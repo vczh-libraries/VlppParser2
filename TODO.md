@@ -1,0 +1,145 @@
+# TODO
+
+## Goal
+
+- Parsing
+  - Explicily declare the boundary of ambiguity resolving (e.g. on EXPR or on STAT)
+  - Error message generation
+  - Error recovering
+- AST
+  - Low overhead AST with reflection
+  - Optional creating AST from a pool
+  - Pooling is a configuration in the AST definition file, the decision could not be changed until re-generate C++ code.
+
+## Experimantal
+
+- Full CFG power, no limitation
+  - Experiment: expanding all left-recursive grammer to right-recursive grammar with instructions
+  - Experiment: optionally inline all rules which don't generate parser functions
+- Serializing
+  - Escaping and Unescaping pairs (instead of only unescaping)
+  - Calculate ambiguous **ToString** cases
+  - Generate **ToString** algorithm
+
+## AST Definition (compatible with Workflow)
+
+```
+class CLASS_NAME [: BASE_CLASS]
+{
+  var FIELD_NAME : TYPE;
+  ...
+}
+```
+
+## Configurations
+
+- Include files in generated C++ header (default to `<VlppParser2.h>`).
+- Standalone AST definition file, instead of being part of the syntax like `VlppParser`.
+  - Global UTF configuration for all `token` in a definition file.
+  - AST definition files could depend on each other, they should have the same UTF configuration.
+  - An AST node in one definition files cannot inherits from one in another file, it could only use one in another file as fields.
+- Reflection supports (opt-out using `VCZH_DEBUG_NO_REFLECTION`).
+  - If AST memory pool is enabled, add the pool object to the constructor in reflection, redirecting to a static function.
+  - All `token` property `X` becomes `X_`, paired with a string property `X` to access the text value in `X_`.
+- Standalone lexical analyzer definition files, with a name.
+- Standalone syntax analyzer definition files.
+  - Import multiple AST definition files.
+  - Import multiple lexical analyzer definition files.
+  - Being able to switch to different lexical analyzer during parser, need to specify a default lexical analyzer name to start.
+- All names of AST and token must be unique.
+- Unique field id will be generated for each fields in each AST node.
+
+### Types
+
+- Reflectable `token` type.
+- Enumerations.
+- Classes.
+- Arrays to class.
+
+## Lexical Analyzer
+
+- Assign token regular expression to token name.
+- Extensible tokens.
+  - For example, recognize `R"[^\s(]\(` and invoke a callback function to determine the end of the string.
+
+## Error Messages
+
+- Being able to specify error messages in syntax.
+- If not specified, default meaningful messages are used.
+- Error messages are generated using the UTF format in the AST definition file.
+  - In C++ code, a file with static functions are generated, implemented by an English cpp file, which could be replaced by manual created one.
+
+## Syntax Analyzer
+
+- Priority of loops:
+  - `+[ RULE ]` (RULE is optional): if `RULE` succeeds, another failure branch is not considered even if the rest doesn't parse.
+  - `-[ RULE ]` (RULE is optional): skip `RULE` and parse the rest. If failed, recognize `RULE` and redo **only the current named-clause**.
+  - `[ RULE ]` (RULE is optional): keep both results
+  - `+ { RULE }` (RULE is repetitive): recognize as much `RULE` as possible first, and then do the rest.
+  - `- { RULE }` (RULE is repetitive): recognize as less `RULE` as possible, and the do the rest. If failed, recognize one more `RULE` and redo **only the current named-clause**.
+  - `{ RULE }` (RULE is repetitive): keep all results.
+- Being able to switch to different lexical analyzer during parsing.
+- Being able to specify error messages in syntax.
+
+## Syntax Callback
+
+- Produce AST assembling instructions during parsing.
+- Keeps the record of branching, generated instructions could be discarded when a certain branch fails in the future.
+- Only make a callback when all ambiguities are resolved, so that the result of executed instructions will never be discarded.
+- Instructions could be executed before parsing ends.
+  - If an AST node could be created in a postfix of instructions.
+    - Generate a SAX-like callback interface, inputs are multiple converted instructions that represents `<FIELD-ID, AST-ID>[]`.
+      - All callback must return an `vuint64_t` number as an identifier of the created AST node.
+      - Such postfix of instructions will be then replaced to one instruction taking this number.
+    - A default implementation for that interface to really create AST nodes, the number is the pointer of the created AST node.
+      - The base class of AST is known, `Ptr<T>` could be created from a reflectable pointer multiple times, that's safe.
+      - For pooled AST node, the pool object must be provided.
+      - For non-pooled AST node, all `Ptr<T>` must be stored in an provided object.
+
+## Supported EBNF
+
+- TOKEN [`:` PROPERTY-NAME]
+- RULE [`:` PROPERTY-NAME]
+- Optional:
+  - `+[` EBNF `]`
+  - `-[` EBNF `]`
+  - `[` EBNF `]`
+- Loop:
+  - `+{` EBNF `}`
+  - `-{` EBNF `}`
+  - `{` EBNF `}`
+- `with{` PROPERTY-ASSIGNMENT ... `}`
+
+## EBNF Program
+
+- RULE {`::=` CLAUSE `as` CLASS-NAME} `;`
+  - Consider a syntax here to switch to different lexical analyzer.
+
+## Development
+
+1. AST.
+  1. Symbol table for AST.
+  2. Manually create a symbol table for the AST for `ParserGen`.
+  3. Symbol table -> C++ code.
+  4. Generate `ParserGen` AST C++ file in this unit test project.
+    1. AST for AST.
+    2. AST for lexicaly analyser.
+    3. AST for syntax.
+2. Instructions.
+  1. Define and test instructions.
+  2. AST + Instruction -> C++ SAX-like callback interface.
+  3. AST + Instruction -> C++ Default implementation for the interface.
+  4. Generate `ParserGen` AST creation C++ file in this unit test project.
+3. Parser.
+  1. Manually create multiple parsers using the `ParserGen` AST, with test input / output.
+  2. Implement the compiler that accepts AST for AST / lexical analyzer / syntax, and create a parser.
+  3. Assert created instructions from parsers.
+  4. Binary serialization and deserialization for parser (lexical analyzer are converted to binary instead of storing regular expressions).
+  5. Generate `ParserGen` parser C++ file in this unit test project.
+4. Testing `ParserGen` parser.
+  1. Recreate above test cases in text format.
+  2. generate C++ code for all of them.
+5. Testing generated parsers.
+6. Create JSON and XML parser.
+7. Port `CodePack` and `ParserGen` to `VlppParser2`.
+  - Do not write to an existing file if the content is not changed.
