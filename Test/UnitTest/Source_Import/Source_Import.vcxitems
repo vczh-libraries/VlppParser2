@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <ItemsProjectGuid>{51f7b357-2ef7-4259-8128-f715d734825a}</ItemsProjectGuid>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectCapability Include="SourceItemsFromImports" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\Import\Vlpp.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\Import\Vlpp.Linux.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\Import\Vlpp.Windows.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\Import\VlppOS.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\Import\VlppOS.Linux.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\Import\VlppOS.Windows.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\Import\VlppReflection.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\Import\VlppRegex.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\Import\Vlpp.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\Import\VlppOS.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\Import\VlppReflection.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\Import\VlppRegex.h" />
+  </ItemGroup>
+</Project>
