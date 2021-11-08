@@ -137,6 +137,61 @@ WriteAstCppFile
 			}
 
 /***********************************************************************
+WriteVisitorHeaderFile
+***********************************************************************/
+
+			void WriteVisitorHeaderFile(AstDefFile* file, const WString& visitorName, stream::StreamWriter& writer, Func<void()> callback)
+			{
+				WriteFileComment(file->Name(), writer);
+				if (file->headerGuard != L"")
+				{
+					writer.WriteString(L"#ifndef ");
+					writer.WriteLine(file->headerGuard + L"_AST_" + wupper(visitorName) + L"VISITOR");
+					writer.WriteString(L"#define ");
+					writer.WriteLine(file->headerGuard + L"_AST_" + wupper(visitorName) + L"VISITOR");
+				}
+				else
+				{
+					writer.WriteLine(L"#pragma once");
+				}
+				writer.WriteLine(L"");
+				WString prefix = WriteFileBegin(file, file->Name(), writer);
+				writer.WriteLine(prefix + L"namespace " + wlower(visitorName) + L"_visitor");
+				writer.WriteLine(prefix + L"{");
+				prefix += L"\t";
+
+				callback();
+
+				prefix = prefix.Left(prefix.Length() - 1);
+				writer.WriteLine(prefix + L"}");
+				WriteFileEnd(file, writer);
+
+				if (file->headerGuard != L"")
+				{
+					writer.WriteString(L"#endif");
+				}
+			}
+
+/***********************************************************************
+WriteVisitorCppFile
+***********************************************************************/
+
+			void WriteVisitorCppFile(AstDefFile* file, const WString& visitorName, stream::StreamWriter& writer, Func<void()> callback)
+			{
+				WriteFileComment(file->Name(), writer);
+				WString prefix = WriteFileBegin(file, file->Name() + L"_" + visitorName, writer);
+				writer.WriteLine(prefix + L"namespace " + wlower(visitorName) + L"_visitor");
+				writer.WriteLine(prefix + L"{");
+				prefix += L"\t";
+
+				callback();
+
+				prefix = prefix.Left(prefix.Length() - 1);
+				writer.WriteLine(prefix + L"}");
+				WriteFileEnd(file, writer);
+			}
+
+/***********************************************************************
 WriteAstFiles
 ***********************************************************************/
 

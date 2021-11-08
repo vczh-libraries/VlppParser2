@@ -21,6 +21,8 @@ namespace vl
 
 			extern void				WriteAstHeaderFile(AstDefFile* file, stream::StreamWriter& writer);
 			extern void				WriteAstCppFile(AstDefFile* file, stream::StreamWriter& writer);
+			extern void				WriteVisitorHeaderFile(AstDefFile* file, const WString& visitorName, stream::StreamWriter& writer, Func<void()> callback);
+			extern void				WriteVisitorCppFile(AstDefFile* file, const WString& visitorName, stream::StreamWriter& writer, Func<void()> callback);
 
 			extern void				WriteEmptyVisitorHeaderFile(AstDefFile* file, stream::StreamWriter& writer);
 			extern void				WriteEmptyVisitorCppFile(AstDefFile* file, stream::StreamWriter& writer);
