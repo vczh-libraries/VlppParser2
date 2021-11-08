@@ -167,7 +167,7 @@ WriteTypeDefinitions
 						if (classSymbol->derivedClasses.Count() > 0)
 						{
 							writer.WriteString(prefix);
-							writer.WriteLine(L"\tclass IVisitor : public vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>");
+							writer.WriteLine(L"\tclass IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>");
 							writer.WriteString(prefix);
 							writer.WriteLine(L"\t{");
 							writer.WriteString(prefix);
@@ -187,7 +187,7 @@ WriteTypeDefinitions
 							writer.WriteString(prefix);
 							writer.WriteString(L"\tvirtual void Accept(");
 							PrintCppType(file, classSymbol, writer);
-							writer.WriteLine(L"::IVisitor* visitor)=0;");
+							writer.WriteLine(L"::IVisitor* visitor) = 0;");
 							writer.WriteLine(L"");
 						}
 
@@ -511,11 +511,8 @@ WriteTypeReflectionImplementation
 					writer.WriteString(L"\t\tADD_TYPE_INFO(");
 					PrintCppType(nullptr, typeSymbol, writer);
 					writer.WriteLine(L")");
-				}
 
-				for (auto&& name : file->SymbolOrder())
-				{
-					if (auto classSymbol = dynamic_cast<AstClassSymbol*>(file->Symbols()[name]))
+					if (auto classSymbol = dynamic_cast<AstClassSymbol*>(typeSymbol))
 					{
 						if (classSymbol->derivedClasses.Count() > 0)
 						{

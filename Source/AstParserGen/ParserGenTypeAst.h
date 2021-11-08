@@ -25,14 +25,14 @@ namespace vl
 			class GlrType abstract : public vl::glr::ParsingAstBase, vl::reflection::Description<GlrType>
 			{
 			public:
-				class IVisitor : public vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
+				class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
 				{
 				public:
 					virtual void Visit(GlrEnum* node) = 0;
 					virtual void Visit(GlrClass* node) = 0;
 				};
 
-				virtual void Accept(GlrType::IVisitor* visitor)=0;
+				virtual void Accept(GlrType::IVisitor* visitor) = 0;
 
 				vl::glr::ParsingToken name;
 			};

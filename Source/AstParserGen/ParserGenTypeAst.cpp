@@ -116,13 +116,13 @@ namespace vl
 				void Load(ITypeManager* manager)
 				{
 					ADD_TYPE_INFO(vl::glr::parsergen::GlrType)
+					ADD_TYPE_INFO(vl::glr::parsergen::GlrType::IVisitor)
 					ADD_TYPE_INFO(vl::glr::parsergen::GlrEnumItem)
 					ADD_TYPE_INFO(vl::glr::parsergen::GlrEnum)
 					ADD_TYPE_INFO(vl::glr::parsergen::GlrPropType)
 					ADD_TYPE_INFO(vl::glr::parsergen::GlrClassProp)
 					ADD_TYPE_INFO(vl::glr::parsergen::GlrClass)
 					ADD_TYPE_INFO(vl::glr::parsergen::GlrFile)
-					ADD_TYPE_INFO(vl::glr::parsergen::GlrType::IVisitor)
 				}
 
 				void Unload(ITypeManager* manager)
