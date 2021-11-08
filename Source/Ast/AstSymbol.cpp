@@ -172,6 +172,48 @@ AstDefFile
 			{
 			}
 
+			bool AstDefFile::AddDependency(const WString& dependency)
+			{
+				if (dependencies.Contains(dependency)) return true;
+				if (!ownerManager->Files().Keys().Contains(dependency))
+				{
+					ownerManager->AddError(
+						AstErrorType::FileDependencyNotExists,
+						name,
+						dependency
+						);
+					return false;
+				}
+
+				List<WString> visited;
+				visited.Add(dependency);
+				for (vint i = 0; i < visited.Count(); i++)
+				{
+					auto currentName = visited[i];
+					if (currentName == name)
+					{
+						ownerManager->AddError(
+							AstErrorType::FileCyclicDependency,
+							name,
+							dependency
+							);
+						return false;
+					}
+					auto current = ownerManager->Files()[currentName];
+					for (vint j = 0; j < current->dependencies.Count(); j++)
+					{
+						auto dep = current->dependencies[j];
+						if (!visited.Contains(dep))
+						{
+							visited.Add(dep);
+						}
+					}
+				}
+
+				dependencies.Add(dependency);
+				return true;
+			}
+
 			AstEnumSymbol* AstDefFile::CreateEnum(const WString& symbolName)
 			{
 				return CreateSymbol<AstEnumSymbol>(symbolName);

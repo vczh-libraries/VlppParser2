@@ -133,7 +133,7 @@ AstDefFile
 				friend class AstSymbolManager;
 
 				using DependenciesList = collections::List<WString>;
-				using NamespaceItems = collections::List<WString>;
+				using StringItems = collections::List<WString>;
 			protected:
 				AstSymbolManager*			ownerManager = nullptr;
 				WString						name;
@@ -145,13 +145,16 @@ AstDefFile
 				AstDefFile(AstSymbolManager* _ownerManager, const WString& _name);
 			public:
 				DependenciesList			dependencies;
-				NamespaceItems				cppNss;
-				NamespaceItems				refNss;
+				StringItems					includes;
+				StringItems					cppNss;
+				StringItems					refNss;
+				WString						filePrefix;
 				WString						classPrefix;
 				WString						headerGuard;
 
 				AstSymbolManager*			Owner() { return ownerManager; }
 				const WString&				Name() { return name; }
+				bool						AddDependency(const WString& dependency);
 				AstEnumSymbol*				CreateEnum(const WString& symbolName);
 				AstClassSymbol*				CreateClass(const WString& symbolName);
 				const auto&					Symbols() { return symbols.map; }
@@ -165,6 +168,8 @@ AstSymbolManager
 			enum class AstErrorType
 			{
 				DuplicatedFile,				// (fileName)
+				FileDependencyNotExists,	// (fileName, dependency)
+				FileCyclicDependency,		// (fileName, dependency)
 				DuplicatedSymbol,			// (fileName, symbolName)
 				DuplicatedSymbolGlobally,	// (fileName, symbolName, anotherFileName)
 				DuplicatedClassProp,		// (fileName, className, propName)
@@ -202,7 +207,10 @@ AstSymbolManager
 				const auto&					Files() { return files.map; }
 				const auto&					FileOrder() { return files.order; }
 				const auto&					Symbols() { return symbolMap; }
+				const auto&					Errors() { return errors; }
 			};
+
+			extern void						CreateParserGenAst(AstSymbolManager& manager);
 		}
 	}
 }
