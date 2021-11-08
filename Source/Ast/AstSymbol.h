@@ -14,9 +14,27 @@ namespace vl
 	{
 		namespace parsergen
 		{
+			class AstEnumSymbol;
 			class AstClassSymbol;
 			class AstDefFile;
 			class AstSymbolManager;
+
+			template<typename T>
+			struct MappedOwning
+			{
+				collections::List<Ptr<T>>				items;
+				collections::List<WString>				order;
+				collections::Dictionary<WString, T*>	map;
+
+				bool Add(const WString& name, T* item)
+				{
+					items.Add(item);
+					if (map.Keys().Contains(name)) return false;
+					order.Add(name);
+					map.Add(name, item);
+					return true;
+				}
+			};
 
 /***********************************************************************
 AstSymbol
@@ -24,33 +42,49 @@ AstSymbol
 
 			class AstSymbol : public Object
 			{
-				friend class AstDefFile;
 			protected:
-				AstDefFile*					ownerFile = nullptr;
-				WString						name;
+				AstDefFile*							ownerFile = nullptr;
+				WString								name;
 
+				AstSymbol(AstDefFile* _file, const WString& _name);
 			public:
+				AstDefFile*							Owner() { return ownerFile; }
+				const WString&						Name() { return name; }
 			};
+
+/***********************************************************************
+AstEnumSymbol
+***********************************************************************/
 
 			class AstEnumItemSymbol : public AstSymbol
 			{
+				friend class AstEnumSymbol;
 			protected:
-				vint						value = 0;
+				AstEnumSymbol*						parent = nullptr;
 
+				AstEnumItemSymbol(AstEnumSymbol* _parent, const WString& name);
 			public:
+				vint								value = 0;
+
+				AstEnumSymbol*						Parent() { return parent; }
 			};
 
 			class AstEnumSymbol : public AstSymbol
 			{
-				using ItemList = collections::List<Ptr<AstEnumItemSymbol>>;
-				using ItemMap = collections::Dictionary<WString, AstEnumItemSymbol*>;
+				friend class AstDefFile;
 			protected:
-				ItemList					items;
-				ItemMap						itemMap;
+				MappedOwning<AstEnumItemSymbol>		items;
 
+				AstEnumSymbol(AstDefFile* _file, const WString& _name);
 			public:
-				const ItemMap&				Items() { return itemMap; }
+				AstEnumItemSymbol*					CreateItem(const WString& itemName);
+				const auto&							Items() { return items.map; }
+				const auto&							ItemOrder() { return items.order; }
 			};
+
+/***********************************************************************
+AstClassSymbol
+***********************************************************************/
 
 			enum class AstPropType
 			{
@@ -61,23 +95,29 @@ AstSymbol
 
 			class AstClassPropSymbol : public AstSymbol
 			{
+				friend class AstClassSymbol;
 			protected:
-				AstPropType					propType = AstPropType::Token;
-				AstClassSymbol*				classSymbol = nullptr;
+				AstClassSymbol*						parent = nullptr;
 
+				AstClassPropSymbol(AstClassSymbol* _parent, const WString& name);
 			public:
+				AstPropType							propType = AstPropType::Token;
+				AstClassSymbol*						classSymbol = nullptr;
+
+				AstClassSymbol*						Parent() { return parent; }
 			};
 
 			class AstClassSymbol : public AstSymbol
 			{
-				using PropList = collections::List<Ptr<AstClassPropSymbol>>;
-				using PropMap = collections::Dictionary<WString, AstClassPropSymbol*>;
+				friend class AstDefFile;
 			protected:
-				PropList					props;
-				PropMap						propMap;
+				MappedOwning<AstClassPropSymbol>	props;
 
+				AstClassSymbol(AstDefFile* _file, const WString& _name);
 			public:
-				const PropMap&				Props() { return propMap; }
+				AstClassPropSymbol*					CreateProp(const WString& propName);
+				const auto&							Props() { return props.map; }
+				const auto&							PropOrder() { return props.order; }
 			};
 
 /***********************************************************************
@@ -90,25 +130,25 @@ AstDefFile
 
 				using DependenciesList = collections::List<WString>;
 				using NamespaceItems = collections::List<WString>;
-				using SymbolList = collections::List<Ptr<AstSymbol>>;
-				using SymbolMap = collections::Dictionary<WString, AstSymbol*>;
 			protected:
 				AstSymbolManager*			ownerManager = nullptr;
-				SymbolList					symbols;
-				SymbolMap					symbolMap;
+				WString						name;
+				MappedOwning<AstSymbol>		symbols;
 
 				template<typename T>
 				T*							CreateSymbol(const WString& symbolName);
 
 				AstDefFile(AstSymbolManager* _ownerManager, const WString& _name);
 			public:
-				WString						name;
 				DependenciesList			dependencies;
 				NamespaceItems				nss;
 
+				AstSymbolManager*			Owner() { return ownerManager; }
+				const WString&				Name() { return name; }
 				AstEnumSymbol*				CreateEnum(const WString& symbolName);
 				AstClassSymbol*				CreateClass(const WString& symbolName);
-				const SymbolMap&			Symbols() { return symbolMap; }
+				const auto&					Symbols() { return symbols.map; }
+				const auto&					SymbolOrder() { return symbols.order; }
 			};
 
 /***********************************************************************
@@ -120,6 +160,8 @@ AstSymbolManager
 				DuplicatedFile,				// (fileName)
 				DuplicatedSymbol,			// (fileName, symbolName)
 				DuplicatedSymbolGlobally,	// (fileName, symbolName, anotherFileName)
+				DuplicatedClassProp,		// (fileName, className, propName)
+				DuplicatedEnumItem,			// (fileName, enumName, propName
 			};
 
 			struct AstError
@@ -132,16 +174,13 @@ AstSymbolManager
 
 			class AstSymbolManager : public Object
 			{
-				using FileList = collections::List<Ptr<AstDefFile>>;
 				using ErrorList = collections::List<AstError>;
-				using FileMap = collections::Dictionary<WString, AstDefFile*>;
 				using SymbolMap = collections::Dictionary<WString, AstSymbol*>;
 
 				friend class AstDefFile;
 			protected:
-				FileList					files;
+				MappedOwning<AstDefFile>	files;
 				ErrorList					errors;
-				FileMap						fileMap;
 				SymbolMap					symbolMap;
 
 			public:
@@ -149,8 +188,9 @@ AstSymbolManager
 				void						AddError(AstErrorType type, TArgs&& ...args);
 
 				AstDefFile*					CreateFile(const WString& name);
-				const FileMap&				Files() { return fileMap; }
-				const SymbolMap&			Symbols() { return symbolMap; }
+				const auto&					Files() { return files.map; }
+				const auto&					FileOrder() { return files.order; }
+				const auto&					Symbols() { return symbolMap; }
 			};
 		}
 	}

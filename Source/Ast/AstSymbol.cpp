@@ -9,22 +9,90 @@ namespace vl
 			using namespace collections;
 
 /***********************************************************************
+AstSymbol
+***********************************************************************/
+
+			AstSymbol::AstSymbol(AstDefFile* _file, const WString& _name)
+				: ownerFile(_file)
+				, name(_name)
+			{
+			}
+
+/***********************************************************************
+AstEnumItemSymbol
+***********************************************************************/
+
+			AstEnumItemSymbol::AstEnumItemSymbol(AstEnumSymbol* _parent, const WString& name)
+				: AstSymbol(_parent->Owner(), name)
+				, parent(_parent)
+			{
+			}
+
+/***********************************************************************
+AstEnumSymbol
+***********************************************************************/
+
+			AstEnumSymbol::AstEnumSymbol(AstDefFile* _file, const WString& _name)
+				: AstSymbol(_file, _name)
+			{
+			}
+
+			AstEnumItemSymbol* AstEnumSymbol::CreateItem(const WString& itemName)
+			{
+				auto symbol = new AstEnumItemSymbol(this, itemName);
+				if (!items.Add(itemName, symbol))
+				{
+					ownerFile->Owner()->AddError(
+						AstErrorType::DuplicatedEnumItem,
+						name,
+						itemName
+						);
+				}
+				return symbol;
+			}
+
+/***********************************************************************
+AstClassPropSymbol
+***********************************************************************/
+
+			AstClassPropSymbol::AstClassPropSymbol(AstClassSymbol* _parent, const WString& name)
+				: AstSymbol(_parent->Owner(), name)
+				, parent(_parent)
+			{
+			}
+
+/***********************************************************************
+AstClassSymbol
+***********************************************************************/
+
+			AstClassSymbol::AstClassSymbol(AstDefFile* _file, const WString& _name)
+				: AstSymbol(_file, _name)
+			{
+			}
+
+			AstClassPropSymbol* AstClassSymbol::CreateProp(const WString& propName)
+			{
+				auto symbol = new AstClassPropSymbol(this, propName);
+				if (!props.Add(propName, symbol))
+				{
+					ownerFile->Owner()->AddError(
+						AstErrorType::DuplicatedClassProp,
+						name,
+						propName
+						);
+				}
+				return symbol;
+			}
+
+/***********************************************************************
 AstDefFile
 ***********************************************************************/
 
 			template<typename T>
 			T* AstDefFile::CreateSymbol(const WString& symbolName)
 			{
-				auto symbol = new T();
-				static_cast<AstSymbol*>(symbol)->ownerFile = this;
-				static_cast<AstSymbol*>(symbol)->name = symbolName;
-				symbols.Add(symbol);
-
-				if (!symbolMap.Keys().Contains(symbolName))
-				{
-					symbolMap.Add(symbolName, symbol);
-				}
-				else
+				auto symbol = new T(this, symbolName);
+				if (!symbols.Add(symbolName, symbol))
 				{
 					ownerManager->AddError(
 						AstErrorType::DuplicatedSymbol,
@@ -43,7 +111,7 @@ AstDefFile
 						AstErrorType::DuplicatedSymbolGlobally,
 						name,
 						symbolName,
-						ownerManager->symbolMap[symbolName]->ownerFile->name
+						ownerManager->symbolMap[symbolName]->Owner()->name
 						);
 				}
 
@@ -51,7 +119,7 @@ AstDefFile
 			}
 
 			AstDefFile::AstDefFile(AstSymbolManager* _ownerManager, const WString& _name)
-				:ownerManager(_ownerManager)
+				: ownerManager(_ownerManager)
 				, name(_name)
 			{
 			}
@@ -92,12 +160,7 @@ AstSymbolManager
 			AstDefFile* AstSymbolManager::CreateFile(const WString& name)
 			{
 				auto file = new AstDefFile(this, name);
-				files.Add(file);
-				if (!fileMap.Keys().Contains(name))
-				{
-					fileMap.Add(name, file);
-				}
-				else
+				if (!files.Add(name, file))
 				{
 					AddError(
 						AstErrorType::DuplicatedFile,
