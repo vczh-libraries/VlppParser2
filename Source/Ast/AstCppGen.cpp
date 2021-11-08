@@ -61,6 +61,7 @@ Forward Declarations
 
 			extern void		WriteTypeForwardDefinitions(AstDefFile* file, const WString& prefix, stream::StreamWriter& writer);
 			extern void		WriteTypeDefinitions(AstDefFile* file, const WString& prefix, stream::StreamWriter& writer);
+			extern void		WriteVisitorImpl(AstDefFile* file, const WString& prefix, stream::StreamWriter& writer);
 
 /***********************************************************************
 WriteAstHeaderFile
@@ -114,7 +115,7 @@ WriteAstCppFile
 				writer.WriteLine(L"Visitor Pattern Implementation");
 				writer.WriteLine(L"***********************************************************************/");
 				writer.WriteLine(L"");
-				//WriteVisitorImpl(&manager, prefix, config.classPrefix, writer);
+				WriteVisitorImpl(file, prefix, writer);
 
 				WriteFileEnd(file, writer);
 

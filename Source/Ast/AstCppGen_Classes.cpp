@@ -176,6 +176,36 @@ WriteTypeDefinitions
 					}
 				}
 			}
+
+/***********************************************************************
+WriteVisitorImpl
+***********************************************************************/
+
+			void WriteVisitorImpl(AstDefFile* file, const WString& prefix, stream::StreamWriter& writer)
+			{
+				for (auto name : file->SymbolOrder())
+				{
+					if (auto classSymbol = dynamic_cast<AstClassSymbol*>(file->Symbols()[name]))
+					{
+						if (classSymbol->baseClass)
+						{
+							writer.WriteString(prefix);
+							writer.WriteString(L"void ");
+							PrintCppType(AstPropType::Type, classSymbol, writer);
+							writer.WriteString(L"::Accept(");
+							PrintCppType(AstPropType::Type, classSymbol->baseClass, writer);
+							writer.WriteLine(L"::IVisitor* visitor)");
+							writer.WriteString(prefix);
+							writer.WriteLine(L"{");
+							writer.WriteString(prefix);
+							writer.WriteLine(L"\tvisitor->Visit(this);");
+							writer.WriteString(prefix);
+							writer.WriteLine(L"}");
+							writer.WriteLine(L"");
+						}
+					}
+				}
+			}
 		}
 	}
 }
