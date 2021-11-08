@@ -116,7 +116,6 @@ WriteAstCppFile
 				writer.WriteLine(L"/***********************************************************************");
 				writer.WriteLine(L"Visitor Pattern Implementation");
 				writer.WriteLine(L"***********************************************************************/");
-				writer.WriteLine(L"");
 				WriteVisitorImpl(file, prefix, writer);
 
 				WriteFileEnd(file, writer);

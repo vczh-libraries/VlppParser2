@@ -26,7 +26,6 @@ Visitor Pattern Implementation
 			{
 				visitor->Visit(this);
 			}
-
 		}
 	}
 }
@@ -44,6 +43,7 @@ namespace vl
 			CLASS_MEMBER_PROPERTY_REFERENCETEMPLATE(NAME, get_##NAME, set_##NAME, L"$This->$Name.value")\
 
 			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrType, glr::parsergen::GlrType)
+			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrType::IVisitor, glr::parsergen::GlrType::IVisitor)
 			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrEnumItem, glr::parsergen::GlrEnumItem)
 			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrEnum, glr::parsergen::GlrEnum)
 			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrPropType, glr::parsergen::GlrPropType)

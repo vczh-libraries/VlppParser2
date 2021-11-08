@@ -229,6 +229,7 @@ WriteVisitorImpl
 					{
 						if (classSymbol->baseClass)
 						{
+							writer.WriteLine(L"");
 							writer.WriteString(prefix);
 							writer.WriteString(L"void ");
 							PrintCppType(file, classSymbol, writer);
@@ -241,7 +242,6 @@ WriteVisitorImpl
 							writer.WriteLine(L"\tvisitor->Visit(this);");
 							writer.WriteString(prefix);
 							writer.WriteLine(L"}");
-							writer.WriteLine(L"");
 						}
 					}
 				}
@@ -352,6 +352,20 @@ WriteTypeReflectionImplementation
 					writer.WriteString(L", ");
 					PrintAstType(nullptr, AstPropType::Type, typeSymbol, PrintTypePurpose::ReflectionName, writer);
 					writer.WriteLine(L")");
+
+					if (auto classSymbol = dynamic_cast<AstClassSymbol*>(typeSymbol))
+					{
+						if (classSymbol->derivedClasses.Count() > 0)
+						{
+							writer.WriteString(prefix);
+							writer.WriteString(L"IMPL_TYPE_INFO_RENAME(");
+							PrintCppType(nullptr, typeSymbol, writer);
+							writer.WriteString(L"::IVisitor");
+							writer.WriteString(L", ");
+							PrintAstType(nullptr, AstPropType::Type, typeSymbol, PrintTypePurpose::ReflectionName, writer);
+							writer.WriteLine(L"::IVisitor)");
+						}
+					}
 				}
 
 				writer.WriteLine(L"");
