@@ -28,11 +28,11 @@ namespace vl
 				class IVisitor : public vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
 				{
 				public:
-					virtual void Visit(vl::glr::parsergen::GlrEnum* node) = 0;
-					virtual void Visit(vl::glr::parsergen::GlrClass* node) = 0;
+					virtual void Visit(GlrEnum* node) = 0;
+					virtual void Visit(GlrClass* node) = 0;
 				};
 
-				virtual void Accept(vl::glr::parsergen::GlrType::IVisitor* visitor)=0;
+				virtual void Accept(GlrType::IVisitor* visitor)=0;
 
 				vl::glr::ParsingToken name;
 			};
@@ -43,12 +43,12 @@ namespace vl
 				vl::glr::ParsingToken name;
 			};
 
-			class GlrEnum : public vl::glr::parsergen::GlrType, vl::reflection::Description<GlrEnum>
+			class GlrEnum : public GlrType, vl::reflection::Description<GlrEnum>
 			{
 			public:
-				vl::collections::List<vl::glr::parsergen::GlrEnumItem> items;
+				vl::collections::List<GlrEnumItem> items;
 
-				void Accept(vl::glr::parsergen::GlrType::IVisitor* visitor) override;
+				void Accept(GlrType::IVisitor* visitor) override;
 			};
 
 			enum class GlrPropType
@@ -62,23 +62,23 @@ namespace vl
 			{
 			public:
 				vl::glr::ParsingToken name;
-				vl::glr::parsergen::GlrPropType propType;
+				GlrPropType propType;
 				vl::glr::ParsingToken propTypeName;
 			};
 
-			class GlrClass : public vl::glr::parsergen::GlrType, vl::reflection::Description<GlrClass>
+			class GlrClass : public GlrType, vl::reflection::Description<GlrClass>
 			{
 			public:
-				vl::collections::List<vl::glr::parsergen::GlrClassProp> props;
+				vl::collections::List<GlrClassProp> props;
 
-				void Accept(vl::glr::parsergen::GlrType::IVisitor* visitor) override;
+				void Accept(GlrType::IVisitor* visitor) override;
 			};
 
 			class GlrFile : public vl::glr::ParsingAstBase, vl::reflection::Description<GlrFile>
 			{
 			public:
 				vl::glr::ParsingToken name;
-				vl::collections::List<vl::glr::parsergen::GlrType> types;
+				vl::collections::List<GlrType> types;
 			};
 		}
 	}

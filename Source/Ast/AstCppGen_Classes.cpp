@@ -32,7 +32,7 @@ WriteTypeForwardDefinitions
 PrintCppType
 ***********************************************************************/
 
-			void PrintCppType(AstPropType propType, AstSymbol* propSymbol, stream::StreamWriter& writer)
+			void PrintCppType(AstDefFile* fileContext, AstPropType propType, AstSymbol* propSymbol, stream::StreamWriter& writer)
 			{
 				if (propType == AstPropType::Token)
 				{
@@ -46,10 +46,13 @@ PrintCppType
 				}
 
 				auto file = propSymbol->Owner();
-				for (auto&& ns : file->cppNss)
+				if (fileContext != file)
 				{
-					writer.WriteString(ns);
-					writer.WriteString(L"::");
+					for (auto&& ns : file->cppNss)
+					{
+						writer.WriteString(ns);
+						writer.WriteString(L"::");
+					}
 				}
 				writer.WriteString(file->classPrefix);
 				writer.WriteString(propSymbol->Name());
@@ -58,6 +61,11 @@ PrintCppType
 				{
 					writer.WriteString(L">");
 				}
+			}
+
+			void PrintCppType(AstDefFile* fileContext, AstSymbol* propSymbol, stream::StreamWriter& writer)
+			{
+				PrintCppType(fileContext, AstPropType::Type, propSymbol, writer);
 			}
 
 /***********************************************************************
@@ -108,7 +116,7 @@ WriteTypeDefinitions
 						writer.WriteString(L" : public ");
 						if (classSymbol->baseClass)
 						{
-							PrintCppType(AstPropType::Type, classSymbol->baseClass, writer);
+							PrintCppType(file, classSymbol->baseClass, writer);
 						}
 						else
 						{
@@ -137,7 +145,7 @@ WriteTypeDefinitions
 							{
 								writer.WriteString(prefix);
 								writer.WriteString(L"\t\tvirtual void Visit(");
-								PrintCppType(AstPropType::Type, childSymbol, writer);
+								PrintCppType(file, childSymbol, writer);
 								writer.WriteLine(L"* node) = 0;");
 							}
 
@@ -146,7 +154,7 @@ WriteTypeDefinitions
 							writer.WriteLine(L"");
 							writer.WriteString(prefix);
 							writer.WriteString(L"\tvirtual void Accept(");
-							PrintCppType(AstPropType::Type, classSymbol, writer);
+							PrintCppType(file, classSymbol, writer);
 							writer.WriteLine(L"::IVisitor* visitor)=0;");
 							writer.WriteLine(L"");
 						}
@@ -156,7 +164,7 @@ WriteTypeDefinitions
 							auto propSymbol = classSymbol->Props()[propName];
 							writer.WriteString(prefix);
 							writer.WriteString(L"\t");
-							PrintCppType(propSymbol->propType, propSymbol->propSymbol, writer);
+							PrintCppType(file, propSymbol->propType, propSymbol->propSymbol, writer);
 							writer.WriteString(L" ");
 							writer.WriteString(propName);
 							writer.WriteLine(L";");
@@ -167,7 +175,7 @@ WriteTypeDefinitions
 							writer.WriteLine(L"");
 							writer.WriteString(prefix);
 							writer.WriteString(L"\tvoid Accept(");
-							PrintCppType(AstPropType::Type, classSymbol->baseClass, writer);
+							PrintCppType(file, classSymbol->baseClass, writer);
 							writer.WriteLine(L"::IVisitor* visitor) override;");
 						}
 
@@ -191,9 +199,9 @@ WriteVisitorImpl
 						{
 							writer.WriteString(prefix);
 							writer.WriteString(L"void ");
-							PrintCppType(AstPropType::Type, classSymbol, writer);
+							PrintCppType(file, classSymbol, writer);
 							writer.WriteString(L"::Accept(");
-							PrintCppType(AstPropType::Type, classSymbol->baseClass, writer);
+							PrintCppType(file, classSymbol->baseClass, writer);
 							writer.WriteLine(L"::IVisitor* visitor)");
 							writer.WriteString(prefix);
 							writer.WriteLine(L"{");

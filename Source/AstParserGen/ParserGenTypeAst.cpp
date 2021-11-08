@@ -17,12 +17,12 @@ namespace vl
 Visitor Pattern Implementation
 ***********************************************************************/
 
-			void vl::glr::parsergen::GlrEnum::Accept(vl::glr::parsergen::GlrType::IVisitor* visitor)
+			void GlrEnum::Accept(GlrType::IVisitor* visitor)
 			{
 				visitor->Visit(this);
 			}
 
-			void vl::glr::parsergen::GlrClass::Accept(vl::glr::parsergen::GlrType::IVisitor* visitor)
+			void GlrClass::Accept(GlrType::IVisitor* visitor)
 			{
 				visitor->Visit(this);
 			}
