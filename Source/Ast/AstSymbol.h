@@ -105,7 +105,7 @@ AstClassSymbol
 				AstSymbol*							propSymbol = nullptr;
 
 				AstClassSymbol*						Parent() { return parent; }
-				bool								SetPropType(AstPropType _type, const WString& typeName);
+				bool								SetPropType(AstPropType _type, const WString& typeName = WString::Empty);
 			};
 
 			class AstClassSymbol : public AstSymbol
@@ -210,7 +210,7 @@ AstSymbolManager
 				const auto&					Errors() { return errors; }
 			};
 
-			extern void						CreateParserGenAst(AstSymbolManager& manager);
+			extern AstDefFile*				CreateParserGenTypeAst(AstSymbolManager& manager);
 		}
 	}
 }

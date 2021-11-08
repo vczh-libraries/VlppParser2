@@ -10,7 +10,7 @@ TEST_FILE
 	TEST_CASE(L"CreateParserGenAst")
 	{
 		AstSymbolManager manager;
-		CreateParserGenAst(manager);
+		CreateParserGenTypeAst(manager);
 		TEST_ASSERT(manager.Errors().Count() == 0);
 	});
 }
