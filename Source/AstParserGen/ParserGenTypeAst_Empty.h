@@ -18,6 +18,16 @@ namespace vl
 		{
 			namespace empty_visitor
 			{
+				/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
+				class TypeVisitor : public Object, public GlrType::IVisitor
+				{
+				public:
+
+					// Visitor Members -----------------------------------
+					void Visit(GlrEnum* node) override;
+					void Visit(GlrClass* node) override;
+				};
+
 			}
 		}
 	}

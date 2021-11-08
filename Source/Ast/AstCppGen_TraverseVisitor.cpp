@@ -15,7 +15,7 @@ WriteTraverseVisitorHeaderFile
 
 			void WriteTraverseVisitorHeaderFile(AstDefFile* file, stream::StreamWriter& writer)
 			{
-				WriteVisitorHeaderFile(file, L"Traverse", writer, [&]()
+				WriteVisitorHeaderFile(file, L"Traverse", writer, [&](const WString& prefix)
 				{
 				});
 			}
@@ -26,7 +26,7 @@ WriteTraverseVisitorCppFile
 
 			void WriteTraverseVisitorCppFile(AstDefFile* file, stream::StreamWriter& writer)
 			{
-				WriteVisitorCppFile(file, L"Traverse", writer, [&]()
+				WriteVisitorCppFile(file, L"Traverse", writer, [&](const WString& prefix)
 				{
 				});
 			}

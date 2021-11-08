@@ -140,7 +140,7 @@ WriteAstCppFile
 WriteVisitorHeaderFile
 ***********************************************************************/
 
-			void WriteVisitorHeaderFile(AstDefFile* file, const WString& visitorName, stream::StreamWriter& writer, Func<void()> callback)
+			void WriteVisitorHeaderFile(AstDefFile* file, const WString& visitorName, stream::StreamWriter& writer, Func<void(const WString&)> callback)
 			{
 				WriteFileComment(file->Name(), writer);
 				if (file->headerGuard != L"")
@@ -160,7 +160,7 @@ WriteVisitorHeaderFile
 				writer.WriteLine(prefix + L"{");
 				prefix += L"\t";
 
-				callback();
+				callback(prefix);
 
 				prefix = prefix.Left(prefix.Length() - 1);
 				writer.WriteLine(prefix + L"}");
@@ -176,7 +176,7 @@ WriteVisitorHeaderFile
 WriteVisitorCppFile
 ***********************************************************************/
 
-			void WriteVisitorCppFile(AstDefFile* file, const WString& visitorName, stream::StreamWriter& writer, Func<void()> callback)
+			void WriteVisitorCppFile(AstDefFile* file, const WString& visitorName, stream::StreamWriter& writer, Func<void(const WString&)> callback)
 			{
 				WriteFileComment(file->Name(), writer);
 				WString prefix = WriteFileBegin(file, file->Name() + L"_" + visitorName, writer);
@@ -184,7 +184,7 @@ WriteVisitorCppFile
 				writer.WriteLine(prefix + L"{");
 				prefix += L"\t";
 
-				callback();
+				callback(prefix);
 
 				prefix = prefix.Left(prefix.Length() - 1);
 				writer.WriteLine(prefix + L"}");

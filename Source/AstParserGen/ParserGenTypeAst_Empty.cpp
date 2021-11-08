@@ -15,6 +15,20 @@ namespace vl
 		{
 			namespace empty_visitor
 			{
+
+/***********************************************************************
+TypeVisitor
+***********************************************************************/
+
+				// Visitor Members -----------------------------------
+
+				void TypeVisitor::Visit(GlrEnum* node)
+				{
+				}
+
+				void TypeVisitor::Visit(GlrClass* node)
+				{
+				}
 			}
 		}
 	}
