@@ -27,7 +27,7 @@ Utility
 			{
 				for (auto include : file->includes)
 				{
-					writer.WriteLine(L"#include " + include);
+					writer.WriteLine(L"#include \"" + include + L"\"");
 				}
 				if (includeFile != L"")
 				{

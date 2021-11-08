@@ -4,7 +4,7 @@ From parser definition:TypeAst
 Licensed under https://github.com/vczh-libraries/License
 ***********************************************************************/
 
-#include ../AstBase.h
+#include "../AstBase.h"
 #include "ParserGenTypeAst.h"
 
 namespace vl

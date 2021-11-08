@@ -7,7 +7,7 @@ Licensed under https://github.com/vczh-libraries/License
 #ifndef VCZH_PARSER2_PARSERGEN_EXPRESSION_AST
 #define VCZH_PARSER2_PARSERGEN_EXPRESSION_AST
 
-#include ../AstBase.h
+#include "../AstBase.h"
 
 namespace vl
 {
