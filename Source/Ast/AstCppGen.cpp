@@ -72,7 +72,6 @@ WriteAstHeaderFile
 				}
 				WString prefix = WriteFileBegin(file, L"", writer);
 
-				//WriteTokenDefinition(table, prefix, config.classPrefix, writer);
 				//WriteTypeForwardDefinitions(definition->types, prefix, 0, &manager, config.classPrefix, writer);
 				//WriteTypeDefinitions(definition->types, prefix, 0, &manager, config.classPrefix, writer);
 
