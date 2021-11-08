@@ -61,6 +61,35 @@ AstClassPropSymbol
 			{
 			}
 
+			bool AstClassPropSymbol::SetPropType(AstPropType _type, const WString& typeName)
+			{
+				propType = _type;
+				if (_type == AstPropType::Token) return true;
+
+				auto& symbols = parent->Owner()->Owner()->Symbols();
+				vint index = symbols.Keys().IndexOf(typeName);
+				if (index == -1)
+				{
+					ownerFile->Owner()->AddError(AstErrorType::FieldTypeNotExists, ownerFile->Name(), name);
+					return false;
+				}
+
+				propSymbol = symbols.Values()[index];
+				if (_type == AstPropType::Type) return true;
+
+				if (!dynamic_cast<AstClassSymbol*>(propSymbol))
+				{
+					parent->Owner()->Owner()->AddError(
+						AstErrorType::FieldTypeNotClass,
+						parent->Owner()->Name(),
+						parent->Name(),
+						name
+						);
+					return false;
+				}
+				return true;
+			}
+
 /***********************************************************************
 AstClassSymbol
 ***********************************************************************/
@@ -68,6 +97,25 @@ AstClassSymbol
 			AstClassSymbol::AstClassSymbol(AstDefFile* _file, const WString& _name)
 				: AstSymbol(_file, _name)
 			{
+			}
+
+			bool AstClassSymbol::SetBaseClass(const WString& typeName)
+			{
+				auto& symbols = ownerFile->Owner()->Symbols();
+				vint index = symbols.Keys().IndexOf(typeName);
+				if (index == -1)
+				{
+					ownerFile->Owner()->AddError(AstErrorType::BaseClassNotExists, ownerFile->Name(), name);
+					return false;
+				}
+
+				baseClass = dynamic_cast<AstClassSymbol*>(symbols.Values()[index]);
+				if (!baseClass)
+				{
+					ownerFile->Owner()->AddError(AstErrorType::BaseClassNotClass, ownerFile->Name(), name);
+					return false;
+				}
+				return true;
 			}
 
 			AstClassPropSymbol* AstClassSymbol::CreateProp(const WString& propName)

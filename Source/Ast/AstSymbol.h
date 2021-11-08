@@ -89,8 +89,8 @@ AstClassSymbol
 			enum class AstPropType
 			{
 				Token,
-				Class,
-				ClassArray,
+				Type,
+				Array,
 			};
 
 			class AstClassPropSymbol : public AstSymbol
@@ -102,9 +102,10 @@ AstClassSymbol
 				AstClassPropSymbol(AstClassSymbol* _parent, const WString& name);
 			public:
 				AstPropType							propType = AstPropType::Token;
-				AstClassSymbol*						classSymbol = nullptr;
+				AstSymbol*							propSymbol = nullptr;
 
 				AstClassSymbol*						Parent() { return parent; }
+				bool								SetPropType(AstPropType _type, const WString& typeName);
 			};
 
 			class AstClassSymbol : public AstSymbol
@@ -115,6 +116,9 @@ AstClassSymbol
 
 				AstClassSymbol(AstDefFile* _file, const WString& _name);
 			public:
+				AstClassSymbol*						baseClass = nullptr;
+
+				bool								SetBaseClass(const WString& typeName);
 				AstClassPropSymbol*					CreateProp(const WString& propName);
 				const auto&							Props() { return props.map; }
 				const auto&							PropOrder() { return props.order; }
@@ -141,7 +145,10 @@ AstDefFile
 				AstDefFile(AstSymbolManager* _ownerManager, const WString& _name);
 			public:
 				DependenciesList			dependencies;
-				NamespaceItems				nss;
+				NamespaceItems				cppNss;
+				NamespaceItems				refNss;
+				WString						classPrefix;
+				WString						headerGuard;
 
 				AstSymbolManager*			Owner() { return ownerManager; }
 				const WString&				Name() { return name; }
@@ -162,6 +169,10 @@ AstSymbolManager
 				DuplicatedSymbolGlobally,	// (fileName, symbolName, anotherFileName)
 				DuplicatedClassProp,		// (fileName, className, propName)
 				DuplicatedEnumItem,			// (fileName, enumName, propName
+				BaseClassNotExists,			// (fileName, className)
+				BaseClassNotClass,			// (fileName, className)
+				FieldTypeNotExists,			// (fileName, className, propName)
+				FieldTypeNotClass,			// (fileName, className, propName)
 			};
 
 			struct AstError
