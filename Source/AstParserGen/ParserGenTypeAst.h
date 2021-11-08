@@ -89,6 +89,36 @@ namespace vl
 	{
 		namespace description
 		{
+#ifndef VCZH_DEBUG_NO_REFLECTION
+			DECL_TYPE_INFO(vl::glr::parsergen::GlrType)
+			DECL_TYPE_INFO(vl::glr::parsergen::GlrType::IVisitor)
+			DECL_TYPE_INFO(vl::glr::parsergen::GlrEnumItem)
+			DECL_TYPE_INFO(vl::glr::parsergen::GlrEnum)
+			DECL_TYPE_INFO(vl::glr::parsergen::GlrPropType)
+			DECL_TYPE_INFO(vl::glr::parsergen::GlrClassProp)
+			DECL_TYPE_INFO(vl::glr::parsergen::GlrClass)
+			DECL_TYPE_INFO(vl::glr::parsergen::GlrFile)
+
+#ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
+
+			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(vl::glr::parsergen::GlrType::IVisitor)
+				void Visit(vl::glr::parsergen::GlrEnum* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+				void Visit(vl::glr::parsergen::GlrClass* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+			END_INTERFACE_PROXY(vl::glr::parsergen::GlrType::IVisitor)
+
+#endif
+#endif
+			/// <summary>Load all reflectable AST types, only available when <b>VCZH_DEBUG_NO_REFLECTION</b> is off.</summary>
+			/// <returns>Returns true if this operation succeeded.</returns>
+			extern bool GlrTypeAstLoadTypes();
 		}
 	}
 }

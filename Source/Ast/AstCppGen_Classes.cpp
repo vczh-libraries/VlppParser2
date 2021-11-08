@@ -214,6 +214,87 @@ WriteVisitorImpl
 					}
 				}
 			}
+
+/***********************************************************************
+WriteTypeReflectionDeclaration
+***********************************************************************/
+
+			void WriteTypeReflectionDeclaration(AstDefFile* file, const WString& prefix, stream::StreamWriter& writer)
+			{
+				writer.WriteLine(L"#ifndef VCZH_DEBUG_NO_REFLECTION");
+
+				for (auto&& name : file->SymbolOrder())
+				{
+					auto typeSymbol = file->Symbols()[name];
+					writer.WriteString(prefix);
+					writer.WriteString(L"DECL_TYPE_INFO(");
+					PrintCppType(nullptr, typeSymbol, writer);
+					writer.WriteLine(L")");
+
+					if (auto classSymbol = dynamic_cast<AstClassSymbol*>(typeSymbol))
+					{
+						if (classSymbol->derivedClasses.Count() > 0)
+						{
+							writer.WriteString(prefix);
+							writer.WriteString(L"DECL_TYPE_INFO(");
+							PrintCppType(nullptr, typeSymbol, writer);
+							writer.WriteLine(L"::IVisitor)");
+						}
+					}
+				}
+
+				writer.WriteLine(L"");
+				writer.WriteLine(L"#ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA");
+				writer.WriteLine(L"");
+				for (auto&& name : file->SymbolOrder())
+				{
+					if (auto classSymbol = dynamic_cast<AstClassSymbol*>(file->Symbols()[name]))
+					{
+						if (classSymbol->derivedClasses.Count() > 0)
+						{
+							writer.WriteString(prefix);
+							writer.WriteString(L"BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(");
+							PrintCppType(nullptr, classSymbol, writer);
+							writer.WriteLine(L"::IVisitor)");
+
+							for (auto childSymbol : classSymbol->derivedClasses)
+							{
+								writer.WriteString(prefix);
+								writer.WriteString(L"\tvoid Visit(");
+								PrintCppType(nullptr, childSymbol, writer);
+								writer.WriteLine(L"* node) override");
+								writer.WriteString(prefix);
+								writer.WriteLine(L"\t{");
+								writer.WriteString(prefix);
+								writer.WriteLine(L"\t\tINVOKE_INTERFACE_PROXY(Visit, node);");
+								writer.WriteString(prefix);
+								writer.WriteLine(L"\t}");
+								writer.WriteLine(L"");
+							}
+
+							writer.WriteString(prefix);
+							writer.WriteString(L"END_INTERFACE_PROXY(");
+							PrintCppType(nullptr, classSymbol, writer);
+							writer.WriteLine(L"::IVisitor)");
+							writer.WriteLine(L"");
+						}
+					}
+				}
+
+				writer.WriteLine(L"#endif");
+				writer.WriteLine(L"#endif");
+
+				writer.WriteString(prefix);
+				writer.WriteLine(L"/// <summary>Load all reflectable AST types, only available when <b>VCZH_DEBUG_NO_REFLECTION</b> is off.</summary>");
+				writer.WriteString(prefix);
+				writer.WriteLine(L"/// <returns>Returns true if this operation succeeded.</returns>");
+
+				writer.WriteString(prefix);
+				writer.WriteString(L"extern bool ");
+				writer.WriteString(file->classPrefix);
+				writer.WriteString(file->Name());
+				writer.WriteLine(L"LoadTypes();");
+			}
 		}
 	}
 }
