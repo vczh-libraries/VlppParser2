@@ -117,6 +117,7 @@ AstClassSymbol
 				AstClassSymbol(AstDefFile* _file, const WString& _name);
 			public:
 				AstClassSymbol*						baseClass = nullptr;
+				collections::List<AstClassSymbol*>	derivedClasses;
 
 				bool								SetBaseClass(const WString& typeName);
 				AstClassPropSymbol*					CreateProp(const WString& propName);

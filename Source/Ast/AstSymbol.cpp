@@ -40,6 +40,7 @@ AstEnumSymbol
 			AstEnumItemSymbol* AstEnumSymbol::CreateItem(const WString& itemName)
 			{
 				auto symbol = new AstEnumItemSymbol(this, itemName);
+				symbol->value = items.items.Count();
 				if (!items.Add(itemName, symbol))
 				{
 					ownerFile->Owner()->AddError(
@@ -115,6 +116,8 @@ AstClassSymbol
 					ownerFile->Owner()->AddError(AstErrorType::BaseClassNotClass, ownerFile->Name(), name);
 					return false;
 				}
+
+				baseClass->derivedClasses.Add(this);
 				return true;
 			}
 

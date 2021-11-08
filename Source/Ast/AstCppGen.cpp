@@ -56,6 +56,13 @@ Utility
 			}
 
 /***********************************************************************
+Forward Declarations
+***********************************************************************/
+
+			extern void		WriteTypeForwardDefinitions(AstDefFile* file, const WString& prefix, stream::StreamWriter& writer);
+			extern void		WriteTypeDefinitions(AstDefFile* file, const WString& prefix, stream::StreamWriter& writer);
+
+/***********************************************************************
 WriteAstHeaderFile
 ***********************************************************************/
 
@@ -72,8 +79,8 @@ WriteAstHeaderFile
 				}
 				WString prefix = WriteFileBegin(file, L"", writer);
 
-				//WriteTypeForwardDefinitions(definition->types, prefix, 0, &manager, config.classPrefix, writer);
-				//WriteTypeDefinitions(definition->types, prefix, 0, &manager, config.classPrefix, writer);
+				WriteTypeForwardDefinitions(file, prefix, writer);
+				WriteTypeDefinitions(file, prefix, writer);
 
 				WriteFileEnd(file, writer);
 

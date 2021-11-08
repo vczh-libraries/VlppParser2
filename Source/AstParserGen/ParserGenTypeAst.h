@@ -15,6 +15,71 @@ namespace vl
 	{
 		namespace parsergen
 		{
+			class GlrClass;
+			class GlrClassProp;
+			class GlrEnum;
+			class GlrEnumItem;
+			class GlrFile;
+			class GlrType;
+
+			class GlrType abstract : public vl::glr::ParsingAstBase, vl::reflection::Description<GlrType>
+			{
+			public:
+				class IVisitor : public vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
+				{
+				public:
+					virtual void Visit(vl::glr::parsergen::GlrEnum* node) = 0;
+					virtual void Visit(vl::glr::parsergen::GlrClass* node) = 0;
+				};
+
+				virtual void Accept(vl::glr::parsergen::GlrType::IVisitor* visitor)=0;
+
+				vl::glr::ParsingToken name;
+			};
+
+			class GlrEnumItem : public vl::glr::ParsingAstBase, vl::reflection::Description<GlrEnumItem>
+			{
+			public:
+				vl::glr::ParsingToken name;
+			};
+
+			class GlrEnum : public vl::glr::parsergen::GlrType, vl::reflection::Description<GlrEnum>
+			{
+			public:
+				vl::collections::List<vl::glr::parsergen::GlrEnumItem> items;
+
+				void Accept(vl::glr::parsergen::GlrType::IVisitor* visitor) override;
+			};
+
+			enum class GlrPropType
+			{
+				Token = 0,
+				Type = 1,
+				Array = 2,
+			};
+
+			class GlrClassProp : public vl::glr::ParsingAstBase, vl::reflection::Description<GlrClassProp>
+			{
+			public:
+				vl::glr::ParsingToken name;
+				vl::glr::parsergen::GlrPropType propType;
+				vl::glr::ParsingToken propTypeName;
+			};
+
+			class GlrClass : public vl::glr::parsergen::GlrType, vl::reflection::Description<GlrClass>
+			{
+			public:
+				vl::collections::List<vl::glr::parsergen::GlrClassProp> props;
+
+				void Accept(vl::glr::parsergen::GlrType::IVisitor* visitor) override;
+			};
+
+			class GlrFile : public vl::glr::ParsingAstBase, vl::reflection::Description<GlrFile>
+			{
+			public:
+				vl::glr::ParsingToken name;
+				vl::collections::List<vl::glr::parsergen::GlrType> types;
+			};
 		}
 	}
 }
