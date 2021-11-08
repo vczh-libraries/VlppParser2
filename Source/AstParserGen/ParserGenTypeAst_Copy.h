@@ -18,6 +18,17 @@ namespace vl
 		{
 			namespace copy_visitor
 			{
+				/// <summary>A copy visitor, overriding all abstract methods with AST copying code.</summary>
+				class TypeVisitor : public virtual vl::glr::CopyVisitorBase, public GlrType::IVisitor
+				{
+				protected:
+
+				public:
+					// Visitor Members -----------------------------------
+					void Visit(GlrEnum* node) override;
+					void Visit(GlrClass* node) override;
+				};
+
 			}
 		}
 	}

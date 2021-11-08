@@ -30,8 +30,8 @@ WriteEmptyVisitorHeaderFile
 								PrintCppType(file, classSymbol, writer);
 								writer.WriteLine(L"::IVisitor");
 								writer.WriteLine(prefix + L"{");
-								writer.WriteLine(prefix + L"public:");
 
+								writer.WriteLine(prefix + L"protected:");
 								for (auto childSymbol : classSymbol->derivedClasses)
 								{
 									if (childSymbol->derivedClasses.Count() > 0)
@@ -41,8 +41,9 @@ WriteEmptyVisitorHeaderFile
 										writer.WriteLine(L"* node) = 0;");
 									}
 								}
-
 								writer.WriteLine(L"");
+
+								writer.WriteLine(prefix + L"public:");
 								writer.WriteLine(prefix + L"\t// Visitor Members -----------------------------------");
 								for (auto childSymbol : classSymbol->derivedClasses)
 								{

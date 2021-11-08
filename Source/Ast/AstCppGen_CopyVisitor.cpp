@@ -9,6 +9,8 @@ namespace vl
 			using namespace collections;
 			using namespace stream;
 
+			extern void PrintCppType(AstDefFile* fileContext, AstSymbol* propSymbol, stream::StreamWriter& writer);
+
 /***********************************************************************
 WriteCopyVisitorHeaderFile
 ***********************************************************************/
@@ -23,6 +25,35 @@ WriteCopyVisitorHeaderFile
 						{
 							if (classSymbol->derivedClasses.Count() > 0)
 							{
+								writer.WriteLine(prefix + L"/// <summary>A copy visitor, overriding all abstract methods with AST copying code.</summary>");
+								writer.WriteString(prefix + L"class " + name + L"Visitor : public virtual vl::glr::CopyVisitorBase, public ");
+								PrintCppType(file, classSymbol, writer);
+								writer.WriteLine(L"::IVisitor");
+								writer.WriteLine(prefix + L"{");
+
+								writer.WriteLine(prefix + L"protected:");
+								for (auto childSymbol : classSymbol->derivedClasses)
+								{
+									if (childSymbol->derivedClasses.Count() > 0)
+									{
+										writer.WriteString(prefix + L"\tvirtual void Dispatch(");
+										PrintCppType(file, childSymbol, writer);
+										writer.WriteLine(L"* node) = 0;");
+									}
+								}
+								writer.WriteLine(L"");
+
+								writer.WriteLine(prefix + L"public:");
+								writer.WriteLine(prefix + L"\t// Visitor Members -----------------------------------");
+								for (auto childSymbol : classSymbol->derivedClasses)
+								{
+									writer.WriteString(prefix + L"\tvoid Visit(");
+									PrintCppType(file, childSymbol, writer);
+									writer.WriteLine(L"* node) override;");
+								}
+
+								writer.WriteLine(prefix + L"};");
+								writer.WriteLine(L"");
 							}
 						}
 					}
