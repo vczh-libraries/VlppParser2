@@ -41,7 +41,14 @@ PrintCppType
 				}
 			}
 
-			void PrintAstType(AstDefFile* fileContext, AstPropType propType, AstSymbol* propSymbol, bool forCpp, stream::StreamWriter& writer)
+			enum class PrintTypePurpose
+			{
+				TypeName,
+				ReflectionName,
+				Value,
+			};
+
+			void PrintAstType(AstDefFile* fileContext, AstPropType propType, AstSymbol* propSymbol, PrintTypePurpose purpose, stream::StreamWriter& writer)
 			{
 				if (propType == AstPropType::Token)
 				{
@@ -51,38 +58,46 @@ PrintCppType
 
 				if (propType == AstPropType::Array)
 				{
-					writer.WriteString(L"vl::collections::List<");
+					writer.WriteString(L"vl::collections::List<Ptr<");
+				}
+				else if (purpose == PrintTypePurpose::Value && dynamic_cast<AstClassSymbol*>(propSymbol))
+				{
+					writer.WriteString(L"Ptr<");
 				}
 
 				auto file = propSymbol->Owner();
-				if (forCpp)
+				if (purpose == PrintTypePurpose::ReflectionName)
+				{
+					PrintNss(file->refNss, writer);
+				}
+				else
 				{
 					if (fileContext != file)
 					{
 						PrintNss(file->cppNss, writer);
 					}
 				}
-				else
-				{
-					PrintNss(file->refNss, writer);
-				}
 				writer.WriteString(file->classPrefix);
 				writer.WriteString(propSymbol->Name());
 
 				if (propType == AstPropType::Array)
 				{
+					writer.WriteString(L">>");
+				}
+				else if (purpose == PrintTypePurpose::Value && dynamic_cast<AstClassSymbol*>(propSymbol))
+				{
 					writer.WriteString(L">");
 				}
 			}
 
-			void PrintCppType(AstDefFile* fileContext, AstPropType propType, AstSymbol* propSymbol, stream::StreamWriter& writer)
+			void PrintFieldType(AstDefFile* fileContext, AstPropType propType, AstSymbol* propSymbol, stream::StreamWriter& writer)
 			{
-				PrintAstType(fileContext, propType, propSymbol, true, writer);
+				PrintAstType(fileContext, propType, propSymbol, PrintTypePurpose::Value, writer);
 			}
 
 			void PrintCppType(AstDefFile* fileContext, AstSymbol* propSymbol, stream::StreamWriter& writer)
 			{
-				PrintCppType(fileContext, AstPropType::Type, propSymbol, writer);
+				PrintAstType(fileContext, AstPropType::Type, propSymbol, PrintTypePurpose::TypeName, writer);
 			}
 
 /***********************************************************************
@@ -181,7 +196,7 @@ WriteTypeDefinitions
 							auto propSymbol = classSymbol->Props()[propName];
 							writer.WriteString(prefix);
 							writer.WriteString(L"\t");
-							PrintCppType(file, propSymbol->propType, propSymbol->propSymbol, writer);
+							PrintFieldType(file, propSymbol->propType, propSymbol->propSymbol, writer);
 							writer.WriteString(L" ");
 							writer.WriteString(propName);
 							writer.WriteLine(L";");
@@ -335,7 +350,7 @@ WriteTypeReflectionImplementation
 					writer.WriteString(L"IMPL_TYPE_INFO_RENAME(");
 					PrintCppType(nullptr, typeSymbol, writer);
 					writer.WriteString(L", ");
-					PrintAstType(nullptr, AstPropType::Type, typeSymbol, false, writer);
+					PrintAstType(nullptr, AstPropType::Type, typeSymbol, PrintTypePurpose::ReflectionName, writer);
 					writer.WriteLine(L")");
 				}
 
