@@ -135,6 +135,84 @@ WriteAstCppFile
 				writer.WriteLine(L"\t}");
 				writer.WriteLine(L"}");
 			}
+
+/***********************************************************************
+WriteAstFiles
+***********************************************************************/
+
+			CppGenOutput WriteAstFiles(AstDefFile* file, collections::Dictionary<WString, WString>& files)
+			{
+				CppGenOutput output;
+				output.astH = file->filePrefix + file->Name() + L".h";
+				output.astCpp = file->filePrefix + file->Name() + L".cpp";
+				output.emptyH = file->filePrefix + file->Name() + L"_Empty.h";
+				output.emptyCpp = file->filePrefix + file->Name() + L"_Empty.cpp";
+				output.copyH = file->filePrefix + file->Name() + L"_Copy.h";
+				output.copyCpp = file->filePrefix + file->Name() + L"_Copy.cpp";
+				output.traverseH = file->filePrefix + file->Name() + L"_Traverse.h";
+				output.traverseCpp = file->filePrefix + file->Name() + L"_Traverse.cpp";
+
+				{
+					WString fileH = GenerateToStream([=](StreamWriter& writer)
+					{
+						WriteAstHeaderFile(file, writer);
+					});
+
+					WString fileCpp = GenerateToStream([=](StreamWriter& writer)
+					{
+						WriteAstCppFile(file, writer);
+					});
+
+					files.Add(output.astH, fileH);
+					files.Add(output.astCpp, fileCpp);
+				}
+
+				{
+					WString fileH = GenerateToStream([=](StreamWriter& writer)
+					{
+						WriteEmptyVisitorHeaderFile(file, writer);
+					});
+
+					WString fileCpp = GenerateToStream([=](StreamWriter& writer)
+					{
+						WriteEmptyVisitorCppFile(file, writer);
+					});
+
+					files.Add(output.emptyH, fileH);
+					files.Add(output.emptyCpp, fileCpp);
+				}
+
+				{
+					WString fileH = GenerateToStream([=](StreamWriter& writer)
+					{
+						WriteCopyVisitorHeaderFile(file, writer);
+					});
+
+					WString fileCpp = GenerateToStream([=](StreamWriter& writer)
+					{
+						WriteCopyVisitorCppFile(file, writer);
+					});
+
+					files.Add(output.copyH, fileH);
+					files.Add(output.copyCpp, fileCpp);
+				}
+
+				{
+					WString fileH = GenerateToStream([=](StreamWriter& writer)
+					{
+						WriteTraverseVisitorHeaderFile(file, writer);
+					});
+
+					WString fileCpp = GenerateToStream([=](StreamWriter& writer)
+					{
+						WriteTraverseVisitorCppFile(file, writer);
+					});
+
+					files.Add(output.traverseH, fileH);
+					files.Add(output.traverseCpp, fileCpp);
+				}
+				return output;
+			}
 		}
 	}
 }

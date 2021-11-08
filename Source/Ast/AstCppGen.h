@@ -28,6 +28,27 @@ namespace vl
 			extern void				WriteCopyVisitorCppFile(AstDefFile* file, stream::StreamWriter& writer);
 			extern void				WriteTraverseVisitorHeaderFile(AstDefFile* file, stream::StreamWriter& writer);
 			extern void				WriteTraverseVisitorCppFile(AstDefFile* file, stream::StreamWriter& writer);
+
+			struct CppGenInput
+			{
+				bool				generateEmptyVisitor = true;
+				bool				generateCopyVisitor = true;
+				bool				generateTraverseVisitor = true;
+			};
+
+			struct CppGenOutput
+			{
+				WString				astH;
+				WString				astCpp;
+				WString				emptyH;
+				WString				emptyCpp;
+				WString				copyH;
+				WString				copyCpp;
+				WString				traverseH;
+				WString				traverseCpp;
+			};
+
+			extern CppGenOutput		WriteAstFiles(AstDefFile* file, collections::Dictionary<WString, WString>& files);
 		}
 	}
 }

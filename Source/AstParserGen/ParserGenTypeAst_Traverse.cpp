@@ -5,7 +5,7 @@ Licensed under https://github.com/vczh-libraries/License
 ***********************************************************************/
 
 #include "../AstBase.h"
-#include "ParserGenTypeAst_Empty.h"
+#include "ParserGenTypeAst_Traverse.h"
 
 namespace vl
 {
@@ -13,7 +13,7 @@ namespace vl
 	{
 		namespace parsergen
 		{
-			namespace empty_visitor
+			namespace traverse_visitor
 			{
 			}
 		}

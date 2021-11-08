@@ -4,8 +4,8 @@ From parser definition:TypeAst
 Licensed under https://github.com/vczh-libraries/License
 ***********************************************************************/
 
-#ifndef VCZH_PARSER2_PARSERGEN_EXPRESSION_AST_EMPTYVISITOR
-#define VCZH_PARSER2_PARSERGEN_EXPRESSION_AST_EMPTYVISITOR
+#ifndef VCZH_PARSER2_PARSERGEN_EXPRESSION_AST_TRAVERSEVISITOR
+#define VCZH_PARSER2_PARSERGEN_EXPRESSION_AST_TRAVERSEVISITOR
 
 #include "../AstBase.h"
 #include "ParserGenTypeAst.h"
@@ -16,7 +16,7 @@ namespace vl
 	{
 		namespace parsergen
 		{
-			namespace empty_visitor
+			namespace traverse_visitor
 			{
 			}
 		}

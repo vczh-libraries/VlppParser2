@@ -10,10 +10,10 @@ namespace vl
 			using namespace stream;
 
 /***********************************************************************
-Utility
+WriteTraverseVisitorHeaderFile
 ***********************************************************************/
 
-			void WriteEmptyVisitorHeaderFile(AstDefFile* file, stream::StreamWriter& writer)
+			void WriteTraverseVisitorHeaderFile(AstDefFile* file, stream::StreamWriter& writer)
 			{
 				WriteFileComment(file->Name(), writer);
 				if (file->headerGuard != L"")
@@ -46,10 +46,10 @@ Utility
 			}
 
 /***********************************************************************
-Utility
+WriteTraverseVisitorCppFile
 ***********************************************************************/
 
-			void WriteEmptyVisitorCppFile(AstDefFile* file, stream::StreamWriter& writer)
+			void WriteTraverseVisitorCppFile(AstDefFile* file, stream::StreamWriter& writer)
 			{
 				WriteFileComment(file->Name(), writer);
 				WString prefix = WriteFileBegin(file, file->Name() + L"_Traverse", writer);
