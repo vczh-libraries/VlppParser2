@@ -63,6 +63,7 @@ Forward Declarations
 			extern void		WriteTypeDefinitions(AstDefFile* file, const WString& prefix, stream::StreamWriter& writer);
 			extern void		WriteVisitorImpl(AstDefFile* file, const WString& prefix, stream::StreamWriter& writer);
 			extern void		WriteTypeReflectionDeclaration(AstDefFile* file, const WString& prefix, stream::StreamWriter& writer);
+			extern void		WriteTypeReflectionImplementation(AstDefFile* file, const WString& prefix, stream::StreamWriter& writer);
 
 /***********************************************************************
 WriteAstHeaderFile
@@ -126,7 +127,7 @@ WriteAstCppFile
 				writer.WriteLine(L"\t{");
 				writer.WriteLine(L"\t\tnamespace description");
 				writer.WriteLine(L"\t\t{");
-				//WriteTypeReflectionImplementation(&manager, L"\t\t\t", config, writer);
+				WriteTypeReflectionImplementation(file, L"\t\t\t", writer);
 				writer.WriteLine(L"\t\t}");
 				writer.WriteLine(L"\t}");
 				writer.WriteLine(L"}");

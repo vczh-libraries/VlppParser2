@@ -36,6 +36,114 @@ namespace vl
 	{
 		namespace description
 		{
+#ifndef VCZH_DEBUG_NO_REFLECTION
+
+#define PARSING_TOKEN_FIELD(NAME)\
+			CLASS_MEMBER_EXTERNALMETHOD_TEMPLATE(get_##NAME, NO_PARAMETER, vl::WString(ClassType::*)(), [](ClassType* node) { return node->NAME.value; }, L"*", L"*")\
+			CLASS_MEMBER_EXTERNALMETHOD_TEMPLATE(set_##NAME, { L"value" }, void(ClassType::*)(const vl::WString&), [](ClassType* node, const vl::WString& value) { node->NAME.value = value; }, L"*", L"*")\
+			CLASS_MEMBER_PROPERTY_REFERENCETEMPLATE(NAME, get_##NAME, set_##NAME, L"$This->$Name.value")\
+
+			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrType, glr::parsergen::GlrType)
+			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrEnumItem, glr::parsergen::GlrEnumItem)
+			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrEnum, glr::parsergen::GlrEnum)
+			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrPropType, glr::parsergen::GlrPropType)
+			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrClassProp, glr::parsergen::GlrClassProp)
+			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrClass, glr::parsergen::GlrClass)
+			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrFile, glr::parsergen::GlrFile)
+
+#ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
+
+			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrType)
+				PARSING_TOKEN_FIELD(name)
+			END_CLASS_MEMBER(vl::glr::parsergen::GlrType)
+
+			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrEnumItem)
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrEnumItem>(), NO_PARAMETER)
+
+				PARSING_TOKEN_FIELD(name)
+			END_CLASS_MEMBER(vl::glr::parsergen::GlrEnumItem)
+
+			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrEnum)
+				CLASS_MEMBER_BASE(vl::glr::parsergen::GlrType)
+
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrEnum>(), NO_PARAMETER)
+
+				CLASS_MEMBER_FIELD(items)
+			END_CLASS_MEMBER(vl::glr::parsergen::GlrEnum)
+
+			BEGIN_ENUM_ITEM(vl::glr::parsergen::GlrPropType)
+				ENUM_ITEM_NAMESPACE(vl::glr::parsergen::GlrPropType)
+				ENUM_NAMESPACE_ITEM(Token)
+				ENUM_NAMESPACE_ITEM(Type)
+				ENUM_NAMESPACE_ITEM(Array)
+			END_ENUM_ITEM(vl::glr::parsergen::GlrPropType)
+
+			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrClassProp)
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrClassProp>(), NO_PARAMETER)
+
+				PARSING_TOKEN_FIELD(name)
+				CLASS_MEMBER_FIELD(propType)
+				PARSING_TOKEN_FIELD(propTypeName)
+			END_CLASS_MEMBER(vl::glr::parsergen::GlrClassProp)
+
+			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrClass)
+				CLASS_MEMBER_BASE(vl::glr::parsergen::GlrType)
+
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrClass>(), NO_PARAMETER)
+
+				CLASS_MEMBER_FIELD(props)
+			END_CLASS_MEMBER(vl::glr::parsergen::GlrClass)
+
+			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrFile)
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrFile>(), NO_PARAMETER)
+
+				PARSING_TOKEN_FIELD(name)
+				CLASS_MEMBER_FIELD(types)
+			END_CLASS_MEMBER(vl::glr::parsergen::GlrFile)
+
+			BEGIN_INTERFACE_MEMBER(vl::glr::parsergen::GlrType::IVisitor)
+				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrType::IVisitor::*)(vl::glr::parsergen::GlrEnum* node))
+				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrType::IVisitor::*)(vl::glr::parsergen::GlrClass* node))
+			END_INTERFACE_MEMBER(vl::glr::parsergen::GlrType)
+
+#endif
+#undef PARSING_TOKEN_FIELD
+
+#ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
+			class GlrTypeAstTypeLoader : public vl::Object, public ITypeLoader
+			{
+			public:
+				void Load(ITypeManager* manager)
+				{
+					ADD_TYPE_INFO(vl::glr::parsergen::GlrType)
+					ADD_TYPE_INFO(vl::glr::parsergen::GlrEnumItem)
+					ADD_TYPE_INFO(vl::glr::parsergen::GlrEnum)
+					ADD_TYPE_INFO(vl::glr::parsergen::GlrPropType)
+					ADD_TYPE_INFO(vl::glr::parsergen::GlrClassProp)
+					ADD_TYPE_INFO(vl::glr::parsergen::GlrClass)
+					ADD_TYPE_INFO(vl::glr::parsergen::GlrFile)
+					ADD_TYPE_INFO(vl::glr::parsergen::GlrType::IVisitor)
+				}
+
+				void Unload(ITypeManager* manager)
+				{
+				}
+			};
+#endif
+#endif
+
+			bool GlrTypeAstLoadTypes()
+			{
+#ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
+				ITypeManager* manager = GetGlobalTypeManager();
+				if(manager)
+				{
+					Ptr<ITypeLoader> loader = new GlrTypeAstTypeLoader;
+					return manager->AddTypeLoader(loader);
+				}
+#endif
+				return false;
+			}
 		}
 	}
 }
