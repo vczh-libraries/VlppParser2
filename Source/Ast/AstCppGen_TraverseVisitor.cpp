@@ -17,6 +17,15 @@ WriteTraverseVisitorHeaderFile
 			{
 				WriteVisitorHeaderFile(file, L"Traverse", writer, [&](const WString& prefix)
 				{
+					for (auto name : file->SymbolOrder())
+					{
+						if (auto classSymbol = dynamic_cast<AstClassSymbol*>(file->Symbols()[name]))
+						{
+							if (classSymbol->derivedClasses.Count() > 0)
+							{
+							}
+						}
+					}
 				});
 			}
 
@@ -28,6 +37,15 @@ WriteTraverseVisitorCppFile
 			{
 				WriteVisitorCppFile(file, L"Traverse", writer, [&](const WString& prefix)
 				{
+					for (auto name : file->SymbolOrder())
+					{
+						if (auto classSymbol = dynamic_cast<AstClassSymbol*>(file->Symbols()[name]))
+						{
+							if (classSymbol->derivedClasses.Count() > 0)
+							{
+							}
+						}
+					}
 				});
 			}
 		}

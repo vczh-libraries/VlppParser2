@@ -165,6 +165,12 @@ Location
 			/// <summary>Content of the token.</summary>
 			WString								value;
 		};
+
+		class CopyVisitorBase : public Object
+		{
+		public:
+			Ptr<ParsingAstBase>					result;
+		};
 	}
 }
 
