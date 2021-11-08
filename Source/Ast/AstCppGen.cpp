@@ -78,8 +78,12 @@ WriteAstHeaderFile
 					writer.WriteLine(file->headerGuard + L"_AST");
 					writer.WriteString(L"#define ");
 					writer.WriteLine(file->headerGuard + L"_AST");
-					writer.WriteLine(L"");
 				}
+				else
+				{
+					writer.WriteLine(L"#pragma once");
+				}
+				writer.WriteLine(L"");
 				WString prefix = WriteFileBegin(file, L"", writer);
 
 				WriteTypeForwardDefinitions(file, prefix, writer);
