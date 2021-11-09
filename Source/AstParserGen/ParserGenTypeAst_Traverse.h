@@ -18,6 +18,31 @@ namespace vl
 		{
 			namespace traverse_visitor
 			{
+				/// <summary>A traverse visitor, overriding all abstract methods with AST visiting code.</summary>
+				class TypeVisitor : public virtual vl::Object, public GlrType::IVisitor
+				{
+				protected:
+					// Traverse ------------------------------------------
+					virtual void Traverse(GlrType* node);
+					virtual void Traverse(GlrEnum* node);
+					virtual void Traverse(GlrEnumItem* node);
+					virtual void Traverse(GlrClass* node);
+					virtual void Traverse(GlrClassProp* node);
+
+					// VisitField ----------------------------------------
+					virtual void VisitField(GlrEnumItem* node);
+					virtual void VisitField(GlrClassProp* node);
+
+					// VisitField (virtual) ------------------------------
+
+					// Dispatch (virtual) --------------------------------
+
+				public:
+					// Visitor Members -----------------------------------
+					void Visit(GlrEnum* node) override;
+					void Visit(GlrClass* node) override;
+				};
+
 			}
 		}
 	}

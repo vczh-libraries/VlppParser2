@@ -14,6 +14,65 @@ namespace calculator
 {
 	namespace traverse_visitor
 	{
+		/// <summary>A traverse visitor, overriding all abstract methods with AST visiting code.</summary>
+		class ExprVisitor : public virtual vl::Object, public Expr::IVisitor
+		{
+		protected:
+			// Traverse ------------------------------------------
+			virtual void Traverse(Expr* node);
+			virtual void Traverse(NumExpr* node);
+			virtual void Traverse(Ref* node);
+			virtual void Traverse(True* node);
+			virtual void Traverse(False* node);
+			virtual void Traverse(Func* node);
+			virtual void Traverse(Arg* node);
+			virtual void Traverse(Call* node);
+
+			// VisitField ----------------------------------------
+			virtual void VisitField(Arg* node);
+
+			// VisitField (virtual) ------------------------------
+			virtual void VisitField(Expr* node) = 0;
+
+			// Dispatch (virtual) --------------------------------
+			virtual void Dispatch(Expandable* node) = 0;
+
+		public:
+			// Visitor Members -----------------------------------
+			void Visit(NumExpr* node) override;
+			void Visit(Ref* node) override;
+			void Visit(True* node) override;
+			void Visit(False* node) override;
+			void Visit(Func* node) override;
+			void Visit(Call* node) override;
+			void Visit(Expandable* node) override;
+		};
+
+		/// <summary>A traverse visitor, overriding all abstract methods with AST visiting code.</summary>
+		class ExpandableVisitor : public virtual vl::Object, public Expandable::IVisitor
+		{
+		protected:
+			// Traverse ------------------------------------------
+			virtual void Traverse(Expr* node);
+			virtual void Traverse(Expandable* node);
+			virtual void Traverse(LetExpr* node);
+			virtual void Traverse(Unary* node);
+			virtual void Traverse(Binary* node);
+
+			// VisitField ----------------------------------------
+
+			// VisitField (virtual) ------------------------------
+			virtual void VisitField(Expr* node) = 0;
+
+			// Dispatch (virtual) --------------------------------
+
+		public:
+			// Visitor Members -----------------------------------
+			void Visit(LetExpr* node) override;
+			void Visit(Unary* node) override;
+			void Visit(Binary* node) override;
+		};
+
 	}
 }
 #endif
