@@ -10,5 +10,73 @@ namespace calculator
 {
 	namespace copy_visitor
 	{
+
+		// CopyFields ----------------------------------------
+
+		void CalculatorRootCopyVisitor::CopyFields(calculator::Arg* from, calculator::Arg* to)
+		{
+			static_assert(false);
+		}
+
+		void CalculatorRootCopyVisitor::CopyFields(calculator::Import* from, calculator::Import* to)
+		{
+			static_assert(false);
+		}
+
+		void CalculatorRootCopyVisitor::CopyFields(calculator::Module* from, calculator::Module* to)
+		{
+			static_assert(false);
+		}
+
+		// Dispatch (virtual) --------------------------------
+
+		void CalculatorRootCopyVisitor::Dispatch(calculator::Expandable* node)
+		{
+			static_assert(false);
+		}
+
+		// CreateField ---------------------------------------
+
+		vl::Ptr<calculator::Arg> CalculatorRootCopyVisitor::CreateField(vl::Ptr<calculator::Arg> from)
+		{
+			static_assert(false);
+		}
+
+		vl::Ptr<calculator::Import> CalculatorRootCopyVisitor::CreateField(vl::Ptr<calculator::Import> from)
+		{
+			static_assert(false);
+		}
+
+		vl::Ptr<calculator::Module> CalculatorRootCopyVisitor::CreateField(vl::Ptr<calculator::Module> from)
+		{
+			static_assert(false);
+		}
+
+		vl::Ptr<calculator::Expandable> CalculatorRootCopyVisitor::CreateField(vl::Ptr<calculator::Expandable> from)
+		{
+			static_assert(false);
+		}
+
+		vl::Ptr<calculator::Expr> CalculatorRootCopyVisitor::CreateField(vl::Ptr<calculator::Expr> from)
+		{
+			static_assert(false);
+		}
+
+		// Visitor Members -----------------------------------
+
+		void CalculatorRootCopyVisitor::Visit(calculator::Arg* node)
+		{
+			static_assert(false);
+		}
+
+		void CalculatorRootCopyVisitor::Visit(calculator::Import* node)
+		{
+			static_assert(false);
+		}
+
+		void CalculatorRootCopyVisitor::Visit(calculator::Module* node)
+		{
+			static_assert(false);
+		}
 	}
 }

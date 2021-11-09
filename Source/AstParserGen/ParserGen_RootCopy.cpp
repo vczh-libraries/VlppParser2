@@ -14,6 +14,64 @@ namespace vl
 		{
 			namespace copy_visitor
 			{
+
+				// CopyFields ----------------------------------------
+
+				void ParserGenRootCopyVisitor::CopyFields(vl::glr::parsergen::GlrClassProp* from, vl::glr::parsergen::GlrClassProp* to)
+				{
+					static_assert(false);
+				}
+
+				void ParserGenRootCopyVisitor::CopyFields(vl::glr::parsergen::GlrEnumItem* from, vl::glr::parsergen::GlrEnumItem* to)
+				{
+					static_assert(false);
+				}
+
+				void ParserGenRootCopyVisitor::CopyFields(vl::glr::parsergen::GlrFile* from, vl::glr::parsergen::GlrFile* to)
+				{
+					static_assert(false);
+				}
+
+				// Dispatch (virtual) --------------------------------
+
+				// CreateField ---------------------------------------
+
+				vl::Ptr<vl::glr::parsergen::GlrClassProp> ParserGenRootCopyVisitor::CreateField(vl::Ptr<vl::glr::parsergen::GlrClassProp> from)
+				{
+					static_assert(false);
+				}
+
+				vl::Ptr<vl::glr::parsergen::GlrEnumItem> ParserGenRootCopyVisitor::CreateField(vl::Ptr<vl::glr::parsergen::GlrEnumItem> from)
+				{
+					static_assert(false);
+				}
+
+				vl::Ptr<vl::glr::parsergen::GlrFile> ParserGenRootCopyVisitor::CreateField(vl::Ptr<vl::glr::parsergen::GlrFile> from)
+				{
+					static_assert(false);
+				}
+
+				vl::Ptr<vl::glr::parsergen::GlrType> ParserGenRootCopyVisitor::CreateField(vl::Ptr<vl::glr::parsergen::GlrType> from)
+				{
+					static_assert(false);
+				}
+
+				// Visitor Members -----------------------------------
+
+				void ParserGenRootCopyVisitor::Visit(vl::glr::parsergen::GlrClassProp* node)
+				{
+					static_assert(false);
+				}
+
+				void ParserGenRootCopyVisitor::Visit(vl::glr::parsergen::GlrEnumItem* node)
+				{
+					static_assert(false);
+				}
+
+				void ParserGenRootCopyVisitor::Visit(vl::glr::parsergen::GlrFile* node)
+				{
+					static_assert(false);
+				}
 			}
 		}
 	}

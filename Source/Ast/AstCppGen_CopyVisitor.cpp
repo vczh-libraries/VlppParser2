@@ -288,7 +288,7 @@ WriteRootCopyVisitorHeaderFile
 				WriteRootVisitorHeaderFile(manager, L"Copy", writer, [&](const WString& prefix)
 				{
 					writer.WriteLine(prefix + L"/// <summary>A copy visitor, overriding all abstract methods with AST copying code.</summary>");
-					writer.WriteLine(prefix + L"class " + manager.name + L"RootVisitor");
+					writer.WriteLine(prefix + L"class " + manager.name + L"RootCopyVisitor");
 					writer.WriteLine(prefix + L"\t: public virtual vl::glr::CopyVisitorBase");
 
 					List<AstClassSymbol*> concreteClasses, visitors;
@@ -390,6 +390,90 @@ WriteRootCopyVisitorCppFile
 			{
 				WriteRootVisitorCppFile(manager, L"Copy", writer, [&](const WString& prefix)
 				{
+					List<AstClassSymbol*> concreteClasses, visitors;
+					CollectAllVisitors(manager, visitors);
+					CollectConcreteClasses(manager, concreteClasses);
+
+					List<AstClassSymbol*> copyFields, allCreateFields, allVirtualCreateFields;
+					{
+						List<AstClassSymbol*> _1;
+						List<AstClassSymbol*> _2;
+						for (auto concreteSymbol : concreteClasses)
+						{
+							CollectCopyDependencies(concreteSymbol, true, false, copyFields, _1, _2);
+						}
+					}
+					{
+						for (auto visitor : visitors)
+						{
+							List<AstClassSymbol*> _1;
+							CollectCopyDependencies(visitor, true, true, _1, allCreateFields, allVirtualCreateFields);
+						}
+					}
+
+					writer.WriteLine(L"");
+					writer.WriteLine(prefix + L"// CopyFields ----------------------------------------");
+					for (auto fieldSymbol : copyFields)
+					{
+						writer.WriteLine(L"");
+						writer.WriteString(prefix + L"void " + manager.name + L"RootCopyVisitor::CopyFields(");
+						PrintCppType(nullptr, fieldSymbol, writer);
+						writer.WriteString(L"* from, ");
+						PrintCppType(nullptr, fieldSymbol, writer);
+						writer.WriteLine(L"* to)");
+						writer.WriteLine(prefix + L"{");
+						writer.WriteLine(prefix + L"\tstatic_assert(false);");
+						writer.WriteLine(prefix + L"}");
+					}
+
+					writer.WriteLine(L"");
+					writer.WriteLine(prefix + L"// Dispatch (virtual) --------------------------------");
+					for (auto childSymbol : visitors)
+					{
+						if (childSymbol->baseClass)
+						{
+							writer.WriteLine(L"");
+							writer.WriteString(prefix + L"void " + manager.name + L"RootCopyVisitor::Dispatch(");
+							PrintCppType(nullptr, childSymbol, writer);
+							writer.WriteLine(L"* node)");
+							writer.WriteLine(prefix + L"{");
+							writer.WriteLine(prefix + L"\tstatic_assert(false);");
+							writer.WriteLine(prefix + L"}");
+						}
+					}
+
+					writer.WriteLine(L"");
+					writer.WriteLine(prefix + L"// CreateField ---------------------------------------");
+					{
+						List<AstClassSymbol*> neededSymbols;
+						CopyFrom(neededSymbols, concreteClasses, true);
+						CopyFrom(neededSymbols, From(visitors), true);
+						for (auto fieldSymbol : neededSymbols)
+						{
+							writer.WriteLine(L"");
+							writer.WriteString(prefix + L"vl::Ptr<");
+							PrintCppType(nullptr, fieldSymbol, writer);
+							writer.WriteString(L"> " + manager.name + L"RootCopyVisitor::CreateField(vl::Ptr<");
+							PrintCppType(nullptr, fieldSymbol, writer);
+							writer.WriteLine(L"> from)");
+							writer.WriteLine(prefix + L"{");
+							writer.WriteLine(prefix + L"\tstatic_assert(false);");
+							writer.WriteLine(prefix + L"}");
+						}
+					}
+
+					writer.WriteLine(L"");
+					writer.WriteLine(prefix + L"// Visitor Members -----------------------------------");
+					for (auto concreteSymbol : concreteClasses)
+					{
+						writer.WriteLine(L"");
+						writer.WriteString(prefix + L"void " + manager.name + L"RootCopyVisitor::Visit(");
+						PrintCppType(nullptr, concreteSymbol, writer);
+						writer.WriteLine(L"* node)");
+						writer.WriteLine(prefix + L"{");
+						writer.WriteLine(prefix + L"\tstatic_assert(false);");
+						writer.WriteLine(prefix + L"}");
+					}
 				});
 			}
 		}

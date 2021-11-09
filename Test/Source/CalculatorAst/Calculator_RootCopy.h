@@ -14,7 +14,7 @@ namespace calculator
 	namespace copy_visitor
 	{
 		/// <summary>A copy visitor, overriding all abstract methods with AST copying code.</summary>
-		class CalculatorRootVisitor
+		class CalculatorRootCopyVisitor
 			: public virtual vl::glr::CopyVisitorBase
 			, public virtual calculator::copy_visitor::ExpandableVisitor
 			, public virtual calculator::copy_visitor::ExprVisitor

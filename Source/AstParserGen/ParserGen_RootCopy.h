@@ -18,7 +18,7 @@ namespace vl
 			namespace copy_visitor
 			{
 				/// <summary>A copy visitor, overriding all abstract methods with AST copying code.</summary>
-				class ParserGenRootVisitor
+				class ParserGenRootCopyVisitor
 					: public virtual vl::glr::CopyVisitorBase
 					, public virtual vl::glr::parsergen::copy_visitor::TypeVisitor
 				{
