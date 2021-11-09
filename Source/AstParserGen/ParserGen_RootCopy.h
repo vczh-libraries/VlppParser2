@@ -22,6 +22,25 @@ namespace vl
 					: public virtual vl::glr::CopyVisitorBase
 					: public virtual vl::glr::parsergen::GlrType::IVisitor
 				{
+				protected:
+					// CopyFields ----------------------------------------
+					void CopyFields(vl::glr::parsergen::GlrClassProp* from, vl::glr::parsergen::GlrClassProp* to);
+					void CopyFields(vl::glr::parsergen::GlrEnumItem* from, vl::glr::parsergen::GlrEnumItem* to);
+					void CopyFields(vl::glr::parsergen::GlrFile* from, vl::glr::parsergen::GlrFile* to);
+
+					// Dispatch (virtual) --------------------------------
+
+				public:
+					// CreateField ---------------------------------------
+					virtual vl::Ptr<vl::glr::parsergen::GlrClassProp> CreateField(vl::Ptr<vl::glr::parsergen::GlrClassProp> from) override;
+					virtual vl::Ptr<vl::glr::parsergen::GlrEnumItem> CreateField(vl::Ptr<vl::glr::parsergen::GlrEnumItem> from) override;
+					virtual vl::Ptr<vl::glr::parsergen::GlrFile> CreateField(vl::Ptr<vl::glr::parsergen::GlrFile> from);
+					virtual vl::Ptr<vl::glr::parsergen::GlrType> CreateField(vl::Ptr<vl::glr::parsergen::GlrType> from);
+
+					// Visitor Members -----------------------------------
+					virtual void Visit(vl::glr::parsergen::GlrClassProp* node);
+					virtual void Visit(vl::glr::parsergen::GlrEnumItem* node);
+					virtual void Visit(vl::glr::parsergen::GlrFile* node);
 				};
 
 			}

@@ -19,6 +19,27 @@ namespace calculator
 			: public virtual calculator::Expandable::IVisitor
 			: public virtual calculator::Expr::IVisitor
 		{
+		protected:
+			// CopyFields ----------------------------------------
+			void CopyFields(calculator::Arg* from, calculator::Arg* to);
+			void CopyFields(calculator::Import* from, calculator::Import* to);
+			void CopyFields(calculator::Module* from, calculator::Module* to);
+
+			// Dispatch (virtual) --------------------------------
+			void Dispatch(calculator::Expandable* node) override;
+
+		public:
+			// CreateField ---------------------------------------
+			virtual vl::Ptr<calculator::Arg> CreateField(vl::Ptr<calculator::Arg> from) override;
+			virtual vl::Ptr<calculator::Import> CreateField(vl::Ptr<calculator::Import> from);
+			virtual vl::Ptr<calculator::Module> CreateField(vl::Ptr<calculator::Module> from);
+			virtual vl::Ptr<calculator::Expandable> CreateField(vl::Ptr<calculator::Expandable> from);
+			virtual vl::Ptr<calculator::Expr> CreateField(vl::Ptr<calculator::Expr> from) override;
+
+			// Visitor Members -----------------------------------
+			virtual void Visit(calculator::Arg* node);
+			virtual void Visit(calculator::Import* node);
+			virtual void Visit(calculator::Module* node);
 		};
 
 	}

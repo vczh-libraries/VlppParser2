@@ -11,6 +11,7 @@ namespace vl
 
 			extern void PrintCppType(AstDefFile* fileContext, AstSymbol* propSymbol, stream::StreamWriter& writer);
 			extern void CollectAllVisitors(AstSymbolManager& manager, List<AstClassSymbol*>& visitors);
+			extern void CollectConcreteClasses(AstSymbolManager& manager, List<AstClassSymbol*>& classes);
 
 			void CollectCopyDependencies(
 				AstClassSymbol* classSymbol,
@@ -86,13 +87,12 @@ WriteCopyVisitorHeaderFile
 								PrintCppType(file, classSymbol, writer);
 								writer.WriteLine(L"::IVisitor");
 								writer.WriteLine(prefix + L"{");
+								writer.WriteLine(prefix + L"protected:");
 
 								List<AstClassSymbol*> copyFields;
 								List<AstClassSymbol*> createFields;
 								List<AstClassSymbol*> virtualCreateFields;
 								CollectCopyDependencies(classSymbol, true, true, copyFields, createFields, virtualCreateFields);
-
-								writer.WriteLine(prefix + L"protected:");
 
 								writer.WriteLine(prefix + L"\t// CopyFields ----------------------------------------");
 								for (auto fieldSymbol : copyFields)
@@ -108,7 +108,7 @@ WriteCopyVisitorHeaderFile
 								writer.WriteLine(prefix + L"\t// CreateField ---------------------------------------");
 								for (auto fieldSymbol : createFields)
 								{
-									writer.WriteString(prefix + L"\tvl::Ptr<");
+									writer.WriteString(prefix + L"\tvirtual vl::Ptr<");
 									PrintCppType(file, fieldSymbol, writer);
 									writer.WriteString(L"> CreateField(vl::Ptr<");
 									PrintCppType(file, fieldSymbol, writer);
@@ -290,8 +290,10 @@ WriteRootCopyVisitorHeaderFile
 					writer.WriteLine(prefix + L"class " + manager.name + L"RootVisitor");
 					writer.WriteLine(prefix + L"\t: public virtual vl::glr::CopyVisitorBase");
 
-					List<AstClassSymbol*> visitors;
+					List<AstClassSymbol*> concreteClasses, visitors;
 					CollectAllVisitors(manager, visitors);
+					CollectConcreteClasses(manager, concreteClasses);
+
 					for (auto visitor : visitors)
 					{
 						writer.WriteString(prefix + L"\t: public virtual ");
@@ -299,6 +301,78 @@ WriteRootCopyVisitorHeaderFile
 						writer.WriteLine(L"::IVisitor");
 					}
 					writer.WriteLine(prefix + L"{");
+					writer.WriteLine(prefix + L"protected:");
+
+					List<AstClassSymbol*> copyFields, allCreateFields, allVirtualCreateFields;
+					{
+						List<AstClassSymbol*> _1;
+						List<AstClassSymbol*> _2;
+						for (auto concreteSymbol : concreteClasses)
+						{
+							CollectCopyDependencies(concreteSymbol, true, false, copyFields, _1, _2);
+						}
+					}
+					{
+						for (auto visitor : visitors)
+						{
+							List<AstClassSymbol*> _1;
+							CollectCopyDependencies(visitor, true, true, _1, allCreateFields, allVirtualCreateFields);
+						}
+					}
+
+					writer.WriteLine(prefix + L"\t// CopyFields ----------------------------------------");
+					for (auto fieldSymbol : copyFields)
+					{
+						writer.WriteString(prefix + L"\tvoid CopyFields(");
+						PrintCppType(nullptr, fieldSymbol, writer);
+						writer.WriteString(L"* from, ");
+						PrintCppType(nullptr, fieldSymbol, writer);
+						writer.WriteLine(L"* to);");
+					}
+					writer.WriteLine(L"");
+
+					writer.WriteLine(prefix + L"\t// Dispatch (virtual) --------------------------------");
+					for (auto childSymbol : visitors)
+					{
+						if (childSymbol->baseClass)
+						{
+							writer.WriteString(prefix + L"\tvoid Dispatch(");
+							PrintCppType(nullptr, childSymbol, writer);
+							writer.WriteLine(L"* node) override;");
+						}
+					}
+					writer.WriteLine(L"");
+
+					writer.WriteLine(prefix + L"public:");
+					writer.WriteLine(prefix + L"\t// CreateField ---------------------------------------");
+					{
+						List<AstClassSymbol*> neededSymbols;
+						CopyFrom(neededSymbols, concreteClasses, true);
+						CopyFrom(neededSymbols, From(visitors), true);
+						for (auto fieldSymbol : neededSymbols)
+						{
+							bool needOverride = allCreateFields.Contains(fieldSymbol) || allVirtualCreateFields.Contains(fieldSymbol);
+							writer.WriteString(prefix + L"\tvirtual vl::Ptr<");
+							PrintCppType(nullptr, fieldSymbol, writer);
+							writer.WriteString(L"> CreateField(vl::Ptr<");
+							PrintCppType(nullptr, fieldSymbol, writer);
+							writer.WriteString(L"> from)");
+							if (needOverride)
+							{
+								writer.WriteString(L" override");
+							}
+							writer.WriteLine(L";");
+						}
+					}
+					writer.WriteLine(L"");
+
+					writer.WriteLine(prefix + L"\t// Visitor Members -----------------------------------");
+					for (auto concreteSymbol : concreteClasses)
+					{
+						writer.WriteString(prefix + L"\tvirtual void Visit(");
+						PrintCppType(nullptr, concreteSymbol, writer);
+						writer.WriteLine(L"* node);");
+					}
 
 					writer.WriteLine(prefix + L"};");
 					writer.WriteLine(L"");

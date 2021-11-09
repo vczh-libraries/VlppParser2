@@ -30,8 +30,8 @@ namespace vl
 					void CopyFields(GlrClassProp* from, GlrClassProp* to);
 
 					// CreateField ---------------------------------------
-					vl::Ptr<GlrEnumItem> CreateField(vl::Ptr<GlrEnumItem> from);
-					vl::Ptr<GlrClassProp> CreateField(vl::Ptr<GlrClassProp> from);
+					virtual vl::Ptr<GlrEnumItem> CreateField(vl::Ptr<GlrEnumItem> from);
+					virtual vl::Ptr<GlrClassProp> CreateField(vl::Ptr<GlrClassProp> from);
 
 					// CreateField (virtual) -----------------------------
 

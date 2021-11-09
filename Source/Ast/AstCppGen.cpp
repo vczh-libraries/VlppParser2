@@ -79,6 +79,20 @@ Utility
 				}
 			}
 
+			void CollectConcreteClasses(AstSymbolManager& manager, List<AstClassSymbol*>& classes)
+			{
+				for (auto typeSymbol : manager.Symbols().Values())
+				{
+					if (auto classSymbol = dynamic_cast<AstClassSymbol*>(typeSymbol))
+					{
+						if (!classSymbol->baseClass && classSymbol->derivedClasses.Count() == 0)
+						{
+							classes.Add(classSymbol);
+						}
+					}
+				}
+			}
+
 /***********************************************************************
 Forward Declarations
 ***********************************************************************/

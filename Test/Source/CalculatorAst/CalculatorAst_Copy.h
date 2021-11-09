@@ -29,7 +29,7 @@ namespace calculator
 			void CopyFields(Call* from, Call* to);
 
 			// CreateField ---------------------------------------
-			vl::Ptr<Arg> CreateField(vl::Ptr<Arg> from);
+			virtual vl::Ptr<Arg> CreateField(vl::Ptr<Arg> from);
 
 			// CreateField (virtual) -----------------------------
 			virtual vl::Ptr<Expr> CreateField(vl::Ptr<Expr> from) = 0;
