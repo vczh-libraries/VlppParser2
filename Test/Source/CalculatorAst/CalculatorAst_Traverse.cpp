@@ -11,5 +11,188 @@ namespace calculator
 {
 	namespace traverse_visitor
 	{
+
+/***********************************************************************
+ExprVisitor
+***********************************************************************/
+
+		// Traverse ------------------------------------------
+
+		void ExprVisitor::Traverse(Expr* node)
+		{
+		}
+
+		void ExprVisitor::Traverse(NumExpr* node)
+		{
+		}
+
+		void ExprVisitor::Traverse(Ref* node)
+		{
+		}
+
+		void ExprVisitor::Traverse(True* node)
+		{
+		}
+
+		void ExprVisitor::Traverse(False* node)
+		{
+		}
+
+		void ExprVisitor::Traverse(Func* node)
+		{
+		}
+
+		void ExprVisitor::Traverse(Arg* node)
+		{
+		}
+
+		void ExprVisitor::Traverse(Call* node)
+		{
+		}
+
+		// Finishing -----------------------------------------
+
+		void ExprVisitor::Finishing(Expr* node)
+		{
+		}
+
+		void ExprVisitor::Finishing(NumExpr* node)
+		{
+		}
+
+		void ExprVisitor::Finishing(Ref* node)
+		{
+		}
+
+		void ExprVisitor::Finishing(True* node)
+		{
+		}
+
+		void ExprVisitor::Finishing(False* node)
+		{
+		}
+
+		void ExprVisitor::Finishing(Func* node)
+		{
+		}
+
+		void ExprVisitor::Finishing(Arg* node)
+		{
+		}
+
+		void ExprVisitor::Finishing(Call* node)
+		{
+		}
+
+		// VisitField ----------------------------------------
+
+		void ExprVisitor::VisitField(Arg* node)
+		{
+			static_assert(false);
+		}
+
+		// Visitor Members -----------------------------------
+
+		void ExprVisitor::Visit(NumExpr* node)
+		{
+			static_assert(false);
+		}
+
+		void ExprVisitor::Visit(Ref* node)
+		{
+			static_assert(false);
+		}
+
+		void ExprVisitor::Visit(True* node)
+		{
+			static_assert(false);
+		}
+
+		void ExprVisitor::Visit(False* node)
+		{
+			static_assert(false);
+		}
+
+		void ExprVisitor::Visit(Func* node)
+		{
+			static_assert(false);
+		}
+
+		void ExprVisitor::Visit(Call* node)
+		{
+			static_assert(false);
+		}
+
+		void ExprVisitor::Visit(Expandable* node)
+		{
+			Dispatch(node);
+		}
+
+/***********************************************************************
+ExpandableVisitor
+***********************************************************************/
+
+		// Traverse ------------------------------------------
+
+		void ExpandableVisitor::Traverse(Expr* node)
+		{
+		}
+
+		void ExpandableVisitor::Traverse(Expandable* node)
+		{
+		}
+
+		void ExpandableVisitor::Traverse(LetExpr* node)
+		{
+		}
+
+		void ExpandableVisitor::Traverse(Unary* node)
+		{
+		}
+
+		void ExpandableVisitor::Traverse(Binary* node)
+		{
+		}
+
+		// Finishing -----------------------------------------
+
+		void ExpandableVisitor::Finishing(Expr* node)
+		{
+		}
+
+		void ExpandableVisitor::Finishing(Expandable* node)
+		{
+		}
+
+		void ExpandableVisitor::Finishing(LetExpr* node)
+		{
+		}
+
+		void ExpandableVisitor::Finishing(Unary* node)
+		{
+		}
+
+		void ExpandableVisitor::Finishing(Binary* node)
+		{
+		}
+
+		// VisitField ----------------------------------------
+
+		// Visitor Members -----------------------------------
+
+		void ExpandableVisitor::Visit(LetExpr* node)
+		{
+			static_assert(false);
+		}
+
+		void ExpandableVisitor::Visit(Unary* node)
+		{
+			static_assert(false);
+		}
+
+		void ExpandableVisitor::Visit(Binary* node)
+		{
+			static_assert(false);
+		}
 	}
 }

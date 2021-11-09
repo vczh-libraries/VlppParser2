@@ -29,6 +29,13 @@ namespace vl
 					virtual void Traverse(GlrClass* node);
 					virtual void Traverse(GlrClassProp* node);
 
+					// Finishing -----------------------------------------
+					virtual void Finishing(GlrType* node);
+					virtual void Finishing(GlrEnum* node);
+					virtual void Finishing(GlrEnumItem* node);
+					virtual void Finishing(GlrClass* node);
+					virtual void Finishing(GlrClassProp* node);
+
 					// VisitField ----------------------------------------
 					virtual void VisitField(GlrEnumItem* node);
 					virtual void VisitField(GlrClassProp* node);

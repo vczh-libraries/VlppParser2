@@ -28,6 +28,16 @@ namespace calculator
 			virtual void Traverse(Arg* node);
 			virtual void Traverse(Call* node);
 
+			// Finishing -----------------------------------------
+			virtual void Finishing(Expr* node);
+			virtual void Finishing(NumExpr* node);
+			virtual void Finishing(Ref* node);
+			virtual void Finishing(True* node);
+			virtual void Finishing(False* node);
+			virtual void Finishing(Func* node);
+			virtual void Finishing(Arg* node);
+			virtual void Finishing(Call* node);
+
 			// VisitField ----------------------------------------
 			virtual void VisitField(Arg* node);
 
@@ -58,6 +68,13 @@ namespace calculator
 			virtual void Traverse(LetExpr* node);
 			virtual void Traverse(Unary* node);
 			virtual void Traverse(Binary* node);
+
+			// Finishing -----------------------------------------
+			virtual void Finishing(Expr* node);
+			virtual void Finishing(Expandable* node);
+			virtual void Finishing(LetExpr* node);
+			virtual void Finishing(Unary* node);
+			virtual void Finishing(Binary* node);
 
 			// VisitField ----------------------------------------
 

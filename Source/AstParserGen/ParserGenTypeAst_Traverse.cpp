@@ -15,6 +15,78 @@ namespace vl
 		{
 			namespace traverse_visitor
 			{
+
+/***********************************************************************
+TypeVisitor
+***********************************************************************/
+
+				// Traverse ------------------------------------------
+
+				void TypeVisitor::Traverse(GlrType* node)
+				{
+				}
+
+				void TypeVisitor::Traverse(GlrEnum* node)
+				{
+				}
+
+				void TypeVisitor::Traverse(GlrEnumItem* node)
+				{
+				}
+
+				void TypeVisitor::Traverse(GlrClass* node)
+				{
+				}
+
+				void TypeVisitor::Traverse(GlrClassProp* node)
+				{
+				}
+
+				// Finishing -----------------------------------------
+
+				void TypeVisitor::Finishing(GlrType* node)
+				{
+				}
+
+				void TypeVisitor::Finishing(GlrEnum* node)
+				{
+				}
+
+				void TypeVisitor::Finishing(GlrEnumItem* node)
+				{
+				}
+
+				void TypeVisitor::Finishing(GlrClass* node)
+				{
+				}
+
+				void TypeVisitor::Finishing(GlrClassProp* node)
+				{
+				}
+
+				// VisitField ----------------------------------------
+
+				void TypeVisitor::VisitField(GlrEnumItem* node)
+				{
+					static_assert(false);
+				}
+
+				void TypeVisitor::VisitField(GlrClassProp* node)
+				{
+					static_assert(false);
+				}
+
+				// Visitor Members -----------------------------------
+
+				void TypeVisitor::Visit(GlrEnum* node)
+				{
+					static_assert(false);
+				}
+
+				void TypeVisitor::Visit(GlrClass* node)
+				{
+					static_assert(false);
+				}
 			}
 		}
 	}
