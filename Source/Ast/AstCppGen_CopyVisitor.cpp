@@ -92,7 +92,7 @@ WriteCopyFieldFunctionBody
 						writer.WriteLine(prefix + L"\tto->" + propSymbol->Name() + L" = from->" + propSymbol->Name() + L";");
 						break;
 					case AstPropType::Array:
-						writer.WriteLine(prefix + L"\tfor (auto listItem : from->" + propSymbol->Name() + L")");
+						writer.WriteLine(prefix + L"\tfor (auto&& listItem : from->" + propSymbol->Name() + L")");
 						writer.WriteLine(prefix + L"\t{");
 						writer.WriteLine(prefix + L"\t\tto->" + propSymbol->Name() + L".Add(CreateField(listItem));");
 						writer.WriteLine(prefix + L"\t}");

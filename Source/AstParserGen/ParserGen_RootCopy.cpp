@@ -32,7 +32,7 @@ namespace vl
 				void ParserGenRootCopyVisitor::CopyFields(vl::glr::parsergen::GlrFile* from, vl::glr::parsergen::GlrFile* to)
 				{
 					to->name = from->name;
-					for (auto listItem : from->types)
+					for (auto&& listItem : from->types)
 					{
 						to->types.Add(CreateField(listItem));
 					}

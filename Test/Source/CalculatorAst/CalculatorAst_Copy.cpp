@@ -47,7 +47,7 @@ ExprVisitor
 		void ExprVisitor::CopyFields(Func* from, Func* to)
 		{
 			CopyFields(static_cast<Expr*>(from), static_cast<Expr*>(to));
-			for (auto listItem : from->args)
+			for (auto&& listItem : from->args)
 			{
 				to->args.Add(CreateField(listItem));
 			}

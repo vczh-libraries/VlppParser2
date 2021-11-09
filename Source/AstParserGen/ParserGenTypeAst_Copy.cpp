@@ -30,7 +30,7 @@ TypeVisitor
 				void TypeVisitor::CopyFields(GlrEnum* from, GlrEnum* to)
 				{
 					CopyFields(static_cast<GlrType*>(from), static_cast<GlrType*>(to));
-					for (auto listItem : from->items)
+					for (auto&& listItem : from->items)
 					{
 						to->items.Add(CreateField(listItem));
 					}
@@ -44,7 +44,7 @@ TypeVisitor
 				void TypeVisitor::CopyFields(GlrClass* from, GlrClass* to)
 				{
 					CopyFields(static_cast<GlrType*>(from), static_cast<GlrType*>(to));
-					for (auto listItem : from->props)
+					for (auto&& listItem : from->props)
 					{
 						to->props.Add(CreateField(listItem));
 					}

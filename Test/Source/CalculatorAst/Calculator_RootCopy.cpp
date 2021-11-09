@@ -26,7 +26,7 @@ namespace calculator
 		void CalculatorRootCopyVisitor::CopyFields(calculator::Module* from, calculator::Module* to)
 		{
 			to->exported = CreateField(from->exported);
-			for (auto listItem : from->imports)
+			for (auto&& listItem : from->imports)
 			{
 				to->imports.Add(CreateField(listItem));
 			}

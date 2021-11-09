@@ -80,24 +80,55 @@ TypeVisitor
 
 				void TypeVisitor::VisitField(GlrEnumItem* node)
 				{
-					static_assert(false);
+					if (!node) return;
+					Traverse(static_cast<GlrEnumItem*>(node));
+					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+					Traverse(node->name);
+					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+					Finishing(static_cast<GlrEnumItem*>(node));
 				}
 
 				void TypeVisitor::VisitField(GlrClassProp* node)
 				{
-					static_assert(false);
+					if (!node) return;
+					Traverse(static_cast<GlrClassProp*>(node));
+					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+					Traverse(node->name);
+					Traverse(node->propTypeName);
+					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+					Finishing(static_cast<GlrClassProp*>(node));
 				}
 
 				// Visitor Members -----------------------------------
 
 				void TypeVisitor::Visit(GlrEnum* node)
 				{
-					static_assert(false);
+					if (!node) return;
+					Traverse(static_cast<GlrEnum*>(node));
+					Traverse(static_cast<GlrType*>(node));
+					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+					for (auto&& listItem : node->items)
+					{
+						Traverse(listItem.Obj());
+					}
+					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+					Finishing(static_cast<GlrType*>(node));
+					Finishing(static_cast<GlrEnum*>(node));
 				}
 
 				void TypeVisitor::Visit(GlrClass* node)
 				{
-					static_assert(false);
+					if (!node) return;
+					Traverse(static_cast<GlrClass*>(node));
+					Traverse(static_cast<GlrType*>(node));
+					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+					for (auto&& listItem : node->props)
+					{
+						Traverse(listItem.Obj());
+					}
+					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+					Finishing(static_cast<GlrType*>(node));
+					Finishing(static_cast<GlrClass*>(node));
 				}
 			}
 		}
