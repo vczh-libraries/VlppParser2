@@ -300,7 +300,7 @@ WriteRootTraverseVisitorHeaderFile
 					writer.WriteLine(prefix + L"{");
 					writer.WriteLine(prefix + L"protected:");
 
-					List<AstClassSymbol*> copyFields, allCreateFields, allVirtualCreateFields;
+					List<AstClassSymbol*> copyFields, allCopyFields, allCreateFields, allVirtualCreateFields;
 					{
 						List<AstClassSymbol*> _1;
 						List<AstClassSymbol*> _2;
@@ -312,29 +312,40 @@ WriteRootTraverseVisitorHeaderFile
 					{
 						for (auto visitor : visitors)
 						{
-							List<AstClassSymbol*> _1;
-							CollectCopyDependencies(visitor, true, true, _1, allCreateFields, allVirtualCreateFields);
+							CollectCopyDependencies(visitor, true, true, allCopyFields, allCreateFields, allVirtualCreateFields);
 						}
 					}
 
 					writer.WriteLine(prefix + L"\t// Traverse ------------------------------------------");
-					writer.WriteLine(prefix + L"\tvirtual void Traverse(vl::glr::ParsingToken& token);");
-					writer.WriteLine(prefix + L"\tvirtual void Traverse(vl::glr::ParsingAstBase* node);");
+					writer.WriteLine(prefix + L"\tvirtual void Traverse(vl::glr::ParsingToken& token) override;");
+					writer.WriteLine(prefix + L"\tvirtual void Traverse(vl::glr::ParsingAstBase* node) override;");
 					for (auto fieldSymbol : From(visitors).Concat(copyFields).Distinct())
 					{
+						bool needOverride = allCopyFields.Contains(fieldSymbol);
 						writer.WriteString(prefix + L"\tvirtual void Traverse(");
 						PrintCppType(nullptr, fieldSymbol, writer);
-						writer.WriteLine(L"* node);");
+						writer.WriteString(L"* node)");
+						if (needOverride)
+						{
+							writer.WriteString(L" override");
+						}
+						writer.WriteLine(L";");
 					}
 					writer.WriteLine(L"");
 
 					writer.WriteLine(prefix + L"\t// Finishing -----------------------------------------");
-					writer.WriteLine(prefix + L"\tvirtual void Finishing(vl::glr::ParsingAstBase* node);");
+					writer.WriteLine(prefix + L"\tvirtual void Finishing(vl::glr::ParsingAstBase* node) override;");
 					for (auto fieldSymbol : From(visitors).Concat(copyFields).Distinct())
 					{
+						bool needOverride = allCopyFields.Contains(fieldSymbol);
 						writer.WriteString(prefix + L"\tvirtual void Finishing(");
 						PrintCppType(nullptr, fieldSymbol, writer);
-						writer.WriteLine(L"* node);");
+						writer.WriteString(L"* node)");
+						if (needOverride)
+						{
+							writer.WriteString(L" override");
+						}
+						writer.WriteLine(L";");
 					}
 					writer.WriteLine(L"");
 

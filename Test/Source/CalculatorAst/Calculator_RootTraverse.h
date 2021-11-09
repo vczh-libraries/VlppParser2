@@ -21,19 +21,19 @@ namespace calculator
 		{
 		protected:
 			// Traverse ------------------------------------------
-			virtual void Traverse(vl::glr::ParsingToken& token);
-			virtual void Traverse(vl::glr::ParsingAstBase* node);
-			virtual void Traverse(calculator::Expandable* node);
-			virtual void Traverse(calculator::Expr* node);
-			virtual void Traverse(calculator::Arg* node);
+			virtual void Traverse(vl::glr::ParsingToken& token) override;
+			virtual void Traverse(vl::glr::ParsingAstBase* node) override;
+			virtual void Traverse(calculator::Expandable* node) override;
+			virtual void Traverse(calculator::Expr* node) override;
+			virtual void Traverse(calculator::Arg* node) override;
 			virtual void Traverse(calculator::Import* node);
 			virtual void Traverse(calculator::Module* node);
 
 			// Finishing -----------------------------------------
-			virtual void Finishing(vl::glr::ParsingAstBase* node);
-			virtual void Finishing(calculator::Expandable* node);
-			virtual void Finishing(calculator::Expr* node);
-			virtual void Finishing(calculator::Arg* node);
+			virtual void Finishing(vl::glr::ParsingAstBase* node) override;
+			virtual void Finishing(calculator::Expandable* node) override;
+			virtual void Finishing(calculator::Expr* node) override;
+			virtual void Finishing(calculator::Arg* node) override;
 			virtual void Finishing(calculator::Import* node);
 			virtual void Finishing(calculator::Module* node);
 

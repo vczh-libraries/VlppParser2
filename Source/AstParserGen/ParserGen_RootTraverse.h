@@ -24,18 +24,18 @@ namespace vl
 				{
 				protected:
 					// Traverse ------------------------------------------
-					virtual void Traverse(vl::glr::ParsingToken& token);
-					virtual void Traverse(vl::glr::ParsingAstBase* node);
-					virtual void Traverse(vl::glr::parsergen::GlrType* node);
-					virtual void Traverse(vl::glr::parsergen::GlrClassProp* node);
-					virtual void Traverse(vl::glr::parsergen::GlrEnumItem* node);
+					virtual void Traverse(vl::glr::ParsingToken& token) override;
+					virtual void Traverse(vl::glr::ParsingAstBase* node) override;
+					virtual void Traverse(vl::glr::parsergen::GlrType* node) override;
+					virtual void Traverse(vl::glr::parsergen::GlrClassProp* node) override;
+					virtual void Traverse(vl::glr::parsergen::GlrEnumItem* node) override;
 					virtual void Traverse(vl::glr::parsergen::GlrFile* node);
 
 					// Finishing -----------------------------------------
-					virtual void Finishing(vl::glr::ParsingAstBase* node);
-					virtual void Finishing(vl::glr::parsergen::GlrType* node);
-					virtual void Finishing(vl::glr::parsergen::GlrClassProp* node);
-					virtual void Finishing(vl::glr::parsergen::GlrEnumItem* node);
+					virtual void Finishing(vl::glr::ParsingAstBase* node) override;
+					virtual void Finishing(vl::glr::parsergen::GlrType* node) override;
+					virtual void Finishing(vl::glr::parsergen::GlrClassProp* node) override;
+					virtual void Finishing(vl::glr::parsergen::GlrEnumItem* node) override;
 					virtual void Finishing(vl::glr::parsergen::GlrFile* node);
 
 					// Dispatch (virtual) --------------------------------
