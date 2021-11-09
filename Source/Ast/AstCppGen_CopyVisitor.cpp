@@ -214,7 +214,7 @@ WriteCopyVisitorCppFile
 											writer.WriteLine(prefix + L"\t}");
 											break;
 										case AstPropType::Type:
-											if (auto classProp = dynamic_cast<AstClassSymbol*>(propSymbol))
+											if (dynamic_cast<AstClassSymbol*>(propSymbol->propSymbol))
 											{
 												writer.WriteLine(prefix + L"\tto->" + propSymbol->Name() + L" = CreateField(from->" + propSymbol->Name() + L");");
 											}

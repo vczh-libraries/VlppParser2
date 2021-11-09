@@ -51,7 +51,7 @@ ExprVisitor
 			{
 				to->args.Add(CreateField(listItem));
 			}
-			to->value = from->value;
+			to->value = CreateField(from->value);
 		}
 
 		void ExprVisitor::CopyFields(Arg* from, Arg* to)
@@ -62,8 +62,8 @@ ExprVisitor
 		void ExprVisitor::CopyFields(Call* from, Call* to)
 		{
 			CopyFields(static_cast<Expr*>(from), static_cast<Expr*>(to));
-			to->arg = from->arg;
-			to->func = from->func;
+			to->arg = CreateField(from->arg);
+			to->func = CreateField(from->func);
 		}
 
 		// CreateField ---------------------------------------
@@ -138,29 +138,29 @@ ExpandableVisitor
 		void ExpandableVisitor::CopyFields(Expandable* from, Expandable* to)
 		{
 			CopyFields(static_cast<Expr*>(from), static_cast<Expr*>(to));
-			to->expanded = from->expanded;
+			to->expanded = CreateField(from->expanded);
 		}
 
 		void ExpandableVisitor::CopyFields(LetExpr* from, LetExpr* to)
 		{
 			CopyFields(static_cast<Expandable*>(from), static_cast<Expandable*>(to));
 			to->name = from->name;
-			to->value = from->value;
+			to->value = CreateField(from->value);
 		}
 
 		void ExpandableVisitor::CopyFields(Unary* from, Unary* to)
 		{
 			CopyFields(static_cast<Expandable*>(from), static_cast<Expandable*>(to));
 			to->op = from->op;
-			to->operand = from->operand;
+			to->operand = CreateField(from->operand);
 		}
 
 		void ExpandableVisitor::CopyFields(Binary* from, Binary* to)
 		{
 			CopyFields(static_cast<Expandable*>(from), static_cast<Expandable*>(to));
-			to->left = from->left;
+			to->left = CreateField(from->left);
 			to->op = from->op;
-			to->right = from->right;
+			to->right = CreateField(from->right);
 		}
 
 		// CreateField ---------------------------------------
