@@ -276,6 +276,28 @@ WriteCopyVisitorCppFile
 					}
 				});
 			}
+
+/***********************************************************************
+WriteRootCopyVisitorHeaderFile
+***********************************************************************/
+
+			void WriteRootCopyVisitorHeaderFile(AstSymbolManager& manager, stream::StreamWriter& writer)
+			{
+				WriteRootVisitorHeaderFile(manager, L"Copy", writer, [&](const WString& prefix)
+				{
+				});
+			}
+
+/***********************************************************************
+WriteRootCopyVisitorCppFile
+***********************************************************************/
+
+			void WriteRootCopyVisitorCppFile(AstSymbolManager& manager, stream::StreamWriter& writer)
+			{
+				WriteRootVisitorCppFile(manager, L"Copy", writer, [&](const WString& prefix)
+				{
+				});
+			}
 		}
 	}
 }

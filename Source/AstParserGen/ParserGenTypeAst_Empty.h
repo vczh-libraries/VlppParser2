@@ -4,8 +4,8 @@ From parser definition:TypeAst
 Licensed under https://github.com/vczh-libraries/License
 ***********************************************************************/
 
-#ifndef VCZH_PARSER2_PARSERGEN_EXPRESSION_AST_EMPTYVISITOR
-#define VCZH_PARSER2_PARSERGEN_EXPRESSION_AST_EMPTYVISITOR
+#ifndef VCZH_PARSER2_PARSERGEN_TYPEAST_AST_EMPTYVISITOR
+#define VCZH_PARSER2_PARSERGEN_TYPEAST_AST_EMPTYVISITOR
 
 #include "../AstBase.h"
 #include "ParserGenTypeAst.h"

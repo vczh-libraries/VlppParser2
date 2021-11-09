@@ -149,7 +149,6 @@ AstDefFile
 				StringItems					includes;
 				StringItems					cppNss;
 				StringItems					refNss;
-				WString						filePrefix;
 				WString						classPrefix;
 				WString						headerGuard;
 
@@ -194,6 +193,7 @@ AstSymbolManager
 			{
 				using ErrorList = collections::List<AstError>;
 				using SymbolMap = collections::Dictionary<WString, AstSymbol*>;
+				using StringItems = collections::List<WString>;
 
 				friend class AstDefFile;
 			protected:
@@ -202,6 +202,10 @@ AstSymbolManager
 				SymbolMap					symbolMap;
 
 			public:
+				WString						name;
+				StringItems					cppNss;
+				WString						headerGuard;
+
 				template<typename ...TArgs>
 				void						AddError(AstErrorType type, TArgs&& ...args);
 
@@ -211,6 +215,17 @@ AstSymbolManager
 				const auto&					Symbols() { return symbolMap; }
 				const auto&					Errors() { return errors; }
 			};
+
+
+			template<typename ...TArgs>
+			void Fill(collections::List<WString>& ss, TArgs&& ...args)
+			{
+				WString items[] = { args... };
+				for (auto& item : items)
+				{
+					ss.Add(item);
+				}
+			}
 
 			extern AstDefFile*				CreateParserGenTypeAst(AstSymbolManager& manager);
 		}

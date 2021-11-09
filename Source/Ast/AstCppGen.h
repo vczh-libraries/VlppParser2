@@ -15,42 +15,42 @@ namespace vl
 	{
 		namespace parsergen
 		{
-			extern void				WriteFileComment(const WString& name, stream::StreamWriter& writer);
-			extern WString			WriteFileBegin(AstDefFile* file, const WString& includeFile, stream::StreamWriter& writer);
-			extern void				WriteFileEnd(AstDefFile* file, stream::StreamWriter& writer);
-
 			extern void				WriteAstHeaderFile(AstDefFile* file, stream::StreamWriter& writer);
 			extern void				WriteAstCppFile(AstDefFile* file, stream::StreamWriter& writer);
 			extern void				WriteVisitorHeaderFile(AstDefFile* file, const WString& visitorName, stream::StreamWriter& writer, Func<void(const WString&)> callback);
 			extern void				WriteVisitorCppFile(AstDefFile* file, const WString& visitorName, stream::StreamWriter& writer, Func<void(const WString&)> callback);
-
+			extern void				WriteRootVisitorHeaderFile(AstSymbolManager& manager, const WString& visitorName, stream::StreamWriter& writer, Func<void(const WString&)> callback);
+			extern void				WriteRootVisitorCppFile(AstSymbolManager& manager, const WString& visitorName, stream::StreamWriter& writer, Func<void(const WString&)> callback);
 			extern void				WriteEmptyVisitorHeaderFile(AstDefFile* file, stream::StreamWriter& writer);
 			extern void				WriteEmptyVisitorCppFile(AstDefFile* file, stream::StreamWriter& writer);
 			extern void				WriteCopyVisitorHeaderFile(AstDefFile* file, stream::StreamWriter& writer);
 			extern void				WriteCopyVisitorCppFile(AstDefFile* file, stream::StreamWriter& writer);
+			extern void				WriteRootCopyVisitorHeaderFile(AstSymbolManager& manager, stream::StreamWriter& writer);
+			extern void				WriteRootCopyVisitorCppFile(AstSymbolManager& manager, stream::StreamWriter& writer);
 			extern void				WriteTraverseVisitorHeaderFile(AstDefFile* file, stream::StreamWriter& writer);
 			extern void				WriteTraverseVisitorCppFile(AstDefFile* file, stream::StreamWriter& writer);
 
-			struct CppGenInput
+			struct CppAstGenOutput
 			{
-				bool				generateEmptyVisitor = true;
-				bool				generateCopyVisitor = true;
-				bool				generateTraverseVisitor = true;
+				WString														astH;
+				WString														astCpp;
+				WString														emptyH;
+				WString														emptyCpp;
+				WString														copyH;
+				WString														copyCpp;
+				WString														traverseH;
+				WString														traverseCpp;
 			};
 
-			struct CppGenOutput
+			struct CppParserAstGenOutput
 			{
-				WString				astH;
-				WString				astCpp;
-				WString				emptyH;
-				WString				emptyCpp;
-				WString				copyH;
-				WString				copyCpp;
-				WString				traverseH;
-				WString				traverseCpp;
+				WString														copyH;
+				WString														copyCpp;
+				collections::Dictionary<AstDefFile*, Ptr<CppAstGenOutput>>	files;
 			};
 
-			extern CppGenOutput		WriteAstFiles(AstDefFile* file, collections::Dictionary<WString, WString>& files);
+			extern Ptr<CppAstGenOutput>			WriteAstFiles(AstDefFile* file, collections::Dictionary<WString, WString>& files);
+			extern Ptr<CppParserAstGenOutput>	WriteAstFiles(AstSymbolManager& manager, collections::Dictionary<WString, WString>& files);
 		}
 	}
 }

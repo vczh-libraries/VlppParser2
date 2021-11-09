@@ -23,19 +23,10 @@ Utility
 				writer.WriteLine(L"");
 			}
 
-			WString WriteFileBegin(AstDefFile* file, const WString& includeFile, stream::StreamWriter& writer)
+			WString WriteNssBegin(List<WString>& cppNss, stream::StreamWriter& writer)
 			{
-				for (auto include : file->includes)
-				{
-					writer.WriteLine(L"#include \"" + include + L"\"");
-				}
-				if (includeFile != L"")
-				{
-					writer.WriteLine(L"#include \"" + file->filePrefix + includeFile + L".h\"");
-				}
-				writer.WriteLine(L"");
 				WString prefix;
-				for (auto ns : file->cppNss)
+				for (auto ns : cppNss)
 				{
 					writer.WriteLine(prefix + L"namespace " + ns);
 					writer.WriteLine(prefix + L"{");
@@ -44,15 +35,34 @@ Utility
 				return prefix;
 			}
 
-			void WriteFileEnd(AstDefFile* file, stream::StreamWriter& writer)
+			void WriteNssEnd(List<WString>& cppNss, stream::StreamWriter& writer)
 			{
-				vint counter = file->cppNss.Count();
-				for (auto ns : file->cppNss)
+				vint counter = cppNss.Count();
+				for (auto ns : cppNss)
 				{
 					counter--;
 					for (vint i = 0; i < counter; i++) writer.WriteChar(L'\t');
 					writer.WriteLine(L"}");
 				}
+			}
+
+			WString WriteFileBegin(AstDefFile* file, const WString& includeFile, stream::StreamWriter& writer)
+			{
+				for (auto include : file->includes)
+				{
+					writer.WriteLine(L"#include \"" + include + L"\"");
+				}
+				if (includeFile != L"")
+				{
+					writer.WriteLine(L"#include \"" + file->Owner()->name + includeFile + L".h\"");
+				}
+				writer.WriteLine(L"");
+				return WriteNssBegin(file->cppNss, writer);
+			}
+
+			void WriteFileEnd(AstDefFile* file, stream::StreamWriter& writer)
+			{
+				WriteNssEnd(file->cppNss, writer);
 			}
 
 /***********************************************************************
@@ -192,79 +202,164 @@ WriteVisitorCppFile
 			}
 
 /***********************************************************************
+WriteRootVisitorHeaderFile
+***********************************************************************/
+
+			void WriteRootVisitorHeaderFile(AstSymbolManager& manager, const WString& visitorName, stream::StreamWriter& writer, Func<void(const WString&)> callback)
+			{
+				WriteFileComment(manager.name, writer);
+				if (manager.headerGuard != L"")
+				{
+					writer.WriteString(L"#ifndef ");
+					writer.WriteLine(manager.headerGuard + L"_AST_" + wupper(visitorName) + L"VISITOR");
+					writer.WriteString(L"#define ");
+					writer.WriteLine(manager.headerGuard + L"_AST_" + wupper(visitorName) + L"VISITOR");
+				}
+				else
+				{
+					writer.WriteLine(L"#pragma once");
+				}
+				writer.WriteLine(L"");
+				WString prefix = WriteNssBegin(manager.cppNss, writer);
+				writer.WriteLine(prefix + L"namespace " + wlower(visitorName) + L"_visitor");
+				writer.WriteLine(prefix + L"{");
+				prefix += L"\t";
+
+				callback(prefix);
+
+				prefix = prefix.Left(prefix.Length() - 1);
+				writer.WriteLine(prefix + L"}");
+				WriteNssEnd(manager.cppNss, writer);
+
+				if (manager.headerGuard != L"")
+				{
+					writer.WriteString(L"#endif");
+				}
+			}
+
+/***********************************************************************
+WriteRootVisitorCppFile
+***********************************************************************/
+
+			void WriteRootVisitorCppFile(AstSymbolManager& manager, const WString& visitorName, stream::StreamWriter& writer, Func<void(const WString&)> callback)
+			{
+				WriteFileComment(manager.name, writer);
+				writer.WriteLine(L"#include \"" + (manager.name + L"_Root" + visitorName) + L"\"");
+				writer.WriteLine(L"");
+				WString prefix = WriteNssBegin(manager.cppNss, writer);
+				writer.WriteLine(prefix + L"namespace " + wlower(visitorName) + L"_visitor");
+				writer.WriteLine(prefix + L"{");
+				prefix += L"\t";
+
+				callback(prefix);
+
+				prefix = prefix.Left(prefix.Length() - 1);
+				writer.WriteLine(prefix + L"}");
+				WriteNssEnd(manager.cppNss, writer);
+			}
+
+/***********************************************************************
 WriteAstFiles
 ***********************************************************************/
 
-			CppGenOutput WriteAstFiles(AstDefFile* file, collections::Dictionary<WString, WString>& files)
+			Ptr<CppAstGenOutput> WriteAstFiles(AstDefFile* file, collections::Dictionary<WString, WString>& files)
 			{
-				CppGenOutput output;
-				output.astH = file->filePrefix + file->Name() + L".h";
-				output.astCpp = file->filePrefix + file->Name() + L".cpp";
-				output.emptyH = file->filePrefix + file->Name() + L"_Empty.h";
-				output.emptyCpp = file->filePrefix + file->Name() + L"_Empty.cpp";
-				output.copyH = file->filePrefix + file->Name() + L"_Copy.h";
-				output.copyCpp = file->filePrefix + file->Name() + L"_Copy.cpp";
-				output.traverseH = file->filePrefix + file->Name() + L"_Traverse.h";
-				output.traverseCpp = file->filePrefix + file->Name() + L"_Traverse.cpp";
+				auto output = MakePtr<CppAstGenOutput>();
+				output->astH = file->Owner()->name + file->Name() + L".h";
+				output->astCpp = file->Owner()->name + file->Name() + L".cpp";
+				output->emptyH = file->Owner()->name + file->Name() + L"_Empty.h";
+				output->emptyCpp = file->Owner()->name + file->Name() + L"_Empty.cpp";
+				output->copyH = file->Owner()->name + file->Name() + L"_Copy.h";
+				output->copyCpp = file->Owner()->name + file->Name() + L"_Copy.cpp";
+				output->traverseH = file->Owner()->name + file->Name() + L"_Traverse.h";
+				output->traverseCpp = file->Owner()->name + file->Name() + L"_Traverse.cpp";
 
 				{
-					WString fileH = GenerateToStream([=](StreamWriter& writer)
+					WString fileH = GenerateToStream([&](StreamWriter& writer)
 					{
 						WriteAstHeaderFile(file, writer);
 					});
 
-					WString fileCpp = GenerateToStream([=](StreamWriter& writer)
+					WString fileCpp = GenerateToStream([&](StreamWriter& writer)
 					{
 						WriteAstCppFile(file, writer);
 					});
 
-					files.Add(output.astH, fileH);
-					files.Add(output.astCpp, fileCpp);
+					files.Add(output->astH, fileH);
+					files.Add(output->astCpp, fileCpp);
 				}
 
 				{
-					WString fileH = GenerateToStream([=](StreamWriter& writer)
+					WString fileH = GenerateToStream([&](StreamWriter& writer)
 					{
 						WriteEmptyVisitorHeaderFile(file, writer);
 					});
 
-					WString fileCpp = GenerateToStream([=](StreamWriter& writer)
+					WString fileCpp = GenerateToStream([&](StreamWriter& writer)
 					{
 						WriteEmptyVisitorCppFile(file, writer);
 					});
 
-					files.Add(output.emptyH, fileH);
-					files.Add(output.emptyCpp, fileCpp);
+					files.Add(output->emptyH, fileH);
+					files.Add(output->emptyCpp, fileCpp);
 				}
 
 				{
-					WString fileH = GenerateToStream([=](StreamWriter& writer)
+					WString fileH = GenerateToStream([&](StreamWriter& writer)
 					{
 						WriteCopyVisitorHeaderFile(file, writer);
 					});
 
-					WString fileCpp = GenerateToStream([=](StreamWriter& writer)
+					WString fileCpp = GenerateToStream([&](StreamWriter& writer)
 					{
 						WriteCopyVisitorCppFile(file, writer);
 					});
 
-					files.Add(output.copyH, fileH);
-					files.Add(output.copyCpp, fileCpp);
+					files.Add(output->copyH, fileH);
+					files.Add(output->copyCpp, fileCpp);
 				}
 
 				{
-					WString fileH = GenerateToStream([=](StreamWriter& writer)
+					WString fileH = GenerateToStream([&](StreamWriter& writer)
 					{
 						WriteTraverseVisitorHeaderFile(file, writer);
 					});
 
-					WString fileCpp = GenerateToStream([=](StreamWriter& writer)
+					WString fileCpp = GenerateToStream([&](StreamWriter& writer)
 					{
 						WriteTraverseVisitorCppFile(file, writer);
 					});
 
-					files.Add(output.traverseH, fileH);
-					files.Add(output.traverseCpp, fileCpp);
+					files.Add(output->traverseH, fileH);
+					files.Add(output->traverseCpp, fileCpp);
+				}
+				return output;
+			}
+
+			Ptr<CppParserAstGenOutput>	WriteAstFiles(AstSymbolManager& manager, collections::Dictionary<WString, WString>& files)
+			{
+				auto output = MakePtr<CppParserAstGenOutput>();
+				output->copyH = manager.name + L"_RootCopy.h";
+				output->copyCpp = manager.name + L"_RootCopy.cpp";
+
+				for (auto file : manager.Files().Values())
+				{
+					output->files.Add(file, WriteAstFiles(file, files));
+				}
+
+				{
+					WString fileH = GenerateToStream([&](StreamWriter& writer)
+					{
+						WriteRootCopyVisitorHeaderFile(manager, writer);
+					});
+
+					WString fileCpp = GenerateToStream([&](StreamWriter& writer)
+					{
+						WriteRootCopyVisitorCppFile(manager, writer);
+					});
+
+					files.Add(output->copyH, fileH);
+					files.Add(output->copyCpp, fileCpp);
 				}
 				return output;
 			}
