@@ -61,7 +61,7 @@ namespace calculator
 
 		vl::Ptr<calculator::Expandable> CalculatorRootCopyVisitor::CreateField(vl::Ptr<calculator::Expandable> from)
 		{
-			from->Accept(static_cast<calculator::Expandable::IVisitor*>(this));
+			from->Accept(static_cast<calculator::Expr::IVisitor*>(this));
 			return this->result.Cast<calculator::Expandable>();
 		}
 

@@ -358,8 +358,14 @@ WriteRootCopyVisitorHeaderFile
 					writer.WriteLine(prefix + L"\t// CreateField ---------------------------------------");
 					{
 						List<AstClassSymbol*> neededSymbols;
-						CopyFrom(neededSymbols, concreteClasses, true);
-						CopyFrom(neededSymbols, From(visitors), true);
+						CopyFrom(
+							neededSymbols,
+							From(concreteClasses)
+								.Concat(visitors)
+								.Concat(allCreateFields)
+								.Concat(allVirtualCreateFields)
+								.Distinct()
+							);
 						for (auto fieldSymbol : neededSymbols)
 						{
 							bool needOverride = allCreateFields.Contains(fieldSymbol) || allVirtualCreateFields.Contains(fieldSymbol);
@@ -456,8 +462,14 @@ WriteRootCopyVisitorCppFile
 					writer.WriteLine(prefix + L"// CreateField ---------------------------------------");
 					{
 						List<AstClassSymbol*> neededSymbols;
-						CopyFrom(neededSymbols, concreteClasses, true);
-						CopyFrom(neededSymbols, From(visitors), true);
+						CopyFrom(
+							neededSymbols,
+							From(concreteClasses)
+								.Concat(visitors)
+								.Concat(allCreateFields)
+								.Concat(allVirtualCreateFields)
+								.Distinct()
+							);
 						for (auto fieldSymbol : neededSymbols)
 						{
 							writer.WriteLine(L"");
@@ -467,10 +479,15 @@ WriteRootCopyVisitorCppFile
 							PrintCppType(nullptr, fieldSymbol, writer);
 							writer.WriteLine(L"> from)");
 							writer.WriteLine(prefix + L"{");
-							if (visitors.Contains(fieldSymbol))
+							if (fieldSymbol->baseClass || visitors.Contains(fieldSymbol))
 							{
+								auto current = fieldSymbol;
+								while (current->baseClass)
+								{
+									current = current->baseClass;
+								}
 								writer.WriteString(prefix + L"\tfrom->Accept(static_cast<");
-								PrintCppType(nullptr, fieldSymbol, writer);
+								PrintCppType(nullptr, current, writer);
 								writer.WriteLine(L"::IVisitor*>(this));");
 							}
 							else
