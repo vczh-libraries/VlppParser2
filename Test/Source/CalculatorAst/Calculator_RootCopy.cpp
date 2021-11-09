@@ -66,17 +66,23 @@ namespace calculator
 
 		void CalculatorRootCopyVisitor::Visit(calculator::Arg* node)
 		{
-			static_assert(false);
+			auto newNode = vl::MakePtr<calculator::Arg>();
+			CopyFields(node, newNode.Obj());
+			this->result = newNode;
 		}
 
 		void CalculatorRootCopyVisitor::Visit(calculator::Import* node)
 		{
-			static_assert(false);
+			auto newNode = vl::MakePtr<calculator::Import>();
+			CopyFields(node, newNode.Obj());
+			this->result = newNode;
 		}
 
 		void CalculatorRootCopyVisitor::Visit(calculator::Module* node)
 		{
-			static_assert(false);
+			auto newNode = vl::MakePtr<calculator::Module>();
+			CopyFields(node, newNode.Obj());
+			this->result = newNode;
 		}
 	}
 }

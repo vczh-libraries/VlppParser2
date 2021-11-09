@@ -60,17 +60,23 @@ namespace vl
 
 				void ParserGenRootCopyVisitor::Visit(vl::glr::parsergen::GlrClassProp* node)
 				{
-					static_assert(false);
+					auto newNode = vl::MakePtr<vl::glr::parsergen::GlrClassProp>();
+					CopyFields(node, newNode.Obj());
+					this->result = newNode;
 				}
 
 				void ParserGenRootCopyVisitor::Visit(vl::glr::parsergen::GlrEnumItem* node)
 				{
-					static_assert(false);
+					auto newNode = vl::MakePtr<vl::glr::parsergen::GlrEnumItem>();
+					CopyFields(node, newNode.Obj());
+					this->result = newNode;
 				}
 
 				void ParserGenRootCopyVisitor::Visit(vl::glr::parsergen::GlrFile* node)
 				{
-					static_assert(false);
+					auto newNode = vl::MakePtr<vl::glr::parsergen::GlrFile>();
+					CopyFields(node, newNode.Obj());
+					this->result = newNode;
 				}
 			}
 		}

@@ -471,7 +471,11 @@ WriteRootCopyVisitorCppFile
 						PrintCppType(nullptr, concreteSymbol, writer);
 						writer.WriteLine(L"* node)");
 						writer.WriteLine(prefix + L"{");
-						writer.WriteLine(prefix + L"\tstatic_assert(false);");
+						writer.WriteString(prefix + L"\tauto newNode = vl::MakePtr<");
+						PrintCppType(nullptr, concreteSymbol, writer);
+						writer.WriteLine(L">();");
+						writer.WriteLine(prefix + L"\tCopyFields(node, newNode.Obj());");
+						writer.WriteLine(prefix + L"\tthis->result = newNode;");
 						writer.WriteLine(prefix + L"}");
 					}
 				});
