@@ -7,6 +7,8 @@ Licensed under https://github.com/vczh-libraries/License
 #ifndef VCZH_PARSER2_PARSERGEN_AST_COPYVISITOR
 #define VCZH_PARSER2_PARSERGEN_AST_COPYVISITOR
 
+#include "ParserGenTypeAst_Copy"
+
 namespace vl
 {
 	namespace glr

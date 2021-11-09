@@ -220,6 +220,11 @@ WriteRootVisitorHeaderFile
 					writer.WriteLine(L"#pragma once");
 				}
 				writer.WriteLine(L"");
+				for(auto file : manager.Files().Values())
+				{
+					writer.WriteLine(L"#include \"" + (manager.name + file->Name() + L"_" + visitorName) + L"\"");
+				}
+				writer.WriteLine(L"");
 				WString prefix = WriteNssBegin(manager.cppNss, writer);
 				writer.WriteLine(prefix + L"namespace " + wlower(visitorName) + L"_visitor");
 				writer.WriteLine(prefix + L"{");

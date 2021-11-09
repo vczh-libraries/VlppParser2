@@ -7,6 +7,8 @@ Licensed under https://github.com/vczh-libraries/License
 #ifndef VCZH_PARSER2_UNITTEST_CALCULATOR_AST_COPYVISITOR
 #define VCZH_PARSER2_UNITTEST_CALCULATOR_AST_COPYVISITOR
 
+#include "CalculatorAst_Copy"
+
 namespace calculator
 {
 	namespace copy_visitor
