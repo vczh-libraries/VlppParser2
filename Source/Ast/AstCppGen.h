@@ -29,6 +29,8 @@ namespace vl
 			extern void				WriteRootCopyVisitorCppFile(AstSymbolManager& manager, stream::StreamWriter& writer);
 			extern void				WriteTraverseVisitorHeaderFile(AstDefFile* file, stream::StreamWriter& writer);
 			extern void				WriteTraverseVisitorCppFile(AstDefFile* file, stream::StreamWriter& writer);
+			extern void				WriteRootTraverseVisitorHeaderFile(AstSymbolManager& manager, stream::StreamWriter& writer);
+			extern void				WriteRootTraverseVisitorCppFile(AstSymbolManager& manager, stream::StreamWriter& writer);
 
 			struct CppAstGenOutput
 			{
@@ -46,6 +48,8 @@ namespace vl
 			{
 				WString														copyH;
 				WString														copyCpp;
+				WString														traverseH;
+				WString														traverseCpp;
 				collections::Dictionary<AstDefFile*, Ptr<CppAstGenOutput>>	files;
 			};
 

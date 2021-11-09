@@ -374,6 +374,8 @@ WriteAstFiles
 				auto output = MakePtr<CppParserAstGenOutput>();
 				output->copyH = manager.name + L"_RootCopy.h";
 				output->copyCpp = manager.name + L"_RootCopy.cpp";
+				output->traverseH = manager.name + L"_RootTraverse.h";
+				output->traverseCpp = manager.name + L"_RootTraverse.cpp";
 
 				for (auto file : manager.Files().Values())
 				{
@@ -393,6 +395,21 @@ WriteAstFiles
 
 					files.Add(output->copyH, fileH);
 					files.Add(output->copyCpp, fileCpp);
+				}
+
+				{
+					WString fileH = GenerateToStream([&](StreamWriter& writer)
+					{
+							WriteRootTraverseVisitorHeaderFile(manager, writer);
+					});
+
+					WString fileCpp = GenerateToStream([&](StreamWriter& writer)
+					{
+							WriteRootTraverseVisitorCppFile(manager, writer);
+					});
+
+					files.Add(output->traverseH, fileH);
+					files.Add(output->traverseCpp, fileCpp);
 				}
 				return output;
 			}

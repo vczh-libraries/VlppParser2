@@ -48,6 +48,28 @@ WriteTraverseVisitorCppFile
 					}
 				});
 			}
+
+/***********************************************************************
+WriteRootTraverseVisitorHeaderFile
+***********************************************************************/
+
+			void WriteRootTraverseVisitorHeaderFile(AstSymbolManager& manager, stream::StreamWriter& writer)
+			{
+				WriteRootVisitorHeaderFile(manager, L"Traverse", writer, [&](const WString& prefix)
+				{
+				});
+			}
+
+/***********************************************************************
+WriteRootTraverseVisitorCppFile
+***********************************************************************/
+
+			void WriteRootTraverseVisitorCppFile(AstSymbolManager& manager, stream::StreamWriter& writer)
+			{
+				WriteRootVisitorCppFile(manager, L"Traverse", writer, [&](const WString& prefix)
+				{
+				});
+			}
 		}
 	}
 }
