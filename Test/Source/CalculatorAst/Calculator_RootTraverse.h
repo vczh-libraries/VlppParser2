@@ -13,6 +13,42 @@ namespace calculator
 {
 	namespace traverse_visitor
 	{
+		/// <summary>A traverse visitor, overriding all abstract methods with AST visiting code.</summary>
+		class CalculatorRootTraverseVisitor
+			: public virtual vl::Object
+			, public virtual calculator::traverse_visitor::ExpandableVisitor
+			, public virtual calculator::traverse_visitor::ExprVisitor
+		{
+		protected:
+			// Traverse ------------------------------------------
+			virtual void Traverse(vl::glr::ParsingToken& token);
+			virtual void Traverse(vl::glr::ParsingAstBase* node);
+			virtual void Traverse(calculator::Expandable* node);
+			virtual void Traverse(calculator::Expr* node);
+			virtual void Traverse(calculator::Arg* node);
+			virtual void Traverse(calculator::Import* node);
+			virtual void Traverse(calculator::Module* node);
+
+			// Finishing -----------------------------------------
+			virtual void Finishing(vl::glr::ParsingAstBase* node);
+			virtual void Finishing(calculator::Expandable* node);
+			virtual void Finishing(calculator::Expr* node);
+			virtual void Finishing(calculator::Arg* node);
+			virtual void Finishing(calculator::Import* node);
+			virtual void Finishing(calculator::Module* node);
+
+			// Dispatch (virtual) --------------------------------
+			void Dispatch(calculator::Expandable* node) override;
+
+		public:
+			// VisitField ----------------------------------------
+			void VisitField(calculator::Arg* node) override;
+			void VisitField(calculator::Import* node);
+			void VisitField(calculator::Module* node);
+			void VisitField(calculator::Expandable* node);
+			void VisitField(calculator::Expr* node) override;
+		};
+
 	}
 }
 #endif

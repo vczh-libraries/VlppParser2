@@ -17,6 +17,37 @@ namespace vl
 		{
 			namespace traverse_visitor
 			{
+				/// <summary>A traverse visitor, overriding all abstract methods with AST visiting code.</summary>
+				class ParserGenRootTraverseVisitor
+					: public virtual vl::Object
+					, public virtual vl::glr::parsergen::traverse_visitor::TypeVisitor
+				{
+				protected:
+					// Traverse ------------------------------------------
+					virtual void Traverse(vl::glr::ParsingToken& token);
+					virtual void Traverse(vl::glr::ParsingAstBase* node);
+					virtual void Traverse(vl::glr::parsergen::GlrType* node);
+					virtual void Traverse(vl::glr::parsergen::GlrClassProp* node);
+					virtual void Traverse(vl::glr::parsergen::GlrEnumItem* node);
+					virtual void Traverse(vl::glr::parsergen::GlrFile* node);
+
+					// Finishing -----------------------------------------
+					virtual void Finishing(vl::glr::ParsingAstBase* node);
+					virtual void Finishing(vl::glr::parsergen::GlrType* node);
+					virtual void Finishing(vl::glr::parsergen::GlrClassProp* node);
+					virtual void Finishing(vl::glr::parsergen::GlrEnumItem* node);
+					virtual void Finishing(vl::glr::parsergen::GlrFile* node);
+
+					// Dispatch (virtual) --------------------------------
+
+				public:
+					// VisitField ----------------------------------------
+					void VisitField(vl::glr::parsergen::GlrClassProp* node) override;
+					void VisitField(vl::glr::parsergen::GlrEnumItem* node) override;
+					void VisitField(vl::glr::parsergen::GlrFile* node);
+					void VisitField(vl::glr::parsergen::GlrType* node);
+				};
+
 			}
 		}
 	}

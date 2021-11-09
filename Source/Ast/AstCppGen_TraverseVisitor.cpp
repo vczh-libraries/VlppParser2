@@ -23,6 +23,58 @@ namespace vl
 				List<AstClassSymbol*>& virtualCreateFields
 				);
 
+			void WriteVisitFieldFunctionBody(AstDefFile* file, AstClassSymbol* fieldSymbol, const WString& prefix, stream::StreamWriter& writer)
+			{
+				writer.WriteLine(prefix + L"\tif (!node) return;");
+				List<AstClassSymbol*> order;
+				{
+					auto current = fieldSymbol;
+					while (current)
+					{
+						order.Add(current);
+						current = current->baseClass;
+					}
+				}
+
+				for (auto classSymbol : order)
+				{
+					writer.WriteString(prefix + L"\tTraverse(static_cast<");
+					PrintCppType(file, classSymbol, writer);
+					writer.WriteLine(L"*>(node));");
+				}
+				writer.WriteLine(prefix + L"\tTraverse(static_cast<vl::glr::ParsingAstBase*>(node));");
+
+				for (auto propSymbol : fieldSymbol->Props().Values())
+				{
+					switch (propSymbol->propType)
+					{
+					case AstPropType::Token:
+						writer.WriteLine(prefix + L"\tTraverse(node->" + propSymbol->Name() + L");");
+						break;
+					case AstPropType::Array:
+						writer.WriteLine(prefix + L"\tfor (auto&& listItem : node->" + propSymbol->Name() + L")");
+						writer.WriteLine(prefix + L"\t{");
+						writer.WriteLine(prefix + L"\t\tTraverse(listItem.Obj());");
+						writer.WriteLine(prefix + L"\t}");
+						break;
+					case AstPropType::Type:
+						if (dynamic_cast<AstClassSymbol*>(propSymbol->propSymbol))
+						{
+							writer.WriteLine(prefix + L"\tTraverse(node->" + propSymbol->Name() + L".Obj());");
+						}
+						break;
+					}
+				}
+
+				writer.WriteLine(prefix + L"\tFinishing(static_cast<vl::glr::ParsingAstBase*>(node));");
+				for (auto classSymbol : From(order).Reverse())
+				{
+					writer.WriteString(prefix + L"\tFinishing(static_cast<");
+					PrintCppType(file, classSymbol, writer);
+					writer.WriteLine(L"*>(node));");
+				}
+			}
+
 /***********************************************************************
 WriteTraverseVisitorHeaderFile
 ***********************************************************************/
@@ -115,58 +167,6 @@ WriteTraverseVisitorHeaderFile
 						}
 					}
 				});
-			}
-
-			void WriteVisitFieldFunctionBody(AstDefFile* file, AstClassSymbol* fieldSymbol, const WString& prefix, stream::StreamWriter& writer)
-			{
-				writer.WriteLine(prefix + L"\tif (!node) return;");
-				List<AstClassSymbol*> order;
-				{
-					auto current = fieldSymbol;
-					while (current)
-					{
-						order.Add(current);
-						current = current->baseClass;
-					}
-				}
-
-				for (auto classSymbol : order)
-				{
-					writer.WriteString(prefix + L"\tTraverse(static_cast<");
-					PrintCppType(file, classSymbol, writer);
-					writer.WriteLine(L"*>(node));");
-				}
-				writer.WriteLine(prefix + L"\tTraverse(static_cast<vl::glr::ParsingAstBase*>(node));");
-
-				for (auto propSymbol : fieldSymbol->Props().Values())
-				{
-					switch (propSymbol->propType)
-					{
-					case AstPropType::Token:
-						writer.WriteLine(prefix + L"\tTraverse(node->" + propSymbol->Name() + L");");
-						break;
-					case AstPropType::Array:
-						writer.WriteLine(prefix + L"\tfor (auto&& listItem : node->" + propSymbol->Name() + L")");
-						writer.WriteLine(prefix + L"\t{");
-						writer.WriteLine(prefix + L"\t\tTraverse(listItem.Obj());");
-						writer.WriteLine(prefix + L"\t}");
-						break;
-					case AstPropType::Type:
-						if (dynamic_cast<AstClassSymbol*>(propSymbol->propSymbol))
-						{
-							writer.WriteLine(prefix + L"\tTraverse(node->" + propSymbol->Name() + L".Obj());");
-						}
-						break;
-					}
-				}
-
-				writer.WriteLine(prefix + L"\tFinishing(static_cast<vl::glr::ParsingAstBase*>(node));");
-				for (auto classSymbol : From(order).Reverse())
-				{
-					writer.WriteString(prefix + L"\tFinishing(static_cast<");
-					PrintCppType(file, classSymbol, writer);
-					writer.WriteLine(L"*>(node));");
-				}
 			}
 
 /***********************************************************************
@@ -281,6 +281,102 @@ WriteRootTraverseVisitorHeaderFile
 			{
 				WriteRootVisitorHeaderFile(manager, L"Traverse", writer, [&](const WString& prefix)
 				{
+					writer.WriteLine(prefix + L"/// <summary>A traverse visitor, overriding all abstract methods with AST visiting code.</summary>");
+					writer.WriteLine(prefix + L"class " + manager.name + L"RootTraverseVisitor");
+					writer.WriteLine(prefix + L"\t: public virtual vl::Object");
+
+					List<AstClassSymbol*> concreteClasses, visitors;
+					CollectAllVisitors(manager, visitors);
+					CollectConcreteClasses(manager, concreteClasses);
+
+					for (auto visitor : visitors)
+					{
+						writer.WriteString(prefix + L"\t, public virtual ");
+						PrintNss(visitor->Owner()->cppNss, writer);
+						writer.WriteString(L"traverse_visitor::");
+						writer.WriteString(visitor->Name());
+						writer.WriteLine(L"Visitor");
+					}
+					writer.WriteLine(prefix + L"{");
+					writer.WriteLine(prefix + L"protected:");
+
+					List<AstClassSymbol*> copyFields, allCreateFields, allVirtualCreateFields;
+					{
+						List<AstClassSymbol*> _1;
+						List<AstClassSymbol*> _2;
+						for (auto concreteSymbol : concreteClasses)
+						{
+							CollectCopyDependencies(concreteSymbol, true, false, copyFields, _1, _2);
+						}
+					}
+					{
+						for (auto visitor : visitors)
+						{
+							List<AstClassSymbol*> _1;
+							CollectCopyDependencies(visitor, true, true, _1, allCreateFields, allVirtualCreateFields);
+						}
+					}
+
+					writer.WriteLine(prefix + L"\t// Traverse ------------------------------------------");
+					writer.WriteLine(prefix + L"\tvirtual void Traverse(vl::glr::ParsingToken& token);");
+					writer.WriteLine(prefix + L"\tvirtual void Traverse(vl::glr::ParsingAstBase* node);");
+					for (auto fieldSymbol : From(visitors).Concat(copyFields).Distinct())
+					{
+						writer.WriteString(prefix + L"\tvirtual void Traverse(");
+						PrintCppType(nullptr, fieldSymbol, writer);
+						writer.WriteLine(L"* node);");
+					}
+					writer.WriteLine(L"");
+
+					writer.WriteLine(prefix + L"\t// Finishing -----------------------------------------");
+					writer.WriteLine(prefix + L"\tvirtual void Finishing(vl::glr::ParsingAstBase* node);");
+					for (auto fieldSymbol : From(visitors).Concat(copyFields).Distinct())
+					{
+						writer.WriteString(prefix + L"\tvirtual void Finishing(");
+						PrintCppType(nullptr, fieldSymbol, writer);
+						writer.WriteLine(L"* node);");
+					}
+					writer.WriteLine(L"");
+
+					writer.WriteLine(prefix + L"\t// Dispatch (virtual) --------------------------------");
+					for (auto childSymbol : visitors)
+					{
+						if (childSymbol->baseClass)
+						{
+							writer.WriteString(prefix + L"\tvoid Dispatch(");
+							PrintCppType(nullptr, childSymbol, writer);
+							writer.WriteLine(L"* node) override;");
+						}
+					}
+					writer.WriteLine(L"");
+
+					writer.WriteLine(prefix + L"public:");
+					writer.WriteLine(prefix + L"\t// VisitField ----------------------------------------");
+					{
+						List<AstClassSymbol*> neededSymbols;
+						CopyFrom(
+							neededSymbols,
+							From(concreteClasses)
+								.Concat(visitors)
+								.Concat(allCreateFields)
+								.Concat(allVirtualCreateFields)
+								.Distinct()
+							);
+						for (auto fieldSymbol : neededSymbols)
+						{
+							bool needOverride = allCreateFields.Contains(fieldSymbol) || allVirtualCreateFields.Contains(fieldSymbol);
+							writer.WriteString(prefix + L"\tvoid VisitField(");
+							PrintCppType(nullptr, fieldSymbol, writer);
+							writer.WriteString(L"* node)");
+							if (needOverride)
+							{
+								writer.WriteString(L" override");
+							}
+							writer.WriteLine(L";");
+						}
+					}
+					writer.WriteLine(prefix + L"};");
+					writer.WriteLine(L"");
 				});
 			}
 
