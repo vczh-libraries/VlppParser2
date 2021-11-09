@@ -70,6 +70,48 @@ namespace vl
 			}
 
 /***********************************************************************
+WriteCopyFieldFunctionBody
+***********************************************************************/
+
+			void WriteCopyFieldFunctionBody(AstDefFile* file, AstClassSymbol* fieldSymbol, const WString& prefix, stream::StreamWriter& writer)
+			{
+				if (fieldSymbol->baseClass)
+				{
+					writer.WriteString(prefix + L"\tCopyFields(static_cast<");
+					PrintCppType(file, fieldSymbol->baseClass, writer);
+					writer.WriteString(L"*>(from), static_cast<");
+					PrintCppType(file, fieldSymbol->baseClass, writer);
+					writer.WriteLine(L"*>(to));");
+				}
+
+				for (auto propSymbol : fieldSymbol->Props().Values())
+				{
+					switch (propSymbol->propType)
+					{
+					case AstPropType::Token:
+						writer.WriteLine(prefix + L"\tto->" + propSymbol->Name() + L" = from->" + propSymbol->Name() + L";");
+						break;
+					case AstPropType::Array:
+						writer.WriteLine(prefix + L"\tfor (auto listItem : from->" + propSymbol->Name() + L")");
+						writer.WriteLine(prefix + L"\t{");
+						writer.WriteLine(prefix + L"\t\tto->" + propSymbol->Name() + L".Add(CreateField(listItem));");
+						writer.WriteLine(prefix + L"\t}");
+						break;
+					case AstPropType::Type:
+						if (dynamic_cast<AstClassSymbol*>(propSymbol->propSymbol))
+						{
+							writer.WriteLine(prefix + L"\tto->" + propSymbol->Name() + L" = CreateField(from->" + propSymbol->Name() + L");");
+						}
+						else
+						{
+							writer.WriteLine(prefix + L"\tto->" + propSymbol->Name() + L" = from->" + propSymbol->Name() + L";");
+						}
+						break;
+					}
+				}
+			}
+
+/***********************************************************************
 WriteCopyVisitorHeaderFile
 ***********************************************************************/
 
@@ -192,41 +234,7 @@ WriteCopyVisitorCppFile
 									PrintCppType(file, fieldSymbol, writer);
 									writer.WriteLine(L"* to)");
 									writer.WriteLine(prefix + L"{");
-
-									if (fieldSymbol->baseClass)
-									{
-										writer.WriteString(prefix + L"\tCopyFields(static_cast<");
-										PrintCppType(file, fieldSymbol->baseClass, writer);
-										writer.WriteString(L"*>(from), static_cast<");
-										PrintCppType(file, fieldSymbol->baseClass, writer);
-										writer.WriteLine(L"*>(to));");
-									}
-
-									for (auto propSymbol : fieldSymbol->Props().Values())
-									{
-										switch (propSymbol->propType)
-										{
-										case AstPropType::Token:
-											writer.WriteLine(prefix + L"\tto->" + propSymbol->Name() + L" = from->" + propSymbol->Name() + L";");
-											break;
-										case AstPropType::Array:
-											writer.WriteLine(prefix + L"\tfor (auto listItem : from->" + propSymbol->Name() + L")");
-											writer.WriteLine(prefix + L"\t{");
-											writer.WriteLine(prefix + L"\t\tto->" + propSymbol->Name() + L".Add(CreateField(listItem));");
-											writer.WriteLine(prefix + L"\t}");
-											break;
-										case AstPropType::Type:
-											if (dynamic_cast<AstClassSymbol*>(propSymbol->propSymbol))
-											{
-												writer.WriteLine(prefix + L"\tto->" + propSymbol->Name() + L" = CreateField(from->" + propSymbol->Name() + L");");
-											}
-											else
-											{
-												writer.WriteLine(prefix + L"\tto->" + propSymbol->Name() + L" = from->" + propSymbol->Name() + L";");
-											}
-											break;
-										}
-									}
+									WriteCopyFieldFunctionBody(file, fieldSymbol, prefix, writer);
 									writer.WriteLine(prefix + L"}");
 								}
 
@@ -422,7 +430,7 @@ WriteRootCopyVisitorCppFile
 						PrintCppType(nullptr, fieldSymbol, writer);
 						writer.WriteLine(L"* to)");
 						writer.WriteLine(prefix + L"{");
-						writer.WriteLine(prefix + L"\tstatic_assert(false);");
+						WriteCopyFieldFunctionBody(nullptr, fieldSymbol, prefix, writer);
 						writer.WriteLine(prefix + L"}");
 					}
 
@@ -457,7 +465,12 @@ WriteRootCopyVisitorCppFile
 							PrintCppType(nullptr, fieldSymbol, writer);
 							writer.WriteLine(L"> from)");
 							writer.WriteLine(prefix + L"{");
-							writer.WriteLine(prefix + L"\tstatic_assert(false);");
+							writer.WriteLine(prefix + L"\tif (!from) return nullptr;");
+							writer.WriteString(prefix + L"\tauto to = vl::MakePtr<");
+							PrintCppType(nullptr, fieldSymbol, writer);
+							writer.WriteLine(L">();");
+							writer.WriteLine(prefix + L"\tCopyFields(from.Obj(), to.Obj());");
+							writer.WriteLine(prefix + L"\treturn to;");
 							writer.WriteLine(prefix + L"}");
 						}
 					}

@@ -15,17 +15,21 @@ namespace calculator
 
 		void CalculatorRootCopyVisitor::CopyFields(calculator::Arg* from, calculator::Arg* to)
 		{
-			static_assert(false);
+			to->name = from->name;
 		}
 
 		void CalculatorRootCopyVisitor::CopyFields(calculator::Import* from, calculator::Import* to)
 		{
-			static_assert(false);
+			to->name = from->name;
 		}
 
 		void CalculatorRootCopyVisitor::CopyFields(calculator::Module* from, calculator::Module* to)
 		{
-			static_assert(false);
+			to->exported = CreateField(from->exported);
+			for (auto listItem : from->imports)
+			{
+				to->imports.Add(CreateField(listItem));
+			}
 		}
 
 		// Dispatch (virtual) --------------------------------
@@ -39,27 +43,42 @@ namespace calculator
 
 		vl::Ptr<calculator::Arg> CalculatorRootCopyVisitor::CreateField(vl::Ptr<calculator::Arg> from)
 		{
-			static_assert(false);
+			if (!from) return nullptr;
+			auto to = vl::MakePtr<calculator::Arg>();
+			CopyFields(from.Obj(), to.Obj());
+			return to;
 		}
 
 		vl::Ptr<calculator::Import> CalculatorRootCopyVisitor::CreateField(vl::Ptr<calculator::Import> from)
 		{
-			static_assert(false);
+			if (!from) return nullptr;
+			auto to = vl::MakePtr<calculator::Import>();
+			CopyFields(from.Obj(), to.Obj());
+			return to;
 		}
 
 		vl::Ptr<calculator::Module> CalculatorRootCopyVisitor::CreateField(vl::Ptr<calculator::Module> from)
 		{
-			static_assert(false);
+			if (!from) return nullptr;
+			auto to = vl::MakePtr<calculator::Module>();
+			CopyFields(from.Obj(), to.Obj());
+			return to;
 		}
 
 		vl::Ptr<calculator::Expandable> CalculatorRootCopyVisitor::CreateField(vl::Ptr<calculator::Expandable> from)
 		{
-			static_assert(false);
+			if (!from) return nullptr;
+			auto to = vl::MakePtr<calculator::Expandable>();
+			CopyFields(from.Obj(), to.Obj());
+			return to;
 		}
 
 		vl::Ptr<calculator::Expr> CalculatorRootCopyVisitor::CreateField(vl::Ptr<calculator::Expr> from)
 		{
-			static_assert(false);
+			if (!from) return nullptr;
+			auto to = vl::MakePtr<calculator::Expr>();
+			CopyFields(from.Obj(), to.Obj());
+			return to;
 		}
 
 		// Visitor Members -----------------------------------
