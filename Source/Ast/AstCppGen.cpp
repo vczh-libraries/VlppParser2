@@ -65,6 +65,20 @@ Utility
 				WriteNssEnd(file->cppNss, writer);
 			}
 
+			void CollectAllVisitors(AstSymbolManager& manager, List<AstClassSymbol*>& visitors)
+			{
+				for (auto typeSymbol : manager.Symbols().Values())
+				{
+					if (auto classSymbol = dynamic_cast<AstClassSymbol*>(typeSymbol))
+					{
+						if (classSymbol->derivedClasses.Count() > 0)
+						{
+							visitors.Add(classSymbol);
+						}
+					}
+				}
+			}
+
 /***********************************************************************
 Forward Declarations
 ***********************************************************************/

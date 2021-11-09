@@ -17,6 +17,13 @@ namespace vl
 		{
 			namespace copy_visitor
 			{
+				/// <summary>A copy visitor, overriding all abstract methods with AST copying code.</summary>
+				class ParserGenRootVisitor
+					: public virtual vl::glr::CopyVisitorBase
+					: public virtual vl::glr::parsergen::GlrType::IVisitor
+				{
+				};
+
 			}
 		}
 	}

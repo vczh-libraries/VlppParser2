@@ -10,6 +10,7 @@ namespace vl
 			using namespace stream;
 
 			extern void PrintCppType(AstDefFile* fileContext, AstSymbol* propSymbol, stream::StreamWriter& writer);
+			extern void CollectAllVisitors(AstSymbolManager& manager, List<AstClassSymbol*>& visitors);
 
 			void CollectCopyDependencies(
 				AstClassSymbol* classSymbol,
@@ -285,6 +286,22 @@ WriteRootCopyVisitorHeaderFile
 			{
 				WriteRootVisitorHeaderFile(manager, L"Copy", writer, [&](const WString& prefix)
 				{
+					writer.WriteLine(prefix + L"/// <summary>A copy visitor, overriding all abstract methods with AST copying code.</summary>");
+					writer.WriteLine(prefix + L"class " + manager.name + L"RootVisitor");
+					writer.WriteLine(prefix + L"\t: public virtual vl::glr::CopyVisitorBase");
+
+					List<AstClassSymbol*> visitors;
+					CollectAllVisitors(manager, visitors);
+					for (auto visitor : visitors)
+					{
+						writer.WriteString(prefix + L"\t: public virtual ");
+						PrintCppType(nullptr, visitor, writer);
+						writer.WriteLine(L"::IVisitor");
+					}
+					writer.WriteLine(prefix + L"{");
+
+					writer.WriteLine(prefix + L"};");
+					writer.WriteLine(L"");
 				});
 			}
 

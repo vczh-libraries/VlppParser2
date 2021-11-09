@@ -13,6 +13,14 @@ namespace calculator
 {
 	namespace copy_visitor
 	{
+		/// <summary>A copy visitor, overriding all abstract methods with AST copying code.</summary>
+		class CalculatorRootVisitor
+			: public virtual vl::glr::CopyVisitorBase
+			: public virtual calculator::Expandable::IVisitor
+			: public virtual calculator::Expr::IVisitor
+		{
+		};
+
 	}
 }
 #endif
