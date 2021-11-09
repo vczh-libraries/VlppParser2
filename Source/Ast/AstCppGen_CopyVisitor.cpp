@@ -467,12 +467,19 @@ WriteRootCopyVisitorCppFile
 							PrintCppType(nullptr, fieldSymbol, writer);
 							writer.WriteLine(L"> from)");
 							writer.WriteLine(prefix + L"{");
-							writer.WriteLine(prefix + L"\tif (!from) return nullptr;");
-							writer.WriteString(prefix + L"\tauto to = vl::MakePtr<");
+							if (visitors.Contains(fieldSymbol))
+							{
+								writer.WriteString(prefix + L"\tfrom->Accept(static_cast<");
+								PrintCppType(nullptr, fieldSymbol, writer);
+								writer.WriteLine(L"::IVisitor*>(this));");
+							}
+							else
+							{
+								writer.WriteLine(prefix + L"\tVisit(from.Obj());");
+							}
+							writer.WriteString(prefix + L"\treturn this->result.Cast<");
 							PrintCppType(nullptr, fieldSymbol, writer);
 							writer.WriteLine(L">();");
-							writer.WriteLine(prefix + L"\tCopyFields(from.Obj(), to.Obj());");
-							writer.WriteLine(prefix + L"\treturn to;");
 							writer.WriteLine(prefix + L"}");
 						}
 					}

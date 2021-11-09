@@ -44,34 +44,26 @@ namespace vl
 
 				vl::Ptr<vl::glr::parsergen::GlrClassProp> ParserGenRootCopyVisitor::CreateField(vl::Ptr<vl::glr::parsergen::GlrClassProp> from)
 				{
-					if (!from) return nullptr;
-					auto to = vl::MakePtr<vl::glr::parsergen::GlrClassProp>();
-					CopyFields(from.Obj(), to.Obj());
-					return to;
+					Visit(from.Obj());
+					return this->result.Cast<vl::glr::parsergen::GlrClassProp>();
 				}
 
 				vl::Ptr<vl::glr::parsergen::GlrEnumItem> ParserGenRootCopyVisitor::CreateField(vl::Ptr<vl::glr::parsergen::GlrEnumItem> from)
 				{
-					if (!from) return nullptr;
-					auto to = vl::MakePtr<vl::glr::parsergen::GlrEnumItem>();
-					CopyFields(from.Obj(), to.Obj());
-					return to;
+					Visit(from.Obj());
+					return this->result.Cast<vl::glr::parsergen::GlrEnumItem>();
 				}
 
 				vl::Ptr<vl::glr::parsergen::GlrFile> ParserGenRootCopyVisitor::CreateField(vl::Ptr<vl::glr::parsergen::GlrFile> from)
 				{
-					if (!from) return nullptr;
-					auto to = vl::MakePtr<vl::glr::parsergen::GlrFile>();
-					CopyFields(from.Obj(), to.Obj());
-					return to;
+					Visit(from.Obj());
+					return this->result.Cast<vl::glr::parsergen::GlrFile>();
 				}
 
 				vl::Ptr<vl::glr::parsergen::GlrType> ParserGenRootCopyVisitor::CreateField(vl::Ptr<vl::glr::parsergen::GlrType> from)
 				{
-					if (!from) return nullptr;
-					auto to = vl::MakePtr<vl::glr::parsergen::GlrType>();
-					CopyFields(from.Obj(), to.Obj());
-					return to;
+					from->Accept(static_cast<vl::glr::parsergen::GlrType::IVisitor*>(this));
+					return this->result.Cast<vl::glr::parsergen::GlrType>();
 				}
 
 				// Visitor Members -----------------------------------

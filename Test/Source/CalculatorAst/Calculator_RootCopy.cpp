@@ -43,42 +43,32 @@ namespace calculator
 
 		vl::Ptr<calculator::Arg> CalculatorRootCopyVisitor::CreateField(vl::Ptr<calculator::Arg> from)
 		{
-			if (!from) return nullptr;
-			auto to = vl::MakePtr<calculator::Arg>();
-			CopyFields(from.Obj(), to.Obj());
-			return to;
+			Visit(from.Obj());
+			return this->result.Cast<calculator::Arg>();
 		}
 
 		vl::Ptr<calculator::Import> CalculatorRootCopyVisitor::CreateField(vl::Ptr<calculator::Import> from)
 		{
-			if (!from) return nullptr;
-			auto to = vl::MakePtr<calculator::Import>();
-			CopyFields(from.Obj(), to.Obj());
-			return to;
+			Visit(from.Obj());
+			return this->result.Cast<calculator::Import>();
 		}
 
 		vl::Ptr<calculator::Module> CalculatorRootCopyVisitor::CreateField(vl::Ptr<calculator::Module> from)
 		{
-			if (!from) return nullptr;
-			auto to = vl::MakePtr<calculator::Module>();
-			CopyFields(from.Obj(), to.Obj());
-			return to;
+			Visit(from.Obj());
+			return this->result.Cast<calculator::Module>();
 		}
 
 		vl::Ptr<calculator::Expandable> CalculatorRootCopyVisitor::CreateField(vl::Ptr<calculator::Expandable> from)
 		{
-			if (!from) return nullptr;
-			auto to = vl::MakePtr<calculator::Expandable>();
-			CopyFields(from.Obj(), to.Obj());
-			return to;
+			from->Accept(static_cast<calculator::Expandable::IVisitor*>(this));
+			return this->result.Cast<calculator::Expandable>();
 		}
 
 		vl::Ptr<calculator::Expr> CalculatorRootCopyVisitor::CreateField(vl::Ptr<calculator::Expr> from)
 		{
-			if (!from) return nullptr;
-			auto to = vl::MakePtr<calculator::Expr>();
-			CopyFields(from.Obj(), to.Obj());
-			return to;
+			from->Accept(static_cast<calculator::Expr::IVisitor*>(this));
+			return this->result.Cast<calculator::Expr>();
 		}
 
 		// Visitor Members -----------------------------------
