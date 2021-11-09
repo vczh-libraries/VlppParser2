@@ -18,6 +18,22 @@ namespace calculator
 		class ExprVisitor : public virtual vl::glr::CopyVisitorBase, public Expr::IVisitor
 		{
 		protected:
+			// CopyFields ----------------------------------------
+			void CopyFields(Expr* from, Expr* to);
+			void CopyFields(NumExpr* from, NumExpr* to);
+			void CopyFields(Ref* from, Ref* to);
+			void CopyFields(True* from, True* to);
+			void CopyFields(False* from, False* to);
+			void CopyFields(Func* from, Func* to);
+			void CopyFields(Arg* from, Arg* to);
+			void CopyFields(Call* from, Call* to);
+
+			// CreateField ---------------------------------------
+			vl::Ptr<Arg> CreateField(vl::Ptr<Arg> from);
+
+			// CreateField (virtual) -----------------------------
+			virtual vl::Ptr<Expr> CreateField(vl::Ptr<Expr> from) = 0;
+
 			// Dispatch (virtual) --------------------------------
 			virtual void Dispatch(Expandable* node) = 0;
 
@@ -36,6 +52,18 @@ namespace calculator
 		class ExpandableVisitor : public virtual vl::glr::CopyVisitorBase, public Expandable::IVisitor
 		{
 		protected:
+			// CopyFields ----------------------------------------
+			void CopyFields(Expr* from, Expr* to);
+			void CopyFields(Expandable* from, Expandable* to);
+			void CopyFields(LetExpr* from, LetExpr* to);
+			void CopyFields(Unary* from, Unary* to);
+			void CopyFields(Binary* from, Binary* to);
+
+			// CreateField ---------------------------------------
+
+			// CreateField (virtual) -----------------------------
+			virtual vl::Ptr<Expr> CreateField(vl::Ptr<Expr> from) = 0;
+
 			// Dispatch (virtual) --------------------------------
 
 		public:

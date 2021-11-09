@@ -11,6 +11,61 @@ namespace vl
 
 			extern void PrintCppType(AstDefFile* fileContext, AstSymbol* propSymbol, stream::StreamWriter& writer);
 
+			void CollectCopyDependencies(
+				AstClassSymbol* classSymbol,
+				bool visitBaseClass,
+				bool visitDerivedClasses,
+				List<AstClassSymbol*>& copyFields,
+				List<AstClassSymbol*>& createFields,
+				List<AstClassSymbol*>& virtualCreateFields
+				)
+			{
+				if (!classSymbol) return;
+
+				if (visitBaseClass)
+				{
+					CollectCopyDependencies(classSymbol->baseClass, true, false, copyFields, createFields, virtualCreateFields);
+				}
+
+				if (!copyFields.Contains(classSymbol))
+				{
+					copyFields.Add(classSymbol);
+				}
+
+				for (auto prop : classSymbol->Props().Values())
+				{
+					if (auto classProp = dynamic_cast<AstClassSymbol*>(prop->propSymbol))
+					{
+						if (classProp->derivedClasses.Count() == 0)
+						{
+							if (!createFields.Contains(classProp))
+							{
+								createFields.Add(classProp);
+								CollectCopyDependencies(classProp, true, false, copyFields, createFields, virtualCreateFields);
+							}
+						}
+						else
+						{
+							if (!virtualCreateFields.Contains(classProp))
+							{
+								virtualCreateFields.Add(classProp);
+							}
+						}
+					}
+				}
+
+				if (visitDerivedClasses)
+				{
+					for (auto childSymbol : classSymbol->derivedClasses)
+					{
+						if (childSymbol->derivedClasses.Count() == 0)
+						{
+							CollectCopyDependencies(childSymbol, false, false, copyFields, createFields, virtualCreateFields);
+						}
+					}
+				}
+			}
+
 /***********************************************************************
 WriteCopyVisitorHeaderFile
 ***********************************************************************/
@@ -31,7 +86,46 @@ WriteCopyVisitorHeaderFile
 								writer.WriteLine(L"::IVisitor");
 								writer.WriteLine(prefix + L"{");
 
+								List<AstClassSymbol*> copyFields;
+								List<AstClassSymbol*> createFields;
+								List<AstClassSymbol*> virtualCreateFields;
+								CollectCopyDependencies(classSymbol, true, true, copyFields, createFields, virtualCreateFields);
+
 								writer.WriteLine(prefix + L"protected:");
+
+								writer.WriteLine(prefix + L"\t// CopyFields ----------------------------------------");
+								for (auto fieldSymbol : copyFields)
+								{
+									writer.WriteString(prefix + L"\tvoid CopyFields(");
+									PrintCppType(file, fieldSymbol, writer);
+									writer.WriteString(L"* from, ");
+									PrintCppType(file, fieldSymbol, writer);
+									writer.WriteLine(L"* to);");
+								}
+								writer.WriteLine(L"");
+
+								writer.WriteLine(prefix + L"\t// CreateField ---------------------------------------");
+								for (auto fieldSymbol : createFields)
+								{
+									writer.WriteString(prefix + L"\tvl::Ptr<");
+									PrintCppType(file, fieldSymbol, writer);
+									writer.WriteString(L"> CreateField(vl::Ptr<");
+									PrintCppType(file, fieldSymbol, writer);
+									writer.WriteLine(L"> from);");
+								}
+								writer.WriteLine(L"");
+
+								writer.WriteLine(prefix + L"\t// CreateField (virtual) -----------------------------");
+								for (auto fieldSymbol : virtualCreateFields)
+								{
+									writer.WriteString(prefix + L"\tvirtual vl::Ptr<");
+									PrintCppType(file, fieldSymbol, writer);
+									writer.WriteString(L"> CreateField(vl::Ptr<");
+									PrintCppType(file, fieldSymbol, writer);
+									writer.WriteLine(L"> from) = 0;");
+								}
+								writer.WriteLine(L"");
+
 								writer.WriteLine(prefix + L"\t// Dispatch (virtual) --------------------------------");
 								for (auto childSymbol : classSymbol->derivedClasses)
 								{

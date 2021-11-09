@@ -22,6 +22,19 @@ namespace vl
 				class TypeVisitor : public virtual vl::glr::CopyVisitorBase, public GlrType::IVisitor
 				{
 				protected:
+					// CopyFields ----------------------------------------
+					void CopyFields(GlrType* from, GlrType* to);
+					void CopyFields(GlrEnum* from, GlrEnum* to);
+					void CopyFields(GlrEnumItem* from, GlrEnumItem* to);
+					void CopyFields(GlrClass* from, GlrClass* to);
+					void CopyFields(GlrClassProp* from, GlrClassProp* to);
+
+					// CreateField ---------------------------------------
+					vl::Ptr<GlrEnumItem> CreateField(vl::Ptr<GlrEnumItem> from);
+					vl::Ptr<GlrClassProp> CreateField(vl::Ptr<GlrClassProp> from);
+
+					// CreateField (virtual) -----------------------------
+
 					// Dispatch (virtual) --------------------------------
 
 				public:
