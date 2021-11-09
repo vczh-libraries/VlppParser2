@@ -7,7 +7,7 @@ Licensed under https://github.com/vczh-libraries/License
 #ifndef VCZH_PARSER2_UNITTEST_CALCULATOR_AST_COPYVISITOR
 #define VCZH_PARSER2_UNITTEST_CALCULATOR_AST_COPYVISITOR
 
-#include "CalculatorAst_Copy"
+#include "CalculatorAst_Copy.h"
 
 namespace calculator
 {
@@ -16,8 +16,8 @@ namespace calculator
 		/// <summary>A copy visitor, overriding all abstract methods with AST copying code.</summary>
 		class CalculatorRootVisitor
 			: public virtual vl::glr::CopyVisitorBase
-			: public virtual calculator::Expandable::IVisitor
-			: public virtual calculator::Expr::IVisitor
+			, public virtual calculator::copy_visitor::ExpandableVisitor
+			, public virtual calculator::copy_visitor::ExprVisitor
 		{
 		protected:
 			// CopyFields ----------------------------------------

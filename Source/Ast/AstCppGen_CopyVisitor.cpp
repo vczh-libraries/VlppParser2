@@ -9,6 +9,7 @@ namespace vl
 			using namespace collections;
 			using namespace stream;
 
+			extern void PrintNss(List<WString>& nss, stream::StreamWriter& writer);
 			extern void PrintCppType(AstDefFile* fileContext, AstSymbol* propSymbol, stream::StreamWriter& writer);
 			extern void CollectAllVisitors(AstSymbolManager& manager, List<AstClassSymbol*>& visitors);
 			extern void CollectConcreteClasses(AstSymbolManager& manager, List<AstClassSymbol*>& classes);
@@ -296,9 +297,11 @@ WriteRootCopyVisitorHeaderFile
 
 					for (auto visitor : visitors)
 					{
-						writer.WriteString(prefix + L"\t: public virtual ");
-						PrintCppType(nullptr, visitor, writer);
-						writer.WriteLine(L"::IVisitor");
+						writer.WriteString(prefix + L"\t, public virtual ");
+						PrintNss(visitor->Owner()->cppNss, writer);
+						writer.WriteString(L"copy_visitor::");
+						writer.WriteString(visitor->Name());
+						writer.WriteLine(L"Visitor");
 					}
 					writer.WriteLine(prefix + L"{");
 					writer.WriteLine(prefix + L"protected:");

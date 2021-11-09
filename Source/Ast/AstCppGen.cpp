@@ -250,7 +250,7 @@ WriteRootVisitorHeaderFile
 				writer.WriteLine(L"");
 				for(auto file : manager.Files().Values())
 				{
-					writer.WriteLine(L"#include \"" + (manager.name + file->Name() + L"_" + visitorName) + L"\"");
+					writer.WriteLine(L"#include \"" + (manager.name + file->Name() + L"_" + visitorName) + L".h\"");
 				}
 				writer.WriteLine(L"");
 				WString prefix = WriteNssBegin(manager.cppNss, writer);
@@ -277,7 +277,7 @@ WriteRootVisitorCppFile
 			void WriteRootVisitorCppFile(AstSymbolManager& manager, const WString& visitorName, stream::StreamWriter& writer, Func<void(const WString&)> callback)
 			{
 				WriteFileComment(manager.name, writer);
-				writer.WriteLine(L"#include \"" + (manager.name + L"_Root" + visitorName) + L"\"");
+				writer.WriteLine(L"#include \"" + (manager.name + L"_Root" + visitorName) + L".h\"");
 				writer.WriteLine(L"");
 				WString prefix = WriteNssBegin(manager.cppNss, writer);
 				writer.WriteLine(prefix + L"namespace " + wlower(visitorName) + L"_visitor");

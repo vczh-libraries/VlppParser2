@@ -4,7 +4,7 @@ From parser definition:ParserGen
 Licensed under https://github.com/vczh-libraries/License
 ***********************************************************************/
 
-#include "ParserGen_RootCopy"
+#include "ParserGen_RootCopy.h"
 
 namespace vl
 {

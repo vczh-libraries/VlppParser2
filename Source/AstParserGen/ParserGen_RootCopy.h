@@ -7,7 +7,7 @@ Licensed under https://github.com/vczh-libraries/License
 #ifndef VCZH_PARSER2_PARSERGEN_AST_COPYVISITOR
 #define VCZH_PARSER2_PARSERGEN_AST_COPYVISITOR
 
-#include "ParserGenTypeAst_Copy"
+#include "ParserGenTypeAst_Copy.h"
 
 namespace vl
 {
@@ -20,7 +20,7 @@ namespace vl
 				/// <summary>A copy visitor, overriding all abstract methods with AST copying code.</summary>
 				class ParserGenRootVisitor
 					: public virtual vl::glr::CopyVisitorBase
-					: public virtual vl::glr::parsergen::GlrType::IVisitor
+					, public virtual vl::glr::parsergen::copy_visitor::TypeVisitor
 				{
 				protected:
 					// CopyFields ----------------------------------------
