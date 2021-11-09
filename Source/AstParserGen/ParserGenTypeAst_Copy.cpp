@@ -61,24 +61,34 @@ TypeVisitor
 
 				vl::Ptr<GlrEnumItem> TypeVisitor::CreateField(vl::Ptr<GlrEnumItem> from)
 				{
-					static_assert(false);
+					if (!from) return nullptr;
+					auto to = vl::MakePtr<GlrEnumItem>();
+					CopyFields(from.Obj(), to.Obj());
+					return to;
 				}
 
 				vl::Ptr<GlrClassProp> TypeVisitor::CreateField(vl::Ptr<GlrClassProp> from)
 				{
-					static_assert(false);
+					if (!from) return nullptr;
+					auto to = vl::MakePtr<GlrClassProp>();
+					CopyFields(from.Obj(), to.Obj());
+					return to;
 				}
 
 				// Visitor Members -----------------------------------
 
 				void TypeVisitor::Visit(GlrEnum* node)
 				{
-					static_assert(false);
+					auto newNode = vl::MakePtr<GlrEnum>();
+					CopyFields(node, newNode.Obj());
+					this->result = newNode;
 				}
 
 				void TypeVisitor::Visit(GlrClass* node)
 				{
-					static_assert(false);
+					auto newNode = vl::MakePtr<GlrClass>();
+					CopyFields(node, newNode.Obj());
+					this->result = newNode;
 				}
 			}
 		}

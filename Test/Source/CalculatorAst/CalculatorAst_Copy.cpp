@@ -70,39 +70,54 @@ ExprVisitor
 
 		vl::Ptr<Arg> ExprVisitor::CreateField(vl::Ptr<Arg> from)
 		{
-			static_assert(false);
+			if (!from) return nullptr;
+			auto to = vl::MakePtr<Arg>();
+			CopyFields(from.Obj(), to.Obj());
+			return to;
 		}
 
 		// Visitor Members -----------------------------------
 
 		void ExprVisitor::Visit(NumExpr* node)
 		{
-			static_assert(false);
+			auto newNode = vl::MakePtr<NumExpr>();
+			CopyFields(node, newNode.Obj());
+			this->result = newNode;
 		}
 
 		void ExprVisitor::Visit(Ref* node)
 		{
-			static_assert(false);
+			auto newNode = vl::MakePtr<Ref>();
+			CopyFields(node, newNode.Obj());
+			this->result = newNode;
 		}
 
 		void ExprVisitor::Visit(True* node)
 		{
-			static_assert(false);
+			auto newNode = vl::MakePtr<True>();
+			CopyFields(node, newNode.Obj());
+			this->result = newNode;
 		}
 
 		void ExprVisitor::Visit(False* node)
 		{
-			static_assert(false);
+			auto newNode = vl::MakePtr<False>();
+			CopyFields(node, newNode.Obj());
+			this->result = newNode;
 		}
 
 		void ExprVisitor::Visit(Func* node)
 		{
-			static_assert(false);
+			auto newNode = vl::MakePtr<Func>();
+			CopyFields(node, newNode.Obj());
+			this->result = newNode;
 		}
 
 		void ExprVisitor::Visit(Call* node)
 		{
-			static_assert(false);
+			auto newNode = vl::MakePtr<Call>();
+			CopyFields(node, newNode.Obj());
+			this->result = newNode;
 		}
 
 		void ExprVisitor::Visit(Expandable* node)
@@ -154,17 +169,23 @@ ExpandableVisitor
 
 		void ExpandableVisitor::Visit(LetExpr* node)
 		{
-			static_assert(false);
+			auto newNode = vl::MakePtr<LetExpr>();
+			CopyFields(node, newNode.Obj());
+			this->result = newNode;
 		}
 
 		void ExpandableVisitor::Visit(Unary* node)
 		{
-			static_assert(false);
+			auto newNode = vl::MakePtr<Unary>();
+			CopyFields(node, newNode.Obj());
+			this->result = newNode;
 		}
 
 		void ExpandableVisitor::Visit(Binary* node)
 		{
-			static_assert(false);
+			auto newNode = vl::MakePtr<Binary>();
+			CopyFields(node, newNode.Obj());
+			this->result = newNode;
 		}
 	}
 }

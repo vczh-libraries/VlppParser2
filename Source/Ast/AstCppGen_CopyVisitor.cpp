@@ -239,7 +239,12 @@ WriteCopyVisitorCppFile
 									PrintCppType(file, fieldSymbol, writer);
 									writer.WriteLine(L"> from)");
 									writer.WriteLine(prefix + L"{");
-									writer.WriteLine(prefix + L"\tstatic_assert(false);");
+									writer.WriteLine(prefix + L"\tif (!from) return nullptr;");
+									writer.WriteString(prefix + L"\tauto to = vl::MakePtr<");
+									PrintCppType(file, fieldSymbol, writer);
+									writer.WriteLine(L">();");
+									writer.WriteLine(prefix + L"\tCopyFields(from.Obj(), to.Obj());");
+									writer.WriteLine(prefix + L"\treturn to;");
 									writer.WriteLine(prefix + L"}");
 								}
 
@@ -258,7 +263,11 @@ WriteCopyVisitorCppFile
 									}
 									else
 									{
-										writer.WriteLine(prefix + L"\tstatic_assert(false);");
+										writer.WriteString(prefix + L"\tauto newNode = vl::MakePtr<");
+										PrintCppType(file, childSymbol, writer);
+										writer.WriteLine(L">();");
+										writer.WriteLine(prefix + L"\tCopyFields(node, newNode.Obj());");
+										writer.WriteLine(prefix + L"\tthis->result = newNode;");
 									}
 									writer.WriteLine(prefix + L"}");
 								}
