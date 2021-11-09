@@ -36,7 +36,7 @@ namespace calculator
 
 		void CalculatorRootCopyVisitor::Dispatch(calculator::Expandable* node)
 		{
-			static_assert(false);
+			node->Accept(static_cast<calculator::Expandable::IVisitor*>(this));
 		}
 
 		// CreateField ---------------------------------------

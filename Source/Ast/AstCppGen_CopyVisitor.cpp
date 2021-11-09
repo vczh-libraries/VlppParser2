@@ -445,7 +445,9 @@ WriteRootCopyVisitorCppFile
 							PrintCppType(nullptr, childSymbol, writer);
 							writer.WriteLine(L"* node)");
 							writer.WriteLine(prefix + L"{");
-							writer.WriteLine(prefix + L"\tstatic_assert(false);");
+							writer.WriteString(prefix + L"\tnode->Accept(static_cast<");
+							PrintCppType(nullptr, childSymbol, writer);
+							writer.WriteLine(L"::IVisitor*>(this));");
 							writer.WriteLine(prefix + L"}");
 						}
 					}
