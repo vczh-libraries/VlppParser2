@@ -24,27 +24,37 @@ TypeVisitor
 
 				void TypeVisitor::CopyFields(GlrType* from, GlrType* to)
 				{
-					static_assert(false);
+					to->name = from->name;
 				}
 
 				void TypeVisitor::CopyFields(GlrEnum* from, GlrEnum* to)
 				{
-					static_assert(false);
+					CopyFields(static_cast<GlrType*>(from), static_cast<GlrType*>(to));
+					for (auto listItem : from->items)
+					{
+						to->items.Add(CreateField(listItem));
+					}
 				}
 
 				void TypeVisitor::CopyFields(GlrEnumItem* from, GlrEnumItem* to)
 				{
-					static_assert(false);
+					to->name = from->name;
 				}
 
 				void TypeVisitor::CopyFields(GlrClass* from, GlrClass* to)
 				{
-					static_assert(false);
+					CopyFields(static_cast<GlrType*>(from), static_cast<GlrType*>(to));
+					for (auto listItem : from->props)
+					{
+						to->props.Add(CreateField(listItem));
+					}
 				}
 
 				void TypeVisitor::CopyFields(GlrClassProp* from, GlrClassProp* to)
 				{
-					static_assert(false);
+					to->name = from->name;
+					to->propType = from->propType;
+					to->propTypeName = from->propTypeName;
 				}
 
 				// CreateField ---------------------------------------

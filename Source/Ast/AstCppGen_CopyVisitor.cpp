@@ -190,7 +190,41 @@ WriteCopyVisitorCppFile
 									PrintCppType(file, fieldSymbol, writer);
 									writer.WriteLine(L"* to)");
 									writer.WriteLine(prefix + L"{");
-									writer.WriteLine(prefix + L"\tstatic_assert(false);");
+
+									if (fieldSymbol->baseClass)
+									{
+										writer.WriteString(prefix + L"\tCopyFields(static_cast<");
+										PrintCppType(file, fieldSymbol->baseClass, writer);
+										writer.WriteString(L"*>(from), static_cast<");
+										PrintCppType(file, fieldSymbol->baseClass, writer);
+										writer.WriteLine(L"*>(to));");
+									}
+
+									for (auto propSymbol : fieldSymbol->Props().Values())
+									{
+										switch (propSymbol->propType)
+										{
+										case AstPropType::Token:
+											writer.WriteLine(prefix + L"\tto->" + propSymbol->Name() + L" = from->" + propSymbol->Name() + L";");
+											break;
+										case AstPropType::Array:
+											writer.WriteLine(prefix + L"\tfor (auto listItem : from->" + propSymbol->Name() + L")");
+											writer.WriteLine(prefix + L"\t{");
+											writer.WriteLine(prefix + L"\t\tto->" + propSymbol->Name() + L".Add(CreateField(listItem));");
+											writer.WriteLine(prefix + L"\t}");
+											break;
+										case AstPropType::Type:
+											if (auto classProp = dynamic_cast<AstClassSymbol*>(propSymbol))
+											{
+												writer.WriteLine(prefix + L"\tto->" + propSymbol->Name() + L" = CreateField(from->" + propSymbol->Name() + L");");
+											}
+											else
+											{
+												writer.WriteLine(prefix + L"\tto->" + propSymbol->Name() + L" = from->" + propSymbol->Name() + L";");
+											}
+											break;
+										}
+									}
 									writer.WriteLine(prefix + L"}");
 								}
 

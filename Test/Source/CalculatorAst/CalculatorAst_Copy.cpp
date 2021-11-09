@@ -20,42 +20,50 @@ ExprVisitor
 
 		void ExprVisitor::CopyFields(Expr* from, Expr* to)
 		{
-			static_assert(false);
 		}
 
 		void ExprVisitor::CopyFields(NumExpr* from, NumExpr* to)
 		{
-			static_assert(false);
+			CopyFields(static_cast<Expr*>(from), static_cast<Expr*>(to));
+			to->value = from->value;
 		}
 
 		void ExprVisitor::CopyFields(Ref* from, Ref* to)
 		{
-			static_assert(false);
+			CopyFields(static_cast<Expr*>(from), static_cast<Expr*>(to));
+			to->name = from->name;
 		}
 
 		void ExprVisitor::CopyFields(True* from, True* to)
 		{
-			static_assert(false);
+			CopyFields(static_cast<Expr*>(from), static_cast<Expr*>(to));
 		}
 
 		void ExprVisitor::CopyFields(False* from, False* to)
 		{
-			static_assert(false);
+			CopyFields(static_cast<Expr*>(from), static_cast<Expr*>(to));
 		}
 
 		void ExprVisitor::CopyFields(Func* from, Func* to)
 		{
-			static_assert(false);
+			CopyFields(static_cast<Expr*>(from), static_cast<Expr*>(to));
+			for (auto listItem : from->args)
+			{
+				to->args.Add(CreateField(listItem));
+			}
+			to->value = from->value;
 		}
 
 		void ExprVisitor::CopyFields(Arg* from, Arg* to)
 		{
-			static_assert(false);
+			to->name = from->name;
 		}
 
 		void ExprVisitor::CopyFields(Call* from, Call* to)
 		{
-			static_assert(false);
+			CopyFields(static_cast<Expr*>(from), static_cast<Expr*>(to));
+			to->arg = from->arg;
+			to->func = from->func;
 		}
 
 		// CreateField ---------------------------------------
@@ -110,27 +118,34 @@ ExpandableVisitor
 
 		void ExpandableVisitor::CopyFields(Expr* from, Expr* to)
 		{
-			static_assert(false);
 		}
 
 		void ExpandableVisitor::CopyFields(Expandable* from, Expandable* to)
 		{
-			static_assert(false);
+			CopyFields(static_cast<Expr*>(from), static_cast<Expr*>(to));
+			to->expanded = from->expanded;
 		}
 
 		void ExpandableVisitor::CopyFields(LetExpr* from, LetExpr* to)
 		{
-			static_assert(false);
+			CopyFields(static_cast<Expandable*>(from), static_cast<Expandable*>(to));
+			to->name = from->name;
+			to->value = from->value;
 		}
 
 		void ExpandableVisitor::CopyFields(Unary* from, Unary* to)
 		{
-			static_assert(false);
+			CopyFields(static_cast<Expandable*>(from), static_cast<Expandable*>(to));
+			to->op = from->op;
+			to->operand = from->operand;
 		}
 
 		void ExpandableVisitor::CopyFields(Binary* from, Binary* to)
 		{
-			static_assert(false);
+			CopyFields(static_cast<Expandable*>(from), static_cast<Expandable*>(to));
+			to->left = from->left;
+			to->op = from->op;
+			to->right = from->right;
 		}
 
 		// CreateField ---------------------------------------
