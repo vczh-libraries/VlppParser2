@@ -22,6 +22,7 @@ namespace vl
 				class TypeVisitor : public virtual vl::glr::CopyVisitorBase, public GlrType::IVisitor
 				{
 				protected:
+					// Dispatch (virtual) --------------------------------
 
 				public:
 					// Visitor Members -----------------------------------

@@ -32,6 +32,7 @@ WriteCopyVisitorHeaderFile
 								writer.WriteLine(prefix + L"{");
 
 								writer.WriteLine(prefix + L"protected:");
+								writer.WriteLine(prefix + L"\t// Dispatch (virtual) --------------------------------");
 								for (auto childSymbol : classSymbol->derivedClasses)
 								{
 									if (childSymbol->derivedClasses.Count() > 0)

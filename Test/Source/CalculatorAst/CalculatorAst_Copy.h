@@ -18,6 +18,7 @@ namespace calculator
 		class ExprVisitor : public virtual vl::glr::CopyVisitorBase, public Expr::IVisitor
 		{
 		protected:
+			// Dispatch (virtual) --------------------------------
 			virtual void Dispatch(Expandable* node) = 0;
 
 		public:
@@ -35,6 +36,7 @@ namespace calculator
 		class ExpandableVisitor : public virtual vl::glr::CopyVisitorBase, public Expandable::IVisitor
 		{
 		protected:
+			// Dispatch (virtual) --------------------------------
 
 		public:
 			// Visitor Members -----------------------------------
