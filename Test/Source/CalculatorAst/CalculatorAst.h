@@ -18,7 +18,9 @@ namespace calculator
 	class Expr;
 	class False;
 	class Func;
+	class Import;
 	class LetExpr;
+	class Module;
 	class NumExpr;
 	class Ref;
 	class True;
@@ -162,6 +164,19 @@ namespace calculator
 
 		void Accept(Expandable::IVisitor* visitor) override;
 	};
+
+	class Import : public vl::glr::ParsingAstBase, vl::reflection::Description<Import>
+	{
+	public:
+		vl::glr::ParsingToken name;
+	};
+
+	class Module : public vl::glr::ParsingAstBase, vl::reflection::Description<Module>
+	{
+	public:
+		vl::collections::List<vl::Ptr<Import>> imports;
+		vl::Ptr<Expr> exported;
+	};
 }
 namespace vl
 {
@@ -186,6 +201,8 @@ namespace vl
 			DECL_TYPE_INFO(calculator::Unary)
 			DECL_TYPE_INFO(calculator::BinaryOp)
 			DECL_TYPE_INFO(calculator::Binary)
+			DECL_TYPE_INFO(calculator::Import)
+			DECL_TYPE_INFO(calculator::Module)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 

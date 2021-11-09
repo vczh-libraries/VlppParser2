@@ -86,6 +86,13 @@ TEST_FILE
 			_binary->CreateProp(L"op")->SetPropType(AstPropType::Type, L"BinaryOp");
 			_binary->CreateProp(L"left")->SetPropType(AstPropType::Type, L"Expr");
 			_binary->CreateProp(L"right")->SetPropType(AstPropType::Type, L"Expr");
+
+			auto _import = file->CreateClass(L"Import");
+			_import->CreateProp(L"name")->SetPropType(AstPropType::Token);
+
+			auto _module = file->CreateClass(L"Module");
+			_module->CreateProp(L"imports")->SetPropType(AstPropType::Array, L"Import");
+			_module->CreateProp(L"exported")->SetPropType(AstPropType::Type, L"Expr");
 		}
 		TEST_ASSERT(manager.Errors().Count() == 0);
 

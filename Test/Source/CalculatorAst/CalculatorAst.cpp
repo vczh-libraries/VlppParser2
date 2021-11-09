@@ -92,6 +92,8 @@ namespace vl
 			IMPL_TYPE_INFO_RENAME(calculator::Unary, calculator::Unary)
 			IMPL_TYPE_INFO_RENAME(calculator::BinaryOp, calculator::BinaryOp)
 			IMPL_TYPE_INFO_RENAME(calculator::Binary, calculator::Binary)
+			IMPL_TYPE_INFO_RENAME(calculator::Import, calculator::Import)
+			IMPL_TYPE_INFO_RENAME(calculator::Module, calculator::Module)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 
@@ -206,6 +208,19 @@ namespace vl
 				CLASS_MEMBER_FIELD(right)
 			END_CLASS_MEMBER(calculator::Binary)
 
+			BEGIN_CLASS_MEMBER(calculator::Import)
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<calculator::Import>(), NO_PARAMETER)
+
+				PARSING_TOKEN_FIELD(name)
+			END_CLASS_MEMBER(calculator::Import)
+
+			BEGIN_CLASS_MEMBER(calculator::Module)
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<calculator::Module>(), NO_PARAMETER)
+
+				CLASS_MEMBER_FIELD(imports)
+				CLASS_MEMBER_FIELD(exported)
+			END_CLASS_MEMBER(calculator::Module)
+
 			BEGIN_INTERFACE_MEMBER(calculator::Expr::IVisitor)
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(calculator::Expr::IVisitor::*)(calculator::NumExpr* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(calculator::Expr::IVisitor::*)(calculator::Ref* node))
@@ -247,6 +262,8 @@ namespace vl
 					ADD_TYPE_INFO(calculator::Unary)
 					ADD_TYPE_INFO(calculator::BinaryOp)
 					ADD_TYPE_INFO(calculator::Binary)
+					ADD_TYPE_INFO(calculator::Import)
+					ADD_TYPE_INFO(calculator::Module)
 				}
 
 				void Unload(ITypeManager* manager)
