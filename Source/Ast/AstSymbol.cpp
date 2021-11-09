@@ -67,7 +67,7 @@ AstClassPropSymbol
 				propType = _type;
 				if (_type == AstPropType::Token) return true;
 
-				auto& symbols = parent->Owner()->Owner()->Symbols();
+				auto& symbols = parent->Owner()->Symbols();
 				vint index = symbols.Keys().IndexOf(typeName);
 				if (index == -1)
 				{
@@ -102,7 +102,7 @@ AstClassSymbol
 
 			bool AstClassSymbol::SetBaseClass(const WString& typeName)
 			{
-				auto& symbols = ownerFile->Owner()->Symbols();
+				auto& symbols = ownerFile->Symbols();
 				vint index = symbols.Keys().IndexOf(typeName);
 				if (index == -1)
 				{
@@ -110,14 +110,36 @@ AstClassSymbol
 					return false;
 				}
 
-				baseClass = dynamic_cast<AstClassSymbol*>(symbols.Values()[index]);
-				if (!baseClass)
+				auto newBaseClass = dynamic_cast<AstClassSymbol*>(symbols.Values()[index]);
+				if (!newBaseClass)
 				{
 					ownerFile->Owner()->AddError(AstErrorType::BaseClassNotClass, ownerFile->Name(), name);
 					return false;
 				}
 
-				baseClass->derivedClasses.Add(this);
+				List<AstClassSymbol*> visited;
+				visited.Add(newBaseClass);
+				for (vint i = 0; i < visited.Count(); i++)
+				{
+					auto currentSymbol = visited[i];
+					if (currentSymbol == this)
+					{
+						ownerFile->Owner()->AddError(
+							AstErrorType::BaseClassCyclicDependency,
+							ownerFile->Name(),
+							name
+						);
+						return false;
+					}
+
+					if (currentSymbol->baseClass)
+					{
+						visited.Add(currentSymbol->baseClass);
+					}
+				}
+
+				baseClass = newBaseClass;
+				newBaseClass->derivedClasses.Add(this);
 				return true;
 			}
 

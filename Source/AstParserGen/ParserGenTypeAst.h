@@ -46,7 +46,7 @@ namespace vl
 			class GlrEnum : public GlrType, vl::reflection::Description<GlrEnum>
 			{
 			public:
-				vl::collections::List<Ptr<GlrEnumItem>> items;
+				vl::collections::List<vl::Ptr<GlrEnumItem>> items;
 
 				void Accept(GlrType::IVisitor* visitor) override;
 			};
@@ -69,7 +69,7 @@ namespace vl
 			class GlrClass : public GlrType, vl::reflection::Description<GlrClass>
 			{
 			public:
-				vl::collections::List<Ptr<GlrClassProp>> props;
+				vl::collections::List<vl::Ptr<GlrClassProp>> props;
 
 				void Accept(GlrType::IVisitor* visitor) override;
 			};
@@ -78,7 +78,7 @@ namespace vl
 			{
 			public:
 				vl::glr::ParsingToken name;
-				vl::collections::List<Ptr<GlrType>> types;
+				vl::collections::List<vl::Ptr<GlrType>> types;
 			};
 		}
 	}

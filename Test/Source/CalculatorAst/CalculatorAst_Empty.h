@@ -14,6 +14,35 @@ namespace calculator
 {
 	namespace empty_visitor
 	{
+		/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
+		class ExprVisitor : public vl::Object, public Expr::IVisitor
+		{
+		protected:
+			virtual void Dispatch(Expandable* node) = 0;
+
+		public:
+			// Visitor Members -----------------------------------
+			void Visit(NumExpr* node) override;
+			void Visit(Ref* node) override;
+			void Visit(True* node) override;
+			void Visit(False* node) override;
+			void Visit(Func* node) override;
+			void Visit(Call* node) override;
+			void Visit(Expandable* node) override;
+		};
+
+		/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
+		class ExpandableVisitor : public vl::Object, public Expandable::IVisitor
+		{
+		protected:
+
+		public:
+			// Visitor Members -----------------------------------
+			void Visit(LetExpr* node) override;
+			void Visit(Unary* node) override;
+			void Visit(Binary* node) override;
+		};
+
 	}
 }
 #endif

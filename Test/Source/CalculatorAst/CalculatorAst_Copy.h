@@ -14,6 +14,35 @@ namespace calculator
 {
 	namespace copy_visitor
 	{
+		/// <summary>A copy visitor, overriding all abstract methods with AST copying code.</summary>
+		class ExprVisitor : public virtual vl::glr::CopyVisitorBase, public Expr::IVisitor
+		{
+		protected:
+			virtual void Dispatch(Expandable* node) = 0;
+
+		public:
+			// Visitor Members -----------------------------------
+			void Visit(NumExpr* node) override;
+			void Visit(Ref* node) override;
+			void Visit(True* node) override;
+			void Visit(False* node) override;
+			void Visit(Func* node) override;
+			void Visit(Call* node) override;
+			void Visit(Expandable* node) override;
+		};
+
+		/// <summary>A copy visitor, overriding all abstract methods with AST copying code.</summary>
+		class ExpandableVisitor : public virtual vl::glr::CopyVisitorBase, public Expandable::IVisitor
+		{
+		protected:
+
+		public:
+			// Visitor Members -----------------------------------
+			void Visit(LetExpr* node) override;
+			void Visit(Unary* node) override;
+			void Visit(Binary* node) override;
+		};
+
 	}
 }
 #endif

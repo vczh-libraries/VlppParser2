@@ -11,6 +11,157 @@ Licensed under https://github.com/vczh-libraries/License
 
 namespace calculator
 {
+	class Arg;
+	class Binary;
+	class Call;
+	class Expandable;
+	class Expr;
+	class False;
+	class Func;
+	class LetExpr;
+	class NumExpr;
+	class Ref;
+	class True;
+	class Unary;
+
+	class Expr abstract : public vl::glr::ParsingAstBase, vl::reflection::Description<Expr>
+	{
+	public:
+		class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
+		{
+		public:
+			virtual void Visit(NumExpr* node) = 0;
+			virtual void Visit(Ref* node) = 0;
+			virtual void Visit(True* node) = 0;
+			virtual void Visit(False* node) = 0;
+			virtual void Visit(Func* node) = 0;
+			virtual void Visit(Call* node) = 0;
+			virtual void Visit(Expandable* node) = 0;
+		};
+
+		virtual void Accept(Expr::IVisitor* visitor) = 0;
+
+	};
+
+	class NumExpr : public Expr, vl::reflection::Description<NumExpr>
+	{
+	public:
+		vl::glr::ParsingToken value;
+
+		void Accept(Expr::IVisitor* visitor) override;
+	};
+
+	class Ref : public Expr, vl::reflection::Description<Ref>
+	{
+	public:
+		vl::glr::ParsingToken name;
+
+		void Accept(Expr::IVisitor* visitor) override;
+	};
+
+	class True : public Expr, vl::reflection::Description<True>
+	{
+	public:
+
+		void Accept(Expr::IVisitor* visitor) override;
+	};
+
+	class False : public Expr, vl::reflection::Description<False>
+	{
+	public:
+
+		void Accept(Expr::IVisitor* visitor) override;
+	};
+
+	class Arg : public vl::glr::ParsingAstBase, vl::reflection::Description<Arg>
+	{
+	public:
+		vl::glr::ParsingToken name;
+	};
+
+	class Func : public Expr, vl::reflection::Description<Func>
+	{
+	public:
+		vl::collections::List<vl::Ptr<Arg>> args;
+		vl::Ptr<Expr> value;
+
+		void Accept(Expr::IVisitor* visitor) override;
+	};
+
+	class Call : public Expr, vl::reflection::Description<Call>
+	{
+	public:
+		vl::Ptr<Expr> func;
+		vl::Ptr<Expr> arg;
+
+		void Accept(Expr::IVisitor* visitor) override;
+	};
+
+	class Expandable abstract : public Expr, vl::reflection::Description<Expandable>
+	{
+	public:
+		class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
+		{
+		public:
+			virtual void Visit(LetExpr* node) = 0;
+			virtual void Visit(Unary* node) = 0;
+			virtual void Visit(Binary* node) = 0;
+		};
+
+		virtual void Accept(Expandable::IVisitor* visitor) = 0;
+
+		vl::Ptr<Expr> expanded;
+
+		void Accept(Expr::IVisitor* visitor) override;
+	};
+
+	class LetExpr : public Expandable, vl::reflection::Description<LetExpr>
+	{
+	public:
+		vl::glr::ParsingToken name;
+		vl::Ptr<Expr> value;
+
+		void Accept(Expandable::IVisitor* visitor) override;
+	};
+
+	enum class UnaryOp
+	{
+		Positive = 0,
+		Negative = 1,
+	};
+
+	class Unary : public Expandable, vl::reflection::Description<Unary>
+	{
+	public:
+		UnaryOp op;
+		vl::Ptr<Expr> operand;
+
+		void Accept(Expandable::IVisitor* visitor) override;
+	};
+
+	enum class BinaryOp
+	{
+		Add = 0,
+		Minus = 1,
+		Multiply = 2,
+		Divid = 3,
+		GT = 4,
+		GE = 5,
+		LT = 6,
+		LE = 7,
+		EQ = 8,
+		NE = 9,
+	};
+
+	class Binary : public Expandable, vl::reflection::Description<Binary>
+	{
+	public:
+		BinaryOp op;
+		vl::Ptr<Expr> left;
+		vl::Ptr<Expr> right;
+
+		void Accept(Expandable::IVisitor* visitor) override;
+	};
 }
 namespace vl
 {
@@ -19,8 +170,80 @@ namespace vl
 		namespace description
 		{
 #ifndef VCZH_DEBUG_NO_REFLECTION
+			DECL_TYPE_INFO(calculator::Expr)
+			DECL_TYPE_INFO(calculator::Expr::IVisitor)
+			DECL_TYPE_INFO(calculator::NumExpr)
+			DECL_TYPE_INFO(calculator::Ref)
+			DECL_TYPE_INFO(calculator::True)
+			DECL_TYPE_INFO(calculator::False)
+			DECL_TYPE_INFO(calculator::Arg)
+			DECL_TYPE_INFO(calculator::Func)
+			DECL_TYPE_INFO(calculator::Call)
+			DECL_TYPE_INFO(calculator::Expandable)
+			DECL_TYPE_INFO(calculator::Expandable::IVisitor)
+			DECL_TYPE_INFO(calculator::LetExpr)
+			DECL_TYPE_INFO(calculator::UnaryOp)
+			DECL_TYPE_INFO(calculator::Unary)
+			DECL_TYPE_INFO(calculator::BinaryOp)
+			DECL_TYPE_INFO(calculator::Binary)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
+
+			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(calculator::Expr::IVisitor)
+				void Visit(calculator::NumExpr* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+				void Visit(calculator::Ref* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+				void Visit(calculator::True* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+				void Visit(calculator::False* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+				void Visit(calculator::Func* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+				void Visit(calculator::Call* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+				void Visit(calculator::Expandable* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+			END_INTERFACE_PROXY(calculator::Expr::IVisitor)
+
+			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(calculator::Expandable::IVisitor)
+				void Visit(calculator::LetExpr* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+				void Visit(calculator::Unary* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+				void Visit(calculator::Binary* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+			END_INTERFACE_PROXY(calculator::Expandable::IVisitor)
 
 #endif
 #endif

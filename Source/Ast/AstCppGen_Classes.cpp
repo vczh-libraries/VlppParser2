@@ -58,11 +58,11 @@ PrintCppType
 
 				if (propType == AstPropType::Array)
 				{
-					writer.WriteString(L"vl::collections::List<Ptr<");
+					writer.WriteString(L"vl::collections::List<vl::Ptr<");
 				}
 				else if (purpose == PrintTypePurpose::Value && dynamic_cast<AstClassSymbol*>(propSymbol))
 				{
-					writer.WriteString(L"Ptr<");
+					writer.WriteString(L"vl::Ptr<");
 				}
 
 				auto file = propSymbol->Owner();

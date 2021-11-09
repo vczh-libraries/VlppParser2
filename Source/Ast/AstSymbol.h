@@ -177,6 +177,7 @@ AstSymbolManager
 				DuplicatedEnumItem,			// (fileName, enumName, propName
 				BaseClassNotExists,			// (fileName, className)
 				BaseClassNotClass,			// (fileName, className)
+				BaseClassCyclicDependency,	// (fileName, className)
 				FieldTypeNotExists,			// (fileName, className, propName)
 				FieldTypeNotClass,			// (fileName, className, propName)
 			};

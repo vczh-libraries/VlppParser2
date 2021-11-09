@@ -19,7 +19,7 @@ namespace vl
 			namespace empty_visitor
 			{
 				/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
-				class TypeVisitor : public Object, public GlrType::IVisitor
+				class TypeVisitor : public vl::Object, public GlrType::IVisitor
 				{
 				protected:
 

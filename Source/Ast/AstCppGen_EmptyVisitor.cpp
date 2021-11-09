@@ -26,7 +26,7 @@ WriteEmptyVisitorHeaderFile
 							if (classSymbol->derivedClasses.Count() > 0)
 							{
 								writer.WriteLine(prefix + L"/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>");
-								writer.WriteString(prefix + L"class " + name + L"Visitor : public Object, public ");
+								writer.WriteString(prefix + L"class " + name + L"Visitor : public vl::Object, public ");
 								PrintCppType(file, classSymbol, writer);
 								writer.WriteLine(L"::IVisitor");
 								writer.WriteLine(prefix + L"{");
