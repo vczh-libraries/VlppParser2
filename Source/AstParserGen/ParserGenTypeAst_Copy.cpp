@@ -15,6 +15,61 @@ namespace vl
 		{
 			namespace copy_visitor
 			{
+
+/***********************************************************************
+TypeVisitor
+***********************************************************************/
+
+				// CopyFields ----------------------------------------
+
+				void TypeVisitor::CopyFields(GlrType* from, GlrType* to)
+				{
+					static_assert(false);
+				}
+
+				void TypeVisitor::CopyFields(GlrEnum* from, GlrEnum* to)
+				{
+					static_assert(false);
+				}
+
+				void TypeVisitor::CopyFields(GlrEnumItem* from, GlrEnumItem* to)
+				{
+					static_assert(false);
+				}
+
+				void TypeVisitor::CopyFields(GlrClass* from, GlrClass* to)
+				{
+					static_assert(false);
+				}
+
+				void TypeVisitor::CopyFields(GlrClassProp* from, GlrClassProp* to)
+				{
+					static_assert(false);
+				}
+
+				// CreateField ---------------------------------------
+
+				vl::Ptr<GlrEnumItem> TypeVisitor::CreateField(vl::Ptr<GlrEnumItem> from)
+				{
+					static_assert(false);
+				}
+
+				vl::Ptr<GlrClassProp> TypeVisitor::CreateField(vl::Ptr<GlrClassProp> from)
+				{
+					static_assert(false);
+				}
+
+				// Visitor Members -----------------------------------
+
+				void TypeVisitor::Visit(GlrEnum* node)
+				{
+					static_assert(false);
+				}
+
+				void TypeVisitor::Visit(GlrClass* node)
+				{
+					static_assert(false);
+				}
 			}
 		}
 	}

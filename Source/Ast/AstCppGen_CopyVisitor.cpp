@@ -169,6 +169,65 @@ WriteCopyVisitorCppFile
 						{
 							if (classSymbol->derivedClasses.Count() > 0)
 							{
+								writer.WriteLine(L"");
+								writer.WriteLine(L"/***********************************************************************");
+								writer.WriteLine(classSymbol->Name() + L"Visitor");
+								writer.WriteLine(L"***********************************************************************/");
+
+								List<AstClassSymbol*> copyFields;
+								List<AstClassSymbol*> createFields;
+								List<AstClassSymbol*> virtualCreateFields;
+								CollectCopyDependencies(classSymbol, true, true, copyFields, createFields, virtualCreateFields);
+
+								writer.WriteLine(L"");
+								writer.WriteLine(prefix + L"// CopyFields ----------------------------------------");
+								for (auto fieldSymbol : copyFields)
+								{
+									writer.WriteLine(L"");
+									writer.WriteString(prefix + L"void " + classSymbol->Name() + L"Visitor::CopyFields(");
+									PrintCppType(file, fieldSymbol, writer);
+									writer.WriteString(L"* from, ");
+									PrintCppType(file, fieldSymbol, writer);
+									writer.WriteLine(L"* to)");
+									writer.WriteLine(prefix + L"{");
+									writer.WriteLine(prefix + L"\tstatic_assert(false);");
+									writer.WriteLine(prefix + L"}");
+								}
+
+								writer.WriteLine(L"");
+								writer.WriteLine(prefix + L"// CreateField ---------------------------------------");
+								for (auto fieldSymbol : createFields)
+								{
+									writer.WriteLine(L"");
+									writer.WriteString(prefix + L"vl::Ptr<");
+									PrintCppType(file, fieldSymbol, writer);
+									writer.WriteString(L"> " + classSymbol->Name() + L"Visitor::CreateField(vl::Ptr<");
+									PrintCppType(file, fieldSymbol, writer);
+									writer.WriteLine(L"> from)");
+									writer.WriteLine(prefix + L"{");
+									writer.WriteLine(prefix + L"\tstatic_assert(false);");
+									writer.WriteLine(prefix + L"}");
+								}
+
+								writer.WriteLine(L"");
+								writer.WriteLine(prefix + L"// Visitor Members -----------------------------------");
+								for (auto childSymbol : classSymbol->derivedClasses)
+								{
+									writer.WriteLine(L"");
+									writer.WriteString(prefix + L"void " + classSymbol->Name() + L"Visitor::Visit(");
+									PrintCppType(file, childSymbol, writer);
+									writer.WriteLine(L"* node)");
+									writer.WriteLine(prefix + L"{");
+									if (childSymbol->derivedClasses.Count() > 0)
+									{
+										writer.WriteLine(prefix + L"\tDispatch(node);");
+									}
+									else
+									{
+										writer.WriteLine(prefix + L"\tstatic_assert(false);");
+									}
+									writer.WriteLine(prefix + L"}");
+								}
 							}
 						}
 					}

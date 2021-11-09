@@ -11,5 +11,145 @@ namespace calculator
 {
 	namespace copy_visitor
 	{
+
+/***********************************************************************
+ExprVisitor
+***********************************************************************/
+
+		// CopyFields ----------------------------------------
+
+		void ExprVisitor::CopyFields(Expr* from, Expr* to)
+		{
+			static_assert(false);
+		}
+
+		void ExprVisitor::CopyFields(NumExpr* from, NumExpr* to)
+		{
+			static_assert(false);
+		}
+
+		void ExprVisitor::CopyFields(Ref* from, Ref* to)
+		{
+			static_assert(false);
+		}
+
+		void ExprVisitor::CopyFields(True* from, True* to)
+		{
+			static_assert(false);
+		}
+
+		void ExprVisitor::CopyFields(False* from, False* to)
+		{
+			static_assert(false);
+		}
+
+		void ExprVisitor::CopyFields(Func* from, Func* to)
+		{
+			static_assert(false);
+		}
+
+		void ExprVisitor::CopyFields(Arg* from, Arg* to)
+		{
+			static_assert(false);
+		}
+
+		void ExprVisitor::CopyFields(Call* from, Call* to)
+		{
+			static_assert(false);
+		}
+
+		// CreateField ---------------------------------------
+
+		vl::Ptr<Arg> ExprVisitor::CreateField(vl::Ptr<Arg> from)
+		{
+			static_assert(false);
+		}
+
+		// Visitor Members -----------------------------------
+
+		void ExprVisitor::Visit(NumExpr* node)
+		{
+			static_assert(false);
+		}
+
+		void ExprVisitor::Visit(Ref* node)
+		{
+			static_assert(false);
+		}
+
+		void ExprVisitor::Visit(True* node)
+		{
+			static_assert(false);
+		}
+
+		void ExprVisitor::Visit(False* node)
+		{
+			static_assert(false);
+		}
+
+		void ExprVisitor::Visit(Func* node)
+		{
+			static_assert(false);
+		}
+
+		void ExprVisitor::Visit(Call* node)
+		{
+			static_assert(false);
+		}
+
+		void ExprVisitor::Visit(Expandable* node)
+		{
+			Dispatch(node);
+		}
+
+/***********************************************************************
+ExpandableVisitor
+***********************************************************************/
+
+		// CopyFields ----------------------------------------
+
+		void ExpandableVisitor::CopyFields(Expr* from, Expr* to)
+		{
+			static_assert(false);
+		}
+
+		void ExpandableVisitor::CopyFields(Expandable* from, Expandable* to)
+		{
+			static_assert(false);
+		}
+
+		void ExpandableVisitor::CopyFields(LetExpr* from, LetExpr* to)
+		{
+			static_assert(false);
+		}
+
+		void ExpandableVisitor::CopyFields(Unary* from, Unary* to)
+		{
+			static_assert(false);
+		}
+
+		void ExpandableVisitor::CopyFields(Binary* from, Binary* to)
+		{
+			static_assert(false);
+		}
+
+		// CreateField ---------------------------------------
+
+		// Visitor Members -----------------------------------
+
+		void ExpandableVisitor::Visit(LetExpr* node)
+		{
+			static_assert(false);
+		}
+
+		void ExpandableVisitor::Visit(Unary* node)
+		{
+			static_assert(false);
+		}
+
+		void ExpandableVisitor::Visit(Binary* node)
+		{
+			static_assert(false);
+		}
 	}
 }
