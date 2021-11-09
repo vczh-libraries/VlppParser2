@@ -23,6 +23,8 @@ namespace vl
 				{
 				protected:
 					// Traverse ------------------------------------------
+					virtual void Traverse(vl::glr::ParsingToken& token);
+					virtual void Traverse(vl::glr::ParsingAstBase* node);
 					virtual void Traverse(GlrType* node);
 					virtual void Traverse(GlrEnum* node);
 					virtual void Traverse(GlrEnumItem* node);
@@ -30,6 +32,7 @@ namespace vl
 					virtual void Traverse(GlrClassProp* node);
 
 					// Finishing -----------------------------------------
+					virtual void Finishing(vl::glr::ParsingAstBase* node);
 					virtual void Finishing(GlrType* node);
 					virtual void Finishing(GlrEnum* node);
 					virtual void Finishing(GlrEnumItem* node);

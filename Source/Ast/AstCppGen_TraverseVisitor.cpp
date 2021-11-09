@@ -50,6 +50,8 @@ WriteTraverseVisitorHeaderFile
 								CollectCopyDependencies(classSymbol, true, true, copyFields, createFields, virtualCreateFields);
 
 								writer.WriteLine(prefix + L"\t// Traverse ------------------------------------------");
+								writer.WriteLine(prefix + L"\tvirtual void Traverse(vl::glr::ParsingToken& token);");
+								writer.WriteLine(prefix + L"\tvirtual void Traverse(vl::glr::ParsingAstBase* node);");
 								for (auto fieldSymbol : copyFields)
 								{
 									writer.WriteString(prefix + L"\tvirtual void Traverse(");
@@ -59,6 +61,7 @@ WriteTraverseVisitorHeaderFile
 								writer.WriteLine(L"");
 
 								writer.WriteLine(prefix + L"\t// Finishing -----------------------------------------");
+								writer.WriteLine(prefix + L"\tvirtual void Finishing(vl::glr::ParsingAstBase* node);");
 								for (auto fieldSymbol : copyFields)
 								{
 									writer.WriteString(prefix + L"\tvirtual void Finishing(");
@@ -140,6 +143,18 @@ WriteTraverseVisitorCppFile
 
 								writer.WriteLine(L"");
 								writer.WriteLine(prefix + L"// Traverse ------------------------------------------");
+								{
+									writer.WriteLine(L"");
+									writer.WriteLine(prefix + L"void " + classSymbol->Name() + L"Visitor::Traverse(vl::glr::ParsingToken& token)");
+									writer.WriteLine(prefix + L"{");
+									writer.WriteLine(prefix + L"}");
+								}
+								{
+									writer.WriteLine(L"");
+									writer.WriteLine(prefix + L"void " + classSymbol->Name() + L"Visitor::Traverse(vl::glr::ParsingAstBase* node)");
+									writer.WriteLine(prefix + L"{");
+									writer.WriteLine(prefix + L"}");
+								}
 								for (auto fieldSymbol : copyFields)
 								{
 									writer.WriteLine(L"");
@@ -152,6 +167,12 @@ WriteTraverseVisitorCppFile
 
 								writer.WriteLine(L"");
 								writer.WriteLine(prefix + L"// Finishing -----------------------------------------");
+								{
+									writer.WriteLine(L"");
+									writer.WriteLine(prefix + L"void " + classSymbol->Name() + L"Visitor::Finishing(vl::glr::ParsingAstBase* node)");
+									writer.WriteLine(prefix + L"{");
+									writer.WriteLine(prefix + L"}");
+								}
 								for (auto fieldSymbol : copyFields)
 								{
 									writer.WriteLine(L"");

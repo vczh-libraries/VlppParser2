@@ -18,6 +18,14 @@ ExprVisitor
 
 		// Traverse ------------------------------------------
 
+		void ExprVisitor::Traverse(vl::glr::ParsingToken& token)
+		{
+		}
+
+		void ExprVisitor::Traverse(vl::glr::ParsingAstBase* node)
+		{
+		}
+
 		void ExprVisitor::Traverse(Expr* node)
 		{
 		}
@@ -51,6 +59,10 @@ ExprVisitor
 		}
 
 		// Finishing -----------------------------------------
+
+		void ExprVisitor::Finishing(vl::glr::ParsingAstBase* node)
+		{
+		}
 
 		void ExprVisitor::Finishing(Expr* node)
 		{
@@ -134,6 +146,14 @@ ExpandableVisitor
 
 		// Traverse ------------------------------------------
 
+		void ExpandableVisitor::Traverse(vl::glr::ParsingToken& token)
+		{
+		}
+
+		void ExpandableVisitor::Traverse(vl::glr::ParsingAstBase* node)
+		{
+		}
+
 		void ExpandableVisitor::Traverse(Expr* node)
 		{
 		}
@@ -155,6 +175,10 @@ ExpandableVisitor
 		}
 
 		// Finishing -----------------------------------------
+
+		void ExpandableVisitor::Finishing(vl::glr::ParsingAstBase* node)
+		{
+		}
 
 		void ExpandableVisitor::Finishing(Expr* node)
 		{

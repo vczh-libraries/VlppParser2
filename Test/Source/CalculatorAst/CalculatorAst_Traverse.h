@@ -19,6 +19,8 @@ namespace calculator
 		{
 		protected:
 			// Traverse ------------------------------------------
+			virtual void Traverse(vl::glr::ParsingToken& token);
+			virtual void Traverse(vl::glr::ParsingAstBase* node);
 			virtual void Traverse(Expr* node);
 			virtual void Traverse(NumExpr* node);
 			virtual void Traverse(Ref* node);
@@ -29,6 +31,7 @@ namespace calculator
 			virtual void Traverse(Call* node);
 
 			// Finishing -----------------------------------------
+			virtual void Finishing(vl::glr::ParsingAstBase* node);
 			virtual void Finishing(Expr* node);
 			virtual void Finishing(NumExpr* node);
 			virtual void Finishing(Ref* node);
@@ -63,6 +66,8 @@ namespace calculator
 		{
 		protected:
 			// Traverse ------------------------------------------
+			virtual void Traverse(vl::glr::ParsingToken& token);
+			virtual void Traverse(vl::glr::ParsingAstBase* node);
 			virtual void Traverse(Expr* node);
 			virtual void Traverse(Expandable* node);
 			virtual void Traverse(LetExpr* node);
@@ -70,6 +75,7 @@ namespace calculator
 			virtual void Traverse(Binary* node);
 
 			// Finishing -----------------------------------------
+			virtual void Finishing(vl::glr::ParsingAstBase* node);
 			virtual void Finishing(Expr* node);
 			virtual void Finishing(Expandable* node);
 			virtual void Finishing(LetExpr* node);

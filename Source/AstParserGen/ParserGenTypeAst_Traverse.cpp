@@ -22,6 +22,14 @@ TypeVisitor
 
 				// Traverse ------------------------------------------
 
+				void TypeVisitor::Traverse(vl::glr::ParsingToken& token)
+				{
+				}
+
+				void TypeVisitor::Traverse(vl::glr::ParsingAstBase* node)
+				{
+				}
+
 				void TypeVisitor::Traverse(GlrType* node)
 				{
 				}
@@ -43,6 +51,10 @@ TypeVisitor
 				}
 
 				// Finishing -----------------------------------------
+
+				void TypeVisitor::Finishing(vl::glr::ParsingAstBase* node)
+				{
+				}
 
 				void TypeVisitor::Finishing(GlrType* node)
 				{
