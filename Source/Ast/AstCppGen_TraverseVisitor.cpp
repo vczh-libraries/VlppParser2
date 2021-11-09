@@ -399,6 +399,125 @@ WriteRootTraverseVisitorCppFile
 			{
 				WriteRootVisitorCppFile(manager, L"Traverse", writer, [&](const WString& prefix)
 				{
+					List<AstClassSymbol*> concreteClasses, visitors;
+					CollectAllVisitors(manager, visitors);
+					CollectConcreteClasses(manager, concreteClasses);
+
+					List<AstClassSymbol*> copyFields, allCopyFields, allCreateFields, allVirtualCreateFields;
+					{
+						List<AstClassSymbol*> _1;
+						List<AstClassSymbol*> _2;
+						for (auto concreteSymbol : concreteClasses)
+						{
+							CollectCopyDependencies(concreteSymbol, true, false, copyFields, _1, _2);
+						}
+					}
+					{
+						for (auto visitor : visitors)
+						{
+							CollectCopyDependencies(visitor, true, true, allCopyFields, allCreateFields, allVirtualCreateFields);
+						}
+					}
+
+					writer.WriteLine(L"");
+					writer.WriteLine(prefix + L"// Traverse ------------------------------------------");
+					{
+						writer.WriteLine(L"");
+						writer.WriteLine(prefix + L"void " + manager.name + L"RootTraverseVisitor::Traverse(vl::glr::ParsingToken& token)");
+						writer.WriteLine(prefix + L"{");
+						writer.WriteLine(prefix + L"}");
+					}
+					{
+						writer.WriteLine(L"");
+						writer.WriteLine(prefix + L"void " + manager.name + L"RootTraverseVisitor::Traverse(vl::glr::ParsingAstBase* node)");
+						writer.WriteLine(prefix + L"{");
+						writer.WriteLine(prefix + L"}");
+					}
+					for (auto fieldSymbol : From(visitors).Concat(copyFields).Distinct())
+					{
+						writer.WriteLine(L"");
+						writer.WriteString(prefix + L"void " + manager.name + L"RootTraverseVisitor::Traverse(");
+						PrintCppType(nullptr, fieldSymbol, writer);
+						writer.WriteLine(L"* node)");
+						writer.WriteLine(prefix + L"{");
+						writer.WriteLine(prefix + L"}");
+					}
+
+					writer.WriteLine(L"");
+					writer.WriteLine(prefix + L"// Finishing -----------------------------------------");
+					{
+						writer.WriteLine(L"");
+						writer.WriteLine(prefix + L"void " + manager.name + L"RootTraverseVisitor::Finishing(vl::glr::ParsingAstBase* node)");
+						writer.WriteLine(prefix + L"{");
+						writer.WriteLine(prefix + L"}");
+					}
+					for (auto fieldSymbol : From(visitors).Concat(copyFields).Distinct())
+					{
+						writer.WriteLine(L"");
+						writer.WriteString(prefix + L"void " + manager.name + L"RootTraverseVisitor::Finishing(");
+						PrintCppType(nullptr, fieldSymbol, writer);
+						writer.WriteLine(L"* node)");
+						writer.WriteLine(prefix + L"{");
+						writer.WriteLine(prefix + L"}");
+					}
+
+					writer.WriteLine(L"");
+					writer.WriteLine(prefix + L"// Dispatch (virtual) --------------------------------");
+					for (auto childSymbol : visitors)
+					{
+						if (childSymbol->baseClass)
+						{
+							writer.WriteLine(L"");
+							writer.WriteString(prefix + L"void " + manager.name + L"RootTraverseVisitor::Dispatch(");
+							PrintCppType(nullptr, childSymbol, writer);
+							writer.WriteLine(L"* node)");
+							writer.WriteLine(prefix + L"{");
+							writer.WriteString(prefix + L"\tnode->Accept(static_cast<");
+							PrintCppType(nullptr, childSymbol, writer);
+							writer.WriteLine(L"::IVisitor*>(this));");
+							writer.WriteLine(prefix + L"}");
+						}
+					}
+
+					writer.WriteLine(L"");
+					writer.WriteLine(prefix + L"// VisitField ----------------------------------------");
+					{
+						List<AstClassSymbol*> neededSymbols;
+						CopyFrom(
+							neededSymbols,
+							From(concreteClasses)
+							.Concat(visitors)
+							.Concat(allCreateFields)
+							.Concat(allVirtualCreateFields)
+							.Distinct()
+						);
+						for (auto fieldSymbol : neededSymbols)
+						{
+							writer.WriteLine(L"");
+							writer.WriteString(prefix + L"void " + manager.name + L"RootTraverseVisitor::VisitField(");
+							PrintCppType(nullptr, fieldSymbol, writer);
+							writer.WriteLine(L"* node)");
+							writer.WriteLine(prefix + L"{");
+							if (fieldSymbol->derivedClasses.Count() > 0)
+							{
+								if (fieldSymbol->baseClass)
+								{
+									writer.WriteLine(prefix + L"\tDispatch(node);");
+								}
+								else
+								{
+									writer.WriteString(prefix + L"\tnode->Accept(static_cast<");
+									PrintCppType(nullptr, fieldSymbol, writer);
+									writer.WriteLine(L"::IVisitor*>(this));");
+								}
+							}
+							else
+							{
+								WriteVisitFieldFunctionBody(nullptr, fieldSymbol, prefix, writer);
+							}
+							writer.WriteLine(prefix + L"}");
+						}
+					}
 				});
 			}
 		}

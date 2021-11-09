@@ -14,6 +14,98 @@ namespace vl
 		{
 			namespace traverse_visitor
 			{
+
+				// Traverse ------------------------------------------
+
+				void ParserGenRootTraverseVisitor::Traverse(vl::glr::ParsingToken& token)
+				{
+				}
+
+				void ParserGenRootTraverseVisitor::Traverse(vl::glr::ParsingAstBase* node)
+				{
+				}
+
+				void ParserGenRootTraverseVisitor::Traverse(vl::glr::parsergen::GlrType* node)
+				{
+				}
+
+				void ParserGenRootTraverseVisitor::Traverse(vl::glr::parsergen::GlrClassProp* node)
+				{
+				}
+
+				void ParserGenRootTraverseVisitor::Traverse(vl::glr::parsergen::GlrEnumItem* node)
+				{
+				}
+
+				void ParserGenRootTraverseVisitor::Traverse(vl::glr::parsergen::GlrFile* node)
+				{
+				}
+
+				// Finishing -----------------------------------------
+
+				void ParserGenRootTraverseVisitor::Finishing(vl::glr::ParsingAstBase* node)
+				{
+				}
+
+				void ParserGenRootTraverseVisitor::Finishing(vl::glr::parsergen::GlrType* node)
+				{
+				}
+
+				void ParserGenRootTraverseVisitor::Finishing(vl::glr::parsergen::GlrClassProp* node)
+				{
+				}
+
+				void ParserGenRootTraverseVisitor::Finishing(vl::glr::parsergen::GlrEnumItem* node)
+				{
+				}
+
+				void ParserGenRootTraverseVisitor::Finishing(vl::glr::parsergen::GlrFile* node)
+				{
+				}
+
+				// Dispatch (virtual) --------------------------------
+
+				// VisitField ----------------------------------------
+
+				void ParserGenRootTraverseVisitor::VisitField(vl::glr::parsergen::GlrClassProp* node)
+				{
+					if (!node) return;
+					Traverse(static_cast<vl::glr::parsergen::GlrClassProp*>(node));
+					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+					Traverse(node->name);
+					Traverse(node->propTypeName);
+					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+					Finishing(static_cast<vl::glr::parsergen::GlrClassProp*>(node));
+				}
+
+				void ParserGenRootTraverseVisitor::VisitField(vl::glr::parsergen::GlrEnumItem* node)
+				{
+					if (!node) return;
+					Traverse(static_cast<vl::glr::parsergen::GlrEnumItem*>(node));
+					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+					Traverse(node->name);
+					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+					Finishing(static_cast<vl::glr::parsergen::GlrEnumItem*>(node));
+				}
+
+				void ParserGenRootTraverseVisitor::VisitField(vl::glr::parsergen::GlrFile* node)
+				{
+					if (!node) return;
+					Traverse(static_cast<vl::glr::parsergen::GlrFile*>(node));
+					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+					Traverse(node->name);
+					for (auto&& listItem : node->types)
+					{
+						Traverse(listItem.Obj());
+					}
+					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+					Finishing(static_cast<vl::glr::parsergen::GlrFile*>(node));
+				}
+
+				void ParserGenRootTraverseVisitor::VisitField(vl::glr::parsergen::GlrType* node)
+				{
+					node->Accept(static_cast<vl::glr::parsergen::GlrType::IVisitor*>(this));
+				}
 			}
 		}
 	}

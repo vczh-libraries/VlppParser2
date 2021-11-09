@@ -10,5 +10,114 @@ namespace calculator
 {
 	namespace traverse_visitor
 	{
+
+		// Traverse ------------------------------------------
+
+		void CalculatorRootTraverseVisitor::Traverse(vl::glr::ParsingToken& token)
+		{
+		}
+
+		void CalculatorRootTraverseVisitor::Traverse(vl::glr::ParsingAstBase* node)
+		{
+		}
+
+		void CalculatorRootTraverseVisitor::Traverse(calculator::Expandable* node)
+		{
+		}
+
+		void CalculatorRootTraverseVisitor::Traverse(calculator::Expr* node)
+		{
+		}
+
+		void CalculatorRootTraverseVisitor::Traverse(calculator::Arg* node)
+		{
+		}
+
+		void CalculatorRootTraverseVisitor::Traverse(calculator::Import* node)
+		{
+		}
+
+		void CalculatorRootTraverseVisitor::Traverse(calculator::Module* node)
+		{
+		}
+
+		// Finishing -----------------------------------------
+
+		void CalculatorRootTraverseVisitor::Finishing(vl::glr::ParsingAstBase* node)
+		{
+		}
+
+		void CalculatorRootTraverseVisitor::Finishing(calculator::Expandable* node)
+		{
+		}
+
+		void CalculatorRootTraverseVisitor::Finishing(calculator::Expr* node)
+		{
+		}
+
+		void CalculatorRootTraverseVisitor::Finishing(calculator::Arg* node)
+		{
+		}
+
+		void CalculatorRootTraverseVisitor::Finishing(calculator::Import* node)
+		{
+		}
+
+		void CalculatorRootTraverseVisitor::Finishing(calculator::Module* node)
+		{
+		}
+
+		// Dispatch (virtual) --------------------------------
+
+		void CalculatorRootTraverseVisitor::Dispatch(calculator::Expandable* node)
+		{
+			node->Accept(static_cast<calculator::Expandable::IVisitor*>(this));
+		}
+
+		// VisitField ----------------------------------------
+
+		void CalculatorRootTraverseVisitor::VisitField(calculator::Arg* node)
+		{
+			if (!node) return;
+			Traverse(static_cast<calculator::Arg*>(node));
+			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+			Traverse(node->name);
+			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+			Finishing(static_cast<calculator::Arg*>(node));
+		}
+
+		void CalculatorRootTraverseVisitor::VisitField(calculator::Import* node)
+		{
+			if (!node) return;
+			Traverse(static_cast<calculator::Import*>(node));
+			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+			Traverse(node->name);
+			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+			Finishing(static_cast<calculator::Import*>(node));
+		}
+
+		void CalculatorRootTraverseVisitor::VisitField(calculator::Module* node)
+		{
+			if (!node) return;
+			Traverse(static_cast<calculator::Module*>(node));
+			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+			Traverse(node->exported.Obj());
+			for (auto&& listItem : node->imports)
+			{
+				Traverse(listItem.Obj());
+			}
+			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+			Finishing(static_cast<calculator::Module*>(node));
+		}
+
+		void CalculatorRootTraverseVisitor::VisitField(calculator::Expandable* node)
+		{
+			Dispatch(node);
+		}
+
+		void CalculatorRootTraverseVisitor::VisitField(calculator::Expr* node)
+		{
+			node->Accept(static_cast<calculator::Expr::IVisitor*>(this));
+		}
 	}
 }
