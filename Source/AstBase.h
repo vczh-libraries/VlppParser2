@@ -171,6 +171,35 @@ Location
 		protected:
 			Ptr<ParsingAstBase>					result;
 		};
+
+		class JsonVisitorBase : public Object
+		{
+		private:
+			stream::StreamWriter&				writer;
+			vint								indentation = 0;
+			collections::List<vint>				indices;
+
+		protected:
+
+			void								BeginObject();
+			void								BeginField(const WString& field);
+			void								EndField();
+			void								EndObject();
+			void								BeginArray();
+			void								BeginArrayItem();
+			void								EndArrayItem();
+			void								EndArray();
+			void								WriteIndent();
+			void								WriteRange(const ParsingTextRange& range);
+			void								WriteToken(const ParsingToken& token);
+			void								WriteType(const WString& type, ParsingAstBase* node);
+			void								WriteString(const WString& text);
+		public:
+			JsonVisitorBase(stream::StreamWriter& _writer);
+		};
+
+		extern void								JsonEscapeString(const WString& text, stream::TextWriter& writer);
+		extern void								JsonUnescapeString(const WString& text, stream::TextWriter& writer);
 	}
 }
 

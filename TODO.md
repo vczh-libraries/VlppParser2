@@ -1,5 +1,9 @@
 # TODO
 
+## Issues
+
+- `JsonEscapeString` `JsonUnescapeString` handle surrogate pairs incorrectly.
+
 ## Goal
 
 - Parsing
