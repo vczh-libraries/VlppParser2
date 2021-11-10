@@ -12,61 +12,6 @@ namespace vl
 			extern void PrintCppType(AstDefFile* fileContext, AstSymbol* propSymbol, stream::StreamWriter& writer);
 			extern void CollectVisitorsAndConcreteClasses(AstDefFile* file, List<AstClassSymbol*>& visitors, List<AstClassSymbol*>& concreteClasses);
 
-			void CollectCopyDependencies(
-				AstClassSymbol* classSymbol,
-				bool visitBaseClass,
-				bool visitDerivedClasses,
-				List<AstClassSymbol*>& copyFields,
-				List<AstClassSymbol*>& createFields,
-				List<AstClassSymbol*>& virtualCreateFields
-				)
-			{
-				if (!classSymbol) return;
-
-				if (visitBaseClass)
-				{
-					CollectCopyDependencies(classSymbol->baseClass, true, false, copyFields, createFields, virtualCreateFields);
-				}
-
-				if (!copyFields.Contains(classSymbol))
-				{
-					copyFields.Add(classSymbol);
-				}
-
-				for (auto prop : classSymbol->Props().Values())
-				{
-					if (auto classProp = dynamic_cast<AstClassSymbol*>(prop->propSymbol))
-					{
-						if (classProp->derivedClasses.Count() == 0)
-						{
-							if (!createFields.Contains(classProp))
-							{
-								createFields.Add(classProp);
-								CollectCopyDependencies(classProp, true, false, copyFields, createFields, virtualCreateFields);
-							}
-						}
-						else
-						{
-							if (!virtualCreateFields.Contains(classProp))
-							{
-								virtualCreateFields.Add(classProp);
-							}
-						}
-					}
-				}
-
-				if (visitDerivedClasses)
-				{
-					for (auto childSymbol : classSymbol->derivedClasses)
-					{
-						if (childSymbol->derivedClasses.Count() == 0)
-						{
-							CollectCopyDependencies(childSymbol, false, false, copyFields, createFields, virtualCreateFields);
-						}
-					}
-				}
-			}
-
 /***********************************************************************
 WriteCopyFieldFunctionBody
 ***********************************************************************/

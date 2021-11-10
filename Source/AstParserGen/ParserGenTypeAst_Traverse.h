@@ -19,40 +19,39 @@ namespace vl
 			namespace traverse_visitor
 			{
 				/// <summary>A traverse visitor, overriding all abstract methods with AST visiting code.</summary>
-				class TypeVisitor : public virtual vl::Object, public GlrType::IVisitor
+				class TypeAstVisitor
+					: public vl::Object
+					, protected virtual GlrType::IVisitor
 				{
 				protected:
-					// Traverse ------------------------------------------
 					virtual void Traverse(vl::glr::ParsingToken& token);
 					virtual void Traverse(vl::glr::ParsingAstBase* node);
-					virtual void Traverse(GlrType* node);
-					virtual void Traverse(GlrEnum* node);
-					virtual void Traverse(GlrEnumItem* node);
-					virtual void Traverse(GlrClass* node);
-					virtual void Traverse(GlrClassProp* node);
+					virtual void Traverse(GlrClass* from, GlrClass* to);
+					virtual void Traverse(GlrClassProp* from, GlrClassProp* to);
+					virtual void Traverse(GlrEnum* from, GlrEnum* to);
+					virtual void Traverse(GlrEnumItem* from, GlrEnumItem* to);
+					virtual void Traverse(GlrFile* from, GlrFile* to);
+					virtual void Traverse(GlrType* from, GlrType* to);
 
-					// Finishing -----------------------------------------
+				protected:
 					virtual void Finishing(vl::glr::ParsingAstBase* node);
-					virtual void Finishing(GlrType* node);
-					virtual void Finishing(GlrEnum* node);
-					virtual void Finishing(GlrEnumItem* node);
-					virtual void Finishing(GlrClass* node);
-					virtual void Finishing(GlrClassProp* node);
+					virtual void Finishing(GlrClass* from, GlrClass* to);
+					virtual void Finishing(GlrClassProp* from, GlrClassProp* to);
+					virtual void Finishing(GlrEnum* from, GlrEnum* to);
+					virtual void Finishing(GlrEnumItem* from, GlrEnumItem* to);
+					virtual void Finishing(GlrFile* from, GlrFile* to);
+					virtual void Finishing(GlrType* from, GlrType* to);
 
-					// VisitField ----------------------------------------
-					virtual void VisitField(GlrEnumItem* node);
-					virtual void VisitField(GlrClassProp* node);
-
-					// VisitField (virtual) ------------------------------
-
-					// Dispatch (virtual) --------------------------------
-
-				public:
-					// Visitor Members -----------------------------------
+				protected:
 					void Visit(GlrEnum* node) override;
 					void Visit(GlrClass* node) override;
-				};
 
+				public:
+					void InspectInto(GlrType* node);
+					void InspectInto(GlrEnumItem* node);
+					void InspectInto(GlrClassProp* node);
+					void InspectInto(GlrFile* node);
+				};
 			}
 		}
 	}
