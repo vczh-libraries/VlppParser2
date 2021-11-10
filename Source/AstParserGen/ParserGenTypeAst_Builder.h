@@ -25,7 +25,7 @@ namespace vl
 				public:
 					ClassBuilder(GlrClass* _node) : node(_node) {}
 
-					ClassBuilder& props(vl::Ptr<GlrClassProp> value);
+					ClassBuilder& props(const vl::Ptr<GlrClassProp>& value);
 				};
 
 				class ClassPropBuilder
@@ -47,7 +47,7 @@ namespace vl
 				public:
 					EnumBuilder(GlrEnum* _node) : node(_node) {}
 
-					EnumBuilder& items(vl::Ptr<GlrEnumItem> value);
+					EnumBuilder& items(const vl::Ptr<GlrEnumItem>& value);
 				};
 
 				class EnumItemBuilder
@@ -68,7 +68,7 @@ namespace vl
 					FileBuilder(GlrFile* _node) : node(_node) {}
 
 					FileBuilder& name(const vl::WString& value);
-					FileBuilder& types(vl::Ptr<GlrType> value);
+					FileBuilder& types(const vl::Ptr<GlrType>& value);
 				};
 
 				class TypeBuilder

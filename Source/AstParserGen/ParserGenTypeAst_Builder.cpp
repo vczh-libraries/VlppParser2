@@ -20,7 +20,7 @@ namespace vl
 ClassBuilder
 ***********************************************************************/
 
-				ClassBuilder& ClassBuilder::props(vl::Ptr<GlrClassProp> value)
+				ClassBuilder& ClassBuilder::props(const vl::Ptr<GlrClassProp>& value)
 				{
 					node->props.Add(value);
 					return *this;
@@ -52,7 +52,7 @@ ClassPropBuilder
 EnumBuilder
 ***********************************************************************/
 
-				EnumBuilder& EnumBuilder::items(vl::Ptr<GlrEnumItem> value)
+				EnumBuilder& EnumBuilder::items(const vl::Ptr<GlrEnumItem>& value)
 				{
 					node->items.Add(value);
 					return *this;
@@ -78,7 +78,7 @@ FileBuilder
 					return *this;
 				}
 
-				FileBuilder& FileBuilder::types(vl::Ptr<GlrType> value)
+				FileBuilder& FileBuilder::types(const vl::Ptr<GlrType>& value)
 				{
 					node->types.Add(value);
 					return *this;

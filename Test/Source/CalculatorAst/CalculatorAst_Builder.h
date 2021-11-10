@@ -31,9 +31,9 @@ namespace calculator
 		public:
 			BinaryBuilder(Binary* _node) : node(_node) {}
 
-			BinaryBuilder& left(vl::Ptr<Expr> value);
+			BinaryBuilder& left(const vl::Ptr<Expr>& value);
 			BinaryBuilder& op(BinaryOp value);
-			BinaryBuilder& right(vl::Ptr<Expr> value);
+			BinaryBuilder& right(const vl::Ptr<Expr>& value);
 		};
 
 		class CallBuilder
@@ -43,8 +43,8 @@ namespace calculator
 		public:
 			CallBuilder(Call* _node) : node(_node) {}
 
-			CallBuilder& arg(vl::Ptr<Expr> value);
-			CallBuilder& func(vl::Ptr<Expr> value);
+			CallBuilder& arg(const vl::Ptr<Expr>& value);
+			CallBuilder& func(const vl::Ptr<Expr>& value);
 		};
 
 		class ExpandableBuilder
@@ -54,7 +54,7 @@ namespace calculator
 		public:
 			ExpandableBuilder(Expandable* _node) : node(_node) {}
 
-			ExpandableBuilder& expanded(vl::Ptr<Expr> value);
+			ExpandableBuilder& expanded(const vl::Ptr<Expr>& value);
 		};
 
 		class FuncBuilder
@@ -64,8 +64,8 @@ namespace calculator
 		public:
 			FuncBuilder(Func* _node) : node(_node) {}
 
-			FuncBuilder& args(vl::Ptr<Arg> value);
-			FuncBuilder& value(vl::Ptr<Expr> value);
+			FuncBuilder& args(const vl::Ptr<Arg>& value);
+			FuncBuilder& value(const vl::Ptr<Expr>& value);
 		};
 
 		class ImportBuilder
@@ -86,7 +86,7 @@ namespace calculator
 			LetExprBuilder(LetExpr* _node) : node(_node) {}
 
 			LetExprBuilder& name(const vl::WString& value);
-			LetExprBuilder& value(vl::Ptr<Expr> value);
+			LetExprBuilder& value(const vl::Ptr<Expr>& value);
 		};
 
 		class ModuleBuilder
@@ -96,8 +96,8 @@ namespace calculator
 		public:
 			ModuleBuilder(Module* _node) : node(_node) {}
 
-			ModuleBuilder& exported(vl::Ptr<Expr> value);
-			ModuleBuilder& imports(vl::Ptr<Import> value);
+			ModuleBuilder& exported(const vl::Ptr<Expr>& value);
+			ModuleBuilder& imports(const vl::Ptr<Import>& value);
 		};
 
 		class NumExprBuilder
@@ -128,7 +128,7 @@ namespace calculator
 			UnaryBuilder(Unary* _node) : node(_node) {}
 
 			UnaryBuilder& op(UnaryOp value);
-			UnaryBuilder& operand(vl::Ptr<Expr> value);
+			UnaryBuilder& operand(const vl::Ptr<Expr>& value);
 		};
 
 	}

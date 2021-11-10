@@ -26,7 +26,7 @@ ArgBuilder
 BinaryBuilder
 ***********************************************************************/
 
-		BinaryBuilder& BinaryBuilder::left(vl::Ptr<Expr> value)
+		BinaryBuilder& BinaryBuilder::left(const vl::Ptr<Expr>& value)
 		{
 			node->left = value;
 			return *this;
@@ -38,7 +38,7 @@ BinaryBuilder
 			return *this;
 		}
 
-		BinaryBuilder& BinaryBuilder::right(vl::Ptr<Expr> value)
+		BinaryBuilder& BinaryBuilder::right(const vl::Ptr<Expr>& value)
 		{
 			node->right = value;
 			return *this;
@@ -48,13 +48,13 @@ BinaryBuilder
 CallBuilder
 ***********************************************************************/
 
-		CallBuilder& CallBuilder::arg(vl::Ptr<Expr> value)
+		CallBuilder& CallBuilder::arg(const vl::Ptr<Expr>& value)
 		{
 			node->arg = value;
 			return *this;
 		}
 
-		CallBuilder& CallBuilder::func(vl::Ptr<Expr> value)
+		CallBuilder& CallBuilder::func(const vl::Ptr<Expr>& value)
 		{
 			node->func = value;
 			return *this;
@@ -64,7 +64,7 @@ CallBuilder
 ExpandableBuilder
 ***********************************************************************/
 
-		ExpandableBuilder& ExpandableBuilder::expanded(vl::Ptr<Expr> value)
+		ExpandableBuilder& ExpandableBuilder::expanded(const vl::Ptr<Expr>& value)
 		{
 			node->expanded = value;
 			return *this;
@@ -74,13 +74,13 @@ ExpandableBuilder
 FuncBuilder
 ***********************************************************************/
 
-		FuncBuilder& FuncBuilder::args(vl::Ptr<Arg> value)
+		FuncBuilder& FuncBuilder::args(const vl::Ptr<Arg>& value)
 		{
 			node->args.Add(value);
 			return *this;
 		}
 
-		FuncBuilder& FuncBuilder::value(vl::Ptr<Expr> value)
+		FuncBuilder& FuncBuilder::value(const vl::Ptr<Expr>& value)
 		{
 			node->value = value;
 			return *this;
@@ -106,7 +106,7 @@ LetExprBuilder
 			return *this;
 		}
 
-		LetExprBuilder& LetExprBuilder::value(vl::Ptr<Expr> value)
+		LetExprBuilder& LetExprBuilder::value(const vl::Ptr<Expr>& value)
 		{
 			node->value = value;
 			return *this;
@@ -116,13 +116,13 @@ LetExprBuilder
 ModuleBuilder
 ***********************************************************************/
 
-		ModuleBuilder& ModuleBuilder::exported(vl::Ptr<Expr> value)
+		ModuleBuilder& ModuleBuilder::exported(const vl::Ptr<Expr>& value)
 		{
 			node->exported = value;
 			return *this;
 		}
 
-		ModuleBuilder& ModuleBuilder::imports(vl::Ptr<Import> value)
+		ModuleBuilder& ModuleBuilder::imports(const vl::Ptr<Import>& value)
 		{
 			node->imports.Add(value);
 			return *this;
@@ -158,7 +158,7 @@ UnaryBuilder
 			return *this;
 		}
 
-		UnaryBuilder& UnaryBuilder::operand(vl::Ptr<Expr> value)
+		UnaryBuilder& UnaryBuilder::operand(const vl::Ptr<Expr>& value)
 		{
 			node->operand = value;
 			return *this;

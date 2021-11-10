@@ -53,9 +53,9 @@ WriteAstBuilderHeaderFile
 											break;
 										}
 									case AstPropType::Array:
-										writer.WriteString(prefix + L"\t" + className + L"& " + propSymbol->Name() + L"(vl::Ptr<");
+										writer.WriteString(prefix + L"\t" + className + L"& " + propSymbol->Name() + L"(const vl::Ptr<");
 										PrintCppType(file, propSymbol->propSymbol, writer);
-										writer.WriteLine(L"> value);");
+										writer.WriteLine(L">& value);");
 										break;
 									}
 								}
@@ -108,9 +108,9 @@ WriteAstBuilderCppFile
 										}
 										if (dynamic_cast<AstClassSymbol*>(propSymbol->propSymbol))
 										{
-											writer.WriteString(prefix + className + L"& " + className + L"::" + propSymbol->Name() + L"(vl::Ptr<");
+											writer.WriteString(prefix + className + L"& " + className + L"::" + propSymbol->Name() + L"(const vl::Ptr<");
 											PrintCppType(file, propSymbol->propSymbol, writer);
-											writer.WriteLine(L"> value)");
+											writer.WriteLine(L">& value)");
 										}
 										writer.WriteLine(prefix + L"{");
 										writer.WriteLine(prefix + L"\tnode->" + propSymbol->Name() + L" = value;");
@@ -118,9 +118,9 @@ WriteAstBuilderCppFile
 										writer.WriteLine(prefix + L"}");
 										break;
 									case AstPropType::Array:
-										writer.WriteString(prefix + className + L"& " + className + L"::" + propSymbol->Name() + L"(vl::Ptr<");
+										writer.WriteString(prefix + className + L"& " + className + L"::" + propSymbol->Name() + L"(const vl::Ptr<");
 										PrintCppType(file, propSymbol->propSymbol, writer);
-										writer.WriteLine(L"> value)");
+										writer.WriteLine(L">& value)");
 										writer.WriteLine(prefix + L"{");
 										writer.WriteLine(prefix + L"\tnode->" + propSymbol->Name() + L".Add(value);");
 										writer.WriteLine(prefix + L"\treturn *this;");
