@@ -168,7 +168,7 @@ Location
 
 		class CopyVisitorBase : public Object
 		{
-		public:
+		protected:
 			Ptr<ParsingAstBase>					result;
 		};
 	}

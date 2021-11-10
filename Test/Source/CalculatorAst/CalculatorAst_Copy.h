@@ -15,30 +15,28 @@ namespace calculator
 	namespace copy_visitor
 	{
 		/// <summary>A copy visitor, overriding all abstract methods with AST copying code.</summary>
-		class ExprVisitor : public virtual vl::glr::CopyVisitorBase, public Expr::IVisitor
+		class AstVisitor
+	: public virtual vl::glr::CopyVisitorBase
+			, protected virtual Expr::IVisitor
+			, protected virtual Expandable::IVisitor
 		{
 		protected:
-			// CopyFields ----------------------------------------
+			void CopyFields(Arg* from, Arg* to);
+			void CopyFields(Binary* from, Binary* to);
+			void CopyFields(Call* from, Call* to);
+			void CopyFields(Expandable* from, Expandable* to);
 			void CopyFields(Expr* from, Expr* to);
+			void CopyFields(False* from, False* to);
+			void CopyFields(Func* from, Func* to);
+			void CopyFields(Import* from, Import* to);
+			void CopyFields(LetExpr* from, LetExpr* to);
+			void CopyFields(Module* from, Module* to);
 			void CopyFields(NumExpr* from, NumExpr* to);
 			void CopyFields(Ref* from, Ref* to);
 			void CopyFields(True* from, True* to);
-			void CopyFields(False* from, False* to);
-			void CopyFields(Func* from, Func* to);
-			void CopyFields(Arg* from, Arg* to);
-			void CopyFields(Call* from, Call* to);
+			void CopyFields(Unary* from, Unary* to);
 
-			// CreateField ---------------------------------------
-			virtual vl::Ptr<Arg> CreateField(vl::Ptr<Arg> from);
-
-			// CreateField (virtual) -----------------------------
-			virtual vl::Ptr<Expr> CreateField(vl::Ptr<Expr> from) = 0;
-
-			// Dispatch (virtual) --------------------------------
-			virtual void Dispatch(Expandable* node) = 0;
-
-		public:
-			// Visitor Members -----------------------------------
+		protected:
 			void Visit(NumExpr* node) override;
 			void Visit(Ref* node) override;
 			void Visit(True* node) override;
@@ -46,33 +44,17 @@ namespace calculator
 			void Visit(Func* node) override;
 			void Visit(Call* node) override;
 			void Visit(Expandable* node) override;
-		};
 
-		/// <summary>A copy visitor, overriding all abstract methods with AST copying code.</summary>
-		class ExpandableVisitor : public virtual vl::glr::CopyVisitorBase, public Expandable::IVisitor
-		{
-		protected:
-			// CopyFields ----------------------------------------
-			void CopyFields(Expr* from, Expr* to);
-			void CopyFields(Expandable* from, Expandable* to);
-			void CopyFields(LetExpr* from, LetExpr* to);
-			void CopyFields(Unary* from, Unary* to);
-			void CopyFields(Binary* from, Binary* to);
-
-			// CreateField ---------------------------------------
-
-			// CreateField (virtual) -----------------------------
-			virtual vl::Ptr<Expr> CreateField(vl::Ptr<Expr> from) = 0;
-
-			// Dispatch (virtual) --------------------------------
-
-		public:
-			// Visitor Members -----------------------------------
 			void Visit(LetExpr* node) override;
 			void Visit(Unary* node) override;
 			void Visit(Binary* node) override;
-		};
 
+		public:
+			virtual vl::Ptr<Expr> CopyNode(Expr* node);
+			virtual vl::Ptr<Arg> CopyNode(Arg* node);
+			virtual vl::Ptr<Import> CopyNode(Import* node);
+			virtual vl::Ptr<Module> CopyNode(Module* node);
+		};
 	}
 }
 #endif

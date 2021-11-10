@@ -19,30 +19,28 @@ namespace vl
 			namespace copy_visitor
 			{
 				/// <summary>A copy visitor, overriding all abstract methods with AST copying code.</summary>
-				class TypeVisitor : public virtual vl::glr::CopyVisitorBase, public GlrType::IVisitor
+				class TypeAstVisitor
+	: public virtual vl::glr::CopyVisitorBase
+					, protected virtual GlrType::IVisitor
 				{
 				protected:
-					// CopyFields ----------------------------------------
-					void CopyFields(GlrType* from, GlrType* to);
-					void CopyFields(GlrEnum* from, GlrEnum* to);
-					void CopyFields(GlrEnumItem* from, GlrEnumItem* to);
 					void CopyFields(GlrClass* from, GlrClass* to);
 					void CopyFields(GlrClassProp* from, GlrClassProp* to);
+					void CopyFields(GlrEnum* from, GlrEnum* to);
+					void CopyFields(GlrEnumItem* from, GlrEnumItem* to);
+					void CopyFields(GlrFile* from, GlrFile* to);
+					void CopyFields(GlrType* from, GlrType* to);
 
-					// CreateField ---------------------------------------
-					virtual vl::Ptr<GlrEnumItem> CreateField(vl::Ptr<GlrEnumItem> from);
-					virtual vl::Ptr<GlrClassProp> CreateField(vl::Ptr<GlrClassProp> from);
-
-					// CreateField (virtual) -----------------------------
-
-					// Dispatch (virtual) --------------------------------
-
-				public:
-					// Visitor Members -----------------------------------
+				protected:
 					void Visit(GlrEnum* node) override;
 					void Visit(GlrClass* node) override;
-				};
 
+				public:
+					virtual vl::Ptr<GlrType> CopyNode(GlrType* node);
+					virtual vl::Ptr<GlrEnumItem> CopyNode(GlrEnumItem* node);
+					virtual vl::Ptr<GlrClassProp> CopyNode(GlrClassProp* node);
+					virtual vl::Ptr<GlrFile> CopyNode(GlrFile* node);
+				};
 			}
 		}
 	}
