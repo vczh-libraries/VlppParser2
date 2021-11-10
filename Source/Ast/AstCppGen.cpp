@@ -10,6 +10,37 @@ namespace vl
 			using namespace stream;
 
 /***********************************************************************
+GenerateFileNames
+***********************************************************************/
+
+			Ptr<CppParserGenOutput> GenerateFileNames(AstSymbolManager& manager)
+			{
+				auto parserOutput = MakePtr<CppParserGenOutput>();
+				parserOutput->assemblyH = manager.name + L"_Assembler.h";
+				parserOutput->assemblyCpp = manager.name + L"_Assembler.cpp";
+
+				for (auto file : manager.Files().Values())
+				{
+					auto astOutput = MakePtr<CppAstGenOutput>();
+					astOutput->astH = file->Owner()->name + file->Name() + L".h";
+					astOutput->astCpp = file->Owner()->name + file->Name() + L".cpp";
+					astOutput->builderH = file->Owner()->name + file->Name() + L"_Builder.h";
+					astOutput->builderCpp = file->Owner()->name + file->Name() + L"_Builder.cpp";
+					astOutput->emptyH = file->Owner()->name + file->Name() + L"_Empty.h";
+					astOutput->emptyCpp = file->Owner()->name + file->Name() + L"_Empty.cpp";
+					astOutput->copyH = file->Owner()->name + file->Name() + L"_Copy.h";
+					astOutput->copyCpp = file->Owner()->name + file->Name() + L"_Copy.cpp";
+					astOutput->traverseH = file->Owner()->name + file->Name() + L"_Traverse.h";
+					astOutput->traverseCpp = file->Owner()->name + file->Name() + L"_Traverse.cpp";
+					astOutput->jsonH = file->Owner()->name + file->Name() + L"_Json.h";
+					astOutput->jsonCpp = file->Owner()->name + file->Name() + L"_Json.cpp";
+
+					parserOutput->files.Add(file, astOutput);
+				}
+				return parserOutput;
+			}
+
+/***********************************************************************
 Utility
 ***********************************************************************/
 
@@ -288,22 +319,8 @@ WriteParserCppFile
 WriteAstFiles
 ***********************************************************************/
 
-			Ptr<CppAstGenOutput> WriteAstFiles(AstDefFile* file, collections::Dictionary<WString, WString>& files)
+			void WriteAstFiles(AstDefFile* file, Ptr<CppAstGenOutput> output, collections::Dictionary<WString, WString>& files)
 			{
-				auto output = MakePtr<CppAstGenOutput>();
-				output->astH = file->Owner()->name + file->Name() + L".h";
-				output->astCpp = file->Owner()->name + file->Name() + L".cpp";
-				output->builderH = file->Owner()->name + file->Name() + L"_Builder.h";
-				output->builderCpp = file->Owner()->name + file->Name() + L"_Builder.cpp";
-				output->emptyH = file->Owner()->name + file->Name() + L"_Empty.h";
-				output->emptyCpp = file->Owner()->name + file->Name() + L"_Empty.cpp";
-				output->copyH = file->Owner()->name + file->Name() + L"_Copy.h";
-				output->copyCpp = file->Owner()->name + file->Name() + L"_Copy.cpp";
-				output->traverseH = file->Owner()->name + file->Name() + L"_Traverse.h";
-				output->traverseCpp = file->Owner()->name + file->Name() + L"_Traverse.cpp";
-				output->jsonH = file->Owner()->name + file->Name() + L"_Json.h";
-				output->jsonCpp = file->Owner()->name + file->Name() + L"_Json.cpp";
-
 				{
 					WString fileH = GenerateToStream([&](StreamWriter& writer)
 					{
@@ -393,18 +410,13 @@ WriteAstFiles
 					files.Add(output->jsonH, fileH);
 					files.Add(output->jsonCpp, fileCpp);
 				}
-				return output;
 			}
 
-			Ptr<CppParserGenOutput> WriteAstFiles(AstSymbolManager& manager, collections::Dictionary<WString, WString>& files)
+			void WriteAstFiles(AstSymbolManager& manager, Ptr<CppParserGenOutput> output, collections::Dictionary<WString, WString>& files)
 			{
-				auto output = MakePtr<CppParserGenOutput>();
-				output->assemblyH = manager.name + L"_Assembler.h";
-				output->assemblyCpp = manager.name + L"_Assembler.cpp";
-
 				for (auto file : manager.Files().Values())
 				{
-					output->files.Add(file, WriteAstFiles(file, files));
+					WriteAstFiles(file, output->files[file], files);
 				}
 
 				{
@@ -421,7 +433,6 @@ WriteAstFiles
 					files.Add(output->assemblyH, fileH);
 					files.Add(output->assemblyCpp, fileCpp);
 				}
-				return output;
 			}
 		}
 	}

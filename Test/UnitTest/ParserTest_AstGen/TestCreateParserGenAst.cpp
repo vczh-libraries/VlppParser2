@@ -22,7 +22,8 @@ TEST_FILE
 		TEST_ASSERT(manager.Errors().Count() == 0);
 
 		Dictionary<WString, WString> files;
-		WriteAstFiles(manager, files);
+		auto output = GenerateFileNames(manager);
+		WriteAstFiles(manager, output, files);
 		auto outputDir = FilePath(GetExePath()) / L"../../../Source/AstParserGen/";
 		for (auto [key, index] : indexed(files.Keys()))
 		{
