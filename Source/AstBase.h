@@ -13,7 +13,7 @@ namespace vl
 	namespace glr
 	{
 /***********************************************************************
-Location
+ParsingTextPos
 ***********************************************************************/
 
 		/// <summary>A type representing text position.</summary>
@@ -105,6 +105,10 @@ Location
 			bool operator>=(const ParsingTextPos& pos)const { return Compare(*this, pos) >= 0; }
 		};
 
+/***********************************************************************
+ParsingTextRange
+***********************************************************************/
+
 		/// <summary>A type representing text range.</summary>
 		struct ParsingTextRange
 		{
@@ -146,6 +150,10 @@ Location
 			bool Contains(const ParsingTextRange& range)const { return start <= range.start && range.end <= end; }
 		};
 
+/***********************************************************************
+AST
+***********************************************************************/
+
 		/// <summary>Base type of all strong typed syntax tree. Normally all strong typed syntax tree are generated from a grammar file using ParserGen.exe in Tools project.</summary>
 		class ParsingAstBase : public Object, public reflection::Description<ParsingAstBase>
 		{
@@ -164,6 +172,24 @@ Location
 			vint								tokenIndex = -1;
 			/// <summary>Content of the token.</summary>
 			WString								value;
+		};
+
+/***********************************************************************
+Utility
+***********************************************************************/
+
+		template<typename TAst, typename ...TBase>
+		class ParsingAstBuilder : public Object, public TBase...
+		{
+		protected:
+			Ptr<TAst>				node = MakePtr<TAst>();
+		public:
+			ParsingAstBuilder() : TBase(node.Obj())... {}
+
+			Ptr<TAst> operator()()const
+			{
+				return node;
+			}
 		};
 
 		class CopyVisitorBase : public Object

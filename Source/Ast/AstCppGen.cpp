@@ -168,15 +168,15 @@ WriteAstCppFile
 WriteVisitorHeaderFile
 ***********************************************************************/
 
-			void WriteVisitorHeaderFile(AstDefFile* file, const WString& visitorName, stream::StreamWriter& writer, Func<void(const WString&)> callback)
+			void WriteUtilityHeaderFile(AstDefFile* file, const WString& guardPostfix, const WString& nss, stream::StreamWriter& writer, Func<void(const WString&)> callback)
 			{
 				WriteFileComment(file->Name(), writer);
 				if (file->headerGuard != L"")
 				{
 					writer.WriteString(L"#ifndef ");
-					writer.WriteLine(file->headerGuard + L"_AST_" + wupper(visitorName) + L"VISITOR");
+					writer.WriteLine(file->headerGuard + L"_AST_" + guardPostfix);
 					writer.WriteString(L"#define ");
-					writer.WriteLine(file->headerGuard + L"_AST_" + wupper(visitorName) + L"VISITOR");
+					writer.WriteLine(file->headerGuard + L"_AST_" + guardPostfix);
 				}
 				else
 				{
@@ -184,7 +184,7 @@ WriteVisitorHeaderFile
 				}
 				writer.WriteLine(L"");
 				WString prefix = WriteFileBegin(file, file->Name(), writer);
-				writer.WriteLine(prefix + L"namespace " + wlower(visitorName) + L"_visitor");
+				writer.WriteLine(prefix + L"namespace " + nss);
 				writer.WriteLine(prefix + L"{");
 				prefix += L"\t";
 
@@ -200,15 +200,20 @@ WriteVisitorHeaderFile
 				}
 			}
 
+			void WriteVisitorHeaderFile(AstDefFile* file, const WString& visitorName, stream::StreamWriter& writer, Func<void(const WString&)> callback)
+			{
+				WriteUtilityHeaderFile(file, wupper(visitorName) + L"VISITOR", wlower(visitorName) + L"_visitor", writer, callback);
+			}
+
 /***********************************************************************
 WriteVisitorCppFile
 ***********************************************************************/
 
-			void WriteVisitorCppFile(AstDefFile* file, const WString& visitorName, stream::StreamWriter& writer, Func<void(const WString&)> callback)
+			void WriteUtilityCppFile(AstDefFile* file, const WString& fileNamePostfix, const WString& nss, stream::StreamWriter& writer, Func<void(const WString&)> callback)
 			{
 				WriteFileComment(file->Name(), writer);
-				WString prefix = WriteFileBegin(file, file->Name() + L"_" + visitorName, writer);
-				writer.WriteLine(prefix + L"namespace " + wlower(visitorName) + L"_visitor");
+				WString prefix = WriteFileBegin(file, file->Name() + L"_" + fileNamePostfix, writer);
+				writer.WriteLine(prefix + L"namespace " + nss);
 				writer.WriteLine(prefix + L"{");
 				prefix += L"\t";
 
@@ -217,6 +222,11 @@ WriteVisitorCppFile
 				prefix = prefix.Left(prefix.Length() - 1);
 				writer.WriteLine(prefix + L"}");
 				WriteFileEnd(file, writer);
+			}
+
+			void WriteVisitorCppFile(AstDefFile* file, const WString& visitorName, stream::StreamWriter& writer, Func<void(const WString&)> callback)
+			{
+				WriteUtilityCppFile(file, visitorName, wlower(visitorName) + L"_visitor", writer, callback);
 			}
 
 /***********************************************************************
@@ -228,6 +238,8 @@ WriteAstFiles
 				auto output = MakePtr<CppAstGenOutput>();
 				output->astH = file->Owner()->name + file->Name() + L".h";
 				output->astCpp = file->Owner()->name + file->Name() + L".cpp";
+				output->builderH = file->Owner()->name + file->Name() + L"_Builder.h";
+				output->builderCpp = file->Owner()->name + file->Name() + L"_Builder.cpp";
 				output->emptyH = file->Owner()->name + file->Name() + L"_Empty.h";
 				output->emptyCpp = file->Owner()->name + file->Name() + L"_Empty.cpp";
 				output->copyH = file->Owner()->name + file->Name() + L"_Copy.h";
@@ -250,6 +262,21 @@ WriteAstFiles
 
 					files.Add(output->astH, fileH);
 					files.Add(output->astCpp, fileCpp);
+				}
+
+				{
+					WString fileH = GenerateToStream([&](StreamWriter& writer)
+					{
+						WriteAstBuilderHeaderFile(file, writer);
+					});
+
+					WString fileCpp = GenerateToStream([&](StreamWriter& writer)
+					{
+						WriteAstBuilderCppFile(file, writer);
+					});
+
+					files.Add(output->builderH, fileH);
+					files.Add(output->builderCpp, fileCpp);
 				}
 
 				{
