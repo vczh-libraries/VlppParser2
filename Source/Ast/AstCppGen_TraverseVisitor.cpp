@@ -156,6 +156,37 @@ WriteTraverseVisitorCppFile
 			{
 				WriteVisitorCppFile(file, L"Traverse", writer, [&](const WString& prefix)
 				{
+					List<AstClassSymbol*> visitors, concreteClasses;
+					CollectVisitorsAndConcreteClasses(file, visitors, concreteClasses);
+
+					writer.WriteLine(prefix + L"void " + file->Name() + L"Visitor::Traverse(vl::glr::ParsingToken& token) {}");
+					writer.WriteLine(prefix + L"void " + file->Name() + L"Visitor::Traverse(vl::glr::ParsingAstBase* node) {}");
+					for (auto typeSymbol : file->Symbols().Values())
+					{
+						if (auto classSymbol = dynamic_cast<AstClassSymbol*>(typeSymbol))
+						{
+							writer.WriteString(prefix + L"void " + file->Name() + L"Visitor::Traverse(");
+							PrintCppType(file, classSymbol, writer);
+							writer.WriteString(L"* from, ");
+							PrintCppType(file, classSymbol, writer);
+							writer.WriteLine(L"* to) {}");
+						}
+					}
+					writer.WriteLine(L"");
+
+					writer.WriteLine(prefix + L"void " + file->Name() + L"Visitor::Finishing(vl::glr::ParsingAstBase* node) {}");
+					for (auto typeSymbol : file->Symbols().Values())
+					{
+						if (auto classSymbol = dynamic_cast<AstClassSymbol*>(typeSymbol))
+						{
+							writer.WriteString(prefix + L"void " + file->Name() + L"Visitor::Finishing(");
+							PrintCppType(file, classSymbol, writer);
+							writer.WriteString(L"* from, ");
+							PrintCppType(file, classSymbol, writer);
+							writer.WriteLine(L"* to) {}");
+						}
+					}
+					writer.WriteLine(L"");
 				});
 			}
 		}

@@ -11,5 +11,38 @@ namespace calculator
 {
 	namespace traverse_visitor
 	{
+		void AstVisitor::Traverse(vl::glr::ParsingToken& token) {}
+		void AstVisitor::Traverse(vl::glr::ParsingAstBase* node) {}
+		void AstVisitor::Traverse(Arg* from, Arg* to) {}
+		void AstVisitor::Traverse(Binary* from, Binary* to) {}
+		void AstVisitor::Traverse(Call* from, Call* to) {}
+		void AstVisitor::Traverse(Expandable* from, Expandable* to) {}
+		void AstVisitor::Traverse(Expr* from, Expr* to) {}
+		void AstVisitor::Traverse(False* from, False* to) {}
+		void AstVisitor::Traverse(Func* from, Func* to) {}
+		void AstVisitor::Traverse(Import* from, Import* to) {}
+		void AstVisitor::Traverse(LetExpr* from, LetExpr* to) {}
+		void AstVisitor::Traverse(Module* from, Module* to) {}
+		void AstVisitor::Traverse(NumExpr* from, NumExpr* to) {}
+		void AstVisitor::Traverse(Ref* from, Ref* to) {}
+		void AstVisitor::Traverse(True* from, True* to) {}
+		void AstVisitor::Traverse(Unary* from, Unary* to) {}
+
+		void AstVisitor::Finishing(vl::glr::ParsingAstBase* node) {}
+		void AstVisitor::Finishing(Arg* from, Arg* to) {}
+		void AstVisitor::Finishing(Binary* from, Binary* to) {}
+		void AstVisitor::Finishing(Call* from, Call* to) {}
+		void AstVisitor::Finishing(Expandable* from, Expandable* to) {}
+		void AstVisitor::Finishing(Expr* from, Expr* to) {}
+		void AstVisitor::Finishing(False* from, False* to) {}
+		void AstVisitor::Finishing(Func* from, Func* to) {}
+		void AstVisitor::Finishing(Import* from, Import* to) {}
+		void AstVisitor::Finishing(LetExpr* from, LetExpr* to) {}
+		void AstVisitor::Finishing(Module* from, Module* to) {}
+		void AstVisitor::Finishing(NumExpr* from, NumExpr* to) {}
+		void AstVisitor::Finishing(Ref* from, Ref* to) {}
+		void AstVisitor::Finishing(True* from, True* to) {}
+		void AstVisitor::Finishing(Unary* from, Unary* to) {}
+
 	}
 }
