@@ -26,46 +26,6 @@ namespace calculator
 	class True;
 	class Unary;
 
-	enum class AstClasses : vl::vint32_t
-	{
-		Arg = 0,
-		Binary = 1,
-		Call = 2,
-		Expandable = 3,
-		Expr = 4,
-		False = 5,
-		Func = 6,
-		Import = 7,
-		LetExpr = 8,
-		Module = 9,
-		NumExpr = 10,
-		Ref = 11,
-		True = 12,
-		Unary = 13,
-	};
-
-	enum class AstFields : vl::vint32_t
-	{
-		Arg_name = (static_cast<vl::vint32_t>(AstClasses::Arg) << 8) + 0,
-		Binary_left = (static_cast<vl::vint32_t>(AstClasses::Binary) << 8) + 0,
-		Binary_op = (static_cast<vl::vint32_t>(AstClasses::Binary) << 8) + 1,
-		Binary_right = (static_cast<vl::vint32_t>(AstClasses::Binary) << 8) + 2,
-		Call_arg = (static_cast<vl::vint32_t>(AstClasses::Call) << 8) + 0,
-		Call_func = (static_cast<vl::vint32_t>(AstClasses::Call) << 8) + 1,
-		Expandable_expanded = (static_cast<vl::vint32_t>(AstClasses::Expandable) << 8) + 0,
-		Func_args = (static_cast<vl::vint32_t>(AstClasses::Func) << 8) + 0,
-		Func_value = (static_cast<vl::vint32_t>(AstClasses::Func) << 8) + 1,
-		Import_name = (static_cast<vl::vint32_t>(AstClasses::Import) << 8) + 0,
-		LetExpr_name = (static_cast<vl::vint32_t>(AstClasses::LetExpr) << 8) + 0,
-		LetExpr_value = (static_cast<vl::vint32_t>(AstClasses::LetExpr) << 8) + 1,
-		Module_exported = (static_cast<vl::vint32_t>(AstClasses::Module) << 8) + 0,
-		Module_imports = (static_cast<vl::vint32_t>(AstClasses::Module) << 8) + 1,
-		NumExpr_value = (static_cast<vl::vint32_t>(AstClasses::NumExpr) << 8) + 0,
-		Ref_name = (static_cast<vl::vint32_t>(AstClasses::Ref) << 8) + 0,
-		Unary_op = (static_cast<vl::vint32_t>(AstClasses::Unary) << 8) + 0,
-		Unary_operand = (static_cast<vl::vint32_t>(AstClasses::Unary) << 8) + 1,
-	};
-
 	enum class UnaryOp
 	{
 		Positive = 0,

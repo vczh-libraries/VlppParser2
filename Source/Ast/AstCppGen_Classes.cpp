@@ -28,44 +28,6 @@ WriteTypeForwardDefinitions
 				}
 			}
 
-			void WriteClassEnumDefinitions(AstDefFile* file, const WString& prefix, stream::StreamWriter& writer)
-			{
-				vint index = 0;
-				writer.WriteLine(L"");
-				writer.WriteLine(prefix + L"enum class " + file->Name() + L"Classes : vl::vint32_t");
-				writer.WriteLine(prefix + L"{");
-				for (auto typeSymbol : file->Symbols().Values())
-				{
-					if (auto classSymbol = dynamic_cast<AstClassSymbol*>(typeSymbol))
-					{
-						writer.WriteLine(prefix + L"\t" + classSymbol->Name() + L" = " + itow(index) + L",");
-						index++;
-					}
-				}
-				writer.WriteLine(prefix + L"};");
-			}
-
-			void WriteFieldEnumDefinitions(AstDefFile* file, const WString& prefix, stream::StreamWriter& writer)
-			{
-				writer.WriteLine(L"");
-				writer.WriteLine(prefix + L"enum class " + file->Name() + L"Fields : vl::vint32_t");
-				writer.WriteLine(prefix + L"{");
-				for (auto typeSymbol : file->Symbols().Values())
-				{
-					if (auto classSymbol = dynamic_cast<AstClassSymbol*>(typeSymbol))
-					{
-						for (auto [propSymbol, index] : indexed(classSymbol->Props().Values()))
-						{
-							writer.WriteString(prefix + L"\t" + classSymbol->Name() + L"_" + propSymbol->Name());
-							writer.WriteString(L" = ");
-							writer.WriteString(L"(static_cast<vl::vint32_t>(" + file->Name() + L"Classes::" + classSymbol->Name() + L") << 8) + " + itow(index));
-							writer.WriteLine(L",");
-						}
-					}
-				}
-				writer.WriteLine(prefix + L"};");
-			}
-
 /***********************************************************************
 PrintCppType
 ***********************************************************************/

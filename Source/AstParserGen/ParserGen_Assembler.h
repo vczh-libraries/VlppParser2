@@ -15,6 +15,28 @@ namespace vl
 	{
 		namespace parsergen
 		{
+			enum class ParserGenClasses : vl::vint32_t
+			{
+				Class = 0,
+				ClassProp = 1,
+				Enum = 2,
+				EnumItem = 3,
+				File = 4,
+				Type = 5,
+			};
+
+			enum class ParserGenFields : vl::vint32_t
+			{
+				Class_props = (static_cast<vl::vint32_t>(ParserGenClasses::Class) << 8) + 0,
+				ClassProp_name = (static_cast<vl::vint32_t>(ParserGenClasses::ClassProp) << 8) + 0,
+				ClassProp_propType = (static_cast<vl::vint32_t>(ParserGenClasses::ClassProp) << 8) + 1,
+				ClassProp_propTypeName = (static_cast<vl::vint32_t>(ParserGenClasses::ClassProp) << 8) + 2,
+				Enum_items = (static_cast<vl::vint32_t>(ParserGenClasses::Enum) << 8) + 0,
+				EnumItem_name = (static_cast<vl::vint32_t>(ParserGenClasses::EnumItem) << 8) + 0,
+				File_name = (static_cast<vl::vint32_t>(ParserGenClasses::File) << 8) + 0,
+				File_types = (static_cast<vl::vint32_t>(ParserGenClasses::File) << 8) + 1,
+				Type_name = (static_cast<vl::vint32_t>(ParserGenClasses::Type) << 8) + 0,
+			};
 		}
 	}
 }

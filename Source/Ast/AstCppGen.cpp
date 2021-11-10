@@ -100,8 +100,6 @@ Forward Declarations
 ***********************************************************************/
 
 			extern void		WriteTypeForwardDefinitions(AstDefFile* file, const WString& prefix, stream::StreamWriter& writer);
-			extern void		WriteClassEnumDefinitions(AstDefFile* file, const WString& prefix, stream::StreamWriter& writer);
-			extern void		WriteFieldEnumDefinitions(AstDefFile* file, const WString& prefix, stream::StreamWriter& writer);
 			extern void		WriteTypeDefinitions(AstDefFile* file, const WString& prefix, stream::StreamWriter& writer);
 			extern void		WriteVisitorImpl(AstDefFile* file, const WString& prefix, stream::StreamWriter& writer);
 			extern void		WriteTypeReflectionDeclaration(AstDefFile* file, const WString& prefix, stream::StreamWriter& writer);
@@ -135,8 +133,6 @@ WriteAstHeaderFile
 				{
 					WString prefix = WriteNssBegin(file->cppNss, writer);
 					WriteTypeForwardDefinitions(file, prefix, writer);
-					WriteClassEnumDefinitions(file, prefix, writer);
-					WriteFieldEnumDefinitions(file, prefix, writer);
 					WriteTypeDefinitions(file, prefix, writer);
 					WriteNssEnd(file->cppNss, writer);
 				}
