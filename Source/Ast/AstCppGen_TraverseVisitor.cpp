@@ -29,13 +29,13 @@ WriteVisitFieldFunctionBody
 					}
 				}
 
-				for (auto classSymbol : order)
+				writer.WriteLine(prefix + L"\tTraverse(static_cast<vl::glr::ParsingAstBase*>(node));");
+				for (auto classSymbol : From(order).Reverse())
 				{
 					writer.WriteString(prefix + L"\tTraverse(static_cast<");
 					PrintCppType(file, classSymbol, writer);
 					writer.WriteLine(L"*>(node));");
 				}
-				writer.WriteLine(prefix + L"\tTraverse(static_cast<vl::glr::ParsingAstBase*>(node));");
 
 				for (auto propSymbol : fieldSymbol->Props().Values())
 				{
@@ -47,25 +47,25 @@ WriteVisitFieldFunctionBody
 					case AstPropType::Array:
 						writer.WriteLine(prefix + L"\tfor (auto&& listItem : node->" + propSymbol->Name() + L")");
 						writer.WriteLine(prefix + L"\t{");
-						writer.WriteLine(prefix + L"\t\tTraverse(listItem.Obj());");
+						writer.WriteLine(prefix + L"\t\tInspectInto(listItem.Obj());");
 						writer.WriteLine(prefix + L"\t}");
 						break;
 					case AstPropType::Type:
 						if (dynamic_cast<AstClassSymbol*>(propSymbol->propSymbol))
 						{
-							writer.WriteLine(prefix + L"\tTraverse(node->" + propSymbol->Name() + L".Obj());");
+							writer.WriteLine(prefix + L"\tInspectInto(node->" + propSymbol->Name() + L".Obj());");
 						}
 						break;
 					}
 				}
 
-				writer.WriteLine(prefix + L"\tFinishing(static_cast<vl::glr::ParsingAstBase*>(node));");
-				for (auto classSymbol : From(order).Reverse())
+				for (auto classSymbol : order)
 				{
 					writer.WriteString(prefix + L"\tFinishing(static_cast<");
 					PrintCppType(file, classSymbol, writer);
 					writer.WriteLine(L"*>(node));");
 				}
+				writer.WriteLine(prefix + L"\tFinishing(static_cast<vl::glr::ParsingAstBase*>(node));");
 			}
 
 /***********************************************************************
@@ -198,6 +198,7 @@ WriteTraverseVisitorCppFile
 							writer.WriteLine(prefix + L"{");
 							if (classSymbol->derivedClasses.Count() == 0)
 							{
+								WriteVisitFieldFunctionBody(file, classSymbol, prefix, writer);
 							}
 							else
 							{
@@ -232,6 +233,7 @@ WriteTraverseVisitorCppFile
 						PrintCppType(file, classSymbol, writer);
 						writer.WriteLine(L"* node)");
 						writer.WriteLine(prefix + L"{");
+						WriteVisitFieldFunctionBody(file, classSymbol, prefix, writer);
 						writer.WriteLine(prefix + L"}");
 						writer.WriteLine(L"");
 					}

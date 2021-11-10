@@ -34,10 +34,32 @@ namespace vl
 
 				void TypeAstVisitor::Visit(GlrEnum* node)
 				{
+					if (!node) return;
+					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+					Traverse(static_cast<GlrType*>(node));
+					Traverse(static_cast<GlrEnum*>(node));
+					for (auto&& listItem : node->items)
+					{
+						InspectInto(listItem.Obj());
+					}
+					Finishing(static_cast<GlrEnum*>(node));
+					Finishing(static_cast<GlrType*>(node));
+					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
 				void TypeAstVisitor::Visit(GlrClass* node)
 				{
+					if (!node) return;
+					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+					Traverse(static_cast<GlrType*>(node));
+					Traverse(static_cast<GlrClass*>(node));
+					for (auto&& listItem : node->props)
+					{
+						InspectInto(listItem.Obj());
+					}
+					Finishing(static_cast<GlrClass*>(node));
+					Finishing(static_cast<GlrType*>(node));
+					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
 				void TypeAstVisitor::InspectInto(GlrType* node)
@@ -47,14 +69,37 @@ namespace vl
 
 				void TypeAstVisitor::InspectInto(GlrEnumItem* node)
 				{
+					if (!node) return;
+					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+					Traverse(static_cast<GlrEnumItem*>(node));
+					Traverse(node->name);
+					Finishing(static_cast<GlrEnumItem*>(node));
+					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
 				void TypeAstVisitor::InspectInto(GlrClassProp* node)
 				{
+					if (!node) return;
+					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+					Traverse(static_cast<GlrClassProp*>(node));
+					Traverse(node->name);
+					Traverse(node->propTypeName);
+					Finishing(static_cast<GlrClassProp*>(node));
+					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
 				void TypeAstVisitor::InspectInto(GlrFile* node)
 				{
+					if (!node) return;
+					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+					Traverse(static_cast<GlrFile*>(node));
+					Traverse(node->name);
+					for (auto&& listItem : node->types)
+					{
+						InspectInto(listItem.Obj());
+					}
+					Finishing(static_cast<GlrFile*>(node));
+					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
 			}
