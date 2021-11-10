@@ -15,9 +15,9 @@ namespace vl
 WriteEmptyVisitorHeaderFile
 ***********************************************************************/
 
-			void WriteEmptyVisitorHeaderFile(AstDefFile* file, stream::StreamWriter& writer)
+			void WriteEmptyVisitorHeaderFile(AstDefFile* file, Ptr<CppAstGenOutput> output, stream::StreamWriter& writer)
 			{
-				WriteVisitorHeaderFile(file, L"Empty", writer, [&](const WString& prefix)
+				WriteAstUtilityHeaderFile(file, output, L"empty_visitor", writer, [&](const WString& prefix)
 				{
 					for (auto name : file->SymbolOrder())
 					{
@@ -65,9 +65,9 @@ WriteEmptyVisitorHeaderFile
 WriteEmptyVisitorCppFile
 ***********************************************************************/
 
-			void WriteEmptyVisitorCppFile(AstDefFile* file, stream::StreamWriter& writer)
+			void WriteEmptyVisitorCppFile(AstDefFile* file, Ptr<CppAstGenOutput> output, stream::StreamWriter& writer)
 			{
-				WriteVisitorCppFile(file, L"Empty", writer, [&](const WString& prefix)
+				WriteAstUtilityCppFile(file, output->emptyH, L"empty_visitor", writer, [&](const WString& prefix)
 				{
 					for (auto name : file->SymbolOrder())
 					{

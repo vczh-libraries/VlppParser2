@@ -58,9 +58,9 @@ WriteCopyFieldFunctionBody
 WriteCopyVisitorHeaderFile
 ***********************************************************************/
 
-			void WriteCopyVisitorHeaderFile(AstDefFile* file, stream::StreamWriter& writer)
+			void WriteCopyVisitorHeaderFile(AstDefFile* file, Ptr<CppAstGenOutput> output, stream::StreamWriter& writer)
 			{
-				WriteVisitorHeaderFile(file, L"Copy", writer, [&](const WString& prefix)
+				WriteAstUtilityHeaderFile(file, output, L"copy_visitor", writer, [&](const WString& prefix)
 				{
 					List<AstClassSymbol*> visitors, concreteClasses;
 					CollectVisitorsAndConcreteClasses(file, visitors, concreteClasses);
@@ -130,9 +130,9 @@ WriteCopyVisitorHeaderFile
 WriteCopyVisitorCppFile
 ***********************************************************************/
 
-			void WriteCopyVisitorCppFile(AstDefFile* file, stream::StreamWriter& writer)
+			void WriteCopyVisitorCppFile(AstDefFile* file, Ptr<CppAstGenOutput> output, stream::StreamWriter& writer)
 			{
-				WriteVisitorCppFile(file, L"Copy", writer, [&](const WString& prefix)
+				WriteAstUtilityCppFile(file, output->copyH, L"copy_visitor", writer, [&](const WString& prefix)
 				{
 					List<AstClassSymbol*> visitors, concreteClasses;
 					CollectVisitorsAndConcreteClasses(file, visitors, concreteClasses);

@@ -79,9 +79,9 @@ WriteVisitFieldFunctionBody
 WriteJsonVisitorHeaderFile
 ***********************************************************************/
 
-			void WriteJsonVisitorHeaderFile(AstDefFile* file, stream::StreamWriter& writer)
+			void WriteJsonVisitorHeaderFile(AstDefFile* file, Ptr<CppAstGenOutput> output, stream::StreamWriter& writer)
 			{
-				WriteVisitorHeaderFile(file, L"Json", writer, [&](const WString& prefix)
+				WriteAstUtilityHeaderFile(file, output, L"json_visitor", writer, [&](const WString& prefix)
 				{
 					List<AstClassSymbol*> visitors, concreteClasses;
 					CollectVisitorsAndConcreteClasses(file, visitors, concreteClasses);
@@ -142,9 +142,9 @@ WriteJsonVisitorHeaderFile
 WriteJsonVisitorCppFile
 ***********************************************************************/
 
-			void WriteJsonVisitorCppFile(AstDefFile* file, stream::StreamWriter& writer)
+			void WriteJsonVisitorCppFile(AstDefFile* file, Ptr<CppAstGenOutput> output, stream::StreamWriter& writer)
 			{
-				WriteVisitorCppFile(file, L"Json", writer, [&](const WString& prefix)
+				WriteAstUtilityCppFile(file, output->jsonH, L"json_visitor", writer, [&](const WString& prefix)
 				{
 					List<AstClassSymbol*> visitors, concreteClasses;
 					CollectVisitorsAndConcreteClasses(file, visitors, concreteClasses);

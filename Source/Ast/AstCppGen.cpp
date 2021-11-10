@@ -327,12 +327,12 @@ WriteAstFiles
 				{
 					WString fileH = GenerateToStream([&](StreamWriter& writer)
 					{
-						WriteAstBuilderHeaderFile(file, writer);
+						WriteAstBuilderHeaderFile(file, output, writer);
 					});
 
 					WString fileCpp = GenerateToStream([&](StreamWriter& writer)
 					{
-						WriteAstBuilderCppFile(file, writer);
+						WriteAstBuilderCppFile(file, output, writer);
 					});
 
 					files.Add(output->builderH, fileH);
@@ -342,12 +342,12 @@ WriteAstFiles
 				{
 					WString fileH = GenerateToStream([&](StreamWriter& writer)
 					{
-						WriteEmptyVisitorHeaderFile(file, writer);
+						WriteEmptyVisitorHeaderFile(file, output, writer);
 					});
 
 					WString fileCpp = GenerateToStream([&](StreamWriter& writer)
 					{
-						WriteEmptyVisitorCppFile(file, writer);
+						WriteEmptyVisitorCppFile(file, output, writer);
 					});
 
 					files.Add(output->emptyH, fileH);
@@ -357,12 +357,12 @@ WriteAstFiles
 				{
 					WString fileH = GenerateToStream([&](StreamWriter& writer)
 					{
-						WriteCopyVisitorHeaderFile(file, writer);
+						WriteCopyVisitorHeaderFile(file, output, writer);
 					});
 
 					WString fileCpp = GenerateToStream([&](StreamWriter& writer)
 					{
-						WriteCopyVisitorCppFile(file, writer);
+						WriteCopyVisitorCppFile(file, output, writer);
 					});
 
 					files.Add(output->copyH, fileH);
@@ -372,12 +372,12 @@ WriteAstFiles
 				{
 					WString fileH = GenerateToStream([&](StreamWriter& writer)
 					{
-						WriteTraverseVisitorHeaderFile(file, writer);
+						WriteTraverseVisitorHeaderFile(file, output, writer);
 					});
 
 					WString fileCpp = GenerateToStream([&](StreamWriter& writer)
 					{
-						WriteTraverseVisitorCppFile(file, writer);
+						WriteTraverseVisitorCppFile(file, output, writer);
 					});
 
 					files.Add(output->traverseH, fileH);
@@ -387,12 +387,12 @@ WriteAstFiles
 				{
 					WString fileH = GenerateToStream([&](StreamWriter& writer)
 					{
-						WriteJsonVisitorHeaderFile(file, writer);
+						WriteJsonVisitorHeaderFile(file, output, writer);
 					});
 
 					WString fileCpp = GenerateToStream([&](StreamWriter& writer)
 					{
-						WriteJsonVisitorCppFile(file, writer);
+						WriteJsonVisitorCppFile(file, output, writer);
 					});
 
 					files.Add(output->jsonH, fileH);
@@ -410,12 +410,12 @@ WriteAstFiles
 				{
 					WString fileH = GenerateToStream([&](StreamWriter& writer)
 					{
-							WriteAstAssemblerHeaderFile(manager, writer);
+							WriteAstAssemblerHeaderFile(manager, output, writer);
 					});
 
 					WString fileCpp = GenerateToStream([&](StreamWriter& writer)
 					{
-							WriteAstAssemblerCppFile(manager, writer);
+							WriteAstAssemblerCppFile(manager, output, writer);
 					});
 
 					files.Add(output->assemblyH, fileH);

@@ -79,9 +79,9 @@ WriteVisitFieldFunctionBody
 WriteTraverseVisitorHeaderFile
 ***********************************************************************/
 
-			void WriteTraverseVisitorHeaderFile(AstDefFile* file, stream::StreamWriter& writer)
+			void WriteTraverseVisitorHeaderFile(AstDefFile* file, Ptr<CppAstGenOutput> output, stream::StreamWriter& writer)
 			{
-				WriteVisitorHeaderFile(file, L"Traverse", writer, [&](const WString& prefix)
+				WriteAstUtilityHeaderFile(file, output, L"traverse_visitor", writer, [&](const WString& prefix)
 				{
 					List<AstClassSymbol*> visitors, concreteClasses;
 					CollectVisitorsAndConcreteClasses(file, visitors, concreteClasses);
@@ -155,9 +155,9 @@ WriteTraverseVisitorHeaderFile
 WriteTraverseVisitorCppFile
 ***********************************************************************/
 
-			void WriteTraverseVisitorCppFile(AstDefFile* file, stream::StreamWriter& writer)
+			void WriteTraverseVisitorCppFile(AstDefFile* file, Ptr<CppAstGenOutput> output, stream::StreamWriter& writer)
 			{
-				WriteVisitorCppFile(file, L"Traverse", writer, [&](const WString& prefix)
+				WriteAstUtilityCppFile(file, output->traverseH, L"traverse_visitor", writer, [&](const WString& prefix)
 				{
 					List<AstClassSymbol*> visitors, concreteClasses;
 					CollectVisitorsAndConcreteClasses(file, visitors, concreteClasses);

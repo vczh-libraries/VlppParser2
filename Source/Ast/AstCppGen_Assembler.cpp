@@ -15,9 +15,9 @@ namespace vl
 WriteAstAssemblerHeaderFile
 ***********************************************************************/
 
-			void WriteAstAssemblerHeaderFile(AstSymbolManager& manager, stream::StreamWriter& writer)
+			void WriteAstAssemblerHeaderFile(AstSymbolManager& manager, Ptr<CppParserGenOutput> output, stream::StreamWriter& writer)
 			{
-				WriteParserHeaderFile(manager, L"ASSEMBLER", writer, [&](const WString& prefix)
+				WriteParserUtilityHeaderFile(manager, output, L"ASSEMBLER", writer, [&](const WString& prefix)
 				{
 				});
 			}
@@ -26,9 +26,9 @@ WriteAstAssemblerHeaderFile
 WriteAstAssemblerCppFile
 ***********************************************************************/
 
-			void WriteAstAssemblerCppFile(AstSymbolManager& manager, stream::StreamWriter& writer)
+			void WriteAstAssemblerCppFile(AstSymbolManager& manager, Ptr<CppParserGenOutput> output, stream::StreamWriter& writer)
 			{
-				WriteParserCppFile(manager, L"Assembler", writer, [&](const WString& prefix)
+				WriteParserUtilityCppFile(manager, output->assemblyH, writer, [&](const WString& prefix)
 				{
 				});
 			}
