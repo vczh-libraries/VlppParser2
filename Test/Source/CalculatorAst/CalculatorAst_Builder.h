@@ -14,6 +14,123 @@ namespace calculator
 {
 	namespace builder
 	{
+		class ArgBuilder
+		{
+		private:
+			Arg* node;
+		public:
+			ArgBuilder(Arg* _node) : node(_node) {}
+
+			ArgBuilder& name(const vl::WString& value);
+		};
+
+		class BinaryBuilder
+		{
+		private:
+			Binary* node;
+		public:
+			BinaryBuilder(Binary* _node) : node(_node) {}
+
+			BinaryBuilder& left(vl::Ptr<Expr> value);
+			BinaryBuilder& op(BinaryOp value);
+			BinaryBuilder& right(vl::Ptr<Expr> value);
+		};
+
+		class CallBuilder
+		{
+		private:
+			Call* node;
+		public:
+			CallBuilder(Call* _node) : node(_node) {}
+
+			CallBuilder& arg(vl::Ptr<Expr> value);
+			CallBuilder& func(vl::Ptr<Expr> value);
+		};
+
+		class ExpandableBuilder
+		{
+		private:
+			Expandable* node;
+		public:
+			ExpandableBuilder(Expandable* _node) : node(_node) {}
+
+			ExpandableBuilder& expanded(vl::Ptr<Expr> value);
+		};
+
+		class FuncBuilder
+		{
+		private:
+			Func* node;
+		public:
+			FuncBuilder(Func* _node) : node(_node) {}
+
+			FuncBuilder& args(vl::Ptr<Arg> value);
+			FuncBuilder& value(vl::Ptr<Expr> value);
+		};
+
+		class ImportBuilder
+		{
+		private:
+			Import* node;
+		public:
+			ImportBuilder(Import* _node) : node(_node) {}
+
+			ImportBuilder& name(const vl::WString& value);
+		};
+
+		class LetExprBuilder
+		{
+		private:
+			LetExpr* node;
+		public:
+			LetExprBuilder(LetExpr* _node) : node(_node) {}
+
+			LetExprBuilder& name(const vl::WString& value);
+			LetExprBuilder& value(vl::Ptr<Expr> value);
+		};
+
+		class ModuleBuilder
+		{
+		private:
+			Module* node;
+		public:
+			ModuleBuilder(Module* _node) : node(_node) {}
+
+			ModuleBuilder& exported(vl::Ptr<Expr> value);
+			ModuleBuilder& imports(vl::Ptr<Import> value);
+		};
+
+		class NumExprBuilder
+		{
+		private:
+			NumExpr* node;
+		public:
+			NumExprBuilder(NumExpr* _node) : node(_node) {}
+
+			NumExprBuilder& value(const vl::WString& value);
+		};
+
+		class RefBuilder
+		{
+		private:
+			Ref* node;
+		public:
+			RefBuilder(Ref* _node) : node(_node) {}
+
+			RefBuilder& name(const vl::WString& value);
+		};
+
+		class UnaryBuilder
+		{
+		private:
+			Unary* node;
+		public:
+			UnaryBuilder(Unary* _node) : node(_node) {}
+
+			UnaryBuilder& op(UnaryOp value);
+			UnaryBuilder& operand(vl::Ptr<Expr> value);
+		};
+
 	}
 }
 #endif

@@ -18,6 +18,69 @@ namespace vl
 		{
 			namespace builder
 			{
+				class ClassBuilder
+				{
+				private:
+					GlrClass* node;
+				public:
+					ClassBuilder(GlrClass* _node) : node(_node) {}
+
+					ClassBuilder& props(vl::Ptr<GlrClassProp> value);
+				};
+
+				class ClassPropBuilder
+				{
+				private:
+					GlrClassProp* node;
+				public:
+					ClassPropBuilder(GlrClassProp* _node) : node(_node) {}
+
+					ClassPropBuilder& name(const vl::WString& value);
+					ClassPropBuilder& propType(GlrPropType value);
+					ClassPropBuilder& propTypeName(const vl::WString& value);
+				};
+
+				class EnumBuilder
+				{
+				private:
+					GlrEnum* node;
+				public:
+					EnumBuilder(GlrEnum* _node) : node(_node) {}
+
+					EnumBuilder& items(vl::Ptr<GlrEnumItem> value);
+				};
+
+				class EnumItemBuilder
+				{
+				private:
+					GlrEnumItem* node;
+				public:
+					EnumItemBuilder(GlrEnumItem* _node) : node(_node) {}
+
+					EnumItemBuilder& name(const vl::WString& value);
+				};
+
+				class FileBuilder
+				{
+				private:
+					GlrFile* node;
+				public:
+					FileBuilder(GlrFile* _node) : node(_node) {}
+
+					FileBuilder& name(const vl::WString& value);
+					FileBuilder& types(vl::Ptr<GlrType> value);
+				};
+
+				class TypeBuilder
+				{
+				private:
+					GlrType* node;
+				public:
+					TypeBuilder(GlrType* _node) : node(_node) {}
+
+					TypeBuilder& name(const vl::WString& value);
+				};
+
 			}
 		}
 	}
