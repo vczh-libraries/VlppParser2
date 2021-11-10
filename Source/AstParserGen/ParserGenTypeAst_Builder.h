@@ -7,7 +7,6 @@ Licensed under https://github.com/vczh-libraries/License
 #ifndef VCZH_PARSER2_PARSERGEN_TYPEAST_AST_BUILDER
 #define VCZH_PARSER2_PARSERGEN_TYPEAST_AST_BUILDER
 
-#include "../AstBase.h"
 #include "ParserGenTypeAst.h"
 
 namespace vl

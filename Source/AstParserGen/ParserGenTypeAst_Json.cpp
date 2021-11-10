@@ -4,7 +4,6 @@ From parser definition:TypeAst
 Licensed under https://github.com/vczh-libraries/License
 ***********************************************************************/
 
-#include "../AstBase.h"
 #include "ParserGenTypeAst_Json.h"
 
 namespace vl

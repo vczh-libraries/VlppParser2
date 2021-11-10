@@ -4,7 +4,6 @@ From parser definition:Ast
 Licensed under https://github.com/vczh-libraries/License
 ***********************************************************************/
 
-#include "../../../Source/AstBase.h"
 #include "CalculatorAst.h"
 
 namespace calculator

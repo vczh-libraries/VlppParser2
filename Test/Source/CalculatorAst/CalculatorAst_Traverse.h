@@ -4,10 +4,9 @@ From parser definition:Ast
 Licensed under https://github.com/vczh-libraries/License
 ***********************************************************************/
 
-#ifndef VCZH_PARSER2_UNITTEST_CALCULATORAST_AST_TRAVERSEVISITOR
-#define VCZH_PARSER2_UNITTEST_CALCULATORAST_AST_TRAVERSEVISITOR
+#ifndef VCZH_PARSER2_UNITTEST_CALCULATORAST_AST_TRAVERSE_VISITOR
+#define VCZH_PARSER2_UNITTEST_CALCULATORAST_AST_TRAVERSE_VISITOR
 
-#include "../../../Source/AstBase.h"
 #include "CalculatorAst.h"
 
 namespace calculator

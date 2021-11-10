@@ -4,10 +4,9 @@ From parser definition:TypeAst
 Licensed under https://github.com/vczh-libraries/License
 ***********************************************************************/
 
-#ifndef VCZH_PARSER2_PARSERGEN_TYPEAST_AST_COPYVISITOR
-#define VCZH_PARSER2_PARSERGEN_TYPEAST_AST_COPYVISITOR
+#ifndef VCZH_PARSER2_PARSERGEN_TYPEAST_AST_COPY_VISITOR
+#define VCZH_PARSER2_PARSERGEN_TYPEAST_AST_COPY_VISITOR
 
-#include "../AstBase.h"
 #include "ParserGenTypeAst.h"
 
 namespace vl

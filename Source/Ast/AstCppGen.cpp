@@ -130,6 +130,7 @@ WriteAstHeaderFile
 				{
 					writer.WriteLine(L"#include \"" + include + L"\"");
 				}
+				writer.WriteLine(L"");
 
 				{
 					WString prefix = WriteNssBegin(file->cppNss, writer);
@@ -163,6 +164,7 @@ WriteAstCppFile
 			{
 				WriteFileComment(file->Name(), writer);
 				writer.WriteLine(L"#include \"" + astHeaderName + L"\"");
+				writer.WriteLine(L"");
 				{
 					WString prefix = WriteNssBegin(file->cppNss, writer);
 					writer.WriteLine(L"/***********************************************************************");
@@ -270,7 +272,7 @@ WriteParserUtilityHeaderFile
 				writer.WriteLine(L"");
 				for (auto file : manager.Files().Values())
 				{
-					writer.WriteLine(L"#include \"" + output->files[file]->astH + L".h\"");
+					writer.WriteLine(L"#include \"" + output->files[file]->astH + L"\"");
 				}
 
 				writer.WriteLine(L"");
@@ -296,7 +298,7 @@ WriteParserUtilityCppFile
 			)
 			{
 				WriteFileComment(manager.name, writer);
-				writer.WriteLine(L"#include \"" + utilityHeaderFile + L".h\"");
+				writer.WriteLine(L"#include \"" + utilityHeaderFile + L"\"");
 				writer.WriteLine(L"");
 				WString prefix = WriteNssBegin(manager.cppNss, writer);
 				callback(prefix);

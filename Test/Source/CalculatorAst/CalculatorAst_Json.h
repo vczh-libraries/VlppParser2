@@ -4,10 +4,9 @@ From parser definition:Ast
 Licensed under https://github.com/vczh-libraries/License
 ***********************************************************************/
 
-#ifndef VCZH_PARSER2_UNITTEST_CALCULATORAST_AST_JSONVISITOR
-#define VCZH_PARSER2_UNITTEST_CALCULATORAST_AST_JSONVISITOR
+#ifndef VCZH_PARSER2_UNITTEST_CALCULATORAST_AST_JSON_VISITOR
+#define VCZH_PARSER2_UNITTEST_CALCULATORAST_AST_JSON_VISITOR
 
-#include "../../../Source/AstBase.h"
 #include "CalculatorAst.h"
 
 namespace calculator
