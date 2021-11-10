@@ -126,6 +126,11 @@ JsonVisitorBase
 			writer.WriteChar(L'\"');
 		}
 
+		void JsonVisitorBase::WriteNull()
+		{
+			writer.WriteString(L"null");
+		}
+
 		JsonVisitorBase::JsonVisitorBase(stream::StreamWriter& _writer)
 			:writer(_writer)
 		{

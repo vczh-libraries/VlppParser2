@@ -220,68 +220,6 @@ WriteVisitorCppFile
 			}
 
 /***********************************************************************
-WriteRootVisitorHeaderFile
-***********************************************************************/
-
-			void WriteRootVisitorHeaderFile(AstSymbolManager& manager, const WString& visitorName, stream::StreamWriter& writer, Func<void(const WString&)> callback)
-			{
-				WriteFileComment(manager.name, writer);
-				if (manager.headerGuard != L"")
-				{
-					writer.WriteString(L"#ifndef ");
-					writer.WriteLine(manager.headerGuard + L"_AST_" + wupper(visitorName) + L"VISITOR");
-					writer.WriteString(L"#define ");
-					writer.WriteLine(manager.headerGuard + L"_AST_" + wupper(visitorName) + L"VISITOR");
-				}
-				else
-				{
-					writer.WriteLine(L"#pragma once");
-				}
-				writer.WriteLine(L"");
-				for(auto file : manager.Files().Values())
-				{
-					writer.WriteLine(L"#include \"" + (manager.name + file->Name() + L"_" + visitorName) + L".h\"");
-				}
-				writer.WriteLine(L"");
-				WString prefix = WriteNssBegin(manager.cppNss, writer);
-				writer.WriteLine(prefix + L"namespace " + wlower(visitorName) + L"_visitor");
-				writer.WriteLine(prefix + L"{");
-				prefix += L"\t";
-
-				callback(prefix);
-
-				prefix = prefix.Left(prefix.Length() - 1);
-				writer.WriteLine(prefix + L"}");
-				WriteNssEnd(manager.cppNss, writer);
-
-				if (manager.headerGuard != L"")
-				{
-					writer.WriteString(L"#endif");
-				}
-			}
-
-/***********************************************************************
-WriteRootVisitorCppFile
-***********************************************************************/
-
-			void WriteRootVisitorCppFile(AstSymbolManager& manager, const WString& visitorName, stream::StreamWriter& writer, Func<void(const WString&)> callback)
-			{
-				WriteFileComment(manager.name, writer);
-				writer.WriteLine(L"#include \"" + (manager.name + L"_Root" + visitorName) + L".h\"");
-				writer.WriteLine(L"");
-				WString prefix = WriteNssBegin(manager.cppNss, writer);
-				writer.WriteLine(prefix + L"namespace " + wlower(visitorName) + L"_visitor");
-				writer.WriteLine(prefix + L"{");
-				prefix += L"\t";
-
-				callback(prefix);
-
-				prefix = prefix.Left(prefix.Length() - 1);
-				writer.WriteLine(prefix + L"}");
-				WriteNssEnd(manager.cppNss, writer);
-			}
-
-/***********************************************************************
 WriteAstFiles
 ***********************************************************************/
 
@@ -296,6 +234,8 @@ WriteAstFiles
 				output->copyCpp = file->Owner()->name + file->Name() + L"_Copy.cpp";
 				output->traverseH = file->Owner()->name + file->Name() + L"_Traverse.h";
 				output->traverseCpp = file->Owner()->name + file->Name() + L"_Traverse.cpp";
+				output->jsonH = file->Owner()->name + file->Name() + L"_Json.h";
+				output->jsonCpp = file->Owner()->name + file->Name() + L"_Json.cpp";
 
 				{
 					WString fileH = GenerateToStream([&](StreamWriter& writer)
@@ -355,6 +295,21 @@ WriteAstFiles
 
 					files.Add(output->traverseH, fileH);
 					files.Add(output->traverseCpp, fileCpp);
+				}
+
+				{
+					WString fileH = GenerateToStream([&](StreamWriter& writer)
+					{
+						WriteJsonVisitorHeaderFile(file, writer);
+					});
+
+					WString fileCpp = GenerateToStream([&](StreamWriter& writer)
+					{
+						WriteJsonVisitorCppFile(file, writer);
+					});
+
+					files.Add(output->jsonH, fileH);
+					files.Add(output->jsonCpp, fileCpp);
 				}
 				return output;
 			}

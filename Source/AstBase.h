@@ -194,6 +194,7 @@ Location
 			void								WriteToken(const ParsingToken& token);
 			void								WriteType(const WString& type, ParsingAstBase* node);
 			void								WriteString(const WString& text);
+			void								WriteNull();
 		public:
 			JsonVisitorBase(stream::StreamWriter& _writer);
 		};
