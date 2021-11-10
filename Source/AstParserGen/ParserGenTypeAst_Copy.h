@@ -32,6 +32,10 @@ namespace vl
 					void CopyFields(GlrType* from, GlrType* to);
 
 				protected:
+					virtual void Visit(GlrEnumItem* node);
+					virtual void Visit(GlrClassProp* node);
+					virtual void Visit(GlrFile* node);
+
 					void Visit(GlrEnum* node) override;
 					void Visit(GlrClass* node) override;
 

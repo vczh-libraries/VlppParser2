@@ -37,6 +37,10 @@ namespace calculator
 			void CopyFields(Unary* from, Unary* to);
 
 		protected:
+			virtual void Visit(Arg* node);
+			virtual void Visit(Import* node);
+			virtual void Visit(Module* node);
+
 			void Visit(NumExpr* node) override;
 			void Visit(Ref* node) override;
 			void Visit(True* node) override;

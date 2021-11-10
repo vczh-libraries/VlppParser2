@@ -91,6 +91,13 @@ WriteCopyVisitorHeaderFile
 					writer.WriteLine(L"");
 
 					writer.WriteLine(prefix + L"protected:");
+					for (auto classSymbol : concreteClasses)
+					{
+						writer.WriteString(prefix + L"\tvirtual void Visit(");
+						PrintCppType(file, classSymbol, writer);
+						writer.WriteLine(L"* node);");
+					}
+					writer.WriteLine(L"");
 					for (auto visitorSymbol : visitors)
 					{
 						for (auto classSymbol : visitorSymbol->derivedClasses)
@@ -146,6 +153,21 @@ WriteCopyVisitorCppFile
 						}
 					}
 
+					for (auto classSymbol : concreteClasses)
+					{
+						writer.WriteString(prefix + L"void " + file->Name() + L"Visitor::Visit(");
+						PrintCppType(file, classSymbol, writer);
+						writer.WriteLine(L"* node)");
+						writer.WriteLine(prefix + L"{");
+						writer.WriteString(prefix + L"\tauto newNode = vl::MakePtr<");
+						PrintCppType(file, classSymbol, writer);
+						writer.WriteLine(L">();");
+						writer.WriteLine(prefix + L"\tCopyFields(node, newNode.Obj());");
+						writer.WriteLine(prefix + L"\tthis->result = newNode;");
+						writer.WriteLine(prefix + L"}");
+						writer.WriteLine(L"");
+					}
+
 					for (auto visitorSymbol : visitors)
 					{
 						for (auto classSymbol : visitorSymbol->derivedClasses)
@@ -181,11 +203,10 @@ WriteCopyVisitorCppFile
 						PrintCppType(file, classSymbol, writer);
 						writer.WriteLine(L"* node)");
 						writer.WriteLine(prefix + L"{");
-						writer.WriteString(prefix + L"\tauto newNode = vl::MakePtr<");
+						writer.WriteLine(prefix + L"\tVisit(node);");
+						writer.WriteString(prefix + L"\treturn this->result.Cast<");
 						PrintCppType(file, classSymbol, writer);
 						writer.WriteLine(L">();");
-						writer.WriteLine(prefix + L"\tCopyFields(node, newNode.Obj());");
-						writer.WriteLine(prefix + L"\treturn newNode;");
 						writer.WriteLine(prefix + L"}");
 						writer.WriteLine(L"");
 					}

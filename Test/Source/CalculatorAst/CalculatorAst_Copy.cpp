@@ -101,6 +101,27 @@ namespace calculator
 			to->operand = CopyNode(from->operand.Obj());
 		}
 
+		void AstVisitor::Visit(Arg* node)
+		{
+			auto newNode = vl::MakePtr<Arg>();
+			CopyFields(node, newNode.Obj());
+			this->result = newNode;
+		}
+
+		void AstVisitor::Visit(Import* node)
+		{
+			auto newNode = vl::MakePtr<Import>();
+			CopyFields(node, newNode.Obj());
+			this->result = newNode;
+		}
+
+		void AstVisitor::Visit(Module* node)
+		{
+			auto newNode = vl::MakePtr<Module>();
+			CopyFields(node, newNode.Obj());
+			this->result = newNode;
+		}
+
 		void AstVisitor::Visit(NumExpr* node)
 		{
 			auto newNode = vl::MakePtr<NumExpr>();
@@ -171,23 +192,20 @@ namespace calculator
 
 		vl::Ptr<Arg> AstVisitor::CopyNode(Arg* node)
 		{
-			auto newNode = vl::MakePtr<Arg>();
-			CopyFields(node, newNode.Obj());
-			return newNode;
+			Visit(node);
+			return this->result.Cast<Arg>();
 		}
 
 		vl::Ptr<Import> AstVisitor::CopyNode(Import* node)
 		{
-			auto newNode = vl::MakePtr<Import>();
-			CopyFields(node, newNode.Obj());
-			return newNode;
+			Visit(node);
+			return this->result.Cast<Import>();
 		}
 
 		vl::Ptr<Module> AstVisitor::CopyNode(Module* node)
 		{
-			auto newNode = vl::MakePtr<Module>();
-			CopyFields(node, newNode.Obj());
-			return newNode;
+			Visit(node);
+			return this->result.Cast<Module>();
 		}
 
 		vl::Ptr<Expr> AstVisitor::CopyNode(Expr* node)

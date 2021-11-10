@@ -59,6 +59,27 @@ namespace vl
 					to->name = from->name;
 				}
 
+				void TypeAstVisitor::Visit(GlrEnumItem* node)
+				{
+					auto newNode = vl::MakePtr<GlrEnumItem>();
+					CopyFields(node, newNode.Obj());
+					this->result = newNode;
+				}
+
+				void TypeAstVisitor::Visit(GlrClassProp* node)
+				{
+					auto newNode = vl::MakePtr<GlrClassProp>();
+					CopyFields(node, newNode.Obj());
+					this->result = newNode;
+				}
+
+				void TypeAstVisitor::Visit(GlrFile* node)
+				{
+					auto newNode = vl::MakePtr<GlrFile>();
+					CopyFields(node, newNode.Obj());
+					this->result = newNode;
+				}
+
 				void TypeAstVisitor::Visit(GlrEnum* node)
 				{
 					auto newNode = vl::MakePtr<GlrEnum>();
@@ -75,23 +96,20 @@ namespace vl
 
 				vl::Ptr<GlrEnumItem> TypeAstVisitor::CopyNode(GlrEnumItem* node)
 				{
-					auto newNode = vl::MakePtr<GlrEnumItem>();
-					CopyFields(node, newNode.Obj());
-					return newNode;
+					Visit(node);
+					return this->result.Cast<GlrEnumItem>();
 				}
 
 				vl::Ptr<GlrClassProp> TypeAstVisitor::CopyNode(GlrClassProp* node)
 				{
-					auto newNode = vl::MakePtr<GlrClassProp>();
-					CopyFields(node, newNode.Obj());
-					return newNode;
+					Visit(node);
+					return this->result.Cast<GlrClassProp>();
 				}
 
 				vl::Ptr<GlrFile> TypeAstVisitor::CopyNode(GlrFile* node)
 				{
-					auto newNode = vl::MakePtr<GlrFile>();
-					CopyFields(node, newNode.Obj());
-					return newNode;
+					Visit(node);
+					return this->result.Cast<GlrFile>();
 				}
 
 				vl::Ptr<GlrType> TypeAstVisitor::CopyNode(GlrType* node)
