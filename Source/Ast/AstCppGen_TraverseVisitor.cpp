@@ -106,9 +106,7 @@ WriteTraverseVisitorHeaderFile
 						{
 							writer.WriteString(prefix + L"\tvirtual void Traverse(");
 							PrintCppType(file, classSymbol, writer);
-							writer.WriteString(L"* from, ");
-							PrintCppType(file, classSymbol, writer);
-							writer.WriteLine(L"* to);");
+							writer.WriteLine(L"* node);");
 						}
 					}
 					writer.WriteLine(L"");
@@ -121,9 +119,7 @@ WriteTraverseVisitorHeaderFile
 						{
 							writer.WriteString(prefix + L"\tvirtual void Finishing(");
 							PrintCppType(file, classSymbol, writer);
-							writer.WriteString(L"* from, ");
-							PrintCppType(file, classSymbol, writer);
-							writer.WriteLine(L"* to);");
+							writer.WriteLine(L"* node);");
 						}
 					}
 					writer.WriteLine(L"");
@@ -174,9 +170,7 @@ WriteTraverseVisitorCppFile
 						{
 							writer.WriteString(prefix + L"void " + file->Name() + L"Visitor::Traverse(");
 							PrintCppType(file, classSymbol, writer);
-							writer.WriteString(L"* from, ");
-							PrintCppType(file, classSymbol, writer);
-							writer.WriteLine(L"* to) {}");
+							writer.WriteLine(L"* node) {}");
 						}
 					}
 					writer.WriteLine(L"");
@@ -188,9 +182,7 @@ WriteTraverseVisitorCppFile
 						{
 							writer.WriteString(prefix + L"void " + file->Name() + L"Visitor::Finishing(");
 							PrintCppType(file, classSymbol, writer);
-							writer.WriteString(L"* from, ");
-							PrintCppType(file, classSymbol, writer);
-							writer.WriteLine(L"* to) {}");
+							writer.WriteLine(L"* node) {}");
 						}
 					}
 					writer.WriteLine(L"");

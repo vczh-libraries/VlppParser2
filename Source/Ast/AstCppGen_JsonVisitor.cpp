@@ -20,7 +20,7 @@ WriteVisitFieldFunctionBody
 			{
 				for (auto propSymbol : fieldSymbol->Props().Values())
 				{
-					writer.WriteLine(prefix + L"\tBeginField(\"L" + propSymbol->Name() + L"\");");
+					writer.WriteLine(prefix + L"\tBeginField(L\"" + propSymbol->Name() + L"\");");
 					switch (propSymbol->propType)
 					{
 					case AstPropType::Token:
@@ -39,7 +39,7 @@ WriteVisitFieldFunctionBody
 					case AstPropType::Type:
 						if (dynamic_cast<AstClassSymbol*>(propSymbol->propSymbol))
 						{
-							writer.WriteLine(prefix + L"\tInspectInto(node->" + propSymbol->Name() + L".Obj());");
+							writer.WriteLine(prefix + L"\tPrint(node->" + propSymbol->Name() + L".Obj());");
 						}
 						break;
 					}
@@ -65,7 +65,7 @@ WriteVisitFieldFunctionBody
 				}
 
 				writer.WriteLine(prefix + L"\tBeginObject();");
-				writer.WriteLine(prefix + L"\tWriteType(\"L" + fieldSymbol->Name() + L"\", node);");
+				writer.WriteLine(prefix + L"\tWriteType(L\"" + fieldSymbol->Name() + L"\", node);");
 				for (auto classSymbol : From(order).Reverse())
 				{
 					writer.WriteString(prefix + L"\tPrintFields(static_cast<");
@@ -104,9 +104,7 @@ WriteJsonVisitorHeaderFile
 						{
 							writer.WriteString(prefix + L"\tvirtual void PrintFields(");
 							PrintCppType(file, classSymbol, writer);
-							writer.WriteString(L"* from, ");
-							PrintCppType(file, classSymbol, writer);
-							writer.WriteLine(L"* to);");
+							writer.WriteLine(L"* node);");
 						}
 					}
 					writer.WriteLine(L"");
@@ -157,9 +155,7 @@ WriteJsonVisitorCppFile
 						{
 							writer.WriteString(prefix + L"void " + file->Name() + L"Visitor::PrintFields(");
 							PrintCppType(file, classSymbol, writer);
-							writer.WriteString(L"* from, ");
-							PrintCppType(file, classSymbol, writer);
-							writer.WriteLine(L"* to)");
+							writer.WriteLine(L"* node)");
 							writer.WriteLine(prefix + L"{");
 							WritePrintFieldsFunctionBody(file, classSymbol, prefix, writer);
 							writer.WriteLine(prefix + L"}");
@@ -194,7 +190,7 @@ WriteJsonVisitorCppFile
 					{
 						if (!classSymbol->baseClass)
 						{
-							writer.WriteString(prefix + L"void " + file->Name() + L"Visitor::InspectInto(");
+							writer.WriteString(prefix + L"void " + file->Name() + L"Visitor::Print(");
 							PrintCppType(file, classSymbol, writer);
 							writer.WriteLine(L"* node)");
 							writer.WriteLine(prefix + L"{");

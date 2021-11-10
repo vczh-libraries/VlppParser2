@@ -17,20 +17,20 @@ namespace vl
 			{
 				void TypeAstVisitor::Traverse(vl::glr::ParsingToken& token) {}
 				void TypeAstVisitor::Traverse(vl::glr::ParsingAstBase* node) {}
-				void TypeAstVisitor::Traverse(GlrClass* from, GlrClass* to) {}
-				void TypeAstVisitor::Traverse(GlrClassProp* from, GlrClassProp* to) {}
-				void TypeAstVisitor::Traverse(GlrEnum* from, GlrEnum* to) {}
-				void TypeAstVisitor::Traverse(GlrEnumItem* from, GlrEnumItem* to) {}
-				void TypeAstVisitor::Traverse(GlrFile* from, GlrFile* to) {}
-				void TypeAstVisitor::Traverse(GlrType* from, GlrType* to) {}
+				void TypeAstVisitor::Traverse(GlrClass* node) {}
+				void TypeAstVisitor::Traverse(GlrClassProp* node) {}
+				void TypeAstVisitor::Traverse(GlrEnum* node) {}
+				void TypeAstVisitor::Traverse(GlrEnumItem* node) {}
+				void TypeAstVisitor::Traverse(GlrFile* node) {}
+				void TypeAstVisitor::Traverse(GlrType* node) {}
 
 				void TypeAstVisitor::Finishing(vl::glr::ParsingAstBase* node) {}
-				void TypeAstVisitor::Finishing(GlrClass* from, GlrClass* to) {}
-				void TypeAstVisitor::Finishing(GlrClassProp* from, GlrClassProp* to) {}
-				void TypeAstVisitor::Finishing(GlrEnum* from, GlrEnum* to) {}
-				void TypeAstVisitor::Finishing(GlrEnumItem* from, GlrEnumItem* to) {}
-				void TypeAstVisitor::Finishing(GlrFile* from, GlrFile* to) {}
-				void TypeAstVisitor::Finishing(GlrType* from, GlrType* to) {}
+				void TypeAstVisitor::Finishing(GlrClass* node) {}
+				void TypeAstVisitor::Finishing(GlrClassProp* node) {}
+				void TypeAstVisitor::Finishing(GlrEnum* node) {}
+				void TypeAstVisitor::Finishing(GlrEnumItem* node) {}
+				void TypeAstVisitor::Finishing(GlrFile* node) {}
+				void TypeAstVisitor::Finishing(GlrType* node) {}
 
 				void TypeAstVisitor::Visit(GlrEnum* node)
 				{

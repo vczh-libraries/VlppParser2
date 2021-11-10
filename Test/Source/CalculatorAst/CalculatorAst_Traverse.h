@@ -23,37 +23,37 @@ namespace calculator
 		protected:
 			virtual void Traverse(vl::glr::ParsingToken& token);
 			virtual void Traverse(vl::glr::ParsingAstBase* node);
-			virtual void Traverse(Arg* from, Arg* to);
-			virtual void Traverse(Binary* from, Binary* to);
-			virtual void Traverse(Call* from, Call* to);
-			virtual void Traverse(Expandable* from, Expandable* to);
-			virtual void Traverse(Expr* from, Expr* to);
-			virtual void Traverse(False* from, False* to);
-			virtual void Traverse(Func* from, Func* to);
-			virtual void Traverse(Import* from, Import* to);
-			virtual void Traverse(LetExpr* from, LetExpr* to);
-			virtual void Traverse(Module* from, Module* to);
-			virtual void Traverse(NumExpr* from, NumExpr* to);
-			virtual void Traverse(Ref* from, Ref* to);
-			virtual void Traverse(True* from, True* to);
-			virtual void Traverse(Unary* from, Unary* to);
+			virtual void Traverse(Arg* node);
+			virtual void Traverse(Binary* node);
+			virtual void Traverse(Call* node);
+			virtual void Traverse(Expandable* node);
+			virtual void Traverse(Expr* node);
+			virtual void Traverse(False* node);
+			virtual void Traverse(Func* node);
+			virtual void Traverse(Import* node);
+			virtual void Traverse(LetExpr* node);
+			virtual void Traverse(Module* node);
+			virtual void Traverse(NumExpr* node);
+			virtual void Traverse(Ref* node);
+			virtual void Traverse(True* node);
+			virtual void Traverse(Unary* node);
 
 		protected:
 			virtual void Finishing(vl::glr::ParsingAstBase* node);
-			virtual void Finishing(Arg* from, Arg* to);
-			virtual void Finishing(Binary* from, Binary* to);
-			virtual void Finishing(Call* from, Call* to);
-			virtual void Finishing(Expandable* from, Expandable* to);
-			virtual void Finishing(Expr* from, Expr* to);
-			virtual void Finishing(False* from, False* to);
-			virtual void Finishing(Func* from, Func* to);
-			virtual void Finishing(Import* from, Import* to);
-			virtual void Finishing(LetExpr* from, LetExpr* to);
-			virtual void Finishing(Module* from, Module* to);
-			virtual void Finishing(NumExpr* from, NumExpr* to);
-			virtual void Finishing(Ref* from, Ref* to);
-			virtual void Finishing(True* from, True* to);
-			virtual void Finishing(Unary* from, Unary* to);
+			virtual void Finishing(Arg* node);
+			virtual void Finishing(Binary* node);
+			virtual void Finishing(Call* node);
+			virtual void Finishing(Expandable* node);
+			virtual void Finishing(Expr* node);
+			virtual void Finishing(False* node);
+			virtual void Finishing(Func* node);
+			virtual void Finishing(Import* node);
+			virtual void Finishing(LetExpr* node);
+			virtual void Finishing(Module* node);
+			virtual void Finishing(NumExpr* node);
+			virtual void Finishing(Ref* node);
+			virtual void Finishing(True* node);
+			virtual void Finishing(Unary* node);
 
 		protected:
 			void Visit(NumExpr* node) override;

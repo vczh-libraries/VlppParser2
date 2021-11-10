@@ -21,20 +21,20 @@ namespace calculator
 			, protected virtual Expandable::IVisitor
 		{
 		protected:
-			virtual void PrintFields(Arg* from, Arg* to);
-			virtual void PrintFields(Binary* from, Binary* to);
-			virtual void PrintFields(Call* from, Call* to);
-			virtual void PrintFields(Expandable* from, Expandable* to);
-			virtual void PrintFields(Expr* from, Expr* to);
-			virtual void PrintFields(False* from, False* to);
-			virtual void PrintFields(Func* from, Func* to);
-			virtual void PrintFields(Import* from, Import* to);
-			virtual void PrintFields(LetExpr* from, LetExpr* to);
-			virtual void PrintFields(Module* from, Module* to);
-			virtual void PrintFields(NumExpr* from, NumExpr* to);
-			virtual void PrintFields(Ref* from, Ref* to);
-			virtual void PrintFields(True* from, True* to);
-			virtual void PrintFields(Unary* from, Unary* to);
+			virtual void PrintFields(Arg* node);
+			virtual void PrintFields(Binary* node);
+			virtual void PrintFields(Call* node);
+			virtual void PrintFields(Expandable* node);
+			virtual void PrintFields(Expr* node);
+			virtual void PrintFields(False* node);
+			virtual void PrintFields(Func* node);
+			virtual void PrintFields(Import* node);
+			virtual void PrintFields(LetExpr* node);
+			virtual void PrintFields(Module* node);
+			virtual void PrintFields(NumExpr* node);
+			virtual void PrintFields(Ref* node);
+			virtual void PrintFields(True* node);
+			virtual void PrintFields(Unary* node);
 
 		protected:
 			void Visit(NumExpr* node) override;

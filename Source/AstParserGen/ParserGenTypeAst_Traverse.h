@@ -26,21 +26,21 @@ namespace vl
 				protected:
 					virtual void Traverse(vl::glr::ParsingToken& token);
 					virtual void Traverse(vl::glr::ParsingAstBase* node);
-					virtual void Traverse(GlrClass* from, GlrClass* to);
-					virtual void Traverse(GlrClassProp* from, GlrClassProp* to);
-					virtual void Traverse(GlrEnum* from, GlrEnum* to);
-					virtual void Traverse(GlrEnumItem* from, GlrEnumItem* to);
-					virtual void Traverse(GlrFile* from, GlrFile* to);
-					virtual void Traverse(GlrType* from, GlrType* to);
+					virtual void Traverse(GlrClass* node);
+					virtual void Traverse(GlrClassProp* node);
+					virtual void Traverse(GlrEnum* node);
+					virtual void Traverse(GlrEnumItem* node);
+					virtual void Traverse(GlrFile* node);
+					virtual void Traverse(GlrType* node);
 
 				protected:
 					virtual void Finishing(vl::glr::ParsingAstBase* node);
-					virtual void Finishing(GlrClass* from, GlrClass* to);
-					virtual void Finishing(GlrClassProp* from, GlrClassProp* to);
-					virtual void Finishing(GlrEnum* from, GlrEnum* to);
-					virtual void Finishing(GlrEnumItem* from, GlrEnumItem* to);
-					virtual void Finishing(GlrFile* from, GlrFile* to);
-					virtual void Finishing(GlrType* from, GlrType* to);
+					virtual void Finishing(GlrClass* node);
+					virtual void Finishing(GlrClassProp* node);
+					virtual void Finishing(GlrEnum* node);
+					virtual void Finishing(GlrEnumItem* node);
+					virtual void Finishing(GlrFile* node);
+					virtual void Finishing(GlrType* node);
 
 				protected:
 					void Visit(GlrEnum* node) override;

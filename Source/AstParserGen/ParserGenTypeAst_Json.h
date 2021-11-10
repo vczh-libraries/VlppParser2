@@ -24,12 +24,12 @@ namespace vl
 					, protected virtual GlrType::IVisitor
 				{
 				protected:
-					virtual void PrintFields(GlrClass* from, GlrClass* to);
-					virtual void PrintFields(GlrClassProp* from, GlrClassProp* to);
-					virtual void PrintFields(GlrEnum* from, GlrEnum* to);
-					virtual void PrintFields(GlrEnumItem* from, GlrEnumItem* to);
-					virtual void PrintFields(GlrFile* from, GlrFile* to);
-					virtual void PrintFields(GlrType* from, GlrType* to);
+					virtual void PrintFields(GlrClass* node);
+					virtual void PrintFields(GlrClassProp* node);
+					virtual void PrintFields(GlrEnum* node);
+					virtual void PrintFields(GlrEnumItem* node);
+					virtual void PrintFields(GlrFile* node);
+					virtual void PrintFields(GlrType* node);
 
 				protected:
 					void Visit(GlrEnum* node) override;

@@ -13,36 +13,36 @@ namespace calculator
 	{
 		void AstVisitor::Traverse(vl::glr::ParsingToken& token) {}
 		void AstVisitor::Traverse(vl::glr::ParsingAstBase* node) {}
-		void AstVisitor::Traverse(Arg* from, Arg* to) {}
-		void AstVisitor::Traverse(Binary* from, Binary* to) {}
-		void AstVisitor::Traverse(Call* from, Call* to) {}
-		void AstVisitor::Traverse(Expandable* from, Expandable* to) {}
-		void AstVisitor::Traverse(Expr* from, Expr* to) {}
-		void AstVisitor::Traverse(False* from, False* to) {}
-		void AstVisitor::Traverse(Func* from, Func* to) {}
-		void AstVisitor::Traverse(Import* from, Import* to) {}
-		void AstVisitor::Traverse(LetExpr* from, LetExpr* to) {}
-		void AstVisitor::Traverse(Module* from, Module* to) {}
-		void AstVisitor::Traverse(NumExpr* from, NumExpr* to) {}
-		void AstVisitor::Traverse(Ref* from, Ref* to) {}
-		void AstVisitor::Traverse(True* from, True* to) {}
-		void AstVisitor::Traverse(Unary* from, Unary* to) {}
+		void AstVisitor::Traverse(Arg* node) {}
+		void AstVisitor::Traverse(Binary* node) {}
+		void AstVisitor::Traverse(Call* node) {}
+		void AstVisitor::Traverse(Expandable* node) {}
+		void AstVisitor::Traverse(Expr* node) {}
+		void AstVisitor::Traverse(False* node) {}
+		void AstVisitor::Traverse(Func* node) {}
+		void AstVisitor::Traverse(Import* node) {}
+		void AstVisitor::Traverse(LetExpr* node) {}
+		void AstVisitor::Traverse(Module* node) {}
+		void AstVisitor::Traverse(NumExpr* node) {}
+		void AstVisitor::Traverse(Ref* node) {}
+		void AstVisitor::Traverse(True* node) {}
+		void AstVisitor::Traverse(Unary* node) {}
 
 		void AstVisitor::Finishing(vl::glr::ParsingAstBase* node) {}
-		void AstVisitor::Finishing(Arg* from, Arg* to) {}
-		void AstVisitor::Finishing(Binary* from, Binary* to) {}
-		void AstVisitor::Finishing(Call* from, Call* to) {}
-		void AstVisitor::Finishing(Expandable* from, Expandable* to) {}
-		void AstVisitor::Finishing(Expr* from, Expr* to) {}
-		void AstVisitor::Finishing(False* from, False* to) {}
-		void AstVisitor::Finishing(Func* from, Func* to) {}
-		void AstVisitor::Finishing(Import* from, Import* to) {}
-		void AstVisitor::Finishing(LetExpr* from, LetExpr* to) {}
-		void AstVisitor::Finishing(Module* from, Module* to) {}
-		void AstVisitor::Finishing(NumExpr* from, NumExpr* to) {}
-		void AstVisitor::Finishing(Ref* from, Ref* to) {}
-		void AstVisitor::Finishing(True* from, True* to) {}
-		void AstVisitor::Finishing(Unary* from, Unary* to) {}
+		void AstVisitor::Finishing(Arg* node) {}
+		void AstVisitor::Finishing(Binary* node) {}
+		void AstVisitor::Finishing(Call* node) {}
+		void AstVisitor::Finishing(Expandable* node) {}
+		void AstVisitor::Finishing(Expr* node) {}
+		void AstVisitor::Finishing(False* node) {}
+		void AstVisitor::Finishing(Func* node) {}
+		void AstVisitor::Finishing(Import* node) {}
+		void AstVisitor::Finishing(LetExpr* node) {}
+		void AstVisitor::Finishing(Module* node) {}
+		void AstVisitor::Finishing(NumExpr* node) {}
+		void AstVisitor::Finishing(Ref* node) {}
+		void AstVisitor::Finishing(True* node) {}
+		void AstVisitor::Finishing(Unary* node) {}
 
 		void AstVisitor::Visit(NumExpr* node)
 		{

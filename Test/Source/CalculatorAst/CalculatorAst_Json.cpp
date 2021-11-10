@@ -11,47 +11,47 @@ namespace calculator
 {
 	namespace json_visitor
 	{
-		void AstVisitor::PrintFields(Arg* from, Arg* to)
+		void AstVisitor::PrintFields(Arg* node)
 		{
-			BeginField("Lname");
+			BeginField(L"name");
 			WriteToken(node->name);
 			EndField();
 		}
-		void AstVisitor::PrintFields(Binary* from, Binary* to)
+		void AstVisitor::PrintFields(Binary* node)
 		{
-			BeginField("Lleft");
-			InspectInto(node->left.Obj());
+			BeginField(L"left");
+			Print(node->left.Obj());
 			EndField();
-			BeginField("Lop");
+			BeginField(L"op");
 			EndField();
-			BeginField("Lright");
-			InspectInto(node->right.Obj());
-			EndField();
-		}
-		void AstVisitor::PrintFields(Call* from, Call* to)
-		{
-			BeginField("Larg");
-			InspectInto(node->arg.Obj());
-			EndField();
-			BeginField("Lfunc");
-			InspectInto(node->func.Obj());
+			BeginField(L"right");
+			Print(node->right.Obj());
 			EndField();
 		}
-		void AstVisitor::PrintFields(Expandable* from, Expandable* to)
+		void AstVisitor::PrintFields(Call* node)
 		{
-			BeginField("Lexpanded");
-			InspectInto(node->expanded.Obj());
+			BeginField(L"arg");
+			Print(node->arg.Obj());
+			EndField();
+			BeginField(L"func");
+			Print(node->func.Obj());
 			EndField();
 		}
-		void AstVisitor::PrintFields(Expr* from, Expr* to)
+		void AstVisitor::PrintFields(Expandable* node)
+		{
+			BeginField(L"expanded");
+			Print(node->expanded.Obj());
+			EndField();
+		}
+		void AstVisitor::PrintFields(Expr* node)
 		{
 		}
-		void AstVisitor::PrintFields(False* from, False* to)
+		void AstVisitor::PrintFields(False* node)
 		{
 		}
-		void AstVisitor::PrintFields(Func* from, Func* to)
+		void AstVisitor::PrintFields(Func* node)
 		{
-			BeginField("Largs");
+			BeginField(L"args");
 			BeginArray();
 			for (auto&& listItem : node->args)
 			{
@@ -61,31 +61,31 @@ namespace calculator
 			}
 			EndArray();
 			EndField();
-			BeginField("Lvalue");
-			InspectInto(node->value.Obj());
+			BeginField(L"value");
+			Print(node->value.Obj());
 			EndField();
 		}
-		void AstVisitor::PrintFields(Import* from, Import* to)
+		void AstVisitor::PrintFields(Import* node)
 		{
-			BeginField("Lname");
+			BeginField(L"name");
 			WriteToken(node->name);
 			EndField();
 		}
-		void AstVisitor::PrintFields(LetExpr* from, LetExpr* to)
+		void AstVisitor::PrintFields(LetExpr* node)
 		{
-			BeginField("Lname");
+			BeginField(L"name");
 			WriteToken(node->name);
 			EndField();
-			BeginField("Lvalue");
-			InspectInto(node->value.Obj());
+			BeginField(L"value");
+			Print(node->value.Obj());
 			EndField();
 		}
-		void AstVisitor::PrintFields(Module* from, Module* to)
+		void AstVisitor::PrintFields(Module* node)
 		{
-			BeginField("Lexported");
-			InspectInto(node->exported.Obj());
+			BeginField(L"exported");
+			Print(node->exported.Obj());
 			EndField();
-			BeginField("Limports");
+			BeginField(L"imports");
 			BeginArray();
 			for (auto&& listItem : node->imports)
 			{
@@ -96,27 +96,27 @@ namespace calculator
 			EndArray();
 			EndField();
 		}
-		void AstVisitor::PrintFields(NumExpr* from, NumExpr* to)
+		void AstVisitor::PrintFields(NumExpr* node)
 		{
-			BeginField("Lvalue");
+			BeginField(L"value");
 			WriteToken(node->value);
 			EndField();
 		}
-		void AstVisitor::PrintFields(Ref* from, Ref* to)
+		void AstVisitor::PrintFields(Ref* node)
 		{
-			BeginField("Lname");
+			BeginField(L"name");
 			WriteToken(node->name);
 			EndField();
 		}
-		void AstVisitor::PrintFields(True* from, True* to)
+		void AstVisitor::PrintFields(True* node)
 		{
 		}
-		void AstVisitor::PrintFields(Unary* from, Unary* to)
+		void AstVisitor::PrintFields(Unary* node)
 		{
-			BeginField("Lop");
+			BeginField(L"op");
 			EndField();
-			BeginField("Loperand");
-			InspectInto(node->operand.Obj());
+			BeginField(L"operand");
+			Print(node->operand.Obj());
 			EndField();
 		}
 
@@ -128,7 +128,7 @@ namespace calculator
 				return;
 			}
 			BeginObject();
-			WriteType("LNumExpr", node);
+			WriteType(L"NumExpr", node);
 			PrintFields(static_cast<Expr*>(node));
 			PrintFields(static_cast<NumExpr*>(node));
 			EndObject();
@@ -142,7 +142,7 @@ namespace calculator
 				return;
 			}
 			BeginObject();
-			WriteType("LRef", node);
+			WriteType(L"Ref", node);
 			PrintFields(static_cast<Expr*>(node));
 			PrintFields(static_cast<Ref*>(node));
 			EndObject();
@@ -156,7 +156,7 @@ namespace calculator
 				return;
 			}
 			BeginObject();
-			WriteType("LTrue", node);
+			WriteType(L"True", node);
 			PrintFields(static_cast<Expr*>(node));
 			PrintFields(static_cast<True*>(node));
 			EndObject();
@@ -170,7 +170,7 @@ namespace calculator
 				return;
 			}
 			BeginObject();
-			WriteType("LFalse", node);
+			WriteType(L"False", node);
 			PrintFields(static_cast<Expr*>(node));
 			PrintFields(static_cast<False*>(node));
 			EndObject();
@@ -184,7 +184,7 @@ namespace calculator
 				return;
 			}
 			BeginObject();
-			WriteType("LFunc", node);
+			WriteType(L"Func", node);
 			PrintFields(static_cast<Expr*>(node));
 			PrintFields(static_cast<Func*>(node));
 			EndObject();
@@ -198,7 +198,7 @@ namespace calculator
 				return;
 			}
 			BeginObject();
-			WriteType("LCall", node);
+			WriteType(L"Call", node);
 			PrintFields(static_cast<Expr*>(node));
 			PrintFields(static_cast<Call*>(node));
 			EndObject();
@@ -217,7 +217,7 @@ namespace calculator
 				return;
 			}
 			BeginObject();
-			WriteType("LLetExpr", node);
+			WriteType(L"LetExpr", node);
 			PrintFields(static_cast<Expr*>(node));
 			PrintFields(static_cast<Expandable*>(node));
 			PrintFields(static_cast<LetExpr*>(node));
@@ -232,7 +232,7 @@ namespace calculator
 				return;
 			}
 			BeginObject();
-			WriteType("LUnary", node);
+			WriteType(L"Unary", node);
 			PrintFields(static_cast<Expr*>(node));
 			PrintFields(static_cast<Expandable*>(node));
 			PrintFields(static_cast<Unary*>(node));
@@ -247,14 +247,14 @@ namespace calculator
 				return;
 			}
 			BeginObject();
-			WriteType("LBinary", node);
+			WriteType(L"Binary", node);
 			PrintFields(static_cast<Expr*>(node));
 			PrintFields(static_cast<Expandable*>(node));
 			PrintFields(static_cast<Binary*>(node));
 			EndObject();
 		}
 
-		void AstVisitor::InspectInto(Expr* node)
+		void AstVisitor::Print(Expr* node)
 		{
 			if (!node) return;
 			node->Accept(static_cast<Expr::IVisitor*>(this));
@@ -268,7 +268,7 @@ namespace calculator
 				return;
 			}
 			BeginObject();
-			WriteType("LArg", node);
+			WriteType(L"Arg", node);
 			PrintFields(static_cast<Arg*>(node));
 			EndObject();
 		}
@@ -281,7 +281,7 @@ namespace calculator
 				return;
 			}
 			BeginObject();
-			WriteType("LImport", node);
+			WriteType(L"Import", node);
 			PrintFields(static_cast<Import*>(node));
 			EndObject();
 		}
@@ -294,7 +294,7 @@ namespace calculator
 				return;
 			}
 			BeginObject();
-			WriteType("LModule", node);
+			WriteType(L"Module", node);
 			PrintFields(static_cast<Module*>(node));
 			EndObject();
 		}

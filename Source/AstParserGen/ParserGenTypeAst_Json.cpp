@@ -15,9 +15,9 @@ namespace vl
 		{
 			namespace json_visitor
 			{
-				void TypeAstVisitor::PrintFields(GlrClass* from, GlrClass* to)
+				void TypeAstVisitor::PrintFields(GlrClass* node)
 				{
-					BeginField("Lprops");
+					BeginField(L"props");
 					BeginArray();
 					for (auto&& listItem : node->props)
 					{
@@ -28,20 +28,20 @@ namespace vl
 					EndArray();
 					EndField();
 				}
-				void TypeAstVisitor::PrintFields(GlrClassProp* from, GlrClassProp* to)
+				void TypeAstVisitor::PrintFields(GlrClassProp* node)
 				{
-					BeginField("Lname");
+					BeginField(L"name");
 					WriteToken(node->name);
 					EndField();
-					BeginField("LpropType");
+					BeginField(L"propType");
 					EndField();
-					BeginField("LpropTypeName");
+					BeginField(L"propTypeName");
 					WriteToken(node->propTypeName);
 					EndField();
 				}
-				void TypeAstVisitor::PrintFields(GlrEnum* from, GlrEnum* to)
+				void TypeAstVisitor::PrintFields(GlrEnum* node)
 				{
-					BeginField("Litems");
+					BeginField(L"items");
 					BeginArray();
 					for (auto&& listItem : node->items)
 					{
@@ -52,18 +52,18 @@ namespace vl
 					EndArray();
 					EndField();
 				}
-				void TypeAstVisitor::PrintFields(GlrEnumItem* from, GlrEnumItem* to)
+				void TypeAstVisitor::PrintFields(GlrEnumItem* node)
 				{
-					BeginField("Lname");
+					BeginField(L"name");
 					WriteToken(node->name);
 					EndField();
 				}
-				void TypeAstVisitor::PrintFields(GlrFile* from, GlrFile* to)
+				void TypeAstVisitor::PrintFields(GlrFile* node)
 				{
-					BeginField("Lname");
+					BeginField(L"name");
 					WriteToken(node->name);
 					EndField();
-					BeginField("Ltypes");
+					BeginField(L"types");
 					BeginArray();
 					for (auto&& listItem : node->types)
 					{
@@ -74,9 +74,9 @@ namespace vl
 					EndArray();
 					EndField();
 				}
-				void TypeAstVisitor::PrintFields(GlrType* from, GlrType* to)
+				void TypeAstVisitor::PrintFields(GlrType* node)
 				{
-					BeginField("Lname");
+					BeginField(L"name");
 					WriteToken(node->name);
 					EndField();
 				}
@@ -89,7 +89,7 @@ namespace vl
 						return;
 					}
 					BeginObject();
-					WriteType("LEnum", node);
+					WriteType(L"Enum", node);
 					PrintFields(static_cast<GlrType*>(node));
 					PrintFields(static_cast<GlrEnum*>(node));
 					EndObject();
@@ -103,13 +103,13 @@ namespace vl
 						return;
 					}
 					BeginObject();
-					WriteType("LClass", node);
+					WriteType(L"Class", node);
 					PrintFields(static_cast<GlrType*>(node));
 					PrintFields(static_cast<GlrClass*>(node));
 					EndObject();
 				}
 
-				void TypeAstVisitor::InspectInto(GlrType* node)
+				void TypeAstVisitor::Print(GlrType* node)
 				{
 					if (!node) return;
 					node->Accept(static_cast<GlrType::IVisitor*>(this));
@@ -123,7 +123,7 @@ namespace vl
 						return;
 					}
 					BeginObject();
-					WriteType("LEnumItem", node);
+					WriteType(L"EnumItem", node);
 					PrintFields(static_cast<GlrEnumItem*>(node));
 					EndObject();
 				}
@@ -136,7 +136,7 @@ namespace vl
 						return;
 					}
 					BeginObject();
-					WriteType("LClassProp", node);
+					WriteType(L"ClassProp", node);
 					PrintFields(static_cast<GlrClassProp*>(node));
 					EndObject();
 				}
@@ -149,7 +149,7 @@ namespace vl
 						return;
 					}
 					BeginObject();
-					WriteType("LFile", node);
+					WriteType(L"File", node);
 					PrintFields(static_cast<GlrFile*>(node));
 					EndObject();
 				}
