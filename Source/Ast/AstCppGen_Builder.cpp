@@ -36,7 +36,6 @@ WriteAstBuilderHeaderFile
 								writer.WriteString(prefix + L"\t" + classSymbol->Name() + L"Builder(");
 								PrintCppType(file, classSymbol, writer);
 								writer.WriteLine(L"* _node) : node(_node) {}");
-								writer.WriteLine(L"");
 								for (auto propSymbol : classSymbol->Props().Values())
 								{
 									switch (propSymbol->propType)

@@ -24,7 +24,6 @@ namespace vl
 					GlrClass* node;
 				public:
 					ClassBuilder(GlrClass* _node) : node(_node) {}
-
 					ClassBuilder& props(const vl::Ptr<GlrClassProp>& value);
 				};
 
@@ -34,7 +33,6 @@ namespace vl
 					GlrClassProp* node;
 				public:
 					ClassPropBuilder(GlrClassProp* _node) : node(_node) {}
-
 					ClassPropBuilder& name(const vl::WString& value);
 					ClassPropBuilder& propType(GlrPropType value);
 					ClassPropBuilder& propTypeName(const vl::WString& value);
@@ -46,7 +44,6 @@ namespace vl
 					GlrEnum* node;
 				public:
 					EnumBuilder(GlrEnum* _node) : node(_node) {}
-
 					EnumBuilder& items(const vl::Ptr<GlrEnumItem>& value);
 				};
 
@@ -56,7 +53,6 @@ namespace vl
 					GlrEnumItem* node;
 				public:
 					EnumItemBuilder(GlrEnumItem* _node) : node(_node) {}
-
 					EnumItemBuilder& name(const vl::WString& value);
 				};
 
@@ -66,7 +62,6 @@ namespace vl
 					GlrFile* node;
 				public:
 					FileBuilder(GlrFile* _node) : node(_node) {}
-
 					FileBuilder& name(const vl::WString& value);
 					FileBuilder& types(const vl::Ptr<GlrType>& value);
 				};
@@ -77,7 +72,6 @@ namespace vl
 					GlrType* node;
 				public:
 					TypeBuilder(GlrType* _node) : node(_node) {}
-
 					TypeBuilder& name(const vl::WString& value);
 				};
 

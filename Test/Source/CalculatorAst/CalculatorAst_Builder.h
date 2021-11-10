@@ -20,7 +20,6 @@ namespace calculator
 			Arg* node;
 		public:
 			ArgBuilder(Arg* _node) : node(_node) {}
-
 			ArgBuilder& name(const vl::WString& value);
 		};
 
@@ -30,7 +29,6 @@ namespace calculator
 			Binary* node;
 		public:
 			BinaryBuilder(Binary* _node) : node(_node) {}
-
 			BinaryBuilder& left(const vl::Ptr<Expr>& value);
 			BinaryBuilder& op(BinaryOp value);
 			BinaryBuilder& right(const vl::Ptr<Expr>& value);
@@ -42,7 +40,6 @@ namespace calculator
 			Call* node;
 		public:
 			CallBuilder(Call* _node) : node(_node) {}
-
 			CallBuilder& arg(const vl::Ptr<Expr>& value);
 			CallBuilder& func(const vl::Ptr<Expr>& value);
 		};
@@ -53,7 +50,6 @@ namespace calculator
 			Expandable* node;
 		public:
 			ExpandableBuilder(Expandable* _node) : node(_node) {}
-
 			ExpandableBuilder& expanded(const vl::Ptr<Expr>& value);
 		};
 
@@ -63,7 +59,6 @@ namespace calculator
 			Func* node;
 		public:
 			FuncBuilder(Func* _node) : node(_node) {}
-
 			FuncBuilder& args(const vl::Ptr<Arg>& value);
 			FuncBuilder& value(const vl::Ptr<Expr>& value);
 		};
@@ -74,7 +69,6 @@ namespace calculator
 			Import* node;
 		public:
 			ImportBuilder(Import* _node) : node(_node) {}
-
 			ImportBuilder& name(const vl::WString& value);
 		};
 
@@ -84,7 +78,6 @@ namespace calculator
 			LetExpr* node;
 		public:
 			LetExprBuilder(LetExpr* _node) : node(_node) {}
-
 			LetExprBuilder& name(const vl::WString& value);
 			LetExprBuilder& value(const vl::Ptr<Expr>& value);
 		};
@@ -95,7 +88,6 @@ namespace calculator
 			Module* node;
 		public:
 			ModuleBuilder(Module* _node) : node(_node) {}
-
 			ModuleBuilder& exported(const vl::Ptr<Expr>& value);
 			ModuleBuilder& imports(const vl::Ptr<Import>& value);
 		};
@@ -106,7 +98,6 @@ namespace calculator
 			NumExpr* node;
 		public:
 			NumExprBuilder(NumExpr* _node) : node(_node) {}
-
 			NumExprBuilder& value(const vl::WString& value);
 		};
 
@@ -116,7 +107,6 @@ namespace calculator
 			Ref* node;
 		public:
 			RefBuilder(Ref* _node) : node(_node) {}
-
 			RefBuilder& name(const vl::WString& value);
 		};
 
@@ -126,7 +116,6 @@ namespace calculator
 			Unary* node;
 		public:
 			UnaryBuilder(Unary* _node) : node(_node) {}
-
 			UnaryBuilder& op(UnaryOp value);
 			UnaryBuilder& operand(const vl::Ptr<Expr>& value);
 		};
