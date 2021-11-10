@@ -11,5 +11,139 @@ namespace calculator
 {
 	namespace builder
 	{
+
+/***********************************************************************
+ArgBuilder
+***********************************************************************/
+
+		ArgBuilder& ArgBuilder::name(const vl::WString& value)
+		{
+			return *this;
+		}
+
+/***********************************************************************
+BinaryBuilder
+***********************************************************************/
+
+		BinaryBuilder& BinaryBuilder::left(vl::Ptr<Expr> value)
+		{
+			return *this;
+		}
+
+		BinaryBuilder& BinaryBuilder::op(BinaryOp value)
+		{
+			return *this;
+		}
+
+		BinaryBuilder& BinaryBuilder::right(vl::Ptr<Expr> value)
+		{
+			return *this;
+		}
+
+/***********************************************************************
+CallBuilder
+***********************************************************************/
+
+		CallBuilder& CallBuilder::arg(vl::Ptr<Expr> value)
+		{
+			return *this;
+		}
+
+		CallBuilder& CallBuilder::func(vl::Ptr<Expr> value)
+		{
+			return *this;
+		}
+
+/***********************************************************************
+ExpandableBuilder
+***********************************************************************/
+
+		ExpandableBuilder& ExpandableBuilder::expanded(vl::Ptr<Expr> value)
+		{
+			return *this;
+		}
+
+/***********************************************************************
+FuncBuilder
+***********************************************************************/
+
+		FuncBuilder& FuncBuilder::args(vl::Ptr<Arg> value)
+		{
+			return *this;
+		}
+
+		FuncBuilder& FuncBuilder::value(vl::Ptr<Expr> value)
+		{
+			return *this;
+		}
+
+/***********************************************************************
+ImportBuilder
+***********************************************************************/
+
+		ImportBuilder& ImportBuilder::name(const vl::WString& value)
+		{
+			return *this;
+		}
+
+/***********************************************************************
+LetExprBuilder
+***********************************************************************/
+
+		LetExprBuilder& LetExprBuilder::name(const vl::WString& value)
+		{
+			return *this;
+		}
+
+		LetExprBuilder& LetExprBuilder::value(vl::Ptr<Expr> value)
+		{
+			return *this;
+		}
+
+/***********************************************************************
+ModuleBuilder
+***********************************************************************/
+
+		ModuleBuilder& ModuleBuilder::exported(vl::Ptr<Expr> value)
+		{
+			return *this;
+		}
+
+		ModuleBuilder& ModuleBuilder::imports(vl::Ptr<Import> value)
+		{
+			return *this;
+		}
+
+/***********************************************************************
+NumExprBuilder
+***********************************************************************/
+
+		NumExprBuilder& NumExprBuilder::value(const vl::WString& value)
+		{
+			return *this;
+		}
+
+/***********************************************************************
+RefBuilder
+***********************************************************************/
+
+		RefBuilder& RefBuilder::name(const vl::WString& value)
+		{
+			return *this;
+		}
+
+/***********************************************************************
+UnaryBuilder
+***********************************************************************/
+
+		UnaryBuilder& UnaryBuilder::op(UnaryOp value)
+		{
+			return *this;
+		}
+
+		UnaryBuilder& UnaryBuilder::operand(vl::Ptr<Expr> value)
+		{
+			return *this;
+		}
 	}
 }

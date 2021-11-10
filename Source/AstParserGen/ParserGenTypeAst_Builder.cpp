@@ -15,6 +15,75 @@ namespace vl
 		{
 			namespace builder
 			{
+
+/***********************************************************************
+ClassBuilder
+***********************************************************************/
+
+				ClassBuilder& ClassBuilder::props(vl::Ptr<GlrClassProp> value)
+				{
+					return *this;
+				}
+
+/***********************************************************************
+ClassPropBuilder
+***********************************************************************/
+
+				ClassPropBuilder& ClassPropBuilder::name(const vl::WString& value)
+				{
+					return *this;
+				}
+
+				ClassPropBuilder& ClassPropBuilder::propType(GlrPropType value)
+				{
+					return *this;
+				}
+
+				ClassPropBuilder& ClassPropBuilder::propTypeName(const vl::WString& value)
+				{
+					return *this;
+				}
+
+/***********************************************************************
+EnumBuilder
+***********************************************************************/
+
+				EnumBuilder& EnumBuilder::items(vl::Ptr<GlrEnumItem> value)
+				{
+					return *this;
+				}
+
+/***********************************************************************
+EnumItemBuilder
+***********************************************************************/
+
+				EnumItemBuilder& EnumItemBuilder::name(const vl::WString& value)
+				{
+					return *this;
+				}
+
+/***********************************************************************
+FileBuilder
+***********************************************************************/
+
+				FileBuilder& FileBuilder::name(const vl::WString& value)
+				{
+					return *this;
+				}
+
+				FileBuilder& FileBuilder::types(vl::Ptr<GlrType> value)
+				{
+					return *this;
+				}
+
+/***********************************************************************
+TypeBuilder
+***********************************************************************/
+
+				TypeBuilder& TypeBuilder::name(const vl::WString& value)
+				{
+					return *this;
+				}
 			}
 		}
 	}
