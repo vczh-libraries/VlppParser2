@@ -64,6 +64,31 @@ WriteAstBuilderHeaderFile
 							}
 						}
 					}
+
+					for (auto typeSymbol : file->Symbols().Values())
+					{
+						if (auto classSymbol = dynamic_cast<AstClassSymbol*>(typeSymbol))
+						{
+							if (classSymbol->derivedClasses.Count() == 0)
+							{
+								writer.WriteString(prefix + L"using Make" + classSymbol->Name() + L" = ");
+								writer.WriteString(L"vl::glr::ParsingAstBuilder<");
+								PrintCppType(file, classSymbol, writer);
+								{
+									auto current = classSymbol;
+									while (current)
+									{
+										if (current->Props().Count() > 0)
+										{
+											writer.WriteString(L", " + current->Name() + L"Builder");
+										}
+										current = current->baseClass;
+									}
+								}
+								writer.WriteLine(L">;");
+							}
+						}
+					}
 				});
 			}
 

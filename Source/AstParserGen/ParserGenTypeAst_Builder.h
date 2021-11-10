@@ -81,6 +81,11 @@ namespace vl
 					TypeBuilder& name(const vl::WString& value);
 				};
 
+				using MakeClass = vl::glr::ParsingAstBuilder<GlrClass, ClassBuilder, TypeBuilder>;
+				using MakeClassProp = vl::glr::ParsingAstBuilder<GlrClassProp, ClassPropBuilder>;
+				using MakeEnum = vl::glr::ParsingAstBuilder<GlrEnum, EnumBuilder, TypeBuilder>;
+				using MakeEnumItem = vl::glr::ParsingAstBuilder<GlrEnumItem, EnumItemBuilder>;
+				using MakeFile = vl::glr::ParsingAstBuilder<GlrFile, FileBuilder>;
 			}
 		}
 	}

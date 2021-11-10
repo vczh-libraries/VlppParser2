@@ -131,6 +131,18 @@ namespace calculator
 			UnaryBuilder& operand(const vl::Ptr<Expr>& value);
 		};
 
+		using MakeArg = vl::glr::ParsingAstBuilder<Arg, ArgBuilder>;
+		using MakeBinary = vl::glr::ParsingAstBuilder<Binary, BinaryBuilder, ExpandableBuilder>;
+		using MakeCall = vl::glr::ParsingAstBuilder<Call, CallBuilder>;
+		using MakeFalse = vl::glr::ParsingAstBuilder<False>;
+		using MakeFunc = vl::glr::ParsingAstBuilder<Func, FuncBuilder>;
+		using MakeImport = vl::glr::ParsingAstBuilder<Import, ImportBuilder>;
+		using MakeLetExpr = vl::glr::ParsingAstBuilder<LetExpr, LetExprBuilder, ExpandableBuilder>;
+		using MakeModule = vl::glr::ParsingAstBuilder<Module, ModuleBuilder>;
+		using MakeNumExpr = vl::glr::ParsingAstBuilder<NumExpr, NumExprBuilder>;
+		using MakeRef = vl::glr::ParsingAstBuilder<Ref, RefBuilder>;
+		using MakeTrue = vl::glr::ParsingAstBuilder<True>;
+		using MakeUnary = vl::glr::ParsingAstBuilder<Unary, UnaryBuilder, ExpandableBuilder>;
 	}
 }
 #endif
