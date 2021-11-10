@@ -186,6 +186,7 @@ WriteVisitorHeaderFile
 				{
 					writer.WriteLine(L"#pragma once");
 				}
+
 				writer.WriteLine(L"");
 				WString prefix = WriteFileBegin(file, file->Name(), writer);
 				writer.WriteLine(prefix + L"namespace " + nss);
@@ -231,6 +232,56 @@ WriteVisitorCppFile
 			void WriteVisitorCppFile(AstDefFile* file, const WString& visitorName, stream::StreamWriter& writer, Func<void(const WString&)> callback)
 			{
 				WriteUtilityCppFile(file, visitorName, wlower(visitorName) + L"_visitor", writer, callback);
+			}
+
+/***********************************************************************
+WriteParserHeaderFile
+***********************************************************************/
+
+			void WriteParserHeaderFile(AstSymbolManager& manager, const WString& guardPostfix, stream::StreamWriter& writer, Func<void(const WString&)> callback)
+			{
+				WriteFileComment(manager.name, writer);
+				if (manager.headerGuard != L"")
+				{
+					writer.WriteString(L"#ifndef ");
+					writer.WriteLine(manager.headerGuard + L"_AST_" + guardPostfix);
+					writer.WriteString(L"#define ");
+					writer.WriteLine(manager.headerGuard + L"_AST_" + guardPostfix);
+				}
+				else
+				{
+					writer.WriteLine(L"#pragma once");
+				}
+
+				writer.WriteLine(L"");
+				for (auto file : manager.Files().Values())
+				{
+					writer.WriteLine(L"#include \"" + manager.name + file->Name() + L".h\"");
+				}
+
+				writer.WriteLine(L"");
+				WString prefix = WriteNssBegin(manager.cppNss, writer);
+				callback(prefix);
+				WriteNssEnd(manager.cppNss, writer);
+
+				if (manager.headerGuard != L"")
+				{
+					writer.WriteString(L"#endif");
+				}
+			}
+
+/***********************************************************************
+WriteParserCppFile
+***********************************************************************/
+
+			void WriteParserCppFile(AstSymbolManager& manager, const WString& fileNamePostfix, stream::StreamWriter& writer, Func<void(const WString&)> callback)
+			{
+				WriteFileComment(manager.name, writer);
+				writer.WriteLine(L"#include \"" + manager.name + L"_" + fileNamePostfix + L".h\"");
+				writer.WriteLine(L"");
+				WString prefix = WriteNssBegin(manager.cppNss, writer);
+				callback(prefix);
+				WriteNssEnd(manager.cppNss, writer);
 			}
 
 /***********************************************************************
@@ -341,6 +392,34 @@ WriteAstFiles
 
 					files.Add(output->jsonH, fileH);
 					files.Add(output->jsonCpp, fileCpp);
+				}
+				return output;
+			}
+
+			Ptr<CppParserGenOutput> WriteAstFiles(AstSymbolManager& manager, collections::Dictionary<WString, WString>& files)
+			{
+				auto output = MakePtr<CppParserGenOutput>();
+				output->assemblyH = manager.name + L"_Assembler.h";
+				output->assemblyCpp = manager.name + L"_Assembler.cpp";
+
+				for (auto file : manager.Files().Values())
+				{
+					output->files.Add(file, WriteAstFiles(file, files));
+				}
+
+				{
+					WString fileH = GenerateToStream([&](StreamWriter& writer)
+					{
+							WriteAstAssemblerHeaderFile(manager, writer);
+					});
+
+					WString fileCpp = GenerateToStream([&](StreamWriter& writer)
+					{
+							WriteAstAssemblerCppFile(manager, writer);
+					});
+
+					files.Add(output->assemblyH, fileH);
+					files.Add(output->assemblyCpp, fileCpp);
 				}
 				return output;
 			}

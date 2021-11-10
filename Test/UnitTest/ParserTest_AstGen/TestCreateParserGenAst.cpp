@@ -21,16 +21,12 @@ TEST_FILE
 		}
 		TEST_ASSERT(manager.Errors().Count() == 0);
 
-		for (auto file : manager.Files().Values())
+		Dictionary<WString, WString> files;
+		WriteAstFiles(manager, files);
+		auto outputDir = FilePath(GetExePath()) / L"../../../Source/AstParserGen/";
+		for (auto [key, index] : indexed(files.Keys()))
 		{
-			Dictionary<WString, WString> files;
-			WriteAstFiles(file, files);
-
-			auto outputDir = FilePath(GetExePath()) / L"../../../Source/AstParserGen/";
-			for (auto [key, index] : indexed(files.Keys()))
-			{
-				File(outputDir / key).WriteAllText(files.Values()[index], false, BomEncoder::Utf8);
-			}
+			File(outputDir / key).WriteAllText(files.Values()[index], false, BomEncoder::Utf8);
 		}
 	});
 }
