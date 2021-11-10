@@ -22,6 +22,7 @@ ClassBuilder
 
 				ClassBuilder& ClassBuilder::props(vl::Ptr<GlrClassProp> value)
 				{
+					node->props.Add(value);
 					return *this;
 				}
 
@@ -31,16 +32,19 @@ ClassPropBuilder
 
 				ClassPropBuilder& ClassPropBuilder::name(const vl::WString& value)
 				{
+					node->name.value = value;
 					return *this;
 				}
 
 				ClassPropBuilder& ClassPropBuilder::propType(GlrPropType value)
 				{
+					node->propType = value;
 					return *this;
 				}
 
 				ClassPropBuilder& ClassPropBuilder::propTypeName(const vl::WString& value)
 				{
+					node->propTypeName.value = value;
 					return *this;
 				}
 
@@ -50,6 +54,7 @@ EnumBuilder
 
 				EnumBuilder& EnumBuilder::items(vl::Ptr<GlrEnumItem> value)
 				{
+					node->items.Add(value);
 					return *this;
 				}
 
@@ -59,6 +64,7 @@ EnumItemBuilder
 
 				EnumItemBuilder& EnumItemBuilder::name(const vl::WString& value)
 				{
+					node->name.value = value;
 					return *this;
 				}
 
@@ -68,11 +74,13 @@ FileBuilder
 
 				FileBuilder& FileBuilder::name(const vl::WString& value)
 				{
+					node->name.value = value;
 					return *this;
 				}
 
 				FileBuilder& FileBuilder::types(vl::Ptr<GlrType> value)
 				{
+					node->types.Add(value);
 					return *this;
 				}
 
@@ -82,6 +90,7 @@ TypeBuilder
 
 				TypeBuilder& TypeBuilder::name(const vl::WString& value)
 				{
+					node->name.value = value;
 					return *this;
 				}
 			}

@@ -18,6 +18,7 @@ ArgBuilder
 
 		ArgBuilder& ArgBuilder::name(const vl::WString& value)
 		{
+			node->name.value = value;
 			return *this;
 		}
 
@@ -27,16 +28,19 @@ BinaryBuilder
 
 		BinaryBuilder& BinaryBuilder::left(vl::Ptr<Expr> value)
 		{
+			node->left = value;
 			return *this;
 		}
 
 		BinaryBuilder& BinaryBuilder::op(BinaryOp value)
 		{
+			node->op = value;
 			return *this;
 		}
 
 		BinaryBuilder& BinaryBuilder::right(vl::Ptr<Expr> value)
 		{
+			node->right = value;
 			return *this;
 		}
 
@@ -46,11 +50,13 @@ CallBuilder
 
 		CallBuilder& CallBuilder::arg(vl::Ptr<Expr> value)
 		{
+			node->arg = value;
 			return *this;
 		}
 
 		CallBuilder& CallBuilder::func(vl::Ptr<Expr> value)
 		{
+			node->func = value;
 			return *this;
 		}
 
@@ -60,6 +66,7 @@ ExpandableBuilder
 
 		ExpandableBuilder& ExpandableBuilder::expanded(vl::Ptr<Expr> value)
 		{
+			node->expanded = value;
 			return *this;
 		}
 
@@ -69,11 +76,13 @@ FuncBuilder
 
 		FuncBuilder& FuncBuilder::args(vl::Ptr<Arg> value)
 		{
+			node->args.Add(value);
 			return *this;
 		}
 
 		FuncBuilder& FuncBuilder::value(vl::Ptr<Expr> value)
 		{
+			node->value = value;
 			return *this;
 		}
 
@@ -83,6 +92,7 @@ ImportBuilder
 
 		ImportBuilder& ImportBuilder::name(const vl::WString& value)
 		{
+			node->name.value = value;
 			return *this;
 		}
 
@@ -92,11 +102,13 @@ LetExprBuilder
 
 		LetExprBuilder& LetExprBuilder::name(const vl::WString& value)
 		{
+			node->name.value = value;
 			return *this;
 		}
 
 		LetExprBuilder& LetExprBuilder::value(vl::Ptr<Expr> value)
 		{
+			node->value = value;
 			return *this;
 		}
 
@@ -106,11 +118,13 @@ ModuleBuilder
 
 		ModuleBuilder& ModuleBuilder::exported(vl::Ptr<Expr> value)
 		{
+			node->exported = value;
 			return *this;
 		}
 
 		ModuleBuilder& ModuleBuilder::imports(vl::Ptr<Import> value)
 		{
+			node->imports.Add(value);
 			return *this;
 		}
 
@@ -120,6 +134,7 @@ NumExprBuilder
 
 		NumExprBuilder& NumExprBuilder::value(const vl::WString& value)
 		{
+			node->value.value = value;
 			return *this;
 		}
 
@@ -129,6 +144,7 @@ RefBuilder
 
 		RefBuilder& RefBuilder::name(const vl::WString& value)
 		{
+			node->name.value = value;
 			return *this;
 		}
 
@@ -138,11 +154,13 @@ UnaryBuilder
 
 		UnaryBuilder& UnaryBuilder::op(UnaryOp value)
 		{
+			node->op = value;
 			return *this;
 		}
 
 		UnaryBuilder& UnaryBuilder::operand(vl::Ptr<Expr> value)
 		{
+			node->operand = value;
 			return *this;
 		}
 	}
