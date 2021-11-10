@@ -32,6 +32,31 @@ namespace vl
 				void TypeAstVisitor::Finishing(GlrFile* from, GlrFile* to) {}
 				void TypeAstVisitor::Finishing(GlrType* from, GlrType* to) {}
 
+				void TypeAstVisitor::Visit(GlrEnum* node)
+				{
+				}
+
+				void TypeAstVisitor::Visit(GlrClass* node)
+				{
+				}
+
+				void TypeAstVisitor::InspectInto(GlrType* node)
+				{
+					node->Accept(static_cast<GlrType::IVisitor*>(this));
+				}
+
+				void TypeAstVisitor::InspectInto(GlrEnumItem* node)
+				{
+				}
+
+				void TypeAstVisitor::InspectInto(GlrClassProp* node)
+				{
+				}
+
+				void TypeAstVisitor::InspectInto(GlrFile* node)
+				{
+				}
+
 			}
 		}
 	}

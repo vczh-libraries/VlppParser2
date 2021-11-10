@@ -190,6 +190,12 @@ namespace calculator
 			this->result = newNode;
 		}
 
+		vl::Ptr<Expr> AstVisitor::CopyNode(Expr* node)
+		{
+			node->Accept(static_cast<Expr::IVisitor*>(this));
+			return this->result.Cast<Expr>();
+		}
+
 		vl::Ptr<Arg> AstVisitor::CopyNode(Arg* node)
 		{
 			Visit(node);
@@ -206,12 +212,6 @@ namespace calculator
 		{
 			Visit(node);
 			return this->result.Cast<Module>();
-		}
-
-		vl::Ptr<Expr> AstVisitor::CopyNode(Expr* node)
-		{
-			node->Accept(static_cast<Expr::IVisitor*>(this));
-			return this->result.Cast<Expr>();
 		}
 
 	}

@@ -44,5 +44,63 @@ namespace calculator
 		void AstVisitor::Finishing(True* from, True* to) {}
 		void AstVisitor::Finishing(Unary* from, Unary* to) {}
 
+		void AstVisitor::Visit(NumExpr* node)
+		{
+		}
+
+		void AstVisitor::Visit(Ref* node)
+		{
+		}
+
+		void AstVisitor::Visit(True* node)
+		{
+		}
+
+		void AstVisitor::Visit(False* node)
+		{
+		}
+
+		void AstVisitor::Visit(Func* node)
+		{
+		}
+
+		void AstVisitor::Visit(Call* node)
+		{
+		}
+
+		void AstVisitor::Visit(Expandable* node)
+		{
+			node->Accept(static_cast<Expandable::IVisitor*>(this));
+		}
+
+		void AstVisitor::Visit(LetExpr* node)
+		{
+		}
+
+		void AstVisitor::Visit(Unary* node)
+		{
+		}
+
+		void AstVisitor::Visit(Binary* node)
+		{
+		}
+
+		void AstVisitor::InspectInto(Expr* node)
+		{
+			node->Accept(static_cast<Expr::IVisitor*>(this));
+		}
+
+		void AstVisitor::InspectInto(Arg* node)
+		{
+		}
+
+		void AstVisitor::InspectInto(Import* node)
+		{
+		}
+
+		void AstVisitor::InspectInto(Module* node)
+		{
+		}
+
 	}
 }

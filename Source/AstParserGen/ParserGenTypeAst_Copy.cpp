@@ -94,6 +94,12 @@ namespace vl
 					this->result = newNode;
 				}
 
+				vl::Ptr<GlrType> TypeAstVisitor::CopyNode(GlrType* node)
+				{
+					node->Accept(static_cast<GlrType::IVisitor*>(this));
+					return this->result.Cast<GlrType>();
+				}
+
 				vl::Ptr<GlrEnumItem> TypeAstVisitor::CopyNode(GlrEnumItem* node)
 				{
 					Visit(node);
@@ -110,12 +116,6 @@ namespace vl
 				{
 					Visit(node);
 					return this->result.Cast<GlrFile>();
-				}
-
-				vl::Ptr<GlrType> TypeAstVisitor::CopyNode(GlrType* node)
-				{
-					node->Accept(static_cast<GlrType::IVisitor*>(this));
-					return this->result.Cast<GlrType>();
 				}
 
 			}

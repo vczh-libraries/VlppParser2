@@ -187,6 +187,54 @@ WriteTraverseVisitorCppFile
 						}
 					}
 					writer.WriteLine(L"");
+
+					for (auto visitorSymbol : visitors)
+					{
+						for (auto classSymbol : visitorSymbol->derivedClasses)
+						{
+							writer.WriteString(prefix + L"void " + file->Name() + L"Visitor::Visit(");
+							PrintCppType(file, classSymbol, writer);
+							writer.WriteLine(L"* node)");
+							writer.WriteLine(prefix + L"{");
+							if (classSymbol->derivedClasses.Count() == 0)
+							{
+							}
+							else
+							{
+								writer.WriteString(prefix + L"\tnode->Accept(static_cast<");
+								PrintCppType(file, classSymbol, writer);
+								writer.WriteLine(L"::IVisitor*>(this));");
+							}
+							writer.WriteLine(prefix + L"}");
+							writer.WriteLine(L"");
+						}
+					}
+
+					for (auto classSymbol : visitors)
+					{
+						if (!classSymbol->baseClass)
+						{
+							writer.WriteString(prefix + L"void " + file->Name() + L"Visitor::InspectInto(");
+							PrintCppType(file, classSymbol, writer);
+							writer.WriteLine(L"* node)");
+							writer.WriteLine(prefix + L"{");
+							writer.WriteString(prefix + L"\tnode->Accept(static_cast<");
+							PrintCppType(file, classSymbol, writer);
+							writer.WriteLine(L"::IVisitor*>(this));");
+							writer.WriteLine(prefix + L"}");
+							writer.WriteLine(L"");
+						}
+					}
+
+					for (auto classSymbol : concreteClasses)
+					{
+						writer.WriteString(prefix + L"void " + file->Name() + L"Visitor::InspectInto(");
+						PrintCppType(file, classSymbol, writer);
+						writer.WriteLine(L"* node)");
+						writer.WriteLine(prefix + L"{");
+						writer.WriteLine(prefix + L"}");
+						writer.WriteLine(L"");
+					}
 				});
 			}
 		}

@@ -195,22 +195,6 @@ WriteCopyVisitorCppFile
 						}
 					}
 
-					for (auto classSymbol : concreteClasses)
-					{
-						writer.WriteString(prefix + L"vl::Ptr<");
-						PrintCppType(file, classSymbol, writer);
-						writer.WriteString(L"> " + file->Name() + L"Visitor::CopyNode(");
-						PrintCppType(file, classSymbol, writer);
-						writer.WriteLine(L"* node)");
-						writer.WriteLine(prefix + L"{");
-						writer.WriteLine(prefix + L"\tVisit(node);");
-						writer.WriteString(prefix + L"\treturn this->result.Cast<");
-						PrintCppType(file, classSymbol, writer);
-						writer.WriteLine(L">();");
-						writer.WriteLine(prefix + L"}");
-						writer.WriteLine(L"");
-					}
-
 					for (auto classSymbol : visitors)
 					{
 						if (!classSymbol->baseClass)
@@ -230,6 +214,22 @@ WriteCopyVisitorCppFile
 							writer.WriteLine(prefix + L"}");
 							writer.WriteLine(L"");
 						}
+					}
+
+					for (auto classSymbol : concreteClasses)
+					{
+						writer.WriteString(prefix + L"vl::Ptr<");
+						PrintCppType(file, classSymbol, writer);
+						writer.WriteString(L"> " + file->Name() + L"Visitor::CopyNode(");
+						PrintCppType(file, classSymbol, writer);
+						writer.WriteLine(L"* node)");
+						writer.WriteLine(prefix + L"{");
+						writer.WriteLine(prefix + L"\tVisit(node);");
+						writer.WriteString(prefix + L"\treturn this->result.Cast<");
+						PrintCppType(file, classSymbol, writer);
+						writer.WriteLine(L">();");
+						writer.WriteLine(prefix + L"}");
+						writer.WriteLine(L"");
 					}
 				});
 			}
