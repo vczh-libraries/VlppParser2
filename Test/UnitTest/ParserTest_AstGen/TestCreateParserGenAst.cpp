@@ -13,19 +13,24 @@ TEST_FILE
 	TEST_CASE(L"CreateParserGenAst")
 	{
 		AstSymbolManager manager;
-		manager.name = L"ParserGen";
-		Fill(manager.cppNss, L"vl", L"glr", L"parsergen");
-		manager.headerGuard = L"VCZH_PARSER2_PARSERGEN";
-		CreateParserGenTypeAst(manager);
+		{
+			manager.name = L"ParserGen";
+			Fill(manager.cppNss, L"vl", L"glr", L"parsergen");
+			manager.headerGuard = L"VCZH_PARSER2_PARSERGEN";
+			CreateParserGenTypeAst(manager);
+		}
 		TEST_ASSERT(manager.Errors().Count() == 0);
 
-		Dictionary<WString, WString> files;
-		WriteAstFiles(manager, files);
-
-		auto outputDir = FilePath(GetExePath()) / L"../../../Source/AstParserGen/";
-		for (auto [key, index] : indexed(files.Keys()))
+		for (auto file : manager.Files().Values())
 		{
-			File(outputDir / key).WriteAllText(files.Values()[index], false, BomEncoder::Utf8);
+			Dictionary<WString, WString> files;
+			WriteAstFiles(file, files);
+
+			auto outputDir = FilePath(GetExePath()) / L"../../../Source/AstParserGen/";
+			for (auto [key, index] : indexed(files.Keys()))
+			{
+				File(outputDir / key).WriteAllText(files.Values()[index], false, BomEncoder::Utf8);
+			}
 		}
 	});
 }

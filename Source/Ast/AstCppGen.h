@@ -25,12 +25,8 @@ namespace vl
 			extern void				WriteEmptyVisitorCppFile(AstDefFile* file, stream::StreamWriter& writer);
 			extern void				WriteCopyVisitorHeaderFile(AstDefFile* file, stream::StreamWriter& writer);
 			extern void				WriteCopyVisitorCppFile(AstDefFile* file, stream::StreamWriter& writer);
-			extern void				WriteRootCopyVisitorHeaderFile(AstSymbolManager& manager, stream::StreamWriter& writer);
-			extern void				WriteRootCopyVisitorCppFile(AstSymbolManager& manager, stream::StreamWriter& writer);
 			extern void				WriteTraverseVisitorHeaderFile(AstDefFile* file, stream::StreamWriter& writer);
 			extern void				WriteTraverseVisitorCppFile(AstDefFile* file, stream::StreamWriter& writer);
-			extern void				WriteRootTraverseVisitorHeaderFile(AstSymbolManager& manager, stream::StreamWriter& writer);
-			extern void				WriteRootTraverseVisitorCppFile(AstSymbolManager& manager, stream::StreamWriter& writer);
 
 			struct CppAstGenOutput
 			{
@@ -44,17 +40,7 @@ namespace vl
 				WString														traverseCpp;
 			};
 
-			struct CppParserAstGenOutput
-			{
-				WString														copyH;
-				WString														copyCpp;
-				WString														traverseH;
-				WString														traverseCpp;
-				collections::Dictionary<AstDefFile*, Ptr<CppAstGenOutput>>	files;
-			};
-
 			extern Ptr<CppAstGenOutput>			WriteAstFiles(AstDefFile* file, collections::Dictionary<WString, WString>& files);
-			extern Ptr<CppParserAstGenOutput>	WriteAstFiles(AstSymbolManager& manager, collections::Dictionary<WString, WString>& files);
 		}
 	}
 }

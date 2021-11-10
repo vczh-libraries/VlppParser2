@@ -100,9 +100,10 @@ TEST_FILE
 		}
 		TEST_ASSERT(manager.Errors().Count() == 0);
 
+		for (auto file : manager.Files().Values())
 		{
 			Dictionary<WString, WString> files;
-			WriteAstFiles(manager, files);
+			WriteAstFiles(file, files);
 
 			auto outputDir = FilePath(GetExePath()) / L"../../Source/CalculatorAst/";
 			for (auto [key, index] : indexed(files.Keys()))
