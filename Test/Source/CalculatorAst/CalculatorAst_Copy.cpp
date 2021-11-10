@@ -192,24 +192,28 @@ namespace calculator
 
 		vl::Ptr<Expr> AstVisitor::CopyNode(Expr* node)
 		{
+			if (!node) return nullptr;
 			node->Accept(static_cast<Expr::IVisitor*>(this));
 			return this->result.Cast<Expr>();
 		}
 
 		vl::Ptr<Arg> AstVisitor::CopyNode(Arg* node)
 		{
+			if (!node) return nullptr;
 			Visit(node);
 			return this->result.Cast<Arg>();
 		}
 
 		vl::Ptr<Import> AstVisitor::CopyNode(Import* node)
 		{
+			if (!node) return nullptr;
 			Visit(node);
 			return this->result.Cast<Import>();
 		}
 
 		vl::Ptr<Module> AstVisitor::CopyNode(Module* node)
 		{
+			if (!node) return nullptr;
 			Visit(node);
 			return this->result.Cast<Module>();
 		}

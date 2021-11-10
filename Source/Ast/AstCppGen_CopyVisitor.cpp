@@ -205,6 +205,7 @@ WriteCopyVisitorCppFile
 							PrintCppType(file, classSymbol, writer);
 							writer.WriteLine(L"* node)");
 							writer.WriteLine(prefix + L"{");
+							writer.WriteLine(prefix + L"\tif (!node) return nullptr;");
 							writer.WriteString(prefix + L"\tnode->Accept(static_cast<");
 							PrintCppType(file, classSymbol, writer);
 							writer.WriteLine(L"::IVisitor*>(this));");
@@ -224,6 +225,7 @@ WriteCopyVisitorCppFile
 						PrintCppType(file, classSymbol, writer);
 						writer.WriteLine(L"* node)");
 						writer.WriteLine(prefix + L"{");
+						writer.WriteLine(prefix + L"\tif (!node) return nullptr;");
 						writer.WriteLine(prefix + L"\tVisit(node);");
 						writer.WriteString(prefix + L"\treturn this->result.Cast<");
 						PrintCppType(file, classSymbol, writer);

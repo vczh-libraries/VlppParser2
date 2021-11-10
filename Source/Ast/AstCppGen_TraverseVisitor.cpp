@@ -37,25 +37,32 @@ WriteVisitFieldFunctionBody
 					writer.WriteLine(L"*>(node));");
 				}
 
-				for (auto propSymbol : fieldSymbol->Props().Values())
 				{
-					switch (propSymbol->propType)
+					auto current = fieldSymbol;
+					while (current)
 					{
-					case AstPropType::Token:
-						writer.WriteLine(prefix + L"\tTraverse(node->" + propSymbol->Name() + L");");
-						break;
-					case AstPropType::Array:
-						writer.WriteLine(prefix + L"\tfor (auto&& listItem : node->" + propSymbol->Name() + L")");
-						writer.WriteLine(prefix + L"\t{");
-						writer.WriteLine(prefix + L"\t\tInspectInto(listItem.Obj());");
-						writer.WriteLine(prefix + L"\t}");
-						break;
-					case AstPropType::Type:
-						if (dynamic_cast<AstClassSymbol*>(propSymbol->propSymbol))
+						for (auto propSymbol : current->Props().Values())
 						{
-							writer.WriteLine(prefix + L"\tInspectInto(node->" + propSymbol->Name() + L".Obj());");
+							switch (propSymbol->propType)
+							{
+							case AstPropType::Token:
+								writer.WriteLine(prefix + L"\tTraverse(node->" + propSymbol->Name() + L");");
+								break;
+							case AstPropType::Array:
+								writer.WriteLine(prefix + L"\tfor (auto&& listItem : node->" + propSymbol->Name() + L")");
+								writer.WriteLine(prefix + L"\t{");
+								writer.WriteLine(prefix + L"\t\tInspectInto(listItem.Obj());");
+								writer.WriteLine(prefix + L"\t}");
+								break;
+							case AstPropType::Type:
+								if (dynamic_cast<AstClassSymbol*>(propSymbol->propSymbol))
+								{
+									writer.WriteLine(prefix + L"\tInspectInto(node->" + propSymbol->Name() + L".Obj());");
+								}
+								break;
+							}
 						}
-						break;
+						current = current->baseClass;
 					}
 				}
 
@@ -219,6 +226,7 @@ WriteTraverseVisitorCppFile
 							PrintCppType(file, classSymbol, writer);
 							writer.WriteLine(L"* node)");
 							writer.WriteLine(prefix + L"{");
+							writer.WriteLine(prefix + L"\tif (!node) return;");
 							writer.WriteString(prefix + L"\tnode->Accept(static_cast<");
 							PrintCppType(file, classSymbol, writer);
 							writer.WriteLine(L"::IVisitor*>(this));");

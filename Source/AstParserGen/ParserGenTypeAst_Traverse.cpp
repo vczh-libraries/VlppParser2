@@ -42,6 +42,7 @@ namespace vl
 					{
 						InspectInto(listItem.Obj());
 					}
+					Traverse(node->name);
 					Finishing(static_cast<GlrEnum*>(node));
 					Finishing(static_cast<GlrType*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
@@ -57,6 +58,7 @@ namespace vl
 					{
 						InspectInto(listItem.Obj());
 					}
+					Traverse(node->name);
 					Finishing(static_cast<GlrClass*>(node));
 					Finishing(static_cast<GlrType*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
@@ -64,6 +66,7 @@ namespace vl
 
 				void TypeAstVisitor::InspectInto(GlrType* node)
 				{
+					if (!node) return;
 					node->Accept(static_cast<GlrType::IVisitor*>(this));
 				}
 

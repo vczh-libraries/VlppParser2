@@ -133,6 +133,7 @@ namespace calculator
 			Traverse(static_cast<LetExpr*>(node));
 			Traverse(node->name);
 			InspectInto(node->value.Obj());
+			InspectInto(node->expanded.Obj());
 			Finishing(static_cast<LetExpr*>(node));
 			Finishing(static_cast<Expandable*>(node));
 			Finishing(static_cast<Expr*>(node));
@@ -147,6 +148,7 @@ namespace calculator
 			Traverse(static_cast<Expandable*>(node));
 			Traverse(static_cast<Unary*>(node));
 			InspectInto(node->operand.Obj());
+			InspectInto(node->expanded.Obj());
 			Finishing(static_cast<Unary*>(node));
 			Finishing(static_cast<Expandable*>(node));
 			Finishing(static_cast<Expr*>(node));
@@ -162,6 +164,7 @@ namespace calculator
 			Traverse(static_cast<Binary*>(node));
 			InspectInto(node->left.Obj());
 			InspectInto(node->right.Obj());
+			InspectInto(node->expanded.Obj());
 			Finishing(static_cast<Binary*>(node));
 			Finishing(static_cast<Expandable*>(node));
 			Finishing(static_cast<Expr*>(node));
@@ -170,6 +173,7 @@ namespace calculator
 
 		void AstVisitor::InspectInto(Expr* node)
 		{
+			if (!node) return;
 			node->Accept(static_cast<Expr::IVisitor*>(this));
 		}
 
