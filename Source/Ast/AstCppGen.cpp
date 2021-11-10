@@ -65,29 +65,19 @@ Utility
 				WriteNssEnd(file->cppNss, writer);
 			}
 
-			void CollectAllVisitors(AstSymbolManager& manager, List<AstClassSymbol*>& visitors)
+			void CollectVisitorsAndConcreteClasses(AstDefFile* file, List<AstClassSymbol*>& visitors, List<AstClassSymbol*>& concreteClasses)
 			{
-				for (auto typeSymbol : manager.Symbols().Values())
+				for (auto name : file->SymbolOrder())
 				{
-					if (auto classSymbol = dynamic_cast<AstClassSymbol*>(typeSymbol))
+					if (auto classSymbol = dynamic_cast<AstClassSymbol*>(file->Symbols()[name]))
 					{
 						if (classSymbol->derivedClasses.Count() > 0)
 						{
 							visitors.Add(classSymbol);
 						}
-					}
-				}
-			}
-
-			void CollectConcreteClasses(AstSymbolManager& manager, List<AstClassSymbol*>& classes)
-			{
-				for (auto typeSymbol : manager.Symbols().Values())
-				{
-					if (auto classSymbol = dynamic_cast<AstClassSymbol*>(typeSymbol))
-					{
 						if (!classSymbol->baseClass && classSymbol->derivedClasses.Count() == 0)
 						{
-							classes.Add(classSymbol);
+							concreteClasses.Add(classSymbol);
 						}
 					}
 				}

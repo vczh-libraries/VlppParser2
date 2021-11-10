@@ -9,10 +9,8 @@ namespace vl
 			using namespace collections;
 			using namespace stream;
 
-			extern void PrintNss(List<WString>& nss, stream::StreamWriter& writer);
 			extern void PrintCppType(AstDefFile* fileContext, AstSymbol* propSymbol, stream::StreamWriter& writer);
-			extern void CollectAllVisitors(AstSymbolManager& manager, List<AstClassSymbol*>& visitors);
-			extern void CollectConcreteClasses(AstSymbolManager& manager, List<AstClassSymbol*>& classes);
+			extern void CollectVisitorsAndConcreteClasses(AstDefFile* file, List<AstClassSymbol*>& visitors, List<AstClassSymbol*>& concreteClasses);
 
 			void CollectCopyDependencies(
 				AstClassSymbol* classSymbol,
@@ -120,20 +118,7 @@ WriteCopyVisitorHeaderFile
 				WriteVisitorHeaderFile(file, L"Copy", writer, [&](const WString& prefix)
 				{
 					List<AstClassSymbol*> visitors, concreteClasses;
-					for (auto name : file->SymbolOrder())
-					{
-						if (auto classSymbol = dynamic_cast<AstClassSymbol*>(file->Symbols()[name]))
-						{
-							if (classSymbol->derivedClasses.Count() > 0)
-							{
-								visitors.Add(classSymbol);
-							}
-							if (!classSymbol->baseClass && classSymbol->derivedClasses.Count() == 0)
-							{
-								concreteClasses.Add(classSymbol);
-							}
-						}
-					}
+					CollectVisitorsAndConcreteClasses(file, visitors, concreteClasses);
 
 					writer.WriteLine(prefix + L"/// <summary>A copy visitor, overriding all abstract methods with AST copying code.</summary>");
 					writer.WriteLine(prefix + L"class " + file->Name() + L"Visitor");
