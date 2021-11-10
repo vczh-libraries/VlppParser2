@@ -77,25 +77,6 @@ Utility
 				}
 			}
 
-			WString WriteFileBegin(AstDefFile* file, const WString& includeFile, stream::StreamWriter& writer)
-			{
-				for (auto include : file->includes)
-				{
-					writer.WriteLine(L"#include \"" + include + L"\"");
-				}
-				if (includeFile != L"")
-				{
-					writer.WriteLine(L"#include \"" + file->Owner()->name + includeFile + L".h\"");
-				}
-				writer.WriteLine(L"");
-				return WriteNssBegin(file->cppNss, writer);
-			}
-
-			void WriteFileEnd(AstDefFile* file, stream::StreamWriter& writer)
-			{
-				WriteNssEnd(file->cppNss, writer);
-			}
-
 			void CollectVisitorsAndConcreteClasses(AstDefFile* file, List<AstClassSymbol*>& visitors, List<AstClassSymbol*>& concreteClasses)
 			{
 				for (auto name : file->SymbolOrder())
@@ -145,25 +126,28 @@ WriteAstHeaderFile
 					writer.WriteLine(L"#pragma once");
 				}
 				writer.WriteLine(L"");
-				WString prefix = WriteFileBegin(file, L"", writer);
+				for (auto include : file->includes)
+				{
+					writer.WriteLine(L"#include \"" + include + L"\"");
+				}
 
-				WriteTypeForwardDefinitions(file, prefix, writer);
-				WriteClassEnumDefinitions(file, prefix, writer);
-				WriteFieldEnumDefinitions(file, prefix, writer);
-				WriteTypeDefinitions(file, prefix, writer);
-
-				WriteFileEnd(file, writer);
-
-				writer.WriteLine(L"namespace vl");
-				writer.WriteLine(L"{");
-				writer.WriteLine(L"\tnamespace reflection");
-				writer.WriteLine(L"\t{");
-				writer.WriteLine(L"\t\tnamespace description");
-				writer.WriteLine(L"\t\t{");
-				WriteTypeReflectionDeclaration(file, L"\t\t\t", writer);
-				writer.WriteLine(L"\t\t}");
-				writer.WriteLine(L"\t}");
-				writer.WriteLine(L"}");
+				{
+					WString prefix = WriteNssBegin(file->cppNss, writer);
+					WriteTypeForwardDefinitions(file, prefix, writer);
+					WriteClassEnumDefinitions(file, prefix, writer);
+					WriteFieldEnumDefinitions(file, prefix, writer);
+					WriteTypeDefinitions(file, prefix, writer);
+					WriteNssEnd(file->cppNss, writer);
+				}
+				{
+					List<WString> refNss;
+					refNss.Add(L"vl");
+					refNss.Add(L"reflection");
+					refNss.Add(L"description");
+					WString prefix = WriteNssBegin(refNss, writer);
+					WriteTypeReflectionDeclaration(file, prefix, writer);
+					WriteNssEnd(refNss, writer);
+				}
 
 				if (file->headerGuard != L"")
 				{
@@ -175,101 +159,100 @@ WriteAstHeaderFile
 WriteAstCppFile
 ***********************************************************************/
 
-			void WriteAstCppFile(AstDefFile* file, stream::StreamWriter& writer)
+			void WriteAstCppFile(AstDefFile* file, const WString& astHeaderName, stream::StreamWriter& writer)
 			{
 				WriteFileComment(file->Name(), writer);
-				WString prefix = WriteFileBegin(file, file->Name(), writer);
-
-				writer.WriteLine(L"/***********************************************************************");
-				writer.WriteLine(L"Visitor Pattern Implementation");
-				writer.WriteLine(L"***********************************************************************/");
-				WriteVisitorImpl(file, prefix, writer);
-
-				WriteFileEnd(file, writer);
-
-				writer.WriteLine(L"namespace vl");
-				writer.WriteLine(L"{");
-				writer.WriteLine(L"\tnamespace reflection");
-				writer.WriteLine(L"\t{");
-				writer.WriteLine(L"\t\tnamespace description");
-				writer.WriteLine(L"\t\t{");
-				WriteTypeReflectionImplementation(file, L"\t\t\t", writer);
-				writer.WriteLine(L"\t\t}");
-				writer.WriteLine(L"\t}");
-				writer.WriteLine(L"}");
+				writer.WriteLine(L"#include \"" + astHeaderName + L"\"");
+				{
+					WString prefix = WriteNssBegin(file->cppNss, writer);
+					writer.WriteLine(L"/***********************************************************************");
+					writer.WriteLine(L"Visitor Pattern Implementation");
+					writer.WriteLine(L"***********************************************************************/");
+					WriteVisitorImpl(file, prefix, writer);
+					WriteNssEnd(file->cppNss, writer);
+				}
+				{
+					List<WString> refNss;
+					refNss.Add(L"vl");
+					refNss.Add(L"reflection");
+					refNss.Add(L"description");
+					WString prefix = WriteNssBegin(refNss, writer);
+					WriteTypeReflectionImplementation(file, prefix, writer);
+					WriteNssEnd(refNss, writer);
+				}
 			}
 
 /***********************************************************************
-WriteVisitorHeaderFile
+WriteAstUtilityHeaderFile
 ***********************************************************************/
 
-			void WriteUtilityHeaderFile(AstDefFile* file, const WString& guardPostfix, const WString& nss, stream::StreamWriter& writer, Func<void(const WString&)> callback)
+			void WriteAstUtilityHeaderFile(
+				AstDefFile* file,
+				Ptr<CppAstGenOutput> output,
+				const WString& extraNss,
+				stream::StreamWriter& writer,
+				Func<void(const WString&)> callback
+			)
 			{
 				WriteFileComment(file->Name(), writer);
-				if (file->headerGuard != L"")
-				{
-					writer.WriteString(L"#ifndef ");
-					writer.WriteLine(file->headerGuard + L"_AST_" + guardPostfix);
-					writer.WriteString(L"#define ");
-					writer.WriteLine(file->headerGuard + L"_AST_" + guardPostfix);
-				}
-				else
-				{
-					writer.WriteLine(L"#pragma once");
-				}
 
+				writer.WriteString(L"#ifndef ");
+				writer.WriteLine(file->headerGuard + L"_AST_" + wupper(extraNss));
+				writer.WriteString(L"#define ");
+				writer.WriteLine(file->headerGuard + L"_AST_" + wupper(extraNss));
 				writer.WriteLine(L"");
-				WString prefix = WriteFileBegin(file, file->Name(), writer);
-				writer.WriteLine(prefix + L"namespace " + nss);
-				writer.WriteLine(prefix + L"{");
-				prefix += L"\t";
-
-				callback(prefix);
-
-				prefix = prefix.Left(prefix.Length() - 1);
-				writer.WriteLine(prefix + L"}");
-				WriteFileEnd(file, writer);
-
+				writer.WriteLine(L"#include \"" + output->astH + L"\"");
+				writer.WriteLine(L"");
+				{
+					List<WString> cppNss;
+					CopyFrom(cppNss, file->cppNss);
+					cppNss.Add(extraNss);
+					WString prefix = WriteNssBegin(cppNss, writer);
+					callback(prefix);
+					WriteNssEnd(cppNss, writer);
+				}
 				if (file->headerGuard != L"")
 				{
 					writer.WriteString(L"#endif");
 				}
 			}
 
-			void WriteVisitorHeaderFile(AstDefFile* file, const WString& visitorName, stream::StreamWriter& writer, Func<void(const WString&)> callback)
-			{
-				WriteUtilityHeaderFile(file, wupper(visitorName) + L"VISITOR", wlower(visitorName) + L"_visitor", writer, callback);
-			}
-
 /***********************************************************************
-WriteVisitorCppFile
+WriteAstUtilityCppFile
 ***********************************************************************/
 
-			void WriteUtilityCppFile(AstDefFile* file, const WString& fileNamePostfix, const WString& nss, stream::StreamWriter& writer, Func<void(const WString&)> callback)
+			void WriteAstUtilityCppFile(
+				AstDefFile* file,
+				const WString& utilityHeaderFile,
+				const WString& extraNss,
+				stream::StreamWriter& writer,
+				Func<void(const WString&)> callback
+			)
 			{
 				WriteFileComment(file->Name(), writer);
-				WString prefix = WriteFileBegin(file, file->Name() + L"_" + fileNamePostfix, writer);
-				writer.WriteLine(prefix + L"namespace " + nss);
-				writer.WriteLine(prefix + L"{");
-				prefix += L"\t";
-
-				callback(prefix);
-
-				prefix = prefix.Left(prefix.Length() - 1);
-				writer.WriteLine(prefix + L"}");
-				WriteFileEnd(file, writer);
-			}
-
-			void WriteVisitorCppFile(AstDefFile* file, const WString& visitorName, stream::StreamWriter& writer, Func<void(const WString&)> callback)
-			{
-				WriteUtilityCppFile(file, visitorName, wlower(visitorName) + L"_visitor", writer, callback);
+				writer.WriteLine(L"#include \"" + utilityHeaderFile + L"\"");
+				writer.WriteLine(L"");
+				{
+					List<WString> cppNss;
+					CopyFrom(cppNss, file->cppNss);
+					cppNss.Add(extraNss);
+					WString prefix = WriteNssBegin(cppNss, writer);
+					callback(prefix);
+					WriteNssEnd(cppNss, writer);
+				}
 			}
 
 /***********************************************************************
-WriteParserHeaderFile
+WriteParserUtilityHeaderFile
 ***********************************************************************/
 
-			void WriteParserHeaderFile(AstSymbolManager& manager, const WString& guardPostfix, stream::StreamWriter& writer, Func<void(const WString&)> callback)
+			void WriteParserUtilityHeaderFile(
+				AstSymbolManager& manager,
+				Ptr<CppParserGenOutput> output,
+				const WString& guardPostfix,
+				stream::StreamWriter& writer,
+				Func<void(const WString&)> callback
+			)
 			{
 				WriteFileComment(manager.name, writer);
 				if (manager.headerGuard != L"")
@@ -287,7 +270,7 @@ WriteParserHeaderFile
 				writer.WriteLine(L"");
 				for (auto file : manager.Files().Values())
 				{
-					writer.WriteLine(L"#include \"" + manager.name + file->Name() + L".h\"");
+					writer.WriteLine(L"#include \"" + output->files[file]->astH + L".h\"");
 				}
 
 				writer.WriteLine(L"");
@@ -302,13 +285,18 @@ WriteParserHeaderFile
 			}
 
 /***********************************************************************
-WriteParserCppFile
+WriteParserUtilityCppFile
 ***********************************************************************/
 
-			void WriteParserCppFile(AstSymbolManager& manager, const WString& fileNamePostfix, stream::StreamWriter& writer, Func<void(const WString&)> callback)
+			void WriteParserUtilityCppFile(
+				AstSymbolManager& manager,
+				const WString& utilityHeaderFile,
+				stream::StreamWriter& writer,
+				Func<void(const WString&)> callback
+			)
 			{
 				WriteFileComment(manager.name, writer);
-				writer.WriteLine(L"#include \"" + manager.name + L"_" + fileNamePostfix + L".h\"");
+				writer.WriteLine(L"#include \"" + utilityHeaderFile + L".h\"");
 				writer.WriteLine(L"");
 				WString prefix = WriteNssBegin(manager.cppNss, writer);
 				callback(prefix);
@@ -329,7 +317,7 @@ WriteAstFiles
 
 					WString fileCpp = GenerateToStream([&](StreamWriter& writer)
 					{
-						WriteAstCppFile(file, writer);
+						WriteAstCppFile(file, output->astH, writer);
 					});
 
 					files.Add(output->astH, fileH);

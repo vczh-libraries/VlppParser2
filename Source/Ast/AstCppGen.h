@@ -42,14 +42,12 @@ namespace vl
 			extern Ptr< CppParserGenOutput>		GenerateFileNames(AstSymbolManager& manager);
 
 			extern void			WriteAstHeaderFile(AstDefFile* file, stream::StreamWriter& writer);
-			extern void			WriteAstCppFile(AstDefFile* file, stream::StreamWriter& writer);
+			extern void			WriteAstCppFile(AstDefFile* file, const WString& astHeaderName, stream::StreamWriter& writer);
 
-			extern void			WriteUtilityHeaderFile(AstDefFile* file, const WString& guardPostfix, const WString& nss, stream::StreamWriter& writer, Func<void(const WString&)> callback);
-			extern void			WriteUtilityCppFile(AstDefFile* file, const WString& fileNamePostfix, const WString& nss, stream::StreamWriter& writer, Func<void(const WString&)> callback);
-			extern void			WriteVisitorHeaderFile(AstDefFile* file, const WString& visitorName, stream::StreamWriter& writer, Func<void(const WString&)> callback);
-			extern void			WriteVisitorCppFile(AstDefFile* file, const WString& visitorName, stream::StreamWriter& writer, Func<void(const WString&)> callback);
-			extern void			WriteParserHeaderFile(AstSymbolManager& manager, const WString& guardPostfix, stream::StreamWriter& writer, Func<void(const WString&)> callback);
-			extern void			WriteParserCppFile(AstSymbolManager& manager, const WString& fileNamePostfix, stream::StreamWriter& writer, Func<void(const WString&)> callback);
+			extern void			WriteAstUtilityHeaderFile(AstDefFile* file, Ptr<CppAstGenOutput> output, const WString& extraNss, stream::StreamWriter& writer, Func<void(const WString&)> callback);
+			extern void			WriteAstUtilityCppFile(AstDefFile* file, const WString& utilityHeaderFile, const WString& extraNss, stream::StreamWriter& writer, Func<void(const WString&)> callback);
+			extern void			WriteParserUtilityHeaderFile(AstSymbolManager& manager, Ptr<CppParserGenOutput> output, const WString& guardPostfix, stream::StreamWriter& writer, Func<void(const WString&)> callback);
+			extern void			WriteParserUtilityCppFile(AstSymbolManager& manager, const WString& utilityHeaderFile, stream::StreamWriter& writer, Func<void(const WString&)> callback);
 
 			extern void			WriteAstBuilderHeaderFile(AstDefFile* file, stream::StreamWriter& writer);
 			extern void			WriteAstBuilderCppFile(AstDefFile* file, stream::StreamWriter& writer);
