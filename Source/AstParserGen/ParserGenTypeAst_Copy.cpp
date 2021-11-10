@@ -15,81 +15,91 @@ namespace vl
 		{
 			namespace copy_visitor
 			{
-
-/***********************************************************************
-TypeVisitor
-***********************************************************************/
-
-				// CopyFields ----------------------------------------
-
-				void TypeVisitor::CopyFields(GlrType* from, GlrType* to)
-				{
-					to->name = from->name;
-				}
-
-				void TypeVisitor::CopyFields(GlrEnum* from, GlrEnum* to)
-				{
-					CopyFields(static_cast<GlrType*>(from), static_cast<GlrType*>(to));
-					for (auto&& listItem : from->items)
-					{
-						to->items.Add(CreateField(listItem));
-					}
-				}
-
-				void TypeVisitor::CopyFields(GlrEnumItem* from, GlrEnumItem* to)
-				{
-					to->name = from->name;
-				}
-
-				void TypeVisitor::CopyFields(GlrClass* from, GlrClass* to)
+				void TypeAstVisitor::CopyFields(GlrClass* from, GlrClass* to)
 				{
 					CopyFields(static_cast<GlrType*>(from), static_cast<GlrType*>(to));
 					for (auto&& listItem : from->props)
 					{
-						to->props.Add(CreateField(listItem));
+						to->props.Add(CopyNode(listItem.Obj()));
 					}
 				}
 
-				void TypeVisitor::CopyFields(GlrClassProp* from, GlrClassProp* to)
+				void TypeAstVisitor::CopyFields(GlrClassProp* from, GlrClassProp* to)
 				{
 					to->name = from->name;
 					to->propType = from->propType;
 					to->propTypeName = from->propTypeName;
 				}
 
-				// CreateField ---------------------------------------
-
-				vl::Ptr<GlrEnumItem> TypeVisitor::CreateField(vl::Ptr<GlrEnumItem> from)
+				void TypeAstVisitor::CopyFields(GlrEnum* from, GlrEnum* to)
 				{
-					if (!from) return nullptr;
-					auto to = vl::MakePtr<GlrEnumItem>();
-					CopyFields(from.Obj(), to.Obj());
-					return to;
+					CopyFields(static_cast<GlrType*>(from), static_cast<GlrType*>(to));
+					for (auto&& listItem : from->items)
+					{
+						to->items.Add(CopyNode(listItem.Obj()));
+					}
 				}
 
-				vl::Ptr<GlrClassProp> TypeVisitor::CreateField(vl::Ptr<GlrClassProp> from)
+				void TypeAstVisitor::CopyFields(GlrEnumItem* from, GlrEnumItem* to)
 				{
-					if (!from) return nullptr;
-					auto to = vl::MakePtr<GlrClassProp>();
-					CopyFields(from.Obj(), to.Obj());
-					return to;
+					to->name = from->name;
 				}
 
-				// Visitor Members -----------------------------------
+				void TypeAstVisitor::CopyFields(GlrFile* from, GlrFile* to)
+				{
+					to->name = from->name;
+					for (auto&& listItem : from->types)
+					{
+						to->types.Add(CopyNode(listItem.Obj()));
+					}
+				}
 
-				void TypeVisitor::Visit(GlrEnum* node)
+				void TypeAstVisitor::CopyFields(GlrType* from, GlrType* to)
+				{
+					to->name = from->name;
+				}
+
+				void TypeAstVisitor::Visit(GlrEnum* node)
 				{
 					auto newNode = vl::MakePtr<GlrEnum>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void TypeVisitor::Visit(GlrClass* node)
+				void TypeAstVisitor::Visit(GlrClass* node)
 				{
 					auto newNode = vl::MakePtr<GlrClass>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
+
+				vl::Ptr<GlrEnumItem> TypeAstVisitor::CopyNode(GlrEnumItem* node)
+				{
+					auto newNode = vl::MakePtr<GlrEnumItem>();
+					CopyFields(node, newNode.Obj());
+					return newNode;
+				}
+
+				vl::Ptr<GlrClassProp> TypeAstVisitor::CopyNode(GlrClassProp* node)
+				{
+					auto newNode = vl::MakePtr<GlrClassProp>();
+					CopyFields(node, newNode.Obj());
+					return newNode;
+				}
+
+				vl::Ptr<GlrFile> TypeAstVisitor::CopyNode(GlrFile* node)
+				{
+					auto newNode = vl::MakePtr<GlrFile>();
+					CopyFields(node, newNode.Obj());
+					return newNode;
+				}
+
+				vl::Ptr<GlrType> TypeAstVisitor::CopyNode(GlrType* node)
+				{
+					node->Accept(static_cast<GlrType::IVisitor*>(this));
+					return this->result.Cast<GlrType>();
+				}
+
 			}
 		}
 	}

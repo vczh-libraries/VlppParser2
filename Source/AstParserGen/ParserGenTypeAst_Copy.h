@@ -20,7 +20,7 @@ namespace vl
 			{
 				/// <summary>A copy visitor, overriding all abstract methods with AST copying code.</summary>
 				class TypeAstVisitor
-	: public virtual vl::glr::CopyVisitorBase
+					: public virtual vl::glr::CopyVisitorBase
 					, protected virtual GlrType::IVisitor
 				{
 				protected:

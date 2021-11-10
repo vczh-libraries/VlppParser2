@@ -92,13 +92,13 @@ WriteCopyFieldFunctionBody
 					case AstPropType::Array:
 						writer.WriteLine(prefix + L"\tfor (auto&& listItem : from->" + propSymbol->Name() + L")");
 						writer.WriteLine(prefix + L"\t{");
-						writer.WriteLine(prefix + L"\t\tto->" + propSymbol->Name() + L".Add(CreateField(listItem));");
+						writer.WriteLine(prefix + L"\t\tto->" + propSymbol->Name() + L".Add(CopyNode(listItem.Obj()));");
 						writer.WriteLine(prefix + L"\t}");
 						break;
 					case AstPropType::Type:
 						if (dynamic_cast<AstClassSymbol*>(propSymbol->propSymbol))
 						{
-							writer.WriteLine(prefix + L"\tto->" + propSymbol->Name() + L" = CreateField(from->" + propSymbol->Name() + L");");
+							writer.WriteLine(prefix + L"\tto->" + propSymbol->Name() + L" = CopyNode(from->" + propSymbol->Name() + L".Obj());");
 						}
 						else
 						{
@@ -122,7 +122,7 @@ WriteCopyVisitorHeaderFile
 
 					writer.WriteLine(prefix + L"/// <summary>A copy visitor, overriding all abstract methods with AST copying code.</summary>");
 					writer.WriteLine(prefix + L"class " + file->Name() + L"Visitor");
-					writer.WriteLine(L"\t: public virtual vl::glr::CopyVisitorBase");
+					writer.WriteLine(prefix + L"\t: public virtual vl::glr::CopyVisitorBase");
 					for (auto visitorSymbol : visitors)
 					{
 						writer.WriteString(prefix + L"\t, protected virtual ");
@@ -182,81 +182,87 @@ WriteCopyVisitorCppFile
 			{
 				WriteVisitorCppFile(file, L"Copy", writer, [&](const WString& prefix)
 				{
-					for (auto name : file->SymbolOrder())
+					List<AstClassSymbol*> visitors, concreteClasses;
+					CollectVisitorsAndConcreteClasses(file, visitors, concreteClasses);
+
+					for (auto typeSymbol : file->Symbols().Values())
 					{
-						if (auto classSymbol = dynamic_cast<AstClassSymbol*>(file->Symbols()[name]))
+						if (auto classSymbol = dynamic_cast<AstClassSymbol*>(typeSymbol))
 						{
-							if (classSymbol->derivedClasses.Count() > 0)
+							writer.WriteString(prefix + L"void " + file->Name() + L"Visitor::CopyFields(");
+							PrintCppType(file, classSymbol, writer);
+							writer.WriteString(L"* from, ");
+							PrintCppType(file, classSymbol, writer);
+							writer.WriteLine(L"* to)");
+							writer.WriteLine(prefix + L"{");
+							WriteCopyFieldFunctionBody(file, classSymbol, prefix, writer);
+							writer.WriteLine(prefix + L"}");
+							writer.WriteLine(L"");
+						}
+					}
+
+					for (auto visitorSymbol : visitors)
+					{
+						for (auto classSymbol : visitorSymbol->derivedClasses)
+						{
+							writer.WriteString(prefix + L"void " + file->Name() + L"Visitor::Visit(");
+							PrintCppType(file, classSymbol, writer);
+							writer.WriteLine(L"* node)");
+							writer.WriteLine(prefix + L"{");
+							if (classSymbol->derivedClasses.Count() == 0)
 							{
-								writer.WriteLine(L"");
-								writer.WriteLine(L"/***********************************************************************");
-								writer.WriteLine(classSymbol->Name() + L"Visitor");
-								writer.WriteLine(L"***********************************************************************/");
-
-								List<AstClassSymbol*> copyFields;
-								List<AstClassSymbol*> createFields;
-								List<AstClassSymbol*> virtualCreateFields;
-								CollectCopyDependencies(classSymbol, true, true, copyFields, createFields, virtualCreateFields);
-
-								writer.WriteLine(L"");
-								writer.WriteLine(prefix + L"// CopyFields ----------------------------------------");
-								for (auto fieldSymbol : copyFields)
-								{
-									writer.WriteLine(L"");
-									writer.WriteString(prefix + L"void " + classSymbol->Name() + L"Visitor::CopyFields(");
-									PrintCppType(file, fieldSymbol, writer);
-									writer.WriteString(L"* from, ");
-									PrintCppType(file, fieldSymbol, writer);
-									writer.WriteLine(L"* to)");
-									writer.WriteLine(prefix + L"{");
-									WriteCopyFieldFunctionBody(file, fieldSymbol, prefix, writer);
-									writer.WriteLine(prefix + L"}");
-								}
-
-								writer.WriteLine(L"");
-								writer.WriteLine(prefix + L"// CreateField ---------------------------------------");
-								for (auto fieldSymbol : createFields)
-								{
-									writer.WriteLine(L"");
-									writer.WriteString(prefix + L"vl::Ptr<");
-									PrintCppType(file, fieldSymbol, writer);
-									writer.WriteString(L"> " + classSymbol->Name() + L"Visitor::CreateField(vl::Ptr<");
-									PrintCppType(file, fieldSymbol, writer);
-									writer.WriteLine(L"> from)");
-									writer.WriteLine(prefix + L"{");
-									writer.WriteLine(prefix + L"\tif (!from) return nullptr;");
-									writer.WriteString(prefix + L"\tauto to = vl::MakePtr<");
-									PrintCppType(file, fieldSymbol, writer);
-									writer.WriteLine(L">();");
-									writer.WriteLine(prefix + L"\tCopyFields(from.Obj(), to.Obj());");
-									writer.WriteLine(prefix + L"\treturn to;");
-									writer.WriteLine(prefix + L"}");
-								}
-
-								writer.WriteLine(L"");
-								writer.WriteLine(prefix + L"// Visitor Members -----------------------------------");
-								for (auto childSymbol : classSymbol->derivedClasses)
-								{
-									writer.WriteLine(L"");
-									writer.WriteString(prefix + L"void " + classSymbol->Name() + L"Visitor::Visit(");
-									PrintCppType(file, childSymbol, writer);
-									writer.WriteLine(L"* node)");
-									writer.WriteLine(prefix + L"{");
-									if (childSymbol->derivedClasses.Count() > 0)
-									{
-										writer.WriteLine(prefix + L"\tDispatch(node);");
-									}
-									else
-									{
-										writer.WriteString(prefix + L"\tauto newNode = vl::MakePtr<");
-										PrintCppType(file, childSymbol, writer);
-										writer.WriteLine(L">();");
-										writer.WriteLine(prefix + L"\tCopyFields(node, newNode.Obj());");
-										writer.WriteLine(prefix + L"\tthis->result = newNode;");
-									}
-									writer.WriteLine(prefix + L"}");
-								}
+								writer.WriteString(prefix + L"\tauto newNode = vl::MakePtr<");
+								PrintCppType(file, classSymbol, writer);
+								writer.WriteLine(L">();");
+								writer.WriteLine(prefix + L"\tCopyFields(node, newNode.Obj());");
+								writer.WriteLine(prefix + L"\tthis->result = newNode;");
 							}
+							else
+							{
+								writer.WriteString(prefix + L"\tnode->Accept(static_cast<");
+								PrintCppType(file, classSymbol, writer);
+								writer.WriteLine(L"::IVisitor*>(this));");
+							}
+							writer.WriteLine(prefix + L"}");
+							writer.WriteLine(L"");
+						}
+					}
+
+					for (auto classSymbol : concreteClasses)
+					{
+						writer.WriteString(prefix + L"vl::Ptr<");
+						PrintCppType(file, classSymbol, writer);
+						writer.WriteString(L"> " + file->Name() + L"Visitor::CopyNode(");
+						PrintCppType(file, classSymbol, writer);
+						writer.WriteLine(L"* node)");
+						writer.WriteLine(prefix + L"{");
+						writer.WriteString(prefix + L"\tauto newNode = vl::MakePtr<");
+						PrintCppType(file, classSymbol, writer);
+						writer.WriteLine(L">();");
+						writer.WriteLine(prefix + L"\tCopyFields(node, newNode.Obj());");
+						writer.WriteLine(prefix + L"\treturn newNode;");
+						writer.WriteLine(prefix + L"}");
+						writer.WriteLine(L"");
+					}
+
+					for (auto classSymbol : visitors)
+					{
+						if (!classSymbol->baseClass)
+						{
+							writer.WriteString(prefix + L"vl::Ptr<");
+							PrintCppType(file, classSymbol, writer);
+							writer.WriteString(L"> " + file->Name() + L"Visitor::CopyNode(");
+							PrintCppType(file, classSymbol, writer);
+							writer.WriteLine(L"* node)");
+							writer.WriteLine(prefix + L"{");
+							writer.WriteString(prefix + L"\tnode->Accept(static_cast<");
+							PrintCppType(file, classSymbol, writer);
+							writer.WriteLine(L"::IVisitor*>(this));");
+							writer.WriteString(prefix + L"\treturn this->result.Cast<");
+							PrintCppType(file, classSymbol, writer);
+							writer.WriteLine(L">();");
+							writer.WriteLine(prefix + L"}");
+							writer.WriteLine(L"");
 						}
 					}
 				});

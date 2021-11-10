@@ -11,181 +11,190 @@ namespace calculator
 {
 	namespace copy_visitor
 	{
+		void AstVisitor::CopyFields(Arg* from, Arg* to)
+		{
+			to->name = from->name;
+		}
 
-/***********************************************************************
-ExprVisitor
-***********************************************************************/
+		void AstVisitor::CopyFields(Binary* from, Binary* to)
+		{
+			CopyFields(static_cast<Expandable*>(from), static_cast<Expandable*>(to));
+			to->left = CopyNode(from->left.Obj());
+			to->op = from->op;
+			to->right = CopyNode(from->right.Obj());
+		}
 
-		// CopyFields ----------------------------------------
+		void AstVisitor::CopyFields(Call* from, Call* to)
+		{
+			CopyFields(static_cast<Expr*>(from), static_cast<Expr*>(to));
+			to->arg = CopyNode(from->arg.Obj());
+			to->func = CopyNode(from->func.Obj());
+		}
 
-		void ExprVisitor::CopyFields(Expr* from, Expr* to)
+		void AstVisitor::CopyFields(Expandable* from, Expandable* to)
+		{
+			CopyFields(static_cast<Expr*>(from), static_cast<Expr*>(to));
+			to->expanded = CopyNode(from->expanded.Obj());
+		}
+
+		void AstVisitor::CopyFields(Expr* from, Expr* to)
 		{
 		}
 
-		void ExprVisitor::CopyFields(NumExpr* from, NumExpr* to)
+		void AstVisitor::CopyFields(False* from, False* to)
+		{
+			CopyFields(static_cast<Expr*>(from), static_cast<Expr*>(to));
+		}
+
+		void AstVisitor::CopyFields(Func* from, Func* to)
+		{
+			CopyFields(static_cast<Expr*>(from), static_cast<Expr*>(to));
+			for (auto&& listItem : from->args)
+			{
+				to->args.Add(CopyNode(listItem.Obj()));
+			}
+			to->value = CopyNode(from->value.Obj());
+		}
+
+		void AstVisitor::CopyFields(Import* from, Import* to)
+		{
+			to->name = from->name;
+		}
+
+		void AstVisitor::CopyFields(LetExpr* from, LetExpr* to)
+		{
+			CopyFields(static_cast<Expandable*>(from), static_cast<Expandable*>(to));
+			to->name = from->name;
+			to->value = CopyNode(from->value.Obj());
+		}
+
+		void AstVisitor::CopyFields(Module* from, Module* to)
+		{
+			to->exported = CopyNode(from->exported.Obj());
+			for (auto&& listItem : from->imports)
+			{
+				to->imports.Add(CopyNode(listItem.Obj()));
+			}
+		}
+
+		void AstVisitor::CopyFields(NumExpr* from, NumExpr* to)
 		{
 			CopyFields(static_cast<Expr*>(from), static_cast<Expr*>(to));
 			to->value = from->value;
 		}
 
-		void ExprVisitor::CopyFields(Ref* from, Ref* to)
+		void AstVisitor::CopyFields(Ref* from, Ref* to)
 		{
 			CopyFields(static_cast<Expr*>(from), static_cast<Expr*>(to));
 			to->name = from->name;
 		}
 
-		void ExprVisitor::CopyFields(True* from, True* to)
+		void AstVisitor::CopyFields(True* from, True* to)
 		{
 			CopyFields(static_cast<Expr*>(from), static_cast<Expr*>(to));
 		}
 
-		void ExprVisitor::CopyFields(False* from, False* to)
+		void AstVisitor::CopyFields(Unary* from, Unary* to)
 		{
-			CopyFields(static_cast<Expr*>(from), static_cast<Expr*>(to));
+			CopyFields(static_cast<Expandable*>(from), static_cast<Expandable*>(to));
+			to->op = from->op;
+			to->operand = CopyNode(from->operand.Obj());
 		}
 
-		void ExprVisitor::CopyFields(Func* from, Func* to)
-		{
-			CopyFields(static_cast<Expr*>(from), static_cast<Expr*>(to));
-			for (auto&& listItem : from->args)
-			{
-				to->args.Add(CreateField(listItem));
-			}
-			to->value = CreateField(from->value);
-		}
-
-		void ExprVisitor::CopyFields(Arg* from, Arg* to)
-		{
-			to->name = from->name;
-		}
-
-		void ExprVisitor::CopyFields(Call* from, Call* to)
-		{
-			CopyFields(static_cast<Expr*>(from), static_cast<Expr*>(to));
-			to->arg = CreateField(from->arg);
-			to->func = CreateField(from->func);
-		}
-
-		// CreateField ---------------------------------------
-
-		vl::Ptr<Arg> ExprVisitor::CreateField(vl::Ptr<Arg> from)
-		{
-			if (!from) return nullptr;
-			auto to = vl::MakePtr<Arg>();
-			CopyFields(from.Obj(), to.Obj());
-			return to;
-		}
-
-		// Visitor Members -----------------------------------
-
-		void ExprVisitor::Visit(NumExpr* node)
+		void AstVisitor::Visit(NumExpr* node)
 		{
 			auto newNode = vl::MakePtr<NumExpr>();
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
-		void ExprVisitor::Visit(Ref* node)
+		void AstVisitor::Visit(Ref* node)
 		{
 			auto newNode = vl::MakePtr<Ref>();
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
-		void ExprVisitor::Visit(True* node)
+		void AstVisitor::Visit(True* node)
 		{
 			auto newNode = vl::MakePtr<True>();
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
-		void ExprVisitor::Visit(False* node)
+		void AstVisitor::Visit(False* node)
 		{
 			auto newNode = vl::MakePtr<False>();
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
-		void ExprVisitor::Visit(Func* node)
+		void AstVisitor::Visit(Func* node)
 		{
 			auto newNode = vl::MakePtr<Func>();
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
-		void ExprVisitor::Visit(Call* node)
+		void AstVisitor::Visit(Call* node)
 		{
 			auto newNode = vl::MakePtr<Call>();
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
-		void ExprVisitor::Visit(Expandable* node)
+		void AstVisitor::Visit(Expandable* node)
 		{
-			Dispatch(node);
+			node->Accept(static_cast<Expandable::IVisitor*>(this));
 		}
 
-/***********************************************************************
-ExpandableVisitor
-***********************************************************************/
-
-		// CopyFields ----------------------------------------
-
-		void ExpandableVisitor::CopyFields(Expr* from, Expr* to)
-		{
-		}
-
-		void ExpandableVisitor::CopyFields(Expandable* from, Expandable* to)
-		{
-			CopyFields(static_cast<Expr*>(from), static_cast<Expr*>(to));
-			to->expanded = CreateField(from->expanded);
-		}
-
-		void ExpandableVisitor::CopyFields(LetExpr* from, LetExpr* to)
-		{
-			CopyFields(static_cast<Expandable*>(from), static_cast<Expandable*>(to));
-			to->name = from->name;
-			to->value = CreateField(from->value);
-		}
-
-		void ExpandableVisitor::CopyFields(Unary* from, Unary* to)
-		{
-			CopyFields(static_cast<Expandable*>(from), static_cast<Expandable*>(to));
-			to->op = from->op;
-			to->operand = CreateField(from->operand);
-		}
-
-		void ExpandableVisitor::CopyFields(Binary* from, Binary* to)
-		{
-			CopyFields(static_cast<Expandable*>(from), static_cast<Expandable*>(to));
-			to->left = CreateField(from->left);
-			to->op = from->op;
-			to->right = CreateField(from->right);
-		}
-
-		// CreateField ---------------------------------------
-
-		// Visitor Members -----------------------------------
-
-		void ExpandableVisitor::Visit(LetExpr* node)
+		void AstVisitor::Visit(LetExpr* node)
 		{
 			auto newNode = vl::MakePtr<LetExpr>();
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
-		void ExpandableVisitor::Visit(Unary* node)
+		void AstVisitor::Visit(Unary* node)
 		{
 			auto newNode = vl::MakePtr<Unary>();
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
-		void ExpandableVisitor::Visit(Binary* node)
+		void AstVisitor::Visit(Binary* node)
 		{
 			auto newNode = vl::MakePtr<Binary>();
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
+
+		vl::Ptr<Arg> AstVisitor::CopyNode(Arg* node)
+		{
+			auto newNode = vl::MakePtr<Arg>();
+			CopyFields(node, newNode.Obj());
+			return newNode;
+		}
+
+		vl::Ptr<Import> AstVisitor::CopyNode(Import* node)
+		{
+			auto newNode = vl::MakePtr<Import>();
+			CopyFields(node, newNode.Obj());
+			return newNode;
+		}
+
+		vl::Ptr<Module> AstVisitor::CopyNode(Module* node)
+		{
+			auto newNode = vl::MakePtr<Module>();
+			CopyFields(node, newNode.Obj());
+			return newNode;
+		}
+
+		vl::Ptr<Expr> AstVisitor::CopyNode(Expr* node)
+		{
+			node->Accept(static_cast<Expr::IVisitor*>(this));
+			return this->result.Cast<Expr>();
+		}
+
 	}
 }
