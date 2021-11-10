@@ -22,6 +22,36 @@ namespace vl
 			class GlrFile;
 			class GlrType;
 
+			enum class TypeAstClasses : vl::vint32_t
+			{
+				Class = 0,
+				ClassProp = 1,
+				Enum = 2,
+				EnumItem = 3,
+				File = 4,
+				Type = 5,
+			};
+
+			enum class TypeAstFields : vl::vint32_t
+			{
+				Class_props = (static_cast<vl::vint32_t>(TypeAstClasses::Class) << 8) + 0,
+				ClassProp_name = (static_cast<vl::vint32_t>(TypeAstClasses::ClassProp) << 8) + 0,
+				ClassProp_propType = (static_cast<vl::vint32_t>(TypeAstClasses::ClassProp) << 8) + 1,
+				ClassProp_propTypeName = (static_cast<vl::vint32_t>(TypeAstClasses::ClassProp) << 8) + 2,
+				Enum_items = (static_cast<vl::vint32_t>(TypeAstClasses::Enum) << 8) + 0,
+				EnumItem_name = (static_cast<vl::vint32_t>(TypeAstClasses::EnumItem) << 8) + 0,
+				File_name = (static_cast<vl::vint32_t>(TypeAstClasses::File) << 8) + 0,
+				File_types = (static_cast<vl::vint32_t>(TypeAstClasses::File) << 8) + 1,
+				Type_name = (static_cast<vl::vint32_t>(TypeAstClasses::Type) << 8) + 0,
+			};
+
+			enum class GlrPropType
+			{
+				Token = 0,
+				Type = 1,
+				Array = 2,
+			};
+
 			class GlrType abstract : public vl::glr::ParsingAstBase, vl::reflection::Description<GlrType>
 			{
 			public:
@@ -49,13 +79,6 @@ namespace vl
 				vl::collections::List<vl::Ptr<GlrEnumItem>> items;
 
 				void Accept(GlrType::IVisitor* visitor) override;
-			};
-
-			enum class GlrPropType
-			{
-				Token = 0,
-				Type = 1,
-				Array = 2,
 			};
 
 			class GlrClassProp : public vl::glr::ParsingAstBase, vl::reflection::Description<GlrClassProp>
