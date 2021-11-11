@@ -1,21 +1,6 @@
 # TODO
 
-## Issues
-
-- `JsonEscapeString` `JsonUnescapeString` handle surrogate pairs incorrectly.
-
-## Goal
-
-- Parsing
-  - Explicily declare the boundary of ambiguity resolving (e.g. on EXPR or on STAT)
-  - Error message generation
-  - Error recovering
-- AST
-  - Low overhead AST with reflection
-  - Optional creating AST from a pool
-  - Pooling is a configuration in the AST definition file, the decision could not be changed until re-generate C++ code.
-
-## Experimantal
+## Experiments
 
 - Full CFG power, no limitation
   - Experiment: expanding all left-recursive grammer to right-recursive grammar with instructions
@@ -53,13 +38,6 @@ class CLASS_NAME [: BASE_CLASS]
 - [ ] All names of AST and token must be unique.
 - [ ] Unique field id will be generated for each fields in each AST node.
 
-### Types
-
-- Reflectable `token` type.
-- Enumerations.
-- Classes.
-- Arrays to class.
-
 ## Lexical Analyzer
 
 - Assign token regular expression to token name.
@@ -85,39 +63,17 @@ class CLASS_NAME [: BASE_CLASS]
 - Being able to switch to different lexical analyzer during parsing.
 - Being able to specify error messages in syntax.
 
-## Syntax Callback
-
-- Produce AST assembling instructions during parsing.
-- Keeps the record of branching, generated instructions could be discarded when a certain branch fails in the future.
-- Only make a callback when all ambiguities are resolved, so that the result of executed instructions will never be discarded.
-- Instructions could be executed before parsing ends.
-  - If an AST node could be created in a postfix of instructions.
-    - Generate a SAX-like callback interface, inputs are multiple converted instructions that represents `<FIELD-ID, AST-ID>[]`.
-      - All callback must return an `vuint64_t` number as an identifier of the created AST node.
-      - Such postfix of instructions will be then replaced to one instruction taking this number.
-    - A default implementation for that interface to really create AST nodes, the number is the pointer of the created AST node.
-      - The base class of AST is known, `Ptr<T>` could be created from a reflectable pointer multiple times, that's safe.
-      - For pooled AST node, the pool object must be provided.
-      - For non-pooled AST node, all `Ptr<T>` must be stored in an provided object.
-
-## Supported EBNF
-
-- TOKEN [`:` PROPERTY-NAME]
-- RULE [`:` PROPERTY-NAME]
-- Optional:
-  - `+[` EBNF `]`
-  - `-[` EBNF `]`
-  - `[` EBNF `]`
-- Loop:
-  - `+{` EBNF `}`
-  - `-{` EBNF `}`
-  - `{` EBNF `}`
-- `with{` PROPERTY-ASSIGNMENT ... `}`
-
 ## EBNF Program
 
-- RULE {`::=` CLAUSE `as` CLASS-NAME} `;`
+- RULE [: TYPE] {`::=` CLAUSE [`as` CLASS-NAME [`with` `{` {ASSIGNMENT ...} `}`]] } `;`
   - Consider a syntax here to switch to different lexical analyzer.
+  - The type of a rule could be:
+    - `token`
+    - `partial` TYPE. Another rule that calls this rule must be
+      - either a `partial` TYPE2, while TYPE2 should be the same to TYPE or its derived type
+      - TYPE2, while TYPE2 should be the same to TYPE or its derived type
+    - TYPE
+    - no type, using the result from one fragment in CLAUSE (exp ::= '(' !exp ')')
 
 ## Development
 
@@ -146,3 +102,13 @@ class CLASS_NAME [: BASE_CLASS]
 5. [ ] Testing generated parsers.
 6. [ ] Create JSON and XML parser.
 7. [ ] Port `CodePack` and `ParserGen` to `VlppParser2`, do not write to an existing file if the content is not changed.
+
+## To Do
+
+- `JsonEscapeString` `JsonUnescapeString` handle surrogate pairs correctly.
+- Switching lexical analyzer during parsing.
+- AST uses classes from another AST file in dependency as fields.
+- Ambiguity AST and parsing.
+- Printing AST classes that created from a memory pool.
+- Error message generating
+- Error recovering
