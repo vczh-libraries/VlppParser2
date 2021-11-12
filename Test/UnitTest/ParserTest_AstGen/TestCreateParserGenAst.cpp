@@ -20,7 +20,7 @@ TEST_FILE
 		Dictionary<WString, WString> files;
 		auto output = GenerateFileNames(manager);
 		WriteAstFiles(manager, output, files);
-		auto outputDir = FilePath(GetExePath()) / L"../../../Source/AstParserGen/";
+		auto outputDir = FilePath(GetExePath()) / L"../../../Source/ParserGen_Generated/";
 		for (auto [key, index] : indexed(files.Keys()))
 		{
 			File(outputDir / key).WriteAllText(files.Values()[index], false, BomEncoder::Utf8);
