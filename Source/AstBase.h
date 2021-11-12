@@ -232,6 +232,90 @@ Utility
 
 		extern void								JsonEscapeString(const WString& text, stream::TextWriter& writer);
 		extern void								JsonUnescapeString(const WString& text, stream::TextWriter& writer);
+
+/***********************************************************************
+Instructions
+***********************************************************************/
+
+		enum class AstInsType
+		{
+			Token,										// Token()							: push the current token as a value.
+			BeginObject,								// BeginObject()					: begin creating an AST node.
+			EndObject,									// EndObject(Type)					: Finish creating an AST node, all objects pushed after BeginObject are supposed to be its fields.
+			Field,										// Field(Field)						: Associate a field name with the top object.
+			ResolveAmbiguity,							// ResolveAmbiguity(Type, Count)	: Combine several top objects to one using an ambiguity node.
+		};
+
+		struct AstIns
+		{
+			AstInsType									type = AstInsType::Token;
+			vint32_t									paramTypeOrField = -1;
+			vint										paramCount = -1;
+		};
+
+		enum class AstInsErrorType
+		{
+			UnknownType,								// UnknownType(Type)					: The type id does not exist.
+			UnknownField,								// UnknownField(Field)					: The field id does not exist.
+			FieldNotExistsInType,						// FieldNotExistsInType(Type, Field)	: The type doesn't have such field.
+			FieldReassigned,							// FieldReassigned(Field)				: An object is assigned to a field but this field has already been assigned.
+			ObjectTypeMismatchedToField,				// ObjectTypeMismatchedToField(Field)	: Unable to assign an object to a field because the type does not match.
+			MissingAmbiguityCandidate,					// MissingAmbiguityCandidate()			: There are not enough candidates to create an ambiguity node.
+
+			AmbiguityCandidateIsToken,					// AmbiguityCandidateIsToken()			: Tokens cannot be ambiguity candidates.
+			UnassignedObjectLeaving,					// UnassignedObjectLeaving()			: There are still unassigned objects leaving when executing EndObject.
+			InstructionNotComplete,						// InstructionNotComplete()				: No more instruction but the root object has not been completed yet.
+			Corrupted,									// Corrupted()							: An exception has been thrown therefore this receiver cannot be used anymore.
+		};
+
+		class AstInsException : public Exception
+		{
+		public:
+			AstInsErrorType								error = AstInsErrorType::Corrupted;
+			vint32_t									paramType = -1;
+			vint32_t									paramField = -1;
+
+			AstInsException(const WString& message, AstInsErrorType _error, vint32_t _type, vint32_t _field)
+				: Exception(message)
+				, error(_error)
+				, paramType(_type)
+				, paramField(_field)
+			{
+			}
+		};
+
+		class IAstInsReceiver : public virtual Interface
+		{
+		public:
+			virtual void								Execute(AstIns instruction, const regex::RegexToken& token) = 0;
+			virtual Ptr<ParsingAstBase>					Finished() = 0;
+		};
+
+		class AstInsReceiverBase : public Object, public virtual IAstInsReceiver
+		{
+		private:
+			struct ObjectOrToken
+			{
+				Ptr<ParsingAstBase>						object;
+				regex::RegexToken						token;
+			};
+
+			collections::List<Ptr<ParsingAstBase>>		created;
+			collections::List<ObjectOrToken>			pushed;
+			bool										corrupted = false;
+
+			virtual void								CreateAstNode(vint32_t type) = 0;
+			virtual void								SetField(ParsingAstBase* object, vint32_t field, Ptr<ParsingAstBase> value) = 0;
+			virtual void								SetField(ParsingAstBase* object, vint32_t field, const regex::RegexToken& token) = 0;
+			virtual Ptr<ParsingAstBase>					ResolveAmbiguity(vint32_t type, collections::Array<Ptr<ParsingAstBase>>& candidates) = 0;
+		protected:
+		public:
+			AstInsReceiverBase();
+			~AstInsReceiverBase();
+
+			void										Execute(AstIns instruction, const regex::RegexToken& token) override;
+			Ptr<ParsingAstBase>							Finished() override;
+		};
 	}
 }
 

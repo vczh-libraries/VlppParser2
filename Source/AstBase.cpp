@@ -219,5 +219,25 @@ Json Printing
 				}
 			}
 		}
+
+/***********************************************************************
+AstInsReceiverBase
+***********************************************************************/
+
+		AstInsReceiverBase::AstInsReceiverBase()
+		{
+		}
+
+		AstInsReceiverBase::~AstInsReceiverBase()
+		{
+		}
+
+		void AstInsReceiverBase::Execute(AstIns instruction, const regex::RegexToken& token)
+		{
+		}
+
+		Ptr<ParsingAstBase> AstInsReceiverBase::Finished()
+		{
+		}
 	}
 }
