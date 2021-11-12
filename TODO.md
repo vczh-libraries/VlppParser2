@@ -68,6 +68,9 @@
    3. [x] AST + Instruction -> C++ SAX-like callback interface.
    4. [x] AST + Instruction -> C++ Default implementation for the interface.
    5. [x] Generate `ParserGen` AST creation C++ file in this unit test project.
+   6. [ ] Test copy visitors.
+   7. [ ] Test traverse visitors.
+   8. [ ] Test json visitors.
 3. [ ] Parser.
    1. [ ] Manually create multiple parsers using the `ParserGen` AST, with test input / output.
    2. [ ] Implement the compiler that accepts AST for AST / lexical analyzer / syntax, and create a parser.
