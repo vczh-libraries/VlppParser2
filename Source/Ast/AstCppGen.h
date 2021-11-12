@@ -37,6 +37,9 @@ namespace vl
 				WString														assemblyH;
 				WString														assemblyCpp;
 				collections::Dictionary<AstDefFile*, Ptr<CppAstGenOutput>>	files;
+
+				collections::Dictionary<AstClassSymbol*, vint>				classIds;
+				collections::Dictionary<AstClassPropSymbol*, vint>			fieldIds;
 			};
 
 			extern Ptr< CppParserGenOutput>		GenerateFileNames(AstSymbolManager& manager);
