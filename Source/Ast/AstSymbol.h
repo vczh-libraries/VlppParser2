@@ -227,6 +227,7 @@ AstSymbolManager
 				}
 			}
 
+			extern void						InitializeParserGenAstSymbolManager(AstSymbolManager& manager);
 			extern AstDefFile*				CreateParserGenTypeAst(AstSymbolManager& manager);
 		}
 	}

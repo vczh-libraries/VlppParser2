@@ -7,7 +7,7 @@ Licensed under https://github.com/vczh-libraries/License
 #ifndef VCZH_PARSER2_UNITTEST_CALCULATORAST_AST
 #define VCZH_PARSER2_UNITTEST_CALCULATORAST_AST
 
-#include "../../../Source/AstBase.h"
+#include "../../../../Source/AstBase.h"
 
 namespace calculator
 {

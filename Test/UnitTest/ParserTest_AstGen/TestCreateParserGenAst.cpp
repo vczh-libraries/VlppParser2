@@ -13,12 +13,8 @@ TEST_FILE
 	TEST_CASE(L"CreateParserGenAst")
 	{
 		AstSymbolManager manager;
-		{
-			manager.name = L"ParserGen";
-			Fill(manager.cppNss, L"vl", L"glr", L"parsergen");
-			manager.headerGuard = L"VCZH_PARSER2_PARSERGEN";
-			CreateParserGenTypeAst(manager);
-		}
+		InitializeParserGenAstSymbolManager(manager);
+		CreateParserGenTypeAst(manager);
 		TEST_ASSERT(manager.Errors().Count() == 0);
 
 		Dictionary<WString, WString> files;
