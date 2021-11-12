@@ -24,6 +24,7 @@ namespace vl
 
 			enum class GlrPropType
 			{
+				UNDEFINED_ENUM_ITEM_VALUE = -1,
 				Token = 0,
 				Type = 1,
 				Array = 2,

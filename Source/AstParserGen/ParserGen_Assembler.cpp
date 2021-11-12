@@ -219,7 +219,15 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 				case ParserGenFields::ClassProp_propType:
 					if (auto typedObject = dynamic_cast<vl::glr::parsergen::GlrClassProp*>(object))
 					{
-						typedObject->propType = (vl::glr::parsergen::GlrPropType)enumItem;
+						if (typedObject->propType == vl::glr::parsergen::GlrPropType::UNDEFINED_ENUM_ITEM_VALUE)
+						{
+							typedObject->propType = (vl::glr::parsergen::GlrPropType)enumItem;
+							break;
+						}
+						else
+						{
+							throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrClassProp::propType\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
+						}
 					}
 					else
 					{

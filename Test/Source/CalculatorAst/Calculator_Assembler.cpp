@@ -450,7 +450,15 @@ CalculatorAstInsReceiver : public vl::glr::AstInsReceiverBase
 		case CalculatorFields::Binary_op:
 			if (auto typedObject = dynamic_cast<calculator::Binary*>(object))
 			{
-				typedObject->op = (calculator::BinaryOp)enumItem;
+				if (typedObject->op == calculator::BinaryOp::UNDEFINED_ENUM_ITEM_VALUE)
+				{
+					typedObject->op = (calculator::BinaryOp)enumItem;
+					break;
+				}
+				else
+				{
+					throw vl::glr::AstInsException(L"Field \"calculator::Binary::op\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
+				}
 			}
 			else
 			{
@@ -459,7 +467,15 @@ CalculatorAstInsReceiver : public vl::glr::AstInsReceiverBase
 		case CalculatorFields::Unary_op:
 			if (auto typedObject = dynamic_cast<calculator::Unary*>(object))
 			{
-				typedObject->op = (calculator::UnaryOp)enumItem;
+				if (typedObject->op == calculator::UnaryOp::UNDEFINED_ENUM_ITEM_VALUE)
+				{
+					typedObject->op = (calculator::UnaryOp)enumItem;
+					break;
+				}
+				else
+				{
+					throw vl::glr::AstInsException(L"Field \"calculator::Unary::op\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
+				}
 			}
 			else
 			{

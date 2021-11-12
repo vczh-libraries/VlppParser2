@@ -28,12 +28,14 @@ namespace calculator
 
 	enum class UnaryOp
 	{
+		UNDEFINED_ENUM_ITEM_VALUE = -1,
 		Positive = 0,
 		Negative = 1,
 	};
 
 	enum class BinaryOp
 	{
+		UNDEFINED_ENUM_ITEM_VALUE = -1,
 		Add = 0,
 		Minus = 1,
 		Multiply = 2,

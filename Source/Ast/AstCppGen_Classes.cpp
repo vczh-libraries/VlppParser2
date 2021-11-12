@@ -119,6 +119,11 @@ WriteTypeDefinitions
 						writer.WriteString(prefix);
 						writer.WriteLine(L"{");
 
+						{
+							writer.WriteString(prefix);
+							writer.WriteLine(L"\tUNDEFINED_ENUM_ITEM_VALUE = -1,");
+						}
+
 						for (auto itemName : enumSymbol->ItemOrder())
 						{
 							auto itemSymbol = enumSymbol->Items()[itemName];
