@@ -13,19 +13,19 @@ namespace calculator
 CalculatorAstInsReceiver : public vl::glr::AstInsReceiverBase
 ***********************************************************************/
 
-	vl::Ptr<vl::glr::ParsingAstBase> CalculatorAstInsReceiver : public vl::glr::AstInsReceiverBase::CreateAstNode(vl::vint32_t type)
+	vl::Ptr<vl::glr::ParsingAstBase> CalculatorAstInsReceiver::CreateAstNode(vl::vint32_t type)
 	{
 	}
 
-	void CalculatorAstInsReceiver : public vl::glr::AstInsReceiverBase::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::Ptr<vl::glr::ParsingAstBase> value)
+	void CalculatorAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::Ptr<vl::glr::ParsingAstBase> value)
 	{
 	}
 
-	void CalculatorAstInsReceiver : public vl::glr::AstInsReceiverBase::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, const vl::regex::RegexToken& token)
+	void CalculatorAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, const vl::regex::RegexToken& token)
 	{
 	}
 
-	vl::Ptr<vl::glr::ParsingAstBase> CalculatorAstInsReceiver : public vl::glr::AstInsReceiverBase::ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates)
+	vl::Ptr<vl::glr::ParsingAstBase> CalculatorAstInsReceiver::ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates)
 	{
 	}
 }

@@ -17,19 +17,19 @@ namespace vl
 ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 ***********************************************************************/
 
-			vl::Ptr<vl::glr::ParsingAstBase> ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase::CreateAstNode(vl::vint32_t type)
+			vl::Ptr<vl::glr::ParsingAstBase> ParserGenAstInsReceiver::CreateAstNode(vl::vint32_t type)
 			{
 			}
 
-			void ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::Ptr<vl::glr::ParsingAstBase> value)
+			void ParserGenAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::Ptr<vl::glr::ParsingAstBase> value)
 			{
 			}
 
-			void ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, const vl::regex::RegexToken& token)
+			void ParserGenAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, const vl::regex::RegexToken& token)
 			{
 			}
 
-			vl::Ptr<vl::glr::ParsingAstBase> ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase::ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates)
+			vl::Ptr<vl::glr::ParsingAstBase> ParserGenAstInsReceiver::ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates)
 			{
 			}
 		}

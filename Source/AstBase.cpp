@@ -270,7 +270,13 @@ AstInsReceiverBase
 					break;
 				case AstInsType::BeginObject:
 					{
-						created.Add(CreateAstNode(instruction.paramTypeOrField));
+						auto value = CreateAstNode(instruction.paramTypeOrField);
+						value->codeRange.start.row = token.rowStart;
+						value->codeRange.start.column = token.columnStart;
+						value->codeRange.end.row = token.rowEnd;
+						value->codeRange.end.column = token.columnEnd;
+						value->codeRange.codeIndex = token.codeIndex;
+						created.Add(value);
 					}
 					break;
 				case AstInsType::EndObject:
@@ -286,6 +292,9 @@ AstInsReceiverBase
 						ObjectOrToken value;
 						value.object = created[created.Count() - 1];
 						created.RemoveAt(created.Count() - 1);
+
+						value.object->codeRange.end.row = token.rowEnd;
+						value.object->codeRange.end.column = token.columnEnd;
 						pushed.Add(value);
 					}
 					break;

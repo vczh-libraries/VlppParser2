@@ -80,25 +80,25 @@ WriteAstAssemblerCppFile
 					writer.WriteLine(L"***********************************************************************/");
 					{
 						writer.WriteLine(L"");
-						writer.WriteLine(prefix + L"vl::Ptr<vl::glr::ParsingAstBase> " + manager.name + L"AstInsReceiver : public vl::glr::AstInsReceiverBase::CreateAstNode(vl::vint32_t type)");
+						writer.WriteLine(prefix + L"vl::Ptr<vl::glr::ParsingAstBase> " + manager.name + L"AstInsReceiver::CreateAstNode(vl::vint32_t type)");
 						writer.WriteLine(prefix + L"{");
 						writer.WriteLine(prefix + L"}");
 					}
 					{
 						writer.WriteLine(L"");
-						writer.WriteLine(prefix + L"void " + manager.name + L"AstInsReceiver : public vl::glr::AstInsReceiverBase::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::Ptr<vl::glr::ParsingAstBase> value)");
+						writer.WriteLine(prefix + L"void " + manager.name + L"AstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::Ptr<vl::glr::ParsingAstBase> value)");
 						writer.WriteLine(prefix + L"{");
 						writer.WriteLine(prefix + L"}");
 					}
 					{
 						writer.WriteLine(L"");
-						writer.WriteLine(prefix + L"void " + manager.name + L"AstInsReceiver : public vl::glr::AstInsReceiverBase::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, const vl::regex::RegexToken& token)");
+						writer.WriteLine(prefix + L"void " + manager.name + L"AstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, const vl::regex::RegexToken& token)");
 						writer.WriteLine(prefix + L"{");
 						writer.WriteLine(prefix + L"}");
 					}
 					{
 						writer.WriteLine(L"");
-						writer.WriteLine(prefix + L"vl::Ptr<vl::glr::ParsingAstBase> " + manager.name + L"AstInsReceiver : public vl::glr::AstInsReceiverBase::ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates)");
+						writer.WriteLine(prefix + L"vl::Ptr<vl::glr::ParsingAstBase> " + manager.name + L"AstInsReceiver::ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates)");
 						writer.WriteLine(prefix + L"{");
 						writer.WriteLine(prefix + L"}");
 					}
