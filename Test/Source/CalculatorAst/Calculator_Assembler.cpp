@@ -186,90 +186,45 @@ CalculatorAstInsReceiver : public vl::glr::AstInsReceiverBase
 		switch((CalculatorFields)field)
 		{
 		case CalculatorFields::Arg_name:
-			if (auto typedObject = dynamic_cast<calculator::Arg*>(object))
 			{
-				if (typedObject->name.value.Length() == 0)
-				{
-					AssignToken(typedObject->name, token);
-					break;
-				}
-				else
-				{
-					throw vl::glr::AstInsException(L"Field \"calculator::Arg::name\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-				}
+				auto typedObject = dynamic_cast<calculator::Arg*>(object);
+				if (!typedObject) throw vl::glr::AstInsException(L"Field \"calculator::Arg::name\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+				if (typedObject->name.value.Length() != 0) throw vl::glr::AstInsException(L"Field \"calculator::Arg::name\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
+				AssignToken(typedObject->name, token);
 			}
-			else
-			{
-				throw vl::glr::AstInsException(L"Field \"calculator::Arg::name\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-			}
+			break;
 		case CalculatorFields::Import_name:
-			if (auto typedObject = dynamic_cast<calculator::Import*>(object))
 			{
-				if (typedObject->name.value.Length() == 0)
-				{
-					AssignToken(typedObject->name, token);
-					break;
-				}
-				else
-				{
-					throw vl::glr::AstInsException(L"Field \"calculator::Import::name\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-				}
+				auto typedObject = dynamic_cast<calculator::Import*>(object);
+				if (!typedObject) throw vl::glr::AstInsException(L"Field \"calculator::Import::name\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+				if (typedObject->name.value.Length() != 0) throw vl::glr::AstInsException(L"Field \"calculator::Import::name\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
+				AssignToken(typedObject->name, token);
 			}
-			else
-			{
-				throw vl::glr::AstInsException(L"Field \"calculator::Import::name\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-			}
+			break;
 		case CalculatorFields::LetExpr_name:
-			if (auto typedObject = dynamic_cast<calculator::LetExpr*>(object))
 			{
-				if (typedObject->name.value.Length() == 0)
-				{
-					AssignToken(typedObject->name, token);
-					break;
-				}
-				else
-				{
-					throw vl::glr::AstInsException(L"Field \"calculator::LetExpr::name\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-				}
+				auto typedObject = dynamic_cast<calculator::LetExpr*>(object);
+				if (!typedObject) throw vl::glr::AstInsException(L"Field \"calculator::LetExpr::name\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+				if (typedObject->name.value.Length() != 0) throw vl::glr::AstInsException(L"Field \"calculator::LetExpr::name\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
+				AssignToken(typedObject->name, token);
 			}
-			else
-			{
-				throw vl::glr::AstInsException(L"Field \"calculator::LetExpr::name\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-			}
+			break;
 		case CalculatorFields::NumExpr_value:
-			if (auto typedObject = dynamic_cast<calculator::NumExpr*>(object))
 			{
-				if (typedObject->value.value.Length() == 0)
-				{
-					AssignToken(typedObject->value, token);
-					break;
-				}
-				else
-				{
-					throw vl::glr::AstInsException(L"Field \"calculator::NumExpr::value\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-				}
+				auto typedObject = dynamic_cast<calculator::NumExpr*>(object);
+				if (!typedObject) throw vl::glr::AstInsException(L"Field \"calculator::NumExpr::value\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+				if (typedObject->value.value.Length() != 0) throw vl::glr::AstInsException(L"Field \"calculator::NumExpr::value\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
+				AssignToken(typedObject->value, token);
 			}
-			else
-			{
-				throw vl::glr::AstInsException(L"Field \"calculator::NumExpr::value\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-			}
+			break;
 		case CalculatorFields::Ref_name:
-			if (auto typedObject = dynamic_cast<calculator::Ref*>(object))
 			{
-				if (typedObject->name.value.Length() == 0)
-				{
-					AssignToken(typedObject->name, token);
-					break;
-				}
-				else
-				{
-					throw vl::glr::AstInsException(L"Field \"calculator::Ref::name\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-				}
+				auto typedObject = dynamic_cast<calculator::Ref*>(object);
+				if (!typedObject) throw vl::glr::AstInsException(L"Field \"calculator::Ref::name\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+				if (typedObject->name.value.Length() != 0) throw vl::glr::AstInsException(L"Field \"calculator::Ref::name\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
+				AssignToken(typedObject->name, token);
 			}
-			else
-			{
-				throw vl::glr::AstInsException(L"Field \"calculator::Ref::name\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-			}
+			break;
 		case CalculatorFields::Binary_left:
 			throw vl::glr::AstInsException(L"Field \"calculator::Binary::left\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 		case CalculatorFields::Binary_op:
