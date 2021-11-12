@@ -137,6 +137,15 @@ CalculatorAstInsReceiver : public vl::glr::AstInsReceiverBase
 		case CalculatorFields::Func_args:
 			if (auto typedObject = dynamic_cast<calculator::Func*>(object))
 			{
+				if (auto typedValue = value.Cast<calculator::Arg>())
+				{
+					typedObject->args.Add(typedValue);
+					break;
+				}
+				else
+				{
+					throw vl::glr::AstInsException(L"Field \"calculator::Func::args\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				}
 			}
 			else
 			{
@@ -193,6 +202,15 @@ CalculatorAstInsReceiver : public vl::glr::AstInsReceiverBase
 		case CalculatorFields::Module_imports:
 			if (auto typedObject = dynamic_cast<calculator::Module*>(object))
 			{
+				if (auto typedValue = value.Cast<calculator::Import>())
+				{
+					typedObject->imports.Add(typedValue);
+					break;
+				}
+				else
+				{
+					throw vl::glr::AstInsException(L"Field \"calculator::Module::imports\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				}
 			}
 			else
 			{

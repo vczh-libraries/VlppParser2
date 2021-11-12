@@ -45,6 +45,15 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 				case ParserGenFields::Class_props:
 					if (auto typedObject = dynamic_cast<vl::glr::parsergen::GlrClass*>(object))
 					{
+						if (auto typedValue = value.Cast<vl::glr::parsergen::GlrClassProp>())
+						{
+							typedObject->props.Add(typedValue);
+							break;
+						}
+						else
+						{
+							throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrClass::props\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+						}
 					}
 					else
 					{
@@ -53,6 +62,15 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 				case ParserGenFields::Enum_items:
 					if (auto typedObject = dynamic_cast<vl::glr::parsergen::GlrEnum*>(object))
 					{
+						if (auto typedValue = value.Cast<vl::glr::parsergen::GlrEnumItem>())
+						{
+							typedObject->items.Add(typedValue);
+							break;
+						}
+						else
+						{
+							throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrEnum::items\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+						}
 					}
 					else
 					{
@@ -61,6 +79,15 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 				case ParserGenFields::File_types:
 					if (auto typedObject = dynamic_cast<vl::glr::parsergen::GlrFile*>(object))
 					{
+						if (auto typedValue = value.Cast<vl::glr::parsergen::GlrType>())
+						{
+							typedObject->types.Add(typedValue);
+							break;
+						}
+						else
+						{
+							throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrFile::types\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+						}
 					}
 					else
 					{

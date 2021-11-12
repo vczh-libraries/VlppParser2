@@ -142,7 +142,19 @@ WriteAstAssemblerCppFile
 											writer.WriteLine(prefix + L"\t\t{");
 											if (propSymbol->propType == AstPropType::Array)
 											{
-
+												writer.WriteString(prefix + L"\t\t\tif (auto typedValue = value.Cast<");
+												PrintCppType(nullptr, propClassSymbol, writer);
+												writer.WriteLine(L">())");
+												writer.WriteLine(prefix + L"\t\t\t{");
+												writer.WriteLine(prefix + L"\t\t\t\ttypedObject->" + propSymbol->Name() + L".Add(typedValue);");
+												writer.WriteLine(prefix + L"\t\t\t\tbreak;");
+												writer.WriteLine(prefix + L"\t\t\t}");
+												writer.WriteLine(prefix + L"\t\t\telse");
+												writer.WriteLine(prefix + L"\t\t\t{");
+												writer.WriteString(prefix + L"\t\t\t\tthrow vl::glr::AstInsException(L\"Field \\\"");
+												PrintCppType(nullptr, classSymbol, writer);
+												writer.WriteLine(L"::" + propSymbol->Name() + L"\\\" cannot be assigned with an uncompatible value.\", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);");
+												writer.WriteLine(prefix + L"\t\t\t}");
 											}
 											else
 											{
