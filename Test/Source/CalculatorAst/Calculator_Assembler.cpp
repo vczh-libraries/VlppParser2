@@ -87,6 +87,7 @@ CalculatorAstInsReceiver : public vl::glr::AstInsReceiverBase
 				if (typedObject->name.value.Length() == 0)
 				{
 					AssignToken(typedObject->name, token);
+					break;
 				}
 				else
 				{
@@ -119,6 +120,7 @@ CalculatorAstInsReceiver : public vl::glr::AstInsReceiverBase
 				if (typedObject->name.value.Length() == 0)
 				{
 					AssignToken(typedObject->name, token);
+					break;
 				}
 				else
 				{
@@ -135,6 +137,7 @@ CalculatorAstInsReceiver : public vl::glr::AstInsReceiverBase
 				if (typedObject->name.value.Length() == 0)
 				{
 					AssignToken(typedObject->name, token);
+					break;
 				}
 				else
 				{
@@ -157,6 +160,7 @@ CalculatorAstInsReceiver : public vl::glr::AstInsReceiverBase
 				if (typedObject->value.value.Length() == 0)
 				{
 					AssignToken(typedObject->value, token);
+					break;
 				}
 				else
 				{
@@ -173,6 +177,7 @@ CalculatorAstInsReceiver : public vl::glr::AstInsReceiverBase
 				if (typedObject->name.value.Length() == 0)
 				{
 					AssignToken(typedObject->name, token);
+					break;
 				}
 				else
 				{

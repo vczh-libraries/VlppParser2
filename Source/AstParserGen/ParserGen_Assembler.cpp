@@ -68,6 +68,7 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 						if (typedObject->name.value.Length() == 0)
 						{
 							AssignToken(typedObject->name, token);
+							break;
 						}
 						else
 						{
@@ -86,6 +87,7 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 						if (typedObject->propTypeName.value.Length() == 0)
 						{
 							AssignToken(typedObject->propTypeName, token);
+							break;
 						}
 						else
 						{
@@ -104,6 +106,7 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 						if (typedObject->name.value.Length() == 0)
 						{
 							AssignToken(typedObject->name, token);
+							break;
 						}
 						else
 						{
@@ -120,6 +123,7 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 						if (typedObject->name.value.Length() == 0)
 						{
 							AssignToken(typedObject->name, token);
+							break;
 						}
 						else
 						{
@@ -138,6 +142,7 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 						if (typedObject->name.value.Length() == 0)
 						{
 							AssignToken(typedObject->name, token);
+							break;
 						}
 						else
 						{

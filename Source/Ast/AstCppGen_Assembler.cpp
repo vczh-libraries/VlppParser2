@@ -151,6 +151,7 @@ WriteAstAssemblerCppFile
 										writer.WriteLine(prefix + L"\t\t\tif (typedObject->" + propSymbol->Name() + L".value.Length() == 0)");
 										writer.WriteLine(prefix + L"\t\t\t{");
 										writer.WriteLine(prefix + L"\t\t\t\tAssignToken(typedObject->" + propSymbol->Name() + L", token);");
+										writer.WriteLine(prefix + L"\t\t\t\tbreak;");
 										writer.WriteLine(prefix + L"\t\t\t}");
 										writer.WriteLine(prefix + L"\t\t\telse");
 										writer.WriteLine(prefix + L"\t\t\t{");
