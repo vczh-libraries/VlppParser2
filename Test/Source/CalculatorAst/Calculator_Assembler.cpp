@@ -54,24 +54,180 @@ CalculatorAstInsReceiver : public vl::glr::AstInsReceiverBase
 	{
 		switch((CalculatorFields)field)
 		{
-		case CalculatorFields::Arg_name:
 		case CalculatorFields::Binary_left:
-		case CalculatorFields::Binary_op:
+			if (auto typedObject = dynamic_cast<calculator::Binary*>(object))
+			{
+				if (!typedObject->left)
+				{
+					break;
+				}
+				else
+				{
+					throw vl::glr::AstInsException(L"Field \"calculator::Binary::left\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
+				}
+			}
+			else
+			{
+				throw vl::glr::AstInsException(L"Field \"calculator::Binary::left\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+			}
 		case CalculatorFields::Binary_right:
+			if (auto typedObject = dynamic_cast<calculator::Binary*>(object))
+			{
+				if (!typedObject->right)
+				{
+					break;
+				}
+				else
+				{
+					throw vl::glr::AstInsException(L"Field \"calculator::Binary::right\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
+				}
+			}
+			else
+			{
+				throw vl::glr::AstInsException(L"Field \"calculator::Binary::right\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+			}
 		case CalculatorFields::Call_arg:
+			if (auto typedObject = dynamic_cast<calculator::Call*>(object))
+			{
+				if (!typedObject->arg)
+				{
+					break;
+				}
+				else
+				{
+					throw vl::glr::AstInsException(L"Field \"calculator::Call::arg\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
+				}
+			}
+			else
+			{
+				throw vl::glr::AstInsException(L"Field \"calculator::Call::arg\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+			}
 		case CalculatorFields::Call_func:
+			if (auto typedObject = dynamic_cast<calculator::Call*>(object))
+			{
+				if (!typedObject->func)
+				{
+					break;
+				}
+				else
+				{
+					throw vl::glr::AstInsException(L"Field \"calculator::Call::func\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
+				}
+			}
+			else
+			{
+				throw vl::glr::AstInsException(L"Field \"calculator::Call::func\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+			}
 		case CalculatorFields::Expandable_expanded:
+			if (auto typedObject = dynamic_cast<calculator::Expandable*>(object))
+			{
+				if (!typedObject->expanded)
+				{
+					break;
+				}
+				else
+				{
+					throw vl::glr::AstInsException(L"Field \"calculator::Expandable::expanded\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
+				}
+			}
+			else
+			{
+				throw vl::glr::AstInsException(L"Field \"calculator::Expandable::expanded\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+			}
 		case CalculatorFields::Func_args:
+			if (auto typedObject = dynamic_cast<calculator::Func*>(object))
+			{
+			}
+			else
+			{
+				throw vl::glr::AstInsException(L"Field \"calculator::Func::args\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+			}
 		case CalculatorFields::Func_value:
-		case CalculatorFields::Import_name:
-		case CalculatorFields::LetExpr_name:
+			if (auto typedObject = dynamic_cast<calculator::Func*>(object))
+			{
+				if (!typedObject->value)
+				{
+					break;
+				}
+				else
+				{
+					throw vl::glr::AstInsException(L"Field \"calculator::Func::value\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
+				}
+			}
+			else
+			{
+				throw vl::glr::AstInsException(L"Field \"calculator::Func::value\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+			}
 		case CalculatorFields::LetExpr_value:
+			if (auto typedObject = dynamic_cast<calculator::LetExpr*>(object))
+			{
+				if (!typedObject->value)
+				{
+					break;
+				}
+				else
+				{
+					throw vl::glr::AstInsException(L"Field \"calculator::LetExpr::value\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
+				}
+			}
+			else
+			{
+				throw vl::glr::AstInsException(L"Field \"calculator::LetExpr::value\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+			}
 		case CalculatorFields::Module_exported:
+			if (auto typedObject = dynamic_cast<calculator::Module*>(object))
+			{
+				if (!typedObject->exported)
+				{
+					break;
+				}
+				else
+				{
+					throw vl::glr::AstInsException(L"Field \"calculator::Module::exported\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
+				}
+			}
+			else
+			{
+				throw vl::glr::AstInsException(L"Field \"calculator::Module::exported\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+			}
 		case CalculatorFields::Module_imports:
-		case CalculatorFields::NumExpr_value:
-		case CalculatorFields::Ref_name:
-		case CalculatorFields::Unary_op:
+			if (auto typedObject = dynamic_cast<calculator::Module*>(object))
+			{
+			}
+			else
+			{
+				throw vl::glr::AstInsException(L"Field \"calculator::Module::imports\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+			}
 		case CalculatorFields::Unary_operand:
+			if (auto typedObject = dynamic_cast<calculator::Unary*>(object))
+			{
+				if (!typedObject->operand)
+				{
+					break;
+				}
+				else
+				{
+					throw vl::glr::AstInsException(L"Field \"calculator::Unary::operand\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
+				}
+			}
+			else
+			{
+				throw vl::glr::AstInsException(L"Field \"calculator::Unary::operand\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+			}
+		case CalculatorFields::Arg_name:
+			throw vl::glr::AstInsException(L"Field \"calculator::Arg::name\" is not an object.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+		case CalculatorFields::Binary_op:
+			throw vl::glr::AstInsException(L"Field \"calculator::Binary::op\" is not an object.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+		case CalculatorFields::Import_name:
+			throw vl::glr::AstInsException(L"Field \"calculator::Import::name\" is not an object.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+		case CalculatorFields::LetExpr_name:
+			throw vl::glr::AstInsException(L"Field \"calculator::LetExpr::name\" is not an object.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+		case CalculatorFields::NumExpr_value:
+			throw vl::glr::AstInsException(L"Field \"calculator::NumExpr::value\" is not an object.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+		case CalculatorFields::Ref_name:
+			throw vl::glr::AstInsException(L"Field \"calculator::Ref::name\" is not an object.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+		case CalculatorFields::Unary_op:
+			throw vl::glr::AstInsException(L"Field \"calculator::Unary::op\" is not an object.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 		default:
 			throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
 		}
@@ -98,22 +254,6 @@ CalculatorAstInsReceiver : public vl::glr::AstInsReceiverBase
 			{
 				throw vl::glr::AstInsException(L"Field \"calculator::Arg::name\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
 			}
-		case CalculatorFields::Binary_left:
-			throw vl::glr::AstInsException(L"Field \"calculator::Binary::left\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-		case CalculatorFields::Binary_op:
-			throw vl::glr::AstInsException(L"Field \"calculator::Binary::op\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-		case CalculatorFields::Binary_right:
-			throw vl::glr::AstInsException(L"Field \"calculator::Binary::right\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-		case CalculatorFields::Call_arg:
-			throw vl::glr::AstInsException(L"Field \"calculator::Call::arg\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-		case CalculatorFields::Call_func:
-			throw vl::glr::AstInsException(L"Field \"calculator::Call::func\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-		case CalculatorFields::Expandable_expanded:
-			throw vl::glr::AstInsException(L"Field \"calculator::Expandable::expanded\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-		case CalculatorFields::Func_args:
-			throw vl::glr::AstInsException(L"Field \"calculator::Func::args\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-		case CalculatorFields::Func_value:
-			throw vl::glr::AstInsException(L"Field \"calculator::Func::value\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 		case CalculatorFields::Import_name:
 			if (auto typedObject = dynamic_cast<calculator::Import*>(object))
 			{
@@ -148,12 +288,6 @@ CalculatorAstInsReceiver : public vl::glr::AstInsReceiverBase
 			{
 				throw vl::glr::AstInsException(L"Field \"calculator::LetExpr::name\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
 			}
-		case CalculatorFields::LetExpr_value:
-			throw vl::glr::AstInsException(L"Field \"calculator::LetExpr::value\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-		case CalculatorFields::Module_exported:
-			throw vl::glr::AstInsException(L"Field \"calculator::Module::exported\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-		case CalculatorFields::Module_imports:
-			throw vl::glr::AstInsException(L"Field \"calculator::Module::imports\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 		case CalculatorFields::NumExpr_value:
 			if (auto typedObject = dynamic_cast<calculator::NumExpr*>(object))
 			{
@@ -188,10 +322,91 @@ CalculatorAstInsReceiver : public vl::glr::AstInsReceiverBase
 			{
 				throw vl::glr::AstInsException(L"Field \"calculator::Ref::name\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
 			}
+		case CalculatorFields::Binary_left:
+			throw vl::glr::AstInsException(L"Field \"calculator::Binary::left\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+		case CalculatorFields::Binary_op:
+			throw vl::glr::AstInsException(L"Field \"calculator::Binary::op\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+		case CalculatorFields::Binary_right:
+			throw vl::glr::AstInsException(L"Field \"calculator::Binary::right\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+		case CalculatorFields::Call_arg:
+			throw vl::glr::AstInsException(L"Field \"calculator::Call::arg\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+		case CalculatorFields::Call_func:
+			throw vl::glr::AstInsException(L"Field \"calculator::Call::func\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+		case CalculatorFields::Expandable_expanded:
+			throw vl::glr::AstInsException(L"Field \"calculator::Expandable::expanded\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+		case CalculatorFields::Func_args:
+			throw vl::glr::AstInsException(L"Field \"calculator::Func::args\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+		case CalculatorFields::Func_value:
+			throw vl::glr::AstInsException(L"Field \"calculator::Func::value\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+		case CalculatorFields::LetExpr_value:
+			throw vl::glr::AstInsException(L"Field \"calculator::LetExpr::value\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+		case CalculatorFields::Module_exported:
+			throw vl::glr::AstInsException(L"Field \"calculator::Module::exported\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+		case CalculatorFields::Module_imports:
+			throw vl::glr::AstInsException(L"Field \"calculator::Module::imports\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 		case CalculatorFields::Unary_op:
 			throw vl::glr::AstInsException(L"Field \"calculator::Unary::op\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 		case CalculatorFields::Unary_operand:
 			throw vl::glr::AstInsException(L"Field \"calculator::Unary::operand\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+		default:
+			throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
+		}
+	}
+
+	void CalculatorAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::vint32_t enumItem)
+	{
+		switch((CalculatorFields)field)
+		{
+		case CalculatorFields::Binary_op:
+			if (auto typedObject = dynamic_cast<calculator::Binary*>(object))
+			{
+				typedObject->op = (calculator::BinaryOp)enumItem;
+			}
+			else
+			{
+				throw vl::glr::AstInsException(L"Field \"calculator::Binary::op\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+			}
+		case CalculatorFields::Unary_op:
+			if (auto typedObject = dynamic_cast<calculator::Unary*>(object))
+			{
+				typedObject->op = (calculator::UnaryOp)enumItem;
+			}
+			else
+			{
+				throw vl::glr::AstInsException(L"Field \"calculator::Unary::op\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+			}
+		case CalculatorFields::Arg_name:
+			throw vl::glr::AstInsException(L"Field \"calculator::Arg::name\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+		case CalculatorFields::Binary_left:
+			throw vl::glr::AstInsException(L"Field \"calculator::Binary::left\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+		case CalculatorFields::Binary_right:
+			throw vl::glr::AstInsException(L"Field \"calculator::Binary::right\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+		case CalculatorFields::Call_arg:
+			throw vl::glr::AstInsException(L"Field \"calculator::Call::arg\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+		case CalculatorFields::Call_func:
+			throw vl::glr::AstInsException(L"Field \"calculator::Call::func\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+		case CalculatorFields::Expandable_expanded:
+			throw vl::glr::AstInsException(L"Field \"calculator::Expandable::expanded\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+		case CalculatorFields::Func_args:
+			throw vl::glr::AstInsException(L"Field \"calculator::Func::args\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+		case CalculatorFields::Func_value:
+			throw vl::glr::AstInsException(L"Field \"calculator::Func::value\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+		case CalculatorFields::Import_name:
+			throw vl::glr::AstInsException(L"Field \"calculator::Import::name\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+		case CalculatorFields::LetExpr_name:
+			throw vl::glr::AstInsException(L"Field \"calculator::LetExpr::name\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+		case CalculatorFields::LetExpr_value:
+			throw vl::glr::AstInsException(L"Field \"calculator::LetExpr::value\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+		case CalculatorFields::Module_exported:
+			throw vl::glr::AstInsException(L"Field \"calculator::Module::exported\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+		case CalculatorFields::Module_imports:
+			throw vl::glr::AstInsException(L"Field \"calculator::Module::imports\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+		case CalculatorFields::NumExpr_value:
+			throw vl::glr::AstInsException(L"Field \"calculator::NumExpr::value\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+		case CalculatorFields::Ref_name:
+			throw vl::glr::AstInsException(L"Field \"calculator::Ref::name\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+		case CalculatorFields::Unary_operand:
+			throw vl::glr::AstInsException(L"Field \"calculator::Unary::operand\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 		default:
 			throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
 		}

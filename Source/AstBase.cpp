@@ -279,9 +279,16 @@ AstInsReceiverBase
 						pushed.Add(value);
 					}
 					break;
+				case AstInsType::EnumItem:
+					{
+						ObjectOrToken value;
+						value.enumItem = instruction.param;
+						pushed.Add(value);
+					}
+					break;
 				case AstInsType::BeginObject:
 					{
-						auto value = CreateAstNode(instruction.paramTypeOrField);
+						auto value = CreateAstNode(instruction.param);
 						value->codeRange.start.row = token.rowStart;
 						value->codeRange.start.column = token.columnStart;
 						value->codeRange.end.row = token.rowEnd;
@@ -323,17 +330,21 @@ AstInsReceiverBase
 						pushed.RemoveAt(pushed.Count() - 1);
 						if (value.object)
 						{
-							SetField(created[created.Count() - 1].Obj(), instruction.paramTypeOrField, value.object);
+							SetField(created[created.Count() - 1].Obj(), instruction.param, value.object);
+						}
+						else if (value.enumItem != -1)
+						{
+							SetField(created[created.Count() - 1].Obj(), instruction.param, value.enumItem);
 						}
 						else
 						{
-							SetField(created[created.Count() - 1].Obj(), instruction.paramTypeOrField, value.token);
+							SetField(created[created.Count() - 1].Obj(), instruction.param, value.token);
 						}
 					}
 					break;
 				case AstInsType::ResolveAmbiguity:
 					{
-						if (instruction.paramCount <= 0 || pushed.Count() < instruction.paramCount)
+						if (instruction.count <= 0 || pushed.Count() < instruction.count)
 						{
 							throw AstInsException(
 								L"There are not enough candidates to create an ambiguity node.",
@@ -341,19 +352,19 @@ AstInsReceiverBase
 								);
 						}
 
-						for (vint i = 0; i < instruction.paramCount; i++)
+						for (vint i = 0; i < instruction.count; i++)
 						{
 							if (!pushed[pushed.Count() - i - 1].object)
 							{
 								throw AstInsException(
-									L"Tokens cannot be ambiguity candidates.",
-									AstInsErrorType::AmbiguityCandidateIsToken
+									L"Tokens or enum items cannot be ambiguity candidates.",
+									AstInsErrorType::AmbiguityCandidateIsNotObject
 									);
 							}
 						}
 
-						Array<Ptr<ParsingAstBase>> candidates(instruction.paramCount);
-						for (vint i = 0; i < instruction.paramCount; i++)
+						Array<Ptr<ParsingAstBase>> candidates(instruction.count);
+						for (vint i = 0; i < instruction.count; i++)
 						{
 							auto value = pushed[pushed.Count() - 1];
 							pushed.RemoveAt(pushed.Count() - 1);
@@ -361,7 +372,7 @@ AstInsReceiverBase
 						}
 
 						ObjectOrToken value;
-						value.object = ResolveAmbiguity(instruction.paramTypeOrField, candidates);
+						value.object = ResolveAmbiguity(instruction.param, candidates);
 						pushed.Add(value);
 					}
 					break;

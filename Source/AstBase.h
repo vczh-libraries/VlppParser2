@@ -240,6 +240,7 @@ Instructions
 		enum class AstInsType
 		{
 			Token,										// Token()							: push the current token as a value.
+			EnumItem,									// EnumItem(Value)					: push an enum item.
 			BeginObject,								// BeginObject()					: begin creating an AST node.
 			EndObject,									// EndObject(Type)					: Finish creating an AST node, all objects pushed after BeginObject are supposed to be its fields.
 			Field,										// Field(Field)						: Associate a field name with the top object.
@@ -249,8 +250,8 @@ Instructions
 		struct AstIns
 		{
 			AstInsType									type = AstInsType::Token;
-			vint32_t									paramTypeOrField = -1;
-			vint										paramCount = -1;
+			vint32_t									param = -1;
+			vint										count = -1;
 		};
 
 		enum class AstInsErrorType
@@ -265,7 +266,7 @@ Instructions
 			NoRootObject,								// NoRootObject()						: There is no created objects.
 			MissingFieldValue,							// MissingFieldValue()					: There is no pushed value to be assigned to a field.
 			MissingAmbiguityCandidate,					// MissingAmbiguityCandidate()			: There are not enough candidates to create an ambiguity node.
-			AmbiguityCandidateIsToken,					// AmbiguityCandidateIsToken()			: Tokens cannot be ambiguity candidates.
+			AmbiguityCandidateIsNotObject,				// AmbiguityCandidateIsNotObject()		: Tokens or enum items cannot be ambiguity candidates.
 			UnassignedObjectLeaving,					// UnassignedObjectLeaving()			: There are still unassigned objects leaving when executing EndObject.
 			InstructionNotComplete,						// InstructionNotComplete()				: No more instruction but the root object has not been completed yet.
 			Corrupted,									// Corrupted()							: An exception has been thrown therefore this receiver cannot be used anymore.
@@ -299,6 +300,7 @@ Instructions
 			struct ObjectOrToken
 			{
 				Ptr<ParsingAstBase>						object;
+				vint32_t								enumItem = -1;
 				regex::RegexToken						token;
 			};
 
@@ -312,6 +314,7 @@ Instructions
 			virtual Ptr<ParsingAstBase>					CreateAstNode(vint32_t type) = 0;
 			virtual void								SetField(ParsingAstBase* object, vint32_t field, Ptr<ParsingAstBase> value) = 0;
 			virtual void								SetField(ParsingAstBase* object, vint32_t field, const regex::RegexToken& token) = 0;
+			virtual void								SetField(ParsingAstBase* object, vint32_t field, vint32_t enumValue) = 0;
 			virtual Ptr<ParsingAstBase>					ResolveAmbiguity(vint32_t type, collections::Array<Ptr<ParsingAstBase>>& candidates) = 0;
 
 			void										AssignToken(ParsingToken& parsingToken, const regex::RegexToken& regexToken);
