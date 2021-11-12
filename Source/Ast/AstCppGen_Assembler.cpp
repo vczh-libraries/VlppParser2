@@ -142,6 +142,36 @@ WriteAstAssemblerCppFile
 								for (auto [propSymbol, index] : indexed(classSymbol->Props().Values()))
 								{
 									writer.WriteLine(prefix + L"\tcase " + manager.name + L"Fields::" + classSymbol->Name() + L"_" + propSymbol->Name() + L":");
+									if (propSymbol->propType == AstPropType::Token)
+									{
+										writer.WriteString(prefix + L"\t\tif (auto typedObject = dynamic_cast<");
+										PrintCppType(nullptr, classSymbol, writer);
+										writer.WriteLine(L"*>(object))");
+										writer.WriteLine(prefix + L"\t\t{");
+										writer.WriteLine(prefix + L"\t\t\tif (typedObject->" + propSymbol->Name() + L".value.Length() == 0)");
+										writer.WriteLine(prefix + L"\t\t\t{");
+										writer.WriteLine(prefix + L"\t\t\t\tAssignToken(typedObject->" + propSymbol->Name() + L", token);");
+										writer.WriteLine(prefix + L"\t\t\t}");
+										writer.WriteLine(prefix + L"\t\t\telse");
+										writer.WriteLine(prefix + L"\t\t\t{");
+										writer.WriteString(prefix + L"\t\t\t\tthrow vl::glr::AstInsException(L\"Field \\\"");
+										PrintCppType(nullptr, classSymbol, writer);
+										writer.WriteLine(L"::" + propSymbol->Name() + L"\\\" has already been assigned.\", vl::glr::AstInsErrorType::FieldReassigned, field);");
+										writer.WriteLine(prefix + L"\t\t\t}");
+										writer.WriteLine(prefix + L"\t\t}");
+										writer.WriteLine(prefix + L"\t\telse");
+										writer.WriteLine(prefix + L"\t\t{");
+										writer.WriteString(prefix + L"\t\t\tthrow vl::glr::AstInsException(L\"Field \\\"");
+										PrintCppType(nullptr, classSymbol, writer);
+										writer.WriteLine(L"::" + propSymbol->Name() + L"\\\" does not exist in the current object.\", vl::glr::AstInsErrorType::FieldNotExistsInType, field);");
+										writer.WriteLine(prefix + L"\t\t}");
+									}
+									else
+									{
+										writer.WriteString(prefix + L"\t\tthrow vl::glr::AstInsException(L\"Field \\\"");
+										PrintCppType(nullptr, classSymbol, writer);
+										writer.WriteLine(L"::" + propSymbol->Name() + L"\\\" is not a token.\", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);");
+									}
 								}
 							}
 						}

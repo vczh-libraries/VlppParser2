@@ -314,6 +314,7 @@ Instructions
 			virtual void								SetField(ParsingAstBase* object, vint32_t field, const regex::RegexToken& token) = 0;
 			virtual Ptr<ParsingAstBase>					ResolveAmbiguity(vint32_t type, collections::Array<Ptr<ParsingAstBase>>& candidates) = 0;
 
+			void										AssignToken(ParsingToken& parsingToken, const regex::RegexToken& regexToken);
 		public:
 			AstInsReceiverBase() = default;
 			~AstInsReceiverBase() = default;
