@@ -43,56 +43,32 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 				switch((ParserGenFields)field)
 				{
 				case ParserGenFields::Class_props:
-					if (auto typedObject = dynamic_cast<vl::glr::parsergen::GlrClass*>(object))
 					{
-						if (auto typedValue = value.Cast<vl::glr::parsergen::GlrClassProp>())
-						{
-							typedObject->props.Add(typedValue);
-							break;
-						}
-						else
-						{
-							throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrClass::props\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-						}
+						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrClass*>(object);
+						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrClass::props\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+						auto typedValue = value.Cast<vl::glr::parsergen::GlrClassProp>();
+						if (!typedValue) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrClass::props\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+						typedObject->props.Add(typedValue);
 					}
-					else
-					{
-						throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrClass::props\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-					}
+					break;
 				case ParserGenFields::Enum_items:
-					if (auto typedObject = dynamic_cast<vl::glr::parsergen::GlrEnum*>(object))
 					{
-						if (auto typedValue = value.Cast<vl::glr::parsergen::GlrEnumItem>())
-						{
-							typedObject->items.Add(typedValue);
-							break;
-						}
-						else
-						{
-							throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrEnum::items\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-						}
+						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrEnum*>(object);
+						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrEnum::items\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+						auto typedValue = value.Cast<vl::glr::parsergen::GlrEnumItem>();
+						if (!typedValue) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrEnum::items\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+						typedObject->items.Add(typedValue);
 					}
-					else
-					{
-						throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrEnum::items\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-					}
+					break;
 				case ParserGenFields::File_types:
-					if (auto typedObject = dynamic_cast<vl::glr::parsergen::GlrFile*>(object))
 					{
-						if (auto typedValue = value.Cast<vl::glr::parsergen::GlrType>())
-						{
-							typedObject->types.Add(typedValue);
-							break;
-						}
-						else
-						{
-							throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrFile::types\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-						}
+						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrFile*>(object);
+						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrFile::types\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+						auto typedValue = value.Cast<vl::glr::parsergen::GlrType>();
+						if (!typedValue) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrFile::types\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+						typedObject->types.Add(typedValue);
 					}
-					else
-					{
-						throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrFile::types\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-					}
+					break;
 				case ParserGenFields::ClassProp_name:
 					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrClassProp::name\" is not an object.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 				case ParserGenFields::ClassProp_propType:

@@ -55,255 +55,113 @@ CalculatorAstInsReceiver : public vl::glr::AstInsReceiverBase
 		switch((CalculatorFields)field)
 		{
 		case CalculatorFields::Binary_left:
-			if (auto typedObject = dynamic_cast<calculator::Binary*>(object))
 			{
-				if (!typedObject->left)
-				{
-					if (auto typedValue = value.Cast<calculator::Expr>())
-					{
-						typedObject->left = typedValue;
-						break;
-					}
-					else
-					{
-						throw vl::glr::AstInsException(L"Field \"calculator::Binary::left\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-					}
-				}
-				else
-				{
-					throw vl::glr::AstInsException(L"Field \"calculator::Binary::left\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-				}
+				auto typedObject = dynamic_cast<calculator::Binary*>(object);
+				if (!typedObject) throw vl::glr::AstInsException(L"Field \"calculator::Binary::left\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+				if (typedObject->left) throw vl::glr::AstInsException(L"Field \"calculator::Binary::left\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
+				auto typedValue = value.Cast<calculator::Expr>();
+				if (!typedValue) throw vl::glr::AstInsException(L"Field \"calculator::Binary::left\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				typedObject->left = typedValue;
 			}
-			else
-			{
-				throw vl::glr::AstInsException(L"Field \"calculator::Binary::left\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-			}
+			break;
 		case CalculatorFields::Binary_right:
-			if (auto typedObject = dynamic_cast<calculator::Binary*>(object))
 			{
-				if (!typedObject->right)
-				{
-					if (auto typedValue = value.Cast<calculator::Expr>())
-					{
-						typedObject->right = typedValue;
-						break;
-					}
-					else
-					{
-						throw vl::glr::AstInsException(L"Field \"calculator::Binary::right\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-					}
-				}
-				else
-				{
-					throw vl::glr::AstInsException(L"Field \"calculator::Binary::right\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-				}
+				auto typedObject = dynamic_cast<calculator::Binary*>(object);
+				if (!typedObject) throw vl::glr::AstInsException(L"Field \"calculator::Binary::right\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+				if (typedObject->right) throw vl::glr::AstInsException(L"Field \"calculator::Binary::right\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
+				auto typedValue = value.Cast<calculator::Expr>();
+				if (!typedValue) throw vl::glr::AstInsException(L"Field \"calculator::Binary::right\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				typedObject->right = typedValue;
 			}
-			else
-			{
-				throw vl::glr::AstInsException(L"Field \"calculator::Binary::right\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-			}
+			break;
 		case CalculatorFields::Call_arg:
-			if (auto typedObject = dynamic_cast<calculator::Call*>(object))
 			{
-				if (!typedObject->arg)
-				{
-					if (auto typedValue = value.Cast<calculator::Expr>())
-					{
-						typedObject->arg = typedValue;
-						break;
-					}
-					else
-					{
-						throw vl::glr::AstInsException(L"Field \"calculator::Call::arg\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-					}
-				}
-				else
-				{
-					throw vl::glr::AstInsException(L"Field \"calculator::Call::arg\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-				}
+				auto typedObject = dynamic_cast<calculator::Call*>(object);
+				if (!typedObject) throw vl::glr::AstInsException(L"Field \"calculator::Call::arg\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+				if (typedObject->arg) throw vl::glr::AstInsException(L"Field \"calculator::Call::arg\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
+				auto typedValue = value.Cast<calculator::Expr>();
+				if (!typedValue) throw vl::glr::AstInsException(L"Field \"calculator::Call::arg\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				typedObject->arg = typedValue;
 			}
-			else
-			{
-				throw vl::glr::AstInsException(L"Field \"calculator::Call::arg\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-			}
+			break;
 		case CalculatorFields::Call_func:
-			if (auto typedObject = dynamic_cast<calculator::Call*>(object))
 			{
-				if (!typedObject->func)
-				{
-					if (auto typedValue = value.Cast<calculator::Expr>())
-					{
-						typedObject->func = typedValue;
-						break;
-					}
-					else
-					{
-						throw vl::glr::AstInsException(L"Field \"calculator::Call::func\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-					}
-				}
-				else
-				{
-					throw vl::glr::AstInsException(L"Field \"calculator::Call::func\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-				}
+				auto typedObject = dynamic_cast<calculator::Call*>(object);
+				if (!typedObject) throw vl::glr::AstInsException(L"Field \"calculator::Call::func\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+				if (typedObject->func) throw vl::glr::AstInsException(L"Field \"calculator::Call::func\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
+				auto typedValue = value.Cast<calculator::Expr>();
+				if (!typedValue) throw vl::glr::AstInsException(L"Field \"calculator::Call::func\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				typedObject->func = typedValue;
 			}
-			else
-			{
-				throw vl::glr::AstInsException(L"Field \"calculator::Call::func\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-			}
+			break;
 		case CalculatorFields::Expandable_expanded:
-			if (auto typedObject = dynamic_cast<calculator::Expandable*>(object))
 			{
-				if (!typedObject->expanded)
-				{
-					if (auto typedValue = value.Cast<calculator::Expr>())
-					{
-						typedObject->expanded = typedValue;
-						break;
-					}
-					else
-					{
-						throw vl::glr::AstInsException(L"Field \"calculator::Expandable::expanded\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-					}
-				}
-				else
-				{
-					throw vl::glr::AstInsException(L"Field \"calculator::Expandable::expanded\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-				}
+				auto typedObject = dynamic_cast<calculator::Expandable*>(object);
+				if (!typedObject) throw vl::glr::AstInsException(L"Field \"calculator::Expandable::expanded\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+				if (typedObject->expanded) throw vl::glr::AstInsException(L"Field \"calculator::Expandable::expanded\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
+				auto typedValue = value.Cast<calculator::Expr>();
+				if (!typedValue) throw vl::glr::AstInsException(L"Field \"calculator::Expandable::expanded\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				typedObject->expanded = typedValue;
 			}
-			else
-			{
-				throw vl::glr::AstInsException(L"Field \"calculator::Expandable::expanded\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-			}
+			break;
 		case CalculatorFields::Func_args:
-			if (auto typedObject = dynamic_cast<calculator::Func*>(object))
 			{
-				if (auto typedValue = value.Cast<calculator::Arg>())
-				{
-					typedObject->args.Add(typedValue);
-					break;
-				}
-				else
-				{
-					throw vl::glr::AstInsException(L"Field \"calculator::Func::args\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				}
+				auto typedObject = dynamic_cast<calculator::Func*>(object);
+				if (!typedObject) throw vl::glr::AstInsException(L"Field \"calculator::Func::args\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+				auto typedValue = value.Cast<calculator::Arg>();
+				if (!typedValue) throw vl::glr::AstInsException(L"Field \"calculator::Func::args\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				typedObject->args.Add(typedValue);
 			}
-			else
-			{
-				throw vl::glr::AstInsException(L"Field \"calculator::Func::args\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-			}
+			break;
 		case CalculatorFields::Func_value:
-			if (auto typedObject = dynamic_cast<calculator::Func*>(object))
 			{
-				if (!typedObject->value)
-				{
-					if (auto typedValue = value.Cast<calculator::Expr>())
-					{
-						typedObject->value = typedValue;
-						break;
-					}
-					else
-					{
-						throw vl::glr::AstInsException(L"Field \"calculator::Func::value\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-					}
-				}
-				else
-				{
-					throw vl::glr::AstInsException(L"Field \"calculator::Func::value\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-				}
+				auto typedObject = dynamic_cast<calculator::Func*>(object);
+				if (!typedObject) throw vl::glr::AstInsException(L"Field \"calculator::Func::value\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+				if (typedObject->value) throw vl::glr::AstInsException(L"Field \"calculator::Func::value\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
+				auto typedValue = value.Cast<calculator::Expr>();
+				if (!typedValue) throw vl::glr::AstInsException(L"Field \"calculator::Func::value\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				typedObject->value = typedValue;
 			}
-			else
-			{
-				throw vl::glr::AstInsException(L"Field \"calculator::Func::value\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-			}
+			break;
 		case CalculatorFields::LetExpr_value:
-			if (auto typedObject = dynamic_cast<calculator::LetExpr*>(object))
 			{
-				if (!typedObject->value)
-				{
-					if (auto typedValue = value.Cast<calculator::Expr>())
-					{
-						typedObject->value = typedValue;
-						break;
-					}
-					else
-					{
-						throw vl::glr::AstInsException(L"Field \"calculator::LetExpr::value\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-					}
-				}
-				else
-				{
-					throw vl::glr::AstInsException(L"Field \"calculator::LetExpr::value\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-				}
+				auto typedObject = dynamic_cast<calculator::LetExpr*>(object);
+				if (!typedObject) throw vl::glr::AstInsException(L"Field \"calculator::LetExpr::value\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+				if (typedObject->value) throw vl::glr::AstInsException(L"Field \"calculator::LetExpr::value\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
+				auto typedValue = value.Cast<calculator::Expr>();
+				if (!typedValue) throw vl::glr::AstInsException(L"Field \"calculator::LetExpr::value\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				typedObject->value = typedValue;
 			}
-			else
-			{
-				throw vl::glr::AstInsException(L"Field \"calculator::LetExpr::value\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-			}
+			break;
 		case CalculatorFields::Module_exported:
-			if (auto typedObject = dynamic_cast<calculator::Module*>(object))
 			{
-				if (!typedObject->exported)
-				{
-					if (auto typedValue = value.Cast<calculator::Expr>())
-					{
-						typedObject->exported = typedValue;
-						break;
-					}
-					else
-					{
-						throw vl::glr::AstInsException(L"Field \"calculator::Module::exported\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-					}
-				}
-				else
-				{
-					throw vl::glr::AstInsException(L"Field \"calculator::Module::exported\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-				}
+				auto typedObject = dynamic_cast<calculator::Module*>(object);
+				if (!typedObject) throw vl::glr::AstInsException(L"Field \"calculator::Module::exported\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+				if (typedObject->exported) throw vl::glr::AstInsException(L"Field \"calculator::Module::exported\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
+				auto typedValue = value.Cast<calculator::Expr>();
+				if (!typedValue) throw vl::glr::AstInsException(L"Field \"calculator::Module::exported\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				typedObject->exported = typedValue;
 			}
-			else
-			{
-				throw vl::glr::AstInsException(L"Field \"calculator::Module::exported\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-			}
+			break;
 		case CalculatorFields::Module_imports:
-			if (auto typedObject = dynamic_cast<calculator::Module*>(object))
 			{
-				if (auto typedValue = value.Cast<calculator::Import>())
-				{
-					typedObject->imports.Add(typedValue);
-					break;
-				}
-				else
-				{
-					throw vl::glr::AstInsException(L"Field \"calculator::Module::imports\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				}
+				auto typedObject = dynamic_cast<calculator::Module*>(object);
+				if (!typedObject) throw vl::glr::AstInsException(L"Field \"calculator::Module::imports\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+				auto typedValue = value.Cast<calculator::Import>();
+				if (!typedValue) throw vl::glr::AstInsException(L"Field \"calculator::Module::imports\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				typedObject->imports.Add(typedValue);
 			}
-			else
-			{
-				throw vl::glr::AstInsException(L"Field \"calculator::Module::imports\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-			}
+			break;
 		case CalculatorFields::Unary_operand:
-			if (auto typedObject = dynamic_cast<calculator::Unary*>(object))
 			{
-				if (!typedObject->operand)
-				{
-					if (auto typedValue = value.Cast<calculator::Expr>())
-					{
-						typedObject->operand = typedValue;
-						break;
-					}
-					else
-					{
-						throw vl::glr::AstInsException(L"Field \"calculator::Unary::operand\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-					}
-				}
-				else
-				{
-					throw vl::glr::AstInsException(L"Field \"calculator::Unary::operand\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-				}
+				auto typedObject = dynamic_cast<calculator::Unary*>(object);
+				if (!typedObject) throw vl::glr::AstInsException(L"Field \"calculator::Unary::operand\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+				if (typedObject->operand) throw vl::glr::AstInsException(L"Field \"calculator::Unary::operand\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
+				auto typedValue = value.Cast<calculator::Expr>();
+				if (!typedValue) throw vl::glr::AstInsException(L"Field \"calculator::Unary::operand\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				typedObject->operand = typedValue;
 			}
-			else
-			{
-				throw vl::glr::AstInsException(L"Field \"calculator::Unary::operand\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-			}
+			break;
 		case CalculatorFields::Arg_name:
 			throw vl::glr::AstInsException(L"Field \"calculator::Arg::name\" is not an object.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 		case CalculatorFields::Binary_op:

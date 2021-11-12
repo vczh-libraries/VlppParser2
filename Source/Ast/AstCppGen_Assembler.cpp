@@ -138,58 +138,35 @@ WriteAstAssemblerCppFile
 										if (auto propClassSymbol = dynamic_cast<AstClassSymbol*>(propSymbol->propSymbol))
 										{
 											writer.WriteLine(prefix + L"\tcase " + manager.name + L"Fields::" + classSymbol->Name() + L"_" + propSymbol->Name() + L":");
-											writer.WriteString(prefix + L"\t\tif (auto typedObject = dynamic_cast<");
-											PrintCppType(nullptr, classSymbol, writer);
-											writer.WriteLine(L"*>(object))");
 											writer.WriteLine(prefix + L"\t\t{");
+											writer.WriteString(prefix + L"\t\t\tauto typedObject = dynamic_cast<");
+											PrintCppType(nullptr, classSymbol, writer);
+											writer.WriteLine(L"*>(object);");
+											writer.WriteString(prefix+L"\t\t\tif (!typedObject) throw vl::glr::AstInsException(L\"Field \\\"");
+											PrintCppType(nullptr, classSymbol, writer);
+											writer.WriteLine(L"::" + propSymbol->Name() + L"\\\" does not exist in the current object.\", vl::glr::AstInsErrorType::FieldNotExistsInType, field);");
+											if (propSymbol->propType != AstPropType::Array)
+											{
+												writer.WriteString(prefix + L"\t\t\tif (typedObject->" + propSymbol->Name() + L") throw vl::glr::AstInsException(L\"Field \\\"");
+												PrintCppType(nullptr, classSymbol, writer);
+												writer.WriteLine(L"::" + propSymbol->Name() + L"\\\" has already been assigned.\", vl::glr::AstInsErrorType::FieldReassigned, field);");
+											}
+											writer.WriteString(prefix + L"\t\t\tauto typedValue = value.Cast<");
+											PrintCppType(nullptr, propClassSymbol, writer);
+											writer.WriteLine(L">();");
+											writer.WriteString(prefix + L"\t\t\tif (!typedValue) throw vl::glr::AstInsException(L\"Field \\\"");
+											PrintCppType(nullptr, classSymbol, writer);
+											writer.WriteLine(L"::" + propSymbol->Name() + L"\\\" cannot be assigned with an uncompatible value.\", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);");
 											if (propSymbol->propType == AstPropType::Array)
 											{
-												writer.WriteString(prefix + L"\t\t\tif (auto typedValue = value.Cast<");
-												PrintCppType(nullptr, propClassSymbol, writer);
-												writer.WriteLine(L">())");
-												writer.WriteLine(prefix + L"\t\t\t{");
-												writer.WriteLine(prefix + L"\t\t\t\ttypedObject->" + propSymbol->Name() + L".Add(typedValue);");
-												writer.WriteLine(prefix + L"\t\t\t\tbreak;");
-												writer.WriteLine(prefix + L"\t\t\t}");
-												writer.WriteLine(prefix + L"\t\t\telse");
-												writer.WriteLine(prefix + L"\t\t\t{");
-												writer.WriteString(prefix + L"\t\t\t\tthrow vl::glr::AstInsException(L\"Field \\\"");
-												PrintCppType(nullptr, classSymbol, writer);
-												writer.WriteLine(L"::" + propSymbol->Name() + L"\\\" cannot be assigned with an uncompatible value.\", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);");
-												writer.WriteLine(prefix + L"\t\t\t}");
+												writer.WriteLine(prefix + L"\t\t\ttypedObject->" + propSymbol->Name() + L".Add(typedValue);");
 											}
 											else
 											{
-												writer.WriteLine(prefix + L"\t\t\tif (!typedObject->" + propSymbol->Name() + L")");
-												writer.WriteLine(prefix + L"\t\t\t{");
-												writer.WriteString(prefix + L"\t\t\t\tif (auto typedValue = value.Cast<");
-												PrintCppType(nullptr, propClassSymbol, writer);
-												writer.WriteLine(L">())");
-												writer.WriteLine(prefix + L"\t\t\t\t{");
-												writer.WriteLine(prefix + L"\t\t\t\t\ttypedObject->" + propSymbol->Name() + L" = typedValue;");
-												writer.WriteLine(prefix + L"\t\t\t\t\tbreak;");
-												writer.WriteLine(prefix + L"\t\t\t\t}");
-												writer.WriteLine(prefix + L"\t\t\t\telse");
-												writer.WriteLine(prefix + L"\t\t\t\t{");
-												writer.WriteString(prefix + L"\t\t\t\t\tthrow vl::glr::AstInsException(L\"Field \\\"");
-												PrintCppType(nullptr, classSymbol, writer);
-												writer.WriteLine(L"::" + propSymbol->Name() + L"\\\" cannot be assigned with an uncompatible value.\", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);");
-												writer.WriteLine(prefix + L"\t\t\t\t}");
-												writer.WriteLine(prefix + L"\t\t\t}");
-												writer.WriteLine(prefix + L"\t\t\telse");
-												writer.WriteLine(prefix + L"\t\t\t{");
-												writer.WriteString(prefix + L"\t\t\t\tthrow vl::glr::AstInsException(L\"Field \\\"");
-												PrintCppType(nullptr, classSymbol, writer);
-												writer.WriteLine(L"::" + propSymbol->Name() + L"\\\" has already been assigned.\", vl::glr::AstInsErrorType::FieldReassigned, field);");
-												writer.WriteLine(prefix + L"\t\t\t}");
+												writer.WriteLine(prefix + L"\t\t\ttypedObject->" + propSymbol->Name() + L" = typedValue;");
 											}
 											writer.WriteLine(prefix + L"\t\t}");
-											writer.WriteLine(prefix + L"\t\telse");
-											writer.WriteLine(prefix + L"\t\t{");
-											writer.WriteString(prefix + L"\t\t\tthrow vl::glr::AstInsException(L\"Field \\\"");
-											PrintCppType(nullptr, classSymbol, writer);
-											writer.WriteLine(L"::" + propSymbol->Name() + L"\\\" does not exist in the current object.\", vl::glr::AstInsErrorType::FieldNotExistsInType, field);");
-											writer.WriteLine(prefix + L"\t\t}");
+											writer.WriteLine(prefix + L"\t\tbreak;");
 										}
 									}
 								}
