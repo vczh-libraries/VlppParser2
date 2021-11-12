@@ -18,19 +18,33 @@ CalculatorAstInsReceiver : public vl::glr::AstInsReceiverBase
 		switch((CalculatorClasses)type)
 		{
 		case CalculatorClasses::Arg:
+			return new calculator::Arg();
 		case CalculatorClasses::Binary:
+			return new calculator::Binary();
 		case CalculatorClasses::Call:
+			return new calculator::Call();
 		case CalculatorClasses::Expandable:
+			throw vl::glr::AstInsException(L"Unable to create abstract class \"calculator::Expandable\".", vl::glr::AstInsErrorType::UnknownType, type);
 		case CalculatorClasses::Expr:
+			throw vl::glr::AstInsException(L"Unable to create abstract class \"calculator::Expr\".", vl::glr::AstInsErrorType::UnknownType, type);
 		case CalculatorClasses::False:
+			return new calculator::False();
 		case CalculatorClasses::Func:
+			return new calculator::Func();
 		case CalculatorClasses::Import:
+			return new calculator::Import();
 		case CalculatorClasses::LetExpr:
+			return new calculator::LetExpr();
 		case CalculatorClasses::Module:
+			return new calculator::Module();
 		case CalculatorClasses::NumExpr:
+			return new calculator::NumExpr();
 		case CalculatorClasses::Ref:
+			return new calculator::Ref();
 		case CalculatorClasses::True:
+			return new calculator::True();
 		case CalculatorClasses::Unary:
+			return new calculator::Unary();
 		default:
 			throw vl::glr::AstInsException(L"The type id does not exist.", vl::glr::AstInsErrorType::UnknownType, type);
 		}

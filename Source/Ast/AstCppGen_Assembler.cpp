@@ -89,6 +89,18 @@ WriteAstAssemblerCppFile
 							if (auto classSymbol = dynamic_cast<AstClassSymbol*>(typeSymbol))
 							{
 								writer.WriteLine(prefix + L"\tcase " + manager.name + L"Classes::" + classSymbol->Name() + L":");
+								if (classSymbol->derivedClasses.Count() > 0)
+								{
+									writer.WriteString(prefix + L"\t\tthrow vl::glr::AstInsException(L\"Unable to create abstract class \\\"");
+									PrintCppType(nullptr, classSymbol, writer);
+									writer.WriteLine(L"\\\".\", vl::glr::AstInsErrorType::UnknownType, type);");
+								}
+								else
+								{
+									writer.WriteString(prefix + L"\t\treturn new ");
+									PrintCppType(nullptr, classSymbol, writer);
+									writer.WriteLine(L"();");
+								}
 							}
 						}
 						writer.WriteLine(prefix + L"\tdefault:");

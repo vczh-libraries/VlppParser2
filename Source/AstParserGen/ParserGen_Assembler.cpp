@@ -22,11 +22,17 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 				switch((ParserGenClasses)type)
 				{
 				case ParserGenClasses::Class:
+					return new vl::glr::parsergen::GlrClass();
 				case ParserGenClasses::ClassProp:
+					return new vl::glr::parsergen::GlrClassProp();
 				case ParserGenClasses::Enum:
+					return new vl::glr::parsergen::GlrEnum();
 				case ParserGenClasses::EnumItem:
+					return new vl::glr::parsergen::GlrEnumItem();
 				case ParserGenClasses::File:
+					return new vl::glr::parsergen::GlrFile();
 				case ParserGenClasses::Type:
+					throw vl::glr::AstInsException(L"Unable to create abstract class \"vl::glr::parsergen::GlrType\".", vl::glr::AstInsErrorType::UnknownType, type);
 				default:
 					throw vl::glr::AstInsException(L"The type id does not exist.", vl::glr::AstInsErrorType::UnknownType, type);
 				}
