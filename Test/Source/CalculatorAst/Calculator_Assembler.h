@@ -50,5 +50,14 @@ namespace calculator
 		Unary_op = (static_cast<vl::vint32_t>(CalculatorClasses::Unary) << 8) + 0,
 		Unary_operand = (static_cast<vl::vint32_t>(CalculatorClasses::Unary) << 8) + 1,
 	};
+
+	class CalculatorAstInsReceiver : public vl::glr::AstInsReceiverBase
+	{
+	protected:
+		vl::Ptr<vl::glr::ParsingAstBase> CreateAstNode(vl::vint32_t type) override;
+		void SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::Ptr<vl::glr::ParsingAstBase> value) override;
+		void SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, const vl::regex::RegexToken& token) override;
+		vl::Ptr<vl::glr::ParsingAstBase> ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates) override;
+	};
 }
 #endif

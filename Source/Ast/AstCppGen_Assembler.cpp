@@ -52,6 +52,17 @@ WriteAstAssemblerHeaderFile
 						}
 						writer.WriteLine(prefix + L"};");
 					}
+					{
+						writer.WriteLine(L"");
+						writer.WriteLine(prefix + L"class " + manager.name + L"AstInsReceiver : public vl::glr::AstInsReceiverBase");
+						writer.WriteLine(prefix + L"{");
+						writer.WriteLine(prefix + L"protected:");
+						writer.WriteLine(prefix + L"\tvl::Ptr<vl::glr::ParsingAstBase> CreateAstNode(vl::vint32_t type) override;");
+						writer.WriteLine(prefix + L"\tvoid SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::Ptr<vl::glr::ParsingAstBase> value) override;");
+						writer.WriteLine(prefix + L"\tvoid SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, const vl::regex::RegexToken& token) override;");
+						writer.WriteLine(prefix + L"\tvl::Ptr<vl::glr::ParsingAstBase> ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates) override;");
+						writer.WriteLine(prefix + L"};");
+					}
 				});
 			}
 
@@ -63,6 +74,34 @@ WriteAstAssemblerCppFile
 			{
 				WriteParserUtilityCppFile(manager, output->assemblyH, writer, [&](const WString& prefix)
 				{
+					writer.WriteLine(L"");
+					writer.WriteLine(L"/***********************************************************************");
+					writer.WriteLine(manager.name + L"AstInsReceiver : public vl::glr::AstInsReceiverBase");
+					writer.WriteLine(L"***********************************************************************/");
+					{
+						writer.WriteLine(L"");
+						writer.WriteLine(prefix + L"vl::Ptr<vl::glr::ParsingAstBase> " + manager.name + L"AstInsReceiver : public vl::glr::AstInsReceiverBase::CreateAstNode(vl::vint32_t type)");
+						writer.WriteLine(prefix + L"{");
+						writer.WriteLine(prefix + L"}");
+					}
+					{
+						writer.WriteLine(L"");
+						writer.WriteLine(prefix + L"void " + manager.name + L"AstInsReceiver : public vl::glr::AstInsReceiverBase::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::Ptr<vl::glr::ParsingAstBase> value)");
+						writer.WriteLine(prefix + L"{");
+						writer.WriteLine(prefix + L"}");
+					}
+					{
+						writer.WriteLine(L"");
+						writer.WriteLine(prefix + L"void " + manager.name + L"AstInsReceiver : public vl::glr::AstInsReceiverBase::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, const vl::regex::RegexToken& token)");
+						writer.WriteLine(prefix + L"{");
+						writer.WriteLine(prefix + L"}");
+					}
+					{
+						writer.WriteLine(L"");
+						writer.WriteLine(prefix + L"vl::Ptr<vl::glr::ParsingAstBase> " + manager.name + L"AstInsReceiver : public vl::glr::AstInsReceiverBase::ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates)");
+						writer.WriteLine(prefix + L"{");
+						writer.WriteLine(prefix + L"}");
+					}
 				});
 			}
 		}
