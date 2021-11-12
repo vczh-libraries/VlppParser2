@@ -59,7 +59,15 @@ CalculatorAstInsReceiver : public vl::glr::AstInsReceiverBase
 			{
 				if (!typedObject->left)
 				{
-					break;
+					if (auto typedValue = value.Cast<calculator::Expr>())
+					{
+						typedObject->left = typedValue;
+						break;
+					}
+					else
+					{
+						throw vl::glr::AstInsException(L"Field \"calculator::Binary::left\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+					}
 				}
 				else
 				{
@@ -75,7 +83,15 @@ CalculatorAstInsReceiver : public vl::glr::AstInsReceiverBase
 			{
 				if (!typedObject->right)
 				{
-					break;
+					if (auto typedValue = value.Cast<calculator::Expr>())
+					{
+						typedObject->right = typedValue;
+						break;
+					}
+					else
+					{
+						throw vl::glr::AstInsException(L"Field \"calculator::Binary::right\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+					}
 				}
 				else
 				{
@@ -91,7 +107,15 @@ CalculatorAstInsReceiver : public vl::glr::AstInsReceiverBase
 			{
 				if (!typedObject->arg)
 				{
-					break;
+					if (auto typedValue = value.Cast<calculator::Expr>())
+					{
+						typedObject->arg = typedValue;
+						break;
+					}
+					else
+					{
+						throw vl::glr::AstInsException(L"Field \"calculator::Call::arg\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+					}
 				}
 				else
 				{
@@ -107,7 +131,15 @@ CalculatorAstInsReceiver : public vl::glr::AstInsReceiverBase
 			{
 				if (!typedObject->func)
 				{
-					break;
+					if (auto typedValue = value.Cast<calculator::Expr>())
+					{
+						typedObject->func = typedValue;
+						break;
+					}
+					else
+					{
+						throw vl::glr::AstInsException(L"Field \"calculator::Call::func\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+					}
 				}
 				else
 				{
@@ -123,7 +155,15 @@ CalculatorAstInsReceiver : public vl::glr::AstInsReceiverBase
 			{
 				if (!typedObject->expanded)
 				{
-					break;
+					if (auto typedValue = value.Cast<calculator::Expr>())
+					{
+						typedObject->expanded = typedValue;
+						break;
+					}
+					else
+					{
+						throw vl::glr::AstInsException(L"Field \"calculator::Expandable::expanded\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+					}
 				}
 				else
 				{
@@ -156,7 +196,15 @@ CalculatorAstInsReceiver : public vl::glr::AstInsReceiverBase
 			{
 				if (!typedObject->value)
 				{
-					break;
+					if (auto typedValue = value.Cast<calculator::Expr>())
+					{
+						typedObject->value = typedValue;
+						break;
+					}
+					else
+					{
+						throw vl::glr::AstInsException(L"Field \"calculator::Func::value\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+					}
 				}
 				else
 				{
@@ -172,7 +220,15 @@ CalculatorAstInsReceiver : public vl::glr::AstInsReceiverBase
 			{
 				if (!typedObject->value)
 				{
-					break;
+					if (auto typedValue = value.Cast<calculator::Expr>())
+					{
+						typedObject->value = typedValue;
+						break;
+					}
+					else
+					{
+						throw vl::glr::AstInsException(L"Field \"calculator::LetExpr::value\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+					}
 				}
 				else
 				{
@@ -188,7 +244,15 @@ CalculatorAstInsReceiver : public vl::glr::AstInsReceiverBase
 			{
 				if (!typedObject->exported)
 				{
-					break;
+					if (auto typedValue = value.Cast<calculator::Expr>())
+					{
+						typedObject->exported = typedValue;
+						break;
+					}
+					else
+					{
+						throw vl::glr::AstInsException(L"Field \"calculator::Module::exported\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+					}
 				}
 				else
 				{
@@ -221,7 +285,15 @@ CalculatorAstInsReceiver : public vl::glr::AstInsReceiverBase
 			{
 				if (!typedObject->operand)
 				{
-					break;
+					if (auto typedValue = value.Cast<calculator::Expr>())
+					{
+						typedObject->operand = typedValue;
+						break;
+					}
+					else
+					{
+						throw vl::glr::AstInsException(L"Field \"calculator::Unary::operand\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+					}
 				}
 				else
 				{
