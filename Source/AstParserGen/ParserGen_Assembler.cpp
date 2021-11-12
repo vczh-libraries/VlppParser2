@@ -19,18 +19,69 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 
 			vl::Ptr<vl::glr::ParsingAstBase> ParserGenAstInsReceiver::CreateAstNode(vl::vint32_t type)
 			{
+				switch((ParserGenClasses)type)
+				{
+				case ParserGenClasses::Class:
+				case ParserGenClasses::ClassProp:
+				case ParserGenClasses::Enum:
+				case ParserGenClasses::EnumItem:
+				case ParserGenClasses::File:
+				case ParserGenClasses::Type:
+				default:
+					throw vl::glr::AstInsException(L"The type id does not exist.", vl::glr::AstInsErrorType::UnknownType, type);
+				}
 			}
 
 			void ParserGenAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::Ptr<vl::glr::ParsingAstBase> value)
 			{
+				switch((ParserGenFields)field)
+				{
+				case ParserGenFields::Class_props:
+				case ParserGenFields::ClassProp_name:
+				case ParserGenFields::ClassProp_propType:
+				case ParserGenFields::ClassProp_propTypeName:
+				case ParserGenFields::Enum_items:
+				case ParserGenFields::EnumItem_name:
+				case ParserGenFields::File_name:
+				case ParserGenFields::File_types:
+				case ParserGenFields::Type_name:
+				default:
+					throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
+				}
 			}
 
 			void ParserGenAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, const vl::regex::RegexToken& token)
 			{
+				switch((ParserGenFields)field)
+				{
+				case ParserGenFields::Class_props:
+				case ParserGenFields::ClassProp_name:
+				case ParserGenFields::ClassProp_propType:
+				case ParserGenFields::ClassProp_propTypeName:
+				case ParserGenFields::Enum_items:
+				case ParserGenFields::EnumItem_name:
+				case ParserGenFields::File_name:
+				case ParserGenFields::File_types:
+				case ParserGenFields::Type_name:
+				default:
+					throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
+				}
 			}
 
 			vl::Ptr<vl::glr::ParsingAstBase> ParserGenAstInsReceiver::ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates)
 			{
+				switch((ParserGenClasses)type)
+				{
+				case ParserGenClasses::Class:
+				case ParserGenClasses::ClassProp:
+				case ParserGenClasses::Enum:
+				case ParserGenClasses::EnumItem:
+				case ParserGenClasses::File:
+				case ParserGenClasses::Type:
+					throw vl::glr::AstInsException(L"The type is not configured to allow ambiguity.", vl::glr::AstInsErrorType::UnsupportedAmbiguityType, type);
+				default:
+					throw vl::glr::AstInsException(L"The type id does not exist.", vl::glr::AstInsErrorType::UnknownType, type);
+				}
 			}
 		}
 	}

@@ -15,17 +15,102 @@ CalculatorAstInsReceiver : public vl::glr::AstInsReceiverBase
 
 	vl::Ptr<vl::glr::ParsingAstBase> CalculatorAstInsReceiver::CreateAstNode(vl::vint32_t type)
 	{
+		switch((CalculatorClasses)type)
+		{
+		case CalculatorClasses::Arg:
+		case CalculatorClasses::Binary:
+		case CalculatorClasses::Call:
+		case CalculatorClasses::Expandable:
+		case CalculatorClasses::Expr:
+		case CalculatorClasses::False:
+		case CalculatorClasses::Func:
+		case CalculatorClasses::Import:
+		case CalculatorClasses::LetExpr:
+		case CalculatorClasses::Module:
+		case CalculatorClasses::NumExpr:
+		case CalculatorClasses::Ref:
+		case CalculatorClasses::True:
+		case CalculatorClasses::Unary:
+		default:
+			throw vl::glr::AstInsException(L"The type id does not exist.", vl::glr::AstInsErrorType::UnknownType, type);
+		}
 	}
 
 	void CalculatorAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::Ptr<vl::glr::ParsingAstBase> value)
 	{
+		switch((CalculatorFields)field)
+		{
+		case CalculatorFields::Arg_name:
+		case CalculatorFields::Binary_left:
+		case CalculatorFields::Binary_op:
+		case CalculatorFields::Binary_right:
+		case CalculatorFields::Call_arg:
+		case CalculatorFields::Call_func:
+		case CalculatorFields::Expandable_expanded:
+		case CalculatorFields::Func_args:
+		case CalculatorFields::Func_value:
+		case CalculatorFields::Import_name:
+		case CalculatorFields::LetExpr_name:
+		case CalculatorFields::LetExpr_value:
+		case CalculatorFields::Module_exported:
+		case CalculatorFields::Module_imports:
+		case CalculatorFields::NumExpr_value:
+		case CalculatorFields::Ref_name:
+		case CalculatorFields::Unary_op:
+		case CalculatorFields::Unary_operand:
+		default:
+			throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
+		}
 	}
 
 	void CalculatorAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, const vl::regex::RegexToken& token)
 	{
+		switch((CalculatorFields)field)
+		{
+		case CalculatorFields::Arg_name:
+		case CalculatorFields::Binary_left:
+		case CalculatorFields::Binary_op:
+		case CalculatorFields::Binary_right:
+		case CalculatorFields::Call_arg:
+		case CalculatorFields::Call_func:
+		case CalculatorFields::Expandable_expanded:
+		case CalculatorFields::Func_args:
+		case CalculatorFields::Func_value:
+		case CalculatorFields::Import_name:
+		case CalculatorFields::LetExpr_name:
+		case CalculatorFields::LetExpr_value:
+		case CalculatorFields::Module_exported:
+		case CalculatorFields::Module_imports:
+		case CalculatorFields::NumExpr_value:
+		case CalculatorFields::Ref_name:
+		case CalculatorFields::Unary_op:
+		case CalculatorFields::Unary_operand:
+		default:
+			throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
+		}
 	}
 
 	vl::Ptr<vl::glr::ParsingAstBase> CalculatorAstInsReceiver::ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates)
 	{
+		switch((CalculatorClasses)type)
+		{
+		case CalculatorClasses::Arg:
+		case CalculatorClasses::Binary:
+		case CalculatorClasses::Call:
+		case CalculatorClasses::Expandable:
+		case CalculatorClasses::Expr:
+		case CalculatorClasses::False:
+		case CalculatorClasses::Func:
+		case CalculatorClasses::Import:
+		case CalculatorClasses::LetExpr:
+		case CalculatorClasses::Module:
+		case CalculatorClasses::NumExpr:
+		case CalculatorClasses::Ref:
+		case CalculatorClasses::True:
+		case CalculatorClasses::Unary:
+			throw vl::glr::AstInsException(L"The type is not configured to allow ambiguity.", vl::glr::AstInsErrorType::UnsupportedAmbiguityType, type);
+		default:
+			throw vl::glr::AstInsException(L"The type id does not exist.", vl::glr::AstInsErrorType::UnknownType, type);
+		}
 	}
 }
