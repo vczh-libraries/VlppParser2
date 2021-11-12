@@ -148,22 +148,13 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 				switch((ParserGenFields)field)
 				{
 				case ParserGenFields::ClassProp_propType:
-					if (auto typedObject = dynamic_cast<vl::glr::parsergen::GlrClassProp*>(object))
 					{
-						if (typedObject->propType == vl::glr::parsergen::GlrPropType::UNDEFINED_ENUM_ITEM_VALUE)
-						{
-							typedObject->propType = (vl::glr::parsergen::GlrPropType)enumItem;
-							break;
-						}
-						else
-						{
-							throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrClassProp::propType\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-						}
+						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrClassProp*>(object);
+						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrClassProp::propType\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+						if (typedObject->propType == vl::glr::parsergen::GlrPropType::UNDEFINED_ENUM_ITEM_VALUE) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrClassProp::propType\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
+						typedObject->propType = (vl::glr::parsergen::GlrPropType)enumItem;
 					}
-					else
-					{
-						throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrClassProp::propType\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-					}
+					break;
 				case ParserGenFields::Class_props:
 					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrClass::props\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 				case ParserGenFields::ClassProp_name:

@@ -273,32 +273,23 @@ WriteAstAssemblerCppFile
 										if (auto propEnumSymbol = dynamic_cast<AstEnumSymbol*>(propSymbol->propSymbol))
 										{
 											writer.WriteLine(prefix + L"\tcase " + manager.name + L"Fields::" + classSymbol->Name() + L"_" + propSymbol->Name() + L":");
-											writer.WriteString(prefix + L"\t\tif (auto typedObject = dynamic_cast<");
-											PrintCppType(nullptr, classSymbol, writer);
-											writer.WriteLine(L"*>(object))");
 											writer.WriteLine(prefix + L"\t\t{");
-											writer.WriteString(prefix + L"\t\t\tif (typedObject->" + propSymbol->Name() + L" == ");
-											PrintCppType(nullptr, propEnumSymbol, writer);
-											writer.WriteLine(L"::UNDEFINED_ENUM_ITEM_VALUE)");
-											writer.WriteLine(prefix + L"\t\t\t{");
-											writer.WriteString(prefix + L"\t\t\t\ttypedObject->" + propSymbol->Name() + L" = (");
-											PrintCppType(nullptr, propEnumSymbol, writer);
-											writer.WriteLine(L")enumItem;");
-											writer.WriteLine(prefix + L"\t\t\t\tbreak;");
-											writer.WriteLine(prefix + L"\t\t\t}");
-											writer.WriteLine(prefix + L"\t\t\telse");
-											writer.WriteLine(prefix + L"\t\t\t{");
-											writer.WriteString(prefix + L"\t\t\t\tthrow vl::glr::AstInsException(L\"Field \\\"");
+											writer.WriteString(prefix + L"\t\t\tauto typedObject = dynamic_cast<");
 											PrintCppType(nullptr, classSymbol, writer);
-											writer.WriteLine(L"::" + propSymbol->Name() + L"\\\" has already been assigned.\", vl::glr::AstInsErrorType::FieldReassigned, field);");
-											writer.WriteLine(prefix + L"\t\t\t}");
-											writer.WriteLine(prefix + L"\t\t}");
-											writer.WriteLine(prefix + L"\t\telse");
-											writer.WriteLine(prefix + L"\t\t{");
-											writer.WriteString(prefix + L"\t\t\tthrow vl::glr::AstInsException(L\"Field \\\"");
+											writer.WriteLine(L"*>(object);");
+											writer.WriteString(prefix + L"\t\t\tif (!typedObject) throw vl::glr::AstInsException(L\"Field \\\"");
 											PrintCppType(nullptr, classSymbol, writer);
 											writer.WriteLine(L"::" + propSymbol->Name() + L"\\\" does not exist in the current object.\", vl::glr::AstInsErrorType::FieldNotExistsInType, field);");
+											writer.WriteString(prefix + L"\t\t\tif (typedObject->" + propSymbol->Name() + L" == ");
+											PrintCppType(nullptr, propEnumSymbol, writer);
+											writer.WriteString(L"::UNDEFINED_ENUM_ITEM_VALUE) throw vl::glr::AstInsException(L\"Field \\\"");
+											PrintCppType(nullptr, classSymbol, writer);
+											writer.WriteLine(L"::" + propSymbol->Name() + L"\\\" has already been assigned.\", vl::glr::AstInsErrorType::FieldReassigned, field);");
+											writer.WriteString(prefix + L"\t\t\ttypedObject->" + propSymbol->Name() + L" = (");
+											PrintCppType(nullptr, propEnumSymbol, writer);
+											writer.WriteLine(L")enumItem;");
 											writer.WriteLine(prefix + L"\t\t}");
+											writer.WriteLine(prefix + L"\t\tbreak;");
 										}
 									}
 								}

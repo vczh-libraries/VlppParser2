@@ -261,39 +261,21 @@ CalculatorAstInsReceiver : public vl::glr::AstInsReceiverBase
 		switch((CalculatorFields)field)
 		{
 		case CalculatorFields::Binary_op:
-			if (auto typedObject = dynamic_cast<calculator::Binary*>(object))
 			{
-				if (typedObject->op == calculator::BinaryOp::UNDEFINED_ENUM_ITEM_VALUE)
-				{
-					typedObject->op = (calculator::BinaryOp)enumItem;
-					break;
-				}
-				else
-				{
-					throw vl::glr::AstInsException(L"Field \"calculator::Binary::op\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-				}
+				auto typedObject = dynamic_cast<calculator::Binary*>(object);
+				if (!typedObject) throw vl::glr::AstInsException(L"Field \"calculator::Binary::op\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+				if (typedObject->op == calculator::BinaryOp::UNDEFINED_ENUM_ITEM_VALUE) throw vl::glr::AstInsException(L"Field \"calculator::Binary::op\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
+				typedObject->op = (calculator::BinaryOp)enumItem;
 			}
-			else
-			{
-				throw vl::glr::AstInsException(L"Field \"calculator::Binary::op\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-			}
+			break;
 		case CalculatorFields::Unary_op:
-			if (auto typedObject = dynamic_cast<calculator::Unary*>(object))
 			{
-				if (typedObject->op == calculator::UnaryOp::UNDEFINED_ENUM_ITEM_VALUE)
-				{
-					typedObject->op = (calculator::UnaryOp)enumItem;
-					break;
-				}
-				else
-				{
-					throw vl::glr::AstInsException(L"Field \"calculator::Unary::op\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-				}
+				auto typedObject = dynamic_cast<calculator::Unary*>(object);
+				if (!typedObject) throw vl::glr::AstInsException(L"Field \"calculator::Unary::op\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+				if (typedObject->op == calculator::UnaryOp::UNDEFINED_ENUM_ITEM_VALUE) throw vl::glr::AstInsException(L"Field \"calculator::Unary::op\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
+				typedObject->op = (calculator::UnaryOp)enumItem;
 			}
-			else
-			{
-				throw vl::glr::AstInsException(L"Field \"calculator::Unary::op\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-			}
+			break;
 		case CalculatorFields::Arg_name:
 			throw vl::glr::AstInsException(L"Field \"calculator::Arg::name\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 		case CalculatorFields::Binary_left:
