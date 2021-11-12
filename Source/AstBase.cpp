@@ -4,6 +4,8 @@ namespace vl
 {
 	namespace glr
 	{
+		using namespace collections;
+
 /***********************************************************************
 JsonVisitorBase
 ***********************************************************************/
@@ -224,20 +226,157 @@ Json Printing
 AstInsReceiverBase
 ***********************************************************************/
 
-		AstInsReceiverBase::AstInsReceiverBase()
+		void AstInsReceiverBase::EnsureContinuable()
 		{
-		}
-
-		AstInsReceiverBase::~AstInsReceiverBase()
-		{
+			if (corrupted)
+			{
+				throw AstInsException(
+					L"An exception has been thrown therefore this receiver cannot be used anymore.",
+					AstInsErrorType::Corrupted
+					);
+			}
+			if (finished)
+			{
+				throw AstInsException(
+					L"The finished instruction has been executed therefore this receiver cannot be used anymore.",
+					AstInsErrorType::Finished
+					);
+			}
 		}
 
 		void AstInsReceiverBase::Execute(AstIns instruction, const regex::RegexToken& token)
 		{
+			EnsureContinuable();
+			try
+			{
+				if (created.Count() == 0 && instruction.type != AstInsType::BeginObject)
+				{
+					if (created.Count() > 1)
+					{
+						throw AstInsException(
+							L"There is no created objects.",
+							AstInsErrorType::NoRootObject
+							);
+					}
+				}
+				switch (instruction.type)
+				{
+				case AstInsType::Token:
+					{
+						ObjectOrToken value;
+						value.token = token;
+						pushed.Add(value);
+					}
+					break;
+				case AstInsType::BeginObject:
+					{
+						created.Add(CreateAstNode(instruction.paramTypeOrField));
+					}
+					break;
+				case AstInsType::EndObject:
+					{
+						if (pushed.Count() > 0)
+						{
+							throw AstInsException(
+								L"There are still unassigned objects leaving when executing EndObject.",
+								AstInsErrorType::UnassignedObjectLeaving
+								);
+						}
+
+						ObjectOrToken value;
+						value.object = created[created.Count() - 1];
+						created.RemoveAt(created.Count() - 1);
+						pushed.Add(value);
+					}
+					break;
+				case AstInsType::Field:
+					{
+						if (pushed.Count() == 0)
+						{
+							throw AstInsException(
+								L"There is no pushed value to be assigned to a field.",
+								AstInsErrorType::MissingFieldValue
+								);
+						}
+
+						auto value = pushed[pushed.Count() - 1];
+						pushed.RemoveAt(pushed.Count() - 1);
+						if (value.object)
+						{
+							SetField(created[created.Count() - 1].Obj(), instruction.paramTypeOrField, value.object);
+						}
+						else
+						{
+							SetField(created[created.Count() - 1].Obj(), instruction.paramTypeOrField, value.token);
+						}
+					}
+					break;
+				case AstInsType::ResolveAmbiguity:
+					{
+						if (instruction.paramCount <= 0 || pushed.Count() < instruction.paramCount)
+						{
+							throw AstInsException(
+								L"There are not enough candidates to create an ambiguity node.",
+								AstInsErrorType::MissingAmbiguityCandidate
+								);
+						}
+
+						for (vint i = 0; i < instruction.paramCount; i++)
+						{
+							if (!pushed[pushed.Count() - i - 1].object)
+							{
+								throw AstInsException(
+									L"Tokens cannot be ambiguity candidates.",
+									AstInsErrorType::AmbiguityCandidateIsToken
+									);
+							}
+						}
+
+						Array<Ptr<ParsingAstBase>> candidates(instruction.paramCount);
+						for (vint i = 0; i < instruction.paramCount; i++)
+						{
+							auto value = pushed[pushed.Count() - 1];
+							pushed.RemoveAt(pushed.Count() - 1);
+							candidates[i] = value.object;
+						}
+
+						ObjectOrToken value;
+						value.object = ResolveAmbiguity(instruction.paramTypeOrField, candidates);
+						pushed.Add(value);
+					}
+					break;
+				}
+			}
+			catch (const AstInsException&)
+			{
+				corrupted = true;
+				throw;
+			}
 		}
 
 		Ptr<ParsingAstBase> AstInsReceiverBase::Finished()
 		{
+			EnsureContinuable();
+			try
+			{
+				if (created.Count() > 1)
+				{
+					throw AstInsException(
+						L"No more instruction but the root object has not been completed yet.",
+						AstInsErrorType::InstructionNotComplete
+						);
+				}
+
+				auto object = created[0];
+				created.Clear();
+				finished = true;
+				return object;
+			}
+			catch (const AstInsException&)
+			{
+				corrupted = true;
+				throw;
+			}
 		}
 	}
 }

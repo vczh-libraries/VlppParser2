@@ -257,29 +257,30 @@ Instructions
 		{
 			UnknownType,								// UnknownType(Type)					: The type id does not exist.
 			UnknownField,								// UnknownField(Field)					: The field id does not exist.
-			FieldNotExistsInType,						// FieldNotExistsInType(Type, Field)	: The type doesn't have such field.
+			FieldNotExistsInType,						// FieldNotExistsInType(Field)			: The type doesn't have such field.
 			FieldReassigned,							// FieldReassigned(Field)				: An object is assigned to a field but this field has already been assigned.
 			ObjectTypeMismatchedToField,				// ObjectTypeMismatchedToField(Field)	: Unable to assign an object to a field because the type does not match.
-			MissingAmbiguityCandidate,					// MissingAmbiguityCandidate()			: There are not enough candidates to create an ambiguity node.
 
+			NoRootObject,								// NoRootObject()						: There is no created objects.
+			MissingFieldValue,							// MissingFieldValue()					: There is no pushed value to be assigned to a field.
+			MissingAmbiguityCandidate,					// MissingAmbiguityCandidate()			: There are not enough candidates to create an ambiguity node.
 			AmbiguityCandidateIsToken,					// AmbiguityCandidateIsToken()			: Tokens cannot be ambiguity candidates.
 			UnassignedObjectLeaving,					// UnassignedObjectLeaving()			: There are still unassigned objects leaving when executing EndObject.
 			InstructionNotComplete,						// InstructionNotComplete()				: No more instruction but the root object has not been completed yet.
 			Corrupted,									// Corrupted()							: An exception has been thrown therefore this receiver cannot be used anymore.
+			Finished,									// Finished()							: The finished instruction has been executed therefore this receiver cannot be used anymore.
 		};
 
 		class AstInsException : public Exception
 		{
 		public:
 			AstInsErrorType								error = AstInsErrorType::Corrupted;
-			vint32_t									paramType = -1;
-			vint32_t									paramField = -1;
+			vint32_t									paramTypeOrField = -1;
 
-			AstInsException(const WString& message, AstInsErrorType _error, vint32_t _type, vint32_t _field)
+			AstInsException(const WString& message, AstInsErrorType _error, vint32_t _typeOrField = -1)
 				: Exception(message)
 				, error(_error)
-				, paramType(_type)
-				, paramField(_field)
+				, paramTypeOrField(_typeOrField)
 			{
 			}
 		};
@@ -302,16 +303,19 @@ Instructions
 
 			collections::List<Ptr<ParsingAstBase>>		created;
 			collections::List<ObjectOrToken>			pushed;
+			bool										finished = false;
 			bool										corrupted = false;
 
-			virtual void								CreateAstNode(vint32_t type) = 0;
+			void										EnsureContinuable();
+		protected:
+			virtual Ptr<ParsingAstBase>					CreateAstNode(vint32_t type) = 0;
 			virtual void								SetField(ParsingAstBase* object, vint32_t field, Ptr<ParsingAstBase> value) = 0;
 			virtual void								SetField(ParsingAstBase* object, vint32_t field, const regex::RegexToken& token) = 0;
 			virtual Ptr<ParsingAstBase>					ResolveAmbiguity(vint32_t type, collections::Array<Ptr<ParsingAstBase>>& candidates) = 0;
-		protected:
+
 		public:
-			AstInsReceiverBase();
-			~AstInsReceiverBase();
+			AstInsReceiverBase() = default;
+			~AstInsReceiverBase() = default;
 
 			void										Execute(AstIns instruction, const regex::RegexToken& token) override;
 			Ptr<ParsingAstBase>							Finished() override;
