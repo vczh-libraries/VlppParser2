@@ -1,4 +1,4 @@
-#include "../../../Source/Ast/AstCppGen.h"
+#include "../../../Source/Ast/AstSymbol.h"
 
 using namespace vl;
 using namespace vl::glr::parsergen;
