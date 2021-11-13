@@ -13,9 +13,9 @@ TEST_FILE
 	TEST_CASE(L"CreateParserGenAst")
 	{
 		ParserSymbolManager global;
-		InitializeParserSymbolManager(global);
-
 		AstSymbolManager astManager(global);
+
+		InitializeParserSymbolManager(global);
 		CreateParserGenTypeAst(astManager);
 		TEST_ASSERT(global.Errors().Count() == 0);
 

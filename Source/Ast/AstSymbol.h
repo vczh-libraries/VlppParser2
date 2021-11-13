@@ -14,7 +14,10 @@ namespace vl
 	{
 		namespace parsergen
 		{
+			class AstEnumSymbol;
+			class AstClassSymbol;
 			class AstDefFile;
+			class AstSymbolManager;
 
 /***********************************************************************
 AstSymbol
@@ -126,7 +129,6 @@ AstDefFile
 				AstDefFile(AstSymbolManager* _ownerManager, const WString& _name);
 			public:
 				DependenciesList			dependencies;
-				StringItems					includes;
 				StringItems					cppNss;
 				StringItems					refNss;
 				WString						classPrefix;

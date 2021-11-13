@@ -15,7 +15,6 @@ CreateParserGenAst
 			AstDefFile* CreateParserGenTypeAst(AstSymbolManager& manager)
 			{
 				auto _ast = manager.CreateFile(L"TypeAst");
-				Fill(_ast->includes, L"../AstBase.h");
 				Fill(_ast->cppNss, L"vl", L"glr", L"parsergen");
 				Fill(_ast->refNss, L"glr", L"parsergen");
 				_ast->classPrefix = L"Glr";

@@ -45,9 +45,9 @@ LexerSymbolManager
 
 				TokenSymbol*				CreateToken(const WString& name);
 
-				ParserSymbolManager& Global() { return global; }
-				const auto& Tokens() { return tokens.map; }
-				const auto& TokenOrder() { return tokens.order; }
+				ParserSymbolManager&		Global() { return global; }
+				const auto&					Tokens() { return tokens.map; }
+				const auto&					TokenOrder() { return tokens.order; }
 			};
 		}
 	}

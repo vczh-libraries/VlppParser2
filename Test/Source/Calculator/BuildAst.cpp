@@ -7,8 +7,6 @@ void GenerateCalculatorAst(AstSymbolManager& manager)
 {
 	{
 		auto file = manager.CreateFile(L"Ast");
-
-		file->includes.Add(L"../../../../Source/AstBase.h");
 		file->cppNss.Add(L"calculator");
 		file->refNss.Add(L"calculator");
 		file->classPrefix = L"";

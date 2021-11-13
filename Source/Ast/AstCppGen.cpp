@@ -118,7 +118,7 @@ WriteAstHeaderFile
 					writer.WriteLine(L"#pragma once");
 				}
 				writer.WriteLine(L"");
-				for (auto include : file->includes)
+				for (auto include : file->Owner()->Global().includes)
 				{
 					writer.WriteLine(L"#include \"" + include + L"\"");
 				}
@@ -402,12 +402,12 @@ WriteAstFiles
 				{
 					WString fileH = GenerateToStream([&](StreamWriter& writer)
 					{
-							WriteAstAssemblerHeaderFile(manager, output, writer);
+						WriteAstAssemblerHeaderFile(manager, output, writer);
 					});
 
 					WString fileCpp = GenerateToStream([&](StreamWriter& writer)
 					{
-							WriteAstAssemblerCppFile(manager, output, writer);
+						WriteAstAssemblerCppFile(manager, output, writer);
 					});
 
 					files.Add(output->assemblyH, fileH);

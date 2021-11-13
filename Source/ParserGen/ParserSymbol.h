@@ -80,6 +80,7 @@ ParserSymbolManager
 				ErrorList					errors;
 			public:
 				WString						name;
+				StringItems					includes;
 				StringItems					cppNss;
 				WString						headerGuard;
 

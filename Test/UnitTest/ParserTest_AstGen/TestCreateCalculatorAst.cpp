@@ -1,4 +1,5 @@
 #include "../../../Source/Ast/AstCppGen.h"
+#include "../../../Source/Lexer/LexerCppGen.h"
 
 using namespace vl;
 using namespace vl::collections;
@@ -14,11 +15,12 @@ TEST_FILE
 	TEST_CASE(L"CreateParserGenAst")
 	{
 		ParserSymbolManager global;
+		AstSymbolManager astManager(global);
+
 		global.name = L"Calculator";
+		Fill(global.includes, L"../../../../Source/AstBase.h");
 		global.cppNss.Add(L"calculator");
 		global.headerGuard = L"VCZH_PARSER2_UNITTEST_CALCULATOR";
-
-		AstSymbolManager astManager(global);
 		GenerateCalculatorAst(astManager);
 		TEST_ASSERT(global.Errors().Count() == 0);
 
