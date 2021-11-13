@@ -9,10 +9,6 @@ namespace vl
 			using namespace collections;
 			using namespace stream;
 
-			extern void					WriteFileComment(const WString& name, stream::StreamWriter& writer);
-			extern WString				WriteNssBegin(List<WString>& cppNss, stream::StreamWriter& writer);
-			extern void					WriteNssEnd(List<WString>& cppNss, stream::StreamWriter& writer);
-
 /***********************************************************************
 WriteLexerHeaderFile
 ***********************************************************************/

@@ -6,6 +6,7 @@ Licensed under https://github.com/vczh-libraries/License
 #ifndef VCZH_PARSER2_PARSERGEN_PARSERCPPGEN
 #define VCZH_PARSER2_PARSERGEN_PARSERCPPGEN
 
+#include <VlppOS.h>
 #include "ParserSymbol.h"
 
 namespace vl
@@ -55,6 +56,10 @@ Utility
 ***********************************************************************/
 
 			extern Ptr<CppParserGenOutput>		GenerateParserFileNames(ParserSymbolManager& manager);
+
+			extern void							WriteFileComment(const WString& name, stream::StreamWriter& writer);
+			extern WString						WriteNssBegin(collections::List<WString>& cppNss, stream::StreamWriter& writer);
+			extern void							WriteNssEnd(collections::List<WString>& cppNss, stream::StreamWriter& writer);
 		}
 	}
 }
