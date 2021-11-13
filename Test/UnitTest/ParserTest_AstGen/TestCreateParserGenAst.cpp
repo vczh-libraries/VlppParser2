@@ -12,14 +12,19 @@ TEST_FILE
 {
 	TEST_CASE(L"CreateParserGenAst")
 	{
-		AstSymbolManager manager;
-		InitializeParserGenAstSymbolManager(manager);
-		CreateParserGenTypeAst(manager);
-		TEST_ASSERT(manager.Errors().Count() == 0);
+		ParserSymbolManager global;
+		InitializeParserSymbolManager(global);
+
+		AstSymbolManager astManager(global);
+		CreateParserGenTypeAst(astManager);
+		TEST_ASSERT(global.Errors().Count() == 0);
+
+		auto output = GenerateParserFileNames(global);
+		GenerateAstFileNames(astManager, output);
 
 		Dictionary<WString, WString> files;
-		auto output = GenerateFileNames(manager);
-		WriteAstFiles(manager, output, files);
+		WriteAstFiles(astManager, output, files);
+
 		auto outputDir = FilePath(GetExePath()) / L"../../../Source/ParserGen_Generated/";
 		for (auto [key, index] : indexed(files.Keys()))
 		{

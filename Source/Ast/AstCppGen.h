@@ -7,6 +7,7 @@ Licensed under https://github.com/vczh-libraries/License
 #define VCZH_PARSER2_AST_ASTCPPGEN
 
 #include <VlppOS.h>
+#include "../ParserGen/ParserCppGen.h"
 #include "AstSymbol.h"
 
 namespace vl
@@ -15,34 +16,7 @@ namespace vl
 	{
 		namespace parsergen
 		{
-
-			struct CppAstGenOutput
-			{
-				WString														astH;
-				WString														astCpp;
-				WString														builderH;
-				WString														builderCpp;
-				WString														emptyH;
-				WString														emptyCpp;
-				WString														copyH;
-				WString														copyCpp;
-				WString														traverseH;
-				WString														traverseCpp;
-				WString														jsonH;
-				WString														jsonCpp;
-			};
-
-			struct CppParserGenOutput
-			{
-				WString														assemblyH;
-				WString														assemblyCpp;
-				collections::Dictionary<AstDefFile*, Ptr<CppAstGenOutput>>	files;
-
-				collections::Dictionary<AstClassSymbol*, vint>				classIds;
-				collections::Dictionary<AstClassPropSymbol*, vint>			fieldIds;
-			};
-
-			extern Ptr< CppParserGenOutput>		GenerateFileNames(AstSymbolManager& manager);
+			extern void											GenerateAstFileNames(AstSymbolManager& manager, Ptr<CppParserGenOutput> parserOutput);
 
 			extern void			WriteAstHeaderFile				(AstDefFile* file, stream::StreamWriter& writer);
 			extern void			WriteAstCppFile					(AstDefFile* file, const WString& astHeaderName, stream::StreamWriter& writer);

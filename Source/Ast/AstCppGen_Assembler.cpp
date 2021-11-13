@@ -21,7 +21,7 @@ WriteAstAssemblerHeaderFile
 				{
 					{
 						vint index = 0;
-						writer.WriteLine(prefix + L"enum class " + manager.name + L"Classes : vl::vint32_t");
+						writer.WriteLine(prefix + L"enum class " + manager.Global().name + L"Classes : vl::vint32_t");
 						writer.WriteLine(prefix + L"{");
 						for (auto typeSymbol : manager.Symbols().Values())
 						{
@@ -36,7 +36,7 @@ WriteAstAssemblerHeaderFile
 					}
 					{
 						writer.WriteLine(L"");
-						writer.WriteLine(prefix + L"enum class " + manager.name + L"Fields : vl::vint32_t");
+						writer.WriteLine(prefix + L"enum class " + manager.Global().name + L"Fields : vl::vint32_t");
 						writer.WriteLine(prefix + L"{");
 						for (auto typeSymbol : manager.Symbols().Values())
 						{
@@ -47,7 +47,7 @@ WriteAstAssemblerHeaderFile
 									output->fieldIds.Add(propSymbol, (output->classIds[classSymbol] << 8) + index);
 									writer.WriteString(prefix + L"\t" + classSymbol->Name() + L"_" + propSymbol->Name());
 									writer.WriteString(L" = ");
-									writer.WriteString(L"(static_cast<vl::vint32_t>(" + manager.name + L"Classes::" + classSymbol->Name() + L") << 8) + " + itow(index));
+									writer.WriteString(L"(static_cast<vl::vint32_t>(" + manager.Global().name + L"Classes::" + classSymbol->Name() + L") << 8) + " + itow(index));
 									writer.WriteLine(L",");
 								}
 							}
@@ -56,7 +56,7 @@ WriteAstAssemblerHeaderFile
 					}
 					{
 						writer.WriteLine(L"");
-						writer.WriteLine(prefix + L"class " + manager.name + L"AstInsReceiver : public vl::glr::AstInsReceiverBase");
+						writer.WriteLine(prefix + L"class " + manager.Global().name + L"AstInsReceiver : public vl::glr::AstInsReceiverBase");
 						writer.WriteLine(prefix + L"{");
 						writer.WriteLine(prefix + L"protected:");
 						writer.WriteLine(prefix + L"\tvl::Ptr<vl::glr::ParsingAstBase> CreateAstNode(vl::vint32_t type) override;");
@@ -79,7 +79,7 @@ WriteAstAssemblerCppFile
 				{
 					writer.WriteLine(L"");
 					writer.WriteLine(L"/***********************************************************************");
-					writer.WriteLine(manager.name + L"AstInsReceiver : public vl::glr::AstInsReceiverBase");
+					writer.WriteLine(manager.Global().name + L"AstInsReceiver : public vl::glr::AstInsReceiverBase");
 					writer.WriteLine(L"***********************************************************************/");
 
 					/***********************************************************************
@@ -88,15 +88,15 @@ WriteAstAssemblerCppFile
 
 					{
 						writer.WriteLine(L"");
-						writer.WriteLine(prefix + L"vl::Ptr<vl::glr::ParsingAstBase> " + manager.name + L"AstInsReceiver::CreateAstNode(vl::vint32_t type)");
+						writer.WriteLine(prefix + L"vl::Ptr<vl::glr::ParsingAstBase> " + manager.Global().name + L"AstInsReceiver::CreateAstNode(vl::vint32_t type)");
 						writer.WriteLine(prefix + L"{");
-						writer.WriteLine(prefix + L"\tswitch((" + manager.name + L"Classes)type)");
+						writer.WriteLine(prefix + L"\tswitch((" + manager.Global().name + L"Classes)type)");
 						writer.WriteLine(prefix + L"\t{");
 						for (auto typeSymbol : manager.Symbols().Values())
 						{
 							if (auto classSymbol = dynamic_cast<AstClassSymbol*>(typeSymbol))
 							{
-								writer.WriteLine(prefix + L"\tcase " + manager.name + L"Classes::" + classSymbol->Name() + L":");
+								writer.WriteLine(prefix + L"\tcase " + manager.Global().name + L"Classes::" + classSymbol->Name() + L":");
 								if (classSymbol->derivedClasses.Count() > 0)
 								{
 									writer.WriteString(prefix + L"\t\tthrow vl::glr::AstInsException(L\"Unable to create abstract class \\\"");
@@ -123,9 +123,9 @@ WriteAstAssemblerCppFile
 
 					{
 						writer.WriteLine(L"");
-						writer.WriteLine(prefix + L"void " + manager.name + L"AstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::Ptr<vl::glr::ParsingAstBase> value)");
+						writer.WriteLine(prefix + L"void " + manager.Global().name + L"AstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::Ptr<vl::glr::ParsingAstBase> value)");
 						writer.WriteLine(prefix + L"{");
-						writer.WriteLine(prefix + L"\tswitch((" + manager.name + L"Fields)field)");
+						writer.WriteLine(prefix + L"\tswitch((" + manager.Global().name + L"Fields)field)");
 						writer.WriteLine(prefix + L"\t{");
 						for (auto typeSymbol : manager.Symbols().Values())
 						{
@@ -137,7 +137,7 @@ WriteAstAssemblerCppFile
 									{
 										if (auto propClassSymbol = dynamic_cast<AstClassSymbol*>(propSymbol->propSymbol))
 										{
-											writer.WriteLine(prefix + L"\tcase " + manager.name + L"Fields::" + classSymbol->Name() + L"_" + propSymbol->Name() + L":");
+											writer.WriteLine(prefix + L"\tcase " + manager.Global().name + L"Fields::" + classSymbol->Name() + L"_" + propSymbol->Name() + L":");
 											writer.WriteLine(prefix + L"\t\t{");
 											writer.WriteString(prefix + L"\t\t\tauto typedObject = dynamic_cast<");
 											PrintCppType(nullptr, classSymbol, writer);
@@ -180,7 +180,7 @@ WriteAstAssemblerCppFile
 								{
 									if (propSymbol->propType == AstPropType::Token || !dynamic_cast<AstClassSymbol*>(propSymbol->propSymbol))
 									{
-										writer.WriteLine(prefix + L"\tcase " + manager.name + L"Fields::" + classSymbol->Name() + L"_" + propSymbol->Name() + L":");
+										writer.WriteLine(prefix + L"\tcase " + manager.Global().name + L"Fields::" + classSymbol->Name() + L"_" + propSymbol->Name() + L":");
 										writer.WriteString(prefix + L"\t\tthrow vl::glr::AstInsException(L\"Field \\\"");
 										PrintCppType(nullptr, classSymbol, writer);
 										writer.WriteLine(L"::" + propSymbol->Name() + L"\\\" is not an object.\", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);");
@@ -200,9 +200,9 @@ WriteAstAssemblerCppFile
 
 					{
 						writer.WriteLine(L"");
-						writer.WriteLine(prefix + L"void " + manager.name + L"AstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, const vl::regex::RegexToken& token)");
+						writer.WriteLine(prefix + L"void " + manager.Global().name + L"AstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, const vl::regex::RegexToken& token)");
 						writer.WriteLine(prefix + L"{");
-						writer.WriteLine(prefix + L"\tswitch((" + manager.name + L"Fields)field)");
+						writer.WriteLine(prefix + L"\tswitch((" + manager.Global().name + L"Fields)field)");
 						writer.WriteLine(prefix + L"\t{");
 						for (auto typeSymbol : manager.Symbols().Values())
 						{
@@ -212,7 +212,7 @@ WriteAstAssemblerCppFile
 								{
 									if (propSymbol->propType == AstPropType::Token)
 									{
-										writer.WriteLine(prefix + L"\tcase " + manager.name + L"Fields::" + classSymbol->Name() + L"_" + propSymbol->Name() + L":");
+										writer.WriteLine(prefix + L"\tcase " + manager.Global().name + L"Fields::" + classSymbol->Name() + L"_" + propSymbol->Name() + L":");
 										writer.WriteLine(prefix + L"\t\t{");
 										writer.WriteString(prefix + L"\t\t\tauto typedObject = dynamic_cast<");
 										PrintCppType(nullptr, classSymbol, writer);
@@ -238,7 +238,7 @@ WriteAstAssemblerCppFile
 								{
 									if (propSymbol->propType != AstPropType::Token)
 									{
-										writer.WriteLine(prefix + L"\tcase " + manager.name + L"Fields::" + classSymbol->Name() + L"_" + propSymbol->Name() + L":");
+										writer.WriteLine(prefix + L"\tcase " + manager.Global().name + L"Fields::" + classSymbol->Name() + L"_" + propSymbol->Name() + L":");
 										writer.WriteString(prefix + L"\t\tthrow vl::glr::AstInsException(L\"Field \\\"");
 										PrintCppType(nullptr, classSymbol, writer);
 										writer.WriteLine(L"::" + propSymbol->Name() + L"\\\" is not a token.\", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);");
@@ -258,9 +258,9 @@ WriteAstAssemblerCppFile
 
 					{
 						writer.WriteLine(L"");
-						writer.WriteLine(prefix + L"void " + manager.name + L"AstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::vint32_t enumItem)");
+						writer.WriteLine(prefix + L"void " + manager.Global().name + L"AstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::vint32_t enumItem)");
 						writer.WriteLine(prefix + L"{");
-						writer.WriteLine(prefix + L"\tswitch((" + manager.name + L"Fields)field)");
+						writer.WriteLine(prefix + L"\tswitch((" + manager.Global().name + L"Fields)field)");
 						writer.WriteLine(prefix + L"\t{");
 						for (auto typeSymbol : manager.Symbols().Values())
 						{
@@ -272,7 +272,7 @@ WriteAstAssemblerCppFile
 									{
 										if (auto propEnumSymbol = dynamic_cast<AstEnumSymbol*>(propSymbol->propSymbol))
 										{
-											writer.WriteLine(prefix + L"\tcase " + manager.name + L"Fields::" + classSymbol->Name() + L"_" + propSymbol->Name() + L":");
+											writer.WriteLine(prefix + L"\tcase " + manager.Global().name + L"Fields::" + classSymbol->Name() + L"_" + propSymbol->Name() + L":");
 											writer.WriteLine(prefix + L"\t\t{");
 											writer.WriteString(prefix + L"\t\t\tauto typedObject = dynamic_cast<");
 											PrintCppType(nullptr, classSymbol, writer);
@@ -303,7 +303,7 @@ WriteAstAssemblerCppFile
 								{
 									if (propSymbol->propType != AstPropType::Type || !dynamic_cast<AstEnumSymbol*>(propSymbol->propSymbol))
 									{
-										writer.WriteLine(prefix + L"\tcase " + manager.name + L"Fields::" + classSymbol->Name() + L"_" + propSymbol->Name() + L":");
+										writer.WriteLine(prefix + L"\tcase " + manager.Global().name + L"Fields::" + classSymbol->Name() + L"_" + propSymbol->Name() + L":");
 										writer.WriteString(prefix + L"\t\tthrow vl::glr::AstInsException(L\"Field \\\"");
 										PrintCppType(nullptr, classSymbol, writer);
 										writer.WriteLine(L"::" + propSymbol->Name() + L"\\\" is not an enum item.\", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);");
@@ -322,15 +322,15 @@ WriteAstAssemblerCppFile
 					***********************************************************************/
 					{
 						writer.WriteLine(L"");
-						writer.WriteLine(prefix + L"vl::Ptr<vl::glr::ParsingAstBase> " + manager.name + L"AstInsReceiver::ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates)");
+						writer.WriteLine(prefix + L"vl::Ptr<vl::glr::ParsingAstBase> " + manager.Global().name + L"AstInsReceiver::ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates)");
 						writer.WriteLine(prefix + L"{");
-						writer.WriteLine(prefix + L"\tswitch((" + manager.name + L"Classes)type)");
+						writer.WriteLine(prefix + L"\tswitch((" + manager.Global().name + L"Classes)type)");
 						writer.WriteLine(prefix + L"\t{");
 						for (auto typeSymbol : manager.Symbols().Values())
 						{
 							if (auto classSymbol = dynamic_cast<AstClassSymbol*>(typeSymbol))
 							{
-								writer.WriteLine(prefix + L"\tcase " + manager.name + L"Classes::" + classSymbol->Name() + L":");
+								writer.WriteLine(prefix + L"\tcase " + manager.Global().name + L"Classes::" + classSymbol->Name() + L":");
 							}
 						}
 						writer.WriteLine(prefix + L"\t\tthrow vl::glr::AstInsException(L\"The type is not configured to allow ambiguity.\", vl::glr::AstInsErrorType::UnsupportedAmbiguityType, type);");

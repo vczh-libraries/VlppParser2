@@ -6,7 +6,7 @@ Licensed under https://github.com/vczh-libraries/License
 #ifndef VCZH_PARSER2_AST_ASTSYMBOL
 #define VCZH_PARSER2_AST_ASTSYMBOL
 
-#include <Vlpp.h>
+#include "../ParserGen/ParserSymbol.h"
 
 namespace vl
 {
@@ -14,27 +14,7 @@ namespace vl
 	{
 		namespace parsergen
 		{
-			class AstEnumSymbol;
-			class AstClassSymbol;
 			class AstDefFile;
-			class AstSymbolManager;
-
-			template<typename T>
-			struct MappedOwning
-			{
-				collections::List<Ptr<T>>				items;
-				collections::List<WString>				order;
-				collections::Dictionary<WString, T*>	map;
-
-				bool Add(const WString& name, T* item)
-				{
-					items.Add(item);
-					if (map.Keys().Contains(name)) return false;
-					order.Add(name);
-					map.Add(name, item);
-					return true;
-				}
-			};
 
 /***********************************************************************
 AstSymbol
@@ -165,69 +145,27 @@ AstDefFile
 AstSymbolManager
 ***********************************************************************/
 
-			enum class AstErrorType
-			{
-				DuplicatedFile,				// (fileName)
-				FileDependencyNotExists,	// (fileName, dependency)
-				FileCyclicDependency,		// (fileName, dependency)
-				DuplicatedSymbol,			// (fileName, symbolName)
-				DuplicatedSymbolGlobally,	// (fileName, symbolName, anotherFileName)
-				DuplicatedClassProp,		// (fileName, className, propName)
-				DuplicatedEnumItem,			// (fileName, enumName, propName
-				BaseClassNotExists,			// (fileName, className)
-				BaseClassNotClass,			// (fileName, className)
-				BaseClassCyclicDependency,	// (fileName, className)
-				FieldTypeNotExists,			// (fileName, className, propName)
-				FieldTypeNotClass,			// (fileName, className, propName)
-			};
-
-			struct AstError
-			{
-				AstErrorType				type;
-				WString						arg1;
-				WString						arg2;
-				WString						arg3;
-			};
-
 			class AstSymbolManager : public Object
 			{
-				using ErrorList = collections::List<AstError>;
 				using SymbolMap = collections::Dictionary<WString, AstSymbol*>;
-				using StringItems = collections::List<WString>;
 
 				friend class AstDefFile;
 			protected:
 				MappedOwning<AstDefFile>	files;
-				ErrorList					errors;
 				SymbolMap					symbolMap;
+				ParserSymbolManager&		global;
 
 			public:
-				WString						name;
-				StringItems					cppNss;
-				WString						headerGuard;
-
-				template<typename ...TArgs>
-				void						AddError(AstErrorType type, TArgs&& ...args);
+				AstSymbolManager(ParserSymbolManager& _global);
 
 				AstDefFile*					CreateFile(const WString& name);
+
+				ParserSymbolManager&		Global() { return global; }
 				const auto&					Files() { return files.map; }
 				const auto&					FileOrder() { return files.order; }
 				const auto&					Symbols() { return symbolMap; }
-				const auto&					Errors() { return errors; }
 			};
 
-
-			template<typename ...TArgs>
-			void Fill(collections::List<WString>& ss, TArgs&& ...args)
-			{
-				WString items[] = { args... };
-				for (auto& item : items)
-				{
-					ss.Add(item);
-				}
-			}
-
-			extern void						InitializeParserGenAstSymbolManager(AstSymbolManager& manager);
 			extern AstDefFile*				CreateParserGenTypeAst(AstSymbolManager& manager);
 		}
 	}

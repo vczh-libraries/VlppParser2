@@ -5,9 +5,6 @@ using namespace vl::glr::parsergen;
 
 void GenerateCalculatorAst(AstSymbolManager& manager)
 {
-	manager.name = L"Calculator";
-	manager.cppNss.Add(L"calculator");
-	manager.headerGuard = L"VCZH_PARSER2_UNITTEST_CALCULATOR";
 	{
 		auto file = manager.CreateFile(L"Ast");
 

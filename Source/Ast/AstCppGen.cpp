@@ -10,34 +10,28 @@ namespace vl
 			using namespace stream;
 
 /***********************************************************************
-GenerateFileNames
+GenerateAstFileNames
 ***********************************************************************/
 
-			Ptr<CppParserGenOutput> GenerateFileNames(AstSymbolManager& manager)
+			void GenerateAstFileNames(AstSymbolManager& manager, Ptr<CppParserGenOutput> parserOutput)
 			{
-				auto parserOutput = MakePtr<CppParserGenOutput>();
-				parserOutput->assemblyH = manager.name + L"_Assembler.h";
-				parserOutput->assemblyCpp = manager.name + L"_Assembler.cpp";
-
 				for (auto file : manager.Files().Values())
 				{
 					auto astOutput = MakePtr<CppAstGenOutput>();
-					astOutput->astH = file->Owner()->name + file->Name() + L".h";
-					astOutput->astCpp = file->Owner()->name + file->Name() + L".cpp";
-					astOutput->builderH = file->Owner()->name + file->Name() + L"_Builder.h";
-					astOutput->builderCpp = file->Owner()->name + file->Name() + L"_Builder.cpp";
-					astOutput->emptyH = file->Owner()->name + file->Name() + L"_Empty.h";
-					astOutput->emptyCpp = file->Owner()->name + file->Name() + L"_Empty.cpp";
-					astOutput->copyH = file->Owner()->name + file->Name() + L"_Copy.h";
-					astOutput->copyCpp = file->Owner()->name + file->Name() + L"_Copy.cpp";
-					astOutput->traverseH = file->Owner()->name + file->Name() + L"_Traverse.h";
-					astOutput->traverseCpp = file->Owner()->name + file->Name() + L"_Traverse.cpp";
-					astOutput->jsonH = file->Owner()->name + file->Name() + L"_Json.h";
-					astOutput->jsonCpp = file->Owner()->name + file->Name() + L"_Json.cpp";
-
+					astOutput->astH			= file->Owner()->Global().name + file->Name() + L".h";
+					astOutput->astCpp		= file->Owner()->Global().name + file->Name() + L".cpp";
+					astOutput->builderH		= file->Owner()->Global().name + file->Name() + L"_Builder.h";
+					astOutput->builderCpp	= file->Owner()->Global().name + file->Name() + L"_Builder.cpp";
+					astOutput->emptyH		= file->Owner()->Global().name + file->Name() + L"_Empty.h";
+					astOutput->emptyCpp		= file->Owner()->Global().name + file->Name() + L"_Empty.cpp";
+					astOutput->copyH		= file->Owner()->Global().name + file->Name() + L"_Copy.h";
+					astOutput->copyCpp		= file->Owner()->Global().name + file->Name() + L"_Copy.cpp";
+					astOutput->traverseH	= file->Owner()->Global().name + file->Name() + L"_Traverse.h";
+					astOutput->traverseCpp	= file->Owner()->Global().name + file->Name() + L"_Traverse.cpp";
+					astOutput->jsonH		= file->Owner()->Global().name + file->Name() + L"_Json.h";
+					astOutput->jsonCpp		= file->Owner()->Global().name + file->Name() + L"_Json.cpp";
 					parserOutput->files.Add(file, astOutput);
 				}
-				return parserOutput;
 			}
 
 /***********************************************************************
@@ -252,13 +246,13 @@ WriteParserUtilityHeaderFile
 				Func<void(const WString&)> callback
 			)
 			{
-				WriteFileComment(manager.name, writer);
-				if (manager.headerGuard != L"")
+				WriteFileComment(manager.Global().name, writer);
+				if (manager.Global().headerGuard != L"")
 				{
 					writer.WriteString(L"#ifndef ");
-					writer.WriteLine(manager.headerGuard + L"_AST_" + guardPostfix);
+					writer.WriteLine(manager.Global().headerGuard + L"_AST_" + guardPostfix);
 					writer.WriteString(L"#define ");
-					writer.WriteLine(manager.headerGuard + L"_AST_" + guardPostfix);
+					writer.WriteLine(manager.Global().headerGuard + L"_AST_" + guardPostfix);
 				}
 				else
 				{
@@ -272,11 +266,11 @@ WriteParserUtilityHeaderFile
 				}
 
 				writer.WriteLine(L"");
-				WString prefix = WriteNssBegin(manager.cppNss, writer);
+				WString prefix = WriteNssBegin(manager.Global().cppNss, writer);
 				callback(prefix);
-				WriteNssEnd(manager.cppNss, writer);
+				WriteNssEnd(manager.Global().cppNss, writer);
 
-				if (manager.headerGuard != L"")
+				if (manager.Global().headerGuard != L"")
 				{
 					writer.WriteString(L"#endif");
 				}
@@ -293,12 +287,12 @@ WriteParserUtilityCppFile
 				Func<void(const WString&)> callback
 			)
 			{
-				WriteFileComment(manager.name, writer);
+				WriteFileComment(manager.Global().name, writer);
 				writer.WriteLine(L"#include \"" + utilityHeaderFile + L"\"");
 				writer.WriteLine(L"");
-				WString prefix = WriteNssBegin(manager.cppNss, writer);
+				WString prefix = WriteNssBegin(manager.Global().cppNss, writer);
 				callback(prefix);
-				WriteNssEnd(manager.cppNss, writer);
+				WriteNssEnd(manager.Global().cppNss, writer);
 			}
 
 /***********************************************************************

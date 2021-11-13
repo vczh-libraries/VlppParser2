@@ -43,8 +43,8 @@ AstEnumSymbol
 				symbol->value = items.items.Count();
 				if (!items.Add(itemName, symbol))
 				{
-					ownerFile->Owner()->AddError(
-						AstErrorType::DuplicatedEnumItem,
+					ownerFile->Owner()->Global().AddError(
+						ParserErrorType::DuplicatedEnumItem,
 						name,
 						itemName
 						);
@@ -71,7 +71,7 @@ AstClassPropSymbol
 				vint index = symbols.Keys().IndexOf(typeName);
 				if (index == -1)
 				{
-					ownerFile->Owner()->AddError(AstErrorType::FieldTypeNotExists, ownerFile->Name(), name);
+					ownerFile->Owner()->Global().AddError(ParserErrorType::FieldTypeNotExists, ownerFile->Name(), name);
 					return false;
 				}
 
@@ -80,8 +80,8 @@ AstClassPropSymbol
 
 				if (!dynamic_cast<AstClassSymbol*>(propSymbol))
 				{
-					parent->Owner()->Owner()->AddError(
-						AstErrorType::FieldTypeNotClass,
+					parent->Owner()->Owner()->Global().AddError(
+						ParserErrorType::FieldTypeNotClass,
 						parent->Owner()->Name(),
 						parent->Name(),
 						name
@@ -106,14 +106,14 @@ AstClassSymbol
 				vint index = symbols.Keys().IndexOf(typeName);
 				if (index == -1)
 				{
-					ownerFile->Owner()->AddError(AstErrorType::BaseClassNotExists, ownerFile->Name(), name);
+					ownerFile->Owner()->Global().AddError(ParserErrorType::BaseClassNotExists, ownerFile->Name(), name);
 					return false;
 				}
 
 				auto newBaseClass = dynamic_cast<AstClassSymbol*>(symbols.Values()[index]);
 				if (!newBaseClass)
 				{
-					ownerFile->Owner()->AddError(AstErrorType::BaseClassNotClass, ownerFile->Name(), name);
+					ownerFile->Owner()->Global().AddError(ParserErrorType::BaseClassNotClass, ownerFile->Name(), name);
 					return false;
 				}
 
@@ -124,8 +124,8 @@ AstClassSymbol
 					auto currentSymbol = visited[i];
 					if (currentSymbol == this)
 					{
-						ownerFile->Owner()->AddError(
-							AstErrorType::BaseClassCyclicDependency,
+						ownerFile->Owner()->Global().AddError(
+							ParserErrorType::BaseClassCyclicDependency,
 							ownerFile->Name(),
 							name
 						);
@@ -148,8 +148,8 @@ AstClassSymbol
 				auto symbol = new AstClassPropSymbol(this, propName);
 				if (!props.Add(propName, symbol))
 				{
-					ownerFile->Owner()->AddError(
-						AstErrorType::DuplicatedClassProp,
+					ownerFile->Owner()->Global().AddError(
+						ParserErrorType::DuplicatedClassProp,
 						name,
 						propName
 						);
@@ -167,8 +167,8 @@ AstDefFile
 				auto symbol = new T(this, symbolName);
 				if (!symbols.Add(symbolName, symbol))
 				{
-					ownerManager->AddError(
-						AstErrorType::DuplicatedSymbol,
+					ownerManager->Global().AddError(
+						ParserErrorType::DuplicatedSymbol,
 						name,
 						symbolName
 						);
@@ -180,8 +180,8 @@ AstDefFile
 				}
 				else
 				{
-					ownerManager->AddError(
-						AstErrorType::DuplicatedSymbolGlobally,
+					ownerManager->Global().AddError(
+						ParserErrorType::DuplicatedSymbolGlobally,
 						name,
 						symbolName,
 						ownerManager->symbolMap[symbolName]->Owner()->name
@@ -202,8 +202,8 @@ AstDefFile
 				if (dependencies.Contains(dependency)) return true;
 				if (!ownerManager->Files().Keys().Contains(dependency))
 				{
-					ownerManager->AddError(
-						AstErrorType::FileDependencyNotExists,
+					ownerManager->Global().AddError(
+						ParserErrorType::FileDependencyNotExists,
 						name,
 						dependency
 						);
@@ -217,8 +217,8 @@ AstDefFile
 					auto currentName = visited[i];
 					if (currentName == name)
 					{
-						ownerManager->AddError(
-							AstErrorType::FileCyclicDependency,
+						ownerManager->Global().AddError(
+							ParserErrorType::FileCyclicDependency,
 							name,
 							dependency
 							);
@@ -253,23 +253,9 @@ AstDefFile
 AstSymbolManager
 ***********************************************************************/
 
-			template<typename ...TArgs>
-			void AstSymbolManager::AddError(AstErrorType type, TArgs&& ...args)
+			AstSymbolManager::AstSymbolManager(ParserSymbolManager& _global)
+				: global(_global)
 			{
-				AstError error;
-				error.type = type;
-
-				WString sargs[] = { WString(args)... };
-				WString* dargs[] = { &error.arg1,&error.arg2,&error.arg3 };
-				constexpr vint sl = sizeof(sargs) / sizeof(*sargs);
-				constexpr vint dl = sizeof(dargs) / sizeof(*dargs);
-				constexpr vint ml = sl < dl ? sl : dl;
-				for (vint i = 0; i < ml; i++)
-				{
-					*dargs[i] = sargs[i];
-				}
-
-				errors.Add(std::move(error));
 			}
 
 			AstDefFile* AstSymbolManager::CreateFile(const WString& name)
@@ -277,8 +263,8 @@ AstSymbolManager
 				auto file = new AstDefFile(this, name);
 				if (!files.Add(name, file))
 				{
-					AddError(
-						AstErrorType::DuplicatedFile,
+					global.AddError(
+						ParserErrorType::DuplicatedFile,
 						name
 						);
 				}
