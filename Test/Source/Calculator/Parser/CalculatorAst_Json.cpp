@@ -22,6 +22,41 @@ namespace calculator
 			Print(node->left.Obj());
 			EndField();
 			BeginField(L"op");
+			switch (node->op)
+			{
+			case calculator::BinaryOp::Add:
+				WriteString(L"Add");
+				break;
+			case calculator::BinaryOp::Divid:
+				WriteString(L"Divid");
+				break;
+			case calculator::BinaryOp::EQ:
+				WriteString(L"EQ");
+				break;
+			case calculator::BinaryOp::GE:
+				WriteString(L"GE");
+				break;
+			case calculator::BinaryOp::GT:
+				WriteString(L"GT");
+				break;
+			case calculator::BinaryOp::LE:
+				WriteString(L"LE");
+				break;
+			case calculator::BinaryOp::LT:
+				WriteString(L"LT");
+				break;
+			case calculator::BinaryOp::Minus:
+				WriteString(L"Minus");
+				break;
+			case calculator::BinaryOp::Multiply:
+				WriteString(L"Multiply");
+				break;
+			case calculator::BinaryOp::NE:
+				WriteString(L"NE");
+				break;
+			default:
+				WriteNull();
+			}
 			EndField();
 			BeginField(L"right");
 			Print(node->right.Obj());
@@ -113,6 +148,17 @@ namespace calculator
 		void AstVisitor::PrintFields(Unary* node)
 		{
 			BeginField(L"op");
+			switch (node->op)
+			{
+			case calculator::UnaryOp::Negative:
+				WriteString(L"Negative");
+				break;
+			case calculator::UnaryOp::Positive:
+				WriteString(L"Positive");
+				break;
+			default:
+				WriteNull();
+			}
 			EndField();
 			BeginField(L"operand");
 			Print(node->operand.Obj());

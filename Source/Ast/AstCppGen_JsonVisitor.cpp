@@ -37,6 +37,22 @@ WriteVisitFieldFunctionBody
 						writer.WriteLine(prefix + L"\tEndArray();");
 						break;
 					case AstPropType::Type:
+						if (auto enumPropSymbol = dynamic_cast<AstEnumSymbol*>(propSymbol->propSymbol))
+						{
+							writer.WriteLine(prefix + L"\tswitch (node->" + propSymbol->Name() + L")");
+							writer.WriteLine(prefix + L"\t{");
+							for (auto enumItemSymbol : enumPropSymbol->Items().Values())
+							{
+								writer.WriteString(prefix + L"\tcase ");
+								PrintCppType(nullptr, enumPropSymbol, writer);
+								writer.WriteLine(L"::" + enumItemSymbol->Name() + L":");
+								writer.WriteLine(prefix + L"\t\tWriteString(L\"" + enumItemSymbol->Name() + L"\");");
+								writer.WriteLine(prefix + L"\t\tbreak;");
+							}
+							writer.WriteLine(prefix + L"\tdefault:");
+							writer.WriteLine(prefix + L"\t\tWriteNull();");
+							writer.WriteLine(prefix + L"\t}");
+						}
 						if (dynamic_cast<AstClassSymbol*>(propSymbol->propSymbol))
 						{
 							writer.WriteLine(prefix + L"\tPrint(node->" + propSymbol->Name() + L".Obj());");

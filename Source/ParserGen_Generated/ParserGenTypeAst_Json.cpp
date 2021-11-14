@@ -33,6 +33,20 @@ namespace vl
 					WriteToken(node->name);
 					EndField();
 					BeginField(L"propType");
+					switch (node->propType)
+					{
+					case vl::glr::parsergen::GlrPropType::Array:
+						WriteString(L"Array");
+						break;
+					case vl::glr::parsergen::GlrPropType::Token:
+						WriteString(L"Token");
+						break;
+					case vl::glr::parsergen::GlrPropType::Type:
+						WriteString(L"Type");
+						break;
+					default:
+						WriteNull();
+					}
 					EndField();
 					BeginField(L"propTypeName");
 					WriteToken(node->propTypeName);
