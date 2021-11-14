@@ -211,9 +211,11 @@ export sum(1, 2, max(3, 4))
 					receiver.Execute({ AstInsType::EndObject }, tokens[15]);
 					receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Call_arg }, tokens[15]);
 
-				receiver.Execute({ AstInsType::EndObject }, tokens[1]);
+				receiver.Execute({ AstInsType::EndObject }, tokens[16]);
+				receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Call_arg }, tokens[16]);
 
-			receiver.Execute({ AstInsType::EndObject }, tokens[1]);
+			receiver.Execute({ AstInsType::EndObject }, tokens[17]);
+			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Module_exported }, tokens[17]);
 
 		receiver.Execute({ AstInsType::EndObject }, tokens[1]);
 
@@ -231,7 +233,7 @@ export sum(1, 2, max(3, 4))
             "$ast": "NumExpr",
             "value": "2"
         }, {
-        "$ast": "Call",
+            "$ast": "Call",
             "arg": [{
                 "$ast": "NumExpr",
                 "value": "3"

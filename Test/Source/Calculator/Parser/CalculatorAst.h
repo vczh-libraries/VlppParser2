@@ -116,7 +116,7 @@ namespace calculator
 	{
 	public:
 		vl::Ptr<Expr> func;
-		vl::Ptr<Expr> arg;
+		vl::collections::List<vl::Ptr<Expr>> arg;
 
 		void Accept(Expr::IVisitor* visitor) override;
 	};

@@ -111,7 +111,10 @@ namespace calculator
 			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
 			Traverse(static_cast<Expr*>(node));
 			Traverse(static_cast<Call*>(node));
-			InspectInto(node->arg.Obj());
+			for (auto&& listItem : node->arg)
+			{
+				InspectInto(listItem.Obj());
+			}
 			InspectInto(node->func.Obj());
 			Finishing(static_cast<Call*>(node));
 			Finishing(static_cast<Expr*>(node));

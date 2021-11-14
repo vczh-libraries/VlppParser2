@@ -49,7 +49,7 @@ CallBuilder
 
 		CallBuilder& CallBuilder::arg(const vl::Ptr<Expr>& value)
 		{
-			node->arg = value;
+			node->arg.Add(value);
 			return *this;
 		}
 

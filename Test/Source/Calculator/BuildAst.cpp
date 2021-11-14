@@ -39,7 +39,7 @@ void GenerateCalculatorAst(AstSymbolManager& manager)
 		auto _Call = file->CreateClass(L"Call");
 		_Call->SetBaseClass(L"Expr");
 		_Call->CreateProp(L"func")->SetPropType(AstPropType::Type, L"Expr");
-		_Call->CreateProp(L"arg")->SetPropType(AstPropType::Type, L"Expr");
+		_Call->CreateProp(L"arg")->SetPropType(AstPropType::Array, L"Expr");
 
 		auto _Expandable = file->CreateClass(L"Expandable");
 		_Expandable->SetBaseClass(L"Expr");

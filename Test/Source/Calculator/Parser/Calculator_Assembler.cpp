@@ -78,10 +78,9 @@ CalculatorAstInsReceiver : public vl::glr::AstInsReceiverBase
 			{
 				auto typedObject = dynamic_cast<calculator::Call*>(object);
 				if (!typedObject) throw vl::glr::AstInsException(L"Field \"calculator::Call::arg\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-				if (typedObject->arg) throw vl::glr::AstInsException(L"Field \"calculator::Call::arg\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
 				auto typedValue = value.Cast<calculator::Expr>();
 				if (!typedValue) throw vl::glr::AstInsException(L"Field \"calculator::Call::arg\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				typedObject->arg = typedValue;
+				typedObject->arg.Add(typedValue);
 			}
 			break;
 		case CalculatorFields::Call_func:

@@ -65,7 +65,14 @@ namespace calculator
 		void AstVisitor::PrintFields(Call* node)
 		{
 			BeginField(L"arg");
-			Print(node->arg.Obj());
+			BeginArray();
+			for (auto&& listItem : node->arg)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
 			EndField();
 			BeginField(L"func");
 			Print(node->func.Obj());

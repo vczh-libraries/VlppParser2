@@ -26,7 +26,10 @@ namespace calculator
 		void AstVisitor::CopyFields(Call* from, Call* to)
 		{
 			CopyFields(static_cast<Expr*>(from), static_cast<Expr*>(to));
-			to->arg = CopyNode(from->arg.Obj());
+			for (auto&& listItem : from->arg)
+			{
+				to->arg.Add(CopyNode(listItem.Obj()));
+			}
 			to->func = CopyNode(from->func.Obj());
 		}
 
