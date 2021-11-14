@@ -22,7 +22,7 @@ JsonVisitorBase
 			vint last = indices[indices.Count() - 1];
 			if (last > 0)
 			{
-				writer.WriteString(L", ");
+				writer.WriteString(L",");
 			}
 			writer.WriteLine(L"");
 			WriteIndent();

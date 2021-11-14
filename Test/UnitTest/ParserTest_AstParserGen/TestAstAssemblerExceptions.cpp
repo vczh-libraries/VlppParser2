@@ -33,7 +33,7 @@ Common Exceptions
 
 	TEST_CASE(L"NoRootObject")
 	{
-		auto input = LR"(
+		WString input = LR"(
 export 1
 )";
 		LEXER(input, tokens);
@@ -47,7 +47,7 @@ export 1
 
 	TEST_CASE(L"MissingFieldValue")
 	{
-		auto input = LR"(
+		WString input = LR"(
 export 1
 )";
 		LEXER(input, tokens);
@@ -63,7 +63,7 @@ export 1
 
 	TEST_CASE(L"MissingAmbiguityCandidate")
 	{
-		auto input = LR"(
+		WString input = LR"(
 export 1
 )";
 		LEXER(input, tokens);
@@ -79,7 +79,7 @@ export 1
 
 	TEST_CASE(L"AmbiguityCandidateIsNotObject")
 	{
-		auto input = LR"(
+		WString input = LR"(
 export 1
 )";
 		LEXER(input, tokens);
@@ -96,7 +96,7 @@ export 1
 
 	TEST_CASE(L"AmbiguityCandidateIsNotObject")
 	{
-		auto input = LR"(
+		WString input = LR"(
 export 1
 )";
 		LEXER(input, tokens);
@@ -113,7 +113,7 @@ export 1
 
 	TEST_CASE(L"InstructionNotComplete")
 	{
-		auto input = LR"(
+		WString input = LR"(
 export 1
 )";
 		LEXER(input, tokens);
@@ -128,7 +128,7 @@ export 1
 
 	TEST_CASE(L"Corrupted (1)")
 	{
-		auto input = LR"(
+		WString input = LR"(
 export 1
 )";
 		LEXER(input, tokens);
@@ -144,7 +144,7 @@ export 1
 
 	TEST_CASE(L"Corrupted (2)")
 	{
-		auto input = LR"(
+		WString input = LR"(
 export 1
 )";
 		LEXER(input, tokens);
@@ -160,7 +160,7 @@ export 1
 
 	TEST_CASE(L"Finished (1)")
 	{
-		auto input = LR"(
+		WString input = LR"(
 export 1
 )";
 		LEXER(input, tokens);
@@ -177,7 +177,7 @@ export 1
 
 	TEST_CASE(L"Finished (2)")
 	{
-		auto input = LR"(
+		WString input = LR"(
 export 1
 )";
 		LEXER(input, tokens);
@@ -198,7 +198,7 @@ Generated AST Exceptions
 
 	TEST_CASE(L"UnknownType")
 	{
-		auto input = LR"(
+		WString input = LR"(
 export 1
 )";
 		LEXER(input, tokens);
@@ -212,7 +212,7 @@ export 1
 
 	TEST_CASE(L"UnknownField")
 	{
-		auto input = LR"(
+		WString input = LR"(
 export 1
 )";
 		LEXER(input, tokens);
@@ -229,7 +229,7 @@ export 1
 
 	TEST_CASE(L"UnsupportedAmbiguityType")
 	{
-		auto input = LR"(
+		WString input = LR"(
 export 1
 )";
 		LEXER(input, tokens);
@@ -248,7 +248,7 @@ export 1
 
 	TEST_CASE(L"FieldNotExistsInType")
 	{
-		auto input = LR"(
+		WString input = LR"(
 export 1
 )";
 		LEXER(input, tokens);
@@ -265,7 +265,7 @@ export 1
 
 	TEST_CASE(L"FieldReassigned")
 	{
-		auto input = LR"(
+		WString input = LR"(
 export 1
 )";
 		LEXER(input, tokens);
@@ -284,7 +284,7 @@ export 1
 
 	TEST_CASE(L"ObjectTypeMismatchedToField (TokenField = Enum)")
 	{
-		auto input = LR"(
+		WString input = LR"(
 export 1
 )";
 		LEXER(input, tokens);
@@ -301,7 +301,7 @@ export 1
 
 	TEST_CASE(L"ObjectTypeMismatchedToField (TokenField = Object)")
 	{
-		auto input = LR"(
+		WString input = LR"(
 export 1
 )";
 		LEXER(input, tokens);
@@ -319,7 +319,7 @@ export 1
 
 	TEST_CASE(L"ObjectTypeMismatchedToField (EnumField = Token)")
 	{
-		auto input = LR"(
+		WString input = LR"(
 export 1
 )";
 		LEXER(input, tokens);
@@ -336,7 +336,7 @@ export 1
 
 	TEST_CASE(L"ObjectTypeMismatchedToField (EnumField = Object)")
 	{
-		auto input = LR"(
+		WString input = LR"(
 export 1
 )";
 		LEXER(input, tokens);
@@ -354,7 +354,7 @@ export 1
 
 	TEST_CASE(L"ObjectTypeMismatchedToField (ObjectField = Token)")
 	{
-		auto input = LR"(
+		WString input = LR"(
 export 1
 )";
 		LEXER(input, tokens);
@@ -371,7 +371,7 @@ export 1
 
 	TEST_CASE(L"ObjectTypeMismatchedToField (ObjectField = Enum)")
 	{
-		auto input = LR"(
+		WString input = LR"(
 export 1
 )";
 		LEXER(input, tokens);

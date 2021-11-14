@@ -40,7 +40,7 @@ namespace TestAstAssembler_TestObjects
 				StreamReader reader(actualStream);
 				while (!reader.IsEnd())
 				{
-					expected.Add(reader.ReadLine());
+					actual.Add(reader.ReadLine());
 				}
 			}
 		}
@@ -67,7 +67,7 @@ TEST_FILE
 
 	TEST_CASE(L"export 1")
 	{
-		auto input = LR"(
+		WString input = LR"(
 export 1
 )";
 		LEXER(input, tokens);
@@ -87,7 +87,8 @@ export 1
     "exported": {
         "$ast": "NumExpr",
         "value": "1"
-    }
+    },
+    "imports": []
 })");
 	});
 
