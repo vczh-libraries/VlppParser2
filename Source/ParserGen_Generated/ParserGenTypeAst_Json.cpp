@@ -108,6 +108,11 @@ namespace vl
 					EndObject();
 				}
 
+				TypeAstVisitor::TypeAstVisitor(vl::stream::StreamWriter& _writer)
+					: vl::glr::JsonVisitorBase(_writer)
+				{
+				}
+
 				void TypeAstVisitor::Print(GlrType* node)
 				{
 					if (!node) return;

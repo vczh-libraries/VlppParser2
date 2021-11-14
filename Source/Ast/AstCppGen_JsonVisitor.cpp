@@ -186,6 +186,12 @@ WriteJsonVisitorCppFile
 						}
 					}
 
+					writer.WriteLine(prefix + file->Name() + L"Visitor::" + file->Name() + L"Visitor(vl::stream::StreamWriter& _writer)");
+					writer.WriteLine(prefix + L"\t: vl::glr::JsonVisitorBase(_writer)");
+					writer.WriteLine(prefix + L"{");
+					writer.WriteLine(prefix + L"}");
+					writer.WriteLine(L"");
+
 					for (auto classSymbol : visitors)
 					{
 						if (!classSymbol->baseClass)

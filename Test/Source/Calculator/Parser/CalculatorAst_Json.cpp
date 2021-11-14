@@ -253,6 +253,11 @@ namespace calculator
 			EndObject();
 		}
 
+		AstVisitor::AstVisitor(vl::stream::StreamWriter& _writer)
+			: vl::glr::JsonVisitorBase(_writer)
+		{
+		}
+
 		void AstVisitor::Print(Expr* node)
 		{
 			if (!node) return;
