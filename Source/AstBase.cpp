@@ -411,7 +411,7 @@ AstInsReceiverBase
 			EnsureContinuable();
 			try
 			{
-				if (created.Count() > 1)
+				if (created.Count() > 0 || pushed.Count() > 1)
 				{
 					throw AstInsException(
 						L"No more instruction but the root object has not been completed yet.",
@@ -419,8 +419,15 @@ AstInsReceiverBase
 						);
 				}
 
-				auto object = created[0];
-				created.Clear();
+				auto object = pushed[0].object;
+				if (!object)
+				{
+					throw AstInsException(
+						L"No more instruction but the root object has not been completed yet.",
+						AstInsErrorType::InstructionNotComplete
+						);
+				}
+				pushed.Clear();
 				finished = true;
 				return object;
 			}

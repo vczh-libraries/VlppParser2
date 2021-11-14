@@ -245,8 +245,8 @@ Instructions
 		{
 			Token,										// Token()							: push the current token as a value.
 			EnumItem,									// EnumItem(Value)					: push an enum item.
-			BeginObject,								// BeginObject()					: begin creating an AST node.
-			EndObject,									// EndObject(Type)					: Finish creating an AST node, all objects pushed after BeginObject are supposed to be its fields.
+			BeginObject,								// BeginObject(Type)				: begin creating an AST node.
+			EndObject,									// EndObject()						: Finish creating an AST node, all objects pushed after BeginObject are supposed to be its fields.
 			Field,										// Field(Field)						: Associate a field name with the top object.
 			ResolveAmbiguity,							// ResolveAmbiguity(Type, Count)	: Combine several top objects to one using an ambiguity node.
 		};
