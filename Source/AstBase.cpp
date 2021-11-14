@@ -101,24 +101,48 @@ JsonVisitorBase
 
 		void JsonVisitorBase::WriteToken(const ParsingToken& token)
 		{
-			writer.WriteString(L"{ \"value\": ");
-			WriteString(token.value);
-			writer.WriteString(L", \"tokenIndex\": ");
-			writer.WriteString(itow(token.tokenIndex));
-			writer.WriteString(L", \"codeRange\": ");
-			WriteRange(token.codeRange);
-			writer.WriteString(L"}");
+			if (printTokenCodeRange)
+			{
+				writer.WriteString(L"{ \"value\": ");
+				WriteString(token.value);
+				writer.WriteString(L", \"tokenIndex\": ");
+				writer.WriteString(itow(token.tokenIndex));
+				writer.WriteString(L", \"codeRange\": ");
+				WriteRange(token.codeRange);
+				writer.WriteString(L"}");
+			}
+			else
+			{
+				WriteString(token.value);
+			}
 		}
 
 		void JsonVisitorBase::WriteType(const WString& type, ParsingAstBase* node)
 		{
-			BeginField(L"$ast");
-			writer.WriteString(L"{ \"type\": ");
-			WriteString(type);
-			writer.WriteString(L", \"codeRange\": ");
-			WriteRange(node->codeRange);
-			writer.WriteString(L"}");
-			EndField();
+			if (printAstType && printAstCodeRange)
+			{
+				BeginField(L"$ast");
+				writer.WriteString(L"{ \"type\": ");
+				WriteString(type);
+				writer.WriteString(L", \"codeRange\": ");
+				WriteRange(node->codeRange);
+				writer.WriteString(L"}");
+				EndField();
+			}
+			else if (printAstType)
+			{
+				BeginField(L"$ast");
+				WriteString(type);
+				EndField();
+			}
+			else if (printAstCodeRange)
+			{
+				BeginField(L"$ast");
+				writer.WriteString(L"{ \"codeRange\": ");
+				WriteRange(node->codeRange);
+				writer.WriteString(L"}");
+				EndField();
+			}
 		}
 
 		void JsonVisitorBase::WriteString(const WString& text)

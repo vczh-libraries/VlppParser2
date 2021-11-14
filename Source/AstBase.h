@@ -227,6 +227,10 @@ Utility
 			void								WriteString(const WString& text);
 			void								WriteNull();
 		public:
+			bool								printTokenCodeRange = true;
+			bool								printAstCodeRange = true;
+			bool								printAstType = true;
+
 			JsonVisitorBase(stream::StreamWriter& _writer);
 		};
 
