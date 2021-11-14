@@ -62,7 +62,7 @@ Utility
 
 			extern void WriteLoadDataFunctionHeader(const WString& prefix, const WString& functionName, stream::StreamWriter& writer)
 			{
-				writer.WriteLine(prefix + L"extern void\t\t" + functionName + L"LexerData(vl::stream::IStream& outputStream);");
+				writer.WriteLine(prefix + L"extern void\t\t" + functionName + L"(vl::stream::IStream& outputStream);");
 			}
 
 			extern void WriteLoadDataFunctionCpp(const WString& prefix, const WString& functionName, stream::MemoryStream& rawData, bool compressData, stream::StreamWriter& writer)

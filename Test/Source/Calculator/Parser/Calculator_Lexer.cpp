@@ -20,7 +20,7 @@ namespace calculator
 	}
 
 
-	void Calculator(vl::stream::IStream& outputStream)
+	void CalculatorLexerData(vl::stream::IStream& outputStream)
 	{
 		static const vl::vint dataLength = 18731; // 4464671 bytes before compressing
 		static const vl::vint dataBlock = 256;

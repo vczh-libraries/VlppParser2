@@ -52,7 +52,7 @@ WriteLexerHeaderFile
 				{
 					writer.WriteLine(L"");
 					writer.WriteLine(prefix + L"extern bool\t\t" + manager.Global().name + L"TokenDeleter(vl::vint token);");
-					WriteLoadDataFunctionHeader(prefix, manager.Global().name, writer);
+					WriteLoadDataFunctionHeader(prefix, manager.Global().name + L"LexerData", writer);
 				}
 				WriteNssEnd(manager.Global().cppNss, writer);
 
@@ -116,7 +116,7 @@ WriteLexerCppFile
 					lexerData.SeekFromBegin(0);
 
 					writer.WriteLine(L"");
-					WriteLoadDataFunctionCpp(prefix, manager.Global().name, lexerData, true, writer);
+					WriteLoadDataFunctionCpp(prefix, manager.Global().name + L"LexerData", lexerData, true, writer);
 				}
 				WriteNssEnd(manager.Global().cppNss, writer);
 			}
