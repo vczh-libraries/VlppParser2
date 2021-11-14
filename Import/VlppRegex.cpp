@@ -1281,7 +1281,7 @@ Write
 				{
 					vint x = i / 8;
 					vint y = i % 8;
-					bits[0] |= (vuint8_t)1 << y;
+					bits[x] |= (vuint8_t)1 << y;
 				}
 			}
 
