@@ -11,5 +11,34 @@ Licensed under https://github.com/vczh-libraries/License
 
 namespace calculator
 {
+	enum class CalculatorTokens : vl::vint32_t
+	{
+		ADD = 0,
+		SUB = 1,
+		MUL = 2,
+		DIV = 3,
+		GT = 4,
+		GE = 5,
+		LT = 6,
+		LE = 7,
+		EQ = 8,
+		NE = 9,
+		OPEN_BRACE = 10,
+		CLOSE_BRACE = 11,
+		COMMA = 12,
+		INFER = 13,
+		ASSIGN = 14,
+		TRUE = 15,
+		FALSE = 16,
+		LET = 17,
+		IN = 18,
+		IMPORT = 19,
+		EXPORT = 20,
+		NUM = 21,
+		ID = 22,
+		SPACE = 23,
+	};
+
+	extern bool CalculatorTokenDeleter(vl::vint token);
 }
 #endif

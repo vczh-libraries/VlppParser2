@@ -34,10 +34,25 @@ WriteLexerHeaderFile
 				}
 				writer.WriteLine(L"");
 
+				WString prefix = WriteNssBegin(manager.Global().cppNss, writer);
 				{
-					WString prefix = WriteNssBegin(manager.Global().cppNss, writer);
-					WriteNssEnd(manager.Global().cppNss, writer);
+					vint index = 0;
+					writer.WriteLine(prefix + L"enum class " + manager.Global().name + L"Tokens : vl::vint32_t");
+					writer.WriteLine(prefix + L"{");
+					for (auto tokenName : manager.TokenOrder())
+					{
+						auto tokenSymbol = manager.Tokens()[tokenName];
+						output->tokenIds.Add(tokenSymbol, index);
+						writer.WriteLine(prefix + L"\t" + tokenSymbol->Name() + L" = " + itow(index) + L",");
+						index++;
+					}
+					writer.WriteLine(prefix + L"};");
 				}
+				{
+					writer.WriteLine(L"");
+					writer.WriteLine(prefix + L"extern bool " + manager.Global().name + L"TokenDeleter(vl::vint token);");
+				}
+				WriteNssEnd(manager.Global().cppNss, writer);
 
 				if (manager.Global().headerGuard != L"")
 				{
@@ -54,10 +69,40 @@ WriteLexerCppFile
 				WriteFileComment(manager.Global().name, writer);
 				writer.WriteLine(L"#include \"" + output->lexerH + L"\"");
 				writer.WriteLine(L"");
+				WString prefix = WriteNssBegin(manager.Global().cppNss, writer);
 				{
-					WString prefix = WriteNssBegin(manager.Global().cppNss, writer);
-					WriteNssEnd(manager.Global().cppNss, writer);
+					writer.WriteLine(prefix + L"bool " + manager.Global().name + L"TokenDeleter(vl::vint token)");
+					writer.WriteLine(prefix + L"{");
+
+					List<WString> discarded;
+					for (auto tokenSymbol : manager.Tokens().Values())
+					{
+						if (tokenSymbol->discarded)
+						{
+							discarded.Add(tokenSymbol->Name());
+						}
+					}
+
+					if (discarded.Count() > 0)
+					{
+						writer.WriteLine(prefix + L"\tswitch((" + manager.Global().name + L"Tokens)token)");
+						writer.WriteLine(prefix + L"\t{");
+						for (auto tokenName : discarded)
+						{
+							writer.WriteLine(prefix + L"\tcase " + manager.Global().name + L"Tokens::" + tokenName + L":");
+						}
+						writer.WriteLine(prefix + L"\t\treturn true;");
+						writer.WriteLine(prefix + L"\tdefault:");
+						writer.WriteLine(prefix + L"\t\treturn false;");
+						writer.WriteLine(prefix + L"\t}");
+					}
+					else
+					{
+						writer.WriteLine(prefix + L"\treturn false;");
+					}
+					writer.WriteLine(prefix + L"}");
 				}
+				WriteNssEnd(manager.Global().cppNss, writer);
 			}
 
 /***********************************************************************

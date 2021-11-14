@@ -15,9 +15,10 @@ namespace vl
 	{
 		namespace parsergen
 		{
+			class AstDefFile;
 			class AstClassPropSymbol;
 			class AstClassSymbol;
-			class AstDefFile;
+			class TokenSymbol;
 
 /***********************************************************************
 Output
@@ -49,6 +50,7 @@ Output
 
 				collections::Dictionary<AstClassSymbol*, vint>				classIds;
 				collections::Dictionary<AstClassPropSymbol*, vint>			fieldIds;
+				collections::Dictionary<TokenSymbol*, vint>				tokenIds;
 			};
 
 /***********************************************************************

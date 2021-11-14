@@ -8,4 +8,14 @@ Licensed under https://github.com/vczh-libraries/License
 
 namespace calculator
 {
+	bool CalculatorTokenDeleter(vl::vint token)
+	{
+		switch((CalculatorTokens)token)
+		{
+		case CalculatorTokens::SPACE:
+			return true;
+		default:
+			return false;
+		}
+	}
 }
