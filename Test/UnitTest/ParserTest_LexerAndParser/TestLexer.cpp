@@ -26,6 +26,7 @@ export sum(1, 2, max(3, 4))
 
 		MemoryStream lexerData;
 		CalculatorLexerData(lexerData);
+		lexerData.SeekFromBegin(0);
 		RegexLexer lexer(lexerData);
 
 		List<RegexToken> tokens;
