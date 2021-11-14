@@ -115,7 +115,11 @@ namespace vl
 
 				void TypeAstVisitor::Print(GlrType* node)
 				{
-					if (!node) return;
+					if (!node)
+					{
+						WriteNull();
+						return;
+					}
 					node->Accept(static_cast<GlrType::IVisitor*>(this));
 				}
 

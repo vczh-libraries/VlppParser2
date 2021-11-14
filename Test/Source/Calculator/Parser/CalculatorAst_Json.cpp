@@ -260,7 +260,11 @@ namespace calculator
 
 		void AstVisitor::Print(Expr* node)
 		{
-			if (!node) return;
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
 			node->Accept(static_cast<Expr::IVisitor*>(this));
 		}
 

@@ -47,13 +47,18 @@ WriteVisitFieldFunctionBody
 				}
 			}
 
-			void WriteVisitFunctionBody(AstDefFile* file, AstClassSymbol* fieldSymbol, const WString& prefix, stream::StreamWriter& writer)
+			void WriteNullAndReturn(const WString& prefix, stream::StreamWriter& writer)
 			{
 				writer.WriteLine(prefix + L"\tif (!node)");
 				writer.WriteLine(prefix + L"\t{");
 				writer.WriteLine(prefix + L"\t\tWriteNull();");
 				writer.WriteLine(prefix + L"\t\treturn;");
 				writer.WriteLine(prefix + L"\t}");
+			}
+
+			void WriteVisitFunctionBody(AstDefFile* file, AstClassSymbol* fieldSymbol, const WString& prefix, stream::StreamWriter& writer)
+			{
+				WriteNullAndReturn(prefix, writer);
 				List<AstClassSymbol*> order;
 				{
 					auto current = fieldSymbol;
@@ -200,7 +205,7 @@ WriteJsonVisitorCppFile
 							PrintCppType(file, classSymbol, writer);
 							writer.WriteLine(L"* node)");
 							writer.WriteLine(prefix + L"{");
-							writer.WriteLine(prefix + L"\tif (!node) return;");
+							WriteNullAndReturn(prefix, writer);
 							writer.WriteString(prefix + L"\tnode->Accept(static_cast<");
 							PrintCppType(file, classSymbol, writer);
 							writer.WriteLine(L"::IVisitor*>(this));");
