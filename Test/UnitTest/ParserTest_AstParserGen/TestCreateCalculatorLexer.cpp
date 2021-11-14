@@ -11,7 +11,7 @@ extern void GenerateCalculatorLexer(LexerSymbolManager& manager);
 
 TEST_FILE
 {
-	TEST_CASE(L"CreateParserGenAst")
+	TEST_CASE(L"CreateCalculatorLexer")
 	{
 		ParserSymbolManager global;
 		LexerSymbolManager lexerManager(global);

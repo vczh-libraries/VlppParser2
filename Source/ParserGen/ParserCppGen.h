@@ -50,7 +50,7 @@ Output
 
 				collections::Dictionary<AstClassSymbol*, vint>				classIds;
 				collections::Dictionary<AstClassPropSymbol*, vint>			fieldIds;
-				collections::Dictionary<TokenSymbol*, vint>				tokenIds;
+				collections::Dictionary<TokenSymbol*, vint>					tokenIds;
 			};
 
 /***********************************************************************
@@ -62,6 +62,8 @@ Utility
 			extern void							WriteFileComment(const WString& name, stream::StreamWriter& writer);
 			extern WString						WriteNssBegin(collections::List<WString>& cppNss, stream::StreamWriter& writer);
 			extern void							WriteNssEnd(collections::List<WString>& cppNss, stream::StreamWriter& writer);
+			extern void							WriteLoadDataFunctionHeader(const WString& prefix, const WString& functionName, stream::StreamWriter& writer);
+			extern void							WriteLoadDataFunctionCpp(const WString& prefix, const WString& functionName, stream::MemoryStream& rawData, stream::StreamWriter& writer);
 		}
 	}
 }

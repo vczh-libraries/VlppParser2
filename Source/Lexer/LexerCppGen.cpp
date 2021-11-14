@@ -52,7 +52,7 @@ WriteLexerHeaderFile
 				{
 					writer.WriteLine(L"");
 					writer.WriteLine(prefix + L"extern bool\t\t" + manager.Global().name + L"TokenDeleter(vl::vint token);");
-					writer.WriteLine(prefix + L"extern void\t\t" + manager.Global().name + L"LexerData(vl::stream::IStream& outputStream);");
+					WriteLoadDataFunctionHeader(prefix, manager.Global().name, writer);
 				}
 				WriteNssEnd(manager.Global().cppNss, writer);
 
@@ -105,7 +105,7 @@ WriteLexerCppFile
 					writer.WriteLine(prefix + L"}");
 				}
 				{
-					MemoryStream lexerData, compressedData;
+					MemoryStream lexerData;
 					{
 						RegexLexer lexer(
 							From(manager.TokenOrder())
@@ -114,45 +114,9 @@ WriteLexerCppFile
 						lexer.Serialize(lexerData);
 					}
 					lexerData.SeekFromBegin(0);
-					{
-						LzwEncoder encoder;
-						EncoderStream encoderStream(compressedData, encoder);
-						CopyStream(lexerData, encoderStream);
-					}
-					compressedData.SeekFromBegin(0);
 
 					writer.WriteLine(L"");
-					writer.WriteLine(prefix + L"void " + manager.Global().name + L"LexerData(vl::stream::IStream& outputStream)");
-					writer.WriteLine(prefix + L"{");
-					writer.WriteLine(prefix + L"\tstatic const char* compressed[] = {");
-					{
-						vint lengthBeforeCompressing = (vint)lexerData.Size();
-						vint length = (vint)compressedData.Size();
-						const vint block = 256;
-						vint remain = length % block;
-						vint solidRows = length / block;
-						vint rows = solidRows + (remain ? 1 : 0);
-
-						char buffer[block];
-						const wchar_t* hex = L"0123456789ABCDEF";
-						for (vint i = 0; i < rows; i++)
-						{
-							vint size = i == solidRows ? remain : block;
-							vint read = compressedData.Read(buffer, size);
-							CHECK_ERROR(size == read, L"vl::glr::parsergen::WriteLexerCppFile()#Failed to read compressed data.");
-							writer.WriteString(prefix + L"\t\t\"");
-							for (vint j = 0; j < size; j++)
-							{
-								vuint8_t byte = buffer[j];
-								writer.WriteString(L"\\x");
-								writer.WriteChar(hex[byte / 16]);
-								writer.WriteChar(hex[byte % 16]);
-							}
-							writer.WriteLine(L"\",");
-						}
-					}
-					writer.WriteLine(prefix + L"\t};");
-					writer.WriteLine(prefix + L"}");
+					WriteLoadDataFunctionCpp(prefix, manager.Global().name, lexerData, writer);
 				}
 				WriteNssEnd(manager.Global().cppNss, writer);
 			}

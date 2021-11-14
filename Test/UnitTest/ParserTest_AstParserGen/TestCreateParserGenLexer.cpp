@@ -10,7 +10,7 @@ extern WString GetExePath();
 
 TEST_FILE
 {
-	TEST_CASE(L"CreateParserGenAst")
+	TEST_CASE(L"CreateParserGenLexer")
 	{
 		ParserSymbolManager global;
 		LexerSymbolManager lexerManager(global);

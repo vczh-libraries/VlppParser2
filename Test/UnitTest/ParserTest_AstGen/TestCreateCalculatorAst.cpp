@@ -11,7 +11,7 @@ extern void GenerateCalculatorAst(AstSymbolManager& manager);
 
 TEST_FILE
 {
-	TEST_CASE(L"CreateParserGenAst")
+	TEST_CASE(L"GenerateCalculatorAst")
 	{
 		ParserSymbolManager global;
 		AstSymbolManager astManager(global);

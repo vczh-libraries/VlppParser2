@@ -59,6 +59,55 @@ Utility
 					writer.WriteLine(L"}");
 				}
 			}
+
+			extern void WriteLoadDataFunctionHeader(const WString& prefix, const WString& functionName, stream::StreamWriter& writer)
+			{
+				writer.WriteLine(prefix + L"extern void\t\t" + functionName + L"LexerData(vl::stream::IStream& outputStream);");
+			}
+
+			extern void WriteLoadDataFunctionCpp(const WString& prefix, const WString& functionName, stream::MemoryStream& rawData, stream::StreamWriter& writer)
+			{
+				MemoryStream compressedData;
+				{
+					LzwEncoder encoder;
+					EncoderStream encoderStream(compressedData, encoder);
+					CopyStream(rawData, encoderStream);
+				}
+				compressedData.SeekFromBegin(0);
+
+				writer.WriteLine(L"");
+				writer.WriteLine(prefix + L"void " + functionName + L"(vl::stream::IStream & outputStream)");
+				writer.WriteLine(prefix + L"{");
+				writer.WriteLine(prefix + L"\tstatic const char* compressed[] = {");
+				{
+					vint lengthBeforeCompressing = (vint)rawData.Size();
+					vint length = (vint)compressedData.Size();
+					const vint block = 256;
+					vint remain = length % block;
+					vint solidRows = length / block;
+					vint rows = solidRows + (remain ? 1 : 0);
+
+					char buffer[block];
+					const wchar_t* hex = L"0123456789ABCDEF";
+					for (vint i = 0; i < rows; i++)
+					{
+						vint size = i == solidRows ? remain : block;
+						vint read = compressedData.Read(buffer, size);
+						CHECK_ERROR(size == read, L"vl::glr::parsergen::WriteLexerCppFile()#Failed to read compressed data.");
+						writer.WriteString(prefix + L"\t\t\"");
+						for (vint j = 0; j < size; j++)
+						{
+							vuint8_t byte = buffer[j];
+							writer.WriteString(L"\\x");
+							writer.WriteChar(hex[byte / 16]);
+							writer.WriteChar(hex[byte % 16]);
+						}
+						writer.WriteLine(L"\",");
+					}
+				}
+				writer.WriteLine(prefix + L"\t};");
+				writer.WriteLine(prefix + L"}");
+			}
 		}
 	}
 }
