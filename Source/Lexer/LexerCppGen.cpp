@@ -116,7 +116,7 @@ WriteLexerCppFile
 					lexerData.SeekFromBegin(0);
 
 					writer.WriteLine(L"");
-					WriteLoadDataFunctionCpp(prefix, manager.Global().name, lexerData, writer);
+					WriteLoadDataFunctionCpp(prefix, manager.Global().name, lexerData, true, writer);
 				}
 				WriteNssEnd(manager.Global().cppNss, writer);
 			}

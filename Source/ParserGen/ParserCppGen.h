@@ -63,7 +63,7 @@ Utility
 			extern WString						WriteNssBegin(collections::List<WString>& cppNss, stream::StreamWriter& writer);
 			extern void							WriteNssEnd(collections::List<WString>& cppNss, stream::StreamWriter& writer);
 			extern void							WriteLoadDataFunctionHeader(const WString& prefix, const WString& functionName, stream::StreamWriter& writer);
-			extern void							WriteLoadDataFunctionCpp(const WString& prefix, const WString& functionName, stream::MemoryStream& rawData, stream::StreamWriter& writer);
+			extern void							WriteLoadDataFunctionCpp(const WString& prefix, const WString& functionName, stream::MemoryStream& rawData, bool compressData, stream::StreamWriter& writer);
 		}
 	}
 }

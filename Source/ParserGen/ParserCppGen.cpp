@@ -65,28 +65,36 @@ Utility
 				writer.WriteLine(prefix + L"extern void\t\t" + functionName + L"LexerData(vl::stream::IStream& outputStream);");
 			}
 
-			extern void WriteLoadDataFunctionCpp(const WString& prefix, const WString& functionName, stream::MemoryStream& rawData, stream::StreamWriter& writer)
+			extern void WriteLoadDataFunctionCpp(const WString& prefix, const WString& functionName, stream::MemoryStream& rawData, bool compressData, stream::StreamWriter& writer)
 			{
 				MemoryStream compressedData;
+				if (compressData)
 				{
-					LzwEncoder encoder;
-					EncoderStream encoderStream(compressedData, encoder);
-					CopyStream(rawData, encoderStream);
+					CompressStream(rawData, compressedData);
+				}
+				else
+				{
+					CopyStream(rawData, compressedData);
 				}
 				compressedData.SeekFromBegin(0);
 
+				vint lengthBeforeCompressing = (vint)rawData.Size();
+				vint length = (vint)compressedData.Size();
+				const vint block = 256;
+				vint remain = length % block;
+				vint solidRows = length / block;
+				vint rows = solidRows + (remain ? 1 : 0);
+
 				writer.WriteLine(L"");
-				writer.WriteLine(prefix + L"void " + functionName + L"(vl::stream::IStream & outputStream)");
+				writer.WriteLine(prefix + L"void " + functionName + L"(vl::stream::IStream& outputStream)");
 				writer.WriteLine(prefix + L"{");
+				writer.WriteLine(prefix + L"\tstatic const vl::vint dataLength = " + itow(length) + L"; // " + itow(lengthBeforeCompressing) + L" bytes before compressing");
+				writer.WriteLine(prefix + L"\tstatic const vl::vint dataBlock = " + itow(block) + L";");
+				writer.WriteLine(prefix + L"\tstatic const vl::vint dataRemain = " + itow(remain) + L";");
+				writer.WriteLine(prefix + L"\tstatic const vl::vint dataSolidRows = " + itow(solidRows) + L";");
+				writer.WriteLine(prefix + L"\tstatic const vl::vint dataRows = " + itow(rows) + L";");
 				writer.WriteLine(prefix + L"\tstatic const char* compressed[] = {");
 				{
-					vint lengthBeforeCompressing = (vint)rawData.Size();
-					vint length = (vint)compressedData.Size();
-					const vint block = 256;
-					vint remain = length % block;
-					vint solidRows = length / block;
-					vint rows = solidRows + (remain ? 1 : 0);
-
 					char buffer[block];
 					const wchar_t* hex = L"0123456789ABCDEF";
 					for (vint i = 0; i < rows; i++)
@@ -106,6 +114,7 @@ Utility
 					}
 				}
 				writer.WriteLine(prefix + L"\t};");
+				writer.WriteLine(prefix + L"\tvl::glr::DecompressSerializedData(compressed, " + WString(compressData ? L"true" : L"false") + L", dataSolidRows, dataRows, dataBlock, dataRemain, outputStream);");
 				writer.WriteLine(prefix + L"}");
 			}
 		}

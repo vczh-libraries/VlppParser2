@@ -328,6 +328,12 @@ Instructions
 			void										Execute(AstIns instruction, const regex::RegexToken& token) override;
 			Ptr<ParsingAstBase>							Finished() override;
 		};
+
+/***********************************************************************
+Compression
+***********************************************************************/
+
+		extern void			DecompressSerializedData(const char** buffer, bool decompress, vint solidRows, vint rows, vint block, vint remain, stream::IStream& outputStream);
 	}
 }
 

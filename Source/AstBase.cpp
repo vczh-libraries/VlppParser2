@@ -5,6 +5,7 @@ namespace vl
 	namespace glr
 	{
 		using namespace collections;
+		using namespace stream;
 
 /***********************************************************************
 JsonVisitorBase
@@ -427,6 +428,29 @@ AstInsReceiverBase
 			{
 				corrupted = true;
 				throw;
+			}
+		}
+
+/***********************************************************************
+Compression
+***********************************************************************/
+
+		void DecompressSerializedData(const char** buffer, bool decompress, vint solidRows, vint rows, vint block, vint remain, stream::IStream& outputStream)
+		{
+			if (decompress)
+			{
+				MemoryStream compressedStream;
+				DecompressSerializedData(buffer, false, solidRows, rows, block, remain, compressedStream);
+				compressedStream.SeekFromBegin(0);
+				DecompressStream(compressedStream, outputStream);
+			}
+			else
+			{
+				for (vint i = 0; i < rows; i++)
+				{
+					vint size = i == solidRows ? remain : block;
+					outputStream.Write((void*)buffer[i], size);
+				}
 			}
 		}
 	}

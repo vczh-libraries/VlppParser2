@@ -24,7 +24,7 @@
   - [x] Reflection supports (opt-out using `VCZH_DEBUG_NO_REFLECTION`).
     - [ ] If AST memory pool is enabled, add the pool object to the constructor in reflection, redirecting to a static function.
     - [ ] All `token` property `X` becomes `X_`, paired with a string property `X` to access the text value in `X_`.
-- [ ] Standalone lexical analyzer definition files.
+- [x] Standalone lexical analyzer definition files.
 - [ ] Standalone syntax analyzer definition files.
 - [x] All names of AST must be unique globally.
 - [ ] All names of token and rule must be unique.
@@ -72,11 +72,13 @@
    7. [ ] Test traverse visitors.
    8. [x] Test json visitors.
 3. [ ] Parser.
-   1. [ ] Manually create multiple parsers using the `ParserGen` AST, with test input / output.
-   2. [ ] Implement the compiler that accepts AST for AST / lexical analyzer / syntax, and create a parser.
-   3. [ ] Assert created instructions from parsers.
-   4. [ ] Binary serialization and deserialization for parser (lexical analyzer are converted to binary instead of storing regular expressions).
-   5. [ ] Generate `ParserGen` parser C++ file in this unit test project.
+   1. [ ] Manually create parser symbols for `Calculator`.
+   2. [ ] Test the parser.
+   3. [ ] Manually create multiple parsers using the `ParserGen` AST, with test input / output.
+   4. [ ] Implement the compiler that accepts AST for AST / lexical analyzer / syntax, and create a parser.
+   5. [ ] Assert created instructions from parsers.
+   6. [ ] Binary serialization and deserialization for parser (lexical analyzer are converted to binary instead of storing regular expressions).
+   7. [ ] Generate `ParserGen` parser C++ file in this unit test project.
 4. [ ] Testing `ParserGen` parser.
    1. [ ] Recreate above test cases in text format.
    2. [ ] generate C++ code for all of them.
