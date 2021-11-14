@@ -18,4 +18,14 @@ namespace calculator
 			return false;
 		}
 	}
+
+	void* CalculatorLexerData(void)
+	{
+		return nullptr;
+	}
+
+	vl::vint CalculatorLexerDataSize(void)
+	{
+		return 0;
+	}
 }

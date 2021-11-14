@@ -39,6 +39,8 @@ namespace calculator
 		SPACE = 23,
 	};
 
-	extern bool CalculatorTokenDeleter(vl::vint token);
+	extern bool			CalculatorTokenDeleter(vl::vint token);
+	extern void*		CalculatorLexerData(void);
+	extern vl::vint		CalculatorLexerDataSize(void);
 }
 #endif

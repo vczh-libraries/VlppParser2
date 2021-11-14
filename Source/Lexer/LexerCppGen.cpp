@@ -50,7 +50,9 @@ WriteLexerHeaderFile
 				}
 				{
 					writer.WriteLine(L"");
-					writer.WriteLine(prefix + L"extern bool " + manager.Global().name + L"TokenDeleter(vl::vint token);");
+					writer.WriteLine(prefix + L"extern bool\t\t\t" + manager.Global().name + L"TokenDeleter(vl::vint token);");
+					writer.WriteLine(prefix + L"extern void*\t\t" + manager.Global().name + L"LexerData(void);");
+					writer.WriteLine(prefix + L"extern vl::vint\t\t" + manager.Global().name + L"LexerDataSize(void);");
 				}
 				WriteNssEnd(manager.Global().cppNss, writer);
 
@@ -100,6 +102,20 @@ WriteLexerCppFile
 					{
 						writer.WriteLine(prefix + L"\treturn false;");
 					}
+					writer.WriteLine(prefix + L"}");
+				}
+				{
+					writer.WriteLine(L"");
+					writer.WriteLine(prefix + L"void* " + manager.Global().name + L"LexerData(void)");
+					writer.WriteLine(prefix + L"{");
+					writer.WriteLine(prefix + L"\treturn nullptr;");
+					writer.WriteLine(prefix + L"}");
+				}
+				{
+					writer.WriteLine(L"");
+					writer.WriteLine(prefix + L"vl::vint " + manager.Global().name + L"LexerDataSize(void)");
+					writer.WriteLine(prefix + L"{");
+					writer.WriteLine(prefix + L"\treturn 0;");
 					writer.WriteLine(prefix + L"}");
 				}
 				WriteNssEnd(manager.Global().cppNss, writer);
