@@ -286,13 +286,10 @@ AstInsReceiverBase
 			{
 				if (created.Count() == 0 && instruction.type != AstInsType::BeginObject)
 				{
-					if (created.Count() > 1)
-					{
-						throw AstInsException(
-							L"There is no created objects.",
-							AstInsErrorType::NoRootObject
-							);
-					}
+					throw AstInsException(
+						L"There is no created objects.",
+						AstInsErrorType::NoRootObject
+						);
 				}
 				switch (instruction.type)
 				{

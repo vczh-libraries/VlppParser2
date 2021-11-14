@@ -6,7 +6,7 @@ using namespace vl::glr::parsergen;
 void GenerateCalculatorLexer(LexerSymbolManager& manager)
 {
 	manager.CreateToken(L"ADD")->regex = L"/+";
-	manager.CreateToken(L"SUB")->regex = L"/-";
+	manager.CreateToken(L"SUB")->regex = L"-";
 	manager.CreateToken(L"MUL")->regex = L"/*";
 	manager.CreateToken(L"DIV")->regex = L"//";
 	manager.CreateToken(L"GT")->regex = L"/>";
@@ -18,8 +18,8 @@ void GenerateCalculatorLexer(LexerSymbolManager& manager)
 	manager.CreateToken(L"OPEN_BRACE")->regex = L"/(";
 	manager.CreateToken(L"CLOSE_BRACE")->regex = L"/)";
 	manager.CreateToken(L"COMMA")->regex = L",";
-	manager.CreateToken(L"INFER")->regex = L"/-/>";
-	manager.CreateToken(L"ASSIGN")->regex = L"/</-";
+	manager.CreateToken(L"INFER")->regex = L"-/>";
+	manager.CreateToken(L"ASSIGN")->regex = L"/<-";
 
 	manager.CreateToken(L"TRUE")->regex = L"true";
 	manager.CreateToken(L"FALSE")->regex = L"false";
