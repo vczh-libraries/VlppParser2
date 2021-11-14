@@ -24,7 +24,7 @@
   - [x] Reflection supports (opt-out using `VCZH_DEBUG_NO_REFLECTION`).
     - [ ] If AST memory pool is enabled, add the pool object to the constructor in reflection, redirecting to a static function.
     - [ ] All `token` property `X` becomes `X_`, paired with a string property `X` to access the text value in `X_`.
-- [ ] Standalone lexical analyzer definition files, with a name.
+- [ ] Standalone lexical analyzer definition files.
 - [ ] Standalone syntax analyzer definition files.
 - [x] All names of AST must be unique globally.
 - [ ] All names of token and rule must be unique.
@@ -64,13 +64,13 @@
       3. [ ] AST for syntax.
 2. [x] Instructions.
    1. [x] Define instructions.
-   2. [ ] Test instructions.
+   2. [x] Test instructions.
    3. [x] AST + Instruction -> C++ SAX-like callback interface.
    4. [x] AST + Instruction -> C++ Default implementation for the interface.
    5. [x] Generate `ParserGen` AST creation C++ file in this unit test project.
    6. [ ] Test copy visitors.
    7. [ ] Test traverse visitors.
-   8. [ ] Test json visitors.
+   8. [x] Test json visitors.
 3. [ ] Parser.
    1. [ ] Manually create multiple parsers using the `ParserGen` AST, with test input / output.
    2. [ ] Implement the compiler that accepts AST for AST / lexical analyzer / syntax, and create a parser.
@@ -88,6 +88,7 @@
 
 - `JsonEscapeString` `JsonUnescapeString` handle surrogate pairs correctly.
 - Switching lexical analyzer during parsing.
+  - Refactor some properties in `LexerSymbolManager` into `LexerFile` with a name.
 - AST uses classes from another AST file in dependency as fields.
 - Ambiguity AST and parsing.
 - Printing AST classes that created from a memory pool.
