@@ -320,14 +320,6 @@ AstInsReceiverBase
 					break;
 				case AstInsType::EndObject:
 					{
-						if (pushed.Count() > 0)
-						{
-							throw AstInsException(
-								L"There are still unassigned objects leaving when executing EndObject.",
-								AstInsErrorType::UnassignedObjectLeaving
-								);
-						}
-
 						ObjectOrToken value;
 						value.object = created[created.Count() - 1];
 						created.RemoveAt(created.Count() - 1);

@@ -271,7 +271,6 @@ Instructions
 			MissingFieldValue,							// MissingFieldValue()					: There is no pushed value to be assigned to a field.
 			MissingAmbiguityCandidate,					// MissingAmbiguityCandidate()			: There are not enough candidates to create an ambiguity node.
 			AmbiguityCandidateIsNotObject,				// AmbiguityCandidateIsNotObject()		: Tokens or enum items cannot be ambiguity candidates.
-			UnassignedObjectLeaving,					// UnassignedObjectLeaving()			: There are still unassigned objects leaving when executing EndObject.
 			InstructionNotComplete,						// InstructionNotComplete()				: No more instruction but the root object has not been completed yet.
 			Corrupted,									// Corrupted()							: An exception has been thrown therefore this receiver cannot be used anymore.
 			Finished,									// Finished()							: The finished instruction has been executed therefore this receiver cannot be used anymore.
