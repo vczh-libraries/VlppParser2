@@ -10,10 +10,6 @@
   - Calculate ambiguous **ToString** cases
   - Generate **ToString** algorithm
 
-## AST Definition
-
-- Must be compatible with Workflow (if possible)
-
 ## Configurations
 
 - [x] Include files in generated C++ header.
@@ -42,49 +38,75 @@
   - `{ RULE }` (RULE is repetitive): keep all results.
   - The loop body could be `RULE; DELIMITER` to specify delimiters between loop items. A delimiter could also be a rule.
 
-- RULE [: TYPE] {`::=` CLAUSE [`as` CLASS-NAME [`with` `{` {ASSIGNMENT ...} `}`]] } `;`
+- RULE {`::=` CLAUSE [`as` CLASS-NAME [`{` {ASSIGNMENT ...} `}`]] } `;`
   - Consider a syntax here to switch to different lexical analyzer.
-  - The type of a rule could be:
-    - `token`
-    - `partial` TYPE. Another rule that calls this rule must be
-      - either a `partial` TYPE2, while TYPE2 should be the same to TYPE or its derived type
-      - TYPE2, while TYPE2 should be the same to TYPE or its derived type
-    - TYPE
-    - no type, using the result from one fragment in CLAUSE (exp ::= '(' !exp ')')
+  - The type of a rule is not specified, it can be inferred to:
+    - `token`: if all clauses are single-token syntax.
+    - `partial` TYPE: if all clauses have the same type `SYNTAX as partial TYPE {...}`. All `TYPE` must be exactly the same.
+      - A partial type rule could be used in another rule if its type is:
+        - `partial` TYPE2, while TYPE2 should be the same to TYPE or its derived type
+        - TYPE2, while TYPE2 should be the same to TYPE or its derived type
+    - TYPE: if all clauses are `SYNTAX as TYPE {...}` or `SYNTAX containing one !RULE`.
+      - the type of this rule is the most detailed common base types of all `TYPE`.
 
 ## Development
 
-1. [x] AST.
+1. [x] `ParserTest_AstGen`.
    1. [x] Symbol table for AST.
    2. [x] Manually create a symbol table for the AST for `ParserGen`.
    3. [x] Symbol table -> C++ code.
-   4. [ ] Generate `ParserGen` AST C++ file in this unit test project.
-      1. [x] AST for AST.
-      2. [ ] AST for lexicaly analyser.
-      3. [ ] AST for syntax.
-2. [x] Instructions.
+   4. [ ] Generate `ParserGen` AST C++ files in this unit test project.
+      1. [x] AST for `ParserGen::TypeAst`.
+      2. [ ] AST for `ParserGen::SyntaxAst`.
+      3. [ ] Ast for `Calculator`
+      4. [x] Visitors
+      5. [x] Assembler
+2. [x] `ParserTest_AstParserGen`.
    1. [x] Define instructions.
    2. [x] Test instructions.
-   3. [x] AST + Instruction -> C++ SAX-like callback interface.
-   4. [x] AST + Instruction -> C++ Default implementation for the interface.
-   5. [x] Generate `ParserGen` AST creation C++ file in this unit test project.
-   6. [ ] Test copy visitors.
-   7. [ ] Test traverse visitors.
-   8. [x] Test json visitors.
-3. [ ] Parser.
-   1. [ ] Manually create parser symbols for `Calculator`.
-   2. [ ] Test the parser.
-   3. [ ] Manually create multiple parsers using the `ParserGen` AST, with test input / output.
-   4. [ ] Implement the compiler that accepts AST for AST / lexical analyzer / syntax, and create a parser.
-   5. [ ] Assert created instructions from parsers.
-   6. [ ] Binary serialization and deserialization for parser (lexical analyzer are converted to binary instead of storing regular expressions).
-   7. [ ] Generate `ParserGen` parser C++ file in this unit test project.
-4. [ ] Testing `ParserGen` parser.
-   1. [ ] Recreate above test cases in text format.
-   2. [ ] generate C++ code for all of them.
-5. [ ] Testing generated parsers.
-6. [ ] Create JSON and XML parser.
-7. [ ] Port `CodePack` and `ParserGen` to `VlppParser2`, do not write to an existing file if the content is not changed.
+   3. [ ] Test copy visitors.
+   4. [ ] Test traverse visitors.
+   5. [x] Test json visitors.
+   6. [ ] Generate `ParserGen` Lexer C++ files in this unit test project.
+      1. [ ] Lexer for `ParserGen`.
+      2. [x] Lexer for `Calculator`.
+3. [ ] `ParserTest_LexerAndParser`.
+   1. [x] Test generated lexer for `Calculator`.
+   2. [ ] Manually create parser symbols for `Calculator`.
+      1. [ ] `SyntaxSymbolManager` accepts epsilon-NFA state machines.
+      2. [ ] Syntax writer for `SyntaxSymbolManager`, it allows us to write state machines like EBNF, for testing purpose only.
+      3. [ ] Create `Calculator` state machines using the writer.
+      4. [ ] Process the state machines and generate parser-ready data structures from `SyntaxSymbolManager` with AST structure data input.
+   3. [ ] Test the parser.
+      1. [ ] Connect the manually created parser to generated AST assembler and lexer.
+      2. [ ] Prepare input text files in `Test/Source/Calculator/Input/`.
+      3. [ ] Prepare output JSON files in `Test/Source/Calculator/Output/`.
+   4. [ ] Generate `ParserGen` Syntax C++ files in this unit test project.
+      1. [ ] Syntax for `ParserGen`.
+      2. [ ] Syntax for `Calculator`.
+4. [ ] `ParserTest_ParserGen_Compiler`
+   1. [ ] Initialize `AstSymbolManager` from `ParserGen::TypeAst`.
+   2. [ ] Initialize `SyntaxSymbolManager` from `ParserGen::SyntaxAst`.
+   3. [ ] Using the generated `ParserGen` files to parse `Calcaultor` defined in `Test/Source/Calculator/`.
+      1. [ ] Test the generated syntax from the previous unit test project.
+      1. [ ] Test the generated syntax from `Test/Source/Calculator/Syntax/Syntax.txt`.
+      2. [ ] Generate the whole `Calculator` C++ files in `Test/Source/Calculator/Parser2` again.
+   4. [ ] Prepare more parser test cases.
+      1. [ ] Multiple parser syntax under `Test/Source/*/Syntax/`.
+      2. [ ] Generate C++ files from them in `Test/Source/*/Parser/`.
+      3. [ ] Prepare input text files in `Test/Source/*/Input/`.
+      4. [ ] Prepare output JSON files in `Test/Source/*/Output/`.
+   5. [ ] Generate JSON parser
+   6. [ ] Generate XML parser
+5. [ ] `ParserTest_ParserGen_Generated`
+   1. [ ] Prepare more parser test cases.
+      1. [ ] Prepare input text files in `Test/Source/*/Input/`.
+      2. [ ] Prepare output JSON files in `Test/Source/*/Output/`.
+   2. [ ] Run all parsers.
+   3. [ ] Test JSON parser.
+   4. [ ] Test XML parser.
+6. [ ] Port `CodePack` and `ParserGen` to `VlppParser2`, do not write to an existing file if the content is not changed.
+   1. [ ] Create a new repo `BuildTools` and adapt the release license instead of the development license.
 
 ## Work Items
 
