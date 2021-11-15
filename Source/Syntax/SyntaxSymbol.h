@@ -6,8 +6,8 @@ Licensed under https://github.com/vczh-libraries/License
 #ifndef VCZH_PARSER2_SYNTAX_SYNTAXSYMBOL
 #define VCZH_PARSER2_SYNTAX_SYNTAXSYMBOL
 
-#include <VlppRegex.h>
 #include "../ParserGen/ParserSymbol.h"
+#include "../../../Source/SyntaxBase.h"
 
 namespace vl
 {

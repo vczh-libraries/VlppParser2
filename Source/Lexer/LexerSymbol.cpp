@@ -31,16 +31,43 @@ LexerSymbolManager
 			{
 			}
 
-			TokenSymbol* LexerSymbolManager::CreateToken(const WString& name)
+			TokenSymbol* LexerSymbolManager::CreateToken(const WString& _name, const WString& _regex)
 			{
-				auto token = new TokenSymbol(name);
-				if (!tokens.Add(name, token))
+				auto token = new TokenSymbol(_name);
+				token->regex = _regex;
+				if (!tokens.Add(_name, token))
 				{
 					global.AddError(
 						ParserErrorType::DuplicatedToken,
-						name
+						_name
 						);
 				}
+				try
+				{
+					auto expr = regex_internal::ParseRegexExpression(wtou32(_regex));
+					if (!expr->expression->HasNoExtension())
+					{
+					global.AddError(
+						ParserErrorType::TokenRegexNotPure,
+						_name
+						);
+					}
+				}
+				catch (const regex_internal::RegexException& e)
+				{
+					global.AddError(
+						ParserErrorType::InvalidTokenRegex,
+						_name,
+						(e.Message() + L" : " + itow(e.position) + L" : " + _regex)
+						);
+				}
+				return token;
+			}
+
+			TokenSymbol* LexerSymbolManager::CreateDiscardedToken(const WString& _name, const WString& _regex)
+			{
+				auto token = CreateToken(_name, _regex);
+				token->discarded = true;
 				return token;
 			}
 		}

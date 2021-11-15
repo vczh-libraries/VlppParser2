@@ -44,7 +44,8 @@ LexerSymbolManager
 			public:
 				LexerSymbolManager(ParserSymbolManager& _global);
 
-				TokenSymbol*				CreateToken(const WString& name);
+				TokenSymbol*				CreateToken(const WString& _name, const WString& _regex);
+				TokenSymbol*				CreateDiscardedToken(const WString& _name, const WString& _regex);
 
 				ParserSymbolManager&		Global() { return global; }
 				const auto&					Tokens() { return tokens.map; }

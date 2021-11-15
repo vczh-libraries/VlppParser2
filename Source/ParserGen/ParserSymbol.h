@@ -61,6 +61,8 @@ ParserSymbolManager
 				FieldTypeNotClass,			// (fileName, className, propName)
 
 				DuplicatedToken,			// (tokenName)
+				InvalidTokenRegex,			// (tokenName, errorMessage)
+				TokenRegexNotPure,			// (tokenName)
 			};
 
 			struct ParserError
