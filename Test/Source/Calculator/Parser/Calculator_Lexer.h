@@ -39,7 +39,8 @@ namespace calculator
 		SPACE = 23,
 	};
 
-	extern bool		CalculatorTokenDeleter(vl::vint token);
-	extern void		CalculatorLexerData(vl::stream::IStream& outputStream);
+	constexpr vl::vint CalculatorTokenCount = 24;
+	extern bool CalculatorTokenDeleter(vl::vint token);
+	extern void CalculatorLexerData(vl::stream::IStream& outputStream);
 }
 #endif
