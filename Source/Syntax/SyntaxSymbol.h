@@ -31,6 +31,8 @@ SyntaxSymbolManager
 
 				ParserSymbolManager&		Global() { return global; }
 			};
+
+			extern void						CreateParserGenSyntax(SyntaxSymbolManager& manager);
 		}
 	}
 }

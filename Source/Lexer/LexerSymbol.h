@@ -51,6 +51,8 @@ LexerSymbolManager
 				const auto&					Tokens() { return tokens.map; }
 				const auto&					TokenOrder() { return tokens.order; }
 			};
+
+			extern void						CreateParserGenLexer(LexerSymbolManager& manager);
 		}
 	}
 }
