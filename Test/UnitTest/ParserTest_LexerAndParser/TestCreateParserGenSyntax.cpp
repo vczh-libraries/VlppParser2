@@ -1,5 +1,3 @@
-#include "../../../Source/Ast/AstCppGen.h"
-#include "../../../Source/Lexer/LexerCppGen.h"
 #include "../../../Source/Syntax/SyntaxCppGen.h"
 
 using namespace vl;
@@ -15,14 +13,9 @@ TEST_FILE
 	TEST_CASE(L"CreateParserGenLexer")
 	{
 		ParserSymbolManager global;
-		AstSymbolManager astManager(global);
-		LexerSymbolManager lexerManager(global);
 		SyntaxSymbolManager syntaxManager(global);
 
 		InitializeParserSymbolManager(global);
-		CreateParserGenTypeAst(astManager);
-		CreateParserGenSyntaxAst(astManager);
-		CreateParserGenLexer(lexerManager);
 		CreateParserGenSyntax(syntaxManager);
 		TEST_ASSERT(global.Errors().Count() == 0);
 

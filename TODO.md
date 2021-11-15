@@ -91,7 +91,7 @@
       1. [ ] Test the generated syntax from the previous unit test project.
       1. [ ] Test the generated syntax from `Test/Source/Calculator/Syntax/Syntax.txt`.
       2. [ ] Generate the whole `Calculator` C++ files in `Test/Source/Calculator/Parser2` again.
-   4. [ ] Prepare more parser test cases.
+   4. [ ] Prepare more parser test cases for `+loop`, `-loop`, `loop`, `+opt`, `-opt`, `opt`, left recursion, indirect left recursion, ...
       1. [ ] Multiple parser syntax under `Test/Source/*/Syntax/`.
       2. [ ] Generate C++ files from them in `Test/Source/*/Parser/`.
       3. [ ] Prepare input text files in `Test/Source/*/Input/`.
