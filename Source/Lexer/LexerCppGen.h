@@ -6,7 +6,6 @@ Licensed under https://github.com/vczh-libraries/License
 #ifndef VCZH_PARSER2_LEXER_LEXERCPPGEN
 #define VCZH_PARSER2_LEXER_LEXERCPPGEN
 
-#include <VlppOS.h>
 #include "../ParserGen/ParserCppGen.h"
 #include "LexerSymbol.h"
 

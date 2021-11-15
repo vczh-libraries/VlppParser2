@@ -128,20 +128,18 @@ WriteLexerFiles
 
 			void WriteLexerFiles(LexerSymbolManager& manager, Ptr<CppParserGenOutput> output, collections::Dictionary<WString, WString>& files)
 			{
+				WString fileH = GenerateToStream([&](StreamWriter& writer)
 				{
-					WString fileH = GenerateToStream([&](StreamWriter& writer)
-					{
-						WriteLexerHeaderFile(manager, output, writer);
-					});
+					WriteLexerHeaderFile(manager, output, writer);
+				});
 
-					WString fileCpp = GenerateToStream([&](StreamWriter& writer)
-					{
-						WriteLexerCppFile(manager, output, writer);
-					});
+				WString fileCpp = GenerateToStream([&](StreamWriter& writer)
+				{
+					WriteLexerCppFile(manager, output, writer);
+				});
 
-					files.Add(output->lexerH, fileH);
-					files.Add(output->lexerCpp, fileCpp);
-				}
+				files.Add(output->lexerH, fileH);
+				files.Add(output->lexerCpp, fileCpp);
 			}
 		}
 	}

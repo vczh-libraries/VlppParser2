@@ -46,6 +46,8 @@ Output
 				WString														assemblyCpp;
 				WString														lexerH;
 				WString														lexerCpp;
+				WString														syntaxH;
+				WString														syntaxCpp;
 				collections::Dictionary<AstDefFile*, Ptr<CppAstGenOutput>>	files;
 
 				collections::Dictionary<AstClassSymbol*, vint>				classIds;
