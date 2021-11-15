@@ -96,8 +96,9 @@
       2. [ ] Generate C++ files from them in `Test/Source/*/Parser/`.
       3. [ ] Prepare input text files in `Test/Source/*/Input/`.
       4. [ ] Prepare output JSON files in `Test/Source/*/Output/`.
-   5. [ ] Generate JSON parser
-   6. [ ] Generate XML parser
+   5. [ ] Prepare more parser test cases for compile errors, no need to have input/output/codegen
+   6. [ ] Generate JSON parser
+   7. [ ] Generate XML parser
 5. [ ] `ParserTest_ParserGen_Generated`
    1. [ ] Prepare more parser test cases.
       1. [ ] Prepare input text files in `Test/Source/*/Input/`.
