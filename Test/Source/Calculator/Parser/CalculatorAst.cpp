@@ -150,7 +150,7 @@ namespace vl
 				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<calculator::Call>(), NO_PARAMETER)
 
 				CLASS_MEMBER_FIELD(func)
-				CLASS_MEMBER_FIELD(arg)
+				CLASS_MEMBER_FIELD(args)
 			END_CLASS_MEMBER(calculator::Call)
 
 			BEGIN_CLASS_MEMBER(calculator::Expandable)
@@ -166,6 +166,7 @@ namespace vl
 
 				PARSING_TOKEN_FIELD(name)
 				CLASS_MEMBER_FIELD(value)
+				CLASS_MEMBER_FIELD(result)
 			END_CLASS_MEMBER(calculator::LetExpr)
 
 			BEGIN_ENUM_ITEM(calculator::UnaryOp)

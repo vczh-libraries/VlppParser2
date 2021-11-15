@@ -47,9 +47,9 @@ BinaryBuilder
 CallBuilder
 ***********************************************************************/
 
-		CallBuilder& CallBuilder::arg(const vl::Ptr<Expr>& value)
+		CallBuilder& CallBuilder::args(const vl::Ptr<Expr>& value)
 		{
-			node->arg.Add(value);
+			node->args.Add(value);
 			return *this;
 		}
 
@@ -102,6 +102,12 @@ LetExprBuilder
 		LetExprBuilder& LetExprBuilder::name(const vl::WString& value)
 		{
 			node->name.value = value;
+			return *this;
+		}
+
+		LetExprBuilder& LetExprBuilder::result(const vl::Ptr<Expr>& value)
+		{
+			node->result = value;
 			return *this;
 		}
 

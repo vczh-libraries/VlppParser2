@@ -1,0 +1,48 @@
+Arg
+  ::= ID:name as Arg
+
+Exp0
+  ::= NUM:value as NumExpr
+  ::= ID:name as Ref
+  ::= "true" as True
+  ::= "false" as False
+  ::= "(" !Exp ")"
+  ::= "(" {Arg:args : ","} ")" "->" Exp:value as Func
+  ::= "let" ID:name "<-" Exp:value "in" Exp:result as LetExpr
+
+Exp1
+  ::= !Exp0
+  ::= "+" Exp1:operand as Unary {op = Positive}
+  ::= "-" Exp1:operand as Unary {op = Negative}
+  ::= Exp1:func "(" {Exp:args : ","} ")" as Call
+
+Exp2
+  ::= !Exp1
+  ::= Exp2:left "*" Exp1:right as Binary {op = "Multiply"}
+  ::= Exp2:left "/" Exp1:right as Binary {op = "Divid"}
+
+Exp3
+  ::= !Exp2
+  ::= Exp3:left "+" Exp2:right as Binary {op = "Add"}
+  ::= Exp3:left "-" Exp2:right as Binary {op = "Minus"}
+
+Exp4
+  ::= !Exp3
+  ::= Exp4:left "<" Exp3:right as Binary {op = "GT"}
+  ::= Exp4:left "<=" Exp3:right as Binary {op = "GE"}
+  ::= Exp4:left ">" Exp3:right as Binary {op = "LT"}
+  ::= Exp4:left ">=" Exp3:right as Binary {op = "LE"}
+
+Exp5
+  ::= !Exp4
+  ::= Exp5:left "==" Exp4:right as Binary {op = "EQ"}
+  ::= Exp5:left "!=" Exp4:right as Binary {op = "NE"}
+
+Exp
+  ::= !Exp5
+
+Import
+  ::= ID:name
+
+Module
+  ::= {Import:imports} "export" Exp:exported

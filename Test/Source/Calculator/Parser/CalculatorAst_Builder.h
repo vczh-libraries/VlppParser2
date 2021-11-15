@@ -39,7 +39,7 @@ namespace calculator
 			Call* node;
 		public:
 			CallBuilder(Call* _node) : node(_node) {}
-			CallBuilder& arg(const vl::Ptr<Expr>& value);
+			CallBuilder& args(const vl::Ptr<Expr>& value);
 			CallBuilder& func(const vl::Ptr<Expr>& value);
 		};
 
@@ -78,6 +78,7 @@ namespace calculator
 		public:
 			LetExprBuilder(LetExpr* _node) : node(_node) {}
 			LetExprBuilder& name(const vl::WString& value);
+			LetExprBuilder& result(const vl::Ptr<Expr>& value);
 			LetExprBuilder& value(const vl::Ptr<Expr>& value);
 		};
 

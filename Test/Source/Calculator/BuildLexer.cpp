@@ -24,11 +24,11 @@ void GenerateCalculatorLexer(LexerSymbolManager& manager)
 	manager.CreateToken(L"TRUE")->regex = L"true";
 	manager.CreateToken(L"FALSE")->regex = L"false";
 	manager.CreateToken(L"LET")->regex = L"let";
-	manager.CreateToken(L"IN")->regex = L"let";
+	manager.CreateToken(L"IN")->regex = L"IN";
 	manager.CreateToken(L"IMPORT")->regex = L"import";
 	manager.CreateToken(L"EXPORT")->regex = L"export";
 
-	manager.CreateToken(L"NUM")->regex = L"/d+(/d+.)?";
+	manager.CreateToken(L"NUM")->regex = L"/d+(./d+)?";
 	manager.CreateToken(L"ID")->regex = L"[a-zA-Z_][a-zA-Z0-9_]*";
 
 	{

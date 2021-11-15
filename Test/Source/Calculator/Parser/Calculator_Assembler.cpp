@@ -74,13 +74,13 @@ CalculatorAstInsReceiver : public vl::glr::AstInsReceiverBase
 				typedObject->right = typedValue;
 			}
 			break;
-		case CalculatorFields::Call_arg:
+		case CalculatorFields::Call_args:
 			{
 				auto typedObject = dynamic_cast<calculator::Call*>(object);
-				if (!typedObject) throw vl::glr::AstInsException(L"Field \"calculator::Call::arg\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+				if (!typedObject) throw vl::glr::AstInsException(L"Field \"calculator::Call::args\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
 				auto typedValue = value.Cast<calculator::Expr>();
-				if (!typedValue) throw vl::glr::AstInsException(L"Field \"calculator::Call::arg\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				typedObject->arg.Add(typedValue);
+				if (!typedValue) throw vl::glr::AstInsException(L"Field \"calculator::Call::args\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				typedObject->args.Add(typedValue);
 			}
 			break;
 		case CalculatorFields::Call_func:
@@ -120,6 +120,16 @@ CalculatorAstInsReceiver : public vl::glr::AstInsReceiverBase
 				auto typedValue = value.Cast<calculator::Expr>();
 				if (!typedValue) throw vl::glr::AstInsException(L"Field \"calculator::Func::value\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 				typedObject->value = typedValue;
+			}
+			break;
+		case CalculatorFields::LetExpr_result:
+			{
+				auto typedObject = dynamic_cast<calculator::LetExpr*>(object);
+				if (!typedObject) throw vl::glr::AstInsException(L"Field \"calculator::LetExpr::result\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+				if (typedObject->result) throw vl::glr::AstInsException(L"Field \"calculator::LetExpr::result\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
+				auto typedValue = value.Cast<calculator::Expr>();
+				if (!typedValue) throw vl::glr::AstInsException(L"Field \"calculator::LetExpr::result\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				typedObject->result = typedValue;
 			}
 			break;
 		case CalculatorFields::LetExpr_value:
@@ -230,8 +240,8 @@ CalculatorAstInsReceiver : public vl::glr::AstInsReceiverBase
 			throw vl::glr::AstInsException(L"Field \"calculator::Binary::op\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 		case CalculatorFields::Binary_right:
 			throw vl::glr::AstInsException(L"Field \"calculator::Binary::right\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-		case CalculatorFields::Call_arg:
-			throw vl::glr::AstInsException(L"Field \"calculator::Call::arg\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+		case CalculatorFields::Call_args:
+			throw vl::glr::AstInsException(L"Field \"calculator::Call::args\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 		case CalculatorFields::Call_func:
 			throw vl::glr::AstInsException(L"Field \"calculator::Call::func\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 		case CalculatorFields::Expandable_expanded:
@@ -240,6 +250,8 @@ CalculatorAstInsReceiver : public vl::glr::AstInsReceiverBase
 			throw vl::glr::AstInsException(L"Field \"calculator::Func::args\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 		case CalculatorFields::Func_value:
 			throw vl::glr::AstInsException(L"Field \"calculator::Func::value\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+		case CalculatorFields::LetExpr_result:
+			throw vl::glr::AstInsException(L"Field \"calculator::LetExpr::result\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 		case CalculatorFields::LetExpr_value:
 			throw vl::glr::AstInsException(L"Field \"calculator::LetExpr::value\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 		case CalculatorFields::Module_exported:
@@ -281,8 +293,8 @@ CalculatorAstInsReceiver : public vl::glr::AstInsReceiverBase
 			throw vl::glr::AstInsException(L"Field \"calculator::Binary::left\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 		case CalculatorFields::Binary_right:
 			throw vl::glr::AstInsException(L"Field \"calculator::Binary::right\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-		case CalculatorFields::Call_arg:
-			throw vl::glr::AstInsException(L"Field \"calculator::Call::arg\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+		case CalculatorFields::Call_args:
+			throw vl::glr::AstInsException(L"Field \"calculator::Call::args\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 		case CalculatorFields::Call_func:
 			throw vl::glr::AstInsException(L"Field \"calculator::Call::func\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 		case CalculatorFields::Expandable_expanded:
@@ -295,6 +307,8 @@ CalculatorAstInsReceiver : public vl::glr::AstInsReceiverBase
 			throw vl::glr::AstInsException(L"Field \"calculator::Import::name\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 		case CalculatorFields::LetExpr_name:
 			throw vl::glr::AstInsException(L"Field \"calculator::LetExpr::name\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+		case CalculatorFields::LetExpr_result:
+			throw vl::glr::AstInsException(L"Field \"calculator::LetExpr::result\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 		case CalculatorFields::LetExpr_value:
 			throw vl::glr::AstInsException(L"Field \"calculator::LetExpr::value\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 		case CalculatorFields::Module_exported:

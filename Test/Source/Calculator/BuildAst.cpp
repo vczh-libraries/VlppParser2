@@ -39,7 +39,7 @@ void GenerateCalculatorAst(AstSymbolManager& manager)
 		auto _Call = file->CreateClass(L"Call");
 		_Call->SetBaseClass(L"Expr");
 		_Call->CreateProp(L"func")->SetPropType(AstPropType::Type, L"Expr");
-		_Call->CreateProp(L"arg")->SetPropType(AstPropType::Array, L"Expr");
+		_Call->CreateProp(L"args")->SetPropType(AstPropType::Array, L"Expr");
 
 		auto _Expandable = file->CreateClass(L"Expandable");
 		_Expandable->SetBaseClass(L"Expr");
@@ -49,6 +49,7 @@ void GenerateCalculatorAst(AstSymbolManager& manager)
 		_letExpr->SetBaseClass(L"Expandable");
 		_letExpr->CreateProp(L"name")->SetPropType(AstPropType::Token);
 		_letExpr->CreateProp(L"value")->SetPropType(AstPropType::Type, L"Expr");
+		_letExpr->CreateProp(L"result")->SetPropType(AstPropType::Type, L"Expr");
 
 		auto _unaryOp = file->CreateEnum(L"UnaryOp");
 		_unaryOp->CreateItem(L"Positive");
