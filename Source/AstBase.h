@@ -243,9 +243,10 @@ Instructions
 
 		enum class AstInsType
 		{
-			Token,										// Token()							: push the current token as a value.
-			EnumItem,									// EnumItem(Value)					: push an enum item.
-			BeginObject,								// BeginObject(Type)				: begin creating an AST node.
+			Token,										// Token()							: Push the current token as a value.
+			EnumItem,									// EnumItem(Value)					: Push an enum item.
+			BeginObject,								// BeginObject(Type)				: Begin creating an AST node.
+			ReopenObject,								// ReopenObject()					: Move the last pushed object back to creating status.
 			EndObject,									// EndObject()						: Finish creating an AST node, all objects pushed after BeginObject are supposed to be its fields.
 			Field,										// Field(Field)						: Associate a field name with the top object.
 			ResolveAmbiguity,							// ResolveAmbiguity(Type, Count)	: Combine several top objects to one using an ambiguity node.
@@ -268,6 +269,8 @@ Instructions
 			ObjectTypeMismatchedToField,				// ObjectTypeMismatchedToField(Field)	: Unable to assign an object to a field because the type does not match.
 
 			NoRootObject,								// NoRootObject()						: There is no created objects.
+			MissingValueToReopen,						// MissingValueToReopen()				: There is no pushed value to reopen.
+			ReopenedValueIsNotObject,					// ReopenedValueIsNotObject()			: The pushed value to reopen is not an object.
 			MissingFieldValue,							// MissingFieldValue()					: There is no pushed value to be assigned to a field.
 			MissingAmbiguityCandidate,					// MissingAmbiguityCandidate()			: There are not enough candidates to create an ambiguity node.
 			AmbiguityCandidateIsNotObject,				// AmbiguityCandidateIsNotObject()		: Tokens or enum items cannot be ambiguity candidates.

@@ -47,22 +47,46 @@ ParserSymbolManager
 
 			enum class ParserErrorType
 			{
-				DuplicatedFile,				// (fileName)
-				FileDependencyNotExists,	// (fileName, dependency)
-				FileCyclicDependency,		// (fileName, dependency)
-				DuplicatedSymbol,			// (fileName, symbolName)
-				DuplicatedSymbolGlobally,	// (fileName, symbolName, anotherFileName)
-				DuplicatedClassProp,		// (fileName, className, propName)
-				DuplicatedEnumItem,			// (fileName, enumName, propName
-				BaseClassNotExists,			// (fileName, className)
-				BaseClassNotClass,			// (fileName, className)
-				BaseClassCyclicDependency,	// (fileName, className)
-				FieldTypeNotExists,			// (fileName, className, propName)
-				FieldTypeNotClass,			// (fileName, className, propName)
+				// AstSymbolManager -------------------------------------------------------------------
+				DuplicatedFile,								// (fileName)
+				FileDependencyNotExists,					// (fileName, dependency)
+				FileCyclicDependency,						// (fileName, dependency)
+				DuplicatedSymbol,							// (fileName, symbolName)
+				DuplicatedSymbolGlobally,					// (fileName, symbolName, anotherFileName)
+				DuplicatedClassProp,						// (fileName, className, propName)
+				DuplicatedEnumItem,							// (fileName, enumName, propName
+				BaseClassNotExists,							// (fileName, className)
+				BaseClassNotClass,							// (fileName, className)
+				BaseClassCyclicDependency,					// (fileName, className)
+				FieldTypeNotExists,							// (fileName, className, propName)
+				FieldTypeNotClass,							// (fileName, className, propName)
 
-				DuplicatedToken,			// (tokenName)
-				InvalidTokenRegex,			// (tokenName, errorMessage)
-				TokenRegexNotPure,			// (tokenName)
+				// LexerSymbolManager -----------------------------------------------------------------
+				DuplicatedToken,							// (tokenName)
+				InvalidTokenRegex,							// (tokenName, errorMessage)
+				TokenRegexNotPure,							// (tokenName)
+
+				// SyntaxSymbolManager ----------------------------------------------------------------
+				DuplicatedRule,								// (ruleName)
+				TokenOrRuleNotExists,						// (ruleName, name)
+				TypeNotExistsInRule,						// (ruleName, typeName)
+				FieldNotExistsInRule,						// (ruleName, typeName, fieldName)
+
+				// SyntaxAst to SyntaxSymbolManager ---------------------------------------------------
+				RuleCannotResolveType,						// (ruleName)									: Unable to resolve to one type from clauses (token, type) or (create, partial).
+				RuleTypeMismatchedToField,					// (ruleName, fieldRuleName, fieldName)			: The rule type is not compatible to the assigning field.
+				PartialRuleUsedOnField,						// (ruleName, partialRuleName, fieldName)		: A partial rule does not create object, it cannot be assigned to a field.
+				ClauseNotCreateObject,						// (ruleName)									: A clause is not a create rule, not a partial rule, and not containing use rule.
+				ClauseCouldExpandToEmptySequence,			// (ruleName)
+				UseRuleUsedInOptionalBody,					// (ruleName)
+				UseRuleUsedInLoopBody,						// (ruleName)
+				UseRuleAppearAfterField,					// (ruleName, useRuleName, fieldName)
+				UseRuleAppearAfterPartialRule,				// (ruleName, useRuleName, partialRuleName)
+				TooManyUseRule,								// (ruleName)
+				ClauseMixedUseAndCreateRule,				// (ruleName)									: A clause with a use rule cannot be a create rule or a partial rule.
+				ClauseTypeMismatchedToPartialRule,			// (ruleName, partialRuleName)					: A clause uses a partial rule of an incompatible type.
+				OptionalBodyCouldExpandToEmptySequence,		// (ruleName)
+				LoopBodyCouldExpandToEmptySequence,			// (ruleName)
 			};
 
 			struct ParserError

@@ -319,6 +319,31 @@ AstInsReceiverBase
 						created.Add(value);
 					}
 					break;
+				case AstInsType::ReopenObject:
+					{
+						if (pushed.Count() == 0)
+						{
+							throw AstInsException(
+								L"There is no pushed value to reopen.",
+								AstInsErrorType::MissingValueToReopen
+								);
+						}
+
+						auto value = pushed[pushed.Count() - 1];
+						if (value.object)
+						{
+							created.Add(value.object);
+							pushed.RemoveAt(pushed.Count() - 1);
+						}
+						else
+						{
+							throw AstInsException(
+								L"The pushed value to reopen is not an object.",
+								AstInsErrorType::ReopenedValueIsNotObject
+								);
+						}
+					}
+					break;
 				case AstInsType::EndObject:
 					{
 						ObjectOrToken value;
