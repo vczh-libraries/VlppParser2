@@ -1,8 +1,6 @@
 #include "../../Source/Calculator/Parser/CalculatorAst.h"
 #include "../../Source/Calculator/Parser/Calculator_Lexer.h"
-#include "../../../Source/Ast/AstCppGen.h"
-#include "../../../Source/Lexer/LexerCppGen.h"
-#include "../../../Source/Syntax/SyntaxCppGen.h"
+#include "../../../Source/Syntax/SyntaxSymbol.h"
 
 using namespace vl;
 using namespace vl::collections;
@@ -12,19 +10,13 @@ using namespace calculator;
 using namespace vl::glr::parsergen;
 
 extern WString GetExePath();
+extern void GenerateCalculatorSyntax(SyntaxSymbolManager& manager);
 
 TEST_FILE
 {
 	ParserSymbolManager global;
-	AstSymbolManager astManager(global);
-	LexerSymbolManager lexerManager(global);
 	SyntaxSymbolManager syntaxManager(global);
-
-	InitializeParserSymbolManager(global);
-	CreateParserGenTypeAst(astManager);
-	CreateParserGenSyntaxAst(astManager);
-	CreateParserGenLexer(lexerManager);
-	CreateParserGenSyntax(syntaxManager);
+	GenerateCalculatorSyntax(syntaxManager);
 	TEST_CASE_ASSERT(global.Errors().Count() == 0);
 
 	MemoryStream lexerData;
