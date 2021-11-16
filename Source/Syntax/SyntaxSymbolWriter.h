@@ -45,6 +45,13 @@ Clause
 					T						body;
 				};
 
+				template<typename T, typename U>
+				struct LoopSep
+				{
+					T						body;
+					U						delimiter;
+				};
+
 				template<typename T>
 				struct Opt
 				{
@@ -59,18 +66,30 @@ Clause
 				};
 
 				template<typename T>
-				struct Create
-				{
-					T						body;
-					vint32_t				type;
-				};
-
-				template<typename T>
 				struct With
 				{
 					T						body;
 					vint32_t				field;
 					vint32_t				enumItem;
+
+					template<typename F, typename E>
+					With<With<T>> with(F field, E enumItem)
+					{
+						return{ *this,(vint32_t)field,(vint32_t)enumItem };
+					}
+				};
+
+				template<typename T>
+				struct Create
+				{
+					T						body;
+					vint32_t				type;
+
+					template<typename F, typename E>
+					With<Create<T>> with(F field, E enumItem)
+					{
+						return{ *this,(vint32_t)field,(vint32_t)enumItem };
+					}
 				};
 
 /***********************************************************************
@@ -87,22 +106,25 @@ Verification
 				struct IsClause_<Rule> { static constexpr bool Value = true; };
 
 				template<typename T>
-				struct IsClause_<Use<T>> { static constexpr bool Value = IsClause<T>::Value; };
+				struct IsClause_<Use<T>> { static constexpr bool Value = IsClause_<T>::Value; };
 
 				template<typename T>
-				struct IsClause_<Loop<T>> { static constexpr bool Value = IsClause<T>::Value; };
-
-				template<typename T>
-				struct IsClause_<Opt<T>> { static constexpr bool Value = IsClause<T>::Value; };
+				struct IsClause_<Loop<T>> { static constexpr bool Value = IsClause_<T>::Value; };
 
 				template<typename T, typename U>
-				struct IsClause_<Seq<T, U>> { static constexpr bool Value = IsClause<T>::Value && IsClause<U>::Value; };
+				struct IsClause_<LoopSep<T, U>> { static constexpr bool Value = IsClause_<T>::Value && IsClause_<U>::Value; };
 
 				template<typename T>
-				struct IsClause_<Create<T>> { static constexpr bool Value = IsClause<T>::Value; };
+				struct IsClause_<Opt<T>> { static constexpr bool Value = IsClause_<T>::Value; };
+
+				template<typename T, typename U>
+				struct IsClause_<Seq<T, U>> { static constexpr bool Value = IsClause_<T>::Value && IsClause_<U>::Value; };
 
 				template<typename T>
-				struct IsClause_<With<T>> { static constexpr bool Value = IsClause<T>::Value; };
+				struct IsClause_<Create<T>> { static constexpr bool Value = IsClause_<T>::Value; };
+
+				template<typename T>
+				struct IsClause_<With<T>> { static constexpr bool Value = IsClause_<T>::Value; };
 
 				template<typename T>
 				constexpr bool IsClause = IsClause_<T>::Value;
@@ -141,9 +163,15 @@ Operators
 				}
 
 				template<typename C>
-				inline std::enable_if_t<IsClause<C>, Loop<C>> operator*(const C& clause)
+				inline std::enable_if_t<IsClause<C>, Loop<C>> loop(const C& clause)
 				{
 					return { clause };
+				}
+
+				template<typename C1, typename C2>
+				inline std::enable_if_t<IsClause<C1> && IsClause<C2>, LoopSep<C1, C2>> loop(const C1& c1, const C2& c2)
+				{
+					return { c1,c2 };
 				}
 
 				template<typename C>
@@ -153,27 +181,15 @@ Operators
 				}
 
 				template<typename C1, typename C2>
-				inline std::enable_if_t<IsClause<C1> && IsClause<C2>, Seq<C1, C2>> opt(const C1& c1, const C2& c2)
+				inline std::enable_if_t<IsClause<C1> && IsClause<C2>, Seq<C1, C2>> operator+(const C1& c1, const C2& c2)
 				{
 					return { c1,c2 };
 				}
 
 				template<typename C, typename T>
-				inline std::enable_if_t<IsClause<C>, Opt<C>> create(const C& clause, T type)
+				inline std::enable_if_t<IsClause<C>, Create<C>> create(const C& clause, T type)
 				{
 					return { clause,(vint32_t)type };
-				}
-
-				template<typename C, typename F, typename E>
-				inline With<Create<C>> with(const Create<C>& clause, F field, E enumItem)
-				{
-					return{ clause,(vint32_t)field,(vint32_t)enumItem };
-				}
-
-				template<typename C, typename F, typename E>
-				inline With<With<C>> with(const With<C>& clause, F field, E enumItem)
-				{
-					return{ clause,(vint32_t)field,(vint32_t)enumItem };
 				}
 
 /***********************************************************************
@@ -213,6 +229,12 @@ Builder
 						throw 0;
 					}
 
+					template<typename C1, typename C2>
+					StatePair Build(const LoopSep<C1, C2>& clause)
+					{
+						throw 0;
+					}
+
 					template<typename C>
 					StatePair Build(const Opt<C>& clause)
 					{
@@ -237,7 +259,6 @@ Builder
 						throw 0;
 					}
 				public:
-
 					Clause(RuleSymbol* _ruleSymbol) : ruleSymbol(_ruleSymbol) {}
 
 					template<typename C>
@@ -245,6 +266,7 @@ Builder
 					{
 						auto pair = Build(clause);
 						ruleSymbol->startStates.Add(pair.begin);
+						return *this;
 					}
 				};
 			}

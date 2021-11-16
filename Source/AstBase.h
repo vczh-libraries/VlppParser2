@@ -248,6 +248,7 @@ Instructions
 			BeginObject,								// BeginObject(Type)				: Begin creating an AST node.
 			ReopenObject,								// ReopenObject()					: Move the last pushed object back to creating status.
 			EndObject,									// EndObject()						: Finish creating an AST node, all objects pushed after BeginObject are supposed to be its fields.
+			DiscardValue,								// DiscardValue()					: Remove a pushed value.
 			Field,										// Field(Field)						: Associate a field name with the top object.
 			ResolveAmbiguity,							// ResolveAmbiguity(Type, Count)	: Combine several top objects to one using an ambiguity node.
 		};
@@ -271,6 +272,7 @@ Instructions
 			NoRootObject,								// NoRootObject()						: There is no created objects.
 			MissingValueToReopen,						// MissingValueToReopen()				: There is no pushed value to reopen.
 			ReopenedValueIsNotObject,					// ReopenedValueIsNotObject()			: The pushed value to reopen is not an object.
+			MissingValueToDiscard,						// MissingValueToDiscard()				: There is no pushed value to discard.
 			MissingFieldValue,							// MissingFieldValue()					: There is no pushed value to be assigned to a field.
 			MissingAmbiguityCandidate,					// MissingAmbiguityCandidate()			: There are not enough candidates to create an ambiguity node.
 			AmbiguityCandidateIsNotObject,				// AmbiguityCandidateIsNotObject()		: Tokens or enum items cannot be ambiguity candidates.
@@ -303,6 +305,12 @@ Instructions
 		class AstInsReceiverBase : public Object, public virtual IAstInsReceiver
 		{
 		private:
+			struct CreatedObject
+			{
+				Ptr<ParsingAstBase>						object;
+				vint									pushedCount;
+			};
+
 			struct ObjectOrToken
 			{
 				Ptr<ParsingAstBase>						object;
@@ -310,7 +318,7 @@ Instructions
 				regex::RegexToken						token;
 			};
 
-			collections::List<Ptr<ParsingAstBase>>		created;
+			collections::List<CreatedObject>			created;
 			collections::List<ObjectOrToken>			pushed;
 			bool										finished = false;
 			bool										corrupted = false;

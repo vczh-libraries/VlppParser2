@@ -28,10 +28,10 @@ Exp3
 
 Exp4
   ::= !Exp3
-  ::= Exp4:left "<" Exp3:right as Binary {op = "GT"}
-  ::= Exp4:left "<=" Exp3:right as Binary {op = "GE"}
-  ::= Exp4:left ">" Exp3:right as Binary {op = "LT"}
-  ::= Exp4:left ">=" Exp3:right as Binary {op = "LE"}
+  ::= Exp4:left "<" Exp3:right as Binary {op = "LT"}
+  ::= Exp4:left "<=" Exp3:right as Binary {op = "LE"}
+  ::= Exp4:left ">" Exp3:right as Binary {op = "GT"}
+  ::= Exp4:left ">=" Exp3:right as Binary {op = "GE"}
 
 Exp5
   ::= !Exp4
@@ -42,7 +42,7 @@ Exp
   ::= !Exp5
 
 Import
-  ::= ID:name
+  ::= ID:name as Import
 
 Module
-  ::= {Import:imports} "export" Exp:exported
+  ::= {Import:imports} "export" Exp:exported as Module

@@ -355,6 +355,18 @@ AstInsReceiverBase
 						pushed.Add(value);
 					}
 					break;
+				case AstInsType::DiscardValue:
+					{
+						if (pushed.Count() == 0)
+						{
+							throw AstInsException(
+								L"There is no pushed value to discard.",
+								AstInsErrorType::MissingValueToDiscard
+								);
+						}
+						pushed.RemoveAt(pushed.Count() - 1);
+					}
+					break;
 				case AstInsType::Field:
 					{
 						if (pushed.Count() == 0)
