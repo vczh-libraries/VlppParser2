@@ -296,16 +296,12 @@ AstInsReceiverBase
 				{
 				case AstInsType::Token:
 					{
-						ObjectOrToken value;
-						value.token = token;
-						pushed.Add(value);
+						pushed.Add(ObjectOrToken{ token });
 					}
 					break;
 				case AstInsType::EnumItem:
 					{
-						ObjectOrToken value;
-						value.enumItem = instruction.param;
-						pushed.Add(value);
+						pushed.Add(ObjectOrToken{ instruction.param });
 					}
 					break;
 				case AstInsType::BeginObject:
@@ -316,24 +312,32 @@ AstInsReceiverBase
 						value->codeRange.end.row = token.rowEnd;
 						value->codeRange.end.column = token.columnEnd;
 						value->codeRange.codeIndex = token.codeIndex;
-						created.Add(value);
+						created.Add(CreatedObject{ value,pushed.Count() });
 					}
 					break;
 				case AstInsType::ReopenObject:
 					{
-						if (pushed.Count() == 0)
+						vint expectedLeavings = created[created.Count() - 1].pushedCount;
+						if (pushed.Count() < expectedLeavings + 1)
 						{
 							throw AstInsException(
 								L"There is no pushed value to reopen.",
 								AstInsErrorType::MissingValueToReopen
 								);
 						}
+						if (pushed.Count() > expectedLeavings + 1)
+						{
+							throw AstInsException(
+								L"The value to reopen is not the only unassigned value.",
+								AstInsErrorType::TooManyUnassignedValues
+								);
+						}
 
 						auto value = pushed[pushed.Count() - 1];
 						if (value.object)
 						{
-							created.Add(value.object);
 							pushed.RemoveAt(pushed.Count() - 1);
+							created.Add(CreatedObject{ value.object,pushed.Count() });
 						}
 						else
 						{
@@ -346,18 +350,25 @@ AstInsReceiverBase
 					break;
 				case AstInsType::EndObject:
 					{
-						ObjectOrToken value;
-						value.object = created[created.Count() - 1];
+						auto createdObject = created[created.Count() - 1];
+						if (pushed.Count() > createdObject.pushedCount)
+						{
+							throw AstInsException(
+								L"There are still values to assign to fields before finishing an object.",
+								AstInsErrorType::LeavingUnassignedValues
+								);
+						}
 						created.RemoveAt(created.Count() - 1);
 
-						value.object->codeRange.end.row = token.rowEnd;
-						value.object->codeRange.end.column = token.columnEnd;
-						pushed.Add(value);
+						createdObject.object->codeRange.end.row = token.rowEnd;
+						createdObject.object->codeRange.end.column = token.columnEnd;
+						pushed.Add(ObjectOrToken{ createdObject.object });
 					}
 					break;
 				case AstInsType::DiscardValue:
 					{
-						if (pushed.Count() == 0)
+						auto createdObject = created[created.Count() - 1];
+						if (pushed.Count() <= createdObject.pushedCount)
 						{
 							throw AstInsException(
 								L"There is no pushed value to discard.",
@@ -369,7 +380,8 @@ AstInsReceiverBase
 					break;
 				case AstInsType::Field:
 					{
-						if (pushed.Count() == 0)
+						auto createdObject = created[created.Count() - 1];
+						if (pushed.Count() <= createdObject.pushedCount)
 						{
 							throw AstInsException(
 								L"There is no pushed value to be assigned to a field.",
@@ -381,21 +393,22 @@ AstInsReceiverBase
 						pushed.RemoveAt(pushed.Count() - 1);
 						if (value.object)
 						{
-							SetField(created[created.Count() - 1].Obj(), instruction.param, value.object);
+							SetField(createdObject.object.Obj(), instruction.param, value.object);
 						}
 						else if (value.enumItem != -1)
 						{
-							SetField(created[created.Count() - 1].Obj(), instruction.param, value.enumItem);
+							SetField(createdObject.object.Obj(), instruction.param, value.enumItem);
 						}
 						else
 						{
-							SetField(created[created.Count() - 1].Obj(), instruction.param, value.token);
+							SetField(createdObject.object.Obj(), instruction.param, value.token);
 						}
 					}
 					break;
 				case AstInsType::ResolveAmbiguity:
 					{
-						if (instruction.count <= 0 || pushed.Count() < instruction.count)
+						vint expectedLeavings = created[created.Count() - 1].pushedCount;
+						if (instruction.count <= 0 || pushed.Count() < expectedLeavings + instruction.count)
 						{
 							throw AstInsException(
 								L"There are not enough candidates to create an ambiguity node.",
@@ -422,9 +435,7 @@ AstInsReceiverBase
 							candidates[i] = value.object;
 						}
 
-						ObjectOrToken value;
-						value.object = ResolveAmbiguity(instruction.param, candidates);
-						pushed.Add(value);
+						pushed.Add(ObjectOrToken{ ResolveAmbiguity(instruction.param, candidates) });
 					}
 					break;
 				}

@@ -270,9 +270,11 @@ Instructions
 			ObjectTypeMismatchedToField,				// ObjectTypeMismatchedToField(Field)	: Unable to assign an object to a field because the type does not match.
 
 			NoRootObject,								// NoRootObject()						: There is no created objects.
+			TooManyUnassignedValues,					// LeavingUnassignedValues()			: The value to reopen is not the only unassigned value.
 			MissingValueToReopen,						// MissingValueToReopen()				: There is no pushed value to reopen.
 			ReopenedValueIsNotObject,					// ReopenedValueIsNotObject()			: The pushed value to reopen is not an object.
 			MissingValueToDiscard,						// MissingValueToDiscard()				: There is no pushed value to discard.
+			LeavingUnassignedValues,					// LeavingUnassignedValues()			: There are still values to assign to fields before finishing an object.
 			MissingFieldValue,							// MissingFieldValue()					: There is no pushed value to be assigned to a field.
 			MissingAmbiguityCandidate,					// MissingAmbiguityCandidate()			: There are not enough candidates to create an ambiguity node.
 			AmbiguityCandidateIsNotObject,				// AmbiguityCandidateIsNotObject()		: Tokens or enum items cannot be ambiguity candidates.
@@ -309,13 +311,19 @@ Instructions
 			{
 				Ptr<ParsingAstBase>						object;
 				vint									pushedCount;
+
+				explicit CreatedObject(Ptr<ParsingAstBase> _object, vint _pushedCount) : object(_object), pushedCount(_pushedCount) {}
 			};
 
 			struct ObjectOrToken
 			{
 				Ptr<ParsingAstBase>						object;
 				vint32_t								enumItem = -1;
-				regex::RegexToken						token;
+				regex::RegexToken						token = {};
+
+				explicit ObjectOrToken(Ptr<ParsingAstBase> _object) : object(_object) {}
+				explicit ObjectOrToken(vint32_t _enumItem) : enumItem(_enumItem) {}
+				explicit ObjectOrToken(const regex::RegexToken& _token) : token(_token) {}
 			};
 
 			collections::List<CreatedObject>			created;
