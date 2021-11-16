@@ -25,14 +25,16 @@ LexerSymbolManager
 			{
 				friend class LexerSymbolManager;
 			protected:
+				LexerSymbolManager*			ownerManager;
 				WString						name;
 
-				TokenSymbol(const WString& _name);
+				TokenSymbol(LexerSymbolManager* _ownerManager, const WString& _name);
 			public:
 				WString						regex;
 				bool						discarded = false;
-
-				const WString&				Name();
+				
+				LexerSymbolManager*			Owner() { return ownerManager; }
+				const WString&				Name() { return name; }
 			};
 
 			class LexerSymbolManager : public Object

@@ -1,4 +1,4 @@
-#include "../../../Source/Syntax/SyntaxSymbol.h"
+#include "../../../Source/Syntax/SyntaxSymbolWriter.h"
 
 using namespace vl;
 using namespace vl::glr::parsergen;

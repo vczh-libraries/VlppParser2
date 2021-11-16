@@ -12,14 +12,10 @@ namespace vl
 TokenSymbol
 ***********************************************************************/
 
-			TokenSymbol::TokenSymbol(const WString& _name)
-				:name(_name)
+			TokenSymbol::TokenSymbol(LexerSymbolManager* _ownerManager, const WString& _name)
+				: ownerManager(_ownerManager)
+				, name(_name)
 			{
-			}
-
-			const WString& TokenSymbol::Name()
-			{
-				return name;
 			}
 
 /***********************************************************************
@@ -33,7 +29,7 @@ LexerSymbolManager
 
 			TokenSymbol* LexerSymbolManager::CreateToken(const WString& _name, const WString& _regex)
 			{
-				auto token = new TokenSymbol(_name);
+				auto token = new TokenSymbol(this, _name);
 				token->regex = _regex;
 				if (!tokens.Add(_name, token))
 				{

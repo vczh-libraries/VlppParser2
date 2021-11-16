@@ -1,0 +1,255 @@
+/***********************************************************************
+Author: Zihan Chen (vczh)
+Licensed under https://github.com/vczh-libraries/License
+***********************************************************************/
+
+#ifndef VCZH_PARSER2_SYNTAX_SYNTAXWRITER
+#define VCZH_PARSER2_SYNTAX_SYNTAXWRITER
+
+#include "SyntaxSymbol.h"
+
+namespace vl
+{
+	namespace glr
+	{
+		namespace parsergen
+		{
+			namespace syntax_writer
+			{
+
+/***********************************************************************
+Clause
+***********************************************************************/
+
+				struct Token
+				{
+					vint32_t				id;
+					vint32_t				field = -1;
+				};
+
+				struct Rule
+				{
+					RuleSymbol*				rule;
+					vint32_t				field = -1;
+				};
+
+				template<typename T>
+				struct Use
+				{
+					T						body;
+				};
+
+				template<typename T>
+				struct Loop
+				{
+					T						body;
+				};
+
+				template<typename T>
+				struct Opt
+				{
+					T						body;
+				};
+
+				template<typename T, typename U>
+				struct Seq
+				{
+					T						first;
+					U						second;
+				};
+
+				template<typename T>
+				struct Create
+				{
+					T						body;
+					vint32_t				type;
+				};
+
+				template<typename T>
+				struct With
+				{
+					T						body;
+					vint32_t				field;
+					vint32_t				enumItem;
+				};
+
+/***********************************************************************
+Verification
+***********************************************************************/
+
+				template<typename T>
+				struct IsClause_ { static constexpr bool Value = false; };
+
+				template<>
+				struct IsClause_<Token> { static constexpr bool Value = true; };
+
+				template<>
+				struct IsClause_<Rule> { static constexpr bool Value = true; };
+
+				template<typename T>
+				struct IsClause_<Use<T>> { static constexpr bool Value = IsClause<T>::Value; };
+
+				template<typename T>
+				struct IsClause_<Loop<T>> { static constexpr bool Value = IsClause<T>::Value; };
+
+				template<typename T>
+				struct IsClause_<Opt<T>> { static constexpr bool Value = IsClause<T>::Value; };
+
+				template<typename T, typename U>
+				struct IsClause_<Seq<T, U>> { static constexpr bool Value = IsClause<T>::Value && IsClause<U>::Value; };
+
+				template<typename T>
+				struct IsClause_<Create<T>> { static constexpr bool Value = IsClause<T>::Value; };
+
+				template<typename T>
+				struct IsClause_<With<T>> { static constexpr bool Value = IsClause<T>::Value; };
+
+				template<typename T>
+				constexpr bool IsClause = IsClause_<T>::Value;
+
+/***********************************************************************
+Operators
+***********************************************************************/
+
+				template<typename T>
+				inline Token tok(T id)
+				{
+					return { (vint32_t)id };
+				}
+
+				template<typename T, typename F>
+				inline Token tok(T id, F field)
+				{
+					return { (vint32_t)id,(vint32_t)field };
+				}
+
+				inline Rule rule(RuleSymbol* r)
+				{
+					return { r };
+				}
+
+				template<typename F>
+				inline Rule rule(RuleSymbol* r, F field)
+				{
+					return { r,(vint32_t)field };
+				}
+
+				template<typename C>
+				inline std::enable_if_t<IsClause<C>, Use<C>> operator!(const C& clause)
+				{
+					return { clause };
+				}
+
+				template<typename C>
+				inline std::enable_if_t<IsClause<C>, Loop<C>> operator*(const C& clause)
+				{
+					return { clause };
+				}
+
+				template<typename C>
+				inline std::enable_if_t<IsClause<C>, Opt<C>> opt(const C& clause)
+				{
+					return { clause };
+				}
+
+				template<typename C1, typename C2>
+				inline std::enable_if_t<IsClause<C1> && IsClause<C2>, Seq<C1, C2>> opt(const C1& c1, const C2& c2)
+				{
+					return { c1,c2 };
+				}
+
+				template<typename C, typename T>
+				inline std::enable_if_t<IsClause<C>, Opt<C>> create(const C& clause, T type)
+				{
+					return { clause,(vint32_t)type };
+				}
+
+				template<typename C, typename F, typename E>
+				inline With<Create<C>> with(const Create<C>& clause, F field, E enumItem)
+				{
+					return{ clause,(vint32_t)field,(vint32_t)enumItem };
+				}
+
+				template<typename C, typename F, typename E>
+				inline With<With<C>> with(const With<C>& clause, F field, E enumItem)
+				{
+					return{ clause,(vint32_t)field,(vint32_t)enumItem };
+				}
+
+/***********************************************************************
+Builder
+***********************************************************************/
+
+				struct Clause
+				{
+				private:
+					struct StatePair
+					{
+						StateSymbol*			begin;
+						StateSymbol*			end;
+					};
+
+					RuleSymbol*					ruleSymbol;
+
+					StatePair Build(const Token& clause)
+					{
+						throw 0;
+					}
+
+					StatePair Build(const Rule& clause)
+					{
+						throw 0;
+					}
+
+					template<typename C>
+					StatePair Build(const Use<C>& clause)
+					{
+						throw 0;
+					}
+
+					template<typename C>
+					StatePair Build(const Loop<C>& clause)
+					{
+						throw 0;
+					}
+
+					template<typename C>
+					StatePair Build(const Opt<C>& clause)
+					{
+						throw 0;
+					}
+
+					template<typename C1, typename C2>
+					StatePair Build(const Seq<C1, C2>& clause)
+					{
+						throw 0;
+					}
+
+					template<typename C>
+					StatePair Build(const Create<C>& clause)
+					{
+						throw 0;
+					}
+
+					template<typename C>
+					StatePair Build(const With<C>& clause)
+					{
+						throw 0;
+					}
+				public:
+
+					Clause(RuleSymbol* _ruleSymbol) : ruleSymbol(_ruleSymbol) {}
+
+					template<typename C>
+					std::enable_if_t<IsClause<C>, Clause&> operator=(const C& clause)
+					{
+						auto pair = Build(clause);
+						ruleSymbol->startStates.Add(pair.begin);
+					}
+				};
+			}
+		}
+	}
+}
+
+#endif

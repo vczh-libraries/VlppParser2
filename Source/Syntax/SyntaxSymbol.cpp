@@ -9,17 +9,36 @@ namespace vl
 			using namespace collections;
 
 /***********************************************************************
-RuleSymbol
+StateSymbol
 ***********************************************************************/
 
-			RuleSymbol::RuleSymbol(const WString& _name)
-				:name(_name)
+			StateSymbol::StateSymbol(RuleSymbol* _rule)
+				: ownerManager(_rule->Owner())
+				, rule(_rule)
 			{
 			}
 
-			const WString& RuleSymbol::Name()
+/***********************************************************************
+EdgeSymbol
+***********************************************************************/
+
+			EdgeSymbol::EdgeSymbol(StateSymbol* _from, StateSymbol* _to)
+				: ownerManager(_from->Owner())
+				, fromState(_from)
+				, toState(_to)
 			{
-				return name;
+				fromState->outEdges.Add(this);
+				toState->inEdges.Add(this);
+			}
+
+/***********************************************************************
+RuleSymbol
+***********************************************************************/
+
+			RuleSymbol::RuleSymbol(SyntaxSymbolManager* _ownerManager, const WString& _name)
+				: ownerManager(_ownerManager)
+				, name(_name)
+			{
 			}
 
 /***********************************************************************
@@ -33,7 +52,7 @@ SyntaxSymbolManager
 
 			RuleSymbol* SyntaxSymbolManager::CreateRule(const WString& name)
 			{
-				auto rule = new RuleSymbol(name);
+				auto rule = new RuleSymbol(this, name);
 				if (!rules.Add(name, rule))
 				{
 					global.AddError(
@@ -42,6 +61,20 @@ SyntaxSymbolManager
 						);
 				}
 				return rule;
+			}
+
+			StateSymbol* SyntaxSymbolManager::CreateState(RuleSymbol* rule)
+			{
+				auto symbol = new StateSymbol(rule);
+				states.Add(symbol);
+				return symbol;
+			}
+
+			EdgeSymbol* SyntaxSymbolManager::CreateEdge(StateSymbol* from, StateSymbol* to)
+			{
+				auto symbol = new EdgeSymbol(from, to);
+				edges.Add(symbol);
+				return symbol;
 			}
 		}
 	}
