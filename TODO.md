@@ -111,6 +111,7 @@
 
 ## Work Items
 
+- `EndObject` after `ReopenObject` doesn't update `ParsingAstBase::codeRange::start`.
 - `JsonEscapeString` `JsonUnescapeString` handle surrogate pairs correctly.
 - Switching lexical analyzer during parsing.
   - Refactor some properties in `LexerSymbolManager` into `LexerFile` with a name.
