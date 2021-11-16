@@ -39,9 +39,111 @@ export 1
 		LEXER(input, tokens);
 		CalculatorAstInsReceiver receiver;
 		TEST_EXCEPTION(
-			receiver.Execute({ AstInsType::Token }, tokens[0]),
+			receiver.Execute({ AstInsType::Token }, tokens[1]),
 			AstInsException,
 			[](const AstInsException& e) { TEST_ASSERT(e.error == AstInsErrorType::NoRootObject); }
+			);
+	});
+
+	TEST_CASE(L"TooManyUnassignedValues")
+	{
+		WString input = LR"(
+export 1
+)";
+		LEXER(input, tokens);
+		CalculatorAstInsReceiver receiver;
+		receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::Module }, tokens[0]);
+		receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::NumExpr }, tokens[1]);
+		receiver.Execute({ AstInsType::EndObject }, tokens[1]);
+		receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::NumExpr }, tokens[1]);
+		receiver.Execute({ AstInsType::EndObject }, tokens[1]);
+		TEST_EXCEPTION(
+			receiver.Execute({ AstInsType::ReopenObject }, tokens[1]),
+			AstInsException,
+			[](const AstInsException& e) { TEST_ASSERT(e.error == AstInsErrorType::TooManyUnassignedValues); }
+			);
+	});
+
+	TEST_CASE(L"MissingValueToReopen")
+	{
+		WString input = LR"(
+export 1
+)";
+		LEXER(input, tokens);
+		CalculatorAstInsReceiver receiver;
+		receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::Module }, tokens[0]);
+		receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::NumExpr }, tokens[1]);
+		TEST_EXCEPTION(
+			receiver.Execute({ AstInsType::ReopenObject }, tokens[1]),
+			AstInsException,
+			[](const AstInsException& e) { TEST_ASSERT(e.error == AstInsErrorType::MissingValueToReopen); }
+			);
+	});
+
+	TEST_CASE(L"ReopenedValueIsNotObject (Token)")
+	{
+		WString input = LR"(
+export 1
+)";
+		LEXER(input, tokens);
+		CalculatorAstInsReceiver receiver;
+		receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::Module }, tokens[0]);
+		receiver.Execute({ AstInsType::Token }, tokens[1]);
+		TEST_EXCEPTION(
+			receiver.Execute({ AstInsType::ReopenObject }, tokens[1]),
+			AstInsException,
+			[](const AstInsException& e) { TEST_ASSERT(e.error == AstInsErrorType::ReopenedValueIsNotObject); }
+			);
+	});
+
+	TEST_CASE(L"ReopenedValueIsNotObject (EnumItem)")
+	{
+		WString input = LR"(
+export 1
+)";
+		LEXER(input, tokens);
+		CalculatorAstInsReceiver receiver;
+		receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::Module }, tokens[0]);
+		receiver.Execute({ AstInsType::EnumItem, 0 }, tokens[1]);
+		TEST_EXCEPTION(
+			receiver.Execute({ AstInsType::ReopenObject }, tokens[1]),
+			AstInsException,
+			[](const AstInsException& e) { TEST_ASSERT(e.error == AstInsErrorType::ReopenedValueIsNotObject); }
+			);
+	});
+
+	TEST_CASE(L"MissingValueToDiscard")
+	{
+		WString input = LR"(
+export 1
+)";
+		LEXER(input, tokens);
+		CalculatorAstInsReceiver receiver;
+		receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::Module }, tokens[0]);
+		receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::NumExpr }, tokens[1]);
+		TEST_EXCEPTION(
+			receiver.Execute({ AstInsType::DiscardValue }, tokens[1]),
+			AstInsException,
+			[](const AstInsException& e) { TEST_ASSERT(e.error == AstInsErrorType::MissingValueToDiscard); }
+			);
+	});
+
+	TEST_CASE(L"LeavingUnassignedValues")
+	{
+		WString input = LR"(
+export 1
+)";
+		LEXER(input, tokens);
+		CalculatorAstInsReceiver receiver;
+		receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::Module }, tokens[0]);
+		receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::NumExpr }, tokens[1]);
+		receiver.Execute({ AstInsType::EndObject }, tokens[1]);
+		receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::NumExpr }, tokens[1]);
+		receiver.Execute({ AstInsType::EndObject }, tokens[1]);
+		TEST_EXCEPTION(
+			receiver.Execute({ AstInsType::EndObject }, tokens[1]),
+			AstInsException,
+			[](const AstInsException& e) { TEST_ASSERT(e.error == AstInsErrorType::LeavingUnassignedValues); }
 			);
 	});
 
@@ -77,7 +179,7 @@ export 1
 			);
 	});
 
-	TEST_CASE(L"AmbiguityCandidateIsNotObject")
+	TEST_CASE(L"AmbiguityCandidateIsNotObject (Token)")
 	{
 		WString input = LR"(
 export 1
@@ -94,7 +196,7 @@ export 1
 			);
 	});
 
-	TEST_CASE(L"AmbiguityCandidateIsNotObject")
+	TEST_CASE(L"AmbiguityCandidateIsNotObject (EnumItem)")
 	{
 		WString input = LR"(
 export 1
