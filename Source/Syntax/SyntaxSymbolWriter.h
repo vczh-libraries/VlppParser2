@@ -305,7 +305,7 @@ Builder
 					template<typename C1, typename C2>
 					StatePair Build(const LoopSep<C1, C2>& clause)
 					{
-						throw 0;
+						return Build(opt(clause.body + loop(clause.delimiter + clause.body)));
 					}
 
 					template<typename C>
