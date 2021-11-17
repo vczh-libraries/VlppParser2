@@ -199,6 +199,7 @@ Builder
 
 				struct Clause
 				{
+					using StatePosMap = collections::Dictionary<StateSymbol*, vint>;
 				private:
 					struct StatePair
 					{
@@ -207,10 +208,38 @@ Builder
 					};
 
 					RuleSymbol*					ruleSymbol;
+					WString						clauseDisplayText;
+					StatePosMap					startPoses;
+					StatePosMap					endPoses;
+
+					StateSymbol* CreateState()
+					{
+						return ruleSymbol->Owner()->CreateState(ruleSymbol);
+					}
+
+					EdgeSymbol* CreateEdge(StateSymbol* from, StateSymbol* to)
+					{
+						return ruleSymbol->Owner()->CreateEdge(from, to);
+					}
 
 					StatePair Build(const Token& clause)
 					{
-						throw 0;
+						StatePair pair;
+						pair.begin = CreateState();
+						pair.end = CreateState();
+
+						auto edge = CreateEdge(pair.begin, pair.end);
+						edge->input.type = EdgeInputType::Token;
+						edge->input.token = clause.id;
+						if (clause.field != -1)
+						{
+							edge->insAfter.Add({ AstInsType::Field,clause.field });
+						}
+
+						startPoses.Add(pair.begin, clauseDisplayText.Length());
+						clauseDisplayText += clause.display;
+						endPoses.Add(pair.end, clauseDisplayText.Length());
+						return pair;
 					}
 
 					StatePair Build(const Rule& clause)
