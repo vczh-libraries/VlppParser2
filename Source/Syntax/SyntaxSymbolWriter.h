@@ -376,8 +376,23 @@ Builder
 					template<typename C>
 					std::enable_if_t<IsClause<C>, Clause&> operator=(const C& clause)
 					{
+						clauseDisplayText = L"";
+						startPoses.Clear();
+						endPoses.Clear();
+
 						auto pair = Build(clause);
 						ruleSymbol->startStates.Add(pair.begin);
+
+						vint l = clauseDisplayText.Length();
+						for (auto [state, pos] : startPoses)
+						{
+							state->label = clauseDisplayText.Left(pos) + L"@ " + clauseDisplayText.Right(l - pos);
+						}
+						for (auto [state, pos] : endPoses)
+						{
+							state->label = clauseDisplayText.Left(pos) + L" @" + clauseDisplayText.Right(l - pos);
+						}
+
 						return *this;
 					}
 				};
