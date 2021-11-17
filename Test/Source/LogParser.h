@@ -7,6 +7,7 @@ using namespace vl;
 using namespace vl::collections;
 using namespace vl::stream;
 using namespace vl::filesystem;
+using namespace vl::glr;
 using namespace vl::glr::parsergen;
 
 void LogSyntax(

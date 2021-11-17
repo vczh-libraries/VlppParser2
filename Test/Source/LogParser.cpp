@@ -2,6 +2,44 @@
 
 extern WString GetExePath();
 
+void LogInstruction(
+	AstIns ins,
+	WString(*typeName)(vint32_t),
+	WString(*fieldName)(vint32_t),
+	StreamWriter& writer
+)
+{
+	switch (ins.type)
+	{
+	case AstInsType::Token:
+		writer.WriteLine(L"Token()");
+		break;
+	case AstInsType::EnumItem:
+		writer.WriteLine(L"EnumItem(" + itow(ins.param) + L")");
+		break;
+	case AstInsType::BeginObject:
+		writer.WriteLine(L"BeginObject(" + typeName(ins.param) + L")");
+		break;
+	case AstInsType::ReopenObject:
+		writer.WriteLine(L"ReopenObject()");
+		break;
+	case AstInsType::EndObject:
+		writer.WriteLine(L"EndObject()");
+		break;
+	case AstInsType::DiscardValue:
+		writer.WriteLine(L"DiscardValue()");
+		break;
+	case AstInsType::Field:
+		writer.WriteLine(L"Field(" + fieldName(ins.param) + L")");
+		break;
+	case AstInsType::ResolveAmbiguity:
+		writer.WriteLine(L"ResolveAmbiguity(" + typeName(ins.param) + L", " + itow(ins.count) + L")");
+		break;
+	default:
+		writer.WriteLine(L"<UNKNOWN-INSTRUCTION>");
+	}
+}
+
 void LogSyntax(
 	SyntaxSymbolManager& manager,
 	const WString& parserName,
@@ -43,7 +81,7 @@ void LogSyntax(
 					{
 						auto state = visited[i];
 						order.Add(state);
-						labels.Add(state, L"[" + itow(count++) + L"] " + state->label);
+						labels.Add(state, L"[" + itow(count++) + L"][" + ruleSymbol->Name() + L"]" + state->label);
 						for (auto edge : state->OutEdges())
 						{
 							auto target = edge->To();
@@ -61,6 +99,35 @@ void LogSyntax(
 	for (auto state : order)
 	{
 		writer.WriteLine(labels[state]);
+		for (auto edge : state->OutEdges())
+		{
+			switch (edge->input.type)
+			{
+			case EdgeInputType::Epsilon:
+				writer.WriteString(L"\tepsilon");
+				break;
+			case EdgeInputType::Token:
+				writer.WriteString(L"\ttoken: " + tokenName(edge->input.token));
+				break;
+			case EdgeInputType::Rule:
+				writer.WriteString(L"\trule: " + edge->input.rule->Name());
+				break;
+			}
+			writer.WriteLine(L" -> " + labels[edge->To()]);
+
+			for (auto&& ins : edge->insBefore)
+			{
+				writer.WriteString(L"\t\t- ");
+				LogInstruction(ins, typeName, fieldName, writer);
+			}
+
+			for (auto&& ins : edge->insAfter)
+			{
+				writer.WriteString(L"\t\t+ ");
+				LogInstruction(ins, typeName, fieldName, writer);
+			}
+
+		}
+		writer.WriteLine(L"");
 	}
-	writer.WriteLine(L"");
 }

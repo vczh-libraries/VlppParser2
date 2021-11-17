@@ -354,7 +354,7 @@ Builder
 						beginEdge->insAfter.Add({ AstInsType::BeginObject,clause.type });
 
 						auto endEdge = CreateEdge(bodyPair.end, pair.end);
-						beginEdge->insAfter.Add({ AstInsType::EndObject });
+						endEdge->insBefore.Add({ AstInsType::EndObject });
 
 						endPoses.Add(pair.end, clauseDisplayText.Length());
 						return pair;
@@ -366,8 +366,8 @@ Builder
 						auto pair = Build(clause.body);
 						CHECK_ERROR(pair.end->InEdges().Count() == 1, L"Internal error!");
 						auto edge = pair.end->InEdges()[0];
-						edge->insAfter.Add({ AstInsType::EnumItem,clause.enumItem });
-						edge->insAfter.Add({ AstInsType::Field,clause.field });
+						edge->insBefore.Add({ AstInsType::EnumItem,clause.enumItem });
+						edge->insBefore.Add({ AstInsType::Field,clause.field });
 						return pair;
 					}
 				public:
