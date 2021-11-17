@@ -7,6 +7,27 @@ using namespace vl::glr::parsergen;
 using namespace vl::glr::parsergen::syntax_writer;
 using namespace calculator;
 
+auto tok(CalculatorTokens id)
+{
+	auto d = CalculatorTokenDisplayText(id);
+	auto n = CalculatorTokenId(id);
+	return syntax_writer::tok(
+		id,
+		(d ? L"\"" + u8tow(U8String::Unmanaged(d)) + L"\"" : u8tow(U8String::Unmanaged(n)))
+		);
+}
+
+auto tok(CalculatorTokens id, CalculatorFields field)
+{
+	auto d = CalculatorTokenDisplayText(id);
+	auto n = CalculatorTokenId(id);
+	return syntax_writer::tok(
+		id,
+		(d ? L"\"" + u8tow(U8String::Unmanaged(d)) + L"\"" : u8tow(U8String::Unmanaged(n))),
+		field
+		);
+}
+
 void GenerateCalculatorSyntax(SyntaxSymbolManager& manager)
 {
 	auto _arg = manager.CreateRule(L"Arg");
