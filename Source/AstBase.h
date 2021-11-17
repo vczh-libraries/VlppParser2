@@ -246,6 +246,7 @@ Instructions
 			Token,										// Token()							: Push the current token as a value.
 			EnumItem,									// EnumItem(Value)					: Push an enum item.
 			BeginObject,								// BeginObject(Type)				: Begin creating an AST node.
+			BeginObjectLeftRecursive,					// BeginObjectLeftRecursive(Type)	: Begin creating an AST node, taking the ownership of the last pushed object.
 			ReopenObject,								// ReopenObject()					: Move the last pushed object back to creating status.
 			EndObject,									// EndObject()						: Finish creating an AST node, all objects pushed after BeginObject are supposed to be its fields.
 			DiscardValue,								// DiscardValue()					: Remove a pushed value.
@@ -270,6 +271,8 @@ Instructions
 			ObjectTypeMismatchedToField,				// ObjectTypeMismatchedToField(Field)	: Unable to assign an object to a field because the type does not match.
 
 			NoRootObject,								// NoRootObject()						: There is no created objects.
+			MissingLeftRecursiveValue,					// MissingLeftRecursiveValue()			: There is no pushed value to create left recursive object.
+			LeftRecursiveValueIsNotObject,				// LeftRecursiveValueIsNotObject()		: The pushed value to create left recursive object is not an object.
 			TooManyUnassignedValues,					// LeavingUnassignedValues()			: The value to reopen is not the only unassigned value.
 			MissingValueToReopen,						// MissingValueToReopen()				: There is no pushed value to reopen.
 			ReopenedValueIsNotObject,					// ReopenedValueIsNotObject()			: The pushed value to reopen is not an object.
