@@ -74,7 +74,7 @@ SyntaxSymbolManager
 
 			EdgeSymbol* SyntaxSymbolManager::CreateEdge(StateSymbol* from, StateSymbol* to)
 			{
-				CHECK_ERROR(!isCompact, L"vl::gre::parsergen::SyntaxSymbolManager::CreateState(RuleSymbol*)#Cannot change the automaton after calling BuildCompactSyntax().");
+				CHECK_ERROR(!isCompact, L"vl::gre::parsergen::SyntaxSymbolManager::CreateEdge(StateSymbol*, StateSymbol*)#Cannot change the automaton after calling BuildCompactSyntax().");
 				auto symbol = new EdgeSymbol(from, to);
 				edges.Add(symbol);
 				return symbol;
