@@ -44,6 +44,53 @@ export 1
 			);
 	});
 
+	TEST_CASE(L"MissingLeftRecursiveValue")
+	{
+		WString input = LR"(
+export 1
+)";
+		LEXER(input, tokens);
+		CalculatorAstInsReceiver receiver;
+		receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::Module }, tokens[0]);
+		TEST_EXCEPTION(
+			receiver.Execute({ AstInsType::BeginObjectLeftRecursive, (vint32_t)CalculatorClasses::Binary }, tokens[1]),
+			AstInsException,
+			[](const AstInsException& e) { TEST_ASSERT(e.error == AstInsErrorType::MissingLeftRecursiveValue); }
+			);
+	});
+
+	TEST_CASE(L"LeftRecursiveValueIsNotObject (Token)")
+	{
+		WString input = LR"(
+export 1
+)";
+		LEXER(input, tokens);
+		CalculatorAstInsReceiver receiver;
+		receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::Module }, tokens[0]);
+		receiver.Execute({ AstInsType::Token }, tokens[1]);
+		TEST_EXCEPTION(
+			receiver.Execute({ AstInsType::BeginObjectLeftRecursive, (vint32_t)CalculatorClasses::Binary }, tokens[1]),
+			AstInsException,
+			[](const AstInsException& e) { TEST_ASSERT(e.error == AstInsErrorType::LeftRecursiveValueIsNotObject); }
+			);
+	});
+
+	TEST_CASE(L"LeftRecursiveValueIsNotObject (EnumItem)")
+	{
+		WString input = LR"(
+export 1
+)";
+		LEXER(input, tokens);
+		CalculatorAstInsReceiver receiver;
+		receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::Module }, tokens[0]);
+		receiver.Execute({ AstInsType::EnumItem, 0 }, tokens[1]);
+		TEST_EXCEPTION(
+			receiver.Execute({ AstInsType::BeginObjectLeftRecursive, (vint32_t)CalculatorClasses::Binary }, tokens[1]),
+			AstInsException,
+			[](const AstInsException& e) { TEST_ASSERT(e.error == AstInsErrorType::LeftRecursiveValueIsNotObject); }
+			);
+	});
+
 	TEST_CASE(L"TooManyUnassignedValues")
 	{
 		WString input = LR"(
