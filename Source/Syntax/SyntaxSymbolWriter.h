@@ -84,7 +84,6 @@ Clause
 				{
 					T						body;
 					vint32_t				type;
-					WString					display;
 
 					template<typename F, typename E>
 					With<Create<T>> with(F field, E enumItem)
@@ -347,9 +346,9 @@ Builder
 						pair.end = CreateState();
 						startPoses.Add(pair.begin, clauseDisplayText.Length());
 
-						clauseDisplayText += L"( ";
+						clauseDisplayText += L"< ";
 						auto bodyPair = Build(clause.body);
-						clauseDisplayText += L" ) as " + clause.display;
+						clauseDisplayText += L" >";
 
 						auto beginEdge = CreateEdge(pair.begin, bodyPair.begin);
 						beginEdge->insAfter.Add({ AstInsType::BeginObject,clause.type });
@@ -364,7 +363,12 @@ Builder
 					template<typename C>
 					StatePair Build(const With<C>& clause)
 					{
-						throw 0;
+						auto pair = Build(clause.body);
+						CHECK_ERROR(pair.end->InEdges().Count() == 1, L"Internal error!");
+						auto edge = pair.end->InEdges()[0];
+						edge->insAfter.Add({ AstInsType::EnumItem,clause.enumItem });
+						edge->insAfter.Add({ AstInsType::Field,clause.field });
+						return pair;
 					}
 				public:
 					Clause(RuleSymbol* _ruleSymbol) : ruleSymbol(_ruleSymbol) {}
