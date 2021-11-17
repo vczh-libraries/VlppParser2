@@ -84,6 +84,7 @@ Clause
 				{
 					T						body;
 					vint32_t				type;
+					WString					display;
 
 					template<typename F, typename E>
 					With<Create<T>> with(F field, E enumItem)
@@ -341,7 +342,23 @@ Builder
 					template<typename C>
 					StatePair Build(const Create<C>& clause)
 					{
-						throw 0;
+						StatePair pair;
+						pair.begin = CreateState();
+						pair.end = CreateState();
+						startPoses.Add(pair.begin, clauseDisplayText.Length());
+
+						clauseDisplayText += L"( ";
+						auto bodyPair = Build(clause.body);
+						clauseDisplayText += L" ) as " + clause.display;
+
+						auto beginEdge = CreateEdge(pair.begin, bodyPair.begin);
+						beginEdge->insAfter.Add({ AstInsType::BeginObject,clause.type });
+
+						auto endEdge = CreateEdge(bodyPair.end, pair.end);
+						beginEdge->insAfter.Add({ AstInsType::EndObject });
+
+						endPoses.Add(pair.end, clauseDisplayText.Length());
+						return pair;
 					}
 
 					template<typename C>
