@@ -34,10 +34,9 @@ Clause
 					vint32_t				field;
 				};
 
-				template<typename T>
 				struct Use
 				{
-					T						body;
+					RuleSymbol*				rule;
 				};
 
 				template<typename T>
@@ -106,8 +105,8 @@ Verification
 				template<>
 				struct IsClause_<Rule> { static constexpr bool Value = true; };
 
-				template<typename T>
-				struct IsClause_<Use<T>> { static constexpr bool Value = IsClause_<T>::Value; };
+				template<>
+				struct IsClause_<Use> { static constexpr bool Value = true; };
 
 				template<typename T>
 				struct IsClause_<Loop<T>> { static constexpr bool Value = IsClause_<T>::Value; };
@@ -157,10 +156,9 @@ Operators
 					return { r,(vint32_t)field };
 				}
 
-				template<typename C>
-				inline std::enable_if_t<IsClause<C>, Use<C>> operator!(const C& clause)
+				inline Use use(RuleSymbol* r)
 				{
-					return { clause };
+					return { r };
 				}
 
 				template<typename C>
@@ -262,10 +260,21 @@ Builder
 						return pair;
 					}
 
-					template<typename C>
-					StatePair Build(const Use<C>& clause)
+					StatePair Build(const Use& clause)
 					{
-						throw 0;
+						StatePair pair;
+						pair.begin = CreateState();
+						pair.end = CreateState();
+
+						auto edge = CreateEdge(pair.begin, pair.end);
+						edge->input.type = EdgeInputType::Rule;
+						edge->input.rule = clause.rule;
+						edge->insAfter.Add({ AstInsType::ReopenObject });
+
+						startPoses.Add(pair.begin, clauseDisplayText.Length());
+						clauseDisplayText += L"!" + clause.rule->Name();
+						endPoses.Add(pair.end, clauseDisplayText.Length());
+						return pair;
 					}
 
 					template<typename C>

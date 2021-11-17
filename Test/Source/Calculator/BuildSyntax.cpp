@@ -57,14 +57,14 @@ void GenerateCalculatorSyntax(SyntaxSymbolManager& manager)
 	// "false" as False
 	Clause{ _exp0 } = create(tok(T::FALSE), C::False);
 	// "(" !Exp ")"
-	Clause{ _exp0 } = tok(T::OPEN_BRACE) + !rule(_exp) + tok(T::CLOSE_BRACE);
+	Clause{ _exp0 } = tok(T::OPEN_BRACE) + use(_exp) + tok(T::CLOSE_BRACE);
 	// "(" {Arg:args : ","} ")" "->" Exp:value as Func
 	Clause{ _exp0 } = create(tok(T::OPEN_BRACE) + loop(rule(_arg, F::Func_args), tok(T::COMMA)) + tok(T::CLOSE_BRACE) + tok(T::INFER) + rule(_exp, F::Func_value), C::Func);
 	// "let" ID:name "<-" Exp:value "in" Exp:result as LetExpr
 	Clause{ _exp0 } = create(tok(T::LET) + tok(T::ID, F::LetExpr_name) + tok(T::ASSIGN) + rule(_exp, F::LetExpr_value) + tok(T::IN) + rule(_exp, F::LetExpr_result), C::LetExpr);
 
 	// !Exp0
-	Clause{ _exp1 } = !rule(_exp0);
+	Clause{ _exp1 } = use(_exp0);
 	// "+" Exp1:operand as Unary {op = Positive}
 	Clause{ _exp1 } = create(tok(T::ADD) + rule(_exp1, F::Unary_operand), C::Unary).with(F::Unary_op, UnaryOp::Positive);
 	// "-" Exp1:operand as Unary {op = Negative}
@@ -73,21 +73,21 @@ void GenerateCalculatorSyntax(SyntaxSymbolManager& manager)
 	Clause{ _exp1 } = create(rule(_exp1, F::Call_func) + tok(T::OPEN_BRACE) + loop(rule(_exp, F::Call_args), tok(T::COMMA)) + tok(T::CLOSE_BRACE), C::Call);
 
 	// !Exp1
-	Clause{ _exp2 } = !rule(_exp1);
+	Clause{ _exp2 } = use(_exp1);
 	// Exp2:left "*" Exp1:right as Binary {op = "Multiply"}
 	Clause{ _exp2 } = create(rule(_exp2, F::Binary_left) + tok(T::MUL) + rule(_exp1, F::Binary_right), C::Binary).with(F::Binary_op, BinaryOp::Multiply);
 	// Exp2:left "/" Exp1:right as Binary {op = "Divid"}
 	Clause{ _exp2 } = create(rule(_exp2, F::Binary_left) + tok(T::DIV) + rule(_exp1, F::Binary_right), C::Binary).with(F::Binary_op, BinaryOp::Divid);
 
 	// !Exp2
-	Clause{ _exp3 } = !rule(_exp2);
+	Clause{ _exp3 } = use(_exp2);
 	// Exp3:left "+" Exp2:right as Binary {op = "Add"}
 	Clause{ _exp3 } = create(rule(_exp3, F::Binary_left) + tok(T::ADD) + rule(_exp2, F::Binary_right), C::Binary).with(F::Binary_op, BinaryOp::Add);
 	// Exp3:left "-" Exp2:right as Binary {op = "Minus"}
 	Clause{ _exp3 } = create(rule(_exp3, F::Binary_left) + tok(T::SUB) + rule(_exp2, F::Binary_right), C::Binary).with(F::Binary_op, BinaryOp::Minus);
 
 	// !Exp3
-	Clause{ _exp4 } = !rule(_exp3);
+	Clause{ _exp4 } = use(_exp3);
 	// Exp4:left "<" Exp3:right as Binary {op = "LT"}
 	Clause{ _exp4 } = create(rule(_exp4, F::Binary_left) + tok(T::LT) + rule(_exp3, F::Binary_right), C::Binary).with(F::Binary_op, BinaryOp::LT);
 	// Exp4:left "<=" Exp3:right as Binary {op = "LE"}
@@ -98,14 +98,14 @@ void GenerateCalculatorSyntax(SyntaxSymbolManager& manager)
 	Clause{ _exp4 } = create(rule(_exp4, F::Binary_left) + tok(T::GE) + rule(_exp3, F::Binary_right), C::Binary).with(F::Binary_op, BinaryOp::GE);
 
 	// !Exp4
-	Clause{ _exp5 } = !rule(_exp4);
+	Clause{ _exp5 } = use(_exp4);
 	// Exp5:left "==" Exp4:right as Binary {op = "EQ"}
 	Clause{ _exp5 } = create(rule(_exp5, F::Binary_left) + tok(T::EQ) + rule(_exp4, F::Binary_right), C::Binary).with(F::Binary_op, BinaryOp::EQ);
 	// xp5:left "!=" Exp4:right as Binary {op = "NE"}
 	Clause{ _exp5 } = create(rule(_exp5, F::Binary_left) + tok(T::NE) + rule(_exp4, F::Binary_right), C::Binary).with(F::Binary_op, BinaryOp::NE);
 
 	// !Exp5
-	Clause{ _exp } = !rule(_exp5);
+	Clause{ _exp } = use(_exp5);
 
 	// ID:name as Import
 	Clause{ _import } = create(tok(T::ID, F::Import_name), C::Import);
