@@ -22,6 +22,8 @@ TEST_FILE
 		global.headerGuard = L"VCZH_PARSER2_UNITTEST_CALCULATOR";
 		GenerateCalculatorSyntax(syntaxManager);
 		TEST_ASSERT(global.Errors().Count() == 0);
+		syntaxManager.BuildCompactSyntax();
+		TEST_ASSERT(global.Errors().Count() == 0);
 
 		auto output = GenerateParserFileNames(global);
 

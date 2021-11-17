@@ -121,17 +121,21 @@ SyntaxSymbolManager
 				StateList					states;
 				EdgeList					edges;
 				ParserSymbolManager&		global;
+				bool						isCompact = false;
 
+				void						BuildCompactSyntaxInternal();
 			public:
 				SyntaxSymbolManager(ParserSymbolManager& _global);
 
 				RuleSymbol*					CreateRule(const WString& name);
 				StateSymbol*				CreateState(RuleSymbol* rule);
 				EdgeSymbol*					CreateEdge(StateSymbol* from, StateSymbol* to);
+				void						BuildCompactSyntax();
 
 				ParserSymbolManager&		Global() { return global; }
 				const auto&					Rules() { return rules.map; }
 				const auto&					RuleOrder() { return rules.order; }
+				bool						IsCompact() { return isCompact; }
 			};
 
 			extern void						CreateParserGenSyntax(SyntaxSymbolManager& manager);

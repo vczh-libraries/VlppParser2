@@ -18,6 +18,8 @@ TEST_FILE
 		InitializeParserSymbolManager(global);
 		CreateParserGenSyntax(syntaxManager);
 		TEST_ASSERT(global.Errors().Count() == 0);
+		syntaxManager.BuildCompactSyntax();
+		TEST_ASSERT(global.Errors().Count() == 0);
 
 		auto output = GenerateParserFileNames(global);
 
