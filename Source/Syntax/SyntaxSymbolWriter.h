@@ -244,7 +244,22 @@ Builder
 
 					StatePair Build(const Rule& clause)
 					{
-						throw 0;
+						StatePair pair;
+						pair.begin = CreateState();
+						pair.end = CreateState();
+
+						auto edge = CreateEdge(pair.begin, pair.end);
+						edge->input.type = EdgeInputType::Rule;
+						edge->input.rule = clause.rule;
+						if (clause.field != -1)
+						{
+							edge->insAfter.Add({ AstInsType::Field,clause.field });
+						}
+
+						startPoses.Add(pair.begin, clauseDisplayText.Length());
+						clauseDisplayText += clause.rule->Name();
+						endPoses.Add(pair.end, clauseDisplayText.Length());
+						return pair;
 					}
 
 					template<typename C>
