@@ -38,6 +38,7 @@ StateSymbol
 
 				StateSymbol(RuleSymbol* _rule);
 			public:
+				WString						label;
 
 				SyntaxSymbolManager*		Owner() { return ownerManager; }
 				RuleSymbol*					Rule() { return rule; }
@@ -49,10 +50,26 @@ StateSymbol
 EdgeSymbol
 ***********************************************************************/
 
+			enum class EdgeInputType
+			{
+				Epsilon,
+				Token,
+				Rule,
+			};
+
+			struct EdgeInput
+			{
+				EdgeInputType				type = EdgeInputType::Epsilon;
+				vint32_t					token = -1;
+				RuleSymbol*					rule = nullptr;
+			};
+
 			class EdgeSymbol : public Object
 			{
 				friend class EdgeSymbol;
 				friend class SyntaxSymbolManager;
+
+				using InsList = collections::List<AstIns>;
 			protected:
 				SyntaxSymbolManager*		ownerManager;
 				StateSymbol*				fromState;
@@ -60,6 +77,9 @@ EdgeSymbol
 
 				EdgeSymbol(StateSymbol* _from, StateSymbol* _to);
 			public:
+				EdgeInput					input;
+				InsList						insBefore;
+				InsList						insAfter;
 
 				SyntaxSymbolManager*		Owner() { return ownerManager; }
 				StateSymbol*				From() { return fromState; }
