@@ -6,8 +6,6 @@ using namespace vl::stream;
 using namespace vl::regex;
 using namespace calculator;
 
-extern WString GetExePath();
-
 TEST_FILE
 {
 	TEST_CASE(L"Test CalculatorLexerData")

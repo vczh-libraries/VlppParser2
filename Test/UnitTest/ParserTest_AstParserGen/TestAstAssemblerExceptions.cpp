@@ -8,7 +8,6 @@ using namespace vl::glr;
 using namespace vl::glr::parsergen;
 using namespace calculator;
 
-extern WString GetExePath();
 extern void GenerateCalculatorLexer(LexerSymbolManager& manager);
 
 TEST_FILE
