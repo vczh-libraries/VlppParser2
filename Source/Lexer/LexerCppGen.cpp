@@ -53,9 +53,9 @@ WriteLexerHeaderFile
 					writer.WriteLine(L"");
 					writer.WriteLine(prefix + L"constexpr vl::vint " + manager.Global().name + L"TokenCount = " + itow(manager.Tokens().Count()) + L";");
 					writer.WriteLine(prefix + L"extern bool " + manager.Global().name + L"TokenDeleter(vl::vint token);");
-					writer.WriteLine(prefix + L"extern const char8_t* " + manager.Global().name + L"TokenId(" + manager.Global().name + L"Tokens token);");
-					writer.WriteLine(prefix + L"extern const char8_t* " + manager.Global().name + L"TokenDisplayText(" + manager.Global().name + L"Tokens token);");
-					writer.WriteLine(prefix + L"extern const char8_t* " + manager.Global().name + L"TokenRegex(" + manager.Global().name + L"Tokens token);");
+					writer.WriteLine(prefix + L"extern const wchar_t* " + manager.Global().name + L"TokenId(" + manager.Global().name + L"Tokens token);");
+					writer.WriteLine(prefix + L"extern const wchar_t* " + manager.Global().name + L"TokenDisplayText(" + manager.Global().name + L"Tokens token);");
+					writer.WriteLine(prefix + L"extern const wchar_t* " + manager.Global().name + L"TokenRegex(" + manager.Global().name + L"Tokens token);");
 					WriteLoadDataFunctionHeader(prefix, manager.Global().name + L"LexerData", writer);
 				}
 				WriteNssEnd(manager.Global().cppNss, writer);
@@ -141,12 +141,12 @@ WriteLexerCppFile
 				}
 				{
 					writer.WriteLine(L"");
-					writer.WriteLine(prefix + L"const char8_t* " + manager.Global().name + L"TokenId(" + manager.Global().name + L"Tokens token)");
+					writer.WriteLine(prefix + L"const wchar_t* " + manager.Global().name + L"TokenId(" + manager.Global().name + L"Tokens token)");
 					writer.WriteLine(prefix + L"{");
-					writer.WriteLine(prefix + L"\tstatic const char8_t* results[] = {");
+					writer.WriteLine(prefix + L"\tstatic const wchar_t* results[] = {");
 					for (auto tokenName : manager.TokenOrder())
 					{
-						writer.WriteLine(prefix + L"\t\tu8\"" + tokenName + L"\",");
+						writer.WriteLine(prefix + L"\t\tL\"" + tokenName + L"\",");
 					}
 					writer.WriteLine(prefix + L"\t};");
 					writer.WriteLine(prefix + L"\tvl::vint index = (vl::vint)token;");
@@ -155,9 +155,9 @@ WriteLexerCppFile
 				}
 				{
 					writer.WriteLine(L"");
-					writer.WriteLine(prefix + L"const char8_t* " + manager.Global().name + L"TokenDisplayText(" + manager.Global().name + L"Tokens token)");
+					writer.WriteLine(prefix + L"const wchar_t* " + manager.Global().name + L"TokenDisplayText(" + manager.Global().name + L"Tokens token)");
 					writer.WriteLine(prefix + L"{");
-					writer.WriteLine(prefix + L"\tstatic const char8_t* results[] = {");
+					writer.WriteLine(prefix + L"\tstatic const wchar_t* results[] = {");
 					for (auto tokenName : manager.TokenOrder())
 					{
 						auto displayText = manager.Tokens()[tokenName]->displayText;
@@ -167,7 +167,7 @@ WriteLexerCppFile
 						}
 						else
 						{
-							writer.WriteString(prefix + L"\t\tu8\"");
+							writer.WriteString(prefix + L"\t\tL\"");
 							WriteCppStringBody(displayText, writer);
 							writer.WriteLine(L"\",");
 						}
@@ -179,12 +179,12 @@ WriteLexerCppFile
 				}
 				{
 					writer.WriteLine(L"");
-					writer.WriteLine(prefix + L"const char8_t* " + manager.Global().name + L"TokenRegex(" + manager.Global().name + L"Tokens token)");
+					writer.WriteLine(prefix + L"const wchar_t* " + manager.Global().name + L"TokenRegex(" + manager.Global().name + L"Tokens token)");
 					writer.WriteLine(prefix + L"{");
-					writer.WriteLine(prefix + L"\tstatic const char8_t* results[] = {");
+					writer.WriteLine(prefix + L"\tstatic const wchar_t* results[] = {");
 					for (auto tokenName : manager.TokenOrder())
 					{
-						writer.WriteString(prefix + L"\t\tu8\"");
+						writer.WriteString(prefix + L"\t\tL\"");
 						WriteCppStringBody(manager.Tokens()[tokenName]->regex, writer);
 						writer.WriteLine(L"\",");
 					}

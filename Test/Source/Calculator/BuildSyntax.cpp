@@ -13,7 +13,7 @@ auto tok(CalculatorTokens id)
 	auto n = CalculatorTokenId(id);
 	return syntax_writer::tok(
 		id,
-		(d ? L"\"" + u8tow(U8String::Unmanaged(d)) + L"\"" : u8tow(U8String::Unmanaged(n)))
+		(d ? L"\"" + WString::Unmanaged(d) + L"\"" : WString::Unmanaged(n))
 		);
 }
 
@@ -23,7 +23,7 @@ auto tok(CalculatorTokens id, CalculatorFields field)
 	auto n = CalculatorTokenId(id);
 	return syntax_writer::tok(
 		id,
-		(d ? L"\"" + u8tow(U8String::Unmanaged(d)) + L"\"" : u8tow(U8String::Unmanaged(n))),
+		(d ? L"\"" + WString::Unmanaged(d) + L"\"" : WString::Unmanaged(n)),
 		field
 		);
 }

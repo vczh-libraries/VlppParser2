@@ -41,9 +41,9 @@ namespace calculator
 
 	constexpr vl::vint CalculatorTokenCount = 24;
 	extern bool CalculatorTokenDeleter(vl::vint token);
-	extern const char8_t* CalculatorTokenId(CalculatorTokens token);
-	extern const char8_t* CalculatorTokenDisplayText(CalculatorTokens token);
-	extern const char8_t* CalculatorTokenRegex(CalculatorTokens token);
+	extern const wchar_t* CalculatorTokenId(CalculatorTokens token);
+	extern const wchar_t* CalculatorTokenDisplayText(CalculatorTokens token);
+	extern const wchar_t* CalculatorTokenRegex(CalculatorTokens token);
 	extern void CalculatorLexerData(vl::stream::IStream& outputStream);
 }
 #endif

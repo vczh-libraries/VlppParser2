@@ -17,4 +17,9 @@ void LogSyntax(SyntaxSymbolManager& manager, const WString& parserName, const WS
 	BomEncoder encoder(BomEncoder::Utf8);
 	EncoderStream encoderStream(fileStream, encoder);
 	StreamWriter writer(encoderStream);
+
+	for (auto ruleName : manager.RuleOrder())
+	{
+		auto ruleSymbol = manager.Rules()[ruleName];
+	}
 }
