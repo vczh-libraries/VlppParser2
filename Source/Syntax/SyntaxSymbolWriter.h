@@ -225,6 +225,7 @@ Builder
 						StatePair pair;
 						pair.begin = CreateState();
 						pair.end = CreateState();
+						startPoses.Add(pair.begin, clauseDisplayText.Length());
 
 						auto edge = CreateEdge(pair.begin, pair.end);
 						edge->input.type = EdgeInputType::Token;
@@ -234,7 +235,6 @@ Builder
 							edge->insAfter.Add({ AstInsType::Field,clause.field });
 						}
 
-						startPoses.Add(pair.begin, clauseDisplayText.Length());
 						clauseDisplayText += clause.display;
 						endPoses.Add(pair.end, clauseDisplayText.Length());
 						return pair;
@@ -245,6 +245,7 @@ Builder
 						StatePair pair;
 						pair.begin = CreateState();
 						pair.end = CreateState();
+						startPoses.Add(pair.begin, clauseDisplayText.Length());
 
 						auto edge = CreateEdge(pair.begin, pair.end);
 						edge->input.type = EdgeInputType::Rule;
@@ -254,7 +255,6 @@ Builder
 							edge->insAfter.Add({ AstInsType::Field,clause.field });
 						}
 
-						startPoses.Add(pair.begin, clauseDisplayText.Length());
 						clauseDisplayText += clause.rule->Name();
 						endPoses.Add(pair.end, clauseDisplayText.Length());
 						return pair;
@@ -265,13 +265,13 @@ Builder
 						StatePair pair;
 						pair.begin = CreateState();
 						pair.end = CreateState();
+						startPoses.Add(pair.begin, clauseDisplayText.Length());
 
 						auto edge = CreateEdge(pair.begin, pair.end);
 						edge->input.type = EdgeInputType::Rule;
 						edge->input.rule = clause.rule;
 						edge->insAfter.Add({ AstInsType::ReopenObject });
 
-						startPoses.Add(pair.begin, clauseDisplayText.Length());
 						clauseDisplayText += L"!" + clause.rule->Name();
 						endPoses.Add(pair.end, clauseDisplayText.Length());
 						return pair;
@@ -280,7 +280,21 @@ Builder
 					template<typename C>
 					StatePair Build(const Loop<C>& clause)
 					{
-						throw 0;
+						StatePair pair;
+						pair.begin = CreateState();
+						pair.end = CreateState();
+						startPoses.Add(pair.begin, clauseDisplayText.Length());
+
+						clauseDisplayText += L"{ ";
+						auto bodyPair = Build(clause.body);
+						clauseDisplayText += L" }";
+
+						CreateEdge(pair.begin, bodyPair.begin);
+						CreateEdge(bodyPair.end, pair.end);
+						CreateEdge(pair.end, pair.begin);
+
+						endPoses.Add(pair.end, clauseDisplayText.Length());
+						return pair;
 					}
 
 					template<typename C1, typename C2>
