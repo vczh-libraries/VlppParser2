@@ -232,6 +232,7 @@ Builder
 						edge->input.token = clause.id;
 						if (clause.field != -1)
 						{
+							edge->insAfter.Add({ AstInsType::Token });
 							edge->insAfter.Add({ AstInsType::Field,clause.field });
 						}
 
@@ -253,6 +254,10 @@ Builder
 						if (clause.field != -1)
 						{
 							edge->insAfter.Add({ AstInsType::Field,clause.field });
+						}
+						else
+						{
+							edge->insAfter.Add({ AstInsType::DiscardValue });
 						}
 
 						clauseDisplayText += clause.rule->Name();
