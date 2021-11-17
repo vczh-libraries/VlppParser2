@@ -176,6 +176,47 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 				}
 			}
 
+			const wchar_t* ParserGenTypeName(ParserGenClasses type)
+			{
+				const wchar_t* results[] = {
+					L"Class",
+					L"ClassProp",
+					L"Enum",
+					L"EnumItem",
+					L"File",
+					L"Type",
+				};
+				vl::vint index = (vl::vint)type;
+				return 0 <= index && index < 6 ? results[index] : nullptr;
+			}
+
+			const wchar_t* ParserGenFieldName(ParserGenFields field)
+			{
+				switch(field)
+				{
+				case ParserGenFields::Class_props:
+					return L"Class::props";
+				case ParserGenFields::ClassProp_name:
+					return L"ClassProp::name";
+				case ParserGenFields::ClassProp_propType:
+					return L"ClassProp::propType";
+				case ParserGenFields::ClassProp_propTypeName:
+					return L"ClassProp::propTypeName";
+				case ParserGenFields::Enum_items:
+					return L"Enum::items";
+				case ParserGenFields::EnumItem_name:
+					return L"EnumItem::name";
+				case ParserGenFields::File_name:
+					return L"File::name";
+				case ParserGenFields::File_types:
+					return L"File::types";
+				case ParserGenFields::Type_name:
+					return L"Type::name";
+				default:
+					return nullptr;
+				}
+			}
+
 			vl::Ptr<vl::glr::ParsingAstBase> ParserGenAstInsReceiver::ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates)
 			{
 				switch((ParserGenClasses)type)

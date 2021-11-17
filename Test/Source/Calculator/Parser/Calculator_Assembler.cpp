@@ -326,6 +326,75 @@ CalculatorAstInsReceiver : public vl::glr::AstInsReceiverBase
 		}
 	}
 
+	const wchar_t* CalculatorTypeName(CalculatorClasses type)
+	{
+		const wchar_t* results[] = {
+			L"Arg",
+			L"Binary",
+			L"Call",
+			L"Expandable",
+			L"Expr",
+			L"False",
+			L"Func",
+			L"Import",
+			L"LetExpr",
+			L"Module",
+			L"NumExpr",
+			L"Ref",
+			L"True",
+			L"Unary",
+		};
+		vl::vint index = (vl::vint)type;
+		return 0 <= index && index < 14 ? results[index] : nullptr;
+	}
+
+	const wchar_t* CalculatorFieldName(CalculatorFields field)
+	{
+		switch(field)
+		{
+		case CalculatorFields::Arg_name:
+			return L"Arg::name";
+		case CalculatorFields::Binary_left:
+			return L"Binary::left";
+		case CalculatorFields::Binary_op:
+			return L"Binary::op";
+		case CalculatorFields::Binary_right:
+			return L"Binary::right";
+		case CalculatorFields::Call_args:
+			return L"Call::args";
+		case CalculatorFields::Call_func:
+			return L"Call::func";
+		case CalculatorFields::Expandable_expanded:
+			return L"Expandable::expanded";
+		case CalculatorFields::Func_args:
+			return L"Func::args";
+		case CalculatorFields::Func_value:
+			return L"Func::value";
+		case CalculatorFields::Import_name:
+			return L"Import::name";
+		case CalculatorFields::LetExpr_name:
+			return L"LetExpr::name";
+		case CalculatorFields::LetExpr_result:
+			return L"LetExpr::result";
+		case CalculatorFields::LetExpr_value:
+			return L"LetExpr::value";
+		case CalculatorFields::Module_exported:
+			return L"Module::exported";
+		case CalculatorFields::Module_imports:
+			return L"Module::imports";
+		case CalculatorFields::NumExpr_value:
+			return L"NumExpr::value";
+		case CalculatorFields::Ref_name:
+			return L"Ref::name";
+		case CalculatorFields::Unary_op:
+			return L"Unary::op";
+		case CalculatorFields::Unary_operand:
+			return L"Unary::operand";
+		default:
+			return nullptr;
+		}
+	}
+
 	vl::Ptr<vl::glr::ParsingAstBase> CalculatorAstInsReceiver::ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates)
 	{
 		switch((CalculatorClasses)type)

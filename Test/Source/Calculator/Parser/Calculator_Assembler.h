@@ -52,6 +52,9 @@ namespace calculator
 		Unary_operand = (static_cast<vl::vint32_t>(CalculatorClasses::Unary) << 8) + 1,
 	};
 
+	extern const wchar_t* CalculatorTypeName(CalculatorClasses type);
+	extern const wchar_t* CalculatorFieldName(CalculatorFields field);
+
 	class CalculatorAstInsReceiver : public vl::glr::AstInsReceiverBase
 	{
 	protected:

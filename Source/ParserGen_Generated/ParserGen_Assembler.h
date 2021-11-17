@@ -38,6 +38,9 @@ namespace vl
 				Type_name = (static_cast<vl::vint32_t>(ParserGenClasses::Type) << 8) + 0,
 			};
 
+			extern const wchar_t* ParserGenTypeName(ParserGenClasses type);
+			extern const wchar_t* ParserGenFieldName(ParserGenFields field);
+
 			class ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 			{
 			protected:

@@ -2,7 +2,14 @@
 
 extern WString GetExePath();
 
-void LogSyntax(SyntaxSymbolManager& manager, const WString& parserName, const WString& phase)
+void LogSyntax(
+	SyntaxSymbolManager& manager,
+	const WString& parserName,
+	const WString& phase,
+	WString(*typeName)(vint32_t),
+	WString(*fieldName)(vint32_t),
+	WString(*tokenName)(vint32_t)
+)
 {
 	auto outputDir = FilePath(GetExePath()) / L"../../Output" / parserName;
 	{

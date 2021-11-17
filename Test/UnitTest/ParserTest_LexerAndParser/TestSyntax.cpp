@@ -1,4 +1,4 @@
-#include "../../Source/Calculator/Parser/CalculatorAst.h"
+#include "../../Source/Calculator/Parser/Calculator_Assembler.h"
 #include "../../Source/Calculator/Parser/Calculator_Lexer.h"
 #include "../../Source/LogParser.h"
 
@@ -13,7 +13,18 @@ TEST_FILE
 	SyntaxSymbolManager syntaxManager(global);
 	GenerateCalculatorSyntax(syntaxManager);
 	TEST_CASE_ASSERT(global.Errors().Count() == 0);
-	LogSyntax(syntaxManager, L"Calculator", L"NFA[1]");
+	LogSyntax(
+		syntaxManager,
+		L"Calculator",
+		L"NFA[1]",
+		[](vint32_t type) { return WString::Unmanaged(CalculatorTypeName((CalculatorClasses)type)); },
+		[](vint32_t field) { return WString::Unmanaged(CalculatorFieldName((CalculatorFields)field)); },
+		[](vint32_t token)
+		{
+			auto n = CalculatorTokenId((CalculatorTokens)token);
+			auto d = CalculatorTokenDisplayText((CalculatorTokens)token);
+			return d ? L"\"" + WString::Unmanaged(d) + L"\"" : WString::Unmanaged(n);
+		});
 
 	MemoryStream lexerData;
 	CalculatorLexerData(lexerData);
