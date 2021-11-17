@@ -275,7 +275,7 @@ Builder
 						auto edge = CreateEdge(pair.begin, pair.end);
 						edge->input.type = EdgeInputType::Rule;
 						edge->input.rule = clause.rule;
-						edge->insAfter.Add({ AstInsType::ReopenObject });
+						edge->insBefore.Add({ AstInsType::ReopenObject });
 
 						clauseDisplayText += L"!" + clause.rule->Name();
 						endPoses.Add(pair.end, clauseDisplayText.Length());

@@ -81,7 +81,7 @@ void LogSyntax(
 					{
 						auto state = visited[i];
 						order.Add(state);
-						labels.Add(state, L"[" + itow(count++) + L"][" + ruleSymbol->Name() + L"]" + state->label);
+						labels.Add(state, L"[" + itow(count++) + L"][" + ruleSymbol->Name() + L"]" + state->label + (state->endingState ? L"[ENDING]" : L""));
 						for (auto edge : state->OutEdges())
 						{
 							auto target = edge->To();
