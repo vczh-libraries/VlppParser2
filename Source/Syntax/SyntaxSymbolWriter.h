@@ -306,13 +306,31 @@ Builder
 					template<typename C>
 					StatePair Build(const Opt<C>& clause)
 					{
-						throw 0;
+						StatePair pair;
+						pair.begin = CreateState();
+						pair.end = CreateState();
+						startPoses.Add(pair.begin, clauseDisplayText.Length());
+
+						clauseDisplayText += L"[ ";
+						auto bodyPair = Build(clause.body);
+						clauseDisplayText += L" ]";
+
+						CreateEdge(pair.begin, bodyPair.begin);
+						CreateEdge(bodyPair.end, pair.end);
+						CreateEdge(pair.begin, pair.end);
+
+						endPoses.Add(pair.end, clauseDisplayText.Length());
+						return pair;
 					}
 
 					template<typename C1, typename C2>
 					StatePair Build(const Seq<C1, C2>& clause)
 					{
-						throw 0;
+						auto firstPair = Build(clause.first);
+						clauseDisplayText += L" ";
+						auto secondPair = Build(clause.second);
+						CreateEdge(firstPair.end, secondPair.begin);
+						return { firstPair.begin,secondPair.end };
 					}
 
 					template<typename C>
