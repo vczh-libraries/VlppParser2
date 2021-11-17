@@ -25,8 +25,42 @@ void LogSyntax(
 	EncoderStream encoderStream(fileStream, encoder);
 	StreamWriter writer(encoderStream);
 
-	for (auto ruleName : manager.RuleOrder())
+	Dictionary<StateSymbol*, WString> labels;
+	List<StateSymbol*> order;
 	{
-		auto ruleSymbol = manager.Rules()[ruleName];
+		vint count = 0;
+		List<StateSymbol*> visited;
+		for (auto ruleName : manager.RuleOrder())
+		{
+			auto ruleSymbol = manager.Rules()[ruleName];
+			for (auto startState : ruleSymbol->startStates)
+			{
+				if (!visited.Contains(startState))
+				{
+					vint startIndex = visited.Count();
+					visited.Add(startState);
+					for (vint i = startIndex; i < visited.Count(); i++)
+					{
+						auto state = visited[i];
+						order.Add(state);
+						labels.Add(state, L"[" + itow(count++) + L"] " + state->label);
+						for (auto edge : state->OutEdges())
+						{
+							auto target = edge->To();
+							if (!visited.Contains(target))
+							{
+								visited.Add(target);
+							}
+						}
+					}
+				}
+			}
+		}
 	}
+
+	for (auto state : order)
+	{
+		writer.WriteLine(labels[state]);
+	}
+	writer.WriteLine(L"");
 }

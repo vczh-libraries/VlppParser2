@@ -39,6 +39,7 @@ StateSymbol
 				StateSymbol(RuleSymbol* _rule);
 			public:
 				WString						label;
+				bool						endingState = false;
 
 				SyntaxSymbolManager*		Owner() { return ownerManager; }
 				RuleSymbol*					Rule() { return rule; }

@@ -382,6 +382,7 @@ Builder
 
 						auto pair = Build(clause);
 						ruleSymbol->startStates.Add(pair.begin);
+						pair.end->endingState = true;
 
 						vint l = clauseDisplayText.Length();
 						for (auto [state, pos] : startPoses)
