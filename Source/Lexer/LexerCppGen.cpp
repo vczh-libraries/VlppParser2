@@ -53,6 +53,9 @@ WriteLexerHeaderFile
 					writer.WriteLine(L"");
 					writer.WriteLine(prefix + L"constexpr vl::vint " + manager.Global().name + L"TokenCount = " + itow(manager.Tokens().Count()) + L";");
 					writer.WriteLine(prefix + L"extern bool " + manager.Global().name + L"TokenDeleter(vl::vint token);");
+					writer.WriteLine(prefix + L"extern const char8_t* " + manager.Global().name + L"TokenId(" + manager.Global().name + L"Tokens token);");
+					writer.WriteLine(prefix + L"extern const char8_t* " + manager.Global().name + L"TokenDisplayText(" + manager.Global().name + L"Tokens token);");
+					writer.WriteLine(prefix + L"extern const char8_t* " + manager.Global().name + L"TokenRegex(" + manager.Global().name + L"Tokens token);");
 					WriteLoadDataFunctionHeader(prefix, manager.Global().name + L"LexerData", writer);
 				}
 				WriteNssEnd(manager.Global().cppNss, writer);
@@ -66,6 +69,37 @@ WriteLexerHeaderFile
 /***********************************************************************
 WriteLexerCppFile
 ***********************************************************************/
+
+			void WriteCppStringBody(const WString& body, stream::StreamWriter& writer)
+			{
+				for (vint i = 0; i < body.Length(); i++)
+				{
+					auto c = body[i];
+					switch (c)
+					{
+					case L'\t':
+						writer.WriteString(L"\\t");
+						break;
+					case L'\r':
+						writer.WriteString(L"\\r");
+						break;
+					case L'\n':
+						writer.WriteString(L"\\n");
+						break;
+					case L'\\':
+						writer.WriteString(L"\\\\");
+						break;
+					case L'\"':
+						writer.WriteString(L"\\\"");
+						break;
+					case L'\'':
+						writer.WriteString(L"\\\'");
+						break;
+					default:
+						writer.WriteChar(c);
+					}
+				}
+			}
 
 			void WriteLexerCppFile(LexerSymbolManager& manager, Ptr<CppParserGenOutput> output, stream::StreamWriter& writer)
 			{
@@ -103,6 +137,60 @@ WriteLexerCppFile
 					{
 						writer.WriteLine(prefix + L"\treturn false;");
 					}
+					writer.WriteLine(prefix + L"}");
+				}
+				{
+					writer.WriteLine(L"");
+					writer.WriteLine(prefix + L"const char8_t* " + manager.Global().name + L"TokenId(" + manager.Global().name + L"Tokens token)");
+					writer.WriteLine(prefix + L"{");
+					writer.WriteLine(prefix + L"\tstatic const char8_t* results[] = {");
+					for (auto tokenName : manager.TokenOrder())
+					{
+						writer.WriteLine(prefix + L"\t\tu8\"" + tokenName + L"\",");
+					}
+					writer.WriteLine(prefix + L"\t};");
+					writer.WriteLine(prefix + L"\tvl::vint index = (vl::vint)token;");
+					writer.WriteLine(prefix + L"\treturn 0 <= index && index < " + manager.Global().name + L"TokenCount ? results[index] : nullptr;");
+					writer.WriteLine(prefix + L"}");
+				}
+				{
+					writer.WriteLine(L"");
+					writer.WriteLine(prefix + L"const char8_t* " + manager.Global().name + L"TokenDisplayText(" + manager.Global().name + L"Tokens token)");
+					writer.WriteLine(prefix + L"{");
+					writer.WriteLine(prefix + L"\tstatic const char8_t* results[] = {");
+					for (auto tokenName : manager.TokenOrder())
+					{
+						auto displayText = manager.Tokens()[tokenName]->displayText;
+						if (displayText == L"")
+						{
+							writer.WriteLine(prefix + L"\t\tnullptr,");
+						}
+						else
+						{
+							writer.WriteString(prefix + L"\t\tu8\"");
+							WriteCppStringBody(displayText, writer);
+							writer.WriteLine(L"\",");
+						}
+					}
+					writer.WriteLine(prefix + L"\t};");
+					writer.WriteLine(prefix + L"\tvl::vint index = (vl::vint)token;");
+					writer.WriteLine(prefix + L"\treturn 0 <= index && index < " + manager.Global().name + L"TokenCount ? results[index] : nullptr;");
+					writer.WriteLine(prefix + L"}");
+				}
+				{
+					writer.WriteLine(L"");
+					writer.WriteLine(prefix + L"const char8_t* " + manager.Global().name + L"TokenRegex(" + manager.Global().name + L"Tokens token)");
+					writer.WriteLine(prefix + L"{");
+					writer.WriteLine(prefix + L"\tstatic const char8_t* results[] = {");
+					for (auto tokenName : manager.TokenOrder())
+					{
+						writer.WriteString(prefix + L"\t\tu8\"");
+						WriteCppStringBody(manager.Tokens()[tokenName]->regex, writer);
+						writer.WriteLine(L"\",");
+					}
+					writer.WriteLine(prefix + L"\t};");
+					writer.WriteLine(prefix + L"\tvl::vint index = (vl::vint)token;");
+					writer.WriteLine(prefix + L"\treturn 0 <= index && index < " + manager.Global().name + L"TokenCount ? results[index] : nullptr;");
 					writer.WriteLine(prefix + L"}");
 				}
 				{

@@ -24,13 +24,14 @@ Clause
 				struct Token
 				{
 					vint32_t				id;
-					vint32_t				field = -1;
+					vint32_t				field;
+					WString					display;
 				};
 
 				struct Rule
 				{
 					RuleSymbol*				rule;
-					vint32_t				field = -1;
+					vint32_t				field;
 				};
 
 				template<typename T>
@@ -134,15 +135,15 @@ Operators
 ***********************************************************************/
 
 				template<typename T>
-				inline Token tok(T id)
+				inline Token tok(T id, const WString& display)
 				{
-					return { (vint32_t)id };
+					return { (vint32_t)id,-1,display };
 				}
 
 				template<typename T, typename F>
-				inline Token tok(T id, F field)
+				inline Token tok(T id, const WString& display, F field = -1)
 				{
-					return { (vint32_t)id,(vint32_t)field };
+					return { (vint32_t)id,(vint32_t)field,display };
 				}
 
 				inline Rule rule(RuleSymbol* r)

@@ -31,6 +31,7 @@ LexerSymbolManager
 				TokenSymbol(LexerSymbolManager* _ownerManager, const WString& _name);
 			public:
 				WString						regex;
+				WString						displayText;
 				bool						discarded = false;
 				
 				LexerSymbolManager*			Owner() { return ownerManager; }
@@ -39,8 +40,10 @@ LexerSymbolManager
 
 			class LexerSymbolManager : public Object
 			{
+				using TokenMap = collections::Dictionary<WString, TokenSymbol*>;
 			protected:
 				MappedOwning<TokenSymbol>	tokens;
+				TokenMap					tokensByDisplayText;
 				ParserSymbolManager&		global;
 
 			public:
@@ -51,6 +54,7 @@ LexerSymbolManager
 
 				ParserSymbolManager&		Global() { return global; }
 				const auto&					Tokens() { return tokens.map; }
+				const auto&					TokensByDisplayText() { return tokensByDisplayText; }
 				const auto&					TokenOrder() { return tokens.order; }
 			};
 

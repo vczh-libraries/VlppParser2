@@ -63,6 +63,7 @@ ParserSymbolManager
 
 				// LexerSymbolManager -----------------------------------------------------------------
 				DuplicatedToken,							// (tokenName)
+				DuplicatedTokenByDisplayText,				// (tokenName)
 				InvalidTokenRegex,							// (tokenName, errorMessage)
 				TokenRegexNotPure,							// (tokenName)
 

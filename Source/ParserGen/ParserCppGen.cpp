@@ -87,7 +87,6 @@ Utility
 				vint solidRows = length / block;
 				vint rows = solidRows + (remain ? 1 : 0);
 
-				writer.WriteLine(L"");
 				writer.WriteLine(prefix + L"void " + functionName + L"(vl::stream::IStream& outputStream)");
 				writer.WriteLine(prefix + L"{");
 				writer.WriteLine(prefix + L"\tstatic const vl::vint dataLength = " + itow(length) + L"; // " + itow(lengthBeforeCompressing) + L" bytes before compressing");
