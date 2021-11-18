@@ -115,6 +115,50 @@ SyntaxSymbolManager::BuildCompactSyntax
 				bool operator>=(const StateSymbolSet& set) const { return Compare(set) >= 0; }
 			};
 
+			class CompactSyntaxBuilder
+			{
+				using StateList = collections::List<Ptr<StateSymbol>>;
+				using EdgeList = collections::List<Ptr<EdgeSymbol>>;
+			protected:
+				RuleSymbol*									rule;
+				StateList&									newStates;
+				EdgeList&									newEdges;
+				Dictionary<StateSymbolSet, StateSymbol*>	oldsToNew;
+				Group<StateSymbol*, StateSymbol*>			newToOlds;
+
+			public:
+				CompactSyntaxBuilder(RuleSymbol* _rule, StateList& _newStates, EdgeList& _newEdges)
+					: rule(_rule)
+					, newStates(_newStates)
+					, newEdges(_newEdges)
+				{
+				}
+
+				StateSymbolSet CalculateEpsilonClosure(StateSymbol* state)
+				{
+					StateSymbolSet key;
+					return std::move(key);
+				}
+
+				StateSymbol* CreateCompactState(StateSymbolSet&& key)
+				{
+					vint index = oldsToNew.Keys().IndexOf(key);
+					if (index != -1)
+					{
+						return oldsToNew.Values()[index];
+					}
+
+					auto newState = new StateSymbol(rule);
+					newStates.Add(newState);
+					return newState;
+				}
+
+				StateSymbol* CreateCompactState(StateSymbol* state)
+				{
+					return CreateCompactState(CalculateEpsilonClosure(state));
+				}
+			};
+
 			StateSymbol* SyntaxSymbolManager::EliminateEpsilonEdges(RuleSymbol* rule, StateList& newStates, EdgeList& newEdges)
 			{
 				auto psuedoState = CreateState(rule);
@@ -122,7 +166,11 @@ SyntaxSymbolManager::BuildCompactSyntax
 				{
 					CreateEdge(psuedoState, startState);
 				}
-				throw 0;
+
+				CompactSyntaxBuilder builder(rule, newStates, newEdges);
+				auto compactStartState = builder.CreateCompactState(psuedoState);
+
+				return compactStartState;
 			}
 
 			void SyntaxSymbolManager::BuildCompactSyntaxInternal()

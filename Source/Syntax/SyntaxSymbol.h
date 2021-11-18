@@ -19,6 +19,7 @@ namespace vl
 			class EdgeSymbol;
 			class RuleSymbol;
 			class SyntaxSymbolManager;
+			class CompactSyntaxBuilder;
 
 /***********************************************************************
 StateSymbol
@@ -28,6 +29,7 @@ StateSymbol
 			{
 				friend class EdgeSymbol;
 				friend class SyntaxSymbolManager;
+				friend class CompactSyntaxBuilder;
 
 				using EdgeList = collections::List<EdgeSymbol*>;
 			protected:
@@ -67,8 +69,8 @@ EdgeSymbol
 
 			class EdgeSymbol : public Object
 			{
-				friend class EdgeSymbol;
 				friend class SyntaxSymbolManager;
+				friend class CompactSyntaxBuilder;
 
 				using InsList = collections::List<AstIns>;
 			protected:
