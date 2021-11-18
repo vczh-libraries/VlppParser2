@@ -316,7 +316,7 @@ SyntaxSymbolManager::BuildCompactSyntax
 					List<StateSymbol*>& visited)
 				{
 					List<EdgeSymbol*> accumulatedEdges;
-					BuildEpsilonEliminatedEdgesInternal(CalculateEpsilonClosure(newState), newState, endState, visited, accumulatedEdges);
+					BuildEpsilonEliminatedEdgesInternal(newToClosure[newState].Copy(), newState, endState, visited, accumulatedEdges);
 				}
 			};
 
