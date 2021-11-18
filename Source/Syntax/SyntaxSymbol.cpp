@@ -94,12 +94,11 @@ SyntaxSymbolManager::BuildCompactSyntax
 				StateSymbolSet& operator=(StateSymbolSet&& set) { states = std::move(set.states); return *this; }
 				StateSymbolSet& operator=(const StateSymbolSet&) = delete;
 
-				void Add(StateSymbol* state)
+				bool Add(StateSymbol* state)
 				{
-					if (!states.Contains(state))
-					{
-						states.Add(state);
-					}
+					if (states.Contains(state)) return false;
+					states.Add(state);
+					return true;
 				}
 
 				vint Compare(const StateSymbolSet& set) const
@@ -123,6 +122,7 @@ SyntaxSymbolManager::BuildCompactSyntax
 				RuleSymbol*									rule;
 				StateList&									newStates;
 				EdgeList&									newEdges;
+				Dictionary<StateSymbol*, StateSymbol*>		oldToNew;
 				Dictionary<StateSymbolSet, StateSymbol*>	oldsToNew;
 				Group<StateSymbol*, StateSymbol*>			newToOlds;
 
@@ -137,7 +137,25 @@ SyntaxSymbolManager::BuildCompactSyntax
 				StateSymbolSet CalculateEpsilonClosure(StateSymbol* state)
 				{
 					StateSymbolSet key;
+					List<StateSymbol*> visited;
 					key.Add(state);
+					visited.Add(state);
+
+					for (vint i = 0; i < visited.Count(); i++)
+					{
+						auto current = visited[i];
+						for (auto edge : current->OutEdges())
+						{
+							if (edge->input.type == EdgeInputType::Epsilon && edge->insBefore.Count() == 0 && edge->insAfter.Count() == 0)
+							{
+								if (key.Add(edge->To()))
+								{
+									visited.Add(edge->To());
+								}
+							}
+						}
+					}
+
 					return std::move(key);
 				}
 
@@ -163,13 +181,25 @@ SyntaxSymbolManager::BuildCompactSyntax
 
 				StateSymbol* CreateCompactState(StateSymbol* state)
 				{
-					return CreateCompactState(CalculateEpsilonClosure(state));
+					vint index = oldToNew.Keys().IndexOf(state);
+					if (index != -1)
+					{
+						return oldToNew.Values()[index];
+					}
+					else
+					{
+						auto newState = CreateCompactState(CalculateEpsilonClosure(state));
+						newState->label = state->label;
+						oldToNew.Add(state, newState);
+						return newState;
+					}
 				}
 			};
 
 			StateSymbol* SyntaxSymbolManager::EliminateEpsilonEdges(RuleSymbol* rule, StateList& newStates, EdgeList& newEdges)
 			{
 				auto psuedoState = CreateState(rule);
+				psuedoState->label = L"{START}";
 				for (auto startState : rule->startStates)
 				{
 					CreateEdge(psuedoState, startState);
