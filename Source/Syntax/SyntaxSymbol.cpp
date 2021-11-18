@@ -167,14 +167,6 @@ SyntaxSymbolManager::BuildCompactSyntax
 				Dictionary<StateSymbol*, StateSymbolSet>	newToClosure;
 				Dictionary<StateSymbol*, StateSymbolSet>	oldToClosure;
 
-			public:
-				CompactSyntaxBuilder(RuleSymbol* _rule, StateList& _newStates, EdgeList& _newEdges)
-					: rule(_rule)
-					, newStates(_newStates)
-					, newEdges(_newEdges)
-				{
-				}
-
 				static bool IsPureEpsilonEdge(EdgeSymbol* edge)
 				{
 					return edge->input.type == EdgeInputType::Epsilon && edge->insBefore.Count() == 0 && edge->insAfter.Count() == 0;
@@ -183,6 +175,22 @@ SyntaxSymbolManager::BuildCompactSyntax
 				static bool IsPureEpsilonState(StateSymbol* state)
 				{
 					return From(state->OutEdges()).All(IsPureEpsilonEdge);
+				}
+
+				StateSymbol* CreateCompactState(StateSymbolSet&& key)
+				{
+					vint index = closureToNew.Keys().IndexOf(key);
+					if (index != -1)
+					{
+						return closureToNew.Values()[index];
+					}
+
+					auto newState = new StateSymbol(rule);
+					newStates.Add(newState);
+					newToClosure.Add(newState, key.Copy());
+					closureToNew.Add(std::move(key), newState);
+
+					return newState;
 				}
 
 				StateSymbolSet CalculateEpsilonClosure(StateSymbol* state)
@@ -224,20 +232,66 @@ SyntaxSymbolManager::BuildCompactSyntax
 					}
 				}
 
-				StateSymbol* CreateCompactState(StateSymbolSet&& key)
+				void BuildEpsilonEliminatedEdgesInternal(
+					StateSymbolSet walkingClosure,
+					StateSymbol* newState,
+					StateSymbol* endState,
+					List<StateSymbol*>& visited,
+					List<EdgeSymbol*>& accumulatedEdges)
 				{
-					vint index = closureToNew.Keys().IndexOf(key);
-					if (index != -1)
+					for (auto oldState : walkingClosure.States())
 					{
-						return closureToNew.Values()[index];
+						for (auto edge : oldState->OutEdges())
+						{
+							if (!IsPureEpsilonEdge(edge))
+							{
+								accumulatedEdges.Add(edge);
+								switch (edge->input.type)
+								{
+								case EdgeInputType::Token:
+								case EdgeInputType::Rule:
+									{
+										auto targetNewState = CreateCompactState(edge->To());
+										if (!visited.Contains(targetNewState))
+										{
+											visited.Add(targetNewState);
+											auto newEdge = new EdgeSymbol(newState, targetNewState);
+											newEdge->input = edge->input;
+											for (auto accumulatedEdge : accumulatedEdges)
+											{
+												CopyFrom(newEdge->insBefore, accumulatedEdge->insBefore, true);
+												CopyFrom(newEdge->insAfter, accumulatedEdge->insAfter, true);
+											}
+										}
+									}
+									break;
+								case EdgeInputType::Epsilon:
+									BuildEpsilonEliminatedEdgesInternal(CalculateEpsilonClosure(edge->To()), newState, endState, visited, accumulatedEdges);
+									break;
+								}
+								accumulatedEdges.RemoveAt(accumulatedEdges.Count() - 1);
+							}
+						}
+
+						if (oldState->endingState)
+						{
+							auto newEdge = new EdgeSymbol(newState, endState);
+							newEdge->input.type = EdgeInputType::Ending;
+							for (auto accumulatedEdge : accumulatedEdges)
+							{
+								CopyFrom(newEdge->insBefore, accumulatedEdge->insBefore, true);
+								CopyFrom(newEdge->insAfter, accumulatedEdge->insAfter, true);
+							}
+						}
 					}
+				}
 
-					auto newState = new StateSymbol(rule);
-					newStates.Add(newState);
-					newToClosure.Add(newState, key.Copy());
-					closureToNew.Add(std::move(key), newState);
-
-					return newState;
+			public:
+				CompactSyntaxBuilder(RuleSymbol* _rule, StateList& _newStates, EdgeList& _newEdges)
+					: rule(_rule)
+					, newStates(_newStates)
+					, newEdges(_newEdges)
+				{
 				}
 
 				StateSymbol* CreateCompactState(StateSymbol* state)
@@ -256,8 +310,13 @@ SyntaxSymbolManager::BuildCompactSyntax
 					}
 				}
 
-				void BuildEpsilonEliminatedEdges(StateSymbol* state, StateSymbol* endState, List<StateSymbol*>& visited)
+				void BuildEpsilonEliminatedEdges(
+					StateSymbol* newState,
+					StateSymbol* endState,
+					List<StateSymbol*>& visited)
 				{
+					List<EdgeSymbol*> accumulatedEdges;
+					BuildEpsilonEliminatedEdgesInternal(CalculateEpsilonClosure(newState), newState, endState, visited, accumulatedEdges);
 				}
 			};
 
