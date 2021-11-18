@@ -137,6 +137,7 @@ SyntaxSymbolManager::BuildCompactSyntax
 				StateSymbolSet CalculateEpsilonClosure(StateSymbol* state)
 				{
 					StateSymbolSet key;
+					key.Add(state);
 					return std::move(key);
 				}
 
@@ -150,6 +151,13 @@ SyntaxSymbolManager::BuildCompactSyntax
 
 					auto newState = new StateSymbol(rule);
 					newStates.Add(newState);
+
+					for (auto oldState : key.states)
+					{
+						newToOlds.Add(newState, oldState);
+					}
+					oldsToNew.Add(std::move(key), newState);
+
 					return newState;
 				}
 
