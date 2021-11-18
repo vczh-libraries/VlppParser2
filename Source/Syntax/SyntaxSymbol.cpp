@@ -134,8 +134,14 @@ SyntaxSymbolManager::BuildCompactSyntax
 				{
 				}
 
+				bool IsPureEpsilonEdge(EdgeSymbol* edge)
+				{
+					return edge->input.type == EdgeInputType::Epsilon && edge->insBefore.Count() == 0 && edge->insAfter.Count() == 0;
+				}
+
 				StateSymbolSet CalculateEpsilonClosure(StateSymbol* state)
 				{
+					// TODO: cache closure / closure only contain states that having non-pure-epsilon edges
 					StateSymbolSet key;
 					List<StateSymbol*> visited;
 					key.Add(state);
@@ -146,7 +152,7 @@ SyntaxSymbolManager::BuildCompactSyntax
 						auto current = visited[i];
 						for (auto edge : current->OutEdges())
 						{
-							if (edge->input.type == EdgeInputType::Epsilon && edge->insBefore.Count() == 0 && edge->insAfter.Count() == 0)
+							if (IsPureEpsilonEdge(edge))
 							{
 								if (key.Add(edge->To()))
 								{
