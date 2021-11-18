@@ -86,24 +86,63 @@ SyntaxSymbolManager::BuildCompactSyntax
 
 			struct StateSymbolSet
 			{
-				SortedList<StateSymbol*> states;
+			private:
+				static const SortedList<StateSymbol*> EmptyStates;
 
+				Ptr<SortedList<StateSymbol*>> states;
+
+			public:
 				StateSymbolSet() = default;
-				StateSymbolSet(StateSymbolSet&& set) : states(std::move(set.states)) {}
 				StateSymbolSet(const StateSymbolSet&) = delete;
-				StateSymbolSet& operator=(StateSymbolSet&& set) { states = std::move(set.states); return *this; }
 				StateSymbolSet& operator=(const StateSymbolSet&) = delete;
+
+				StateSymbolSet(StateSymbolSet&& set)
+				{
+					states = set.states;
+					set.states = nullptr;
+				}
+
+				StateSymbolSet& operator=(StateSymbolSet&& set)
+				{
+					states = set.states;
+					set.states = nullptr;
+					return *this;
+				}
+
+				StateSymbolSet Copy() const
+				{
+					StateSymbolSet set;
+					set.states = states;
+					return set;
+				}
 
 				bool Add(StateSymbol* state)
 				{
-					if (states.Contains(state)) return false;
-					states.Add(state);
-					return true;
+					if (states)
+					{
+						if (states->Contains(state)) return false;
+						states->Add(state);
+						return true;
+					}
+					else
+					{
+						states = new SortedList<StateSymbol*>();
+						states->Add(state);
+						return true;
+					}
+				}
+
+				const SortedList<StateSymbol*>& States() const
+				{
+					return states ? *states.Obj() : EmptyStates;
 				}
 
 				vint Compare(const StateSymbolSet& set) const
 				{
-					return CompareEnumerable(states, set.states);
+					if (!states && !set.states) return 0;
+					if (!states) return -1;
+					if (!set.states) return 1;
+					return CompareEnumerable(*states.Obj(), *set.states.Obj());
 				}
 
 				bool operator==(const StateSymbolSet& set) const { return Compare(set) == 0; }
@@ -113,6 +152,7 @@ SyntaxSymbolManager::BuildCompactSyntax
 				bool operator> (const StateSymbolSet& set) const { return Compare(set) > 0; }
 				bool operator>=(const StateSymbolSet& set) const { return Compare(set) >= 0; }
 			};
+			const SortedList<StateSymbol*> StateSymbolSet::EmptyStates;
 
 			class CompactSyntaxBuilder
 			{
@@ -123,8 +163,9 @@ SyntaxSymbolManager::BuildCompactSyntax
 				StateList&									newStates;
 				EdgeList&									newEdges;
 				Dictionary<StateSymbol*, StateSymbol*>		oldToNew;
-				Dictionary<StateSymbolSet, StateSymbol*>	oldsToNew;
-				Group<StateSymbol*, StateSymbol*>			newToOlds;
+				Dictionary<StateSymbolSet, StateSymbol*>	closureToNew;
+				Dictionary<StateSymbol*, StateSymbolSet>	newToClosure;
+				Dictionary<StateSymbol*, StateSymbolSet>	oldToClosure;
 
 			public:
 				CompactSyntaxBuilder(RuleSymbol* _rule, StateList& _newStates, EdgeList& _newEdges)
@@ -134,53 +175,67 @@ SyntaxSymbolManager::BuildCompactSyntax
 				{
 				}
 
-				bool IsPureEpsilonEdge(EdgeSymbol* edge)
+				static bool IsPureEpsilonEdge(EdgeSymbol* edge)
 				{
 					return edge->input.type == EdgeInputType::Epsilon && edge->insBefore.Count() == 0 && edge->insAfter.Count() == 0;
 				}
 
+				static bool IsPureEpsilonState(StateSymbol* state)
+				{
+					return From(state->OutEdges()).All(IsPureEpsilonEdge);
+				}
+
 				StateSymbolSet CalculateEpsilonClosure(StateSymbol* state)
 				{
-					// TODO: cache closure / closure only contain states that having non-pure-epsilon edges
-					StateSymbolSet key;
-					List<StateSymbol*> visited;
-					key.Add(state);
-					visited.Add(state);
-
-					for (vint i = 0; i < visited.Count(); i++)
+					vint index = oldToClosure.Keys().IndexOf(state);
+					if (index != -1)
 					{
-						auto current = visited[i];
-						for (auto edge : current->OutEdges())
+						return oldToClosure.Values()[index].Copy();
+					}
+					else
+					{
+						StateSymbolSet key;
+						List<StateSymbol*> visited;
+						key.Add(state);
+						visited.Add(state);
+
+						for (vint i = 0; i < visited.Count(); i++)
 						{
-							if (IsPureEpsilonEdge(edge))
+							auto current = visited[i];
+							for (auto edge : current->OutEdges())
 							{
-								if (key.Add(edge->To()))
+								if (IsPureEpsilonEdge(edge))
 								{
-									visited.Add(edge->To());
+									auto toState = edge->To();
+									if (!visited.Contains(toState))
+									{
+										visited.Add(toState);
+										if (!IsPureEpsilonState(toState))
+										{
+											key.Add(toState);
+										}
+									}
 								}
 							}
 						}
-					}
 
-					return std::move(key);
+						oldToClosure.Add(state, key.Copy());
+						return std::move(key);
+					}
 				}
 
 				StateSymbol* CreateCompactState(StateSymbolSet&& key)
 				{
-					vint index = oldsToNew.Keys().IndexOf(key);
+					vint index = closureToNew.Keys().IndexOf(key);
 					if (index != -1)
 					{
-						return oldsToNew.Values()[index];
+						return closureToNew.Values()[index];
 					}
 
 					auto newState = new StateSymbol(rule);
 					newStates.Add(newState);
-
-					for (auto oldState : key.states)
-					{
-						newToOlds.Add(newState, oldState);
-					}
-					oldsToNew.Add(std::move(key), newState);
+					newToClosure.Add(newState, key.Copy());
+					closureToNew.Add(std::move(key), newState);
 
 					return newState;
 				}
