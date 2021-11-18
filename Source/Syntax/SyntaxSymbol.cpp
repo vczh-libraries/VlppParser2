@@ -194,12 +194,15 @@ SyntaxSymbolManager::BuildCompactSyntax
 						return newState;
 					}
 				}
+
+				void BuildEpsilonEliminatedEdges(StateSymbol* state, StateSymbol* endState, List<StateSymbol*>& visited)
+				{
+				}
 			};
 
 			StateSymbol* SyntaxSymbolManager::EliminateEpsilonEdges(RuleSymbol* rule, StateList& newStates, EdgeList& newEdges)
 			{
 				auto psuedoState = CreateState(rule);
-				psuedoState->label = L"{START}";
 				for (auto startState : rule->startStates)
 				{
 					CreateEdge(psuedoState, startState);
@@ -207,6 +210,20 @@ SyntaxSymbolManager::BuildCompactSyntax
 
 				CompactSyntaxBuilder builder(rule, newStates, newEdges);
 				auto compactStartState = builder.CreateCompactState(psuedoState);
+				compactStartState->label = L"{START}";
+
+				auto endState = new StateSymbol(rule);
+				endState->label = L"{END}";
+				newStates.Add(endState);
+
+				List<StateSymbol*> visited;
+				visited.Add(compactStartState);
+
+				for (vint i = 0; i < visited.Count(); i++)
+				{
+					auto current = visited[i];
+					builder.BuildEpsilonEliminatedEdges(current, endState, visited);
+				}
 
 				return compactStartState;
 			}
@@ -227,6 +244,7 @@ SyntaxSymbolManager::BuildCompactSyntax
 
 			void SyntaxSymbolManager::BuildCompactSyntax()
 			{
+				CHECK_ERROR(global.Errors().Count() == 0, L"vl::gre::parsergen::SyntaxSymbolManager::BuildCompactSyntax()#BuildCompactSyntax() cannot be called before errors are resolved.");
 				CHECK_ERROR(!isCompact, L"vl::gre::parsergen::SyntaxSymbolManager::BuildCompactSyntax()#BuildCompactSyntax() can only be called once.");
 				BuildCompactSyntaxInternal();
 				isCompact = true;

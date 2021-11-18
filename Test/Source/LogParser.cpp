@@ -85,7 +85,7 @@ void LogSyntax(
 						for (auto edge : state->OutEdges())
 						{
 							auto target = edge->To();
-							if (!visited.Contains(target))
+							if (target->Rule() == ruleSymbol && !visited.Contains(target))
 							{
 								visited.Add(target);
 							}
@@ -105,6 +105,9 @@ void LogSyntax(
 			{
 			case EdgeInputType::Epsilon:
 				writer.WriteString(L"\tepsilon");
+				break;
+			case EdgeInputType::Ending:
+				writer.WriteString(L"\tending");
 				break;
 			case EdgeInputType::Token:
 				writer.WriteString(L"\ttoken: " + tokenName(edge->input.token));

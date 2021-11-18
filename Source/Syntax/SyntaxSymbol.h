@@ -56,6 +56,7 @@ EdgeSymbol
 			enum class EdgeInputType
 			{
 				Epsilon,
+				Ending,
 				Token,
 				Rule,
 			};
