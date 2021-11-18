@@ -256,6 +256,7 @@ SyntaxSymbolManager::BuildCompactSyntax
 										{
 											visited.Add(targetNewState);
 											auto newEdge = new EdgeSymbol(newState, targetNewState);
+											newEdges.Add(newEdge);
 											newEdge->input = edge->input;
 											for (auto accumulatedEdge : accumulatedEdges)
 											{
@@ -282,6 +283,24 @@ SyntaxSymbolManager::BuildCompactSyntax
 								CopyFrom(newEdge->insBefore, accumulatedEdge->insBefore, true);
 								CopyFrom(newEdge->insAfter, accumulatedEdge->insAfter, true);
 							}
+
+							for (auto endingEdge : newState->OutEdges())
+							{
+								if (endingEdge != newEdge && endingEdge->input.type == EdgeInputType::Ending)
+								{
+									if(
+										CompareEnumerable(endingEdge->insBefore,newEdge->insBefore) == 0 &&
+										CompareEnumerable(endingEdge->insAfter, newEdge->insAfter) == 0)
+									{
+										newState->outEdges.Remove(newEdge);
+										endState->inEdges.Remove(newEdge);
+										delete newEdge;
+										goto DISCARD_ENDING_EDGE;
+									}
+								}
+							}
+							newEdges.Add(newEdge);
+						DISCARD_ENDING_EDGE:;
 						}
 					}
 				}
@@ -334,6 +353,7 @@ SyntaxSymbolManager::BuildCompactSyntax
 
 				auto endState = new StateSymbol(rule);
 				endState->label = L"{END}";
+				endState->endingState = true;
 				newStates.Add(endState);
 
 				List<StateSymbol*> visited;
