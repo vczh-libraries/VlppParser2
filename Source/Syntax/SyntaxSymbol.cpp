@@ -89,9 +89,9 @@ SyntaxSymbolManager::BuildCompactSyntax
 				SortedList<StateSymbol*> states;
 
 				StateSymbolSet() = default;
-				StateSymbolSet(StateSymbolSet&&) = default;
+				StateSymbolSet(StateSymbolSet&& set) : states(std::move(set.states)) {}
 				StateSymbolSet(const StateSymbolSet&) = delete;
-				StateSymbolSet& operator=(StateSymbolSet&&) = default;
+				StateSymbolSet& operator=(StateSymbolSet&& set) { states = std::move(set.states); return *this; }
 				StateSymbolSet& operator=(const StateSymbolSet&) = delete;
 
 				void Add(StateSymbol* state)
