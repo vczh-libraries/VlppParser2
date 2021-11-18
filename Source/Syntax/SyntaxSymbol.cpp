@@ -84,8 +84,59 @@ SyntaxSymbolManager
 SyntaxSymbolManager::BuildCompactSyntax
 ***********************************************************************/
 
+			struct StateSymbolSet
+			{
+				SortedList<StateSymbol*> states;
+
+				StateSymbolSet() = default;
+				StateSymbolSet(StateSymbolSet&&) = default;
+				StateSymbolSet(const StateSymbolSet&) = delete;
+				StateSymbolSet& operator=(StateSymbolSet&&) = default;
+				StateSymbolSet& operator=(const StateSymbolSet&) = delete;
+
+				void Add(StateSymbol* state)
+				{
+					if (!states.Contains(state))
+					{
+						states.Add(state);
+					}
+				}
+
+				vint Compare(const StateSymbolSet& set) const
+				{
+					return CompareEnumerable(states, set.states);
+				}
+
+				bool operator==(const StateSymbolSet& set) const { return Compare(set) == 0; }
+				bool operator!=(const StateSymbolSet& set) const { return Compare(set) != 0; }
+				bool operator< (const StateSymbolSet& set) const { return Compare(set) < 0; }
+				bool operator<=(const StateSymbolSet& set) const { return Compare(set) <= 0; }
+				bool operator> (const StateSymbolSet& set) const { return Compare(set) > 0; }
+				bool operator>=(const StateSymbolSet& set) const { return Compare(set) >= 0; }
+			};
+
+			StateSymbol* SyntaxSymbolManager::EliminateEpsilonEdges(RuleSymbol* rule, StateList& newStates, EdgeList& newEdges)
+			{
+				auto psuedoState = CreateState(rule);
+				for (auto startState : rule->startStates)
+				{
+					CreateEdge(psuedoState, startState);
+				}
+				throw 0;
+			}
+
 			void SyntaxSymbolManager::BuildCompactSyntaxInternal()
 			{
+				StateList newStates;
+				EdgeList newEdges;
+				for (auto ruleSymbol : rules.map.Values())
+				{
+					auto startState = EliminateEpsilonEdges(ruleSymbol, newStates, newEdges);
+					ruleSymbol->startStates.Clear();
+					ruleSymbol->startStates.Add(startState);
+				}
+				CopyFrom(states, newStates);
+				CopyFrom(edges, newEdges);
 			}
 
 			void SyntaxSymbolManager::BuildCompactSyntax()

@@ -123,6 +123,7 @@ SyntaxSymbolManager
 				ParserSymbolManager&		global;
 				bool						isCompact = false;
 
+				StateSymbol*				EliminateEpsilonEdges(RuleSymbol* rule, StateList& newStates, EdgeList& newEdges);
 				void						BuildCompactSyntaxInternal();
 			public:
 				SyntaxSymbolManager(ParserSymbolManager& _global);
