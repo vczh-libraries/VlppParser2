@@ -122,6 +122,12 @@ void LogSyntax(
 				LogInstruction(ins, typeName, fieldName, writer);
 			}
 
+			for (auto returnState : edge->returnStates)
+			{
+				writer.WriteString(L"\t\t> ");
+				writer.WriteLine(labels[returnState]);
+			}
+
 		}
 		writer.WriteLine(L"");
 	}

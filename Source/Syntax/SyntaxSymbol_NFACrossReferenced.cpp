@@ -14,8 +14,10 @@ SyntaxSymbolManager::FixCrossReferencedRuleEdge
 
 			void SyntaxSymbolManager::FixCrossReferencedRuleEdge(StateSymbol* startState, collections::List<EdgeSymbol*>& accumulatedEdges)
 			{
-				auto currentState = accumulatedEdges[accumulatedEdges.Count() - 1]->To();
-				for (auto edge : currentState->OutEdges())
+				auto lastEdge = accumulatedEdges[accumulatedEdges.Count() - 1];
+				auto lastRule = lastEdge->input.rule;
+				auto ruleBegin = lastRule->startStates[0];
+				for (auto edge : ruleBegin->OutEdges())
 				{
 					switch (edge->input.type)
 					{
