@@ -85,6 +85,11 @@ void LogSyntax(
 			});
 		for (auto edge : orderedEdges)
 		{
+			if (manager.Phase() == SyntaxPhase::CrossReferencedNFA && edge->input.type == EdgeInputType::Rule)
+			{
+				continue;
+			}
+
 			switch (edge->input.type)
 			{
 			case EdgeInputType::Epsilon:

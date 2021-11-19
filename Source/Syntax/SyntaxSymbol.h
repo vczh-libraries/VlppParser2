@@ -140,6 +140,7 @@ SyntaxSymbolManager
 				StateSymbol*				EliminateEpsilonEdges(RuleSymbol* rule, StateList& newStates, EdgeList& newEdges);
 				void						BuildCompactNFAInternal();
 
+				void						FixCrossReferencedRuleEdge(StateSymbol* startState, collections::List<EdgeSymbol*>& accumulatedEdges);
 				void						BuildCrossReferencedNFAInternal();
 			public:
 				SyntaxSymbolManager(ParserSymbolManager& _global);
