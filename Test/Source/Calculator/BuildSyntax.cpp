@@ -107,8 +107,8 @@ void GenerateCalculatorSyntax(SyntaxSymbolManager& manager)
 	// !Exp5
 	Clause{ _exp } = use(_exp5);
 
-	// ID:name as Import
-	Clause{ _import } = create(tok(T::ID, F::Import_name), C::Import);
+	// "import" ID:name as Import
+	Clause{ _import } = create(tok(T::IMPORT) +  tok(T::ID, F::Import_name), C::Import);
 
 	// {Import:imports} "export" Exp:exported as Module
 	Clause{ _module } = create(loop(rule(_import, F::Module_imports)) + tok(T::EXPORT) + rule(_exp, F::Module_exported), C::Module);
