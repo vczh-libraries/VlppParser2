@@ -351,10 +351,10 @@ SyntaxSymbolManager::BuildCompactSyntax
 
 				CompactSyntaxBuilder builder(rule, newStates, newEdges);
 				auto compactStartState = builder.CreateCompactState(psuedoState);
-				compactStartState->label = L"{START}";
+				compactStartState->label = L" BEGIN ";
 
 				auto endState = new StateSymbol(rule);
-				endState->label = L"{END}";
+				endState->label = L" END ";
 				endState->endingState = true;
 				newStates.Add(endState);
 
