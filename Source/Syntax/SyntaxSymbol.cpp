@@ -257,14 +257,14 @@ SyntaxSymbolManager::BuildCompactSyntax
 										if (!visited.Contains(targetNewState))
 										{
 											visited.Add(targetNewState);
-											auto newEdge = new EdgeSymbol(newState, targetNewState);
-											newEdges.Add(newEdge);
-											newEdge->input = edge->input;
-											for (auto accumulatedEdge : accumulatedEdges)
-											{
-												CopyFrom(newEdge->insBeforeInput, accumulatedEdge->insBeforeInput, true);
-												CopyFrom(newEdge->insAfterInput, accumulatedEdge->insAfterInput, true);
-											}
+										}
+										auto newEdge = new EdgeSymbol(newState, targetNewState);
+										newEdges.Add(newEdge);
+										newEdge->input = edge->input;
+										for (auto accumulatedEdge : accumulatedEdges)
+										{
+											CopyFrom(newEdge->insBeforeInput, accumulatedEdge->insBeforeInput, true);
+											CopyFrom(newEdge->insAfterInput, accumulatedEdge->insAfterInput, true);
 										}
 									}
 									break;
