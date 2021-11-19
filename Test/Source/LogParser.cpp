@@ -118,13 +118,13 @@ void LogSyntax(
 			}
 			writer.WriteLine(L" -> " + labels[edge->To()]);
 
-			for (auto&& ins : edge->insBefore)
+			for (auto&& ins : edge->insBeforeInput)
 			{
 				writer.WriteString(L"\t\t- ");
 				LogInstruction(ins, typeName, fieldName, writer);
 			}
 
-			for (auto&& ins : edge->insAfter)
+			for (auto&& ins : edge->insAfterInput)
 			{
 				writer.WriteString(L"\t\t+ ");
 				LogInstruction(ins, typeName, fieldName, writer);

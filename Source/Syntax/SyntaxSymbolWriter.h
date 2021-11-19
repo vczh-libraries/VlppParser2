@@ -227,13 +227,15 @@ Builder
 						pair.end = CreateState();
 						startPoses.Add(pair.begin, clauseDisplayText.Length());
 
-						auto edge = CreateEdge(pair.begin, pair.end);
-						edge->input.type = EdgeInputType::Token;
-						edge->input.token = clause.id;
-						if (clause.field != -1)
 						{
-							edge->insAfter.Add({ AstInsType::Token });
-							edge->insAfter.Add({ AstInsType::Field,clause.field });
+							auto edge = CreateEdge(pair.begin, pair.end);
+							edge->input.type = EdgeInputType::Token;
+							edge->input.token = clause.id;
+							if (clause.field != -1)
+							{
+								edge->insAfterInput.Add({ AstInsType::Token });
+								edge->insAfterInput.Add({ AstInsType::Field,clause.field });
+							}
 						}
 
 						clauseDisplayText += clause.display;
@@ -248,16 +250,18 @@ Builder
 						pair.end = CreateState();
 						startPoses.Add(pair.begin, clauseDisplayText.Length());
 
-						auto edge = CreateEdge(pair.begin, pair.end);
-						edge->input.type = EdgeInputType::Rule;
-						edge->input.rule = clause.rule;
-						if (clause.field != -1)
 						{
-							edge->insAfter.Add({ AstInsType::Field,clause.field });
-						}
-						else
-						{
-							edge->insAfter.Add({ AstInsType::DiscardValue });
+							auto edge = CreateEdge(pair.begin, pair.end);
+							edge->input.type = EdgeInputType::Rule;
+							edge->input.rule = clause.rule;
+							if (clause.field != -1)
+							{
+								edge->insAfterInput.Add({ AstInsType::Field,clause.field });
+							}
+							else
+							{
+								edge->insAfterInput.Add({ AstInsType::DiscardValue });
+							}
 						}
 
 						clauseDisplayText += clause.rule->Name();
@@ -272,10 +276,13 @@ Builder
 						pair.end = CreateState();
 						startPoses.Add(pair.begin, clauseDisplayText.Length());
 
-						auto edge = CreateEdge(pair.begin, pair.end);
-						edge->input.type = EdgeInputType::Rule;
-						edge->input.rule = clause.rule;
-						edge->insBefore.Add({ AstInsType::ReopenObject });
+						auto middleState = CreateState();
+						{
+							auto edge = CreateEdge(pair.begin, middleState);
+							edge->input.type = EdgeInputType::Rule;
+							edge->input.rule = clause.rule;
+							edge->insAfterInput.Add({ AstInsType::ReopenObject });
+						}
 
 						clauseDisplayText += L"!" + clause.rule->Name();
 						endPoses.Add(pair.end, clauseDisplayText.Length());
@@ -349,13 +356,14 @@ Builder
 						clauseDisplayText += L"< ";
 						auto bodyPair = Build(clause.body);
 						clauseDisplayText += L" >";
-
-						auto beginEdge = CreateEdge(pair.begin, bodyPair.begin);
-						beginEdge->insAfter.Add({ AstInsType::BeginObject,clause.type });
-
-						auto endEdge = CreateEdge(bodyPair.end, pair.end);
-						endEdge->insBefore.Add({ AstInsType::EndObject });
-
+						{
+							auto edge = CreateEdge(pair.begin, bodyPair.begin);
+							edge->insBeforeInput.Add({ AstInsType::BeginObject,clause.type });
+						}
+						{
+							auto edge = CreateEdge(bodyPair.end, pair.end);
+							edge->insBeforeInput.Add({ AstInsType::EndObject });
+						}
 						endPoses.Add(pair.end, clauseDisplayText.Length());
 						return pair;
 					}
@@ -366,8 +374,8 @@ Builder
 						auto pair = Build(clause.body);
 						CHECK_ERROR(pair.end->InEdges().Count() == 1, L"Internal error!");
 						auto edge = pair.end->InEdges()[0];
-						edge->insBefore.Add({ AstInsType::EnumItem,clause.enumItem });
-						edge->insBefore.Add({ AstInsType::Field,clause.field });
+						edge->insBeforeInput.Add({ AstInsType::EnumItem,clause.enumItem });
+						edge->insBeforeInput.Add({ AstInsType::Field,clause.field });
 						return pair;
 					}
 				public:

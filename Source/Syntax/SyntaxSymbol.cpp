@@ -169,7 +169,9 @@ SyntaxSymbolManager::BuildCompactSyntax
 
 				static bool IsPureEpsilonEdge(EdgeSymbol* edge)
 				{
-					return edge->input.type == EdgeInputType::Epsilon && edge->insBefore.Count() == 0 && edge->insAfter.Count() == 0;
+					if (edge->input.type != EdgeInputType::Epsilon) return false;
+					CHECK_ERROR(edge->insAfterInput.Count() == 0, L"vl::gre::parsergen::CompactSyntaxBuilder::IsPureEpsilonEdge(EdgeSymbol*)#Epsilon edge is not allowed to have non-empty insAfterInput.");
+					return edge->insBeforeInput.Count() == 0;
 				}
 
 				static bool IsPureEpsilonState(StateSymbol* state)
@@ -260,8 +262,8 @@ SyntaxSymbolManager::BuildCompactSyntax
 											newEdge->input = edge->input;
 											for (auto accumulatedEdge : accumulatedEdges)
 											{
-												CopyFrom(newEdge->insBefore, accumulatedEdge->insBefore, true);
-												CopyFrom(newEdge->insAfter, accumulatedEdge->insAfter, true);
+												CopyFrom(newEdge->insBeforeInput, accumulatedEdge->insBeforeInput, true);
+												CopyFrom(newEdge->insAfterInput, accumulatedEdge->insAfterInput, true);
 											}
 										}
 									}
@@ -280,8 +282,8 @@ SyntaxSymbolManager::BuildCompactSyntax
 							newEdge->input.type = EdgeInputType::Ending;
 							for (auto accumulatedEdge : accumulatedEdges)
 							{
-								CopyFrom(newEdge->insBefore, accumulatedEdge->insBefore, true);
-								CopyFrom(newEdge->insAfter, accumulatedEdge->insAfter, true);
+								CopyFrom(newEdge->insBeforeInput, accumulatedEdge->insBeforeInput, true);
+								CopyFrom(newEdge->insAfterInput, accumulatedEdge->insAfterInput, true);
 							}
 
 							for (auto endingEdge : newState->OutEdges())
@@ -289,8 +291,8 @@ SyntaxSymbolManager::BuildCompactSyntax
 								if (endingEdge != newEdge && endingEdge->input.type == EdgeInputType::Ending)
 								{
 									if(
-										CompareEnumerable(endingEdge->insBefore,newEdge->insBefore) == 0 &&
-										CompareEnumerable(endingEdge->insAfter, newEdge->insAfter) == 0)
+										CompareEnumerable(endingEdge->insBeforeInput,newEdge->insBeforeInput) == 0 &&
+										CompareEnumerable(endingEdge->insAfterInput, newEdge->insAfterInput) == 0)
 									{
 										newState->outEdges.Remove(newEdge);
 										endState->inEdges.Remove(newEdge);

@@ -82,8 +82,8 @@ EdgeSymbol
 				EdgeSymbol(StateSymbol* _from, StateSymbol* _to);
 			public:
 				EdgeInput					input;
-				InsList						insBefore;
-				InsList						insAfter;
+				InsList						insBeforeInput;
+				InsList						insAfterInput;
 
 				SyntaxSymbolManager*		Owner() { return ownerManager; }
 				StateSymbol*				From() { return fromState; }
