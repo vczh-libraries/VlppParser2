@@ -22,6 +22,7 @@ SyntaxSymbolManager::FixCrossReferencedRuleEdge
 					switch (edge->input.type)
 					{
 					case EdgeInputType::Token:
+						if (edge->returnEdges.Count() == 0)
 						{
 							auto newEdge = new EdgeSymbol(startState, edge->To());
 							edges.Add(newEdge);
