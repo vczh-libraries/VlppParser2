@@ -26,6 +26,7 @@ SyntaxSymbolManager::FixCrossReferencedRuleEdge
 							auto newEdge = new EdgeSymbol(startState, edge->To());
 							edges.Add(newEdge);
 
+							newEdge->input = edge->input;
 							for (auto acc : accumulatedEdges)
 							{
 								CopyFrom(newEdge->insBeforeInput, acc->insBeforeInput, true);
