@@ -137,6 +137,7 @@ SyntaxSymbolManager
 				void						EliminateLeftRecursion(RuleSymbol* rule, StateSymbol* startState, StateSymbol* endState, StateList& newStates, EdgeList& newEdges);
 				StateSymbol*				EliminateEpsilonEdges(RuleSymbol* rule, StateList& newStates, EdgeList& newEdges);
 				void						BuildCompactNFAInternal();
+
 				void						BuildCrossReferencedNFAInternal();
 			public:
 				SyntaxSymbolManager(ParserSymbolManager& _global);
