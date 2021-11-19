@@ -276,9 +276,8 @@ Builder
 						pair.end = CreateState();
 						startPoses.Add(pair.begin, clauseDisplayText.Length());
 
-						auto middleState = CreateState();
 						{
-							auto edge = CreateEdge(pair.begin, middleState);
+							auto edge = CreateEdge(pair.begin, pair.end);
 							edge->input.type = EdgeInputType::Rule;
 							edge->input.rule = clause.rule;
 							edge->insAfterInput.Add({ AstInsType::ReopenObject });
