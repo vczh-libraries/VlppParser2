@@ -302,7 +302,8 @@ Builder
 
 						CreateEdge(pair.begin, bodyPair.begin);
 						CreateEdge(bodyPair.end, pair.end);
-						CreateEdge(pair.end, pair.begin);
+						CreateEdge(pair.begin, pair.end);
+						CreateEdge(bodyPair.end, bodyPair.begin);
 
 						endPoses.Add(pair.end, clauseDisplayText.Length());
 						return pair;
