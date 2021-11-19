@@ -75,7 +75,7 @@ EdgeSymbol
 				friend class CompactSyntaxBuilder;
 
 				using InsList = collections::List<AstIns>;
-				using StateList = collections::List<StateSymbol*>;
+				using EdgeList = collections::List<EdgeSymbol*>;
 			protected:
 				SyntaxSymbolManager*		ownerManager;
 				StateSymbol*				fromState;
@@ -86,7 +86,7 @@ EdgeSymbol
 				EdgeInput					input;
 				InsList						insBeforeInput;
 				InsList						insAfterInput;
-				StateList					returnStates;
+				EdgeList					returnEdges;
 
 				SyntaxSymbolManager*		Owner() { return ownerManager; }
 				StateSymbol*				From() { return fromState; }

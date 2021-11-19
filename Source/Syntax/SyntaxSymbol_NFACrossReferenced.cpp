@@ -29,8 +29,7 @@ SyntaxSymbolManager::FixCrossReferencedRuleEdge
 							for (auto acc : accumulatedEdges)
 							{
 								CopyFrom(newEdge->insBeforeInput, acc->insBeforeInput, true);
-								CopyFrom(newEdge->insAfterInput, acc->insAfterInput, true);
-								newEdge->returnStates.Add(acc->To());
+								newEdge->returnEdges.Add(acc);
 							}
 							CopyFrom(newEdge->insBeforeInput, edge->insBeforeInput, true);
 							CopyFrom(newEdge->insAfterInput, edge->insAfterInput, true);

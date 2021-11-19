@@ -85,11 +85,6 @@ void LogSyntax(
 			});
 		for (auto edge : orderedEdges)
 		{
-			if (manager.Phase() == SyntaxPhase::CrossReferencedNFA && edge->input.type == EdgeInputType::Rule)
-			{
-				continue;
-			}
-
 			switch (edge->input.type)
 			{
 			case EdgeInputType::Epsilon:
@@ -122,10 +117,9 @@ void LogSyntax(
 				LogInstruction(ins, typeName, fieldName, writer);
 			}
 
-			for (auto returnState : edge->returnStates)
+			for (auto returnEdge : edge->returnEdges)
 			{
-				writer.WriteString(L"\t\t> ");
-				writer.WriteLine(labels[returnState]);
+				writer.WriteLine(L"\t\t> rule: " + returnEdge->input.rule->Name() + L" -> " + labels[returnEdge->To()]);
 			}
 
 		}
