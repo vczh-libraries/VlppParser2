@@ -61,12 +61,14 @@ SyntaxSymbolManager::BuildCrossReferencedNFAInternal
 
 			void SyntaxSymbolManager::BuildCrossReferencedNFAInternal()
 			{
-				for (auto edge : edges)
+				vint count = edges.Count();
+				for (vint i = 0; i < count; i++)
 				{
+					auto edge = edges[i].Obj();
 					if (edge->input.type == EdgeInputType::Rule)
 					{
 						List<EdgeSymbol*> accumulatedEdges;
-						accumulatedEdges.Add(edge.Obj());
+						accumulatedEdges.Add(edge);
 						FixCrossReferencedRuleEdge(edge->From(), accumulatedEdges);
 					}
 				}
