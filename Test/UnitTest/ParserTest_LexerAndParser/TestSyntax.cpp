@@ -35,9 +35,13 @@ TEST_FILE
 	TEST_CASE_ASSERT(global.Errors().Count() == 0);
 	LogCalculatorSyntax(syntaxManager, L"NFA[1]");
 
-	syntaxManager.BuildCompactSyntax();
+	syntaxManager.BuildCompactNFA();
 	TEST_CASE_ASSERT(global.Errors().Count() == 0);
 	LogCalculatorSyntax(syntaxManager, L"NFA[2]");
+
+	syntaxManager.BuildCrossReferencedNFA();
+	TEST_CASE_ASSERT(global.Errors().Count() == 0);
+	LogCalculatorSyntax(syntaxManager, L"NFA[3]");
 
 	MemoryStream lexerData;
 	CalculatorLexerData(lexerData);

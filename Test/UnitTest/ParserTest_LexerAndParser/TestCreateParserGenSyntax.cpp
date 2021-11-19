@@ -18,7 +18,9 @@ TEST_FILE
 		InitializeParserSymbolManager(global);
 		CreateParserGenSyntax(syntaxManager);
 		TEST_ASSERT(global.Errors().Count() == 0);
-		syntaxManager.BuildCompactSyntax();
+		syntaxManager.BuildCompactNFA();
+		TEST_ASSERT(global.Errors().Count() == 0);
+		syntaxManager.BuildCrossReferencedNFA();
 		TEST_ASSERT(global.Errors().Count() == 0);
 
 		auto output = GenerateParserFileNames(global);

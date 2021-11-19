@@ -116,6 +116,13 @@ RuleSymbol
 SyntaxSymbolManager
 ***********************************************************************/
 
+			enum class SyntaxPhase
+			{
+				EpsilonNFA,
+				CompactNFA,
+				CrossReferencedNFA,
+			};
+
 			class SyntaxSymbolManager : public Object
 			{
 				using StateList = collections::List<Ptr<StateSymbol>>;
@@ -125,23 +132,26 @@ SyntaxSymbolManager
 				StateList					states;
 				EdgeList					edges;
 				ParserSymbolManager&		global;
-				bool						isCompact = false;
+				SyntaxPhase					phase = SyntaxPhase::EpsilonNFA;
 
 				void						EliminateLeftRecursion(RuleSymbol* rule, StateSymbol* startState, StateSymbol* endState, StateList& newStates, EdgeList& newEdges);
 				StateSymbol*				EliminateEpsilonEdges(RuleSymbol* rule, StateList& newStates, EdgeList& newEdges);
-				void						BuildCompactSyntaxInternal();
+				void						BuildCompactNFAInternal();
+				void						BuildCrossReferencedNFAInternal();
 			public:
 				SyntaxSymbolManager(ParserSymbolManager& _global);
 
 				RuleSymbol*					CreateRule(const WString& name);
 				StateSymbol*				CreateState(RuleSymbol* rule);
 				EdgeSymbol*					CreateEdge(StateSymbol* from, StateSymbol* to);
-				void						BuildCompactSyntax();
+
+				void						BuildCompactNFA();
+				void						BuildCrossReferencedNFA();
 
 				ParserSymbolManager&		Global() { return global; }
 				const auto&					Rules() { return rules.map; }
 				const auto&					RuleOrder() { return rules.order; }
-				bool						IsCompact() { return isCompact; }
+				SyntaxPhase					Phase() { return phase; }
 			};
 
 			extern void						CreateParserGenSyntax(SyntaxSymbolManager& manager);

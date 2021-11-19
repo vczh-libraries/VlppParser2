@@ -66,7 +66,7 @@ SyntaxSymbolManager
 
 			StateSymbol* SyntaxSymbolManager::CreateState(RuleSymbol* rule)
 			{
-				CHECK_ERROR(!isCompact, L"vl::gre::parsergen::SyntaxSymbolManager::CreateState(RuleSymbol*)#Cannot change the automaton after calling BuildCompactSyntax().");
+				CHECK_ERROR(phase == SyntaxPhase::EpsilonNFA, L"vl::gre::parsergen::SyntaxSymbolManager::CreateState(RuleSymbol*)#Cannot change the automaton after calling BuildCompactSyntax().");
 				auto symbol = new StateSymbol(rule);
 				states.Add(symbol);
 				return symbol;
@@ -74,7 +74,7 @@ SyntaxSymbolManager
 
 			EdgeSymbol* SyntaxSymbolManager::CreateEdge(StateSymbol* from, StateSymbol* to)
 			{
-				CHECK_ERROR(!isCompact, L"vl::gre::parsergen::SyntaxSymbolManager::CreateEdge(StateSymbol*, StateSymbol*)#Cannot change the automaton after calling BuildCompactSyntax().");
+				CHECK_ERROR(phase == SyntaxPhase::EpsilonNFA, L"vl::gre::parsergen::SyntaxSymbolManager::CreateEdge(StateSymbol*, StateSymbol*)#Cannot change the automaton after calling BuildCompactSyntax().");
 				auto symbol = new EdgeSymbol(from, to);
 				edges.Add(symbol);
 				return symbol;
@@ -423,7 +423,7 @@ SyntaxSymbolManager::BuildCompactSyntax
 				return compactStartState;
 			}
 
-			void SyntaxSymbolManager::BuildCompactSyntaxInternal()
+			void SyntaxSymbolManager::BuildCompactNFAInternal()
 			{
 				StateList newStates;
 				EdgeList newEdges;
@@ -437,12 +437,24 @@ SyntaxSymbolManager::BuildCompactSyntax
 				CopyFrom(edges, newEdges);
 			}
 
-			void SyntaxSymbolManager::BuildCompactSyntax()
+			void SyntaxSymbolManager::BuildCrossReferencedNFAInternal()
 			{
-				CHECK_ERROR(global.Errors().Count() == 0, L"vl::gre::parsergen::SyntaxSymbolManager::BuildCompactSyntax()#BuildCompactSyntax() cannot be called before errors are resolved.");
-				CHECK_ERROR(!isCompact, L"vl::gre::parsergen::SyntaxSymbolManager::BuildCompactSyntax()#BuildCompactSyntax() can only be called once.");
-				BuildCompactSyntaxInternal();
-				isCompact = true;
+			}
+
+			void SyntaxSymbolManager::BuildCompactNFA()
+			{
+				CHECK_ERROR(global.Errors().Count() == 0, L"vl::gre::parsergen::SyntaxSymbolManager::BuildCompactSyntax()#BuildCompactNFA() cannot be called before errors are resolved.");
+				CHECK_ERROR(phase == SyntaxPhase::EpsilonNFA, L"vl::gre::parsergen::SyntaxSymbolManager::BuildCompactSyntax()#BuildCompactNFA() can only be called on epsilon NFA.");
+				BuildCompactNFAInternal();
+				phase = SyntaxPhase::CompactNFA;
+			}
+
+			void SyntaxSymbolManager::BuildCrossReferencedNFA()
+			{
+				CHECK_ERROR(global.Errors().Count() == 0, L"vl::gre::parsergen::SyntaxSymbolManager::BuildCompactSyntax()#BuildCrossReferencedNFA() cannot be called before errors are resolved.");
+				CHECK_ERROR(phase == SyntaxPhase::CompactNFA, L"vl::gre::parsergen::SyntaxSymbolManager::BuildCompactSyntax()#BuildCrossReferencedNFA() can only be called on compact NFA.");
+				BuildCrossReferencedNFAInternal();
+				phase = SyntaxPhase::CrossReferencedNFA;
 			}
 		}
 	}
