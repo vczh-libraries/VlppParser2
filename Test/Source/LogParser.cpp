@@ -20,6 +20,9 @@ void LogInstruction(
 	case AstInsType::BeginObject:
 		writer.WriteLine(L"BeginObject(" + typeName(ins.param) + L")");
 		break;
+	case AstInsType::BeginObjectLeftRecursive:
+		writer.WriteLine(L"BeginObjectLeftRecursive(" + typeName(ins.param) + L")");
+		break;
 	case AstInsType::ReopenObject:
 		writer.WriteLine(L"ReopenObject()");
 		break;
@@ -129,6 +132,9 @@ void LogSyntax(
 				break;
 			case EdgeInputType::Ending:
 				writer.WriteString(L"\tending");
+				break;
+			case EdgeInputType::LeftRec :
+				writer.WriteString(L"\tleftrec");
 				break;
 			case EdgeInputType::Token:
 				writer.WriteString(L"\ttoken: " + tokenName(edge->input.token));

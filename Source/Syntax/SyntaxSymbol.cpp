@@ -341,6 +341,58 @@ SyntaxSymbolManager::BuildCompactSyntax
 				}
 			};
 
+			void SyntaxSymbolManager::EliminateLeftRecursion(RuleSymbol* rule, StateSymbol* startState, StateSymbol* endState, StateList& newStates, EdgeList& newEdges)
+			{
+				List<EdgeSymbol*> lrecEdges;
+				for (auto edge : startState->OutEdges())
+				{
+					if (edge->input.type == EdgeInputType::Rule && edge->input.rule == rule)
+					{
+						lrecEdges.Add(edge);
+					}
+				}
+
+				for (auto lrecEdge : lrecEdges)
+				{
+					for (auto endingEdge : endState->InEdges())
+					{
+						auto state = endingEdge->From();
+						auto newEdge = new EdgeSymbol(state, lrecEdge->To());
+						newEdges.Add(newEdge);
+
+						newEdge->input.type = EdgeInputType::LeftRec;
+						CopyFrom(newEdge->insBeforeInput, endingEdge->insBeforeInput, true);
+						CopyFrom(newEdge->insAfterInput, endingEdge->insAfterInput, true);
+						CopyFrom(newEdge->insBeforeInput, lrecEdge->insBeforeInput, true);
+						CopyFrom(newEdge->insAfterInput, lrecEdge->insAfterInput, true);
+
+						for (vint i = 0; i < newEdge->insBeforeInput.Count(); i++)
+						{
+							auto& ins = newEdge->insBeforeInput[i];
+							if (ins.type == AstInsType::BeginObject)
+							{
+								ins.type = AstInsType::BeginObjectLeftRecursive;
+							}
+						}
+						for (vint i = 0; i < newEdge->insAfterInput.Count(); i++)
+						{
+							auto& ins = newEdge->insAfterInput[i];
+							if (ins.type == AstInsType::BeginObject)
+							{
+								ins.type = AstInsType::BeginObjectLeftRecursive;
+							}
+						}
+					}
+				}
+
+				for (auto lrecEdge : lrecEdges)
+				{
+					lrecEdge->From()->outEdges.Remove(lrecEdge);
+					lrecEdge->To()->inEdges.Remove(lrecEdge);
+					newEdges.Remove(lrecEdge);
+				}
+			}
+
 			StateSymbol* SyntaxSymbolManager::EliminateEpsilonEdges(RuleSymbol* rule, StateList& newStates, EdgeList& newEdges)
 			{
 				auto psuedoState = CreateState(rule);
@@ -353,10 +405,10 @@ SyntaxSymbolManager::BuildCompactSyntax
 				auto compactStartState = builder.CreateCompactState(psuedoState);
 				compactStartState->label = L" BEGIN ";
 
-				auto endState = new StateSymbol(rule);
-				endState->label = L" END ";
-				endState->endingState = true;
-				newStates.Add(endState);
+				auto compactEndState = new StateSymbol(rule);
+				compactEndState->label = L" END ";
+				compactEndState->endingState = true;
+				newStates.Add(compactEndState);
 
 				List<StateSymbol*> visited;
 				visited.Add(compactStartState);
@@ -364,9 +416,10 @@ SyntaxSymbolManager::BuildCompactSyntax
 				for (vint i = 0; i < visited.Count(); i++)
 				{
 					auto current = visited[i];
-					builder.BuildEpsilonEliminatedEdges(current, endState, visited);
+					builder.BuildEpsilonEliminatedEdges(current, compactEndState, visited);
 				}
 
+				EliminateLeftRecursion(rule, compactStartState, compactEndState, newStates, newEdges);
 				return compactStartState;
 			}
 

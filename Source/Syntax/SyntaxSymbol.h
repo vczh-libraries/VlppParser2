@@ -57,6 +57,7 @@ EdgeSymbol
 			{
 				Epsilon,
 				Ending,
+				LeftRec,
 				Token,
 				Rule,
 			};
@@ -126,6 +127,7 @@ SyntaxSymbolManager
 				ParserSymbolManager&		global;
 				bool						isCompact = false;
 
+				void						EliminateLeftRecursion(RuleSymbol* rule, StateSymbol* startState, StateSymbol* endState, StateList& newStates, EdgeList& newEdges);
 				StateSymbol*				EliminateEpsilonEdges(RuleSymbol* rule, StateList& newStates, EdgeList& newEdges);
 				void						BuildCompactSyntaxInternal();
 			public:
