@@ -120,7 +120,7 @@ void LogSyntax(
 			{
 				return order.IndexOf(e1->To()) - order.IndexOf(e2->To());
 			});
-		for (auto edge : state->OutEdges())
+		for (auto edge : orderedEdges)
 		{
 			switch (edge->input.type)
 			{
