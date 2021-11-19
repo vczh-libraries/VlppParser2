@@ -75,6 +75,7 @@ EdgeSymbol
 				friend class CompactSyntaxBuilder;
 
 				using InsList = collections::List<AstIns>;
+				using StateList = collections::List<StateSymbol*>;
 			protected:
 				SyntaxSymbolManager*		ownerManager;
 				StateSymbol*				fromState;
@@ -85,6 +86,7 @@ EdgeSymbol
 				EdgeInput					input;
 				InsList						insBeforeInput;
 				InsList						insAfterInput;
+				StateList					returnStates;
 
 				SyntaxSymbolManager*		Owner() { return ownerManager; }
 				StateSymbol*				From() { return fromState; }
@@ -148,6 +150,7 @@ SyntaxSymbolManager
 
 				void						BuildCompactNFA();
 				void						BuildCrossReferencedNFA();
+				void						GetStatesInStableOrder(collections::List<StateSymbol*>& order);
 
 				ParserSymbolManager&		Global() { return global; }
 				const auto&					Rules() { return rules.map; }

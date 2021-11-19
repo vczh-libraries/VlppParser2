@@ -67,52 +67,12 @@ void LogSyntax(
 	StreamWriter writer(encoderStream);
 
 	Dictionary<StateSymbol*, WString> labels;
-	Group<RuleSymbol*, StateSymbol*> groupedStates;
 	List<StateSymbol*> order;
+	manager.GetStatesInStableOrder(order);
+	for (auto [state, index] : indexed(order))
 	{
-		List<StateSymbol*> visited;
-		for (auto ruleName : manager.RuleOrder())
-		{
-			auto ruleSymbol = manager.Rules()[ruleName];
-			for (auto startState : ruleSymbol->startStates)
-			{
-				if (!visited.Contains(startState))
-				{
-					vint startIndex = visited.Add(startState);
-					for (vint i = startIndex; i < visited.Count(); i++)
-					{
-						auto state = visited[i];
-						groupedStates.Add(state->Rule(), state);
-						for (auto edge : state->OutEdges())
-						{
-							auto target = edge->To();
-							if (!visited.Contains(target))
-							{
-								visited.Add(target);
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-	{
-		vint counter = 0;
-		for (auto ruleName : manager.RuleOrder())
-		{
-			auto ruleSymbol = manager.Rules()[ruleName];
-			auto orderedStates = From(groupedStates[ruleSymbol])
-				.OrderBy([](StateSymbol* s1, StateSymbol* s2)
-				{
-					return WString::Compare(s1->label, s2->label);
-				});
-			for (auto state : orderedStates)
-			{
-				auto label = L"[" + itow(counter++) + L"][" + ruleSymbol->Name() + L"]" + state->label + (state->endingState ? L"[ENDING]" : L"");
-				order.Add(state);
-				labels.Add(state, label);
-			}
-		}
+		auto label = L"[" + itow(index) + L"][" + state->Rule()->Name() + L"]" + state->label + (state->endingState ? L"[ENDING]" : L"");
+		labels.Add(state, label);
 	}
 
 	for (auto state : order)

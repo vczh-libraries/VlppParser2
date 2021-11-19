@@ -95,6 +95,54 @@ SyntaxSymbolManager
 				BuildCrossReferencedNFAInternal();
 				phase = SyntaxPhase::CrossReferencedNFA;
 			}
+
+			void SyntaxSymbolManager::GetStatesInStableOrder(collections::List<StateSymbol*>& order)
+			{
+				Group<RuleSymbol*, StateSymbol*> groupedStates;
+				{
+					List<StateSymbol*> visited;
+					for (auto ruleName : rules.order)
+					{
+						auto ruleSymbol = rules.map[ruleName];
+						for (auto startState : ruleSymbol->startStates)
+						{
+							if (!visited.Contains(startState))
+							{
+								vint startIndex = visited.Add(startState);
+								for (vint i = startIndex; i < visited.Count(); i++)
+								{
+									auto state = visited[i];
+									groupedStates.Add(state->Rule(), state);
+									for (auto edge : state->OutEdges())
+									{
+										auto target = edge->To();
+										if (!visited.Contains(target))
+										{
+											visited.Add(target);
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+				{
+					vint counter = 0;
+					for (auto ruleName : rules.order)
+					{
+						auto ruleSymbol = rules.map[ruleName];
+						auto orderedStates = From(groupedStates[ruleSymbol])
+							.OrderBy([](StateSymbol* s1, StateSymbol* s2)
+								{
+									return WString::Compare(s1->label, s2->label);
+								});
+						for (auto state : orderedStates)
+						{
+							order.Add(state);
+						}
+					}
+				}
+			}
 		}
 	}
 }
