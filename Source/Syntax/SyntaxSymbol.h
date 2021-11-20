@@ -109,7 +109,7 @@ RuleSymbol
 				RuleSymbol(SyntaxSymbolManager* _ownerManager, const WString& _name);
 			public:
 				StateList					startStates;
-				
+
 				SyntaxSymbolManager*		Owner() { return ownerManager; }
 				const WString&				Name() { return name; }
 			};
@@ -151,6 +151,7 @@ SyntaxSymbolManager
 
 				void						BuildCompactNFA();
 				void						BuildCrossReferencedNFA();
+				void						BuildAutomaton(automaton::Executable& executable, automaton::Metadata& metadata);
 				void						GetStatesInStableOrder(collections::List<StateSymbol*>& order);
 
 				ParserSymbolManager&		Global() { return global; }

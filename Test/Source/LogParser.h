@@ -8,6 +8,7 @@ using namespace vl::collections;
 using namespace vl::stream;
 using namespace vl::filesystem;
 using namespace vl::glr;
+using namespace vl::glr::automaton;
 using namespace vl::glr::parsergen;
 
 void LogSyntax(
@@ -17,6 +18,15 @@ void LogSyntax(
 	WString (*typeName)(vint32_t),
 	WString (*fieldName)(vint32_t),
 	WString (*tokenName)(vint32_t)
+	);
+
+void LogAutomaton(
+	const WString& parserName,
+	Executable& executable,
+	Metadata& metadata,
+	WString(*typeName)(vint32_t),
+	WString(*fieldName)(vint32_t),
+	WString(*tokenName)(vint32_t)
 	);
 
 #endif

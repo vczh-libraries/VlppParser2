@@ -24,6 +24,22 @@ namespace TestSyntax_TestObjects
 				return d ? L"\"" + WString::Unmanaged(d) + L"\"" : WString::Unmanaged(n);
 			});
 	}
+
+	void LogCalculatorAutomaton(Executable& executable, Metadata& metadata)
+	{
+		LogAutomaton(
+			L"Calculator",
+			executable,
+			metadata,
+			[](vint32_t type) { return WString::Unmanaged(CalculatorTypeName((CalculatorClasses)type)); },
+			[](vint32_t field) { return WString::Unmanaged(CalculatorFieldName((CalculatorFields)field)); },
+			[](vint32_t token)
+			{
+				auto n = CalculatorTokenId((CalculatorTokens)token);
+				auto d = CalculatorTokenDisplayText((CalculatorTokens)token);
+				return d ? L"\"" + WString::Unmanaged(d) + L"\"" : WString::Unmanaged(n);
+			});
+	}
 }
 using namespace TestSyntax_TestObjects;
 
@@ -42,6 +58,11 @@ TEST_FILE
 	syntaxManager.BuildCrossReferencedNFA();
 	TEST_CASE_ASSERT(global.Errors().Count() == 0);
 	LogCalculatorSyntax(syntaxManager, L"NFA[3]");
+
+	Executable executable;
+	Metadata metadata;
+	syntaxManager.BuildAutomaton(executable, metadata);
+	LogCalculatorAutomaton(executable, metadata);
 
 	MemoryStream lexerData;
 	CalculatorLexerData(lexerData);

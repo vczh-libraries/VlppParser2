@@ -2,6 +2,10 @@
 
 extern WString GetExePath();
 
+/***********************************************************************
+LogInstruction
+***********************************************************************/
+
 void LogInstruction(
 	AstIns ins,
 	WString(*typeName)(vint32_t),
@@ -42,6 +46,10 @@ void LogInstruction(
 		writer.WriteLine(L"<UNKNOWN-INSTRUCTION>");
 	}
 }
+
+/***********************************************************************
+LogSyntax
+***********************************************************************/
 
 void LogSyntax(
 	SyntaxSymbolManager& manager,
@@ -125,4 +133,19 @@ void LogSyntax(
 		}
 		writer.WriteLine(L"");
 	}
+}
+
+/***********************************************************************
+LogAutomaton
+***********************************************************************/
+
+void LogAutomaton(
+	const WString& parserName,
+	Executable& executable,
+	Metadata& metadata,
+	WString(*typeName)(vint32_t),
+	WString(*fieldName)(vint32_t),
+	WString(*tokenName)(vint32_t)
+)
+{
 }
