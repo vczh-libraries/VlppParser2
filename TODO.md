@@ -21,7 +21,7 @@
     - [ ] If AST memory pool is enabled, add the pool object to the constructor in reflection, redirecting to a static function.
     - [ ] All `token` property `X` becomes `X_`, paired with a string property `X` to access the text value in `X_`.
 - [x] Standalone lexical analyzer definition files.
-- [ ] Standalone syntax analyzer definition files.
+- [x] Standalone syntax analyzer definition files.
 - [x] All names of AST must be unique globally.
 - [ ] All names of token and rule must be unique.
 - [x] Unique field id will be generated for each fields in each AST node.
@@ -118,6 +118,7 @@
 - AST uses classes from another AST file in dependency as fields.
 - Ambiguity AST and parsing.
 - Printing AST classes that created from a memory pool.
+- Support multiple syntax definition file in one parser.
 - Error message generating.
   - Allow users to customize error messages.
   - Support localization.
