@@ -38,6 +38,7 @@ Automaton
 
 			struct ReturnDesc
 			{
+				vint								consumedRule = -1;
 				vint								returnState = -1;
 				InstructionArray					insAfterInput;
 			};

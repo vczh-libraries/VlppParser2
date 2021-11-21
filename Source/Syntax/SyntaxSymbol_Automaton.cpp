@@ -124,6 +124,7 @@ SyntaxSymbolManager::BuildAutomaton
 				for (auto [edge, edgeIndex] : indexed(returnEdgesInOrder))
 				{
 					auto&& returnDesc = executable.returns[edgeIndex];
+					returnDesc.consumedRule = rulesInOrder.IndexOf(edge->input.rule);
 					returnDesc.returnState = statesInOrder.IndexOf(edge->To());
 
 					returnDesc.insAfterInput.start = instructionsInOrder.Count();

@@ -64,7 +64,7 @@ void LogInstruction(
 LogSyntax
 ***********************************************************************/
 
-void LogSyntax(
+FilePath LogSyntax(
 	SyntaxSymbolManager& manager,
 	const WString& parserName,
 	const WString& phase,
@@ -94,19 +94,27 @@ void LogSyntax(
 		auto orderedEdges = From(state->OutEdges())
 			.OrderBy([&](EdgeSymbol* e1, EdgeSymbol* e2)
 			{
+				vint result = 0;
 				if (e1->input.type != e2->input.type)
 				{
-					return (vint)e1->input.type - (vint)e2->input.type;
+					result = (vint)e1->input.type - (vint)e2->input.type;
 				}
-				switch (e1->input.type)
+				else
 				{
-				case EdgeInputType::Token:
-					return e1->input.token - e2->input.token;
-				case EdgeInputType::Rule:
-					return manager.RuleOrder().IndexOf(e1->input.rule->Name()) - manager.RuleOrder().IndexOf(e2->input.rule->Name());
-				default:
-					return 0;
+					switch (e1->input.type)
+					{
+					case EdgeInputType::Token:
+						result = e1->input.token - e2->input.token;
+						break;
+					case EdgeInputType::Rule:
+						result = manager.RuleOrder().IndexOf(e1->input.rule->Name()) - manager.RuleOrder().IndexOf(e2->input.rule->Name());
+						break;
+					default:;
+					}
 				}
+
+				if (result != 0) return result;
+				return order.IndexOf(e1->To()) - order.IndexOf(e2->To());
 			});
 		for (auto edge : orderedEdges)
 		{
@@ -125,6 +133,10 @@ void LogSyntax(
 				writer.WriteString(L"\ttoken: " + tokenName(edge->input.token));
 				break;
 			case EdgeInputType::Rule:
+				if (manager.Phase() == SyntaxPhase::CrossReferencedNFA)
+				{
+					continue;
+				}
 				writer.WriteString(L"\trule: " + edge->input.rule->Name());
 				break;
 			}
@@ -155,13 +167,14 @@ void LogSyntax(
 		}
 		writer.WriteLine(L"");
 	}
+	return outputFile;
 }
 
 /***********************************************************************
 LogAutomaton
 ***********************************************************************/
 
-void LogAutomaton(
+FilePath LogAutomaton(
 	const WString& parserName,
 	Executable& executable,
 	Metadata& metadata,
@@ -215,7 +228,7 @@ void LogAutomaton(
 				for (vint returnRef = 0; returnRef < edge.returns.count; returnRef++)
 				{
 					auto&& returnDesc = executable.returns[edge.returns.start + returnRef];
-					writer.WriteLine(L"\t\t> rule: " + metadata.ruleNames[executable.states[returnDesc.returnState].rule] + L" -> " + metadata.stateLabels[returnDesc.returnState]);
+					writer.WriteLine(L"\t\t> rule: " + metadata.ruleNames[returnDesc.consumedRule] + L" -> " + metadata.stateLabels[returnDesc.returnState]);
 					for (vint insRef = 0; insRef < returnDesc.insAfterInput.count; insRef++)
 					{
 						writer.WriteString(L"\t\t\t+ ");
@@ -226,4 +239,5 @@ void LogAutomaton(
 		}
 		writer.WriteLine(L"");
 	}
+	return outputFile;
 }

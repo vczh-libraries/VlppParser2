@@ -11,7 +11,7 @@ using namespace vl::glr;
 using namespace vl::glr::automaton;
 using namespace vl::glr::parsergen;
 
-void LogSyntax(
+FilePath LogSyntax(
 	SyntaxSymbolManager& manager,
 	const WString& parserName,
 	const WString& phase,
@@ -20,7 +20,7 @@ void LogSyntax(
 	const Func<WString(vint32_t)>& tokenName
 	);
 
-void LogAutomaton(
+FilePath LogAutomaton(
 	const WString& parserName,
 	Executable& executable,
 	Metadata& metadata,

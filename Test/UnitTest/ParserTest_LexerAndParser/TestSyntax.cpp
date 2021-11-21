@@ -9,9 +9,9 @@ extern void GenerateCalculatorSyntax(SyntaxSymbolManager& manager);
 
 namespace TestSyntax_TestObjects
 {
-	void LogCalculatorSyntax(SyntaxSymbolManager& syntaxManager, const WString& phase)
+	FilePath LogCalculatorSyntax(SyntaxSymbolManager& syntaxManager, const WString& phase)
 	{
-		LogSyntax(
+		return LogSyntax(
 			syntaxManager,
 			L"Calculator",
 			phase,
@@ -25,9 +25,9 @@ namespace TestSyntax_TestObjects
 			});
 	}
 
-	void LogCalculatorAutomaton(Executable& executable, Metadata& metadata)
+	FilePath LogCalculatorAutomaton(Executable& executable, Metadata& metadata)
 	{
-		LogAutomaton(
+		return LogAutomaton(
 			L"Calculator",
 			executable,
 			metadata,
@@ -57,12 +57,16 @@ TEST_FILE
 
 	syntaxManager.BuildCrossReferencedNFA();
 	TEST_CASE_ASSERT(global.Errors().Count() == 0);
-	LogCalculatorSyntax(syntaxManager, L"NFA[3]");
+	auto fileCompact = LogCalculatorSyntax(syntaxManager, L"NFA[3]");
 
 	Executable executable;
 	Metadata metadata;
 	syntaxManager.BuildAutomaton(CalculatorTokenCount, executable, metadata);
-	LogCalculatorAutomaton(executable, metadata);
+	auto fileAutomaton = LogCalculatorAutomaton(executable, metadata);
+
+	auto contentCompact = File(fileCompact).ReadAllTextByBom();
+	auto contectAutomaton = File(fileAutomaton).ReadAllTextByBom();
+	TEST_CASE_ASSERT(contentCompact == contectAutomaton);
 
 	MemoryStream lexerData;
 	CalculatorLexerData(lexerData);

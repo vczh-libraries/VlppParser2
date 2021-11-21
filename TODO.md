@@ -58,7 +58,7 @@
    4. [ ] Generate `ParserGen` AST C++ files in this unit test project.
       1. [x] AST for `ParserGen::TypeAst`.
       2. [ ] AST for `ParserGen::SyntaxAst`.
-      3. [ ] Ast for `Calculator`
+      3. [x] Ast for `Calculator`
       4. [x] Visitors
       5. [x] Assembler
 2. [x] `ParserTest_AstParserGen`.
@@ -72,35 +72,35 @@
       2. [x] Lexer for `Calculator`.
 3. [ ] `ParserTest_LexerAndParser`.
    1. [x] Test generated lexer for `Calculator`.
-   2. [ ] Manually create parser symbols for `Calculator`.
-      1. [ ] `SyntaxSymbolManager` accepts epsilon-NFA state machines.
-      2. [ ] Syntax writer for `SyntaxSymbolManager`, it allows us to write state machines like EBNF, for testing purpose only.
-      3. [ ] Create `Calculator` state machines using the writer.
-      4. [ ] Process the state machines and generate parser-ready data structures from `SyntaxSymbolManager` with AST structure data input.
+   2. [x] Manually create parser symbols for `Calculator`.
+      1. [x] `SyntaxSymbolManager` accepts epsilon-NFA state machines.
+      2. [x] Syntax writer for `SyntaxSymbolManager`, it allows us to write state machines like EBNF, for testing purpose only.
+      3. [x] Create `Calculator` state machines using the writer.
+      4. [x] Process the state machines and generate parser-ready data structures from `SyntaxSymbolManager` with AST structure data input.
    3. [ ] Test the parser.
-      1. [ ] Connect the manually created parser to generated AST assembler and lexer.
-      2. [ ] Prepare input text files in `Test/Source/Calculator/Input/`.
-      3. [ ] Prepare output JSON files in `Test/Source/Calculator/Output/`.
+      1. [ ] Prepare input text files in `Test/Source/Calculator/Input/`.
+      2. [ ] Prepare output JSON files in `Test/Source/Calculator/Output/`.
+      3. [ ] Run the generated `Executable` from `SyntaxSymbolManager`
    4. [ ] Generate `ParserGen` Syntax C++ files in this unit test project.
       1. [ ] Syntax for `ParserGen`.
       2. [ ] Syntax for `Calculator`.
 4. [ ] `ParserTest_ParserGen_Compiler`
    1. [ ] Initialize `AstSymbolManager` from `ParserGen::TypeAst`.
    2. [ ] Initialize `SyntaxSymbolManager` from `ParserGen::SyntaxAst`.
-   3. [ ] Using the generated `ParserGen` files to parse `Calcaultor` defined in `Test/Source/Calculator/`.
-      1. [ ] Test the generated syntax from the previous unit test project.
-      1. [ ] Test the generated syntax from `Test/Source/Calculator/Syntax/Syntax.txt`.
-      2. [ ] Generate the whole `Calculator` C++ files in `Test/Source/Calculator/Parser2` again.
-   4. [ ] Prepare more parser test cases for `+loop`, `-loop`, `loop`, `+opt`, `-opt`, `opt`, left recursion, indirect left recursion, ...
+   3. [ ] Test generated `Calculator` syntax C++ files again.
+   4. [ ] Test generated `ParserGen` syntax C++ files to parse `Test/Source/Calculator/Syntax/Syntax.txt`.
+      1. [ ] Generate the whole `Calculator` C++ files in `Test/Source/Calculator/Parser2` again.
+   5. [ ] Prepare more parser test cases for `+loop`, `-loop`, `loop`, `+opt`, `-opt`, `opt`, left recursion, indirect left recursion, ...
       1. [ ] Multiple parser syntax under `Test/Source/*/Syntax/`.
       2. [ ] Generate C++ files from them in `Test/Source/*/Parser/`.
       3. [ ] Prepare input text files in `Test/Source/*/Input/`.
       4. [ ] Prepare output JSON files in `Test/Source/*/Output/`.
+      5. [ ] Use the generated `ParserGen` syntax C++ files to do above work items.
    5. [ ] Prepare more parser test cases for compile errors, no need to have input/output/codegen
    6. [ ] Generate JSON parser
    7. [ ] Generate XML parser
 5. [ ] `ParserTest_ParserGen_Generated`
-   1. [ ] Prepare more parser test cases.
+   1. [ ] Prepare more parser test cases (including `Calculator/Parser2`).
       1. [ ] Prepare input text files in `Test/Source/*/Input/`.
       2. [ ] Prepare output JSON files in `Test/Source/*/Output/`.
    2. [ ] Run all parsers.
