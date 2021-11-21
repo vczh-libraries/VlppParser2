@@ -15,18 +15,18 @@ void LogSyntax(
 	SyntaxSymbolManager& manager,
 	const WString& parserName,
 	const WString& phase,
-	WString (*typeName)(vint32_t),
-	WString (*fieldName)(vint32_t),
-	WString (*tokenName)(vint32_t)
+	const Func<WString(vint32_t)>& typeName,
+	const Func<WString(vint32_t)>& fieldName,
+	const Func<WString(vint32_t)>& tokenName
 	);
 
 void LogAutomaton(
 	const WString& parserName,
 	Executable& executable,
 	Metadata& metadata,
-	WString(*typeName)(vint32_t),
-	WString(*fieldName)(vint32_t),
-	WString(*tokenName)(vint32_t)
+	const Func<WString(vint32_t)>& typeName,
+	const Func<WString(vint32_t)>& fieldName,
+	const Func<WString(vint32_t)>& tokenName
 	);
 
 #endif
