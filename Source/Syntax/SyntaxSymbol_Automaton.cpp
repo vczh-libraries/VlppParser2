@@ -32,6 +32,14 @@ SyntaxSymbolManager::BuildAutomaton
 				{
 					metadata.stateLabels[index] = GetStateGlobalLabel(state, index);
 				}
+
+				executable.tokenCount = tokenCount;
+				executable.ruleCount = rulesInOrder.Count();
+				executable.ruleStartStates.Resize(rulesInOrder.Count());
+				for (auto [rule, index] : indexed(rulesInOrder))
+				{
+					executable.ruleStartStates[index] = statesInOrder.IndexOf(rule->startStates[0]);
+				}
 			}
 		}
 	}
