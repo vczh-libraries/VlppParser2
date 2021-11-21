@@ -85,8 +85,7 @@ void LogSyntax(
 	manager.GetStatesInStableOrder(order);
 	for (auto [state, index] : indexed(order))
 	{
-		auto label = L"[" + itow(index) + L"][" + state->Rule()->Name() + L"]" + state->label + (state->endingState ? L"[ENDING]" : L"");
-		labels.Add(state, label);
+		labels.Add(state, manager.GetStateGlobalLabel(state, index));
 	}
 
 	for (auto state : order)

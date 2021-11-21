@@ -143,6 +143,11 @@ SyntaxSymbolManager
 					}
 				}
 			}
+
+			WString SyntaxSymbolManager::GetStateGlobalLabel(StateSymbol* state, vint index)
+			{
+				return L"[" + itow(index) + L"][" + state->Rule()->Name() + L"]" + state->label + (state->endingState ? L"[ENDING]" : L"");
+			}
 		}
 	}
 }

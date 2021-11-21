@@ -151,8 +151,9 @@ SyntaxSymbolManager
 
 				void						BuildCompactNFA();
 				void						BuildCrossReferencedNFA();
-				void						BuildAutomaton(automaton::Executable& executable, automaton::Metadata& metadata);
+				void						BuildAutomaton(vint tokenCount, automaton::Executable& executable, automaton::Metadata& metadata);
 				void						GetStatesInStableOrder(collections::List<StateSymbol*>& order);
+				WString						GetStateGlobalLabel(StateSymbol* state, vint index);
 
 				ParserSymbolManager&		Global() { return global; }
 				const auto&					Rules() { return rules.map; }

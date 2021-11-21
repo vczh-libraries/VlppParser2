@@ -61,7 +61,7 @@ TEST_FILE
 
 	Executable executable;
 	Metadata metadata;
-	syntaxManager.BuildAutomaton(executable, metadata);
+	syntaxManager.BuildAutomaton(CalculatorTokenCount, executable, metadata);
 	LogCalculatorAutomaton(executable, metadata);
 
 	MemoryStream lexerData;
