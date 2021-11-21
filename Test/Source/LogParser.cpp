@@ -2,6 +2,19 @@
 
 extern WString GetExePath();
 
+FilePath GetOutputDir(const WString& parserName)
+{
+	auto outputDir = FilePath(GetExePath()) / L"../../Output" / parserName;
+	{
+		Folder folder = outputDir;
+		if (!folder.Exists())
+		{
+			folder.Create(true);
+		}
+	}
+	return outputDir;
+}
+
 /***********************************************************************
 LogInstruction
 ***********************************************************************/
@@ -60,14 +73,7 @@ void LogSyntax(
 	WString(*tokenName)(vint32_t)
 )
 {
-	auto outputDir = FilePath(GetExePath()) / L"../../Output" / parserName;
-	{
-		Folder folder = outputDir;
-		if (!folder.Exists())
-		{
-			folder.Create(true);
-		}
-	}
+	auto outputDir = GetOutputDir(parserName);
 	auto outputFile = outputDir / (phase + L".txt");
 	FileStream fileStream(outputFile.GetFullPath(), FileStream::WriteOnly);
 	BomEncoder encoder(BomEncoder::Utf8);
@@ -148,4 +154,60 @@ void LogAutomaton(
 	WString(*tokenName)(vint32_t)
 )
 {
+	auto outputDir = GetOutputDir(parserName);
+	auto outputFile = outputDir / L"Automaton.txt";
+	FileStream fileStream(outputFile.GetFullPath(), FileStream::WriteOnly);
+	BomEncoder encoder(BomEncoder::Utf8);
+	EncoderStream encoderStream(fileStream, encoder);
+	StreamWriter writer(encoderStream);
+
+	for (auto&& [state, stateIndex] : indexed(executable.states))
+	{
+		writer.WriteLine(metadata.stateLabels[stateIndex]);
+		for (vint input = 0; input < Executable::TokenBegin + executable.tokenCount; input++)
+		{
+			auto&& transition = executable.transitions[stateIndex * (Executable::TokenBegin + executable.tokenCount) + input];
+			for (vint edgeRef = 0; edgeRef < transition.count; edgeRef++)
+			{
+				auto&& edge = executable.edges[transition.start + edgeRef];
+				switch (input)
+				{
+				case Executable::EndingInput:
+					writer.WriteString(L"\tending");
+					break;
+				case Executable::LeftrecInput:
+					writer.WriteString(L"\tleftrec");
+					break;
+				default:
+					writer.WriteString(L"\ttoken:" + tokenName(input - Executable::TokenBegin));
+					break;
+				}
+				writer.WriteLine(L" -> " + metadata.stateLabels[edge.toState]);
+
+				for (vint insRef = 0; insRef < edge.insBeforeInput.count; insRef++)
+				{
+					writer.WriteString(L"\t\t- ");
+					LogInstruction(executable.instructions[edge.insBeforeInput.start + insRef], typeName, fieldName, writer);
+				}
+
+				for (vint insRef = 0; insRef < edge.insAfterInput.count; insRef++)
+				{
+					writer.WriteString(L"\t\t- ");
+					LogInstruction(executable.instructions[edge.insAfterInput.start + insRef], typeName, fieldName, writer);
+				}
+
+				for (vint returnRef = 0; returnRef < edge.returns.count; returnRef++)
+				{
+					auto&& returnDesc = executable.returns[edge.returns.start + returnRef];
+					writer.WriteLine(L"\t\t> rule: " + metadata.ruleNames[executable.states[returnDesc.returnState].rule] + L" -> " + metadata.stateLabels[returnDesc.returnState]);
+					for (vint insRef = 0; insRef < returnDesc.insAfterInput.count; insRef++)
+					{
+						writer.WriteString(L"\t\t- ");
+						LogInstruction(executable.instructions[returnDesc.insAfterInput.start + insRef], typeName, fieldName, writer);
+					}
+				}
+			}
+		}
+		writer.WriteLine(L"");
+	}
 }

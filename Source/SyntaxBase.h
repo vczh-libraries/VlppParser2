@@ -53,6 +53,7 @@ Automaton
 
 			struct StateDesc
 			{
+				vint								rule = -1;
 				bool								endingState = false;
 			};
 
