@@ -22,6 +22,7 @@
     - [ ] All `token` property `X` becomes `X_`, paired with a string property `X` to access the text value in `X_`.
 - [x] Standalone lexical analyzer definition files.
 - [x] Standalone syntax analyzer definition files.
+  - Multiple syntax files are combined together before creating `SyntaxSymbolManager`.
 - [x] All names of AST must be unique globally.
 - [ ] All names of token and rule must be unique.
 - [x] Unique field id will be generated for each fields in each AST node.
@@ -80,7 +81,8 @@
    3. [ ] Test the parser.
       1. [ ] Prepare input text files in `Test/Source/Calculator/Input/`.
       2. [ ] Prepare output JSON files in `Test/Source/Calculator/Output/`.
-      3. [ ] Run the generated `Executable` from `SyntaxSymbolManager`
+      3. [ ] Run the generated `Executable` from `SyntaxSymbolManager`.
+      4. [ ] Check `codeRange` of all nodes.
    4. [ ] Generate `ParserGen` Syntax C++ files in this unit test project.
       1. [ ] Syntax for `ParserGen`.
       2. [ ] Syntax for `Calculator`.
@@ -109,9 +111,14 @@
 6. [ ] Port `CodePack` and `ParserGen` to `VlppParser2`, do not write to an existing file if the content is not changed.
    1. [ ] Create a new repo `BuildTools` and adapt the release license instead of the development license.
 
-## Work Items
+## Work Items (before `ParserTest_ParserGen_Compiler`)
 
 - `EndObject` after `ReopenObject` doesn't update `ParsingAstBase::codeRange::start`.
+- Make sure each time `regex_internal::PureInterpretor` creates the automaton in stable order with the same input.
+- Optimize `CrossReferencedNFA` to merge prefix (two states can be merged if their `InEdges` are identical, `FromState` in `InEdges` are replaced by merged states)
+
+## Work Items
+
 - `JsonEscapeString` `JsonUnescapeString` handle surrogate pairs correctly.
 - Switching lexical analyzer during parsing.
   - Refactor some properties in `LexerSymbolManager` into `LexerFile` with a name.
