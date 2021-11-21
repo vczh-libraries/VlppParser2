@@ -54,9 +54,12 @@ SyntaxSymbolManager::BuildAutomaton
 					stateDesc.endingState = state->endingState;
 				}
 
+				List<EdgeSymbol*> edgesInOrder;
+				List<EdgeSymbol*> returnEdgesInOrder;
+				List<AstIns> instructionsInOrder;
+
 				// executable.transitions
 				vint inputCount = automaton::Executable::TokenBegin + tokenCount;
-				List<EdgeSymbol*> edgesInOrder;
 				executable.transitions.Resize(statesInOrder.Count() * inputCount);
 				for (auto [state, stateIndex] : indexed(statesInOrder))
 				{
@@ -91,9 +94,33 @@ SyntaxSymbolManager::BuildAutomaton
 					}
 				}
 
+				// executable.edges
+				executable.edges.Resize(edgesInOrder.Count());
+				for (auto [edge, edgeIndex] : indexed(edgesInOrder))
+				{
+					auto&& edgeDesc = executable.edges[edgeIndex];
+					edgeDesc.fromState = statesInOrder.IndexOf(edge->From());
+					edgeDesc.toState = statesInOrder.IndexOf(edge->To());
+
+					edgeDesc.insBeforeInput.start = instructionsInOrder.Count();
+					CopyFrom(instructionsInOrder, edge->insBeforeInput, true);
+					edgeDesc.insBeforeInput.count = instructionsInOrder.Count() - edgeDesc.insBeforeInput.start;
+
+					edgeDesc.insAfterInput.start = instructionsInOrder.Count();
+					CopyFrom(instructionsInOrder, edge->insBeforeInput, true);
+					edgeDesc.insAfterInput.count = instructionsInOrder.Count() - edgeDesc.insAfterInput.start;
+
+					edgeDesc.returns.start = returnEdgesInOrder.Count();
+					CopyFrom(returnEdgesInOrder, edge->returnEdges, true);
+					edgeDesc.returns.count = returnEdgesInOrder.Count() - edgeDesc.returns.start;
+
+					if (edgeDesc.insBeforeInput.count == 0) edgeDesc.insBeforeInput.start = -1;
+					if (edgeDesc.insAfterInput.count == 0) edgeDesc.insAfterInput.start = -1;
+					if (edgeDesc.returns.count == 0) edgeDesc.returns.start = -1;
+				}
+
 				// executable.instructions
 				// executable.returns
-				// executable.edges
 			}
 		}
 	}
