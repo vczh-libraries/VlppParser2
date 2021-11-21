@@ -145,6 +145,11 @@ void LogSyntax(
 			for (auto returnEdge : edge->returnEdges)
 			{
 				writer.WriteLine(L"\t\t> rule: " + returnEdge->input.rule->Name() + L" -> " + labels[returnEdge->To()]);
+				for (auto&& ins : returnEdge->insAfterInput)
+				{
+					writer.WriteString(L"\t\t\t+ ");
+					LogInstruction(ins, typeName, fieldName, writer);
+				}
 			}
 
 		}
@@ -203,7 +208,7 @@ void LogAutomaton(
 
 				for (vint insRef = 0; insRef < edge.insAfterInput.count; insRef++)
 				{
-					writer.WriteString(L"\t\t- ");
+					writer.WriteString(L"\t\t+ ");
 					LogInstruction(executable.instructions[edge.insAfterInput.start + insRef], typeName, fieldName, writer);
 				}
 
@@ -213,7 +218,7 @@ void LogAutomaton(
 					writer.WriteLine(L"\t\t> rule: " + metadata.ruleNames[executable.states[returnDesc.returnState].rule] + L" -> " + metadata.stateLabels[returnDesc.returnState]);
 					for (vint insRef = 0; insRef < returnDesc.insAfterInput.count; insRef++)
 					{
-						writer.WriteString(L"\t\t- ");
+						writer.WriteString(L"\t\t\t+ ");
 						LogInstruction(executable.instructions[returnDesc.insAfterInput.start + insRef], typeName, fieldName, writer);
 					}
 				}
