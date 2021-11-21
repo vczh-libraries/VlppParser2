@@ -76,6 +76,9 @@ export 1
 )";
 		List<RegexToken> tokens;
 		lexer.Parse(input).ReadToEnd(tokens, CalculatorTokenDeleter);
+
+		TraceManager tm;
+		tm.Initialize(executable.ruleStartStates[metadata.ruleNames.IndexOf(L"Module")]);
 	});
 
 #undef LEXER

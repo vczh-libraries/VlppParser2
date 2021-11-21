@@ -82,6 +82,97 @@ Automaton
 /***********************************************************************
 Execution
 ***********************************************************************/
+
+			template<typename T>
+			class AllocateOnly : public Object
+			{
+			protected:
+				vint											blockSize;
+				vint											remains;
+				collections::List<Ptr<collections::Array<T>>>	buffers;
+
+			public:
+				AllocateOnly(vint _blockSize = 65536)
+					: blockSize(_blockSize)
+					, remains(0)
+				{
+				}
+
+				T* Get(vint index)
+				{
+					vint row = index / blockSize;
+					vint column = index % blockSize;
+					CHECK_ERROR(0 <= row && row < buffers.Count(), L"vl::glr::automaton::AllocateOnly<T>::Get(vint)#Index out of range.");
+					if (row == buffers.Count() - 1)
+					{
+						CHECK_ERROR(0 <= column && column < (blockSize - remains), L"vl::glr::automaton::AllocateOnly<T>::Get(vint)#Index out of range.");
+					}
+					else
+					{
+						CHECK_ERROR(0 <= column && column < blockSize, L"vl::glr::automaton::AllocateOnly<T>::Get(vint)#Index out of range.");
+					}
+					return &buffers[row]->operator[](column);
+				}
+
+				vint Allocate()
+				{
+					if (remains == 0)
+					{
+						buffers.Add(new collections::Array<T>(blockSize));
+						remains = blockSize;
+					}
+					vint index = blockSize * (buffers.Count() - 1) + (blockSize - remains);
+					buffers[buffers.Count() - 1]->operator[](blockSize - remains).allocatedIndex = index;
+					remains--;
+					return index;
+				}
+
+				void Clear()
+				{
+					remains = 0;
+					buffers.Clear();
+				}
+			};
+
+			struct ReturnStack
+			{
+				vint	allocatedIndex;
+				vint	previous;
+				vint	state;
+			};
+
+			struct Trace
+			{
+				vint	allocatedIndex;
+				vint	previous;
+				vint	state;
+				vint	returnStack;
+				vint	byEdge;
+				vint	byInput;
+				vint	traceBeginObject;
+				vint	traceAfterBranch;
+			};
+
+			class TraceManager : public Object
+			{
+			protected:
+				AllocateOnly<ReturnStack>			returnStacks;
+				AllocateOnly<Trace>					traces;
+				collections::List<Trace*>			traces1;
+				collections::List<Trace*>			traces2;
+
+			public:
+				vint								concurrentCount = 0;
+				collections::List<Trace*>*			concurrentTraces = &traces1;
+				collections::List<Trace*>*			backupTraces = &traces2;
+
+				ReturnStack*						GetReturnStack(vint index);
+				ReturnStack*						AllocateReturnStack();
+				Trace*								GetTrace(vint index);
+				Trace*								AllocateTrace();
+				void								Swap();
+				void								Initialize(vint startState);
+			};
 		}
 	}
 }
