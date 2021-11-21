@@ -107,7 +107,7 @@ SyntaxSymbolManager::BuildAutomaton
 					edgeDesc.insBeforeInput.count = instructionsInOrder.Count() - edgeDesc.insBeforeInput.start;
 
 					edgeDesc.insAfterInput.start = instructionsInOrder.Count();
-					CopyFrom(instructionsInOrder, edge->insBeforeInput, true);
+					CopyFrom(instructionsInOrder, edge->insAfterInput, true);
 					edgeDesc.insAfterInput.count = instructionsInOrder.Count() - edgeDesc.insAfterInput.start;
 
 					edgeDesc.returns.start = returnEdgesInOrder.Count();
@@ -127,7 +127,7 @@ SyntaxSymbolManager::BuildAutomaton
 					returnDesc.returnState = statesInOrder.IndexOf(edge->To());
 
 					returnDesc.insAfterInput.start = instructionsInOrder.Count();
-					CopyFrom(instructionsInOrder, edge->insBeforeInput, true);
+					CopyFrom(instructionsInOrder, edge->insAfterInput, true);
 					returnDesc.insAfterInput.count = instructionsInOrder.Count() - returnDesc.insAfterInput.start;
 					if (returnDesc.insAfterInput.count == 0) returnDesc.insAfterInput.start = -1;
 				}

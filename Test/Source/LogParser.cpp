@@ -94,7 +94,19 @@ void LogSyntax(
 		auto orderedEdges = From(state->OutEdges())
 			.OrderBy([&](EdgeSymbol* e1, EdgeSymbol* e2)
 			{
-				return order.IndexOf(e1->To()) - order.IndexOf(e2->To());
+				if (e1->input.type != e2->input.type)
+				{
+					return (vint)e1->input.type - (vint)e2->input.type;
+				}
+				switch (e1->input.type)
+				{
+				case EdgeInputType::Token:
+					return e1->input.token - e2->input.token;
+				case EdgeInputType::Rule:
+					return manager.RuleOrder().IndexOf(e1->input.rule->Name()) - manager.RuleOrder().IndexOf(e2->input.rule->Name());
+				default:
+					return 0;
+				}
 			});
 		for (auto edge : orderedEdges)
 		{
@@ -178,7 +190,7 @@ void LogAutomaton(
 					writer.WriteString(L"\tleftrec");
 					break;
 				default:
-					writer.WriteString(L"\ttoken:" + tokenName(input - Executable::TokenBegin));
+					writer.WriteString(L"\ttoken: " + tokenName(input - Executable::TokenBegin));
 					break;
 				}
 				writer.WriteLine(L" -> " + metadata.stateLabels[edge.toState]);
