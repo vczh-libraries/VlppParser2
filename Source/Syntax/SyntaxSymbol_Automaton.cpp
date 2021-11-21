@@ -119,8 +119,21 @@ SyntaxSymbolManager::BuildAutomaton
 					if (edgeDesc.returns.count == 0) edgeDesc.returns.start = -1;
 				}
 
-				// executable.instructions
 				// executable.returns
+				executable.returns.Resize(returnEdgesInOrder.Count());
+				for (auto [edge, edgeIndex] : indexed(returnEdgesInOrder))
+				{
+					auto&& returnDesc = executable.returns[edgeIndex];
+					returnDesc.returnState = statesInOrder.IndexOf(edge->To());
+
+					returnDesc.insAfterInput.start = instructionsInOrder.Count();
+					CopyFrom(instructionsInOrder, edge->insBeforeInput, true);
+					returnDesc.insAfterInput.count = instructionsInOrder.Count() - returnDesc.insAfterInput.start;
+					if (returnDesc.insAfterInput.count == 0) returnDesc.insAfterInput.start = -1;
+				}
+
+				// executable.instructions
+				CopyFrom(executable.instructions, instructionsInOrder);
 			}
 		}
 	}
