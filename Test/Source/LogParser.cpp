@@ -225,9 +225,9 @@ FilePath LogAutomaton(
 					LogInstruction(executable.instructions[edge.insAfterInput.start + insRef], typeName, fieldName, writer);
 				}
 
-				for (vint returnRef = 0; returnRef < edge.returns.count; returnRef++)
+				for (vint returnRef = 0; returnRef < edge.returnIndices.count; returnRef++)
 				{
-					auto&& returnDesc = executable.returns[edge.returns.start + returnRef];
+					auto&& returnDesc = executable.returns[executable.returnIndices[edge.returnIndices.start + returnRef]];
 					writer.WriteLine(L"\t\t> rule: " + metadata.ruleNames[returnDesc.consumedRule] + L" -> " + metadata.stateLabels[returnDesc.returnState]);
 					for (vint insRef = 0; insRef < returnDesc.insAfterInput.count; insRef++)
 					{

@@ -56,6 +56,7 @@ SyntaxSymbolManager::BuildAutomaton
 
 				List<EdgeSymbol*> edgesInOrder;
 				List<EdgeSymbol*> returnEdgesInOrder;
+				List<vint> returnIndicesInOrder;
 				List<AstIns> instructionsInOrder;
 
 				// executable.transitions
@@ -110,13 +111,21 @@ SyntaxSymbolManager::BuildAutomaton
 					CopyFrom(instructionsInOrder, edge->insAfterInput, true);
 					edgeDesc.insAfterInput.count = instructionsInOrder.Count() - edgeDesc.insAfterInput.start;
 
-					edgeDesc.returns.start = returnEdgesInOrder.Count();
-					CopyFrom(returnEdgesInOrder, edge->returnEdges, true);
-					edgeDesc.returns.count = returnEdgesInOrder.Count() - edgeDesc.returns.start;
+					edgeDesc.returnIndices.start = returnIndicesInOrder.Count();
+					for (auto returnEdge : edge->returnEdges)
+					{
+						vint index = returnEdgesInOrder.IndexOf(returnEdge);
+						if (index == -1)
+						{
+							index = returnEdgesInOrder.Add(returnEdge);
+						}
+						returnIndicesInOrder.Add(index);
+					}
+					edgeDesc.returnIndices.count = returnIndicesInOrder.Count() - edgeDesc.returnIndices.start;
 
 					if (edgeDesc.insBeforeInput.count == 0) edgeDesc.insBeforeInput.start = -1;
 					if (edgeDesc.insAfterInput.count == 0) edgeDesc.insAfterInput.start = -1;
-					if (edgeDesc.returns.count == 0) edgeDesc.returns.start = -1;
+					if (edgeDesc.returnIndices.count == 0) edgeDesc.returnIndices.start = -1;
 				}
 
 				// executable.returns
@@ -132,6 +141,9 @@ SyntaxSymbolManager::BuildAutomaton
 					returnDesc.insAfterInput.count = instructionsInOrder.Count() - returnDesc.insAfterInput.start;
 					if (returnDesc.insAfterInput.count == 0) returnDesc.insAfterInput.start = -1;
 				}
+
+				// executable.returnIndices
+				CopyFrom(executable.returnIndices, returnIndicesInOrder);
 
 				// executable.instructions
 				CopyFrom(executable.instructions, instructionsInOrder);

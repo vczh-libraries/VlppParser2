@@ -24,7 +24,7 @@ Automaton
 				vint								count = 0;
 			};
 
-			struct ReturnArray
+			struct ReturnIndexArray
 			{
 				vint								start = -1;
 				vint								count = -1;
@@ -49,7 +49,7 @@ Automaton
 				vint								toState = -1;
 				InstructionArray					insBeforeInput;
 				InstructionArray					insAfterInput;
-				ReturnArray							returns;
+				ReturnIndexArray					returnIndices;
 			};
 
 			struct StateDesc
@@ -69,9 +69,10 @@ Automaton
 				collections::Array<vint>			ruleStartStates;		// ruleStartStates[rule] = the start state of this rule.
 				collections::Array<EdgeArray>		transitions;			// transitions[state * (TokenBegin + tokenCount) + input] = edges from state with specified input.
 				collections::Array<AstIns>			instructions;			// referenced by InstructionArray
-				collections::Array<ReturnDesc>		returns;				// referenced by ReturnArray
+				collections::Array<vint>			returnIndices;			// referenced by ReturnIndexArray
+				collections::Array<ReturnDesc>		returns;				// referenced by Executable::returnIndices
 				collections::Array<EdgeDesc>		edges;					// referenced by EdgeArray
-				collections::Array<StateDesc>		states;
+				collections::Array<StateDesc>		states;					// refereced by returnState/fromState/toState
 			};
 
 			struct Metadata
@@ -137,21 +138,21 @@ Execution
 
 			struct ReturnStack
 			{
-				vint	allocatedIndex;
-				vint	previous;
-				vint	state;
+				vint	allocatedIndex;				// id of this ReturnStack
+				vint	previous;					// id of the previous ReturnStack
+				vint	returnIndex;				// index of ReturnDesc
 			};
 
 			struct Trace
 			{
-				vint	allocatedIndex;
-				vint	previous;
-				vint	state;
-				vint	returnStack;
-				vint	byEdge;
-				vint	byInput;
-				vint	traceBeginObject;
-				vint	traceAfterBranch;
+				vint	allocatedIndex;				// id of this Trace
+				vint	previous;					// id of the previous Trace
+				vint	state;						// id of the current StateDesc
+				vint	returnStack;				// id of the current ReturnStack
+				vint	byEdge;						// id of the last EdgeDesc that make this trace
+				vint	byInput;					// the last input that make this trace
+				vint	traceBeginObject;			// the id of the Trace which contains the latest AstInsType::BeginObject
+				vint	traceAfterBranch;			// the id of the Trace which is the first trace of the current branch
 			};
 
 			class TraceManager : public Object
