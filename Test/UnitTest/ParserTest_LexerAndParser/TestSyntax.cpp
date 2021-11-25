@@ -81,12 +81,12 @@ export 1
 		List<RegexToken> tokens;
 		lexer.Parse(input).ReadToEnd(tokens, CalculatorTokenDeleter);
 
-		TraceManager tm;
+		TraceManager tm(executable);
 		tm.Initialize(executable.ruleStartStates[metadata.ruleNames.IndexOf(L"Module")]);
 		for (vint i = 0; i < tokens.Count(); i++)
 		{
 			auto&& token = tokens[i];
-			tm.Input(i, Executable::TokenBegin + token.token);
+			tm.Input(i, token.token);
 			TEST_ASSERT(tm.concurrentCount > 0);
 		}
 		tm.EndOfInput();

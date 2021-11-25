@@ -161,6 +161,7 @@ Execution
 			class TraceManager : public Object
 			{
 			protected:
+				Executable&							executable;
 				AllocateOnly<ReturnStack>			returnStacks;
 				AllocateOnly<Trace>					traces;
 				collections::List<Trace*>			traces1;
@@ -170,9 +171,11 @@ Execution
 				void								AddTrace(Trace* trace);
 				void								EndSwap();
 			public:
+				TraceManager(Executable& _executable);
+
 				vint								concurrentCount = 0;
-				collections::List<Trace*>*			concurrentTraces = &traces1;
-				collections::List<Trace*>*			backupTraces = &traces2;
+				collections::List<Trace*>*			concurrentTraces = nullptr;
+				collections::List<Trace*>*			backupTraces = nullptr;
 
 				ReturnStack*						GetReturnStack(vint index);
 				ReturnStack*						AllocateReturnStack();
@@ -180,7 +183,7 @@ Execution
 				Trace*								AllocateTrace();
 
 				void								Initialize(vint startState);
-				void								Input(vint tokenIndex, vint input);
+				void								Input(vint currentTokenIndex, vint token);
 				void								EndOfInput();
 			};
 		}
