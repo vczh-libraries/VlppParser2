@@ -92,6 +92,54 @@ export 1
 		tm.EndOfInput();
 		TEST_ASSERT(tm.concurrentCount == 1);
 		TEST_ASSERT(executable.states[tm.concurrentTraces->Get(0)->state].endingState);
+
+		auto currentTrace = tm.PrepareTraceRoute();
+		CalculatorAstInsReceiver receiver;
+		while (currentTrace)
+		{
+			if (currentTrace->byEdge != -1)
+			{
+				auto& edgeDesc = executable.edges[currentTrace->byEdge];
+				for (vint insRef = 0; insRef < edgeDesc.insBeforeInput.count; insRef++)
+				{
+					vint insIndex = edgeDesc.insBeforeInput.start + insRef;
+					auto& ins = executable.instructions[insIndex];
+					auto& token = tokens[currentTrace->previousTokenIndex == -1 ? 0 : currentTrace->previousTokenIndex];
+					receiver.Execute(ins, token);
+				}
+				for (vint insRef = 0; insRef < edgeDesc.insAfterInput.count; insRef++)
+				{
+					vint insIndex = edgeDesc.insAfterInput.start + insRef;
+					auto& ins = executable.instructions[insIndex];
+					auto& token = tokens[currentTrace->currentTokenIndex];
+					receiver.Execute(ins, token);
+				}
+			}
+
+			if (currentTrace->executedReturn != -1)
+			{
+				auto& returnDesc = executable.returns[currentTrace->executedReturn];
+				for (vint insRef = 0; insRef < returnDesc.insAfterInput.count; insRef++)
+				{
+					vint insIndex = returnDesc.insAfterInput.start + insRef;
+					auto& ins = executable.instructions[insIndex];
+					auto& token = tokens[currentTrace->currentTokenIndex];
+					receiver.Execute(ins, token);
+				}
+			}
+
+			if (currentTrace->selectedNext == -1)
+			{
+				currentTrace = nullptr;
+			}
+			else
+			{
+				currentTrace = tm.GetTrace(currentTrace->selectedNext);
+			}
+		}
+		auto ast = receiver.Finished();
+		auto astModule = ast.Cast<Module>();
+		TEST_ASSERT(astModule);
 	});
 
 #undef LEXER

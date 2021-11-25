@@ -148,6 +148,7 @@ Execution
 			{
 				vint	allocatedIndex;				// id of this Trace
 				vint	previous;					// id of the previous Trace
+				vint	selectedNext;				// id of the selected next Trace
 				vint	state;						// id of the current StateDesc
 				vint	returnStack;				// id of the current ReturnStack
 				vint	executedReturn;				// id of the executed ReturnDesc
@@ -192,6 +193,7 @@ Execution
 				void								Initialize(vint startState);
 				void								Input(vint currentTokenIndex, vint token);
 				void								EndOfInput();
+				Trace*								PrepareTraceRoute();
 			};
 		}
 	}

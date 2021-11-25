@@ -65,6 +65,7 @@ TraceManager
 			{
 				auto trace = traces.Get(traces.Allocate());
 				trace->previous = -1;
+				trace->selectedNext = -1;
 				trace->state = -1;
 				trace->returnStack = -1;
 				trace->executedReturn = -1;
@@ -237,6 +238,24 @@ TraceManager::Input
 					}
 				}
 				EndSwap();
+			}
+
+/***********************************************************************
+TraceManager::PrepareTraceRoute
+***********************************************************************/
+
+			Trace* TraceManager::PrepareTraceRoute()
+			{
+				CHECK_ERROR(concurrentCount == 1, L"vl::glr::automaton::TraceManager::PrepareTraceRoute()#Too many finite traces.");
+				auto trace = concurrentTraces->Get(0);
+				while (trace->previous != -1)
+				{
+					auto previous = GetTrace(trace->previous);
+					CHECK_ERROR(previous->selectedNext == -1, L"vl::glr::automaton::TraceManager::PrepareTraceRoute()#Trace::selectedNext has been assigned.");
+					previous->selectedNext = trace->allocatedIndex;
+					trace = previous;
+				}
+				return trace;
 			}
 		}
 	}
