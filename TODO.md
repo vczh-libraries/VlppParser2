@@ -79,10 +79,11 @@
       3. [x] Create `Calculator` state machines using the writer.
       4. [x] Process the state machines and generate parser-ready data structures from `SyntaxSymbolManager` with AST structure data input.
    3. [ ] Test the parser.
-      1. [ ] Prepare input text files in `Test/Source/Calculator/Input/`.
-      2. [ ] Prepare output JSON files in `Test/Source/Calculator/Output/`.
-      3. [ ] Run the generated `Executable` from `SyntaxSymbolManager`.
-      4. [ ] Check `codeRange` of all nodes.
+      1. [x] Test and assert `export 1`.
+      2. [ ] Prepare input text files in `Test/Source/Calculator/Input/`.
+      3. [ ] Prepare output JSON files in `Test/Source/Calculator/Output/`.
+      4. [x] Run the generated `Executable` from `SyntaxSymbolManager`.
+      5. [ ] Check `codeRange` of all nodes.
    4. [ ] Generate `ParserGen` Syntax C++ files in this unit test project.
       1. [ ] Syntax for `ParserGen`.
       2. [ ] Syntax for `Calculator`.
@@ -123,6 +124,7 @@
 - Switching lexical analyzer during parsing.
   - Refactor some properties in `LexerSymbolManager` into `LexerFile` with a name.
 - AST uses classes from another AST file in dependency as fields.
+- Do not submit {`ReopenObject` `EndObject`} since the second instruction cancel the first one.
 - Ambiguity AST and parsing.
 - Printing AST classes that created from a memory pool.
 - Support multiple syntax definition file in one parser.
