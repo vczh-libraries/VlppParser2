@@ -124,7 +124,6 @@
 - Switching lexical analyzer during parsing.
   - Refactor some properties in `LexerSymbolManager` into `LexerFile` with a name.
 - AST uses classes from another AST file in dependency as fields.
-- Do not submit {`ReopenObject` `EndObject`} since the second instruction cancel the first one.
 - Ambiguity AST and parsing.
 - Printing AST classes that created from a memory pool.
 - Support multiple syntax definition file in one parser.

@@ -283,6 +283,36 @@ FilePath LogTrace(
 	EncoderStream encoderStream(fileStream, encoder);
 	StreamWriter writer(encoderStream);
 
+	AstIns* submittedInstruction = nullptr;
+	regex::RegexToken* submittedToken = nullptr;
+
+	auto executeSubmitted = [&]()
+	{
+		if (submittedInstruction)
+		{
+			LogTraceInstruction(*submittedInstruction, *submittedToken, typeName, fieldName, tokenName, writer);
+			submittedInstruction = nullptr;
+			submittedToken = nullptr;
+		}
+	};
+
+	auto submit = [&](AstIns& ins, regex::RegexToken& token)
+	{
+		if (submittedInstruction && submittedInstruction->type == AstInsType::EndObject)
+		{
+			if (ins.type == AstInsType::ReopenObject)
+			{
+				submittedInstruction = nullptr;
+				submittedToken = nullptr;
+				return;
+			}
+		}
+
+		executeSubmitted();
+		submittedInstruction = &ins;
+		submittedToken = &token;
+	};
+
 	while (trace)
 	{
 		if (trace->byEdge != -1)
@@ -293,14 +323,14 @@ FilePath LogTrace(
 				vint insIndex = edgeDesc.insBeforeInput.start + insRef;
 				auto& ins = executable.instructions[insIndex];
 				auto& token = tokens[trace->previousTokenIndex == -1 ? 0 : trace->previousTokenIndex];
-				LogTraceInstruction(ins, token, typeName, fieldName, tokenName, writer);
+				submit(ins, token);
 			}
 			for (vint insRef = 0; insRef < edgeDesc.insAfterInput.count; insRef++)
 			{
 				vint insIndex = edgeDesc.insAfterInput.start + insRef;
 				auto& ins = executable.instructions[insIndex];
 				auto& token = tokens[trace->currentTokenIndex];
-				LogTraceInstruction(ins, token, typeName, fieldName, tokenName, writer);
+				submit(ins, token);
 			}
 		}
 
@@ -312,7 +342,7 @@ FilePath LogTrace(
 				vint insIndex = returnDesc.insAfterInput.start + insRef;
 				auto& ins = executable.instructions[insIndex];
 				auto& token = tokens[trace->currentTokenIndex];
-				LogTraceInstruction(ins, token, typeName, fieldName, tokenName, writer);
+				submit(ins, token);
 			}
 		}
 
