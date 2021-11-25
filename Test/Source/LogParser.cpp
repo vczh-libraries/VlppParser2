@@ -281,7 +281,6 @@ public:
 		, tokenName(_tokenName)
 		, writer(_writer)
 	{
-
 	}
 
 	void Execute(AstIns instruction, const regex::RegexToken& token) override
