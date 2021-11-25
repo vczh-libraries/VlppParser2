@@ -13,6 +13,31 @@ namespace vl
 TraceManager
 ***********************************************************************/
 
+			void TraceManager::BeginSwap()
+			{
+				concurrentCount = 0;
+			}
+
+			void TraceManager::AddTrace(Trace* trace)
+			{
+				if (concurrentCount < backupTraces->Count())
+				{
+					backupTraces->Set(concurrentCount, trace);
+				}
+				else
+				{
+					backupTraces->Add(trace);
+				}
+				concurrentCount++;
+			}
+
+			void TraceManager::EndSwap()
+			{
+				auto t = concurrentTraces;
+				concurrentTraces = backupTraces;
+				backupTraces = t;
+			}
+
 			ReturnStack* TraceManager::GetReturnStack(vint index)
 			{
 				return returnStacks.Get(index);
@@ -31,13 +56,6 @@ TraceManager
 			Trace* TraceManager::AllocateTrace()
 			{
 				return traces.Get(traces.Allocate());
-			}
-
-			void TraceManager::Swap()
-			{
-				auto t = concurrentTraces;
-				concurrentTraces = backupTraces;
-				backupTraces = t;
 			}
 
 			void TraceManager::Initialize(vint startState)

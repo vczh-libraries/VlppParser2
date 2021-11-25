@@ -87,9 +87,9 @@ export 1
 		{
 			auto&& token = tokens[i];
 			tm.Input(i, Executable::TokenBegin + token.token);
+			TEST_ASSERT(tm.concurrentCount > 0);
 		}
 		tm.EndOfInput();
-
 		TEST_ASSERT(tm.concurrentCount == 1);
 		TEST_ASSERT(executable.states[tm.concurrentTraces->Get(0)->state].endingState);
 	});

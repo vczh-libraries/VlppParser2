@@ -166,6 +166,9 @@ Execution
 				collections::List<Trace*>			traces1;
 				collections::List<Trace*>			traces2;
 
+				void								BeginSwap();
+				void								AddTrace(Trace* trace);
+				void								EndSwap();
 			public:
 				vint								concurrentCount = 0;
 				collections::List<Trace*>*			concurrentTraces = &traces1;
@@ -175,7 +178,6 @@ Execution
 				ReturnStack*						AllocateReturnStack();
 				Trace*								GetTrace(vint index);
 				Trace*								AllocateTrace();
-				void								Swap();
 
 				void								Initialize(vint startState);
 				void								Input(vint tokenIndex, vint input);
