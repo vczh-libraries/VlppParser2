@@ -83,6 +83,15 @@ export 1
 
 		TraceManager tm;
 		tm.Initialize(executable.ruleStartStates[metadata.ruleNames.IndexOf(L"Module")]);
+		for (vint i = 0; i < tokens.Count(); i++)
+		{
+			auto&& token = tokens[i];
+			tm.Input(i, Executable::TokenBegin + token.token);
+		}
+		tm.EndOfInput();
+
+		TEST_ASSERT(tm.concurrentCount == 1);
+		TEST_ASSERT(executable.states[tm.concurrentTraces->Get(0)->state].endingState);
 	});
 
 #undef LEXER

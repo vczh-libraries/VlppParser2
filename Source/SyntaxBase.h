@@ -60,6 +60,7 @@ Automaton
 
 			struct Executable
 			{
+				static constexpr vint				EndOfInputInput = -1;
 				static constexpr vint				EndingInput = 0;
 				static constexpr vint				LeftrecInput = 1;
 				static constexpr vint				TokenBegin = 2;
@@ -151,6 +152,8 @@ Execution
 				vint	returnStack;				// id of the current ReturnStack
 				vint	byEdge;						// id of the last EdgeDesc that make this trace
 				vint	byInput;					// the last input that make this trace
+				vint	previousTokenIndex;			// the index of the token before byInput
+				vint	currentTokenIndex;			// the index of the token that is byInput
 				vint	traceBeginObject;			// the id of the Trace which contains the latest AstInsType::BeginObject
 				vint	traceAfterBranch;			// the id of the Trace which is the first trace of the current branch
 			};
@@ -173,7 +176,10 @@ Execution
 				Trace*								GetTrace(vint index);
 				Trace*								AllocateTrace();
 				void								Swap();
+
 				void								Initialize(vint startState);
+				void								Input(vint tokenIndex, vint input);
+				void								EndOfInput();
 			};
 		}
 	}

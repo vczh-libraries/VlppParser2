@@ -53,11 +53,21 @@ TraceManager
 				trace->returnStack = -1;
 				trace->byEdge = -1;
 				trace->byInput = -1;
+				trace->previousTokenIndex = -1;
+				trace->currentTokenIndex = -1;
 				trace->traceBeginObject = -1;
 				trace->traceAfterBranch = -1;
 
 				concurrentCount = 1;
 				concurrentTraces->Add(trace);
+			}
+
+			void TraceManager::Input(vint tokenIndex, vint input)
+			{
+			}
+
+			void TraceManager::EndOfInput()
+			{
 			}
 		}
 	}
