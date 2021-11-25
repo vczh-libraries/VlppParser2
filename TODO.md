@@ -83,7 +83,7 @@
       2. [x] Prepare input text files in `Test/Source/Calculator/Input/`.
       3. [x] Prepare output JSON files in `Test/Source/Calculator/Output/`.
       4. [x] Run the generated `Executable` from `SyntaxSymbolManager`.
-      5. [ ] Check `codeRange` of all nodes. (really need `insBeforeInput`?)
+      5. [ ] Check `codeRange` of all nodes. (use the previous/current token(calculate codeRange) v.s. before/after rule deduction (move instructions to different places))
    4. [ ] Generate `ParserGen` Syntax C++ files in this unit test project.
       1. [ ] Syntax for `ParserGen`.
       2. [ ] Syntax for `Calculator`.
