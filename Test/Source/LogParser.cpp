@@ -263,6 +263,43 @@ void LogTraceInstruction(
 	LogInstruction(ins, typeName, fieldName, writer);
 }
 
+class LogTraceInsReceiver : public Object, public virtual IAstInsReceiver
+{
+protected:
+	const Func<WString(vint32_t)>&		typeName;
+	const Func<WString(vint32_t)>&		fieldName;
+	const Func<WString(vint32_t)>&		tokenName;
+	StreamWriter&						writer;
+public:
+	LogTraceInsReceiver(
+		const Func<WString(vint32_t)>& _typeName,
+		const Func<WString(vint32_t)>& _fieldName,
+		const Func<WString(vint32_t)>& _tokenName,
+		StreamWriter& _writer)
+		: typeName(_typeName)
+		, fieldName(_fieldName)
+		, tokenName(_tokenName)
+		, writer(_writer)
+	{
+
+	}
+
+	void Execute(AstIns instruction, const regex::RegexToken& token) override
+	{
+		writer.WriteString(L"<");
+		writer.WriteString(tokenName(token.token));
+		writer.WriteString(L":");
+		writer.WriteString(token.reading, token.length);
+		writer.WriteString(L"> ");
+		LogInstruction(instruction, typeName, fieldName, writer);
+	}
+
+	Ptr<ParsingAstBase> Finished() override
+	{
+		return {};
+	}
+};
+
 FilePath LogTrace(
 	const WString& parserName,
 	const WString& caseName,
@@ -282,79 +319,7 @@ FilePath LogTrace(
 	BomEncoder encoder(BomEncoder::Utf8);
 	EncoderStream encoderStream(fileStream, encoder);
 	StreamWriter writer(encoderStream);
-
-	AstIns* submittedInstruction = nullptr;
-	regex::RegexToken* submittedToken = nullptr;
-
-	auto executeSubmitted = [&]()
-	{
-		if (submittedInstruction)
-		{
-			LogTraceInstruction(*submittedInstruction, *submittedToken, typeName, fieldName, tokenName, writer);
-			submittedInstruction = nullptr;
-			submittedToken = nullptr;
-		}
-	};
-
-	auto submit = [&](AstIns& ins, regex::RegexToken& token)
-	{
-		if (submittedInstruction && submittedInstruction->type == AstInsType::EndObject)
-		{
-			if (ins.type == AstInsType::ReopenObject)
-			{
-				submittedInstruction = nullptr;
-				submittedToken = nullptr;
-				return;
-			}
-		}
-
-		executeSubmitted();
-		submittedInstruction = &ins;
-		submittedToken = &token;
-	};
-
-	while (trace)
-	{
-		if (trace->byEdge != -1)
-		{
-			auto& edgeDesc = executable.edges[trace->byEdge];
-			for (vint insRef = 0; insRef < edgeDesc.insBeforeInput.count; insRef++)
-			{
-				vint insIndex = edgeDesc.insBeforeInput.start + insRef;
-				auto& ins = executable.instructions[insIndex];
-				auto& token = tokens[trace->previousTokenIndex == -1 ? 0 : trace->previousTokenIndex];
-				submit(ins, token);
-			}
-			for (vint insRef = 0; insRef < edgeDesc.insAfterInput.count; insRef++)
-			{
-				vint insIndex = edgeDesc.insAfterInput.start + insRef;
-				auto& ins = executable.instructions[insIndex];
-				auto& token = tokens[trace->currentTokenIndex];
-				submit(ins, token);
-			}
-		}
-
-		if (trace->executedReturn != -1)
-		{
-			auto& returnDesc = executable.returns[trace->executedReturn];
-			for (vint insRef = 0; insRef < returnDesc.insAfterInput.count; insRef++)
-			{
-				vint insIndex = returnDesc.insAfterInput.start + insRef;
-				auto& ins = executable.instructions[insIndex];
-				auto& token = tokens[trace->currentTokenIndex];
-				submit(ins, token);
-			}
-		}
-
-		if (trace->selectedNext == -1)
-		{
-			trace = nullptr;
-		}
-		else
-		{
-			trace = tm.GetTrace(trace->selectedNext);
-		}
-	}
-
+	LogTraceInsReceiver receiver(typeName, fieldName, tokenName, writer);
+	tm.ExecuteTrace(trace, receiver, tokens);
 	return outputFile;
 }
