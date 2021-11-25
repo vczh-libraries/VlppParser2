@@ -7,7 +7,6 @@ Exp0
   ::= "true" as True
   ::= "false" as False
   ::= "(" !Exp ")"
-  ::= "(" {Arg:args : ","} ")" "->" Exp:value as Func
 
 Exp1
   ::= !Exp0
@@ -39,6 +38,7 @@ Exp5
 
 Exp
   ::= !Exp5
+  ::= "(" {Arg:args : ","} ")" "->" Exp:value as Func
   ::= "let" ID:name "<-" Exp:value "in" Exp:result as LetExpr
 
 Import
