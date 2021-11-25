@@ -257,6 +257,58 @@ TraceManager::PrepareTraceRoute
 				}
 				return trace;
 			}
+
+/***********************************************************************
+TraceManager::ExecuteTrace
+***********************************************************************/
+
+			Ptr<ParsingAstBase> TraceManager::ExecuteTrace(Trace* trace, IAstInsReceiver& receiver, collections::List<regex::RegexToken>& tokens)
+			{
+				while (trace)
+				{
+					if (trace->byEdge != -1)
+					{
+						auto& edgeDesc = executable.edges[trace->byEdge];
+						for (vint insRef = 0; insRef < edgeDesc.insBeforeInput.count; insRef++)
+						{
+							vint insIndex = edgeDesc.insBeforeInput.start + insRef;
+							auto& ins = executable.instructions[insIndex];
+							auto& token = tokens[trace->previousTokenIndex == -1 ? 0 : trace->previousTokenIndex];
+							receiver.Execute(ins, token);
+						}
+						for (vint insRef = 0; insRef < edgeDesc.insAfterInput.count; insRef++)
+						{
+							vint insIndex = edgeDesc.insAfterInput.start + insRef;
+							auto& ins = executable.instructions[insIndex];
+							auto& token = tokens[trace->currentTokenIndex];
+							receiver.Execute(ins, token);
+						}
+					}
+
+					if (trace->executedReturn != -1)
+					{
+						auto& returnDesc = executable.returns[trace->executedReturn];
+						for (vint insRef = 0; insRef < returnDesc.insAfterInput.count; insRef++)
+						{
+							vint insIndex = returnDesc.insAfterInput.start + insRef;
+							auto& ins = executable.instructions[insIndex];
+							auto& token = tokens[trace->currentTokenIndex];
+							receiver.Execute(ins, token);
+						}
+					}
+
+					if (trace->selectedNext == -1)
+					{
+						trace = nullptr;
+					}
+					else
+					{
+						trace = GetTrace(trace->selectedNext);
+					}
+				}
+
+				return receiver.Finished();
+			}
 		}
 	}
 }

@@ -194,6 +194,7 @@ Execution
 				void								Input(vint currentTokenIndex, vint token);
 				void								EndOfInput();
 				Trace*								PrepareTraceRoute();
+				Ptr<ParsingAstBase>					ExecuteTrace(Trace* trace, IAstInsReceiver& receiver, collections::List<regex::RegexToken>& tokens);
 			};
 		}
 	}
