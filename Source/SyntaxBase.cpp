@@ -194,10 +194,16 @@ TraceManager::Input
 					auto& edgeDesc = executable.edges[edgeArray.start + edgeRef];
 					auto newTrace = WalkAlongSingleEdge(previousTokenIndex, currentTokenIndex, input, trace, byEdge, edgeDesc);
 
-					auto returnStack = GetReturnStack(newTrace->returnStack);
-					newTrace->returnStack = returnStack->previous;
-					newTrace->executedReturn = returnStack->returnIndex;
-					WalkAlongEpsilonEdges(previousTokenIndex, currentTokenIndex, input, newTrace);
+					if (newTrace->returnStack != -1)
+					{
+						auto returnStack = GetReturnStack(newTrace->returnStack);
+						newTrace->returnStack = returnStack->previous;
+						newTrace->executedReturn = returnStack->returnIndex;
+
+						auto& returnDesc = executable.returns[newTrace->executedReturn];
+						newTrace->state = returnDesc.returnState;
+						WalkAlongEpsilonEdges(previousTokenIndex, currentTokenIndex, input, newTrace);
+					}
 				}
 			}
 
@@ -224,7 +230,8 @@ TraceManager::Input
 				for (vint traceIndex = 0; traceIndex < traceCount; traceIndex++)
 				{
 					auto trace = concurrentTraces->Get(traceIndex);
-					if (trace->returnStack == -1)
+					auto& stateDesc = executable.states[trace->state];
+					if (trace->returnStack == -1 && stateDesc.endingState)
 					{
 						AddTrace(trace);
 					}
