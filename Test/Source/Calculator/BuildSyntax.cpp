@@ -60,8 +60,6 @@ void GenerateCalculatorSyntax(SyntaxSymbolManager& manager)
 	Clause{ _exp0 } = tok(T::OPEN_BRACE) + use(_exp) + tok(T::CLOSE_BRACE);
 	// "(" {Arg:args : ","} ")" "->" Exp:value as Func
 	Clause{ _exp0 } = create(tok(T::OPEN_BRACE) + loop(rule(_arg, F::Func_args), tok(T::COMMA)) + tok(T::CLOSE_BRACE) + tok(T::INFER) + rule(_exp, F::Func_value), C::Func);
-	// "let" ID:name "<-" Exp:value "in" Exp:result as LetExpr
-	Clause{ _exp0 } = create(tok(T::LET) + tok(T::ID, F::LetExpr_name) + tok(T::ASSIGN) + rule(_exp, F::LetExpr_value) + tok(T::IN) + rule(_exp, F::LetExpr_result), C::LetExpr);
 
 	// !Exp0
 	Clause{ _exp1 } = use(_exp0);
@@ -106,6 +104,8 @@ void GenerateCalculatorSyntax(SyntaxSymbolManager& manager)
 
 	// !Exp5
 	Clause{ _exp } = use(_exp5);
+	// "let" ID:name "<-" Exp:value "in" Exp:result as LetExpr
+	Clause{ _exp } = create(tok(T::LET) + tok(T::ID, F::LetExpr_name) + tok(T::ASSIGN) + rule(_exp, F::LetExpr_value) + tok(T::IN) + rule(_exp, F::LetExpr_result), C::LetExpr);
 
 	// "import" ID:name as Import
 	Clause{ _import } = create(tok(T::IMPORT) +  tok(T::ID, F::Import_name), C::Import);

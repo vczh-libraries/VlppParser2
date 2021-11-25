@@ -26,7 +26,7 @@ void GenerateCalculatorLexer(LexerSymbolManager& manager)
 	manager.CreateToken(L"TRUE", L"true");
 	manager.CreateToken(L"FALSE", L"false");
 	manager.CreateToken(L"LET", L"let");
-	manager.CreateToken(L"IN", L"IN");
+	manager.CreateToken(L"IN", L"in");
 	manager.CreateToken(L"IMPORT", L"import");
 	manager.CreateToken(L"EXPORT", L"export");
 
