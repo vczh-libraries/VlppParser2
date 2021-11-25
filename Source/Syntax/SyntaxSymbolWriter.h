@@ -92,6 +92,18 @@ Clause
 					}
 				};
 
+				template<typename T>
+				struct Reuse
+				{
+					T						body;
+
+					template<typename F, typename E>
+					With<Create<T>> with(F field, E enumItem)
+					{
+						return{ *this,(vint32_t)field,(vint32_t)enumItem };
+					}
+				};
+
 /***********************************************************************
 Verification
 ***********************************************************************/
@@ -121,10 +133,13 @@ Verification
 				struct IsClause_<Seq<T, U>> { static constexpr bool Value = IsClause_<T>::Value && IsClause_<U>::Value; };
 
 				template<typename T>
+				struct IsClause_<With<T>> { static constexpr bool Value = IsClause_<T>::Value; };
+
+				template<typename T>
 				struct IsClause_<Create<T>> { static constexpr bool Value = IsClause_<T>::Value; };
 
 				template<typename T>
-				struct IsClause_<With<T>> { static constexpr bool Value = IsClause_<T>::Value; };
+				struct IsClause_<Reuse<T>> { static constexpr bool Value = IsClause_<T>::Value; };
 
 				template<typename T>
 				constexpr bool IsClause = IsClause_<T>::Value;
@@ -189,6 +204,12 @@ Operators
 				inline std::enable_if_t<IsClause<C>, Create<C>> create(const C& clause, T type)
 				{
 					return { clause,(vint32_t)type };
+				}
+
+				template<typename C>
+				inline std::enable_if_t<IsClause<C>, Reuse<C>> reuse(const C& clause)
+				{
+					return { clause };
 				}
 
 /***********************************************************************
@@ -346,6 +367,17 @@ Builder
 					}
 
 					template<typename C>
+					StatePair Build(const With<C>& clause)
+					{
+						auto pair = Build(clause.body);
+						CHECK_ERROR(pair.end->InEdges().Count() == 1, L"Internal error!");
+						auto edge = pair.end->InEdges()[0];
+						edge->insBeforeInput.Add({ AstInsType::EnumItem,clause.enumItem });
+						edge->insBeforeInput.Add({ AstInsType::Field,clause.field });
+						return pair;
+					}
+
+					template<typename C>
 					StatePair Build(const Create<C>& clause)
 					{
 						StatePair pair;
@@ -369,20 +401,27 @@ Builder
 					}
 
 					template<typename C>
-					StatePair Build(const With<C>& clause)
+					StatePair Build(const Reuse<C>& clause)
 					{
-						auto pair = Build(clause.body);
-						CHECK_ERROR(pair.end->InEdges().Count() == 1, L"Internal error!");
-						auto edge = pair.end->InEdges()[0];
-						edge->insBeforeInput.Add({ AstInsType::EnumItem,clause.enumItem });
-						edge->insBeforeInput.Add({ AstInsType::Field,clause.field });
+						StatePair pair;
+						pair.begin = CreateState();
+						pair.end = CreateState();
+						startPoses.Add(pair.begin, clauseDisplayText.Length());
+
+						clauseDisplayText += L"<< ";
+						auto bodyPair = Build(clause.body);
+						clauseDisplayText += L" >>";
+						CreateEdge(pair.begin, bodyPair.begin);
+						{
+							auto edge = CreateEdge(bodyPair.end, pair.end);
+							edge->insBeforeInput.Add({ AstInsType::EndObject });
+						}
+						endPoses.Add(pair.end, clauseDisplayText.Length());
 						return pair;
 					}
-				public:
-					Clause(RuleSymbol* _ruleSymbol) : ruleSymbol(_ruleSymbol) {}
 
 					template<typename C>
-					std::enable_if_t<IsClause<C>, Clause&> operator=(const C& clause)
+					void Assign(const C& clause)
 					{
 						clauseDisplayText = L"";
 						startPoses.Clear();
@@ -401,8 +440,35 @@ Builder
 						{
 							state->label = clauseDisplayText.Left(pos) + L" @" + clauseDisplayText.Right(l - pos);
 						}
+					}
+				public:
+					Clause(RuleSymbol* _ruleSymbol) : ruleSymbol(_ruleSymbol) {}
 
+					template<typename C>
+					Clause& operator=(const Create<C>& clause)
+					{
+						Assign(clause);
 						return *this;
+					}
+
+					template<typename C>
+					Clause& operator=(const With<C>& clause)
+					{
+						Assign(clause);
+						return *this;
+					}
+
+					template<typename C>
+					Clause& operator=(const Reuse<C>& clause)
+					{
+						Assign(clause);
+						return *this;
+					}
+
+					template<typename C>
+					Clause& operator=(const C& clause)
+					{
+						return operator=(reuse(clause));
 					}
 				};
 			}

@@ -29,4 +29,44 @@ FilePath LogAutomaton(
 	const Func<WString(vint32_t)>& tokenName
 	);
 
+
+template<typename TVisitor, typename T>
+void AssertAst(Ptr<T> ast, const wchar_t* output)
+{
+	List<WString> expected, actual;
+	{
+		StringReader reader(output);
+		while (!reader.IsEnd())
+		{
+			expected.Add(reader.ReadLine());
+		}
+	}
+	{
+		MemoryStream actualStream;
+		{
+			StreamWriter writer(actualStream);
+			TVisitor visitor(writer);
+			visitor.printAstCodeRange = false;
+			visitor.printTokenCodeRange = false;
+			visitor.Print(ast.Obj());
+		}
+		actualStream.SeekFromBegin(0);
+		{
+			StreamReader reader(actualStream);
+			while (!reader.IsEnd())
+			{
+				actual.Add(reader.ReadLine());
+			}
+		}
+	}
+
+	TEST_ASSERT(expected.Count() == actual.Count());
+	for (vint i = 0; i < expected.Count(); i++)
+	{
+		auto se = expected[i];
+		auto sa = actual[i];
+		TEST_ASSERT(se == sa);
+	}
+}
+
 #endif

@@ -1,6 +1,7 @@
 #include "../../../Source/Lexer/LexerCppGen.h"
-#include "../../Source/Calculator/Parser/Calculator_Assembler.h"
 #include "../../Source/Calculator/Parser/CalculatorAst_Json.h"
+#include "../../Source/Calculator/Parser/Calculator_Assembler.h"
+#include "../../Source/LogParser.h"
 
 using namespace vl;
 using namespace vl::collections;
@@ -11,49 +12,6 @@ using namespace vl::glr::parsergen;
 using namespace calculator;
 
 extern void GenerateCalculatorLexer(LexerSymbolManager& manager);
-
-namespace TestAstAssembler_TestObjects
-{
-	template<typename T>
-	void AssertAst(Ptr<T> ast, const wchar_t* output)
-	{
-		List<WString> expected, actual;
-		{
-			StringReader reader(output);
-			while (!reader.IsEnd())
-			{
-				expected.Add(reader.ReadLine());
-			}
-		}
-		{
-			MemoryStream actualStream;
-			{
-				StreamWriter writer(actualStream);
-				json_visitor::AstVisitor visitor(writer);
-				visitor.printAstCodeRange = false;
-				visitor.printTokenCodeRange = false;
-				visitor.Print(ast.Obj());
-			}
-			actualStream.SeekFromBegin(0);
-			{
-				StreamReader reader(actualStream);
-				while (!reader.IsEnd())
-				{
-					actual.Add(reader.ReadLine());
-				}
-			}
-		}
-
-		TEST_ASSERT(expected.Count() == actual.Count());
-		for (vint i = 0; i < expected.Count(); i++)
-		{
-			auto se = expected[i];
-			auto sa = actual[i];
-			TEST_ASSERT(se == sa);
-		}
-	}
-}
-using namespace TestAstAssembler_TestObjects;
 
 TEST_FILE
 {
@@ -89,7 +47,7 @@ export 1
 		auto node = receiver.Finished();
 		auto ast = node.Cast<Module>();
 		TEST_ASSERT(ast);
-		AssertAst(ast, LR"({
+		AssertAst<json_visitor::AstVisitor>(ast, LR"({
     "$ast": "Module",
     "exported": {
         "$ast": "NumExpr",
@@ -122,7 +80,7 @@ export 1
 		auto node = receiver.Finished();
 		auto ast = node.Cast<Module>();
 		TEST_ASSERT(ast);
-		AssertAst(ast, LR"({
+		AssertAst<json_visitor::AstVisitor>(ast, LR"({
     "$ast": "Module",
     "exported": {
         "$ast": "NumExpr",
@@ -152,7 +110,7 @@ export (1)
 		auto node = receiver.Finished();
 		auto ast = node.Cast<Module>();
 		TEST_ASSERT(ast);
-		AssertAst(ast, LR"({
+		AssertAst<json_visitor::AstVisitor>(ast, LR"({
     "$ast": "Module",
     "exported": {
         "$ast": "NumExpr",
@@ -190,7 +148,7 @@ export 1 + 2
 		auto node = receiver.Finished();
 		auto ast = node.Cast<Module>();
 		TEST_ASSERT(ast);
-		AssertAst(ast, LR"({
+		AssertAst<json_visitor::AstVisitor>(ast, LR"({
     "$ast": "Module",
     "exported": {
         "$ast": "Binary",
@@ -237,7 +195,7 @@ export 1 + 2
 		auto node = receiver.Finished();
 		auto ast = node.Cast<Module>();
 		TEST_ASSERT(ast);
-		AssertAst(ast, LR"({
+		AssertAst<json_visitor::AstVisitor>(ast, LR"({
     "$ast": "Module",
     "exported": {
         "$ast": "Binary",
@@ -331,7 +289,7 @@ export sum(1, 2, max(3, 4))
 		auto node = receiver.Finished();
 		auto ast = node.Cast<Module>();
 		TEST_ASSERT(ast);
-		AssertAst(ast, LR"({
+		AssertAst<json_visitor::AstVisitor>(ast, LR"({
     "$ast": "Module",
     "exported": {
         "$ast": "Call",

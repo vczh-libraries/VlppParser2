@@ -1,3 +1,4 @@
+#include "../../Source/Calculator/Parser/CalculatorAst_Json.h"
 #include "../../Source/Calculator/Parser/Calculator_Assembler.h"
 #include "../../Source/Calculator/Parser/Calculator_Lexer.h"
 #include "../../Source/LogParser.h"
@@ -98,6 +99,14 @@ export 1
 		auto ast = tm.ExecuteTrace(rootTrace, receiver, tokens);
 		auto astModule = ast.Cast<Module>();
 		TEST_ASSERT(astModule);
+		AssertAst<json_visitor::AstVisitor>(astModule, LR"({
+    "$ast": "Module",
+    "exported": {
+        "$ast": "NumExpr",
+        "value": "1"
+    },
+    "imports": []
+})");
 	});
 
 #undef LEXER
