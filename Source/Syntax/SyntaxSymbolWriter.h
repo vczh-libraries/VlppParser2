@@ -71,12 +71,6 @@ Clause
 					T						body;
 					vint32_t				field;
 					vint32_t				enumItem;
-
-					template<typename F, typename E>
-					With<With<T>> with(F field, E enumItem)
-					{
-						return{ *this,(vint32_t)field,(vint32_t)enumItem };
-					}
 				};
 
 				template<typename T>
@@ -86,9 +80,9 @@ Clause
 					vint32_t				type;
 
 					template<typename F, typename E>
-					With<Create<T>> with(F field, E enumItem)
+					Create<With<T>> with(F field, E enumItem)
 					{
-						return{ *this,(vint32_t)field,(vint32_t)enumItem };
+						return { { body,(vint32_t)field,(vint32_t)enumItem }, type };
 					}
 				};
 
@@ -98,9 +92,9 @@ Clause
 					T						body;
 
 					template<typename F, typename E>
-					With<Create<T>> with(F field, E enumItem)
+					Reuse<With<T>> with(F field, E enumItem)
 					{
-						return{ *this,(vint32_t)field,(vint32_t)enumItem };
+						return { { body,(vint32_t)field,(vint32_t)enumItem } };
 					}
 				};
 
@@ -446,13 +440,6 @@ Builder
 
 					template<typename C>
 					Clause& operator=(const Create<C>& clause)
-					{
-						Assign(clause);
-						return *this;
-					}
-
-					template<typename C>
-					Clause& operator=(const With<C>& clause)
 					{
 						Assign(clause);
 						return *this;
