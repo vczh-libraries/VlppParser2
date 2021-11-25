@@ -78,9 +78,9 @@
       2. [x] Syntax writer for `SyntaxSymbolManager`, it allows us to write state machines like EBNF, for testing purpose only.
       3. [x] Create `Calculator` state machines using the writer.
       4. [x] Process the state machines and generate parser-ready data structures from `SyntaxSymbolManager` with AST structure data input.
-   3. [ ] Test the parser.
+   3. [x] Test the parser.
       1. [x] Test and assert `export 1`.
-      2. [ ] Prepare input text files in `Test/Source/Calculator/Input/`.
+      2. [x] Prepare input text files in `Test/Source/Calculator/Input/`.
       3. [ ] Prepare output JSON files in `Test/Source/Calculator/Output/`.
       4. [x] Run the generated `Executable` from `SyntaxSymbolManager`.
       5. [ ] Check `codeRange` of all nodes.

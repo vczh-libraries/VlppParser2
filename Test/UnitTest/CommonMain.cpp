@@ -21,6 +21,15 @@ WString GetExePath()
 	return WString::CopyFrom(buffer, pos + 1);
 }
 
+WString GetTestParserInputPath(const WString& parserName)
+{
+#ifdef _WIN64
+	return GetExePath() + L"../../../Source/" + parserName + L"/";
+#else
+	return GetExePath() + L"../../Source/" + parserName + L"/";
+#endif
+}
+
 WString GetTestOutputPath()
 {
 #ifdef _WIN64

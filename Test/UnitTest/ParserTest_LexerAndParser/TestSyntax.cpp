@@ -6,6 +6,8 @@
 using namespace vl::regex;
 using namespace calculator;
 
+extern WString GetTestParserInputPath(const WString& parserName);
+extern FilePath GetOutputDir(const WString& parserName);
 extern void GenerateCalculatorSyntax(SyntaxSymbolManager& manager);
 
 namespace TestSyntax_TestObjects
@@ -40,6 +42,32 @@ namespace TestSyntax_TestObjects
 				auto d = CalculatorTokenDisplayText((CalculatorTokens)token);
 				return d ? L"\"" + WString::Unmanaged(d) + L"\"" : WString::Unmanaged(n);
 			});
+	}
+
+	Ptr<Module> ParseCalculator(const WString& input, RegexLexer& lexer, Executable& executable, Metadata& metadata)
+	{
+		List<RegexToken> tokens;
+		lexer.Parse(input).ReadToEnd(tokens, CalculatorTokenDeleter);
+
+		TraceManager tm(executable);
+		tm.Initialize(executable.ruleStartStates[metadata.ruleNames.IndexOf(L"Module")]);
+		for (vint i = 0; i < tokens.Count(); i++)
+		{
+			auto&& token = tokens[i];
+			tm.Input(i, token.token);
+			TEST_ASSERT(tm.concurrentCount > 0);
+		}
+		tm.EndOfInput();
+		TEST_ASSERT(tm.concurrentCount == 1);
+		TEST_ASSERT(executable.states[tm.concurrentTraces->Get(0)->state].endingState);
+
+		auto rootTrace = tm.PrepareTraceRoute();
+		CalculatorAstInsReceiver receiver;
+		auto ast = tm.ExecuteTrace(rootTrace, receiver, tokens);
+		auto astModule = ast.Cast<Module>();
+		TEST_ASSERT(astModule);
+
+		return astModule;
 	}
 }
 using namespace TestSyntax_TestObjects;
@@ -79,27 +107,8 @@ TEST_FILE
 		WString input = LR"(
 export 1
 )";
-		List<RegexToken> tokens;
-		lexer.Parse(input).ReadToEnd(tokens, CalculatorTokenDeleter);
-
-		TraceManager tm(executable);
-		tm.Initialize(executable.ruleStartStates[metadata.ruleNames.IndexOf(L"Module")]);
-		for (vint i = 0; i < tokens.Count(); i++)
-		{
-			auto&& token = tokens[i];
-			tm.Input(i, token.token);
-			TEST_ASSERT(tm.concurrentCount > 0);
-		}
-		tm.EndOfInput();
-		TEST_ASSERT(tm.concurrentCount == 1);
-		TEST_ASSERT(executable.states[tm.concurrentTraces->Get(0)->state].endingState);
-
-		auto rootTrace = tm.PrepareTraceRoute();
-		CalculatorAstInsReceiver receiver;
-		auto ast = tm.ExecuteTrace(rootTrace, receiver, tokens);
-		auto astModule = ast.Cast<Module>();
-		TEST_ASSERT(astModule);
-		AssertAst<json_visitor::AstVisitor>(astModule, LR"({
+		auto ast = ParseCalculator(input, lexer, executable, metadata);
+		AssertAst<json_visitor::AstVisitor>(ast, LR"({
     "$ast": "Module",
     "exported": {
         "$ast": "NumExpr",
@@ -107,6 +116,29 @@ export 1
     },
     "imports": []
 })");
+	});
+
+	TEST_CATEGORY(L"Test Calculator Syntax")
+	{
+		Folder dirInput = FilePath(GetTestParserInputPath(L"Calculator")) / L"Input";
+		FilePath dirBaseline = FilePath(GetTestParserInputPath(L"Calculator")) / L"Output";
+		FilePath dirOutput = GetOutputDir(L"Calculator");
+
+		List<File> inputFiles;
+		dirInput.GetFiles(inputFiles);
+		for (auto&& inputFile : inputFiles)
+		{
+			auto caseName = inputFile.GetFilePath().GetName();
+			caseName = caseName.Left(caseName.Length() - 4);
+
+			TEST_CASE(caseName)
+			{
+				auto input = inputFile.ReadAllTextByBom();
+				auto ast = ParseCalculator(input, lexer, executable, metadata);
+				auto actualJson = PrintAstJson<json_visitor::AstVisitor>(ast);
+				File(dirOutput / (L"Output[" + caseName + L"].json")).WriteAllText(actualJson, true, BomEncoder::Utf8);
+			});
+		}
 	});
 
 #undef LEXER

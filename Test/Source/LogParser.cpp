@@ -1,10 +1,10 @@
 #include "LogParser.h"
 
-extern WString GetExePath();
+extern WString GetTestOutputPath();
 
 FilePath GetOutputDir(const WString& parserName)
 {
-	auto outputDir = FilePath(GetExePath()) / L"../../Output" / parserName;
+	auto outputDir = FilePath(GetTestOutputPath()) / parserName;
 	{
 		Folder folder = outputDir;
 		if (!folder.Exists())

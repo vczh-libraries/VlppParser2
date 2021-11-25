@@ -31,32 +31,38 @@ FilePath LogAutomaton(
 
 
 template<typename TVisitor, typename T>
-void AssertAst(Ptr<T> ast, const wchar_t* output)
+WString PrintAstJson(Ptr<T> ast)
+{
+	MemoryStream actualStream;
+	{
+		StreamWriter writer(actualStream);
+		TVisitor visitor(writer);
+		visitor.printAstCodeRange = false;
+		visitor.printTokenCodeRange = false;
+		visitor.Print(ast.Obj());
+	}
+	actualStream.SeekFromBegin(0);
+	{
+		StreamReader reader(actualStream);
+		return reader.ReadToEnd();
+	}
+}
+
+inline void AssertLines(const WString& expectedString, const WString& actualString)
 {
 	List<WString> expected, actual;
 	{
-		StringReader reader(output);
+		StringReader reader(expectedString);
 		while (!reader.IsEnd())
 		{
 			expected.Add(reader.ReadLine());
 		}
 	}
 	{
-		MemoryStream actualStream;
+		StringReader reader(actualString);
+		while (!reader.IsEnd())
 		{
-			StreamWriter writer(actualStream);
-			TVisitor visitor(writer);
-			visitor.printAstCodeRange = false;
-			visitor.printTokenCodeRange = false;
-			visitor.Print(ast.Obj());
-		}
-		actualStream.SeekFromBegin(0);
-		{
-			StreamReader reader(actualStream);
-			while (!reader.IsEnd())
-			{
-				actual.Add(reader.ReadLine());
-			}
+			actual.Add(reader.ReadLine());
 		}
 	}
 
@@ -67,6 +73,13 @@ void AssertAst(Ptr<T> ast, const wchar_t* output)
 		auto sa = actual[i];
 		TEST_ASSERT(se == sa);
 	}
+}
+
+template<typename TVisitor, typename T>
+void AssertAst(Ptr<T> ast, const wchar_t* output)
+{
+	auto actual = PrintAstJson<TVisitor>(ast);
+	AssertLines(WString::Unmanaged(output), actual);
 }
 
 #endif
