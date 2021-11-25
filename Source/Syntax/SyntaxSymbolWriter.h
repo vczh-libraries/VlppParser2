@@ -364,11 +364,13 @@ Builder
 					StatePair Build(const With<C>& clause)
 					{
 						auto pair = Build(clause.body);
-						CHECK_ERROR(pair.end->InEdges().Count() == 1, L"Internal error!");
-						auto edge = pair.end->InEdges()[0];
+						auto withState = CreateState();
+						auto edge = CreateEdge(pair.end, withState);
 						edge->insBeforeInput.Add({ AstInsType::EnumItem,clause.enumItem });
 						edge->insBeforeInput.Add({ AstInsType::Field,clause.field });
-						return pair;
+
+						endPoses.Add(withState, clauseDisplayText.Length());
+						return { pair.begin,withState };
 					}
 
 					template<typename C>
