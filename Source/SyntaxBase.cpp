@@ -67,6 +67,7 @@ TraceManager
 				trace->previous = -1;
 				trace->state = -1;
 				trace->returnStack = -1;
+				trace->executedReturn = -1;
 				trace->byEdge = -1;
 				trace->byInput = -1;
 				trace->previousTokenIndex = -1;
@@ -91,25 +92,144 @@ TraceManager
 				concurrentTraces->Add(trace);
 			}
 
+/***********************************************************************
+TraceManager::Input
+***********************************************************************/
+
+			Trace* TraceManager::WalkAlongSingleEdge(
+				vint previousTokenIndex,
+				vint currentTokenIndex,
+				vint input,
+				Trace* trace,
+				vint byEdge,
+				EdgeDesc& edgeDesc
+			)
+			{
+				auto newTrace = AllocateTrace();
+				AddTrace(newTrace);
+
+				newTrace->previous = trace->allocatedIndex;
+				newTrace->state = edgeDesc.toState;
+				newTrace->returnStack = trace->returnStack;
+				newTrace->byEdge = byEdge;
+				newTrace->byInput = input;
+				newTrace->previousTokenIndex = previousTokenIndex;
+				newTrace->currentTokenIndex = currentTokenIndex;
+
+				for (vint returnRef = 0; returnRef < edgeDesc.returnIndices.count; returnRef++)
+				{
+					vint returnIndex = executable.returnIndices[edgeDesc.returnIndices.start + returnRef];
+					auto returnStack = AllocateReturnStack();
+					returnStack->previous = newTrace->returnStack;
+					returnStack->returnIndex = returnIndex;
+					newTrace->returnStack = returnStack->allocatedIndex;
+				}
+
+				return newTrace;
+			}
+
+			void TraceManager::WalkAlongTokenEdges(
+				vint previousTokenIndex,
+				vint currentTokenIndex,
+				vint input,
+				Trace* trace,
+				EdgeArray& edgeArray
+			)
+			{
+				for (vint edgeRef = 0; edgeRef < edgeArray.count; edgeRef++)
+				{
+					vint byEdge = edgeArray.start + edgeRef;
+					auto& edgeDesc = executable.edges[edgeArray.start + edgeRef];
+					auto newTrace = WalkAlongSingleEdge(previousTokenIndex, currentTokenIndex, input, trace, byEdge, edgeDesc);
+					WalkAlongEpsilonEdges(previousTokenIndex, currentTokenIndex, input, newTrace);
+				}
+			}
+
+			void TraceManager::WalkAlongEpsilonEdges(
+				vint previousTokenIndex,
+				vint currentTokenIndex,
+				vint input,
+				Trace* trace
+			)
+			{
+				{
+					vint transactionIndex = trace->state * (Executable::TokenBegin + executable.tokenCount) + Executable::LeftrecInput;
+					auto&& edgeArray = executable.transitions[transactionIndex];
+					WalkAlongLeftrecEdges(previousTokenIndex, currentTokenIndex, input, trace, edgeArray);
+				}
+				{
+					vint transactionIndex = trace->state * (Executable::TokenBegin + executable.tokenCount) + Executable::EndingInput;
+					auto&& edgeArray = executable.transitions[transactionIndex];
+					WalkAlongEndingEdges(previousTokenIndex, currentTokenIndex, input, trace, edgeArray);
+				}
+			}
+
+			void TraceManager::WalkAlongLeftrecEdges(
+				vint previousTokenIndex,
+				vint currentTokenIndex,
+				vint input,
+				Trace* trace,
+				EdgeArray& edgeArray
+			)
+			{
+				for (vint edgeRef = 0; edgeRef < edgeArray.count; edgeRef++)
+				{
+					vint byEdge = edgeArray.start + edgeRef;
+					auto& edgeDesc = executable.edges[edgeArray.start + edgeRef];
+					WalkAlongSingleEdge(previousTokenIndex, currentTokenIndex, input, trace, byEdge, edgeDesc);
+				}
+			}
+
+			void TraceManager::WalkAlongEndingEdges(
+				vint previousTokenIndex,
+				vint currentTokenIndex,
+				vint input,
+				Trace* trace,
+				EdgeArray& edgeArray
+			)
+			{
+				for (vint edgeRef = 0; edgeRef < edgeArray.count; edgeRef++)
+				{
+					vint byEdge = edgeArray.start + edgeRef;
+					auto& edgeDesc = executable.edges[edgeArray.start + edgeRef];
+					auto newTrace = WalkAlongSingleEdge(previousTokenIndex, currentTokenIndex, input, trace, byEdge, edgeDesc);
+
+					auto returnStack = GetReturnStack(newTrace->returnStack);
+					newTrace->returnStack = returnStack->previous;
+					newTrace->executedReturn = returnStack->returnIndex;
+					WalkAlongEpsilonEdges(previousTokenIndex, currentTokenIndex, input, newTrace);
+				}
+			}
+
 			void TraceManager::Input(vint currentTokenIndex, vint token)
 			{
+				vint traceCount = concurrentCount;
 				vint previousTokenIndex = currentTokenIndex - 1;
 				vint input = Executable::TokenBegin + token;
 				BeginSwap();
-				for (auto trace : *concurrentTraces)
+				for (vint traceIndex = 0; traceIndex < traceCount; traceIndex++)
 				{
+					auto trace = concurrentTraces->Get(traceIndex);
 					vint transactionIndex = trace->state * (Executable::TokenBegin + executable.tokenCount) + input;
 					auto&& edgeArray = executable.transitions[transactionIndex];
-					for (vint edgeRef = 0; edgeRef < edgeArray.count; edgeRef++)
-					{
-						auto& edgeDesc = executable.edges[edgeArray.start + edgeRef];
-					}
+					WalkAlongTokenEdges(previousTokenIndex, currentTokenIndex, input, trace, edgeArray);
 				}
 				EndSwap();
 			}
 
 			void TraceManager::EndOfInput()
 			{
+				vint traceCount = concurrentCount;
+				BeginSwap();
+				for (vint traceIndex = 0; traceIndex < traceCount; traceIndex++)
+				{
+					auto trace = concurrentTraces->Get(traceIndex);
+					if (trace->returnStack == -1)
+					{
+						AddTrace(trace);
+					}
+				}
+				EndSwap();
 			}
 		}
 	}

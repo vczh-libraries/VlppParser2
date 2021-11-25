@@ -150,6 +150,7 @@ Execution
 				vint	previous;					// id of the previous Trace
 				vint	state;						// id of the current StateDesc
 				vint	returnStack;				// id of the current ReturnStack
+				vint	executedReturn;				// id of the executed ReturnDesc
 				vint	byEdge;						// id of the last EdgeDesc that make this trace
 				vint	byInput;					// the last input that make this trace
 				vint	previousTokenIndex;			// the index of the token before byInput
@@ -170,6 +171,12 @@ Execution
 				void								BeginSwap();
 				void								AddTrace(Trace* trace);
 				void								EndSwap();
+
+				Trace*								WalkAlongSingleEdge(vint previousTokenIndex, vint currentTokenIndex, vint input, Trace* trace, vint byEdge, EdgeDesc& edgeDesc);
+				void								WalkAlongTokenEdges(vint previousTokenIndex, vint currentTokenIndex, vint input, Trace* trace, EdgeArray& edgeArray);
+				void								WalkAlongEpsilonEdges(vint previousTokenIndex, vint currentTokenIndex, vint input, Trace* trace);
+				void								WalkAlongLeftrecEdges(vint previousTokenIndex, vint currentTokenIndex, vint input, Trace* trace, EdgeArray& edgeArray);
+				void								WalkAlongEndingEdges(vint previousTokenIndex, vint currentTokenIndex, vint input, Trace* trace, EdgeArray& edgeArray);
 			public:
 				TraceManager(Executable& _executable);
 
