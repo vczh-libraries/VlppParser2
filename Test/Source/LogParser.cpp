@@ -241,3 +241,90 @@ FilePath LogAutomaton(
 	}
 	return outputFile;
 }
+
+/***********************************************************************
+LogTrace
+***********************************************************************/
+
+void LogTraceInstruction(
+	AstIns& ins,
+	RegexToken& token,
+	const Func<WString(vint32_t)>& typeName,
+	const Func<WString(vint32_t)>& fieldName,
+	const Func<WString(vint32_t)>& tokenName,
+	StreamWriter& writer
+	)
+{
+	writer.WriteString(L"<");
+	writer.WriteString(tokenName(token.token));
+	writer.WriteString(L":");
+	writer.WriteString(token.reading, token.length);
+	writer.WriteString(L"> ");
+	LogInstruction(ins, typeName, fieldName, writer);
+}
+
+FilePath LogTrace(
+	const WString& parserName,
+	const WString& caseName,
+	Executable& executable,
+	Metadata& metadata,
+	TraceManager& tm,
+	Trace* trace,
+	List<RegexToken>& tokens,
+	const Func<WString(vint32_t)>& typeName,
+	const Func<WString(vint32_t)>& fieldName,
+	const Func<WString(vint32_t)>& tokenName
+)
+{
+	auto outputDir = GetOutputDir(parserName);
+	auto outputFile = outputDir / (L"Instructions[" + caseName + L"].txt");
+	FileStream fileStream(outputFile.GetFullPath(), FileStream::WriteOnly);
+	BomEncoder encoder(BomEncoder::Utf8);
+	EncoderStream encoderStream(fileStream, encoder);
+	StreamWriter writer(encoderStream);
+
+	while (trace)
+	{
+		if (trace->byEdge != -1)
+		{
+			auto& edgeDesc = executable.edges[trace->byEdge];
+			for (vint insRef = 0; insRef < edgeDesc.insBeforeInput.count; insRef++)
+			{
+				vint insIndex = edgeDesc.insBeforeInput.start + insRef;
+				auto& ins = executable.instructions[insIndex];
+				auto& token = tokens[trace->previousTokenIndex == -1 ? 0 : trace->previousTokenIndex];
+				LogTraceInstruction(ins, token, typeName, fieldName, tokenName, writer);
+			}
+			for (vint insRef = 0; insRef < edgeDesc.insAfterInput.count; insRef++)
+			{
+				vint insIndex = edgeDesc.insAfterInput.start + insRef;
+				auto& ins = executable.instructions[insIndex];
+				auto& token = tokens[trace->currentTokenIndex];
+				LogTraceInstruction(ins, token, typeName, fieldName, tokenName, writer);
+			}
+		}
+
+		if (trace->executedReturn != -1)
+		{
+			auto& returnDesc = executable.returns[trace->executedReturn];
+			for (vint insRef = 0; insRef < returnDesc.insAfterInput.count; insRef++)
+			{
+				vint insIndex = returnDesc.insAfterInput.start + insRef;
+				auto& ins = executable.instructions[insIndex];
+				auto& token = tokens[trace->currentTokenIndex];
+				LogTraceInstruction(ins, token, typeName, fieldName, tokenName, writer);
+			}
+		}
+
+		if (trace->selectedNext == -1)
+		{
+			trace = nullptr;
+		}
+		else
+		{
+			trace = tm.GetTrace(trace->selectedNext);
+		}
+	}
+
+	return outputFile;
+}

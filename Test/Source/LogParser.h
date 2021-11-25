@@ -7,6 +7,7 @@ using namespace vl;
 using namespace vl::collections;
 using namespace vl::stream;
 using namespace vl::filesystem;
+using namespace vl::regex;
 using namespace vl::glr;
 using namespace vl::glr::automaton;
 using namespace vl::glr::parsergen;
@@ -29,6 +30,18 @@ FilePath LogAutomaton(
 	const Func<WString(vint32_t)>& tokenName
 	);
 
+FilePath LogTrace(
+	const WString& parserName,
+	const WString& caseName,
+	Executable& executable,
+	Metadata& metadata,
+	TraceManager& tm,
+	Trace* trace,
+	List<RegexToken>& tokens,
+	const Func<WString(vint32_t)>& typeName,
+	const Func<WString(vint32_t)>& fieldName,
+	const Func<WString(vint32_t)>& tokenName
+	);
 
 template<typename TVisitor, typename T>
 WString PrintAstJson(Ptr<T> ast)

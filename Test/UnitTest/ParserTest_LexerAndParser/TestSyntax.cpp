@@ -44,7 +44,7 @@ namespace TestSyntax_TestObjects
 			});
 	}
 
-	Ptr<Module> ParseCalculator(const WString& input, RegexLexer& lexer, Executable& executable, Metadata& metadata)
+	Ptr<Module> ParseCalculator(const WString& input, RegexLexer& lexer, Executable& executable, Metadata& metadata, const WString& caseName)
 	{
 		List<RegexToken> tokens;
 		lexer.Parse(input).ReadToEnd(tokens, CalculatorTokenDeleter);
@@ -62,6 +62,18 @@ namespace TestSyntax_TestObjects
 		TEST_ASSERT(executable.states[tm.concurrentTraces->Get(0)->state].endingState);
 
 		auto rootTrace = tm.PrepareTraceRoute();
+		LogTrace(
+			L"Calculator",
+			caseName,
+			executable,
+			metadata,
+			tm,
+			rootTrace,
+			tokens,
+			[](vint32_t type) { return WString::Unmanaged(CalculatorTypeName((CalculatorClasses)type)); },
+			[](vint32_t field) { return WString::Unmanaged(CalculatorFieldName((CalculatorFields)field)); },
+			[](vint32_t token) { return WString::Unmanaged(CalculatorTokenId((CalculatorTokens)token)); }
+			);
 		CalculatorAstInsReceiver receiver;
 		auto ast = tm.ExecuteTrace(rootTrace, receiver, tokens);
 		auto astModule = ast.Cast<Module>();
@@ -107,7 +119,7 @@ TEST_FILE
 		WString input = LR"(
 export 1
 )";
-		auto ast = ParseCalculator(input, lexer, executable, metadata);
+		auto ast = ParseCalculator(input, lexer, executable, metadata, L"Calculator");
 		AssertAst<json_visitor::AstVisitor>(ast, LR"({
     "$ast": "Module",
     "exported": {
@@ -134,7 +146,7 @@ export 1
 			TEST_CASE(caseName)
 			{
 				auto input = inputFile.ReadAllTextByBom();
-				auto ast = ParseCalculator(input, lexer, executable, metadata);
+				auto ast = ParseCalculator(input, lexer, executable, metadata, caseName);
 				auto actualJson = PrintAstJson<json_visitor::AstVisitor>(ast);
 				File(dirOutput / (L"Output[" + caseName + L"].json")).WriteAllText(actualJson, true, BomEncoder::Utf8);
 			});
