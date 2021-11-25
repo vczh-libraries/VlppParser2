@@ -149,6 +149,8 @@ export 1
 				auto ast = ParseCalculator(input, lexer, executable, metadata, caseName);
 				auto actualJson = PrintAstJson<json_visitor::AstVisitor>(ast);
 				File(dirOutput / (L"Output[" + caseName + L"].json")).WriteAllText(actualJson, true, BomEncoder::Utf8);
+				auto expectedJson = File(dirBaseline / (caseName + L".json")).ReadAllTextByBom();
+				AssertLines(expectedJson, actualJson);
 			});
 		}
 	});

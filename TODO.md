@@ -81,7 +81,7 @@
    3. [x] Test the parser.
       1. [x] Test and assert `export 1`.
       2. [x] Prepare input text files in `Test/Source/Calculator/Input/`.
-      3. [ ] Prepare output JSON files in `Test/Source/Calculator/Output/`.
+      3. [x] Prepare output JSON files in `Test/Source/Calculator/Output/`.
       4. [x] Run the generated `Executable` from `SyntaxSymbolManager`.
       5. [ ] Check `codeRange` of all nodes. (really need `insBeforeInput`?)
    4. [ ] Generate `ParserGen` Syntax C++ files in this unit test project.
