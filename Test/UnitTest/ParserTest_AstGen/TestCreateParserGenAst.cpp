@@ -17,6 +17,7 @@ TEST_FILE
 
 		InitializeParserSymbolManager(global);
 		CreateParserGenTypeAst(astManager);
+		CreateParserGenRuleAst(astManager);
 		TEST_ASSERT(global.Errors().Count() == 0);
 
 		auto output = GenerateParserFileNames(global);
