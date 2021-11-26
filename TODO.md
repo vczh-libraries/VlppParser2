@@ -115,7 +115,6 @@
 ## Work Items (before `ParserTest_ParserGen_Compiler`)
 
 - `EndObject` after `ReopenObject` doesn't update `ParsingAstBase::codeRange::start`.
-- Make sure each time `regex_internal::PureInterpretor` creates the automaton in stable order with the same input.
 - Optimize `CrossReferencedNFA` to merge prefix (two states can be merged if their `InEdges` are identical, `FromState` in `InEdges` are replaced by merged states)
 
 ## Work Items
