@@ -1,12 +1,16 @@
 #include "../../../Source/Syntax/SyntaxCppGen.h"
+#include "../../Source/Calculator/Parser/Calculator_Lexer.h"
 
 using namespace vl;
 using namespace vl::collections;
 using namespace vl::stream;
 using namespace vl::filesystem;
 using namespace vl::glr::parsergen;
+using namespace vl::glr::automaton;
+using namespace calculator;
 
 extern WString GetExePath();
+extern void InitializeCalculatorParserSymbolManager(ParserSymbolManager& manager);
 extern void GenerateCalculatorSyntax(SyntaxSymbolManager& manager);
 
 TEST_FILE
@@ -15,22 +19,24 @@ TEST_FILE
 	{
 		ParserSymbolManager global;
 		SyntaxSymbolManager syntaxManager(global);
+		Executable executable;
+		Metadata metadata;
 
-		global.name = L"Calculator";
-		Fill(global.includes, L"../../../../Source/AstBase.h");
-		global.cppNss.Add(L"calculator");
-		global.headerGuard = L"VCZH_PARSER2_UNITTEST_CALCULATOR";
+		InitializeCalculatorParserSymbolManager(global);
 		GenerateCalculatorSyntax(syntaxManager);
 		TEST_ASSERT(global.Errors().Count() == 0);
+
 		syntaxManager.BuildCompactNFA();
 		TEST_ASSERT(global.Errors().Count() == 0);
 		syntaxManager.BuildCrossReferencedNFA();
 		TEST_ASSERT(global.Errors().Count() == 0);
+		syntaxManager.BuildAutomaton(CalculatorTokenCount, executable, metadata);
 
 		auto output = GenerateParserFileNames(global);
+		GenerateSyntaxFileNames(syntaxManager, output);
 
 		Dictionary<WString, WString> files;
-		WriteSyntaxFiles(syntaxManager, output, files);
+		WriteSyntaxFiles(syntaxManager, executable, metadata, output, files);
 
 		auto outputDir = FilePath(GetExePath()) / L"../../Source/Calculator/Parser/";
 		for (auto [key, index] : indexed(files.Keys()))

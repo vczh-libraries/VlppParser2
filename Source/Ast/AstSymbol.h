@@ -169,7 +169,7 @@ AstSymbolManager
 			};
 
 			extern AstDefFile*				CreateParserGenTypeAst(AstSymbolManager& manager);
-			extern AstDefFile*				CreateParserGenSyntaxAst(AstSymbolManager& manager);
+			extern AstDefFile*				CreateParserGenRuleAst(AstSymbolManager& manager);
 		}
 	}
 }

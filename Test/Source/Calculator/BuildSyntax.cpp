@@ -30,6 +30,8 @@ auto tok(CalculatorTokens id, CalculatorFields field)
 
 void GenerateCalculatorSyntax(SyntaxSymbolManager& manager)
 {
+	manager.name = L"ModuleParser";
+
 	auto _arg = manager.CreateRule(L"Arg");
 	auto _exp0 = manager.CreateRule(L"Exp0");
 	auto _exp1 = manager.CreateRule(L"Exp1");

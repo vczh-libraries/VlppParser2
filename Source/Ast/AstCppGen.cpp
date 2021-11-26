@@ -30,7 +30,7 @@ GenerateAstFileNames
 					astOutput->traverseCpp	= file->Owner()->Global().name + file->Name() + L"_Traverse.cpp";
 					astOutput->jsonH		= file->Owner()->Global().name + file->Name() + L"_Json.h";
 					astOutput->jsonCpp		= file->Owner()->Global().name + file->Name() + L"_Json.cpp";
-					parserOutput->files.Add(file, astOutput);
+					parserOutput->astOutputs.Add(file, astOutput);
 				}
 			}
 
@@ -229,7 +229,7 @@ WriteParserUtilityHeaderFile
 				writer.WriteLine(L"");
 				for (auto file : manager.Files().Values())
 				{
-					writer.WriteLine(L"#include \"" + output->files[file]->astH + L"\"");
+					writer.WriteLine(L"#include \"" + output->astOutputs[file]->astH + L"\"");
 				}
 
 				writer.WriteLine(L"");
@@ -363,7 +363,7 @@ WriteAstFiles
 			{
 				for (auto file : manager.Files().Values())
 				{
-					WriteAstFiles(file, output->files[file], files);
+					WriteAstFiles(file, output->astOutputs[file], files);
 				}
 
 				{

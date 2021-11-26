@@ -9,7 +9,7 @@ namespace vl
 			using namespace collections;
 
 /***********************************************************************
-CreateParserGenAst
+CreateParserGenTypeAst
 ***********************************************************************/
 
 			AstDefFile* CreateParserGenTypeAst(AstSymbolManager& manager)

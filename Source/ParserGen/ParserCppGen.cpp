@@ -20,8 +20,6 @@ GenerateParserFileNames
 				parserOutput->assemblyCpp = manager.name + L"_Assembler.cpp";
 				parserOutput->lexerH = manager.name + L"_Lexer.h";
 				parserOutput->lexerCpp = manager.name + L"_Lexer.cpp";
-				parserOutput->syntaxH = manager.name + L"_Syntax.h";
-				parserOutput->syntaxCpp = manager.name + L"_Syntax.cpp";
 				return parserOutput;
 			}
 

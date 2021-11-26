@@ -9,11 +9,12 @@ namespace vl
 			using namespace collections;
 
 /***********************************************************************
-CreateParserGenAst
+CreateParserGenRuleSyntax
 ***********************************************************************/
 
-			void CreateParserGenSyntax(SyntaxSymbolManager& manager)
+			void CreateParserGenRuleSyntax(SyntaxSymbolManager& manager)
 			{
+				manager.name = L"RuleParser";
 			}
 		}
 	}

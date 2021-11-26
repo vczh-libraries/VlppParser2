@@ -155,6 +155,8 @@ SyntaxSymbolManager
 			public:
 				SyntaxSymbolManager(ParserSymbolManager& _global);
 
+				WString						name;
+
 				RuleSymbol*					CreateRule(const WString& name);
 				StateSymbol*				CreateState(RuleSymbol* rule);
 				EdgeSymbol*					CreateEdge(StateSymbol* from, StateSymbol* to);
@@ -171,7 +173,8 @@ SyntaxSymbolManager
 				SyntaxPhase					Phase() { return phase; }
 			};
 
-			extern void						CreateParserGenSyntax(SyntaxSymbolManager& manager);
+			extern void						CreateParserGenTypeSyntax(SyntaxSymbolManager& manager);
+			extern void						CreateParserGenRuleSyntax(SyntaxSymbolManager& manager);
 		}
 	}
 }

@@ -1,4 +1,4 @@
-#include "AstSymbol.h"
+#include "SyntaxSymbol.h"
 
 namespace vl
 {
@@ -9,12 +9,12 @@ namespace vl
 			using namespace collections;
 
 /***********************************************************************
-CreateParserGenAst
+CreateParserGenTypeSyntax
 ***********************************************************************/
 
-			AstDefFile* CreateParserGenSyntaxAst(AstSymbolManager& manager)
+			void CreateParserGenTypeSyntax(SyntaxSymbolManager& manager)
 			{
-				return nullptr;
+				manager.name = L"TypeParser";
 			}
 		}
 	}

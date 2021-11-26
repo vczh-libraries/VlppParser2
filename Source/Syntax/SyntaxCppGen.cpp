@@ -11,10 +11,23 @@ namespace vl
 			using namespace regex;
 
 /***********************************************************************
+GenerateSyntaxFileNames
+***********************************************************************/
+
+			Ptr<CppSyntaxGenOutput> GenerateSyntaxFileNames(SyntaxSymbolManager& manager, Ptr<CppParserGenOutput> output)
+			{
+				auto syntaxOutput = MakePtr<CppSyntaxGenOutput>();
+				syntaxOutput->syntaxH = manager.Global().name + manager.name + L".h";
+				syntaxOutput->syntaxCpp = manager.Global().name + manager.name + L".cpp";
+				output->syntaxOutputs.Add(&manager, syntaxOutput);
+				return syntaxOutput;
+			}
+
+/***********************************************************************
 WriteSyntaxHeaderFile
 ***********************************************************************/
 
-			void WriteSyntaxHeaderFile(SyntaxSymbolManager& manager, Ptr<CppParserGenOutput> output, stream::StreamWriter& writer)
+			void WriteSyntaxHeaderFile(SyntaxSymbolManager& manager, automaton::Executable& executable, automaton::Metadata& metadata, Ptr<CppParserGenOutput> output, stream::StreamWriter& writer)
 			{
 				WriteFileComment(manager.Global().name, writer);
 				if (manager.Global().headerGuard != L"")
@@ -48,10 +61,10 @@ WriteSyntaxHeaderFile
 WriteSyntaxCppFile
 ***********************************************************************/
 
-			void WriteSyntaxCppFile(SyntaxSymbolManager& manager, Ptr<CppParserGenOutput> output, stream::StreamWriter& writer)
+			void WriteSyntaxCppFile(SyntaxSymbolManager& manager, automaton::Executable& executable, automaton::Metadata& metadata, Ptr<CppParserGenOutput> output, stream::StreamWriter& writer)
 			{
 				WriteFileComment(manager.Global().name, writer);
-				writer.WriteLine(L"#include \"" + output->syntaxH + L"\"");
+				writer.WriteLine(L"#include \"" + output->syntaxOutputs[&manager]->syntaxH + L"\"");
 				writer.WriteLine(L"");
 				WString prefix = WriteNssBegin(manager.Global().cppNss, writer);
 				WriteNssEnd(manager.Global().cppNss, writer);
@@ -61,20 +74,20 @@ WriteSyntaxCppFile
 WriteLexerFiles
 ***********************************************************************/
 
-			void WriteSyntaxFiles(SyntaxSymbolManager& manager, Ptr<CppParserGenOutput> output, collections::Dictionary<WString, WString>& files)
+			void WriteSyntaxFiles(SyntaxSymbolManager& manager, automaton::Executable& executable, automaton::Metadata& metadata, Ptr<CppParserGenOutput> output, collections::Dictionary<WString, WString>& files)
 			{
 				WString fileH = GenerateToStream([&](StreamWriter& writer)
 				{
-						WriteSyntaxHeaderFile(manager, output, writer);
+						WriteSyntaxHeaderFile(manager, executable, metadata, output, writer);
 				});
 
 				WString fileCpp = GenerateToStream([&](StreamWriter& writer)
 				{
-						WriteSyntaxCppFile(manager, output, writer);
+						WriteSyntaxCppFile(manager, executable, metadata, output, writer);
 				});
 
-				files.Add(output->syntaxH, fileH);
-				files.Add(output->syntaxCpp, fileCpp);
+				files.Add(output->syntaxOutputs[&manager]->syntaxH, fileH);
+				files.Add(output->syntaxOutputs[&manager]->syntaxCpp, fileCpp);
 			}
 		}
 	}

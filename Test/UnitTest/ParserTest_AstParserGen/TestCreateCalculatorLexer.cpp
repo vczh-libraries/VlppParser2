@@ -7,6 +7,7 @@ using namespace vl::filesystem;
 using namespace vl::glr::parsergen;
 
 extern WString GetExePath();
+extern void InitializeCalculatorParserSymbolManager(ParserSymbolManager& manager);
 extern void GenerateCalculatorLexer(LexerSymbolManager& manager);
 
 TEST_FILE
@@ -16,10 +17,7 @@ TEST_FILE
 		ParserSymbolManager global;
 		LexerSymbolManager lexerManager(global);
 
-		global.name = L"Calculator";
-		Fill(global.includes, L"../../../../Source/AstBase.h");
-		global.cppNss.Add(L"calculator");
-		global.headerGuard = L"VCZH_PARSER2_UNITTEST_CALCULATOR";
+		InitializeCalculatorParserSymbolManager(global);
 		GenerateCalculatorLexer(lexerManager);
 		TEST_ASSERT(global.Errors().Count() == 0);
 

@@ -19,6 +19,7 @@ namespace vl
 			class AstClassPropSymbol;
 			class AstClassSymbol;
 			class TokenSymbol;
+			class SyntaxSymbolManager;
 
 /***********************************************************************
 Output
@@ -26,33 +27,38 @@ Output
 
 			struct CppAstGenOutput
 			{
-				WString														astH;
-				WString														astCpp;
-				WString														builderH;
-				WString														builderCpp;
-				WString														emptyH;
-				WString														emptyCpp;
-				WString														copyH;
-				WString														copyCpp;
-				WString														traverseH;
-				WString														traverseCpp;
-				WString														jsonH;
-				WString														jsonCpp;
+				WString			astH;
+				WString			astCpp;
+				WString			builderH;
+				WString			builderCpp;
+				WString			emptyH;
+				WString			emptyCpp;
+				WString			copyH;
+				WString			copyCpp;
+				WString			traverseH;
+				WString			traverseCpp;
+				WString			jsonH;
+				WString			jsonCpp;
+			};
+
+			struct CppSyntaxGenOutput
+			{
+				WString			syntaxH;
+				WString			syntaxCpp;
 			};
 
 			struct CppParserGenOutput
 			{
-				WString														assemblyH;
-				WString														assemblyCpp;
-				WString														lexerH;
-				WString														lexerCpp;
-				WString														syntaxH;
-				WString														syntaxCpp;
-				collections::Dictionary<AstDefFile*, Ptr<CppAstGenOutput>>	files;
+				WString																	assemblyH;
+				WString																	assemblyCpp;
+				WString																	lexerH;
+				WString																	lexerCpp;
+				collections::Dictionary<AstDefFile*, Ptr<CppAstGenOutput>>				astOutputs;
+				collections::Dictionary<SyntaxSymbolManager*, Ptr<CppSyntaxGenOutput>>	syntaxOutputs;
 
-				collections::Dictionary<AstClassSymbol*, vint>				classIds;
-				collections::Dictionary<AstClassPropSymbol*, vint>			fieldIds;
-				collections::Dictionary<TokenSymbol*, vint>					tokenIds;
+				collections::Dictionary<AstClassSymbol*, vint>							classIds;
+				collections::Dictionary<AstClassPropSymbol*, vint>						fieldIds;
+				collections::Dictionary<TokenSymbol*, vint>								tokenIds;
 			};
 
 /***********************************************************************
