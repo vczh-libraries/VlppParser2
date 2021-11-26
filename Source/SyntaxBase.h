@@ -175,9 +175,9 @@ Execution
 
 				Trace*								WalkAlongSingleEdge(vint previousTokenIndex, vint currentTokenIndex, vint input, Trace* trace, vint byEdge, EdgeDesc& edgeDesc);
 				void								WalkAlongTokenEdges(vint previousTokenIndex, vint currentTokenIndex, vint input, Trace* trace, EdgeArray& edgeArray);
-				void								WalkAlongEpsilonEdges(vint previousTokenIndex, vint currentTokenIndex, vint input, Trace* trace);
-				void								WalkAlongLeftrecEdges(vint previousTokenIndex, vint currentTokenIndex, vint input, Trace* trace, EdgeArray& edgeArray);
-				void								WalkAlongEndingEdges(vint previousTokenIndex, vint currentTokenIndex, vint input, Trace* trace, EdgeArray& edgeArray);
+				void								WalkAlongEpsilonEdges(vint previousTokenIndex, vint currentTokenIndex, Trace* trace);
+				void								WalkAlongLeftrecEdges(vint previousTokenIndex, vint currentTokenIndex, Trace* trace, EdgeArray& edgeArray);
+				void								WalkAlongEndingEdges(vint previousTokenIndex, vint currentTokenIndex, Trace* trace, EdgeArray& edgeArray);
 			public:
 				TraceManager(Executable& _executable);
 

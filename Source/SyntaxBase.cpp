@@ -142,33 +142,31 @@ TraceManager::Input
 					vint byEdge = edgeArray.start + edgeRef;
 					auto& edgeDesc = executable.edges[edgeArray.start + edgeRef];
 					auto newTrace = WalkAlongSingleEdge(previousTokenIndex, currentTokenIndex, input, trace, byEdge, edgeDesc);
-					WalkAlongEpsilonEdges(previousTokenIndex, currentTokenIndex, input, newTrace);
+					WalkAlongEpsilonEdges(previousTokenIndex, currentTokenIndex, newTrace);
 				}
 			}
 
 			void TraceManager::WalkAlongEpsilonEdges(
 				vint previousTokenIndex,
 				vint currentTokenIndex,
-				vint input,
 				Trace* trace
 			)
 			{
 				{
 					vint transactionIndex = trace->state * (Executable::TokenBegin + executable.tokenCount) + Executable::LeftrecInput;
 					auto&& edgeArray = executable.transitions[transactionIndex];
-					WalkAlongLeftrecEdges(previousTokenIndex, currentTokenIndex, input, trace, edgeArray);
+					WalkAlongLeftrecEdges(previousTokenIndex, currentTokenIndex, trace, edgeArray);
 				}
 				{
 					vint transactionIndex = trace->state * (Executable::TokenBegin + executable.tokenCount) + Executable::EndingInput;
 					auto&& edgeArray = executable.transitions[transactionIndex];
-					WalkAlongEndingEdges(previousTokenIndex, currentTokenIndex, input, trace, edgeArray);
+					WalkAlongEndingEdges(previousTokenIndex, currentTokenIndex, trace, edgeArray);
 				}
 			}
 
 			void TraceManager::WalkAlongLeftrecEdges(
 				vint previousTokenIndex,
 				vint currentTokenIndex,
-				vint input,
 				Trace* trace,
 				EdgeArray& edgeArray
 			)
@@ -177,14 +175,13 @@ TraceManager::Input
 				{
 					vint byEdge = edgeArray.start + edgeRef;
 					auto& edgeDesc = executable.edges[edgeArray.start + edgeRef];
-					WalkAlongSingleEdge(previousTokenIndex, currentTokenIndex, input, trace, byEdge, edgeDesc);
+					WalkAlongSingleEdge(previousTokenIndex, currentTokenIndex, Executable::LeftrecInput, trace, byEdge, edgeDesc);
 				}
 			}
 
 			void TraceManager::WalkAlongEndingEdges(
 				vint previousTokenIndex,
 				vint currentTokenIndex,
-				vint input,
 				Trace* trace,
 				EdgeArray& edgeArray
 			)
@@ -193,7 +190,7 @@ TraceManager::Input
 				{
 					vint byEdge = edgeArray.start + edgeRef;
 					auto& edgeDesc = executable.edges[edgeArray.start + edgeRef];
-					auto newTrace = WalkAlongSingleEdge(previousTokenIndex, currentTokenIndex, input, trace, byEdge, edgeDesc);
+					auto newTrace = WalkAlongSingleEdge(previousTokenIndex, currentTokenIndex, Executable::EndingInput, trace, byEdge, edgeDesc);
 
 					if (newTrace->returnStack != -1)
 					{
@@ -203,7 +200,7 @@ TraceManager::Input
 
 						auto& returnDesc = executable.returns[newTrace->executedReturn];
 						newTrace->state = returnDesc.returnState;
-						WalkAlongEpsilonEdges(previousTokenIndex, currentTokenIndex, input, newTrace);
+						WalkAlongEpsilonEdges(previousTokenIndex, currentTokenIndex, newTrace);
 					}
 				}
 			}
@@ -310,7 +307,10 @@ TraceManager::ExecuteTrace
 						{
 							vint insIndex = edgeDesc.insBeforeInput.start + insRef;
 							auto& ins = executable.instructions[insIndex];
-							auto& token = tokens[trace->previousTokenIndex == -1 ? 0 : trace->previousTokenIndex];
+							vint tokenIndex =
+								trace->previousTokenIndex == -1 ? trace->currentTokenIndex :
+								trace->previousTokenIndex;
+							auto& token = tokens[tokenIndex];
 							submitter.Submit(ins, token);
 						}
 						for (vint insRef = 0; insRef < edgeDesc.insAfterInput.count; insRef++)
