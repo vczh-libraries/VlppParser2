@@ -39,6 +39,19 @@ WString GetTestOutputPath()
 #endif
 }
 
+FilePath GetOutputDir(const WString& parserName)
+{
+	auto outputDir = FilePath(GetTestOutputPath()) / parserName;
+	{
+		Folder folder = outputDir;
+		if (!folder.Exists())
+		{
+			folder.Create(true);
+		}
+	}
+	return outputDir;
+}
+
 TEST_FILE
 {
 	TEST_CASE_ASSERT(Folder(GetTestOutputPath()).Exists());
