@@ -307,10 +307,7 @@ TraceManager::ExecuteTrace
 						{
 							vint insIndex = edgeDesc.insBeforeInput.start + insRef;
 							auto& ins = executable.instructions[insIndex];
-							vint tokenIndex =
-								trace->previousTokenIndex == -1 ? trace->currentTokenIndex :
-								trace->previousTokenIndex;
-							auto& token = tokens[tokenIndex];
+							auto& token = tokens[trace->currentTokenIndex];
 							submitter.Submit(ins, token);
 						}
 						for (vint insRef = 0; insRef < edgeDesc.insAfterInput.count; insRef++)
