@@ -55,11 +55,11 @@ EdgeSymbol
 
 			enum class EdgeInputType
 			{
-				Epsilon,
-				Ending,
-				LeftRec,
-				Token,
-				Rule,
+				Epsilon,		// No input is needed to execute this edge.
+				Ending,			// An epsilon edge that reduces the current rule.
+				LeftRec,		// An epsilon edge that reduces the current rule, which is the first input of one of its left recursive clause.
+				Token,			// An token is read to execute this edge.
+				Rule,			// A rule is reduced to execute this edge.
 			};
 
 			struct EdgeInput
@@ -83,10 +83,12 @@ EdgeSymbol
 
 				EdgeSymbol(StateSymbol* _from, StateSymbol* _to);
 			public:
-				EdgeInput					input;
-				InsList						insBeforeInput;
-				InsList						insAfterInput;
-				EdgeList					returnEdges;
+				EdgeInput					input;				// Input of this edge.
+				InsList						insBeforeInput;		// Instructions to execute before pushing the value from a token or a reduced rule.
+				InsList						insAfterInput;		// Instructions to execute after pushing the value from a token or a reduced rule.
+				EdgeList					returnEdges;		// Edges of rule reduction.
+																// InsBeforeInput will be copied to a cross-referenced edge.
+																// When a reduction is done, only insAfterInput need to execute.
 
 				SyntaxSymbolManager*		Owner() { return ownerManager; }
 				StateSymbol*				From() { return fromState; }
@@ -120,9 +122,17 @@ SyntaxSymbolManager
 
 			enum class SyntaxPhase
 			{
-				EpsilonNFA,
-				CompactNFA,
-				CrossReferencedNFA,
+				EpsilonNFA,					// An automaton that has edges of Epsilon, Token, Rule.
+				CompactNFA,					// Epsilon edges are eliminated by compressing multiple edges into one.
+											// Epsilon edges to the ending state will be compressed to an Ending edge.
+											// The first edge of Rule in left-recursive clauses becomes a LeftRec edge, with its fromState changed to the ending state.
+											// fromState and toState of non-LeftRec edges belong to the same clause.
+				CrossReferencedNFA,			// Edges of Rule are compressed to an edge that pointing towards states in other clauses.
+											// Multiple edges of rule are stored in returnEdges in the order of execution.
+											// insBeforeInput of an edge contains insBeforeInput from its returnEdges.
+											// returnEdges of an edge will be pushed to a stack when it is executed.
+											// Executing an Ending edge pops a returnEdges and execute its insAfterInput only.
+											// automaton::Executable is exactly the same to CrossReferencedNFA, stored a more cache friendly way.
 			};
 
 			class SyntaxSymbolManager : public Object
