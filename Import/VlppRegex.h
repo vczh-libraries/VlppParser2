@@ -2026,9 +2026,9 @@ namespace vl
 			static const vint	SupportedCharCount = MaxChar32 + 1;
 
 			vint				charMap[SupportedCharCount];		// char -> char set index
-			vint**				transition = nullptr;				// (state * char set index) -> state*
+			vint*				transitions = nullptr;				// (state * charSetCount + charSetIndex) -> state
 			bool*				finalState = nullptr;				// state -> bool
-			vint*				relatedFinalState = nullptr;		// sate -> (finalState or -1)
+			vint*				relatedFinalState = nullptr;		// state -> (finalState or -1)
 			vint				stateCount;
 			vint				charSetCount;
 			vint				startState;
