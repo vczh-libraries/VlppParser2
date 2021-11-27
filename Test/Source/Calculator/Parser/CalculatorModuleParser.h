@@ -7,10 +7,25 @@ Licensed under https://github.com/vczh-libraries/License
 #ifndef VCZH_PARSER2_UNITTEST_CALCULATOR_MODULEPARSER_SYNTAX
 #define VCZH_PARSER2_UNITTEST_CALCULATOR_MODULEPARSER_SYNTAX
 
-#include "../../../../Source/AstBase.h"
-#include "../../../../Source/SyntaxBase.h"
+#include "Calculator_Assembler.h"
+#include "Calculator_Lexer.h"
 
 namespace calculator
 {
+	enum class ModuleParserStates
+	{
+		Arg = 0,
+		Exp0 = 3,
+		Exp1 = 12,
+		Exp2 = 25,
+		Exp3 = 34,
+		Exp4 = 43,
+		Exp5 = 58,
+		Exp = 67,
+		Import = 83,
+		Module = 87,
+	};
+
+	extern void CalculatorModuleParserData(vl::stream::IStream& outputStream);
 }
 #endif

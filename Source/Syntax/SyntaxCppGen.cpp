@@ -42,13 +42,24 @@ WriteSyntaxHeaderFile
 					writer.WriteLine(L"#pragma once");
 				}
 				writer.WriteLine(L"");
-				for (auto include : manager.Global().includes)
-				{
-					writer.WriteLine(L"#include \"" + include + L"\"");
-				}
+				writer.WriteLine(L"#include \"" + output->assemblyH + L"\"");
+				writer.WriteLine(L"#include \"" + output->lexerH +L"\"");
 				writer.WriteLine(L"");
 
 				WString prefix = WriteNssBegin(manager.Global().cppNss, writer);
+				{
+					writer.WriteLine(prefix + L"enum class " + manager.name + L"States");
+					writer.WriteLine(prefix + L"{");
+					for (auto&& [ruleName, index] : indexed(metadata.ruleNames))
+					{
+						writer.WriteLine(prefix + L"\t" + ruleName + L" = " + itow(executable.ruleStartStates[index]) + L",");
+					}
+					writer.WriteLine(prefix + L"};");
+				}
+				{
+					writer.WriteLine(L"");
+					WriteLoadDataFunctionHeader(prefix, manager.Global().name + manager.name + L"Data", writer);
+				}
 				WriteNssEnd(manager.Global().cppNss, writer);
 
 				if (manager.Global().headerGuard != L"")
@@ -67,6 +78,12 @@ WriteSyntaxCppFile
 				writer.WriteLine(L"#include \"" + output->syntaxOutputs[&manager]->syntaxH + L"\"");
 				writer.WriteLine(L"");
 				WString prefix = WriteNssBegin(manager.Global().cppNss, writer);
+				{
+					MemoryStream syntaxData;
+					executable.Serialize(syntaxData);
+					syntaxData.SeekFromBegin(0);
+					WriteLoadDataFunctionCpp(prefix, manager.Global().name + manager.name + L"Data", syntaxData, true, writer);
+				}
 				WriteNssEnd(manager.Global().cppNss, writer);
 			}
 
