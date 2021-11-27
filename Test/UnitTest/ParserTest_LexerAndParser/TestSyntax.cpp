@@ -1,4 +1,4 @@
-#include "../../Source/Calculator/Parser/CalculatorAst_Json.h"
+#include "../../Source/Calculator/Parser/CalculatorExprAst_Json.h"
 #include "../../Source/Calculator/Parser/Calculator_Assembler.h"
 #include "../../Source/Calculator/Parser/Calculator_Lexer.h"
 #include "../../Source/LogParser.h"
@@ -120,7 +120,7 @@ TEST_FILE
 export 1
 )";
 		auto ast = ParseCalculator(input, lexer, executable, metadata, L"Calculator");
-		AssertAst<json_visitor::AstVisitor>(ast, LR"({
+		AssertAst<json_visitor::ExprAstVisitor>(ast, LR"({
     "$ast": "Module",
     "exported": {
         "$ast": "NumExpr",
@@ -152,7 +152,7 @@ export 1
 			{
 				auto input = inputFile.ReadAllTextByBom();
 				auto ast = ParseCalculator(input, lexer, executable2, metadata, caseName);
-				auto actualJson = PrintAstJson<json_visitor::AstVisitor>(ast);
+				auto actualJson = PrintAstJson<json_visitor::ExprAstVisitor>(ast);
 				File(dirOutput / (L"Output[" + caseName + L"].json")).WriteAllText(actualJson, true, BomEncoder::Utf8);
 				auto expectedJson = File(dirBaseline / (caseName + L".json")).ReadAllTextByBom();
 				AssertLines(expectedJson, actualJson);

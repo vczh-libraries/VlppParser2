@@ -1,5 +1,5 @@
 #include "../../../Source/Lexer/LexerCppGen.h"
-#include "../../Source/Calculator/Parser/CalculatorAst_Json.h"
+#include "../../Source/Calculator/Parser/CalculatorExprAst_Json.h"
 #include "../../Source/Calculator/Parser/Calculator_Assembler.h"
 #include "../../Source/LogParser.h"
 
@@ -47,7 +47,7 @@ export 1
 		auto node = receiver.Finished();
 		auto ast = node.Cast<Module>();
 		TEST_ASSERT(ast);
-		AssertAst<json_visitor::AstVisitor>(ast, LR"({
+		AssertAst<json_visitor::ExprAstVisitor>(ast, LR"({
     "$ast": "Module",
     "exported": {
         "$ast": "NumExpr",
@@ -80,7 +80,7 @@ export 1
 		auto node = receiver.Finished();
 		auto ast = node.Cast<Module>();
 		TEST_ASSERT(ast);
-		AssertAst<json_visitor::AstVisitor>(ast, LR"({
+		AssertAst<json_visitor::ExprAstVisitor>(ast, LR"({
     "$ast": "Module",
     "exported": {
         "$ast": "NumExpr",
@@ -110,7 +110,7 @@ export (1)
 		auto node = receiver.Finished();
 		auto ast = node.Cast<Module>();
 		TEST_ASSERT(ast);
-		AssertAst<json_visitor::AstVisitor>(ast, LR"({
+		AssertAst<json_visitor::ExprAstVisitor>(ast, LR"({
     "$ast": "Module",
     "exported": {
         "$ast": "NumExpr",
@@ -148,7 +148,7 @@ export 1 + 2
 		auto node = receiver.Finished();
 		auto ast = node.Cast<Module>();
 		TEST_ASSERT(ast);
-		AssertAst<json_visitor::AstVisitor>(ast, LR"({
+		AssertAst<json_visitor::ExprAstVisitor>(ast, LR"({
     "$ast": "Module",
     "exported": {
         "$ast": "Binary",
@@ -195,7 +195,7 @@ export 1 + 2
 		auto node = receiver.Finished();
 		auto ast = node.Cast<Module>();
 		TEST_ASSERT(ast);
-		AssertAst<json_visitor::AstVisitor>(ast, LR"({
+		AssertAst<json_visitor::ExprAstVisitor>(ast, LR"({
     "$ast": "Module",
     "exported": {
         "$ast": "Binary",
@@ -289,7 +289,7 @@ export sum(1, 2, max(3, 4))
 		auto node = receiver.Finished();
 		auto ast = node.Cast<Module>();
 		TEST_ASSERT(ast);
-		AssertAst<json_visitor::AstVisitor>(ast, LR"({
+		AssertAst<json_visitor::ExprAstVisitor>(ast, LR"({
     "$ast": "Module",
     "exported": {
         "$ast": "Call",
