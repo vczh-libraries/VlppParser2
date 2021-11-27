@@ -74,6 +74,11 @@ Automaton
 				collections::Array<ReturnDesc>		returns;				// referenced by Executable::returnIndices
 				collections::Array<EdgeDesc>		edges;					// referenced by EdgeArray
 				collections::Array<StateDesc>		states;					// refereced by returnState/fromState/toState
+
+				Executable() = default;
+				Executable(stream::IStream& inputStream);
+
+				void								Serialize(stream::IStream& outputStream);
 			};
 
 			struct Metadata

@@ -130,6 +130,11 @@ export 1
 })");
 	});
 
+	MemoryStream executableStream;
+	executable.Serialize(executableStream);
+	executableStream.SeekFromBegin(0);
+	Executable executable2(executableStream);
+
 	TEST_CATEGORY(L"Test Calculator Syntax")
 	{
 		Folder dirInput = FilePath(GetTestParserInputPath(L"Calculator")) / L"Input";
@@ -146,7 +151,7 @@ export 1
 			TEST_CASE(caseName)
 			{
 				auto input = inputFile.ReadAllTextByBom();
-				auto ast = ParseCalculator(input, lexer, executable, metadata, caseName);
+				auto ast = ParseCalculator(input, lexer, executable2, metadata, caseName);
 				auto actualJson = PrintAstJson<json_visitor::AstVisitor>(ast);
 				File(dirOutput / (L"Output[" + caseName + L"].json")).WriteAllText(actualJson, true, BomEncoder::Utf8);
 				auto expectedJson = File(dirBaseline / (caseName + L".json")).ReadAllTextByBom();
