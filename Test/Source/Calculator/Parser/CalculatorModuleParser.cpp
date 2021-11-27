@@ -56,4 +56,14 @@ namespace calculator
 		: vl::glr::ParserBase<CalculatorTokens, ModuleParserStates, CalculatorAstInsReceiver, ModuleParserStateTypes>(&CalculatorTokenDeleter, &CalculatorLexerData, &CalculatorModuleParserData)
 	{
 	};
+
+	vl::Ptr<calculator::Expr> ModuleParser::ParseExp(const vl::WString & input, vl::vint codeIndex)
+	{
+		 return Parse<ModuleParserStates::Exp>(input, codeIndex);
+	};
+
+	vl::Ptr<calculator::Module> ModuleParser::ParseModule(const vl::WString & input, vl::vint codeIndex)
+	{
+		 return Parse<ModuleParserStates::Module>(input, codeIndex);
+	};
 }

@@ -83,6 +83,16 @@ WriteSyntaxHeaderFile
 					writer.WriteLine(prefix + L"{");
 					writer.WriteLine(prefix + L"public:");
 					writer.WriteLine(prefix + L"\t" + manager.name + L"();");
+					writer.WriteLine(L"");
+					for (auto ruleName : manager.RuleOrder())
+					{
+						auto ruleSymbol = manager.Rules()[ruleName];
+						if (manager.parsableRules.Contains(ruleSymbol))
+						{
+							auto astType = manager.ruleTypes[ruleSymbol];
+							writer.WriteLine(prefix + L"\tvl::Ptr<" + astType + L"> Parse" + ruleName + L"(const vl::WString & input, vl::vint codeIndex = -1);");
+						}
+					}
 					writer.WriteLine(prefix + L"};");
 				}
 				WriteNssEnd(manager.Global().cppNss, writer);
@@ -122,6 +132,20 @@ WriteSyntaxCppFile
 					writer.WriteLine(L"&" + manager.Global().name + manager.name + L"Data)");
 					writer.WriteLine(prefix + L"{");
 					writer.WriteLine(prefix + L"};");
+				}
+
+				for (auto ruleName : manager.RuleOrder())
+				{
+					auto ruleSymbol = manager.Rules()[ruleName];
+					if (manager.parsableRules.Contains(ruleSymbol))
+					{
+						auto astType = manager.ruleTypes[ruleSymbol];
+						writer.WriteLine(L"");
+						writer.WriteLine(prefix + L"vl::Ptr<" + astType + L"> " + manager.name + L"::Parse" + ruleName + L"(const vl::WString & input, vl::vint codeIndex)");
+						writer.WriteLine(prefix + L"{");
+						writer.WriteLine(prefix + L"\t return Parse<" + manager.name + L"States::" + ruleName + L">(input, codeIndex);");
+						writer.WriteLine(prefix + L"};");
+					}
 				}
 				WriteNssEnd(manager.Global().cppNss, writer);
 			}

@@ -268,18 +268,18 @@ Parser
 				CHECK_ERROR(tm.concurrentCount == 1, errorMessage);
 				CHECK_ERROR(executable->states[tm.concurrentTraces->Get(0)->state].endingState, errorMessage);
 
-				TReceiver2 receiver;
 				auto rootTrace = tm.PrepareTraceRoute();
 				return tm.ExecuteTrace(rootTrace, receiver, tokens);
 			}
 
 			template<TStates State>
-			auto Parse(const WString& input, vint codeIndex = -1)
+			auto Parse(const WString& input, vint codeIndex)
 			{
 				TReceiver receiver;
-				auto ast = ParseWithReceiver(input, State, receiver);
+				auto ast = ParseWithReceiver(input, State, receiver, codeIndex);
 				auto typedAst = ast.Cast<typename TStateTypes<State>::Type>();
 				CHECK_ERROR(typedAst, L"vl::glr::ParserBase<...>::Parse<State>(const WString&)#Unexpected type of the created AST.");
+				return typedAst;
 			}
 		};
 	}

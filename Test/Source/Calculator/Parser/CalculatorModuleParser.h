@@ -36,6 +36,9 @@ namespace calculator
 	{
 	public:
 		ModuleParser();
+
+		vl::Ptr<calculator::Expr> ParseExp(const vl::WString & input, vl::vint codeIndex = -1);
+		vl::Ptr<calculator::Module> ParseModule(const vl::WString & input, vl::vint codeIndex = -1);
 	};
 }
 #endif
