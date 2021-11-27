@@ -33,9 +33,9 @@ WriteSyntaxHeaderFile
 				if (manager.Global().headerGuard != L"")
 				{
 					writer.WriteString(L"#ifndef ");
-					writer.WriteLine(manager.Global().headerGuard + L"_SYNTAX");
+					writer.WriteLine(manager.Global().headerGuard + L"_" + wupper(manager.name) + L"_SYNTAX");
 					writer.WriteString(L"#define ");
-					writer.WriteLine(manager.Global().headerGuard + L"_SYNTAX");
+					writer.WriteLine(manager.Global().headerGuard + L"_" + wupper(manager.name) + L"_SYNTAX");
 				}
 				else
 				{
@@ -78,12 +78,12 @@ WriteLexerFiles
 			{
 				WString fileH = GenerateToStream([&](StreamWriter& writer)
 				{
-						WriteSyntaxHeaderFile(manager, executable, metadata, output, writer);
+					WriteSyntaxHeaderFile(manager, executable, metadata, output, writer);
 				});
 
 				WString fileCpp = GenerateToStream([&](StreamWriter& writer)
 				{
-						WriteSyntaxCppFile(manager, executable, metadata, output, writer);
+					WriteSyntaxCppFile(manager, executable, metadata, output, writer);
 				});
 
 				files.Add(output->syntaxOutputs[&manager]->syntaxH, fileH);

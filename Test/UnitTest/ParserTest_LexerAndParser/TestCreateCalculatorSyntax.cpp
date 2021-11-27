@@ -41,7 +41,7 @@ TEST_FILE
 		auto outputDir = FilePath(GetExePath()) / L"../../Source/Calculator/Parser/";
 		for (auto [key, index] : indexed(files.Keys()))
 		{
-			//File(outputDir / key).WriteAllText(files.Values()[index], false, BomEncoder::Utf8);
+			File(outputDir / key).WriteAllText(files.Values()[index], false, BomEncoder::Utf8);
 		}
 	});
 }

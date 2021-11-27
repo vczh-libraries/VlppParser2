@@ -8,6 +8,7 @@ Licensed under https://github.com/vczh-libraries/License
 #define VCZH_PARSER2_UNITTEST_CALCULATOR_EXPRAST_AST
 
 #include "../../../../Source/AstBase.h"
+#include "../../../../Source/SyntaxBase.h"
 
 namespace calculator
 {

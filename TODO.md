@@ -71,7 +71,7 @@
    6. [ ] Generate `ParserGen` Lexer C++ files in this unit test project.
       1. [ ] Lexer for `ParserGen`.
       2. [x] Lexer for `Calculator`.
-3. [ ] `ParserTest_LexerAndParser`.
+3. [x] `ParserTest_LexerAndParser`.
    1. [x] Test generated lexer for `Calculator`.
    2. [x] Manually create parser symbols for `Calculator`.
       1. [x] `SyntaxSymbolManager` accepts epsilon-NFA state machines.
@@ -86,8 +86,8 @@
       5. [ ] Check `codeRange` of all nodes. (use the previous/current token(calculate codeRange) v.s. before/after rule deduction (move instructions to different places))
    4. [ ] Generate `ParserGen` Syntax C++ files in this unit test project.
       1. [ ] Syntax for `ParserGen`.
-      2. [ ] Syntax for `Calculator`.
-4. [ ] `ParserTest_ParserGen_Compiler`
+      2. [x] Syntax for `Calculator`.
+4. [x] `ParserTest_ParserGen_Compiler`
    1. [ ] Initialize `AstSymbolManager` from `ParserGen::TypeAst`.
    2. [ ] Initialize `SyntaxSymbolManager` from `ParserGen::SyntaxAst`.
    3. [ ] Test generated `Calculator` syntax C++ files again.

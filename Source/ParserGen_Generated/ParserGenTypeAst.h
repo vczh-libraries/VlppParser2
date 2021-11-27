@@ -8,6 +8,7 @@ Licensed under https://github.com/vczh-libraries/License
 #define VCZH_PARSER2_PARSERGEN_TYPEAST_AST
 
 #include "../AstBase.h"
+#include "../SyntaxBase.h"
 
 namespace vl
 {
