@@ -73,12 +73,13 @@ WriteAstHeaderFile
 			void WriteAstHeaderFile(AstDefFile* file, stream::StreamWriter& writer)
 			{
 				WriteFileComment(file->Name(), writer);
-				if (file->headerGuard != L"")
+				auto&& headerGuard = file->Owner()->Global().headerGuard;
+				if (headerGuard != L"")
 				{
 					writer.WriteString(L"#ifndef ");
-					writer.WriteLine(file->headerGuard + L"_AST");
+					writer.WriteLine(headerGuard + L"_" + wupper(file->Name()) + L"_AST");
 					writer.WriteString(L"#define ");
-					writer.WriteLine(file->headerGuard + L"_AST");
+					writer.WriteLine(headerGuard + L"_" + wupper(file->Name()) + L"_AST");
 				}
 				else
 				{
@@ -107,7 +108,7 @@ WriteAstHeaderFile
 					WriteNssEnd(refNss, writer);
 				}
 
-				if (file->headerGuard != L"")
+				if (headerGuard != L"")
 				{
 					writer.WriteString(L"#endif");
 				}
@@ -154,11 +155,18 @@ WriteAstUtilityHeaderFile
 			)
 			{
 				WriteFileComment(file->Name(), writer);
-
-				writer.WriteString(L"#ifndef ");
-				writer.WriteLine(file->headerGuard + L"_AST_" + wupper(extraNss));
-				writer.WriteString(L"#define ");
-				writer.WriteLine(file->headerGuard + L"_AST_" + wupper(extraNss));
+				auto&& headerGuard = file->Owner()->Global().headerGuard;
+				if (headerGuard != L"")
+				{
+					writer.WriteString(L"#ifndef ");
+					writer.WriteLine(headerGuard + L"_" + wupper(file->Name()) + L"_AST_" + wupper(extraNss));
+					writer.WriteString(L"#define ");
+					writer.WriteLine(headerGuard + L"_" + wupper(file->Name()) + L"_AST_" + wupper(extraNss));
+				}
+				else
+				{
+					writer.WriteLine(L"#pragma once");
+				}
 				writer.WriteLine(L"");
 				writer.WriteLine(L"#include \"" + output->astH + L"\"");
 				writer.WriteLine(L"");
@@ -170,7 +178,7 @@ WriteAstUtilityHeaderFile
 					callback(prefix);
 					WriteNssEnd(cppNss, writer);
 				}
-				if (file->headerGuard != L"")
+				if (headerGuard != L"")
 				{
 					writer.WriteString(L"#endif");
 				}

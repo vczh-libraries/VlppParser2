@@ -132,7 +132,6 @@ AstDefFile
 				StringItems					cppNss;
 				StringItems					refNss;
 				WString						classPrefix;
-				WString						headerGuard;
 
 				AstSymbolManager*			Owner() { return ownerManager; }
 				const WString&				Name() { return name; }

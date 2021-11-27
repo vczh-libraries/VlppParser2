@@ -18,7 +18,6 @@ CreateParserGenTypeAst
 				Fill(_ast->cppNss, L"vl", L"glr", L"parsergen");
 				Fill(_ast->refNss, L"glr", L"parsergen");
 				_ast->classPrefix = L"Glr";
-				_ast->headerGuard = L"VCZH_PARSER2_PARSERGEN_TYPEAST";
 
 				auto _type = _ast->CreateClass(L"Type");
 				_type->CreateProp(L"name")->SetPropType(AstPropType::Token);

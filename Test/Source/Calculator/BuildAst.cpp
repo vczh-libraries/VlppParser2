@@ -6,11 +6,10 @@ using namespace vl::glr::parsergen;
 void GenerateCalculatorAst(AstSymbolManager& manager)
 {
 	{
-		auto file = manager.CreateFile(L"Ast");
+		auto file = manager.CreateFile(L"ExprAst");
 		file->cppNss.Add(L"calculator");
 		file->refNss.Add(L"calculator");
 		file->classPrefix = L"";
-		file->headerGuard = L"VCZH_PARSER2_UNITTEST_CALCULATORAST";
 
 		auto _expr = file->CreateClass(L"Expr");
 
