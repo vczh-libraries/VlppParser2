@@ -26,6 +26,14 @@ namespace calculator
 		Module = 87,
 	};
 
+	template<ModuleParserStates> struct ModuleParserStateTypes;
+	template<> struct ModuleParserStateTypes<ModuleParserStates::Exp> { using Type = calculator::Expr; };
+	template<> struct ModuleParserStateTypes<ModuleParserStates::Module> { using Type = calculator::Module; };
+
 	extern void CalculatorModuleParserData(vl::stream::IStream& outputStream);
+
+	class ModuleParser: vl::glr::ParserBase<CalculatorTokens, ModuleParserStates, CalculatorAstInsReceiver, ModuleParserStateTypes>
+	{
+	};
 }
 #endif

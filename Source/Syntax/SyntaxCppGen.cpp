@@ -58,7 +58,30 @@ WriteSyntaxHeaderFile
 				}
 				{
 					writer.WriteLine(L"");
+					writer.WriteLine(prefix + L"template<" + manager.name + L"States> struct " + manager.name + L"StateTypes;");
+					for(auto ruleName : manager.RuleOrder())
+					{
+						auto ruleSymbol = manager.Rules()[ruleName];
+						if (manager.parsableRules.Contains(ruleSymbol))
+						{
+							auto astType = manager.ruleTypes[ruleSymbol];
+							writer.WriteLine(prefix + L"template<> struct " + manager.name + L"StateTypes<" + manager.name + L"States::" + ruleName + L"> { using Type = " + astType + L"; };");
+						}
+					}
+				}
+				{
+					writer.WriteLine(L"");
 					WriteLoadDataFunctionHeader(prefix, manager.Global().name + manager.name + L"Data", writer);
+				}
+				{
+					writer.WriteLine(L"");
+					writer.WriteString(prefix + L"class " + manager.name + L": vl::glr::ParserBase<");
+					writer.WriteString(manager.Global().name + L"Tokens, ");
+					writer.WriteString(manager.name + L"States, ");
+					writer.WriteString(manager.Global().name + L"AstInsReceiver, ");
+					writer.WriteLine(manager.name + L"StateTypes>");
+					writer.WriteLine(prefix + L"{");
+					writer.WriteLine(prefix + L"};");
 				}
 				WriteNssEnd(manager.Global().cppNss, writer);
 
