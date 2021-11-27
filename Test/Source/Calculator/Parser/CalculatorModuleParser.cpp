@@ -51,4 +51,9 @@ namespace calculator
 		};
 		vl::glr::DecompressSerializedData(compressed, true, dataSolidRows, dataRows, dataBlock, dataRemain, outputStream);
 	}
+
+	ModuleParser::ModuleParser()
+		: vl::glr::ParserBase<CalculatorTokens, ModuleParserStates, CalculatorAstInsReceiver, ModuleParserStateTypes>(&CalculatorTokenDeleter, &CalculatorLexerData, &CalculatorModuleParserData)
+	{
+	};
 }

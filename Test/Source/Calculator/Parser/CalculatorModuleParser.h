@@ -34,6 +34,8 @@ namespace calculator
 
 	class ModuleParser: vl::glr::ParserBase<CalculatorTokens, ModuleParserStates, CalculatorAstInsReceiver, ModuleParserStateTypes>
 	{
+	public:
+		ModuleParser();
 	};
 }
 #endif

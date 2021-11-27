@@ -81,6 +81,8 @@ WriteSyntaxHeaderFile
 					writer.WriteString(manager.Global().name + L"AstInsReceiver, ");
 					writer.WriteLine(manager.name + L"StateTypes>");
 					writer.WriteLine(prefix + L"{");
+					writer.WriteLine(prefix + L"public:");
+					writer.WriteLine(prefix + L"\t" + manager.name + L"();");
 					writer.WriteLine(prefix + L"};");
 				}
 				WriteNssEnd(manager.Global().cppNss, writer);
@@ -106,6 +108,20 @@ WriteSyntaxCppFile
 					executable.Serialize(syntaxData);
 					syntaxData.SeekFromBegin(0);
 					WriteLoadDataFunctionCpp(prefix, manager.Global().name + manager.name + L"Data", syntaxData, true, writer);
+				}
+				{
+					writer.WriteLine(L"");
+					writer.WriteLine(prefix + manager.name + L"::"+ manager.name + L"()");
+					writer.WriteString(prefix + L"\t: vl::glr::ParserBase<");
+					writer.WriteString(manager.Global().name + L"Tokens, ");
+					writer.WriteString(manager.name + L"States, ");
+					writer.WriteString(manager.Global().name + L"AstInsReceiver, ");
+					writer.WriteString(manager.name + L"StateTypes>(");
+					writer.WriteString(L"&" + manager.Global().name + L"TokenDeleter, ");
+					writer.WriteString(L"&" + manager.Global().name + L"LexerData, ");
+					writer.WriteLine(L"&" + manager.Global().name + manager.name + L"Data)");
+					writer.WriteLine(prefix + L"{");
+					writer.WriteLine(prefix + L"};");
 				}
 				WriteNssEnd(manager.Global().cppNss, writer);
 			}
