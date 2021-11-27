@@ -90,7 +90,7 @@
 4. [x] `ParserTest_ParserGen_Compiler`
    1. [ ] Initialize `AstSymbolManager` from `ParserGen::TypeAst`.
    2. [ ] Initialize `SyntaxSymbolManager` from `ParserGen::SyntaxAst`.
-   3. [ ] Test generated `Calculator` syntax C++ files again.
+   3. [x] Test generated `Calculator` syntax C++ files again.
    4. [ ] Test generated `ParserGen` syntax C++ files to parse `Test/Source/Calculator/Syntax/Syntax.txt`.
       1. [ ] Generate the whole `Calculator` C++ files in `Test/Source/Calculator/Parser2` again.
    5. [ ] Prepare more parser test cases for `+loop`, `-loop`, `loop`, `+opt`, `-opt`, `opt`, left recursion, indirect left recursion, ...
