@@ -202,6 +202,86 @@ Execution
 				Ptr<ParsingAstBase>					ExecuteTrace(Trace* trace, IAstInsReceiver& receiver, collections::List<regex::RegexToken>& tokens);
 			};
 		}
+
+/***********************************************************************
+Parser
+***********************************************************************/
+
+		template<
+			typename TTokens,
+			typename TStates,
+			typename TReceiver,
+			template<TStates> class TStateTypes
+		>
+		class ParserBase : public Object
+		{
+			static_assert(std::is_enum_v<TTokens>);
+			static_assert(std::is_enum_v<TStates>);
+			static_assert(std::is_convertible_v<TReceiver*, IAstInsReceiver*>);
+
+			using Deleter = bool(*)(vint);
+		protected:
+			Deleter									deleter;
+			Ptr<regex::RegexLexer>					lexer;
+			Ptr<automaton::Executable>				executable;
+
+		public:
+			ParserBase(
+				Deleter _deleter,
+				void(*_lexerData)(stream::IStream&),
+				void(*_parserData)(stream::IStream&)
+			) : deleter(_deleter)
+			{
+				{
+					stream::MemoryStream data;
+					_lexerData(data);
+					data.SeekFromBegin(0);
+					lexer = new regex::RegexLexer(data);
+				}
+				{
+					stream::MemoryStream data;
+					_parserData(data);
+					data.SeekFromBegin(0);
+					executable = new automaton::Executable(data);
+				}
+			}
+
+			template<typename TReceiver2>
+			auto ParseWithReceiver(const WString& input, TStates state, TReceiver2& receiver, vint codeIndex)
+			{
+				const wchar_t* errorMessage = L"vl::glr::ParserBase<...>::ParseWithReceiver<TReceiver2>(const WString&, TState, TReceiver2&, vint)#Error happens during parsing.";
+				collections::List<regex::RegexToken> tokens;
+				lexer->Parse(input, {}, codeIndex).ReadToEnd(tokens, deleter);
+
+				automaton::TraceManager tm(*executable.Obj());
+				tm.Initialize((vint)state);
+				for (vint i = 0; i < tokens.Count(); i++)
+				{
+					auto&& token = tokens[i];
+					tm.Input(i, token.token);
+					// TODO: log errors instead of crashing (failed to parse)
+					CHECK_ERROR(tm.concurrentCount > 0, errorMessage);
+				}
+
+				tm.EndOfInput();
+				// TODO: log errors instead of crashing (input not complete, unresolvable ambiguity)
+				CHECK_ERROR(tm.concurrentCount == 1, errorMessage);
+				CHECK_ERROR(executable->states[tm.concurrentTraces->Get(0)->state].endingState, errorMessage);
+
+				TReceiver2 receiver;
+				auto rootTrace = tm.PrepareTraceRoute();
+				return tm.ExecuteTrace(rootTrace, receiver, tokens);
+			}
+
+			template<TStates State>
+			auto Parse(const WString& input, vint codeIndex = -1)
+			{
+				TReceiver receiver;
+				auto ast = ParseWithReceiver(input, State, receiver);
+				auto typedAst = ast.Cast<typename TStateTypes<State>::Type>();
+				CHECK_ERROR(typedAst, L"vl::glr::ParserBase<...>::Parse<State>(const WString&)#Unexpected type of the created AST.");
+			}
+		};
 	}
 }
 
