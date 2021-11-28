@@ -16,11 +16,11 @@ namespace vl
 	{
 		namespace parsergen
 		{
+			class GlrAstFile;
 			class GlrClass;
 			class GlrClassProp;
 			class GlrEnum;
 			class GlrEnumItem;
-			class GlrFile;
 			class GlrType;
 
 			enum class GlrPropType
@@ -66,6 +66,7 @@ namespace vl
 				vl::glr::ParsingToken name;
 				GlrPropType propType;
 				vl::glr::ParsingToken propTypeName;
+				vl::glr::ParsingToken baseClass;
 			};
 
 			class GlrClass : public GlrType, vl::reflection::Description<GlrClass>
@@ -76,10 +77,9 @@ namespace vl
 				void Accept(GlrType::IVisitor* visitor) override;
 			};
 
-			class GlrFile : public vl::glr::ParsingAstBase, vl::reflection::Description<GlrFile>
+			class GlrAstFile : public vl::glr::ParsingAstBase, vl::reflection::Description<GlrAstFile>
 			{
 			public:
-				vl::glr::ParsingToken name;
 				vl::collections::List<vl::Ptr<GlrType>> types;
 			};
 		}
@@ -99,7 +99,7 @@ namespace vl
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrPropType)
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrClassProp)
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrClass)
-			DECL_TYPE_INFO(vl::glr::parsergen::GlrFile)
+			DECL_TYPE_INFO(vl::glr::parsergen::GlrAstFile)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 

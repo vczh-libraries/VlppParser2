@@ -21,18 +21,42 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 			{
 				switch((ParserGenClasses)type)
 				{
+				case ParserGenClasses::Assignment:
+					return new vl::glr::parsergen::GlrAssignment();
+				case ParserGenClasses::AstFile:
+					return new vl::glr::parsergen::GlrAstFile();
 				case ParserGenClasses::Class:
 					return new vl::glr::parsergen::GlrClass();
 				case ParserGenClasses::ClassProp:
 					return new vl::glr::parsergen::GlrClassProp();
+				case ParserGenClasses::Clause:
+					throw vl::glr::AstInsException(L"Unable to create abstract class \"vl::glr::parsergen::GlrClause\".", vl::glr::AstInsErrorType::UnknownType, type);
+				case ParserGenClasses::CreateClause:
+					return new vl::glr::parsergen::GlrCreateClause();
 				case ParserGenClasses::Enum:
 					return new vl::glr::parsergen::GlrEnum();
 				case ParserGenClasses::EnumItem:
 					return new vl::glr::parsergen::GlrEnumItem();
-				case ParserGenClasses::File:
-					return new vl::glr::parsergen::GlrFile();
+				case ParserGenClasses::LiteralClause:
+					return new vl::glr::parsergen::GlrLiteralClause();
+				case ParserGenClasses::LoopClause:
+					return new vl::glr::parsergen::GlrLoopClause();
+				case ParserGenClasses::OptionalClause:
+					return new vl::glr::parsergen::GlrOptionalClause();
+				case ParserGenClasses::RefClause:
+					return new vl::glr::parsergen::GlrRefClause();
+				case ParserGenClasses::Rule:
+					return new vl::glr::parsergen::GlrRule();
+				case ParserGenClasses::SequenceClause:
+					return new vl::glr::parsergen::GlrSequenceClause();
+				case ParserGenClasses::SyntaxFile:
+					return new vl::glr::parsergen::GlrSyntaxFile();
 				case ParserGenClasses::Type:
 					throw vl::glr::AstInsException(L"Unable to create abstract class \"vl::glr::parsergen::GlrType\".", vl::glr::AstInsErrorType::UnknownType, type);
+				case ParserGenClasses::UseClause:
+					return new vl::glr::parsergen::GlrUseClause();
+				case ParserGenClasses::_ReuseClause:
+					return new vl::glr::parsergen::Glr_ReuseClause();
 				default:
 					throw vl::glr::AstInsException(L"The type id does not exist.", vl::glr::AstInsErrorType::UnknownType, type);
 				}
@@ -42,6 +66,15 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 			{
 				switch((ParserGenFields)field)
 				{
+				case ParserGenFields::AstFile_types:
+					{
+						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrAstFile*>(object);
+						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrAstFile::types\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+						auto typedValue = value.Cast<vl::glr::parsergen::GlrType>();
+						if (!typedValue) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrAstFile::types\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+						typedObject->types.Add(typedValue);
+					}
+					break;
 				case ParserGenFields::Class_props:
 					{
 						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrClass*>(object);
@@ -49,6 +82,25 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 						auto typedValue = value.Cast<vl::glr::parsergen::GlrClassProp>();
 						if (!typedValue) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrClass::props\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 						typedObject->props.Add(typedValue);
+					}
+					break;
+				case ParserGenFields::CreateClause_assignments:
+					{
+						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrCreateClause*>(object);
+						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrCreateClause::assignments\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+						auto typedValue = value.Cast<vl::glr::parsergen::GlrAssignment>();
+						if (!typedValue) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrCreateClause::assignments\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+						typedObject->assignments.Add(typedValue);
+					}
+					break;
+				case ParserGenFields::CreateClause_clause:
+					{
+						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrCreateClause*>(object);
+						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrCreateClause::clause\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+						if (typedObject->clause) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrCreateClause::clause\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
+						auto typedValue = value.Cast<vl::glr::parsergen::GlrClause>();
+						if (!typedValue) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrCreateClause::clause\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+						typedObject->clause = typedValue;
 					}
 					break;
 				case ParserGenFields::Enum_items:
@@ -60,25 +112,127 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 						typedObject->items.Add(typedValue);
 					}
 					break;
-				case ParserGenFields::File_types:
+				case ParserGenFields::LoopClause_clause:
 					{
-						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrFile*>(object);
-						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrFile::types\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-						auto typedValue = value.Cast<vl::glr::parsergen::GlrType>();
-						if (!typedValue) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrFile::types\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-						typedObject->types.Add(typedValue);
+						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrLoopClause*>(object);
+						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrLoopClause::clause\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+						if (typedObject->clause) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrLoopClause::clause\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
+						auto typedValue = value.Cast<vl::glr::parsergen::GlrClause>();
+						if (!typedValue) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrLoopClause::clause\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+						typedObject->clause = typedValue;
 					}
 					break;
+				case ParserGenFields::LoopClause_delimiter:
+					{
+						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrLoopClause*>(object);
+						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrLoopClause::delimiter\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+						if (typedObject->delimiter) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrLoopClause::delimiter\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
+						auto typedValue = value.Cast<vl::glr::parsergen::GlrClause>();
+						if (!typedValue) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrLoopClause::delimiter\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+						typedObject->delimiter = typedValue;
+					}
+					break;
+				case ParserGenFields::OptionalClause_clause:
+					{
+						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrOptionalClause*>(object);
+						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrOptionalClause::clause\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+						if (typedObject->clause) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrOptionalClause::clause\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
+						auto typedValue = value.Cast<vl::glr::parsergen::GlrClause>();
+						if (!typedValue) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrOptionalClause::clause\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+						typedObject->clause = typedValue;
+					}
+					break;
+				case ParserGenFields::Rule_clauses:
+					{
+						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrRule*>(object);
+						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrRule::clauses\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+						auto typedValue = value.Cast<vl::glr::parsergen::GlrClause>();
+						if (!typedValue) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrRule::clauses\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+						typedObject->clauses.Add(typedValue);
+					}
+					break;
+				case ParserGenFields::SequenceClause_first:
+					{
+						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrSequenceClause*>(object);
+						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrSequenceClause::first\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+						if (typedObject->first) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrSequenceClause::first\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
+						auto typedValue = value.Cast<vl::glr::parsergen::GlrClause>();
+						if (!typedValue) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrSequenceClause::first\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+						typedObject->first = typedValue;
+					}
+					break;
+				case ParserGenFields::SequenceClause_second:
+					{
+						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrSequenceClause*>(object);
+						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrSequenceClause::second\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+						if (typedObject->second) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrSequenceClause::second\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
+						auto typedValue = value.Cast<vl::glr::parsergen::GlrClause>();
+						if (!typedValue) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrSequenceClause::second\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+						typedObject->second = typedValue;
+					}
+					break;
+				case ParserGenFields::SyntaxFile_rules:
+					{
+						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrSyntaxFile*>(object);
+						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrSyntaxFile::rules\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+						auto typedValue = value.Cast<vl::glr::parsergen::GlrRule>();
+						if (!typedValue) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrSyntaxFile::rules\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+						typedObject->rules.Add(typedValue);
+					}
+					break;
+				case ParserGenFields::UseClause_clause:
+					{
+						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrUseClause*>(object);
+						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrUseClause::clause\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+						if (typedObject->clause) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrUseClause::clause\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
+						auto typedValue = value.Cast<vl::glr::parsergen::GlrClause>();
+						if (!typedValue) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrUseClause::clause\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+						typedObject->clause = typedValue;
+					}
+					break;
+				case ParserGenFields::_ReuseClause_assignments:
+					{
+						auto typedObject = dynamic_cast<vl::glr::parsergen::Glr_ReuseClause*>(object);
+						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::Glr_ReuseClause::assignments\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+						auto typedValue = value.Cast<vl::glr::parsergen::GlrAssignment>();
+						if (!typedValue) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::Glr_ReuseClause::assignments\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+						typedObject->assignments.Add(typedValue);
+					}
+					break;
+				case ParserGenFields::_ReuseClause_clause:
+					{
+						auto typedObject = dynamic_cast<vl::glr::parsergen::Glr_ReuseClause*>(object);
+						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::Glr_ReuseClause::clause\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+						if (typedObject->clause) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::Glr_ReuseClause::clause\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
+						auto typedValue = value.Cast<vl::glr::parsergen::GlrClause>();
+						if (!typedValue) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::Glr_ReuseClause::clause\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+						typedObject->clause = typedValue;
+					}
+					break;
+				case ParserGenFields::Assignment_field:
+					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrAssignment::field\" is not an object.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				case ParserGenFields::Assignment_value:
+					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrAssignment::value\" is not an object.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				case ParserGenFields::ClassProp_baseClass:
+					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrClassProp::baseClass\" is not an object.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 				case ParserGenFields::ClassProp_name:
 					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrClassProp::name\" is not an object.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 				case ParserGenFields::ClassProp_propType:
 					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrClassProp::propType\" is not an object.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 				case ParserGenFields::ClassProp_propTypeName:
 					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrClassProp::propTypeName\" is not an object.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				case ParserGenFields::CreateClause_type:
+					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrCreateClause::type\" is not an object.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 				case ParserGenFields::EnumItem_name:
 					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrEnumItem::name\" is not an object.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::File_name:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrFile::name\" is not an object.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				case ParserGenFields::LiteralClause_value:
+					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrLiteralClause::value\" is not an object.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				case ParserGenFields::RefClause_field:
+					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrRefClause::field\" is not an object.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				case ParserGenFields::RefClause_name:
+					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrRefClause::name\" is not an object.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				case ParserGenFields::Rule_name:
+					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrRule::name\" is not an object.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 				case ParserGenFields::Type_name:
 					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrType::name\" is not an object.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 				default:
@@ -90,6 +244,30 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 			{
 				switch((ParserGenFields)field)
 				{
+				case ParserGenFields::Assignment_field:
+					{
+						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrAssignment*>(object);
+						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrAssignment::field\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+						if (typedObject->field.value.Length() != 0) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrAssignment::field\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
+						AssignToken(typedObject->field, token);
+					}
+					break;
+				case ParserGenFields::Assignment_value:
+					{
+						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrAssignment*>(object);
+						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrAssignment::value\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+						if (typedObject->value.value.Length() != 0) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrAssignment::value\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
+						AssignToken(typedObject->value, token);
+					}
+					break;
+				case ParserGenFields::ClassProp_baseClass:
+					{
+						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrClassProp*>(object);
+						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrClassProp::baseClass\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+						if (typedObject->baseClass.value.Length() != 0) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrClassProp::baseClass\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
+						AssignToken(typedObject->baseClass, token);
+					}
+					break;
 				case ParserGenFields::ClassProp_name:
 					{
 						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrClassProp*>(object);
@@ -106,6 +284,14 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 						AssignToken(typedObject->propTypeName, token);
 					}
 					break;
+				case ParserGenFields::CreateClause_type:
+					{
+						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrCreateClause*>(object);
+						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrCreateClause::type\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+						if (typedObject->type.value.Length() != 0) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrCreateClause::type\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
+						AssignToken(typedObject->type, token);
+					}
+					break;
 				case ParserGenFields::EnumItem_name:
 					{
 						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrEnumItem*>(object);
@@ -114,11 +300,35 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 						AssignToken(typedObject->name, token);
 					}
 					break;
-				case ParserGenFields::File_name:
+				case ParserGenFields::LiteralClause_value:
 					{
-						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrFile*>(object);
-						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrFile::name\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-						if (typedObject->name.value.Length() != 0) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrFile::name\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
+						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrLiteralClause*>(object);
+						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrLiteralClause::value\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+						if (typedObject->value.value.Length() != 0) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrLiteralClause::value\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
+						AssignToken(typedObject->value, token);
+					}
+					break;
+				case ParserGenFields::RefClause_field:
+					{
+						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrRefClause*>(object);
+						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrRefClause::field\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+						if (typedObject->field.value.Length() != 0) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrRefClause::field\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
+						AssignToken(typedObject->field, token);
+					}
+					break;
+				case ParserGenFields::RefClause_name:
+					{
+						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrRefClause*>(object);
+						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrRefClause::name\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+						if (typedObject->name.value.Length() != 0) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrRefClause::name\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
+						AssignToken(typedObject->name, token);
+					}
+					break;
+				case ParserGenFields::Rule_name:
+					{
+						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrRule*>(object);
+						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrRule::name\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+						if (typedObject->name.value.Length() != 0) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrRule::name\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
 						AssignToken(typedObject->name, token);
 					}
 					break;
@@ -130,14 +340,38 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 						AssignToken(typedObject->name, token);
 					}
 					break;
+				case ParserGenFields::AstFile_types:
+					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrAstFile::types\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 				case ParserGenFields::Class_props:
 					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrClass::props\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 				case ParserGenFields::ClassProp_propType:
 					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrClassProp::propType\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				case ParserGenFields::CreateClause_assignments:
+					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrCreateClause::assignments\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				case ParserGenFields::CreateClause_clause:
+					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrCreateClause::clause\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 				case ParserGenFields::Enum_items:
 					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrEnum::items\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::File_types:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrFile::types\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				case ParserGenFields::LoopClause_clause:
+					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrLoopClause::clause\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				case ParserGenFields::LoopClause_delimiter:
+					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrLoopClause::delimiter\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				case ParserGenFields::OptionalClause_clause:
+					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrOptionalClause::clause\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				case ParserGenFields::Rule_clauses:
+					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrRule::clauses\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				case ParserGenFields::SequenceClause_first:
+					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrSequenceClause::first\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				case ParserGenFields::SequenceClause_second:
+					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrSequenceClause::second\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				case ParserGenFields::SyntaxFile_rules:
+					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrSyntaxFile::rules\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				case ParserGenFields::UseClause_clause:
+					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrUseClause::clause\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				case ParserGenFields::_ReuseClause_assignments:
+					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::Glr_ReuseClause::assignments\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				case ParserGenFields::_ReuseClause_clause:
+					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::Glr_ReuseClause::clause\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 				default:
 					throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
 				}
@@ -155,22 +389,60 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 						typedObject->propType = (vl::glr::parsergen::GlrPropType)enumItem;
 					}
 					break;
+				case ParserGenFields::Assignment_field:
+					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrAssignment::field\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				case ParserGenFields::Assignment_value:
+					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrAssignment::value\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				case ParserGenFields::AstFile_types:
+					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrAstFile::types\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 				case ParserGenFields::Class_props:
 					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrClass::props\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				case ParserGenFields::ClassProp_baseClass:
+					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrClassProp::baseClass\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 				case ParserGenFields::ClassProp_name:
 					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrClassProp::name\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 				case ParserGenFields::ClassProp_propTypeName:
 					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrClassProp::propTypeName\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				case ParserGenFields::CreateClause_assignments:
+					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrCreateClause::assignments\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				case ParserGenFields::CreateClause_clause:
+					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrCreateClause::clause\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				case ParserGenFields::CreateClause_type:
+					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrCreateClause::type\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 				case ParserGenFields::Enum_items:
 					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrEnum::items\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 				case ParserGenFields::EnumItem_name:
 					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrEnumItem::name\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::File_name:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrFile::name\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::File_types:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrFile::types\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				case ParserGenFields::LiteralClause_value:
+					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrLiteralClause::value\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				case ParserGenFields::LoopClause_clause:
+					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrLoopClause::clause\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				case ParserGenFields::LoopClause_delimiter:
+					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrLoopClause::delimiter\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				case ParserGenFields::OptionalClause_clause:
+					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrOptionalClause::clause\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				case ParserGenFields::RefClause_field:
+					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrRefClause::field\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				case ParserGenFields::RefClause_name:
+					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrRefClause::name\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				case ParserGenFields::Rule_clauses:
+					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrRule::clauses\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				case ParserGenFields::Rule_name:
+					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrRule::name\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				case ParserGenFields::SequenceClause_first:
+					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrSequenceClause::first\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				case ParserGenFields::SequenceClause_second:
+					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrSequenceClause::second\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				case ParserGenFields::SyntaxFile_rules:
+					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrSyntaxFile::rules\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 				case ParserGenFields::Type_name:
 					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrType::name\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				case ParserGenFields::UseClause_clause:
+					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrUseClause::clause\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				case ParserGenFields::_ReuseClause_assignments:
+					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::Glr_ReuseClause::assignments\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				case ParserGenFields::_ReuseClause_clause:
+					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::Glr_ReuseClause::clause\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 				default:
 					throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
 				}
@@ -179,39 +451,89 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 			const wchar_t* ParserGenTypeName(ParserGenClasses type)
 			{
 				const wchar_t* results[] = {
+					L"Assignment",
+					L"AstFile",
 					L"Class",
 					L"ClassProp",
+					L"Clause",
+					L"CreateClause",
 					L"Enum",
 					L"EnumItem",
-					L"File",
+					L"LiteralClause",
+					L"LoopClause",
+					L"OptionalClause",
+					L"RefClause",
+					L"Rule",
+					L"SequenceClause",
+					L"SyntaxFile",
 					L"Type",
+					L"UseClause",
+					L"_ReuseClause",
 				};
 				vl::vint index = (vl::vint)type;
-				return 0 <= index && index < 6 ? results[index] : nullptr;
+				return 0 <= index && index < 18 ? results[index] : nullptr;
 			}
 
 			const wchar_t* ParserGenFieldName(ParserGenFields field)
 			{
 				switch(field)
 				{
+				case ParserGenFields::Assignment_field:
+					return L"Assignment::field";
+				case ParserGenFields::Assignment_value:
+					return L"Assignment::value";
+				case ParserGenFields::AstFile_types:
+					return L"AstFile::types";
 				case ParserGenFields::Class_props:
 					return L"Class::props";
+				case ParserGenFields::ClassProp_baseClass:
+					return L"ClassProp::baseClass";
 				case ParserGenFields::ClassProp_name:
 					return L"ClassProp::name";
 				case ParserGenFields::ClassProp_propType:
 					return L"ClassProp::propType";
 				case ParserGenFields::ClassProp_propTypeName:
 					return L"ClassProp::propTypeName";
+				case ParserGenFields::CreateClause_assignments:
+					return L"CreateClause::assignments";
+				case ParserGenFields::CreateClause_clause:
+					return L"CreateClause::clause";
+				case ParserGenFields::CreateClause_type:
+					return L"CreateClause::type";
 				case ParserGenFields::Enum_items:
 					return L"Enum::items";
 				case ParserGenFields::EnumItem_name:
 					return L"EnumItem::name";
-				case ParserGenFields::File_name:
-					return L"File::name";
-				case ParserGenFields::File_types:
-					return L"File::types";
+				case ParserGenFields::LiteralClause_value:
+					return L"LiteralClause::value";
+				case ParserGenFields::LoopClause_clause:
+					return L"LoopClause::clause";
+				case ParserGenFields::LoopClause_delimiter:
+					return L"LoopClause::delimiter";
+				case ParserGenFields::OptionalClause_clause:
+					return L"OptionalClause::clause";
+				case ParserGenFields::RefClause_field:
+					return L"RefClause::field";
+				case ParserGenFields::RefClause_name:
+					return L"RefClause::name";
+				case ParserGenFields::Rule_clauses:
+					return L"Rule::clauses";
+				case ParserGenFields::Rule_name:
+					return L"Rule::name";
+				case ParserGenFields::SequenceClause_first:
+					return L"SequenceClause::first";
+				case ParserGenFields::SequenceClause_second:
+					return L"SequenceClause::second";
+				case ParserGenFields::SyntaxFile_rules:
+					return L"SyntaxFile::rules";
 				case ParserGenFields::Type_name:
 					return L"Type::name";
+				case ParserGenFields::UseClause_clause:
+					return L"UseClause::clause";
+				case ParserGenFields::_ReuseClause_assignments:
+					return L"_ReuseClause::assignments";
+				case ParserGenFields::_ReuseClause_clause:
+					return L"_ReuseClause::clause";
 				default:
 					return nullptr;
 				}
@@ -221,12 +543,24 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 			{
 				switch((ParserGenClasses)type)
 				{
+				case ParserGenClasses::Assignment:
+				case ParserGenClasses::AstFile:
 				case ParserGenClasses::Class:
 				case ParserGenClasses::ClassProp:
+				case ParserGenClasses::Clause:
+				case ParserGenClasses::CreateClause:
 				case ParserGenClasses::Enum:
 				case ParserGenClasses::EnumItem:
-				case ParserGenClasses::File:
+				case ParserGenClasses::LiteralClause:
+				case ParserGenClasses::LoopClause:
+				case ParserGenClasses::OptionalClause:
+				case ParserGenClasses::RefClause:
+				case ParserGenClasses::Rule:
+				case ParserGenClasses::SequenceClause:
+				case ParserGenClasses::SyntaxFile:
 				case ParserGenClasses::Type:
+				case ParserGenClasses::UseClause:
+				case ParserGenClasses::_ReuseClause:
 					throw vl::glr::AstInsException(L"The type is not configured to allow ambiguity.", vl::glr::AstInsErrorType::UnsupportedAmbiguityType, type);
 				default:
 					throw vl::glr::AstInsException(L"The type id does not exist.", vl::glr::AstInsErrorType::UnknownType, type);

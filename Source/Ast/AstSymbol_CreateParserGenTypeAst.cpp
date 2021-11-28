@@ -41,10 +41,10 @@ CreateParserGenTypeAst
 
 				auto _class = _ast->CreateClass(L"Class");
 				_class->SetBaseClass(L"Type");
+				_classProp->CreateProp(L"baseClass")->SetPropType(AstPropType::Token);
 				_class->CreateProp(L"props")->SetPropType(AstPropType::Array, L"ClassProp");
 
-				auto _file = _ast->CreateClass(L"File");
-				_file->CreateProp(L"name")->SetPropType(AstPropType::Token);
+				auto _file = _ast->CreateClass(L"AstFile");
 				_file->CreateProp(L"types")->SetPropType(AstPropType::Array, L"Type");
 
 				return _ast;

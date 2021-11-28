@@ -25,20 +25,20 @@ namespace vl
 				protected:
 					virtual void Traverse(vl::glr::ParsingToken& token);
 					virtual void Traverse(vl::glr::ParsingAstBase* node);
+					virtual void Traverse(GlrAstFile* node);
 					virtual void Traverse(GlrClass* node);
 					virtual void Traverse(GlrClassProp* node);
 					virtual void Traverse(GlrEnum* node);
 					virtual void Traverse(GlrEnumItem* node);
-					virtual void Traverse(GlrFile* node);
 					virtual void Traverse(GlrType* node);
 
 				protected:
 					virtual void Finishing(vl::glr::ParsingAstBase* node);
+					virtual void Finishing(GlrAstFile* node);
 					virtual void Finishing(GlrClass* node);
 					virtual void Finishing(GlrClassProp* node);
 					virtual void Finishing(GlrEnum* node);
 					virtual void Finishing(GlrEnumItem* node);
-					virtual void Finishing(GlrFile* node);
 					virtual void Finishing(GlrType* node);
 
 				protected:
@@ -49,7 +49,7 @@ namespace vl
 					void InspectInto(GlrType* node);
 					void InspectInto(GlrEnumItem* node);
 					void InspectInto(GlrClassProp* node);
-					void InspectInto(GlrFile* node);
+					void InspectInto(GlrAstFile* node);
 				};
 			}
 		}

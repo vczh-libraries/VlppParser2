@@ -23,11 +23,11 @@ namespace vl
 					, protected virtual GlrType::IVisitor
 				{
 				protected:
+					virtual void PrintFields(GlrAstFile* node);
 					virtual void PrintFields(GlrClass* node);
 					virtual void PrintFields(GlrClassProp* node);
 					virtual void PrintFields(GlrEnum* node);
 					virtual void PrintFields(GlrEnumItem* node);
-					virtual void PrintFields(GlrFile* node);
 					virtual void PrintFields(GlrType* node);
 
 				protected:
@@ -40,7 +40,7 @@ namespace vl
 					void Print(GlrType* node);
 					void Print(GlrEnumItem* node);
 					void Print(GlrClassProp* node);
-					void Print(GlrFile* node);
+					void Print(GlrAstFile* node);
 				};
 			}
 		}

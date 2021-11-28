@@ -7,6 +7,7 @@ Licensed under https://github.com/vczh-libraries/License
 #ifndef VCZH_PARSER2_PARSERGEN_AST_ASSEMBLER
 #define VCZH_PARSER2_PARSERGEN_AST_ASSEMBLER
 
+#include "ParserGenRuleAst.h"
 #include "ParserGenTypeAst.h"
 
 namespace vl
@@ -17,25 +18,56 @@ namespace vl
 		{
 			enum class ParserGenClasses : vl::vint32_t
 			{
-				Class = 0,
-				ClassProp = 1,
-				Enum = 2,
-				EnumItem = 3,
-				File = 4,
-				Type = 5,
+				Assignment = 0,
+				AstFile = 1,
+				Class = 2,
+				ClassProp = 3,
+				Clause = 4,
+				CreateClause = 5,
+				Enum = 6,
+				EnumItem = 7,
+				LiteralClause = 8,
+				LoopClause = 9,
+				OptionalClause = 10,
+				RefClause = 11,
+				Rule = 12,
+				SequenceClause = 13,
+				SyntaxFile = 14,
+				Type = 15,
+				UseClause = 16,
+				_ReuseClause = 17,
 			};
 
 			enum class ParserGenFields : vl::vint32_t
 			{
+				Assignment_field = (static_cast<vl::vint32_t>(ParserGenClasses::Assignment) << 8) + 0,
+				Assignment_value = (static_cast<vl::vint32_t>(ParserGenClasses::Assignment) << 8) + 1,
+				AstFile_types = (static_cast<vl::vint32_t>(ParserGenClasses::AstFile) << 8) + 0,
 				Class_props = (static_cast<vl::vint32_t>(ParserGenClasses::Class) << 8) + 0,
-				ClassProp_name = (static_cast<vl::vint32_t>(ParserGenClasses::ClassProp) << 8) + 0,
-				ClassProp_propType = (static_cast<vl::vint32_t>(ParserGenClasses::ClassProp) << 8) + 1,
-				ClassProp_propTypeName = (static_cast<vl::vint32_t>(ParserGenClasses::ClassProp) << 8) + 2,
+				ClassProp_baseClass = (static_cast<vl::vint32_t>(ParserGenClasses::ClassProp) << 8) + 0,
+				ClassProp_name = (static_cast<vl::vint32_t>(ParserGenClasses::ClassProp) << 8) + 1,
+				ClassProp_propType = (static_cast<vl::vint32_t>(ParserGenClasses::ClassProp) << 8) + 2,
+				ClassProp_propTypeName = (static_cast<vl::vint32_t>(ParserGenClasses::ClassProp) << 8) + 3,
+				CreateClause_assignments = (static_cast<vl::vint32_t>(ParserGenClasses::CreateClause) << 8) + 0,
+				CreateClause_clause = (static_cast<vl::vint32_t>(ParserGenClasses::CreateClause) << 8) + 1,
+				CreateClause_type = (static_cast<vl::vint32_t>(ParserGenClasses::CreateClause) << 8) + 2,
 				Enum_items = (static_cast<vl::vint32_t>(ParserGenClasses::Enum) << 8) + 0,
 				EnumItem_name = (static_cast<vl::vint32_t>(ParserGenClasses::EnumItem) << 8) + 0,
-				File_name = (static_cast<vl::vint32_t>(ParserGenClasses::File) << 8) + 0,
-				File_types = (static_cast<vl::vint32_t>(ParserGenClasses::File) << 8) + 1,
+				LiteralClause_value = (static_cast<vl::vint32_t>(ParserGenClasses::LiteralClause) << 8) + 0,
+				LoopClause_clause = (static_cast<vl::vint32_t>(ParserGenClasses::LoopClause) << 8) + 0,
+				LoopClause_delimiter = (static_cast<vl::vint32_t>(ParserGenClasses::LoopClause) << 8) + 1,
+				OptionalClause_clause = (static_cast<vl::vint32_t>(ParserGenClasses::OptionalClause) << 8) + 0,
+				RefClause_field = (static_cast<vl::vint32_t>(ParserGenClasses::RefClause) << 8) + 0,
+				RefClause_name = (static_cast<vl::vint32_t>(ParserGenClasses::RefClause) << 8) + 1,
+				Rule_clauses = (static_cast<vl::vint32_t>(ParserGenClasses::Rule) << 8) + 0,
+				Rule_name = (static_cast<vl::vint32_t>(ParserGenClasses::Rule) << 8) + 1,
+				SequenceClause_first = (static_cast<vl::vint32_t>(ParserGenClasses::SequenceClause) << 8) + 0,
+				SequenceClause_second = (static_cast<vl::vint32_t>(ParserGenClasses::SequenceClause) << 8) + 1,
+				SyntaxFile_rules = (static_cast<vl::vint32_t>(ParserGenClasses::SyntaxFile) << 8) + 0,
 				Type_name = (static_cast<vl::vint32_t>(ParserGenClasses::Type) << 8) + 0,
+				UseClause_clause = (static_cast<vl::vint32_t>(ParserGenClasses::UseClause) << 8) + 0,
+				_ReuseClause_assignments = (static_cast<vl::vint32_t>(ParserGenClasses::_ReuseClause) << 8) + 0,
+				_ReuseClause_clause = (static_cast<vl::vint32_t>(ParserGenClasses::_ReuseClause) << 8) + 1,
 			};
 
 			extern const wchar_t* ParserGenTypeName(ParserGenClasses type);

@@ -14,6 +14,19 @@ namespace vl
 		{
 			namespace json_visitor
 			{
+				void TypeAstVisitor::PrintFields(GlrAstFile* node)
+				{
+					BeginField(L"types");
+					BeginArray();
+					for (auto&& listItem : node->types)
+					{
+						BeginArrayItem();
+						Print(listItem.Obj());
+						EndArrayItem();
+					}
+					EndArray();
+					EndField();
+				}
 				void TypeAstVisitor::PrintFields(GlrClass* node)
 				{
 					BeginField(L"props");
@@ -29,6 +42,9 @@ namespace vl
 				}
 				void TypeAstVisitor::PrintFields(GlrClassProp* node)
 				{
+					BeginField(L"baseClass");
+					WriteToken(node->baseClass);
+					EndField();
 					BeginField(L"name");
 					WriteToken(node->name);
 					EndField();
@@ -69,22 +85,6 @@ namespace vl
 				{
 					BeginField(L"name");
 					WriteToken(node->name);
-					EndField();
-				}
-				void TypeAstVisitor::PrintFields(GlrFile* node)
-				{
-					BeginField(L"name");
-					WriteToken(node->name);
-					EndField();
-					BeginField(L"types");
-					BeginArray();
-					for (auto&& listItem : node->types)
-					{
-						BeginArrayItem();
-						Print(listItem.Obj());
-						EndArrayItem();
-					}
-					EndArray();
 					EndField();
 				}
 				void TypeAstVisitor::PrintFields(GlrType* node)
@@ -163,7 +163,7 @@ namespace vl
 					EndObject();
 				}
 
-				void TypeAstVisitor::Print(GlrFile* node)
+				void TypeAstVisitor::Print(GlrAstFile* node)
 				{
 					if (!node)
 					{
@@ -171,8 +171,8 @@ namespace vl
 						return;
 					}
 					BeginObject();
-					WriteType(L"File", node);
-					PrintFields(static_cast<GlrFile*>(node));
+					WriteType(L"AstFile", node);
+					PrintFields(static_cast<GlrAstFile*>(node));
 					EndObject();
 				}
 

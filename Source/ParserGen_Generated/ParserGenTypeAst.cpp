@@ -43,7 +43,7 @@ namespace vl
 			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrPropType, glr::parsergen::GlrPropType)
 			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrClassProp, glr::parsergen::GlrClassProp)
 			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrClass, glr::parsergen::GlrClass)
-			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrFile, glr::parsergen::GlrFile)
+			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrAstFile, glr::parsergen::GlrAstFile)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 
@@ -84,6 +84,7 @@ namespace vl
 				CLASS_MEMBER_FIELD(name)
 				CLASS_MEMBER_FIELD(propType)
 				CLASS_MEMBER_FIELD(propTypeName)
+				CLASS_MEMBER_FIELD(baseClass)
 			END_CLASS_MEMBER(vl::glr::parsergen::GlrClassProp)
 
 			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrClass)
@@ -94,14 +95,13 @@ namespace vl
 				CLASS_MEMBER_FIELD(props)
 			END_CLASS_MEMBER(vl::glr::parsergen::GlrClass)
 
-			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrFile)
+			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrAstFile)
 				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrFile>(), NO_PARAMETER)
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrAstFile>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(name)
 				CLASS_MEMBER_FIELD(types)
-			END_CLASS_MEMBER(vl::glr::parsergen::GlrFile)
+			END_CLASS_MEMBER(vl::glr::parsergen::GlrAstFile)
 
 			BEGIN_INTERFACE_MEMBER(vl::glr::parsergen::GlrType::IVisitor)
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrType::IVisitor::*)(vl::glr::parsergen::GlrEnum* node))
@@ -123,7 +123,7 @@ namespace vl
 					ADD_TYPE_INFO(vl::glr::parsergen::GlrPropType)
 					ADD_TYPE_INFO(vl::glr::parsergen::GlrClassProp)
 					ADD_TYPE_INFO(vl::glr::parsergen::GlrClass)
-					ADD_TYPE_INFO(vl::glr::parsergen::GlrFile)
+					ADD_TYPE_INFO(vl::glr::parsergen::GlrAstFile)
 				}
 
 				void Unload(ITypeManager* manager)

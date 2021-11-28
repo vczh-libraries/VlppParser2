@@ -23,17 +23,17 @@ namespace vl
 					, protected virtual GlrType::IVisitor
 				{
 				protected:
+					void CopyFields(GlrAstFile* from, GlrAstFile* to);
 					void CopyFields(GlrClass* from, GlrClass* to);
 					void CopyFields(GlrClassProp* from, GlrClassProp* to);
 					void CopyFields(GlrEnum* from, GlrEnum* to);
 					void CopyFields(GlrEnumItem* from, GlrEnumItem* to);
-					void CopyFields(GlrFile* from, GlrFile* to);
 					void CopyFields(GlrType* from, GlrType* to);
 
 				protected:
 					virtual void Visit(GlrEnumItem* node);
 					virtual void Visit(GlrClassProp* node);
-					virtual void Visit(GlrFile* node);
+					virtual void Visit(GlrAstFile* node);
 
 					void Visit(GlrEnum* node) override;
 					void Visit(GlrClass* node) override;
@@ -42,7 +42,7 @@ namespace vl
 					virtual vl::Ptr<GlrType> CopyNode(GlrType* node);
 					virtual vl::Ptr<GlrEnumItem> CopyNode(GlrEnumItem* node);
 					virtual vl::Ptr<GlrClassProp> CopyNode(GlrClassProp* node);
-					virtual vl::Ptr<GlrFile> CopyNode(GlrFile* node);
+					virtual vl::Ptr<GlrAstFile> CopyNode(GlrAstFile* node);
 				};
 			}
 		}

@@ -56,9 +56,9 @@
    1. [x] Symbol table for AST.
    2. [x] Manually create a symbol table for the AST for `ParserGen`.
    3. [x] Symbol table -> C++ code.
-   4. [ ] Generate `ParserGen` AST C++ files in this unit test project.
+   4. [x] Generate `ParserGen` AST C++ files in this unit test project.
       1. [x] AST for `ParserGen::TypeAst`.
-      2. [ ] AST for `ParserGen::SyntaxAst`.
+      2. [x] AST for `ParserGen::RuleAst`.
       3. [x] Ast for `Calculator`
       4. [x] Visitors
       5. [x] Assembler

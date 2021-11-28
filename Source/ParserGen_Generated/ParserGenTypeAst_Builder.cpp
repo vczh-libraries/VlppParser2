@@ -16,6 +16,16 @@ namespace vl
 			{
 
 /***********************************************************************
+AstFileBuilder
+***********************************************************************/
+
+				AstFileBuilder& AstFileBuilder::types(const vl::Ptr<GlrType>& value)
+				{
+					node->types.Add(value);
+					return *this;
+				}
+
+/***********************************************************************
 ClassBuilder
 ***********************************************************************/
 
@@ -28,6 +38,12 @@ ClassBuilder
 /***********************************************************************
 ClassPropBuilder
 ***********************************************************************/
+
+				ClassPropBuilder& ClassPropBuilder::baseClass(const vl::WString& value)
+				{
+					node->baseClass.value = value;
+					return *this;
+				}
 
 				ClassPropBuilder& ClassPropBuilder::name(const vl::WString& value)
 				{
@@ -64,22 +80,6 @@ EnumItemBuilder
 				EnumItemBuilder& EnumItemBuilder::name(const vl::WString& value)
 				{
 					node->name.value = value;
-					return *this;
-				}
-
-/***********************************************************************
-FileBuilder
-***********************************************************************/
-
-				FileBuilder& FileBuilder::name(const vl::WString& value)
-				{
-					node->name.value = value;
-					return *this;
-				}
-
-				FileBuilder& FileBuilder::types(const vl::Ptr<GlrType>& value)
-				{
-					node->types.Add(value);
 					return *this;
 				}
 

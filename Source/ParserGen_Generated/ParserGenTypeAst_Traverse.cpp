@@ -16,19 +16,19 @@ namespace vl
 			{
 				void TypeAstVisitor::Traverse(vl::glr::ParsingToken& token) {}
 				void TypeAstVisitor::Traverse(vl::glr::ParsingAstBase* node) {}
+				void TypeAstVisitor::Traverse(GlrAstFile* node) {}
 				void TypeAstVisitor::Traverse(GlrClass* node) {}
 				void TypeAstVisitor::Traverse(GlrClassProp* node) {}
 				void TypeAstVisitor::Traverse(GlrEnum* node) {}
 				void TypeAstVisitor::Traverse(GlrEnumItem* node) {}
-				void TypeAstVisitor::Traverse(GlrFile* node) {}
 				void TypeAstVisitor::Traverse(GlrType* node) {}
 
 				void TypeAstVisitor::Finishing(vl::glr::ParsingAstBase* node) {}
+				void TypeAstVisitor::Finishing(GlrAstFile* node) {}
 				void TypeAstVisitor::Finishing(GlrClass* node) {}
 				void TypeAstVisitor::Finishing(GlrClassProp* node) {}
 				void TypeAstVisitor::Finishing(GlrEnum* node) {}
 				void TypeAstVisitor::Finishing(GlrEnumItem* node) {}
-				void TypeAstVisitor::Finishing(GlrFile* node) {}
 				void TypeAstVisitor::Finishing(GlrType* node) {}
 
 				void TypeAstVisitor::Visit(GlrEnum* node)
@@ -84,23 +84,23 @@ namespace vl
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
 					Traverse(static_cast<GlrClassProp*>(node));
+					Traverse(node->baseClass);
 					Traverse(node->name);
 					Traverse(node->propTypeName);
 					Finishing(static_cast<GlrClassProp*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void TypeAstVisitor::InspectInto(GlrFile* node)
+				void TypeAstVisitor::InspectInto(GlrAstFile* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<GlrFile*>(node));
-					Traverse(node->name);
+					Traverse(static_cast<GlrAstFile*>(node));
 					for (auto&& listItem : node->types)
 					{
 						InspectInto(listItem.Obj());
 					}
-					Finishing(static_cast<GlrFile*>(node));
+					Finishing(static_cast<GlrAstFile*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
