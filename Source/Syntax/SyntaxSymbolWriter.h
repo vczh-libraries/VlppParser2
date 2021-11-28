@@ -327,7 +327,25 @@ Builder
 					template<typename C1, typename C2>
 					StatePair Build(const LoopSep<C1, C2>& clause)
 					{
-						return Build(opt(clause.body + loop(clause.delimiter + clause.body)));
+						StatePair pair;
+						pair.begin = CreateState();
+						pair.end = CreateState();
+						startPoses.Add(pair.begin, clauseDisplayText.Length());
+
+						clauseDisplayText += L"{ ";
+						auto bodyPair = Build(clause.body);
+						clauseDisplayText += L" ; ";
+						auto delimiterPair = Build(clause.delimiter);
+						clauseDisplayText += L" }";
+
+						CreateEdge(pair.begin, bodyPair.begin);
+						CreateEdge(bodyPair.end, pair.end);
+						CreateEdge(pair.begin, pair.end);
+						CreateEdge(bodyPair.end, delimiterPair.begin);
+						CreateEdge(delimiterPair.end, bodyPair.begin);
+
+						endPoses.Add(pair.end, clauseDisplayText.Length());
+						return pair;
 					}
 
 					template<typename C>

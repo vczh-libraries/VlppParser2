@@ -17,13 +17,13 @@ namespace calculator
 		Arg = 0,
 		Exp0 = 3,
 		Exp1 = 12,
-		Exp2 = 25,
-		Exp3 = 34,
-		Exp4 = 43,
-		Exp5 = 58,
-		Exp = 67,
-		Import = 83,
-		Module = 87,
+		Exp2 = 24,
+		Exp3 = 33,
+		Exp4 = 42,
+		Exp5 = 57,
+		Exp = 66,
+		Import = 81,
+		Module = 85,
 	};
 
 	template<ModuleParserStates> struct ModuleParserStateTypes;

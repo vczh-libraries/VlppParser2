@@ -12,7 +12,7 @@ Exp1
   ::= !Exp0
   ::= "+" Exp1:operand as Unary {op = Positive}
   ::= "-" Exp1:operand as Unary {op = Negative}
-  ::= Exp1:func "(" {Exp:args : ","} ")" as Call
+  ::= Exp1:func "(" {Exp:args ; ","} ")" as Call
 
 Exp2
   ::= !Exp1
@@ -38,7 +38,7 @@ Exp5
 
 Exp
   ::= !Exp5
-  ::= "(" {Arg:args : ","} ")" "->" Exp:value as Func
+  ::= "(" {Arg:args ; ","} ")" "->" Exp:value as Func
   ::= "let" ID:name "<-" Exp:value "in" Exp:result as LetExpr
 
 Import
