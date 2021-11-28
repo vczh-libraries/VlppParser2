@@ -36,11 +36,6 @@ namespace vl
 		{
 #ifndef VCZH_DEBUG_NO_REFLECTION
 
-#define PARSING_TOKEN_FIELD(NAME)\
-			CLASS_MEMBER_EXTERNALMETHOD_TEMPLATE(get_##NAME, NO_PARAMETER, vl::WString(ClassType::*)(), [](ClassType* node) { return node->NAME.value; }, L"*", L"*")\
-			CLASS_MEMBER_EXTERNALMETHOD_TEMPLATE(set_##NAME, { L"value" }, void(ClassType::*)(const vl::WString&), [](ClassType* node, const vl::WString& value) { node->NAME.value = value; }, L"*", L"*")\
-			CLASS_MEMBER_PROPERTY_REFERENCETEMPLATE(NAME, get_##NAME, set_##NAME, L"$This->$Name.value")\
-
 			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrType, glr::parsergen::GlrType)
 			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrType::IVisitor, glr::parsergen::GlrType::IVisitor)
 			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrEnumItem, glr::parsergen::GlrEnumItem)
@@ -53,13 +48,17 @@ namespace vl
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 
 			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrType)
-				PARSING_TOKEN_FIELD(name)
+				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+
+				CLASS_MEMBER_FIELD(name)
 			END_CLASS_MEMBER(vl::glr::parsergen::GlrType)
 
 			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrEnumItem)
+				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+
 				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrEnumItem>(), NO_PARAMETER)
 
-				PARSING_TOKEN_FIELD(name)
+				CLASS_MEMBER_FIELD(name)
 			END_CLASS_MEMBER(vl::glr::parsergen::GlrEnumItem)
 
 			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrEnum)
@@ -78,11 +77,13 @@ namespace vl
 			END_ENUM_ITEM(vl::glr::parsergen::GlrPropType)
 
 			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrClassProp)
+				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+
 				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrClassProp>(), NO_PARAMETER)
 
-				PARSING_TOKEN_FIELD(name)
+				CLASS_MEMBER_FIELD(name)
 				CLASS_MEMBER_FIELD(propType)
-				PARSING_TOKEN_FIELD(propTypeName)
+				CLASS_MEMBER_FIELD(propTypeName)
 			END_CLASS_MEMBER(vl::glr::parsergen::GlrClassProp)
 
 			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrClass)
@@ -94,9 +95,11 @@ namespace vl
 			END_CLASS_MEMBER(vl::glr::parsergen::GlrClass)
 
 			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrFile)
+				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+
 				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrFile>(), NO_PARAMETER)
 
-				PARSING_TOKEN_FIELD(name)
+				CLASS_MEMBER_FIELD(name)
 				CLASS_MEMBER_FIELD(types)
 			END_CLASS_MEMBER(vl::glr::parsergen::GlrFile)
 
@@ -106,7 +109,6 @@ namespace vl
 			END_INTERFACE_MEMBER(vl::glr::parsergen::GlrType)
 
 #endif
-#undef PARSING_TOKEN_FIELD
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 			class GlrTypeAstTypeLoader : public vl::Object, public ITypeLoader
@@ -134,8 +136,7 @@ namespace vl
 			bool GlrTypeAstLoadTypes()
 			{
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
-				ITypeManager* manager = GetGlobalTypeManager();
-				if(manager)
+				if (auto manager = GetGlobalTypeManager())
 				{
 					Ptr<ITypeLoader> loader = new GlrTypeAstTypeLoader;
 					return manager->AddTypeLoader(loader);

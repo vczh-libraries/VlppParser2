@@ -171,7 +171,7 @@ AST
 			/// <summary>Type of the token, representing the index of a regular expression that creates this token in the regular expression list in the grammar file.</summary>
 			vint								tokenIndex = -1;
 			/// <summary>Content of the token.</summary>
-			WString								value;
+			WString								value; 
 		};
 
 /***********************************************************************
@@ -372,6 +372,24 @@ Compression
 ***********************************************************************/
 
 		extern void			DecompressSerializedData(const char** buffer, bool decompress, vint solidRows, vint rows, vint block, vint remain, stream::IStream& outputStream);
+	}
+
+/***********************************************************************
+Reflection
+***********************************************************************/
+
+	namespace reflection
+	{
+		namespace description
+		{
+#ifndef VCZH_DEBUG_NO_REFLECTION
+			DECL_TYPE_INFO(vl::glr::ParsingTextPos)
+			DECL_TYPE_INFO(vl::glr::ParsingTextRange)
+			DECL_TYPE_INFO(vl::glr::ParsingToken)
+			DECL_TYPE_INFO(vl::glr::ParsingAstBase)
+#endif
+			extern bool		LoadParsing2Types();
+		}
 	}
 }
 

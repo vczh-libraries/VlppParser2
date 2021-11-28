@@ -346,11 +346,6 @@ WriteTypeReflectionImplementation
 				writer.WriteLine(L"#ifndef VCZH_DEBUG_NO_REFLECTION");
 
 				writer.WriteLine(L"");
-				writer.WriteLine(L"#define PARSING_TOKEN_FIELD(NAME)\\");
-				writer.WriteLine(L"\t\t\tCLASS_MEMBER_EXTERNALMETHOD_TEMPLATE(get_##NAME, NO_PARAMETER, vl::WString(ClassType::*)(), [](ClassType* node) { return node->NAME.value; }, L\"*\", L\"*\")\\");
-				writer.WriteLine(L"\t\t\tCLASS_MEMBER_EXTERNALMETHOD_TEMPLATE(set_##NAME, { L\"value\" }, void(ClassType::*)(const vl::WString&), [](ClassType* node, const vl::WString& value) { node->NAME.value = value; }, L\"*\", L\"*\")\\");
-				writer.WriteLine(L"\t\t\tCLASS_MEMBER_PROPERTY_REFERENCETEMPLATE(NAME, get_##NAME, set_##NAME, L\"$This->$Name.value\")\\");
-				writer.WriteLine(L"");
 
 				for (auto&& name : file->SymbolOrder())
 				{
@@ -424,8 +419,12 @@ WriteTypeReflectionImplementation
 							writer.WriteString(L"\tCLASS_MEMBER_BASE(");
 							PrintCppType(nullptr, classSymbol->baseClass, writer);
 							writer.WriteLine(L")");
-							writer.WriteLine(L"");
 						}
+						else
+						{
+							writer.WriteLine(prefix + L"\tCLASS_MEMBER_BASE(vl::glr::ParsingAstBase)");
+						}
+						writer.WriteLine(L"");
 
 						if (classSymbol->derivedClasses.Count() == 0)
 						{
@@ -439,20 +438,10 @@ WriteTypeReflectionImplementation
 						for (auto propName : classSymbol->PropOrder())
 						{
 							auto propSymbol = classSymbol->Props()[propName];
-							if (propSymbol->propType == AstPropType::Token)
-							{
-								writer.WriteString(prefix);
-								writer.WriteString(L"\tPARSING_TOKEN_FIELD(");
-								writer.WriteString(propSymbol->Name());
-								writer.WriteLine(L")");
-							}
-							else
-							{
-								writer.WriteString(prefix);
-								writer.WriteString(L"\tCLASS_MEMBER_FIELD(");
-								writer.WriteString(propSymbol->Name());
-								writer.WriteLine(L")");
-							}
+							writer.WriteString(prefix);
+							writer.WriteString(L"\tCLASS_MEMBER_FIELD(");
+							writer.WriteString(propSymbol->Name());
+							writer.WriteLine(L")");
 						}
 
 						writer.WriteString(prefix);
@@ -494,7 +483,6 @@ WriteTypeReflectionImplementation
 
 				writer.WriteLine(L"");
 				writer.WriteLine(L"#endif");
-				writer.WriteLine(L"#undef PARSING_TOKEN_FIELD");
 
 				writer.WriteLine(L"");
 				writer.WriteLine(L"#ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA");
@@ -561,9 +549,7 @@ WriteTypeReflectionImplementation
 				writer.WriteLine(L"#ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA");
 
 				writer.WriteString(prefix);
-				writer.WriteLine(L"\tITypeManager* manager = GetGlobalTypeManager();");
-				writer.WriteString(prefix);
-				writer.WriteLine(L"\tif(manager)");
+				writer.WriteLine(L"\tif (auto manager = GetGlobalTypeManager())");
 				writer.WriteString(prefix);
 				writer.WriteLine(L"\t{");
 				writer.WriteString(prefix);

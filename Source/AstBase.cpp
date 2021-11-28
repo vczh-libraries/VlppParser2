@@ -529,4 +529,73 @@ Compression
 			}
 		}
 	}
+
+/***********************************************************************
+Reflection
+***********************************************************************/
+
+	namespace reflection
+	{
+		namespace description
+		{
+#ifndef VCZH_DEBUG_NO_REFLECTION
+			IMPL_TYPE_INFO_RENAME(vl::glr::ParsingTextPos, system::ParsingTextPos)
+			IMPL_TYPE_INFO_RENAME(vl::glr::ParsingTextRange, system::ParsingTextRange)
+			IMPL_TYPE_INFO_RENAME(vl::glr::ParsingToken, system::ParsingToken)
+			IMPL_TYPE_INFO_RENAME(vl::glr::ParsingAstBase, system::ParsingAstBase)
+
+#ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
+
+			BEGIN_STRUCT_MEMBER(vl::glr::ParsingTextPos)
+				STRUCT_MEMBER(index)
+				STRUCT_MEMBER(row)
+				STRUCT_MEMBER(column)
+			END_STRUCT_MEMBER(vl::glr::ParsingTextPos)
+
+			BEGIN_STRUCT_MEMBER(vl::glr::ParsingTextRange)
+				STRUCT_MEMBER(start)
+				STRUCT_MEMBER(end)
+				STRUCT_MEMBER(codeIndex)
+			END_STRUCT_MEMBER(vl::glr::ParsingTextRange)
+
+			BEGIN_STRUCT_MEMBER(vl::glr::ParsingToken)
+				STRUCT_MEMBER(codeRange)
+				STRUCT_MEMBER(tokenIndex)
+				STRUCT_MEMBER(value)
+			END_STRUCT_MEMBER(vl::glr::ParsingToken)
+
+			BEGIN_CLASS_MEMBER(vl::glr::ParsingAstBase)
+				CLASS_MEMBER_FIELD(codeRange)
+			END_CLASS_MEMBER(vl::glr::ParsingAstBase)
+
+			class Parsing2TypeLoader : public vl::Object, public ITypeLoader
+			{
+			public:
+				void Load(ITypeManager* manager)
+				{
+					ADD_TYPE_INFO(vl::glr::ParsingTextPos)
+					ADD_TYPE_INFO(vl::glr::ParsingTextRange)
+					ADD_TYPE_INFO(vl::glr::ParsingToken)
+					ADD_TYPE_INFO(vl::glr::ParsingAstBase)
+				}
+
+				void Unload(ITypeManager* manager)
+				{
+				}
+			};
+#endif
+#endif
+			bool LoadParsing2Types()
+			{
+#ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
+				if (auto manager = GetGlobalTypeManager())
+				{
+					Ptr<ITypeLoader> loader = new Parsing2TypeLoader;
+					return manager->AddTypeLoader(loader);
+				}
+#endif
+				return false;
+			}
+		}
+	}
 }

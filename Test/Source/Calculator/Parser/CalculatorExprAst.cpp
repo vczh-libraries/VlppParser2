@@ -70,11 +70,6 @@ namespace vl
 		{
 #ifndef VCZH_DEBUG_NO_REFLECTION
 
-#define PARSING_TOKEN_FIELD(NAME)\
-			CLASS_MEMBER_EXTERNALMETHOD_TEMPLATE(get_##NAME, NO_PARAMETER, vl::WString(ClassType::*)(), [](ClassType* node) { return node->NAME.value; }, L"*", L"*")\
-			CLASS_MEMBER_EXTERNALMETHOD_TEMPLATE(set_##NAME, { L"value" }, void(ClassType::*)(const vl::WString&), [](ClassType* node, const vl::WString& value) { node->NAME.value = value; }, L"*", L"*")\
-			CLASS_MEMBER_PROPERTY_REFERENCETEMPLATE(NAME, get_##NAME, set_##NAME, L"$This->$Name.value")\
-
 			IMPL_TYPE_INFO_RENAME(calculator::Expr, calculator::Expr)
 			IMPL_TYPE_INFO_RENAME(calculator::Expr::IVisitor, calculator::Expr::IVisitor)
 			IMPL_TYPE_INFO_RENAME(calculator::NumExpr, calculator::NumExpr)
@@ -97,6 +92,8 @@ namespace vl
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 
 			BEGIN_CLASS_MEMBER(calculator::Expr)
+				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+
 			END_CLASS_MEMBER(calculator::Expr)
 
 			BEGIN_CLASS_MEMBER(calculator::NumExpr)
@@ -104,7 +101,7 @@ namespace vl
 
 				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<calculator::NumExpr>(), NO_PARAMETER)
 
-				PARSING_TOKEN_FIELD(value)
+				CLASS_MEMBER_FIELD(value)
 			END_CLASS_MEMBER(calculator::NumExpr)
 
 			BEGIN_CLASS_MEMBER(calculator::Ref)
@@ -112,7 +109,7 @@ namespace vl
 
 				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<calculator::Ref>(), NO_PARAMETER)
 
-				PARSING_TOKEN_FIELD(name)
+				CLASS_MEMBER_FIELD(name)
 			END_CLASS_MEMBER(calculator::Ref)
 
 			BEGIN_CLASS_MEMBER(calculator::True)
@@ -130,9 +127,11 @@ namespace vl
 			END_CLASS_MEMBER(calculator::False)
 
 			BEGIN_CLASS_MEMBER(calculator::Arg)
+				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+
 				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<calculator::Arg>(), NO_PARAMETER)
 
-				PARSING_TOKEN_FIELD(name)
+				CLASS_MEMBER_FIELD(name)
 			END_CLASS_MEMBER(calculator::Arg)
 
 			BEGIN_CLASS_MEMBER(calculator::Func)
@@ -164,7 +163,7 @@ namespace vl
 
 				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<calculator::LetExpr>(), NO_PARAMETER)
 
-				PARSING_TOKEN_FIELD(name)
+				CLASS_MEMBER_FIELD(name)
 				CLASS_MEMBER_FIELD(value)
 				CLASS_MEMBER_FIELD(result)
 			END_CLASS_MEMBER(calculator::LetExpr)
@@ -209,12 +208,16 @@ namespace vl
 			END_CLASS_MEMBER(calculator::Binary)
 
 			BEGIN_CLASS_MEMBER(calculator::Import)
+				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+
 				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<calculator::Import>(), NO_PARAMETER)
 
-				PARSING_TOKEN_FIELD(name)
+				CLASS_MEMBER_FIELD(name)
 			END_CLASS_MEMBER(calculator::Import)
 
 			BEGIN_CLASS_MEMBER(calculator::Module)
+				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+
 				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<calculator::Module>(), NO_PARAMETER)
 
 				CLASS_MEMBER_FIELD(imports)
@@ -238,7 +241,6 @@ namespace vl
 			END_INTERFACE_MEMBER(calculator::Expandable)
 
 #endif
-#undef PARSING_TOKEN_FIELD
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 			class ExprAstTypeLoader : public vl::Object, public ITypeLoader
@@ -276,8 +278,7 @@ namespace vl
 			bool ExprAstLoadTypes()
 			{
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
-				ITypeManager* manager = GetGlobalTypeManager();
-				if(manager)
+				if (auto manager = GetGlobalTypeManager())
 				{
 					Ptr<ITypeLoader> loader = new ExprAstTypeLoader;
 					return manager->AddTypeLoader(loader);
