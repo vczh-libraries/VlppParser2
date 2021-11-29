@@ -43,6 +43,7 @@ namespace vl
 				protected:
 					void Visit(GlrRefSyntax* node) override;
 					void Visit(GlrLiteralSyntax* node) override;
+					void Visit(GlrUseSyntax* node) override;
 					void Visit(GlrLoopSyntax* node) override;
 					void Visit(GlrOptionalSyntax* node) override;
 					void Visit(GlrSequenceSyntax* node) override;
@@ -57,7 +58,6 @@ namespace vl
 
 					void Print(GlrSyntax* node);
 					void Print(GlrClause* node);
-					void Print(GlrUseSyntax* node);
 					void Print(GlrAssignment* node);
 					void Print(GlrRule* node);
 					void Print(GlrSyntaxFile* node);

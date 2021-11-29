@@ -40,6 +40,7 @@ namespace vl
 				public:
 					virtual void Visit(GlrRefSyntax* node) = 0;
 					virtual void Visit(GlrLiteralSyntax* node) = 0;
+					virtual void Visit(GlrUseSyntax* node) = 0;
 					virtual void Visit(GlrLoopSyntax* node) = 0;
 					virtual void Visit(GlrOptionalSyntax* node) = 0;
 					virtual void Visit(GlrSequenceSyntax* node) = 0;
@@ -67,10 +68,12 @@ namespace vl
 				void Accept(GlrSyntax::IVisitor* visitor) override;
 			};
 
-			class GlrUseSyntax : public vl::glr::ParsingAstBase, vl::reflection::Description<GlrUseSyntax>
+			class GlrUseSyntax : public GlrSyntax, vl::reflection::Description<GlrUseSyntax>
 			{
 			public:
 				vl::glr::ParsingToken name;
+
+				void Accept(GlrSyntax::IVisitor* visitor) override;
 			};
 
 			class GlrLoopSyntax : public GlrSyntax, vl::reflection::Description<GlrLoopSyntax>
@@ -208,6 +211,11 @@ namespace vl
 				}
 
 				void Visit(vl::glr::parsergen::GlrLiteralSyntax* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+				void Visit(vl::glr::parsergen::GlrUseSyntax* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}

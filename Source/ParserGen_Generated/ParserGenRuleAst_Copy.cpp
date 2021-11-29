@@ -109,6 +109,7 @@ namespace vl
 
 				void RuleAstVisitor::CopyFields(GlrUseSyntax* from, GlrUseSyntax* to)
 				{
+					CopyFields(static_cast<GlrSyntax*>(from), static_cast<GlrSyntax*>(to));
 					to->name = from->name;
 				}
 
@@ -120,13 +121,6 @@ namespace vl
 						to->assignments.Add(CopyNode(listItem.Obj()));
 					}
 					to->syntax = CopyNode(from->syntax.Obj());
-				}
-
-				void RuleAstVisitor::Visit(GlrUseSyntax* node)
-				{
-					auto newNode = vl::MakePtr<GlrUseSyntax>();
-					CopyFields(node, newNode.Obj());
-					this->result = newNode;
 				}
 
 				void RuleAstVisitor::Visit(GlrAssignment* node)
@@ -160,6 +154,13 @@ namespace vl
 				void RuleAstVisitor::Visit(GlrLiteralSyntax* node)
 				{
 					auto newNode = vl::MakePtr<GlrLiteralSyntax>();
+					CopyFields(node, newNode.Obj());
+					this->result = newNode;
+				}
+
+				void RuleAstVisitor::Visit(GlrUseSyntax* node)
+				{
+					auto newNode = vl::MakePtr<GlrUseSyntax>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
@@ -225,13 +226,6 @@ namespace vl
 					if (!node) return nullptr;
 					node->Accept(static_cast<GlrClause::IVisitor*>(this));
 					return this->result.Cast<GlrClause>();
-				}
-
-				vl::Ptr<GlrUseSyntax> RuleAstVisitor::CopyNode(GlrUseSyntax* node)
-				{
-					if (!node) return nullptr;
-					Visit(node);
-					return this->result.Cast<GlrUseSyntax>();
 				}
 
 				vl::Ptr<GlrAssignment> RuleAstVisitor::CopyNode(GlrAssignment* node)

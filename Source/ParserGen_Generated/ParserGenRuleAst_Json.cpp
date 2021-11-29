@@ -195,6 +195,20 @@ namespace vl
 					EndObject();
 				}
 
+				void RuleAstVisitor::Visit(GlrUseSyntax* node)
+				{
+					if (!node)
+					{
+						WriteNull();
+						return;
+					}
+					BeginObject();
+					WriteType(L"UseSyntax", node);
+					PrintFields(static_cast<GlrSyntax*>(node));
+					PrintFields(static_cast<GlrUseSyntax*>(node));
+					EndObject();
+				}
+
 				void RuleAstVisitor::Visit(GlrLoopSyntax* node)
 				{
 					if (!node)
@@ -316,19 +330,6 @@ namespace vl
 						return;
 					}
 					node->Accept(static_cast<GlrClause::IVisitor*>(this));
-				}
-
-				void RuleAstVisitor::Print(GlrUseSyntax* node)
-				{
-					if (!node)
-					{
-						WriteNull();
-						return;
-					}
-					BeginObject();
-					WriteType(L"UseSyntax", node);
-					PrintFields(static_cast<GlrUseSyntax*>(node));
-					EndObject();
 				}
 
 				void RuleAstVisitor::Print(GlrAssignment* node)

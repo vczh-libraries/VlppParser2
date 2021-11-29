@@ -31,6 +31,7 @@ CreateParserGenRuleAst
 				_LiteralSyntax->CreateProp(L"value")->SetPropType(AstPropType::Token);
 
 				auto _UseSyntax = _ast->CreateClass(L"UseSyntax");
+				_UseSyntax->SetBaseClass(L"Syntax");
 				_UseSyntax->CreateProp(L"name")->SetPropType(AstPropType::Token);
 
 				auto _LoopSyntax = _ast->CreateClass(L"LoopSyntax");
