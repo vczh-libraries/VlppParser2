@@ -16,37 +16,42 @@ namespace vl
 Visitor Pattern Implementation
 ***********************************************************************/
 
-			void GlrRefClause::Accept(GlrClause::IVisitor* visitor)
+			void GlrRefSyntax::Accept(GlrSyntax::IVisitor* visitor)
 			{
 				visitor->Visit(this);
 			}
 
-			void GlrLiteralClause::Accept(GlrClause::IVisitor* visitor)
+			void GlrLiteralSyntax::Accept(GlrSyntax::IVisitor* visitor)
 			{
 				visitor->Visit(this);
 			}
 
-			void GlrUseClause::Accept(GlrClause::IVisitor* visitor)
+			void GlrUseSyntax::Accept(GlrSyntax::IVisitor* visitor)
 			{
 				visitor->Visit(this);
 			}
 
-			void GlrLoopClause::Accept(GlrClause::IVisitor* visitor)
+			void GlrLoopSyntax::Accept(GlrSyntax::IVisitor* visitor)
 			{
 				visitor->Visit(this);
 			}
 
-			void GlrOptionalClause::Accept(GlrClause::IVisitor* visitor)
+			void GlrOptionalSyntax::Accept(GlrSyntax::IVisitor* visitor)
 			{
 				visitor->Visit(this);
 			}
 
-			void GlrSequenceClause::Accept(GlrClause::IVisitor* visitor)
+			void GlrSequenceSyntax::Accept(GlrSyntax::IVisitor* visitor)
 			{
 				visitor->Visit(this);
 			}
 
 			void GlrCreateClause::Accept(GlrClause::IVisitor* visitor)
+			{
+				visitor->Visit(this);
+			}
+
+			void GlrPartialClause::Accept(GlrClause::IVisitor* visitor)
 			{
 				visitor->Visit(this);
 			}
@@ -66,77 +71,85 @@ namespace vl
 		{
 #ifndef VCZH_DEBUG_NO_REFLECTION
 
+			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrSyntax, glr::parsergen::GlrSyntax)
+			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrSyntax::IVisitor, glr::parsergen::GlrSyntax::IVisitor)
+			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrRefSyntax, glr::parsergen::GlrRefSyntax)
+			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrLiteralSyntax, glr::parsergen::GlrLiteralSyntax)
+			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrUseSyntax, glr::parsergen::GlrUseSyntax)
+			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrLoopSyntax, glr::parsergen::GlrLoopSyntax)
+			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrOptionalSyntax, glr::parsergen::GlrOptionalSyntax)
+			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrSequenceSyntax, glr::parsergen::GlrSequenceSyntax)
 			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrClause, glr::parsergen::GlrClause)
 			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrClause::IVisitor, glr::parsergen::GlrClause::IVisitor)
-			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrRefClause, glr::parsergen::GlrRefClause)
-			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrLiteralClause, glr::parsergen::GlrLiteralClause)
-			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrUseClause, glr::parsergen::GlrUseClause)
-			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrLoopClause, glr::parsergen::GlrLoopClause)
-			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrOptionalClause, glr::parsergen::GlrOptionalClause)
-			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrSequenceClause, glr::parsergen::GlrSequenceClause)
 			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrAssignment, glr::parsergen::GlrAssignment)
 			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrCreateClause, glr::parsergen::GlrCreateClause)
+			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrPartialClause, glr::parsergen::GlrPartialClause)
 			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::Glr_ReuseClause, glr::parsergen::Glr_ReuseClause)
 			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrRule, glr::parsergen::GlrRule)
 			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrSyntaxFile, glr::parsergen::GlrSyntaxFile)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 
+			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrSyntax)
+				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+
+			END_CLASS_MEMBER(vl::glr::parsergen::GlrSyntax)
+
+			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrRefSyntax)
+				CLASS_MEMBER_BASE(vl::glr::parsergen::GlrSyntax)
+
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrRefSyntax>(), NO_PARAMETER)
+
+				CLASS_MEMBER_FIELD(name)
+				CLASS_MEMBER_FIELD(field)
+			END_CLASS_MEMBER(vl::glr::parsergen::GlrRefSyntax)
+
+			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrLiteralSyntax)
+				CLASS_MEMBER_BASE(vl::glr::parsergen::GlrSyntax)
+
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrLiteralSyntax>(), NO_PARAMETER)
+
+				CLASS_MEMBER_FIELD(value)
+			END_CLASS_MEMBER(vl::glr::parsergen::GlrLiteralSyntax)
+
+			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrUseSyntax)
+				CLASS_MEMBER_BASE(vl::glr::parsergen::GlrSyntax)
+
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrUseSyntax>(), NO_PARAMETER)
+
+				CLASS_MEMBER_FIELD(Syntax)
+			END_CLASS_MEMBER(vl::glr::parsergen::GlrUseSyntax)
+
+			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrLoopSyntax)
+				CLASS_MEMBER_BASE(vl::glr::parsergen::GlrSyntax)
+
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrLoopSyntax>(), NO_PARAMETER)
+
+				CLASS_MEMBER_FIELD(Syntax)
+				CLASS_MEMBER_FIELD(delimiter)
+			END_CLASS_MEMBER(vl::glr::parsergen::GlrLoopSyntax)
+
+			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrOptionalSyntax)
+				CLASS_MEMBER_BASE(vl::glr::parsergen::GlrSyntax)
+
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrOptionalSyntax>(), NO_PARAMETER)
+
+				CLASS_MEMBER_FIELD(Syntax)
+			END_CLASS_MEMBER(vl::glr::parsergen::GlrOptionalSyntax)
+
+			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrSequenceSyntax)
+				CLASS_MEMBER_BASE(vl::glr::parsergen::GlrSyntax)
+
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrSequenceSyntax>(), NO_PARAMETER)
+
+				CLASS_MEMBER_FIELD(first)
+				CLASS_MEMBER_FIELD(second)
+			END_CLASS_MEMBER(vl::glr::parsergen::GlrSequenceSyntax)
+
 			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrClause)
 				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
 			END_CLASS_MEMBER(vl::glr::parsergen::GlrClause)
-
-			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrRefClause)
-				CLASS_MEMBER_BASE(vl::glr::parsergen::GlrClause)
-
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrRefClause>(), NO_PARAMETER)
-
-				CLASS_MEMBER_FIELD(name)
-				CLASS_MEMBER_FIELD(field)
-			END_CLASS_MEMBER(vl::glr::parsergen::GlrRefClause)
-
-			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrLiteralClause)
-				CLASS_MEMBER_BASE(vl::glr::parsergen::GlrClause)
-
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrLiteralClause>(), NO_PARAMETER)
-
-				CLASS_MEMBER_FIELD(value)
-			END_CLASS_MEMBER(vl::glr::parsergen::GlrLiteralClause)
-
-			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrUseClause)
-				CLASS_MEMBER_BASE(vl::glr::parsergen::GlrClause)
-
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrUseClause>(), NO_PARAMETER)
-
-				CLASS_MEMBER_FIELD(clause)
-			END_CLASS_MEMBER(vl::glr::parsergen::GlrUseClause)
-
-			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrLoopClause)
-				CLASS_MEMBER_BASE(vl::glr::parsergen::GlrClause)
-
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrLoopClause>(), NO_PARAMETER)
-
-				CLASS_MEMBER_FIELD(clause)
-				CLASS_MEMBER_FIELD(delimiter)
-			END_CLASS_MEMBER(vl::glr::parsergen::GlrLoopClause)
-
-			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrOptionalClause)
-				CLASS_MEMBER_BASE(vl::glr::parsergen::GlrClause)
-
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrOptionalClause>(), NO_PARAMETER)
-
-				CLASS_MEMBER_FIELD(clause)
-			END_CLASS_MEMBER(vl::glr::parsergen::GlrOptionalClause)
-
-			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrSequenceClause)
-				CLASS_MEMBER_BASE(vl::glr::parsergen::GlrClause)
-
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrSequenceClause>(), NO_PARAMETER)
-
-				CLASS_MEMBER_FIELD(first)
-				CLASS_MEMBER_FIELD(second)
-			END_CLASS_MEMBER(vl::glr::parsergen::GlrSequenceClause)
 
 			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrAssignment)
 				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
@@ -153,16 +166,26 @@ namespace vl
 				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrCreateClause>(), NO_PARAMETER)
 
 				CLASS_MEMBER_FIELD(type)
-				CLASS_MEMBER_FIELD(clause)
+				CLASS_MEMBER_FIELD(syntax)
 				CLASS_MEMBER_FIELD(assignments)
 			END_CLASS_MEMBER(vl::glr::parsergen::GlrCreateClause)
+
+			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrPartialClause)
+				CLASS_MEMBER_BASE(vl::glr::parsergen::GlrClause)
+
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrPartialClause>(), NO_PARAMETER)
+
+				CLASS_MEMBER_FIELD(type)
+				CLASS_MEMBER_FIELD(syntax)
+				CLASS_MEMBER_FIELD(assignments)
+			END_CLASS_MEMBER(vl::glr::parsergen::GlrPartialClause)
 
 			BEGIN_CLASS_MEMBER(vl::glr::parsergen::Glr_ReuseClause)
 				CLASS_MEMBER_BASE(vl::glr::parsergen::GlrClause)
 
 				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::Glr_ReuseClause>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(clause)
+				CLASS_MEMBER_FIELD(syntax)
 				CLASS_MEMBER_FIELD(assignments)
 			END_CLASS_MEMBER(vl::glr::parsergen::Glr_ReuseClause)
 
@@ -183,14 +206,18 @@ namespace vl
 				CLASS_MEMBER_FIELD(rules)
 			END_CLASS_MEMBER(vl::glr::parsergen::GlrSyntaxFile)
 
+			BEGIN_INTERFACE_MEMBER(vl::glr::parsergen::GlrSyntax::IVisitor)
+				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrSyntax::IVisitor::*)(vl::glr::parsergen::GlrRefSyntax* node))
+				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrSyntax::IVisitor::*)(vl::glr::parsergen::GlrLiteralSyntax* node))
+				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrSyntax::IVisitor::*)(vl::glr::parsergen::GlrUseSyntax* node))
+				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrSyntax::IVisitor::*)(vl::glr::parsergen::GlrLoopSyntax* node))
+				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrSyntax::IVisitor::*)(vl::glr::parsergen::GlrOptionalSyntax* node))
+				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrSyntax::IVisitor::*)(vl::glr::parsergen::GlrSequenceSyntax* node))
+			END_INTERFACE_MEMBER(vl::glr::parsergen::GlrSyntax)
+
 			BEGIN_INTERFACE_MEMBER(vl::glr::parsergen::GlrClause::IVisitor)
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrClause::IVisitor::*)(vl::glr::parsergen::GlrRefClause* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrClause::IVisitor::*)(vl::glr::parsergen::GlrLiteralClause* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrClause::IVisitor::*)(vl::glr::parsergen::GlrUseClause* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrClause::IVisitor::*)(vl::glr::parsergen::GlrLoopClause* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrClause::IVisitor::*)(vl::glr::parsergen::GlrOptionalClause* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrClause::IVisitor::*)(vl::glr::parsergen::GlrSequenceClause* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrClause::IVisitor::*)(vl::glr::parsergen::GlrCreateClause* node))
+				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrClause::IVisitor::*)(vl::glr::parsergen::GlrPartialClause* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrClause::IVisitor::*)(vl::glr::parsergen::Glr_ReuseClause* node))
 			END_INTERFACE_MEMBER(vl::glr::parsergen::GlrClause)
 
@@ -202,16 +229,19 @@ namespace vl
 			public:
 				void Load(ITypeManager* manager)
 				{
+					ADD_TYPE_INFO(vl::glr::parsergen::GlrSyntax)
+					ADD_TYPE_INFO(vl::glr::parsergen::GlrSyntax::IVisitor)
+					ADD_TYPE_INFO(vl::glr::parsergen::GlrRefSyntax)
+					ADD_TYPE_INFO(vl::glr::parsergen::GlrLiteralSyntax)
+					ADD_TYPE_INFO(vl::glr::parsergen::GlrUseSyntax)
+					ADD_TYPE_INFO(vl::glr::parsergen::GlrLoopSyntax)
+					ADD_TYPE_INFO(vl::glr::parsergen::GlrOptionalSyntax)
+					ADD_TYPE_INFO(vl::glr::parsergen::GlrSequenceSyntax)
 					ADD_TYPE_INFO(vl::glr::parsergen::GlrClause)
 					ADD_TYPE_INFO(vl::glr::parsergen::GlrClause::IVisitor)
-					ADD_TYPE_INFO(vl::glr::parsergen::GlrRefClause)
-					ADD_TYPE_INFO(vl::glr::parsergen::GlrLiteralClause)
-					ADD_TYPE_INFO(vl::glr::parsergen::GlrUseClause)
-					ADD_TYPE_INFO(vl::glr::parsergen::GlrLoopClause)
-					ADD_TYPE_INFO(vl::glr::parsergen::GlrOptionalClause)
-					ADD_TYPE_INFO(vl::glr::parsergen::GlrSequenceClause)
 					ADD_TYPE_INFO(vl::glr::parsergen::GlrAssignment)
 					ADD_TYPE_INFO(vl::glr::parsergen::GlrCreateClause)
+					ADD_TYPE_INFO(vl::glr::parsergen::GlrPartialClause)
 					ADD_TYPE_INFO(vl::glr::parsergen::Glr_ReuseClause)
 					ADD_TYPE_INFO(vl::glr::parsergen::GlrRule)
 					ADD_TYPE_INFO(vl::glr::parsergen::GlrSyntaxFile)

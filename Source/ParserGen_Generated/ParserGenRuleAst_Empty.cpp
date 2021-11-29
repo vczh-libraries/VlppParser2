@@ -16,36 +16,46 @@ namespace vl
 			{
 
 /***********************************************************************
+SyntaxVisitor
+***********************************************************************/
+
+				// Visitor Members -----------------------------------
+
+				void SyntaxVisitor::Visit(GlrRefSyntax* node)
+				{
+				}
+
+				void SyntaxVisitor::Visit(GlrLiteralSyntax* node)
+				{
+				}
+
+				void SyntaxVisitor::Visit(GlrUseSyntax* node)
+				{
+				}
+
+				void SyntaxVisitor::Visit(GlrLoopSyntax* node)
+				{
+				}
+
+				void SyntaxVisitor::Visit(GlrOptionalSyntax* node)
+				{
+				}
+
+				void SyntaxVisitor::Visit(GlrSequenceSyntax* node)
+				{
+				}
+
+/***********************************************************************
 ClauseVisitor
 ***********************************************************************/
 
 				// Visitor Members -----------------------------------
 
-				void ClauseVisitor::Visit(GlrRefClause* node)
-				{
-				}
-
-				void ClauseVisitor::Visit(GlrLiteralClause* node)
-				{
-				}
-
-				void ClauseVisitor::Visit(GlrUseClause* node)
-				{
-				}
-
-				void ClauseVisitor::Visit(GlrLoopClause* node)
-				{
-				}
-
-				void ClauseVisitor::Visit(GlrOptionalClause* node)
-				{
-				}
-
-				void ClauseVisitor::Visit(GlrSequenceClause* node)
-				{
-				}
-
 				void ClauseVisitor::Visit(GlrCreateClause* node)
+				{
+				}
+
+				void ClauseVisitor::Visit(GlrPartialClause* node)
 				{
 				}
 

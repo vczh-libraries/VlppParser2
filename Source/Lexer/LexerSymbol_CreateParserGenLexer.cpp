@@ -19,6 +19,7 @@ CreateParserGenAst
 				manager.CreateToken(L"VAR", L"var");
 				manager.CreateToken(L"TOKEN", L"token");
 				manager.CreateToken(L"AS", L"as");
+				manager.CreateToken(L"PARTIAL", L"partial");
 
 				manager.CreateToken(L"OPEN_ROUND", L"/(");
 				manager.CreateToken(L"CLOSE_ROUND", L"/)");

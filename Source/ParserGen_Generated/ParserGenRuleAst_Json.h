@@ -20,35 +20,41 @@ namespace vl
 				/// <summary>A JSON visitor, overriding all abstract methods with AST to JSON serialization code.</summary>
 				class RuleAstVisitor
 					: public vl::glr::JsonVisitorBase
+					, protected virtual GlrSyntax::IVisitor
 					, protected virtual GlrClause::IVisitor
 				{
 				protected:
 					virtual void PrintFields(GlrAssignment* node);
 					virtual void PrintFields(GlrClause* node);
 					virtual void PrintFields(GlrCreateClause* node);
-					virtual void PrintFields(GlrLiteralClause* node);
-					virtual void PrintFields(GlrLoopClause* node);
-					virtual void PrintFields(GlrOptionalClause* node);
-					virtual void PrintFields(GlrRefClause* node);
+					virtual void PrintFields(GlrLiteralSyntax* node);
+					virtual void PrintFields(GlrLoopSyntax* node);
+					virtual void PrintFields(GlrOptionalSyntax* node);
+					virtual void PrintFields(GlrPartialClause* node);
+					virtual void PrintFields(GlrRefSyntax* node);
 					virtual void PrintFields(GlrRule* node);
-					virtual void PrintFields(GlrSequenceClause* node);
+					virtual void PrintFields(GlrSequenceSyntax* node);
+					virtual void PrintFields(GlrSyntax* node);
 					virtual void PrintFields(GlrSyntaxFile* node);
-					virtual void PrintFields(GlrUseClause* node);
+					virtual void PrintFields(GlrUseSyntax* node);
 					virtual void PrintFields(Glr_ReuseClause* node);
 
 				protected:
-					void Visit(GlrRefClause* node) override;
-					void Visit(GlrLiteralClause* node) override;
-					void Visit(GlrUseClause* node) override;
-					void Visit(GlrLoopClause* node) override;
-					void Visit(GlrOptionalClause* node) override;
-					void Visit(GlrSequenceClause* node) override;
+					void Visit(GlrRefSyntax* node) override;
+					void Visit(GlrLiteralSyntax* node) override;
+					void Visit(GlrUseSyntax* node) override;
+					void Visit(GlrLoopSyntax* node) override;
+					void Visit(GlrOptionalSyntax* node) override;
+					void Visit(GlrSequenceSyntax* node) override;
+
 					void Visit(GlrCreateClause* node) override;
+					void Visit(GlrPartialClause* node) override;
 					void Visit(Glr_ReuseClause* node) override;
 
 				public:
 					RuleAstVisitor(vl::stream::StreamWriter& _writer);
 
+					void Print(GlrSyntax* node);
 					void Print(GlrClause* node);
 					void Print(GlrAssignment* node);
 					void Print(GlrRule* node);

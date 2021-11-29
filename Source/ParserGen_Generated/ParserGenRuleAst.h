@@ -19,15 +19,86 @@ namespace vl
 			class GlrAssignment;
 			class GlrClause;
 			class GlrCreateClause;
-			class GlrLiteralClause;
-			class GlrLoopClause;
-			class GlrOptionalClause;
-			class GlrRefClause;
+			class GlrLiteralSyntax;
+			class GlrLoopSyntax;
+			class GlrOptionalSyntax;
+			class GlrPartialClause;
+			class GlrRefSyntax;
 			class GlrRule;
-			class GlrSequenceClause;
+			class GlrSequenceSyntax;
+			class GlrSyntax;
 			class GlrSyntaxFile;
-			class GlrUseClause;
+			class GlrUseSyntax;
 			class Glr_ReuseClause;
+
+			class GlrSyntax abstract : public vl::glr::ParsingAstBase, vl::reflection::Description<GlrSyntax>
+			{
+			public:
+				class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
+				{
+				public:
+					virtual void Visit(GlrRefSyntax* node) = 0;
+					virtual void Visit(GlrLiteralSyntax* node) = 0;
+					virtual void Visit(GlrUseSyntax* node) = 0;
+					virtual void Visit(GlrLoopSyntax* node) = 0;
+					virtual void Visit(GlrOptionalSyntax* node) = 0;
+					virtual void Visit(GlrSequenceSyntax* node) = 0;
+				};
+
+				virtual void Accept(GlrSyntax::IVisitor* visitor) = 0;
+
+			};
+
+			class GlrRefSyntax : public GlrSyntax, vl::reflection::Description<GlrRefSyntax>
+			{
+			public:
+				vl::glr::ParsingToken name;
+				vl::glr::ParsingToken field;
+
+				void Accept(GlrSyntax::IVisitor* visitor) override;
+			};
+
+			class GlrLiteralSyntax : public GlrSyntax, vl::reflection::Description<GlrLiteralSyntax>
+			{
+			public:
+				vl::glr::ParsingToken value;
+
+				void Accept(GlrSyntax::IVisitor* visitor) override;
+			};
+
+			class GlrUseSyntax : public GlrSyntax, vl::reflection::Description<GlrUseSyntax>
+			{
+			public:
+				vl::Ptr<GlrSyntax> Syntax;
+
+				void Accept(GlrSyntax::IVisitor* visitor) override;
+			};
+
+			class GlrLoopSyntax : public GlrSyntax, vl::reflection::Description<GlrLoopSyntax>
+			{
+			public:
+				vl::Ptr<GlrSyntax> Syntax;
+				vl::Ptr<GlrSyntax> delimiter;
+
+				void Accept(GlrSyntax::IVisitor* visitor) override;
+			};
+
+			class GlrOptionalSyntax : public GlrSyntax, vl::reflection::Description<GlrOptionalSyntax>
+			{
+			public:
+				vl::Ptr<GlrSyntax> Syntax;
+
+				void Accept(GlrSyntax::IVisitor* visitor) override;
+			};
+
+			class GlrSequenceSyntax : public GlrSyntax, vl::reflection::Description<GlrSequenceSyntax>
+			{
+			public:
+				vl::Ptr<GlrSyntax> first;
+				vl::Ptr<GlrSyntax> second;
+
+				void Accept(GlrSyntax::IVisitor* visitor) override;
+			};
 
 			class GlrClause abstract : public vl::glr::ParsingAstBase, vl::reflection::Description<GlrClause>
 			{
@@ -35,69 +106,13 @@ namespace vl
 				class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
 				{
 				public:
-					virtual void Visit(GlrRefClause* node) = 0;
-					virtual void Visit(GlrLiteralClause* node) = 0;
-					virtual void Visit(GlrUseClause* node) = 0;
-					virtual void Visit(GlrLoopClause* node) = 0;
-					virtual void Visit(GlrOptionalClause* node) = 0;
-					virtual void Visit(GlrSequenceClause* node) = 0;
 					virtual void Visit(GlrCreateClause* node) = 0;
+					virtual void Visit(GlrPartialClause* node) = 0;
 					virtual void Visit(Glr_ReuseClause* node) = 0;
 				};
 
 				virtual void Accept(GlrClause::IVisitor* visitor) = 0;
 
-			};
-
-			class GlrRefClause : public GlrClause, vl::reflection::Description<GlrRefClause>
-			{
-			public:
-				vl::glr::ParsingToken name;
-				vl::glr::ParsingToken field;
-
-				void Accept(GlrClause::IVisitor* visitor) override;
-			};
-
-			class GlrLiteralClause : public GlrClause, vl::reflection::Description<GlrLiteralClause>
-			{
-			public:
-				vl::glr::ParsingToken value;
-
-				void Accept(GlrClause::IVisitor* visitor) override;
-			};
-
-			class GlrUseClause : public GlrClause, vl::reflection::Description<GlrUseClause>
-			{
-			public:
-				vl::Ptr<GlrClause> clause;
-
-				void Accept(GlrClause::IVisitor* visitor) override;
-			};
-
-			class GlrLoopClause : public GlrClause, vl::reflection::Description<GlrLoopClause>
-			{
-			public:
-				vl::Ptr<GlrClause> clause;
-				vl::Ptr<GlrClause> delimiter;
-
-				void Accept(GlrClause::IVisitor* visitor) override;
-			};
-
-			class GlrOptionalClause : public GlrClause, vl::reflection::Description<GlrOptionalClause>
-			{
-			public:
-				vl::Ptr<GlrClause> clause;
-
-				void Accept(GlrClause::IVisitor* visitor) override;
-			};
-
-			class GlrSequenceClause : public GlrClause, vl::reflection::Description<GlrSequenceClause>
-			{
-			public:
-				vl::Ptr<GlrClause> first;
-				vl::Ptr<GlrClause> second;
-
-				void Accept(GlrClause::IVisitor* visitor) override;
 			};
 
 			class GlrAssignment : public vl::glr::ParsingAstBase, vl::reflection::Description<GlrAssignment>
@@ -111,7 +126,17 @@ namespace vl
 			{
 			public:
 				vl::glr::ParsingToken type;
-				vl::Ptr<GlrClause> clause;
+				vl::Ptr<GlrSyntax> syntax;
+				vl::collections::List<vl::Ptr<GlrAssignment>> assignments;
+
+				void Accept(GlrClause::IVisitor* visitor) override;
+			};
+
+			class GlrPartialClause : public GlrClause, vl::reflection::Description<GlrPartialClause>
+			{
+			public:
+				vl::glr::ParsingToken type;
+				vl::Ptr<GlrSyntax> syntax;
 				vl::collections::List<vl::Ptr<GlrAssignment>> assignments;
 
 				void Accept(GlrClause::IVisitor* visitor) override;
@@ -120,7 +145,7 @@ namespace vl
 			class Glr_ReuseClause : public GlrClause, vl::reflection::Description<Glr_ReuseClause>
 			{
 			public:
-				vl::Ptr<GlrClause> clause;
+				vl::Ptr<GlrSyntax> syntax;
 				vl::collections::List<vl::Ptr<GlrAssignment>> assignments;
 
 				void Accept(GlrClause::IVisitor* visitor) override;
@@ -148,54 +173,65 @@ namespace vl
 		namespace description
 		{
 #ifndef VCZH_DEBUG_NO_REFLECTION
+			DECL_TYPE_INFO(vl::glr::parsergen::GlrSyntax)
+			DECL_TYPE_INFO(vl::glr::parsergen::GlrSyntax::IVisitor)
+			DECL_TYPE_INFO(vl::glr::parsergen::GlrRefSyntax)
+			DECL_TYPE_INFO(vl::glr::parsergen::GlrLiteralSyntax)
+			DECL_TYPE_INFO(vl::glr::parsergen::GlrUseSyntax)
+			DECL_TYPE_INFO(vl::glr::parsergen::GlrLoopSyntax)
+			DECL_TYPE_INFO(vl::glr::parsergen::GlrOptionalSyntax)
+			DECL_TYPE_INFO(vl::glr::parsergen::GlrSequenceSyntax)
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrClause)
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrClause::IVisitor)
-			DECL_TYPE_INFO(vl::glr::parsergen::GlrRefClause)
-			DECL_TYPE_INFO(vl::glr::parsergen::GlrLiteralClause)
-			DECL_TYPE_INFO(vl::glr::parsergen::GlrUseClause)
-			DECL_TYPE_INFO(vl::glr::parsergen::GlrLoopClause)
-			DECL_TYPE_INFO(vl::glr::parsergen::GlrOptionalClause)
-			DECL_TYPE_INFO(vl::glr::parsergen::GlrSequenceClause)
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrAssignment)
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrCreateClause)
+			DECL_TYPE_INFO(vl::glr::parsergen::GlrPartialClause)
 			DECL_TYPE_INFO(vl::glr::parsergen::Glr_ReuseClause)
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrRule)
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrSyntaxFile)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 
+			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(vl::glr::parsergen::GlrSyntax::IVisitor)
+				void Visit(vl::glr::parsergen::GlrRefSyntax* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+				void Visit(vl::glr::parsergen::GlrLiteralSyntax* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+				void Visit(vl::glr::parsergen::GlrUseSyntax* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+				void Visit(vl::glr::parsergen::GlrLoopSyntax* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+				void Visit(vl::glr::parsergen::GlrOptionalSyntax* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+				void Visit(vl::glr::parsergen::GlrSequenceSyntax* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+			END_INTERFACE_PROXY(vl::glr::parsergen::GlrSyntax::IVisitor)
+
 			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(vl::glr::parsergen::GlrClause::IVisitor)
-				void Visit(vl::glr::parsergen::GlrRefClause* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::parsergen::GlrLiteralClause* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::parsergen::GlrUseClause* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::parsergen::GlrLoopClause* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::parsergen::GlrOptionalClause* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::parsergen::GlrSequenceClause* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
 				void Visit(vl::glr::parsergen::GlrCreateClause* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+				void Visit(vl::glr::parsergen::GlrPartialClause* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}

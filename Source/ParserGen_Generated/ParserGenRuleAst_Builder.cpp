@@ -41,9 +41,9 @@ CreateClauseBuilder
 					return *this;
 				}
 
-				CreateClauseBuilder& CreateClauseBuilder::clause(const vl::Ptr<GlrClause>& value)
+				CreateClauseBuilder& CreateClauseBuilder::syntax(const vl::Ptr<GlrSyntax>& value)
 				{
-					node->clause = value;
+					node->syntax = value;
 					return *this;
 				}
 
@@ -54,52 +54,74 @@ CreateClauseBuilder
 				}
 
 /***********************************************************************
-LiteralClauseBuilder
+LiteralSyntaxBuilder
 ***********************************************************************/
 
-				LiteralClauseBuilder& LiteralClauseBuilder::value(const vl::WString& value)
+				LiteralSyntaxBuilder& LiteralSyntaxBuilder::value(const vl::WString& value)
 				{
 					node->value.value = value;
 					return *this;
 				}
 
 /***********************************************************************
-LoopClauseBuilder
+LoopSyntaxBuilder
 ***********************************************************************/
 
-				LoopClauseBuilder& LoopClauseBuilder::clause(const vl::Ptr<GlrClause>& value)
+				LoopSyntaxBuilder& LoopSyntaxBuilder::Syntax(const vl::Ptr<GlrSyntax>& value)
 				{
-					node->clause = value;
+					node->Syntax = value;
 					return *this;
 				}
 
-				LoopClauseBuilder& LoopClauseBuilder::delimiter(const vl::Ptr<GlrClause>& value)
+				LoopSyntaxBuilder& LoopSyntaxBuilder::delimiter(const vl::Ptr<GlrSyntax>& value)
 				{
 					node->delimiter = value;
 					return *this;
 				}
 
 /***********************************************************************
-OptionalClauseBuilder
+OptionalSyntaxBuilder
 ***********************************************************************/
 
-				OptionalClauseBuilder& OptionalClauseBuilder::clause(const vl::Ptr<GlrClause>& value)
+				OptionalSyntaxBuilder& OptionalSyntaxBuilder::Syntax(const vl::Ptr<GlrSyntax>& value)
 				{
-					node->clause = value;
+					node->Syntax = value;
 					return *this;
 				}
 
 /***********************************************************************
-RefClauseBuilder
+PartialClauseBuilder
 ***********************************************************************/
 
-				RefClauseBuilder& RefClauseBuilder::field(const vl::WString& value)
+				PartialClauseBuilder& PartialClauseBuilder::assignments(const vl::Ptr<GlrAssignment>& value)
+				{
+					node->assignments.Add(value);
+					return *this;
+				}
+
+				PartialClauseBuilder& PartialClauseBuilder::syntax(const vl::Ptr<GlrSyntax>& value)
+				{
+					node->syntax = value;
+					return *this;
+				}
+
+				PartialClauseBuilder& PartialClauseBuilder::type(const vl::WString& value)
+				{
+					node->type.value = value;
+					return *this;
+				}
+
+/***********************************************************************
+RefSyntaxBuilder
+***********************************************************************/
+
+				RefSyntaxBuilder& RefSyntaxBuilder::field(const vl::WString& value)
 				{
 					node->field.value = value;
 					return *this;
 				}
 
-				RefClauseBuilder& RefClauseBuilder::name(const vl::WString& value)
+				RefSyntaxBuilder& RefSyntaxBuilder::name(const vl::WString& value)
 				{
 					node->name.value = value;
 					return *this;
@@ -122,16 +144,16 @@ RuleBuilder
 				}
 
 /***********************************************************************
-SequenceClauseBuilder
+SequenceSyntaxBuilder
 ***********************************************************************/
 
-				SequenceClauseBuilder& SequenceClauseBuilder::first(const vl::Ptr<GlrClause>& value)
+				SequenceSyntaxBuilder& SequenceSyntaxBuilder::first(const vl::Ptr<GlrSyntax>& value)
 				{
 					node->first = value;
 					return *this;
 				}
 
-				SequenceClauseBuilder& SequenceClauseBuilder::second(const vl::Ptr<GlrClause>& value)
+				SequenceSyntaxBuilder& SequenceSyntaxBuilder::second(const vl::Ptr<GlrSyntax>& value)
 				{
 					node->second = value;
 					return *this;
@@ -148,12 +170,12 @@ SyntaxFileBuilder
 				}
 
 /***********************************************************************
-UseClauseBuilder
+UseSyntaxBuilder
 ***********************************************************************/
 
-				UseClauseBuilder& UseClauseBuilder::clause(const vl::Ptr<GlrClause>& value)
+				UseSyntaxBuilder& UseSyntaxBuilder::Syntax(const vl::Ptr<GlrSyntax>& value)
 				{
-					node->clause = value;
+					node->Syntax = value;
 					return *this;
 				}
 
@@ -167,9 +189,9 @@ _ReuseClauseBuilder
 					return *this;
 				}
 
-				_ReuseClauseBuilder& _ReuseClauseBuilder::clause(const vl::Ptr<GlrClause>& value)
+				_ReuseClauseBuilder& _ReuseClauseBuilder::syntax(const vl::Ptr<GlrSyntax>& value)
 				{
-					node->clause = value;
+					node->syntax = value;
 					return *this;
 				}
 			}

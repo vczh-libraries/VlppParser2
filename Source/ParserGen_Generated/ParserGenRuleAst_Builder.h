@@ -34,46 +34,57 @@ namespace vl
 				public:
 					CreateClauseBuilder(GlrCreateClause* _node) : node(_node) {}
 					CreateClauseBuilder& assignments(const vl::Ptr<GlrAssignment>& value);
-					CreateClauseBuilder& clause(const vl::Ptr<GlrClause>& value);
+					CreateClauseBuilder& syntax(const vl::Ptr<GlrSyntax>& value);
 					CreateClauseBuilder& type(const vl::WString& value);
 				};
 
-				class LiteralClauseBuilder
+				class LiteralSyntaxBuilder
 				{
 				private:
-					GlrLiteralClause* node;
+					GlrLiteralSyntax* node;
 				public:
-					LiteralClauseBuilder(GlrLiteralClause* _node) : node(_node) {}
-					LiteralClauseBuilder& value(const vl::WString& value);
+					LiteralSyntaxBuilder(GlrLiteralSyntax* _node) : node(_node) {}
+					LiteralSyntaxBuilder& value(const vl::WString& value);
 				};
 
-				class LoopClauseBuilder
+				class LoopSyntaxBuilder
 				{
 				private:
-					GlrLoopClause* node;
+					GlrLoopSyntax* node;
 				public:
-					LoopClauseBuilder(GlrLoopClause* _node) : node(_node) {}
-					LoopClauseBuilder& clause(const vl::Ptr<GlrClause>& value);
-					LoopClauseBuilder& delimiter(const vl::Ptr<GlrClause>& value);
+					LoopSyntaxBuilder(GlrLoopSyntax* _node) : node(_node) {}
+					LoopSyntaxBuilder& Syntax(const vl::Ptr<GlrSyntax>& value);
+					LoopSyntaxBuilder& delimiter(const vl::Ptr<GlrSyntax>& value);
 				};
 
-				class OptionalClauseBuilder
+				class OptionalSyntaxBuilder
 				{
 				private:
-					GlrOptionalClause* node;
+					GlrOptionalSyntax* node;
 				public:
-					OptionalClauseBuilder(GlrOptionalClause* _node) : node(_node) {}
-					OptionalClauseBuilder& clause(const vl::Ptr<GlrClause>& value);
+					OptionalSyntaxBuilder(GlrOptionalSyntax* _node) : node(_node) {}
+					OptionalSyntaxBuilder& Syntax(const vl::Ptr<GlrSyntax>& value);
 				};
 
-				class RefClauseBuilder
+				class PartialClauseBuilder
 				{
 				private:
-					GlrRefClause* node;
+					GlrPartialClause* node;
 				public:
-					RefClauseBuilder(GlrRefClause* _node) : node(_node) {}
-					RefClauseBuilder& field(const vl::WString& value);
-					RefClauseBuilder& name(const vl::WString& value);
+					PartialClauseBuilder(GlrPartialClause* _node) : node(_node) {}
+					PartialClauseBuilder& assignments(const vl::Ptr<GlrAssignment>& value);
+					PartialClauseBuilder& syntax(const vl::Ptr<GlrSyntax>& value);
+					PartialClauseBuilder& type(const vl::WString& value);
+				};
+
+				class RefSyntaxBuilder
+				{
+				private:
+					GlrRefSyntax* node;
+				public:
+					RefSyntaxBuilder(GlrRefSyntax* _node) : node(_node) {}
+					RefSyntaxBuilder& field(const vl::WString& value);
+					RefSyntaxBuilder& name(const vl::WString& value);
 				};
 
 				class RuleBuilder
@@ -86,14 +97,14 @@ namespace vl
 					RuleBuilder& name(const vl::WString& value);
 				};
 
-				class SequenceClauseBuilder
+				class SequenceSyntaxBuilder
 				{
 				private:
-					GlrSequenceClause* node;
+					GlrSequenceSyntax* node;
 				public:
-					SequenceClauseBuilder(GlrSequenceClause* _node) : node(_node) {}
-					SequenceClauseBuilder& first(const vl::Ptr<GlrClause>& value);
-					SequenceClauseBuilder& second(const vl::Ptr<GlrClause>& value);
+					SequenceSyntaxBuilder(GlrSequenceSyntax* _node) : node(_node) {}
+					SequenceSyntaxBuilder& first(const vl::Ptr<GlrSyntax>& value);
+					SequenceSyntaxBuilder& second(const vl::Ptr<GlrSyntax>& value);
 				};
 
 				class SyntaxFileBuilder
@@ -105,13 +116,13 @@ namespace vl
 					SyntaxFileBuilder& rules(const vl::Ptr<GlrRule>& value);
 				};
 
-				class UseClauseBuilder
+				class UseSyntaxBuilder
 				{
 				private:
-					GlrUseClause* node;
+					GlrUseSyntax* node;
 				public:
-					UseClauseBuilder(GlrUseClause* _node) : node(_node) {}
-					UseClauseBuilder& clause(const vl::Ptr<GlrClause>& value);
+					UseSyntaxBuilder(GlrUseSyntax* _node) : node(_node) {}
+					UseSyntaxBuilder& Syntax(const vl::Ptr<GlrSyntax>& value);
 				};
 
 				class _ReuseClauseBuilder
@@ -121,19 +132,20 @@ namespace vl
 				public:
 					_ReuseClauseBuilder(Glr_ReuseClause* _node) : node(_node) {}
 					_ReuseClauseBuilder& assignments(const vl::Ptr<GlrAssignment>& value);
-					_ReuseClauseBuilder& clause(const vl::Ptr<GlrClause>& value);
+					_ReuseClauseBuilder& syntax(const vl::Ptr<GlrSyntax>& value);
 				};
 
 				using MakeAssignment = vl::glr::ParsingAstBuilder<GlrAssignment, AssignmentBuilder>;
 				using MakeCreateClause = vl::glr::ParsingAstBuilder<GlrCreateClause, CreateClauseBuilder>;
-				using MakeLiteralClause = vl::glr::ParsingAstBuilder<GlrLiteralClause, LiteralClauseBuilder>;
-				using MakeLoopClause = vl::glr::ParsingAstBuilder<GlrLoopClause, LoopClauseBuilder>;
-				using MakeOptionalClause = vl::glr::ParsingAstBuilder<GlrOptionalClause, OptionalClauseBuilder>;
-				using MakeRefClause = vl::glr::ParsingAstBuilder<GlrRefClause, RefClauseBuilder>;
+				using MakeLiteralSyntax = vl::glr::ParsingAstBuilder<GlrLiteralSyntax, LiteralSyntaxBuilder>;
+				using MakeLoopSyntax = vl::glr::ParsingAstBuilder<GlrLoopSyntax, LoopSyntaxBuilder>;
+				using MakeOptionalSyntax = vl::glr::ParsingAstBuilder<GlrOptionalSyntax, OptionalSyntaxBuilder>;
+				using MakePartialClause = vl::glr::ParsingAstBuilder<GlrPartialClause, PartialClauseBuilder>;
+				using MakeRefSyntax = vl::glr::ParsingAstBuilder<GlrRefSyntax, RefSyntaxBuilder>;
 				using MakeRule = vl::glr::ParsingAstBuilder<GlrRule, RuleBuilder>;
-				using MakeSequenceClause = vl::glr::ParsingAstBuilder<GlrSequenceClause, SequenceClauseBuilder>;
+				using MakeSequenceSyntax = vl::glr::ParsingAstBuilder<GlrSequenceSyntax, SequenceSyntaxBuilder>;
 				using MakeSyntaxFile = vl::glr::ParsingAstBuilder<GlrSyntaxFile, SyntaxFileBuilder>;
-				using MakeUseClause = vl::glr::ParsingAstBuilder<GlrUseClause, UseClauseBuilder>;
+				using MakeUseSyntax = vl::glr::ParsingAstBuilder<GlrUseSyntax, UseSyntaxBuilder>;
 				using Make_ReuseClause = vl::glr::ParsingAstBuilder<Glr_ReuseClause, _ReuseClauseBuilder>;
 			}
 		}

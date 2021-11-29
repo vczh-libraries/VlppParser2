@@ -29,6 +29,9 @@ namespace vl
 				}
 				void TypeAstVisitor::PrintFields(GlrClass* node)
 				{
+					BeginField(L"baseClass");
+					WriteToken(node->baseClass);
+					EndField();
 					BeginField(L"props");
 					BeginArray();
 					for (auto&& listItem : node->props)
@@ -42,9 +45,6 @@ namespace vl
 				}
 				void TypeAstVisitor::PrintFields(GlrClassProp* node)
 				{
-					BeginField(L"baseClass");
-					WriteToken(node->baseClass);
-					EndField();
 					BeginField(L"name");
 					WriteToken(node->name);
 					EndField();

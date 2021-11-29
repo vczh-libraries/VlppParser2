@@ -19,34 +19,36 @@ CreateParserGenRuleAst
 				Fill(_ast->refNss, L"glr", L"parsergen");
 				_ast->classPrefix = L"Glr";
 
+				auto _Syntax = _ast->CreateClass(L"Syntax");
+
+				auto _RefSyntax = _ast->CreateClass(L"RefSyntax");
+				_RefSyntax->SetBaseClass(L"Syntax");
+				_RefSyntax->CreateProp(L"name")->SetPropType(AstPropType::Token);
+				_RefSyntax->CreateProp(L"field")->SetPropType(AstPropType::Token);
+
+				auto _LiteralSyntax = _ast->CreateClass(L"LiteralSyntax");
+				_LiteralSyntax->SetBaseClass(L"Syntax");
+				_LiteralSyntax->CreateProp(L"value")->SetPropType(AstPropType::Token);
+
+				auto _UseSyntax = _ast->CreateClass(L"UseSyntax");
+				_UseSyntax->SetBaseClass(L"Syntax");
+				_UseSyntax->CreateProp(L"Syntax")->SetPropType(AstPropType::Type, L"Syntax");
+
+				auto _LoopSyntax = _ast->CreateClass(L"LoopSyntax");
+				_LoopSyntax->SetBaseClass(L"Syntax");
+				_LoopSyntax->CreateProp(L"Syntax")->SetPropType(AstPropType::Type, L"Syntax");
+				_LoopSyntax->CreateProp(L"delimiter")->SetPropType(AstPropType::Type, L"Syntax");
+
+				auto _OptionalSyntax = _ast->CreateClass(L"OptionalSyntax");
+				_OptionalSyntax->SetBaseClass(L"Syntax");
+				_OptionalSyntax->CreateProp(L"Syntax")->SetPropType(AstPropType::Type, L"Syntax");
+
+				auto _SequenceSyntax = _ast->CreateClass(L"SequenceSyntax");
+				_SequenceSyntax->SetBaseClass(L"Syntax");
+				_SequenceSyntax->CreateProp(L"first")->SetPropType(AstPropType::Type, L"Syntax");
+				_SequenceSyntax->CreateProp(L"second")->SetPropType(AstPropType::Type, L"Syntax");
+
 				auto _Clause = _ast->CreateClass(L"Clause");
-
-				auto _RefClause = _ast->CreateClass(L"RefClause");
-				_RefClause->SetBaseClass(L"Clause");
-				_RefClause->CreateProp(L"name")->SetPropType(AstPropType::Token);
-				_RefClause->CreateProp(L"field")->SetPropType(AstPropType::Token);
-
-				auto _LiteralClause = _ast->CreateClass(L"LiteralClause");
-				_LiteralClause->SetBaseClass(L"Clause");
-				_LiteralClause->CreateProp(L"value")->SetPropType(AstPropType::Token);
-
-				auto _UseClause = _ast->CreateClass(L"UseClause");
-				_UseClause->SetBaseClass(L"Clause");
-				_UseClause->CreateProp(L"clause")->SetPropType(AstPropType::Type, L"Clause");
-
-				auto _LoopClause = _ast->CreateClass(L"LoopClause");
-				_LoopClause->SetBaseClass(L"Clause");
-				_LoopClause->CreateProp(L"clause")->SetPropType(AstPropType::Type, L"Clause");
-				_LoopClause->CreateProp(L"delimiter")->SetPropType(AstPropType::Type, L"Clause");
-
-				auto _OptionalClause = _ast->CreateClass(L"OptionalClause");
-				_OptionalClause->SetBaseClass(L"Clause");
-				_OptionalClause->CreateProp(L"clause")->SetPropType(AstPropType::Type, L"Clause");
-
-				auto _SequenceClause = _ast->CreateClass(L"SequenceClause");
-				_SequenceClause->SetBaseClass(L"Clause");
-				_SequenceClause->CreateProp(L"first")->SetPropType(AstPropType::Type, L"Clause");
-				_SequenceClause->CreateProp(L"second")->SetPropType(AstPropType::Type, L"Clause");
 
 				auto _Assignment = _ast->CreateClass(L"Assignment");
 				_Assignment->CreateProp(L"field")->SetPropType(AstPropType::Token);
@@ -55,12 +57,18 @@ CreateParserGenRuleAst
 				auto _CreateClause = _ast->CreateClass(L"CreateClause");
 				_CreateClause->SetBaseClass(L"Clause");
 				_CreateClause->CreateProp(L"type")->SetPropType(AstPropType::Token);
-				_CreateClause->CreateProp(L"clause")->SetPropType(AstPropType::Type, L"Clause");
+				_CreateClause->CreateProp(L"syntax")->SetPropType(AstPropType::Type, L"Syntax");
 				_CreateClause->CreateProp(L"assignments")->SetPropType(AstPropType::Array, L"Assignment");
+
+				auto _PartialClause = _ast->CreateClass(L"PartialClause");
+				_PartialClause->SetBaseClass(L"Clause");
+				_PartialClause->CreateProp(L"type")->SetPropType(AstPropType::Token);
+				_PartialClause->CreateProp(L"syntax")->SetPropType(AstPropType::Type, L"Syntax");
+				_PartialClause->CreateProp(L"assignments")->SetPropType(AstPropType::Array, L"Assignment");
 
 				auto _ReuseClause = _ast->CreateClass(L"_ReuseClause");
 				_ReuseClause->SetBaseClass(L"Clause");
-				_ReuseClause->CreateProp(L"clause")->SetPropType(AstPropType::Type, L"Clause");
+				_ReuseClause->CreateProp(L"syntax")->SetPropType(AstPropType::Type, L"Syntax");
 				_ReuseClause->CreateProp(L"assignments")->SetPropType(AstPropType::Array, L"Assignment");
 
 				auto _Rule = _ast->CreateClass(L"Rule");

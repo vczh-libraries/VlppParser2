@@ -31,32 +31,43 @@ namespace vl
 					{
 						to->assignments.Add(CopyNode(listItem.Obj()));
 					}
-					to->clause = CopyNode(from->clause.Obj());
+					to->syntax = CopyNode(from->syntax.Obj());
 					to->type = from->type;
 				}
 
-				void RuleAstVisitor::CopyFields(GlrLiteralClause* from, GlrLiteralClause* to)
+				void RuleAstVisitor::CopyFields(GlrLiteralSyntax* from, GlrLiteralSyntax* to)
 				{
-					CopyFields(static_cast<GlrClause*>(from), static_cast<GlrClause*>(to));
+					CopyFields(static_cast<GlrSyntax*>(from), static_cast<GlrSyntax*>(to));
 					to->value = from->value;
 				}
 
-				void RuleAstVisitor::CopyFields(GlrLoopClause* from, GlrLoopClause* to)
+				void RuleAstVisitor::CopyFields(GlrLoopSyntax* from, GlrLoopSyntax* to)
 				{
-					CopyFields(static_cast<GlrClause*>(from), static_cast<GlrClause*>(to));
-					to->clause = CopyNode(from->clause.Obj());
+					CopyFields(static_cast<GlrSyntax*>(from), static_cast<GlrSyntax*>(to));
+					to->Syntax = CopyNode(from->Syntax.Obj());
 					to->delimiter = CopyNode(from->delimiter.Obj());
 				}
 
-				void RuleAstVisitor::CopyFields(GlrOptionalClause* from, GlrOptionalClause* to)
+				void RuleAstVisitor::CopyFields(GlrOptionalSyntax* from, GlrOptionalSyntax* to)
 				{
-					CopyFields(static_cast<GlrClause*>(from), static_cast<GlrClause*>(to));
-					to->clause = CopyNode(from->clause.Obj());
+					CopyFields(static_cast<GlrSyntax*>(from), static_cast<GlrSyntax*>(to));
+					to->Syntax = CopyNode(from->Syntax.Obj());
 				}
 
-				void RuleAstVisitor::CopyFields(GlrRefClause* from, GlrRefClause* to)
+				void RuleAstVisitor::CopyFields(GlrPartialClause* from, GlrPartialClause* to)
 				{
 					CopyFields(static_cast<GlrClause*>(from), static_cast<GlrClause*>(to));
+					for (auto&& listItem : from->assignments)
+					{
+						to->assignments.Add(CopyNode(listItem.Obj()));
+					}
+					to->syntax = CopyNode(from->syntax.Obj());
+					to->type = from->type;
+				}
+
+				void RuleAstVisitor::CopyFields(GlrRefSyntax* from, GlrRefSyntax* to)
+				{
+					CopyFields(static_cast<GlrSyntax*>(from), static_cast<GlrSyntax*>(to));
 					to->field = from->field;
 					to->name = from->name;
 				}
@@ -70,11 +81,15 @@ namespace vl
 					to->name = from->name;
 				}
 
-				void RuleAstVisitor::CopyFields(GlrSequenceClause* from, GlrSequenceClause* to)
+				void RuleAstVisitor::CopyFields(GlrSequenceSyntax* from, GlrSequenceSyntax* to)
 				{
-					CopyFields(static_cast<GlrClause*>(from), static_cast<GlrClause*>(to));
+					CopyFields(static_cast<GlrSyntax*>(from), static_cast<GlrSyntax*>(to));
 					to->first = CopyNode(from->first.Obj());
 					to->second = CopyNode(from->second.Obj());
+				}
+
+				void RuleAstVisitor::CopyFields(GlrSyntax* from, GlrSyntax* to)
+				{
 				}
 
 				void RuleAstVisitor::CopyFields(GlrSyntaxFile* from, GlrSyntaxFile* to)
@@ -85,10 +100,10 @@ namespace vl
 					}
 				}
 
-				void RuleAstVisitor::CopyFields(GlrUseClause* from, GlrUseClause* to)
+				void RuleAstVisitor::CopyFields(GlrUseSyntax* from, GlrUseSyntax* to)
 				{
-					CopyFields(static_cast<GlrClause*>(from), static_cast<GlrClause*>(to));
-					to->clause = CopyNode(from->clause.Obj());
+					CopyFields(static_cast<GlrSyntax*>(from), static_cast<GlrSyntax*>(to));
+					to->Syntax = CopyNode(from->Syntax.Obj());
 				}
 
 				void RuleAstVisitor::CopyFields(Glr_ReuseClause* from, Glr_ReuseClause* to)
@@ -98,7 +113,7 @@ namespace vl
 					{
 						to->assignments.Add(CopyNode(listItem.Obj()));
 					}
-					to->clause = CopyNode(from->clause.Obj());
+					to->syntax = CopyNode(from->syntax.Obj());
 				}
 
 				void RuleAstVisitor::Visit(GlrAssignment* node)
@@ -122,44 +137,44 @@ namespace vl
 					this->result = newNode;
 				}
 
-				void RuleAstVisitor::Visit(GlrRefClause* node)
+				void RuleAstVisitor::Visit(GlrRefSyntax* node)
 				{
-					auto newNode = vl::MakePtr<GlrRefClause>();
+					auto newNode = vl::MakePtr<GlrRefSyntax>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void RuleAstVisitor::Visit(GlrLiteralClause* node)
+				void RuleAstVisitor::Visit(GlrLiteralSyntax* node)
 				{
-					auto newNode = vl::MakePtr<GlrLiteralClause>();
+					auto newNode = vl::MakePtr<GlrLiteralSyntax>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void RuleAstVisitor::Visit(GlrUseClause* node)
+				void RuleAstVisitor::Visit(GlrUseSyntax* node)
 				{
-					auto newNode = vl::MakePtr<GlrUseClause>();
+					auto newNode = vl::MakePtr<GlrUseSyntax>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void RuleAstVisitor::Visit(GlrLoopClause* node)
+				void RuleAstVisitor::Visit(GlrLoopSyntax* node)
 				{
-					auto newNode = vl::MakePtr<GlrLoopClause>();
+					auto newNode = vl::MakePtr<GlrLoopSyntax>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void RuleAstVisitor::Visit(GlrOptionalClause* node)
+				void RuleAstVisitor::Visit(GlrOptionalSyntax* node)
 				{
-					auto newNode = vl::MakePtr<GlrOptionalClause>();
+					auto newNode = vl::MakePtr<GlrOptionalSyntax>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void RuleAstVisitor::Visit(GlrSequenceClause* node)
+				void RuleAstVisitor::Visit(GlrSequenceSyntax* node)
 				{
-					auto newNode = vl::MakePtr<GlrSequenceClause>();
+					auto newNode = vl::MakePtr<GlrSequenceSyntax>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
@@ -171,11 +186,25 @@ namespace vl
 					this->result = newNode;
 				}
 
+				void RuleAstVisitor::Visit(GlrPartialClause* node)
+				{
+					auto newNode = vl::MakePtr<GlrPartialClause>();
+					CopyFields(node, newNode.Obj());
+					this->result = newNode;
+				}
+
 				void RuleAstVisitor::Visit(Glr_ReuseClause* node)
 				{
 					auto newNode = vl::MakePtr<Glr_ReuseClause>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
+				}
+
+				vl::Ptr<GlrSyntax> RuleAstVisitor::CopyNode(GlrSyntax* node)
+				{
+					if (!node) return nullptr;
+					node->Accept(static_cast<GlrSyntax::IVisitor*>(this));
+					return this->result.Cast<GlrSyntax>();
 				}
 
 				vl::Ptr<GlrClause> RuleAstVisitor::CopyNode(GlrClause* node)

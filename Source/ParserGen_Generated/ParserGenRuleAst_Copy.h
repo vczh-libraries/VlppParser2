@@ -20,20 +20,23 @@ namespace vl
 				/// <summary>A copy visitor, overriding all abstract methods with AST copying code.</summary>
 				class RuleAstVisitor
 					: public virtual vl::glr::CopyVisitorBase
+					, protected virtual GlrSyntax::IVisitor
 					, protected virtual GlrClause::IVisitor
 				{
 				protected:
 					void CopyFields(GlrAssignment* from, GlrAssignment* to);
 					void CopyFields(GlrClause* from, GlrClause* to);
 					void CopyFields(GlrCreateClause* from, GlrCreateClause* to);
-					void CopyFields(GlrLiteralClause* from, GlrLiteralClause* to);
-					void CopyFields(GlrLoopClause* from, GlrLoopClause* to);
-					void CopyFields(GlrOptionalClause* from, GlrOptionalClause* to);
-					void CopyFields(GlrRefClause* from, GlrRefClause* to);
+					void CopyFields(GlrLiteralSyntax* from, GlrLiteralSyntax* to);
+					void CopyFields(GlrLoopSyntax* from, GlrLoopSyntax* to);
+					void CopyFields(GlrOptionalSyntax* from, GlrOptionalSyntax* to);
+					void CopyFields(GlrPartialClause* from, GlrPartialClause* to);
+					void CopyFields(GlrRefSyntax* from, GlrRefSyntax* to);
 					void CopyFields(GlrRule* from, GlrRule* to);
-					void CopyFields(GlrSequenceClause* from, GlrSequenceClause* to);
+					void CopyFields(GlrSequenceSyntax* from, GlrSequenceSyntax* to);
+					void CopyFields(GlrSyntax* from, GlrSyntax* to);
 					void CopyFields(GlrSyntaxFile* from, GlrSyntaxFile* to);
-					void CopyFields(GlrUseClause* from, GlrUseClause* to);
+					void CopyFields(GlrUseSyntax* from, GlrUseSyntax* to);
 					void CopyFields(Glr_ReuseClause* from, Glr_ReuseClause* to);
 
 				protected:
@@ -41,16 +44,19 @@ namespace vl
 					virtual void Visit(GlrRule* node);
 					virtual void Visit(GlrSyntaxFile* node);
 
-					void Visit(GlrRefClause* node) override;
-					void Visit(GlrLiteralClause* node) override;
-					void Visit(GlrUseClause* node) override;
-					void Visit(GlrLoopClause* node) override;
-					void Visit(GlrOptionalClause* node) override;
-					void Visit(GlrSequenceClause* node) override;
+					void Visit(GlrRefSyntax* node) override;
+					void Visit(GlrLiteralSyntax* node) override;
+					void Visit(GlrUseSyntax* node) override;
+					void Visit(GlrLoopSyntax* node) override;
+					void Visit(GlrOptionalSyntax* node) override;
+					void Visit(GlrSequenceSyntax* node) override;
+
 					void Visit(GlrCreateClause* node) override;
+					void Visit(GlrPartialClause* node) override;
 					void Visit(Glr_ReuseClause* node) override;
 
 				public:
+					virtual vl::Ptr<GlrSyntax> CopyNode(GlrSyntax* node);
 					virtual vl::Ptr<GlrClause> CopyNode(GlrClause* node);
 					virtual vl::Ptr<GlrAssignment> CopyNode(GlrAssignment* node);
 					virtual vl::Ptr<GlrRule> CopyNode(GlrRule* node);

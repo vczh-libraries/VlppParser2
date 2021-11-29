@@ -23,24 +23,25 @@ namespace vl
 				VAR = 2,
 				TOKEN = 3,
 				AS = 4,
-				OPEN_ROUND = 5,
-				CLOSE_ROUND = 6,
-				OPEN_SQUARE = 7,
-				CLOSE_SQUARE = 8,
-				OPEN_CURLY = 9,
-				CLOSE_CURLY = 10,
-				COMMA = 11,
-				COLON = 12,
-				SEMICOLON = 13,
-				INFER = 14,
-				USE = 15,
-				ASSIGN = 16,
-				ID = 17,
-				STRING = 18,
-				SPACE = 19,
+				PARTIAL = 5,
+				OPEN_ROUND = 6,
+				CLOSE_ROUND = 7,
+				OPEN_SQUARE = 8,
+				CLOSE_SQUARE = 9,
+				OPEN_CURLY = 10,
+				CLOSE_CURLY = 11,
+				COMMA = 12,
+				COLON = 13,
+				SEMICOLON = 14,
+				INFER = 15,
+				USE = 16,
+				ASSIGN = 17,
+				ID = 18,
+				STRING = 19,
+				SPACE = 20,
 			};
 
-			constexpr vl::vint ParserGenTokenCount = 20;
+			constexpr vl::vint ParserGenTokenCount = 21;
 			extern bool ParserGenTokenDeleter(vl::vint token);
 			extern const wchar_t* ParserGenTokenId(ParserGenTokens token);
 			extern const wchar_t* ParserGenTokenDisplayText(ParserGenTokens token);

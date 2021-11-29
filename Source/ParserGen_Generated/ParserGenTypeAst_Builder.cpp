@@ -29,6 +29,12 @@ AstFileBuilder
 ClassBuilder
 ***********************************************************************/
 
+				ClassBuilder& ClassBuilder::baseClass(const vl::WString& value)
+				{
+					node->baseClass.value = value;
+					return *this;
+				}
+
 				ClassBuilder& ClassBuilder::props(const vl::Ptr<GlrClassProp>& value)
 				{
 					node->props.Add(value);
@@ -38,12 +44,6 @@ ClassBuilder
 /***********************************************************************
 ClassPropBuilder
 ***********************************************************************/
-
-				ClassPropBuilder& ClassPropBuilder::baseClass(const vl::WString& value)
-				{
-					node->baseClass.value = value;
-					return *this;
-				}
 
 				ClassPropBuilder& ClassPropBuilder::name(const vl::WString& value)
 				{

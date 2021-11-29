@@ -25,6 +25,7 @@ namespace vl
 				void TypeAstVisitor::CopyFields(GlrClass* from, GlrClass* to)
 				{
 					CopyFields(static_cast<GlrType*>(from), static_cast<GlrType*>(to));
+					to->baseClass = from->baseClass;
 					for (auto&& listItem : from->props)
 					{
 						to->props.Add(CopyNode(listItem.Obj()));
@@ -33,7 +34,6 @@ namespace vl
 
 				void TypeAstVisitor::CopyFields(GlrClassProp* from, GlrClassProp* to)
 				{
-					to->baseClass = from->baseClass;
 					to->name = from->name;
 					to->propType = from->propType;
 					to->propTypeName = from->propTypeName;

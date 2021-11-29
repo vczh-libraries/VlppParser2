@@ -84,7 +84,6 @@ namespace vl
 				CLASS_MEMBER_FIELD(name)
 				CLASS_MEMBER_FIELD(propType)
 				CLASS_MEMBER_FIELD(propTypeName)
-				CLASS_MEMBER_FIELD(baseClass)
 			END_CLASS_MEMBER(vl::glr::parsergen::GlrClassProp)
 
 			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrClass)
@@ -92,6 +91,7 @@ namespace vl
 
 				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrClass>(), NO_PARAMETER)
 
+				CLASS_MEMBER_FIELD(baseClass)
 				CLASS_MEMBER_FIELD(props)
 			END_CLASS_MEMBER(vl::glr::parsergen::GlrClass)
 

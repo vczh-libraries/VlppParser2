@@ -53,6 +53,7 @@ namespace vl
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
 					Traverse(static_cast<GlrType*>(node));
 					Traverse(static_cast<GlrClass*>(node));
+					Traverse(node->baseClass);
 					for (auto&& listItem : node->props)
 					{
 						InspectInto(listItem.Obj());
@@ -84,7 +85,6 @@ namespace vl
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
 					Traverse(static_cast<GlrClassProp*>(node));
-					Traverse(node->baseClass);
 					Traverse(node->name);
 					Traverse(node->propTypeName);
 					Finishing(static_cast<GlrClassProp*>(node));

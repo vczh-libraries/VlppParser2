@@ -20,6 +20,7 @@ namespace vl
 				/// <summary>A traverse visitor, overriding all abstract methods with AST visiting code.</summary>
 				class RuleAstVisitor
 					: public vl::Object
+					, protected virtual GlrSyntax::IVisitor
 					, protected virtual GlrClause::IVisitor
 				{
 				protected:
@@ -28,14 +29,16 @@ namespace vl
 					virtual void Traverse(GlrAssignment* node);
 					virtual void Traverse(GlrClause* node);
 					virtual void Traverse(GlrCreateClause* node);
-					virtual void Traverse(GlrLiteralClause* node);
-					virtual void Traverse(GlrLoopClause* node);
-					virtual void Traverse(GlrOptionalClause* node);
-					virtual void Traverse(GlrRefClause* node);
+					virtual void Traverse(GlrLiteralSyntax* node);
+					virtual void Traverse(GlrLoopSyntax* node);
+					virtual void Traverse(GlrOptionalSyntax* node);
+					virtual void Traverse(GlrPartialClause* node);
+					virtual void Traverse(GlrRefSyntax* node);
 					virtual void Traverse(GlrRule* node);
-					virtual void Traverse(GlrSequenceClause* node);
+					virtual void Traverse(GlrSequenceSyntax* node);
+					virtual void Traverse(GlrSyntax* node);
 					virtual void Traverse(GlrSyntaxFile* node);
-					virtual void Traverse(GlrUseClause* node);
+					virtual void Traverse(GlrUseSyntax* node);
 					virtual void Traverse(Glr_ReuseClause* node);
 
 				protected:
@@ -43,27 +46,32 @@ namespace vl
 					virtual void Finishing(GlrAssignment* node);
 					virtual void Finishing(GlrClause* node);
 					virtual void Finishing(GlrCreateClause* node);
-					virtual void Finishing(GlrLiteralClause* node);
-					virtual void Finishing(GlrLoopClause* node);
-					virtual void Finishing(GlrOptionalClause* node);
-					virtual void Finishing(GlrRefClause* node);
+					virtual void Finishing(GlrLiteralSyntax* node);
+					virtual void Finishing(GlrLoopSyntax* node);
+					virtual void Finishing(GlrOptionalSyntax* node);
+					virtual void Finishing(GlrPartialClause* node);
+					virtual void Finishing(GlrRefSyntax* node);
 					virtual void Finishing(GlrRule* node);
-					virtual void Finishing(GlrSequenceClause* node);
+					virtual void Finishing(GlrSequenceSyntax* node);
+					virtual void Finishing(GlrSyntax* node);
 					virtual void Finishing(GlrSyntaxFile* node);
-					virtual void Finishing(GlrUseClause* node);
+					virtual void Finishing(GlrUseSyntax* node);
 					virtual void Finishing(Glr_ReuseClause* node);
 
 				protected:
-					void Visit(GlrRefClause* node) override;
-					void Visit(GlrLiteralClause* node) override;
-					void Visit(GlrUseClause* node) override;
-					void Visit(GlrLoopClause* node) override;
-					void Visit(GlrOptionalClause* node) override;
-					void Visit(GlrSequenceClause* node) override;
+					void Visit(GlrRefSyntax* node) override;
+					void Visit(GlrLiteralSyntax* node) override;
+					void Visit(GlrUseSyntax* node) override;
+					void Visit(GlrLoopSyntax* node) override;
+					void Visit(GlrOptionalSyntax* node) override;
+					void Visit(GlrSequenceSyntax* node) override;
+
 					void Visit(GlrCreateClause* node) override;
+					void Visit(GlrPartialClause* node) override;
 					void Visit(Glr_ReuseClause* node) override;
 
 				public:
+					void InspectInto(GlrSyntax* node);
 					void InspectInto(GlrClause* node);
 					void InspectInto(GlrAssignment* node);
 					void InspectInto(GlrRule* node);

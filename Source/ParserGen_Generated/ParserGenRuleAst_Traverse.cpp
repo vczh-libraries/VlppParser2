@@ -19,102 +19,106 @@ namespace vl
 				void RuleAstVisitor::Traverse(GlrAssignment* node) {}
 				void RuleAstVisitor::Traverse(GlrClause* node) {}
 				void RuleAstVisitor::Traverse(GlrCreateClause* node) {}
-				void RuleAstVisitor::Traverse(GlrLiteralClause* node) {}
-				void RuleAstVisitor::Traverse(GlrLoopClause* node) {}
-				void RuleAstVisitor::Traverse(GlrOptionalClause* node) {}
-				void RuleAstVisitor::Traverse(GlrRefClause* node) {}
+				void RuleAstVisitor::Traverse(GlrLiteralSyntax* node) {}
+				void RuleAstVisitor::Traverse(GlrLoopSyntax* node) {}
+				void RuleAstVisitor::Traverse(GlrOptionalSyntax* node) {}
+				void RuleAstVisitor::Traverse(GlrPartialClause* node) {}
+				void RuleAstVisitor::Traverse(GlrRefSyntax* node) {}
 				void RuleAstVisitor::Traverse(GlrRule* node) {}
-				void RuleAstVisitor::Traverse(GlrSequenceClause* node) {}
+				void RuleAstVisitor::Traverse(GlrSequenceSyntax* node) {}
+				void RuleAstVisitor::Traverse(GlrSyntax* node) {}
 				void RuleAstVisitor::Traverse(GlrSyntaxFile* node) {}
-				void RuleAstVisitor::Traverse(GlrUseClause* node) {}
+				void RuleAstVisitor::Traverse(GlrUseSyntax* node) {}
 				void RuleAstVisitor::Traverse(Glr_ReuseClause* node) {}
 
 				void RuleAstVisitor::Finishing(vl::glr::ParsingAstBase* node) {}
 				void RuleAstVisitor::Finishing(GlrAssignment* node) {}
 				void RuleAstVisitor::Finishing(GlrClause* node) {}
 				void RuleAstVisitor::Finishing(GlrCreateClause* node) {}
-				void RuleAstVisitor::Finishing(GlrLiteralClause* node) {}
-				void RuleAstVisitor::Finishing(GlrLoopClause* node) {}
-				void RuleAstVisitor::Finishing(GlrOptionalClause* node) {}
-				void RuleAstVisitor::Finishing(GlrRefClause* node) {}
+				void RuleAstVisitor::Finishing(GlrLiteralSyntax* node) {}
+				void RuleAstVisitor::Finishing(GlrLoopSyntax* node) {}
+				void RuleAstVisitor::Finishing(GlrOptionalSyntax* node) {}
+				void RuleAstVisitor::Finishing(GlrPartialClause* node) {}
+				void RuleAstVisitor::Finishing(GlrRefSyntax* node) {}
 				void RuleAstVisitor::Finishing(GlrRule* node) {}
-				void RuleAstVisitor::Finishing(GlrSequenceClause* node) {}
+				void RuleAstVisitor::Finishing(GlrSequenceSyntax* node) {}
+				void RuleAstVisitor::Finishing(GlrSyntax* node) {}
 				void RuleAstVisitor::Finishing(GlrSyntaxFile* node) {}
-				void RuleAstVisitor::Finishing(GlrUseClause* node) {}
+				void RuleAstVisitor::Finishing(GlrUseSyntax* node) {}
 				void RuleAstVisitor::Finishing(Glr_ReuseClause* node) {}
 
-				void RuleAstVisitor::Visit(GlrRefClause* node)
+				void RuleAstVisitor::Visit(GlrRefSyntax* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<GlrClause*>(node));
-					Traverse(static_cast<GlrRefClause*>(node));
+					Traverse(static_cast<GlrSyntax*>(node));
+					Traverse(static_cast<GlrRefSyntax*>(node));
 					Traverse(node->field);
 					Traverse(node->name);
-					Finishing(static_cast<GlrRefClause*>(node));
-					Finishing(static_cast<GlrClause*>(node));
+					Finishing(static_cast<GlrRefSyntax*>(node));
+					Finishing(static_cast<GlrSyntax*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void RuleAstVisitor::Visit(GlrLiteralClause* node)
+				void RuleAstVisitor::Visit(GlrLiteralSyntax* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<GlrClause*>(node));
-					Traverse(static_cast<GlrLiteralClause*>(node));
+					Traverse(static_cast<GlrSyntax*>(node));
+					Traverse(static_cast<GlrLiteralSyntax*>(node));
 					Traverse(node->value);
-					Finishing(static_cast<GlrLiteralClause*>(node));
-					Finishing(static_cast<GlrClause*>(node));
+					Finishing(static_cast<GlrLiteralSyntax*>(node));
+					Finishing(static_cast<GlrSyntax*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void RuleAstVisitor::Visit(GlrUseClause* node)
+				void RuleAstVisitor::Visit(GlrUseSyntax* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<GlrClause*>(node));
-					Traverse(static_cast<GlrUseClause*>(node));
-					InspectInto(node->clause.Obj());
-					Finishing(static_cast<GlrUseClause*>(node));
-					Finishing(static_cast<GlrClause*>(node));
+					Traverse(static_cast<GlrSyntax*>(node));
+					Traverse(static_cast<GlrUseSyntax*>(node));
+					InspectInto(node->Syntax.Obj());
+					Finishing(static_cast<GlrUseSyntax*>(node));
+					Finishing(static_cast<GlrSyntax*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void RuleAstVisitor::Visit(GlrLoopClause* node)
+				void RuleAstVisitor::Visit(GlrLoopSyntax* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<GlrClause*>(node));
-					Traverse(static_cast<GlrLoopClause*>(node));
-					InspectInto(node->clause.Obj());
+					Traverse(static_cast<GlrSyntax*>(node));
+					Traverse(static_cast<GlrLoopSyntax*>(node));
+					InspectInto(node->Syntax.Obj());
 					InspectInto(node->delimiter.Obj());
-					Finishing(static_cast<GlrLoopClause*>(node));
-					Finishing(static_cast<GlrClause*>(node));
+					Finishing(static_cast<GlrLoopSyntax*>(node));
+					Finishing(static_cast<GlrSyntax*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void RuleAstVisitor::Visit(GlrOptionalClause* node)
+				void RuleAstVisitor::Visit(GlrOptionalSyntax* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<GlrClause*>(node));
-					Traverse(static_cast<GlrOptionalClause*>(node));
-					InspectInto(node->clause.Obj());
-					Finishing(static_cast<GlrOptionalClause*>(node));
-					Finishing(static_cast<GlrClause*>(node));
+					Traverse(static_cast<GlrSyntax*>(node));
+					Traverse(static_cast<GlrOptionalSyntax*>(node));
+					InspectInto(node->Syntax.Obj());
+					Finishing(static_cast<GlrOptionalSyntax*>(node));
+					Finishing(static_cast<GlrSyntax*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void RuleAstVisitor::Visit(GlrSequenceClause* node)
+				void RuleAstVisitor::Visit(GlrSequenceSyntax* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<GlrClause*>(node));
-					Traverse(static_cast<GlrSequenceClause*>(node));
+					Traverse(static_cast<GlrSyntax*>(node));
+					Traverse(static_cast<GlrSequenceSyntax*>(node));
 					InspectInto(node->first.Obj());
 					InspectInto(node->second.Obj());
-					Finishing(static_cast<GlrSequenceClause*>(node));
-					Finishing(static_cast<GlrClause*>(node));
+					Finishing(static_cast<GlrSequenceSyntax*>(node));
+					Finishing(static_cast<GlrSyntax*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
@@ -128,9 +132,26 @@ namespace vl
 					{
 						InspectInto(listItem.Obj());
 					}
-					InspectInto(node->clause.Obj());
+					InspectInto(node->syntax.Obj());
 					Traverse(node->type);
 					Finishing(static_cast<GlrCreateClause*>(node));
+					Finishing(static_cast<GlrClause*>(node));
+					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+				}
+
+				void RuleAstVisitor::Visit(GlrPartialClause* node)
+				{
+					if (!node) return;
+					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+					Traverse(static_cast<GlrClause*>(node));
+					Traverse(static_cast<GlrPartialClause*>(node));
+					for (auto&& listItem : node->assignments)
+					{
+						InspectInto(listItem.Obj());
+					}
+					InspectInto(node->syntax.Obj());
+					Traverse(node->type);
+					Finishing(static_cast<GlrPartialClause*>(node));
 					Finishing(static_cast<GlrClause*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
@@ -145,10 +166,16 @@ namespace vl
 					{
 						InspectInto(listItem.Obj());
 					}
-					InspectInto(node->clause.Obj());
+					InspectInto(node->syntax.Obj());
 					Finishing(static_cast<Glr_ReuseClause*>(node));
 					Finishing(static_cast<GlrClause*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+				}
+
+				void RuleAstVisitor::InspectInto(GlrSyntax* node)
+				{
+					if (!node) return;
+					node->Accept(static_cast<GlrSyntax::IVisitor*>(this));
 				}
 
 				void RuleAstVisitor::InspectInto(GlrClause* node)

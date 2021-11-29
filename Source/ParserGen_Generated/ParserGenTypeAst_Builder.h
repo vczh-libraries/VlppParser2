@@ -32,6 +32,7 @@ namespace vl
 					GlrClass* node;
 				public:
 					ClassBuilder(GlrClass* _node) : node(_node) {}
+					ClassBuilder& baseClass(const vl::WString& value);
 					ClassBuilder& props(const vl::Ptr<GlrClassProp>& value);
 				};
 
@@ -41,7 +42,6 @@ namespace vl
 					GlrClassProp* node;
 				public:
 					ClassPropBuilder(GlrClassProp* _node) : node(_node) {}
-					ClassPropBuilder& baseClass(const vl::WString& value);
 					ClassPropBuilder& name(const vl::WString& value);
 					ClassPropBuilder& propType(GlrPropType value);
 					ClassPropBuilder& propTypeName(const vl::WString& value);

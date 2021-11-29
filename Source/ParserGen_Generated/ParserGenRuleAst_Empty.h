@@ -18,6 +18,22 @@ namespace vl
 			namespace empty_visitor
 			{
 				/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
+				class SyntaxVisitor : public vl::Object, public GlrSyntax::IVisitor
+				{
+				protected:
+					// Dispatch (virtual) --------------------------------
+
+				public:
+					// Visitor Members -----------------------------------
+					void Visit(GlrRefSyntax* node) override;
+					void Visit(GlrLiteralSyntax* node) override;
+					void Visit(GlrUseSyntax* node) override;
+					void Visit(GlrLoopSyntax* node) override;
+					void Visit(GlrOptionalSyntax* node) override;
+					void Visit(GlrSequenceSyntax* node) override;
+				};
+
+				/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
 				class ClauseVisitor : public vl::Object, public GlrClause::IVisitor
 				{
 				protected:
@@ -25,13 +41,8 @@ namespace vl
 
 				public:
 					// Visitor Members -----------------------------------
-					void Visit(GlrRefClause* node) override;
-					void Visit(GlrLiteralClause* node) override;
-					void Visit(GlrUseClause* node) override;
-					void Visit(GlrLoopClause* node) override;
-					void Visit(GlrOptionalClause* node) override;
-					void Visit(GlrSequenceClause* node) override;
 					void Visit(GlrCreateClause* node) override;
+					void Visit(GlrPartialClause* node) override;
 					void Visit(Glr_ReuseClause* node) override;
 				};
 

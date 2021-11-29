@@ -66,12 +66,12 @@ namespace vl
 				vl::glr::ParsingToken name;
 				GlrPropType propType;
 				vl::glr::ParsingToken propTypeName;
-				vl::glr::ParsingToken baseClass;
 			};
 
 			class GlrClass : public GlrType, vl::reflection::Description<GlrClass>
 			{
 			public:
+				vl::glr::ParsingToken baseClass;
 				vl::collections::List<vl::Ptr<GlrClassProp>> props;
 
 				void Accept(GlrType::IVisitor* visitor) override;
