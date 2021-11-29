@@ -30,6 +30,9 @@ Clause
 
 				struct Rule
 				{
+					static const vint		Partial = -2;
+					static const vint		Discard = -1;
+
 					RuleSymbol*				rule;
 					vint32_t				field;
 				};
@@ -179,9 +182,14 @@ Operators
 					return { (vint32_t)id,(vint32_t)field,display };
 				}
 
-				inline Rule rule(RuleSymbol* r)
+				inline Rule drule(RuleSymbol* r)
 				{
-					return { r };
+					return { r,Rule::Discard };
+				}
+
+				inline Rule prule(RuleSymbol* r)
+				{
+					return { r,Rule::Partial };
 				}
 
 				template<typename F>
@@ -306,13 +314,15 @@ Builder
 							auto edge = CreateEdge(pair.begin, pair.end);
 							edge->input.type = EdgeInputType::Rule;
 							edge->input.rule = clause.rule;
-							if (clause.field != -1)
+							switch (clause.field)
 							{
-								edge->insAfterInput.Add({ AstInsType::Field,clause.field });
-							}
-							else
-							{
+							case Rule::Partial:
+								break;
+							case Rule::Discard:
 								edge->insAfterInput.Add({ AstInsType::DiscardValue });
+								break;
+							default:
+								edge->insAfterInput.Add({ AstInsType::Field,clause.field });
 							}
 						}
 

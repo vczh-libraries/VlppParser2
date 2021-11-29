@@ -71,10 +71,10 @@ CreateParserGenTypeSyntax
 				Clause{ _classPropType } = partial(tok(T::ID, F::ClassProp_propTypeName) + tok(T::OPEN_SQUARE) + tok(T::CLOSE_SQUARE)).with(F::ClassProp_propType, GlrPropType::Array);
 
 				// "var" ID:name ":" ClassPropType ";" as ClassProp
-				Clause{ _classProp } = create(tok(T::VAR) + tok(T::ID, F::ClassProp_name) + tok(T::COLON) + rule(_classPropType) + tok(T::SEMICOLON), C::ClassProp);
+				Clause{ _classProp } = create(tok(T::VAR) + tok(T::ID, F::ClassProp_name) + tok(T::COLON) + prule(_classPropType) + tok(T::SEMICOLON), C::ClassProp);
 
 				// "class" ID:name [":" ID:baseClass] "{" {ClassProp} "}" as Class
-				Clause{ _class } = create(tok(T::CLASS) + tok(T::ID, F::Type_name) + opt(tok(T::COLON) + tok(T::ID, F::Class_baseClass)) + tok(T::OPEN_CURLY) + loop(rule(_classProp)) + tok(T::CLOSE_CURLY), C::Class);
+				Clause{ _class } = create(tok(T::CLASS) + tok(T::ID, F::Type_name) + opt(tok(T::COLON) + tok(T::ID, F::Class_baseClass)) + tok(T::OPEN_CURLY) + loop(rule(_classProp, F::Class_props)) + tok(T::CLOSE_CURLY), C::Class);
 
 				// !Class | !Enum
 				Clause{ _type } = use(_enum) | use(_class);

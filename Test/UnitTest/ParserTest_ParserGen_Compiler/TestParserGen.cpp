@@ -21,7 +21,7 @@ TEST_FILE
 			auto astCode = File(dirParser / L"Syntax/Ast.txt").ReadAllTextByBom();
 			auto ast = typeParser.ParseFile(astCode);
 			auto actualJson = PrintAstJson<json_visitor::TypeAstVisitor>(ast);
-			File(dirOutput / L"Output[Calculator].txt").WriteAllText(actualJson, BomEncoder::Utf8);
+			File(dirOutput / L"Ast[Calculator].txt").WriteAllText(actualJson, BomEncoder::Utf8);
 		});
 	});
 
