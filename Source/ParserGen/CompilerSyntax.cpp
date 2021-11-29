@@ -8,6 +8,35 @@ namespace vl
 		{
 			using namespace collections;
 
+			using LiteralTokenMap = Dictionary<GlrLiteralSyntax*, vint>;
+			using ClauseTypeMap = Dictionary<GlrClause*, AstClassSymbol*>;
+
+			struct VisitorContext
+			{
+				ParserSymbolManager&		global;
+				AstSymbolManager&			astManager;
+				LexerSymbolManager&			lexerManager;
+				SyntaxSymbolManager&		syntaxManager;
+				Ptr<CppParserGenOutput>		output;
+
+				LiteralTokenMap				literalTokens;
+				ClauseTypeMap				clauseTypes;
+
+				VisitorContext(
+					AstSymbolManager& _astManager,
+					LexerSymbolManager& _lexerManager,
+					SyntaxSymbolManager& _syntaxManager,
+					Ptr<CppParserGenOutput> _output
+				)
+					: global(_syntaxManager.Global())
+					, astManager(_astManager)
+					, lexerManager(_lexerManager)
+					, syntaxManager(_syntaxManager)
+					, output(_output)
+				{
+				}
+			};
+
 /***********************************************************************
 ResolveNameVisitor
 ***********************************************************************/
@@ -17,60 +46,47 @@ ResolveNameVisitor
 				, public virtual GlrSyntax::IVisitor
 				, public virtual GlrClause::IVisitor
 			{
-				using LiteralTokenMap = Dictionary<GlrLiteralSyntax*, vint>;
 			protected:
-				ParserSymbolManager&		global;
-				AstSymbolManager&			astManager;
-				LexerSymbolManager&			lexerManager;
-				SyntaxSymbolManager&		syntaxManager;
-
-				LiteralTokenMap&			literalTokens;
+				VisitorContext&				context;
 				RuleSymbol*					ruleSymbol;
-
-				vint						createCount = 0;
-				vint						partialCount = 0;
-				vint						reuseCount = 0;
 
 				AstClassSymbol* GetRuleClass(const WString& typeName)
 				{
-					vint index = astManager.Symbols().Keys().IndexOf(typeName);
+					vint index = context.astManager.Symbols().Keys().IndexOf(typeName);
 					if (index == -1)
 					{
-						global.AddError(ParserErrorType::TypeNotExistsInRule, ruleSymbol->Name(), typeName);
+						context.global.AddError(ParserErrorType::TypeNotExistsInRule, ruleSymbol->Name(), typeName);
 						return nullptr;
 					}
 
-					auto classSymbol = dynamic_cast<AstClassSymbol*>(astManager.Symbols().Values()[index]);
+					auto classSymbol = dynamic_cast<AstClassSymbol*>(context.astManager.Symbols().Values()[index]);
 					if (!classSymbol)
 					{
-						global.AddError(ParserErrorType::TypeNotClassInRule, ruleSymbol->Name(), typeName);
+						context.global.AddError(ParserErrorType::TypeNotClassInRule, ruleSymbol->Name(), typeName);
 					}
 					return classSymbol;
 				}
 			public:
+				vint						createCount = 0;
+				vint						partialCount = 0;
+				vint						reuseCount = 0;
+
 				ResolveNameVisitor(
-					AstSymbolManager& _astManager,
-					LexerSymbolManager& _lexerManager,
-					SyntaxSymbolManager& _syntaxManager,
-					LiteralTokenMap& _literalTokens,
+					VisitorContext& _context,
 					RuleSymbol* _ruleSymbol
 				)
-					: global(_syntaxManager.Global())
-					, astManager(_astManager)
-					, lexerManager(_lexerManager)
-					, syntaxManager(_syntaxManager)
-					, literalTokens(_literalTokens)
+					: context(_context)
 					, ruleSymbol(_ruleSymbol)
 				{
 				}
 
 				void Visit(GlrRefSyntax* node) override
 				{
-					vint tokenIndex = lexerManager.TokenOrder().IndexOf(node->name.value);
-					vint ruleIndex = syntaxManager.Rules().Keys().IndexOf(node->name.value);
+					vint tokenIndex = context.lexerManager.TokenOrder().IndexOf(node->name.value);
+					vint ruleIndex = context.syntaxManager.Rules().Keys().IndexOf(node->name.value);
 					if (tokenIndex == -1 && ruleIndex == -1)
 					{
-						global.AddError(ParserErrorType::TokenOrRuleNotExistsInRule, ruleSymbol->Name(), node->name.value);
+						context.global.AddError(ParserErrorType::TokenOrRuleNotExistsInRule, ruleSymbol->Name(), node->name.value);
 					}
 				}
 
@@ -93,25 +109,25 @@ ResolveNameVisitor
 						*writing = 0;
 
 						auto literalValue = WString::Unmanaged(&buffer[0]);
-						for (auto&& [tokenName, tokenIndex] : indexed(lexerManager.TokenOrder()))
+						for (auto&& [tokenName, tokenIndex] : indexed(context.lexerManager.TokenOrder()))
 						{
-							auto tokenSymbol = lexerManager.Tokens()[tokenName];
+							auto tokenSymbol = context.lexerManager.Tokens()[tokenName];
 							if (tokenSymbol->displayText==literalValue)
 							{
-								literalTokens.Add(node, tokenIndex);
+								context.literalTokens.Add(node, tokenIndex);
 								return;
 							}
 						}
 					}
-					global.AddError(ParserErrorType::TokenOrRuleNotExistsInRule, ruleSymbol->Name(), node->value.value);
+					context.global.AddError(ParserErrorType::TokenOrRuleNotExistsInRule, ruleSymbol->Name(), node->value.value);
 				}
 
 				void Visit(GlrUseSyntax* node) override
 				{
-					vint ruleIndex = syntaxManager.Rules().Keys().IndexOf(node->name.value);
+					vint ruleIndex = context.syntaxManager.Rules().Keys().IndexOf(node->name.value);
 					if (ruleIndex == -1)
 					{
-						global.AddError(ParserErrorType::TokenOrRuleNotExistsInRule, ruleSymbol->Name(), node->name.value);
+						context.global.AddError(ParserErrorType::TokenOrRuleNotExistsInRule, ruleSymbol->Name(), node->name.value);
 					}
 				}
 
@@ -179,16 +195,10 @@ CompileSyntaxVisitor
 				};
 
 				using StatePosMap = Dictionary<StateSymbol*, vint>;
-				using LiteralTokenMap = Dictionary<GlrLiteralSyntax*, vint>;
 			protected:
-				ParserSymbolManager&		global;
-				AstSymbolManager&			astManager;
-				LexerSymbolManager&			lexerManager;
-				SyntaxSymbolManager&		syntaxManager;
-
-				LiteralTokenMap&			literalTokens;
-				Ptr<CppParserGenOutput>		output;
+				VisitorContext&				context;
 				RuleSymbol*					ruleSymbol;
+				AstClassSymbol*				clauseType;
 
 				WString						clauseDisplayText;
 				StatePosMap					startPoses;
@@ -218,19 +228,10 @@ CompileSyntaxVisitor
 				}
 			public:
 				CompileSyntaxVisitor(
-					AstSymbolManager& _astManager,
-					LexerSymbolManager& _lexerManager,
-					SyntaxSymbolManager& _syntaxManager,
-					LiteralTokenMap& _literalTokens,
-					Ptr<CppParserGenOutput> _output,
+					VisitorContext& _context,
 					RuleSymbol* _ruleSymbol
 				)
-					: global(_syntaxManager.Global())
-					, astManager(_astManager)
-					, lexerManager(_lexerManager)
-					, syntaxManager(_syntaxManager)
-					, literalTokens(_literalTokens)
-					, output(_output)
+					: context(_context)
 					, ruleSymbol(_ruleSymbol)
 				{
 				}
@@ -259,7 +260,7 @@ CompileSyntaxVisitor
 				void Visit(GlrRefSyntax* node) override
 				{
 					{
-						vint index = lexerManager.TokenOrder().IndexOf(node->name.value);
+						vint index = context.lexerManager.TokenOrder().IndexOf(node->name.value);
 						if (index != -1)
 						{
 							StatePair pair;
@@ -273,23 +274,23 @@ CompileSyntaxVisitor
 								edge->input.token = index;
 								if (node->field)
 								{
-									auto propSymbol = ruleSymbol->ruleType->Props()[node->field.value];
+									auto propSymbol = clauseType->Props()[node->field.value];
 									edge->insAfterInput.Add({ AstInsType::Token });
-									edge->insAfterInput.Add({ AstInsType::Field,output->fieldIds[propSymbol] });
+									edge->insAfterInput.Add({ AstInsType::Field,context.output->fieldIds[propSymbol] });
 								}
 							}
 
-							clauseDisplayText += lexerManager.Tokens()[node->name.value]->displayText;
+							clauseDisplayText += context.lexerManager.Tokens()[node->name.value]->displayText;
 							endPoses.Add(pair.end, clauseDisplayText.Length());
 							result = pair;
 							return;
 						}
 					}
 					{
-						vint index = syntaxManager.Rules().Keys().IndexOf(node->name.value);
+						vint index = context.syntaxManager.Rules().Keys().IndexOf(node->name.value);
 						if (index != -1)
 						{
-							auto rule = syntaxManager.Rules().Values()[index];
+							auto rule = context.syntaxManager.Rules().Values()[index];
 							StatePair pair;
 							pair.begin = CreateState();
 							pair.end = CreateState();
@@ -301,8 +302,8 @@ CompileSyntaxVisitor
 								edge->input.rule = rule;
 								if (node->field)
 								{
-									auto propSymbol = ruleSymbol->ruleType->Props()[node->field.value];
-									edge->insAfterInput.Add({ AstInsType::Field,output->fieldIds[propSymbol] });
+									auto propSymbol = clauseType->Props()[node->field.value];
+									edge->insAfterInput.Add({ AstInsType::Field,context.output->fieldIds[propSymbol] });
 								}
 								else if (!rule->isPartial)
 								{
@@ -321,7 +322,7 @@ CompileSyntaxVisitor
 
 				void Visit(GlrLiteralSyntax* node) override
 				{
-					vint index = literalTokens[node];
+					vint index = context.literalTokens[node];
 					StatePair pair;
 					pair.begin = CreateState();
 					pair.end = CreateState();
@@ -330,24 +331,24 @@ CompileSyntaxVisitor
 					{
 						auto edge = CreateEdge(pair.begin, pair.end);
 						edge->input.type = EdgeInputType::Token;
-						edge->input.token = literalTokens[node];
+						edge->input.token = context.literalTokens[node];
 					}
 
-					clauseDisplayText += lexerManager.Tokens()[lexerManager.TokenOrder()[index]]->displayText;
+					clauseDisplayText += context.lexerManager.Tokens()[context.lexerManager.TokenOrder()[index]]->displayText;
 					endPoses.Add(pair.end, clauseDisplayText.Length());
 					result = pair;
 				}
 
 				void Visit(GlrUseSyntax* node) override
 				{
-					vint index = syntaxManager.Rules().Keys().IndexOf(node->name.value);
+					vint index = context.syntaxManager.Rules().Keys().IndexOf(node->name.value);
 					if (index == -1)
 					{
-						global.AddError(ParserErrorType::TokenOrRuleNotExistsInRule, node->name.value);
+						context.global.AddError(ParserErrorType::TokenOrRuleNotExistsInRule, node->name.value);
 						return;
 					}
 
-					auto rule = syntaxManager.Rules().Values()[index];
+					auto rule = context.syntaxManager.Rules().Values()[index];
 					StatePair pair;
 					pair.begin = CreateState();
 					pair.end = CreateState();
@@ -448,8 +449,23 @@ CompileSyntaxVisitor
 					result = pair;
 				}
 
+				StatePair Visit(StatePair pair, GlrAssignment* node)
+				{
+					auto withState = CreateState();
+					auto edge = CreateEdge(pair.end, withState);
+
+					auto propSymbol = clauseType->Props()[node->field.value];
+					auto enumSymbol = dynamic_cast<AstEnumSymbol*>(propSymbol->propSymbol);
+					edge->insBeforeInput.Add({ AstInsType::EnumItem,enumSymbol->ItemOrder().IndexOf(node->value.value) });
+					edge->insBeforeInput.Add({ AstInsType::Field,context.output->fieldIds[propSymbol] });
+
+					endPoses.Add(withState, clauseDisplayText.Length());
+					return { pair.begin,withState };
+				}
+
 				void Visit(GlrCreateClause* node) override
 				{
+					clauseType = context.clauseTypes[node];
 					StatePair pair;
 					pair.begin = CreateState();
 					pair.end = CreateState();
@@ -457,11 +473,15 @@ CompileSyntaxVisitor
 
 					clauseDisplayText += L"< ";
 					auto bodyPair = Build(node->syntax);
+					for (auto assignment : node->assignments)
+					{
+						bodyPair = Visit(bodyPair, assignment.Obj());
+					}
 					clauseDisplayText += L" >";
 					{
-						auto classSymbol = dynamic_cast<AstClassSymbol*>(astManager.Symbols()[node->type.value]);
+						auto classSymbol = dynamic_cast<AstClassSymbol*>(context.astManager.Symbols()[node->type.value]);
 						auto edge = CreateEdge(pair.begin, bodyPair.begin);
-						edge->insBeforeInput.Add({ AstInsType::BeginObject,output->classIds[classSymbol] });
+						edge->insBeforeInput.Add({ AstInsType::BeginObject,context.output->classIds[classSymbol] });
 					}
 					{
 						auto edge = CreateEdge(bodyPair.end, pair.end);
@@ -473,11 +493,17 @@ CompileSyntaxVisitor
 
 				void Visit(GlrPartialClause* node) override
 				{
-					Build(node->syntax);
+					clauseType = context.clauseTypes[node];
+					auto bodyPair = Build(node->syntax);
+					for (auto assignment : node->assignments)
+					{
+						bodyPair = Visit(bodyPair, assignment.Obj());
+					}
 				}
 
 				void Visit(Glr_ReuseClause* node) override
 				{
+					clauseType = context.clauseTypes[node];
 					StatePair pair;
 					pair.begin = CreateState();
 					pair.end = CreateState();
@@ -485,6 +511,10 @@ CompileSyntaxVisitor
 
 					clauseDisplayText += L"<< ";
 					auto bodyPair = Build(node->syntax);
+					for (auto assignment : node->assignments)
+					{
+						bodyPair = Visit(bodyPair, assignment.Obj());
+					}
 					clauseDisplayText += L" >>";
 					CreateEdge(pair.begin, bodyPair.begin);
 					{
@@ -518,16 +548,21 @@ CompileSyntax
 				}
 				if (syntaxManager.Global().Errors().Count() > 0) return;
 
-				Dictionary<GlrLiteralSyntax*, vint> literalTokens;
+				VisitorContext context(astManager, lexerManager, syntaxManager, output);
 				for (auto file : files)
 				{
 					for (auto rule : file->rules)
 					{
 						auto ruleSymbol = syntaxManager.Rules()[rule->name.value];
-						ResolveNameVisitor visitor(astManager, lexerManager, syntaxManager, literalTokens, ruleSymbol);
+						ResolveNameVisitor visitor(context, ruleSymbol);
 						for (auto clause : rule->clauses)
 						{
 							clause->Accept(&visitor);
+						}
+
+						if (visitor.partialCount > 0 && (visitor.createCount > 0 || visitor.reuseCount > 0))
+						{
+							syntaxManager.Global().AddError(ParserErrorType::RuleCannotResolveToDeterministicType, ruleSymbol->Name());
 						}
 					}
 				}
@@ -538,7 +573,7 @@ CompileSyntax
 					for (auto rule : file->rules)
 					{
 						auto ruleSymbol = syntaxManager.Rules()[rule->name.value];
-						CompileSyntaxVisitor visitor(astManager, lexerManager, syntaxManager, literalTokens, output, ruleSymbol);
+						CompileSyntaxVisitor visitor(context, ruleSymbol);
 						for (auto clause : rule->clauses)
 						{
 							visitor.AssignClause(clause);
