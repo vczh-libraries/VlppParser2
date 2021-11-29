@@ -133,9 +133,9 @@ SyntaxSymbolManager
 						auto ruleSymbol = rules.map[ruleName];
 						auto orderedStates = From(groupedStates[ruleSymbol])
 							.OrderBy([](StateSymbol* s1, StateSymbol* s2)
-								{
-									return WString::Compare(s1->label, s2->label);
-								});
+							{
+								return WString::Compare(s1->label, s2->label);
+							});
 						for (auto state : orderedStates)
 						{
 							order.Add(state);

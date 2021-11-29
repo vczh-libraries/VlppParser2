@@ -52,7 +52,7 @@ void LogInstruction(
 LogAutomaton
 ***********************************************************************/
 
-FilePath LogAutomaton(
+FilePath LogAutomatonWithPath(
 	const FilePath& outputFile,
 	Executable& executable,
 	Metadata& metadata,
@@ -127,7 +127,7 @@ FilePath LogAutomaton(
 	const Func<WString(vint32_t)>& tokenName
 )
 {
-	return LogAutomaton(GetOutputDir(parserName) / L"Automaton.txt", executable, metadata, typeName, fieldName, tokenName);
+	return LogAutomatonWithPath(GetOutputDir(parserName) / L"Automaton.txt", executable, metadata, typeName, fieldName, tokenName);
 }
 
 /***********************************************************************

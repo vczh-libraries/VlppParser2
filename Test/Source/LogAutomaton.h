@@ -18,7 +18,7 @@ void LogInstruction(
 	StreamWriter& writer
 	);
 
-FilePath LogAutomaton(
+FilePath LogAutomatonWithPath(
 	const FilePath& outputFile,
 	Executable& executable,
 	Metadata& metadata,

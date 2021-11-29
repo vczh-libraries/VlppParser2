@@ -111,7 +111,7 @@ TEST_FILE
 				syntaxManager.BuildAutomaton(lexerManager.Tokens().Count(), executable, metadata);
 				TEST_ASSERT(global.Errors().Count() == 0);
 
-				LogAutomaton(
+				LogAutomatonWithPath(
 					dirOutput / (L"Automaton[" + parserName + L"].txt"),
 					executable,
 					metadata,

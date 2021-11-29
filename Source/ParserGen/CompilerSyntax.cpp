@@ -293,6 +293,7 @@ CompileSyntaxVisitor
 						vint index = context.lexerManager.TokenOrder().IndexOf(node->name.value);
 						if (index != -1)
 						{
+							auto token = context.lexerManager.Tokens()[node->name.value];
 							StatePair pair;
 							pair.begin = CreateState();
 							pair.end = CreateState();
@@ -310,7 +311,7 @@ CompileSyntaxVisitor
 								}
 							}
 
-							clauseDisplayText += context.lexerManager.Tokens()[node->name.value]->displayText;
+							clauseDisplayText += token->displayText == L"" ? token->Name() : L"\"" + token->displayText + L"\"";
 							endPoses.Add(pair.end, clauseDisplayText.Length());
 							result = pair;
 							return;
@@ -353,6 +354,7 @@ CompileSyntaxVisitor
 				void Visit(GlrLiteralSyntax* node) override
 				{
 					vint index = context.literalTokens[node];
+					auto token = context.lexerManager.Tokens()[context.lexerManager.TokenOrder()[index]];
 					StatePair pair;
 					pair.begin = CreateState();
 					pair.end = CreateState();
@@ -364,7 +366,7 @@ CompileSyntaxVisitor
 						edge->input.token = context.literalTokens[node];
 					}
 
-					clauseDisplayText += context.lexerManager.Tokens()[context.lexerManager.TokenOrder()[index]]->displayText;
+					clauseDisplayText += token->displayText == L"" ? token->Name() : L"\"" + token->displayText + L"\"";
 					endPoses.Add(pair.end, clauseDisplayText.Length());
 					result = pair;
 				}
