@@ -75,8 +75,8 @@ TEST_FILE
 
 				CompileAst(astManager, astDefFile, astFile);
 				TEST_ASSERT(global.Errors().Count() == 0);
-				//CompileLexer(lexerManager, lexerInput);
-				//TEST_ASSERT(global.Errors().Count() == 0);
+				CompileLexer(lexerManager, lexerInput);
+				TEST_ASSERT(global.Errors().Count() == 0);
 				//CompileSyntax(astManager, lexerManager, syntaxManager, files);
 				//TEST_ASSERT(global.Errors().Count() == 0);
 
@@ -113,7 +113,7 @@ TEST_FILE
 
 				Dictionary<WString, WString> files;
 				WriteAstFiles(astManager, output, files);
-				//WriteLexerFiles(lexerManager, output, files);
+				WriteLexerFiles(lexerManager, output, files);
 				//WriteSyntaxFiles(syntaxManager, executable, metadata, output, files);
 
 				for (auto&& [name, content] : files)
