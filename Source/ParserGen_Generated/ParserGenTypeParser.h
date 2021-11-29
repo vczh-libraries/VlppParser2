@@ -22,9 +22,9 @@ namespace vl
 				Enum = 4,
 				ClassPropType = 11,
 				classProp = 18,
-				Class = 24,
-				Type = 33,
-				File = 37,
+				Class = 25,
+				Type = 34,
+				File = 38,
 			};
 
 			template<TypeParserStates> struct TypeParserStateTypes;
