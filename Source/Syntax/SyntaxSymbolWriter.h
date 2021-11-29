@@ -65,6 +65,13 @@ Clause
 					U						second;
 				};
 
+				template<typename T, typename U>
+				struct Alt
+				{
+					T						first;
+					U						second;
+				};
+
 				template<typename T>
 				struct With
 				{
@@ -83,6 +90,18 @@ Clause
 					Create<With<T>> with(F field, E enumItem)
 					{
 						return { { body,(vint32_t)field,(vint32_t)enumItem }, type };
+					}
+				};
+
+				template<typename T>
+				struct Partial
+				{
+					T						body;
+
+					template<typename F, typename E>
+					Partial<With<T>> with(F field, E enumItem)
+					{
+						return { { body,(vint32_t)field,(vint32_t)enumItem } };
 					}
 				};
 
@@ -126,11 +145,17 @@ Verification
 				template<typename T, typename U>
 				struct IsClause_<Seq<T, U>> { static constexpr bool Value = IsClause_<T>::Value && IsClause_<U>::Value; };
 
+				template<typename T, typename U>
+				struct IsClause_<Alt<T, U>> { static constexpr bool Value = IsClause_<T>::Value && IsClause_<U>::Value; };
+
 				template<typename T>
 				struct IsClause_<With<T>> { static constexpr bool Value = IsClause_<T>::Value; };
 
 				template<typename T>
 				struct IsClause_<Create<T>> { static constexpr bool Value = IsClause_<T>::Value; };
+
+				template<typename T>
+				struct IsClause_<Partial<T>> { static constexpr bool Value = IsClause_<T>::Value; };
 
 				template<typename T>
 				struct IsClause_<Reuse<T>> { static constexpr bool Value = IsClause_<T>::Value; };
@@ -194,10 +219,22 @@ Operators
 					return { c1,c2 };
 				}
 
+				template<typename C1, typename C2>
+				inline std::enable_if_t<IsClause<C1>&& IsClause<C2>, Alt<C1, C2>> operator|(const C1& c1, const C2& c2)
+				{
+					return { c1,c2 };
+				}
+
 				template<typename C, typename T>
 				inline std::enable_if_t<IsClause<C>, Create<C>> create(const C& clause, T type)
 				{
 					return { clause,(vint32_t)type };
+				}
+
+				template<typename C>
+				inline std::enable_if_t<IsClause<C>, Partial<C>> partial(const C& clause)
+				{
+					return { clause };
 				}
 
 				template<typename C>
@@ -378,6 +415,29 @@ Builder
 						return { firstPair.begin,secondPair.end };
 					}
 
+					template<typename C1, typename C2>
+					StatePair Build(const Alt<C1, C2>& clause)
+					{
+						StatePair pair;
+						pair.begin = CreateState();
+						pair.end = CreateState();
+						startPoses.Add(pair.begin, clauseDisplayText.Length());
+
+						clauseDisplayText += L"( ";
+						auto firstPair = Build(clause.first);
+						clauseDisplayText += L" | ";
+						auto secondPair = Build(clause.second);
+						clauseDisplayText += L" )";
+
+						CreateEdge(pair.begin, firstPair.begin);
+						CreateEdge(firstPair.end, pair.end);
+						CreateEdge(pair.begin, secondPair.begin);
+						CreateEdge(secondPair.end, pair.end);
+
+						endPoses.Add(pair.end, clauseDisplayText.Length());
+						return pair;
+					}
+
 					template<typename C>
 					StatePair Build(const With<C>& clause)
 					{
@@ -412,6 +472,12 @@ Builder
 						}
 						endPoses.Add(pair.end, clauseDisplayText.Length());
 						return pair;
+					}
+
+					template<typename C>
+					StatePair Build(const Partial<C>& clause)
+					{
+						return Build(clause.body);
 					}
 
 					template<typename C>
@@ -460,6 +526,13 @@ Builder
 
 					template<typename C>
 					Clause& operator=(const Create<C>& clause)
+					{
+						Assign(clause);
+						return *this;
+					}
+
+					template<typename C>
+					Clause& operator=(const Partial<C>& clause)
 					{
 						Assign(clause);
 						return *this;

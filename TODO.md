@@ -85,8 +85,9 @@
       4. [x] Run the generated `Executable` from `SyntaxSymbolManager`.
       5. [ ] Check `codeRange` of all nodes. (use the previous/current token(calculate codeRange) v.s. before/after rule deduction (move instructions to different places))
    4. [ ] Generate `ParserGen` Syntax C++ files in this unit test project.
-      1. [ ] Syntax for `ParserGen`.
-      2. [x] Syntax for `Calculator`.
+      1. [x] Syntax for `ParserGen::TypeSyntax`.
+      2. [ ] Syntax for `ParserGen::RuleSyntax`.
+      3. [x] Syntax for `Calculator`.
 4. [x] `ParserTest_ParserGen_Compiler`
    1. [ ] Initialize `AstSymbolManager` from `ParserGen::TypeAst`.
    2. [ ] Initialize `SyntaxSymbolManager` from `ParserGen::SyntaxAst`.
