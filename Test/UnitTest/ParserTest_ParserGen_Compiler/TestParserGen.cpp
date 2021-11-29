@@ -77,15 +77,15 @@ TEST_FILE
 				TEST_ASSERT(global.Errors().Count() == 0);
 				CompileLexer(lexerManager, lexerInput);
 				TEST_ASSERT(global.Errors().Count() == 0);
-				//CompileSyntax(astManager, lexerManager, syntaxManager, files);
-				//TEST_ASSERT(global.Errors().Count() == 0);
+				CompileSyntax(astManager, lexerManager, syntaxManager, files);
+				TEST_ASSERT(global.Errors().Count() == 0);
 
-				//syntaxManager.BuildCompactNFA();
-				//TEST_ASSERT(global.Errors().Count() == 0);
-				//syntaxManager.BuildCrossReferencedNFA();
-				//TEST_ASSERT(global.Errors().Count() == 0);
-				//syntaxManager.BuildAutomaton(lexerManager.Tokens().Count(), executable, metadata);
-				//TEST_ASSERT(global.Errors().Count() == 0);
+				syntaxManager.BuildCompactNFA();
+				TEST_ASSERT(global.Errors().Count() == 0);
+				syntaxManager.BuildCrossReferencedNFA();
+				TEST_ASSERT(global.Errors().Count() == 0);
+				syntaxManager.BuildAutomaton(lexerManager.Tokens().Count(), executable, metadata);
+				TEST_ASSERT(global.Errors().Count() == 0);
 			});
 
 			if (global.Errors().Count() == 0)
@@ -102,9 +102,9 @@ TEST_FILE
 					astDefFile->classPrefix = L"";
 				}
 				{
-					//syntaxManager.name = parserName;
-					//syntaxManager.parsableRules.Add(syntaxManager.Rules()[ruleName]);
-					//syntaxManager.ruleTypes.Add(syntaxManager.Rules()[ruleName], L"*");
+					syntaxManager.name = parserName;
+					syntaxManager.parsableRules.Add(syntaxManager.Rules()[ruleName]);
+					syntaxManager.ruleTypes.Add(syntaxManager.Rules()[ruleName], L"*");
 				}
 
 				auto output = GenerateParserFileNames(global);
@@ -114,7 +114,7 @@ TEST_FILE
 				Dictionary<WString, WString> files;
 				WriteAstFiles(astManager, output, files);
 				WriteLexerFiles(lexerManager, output, files);
-				//WriteSyntaxFiles(syntaxManager, executable, metadata, output, files);
+				WriteSyntaxFiles(syntaxManager, executable, metadata, output, files);
 
 				for (auto&& [name, content] : files)
 				{
