@@ -84,25 +84,26 @@
       3. [x] Prepare output JSON files in `Test/Source/Calculator/Output/`.
       4. [x] Run the generated `Executable` from `SyntaxSymbolManager`.
       5. [ ] Check `codeRange` of all nodes. (use the previous/current token(calculate codeRange) v.s. before/after rule deduction (move instructions to different places))
-   4. [ ] Generate `ParserGen` Syntax C++ files in this unit test project.
+   4. [x] Generate `ParserGen` Syntax C++ files in this unit test project.
       1. [x] Syntax for `ParserGen::TypeSyntax`.
-      2. [ ] Syntax for `ParserGen::RuleSyntax`.
+      2. [x] Syntax for `ParserGen::RuleSyntax`.
       3. [x] Syntax for `Calculator`.
 4. [x] `ParserTest_ParserGen_Compiler`
    1. [ ] Initialize `AstSymbolManager` from `ParserGen::TypeAst`.
    2. [ ] Initialize `SyntaxSymbolManager` from `ParserGen::SyntaxAst`.
    3. [x] Test generated `Calculator` syntax C++ files again.
-   4. [ ] Test generated `ParserGen` syntax C++ files to parse `Test/Source/Calculator/Syntax/Syntax.txt`.
-      1. [ ] Generate the whole `Calculator` C++ files in `Test/Source/Calculator/Parser2` again.
-   5. [ ] Prepare more parser test cases for `+loop`, `-loop`, `loop`, `+opt`, `-opt`, `opt`, left recursion, indirect left recursion, ...
+   4. [x] Test generated `ParserGen` syntax C++ files to parse `Test/Source/Calculator/Syntax/Ast.txt`.
+   5. [ ] Test generated `ParserGen` syntax C++ files to parse `Test/Source/Calculator/Syntax/Syntax.txt`.
+   6. [ ] Generate the whole `Calculator` C++ files in `Test/Source/Calculator/Parser2` again.
+   7. [ ] Prepare more parser test cases for `+loop`, `-loop`, `loop`, `+opt`, `-opt`, `opt`, left recursion, indirect left recursion, ...
       1. [ ] Multiple parser syntax under `Test/Source/*/Syntax/`.
       2. [ ] Generate C++ files from them in `Test/Source/*/Parser/`.
       3. [ ] Prepare input text files in `Test/Source/*/Input/`.
       4. [ ] Prepare output JSON files in `Test/Source/*/Output/`.
       5. [ ] Use the generated `ParserGen` syntax C++ files to do above work items.
-   5. [ ] Prepare more parser test cases for compile errors, no need to have input/output/codegen
-   6. [ ] Generate JSON parser
-   7. [ ] Generate XML parser
+   8. [ ] Prepare more parser test cases for compile errors, no need to have input/output/codegen
+   9. [ ] Generate JSON parser
+   10. [ ] Generate XML parser
 5. [ ] `ParserTest_ParserGen_Generated`
    1. [ ] Prepare more parser test cases (including `Calculator/Parser2`).
       1. [ ] Prepare input text files in `Test/Source/*/Input/`.

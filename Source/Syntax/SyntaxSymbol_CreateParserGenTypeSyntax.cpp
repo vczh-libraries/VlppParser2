@@ -11,26 +11,8 @@ namespace vl
 			using namespace collections;
 			using namespace syntax_writer;
 
-			auto tok(ParserGenTokens id)
-			{
-				auto d = ParserGenTokenDisplayText(id);
-				auto n = ParserGenTokenId(id);
-				return syntax_writer::tok(
-					id,
-					(d ? L"\"" + WString::Unmanaged(d) + L"\"" : WString::Unmanaged(n))
-				);
-			}
-
-			auto tok(ParserGenTokens id, ParserGenFields field)
-			{
-				auto d = ParserGenTokenDisplayText(id);
-				auto n = ParserGenTokenId(id);
-				return syntax_writer::tok(
-					id,
-					(d ? L"\"" + WString::Unmanaged(d) + L"\"" : WString::Unmanaged(n)),
-					field
-				);
-			}
+			extern syntax_writer::Token		tok(ParserGenTokens id);
+			extern syntax_writer::Token		tok(ParserGenTokens id, ParserGenFields field);
 
 /***********************************************************************
 CreateParserGenTypeSyntax
