@@ -9,10 +9,10 @@ namespace vl
 			using namespace collections;
 
 /***********************************************************************
-CheckSyntaxVisitor
+ResolveNameVisitor
 ***********************************************************************/
 
-			class CheckSyntaxVisitor
+			class ResolveNameVisitor
 				: public Object
 				, public virtual GlrSyntax::IVisitor
 				, public virtual GlrClause::IVisitor
@@ -27,8 +27,28 @@ CheckSyntaxVisitor
 				LiteralTokenMap&			literalTokens;
 				RuleSymbol*					ruleSymbol;
 
+				vint						createCount = 0;
+				vint						partialCount = 0;
+				vint						reuseCount = 0;
+
+				AstClassSymbol* GetRuleClass(const WString& typeName)
+				{
+					vint index = astManager.Symbols().Keys().IndexOf(typeName);
+					if (index == -1)
+					{
+						global.AddError(ParserErrorType::TypeNotExistsInRule, ruleSymbol->Name(), typeName);
+						return nullptr;
+					}
+
+					auto classSymbol = dynamic_cast<AstClassSymbol*>(astManager.Symbols().Values()[index]);
+					if (!classSymbol)
+					{
+						global.AddError(ParserErrorType::TypeNotClassInRule, ruleSymbol->Name(), typeName);
+					}
+					return classSymbol;
+				}
 			public:
-				CheckSyntaxVisitor(
+				ResolveNameVisitor(
 					AstSymbolManager& _astManager,
 					LexerSymbolManager& _lexerManager,
 					SyntaxSymbolManager& _syntaxManager,
@@ -46,52 +66,99 @@ CheckSyntaxVisitor
 
 				void Visit(GlrRefSyntax* node) override
 				{
-					CHECK_FAIL(L"Not Implemented!");
+					vint tokenIndex = lexerManager.TokenOrder().IndexOf(node->name.value);
+					vint ruleIndex = syntaxManager.Rules().Keys().IndexOf(node->name.value);
+					if (tokenIndex == -1 && ruleIndex == -1)
+					{
+						global.AddError(ParserErrorType::TokenOrRuleNotExistsInRule, ruleSymbol->Name(), node->name.value);
+					}
 				}
 
 				void Visit(GlrLiteralSyntax* node) override
 				{
-					CHECK_FAIL(L"Not Implemented!");
+					if (node->value.value.Length() > 2)
+					{
+						Array<wchar_t> buffer(node->value.value.Length());
+						wchar_t* writing = &buffer[0];
+
+						for (vint i = 1; i < node->value.value.Length() - 1; i++)
+						{
+							wchar_t c = node->value.value[i];
+							*writing++ = c;
+							if (c == L'\"')
+							{
+								i++;
+							}
+						}
+						*writing = 0;
+
+						auto literalValue = WString::Unmanaged(&buffer[0]);
+						for (auto&& [tokenName, tokenIndex] : indexed(lexerManager.TokenOrder()))
+						{
+							auto tokenSymbol = lexerManager.Tokens()[tokenName];
+							if (tokenSymbol->displayText==literalValue)
+							{
+								literalTokens.Add(node, tokenIndex);
+								return;
+							}
+						}
+					}
+					global.AddError(ParserErrorType::TokenOrRuleNotExistsInRule, ruleSymbol->Name(), node->value.value);
 				}
 
 				void Visit(GlrUseSyntax* node) override
 				{
-					CHECK_FAIL(L"Not Implemented!");
+					vint ruleIndex = syntaxManager.Rules().Keys().IndexOf(node->name.value);
+					if (ruleIndex == -1)
+					{
+						global.AddError(ParserErrorType::TokenOrRuleNotExistsInRule, ruleSymbol->Name(), node->name.value);
+					}
 				}
 
 				void Visit(GlrLoopSyntax* node) override
 				{
-					CHECK_FAIL(L"Not Implemented!");
+					node->syntax->Accept(this);
+					if (node->delimiter)
+					{
+						node->delimiter->Accept(this);
+					}
 				}
 
 				void Visit(GlrOptionalSyntax* node) override
 				{
-					CHECK_FAIL(L"Not Implemented!");
+					node->syntax->Accept(this);
 				}
 
 				void Visit(GlrSequenceSyntax* node) override
 				{
-					CHECK_FAIL(L"Not Implemented!");
+					node->first->Accept(this);
+					node->second->Accept(this);
 				}
 
 				void Visit(GlrAlternativeSyntax* node) override
 				{
-					CHECK_FAIL(L"Not Implemented!");
+					node->first->Accept(this);
+					node->second->Accept(this);
 				}
 
 				void Visit(GlrCreateClause* node) override
 				{
-					CHECK_FAIL(L"Not Implemented!");
+					createCount++;
+					GetRuleClass(node->type.value);
+					node->syntax->Accept(this);
 				}
 
 				void Visit(GlrPartialClause* node) override
 				{
-					CHECK_FAIL(L"Not Implemented!");
+					partialCount++;
+					GetRuleClass(node->type.value);
+					node->syntax->Accept(this);
 				}
 
 				void Visit(Glr_ReuseClause* node) override
 				{
-					CHECK_FAIL(L"Not Implemented!");
+					reuseCount++;
+					node->syntax->Accept(this);
 				}
 			};
 
@@ -457,7 +524,7 @@ CompileSyntax
 					for (auto rule : file->rules)
 					{
 						auto ruleSymbol = syntaxManager.Rules()[rule->name.value];
-						CheckSyntaxVisitor visitor(astManager, lexerManager, syntaxManager, literalTokens, ruleSymbol);
+						ResolveNameVisitor visitor(astManager, lexerManager, syntaxManager, literalTokens, ruleSymbol);
 						for (auto clause : rule->clauses)
 						{
 							clause->Accept(&visitor);

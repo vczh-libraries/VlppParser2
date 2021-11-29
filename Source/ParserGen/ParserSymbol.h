@@ -70,28 +70,29 @@ ParserSymbolManager
 
 				// SyntaxSymbolManager ----------------------------------------------------------------
 				DuplicatedRule,								// (ruleName)
-				RuleIsIndirectlyLeftRecursive,				// (ruleName)										: Indirect left recursion must be resolved before.
+				RuleIsIndirectlyLeftRecursive,				// (ruleName)								: Indirect left recursion must be resolved before.
 
 				// SyntaxAst to SyntaxSymbolManager ---------------------------------------------------
 				// hint is a position in clause like: EXP0 ::= '(' @ !EXP ')'
 				RuleNameConflictedWithToken,				// (ruleName)
-				TokenOrRuleNotExistsInRule,					// (ruleName, hint, name)
-				TypeNotExistsInRule,						// (ruleName, hint, name)
-				FieldNotExistsInRule,						// (ruleName, hint, typeName, fieldName)
-				RuleCannotResolveToDeterministicType,		// (ruleName, hint)									: Unable to resolve to one type from clauses (token, type) or (create, partial).
-				RuleTypeMismatchedToField,					// (ruleName, hint, fieldRuleName, fieldName)		: The rule type is not compatible to the assigning field.
-				PartialRuleUsedOnField,						// (ruleName, hint, partialRuleName, fieldName)		: A partial rule does not create object, it cannot be assigned to a field.
-				ClauseNotCreateObject,						// (ruleName, hint)									: A clause is not a create rule, not a partial rule, and not containing use rule.
-				ClauseCouldExpandToEmptySequence,			// (ruleName, hint)
-				UseRuleUsedInOptionalBody,					// (ruleName, hint)
-				UseRuleUsedInLoopBody,						// (ruleName, hint)
-				UseRuleAppearAfterField,					// (ruleName, hint, useRuleName, fieldName)
-				UseRuleAppearAfterPartialRule,				// (ruleName, hint, useRuleName, partialRuleName)
-				TooManyUseRule,								// (ruleName, hint)
-				ClauseMixedUseAndCreateRule,				// (ruleName, hint)									: A clause with a use rule cannot be a create rule or a partial rule.
-				ClauseTypeMismatchedToPartialRule,			// (ruleName, hint, partialRuleName)				: A clause uses a partial rule of an incompatible type.
-				OptionalBodyCouldExpandToEmptySequence,		// (ruleName, hint)
-				LoopBodyCouldExpandToEmptySequence,			// (ruleName, hint)
+				TokenOrRuleNotExistsInRule,					// (ruleName, name)
+				TypeNotExistsInRule,						// (ruleName, name)
+				TypeNotClassInRule,							// (ruleName, name)
+				FieldNotExistsInRule,						// (ruleName, typeName, fieldName)
+				RuleCannotResolveToDeterministicType,		// (ruleName)								: Unable to resolve to one type from clauses (token, type) or (create, partial).
+				RuleTypeMismatchedToField,					// (ruleName, fieldRuleName, fieldName)		: The rule type is not compatible to the assigning field.
+				PartialRuleUsedOnField,						// (ruleName, partialRuleName, fieldName)	: A partial rule does not create object, it cannot be assigned to a field.
+				ClauseNotCreateObject,						// (ruleName)								: A clause is not a create rule, not a partial rule, and not containing use rule.
+				ClauseCouldExpandToEmptySequence,			// (ruleName)
+				UseRuleUsedInOptionalBody,					// (ruleName)
+				UseRuleUsedInLoopBody,						// (ruleName)
+				UseRuleAppearAfterField,					// (ruleName, useRuleName, fieldName)
+				UseRuleAppearAfterPartialRule,				// (ruleName, useRuleName, partialRuleName)
+				TooManyUseRule,								// (ruleName)
+				ClauseMixedUseAndCreateRule,				// (ruleName)								: A clause with a use rule cannot be a create rule or a partial rule.
+				ClauseTypeMismatchedToPartialRule,			// (ruleName, partialRuleName)				: A clause uses a partial rule of an incompatible type.
+				OptionalBodyCouldExpandToEmptySequence,		// (ruleName)
+				LoopBodyCouldExpandToEmptySequence,			// (ruleName)
 			};
 
 			struct ParserError
