@@ -8,6 +8,7 @@ namespace vl
 		{
 			using namespace collections;
 
+			using GlrRuleMap = Dictionary<RuleSymbol*, GlrRule*>;
 			using LiteralTokenMap = Dictionary<GlrLiteralSyntax*, vint>;
 			using RuleReuseDependencies = Group<RuleSymbol*, RuleSymbol*>;
 			using RuleKnownTypes = Group<RuleSymbol*, AstClassSymbol*>;
@@ -22,6 +23,7 @@ namespace vl
 				SyntaxSymbolManager&		syntaxManager;
 				Ptr<CppParserGenOutput>		output;
 
+				GlrRuleMap					astRules;
 				LiteralTokenMap				literalTokens;
 				RuleReuseDependencies		ruleReuseDependencies;
 				RuleKnownTypes				ruleKnownTypes;
@@ -555,11 +557,101 @@ CompileSyntaxVisitor
 			};
 
 /***********************************************************************
+CalculateRuleAndClauseTypes
+***********************************************************************/
+
+			AstClassSymbol* MergeClassSymbol(AstClassSymbol* c1, AstClassSymbol* c2)
+			{
+				CHECK_FAIL(L"Not Implemented!");
+			}
+
+			void CalculateRuleAndClauseTypes(VisitorContext& context)
+			{
+				// find cyclic dependencies in "Rule ::= !Rule"
+				auto&& rules = context.syntaxManager.Rules().Values();
+				PartialOrderingProcessor pop;
+				pop.InitWithGroup(rules, context.ruleReuseDependencies);
+				pop.Sort();
+
+				// remove cyclic dependended rules from ruleReuseDependencies
+				for (auto&& component : pop.components)
+				{
+					for (vint i = 0; i < component.nodeCount - 1; i++)
+					{
+						for (vint j = i + 1; j < component.nodeCount; j++)
+						{
+							auto r1 = rules[component.firstNode[i]];
+							auto r2 = rules[component.firstNode[j]];
+							context.ruleReuseDependencies.Remove(r1, r2);
+							context.ruleReuseDependencies.Remove(r2, r1);
+						}
+					}
+				}
+
+				// calculate types for rules from clauses with known types
+				for (auto rule : rules)
+				{
+					for (auto clause : context.astRules[rule]->clauses)
+					{
+						vint index = context.clauseTypes.Keys().IndexOf(clause.Obj());
+						if (index != -1)
+						{
+							rule->ruleType = MergeClassSymbol(rule->ruleType, context.clauseTypes.Values()[index]);
+						}
+					}
+				}
+
+				// calculate types for rules that contain reuse dependency
+				for (auto&& component : pop.components)
+				{
+					for (vint i = 0; i < component.nodeCount; i++)
+					{
+						auto rule = rules[component.firstNode[i]];
+						vint index = context.ruleReuseDependencies.Keys().IndexOf(rule);
+						if (index != -1)
+						{
+							for (auto dep : context.ruleReuseDependencies.GetByIndex(index))
+							{
+								rule->ruleType = MergeClassSymbol(rule->ruleType, dep->ruleType);
+							}
+						}
+					}
+				}
+
+				// prompt errors
+				for (auto rule : rules)
+				{
+					if (!rule->ruleType)
+					{
+						context.global.AddError(ParserErrorType::RuleCannotResolveToDeterministicType, rule->Name());
+					}
+				}
+
+				// calculate types for reuse clauses
+				for (auto&& [clause, index] : indexed(context.clauseReuseDependencies.Keys()))
+				{
+					AstClassSymbol* type = nullptr;
+					for (auto dep : context.clauseReuseDependencies.GetByIndex(index))
+					{
+						type = MergeClassSymbol(type, dep->ruleType);
+					}
+
+					if (type)
+					{
+						context.clauseTypes.Add(clause, type);
+					}
+				}
+			}
+
+/***********************************************************************
 CompileSyntax
 ***********************************************************************/
 
 			void CompileSyntax(AstSymbolManager& astManager, LexerSymbolManager& lexerManager, SyntaxSymbolManager& syntaxManager, Ptr<CppParserGenOutput> output, collections::List<Ptr<GlrSyntaxFile>>& files)
 			{
+				VisitorContext context(astManager, lexerManager, syntaxManager, output);
+
+				// check rule names
 				for (auto file : files)
 				{
 					for (auto rule : file->rules)
@@ -570,13 +662,14 @@ CompileSyntax
 						}
 						else
 						{
-							syntaxManager.CreateRule(rule->name.value);
+							auto ruleSymbol = syntaxManager.CreateRule(rule->name.value);
+							context.astRules.Add(ruleSymbol, rule.Obj());
 						}
 					}
 				}
 				if (syntaxManager.Global().Errors().Count() > 0) return;
 
-				VisitorContext context(astManager, lexerManager, syntaxManager, output);
+				// resolve tokens, rules, types
 				for (auto file : files)
 				{
 					for (auto rule : file->rules)
@@ -596,6 +689,13 @@ CompileSyntax
 				}
 				if (syntaxManager.Global().Errors().Count() > 0) return;
 
+				// resolve types for rules and clauses
+				CalculateRuleAndClauseTypes(context);
+				if (syntaxManager.Global().Errors().Count() > 0) return;
+
+				// check syntax structures
+
+				// build eNFA
 				for (auto file : files)
 				{
 					for (auto rule : file->rules)
