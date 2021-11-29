@@ -2,7 +2,6 @@
 #include "../../Source/Calculator/Parser/CalculatorModuleParser.h"
 #include "../../Source/LogAutomaton.h"
 
-using namespace vl::regex;
 using namespace calculator;
 
 extern WString GetTestParserInputPath(const WString& parserName);

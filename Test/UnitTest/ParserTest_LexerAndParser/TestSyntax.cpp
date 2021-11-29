@@ -3,7 +3,6 @@
 #include "../../Source/Calculator/Parser/Calculator_Lexer.h"
 #include "../../Source/LogParser.h"
 
-using namespace vl::regex;
 using namespace calculator;
 
 extern WString GetTestParserInputPath(const WString& parserName);

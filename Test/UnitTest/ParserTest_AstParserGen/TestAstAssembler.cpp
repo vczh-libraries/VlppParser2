@@ -3,11 +3,6 @@
 #include "../../Source/Calculator/Parser/Calculator_Assembler.h"
 #include "../../Source/LogParser.h"
 
-using namespace vl;
-using namespace vl::collections;
-using namespace vl::stream;
-using namespace vl::regex;
-using namespace vl::glr;
 using namespace vl::glr::parsergen;
 using namespace calculator;
 

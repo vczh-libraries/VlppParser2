@@ -1,4 +1,5 @@
 #include "../../../Source/Syntax/SyntaxCppGen.h"
+#include "../../../Source/ParserGen_Generated/ParserGen_Lexer.h"
 
 using namespace vl;
 using namespace vl::collections;
@@ -32,14 +33,14 @@ TEST_FILE
 			TEST_ASSERT(global.Errors().Count() == 0);
 			typeSyntaxManager.BuildCrossReferencedNFA();
 			TEST_ASSERT(global.Errors().Count() == 0);
-			typeSyntaxManager.BuildAutomaton(-1, typeExecutable, typeMetadata);
+			typeSyntaxManager.BuildAutomaton(ParserGenTokenCount, typeExecutable, typeMetadata);
 		}
 		{
 			ruleSyntaxManager.BuildCompactNFA();
 			TEST_ASSERT(global.Errors().Count() == 0);
 			ruleSyntaxManager.BuildCrossReferencedNFA();
 			TEST_ASSERT(global.Errors().Count() == 0);
-			ruleSyntaxManager.BuildAutomaton(-1, ruleExecutable, ruleMetadata);
+			ruleSyntaxManager.BuildAutomaton(ParserGenTokenCount, ruleExecutable, ruleMetadata);
 		}
 		auto output = GenerateParserFileNames(global);
 		GenerateSyntaxFileNames(typeSyntaxManager, output);
