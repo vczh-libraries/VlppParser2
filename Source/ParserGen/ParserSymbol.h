@@ -78,18 +78,23 @@ ParserSymbolManager
 				TokenOrRuleNotExistsInRule,					// (ruleName, name)
 				TypeNotExistsInRule,						// (ruleName, name)
 				TypeNotClassInRule,							// (ruleName, name)
-				FieldNotExistsInRule,						// (ruleName, typeName, fieldName)
+				RuleMixedPartialClauseWithOtherClause,		// (ruleName)
 				RuleCannotResolveToDeterministicType,		// (ruleName)								: Unable to resolve to one type from clauses (token, type) or (create, partial).
+				RuleWithDifferentPartialTypes,				// (ruleName)
+
+				FieldNotExistsInRule,						// (ruleName, typeName, fieldName)
 				RuleTypeMismatchedToField,					// (ruleName, fieldRuleName, fieldName)		: The rule type is not compatible to the assigning field.
 				PartialRuleUsedOnField,						// (ruleName, partialRuleName, fieldName)	: A partial rule does not create object, it cannot be assigned to a field.
+				FieldInAssignmentNotEnum,					// (ruleName, fieldName)					: Assignment can only assign fields in enum types.
+				EnumItemMismatchedToField,					// (ruleName, fieldName, enumItem)			: Try to assign an unexisting or mismatched enum item to a field in an enum type.
 				ClauseNotCreateObject,						// (ruleName)								: A clause is not a create rule, not a partial rule, and not containing use rule.
 				ClauseCouldExpandToEmptySequence,			// (ruleName)
 				UseRuleUsedInOptionalBody,					// (ruleName)
 				UseRuleUsedInLoopBody,						// (ruleName)
 				UseRuleAppearAfterField,					// (ruleName, useRuleName, fieldName)
 				UseRuleAppearAfterPartialRule,				// (ruleName, useRuleName, partialRuleName)
-				TooManyUseRule,								// (ruleName)
-				ClauseMixedUseAndCreateRule,				// (ruleName)								: A clause with a use rule cannot be a create rule or a partial rule.
+				TooManyUseRule,								// (ruleName)								: Multiple use rule in a potential sequence in a clause.
+				CreateClauseMixedWithNonPartialUseRule,		// (ruleName)								: A clause with a use rule cannot be a create rule or a partial rule.
 				ClauseTypeMismatchedToPartialRule,			// (ruleName, partialRuleName)				: A clause uses a partial rule of an incompatible type.
 				OptionalBodyCouldExpandToEmptySequence,		// (ruleName)
 				LoopBodyCouldExpandToEmptySequence,			// (ruleName)

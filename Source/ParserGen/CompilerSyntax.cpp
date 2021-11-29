@@ -725,7 +725,26 @@ CompileSyntax
 
 						if (visitor.partialCount > 0 && (visitor.createCount > 0 || visitor.reuseCount > 0))
 						{
-							syntaxManager.Global().AddError(ParserErrorType::RuleCannotResolveToDeterministicType, ruleSymbol->Name());
+							syntaxManager.Global().AddError(ParserErrorType::RuleMixedPartialClauseWithOtherClause, ruleSymbol->Name());
+						}
+
+						AstClassSymbol* partialType = nullptr;
+						for (auto clause : From(rule->clauses).FindType<GlrPartialClause>())
+						{
+							vint index = context.clauseTypes.Keys().IndexOf(clause.Obj());
+							if (index != -1)
+							{
+								auto type = context.clauseTypes.Values()[index];
+								if (!partialType)
+								{
+									partialType = type;
+								}
+								else if (type && partialType != type)
+								{
+									syntaxManager.Global().AddError(ParserErrorType::RuleWithDifferentPartialTypes, ruleSymbol->Name());
+									break;
+								}
+							}
 						}
 					}
 				}

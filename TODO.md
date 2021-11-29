@@ -22,22 +22,13 @@
     - [ ] All `token` property `X` becomes `X_`, paired with a string property `X` to access the text value in `X_`.
 - [x] Standalone lexical analyzer definition files.
 - [x] Standalone syntax analyzer definition files.
-  - Multiple syntax files are combined together before creating `SyntaxSymbolManager`.
+  - [x] Multiple syntax files are combined together before creating `SyntaxSymbolManager`.
 - [x] All names of AST must be unique globally.
 - [x] All names of token and rule must be unique.
 - [x] Unique field id will be generated for each fields in each AST node.
 - [ ] One XML "parser project file" to contain all above information, linking to all AST/Lexical Analyzer/Syntax files.
 
 ## EBNF Program
-
-- Priority of loops:
-  - `+[ RULE ]` (RULE is optional): if `RULE` succeeds, another failure branch is not considered even if the rest doesn't parse.
-  - `-[ RULE ]` (RULE is optional): skip `RULE` and parse the rest. If failed, recognize `RULE` and redo **only the current named-clause**.
-  - `[ RULE ]` (RULE is optional): keep both results
-  - `+ { RULE }` (RULE is repetitive): recognize as much `RULE` as possible first, and then do the rest.
-  - `- { RULE }` (RULE is repetitive): recognize as less `RULE` as possible, and the do the rest. If failed, recognize one more `RULE` and redo **only the current named-clause**.
-  - `{ RULE }` (RULE is repetitive): keep all results.
-  - The loop body could be `RULE; DELIMITER` to specify delimiters between loop items. A delimiter could also be a rule.
 
 - RULE {`::=` CLAUSE [`as` CLASS-NAME [`{` {ASSIGNMENT ...} `}`]] } `;`
   - Consider a syntax here to switch to different lexical analyzer.
@@ -104,10 +95,8 @@
    8. [ ] Prepare more parser test cases for compile errors, no need to have input/output/codegen
    9. [ ] Generate JSON parser
    10. [ ] Generate XML parser
-5. [ ] `ParserTest_ParserGen_Generated`
-   1. [ ] Prepare more parser test cases (including `Calculator/Parser2`).
-      1. [ ] Prepare input text files in `Test/Source/*/Input/`.
-      2. [ ] Prepare output JSON files in `Test/Source/*/Output/`.
+5. [x] `ParserTest_ParserGen_Generated`
+   1. [x] Prepare more parser test cases (including `Calculator/Generated`).
    2. [ ] Run all parsers.
    3. [ ] Test JSON parser.
    4. [ ] Test XML parser.
@@ -126,6 +115,10 @@
   - Refactor some properties in `LexerSymbolManager` into `LexerFile` with a name.
 - AST uses classes from another AST file in dependency as fields.
 - Ambiguity AST and parsing.
+- Branch priorities:
+  - Loop
+  - Optional
+  - Alternative
 - Printing AST classes that created from a memory pool.
 - Support multiple syntax definition file in one parser.
 - Error message generating.
