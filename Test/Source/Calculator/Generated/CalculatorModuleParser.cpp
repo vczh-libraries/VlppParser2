@@ -8,7 +8,7 @@ Licensed under https://github.com/vczh-libraries/License
 
 namespace calculator
 {
-	void CalculatorCalculatorData(vl::stream::IStream& outputStream)
+	void CalculatorModuleParserData(vl::stream::IStream& outputStream)
 	{
 		static const vl::vint dataLength = 7962; // 77746 bytes before compressing
 		static const vl::vint dataBlock = 256;
@@ -52,13 +52,18 @@ namespace calculator
 		vl::glr::DecompressSerializedData(compressed, true, dataSolidRows, dataRows, dataBlock, dataRemain, outputStream);
 	}
 
-	Calculator::Calculator()
-		: vl::glr::ParserBase<CalculatorTokens, CalculatorStates, CalculatorAstInsReceiver, CalculatorStateTypes>(&CalculatorTokenDeleter, &CalculatorLexerData, &CalculatorCalculatorData)
+	ModuleParser::ModuleParser()
+		: vl::glr::ParserBase<CalculatorTokens, ModuleParserStates, CalculatorAstInsReceiver, ModuleParserStateTypes>(&CalculatorTokenDeleter, &CalculatorLexerData, &CalculatorModuleParserData)
 	{
 	};
 
-	vl::Ptr<*> Calculator::ParseModule(const vl::WString & input, vl::vint codeIndex)
+	vl::Ptr<calculator::Expr> ModuleParser::ParseExp(const vl::WString & input, vl::vint codeIndex)
 	{
-		 return Parse<CalculatorStates::Module>(input, codeIndex);
+		 return Parse<ModuleParserStates::Exp>(input, codeIndex);
+	};
+
+	vl::Ptr<calculator::Module> ModuleParser::ParseModule(const vl::WString & input, vl::vint codeIndex)
+	{
+		 return Parse<ModuleParserStates::Module>(input, codeIndex);
 	};
 }

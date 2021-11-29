@@ -111,9 +111,17 @@ TEST_FILE
 				syntaxManager.BuildAutomaton(lexerManager.Tokens().Count(), executable, metadata);
 				TEST_ASSERT(global.Errors().Count() == 0);
 
-				syntaxManager.name = parserName;
-				syntaxManager.parsableRules.Add(syntaxManager.Rules()[ruleName]);
-				syntaxManager.ruleTypes.Add(syntaxManager.Rules()[ruleName], L"*");
+				{
+					auto rule = syntaxManager.Rules()[ruleName];
+					syntaxManager.parsableRules.Add(rule);
+					syntaxManager.ruleTypes.Add(rule, wlower(parserName) + L"::" + rule->ruleType->Name());
+				}
+				if (parserName == L"Calculator")
+				{
+					auto rule = syntaxManager.Rules()[L"Exp"];
+					syntaxManager.parsableRules.Add(rule);
+					syntaxManager.ruleTypes.Add(rule, wlower(parserName) + L"::" + rule->ruleType->Name());
+				}
 				WriteSyntaxFiles(syntaxManager, executable, metadata, output, files);
 			});
 
@@ -126,13 +134,16 @@ TEST_FILE
 
 				if (parserName == L"Calculator")
 				{
-					TEST_CASE(L"Ensure Calculator Generated Files Identical")
+					TEST_CATEGORY(L"Ensure Calculator Generated Files Identical")
 					{
 						// Compare Source/Calculator/Generated with Source/Calculator/Parser
 						for (auto&& [name, content] : files)
 						{
-							auto expected = File(FilePath(GetTestParserInputPath(parserName)) / L"Parser" / name).ReadAllTextByBom();
-							TEST_ASSERT(content == expected);
+							TEST_CASE(name)
+							{
+								auto expected = File(FilePath(GetTestParserInputPath(parserName)) / L"Parser" / name).ReadAllTextByBom();
+								TEST_ASSERT(content == expected);
+							});
 						}
 					});
 				}

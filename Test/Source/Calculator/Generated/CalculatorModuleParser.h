@@ -4,15 +4,15 @@ From parser definition:Calculator
 Licensed under https://github.com/vczh-libraries/License
 ***********************************************************************/
 
-#ifndef VCZH_PARSER2_UNITTEST_CALCULATOR_CALCULATOR_SYNTAX
-#define VCZH_PARSER2_UNITTEST_CALCULATOR_CALCULATOR_SYNTAX
+#ifndef VCZH_PARSER2_UNITTEST_CALCULATOR_MODULEPARSER_SYNTAX
+#define VCZH_PARSER2_UNITTEST_CALCULATOR_MODULEPARSER_SYNTAX
 
 #include "Calculator_Assembler.h"
 #include "Calculator_Lexer.h"
 
 namespace calculator
 {
-	enum class CalculatorStates
+	enum class ModuleParserStates
 	{
 		Arg = 0,
 		Exp0 = 3,
@@ -26,17 +26,19 @@ namespace calculator
 		Module = 85,
 	};
 
-	template<CalculatorStates> struct CalculatorStateTypes;
-	template<> struct CalculatorStateTypes<CalculatorStates::Module> { using Type = *; };
+	template<ModuleParserStates> struct ModuleParserStateTypes;
+	template<> struct ModuleParserStateTypes<ModuleParserStates::Exp> { using Type = calculator::Expr; };
+	template<> struct ModuleParserStateTypes<ModuleParserStates::Module> { using Type = calculator::Module; };
 
-	extern void CalculatorCalculatorData(vl::stream::IStream& outputStream);
+	extern void CalculatorModuleParserData(vl::stream::IStream& outputStream);
 
-	class Calculator: vl::glr::ParserBase<CalculatorTokens, CalculatorStates, CalculatorAstInsReceiver, CalculatorStateTypes>
+	class ModuleParser: vl::glr::ParserBase<CalculatorTokens, ModuleParserStates, CalculatorAstInsReceiver, ModuleParserStateTypes>
 	{
 	public:
-		Calculator();
+		ModuleParser();
 
-		vl::Ptr<*> ParseModule(const vl::WString & input, vl::vint codeIndex = -1);
+		vl::Ptr<calculator::Expr> ParseExp(const vl::WString & input, vl::vint codeIndex = -1);
+		vl::Ptr<calculator::Module> ParseModule(const vl::WString & input, vl::vint codeIndex = -1);
 	};
 }
 #endif
