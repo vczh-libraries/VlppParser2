@@ -68,8 +68,8 @@
    3. [ ] Test copy visitors.
    4. [ ] Test traverse visitors.
    5. [x] Test json visitors.
-   6. [ ] Generate `ParserGen` Lexer C++ files in this unit test project.
-      1. [ ] Lexer for `ParserGen`.
+   6. [x] Generate `ParserGen` Lexer C++ files in this unit test project.
+      1. [x] Lexer for `ParserGen`.
       2. [x] Lexer for `Calculator`.
 3. [x] `ParserTest_LexerAndParser`.
    1. [x] Test generated lexer for `Calculator`.
