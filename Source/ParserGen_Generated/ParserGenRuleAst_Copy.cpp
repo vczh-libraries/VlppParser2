@@ -14,6 +14,13 @@ namespace vl
 		{
 			namespace copy_visitor
 			{
+				void RuleAstVisitor::CopyFields(GlrAlternativeSyntax* from, GlrAlternativeSyntax* to)
+				{
+					CopyFields(static_cast<GlrSyntax*>(from), static_cast<GlrSyntax*>(to));
+					to->first = CopyNode(from->first.Obj());
+					to->second = CopyNode(from->second.Obj());
+				}
+
 				void RuleAstVisitor::CopyFields(GlrAssignment* from, GlrAssignment* to)
 				{
 					to->field = from->field;
@@ -175,6 +182,13 @@ namespace vl
 				void RuleAstVisitor::Visit(GlrSequenceSyntax* node)
 				{
 					auto newNode = vl::MakePtr<GlrSequenceSyntax>();
+					CopyFields(node, newNode.Obj());
+					this->result = newNode;
+				}
+
+				void RuleAstVisitor::Visit(GlrAlternativeSyntax* node)
+				{
+					auto newNode = vl::MakePtr<GlrAlternativeSyntax>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}

@@ -26,6 +26,7 @@ namespace vl
 				protected:
 					virtual void Traverse(vl::glr::ParsingToken& token);
 					virtual void Traverse(vl::glr::ParsingAstBase* node);
+					virtual void Traverse(GlrAlternativeSyntax* node);
 					virtual void Traverse(GlrAssignment* node);
 					virtual void Traverse(GlrClause* node);
 					virtual void Traverse(GlrCreateClause* node);
@@ -43,6 +44,7 @@ namespace vl
 
 				protected:
 					virtual void Finishing(vl::glr::ParsingAstBase* node);
+					virtual void Finishing(GlrAlternativeSyntax* node);
 					virtual void Finishing(GlrAssignment* node);
 					virtual void Finishing(GlrClause* node);
 					virtual void Finishing(GlrCreateClause* node);
@@ -65,6 +67,7 @@ namespace vl
 					void Visit(GlrLoopSyntax* node) override;
 					void Visit(GlrOptionalSyntax* node) override;
 					void Visit(GlrSequenceSyntax* node) override;
+					void Visit(GlrAlternativeSyntax* node) override;
 
 					void Visit(GlrCreateClause* node) override;
 					void Visit(GlrPartialClause* node) override;

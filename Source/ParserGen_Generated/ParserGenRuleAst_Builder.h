@@ -17,6 +17,16 @@ namespace vl
 		{
 			namespace builder
 			{
+				class AlternativeSyntaxBuilder
+				{
+				private:
+					GlrAlternativeSyntax* node;
+				public:
+					AlternativeSyntaxBuilder(GlrAlternativeSyntax* _node) : node(_node) {}
+					AlternativeSyntaxBuilder& first(const vl::Ptr<GlrSyntax>& value);
+					AlternativeSyntaxBuilder& second(const vl::Ptr<GlrSyntax>& value);
+				};
+
 				class AssignmentBuilder
 				{
 				private:
@@ -135,6 +145,7 @@ namespace vl
 					_ReuseClauseBuilder& syntax(const vl::Ptr<GlrSyntax>& value);
 				};
 
+				using MakeAlternativeSyntax = vl::glr::ParsingAstBuilder<GlrAlternativeSyntax, AlternativeSyntaxBuilder>;
 				using MakeAssignment = vl::glr::ParsingAstBuilder<GlrAssignment, AssignmentBuilder>;
 				using MakeCreateClause = vl::glr::ParsingAstBuilder<GlrCreateClause, CreateClauseBuilder>;
 				using MakeLiteralSyntax = vl::glr::ParsingAstBuilder<GlrLiteralSyntax, LiteralSyntaxBuilder>;

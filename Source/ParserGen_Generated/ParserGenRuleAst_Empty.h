@@ -31,6 +31,7 @@ namespace vl
 					void Visit(GlrLoopSyntax* node) override;
 					void Visit(GlrOptionalSyntax* node) override;
 					void Visit(GlrSequenceSyntax* node) override;
+					void Visit(GlrAlternativeSyntax* node) override;
 				};
 
 				/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>

@@ -16,6 +16,7 @@ namespace vl
 			{
 				void RuleAstVisitor::Traverse(vl::glr::ParsingToken& token) {}
 				void RuleAstVisitor::Traverse(vl::glr::ParsingAstBase* node) {}
+				void RuleAstVisitor::Traverse(GlrAlternativeSyntax* node) {}
 				void RuleAstVisitor::Traverse(GlrAssignment* node) {}
 				void RuleAstVisitor::Traverse(GlrClause* node) {}
 				void RuleAstVisitor::Traverse(GlrCreateClause* node) {}
@@ -32,6 +33,7 @@ namespace vl
 				void RuleAstVisitor::Traverse(Glr_ReuseClause* node) {}
 
 				void RuleAstVisitor::Finishing(vl::glr::ParsingAstBase* node) {}
+				void RuleAstVisitor::Finishing(GlrAlternativeSyntax* node) {}
 				void RuleAstVisitor::Finishing(GlrAssignment* node) {}
 				void RuleAstVisitor::Finishing(GlrClause* node) {}
 				void RuleAstVisitor::Finishing(GlrCreateClause* node) {}
@@ -118,6 +120,19 @@ namespace vl
 					InspectInto(node->first.Obj());
 					InspectInto(node->second.Obj());
 					Finishing(static_cast<GlrSequenceSyntax*>(node));
+					Finishing(static_cast<GlrSyntax*>(node));
+					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+				}
+
+				void RuleAstVisitor::Visit(GlrAlternativeSyntax* node)
+				{
+					if (!node) return;
+					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+					Traverse(static_cast<GlrSyntax*>(node));
+					Traverse(static_cast<GlrAlternativeSyntax*>(node));
+					InspectInto(node->first.Obj());
+					InspectInto(node->second.Obj());
+					Finishing(static_cast<GlrAlternativeSyntax*>(node));
 					Finishing(static_cast<GlrSyntax*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}

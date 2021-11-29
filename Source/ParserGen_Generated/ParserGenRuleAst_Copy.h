@@ -24,6 +24,7 @@ namespace vl
 					, protected virtual GlrClause::IVisitor
 				{
 				protected:
+					void CopyFields(GlrAlternativeSyntax* from, GlrAlternativeSyntax* to);
 					void CopyFields(GlrAssignment* from, GlrAssignment* to);
 					void CopyFields(GlrClause* from, GlrClause* to);
 					void CopyFields(GlrCreateClause* from, GlrCreateClause* to);
@@ -50,6 +51,7 @@ namespace vl
 					void Visit(GlrLoopSyntax* node) override;
 					void Visit(GlrOptionalSyntax* node) override;
 					void Visit(GlrSequenceSyntax* node) override;
+					void Visit(GlrAlternativeSyntax* node) override;
 
 					void Visit(GlrCreateClause* node) override;
 					void Visit(GlrPartialClause* node) override;

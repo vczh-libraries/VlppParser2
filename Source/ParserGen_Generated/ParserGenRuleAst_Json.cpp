@@ -14,6 +14,15 @@ namespace vl
 		{
 			namespace json_visitor
 			{
+				void RuleAstVisitor::PrintFields(GlrAlternativeSyntax* node)
+				{
+					BeginField(L"first");
+					Print(node->first.Obj());
+					EndField();
+					BeginField(L"second");
+					Print(node->second.Obj());
+					EndField();
+				}
 				void RuleAstVisitor::PrintFields(GlrAssignment* node)
 				{
 					BeginField(L"field");
@@ -239,6 +248,20 @@ namespace vl
 					WriteType(L"SequenceSyntax", node);
 					PrintFields(static_cast<GlrSyntax*>(node));
 					PrintFields(static_cast<GlrSequenceSyntax*>(node));
+					EndObject();
+				}
+
+				void RuleAstVisitor::Visit(GlrAlternativeSyntax* node)
+				{
+					if (!node)
+					{
+						WriteNull();
+						return;
+					}
+					BeginObject();
+					WriteType(L"AlternativeSyntax", node);
+					PrintFields(static_cast<GlrSyntax*>(node));
+					PrintFields(static_cast<GlrAlternativeSyntax*>(node));
 					EndObject();
 				}
 

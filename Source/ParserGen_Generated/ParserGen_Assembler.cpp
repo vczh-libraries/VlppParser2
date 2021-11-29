@@ -21,6 +21,8 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 			{
 				switch((ParserGenClasses)type)
 				{
+				case ParserGenClasses::AlternativeSyntax:
+					return new vl::glr::parsergen::GlrAlternativeSyntax();
 				case ParserGenClasses::Assignment:
 					return new vl::glr::parsergen::GlrAssignment();
 				case ParserGenClasses::AstFile:
@@ -70,6 +72,26 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 			{
 				switch((ParserGenFields)field)
 				{
+				case ParserGenFields::AlternativeSyntax_first:
+					{
+						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrAlternativeSyntax*>(object);
+						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrAlternativeSyntax::first\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+						if (typedObject->first) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrAlternativeSyntax::first\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
+						auto typedValue = value.Cast<vl::glr::parsergen::GlrSyntax>();
+						if (!typedValue) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrAlternativeSyntax::first\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+						typedObject->first = typedValue;
+					}
+					break;
+				case ParserGenFields::AlternativeSyntax_second:
+					{
+						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrAlternativeSyntax*>(object);
+						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrAlternativeSyntax::second\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+						if (typedObject->second) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrAlternativeSyntax::second\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
+						auto typedValue = value.Cast<vl::glr::parsergen::GlrSyntax>();
+						if (!typedValue) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrAlternativeSyntax::second\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+						typedObject->second = typedValue;
+					}
+					break;
 				case ParserGenFields::AstFile_types:
 					{
 						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrAstFile*>(object);
@@ -373,6 +395,10 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 						AssignToken(typedObject->name, token);
 					}
 					break;
+				case ParserGenFields::AlternativeSyntax_first:
+					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrAlternativeSyntax::first\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				case ParserGenFields::AlternativeSyntax_second:
+					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrAlternativeSyntax::second\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 				case ParserGenFields::AstFile_types:
 					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrAstFile::types\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 				case ParserGenFields::Class_props:
@@ -426,6 +452,10 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 						typedObject->propType = (vl::glr::parsergen::GlrPropType)enumItem;
 					}
 					break;
+				case ParserGenFields::AlternativeSyntax_first:
+					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrAlternativeSyntax::first\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				case ParserGenFields::AlternativeSyntax_second:
+					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrAlternativeSyntax::second\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 				case ParserGenFields::Assignment_field:
 					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrAssignment::field\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 				case ParserGenFields::Assignment_value:
@@ -494,6 +524,7 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 			const wchar_t* ParserGenTypeName(ParserGenClasses type)
 			{
 				const wchar_t* results[] = {
+					L"AlternativeSyntax",
 					L"Assignment",
 					L"AstFile",
 					L"Class",
@@ -516,13 +547,17 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					L"_ReuseClause",
 				};
 				vl::vint index = (vl::vint)type;
-				return 0 <= index && index < 20 ? results[index] : nullptr;
+				return 0 <= index && index < 21 ? results[index] : nullptr;
 			}
 
 			const wchar_t* ParserGenFieldName(ParserGenFields field)
 			{
 				switch(field)
 				{
+				case ParserGenFields::AlternativeSyntax_first:
+					return L"AlternativeSyntax::first";
+				case ParserGenFields::AlternativeSyntax_second:
+					return L"AlternativeSyntax::second";
 				case ParserGenFields::Assignment_field:
 					return L"Assignment::field";
 				case ParserGenFields::Assignment_value:
@@ -594,6 +629,7 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 			{
 				switch((ParserGenClasses)type)
 				{
+				case ParserGenClasses::AlternativeSyntax:
 				case ParserGenClasses::Assignment:
 				case ParserGenClasses::AstFile:
 				case ParserGenClasses::Class:

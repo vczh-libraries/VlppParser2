@@ -24,6 +24,7 @@ namespace vl
 					, protected virtual GlrClause::IVisitor
 				{
 				protected:
+					virtual void PrintFields(GlrAlternativeSyntax* node);
 					virtual void PrintFields(GlrAssignment* node);
 					virtual void PrintFields(GlrClause* node);
 					virtual void PrintFields(GlrCreateClause* node);
@@ -46,6 +47,7 @@ namespace vl
 					void Visit(GlrLoopSyntax* node) override;
 					void Visit(GlrOptionalSyntax* node) override;
 					void Visit(GlrSequenceSyntax* node) override;
+					void Visit(GlrAlternativeSyntax* node) override;
 
 					void Visit(GlrCreateClause* node) override;
 					void Visit(GlrPartialClause* node) override;

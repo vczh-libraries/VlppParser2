@@ -16,6 +16,22 @@ namespace vl
 			{
 
 /***********************************************************************
+AlternativeSyntaxBuilder
+***********************************************************************/
+
+				AlternativeSyntaxBuilder& AlternativeSyntaxBuilder::first(const vl::Ptr<GlrSyntax>& value)
+				{
+					node->first = value;
+					return *this;
+				}
+
+				AlternativeSyntaxBuilder& AlternativeSyntaxBuilder::second(const vl::Ptr<GlrSyntax>& value)
+				{
+					node->second = value;
+					return *this;
+				}
+
+/***********************************************************************
 AssignmentBuilder
 ***********************************************************************/
 

@@ -16,6 +16,7 @@ namespace vl
 	{
 		namespace parsergen
 		{
+			class GlrAlternativeSyntax;
 			class GlrAssignment;
 			class GlrClause;
 			class GlrCreateClause;
@@ -43,6 +44,7 @@ namespace vl
 					virtual void Visit(GlrLoopSyntax* node) = 0;
 					virtual void Visit(GlrOptionalSyntax* node) = 0;
 					virtual void Visit(GlrSequenceSyntax* node) = 0;
+					virtual void Visit(GlrAlternativeSyntax* node) = 0;
 				};
 
 				virtual void Accept(GlrSyntax::IVisitor* visitor) = 0;
@@ -92,6 +94,15 @@ namespace vl
 			};
 
 			class GlrSequenceSyntax : public GlrSyntax, vl::reflection::Description<GlrSequenceSyntax>
+			{
+			public:
+				vl::Ptr<GlrSyntax> first;
+				vl::Ptr<GlrSyntax> second;
+
+				void Accept(GlrSyntax::IVisitor* visitor) override;
+			};
+
+			class GlrAlternativeSyntax : public GlrSyntax, vl::reflection::Description<GlrAlternativeSyntax>
 			{
 			public:
 				vl::Ptr<GlrSyntax> first;
@@ -181,6 +192,7 @@ namespace vl
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrLoopSyntax)
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrOptionalSyntax)
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrSequenceSyntax)
+			DECL_TYPE_INFO(vl::glr::parsergen::GlrAlternativeSyntax)
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrClause)
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrClause::IVisitor)
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrAssignment)
@@ -219,6 +231,11 @@ namespace vl
 				}
 
 				void Visit(vl::glr::parsergen::GlrSequenceSyntax* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+				void Visit(vl::glr::parsergen::GlrAlternativeSyntax* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}

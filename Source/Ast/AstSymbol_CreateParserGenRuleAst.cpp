@@ -48,6 +48,11 @@ CreateParserGenRuleAst
 				_SequenceSyntax->CreateProp(L"first")->SetPropType(AstPropType::Type, L"Syntax");
 				_SequenceSyntax->CreateProp(L"second")->SetPropType(AstPropType::Type, L"Syntax");
 
+				auto _AlternativeSyntax = _ast->CreateClass(L"AlternativeSyntax");
+				_AlternativeSyntax->SetBaseClass(L"Syntax");
+				_AlternativeSyntax->CreateProp(L"first")->SetPropType(AstPropType::Type, L"Syntax");
+				_AlternativeSyntax->CreateProp(L"second")->SetPropType(AstPropType::Type, L"Syntax");
+
 				auto _Clause = _ast->CreateClass(L"Clause");
 
 				auto _Assignment = _ast->CreateClass(L"Assignment");
