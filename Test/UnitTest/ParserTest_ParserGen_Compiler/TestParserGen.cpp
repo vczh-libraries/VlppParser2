@@ -70,6 +70,7 @@ TEST_FILE
 			Fill(global.includes, L"../../../../Source/AstBase.h", L"../../../../Source/SyntaxBase.h");
 			global.cppNss.Add(wlower(parserName));
 			global.headerGuard = L"VCZH_PARSER2_UNITTEST_" + wupper(parserName);
+			syntaxManager.name = ruleName + L"Parser";
 
 			auto astDefFile = astManager.CreateFile(astName);
 			auto output = GenerateParserFileNames(global);
