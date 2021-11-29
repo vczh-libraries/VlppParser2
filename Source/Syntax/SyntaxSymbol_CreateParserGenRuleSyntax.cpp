@@ -72,7 +72,7 @@ CreateParserGenRuleSyntax
 				Clause{ _syntax } = use(_syntax2);
 
 				// ID:field "=" STRING:value as partial Assignment
-				Clause{ _assignment } = partial(tok(T::ID, F::Assignment_field) + tok(T::ASSIGN) + tok(T::STRING, F::Assignment_value));
+				Clause{ _assignment } = partial(tok(T::ID, F::Assignment_field) + tok(T::ASSIGN) + tok(T::ID, F::Assignment_value));
 
 				// Syntax:syntax "as" ID:type ["{" {Assignment:assignments} "}"] as CreateClause
 				Clause{ _clause } = create(rule(_syntax, F::CreateClause_syntax) + tok(T::AS) + tok(T::ID, F::CreateClause_type) + opt(tok(T::OPEN_CURLY) + loop(rule(_assignment, F::CreateClause_assignments)) + tok(T::CLOSE_CURLY)), C::CreateClause);
