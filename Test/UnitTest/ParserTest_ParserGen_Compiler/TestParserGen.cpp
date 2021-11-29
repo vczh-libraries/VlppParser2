@@ -66,18 +66,41 @@ TEST_FILE
 			Executable executable;
 			Metadata metadata;
 
-			auto astDefFile = astManager.CreateFile(astName);
-			TEST_CASE(L"Compiler")
-			{
-				auto lexerInput = File(dirParser / L"Syntax/Lexer.txt").ReadAllTextByBom();
-				List<Ptr<GlrSyntaxFile>> files;
-				files.Add(syntaxFile);
+			global.name = parserName;
+			Fill(global.includes, L"../../../../Source/AstBase.h", L"../../../../Source/SyntaxBase.h");
+			global.cppNss.Add(wlower(parserName));
+			global.headerGuard = L"VCZH_PARSER2_UNITTEST_" + wupper(parserName);
 
+			auto astDefFile = astManager.CreateFile(astName);
+			auto output = GenerateParserFileNames(global);
+			GenerateAstFileNames(astManager, output);
+			GenerateSyntaxFileNames(syntaxManager, output);
+
+			Dictionary<WString, WString> files;
+			TEST_CASE(L"CompilerAst")
+			{
 				CompileAst(astManager, astDefFile, astFile);
 				TEST_ASSERT(global.Errors().Count() == 0);
+
+				astDefFile->cppNss.Add(wlower(parserName));
+				astDefFile->refNss.Add(wlower(parserName));
+				astDefFile->classPrefix = L"";
+				WriteAstFiles(astManager, output, files);
+			});
+
+			TEST_CASE(L"CompilerLexer")
+			{
+				auto lexerInput = File(dirParser / L"Syntax/Lexer.txt").ReadAllTextByBom();
 				CompileLexer(lexerManager, lexerInput);
 				TEST_ASSERT(global.Errors().Count() == 0);
-				CompileSyntax(astManager, lexerManager, syntaxManager, files);
+				WriteLexerFiles(lexerManager, output, files);
+			});
+
+			TEST_CASE(L"CompilerSyntax")
+			{
+				List<Ptr<GlrSyntaxFile>> syntaxFiles;
+				syntaxFiles.Add(syntaxFile);
+				CompileSyntax(astManager, lexerManager, syntaxManager, output, syntaxFiles);
 				TEST_ASSERT(global.Errors().Count() == 0);
 
 				syntaxManager.BuildCompactNFA();
@@ -86,36 +109,15 @@ TEST_FILE
 				TEST_ASSERT(global.Errors().Count() == 0);
 				syntaxManager.BuildAutomaton(lexerManager.Tokens().Count(), executable, metadata);
 				TEST_ASSERT(global.Errors().Count() == 0);
+
+				syntaxManager.name = parserName;
+				syntaxManager.parsableRules.Add(syntaxManager.Rules()[ruleName]);
+				syntaxManager.ruleTypes.Add(syntaxManager.Rules()[ruleName], L"*");
+				WriteSyntaxFiles(syntaxManager, executable, metadata, output, files);
 			});
 
 			if (global.Errors().Count() == 0)
 			{
-				{
-					global.name = parserName;
-					Fill(global.includes, L"../../../../Source/AstBase.h", L"../../../../Source/SyntaxBase.h");
-					global.cppNss.Add(wlower(parserName));
-					global.headerGuard = L"VCZH_PARSER2_UNITTEST_" + wupper(parserName);
-				}
-				{
-					astDefFile->cppNss.Add(wlower(parserName));
-					astDefFile->refNss.Add(wlower(parserName));
-					astDefFile->classPrefix = L"";
-				}
-				{
-					syntaxManager.name = parserName;
-					syntaxManager.parsableRules.Add(syntaxManager.Rules()[ruleName]);
-					syntaxManager.ruleTypes.Add(syntaxManager.Rules()[ruleName], L"*");
-				}
-
-				auto output = GenerateParserFileNames(global);
-				GenerateAstFileNames(astManager, output);
-				GenerateSyntaxFileNames(syntaxManager, output);
-
-				Dictionary<WString, WString> files;
-				WriteAstFiles(astManager, output, files);
-				WriteLexerFiles(lexerManager, output, files);
-				WriteSyntaxFiles(syntaxManager, executable, metadata, output, files);
-
 				for (auto&& [name, content] : files)
 				{
 					File(dirGenerated / name).WriteAllText(content, false, BomEncoder::Utf8);

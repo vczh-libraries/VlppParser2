@@ -11,6 +11,7 @@ Licensed under https://github.com/vczh-libraries/License
 #include "../Ast/AstSymbol.h"
 #include "../Lexer/LexerSymbol.h"
 #include "../Syntax/SyntaxSymbol.h"
+#include "../ParserGen/ParserCppGen.h"
 
 namespace vl
 {
@@ -24,7 +25,7 @@ Compiler
 
 			extern void							CompileAst(AstSymbolManager& astManager, AstDefFile* astDefFile, Ptr<GlrAstFile> file);
 			extern void							CompileLexer(LexerSymbolManager& lexerManager, const WString& input);
-			extern void							CompileSyntax(AstSymbolManager& astManager, LexerSymbolManager& lexerManager, SyntaxSymbolManager& syntaxManager, collections::List<Ptr<GlrSyntaxFile>>& files);
+			extern void							CompileSyntax(AstSymbolManager& astManager, LexerSymbolManager& lexerManager, SyntaxSymbolManager& syntaxManager, Ptr<CppParserGenOutput> output, collections::List<Ptr<GlrSyntaxFile>>& files);
 		}
 	}
 }

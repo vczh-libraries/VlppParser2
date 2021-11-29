@@ -6,6 +6,7 @@ namespace vl
 	{
 		namespace parsergen
 		{
+			using namespace collections;
 
 /***********************************************************************
 CheckSyntaxVisitor
@@ -27,13 +28,18 @@ CompileSyntaxVisitor
 					StateSymbol* end;
 				};
 
-				using StatePosMap = collections::Dictionary<StateSymbol*, vint>;
+				using StatePosMap = Dictionary<StateSymbol*, vint>;
+				using LiteralTokenMap = Dictionary<GlrLiteralSyntax*, vint>;
 			protected:
 				ParserSymbolManager&		global;
 				AstSymbolManager&			astManager;
 				LexerSymbolManager&			lexerManager;
 				SyntaxSymbolManager&		syntaxManager;
+
+				LiteralTokenMap&			literalTokens;
+				Ptr<CppParserGenOutput>		output;
 				RuleSymbol*					ruleSymbol;
+
 				WString						clauseDisplayText;
 				StatePosMap					startPoses;
 				StatePosMap					endPoses;
@@ -61,11 +67,20 @@ CompileSyntaxVisitor
 					return result;
 				}
 			public:
-				CompileSyntaxVisitor(AstSymbolManager& _astManager, LexerSymbolManager& _lexerManager, SyntaxSymbolManager& _syntaxManager, RuleSymbol* _ruleSymbol)
-					: global(syntaxManager.Global())
+				CompileSyntaxVisitor(
+					AstSymbolManager& _astManager,
+					LexerSymbolManager& _lexerManager,
+					SyntaxSymbolManager& _syntaxManager,
+					LiteralTokenMap& _literalTokens,
+					Ptr<CppParserGenOutput> _output,
+					RuleSymbol* _ruleSymbol
+				)
+					: global(_syntaxManager.Global())
 					, astManager(_astManager)
 					, lexerManager(_lexerManager)
 					, syntaxManager(_syntaxManager)
+					, literalTokens(_literalTokens)
+					, output(_output)
 					, ruleSymbol(_ruleSymbol)
 				{
 				}
@@ -108,8 +123,9 @@ CompileSyntaxVisitor
 								edge->input.token = index;
 								if (node->field)
 								{
+									auto propSymbol = ruleSymbol->ruleType->Props()[node->field.value];
 									edge->insAfterInput.Add({ AstInsType::Token });
-									edge->insAfterInput.Add({ AstInsType::Field,clause.field });
+									edge->insAfterInput.Add({ AstInsType::Field,output->fieldIds[propSymbol] });
 								}
 							}
 
@@ -133,15 +149,14 @@ CompileSyntaxVisitor
 								auto edge = CreateEdge(pair.begin, pair.end);
 								edge->input.type = EdgeInputType::Rule;
 								edge->input.rule = rule;
-								switch (clause.field)
+								if (node->field)
 								{
-								case Rule::Partial:
-									break;
-								case Rule::Discard:
+									auto propSymbol = ruleSymbol->ruleType->Props()[node->field.value];
+									edge->insAfterInput.Add({ AstInsType::Field,output->fieldIds[propSymbol] });
+								}
+								else if (!rule->isPartial)
+								{
 									edge->insAfterInput.Add({ AstInsType::DiscardValue });
-									break;
-								default:
-									edge->insAfterInput.Add({ AstInsType::Field,clause.field });
 								}
 							}
 
@@ -151,12 +166,26 @@ CompileSyntaxVisitor
 							return;
 						}
 					}
-					global.AddError(ParserErrorType::TokenOrRuleNotExistsInRule, node->name.value);
+					CHECK_FAIL(L"Should not reach here!");
 				}
 
 				void Visit(GlrLiteralSyntax* node) override
 				{
-					CHECK_FAIL(L"Not Implemented!");
+					vint index = literalTokens[node];
+					StatePair pair;
+					pair.begin = CreateState();
+					pair.end = CreateState();
+					startPoses.Add(pair.begin, clauseDisplayText.Length());
+
+					{
+						auto edge = CreateEdge(pair.begin, pair.end);
+						edge->input.type = EdgeInputType::Token;
+						edge->input.token = literalTokens[node];
+					}
+
+					clauseDisplayText += lexerManager.Tokens()[lexerManager.TokenOrder()[index]]->displayText;
+					endPoses.Add(pair.end, clauseDisplayText.Length());
+					result = pair;
 				}
 
 				void Visit(GlrUseSyntax* node) override
@@ -280,8 +309,9 @@ CompileSyntaxVisitor
 					auto bodyPair = Build(node->syntax);
 					clauseDisplayText += L" >";
 					{
+						auto classSymbol = dynamic_cast<AstClassSymbol*>(astManager.Symbols()[node->type.value]);
 						auto edge = CreateEdge(pair.begin, bodyPair.begin);
-						edge->insBeforeInput.Add({ AstInsType::BeginObject,clause.type });
+						edge->insBeforeInput.Add({ AstInsType::BeginObject,output->classIds[classSymbol] });
 					}
 					{
 						auto edge = CreateEdge(bodyPair.end, pair.end);
@@ -320,7 +350,7 @@ CompileSyntaxVisitor
 CompileSyntax
 ***********************************************************************/
 
-			void CompileSyntax(AstSymbolManager& astManager, LexerSymbolManager& lexerManager, SyntaxSymbolManager& syntaxManager, collections::List<Ptr<GlrSyntaxFile>>& files)
+			void CompileSyntax(AstSymbolManager& astManager, LexerSymbolManager& lexerManager, SyntaxSymbolManager& syntaxManager, Ptr<CppParserGenOutput> output, collections::List<Ptr<GlrSyntaxFile>>& files)
 			{
 				for (auto file : files)
 				{
@@ -338,12 +368,13 @@ CompileSyntax
 				}
 				if (syntaxManager.Global().Errors().Count() > 0) return;
 
+				Dictionary<GlrLiteralSyntax*, vint> literalTokens;
 				for (auto file : files)
 				{
 					for (auto rule : file->rules)
 					{
 						auto ruleSymbol = syntaxManager.Rules()[rule->name.value];
-						CompileSyntaxVisitor visitor(astManager, lexerManager, syntaxManager, ruleSymbol);
+						CompileSyntaxVisitor visitor(astManager, lexerManager, syntaxManager, literalTokens, output, ruleSymbol);
 						for (auto clause : rule->clauses)
 						{
 							visitor.AssignClause(clause);

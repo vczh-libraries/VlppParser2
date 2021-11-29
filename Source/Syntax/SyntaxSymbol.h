@@ -15,6 +15,7 @@ namespace vl
 	{
 		namespace parsergen
 		{
+			class AstClassSymbol;
 			class StateSymbol;
 			class EdgeSymbol;
 			class RuleSymbol;
@@ -111,6 +112,8 @@ RuleSymbol
 				RuleSymbol(SyntaxSymbolManager* _ownerManager, const WString& _name);
 			public:
 				StateList					startStates;
+				bool						isPartial = false;
+				AstClassSymbol*				ruleType = nullptr;
 
 				SyntaxSymbolManager*		Owner() { return ownerManager; }
 				const WString&				Name() { return name; }
