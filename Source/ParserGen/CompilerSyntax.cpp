@@ -209,6 +209,87 @@ ResolveNameVisitor
 			};
 
 /***********************************************************************
+CheckSyntaxVisitor
+***********************************************************************/
+
+			class CheckSyntaxVisitor
+				: public Object
+				, public virtual GlrSyntax::IVisitor
+				, public virtual GlrClause::IVisitor
+			{
+			protected:
+				VisitorContext&				context;
+				RuleSymbol*					ruleSymbol;
+				GlrClause*					clause = nullptr;
+
+			public:
+				CheckSyntaxVisitor(
+					VisitorContext& _context,
+					RuleSymbol* _ruleSymbol
+				)
+					: context(_context)
+					, ruleSymbol(_ruleSymbol)
+				{
+				}
+
+				void Visit(GlrRefSyntax* node) override
+				{
+				}
+
+				void Visit(GlrLiteralSyntax* node) override
+				{
+				}
+
+				void Visit(GlrUseSyntax* node) override
+				{
+				}
+
+				void Visit(GlrLoopSyntax* node) override
+				{
+					node->syntax->Accept(this);
+					if (node->delimiter)
+					{
+						node->delimiter->Accept(this);
+					}
+				}
+
+				void Visit(GlrOptionalSyntax* node) override
+				{
+					node->syntax->Accept(this);
+				}
+
+				void Visit(GlrSequenceSyntax* node) override
+				{
+					node->first->Accept(this);
+					node->second->Accept(this);
+				}
+
+				void Visit(GlrAlternativeSyntax* node) override
+				{
+					node->first->Accept(this);
+					node->second->Accept(this);
+				}
+
+				void Visit(GlrCreateClause* node) override
+				{
+					clause = node;
+					node->syntax->Accept(this);
+				}
+
+				void Visit(GlrPartialClause* node) override
+				{
+					clause = node;
+					node->syntax->Accept(this);
+				}
+
+				void Visit(Glr_ReuseClause* node) override
+				{
+					clause = node;
+					node->syntax->Accept(this);
+				}
+			};
+
+/***********************************************************************
 CompileSyntaxVisitor
 ***********************************************************************/
 
@@ -755,6 +836,19 @@ CompileSyntax
 				if (syntaxManager.Global().Errors().Count() > 0) return;
 
 				// check syntax structures
+				for (auto file : files)
+				{
+					for (auto rule : file->rules)
+					{
+						auto ruleSymbol = syntaxManager.Rules()[rule->name.value];
+						CheckSyntaxVisitor visitor(context, ruleSymbol);
+						for (auto clause : rule->clauses)
+						{
+							clause->Accept(&visitor);
+						}
+					}
+				}
+				if (syntaxManager.Global().Errors().Count() > 0) return;
 
 				// build eNFA
 				for (auto file : files)
