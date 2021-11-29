@@ -289,6 +289,7 @@ TraceManager::Input
 				vint traceCount = concurrentCount;
 				vint previousTokenIndex = currentTokenIndex - 1;
 				vint input = Executable::TokenBegin + token;
+
 				BeginSwap();
 				for (vint traceIndex = 0; traceIndex < traceCount; traceIndex++)
 				{
@@ -298,6 +299,11 @@ TraceManager::Input
 					WalkAlongTokenEdges(previousTokenIndex, currentTokenIndex, input, trace, edgeArray);
 				}
 				EndSwap();
+
+				for (vint traceIndex = concurrentCount; traceIndex < concurrentTraces->Count(); traceIndex++)
+				{
+					concurrentTraces->Set(traceIndex, nullptr);
+				}
 			}
 
 			void TraceManager::EndOfInput()
