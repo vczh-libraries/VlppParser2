@@ -62,6 +62,7 @@ ParserSymbolManager
 				FieldTypeNotClass,							// (fileName, className, propName)
 
 				// LexerSymbolManager -----------------------------------------------------------------
+				InvalidTokenDefinition,						// (code)
 				DuplicatedToken,							// (tokenName)
 				DuplicatedTokenByDisplayText,				// (tokenName)
 				InvalidTokenRegex,							// (tokenName, errorMessage)
