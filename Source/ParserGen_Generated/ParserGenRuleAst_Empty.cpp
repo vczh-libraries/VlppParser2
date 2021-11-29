@@ -29,10 +29,6 @@ SyntaxVisitor
 				{
 				}
 
-				void SyntaxVisitor::Visit(GlrUseSyntax* node)
-				{
-				}
-
 				void SyntaxVisitor::Visit(GlrLoopSyntax* node)
 				{
 				}

@@ -34,14 +34,15 @@ namespace vl
 				COLON = 13,
 				SEMICOLON = 14,
 				INFER = 15,
-				USE = 16,
-				ASSIGN = 17,
-				ID = 18,
-				STRING = 19,
-				SPACE = 20,
+				ALTERNATIVE = 16,
+				USE = 17,
+				ASSIGN = 18,
+				ID = 19,
+				STRING = 20,
+				SPACE = 21,
 			};
 
-			constexpr vl::vint ParserGenTokenCount = 21;
+			constexpr vl::vint ParserGenTokenCount = 22;
 			extern bool ParserGenTokenDeleter(vl::vint token);
 			extern const wchar_t* ParserGenTokenId(ParserGenTokens token);
 			extern const wchar_t* ParserGenTokenDisplayText(ParserGenTokens token);

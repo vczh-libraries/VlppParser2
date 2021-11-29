@@ -31,17 +31,16 @@ CreateParserGenRuleAst
 				_LiteralSyntax->CreateProp(L"value")->SetPropType(AstPropType::Token);
 
 				auto _UseSyntax = _ast->CreateClass(L"UseSyntax");
-				_UseSyntax->SetBaseClass(L"Syntax");
-				_UseSyntax->CreateProp(L"Syntax")->SetPropType(AstPropType::Type, L"Syntax");
+				_UseSyntax->CreateProp(L"name")->SetPropType(AstPropType::Token);
 
 				auto _LoopSyntax = _ast->CreateClass(L"LoopSyntax");
 				_LoopSyntax->SetBaseClass(L"Syntax");
-				_LoopSyntax->CreateProp(L"Syntax")->SetPropType(AstPropType::Type, L"Syntax");
+				_LoopSyntax->CreateProp(L"syntax")->SetPropType(AstPropType::Type, L"Syntax");
 				_LoopSyntax->CreateProp(L"delimiter")->SetPropType(AstPropType::Type, L"Syntax");
 
 				auto _OptionalSyntax = _ast->CreateClass(L"OptionalSyntax");
 				_OptionalSyntax->SetBaseClass(L"Syntax");
-				_OptionalSyntax->CreateProp(L"Syntax")->SetPropType(AstPropType::Type, L"Syntax");
+				_OptionalSyntax->CreateProp(L"syntax")->SetPropType(AstPropType::Type, L"Syntax");
 
 				auto _SequenceSyntax = _ast->CreateClass(L"SequenceSyntax");
 				_SequenceSyntax->SetBaseClass(L"Syntax");

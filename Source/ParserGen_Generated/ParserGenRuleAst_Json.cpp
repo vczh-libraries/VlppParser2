@@ -62,17 +62,17 @@ namespace vl
 				}
 				void RuleAstVisitor::PrintFields(GlrLoopSyntax* node)
 				{
-					BeginField(L"Syntax");
-					Print(node->Syntax.Obj());
-					EndField();
 					BeginField(L"delimiter");
 					Print(node->delimiter.Obj());
+					EndField();
+					BeginField(L"syntax");
+					Print(node->syntax.Obj());
 					EndField();
 				}
 				void RuleAstVisitor::PrintFields(GlrOptionalSyntax* node)
 				{
-					BeginField(L"Syntax");
-					Print(node->Syntax.Obj());
+					BeginField(L"syntax");
+					Print(node->syntax.Obj());
 					EndField();
 				}
 				void RuleAstVisitor::PrintFields(GlrPartialClause* node)
@@ -146,8 +146,8 @@ namespace vl
 				}
 				void RuleAstVisitor::PrintFields(GlrUseSyntax* node)
 				{
-					BeginField(L"Syntax");
-					Print(node->Syntax.Obj());
+					BeginField(L"name");
+					WriteToken(node->name);
 					EndField();
 				}
 				void RuleAstVisitor::PrintFields(Glr_ReuseClause* node)
@@ -192,20 +192,6 @@ namespace vl
 					WriteType(L"LiteralSyntax", node);
 					PrintFields(static_cast<GlrSyntax*>(node));
 					PrintFields(static_cast<GlrLiteralSyntax*>(node));
-					EndObject();
-				}
-
-				void RuleAstVisitor::Visit(GlrUseSyntax* node)
-				{
-					if (!node)
-					{
-						WriteNull();
-						return;
-					}
-					BeginObject();
-					WriteType(L"UseSyntax", node);
-					PrintFields(static_cast<GlrSyntax*>(node));
-					PrintFields(static_cast<GlrUseSyntax*>(node));
 					EndObject();
 				}
 
@@ -330,6 +316,19 @@ namespace vl
 						return;
 					}
 					node->Accept(static_cast<GlrClause::IVisitor*>(this));
+				}
+
+				void RuleAstVisitor::Print(GlrUseSyntax* node)
+				{
+					if (!node)
+					{
+						WriteNull();
+						return;
+					}
+					BeginObject();
+					WriteType(L"UseSyntax", node);
+					PrintFields(static_cast<GlrUseSyntax*>(node));
+					EndObject();
 				}
 
 				void RuleAstVisitor::Print(GlrAssignment* node)

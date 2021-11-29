@@ -26,11 +26,6 @@ Visitor Pattern Implementation
 				visitor->Visit(this);
 			}
 
-			void GlrUseSyntax::Accept(GlrSyntax::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
 			void GlrLoopSyntax::Accept(GlrSyntax::IVisitor* visitor)
 			{
 				visitor->Visit(this);
@@ -119,11 +114,11 @@ namespace vl
 			END_CLASS_MEMBER(vl::glr::parsergen::GlrLiteralSyntax)
 
 			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrUseSyntax)
-				CLASS_MEMBER_BASE(vl::glr::parsergen::GlrSyntax)
+				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
 				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrUseSyntax>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(Syntax)
+				CLASS_MEMBER_FIELD(name)
 			END_CLASS_MEMBER(vl::glr::parsergen::GlrUseSyntax)
 
 			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrLoopSyntax)
@@ -131,7 +126,7 @@ namespace vl
 
 				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrLoopSyntax>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(Syntax)
+				CLASS_MEMBER_FIELD(syntax)
 				CLASS_MEMBER_FIELD(delimiter)
 			END_CLASS_MEMBER(vl::glr::parsergen::GlrLoopSyntax)
 
@@ -140,7 +135,7 @@ namespace vl
 
 				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrOptionalSyntax>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(Syntax)
+				CLASS_MEMBER_FIELD(syntax)
 			END_CLASS_MEMBER(vl::glr::parsergen::GlrOptionalSyntax)
 
 			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrSequenceSyntax)
@@ -224,7 +219,6 @@ namespace vl
 			BEGIN_INTERFACE_MEMBER(vl::glr::parsergen::GlrSyntax::IVisitor)
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrSyntax::IVisitor::*)(vl::glr::parsergen::GlrRefSyntax* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrSyntax::IVisitor::*)(vl::glr::parsergen::GlrLiteralSyntax* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrSyntax::IVisitor::*)(vl::glr::parsergen::GlrUseSyntax* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrSyntax::IVisitor::*)(vl::glr::parsergen::GlrLoopSyntax* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrSyntax::IVisitor::*)(vl::glr::parsergen::GlrOptionalSyntax* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrSyntax::IVisitor::*)(vl::glr::parsergen::GlrSequenceSyntax* node))

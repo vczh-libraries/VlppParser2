@@ -63,8 +63,8 @@ namespace vl
 					GlrLoopSyntax* node;
 				public:
 					LoopSyntaxBuilder(GlrLoopSyntax* _node) : node(_node) {}
-					LoopSyntaxBuilder& Syntax(const vl::Ptr<GlrSyntax>& value);
 					LoopSyntaxBuilder& delimiter(const vl::Ptr<GlrSyntax>& value);
+					LoopSyntaxBuilder& syntax(const vl::Ptr<GlrSyntax>& value);
 				};
 
 				class OptionalSyntaxBuilder
@@ -73,7 +73,7 @@ namespace vl
 					GlrOptionalSyntax* node;
 				public:
 					OptionalSyntaxBuilder(GlrOptionalSyntax* _node) : node(_node) {}
-					OptionalSyntaxBuilder& Syntax(const vl::Ptr<GlrSyntax>& value);
+					OptionalSyntaxBuilder& syntax(const vl::Ptr<GlrSyntax>& value);
 				};
 
 				class PartialClauseBuilder
@@ -132,7 +132,7 @@ namespace vl
 					GlrUseSyntax* node;
 				public:
 					UseSyntaxBuilder(GlrUseSyntax* _node) : node(_node) {}
-					UseSyntaxBuilder& Syntax(const vl::Ptr<GlrSyntax>& value);
+					UseSyntaxBuilder& name(const vl::WString& value);
 				};
 
 				class _ReuseClauseBuilder

@@ -83,15 +83,15 @@ LiteralSyntaxBuilder
 LoopSyntaxBuilder
 ***********************************************************************/
 
-				LoopSyntaxBuilder& LoopSyntaxBuilder::Syntax(const vl::Ptr<GlrSyntax>& value)
-				{
-					node->Syntax = value;
-					return *this;
-				}
-
 				LoopSyntaxBuilder& LoopSyntaxBuilder::delimiter(const vl::Ptr<GlrSyntax>& value)
 				{
 					node->delimiter = value;
+					return *this;
+				}
+
+				LoopSyntaxBuilder& LoopSyntaxBuilder::syntax(const vl::Ptr<GlrSyntax>& value)
+				{
+					node->syntax = value;
 					return *this;
 				}
 
@@ -99,9 +99,9 @@ LoopSyntaxBuilder
 OptionalSyntaxBuilder
 ***********************************************************************/
 
-				OptionalSyntaxBuilder& OptionalSyntaxBuilder::Syntax(const vl::Ptr<GlrSyntax>& value)
+				OptionalSyntaxBuilder& OptionalSyntaxBuilder::syntax(const vl::Ptr<GlrSyntax>& value)
 				{
-					node->Syntax = value;
+					node->syntax = value;
 					return *this;
 				}
 
@@ -189,9 +189,9 @@ SyntaxFileBuilder
 UseSyntaxBuilder
 ***********************************************************************/
 
-				UseSyntaxBuilder& UseSyntaxBuilder::Syntax(const vl::Ptr<GlrSyntax>& value)
+				UseSyntaxBuilder& UseSyntaxBuilder::name(const vl::WString& value)
 				{
-					node->Syntax = value;
+					node->name.value = value;
 					return *this;
 				}
 

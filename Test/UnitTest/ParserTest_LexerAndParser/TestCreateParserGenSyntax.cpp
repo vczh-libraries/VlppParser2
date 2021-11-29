@@ -48,7 +48,7 @@ TEST_FILE
 
 		Dictionary<WString, WString> files;
 		WriteSyntaxFiles(typeSyntaxManager, typeExecutable, typeMetadata, output, files);
-		//WriteSyntaxFiles(ruleSyntaxManager, ruleExecutable, ruleMetadata, output, files);
+		WriteSyntaxFiles(ruleSyntaxManager, ruleExecutable, ruleMetadata, output, files);
 
 		auto outputDir = FilePath(GetExePath()) / L"../../../Source/ParserGen_Generated/";
 		for (auto [key, index] : indexed(files.Keys()))

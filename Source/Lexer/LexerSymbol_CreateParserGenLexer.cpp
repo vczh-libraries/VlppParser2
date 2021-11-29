@@ -33,6 +33,7 @@ CreateParserGenAst
 				manager.CreateToken(L"SEMICOLON", L";");
 
 				manager.CreateToken(L"INFER", L"::=");
+				manager.CreateToken(L"ALTERNATIVE", L"/|");
 				manager.CreateToken(L"USE", L"!");
 				manager.CreateToken(L"ASSIGN", L"=");
 

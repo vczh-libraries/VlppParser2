@@ -74,26 +74,14 @@ namespace vl
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void RuleAstVisitor::Visit(GlrUseSyntax* node)
-				{
-					if (!node) return;
-					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<GlrSyntax*>(node));
-					Traverse(static_cast<GlrUseSyntax*>(node));
-					InspectInto(node->Syntax.Obj());
-					Finishing(static_cast<GlrUseSyntax*>(node));
-					Finishing(static_cast<GlrSyntax*>(node));
-					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
-				}
-
 				void RuleAstVisitor::Visit(GlrLoopSyntax* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
 					Traverse(static_cast<GlrSyntax*>(node));
 					Traverse(static_cast<GlrLoopSyntax*>(node));
-					InspectInto(node->Syntax.Obj());
 					InspectInto(node->delimiter.Obj());
+					InspectInto(node->syntax.Obj());
 					Finishing(static_cast<GlrLoopSyntax*>(node));
 					Finishing(static_cast<GlrSyntax*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
@@ -105,7 +93,7 @@ namespace vl
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
 					Traverse(static_cast<GlrSyntax*>(node));
 					Traverse(static_cast<GlrOptionalSyntax*>(node));
-					InspectInto(node->Syntax.Obj());
+					InspectInto(node->syntax.Obj());
 					Finishing(static_cast<GlrOptionalSyntax*>(node));
 					Finishing(static_cast<GlrSyntax*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
@@ -197,6 +185,16 @@ namespace vl
 				{
 					if (!node) return;
 					node->Accept(static_cast<GlrClause::IVisitor*>(this));
+				}
+
+				void RuleAstVisitor::InspectInto(GlrUseSyntax* node)
+				{
+					if (!node) return;
+					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+					Traverse(static_cast<GlrUseSyntax*>(node));
+					Traverse(node->name);
+					Finishing(static_cast<GlrUseSyntax*>(node));
+					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
 				void RuleAstVisitor::InspectInto(GlrAssignment* node)

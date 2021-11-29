@@ -63,7 +63,6 @@ namespace vl
 				protected:
 					void Visit(GlrRefSyntax* node) override;
 					void Visit(GlrLiteralSyntax* node) override;
-					void Visit(GlrUseSyntax* node) override;
 					void Visit(GlrLoopSyntax* node) override;
 					void Visit(GlrOptionalSyntax* node) override;
 					void Visit(GlrSequenceSyntax* node) override;
@@ -76,6 +75,7 @@ namespace vl
 				public:
 					void InspectInto(GlrSyntax* node);
 					void InspectInto(GlrClause* node);
+					void InspectInto(GlrUseSyntax* node);
 					void InspectInto(GlrAssignment* node);
 					void InspectInto(GlrRule* node);
 					void InspectInto(GlrSyntaxFile* node);
