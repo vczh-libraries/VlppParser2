@@ -172,6 +172,8 @@ AST
 			vint								tokenIndex = -1;
 			/// <summary>Content of the token.</summary>
 			WString								value; 
+
+			operator bool() const { return value.Length() > 0; }
 		};
 
 /***********************************************************************

@@ -89,7 +89,7 @@
       2. [x] Syntax for `ParserGen::RuleSyntax`.
       3. [x] Syntax for `Calculator`.
 4. [x] `ParserTest_ParserGen_Compiler`
-   1. [ ] Initialize `AstSymbolManager` from `ParserGen::TypeAst`.
+   1. [x] Initialize `AstSymbolManager` from `ParserGen::TypeAst`.
    2. [ ] Initialize `SyntaxSymbolManager` from `ParserGen::SyntaxAst`.
    3. [x] Test generated `Calculator` syntax C++ files again.
    4. [x] Test generated `ParserGen` syntax C++ files to parse `Test/Source/Calculator/Syntax/Ast.txt`.

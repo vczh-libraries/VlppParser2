@@ -3,6 +3,9 @@
 #include "../../../Source/ParserGen_Generated/ParserGenTypeParser.h"
 #include "../../../Source/ParserGen_Generated/ParserGenRuleParser.h"
 #include "../../../Source/ParserGen/Compiler.h"
+#include "../../../Source/Ast/AstCppGen.h"
+#include "../../../Source/Lexer/LexerCppGen.h"
+#include "../../../Source/Syntax/SyntaxCppGen.h"
 #include "../../Source/LogAutomaton.h"
 
 using namespace vl::glr::parsergen;
@@ -31,6 +34,11 @@ TEST_FILE
 		{
 			FilePath dirParser = GetTestParserInputPath(parserName);
 			FilePath dirOutput = GetOutputDir(L"ParserGen");
+			FilePath dirGenerated = dirParser / L"Generated";
+			if (!Folder(dirGenerated).Exists())
+			{
+				Folder(dirGenerated).Create(true);
+			}
 
 			Ptr<GlrAstFile> astFile;
 			Ptr<GlrSyntaxFile> syntaxFile;
@@ -55,6 +63,8 @@ TEST_FILE
 			AstSymbolManager astManager(global);
 			LexerSymbolManager lexerManager(global);
 			SyntaxSymbolManager syntaxManager(global);
+			Executable executable;
+			Metadata metadata;
 
 			auto astDefFile = astManager.CreateFile(astName);
 			TEST_CASE(L"Compiler")
@@ -65,34 +75,64 @@ TEST_FILE
 
 				CompileAst(astManager, astDefFile, astFile);
 				TEST_ASSERT(global.Errors().Count() == 0);
-				CompileLexer(lexerManager, lexerInput);
-				TEST_ASSERT(global.Errors().Count() == 0);
-				CompileSyntax(astManager, lexerManager, syntaxManager, files);
-				TEST_ASSERT(global.Errors().Count() == 0);
+				//CompileLexer(lexerManager, lexerInput);
+				//TEST_ASSERT(global.Errors().Count() == 0);
+				//CompileSyntax(astManager, lexerManager, syntaxManager, files);
+				//TEST_ASSERT(global.Errors().Count() == 0);
+
+				//syntaxManager.BuildCompactNFA();
+				//TEST_ASSERT(global.Errors().Count() == 0);
+				//syntaxManager.BuildCrossReferencedNFA();
+				//TEST_ASSERT(global.Errors().Count() == 0);
+				//syntaxManager.BuildAutomaton(lexerManager.Tokens().Count(), executable, metadata);
+				//TEST_ASSERT(global.Errors().Count() == 0);
 			});
 
+			if (global.Errors().Count() == 0)
 			{
-				global.name = parserName;
-				Fill(global.includes, L"../../../../Source/AstBase.h", L"../../../../Source/SyntaxBase.h");
-				global.cppNss.Add(wlower(parserName));
-				global.headerGuard = L"VCZH_PARSER2_UNITTEST_" + wupper(parserName);
-			}
-			{
-				astDefFile->cppNss.Add(wlower(parserName));
-				astDefFile->refNss.Add(wlower(parserName));
-				astDefFile->classPrefix = L"";
-			}
-			{
-				syntaxManager.name = parserName;
-				syntaxManager.parsableRules.Add(syntaxManager.Rules()[ruleName]);
-				syntaxManager.ruleTypes.Add(syntaxManager.Rules()[ruleName], L"*");
-			}
+				{
+					global.name = parserName;
+					Fill(global.includes, L"../../../../Source/AstBase.h", L"../../../../Source/SyntaxBase.h");
+					global.cppNss.Add(wlower(parserName));
+					global.headerGuard = L"VCZH_PARSER2_UNITTEST_" + wupper(parserName);
+				}
+				{
+					astDefFile->cppNss.Add(wlower(parserName));
+					astDefFile->refNss.Add(wlower(parserName));
+					astDefFile->classPrefix = L"";
+				}
+				{
+					//syntaxManager.name = parserName;
+					//syntaxManager.parsableRules.Add(syntaxManager.Rules()[ruleName]);
+					//syntaxManager.ruleTypes.Add(syntaxManager.Rules()[ruleName], L"*");
+				}
 
-			// Generate files
+				auto output = GenerateParserFileNames(global);
+				GenerateAstFileNames(astManager, output);
+				GenerateSyntaxFileNames(syntaxManager, output);
 
-			if (parserName == L"Calculator")
-			{
-				// Compare Source/Calculator/Generated with Source/Calculator/Parser
+				Dictionary<WString, WString> files;
+				WriteAstFiles(astManager, output, files);
+				//WriteLexerFiles(lexerManager, output, files);
+				//WriteSyntaxFiles(syntaxManager, executable, metadata, output, files);
+
+				for (auto&& [name, content] : files)
+				{
+					File(dirGenerated / name).WriteAllText(content, false, BomEncoder::Utf8);
+				}
+
+				if (parserName == L"Calculator")
+				{
+					TEST_CASE(L"Ensure Calculator Generated Files Identical")
+					{
+						// Compare Source/Calculator/Generated with Source/Calculator/Parser
+						for (auto&& [name, content] : files)
+						{
+							auto expected = File(FilePath(GetTestParserInputPath(parserName)) / L"Parser" / name).ReadAllTextByBom();
+							TEST_ASSERT(content == expected);
+						}
+					});
+				}
 			}
 		});
 	}
