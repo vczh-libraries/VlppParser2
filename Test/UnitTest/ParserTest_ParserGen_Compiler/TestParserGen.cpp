@@ -2,6 +2,7 @@
 #include "../../../Source/ParserGen_Generated/ParserGenRuleAst_Json.h"
 #include "../../../Source/ParserGen_Generated/ParserGenTypeParser.h"
 #include "../../../Source/ParserGen_Generated/ParserGenRuleParser.h"
+#include "../../../Source/ParserGen/Compiler.h"
 #include "../../Source/LogAutomaton.h"
 
 using namespace vl::glr::parsergen;
@@ -9,32 +10,92 @@ using namespace vl::glr::parsergen;
 extern WString GetTestParserInputPath(const WString& parserName);
 extern FilePath GetOutputDir(const WString& parserName);
 
+struct ParserDef
+{
+	WString parserName;
+	WString astName;
+	WString ruleName;
+};
+
 TEST_FILE
 {
 	TypeParser typeParser;
 	RuleParser ruleParser;
 
-	TEST_CATEGORY(L"Test ParserGen on Calculator")
+	List<ParserDef> parsersToLoad;
+	parsersToLoad.Add(ParserDef{ L"Calculator", L"ExprAst", L"Module" });
+
+	for (auto&& [parserName, astName, ruleName] : parsersToLoad)
 	{
-		FilePath dirParser = GetTestParserInputPath(L"Calculator");
-		FilePath dirOutput = GetOutputDir(L"ParserGen");
-
-		TEST_CASE(L"Ast.txt")
+		TEST_CATEGORY(L"Test ParserGen on " + parserName)
 		{
-			auto input = File(dirParser / L"Syntax/Ast.txt").ReadAllTextByBom();
-			auto ast = typeParser.ParseFile(input);
-			auto actualJson = PrintAstJson<json_visitor::TypeAstVisitor>(ast);
-			File(dirOutput / L"Ast[Calculator].txt").WriteAllText(actualJson, BomEncoder::Utf8);
-		});
+			FilePath dirParser = GetTestParserInputPath(parserName);
+			FilePath dirOutput = GetOutputDir(L"ParserGen");
 
-		TEST_CASE(L"Syntax.txt")
-		{
-			auto input = File(dirParser / L"Syntax/Syntax.txt").ReadAllTextByBom();
-			auto ast = ruleParser.ParseFile(input);
-			auto actualJson = PrintAstJson<json_visitor::RuleAstVisitor>(ast);
-			File(dirOutput / L"Syntax[Calculator].txt").WriteAllText(actualJson, BomEncoder::Utf8);
+			Ptr<GlrAstFile> astFile;
+			Ptr<GlrSyntaxFile> syntaxFile;
+
+			TEST_CASE(L"Parse Ast.txt")
+			{
+				auto input = File(dirParser / L"Syntax/Ast.txt").ReadAllTextByBom();
+				astFile = typeParser.ParseFile(input);
+				auto actualJson = PrintAstJson<json_visitor::TypeAstVisitor>(astFile);
+				File(dirOutput / (L"Ast[" + parserName + L"].txt")).WriteAllText(actualJson, BomEncoder::Utf8);
+			});
+
+			TEST_CASE(L"Parse Syntax.txt")
+			{
+				auto input = File(dirParser / L"Syntax/Syntax.txt").ReadAllTextByBom();
+				syntaxFile = ruleParser.ParseFile(input);
+				auto actualJson = PrintAstJson<json_visitor::RuleAstVisitor>(syntaxFile);
+				File(dirOutput / (L"Syntax[" + parserName + L"].txt")).WriteAllText(actualJson, BomEncoder::Utf8);
+			});
+
+			ParserSymbolManager global;
+			AstSymbolManager astManager(global);
+			LexerSymbolManager lexerManager(global);
+			SyntaxSymbolManager syntaxManager(global);
+
+			auto astDefFile = astManager.CreateFile(astName);
+			TEST_CASE(L"Compiler")
+			{
+				auto lexerInput = File(dirParser / L"Syntax/Lexer.txt").ReadAllTextByBom();
+				List<Ptr<GlrSyntaxFile>> files;
+				files.Add(syntaxFile);
+
+				CompileAst(astManager, astDefFile, astFile);
+				TEST_ASSERT(global.Errors().Count() == 0);
+				CompileLexer(lexerManager, lexerInput);
+				TEST_ASSERT(global.Errors().Count() == 0);
+				CompileSyntax(astManager, lexerManager, syntaxManager, files);
+				TEST_ASSERT(global.Errors().Count() == 0);
+			});
+
+			{
+				global.name = parserName;
+				Fill(global.includes, L"../../../../Source/AstBase.h", L"../../../../Source/SyntaxBase.h");
+				global.cppNss.Add(wlower(parserName));
+				global.headerGuard = L"VCZH_PARSER2_UNITTEST_" + wupper(parserName);
+			}
+			{
+				astDefFile->cppNss.Add(wlower(parserName));
+				astDefFile->refNss.Add(wlower(parserName));
+				astDefFile->classPrefix = L"";
+			}
+			{
+				syntaxManager.name = parserName;
+				syntaxManager.parsableRules.Add(syntaxManager.Rules()[ruleName]);
+				syntaxManager.ruleTypes.Add(syntaxManager.Rules()[ruleName], L"*");
+			}
+
+			// Generate files
+
+			if (parserName == L"Calculator")
+			{
+				// Compare Source/Calculator/Generated with Source/Calculator/Parser
+			}
 		});
-	});
+	}
 
 #undef LEXER
 }
