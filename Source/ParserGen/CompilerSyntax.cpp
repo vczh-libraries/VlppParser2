@@ -9,6 +9,9 @@ namespace vl
 			using namespace collections;
 
 			using LiteralTokenMap = Dictionary<GlrLiteralSyntax*, vint>;
+			using RuleReuseDependencies = Group<RuleSymbol*, RuleSymbol*>;
+			using RuleKnownTypes = Group<RuleSymbol*, AstClassSymbol*>;
+			using ClauseReuseDependencies = Group<GlrClause*, RuleSymbol*>;
 			using ClauseTypeMap = Dictionary<GlrClause*, AstClassSymbol*>;
 
 			struct VisitorContext
@@ -20,6 +23,9 @@ namespace vl
 				Ptr<CppParserGenOutput>		output;
 
 				LiteralTokenMap				literalTokens;
+				RuleReuseDependencies		ruleReuseDependencies;
+				RuleKnownTypes				ruleKnownTypes;
+				ClauseReuseDependencies		clauseReuseDependencies;
 				ClauseTypeMap				clauseTypes;
 
 				VisitorContext(
@@ -49,6 +55,7 @@ ResolveNameVisitor
 			protected:
 				VisitorContext&				context;
 				RuleSymbol*					ruleSymbol;
+				GlrClause*					clause = nullptr;
 
 				AstClassSymbol* GetRuleClass(const WString& typeName)
 				{
@@ -129,6 +136,18 @@ ResolveNameVisitor
 					{
 						context.global.AddError(ParserErrorType::TokenOrRuleNotExistsInRule, ruleSymbol->Name(), node->name.value);
 					}
+					else if (clause)
+					{
+						auto usedRuleSymbol = context.syntaxManager.Rules().Values()[ruleIndex];
+						if (!context.ruleReuseDependencies.Contains(ruleSymbol, usedRuleSymbol))
+						{
+							context.ruleReuseDependencies.Add(ruleSymbol, usedRuleSymbol);
+						}
+						if (!context.clauseReuseDependencies.Contains(clause, usedRuleSymbol))
+						{
+							context.clauseReuseDependencies.Add(clause, usedRuleSymbol);
+						}
+					}
 				}
 
 				void Visit(GlrLoopSyntax* node) override
@@ -160,20 +179,29 @@ ResolveNameVisitor
 				void Visit(GlrCreateClause* node) override
 				{
 					createCount++;
-					GetRuleClass(node->type.value);
+					if (auto classSymbol = GetRuleClass(node->type.value))
+					{
+						context.ruleKnownTypes.Add(ruleSymbol, classSymbol);
+						context.clauseTypes.Add(node, classSymbol);
+					}
 					node->syntax->Accept(this);
 				}
 
 				void Visit(GlrPartialClause* node) override
 				{
 					partialCount++;
-					GetRuleClass(node->type.value);
+					if (auto classSymbol = GetRuleClass(node->type.value))
+					{
+						context.ruleKnownTypes.Add(ruleSymbol, classSymbol);
+						context.clauseTypes.Add(node, classSymbol);
+					}
 					node->syntax->Accept(this);
 				}
 
 				void Visit(Glr_ReuseClause* node) override
 				{
 					reuseCount++;
+					clause = node;
 					node->syntax->Accept(this);
 				}
 			};
