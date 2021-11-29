@@ -74,8 +74,11 @@ ParserSymbolManager
 
 				// SyntaxAst to SyntaxSymbolManager ---------------------------------------------------
 				// hint is a position in clause like: EXP0 ::= '(' @ !EXP ')'
-				TypeNotExistsInRule,						// (ruleName, hint, name)
+				RuleNameConflictedWithToken,				// (ruleName)
 				TokenOrRuleNotExistsInRule,					// (ruleName, hint, name)
+
+				// SyntaxAst Validation ---------------------------------------------------------------
+				TypeNotExistsInRule,						// (ruleName, hint, name)
 				FieldNotExistsInRule,						// (ruleName, hint, typeName, fieldName)
 				RuleCannotResolveToDeterministicType,		// (ruleName, hint)									: Unable to resolve to one type from clauses (token, type) or (create, partial).
 				RuleTypeMismatchedToField,					// (ruleName, hint, fieldRuleName, fieldName)		: The rule type is not compatible to the assigning field.

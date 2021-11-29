@@ -24,7 +24,7 @@
 - [x] Standalone syntax analyzer definition files.
   - Multiple syntax files are combined together before creating `SyntaxSymbolManager`.
 - [x] All names of AST must be unique globally.
-- [ ] All names of token and rule must be unique.
+- [x] All names of token and rule must be unique.
 - [x] Unique field id will be generated for each fields in each AST node.
 - [ ] One XML "parser project file" to contain all above information, linking to all AST/Lexical Analyzer/Syntax files.
 
@@ -90,7 +90,7 @@
       3. [x] Syntax for `Calculator`.
 4. [x] `ParserTest_ParserGen_Compiler`
    1. [x] Initialize `AstSymbolManager` from `ParserGen::TypeAst`.
-   2. [ ] Initialize `SyntaxSymbolManager` from `ParserGen::SyntaxAst`.
+   2. [x] Initialize `SyntaxSymbolManager` from `ParserGen::SyntaxAst`.
    3. [x] Test generated `Calculator` syntax C++ files again.
    4. [x] Test generated `ParserGen` syntax C++ files to parse `Test/Source/Calculator/Syntax/Ast.txt`.
    5. [x] Test generated `ParserGen` syntax C++ files to parse `Test/Source/Calculator/Syntax/Syntax.txt`.

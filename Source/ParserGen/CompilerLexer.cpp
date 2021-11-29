@@ -10,7 +10,7 @@ namespace vl
 			using namespace regex;
 
 /***********************************************************************
-CompileAst
+CompileLexer
 ***********************************************************************/
 
 			void CompileLexer(LexerSymbolManager& lexerManager, const WString& input)
