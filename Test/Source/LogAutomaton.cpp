@@ -53,7 +53,7 @@ LogAutomaton
 ***********************************************************************/
 
 FilePath LogAutomaton(
-	const WString& parserName,
+	const FilePath& outputFile,
 	Executable& executable,
 	Metadata& metadata,
 	const Func<WString(vint32_t)>& typeName,
@@ -61,8 +61,6 @@ FilePath LogAutomaton(
 	const Func<WString(vint32_t)>& tokenName
 )
 {
-	auto outputDir = GetOutputDir(parserName);
-	auto outputFile = outputDir / L"Automaton.txt";
 	FileStream fileStream(outputFile.GetFullPath(), FileStream::WriteOnly);
 	BomEncoder encoder(BomEncoder::Utf8);
 	EncoderStream encoderStream(fileStream, encoder);
@@ -118,6 +116,18 @@ FilePath LogAutomaton(
 		writer.WriteLine(L"");
 	}
 	return outputFile;
+}
+
+FilePath LogAutomaton(
+	const WString& parserName,
+	Executable& executable,
+	Metadata& metadata,
+	const Func<WString(vint32_t)>& typeName,
+	const Func<WString(vint32_t)>& fieldName,
+	const Func<WString(vint32_t)>& tokenName
+)
+{
+	return LogAutomaton(GetOutputDir(parserName) / L"Automaton.txt", executable, metadata, typeName, fieldName, tokenName);
 }
 
 /***********************************************************************

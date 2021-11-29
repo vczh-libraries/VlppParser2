@@ -111,6 +111,15 @@ TEST_FILE
 				syntaxManager.BuildAutomaton(lexerManager.Tokens().Count(), executable, metadata);
 				TEST_ASSERT(global.Errors().Count() == 0);
 
+				LogAutomaton(
+					dirOutput / (L"Automaton[" + parserName + L"].txt"),
+					executable,
+					metadata,
+					[&](vint index) { auto type = output->classIds.Keys()[output->classIds.Values().IndexOf(index)]; return type->Name(); },
+					[&](vint index) { auto prop = output->fieldIds.Keys()[output->fieldIds.Values().IndexOf(index)]; return prop->Parent()->Name() + L"::" + prop->Name(); },
+					[&](vint index) { auto token = lexerManager.Tokens()[lexerManager.TokenOrder()[index]]; return token->displayText == L"" ? token->Name() : L"\"" + token->displayText + L"\""; }
+					);
+
 				{
 					auto rule = syntaxManager.Rules()[ruleName];
 					syntaxManager.parsableRules.Add(rule);

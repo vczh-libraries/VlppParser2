@@ -19,6 +19,15 @@ void LogInstruction(
 	);
 
 FilePath LogAutomaton(
+	const FilePath& outputFile,
+	Executable& executable,
+	Metadata& metadata,
+	const Func<WString(vint32_t)>& typeName,
+	const Func<WString(vint32_t)>& fieldName,
+	const Func<WString(vint32_t)>& tokenName
+	);
+
+FilePath LogAutomaton(
 	const WString& parserName,
 	Executable& executable,
 	Metadata& metadata,
