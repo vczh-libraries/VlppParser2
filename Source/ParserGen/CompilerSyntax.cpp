@@ -12,6 +12,89 @@ namespace vl
 CheckSyntaxVisitor
 ***********************************************************************/
 
+			class CheckSyntaxVisitor
+				: public Object
+				, public virtual GlrSyntax::IVisitor
+				, public virtual GlrClause::IVisitor
+			{
+				using LiteralTokenMap = Dictionary<GlrLiteralSyntax*, vint>;
+			protected:
+				ParserSymbolManager&		global;
+				AstSymbolManager&			astManager;
+				LexerSymbolManager&			lexerManager;
+				SyntaxSymbolManager&		syntaxManager;
+
+				LiteralTokenMap&			literalTokens;
+				RuleSymbol*					ruleSymbol;
+
+			public:
+				CheckSyntaxVisitor(
+					AstSymbolManager& _astManager,
+					LexerSymbolManager& _lexerManager,
+					SyntaxSymbolManager& _syntaxManager,
+					LiteralTokenMap& _literalTokens,
+					RuleSymbol* _ruleSymbol
+				)
+					: global(_syntaxManager.Global())
+					, astManager(_astManager)
+					, lexerManager(_lexerManager)
+					, syntaxManager(_syntaxManager)
+					, literalTokens(_literalTokens)
+					, ruleSymbol(_ruleSymbol)
+				{
+				}
+
+				void Visit(GlrRefSyntax* node) override
+				{
+					CHECK_FAIL(L"Not Implemented!");
+				}
+
+				void Visit(GlrLiteralSyntax* node) override
+				{
+					CHECK_FAIL(L"Not Implemented!");
+				}
+
+				void Visit(GlrUseSyntax* node) override
+				{
+					CHECK_FAIL(L"Not Implemented!");
+				}
+
+				void Visit(GlrLoopSyntax* node) override
+				{
+					CHECK_FAIL(L"Not Implemented!");
+				}
+
+				void Visit(GlrOptionalSyntax* node) override
+				{
+					CHECK_FAIL(L"Not Implemented!");
+				}
+
+				void Visit(GlrSequenceSyntax* node) override
+				{
+					CHECK_FAIL(L"Not Implemented!");
+				}
+
+				void Visit(GlrAlternativeSyntax* node) override
+				{
+					CHECK_FAIL(L"Not Implemented!");
+				}
+
+				void Visit(GlrCreateClause* node) override
+				{
+					CHECK_FAIL(L"Not Implemented!");
+				}
+
+				void Visit(GlrPartialClause* node) override
+				{
+					CHECK_FAIL(L"Not Implemented!");
+				}
+
+				void Visit(Glr_ReuseClause* node) override
+				{
+					CHECK_FAIL(L"Not Implemented!");
+				}
+			};
+
 /***********************************************************************
 CompileSyntaxVisitor
 ***********************************************************************/
@@ -369,6 +452,20 @@ CompileSyntax
 				if (syntaxManager.Global().Errors().Count() > 0) return;
 
 				Dictionary<GlrLiteralSyntax*, vint> literalTokens;
+				for (auto file : files)
+				{
+					for (auto rule : file->rules)
+					{
+						auto ruleSymbol = syntaxManager.Rules()[rule->name.value];
+						CheckSyntaxVisitor visitor(astManager, lexerManager, syntaxManager, literalTokens, ruleSymbol);
+						for (auto clause : rule->clauses)
+						{
+							clause->Accept(&visitor);
+						}
+					}
+				}
+				if (syntaxManager.Global().Errors().Count() > 0) return;
+
 				for (auto file : files)
 				{
 					for (auto rule : file->rules)
