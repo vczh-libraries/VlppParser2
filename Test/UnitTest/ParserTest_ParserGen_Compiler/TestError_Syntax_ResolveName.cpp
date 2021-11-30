@@ -72,4 +72,52 @@ SPACE ::= NUM:value as NumExpr;
 			{ ParserErrorType::RuleNameConflictedWithToken,L"SPACE" }
 			);
 	});
+
+	TEST_CASE(L"TypeNotExistsInRule")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0 ::= NUM:value as Unknown;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::TypeNotExistsInRule,L"Exp0",L"Unknown" }
+		);
+	});
+
+	TEST_CASE(L"TypeNotClassInRule")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0 ::= NUM:value as BinaryOp;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::TypeNotClassInRule,L"Exp0",L"BinaryOp" }
+		);
+	});
+
+	TEST_CASE(L"TokenOrRuleNotExistsInRule")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0 ::= NUM2:value as NumExpr;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::TokenOrRuleNotExistsInRule,L"Exp0",L"NUM2" }
+		);
+	});
 }
