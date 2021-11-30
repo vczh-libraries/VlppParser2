@@ -69,41 +69,124 @@ TEST_FILE
 
 	TEST_CASE(L"DuplicatedSymbol")
 	{
-		ExpectError(parser, LR"AST(
-			)AST",
-			{ ParserErrorType::DuplicatedSymbol,L"A" }
-			);
+		const wchar_t* inputs[] = {
+LR"AST(
+			enum A{}
+			enum A{}
+)AST",
+LR"AST(
+			class A{}
+			class A{}
+)AST",
+LR"AST(
+			enum A{}
+			class A{}
+)AST" };
+		for (auto input : inputs)
+		{
+			ExpectError(parser, input, { ParserErrorType::DuplicatedSymbol,L"Ast",L"A" });
+		}
 	});
 
 	TEST_CASE(L"DuplicatedSymbolGlobally")
 	{
+		const wchar_t* inputs[] = {
+LR"AST(
+			enum A{}
+)AST",
+LR"AST(
+			class A{}
+)AST" };
+		for (auto input1 : inputs)
+		{
+			for (auto input2 : inputs)
+			{
+				ParserSymbolManager global;
+				AstSymbolManager astManager(global);
+				CompileAstCode(parser, astManager, L"Ast1", input1);
+				CompileAstCode(parser, astManager, L"Ast2", input2);
+				AssertError(global, { ParserErrorType::DuplicatedSymbolGlobally,L"Ast2",L"A",L"Ast1" });
+			}
+		}
 	});
 
 	TEST_CASE(L"DuplicatedClassProp")
 	{
+		const wchar_t* input =
+LR"AST(
+			class A
+			{
+				var a : token;
+				var a : token;
+			}
+)AST";
+		ExpectError(parser, input, { ParserErrorType::DuplicatedClassProp,L"Ast",L"A",L"a" });
 	});
 
 	TEST_CASE(L"DuplicatedEnumItem")
 	{
+		const wchar_t* input =
+LR"AST(
+			enum A
+			{
+				a,
+				a,
+			}
+)AST";
+		ExpectError(parser, input, { ParserErrorType::DuplicatedEnumItem,L"Ast",L"A",L"a" });
 	});
 
 	TEST_CASE(L"BaseClassNotExists")
 	{
+		const wchar_t* input =
+LR"AST(
+			class A : B {}
+)AST";
+		ExpectError(parser, input, { ParserErrorType::BaseClassNotExists,L"Ast",L"A",L"B" });
 	});
 
 	TEST_CASE(L"BaseClassNotClass")
 	{
+		const wchar_t* input =
+LR"AST(
+			enum A {}
+			class B : A {}
+)AST";
+		ExpectError(parser, input, { ParserErrorType::BaseClassNotClass,L"Ast",L"B",L"A" });
 	});
 
 	TEST_CASE(L"BaseClassCyclicDependency")
 	{
+		const wchar_t* input =
+LR"AST(
+			class A : B {}
+			class B : A {}
+)AST";
+		ExpectError(parser, input, { ParserErrorType::BaseClassCyclicDependency,L"Ast",L"B" });
 	});
 
 	TEST_CASE(L"FieldTypeNotExists")
 	{
+		const wchar_t* input =
+LR"AST(
+			class A
+			{
+				var b : B;
+			}
+)AST";
+		ExpectError(parser, input, { ParserErrorType::FieldTypeNotExists,L"Ast",L"A",L"b" });
 	});
 
 	TEST_CASE(L"FieldTypeNotClass")
 	{
+		const wchar_t* input =
+LR"AST(
+			enum A {}
+			class B
+			{
+				var a : A[];
+			}
+)AST";
+		ExpectError(parser, input, { ParserErrorType::FieldTypeNotExists,L"Ast",L"B",L"a" });
 	});
 }
