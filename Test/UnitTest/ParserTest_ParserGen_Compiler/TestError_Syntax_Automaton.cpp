@@ -11,7 +11,7 @@ using namespace vl::glr::parsergen;
 
 extern void AssertError(ParserSymbolManager& global, ParserError expectedError);
 
-namespace TestError_Syntax_Automaton_TestObjects
+namespace TestError_Syntax_TestObjects
 {
 	void ExpectError(TypeParser& typeParser, RuleParser& ruleParser, const WString& astCode, const WString& lexerCode, const WString& syntaxCode, ParserError expectedError)
 	{
@@ -46,7 +46,7 @@ namespace TestError_Syntax_Automaton_TestObjects
 		AssertError(global, expectedError);
 	}
 }
-using namespace TestError_Syntax_Automaton_TestObjects;
+using namespace TestError_Syntax_TestObjects;
 
 TEST_FILE
 {
@@ -61,8 +61,6 @@ class Ast {}
 	const wchar_t* lexerCode =
 LR"LEXER(
 A:a
-B:b
-C:c
 )LEXER";
 
 	TEST_CASE(L"DuplicatedRule")
@@ -104,7 +102,7 @@ Z
 			astCode,
 			lexerCode,
 			syntaxCode,
-			{ ParserErrorType::RuleIsIndirectlyLeftRecursive,L"Y" }
+			{ ParserErrorType::RuleIsIndirectlyLeftRecursive,L"Z" }
 			);
 	});
 }

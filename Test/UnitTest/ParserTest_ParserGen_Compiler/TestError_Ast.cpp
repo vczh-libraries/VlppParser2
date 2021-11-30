@@ -7,7 +7,7 @@ using namespace vl::glr::parsergen;
 
 void AssertError(ParserSymbolManager& global, ParserError expectedError)
 {
-	TEST_ASSERT(global.Errors().Count() == 1);
+	TEST_ASSERT(global.Errors().Count() > 0);
 	auto&& error = global.Errors()[0];
 	TEST_ASSERT(error.type == expectedError.type);
 	TEST_ASSERT(error.arg1 == expectedError.arg1);
