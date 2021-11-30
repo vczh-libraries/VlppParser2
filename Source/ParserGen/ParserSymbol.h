@@ -55,8 +55,8 @@ ParserSymbolManager
 				DuplicatedSymbolGlobally,					// (fileName, symbolName, anotherFileName)
 				DuplicatedClassProp,						// (fileName, className, propName)
 				DuplicatedEnumItem,							// (fileName, enumName, propName
-				BaseClassNotExists,							// (fileName, className, baseClass)
-				BaseClassNotClass,							// (fileName, className, baseClass)
+				BaseClassNotExists,							// (fileName, className, typeName)
+				BaseClassNotClass,							// (fileName, className, typeName)
 				BaseClassCyclicDependency,					// (fileName, className)
 				FieldTypeNotExists,							// (fileName, className, propName)
 				FieldTypeNotClass,							// (fileName, className, propName)

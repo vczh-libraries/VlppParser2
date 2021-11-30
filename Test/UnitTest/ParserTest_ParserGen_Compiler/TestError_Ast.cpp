@@ -71,16 +71,16 @@ TEST_FILE
 	{
 		const wchar_t* inputs[] = {
 LR"AST(
-			enum A{}
-			enum A{}
+			enum A {}
+			enum A {}
 )AST",
 LR"AST(
-			class A{}
-			class A{}
+			class A {}
+			class A {}
 )AST",
 LR"AST(
-			enum A{}
-			class A{}
+			enum A {}
+			class A {}
 )AST" };
 		for (auto input : inputs)
 		{
@@ -92,10 +92,10 @@ LR"AST(
 	{
 		const wchar_t* inputs[] = {
 LR"AST(
-			enum A{}
+			enum A {}
 )AST",
 LR"AST(
-			class A{}
+			class A {}
 )AST" };
 		for (auto input1 : inputs)
 		{
@@ -187,6 +187,6 @@ LR"AST(
 				var a : A[];
 			}
 )AST";
-		ExpectError(parser, input, { ParserErrorType::FieldTypeNotExists,L"Ast",L"B",L"a" });
+		ExpectError(parser, input, { ParserErrorType::FieldTypeNotClass,L"Ast",L"B",L"a" });
 	});
 }

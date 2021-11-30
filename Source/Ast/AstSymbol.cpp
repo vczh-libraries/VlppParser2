@@ -45,6 +45,7 @@ AstEnumSymbol
 				{
 					ownerFile->Owner()->Global().AddError(
 						ParserErrorType::DuplicatedEnumItem,
+						ownerFile->Name(),
 						name,
 						itemName
 						);
@@ -71,7 +72,12 @@ AstClassPropSymbol
 				vint index = symbols.Keys().IndexOf(typeName);
 				if (index == -1)
 				{
-					ownerFile->Owner()->Global().AddError(ParserErrorType::FieldTypeNotExists, ownerFile->Name(), name);
+					ownerFile->Owner()->Global().AddError(
+						ParserErrorType::FieldTypeNotExists,
+						ownerFile->Name(),
+						parent->Name(),
+						name
+						);
 					return false;
 				}
 
@@ -106,14 +112,14 @@ AstClassSymbol
 				vint index = symbols.Keys().IndexOf(typeName);
 				if (index == -1)
 				{
-					ownerFile->Owner()->Global().AddError(ParserErrorType::BaseClassNotExists, ownerFile->Name(), name);
+					ownerFile->Owner()->Global().AddError(ParserErrorType::BaseClassNotExists, ownerFile->Name(), name, typeName);
 					return false;
 				}
 
 				auto newBaseClass = dynamic_cast<AstClassSymbol*>(symbols.Values()[index]);
 				if (!newBaseClass)
 				{
-					ownerFile->Owner()->Global().AddError(ParserErrorType::BaseClassNotClass, ownerFile->Name(), name);
+					ownerFile->Owner()->Global().AddError(ParserErrorType::BaseClassNotClass, ownerFile->Name(), name, typeName);
 					return false;
 				}
 
@@ -150,6 +156,7 @@ AstClassSymbol
 				{
 					ownerFile->Owner()->Global().AddError(
 						ParserErrorType::DuplicatedClassProp,
+						ownerFile->Name(),
 						name,
 						propName
 						);
@@ -173,8 +180,7 @@ AstDefFile
 						symbolName
 						);
 				}
-
-				if (!ownerManager->symbolMap.Keys().Contains(symbolName))
+				else if (!ownerManager->symbolMap.Keys().Contains(symbolName))
 				{
 					ownerManager->symbolMap.Add(symbolName, symbol);
 				}
