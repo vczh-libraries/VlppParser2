@@ -10,6 +10,7 @@ using namespace vl::glr::automaton;
 using namespace calculator;
 
 extern WString GetExePath();
+extern void WriteFilesIfChanged(FilePath outputDir, Dictionary<WString, WString>& files);
 extern void InitializeCalculatorParserSymbolManager(ParserSymbolManager& manager);
 extern void GenerateCalculatorSyntax(SyntaxSymbolManager& manager);
 
@@ -39,9 +40,6 @@ TEST_FILE
 		WriteSyntaxFiles(syntaxManager, executable, metadata, output, files);
 
 		auto outputDir = FilePath(GetExePath()) / L"../../Source/Calculator/Parser/";
-		for (auto [key, index] : indexed(files.Keys()))
-		{
-			File(outputDir / key).WriteAllText(files.Values()[index], false, BomEncoder::Utf8);
-		}
+		WriteFilesIfChanged(outputDir, files);
 	});
 }

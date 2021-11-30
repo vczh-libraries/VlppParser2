@@ -12,6 +12,7 @@ using namespace vl::glr::parsergen;
 
 extern WString GetTestParserInputPath(const WString& parserName);
 extern FilePath GetOutputDir(const WString& parserName);
+extern void WriteFilesIfChanged(FilePath outputDir, Dictionary<WString, WString>& files);
 
 struct ParserDef
 {
@@ -115,9 +116,9 @@ TEST_FILE
 					dirOutput / (L"Automaton[" + parserName + L"].txt"),
 					executable,
 					metadata,
-					[&](vint index) { auto type = output->classIds.Keys()[output->classIds.Values().IndexOf(index)]; return type->Name(); },
-					[&](vint index) { auto prop = output->fieldIds.Keys()[output->fieldIds.Values().IndexOf(index)]; return prop->Parent()->Name() + L"::" + prop->Name(); },
-					[&](vint index) { auto token = lexerManager.Tokens()[lexerManager.TokenOrder()[index]]; return token->displayText == L"" ? token->Name() : L"\"" + token->displayText + L"\""; }
+					[&](vint32_t index) { auto type = output->classIds.Keys()[output->classIds.Values().IndexOf(index)]; return type->Name(); },
+					[&](vint32_t index) { auto prop = output->fieldIds.Keys()[output->fieldIds.Values().IndexOf(index)]; return prop->Parent()->Name() + L"::" + prop->Name(); },
+					[&](vint32_t index) { auto token = lexerManager.Tokens()[lexerManager.TokenOrder()[index]]; return token->displayText == L"" ? token->Name() : L"\"" + token->displayText + L"\""; }
 					);
 
 				{
@@ -136,10 +137,7 @@ TEST_FILE
 
 			if (global.Errors().Count() == 0)
 			{
-				for (auto&& [name, content] : files)
-				{
-					File(dirGenerated / name).WriteAllText(content, false, BomEncoder::Utf8);
-				}
+				WriteFilesIfChanged(dirGenerated, files);
 
 				if (parserName == L"Calculator")
 				{

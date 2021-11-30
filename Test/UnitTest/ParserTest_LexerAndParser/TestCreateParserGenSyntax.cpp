@@ -9,6 +9,7 @@ using namespace vl::glr::parsergen;
 using namespace vl::glr::automaton;
 
 extern WString GetExePath();
+extern void WriteFilesIfChanged(FilePath outputDir, Dictionary<WString, WString>& files);
 
 TEST_FILE
 {
@@ -51,9 +52,6 @@ TEST_FILE
 		WriteSyntaxFiles(ruleSyntaxManager, ruleExecutable, ruleMetadata, output, files);
 
 		auto outputDir = FilePath(GetExePath()) / L"../../../Source/ParserGen_Generated/";
-		for (auto [key, index] : indexed(files.Keys()))
-		{
-			File(outputDir / key).WriteAllText(files.Values()[index], false, BomEncoder::Utf8);
-		}
+		WriteFilesIfChanged(outputDir, files);
 	});
 }

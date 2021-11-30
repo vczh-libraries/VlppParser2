@@ -2,6 +2,8 @@
 #include <Windows.h>
 
 using namespace vl;
+using namespace vl::collections;
+using namespace vl::stream;
 using namespace vl::filesystem;
 
 WString GetExePath()
@@ -50,6 +52,24 @@ FilePath GetOutputDir(const WString& parserName)
 		}
 	}
 	return outputDir;
+}
+
+void WriteFilesIfChanged(FilePath outputDir, Dictionary<WString, WString>& files)
+{
+	for (auto [key, index] : indexed(files.Keys()))
+	{
+		File outputFile = outputDir / key;
+		auto content = files.Values()[index];
+		if (outputFile.Exists())
+		{
+			auto existing = outputFile.ReadAllTextByBom();
+			if (content == existing)
+			{
+				continue;
+			}
+		}
+		outputFile.WriteAllText(content, false, BomEncoder::Utf8);
+	}
 }
 
 TEST_FILE

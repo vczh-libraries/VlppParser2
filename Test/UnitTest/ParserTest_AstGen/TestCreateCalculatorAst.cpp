@@ -7,6 +7,7 @@ using namespace vl::filesystem;
 using namespace vl::glr::parsergen;
 
 extern WString GetExePath();
+extern void WriteFilesIfChanged(FilePath outputDir, Dictionary<WString, WString>& files);
 extern void InitializeCalculatorParserSymbolManager(ParserSymbolManager& manager);
 extern void GenerateCalculatorAst(AstSymbolManager& manager);
 
@@ -28,9 +29,6 @@ TEST_FILE
 		WriteAstFiles(astManager, output, files);
 
 		auto outputDir = FilePath(GetExePath()) / L"../../Source/Calculator/Parser/";
-		for (auto [key, index] : indexed(files.Keys()))
-		{
-			File(outputDir / key).WriteAllText(files.Values()[index], false, BomEncoder::Utf8);
-		}
+		WriteFilesIfChanged(outputDir, files);
 	});
 }
