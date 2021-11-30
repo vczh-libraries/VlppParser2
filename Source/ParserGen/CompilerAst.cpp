@@ -11,19 +11,40 @@ namespace vl
 CompileAst
 ***********************************************************************/
 
-			class CompileAstVisitor :public Object, public virtual GlrType::IVisitor
+			class CreateAstSymbolVisitor :public Object, public virtual GlrType::IVisitor
 			{
 			protected:
 				AstDefFile*				astDefFile;
 			public:
-				CompileAstVisitor(AstDefFile* _astDefFile)
+				CreateAstSymbolVisitor(AstDefFile* _astDefFile)
 					: astDefFile(_astDefFile)
 				{
 				}
 
 				void Visit(GlrEnum* node) override
 				{
-					auto enumSymbol = astDefFile->CreateEnum(node->name.value);
+					astDefFile->CreateEnum(node->name.value);
+				}
+
+				void Visit(GlrClass* node) override
+				{
+					astDefFile->CreateClass(node->name.value);
+				}
+			};
+
+			class FillAstSymbolVisitor :public Object, public virtual GlrType::IVisitor
+			{
+			protected:
+				AstDefFile*				astDefFile;
+			public:
+				FillAstSymbolVisitor(AstDefFile* _astDefFile)
+					: astDefFile(_astDefFile)
+				{
+				}
+
+				void Visit(GlrEnum* node) override
+				{
+					auto enumSymbol = dynamic_cast<AstEnumSymbol*>(astDefFile->Symbols()[node->name.value]);
 					for (auto item : node->items)
 					{
 						enumSymbol->CreateItem(item->name.value);
@@ -32,7 +53,7 @@ CompileAst
 
 				void Visit(GlrClass* node) override
 				{
-					auto classSymbol = astDefFile->CreateClass(node->name.value);
+					auto classSymbol = dynamic_cast<AstClassSymbol*>(astDefFile->Symbols()[node->name.value]);
 					if (node->baseClass)
 					{
 						classSymbol->SetBaseClass(node->baseClass.value);
@@ -58,10 +79,20 @@ CompileAst
 
 			void CompileAst(AstSymbolManager& astManager, AstDefFile* astDefFile, Ptr<GlrAstFile> file)
 			{
-				CompileAstVisitor visitor(astDefFile);
-				for (auto type : file->types)
 				{
-					type->Accept(&visitor);
+					CreateAstSymbolVisitor visitor(astDefFile);
+					for (auto type : file->types)
+					{
+						type->Accept(&visitor);
+					}
+				}
+				if (astManager.Global().Errors().Count() == 0)
+				{
+					FillAstSymbolVisitor visitor(astDefFile);
+					for (auto type : file->types)
+					{
+						type->Accept(&visitor);
+					}
 				}
 			}
 		}
