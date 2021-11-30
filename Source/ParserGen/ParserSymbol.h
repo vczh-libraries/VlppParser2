@@ -78,7 +78,7 @@ ParserSymbolManager
 				TypeNotClassInRule,							// (ruleName, name)
 				TokenOrRuleNotExistsInRule,					// (ruleName, name)
 
-				// SyntaxAst (CalculateRuleAndClauseTypes) --------------------------------------------
+				// SyntaxAst (CalculateTypes) ---------------------------------------------------------
 				RuleMixedPartialClauseWithOtherClause,		// (ruleName)
 				RuleWithDifferentPartialTypes,				// (ruleName)
 				RuleCannotResolveToDeterministicType,		// (ruleName)								: Unable to resolve to one type from clauses (token, type) or (create, partial).
