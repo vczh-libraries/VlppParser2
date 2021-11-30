@@ -105,7 +105,7 @@ Exp0 ::= NUM:value as BinaryOp;
 		);
 	});
 
-	TEST_CASE(L"TokenOrRuleNotExistsInRule")
+	TEST_CASE(L"TokenOrRuleNotExistsInRule 1")
 	{
 		const wchar_t* syntaxCode =
 LR"SYNTAX(
@@ -118,6 +118,39 @@ Exp0 ::= NUM2:value as NumExpr;
 			lexerCode,
 			syntaxCode,
 			{ ParserErrorType::TokenOrRuleNotExistsInRule,L"Exp0",L"NUM2" }
+		);
+	});
+
+	TEST_CASE(L"TokenOrRuleNotExistsInRule 2")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0 ::= "-" NUM:value as NumExpr;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::TokenOrRuleNotExistsInRule,L"Exp0",L"\"-\"" }
+		);
+	});
+
+	TEST_CASE(L"TokenOrRuleNotExistsInRule 3")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0 ::= NUM:value as NumExpr;
+Exp1 ::= !Exp;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::TokenOrRuleNotExistsInRule,L"Exp1",L"Exp" }
 		);
 	});
 }
