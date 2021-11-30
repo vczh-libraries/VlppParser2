@@ -6,7 +6,7 @@ using namespace vl::stream;
 using namespace vl::filesystem;
 using namespace vl::glr::parsergen;
 
-extern WString GetExePath();
+extern WString GetParserGenGeneratedOutputPath();
 extern void WriteFilesIfChanged(FilePath outputDir, Dictionary<WString, WString>& files);
 
 TEST_FILE
@@ -25,7 +25,7 @@ TEST_FILE
 		Dictionary<WString, WString> files;
 		WriteLexerFiles(lexerManager, output, files);
 
-		auto outputDir = FilePath(GetExePath()) / L"../../../Source/ParserGen_Generated/";
+		auto outputDir = FilePath(GetParserGenGeneratedOutputPath());
 		WriteFilesIfChanged(outputDir, files);
 	});
 }

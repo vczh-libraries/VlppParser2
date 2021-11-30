@@ -9,7 +9,7 @@ using namespace vl::glr::parsergen;
 using namespace vl::glr::automaton;
 using namespace calculator;
 
-extern WString GetExePath();
+extern WString GetTestParserInputPath(const WString& parserName);
 extern void WriteFilesIfChanged(FilePath outputDir, Dictionary<WString, WString>& files);
 extern void InitializeCalculatorParserSymbolManager(ParserSymbolManager& manager);
 extern void GenerateCalculatorSyntax(SyntaxSymbolManager& manager);
@@ -39,7 +39,7 @@ TEST_FILE
 		Dictionary<WString, WString> files;
 		WriteSyntaxFiles(syntaxManager, executable, metadata, output, files);
 
-		auto outputDir = FilePath(GetExePath()) / L"../../Source/Calculator/Parser/";
+		auto outputDir = FilePath(GetTestParserInputPath(L"Calculator")) / L"Parser";
 		WriteFilesIfChanged(outputDir, files);
 	});
 }

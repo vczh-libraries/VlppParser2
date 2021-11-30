@@ -41,6 +41,11 @@ WString GetTestOutputPath()
 #endif
 }
 
+WString GetParserGenGeneratedOutputPath()
+{
+	return GetTestOutputPath() + L"../../Source/ParserGen_Generated/";
+}
+
 FilePath GetOutputDir(const WString& parserName)
 {
 	auto outputDir = FilePath(GetTestOutputPath()) / parserName;

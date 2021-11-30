@@ -8,7 +8,7 @@ using namespace vl::filesystem;
 using namespace vl::glr::parsergen;
 using namespace vl::glr::automaton;
 
-extern WString GetExePath();
+extern WString GetParserGenGeneratedOutputPath();
 extern void WriteFilesIfChanged(FilePath outputDir, Dictionary<WString, WString>& files);
 
 TEST_FILE
@@ -51,7 +51,7 @@ TEST_FILE
 		WriteSyntaxFiles(typeSyntaxManager, typeExecutable, typeMetadata, output, files);
 		WriteSyntaxFiles(ruleSyntaxManager, ruleExecutable, ruleMetadata, output, files);
 
-		auto outputDir = FilePath(GetExePath()) / L"../../../Source/ParserGen_Generated/";
+		auto outputDir = FilePath(GetParserGenGeneratedOutputPath());
 		WriteFilesIfChanged(outputDir, files);
 	});
 }

@@ -6,7 +6,7 @@ using namespace vl::stream;
 using namespace vl::filesystem;
 using namespace vl::glr::parsergen;
 
-extern WString GetExePath();
+extern WString GetTestParserInputPath(const WString& parserName);
 extern void WriteFilesIfChanged(FilePath outputDir, Dictionary<WString, WString>& files);
 extern void InitializeCalculatorParserSymbolManager(ParserSymbolManager& manager);
 extern void GenerateCalculatorAst(AstSymbolManager& manager);
@@ -28,7 +28,7 @@ TEST_FILE
 		Dictionary<WString, WString> files;
 		WriteAstFiles(astManager, output, files);
 
-		auto outputDir = FilePath(GetExePath()) / L"../../Source/Calculator/Parser/";
+		auto outputDir = FilePath(GetTestParserInputPath(L"Calculator")) / L"Parser";
 		WriteFilesIfChanged(outputDir, files);
 	});
 }
