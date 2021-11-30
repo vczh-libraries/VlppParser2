@@ -50,9 +50,9 @@ ID
 	{
 		const wchar_t* input =
 LR"AST(
-discard:/w+
+ID/w+
 )AST";
-		ExpectError(input, { ParserErrorType::InvalidTokenDefinition,L"discard:/w+" });
+		ExpectError(input, { ParserErrorType::InvalidTokenDefinition,L"ID/w+" });
 	});
 
 	TEST_CASE(L"DuplicatedToken")
@@ -81,7 +81,7 @@ ID2:[I]D
 			LR"AST(
 ID:/
 )AST";
-		ExpectError(input, { ParserErrorType::InvalidTokenRegex,L"ID" });
+		ExpectError(input, { ParserErrorType::InvalidTokenRegex,L"ID",L"Regular expression syntax error: Illegal character escaping. : 1 : /" });
 	});
 
 	TEST_CASE(L"TokenRegexNotPure")
