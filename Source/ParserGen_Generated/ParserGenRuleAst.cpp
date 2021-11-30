@@ -61,7 +61,7 @@ Visitor Pattern Implementation
 				visitor->Visit(this);
 			}
 
-			void Glr_ReuseClause::Accept(GlrClause::IVisitor* visitor)
+			void GlrReuseClause::Accept(GlrClause::IVisitor* visitor)
 			{
 				visitor->Visit(this);
 			}
@@ -90,7 +90,7 @@ namespace vl
 			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrAssignment, glr::parsergen::GlrAssignment)
 			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrCreateClause, glr::parsergen::GlrCreateClause)
 			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrPartialClause, glr::parsergen::GlrPartialClause)
-			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::Glr_ReuseClause, glr::parsergen::Glr_ReuseClause)
+			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrReuseClause, glr::parsergen::GlrReuseClause)
 			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrRule, glr::parsergen::GlrRule)
 			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrSyntaxFile, glr::parsergen::GlrSyntaxFile)
 
@@ -195,14 +195,14 @@ namespace vl
 				CLASS_MEMBER_FIELD(assignments)
 			END_CLASS_MEMBER(vl::glr::parsergen::GlrPartialClause)
 
-			BEGIN_CLASS_MEMBER(vl::glr::parsergen::Glr_ReuseClause)
+			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrReuseClause)
 				CLASS_MEMBER_BASE(vl::glr::parsergen::GlrClause)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::Glr_ReuseClause>(), NO_PARAMETER)
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrReuseClause>(), NO_PARAMETER)
 
 				CLASS_MEMBER_FIELD(syntax)
 				CLASS_MEMBER_FIELD(assignments)
-			END_CLASS_MEMBER(vl::glr::parsergen::Glr_ReuseClause)
+			END_CLASS_MEMBER(vl::glr::parsergen::GlrReuseClause)
 
 			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrRule)
 				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
@@ -234,7 +234,7 @@ namespace vl
 			BEGIN_INTERFACE_MEMBER(vl::glr::parsergen::GlrClause::IVisitor)
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrClause::IVisitor::*)(vl::glr::parsergen::GlrCreateClause* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrClause::IVisitor::*)(vl::glr::parsergen::GlrPartialClause* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrClause::IVisitor::*)(vl::glr::parsergen::Glr_ReuseClause* node))
+				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrClause::IVisitor::*)(vl::glr::parsergen::GlrReuseClause* node))
 			END_INTERFACE_MEMBER(vl::glr::parsergen::GlrClause)
 
 #endif
@@ -259,7 +259,7 @@ namespace vl
 					ADD_TYPE_INFO(vl::glr::parsergen::GlrAssignment)
 					ADD_TYPE_INFO(vl::glr::parsergen::GlrCreateClause)
 					ADD_TYPE_INFO(vl::glr::parsergen::GlrPartialClause)
-					ADD_TYPE_INFO(vl::glr::parsergen::Glr_ReuseClause)
+					ADD_TYPE_INFO(vl::glr::parsergen::GlrReuseClause)
 					ADD_TYPE_INFO(vl::glr::parsergen::GlrRule)
 					ADD_TYPE_INFO(vl::glr::parsergen::GlrSyntaxFile)
 				}

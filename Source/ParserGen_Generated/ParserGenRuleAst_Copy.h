@@ -33,12 +33,12 @@ namespace vl
 					void CopyFields(GlrOptionalSyntax* from, GlrOptionalSyntax* to);
 					void CopyFields(GlrPartialClause* from, GlrPartialClause* to);
 					void CopyFields(GlrRefSyntax* from, GlrRefSyntax* to);
+					void CopyFields(GlrReuseClause* from, GlrReuseClause* to);
 					void CopyFields(GlrRule* from, GlrRule* to);
 					void CopyFields(GlrSequenceSyntax* from, GlrSequenceSyntax* to);
 					void CopyFields(GlrSyntax* from, GlrSyntax* to);
 					void CopyFields(GlrSyntaxFile* from, GlrSyntaxFile* to);
 					void CopyFields(GlrUseSyntax* from, GlrUseSyntax* to);
-					void CopyFields(Glr_ReuseClause* from, Glr_ReuseClause* to);
 
 				protected:
 					virtual void Visit(GlrAssignment* node);
@@ -55,7 +55,7 @@ namespace vl
 
 					void Visit(GlrCreateClause* node) override;
 					void Visit(GlrPartialClause* node) override;
-					void Visit(Glr_ReuseClause* node) override;
+					void Visit(GlrReuseClause* node) override;
 
 				public:
 					virtual vl::Ptr<GlrSyntax> CopyNode(GlrSyntax* node);

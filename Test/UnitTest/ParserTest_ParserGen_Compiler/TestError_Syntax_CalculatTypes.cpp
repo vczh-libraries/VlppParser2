@@ -204,6 +204,7 @@ Exp1
   ;
 Exp2
   ::= !Exp0 !Exp1
+  ::= "+" as Module
   ;
 )SYNTAX";
 		ExpectError(
@@ -222,6 +223,7 @@ Exp2
 LR"SYNTAX(
 Exp0
   ::= NUM
+  ::= "+" as Module
   ;
 )SYNTAX";
 		ExpectError(

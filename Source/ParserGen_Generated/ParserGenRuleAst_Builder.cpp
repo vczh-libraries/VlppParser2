@@ -144,6 +144,22 @@ RefSyntaxBuilder
 				}
 
 /***********************************************************************
+ReuseClauseBuilder
+***********************************************************************/
+
+				ReuseClauseBuilder& ReuseClauseBuilder::assignments(const vl::Ptr<GlrAssignment>& value)
+				{
+					node->assignments.Add(value);
+					return *this;
+				}
+
+				ReuseClauseBuilder& ReuseClauseBuilder::syntax(const vl::Ptr<GlrSyntax>& value)
+				{
+					node->syntax = value;
+					return *this;
+				}
+
+/***********************************************************************
 RuleBuilder
 ***********************************************************************/
 
@@ -192,22 +208,6 @@ UseSyntaxBuilder
 				UseSyntaxBuilder& UseSyntaxBuilder::name(const vl::WString& value)
 				{
 					node->name.value = value;
-					return *this;
-				}
-
-/***********************************************************************
-_ReuseClauseBuilder
-***********************************************************************/
-
-				_ReuseClauseBuilder& _ReuseClauseBuilder::assignments(const vl::Ptr<GlrAssignment>& value)
-				{
-					node->assignments.Add(value);
-					return *this;
-				}
-
-				_ReuseClauseBuilder& _ReuseClauseBuilder::syntax(const vl::Ptr<GlrSyntax>& value)
-				{
-					node->syntax = value;
 					return *this;
 				}
 			}

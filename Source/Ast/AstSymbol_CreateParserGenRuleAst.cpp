@@ -71,7 +71,7 @@ CreateParserGenRuleAst
 				_PartialClause->CreateProp(L"syntax")->SetPropType(AstPropType::Type, L"Syntax");
 				_PartialClause->CreateProp(L"assignments")->SetPropType(AstPropType::Array, L"Assignment");
 
-				auto _ReuseClause = _ast->CreateClass(L"_ReuseClause");
+				auto _ReuseClause = _ast->CreateClass(L"ReuseClause");
 				_ReuseClause->SetBaseClass(L"Clause");
 				_ReuseClause->CreateProp(L"syntax")->SetPropType(AstPropType::Type, L"Syntax");
 				_ReuseClause->CreateProp(L"assignments")->SetPropType(AstPropType::Array, L"Assignment");

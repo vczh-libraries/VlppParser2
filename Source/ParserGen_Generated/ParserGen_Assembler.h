@@ -32,13 +32,13 @@ namespace vl
 				OptionalSyntax = 11,
 				PartialClause = 12,
 				RefSyntax = 13,
-				Rule = 14,
-				SequenceSyntax = 15,
-				Syntax = 16,
-				SyntaxFile = 17,
-				Type = 18,
-				UseSyntax = 19,
-				_ReuseClause = 20,
+				ReuseClause = 14,
+				Rule = 15,
+				SequenceSyntax = 16,
+				Syntax = 17,
+				SyntaxFile = 18,
+				Type = 19,
+				UseSyntax = 20,
 			};
 
 			enum class ParserGenFields : vl::vint32_t
@@ -67,6 +67,8 @@ namespace vl
 				PartialClause_type = (static_cast<vl::vint32_t>(ParserGenClasses::PartialClause) << 8) + 2,
 				RefSyntax_field = (static_cast<vl::vint32_t>(ParserGenClasses::RefSyntax) << 8) + 0,
 				RefSyntax_name = (static_cast<vl::vint32_t>(ParserGenClasses::RefSyntax) << 8) + 1,
+				ReuseClause_assignments = (static_cast<vl::vint32_t>(ParserGenClasses::ReuseClause) << 8) + 0,
+				ReuseClause_syntax = (static_cast<vl::vint32_t>(ParserGenClasses::ReuseClause) << 8) + 1,
 				Rule_clauses = (static_cast<vl::vint32_t>(ParserGenClasses::Rule) << 8) + 0,
 				Rule_name = (static_cast<vl::vint32_t>(ParserGenClasses::Rule) << 8) + 1,
 				SequenceSyntax_first = (static_cast<vl::vint32_t>(ParserGenClasses::SequenceSyntax) << 8) + 0,
@@ -74,8 +76,6 @@ namespace vl
 				SyntaxFile_rules = (static_cast<vl::vint32_t>(ParserGenClasses::SyntaxFile) << 8) + 0,
 				Type_name = (static_cast<vl::vint32_t>(ParserGenClasses::Type) << 8) + 0,
 				UseSyntax_name = (static_cast<vl::vint32_t>(ParserGenClasses::UseSyntax) << 8) + 0,
-				_ReuseClause_assignments = (static_cast<vl::vint32_t>(ParserGenClasses::_ReuseClause) << 8) + 0,
-				_ReuseClause_syntax = (static_cast<vl::vint32_t>(ParserGenClasses::_ReuseClause) << 8) + 1,
 			};
 
 			extern const wchar_t* ParserGenTypeName(ParserGenClasses type);

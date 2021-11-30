@@ -44,7 +44,7 @@ namespace vl
 					// Visitor Members -----------------------------------
 					void Visit(GlrCreateClause* node) override;
 					void Visit(GlrPartialClause* node) override;
-					void Visit(Glr_ReuseClause* node) override;
+					void Visit(GlrReuseClause* node) override;
 				};
 
 			}

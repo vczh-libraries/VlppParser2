@@ -33,12 +33,12 @@ namespace vl
 					virtual void PrintFields(GlrOptionalSyntax* node);
 					virtual void PrintFields(GlrPartialClause* node);
 					virtual void PrintFields(GlrRefSyntax* node);
+					virtual void PrintFields(GlrReuseClause* node);
 					virtual void PrintFields(GlrRule* node);
 					virtual void PrintFields(GlrSequenceSyntax* node);
 					virtual void PrintFields(GlrSyntax* node);
 					virtual void PrintFields(GlrSyntaxFile* node);
 					virtual void PrintFields(GlrUseSyntax* node);
-					virtual void PrintFields(Glr_ReuseClause* node);
 
 				protected:
 					void Visit(GlrRefSyntax* node) override;
@@ -51,7 +51,7 @@ namespace vl
 
 					void Visit(GlrCreateClause* node) override;
 					void Visit(GlrPartialClause* node) override;
-					void Visit(Glr_ReuseClause* node) override;
+					void Visit(GlrReuseClause* node) override;
 
 				public:
 					RuleAstVisitor(vl::stream::StreamWriter& _writer);

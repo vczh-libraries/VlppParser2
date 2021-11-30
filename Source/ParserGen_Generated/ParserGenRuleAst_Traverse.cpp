@@ -25,12 +25,12 @@ namespace vl
 				void RuleAstVisitor::Traverse(GlrOptionalSyntax* node) {}
 				void RuleAstVisitor::Traverse(GlrPartialClause* node) {}
 				void RuleAstVisitor::Traverse(GlrRefSyntax* node) {}
+				void RuleAstVisitor::Traverse(GlrReuseClause* node) {}
 				void RuleAstVisitor::Traverse(GlrRule* node) {}
 				void RuleAstVisitor::Traverse(GlrSequenceSyntax* node) {}
 				void RuleAstVisitor::Traverse(GlrSyntax* node) {}
 				void RuleAstVisitor::Traverse(GlrSyntaxFile* node) {}
 				void RuleAstVisitor::Traverse(GlrUseSyntax* node) {}
-				void RuleAstVisitor::Traverse(Glr_ReuseClause* node) {}
 
 				void RuleAstVisitor::Finishing(vl::glr::ParsingAstBase* node) {}
 				void RuleAstVisitor::Finishing(GlrAlternativeSyntax* node) {}
@@ -42,12 +42,12 @@ namespace vl
 				void RuleAstVisitor::Finishing(GlrOptionalSyntax* node) {}
 				void RuleAstVisitor::Finishing(GlrPartialClause* node) {}
 				void RuleAstVisitor::Finishing(GlrRefSyntax* node) {}
+				void RuleAstVisitor::Finishing(GlrReuseClause* node) {}
 				void RuleAstVisitor::Finishing(GlrRule* node) {}
 				void RuleAstVisitor::Finishing(GlrSequenceSyntax* node) {}
 				void RuleAstVisitor::Finishing(GlrSyntax* node) {}
 				void RuleAstVisitor::Finishing(GlrSyntaxFile* node) {}
 				void RuleAstVisitor::Finishing(GlrUseSyntax* node) {}
-				void RuleAstVisitor::Finishing(Glr_ReuseClause* node) {}
 
 				void RuleAstVisitor::Visit(GlrRefSyntax* node)
 				{
@@ -171,18 +171,18 @@ namespace vl
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void RuleAstVisitor::Visit(Glr_ReuseClause* node)
+				void RuleAstVisitor::Visit(GlrReuseClause* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
 					Traverse(static_cast<GlrClause*>(node));
-					Traverse(static_cast<Glr_ReuseClause*>(node));
+					Traverse(static_cast<GlrReuseClause*>(node));
 					for (auto&& listItem : node->assignments)
 					{
 						InspectInto(listItem.Obj());
 					}
 					InspectInto(node->syntax.Obj());
-					Finishing(static_cast<Glr_ReuseClause*>(node));
+					Finishing(static_cast<GlrReuseClause*>(node));
 					Finishing(static_cast<GlrClause*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}

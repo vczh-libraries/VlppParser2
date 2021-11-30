@@ -63,7 +63,7 @@ ClauseVisitor
 				{
 				}
 
-				void ClauseVisitor::Visit(Glr_ReuseClause* node)
+				void ClauseVisitor::Visit(GlrReuseClause* node)
 				{
 				}
 			}

@@ -81,7 +81,7 @@ CreateParserGenRuleSyntax
 				Clause{ _clause } = create(rule(_syntax, F::PartialClause_syntax) + tok(T::AS) + tok(T::PARTIAL) + tok(T::ID, F::PartialClause_type) + opt(tok(T::OPEN_CURLY) + loop(rule(_assignment, F::PartialClause_assignments)) + tok(T::CLOSE_CURLY)), C::PartialClause);
 
 				// Syntax:syntax ["{" {Assignment:assignments} "}"] as ReuseClause
-				Clause{ _clause } = create(rule(_syntax, F::_ReuseClause_syntax) + opt(tok(T::OPEN_CURLY) + loop(rule(_assignment, F::_ReuseClause_assignments)) + tok(T::CLOSE_CURLY)), C::_ReuseClause);
+				Clause{ _clause } = create(rule(_syntax, F::ReuseClause_syntax) + opt(tok(T::OPEN_CURLY) + loop(rule(_assignment, F::ReuseClause_assignments)) + tok(T::CLOSE_CURLY)), C::ReuseClause);
 
 				// ID:name {"::=" Clause:clauses} ";" as Rule
 				Clause{ _rule } = create(tok(T::ID, F::Rule_name) + loop(tok(T::INFER) + rule(_clause, F::Rule_clauses)) + tok(T::SEMICOLON), C::Rule);

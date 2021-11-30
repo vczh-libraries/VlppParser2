@@ -220,7 +220,7 @@ ResolveNameVisitor
 					node->syntax->Accept(this);
 				}
 
-				void Visit(Glr_ReuseClause* node) override
+				void Visit(GlrReuseClause* node) override
 				{
 					reuseCount++;
 					clause = node;
@@ -302,7 +302,7 @@ CheckSyntaxVisitor
 					node->syntax->Accept(this);
 				}
 
-				void Visit(Glr_ReuseClause* node) override
+				void Visit(GlrReuseClause* node) override
 				{
 					clause = node;
 					node->syntax->Accept(this);
@@ -637,7 +637,7 @@ CompileSyntaxVisitor
 					}
 				}
 
-				void Visit(Glr_ReuseClause* node) override
+				void Visit(GlrReuseClause* node) override
 				{
 					clauseType = context.clauseTypes[node];
 					StatePair pair;
@@ -765,15 +765,20 @@ CalculateRuleAndClauseTypes
 						vint index = context.ruleReuseDependencies.Keys().IndexOf(rule);
 						if (index != -1)
 						{
+							AstClassSymbol* type = nullptr;
 							for (auto dep : context.ruleReuseDependencies.GetByIndex(index))
 							{
-								rule->ruleType = MergeClassSymbol(rule->ruleType, dep->ruleType);
+								type = MergeClassSymbol(type, dep->ruleType);
+							}
+							if (type)
+							{
+								rule->ruleType = MergeClassSymbol(rule->ruleType, type);
 								if (!rule->ruleType)
 								{
 									context.global.AddError(
 										ParserErrorType::RuleCannotResolveToDeterministicType,
 										rule->Name()
-										);
+									);
 									break;
 								}
 							}
@@ -795,17 +800,38 @@ CalculateRuleAndClauseTypes
 				}
 
 				// calculate types for reuse clauses
-				for (auto&& [clause, index] : indexed(context.clauseReuseDependencies.Keys()))
+				for (auto astRule : context.astRules.Values())
 				{
-					AstClassSymbol* type = nullptr;
-					for (auto dep : context.clauseReuseDependencies.GetByIndex(index))
+					for (auto clause : From(astRule->clauses).FindType<GlrReuseClause>())
 					{
-						type = MergeClassSymbol(type, dep->ruleType);
-					}
+						vint index = context.clauseReuseDependencies.Keys().IndexOf(clause.Obj());
+						if (index == -1)
+						{
+							context.global.AddError(
+								ParserErrorType::ReuseClauseContainsNoUseRule,
+								astRule->name.value
+								);
+						}
+						else
+						{
+							AstClassSymbol* type = nullptr;
+							for (auto dep : context.clauseReuseDependencies.GetByIndex(index))
+							{
+								type = MergeClassSymbol(type, dep->ruleType);
+							}
 
-					if (type)
-					{
-						context.clauseTypes.Add(clause, type);
+							if (type)
+							{
+								context.clauseTypes.Add(clause.Obj(), type);
+							}
+							else
+							{
+								context.global.AddError(
+									ParserErrorType::ReuseClauseCannotResolveToDeterministicType,
+									astRule->name.value
+									);
+							}
+						}
 					}
 				}
 			}

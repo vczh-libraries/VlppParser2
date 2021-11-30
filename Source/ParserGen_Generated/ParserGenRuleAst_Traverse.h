@@ -35,12 +35,12 @@ namespace vl
 					virtual void Traverse(GlrOptionalSyntax* node);
 					virtual void Traverse(GlrPartialClause* node);
 					virtual void Traverse(GlrRefSyntax* node);
+					virtual void Traverse(GlrReuseClause* node);
 					virtual void Traverse(GlrRule* node);
 					virtual void Traverse(GlrSequenceSyntax* node);
 					virtual void Traverse(GlrSyntax* node);
 					virtual void Traverse(GlrSyntaxFile* node);
 					virtual void Traverse(GlrUseSyntax* node);
-					virtual void Traverse(Glr_ReuseClause* node);
 
 				protected:
 					virtual void Finishing(vl::glr::ParsingAstBase* node);
@@ -53,12 +53,12 @@ namespace vl
 					virtual void Finishing(GlrOptionalSyntax* node);
 					virtual void Finishing(GlrPartialClause* node);
 					virtual void Finishing(GlrRefSyntax* node);
+					virtual void Finishing(GlrReuseClause* node);
 					virtual void Finishing(GlrRule* node);
 					virtual void Finishing(GlrSequenceSyntax* node);
 					virtual void Finishing(GlrSyntax* node);
 					virtual void Finishing(GlrSyntaxFile* node);
 					virtual void Finishing(GlrUseSyntax* node);
-					virtual void Finishing(Glr_ReuseClause* node);
 
 				protected:
 					void Visit(GlrRefSyntax* node) override;
@@ -71,7 +71,7 @@ namespace vl
 
 					void Visit(GlrCreateClause* node) override;
 					void Visit(GlrPartialClause* node) override;
-					void Visit(Glr_ReuseClause* node) override;
+					void Visit(GlrReuseClause* node) override;
 
 				public:
 					void InspectInto(GlrSyntax* node);

@@ -79,6 +79,16 @@ namespace vl
 					to->name = from->name;
 				}
 
+				void RuleAstVisitor::CopyFields(GlrReuseClause* from, GlrReuseClause* to)
+				{
+					CopyFields(static_cast<GlrClause*>(from), static_cast<GlrClause*>(to));
+					for (auto&& listItem : from->assignments)
+					{
+						to->assignments.Add(CopyNode(listItem.Obj()));
+					}
+					to->syntax = CopyNode(from->syntax.Obj());
+				}
+
 				void RuleAstVisitor::CopyFields(GlrRule* from, GlrRule* to)
 				{
 					for (auto&& listItem : from->clauses)
@@ -111,16 +121,6 @@ namespace vl
 				{
 					CopyFields(static_cast<GlrSyntax*>(from), static_cast<GlrSyntax*>(to));
 					to->name = from->name;
-				}
-
-				void RuleAstVisitor::CopyFields(Glr_ReuseClause* from, Glr_ReuseClause* to)
-				{
-					CopyFields(static_cast<GlrClause*>(from), static_cast<GlrClause*>(to));
-					for (auto&& listItem : from->assignments)
-					{
-						to->assignments.Add(CopyNode(listItem.Obj()));
-					}
-					to->syntax = CopyNode(from->syntax.Obj());
 				}
 
 				void RuleAstVisitor::Visit(GlrAssignment* node)
@@ -207,9 +207,9 @@ namespace vl
 					this->result = newNode;
 				}
 
-				void RuleAstVisitor::Visit(Glr_ReuseClause* node)
+				void RuleAstVisitor::Visit(GlrReuseClause* node)
 				{
-					auto newNode = vl::MakePtr<Glr_ReuseClause>();
+					auto newNode = vl::MakePtr<GlrReuseClause>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}

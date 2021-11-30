@@ -49,6 +49,8 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					return new vl::glr::parsergen::GlrPartialClause();
 				case ParserGenClasses::RefSyntax:
 					return new vl::glr::parsergen::GlrRefSyntax();
+				case ParserGenClasses::ReuseClause:
+					return new vl::glr::parsergen::GlrReuseClause();
 				case ParserGenClasses::Rule:
 					return new vl::glr::parsergen::GlrRule();
 				case ParserGenClasses::SequenceSyntax:
@@ -61,8 +63,6 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					throw vl::glr::AstInsException(L"Unable to create abstract class \"vl::glr::parsergen::GlrType\".", vl::glr::AstInsErrorType::UnknownType, type);
 				case ParserGenClasses::UseSyntax:
 					return new vl::glr::parsergen::GlrUseSyntax();
-				case ParserGenClasses::_ReuseClause:
-					return new vl::glr::parsergen::Glr_ReuseClause();
 				default:
 					throw vl::glr::AstInsException(L"The type id does not exist.", vl::glr::AstInsErrorType::UnknownType, type);
 				}
@@ -187,6 +187,25 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 						typedObject->syntax = typedValue;
 					}
 					break;
+				case ParserGenFields::ReuseClause_assignments:
+					{
+						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrReuseClause*>(object);
+						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrReuseClause::assignments\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+						auto typedValue = value.Cast<vl::glr::parsergen::GlrAssignment>();
+						if (!typedValue) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrReuseClause::assignments\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+						typedObject->assignments.Add(typedValue);
+					}
+					break;
+				case ParserGenFields::ReuseClause_syntax:
+					{
+						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrReuseClause*>(object);
+						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrReuseClause::syntax\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+						if (typedObject->syntax) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrReuseClause::syntax\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
+						auto typedValue = value.Cast<vl::glr::parsergen::GlrSyntax>();
+						if (!typedValue) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrReuseClause::syntax\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+						typedObject->syntax = typedValue;
+					}
+					break;
 				case ParserGenFields::Rule_clauses:
 					{
 						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrRule*>(object);
@@ -223,25 +242,6 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 						auto typedValue = value.Cast<vl::glr::parsergen::GlrRule>();
 						if (!typedValue) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrSyntaxFile::rules\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 						typedObject->rules.Add(typedValue);
-					}
-					break;
-				case ParserGenFields::_ReuseClause_assignments:
-					{
-						auto typedObject = dynamic_cast<vl::glr::parsergen::Glr_ReuseClause*>(object);
-						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::Glr_ReuseClause::assignments\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-						auto typedValue = value.Cast<vl::glr::parsergen::GlrAssignment>();
-						if (!typedValue) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::Glr_ReuseClause::assignments\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-						typedObject->assignments.Add(typedValue);
-					}
-					break;
-				case ParserGenFields::_ReuseClause_syntax:
-					{
-						auto typedObject = dynamic_cast<vl::glr::parsergen::Glr_ReuseClause*>(object);
-						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::Glr_ReuseClause::syntax\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-						if (typedObject->syntax) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::Glr_ReuseClause::syntax\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-						auto typedValue = value.Cast<vl::glr::parsergen::GlrSyntax>();
-						if (!typedValue) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::Glr_ReuseClause::syntax\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-						typedObject->syntax = typedValue;
 					}
 					break;
 				case ParserGenFields::Assignment_field:
@@ -421,6 +421,10 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrPartialClause::assignments\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 				case ParserGenFields::PartialClause_syntax:
 					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrPartialClause::syntax\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				case ParserGenFields::ReuseClause_assignments:
+					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrReuseClause::assignments\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				case ParserGenFields::ReuseClause_syntax:
+					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrReuseClause::syntax\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 				case ParserGenFields::Rule_clauses:
 					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrRule::clauses\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 				case ParserGenFields::SequenceSyntax_first:
@@ -429,10 +433,6 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrSequenceSyntax::second\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 				case ParserGenFields::SyntaxFile_rules:
 					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrSyntaxFile::rules\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::_ReuseClause_assignments:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::Glr_ReuseClause::assignments\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::_ReuseClause_syntax:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::Glr_ReuseClause::syntax\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 				default:
 					throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
 				}
@@ -496,6 +496,10 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrRefSyntax::field\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 				case ParserGenFields::RefSyntax_name:
 					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrRefSyntax::name\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				case ParserGenFields::ReuseClause_assignments:
+					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrReuseClause::assignments\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				case ParserGenFields::ReuseClause_syntax:
+					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrReuseClause::syntax\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 				case ParserGenFields::Rule_clauses:
 					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrRule::clauses\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 				case ParserGenFields::Rule_name:
@@ -510,10 +514,6 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrType::name\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 				case ParserGenFields::UseSyntax_name:
 					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrUseSyntax::name\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::_ReuseClause_assignments:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::Glr_ReuseClause::assignments\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::_ReuseClause_syntax:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::Glr_ReuseClause::syntax\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 				default:
 					throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
 				}
@@ -536,13 +536,13 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					L"OptionalSyntax",
 					L"PartialClause",
 					L"RefSyntax",
+					L"ReuseClause",
 					L"Rule",
 					L"SequenceSyntax",
 					L"Syntax",
 					L"SyntaxFile",
 					L"Type",
 					L"UseSyntax",
-					L"_ReuseClause",
 				};
 				vl::vint index = (vl::vint)type;
 				return 0 <= index && index < 21 ? results[index] : nullptr;
@@ -600,6 +600,10 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					return L"RefSyntax::field";
 				case ParserGenFields::RefSyntax_name:
 					return L"RefSyntax::name";
+				case ParserGenFields::ReuseClause_assignments:
+					return L"ReuseClause::assignments";
+				case ParserGenFields::ReuseClause_syntax:
+					return L"ReuseClause::syntax";
 				case ParserGenFields::Rule_clauses:
 					return L"Rule::clauses";
 				case ParserGenFields::Rule_name:
@@ -614,10 +618,6 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					return L"Type::name";
 				case ParserGenFields::UseSyntax_name:
 					return L"UseSyntax::name";
-				case ParserGenFields::_ReuseClause_assignments:
-					return L"_ReuseClause::assignments";
-				case ParserGenFields::_ReuseClause_syntax:
-					return L"_ReuseClause::syntax";
 				default:
 					return nullptr;
 				}
@@ -641,13 +641,13 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 				case ParserGenClasses::OptionalSyntax:
 				case ParserGenClasses::PartialClause:
 				case ParserGenClasses::RefSyntax:
+				case ParserGenClasses::ReuseClause:
 				case ParserGenClasses::Rule:
 				case ParserGenClasses::SequenceSyntax:
 				case ParserGenClasses::Syntax:
 				case ParserGenClasses::SyntaxFile:
 				case ParserGenClasses::Type:
 				case ParserGenClasses::UseSyntax:
-				case ParserGenClasses::_ReuseClause:
 					throw vl::glr::AstInsException(L"The type is not configured to allow ambiguity.", vl::glr::AstInsErrorType::UnsupportedAmbiguityType, type);
 				default:
 					throw vl::glr::AstInsException(L"The type id does not exist.", vl::glr::AstInsErrorType::UnknownType, type);

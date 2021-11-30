@@ -103,6 +103,22 @@ namespace vl
 					WriteToken(node->name);
 					EndField();
 				}
+				void RuleAstVisitor::PrintFields(GlrReuseClause* node)
+				{
+					BeginField(L"assignments");
+					BeginArray();
+					for (auto&& listItem : node->assignments)
+					{
+						BeginArrayItem();
+						Print(listItem.Obj());
+						EndArrayItem();
+					}
+					EndArray();
+					EndField();
+					BeginField(L"syntax");
+					Print(node->syntax.Obj());
+					EndField();
+				}
 				void RuleAstVisitor::PrintFields(GlrRule* node)
 				{
 					BeginField(L"clauses");
@@ -148,22 +164,6 @@ namespace vl
 				{
 					BeginField(L"name");
 					WriteToken(node->name);
-					EndField();
-				}
-				void RuleAstVisitor::PrintFields(Glr_ReuseClause* node)
-				{
-					BeginField(L"assignments");
-					BeginArray();
-					for (auto&& listItem : node->assignments)
-					{
-						BeginArrayItem();
-						Print(listItem.Obj());
-						EndArrayItem();
-					}
-					EndArray();
-					EndField();
-					BeginField(L"syntax");
-					Print(node->syntax.Obj());
 					EndField();
 				}
 
@@ -293,7 +293,7 @@ namespace vl
 					EndObject();
 				}
 
-				void RuleAstVisitor::Visit(Glr_ReuseClause* node)
+				void RuleAstVisitor::Visit(GlrReuseClause* node)
 				{
 					if (!node)
 					{
@@ -301,9 +301,9 @@ namespace vl
 						return;
 					}
 					BeginObject();
-					WriteType(L"_ReuseClause", node);
+					WriteType(L"ReuseClause", node);
 					PrintFields(static_cast<GlrClause*>(node));
-					PrintFields(static_cast<Glr_ReuseClause*>(node));
+					PrintFields(static_cast<GlrReuseClause*>(node));
 					EndObject();
 				}
 

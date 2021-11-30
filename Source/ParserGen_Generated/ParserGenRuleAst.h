@@ -25,12 +25,12 @@ namespace vl
 			class GlrOptionalSyntax;
 			class GlrPartialClause;
 			class GlrRefSyntax;
+			class GlrReuseClause;
 			class GlrRule;
 			class GlrSequenceSyntax;
 			class GlrSyntax;
 			class GlrSyntaxFile;
 			class GlrUseSyntax;
-			class Glr_ReuseClause;
 
 			class GlrSyntax abstract : public vl::glr::ParsingAstBase, vl::reflection::Description<GlrSyntax>
 			{
@@ -119,7 +119,7 @@ namespace vl
 				public:
 					virtual void Visit(GlrCreateClause* node) = 0;
 					virtual void Visit(GlrPartialClause* node) = 0;
-					virtual void Visit(Glr_ReuseClause* node) = 0;
+					virtual void Visit(GlrReuseClause* node) = 0;
 				};
 
 				virtual void Accept(GlrClause::IVisitor* visitor) = 0;
@@ -153,7 +153,7 @@ namespace vl
 				void Accept(GlrClause::IVisitor* visitor) override;
 			};
 
-			class Glr_ReuseClause : public GlrClause, vl::reflection::Description<Glr_ReuseClause>
+			class GlrReuseClause : public GlrClause, vl::reflection::Description<GlrReuseClause>
 			{
 			public:
 				vl::Ptr<GlrSyntax> syntax;
@@ -198,7 +198,7 @@ namespace vl
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrAssignment)
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrCreateClause)
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrPartialClause)
-			DECL_TYPE_INFO(vl::glr::parsergen::Glr_ReuseClause)
+			DECL_TYPE_INFO(vl::glr::parsergen::GlrReuseClause)
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrRule)
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrSyntaxFile)
 
@@ -253,7 +253,7 @@ namespace vl
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::parsergen::Glr_ReuseClause* node) override
+				void Visit(vl::glr::parsergen::GlrReuseClause* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
