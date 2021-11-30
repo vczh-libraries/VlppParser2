@@ -9,7 +9,7 @@ namespace vl
 			using namespace collections;
 
 			using GlrRuleMap = Dictionary<RuleSymbol*, GlrRule*>;
-			using LiteralTokenMap = Dictionary<GlrLiteralSyntax*, vint>;
+			using LiteralTokenMap = Dictionary<GlrLiteralSyntax*, vint32_t>;
 			using RuleReuseDependencies = Group<RuleSymbol*, RuleSymbol*>;
 			using RuleKnownTypes = Group<RuleSymbol*, AstClassSymbol*>;
 			using ClauseReuseDependencies = Group<GlrClause*, RuleSymbol*>;
@@ -135,7 +135,7 @@ ResolveNameVisitor
 							auto tokenSymbol = context.lexerManager.Tokens()[tokenName];
 							if (tokenSymbol->displayText==literalValue)
 							{
-								context.literalTokens.Add(node, tokenIndex);
+								context.literalTokens.Add(node, (vint32_t)tokenIndex);
 								return;
 							}
 						}
@@ -403,7 +403,7 @@ CompileSyntaxVisitor
 							{
 								auto edge = CreateEdge(pair.begin, pair.end);
 								edge->input.type = EdgeInputType::Token;
-								edge->input.token = index;
+								edge->input.token = (vint32_t)index;
 								if (node->field)
 								{
 									auto propSymbol = clauseType->Props()[node->field.value];
@@ -592,7 +592,7 @@ CompileSyntaxVisitor
 
 					auto propSymbol = clauseType->Props()[node->field.value];
 					auto enumSymbol = dynamic_cast<AstEnumSymbol*>(propSymbol->propSymbol);
-					edge->insBeforeInput.Add({ AstInsType::EnumItem,enumSymbol->ItemOrder().IndexOf(node->value.value) });
+					edge->insBeforeInput.Add({ AstInsType::EnumItem,(vint32_t)enumSymbol->ItemOrder().IndexOf(node->value.value) });
 					edge->insBeforeInput.Add({ AstInsType::Field,context.output->fieldIds[propSymbol] });
 
 					endPoses.Add(withState, clauseDisplayText.Length());

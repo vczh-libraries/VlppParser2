@@ -56,9 +56,9 @@ Output
 				collections::Dictionary<AstDefFile*, Ptr<CppAstGenOutput>>				astOutputs;
 				collections::Dictionary<SyntaxSymbolManager*, Ptr<CppSyntaxGenOutput>>	syntaxOutputs;
 
-				collections::Dictionary<AstClassSymbol*, vint>							classIds;
-				collections::Dictionary<AstClassPropSymbol*, vint>						fieldIds;
-				collections::Dictionary<TokenSymbol*, vint>								tokenIds;
+				collections::Dictionary<AstClassSymbol*, vint32_t>						classIds;
+				collections::Dictionary<AstClassPropSymbol*, vint32_t>					fieldIds;
+				collections::Dictionary<TokenSymbol*, vint32_t>							tokenIds;
 			};
 
 /***********************************************************************

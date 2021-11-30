@@ -84,7 +84,7 @@ FilePath LogAutomatonWithPath(
 					writer.WriteString(L"\tleftrec");
 					break;
 				default:
-					writer.WriteString(L"\ttoken: " + tokenName(input - Executable::TokenBegin));
+					writer.WriteString(L"\ttoken: " + tokenName((vint32_t)(input - Executable::TokenBegin)));
 					break;
 				}
 				writer.WriteLine(L" -> " + metadata.stateLabels[edge.toState]);
@@ -144,7 +144,7 @@ void LogTraceInstruction(
 	)
 {
 	writer.WriteString(L"<");
-	writer.WriteString(tokenName(token.token));
+	writer.WriteString(tokenName((vint32_t)token.token));
 	writer.WriteString(L":");
 	writer.WriteString(token.reading, token.length);
 	writer.WriteString(L"> ");
@@ -174,7 +174,7 @@ public:
 	void Execute(AstIns instruction, const regex::RegexToken& token) override
 	{
 		writer.WriteString(L"<");
-		writer.WriteString(tokenName(token.token));
+		writer.WriteString(tokenName((vint32_t)token.token));
 		writer.WriteString(L":");
 		writer.WriteString(token.reading, token.length);
 		writer.WriteString(L"> ");
