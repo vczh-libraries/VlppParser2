@@ -5,6 +5,16 @@ using namespace vl;
 using namespace vl::glr;
 using namespace vl::glr::parsergen;
 
+void AssertError(ParserSymbolManager& global, ParserError expectedError)
+{
+	TEST_ASSERT(global.Errors().Count() == 1);
+	auto&& error = global.Errors()[0];
+	TEST_ASSERT(error.type == expectedError.type);
+	TEST_ASSERT(error.arg1 == expectedError.arg1);
+	TEST_ASSERT(error.arg2 == expectedError.arg2);
+	TEST_ASSERT(error.arg3 == expectedError.arg3);
+}
+
 namespace TestError_Ast_TestObjects
 {
 	AstDefFile* CompileAstCode(TypeParser& parser, AstSymbolManager& astManager, const WString& astName, const WString& astCode)
@@ -13,16 +23,6 @@ namespace TestError_Ast_TestObjects
 		auto astDefFile = astManager.CreateFile(astName);
 		CompileAst(astManager, astDefFile, astFile);
 		return astDefFile;
-	}
-
-	void AssertError(ParserSymbolManager& global, ParserError expectedError)
-	{
-		TEST_ASSERT(global.Errors().Count() == 1);
-		auto&& error = global.Errors()[0];
-		TEST_ASSERT(error.type == expectedError.type);
-		TEST_ASSERT(error.arg1 == expectedError.arg1);
-		TEST_ASSERT(error.arg2 == expectedError.arg2);
-		TEST_ASSERT(error.arg3 == expectedError.arg3);
 	}
 
 	void ExpectError(TypeParser& parser, const WString& astCode, ParserError expectedError)

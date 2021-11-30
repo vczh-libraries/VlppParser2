@@ -9,18 +9,10 @@ using namespace vl::glr;
 using namespace vl::glr::automaton;
 using namespace vl::glr::parsergen;
 
+extern void AssertError(ParserSymbolManager& global, ParserError expectedError);
+
 namespace TestError_Syntax_Automaton_TestObjects
 {
-	void AssertError(ParserSymbolManager& global, ParserError expectedError)
-	{
-		TEST_ASSERT(global.Errors().Count() == 1);
-		auto&& error = global.Errors()[0];
-		TEST_ASSERT(error.type == expectedError.type);
-		TEST_ASSERT(error.arg1 == expectedError.arg1);
-		TEST_ASSERT(error.arg2 == expectedError.arg2);
-		TEST_ASSERT(error.arg3 == expectedError.arg3);
-	}
-
 	void ExpectError(TypeParser& typeParser, RuleParser& ruleParser, const WString& astCode, const WString& lexerCode, const WString& syntaxCode, ParserError expectedError)
 	{
 		ParserSymbolManager global;
@@ -63,16 +55,31 @@ TEST_FILE
 
 	const wchar_t* astCode =
 LR"AST(
+class Ast {}
 )AST";
 
 	const wchar_t* lexerCode =
 LR"LEXER(
+A:a
+B:b
+C:c
 )LEXER";
 
 	TEST_CASE(L"DuplicatedRule")
 	{
 		const wchar_t* syntaxCode =
 LR"SYNTAX(
+X
+  ::= A as Ast
+  ;
+Y
+  ::= !X
+  ::= Z !Y
+  ;
+Z
+  ::= !X
+  ::= Y !Z
+  ;
 )SYNTAX";
 		ExpectError(
 			typeParser,
@@ -80,7 +87,7 @@ LR"SYNTAX(
 			astCode,
 			lexerCode,
 			syntaxCode,
-			{ ParserErrorType::DuplicatedRule,L"EXP" }
+			{ ParserErrorType::DuplicatedRule,L"Y" }
 			);
 	});
 }

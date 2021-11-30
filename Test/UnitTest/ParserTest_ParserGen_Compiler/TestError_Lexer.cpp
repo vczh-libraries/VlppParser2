@@ -4,18 +4,10 @@ using namespace vl;
 using namespace vl::glr;
 using namespace vl::glr::parsergen;
 
+extern void AssertError(ParserSymbolManager& global, ParserError expectedError);
+
 namespace TestError_Lexer_TestObjects
 {
-	void AssertError(ParserSymbolManager& global, ParserError expectedError)
-	{
-		TEST_ASSERT(global.Errors().Count() == 1);
-		auto&& error = global.Errors()[0];
-		TEST_ASSERT(error.type == expectedError.type);
-		TEST_ASSERT(error.arg1 == expectedError.arg1);
-		TEST_ASSERT(error.arg2 == expectedError.arg2);
-		TEST_ASSERT(error.arg3 == expectedError.arg3);
-	}
-
 	void ExpectError(const WString& lexerCode , ParserError expectedError)
 	{
 		ParserSymbolManager global;
