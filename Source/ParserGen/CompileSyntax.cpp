@@ -64,14 +64,22 @@ ResolveNameVisitor
 					vint index = context.astManager.Symbols().Keys().IndexOf(typeName);
 					if (index == -1)
 					{
-						context.global.AddError(ParserErrorType::TypeNotExistsInRule, ruleSymbol->Name(), typeName);
+						context.global.AddError(
+							ParserErrorType::TypeNotExistsInRule,
+							ruleSymbol->Name(),
+							typeName
+							);
 						return nullptr;
 					}
 
 					auto classSymbol = dynamic_cast<AstClassSymbol*>(context.astManager.Symbols().Values()[index]);
 					if (!classSymbol)
 					{
-						context.global.AddError(ParserErrorType::TypeNotClassInRule, ruleSymbol->Name(), typeName);
+						context.global.AddError(
+							ParserErrorType::TypeNotClassInRule,
+							ruleSymbol->Name(),
+							typeName
+							);
 					}
 					return classSymbol;
 				}
@@ -95,7 +103,11 @@ ResolveNameVisitor
 					vint ruleIndex = context.syntaxManager.Rules().Keys().IndexOf(node->name.value);
 					if (tokenIndex == -1 && ruleIndex == -1)
 					{
-						context.global.AddError(ParserErrorType::TokenOrRuleNotExistsInRule, ruleSymbol->Name(), node->name.value);
+						context.global.AddError(
+							ParserErrorType::TokenOrRuleNotExistsInRule,
+							ruleSymbol->Name(),
+							node->name.value
+							);
 					}
 				}
 
@@ -128,7 +140,11 @@ ResolveNameVisitor
 							}
 						}
 					}
-					context.global.AddError(ParserErrorType::TokenOrRuleNotExistsInRule, ruleSymbol->Name(), node->value.value);
+					context.global.AddError(
+						ParserErrorType::TokenOrRuleNotExistsInRule,
+						ruleSymbol->Name(),
+						node->value.value
+						);
 				}
 
 				void Visit(GlrUseSyntax* node) override
@@ -136,7 +152,11 @@ ResolveNameVisitor
 					vint ruleIndex = context.syntaxManager.Rules().Keys().IndexOf(node->name.value);
 					if (ruleIndex == -1)
 					{
-						context.global.AddError(ParserErrorType::TokenOrRuleNotExistsInRule, ruleSymbol->Name(), node->name.value);
+						context.global.AddError(
+							ParserErrorType::TokenOrRuleNotExistsInRule,
+							ruleSymbol->Name(),
+							node->name.value
+							);
 					}
 					else if (clause)
 					{
@@ -457,7 +477,10 @@ CompileSyntaxVisitor
 					vint index = context.syntaxManager.Rules().Keys().IndexOf(node->name.value);
 					if (index == -1)
 					{
-						context.global.AddError(ParserErrorType::TokenOrRuleNotExistsInRule, node->name.value);
+						context.global.AddError(
+							ParserErrorType::TokenOrRuleNotExistsInRule,
+							node->name.value
+							);
 						return;
 					}
 
@@ -720,9 +743,18 @@ CalculateRuleAndClauseTypes
 						if (index != -1)
 						{
 							rule->ruleType = MergeClassSymbol(rule->ruleType, context.clauseTypes.Values()[index]);
+							if (!rule->ruleType)
+							{
+								context.global.AddError(
+									ParserErrorType::RuleCannotResolveToDeterministicType,
+									rule->Name()
+									);
+								break;
+							}
 						}
 					}
 				}
+				if (context.global.Errors().Count() > 0) return;
 
 				// calculate types for rules that contain reuse dependency
 				for (auto&& component : pop.components)
@@ -736,17 +768,29 @@ CalculateRuleAndClauseTypes
 							for (auto dep : context.ruleReuseDependencies.GetByIndex(index))
 							{
 								rule->ruleType = MergeClassSymbol(rule->ruleType, dep->ruleType);
+								if (!rule->ruleType)
+								{
+									context.global.AddError(
+										ParserErrorType::RuleCannotResolveToDeterministicType,
+										rule->Name()
+										);
+									break;
+								}
 							}
 						}
 					}
 				}
+				if (context.global.Errors().Count() > 0) return;
 
 				// prompt errors
 				for (auto rule : rules)
 				{
 					if (!rule->ruleType)
 					{
-						context.global.AddError(ParserErrorType::RuleCannotResolveToDeterministicType, rule->Name());
+						context.global.AddError(
+							ParserErrorType::RuleCannotResolveToDeterministicType,
+							rule->Name()
+							);
 					}
 				}
 
@@ -781,7 +825,10 @@ CompileSyntax
 					{
 						if (lexerManager.Tokens().Keys().Contains(rule->name.value))
 						{
-							syntaxManager.Global().AddError(ParserErrorType::RuleNameConflictedWithToken, rule->name.value);
+							syntaxManager.Global().AddError(
+								ParserErrorType::RuleNameConflictedWithToken,
+								rule->name.value
+								);
 						}
 						else
 						{
@@ -806,7 +853,10 @@ CompileSyntax
 
 						if (visitor.partialCount > 0 && (visitor.createCount > 0 || visitor.reuseCount > 0))
 						{
-							syntaxManager.Global().AddError(ParserErrorType::RuleMixedPartialClauseWithOtherClause, ruleSymbol->Name());
+							syntaxManager.Global().AddError(
+								ParserErrorType::RuleMixedPartialClauseWithOtherClause,
+								ruleSymbol->Name()
+								);
 						}
 
 						AstClassSymbol* partialType = nullptr;
@@ -822,7 +872,10 @@ CompileSyntax
 								}
 								else if (type && partialType != type)
 								{
-									syntaxManager.Global().AddError(ParserErrorType::RuleWithDifferentPartialTypes, ruleSymbol->Name());
+									syntaxManager.Global().AddError(
+										ParserErrorType::RuleWithDifferentPartialTypes,
+										ruleSymbol->Name()
+										);
 									break;
 								}
 							}
