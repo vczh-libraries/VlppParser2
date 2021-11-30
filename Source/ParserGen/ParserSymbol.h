@@ -72,15 +72,16 @@ ParserSymbolManager
 				DuplicatedRule,								// (ruleName)
 				RuleIsIndirectlyLeftRecursive,				// (ruleName)								: Indirect left recursion must be resolved before.
 
-				// SyntaxAst to SyntaxSymbolManager ---------------------------------------------------
-				// hint is a position in clause like: EXP0 ::= '(' @ !EXP ')'
+				// SyntaxAst (ResolveName) ------------------------------------------------------------
 				RuleNameConflictedWithToken,				// (ruleName)
-				TokenOrRuleNotExistsInRule,					// (ruleName, name)
 				TypeNotExistsInRule,						// (ruleName, name)
 				TypeNotClassInRule,							// (ruleName, name)
+				TokenOrRuleNotExistsInRule,					// (ruleName, name)
+
+				// SyntaxAst (CalculateRuleAndClauseTypes) --------------------------------------------
 				RuleMixedPartialClauseWithOtherClause,		// (ruleName)
-				RuleCannotResolveToDeterministicType,		// (ruleName)								: Unable to resolve to one type from clauses (token, type) or (create, partial).
 				RuleWithDifferentPartialTypes,				// (ruleName)
+				RuleCannotResolveToDeterministicType,		// (ruleName)								: Unable to resolve to one type from clauses (token, type) or (create, partial).
 
 				FieldNotExistsInRule,						// (ruleName, typeName, fieldName)
 				RuleTypeMismatchedToField,					// (ruleName, fieldRuleName, fieldName)		: The rule type is not compatible to the assigning field.
