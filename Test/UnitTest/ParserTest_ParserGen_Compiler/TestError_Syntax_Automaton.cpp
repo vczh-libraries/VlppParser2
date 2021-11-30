@@ -69,6 +69,23 @@ C:c
 	{
 		const wchar_t* syntaxCode =
 LR"SYNTAX(
+X ::= A as Ast;
+X ::= A as Ast;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::DuplicatedRule,L"X" }
+			);
+	});
+
+	TEST_CASE(L"RuleIsIndirectlyLeftRecursive")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
 X
   ::= A as Ast
   ;
@@ -87,7 +104,7 @@ Z
 			astCode,
 			lexerCode,
 			syntaxCode,
-			{ ParserErrorType::DuplicatedRule,L"Y" }
+			{ ParserErrorType::RuleIsIndirectlyLeftRecursive,L"Y" }
 			);
 	});
 }
