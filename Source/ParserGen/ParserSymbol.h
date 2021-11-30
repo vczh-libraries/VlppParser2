@@ -82,6 +82,8 @@ ParserSymbolManager
 				RuleMixedPartialClauseWithOtherClause,		// (ruleName)
 				RuleWithDifferentPartialTypes,				// (ruleName)
 				RuleCannotResolveToDeterministicType,		// (ruleName)								: Unable to resolve to one type from clauses (token, type) or (create, partial).
+				ReuseClauseCannotResolveToDeterministicType,// (ruleName)								: A reuse clause contains multiple use rule but their types are not compatible to each other.
+				ReuseClauseContainsNoUseRule,				// (ruleName)								: A reuse clause contains no use rule therefore the type cannot be determined.
 
 				FieldNotExistsInRule,						// (ruleName, typeName, fieldName)
 				RuleTypeMismatchedToField,					// (ruleName, fieldRuleName, fieldName)		: The rule type is not compatible to the assigning field.

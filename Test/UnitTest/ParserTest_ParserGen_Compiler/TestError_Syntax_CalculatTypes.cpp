@@ -50,6 +50,11 @@ class BinaryExpr
 	var left : Expr;
 	var right : Expr;
 }
+
+class Module
+{
+	var export : Expr;
+}
 )AST";
 
 	const wchar_t* lexerCode =
@@ -120,6 +125,92 @@ Exp0
 			lexerCode,
 			syntaxCode,
 			{ ParserErrorType::RuleWithDifferentPartialTypes,L"Exp0" }
+			);
+	});
+
+	TEST_CASE(L"RuleCannotResolveToDeterministicType 1")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= NUM:value as NumExpr
+  ::= ID:value as RefExpr
+  ::= "+" as Module
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::RuleCannotResolveToDeterministicType,L"Exp0" }
+			);
+	});
+
+	TEST_CASE(L"RuleCannotResolveToDeterministicType 2")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= NUM:value as NumExpr
+  ::= ID:value as RefExpr
+  ;
+Exp1
+  ::= !Exp0
+  ::= "+" as Module
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::RuleCannotResolveToDeterministicType,L"Exp1" }
+			);
+	});
+
+	TEST_CASE(L"ReuseClauseCannotResolveToDeterministicType")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= NUM:value as NumExpr
+  ::= ID:value as RefExpr
+  ;
+Exp1
+  ::= Exp0:export as Module
+  ;
+Exp2
+  ::= !Exp0 !Exp1
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::ReuseClauseCannotResolveToDeterministicType,L"Exp2" }
+			);
+	});
+
+	TEST_CASE(L"ReuseClauseContainsNoUseRule")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= NUM
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::ReuseClauseContainsNoUseRule,L"Exp0" }
 			);
 	});
 }
