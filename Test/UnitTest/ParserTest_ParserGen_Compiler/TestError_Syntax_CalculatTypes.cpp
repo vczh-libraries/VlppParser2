@@ -28,12 +28,12 @@ class Expr
 {
 }
 
-class RefExpr
+class RefExpr : Expr
 {
 	var value : token;
 }
 
-class NumExpr
+class NumExpr : Expr
 {
 	var value : token;
 }
@@ -44,7 +44,7 @@ enum BinaryOp
 	Mul,
 }
 
-class BinaryExpr
+class BinaryExpr : Expr
 {
 	var op : BinaryOp;
 	var left : Expr;
@@ -134,6 +134,26 @@ Exp0
 LR"SYNTAX(
 Exp0
   ::= NUM:value as NumExpr
+  ::= "+" as Module
+  ::= ID:value as RefExpr
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::RuleCannotResolveToDeterministicType,L"Exp0" }
+			);
+	});
+
+	TEST_CASE(L"RuleCannotResolveToDeterministicType 2")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= NUM:value as NumExpr
   ::= ID:value as RefExpr
   ::= "+" as Module
   ;
@@ -148,7 +168,7 @@ Exp0
 			);
 	});
 
-	TEST_CASE(L"RuleCannotResolveToDeterministicType 2")
+	TEST_CASE(L"RuleCannotResolveToDeterministicType 3")
 	{
 		const wchar_t* syntaxCode =
 LR"SYNTAX(
