@@ -96,7 +96,7 @@ ParserSymbolManager
 				ClauseTypeMismatchedToPartialRule,			// (ruleName, clauseType, partialRuleName, partialRuleType)		: A clause uses a partial rule of an incompatible type.
 
 				// SyntaxAst (ValidateStructure) ------------------------------------------------------
-				ClauseNotCreateObject,						// (ruleName)													: A clause is not a create rule, not a partial rule, and not containing use rule.
+				ClauseNotCreateObject,						// (ruleName)													: A reuse clause does not containing use rule in all potential sequences.
 				ClauseCouldExpandToEmptySequence,			// (ruleName)
 				LoopBodyCouldExpandToEmptySequence,			// (ruleName)
 				UseRuleUsedInOptionalBody,					// (ruleName, useRuleName)
