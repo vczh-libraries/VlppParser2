@@ -2023,9 +2023,11 @@ namespace vl
 
 		class PureInterpretor : public Object
 		{
+			using CharRangeArray = collections::Array<CharRange>;
 		protected:
 			static const vint	SupportedCharCount = MaxChar32 + 1;
 
+			CharRangeArray		charRanges;
 			vint				charMap[SupportedCharCount];		// char -> char set index
 			vint*				transitions = nullptr;				// (state * charSetCount + charSetIndex) -> state
 			bool*				finalState = nullptr;				// state -> bool
@@ -2033,6 +2035,8 @@ namespace vl
 			vint				stateCount;
 			vint				charSetCount;
 			vint				startState;
+
+			void				ExpandCharRanges();
 		public:
 			PureInterpretor(Automaton::Ref dfa, CharRange::List& subsets);
 			PureInterpretor(stream::IStream& inputStream);

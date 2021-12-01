@@ -1300,7 +1300,17 @@ PureInterpretor (Serialization)
 			ReadInt(inputStream, stateCount);
 			ReadInt(inputStream, charSetCount);
 			ReadInt(inputStream, startState);
-			ReadInts(inputStream, SupportedCharCount, charMap);
+			{
+				vint count = 0;
+				ReadInt(inputStream, count);
+				charRanges.Resize(count);
+				if (count > 0)
+				{
+					vint size = charRanges.Count() * sizeof(CharRange);
+					CHECK_ERROR(inputStream.Read(&charRanges[0], size) == size, L"Failed to serialize RegexLexer.");
+				}
+				ExpandCharRanges();
+			}
 
 			transitions = new vint[stateCount * charSetCount];
 			ReadInts(inputStream, stateCount * charSetCount, transitions);
@@ -1314,7 +1324,14 @@ PureInterpretor (Serialization)
 			WriteInt(outputStream, stateCount);
 			WriteInt(outputStream, charSetCount);
 			WriteInt(outputStream, startState);
-			WriteInts(outputStream, SupportedCharCount, charMap);
+			{
+				WriteInt(outputStream, charRanges.Count());
+				if (charRanges.Count() > 0)
+				{
+					vint size = charRanges.Count() * sizeof(CharRange);
+					CHECK_ERROR(outputStream.Write(&charRanges[0], size) == size, L"Failed to serialize RegexLexer.");
+				}
+			}
 			WriteInts(outputStream, stateCount * charSetCount, transitions);
 			WriteBools(outputStream, stateCount, finalState);
 		}
@@ -1323,6 +1340,23 @@ PureInterpretor (Serialization)
 PureInterpretor
 ***********************************************************************/
 
+		void PureInterpretor::ExpandCharRanges()
+		{
+			for (vint i = 0; i < SupportedCharCount; i++)
+			{
+				charMap[i] = charSetCount - 1;
+			}
+			for (vint i = 0; i < charRanges.Count(); i++)
+			{
+				CharRange range = charRanges[i];
+				for (char32_t j = range.begin; j <= range.end; j++)
+				{
+					if (j > MaxChar32) break;
+					charMap[j] = i;
+				}
+			}
+		}
+
 		PureInterpretor::PureInterpretor(Automaton::Ref dfa, CharRange::List& subsets)
 		{
 			stateCount = dfa->states.Count();
@@ -1330,19 +1364,8 @@ PureInterpretor
 			startState = dfa->states.IndexOf(dfa->startState);
 
 			// Map char to input index (equivalent char class)
-			for (vint i = 0; i < SupportedCharCount; i++)
-			{
-				charMap[i] = charSetCount - 1;
-			}
-			for (vint i = 0; i < subsets.Count(); i++)
-			{
-				CharRange range = subsets[i];
-				for (char32_t j = range.begin; j <= range.end; j++)
-				{
-					if (j > MaxChar32) break;
-					charMap[j] = i;
-				}
-			}
+			CopyFrom(charRanges, subsets);
+			ExpandCharRanges();
 
 			// Create transitions from DFA, using input index to represent input char
 			transitions = new vint[stateCount * charSetCount];
