@@ -110,7 +110,6 @@
 
 ## Work Items
 
-- `RuleParser` not stably generated from `ParserTest_LexerAndParser`
 - `JsonEscapeString` `JsonUnescapeString` handle surrogate pairs correctly.
 - Switching lexical analyzer during parsing.
   - Refactor some properties in `LexerSymbolManager` into `LexerFile` with a name.

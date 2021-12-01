@@ -6,6 +6,14 @@
 
 using namespace vl::glr::parsergen;
 
+FilePath LogSyntaxWithPath(
+	SyntaxSymbolManager& manager,
+	const FilePath& outputFile,
+	const Func<WString(vint32_t)>& typeName,
+	const Func<WString(vint32_t)>& fieldName,
+	const Func<WString(vint32_t)>& tokenName
+	);
+
 FilePath LogSyntax(
 	SyntaxSymbolManager& manager,
 	const WString& parserName,

@@ -48,6 +48,8 @@ StateSymbol
 				RuleSymbol*					Rule() { return rule; }
 				const EdgeList&				InEdges() { return inEdges; }
 				const EdgeList&				OutEdges() { return outEdges; }
+
+				void						GetOutEdgesInStableOrder(collections::List<StateSymbol*>& orderedStates, EdgeList& orderedEdges);
 			};
 
 /***********************************************************************
@@ -155,7 +157,7 @@ SyntaxSymbolManager
 				StateSymbol*				EliminateEpsilonEdges(RuleSymbol* rule, StateList& newStates, EdgeList& newEdges);
 				void						BuildCompactNFAInternal();
 
-				void						FixCrossReferencedRuleEdge(StateSymbol* startState, collections::List<EdgeSymbol*>& accumulatedEdges);
+				void						FixCrossReferencedRuleEdge(StateSymbol* startState, collections::Group<StateSymbol*, EdgeSymbol*>& orderedEdges, collections::List<EdgeSymbol*>& accumulatedEdges);
 				void						BuildCrossReferencedNFAInternal();
 			public:
 				SyntaxSymbolManager(ParserSymbolManager& _global);

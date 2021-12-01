@@ -7,17 +7,14 @@ extern FilePath GetOutputDir(const WString& parserName);
 LogSyntax
 ***********************************************************************/
 
-FilePath LogSyntax(
+FilePath LogSyntaxWithPath(
 	SyntaxSymbolManager& manager,
-	const WString& parserName,
-	const WString& phase,
+	const FilePath& outputFile,
 	const Func<WString(vint32_t)>& typeName,
 	const Func<WString(vint32_t)>& fieldName,
 	const Func<WString(vint32_t)>& tokenName
 )
 {
-	auto outputDir = GetOutputDir(parserName);
-	auto outputFile = outputDir / (phase + L".txt");
 	FileStream fileStream(outputFile.GetFullPath(), FileStream::WriteOnly);
 	BomEncoder encoder(BomEncoder::Utf8);
 	EncoderStream encoderStream(fileStream, encoder);
@@ -33,32 +30,9 @@ FilePath LogSyntax(
 
 	for (auto state : order)
 	{
+		List<EdgeSymbol*> orderedEdges;
+		state->GetOutEdgesInStableOrder(order, orderedEdges);
 		writer.WriteLine(labels[state]);
-		auto orderedEdges = From(state->OutEdges())
-			.OrderBy([&](EdgeSymbol* e1, EdgeSymbol* e2)
-			{
-				vint result = 0;
-				if (e1->input.type != e2->input.type)
-				{
-					result = (vint)e1->input.type - (vint)e2->input.type;
-				}
-				else
-				{
-					switch (e1->input.type)
-					{
-					case EdgeInputType::Token:
-						result = e1->input.token - e2->input.token;
-						break;
-					case EdgeInputType::Rule:
-						result = manager.RuleOrder().IndexOf(e1->input.rule->Name()) - manager.RuleOrder().IndexOf(e2->input.rule->Name());
-						break;
-					default:;
-					}
-				}
-
-				if (result != 0) return result;
-				return order.IndexOf(e1->To()) - order.IndexOf(e2->To());
-			});
 		for (auto edge : orderedEdges)
 		{
 			switch (edge->input.type)
@@ -111,4 +85,18 @@ FilePath LogSyntax(
 		writer.WriteLine(L"");
 	}
 	return outputFile;
+}
+
+FilePath LogSyntax(
+	SyntaxSymbolManager& manager,
+	const WString& parserName,
+	const WString& phase,
+	const Func<WString(vint32_t)>& typeName,
+	const Func<WString(vint32_t)>& fieldName,
+	const Func<WString(vint32_t)>& tokenName
+)
+{
+	auto outputDir = GetOutputDir(parserName);
+	auto outputFile = outputDir / (phase + L".txt");
+	return LogSyntaxWithPath(manager, outputFile, typeName, fieldName, tokenName);
 }
