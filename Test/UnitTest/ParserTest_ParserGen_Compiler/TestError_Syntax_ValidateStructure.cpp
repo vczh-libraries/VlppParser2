@@ -158,7 +158,7 @@ Exp1
 			);
 	});
 
-	TEST_CASE(L"TooManyUseRule")
+	TEST_CASE(L"ClauseTooManyUseRule")
 	{
 		const wchar_t* syntaxCode =
 LR"SYNTAX(
@@ -181,7 +181,7 @@ Exp3
 			astCode,
 			lexerCode,
 			syntaxCode,
-			{ ParserErrorType::TooManyUseRule,L"Exp3",L"Exp0",L"Exp2" }
+			{ ParserErrorType::ClauseTooManyUseRule,L"Exp3" }
 			);
 	});
 

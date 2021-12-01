@@ -27,7 +27,8 @@ ValidateStructureVisitor
 				vint						loopCounter = 0;
 
 				vint						syntaxMinLength = 0;
-				vint						syntaxUseRuleCount = 0;
+				vint						syntaxMinUseRuleCount = 0;
+				vint						syntaxMaxUseRuleCount = 0;
 
 			public:
 				ValidateStructureVisitor(
@@ -42,16 +43,22 @@ ValidateStructureVisitor
 				void Visit(GlrRefSyntax* node) override
 				{
 					syntaxMinLength = 1;
+					syntaxMinUseRuleCount = 0;
+					syntaxMaxUseRuleCount = 0;
 				}
 
 				void Visit(GlrLiteralSyntax* node) override
 				{
 					syntaxMinLength = 1;
+					syntaxMinUseRuleCount = 0;
+					syntaxMaxUseRuleCount = 0;
 				}
 
 				void Visit(GlrUseSyntax* node) override
 				{
 					syntaxMinLength = 1;
+					syntaxMinUseRuleCount = 1;
+					syntaxMaxUseRuleCount = 1;
 					if (loopCounter > 0)
 					{
 						context.global.AddError(
@@ -72,31 +79,42 @@ ValidateStructureVisitor
 
 				void Visit(GlrLoopSyntax* node) override
 				{
-					vint bodyMinLength = 0;
-					vint delimiterMinLength = 0;
+					vint bodyMinLength = 0, bodyMaxUseRuleCount = 0;
+					vint delimiterMinLength = 0, delimiterMaxUseRuleCount = 0;
+
 					loopCounter++;
+
 					node->syntax->Accept(this);
 					bodyMinLength = syntaxMinLength;
+					bodyMaxUseRuleCount = syntaxMaxUseRuleCount;
+
 					if (node->delimiter)
 					{
 						node->delimiter->Accept(this);
 						delimiterMinLength = syntaxMinLength;
+						delimiterMaxUseRuleCount = syntaxMaxUseRuleCount;
 					}
+
 					if (delimiterMinLength + bodyMinLength == 0)
 					{
 						context.global.AddError(
 							ParserErrorType::LoopBodyCouldExpandToEmptySequence,
 							ruleSymbol->Name()
-							);
+						);
 					}
 					syntaxMinLength = 0;
+					syntaxMinUseRuleCount = 0;
+					syntaxMaxUseRuleCount = bodyMaxUseRuleCount * 2 + delimiterMaxUseRuleCount * 2;
+
 					loopCounter--;
 				}
 
 				void Visit(GlrOptionalSyntax* node) override
 				{
 					optionalCounter++;
+
 					node->syntax->Accept(this);
+
 					if (syntaxMinLength == 0)
 					{
 						context.global.AddError(
@@ -105,6 +123,8 @@ ValidateStructureVisitor
 							);
 					}
 					syntaxMinLength = 0;
+					syntaxMinUseRuleCount = 0;
+
 					optionalCounter--;
 				}
 
@@ -112,57 +132,80 @@ ValidateStructureVisitor
 				{
 					node->first->Accept(this);
 					vint firstMinLength = syntaxMinLength;
+					vint firstMinUseRuleCount = syntaxMinUseRuleCount;
+					vint firstMaxUseRuleCount = syntaxMaxUseRuleCount;
+
 					node->second->Accept(this);
 					vint secondMinLength = syntaxMinLength;
+					vint secondMinUseRuleCount = syntaxMinUseRuleCount;
+					vint secondMaxUseRuleCount = syntaxMaxUseRuleCount;
+
 					syntaxMinLength = firstMinLength + secondMinLength;
+					syntaxMinUseRuleCount = firstMinUseRuleCount + secondMinUseRuleCount;
+					syntaxMaxUseRuleCount = firstMaxUseRuleCount + secondMaxUseRuleCount;
 				}
 
 				void Visit(GlrAlternativeSyntax* node) override
 				{
 					node->first->Accept(this);
 					vint firstMinLength = syntaxMinLength;
+					vint firstMinUseRuleCount = syntaxMinUseRuleCount;
+					vint firstMaxUseRuleCount = syntaxMaxUseRuleCount;
+
 					node->second->Accept(this);
 					vint secondMinLength = syntaxMinLength;
+					vint secondMinUseRuleCount = syntaxMinUseRuleCount;
+					vint secondMaxUseRuleCount = syntaxMaxUseRuleCount;
+
 					syntaxMinLength = firstMinLength < secondMinLength ? firstMinLength : secondMinLength;
+					syntaxMinUseRuleCount = firstMinUseRuleCount < secondMinUseRuleCount ? firstMinUseRuleCount : secondMinUseRuleCount;
+					syntaxMaxUseRuleCount = firstMaxUseRuleCount > secondMaxUseRuleCount ? firstMaxUseRuleCount : secondMaxUseRuleCount;
+				}
+
+				void CheckAfterClause()
+				{
+					if (syntaxMinLength == 0)
+					{
+						context.global.AddError(
+							ParserErrorType::ClauseCouldExpandToEmptySequence,
+							ruleSymbol->Name()
+							);
+					}
+					if (syntaxMinUseRuleCount == 0)
+					{
+						context.global.AddError(
+							ParserErrorType::ClauseNotCreateObject,
+							ruleSymbol->Name()
+							);
+					}
+					if (syntaxMaxUseRuleCount > 1)
+					{
+						context.global.AddError(
+							ParserErrorType::ClauseTooManyUseRule,
+							ruleSymbol->Name()
+							);
+					}
 				}
 
 				void Visit(GlrCreateClause* node) override
 				{
 					clause = node;
 					node->syntax->Accept(this);
-					if (syntaxMinLength == 0)
-					{
-						context.global.AddError(
-							ParserErrorType::ClauseCouldExpandToEmptySequence,
-							ruleSymbol->Name()
-							);
-					}
+					CheckAfterClause();
 				}
 
 				void Visit(GlrPartialClause* node) override
 				{
 					clause = node;
 					node->syntax->Accept(this);
-					if (syntaxMinLength == 0)
-					{
-						context.global.AddError(
-							ParserErrorType::ClauseCouldExpandToEmptySequence,
-							ruleSymbol->Name()
-							);
-					}
+					CheckAfterClause();
 				}
 
 				void Visit(GlrReuseClause* node) override
 				{
 					clause = node;
 					node->syntax->Accept(this);
-					if (syntaxMinLength == 0)
-					{
-						context.global.AddError(
-							ParserErrorType::ClauseCouldExpandToEmptySequence,
-							ruleSymbol->Name()
-							);
-					}
+					CheckAfterClause();
 				}
 			};
 

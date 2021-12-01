@@ -99,7 +99,7 @@ ParserSymbolManager
 				ClauseNotCreateObject,						// (ruleName)													: A reuse clause does not contain use rule in some potential sequences.
 				UseRuleUsedInOptionalBody,					// (ruleName, useRuleName)
 				UseRuleUsedInLoopBody,						// (ruleName, useRuleName)
-				TooManyUseRule,								// (ruleName, useRule1, useRule2)								: Multiple use rules in a potential sequence in a clause.
+				ClauseTooManyUseRule,						// (ruleName)													: Multiple use rules in a potential sequence in a clause.
 				UseRuleAppearAfterField,					// (ruleName, useRuleName, fieldName)
 				UseRuleAppearAfterPartialRule,				// (ruleName, useRuleName, partialRuleName)
 				ClauseCouldExpandToEmptySequence,			// (ruleName)
