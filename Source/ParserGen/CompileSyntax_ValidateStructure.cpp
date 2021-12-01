@@ -23,6 +23,9 @@ ValidateStructureVisitor
 				RuleSymbol*					ruleSymbol;
 				GlrClause*					clause = nullptr;
 
+				vint						optionalCounter = 0;
+				vint						loopCounter = 0;
+
 			public:
 				ValidateStructureVisitor(
 					VisitorContext& _context,
@@ -43,20 +46,40 @@ ValidateStructureVisitor
 
 				void Visit(GlrUseSyntax* node) override
 				{
+					if (loopCounter > 0)
+					{
+						context.global.AddError(
+							ParserErrorType::UseRuleUsedInLoopBody,
+							ruleSymbol->Name(),
+							node->name.value
+							);
+					}
+					if (optionalCounter > 0)
+					{
+						context.global.AddError(
+							ParserErrorType::UseRuleUsedInOptionalBody,
+							ruleSymbol->Name(),
+							node->name.value
+							);
+					}
 				}
 
 				void Visit(GlrLoopSyntax* node) override
 				{
+					loopCounter++;
 					node->syntax->Accept(this);
 					if (node->delimiter)
 					{
 						node->delimiter->Accept(this);
 					}
+					loopCounter--;
 				}
 
 				void Visit(GlrOptionalSyntax* node) override
 				{
+					optionalCounter++;
 					node->syntax->Accept(this);
+					optionalCounter--;
 				}
 
 				void Visit(GlrSequenceSyntax* node) override
