@@ -60,6 +60,46 @@ ValidateTypesVisitor
 								node->field.value
 								);
 						}
+						else
+						{
+							vint tokenIndex = context.lexerManager.TokenOrder().IndexOf(node->name.value);
+							vint ruleIndex = context.syntaxManager.Rules().Keys().IndexOf(node->name.value);
+							if (tokenIndex != -1)
+							{
+								if (prop->propType != AstPropType::Token)
+								{
+									context.global.AddError(
+										ParserErrorType::RuleTypeMismatchedToField,
+										ruleSymbol->Name(),
+										L"token",
+										node->field.value
+										);
+								}
+							}
+							if (ruleIndex != -1)
+							{
+								auto fieldRule = context.syntaxManager.Rules().Values()[ruleIndex];
+								if (auto propClassSymbol = dynamic_cast<AstClassSymbol*>(prop->propSymbol))
+								{
+									currentType = fieldRule->ruleType;
+									while (currentType)
+									{
+										if (currentType == propClassSymbol)
+										{
+											goto PASS_FIELD_TYPE;
+										}
+										currentType = currentType->baseClass;
+									}
+								}
+								context.global.AddError(
+									ParserErrorType::RuleTypeMismatchedToField,
+									ruleSymbol->Name(),
+									fieldRule->ruleType->Name(),
+									node->field.value
+									);
+							PASS_FIELD_TYPE:;
+							}
+						}
 					}
 				}
 

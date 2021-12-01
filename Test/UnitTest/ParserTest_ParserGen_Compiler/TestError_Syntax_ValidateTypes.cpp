@@ -190,4 +190,103 @@ Exp2
 			{ ParserErrorType::FieldNotExistsInClause,L"Exp2",L"BinaryExpr",L"unknown" }
 			);
 	});
+
+	TEST_CASE(L"RuleTypeMismatchedToField 1")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Module
+  ::= "+" as Module
+  ;
+Exp0
+  ::= Module:value as NumExpr
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::RuleTypeMismatchedToField,L"Exp0",L"Module",L"value" }
+			);
+	});
+
+	TEST_CASE(L"RuleTypeMismatchedToField 2")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Module
+  ::= "+" as Module
+  ;
+Exp0
+  ::= Module:left as BinaryExpr
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::RuleTypeMismatchedToField,L"Exp0",L"Module",L"left" }
+			);
+	});
+
+	TEST_CASE(L"RuleTypeMismatchedToField 3")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Module
+  ::= "+" as Module
+  ;
+Exp0
+  ::= Module:op as BinaryExpr
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::RuleTypeMismatchedToField,L"Exp0",L"Module",L"op" }
+			);
+	});
+
+	TEST_CASE(L"RuleTypeMismatchedToField 4")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= NUM:left as BinaryExpr
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::RuleTypeMismatchedToField,L"Exp0",L"token",L"left" }
+			);
+	});
+
+	TEST_CASE(L"RuleTypeMismatchedToField 5")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= NUM:op as BinaryExpr
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::RuleTypeMismatchedToField,L"Exp0",L"token",L"op" }
+			);
+	});
 }
