@@ -57,32 +57,43 @@ ValidateTypesVisitor
 					return nullptr;
 				}
 
+				bool ConvertibleTo(AstClassSymbol* from, AstClassSymbol* to)
+				{
+					while (from)
+					{
+						if (from == to) return true;
+						from = from->baseClass;
+					}
+					return false;
+				}
+
 				void Visit(GlrRefSyntax* node) override
 				{
+					vint ruleIndex = context.syntaxManager.Rules().Keys().IndexOf(node->name.value);
+					auto clauseType = context.clauseTypes[clause];
+					auto fieldRule = ruleIndex == -1 ? nullptr : context.syntaxManager.Rules().Values()[ruleIndex];
+
+					if (fieldRule && fieldRule->isPartial)
+					{
+						if (!ConvertibleTo(clauseType, fieldRule->ruleType))
+						{
+							context.global.AddError(
+								ParserErrorType::ClauseTypeMismatchedToPartialRule,
+								ruleSymbol->Name(),
+								clauseType->Name(),
+								fieldRule->Name(),
+								fieldRule->ruleType->Name()
+								);
+						}
+					}
+
 					if (node->field)
 					{
 						AstClassSymbol* clauseType = nullptr;
 						if (auto prop = FindField(clauseType, node->field.value))
 						{
-							vint tokenIndex = context.lexerManager.TokenOrder().IndexOf(node->name.value);
-							vint ruleIndex = context.syntaxManager.Rules().Keys().IndexOf(node->name.value);
-							if (tokenIndex != -1)
+							if (fieldRule)
 							{
-								if (prop->propType != AstPropType::Token)
-								{
-									context.global.AddError(
-										ParserErrorType::RuleTypeMismatchedToField,
-										ruleSymbol->Name(),
-										clauseType->Name(),
-										node->field.value,
-										L"token"
-										);
-								}
-							}
-							if (ruleIndex != -1)
-							{
-								auto fieldRule = context.syntaxManager.Rules().Values()[ruleIndex];
-
 								if (fieldRule->isPartial)
 								{
 									context.global.AddError(
@@ -96,14 +107,9 @@ ValidateTypesVisitor
 
 								if (auto propClassSymbol = dynamic_cast<AstClassSymbol*>(prop->propSymbol))
 								{
-									auto currentType = fieldRule->ruleType;
-									while (currentType)
+									if (ConvertibleTo(fieldRule->ruleType, propClassSymbol))
 									{
-										if (currentType == propClassSymbol)
-										{
-											goto PASS_FIELD_TYPE;
-										}
-										currentType = currentType->baseClass;
+										goto PASS_FIELD_TYPE;
 									}
 								}
 								context.global.AddError(
@@ -114,6 +120,19 @@ ValidateTypesVisitor
 									fieldRule->ruleType->Name()
 									);
 							PASS_FIELD_TYPE:;
+							}
+							else
+							{
+								if (prop->propType != AstPropType::Token)
+								{
+									context.global.AddError(
+										ParserErrorType::RuleTypeMismatchedToField,
+										ruleSymbol->Name(),
+										clauseType->Name(),
+										node->field.value,
+										L"token"
+										);
+								}
 							}
 						}
 					}

@@ -430,7 +430,7 @@ Exp1
 		const wchar_t* syntaxCode =
 LR"SYNTAX(
 Exp0
-  ::= NUM:value as partial NumExpr
+  ::= "+" as partial BinaryExpr
   ;
 Exp1
   ::= Exp0:left as BinaryExpr
@@ -443,6 +443,48 @@ Exp1
 			lexerCode,
 			syntaxCode,
 			{ ParserErrorType::PartialRuleUsedOnField,L"Exp1",L"BinaryExpr",L"Exp0",L"left" }
+			);
+	});
+
+	TEST_CASE(L"ClauseTypeMismatchedToPartialRule")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= NUM:value as partial NumExpr
+  ;
+Exp1
+  ::= Exp0 as Module
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::ClauseTypeMismatchedToPartialRule,L"Exp1",L"Module",L"Exp0",L"NumExpr" }
+			);
+	});
+
+	TEST_CASE(L"ClauseTypeMismatchedToPartialRule")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= "+" as partial BinaryExpr
+  ;
+Exp1
+  ::= Exp0 as Expr
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::ClauseTypeMismatchedToPartialRule,L"Exp1",L"Expr",L"Exp0",L"BinaryExpr" }
 			);
 	});
 }
