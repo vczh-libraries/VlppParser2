@@ -162,7 +162,7 @@ ValidateStructureVisitor
 					syntaxMaxUseRuleCount = firstMaxUseRuleCount > secondMaxUseRuleCount ? firstMaxUseRuleCount : secondMaxUseRuleCount;
 				}
 
-				void CheckAfterClause()
+				void CheckAfterClause(bool reuseClause)
 				{
 					if (syntaxMinLength == 0)
 					{
@@ -171,19 +171,22 @@ ValidateStructureVisitor
 							ruleSymbol->Name()
 							);
 					}
-					if (syntaxMinUseRuleCount == 0)
+					if (reuseClause)
 					{
-						context.global.AddError(
-							ParserErrorType::ClauseNotCreateObject,
-							ruleSymbol->Name()
+						if (syntaxMinUseRuleCount == 0)
+						{
+							context.global.AddError(
+								ParserErrorType::ClauseNotCreateObject,
+								ruleSymbol->Name()
 							);
-					}
-					if (syntaxMaxUseRuleCount > 1)
-					{
-						context.global.AddError(
-							ParserErrorType::ClauseTooManyUseRule,
-							ruleSymbol->Name()
+						}
+						if (syntaxMaxUseRuleCount > 1)
+						{
+							context.global.AddError(
+								ParserErrorType::ClauseTooManyUseRule,
+								ruleSymbol->Name()
 							);
+						}
 					}
 				}
 
@@ -191,21 +194,21 @@ ValidateStructureVisitor
 				{
 					clause = node;
 					node->syntax->Accept(this);
-					CheckAfterClause();
+					CheckAfterClause(false);
 				}
 
 				void Visit(GlrPartialClause* node) override
 				{
 					clause = node;
 					node->syntax->Accept(this);
-					CheckAfterClause();
+					CheckAfterClause(false);
 				}
 
 				void Visit(GlrReuseClause* node) override
 				{
 					clause = node;
 					node->syntax->Accept(this);
-					CheckAfterClause();
+					CheckAfterClause(true);
 				}
 			};
 

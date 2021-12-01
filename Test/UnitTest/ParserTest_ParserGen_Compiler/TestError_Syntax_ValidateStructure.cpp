@@ -145,7 +145,7 @@ Exp0
   ::= NUM:value as NumExpr
   ;
 Exp1
-  ::= "(" {"-"; "+" !Exp0} ")"
+  ::= "(" {"*"; "+" !Exp0} ")"
   ;
 )SYNTAX";
 		ExpectError(
