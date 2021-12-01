@@ -27,7 +27,7 @@ WriteAstAssemblerHeaderFile
 						{
 							if (auto classSymbol = dynamic_cast<AstClassSymbol*>(typeSymbol))
 							{
-								output->classIds.Add(classSymbol, index);
+								output->classIds.Add(classSymbol, (vint32_t)index);
 								writer.WriteLine(prefix + L"\t" + classSymbol->Name() + L" = " + itow(index) + L",");
 								index++;
 							}
@@ -44,7 +44,7 @@ WriteAstAssemblerHeaderFile
 							{
 								for (auto [propSymbol, index] : indexed(classSymbol->Props().Values()))
 								{
-									output->fieldIds.Add(propSymbol, (output->classIds[classSymbol] << 8) + index);
+									output->fieldIds.Add(propSymbol, (vint32_t)((output->classIds[classSymbol] << 8) + index));
 									writer.WriteString(prefix + L"\t" + classSymbol->Name() + L"_" + propSymbol->Name());
 									writer.WriteString(L" = ");
 									writer.WriteString(L"(static_cast<vl::vint32_t>(" + manager.Global().name + L"Classes::" + classSymbol->Name() + L") << 8) + " + itow(index));

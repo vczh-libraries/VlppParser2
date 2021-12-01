@@ -43,7 +43,7 @@ WriteLexerHeaderFile
 					for (auto tokenName : manager.TokenOrder())
 					{
 						auto tokenSymbol = manager.Tokens()[tokenName];
-						output->tokenIds.Add(tokenSymbol, index);
+						output->tokenIds.Add(tokenSymbol, (vint32_t)index);
 						writer.WriteLine(prefix + L"\t" + tokenSymbol->Name() + L" = " + itow(index) + L",");
 						index++;
 					}

@@ -19,6 +19,46 @@ namespace vl
 	{
 		namespace parsergen
 		{
+			namespace compile_syntax
+			{
+				using GlrRuleMap = collections::Dictionary<RuleSymbol*, GlrRule*>;
+				using LiteralTokenMap = collections::Dictionary<GlrLiteralSyntax*, vint32_t>;
+				using RuleReuseDependencies = collections::Group<RuleSymbol*, RuleSymbol*>;
+				using RuleKnownTypes = collections::Group<RuleSymbol*, AstClassSymbol*>;
+				using ClauseReuseDependencies = collections::Group<GlrClause*, RuleSymbol*>;
+				using ClauseTypeMap = collections::Dictionary<GlrClause*, AstClassSymbol*>;
+
+				struct VisitorContext
+				{
+					ParserSymbolManager&		global;
+					AstSymbolManager&			astManager;
+					LexerSymbolManager&			lexerManager;
+					SyntaxSymbolManager&		syntaxManager;
+					Ptr<CppParserGenOutput>		output;
+
+					GlrRuleMap					astRules;
+					LiteralTokenMap				literalTokens;
+					RuleReuseDependencies		ruleReuseDependencies;
+					RuleKnownTypes				ruleKnownTypes;
+					ClauseReuseDependencies		clauseReuseDependencies;
+					ClauseTypeMap				clauseTypes;
+
+					VisitorContext(
+						AstSymbolManager& _astManager,
+						LexerSymbolManager& _lexerManager,
+						SyntaxSymbolManager& _syntaxManager,
+						Ptr<CppParserGenOutput> _output
+					)
+						: global(_syntaxManager.Global())
+						, astManager(_astManager)
+						, lexerManager(_lexerManager)
+						, syntaxManager(_syntaxManager)
+						, output(_output)
+					{
+					}
+				};
+			}
+
 /***********************************************************************
 Compiler
 ***********************************************************************/
