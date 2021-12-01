@@ -86,25 +86,25 @@ ParserSymbolManager
 				ReuseClauseContainsNoUseRule,				// (ruleName)								: A reuse clause contains no use rule therefore the type cannot be determined.
 
 				// SyntaxAst (ValidateTypes) ----------------------------------------------------------
+				FieldNotExistsInClause,						// (ruleName, typeName, fieldName)			: The field does not exist in the type of the clause.
+				RuleTypeMismatchedToField,					// (ruleName, fieldRuleType, fieldName)		: The rule type is not compatible to the assigning field.
+				AssignmentToNonEnumField,					// (ruleName, fieldType, fieldName)			: Assignment can only assign fields in enum types.
+				EnumItemMismatchedToField,					// (ruleName, enumItem, fieldName)			: Try to assign an unexisting or mismatched enum item to a field in an enum type.
+				UseRuleWithPartialRule,						// (ruleName, useRuleName)					: A use rule should not be used on a partial rule.
+				UseRuleInNonReuseClause,					// (ruleName, useRuleName)					: A use rule should only appear in reuse clause.
+				PartialRuleUsedOnField,						// (ruleName, partialRuleName, fieldName)	: A partial rule does not create object, it cannot be assigned to a field.
+				ClauseTypeMismatchedToPartialRule,			// (ruleName, partialRuleName, clauseType)	: A clause uses a partial rule of an incompatible type.
 
 				// SyntaxAst (ValidateStructure) ------------------------------------------------------
-
-				FieldNotExistsInRule,						// (ruleName, typeName, fieldName)
-				RuleTypeMismatchedToField,					// (ruleName, fieldRuleName, fieldName)		: The rule type is not compatible to the assigning field.
-				PartialRuleUsedOnField,						// (ruleName, partialRuleName, fieldName)	: A partial rule does not create object, it cannot be assigned to a field.
-				FieldInAssignmentNotEnum,					// (ruleName, fieldName)					: Assignment can only assign fields in enum types.
-				EnumItemMismatchedToField,					// (ruleName, fieldName, enumItem)			: Try to assign an unexisting or mismatched enum item to a field in an enum type.
 				ClauseNotCreateObject,						// (ruleName)								: A clause is not a create rule, not a partial rule, and not containing use rule.
 				ClauseCouldExpandToEmptySequence,			// (ruleName)
-				UseRuleUsedInOptionalBody,					// (ruleName)
-				UseRuleUsedInLoopBody,						// (ruleName)
+				LoopBodyCouldExpandToEmptySequence,			// (ruleName)
+				UseRuleUsedInOptionalBody,					// (ruleName, useRuleName)
+				UseRuleUsedInLoopBody,						// (ruleName, useRuleName)
 				UseRuleAppearAfterField,					// (ruleName, useRuleName, fieldName)
 				UseRuleAppearAfterPartialRule,				// (ruleName, useRuleName, partialRuleName)
-				TooManyUseRule,								// (ruleName)								: Multiple use rule in a potential sequence in a clause.
-				CreateClauseMixedWithNonPartialUseRule,		// (ruleName)								: A clause with a use rule cannot be a create rule or a partial rule.
-				ClauseTypeMismatchedToPartialRule,			// (ruleName, partialRuleName)				: A clause uses a partial rule of an incompatible type.
+				TooManyUseRule,								// (ruleName, useRule1, useRule2)			: Multiple use rule in a potential sequence in a clause.
 				OptionalBodyCouldExpandToEmptySequence,		// (ruleName)
-				LoopBodyCouldExpandToEmptySequence,			// (ruleName)
 			};
 
 			struct ParserError
