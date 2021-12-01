@@ -95,16 +95,18 @@ ParserSymbolManager
 				PartialRuleUsedOnField,						// (ruleName, clauseType, partialRuleName, fieldName)			: A partial rule does not create object, it cannot be assigned to a field.
 				ClauseTypeMismatchedToPartialRule,			// (ruleName, clauseType, partialRuleName, partialRuleType)		: A clause uses a partial rule of an incompatible type.
 
-				// SyntaxAst (ValidateStructure) ------------------------------------------------------
+				// SyntaxAst (ValidateStructure, counting) --------------------------------------------
 				ClauseNotCreateObject,						// (ruleName)													: A reuse clause does not contain use rule in some potential sequences.
 				UseRuleUsedInOptionalBody,					// (ruleName, useRuleName)
 				UseRuleUsedInLoopBody,						// (ruleName, useRuleName)
 				ClauseTooManyUseRule,						// (ruleName)													: Multiple use rules in a potential sequence in a clause.
-				UseRuleAppearAfterField,					// (ruleName, useRuleName, fieldName)
-				UseRuleAppearAfterPartialRule,				// (ruleName, useRuleName, partialRuleName)
 				ClauseCouldExpandToEmptySequence,			// (ruleName)
 				LoopBodyCouldExpandToEmptySequence,			// (ruleName)
 				OptionalBodyCouldExpandToEmptySequence,		// (ruleName)
+
+				// SyntaxAst (ValidateStructure, relationship) ----------------------------------------
+				UseRuleAppearAfterField,					// (ruleName, useRuleName, fieldName)
+				UseRuleAppearAfterPartialRule,				// (ruleName, useRuleName, partialRuleName)
 				NonArrayFieldAssignedInLoop,				// (ruleName, clauseType, fieldName)
 				FieldAssignedMoreThanOnce,					// (ruleName, clauseType, fieldName)
 				IndirectRecursionInRule,					// (ruleName, firstStepRuleName)

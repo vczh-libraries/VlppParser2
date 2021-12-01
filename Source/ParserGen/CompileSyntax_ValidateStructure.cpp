@@ -10,10 +10,10 @@ namespace vl
 			using namespace compile_syntax;
 
 /***********************************************************************
-ValidateStructureVisitor
+ValidateStructureCountingVisitor
 ***********************************************************************/
 
-			class ValidateStructureVisitor
+			class ValidateStructureCountingVisitor
 				: public Object
 				, public virtual GlrSyntax::IVisitor
 				, public virtual GlrClause::IVisitor
@@ -31,7 +31,7 @@ ValidateStructureVisitor
 				vint						syntaxMaxUseRuleCount = 0;
 
 			public:
-				ValidateStructureVisitor(
+				ValidateStructureCountingVisitor(
 					VisitorContext& _context,
 					RuleSymbol* _ruleSymbol
 				)
@@ -213,6 +213,87 @@ ValidateStructureVisitor
 			};
 
 /***********************************************************************
+ValidateStructureRelationshipVisitor
+***********************************************************************/
+
+			class ValidateStructureRelationshipVisitor
+				: public Object
+				, public virtual GlrSyntax::IVisitor
+				, public virtual GlrClause::IVisitor
+			{
+			protected:
+				VisitorContext&				context;
+				RuleSymbol*					ruleSymbol;
+				GlrClause*					clause = nullptr;
+
+			public:
+				ValidateStructureRelationshipVisitor(
+					VisitorContext& _context,
+					RuleSymbol* _ruleSymbol
+				)
+					: context(_context)
+					, ruleSymbol(_ruleSymbol)
+				{
+				}
+
+				void Visit(GlrRefSyntax* node) override
+				{
+				}
+
+				void Visit(GlrLiteralSyntax* node) override
+				{
+				}
+
+				void Visit(GlrUseSyntax* node) override
+				{
+				}
+
+				void Visit(GlrLoopSyntax* node) override
+				{
+					node->syntax->Accept(this);
+					if (node->delimiter)
+					{
+						node->delimiter->Accept(this);
+					}
+				}
+
+				void Visit(GlrOptionalSyntax* node) override
+				{
+					node->syntax->Accept(this);
+				}
+
+				void Visit(GlrSequenceSyntax* node) override
+				{
+					node->first->Accept(this);
+					node->second->Accept(this);
+				}
+
+				void Visit(GlrAlternativeSyntax* node) override
+				{
+					node->first->Accept(this);
+					node->second->Accept(this);
+				}
+
+				void Visit(GlrCreateClause* node) override
+				{
+					clause = node;
+					node->syntax->Accept(this);
+				}
+
+				void Visit(GlrPartialClause* node) override
+				{
+					clause = node;
+					node->syntax->Accept(this);
+				}
+
+				void Visit(GlrReuseClause* node) override
+				{
+					clause = node;
+					node->syntax->Accept(this);
+				}
+			};
+
+/***********************************************************************
 ValidateStructure
 ***********************************************************************/
 
@@ -223,10 +304,12 @@ ValidateStructure
 					for (auto rule : file->rules)
 					{
 						auto ruleSymbol = context.syntaxManager.Rules()[rule->name.value];
-						ValidateStructureVisitor visitor(context, ruleSymbol);
+						ValidateStructureCountingVisitor visitor1(context, ruleSymbol);
 						for (auto clause : rule->clauses)
 						{
-							clause->Accept(&visitor);
+							ValidateStructureRelationshipVisitor visitor2(context, ruleSymbol);
+							clause->Accept(&visitor1);
+							clause->Accept(&visitor2);
 						}
 					}
 				}
