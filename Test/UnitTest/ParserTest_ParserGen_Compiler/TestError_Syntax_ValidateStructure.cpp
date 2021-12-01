@@ -185,14 +185,6 @@ Exp3
 			);
 	});
 
-	TEST_CASE(L"UseRuleAppearAfterField")
-	{
-	});
-
-	TEST_CASE(L"UseRuleAppearAfterPartialRule")
-	{
-	});
-
 	TEST_CASE(L"ClauseCouldExpandToEmptySequence")
 	{
 		const wchar_t* syntaxCode =
@@ -254,6 +246,14 @@ Exp1
 			syntaxCode,
 			{ ParserErrorType::OptionalBodyCouldExpandToEmptySequence,L"Exp1" }
 			);
+	});
+
+	TEST_CASE(L"UseRuleAppearAfterField")
+	{
+	});
+
+	TEST_CASE(L"UseRuleAppearAfterPartialRule")
+	{
 	});
 
 	TEST_CASE(L"NonArrayFieldAssignedInLoop")
