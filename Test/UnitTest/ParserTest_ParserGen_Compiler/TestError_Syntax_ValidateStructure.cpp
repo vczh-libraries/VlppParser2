@@ -51,6 +51,12 @@ class BinaryExpr : Expr
 	var right : Expr;
 }
 
+class CallExpr : Expr
+{
+	var func : Expr;
+	var args : Expr[];
+}
+
 class Module
 {
 	var export : Expr;
@@ -87,5 +93,178 @@ Exp1
 			syntaxCode,
 			{ ParserErrorType::ClauseNotCreateObject,L"Exp1" }
 			);
+	});
+
+	TEST_CASE(L"UseRuleUsedInOptionalBody")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= NUM:value as NumExpr
+  ;
+Exp1
+  ::= "(" ["+" !Exp0] ")"
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::UseRuleUsedInOptionalBody,L"Exp1",L"Exp0" }
+			);
+	});
+
+	TEST_CASE(L"UseRuleUsedInLoopBody 1")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= NUM:value as NumExpr
+  ;
+Exp1
+  ::= "(" {"+" !Exp0} ")"
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::UseRuleUsedInLoopBody,L"Exp1",L"Exp0" }
+			);
+	});
+
+	TEST_CASE(L"UseRuleUsedInLoopBody 2")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= NUM:value as NumExpr
+  ;
+Exp1
+  ::= "(" {"-"; "+" !Exp0} ")"
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::UseRuleUsedInLoopBody,L"Exp1",L"Exp0" }
+			);
+	});
+
+	TEST_CASE(L"TooManyUseRule")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= NUM:value as NumExpr
+  ;
+Exp1
+  ::= NUM:value as NumExpr
+  ;
+Exp2
+  ::= NUM:value as NumExpr
+  ;
+Exp3
+  ::= (!Exp0 | !Exp1) !Exp2
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::TooManyUseRule,L"Exp3",L"Exp0",L"Exp2" }
+			);
+	});
+
+	TEST_CASE(L"UseRuleAppearAfterField")
+	{
+	});
+
+	TEST_CASE(L"UseRuleAppearAfterPartialRule")
+	{
+	});
+
+	TEST_CASE(L"ClauseCouldExpandToEmptySequence")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= NUM:value as NumExpr
+  ;
+Exp1
+  ::= [Exp0:left] [Exp1:left] as BinaryExpr
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::ClauseCouldExpandToEmptySequence,L"Exp1" }
+			);
+	});
+
+	TEST_CASE(L"LoopBodyCouldExpandToEmptySequence")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= NUM:value as NumExpr
+  ;
+Exp1
+  ::= Exp0:func {[Exp0:args]; [Exp1:args]} as CallExpr
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::LoopBodyCouldExpandToEmptySequence,L"Exp1" }
+			);
+	});
+
+	TEST_CASE(L"OptionalBodyCouldExpandToEmptySequence")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= NUM:value as NumExpr
+  ;
+Exp1
+  ::= Exp0:func [[Exp0:args] [Exp1:args]] as CallExpr
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::OptionalBodyCouldExpandToEmptySequence,L"Exp1" }
+			);
+	});
+
+	TEST_CASE(L"NonArrayFieldAssignedInLoop")
+	{
+	});
+
+	TEST_CASE(L"FieldAssignedMoreThanOnce")
+	{
+	});
+
+	TEST_CASE(L"IndirectionRecursionInRule")
+	{
 	});
 }
