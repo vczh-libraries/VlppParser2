@@ -26,6 +26,9 @@ ValidateStructureVisitor
 				vint						optionalCounter = 0;
 				vint						loopCounter = 0;
 
+				vint						syntaxMinLength = 0;
+				vint						syntaxUseRuleCount = 0;
+
 			public:
 				ValidateStructureVisitor(
 					VisitorContext& _context,
@@ -38,14 +41,17 @@ ValidateStructureVisitor
 
 				void Visit(GlrRefSyntax* node) override
 				{
+					syntaxMinLength = 1;
 				}
 
 				void Visit(GlrLiteralSyntax* node) override
 				{
+					syntaxMinLength = 1;
 				}
 
 				void Visit(GlrUseSyntax* node) override
 				{
+					syntaxMinLength = 1;
 					if (loopCounter > 0)
 					{
 						context.global.AddError(
@@ -66,12 +72,24 @@ ValidateStructureVisitor
 
 				void Visit(GlrLoopSyntax* node) override
 				{
+					vint bodyMinLength = 0;
+					vint delimiterMinLength = 0;
 					loopCounter++;
 					node->syntax->Accept(this);
+					bodyMinLength = syntaxMinLength;
 					if (node->delimiter)
 					{
 						node->delimiter->Accept(this);
+						delimiterMinLength = syntaxMinLength;
 					}
+					if (delimiterMinLength + bodyMinLength == 0)
+					{
+						context.global.AddError(
+							ParserErrorType::LoopBodyCouldExpandToEmptySequence,
+							ruleSymbol->Name()
+							);
+					}
+					syntaxMinLength = 0;
 					loopCounter--;
 				}
 
@@ -79,37 +97,72 @@ ValidateStructureVisitor
 				{
 					optionalCounter++;
 					node->syntax->Accept(this);
+					if (syntaxMinLength == 0)
+					{
+						context.global.AddError(
+							ParserErrorType::OptionalBodyCouldExpandToEmptySequence,
+							ruleSymbol->Name()
+							);
+					}
+					syntaxMinLength = 0;
 					optionalCounter--;
 				}
 
 				void Visit(GlrSequenceSyntax* node) override
 				{
 					node->first->Accept(this);
+					vint firstMinLength = syntaxMinLength;
 					node->second->Accept(this);
+					vint secondMinLength = syntaxMinLength;
+					syntaxMinLength = firstMinLength + secondMinLength;
 				}
 
 				void Visit(GlrAlternativeSyntax* node) override
 				{
 					node->first->Accept(this);
+					vint firstMinLength = syntaxMinLength;
 					node->second->Accept(this);
+					vint secondMinLength = syntaxMinLength;
+					syntaxMinLength = firstMinLength < secondMinLength ? firstMinLength : secondMinLength;
 				}
 
 				void Visit(GlrCreateClause* node) override
 				{
 					clause = node;
 					node->syntax->Accept(this);
+					if (syntaxMinLength == 0)
+					{
+						context.global.AddError(
+							ParserErrorType::ClauseCouldExpandToEmptySequence,
+							ruleSymbol->Name()
+							);
+					}
 				}
 
 				void Visit(GlrPartialClause* node) override
 				{
 					clause = node;
 					node->syntax->Accept(this);
+					if (syntaxMinLength == 0)
+					{
+						context.global.AddError(
+							ParserErrorType::ClauseCouldExpandToEmptySequence,
+							ruleSymbol->Name()
+							);
+					}
 				}
 
 				void Visit(GlrReuseClause* node) override
 				{
 					clause = node;
 					node->syntax->Accept(this);
+					if (syntaxMinLength == 0)
+					{
+						context.global.AddError(
+							ParserErrorType::ClauseCouldExpandToEmptySequence,
+							ruleSymbol->Name()
+							);
+					}
 				}
 			};
 
