@@ -35,6 +35,32 @@ ValidateTypesVisitor
 
 				void Visit(GlrRefSyntax* node) override
 				{
+					if (node->field)
+					{
+						auto clauseType = context.clauseTypes[clause];
+						auto currentType = clauseType;
+						AstClassPropSymbol* prop = nullptr;
+						while (currentType)
+						{
+							vint index = currentType->Props().Keys().IndexOf(node->field.value);
+							if (index != -1)
+							{
+								prop = currentType->Props().Values()[index];
+								break;
+							}
+							currentType = currentType->baseClass;
+						}
+
+						if (!prop)
+						{
+							context.global.AddError(
+								ParserErrorType::FieldNotExistsInClause,
+								ruleSymbol->Name(),
+								clauseType->Name(),
+								node->field.value
+								);
+						}
+					}
 				}
 
 				void Visit(GlrLiteralSyntax* node) override

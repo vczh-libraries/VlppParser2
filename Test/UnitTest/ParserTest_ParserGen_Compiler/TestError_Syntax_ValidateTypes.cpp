@@ -68,7 +68,7 @@ CLOSE:/)
 discard SPACE:/s+
 )LEXER";
 
-	TEST_CASE(L"FieldNotExistsInClause")
+	TEST_CASE(L"FieldNotExistsInClause 1")
 	{
 		const wchar_t* syntaxCode =
 LR"SYNTAX(
@@ -83,6 +83,111 @@ Exp0
 			lexerCode,
 			syntaxCode,
 			{ ParserErrorType::FieldNotExistsInClause,L"Exp0",L"NumExpr",L"unknown" }
+			);
+	});
+
+	TEST_CASE(L"FieldNotExistsInClause 2")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= NUM:unknown as partial NumExpr
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::FieldNotExistsInClause,L"Exp0",L"NumExpr",L"unknown" }
+			);
+	});
+
+	TEST_CASE(L"FieldNotExistsInClause 2")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= "+" as NumExpr
+  ;
+Exp1
+  ::= !Exp0 NUM:unknown
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::FieldNotExistsInClause,L"Exp1",L"NumExpr",L"unknown" }
+			);
+	});
+
+	TEST_CASE(L"FieldNotExistsInClause 4")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= NUM:value as NumExpr
+  ;
+Exp1
+  ::= Exp0:left "+" Exp0:unknown as BinaryExpr
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::FieldNotExistsInClause,L"Exp1",L"BinaryExpr",L"unknown" }
+			);
+	});
+
+	TEST_CASE(L"FieldNotExistsInClause 5")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= NUM:value as NumExpr
+  ;
+Exp1
+  ::= Exp0:left "+" Exp0:unknown as partial BinaryExpr
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::FieldNotExistsInClause,L"Exp1",L"BinaryExpr",L"unknown" }
+			);
+	});
+
+	TEST_CASE(L"FieldNotExistsInClause 6")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= NUM:value as NumExpr
+  ;
+Exp1
+  ::= Exp0:left "+" as BinaryExpr
+  ;
+Exp2
+  ::= !Exp1 Exp0:unknown
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::FieldNotExistsInClause,L"Exp2",L"BinaryExpr",L"unknown" }
 			);
 	});
 }
