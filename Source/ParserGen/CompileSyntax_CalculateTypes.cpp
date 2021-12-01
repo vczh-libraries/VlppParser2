@@ -21,6 +21,7 @@ ValidatePartialRules
 					{
 						List<Ptr<GlrPartialClause>> partialClauses;
 						CopyFrom(partialClauses, From(rule->clauses).FindType<GlrPartialClause>());
+						if (partialClauses.Count() == 0) continue;
 
 						auto ruleSymbol = context.syntaxManager.Rules()[rule->name.value];
 						ruleSymbol->isPartial = partialClauses.Count() > 0;

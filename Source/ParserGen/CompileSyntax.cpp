@@ -42,6 +42,7 @@ CompileSyntax
 						}
 					}
 				}
+				if (syntaxManager.Global().Errors().Count() > 0) return;
 
 				ResolveName(context, files);
 				if (syntaxManager.Global().Errors().Count() > 0) return;
