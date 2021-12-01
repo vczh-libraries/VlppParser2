@@ -82,6 +82,18 @@ ValidateTypesVisitor
 							if (ruleIndex != -1)
 							{
 								auto fieldRule = context.syntaxManager.Rules().Values()[ruleIndex];
+
+								if (fieldRule->isPartial)
+								{
+									context.global.AddError(
+										ParserErrorType::PartialRuleUsedOnField,
+										ruleSymbol->Name(),
+										clauseType->Name(),
+										fieldRule->Name(),
+										node->field.value
+										);
+								}
+
 								if (auto propClassSymbol = dynamic_cast<AstClassSymbol*>(prop->propSymbol))
 								{
 									auto currentType = fieldRule->ruleType;

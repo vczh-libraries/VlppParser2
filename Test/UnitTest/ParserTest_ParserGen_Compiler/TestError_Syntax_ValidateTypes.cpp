@@ -424,4 +424,25 @@ Exp1
 			{ ParserErrorType::UseRuleInNonReuseClause,L"Exp1",L"Exp0" }
 			);
 	});
+
+	TEST_CASE(L"PartialRuleUsedOnField")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= NUM:value as partial NumExpr
+  ;
+Exp1
+  ::= Exp0:left as BinaryExpr
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::PartialRuleUsedOnField,L"Exp1",L"BinaryExpr",L"Exp0",L"left" }
+			);
+	});
 }
