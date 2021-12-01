@@ -113,6 +113,23 @@ ValidateTypesVisitor
 
 				void Visit(GlrUseSyntax* node) override
 				{
+					auto fieldRule = context.syntaxManager.Rules()[node->name.value];
+					if (fieldRule->isPartial)
+					{
+						context.global.AddError(
+							ParserErrorType::UseRuleWithPartialRule,
+							ruleSymbol->Name(),
+							node->name.value
+							);
+					}
+					if (!dynamic_cast<GlrReuseClause*>(clause))
+					{
+						context.global.AddError(
+							ParserErrorType::UseRuleInNonReuseClause,
+							ruleSymbol->Name(),
+							node->name.value
+							);
+					}
 				}
 
 				void Visit(GlrLoopSyntax* node) override

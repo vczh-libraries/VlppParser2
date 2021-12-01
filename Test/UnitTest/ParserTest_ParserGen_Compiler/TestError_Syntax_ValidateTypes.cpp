@@ -361,4 +361,67 @@ Exp0
 			{ ParserErrorType::EnumItemMismatchedToField,L"Exp0",L"BinaryExpr",L"op",L"unknown" }
 			);
 	});
+
+	TEST_CASE(L"UseRuleWithPartialRule")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= NUM:value as partial NumExpr
+  ;
+Exp1
+  ::= !Exp0
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::UseRuleWithPartialRule,L"Exp1",L"Exp0" }
+			);
+	});
+
+	TEST_CASE(L"UseRuleInNonReuseClause 1")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= NUM:value as NumExpr
+  ;
+Exp1
+  ::= !Exp0 as NumExpr
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::UseRuleInNonReuseClause,L"Exp1",L"Exp0" }
+			);
+	});
+
+	TEST_CASE(L"UseRuleInNonReuseClause 2")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= NUM:value as NumExpr
+  ;
+Exp1
+  ::= !Exp0 as partial NumExpr
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::UseRuleInNonReuseClause,L"Exp1",L"Exp0" }
+			);
+	});
 }
