@@ -92,7 +92,7 @@
       3. [ ] Prepare input text files in `Test/Source/*/Input/`.
       4. [ ] Prepare output JSON files in `Test/Source/*/Output/`.
       5. [ ] Use the generated `ParserGen` syntax C++ files to do above work items.
-   8. [ ] Prepare more parser test cases for compile errors, no need to have input/output/codegen
+   8. [x] Prepare more parser test cases for compile errors, no need to have input/output/codegen
    9. [ ] Generate JSON parser
    10. [ ] Generate XML parser
 5. [x] `ParserTest_ParserGen_Generated`
@@ -110,6 +110,7 @@
 
 ## Work Items
 
+- `RuleParser` not stably generated from `ParserTest_LexerAndParser`
 - `JsonEscapeString` `JsonUnescapeString` handle surrogate pairs correctly.
 - Switching lexical analyzer during parsing.
   - Refactor some properties in `LexerSymbolManager` into `LexerFile` with a name.

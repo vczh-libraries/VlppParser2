@@ -1,14 +1,12 @@
 #include "../../../Source/Syntax/SyntaxCppGen.h"
+#include "../../../Source/ParserGen_Generated/ParserGen_Assembler.h"
 #include "../../../Source/ParserGen_Generated/ParserGen_Lexer.h"
+#include "../../Source/LogAutomaton.h"
 
-using namespace vl;
-using namespace vl::collections;
-using namespace vl::stream;
-using namespace vl::filesystem;
 using namespace vl::glr::parsergen;
-using namespace vl::glr::automaton;
 
 extern WString GetParserGenGeneratedOutputPath();
+extern FilePath GetOutputDir(const WString& parserName);
 extern void WriteFilesIfChanged(FilePath outputDir, Dictionary<WString, WString>& files);
 
 TEST_FILE
@@ -35,6 +33,19 @@ TEST_FILE
 			typeSyntaxManager.BuildCrossReferencedNFA();
 			TEST_ASSERT(global.Errors().Count() == 0);
 			typeSyntaxManager.BuildAutomaton(ParserGenTokenCount, typeExecutable, typeMetadata);
+
+			LogAutomatonWithPath(
+				GetOutputDir(L"ParserGen") / L"Automaton[ParserGen_TypeParser].txt",
+				typeExecutable,
+				typeMetadata,
+				[](vint32_t type) { return WString::Unmanaged(ParserGenTypeName((ParserGenClasses)type)); },
+				[](vint32_t field) { return WString::Unmanaged(ParserGenFieldName((ParserGenFields)field)); },
+				[](vint32_t token)
+				{
+					auto n = ParserGenTokenId((ParserGenTokens)token);
+					auto d = ParserGenTokenDisplayText((ParserGenTokens)token);
+					return d ? L"\"" + WString::Unmanaged(d) + L"\"" : WString::Unmanaged(n);
+				});
 		}
 		{
 			ruleSyntaxManager.BuildCompactNFA();
@@ -42,6 +53,19 @@ TEST_FILE
 			ruleSyntaxManager.BuildCrossReferencedNFA();
 			TEST_ASSERT(global.Errors().Count() == 0);
 			ruleSyntaxManager.BuildAutomaton(ParserGenTokenCount, ruleExecutable, ruleMetadata);
+
+			LogAutomatonWithPath(
+				GetOutputDir(L"ParserGen") / L"Automaton[ParserGen_RuleParser].txt",
+				ruleExecutable,
+				ruleMetadata,
+				[](vint32_t type) { return WString::Unmanaged(ParserGenTypeName((ParserGenClasses)type)); },
+				[](vint32_t field) { return WString::Unmanaged(ParserGenFieldName((ParserGenFields)field)); },
+				[](vint32_t token)
+				{
+					auto n = ParserGenTokenId((ParserGenTokens)token);
+					auto d = ParserGenTokenDisplayText((ParserGenTokens)token);
+					return d ? L"\"" + WString::Unmanaged(d) + L"\"" : WString::Unmanaged(n);
+				});
 		}
 		auto output = GenerateParserFileNames(global);
 		GenerateSyntaxFileNames(typeSyntaxManager, output);
