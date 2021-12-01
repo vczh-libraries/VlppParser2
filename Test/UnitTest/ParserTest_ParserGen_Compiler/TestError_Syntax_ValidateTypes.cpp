@@ -191,6 +191,24 @@ Exp2
 			);
 	});
 
+	TEST_CASE(L"FieldNotExistsInClause 6")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= "+" as NumExpr {unknown = Add}
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::FieldNotExistsInClause,L"Exp0",L"NumExpr",L"unknown" }
+			);
+	});
+
 	TEST_CASE(L"RuleTypeMismatchedToField 1")
 	{
 		const wchar_t* syntaxCode =
@@ -208,7 +226,7 @@ Exp0
 			astCode,
 			lexerCode,
 			syntaxCode,
-			{ ParserErrorType::RuleTypeMismatchedToField,L"Exp0",L"Module",L"value" }
+			{ ParserErrorType::RuleTypeMismatchedToField,L"Exp0",L"NumExpr",L"value",L"Module" }
 			);
 	});
 
@@ -229,7 +247,7 @@ Exp0
 			astCode,
 			lexerCode,
 			syntaxCode,
-			{ ParserErrorType::RuleTypeMismatchedToField,L"Exp0",L"Module",L"left" }
+			{ ParserErrorType::RuleTypeMismatchedToField,L"Exp0",L"BinaryExpr",L"left",L"Module" }
 			);
 	});
 
@@ -250,7 +268,7 @@ Exp0
 			astCode,
 			lexerCode,
 			syntaxCode,
-			{ ParserErrorType::RuleTypeMismatchedToField,L"Exp0",L"Module",L"op" }
+			{ ParserErrorType::RuleTypeMismatchedToField,L"Exp0",L"BinaryExpr",L"op",L"Module" }
 			);
 	});
 
@@ -268,7 +286,7 @@ Exp0
 			astCode,
 			lexerCode,
 			syntaxCode,
-			{ ParserErrorType::RuleTypeMismatchedToField,L"Exp0",L"token",L"left" }
+			{ ParserErrorType::RuleTypeMismatchedToField,L"Exp0",L"BinaryExpr",L"left",L"token" }
 			);
 	});
 
@@ -286,7 +304,61 @@ Exp0
 			astCode,
 			lexerCode,
 			syntaxCode,
-			{ ParserErrorType::RuleTypeMismatchedToField,L"Exp0",L"token",L"op" }
+			{ ParserErrorType::RuleTypeMismatchedToField,L"Exp0",L"BinaryExpr",L"op",L"token" }
+			);
+	});
+
+	TEST_CASE(L"AssignmentToNonEnumField 1")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= "+" as NumExpr {value = Add}
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::AssignmentToNonEnumField,L"Exp0",L"NumExpr",L"value" }
+			);
+	});
+
+	TEST_CASE(L"AssignmentToNonEnumField 2")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= "+" as BinaryExpr {left = Add}
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::AssignmentToNonEnumField,L"Exp0",L"BinaryExpr",L"left" }
+			);
+	});
+
+	TEST_CASE(L"EnumItemMismatchedToField")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= "+" as BinaryExpr {op = unknown}
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::EnumItemMismatchedToField,L"Exp0",L"BinaryExpr",L"op",L"unknown" }
 			);
 	});
 }

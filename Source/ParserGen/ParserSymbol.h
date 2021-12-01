@@ -70,7 +70,7 @@ ParserSymbolManager
 
 				// SyntaxSymbolManager ----------------------------------------------------------------
 				DuplicatedRule,								// (ruleName)
-				RuleIsIndirectlyLeftRecursive,				// (ruleName)								: Indirect left recursion must be resolved before.
+				RuleIsIndirectlyLeftRecursive,				// (ruleName)													: Indirect left recursion must be resolved before.
 
 				// SyntaxAst (ResolveName) ------------------------------------------------------------
 				RuleNameConflictedWithToken,				// (ruleName)
@@ -81,29 +81,29 @@ ParserSymbolManager
 				// SyntaxAst (CalculateTypes) ---------------------------------------------------------
 				RuleMixedPartialClauseWithOtherClause,		// (ruleName)
 				RuleWithDifferentPartialTypes,				// (ruleName)
-				RuleCannotResolveToDeterministicType,		// (ruleName)								: Unable to resolve to one type from clauses (token, type) or (create, partial).
-				ReuseClauseCannotResolveToDeterministicType,// (ruleName)								: A reuse clause contains multiple use rule but their types are not compatible to each other.
-				ReuseClauseContainsNoUseRule,				// (ruleName)								: A reuse clause contains no use rule therefore the type cannot be determined.
+				RuleCannotResolveToDeterministicType,		// (ruleName)													: Unable to resolve to one type from clauses (token, type) or (create, partial).
+				ReuseClauseCannotResolveToDeterministicType,// (ruleName)													: A reuse clause contains multiple use rule but their types are not compatible to each other.
+				ReuseClauseContainsNoUseRule,				// (ruleName)													: A reuse clause contains no use rule therefore the type cannot be determined.
 
 				// SyntaxAst (ValidateTypes) ----------------------------------------------------------
-				FieldNotExistsInClause,						// (ruleName, typeName, fieldName)			: The field does not exist in the type of the clause.
-				RuleTypeMismatchedToField,					// (ruleName, fieldRuleType, fieldName)		: The rule type is not compatible to the assigning field.
-				AssignmentToNonEnumField,					// (ruleName, fieldType, fieldName)			: Assignment can only assign fields in enum types.
-				EnumItemMismatchedToField,					// (ruleName, enumItem, fieldName)			: Try to assign an unexisting or mismatched enum item to a field in an enum type.
-				UseRuleWithPartialRule,						// (ruleName, useRuleName)					: A use rule should not be used on a partial rule.
-				UseRuleInNonReuseClause,					// (ruleName, useRuleName)					: A use rule should only appear in reuse clause.
-				PartialRuleUsedOnField,						// (ruleName, partialRuleName, fieldName)	: A partial rule does not create object, it cannot be assigned to a field.
-				ClauseTypeMismatchedToPartialRule,			// (ruleName, partialRuleName, clauseType)	: A clause uses a partial rule of an incompatible type.
+				FieldNotExistsInClause,						// (ruleName, clauseType, fieldName)							: The field does not exist in the type of the clause.
+				RuleTypeMismatchedToField,					// (ruleName, clauseType, fieldName, fieldRuleType)				: The rule type is not compatible to the assigning field.
+				AssignmentToNonEnumField,					// (ruleName, clauseType, fieldName)							: Assignment can only assign fields in enum types.
+				EnumItemMismatchedToField,					// (ruleName, clauseType, fieldName, enumItem)					: Try to assign an unexisting or mismatched enum item to a field in an enum type.
+				UseRuleWithPartialRule,						// (ruleName, useRuleName)										: A use rule should not be used with a partial rule.
+				UseRuleInNonReuseClause,					// (ruleName, useRuleName)										: A use rule should only appear in reuse clause.
+				PartialRuleUsedOnField,						// (ruleName, clauseType, partialRuleName, fieldName)			: A partial rule does not create object, it cannot be assigned to a field.
+				ClauseTypeMismatchedToPartialRule,			// (ruleName, clauseType, partialRuleName, partialRuleType)		: A clause uses a partial rule of an incompatible type.
 
 				// SyntaxAst (ValidateStructure) ------------------------------------------------------
-				ClauseNotCreateObject,						// (ruleName)								: A clause is not a create rule, not a partial rule, and not containing use rule.
+				ClauseNotCreateObject,						// (ruleName)													: A clause is not a create rule, not a partial rule, and not containing use rule.
 				ClauseCouldExpandToEmptySequence,			// (ruleName)
 				LoopBodyCouldExpandToEmptySequence,			// (ruleName)
 				UseRuleUsedInOptionalBody,					// (ruleName, useRuleName)
 				UseRuleUsedInLoopBody,						// (ruleName, useRuleName)
 				UseRuleAppearAfterField,					// (ruleName, useRuleName, fieldName)
 				UseRuleAppearAfterPartialRule,				// (ruleName, useRuleName, partialRuleName)
-				TooManyUseRule,								// (ruleName, useRule1, useRule2)			: Multiple use rule in a potential sequence in a clause.
+				TooManyUseRule,								// (ruleName, useRule1, useRule2)								: Multiple use rule in a potential sequence in a clause.
 				OptionalBodyCouldExpandToEmptySequence,		// (ruleName)
 			};
 
@@ -113,6 +113,7 @@ ParserSymbolManager
 				WString						arg1;
 				WString						arg2;
 				WString						arg3;
+				WString						arg4;
 			};
 
 			class ParserSymbolManager : public Object
@@ -137,7 +138,7 @@ ParserSymbolManager
 					error.type = type;
 
 					WString sargs[] = { WString(args)... };
-					WString* dargs[] = { &error.arg1,&error.arg2,&error.arg3 };
+					WString* dargs[] = { &error.arg1,&error.arg2,&error.arg3,&error.arg4 };
 					constexpr vint sl = sizeof(sargs) / sizeof(*sargs);
 					constexpr vint dl = sizeof(dargs) / sizeof(*dargs);
 					constexpr vint ml = sl < dl ? sl : dl;

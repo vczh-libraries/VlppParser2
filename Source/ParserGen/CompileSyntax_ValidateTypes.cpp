@@ -33,34 +33,36 @@ ValidateTypesVisitor
 				{
 				}
 
+				AstClassPropSymbol* FindField(AstClassSymbol*& clauseType, const WString& name)
+				{
+					clauseType = context.clauseTypes[clause];
+					auto currentType = clauseType;
+					AstClassPropSymbol* prop = nullptr;
+					while (currentType)
+					{
+						vint index = currentType->Props().Keys().IndexOf(name);
+						if (index != -1)
+						{
+							return currentType->Props().Values()[index];
+						}
+						currentType = currentType->baseClass;
+					}
+
+					context.global.AddError(
+						ParserErrorType::FieldNotExistsInClause,
+						ruleSymbol->Name(),
+						clauseType->Name(),
+						name
+						);
+					return nullptr;
+				}
+
 				void Visit(GlrRefSyntax* node) override
 				{
 					if (node->field)
 					{
-						auto clauseType = context.clauseTypes[clause];
-						auto currentType = clauseType;
-						AstClassPropSymbol* prop = nullptr;
-						while (currentType)
-						{
-							vint index = currentType->Props().Keys().IndexOf(node->field.value);
-							if (index != -1)
-							{
-								prop = currentType->Props().Values()[index];
-								break;
-							}
-							currentType = currentType->baseClass;
-						}
-
-						if (!prop)
-						{
-							context.global.AddError(
-								ParserErrorType::FieldNotExistsInClause,
-								ruleSymbol->Name(),
-								clauseType->Name(),
-								node->field.value
-								);
-						}
-						else
+						AstClassSymbol* clauseType = nullptr;
+						if (auto prop = FindField(clauseType, node->field.value))
 						{
 							vint tokenIndex = context.lexerManager.TokenOrder().IndexOf(node->name.value);
 							vint ruleIndex = context.syntaxManager.Rules().Keys().IndexOf(node->name.value);
@@ -71,8 +73,9 @@ ValidateTypesVisitor
 									context.global.AddError(
 										ParserErrorType::RuleTypeMismatchedToField,
 										ruleSymbol->Name(),
-										L"token",
-										node->field.value
+										clauseType->Name(),
+										node->field.value,
+										L"token"
 										);
 								}
 							}
@@ -81,7 +84,7 @@ ValidateTypesVisitor
 								auto fieldRule = context.syntaxManager.Rules().Values()[ruleIndex];
 								if (auto propClassSymbol = dynamic_cast<AstClassSymbol*>(prop->propSymbol))
 								{
-									currentType = fieldRule->ruleType;
+									auto currentType = fieldRule->ruleType;
 									while (currentType)
 									{
 										if (currentType == propClassSymbol)
@@ -94,8 +97,9 @@ ValidateTypesVisitor
 								context.global.AddError(
 									ParserErrorType::RuleTypeMismatchedToField,
 									ruleSymbol->Name(),
-									fieldRule->ruleType->Name(),
-									node->field.value
+									clauseType->Name(),
+									node->field.value,
+									fieldRule->ruleType->Name()
 									);
 							PASS_FIELD_TYPE:;
 							}
@@ -137,22 +141,64 @@ ValidateTypesVisitor
 					node->second->Accept(this);
 				}
 
+				void Visit(GlrAssignment* node)
+				{
+					AstClassSymbol* clauseType = nullptr;
+					if (auto prop = FindField(clauseType, node->field.value))
+					{
+						if (auto enumPropSymbol = dynamic_cast<AstEnumSymbol*>(prop->propSymbol))
+						{
+							if (!enumPropSymbol->Items().Keys().Contains(node->value.value))
+							{
+								context.global.AddError(
+									ParserErrorType::EnumItemMismatchedToField,
+									ruleSymbol->Name(),
+									clauseType->Name(),
+									node->field.value,
+									node->value.value
+									);
+							}
+						}
+						else
+						{
+							context.global.AddError(
+								ParserErrorType::AssignmentToNonEnumField,
+								ruleSymbol->Name(),
+								clauseType->Name(),
+								node->field.value
+								);
+						}
+					}
+				}
+
 				void Visit(GlrCreateClause* node) override
 				{
 					clause = node;
 					node->syntax->Accept(this);
+					for (auto assignment : node->assignments)
+					{
+						Visit(assignment.Obj());
+					}
 				}
 
 				void Visit(GlrPartialClause* node) override
 				{
 					clause = node;
 					node->syntax->Accept(this);
+					for (auto assignment : node->assignments)
+					{
+						Visit(assignment.Obj());
+					}
 				}
 
 				void Visit(GlrReuseClause* node) override
 				{
 					clause = node;
 					node->syntax->Accept(this);
+					for (auto assignment : node->assignments)
+					{
+						Visit(assignment.Obj());
+					}
 				}
 			};
 

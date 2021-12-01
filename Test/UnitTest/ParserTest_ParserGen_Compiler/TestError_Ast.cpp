@@ -13,6 +13,7 @@ void AssertError(ParserSymbolManager& global, ParserError expectedError)
 	TEST_ASSERT(error.arg1 == expectedError.arg1);
 	TEST_ASSERT(error.arg2 == expectedError.arg2);
 	TEST_ASSERT(error.arg3 == expectedError.arg3);
+	TEST_ASSERT(error.arg4 == expectedError.arg4);
 }
 
 namespace TestError_Ast_TestObjects
