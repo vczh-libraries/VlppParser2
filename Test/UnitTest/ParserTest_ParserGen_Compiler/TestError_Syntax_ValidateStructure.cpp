@@ -203,6 +203,27 @@ Exp0
 			);
 	});
 
+	TEST_CASE(L"NonLoopablePartialRuleUsedInLoop")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= NUM:value as partial NumExpr
+  ;
+Exp1
+  ::= {Exp0} Exp0 as NumExpr
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::NonLoopablePartialRuleUsedInLoop,L"Exp1",L"NumExpr",L"Exp0" }
+			);
+	});
+
 	TEST_CASE(L"ClauseCouldExpandToEmptySequence")
 	{
 		const wchar_t* syntaxCode =

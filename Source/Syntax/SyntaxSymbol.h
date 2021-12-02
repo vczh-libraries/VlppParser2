@@ -115,6 +115,7 @@ RuleSymbol
 			public:
 				StateList					startStates;
 				bool						isPartial = false;
+				bool						assignedNonArrayField = false;
 				AstClassSymbol*				ruleType = nullptr;
 
 				SyntaxSymbolManager*		Owner() { return ownerManager; }

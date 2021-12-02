@@ -101,6 +101,7 @@ ParserSymbolManager
 				UseRuleUsedInLoopBody,						// (ruleName, useRuleName)
 				ClauseTooManyUseRule,						// (ruleName)													: Multiple use rules in a potential sequence in a clause.
 				NonArrayFieldAssignedInLoop,				// (ruleName, clauseType, fieldName)
+				NonLoopablePartialRuleUsedInLoop,			// (ruleName, clauseType, partialRuleName)
 				ClauseCouldExpandToEmptySequence,			// (ruleName)
 				LoopBodyCouldExpandToEmptySequence,			// (ruleName)
 				OptionalBodyCouldExpandToEmptySequence,		// (ruleName)
