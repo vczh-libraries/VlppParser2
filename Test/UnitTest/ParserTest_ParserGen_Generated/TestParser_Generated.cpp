@@ -16,7 +16,7 @@ namespace TestParser_Generated_TestObjects
 		{
 			Folder dirInput = FilePath(GetTestParserInputPath(parserName)) / L"Input";
 			FilePath dirBaseline = FilePath(GetTestParserInputPath(parserName)) / L"Output";
-			FilePath dirOutput = GetOutputDir(parserName);
+			FilePath dirOutput = GetOutputDir(L"Generated-" + parserName);
 
 			List<File> inputFiles;
 			dirInput.GetFiles(inputFiles);
@@ -30,7 +30,11 @@ namespace TestParser_Generated_TestObjects
 					auto input = inputFile.ReadAllTextByBom();
 					auto ast = parser.ParseModule(input);
 					auto actualJson = PrintAstJson<TJsonVisitor>(ast);
-					auto expectedJson = File(dirBaseline / (caseName + L".json")).ReadAllTextByBom();
+					File(dirOutput / (L"Output[" + caseName + L"].json")).WriteAllText(actualJson, true, BomEncoder::Utf8);
+
+					auto expectedJsonFile = File(dirBaseline / (caseName + L".json"));
+					if (!expectedJsonFile.Exists()) return;
+					auto expectedJson = expectedJsonFile.ReadAllTextByBom();
 					AssertLines(expectedJson, actualJson);
 				});
 			}

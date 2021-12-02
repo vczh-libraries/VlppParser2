@@ -49,7 +49,7 @@ TEST_FILE
 				auto input = File(dirParser / L"Syntax/Ast.txt").ReadAllTextByBom();
 				astFile = typeParser.ParseFile(input);
 				auto actualJson = PrintAstJson<json_visitor::TypeAstVisitor>(astFile);
-				File(dirOutput / (L"Ast[" + parserName + L"].txt")).WriteAllText(actualJson, BomEncoder::Utf8);
+				File(dirOutput / (L"Ast[" + parserName + L"].txt")).WriteAllText(actualJson, true, BomEncoder::Utf8);
 			});
 
 			TEST_CASE(L"Parse Syntax.txt")
@@ -57,7 +57,7 @@ TEST_FILE
 				auto input = File(dirParser / L"Syntax/Syntax.txt").ReadAllTextByBom();
 				syntaxFile = ruleParser.ParseFile(input);
 				auto actualJson = PrintAstJson<json_visitor::RuleAstVisitor>(syntaxFile);
-				File(dirOutput / (L"Syntax[" + parserName + L"].txt")).WriteAllText(actualJson, BomEncoder::Utf8);
+				File(dirOutput / (L"Syntax[" + parserName + L"].txt")).WriteAllText(actualJson, true, BomEncoder::Utf8);
 			});
 
 			ParserSymbolManager global;
