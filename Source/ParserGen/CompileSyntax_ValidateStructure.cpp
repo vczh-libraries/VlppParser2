@@ -450,6 +450,7 @@ ValidateStructureRelationshipVisitor
 						{
 							counters.Set(c->ref, counters.Values()[index] + 1);
 						}
+						c = c->next;
 					}
 
 					auto clauseType = context.clauseTypes[clause];
