@@ -1,6 +1,6 @@
 #include "../../Source/Calculator/Generated/CalculatorExprAst_Json.h"
 #include "../../Source/Calculator/Generated/CalculatorModuleParser.h"
-#include "../../Source/LogAutomaton.h"
+#include "../../Source/LogTrace.h"
 
 extern WString GetTestParserInputPath(const WString& parserName);
 extern FilePath GetOutputDir(const WString& parserName);

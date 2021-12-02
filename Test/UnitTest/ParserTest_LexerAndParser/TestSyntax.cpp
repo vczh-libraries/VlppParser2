@@ -64,8 +64,6 @@ namespace TestSyntax_TestObjects
 		LogTrace(
 			L"Calculator",
 			caseName,
-			executable,
-			metadata,
 			tm,
 			rootTrace,
 			tokens,
