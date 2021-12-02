@@ -22,7 +22,7 @@
     - [ ] All `token` property `X` becomes `X_`, paired with a string property `X` to access the text value in `X_`.
 - [x] Standalone lexical analyzer definition files.
 - [x] Standalone syntax analyzer definition files.
-  - [x] Multiple syntax files are combined together before creating `SyntaxSymbolManager`.
+  - [ ] One parser creates one `SyntaxSymbolManager`, could include multiple syntax files.
 - [x] All names of AST must be unique globally.
 - [x] All names of token and rule must be unique.
 - [x] Unique field id will be generated for each fields in each AST node.
@@ -43,74 +43,36 @@
 
 ## Development
 
-1. [x] `ParserTest_AstGen`.
-   1. [x] Symbol table for AST.
-   2. [x] Manually create a symbol table for the AST for `ParserGen`.
-   3. [x] Symbol table -> C++ code.
-   4. [x] Generate `ParserGen` AST C++ files in this unit test project.
-      1. [x] AST for `ParserGen::TypeAst`.
-      2. [x] AST for `ParserGen::RuleAst`.
-      3. [x] Ast for `Calculator`
-      4. [x] Visitors
-      5. [x] Assembler
-2. [x] `ParserTest_AstParserGen`.
-   1. [x] Define instructions.
-   2. [x] Test instructions.
-   3. [ ] Test copy visitors.
-   4. [ ] Test traverse visitors.
-   5. [x] Test json visitors.
-   6. [x] Generate `ParserGen` Lexer C++ files in this unit test project.
-      1. [x] Lexer for `ParserGen`.
-      2. [x] Lexer for `Calculator`.
-3. [x] `ParserTest_LexerAndParser`.
-   1. [x] Test generated lexer for `Calculator`.
-   2. [x] Manually create parser symbols for `Calculator`.
-      1. [x] `SyntaxSymbolManager` accepts epsilon-NFA state machines.
-      2. [x] Syntax writer for `SyntaxSymbolManager`, it allows us to write state machines like EBNF, for testing purpose only.
-      3. [x] Create `Calculator` state machines using the writer.
-      4. [x] Process the state machines and generate parser-ready data structures from `SyntaxSymbolManager` with AST structure data input.
-   3. [x] Test the parser.
-      1. [x] Test and assert `export 1`.
-      2. [x] Prepare input text files in `Test/Source/Calculator/Input/`.
-      3. [x] Prepare output JSON files in `Test/Source/Calculator/Output/`.
-      4. [x] Run the generated `Executable` from `SyntaxSymbolManager`.
-      5. [ ] Check `codeRange` of all nodes. (use the previous/current token(calculate codeRange) v.s. before/after rule deduction (move instructions to different places))
-   4. [x] Generate `ParserGen` Syntax C++ files in this unit test project.
-      1. [x] Syntax for `ParserGen::TypeSyntax`.
-      2. [x] Syntax for `ParserGen::RuleSyntax`.
-      3. [x] Syntax for `Calculator`.
-4. [x] `ParserTest_ParserGen_Compiler`
-   1. [x] Initialize `AstSymbolManager` from `ParserGen::TypeAst`.
-   2. [x] Initialize `SyntaxSymbolManager` from `ParserGen::SyntaxAst`.
-   3. [x] Test generated `Calculator` syntax C++ files again.
-   4. [x] Test generated `ParserGen` syntax C++ files to parse `Test/Source/Calculator/Syntax/Ast.txt`.
-   5. [x] Test generated `ParserGen` syntax C++ files to parse `Test/Source/Calculator/Syntax/Syntax.txt`.
-   6. [x] Generate the whole `Calculator` C++ files in `Test/Source/Calculator/Parser2` again.
-   7. [ ] Prepare more parser test cases for `+loop`, `-loop`, `loop`, `+opt`, `-opt`, `opt`, left recursion, indirect left recursion, ...
+1. [x] `ParserTest_ParserGen_Compiler`
+   1. [ ] Prepare more parser test cases for advanced features (proprities, ambiguity) ...
       1. [ ] Multiple parser syntax under `Test/Source/*/Syntax/`.
       2. [ ] Generate C++ files from them in `Test/Source/*/Parser/`.
       3. [ ] Prepare input text files in `Test/Source/*/Input/`.
       4. [ ] Prepare output JSON files in `Test/Source/*/Output/`.
       5. [ ] Use the generated `ParserGen` syntax C++ files to do above work items.
-   8. [x] Prepare more parser test cases for compile errors, no need to have input/output/codegen
-   9. [ ] Generate JSON parser
-   10. [ ] Generate XML parser
-5. [x] `ParserTest_ParserGen_Generated`
+   2. [ ] Generate JSON parser
+   3. [ ] Generate XML parser
+1. [x] `ParserTest_ParserGen_Generated`
    1. [x] Prepare more parser test cases (including `Calculator/Generated`).
    2. [ ] Run all parsers.
    3. [ ] Test JSON parser.
    4. [ ] Test XML parser.
-6. [ ] Port `CodePack` and `ParserGen` to `VlppParser2`, do not write to an existing file if the content is not changed.
+3. [ ] Port `CodePack` and `ParserGen` to `VlppParser2`, do not write to an existing file if the content is not changed.
    1. [ ] Create a new repo `BuildTools` and adapt the release license instead of the development license.
 
-## Work Items (before `ParserTest_ParserGen_Compiler`)
+## Work Items (issues)
 
 - `EndObject` after `ReopenObject` doesn't update `ParsingAstBase::codeRange::start`.
-- Optimize `CrossReferencedNFA` to merge prefix (two states can be merged if their `InEdges` are identical, `FromState` in `InEdges` are replaced by merged states)
-
-## Work Items
-
+- Optimize `CrossReferencedNFA` to merge prefix (two states can be merged if their `InEdges` are identical, `FromState` in `InEdges` are replaced by merged states).
 - `JsonEscapeString` `JsonUnescapeString` handle surrogate pairs correctly.
+- `ParserTest_AstParserGen`
+  - Test Copy Visitors
+  - Test Traverse Visitors
+- `ParserTest_LexerAndParser`
+  - Check `codeRange` of all nodes. (use the previous/current token(calculate codeRange) v.s. before/after rule deduction (move instructions to different places))
+
+## Work Items (enhancement)
+
 - Switching lexical analyzer during parsing.
   - Refactor some properties in `LexerSymbolManager` into `LexerFile` with a name.
 - AST uses classes from another AST file in dependency as fields.
@@ -126,3 +88,4 @@
   - Support localization.
 - Error recovering.
 - Extensible tokens, for example, recognize `R"[^\s(]\(` and invoke a callback function to determine the end of the string.
+  - Offer two options: using (rich regex | C++) to search for complete token.
