@@ -7,8 +7,21 @@ extern FilePath GetOutputDir(const WString& parserName);
 
 namespace TestParser_Generated_TestObjects
 {
-	template<typename TParser, typename TJsonVisitor>
-	void TestParser(const WString& parserName)
+	template<
+		typename TParser,
+		typename TJsonVisitor,
+		typename TStates,
+		typename TClasses,
+		typename TFields,
+		typename TTokens
+		>
+	void TestParser(
+		const WString& parserName,
+		TStates startState,
+		const wchar_t* (*typeName)(TClasses),
+		const wchar_t* (*fieldName)(TFields),
+		const wchar_t* (*tokenId)(TTokens)
+		)
 	{
 		TParser parser;
 
@@ -28,6 +41,18 @@ namespace TestParser_Generated_TestObjects
 				TEST_CASE(caseName)
 				{
 					auto input = inputFile.ReadAllTextByBom();
+					
+					LogTrace(
+						L"Generated-" + parserName,
+						caseName,
+						[=](vint32_t type) { return WString::Unmanaged(typeName((TClasses)type)); },
+						[=](vint32_t field) { return WString::Unmanaged(fieldName((TFields)field)); },
+						[=](vint32_t token) { return WString::Unmanaged(tokenId((TTokens)token)); },
+						[&](IAstInsReceiver& receiver)
+						{
+							parser.ParseWithReceiver(input, startState, receiver, -1);
+						});
+
 					auto ast = parser.ParseModule(input);
 					auto actualJson = PrintAstJson<TJsonVisitor>(ast);
 					File(dirOutput / (L"Output[" + caseName + L"].json")).WriteAllText(actualJson, true, BomEncoder::Utf8);
@@ -45,5 +70,11 @@ using namespace TestParser_Generated_TestObjects;
 
 TEST_FILE
 {
-	TestParser<calculator::ModuleParser, calculator::json_visitor::ExprAstVisitor>(L"Calculator");
+	TestParser<calculator::ModuleParser, calculator::json_visitor::ExprAstVisitor>(
+		L"Calculator",
+		calculator::ModuleParserStates::Module,
+		&calculator::CalculatorTypeName,
+		&calculator::CalculatorFieldName,
+		&calculator::CalculatorTokenId
+		);
 }

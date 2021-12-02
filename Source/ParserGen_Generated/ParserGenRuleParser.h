@@ -33,7 +33,7 @@ namespace vl
 
 			extern void ParserGenRuleParserData(vl::stream::IStream& outputStream);
 
-			class RuleParser: vl::glr::ParserBase<ParserGenTokens, RuleParserStates, ParserGenAstInsReceiver, RuleParserStateTypes>
+			class RuleParser: public vl::glr::ParserBase<ParserGenTokens, RuleParserStates, ParserGenAstInsReceiver, RuleParserStateTypes>
 			{
 			public:
 				RuleParser();

@@ -32,7 +32,7 @@ namespace calculator
 
 	extern void CalculatorModuleParserData(vl::stream::IStream& outputStream);
 
-	class ModuleParser: vl::glr::ParserBase<CalculatorTokens, ModuleParserStates, CalculatorAstInsReceiver, ModuleParserStateTypes>
+	class ModuleParser: public vl::glr::ParserBase<CalculatorTokens, ModuleParserStates, CalculatorAstInsReceiver, ModuleParserStateTypes>
 	{
 	public:
 		ModuleParser();

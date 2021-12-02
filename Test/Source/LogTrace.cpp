@@ -108,6 +108,26 @@ public:
 FilePath LogTrace(
 	const WString& parserName,
 	const WString& caseName,
+	const Func<WString(vint32_t)>& typeName,
+	const Func<WString(vint32_t)>& fieldName,
+	const Func<WString(vint32_t)>& tokenName,
+	const Func<void(IAstInsReceiver&)>& callback
+)
+{
+	auto outputDir = GetOutputDir(parserName);
+	auto outputFile = outputDir / (L"Instructions[" + caseName + L"].txt");
+	auto content = GenerateToStream([&](StreamWriter& writer)
+	{
+		LogTraceInsReceiver receiver(typeName, fieldName, tokenName, writer);
+		callback(receiver);
+	});
+	File(outputFile).WriteAllText(content, true, BomEncoder::Utf8);
+	return outputFile;
+}
+
+FilePath LogTrace(
+	const WString& parserName,
+	const WString& caseName,
 	TraceManager& tm,
 	Trace* trace,
 	List<RegexToken>& tokens,
@@ -116,13 +136,8 @@ FilePath LogTrace(
 	const Func<WString(vint32_t)>& tokenName
 )
 {
-	auto outputDir = GetOutputDir(parserName);
-	auto outputFile = outputDir / (L"Instructions[" + caseName + L"].txt");
-	FileStream fileStream(outputFile.GetFullPath(), FileStream::WriteOnly);
-	BomEncoder encoder(BomEncoder::Utf8);
-	EncoderStream encoderStream(fileStream, encoder);
-	StreamWriter writer(encoderStream);
-	LogTraceInsReceiver receiver(typeName, fieldName, tokenName, writer);
-	tm.ExecuteTrace(trace, receiver, tokens);
-	return outputFile;
+	return LogTrace(parserName, caseName, typeName, fieldName, tokenName, [&](IAstInsReceiver& receiver)
+	{
+		tm.ExecuteTrace(trace, receiver, tokens);
+	});
 }

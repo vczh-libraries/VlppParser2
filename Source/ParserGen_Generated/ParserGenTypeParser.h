@@ -32,7 +32,7 @@ namespace vl
 
 			extern void ParserGenTypeParserData(vl::stream::IStream& outputStream);
 
-			class TypeParser: vl::glr::ParserBase<ParserGenTokens, TypeParserStates, ParserGenAstInsReceiver, TypeParserStateTypes>
+			class TypeParser: public vl::glr::ParserBase<ParserGenTokens, TypeParserStates, ParserGenAstInsReceiver, TypeParserStateTypes>
 			{
 			public:
 				TypeParser();

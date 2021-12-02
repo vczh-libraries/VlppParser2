@@ -75,7 +75,7 @@ WriteSyntaxHeaderFile
 				}
 				{
 					writer.WriteLine(L"");
-					writer.WriteString(prefix + L"class " + manager.name + L": vl::glr::ParserBase<");
+					writer.WriteString(prefix + L"class " + manager.name + L": public vl::glr::ParserBase<");
 					writer.WriteString(manager.Global().name + L"Tokens, ");
 					writer.WriteString(manager.name + L"States, ");
 					writer.WriteString(manager.Global().name + L"AstInsReceiver, ");
