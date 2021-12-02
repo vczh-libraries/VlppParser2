@@ -36,6 +36,4 @@ export sum(1, 2, max(3, 4))
 			TEST_ASSERT(WString::CopyFrom(tokens[i].reading, tokens[i].length) == outputs[i]);
 		}
 	});
-
-#undef LEXER
 }

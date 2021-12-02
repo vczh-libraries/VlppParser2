@@ -34,6 +34,4 @@ TEST_FILE
 			});
 		}
 	});
-
-#undef LEXER
 }

@@ -158,6 +158,4 @@ export 1
 			});
 		}
 	});
-
-#undef LEXER
 }
