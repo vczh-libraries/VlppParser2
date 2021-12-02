@@ -472,18 +472,19 @@ ValidateStructureRelationshipVisitor
 
 				void CheckAfterClause()
 				{
-					Dictionary<GlrRefSyntax*, vint> counters;
+					Dictionary<WString, vint> counters;
 					auto c = existingFields.first;
 					while (c)
 					{
-						vint index = counters.Keys().IndexOf(c->ref);
+						auto fieldName = c->ref->field.value;
+						vint index = counters.Keys().IndexOf(fieldName);
 						if (index == -1)
 						{
-							counters.Add(c->ref, 1);
+							counters.Add(fieldName, 1);
 						}
 						else
 						{
-							counters.Set(c->ref, counters.Values()[index] + 1);
+							counters.Set(fieldName, counters.Values()[index] + 1);
 						}
 						c = c->next;
 					}
@@ -491,7 +492,7 @@ ValidateStructureRelationshipVisitor
 					auto clauseType = context.clauseTypes[clause];
 					for (auto [key, value] : counters)
 					{
-						auto prop = clauseType->Props()[key->field.value];
+						auto prop = clauseType->Props()[key];
 						if (prop->propType != AstPropType::Array && value > 1)
 						{
 							context.global.AddError(
@@ -499,7 +500,7 @@ ValidateStructureRelationshipVisitor
 								ruleSymbol->Name(),
 								clauseType->Name(),
 								prop->Name()
-							);
+								);
 						}
 					}
 				}

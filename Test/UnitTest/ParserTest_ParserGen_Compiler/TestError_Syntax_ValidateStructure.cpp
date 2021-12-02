@@ -613,8 +613,4 @@ Exp0
 			{ ParserErrorType::FieldAssignedMoreThanOnce,L"Exp0",L"NumExpr",L"value" }
 			);
 	});
-
-	TEST_CASE(L"IndirectionRecursionInRule")
-	{
-	});
 }

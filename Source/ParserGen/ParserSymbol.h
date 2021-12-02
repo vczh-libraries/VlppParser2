@@ -110,7 +110,6 @@ ParserSymbolManager
 				UseRuleAppearAfterField,					// (ruleName, useRuleName, fieldName)
 				UseRuleAppearAfterPartialRule,				// (ruleName, useRuleName, partialRuleName)
 				FieldAssignedMoreThanOnce,					// (ruleName, clauseType, fieldName)
-				IndirectRecursionInRule,					// (ruleName, firstStepRuleName)
 			};
 
 			struct ParserError
