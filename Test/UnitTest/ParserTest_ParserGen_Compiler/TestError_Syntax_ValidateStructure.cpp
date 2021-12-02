@@ -454,10 +454,13 @@ Exp0
   ::= NUM:value as NumExpr
   ;
 Exp1
-  ::= NUM:value as partial NumExpr
+  ::= Exp0:args as partial CallExpr
   ;
 Exp2
-  ::= {Exp1 ; "+"} !Exp0
+  ::= Exp0:func as CallExpr
+  ;
+Exp3
+  ::= {Exp1 ; "+"} !Exp2
   ;
 )SYNTAX";
 		ExpectError(
@@ -466,7 +469,7 @@ Exp2
 			astCode,
 			lexerCode,
 			syntaxCode,
-			{ ParserErrorType::UseRuleAppearAfterPartialRule,L"Exp2",L"Exp0",L"Exp1" }
+			{ ParserErrorType::UseRuleAppearAfterPartialRule,L"Exp3",L"Exp2",L"Exp1" }
 			);
 	});
 
@@ -478,10 +481,13 @@ Exp0
   ::= NUM:value as NumExpr
   ;
 Exp1
-  ::= NUM:value as partial NumExpr
+  ::= Exp0:args as partial CallExpr
   ;
 Exp2
-  ::= {"+" ; Exp1} !Exp0
+  ::= Exp0:func as CallExpr
+  ;
+Exp3
+  ::= {"+" ; Exp1} !Exp2
   ;
 )SYNTAX";
 		ExpectError(
@@ -490,7 +496,7 @@ Exp2
 			astCode,
 			lexerCode,
 			syntaxCode,
-			{ ParserErrorType::UseRuleAppearAfterPartialRule,L"Exp2",L"Exp0",L"Exp1" }
+			{ ParserErrorType::UseRuleAppearAfterPartialRule,L"Exp3",L"Exp2",L"Exp1" }
 			);
 	});
 

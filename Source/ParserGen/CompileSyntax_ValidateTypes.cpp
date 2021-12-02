@@ -37,13 +37,17 @@ ValidateTypesVisitor
 				{
 					clauseType = context.clauseTypes[clause];
 					auto currentType = clauseType;
-					AstClassPropSymbol* prop = nullptr;
 					while (currentType)
 					{
 						vint index = currentType->Props().Keys().IndexOf(name);
 						if (index != -1)
 						{
-							return currentType->Props().Values()[index];
+							auto prop = currentType->Props().Values()[index];
+							if (prop->propType != AstPropType::Array)
+							{
+								ruleSymbol->assignedNonArrayField = true;
+							}
+							return prop;
 						}
 						currentType = currentType->baseClass;
 					}
