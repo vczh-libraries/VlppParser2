@@ -46,18 +46,37 @@ ValidateStructureCountingVisitor
 					syntaxMinUseRuleCount = 0;
 					syntaxMaxUseRuleCount = 0;
 
-					if (node->field && loopCounter > 0)
+					if (loopCounter > 0)
 					{
 						auto clauseType = context.clauseTypes[clause];
-						auto prop = clauseType->Props()[node->field.value];
-						if (prop->propType != AstPropType::Array)
+
+						if (node->field)
 						{
-							context.global.AddError(
-								ParserErrorType::NonArrayFieldAssignedInLoop,
-								ruleSymbol->Name(),
-								clauseType->Name(),
-								prop->Name()
-								);
+							auto prop = clauseType->Props()[node->field.value];
+							if (prop->propType != AstPropType::Array)
+							{
+								context.global.AddError(
+									ParserErrorType::NonArrayFieldAssignedInLoop,
+									ruleSymbol->Name(),
+									clauseType->Name(),
+									prop->Name()
+									);
+							}
+						}
+
+						vint ruleIndex = context.syntaxManager.Rules().Keys().IndexOf(node->name.value);
+						if (ruleIndex != -1)
+						{
+							auto fieldRule = context.syntaxManager.Rules().Values()[ruleIndex];
+							if (fieldRule->isPartial && fieldRule->assignedNonArrayField)
+							{
+								context.global.AddError(
+									ParserErrorType::NonLoopablePartialRuleUsedInLoop,
+									ruleSymbol->Name(),
+									clauseType->Name(),
+									fieldRule->Name()
+									);
+							}
 						}
 					}
 				}
