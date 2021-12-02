@@ -185,6 +185,24 @@ Exp3
 			);
 	});
 
+	TEST_CASE(L"NonArrayFieldAssignedInLoop")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= {NUM:value} as NumExpr
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::NonArrayFieldAssignedInLoop,L"Exp0",L"NumExpr",L"value" }
+			);
+	});
+
 	TEST_CASE(L"ClauseCouldExpandToEmptySequence")
 	{
 		const wchar_t* syntaxCode =
@@ -298,7 +316,10 @@ Exp0
   ::= NUM:value as NumExpr
   ;
 Exp1
-  ::= {NUM:value ; "+"} !Exp0
+  ::= Exp0:func as CallExpr
+  ;
+Exp2
+  ::= {Exp0:args ; "+"} !Exp1
   ;
 )SYNTAX";
 		ExpectError(
@@ -307,7 +328,7 @@ Exp1
 			astCode,
 			lexerCode,
 			syntaxCode,
-			{ ParserErrorType::UseRuleAppearAfterField,L"Exp1",L"Exp0",L"value" }
+			{ ParserErrorType::UseRuleAppearAfterField,L"Exp2",L"Exp1",L"args" }
 			);
 	});
 
@@ -319,7 +340,10 @@ Exp0
   ::= NUM:value as NumExpr
   ;
 Exp1
-  ::= {"+" ; NUM:value} !Exp0
+  ::= Exp0:func as CallExpr
+  ;
+Exp2
+  ::= {"+" ; Exp0:args} !Exp1
   ;
 )SYNTAX";
 		ExpectError(
@@ -328,7 +352,7 @@ Exp1
 			astCode,
 			lexerCode,
 			syntaxCode,
-			{ ParserErrorType::UseRuleAppearAfterField,L"Exp1",L"Exp0",L"value" }
+			{ ParserErrorType::UseRuleAppearAfterField,L"Exp2",L"Exp1",L"args" }
 			);
 	});
 
@@ -471,10 +495,6 @@ Exp2
 			syntaxCode,
 			{ ParserErrorType::UseRuleAppearAfterPartialRule,L"Exp2",L"Exp0",L"Exp1" }
 			);
-	});
-
-	TEST_CASE(L"NonArrayFieldAssignedInLoop")
-	{
 	});
 
 	TEST_CASE(L"FieldAssignedMoreThanOnce")

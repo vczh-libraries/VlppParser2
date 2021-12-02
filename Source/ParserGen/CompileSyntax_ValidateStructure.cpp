@@ -45,6 +45,21 @@ ValidateStructureCountingVisitor
 					syntaxMinLength = 1;
 					syntaxMinUseRuleCount = 0;
 					syntaxMaxUseRuleCount = 0;
+
+					if (node->field && loopCounter > 0)
+					{
+						auto clauseType = context.clauseTypes[clause];
+						auto prop = clauseType->Props()[node->field.value];
+						if (prop->propType != AstPropType::Array)
+						{
+							context.global.AddError(
+								ParserErrorType::NonArrayFieldAssignedInLoop,
+								ruleSymbol->Name(),
+								clauseType->Name(),
+								prop->Name()
+								);
+						}
+					}
 				}
 
 				void Visit(GlrLiteralSyntax* node) override
@@ -59,6 +74,7 @@ ValidateStructureCountingVisitor
 					syntaxMinLength = 1;
 					syntaxMinUseRuleCount = 1;
 					syntaxMaxUseRuleCount = 1;
+
 					if (loopCounter > 0)
 					{
 						context.global.AddError(

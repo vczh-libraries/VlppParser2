@@ -100,6 +100,7 @@ ParserSymbolManager
 				UseRuleUsedInOptionalBody,					// (ruleName, useRuleName)
 				UseRuleUsedInLoopBody,						// (ruleName, useRuleName)
 				ClauseTooManyUseRule,						// (ruleName)													: Multiple use rules in a potential sequence in a clause.
+				NonArrayFieldAssignedInLoop,				// (ruleName, clauseType, fieldName)
 				ClauseCouldExpandToEmptySequence,			// (ruleName)
 				LoopBodyCouldExpandToEmptySequence,			// (ruleName)
 				OptionalBodyCouldExpandToEmptySequence,		// (ruleName)
@@ -107,7 +108,6 @@ ParserSymbolManager
 				// SyntaxAst (ValidateStructure, relationship) ----------------------------------------
 				UseRuleAppearAfterField,					// (ruleName, useRuleName, fieldName)
 				UseRuleAppearAfterPartialRule,				// (ruleName, useRuleName, partialRuleName)
-				NonArrayFieldAssignedInLoop,				// (ruleName, clauseType, fieldName)
 				FieldAssignedMoreThanOnce,					// (ruleName, clauseType, fieldName)
 				IndirectRecursionInRule,					// (ruleName, firstStepRuleName)
 			};
