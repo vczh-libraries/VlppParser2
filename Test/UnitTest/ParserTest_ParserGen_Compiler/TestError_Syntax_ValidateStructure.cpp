@@ -248,12 +248,229 @@ Exp1
 			);
 	});
 
-	TEST_CASE(L"UseRuleAppearAfterField")
+	TEST_CASE(L"UseRuleAppearAfterField 1")
 	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= NUM:value as NumExpr
+  ;
+Exp1
+  ::= NUM:value !Exp0
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::UseRuleAppearAfterField,L"Exp1",L"Exp0",L"value" }
+			);
 	});
 
-	TEST_CASE(L"UseRuleAppearAfterPartialRule")
+	TEST_CASE(L"UseRuleAppearAfterField 2")
 	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= NUM:value as NumExpr
+  ;
+Exp1
+  ::= (NUM:value | "+") !Exp0
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::UseRuleAppearAfterField,L"Exp1",L"Exp0",L"value" }
+			);
+	});
+
+	TEST_CASE(L"UseRuleAppearAfterField 3")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= NUM:value as NumExpr
+  ;
+Exp1
+  ::= {NUM:value ; "+"} !Exp0
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::UseRuleAppearAfterField,L"Exp1",L"Exp0",L"value" }
+			);
+	});
+
+	TEST_CASE(L"UseRuleAppearAfterField 4")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= NUM:value as NumExpr
+  ;
+Exp1
+  ::= {"+" ; NUM:value} !Exp0
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::UseRuleAppearAfterField,L"Exp1",L"Exp0",L"value" }
+			);
+	});
+
+	TEST_CASE(L"UseRuleAppearAfterField 5")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= NUM:value as NumExpr
+  ;
+Exp1
+  ::= [NUM:value] !Exp0
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::UseRuleAppearAfterField,L"Exp1",L"Exp0",L"value" }
+			);
+	});
+
+	TEST_CASE(L"UseRuleAppearAfterPartialRule 1")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= NUM:value as NumExpr
+  ;
+Exp1
+  ::= NUM:value as partial NumExpr
+  ;
+Exp2
+  ::= Exp1 !Exp0
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::UseRuleAppearAfterPartialRule,L"Exp2",L"Exp0",L"Exp1" }
+			);
+	});
+
+	TEST_CASE(L"UseRuleAppearAfterPartialRule 2")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= NUM:value as NumExpr
+  ;
+Exp1
+  ::= NUM:value as partial NumExpr
+  ;
+Exp2
+  ::= (Exp1 | "+") !Exp0
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::UseRuleAppearAfterPartialRule,L"Exp2",L"Exp0",L"Exp1" }
+			);
+	});
+
+	TEST_CASE(L"UseRuleAppearAfterPartialRule 3")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= NUM:value as NumExpr
+  ;
+Exp1
+  ::= NUM:value as partial NumExpr
+  ;
+Exp2
+  ::= {Exp1 ; "+"} !Exp0
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::UseRuleAppearAfterPartialRule,L"Exp2",L"Exp0",L"Exp1" }
+			);
+	});
+
+	TEST_CASE(L"UseRuleAppearAfterPartialRule 4")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= NUM:value as NumExpr
+  ;
+Exp1
+  ::= NUM:value as partial NumExpr
+  ;
+Exp2
+  ::= {"+" ; Exp1} !Exp0
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::UseRuleAppearAfterPartialRule,L"Exp2",L"Exp0",L"Exp1" }
+			);
+	});
+
+	TEST_CASE(L"UseRuleAppearAfterPartialRule 5")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= NUM:value as NumExpr
+  ;
+Exp1
+  ::= NUM:value as partial NumExpr
+  ;
+Exp2
+  ::= [Exp1] !Exp0
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::UseRuleAppearAfterPartialRule,L"Exp2",L"Exp0",L"Exp1" }
+			);
 	});
 
 	TEST_CASE(L"NonArrayFieldAssignedInLoop")
