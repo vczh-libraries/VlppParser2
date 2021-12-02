@@ -524,8 +524,94 @@ Exp2
 			);
 	});
 
-	TEST_CASE(L"FieldAssignedMoreThanOnce")
+	TEST_CASE(L"FieldAssignedMoreThanOnce 1")
 	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= NUM:value NUM:value as NumExpr
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::FieldAssignedMoreThanOnce,L"Exp0",L"NumExpr",L"value" }
+			);
+	});
+
+	TEST_CASE(L"FieldAssignedMoreThanOnce 2")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= NUM:value [NUM:value] as NumExpr
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::FieldAssignedMoreThanOnce,L"Exp0",L"NumExpr",L"value" }
+			);
+	});
+
+	TEST_CASE(L"FieldAssignedMoreThanOnce 3")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= [NUM:value] "+" [NUM:value] as NumExpr
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::FieldAssignedMoreThanOnce,L"Exp0",L"NumExpr",L"value" }
+			);
+	});
+
+	TEST_CASE(L"FieldAssignedMoreThanOnce 4")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= (NUM:value | "+") [NUM:value] as NumExpr
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::FieldAssignedMoreThanOnce,L"Exp0",L"NumExpr",L"value" }
+			);
+	});
+
+	TEST_CASE(L"FieldAssignedMoreThanOnce 5")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= ("+" | NUM:value) [NUM:value] as NumExpr
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::FieldAssignedMoreThanOnce,L"Exp0",L"NumExpr",L"value" }
+			);
 	});
 
 	TEST_CASE(L"IndirectionRecursionInRule")
