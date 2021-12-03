@@ -274,6 +274,23 @@ void RenderTrace(
 RenderTraceTree
 ***********************************************************************/
 
+struct TraceTree;
+
+enum class TraceCellContent
+{
+	Empty,
+	Trace,
+	LinkToToken,
+};
+
+struct TraceCell
+{
+	TraceCellContent		content = TraceCellContent::Empty;
+	TraceTree*				traceTree = nullptr;
+	vint					rows = 1;
+	vint					columns = 1;
+};
+
 struct TraceTree
 {
 	bool					tokenTrace = false;
@@ -345,6 +362,42 @@ struct TraceTree
 			child->SetTokenTraceRows(rows);
 		}
 	}
+
+	void FillBoard(Array<TraceCell>& board, vint depth, vint width)
+	{
+		if (trace)
+		{
+			auto&& cell = board[row * width + column];
+			cell.content = TraceCellContent::Trace;
+			cell.traceTree = this;
+		}
+
+		for (auto child : children)
+		{
+			child->FillBoard(board, depth, width);
+			if (child->tokenTrace)
+			{
+				for (vint i = row + 1; i < child->row; i++)
+				{
+					board[i * width + child->column].content = TraceCellContent::LinkToToken;
+				}
+			}
+		}
+	}
+};
+
+struct TraceBoardBuffer
+{
+	Array<Array<wchar_t>>	lines;
+
+	TraceBoardBuffer(vint rows, vint columns)
+	{
+		lines.Resize(rows);
+		for (vint i = 0; i < rows; i++)
+		{
+			lines[i].Resize(columns);
+		}
+	}
 };
 
 void RenderTraceTree(
@@ -354,6 +407,9 @@ void RenderTraceTree(
 	StreamWriter& writer
 )
 {
+	List<vint> sendPositions;
+	List<vint> receivePositions;
+	Group<vint, vint> sendTos;
 	List<Trace*> startTraces;
 	startTraces.Add(rootTrace);
 
@@ -366,9 +422,66 @@ void RenderTraceTree(
 		{
 			root->AddChildTrace(trace, true, nexts, endTraces);
 		}
-		root->SetColumns(0);
+		vint width = root->SetColumns(0);
 		vint depth = root->SetRows(-1);
 		root->SetTokenTraceRows(depth);
+
+		Array<TraceCell> board((depth + 1) * width);
+		root->FillBoard(board, depth, width);
+
+		for (vint i = 0; i < board.Count(); i++)
+		{
+			auto&& cell = board[i];
+			if (cell.traceTree && cell.traceTree->row != depth)
+			{
+				auto trace = cell.traceTree->trace;
+				auto&& lines = traceLogs[trace];
+				cell.rows = lines.Count();
+				cell.columns = lines[0].Length();
+			}
+		}
+
+		vint bufferRows = 0;
+		vint bufferColumns = 0;
+
+		for (vint row = 0; row < depth + 1; row++)
+		{
+			vint maxRows = 0;
+			for (vint column = 0; column < width; column++)
+			{
+				vint rows = board[row * width + column].rows;
+				if (maxRows < rows) maxRows = rows;
+			}
+			for (vint column = 0; column < width; column++)
+			{
+				board[row * width + column].rows = maxRows;
+			}
+			bufferRows += maxRows;
+		}
+
+		for (vint column = 0; column < width; column++)
+		{
+			vint maxColumns = 0;
+			for (vint row = 0; row < depth + 1; row++)
+			{
+				vint columns = board[row * width + column].columns;
+				if (maxColumns < columns) maxColumns = columns;
+			}
+			for (vint row = 0; row < depth + 1; row++)
+			{
+				board[row * width + column].columns = maxColumns;
+			}
+			bufferColumns += maxColumns;
+		}
+
+		vint connectionOffset = 0;
+		if (sendTos.Count() > 0)
+		{
+			connectionOffset = 5;
+		}
+		bufferRows += connectionOffset + depth - 1;
+		bufferColumns += width - 1;
+		TraceBoardBuffer buffer(bufferRows, bufferColumns);
 
 		CopyFrom(startTraces, endTraces);
 	}
