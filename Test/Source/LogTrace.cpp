@@ -395,7 +395,60 @@ struct TraceBoardBuffer
 		lines.Resize(rows);
 		for (vint i = 0; i < rows; i++)
 		{
-			lines[i].Resize(columns);
+			auto&& line = lines[i];
+			line.Resize(columns + 1);
+			for (vint j = 0; j < columns + 1; j++)
+			{
+				line[j] = 0;
+			}
+		}
+	}
+
+	Array<wchar_t>& Prepare(vint row, vint column)
+	{
+		auto&& line = lines[row];
+		for (vint i = 0; i < column; i++)
+		{
+			if (line[i] == 0) line[i] = L' ';
+		}
+		return line;
+	}
+
+	void Set(vint row, vint column, wchar_t c)
+	{
+		auto&& line = Prepare(row, column);
+		line[column] = c;
+	}
+
+	void Draw(vint row, vint column, wchar_t c)
+	{
+		auto&& line = Prepare(row, column);
+		switch (c)
+		{
+		case L'|':
+			switch (line[column])
+			{
+			case L' ':
+				line[column] = L'|';
+				break;
+			case L'-':
+				line[column] = L'+';
+				break;
+			}
+			break;
+		case L'-':
+			switch (line[column])
+			{
+			case L' ':
+				line[column] = L'-';
+				break;
+			case L'|':
+				line[column] = L'+';
+				break;
+			}
+			break;
+		default:
+			line[column] = c;
 		}
 	}
 };
@@ -482,6 +535,11 @@ void RenderTraceTree(
 		bufferRows += connectionOffset + depth - 1;
 		bufferColumns += width - 1;
 		TraceBoardBuffer buffer(bufferRows, bufferColumns);
+
+		for (auto&& line : buffer.lines)
+		{
+			writer.WriteLine(&line[0]);
+		}
 
 		CopyFrom(startTraces, endTraces);
 	}
