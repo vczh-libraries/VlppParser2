@@ -327,12 +327,12 @@ struct TraceTree
 			return;
 		}
 
-		vint childId = trace->successorFirst;
+		vint childId = trace->successors.first;
 		while (childId != -1)
 		{
 			auto child = tm.GetTrace(childId);
 			tree->AddChildTrace(child, tm, false, endTraces, sendTraces);
-			childId = child->successorSiblingNext;
+			childId = child->successors.siblingNext;
 		}
 	}
 

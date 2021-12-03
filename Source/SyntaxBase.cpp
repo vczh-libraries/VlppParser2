@@ -145,10 +145,10 @@ TraceManager
 				auto trace = traces.Get(traces.Allocate());
 
 				trace->predecessor = -1;
-				trace->successorFirst = -1;
-				trace->successorLast = -1;
-				trace->successorSiblingPrev = -1;
-				trace->successorSiblingNext = -1;
+				trace->successors.first = -1;
+				trace->successors.last = -1;
+				trace->successors.siblingPrev = -1;
+				trace->successors.siblingNext = -1;
 
 				trace->state = -1;
 				trace->returnStack = -1;
@@ -385,17 +385,17 @@ TraceManager::PrepareTraceRoute
 					while (trace->predecessor != -1)
 					{
 						auto predecessor = GetTrace(trace->predecessor);
-						if (predecessor->successorFirst == -1)
+						if (predecessor->successors.first == -1)
 						{
-							predecessor->successorFirst = trace->allocatedIndex;
-							predecessor->successorLast = trace->allocatedIndex;
+							predecessor->successors.first = trace->allocatedIndex;
+							predecessor->successors.last = trace->allocatedIndex;
 						}
 						else
 						{
-							auto sibling = GetTrace(predecessor->successorLast);
-							sibling->successorSiblingNext = trace->allocatedIndex;
-							trace->successorSiblingPrev = sibling->allocatedIndex;
-							predecessor->successorLast = trace->allocatedIndex;
+							auto sibling = GetTrace(predecessor->successors.last);
+							sibling->successors.siblingNext = trace->allocatedIndex;
+							trace->successors.siblingPrev = sibling->allocatedIndex;
+							predecessor->successors.last = trace->allocatedIndex;
 							goto FINISH_CURRENT_ROUTE;
 						}
 						trace = predecessor;
@@ -483,14 +483,14 @@ TraceManager::ExecuteTrace
 						}
 					}
 
-					if (trace->successorFirst == -1)
+					if (trace->successors.first == -1)
 					{
 						trace = nullptr;
 					}
 					else
 					{
-						CHECK_ERROR(trace->successorFirst == trace->successorLast, L"vl::glr::automaton::TraceManager::ExecuteTrace(Trace*, IAstInsReceiver&, List<RegexToken>&)#Ambiguous trace not implemented.");
-						trace = GetTrace(trace->successorFirst);
+						CHECK_ERROR(trace->successors.first == trace->successors.last, L"vl::glr::automaton::TraceManager::ExecuteTrace(Trace*, IAstInsReceiver&, List<RegexToken>&)#Ambiguous trace not implemented.");
+						trace = GetTrace(trace->successors.first);
 					}
 				}
 

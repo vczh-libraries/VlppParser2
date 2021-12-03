@@ -144,29 +144,34 @@ Execution
 
 			struct ReturnStack
 			{
-				vint	allocatedIndex;				// id of this ReturnStack
-				vint	previous;					// id of the previous ReturnStack
-				vint	returnIndex;				// index of ReturnDesc
+				vint				allocatedIndex;				// id of this ReturnStack
+				vint				previous;					// id of the previous ReturnStack
+				vint				returnIndex;				// index of ReturnDesc
+			};
+
+			struct TraceCollection
+			{
+				vint				first;						// first trace in the collection
+				vint				last;						// last trace in the collection
+				vint				siblingPrev;				// previous trace in the collection of the owned trace
+				vint				siblingNext;				// next trace in the collection of the owned trace
 			};
 
 			struct Trace
 			{
-				vint	allocatedIndex;				// id of this Trace
-				vint	predecessor;				// id of the predecessor Trace
-				vint	successorFirst;				// (after finish parsing) id of the first successor Trace
-				vint	successorLast;				// (after finish parsing) id of the last successor Trace
-				vint	successorSiblingPrev;		// (after finish parsing) id of the previous successor Trace of predecessor
-				vint	successorSiblingNext;		// (after finish parsing) id of the next successor Trace of predecessor
+				vint				allocatedIndex;				// id of this Trace
+				vint				predecessor;				// id of the predecessor Trace
+				TraceCollection		successors;					// successors (after finishing parsing)
 
-				vint	state;						// id of the current StateDesc
-				vint	returnStack;				// id of the current ReturnStack
-				vint	executedReturn;				// id of the executed ReturnDesc
-				vint	byEdge;						// id of the last EdgeDesc that make this trace
-				vint	byInput;					// the last input that make this trace
-				vint	previousTokenIndex;			// the index of the token before byInput
-				vint	currentTokenIndex;			// the index of the token that is byInput
-				vint	traceBeginObject;			// the id of the Trace which contains the latest AstInsType::BeginObject
-				vint	traceAfterBranch;			// the id of the Trace which is the first trace of the current branch
+				vint				state;						// id of the current StateDesc
+				vint				returnStack;				// id of the current ReturnStack
+				vint				executedReturn;				// id of the executed ReturnDesc
+				vint				byEdge;						// id of the last EdgeDesc that make this trace
+				vint				byInput;					// the last input that make this trace
+				vint				previousTokenIndex;			// the index of the token before byInput
+				vint				currentTokenIndex;			// the index of the token that is byInput
+				vint				traceBeginObject;			// the id of the Trace which contains the latest AstInsType::BeginObject
+				vint				traceAfterBranch;			// the id of the Trace which is the first trace of the current branch
 			};
 
 			class TraceManager : public Object
