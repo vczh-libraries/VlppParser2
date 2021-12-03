@@ -375,7 +375,7 @@ struct TraceTree
 
 	void FillBoard(Array<TraceCell>& board, vint depth, vint width)
 	{
-		if (trace)
+		if (trace && !endTrace)
 		{
 			auto&& cell = board[row * width + column];
 			cell.content = TraceCellContent::Trace;
@@ -576,7 +576,7 @@ void RenderTraceTree(
 		vint depth = root->SetRows(-1) - 1;
 		root->SetEndTraceRows(depth);
 
-		Array<TraceCell> board((depth + 1) * width);
+		Array<TraceCell> board(depth * width);
 		root->FillBoard(board, depth, width);
 
 		for (vint i = 0; i < board.Count(); i++)
@@ -598,7 +598,7 @@ void RenderTraceTree(
 		Array<vint> rowStarts(depth + 1);
 		Array<vint> columnStarts(width);
 
-		for (vint row = 0; row < depth + 1; row++)
+		for (vint row = 0; row < depth; row++)
 		{
 			vint maxRows = 0;
 			rowStarts[row] = bufferRows + row * rowPadding;
@@ -611,22 +611,20 @@ void RenderTraceTree(
 			{
 				board[row * width + column].rows = maxRows;
 			}
-			if (row < depth)
-			{
-				bufferRows += maxRows;
-			}
+			bufferRows += maxRows;
 		}
+		rowStarts[depth] = bufferRows + depth * rowPadding;
 
 		for (vint column = 0; column < width; column++)
 		{
 			vint maxColumns = 0;
 			columnStarts[column] = bufferColumns + column * columnPadding;
-			for (vint row = 0; row < depth + 1; row++)
+			for (vint row = 0; row < depth; row++)
 			{
 				vint columns = board[row * width + column].columns;
 				if (maxColumns < columns) maxColumns = columns;
 			}
-			for (vint row = 0; row < depth + 1; row++)
+			for (vint row = 0; row < depth; row++)
 			{
 				board[row * width + column].columns = maxColumns;
 			}
@@ -750,23 +748,22 @@ FilePath LogTraceManager(
 		for (vint i = 0; i < visited.Count(); i++)
 		{
 			auto trace = visited[i];
-			RenderTrace(
-				traceLogs,
-				trace,
-				trace->byInput >= Executable::TokenBegin,
-				executable,
-				tm,
-				tokens,
-				typeName,
-				fieldName,
-				tokenName,
-				ruleName,
-				stateLabel
-			);
-
 			if (!availables.Contains(trace))
 			{
 				availables.Add(trace);
+				RenderTrace(
+					traceLogs,
+					trace,
+					trace->byInput >= Executable::TokenBegin,
+					executable,
+					tm,
+					tokens,
+					typeName,
+					fieldName,
+					tokenName,
+					ruleName,
+					stateLabel
+					);
 
 				if (trace->previous == -1)
 				{
