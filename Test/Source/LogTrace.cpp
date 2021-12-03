@@ -304,7 +304,13 @@ struct TraceTree
 	vint					column = -1;
 	vint					row = -1;
 
-	void AddChildTrace(Trace* trace, bool firstLevel, Group<Trace*, Trace*>& nexts, List<Trace*>& endTraces)
+	void AddChildTrace(
+		Trace* trace,
+		bool firstLevel,
+		Group<Trace*, Trace*>& nexts,
+		List<Trace*>& endTraces,
+		List<TraceTree*>& sendTraces
+	)
 	{
 		auto tree = MakePtr<TraceTree>();
 		tree->endTrace = !firstLevel && trace->byInput >= Executable::TokenBegin;
@@ -313,6 +319,7 @@ struct TraceTree
 
 		if (tree->endTrace)
 		{
+			sendTraces.Add(tree.Obj());
 			if (!endTraces.Contains(trace))
 			{
 				endTraces.Add(trace);
@@ -325,7 +332,7 @@ struct TraceTree
 		{
 			for (auto childTrace : nexts.GetByIndex(index))
 			{
-				tree->AddChildTrace(childTrace, false, nexts, endTraces);
+				tree->AddChildTrace(childTrace, false, nexts, endTraces, sendTraces);
 			}
 		}
 	}
@@ -427,6 +434,15 @@ struct TraceBoardBuffer
 		line[column] = c;
 	}
 
+	void Set(vint row, vint column, const WString& s)
+	{
+		auto&& line = Prepare(row, column);
+		for (vint i = 0; i < s.Length(); i++)
+		{
+			line[column + i] = s[i];
+		}
+	}
+
 	void Draw(vint row, vint column, wchar_t c)
 	{
 		auto&& line = Prepare(row, column);
@@ -525,20 +541,21 @@ void RenderTraceTree(
 	StreamWriter& writer
 )
 {
-	List<vint> sendPositions;
-	List<vint> receivePositions;
-	Group<vint, vint> sendTos;
+	Array<vint> sendPositions;
+	Array<vint> receivePositions;
+	Dictionary<vint, vint> sendTos;
 	List<Trace*> startTraces;
 	startTraces.Add(rootTrace);
 
 	while (startTraces.Count() > 0)
 	{
 		List<Trace*> endTraces;
+		List<TraceTree*> sendTraces;
 		auto root = MakePtr<TraceTree>();
 
 		for (auto trace : startTraces)
 		{
-			root->AddChildTrace(trace, true, nexts, endTraces);
+			root->AddChildTrace(trace, true, nexts, endTraces, sendTraces);
 		}
 		vint width = root->SetColumns(0);
 		vint depth = root->SetRows(-1) - 1;
@@ -619,11 +636,7 @@ void RenderTraceTree(
 
 				for (vint u = 0; u < lines.Count(); u++)
 				{
-					auto&& line = lines[u];
-					for (vint v = 0; v < line.Length(); v++)
-					{
-						buffer.Set(x + u, y + v, line[v]);
-					}
+					buffer.Set(x + u, y, lines[u]);
 				}
 			}
 		}
@@ -638,6 +651,43 @@ void RenderTraceTree(
 			rowStarts,
 			columnStarts,
 			writer);
+
+		receivePositions.Resize(startTraces.Count());
+		for (auto [child, index] : indexed(root->children))
+		{
+			receivePositions[index] = columnStarts[child->column];
+		}
+
+		if (sendTos.Count() > 0)
+		{
+			vint max = 0;
+			for (auto [p, i] : indexed(sendPositions))
+			{
+				buffer.Set(0, p, L"[" + itow(sendTos[i]) + L"]");
+				buffer.Draw(1, p + 1, L'|');
+				buffer.Draw(2, p + 1, L'|');
+				if (max < p) max = p;
+			}
+			for (auto [p, i] : indexed(receivePositions))
+			{
+				buffer.Draw(2, p + 1, L'|');
+				buffer.Draw(3, p + 1, L'|');
+				buffer.Set(4, p, L"[" + itow(i) + L"]");
+				if (max < p) max = p;
+			}
+			for (vint i = 0; i <= max; i++)
+			{
+				buffer.Draw(2, i + 1, L'-');
+			}
+		}
+
+		sendPositions.Resize(sendTraces.Count());
+		sendTos.Clear();
+		for (auto [tree, index] : indexed(sendTraces))
+		{
+			sendPositions[index] = columnStarts[tree->column];
+			sendTos.Add(index, endTraces.IndexOf(tree->trace));
+		}
 
 		for (auto&& line : buffer.lines)
 		{
