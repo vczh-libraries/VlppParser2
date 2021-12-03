@@ -20,10 +20,45 @@ namespace TestParser_Generated_TestObjects
 		TStates startState,
 		const wchar_t* (*typeName)(TClasses),
 		const wchar_t* (*fieldName)(TFields),
-		const wchar_t* (*tokenId)(TTokens)
+		const wchar_t* (*tokenId)(TTokens),
+		const wchar_t* (*ruleName)(vint),
+		const wchar_t* (*stateLabel)(vint)
 		)
 	{
 		TParser parser;
+		WString caseName;
+
+		parser.OnEndOfInput.Add(
+			[&](List<RegexToken>& tokens, Executable& executable, TraceManager& tm, Trace*)
+			{
+				LogTraceManager(
+					L"Generated-" + parserName,
+					caseName,
+					executable,
+					tm,
+					tokens,
+					[=](vint32_t type) { return WString::Unmanaged(typeName((TClasses)type)); },
+					[=](vint32_t field) { return WString::Unmanaged(fieldName((TFields)field)); },
+					[=](vint32_t token) { return WString::Unmanaged(tokenId((TTokens)token)); },
+					[=](vint32_t rule) { return WString::Unmanaged(ruleName(rule)); },
+					[=](vint32_t state) { return WString::Unmanaged(stateLabel(state)); }
+				);
+			});
+
+		parser.OnPreparedTraceRoute.Add(
+			[&](List<RegexToken>& tokens, Executable& executable, TraceManager& tm, Trace* rootTrace)
+			{
+				LogTraceExecution(
+					L"Generated-" + parserName,
+					caseName,
+					[=](vint32_t type) { return WString::Unmanaged(typeName((TClasses)type)); },
+					[=](vint32_t field) { return WString::Unmanaged(fieldName((TFields)field)); },
+					[=](vint32_t token) { return WString::Unmanaged(tokenId((TTokens)token)); },
+					[&](IAstInsReceiver& receiver)
+					{
+						tm.ExecuteTrace(rootTrace, receiver, tokens);
+					});
+			});
 
 		TEST_CATEGORY(L"Test " + parserName + L" Syntax")
 		{
@@ -35,24 +70,12 @@ namespace TestParser_Generated_TestObjects
 			dirInput.GetFiles(inputFiles);
 			for (auto&& inputFile : inputFiles)
 			{
-				auto caseName = inputFile.GetFilePath().GetName();
+				caseName = inputFile.GetFilePath().GetName();
 				caseName = caseName.Left(caseName.Length() - 4);
 
 				TEST_CASE(caseName)
 				{
 					auto input = inputFile.ReadAllTextByBom();
-					
-					LogTraceExecution(
-						L"Generated-" + parserName,
-						caseName,
-						[=](vint32_t type) { return WString::Unmanaged(typeName((TClasses)type)); },
-						[=](vint32_t field) { return WString::Unmanaged(fieldName((TFields)field)); },
-						[=](vint32_t token) { return WString::Unmanaged(tokenId((TTokens)token)); },
-						[&](IAstInsReceiver& receiver)
-						{
-							parser.ParseWithReceiver(input, startState, receiver, -1);
-						});
-
 					auto ast = parser.ParseModule(input);
 					auto actualJson = PrintAstJson<TJsonVisitor>(ast);
 					File(dirOutput / (L"Output[" + caseName + L"].json")).WriteAllText(actualJson, true, BomEncoder::Utf8);
@@ -75,6 +98,8 @@ TEST_FILE
 		calculator::ModuleParserStates::Module,
 		&calculator::CalculatorTypeName,
 		&calculator::CalculatorFieldName,
-		&calculator::CalculatorTokenId
+		&calculator::CalculatorTokenId,
+		&calculator::ModuleParserRuleName,
+		&calculator::ModuleParserStateLabel
 		);
 }
