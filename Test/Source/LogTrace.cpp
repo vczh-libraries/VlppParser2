@@ -136,6 +136,7 @@ RenderTrace
 void RenderTrace(
 	Group<Trace*, WString>& traceLogs,
 	Trace* trace,
+	bool bold,
 	Executable& executable,
 	TraceManager& tm,
 	List<RegexToken>& tokens,
@@ -213,43 +214,59 @@ void RenderTrace(
 			}
 		}
 	}));
+
+	List<WString> lines;
 	while (!reader.IsEnd())
 	{
-		traceLogs.Add(trace, reader.ReadLine());
+		lines.Add(reader.ReadLine());
 	}
-	{
-		auto&& logs = const_cast<List<WString>&>(traceLogs[trace]);
-		logs.RemoveAt(logs.Count() - 1);
+	lines.RemoveAt(lines.Count() - 1);
 
+	{
+		vint thickness = bold ? 2 : 1;
 		vint length = 0;
-		for (auto&& line : logs)
+		for (auto&& line : lines)
 		{
 			if (length < line.Length()) length = line.Length();
 		}
-		for (vint i = 0; i < logs.Count(); i++)
+
+		vint blockLength = length + (thickness + 1) * 2;
+		Array<wchar_t> buffer(blockLength);
+
+		for (vint i = 0; i < thickness; i++)
 		{
-			auto&& line = logs[i];
-			Array<wchar_t> newLine(length + 2);
-			newLine[0] = L'|';
-			memcpy(&newLine[1], line.Buffer(), sizeof(wchar_t) * line.Length());
-			for (vint j = line.Length() + 1; j < length + 1; j++)
-			{
-				newLine[j] = L' ';
-			}
-			newLine[length + 1] = L'|';
-			logs[i] = WString::CopyFrom(&newLine[0], length + 2);
+			buffer[i] = L'+';
+			buffer[blockLength - i - 1] = L'+';
+		}
+		for (vint i = 0; i < length + 2; i++)
+		{
+			buffer[i + thickness] = bold ? L'=' : L'-';
+		}
+		auto border = WString::CopyFrom(&buffer[0], blockLength);
+
+		for (vint i = 0; i < thickness; i++)
+		{
+			buffer[i] = L'|';
+			buffer[blockLength - i - 1] = L'|';
+		}
+		for (vint i = 0; i < length + 2; i++)
+		{
+			buffer[i + thickness] = L' ';
 		}
 
-		Array<wchar_t> newLine(length + 2);
-		newLine[0] = L'+';
-		for (vint i = 1; i < length + 1; i++)
+		traceLogs.Add(trace, border);
+
+		for (auto&& line : lines)
 		{
-			newLine[i] = L'-';
+			for (vint i = 0; i < length; i++)
+			{
+				buffer[i + thickness + 1] = L' ';
+			}
+			memcpy(&buffer[thickness + 1], line.Buffer(), sizeof(wchar_t)* line.Length());
+			traceLogs.Add(trace, WString::CopyFrom(&buffer[0], blockLength));
 		}
-		newLine[length + 1] = L'+';
-		auto border = WString::CopyFrom(&newLine[0], length + 2);
-		logs.Insert(0, border);
-		logs.Add(border);
+
+		traceLogs.Add(trace, border);
 	}
 }
 
@@ -311,7 +328,19 @@ FilePath LogTraceManager(
 		for (vint i = 0; i < visited.Count(); i++)
 		{
 			auto trace = visited[i];
-			RenderTrace(traceLogs, trace, executable, tm, tokens, typeName, fieldName, tokenName, ruleName, stateLabel);
+			RenderTrace(
+				traceLogs,
+				trace,
+				trace->byInput >= Executable::TokenBegin,
+				executable,
+				tm,
+				tokens,
+				typeName,
+				fieldName,
+				tokenName,
+				ruleName,
+				stateLabel
+			);
 
 			if (!availables.Contains(trace))
 			{
