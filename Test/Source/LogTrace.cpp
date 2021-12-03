@@ -293,36 +293,35 @@ struct TraceCell
 
 struct TraceTree
 {
-	bool					tokenTrace = false;
+	bool					endTrace = false;
 	Trace*					trace = nullptr;
 	List<Ptr<TraceTree>>	children;
 
 	vint					column = -1;
 	vint					row = -1;
 
-	void AddChildTrace(Trace* trace, bool firstLevel, Group<Trace*, Trace*>& nexts, List<Trace*>& tokenTraces)
+	void AddChildTrace(Trace* trace, bool firstLevel, Group<Trace*, Trace*>& nexts, List<Trace*>& endTraces)
 	{
 		auto tree = MakePtr<TraceTree>();
-		tree->tokenTrace = trace->byInput >= Executable::TokenBegin;
+		tree->endTrace = !firstLevel && trace->byInput >= Executable::TokenBegin;
 		tree->trace = trace;
 		children.Add(tree);
 
-		if (tree->tokenTrace)
+		if (tree->endTrace)
 		{
-			if (!firstLevel && !tokenTraces.Contains(trace))
+			if (!endTraces.Contains(trace))
 			{
-				tokenTraces.Add(trace);
+				endTraces.Add(trace);
 			}
+			return;
 		}
-		else
+
+		vint index = nexts.Keys().IndexOf(trace);
+		if (index != -1)
 		{
-			vint index = nexts.Keys().IndexOf(trace);
-			if (index != -1)
+			for (auto childTrace : nexts.GetByIndex(index))
 			{
-				for (auto childTrace : nexts.GetByIndex(index))
-				{
-					tree->AddChildTrace(childTrace, false, nexts, tokenTraces);
-				}
+				tree->AddChildTrace(childTrace, false, nexts, endTraces);
 			}
 		}
 	}
@@ -340,7 +339,7 @@ struct TraceTree
 
 	vint SetRows(vint start)
 	{
-		if (tokenTrace) return 0;
+		if (endTrace) return 0;
 		row = start;
 		vint depth = 0;
 		for (auto child : children)
@@ -351,15 +350,15 @@ struct TraceTree
 		return depth + 1;
 	}
 
-	void SetTokenTraceRows(vint rows)
+	void SetEndTraceRows(vint rows)
 	{
-		if (tokenTrace)
+		if (endTrace)
 		{
 			row = rows;
 		}
 		for (auto child : children)
 		{
-			child->SetTokenTraceRows(rows);
+			child->SetEndTraceRows(rows);
 		}
 	}
 
@@ -375,7 +374,7 @@ struct TraceTree
 		for (auto child : children)
 		{
 			child->FillBoard(board, depth, width);
-			if (child->tokenTrace)
+			if (child->endTrace)
 			{
 				for (vint i = row + 1; i < child->row; i++)
 				{
@@ -477,7 +476,7 @@ void RenderTraceTree(
 		}
 		vint width = root->SetColumns(0);
 		vint depth = root->SetRows(-1);
-		root->SetTokenTraceRows(depth);
+		root->SetEndTraceRows(depth);
 
 		Array<TraceCell> board((depth + 1) * width);
 		root->FillBoard(board, depth, width);
