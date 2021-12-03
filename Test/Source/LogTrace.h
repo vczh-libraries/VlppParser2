@@ -18,7 +18,7 @@ extern void LogInstruction(
 	StreamWriter& writer
 	);
 
-FilePath LogTrace(
+FilePath LogTraceExecution(
 	const WString& parserName,
 	const WString& caseName,
 	const Func<WString(vint32_t)>& typeName,
@@ -27,7 +27,7 @@ FilePath LogTrace(
 	const Func<void(IAstInsReceiver&)>& callback
 	);
 
-FilePath LogTrace(
+FilePath LogTraceExecution(
 	const WString& parserName,
 	const WString& caseName,
 	TraceManager& tm,

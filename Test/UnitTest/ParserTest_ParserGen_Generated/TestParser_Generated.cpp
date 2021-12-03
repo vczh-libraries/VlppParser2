@@ -42,7 +42,7 @@ namespace TestParser_Generated_TestObjects
 				{
 					auto input = inputFile.ReadAllTextByBom();
 					
-					LogTrace(
+					LogTraceExecution(
 						L"Generated-" + parserName,
 						caseName,
 						[=](vint32_t type) { return WString::Unmanaged(typeName((TClasses)type)); },

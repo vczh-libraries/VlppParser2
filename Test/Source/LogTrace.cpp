@@ -105,7 +105,7 @@ public:
 	}
 };
 
-FilePath LogTrace(
+FilePath LogTraceExecution(
 	const WString& parserName,
 	const WString& caseName,
 	const Func<WString(vint32_t)>& typeName,
@@ -125,7 +125,7 @@ FilePath LogTrace(
 	return outputFile;
 }
 
-FilePath LogTrace(
+FilePath LogTraceExecution(
 	const WString& parserName,
 	const WString& caseName,
 	TraceManager& tm,
@@ -136,7 +136,7 @@ FilePath LogTrace(
 	const Func<WString(vint32_t)>& tokenName
 )
 {
-	return LogTrace(parserName, caseName, typeName, fieldName, tokenName, [&](IAstInsReceiver& receiver)
+	return LogTraceExecution(parserName, caseName, typeName, fieldName, tokenName, [&](IAstInsReceiver& receiver)
 	{
 		tm.ExecuteTrace(trace, receiver, tokens);
 	});

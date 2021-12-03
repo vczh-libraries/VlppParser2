@@ -61,7 +61,7 @@ namespace TestSyntax_TestObjects
 		TEST_ASSERT(executable.states[tm.concurrentTraces->Get(0)->state].endingState);
 
 		auto rootTrace = tm.PrepareTraceRoute();
-		LogTrace(
+		LogTraceExecution(
 			L"Calculator",
 			caseName,
 			tm,
