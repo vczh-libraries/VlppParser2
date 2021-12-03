@@ -70,37 +70,6 @@ WriteLexerHeaderFile
 WriteLexerCppFile
 ***********************************************************************/
 
-			void WriteCppStringBody(const WString& body, stream::StreamWriter& writer)
-			{
-				for (vint i = 0; i < body.Length(); i++)
-				{
-					auto c = body[i];
-					switch (c)
-					{
-					case L'\t':
-						writer.WriteString(L"\\t");
-						break;
-					case L'\r':
-						writer.WriteString(L"\\r");
-						break;
-					case L'\n':
-						writer.WriteString(L"\\n");
-						break;
-					case L'\\':
-						writer.WriteString(L"\\\\");
-						break;
-					case L'\"':
-						writer.WriteString(L"\\\"");
-						break;
-					case L'\'':
-						writer.WriteString(L"\\\'");
-						break;
-					default:
-						writer.WriteChar(c);
-					}
-				}
-			}
-
 			void WriteLexerCppFile(LexerSymbolManager& manager, Ptr<CppParserGenOutput> output, stream::StreamWriter& writer)
 			{
 				WriteFileComment(manager.Global().name, writer);

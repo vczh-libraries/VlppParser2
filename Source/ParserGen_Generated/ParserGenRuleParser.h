@@ -31,6 +31,8 @@ namespace vl
 			template<RuleParserStates> struct RuleParserStateTypes;
 			template<> struct RuleParserStateTypes<RuleParserStates::File> { using Type = vl::glr::parsergen::GlrSyntaxFile; };
 
+			const wchar_t* RuleParserRuleName(vl::vint index);
+			const wchar_t* RuleParserStateLabel(vl::vint index);
 			extern void ParserGenRuleParserData(vl::stream::IStream& outputStream);
 
 			class RuleParser: public vl::glr::ParserBase<ParserGenTokens, RuleParserStates, ParserGenAstInsReceiver, RuleParserStateTypes>

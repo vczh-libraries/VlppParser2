@@ -32,6 +32,69 @@ namespace vl
 				vl::glr::DecompressSerializedData(compressed, true, dataSolidRows, dataRows, dataBlock, dataRemain, outputStream);
 			}
 
+			const wchar_t* TypeParserRuleName(vl::vint index)
+			{
+				static const wchar_t* results[] = {
+					L"EnumItem",
+					L"Enum",
+					L"ClassPropType",
+					L"classProp",
+					L"Class",
+					L"Type",
+					L"File",
+				};
+				return results[index];
+			}
+
+			const wchar_t* TypeParserStateLabel(vl::vint index)
+			{
+				static const wchar_t* results[] = {
+					L"[0][EnumItem] BEGIN ",
+					L"[1][EnumItem] END [ENDING]",
+					L"[2][EnumItem]< ID \",\" @ >",
+					L"[3][EnumItem]< ID @ \",\" >",
+					L"[4][Enum] BEGIN ",
+					L"[5][Enum] END [ENDING]",
+					L"[6][Enum]< \"enum\" @ ID \"{\" { EnumItem } \"}\" >",
+					L"[7][Enum]< \"enum\" ID \"{\" @ { EnumItem } \"}\" >",
+					L"[8][Enum]< \"enum\" ID \"{\" { EnumItem @ } \"}\" >",
+					L"[9][Enum]< \"enum\" ID \"{\" { EnumItem } \"}\" @ >",
+					L"[10][Enum]< \"enum\" ID @ \"{\" { EnumItem } \"}\" >",
+					L"[11][ClassPropType] BEGIN ",
+					L"[12][ClassPropType] END [ENDING]",
+					L"[13][ClassPropType]\"token\" @",
+					L"[14][ClassPropType]ID \"[\" \"]\" @",
+					L"[15][ClassPropType]ID \"[\" @ \"]\"",
+					L"[16][ClassPropType]ID @",
+					L"[17][ClassPropType]ID @ \"[\" \"]\"",
+					L"[18][classProp] BEGIN ",
+					L"[19][classProp] END [ENDING]",
+					L"[20][classProp]< \"var\" @ ID \":\" ClassPropType \";\" >",
+					L"[21][classProp]< \"var\" ID \":\" @ ClassPropType \";\" >",
+					L"[22][classProp]< \"var\" ID \":\" ClassPropType \";\" @ >",
+					L"[23][classProp]< \"var\" ID \":\" ClassPropType @ \";\" >",
+					L"[24][classProp]< \"var\" ID @ \":\" ClassPropType \";\" >",
+					L"[25][Class] BEGIN ",
+					L"[26][Class] END [ENDING]",
+					L"[27][Class]< \"class\" @ ID [ \":\" ID ] \"{\" { classProp } \"}\" >",
+					L"[28][Class]< \"class\" ID @ [ \":\" ID ] \"{\" { classProp } \"}\" >",
+					L"[29][Class]< \"class\" ID [ \":\" @ ID ] \"{\" { classProp } \"}\" >",
+					L"[30][Class]< \"class\" ID [ \":\" ID @ ] \"{\" { classProp } \"}\" >",
+					L"[31][Class]< \"class\" ID [ \":\" ID ] \"{\" @ { classProp } \"}\" >",
+					L"[32][Class]< \"class\" ID [ \":\" ID ] \"{\" { classProp @ } \"}\" >",
+					L"[33][Class]< \"class\" ID [ \":\" ID ] \"{\" { classProp } \"}\" @ >",
+					L"[34][Type] BEGIN ",
+					L"[35][Type] END [ENDING]",
+					L"[36][Type]<< ( !Enum @ | !Class ) >>",
+					L"[37][Type]<< ( !Enum | !Class @ ) >>",
+					L"[38][File] BEGIN ",
+					L"[39][File] END [ENDING]",
+					L"[40][File]< Type @ { Type } >",
+					L"[41][File]< Type { Type @ } >",
+				};
+				return results[index];
+			}
+
 			TypeParser::TypeParser()
 				: vl::glr::ParserBase<ParserGenTokens, TypeParserStates, ParserGenAstInsReceiver, TypeParserStateTypes>(&ParserGenTokenDeleter, &ParserGenLexerData, &ParserGenTypeParserData)
 			{

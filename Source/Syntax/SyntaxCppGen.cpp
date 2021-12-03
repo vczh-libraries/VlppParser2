@@ -71,6 +71,8 @@ WriteSyntaxHeaderFile
 				}
 				{
 					writer.WriteLine(L"");
+					writer.WriteLine(prefix + L"const wchar_t* " + manager.name + L"RuleName(vl::vint index);");
+					writer.WriteLine(prefix + L"const wchar_t* " + manager.name + L"StateLabel(vl::vint index);");
 					WriteLoadDataFunctionHeader(prefix, manager.Global().name + manager.name + L"Data", writer);
 				}
 				{
@@ -118,6 +120,36 @@ WriteSyntaxCppFile
 					executable.Serialize(syntaxData);
 					syntaxData.SeekFromBegin(0);
 					WriteLoadDataFunctionCpp(prefix, manager.Global().name + manager.name + L"Data", syntaxData, true, writer);
+				}
+				{
+					writer.WriteLine(L"");
+					writer.WriteLine(prefix + L"const wchar_t* " + manager.name + L"RuleName(vl::vint index)");
+					writer.WriteLine(prefix + L"{");
+					writer.WriteLine(prefix + L"\tstatic const wchar_t* results[] = {");
+					for (auto&& ruleName : metadata.ruleNames)
+					{
+						writer.WriteString(prefix + L"\t\tL\"");
+						WriteCppStringBody(ruleName, writer);
+						writer.WriteLine(L"\",");
+					}
+					writer.WriteLine(prefix + L"\t};");
+					writer.WriteLine(prefix + L"\treturn results[index];");
+					writer.WriteLine(prefix + L"}");
+				}
+				{
+					writer.WriteLine(L"");
+					writer.WriteLine(prefix + L"const wchar_t* " + manager.name + L"StateLabel(vl::vint index)");
+					writer.WriteLine(prefix + L"{");
+					writer.WriteLine(prefix + L"\tstatic const wchar_t* results[] = {");
+					for (auto&& stateLabel : metadata.stateLabels)
+					{
+						writer.WriteString(prefix + L"\t\tL\"");
+						WriteCppStringBody(stateLabel, writer);
+						writer.WriteLine(L"\",");
+					}
+					writer.WriteLine(prefix + L"\t};");
+					writer.WriteLine(prefix + L"\treturn results[index];");
+					writer.WriteLine(prefix + L"}");
 				}
 				{
 					writer.WriteLine(L"");

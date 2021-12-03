@@ -67,6 +67,7 @@ Utility
 
 			extern Ptr<CppParserGenOutput>		GenerateParserFileNames(ParserSymbolManager& manager);
 
+			extern void							WriteCppStringBody(const WString& body, stream::StreamWriter& writer);
 			extern void							WriteFileComment(const WString& name, stream::StreamWriter& writer);
 			extern WString						WriteNssBegin(collections::List<WString>& cppNss, stream::StreamWriter& writer);
 			extern void							WriteNssEnd(collections::List<WString>& cppNss, stream::StreamWriter& writer);

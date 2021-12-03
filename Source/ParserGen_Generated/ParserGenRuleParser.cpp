@@ -42,6 +42,95 @@ namespace vl
 				vl::glr::DecompressSerializedData(compressed, true, dataSolidRows, dataRows, dataBlock, dataRemain, outputStream);
 			}
 
+			const wchar_t* RuleParserRuleName(vl::vint index)
+			{
+				static const wchar_t* results[] = {
+					L"Syntax0",
+					L"Syntax1",
+					L"Syntax2",
+					L"Syntax",
+					L"Assignment",
+					L"Clause",
+					L"Rule",
+					L"File",
+				};
+				return results[index];
+			}
+
+			const wchar_t* RuleParserStateLabel(vl::vint index)
+			{
+				static const wchar_t* results[] = {
+					L"[0][Syntax0] BEGIN ",
+					L"[1][Syntax0] END [ENDING]",
+					L"[2][Syntax0]< \"!\" @ ID >",
+					L"[3][Syntax0]< \"!\" ID @ >",
+					L"[4][Syntax0]< \"[\" @ Syntax \"]\" >",
+					L"[5][Syntax0]< \"[\" Syntax \"]\" @ >",
+					L"[6][Syntax0]< \"[\" Syntax @ \"]\" >",
+					L"[7][Syntax0]< \"{\" @ Syntax [ \";\" Syntax ] \"}\" >",
+					L"[8][Syntax0]< \"{\" Syntax @ [ \";\" Syntax ] \"}\" >",
+					L"[9][Syntax0]< \"{\" Syntax [ \";\" @ Syntax ] \"}\" >",
+					L"[10][Syntax0]< \"{\" Syntax [ \";\" Syntax @ ] \"}\" >",
+					L"[11][Syntax0]< \"{\" Syntax [ \";\" Syntax ] \"}\" @ >",
+					L"[12][Syntax0]< ID @ [ \":\" ID ] >",
+					L"[13][Syntax0]< ID [ \":\" @ ID ] >",
+					L"[14][Syntax0]< ID [ \":\" ID @ ] >",
+					L"[15][Syntax0]< STRING @ >",
+					L"[16][Syntax0]<< \"(\" !Syntax \")\" @ >>",
+					L"[17][Syntax0]<< \"(\" !Syntax @ \")\" >>",
+					L"[18][Syntax0]<< \"(\" @ !Syntax \")\" >>",
+					L"[19][Syntax1] BEGIN ",
+					L"[20][Syntax1] END [ENDING]",
+					L"[21][Syntax1]< Syntax1 @ Syntax0 >",
+					L"[22][Syntax1]< Syntax1 Syntax0 @ >",
+					L"[23][Syntax1]<< !Syntax0 @ >>",
+					L"[24][Syntax2] BEGIN ",
+					L"[25][Syntax2] END [ENDING]",
+					L"[26][Syntax2]< Syntax2 \"|\" @ Syntax1 >",
+					L"[27][Syntax2]< Syntax2 \"|\" Syntax1 @ >",
+					L"[28][Syntax2]< Syntax2 @ \"|\" Syntax1 >",
+					L"[29][Syntax2]<< !Syntax1 @ >>",
+					L"[30][Syntax] BEGIN ",
+					L"[31][Syntax] END [ENDING]",
+					L"[32][Syntax]<< !Syntax2 @ >>",
+					L"[33][Assignment] BEGIN ",
+					L"[34][Assignment] END [ENDING]",
+					L"[35][Assignment]< ID \"=\" @ ID >",
+					L"[36][Assignment]< ID \"=\" ID @ >",
+					L"[37][Assignment]< ID @ \"=\" ID >",
+					L"[38][Clause] BEGIN ",
+					L"[39][Clause] END [ENDING]",
+					L"[40][Clause]< Syntax \"as\" \"partial\" @ ID [ \"{\" { Assignment } \"}\" ] >",
+					L"[41][Clause]< Syntax \"as\" \"partial\" ID @ [ \"{\" { Assignment } \"}\" ] >",
+					L"[42][Clause]< Syntax \"as\" \"partial\" ID [ \"{\" @ { Assignment } \"}\" ] >",
+					L"[43][Clause]< Syntax \"as\" \"partial\" ID [ \"{\" { Assignment @ } \"}\" ] >",
+					L"[44][Clause]< Syntax \"as\" \"partial\" ID [ \"{\" { Assignment } \"}\" @ ] >",
+					L"[45][Clause]< Syntax \"as\" @ \"partial\" ID [ \"{\" { Assignment } \"}\" ] >",
+					L"[46][Clause]< Syntax \"as\" @ ID [ \"{\" { Assignment } \"}\" ] >",
+					L"[47][Clause]< Syntax \"as\" ID @ [ \"{\" { Assignment } \"}\" ] >",
+					L"[48][Clause]< Syntax \"as\" ID [ \"{\" @ { Assignment } \"}\" ] >",
+					L"[49][Clause]< Syntax \"as\" ID [ \"{\" { Assignment @ } \"}\" ] >",
+					L"[50][Clause]< Syntax \"as\" ID [ \"{\" { Assignment } \"}\" @ ] >",
+					L"[51][Clause]< Syntax @ \"as\" \"partial\" ID [ \"{\" { Assignment } \"}\" ] >",
+					L"[52][Clause]< Syntax @ \"as\" ID [ \"{\" { Assignment } \"}\" ] >",
+					L"[53][Clause]< Syntax @ [ \"{\" { Assignment } \"}\" ] >",
+					L"[54][Clause]< Syntax [ \"{\" @ { Assignment } \"}\" ] >",
+					L"[55][Clause]< Syntax [ \"{\" { Assignment @ } \"}\" ] >",
+					L"[56][Clause]< Syntax [ \"{\" { Assignment } \"}\" @ ] >",
+					L"[57][Rule] BEGIN ",
+					L"[58][Rule] END [ENDING]",
+					L"[59][Rule]< ID @ { \"::=\" Clause } \";\" >",
+					L"[60][Rule]< ID { \"::=\" @ Clause } \";\" >",
+					L"[61][Rule]< ID { \"::=\" Clause @ } \";\" >",
+					L"[62][Rule]< ID { \"::=\" Clause } \";\" @ >",
+					L"[63][File] BEGIN ",
+					L"[64][File] END [ENDING]",
+					L"[65][File]< Rule @ { Rule } >",
+					L"[66][File]< Rule { Rule @ } >",
+				};
+				return results[index];
+			}
+
 			RuleParser::RuleParser()
 				: vl::glr::ParserBase<ParserGenTokens, RuleParserStates, ParserGenAstInsReceiver, RuleParserStateTypes>(&ParserGenTokenDeleter, &ParserGenLexerData, &ParserGenRuleParserData)
 			{
