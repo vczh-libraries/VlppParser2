@@ -56,7 +56,18 @@ namespace TestSyntax_TestObjects
 			tm.Input(i, token.token);
 			TEST_ASSERT(tm.concurrentCount > 0);
 		}
+
 		tm.EndOfInput();
+		LogTraceManager(
+			L"Calculator",
+			caseName,
+			tm,
+			tokens,
+			[](vint32_t type) { return WString::Unmanaged(CalculatorTypeName((CalculatorClasses)type)); },
+			[](vint32_t field) { return WString::Unmanaged(CalculatorFieldName((CalculatorFields)field)); },
+			[](vint32_t token) { return WString::Unmanaged(CalculatorTokenId((CalculatorTokens)token)); }
+			);
+
 		TEST_ASSERT(tm.concurrentCount == 1);
 		TEST_ASSERT(executable.states[tm.concurrentTraces->Get(0)->state].endingState);
 

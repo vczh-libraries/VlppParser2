@@ -49,25 +49,8 @@ void LogInstruction(
 }
 
 /***********************************************************************
-LogTrace
+LogTraceInsReceiver
 ***********************************************************************/
-
-void LogTraceInstruction(
-	AstIns& ins,
-	RegexToken& token,
-	const Func<WString(vint32_t)>& typeName,
-	const Func<WString(vint32_t)>& fieldName,
-	const Func<WString(vint32_t)>& tokenName,
-	StreamWriter& writer
-	)
-{
-	writer.WriteString(L"<");
-	writer.WriteString(tokenName((vint32_t)token.token));
-	writer.WriteString(L":");
-	writer.WriteString(token.reading, token.length);
-	writer.WriteString(L"> ");
-	LogInstruction(ins, typeName, fieldName, writer);
-}
 
 class LogTraceInsReceiver : public Object, public virtual IAstInsReceiver
 {
@@ -105,6 +88,10 @@ public:
 	}
 };
 
+/***********************************************************************
+LogTraceExecution
+***********************************************************************/
+
 FilePath LogTraceExecution(
 	const WString& parserName,
 	const WString& caseName,
@@ -140,4 +127,27 @@ FilePath LogTraceExecution(
 	{
 		tm.ExecuteTrace(trace, receiver, tokens);
 	});
+}
+
+/***********************************************************************
+LogTraceManager
+***********************************************************************/
+
+FilePath LogTraceManager(
+	const WString& parserName,
+	const WString& caseName,
+	TraceManager& tm,
+	List<RegexToken>& tokens,
+	const Func<WString(vint32_t)>& typeName,
+	const Func<WString(vint32_t)>& fieldName,
+	const Func<WString(vint32_t)>& tokenName
+)
+{
+	auto outputDir = GetOutputDir(parserName);
+	auto outputFile = outputDir / (L"Trace[" + caseName + L"].txt");
+	auto content = GenerateToStream([&](StreamWriter& writer)
+	{
+	});
+	File(outputFile).WriteAllText(content, true, BomEncoder::Utf8);
+	return outputFile;
 }

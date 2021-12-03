@@ -38,6 +38,16 @@ FilePath LogTraceExecution(
 	const Func<WString(vint32_t)>& tokenName
 	);
 
+FilePath LogTraceManager(
+	const WString& parserName,
+	const WString& caseName,
+	TraceManager& tm,
+	List<RegexToken>& tokens,
+	const Func<WString(vint32_t)>& typeName,
+	const Func<WString(vint32_t)>& fieldName,
+	const Func<WString(vint32_t)>& tokenName
+	);
+
 template<typename TVisitor, typename T>
 WString PrintAstJson(Ptr<T> ast)
 {
