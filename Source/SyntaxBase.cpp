@@ -190,12 +190,29 @@ TraceManager::Input
 				EdgeDesc& edgeDesc
 			)
 			{
+				vint state = edgeDesc.toState;
+				vint returnStack = trace->returnStack;
+				vint executedReturn = -1;
+
+				if (input == Executable::EndingInput)
+				{
+					CHECK_ERROR(edgeDesc.returnIndices.count == 0, L"vl::glr::automaton::TraceManager::WalkAlongSingleEdge(vint, vint, vint, Trace*, vint, EdgeDesc&)#Ending input edge is not allowed to push the return stack.");
+					if (returnStack != -1)
+					{
+						auto rs = GetReturnStack(returnStack);
+						returnStack = rs->previous;
+						executedReturn = rs->returnIndex;
+						state = executable.returns[executedReturn].returnState;
+					}
+				}
+
 				auto newTrace = AllocateTrace();
 				AddTrace(newTrace);
 
 				newTrace->predecessor = trace->allocatedIndex;
-				newTrace->state = edgeDesc.toState;
-				newTrace->returnStack = trace->returnStack;
+				newTrace->state = state;
+				newTrace->returnStack = returnStack;
+				newTrace->executedReturn = executedReturn;
 				newTrace->byEdge = byEdge;
 				newTrace->byInput = input;
 				newTrace->previousTokenIndex = previousTokenIndex;
@@ -225,8 +242,10 @@ TraceManager::Input
 				{
 					vint byEdge = edgeArray.start + edgeRef;
 					auto& edgeDesc = executable.edges[edgeArray.start + edgeRef];
-					auto newTrace = WalkAlongSingleEdge(previousTokenIndex, currentTokenIndex, input, trace, byEdge, edgeDesc);
-					WalkAlongEpsilonEdges(previousTokenIndex, currentTokenIndex, newTrace);
+					if (auto newTrace = WalkAlongSingleEdge(previousTokenIndex, currentTokenIndex, input, trace, byEdge, edgeDesc))
+					{
+						WalkAlongEpsilonEdges(previousTokenIndex, currentTokenIndex, newTrace);
+					}
 				}
 			}
 
@@ -274,16 +293,8 @@ TraceManager::Input
 				{
 					vint byEdge = edgeArray.start + edgeRef;
 					auto& edgeDesc = executable.edges[edgeArray.start + edgeRef];
-					auto newTrace = WalkAlongSingleEdge(previousTokenIndex, currentTokenIndex, Executable::EndingInput, trace, byEdge, edgeDesc);
-
-					if (newTrace->returnStack != -1)
+					if (auto newTrace = WalkAlongSingleEdge(previousTokenIndex, currentTokenIndex, Executable::EndingInput, trace, byEdge, edgeDesc))
 					{
-						auto returnStack = GetReturnStack(newTrace->returnStack);
-						newTrace->returnStack = returnStack->previous;
-						newTrace->executedReturn = returnStack->returnIndex;
-
-						auto& returnDesc = executable.returns[newTrace->executedReturn];
-						newTrace->state = returnDesc.returnState;
 						WalkAlongEpsilonEdges(previousTokenIndex, currentTokenIndex, newTrace);
 					}
 				}
