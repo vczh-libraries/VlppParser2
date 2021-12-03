@@ -137,10 +137,13 @@ void RenderTrace(
 	Group<Trace*, WString>& traceLogs,
 	Trace* trace,
 	Executable& executable,
+	TraceManager& tm,
 	List<RegexToken>& tokens,
 	const Func<WString(vint32_t)>& typeName,
 	const Func<WString(vint32_t)>& fieldName,
-	const Func<WString(vint32_t)>& tokenName
+	const Func<WString(vint32_t)>& tokenName,
+	const Func<WString(vint32_t)>& ruleName,
+	const Func<WString(vint32_t)>& stateLabel
 )
 {
 	StringReader reader(GenerateToStream([&](StreamWriter& writer)
@@ -149,28 +152,23 @@ void RenderTrace(
 		switch (trace->byInput)
 		{
 		case -1:
-			writer.WriteString(L"<Start>");
+			writer.WriteLine(L"<Start>");
 			break;
 		case Executable::EndingInput:
-			writer.WriteString(L"<Ending>");
+			writer.WriteLine(L"<Ending>");
 			break;
 		case Executable::LeftrecInput:
-			writer.WriteString(L"<Leftrec>");
+			writer.WriteLine(L"<Leftrec>");
 			break;
 		default:
-			writer.WriteString(L"{" + tokenName((vint32_t)(trace->byInput - Executable::TokenBegin)) + L"}");
+			{
+				auto&& token = tokens[trace->currentTokenIndex];
+				writer.WriteString(L"{" + tokenName((vint32_t)(trace->byInput - Executable::TokenBegin)) + L"} ");
+				writer.WriteLine(token.reading, token.length);
+			}
 		}
 
-		if (trace->currentTokenIndex != -1)
-		{
-			auto&& token = tokens[trace->currentTokenIndex];
-			writer.WriteString(L" ");
-			writer.WriteLine(token.reading, token.length);
-		}
-		else
-		{
-			writer.WriteLine(L"");
-		}
+		writer.WriteLine(stateLabel((vint32_t)trace->state));
 
 		if (trace->byEdge != -1)
 		{
@@ -200,6 +198,18 @@ void RenderTrace(
 				auto& ins = executable.instructions[insIndex];
 				writer.WriteString(L"  > ");
 				LogInstruction(ins, typeName, fieldName, writer);
+			}
+		}
+
+		if (trace->returnStack != -1)
+		{
+			auto returnStack = tm.GetReturnStack(trace->returnStack);
+			while (true)
+			{
+				auto&& returnDesc = executable.returns[returnStack->returnIndex];
+				writer.WriteLine(ruleName((vint32_t)returnDesc.consumedRule) + L" -> " + stateLabel((vint32_t)returnDesc.returnState));
+				if (returnStack->previous == -1) break;
+				returnStack = tm.GetReturnStack(returnStack->previous);
 			}
 		}
 	}));
@@ -301,7 +311,7 @@ FilePath LogTraceManager(
 		for (vint i = 0; i < visited.Count(); i++)
 		{
 			auto trace = visited[i];
-			RenderTrace(traceLogs, trace, executable, tokens, typeName, fieldName, tokenName);
+			RenderTrace(traceLogs, trace, executable, tm, tokens, typeName, fieldName, tokenName, ruleName, stateLabel);
 
 			if (!availables.Contains(trace))
 			{
