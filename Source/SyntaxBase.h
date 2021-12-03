@@ -276,7 +276,7 @@ Parser
 				auto rootTrace = tm.PrepareTraceRoute();
 				OnEndOfInput(tokens, *executable.Obj(), tm, rootTrace);
 				// TODO: log errors instead of crashing (input not complete, unresolvable ambiguity)
-				CHECK_ERROR(tm.concurrentCount == 1, ERROR_MESSAGE_PREFIX L"Ambiguity not implemented.");
+				CHECK_ERROR(tm.concurrentCount == 1, ERROR_MESSAGE_PREFIX L"Ambiguity not fully resolved.");
 				CHECK_ERROR(executable->states[tm.concurrentTraces->Get(0)->state].endingState, ERROR_MESSAGE_PREFIX L"Input is incomplete.");
 
 				TReceiver receiver;
