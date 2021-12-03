@@ -31,13 +31,14 @@ namespace TestParser_Generated_TestObjects
 		WString caseName;
 
 		parser.OnEndOfInput.Add(
-			[&](List<RegexToken>& tokens, Executable& executable, TraceManager& tm, Trace*)
+			[&](List<RegexToken>& tokens, Executable& executable, TraceManager& tm, Trace* rootTrace)
 			{
 				LogTraceManager(
 					L"Generated-" + parserName,
 					caseName,
 					executable,
 					tm,
+					rootTrace,
 					tokens,
 					[=](vint32_t type) { return WString::Unmanaged(typeName((TClasses)type)); },
 					[=](vint32_t field) { return WString::Unmanaged(fieldName((TFields)field)); },
@@ -45,21 +46,20 @@ namespace TestParser_Generated_TestObjects
 					[=](vint32_t rule) { return WString::Unmanaged(ruleName(rule)); },
 					[=](vint32_t state) { return WString::Unmanaged(stateLabel(state)); }
 				);
-			});
 
-		parser.OnPreparedTraceRoute.Add(
-			[&](List<RegexToken>& tokens, Executable& executable, TraceManager& tm, Trace* rootTrace)
-			{
-				LogTraceExecution(
-					L"Generated-" + parserName,
-					caseName,
-					[=](vint32_t type) { return WString::Unmanaged(typeName((TClasses)type)); },
-					[=](vint32_t field) { return WString::Unmanaged(fieldName((TFields)field)); },
-					[=](vint32_t token) { return WString::Unmanaged(tokenId((TTokens)token)); },
-					[&](IAstInsReceiver& receiver)
-					{
-						tm.ExecuteTrace(rootTrace, receiver, tokens);
-					});
+				if (tm.concurrentCount == 1)
+				{
+					LogTraceExecution(
+						L"Generated-" + parserName,
+						caseName,
+						[=](vint32_t type) { return WString::Unmanaged(typeName((TClasses)type)); },
+						[=](vint32_t field) { return WString::Unmanaged(fieldName((TFields)field)); },
+						[=](vint32_t token) { return WString::Unmanaged(tokenId((TTokens)token)); },
+						[&](IAstInsReceiver& receiver)
+						{
+							tm.ExecuteTrace(rootTrace, receiver, tokens);
+						});
+				}
 			});
 
 		TEST_CATEGORY(L"Test " + parserName + L" Syntax")

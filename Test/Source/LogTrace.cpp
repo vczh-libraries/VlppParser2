@@ -116,7 +116,7 @@ FilePath LogTraceExecution(
 	const WString& parserName,
 	const WString& caseName,
 	TraceManager& tm,
-	Trace* trace,
+	Trace* rootTrace,
 	List<RegexToken>& tokens,
 	const Func<WString(vint32_t)>& typeName,
 	const Func<WString(vint32_t)>& fieldName,
@@ -125,7 +125,7 @@ FilePath LogTraceExecution(
 {
 	return LogTraceExecution(parserName, caseName, typeName, fieldName, tokenName, [&](IAstInsReceiver& receiver)
 	{
-		tm.ExecuteTrace(trace, receiver, tokens);
+		tm.ExecuteTrace(rootTrace, receiver, tokens);
 	});
 }
 
@@ -306,8 +306,8 @@ struct TraceTree
 
 	void AddChildTrace(
 		Trace* trace,
+		TraceManager& tm,
 		bool firstLevel,
-		Group<Trace*, Trace*>& nexts,
 		List<Trace*>& endTraces,
 		List<TraceTree*>& sendTraces
 	)
@@ -327,13 +327,12 @@ struct TraceTree
 			return;
 		}
 
-		vint index = nexts.Keys().IndexOf(trace);
-		if (index != -1)
+		vint childId = trace->successorFirst;
+		while (childId != -1)
 		{
-			for (auto childTrace : nexts.GetByIndex(index))
-			{
-				tree->AddChildTrace(childTrace, false, nexts, endTraces, sendTraces);
-			}
+			auto child = tm.GetTrace(childId);
+			tree->AddChildTrace(child, tm, false, endTraces, sendTraces);
+			childId = child->successorSiblingNext;
 		}
 	}
 
@@ -551,7 +550,7 @@ void RenderTraceTreeConnection(
 
 void RenderTraceTree(
 	Trace* rootTrace,
-	Group<Trace*, Trace*>& nexts,
+	TraceManager& tm,
 	Group<Trace*, WString>& traceLogs,
 	StreamWriter& writer
 )
@@ -570,7 +569,7 @@ void RenderTraceTree(
 
 		for (auto trace : startTraces)
 		{
-			root->AddChildTrace(trace, true, nexts, endTraces, sendTraces);
+			root->AddChildTrace(trace, tm, true, endTraces, sendTraces);
 		}
 		vint width = root->SetColumns(0);
 		vint depth = root->SetRows(-1) - 1;
@@ -724,6 +723,7 @@ FilePath LogTraceManager(
 	const WString& caseName,
 	Executable& executable,
 	TraceManager& tm,
+	Trace* rootTrace,
 	List<RegexToken>& tokens,
 	const Func<WString(vint32_t)>& typeName,
 	const Func<WString(vint32_t)>& fieldName,
@@ -733,11 +733,9 @@ FilePath LogTraceManager(
 )
 {
 	CHECK_ERROR(tm.concurrentCount > 0, L"Cannot log failed traces!");
-	Trace* rootTrace = nullptr;
-	Group<Trace*, Trace*> nexts;
 	Group<Trace*, WString> traceLogs;
 	{
-		SortedList<Trace*> availables;
+		SortedList<Trace*> logged;
 		List<Trace*> visited;
 
 		for (vint i = 0; i < tm.concurrentCount; i++)
@@ -748,9 +746,9 @@ FilePath LogTraceManager(
 		for (vint i = 0; i < visited.Count(); i++)
 		{
 			auto trace = visited[i];
-			if (!availables.Contains(trace))
+			if (!logged.Contains(trace))
 			{
-				availables.Add(trace);
+				logged.Add(trace);
 				RenderTrace(
 					traceLogs,
 					trace,
@@ -764,18 +762,7 @@ FilePath LogTraceManager(
 					ruleName,
 					stateLabel
 					);
-
-				if (trace->previous == -1)
-				{
-					CHECK_ERROR(rootTrace == nullptr, L"Impossible to have multiple root traces!");
-					rootTrace = trace;
-				}
-				else
-				{
-					auto previous = tm.GetTrace(trace->previous);
-					visited.Add(previous);
-					nexts.Add(previous, trace);
-				}
+				visited.Add(tm.GetTrace(trace->predecessor));
 			}
 		}
 	}
@@ -784,7 +771,7 @@ FilePath LogTraceManager(
 	auto outputFile = outputDir / (L"Trace[" + caseName + L"].txt");
 	auto content = GenerateToStream([&](StreamWriter& writer)
 	{
-		RenderTraceTree(rootTrace, nexts, traceLogs, writer);
+		RenderTraceTree(rootTrace, tm, traceLogs, writer);
 	});
 	File(outputFile).WriteAllText(content, true, BomEncoder::Utf8);
 	return outputFile;

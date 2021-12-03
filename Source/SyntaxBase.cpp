@@ -143,8 +143,13 @@ TraceManager
 			Trace* TraceManager::AllocateTrace()
 			{
 				auto trace = traces.Get(traces.Allocate());
-				trace->previous = -1;
-				trace->selectedNext = -1;
+
+				trace->predecessor = -1;
+				trace->successorFirst = -1;
+				trace->successorLast = -1;
+				trace->successorSiblingPrev = -1;
+				trace->successorSiblingNext = -1;
+
 				trace->state = -1;
 				trace->returnStack = -1;
 				trace->executedReturn = -1;
@@ -188,7 +193,7 @@ TraceManager::Input
 				auto newTrace = AllocateTrace();
 				AddTrace(newTrace);
 
-				newTrace->previous = trace->allocatedIndex;
+				newTrace->predecessor = trace->allocatedIndex;
 				newTrace->state = edgeDesc.toState;
 				newTrace->returnStack = trace->returnStack;
 				newTrace->byEdge = byEdge;
@@ -328,16 +333,31 @@ TraceManager::PrepareTraceRoute
 
 			Trace* TraceManager::PrepareTraceRoute()
 			{
-				CHECK_ERROR(concurrentCount == 1, L"vl::glr::automaton::TraceManager::PrepareTraceRoute()#Too many finite traces.");
-				auto trace = concurrentTraces->Get(0);
-				while (trace->previous != -1)
+				Trace* rootTrace = nullptr;
+				for (vint i = 0; i < concurrentCount; i++)
 				{
-					auto previous = GetTrace(trace->previous);
-					CHECK_ERROR(previous->selectedNext == -1, L"vl::glr::automaton::TraceManager::PrepareTraceRoute()#Trace::selectedNext has been assigned.");
-					previous->selectedNext = trace->allocatedIndex;
-					trace = previous;
+					auto trace = concurrentTraces->Get(i);
+					while (trace->predecessor != -1)
+					{
+						auto predecessor = GetTrace(trace->predecessor);
+						if (predecessor->successorFirst == -1)
+						{
+							predecessor->successorFirst = trace->allocatedIndex;
+							predecessor->successorLast = trace->allocatedIndex;
+						}
+						else
+						{
+							auto sibling = GetTrace(predecessor->successorLast);
+							sibling->successorSiblingNext = trace->allocatedIndex;
+							trace->successorSiblingPrev = sibling->allocatedIndex;
+							predecessor->successorLast = trace->allocatedIndex;
+						}
+						trace = predecessor;
+					}
+					CHECK_ERROR(rootTrace == nullptr, L"vl::glr::automaton::TraceManager::PrepareTraceRoute()#Impossible to have more than one root trace.");
+					rootTrace = trace;
 				}
-				return trace;
+				return rootTrace;
 			}
 
 /***********************************************************************
@@ -416,13 +436,14 @@ TraceManager::ExecuteTrace
 						}
 					}
 
-					if (trace->selectedNext == -1)
+					if (trace->successorFirst == -1)
 					{
 						trace = nullptr;
 					}
 					else
 					{
-						trace = GetTrace(trace->selectedNext);
+						CHECK_ERROR(trace->successorFirst == trace->successorLast, L"vl::glr::automaton::TraceManager::ExecuteTrace(Trace*, IAstInsReceiver&, List<RegexToken>&)#Ambiguous trace not implemented.");
+						trace = GetTrace(trace->successorFirst);
 					}
 				}
 

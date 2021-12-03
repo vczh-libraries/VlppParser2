@@ -152,8 +152,12 @@ Execution
 			struct Trace
 			{
 				vint	allocatedIndex;				// id of this Trace
-				vint	previous;					// id of the previous Trace
-				vint	selectedNext;				// id of the selected next Trace
+				vint	predecessor;				// id of the predecessor Trace
+				vint	successorFirst;				// (after finish parsing) id of the first successor Trace
+				vint	successorLast;				// (after finish parsing) id of the last successor Trace
+				vint	successorSiblingPrev;		// (after finish parsing) id of the previous successor Trace of predecessor
+				vint	successorSiblingNext;		// (after finish parsing) id of the next successor Trace of predecessor
+
 				vint	state;						// id of the current StateDesc
 				vint	returnStack;				// id of the current ReturnStack
 				vint	executedReturn;				// id of the executed ReturnDesc
@@ -229,7 +233,6 @@ Parser
 
 		public:
 			Event<Callback>							OnEndOfInput;
-			Event<Callback>							OnPreparedTraceRoute;
 
 			ParserBase(
 				Deleter _deleter,
@@ -269,13 +272,11 @@ Parser
 				}
 
 				tm.EndOfInput();
-				OnEndOfInput(tokens, *executable.Obj(), tm, nullptr);
+				auto rootTrace = tm.PrepareTraceRoute();
+				OnEndOfInput(tokens, *executable.Obj(), tm, rootTrace);
 				// TODO: log errors instead of crashing (input not complete, unresolvable ambiguity)
 				CHECK_ERROR(tm.concurrentCount == 1, errorMessage);
 				CHECK_ERROR(executable->states[tm.concurrentTraces->Get(0)->state].endingState, errorMessage);
-
-				auto rootTrace = tm.PrepareTraceRoute();
-				OnPreparedTraceRoute(tokens, *executable.Obj(), tm, rootTrace);
 
 				TReceiver receiver;
 				auto ast = tm.ExecuteTrace(rootTrace, receiver, tokens);

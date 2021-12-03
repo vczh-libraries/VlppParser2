@@ -58,11 +58,14 @@ namespace TestSyntax_TestObjects
 		}
 
 		tm.EndOfInput();
+		auto rootTrace = tm.PrepareTraceRoute();
+
 		LogTraceManager(
 			L"Calculator",
 			caseName,
 			executable,
 			tm,
+			rootTrace,
 			tokens,
 			[](vint32_t type) { return WString::Unmanaged(CalculatorTypeName((CalculatorClasses)type)); },
 			[](vint32_t field) { return WString::Unmanaged(CalculatorFieldName((CalculatorFields)field)); },
@@ -74,7 +77,6 @@ namespace TestSyntax_TestObjects
 		TEST_ASSERT(tm.concurrentCount == 1);
 		TEST_ASSERT(executable.states[tm.concurrentTraces->Get(0)->state].endingState);
 
-		auto rootTrace = tm.PrepareTraceRoute();
 		LogTraceExecution(
 			L"Calculator",
 			caseName,
