@@ -313,6 +313,7 @@ FilePath LogTraceManager(
 	const Func<WString(vint32_t)>& stateLabel
 )
 {
+	CHECK_ERROR(tm.concurrentCount > 0, L"Cannot log failed traces!");
 	Trace* rootTrace = nullptr;
 	Group<Trace*, Trace*> nexts;
 	Group<Trace*, WString> traceLogs;
