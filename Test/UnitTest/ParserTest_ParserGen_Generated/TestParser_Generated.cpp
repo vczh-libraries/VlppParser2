@@ -1,5 +1,7 @@
 #include "../../Source/Calculator/Generated/CalculatorExprAst_Json.h"
 #include "../../Source/Calculator/Generated/CalculatorModuleParser.h"
+#include "../../Source/IfElseAmbiguity/Generated/IfElseAmbiguityStatAst_Json.h"
+#include "../../Source/IfElseAmbiguity/Generated/IfElseAmbiguityModuleParser.h"
 #include "../../Source/LogTrace.h"
 
 extern WString GetTestParserInputPath(const WString& parserName);
@@ -101,5 +103,14 @@ TEST_FILE
 		&calculator::CalculatorTokenId,
 		&calculator::ModuleParserRuleName,
 		&calculator::ModuleParserStateLabel
+		);
+	TestParser<ifelseambiguity::ModuleParser, ifelseambiguity::json_visitor::StatAstVisitor>(
+		L"IfElseAmbiguity",
+		ifelseambiguity::ModuleParserStates::Module,
+		&ifelseambiguity::IfElseAmbiguityTypeName,
+		&ifelseambiguity::IfElseAmbiguityFieldName,
+		&ifelseambiguity::IfElseAmbiguityTokenId,
+		&ifelseambiguity::ModuleParserRuleName,
+		&ifelseambiguity::ModuleParserStateLabel
 		);
 }

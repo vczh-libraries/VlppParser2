@@ -1,0 +1,21 @@
+Do
+  ::= "do" ";" as DoStat
+  ;
+
+Block
+  ::= "{" { Stat:stats } "}" as BlockStat
+  ;
+
+If
+  ::= "if" "cond" "then" Stat:thenBranch "else" Stat:elseBranch as IfStat
+  ;
+
+Stat
+  ::= !Do
+  ::= !Block
+  ::= !If
+  ;
+
+Module
+  ::= Stat:stat as Module
+  ;

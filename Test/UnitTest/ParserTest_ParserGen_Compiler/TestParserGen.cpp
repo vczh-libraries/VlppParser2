@@ -28,6 +28,7 @@ TEST_FILE
 
 	List<ParserDef> parsersToLoad;
 	parsersToLoad.Add(ParserDef{ L"Calculator", L"ExprAst", L"Module" });
+	parsersToLoad.Add(ParserDef{ L"IfElseAmbiguity", L"StatAst", L"Module" });
 
 	for (auto&& [parserName, astName, ruleName] : parsersToLoad)
 	{
