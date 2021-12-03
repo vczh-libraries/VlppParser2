@@ -257,7 +257,8 @@ Parser
 			template<TStates State>
 			auto Parse(const WString& input, vint codeIndex = -1)
 			{
-				const wchar_t* errorMessage = L"vl::glr::ParserBase<...>::ParseWithReceiver<TReceiver2>(const WString&, TState, TReceiver2&, vint)#Error happens during parsing.";
+				#define ERROR_MESSAGE_PREFIX L"vl::glr::ParserBase<...>::ParseWithReceiver<TReceiver2>(const WString&, TState, TReceiver2&, vint)#"
+
 				TokenList tokens;
 				lexer->Parse(input, {}, codeIndex).ReadToEnd(tokens, deleter);
 
@@ -268,21 +269,23 @@ Parser
 					auto&& token = tokens[i];
 					tm.Input(i, token.token);
 					// TODO: log errors instead of crashing (failed to parse)
-					CHECK_ERROR(tm.concurrentCount > 0, errorMessage);
+					CHECK_ERROR(tm.concurrentCount > 0, ERROR_MESSAGE_PREFIX L"Error happens during parsing.");
 				}
 
 				tm.EndOfInput();
 				auto rootTrace = tm.PrepareTraceRoute();
 				OnEndOfInput(tokens, *executable.Obj(), tm, rootTrace);
 				// TODO: log errors instead of crashing (input not complete, unresolvable ambiguity)
-				CHECK_ERROR(tm.concurrentCount == 1, errorMessage);
-				CHECK_ERROR(executable->states[tm.concurrentTraces->Get(0)->state].endingState, errorMessage);
+				CHECK_ERROR(tm.concurrentCount == 1, ERROR_MESSAGE_PREFIX L"Ambiguity not implemented.");
+				CHECK_ERROR(executable->states[tm.concurrentTraces->Get(0)->state].endingState, ERROR_MESSAGE_PREFIX L"Input is incomplete.");
 
 				TReceiver receiver;
 				auto ast = tm.ExecuteTrace(rootTrace, receiver, tokens);
 				auto typedAst = ast.Cast<typename TStateTypes<State>::Type>();
-				CHECK_ERROR(typedAst, L"vl::glr::ParserBase<...>::Parse<State>(const WString&)#Unexpected type of the created AST.");
+				CHECK_ERROR(typedAst, ERROR_MESSAGE_PREFIX L"#Unexpected type of the created AST.");
 				return typedAst;
+
+				#undef ERROR_MESSAGE_PREFIX
 			}
 		};
 	}

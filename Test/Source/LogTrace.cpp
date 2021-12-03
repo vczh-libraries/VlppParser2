@@ -762,7 +762,10 @@ FilePath LogTraceManager(
 					ruleName,
 					stateLabel
 					);
-				visited.Add(tm.GetTrace(trace->predecessor));
+				if (trace->predecessor != -1)
+				{
+					visited.Add(tm.GetTrace(trace->predecessor));
+				}
 			}
 		}
 	}

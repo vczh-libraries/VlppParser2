@@ -351,11 +351,13 @@ TraceManager::PrepareTraceRoute
 							sibling->successorSiblingNext = trace->allocatedIndex;
 							trace->successorSiblingPrev = sibling->allocatedIndex;
 							predecessor->successorLast = trace->allocatedIndex;
+							goto FINISH_CURRENT_ROUTE;
 						}
 						trace = predecessor;
 					}
 					CHECK_ERROR(rootTrace == nullptr, L"vl::glr::automaton::TraceManager::PrepareTraceRoute()#Impossible to have more than one root trace.");
 					rootTrace = trace;
+				FINISH_CURRENT_ROUTE:;
 				}
 				return rootTrace;
 			}
