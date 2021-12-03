@@ -484,6 +484,7 @@ RenderTraceTree
 
 void RenderTraceTreeConnection(
 	TraceTree* tree,
+	Group<Trace*, WString>& traceLogs,
 	Array<TraceCell>& board,
 	vint depth,
 	vint width,
@@ -494,28 +495,41 @@ void RenderTraceTreeConnection(
 	StreamWriter& writer
 )
 {
-	if (tree->trace && !tree->endTrace)
+	if (tree->endTrace) return;
+	if (tree->trace)
 	{
 		if (tree->children.Count() == 0) return;
 		auto&& cell = board[tree->row * width + tree->column];
 		vint startRow = rowStarts[tree->row] + cell.rows + connectionOffset;
 		vint startColumn = columnStarts[tree->column];
 
+		vint beginRow = rowStarts[tree->row] + traceLogs[tree->trace].Count() + connectionOffset;
+		for (vint i = beginRow; i < startRow; i++)
+		{
+			buffer.Draw(i, startColumn, L'|');
+		}
+
 		vint maxColumn = startColumn;
 		for (auto child : tree->children)
 		{
-			if (child->endTrace) return;
-			vint endRow = rowStarts[child->row] - 1 + connectionOffset;
 			vint endColumn = columnStarts[child->column];
-			buffer.Draw(endRow - 1, endColumn, L'|');
-			buffer.Draw(endRow, endColumn, L'|');
 			if (maxColumn < endColumn) maxColumn = endColumn;
+
+			vint endRow = rowStarts[child->row] - 1 + connectionOffset;
+			if (endRow >= buffer.lines.Count()) endRow = buffer.lines.Count() - 1;
+			for (vint i = startRow + 1; i <= endRow; i++)
+			{
+				buffer.Draw(i, endColumn, L'|');
+			}
 		}
 
-		buffer.Draw(startRow, startColumn, L'|');
-		for (vint i = startColumn; i <= maxColumn; i++)
+		if (startRow < buffer.lines.Count() - 1)
 		{
-			buffer.Draw(startRow + 1, i, L'-');
+			buffer.Draw(startRow, startColumn, L'|');
+			for (vint i = startColumn; i <= maxColumn; i++)
+			{
+				buffer.Draw(startRow + 1, i, L'-');
+			}
 		}
 	}
 
@@ -523,6 +537,7 @@ void RenderTraceTreeConnection(
 	{
 		RenderTraceTreeConnection(
 			child.Obj(),
+			traceLogs,
 			board,
 			depth,
 			width,
@@ -583,7 +598,7 @@ void RenderTraceTree(
 		Array<vint> rowStarts(depth + 1);
 		Array<vint> columnStarts(width);
 
-		for (vint row = 0; row < depth; row++)
+		for (vint row = 0; row < depth + 1; row++)
 		{
 			vint maxRows = 0;
 			rowStarts[row] = bufferRows + row * rowPadding;
@@ -596,7 +611,10 @@ void RenderTraceTree(
 			{
 				board[row * width + column].rows = maxRows;
 			}
-			bufferRows += maxRows;
+			if (row < depth)
+			{
+				bufferRows += maxRows;
+			}
 		}
 
 		for (vint column = 0; column < width; column++)
@@ -643,6 +661,7 @@ void RenderTraceTree(
 
 		RenderTraceTreeConnection(
 			root.Obj(),
+			traceLogs,
 			board,
 			depth,
 			width,
