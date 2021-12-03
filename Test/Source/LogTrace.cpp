@@ -496,10 +496,13 @@ void RenderTraceTree(
 
 		vint bufferRows = 0;
 		vint bufferColumns = 0;
+		Array<vint> rowStarts(depth+1);
+		Array<vint> columnStarts(width);
 
 		for (vint row = 0; row < depth + 1; row++)
 		{
 			vint maxRows = 0;
+			rowStarts[row] = maxRows + row;
 			for (vint column = 0; column < width; column++)
 			{
 				vint rows = board[row * width + column].rows;
@@ -515,6 +518,7 @@ void RenderTraceTree(
 		for (vint column = 0; column < width; column++)
 		{
 			vint maxColumns = 0;
+			columnStarts[column] = maxColumns + column;
 			for (vint row = 0; row < depth + 1; row++)
 			{
 				vint columns = board[row * width + column].columns;
@@ -535,6 +539,27 @@ void RenderTraceTree(
 		bufferRows += connectionOffset + depth - 1;
 		bufferColumns += width - 1;
 		TraceBoardBuffer buffer(bufferRows, bufferColumns);
+
+		for (vint i = 0; i < board.Count(); i++)
+		{
+			auto&& cell = board[i];
+			if (cell.traceTree && cell.traceTree->row != depth)
+			{
+				auto trace = cell.traceTree->trace;
+				auto&& lines = traceLogs[trace];
+				vint x = rowStarts[cell.traceTree->row] + connectionOffset;
+				vint y = columnStarts[cell.traceTree->column];
+
+				for (vint u = 0; u < lines.Count(); u++)
+				{
+					auto&& line = lines[u];
+					for (vint v = 0; v < line.Length(); v++)
+					{
+						buffer.Set(x + u, y + v, line[v]);
+					}
+				}
+			}
+		}
 
 		for (auto&& line : buffer.lines)
 		{
