@@ -41,11 +41,14 @@ FilePath LogTraceExecution(
 FilePath LogTraceManager(
 	const WString& parserName,
 	const WString& caseName,
+	Executable& executable,
 	TraceManager& tm,
 	List<RegexToken>& tokens,
 	const Func<WString(vint32_t)>& typeName,
 	const Func<WString(vint32_t)>& fieldName,
-	const Func<WString(vint32_t)>& tokenName
+	const Func<WString(vint32_t)>& tokenName,
+	const Func<WString(vint32_t)>& ruleName,
+	const Func<WString(vint32_t)>& stateLabel
 	);
 
 template<typename TVisitor, typename T>

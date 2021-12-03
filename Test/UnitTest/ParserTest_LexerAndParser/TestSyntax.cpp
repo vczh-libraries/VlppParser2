@@ -61,11 +61,14 @@ namespace TestSyntax_TestObjects
 		LogTraceManager(
 			L"Calculator",
 			caseName,
+			executable,
 			tm,
 			tokens,
 			[](vint32_t type) { return WString::Unmanaged(CalculatorTypeName((CalculatorClasses)type)); },
 			[](vint32_t field) { return WString::Unmanaged(CalculatorFieldName((CalculatorFields)field)); },
-			[](vint32_t token) { return WString::Unmanaged(CalculatorTokenId((CalculatorTokens)token)); }
+			[](vint32_t token) { return WString::Unmanaged(CalculatorTokenId((CalculatorTokens)token)); },
+			[&](vint32_t rule) { return metadata.ruleNames[rule]; },
+			[&](vint32_t state) { return metadata.stateLabels[state]; }
 			);
 
 		TEST_ASSERT(tm.concurrentCount == 1);
