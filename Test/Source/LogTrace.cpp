@@ -274,6 +274,79 @@ void RenderTrace(
 RenderTraceTree
 ***********************************************************************/
 
+struct TraceTree
+{
+	bool					tokenTrace = false;
+	Trace*					trace = nullptr;
+	List<Ptr<TraceTree>>	children;
+
+	vint					column = -1;
+	vint					row = -1;
+
+	void AddChildTrace(Trace* trace, bool firstLevel, Group<Trace*, Trace*>& nexts, List<Trace*>& tokenTraces)
+	{
+		auto tree = MakePtr<TraceTree>();
+		tree->tokenTrace = trace->byInput >= Executable::TokenBegin;
+		tree->trace = trace;
+		children.Add(tree);
+
+		if (tree->tokenTrace)
+		{
+			if (!firstLevel && !tokenTraces.Contains(trace))
+			{
+				tokenTraces.Add(trace);
+			}
+		}
+		else
+		{
+			vint index = nexts.Keys().IndexOf(trace);
+			if (index != -1)
+			{
+				for (auto childTrace : nexts.GetByIndex(index))
+				{
+					tree->AddChildTrace(childTrace, false, nexts, tokenTraces);
+				}
+			}
+		}
+	}
+
+	vint SetColumns(vint start)
+	{
+		column = start;
+		vint current = start;
+		for (auto child : children)
+		{
+			current += child->SetColumns(current);
+		}
+		return current == start ? 1 : current - start;
+	}
+
+	vint SetRows(vint start)
+	{
+		if (tokenTrace) return 0;
+		row = start;
+		vint depth = 0;
+		for (auto child : children)
+		{
+			vint childDepth = child->SetRows(start + 1);
+			if (depth < childDepth) depth = childDepth;
+		}
+		return depth + 1;
+	}
+
+	void SetTokenTraceRows(vint rows)
+	{
+		if (tokenTrace)
+		{
+			row = rows;
+		}
+		for (auto child : children)
+		{
+			child->SetTokenTraceRows(rows);
+		}
+	}
+};
+
 void RenderTraceTree(
 	Trace* rootTrace,
 	Group<Trace*, Trace*>& nexts,
@@ -281,18 +354,23 @@ void RenderTraceTree(
 	StreamWriter& writer
 )
 {
-	while (true)
-	{
-		auto&& logs = traceLogs[rootTrace];
-		for (auto&& line : logs)
-		{
-			writer.WriteLine(line);
-		}
-		writer.WriteLine(L"");
+	List<Trace*> startTraces;
+	startTraces.Add(rootTrace);
 
-		vint index = nexts.Keys().IndexOf(rootTrace);
-		if (index == -1) break;
-		rootTrace = nexts.GetByIndex(index)[0];
+	while (startTraces.Count() > 0)
+	{
+		List<Trace*> endTraces;
+		auto root = MakePtr<TraceTree>();
+
+		for (auto trace : startTraces)
+		{
+			root->AddChildTrace(trace, true, nexts, endTraces);
+		}
+		root->SetColumns(0);
+		vint depth = root->SetRows(-1);
+		root->SetTokenTraceRows(depth);
+
+		CopyFrom(startTraces, endTraces);
 	}
 }
 
