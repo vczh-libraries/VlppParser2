@@ -484,7 +484,7 @@ void RenderTraceTree(
 		for (vint i = 0; i < board.Count(); i++)
 		{
 			auto&& cell = board[i];
-			if (cell.traceTree && cell.traceTree->row != depth)
+			if (cell.traceTree && !cell.traceTree->endTrace)
 			{
 				auto trace = cell.traceTree->trace;
 				auto&& lines = traceLogs[trace];
@@ -493,15 +493,17 @@ void RenderTraceTree(
 			}
 		}
 
+		vint columnPadding = 2;
+		vint rowPadding = 3;
 		vint bufferRows = 0;
 		vint bufferColumns = 0;
-		Array<vint> rowStarts(depth+1);
+		Array<vint> rowStarts(depth + 1);
 		Array<vint> columnStarts(width);
 
 		for (vint row = 0; row < depth + 1; row++)
 		{
 			vint maxRows = 0;
-			rowStarts[row] = maxRows + row;
+			rowStarts[row] = bufferRows + row * rowPadding;
 			for (vint column = 0; column < width; column++)
 			{
 				vint rows = board[row * width + column].rows;
@@ -517,7 +519,7 @@ void RenderTraceTree(
 		for (vint column = 0; column < width; column++)
 		{
 			vint maxColumns = 0;
-			columnStarts[column] = maxColumns + column;
+			columnStarts[column] = bufferColumns + column * columnPadding;
 			for (vint row = 0; row < depth + 1; row++)
 			{
 				vint columns = board[row * width + column].columns;
@@ -535,14 +537,14 @@ void RenderTraceTree(
 		{
 			connectionOffset = 5;
 		}
-		bufferRows += connectionOffset + depth - 1;
-		bufferColumns += width - 1;
+		bufferRows += connectionOffset + (depth - 1) * rowPadding;
+		bufferColumns += (width - 1) * columnPadding;
 		TraceBoardBuffer buffer(bufferRows, bufferColumns);
 
 		for (vint i = 0; i < board.Count(); i++)
 		{
 			auto&& cell = board[i];
-			if (cell.traceTree && cell.traceTree->row != depth)
+			if (cell.traceTree && !cell.traceTree->endTrace)
 			{
 				auto trace = cell.traceTree->trace;
 				auto&& lines = traceLogs[trace];
