@@ -37,33 +37,10 @@ TEST_FILE
 		CreateParserGenRuleSyntax(ruleSyntaxManager);
 		TEST_ASSERT(global.Errors().Count() == 0);
 		{
-			LogSyntaxWithPath(
-				typeSyntaxManager,
-				GetOutputDir(L"ParserGen") / L"NFA[1][ParserGen_TypeParser].txt",
-				typeName,
-				fieldName,
-				tokenName);
-
 			typeSyntaxManager.BuildCompactNFA();
 			TEST_ASSERT(global.Errors().Count() == 0);
-
-			LogSyntaxWithPath(
-				typeSyntaxManager,
-				GetOutputDir(L"ParserGen") / L"NFA[2][ParserGen_TypeParser].txt",
-				typeName,
-				fieldName,
-				tokenName);
-
 			typeSyntaxManager.BuildCrossReferencedNFA();
 			TEST_ASSERT(global.Errors().Count() == 0);
-
-			LogSyntaxWithPath(
-				typeSyntaxManager,
-				GetOutputDir(L"ParserGen") / L"NFA[3][ParserGen_TypeParser].txt",
-				typeName,
-				fieldName,
-				tokenName);
-
 			typeSyntaxManager.BuildAutomaton(ParserGenTokenCount, typeExecutable, typeMetadata);
 
 			LogAutomatonWithPath(
@@ -75,33 +52,10 @@ TEST_FILE
 				tokenName);
 		}
 		{
-			LogSyntaxWithPath(
-				ruleSyntaxManager,
-				GetOutputDir(L"ParserGen") / L"NFA[1][ParserGen_RuleParser].txt",
-				typeName,
-				fieldName,
-				tokenName);
-
 			ruleSyntaxManager.BuildCompactNFA();
 			TEST_ASSERT(global.Errors().Count() == 0);
-
-			LogSyntaxWithPath(
-				ruleSyntaxManager,
-				GetOutputDir(L"ParserGen") / L"NFA[2][ParserGen_RuleParser].txt",
-				typeName,
-				fieldName,
-				tokenName);
-
 			ruleSyntaxManager.BuildCrossReferencedNFA();
 			TEST_ASSERT(global.Errors().Count() == 0);
-
-			LogSyntaxWithPath(
-				ruleSyntaxManager,
-				GetOutputDir(L"ParserGen") / L"NFA[3][ParserGen_RuleParser].txt",
-				typeName,
-				fieldName,
-				tokenName);
-
 			ruleSyntaxManager.BuildAutomaton(ParserGenTokenCount, ruleExecutable, ruleMetadata);
 
 			LogAutomatonWithPath(
