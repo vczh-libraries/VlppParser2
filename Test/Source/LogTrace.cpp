@@ -590,7 +590,7 @@ void RenderTraceTree(
 			}
 		}
 
-		vint columnPadding = 2;
+		vint columnPadding = 4;
 		vint rowPadding = 3;
 		vint bufferRows = 0;
 		vint bufferColumns = 0;
@@ -676,24 +676,34 @@ void RenderTraceTree(
 
 		if (sendTos.Count() > 0)
 		{
-			vint max = 0;
 			for (auto [p, i] : indexed(sendPositions))
 			{
 				buffer.Set(0, p, L"[" + itow(sendTos[i]) + L"]");
 				buffer.Draw(1, p + 1, L'|');
 				buffer.Draw(2, p + 1, L'|');
-				if (max < p) max = p;
 			}
+
 			for (auto [p, i] : indexed(receivePositions))
 			{
 				buffer.Draw(2, p + 1, L'|');
 				buffer.Draw(3, p + 1, L'|');
 				buffer.Set(4, p, L"[" + itow(i) + L"]");
-				if (max < p) max = p;
 			}
-			for (vint i = 0; i <= max; i++)
+
+			for (auto [is, ir] : sendTos)
 			{
-				buffer.Draw(2, i + 1, L'-');
+				auto p1 = sendPositions[is] + 1;
+				auto p2 = receivePositions[ir] + 1;
+				if (p1 > p2)
+				{
+					auto t = p1;
+					p1 = p2;
+					p2 = t;
+				}
+				for (vint i = p1; i <= p2; i++)
+				{
+					buffer.Draw(2, i, L'-');
+				}
 			}
 		}
 
