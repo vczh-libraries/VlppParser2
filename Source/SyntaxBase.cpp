@@ -117,16 +117,17 @@ TraceManager
 				backupTraces = t;
 			}
 
-			void TraceManager::AddTraceToCollection(Trace* owner, Trace* element, TraceCollection(Trace::* collection), bool& firstElement)
+			void TraceManager::AddTraceToCollection(Trace* owner, Trace* element, TraceCollection(Trace::* collection))
 			{
 				auto&& ownerCollection = owner->*collection;
 				auto&& elementCollection = element->*collection;
+				CHECK_ERROR(elementCollection.owner == -1, L"vl::glr::automaton::TraceManager::AddTraceToCollection(Trace*, Trace*, TraceCollection(Trace::*), bool*)#Element has been added to another collection.");
+				elementCollection.owner = owner->allocatedIndex;
 
 				if (ownerCollection.first == -1)
 				{
 					ownerCollection.first = element->allocatedIndex;
 					ownerCollection.last = element->allocatedIndex;
-					firstElement = true;
 				}
 				else
 				{
@@ -135,7 +136,6 @@ TraceManager
 					siblingCollection.siblingNext = element->allocatedIndex;
 					elementCollection.siblingPrev = sibling->allocatedIndex;
 					ownerCollection.last = element->allocatedIndex;
-					firstElement = false;
 				}
 			}
 
@@ -170,11 +170,13 @@ TraceManager
 				trace->predecessors.last = -1;
 				trace->predecessors.siblingPrev = -1;
 				trace->predecessors.siblingNext = -1;
+				trace->predecessors.owner = -1;
 
 				trace->successors.first = -1;
 				trace->successors.last = -1;
 				trace->successors.siblingPrev = -1;
 				trace->successors.siblingNext = -1;
+				trace->successors.owner = -1;
 
 				trace->state = -1;
 				trace->returnStack = -1;
@@ -261,8 +263,7 @@ TraceManager::Input
 							r2 = rs2->previous;
 						}
 					MERGABLE_TRACE_FOUND:
-						bool firstElement = false;
-						AddTraceToCollection(candidate, trace, &Trace::predecessors, firstElement);
+						AddTraceToCollection(candidate, trace, &Trace::predecessors);
 					}
 				MERGABLE_TRACE_NOT_FOUND:;
 				}
@@ -407,24 +408,33 @@ TraceManager::PrepareTraceRoute
 			Trace* TraceManager::PrepareTraceRoute()
 			{
 				Trace* rootTrace = nullptr;
+				SortedList<Trace*> available;
+				List<Trace*> visited;
+
 				for (vint i = 0; i < concurrentCount; i++)
 				{
 					auto trace = concurrentTraces->Get(i);
-					while (trace->predecessors.first != -1)
+					visited.Add(trace);
+				}
+
+				for (vint i = 0; i < visited.Count(); i++)
+				{
+					auto visiting = visited[i];
+					if (available.Contains(visiting)) continue;
+
+					if (visiting->predecessors.first == -1)
 					{
-						CHECK_ERROR(trace->predecessors.last == trace->predecessors.first, L"vl::glr::automaton::TraceManager::PrepareTraceRoute()#Multiple to multiple predecessor-successor relation is not supported.");
-						auto predecessor = GetTrace(trace->predecessors.first);
-						bool firstElement = false;
-						AddTraceToCollection(predecessor, trace, &Trace::successors, firstElement);
-						if (!firstElement)
-						{
-							goto FINISH_CURRENT_ROUTE;
-						}
-						trace = predecessor;
+						CHECK_ERROR(rootTrace == nullptr, L"vl::glr::automaton::TraceManager::PrepareTraceRoute()#Impossible to have more than one root trace.");
+						rootTrace = visiting;
 					}
-					CHECK_ERROR(rootTrace == nullptr, L"vl::glr::automaton::TraceManager::PrepareTraceRoute()#Impossible to have more than one root trace.");
-					rootTrace = trace;
-				FINISH_CURRENT_ROUTE:;
+
+					auto predecessorId = visiting->predecessors.first;
+					while (predecessorId != -1)
+					{
+						auto predecessor = GetTrace(predecessorId);
+						AddTraceToCollection(predecessor, visiting, &Trace::successors);
+						predecessorId = predecessor->predecessors.siblingNext;
+					}
 				}
 				return rootTrace;
 			}

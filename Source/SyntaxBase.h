@@ -153,8 +153,10 @@ Execution
 			{
 				vint				first;						// first trace in the collection
 				vint				last;						// last trace in the collection
+
 				vint				siblingPrev;				// previous trace in the collection of the owned trace
 				vint				siblingNext;				// next trace in the collection of the owned trace
+				vint				owner;						// owner of the collection
 			};
 
 			struct Trace
@@ -186,7 +188,7 @@ Execution
 				void								BeginSwap();
 				void								AddTrace(Trace* trace);
 				void								EndSwap();
-				void								AddTraceToCollection(Trace* owner, Trace* element, TraceCollection(Trace::* collection), bool& firstElement);
+				void								AddTraceToCollection(Trace* owner, Trace* element, TraceCollection(Trace::* collection));
 
 				Trace*								WalkAlongSingleEdge(vint previousTokenIndex, vint currentTokenIndex, vint input, Trace* trace, vint byEdge, EdgeDesc& edgeDesc);
 				void								WalkAlongTokenEdges(vint previousTokenIndex, vint currentTokenIndex, vint input, Trace* trace, EdgeArray& edgeArray);

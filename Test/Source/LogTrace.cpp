@@ -327,12 +327,12 @@ struct TraceTree
 			return;
 		}
 
-		vint childId = trace->successors.first;
-		while (childId != -1)
+		vint successorId = trace->successors.first;
+		while (successorId != -1)
 		{
-			auto child = tm.GetTrace(childId);
-			tree->AddChildTrace(child, tm, false, endTraces, sendTraces);
-			childId = child->successors.siblingNext;
+			auto successor = tm.GetTrace(successorId);
+			tree->AddChildTrace(successor, tm, false, endTraces, sendTraces);
+			successorId = successor->successors.siblingNext;
 		}
 	}
 
@@ -747,11 +747,7 @@ FilePath LogTraceManager(
 	{
 		SortedList<Trace*> logged;
 		List<Trace*> visited;
-
-		for (vint i = 0; i < tm.concurrentCount; i++)
-		{
-			visited.Add(tm.concurrentTraces->Get(i));
-		}
+		visited.Add(rootTrace);
 
 		for (vint i = 0; i < visited.Count(); i++)
 		{
@@ -772,9 +768,13 @@ FilePath LogTraceManager(
 					ruleName,
 					stateLabel
 					);
-				if (trace->predecessor != -1)
+
+				vint successorId = trace->successors.first;
+				while (successorId != -1)
 				{
-					visited.Add(tm.GetTrace(trace->predecessor));
+					auto successor = tm.GetTrace(successorId);
+					visited.Add(successor);
+					successorId = successor->successors.siblingNext;
 				}
 			}
 		}
