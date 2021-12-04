@@ -227,10 +227,11 @@ TraceManager::PrepareTraceRoute
 
 			Trace* TraceManager::PrepareTraceRoute()
 			{
+				if (state == TraceManagerState::PreparedTraceRoute) return rootTrace;
 				CHECK_ERROR(state == TraceManagerState::Finished, L"vl::glr::automaton::TraceManager::PrepareTraceRoute()#Wrong timing to call this function.");
 				state = TraceManagerState::PreparedTraceRoute;
 
-				Trace* rootTrace = nullptr;
+				Trace* rootTraceCandidate = nullptr;
 				SortedList<Trace*> available;
 				List<Trace*> visited;
 
@@ -248,8 +249,8 @@ TraceManager::PrepareTraceRoute
 
 					if (visiting->predecessors.first == -1)
 					{
-						CHECK_ERROR(rootTrace == nullptr, L"vl::glr::automaton::TraceManager::PrepareTraceRoute()#Impossible to have more than one root trace.");
-						rootTrace = visiting;
+						CHECK_ERROR(rootTraceCandidate == nullptr, L"vl::glr::automaton::TraceManager::PrepareTraceRoute()#Impossible to have more than one root trace.");
+						rootTraceCandidate = visiting;
 					}
 
 					auto predecessorId = visiting->predecessors.first;
@@ -267,6 +268,8 @@ TraceManager::PrepareTraceRoute
 					auto trace = concurrentTraces->Get(i);
 					FillAmbiguityInfoForPredecessorTraces(trace);
 				}
+
+				rootTrace = rootTraceCandidate;
 				return rootTrace;
 			}
 		}

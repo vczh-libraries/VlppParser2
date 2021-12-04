@@ -172,6 +172,12 @@ Execution
 
 			struct RuntimeRouting
 			{
+				vint					expectedVisitCount = -1;	// the number of visits to complete a whole execution, could be greater than 1 if there ambiguity happens
+																	// (filled by PrepareTraceRoute)
+
+				vint					visitedCount = -1;			// (visitedCount - baseVisitCount) is the number of visiting of the current execution
+																	// visitedCount < baseVisitCount means this member has not been initialized therefore it means 0
+																	// (filled by ExecuteTrace)
 			};
 
 			struct Trace
@@ -193,7 +199,8 @@ Execution
 																	// (filled by PrepareTraceRoute)
 
 				RuntimeRouting			runtimeRouting;				// a data structure guiding instruction execution when a trace need to be executed multiple times
-																	// (filled by ExecuteTrace)
+																	// this member is useful when it has multiple predecessors
+																	// or its only predecessor has multiple successors
 			};
 
 			enum class TraceManagerState
@@ -221,8 +228,13 @@ Execution
 				Executable&							executable;
 				AllocateOnly<ReturnStack>			returnStacks;
 				AllocateOnly<Trace>					traces;
+
 				collections::List<Trace*>			traces1;
 				collections::List<Trace*>			traces2;
+
+				Trace*								rootTrace = nullptr;
+				vint								maxTraceVisitCount = 0;
+				vint								baseVisitCount = 0;
 
 				void								BeginSwap();
 				void								AddTrace(Trace* trace);

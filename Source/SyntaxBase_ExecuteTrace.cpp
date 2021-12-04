@@ -48,6 +48,8 @@ TraceManager::ExecuteTrace
 			{
 				CHECK_ERROR(state == TraceManagerState::PreparedTraceRoute, L"vl::glr::automaton::TraceManager::ExecuteTrace(Trace*, IAstInsReceiver&, List<RegexToken>&)#Wrong timing to call this function.");
 
+				baseVisitCount += maxTraceVisitCount;
+
 				TraceManagerSubmitter submitter;
 				submitter.receiver = &receiver;
 

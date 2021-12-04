@@ -178,6 +178,10 @@ TraceManager
 				concurrentTraces = &traces1;
 				backupTraces = &traces2;
 
+				rootTrace = nullptr;
+				maxTraceVisitCount = 0;
+				baseVisitCount = 0;
+
 				auto trace = AllocateTrace();
 				trace->state = startState;
 				concurrentCount = 1;
