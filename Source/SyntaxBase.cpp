@@ -398,10 +398,19 @@ TraceManager::PrepareTraceRoute
 					insLists.edgeInsBeforeInput = edgeDesc.insBeforeInput;
 					insLists.edgeInsAfterInput = edgeDesc.insAfterInput;
 				}
+				else
+				{
+					insLists.edgeInsBeforeInput = {};
+					insLists.edgeInsAfterInput = {};
+				}
 				if (trace->executedReturn != -1)
 				{
 					auto& returnDesc = executable.returns[trace->executedReturn];
 					insLists.returnInsAfterInput = returnDesc.insAfterInput;
+				}
+				else
+				{
+					insLists.returnInsAfterInput = {};
 				}
 
 				insLists.c1 = insLists.edgeInsBeforeInput.count;
@@ -468,7 +477,7 @@ TraceManager::PrepareTraceRoute
 					if (trace->predecessors.first != trace->predecessors.last)
 					{
 						auto& ambiguity = FillAmbiguityInfoForMergingTrace(trace);
-						for (vint i = instruction; i > ambiguity.insEndObject; i++)
+						for (vint i = instruction; i > ambiguity.insEndObject; i--)
 						{
 							if (RunInstruction(i, insLists, objectCount))
 							{
