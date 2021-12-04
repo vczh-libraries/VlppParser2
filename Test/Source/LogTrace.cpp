@@ -359,9 +359,13 @@ struct TraceTree
 		vint current = start;
 		for (auto child : children)
 		{
-			//if (child->column == -1 || child->column > current)
+			if (child->column == -1 || child->column > current)
 			{
 				current += child->SetColumns(current);
+			}
+			else
+			{
+				current += 1;
 			}
 		}
 		return current == start ? 1 : current - start;
@@ -536,10 +540,31 @@ void RenderTraceTreeConnection(
 			if (maxColumn < endColumn) maxColumn = endColumn;
 
 			vint endRow = rowStarts[child->row] - 1 + connectionOffset;
-			if (endRow >= buffer.lines.Count()) endRow = buffer.lines.Count() - 1;
-			for (vint i = startRow + 1; i <= endRow; i++)
+			for (vint i = startRow + 1; i < endRow; i++)
 			{
-				buffer.Draw(i, endColumn, L'|');
+				if (i >= buffer.lines.Count()) break;
+				buffer.Draw(i, startColumn, L'|');
+			}
+
+			if (endRow - 1 < buffer.lines.Count())
+			{
+				vint c1 = startColumn;
+				vint c2 = endColumn;
+				if (c1 > c2)
+				{
+					vint t = c1;
+					c1 = c2;
+					c2 = t;
+				}
+				for (vint i = c1; i <= c2; i++)
+				{
+					buffer.Draw(endRow - 1, i, L'-');
+				}
+			}
+
+			if (endRow < buffer.lines.Count())
+			{
+				buffer.Draw(endRow, endColumn, L'|');
 			}
 		}
 
