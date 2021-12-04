@@ -240,7 +240,7 @@ Execution
 				bool								RunInstruction(vint instruction, TraceInsLists& insLists, vint& objectCount);
 				void								FindBalancedBeginObject(Trace*& trace, vint& instruction, vint& objectCount);
 				TraceAmbiguity&						FillAmbiguityInfoForMergingTrace(Trace* trace);
-				void								FillAmbiguityInfoForPrecedenceTraces(Trace* trace);
+				void								FillAmbiguityInfoForPredecessorTraces(Trace* trace);
 			public:
 				TraceManager(Executable& _executable);
 

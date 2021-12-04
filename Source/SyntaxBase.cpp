@@ -506,6 +506,7 @@ TraceManager::PrepareTraceRoute
 					return trace->ambiguity;
 				}
 
+				CHECK_ERROR(trace->predecessors.first != trace->predecessors.last, L"This function is not allowed to run on non-merging traces.");
 				TraceInsLists insLists;
 				ReadInstructionList(trace, insLists);
 
@@ -520,10 +521,53 @@ TraceManager::PrepareTraceRoute
 					}
 				}
 				CHECK_ERROR(insEndObject != -1, ERROR_MESSAGE_PREFIX L"Cannot find EndObject instruction in the merging trace.");
+
+				vint objectCount = 1;
+				for (vint i = insEndObject - 1; i >= 0; i--)
+				{
+					if (RunInstruction(i, insLists, objectCount))
+					{
+						CHECK_FAIL(ERROR_MESSAGE_PREFIX L"BeginObject for the EndObject in the merging trace is impossible to be in the same trace.");
+					}
+				}
+
+				vint insBeginObject = -1;
+				vint traceBeginObject = -1;
+
+				vint predecessorId = trace->predecessors.first;
+				while (predecessorId != -1)
+				{
+					auto predecessor = GetTrace(predecessorId);
+					{
+						TraceInsLists branchInsLists;
+						ReadInstructionList(predecessor, branchInsLists);
+
+						auto branchTrace = predecessor;
+						vint branchInstruction = branchInsLists.c3 - 1;
+						vint branchObjectCount = objectCount;
+						FindBalancedBeginObject(branchTrace, branchInstruction, branchObjectCount);
+
+						if (traceBeginObject == -1)
+						{
+							traceBeginObject = branchTrace->allocatedIndex;
+							insBeginObject = branchInstruction;
+						}
+						else
+						{
+							CHECK_ERROR(traceBeginObject == branchTrace->allocatedIndex && insBeginObject == branchInstruction, ERROR_MESSAGE_PREFIX L"BeginObject searched from different branches are not the same.");
+						}
+					}
+					predecessorId = predecessor->predecessors.siblingNext;
+				}
+
+				trace->ambiguity.insEndObject = insEndObject;
+				trace->ambiguity.insBeginObject = insBeginObject;
+				trace->ambiguity.traceBeginObject = traceBeginObject;
+				return trace->ambiguity;
 #undef ERROR_MESSAGE_PREFIX
 			}
 
-			void TraceManager::FillAmbiguityInfoForPrecedenceTraces(Trace* trace)
+			void TraceManager::FillAmbiguityInfoForPredecessorTraces(Trace* trace)
 			{
 			}
 
@@ -567,7 +611,7 @@ TraceManager::PrepareTraceRoute
 				for (vint i = 0; i < concurrentCount; i++)
 				{
 					auto trace = concurrentTraces->Get(i);
-					FillAmbiguityInfoForPrecedenceTraces(trace);
+					FillAmbiguityInfoForPredecessorTraces(trace);
 				}
 				return rootTrace;
 			}
