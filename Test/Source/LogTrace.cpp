@@ -169,6 +169,27 @@ void RenderTrace(
 			}
 		}
 
+		{
+			bool printVisitCount = false;
+			if (trace->predecessors.first != trace->predecessors.last)
+			{
+				printVisitCount = true;
+			}
+			else if (trace->predecessors.first != -1)
+			{
+				auto predecessor = tm.GetTrace(trace->predecessors.first);
+				if (predecessor->successors.first != predecessor->successors.last)
+				{
+					printVisitCount = true;
+				}
+			}
+
+			if (printVisitCount)
+			{
+				writer.WriteLine(L"  <expected visits: " + itow(trace->runtimeRouting.expectedVisitCount) + L">");
+			}
+		}
+
 		writer.WriteLine(stateLabel((vint32_t)trace->state));
 
 		vint c1 = 0, c2 = 0;
