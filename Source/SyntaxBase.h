@@ -204,6 +204,16 @@ Execution
 				PreparedTraceRoute,
 			};
 
+			struct TraceInsLists
+			{
+				InstructionArray					edgeInsBeforeInput;
+				InstructionArray					edgeInsAfterInput;
+				InstructionArray					returnInsAfterInput;
+				vint								c1;
+				vint								c2;
+				vint								c3;
+			};
+
 			class TraceManager : public Object
 			{
 			protected:
@@ -225,8 +235,12 @@ Execution
 				void								WalkAlongLeftrecEdges(vint previousTokenIndex, vint currentTokenIndex, Trace* trace, EdgeArray& edgeArray);
 				void								WalkAlongEndingEdges(vint previousTokenIndex, vint currentTokenIndex, Trace* trace, EdgeArray& edgeArray);
 
-				bool								SearchSingleTraceForBeginObject(Trace*& trace, vint& instruction, vint& objectCount);
-				TraceAmbiguity&						FillAmbiguityInfo(Trace* trace);
+				void								ReadInstructionList(Trace* trace, TraceInsLists& insLists);
+				AstIns&								ReadInstruction(vint instruction, TraceInsLists& insLists);
+				bool								RunInstruction(vint instruction, TraceInsLists& insLists, vint& objectCount);
+				void								FindBalancedBeginObject(Trace*& trace, vint& instruction, vint& objectCount);
+				TraceAmbiguity&						FillAmbiguityInfoForMergingTrace(Trace* trace);
+				void								FillAmbiguityInfoForPrecedenceTraces(Trace* trace);
 			public:
 				TraceManager(Executable& _executable);
 

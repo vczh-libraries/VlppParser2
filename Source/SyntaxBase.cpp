@@ -390,74 +390,141 @@ TraceManager::Input
 TraceManager::PrepareTraceRoute
 ***********************************************************************/
 
-			bool TraceManager::SearchSingleTraceForBeginObject(Trace*& trace, vint& instruction, vint& objectCount)
+			void TraceManager::ReadInstructionList(Trace* trace, TraceInsLists& insLists)
 			{
-#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::SearchSingleTraceForBeginObject(Trace*&, vint&, vint&)#"
-				InstructionArray edgeInsBeforeInput, edgeInsAfterInput, returnInsAfterInput;
 				if (trace->byEdge != -1)
 				{
 					auto& edgeDesc = executable.edges[trace->byEdge];
-					edgeInsBeforeInput = edgeDesc.insBeforeInput;
-					edgeInsAfterInput = edgeDesc.insAfterInput;
+					insLists.edgeInsBeforeInput = edgeDesc.insBeforeInput;
+					insLists.edgeInsAfterInput = edgeDesc.insAfterInput;
 				}
 				if (trace->executedReturn != -1)
 				{
 					auto& returnDesc = executable.returns[trace->executedReturn];
-					returnInsAfterInput = returnDesc.insAfterInput;
+					insLists.returnInsAfterInput = returnDesc.insAfterInput;
 				}
 
-				vint c1 = edgeInsBeforeInput.count;
-				vint c2 = c1 + edgeInsAfterInput.count;
-				vint c3 = c2 + returnInsAfterInput.count;
-				if (instruction == -1) instruction = c3;
+				insLists.c1 = insLists.edgeInsBeforeInput.count;
+				insLists.c2 = insLists.c1 + insLists.edgeInsAfterInput.count;
+				insLists.c3 = insLists.c2 + insLists.returnInsAfterInput.count;
+			}
 
+			AstIns& TraceManager::ReadInstruction(vint instruction, TraceInsLists& insLists)
+			{
+#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::ReadInstruction(vint, TraceInsLists&)#"
+				CHECK_ERROR(0 <= instruction && instruction <= insLists.c3, ERROR_MESSAGE_PREFIX L"Instruction index out of range.");
+
+				vint insRef = -1;
+				if (instruction < insLists.c1)
+				{
+					insRef = insLists.edgeInsBeforeInput.start + instruction;
+				}
+				else if (instruction < insLists.c2)
+				{
+					insRef = insLists.edgeInsAfterInput.start + (instruction - insLists.c1);
+				}
+				else if (instruction < insLists.c3)
+				{
+					insRef = insLists.returnInsAfterInput.start + (instruction - insLists.c2);
+				}
+				else
+				{
+					CHECK_FAIL(ERROR_MESSAGE_PREFIX L"Instruction index out of range.");
+				}
+
+				return executable.instructions[insRef];
+#undef ERROR_MESSAGE_PREFIX
+			}
+
+			bool TraceManager::RunInstruction(vint instruction, TraceInsLists& insLists, vint& objectCount)
+			{
+#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::SearchSingleTraceForBeginObject(Trace*&, vint&, vint&)#"
+				auto& ins = ReadInstruction(instruction, insLists);
+				switch (ins.type)
+				{
+				case AstInsType::EndObject:
+					objectCount++;
+					break;
+				case AstInsType::ReopenObject:
+				case AstInsType::BeginObject:
+				case AstInsType::BeginObjectLeftRecursive:
+					CHECK_ERROR(objectCount > 0, ERROR_MESSAGE_PREFIX L"Encountered unbalanced instructions.");
+					objectCount--;
+					break;
+				}
+
+				return objectCount == 0 && (ins.type == AstInsType::BeginObject || ins.type == AstInsType::BeginObjectLeftRecursive);
+#undef ERROR_MESSAGE_PREFIX
+			}
+
+			void TraceManager::FindBalancedBeginObject(Trace*& trace, vint& instruction, vint& objectCount)
+			{
+#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::FindBalancedBeginObject(Trace*&, vint&, vint&)#"
 				while (true)
 				{
-					instruction--;
-					if (instruction < 0)
-					{
-						return false;
-					}
+					TraceInsLists insLists;
+					ReadInstructionList(trace, insLists);
 
-					vint insRef = -1;
-					if (instruction < c1)
+					if (trace->predecessors.first != trace->predecessors.last)
 					{
-						insRef = edgeInsBeforeInput.start + instruction;
-					}
-					else if (instruction < c2)
-					{
-						insRef = edgeInsAfterInput.start + (instruction - c1);
-					}
-					else if (instruction < c3)
-					{
-						insRef = returnInsAfterInput.start + (instruction - c2);
+						auto& ambiguity = FillAmbiguityInfoForMergingTrace(trace);
+						for (vint i = instruction; i > ambiguity.insEndObject; i++)
+						{
+							if (RunInstruction(i, insLists, objectCount))
+							{
+								instruction = i;
+								return;
+							}
+						}
+
+						trace = GetTrace(ambiguity.traceBeginObject);
+						instruction = ambiguity.insBeginObject - 1;
 					}
 					else
 					{
-						CHECK_FAIL(ERROR_MESSAGE_PREFIX L"Instruction index out of range.");
-					}
+						for (vint i = instruction; i >= 0; i--)
+						{
+							if (RunInstruction(i, insLists, objectCount))
+							{
+								instruction = i;
+								return;
+							}
+						}
 
-					auto& ins = executable.instructions[insRef];
-					switch (ins.type)
-					{
-					case AstInsType::EndObject:
-						objectCount++;
-						break;
-					case AstInsType::ReopenObject:
-					case AstInsType::BeginObject:
-					case AstInsType::BeginObjectLeftRecursive:
-						CHECK_ERROR(objectCount > 0, ERROR_MESSAGE_PREFIX L"Encountered unbalanced instructions.");
-						objectCount--;
-						break;
-					}
-
-					if (objectCount == 0 && (ins.type == AstInsType::BeginObject || ins.type == AstInsType::BeginObjectLeftRecursive))
-					{
-						return true;
+						CHECK_ERROR(trace->predecessors.first != -1, ERROR_MESSAGE_PREFIX L"Encountered unbalanced instructions.");
+						trace = GetTrace(trace->predecessors.first);
 					}
 				}
-				return false;
 #undef ERROR_MESSAGE_PREFIX
+			}
+
+			TraceAmbiguity& TraceManager::FillAmbiguityInfoForMergingTrace(Trace* trace)
+			{
+#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::SearchSingleTraceForBeginObject(Trace*&, vint&, vint&)#"
+				if (trace->ambiguity.insEndObject != -1)
+				{
+					return trace->ambiguity;
+				}
+
+				TraceInsLists insLists;
+				ReadInstructionList(trace, insLists);
+
+				vint insEndObject = -1;
+				for (vint i = 0; i < insLists.c3; i++)
+				{
+					auto& ins = ReadInstruction(i, insLists);
+					if (ins.type == AstInsType::EndObject)
+					{
+						insEndObject = i;
+						break;
+					}
+				}
+				CHECK_ERROR(insEndObject != -1, ERROR_MESSAGE_PREFIX L"Cannot find EndObject instruction in the merging trace.");
+#undef ERROR_MESSAGE_PREFIX
+			}
+
+			void TraceManager::FillAmbiguityInfoForPrecedenceTraces(Trace* trace)
+			{
 			}
 
 			Trace* TraceManager::PrepareTraceRoute()
@@ -495,6 +562,12 @@ TraceManager::PrepareTraceRoute
 						predecessorId = predecessor->predecessors.siblingNext;
 						visited.Add(predecessor);
 					}
+				}
+
+				for (vint i = 0; i < concurrentCount; i++)
+				{
+					auto trace = concurrentTraces->Get(i);
+					FillAmbiguityInfoForPrecedenceTraces(trace);
 				}
 				return rootTrace;
 			}
