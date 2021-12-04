@@ -156,7 +156,6 @@ Execution
 
 				vint				siblingPrev;				// previous trace in the collection of the owned trace
 				vint				siblingNext;				// next trace in the collection of the owned trace
-				vint				owner;						// owner of the collection
 			};
 
 			struct Trace

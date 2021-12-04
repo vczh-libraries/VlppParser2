@@ -121,8 +121,6 @@ TraceManager
 			{
 				auto&& ownerCollection = owner->*collection;
 				auto&& elementCollection = element->*collection;
-				CHECK_ERROR(elementCollection.owner == -1, L"vl::glr::automaton::TraceManager::AddTraceToCollection(Trace*, Trace*, TraceCollection(Trace::*), bool*)#Element has been added to another collection.");
-				elementCollection.owner = owner->allocatedIndex;
 
 				if (ownerCollection.first == -1)
 				{
@@ -170,13 +168,11 @@ TraceManager
 				trace->predecessors.last = -1;
 				trace->predecessors.siblingPrev = -1;
 				trace->predecessors.siblingNext = -1;
-				trace->predecessors.owner = -1;
 
 				trace->successors.first = -1;
 				trace->successors.last = -1;
 				trace->successors.siblingPrev = -1;
 				trace->successors.siblingNext = -1;
-				trace->successors.owner = -1;
 
 				trace->state = -1;
 				trace->returnStack = -1;
@@ -264,6 +260,7 @@ TraceManager::Input
 						}
 					MERGABLE_TRACE_FOUND:
 						AddTraceToCollection(candidate, trace, &Trace::predecessors);
+						return nullptr;
 					}
 				MERGABLE_TRACE_NOT_FOUND:;
 				}
