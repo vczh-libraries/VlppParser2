@@ -460,11 +460,11 @@ TraceManager::PrepareTraceRoute
 			void TraceManager::FindBalancedBeginObject(Trace*& trace, vint& instruction, vint& objectCount)
 			{
 #define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::FindBalancedBeginObject(Trace*&, vint&, vint&)#"
+				TraceInsLists insLists;
+				ReadInstructionList(trace, insLists);
+
 				while (true)
 				{
-					TraceInsLists insLists;
-					ReadInstructionList(trace, insLists);
-
 					if (trace->predecessors.first != trace->predecessors.last)
 					{
 						auto& ambiguity = FillAmbiguityInfoForMergingTrace(trace);
@@ -478,6 +478,7 @@ TraceManager::PrepareTraceRoute
 						}
 
 						trace = GetTrace(ambiguity.traceBeginObject);
+						ReadInstructionList(trace, insLists);
 						instruction = ambiguity.insBeginObject - 1;
 					}
 					else
@@ -493,6 +494,8 @@ TraceManager::PrepareTraceRoute
 
 						CHECK_ERROR(trace->predecessors.first != -1, ERROR_MESSAGE_PREFIX L"Encountered unbalanced instructions.");
 						trace = GetTrace(trace->predecessors.first);
+						ReadInstructionList(trace, insLists);
+						instruction = insLists.c3 - 1;
 					}
 				}
 #undef ERROR_MESSAGE_PREFIX
