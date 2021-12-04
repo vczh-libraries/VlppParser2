@@ -609,6 +609,26 @@ void RenderTraceTree(
 
 	while (startTraces.Count() > 0)
 	{
+		vint minWidthDueToConnection = 0;
+		if (sendTos.Count() > 0)
+		{
+			for (auto p : sendPositions)
+			{
+				if (minWidthDueToConnection < p)
+				{
+					minWidthDueToConnection = p;
+				}
+			}
+			for (auto p : receivePositions)
+			{
+				if (minWidthDueToConnection < p)
+				{
+					minWidthDueToConnection = p;
+				}
+			}
+			minWidthDueToConnection += 5;
+		}
+
 		List<Trace*> endTraces;
 		List<TraceTree*> sendTraces;
 		auto root = MakePtr<TraceTree>();
@@ -685,7 +705,10 @@ void RenderTraceTree(
 		}
 		bufferRows += connectionOffset + (depth - 1) * rowPadding;
 		bufferColumns += (width - 1) * columnPadding;
-		TraceBoardBuffer buffer(bufferRows, bufferColumns);
+		TraceBoardBuffer buffer(
+			bufferRows,
+			(minWidthDueToConnection > bufferColumns ? minWidthDueToConnection : bufferColumns)
+			);
 
 		for (vint i = 0; i < board.Count(); i++)
 		{
