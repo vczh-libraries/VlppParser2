@@ -224,6 +224,9 @@ Execution
 				void								WalkAlongEpsilonEdges(vint previousTokenIndex, vint currentTokenIndex, Trace* trace);
 				void								WalkAlongLeftrecEdges(vint previousTokenIndex, vint currentTokenIndex, Trace* trace, EdgeArray& edgeArray);
 				void								WalkAlongEndingEdges(vint previousTokenIndex, vint currentTokenIndex, Trace* trace, EdgeArray& edgeArray);
+
+				bool								SearchSingleTraceForBeginObject(Trace*& trace, vint& instruction, vint& objectCount);
+				TraceAmbiguity&						FillAmbiguityInfo(Trace* trace);
 			public:
 				TraceManager(Executable& _executable);
 

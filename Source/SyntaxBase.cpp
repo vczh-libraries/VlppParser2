@@ -390,6 +390,76 @@ TraceManager::Input
 TraceManager::PrepareTraceRoute
 ***********************************************************************/
 
+			bool TraceManager::SearchSingleTraceForBeginObject(Trace*& trace, vint& instruction, vint& objectCount)
+			{
+#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::SearchSingleTraceForBeginObject(Trace*&, vint&, vint&)#"
+				InstructionArray edgeInsBeforeInput, edgeInsAfterInput, returnInsAfterInput;
+				if (trace->byEdge != -1)
+				{
+					auto& edgeDesc = executable.edges[trace->byEdge];
+					edgeInsBeforeInput = edgeDesc.insBeforeInput;
+					edgeInsAfterInput = edgeDesc.insAfterInput;
+				}
+				if (trace->executedReturn != -1)
+				{
+					auto& returnDesc = executable.returns[trace->executedReturn];
+					returnInsAfterInput = returnDesc.insAfterInput;
+				}
+
+				vint c1 = edgeInsBeforeInput.count;
+				vint c2 = c1 + edgeInsAfterInput.count;
+				vint c3 = c2 + returnInsAfterInput.count;
+				if (instruction == -1) instruction = c3;
+
+				while (true)
+				{
+					instruction--;
+					if (instruction < 0)
+					{
+						return false;
+					}
+
+					vint insRef = -1;
+					if (instruction < c1)
+					{
+						insRef = edgeInsBeforeInput.start + instruction;
+					}
+					else if (instruction < c2)
+					{
+						insRef = edgeInsAfterInput.start + (instruction - c1);
+					}
+					else if (instruction < c3)
+					{
+						insRef = returnInsAfterInput.start + (instruction - c2);
+					}
+					else
+					{
+						CHECK_FAIL(ERROR_MESSAGE_PREFIX L"Instruction index out of range.");
+					}
+
+					auto& ins = executable.instructions[insRef];
+					switch (ins.type)
+					{
+					case AstInsType::EndObject:
+						objectCount++;
+						break;
+					case AstInsType::ReopenObject:
+					case AstInsType::BeginObject:
+					case AstInsType::BeginObjectLeftRecursive:
+						CHECK_ERROR(objectCount > 0, ERROR_MESSAGE_PREFIX L"Encountered unbalanced instructions.");
+						objectCount--;
+						break;
+					}
+
+					if (objectCount == 0 && (ins.type == AstInsType::BeginObject || ins.type == AstInsType::BeginObjectLeftRecursive))
+					{
+						return true;
+					}
+				}
+				return false;
+#undef ERROR_MESSAGE_PREFIX
+			}
+
 			Trace* TraceManager::PrepareTraceRoute()
 			{
 				CHECK_ERROR(state == TraceManagerState::Finished, L"vl::glr::automaton::TraceManager::PrepareTraceRoute()#Wrong timing to call this function.");
