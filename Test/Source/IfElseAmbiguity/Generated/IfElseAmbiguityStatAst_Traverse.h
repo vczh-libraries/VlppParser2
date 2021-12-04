@@ -23,6 +23,7 @@ namespace ifelseambiguity
 			virtual void Traverse(vl::glr::ParsingAstBase* node);
 			virtual void Traverse(BlockStat* node);
 			virtual void Traverse(DoStat* node);
+			virtual void Traverse(IfContent* node);
 			virtual void Traverse(IfStat* node);
 			virtual void Traverse(Module* node);
 			virtual void Traverse(Stat* node);
@@ -31,6 +32,7 @@ namespace ifelseambiguity
 			virtual void Finishing(vl::glr::ParsingAstBase* node);
 			virtual void Finishing(BlockStat* node);
 			virtual void Finishing(DoStat* node);
+			virtual void Finishing(IfContent* node);
 			virtual void Finishing(IfStat* node);
 			virtual void Finishing(Module* node);
 			virtual void Finishing(Stat* node);
@@ -42,6 +44,7 @@ namespace ifelseambiguity
 
 		public:
 			void InspectInto(Stat* node);
+			void InspectInto(IfContent* node);
 			void InspectInto(Module* node);
 		};
 	}

@@ -38,6 +38,7 @@ namespace vl
 			IMPL_TYPE_INFO_RENAME(ifelseambiguity::Stat, ifelseambiguity::Stat)
 			IMPL_TYPE_INFO_RENAME(ifelseambiguity::Stat::IVisitor, ifelseambiguity::Stat::IVisitor)
 			IMPL_TYPE_INFO_RENAME(ifelseambiguity::DoStat, ifelseambiguity::DoStat)
+			IMPL_TYPE_INFO_RENAME(ifelseambiguity::IfContent, ifelseambiguity::IfContent)
 			IMPL_TYPE_INFO_RENAME(ifelseambiguity::IfStat, ifelseambiguity::IfStat)
 			IMPL_TYPE_INFO_RENAME(ifelseambiguity::BlockStat, ifelseambiguity::BlockStat)
 			IMPL_TYPE_INFO_RENAME(ifelseambiguity::Module, ifelseambiguity::Module)
@@ -56,13 +57,21 @@ namespace vl
 
 			END_CLASS_MEMBER(ifelseambiguity::DoStat)
 
+			BEGIN_CLASS_MEMBER(ifelseambiguity::IfContent)
+				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<ifelseambiguity::IfContent>(), NO_PARAMETER)
+
+				CLASS_MEMBER_FIELD(thenBranch)
+				CLASS_MEMBER_FIELD(elseBranch)
+			END_CLASS_MEMBER(ifelseambiguity::IfContent)
+
 			BEGIN_CLASS_MEMBER(ifelseambiguity::IfStat)
 				CLASS_MEMBER_BASE(ifelseambiguity::Stat)
 
 				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<ifelseambiguity::IfStat>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(thenBranch)
-				CLASS_MEMBER_FIELD(elseBranch)
+				CLASS_MEMBER_FIELD(content)
 			END_CLASS_MEMBER(ifelseambiguity::IfStat)
 
 			BEGIN_CLASS_MEMBER(ifelseambiguity::BlockStat)
@@ -98,6 +107,7 @@ namespace vl
 					ADD_TYPE_INFO(ifelseambiguity::Stat)
 					ADD_TYPE_INFO(ifelseambiguity::Stat::IVisitor)
 					ADD_TYPE_INFO(ifelseambiguity::DoStat)
+					ADD_TYPE_INFO(ifelseambiguity::IfContent)
 					ADD_TYPE_INFO(ifelseambiguity::IfStat)
 					ADD_TYPE_INFO(ifelseambiguity::BlockStat)
 					ADD_TYPE_INFO(ifelseambiguity::Module)

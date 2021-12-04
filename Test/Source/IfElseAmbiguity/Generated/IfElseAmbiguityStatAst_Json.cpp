@@ -26,13 +26,19 @@ namespace ifelseambiguity
 		void StatAstVisitor::PrintFields(DoStat* node)
 		{
 		}
-		void StatAstVisitor::PrintFields(IfStat* node)
+		void StatAstVisitor::PrintFields(IfContent* node)
 		{
 			BeginField(L"elseBranch");
 			Print(node->elseBranch.Obj());
 			EndField();
 			BeginField(L"thenBranch");
 			Print(node->thenBranch.Obj());
+			EndField();
+		}
+		void StatAstVisitor::PrintFields(IfStat* node)
+		{
+			BeginField(L"content");
+			Print(node->content.Obj());
 			EndField();
 		}
 		void StatAstVisitor::PrintFields(Module* node)
@@ -100,6 +106,19 @@ namespace ifelseambiguity
 				return;
 			}
 			node->Accept(static_cast<Stat::IVisitor*>(this));
+		}
+
+		void StatAstVisitor::Print(IfContent* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"IfContent", node);
+			PrintFields(static_cast<IfContent*>(node));
+			EndObject();
 		}
 
 		void StatAstVisitor::Print(Module* node)

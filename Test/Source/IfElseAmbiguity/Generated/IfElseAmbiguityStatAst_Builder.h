@@ -22,14 +22,23 @@ namespace ifelseambiguity
 			BlockStatBuilder& stats(const vl::Ptr<Stat>& value);
 		};
 
+		class IfContentBuilder
+		{
+		private:
+			IfContent* node;
+		public:
+			IfContentBuilder(IfContent* _node) : node(_node) {}
+			IfContentBuilder& elseBranch(const vl::Ptr<Stat>& value);
+			IfContentBuilder& thenBranch(const vl::Ptr<Stat>& value);
+		};
+
 		class IfStatBuilder
 		{
 		private:
 			IfStat* node;
 		public:
 			IfStatBuilder(IfStat* _node) : node(_node) {}
-			IfStatBuilder& elseBranch(const vl::Ptr<Stat>& value);
-			IfStatBuilder& thenBranch(const vl::Ptr<Stat>& value);
+			IfStatBuilder& content(const vl::Ptr<IfContent>& value);
 		};
 
 		class ModuleBuilder
@@ -43,6 +52,7 @@ namespace ifelseambiguity
 
 		using MakeBlockStat = vl::glr::ParsingAstBuilder<BlockStat, BlockStatBuilder>;
 		using MakeDoStat = vl::glr::ParsingAstBuilder<DoStat>;
+		using MakeIfContent = vl::glr::ParsingAstBuilder<IfContent, IfContentBuilder>;
 		using MakeIfStat = vl::glr::ParsingAstBuilder<IfStat, IfStatBuilder>;
 		using MakeModule = vl::glr::ParsingAstBuilder<Module, ModuleBuilder>;
 	}

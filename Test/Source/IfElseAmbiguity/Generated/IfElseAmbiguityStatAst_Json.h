@@ -21,6 +21,7 @@ namespace ifelseambiguity
 		protected:
 			virtual void PrintFields(BlockStat* node);
 			virtual void PrintFields(DoStat* node);
+			virtual void PrintFields(IfContent* node);
 			virtual void PrintFields(IfStat* node);
 			virtual void PrintFields(Module* node);
 			virtual void PrintFields(Stat* node);
@@ -34,6 +35,7 @@ namespace ifelseambiguity
 			StatAstVisitor(vl::stream::StreamWriter& _writer);
 
 			void Print(Stat* node);
+			void Print(IfContent* node);
 			void Print(Module* node);
 		};
 	}

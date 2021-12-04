@@ -21,6 +21,8 @@ IfElseAmbiguityAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return new ifelseambiguity::BlockStat();
 		case IfElseAmbiguityClasses::DoStat:
 			return new ifelseambiguity::DoStat();
+		case IfElseAmbiguityClasses::IfContent:
+			return new ifelseambiguity::IfContent();
 		case IfElseAmbiguityClasses::IfStat:
 			return new ifelseambiguity::IfStat();
 		case IfElseAmbiguityClasses::Module:
@@ -45,24 +47,34 @@ IfElseAmbiguityAstInsReceiver : public vl::glr::AstInsReceiverBase
 				typedObject->stats.Add(typedValue);
 			}
 			break;
-		case IfElseAmbiguityFields::IfStat_elseBranch:
+		case IfElseAmbiguityFields::IfContent_elseBranch:
 			{
-				auto typedObject = dynamic_cast<ifelseambiguity::IfStat*>(object);
-				if (!typedObject) throw vl::glr::AstInsException(L"Field \"ifelseambiguity::IfStat::elseBranch\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-				if (typedObject->elseBranch) throw vl::glr::AstInsException(L"Field \"ifelseambiguity::IfStat::elseBranch\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
+				auto typedObject = dynamic_cast<ifelseambiguity::IfContent*>(object);
+				if (!typedObject) throw vl::glr::AstInsException(L"Field \"ifelseambiguity::IfContent::elseBranch\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+				if (typedObject->elseBranch) throw vl::glr::AstInsException(L"Field \"ifelseambiguity::IfContent::elseBranch\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
 				auto typedValue = value.Cast<ifelseambiguity::Stat>();
-				if (!typedValue) throw vl::glr::AstInsException(L"Field \"ifelseambiguity::IfStat::elseBranch\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				if (!typedValue) throw vl::glr::AstInsException(L"Field \"ifelseambiguity::IfContent::elseBranch\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 				typedObject->elseBranch = typedValue;
 			}
 			break;
-		case IfElseAmbiguityFields::IfStat_thenBranch:
+		case IfElseAmbiguityFields::IfContent_thenBranch:
+			{
+				auto typedObject = dynamic_cast<ifelseambiguity::IfContent*>(object);
+				if (!typedObject) throw vl::glr::AstInsException(L"Field \"ifelseambiguity::IfContent::thenBranch\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+				if (typedObject->thenBranch) throw vl::glr::AstInsException(L"Field \"ifelseambiguity::IfContent::thenBranch\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
+				auto typedValue = value.Cast<ifelseambiguity::Stat>();
+				if (!typedValue) throw vl::glr::AstInsException(L"Field \"ifelseambiguity::IfContent::thenBranch\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				typedObject->thenBranch = typedValue;
+			}
+			break;
+		case IfElseAmbiguityFields::IfStat_content:
 			{
 				auto typedObject = dynamic_cast<ifelseambiguity::IfStat*>(object);
-				if (!typedObject) throw vl::glr::AstInsException(L"Field \"ifelseambiguity::IfStat::thenBranch\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-				if (typedObject->thenBranch) throw vl::glr::AstInsException(L"Field \"ifelseambiguity::IfStat::thenBranch\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-				auto typedValue = value.Cast<ifelseambiguity::Stat>();
-				if (!typedValue) throw vl::glr::AstInsException(L"Field \"ifelseambiguity::IfStat::thenBranch\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				typedObject->thenBranch = typedValue;
+				if (!typedObject) throw vl::glr::AstInsException(L"Field \"ifelseambiguity::IfStat::content\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+				if (typedObject->content) throw vl::glr::AstInsException(L"Field \"ifelseambiguity::IfStat::content\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
+				auto typedValue = value.Cast<ifelseambiguity::IfContent>();
+				if (!typedValue) throw vl::glr::AstInsException(L"Field \"ifelseambiguity::IfStat::content\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				typedObject->content = typedValue;
 			}
 			break;
 		case IfElseAmbiguityFields::Module_stat:
@@ -86,10 +98,12 @@ IfElseAmbiguityAstInsReceiver : public vl::glr::AstInsReceiverBase
 		{
 		case IfElseAmbiguityFields::BlockStat_stats:
 			throw vl::glr::AstInsException(L"Field \"ifelseambiguity::BlockStat::stats\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-		case IfElseAmbiguityFields::IfStat_elseBranch:
-			throw vl::glr::AstInsException(L"Field \"ifelseambiguity::IfStat::elseBranch\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-		case IfElseAmbiguityFields::IfStat_thenBranch:
-			throw vl::glr::AstInsException(L"Field \"ifelseambiguity::IfStat::thenBranch\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+		case IfElseAmbiguityFields::IfContent_elseBranch:
+			throw vl::glr::AstInsException(L"Field \"ifelseambiguity::IfContent::elseBranch\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+		case IfElseAmbiguityFields::IfContent_thenBranch:
+			throw vl::glr::AstInsException(L"Field \"ifelseambiguity::IfContent::thenBranch\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+		case IfElseAmbiguityFields::IfStat_content:
+			throw vl::glr::AstInsException(L"Field \"ifelseambiguity::IfStat::content\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 		case IfElseAmbiguityFields::Module_stat:
 			throw vl::glr::AstInsException(L"Field \"ifelseambiguity::Module::stat\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 		default:
@@ -103,10 +117,12 @@ IfElseAmbiguityAstInsReceiver : public vl::glr::AstInsReceiverBase
 		{
 		case IfElseAmbiguityFields::BlockStat_stats:
 			throw vl::glr::AstInsException(L"Field \"ifelseambiguity::BlockStat::stats\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-		case IfElseAmbiguityFields::IfStat_elseBranch:
-			throw vl::glr::AstInsException(L"Field \"ifelseambiguity::IfStat::elseBranch\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-		case IfElseAmbiguityFields::IfStat_thenBranch:
-			throw vl::glr::AstInsException(L"Field \"ifelseambiguity::IfStat::thenBranch\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+		case IfElseAmbiguityFields::IfContent_elseBranch:
+			throw vl::glr::AstInsException(L"Field \"ifelseambiguity::IfContent::elseBranch\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+		case IfElseAmbiguityFields::IfContent_thenBranch:
+			throw vl::glr::AstInsException(L"Field \"ifelseambiguity::IfContent::thenBranch\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+		case IfElseAmbiguityFields::IfStat_content:
+			throw vl::glr::AstInsException(L"Field \"ifelseambiguity::IfStat::content\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 		case IfElseAmbiguityFields::Module_stat:
 			throw vl::glr::AstInsException(L"Field \"ifelseambiguity::Module::stat\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 		default:
@@ -119,12 +135,13 @@ IfElseAmbiguityAstInsReceiver : public vl::glr::AstInsReceiverBase
 		const wchar_t* results[] = {
 			L"BlockStat",
 			L"DoStat",
+			L"IfContent",
 			L"IfStat",
 			L"Module",
 			L"Stat",
 		};
 		vl::vint index = (vl::vint)type;
-		return 0 <= index && index < 5 ? results[index] : nullptr;
+		return 0 <= index && index < 6 ? results[index] : nullptr;
 	}
 
 	const wchar_t* IfElseAmbiguityFieldName(IfElseAmbiguityFields field)
@@ -133,10 +150,12 @@ IfElseAmbiguityAstInsReceiver : public vl::glr::AstInsReceiverBase
 		{
 		case IfElseAmbiguityFields::BlockStat_stats:
 			return L"BlockStat::stats";
-		case IfElseAmbiguityFields::IfStat_elseBranch:
-			return L"IfStat::elseBranch";
-		case IfElseAmbiguityFields::IfStat_thenBranch:
-			return L"IfStat::thenBranch";
+		case IfElseAmbiguityFields::IfContent_elseBranch:
+			return L"IfContent::elseBranch";
+		case IfElseAmbiguityFields::IfContent_thenBranch:
+			return L"IfContent::thenBranch";
+		case IfElseAmbiguityFields::IfStat_content:
+			return L"IfStat::content";
 		case IfElseAmbiguityFields::Module_stat:
 			return L"Module::stat";
 		default:
@@ -150,6 +169,7 @@ IfElseAmbiguityAstInsReceiver : public vl::glr::AstInsReceiverBase
 		{
 		case IfElseAmbiguityClasses::BlockStat:
 		case IfElseAmbiguityClasses::DoStat:
+		case IfElseAmbiguityClasses::IfContent:
 		case IfElseAmbiguityClasses::IfStat:
 		case IfElseAmbiguityClasses::Module:
 		case IfElseAmbiguityClasses::Stat:

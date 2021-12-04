@@ -15,16 +15,18 @@ namespace ifelseambiguity
 	{
 		BlockStat = 0,
 		DoStat = 1,
-		IfStat = 2,
-		Module = 3,
-		Stat = 4,
+		IfContent = 2,
+		IfStat = 3,
+		Module = 4,
+		Stat = 5,
 	};
 
 	enum class IfElseAmbiguityFields : vl::vint32_t
 	{
 		BlockStat_stats = (static_cast<vl::vint32_t>(IfElseAmbiguityClasses::BlockStat) << 8) + 0,
-		IfStat_elseBranch = (static_cast<vl::vint32_t>(IfElseAmbiguityClasses::IfStat) << 8) + 0,
-		IfStat_thenBranch = (static_cast<vl::vint32_t>(IfElseAmbiguityClasses::IfStat) << 8) + 1,
+		IfContent_elseBranch = (static_cast<vl::vint32_t>(IfElseAmbiguityClasses::IfContent) << 8) + 0,
+		IfContent_thenBranch = (static_cast<vl::vint32_t>(IfElseAmbiguityClasses::IfContent) << 8) + 1,
+		IfStat_content = (static_cast<vl::vint32_t>(IfElseAmbiguityClasses::IfStat) << 8) + 0,
 		Module_stat = (static_cast<vl::vint32_t>(IfElseAmbiguityClasses::Module) << 8) + 0,
 	};
 

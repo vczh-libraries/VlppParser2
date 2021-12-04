@@ -22,18 +22,28 @@ BlockStatBuilder
 		}
 
 /***********************************************************************
-IfStatBuilder
+IfContentBuilder
 ***********************************************************************/
 
-		IfStatBuilder& IfStatBuilder::elseBranch(const vl::Ptr<Stat>& value)
+		IfContentBuilder& IfContentBuilder::elseBranch(const vl::Ptr<Stat>& value)
 		{
 			node->elseBranch = value;
 			return *this;
 		}
 
-		IfStatBuilder& IfStatBuilder::thenBranch(const vl::Ptr<Stat>& value)
+		IfContentBuilder& IfContentBuilder::thenBranch(const vl::Ptr<Stat>& value)
 		{
 			node->thenBranch = value;
+			return *this;
+		}
+
+/***********************************************************************
+IfStatBuilder
+***********************************************************************/
+
+		IfStatBuilder& IfStatBuilder::content(const vl::Ptr<IfContent>& value)
+		{
+			node->content = value;
 			return *this;
 		}
 

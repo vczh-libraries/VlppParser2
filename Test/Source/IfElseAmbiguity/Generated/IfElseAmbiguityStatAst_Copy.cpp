@@ -24,11 +24,16 @@ namespace ifelseambiguity
 			CopyFields(static_cast<Stat*>(from), static_cast<Stat*>(to));
 		}
 
+		void StatAstVisitor::CopyFields(IfContent* from, IfContent* to)
+		{
+			to->elseBranch = CopyNode(from->elseBranch.Obj());
+			to->thenBranch = CopyNode(from->thenBranch.Obj());
+		}
+
 		void StatAstVisitor::CopyFields(IfStat* from, IfStat* to)
 		{
 			CopyFields(static_cast<Stat*>(from), static_cast<Stat*>(to));
-			to->elseBranch = CopyNode(from->elseBranch.Obj());
-			to->thenBranch = CopyNode(from->thenBranch.Obj());
+			to->content = CopyNode(from->content.Obj());
 		}
 
 		void StatAstVisitor::CopyFields(Module* from, Module* to)
@@ -38,6 +43,13 @@ namespace ifelseambiguity
 
 		void StatAstVisitor::CopyFields(Stat* from, Stat* to)
 		{
+		}
+
+		void StatAstVisitor::Visit(IfContent* node)
+		{
+			auto newNode = vl::MakePtr<IfContent>();
+			CopyFields(node, newNode.Obj());
+			this->result = newNode;
 		}
 
 		void StatAstVisitor::Visit(Module* node)
@@ -73,6 +85,13 @@ namespace ifelseambiguity
 			if (!node) return nullptr;
 			node->Accept(static_cast<Stat::IVisitor*>(this));
 			return this->result.Cast<Stat>();
+		}
+
+		vl::Ptr<IfContent> StatAstVisitor::CopyNode(IfContent* node)
+		{
+			if (!node) return nullptr;
+			Visit(node);
+			return this->result.Cast<IfContent>();
 		}
 
 		vl::Ptr<Module> StatAstVisitor::CopyNode(Module* node)

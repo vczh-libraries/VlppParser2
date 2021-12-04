@@ -14,6 +14,7 @@ namespace ifelseambiguity
 		void StatAstVisitor::Traverse(vl::glr::ParsingAstBase* node) {}
 		void StatAstVisitor::Traverse(BlockStat* node) {}
 		void StatAstVisitor::Traverse(DoStat* node) {}
+		void StatAstVisitor::Traverse(IfContent* node) {}
 		void StatAstVisitor::Traverse(IfStat* node) {}
 		void StatAstVisitor::Traverse(Module* node) {}
 		void StatAstVisitor::Traverse(Stat* node) {}
@@ -21,6 +22,7 @@ namespace ifelseambiguity
 		void StatAstVisitor::Finishing(vl::glr::ParsingAstBase* node) {}
 		void StatAstVisitor::Finishing(BlockStat* node) {}
 		void StatAstVisitor::Finishing(DoStat* node) {}
+		void StatAstVisitor::Finishing(IfContent* node) {}
 		void StatAstVisitor::Finishing(IfStat* node) {}
 		void StatAstVisitor::Finishing(Module* node) {}
 		void StatAstVisitor::Finishing(Stat* node) {}
@@ -42,8 +44,7 @@ namespace ifelseambiguity
 			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
 			Traverse(static_cast<Stat*>(node));
 			Traverse(static_cast<IfStat*>(node));
-			InspectInto(node->elseBranch.Obj());
-			InspectInto(node->thenBranch.Obj());
+			InspectInto(node->content.Obj());
 			Finishing(static_cast<IfStat*>(node));
 			Finishing(static_cast<Stat*>(node));
 			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
@@ -68,6 +69,17 @@ namespace ifelseambiguity
 		{
 			if (!node) return;
 			node->Accept(static_cast<Stat::IVisitor*>(this));
+		}
+
+		void StatAstVisitor::InspectInto(IfContent* node)
+		{
+			if (!node) return;
+			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+			Traverse(static_cast<IfContent*>(node));
+			InspectInto(node->elseBranch.Obj());
+			InspectInto(node->thenBranch.Obj());
+			Finishing(static_cast<IfContent*>(node));
+			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 		}
 
 		void StatAstVisitor::InspectInto(Module* node)

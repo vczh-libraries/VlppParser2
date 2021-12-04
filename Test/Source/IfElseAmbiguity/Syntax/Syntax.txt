@@ -6,14 +6,14 @@ Block
   ::= "{" { Stat:stats } "}" as BlockStat
   ;
 
-If
-  ::= "if" "cond" "then" Stat:thenBranch ["else" Stat:elseBranch] as IfStat
+IfContent
+  ::= "if" "cond" "then" Stat:thenBranch ["else" Stat:elseBranch] as IfContent
   ;
 
 Stat
   ::= !Do
   ::= !Block
-  ::= !If
+  ::= IfContent:content as IfStat
   ;
 
 Module

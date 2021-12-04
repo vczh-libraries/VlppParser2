@@ -21,11 +21,13 @@ namespace ifelseambiguity
 		protected:
 			void CopyFields(BlockStat* from, BlockStat* to);
 			void CopyFields(DoStat* from, DoStat* to);
+			void CopyFields(IfContent* from, IfContent* to);
 			void CopyFields(IfStat* from, IfStat* to);
 			void CopyFields(Module* from, Module* to);
 			void CopyFields(Stat* from, Stat* to);
 
 		protected:
+			virtual void Visit(IfContent* node);
 			virtual void Visit(Module* node);
 
 			void Visit(DoStat* node) override;
@@ -34,6 +36,7 @@ namespace ifelseambiguity
 
 		public:
 			virtual vl::Ptr<Stat> CopyNode(Stat* node);
+			virtual vl::Ptr<IfContent> CopyNode(IfContent* node);
 			virtual vl::Ptr<Module> CopyNode(Module* node);
 		};
 	}

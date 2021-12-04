@@ -14,6 +14,7 @@ namespace ifelseambiguity
 {
 	class BlockStat;
 	class DoStat;
+	class IfContent;
 	class IfStat;
 	class Module;
 	class Stat;
@@ -40,11 +41,17 @@ namespace ifelseambiguity
 		void Accept(Stat::IVisitor* visitor) override;
 	};
 
-	class IfStat : public Stat, vl::reflection::Description<IfStat>
+	class IfContent : public vl::glr::ParsingAstBase, vl::reflection::Description<IfContent>
 	{
 	public:
 		vl::Ptr<Stat> thenBranch;
 		vl::Ptr<Stat> elseBranch;
+	};
+
+	class IfStat : public Stat, vl::reflection::Description<IfStat>
+	{
+	public:
+		vl::Ptr<IfContent> content;
 
 		void Accept(Stat::IVisitor* visitor) override;
 	};
@@ -73,6 +80,7 @@ namespace vl
 			DECL_TYPE_INFO(ifelseambiguity::Stat)
 			DECL_TYPE_INFO(ifelseambiguity::Stat::IVisitor)
 			DECL_TYPE_INFO(ifelseambiguity::DoStat)
+			DECL_TYPE_INFO(ifelseambiguity::IfContent)
 			DECL_TYPE_INFO(ifelseambiguity::IfStat)
 			DECL_TYPE_INFO(ifelseambiguity::BlockStat)
 			DECL_TYPE_INFO(ifelseambiguity::Module)

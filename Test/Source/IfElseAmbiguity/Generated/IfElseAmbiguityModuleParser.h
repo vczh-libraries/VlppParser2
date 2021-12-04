@@ -16,7 +16,7 @@ namespace ifelseambiguity
 	{
 		Do = 0,
 		Block = 4,
-		If = 9,
+		IfContent = 9,
 		Stat = 17,
 		Module = 22,
 	};
