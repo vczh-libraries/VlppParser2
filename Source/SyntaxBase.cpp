@@ -501,7 +501,7 @@ TraceManager::PrepareTraceRoute
 			TraceAmbiguity& TraceManager::FillAmbiguityInfoForMergingTrace(Trace* trace)
 			{
 #define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::SearchSingleTraceForBeginObject(Trace*&, vint&, vint&)#"
-				if (trace->ambiguity.insEndObject != -1)
+				if (trace->ambiguity.traceBeginObject != -1)
 				{
 					return trace->ambiguity;
 				}
@@ -569,6 +569,26 @@ TraceManager::PrepareTraceRoute
 
 			void TraceManager::FillAmbiguityInfoForPredecessorTraces(Trace* trace)
 			{
+				while (trace)
+				{
+					if (trace->predecessors.first != trace->predecessors.last)
+					{
+						if (trace->ambiguity.traceBeginObject == -1)
+						{
+							auto& ambiguity = FillAmbiguityInfoForMergingTrace(trace);
+							trace = GetTrace(ambiguity.traceBeginObject);
+						}
+						else
+						{
+							break;
+						}
+					}
+					else
+					{
+						if (trace->predecessors.first == -1) break;
+						trace = GetTrace(trace->predecessors.first);
+					}
+				}
 			}
 
 			Trace* TraceManager::PrepareTraceRoute()
