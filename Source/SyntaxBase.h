@@ -160,7 +160,7 @@ Execution
 			struct Trace
 			{
 				vint				allocatedIndex;				// id of this Trace
-				vint				predecessor;				// id of the predecessor Trace
+				TraceCollection		predecessors;				// id of the predecessor Trace
 				TraceCollection		successors;					// successors (after finishing parsing)
 
 				vint				state;						// id of the current StateDesc
@@ -186,6 +186,7 @@ Execution
 				void								BeginSwap();
 				void								AddTrace(Trace* trace);
 				void								EndSwap();
+				void								AddTraceToCollection(Trace* owner, Trace* element, TraceCollection(Trace::* collection), bool& firstElement);
 
 				Trace*								WalkAlongSingleEdge(vint previousTokenIndex, vint currentTokenIndex, vint input, Trace* trace, vint byEdge, EdgeDesc& edgeDesc);
 				void								WalkAlongTokenEdges(vint previousTokenIndex, vint currentTokenIndex, vint input, Trace* trace, EdgeArray& edgeArray);

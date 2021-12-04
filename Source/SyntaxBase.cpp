@@ -117,6 +117,28 @@ TraceManager
 				backupTraces = t;
 			}
 
+			void TraceManager::AddTraceToCollection(Trace* owner, Trace* element, TraceCollection(Trace::* collection), bool& firstElement)
+			{
+				auto&& ownerCollection = owner->*collection;
+				auto&& elementCollection = element->*collection;
+
+				if (ownerCollection.first == -1)
+				{
+					ownerCollection.first = element->allocatedIndex;
+					ownerCollection.last = element->allocatedIndex;
+					firstElement = true;
+				}
+				else
+				{
+					auto sibling = GetTrace(ownerCollection.last);
+					auto&& siblingCollection = sibling->*collection;
+					siblingCollection.siblingNext = element->allocatedIndex;
+					elementCollection.siblingPrev = sibling->allocatedIndex;
+					ownerCollection.last = element->allocatedIndex;
+					firstElement = false;
+				}
+			}
+
 			TraceManager::TraceManager(Executable& _executable)
 				:executable(_executable)
 			{
@@ -144,7 +166,11 @@ TraceManager
 			{
 				auto trace = traces.Get(traces.Allocate());
 
-				trace->predecessor = -1;
+				trace->predecessors.first = -1;
+				trace->predecessors.last = -1;
+				trace->predecessors.siblingPrev = -1;
+				trace->predecessors.siblingNext = -1;
+
 				trace->successors.first = -1;
 				trace->successors.last = -1;
 				trace->successors.siblingPrev = -1;
@@ -209,7 +235,7 @@ TraceManager::Input
 				for (vint i = 0; i < concurrentCount; i++)
 				{
 					auto candidate = backupTraces->Get(i);
-					if (state == candidate->state)
+					if (state == candidate->state && executedReturn == candidate->executedReturn)
 					{
 						auto r1 = returnStack;
 						auto r2 = candidate->returnStack;
@@ -235,7 +261,8 @@ TraceManager::Input
 							r2 = rs2->previous;
 						}
 					MERGABLE_TRACE_FOUND:
-						CHECK_FAIL(L"vl::glr::automaton::TraceManager::WalkAlongSingleEdge(vint, vint, vint, Trace*, vint, EdgeDesc&)#Ambiguity not implemented.");
+						bool firstElement = false;
+						AddTraceToCollection(candidate, trace, &Trace::predecessors, firstElement);
 					}
 				MERGABLE_TRACE_NOT_FOUND:;
 				}
@@ -243,7 +270,8 @@ TraceManager::Input
 				auto newTrace = AllocateTrace();
 				AddTrace(newTrace);
 
-				newTrace->predecessor = trace->allocatedIndex;
+				newTrace->predecessors.first = trace->allocatedIndex;
+				newTrace->predecessors.last = trace->allocatedIndex;
 				newTrace->state = state;
 				newTrace->returnStack = returnStack;
 				newTrace->executedReturn = executedReturn;
@@ -382,20 +410,14 @@ TraceManager::PrepareTraceRoute
 				for (vint i = 0; i < concurrentCount; i++)
 				{
 					auto trace = concurrentTraces->Get(i);
-					while (trace->predecessor != -1)
+					while (trace->predecessors.first != -1)
 					{
-						auto predecessor = GetTrace(trace->predecessor);
-						if (predecessor->successors.first == -1)
+						CHECK_ERROR(trace->predecessors.last == trace->predecessors.first, L"vl::glr::automaton::TraceManager::PrepareTraceRoute()#Multiple to multiple predecessor-successor relation is not supported.");
+						auto predecessor = GetTrace(trace->predecessors.first);
+						bool firstElement = false;
+						AddTraceToCollection(predecessor, trace, &Trace::successors, firstElement);
+						if (!firstElement)
 						{
-							predecessor->successors.first = trace->allocatedIndex;
-							predecessor->successors.last = trace->allocatedIndex;
-						}
-						else
-						{
-							auto sibling = GetTrace(predecessor->successors.last);
-							sibling->successors.siblingNext = trace->allocatedIndex;
-							trace->successors.siblingPrev = sibling->allocatedIndex;
-							predecessor->successors.last = trace->allocatedIndex;
 							goto FINISH_CURRENT_ROUTE;
 						}
 						trace = predecessor;
