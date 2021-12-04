@@ -171,15 +171,27 @@ void RenderTrace(
 
 		writer.WriteLine(stateLabel((vint32_t)trace->state));
 
+		vint c1 = 0, c2 = 0;
 		if (trace->byEdge != -1)
 		{
 			auto& edgeDesc = executable.edges[trace->byEdge];
+			c1 = edgeDesc.insBeforeInput.count;
+			c2 = c1 + edgeDesc.insAfterInput.count;
+
 			for (vint insRef = 0; insRef < edgeDesc.insBeforeInput.count; insRef++)
 			{
 				vint insIndex = edgeDesc.insBeforeInput.start + insRef;
 				auto& ins = executable.instructions[insIndex];
 				writer.WriteString(L"  > ");
 				LogInstruction(ins, typeName, fieldName, writer);
+				if (insRef == trace->ambiguity.insEndObject)
+				{
+					writer.WriteLine(L"      AMB => State[" +
+						itow(trace->ambiguity.traceBeginObject) +
+						L"].Ins[" +
+						itow(trace->ambiguity.insBeginObject) +
+						L"]");
+				}
 			}
 			for (vint insRef = 0; insRef < edgeDesc.insAfterInput.count; insRef++)
 			{
@@ -187,6 +199,14 @@ void RenderTrace(
 				auto& ins = executable.instructions[insIndex];
 				writer.WriteString(L"  > ");
 				LogInstruction(ins, typeName, fieldName, writer);
+				if (c1 + insRef == trace->ambiguity.insEndObject)
+				{
+					writer.WriteLine(L"      AMB => State[" +
+						itow(trace->ambiguity.traceBeginObject) +
+						L"].Ins[" +
+						itow(trace->ambiguity.insBeginObject) +
+						L"]");
+				}
 			}
 		}
 
@@ -199,6 +219,14 @@ void RenderTrace(
 				auto& ins = executable.instructions[insIndex];
 				writer.WriteString(L"  > ");
 				LogInstruction(ins, typeName, fieldName, writer);
+				if (c2 + insRef == trace->ambiguity.insEndObject)
+				{
+					writer.WriteLine(L"      AMB => State[" +
+						itow(trace->ambiguity.traceBeginObject) +
+						L"].Ins[" +
+						itow(trace->ambiguity.insBeginObject) +
+						L"]");
+				}
 			}
 		}
 
