@@ -155,10 +155,7 @@ TraceManager
 
 			ReturnStack* TraceManager::AllocateReturnStack()
 			{
-				auto returnStack = returnStacks.Get(returnStacks.Allocate());
-				returnStack->previous = -1;
-				returnStack->returnIndex = -1;
-				return returnStack;
+				return returnStacks.Get(returnStacks.Allocate());
 			}
 
 			Trace* TraceManager::GetTrace(vint index)
@@ -168,32 +165,13 @@ TraceManager
 
 			Trace* TraceManager::AllocateTrace()
 			{
-				auto trace = traces.Get(traces.Allocate());
-
-				trace->predecessors.first = -1;
-				trace->predecessors.last = -1;
-				trace->predecessors.siblingPrev = -1;
-				trace->predecessors.siblingNext = -1;
-
-				trace->successors.first = -1;
-				trace->successors.last = -1;
-				trace->successors.siblingPrev = -1;
-				trace->successors.siblingNext = -1;
-
-				trace->state = -1;
-				trace->returnStack = -1;
-				trace->executedReturn = -1;
-				trace->byEdge = -1;
-				trace->byInput = -1;
-				trace->previousTokenIndex = -1;
-				trace->currentTokenIndex = -1;
-				trace->traceBeginObject = -1;
-				trace->traceAfterBranch = -1;
-				return trace;
+				return traces.Get(traces.Allocate());
 			}
 
 			void TraceManager::Initialize(vint startState)
 			{
+				state = TraceManagerState::WaitingForInput;
+
 				returnStacks.Clear();
 				traces.Clear();
 				traces1.Clear();
@@ -368,6 +346,7 @@ TraceManager::Input
 
 			void TraceManager::Input(vint currentTokenIndex, vint token)
 			{
+				CHECK_ERROR(state == TraceManagerState::WaitingForInput, L"vl::glr::automaton::TraceManager::Input(vint, vint)#Wrong timing to call this function.");
 				vint traceCount = concurrentCount;
 				vint previousTokenIndex = currentTokenIndex - 1;
 				vint input = Executable::TokenBegin + token;
@@ -390,6 +369,9 @@ TraceManager::Input
 
 			void TraceManager::EndOfInput()
 			{
+				CHECK_ERROR(state == TraceManagerState::WaitingForInput, L"vl::glr::automaton::TraceManager::EndOfInput()#Wrong timing to call this function.");
+				state = TraceManagerState::Finished;
+
 				vint traceCount = concurrentCount;
 				BeginSwap();
 				for (vint traceIndex = 0; traceIndex < traceCount; traceIndex++)
@@ -410,6 +392,9 @@ TraceManager::PrepareTraceRoute
 
 			Trace* TraceManager::PrepareTraceRoute()
 			{
+				CHECK_ERROR(state == TraceManagerState::Finished, L"vl::glr::automaton::TraceManager::PrepareTraceRoute()#Wrong timing to call this function.");
+				state = TraceManagerState::PreparedTraceRoute;
+
 				Trace* rootTrace = nullptr;
 				SortedList<Trace*> available;
 				List<Trace*> visited;
@@ -484,6 +469,8 @@ TraceManager::ExecuteTrace
 
 			Ptr<ParsingAstBase> TraceManager::ExecuteTrace(Trace* trace, IAstInsReceiver& receiver, collections::List<regex::RegexToken>& tokens)
 			{
+				CHECK_ERROR(state == TraceManagerState::PreparedTraceRoute, L"vl::glr::automaton::TraceManager::ExecuteTrace(Trace*, IAstInsReceiver&, List<RegexToken>&)#Wrong timing to call this function.");
+
 				TraceManagerSubmitter submitter;
 				submitter.receiver = &receiver;
 

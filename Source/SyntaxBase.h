@@ -144,40 +144,70 @@ Execution
 
 			struct ReturnStack
 			{
-				vint				allocatedIndex;				// id of this ReturnStack
-				vint				previous;					// id of the previous ReturnStack
-				vint				returnIndex;				// index of ReturnDesc
+				vint					allocatedIndex = -1;		// id of this ReturnStack
+				vint					previous = -1;				// id of the previous ReturnStack
+				vint					returnIndex = -1;			// index of ReturnDesc
 			};
 
 			struct TraceCollection
 			{
-				vint				first;						// first trace in the collection
-				vint				last;						// last trace in the collection
+				vint					first = -1;					// first trace in the collection
+				vint					last = -1;					// last trace in the collection
+				vint					siblingPrev = -1;			// previous trace in the collection of the owned trace
+				vint					siblingNext = -1;			// next trace in the collection of the owned trace
+			};
 
-				vint				siblingPrev;				// previous trace in the collection of the owned trace
-				vint				siblingNext;				// next trace in the collection of the owned trace
+			struct TraceAmbiguity
+			{
+				vint					insEndObject = -1;			// the index of the first EndObject instruction
+																	// in {byEdge.insBeforeInput, byEdge.insAfterInput, executedReturn.insAfterInput} combined
+
+				vint					traceBeginObject = -1;		// id of the trace containing BeginObject or BeginObjectLeftRecursive
+																	// that ends by the above EndObject
+
+				vint					insBeginObject = -1;		// the index of the BeginObject or BeginObjectLeftRecursive instruction
+																	// from traceBeginObject
+																	// in {byEdge.insBeforeInput, byEdge.insAfterInput, executedReturn.insAfterInput} combined
+			};
+
+			struct RuntimeRouting
+			{
 			};
 
 			struct Trace
 			{
-				vint				allocatedIndex;				// id of this Trace
-				TraceCollection		predecessors;				// id of the predecessor Trace
-				TraceCollection		successors;					// successors (after finishing parsing)
+				vint					allocatedIndex = -1;		// id of this Trace
+				TraceCollection			predecessors;				// id of the predecessor Trace
+				TraceCollection			successors;					// successors (filled by PrepareTraceRoute)
 
-				vint				state;						// id of the current StateDesc
-				vint				returnStack;				// id of the current ReturnStack
-				vint				executedReturn;				// id of the executed ReturnDesc
-				vint				byEdge;						// id of the last EdgeDesc that make this trace
-				vint				byInput;					// the last input that make this trace
-				vint				previousTokenIndex;			// the index of the token before byInput
-				vint				currentTokenIndex;			// the index of the token that is byInput
-				vint				traceBeginObject;			// the id of the Trace which contains the latest AstInsType::BeginObject
-				vint				traceAfterBranch;			// the id of the Trace which is the first trace of the current branch
+				vint					state = -1;					// id of the current StateDesc
+				vint					returnStack = -1;			// id of the current ReturnStack
+				vint					executedReturn = -1;		// id of the executed ReturnDesc
+				vint					byEdge = -1;				// id of the last EdgeDesc that make this trace
+				vint					byInput = -1;				// the last input that make this trace
+				vint					previousTokenIndex = -1;	// the index of the token before byInput
+				vint					currentTokenIndex = -1;		// the index of the token that is byInput
+
+				TraceAmbiguity			ambiguity;					// where to end resolving ambiguity in instructions from this trace
+																	// this member is useful when it has multiple predecessors
+																	// (filled by PrepareTraceRoute)
+
+				RuntimeRouting			runtimeRouting;				// a data structure guiding instruction execution when a trace need to be executed multiple times
+																	// (filled by ExecuteTrace)
+			};
+
+			enum class TraceManagerState
+			{
+				Uninitialized,
+				WaitingForInput,
+				Finished,
+				PreparedTraceRoute,
 			};
 
 			class TraceManager : public Object
 			{
 			protected:
+				TraceManagerState					state = TraceManagerState::Uninitialized;
 				Executable&							executable;
 				AllocateOnly<ReturnStack>			returnStacks;
 				AllocateOnly<Trace>					traces;
