@@ -421,6 +421,7 @@ TraceManager::PrepareTraceRoute
 				{
 					auto visiting = visited[i];
 					if (available.Contains(visiting)) continue;
+					available.Add(visiting);
 
 					if (visiting->predecessors.first == -1)
 					{
@@ -434,6 +435,7 @@ TraceManager::PrepareTraceRoute
 						auto predecessor = GetTrace(predecessorId);
 						AddTraceToCollection(predecessor, visiting, &Trace::successors);
 						predecessorId = predecessor->predecessors.siblingNext;
+						visited.Add(predecessor);
 					}
 				}
 				return rootTrace;
