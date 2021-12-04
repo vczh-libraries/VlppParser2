@@ -119,8 +119,12 @@ TraceManager
 
 			void TraceManager::AddTraceToCollection(Trace* owner, Trace* element, TraceCollection(Trace::* collection))
 			{
+				auto errorMessage = L"vl::glr::automaton::TraceManager::AddTraceToCollection(Trace*, Trace*, TraceCollection(Trace::*))#Multiple to multiple predecessor-successor relationship is not supported.";
+
 				auto&& ownerCollection = owner->*collection;
 				auto&& elementCollection = element->*collection;
+				CHECK_ERROR(elementCollection.siblingNext == -1, errorMessage);
+				CHECK_ERROR(elementCollection.siblingPrev == -1, errorMessage);
 
 				if (ownerCollection.first == -1)
 				{
@@ -131,6 +135,8 @@ TraceManager
 				{
 					auto sibling = GetTrace(ownerCollection.last);
 					auto&& siblingCollection = sibling->*collection;
+					CHECK_ERROR(siblingCollection.siblingNext == -1, errorMessage);
+
 					siblingCollection.siblingNext = element->allocatedIndex;
 					elementCollection.siblingPrev = sibling->allocatedIndex;
 					ownerCollection.last = element->allocatedIndex;

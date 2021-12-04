@@ -308,14 +308,31 @@ struct TraceTree
 		Trace* trace,
 		TraceManager& tm,
 		bool firstLevel,
+		Dictionary<Trace*, Ptr<TraceTree>>& nonEndTraces,
 		List<Trace*>& endTraces,
 		List<TraceTree*>& sendTraces
 	)
 	{
+		bool endTrace = !firstLevel && trace->byInput >= Executable::TokenBegin;
+		if (!endTrace)
+		{
+			vint index = nonEndTraces.Keys().IndexOf(trace);
+			if (index != -1)
+			{
+				children.Add(nonEndTraces.Values()[index]);
+				return;
+			}
+		}
+
 		auto tree = MakePtr<TraceTree>();
-		tree->endTrace = !firstLevel && trace->byInput >= Executable::TokenBegin;
+		tree->endTrace = endTrace;
 		tree->trace = trace;
 		children.Add(tree);
+
+		if (!endTrace)
+		{
+			nonEndTraces.Add(trace, tree);
+		}
 
 		if (tree->endTrace)
 		{
@@ -331,7 +348,7 @@ struct TraceTree
 		while (successorId != -1)
 		{
 			auto successor = tm.GetTrace(successorId);
-			tree->AddChildTrace(successor, tm, false, endTraces, sendTraces);
+			tree->AddChildTrace(successor, tm, false, nonEndTraces, endTraces, sendTraces);
 			successorId = successor->successors.siblingNext;
 		}
 	}
@@ -342,7 +359,10 @@ struct TraceTree
 		vint current = start;
 		for (auto child : children)
 		{
-			current += child->SetColumns(current);
+			//if (child->column == -1 || child->column > current)
+			{
+				current += child->SetColumns(current);
+			}
 		}
 		return current == start ? 1 : current - start;
 	}
@@ -354,6 +374,7 @@ struct TraceTree
 		vint depth = 0;
 		for (auto child : children)
 		{
+			if (child->row > start + 1) continue;
 			vint childDepth = child->SetRows(start + 1);
 			if (depth < childDepth) depth = childDepth;
 		}
@@ -566,10 +587,12 @@ void RenderTraceTree(
 		List<Trace*> endTraces;
 		List<TraceTree*> sendTraces;
 		auto root = MakePtr<TraceTree>();
-
-		for (auto trace : startTraces)
 		{
-			root->AddChildTrace(trace, tm, true, endTraces, sendTraces);
+			Dictionary<Trace*, Ptr<TraceTree>> nonEndTraces;
+			for (auto trace : startTraces)
+			{
+				root->AddChildTrace(trace, tm, true, nonEndTraces, endTraces, sendTraces);
+			}
 		}
 		vint width = root->SetColumns(0);
 		vint depth = root->SetRows(-1) - 1;
