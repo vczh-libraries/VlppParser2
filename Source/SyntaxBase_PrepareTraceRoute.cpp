@@ -108,9 +108,9 @@ TraceManager::PrepareTraceRoute
 							}
 						}
 
+						instruction = trace->ambiguity.insBeginObject - 1;
 						trace = GetTrace(trace->ambiguity.traceBeginObject);
 						ReadInstructionList(trace, insLists);
-						instruction = trace->ambiguity.insBeginObject - 1;
 					}
 					else
 					{
