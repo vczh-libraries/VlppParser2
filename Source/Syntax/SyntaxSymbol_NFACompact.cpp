@@ -95,151 +95,76 @@ CompactSyntaxBuilder
 				StateList&									newStates;
 				EdgeList&									newEdges;
 				Dictionary<StateSymbol*, StateSymbol*>		oldToNew;
-				Dictionary<StateSymbolSet, StateSymbol*>	closureToNew;
-				Dictionary<StateSymbol*, StateSymbolSet>	newToClosure;
-				Dictionary<StateSymbol*, StateSymbolSet>	oldToClosure;
-
-				static bool IsPureEpsilonEdge(EdgeSymbol* edge)
-				{
-					if (edge->input.type != EdgeInputType::Epsilon) return false;
-					CHECK_ERROR(edge->insAfterInput.Count() == 0, L"vl::gre::parsergen::CompactSyntaxBuilder::IsPureEpsilonEdge(EdgeSymbol*)#Epsilon edge is not allowed to have non-empty insAfterInput.");
-					return edge->insBeforeInput.Count() == 0;
-				}
-
-				static bool IsPureEpsilonState(StateSymbol* state)
-				{
-					return From(state->OutEdges()).All(IsPureEpsilonEdge);
-				}
-
-				StateSymbol* CreateCompactState(StateSymbolSet&& key)
-				{
-					vint index = closureToNew.Keys().IndexOf(key);
-					if (index != -1)
-					{
-						return closureToNew.Values()[index];
-					}
-
-					auto newState = new StateSymbol(rule);
-					newStates.Add(newState);
-					newToClosure.Add(newState, key.Copy());
-					closureToNew.Add(std::move(key), newState);
-
-					return newState;
-				}
-
-				StateSymbolSet CalculateEpsilonClosure(StateSymbol* state)
-				{
-					vint index = oldToClosure.Keys().IndexOf(state);
-					if (index != -1)
-					{
-						return oldToClosure.Values()[index].Copy();
-					}
-					else
-					{
-						StateSymbolSet key;
-						List<StateSymbol*> visited;
-						key.Add(state);
-						visited.Add(state);
-
-						for (vint i = 0; i < visited.Count(); i++)
-						{
-							auto current = visited[i];
-							for (auto edge : current->OutEdges())
-							{
-								if (IsPureEpsilonEdge(edge))
-								{
-									auto toState = edge->To();
-									if (!visited.Contains(toState))
-									{
-										visited.Add(toState);
-										if (!IsPureEpsilonState(toState))
-										{
-											key.Add(toState);
-										}
-									}
-								}
-							}
-						}
-
-						oldToClosure.Add(state, key.Copy());
-						return std::move(key);
-					}
-				}
+				Dictionary<StateSymbol*, StateSymbol*>		newToOld;
 
 				void BuildEpsilonEliminatedEdgesInternal(
-					StateSymbolSet walkingClosure,
+					StateSymbol* walkingOldState,
 					StateSymbol* newState,
 					StateSymbol* endState,
 					List<StateSymbol*>& visited,
 					List<EdgeSymbol*>& accumulatedEdges)
 				{
-					for (auto oldState : walkingClosure.States())
+					for (auto edge : walkingOldState->OutEdges())
 					{
-						for (auto edge : oldState->OutEdges())
+						accumulatedEdges.Add(edge);
+						switch (edge->input.type)
 						{
-							if (!IsPureEpsilonEdge(edge))
+						case EdgeInputType::Token:
+						case EdgeInputType::Rule:
 							{
-								accumulatedEdges.Add(edge);
-								switch (edge->input.type)
+								auto targetNewState = CreateCompactState(edge->To());
+								if (!visited.Contains(targetNewState))
 								{
-								case EdgeInputType::Token:
-								case EdgeInputType::Rule:
-									{
-										auto targetNewState = CreateCompactState(edge->To());
-										if (!visited.Contains(targetNewState))
-										{
-											visited.Add(targetNewState);
-										}
-										auto newEdge = new EdgeSymbol(newState, targetNewState);
-										newEdges.Add(newEdge);
-										newEdge->input = edge->input;
-										newEdge->important |= edge->important;
-										for (auto accumulatedEdge : accumulatedEdges)
-										{
-											CopyFrom(newEdge->insBeforeInput, accumulatedEdge->insBeforeInput, true);
-											CopyFrom(newEdge->insAfterInput, accumulatedEdge->insAfterInput, true);
-											newEdge->important |= accumulatedEdge->important;
-										}
-									}
-									break;
-								case EdgeInputType::Epsilon:
-									BuildEpsilonEliminatedEdgesInternal(CalculateEpsilonClosure(edge->To()), newState, endState, visited, accumulatedEdges);
-									break;
+									visited.Add(targetNewState);
 								}
-								accumulatedEdges.RemoveAt(accumulatedEdges.Count() - 1);
-							}
-						}
-
-						if (oldState->endingState)
-						{
-							auto newEdge = new EdgeSymbol(newState, endState);
-							newEdge->input.type = EdgeInputType::Ending;
-							for (auto accumulatedEdge : accumulatedEdges)
-							{
-								CopyFrom(newEdge->insBeforeInput, accumulatedEdge->insBeforeInput, true);
-								CopyFrom(newEdge->insAfterInput, accumulatedEdge->insAfterInput, true);
-								newEdge->important |= accumulatedEdge->important;
-							}
-
-							for (auto endingEdge : newState->OutEdges())
-							{
-								if (endingEdge != newEdge && endingEdge->input.type == EdgeInputType::Ending)
+								auto newEdge = new EdgeSymbol(newState, targetNewState);
+								newEdges.Add(newEdge);
+								newEdge->input = edge->input;
+								newEdge->important |= edge->important;
+								for (auto accumulatedEdge : accumulatedEdges)
 								{
-									if (
-										CompareEnumerable(endingEdge->insBeforeInput, newEdge->insBeforeInput) == 0 &&
-										CompareEnumerable(endingEdge->insAfterInput, newEdge->insAfterInput) == 0)
-									{
-										CHECK_ERROR(newEdge->important == endingEdge->important, L"It is not possible to have two equal ending edges with different priority.");
-										newState->outEdges.Remove(newEdge);
-										endState->inEdges.Remove(newEdge);
-										delete newEdge;
-										goto DISCARD_ENDING_EDGE;
-									}
+									CopyFrom(newEdge->insBeforeInput, accumulatedEdge->insBeforeInput, true);
+									CopyFrom(newEdge->insAfterInput, accumulatedEdge->insAfterInput, true);
+									newEdge->important |= accumulatedEdge->important;
 								}
 							}
-							newEdges.Add(newEdge);
-						DISCARD_ENDING_EDGE:;
+							break;
+						case EdgeInputType::Epsilon:
+							BuildEpsilonEliminatedEdgesInternal(edge->To(), newState, endState, visited, accumulatedEdges);
+							break;
 						}
+						accumulatedEdges.RemoveAt(accumulatedEdges.Count() - 1);
+					}
+
+					if (walkingOldState->endingState)
+					{
+						auto newEdge = new EdgeSymbol(newState, endState);
+						newEdge->input.type = EdgeInputType::Ending;
+						for (auto accumulatedEdge : accumulatedEdges)
+						{
+							CopyFrom(newEdge->insBeforeInput, accumulatedEdge->insBeforeInput, true);
+							CopyFrom(newEdge->insAfterInput, accumulatedEdge->insAfterInput, true);
+							newEdge->important |= accumulatedEdge->important;
+						}
+
+						for (auto endingEdge : newState->OutEdges())
+						{
+							if (endingEdge != newEdge && endingEdge->input.type == EdgeInputType::Ending)
+							{
+								if (
+									CompareEnumerable(endingEdge->insBeforeInput, newEdge->insBeforeInput) == 0 &&
+									CompareEnumerable(endingEdge->insAfterInput, newEdge->insAfterInput) == 0)
+								{
+									CHECK_ERROR(newEdge->important == endingEdge->important, L"It is not possible to have two equal ending edges with different priority.");
+									newState->outEdges.Remove(newEdge);
+									endState->inEdges.Remove(newEdge);
+									delete newEdge;
+									goto DISCARD_ENDING_EDGE;
+								}
+							}
+						}
+						newEdges.Add(newEdge);
+					DISCARD_ENDING_EDGE:;
 					}
 				}
 
@@ -260,9 +185,11 @@ CompactSyntaxBuilder
 					}
 					else
 					{
-						auto newState = CreateCompactState(CalculateEpsilonClosure(state));
+						auto newState = new StateSymbol(rule);
 						newState->label = state->label;
+						newStates.Add(newState);
 						oldToNew.Add(state, newState);
+						newToOld.Add(newState, state);
 						return newState;
 					}
 				}
@@ -273,7 +200,7 @@ CompactSyntaxBuilder
 					List<StateSymbol*>& visited)
 				{
 					List<EdgeSymbol*> accumulatedEdges;
-					BuildEpsilonEliminatedEdgesInternal(newToClosure[newState].Copy(), newState, endState, visited, accumulatedEdges);
+					BuildEpsilonEliminatedEdgesInternal(newToOld[newState], newState, endState, visited, accumulatedEdges);
 				}
 			};
 
