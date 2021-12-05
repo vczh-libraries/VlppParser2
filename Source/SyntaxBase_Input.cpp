@@ -10,6 +10,24 @@ namespace vl
 TraceManager::Input
 ***********************************************************************/
 
+			bool TraceManager::AreReturnDescEqual(vint ri1, vint ri2)
+			{
+				// TODO: create a cache to compare two returnIndex directly
+				// instead of repeatly scanning the content here
+				if (ri1 == ri2) return true;
+				auto& rd1 = executable.returns[ri1];
+				auto& rd2 = executable.returns[ri2];
+				if (rd1.returnState != rd2.returnState) return false;
+				if (rd1.insAfterInput.count != rd2.insAfterInput.count) return false;
+				for (vint insRef = 0; insRef < rd1.insAfterInput.count; insRef++)
+				{
+					auto& ins1 = executable.instructions[rd1.insAfterInput.start + insRef];
+					auto& ins2 = executable.instructions[rd2.insAfterInput.start + insRef];
+					if (ins1 != ins2) return false;
+				}
+				return true;
+			}
+
 			Trace* TraceManager::WalkAlongSingleEdge(
 				vint previousTokenIndex,
 				vint currentTokenIndex,
@@ -54,20 +72,9 @@ TraceManager::Input
 								if (r1 == r2) goto MERGABLE_TRACE_FOUND;
 								auto rs1 = GetReturnStack(r1);
 								auto rs2 = GetReturnStack(r2);
-								if (rs1->returnIndex != rs2->returnIndex)
+								if (!AreReturnDescEqual(rs1->returnIndex, rs2->returnIndex))
 								{
-									// TODO: create a cache to compare two returnIndex directly
-									// instead of repeatly scanning the content here
-									auto& rd1 = executable.returns[rs1->returnIndex];
-									auto& rd2 = executable.returns[rs2->returnIndex];
-									if (rd1.returnState != rd2.returnState) goto MERGABLE_TRACE_NOT_FOUND;
-									if (rd1.insAfterInput.count != rd2.insAfterInput.count) goto MERGABLE_TRACE_NOT_FOUND;
-									for (vint insRef = 0; insRef < rd1.insAfterInput.count; insRef++)
-									{
-										auto& ins1 = executable.instructions[rd1.insAfterInput.start + insRef];
-										auto& ins2 = executable.instructions[rd2.insAfterInput.start + insRef];
-										if (ins1 != ins2) goto MERGABLE_TRACE_NOT_FOUND;
-									}
+									goto MERGABLE_TRACE_NOT_FOUND;
 								}
 								r1 = rs1->previous;
 								r2 = rs2->previous;
