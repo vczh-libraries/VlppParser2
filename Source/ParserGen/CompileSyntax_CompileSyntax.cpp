@@ -237,7 +237,6 @@ CompileSyntaxVisitor
 
 				void Visit(GlrOptionalSyntax* node) override
 				{
-					CHECK_ERROR(node->priority == GlrOptionalPriority::Equal, L"Not Implemented!");
 					StatePair pair;
 					pair.begin = CreateState();
 					pair.end = CreateState();
@@ -247,9 +246,18 @@ CompileSyntaxVisitor
 					auto bodyPair = Build(node->syntax);
 					clauseDisplayText += L" ]";
 
-					CreateEdge(pair.begin, bodyPair.begin);
+					auto takeEdge = CreateEdge(pair.begin, bodyPair.begin);
 					CreateEdge(bodyPair.end, pair.end);
-					CreateEdge(pair.begin, pair.end);
+					auto skipEdge = CreateEdge(pair.begin, pair.end);
+
+					if (node->priority == GlrOptionalPriority::PreferTake)
+					{
+						takeEdge->important = true;
+					}
+					if (node->priority == GlrOptionalPriority::PreferSkip)
+					{
+						skipEdge->important = true;
+					}
 
 					endPoses.Add(pair.end, clauseDisplayText.Length());
 					result = pair;

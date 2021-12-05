@@ -87,6 +87,8 @@ EdgeSymbol
 				EdgeSymbol(StateSymbol* _from, StateSymbol* _to);
 			public:
 				EdgeInput					input;				// Input of this edge.
+				bool						important = false;	// true and false are the only two priorites of edges.
+																// If any important edge forms a cross referenced NFA edge, it becomes important too.
 				InsList						insBeforeInput;		// Instructions to execute before pushing the value from a token or a reduced rule.
 				InsList						insAfterInput;		// Instructions to execute after pushing the value from a token or a reduced rule.
 				EdgeList					returnEdges;		// Edges of rule reduction.
