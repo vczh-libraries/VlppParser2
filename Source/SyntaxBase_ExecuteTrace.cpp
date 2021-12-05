@@ -46,43 +46,67 @@ TraceManager::ExecuteTrace
 
 			Ptr<ParsingAstBase> TraceManager::ExecuteTrace(Trace* trace, IAstInsReceiver& receiver, collections::List<regex::RegexToken>& tokens)
 			{
-				CHECK_ERROR(state == TraceManagerState::PreparedTraceRoute, L"vl::glr::automaton::TraceManager::ExecuteTrace(Trace*, IAstInsReceiver&, List<RegexToken>&)#Wrong timing to call this function.");
+#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::ExecuteTrace(Trace*, IAstInsReceiver&, List<RegexToken>&)#"
+				CHECK_ERROR(state == TraceManagerState::PreparedTraceRoute, ERROR_MESSAGE_PREFIX L"Wrong timing to call this function.");
 
 				baseVisitCount += maxTraceVisitCount;
 
 				TraceManagerSubmitter submitter;
 				submitter.receiver = &receiver;
 
+				vint startIns = 0;
 				while (trace)
 				{
-					if (trace->byEdge != -1)
+					TraceInsLists insLists;
+					ReadInstructionList(trace, insLists);
+
+					vint maxIns = insLists.c3 - 1;
+					if (trace->ambiguity.traceBeginObject != -1)
 					{
-						auto& edgeDesc = executable.edges[trace->byEdge];
-						for (vint insRef = 0; insRef < edgeDesc.insBeforeInput.count; insRef++)
+						maxIns = trace->ambiguity.insEndObject;
+
+						CHECK_ERROR(trace->runtimeRouting.expectedVisitCount > 0, ERROR_MESSAGE_PREFIX L"expectedVisitCount for this merging trace is not properly initialized.");
+						if (trace->runtimeRouting.visitedCount < baseVisitCount)
 						{
-							vint insIndex = edgeDesc.insBeforeInput.start + insRef;
-							auto& ins = executable.instructions[insIndex];
-							auto& token = tokens[trace->currentTokenIndex];
-							submitter.Submit(ins, token);
+							trace->runtimeRouting.visitedCount = baseVisitCount;
 						}
-						for (vint insRef = 0; insRef < edgeDesc.insAfterInput.count; insRef++)
-						{
-							vint insIndex = edgeDesc.insAfterInput.start + insRef;
-							auto& ins = executable.instructions[insIndex];
-							auto& token = tokens[trace->currentTokenIndex];
-							submitter.Submit(ins, token);
-						}
+						trace->runtimeRouting.visitedCount++;
 					}
 
-					if (trace->executedReturn != -1)
+					for (vint i = startIns; i <= maxIns; i++)
 					{
-						auto& returnDesc = executable.returns[trace->executedReturn];
-						for (vint insRef = 0; insRef < returnDesc.insAfterInput.count; insRef++)
+						auto& ins = ReadInstruction(i, insLists);
+						auto& token = tokens[trace->currentTokenIndex];
+						submitter.Submit(ins, token);
+					}
+
+					startIns = 0;
+					if (trace->ambiguity.traceBeginObject != -1)
+					{
+						auto traceBeginObject = GetTrace(trace->ambiguity.traceBeginObject);
+						if (trace->runtimeRouting.visitedCount - baseVisitCount == trace->runtimeRouting.expectedVisitCount)
 						{
-							vint insIndex = returnDesc.insAfterInput.start + insRef;
-							auto& ins = executable.instructions[insIndex];
-							auto& token = tokens[trace->currentTokenIndex];
-							submitter.Submit(ins, token);
+							{
+								TraceInsLists beginInsLists;
+								ReadInstructionList(traceBeginObject, beginInsLists);
+								auto& beginIns = ReadInstruction(trace->ambiguity.insBeginObject, beginInsLists);
+								auto& token = tokens[trace->currentTokenIndex];
+
+								AstIns insResolve = { AstInsType::ResolveAmbiguity,beginIns.param,trace->runtimeRouting.expectedVisitCount };
+								submitter.Submit(insResolve, token);
+							}
+
+							for (vint i = maxIns + 1; i < insLists.c3; i++)
+							{
+								auto& ins = ReadInstruction(i, insLists);
+								auto& token = tokens[trace->currentTokenIndex];
+								submitter.Submit(ins, token);
+							}
+						}
+						else
+						{
+							startIns = trace->ambiguity.insBeginObject;
+							trace = traceBeginObject;
 						}
 					}
 
@@ -90,15 +114,41 @@ TraceManager::ExecuteTrace
 					{
 						trace = nullptr;
 					}
+					else if (trace->successors.first == trace->successors.last)
+					{
+						trace = GetTrace(trace->successors.first);
+					}
 					else
 					{
-						CHECK_ERROR(trace->successors.first == trace->successors.last, L"vl::glr::automaton::TraceManager::ExecuteTrace(Trace*, IAstInsReceiver&, List<RegexToken>&)#Ambiguous trace not implemented.");
-						trace = GetTrace(trace->successors.first);
+						vint successorId = trace->successors.first;
+						while (successorId != -1)
+						{
+							auto successor = GetTrace(successorId);
+							CHECK_ERROR(successor->runtimeRouting.expectedVisitCount > 0, ERROR_MESSAGE_PREFIX L"expectedVisitCount for this branch is not properly initialized.");
+							if (successor->runtimeRouting.visitedCount < baseVisitCount)
+							{
+								successor->runtimeRouting.visitedCount = baseVisitCount;
+							}
+
+							vint visitedCount = successor->runtimeRouting.visitedCount - baseVisitCount;
+							if (visitedCount < successor->runtimeRouting.expectedVisitCount)
+							{
+								successor->runtimeRouting.expectedVisitCount++;
+								trace = successor;
+								continue;
+							}
+							else
+							{
+								successorId = successor->successors.siblingNext;
+							}
+						}
+						CHECK_FAIL(ERROR_MESSAGE_PREFIX L"All branches have been executed, the merging trace should not have jumped back here.");
 					}
 				}
 
 				submitter.ExecuteSubmitted();
 				return receiver.Finished();
+#undef ERROR_MESSAGE_PREFIX
 			}
 		}
 	}

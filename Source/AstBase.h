@@ -253,7 +253,7 @@ Instructions
 			EndObject,									// EndObject()						: Finish creating an AST node, all objects pushed after BeginObject are supposed to be its fields.
 			DiscardValue,								// DiscardValue()					: Remove a pushed value.
 			Field,										// Field(Field)						: Associate a field name with the top object.
-			ResolveAmbiguity,							// ResolveAmbiguity(Type, Count)	: Combine several top objects to one using an ambiguity node.
+			ResolveAmbiguity,							// ResolveAmbiguity(Type, Count)	: Combine several top objects to one using an ambiguity node. Type is the type of each top object.
 		};
 
 		struct AstIns
