@@ -172,10 +172,10 @@ Execution
 
 			struct RuntimeRouting
 			{
-				vint					expectedVisitCount = -1;	// the number of visits to complete a whole execution, could be greater than 1 if there ambiguity happens
+				vint					expectedVisitCount = 0;		// the number of visits to complete a whole execution, could be greater than 1 if there ambiguity happens
 																	// (filled by PrepareTraceRoute)
 
-				vint					visitedCount = -1;			// (visitedCount - baseVisitCount) is the number of visiting of the current execution
+				vint					visitedCount = 0;			// (visitedCount - baseVisitCount) is the number of visiting of the current execution
 																	// visitedCount < baseVisitCount means this member has not been initialized therefore it means 0
 																	// (filled by ExecuteTrace)
 			};
@@ -251,7 +251,7 @@ Execution
 				AstIns&								ReadInstruction(vint instruction, TraceInsLists& insLists);
 				bool								RunInstruction(vint instruction, TraceInsLists& insLists, vint& objectCount);
 				void								FindBalancedBeginObject(Trace*& trace, vint& instruction, vint& objectCount);
-				TraceAmbiguity&						FillAmbiguityInfoForMergingTrace(Trace* trace);
+				void								FillAmbiguityInfoForMergingTrace(Trace* trace);
 				void								FillAmbiguityInfoForPredecessorTraces(Trace* trace);
 			public:
 				TraceManager(Executable& _executable);

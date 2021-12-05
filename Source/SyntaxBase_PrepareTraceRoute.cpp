@@ -98,8 +98,8 @@ TraceManager::PrepareTraceRoute
 				{
 					if (trace->predecessors.first != trace->predecessors.last)
 					{
-						auto& ambiguity = FillAmbiguityInfoForMergingTrace(trace);
-						for (vint i = instruction; i > ambiguity.insEndObject; i--)
+						FillAmbiguityInfoForMergingTrace(trace);
+						for (vint i = instruction; i > trace->ambiguity.insEndObject; i--)
 						{
 							if (RunInstruction(i, insLists, objectCount))
 							{
@@ -108,9 +108,9 @@ TraceManager::PrepareTraceRoute
 							}
 						}
 
-						trace = GetTrace(ambiguity.traceBeginObject);
+						trace = GetTrace(trace->ambiguity.traceBeginObject);
 						ReadInstructionList(trace, insLists);
-						instruction = ambiguity.insBeginObject - 1;
+						instruction = trace->ambiguity.insBeginObject - 1;
 					}
 					else
 					{
@@ -124,20 +124,27 @@ TraceManager::PrepareTraceRoute
 						}
 
 						CHECK_ERROR(trace->predecessors.first != -1, ERROR_MESSAGE_PREFIX L"Encountered unbalanced instructions.");
+						auto lastBranch = trace;
+
 						trace = GetTrace(trace->predecessors.first);
 						ReadInstructionList(trace, insLists);
 						instruction = insLists.c3 - 1;
+
+						if (trace->successors.first != trace->successors.last)
+						{
+							lastBranch->runtimeRouting.expectedVisitCount++;
+						}
 					}
 				}
 #undef ERROR_MESSAGE_PREFIX
 			}
 
-			TraceAmbiguity& TraceManager::FillAmbiguityInfoForMergingTrace(Trace* trace)
+			void TraceManager::FillAmbiguityInfoForMergingTrace(Trace* trace)
 			{
 #define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::SearchSingleTraceForBeginObject(Trace*&, vint&, vint&)#"
 				if (trace->ambiguity.traceBeginObject != -1)
 				{
-					return trace->ambiguity;
+					return;
 				}
 
 				CHECK_ERROR(trace->predecessors.first != trace->predecessors.last, L"This function is not allowed to run on non-merging traces.");
@@ -192,12 +199,12 @@ TraceManager::PrepareTraceRoute
 						}
 					}
 					predecessorId = predecessor->predecessors.siblingNext;
+					trace->runtimeRouting.expectedVisitCount++;
 				}
 
 				trace->ambiguity.insEndObject = insEndObject;
 				trace->ambiguity.insBeginObject = insBeginObject;
 				trace->ambiguity.traceBeginObject = traceBeginObject;
-				return trace->ambiguity;
 #undef ERROR_MESSAGE_PREFIX
 			}
 
@@ -209,8 +216,12 @@ TraceManager::PrepareTraceRoute
 					{
 						if (trace->ambiguity.traceBeginObject == -1)
 						{
-							auto& ambiguity = FillAmbiguityInfoForMergingTrace(trace);
-							trace = GetTrace(ambiguity.traceBeginObject);
+							FillAmbiguityInfoForMergingTrace(trace);
+							if (maxTraceVisitCount < trace->runtimeRouting.expectedVisitCount)
+							{
+								maxTraceVisitCount = trace->runtimeRouting.expectedVisitCount;
+							}
+							trace = GetTrace(trace->ambiguity.traceBeginObject);
 						}
 						else
 						{
