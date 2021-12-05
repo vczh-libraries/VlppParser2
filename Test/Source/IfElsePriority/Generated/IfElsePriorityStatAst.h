@@ -101,7 +101,7 @@ namespace vl
 #endif
 			/// <summary>Load all reflectable AST types, only available when <b>VCZH_DEBUG_NO_REFLECTION</b> is off.</summary>
 			/// <returns>Returns true if this operation succeeded.</returns>
-			extern bool StatAstLoadTypes();
+			extern bool IfElsePriorityStatAstLoadTypes();
 		}
 	}
 }

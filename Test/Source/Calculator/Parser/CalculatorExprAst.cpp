@@ -243,7 +243,7 @@ namespace vl
 #endif
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
-			class ExprAstTypeLoader : public vl::Object, public ITypeLoader
+			class CalculatorExprAstTypeLoader : public vl::Object, public ITypeLoader
 			{
 			public:
 				void Load(ITypeManager* manager)
@@ -275,12 +275,12 @@ namespace vl
 #endif
 #endif
 
-			bool ExprAstLoadTypes()
+			bool CalculatorExprAstLoadTypes()
 			{
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 				if (auto manager = GetGlobalTypeManager())
 				{
-					Ptr<ITypeLoader> loader = new ExprAstTypeLoader;
+					Ptr<ITypeLoader> loader = new CalculatorExprAstTypeLoader;
 					return manager->AddTypeLoader(loader);
 				}
 #endif

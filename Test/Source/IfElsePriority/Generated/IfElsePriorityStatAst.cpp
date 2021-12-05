@@ -90,7 +90,7 @@ namespace vl
 #endif
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
-			class StatAstTypeLoader : public vl::Object, public ITypeLoader
+			class IfElsePriorityStatAstTypeLoader : public vl::Object, public ITypeLoader
 			{
 			public:
 				void Load(ITypeManager* manager)
@@ -110,12 +110,12 @@ namespace vl
 #endif
 #endif
 
-			bool StatAstLoadTypes()
+			bool IfElsePriorityStatAstLoadTypes()
 			{
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 				if (auto manager = GetGlobalTypeManager())
 				{
-					Ptr<ITypeLoader> loader = new StatAstTypeLoader;
+					Ptr<ITypeLoader> loader = new IfElsePriorityStatAstTypeLoader;
 					return manager->AddTypeLoader(loader);
 				}
 #endif

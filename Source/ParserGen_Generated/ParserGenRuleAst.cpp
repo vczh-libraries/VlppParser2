@@ -240,7 +240,7 @@ namespace vl
 #endif
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
-			class GlrRuleAstTypeLoader : public vl::Object, public ITypeLoader
+			class ParserGenRuleAstTypeLoader : public vl::Object, public ITypeLoader
 			{
 			public:
 				void Load(ITypeManager* manager)
@@ -271,12 +271,12 @@ namespace vl
 #endif
 #endif
 
-			bool GlrRuleAstLoadTypes()
+			bool ParserGenRuleAstLoadTypes()
 			{
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 				if (auto manager = GetGlobalTypeManager())
 				{
-					Ptr<ITypeLoader> loader = new GlrRuleAstTypeLoader;
+					Ptr<ITypeLoader> loader = new ParserGenRuleAstTypeLoader;
 					return manager->AddTypeLoader(loader);
 				}
 #endif

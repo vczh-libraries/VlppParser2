@@ -332,7 +332,7 @@ WriteTypeReflectionDeclaration
 
 				writer.WriteString(prefix);
 				writer.WriteString(L"extern bool ");
-				writer.WriteString(file->classPrefix);
+				writer.WriteString(file->Owner()->Global().name);
 				writer.WriteString(file->Name());
 				writer.WriteLine(L"LoadTypes();");
 			}
@@ -488,7 +488,7 @@ WriteTypeReflectionImplementation
 				writer.WriteLine(L"#ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA");
 				writer.WriteString(prefix);
 				writer.WriteString(L"class ");
-				writer.WriteString(file->classPrefix);
+				writer.WriteString(file->Owner()->Global().name);
 				writer.WriteString(file->Name());
 				writer.WriteLine(L"TypeLoader : public vl::Object, public ITypeLoader");
 				writer.WriteString(prefix);
@@ -541,7 +541,7 @@ WriteTypeReflectionImplementation
 				writer.WriteLine(L"");
 				writer.WriteString(prefix);
 				writer.WriteString(L"bool ");
-				writer.WriteString(file->classPrefix);
+				writer.WriteString(file->Owner()->Global().name);
 				writer.WriteString(file->Name());
 				writer.WriteLine(L"LoadTypes()");
 				writer.WriteString(prefix);
@@ -554,7 +554,7 @@ WriteTypeReflectionImplementation
 				writer.WriteLine(L"\t{");
 				writer.WriteString(prefix);
 				writer.WriteString(L"\t\tPtr<ITypeLoader> loader = new ");
-				writer.WriteString(file->classPrefix);
+				writer.WriteString(file->Owner()->Global().name);
 				writer.WriteString(file->Name());
 				writer.WriteLine(L"TypeLoader;");
 				writer.WriteString(prefix);
