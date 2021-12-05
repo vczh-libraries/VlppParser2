@@ -6,6 +6,7 @@
   - Escaping and Unescaping pairs (instead of only unescaping)
   - Calculate ambiguous **ToString** cases
   - Generate **ToString** algorithm
+- Loop priority
 
 ## Configurations
 
@@ -25,28 +26,15 @@
 - [x] Unique field id will be generated for each fields in each AST node.
 - [ ] One XML "parser project file" to contain all above information, linking to all AST/Lexical Analyzer/Syntax files.
 
-## EBNF Program
-
-- RULE {`::=` CLAUSE [`as` CLASS-NAME [`{` {ASSIGNMENT ...} `}`]] } `;`
-  - Consider a syntax here to switch to different lexical analyzer.
-  - The type of a rule is not specified, it can be inferred to:
-    - `token`: if all clauses are single-token syntax.
-    - `partial` TYPE: if all clauses have the same type `SYNTAX as partial TYPE {...}`. All `TYPE` must be exactly the same.
-      - A partial type rule could be used in another rule if its type is:
-        - `partial` TYPE2, while TYPE2 should be the same to TYPE or its derived type
-        - TYPE2, while TYPE2 should be the same to TYPE or its derived type
-    - TYPE: if all clauses are `SYNTAX as TYPE {...}` or `SYNTAX containing one !RULE`.
-      - the type of this rule is the most detailed common base types of all `TYPE`.
-
 ## Development
 
 1. [x] `ParserTest_ParserGen_Compiler`
    1. [ ] Prepare more parser test cases for advanced features (proprities) ...
-      1. [ ] Multiple parser syntax under `Test/Source/*/Syntax/`.
-      2. [ ] Generate C++ files from them in `Test/Source/*/Parser/`.
-      3. [ ] Prepare input text files in `Test/Source/*/Input/`.
-      4. [ ] Prepare output JSON files in `Test/Source/*/Output/`.
-      5. [ ] Use the generated `ParserGen` syntax C++ files to do above work items.
+      1. [x] `Calculator.
+      2. [x] `IfElseAmbiguity`. (Equal)
+      3. [x] `IfElsePriority`. (PreferTake)
+         1. [ ] Test.
+      4. [ ] `IfElsePriority2`. (PreferSkip)
    2. [ ] Generate JSON parser
    3. [ ] Generate XML parser
 1. [x] `ParserTest_ParserGen_Generated`
@@ -74,14 +62,15 @@
   - Refactor some properties in `LexerSymbolManager` into `LexerFile` with a name.
 - AST uses classes from another AST file in dependency as fields.
 - Branch priorities:
-  - Loop
   - Optional
-  - Alternative
+  - Alternative (consider a good syntax)
 - Printing AST classes that created from a memory pool.
-- Support multiple syntax definition file in one parser.
 - Error message generating.
   - Allow users to customize error messages.
   - Support localization.
 - Error recovering.
 - Extensible tokens, for example, recognize `R"[^\s(]\(` and invoke a callback function to determine the end of the string.
   - Offer two options: using (rich regex | C++) to search for complete token.
+- Escaping and unescaping functions
+  - Offer two options: experiment
+  - Map positions between escaped and unescaped text
