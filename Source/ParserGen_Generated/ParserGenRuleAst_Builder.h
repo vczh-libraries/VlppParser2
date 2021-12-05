@@ -73,6 +73,7 @@ namespace vl
 					GlrOptionalSyntax* node;
 				public:
 					OptionalSyntaxBuilder(GlrOptionalSyntax* _node) : node(_node) {}
+					OptionalSyntaxBuilder& priority(GlrOptionalPriority value);
 					OptionalSyntaxBuilder& syntax(const vl::Ptr<GlrSyntax>& value);
 				};
 

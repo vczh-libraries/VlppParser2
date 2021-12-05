@@ -99,6 +99,12 @@ LoopSyntaxBuilder
 OptionalSyntaxBuilder
 ***********************************************************************/
 
+				OptionalSyntaxBuilder& OptionalSyntaxBuilder::priority(GlrOptionalPriority value)
+				{
+					node->priority = value;
+					return *this;
+				}
+
 				OptionalSyntaxBuilder& OptionalSyntaxBuilder::syntax(const vl::Ptr<GlrSyntax>& value)
 				{
 					node->syntax = value;

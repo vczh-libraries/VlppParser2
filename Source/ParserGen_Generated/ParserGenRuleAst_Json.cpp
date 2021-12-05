@@ -71,6 +71,22 @@ namespace vl
 				}
 				void RuleAstVisitor::PrintFields(GlrOptionalSyntax* node)
 				{
+					BeginField(L"priority");
+					switch (node->priority)
+					{
+					case vl::glr::parsergen::GlrOptionalPriority::Equal:
+						WriteString(L"Equal");
+						break;
+					case vl::glr::parsergen::GlrOptionalPriority::PreferSkip:
+						WriteString(L"PreferSkip");
+						break;
+					case vl::glr::parsergen::GlrOptionalPriority::PreferTake:
+						WriteString(L"PreferTake");
+						break;
+					default:
+						WriteNull();
+					}
+					EndField();
 					BeginField(L"syntax");
 					Print(node->syntax.Obj());
 					EndField();

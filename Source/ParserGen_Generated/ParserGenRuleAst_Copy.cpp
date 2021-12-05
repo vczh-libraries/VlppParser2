@@ -58,6 +58,7 @@ namespace vl
 				void RuleAstVisitor::CopyFields(GlrOptionalSyntax* from, GlrOptionalSyntax* to)
 				{
 					CopyFields(static_cast<GlrSyntax*>(from), static_cast<GlrSyntax*>(to));
+					to->priority = from->priority;
 					to->syntax = CopyNode(from->syntax.Obj());
 				}
 

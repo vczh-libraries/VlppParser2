@@ -32,6 +32,14 @@ namespace vl
 			class GlrSyntaxFile;
 			class GlrUseSyntax;
 
+			enum class GlrOptionalPriority
+			{
+				UNDEFINED_ENUM_ITEM_VALUE = -1,
+				Equal = 0,
+				PreferTake = 1,
+				PreferSkip = 2,
+			};
+
 			class GlrSyntax abstract : public vl::glr::ParsingAstBase, vl::reflection::Description<GlrSyntax>
 			{
 			public:
@@ -88,6 +96,7 @@ namespace vl
 			class GlrOptionalSyntax : public GlrSyntax, vl::reflection::Description<GlrOptionalSyntax>
 			{
 			public:
+				GlrOptionalPriority priority;
 				vl::Ptr<GlrSyntax> syntax;
 
 				void Accept(GlrSyntax::IVisitor* visitor) override;
@@ -190,6 +199,7 @@ namespace vl
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrLiteralSyntax)
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrUseSyntax)
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrLoopSyntax)
+			DECL_TYPE_INFO(vl::glr::parsergen::GlrOptionalPriority)
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrOptionalSyntax)
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrSequenceSyntax)
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrAlternativeSyntax)

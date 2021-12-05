@@ -82,6 +82,7 @@ namespace vl
 			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrLiteralSyntax, glr::parsergen::GlrLiteralSyntax)
 			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrUseSyntax, glr::parsergen::GlrUseSyntax)
 			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrLoopSyntax, glr::parsergen::GlrLoopSyntax)
+			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrOptionalPriority, glr::parsergen::GlrOptionalPriority)
 			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrOptionalSyntax, glr::parsergen::GlrOptionalSyntax)
 			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrSequenceSyntax, glr::parsergen::GlrSequenceSyntax)
 			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrAlternativeSyntax, glr::parsergen::GlrAlternativeSyntax)
@@ -135,11 +136,19 @@ namespace vl
 				CLASS_MEMBER_FIELD(delimiter)
 			END_CLASS_MEMBER(vl::glr::parsergen::GlrLoopSyntax)
 
+			BEGIN_ENUM_ITEM(vl::glr::parsergen::GlrOptionalPriority)
+				ENUM_ITEM_NAMESPACE(vl::glr::parsergen::GlrOptionalPriority)
+				ENUM_NAMESPACE_ITEM(Equal)
+				ENUM_NAMESPACE_ITEM(PreferTake)
+				ENUM_NAMESPACE_ITEM(PreferSkip)
+			END_ENUM_ITEM(vl::glr::parsergen::GlrOptionalPriority)
+
 			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrOptionalSyntax)
 				CLASS_MEMBER_BASE(vl::glr::parsergen::GlrSyntax)
 
 				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrOptionalSyntax>(), NO_PARAMETER)
 
+				CLASS_MEMBER_FIELD(priority)
 				CLASS_MEMBER_FIELD(syntax)
 			END_CLASS_MEMBER(vl::glr::parsergen::GlrOptionalSyntax)
 
@@ -251,6 +260,7 @@ namespace vl
 					ADD_TYPE_INFO(vl::glr::parsergen::GlrLiteralSyntax)
 					ADD_TYPE_INFO(vl::glr::parsergen::GlrUseSyntax)
 					ADD_TYPE_INFO(vl::glr::parsergen::GlrLoopSyntax)
+					ADD_TYPE_INFO(vl::glr::parsergen::GlrOptionalPriority)
 					ADD_TYPE_INFO(vl::glr::parsergen::GlrOptionalSyntax)
 					ADD_TYPE_INFO(vl::glr::parsergen::GlrSequenceSyntax)
 					ADD_TYPE_INFO(vl::glr::parsergen::GlrAlternativeSyntax)

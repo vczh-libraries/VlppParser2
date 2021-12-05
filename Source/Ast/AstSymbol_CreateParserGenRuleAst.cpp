@@ -39,8 +39,14 @@ CreateParserGenRuleAst
 				_LoopSyntax->CreateProp(L"syntax")->SetPropType(AstPropType::Type, L"Syntax");
 				_LoopSyntax->CreateProp(L"delimiter")->SetPropType(AstPropType::Type, L"Syntax");
 
+				auto _OptionalPriority = _ast->CreateEnum(L"OptionalPriority");
+				_OptionalPriority->CreateItem(L"Equal");
+				_OptionalPriority->CreateItem(L"PreferTake");
+				_OptionalPriority->CreateItem(L"PreferSkip");
+
 				auto _OptionalSyntax = _ast->CreateClass(L"OptionalSyntax");
 				_OptionalSyntax->SetBaseClass(L"Syntax");
+				_OptionalSyntax->CreateProp(L"priority")->SetPropType(AstPropType::Type, L"OptionalPriority");
 				_OptionalSyntax->CreateProp(L"syntax")->SetPropType(AstPropType::Type, L"Syntax");
 
 				auto _SequenceSyntax = _ast->CreateClass(L"SequenceSyntax");
