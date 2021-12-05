@@ -284,6 +284,7 @@ Instructions
 			UnknownType,								// UnknownType(Type)					: The type id does not exist.
 			UnknownField,								// UnknownField(Field)					: The field id does not exist.
 			UnsupportedAmbiguityType,					// UnsupportedAmbiguityType(Type)		: The type is not configured to allow ambiguity.
+			UnexpectedAmbiguousCandidate,				// UnexpectedAmbiguousCandidate(Type)	: The type of the ambiguous candidate is not compatible to the required type.
 			FieldNotExistsInType,						// FieldNotExistsInType(Field)			: The type doesn't have such field.
 			FieldReassigned,							// FieldReassigned(Field)				: An object is assigned to a field but this field has already been assigned.
 			ObjectTypeMismatchedToField,				// ObjectTypeMismatchedToField(Field)	: Unable to assign an object to a field because the type does not match.

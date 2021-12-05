@@ -380,11 +380,64 @@ WriteAstAssemblerCppFile
 						writer.WriteLine(prefix + L"{");
 						writer.WriteLine(prefix + L"\tswitch((" + manager.Global().name + L"Classes)type)");
 						writer.WriteLine(prefix + L"\t{");
+
+						Dictionary<AstClassSymbol*, AstClassSymbol*> resolvables;
 						for (auto typeSymbol : manager.Symbols().Values())
 						{
 							if (auto classSymbol = dynamic_cast<AstClassSymbol*>(typeSymbol))
 							{
-								writer.WriteLine(prefix + L"\tcase " + manager.Global().name + L"Classes::" + classSymbol->Name() + L":");
+								auto current = classSymbol;
+								while (current)
+								{
+									if (current->ambiguousDerivedClass)
+									{
+										if (classSymbol != current && classSymbol != current->ambiguousDerivedClass)
+										{
+											resolvables.Add(classSymbol, current->ambiguousDerivedClass);
+										}
+										break;
+									}
+									current = current->baseClass;
+								}
+							}
+						}
+
+						for (auto typeSymbol : manager.Symbols().Values())
+						{
+							if (auto classSymbol = dynamic_cast<AstClassSymbol*>(typeSymbol))
+							{
+								if (resolvables.Keys().Contains(classSymbol))
+								{
+									auto ambiguousClassSymbol = resolvables[classSymbol];
+									writer.WriteLine(prefix + L"\tcase " + manager.Global().name + L"Classes::" + classSymbol->Name() + L":");
+									writer.WriteLine(prefix + L"\t\t{");
+									writer.WriteString(prefix + L"\t\t\tvl::Ptr<");
+									PrintCppType(nullptr, ambiguousClassSymbol, writer);
+									writer.WriteString(L"> ast = new ");
+									PrintCppType(nullptr, ambiguousClassSymbol, writer);
+									writer.WriteLine(L"();");
+									writer.WriteLine(prefix + L"\t\t\tfor (auto candidate : candidates)");
+									writer.WriteLine(prefix + L"\t\t\t{");
+									writer.WriteString(prefix + L"\t\t\t\tauto typedAst = candidate.Cast<");
+									PrintCppType(nullptr, classSymbol, writer);
+									writer.WriteLine(L">();");
+									writer.WriteLine(prefix + L"\t\t\t\tif (!typedAst) throw vl::glr::AstInsException(L\"The type of the ambiguous candidate is not compatible to the required type\", vl::glr::AstInsErrorType::UnexpectedAmbiguousCandidate, type);");
+									writer.WriteLine(prefix + L"\t\t\t\tast->candidates.Add(typedAst);");
+									writer.WriteLine(prefix + L"\t\t\t}");
+									writer.WriteLine(prefix + L"\t\t\treturn ast;");
+									writer.WriteLine(prefix + L"\t\t}");
+								}
+							}
+						}
+
+						for (auto typeSymbol : manager.Symbols().Values())
+						{
+							if (auto classSymbol = dynamic_cast<AstClassSymbol*>(typeSymbol))
+							{
+								if (!resolvables.Keys().Contains(classSymbol))
+								{
+									writer.WriteLine(prefix + L"\tcase " + manager.Global().name + L"Classes::" + classSymbol->Name() + L":");
+								}
 							}
 						}
 						writer.WriteLine(prefix + L"\t\tthrow vl::glr::AstInsException(L\"The type is not configured to allow ambiguity.\", vl::glr::AstInsErrorType::UnsupportedAmbiguityType, type);");
