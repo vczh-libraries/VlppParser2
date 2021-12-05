@@ -107,6 +107,7 @@ TraceManager::ExecuteTrace
 						{
 							startIns = trace->ambiguity.insBeginObject;
 							trace = traceBeginObject;
+							goto FOUND_NEXT_TRACE;
 						}
 					}
 
@@ -135,7 +136,7 @@ TraceManager::ExecuteTrace
 							{
 								successor->runtimeRouting.visitedCount++;
 								trace = successor;
-								goto FOUND_SUCCESSOR;
+								goto FOUND_NEXT_TRACE;
 							}
 							else
 							{
@@ -143,8 +144,8 @@ TraceManager::ExecuteTrace
 							}
 						}
 						CHECK_FAIL(ERROR_MESSAGE_PREFIX L"All branches have been executed, the merging trace should not have jumped back here.");
-					FOUND_SUCCESSOR:;
 					}
+				FOUND_NEXT_TRACE:;
 				}
 
 				submitter.ExecuteSubmitted();
