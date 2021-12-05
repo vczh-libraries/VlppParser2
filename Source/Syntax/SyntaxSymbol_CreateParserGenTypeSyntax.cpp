@@ -62,7 +62,7 @@ CreateParserGenTypeSyntax
 				// "class" ClassBody {ambiguity = No}
 				Clause{ _class } = create(tok(T::CLASS) + prule(_classBody), C::Class).with(F::Class_ambiguity, GlrClassAmbiguity::No);
 
-				// "ambiguous" "class" ClassBody {ambiguity = No}
+				// "ambiguous" "class" ClassBody {ambiguity = Yes}
 				Clause{ _class } = create(tok(T::AMBIGUOUS) + tok(T::CLASS) + prule(_classBody), C::Class).with(F::Class_ambiguity, GlrClassAmbiguity::Yes);
 
 				// !Class | !Enum

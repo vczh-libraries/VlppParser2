@@ -18,14 +18,15 @@ namespace vl
 		{
 			enum class RuleParserStates
 			{
-				Syntax0 = 0,
-				Syntax1 = 19,
-				Syntax2 = 24,
-				Syntax = 30,
-				Assignment = 33,
-				Clause = 38,
-				Rule = 57,
-				File = 63,
+				OptionalBody = 0,
+				Syntax0 = 5,
+				Syntax1 = 26,
+				Syntax2 = 31,
+				Syntax = 37,
+				Assignment = 40,
+				Clause = 45,
+				Rule = 64,
+				File = 70,
 			};
 
 			template<RuleParserStates> struct RuleParserStateTypes;

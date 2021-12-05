@@ -22,6 +22,7 @@ CreateParserGenRuleSyntax
 			{
 				manager.name = L"RuleParser";
 
+				auto _optionalBody = manager.CreateRule(L"OptionalBody");
 				auto _syntax0 = manager.CreateRule(L"Syntax0");
 				auto _syntax1 = manager.CreateRule(L"Syntax1");
 				auto _syntax2 = manager.CreateRule(L"Syntax2");
@@ -38,6 +39,9 @@ CreateParserGenRuleSyntax
 				using C = ParserGenClasses;
 				using F = ParserGenFields;
 
+				// "[" Syntax:syntax "]" as partial OptionalSyntax
+				Clause{ _optionalBody } = partial(tok(T::OPEN_SQUARE) + rule(_syntax, F::OptionalSyntax_syntax) + tok(T::CLOSE_SQUARE));
+
 				// ID:name [":" ID:field] as RefSyntax
 				Clause{ _syntax0 } = create(tok(T::ID, F::RefSyntax_name) + opt(tok(T::COLON) + tok(T::ID, F::RefSyntax_field)), C::RefSyntax);
 
@@ -50,8 +54,14 @@ CreateParserGenRuleSyntax
 				// "{" Syntax:syntax [";" syntax:delimiter] "}" as LoopSyntax
 				Clause{ _syntax0 } = create(tok(T::OPEN_CURLY) + rule(_syntax, F::LoopSyntax_syntax) + opt(tok(T::SEMICOLON) + rule(_syntax, F::LoopSyntax_delimiter)) + tok(T::CLOSE_CURLY), C::LoopSyntax);
 
-				// "[" Syntax:syntax "]" as OptionalSyntax
-				Clause{ _syntax0 } = create(tok(T::OPEN_SQUARE) + rule(_syntax, F::OptionalSyntax_syntax) + tok(T::CLOSE_SQUARE), C::OptionalSyntax);
+				// "+" OptionalBody as OptionalSyntax {priority = PreferTake}
+				Clause{ _syntax0 } = create(tok(T::POSITIVE) + prule(_optionalBody), C::OptionalSyntax).with(F::OptionalSyntax_priority, GlrOptionalPriority::PreferTake);
+
+				// "-" OptionalBody as OptionalSyntax {priority = PreferSkip}
+				Clause{ _syntax0 } = create(tok(T::NEGATIVE) + prule(_optionalBody), C::OptionalSyntax).with(F::OptionalSyntax_priority, GlrOptionalPriority::PreferSkip);
+
+				// OptionalBody as OptionalSyntax {priority = Equal}
+				Clause{ _syntax0 } = create(prule(_optionalBody), C::OptionalSyntax).with(F::OptionalSyntax_priority, GlrOptionalPriority::Equal);
 
 				// "(" !Syntax ")"
 				Clause{ _syntax0 } = tok(T::OPEN_ROUND) + use(_syntax) + tok(T::CLOSE_ROUND);
