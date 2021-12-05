@@ -172,11 +172,10 @@ Execution
 
 			struct RuntimeRouting
 			{
-				vint					expectedVisitCount = 0;		// the number of visits to complete a whole execution, could be greater than 1 if there ambiguity happens
-																	// (filled by PrepareTraceRoute)
+				vint					predecessorCount = -1;		// the number of predecessors
 
-				vint					visitedCount = 0;			// (visitedCount - baseVisitCount) is the number of visiting of the current execution
-																	// visitedCount < baseVisitCount means this member has not been initialized therefore it means 0
+				vint					branchVisited = 0;			// the number of visited branches in the current loop.
+																	// if these branches are contained in a larger ambiguity resolving loop, all branches could be visited multiple times
 																	// (filled by ExecuteTrace)
 			};
 
@@ -199,8 +198,7 @@ Execution
 																	// (filled by PrepareTraceRoute)
 
 				RuntimeRouting			runtimeRouting;				// a data structure guiding instruction execution when a trace need to be executed multiple times
-																	// this member is useful when it has multiple predecessors
-																	// or its only predecessor has multiple successors
+																	// this member is useful when it has multiple predecessors or successors
 			};
 
 			enum class TraceManagerState
@@ -233,8 +231,6 @@ Execution
 				collections::List<Trace*>			traces2;
 
 				Trace*								rootTrace = nullptr;
-				vint								maxTraceVisitCount = 0;
-				vint								baseVisitCount = 0;
 
 				void								BeginSwap();
 				void								AddTrace(Trace* trace);

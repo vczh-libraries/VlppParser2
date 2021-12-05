@@ -49,8 +49,6 @@ TraceManager::ExecuteTrace
 #define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::ExecuteTrace(Trace*, IAstInsReceiver&, List<RegexToken>&)#"
 				CHECK_ERROR(state == TraceManagerState::PreparedTraceRoute, ERROR_MESSAGE_PREFIX L"Wrong timing to call this function.");
 
-				baseVisitCount += maxTraceVisitCount;
-
 				TraceManagerSubmitter submitter;
 				submitter.receiver = &receiver;
 
@@ -65,12 +63,16 @@ TraceManager::ExecuteTrace
 					{
 						maxIns = trace->ambiguity.insEndObject;
 
-						CHECK_ERROR(trace->runtimeRouting.expectedVisitCount > 0, ERROR_MESSAGE_PREFIX L"expectedVisitCount for this merging trace is not properly initialized.");
-						if (trace->runtimeRouting.visitedCount < baseVisitCount)
+						if (trace->runtimeRouting.predecessorCount == -1)
 						{
-							trace->runtimeRouting.visitedCount = baseVisitCount;
+							trace->runtimeRouting.predecessorCount = 0;
+							auto predecessorId = trace->predecessors.first;
+							while (predecessorId != -1)
+							{
+								trace->runtimeRouting.predecessorCount++;
+								predecessorId = GetTrace(predecessorId)->predecessors.siblingNext;
+							}
 						}
-						trace->runtimeRouting.visitedCount++;
 					}
 
 					for (vint i = startIns; i <= maxIns; i++)
@@ -83,16 +85,19 @@ TraceManager::ExecuteTrace
 					startIns = 0;
 					if (trace->ambiguity.traceBeginObject != -1)
 					{
+						trace->runtimeRouting.branchVisited++;
 						auto traceBeginObject = GetTrace(trace->ambiguity.traceBeginObject);
-						if (trace->runtimeRouting.visitedCount - baseVisitCount == trace->runtimeRouting.expectedVisitCount)
+
+						if (trace->runtimeRouting.branchVisited == trace->runtimeRouting.predecessorCount)
 						{
+							trace->runtimeRouting.branchVisited = 0;
 							{
 								TraceInsLists beginInsLists;
 								ReadInstructionList(traceBeginObject, beginInsLists);
 								auto& beginIns = ReadInstruction(trace->ambiguity.insBeginObject, beginInsLists);
 								auto& token = tokens[trace->currentTokenIndex];
 
-								AstIns insResolve = { AstInsType::ResolveAmbiguity,beginIns.param,trace->runtimeRouting.expectedVisitCount };
+								AstIns insResolve = { AstInsType::ResolveAmbiguity,beginIns.param,trace->runtimeRouting.predecessorCount };
 								submitter.Submit(insResolve, token);
 							}
 
@@ -121,29 +126,25 @@ TraceManager::ExecuteTrace
 					}
 					else
 					{
-						vint successorId = trace->successors.first;
-						while (successorId != -1)
+						vint nextSuccessorId = trace->successors.first;
+						Trace* successor = nullptr;
+						for (vint i = 0; i < trace->runtimeRouting.branchVisited; i++)
 						{
-							auto successor = GetTrace(successorId);
-							CHECK_ERROR(successor->runtimeRouting.expectedVisitCount > 0, ERROR_MESSAGE_PREFIX L"expectedVisitCount for this branch is not properly initialized.");
-							if (successor->runtimeRouting.visitedCount < baseVisitCount)
-							{
-								successor->runtimeRouting.visitedCount = baseVisitCount;
-							}
-
-							vint visitedCount = successor->runtimeRouting.visitedCount - baseVisitCount;
-							if (visitedCount < successor->runtimeRouting.expectedVisitCount)
-							{
-								successor->runtimeRouting.visitedCount++;
-								trace = successor;
-								goto FOUND_NEXT_TRACE;
-							}
-							else
-							{
-								successorId = successor->successors.siblingNext;
-							}
+							CHECK_ERROR(nextSuccessorId != -1, ERROR_MESSAGE_PREFIX L"branchVisited corrupted.");
+							auto successor = GetTrace(nextSuccessorId);
+							nextSuccessorId = successor->successors.siblingNext;
 						}
-						CHECK_FAIL(ERROR_MESSAGE_PREFIX L"All branches have been executed, the merging trace should not have jumped back here.");
+
+						if (nextSuccessorId == -1)
+						{
+							trace->runtimeRouting.branchVisited = 0;
+						}
+						else
+						{
+							trace->runtimeRouting.branchVisited++;
+						}
+
+						trace = successor;
 					}
 				FOUND_NEXT_TRACE:;
 				}

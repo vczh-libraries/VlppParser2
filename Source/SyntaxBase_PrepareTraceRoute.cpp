@@ -129,11 +129,6 @@ TraceManager::PrepareTraceRoute
 						trace = GetTrace(trace->predecessors.first);
 						ReadInstructionList(trace, insLists);
 						instruction = insLists.c3 - 1;
-
-						if (trace->successors.first != trace->successors.last)
-						{
-							lastBranch->runtimeRouting.expectedVisitCount++;
-						}
 					}
 				}
 #undef ERROR_MESSAGE_PREFIX
@@ -199,7 +194,6 @@ TraceManager::PrepareTraceRoute
 						}
 					}
 					predecessorId = predecessor->predecessors.siblingNext;
-					trace->runtimeRouting.expectedVisitCount++;
 				}
 
 				trace->ambiguity.insEndObject = insEndObject;
@@ -217,10 +211,6 @@ TraceManager::PrepareTraceRoute
 						if (trace->ambiguity.traceBeginObject == -1)
 						{
 							FillAmbiguityInfoForMergingTrace(trace);
-							if (maxTraceVisitCount < trace->runtimeRouting.expectedVisitCount)
-							{
-								maxTraceVisitCount = trace->runtimeRouting.expectedVisitCount;
-							}
 							trace = GetTrace(trace->ambiguity.traceBeginObject);
 						}
 						else

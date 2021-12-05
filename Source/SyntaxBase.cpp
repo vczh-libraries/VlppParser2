@@ -179,8 +179,6 @@ TraceManager
 				backupTraces = &traces2;
 
 				rootTrace = nullptr;
-				maxTraceVisitCount = 0;
-				baseVisitCount = 0;
 
 				auto trace = AllocateTrace();
 				trace->state = startState;
