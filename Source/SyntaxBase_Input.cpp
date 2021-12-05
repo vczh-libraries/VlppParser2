@@ -58,10 +58,23 @@ TraceManager::Input
 				vint returnStack = trace->returnStack;
 				vint executedReturn = -1;
 
-				// push competition stack if edge has priority
-				// pop competition stack if executedReturn has priority
-				// delete all failed backupTraces brought by EdgePriority (could delete itself)
-				// then continue with ambiguity resolving
+				// from the same competition trace, if walked alone transitions with priority
+				// predecessors will take a mark from the competition trace
+				// when the high priority ending transition from the competition trace is picked up
+				//     > ending state and the state of the competition trace is in the same clause
+				//     > and return stack before executing the ending transition is the same to the competition trace
+				// all other traces talking the connected low priority mark fails
+				// high priority marks from this competition trace will be removed
+				// after a step of input
+				// if all high priority or all low priority marks from the same competition trace are gone
+				// then all marks from this competition trace will also be removed
+				//
+				// a competition trace could maintain a TraceCollection
+				// when a new step of input begins, the competition trace clear its collection, but the record in elements don't change
+				// if a new trace is created, and the original trace has a non-empty record
+				// the record is inherited, and the new trace adds itself to the competition trace's collection
+				// if a competition trace is closed, it is flagged, and don't accept new elements
+				// a linked list of living competition traces are maintained
 
 				if (input == Executable::EndingInput)
 				{
