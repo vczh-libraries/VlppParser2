@@ -25,7 +25,7 @@ TraceManager::Input
 
 				// push competition stack if edge has priority
 				// pop competition stack if executedReturn has priority
-				// delete all failed backupTraces brought by EdgePriority
+				// delete all failed backupTraces brought by EdgePriority (could delete itself)
 				// then continue with ambiguity resolving
 
 				if (input == Executable::EndingInput)
