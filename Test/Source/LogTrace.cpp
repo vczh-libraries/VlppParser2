@@ -232,11 +232,12 @@ void RenderTrace(
 
 		if (trace->returnStack != -1)
 		{
+			writer.WriteLine(L"[RETURN STACK]:");
 			auto returnStack = tm.GetReturnStack(trace->returnStack);
 			while (true)
 			{
 				auto&& returnDesc = executable.returns[returnStack->returnIndex];
-				writer.WriteLine(ruleName((vint32_t)returnDesc.consumedRule) + L" -> " + stateLabel((vint32_t)returnDesc.returnState));
+				writer.WriteLine(L"  > " + ruleName((vint32_t)returnDesc.consumedRule) + L" -> " + stateLabel((vint32_t)returnDesc.returnState));
 				if (returnStack->previous == -1) break;
 				returnStack = tm.GetReturnStack(returnStack->previous);
 			}
