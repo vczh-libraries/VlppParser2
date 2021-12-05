@@ -128,10 +128,10 @@ TraceManager::ExecuteTrace
 					{
 						vint nextSuccessorId = trace->successors.first;
 						Trace* successor = nullptr;
-						for (vint i = 0; i < trace->runtimeRouting.branchVisited; i++)
+						for (vint i = 0; i <= trace->runtimeRouting.branchVisited; i++)
 						{
 							CHECK_ERROR(nextSuccessorId != -1, ERROR_MESSAGE_PREFIX L"branchVisited corrupted.");
-							auto successor = GetTrace(nextSuccessorId);
+							successor = GetTrace(nextSuccessorId);
 							nextSuccessorId = successor->successors.siblingNext;
 						}
 
