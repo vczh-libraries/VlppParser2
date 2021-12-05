@@ -38,12 +38,14 @@ namespace vl
 				ALTERNATIVE = 17,
 				USE = 18,
 				ASSIGN = 19,
-				ID = 20,
-				STRING = 21,
-				SPACE = 22,
+				POSITIVE = 20,
+				NEGATIVE = 21,
+				ID = 22,
+				STRING = 23,
+				SPACE = 24,
 			};
 
-			constexpr vl::vint ParserGenTokenCount = 23;
+			constexpr vl::vint ParserGenTokenCount = 25;
 			extern bool ParserGenTokenDeleter(vl::vint token);
 			extern const wchar_t* ParserGenTokenId(ParserGenTokens token);
 			extern const wchar_t* ParserGenTokenDisplayText(ParserGenTokens token);

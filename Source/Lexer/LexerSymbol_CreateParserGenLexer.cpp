@@ -37,6 +37,8 @@ CreateParserGenAst
 				manager.CreateToken(L"ALTERNATIVE", L"/|");
 				manager.CreateToken(L"USE", L"!");
 				manager.CreateToken(L"ASSIGN", L"=");
+				manager.CreateToken(L"POSITIVE", L"/+");
+				manager.CreateToken(L"NEGATIVE", L"-");
 
 				manager.CreateToken(L"ID", L"[a-zA-Z_][a-zA-Z0-9_]*");
 				manager.CreateToken(L"STRING", L"(\"[^\"]*\")+");
