@@ -23,6 +23,11 @@ TraceManager::Input
 				vint returnStack = trace->returnStack;
 				vint executedReturn = -1;
 
+				// push competition stack if edge has priority
+				// pop competition stack if executedReturn has priority
+				// delete all failed backupTraces brought by EdgePriority
+				// then continue with ambiguity resolving
+
 				if (input == Executable::EndingInput)
 				{
 					CHECK_ERROR(edgeDesc.returnIndices.count == 0, L"vl::glr::automaton::TraceManager::WalkAlongSingleEdge(vint, vint, vint, Trace*, vint, EdgeDesc&)#Ending input edge is not allowed to push the return stack.");
