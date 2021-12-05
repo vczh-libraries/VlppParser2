@@ -237,6 +237,7 @@ CompileSyntaxVisitor
 
 				void Visit(GlrOptionalSyntax* node) override
 				{
+					CHECK_ERROR(node->priority == GlrOptionalPriority::Equal, L"Not Implemented!");
 					StatePair pair;
 					pair.begin = CreateState();
 					pair.end = CreateState();
