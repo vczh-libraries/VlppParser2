@@ -84,6 +84,7 @@ namespace TestParser_Generated_TestObjects
 
 					auto expectedJsonFile = File(dirBaseline / (caseName + L".json"));
 					if (!expectedJsonFile.Exists()) return;
+					TEST_PRINT(L"Compared with expectedJson");
 					auto expectedJson = expectedJsonFile.ReadAllTextByBom();
 					AssertLines(expectedJson, actualJson);
 				});

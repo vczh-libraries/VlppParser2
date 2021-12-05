@@ -2,9 +2,6 @@
 
 ## Experiments
 
-- Full CFG power, no limitation
-  - Experiment: expanding all left-recursive grammer to right-recursive grammar with instructions
-  - Experiment: optionally inline all rules which don't generate parser functions
 - Serializing
   - Escaping and Unescaping pairs (instead of only unescaping)
   - Calculate ambiguous **ToString** cases
@@ -44,7 +41,7 @@
 ## Development
 
 1. [x] `ParserTest_ParserGen_Compiler`
-   1. [ ] Prepare more parser test cases for advanced features (proprities, ambiguity) ...
+   1. [ ] Prepare more parser test cases for advanced features (proprities) ...
       1. [ ] Multiple parser syntax under `Test/Source/*/Syntax/`.
       2. [ ] Generate C++ files from them in `Test/Source/*/Parser/`.
       3. [ ] Prepare input text files in `Test/Source/*/Input/`.
@@ -76,7 +73,6 @@
 - Switching lexical analyzer during parsing.
   - Refactor some properties in `LexerSymbolManager` into `LexerFile` with a name.
 - AST uses classes from another AST file in dependency as fields.
-- Ambiguity AST and parsing.
 - Branch priorities:
   - Loop
   - Optional
