@@ -40,39 +40,44 @@ TraceManager::Input
 					}
 				}
 
-				for (vint i = 0; i < concurrentCount; i++)
+				if (input == Executable::EndingInput)
 				{
-					auto candidate = backupTraces->Get(i);
-					if (state == candidate->state && executedReturn == candidate->executedReturn)
+					for (vint i = 0; i < concurrentCount; i++)
 					{
-						auto r1 = returnStack;
-						auto r2 = candidate->returnStack;
-						while (true)
+						auto candidate = backupTraces->Get(i);
+						if (state == candidate->state && executedReturn == candidate->executedReturn)
 						{
-							if (r1 == r2) goto MERGABLE_TRACE_FOUND;
-							auto rs1 = GetReturnStack(r1);
-							auto rs2 = GetReturnStack(r2);
-							if (rs1->returnIndex != rs2->returnIndex)
+							auto r1 = returnStack;
+							auto r2 = candidate->returnStack;
+							while (true)
 							{
-								auto& rd1 = executable.returns[rs1->returnIndex];
-								auto& rd2 = executable.returns[rs2->returnIndex];
-								if (rd1.returnState != rd2.returnState) goto MERGABLE_TRACE_NOT_FOUND;
-								if (rd1.insAfterInput.count != rd2.insAfterInput.count) goto MERGABLE_TRACE_NOT_FOUND;
-								for (vint insRef = 0; insRef < rd1.insAfterInput.count; insRef++)
+								if (r1 == r2) goto MERGABLE_TRACE_FOUND;
+								auto rs1 = GetReturnStack(r1);
+								auto rs2 = GetReturnStack(r2);
+								if (rs1->returnIndex != rs2->returnIndex)
 								{
-									auto& ins1 = executable.instructions[rd1.insAfterInput.start + insRef];
-									auto& ins2 = executable.instructions[rd2.insAfterInput.start + insRef];
-									if (ins1 != ins2) goto MERGABLE_TRACE_NOT_FOUND;
+									// TODO: create a cache to compare two returnIndex directly
+									// instead of repeatly scanning the content here
+									auto& rd1 = executable.returns[rs1->returnIndex];
+									auto& rd2 = executable.returns[rs2->returnIndex];
+									if (rd1.returnState != rd2.returnState) goto MERGABLE_TRACE_NOT_FOUND;
+									if (rd1.insAfterInput.count != rd2.insAfterInput.count) goto MERGABLE_TRACE_NOT_FOUND;
+									for (vint insRef = 0; insRef < rd1.insAfterInput.count; insRef++)
+									{
+										auto& ins1 = executable.instructions[rd1.insAfterInput.start + insRef];
+										auto& ins2 = executable.instructions[rd2.insAfterInput.start + insRef];
+										if (ins1 != ins2) goto MERGABLE_TRACE_NOT_FOUND;
+									}
 								}
+								r1 = rs1->previous;
+								r2 = rs2->previous;
 							}
-							r1 = rs1->previous;
-							r2 = rs2->previous;
+						MERGABLE_TRACE_FOUND:
+							AddTraceToCollection(candidate, trace, &Trace::predecessors);
+							return nullptr;
 						}
-					MERGABLE_TRACE_FOUND:
-						AddTraceToCollection(candidate, trace, &Trace::predecessors);
-						return nullptr;
+					MERGABLE_TRACE_NOT_FOUND:;
 					}
-				MERGABLE_TRACE_NOT_FOUND:;
 				}
 
 				auto newTrace = AllocateTrace();

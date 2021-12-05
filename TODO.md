@@ -59,6 +59,7 @@
 
 ## Work Items (issues)
 
+- Create a map to compare two `returnIndex` in `TraceManager::WalkAlongSingleEdge`
 - `EndObject` after `ReopenObject` doesn't update `ParsingAstBase::codeRange::start`.
 - Optimize `CrossReferencedNFA` to merge prefix (two states can be merged if their `InEdges` are identical, `FromState` in `InEdges` are replaced by merged states).
 - `JsonEscapeString` `JsonUnescapeString` handle surrogate pairs correctly.
