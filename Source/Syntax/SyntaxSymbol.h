@@ -72,6 +72,13 @@ EdgeSymbol
 				RuleSymbol*					rule = nullptr;
 			};
 
+			enum class EdgeImportancy
+			{
+				NoCompetition,
+				HighPriority,
+				LowPriority,
+			};
+
 			class EdgeSymbol : public Object
 			{
 				friend class SyntaxSymbolManager;
@@ -86,14 +93,16 @@ EdgeSymbol
 
 				EdgeSymbol(StateSymbol* _from, StateSymbol* _to);
 			public:
-				EdgeInput					input;				// Input of this edge.
-				bool						important = false;	// true and false are the only two priorites of edges.
-																// If any important edge forms a cross referenced NFA edge, it becomes important too.
-				InsList						insBeforeInput;		// Instructions to execute before pushing the value from a token or a reduced rule.
-				InsList						insAfterInput;		// Instructions to execute after pushing the value from a token or a reduced rule.
-				EdgeList					returnEdges;		// Edges of rule reduction.
-																// InsBeforeInput will be copied to a cross-referenced edge.
-																// When a reduction is done, only insAfterInput need to execute.
+				EdgeInput					input;											// Input of this edge.
+				bool						important = false;								// true and false are the only two priorites of edges.
+				EdgeImportancy				importancy = EdgeImportancy::NoCompetition;		// important -> HighPriority, !important with important sibling -> LowPriority.
+																							// (filled by BuildCompactNFA)
+																							// If any important edge forms a cross referenced NFA edge, it becomes important too.
+				InsList						insBeforeInput;									// Instructions to execute before pushing the value from a token or a reduced rule.
+				InsList						insAfterInput;									// Instructions to execute after pushing the value from a token or a reduced rule.
+				EdgeList					returnEdges;									// Edges of rule reduction.
+																							// InsBeforeInput will be copied to a cross-referenced edge.
+																							// When a reduction is done, only insAfterInput need to execute.
 
 				SyntaxSymbolManager*		Owner() { return ownerManager; }
 				StateSymbol*				From() { return fromState; }

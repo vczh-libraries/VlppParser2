@@ -31,6 +31,7 @@ SyntaxSymbolManager::FixCrossReferencedRuleEdge
 							edges.Add(newEdge);
 
 							newEdge->input = edge->input;
+							newEdge->importancy = edge->importancy;
 							for (auto acc : accumulatedEdges)
 							{
 								CopyFrom(newEdge->insBeforeInput, acc->insBeforeInput, true);

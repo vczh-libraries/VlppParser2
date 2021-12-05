@@ -226,6 +226,8 @@ SyntaxSymbolManager::EliminateLeftRecursion
 						auto state = endingEdge->From();
 						auto newEdge = new EdgeSymbol(state, lrecEdge->To());
 						newEdges.Add(newEdge);
+						newEdge->important |= endingEdge->important;
+						newEdge->important |= lrecEdge->important;
 
 						newEdge->input.type = EdgeInputType::LeftRec;
 						CopyFrom(newEdge->insBeforeInput, endingEdge->insBeforeInput, true);
@@ -310,6 +312,27 @@ SyntaxSymbolManager::BuildCompactNFAInternal
 				}
 				CopyFrom(states, newStates);
 				CopyFrom(edges, newEdges);
+
+				for (auto state : states)
+				{
+					bool competition = false;
+					for (auto edge : state->OutEdges())
+					{
+						if (edge->important)
+						{
+							competition = true;
+							break;
+						}
+					}
+
+					if (competition)
+					{
+						for (auto edge : state->OutEdges())
+						{
+							edge->importancy = edge->important ? EdgeImportancy::HighPriority : EdgeImportancy::LowPriority;
+						}
+					}
+				}
 			}
 		}
 	}

@@ -29,7 +29,7 @@
 ## Development
 
 1. [x] `ParserTest_ParserGen_Compiler`
-   1. [ ] Prepare more parser test cases for advanced features (proprities) ...
+   1. [ ] Prepare more parser test cases for advanced features (proprities, ambiguity, left recursion, mix any of them together) ...
       1. [x] `Calculator.
       2. [x] `IfElseAmbiguity`. (Equal)
       3. [x] `IfElsePriority`. (PreferTake)
