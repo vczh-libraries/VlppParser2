@@ -26,6 +26,17 @@ namespace ifelseambiguity
 			void Visit(BlockStat* node) override;
 		};
 
+		/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
+		class IfContentVisitor : public vl::Object, public IfContent::IVisitor
+		{
+		protected:
+			// Dispatch (virtual) --------------------------------
+
+		public:
+			// Visitor Members -----------------------------------
+			void Visit(IfContentCandidate* node) override;
+		};
+
 	}
 }
 #endif

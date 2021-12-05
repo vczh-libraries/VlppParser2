@@ -28,11 +28,27 @@ namespace ifelseambiguity
 		}
 		void StatAstVisitor::PrintFields(IfContent* node)
 		{
+		}
+		void StatAstVisitor::PrintFields(IfContentCandidate* node)
+		{
 			BeginField(L"elseBranch");
 			Print(node->elseBranch.Obj());
 			EndField();
 			BeginField(L"thenBranch");
 			Print(node->thenBranch.Obj());
+			EndField();
+		}
+		void StatAstVisitor::PrintFields(IfContentToResolve* node)
+		{
+			BeginField(L"candidates");
+			BeginArray();
+			for (auto&& listItem : node->candidates)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
 			EndField();
 		}
 		void StatAstVisitor::PrintFields(IfStat* node)
@@ -93,6 +109,20 @@ namespace ifelseambiguity
 			EndObject();
 		}
 
+		void StatAstVisitor::Visit(IfContentCandidate* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"IfContentCandidate", node);
+			PrintFields(static_cast<IfContent*>(node));
+			PrintFields(static_cast<IfContentCandidate*>(node));
+			EndObject();
+		}
+
 		StatAstVisitor::StatAstVisitor(vl::stream::StreamWriter& _writer)
 			: vl::glr::JsonVisitorBase(_writer)
 		{
@@ -115,10 +145,7 @@ namespace ifelseambiguity
 				WriteNull();
 				return;
 			}
-			BeginObject();
-			WriteType(L"IfContent", node);
-			PrintFields(static_cast<IfContent*>(node));
-			EndObject();
+			node->Accept(static_cast<IfContent::IVisitor*>(this));
 		}
 
 		void StatAstVisitor::Print(Module* node)

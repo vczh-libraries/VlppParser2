@@ -15,6 +15,8 @@ namespace ifelseambiguity
 	class BlockStat;
 	class DoStat;
 	class IfContent;
+	class IfContentCandidate;
+	class IfContentToResolve;
 	class IfStat;
 	class Module;
 	class Stat;
@@ -41,11 +43,26 @@ namespace ifelseambiguity
 		void Accept(Stat::IVisitor* visitor) override;
 	};
 
-	class IfContent : public vl::glr::ParsingAstBase, vl::reflection::Description<IfContent>
+	class IfContent abstract : public vl::glr::ParsingAstBase, vl::reflection::Description<IfContent>
+	{
+	public:
+		class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
+		{
+		public:
+			virtual void Visit(IfContentCandidate* node) = 0;
+		};
+
+		virtual void Accept(IfContent::IVisitor* visitor) = 0;
+
+	};
+
+	class IfContentCandidate : public IfContent, vl::reflection::Description<IfContentCandidate>
 	{
 	public:
 		vl::Ptr<Stat> thenBranch;
 		vl::Ptr<Stat> elseBranch;
+
+		void Accept(IfContent::IVisitor* visitor) override;
 	};
 
 	class IfStat : public Stat, vl::reflection::Description<IfStat>
@@ -69,6 +86,14 @@ namespace ifelseambiguity
 	public:
 		vl::Ptr<Stat> stat;
 	};
+
+	class IfContentToResolve : public IfContent, vl::reflection::Description<IfContentToResolve>
+	{
+	public:
+		vl::collections::List<vl::Ptr<IfContent>> candidates;
+
+		void Accept(IfContent::IVisitor* visitor) override;
+	};
 }
 namespace vl
 {
@@ -81,9 +106,12 @@ namespace vl
 			DECL_TYPE_INFO(ifelseambiguity::Stat::IVisitor)
 			DECL_TYPE_INFO(ifelseambiguity::DoStat)
 			DECL_TYPE_INFO(ifelseambiguity::IfContent)
+			DECL_TYPE_INFO(ifelseambiguity::IfContent::IVisitor)
+			DECL_TYPE_INFO(ifelseambiguity::IfContentCandidate)
 			DECL_TYPE_INFO(ifelseambiguity::IfStat)
 			DECL_TYPE_INFO(ifelseambiguity::BlockStat)
 			DECL_TYPE_INFO(ifelseambiguity::Module)
+			DECL_TYPE_INFO(ifelseambiguity::IfContentToResolve)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 
@@ -104,6 +132,14 @@ namespace vl
 				}
 
 			END_INTERFACE_PROXY(ifelseambiguity::Stat::IVisitor)
+
+			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(ifelseambiguity::IfContent::IVisitor)
+				void Visit(ifelseambiguity::IfContentCandidate* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+			END_INTERFACE_PROXY(ifelseambiguity::IfContent::IVisitor)
 
 #endif
 #endif

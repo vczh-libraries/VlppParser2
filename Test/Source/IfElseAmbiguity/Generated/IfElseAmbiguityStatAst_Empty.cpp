@@ -28,5 +28,15 @@ StatVisitor
 		void StatVisitor::Visit(BlockStat* node)
 		{
 		}
+
+/***********************************************************************
+IfContentVisitor
+***********************************************************************/
+
+		// Visitor Members -----------------------------------
+
+		void IfContentVisitor::Visit(IfContentCandidate* node)
+		{
+		}
 	}
 }

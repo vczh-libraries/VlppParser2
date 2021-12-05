@@ -26,6 +26,7 @@ CreateParserGenTypeSyntax
 				auto _enum = manager.CreateRule(L"Enum");
 				auto _classPropType = manager.CreateRule(L"ClassPropType");
 				auto _classProp = manager.CreateRule(L"classProp");
+				auto _classBody = manager.CreateRule(L"ClassBody");
 				auto _class = manager.CreateRule(L"Class");
 				auto _type = manager.CreateRule(L"Type");
 				auto _file = manager.CreateRule(L"File");
@@ -55,8 +56,14 @@ CreateParserGenTypeSyntax
 				// "var" ID:name ":" ClassPropType ";" as ClassProp
 				Clause{ _classProp } = create(tok(T::VAR) + tok(T::ID, F::ClassProp_name) + tok(T::COLON) + prule(_classPropType) + tok(T::SEMICOLON), C::ClassProp);
 
-				// "class" ID:name [":" ID:baseClass] "{" {ClassProp} "}" as Class
-				Clause{ _class } = create(tok(T::CLASS) + tok(T::ID, F::Type_name) + opt(tok(T::COLON) + tok(T::ID, F::Class_baseClass)) + tok(T::OPEN_CURLY) + loop(rule(_classProp, F::Class_props)) + tok(T::CLOSE_CURLY), C::Class);
+				// ID:name [":" ID:baseClass] "{" {ClassProp} "}" as partial Class
+				Clause{ _classBody } = partial(tok(T::ID, F::Type_name) + opt(tok(T::COLON) + tok(T::ID, F::Class_baseClass)) + tok(T::OPEN_CURLY) + loop(rule(_classProp, F::Class_props)) + tok(T::CLOSE_CURLY));
+
+				// "class" ClassBody {ambiguity = No}
+				Clause{ _class } = create(tok(T::CLASS) + prule(_classBody), C::Class).with(F::Class_ambiguity, GlrClassAmbiguity::No);
+
+				// "ambiguous" "class" ClassBody {ambiguity = No}
+				Clause{ _class } = create(tok(T::AMBIGUOUS) + tok(T::CLASS) + prule(_classBody), C::Class).with(F::Class_ambiguity, GlrClassAmbiguity::Yes);
 
 				// !Class | !Enum
 				Clause{ _type } = use(_enum) | use(_class);

@@ -18,31 +18,32 @@ namespace vl
 		{
 			enum class ParserGenTokens : vl::vint32_t
 			{
-				CLASS = 0,
-				ENUM = 1,
-				VAR = 2,
-				TOKEN = 3,
-				AS = 4,
-				PARTIAL = 5,
-				OPEN_ROUND = 6,
-				CLOSE_ROUND = 7,
-				OPEN_SQUARE = 8,
-				CLOSE_SQUARE = 9,
-				OPEN_CURLY = 10,
-				CLOSE_CURLY = 11,
-				COMMA = 12,
-				COLON = 13,
-				SEMICOLON = 14,
-				INFER = 15,
-				ALTERNATIVE = 16,
-				USE = 17,
-				ASSIGN = 18,
-				ID = 19,
-				STRING = 20,
-				SPACE = 21,
+				AMBIGUOUS = 0,
+				CLASS = 1,
+				ENUM = 2,
+				VAR = 3,
+				TOKEN = 4,
+				AS = 5,
+				PARTIAL = 6,
+				OPEN_ROUND = 7,
+				CLOSE_ROUND = 8,
+				OPEN_SQUARE = 9,
+				CLOSE_SQUARE = 10,
+				OPEN_CURLY = 11,
+				CLOSE_CURLY = 12,
+				COMMA = 13,
+				COLON = 14,
+				SEMICOLON = 15,
+				INFER = 16,
+				ALTERNATIVE = 17,
+				USE = 18,
+				ASSIGN = 19,
+				ID = 20,
+				STRING = 21,
+				SPACE = 22,
 			};
 
-			constexpr vl::vint ParserGenTokenCount = 22;
+			constexpr vl::vint ParserGenTokenCount = 23;
 			extern bool ParserGenTokenDeleter(vl::vint token);
 			extern const wchar_t* ParserGenTokenId(ParserGenTokens token);
 			extern const wchar_t* ParserGenTokenDisplayText(ParserGenTokens token);

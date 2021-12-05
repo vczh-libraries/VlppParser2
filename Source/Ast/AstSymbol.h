@@ -100,9 +100,11 @@ AstClassSymbol
 				AstClassSymbol(AstDefFile* _file, const WString& _name);
 			public:
 				AstClassSymbol*						baseClass = nullptr;
+				AstClassSymbol*						ambiguousDerivedClass = nullptr;
 				collections::List<AstClassSymbol*>	derivedClasses;
 
 				bool								SetBaseClass(const WString& typeName);
+				AstClassSymbol*						CreateAmbiguousDerivedClass();
 				AstClassPropSymbol*					CreateProp(const WString& propName);
 				const auto&							Props() { return props.map; }
 				const auto&							PropOrder() { return props.order; }

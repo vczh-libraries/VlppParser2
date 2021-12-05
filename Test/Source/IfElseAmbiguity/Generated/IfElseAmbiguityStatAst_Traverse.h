@@ -17,6 +17,7 @@ namespace ifelseambiguity
 		class StatAstVisitor
 			: public vl::Object
 			, protected virtual Stat::IVisitor
+			, protected virtual IfContent::IVisitor
 		{
 		protected:
 			virtual void Traverse(vl::glr::ParsingToken& token);
@@ -24,6 +25,8 @@ namespace ifelseambiguity
 			virtual void Traverse(BlockStat* node);
 			virtual void Traverse(DoStat* node);
 			virtual void Traverse(IfContent* node);
+			virtual void Traverse(IfContentCandidate* node);
+			virtual void Traverse(IfContentToResolve* node);
 			virtual void Traverse(IfStat* node);
 			virtual void Traverse(Module* node);
 			virtual void Traverse(Stat* node);
@@ -33,6 +36,8 @@ namespace ifelseambiguity
 			virtual void Finishing(BlockStat* node);
 			virtual void Finishing(DoStat* node);
 			virtual void Finishing(IfContent* node);
+			virtual void Finishing(IfContentCandidate* node);
+			virtual void Finishing(IfContentToResolve* node);
 			virtual void Finishing(IfStat* node);
 			virtual void Finishing(Module* node);
 			virtual void Finishing(Stat* node);
@@ -41,6 +46,8 @@ namespace ifelseambiguity
 			void Visit(DoStat* node) override;
 			void Visit(IfStat* node) override;
 			void Visit(BlockStat* node) override;
+
+			void Visit(IfContentCandidate* node) override;
 
 		public:
 			void InspectInto(Stat* node);

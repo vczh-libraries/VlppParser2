@@ -248,6 +248,8 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrAssignment::field\" is not an object.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 				case ParserGenFields::Assignment_value:
 					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrAssignment::value\" is not an object.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				case ParserGenFields::Class_ambiguity:
+					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrClass::ambiguity\" is not an object.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 				case ParserGenFields::Class_baseClass:
 					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrClass::baseClass\" is not an object.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 				case ParserGenFields::ClassProp_name:
@@ -401,6 +403,8 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrAlternativeSyntax::second\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 				case ParserGenFields::AstFile_types:
 					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrAstFile::types\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				case ParserGenFields::Class_ambiguity:
+					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrClass::ambiguity\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 				case ParserGenFields::Class_props:
 					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrClass::props\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 				case ParserGenFields::ClassProp_propType:
@@ -442,6 +446,14 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 			{
 				switch((ParserGenFields)field)
 				{
+				case ParserGenFields::Class_ambiguity:
+					{
+						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrClass*>(object);
+						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrClass::ambiguity\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+						if (typedObject->ambiguity == vl::glr::parsergen::GlrClassAmbiguity::UNDEFINED_ENUM_ITEM_VALUE) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrClass::ambiguity\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
+						typedObject->ambiguity = (vl::glr::parsergen::GlrClassAmbiguity)enumItem;
+					}
+					break;
 				case ParserGenFields::ClassProp_propType:
 					{
 						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrClassProp*>(object);
@@ -562,6 +574,8 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					return L"Assignment::value";
 				case ParserGenFields::AstFile_types:
 					return L"AstFile::types";
+				case ParserGenFields::Class_ambiguity:
+					return L"Class::ambiguity";
 				case ParserGenFields::Class_baseClass:
 					return L"Class::baseClass";
 				case ParserGenFields::Class_props:

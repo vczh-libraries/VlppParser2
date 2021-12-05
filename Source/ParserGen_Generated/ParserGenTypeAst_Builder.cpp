@@ -29,6 +29,12 @@ AstFileBuilder
 ClassBuilder
 ***********************************************************************/
 
+				ClassBuilder& ClassBuilder::ambiguity(GlrClassAmbiguity value)
+				{
+					node->ambiguity = value;
+					return *this;
+				}
+
 				ClassBuilder& ClassBuilder::baseClass(const vl::WString& value)
 				{
 					node->baseClass.value = value;

@@ -58,6 +58,10 @@ CompileAst
 					{
 						classSymbol->SetBaseClass(node->baseClass.value);
 					}
+					if (node->ambiguity == GlrClassAmbiguity::Yes)
+					{
+						classSymbol->CreateAmbiguousDerivedClass();
+					}
 					for (auto prop : node->props)
 					{
 						auto propSymbol = classSymbol->CreateProp(prop->name.value);

@@ -17,11 +17,14 @@ namespace ifelseambiguity
 		class StatAstVisitor
 			: public vl::glr::JsonVisitorBase
 			, protected virtual Stat::IVisitor
+			, protected virtual IfContent::IVisitor
 		{
 		protected:
 			virtual void PrintFields(BlockStat* node);
 			virtual void PrintFields(DoStat* node);
 			virtual void PrintFields(IfContent* node);
+			virtual void PrintFields(IfContentCandidate* node);
+			virtual void PrintFields(IfContentToResolve* node);
 			virtual void PrintFields(IfStat* node);
 			virtual void PrintFields(Module* node);
 			virtual void PrintFields(Stat* node);
@@ -30,6 +33,8 @@ namespace ifelseambiguity
 			void Visit(DoStat* node) override;
 			void Visit(IfStat* node) override;
 			void Visit(BlockStat* node) override;
+
+			void Visit(IfContentCandidate* node) override;
 
 		public:
 			StatAstVisitor(vl::stream::StreamWriter& _writer);

@@ -149,6 +149,22 @@ AstClassSymbol
 				return true;
 			}
 
+			AstClassSymbol* AstClassSymbol::CreateAmbiguousDerivedClass()
+			{
+				if (!ambiguousDerivedClass)
+				{
+					auto derived = ownerFile->CreateClass(name + L"ToResolve");
+					derived->baseClass = this;
+
+					auto prop = derived->CreateProp(L"candidates");
+					prop->propType = AstPropType::Array;
+					prop->propSymbol = this;
+
+					ambiguousDerivedClass = derived;
+				}
+				return ambiguousDerivedClass;
+			}
+
 			AstClassPropSymbol* AstClassSymbol::CreateProp(const WString& propName)
 			{
 				auto symbol = new AstClassPropSymbol(this, propName);

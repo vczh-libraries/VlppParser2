@@ -31,6 +31,13 @@ namespace vl
 				Array = 2,
 			};
 
+			enum class GlrClassAmbiguity
+			{
+				UNDEFINED_ENUM_ITEM_VALUE = -1,
+				No = 0,
+				Yes = 1,
+			};
+
 			class GlrType abstract : public vl::glr::ParsingAstBase, vl::reflection::Description<GlrType>
 			{
 			public:
@@ -72,6 +79,7 @@ namespace vl
 			{
 			public:
 				vl::glr::ParsingToken baseClass;
+				GlrClassAmbiguity ambiguity;
 				vl::collections::List<vl::Ptr<GlrClassProp>> props;
 
 				void Accept(GlrType::IVisitor* visitor) override;
@@ -98,6 +106,7 @@ namespace vl
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrEnum)
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrPropType)
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrClassProp)
+			DECL_TYPE_INFO(vl::glr::parsergen::GlrClassAmbiguity)
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrClass)
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrAstFile)
 

@@ -15,6 +15,8 @@ namespace ifelseambiguity
 		void StatAstVisitor::Traverse(BlockStat* node) {}
 		void StatAstVisitor::Traverse(DoStat* node) {}
 		void StatAstVisitor::Traverse(IfContent* node) {}
+		void StatAstVisitor::Traverse(IfContentCandidate* node) {}
+		void StatAstVisitor::Traverse(IfContentToResolve* node) {}
 		void StatAstVisitor::Traverse(IfStat* node) {}
 		void StatAstVisitor::Traverse(Module* node) {}
 		void StatAstVisitor::Traverse(Stat* node) {}
@@ -23,6 +25,8 @@ namespace ifelseambiguity
 		void StatAstVisitor::Finishing(BlockStat* node) {}
 		void StatAstVisitor::Finishing(DoStat* node) {}
 		void StatAstVisitor::Finishing(IfContent* node) {}
+		void StatAstVisitor::Finishing(IfContentCandidate* node) {}
+		void StatAstVisitor::Finishing(IfContentToResolve* node) {}
 		void StatAstVisitor::Finishing(IfStat* node) {}
 		void StatAstVisitor::Finishing(Module* node) {}
 		void StatAstVisitor::Finishing(Stat* node) {}
@@ -65,6 +69,19 @@ namespace ifelseambiguity
 			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 		}
 
+		void StatAstVisitor::Visit(IfContentCandidate* node)
+		{
+			if (!node) return;
+			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+			Traverse(static_cast<IfContent*>(node));
+			Traverse(static_cast<IfContentCandidate*>(node));
+			InspectInto(node->elseBranch.Obj());
+			InspectInto(node->thenBranch.Obj());
+			Finishing(static_cast<IfContentCandidate*>(node));
+			Finishing(static_cast<IfContent*>(node));
+			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+		}
+
 		void StatAstVisitor::InspectInto(Stat* node)
 		{
 			if (!node) return;
@@ -74,12 +91,7 @@ namespace ifelseambiguity
 		void StatAstVisitor::InspectInto(IfContent* node)
 		{
 			if (!node) return;
-			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-			Traverse(static_cast<IfContent*>(node));
-			InspectInto(node->elseBranch.Obj());
-			InspectInto(node->thenBranch.Obj());
-			Finishing(static_cast<IfContent*>(node));
-			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+			node->Accept(static_cast<IfContent::IVisitor*>(this));
 		}
 
 		void StatAstVisitor::InspectInto(Module* node)

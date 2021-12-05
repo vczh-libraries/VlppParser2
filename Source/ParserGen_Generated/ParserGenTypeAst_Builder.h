@@ -32,6 +32,7 @@ namespace vl
 					GlrClass* node;
 				public:
 					ClassBuilder(GlrClass* _node) : node(_node) {}
+					ClassBuilder& ambiguity(GlrClassAmbiguity value);
 					ClassBuilder& baseClass(const vl::WString& value);
 					ClassBuilder& props(const vl::Ptr<GlrClassProp>& value);
 				};

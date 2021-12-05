@@ -17,22 +17,26 @@ namespace ifelseambiguity
 		class StatAstVisitor
 			: public virtual vl::glr::CopyVisitorBase
 			, protected virtual Stat::IVisitor
+			, protected virtual IfContent::IVisitor
 		{
 		protected:
 			void CopyFields(BlockStat* from, BlockStat* to);
 			void CopyFields(DoStat* from, DoStat* to);
 			void CopyFields(IfContent* from, IfContent* to);
+			void CopyFields(IfContentCandidate* from, IfContentCandidate* to);
+			void CopyFields(IfContentToResolve* from, IfContentToResolve* to);
 			void CopyFields(IfStat* from, IfStat* to);
 			void CopyFields(Module* from, Module* to);
 			void CopyFields(Stat* from, Stat* to);
 
 		protected:
-			virtual void Visit(IfContent* node);
 			virtual void Visit(Module* node);
 
 			void Visit(DoStat* node) override;
 			void Visit(IfStat* node) override;
 			void Visit(BlockStat* node) override;
+
+			void Visit(IfContentCandidate* node) override;
 
 		public:
 			virtual vl::Ptr<Stat> CopyNode(Stat* node);

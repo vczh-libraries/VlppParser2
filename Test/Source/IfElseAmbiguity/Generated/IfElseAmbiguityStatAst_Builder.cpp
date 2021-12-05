@@ -22,18 +22,28 @@ BlockStatBuilder
 		}
 
 /***********************************************************************
-IfContentBuilder
+IfContentCandidateBuilder
 ***********************************************************************/
 
-		IfContentBuilder& IfContentBuilder::elseBranch(const vl::Ptr<Stat>& value)
+		IfContentCandidateBuilder& IfContentCandidateBuilder::elseBranch(const vl::Ptr<Stat>& value)
 		{
 			node->elseBranch = value;
 			return *this;
 		}
 
-		IfContentBuilder& IfContentBuilder::thenBranch(const vl::Ptr<Stat>& value)
+		IfContentCandidateBuilder& IfContentCandidateBuilder::thenBranch(const vl::Ptr<Stat>& value)
 		{
 			node->thenBranch = value;
+			return *this;
+		}
+
+/***********************************************************************
+IfContentToResolveBuilder
+***********************************************************************/
+
+		IfContentToResolveBuilder& IfContentToResolveBuilder::candidates(const vl::Ptr<IfContent>& value)
+		{
+			node->candidates.Add(value);
 			return *this;
 		}
 
