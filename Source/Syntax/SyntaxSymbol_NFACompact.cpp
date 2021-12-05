@@ -193,10 +193,12 @@ CompactSyntaxBuilder
 										auto newEdge = new EdgeSymbol(newState, targetNewState);
 										newEdges.Add(newEdge);
 										newEdge->input = edge->input;
+										newEdge->important |= edge->important;
 										for (auto accumulatedEdge : accumulatedEdges)
 										{
 											CopyFrom(newEdge->insBeforeInput, accumulatedEdge->insBeforeInput, true);
 											CopyFrom(newEdge->insAfterInput, accumulatedEdge->insAfterInput, true);
+											newEdge->important |= accumulatedEdge->important;
 										}
 									}
 									break;
@@ -216,16 +218,18 @@ CompactSyntaxBuilder
 							{
 								CopyFrom(newEdge->insBeforeInput, accumulatedEdge->insBeforeInput, true);
 								CopyFrom(newEdge->insAfterInput, accumulatedEdge->insAfterInput, true);
+								newEdge->important |= accumulatedEdge->important;
 							}
 
 							for (auto endingEdge : newState->OutEdges())
 							{
 								if (endingEdge != newEdge && endingEdge->input.type == EdgeInputType::Ending)
 								{
-									if(
-										CompareEnumerable(endingEdge->insBeforeInput,newEdge->insBeforeInput) == 0 &&
+									if (
+										CompareEnumerable(endingEdge->insBeforeInput, newEdge->insBeforeInput) == 0 &&
 										CompareEnumerable(endingEdge->insAfterInput, newEdge->insAfterInput) == 0)
 									{
+										CHECK_ERROR(newEdge->important == endingEdge->important, L"It is not possible to have two equal ending edges with different priority.");
 										newState->outEdges.Remove(newEdge);
 										endState->inEdges.Remove(newEdge);
 										delete newEdge;
