@@ -72,9 +72,6 @@
 - Switching lexical analyzer during parsing.
   - Refactor some properties in `LexerSymbolManager` into `LexerFile` with a name.
 - AST uses classes from another AST file in dependency as fields.
-- Branch priorities:
-  - Optional
-  - Alternative (consider a good syntax)
 - Printing AST classes that created from a memory pool.
 - Error message generating.
   - Allow users to customize error messages.
