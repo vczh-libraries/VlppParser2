@@ -2,6 +2,8 @@
 #include "../../Source/Calculator/Generated/CalculatorModuleParser.h"
 #include "../../Source/IfElseAmbiguity/Generated/IfElseAmbiguityStatAst_Json.h"
 #include "../../Source/IfElseAmbiguity/Generated/IfElseAmbiguityModuleParser.h"
+#include "../../Source/IfElsePriority/Generated/IfElsePriorityStatAst_Json.h"
+#include "../../Source/IfElsePriority/Generated/IfElsePriorityModuleParser.h"
 #include "../../Source/LogTrace.h"
 
 extern WString GetTestParserInputPath(const WString& parserName);
@@ -113,5 +115,14 @@ TEST_FILE
 		&ifelseambiguity::IfElseAmbiguityTokenId,
 		&ifelseambiguity::ModuleParserRuleName,
 		&ifelseambiguity::ModuleParserStateLabel
+		);
+	TestParser<ifelsepriority::ModuleParser, ifelsepriority::json_visitor::StatAstVisitor>(
+		L"IfElsePriority",
+		ifelsepriority::ModuleParserStates::Module,
+		&ifelsepriority::IfElsePriorityTypeName,
+		&ifelsepriority::IfElsePriorityFieldName,
+		&ifelsepriority::IfElsePriorityTokenId,
+		&ifelsepriority::ModuleParserRuleName,
+		&ifelsepriority::ModuleParserStateLabel
 		);
 }
