@@ -35,6 +35,10 @@ IfContentVisitor
 
 		// Visitor Members -----------------------------------
 
+		void IfContentVisitor::Visit(IfContentToResolve* node)
+		{
+		}
+
 		void IfContentVisitor::Visit(IfContentCandidate* node)
 		{
 		}

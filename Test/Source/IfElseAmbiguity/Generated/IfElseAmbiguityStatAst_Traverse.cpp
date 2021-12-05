@@ -69,6 +69,21 @@ namespace ifelseambiguity
 			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 		}
 
+		void StatAstVisitor::Visit(IfContentToResolve* node)
+		{
+			if (!node) return;
+			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+			Traverse(static_cast<IfContent*>(node));
+			Traverse(static_cast<IfContentToResolve*>(node));
+			for (auto&& listItem : node->candidates)
+			{
+				InspectInto(listItem.Obj());
+			}
+			Finishing(static_cast<IfContentToResolve*>(node));
+			Finishing(static_cast<IfContent*>(node));
+			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+		}
+
 		void StatAstVisitor::Visit(IfContentCandidate* node)
 		{
 			if (!node) return;

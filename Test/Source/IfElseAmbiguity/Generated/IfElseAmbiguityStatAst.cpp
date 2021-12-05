@@ -123,6 +123,7 @@ namespace vl
 			END_INTERFACE_MEMBER(ifelseambiguity::Stat)
 
 			BEGIN_INTERFACE_MEMBER(ifelseambiguity::IfContent::IVisitor)
+				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(ifelseambiguity::IfContent::IVisitor::*)(ifelseambiguity::IfContentToResolve* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(ifelseambiguity::IfContent::IVisitor::*)(ifelseambiguity::IfContentCandidate* node))
 			END_INTERFACE_MEMBER(ifelseambiguity::IfContent)
 

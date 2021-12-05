@@ -109,6 +109,20 @@ namespace ifelseambiguity
 			EndObject();
 		}
 
+		void StatAstVisitor::Visit(IfContentToResolve* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"IfContentToResolve", node);
+			PrintFields(static_cast<IfContent*>(node));
+			PrintFields(static_cast<IfContentToResolve*>(node));
+			EndObject();
+		}
+
 		void StatAstVisitor::Visit(IfContentCandidate* node)
 		{
 			if (!node)

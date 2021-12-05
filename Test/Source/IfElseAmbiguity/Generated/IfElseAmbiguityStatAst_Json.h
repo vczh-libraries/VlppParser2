@@ -34,6 +34,7 @@ namespace ifelseambiguity
 			void Visit(IfStat* node) override;
 			void Visit(BlockStat* node) override;
 
+			void Visit(IfContentToResolve* node) override;
 			void Visit(IfContentCandidate* node) override;
 
 		public:

@@ -34,6 +34,7 @@ namespace ifelseambiguity
 
 		public:
 			// Visitor Members -----------------------------------
+			void Visit(IfContentToResolve* node) override;
 			void Visit(IfContentCandidate* node) override;
 		};
 

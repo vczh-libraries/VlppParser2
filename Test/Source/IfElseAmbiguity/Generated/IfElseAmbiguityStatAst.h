@@ -49,6 +49,7 @@ namespace ifelseambiguity
 		class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
 		{
 		public:
+			virtual void Visit(IfContentToResolve* node) = 0;
 			virtual void Visit(IfContentCandidate* node) = 0;
 		};
 
@@ -134,6 +135,11 @@ namespace vl
 			END_INTERFACE_PROXY(ifelseambiguity::Stat::IVisitor)
 
 			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(ifelseambiguity::IfContent::IVisitor)
+				void Visit(ifelseambiguity::IfContentToResolve* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
 				void Visit(ifelseambiguity::IfContentCandidate* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);

@@ -155,6 +155,7 @@ AstClassSymbol
 				{
 					auto derived = ownerFile->CreateClass(name + L"ToResolve");
 					derived->baseClass = this;
+					derivedClasses.Add(derived);
 
 					auto prop = derived->CreateProp(L"candidates");
 					prop->propType = AstPropType::Array;

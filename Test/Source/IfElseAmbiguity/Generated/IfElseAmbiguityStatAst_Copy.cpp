@@ -87,6 +87,13 @@ namespace ifelseambiguity
 			this->result = newNode;
 		}
 
+		void StatAstVisitor::Visit(IfContentToResolve* node)
+		{
+			auto newNode = vl::MakePtr<IfContentToResolve>();
+			CopyFields(node, newNode.Obj());
+			this->result = newNode;
+		}
+
 		void StatAstVisitor::Visit(IfContentCandidate* node)
 		{
 			auto newNode = vl::MakePtr<IfContentCandidate>();
