@@ -133,9 +133,9 @@ TraceManager::ExecuteTrace
 							vint visitedCount = successor->runtimeRouting.visitedCount - baseVisitCount;
 							if (visitedCount < successor->runtimeRouting.expectedVisitCount)
 							{
-								successor->runtimeRouting.expectedVisitCount++;
+								successor->runtimeRouting.visitedCount++;
 								trace = successor;
-								continue;
+								goto FOUND_SUCCESSOR;
 							}
 							else
 							{
@@ -143,6 +143,7 @@ TraceManager::ExecuteTrace
 							}
 						}
 						CHECK_FAIL(ERROR_MESSAGE_PREFIX L"All branches have been executed, the merging trace should not have jumped back here.");
+					FOUND_SUCCESSOR:;
 					}
 				}
 
