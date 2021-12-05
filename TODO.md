@@ -7,6 +7,7 @@
   - Calculate ambiguous **ToString** cases
   - Generate **ToString** algorithm
 - Loop priority
+- Document the algorithm in a markdown file
 
 ## Configurations
 
