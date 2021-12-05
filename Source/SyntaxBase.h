@@ -36,10 +36,18 @@ Automaton
 				vint								count = 0;
 			};
 
+			enum class EdgePriority
+			{
+				NoCompetition,
+				HighPriority,
+				LowPriority,
+			};
+
 			struct ReturnDesc
 			{
 				vint								consumedRule = -1;
 				vint								returnState = -1;
+				EdgePriority						priority = EdgePriority::NoCompetition;
 				InstructionArray					insAfterInput;
 			};
 
@@ -47,6 +55,7 @@ Automaton
 			{
 				vint								fromState = -1;
 				vint								toState = -1;
+				EdgePriority						priority = EdgePriority::NoCompetition;
 				InstructionArray					insBeforeInput;
 				InstructionArray					insAfterInput;
 				ReturnIndexArray					returnIndices;

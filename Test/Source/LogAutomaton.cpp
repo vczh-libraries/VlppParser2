@@ -42,6 +42,15 @@ FilePath LogAutomatonWithPath(
 					writer.WriteString(L"\ttoken: " + tokenName((vint32_t)(input - Executable::TokenBegin)));
 					break;
 				}
+				switch (edge.priority)
+				{
+				case EdgePriority::HighPriority:
+					writer.WriteString(L" [HIGH PRIORITY]");
+					break;
+				case EdgePriority::LowPriority:
+					writer.WriteString(L" [LOW PRIORITY]");
+					break;
+				}
 				writer.WriteLine(L" -> " + metadata.stateLabels[edge.toState]);
 
 				for (vint insRef = 0; insRef < edge.insBeforeInput.count; insRef++)
@@ -59,7 +68,17 @@ FilePath LogAutomatonWithPath(
 				for (vint returnRef = 0; returnRef < edge.returnIndices.count; returnRef++)
 				{
 					auto&& returnDesc = executable.returns[executable.returnIndices[edge.returnIndices.start + returnRef]];
-					writer.WriteLine(L"\t\t> rule: " + metadata.ruleNames[returnDesc.consumedRule] + L" -> " + metadata.stateLabels[returnDesc.returnState]);
+					writer.WriteString(L"\t\t> rule");
+					switch (returnDesc.priority)
+					{
+					case EdgePriority::HighPriority:
+						writer.WriteString(L" [HIGH PRIORITY]");
+						break;
+					case EdgePriority::LowPriority:
+						writer.WriteString(L" [LOW PRIORITY]");
+						break;
+					}
+					writer.WriteLine(L": " + metadata.ruleNames[returnDesc.consumedRule] + L" -> " + metadata.stateLabels[returnDesc.returnState]);
 					for (vint insRef = 0; insRef < returnDesc.insAfterInput.count; insRef++)
 					{
 						writer.WriteString(L"\t\t\t+ ");

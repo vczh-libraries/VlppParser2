@@ -102,6 +102,15 @@ SyntaxSymbolManager::BuildAutomaton
 					auto&& edgeDesc = executable.edges[edgeIndex];
 					edgeDesc.fromState = statesInOrder.IndexOf(edge->From());
 					edgeDesc.toState = statesInOrder.IndexOf(edge->To());
+					switch (edge->importancy)
+					{
+					case EdgeImportancy::HighPriority:
+						edgeDesc.priority = automaton::EdgePriority::HighPriority;
+						break;
+					case EdgeImportancy::LowPriority:
+						edgeDesc.priority = automaton::EdgePriority::LowPriority;
+						break;
+					}
 
 					edgeDesc.insBeforeInput.start = instructionsInOrder.Count();
 					CopyFrom(instructionsInOrder, edge->insBeforeInput, true);
@@ -135,6 +144,15 @@ SyntaxSymbolManager::BuildAutomaton
 					auto&& returnDesc = executable.returns[edgeIndex];
 					returnDesc.consumedRule = rulesInOrder.IndexOf(edge->input.rule);
 					returnDesc.returnState = statesInOrder.IndexOf(edge->To());
+					switch (edge->importancy)
+					{
+					case EdgeImportancy::HighPriority:
+						returnDesc.priority = automaton::EdgePriority::HighPriority;
+						break;
+					case EdgeImportancy::LowPriority:
+						returnDesc.priority = automaton::EdgePriority::LowPriority;
+						break;
+					}
 
 					returnDesc.insAfterInput.start = instructionsInOrder.Count();
 					CopyFrom(instructionsInOrder, edge->insAfterInput, true);

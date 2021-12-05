@@ -29,7 +29,7 @@
 ## Development
 
 1. [x] `ParserTest_ParserGen_Compiler`
-   1. [ ] Prepare more parser test cases for advanced features (proprities, ambiguity, left recursion, mix any of them together) ...
+   1. [ ] Prepare more parser test cases for advanced features
       1. [x] `Calculator.
       2. [x] `IfElseAmbiguity`. (Equal)
       3. [x] `IfElsePriority`. (PreferTake)
@@ -44,6 +44,17 @@
    4. [ ] Test XML parser.
 3. [ ] Port `CodePack` and `ParserGen` to `VlppParser2`, do not write to an existing file if the content is not changed.
    1. [ ] Create a new repo `BuildTools` and adapt the release license instead of the development license.
+
+## Work Items (GLR features)
+
+- [x] Ambiguity
+- [x] Priority
+- [ ] Priority in alternative syntax
+- [ ] Priority in returnDesc / left recursive transition
+- [ ] Priority with left recursion
+- [ ] Ambiguity with left recursion
+- [ ] Priority with ambiguity
+- [ ] Everything together
 
 ## Work Items (issues)
 
