@@ -28,6 +28,23 @@ TraceManager::Input
 				return true;
 			}
 
+			bool TraceManager::AreReturnStackEqual(vint r1, vint r2)
+			{
+				while (true)
+				{
+					if (r1 == r2) return true;
+					if (r1 == -1 || r2 == -1) return false;
+					auto rs1 = GetReturnStack(r1);
+					auto rs2 = GetReturnStack(r2);
+					if (!AreReturnDescEqual(rs1->returnIndex, rs2->returnIndex))
+					{
+						return false;
+					}
+					r1 = rs1->previous;
+					r2 = rs2->previous;
+				}
+			}
+
 			Trace* TraceManager::WalkAlongSingleEdge(
 				vint previousTokenIndex,
 				vint currentTokenIndex,
@@ -67,21 +84,11 @@ TraceManager::Input
 						{
 							auto r1 = returnStack;
 							auto r2 = candidate->returnStack;
-							while (true)
+							if (AreReturnStackEqual(r1, r2))
 							{
-								if (r1 == r2) goto MERGABLE_TRACE_FOUND;
-								auto rs1 = GetReturnStack(r1);
-								auto rs2 = GetReturnStack(r2);
-								if (!AreReturnDescEqual(rs1->returnIndex, rs2->returnIndex))
-								{
-									goto MERGABLE_TRACE_NOT_FOUND;
-								}
-								r1 = rs1->previous;
-								r2 = rs2->previous;
+								AddTraceToCollection(candidate, trace, &Trace::predecessors);
+								return nullptr;
 							}
-						MERGABLE_TRACE_FOUND:
-							AddTraceToCollection(candidate, trace, &Trace::predecessors);
-							return nullptr;
 						}
 					MERGABLE_TRACE_NOT_FOUND:;
 					}
