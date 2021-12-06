@@ -101,6 +101,7 @@ TraceManager::Input
 
 				if (input == Executable::EndingInput)
 				{
+					// TODO: check if high priority wins and mark the competition
 					CHECK_ERROR(edgeDesc.returnIndices.count == 0, L"vl::glr::automaton::TraceManager::WalkAlongSingleEdge(vint, vint, vint, Trace*, vint, EdgeDesc&)#Ending input edge is not allowed to push the return stack.");
 					if (returnStack != -1)
 					{
@@ -236,6 +237,7 @@ TraceManager::Input
 					auto&& edgeArray = executable.transitions[transactionIndex];
 					WalkAlongTokenEdges(currentTokenIndex, input, trace, edgeArray);
 				}
+				// TODO: check if any bet wins and close competitions
 				EndSwap();
 
 				for (vint32_t traceIndex = concurrentCount; traceIndex < concurrentTraces->Count(); traceIndex++)
