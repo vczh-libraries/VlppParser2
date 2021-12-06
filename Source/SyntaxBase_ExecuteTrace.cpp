@@ -52,13 +52,13 @@ TraceManager::ExecuteTrace
 				TraceManagerSubmitter submitter;
 				submitter.receiver = &receiver;
 
-				vint startIns = 0;
+				vint32_t startIns = 0;
 				while (trace)
 				{
 					TraceInsLists insLists;
 					ReadInstructionList(trace, insLists);
 
-					vint maxIns = insLists.c3 - 1;
+					vint32_t maxIns = insLists.c3 - 1;
 					if (trace->ambiguity.traceBeginObject != -1)
 					{
 						maxIns = trace->ambiguity.insEndObject;
@@ -75,7 +75,7 @@ TraceManager::ExecuteTrace
 						}
 					}
 
-					for (vint i = startIns; i <= maxIns; i++)
+					for (vint32_t i = startIns; i <= maxIns; i++)
 					{
 						auto& ins = ReadInstruction(i, insLists);
 						auto& token = tokens[trace->currentTokenIndex];
@@ -101,7 +101,7 @@ TraceManager::ExecuteTrace
 								submitter.Submit(insResolve, token);
 							}
 
-							for (vint i = maxIns + 1; i < insLists.c3; i++)
+							for (vint32_t i = maxIns + 1; i < insLists.c3; i++)
 							{
 								auto& ins = ReadInstruction(i, insLists);
 								auto& token = tokens[trace->currentTokenIndex];

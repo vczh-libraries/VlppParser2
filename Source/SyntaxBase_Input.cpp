@@ -201,7 +201,7 @@ TraceManager::Input
 				}
 			}
 
-			void TraceManager::Input(vint currentTokenIndex, vint token)
+			void TraceManager::Input(vint32_t currentTokenIndex, vint32_t token)
 			{
 				CHECK_ERROR(state == TraceManagerState::WaitingForInput, L"vl::glr::automaton::TraceManager::Input(vint, vint)#Wrong timing to call this function.");
 				vint32_t traceCount = concurrentCount;

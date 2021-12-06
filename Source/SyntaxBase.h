@@ -20,20 +20,20 @@ Automaton
 		{
 			struct InstructionArray
 			{
-				vint								start = -1;
-				vint								count = 0;
+				vint32_t							start = -1;
+				vint32_t							count = 0;
 			};
 
 			struct ReturnIndexArray
 			{
-				vint								start = -1;
-				vint								count = -1;
+				vint32_t							start = -1;
+				vint32_t							count = -1;
 			};
 
 			struct EdgeArray
 			{
-				vint								start = -1;
-				vint								count = 0;
+				vint32_t							start = -1;
+				vint32_t							count = 0;
 			};
 
 			enum class EdgePriority
@@ -45,16 +45,16 @@ Automaton
 
 			struct ReturnDesc
 			{
-				vint								consumedRule = -1;
-				vint								returnState = -1;
+				vint32_t							consumedRule = -1;
+				vint32_t							returnState = -1;
 				EdgePriority						priority = EdgePriority::NoCompetition;
 				InstructionArray					insAfterInput;
 			};
 
 			struct EdgeDesc
 			{
-				vint								fromState = -1;
-				vint								toState = -1;
+				vint32_t							fromState = -1;
+				vint32_t							toState = -1;
 				EdgePriority						priority = EdgePriority::NoCompetition;
 				InstructionArray					insBeforeInput;
 				InstructionArray					insAfterInput;
@@ -63,23 +63,23 @@ Automaton
 
 			struct StateDesc
 			{
-				vint								rule = -1;
+				vint32_t							rule = -1;
 				bool								endingState = false;
 			};
 
 			struct Executable
 			{
-				static constexpr vint				EndOfInputInput = -1;
-				static constexpr vint				EndingInput = 0;
-				static constexpr vint				LeftrecInput = 1;
-				static constexpr vint				TokenBegin = 2;
+				static constexpr vint32_t			EndOfInputInput = -1;
+				static constexpr vint32_t			EndingInput = 0;
+				static constexpr vint32_t			LeftrecInput = 1;
+				static constexpr vint32_t			TokenBegin = 2;
 
-				vint								tokenCount = 0;
-				vint								ruleCount = 0;
-				collections::Array<vint>			ruleStartStates;		// ruleStartStates[rule] = the start state of this rule.
+				vint32_t							tokenCount = 0;
+				vint32_t							ruleCount = 0;
+				collections::Array<vint32_t>		ruleStartStates;		// ruleStartStates[rule] = the start state of this rule.
 				collections::Array<EdgeArray>		transitions;			// transitions[state * (TokenBegin + tokenCount) + input] = edges from state with specified input.
 				collections::Array<AstIns>			instructions;			// referenced by InstructionArray
-				collections::Array<vint>			returnIndices;			// referenced by ReturnIndexArray
+				collections::Array<vint32_t>		returnIndices;			// referenced by ReturnIndexArray
 				collections::Array<ReturnDesc>		returns;				// referenced by Executable::returnIndices
 				collections::Array<EdgeDesc>		edges;					// referenced by EdgeArray
 				collections::Array<StateDesc>		states;					// refereced by returnState/fromState/toState
@@ -141,7 +141,7 @@ Execution
 					vint index = blockSize * (buffers.Count() - 1) + (blockSize - remains);
 					buffers[buffers.Count() - 1]->operator[](blockSize - remains).allocatedIndex = (vint32_t)index;
 					remains--;
-					return index;
+					return (vint32_t)index;
 				}
 
 				void Clear()
@@ -273,7 +273,7 @@ Execution
 				Trace*								AllocateTrace();
 
 				void								Initialize(vint32_t startState);
-				void								Input(vint currentTokenIndex, vint token);
+				void								Input(vint32_t currentTokenIndex, vint32_t token);
 				void								EndOfInput();
 				Trace*								PrepareTraceRoute();
 				Ptr<ParsingAstBase>					ExecuteTrace(Trace* trace, IAstInsReceiver& receiver, collections::List<regex::RegexToken>& tokens);
@@ -336,11 +336,11 @@ Parser
 				lexer->Parse(input, {}, codeIndex).ReadToEnd(tokens, deleter);
 
 				automaton::TraceManager tm(*executable.Obj());
-				tm.Initialize((vint)State);
-				for (vint i = 0; i < tokens.Count(); i++)
+				tm.Initialize((vint32_t)State);
+				for (vint32_t i = 0; i < tokens.Count(); i++)
 				{
 					auto&& token = tokens[i];
-					tm.Input(i, token.token);
+					tm.Input(i, (vint32_t)token.token);
 					// TODO: log errors instead of crashing (failed to parse)
 					CHECK_ERROR(tm.concurrentCount > 0, ERROR_MESSAGE_PREFIX L"Error happens during parsing.");
 				}

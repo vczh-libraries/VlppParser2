@@ -35,14 +35,14 @@ SyntaxSymbolManager::BuildAutomaton
 					metadata.stateLabels[index] = GetStateGlobalLabel(state, index);
 				}
 
-				executable.tokenCount = tokenCount;
-				executable.ruleCount = rulesInOrder.Count();
+				executable.tokenCount = (vint32_t)tokenCount;
+				executable.ruleCount = (vint32_t)rulesInOrder.Count();
 
 				// executable.ruleStartStates
 				executable.ruleStartStates.Resize(rulesInOrder.Count());
 				for (auto [rule, index] : indexed(rulesInOrder))
 				{
-					executable.ruleStartStates[index] = statesInOrder.IndexOf(rule->startStates[0]);
+					executable.ruleStartStates[index] = (vint32_t)statesInOrder.IndexOf(rule->startStates[0]);
 				}
 
 				// executable.states
@@ -50,13 +50,13 @@ SyntaxSymbolManager::BuildAutomaton
 				for (auto [state, index] : indexed(statesInOrder))
 				{
 					auto&& stateDesc = executable.states[index];
-					stateDesc.rule = rulesInOrder.IndexOf(state->Rule());
+					stateDesc.rule = (vint32_t)rulesInOrder.IndexOf(state->Rule());
 					stateDesc.endingState = state->endingState;
 				}
 
 				List<EdgeSymbol*> edgesInOrder;
 				List<EdgeSymbol*> returnEdgesInOrder;
-				List<vint> returnIndicesInOrder;
+				List<vint32_t> returnIndicesInOrder;
 				List<AstIns> instructionsInOrder;
 
 				// executable.transitions
@@ -84,9 +84,9 @@ SyntaxSymbolManager::BuildAutomaton
 							{
 								return statesInOrder.IndexOf(e1->To()) - statesInOrder.IndexOf(e2->To());
 							});
-						transition.start = edgesInOrder.Count();
+						transition.start = (vint32_t)edgesInOrder.Count();
 						CopyFrom(edgesInOrder, orderedEdges, true);
-						transition.count = edgesInOrder.Count() - transition.start;
+						transition.count = (vint32_t)edgesInOrder.Count() - transition.start;
 						if (transition.count == 0)
 						{
 							transition.start = -1;
@@ -100,8 +100,8 @@ SyntaxSymbolManager::BuildAutomaton
 				for (auto [edge, edgeIndex] : indexed(edgesInOrder))
 				{
 					auto&& edgeDesc = executable.edges[edgeIndex];
-					edgeDesc.fromState = statesInOrder.IndexOf(edge->From());
-					edgeDesc.toState = statesInOrder.IndexOf(edge->To());
+					edgeDesc.fromState = (vint32_t)statesInOrder.IndexOf(edge->From());
+					edgeDesc.toState = (vint32_t)statesInOrder.IndexOf(edge->To());
 					switch (edge->importancy)
 					{
 					case EdgeImportancy::HighPriority:
@@ -112,15 +112,15 @@ SyntaxSymbolManager::BuildAutomaton
 						break;
 					}
 
-					edgeDesc.insBeforeInput.start = instructionsInOrder.Count();
+					edgeDesc.insBeforeInput.start = (vint32_t)instructionsInOrder.Count();
 					CopyFrom(instructionsInOrder, edge->insBeforeInput, true);
-					edgeDesc.insBeforeInput.count = instructionsInOrder.Count() - edgeDesc.insBeforeInput.start;
+					edgeDesc.insBeforeInput.count = (vint32_t)instructionsInOrder.Count() - edgeDesc.insBeforeInput.start;
 
-					edgeDesc.insAfterInput.start = instructionsInOrder.Count();
+					edgeDesc.insAfterInput.start = (vint32_t)instructionsInOrder.Count();
 					CopyFrom(instructionsInOrder, edge->insAfterInput, true);
-					edgeDesc.insAfterInput.count = instructionsInOrder.Count() - edgeDesc.insAfterInput.start;
+					edgeDesc.insAfterInput.count = (vint32_t)instructionsInOrder.Count() - edgeDesc.insAfterInput.start;
 
-					edgeDesc.returnIndices.start = returnIndicesInOrder.Count();
+					edgeDesc.returnIndices.start = (vint32_t)returnIndicesInOrder.Count();
 					for (auto returnEdge : edge->returnEdges)
 					{
 						vint index = returnEdgesInOrder.IndexOf(returnEdge);
@@ -128,9 +128,9 @@ SyntaxSymbolManager::BuildAutomaton
 						{
 							index = returnEdgesInOrder.Add(returnEdge);
 						}
-						returnIndicesInOrder.Add(index);
+						returnIndicesInOrder.Add((vint32_t)index);
 					}
-					edgeDesc.returnIndices.count = returnIndicesInOrder.Count() - edgeDesc.returnIndices.start;
+					edgeDesc.returnIndices.count = (vint32_t)returnIndicesInOrder.Count() - edgeDesc.returnIndices.start;
 
 					if (edgeDesc.insBeforeInput.count == 0) edgeDesc.insBeforeInput.start = -1;
 					if (edgeDesc.insAfterInput.count == 0) edgeDesc.insAfterInput.start = -1;
@@ -142,8 +142,8 @@ SyntaxSymbolManager::BuildAutomaton
 				for (auto [edge, edgeIndex] : indexed(returnEdgesInOrder))
 				{
 					auto&& returnDesc = executable.returns[edgeIndex];
-					returnDesc.consumedRule = rulesInOrder.IndexOf(edge->input.rule);
-					returnDesc.returnState = statesInOrder.IndexOf(edge->To());
+					returnDesc.consumedRule = (vint32_t)rulesInOrder.IndexOf(edge->input.rule);
+					returnDesc.returnState = (vint32_t)statesInOrder.IndexOf(edge->To());
 					switch (edge->importancy)
 					{
 					case EdgeImportancy::HighPriority:
@@ -154,9 +154,9 @@ SyntaxSymbolManager::BuildAutomaton
 						break;
 					}
 
-					returnDesc.insAfterInput.start = instructionsInOrder.Count();
+					returnDesc.insAfterInput.start = (vint32_t)instructionsInOrder.Count();
 					CopyFrom(instructionsInOrder, edge->insAfterInput, true);
-					returnDesc.insAfterInput.count = instructionsInOrder.Count() - returnDesc.insAfterInput.start;
+					returnDesc.insAfterInput.count = (vint32_t)instructionsInOrder.Count() - returnDesc.insAfterInput.start;
 					if (returnDesc.insAfterInput.count == 0) returnDesc.insAfterInput.start = -1;
 				}
 

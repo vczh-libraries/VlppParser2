@@ -50,10 +50,10 @@ namespace TestSyntax_TestObjects
 
 		TraceManager tm(executable);
 		tm.Initialize(executable.ruleStartStates[metadata.ruleNames.IndexOf(L"Module")]);
-		for (vint i = 0; i < tokens.Count(); i++)
+		for (vint32_t i = 0; i < tokens.Count(); i++)
 		{
 			auto&& token = tokens[i];
-			tm.Input(i, token.token);
+			tm.Input(i, (vint32_t)token.token);
 			TEST_ASSERT(tm.concurrentCount > 0);
 		}
 
