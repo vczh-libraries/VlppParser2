@@ -196,9 +196,28 @@ TraceManager::PrepareTraceRoute
 					predecessorId = predecessor->predecessors.siblingNext;
 				}
 
-				trace->ambiguity.insEndObject = insEndObject;
-				trace->ambiguity.insBeginObject = insBeginObject;
-				trace->ambiguity.traceBeginObject = traceBeginObject;
+				{
+					trace->ambiguity.insEndObject = insEndObject;
+
+					auto currentTrace = GetTrace(traceBeginObject);
+					vint32_t currentIns = insBeginObject;
+
+					ReadInstructionList(currentTrace, insLists);
+					auto ins = ReadInstruction(currentIns, insLists);
+					trace->ambiguity.ambiguityType = ins.param;
+
+					vint32_t objectCount = 0;
+					while (ins.type == AstInsType::BeginObjectLeftRecursive)
+					{
+						currentIns--;
+						FindBalancedBeginObject(currentTrace, currentIns, objectCount);
+						ReadInstructionList(currentTrace, insLists);
+						ins = ReadInstruction(currentIns, insLists);
+					}
+
+					trace->ambiguity.insBeginObject = currentIns;
+					trace->ambiguity.traceBeginObject = currentTrace->allocatedIndex;
+				}
 #undef ERROR_MESSAGE_PREFIX
 			}
 

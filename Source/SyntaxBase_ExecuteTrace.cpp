@@ -92,12 +92,8 @@ TraceManager::ExecuteTrace
 						{
 							trace->runtimeRouting.branchVisited = 0;
 							{
-								TraceInsLists beginInsLists;
-								ReadInstructionList(traceBeginObject, beginInsLists);
-								auto& beginIns = ReadInstruction(trace->ambiguity.insBeginObject, beginInsLists);
 								auto& token = tokens[trace->currentTokenIndex];
-
-								AstIns insResolve = { AstInsType::ResolveAmbiguity,beginIns.param,trace->runtimeRouting.predecessorCount };
+								AstIns insResolve = { AstInsType::ResolveAmbiguity,trace->ambiguity.ambiguityType,trace->runtimeRouting.predecessorCount };
 								submitter.Submit(insResolve, token);
 							}
 

@@ -171,12 +171,15 @@ Execution
 				vint32_t				insEndObject = -1;			// the index of the first EndObject instruction
 																	// in {byEdge.insBeforeInput, byEdge.insAfterInput, executedReturn.insAfterInput} combined
 
-				vint32_t				traceBeginObject = -1;		// id of the trace containing BeginObject or BeginObjectLeftRecursive
+				vint32_t				traceBeginObject = -1;		// id of the trace containing BeginObject
 																	// that ends by the above EndObject
 
-				vint32_t				insBeginObject = -1;		// the index of the BeginObject or BeginObjectLeftRecursive instruction
+				vint32_t				insBeginObject = -1;		// the index of the BeginObject instruction
 																	// from traceBeginObject
 																	// in {byEdge.insBeforeInput, byEdge.insAfterInput, executedReturn.insAfterInput} combined
+
+				vint32_t				ambiguityType = -1;			// when the BeginObject creates an object that later be consumed by BeginObjectLeftRecursive
+																	// than the correct type is the type in BeginObjectLeftRecursive
 			};
 
 			enum class CompetitionStatus
