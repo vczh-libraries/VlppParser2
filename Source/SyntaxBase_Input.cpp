@@ -104,7 +104,7 @@ Competitions
 							ac->next = trace->runtimeRouting.attendingCompetitions;
 							ac->competition = competition->allocatedIndex;
 							ac->forHighPriority = false;
-							competition->highBet = ac->allocatedIndex;
+							competition->lowBet = ac->allocatedIndex;
 						}
 						return competition->lowBet;
 					}
