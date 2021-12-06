@@ -101,7 +101,6 @@ TraceManager::Input
 
 				if (input == Executable::EndingInput)
 				{
-					// TODO: check if high priority wins and mark the competition
 					CHECK_ERROR(edgeDesc.returnIndices.count == 0, L"vl::glr::automaton::TraceManager::WalkAlongSingleEdge(vint, vint, vint, Trace*, vint, EdgeDesc&)#Ending input edge is not allowed to push the return stack.");
 					if (returnStack != -1)
 					{
@@ -110,10 +109,22 @@ TraceManager::Input
 						executedReturn = rs->returnIndex;
 						state = executable.returns[executedReturn].returnState;
 					}
-				}
 
-				if (input == Executable::EndingInput)
-				{
+					auto acId = attendingCompetition;
+					while (acId != -1)
+					{
+						auto ac = GetAttendingCompetitions(acId);
+						auto cpt = GetCompetition(ac->competition);
+						auto cptr = GetTrace(cpt->ownerTrace);
+						if (cptr->returnStack == executedReturn)
+						{
+							CHECK_ERROR(cpt->status != CompetitionStatus::LowPriorityWin, L"The competition is closed too early.");
+							cpt->status = CompetitionStatus::HighPriorityWin;
+							break;
+						}
+						acId = ac->next;
+					}
+
 					for (vint i = 0; i < concurrentCount; i++)
 					{
 						auto candidate = backupTraces->Get(i);
