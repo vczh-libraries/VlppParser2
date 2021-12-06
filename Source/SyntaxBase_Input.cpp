@@ -112,14 +112,14 @@ Competitions
 				return trace->runtimeRouting.attendingCompetitions;
 			}
 
-			void TraceManager::CheckAttendingCompetitionsOnEndingEdge(vint32_t acId, vint32_t returnIndex)
+			void TraceManager::CheckAttendingCompetitionsOnEndingEdge(vint32_t acId, vint32_t returnStack)
 			{
 				while (acId != -1)
 				{
 					auto ac = GetAttendingCompetitions(acId);
 					auto cpt = GetCompetition(ac->competition);
 					auto cptr = GetTrace(cpt->ownerTrace);
-					if (cptr->returnStack == returnIndex)
+					if (cptr->returnStack == returnStack)
 					{
 						CHECK_ERROR(cpt->status != CompetitionStatus::LowPriorityWin, L"The competition is closed too early.");
 						cpt->status = CompetitionStatus::HighPriorityWin;
@@ -265,7 +265,7 @@ TraceManager::WalkAlongSingleEdge
 						state = executable.returns[executedReturn].returnState;
 					}
 
-					CheckAttendingCompetitionsOnEndingEdge(acId, executedReturn);
+					CheckAttendingCompetitionsOnEndingEdge(acId, returnStack);
 
 					for (vint i = 0; i < concurrentCount; i++)
 					{
