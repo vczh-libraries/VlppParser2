@@ -205,6 +205,7 @@ TraceManager
 				backupTraces = &traces2;
 
 				rootTrace = nullptr;
+				activeCompetitions = -1;
 
 				auto trace = AllocateTrace();
 				trace->state = startState;

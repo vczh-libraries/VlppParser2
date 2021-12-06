@@ -76,6 +76,9 @@ Competitions
 						competition = AllocateCompetition();
 						competition->ownerTrace = trace->allocatedIndex;
 						trace->runtimeRouting.holdingCompetition = competition->allocatedIndex;
+
+						competition->next = activeCompetitions;
+						activeCompetitions = competition->allocatedIndex;
 					}
 					else
 					{
@@ -123,6 +126,110 @@ Competitions
 						break;
 					}
 					acId = ac->next;
+				}
+			}
+
+			void TraceManager::CheckBackupTracesBeforeSwapping()
+			{
+				{
+					auto cId = activeCompetitions;
+					while (cId != -1)
+					{
+						auto cpt = GetCompetition(cId);
+						cpt->highCounter = 0;
+						cpt->lowCounter = 0;
+						cId = cpt->next;
+					}
+				}
+
+				for (vint i = 0; i < concurrentCount; i++)
+				{
+					auto trace = backupTraces->Get(i);
+					auto acId = trace->runtimeRouting.attendingCompetitions;
+					while (acId != -1)
+					{
+						auto ac = GetAttendingCompetitions(acId);
+						auto cpt = GetCompetition(ac->competition);
+						(ac->forHighPriority ? cpt->highCounter : cpt->lowCounter)++;
+						acId = ac->next;
+					}
+				}
+
+				{
+					auto cId = activeCompetitions;
+					while (cId != -1)
+					{
+						auto cpt = GetCompetition(cId);
+						if (cpt->status == CompetitionStatus::Holding)
+						{
+							if (cpt->highCounter > 0 && cpt->lowCounter == 0)
+							{
+								cpt->status = CompetitionStatus::HighPriorityWin;
+							}
+							else if (cpt->highCounter == 0 && cpt->lowCounter > 0)
+							{
+								cpt->status = CompetitionStatus::LowPriorityWin;
+							}
+						}
+						cId = cpt->next;
+					}
+				}
+
+				for (vint i = concurrentCount - 1; i >= 0; i--)
+				{
+					auto trace = backupTraces->Get(i);
+					auto acId = trace->runtimeRouting.attendingCompetitions;
+					while (acId != -1)
+					{
+						auto ac = GetAttendingCompetitions(acId);
+						auto cpt = GetCompetition(ac->competition);
+						if (cpt->status != CompetitionStatus::Holding)
+						{
+							ac->closed = true;
+							if (ac->forHighPriority != (cpt->status == CompetitionStatus::HighPriorityWin))
+							{
+								concurrentCount--;
+								backupTraces->RemoveAt(i);
+								goto TRACE_REMOVED;
+							}
+						}
+						acId = ac->next;
+					}
+				TRACE_REMOVED:;
+				}
+
+				{
+					vint32_t* pnext = &activeCompetitions;
+					while (*pnext != -1)
+					{
+						auto cpt = GetCompetition(*pnext);
+						if (cpt->status != CompetitionStatus::Holding || (cpt->highCounter == 0 && cpt->lowCounter == 0))
+						{
+							*pnext = cpt->next;
+						}
+						else
+						{
+							pnext = &cpt->next;
+						}
+					}
+				}
+
+				for (vint i = 0; i < concurrentCount; i++)
+				{
+					auto trace = backupTraces->Get(i);
+					vint32_t* pnext = &trace->runtimeRouting.attendingCompetitions;
+					while (*pnext != -1)
+					{
+						auto ac = GetAttendingCompetitions(*pnext);
+						if (ac->closed)
+						{
+							*pnext = ac->next;
+						}
+						else
+						{
+							pnext = &ac->next;
+						}
+					}
 				}
 			}
 
@@ -309,6 +416,7 @@ TraceManager::EndOfInput
 						AddTrace(trace);
 					}
 				}
+				CheckBackupTracesBeforeSwapping();
 				EndSwap();
 			}
 		}

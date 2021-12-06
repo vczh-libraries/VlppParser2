@@ -189,6 +189,8 @@ Execution
 			struct Competition
 			{
 				vint32_t				allocatedIndex = -1;
+				vint32_t				next = -1;					// next active Competition
+
 				CompetitionStatus		status = CompetitionStatus::Holding;	// if predecessors from this trace have different priority, the competition begins
 																				// when the competition is over, it will be changed to HighPriorityWin or LowPriorityWin
 																				// if all candidates fail, it could be Holding forever
@@ -196,6 +198,11 @@ Execution
 				vint32_t				ownerTrace = -1;			// the id of the Trace that holds this competition
 				vint32_t				highBet = -1;				// the id of the high bet AttendingCompetitions for this competition
 				vint32_t				lowBet = -1;				// the id of the low bet AttendingCompetitions for this competition
+
+				vint32_t				highCounter = 0;			// temporary counter for all existing high bets
+																	// in the current step of input
+				vint32_t				lowCounter = 0;				// temporary counter for all existing low bets
+																	// in the current step of input
 			};
 
 			struct AttendingCompetitions
@@ -204,6 +211,9 @@ Execution
 				vint32_t				next = -1;					// the next AttendingCompetitions
 				vint32_t				competition = -1;			// the id of the Competition
 				bool					forHighPriority = false;	// bet of this competition
+
+				bool					closed = false;				// true if the competition has been closed
+																	// this flag is not always updated for discarded AttendingCompetitions objects
 			};
 
 			struct RuntimeRouting
@@ -276,6 +286,7 @@ Execution
 				collections::List<Trace*>			traces2;
 
 				Trace*								rootTrace = nullptr;
+				vint32_t							activeCompetitions = -1;
 
 				void								BeginSwap();
 				void								AddTrace(Trace* trace);
@@ -288,6 +299,7 @@ Execution
 
 				vint32_t							AttendCompetitionIfNecessary(Trace* trace, EdgeDesc& edgeDesc);
 				void								CheckAttendingCompetitionsOnEndingEdge(vint32_t acId, vint32_t returnIndex);
+				void								CheckBackupTracesBeforeSwapping();
 
 				Trace*								WalkAlongSingleEdge(vint32_t currentTokenIndex, vint32_t input, Trace* trace, vint32_t byEdge, EdgeDesc& edgeDesc);
 				void								WalkAlongLeftrecEdges(vint32_t currentTokenIndex, Trace* trace, EdgeArray& edgeArray);
