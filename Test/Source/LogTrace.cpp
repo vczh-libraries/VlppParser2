@@ -383,7 +383,6 @@ struct TraceTree
 
 		if (tree->endTrace)
 		{
-			sendTraces.Add(tree.Obj());
 			if (!endTraces.Contains(trace))
 			{
 				endTraces.Add(trace);
@@ -397,6 +396,15 @@ struct TraceTree
 			auto successor = tm.GetTrace(successorId);
 			tree->AddChildTrace(successor, tm, false, nonEndTraces, endTraces, sendTraces);
 			successorId = successor->successors.siblingNext;
+		}
+
+		for (auto child : tree->children)
+		{
+			if (child->endTrace)
+			{
+				sendTraces.Add(tree.Obj());
+				break;
+			}
 		}
 	}
 
@@ -650,7 +658,7 @@ void RenderTraceTree(
 {
 	Array<vint> sendPositions;
 	Array<vint> receivePositions;
-	Dictionary<vint, vint> sendTos;
+	Group<vint, vint> sendTos;
 	List<Trace*> startTraces;
 	startTraces.Add(rootTrace);
 
@@ -796,7 +804,15 @@ void RenderTraceTree(
 		{
 			for (auto [p, i] : indexed(sendPositions))
 			{
-				buffer.Set(0, p, L"[" + itow(sendTos[i]) + L"]");
+				WString label = L"[";
+				for (auto [r, ri] : indexed(sendTos[i]))
+				{
+					if (ri != 0) label += L"/";
+					label += itow(r);
+				}
+				label += L"]";
+
+				buffer.Set(0, p, label);
 				buffer.Draw(1, p + 1, L'|');
 				buffer.Draw(2, p + 1, L'|');
 			}
@@ -830,7 +846,13 @@ void RenderTraceTree(
 		for (auto [tree, index] : indexed(sendTraces))
 		{
 			sendPositions[index] = columnStarts[tree->column];
-			sendTos.Add(index, endTraces.IndexOf(tree->trace));
+			for (auto child : tree->children)
+			{
+				if (child->endTrace)
+				{
+					sendTos.Add(index, endTraces.IndexOf(child->trace));
+				}
+			}
 		}
 
 		for (auto&& line : buffer.lines)
