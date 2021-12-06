@@ -1,0 +1,20 @@
+Exp0
+  ::= ID:name as RefExpr
+  ::= ID:name "<" {Exp:args ; ","} ">" as GenericExpr
+  ::= "(" !Exp ")"
+  ;
+
+Exp1
+  ::= !Exp0
+  ::= Exp1:func "(" {Exp:args ; ","} ")" as CallExpr
+  ;
+
+Exp
+  ::= !Exp1
+  ::= Exp:left "<" Exp1:right as BinaryExpr {op = LT}
+  ::= Exp:left ">" Exp1:right as BinaryExpr {op = GT}
+  ;
+
+Module
+  ::= Exp:expr as Module
+  ;

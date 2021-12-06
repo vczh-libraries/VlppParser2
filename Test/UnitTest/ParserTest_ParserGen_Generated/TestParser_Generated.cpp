@@ -4,6 +4,8 @@
 #include "../../Source/IfElseAmbiguity/Generated/IfElseAmbiguityModuleParser.h"
 #include "../../Source/IfElsePriority/Generated/IfElsePriorityStatAst_Json.h"
 #include "../../Source/IfElsePriority/Generated/IfElsePriorityModuleParser.h"
+#include "../../Source/GenericAmbiguity/Generated/GenericAmbiguityExprAst_Json.h"
+#include "../../Source/GenericAmbiguity/Generated/GenericAmbiguityModuleParser.h"
 #include "../../Source/LogTrace.h"
 
 extern WString GetTestParserInputPath(const WString& parserName);
@@ -124,5 +126,14 @@ TEST_FILE
 		&ifelsepriority::IfElsePriorityTokenId,
 		&ifelsepriority::ModuleParserRuleName,
 		&ifelsepriority::ModuleParserStateLabel
+		);
+	TestParser<genericambiguity::ModuleParser, genericambiguity::json_visitor::ExprAstVisitor>(
+		L"GenericAmbiguity",
+		genericambiguity::ModuleParserStates::Module,
+		&genericambiguity::GenericAmbiguityTypeName,
+		&genericambiguity::GenericAmbiguityFieldName,
+		&genericambiguity::GenericAmbiguityTokenId,
+		&genericambiguity::ModuleParserRuleName,
+		&genericambiguity::ModuleParserStateLabel
 		);
 }
