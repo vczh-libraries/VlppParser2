@@ -10,7 +10,7 @@ namespace vl
 TraceManager::Input
 ***********************************************************************/
 
-			bool TraceManager::AreReturnDescEqual(vint ri1, vint ri2)
+			bool TraceManager::AreReturnDescEqual(vint32_t ri1, vint32_t ri2)
 			{
 				// TODO: create a cache to compare two returnIndex directly
 				// instead of repeatly scanning the content here
@@ -28,7 +28,7 @@ TraceManager::Input
 				return true;
 			}
 
-			bool TraceManager::AreReturnStackEqual(vint r1, vint r2)
+			bool TraceManager::AreReturnStackEqual(vint32_t r1, vint32_t r2)
 			{
 				while (true)
 				{
@@ -46,17 +46,17 @@ TraceManager::Input
 			}
 
 			Trace* TraceManager::WalkAlongSingleEdge(
-				vint previousTokenIndex,
-				vint currentTokenIndex,
-				vint input,
+				vint32_t previousTokenIndex,
+				vint32_t currentTokenIndex,
+				vint32_t input,
 				Trace* trace,
-				vint byEdge,
+				vint32_t byEdge,
 				EdgeDesc& edgeDesc
 			)
 			{
-				vint state = edgeDesc.toState;
-				vint returnStack = trace->returnStack;
-				vint executedReturn = -1;
+				vint32_t state = edgeDesc.toState;
+				vint32_t returnStack = trace->returnStack;
+				vint32_t executedReturn = -1;
 
 				// from the same competition trace, if walked alone transitions with priority
 				// predecessors will take a mark from the competition trace
@@ -103,7 +103,6 @@ TraceManager::Input
 								return nullptr;
 							}
 						}
-					MERGABLE_TRACE_NOT_FOUND:;
 					}
 				}
 
@@ -122,7 +121,7 @@ TraceManager::Input
 
 				for (vint returnRef = 0; returnRef < edgeDesc.returnIndices.count; returnRef++)
 				{
-					vint returnIndex = executable.returnIndices[edgeDesc.returnIndices.start + returnRef];
+					auto returnIndex = executable.returnIndices[edgeDesc.returnIndices.start + returnRef];
 					auto returnStack = AllocateReturnStack();
 					returnStack->previous = newTrace->returnStack;
 					returnStack->returnIndex = returnIndex;
@@ -133,16 +132,16 @@ TraceManager::Input
 			}
 
 			void TraceManager::WalkAlongTokenEdges(
-				vint previousTokenIndex,
-				vint currentTokenIndex,
-				vint input,
+				vint32_t previousTokenIndex,
+				vint32_t currentTokenIndex,
+				vint32_t input,
 				Trace* trace,
 				EdgeArray& edgeArray
 			)
 			{
-				for (vint edgeRef = 0; edgeRef < edgeArray.count; edgeRef++)
+				for (vint32_t edgeRef = 0; edgeRef < edgeArray.count; edgeRef++)
 				{
-					vint byEdge = edgeArray.start + edgeRef;
+					vint32_t byEdge = edgeArray.start + edgeRef;
 					auto& edgeDesc = executable.edges[edgeArray.start + edgeRef];
 					if (auto newTrace = WalkAlongSingleEdge(previousTokenIndex, currentTokenIndex, input, trace, byEdge, edgeDesc))
 					{
@@ -152,48 +151,48 @@ TraceManager::Input
 			}
 
 			void TraceManager::WalkAlongEpsilonEdges(
-				vint previousTokenIndex,
-				vint currentTokenIndex,
+				vint32_t previousTokenIndex,
+				vint32_t currentTokenIndex,
 				Trace* trace
 			)
 			{
 				{
-					vint transactionIndex = trace->state * (Executable::TokenBegin + executable.tokenCount) + Executable::LeftrecInput;
+					vint32_t transactionIndex = trace->state * (Executable::TokenBegin + executable.tokenCount) + Executable::LeftrecInput;
 					auto&& edgeArray = executable.transitions[transactionIndex];
 					WalkAlongLeftrecEdges(previousTokenIndex, currentTokenIndex, trace, edgeArray);
 				}
 				{
-					vint transactionIndex = trace->state * (Executable::TokenBegin + executable.tokenCount) + Executable::EndingInput;
+					vint32_t transactionIndex = trace->state * (Executable::TokenBegin + executable.tokenCount) + Executable::EndingInput;
 					auto&& edgeArray = executable.transitions[transactionIndex];
 					WalkAlongEndingEdges(previousTokenIndex, currentTokenIndex, trace, edgeArray);
 				}
 			}
 
 			void TraceManager::WalkAlongLeftrecEdges(
-				vint previousTokenIndex,
-				vint currentTokenIndex,
+				vint32_t previousTokenIndex,
+				vint32_t currentTokenIndex,
 				Trace* trace,
 				EdgeArray& edgeArray
 			)
 			{
-				for (vint edgeRef = 0; edgeRef < edgeArray.count; edgeRef++)
+				for (vint32_t edgeRef = 0; edgeRef < edgeArray.count; edgeRef++)
 				{
-					vint byEdge = edgeArray.start + edgeRef;
+					vint32_t byEdge = edgeArray.start + edgeRef;
 					auto& edgeDesc = executable.edges[edgeArray.start + edgeRef];
 					WalkAlongSingleEdge(previousTokenIndex, currentTokenIndex, Executable::LeftrecInput, trace, byEdge, edgeDesc);
 				}
 			}
 
 			void TraceManager::WalkAlongEndingEdges(
-				vint previousTokenIndex,
-				vint currentTokenIndex,
+				vint32_t previousTokenIndex,
+				vint32_t currentTokenIndex,
 				Trace* trace,
 				EdgeArray& edgeArray
 			)
 			{
-				for (vint edgeRef = 0; edgeRef < edgeArray.count; edgeRef++)
+				for (vint32_t edgeRef = 0; edgeRef < edgeArray.count; edgeRef++)
 				{
-					vint byEdge = edgeArray.start + edgeRef;
+					vint32_t byEdge = edgeArray.start + edgeRef;
 					auto& edgeDesc = executable.edges[edgeArray.start + edgeRef];
 					if (auto newTrace = WalkAlongSingleEdge(previousTokenIndex, currentTokenIndex, Executable::EndingInput, trace, byEdge, edgeDesc))
 					{
@@ -205,21 +204,21 @@ TraceManager::Input
 			void TraceManager::Input(vint currentTokenIndex, vint token)
 			{
 				CHECK_ERROR(state == TraceManagerState::WaitingForInput, L"vl::glr::automaton::TraceManager::Input(vint, vint)#Wrong timing to call this function.");
-				vint traceCount = concurrentCount;
-				vint previousTokenIndex = currentTokenIndex - 1;
-				vint input = Executable::TokenBegin + token;
+				vint32_t traceCount = concurrentCount;
+				vint32_t previousTokenIndex = currentTokenIndex - 1;
+				vint32_t input = Executable::TokenBegin + token;
 
 				BeginSwap();
-				for (vint traceIndex = 0; traceIndex < traceCount; traceIndex++)
+				for (vint32_t traceIndex = 0; traceIndex < traceCount; traceIndex++)
 				{
 					auto trace = concurrentTraces->Get(traceIndex);
-					vint transactionIndex = trace->state * (Executable::TokenBegin + executable.tokenCount) + input;
+					vint32_t transactionIndex = trace->state * (Executable::TokenBegin + executable.tokenCount) + input;
 					auto&& edgeArray = executable.transitions[transactionIndex];
 					WalkAlongTokenEdges(previousTokenIndex, currentTokenIndex, input, trace, edgeArray);
 				}
 				EndSwap();
 
-				for (vint traceIndex = concurrentCount; traceIndex < concurrentTraces->Count(); traceIndex++)
+				for (vint32_t traceIndex = concurrentCount; traceIndex < concurrentTraces->Count(); traceIndex++)
 				{
 					concurrentTraces->Set(traceIndex, nullptr);
 				}
@@ -230,9 +229,9 @@ TraceManager::Input
 				CHECK_ERROR(state == TraceManagerState::WaitingForInput, L"vl::glr::automaton::TraceManager::EndOfInput()#Wrong timing to call this function.");
 				state = TraceManagerState::Finished;
 
-				vint traceCount = concurrentCount;
+				vint32_t traceCount = concurrentCount;
 				BeginSwap();
-				for (vint traceIndex = 0; traceIndex < traceCount; traceIndex++)
+				for (vint32_t traceIndex = 0; traceIndex < traceCount; traceIndex++)
 				{
 					auto trace = concurrentTraces->Get(traceIndex);
 					auto& stateDesc = executable.states[trace->state];

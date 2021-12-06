@@ -115,7 +115,7 @@ Execution
 				{
 				}
 
-				T* Get(vint index)
+				T* Get(vint32_t index)
 				{
 					vint row = index / blockSize;
 					vint column = index % blockSize;
@@ -131,7 +131,7 @@ Execution
 					return &buffers[row]->operator[](column);
 				}
 
-				vint Allocate()
+				vint32_t Allocate()
 				{
 					if (remains == 0)
 					{
@@ -139,7 +139,7 @@ Execution
 						remains = blockSize;
 					}
 					vint index = blockSize * (buffers.Count() - 1) + (blockSize - remains);
-					buffers[buffers.Count() - 1]->operator[](blockSize - remains).allocatedIndex = index;
+					buffers[buffers.Count() - 1]->operator[](blockSize - remains).allocatedIndex = (vint32_t)index;
 					remains--;
 					return index;
 				}
@@ -153,54 +153,54 @@ Execution
 
 			struct ReturnStack
 			{
-				vint					allocatedIndex = -1;		// id of this ReturnStack
-				vint					previous = -1;				// id of the previous ReturnStack
-				vint					returnIndex = -1;			// index of ReturnDesc
+				vint32_t				allocatedIndex = -1;		// id of this ReturnStack
+				vint32_t				previous = -1;				// id of the previous ReturnStack
+				vint32_t				returnIndex = -1;			// index of ReturnDesc
 			};
 
 			struct TraceCollection
 			{
-				vint					first = -1;					// first trace in the collection
-				vint					last = -1;					// last trace in the collection
-				vint					siblingPrev = -1;			// previous trace in the collection of the owned trace
-				vint					siblingNext = -1;			// next trace in the collection of the owned trace
+				vint32_t				first = -1;					// first trace in the collection
+				vint32_t				last = -1;					// last trace in the collection
+				vint32_t				siblingPrev = -1;			// previous trace in the collection of the owned trace
+				vint32_t				siblingNext = -1;			// next trace in the collection of the owned trace
 			};
 
 			struct TraceAmbiguity
 			{
-				vint					insEndObject = -1;			// the index of the first EndObject instruction
+				vint32_t				insEndObject = -1;			// the index of the first EndObject instruction
 																	// in {byEdge.insBeforeInput, byEdge.insAfterInput, executedReturn.insAfterInput} combined
 
-				vint					traceBeginObject = -1;		// id of the trace containing BeginObject or BeginObjectLeftRecursive
+				vint32_t				traceBeginObject = -1;		// id of the trace containing BeginObject or BeginObjectLeftRecursive
 																	// that ends by the above EndObject
 
-				vint					insBeginObject = -1;		// the index of the BeginObject or BeginObjectLeftRecursive instruction
+				vint32_t				insBeginObject = -1;		// the index of the BeginObject or BeginObjectLeftRecursive instruction
 																	// from traceBeginObject
 																	// in {byEdge.insBeforeInput, byEdge.insAfterInput, executedReturn.insAfterInput} combined
 			};
 
 			struct RuntimeRouting
 			{
-				vint					predecessorCount = -1;		// the number of predecessors
+				vint32_t				predecessorCount = -1;		// the number of predecessors
 
-				vint					branchVisited = 0;			// the number of visited branches in the current loop.
+				vint32_t				branchVisited = 0;			// the number of visited branches in the current loop.
 																	// if these branches are contained in a larger ambiguity resolving loop, all branches could be visited multiple times
 																	// (filled by ExecuteTrace)
 			};
 
 			struct Trace
 			{
-				vint					allocatedIndex = -1;		// id of this Trace
+				vint32_t				allocatedIndex = -1;		// id of this Trace
 				TraceCollection			predecessors;				// id of the predecessor Trace
 				TraceCollection			successors;					// successors (filled by PrepareTraceRoute)
 
-				vint					state = -1;					// id of the current StateDesc
-				vint					returnStack = -1;			// id of the current ReturnStack
-				vint					executedReturn = -1;		// id of the executed ReturnDesc
-				vint					byEdge = -1;				// id of the last EdgeDesc that make this trace
-				vint					byInput = -1;				// the last input that make this trace
-				vint					previousTokenIndex = -1;	// the index of the token before byInput
-				vint					currentTokenIndex = -1;		// the index of the token that is byInput
+				vint32_t				state = -1;					// id of the current StateDesc
+				vint32_t				returnStack = -1;			// id of the current ReturnStack
+				vint32_t				executedReturn = -1;		// id of the executed ReturnDesc
+				vint32_t				byEdge = -1;				// id of the last EdgeDesc that make this trace
+				vint32_t				byInput = -1;				// the last input that make this trace
+				vint32_t				previousTokenIndex = -1;	// the index of the token before byInput
+				vint32_t				currentTokenIndex = -1;		// the index of the token that is byInput
 
 				TraceAmbiguity			ambiguity;					// where to end resolving ambiguity in instructions from this trace
 																	// this member is useful when it has multiple predecessors
@@ -223,9 +223,9 @@ Execution
 				InstructionArray					edgeInsBeforeInput;
 				InstructionArray					edgeInsAfterInput;
 				InstructionArray					returnInsAfterInput;
-				vint								c1;
-				vint								c2;
-				vint								c3;
+				vint32_t							c1;
+				vint32_t							c2;
+				vint32_t							c3;
 			};
 
 			class TraceManager : public Object
@@ -246,33 +246,33 @@ Execution
 				void								EndSwap();
 				void								AddTraceToCollection(Trace* owner, Trace* element, TraceCollection(Trace::* collection));
 
-				bool								AreReturnDescEqual(vint ri1, vint ri2);
-				bool								AreReturnStackEqual(vint r1, vint r2);
-				Trace*								WalkAlongSingleEdge(vint previousTokenIndex, vint currentTokenIndex, vint input, Trace* trace, vint byEdge, EdgeDesc& edgeDesc);
-				void								WalkAlongTokenEdges(vint previousTokenIndex, vint currentTokenIndex, vint input, Trace* trace, EdgeArray& edgeArray);
-				void								WalkAlongEpsilonEdges(vint previousTokenIndex, vint currentTokenIndex, Trace* trace);
-				void								WalkAlongLeftrecEdges(vint previousTokenIndex, vint currentTokenIndex, Trace* trace, EdgeArray& edgeArray);
-				void								WalkAlongEndingEdges(vint previousTokenIndex, vint currentTokenIndex, Trace* trace, EdgeArray& edgeArray);
+				bool								AreReturnDescEqual(vint32_t ri1, vint32_t ri2);
+				bool								AreReturnStackEqual(vint32_t r1, vint32_t r2);
+				Trace*								WalkAlongSingleEdge(vint32_t previousTokenIndex, vint32_t currentTokenIndex, vint32_t input, Trace* trace, vint32_t byEdge, EdgeDesc& edgeDesc);
+				void								WalkAlongTokenEdges(vint32_t previousTokenIndex, vint32_t currentTokenIndex, vint32_t input, Trace* trace, EdgeArray& edgeArray);
+				void								WalkAlongEpsilonEdges(vint32_t previousTokenIndex, vint32_t currentTokenIndex, Trace* trace);
+				void								WalkAlongLeftrecEdges(vint32_t previousTokenIndex, vint32_t currentTokenIndex, Trace* trace, EdgeArray& edgeArray);
+				void								WalkAlongEndingEdges(vint32_t previousTokenIndex, vint32_t currentTokenIndex, Trace* trace, EdgeArray& edgeArray);
 
 				void								ReadInstructionList(Trace* trace, TraceInsLists& insLists);
-				AstIns&								ReadInstruction(vint instruction, TraceInsLists& insLists);
-				bool								RunInstruction(vint instruction, TraceInsLists& insLists, vint& objectCount);
-				void								FindBalancedBeginObject(Trace*& trace, vint& instruction, vint& objectCount);
+				AstIns&								ReadInstruction(vint32_t instruction, TraceInsLists& insLists);
+				bool								RunInstruction(vint32_t instruction, TraceInsLists& insLists, vint32_t& objectCount);
+				void								FindBalancedBeginObject(Trace*& trace, vint32_t& instruction, vint32_t& objectCount);
 				void								FillAmbiguityInfoForMergingTrace(Trace* trace);
 				void								FillAmbiguityInfoForPredecessorTraces(Trace* trace);
 			public:
 				TraceManager(Executable& _executable);
 
-				vint								concurrentCount = 0;
+				vint32_t							concurrentCount = 0;
 				collections::List<Trace*>*			concurrentTraces = nullptr;
 				collections::List<Trace*>*			backupTraces = nullptr;
 
-				ReturnStack*						GetReturnStack(vint index);
+				ReturnStack*						GetReturnStack(vint32_t index);
 				ReturnStack*						AllocateReturnStack();
-				Trace*								GetTrace(vint index);
+				Trace*								GetTrace(vint32_t index);
 				Trace*								AllocateTrace();
 
-				void								Initialize(vint startState);
+				void								Initialize(vint32_t startState);
 				void								Input(vint currentTokenIndex, vint token);
 				void								EndOfInput();
 				Trace*								PrepareTraceRoute();

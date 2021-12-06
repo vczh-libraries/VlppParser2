@@ -35,12 +35,12 @@ TraceManager::PrepareTraceRoute
 					insLists.returnInsAfterInput = {};
 				}
 
-				insLists.c1 = insLists.edgeInsBeforeInput.count;
-				insLists.c2 = insLists.c1 + insLists.edgeInsAfterInput.count;
-				insLists.c3 = insLists.c2 + insLists.returnInsAfterInput.count;
+				insLists.c1 = (vint32_t)(insLists.edgeInsBeforeInput.count);
+				insLists.c2 = (vint32_t)(insLists.c1 + insLists.edgeInsAfterInput.count);
+				insLists.c3 = (vint32_t)(insLists.c2 + insLists.returnInsAfterInput.count);
 			}
 
-			AstIns& TraceManager::ReadInstruction(vint instruction, TraceInsLists& insLists)
+			AstIns& TraceManager::ReadInstruction(vint32_t instruction, TraceInsLists& insLists)
 			{
 #define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::ReadInstruction(vint, TraceInsLists&)#"
 				CHECK_ERROR(0 <= instruction && instruction <= insLists.c3, ERROR_MESSAGE_PREFIX L"Instruction index out of range.");
@@ -67,7 +67,7 @@ TraceManager::PrepareTraceRoute
 #undef ERROR_MESSAGE_PREFIX
 			}
 
-			bool TraceManager::RunInstruction(vint instruction, TraceInsLists& insLists, vint& objectCount)
+			bool TraceManager::RunInstruction(vint32_t instruction, TraceInsLists& insLists, vint32_t& objectCount)
 			{
 #define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::SearchSingleTraceForBeginObject(Trace*&, vint&, vint&)#"
 				auto& ins = ReadInstruction(instruction, insLists);
@@ -88,7 +88,7 @@ TraceManager::PrepareTraceRoute
 #undef ERROR_MESSAGE_PREFIX
 			}
 
-			void TraceManager::FindBalancedBeginObject(Trace*& trace, vint& instruction, vint& objectCount)
+			void TraceManager::FindBalancedBeginObject(Trace*& trace, vint32_t& instruction, vint32_t& objectCount)
 			{
 #define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::FindBalancedBeginObject(Trace*&, vint&, vint&)#"
 				TraceInsLists insLists;
@@ -99,7 +99,7 @@ TraceManager::PrepareTraceRoute
 					if (trace->predecessors.first != trace->predecessors.last)
 					{
 						FillAmbiguityInfoForMergingTrace(trace);
-						for (vint i = instruction; i > trace->ambiguity.insEndObject; i--)
+						for (auto i = instruction; i > trace->ambiguity.insEndObject; i--)
 						{
 							if (RunInstruction(i, insLists, objectCount))
 							{
@@ -114,7 +114,7 @@ TraceManager::PrepareTraceRoute
 					}
 					else
 					{
-						for (vint i = instruction; i >= 0; i--)
+						for (auto i = instruction; i >= 0; i--)
 						{
 							if (RunInstruction(i, insLists, objectCount))
 							{
@@ -146,8 +146,8 @@ TraceManager::PrepareTraceRoute
 				TraceInsLists insLists;
 				ReadInstructionList(trace, insLists);
 
-				vint insEndObject = -1;
-				for (vint i = 0; i < insLists.c3; i++)
+				vint32_t insEndObject = -1;
+				for (vint32_t i = 0; i < insLists.c3; i++)
 				{
 					auto& ins = ReadInstruction(i, insLists);
 					if (ins.type == AstInsType::EndObject)
@@ -158,8 +158,8 @@ TraceManager::PrepareTraceRoute
 				}
 				CHECK_ERROR(insEndObject != -1, ERROR_MESSAGE_PREFIX L"Cannot find EndObject instruction in the merging trace.");
 
-				vint objectCount = 1;
-				for (vint i = insEndObject - 1; i >= 0; i--)
+				vint32_t objectCount = 1;
+				for (vint32_t i = insEndObject - 1; i >= 0; i--)
 				{
 					if (RunInstruction(i, insLists, objectCount))
 					{
@@ -167,10 +167,10 @@ TraceManager::PrepareTraceRoute
 					}
 				}
 
-				vint insBeginObject = -1;
-				vint traceBeginObject = -1;
+				vint32_t insBeginObject = -1;
+				vint32_t traceBeginObject = -1;
 
-				vint predecessorId = trace->predecessors.first;
+				auto predecessorId = trace->predecessors.first;
 				while (predecessorId != -1)
 				{
 					auto predecessor = GetTrace(predecessorId);
@@ -179,8 +179,8 @@ TraceManager::PrepareTraceRoute
 						ReadInstructionList(predecessor, branchInsLists);
 
 						auto branchTrace = predecessor;
-						vint branchInstruction = branchInsLists.c3 - 1;
-						vint branchObjectCount = objectCount;
+						vint32_t branchInstruction = branchInsLists.c3 - 1;
+						vint32_t branchObjectCount = objectCount;
 						FindBalancedBeginObject(branchTrace, branchInstruction, branchObjectCount);
 
 						if (traceBeginObject == -1)

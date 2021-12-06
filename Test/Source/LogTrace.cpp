@@ -373,7 +373,7 @@ struct TraceTree
 			return;
 		}
 
-		vint successorId = trace->successors.first;
+		auto successorId = trace->successors.first;
 		while (successorId != -1)
 		{
 			auto successor = tm.GetTrace(successorId);
@@ -869,7 +869,7 @@ FilePath LogTraceManager(
 					stateLabel
 					);
 
-				vint successorId = trace->successors.first;
+				auto successorId = trace->successors.first;
 				while (successorId != -1)
 				{
 					auto successor = tm.GetTrace(successorId);

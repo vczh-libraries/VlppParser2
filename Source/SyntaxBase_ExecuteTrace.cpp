@@ -126,7 +126,7 @@ TraceManager::ExecuteTrace
 					}
 					else
 					{
-						vint nextSuccessorId = trace->successors.first;
+						auto nextSuccessorId = trace->successors.first;
 						Trace* successor = nullptr;
 						for (vint i = 0; i <= trace->runtimeRouting.branchVisited; i++)
 						{

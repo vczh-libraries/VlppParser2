@@ -147,7 +147,7 @@ TraceManager
 			{
 			}
 
-			ReturnStack* TraceManager::GetReturnStack(vint index)
+			ReturnStack* TraceManager::GetReturnStack(vint32_t index)
 			{
 				return returnStacks.Get(index);
 			}
@@ -157,7 +157,7 @@ TraceManager
 				return returnStacks.Get(returnStacks.Allocate());
 			}
 
-			Trace* TraceManager::GetTrace(vint index)
+			Trace* TraceManager::GetTrace(vint32_t index)
 			{
 				return traces.Get(index);
 			}
@@ -167,7 +167,7 @@ TraceManager
 				return traces.Get(traces.Allocate());
 			}
 
-			void TraceManager::Initialize(vint startState)
+			void TraceManager::Initialize(vint32_t startState)
 			{
 				state = TraceManagerState::WaitingForInput;
 
