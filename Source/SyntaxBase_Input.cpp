@@ -6,8 +6,9 @@ namespace vl
 	{
 		namespace automaton
 		{
+
 /***********************************************************************
-TraceManager::Input
+Resolving Ambiguity
 ***********************************************************************/
 
 			bool TraceManager::AreReturnDescEqual(vint32_t ri1, vint32_t ri2)
@@ -45,19 +46,28 @@ TraceManager::Input
 				}
 			}
 
-			Trace* TraceManager::WalkAlongSingleEdge(
-				vint32_t currentTokenIndex,
-				vint32_t input,
-				Trace* trace,
-				vint32_t byEdge,
-				EdgeDesc& edgeDesc
-			)
+			bool TraceManager::AreTwoTraceEqual(vint32_t state, vint32_t returnStack, vint32_t executedReturn, vint32_t acId, Trace* candidate)
 			{
-				vint32_t state = edgeDesc.toState;
-				vint32_t returnStack = trace->returnStack;
-				vint32_t executedReturn = -1;
+				if (state == candidate->state &&
+					executedReturn == candidate->executedReturn &&
+					acId == candidate->runtimeRouting.attendingCompetitions)
+				{
+					auto r1 = returnStack;
+					auto r2 = candidate->returnStack;
+					if (AreReturnStackEqual(r1, r2))
+					{
+						return true;
+					}
+				}
+				return false;
+			}
 
-				vint32_t attendingCompetition = trace->runtimeRouting.attendingCompetitions;
+/***********************************************************************
+Competitions
+***********************************************************************/
+
+			vint32_t TraceManager::AttendCompetitionIfNecessary(Trace* trace, EdgeDesc& edgeDesc)
+			{
 				if (edgeDesc.priority != EdgePriority::NoCompetition)
 				{
 					Competition* competition = nullptr;
@@ -83,8 +93,7 @@ TraceManager::Input
 							ac->forHighPriority = true;
 							competition->highBet = ac->allocatedIndex;
 						}
-						attendingCompetition = competition->highBet;
-						break;
+						return competition->highBet;
 					case EdgePriority::LowPriority:
 						if (competition->lowBet == -1)
 						{
@@ -94,10 +103,45 @@ TraceManager::Input
 							ac->forHighPriority = false;
 							competition->highBet = ac->allocatedIndex;
 						}
-						attendingCompetition = competition->lowBet;
-						break;
+						return competition->lowBet;
 					}
 				}
+				return trace->runtimeRouting.attendingCompetitions;
+			}
+
+			void TraceManager::CheckAttendingCompetitionsOnEndingEdge(vint32_t acId, vint32_t returnIndex)
+			{
+				while (acId != -1)
+				{
+					auto ac = GetAttendingCompetitions(acId);
+					auto cpt = GetCompetition(ac->competition);
+					auto cptr = GetTrace(cpt->ownerTrace);
+					if (cptr->returnStack == returnIndex)
+					{
+						CHECK_ERROR(cpt->status != CompetitionStatus::LowPriorityWin, L"The competition is closed too early.");
+						cpt->status = CompetitionStatus::HighPriorityWin;
+						break;
+					}
+					acId = ac->next;
+				}
+			}
+
+/***********************************************************************
+TraceManager::WalkAlongTokenEdges
+***********************************************************************/
+
+			Trace* TraceManager::WalkAlongSingleEdge(
+				vint32_t currentTokenIndex,
+				vint32_t input,
+				Trace* trace,
+				vint32_t byEdge,
+				EdgeDesc& edgeDesc
+			)
+			{
+				vint32_t state = edgeDesc.toState;
+				vint32_t returnStack = trace->returnStack;
+				vint32_t executedReturn = -1;
+				vint32_t acId = AttendCompetitionIfNecessary(trace, edgeDesc);
 
 				if (input == Executable::EndingInput)
 				{
@@ -110,35 +154,15 @@ TraceManager::Input
 						state = executable.returns[executedReturn].returnState;
 					}
 
-					auto acId = attendingCompetition;
-					while (acId != -1)
-					{
-						auto ac = GetAttendingCompetitions(acId);
-						auto cpt = GetCompetition(ac->competition);
-						auto cptr = GetTrace(cpt->ownerTrace);
-						if (cptr->returnStack == executedReturn)
-						{
-							CHECK_ERROR(cpt->status != CompetitionStatus::LowPriorityWin, L"The competition is closed too early.");
-							cpt->status = CompetitionStatus::HighPriorityWin;
-							break;
-						}
-						acId = ac->next;
-					}
+					CheckAttendingCompetitionsOnEndingEdge(acId, executedReturn);
 
 					for (vint i = 0; i < concurrentCount; i++)
 					{
 						auto candidate = backupTraces->Get(i);
-						if (state == candidate->state &&
-							executedReturn == candidate->executedReturn &&
-							attendingCompetition == candidate->runtimeRouting.attendingCompetitions)
+						if (AreTwoTraceEqual(state, returnStack, executedReturn, acId, candidate))
 						{
-							auto r1 = returnStack;
-							auto r2 = candidate->returnStack;
-							if (AreReturnStackEqual(r1, r2))
-							{
-								AddTraceToCollection(candidate, trace, &Trace::predecessors);
-								return nullptr;
-							}
+							AddTraceToCollection(candidate, trace, &Trace::predecessors);
+							return nullptr;
 						}
 					}
 				}
@@ -154,7 +178,7 @@ TraceManager::Input
 				newTrace->byEdge = byEdge;
 				newTrace->byInput = input;
 				newTrace->currentTokenIndex = currentTokenIndex;
-				newTrace->runtimeRouting.attendingCompetitions = attendingCompetition;
+				newTrace->runtimeRouting.attendingCompetitions = acId;
 
 				for (vint returnRef = 0; returnRef < edgeDesc.returnIndices.count; returnRef++)
 				{
@@ -234,6 +258,10 @@ TraceManager::Input
 				}
 			}
 
+/***********************************************************************
+TraceManager::Input
+***********************************************************************/
+
 			void TraceManager::Input(vint32_t currentTokenIndex, vint32_t token)
 			{
 				CHECK_ERROR(state == TraceManagerState::WaitingForInput, L"vl::glr::automaton::TraceManager::Input(vint, vint)#Wrong timing to call this function.");
@@ -256,6 +284,10 @@ TraceManager::Input
 					concurrentTraces->Set(traceIndex, nullptr);
 				}
 			}
+
+/***********************************************************************
+TraceManager::EndOfInput
+***********************************************************************/
 
 			void TraceManager::EndOfInput()
 			{

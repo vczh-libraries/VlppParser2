@@ -284,6 +284,11 @@ Execution
 
 				bool								AreReturnDescEqual(vint32_t ri1, vint32_t ri2);
 				bool								AreReturnStackEqual(vint32_t r1, vint32_t r2);
+				bool								AreTwoTraceEqual(vint32_t state, vint32_t returnStack, vint32_t executedReturn, vint32_t acId, Trace* candidate);
+
+				vint32_t							AttendCompetitionIfNecessary(Trace* trace, EdgeDesc& edgeDesc);
+				void								CheckAttendingCompetitionsOnEndingEdge(vint32_t acId, vint32_t returnIndex);
+
 				Trace*								WalkAlongSingleEdge(vint32_t currentTokenIndex, vint32_t input, Trace* trace, vint32_t byEdge, EdgeDesc& edgeDesc);
 				void								WalkAlongTokenEdges(vint32_t currentTokenIndex, vint32_t input, Trace* trace, EdgeArray& edgeArray);
 				void								WalkAlongEpsilonEdges(vint32_t currentTokenIndex, Trace* trace);
