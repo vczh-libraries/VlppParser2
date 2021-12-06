@@ -387,7 +387,7 @@ TraceManager::Input
 					auto&& edgeArray = executable.transitions[transactionIndex];
 					WalkAlongTokenEdges(currentTokenIndex, input, trace, edgeArray);
 				}
-				// TODO: check if any bet wins and close competitions
+				CheckBackupTracesBeforeSwapping();
 				EndSwap();
 
 				for (vint32_t traceIndex = concurrentCount; traceIndex < concurrentTraces->Count(); traceIndex++)
@@ -416,7 +416,6 @@ TraceManager::EndOfInput
 						AddTrace(trace);
 					}
 				}
-				CheckBackupTracesBeforeSwapping();
 				EndSwap();
 			}
 		}
