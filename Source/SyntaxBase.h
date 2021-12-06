@@ -290,10 +290,10 @@ Execution
 				void								CheckAttendingCompetitionsOnEndingEdge(vint32_t acId, vint32_t returnIndex);
 
 				Trace*								WalkAlongSingleEdge(vint32_t currentTokenIndex, vint32_t input, Trace* trace, vint32_t byEdge, EdgeDesc& edgeDesc);
-				void								WalkAlongTokenEdges(vint32_t currentTokenIndex, vint32_t input, Trace* trace, EdgeArray& edgeArray);
-				void								WalkAlongEpsilonEdges(vint32_t currentTokenIndex, Trace* trace);
 				void								WalkAlongLeftrecEdges(vint32_t currentTokenIndex, Trace* trace, EdgeArray& edgeArray);
 				void								WalkAlongEndingEdges(vint32_t currentTokenIndex, Trace* trace, EdgeArray& edgeArray);
+				void								WalkAlongEpsilonEdges(vint32_t currentTokenIndex, Trace* trace);
+				void								WalkAlongTokenEdges(vint32_t currentTokenIndex, vint32_t input, Trace* trace, EdgeArray& edgeArray);
 
 				void								ReadInstructionList(Trace* trace, TraceInsLists& insLists);
 				AstIns&								ReadInstruction(vint32_t instruction, TraceInsLists& insLists);

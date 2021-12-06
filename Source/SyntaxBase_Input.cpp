@@ -127,7 +127,7 @@ Competitions
 			}
 
 /***********************************************************************
-TraceManager::WalkAlongTokenEdges
+TraceManager::WalkAlongSingleEdge
 ***********************************************************************/
 
 			Trace* TraceManager::WalkAlongSingleEdge(
@@ -192,40 +192,9 @@ TraceManager::WalkAlongTokenEdges
 				return newTrace;
 			}
 
-			void TraceManager::WalkAlongTokenEdges(
-				vint32_t currentTokenIndex,
-				vint32_t input,
-				Trace* trace,
-				EdgeArray& edgeArray
-			)
-			{
-				for (vint32_t edgeRef = 0; edgeRef < edgeArray.count; edgeRef++)
-				{
-					vint32_t byEdge = edgeArray.start + edgeRef;
-					auto& edgeDesc = executable.edges[edgeArray.start + edgeRef];
-					if (auto newTrace = WalkAlongSingleEdge(currentTokenIndex, input, trace, byEdge, edgeDesc))
-					{
-						WalkAlongEpsilonEdges(currentTokenIndex, newTrace);
-					}
-				}
-			}
-
-			void TraceManager::WalkAlongEpsilonEdges(
-				vint32_t currentTokenIndex,
-				Trace* trace
-			)
-			{
-				{
-					vint32_t transactionIndex = trace->state * (Executable::TokenBegin + executable.tokenCount) + Executable::LeftrecInput;
-					auto&& edgeArray = executable.transitions[transactionIndex];
-					WalkAlongLeftrecEdges(currentTokenIndex, trace, edgeArray);
-				}
-				{
-					vint32_t transactionIndex = trace->state * (Executable::TokenBegin + executable.tokenCount) + Executable::EndingInput;
-					auto&& edgeArray = executable.transitions[transactionIndex];
-					WalkAlongEndingEdges(currentTokenIndex, trace, edgeArray);
-				}
-			}
+/***********************************************************************
+TraceManager::WalkAlongTokenEdges
+***********************************************************************/
 
 			void TraceManager::WalkAlongLeftrecEdges(
 				vint32_t currentTokenIndex,
@@ -252,6 +221,41 @@ TraceManager::WalkAlongTokenEdges
 					vint32_t byEdge = edgeArray.start + edgeRef;
 					auto& edgeDesc = executable.edges[edgeArray.start + edgeRef];
 					if (auto newTrace = WalkAlongSingleEdge(currentTokenIndex, Executable::EndingInput, trace, byEdge, edgeDesc))
+					{
+						WalkAlongEpsilonEdges(currentTokenIndex, newTrace);
+					}
+				}
+			}
+
+			void TraceManager::WalkAlongEpsilonEdges(
+				vint32_t currentTokenIndex,
+				Trace* trace
+			)
+			{
+				{
+					vint32_t transactionIndex = trace->state * (Executable::TokenBegin + executable.tokenCount) + Executable::LeftrecInput;
+					auto&& edgeArray = executable.transitions[transactionIndex];
+					WalkAlongLeftrecEdges(currentTokenIndex, trace, edgeArray);
+				}
+				{
+					vint32_t transactionIndex = trace->state * (Executable::TokenBegin + executable.tokenCount) + Executable::EndingInput;
+					auto&& edgeArray = executable.transitions[transactionIndex];
+					WalkAlongEndingEdges(currentTokenIndex, trace, edgeArray);
+				}
+			}
+
+			void TraceManager::WalkAlongTokenEdges(
+				vint32_t currentTokenIndex,
+				vint32_t input,
+				Trace* trace,
+				EdgeArray& edgeArray
+			)
+			{
+				for (vint32_t edgeRef = 0; edgeRef < edgeArray.count; edgeRef++)
+				{
+					vint32_t byEdge = edgeArray.start + edgeRef;
+					auto& edgeDesc = executable.edges[edgeArray.start + edgeRef];
+					if (auto newTrace = WalkAlongSingleEdge(currentTokenIndex, input, trace, byEdge, edgeDesc))
 					{
 						WalkAlongEpsilonEdges(currentTokenIndex, newTrace);
 					}
