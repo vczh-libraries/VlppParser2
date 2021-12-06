@@ -54,7 +54,7 @@
 - [ ] Priority in alternative syntax
 - [ ] Priority in returnDesc / left recursive transition
 - [ ] Priority with left recursion
-- [ ] Ambiguity with left recursion
+- [x] Ambiguity with left recursion
 - [ ] Priority with ambiguity
 - [ ] Everything together
 
