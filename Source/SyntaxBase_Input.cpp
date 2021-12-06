@@ -383,6 +383,11 @@ TraceManager::Input
 				vint32_t traceCount = concurrentCount;
 				vint32_t input = Executable::TokenBegin + token;
 
+				// for each surviving trace
+				// step one TokenInput transition
+				// followed by multiple and EndingInput, LeftRecInput and their combination
+				// one surviving trace could create multiple surviving trace
+
 				BeginSwap();
 				for (vint32_t traceIndex = 0; traceIndex < traceCount; traceIndex++)
 				{
@@ -408,6 +413,11 @@ TraceManager::EndOfInput
 			{
 				CHECK_ERROR(state == TraceManagerState::WaitingForInput, L"vl::glr::automaton::TraceManager::EndOfInput()#Wrong timing to call this function.");
 				state = TraceManagerState::Finished;
+
+				// check all surviving traces and remove all that
+				//   1) does not stay in an ending state
+				//   2) return stack is not empty
+				// the remaining are all traces that successfully walked to the ending state of the root rule
 
 				vint32_t traceCount = concurrentCount;
 				BeginSwap();
