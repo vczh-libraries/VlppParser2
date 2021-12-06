@@ -299,7 +299,7 @@ Execution
 
 				vint32_t							AttendCompetitionIfNecessary(Trace* trace, EdgeDesc& edgeDesc);
 				void								CheckAttendingCompetitionsOnEndingEdge(vint32_t acId, vint32_t returnIndex);
-				void								CheckBackupTracesBeforeSwapping();
+				void								CheckBackupTracesBeforeSwapping(vint32_t currentTokenIndex);
 
 				Trace*								WalkAlongSingleEdge(vint32_t currentTokenIndex, vint32_t input, Trace* trace, vint32_t byEdge, EdgeDesc& edgeDesc);
 				void								WalkAlongLeftrecEdges(vint32_t currentTokenIndex, Trace* trace, EdgeArray& edgeArray);

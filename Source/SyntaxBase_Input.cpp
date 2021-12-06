@@ -129,7 +129,7 @@ Competitions
 				}
 			}
 
-			void TraceManager::CheckBackupTracesBeforeSwapping()
+			void TraceManager::CheckBackupTracesBeforeSwapping(vint32_t currentTokenIndex)
 			{
 				{
 					auto cId = activeCompetitions;
@@ -168,7 +168,11 @@ Competitions
 							}
 							else if (cpt->highCounter == 0 && cpt->lowCounter > 0)
 							{
-								cpt->status = CompetitionStatus::LowPriorityWin;
+								auto cptr = GetTrace(cpt->ownerTrace);
+								if (cptr->currentTokenIndex != currentTokenIndex)
+								{
+									cpt->status = CompetitionStatus::LowPriorityWin;
+								}
 							}
 						}
 						cId = cpt->next;
@@ -387,7 +391,7 @@ TraceManager::Input
 					auto&& edgeArray = executable.transitions[transactionIndex];
 					WalkAlongTokenEdges(currentTokenIndex, input, trace, edgeArray);
 				}
-				CheckBackupTracesBeforeSwapping();
+				CheckBackupTracesBeforeSwapping(currentTokenIndex);
 				EndSwap();
 
 				for (vint32_t traceIndex = concurrentCount; traceIndex < concurrentTraces->Count(); traceIndex++)
