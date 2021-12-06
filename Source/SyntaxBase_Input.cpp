@@ -57,7 +57,7 @@ TraceManager::Input
 				vint32_t returnStack = trace->returnStack;
 				vint32_t executedReturn = -1;
 
-				vint32_t attendingCompetition = -1;
+				vint32_t attendingCompetition = trace->runtimeRouting.attendingCompetitions;
 				if (edgeDesc.priority != EdgePriority::NoCompetition)
 				{
 					Competition* competition = nullptr;
