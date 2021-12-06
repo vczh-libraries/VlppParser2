@@ -187,11 +187,24 @@ Execution
 				LowPriorityWin,
 			};
 
+			struct Competition
+			{
+				vint32_t				allocatedIndex = -1;
+				CompetitionStatus		status = CompetitionStatus::NotStarted;		// if predecessors from this trace have different priority
+																					// the competition begins and it will be changed to Holding
+																					// when the competition is over, it will be changed to HighPriorityWin or LowPriorityWin
+																					// if all candidates fail, it could be Holding forever
+
+				vint32_t				ownerTrace = -1;			// the id of the Trace that holds this competition
+				vint32_t				highBet = -1;				// the id of the high bet AttendingCompetitions for this competition
+				vint32_t				lowBet = -1;				// the id of the low bet AttendingCompetitions for this competition
+			};
+
 			struct AttendingCompetitions
 			{
 				vint32_t				allocatedIndex = -1;		// id of this AttendingCompetitions
 				vint32_t				next = -1;					// the next AttendingCompetitions
-				vint32_t				competitionTrace = -1;		// the id of the trace which is holding the competition
+				vint32_t				competition = -1;			// the id of the Competition
 				bool					forHighPriority = false;	// bet of this competition
 			};
 
@@ -204,10 +217,7 @@ Execution
 																	// if these branches are contained in a larger ambiguity resolving loop, all branches could be visited multiple times
 																	// (filled by ExecuteTrace)
 
-				CompetitionStatus		competition = CompetitionStatus::NotStarted;	// if predecessors from this trace have different priority
-																						// the competition begins and it will be changed to Holding
-																						// when the competition is over, it will be changed to HighPriorityWin or LowPriorityWin
-																						// if all candidates fail, it could be Holding forever
+				vint32_t				holdingCompetition = -1;	// the id of the active Competition
 
 				vint32_t				attendingCompetitions = -1;	// a linked list containing all AttendingCompetitions that this trace is attending
 																	// predecessors could share and modify the same linked list
@@ -226,7 +236,6 @@ Execution
 				vint32_t				executedReturn = -1;		// id of the executed ReturnDesc
 				vint32_t				byEdge = -1;				// id of the last EdgeDesc that make this trace
 				vint32_t				byInput = -1;				// the last input that make this trace
-				vint32_t				previousTokenIndex = -1;	// the index of the token before byInput
 				vint32_t				currentTokenIndex = -1;		// the index of the token that is byInput
 
 				TraceAmbiguity			ambiguity;					// where to end resolving ambiguity in instructions from this trace
@@ -262,6 +271,7 @@ Execution
 				Executable&							executable;
 				AllocateOnly<ReturnStack>			returnStacks;
 				AllocateOnly<Trace>					traces;
+				AllocateOnly<Competition>			competitions;
 				AllocateOnly<AttendingCompetitions>	attendingCompetitions;
 
 				collections::List<Trace*>			traces1;
@@ -276,11 +286,11 @@ Execution
 
 				bool								AreReturnDescEqual(vint32_t ri1, vint32_t ri2);
 				bool								AreReturnStackEqual(vint32_t r1, vint32_t r2);
-				Trace*								WalkAlongSingleEdge(vint32_t previousTokenIndex, vint32_t currentTokenIndex, vint32_t input, Trace* trace, vint32_t byEdge, EdgeDesc& edgeDesc);
-				void								WalkAlongTokenEdges(vint32_t previousTokenIndex, vint32_t currentTokenIndex, vint32_t input, Trace* trace, EdgeArray& edgeArray);
-				void								WalkAlongEpsilonEdges(vint32_t previousTokenIndex, vint32_t currentTokenIndex, Trace* trace);
-				void								WalkAlongLeftrecEdges(vint32_t previousTokenIndex, vint32_t currentTokenIndex, Trace* trace, EdgeArray& edgeArray);
-				void								WalkAlongEndingEdges(vint32_t previousTokenIndex, vint32_t currentTokenIndex, Trace* trace, EdgeArray& edgeArray);
+				Trace*								WalkAlongSingleEdge(vint32_t currentTokenIndex, vint32_t input, Trace* trace, vint32_t byEdge, EdgeDesc& edgeDesc);
+				void								WalkAlongTokenEdges(vint32_t currentTokenIndex, vint32_t input, Trace* trace, EdgeArray& edgeArray);
+				void								WalkAlongEpsilonEdges(vint32_t currentTokenIndex, Trace* trace);
+				void								WalkAlongLeftrecEdges(vint32_t currentTokenIndex, Trace* trace, EdgeArray& edgeArray);
+				void								WalkAlongEndingEdges(vint32_t currentTokenIndex, Trace* trace, EdgeArray& edgeArray);
 
 				void								ReadInstructionList(Trace* trace, TraceInsLists& insLists);
 				AstIns&								ReadInstruction(vint32_t instruction, TraceInsLists& insLists);
@@ -299,6 +309,8 @@ Execution
 				ReturnStack*						AllocateReturnStack();
 				Trace*								GetTrace(vint32_t index);
 				Trace*								AllocateTrace();
+				Competition*						GetCompetition(vint32_t index);
+				Competition*						AllocateCompetition();
 				AttendingCompetitions*				GetAttendingCompetitions(vint32_t index);
 				AttendingCompetitions*				AllocateAttendingCompetitions();
 

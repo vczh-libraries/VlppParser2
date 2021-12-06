@@ -167,6 +167,16 @@ TraceManager
 				return traces.Get(traces.Allocate());
 			}
 
+			Competition* TraceManager::GetCompetition(vint32_t index)
+			{
+				return competitions.Get(index);
+			}
+
+			Competition* TraceManager::AllocateCompetition()
+			{
+				return competitions.Get(competitions.Allocate());
+			}
+
 			AttendingCompetitions* TraceManager::GetAttendingCompetitions(vint32_t index)
 			{
 				return attendingCompetitions.Get(index);
@@ -183,6 +193,7 @@ TraceManager
 
 				returnStacks.Clear();
 				traces.Clear();
+				competitions.Clear();
 				attendingCompetitions.Clear();
 
 				traces1.Clear();
