@@ -57,23 +57,47 @@ TraceManager::Input
 				vint32_t returnStack = trace->returnStack;
 				vint32_t executedReturn = -1;
 
-				// from the same competition trace, if walked alone transitions with priority
-				// predecessors will take a mark from the competition trace
-				// when the high priority ending transition from the competition trace is picked up
-				//     > ending state and the state of the competition trace is in the same clause
-				//     > and return stack before executing the ending transition is the same to the competition trace
-				// all other traces talking the connected low priority mark fails
-				// high priority marks from this competition trace will be removed
-				// after a step of input
-				// if all high priority or all low priority marks from the same competition trace are gone
-				// then all marks from this competition trace will also be removed
-				//
-				// a competition trace could maintain a TraceCollection
-				// when a new step of input begins, the competition trace clear its collection, but the record in elements don't change
-				// if a new trace is created, and the original trace has a non-empty record
-				// the record is inherited, and the new trace adds itself to the competition trace's collection
-				// if a competition trace is closed, it is flagged, and don't accept new elements
-				// a linked list of living competition traces are maintained
+				vint32_t attendingCompetition = -1;
+				if (edgeDesc.priority != EdgePriority::NoCompetition)
+				{
+					Competition* competition = nullptr;
+					if (trace->runtimeRouting.holdingCompetition == -1)
+					{
+						competition = AllocateCompetition();
+						competition->ownerTrace = trace->allocatedIndex;
+						trace->runtimeRouting.holdingCompetition = competition->allocatedIndex;
+					}
+					else
+					{
+						competition = GetCompetition(trace->runtimeRouting.holdingCompetition);
+					}
+
+					switch (edgeDesc.priority)
+					{
+					case EdgePriority::HighPriority:
+						if (competition->highBet == -1)
+						{
+							auto ac = AllocateAttendingCompetitions();
+							ac->next = trace->runtimeRouting.attendingCompetitions;
+							ac->competition = competition->allocatedIndex;
+							ac->forHighPriority = true;
+							competition->highBet = ac->allocatedIndex;
+						}
+						attendingCompetition = competition->highBet;
+						break;
+					case EdgePriority::LowPriority:
+						if (competition->lowBet == -1)
+						{
+							auto ac = AllocateAttendingCompetitions();
+							ac->next = trace->runtimeRouting.attendingCompetitions;
+							ac->competition = competition->allocatedIndex;
+							ac->forHighPriority = false;
+							competition->highBet = ac->allocatedIndex;
+						}
+						attendingCompetition = competition->lowBet;
+						break;
+					}
+				}
 
 				if (input == Executable::EndingInput)
 				{
@@ -92,7 +116,9 @@ TraceManager::Input
 					for (vint i = 0; i < concurrentCount; i++)
 					{
 						auto candidate = backupTraces->Get(i);
-						if (state == candidate->state && executedReturn == candidate->executedReturn)
+						if (state == candidate->state &&
+							executedReturn == candidate->executedReturn &&
+							attendingCompetition == candidate->runtimeRouting.attendingCompetitions)
 						{
 							auto r1 = returnStack;
 							auto r2 = candidate->returnStack;
@@ -116,6 +142,7 @@ TraceManager::Input
 				newTrace->byEdge = byEdge;
 				newTrace->byInput = input;
 				newTrace->currentTokenIndex = currentTokenIndex;
+				newTrace->runtimeRouting.attendingCompetitions = attendingCompetition;
 
 				for (vint returnRef = 0; returnRef < edgeDesc.returnIndices.count; returnRef++)
 				{

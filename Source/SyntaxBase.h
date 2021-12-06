@@ -181,7 +181,6 @@ Execution
 
 			enum class CompetitionStatus
 			{
-				NotStarted,
 				Holding,
 				HighPriorityWin,
 				LowPriorityWin,
@@ -190,10 +189,9 @@ Execution
 			struct Competition
 			{
 				vint32_t				allocatedIndex = -1;
-				CompetitionStatus		status = CompetitionStatus::NotStarted;		// if predecessors from this trace have different priority
-																					// the competition begins and it will be changed to Holding
-																					// when the competition is over, it will be changed to HighPriorityWin or LowPriorityWin
-																					// if all candidates fail, it could be Holding forever
+				CompetitionStatus		status = CompetitionStatus::Holding;	// if predecessors from this trace have different priority, the competition begins
+																				// when the competition is over, it will be changed to HighPriorityWin or LowPriorityWin
+																				// if all candidates fail, it could be Holding forever
 
 				vint32_t				ownerTrace = -1;			// the id of the Trace that holds this competition
 				vint32_t				highBet = -1;				// the id of the high bet AttendingCompetitions for this competition

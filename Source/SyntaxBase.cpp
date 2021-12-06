@@ -10,6 +10,7 @@ namespace vl
 			using namespace glr::automaton;
 
 			SERIALIZE_ENUM(AstInsType)
+			SERIALIZE_ENUM(EdgePriority)
 
 			BEGIN_SERIALIZATION(AstIns)
 				SERIALIZE(type)
@@ -35,12 +36,14 @@ namespace vl
 			BEGIN_SERIALIZATION(ReturnDesc)
 				SERIALIZE(consumedRule)
 				SERIALIZE(returnState)
+				SERIALIZE(priority)
 				SERIALIZE(insAfterInput)
 			END_SERIALIZATION
 
 			BEGIN_SERIALIZATION(EdgeDesc)
 				SERIALIZE(fromState)
 				SERIALIZE(toState)
+				SERIALIZE(priority)
 				SERIALIZE(insBeforeInput)
 				SERIALIZE(insAfterInput)
 				SERIALIZE(returnIndices)
