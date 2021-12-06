@@ -174,16 +174,17 @@ void RenderTrace(
 		if (trace->runtimeRouting.holdingCompetition != -1)
 		{
 			auto competition = tm.GetCompetition(trace->runtimeRouting.holdingCompetition);
+			writer.WriteString(L"[" + itow(competition->allocatedIndex) + L"][COMPETITION: ");
 			switch (competition->status)
 			{
 			case CompetitionStatus::Holding:
-				writer.WriteLine(L"[HOLDING COMPETITION]");
+				writer.WriteLine(L"HOLDING]");
 				break;
 			case CompetitionStatus::HighPriorityWin:
-				writer.WriteLine(L"[HIGH PRIORITY WIN]");
+				writer.WriteLine(L"HIGH PRIORITY WIN]");
 				break;
 			case CompetitionStatus::LowPriorityWin:
-				writer.WriteLine(L"[LOW PRIORITY WIN]");
+				writer.WriteLine(L"LOW PRIORITY WIN]");
 				break;
 			}
 		}

@@ -34,7 +34,6 @@
       1. [x] `Calculator.
       2. [x] `IfElseAmbiguity`. (Equal)
       3. [x] `IfElsePriority`. (PreferTake)
-         1. [ ] Test.
       4. [ ] `IfElsePriority2`. (PreferSkip, but don't let `-[C]` ends a clause, or it will always win)
    2. [ ] Generate JSON parser
    3. [ ] Generate XML parser
