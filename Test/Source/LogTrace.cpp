@@ -171,6 +171,19 @@ void RenderTrace(
 
 		writer.WriteLine(stateLabel((vint32_t)trace->state));
 
+		switch (trace->runtimeRouting.competition)
+		{
+		case CompetitionStatus::Holding:
+			writer.WriteLine(L"[HOLDING COMPETITION]");
+			break;
+		case CompetitionStatus::HighPriorityWin:
+			writer.WriteLine(L"[HIGH PRIORITY WIN]");
+			break;
+		case CompetitionStatus::LowPriorityWin:
+			writer.WriteLine(L"[LOW PRIORITY WIN]");
+			break;
+		}
+
 		vint c1 = 0, c2 = 0;
 		if (trace->byEdge != -1)
 		{

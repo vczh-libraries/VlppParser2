@@ -179,13 +179,40 @@ Execution
 																	// in {byEdge.insBeforeInput, byEdge.insAfterInput, executedReturn.insAfterInput} combined
 			};
 
+			enum class CompetitionStatus
+			{
+				NotStarted,
+				Holding,
+				HighPriorityWin,
+				LowPriorityWin,
+			};
+
+			struct AttendingCompetitions
+			{
+				vint32_t				allocatedIndex = -1;		// id of this AttendingCompetitions
+				vint32_t				next = -1;					// the next AttendingCompetitions
+				vint32_t				competitionTrace = -1;		// the id of the trace which is holding the competition
+				bool					forHighPriority = false;	// bet of this competition
+			};
+
 			struct RuntimeRouting
 			{
 				vint32_t				predecessorCount = -1;		// the number of predecessors
+																	// (filled by ExecuteTrace)
 
 				vint32_t				branchVisited = 0;			// the number of visited branches in the current loop.
 																	// if these branches are contained in a larger ambiguity resolving loop, all branches could be visited multiple times
 																	// (filled by ExecuteTrace)
+
+				CompetitionStatus		competition = CompetitionStatus::NotStarted;	// if predecessors from this trace have different priority
+																						// the competition begins and it will be changed to Holding
+																						// when the competition is over, it will be changed to HighPriorityWin or LowPriorityWin
+																						// if all candidates fail, it could be Holding forever
+
+				vint32_t				attendingCompetitions = -1;	// a linked list containing all AttendingCompetitions that this trace is attending
+																	// predecessors could share and modify the same linked list
+																	// if a competition is over, node could be removed from the linked list
+																	// one competition only creates two AttendingCompetitions, traces with the same bet share the object
 			};
 
 			struct Trace
@@ -235,6 +262,7 @@ Execution
 				Executable&							executable;
 				AllocateOnly<ReturnStack>			returnStacks;
 				AllocateOnly<Trace>					traces;
+				AllocateOnly<AttendingCompetitions>	attendingCompetitions;
 
 				collections::List<Trace*>			traces1;
 				collections::List<Trace*>			traces2;
@@ -271,6 +299,8 @@ Execution
 				ReturnStack*						AllocateReturnStack();
 				Trace*								GetTrace(vint32_t index);
 				Trace*								AllocateTrace();
+				AttendingCompetitions*				GetAttendingCompetitions(vint32_t index);
+				AttendingCompetitions*				AllocateAttendingCompetitions();
 
 				void								Initialize(vint32_t startState);
 				void								Input(vint32_t currentTokenIndex, vint32_t token);

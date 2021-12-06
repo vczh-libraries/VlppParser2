@@ -167,12 +167,24 @@ TraceManager
 				return traces.Get(traces.Allocate());
 			}
 
+			AttendingCompetitions* TraceManager::GetAttendingCompetitions(vint32_t index)
+			{
+				return attendingCompetitions.Get(index);
+			}
+
+			AttendingCompetitions* TraceManager::AllocateAttendingCompetitions()
+			{
+				return attendingCompetitions.Get(attendingCompetitions.Allocate());
+			}
+
 			void TraceManager::Initialize(vint32_t startState)
 			{
 				state = TraceManagerState::WaitingForInput;
 
 				returnStacks.Clear();
 				traces.Clear();
+				attendingCompetitions.Clear();
+
 				traces1.Clear();
 				traces2.Clear();
 				concurrentTraces = &traces1;
