@@ -35,7 +35,7 @@
       2. [x] `IfElseAmbiguity`. (Equal)
       3. [x] `IfElsePriority`. (PreferTake)
       4. [x] `GenericAmbiguity` (Ambiguity happens in loop)
-      5. [ ] `IfElsePriority2`. (PreferSkip, but don't let `-[C]` ends a clause, or it will always win)
+      5. [ ] `IfElsePriority2`. (PreferSkip, but don't let `-[C]` ends a clause (add compile error), or it will always win)
       6. [ ] `GenericPriority` (?)
    2. [ ] Generate JSON parser
    3. [ ] Generate XML parser
@@ -51,7 +51,7 @@
 
 - [x] Ambiguity
 - [x] Priority
-- [ ] Priority in alternative syntax
+- [ ] Priority in alternative syntax, but don't let it ends a clause if a high priority branch could be empty (add compile error)
 - [ ] Priority in returnDesc / left recursive transition
 - [ ] Priority with left recursion
 - [x] Ambiguity with left recursion
@@ -60,8 +60,10 @@
 
 ## Work Items (issues)
 
-- Create a map to compare two `returnIndex` in `TraceManager::AreReturnDescEqual`
+- fix todo in `TraceManager::AreReturnDescEqual`
+- fix todo in `Tracemanager::AreTwoTraceEqual`
 - `EndObject` after `ReopenObject` doesn't update `ParsingAstBase::codeRange::start`.
+  - for example, when `Exp` is reopened to run `( Exp @ )`, then the created ast begins from `Exp` but ends at `)`.
 - Optimize `CrossReferencedNFA` to merge prefix (two states can be merged if their `InEdges` are identical, `FromState` in `InEdges` are replaced by merged states).
 - `JsonEscapeString` `JsonUnescapeString` handle surrogate pairs correctly.
 - `ParserTest_AstParserGen`
