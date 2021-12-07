@@ -56,6 +56,13 @@ namespace genericambiguity
 			to->expr = CopyNode(from->expr.Obj());
 		}
 
+		void ExprAstVisitor::CopyFields(PostfixExpr* from, PostfixExpr* to)
+		{
+			CopyFields(static_cast<Expr*>(from), static_cast<Expr*>(to));
+			to->expr = CopyNode(from->expr.Obj());
+			to->op = from->op;
+		}
+
 		void ExprAstVisitor::CopyFields(RefExpr* from, RefExpr* to)
 		{
 			CopyFields(static_cast<Expr*>(from), static_cast<Expr*>(to));
@@ -93,6 +100,13 @@ namespace genericambiguity
 		void ExprAstVisitor::Visit(CallExpr* node)
 		{
 			auto newNode = vl::MakePtr<CallExpr>();
+			CopyFields(node, newNode.Obj());
+			this->result = newNode;
+		}
+
+		void ExprAstVisitor::Visit(PostfixExpr* node)
+		{
+			auto newNode = vl::MakePtr<PostfixExpr>();
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}

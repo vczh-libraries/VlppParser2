@@ -9,10 +9,16 @@ Exp1
   ::= Exp1:func "(" {Exp:args ; ","} ")" as CallExpr
   ;
 
-Exp
+Exp2
   ::= !Exp1
-  ::= Exp:left "<" Exp1:right as BinaryExpr {op = LT}
-  ::= Exp:left ">" Exp1:right as BinaryExpr {op = GT}
+  ::= Exp2 "+" as PostfixExpr {op = Add}
+  ::= Exp2 "+" "+" as PostfixExpr {op = Increment}
+  ;
+
+Exp
+  ::= !Exp2
+  ::= Exp:left "<" Exp2:right as BinaryExpr {op = LT}
+  ::= Exp:left ">" Exp2:right as BinaryExpr {op = GT}
   ;
 
 Module

@@ -86,6 +86,22 @@ ModuleBuilder
 		}
 
 /***********************************************************************
+PostfixExprBuilder
+***********************************************************************/
+
+		PostfixExprBuilder& PostfixExprBuilder::expr(const vl::Ptr<Expr>& value)
+		{
+			node->expr = value;
+			return *this;
+		}
+
+		PostfixExprBuilder& PostfixExprBuilder::op(PostfixOp value)
+		{
+			node->op = value;
+			return *this;
+		}
+
+/***********************************************************************
 RefExprBuilder
 ***********************************************************************/
 

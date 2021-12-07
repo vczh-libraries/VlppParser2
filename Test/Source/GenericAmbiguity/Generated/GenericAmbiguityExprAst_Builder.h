@@ -62,6 +62,16 @@ namespace genericambiguity
 			ModuleBuilder& expr(const vl::Ptr<Expr>& value);
 		};
 
+		class PostfixExprBuilder
+		{
+		private:
+			PostfixExpr* node;
+		public:
+			PostfixExprBuilder(PostfixExpr* _node) : node(_node) {}
+			PostfixExprBuilder& expr(const vl::Ptr<Expr>& value);
+			PostfixExprBuilder& op(PostfixOp value);
+		};
+
 		class RefExprBuilder
 		{
 		private:
@@ -76,6 +86,7 @@ namespace genericambiguity
 		using MakeExprToResolve = vl::glr::ParsingAstBuilder<ExprToResolve, ExprToResolveBuilder>;
 		using MakeGenericExpr = vl::glr::ParsingAstBuilder<GenericExpr, GenericExprBuilder>;
 		using MakeModule = vl::glr::ParsingAstBuilder<Module, ModuleBuilder>;
+		using MakePostfixExpr = vl::glr::ParsingAstBuilder<PostfixExpr, PostfixExprBuilder>;
 		using MakeRefExpr = vl::glr::ParsingAstBuilder<RefExpr, RefExprBuilder>;
 	}
 }

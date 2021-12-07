@@ -29,6 +29,8 @@ GenericAmbiguityAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return new genericambiguity::GenericExpr();
 		case GenericAmbiguityClasses::Module:
 			return new genericambiguity::Module();
+		case GenericAmbiguityClasses::PostfixExpr:
+			return new genericambiguity::PostfixExpr();
 		case GenericAmbiguityClasses::RefExpr:
 			return new genericambiguity::RefExpr();
 		default:
@@ -107,10 +109,22 @@ GenericAmbiguityAstInsReceiver : public vl::glr::AstInsReceiverBase
 				typedObject->expr = typedValue;
 			}
 			break;
+		case GenericAmbiguityFields::PostfixExpr_expr:
+			{
+				auto typedObject = dynamic_cast<genericambiguity::PostfixExpr*>(object);
+				if (!typedObject) throw vl::glr::AstInsException(L"Field \"genericambiguity::PostfixExpr::expr\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+				if (typedObject->expr) throw vl::glr::AstInsException(L"Field \"genericambiguity::PostfixExpr::expr\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
+				auto typedValue = value.Cast<genericambiguity::Expr>();
+				if (!typedValue) throw vl::glr::AstInsException(L"Field \"genericambiguity::PostfixExpr::expr\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				typedObject->expr = typedValue;
+			}
+			break;
 		case GenericAmbiguityFields::BinaryExpr_op:
 			throw vl::glr::AstInsException(L"Field \"genericambiguity::BinaryExpr::op\" is not an object.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 		case GenericAmbiguityFields::GenericExpr_name:
 			throw vl::glr::AstInsException(L"Field \"genericambiguity::GenericExpr::name\" is not an object.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+		case GenericAmbiguityFields::PostfixExpr_op:
+			throw vl::glr::AstInsException(L"Field \"genericambiguity::PostfixExpr::op\" is not an object.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 		case GenericAmbiguityFields::RefExpr_name:
 			throw vl::glr::AstInsException(L"Field \"genericambiguity::RefExpr::name\" is not an object.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 		default:
@@ -154,6 +168,10 @@ GenericAmbiguityAstInsReceiver : public vl::glr::AstInsReceiverBase
 			throw vl::glr::AstInsException(L"Field \"genericambiguity::GenericExpr::args\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 		case GenericAmbiguityFields::Module_expr:
 			throw vl::glr::AstInsException(L"Field \"genericambiguity::Module::expr\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+		case GenericAmbiguityFields::PostfixExpr_expr:
+			throw vl::glr::AstInsException(L"Field \"genericambiguity::PostfixExpr::expr\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+		case GenericAmbiguityFields::PostfixExpr_op:
+			throw vl::glr::AstInsException(L"Field \"genericambiguity::PostfixExpr::op\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 		default:
 			throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
 		}
@@ -169,6 +187,14 @@ GenericAmbiguityAstInsReceiver : public vl::glr::AstInsReceiverBase
 				if (!typedObject) throw vl::glr::AstInsException(L"Field \"genericambiguity::BinaryExpr::op\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
 				if (typedObject->op == genericambiguity::BinaryOp::UNDEFINED_ENUM_ITEM_VALUE) throw vl::glr::AstInsException(L"Field \"genericambiguity::BinaryExpr::op\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
 				typedObject->op = (genericambiguity::BinaryOp)enumItem;
+			}
+			break;
+		case GenericAmbiguityFields::PostfixExpr_op:
+			{
+				auto typedObject = dynamic_cast<genericambiguity::PostfixExpr*>(object);
+				if (!typedObject) throw vl::glr::AstInsException(L"Field \"genericambiguity::PostfixExpr::op\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+				if (typedObject->op == genericambiguity::PostfixOp::UNDEFINED_ENUM_ITEM_VALUE) throw vl::glr::AstInsException(L"Field \"genericambiguity::PostfixExpr::op\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
+				typedObject->op = (genericambiguity::PostfixOp)enumItem;
 			}
 			break;
 		case GenericAmbiguityFields::BinaryExpr_left:
@@ -187,6 +213,8 @@ GenericAmbiguityAstInsReceiver : public vl::glr::AstInsReceiverBase
 			throw vl::glr::AstInsException(L"Field \"genericambiguity::GenericExpr::name\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 		case GenericAmbiguityFields::Module_expr:
 			throw vl::glr::AstInsException(L"Field \"genericambiguity::Module::expr\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+		case GenericAmbiguityFields::PostfixExpr_expr:
+			throw vl::glr::AstInsException(L"Field \"genericambiguity::PostfixExpr::expr\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 		case GenericAmbiguityFields::RefExpr_name:
 			throw vl::glr::AstInsException(L"Field \"genericambiguity::RefExpr::name\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 		default:
@@ -203,10 +231,11 @@ GenericAmbiguityAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"ExprToResolve",
 			L"GenericExpr",
 			L"Module",
+			L"PostfixExpr",
 			L"RefExpr",
 		};
 		vl::vint index = (vl::vint)type;
-		return 0 <= index && index < 7 ? results[index] : nullptr;
+		return 0 <= index && index < 8 ? results[index] : nullptr;
 	}
 
 	const wchar_t* GenericAmbiguityFieldName(GenericAmbiguityFields field)
@@ -231,6 +260,10 @@ GenericAmbiguityAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return L"GenericExpr::name";
 		case GenericAmbiguityFields::Module_expr:
 			return L"Module::expr";
+		case GenericAmbiguityFields::PostfixExpr_expr:
+			return L"PostfixExpr::expr";
+		case GenericAmbiguityFields::PostfixExpr_op:
+			return L"PostfixExpr::op";
 		case GenericAmbiguityFields::RefExpr_name:
 			return L"RefExpr::name";
 		default:
@@ -270,6 +303,17 @@ GenericAmbiguityAstInsReceiver : public vl::glr::AstInsReceiverBase
 				for (auto candidate : candidates)
 				{
 					auto typedAst = candidate.Cast<genericambiguity::GenericExpr>();
+					if (!typedAst) throw vl::glr::AstInsException(L"The type of the ambiguous candidate is not compatible to the required type", vl::glr::AstInsErrorType::UnexpectedAmbiguousCandidate, type);
+					ast->candidates.Add(typedAst);
+				}
+				return ast;
+			}
+		case GenericAmbiguityClasses::PostfixExpr:
+			{
+				vl::Ptr<genericambiguity::ExprToResolve> ast = new genericambiguity::ExprToResolve();
+				for (auto candidate : candidates)
+				{
+					auto typedAst = candidate.Cast<genericambiguity::PostfixExpr>();
 					if (!typedAst) throw vl::glr::AstInsException(L"The type of the ambiguous candidate is not compatible to the required type", vl::glr::AstInsErrorType::UnexpectedAmbiguousCandidate, type);
 					ast->candidates.Add(typedAst);
 				}

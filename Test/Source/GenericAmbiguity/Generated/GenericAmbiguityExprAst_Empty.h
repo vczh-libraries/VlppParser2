@@ -25,6 +25,7 @@ namespace genericambiguity
 			void Visit(RefExpr* node) override;
 			void Visit(GenericExpr* node) override;
 			void Visit(CallExpr* node) override;
+			void Visit(PostfixExpr* node) override;
 			void Visit(BinaryExpr* node) override;
 		};
 

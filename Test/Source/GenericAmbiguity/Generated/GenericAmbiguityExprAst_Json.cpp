@@ -86,6 +86,25 @@ namespace genericambiguity
 			Print(node->expr.Obj());
 			EndField();
 		}
+		void ExprAstVisitor::PrintFields(PostfixExpr* node)
+		{
+			BeginField(L"expr");
+			Print(node->expr.Obj());
+			EndField();
+			BeginField(L"op");
+			switch (node->op)
+			{
+			case genericambiguity::PostfixOp::Add:
+				WriteString(L"Add");
+				break;
+			case genericambiguity::PostfixOp::Increment:
+				WriteString(L"Increment");
+				break;
+			default:
+				WriteNull();
+			}
+			EndField();
+		}
 		void ExprAstVisitor::PrintFields(RefExpr* node)
 		{
 			BeginField(L"name");
@@ -146,6 +165,20 @@ namespace genericambiguity
 			WriteType(L"CallExpr", node);
 			PrintFields(static_cast<Expr*>(node));
 			PrintFields(static_cast<CallExpr*>(node));
+			EndObject();
+		}
+
+		void ExprAstVisitor::Visit(PostfixExpr* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"PostfixExpr", node);
+			PrintFields(static_cast<Expr*>(node));
+			PrintFields(static_cast<PostfixExpr*>(node));
 			EndObject();
 		}
 

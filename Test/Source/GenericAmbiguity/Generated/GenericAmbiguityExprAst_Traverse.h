@@ -27,6 +27,7 @@ namespace genericambiguity
 			virtual void Traverse(ExprToResolve* node);
 			virtual void Traverse(GenericExpr* node);
 			virtual void Traverse(Module* node);
+			virtual void Traverse(PostfixExpr* node);
 			virtual void Traverse(RefExpr* node);
 
 		protected:
@@ -37,6 +38,7 @@ namespace genericambiguity
 			virtual void Finishing(ExprToResolve* node);
 			virtual void Finishing(GenericExpr* node);
 			virtual void Finishing(Module* node);
+			virtual void Finishing(PostfixExpr* node);
 			virtual void Finishing(RefExpr* node);
 
 		protected:
@@ -44,6 +46,7 @@ namespace genericambiguity
 			void Visit(RefExpr* node) override;
 			void Visit(GenericExpr* node) override;
 			void Visit(CallExpr* node) override;
+			void Visit(PostfixExpr* node) override;
 			void Visit(BinaryExpr* node) override;
 
 		public:

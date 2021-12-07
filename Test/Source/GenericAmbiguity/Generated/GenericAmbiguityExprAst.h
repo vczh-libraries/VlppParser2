@@ -18,7 +18,15 @@ namespace genericambiguity
 	class ExprToResolve;
 	class GenericExpr;
 	class Module;
+	class PostfixExpr;
 	class RefExpr;
+
+	enum class PostfixOp
+	{
+		UNDEFINED_ENUM_ITEM_VALUE = -1,
+		Add = 0,
+		Increment = 1,
+	};
 
 	enum class BinaryOp
 	{
@@ -37,6 +45,7 @@ namespace genericambiguity
 			virtual void Visit(RefExpr* node) = 0;
 			virtual void Visit(GenericExpr* node) = 0;
 			virtual void Visit(CallExpr* node) = 0;
+			virtual void Visit(PostfixExpr* node) = 0;
 			virtual void Visit(BinaryExpr* node) = 0;
 		};
 
@@ -66,6 +75,15 @@ namespace genericambiguity
 	public:
 		vl::Ptr<Expr> func;
 		vl::collections::List<vl::Ptr<Expr>> args;
+
+		void Accept(Expr::IVisitor* visitor) override;
+	};
+
+	class PostfixExpr : public Expr, vl::reflection::Description<PostfixExpr>
+	{
+	public:
+		PostfixOp op;
+		vl::Ptr<Expr> expr;
 
 		void Accept(Expr::IVisitor* visitor) override;
 	};
@@ -106,6 +124,8 @@ namespace vl
 			DECL_TYPE_INFO(genericambiguity::RefExpr)
 			DECL_TYPE_INFO(genericambiguity::GenericExpr)
 			DECL_TYPE_INFO(genericambiguity::CallExpr)
+			DECL_TYPE_INFO(genericambiguity::PostfixOp)
+			DECL_TYPE_INFO(genericambiguity::PostfixExpr)
 			DECL_TYPE_INFO(genericambiguity::BinaryOp)
 			DECL_TYPE_INFO(genericambiguity::BinaryExpr)
 			DECL_TYPE_INFO(genericambiguity::Module)
@@ -130,6 +150,11 @@ namespace vl
 				}
 
 				void Visit(genericambiguity::CallExpr* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+				void Visit(genericambiguity::PostfixExpr* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}

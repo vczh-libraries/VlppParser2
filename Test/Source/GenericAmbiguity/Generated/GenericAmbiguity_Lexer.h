@@ -19,11 +19,12 @@ namespace genericambiguity
 		OPEN_ANGLE = 2,
 		CLOSE_ANGLE = 3,
 		COMMA = 4,
-		ID = 5,
-		SPACE = 6,
+		ADD = 5,
+		ID = 6,
+		SPACE = 7,
 	};
 
-	constexpr vl::vint GenericAmbiguityTokenCount = 7;
+	constexpr vl::vint GenericAmbiguityTokenCount = 8;
 	extern bool GenericAmbiguityTokenDeleter(vl::vint token);
 	extern const wchar_t* GenericAmbiguityTokenId(GenericAmbiguityTokens token);
 	extern const wchar_t* GenericAmbiguityTokenDisplayText(GenericAmbiguityTokens token);

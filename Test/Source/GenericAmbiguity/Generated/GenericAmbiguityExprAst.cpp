@@ -27,6 +27,11 @@ Visitor Pattern Implementation
 		visitor->Visit(this);
 	}
 
+	void PostfixExpr::Accept(Expr::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
 	void BinaryExpr::Accept(Expr::IVisitor* visitor)
 	{
 		visitor->Visit(this);
@@ -50,6 +55,8 @@ namespace vl
 			IMPL_TYPE_INFO_RENAME(genericambiguity::RefExpr, genericambiguity::RefExpr)
 			IMPL_TYPE_INFO_RENAME(genericambiguity::GenericExpr, genericambiguity::GenericExpr)
 			IMPL_TYPE_INFO_RENAME(genericambiguity::CallExpr, genericambiguity::CallExpr)
+			IMPL_TYPE_INFO_RENAME(genericambiguity::PostfixOp, genericambiguity::PostfixOp)
+			IMPL_TYPE_INFO_RENAME(genericambiguity::PostfixExpr, genericambiguity::PostfixExpr)
 			IMPL_TYPE_INFO_RENAME(genericambiguity::BinaryOp, genericambiguity::BinaryOp)
 			IMPL_TYPE_INFO_RENAME(genericambiguity::BinaryExpr, genericambiguity::BinaryExpr)
 			IMPL_TYPE_INFO_RENAME(genericambiguity::Module, genericambiguity::Module)
@@ -88,6 +95,21 @@ namespace vl
 				CLASS_MEMBER_FIELD(args)
 			END_CLASS_MEMBER(genericambiguity::CallExpr)
 
+			BEGIN_ENUM_ITEM(genericambiguity::PostfixOp)
+				ENUM_ITEM_NAMESPACE(genericambiguity::PostfixOp)
+				ENUM_NAMESPACE_ITEM(Add)
+				ENUM_NAMESPACE_ITEM(Increment)
+			END_ENUM_ITEM(genericambiguity::PostfixOp)
+
+			BEGIN_CLASS_MEMBER(genericambiguity::PostfixExpr)
+				CLASS_MEMBER_BASE(genericambiguity::Expr)
+
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<genericambiguity::PostfixExpr>(), NO_PARAMETER)
+
+				CLASS_MEMBER_FIELD(op)
+				CLASS_MEMBER_FIELD(expr)
+			END_CLASS_MEMBER(genericambiguity::PostfixExpr)
+
 			BEGIN_ENUM_ITEM(genericambiguity::BinaryOp)
 				ENUM_ITEM_NAMESPACE(genericambiguity::BinaryOp)
 				ENUM_NAMESPACE_ITEM(LT)
@@ -125,6 +147,7 @@ namespace vl
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(genericambiguity::Expr::IVisitor::*)(genericambiguity::RefExpr* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(genericambiguity::Expr::IVisitor::*)(genericambiguity::GenericExpr* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(genericambiguity::Expr::IVisitor::*)(genericambiguity::CallExpr* node))
+				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(genericambiguity::Expr::IVisitor::*)(genericambiguity::PostfixExpr* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(genericambiguity::Expr::IVisitor::*)(genericambiguity::BinaryExpr* node))
 			END_INTERFACE_MEMBER(genericambiguity::Expr)
 
@@ -141,6 +164,8 @@ namespace vl
 					ADD_TYPE_INFO(genericambiguity::RefExpr)
 					ADD_TYPE_INFO(genericambiguity::GenericExpr)
 					ADD_TYPE_INFO(genericambiguity::CallExpr)
+					ADD_TYPE_INFO(genericambiguity::PostfixOp)
+					ADD_TYPE_INFO(genericambiguity::PostfixExpr)
 					ADD_TYPE_INFO(genericambiguity::BinaryOp)
 					ADD_TYPE_INFO(genericambiguity::BinaryExpr)
 					ADD_TYPE_INFO(genericambiguity::Module)

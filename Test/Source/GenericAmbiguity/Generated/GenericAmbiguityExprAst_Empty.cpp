@@ -33,6 +33,10 @@ ExprVisitor
 		{
 		}
 
+		void ExprVisitor::Visit(PostfixExpr* node)
+		{
+		}
+
 		void ExprVisitor::Visit(BinaryExpr* node)
 		{
 		}
