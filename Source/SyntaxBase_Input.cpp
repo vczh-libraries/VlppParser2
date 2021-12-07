@@ -52,6 +52,9 @@ Resolving Ambiguity
 				// maybe we should just compare the BeginObject before merging branches
 				// instead of try to find the BeginObject from BeginObjectLeftRecursive after merging branches
 
+				// TODO: is it possible that we must (or not just could) compare r1 == r2?
+				// try to build this case
+
 				while (true)
 				{
 					if (r1 == r2) return true;
