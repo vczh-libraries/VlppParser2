@@ -75,9 +75,12 @@ Resolving Ambiguity
 				// two traces equal to each other if
 				//   1) they are in the same state
 				//   2) they have the same executedReturn
-				//      we don't check instructions in both executed transitions, but why? (TODO: could be wrong)
 				//   3) they are attending same competitions
 				//   4) they have the same return stack
+
+				// TODO:
+				//   {field = enum} could be different before EndObject
+				//   we need to find a way to correctly execute those instructions before EndObject
 				if (state == candidate->state &&
 					executedReturn == candidate->executedReturn &&
 					acId == candidate->runtimeRouting.attendingCompetitions)

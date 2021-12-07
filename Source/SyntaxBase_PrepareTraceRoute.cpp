@@ -89,7 +89,11 @@ TraceManager::PrepareTraceRoute
 					break;
 				}
 
-				return objectCount == 0 && (ins.type == AstInsType::BeginObject || ins.type == AstInsType::BeginObjectLeftRecursive);
+				// if we found a ReopenObject or BeginObjectLeftRecursive which creates the bottom object in stack
+				// then we should continue until we reach the BeginObject
+				// because such BeginObject creates objects that eventually become part of ReopenObject or BeginObjectLeftRecursive created objects
+				// we cannot allow sharing the same child AST object in different parent AST objects.
+				return objectCount == 0 && ins.type == AstInsType::BeginObject;
 #undef ERROR_MESSAGE_PREFIX
 			}
 
@@ -232,32 +236,43 @@ TraceManager::PrepareTraceRoute
 					predecessorId = predecessor->predecessors.siblingNext;
 				}
 
-				// if the object closed by EndObject is created by BeginObjectLeftRecursive
-				// we need to find the BeginObject which creates an object that is consumed by BeginObjectLeftRecursive
 				{
 					trace->ambiguity.insEndObject = insEndObject;
+					trace->ambiguity.insBeginObject = insBeginObject;
+					trace->ambiguity.traceBeginObject = traceBeginObject;
 
 					auto currentTrace = GetTrace(traceBeginObject);
-					vint32_t currentIns = insBeginObject;
-
 					ReadInstructionList(currentTrace, insLists);
-					auto ins = ReadInstruction(currentIns, insLists);
+					auto ins = ReadInstruction(insBeginObject, insLists);
 					trace->ambiguity.ambiguityType = ins.param;
-
-					vint32_t objectCount = 0;
-					// the object consumed by BeginObjectLeftRecursive could be created by a former BeginObjectLeftRecursive
-					// we need to search until we reach the BeginObject instruction
-					while (ins.type == AstInsType::BeginObjectLeftRecursive)
-					{
-						currentIns--;
-						FindBalancedBeginObject(currentTrace, currentIns, objectCount);
-						ReadInstructionList(currentTrace, insLists);
-						ins = ReadInstruction(currentIns, insLists);
-					}
-
-					trace->ambiguity.insBeginObject = currentIns;
-					trace->ambiguity.traceBeginObject = currentTrace->allocatedIndex;
 				}
+
+				// // if the object closed by EndObject is created by BeginObjectLeftRecursive
+				// // we need to find the BeginObject which creates an object that is consumed by BeginObjectLeftRecursive
+				// {
+				// 	trace->ambiguity.insEndObject = insEndObject;
+				// 
+				// 	auto currentTrace = GetTrace(traceBeginObject);
+				// 	vint32_t currentIns = insBeginObject;
+				// 
+				// 	ReadInstructionList(currentTrace, insLists);
+				// 	auto ins = ReadInstruction(currentIns, insLists);
+				// 	trace->ambiguity.ambiguityType = ins.param;
+				// 
+				// 	vint32_t objectCount = 0;
+				// 	// the object consumed by BeginObjectLeftRecursive could be created by a former BeginObjectLeftRecursive
+				// 	// we need to search until we reach the BeginObject instruction
+				// 	while (ins.type == AstInsType::BeginObjectLeftRecursive)
+				// 	{
+				// 		currentIns--;
+				// 		FindBalancedBeginObject(currentTrace, currentIns, objectCount);
+				// 		ReadInstructionList(currentTrace, insLists);
+				// 		ins = ReadInstruction(currentIns, insLists);
+				// 	}
+				// 
+				// 	trace->ambiguity.insBeginObject = currentIns;
+				// 	trace->ambiguity.traceBeginObject = currentTrace->allocatedIndex;
+				// }
 #undef ERROR_MESSAGE_PREFIX
 			}
 
