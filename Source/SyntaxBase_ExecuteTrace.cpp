@@ -65,45 +65,35 @@ TraceManager::ExecuteTrace
 				{
 					TraceInsLists insLists;
 					ReadInstructionList(trace, insLists);
-					CHECK_ERROR(trace->ambiguityInsPostfix == -1, ERROR_MESSAGE_PREFIX L"Not Implemented.");
 
 					// if the current trace is an ambiguity resolving trace
 					// we check if all predecessors has been visited
 					// if yes, we continue
 					// if no, we jump to the BeginObject and repeat it again
 
-					vint32_t maxIns = insLists.c3 - 1;
-					if (trace->ambiguity.traceBeginObject != -1)
+					if (trace->ambiguity.traceBeginObject != -1 && trace->runtimeRouting.predecessorCount == -1)
 					{
-						// for any ambiguity resolving trace
-						// we only execute instructions until and include EndObject
-						maxIns = trace->ambiguity.insEndObject;
-
 						// we need to know how many predecessors there
 						// the number is calculated and cached when an ambiguity resolving trace is visited for the first time
-						if (trace->runtimeRouting.predecessorCount == -1)
+						trace->runtimeRouting.predecessorCount = 0;
+						auto predecessorId = trace->predecessors.first;
+						while (predecessorId != -1)
 						{
-							trace->runtimeRouting.predecessorCount = 0;
-							auto predecessorId = trace->predecessors.first;
-							while (predecessorId != -1)
-							{
-								trace->runtimeRouting.predecessorCount++;
-								predecessorId = GetTrace(predecessorId)->predecessors.siblingNext;
-							}
+							trace->runtimeRouting.predecessorCount++;
+							predecessorId = GetTrace(predecessorId)->predecessors.siblingNext;
 						}
-					}
-					
-					// execute the selected range of instructions
-					for (vint32_t i = startIns; i <= maxIns; i++)
-					{
-						auto& ins = ReadInstruction(i, insLists);
-						auto& token = tokens[trace->currentTokenIndex];
-						submitter.Submit(ins, token);
 					}
 
 					startIns = 0;
 					if (trace->ambiguity.traceBeginObject != -1)
 					{
+						// execute the EndObject instruction
+						{
+							auto& ins = ReadInstruction(trace->ambiguity.insEndObject, insLists);
+							auto& token = tokens[trace->currentTokenIndex];
+							submitter.Submit(ins, token);
+						}
+
 						// for any ambiguity resolving trace
 						// we check all predecessors has been visited
 						trace->runtimeRouting.branchVisited++;
@@ -124,7 +114,7 @@ TraceManager::ExecuteTrace
 
 							// execute all instructions after EndObject
 							// these part should not be repeated
-							for (vint32_t i = maxIns + 1; i < insLists.c3; i++)
+							for (vint32_t i = trace->ambiguity.insEndObject + 1; i < insLists.c3; i++)
 							{
 								auto& ins = ReadInstruction(i, insLists);
 								auto& token = tokens[trace->currentTokenIndex];
@@ -138,6 +128,22 @@ TraceManager::ExecuteTrace
 							startIns = trace->ambiguity.insBeginObject;
 							trace = traceBeginObject;
 							goto FOUND_NEXT_TRACE;
+						}
+					}
+					else
+					{
+						// otherwise, just submit instructions
+						vint32_t endIns = insLists.c3 - 1;
+						if (trace->ambiguityInsPostfix != -1)
+						{
+							endIns = insLists.c1 - trace->ambiguityInsPostfix - 1;
+						}
+
+						for (vint32_t i = startIns; i <= endIns; i++)
+						{
+							auto& ins = ReadInstruction(i, insLists);
+							auto& token = tokens[trace->currentTokenIndex];
+							submitter.Submit(ins, token);
 						}
 					}
 
