@@ -16,6 +16,10 @@ Resolving Ambiguity
 				// return ri1 == ri2; // also works, check later
 				// TODO: create a cache to compare two returnIndex directly
 				// instead of repeatly scanning the content here
+
+				// two returns equal to each other if
+				//   1) they shares the same id, so we are comparing a return with itself
+				//   2) they have exactly the same data
 				if (ri1 == ri2) return true;
 				auto& rd1 = executable.returns[ri1];
 				auto& rd2 = executable.returns[ri2];
@@ -32,6 +36,9 @@ Resolving Ambiguity
 
 			bool TraceManager::AreReturnStackEqual(vint32_t r1, vint32_t r2)
 			{
+				// two return stacks equal to each other if
+				//   1) they shares the same id, so we are comparing a return stack with itself
+				//   2) both top returns equal, and both remaining return stack equals
 				while (true)
 				{
 					if (r1 == r2) return true;
@@ -49,6 +56,12 @@ Resolving Ambiguity
 
 			bool TraceManager::AreTwoTraceEqual(vint32_t state, vint32_t returnStack, vint32_t executedReturn, vint32_t acId, Trace* candidate)
 			{
+				// two traces equal to each other if
+				//   1) they are in the same state
+				//   2) they have the same executedReturn
+				//      we don't check instructions in both executed transitions, but why? (TODO: check later)
+				//   3) they are attending same competitions
+				//   4) they have the same return stack
 				if (state == candidate->state &&
 					executedReturn == candidate->executedReturn &&
 					acId == candidate->runtimeRouting.attendingCompetitions)
