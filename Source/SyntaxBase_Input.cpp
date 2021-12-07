@@ -112,14 +112,14 @@ Competitions
 				return trace->runtimeRouting.attendingCompetitions;
 			}
 
-			void TraceManager::CheckAttendingCompetitionsOnEndingEdge(vint32_t acId, vint32_t returnStack)
+			void TraceManager::CheckAttendingCompetitionsOnEndingEdge(Trace* trace, vint32_t acId, vint32_t returnStack)
 			{
 				while (acId != -1)
 				{
 					auto ac = GetAttendingCompetitions(acId);
 					auto cpt = GetCompetition(ac->competition);
 					auto cptr = GetTrace(cpt->ownerTrace);
-					if (cptr->returnStack == returnStack)
+					if (cptr != trace && cptr->returnStack == returnStack)
 					{
 						CHECK_ERROR(cpt->status != CompetitionStatus::LowPriorityWin, L"The competition is closed too early.");
 						cpt->status = CompetitionStatus::HighPriorityWin;
@@ -252,11 +252,15 @@ TraceManager::WalkAlongSingleEdge
 				vint32_t state = edgeDesc.toState;
 				vint32_t returnStack = trace->returnStack;
 				vint32_t executedReturn = -1;
+
+				// attend a competition hold by the current trace if the priority is set for this output transition
 				vint32_t acId = AttendCompetitionIfNecessary(trace, edgeDesc);
 
 				if (input == Executable::EndingInput)
 				{
-					CHECK_ERROR(edgeDesc.returnIndices.count == 0, L"vl::glr::automaton::TraceManager::WalkAlongSingleEdge(vint, vint, vint, Trace*, vint, EdgeDesc&)#Ending input edge is not allowed to push the return stack.");
+					// an EndingInput transition consume return record in the return stack
+					// such return will be popped from the return stack and stored in Trace::executedReturn
+					CHECK_ERROR(edgeDesc.returnIndices.count == 0, L"vl::glr::automaton::TraceManager::WalkAlongSingleEdge(vint, vint, vint, Trace*, vint, EdgeDesc&)#Ending input edge is not allowed to push something into the return stack.");
 					if (returnStack != -1)
 					{
 						auto rs = GetReturnStack(returnStack);
@@ -265,8 +269,17 @@ TraceManager::WalkAlongSingleEdge
 						state = executable.returns[executedReturn].returnState;
 					}
 
-					CheckAttendingCompetitionsOnEndingEdge(acId, returnStack);
+					// an EndingInput transition also settle a competition if
+					//   1) there is a competition
+					//   2) the returnStack of the trace holding the competition is the same to the current returnStack
+					//   3) the target trace bets high priority
+					// in this case, high priority traces wins the competition
+					// but no traces are being removed for now, just mark the competition
+					CheckAttendingCompetitionsOnEndingEdge(trace, acId, trace->returnStack);
 
+					// if the target trace has exactly the same to another surviving trace
+					// stop creating a Trace instance for the target trace
+					// instead connect the correct trace to that surviving trace and form a ambiguity resolving structure
 					for (vint i = 0; i < concurrentCount; i++)
 					{
 						auto candidate = backupTraces->Get(i);
@@ -278,6 +291,9 @@ TraceManager::WalkAlongSingleEdge
 					}
 				}
 
+				// if ambiguity resolving doesn't happen
+				// create an instance of the target trace
+				// and connect the current trace to this target trace
 				auto newTrace = AllocateTrace();
 				AddTrace(newTrace);
 
@@ -291,6 +307,7 @@ TraceManager::WalkAlongSingleEdge
 				newTrace->currentTokenIndex = currentTokenIndex;
 				newTrace->runtimeRouting.attendingCompetitions = acId;
 
+				// push returns to the return stack if the transition requires
 				for (vint returnRef = 0; returnRef < edgeDesc.returnIndices.count; returnRef++)
 				{
 					auto returnIndex = executable.returnIndices[edgeDesc.returnIndices.start + returnRef];

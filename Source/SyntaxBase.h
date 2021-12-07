@@ -301,7 +301,7 @@ Execution
 				bool								AreTwoTraceEqual(vint32_t state, vint32_t returnStack, vint32_t executedReturn, vint32_t acId, Trace* candidate);
 
 				vint32_t							AttendCompetitionIfNecessary(Trace* trace, EdgeDesc& edgeDesc);
-				void								CheckAttendingCompetitionsOnEndingEdge(vint32_t acId, vint32_t returnStack);
+				void								CheckAttendingCompetitionsOnEndingEdge(Trace* trace, vint32_t acId, vint32_t returnStack);
 				void								CheckBackupTracesBeforeSwapping(vint32_t currentTokenIndex);
 
 				Trace*								WalkAlongSingleEdge(vint32_t currentTokenIndex, vint32_t input, Trace* trace, vint32_t byEdge, EdgeDesc& edgeDesc);
