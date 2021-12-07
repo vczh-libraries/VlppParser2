@@ -59,7 +59,7 @@ Resolving Ambiguity
 				// two traces equal to each other if
 				//   1) they are in the same state
 				//   2) they have the same executedReturn
-				//      we don't check instructions in both executed transitions, but why? (TODO: check later)
+				//      we don't check instructions in both executed transitions, but why? (TODO: could be wrong)
 				//   3) they are attending same competitions
 				//   4) they have the same return stack
 				if (state == candidate->state &&
@@ -137,18 +137,30 @@ Competitions
 				return trace->runtimeRouting.attendingCompetitions;
 			}
 
-			void TraceManager::CheckAttendingCompetitionsOnEndingEdge(Trace* trace, vint32_t acId, vint32_t returnStack)
+			void TraceManager::CheckAttendingCompetitionsOnEndingEdge(Trace* trace, EdgeDesc& edgeDesc, vint32_t acId, vint32_t returnStack)
 			{
 				while (acId != -1)
 				{
+					// when executing an EndingInput transition, we announce high priority win a competition if
+					//   1) such EndingInput transitions ends the clause where the state of the trace holding competition is in the same clause
+					//      we ensure this by comparing both returnStack object (not content)
+					//      because a ReturnStack object is created when entering a new clause
+					//   2) if the EndingInput transition begins from the trace holding the competition, it cannot be a low priority transition
+					//      visiting such transitions only mean a low priority trace survives the clause
+					//   3) the competition has not been settled
 					auto ac = GetAttendingCompetitions(acId);
 					auto cpt = GetCompetition(ac->competition);
 					auto cptr = GetTrace(cpt->ownerTrace);
-					if (cptr != trace && cptr->returnStack == returnStack)
+					if (cptr->returnStack == returnStack)
 					{
-						CHECK_ERROR(cpt->status != CompetitionStatus::LowPriorityWin, L"The competition is closed too early.");
-						cpt->status = CompetitionStatus::HighPriorityWin;
-						break;
+						if (cptr != trace || edgeDesc.priority != EdgePriority::LowPriority)
+						{
+							if (cpt->status != CompetitionStatus::LowPriorityWin)
+							{
+								cpt->status = CompetitionStatus::HighPriorityWin;
+								break;
+							}
+						}
 					}
 					acId = ac->next;
 				}
@@ -322,7 +334,7 @@ TraceManager::WalkAlongSingleEdge
 					//   3) the target trace bets high priority
 					// in this case, high priority traces wins the competition
 					// but no traces are being removed for now, just mark the competition
-					CheckAttendingCompetitionsOnEndingEdge(trace, acId, trace->returnStack);
+					CheckAttendingCompetitionsOnEndingEdge(trace, edgeDesc, acId, trace->returnStack);
 
 					// if the target trace has exactly the same to another surviving trace
 					// stop creating a Trace instance for the target trace
