@@ -13,6 +13,7 @@ Resolving Ambiguity
 
 			bool TraceManager::AreReturnDescEqual(vint32_t ri1, vint32_t ri2)
 			{
+				// return ri1 == ri2; // also works, check later
 				// TODO: create a cache to compare two returnIndex directly
 				// instead of repeatly scanning the content here
 				if (ri1 == ri2) return true;
@@ -68,8 +69,10 @@ Competitions
 
 			vint32_t TraceManager::AttendCompetitionIfNecessary(Trace* trace, EdgeDesc& edgeDesc)
 			{
+				// attend a competition if the priority of the transition is set
 				if (edgeDesc.priority != EdgePriority::NoCompetition)
 				{
+					// check if a competition object has been created for this trace
 					Competition* competition = nullptr;
 					if (trace->runtimeRouting.holdingCompetition == -1)
 					{
@@ -85,11 +88,19 @@ Competitions
 						competition = GetCompetition(trace->runtimeRouting.holdingCompetition);
 					}
 
+					// target traces from the current trace should attend all competitions that the current trace attends
+					// so only one AttendingCompetitions object needs to be created per bet
+					// it is fine for different traces share all or part of AttendingCompetitions in their RuntimeRouting::attendingCompetitions linked list
+					// because if a competition is settled in the future
+					// AttendingCompetitions objects for this competition is going to be removed anyway
+					// sharing a linked list doesn't change the result
+
 					switch (edgeDesc.priority)
 					{
 					case EdgePriority::HighPriority:
 						if (competition->highBet == -1)
 						{
+							// create an AttendingCompetitions for this competition for high priority bet if it is not created
 							auto ac = AllocateAttendingCompetitions();
 							ac->next = trace->runtimeRouting.attendingCompetitions;
 							ac->competition = competition->allocatedIndex;
@@ -100,6 +111,7 @@ Competitions
 					case EdgePriority::LowPriority:
 						if (competition->lowBet == -1)
 						{
+							// create an AttendingCompetitions for this competition for high priority bet if it is not created
 							auto ac = AllocateAttendingCompetitions();
 							ac->next = trace->runtimeRouting.attendingCompetitions;
 							ac->competition = competition->allocatedIndex;
