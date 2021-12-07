@@ -256,7 +256,7 @@ Execution
 																	// (filled by PrepareTraceRoute)
 
 				vint32_t				ambiguityInsPostfix = -1;	// this member is useful when it is not -1
-																	// specifying the length of the postfix of instructions in this trace
+																	// specifying the length of the postfix of byEdge.insBeforeInput in this trace
 																	// when a trace has multiple predecessors
 																	// only execute the specified postfix of instructions
 																	// when the only successor of a trace has multiple predecessors

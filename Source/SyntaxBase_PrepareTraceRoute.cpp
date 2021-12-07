@@ -113,6 +113,7 @@ TraceManager::PrepareTraceRoute
 						// if there are multiple predecessors
 						// then this is a ambiguity resolving trace
 						FillAmbiguityInfoForMergingTrace(trace);
+						CHECK_ERROR(trace->ambiguityInsPostfix == -1, ERROR_MESSAGE_PREFIX L"Not Implemented.");
 
 						// execute all instructions until it reaches the first EndObject instruction
 						// and this EndObject instruction is not executed
@@ -133,6 +134,7 @@ TraceManager::PrepareTraceRoute
 					}
 					else
 					{
+						CHECK_ERROR(trace->ambiguityInsPostfix == -1, ERROR_MESSAGE_PREFIX L"Not Implemented.");
 						// if there is only one predecessor
 						// run all instructions until we find the correct BeginObject or BeginObjectLeftRecursive instruction
 						for (auto i = instruction; i >= 0; i--)
@@ -180,6 +182,7 @@ TraceManager::PrepareTraceRoute
 				TraceInsLists insLists;
 				ReadInstructionList(trace, insLists);
 
+				CHECK_ERROR(trace->ambiguityInsPostfix == -1, ERROR_MESSAGE_PREFIX L"Not Implemented.");
 				vint32_t insEndObject = -1;
 				for (vint32_t i = 0; i < insLists.c3; i++)
 				{

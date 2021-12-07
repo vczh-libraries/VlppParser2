@@ -65,6 +65,7 @@ TraceManager::ExecuteTrace
 				{
 					TraceInsLists insLists;
 					ReadInstructionList(trace, insLists);
+					CHECK_ERROR(trace->ambiguityInsPostfix == -1, ERROR_MESSAGE_PREFIX L"Not Implemented.");
 
 					// if the current trace is an ambiguity resolving trace
 					// we check if all predecessors has been visited

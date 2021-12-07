@@ -448,16 +448,21 @@ TraceManager::WalkAlongSingleEdge
 							// and ambiguityTraceMerge should not have had multiple predecessors at this moment
 							CHECK_ERROR(ambiguityTraceToMerge->predecessors.first == ambiguityTraceToMerge->predecessors.last, ERROR_MESSAGE_PREFIX L"An ambiguity resolving traces should have been cut.");
 
-							// although executedReturn is executed by EndObject
-							// but executedReturn is stored in the first trace
-							// and EndObject is available in the second trace
-							// so newTrace->executedReturn should be -1
-
 							auto formerTrace = AllocateTrace();
 							{
 								vint32_t formerId = formerTrace->allocatedIndex;
 								*formerTrace = *ambiguityTraceToMerge;
 								formerTrace->allocatedIndex = formerId;
+							}
+
+							// executedReturn is from the EndObject instruction
+							// which is available in the instruction postfix
+							// so formerTrace->executedReturn should be -1 and keep the previous return stack
+							formerTrace->executedReturn = -1;
+							if (ambiguityTraceToMerge->predecessors.first != -1)
+							{
+								auto predecessor = GetTrace(ambiguityTraceToMerge->predecessors.first);
+								formerTrace->returnStack = predecessor->returnStack;
 							}
 
 							// ambiguity is filled by PrepareTraceRoute, skipped
@@ -488,9 +493,26 @@ TraceManager::WalkAlongSingleEdge
 					}
 					else
 					{
+						// otherwise, create a new trace with the instruction prefix
+						auto newTrace = AllocateTrace();
+						newTrace->predecessors.first = trace->allocatedIndex;
+						newTrace->predecessors.last = trace->allocatedIndex;
+						newTrace->state = state;
+						newTrace->returnStack = trace->returnStack;
+						newTrace->byEdge = byEdge;
+						newTrace->byInput = input;
+						newTrace->currentTokenIndex = currentTokenIndex;
 
+						// executedReturn == ambiguityTraceToMerge->executedReturn is ensured
+						// so no need to assign executedReturn to newTrace
+						// acid == ambiguityTraceToMerge->runtimeRouting.attendingCompetitions is ensure
+						// and ambiguityTraceToMerge is supposed to inherit this value
+						newTrace->runtimeRouting.attendingCompetitions = acId;
+
+						newTrace->ambiguityInsPostfix = postfix;
 					}
 
+					// return nullptr so that there is no WalkAlongEpsilonEdges following WalkAlongSingleEdge
 					return nullptr;
 				}
 				else
