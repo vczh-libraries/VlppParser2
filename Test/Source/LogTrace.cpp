@@ -202,6 +202,7 @@ void RenderTrace(
 				auto& ins = executable.instructions[insIndex];
 				writer.WriteString(L"  - ");
 				LogInstruction(ins, typeName, fieldName, writer);
+
 				if (insRef == trace->ambiguity.insEndObject)
 				{
 					writer.WriteLine(L"      AMB => Trace[" +
@@ -210,7 +211,13 @@ void RenderTrace(
 						itow(trace->ambiguity.insBeginObject) +
 						L"]");
 				}
+
+				if (trace->ambiguityInsPostfix != -1 && insRef == edgeDesc.insBeforeInput.count - trace->ambiguityInsPostfix)
+				{
+					writer.WriteLine(L"    --------------------");
+				}
 			}
+
 			for (vint insRef = 0; insRef < edgeDesc.insAfterInput.count; insRef++)
 			{
 				vint insIndex = edgeDesc.insAfterInput.start + insRef;

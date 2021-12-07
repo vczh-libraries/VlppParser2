@@ -138,7 +138,7 @@ Resolving Ambiguity
 				CHECK_ERROR(oldEdge.insBeforeInput.count - i1 == newEdge.insBeforeInput.count - i2, L"Two instruction postfix after EndObject not equal.");
 
 				vint32_t postfix = oldEdge.insBeforeInput.count - i1;
-				for (vint32_t postfixRef = 0; postfixRef < postfix; postfix++)
+				for (vint32_t postfixRef = 0; postfixRef < postfix; postfixRef++)
 				{
 					auto&& ins1 = executable.instructions[oldEdge.insBeforeInput.start + i1 + postfixRef];
 					auto&& ins2 = executable.instructions[newEdge.insBeforeInput.start + i2 + postfixRef];
