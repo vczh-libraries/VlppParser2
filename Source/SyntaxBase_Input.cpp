@@ -318,6 +318,9 @@ TraceManager::WalkAlongTokenEdges
 					vint32_t byEdge = edgeArray.start + edgeRef;
 					auto& edgeDesc = executable.edges[edgeArray.start + edgeRef];
 					WalkAlongSingleEdge(currentTokenIndex, Executable::LeftrecInput, trace, byEdge, edgeDesc);
+
+					// A LeftrecInput transition points to a non ending state in another clause
+					// so there is no need to find other epsilon transitions after LeftrecInput
 				}
 			}
 
@@ -333,6 +336,7 @@ TraceManager::WalkAlongTokenEdges
 					auto& edgeDesc = executable.edges[edgeArray.start + edgeRef];
 					if (auto newTrace = WalkAlongSingleEdge(currentTokenIndex, Executable::EndingInput, trace, byEdge, edgeDesc))
 					{
+						// EndingInput could be followed by EndingInput or LeftrecInput
 						WalkAlongEpsilonEdges(currentTokenIndex, newTrace);
 					}
 				}
@@ -344,11 +348,13 @@ TraceManager::WalkAlongTokenEdges
 			)
 			{
 				{
+					// LeftrecInput transition is an epsilon transition
 					vint32_t transactionIndex = trace->state * (Executable::TokenBegin + executable.tokenCount) + Executable::LeftrecInput;
 					auto&& edgeArray = executable.transitions[transactionIndex];
 					WalkAlongLeftrecEdges(currentTokenIndex, trace, edgeArray);
 				}
 				{
+					// EndingInput transition is an epsilon transition
 					vint32_t transactionIndex = trace->state * (Executable::TokenBegin + executable.tokenCount) + Executable::EndingInput;
 					auto&& edgeArray = executable.transitions[transactionIndex];
 					WalkAlongEndingEdges(currentTokenIndex, trace, edgeArray);
@@ -362,12 +368,17 @@ TraceManager::WalkAlongTokenEdges
 				EdgeArray& edgeArray
 			)
 			{
+				// find all transitions that has the expected input
+				// there could be multiple transitions with the same input
+				// but with different instructions and destinations
 				for (vint32_t edgeRef = 0; edgeRef < edgeArray.count; edgeRef++)
 				{
 					vint32_t byEdge = edgeArray.start + edgeRef;
 					auto& edgeDesc = executable.edges[edgeArray.start + edgeRef];
 					if (auto newTrace = WalkAlongSingleEdge(currentTokenIndex, input, trace, byEdge, edgeDesc))
 					{
+						// continue with as much EndingInput and LeftrecInput transitions as possible
+						// TokenInput could be followed by EndingInput or LeftrecInput
 						WalkAlongEpsilonEdges(currentTokenIndex, newTrace);
 					}
 				}
@@ -383,12 +394,12 @@ TraceManager::Input
 				vint32_t traceCount = concurrentCount;
 				vint32_t input = Executable::TokenBegin + token;
 
+				BeginSwap();
+
 				// for each surviving trace
 				// step one TokenInput transition
-				// followed by multiple and EndingInput, LeftRecInput and their combination
+				// followed by multiple and EndingInput, LeftrecInput and their combination
 				// one surviving trace could create multiple surviving trace
-
-				BeginSwap();
 				for (vint32_t traceIndex = 0; traceIndex < traceCount; traceIndex++)
 				{
 					auto trace = concurrentTraces->Get(traceIndex);
@@ -396,7 +407,11 @@ TraceManager::Input
 					auto&& edgeArray = executable.transitions[transactionIndex];
 					WalkAlongTokenEdges(currentTokenIndex, input, trace, edgeArray);
 				}
+
+				// if competitions happen between new surviving traces
+				// remove traces that known to have lost the competition
 				CheckBackupTracesBeforeSwapping(currentTokenIndex);
+
 				EndSwap();
 
 				for (vint32_t traceIndex = concurrentCount; traceIndex < concurrentTraces->Count(); traceIndex++)
@@ -414,13 +429,13 @@ TraceManager::EndOfInput
 				CHECK_ERROR(state == TraceManagerState::WaitingForInput, L"vl::glr::automaton::TraceManager::EndOfInput()#Wrong timing to call this function.");
 				state = TraceManagerState::Finished;
 
+				vint32_t traceCount = concurrentCount;
+				BeginSwap();
+
 				// check all surviving traces and remove all that
 				//   1) does not stay in an ending state
 				//   2) return stack is not empty
 				// the remaining are all traces that successfully walked to the ending state of the root rule
-
-				vint32_t traceCount = concurrentCount;
-				BeginSwap();
 				for (vint32_t traceIndex = 0; traceIndex < traceCount; traceIndex++)
 				{
 					auto trace = concurrentTraces->Get(traceIndex);
@@ -430,6 +445,7 @@ TraceManager::EndOfInput
 						AddTrace(trace);
 					}
 				}
+
 				EndSwap();
 			}
 		}
