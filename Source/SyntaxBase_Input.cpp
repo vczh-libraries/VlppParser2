@@ -13,13 +13,15 @@ Resolving Ambiguity
 
 			bool TraceManager::AreReturnDescEqual(vint32_t ri1, vint32_t ri2)
 			{
-				// return ri1 == ri2; // also works, check later
-				// TODO: create a cache to compare two returnIndex directly
-				// instead of repeatly scanning the content here
-
 				// two returns equal to each other if
 				//   1) they shares the same id, so we are comparing a return with itself
 				//   2) they have exactly the same data
+
+				// we cannot just compare ri1 == ri2 because
+				// if two alternative branches ends with the same rule and same instructions
+				// then two ReturnDesc will have the same data in it
+				// TODO: verify (this function could be deleted if AreReturnStackEqual doesn't need it anymore)
+
 				if (ri1 == ri2) return true;
 				auto& rd1 = executable.returns[ri1];
 				auto& rd2 = executable.returns[ri2];
@@ -39,6 +41,17 @@ Resolving Ambiguity
 				// two return stacks equal to each other if
 				//   1) they shares the same id, so we are comparing a return stack with itself
 				//   2) both top returns equal, and both remaining return stack equals
+
+				// could we just compare r1 == r2 (TODO: verify)
+				// Ambiguity resolving requires different branchs should share
+				// BeginObject, BeginObjectLeftRecursive and EndObject in exactly the same place (trace + ins)
+				// so their return stack should just be the same object
+
+				// TODO: when ambiguity is created because two left recursive clauses consume the same series of inputs
+				// then the BeginObjectLeftRecursive could belong to different traces
+				// maybe we should just compare the BeginObject before merging branches
+				// instead of try to find the BeginObject from BeginObjectLeftRecursive after merging branches
+
 				while (true)
 				{
 					if (r1 == r2) return true;
