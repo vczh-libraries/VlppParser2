@@ -490,6 +490,8 @@ TraceManager::Input
 
 				EndSwap();
 
+				// if there are unused spaces in concurrentTraces
+				// set them to nullptr to clear out traces from the last round
 				for (vint32_t traceIndex = concurrentCount; traceIndex < concurrentTraces->Count(); traceIndex++)
 				{
 					concurrentTraces->Set(traceIndex, nullptr);
