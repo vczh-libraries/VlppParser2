@@ -143,7 +143,10 @@ Competitions
 
 			void TraceManager::CheckBackupTracesBeforeSwapping(vint32_t currentTokenIndex)
 			{
+				// try to find if any competition could be settled at this moment
+
 				{
+					// reset highCounter and lowCounter for any active competitions
 					auto cId = activeCompetitions;
 					while (cId != -1)
 					{
@@ -154,6 +157,8 @@ Competitions
 					}
 				}
 
+				// for any surviving traces
+				// add itself to the appriopriate counter for all attending competitions
 				for (vint i = 0; i < concurrentCount; i++)
 				{
 					auto trace = backupTraces->Get(i);
@@ -167,6 +172,9 @@ Competitions
 					}
 				}
 
+				// revisit all active competitions
+				// some competitions could have been settled
+				// but settled competitions will only be removed before consuming the next token
 				{
 					auto cId = activeCompetitions;
 					while (cId != -1)
@@ -176,10 +184,19 @@ Competitions
 						{
 							if (cpt->highCounter > 0 && cpt->lowCounter == 0)
 							{
+								// if only high bet traces survive, high priority win
 								cpt->status = CompetitionStatus::HighPriorityWin;
 							}
 							else if (cpt->highCounter == 0 && cpt->lowCounter > 0)
 							{
+								// if only low bet traces survive, low priority win
+								// after at least one token is consumed from when the competition is created
+								// low priority epsilon transitions could have been visited right after a competition is created
+								// but high priority token transitions could only be visited when consuming the next token
+								// if all high priority transitions are token token transitions
+								// and all low priority transitions are epsilon transitions
+								// closing the competition too early will direct to a wrong result
+								// so we need to wait at least one step to see if any trace will visit the high priority transition in the future
 								auto cptr = GetTrace(cpt->ownerTrace);
 								if (cptr->currentTokenIndex != currentTokenIndex)
 								{
@@ -191,6 +208,9 @@ Competitions
 					}
 				}
 
+				// for any surviving traces
+				// if it loses any one of its attending competitions
+				// this trace will be removed
 				for (vint i = concurrentCount - 1; i >= 0; i--)
 				{
 					auto trace = backupTraces->Get(i);
@@ -214,6 +234,7 @@ Competitions
 				TRACE_REMOVED:;
 				}
 
+				// remove all settled competition from the active competitions linked list
 				{
 					vint32_t* pnext = &activeCompetitions;
 					while (*pnext != -1)
@@ -230,6 +251,7 @@ Competitions
 					}
 				}
 
+				// remove all settled AttendingCompetitions object from linked lists of any surviving trace
 				for (vint i = 0; i < concurrentCount; i++)
 				{
 					auto trace = backupTraces->Get(i);
