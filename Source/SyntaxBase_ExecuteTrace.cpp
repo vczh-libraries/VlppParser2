@@ -18,6 +18,12 @@ TraceManager::ExecuteTrace
 
 				void Submit(AstIns& ins, regex::RegexToken& token)
 				{
+					// ReopenObject cancels the previous EndObject, so we don't execute {EndObject, ReopenObject} if they appear together
+					// when an instruction is submitted
+					// the previous instruction is executed and the current one is put on wait
+					// but when a ReopenObject instruction is submitted
+					// if the waiting instruction is EndObject, we cancel all of them, otherwise execute the previous instruction and put ReopenObject on wait
+
 					if (submittedInstruction && submittedInstruction->type == AstInsType::EndObject)
 					{
 						if (ins.type == AstInsType::ReopenObject)
@@ -52,17 +58,28 @@ TraceManager::ExecuteTrace
 				TraceManagerSubmitter submitter;
 				submitter.receiver = &receiver;
 
+				// execute from the root trace
+
 				vint32_t startIns = 0;
 				while (trace)
 				{
 					TraceInsLists insLists;
 					ReadInstructionList(trace, insLists);
 
+					// if the current trace is an ambiguity resolving trace
+					// we check if all predecessors has been visited
+					// if yes, we continue
+					// if no, we jump to the BeginObject and repeat it again
+
 					vint32_t maxIns = insLists.c3 - 1;
 					if (trace->ambiguity.traceBeginObject != -1)
 					{
+						// for any ambiguity resolving trace
+						// we only execute instructions until and include EndObject
 						maxIns = trace->ambiguity.insEndObject;
 
+						// we need to know how many predecessors there
+						// the number is calculated and cached when an ambiguity resolving trace is visited for the first time
 						if (trace->runtimeRouting.predecessorCount == -1)
 						{
 							trace->runtimeRouting.predecessorCount = 0;
@@ -74,7 +91,8 @@ TraceManager::ExecuteTrace
 							}
 						}
 					}
-
+					
+					// execute the selected range of instructions
 					for (vint32_t i = startIns; i <= maxIns; i++)
 					{
 						auto& ins = ReadInstruction(i, insLists);
@@ -85,18 +103,26 @@ TraceManager::ExecuteTrace
 					startIns = 0;
 					if (trace->ambiguity.traceBeginObject != -1)
 					{
+						// for any ambiguity resolving trace
+						// we check all predecessors has been visited
 						trace->runtimeRouting.branchVisited++;
 						auto traceBeginObject = GetTrace(trace->ambiguity.traceBeginObject);
 
 						if (trace->runtimeRouting.branchVisited == trace->runtimeRouting.predecessorCount)
 						{
+							// if all predecessors has been visited
+							// we reset the number to 0
+							// because TraceManager::ExecuteTrace could be called multiple time
 							trace->runtimeRouting.branchVisited = 0;
 							{
+								// submit a ResolveAmbiguity instruction
 								auto& token = tokens[trace->currentTokenIndex];
 								AstIns insResolve = { AstInsType::ResolveAmbiguity,trace->ambiguity.ambiguityType,trace->runtimeRouting.predecessorCount };
 								submitter.Submit(insResolve, token);
 							}
 
+							// execute all instructions after EndObject
+							// these part should not be repeated
 							for (vint32_t i = maxIns + 1; i < insLists.c3; i++)
 							{
 								auto& ins = ReadInstruction(i, insLists);
@@ -106,6 +132,8 @@ TraceManager::ExecuteTrace
 						}
 						else
 						{
+							// if there are unvisited predecessors
+							// we jump to the BeginObject instruction and repeat it again
 							startIns = trace->ambiguity.insBeginObject;
 							trace = traceBeginObject;
 							goto FOUND_NEXT_TRACE;
@@ -122,6 +150,9 @@ TraceManager::ExecuteTrace
 					}
 					else
 					{
+						// if there are multiple successors
+						// whenever this trace is visited
+						// we pick a different successor to continue
 						auto nextSuccessorId = trace->successors.first;
 						Trace* successor = nullptr;
 						for (vint i = 0; i <= trace->runtimeRouting.branchVisited; i++)
