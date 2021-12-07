@@ -55,7 +55,7 @@
 - [ ] Priority in returnDesc / left recursive transition
 - [ ] Priority with left recursion
 - [x] Ambiguity with left recursion, when ASTs creates from left recursion clauses belong to a bigger part of ambiguity resolving
-- [ ] Ambiguity with left recursion, when two left recursive clauses consume the same series of inputs
+- [x] Ambiguity with left recursion, when two left recursive clauses consume the same series of inputs
 - [ ] Priority with ambiguity
 - [ ] Everything together
 

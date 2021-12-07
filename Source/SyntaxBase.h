@@ -170,6 +170,8 @@ Execution
 			{
 				vint32_t				insEndObject = -1;			// the index of the first EndObject instruction
 																	// in {byEdge.insBeforeInput, byEdge.insAfterInput, executedReturn.insAfterInput} combined
+																	// when this member is valid, the trace should satisfies:
+																	// trace.ambiguity.insEndObject == trace.byEdge.insBeforeInput.count - trace.ambiguityInsPostfix
 
 				vint32_t				traceBeginObject = -1;		// id of the trace containing BeginObject
 																	// that ends by the above EndObject
@@ -253,6 +255,13 @@ Execution
 																	// this member is useful when it has multiple predecessors
 																	// (filled by PrepareTraceRoute)
 
+				vint32_t				ambiguityInsPostfix = -1;	// this member is useful when it is not -1
+																	// specifying the length of the postfix of instructions in this trace
+																	// when a trace has multiple predecessors
+																	// only execute the specified postfix of instructions
+																	// when the only successor of a trace has multiple predecessors
+																	// only execute the specified prefix of instructions
+
 				RuntimeRouting			runtimeRouting;				// a data structure guiding instruction execution when a trace need to be executed multiple times
 																	// this member is useful when it has multiple predecessors or successors
 			};
@@ -299,6 +308,7 @@ Execution
 				bool								AreReturnDescEqual(vint32_t ri1, vint32_t ri2);
 				bool								AreReturnStackEqual(vint32_t r1, vint32_t r2);
 				bool								AreTwoTraceEqual(vint32_t state, vint32_t returnStack, vint32_t executedReturn, vint32_t acId, Trace* candidate);
+				vint32_t							GetInstructionPostfix(EdgeDesc& oldEdge, EdgeDesc& newEdge);
 
 				vint32_t							AttendCompetitionIfNecessary(Trace* trace, EdgeDesc& edgeDesc);
 				void								CheckAttendingCompetitionsOnEndingEdge(Trace* trace, EdgeDesc& edgeDesc, vint32_t acId, vint32_t returnStack);

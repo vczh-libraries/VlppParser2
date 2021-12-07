@@ -38,6 +38,8 @@ Resolving Ambiguity
 
 			bool TraceManager::AreReturnStackEqual(vint32_t r1, vint32_t r2)
 			{
+				return r1 == r2;
+
 				// two return stacks equal to each other if
 				//   1) they shares the same id, so we are comparing a return stack with itself
 				//   2) both top returns equal, and both remaining return stack equals
@@ -77,10 +79,6 @@ Resolving Ambiguity
 				//   2) they have the same executedReturn
 				//   3) they are attending same competitions
 				//   4) they have the same return stack
-
-				// TODO:
-				//   {field = enum} could be different before EndObject
-				//   we need to find a way to correctly execute those instructions before EndObject
 				if (state == candidate->state &&
 					executedReturn == candidate->executedReturn &&
 					acId == candidate->runtimeRouting.attendingCompetitions)
@@ -93,6 +91,61 @@ Resolving Ambiguity
 					}
 				}
 				return false;
+			}
+
+			vint32_t TraceManager::GetInstructionPostfix(EdgeDesc& oldEdge, EdgeDesc& newEdge)
+			{
+#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::GetInstructionPostfix(EdgeDesc&, EdgeDesc&)#"
+				// given two equal traces, calculate their common instruction postfix length
+				// EndObject is the first instruction of the postfix
+
+				// EndObject may not be the first instruction in both edges
+				// and instructions before EndObject could be different
+				// the most common case is different {field = value} before EndObject
+				// if the ambiguity is created by two left recursive clauses which consume the same series of tokens
+
+				CHECK_ERROR(oldEdge.insAfterInput.count == 0, ERROR_MESSAGE_PREFIX L"EndingInput edge is not allowed to have insAfterInput.");
+				CHECK_ERROR(newEdge.insAfterInput.count == 0, ERROR_MESSAGE_PREFIX L"EndingInput edge is not allowed to have insAfterInput.");
+
+				// find the first EndObject instruction
+				vint32_t i1 = -1;
+				vint32_t i2 = -1;
+
+				for (vint32_t insRef = 0; insRef < oldEdge.insBeforeInput.count; insRef++)
+				{
+					auto&& ins = executable.instructions[oldEdge.insBeforeInput.start + insRef];
+					if (ins.type == AstInsType::EndObject)
+					{
+						i1 = insRef;
+						break;
+					}
+				}
+
+				for (vint32_t insRef = 0; insRef < newEdge.insBeforeInput.count; insRef++)
+				{
+					auto&& ins = executable.instructions[newEdge.insBeforeInput.start + insRef];
+					if (ins.type == AstInsType::EndObject)
+					{
+						i2 = insRef;
+						break;
+					}
+				}
+
+				CHECK_ERROR(i1 != -1, ERROR_MESSAGE_PREFIX L"EndObject from oldEdge not found.");
+				CHECK_ERROR(i2 != -1, ERROR_MESSAGE_PREFIX L"EndObject from newEdge not found.");
+
+				// ensure they have the same instruction postfix starting from EndObject
+				CHECK_ERROR(oldEdge.insBeforeInput.count - i1 == newEdge.insBeforeInput.count - i2, L"Two instruction postfix after EndObject not equal.");
+
+				vint32_t postfix = oldEdge.insBeforeInput.count - i1;
+				for (vint32_t postfixRef = 0; postfixRef < postfix; postfix++)
+				{
+					auto&& ins1 = executable.instructions[oldEdge.insBeforeInput.start + i1 + postfixRef];
+					auto&& ins2 = executable.instructions[newEdge.insBeforeInput.start + i2 + postfixRef];
+					CHECK_ERROR(ins1 == ins2, L"Two instruction postfix after EndObject not equal.");
+				}
+				return postfix;
+#undef ERROR_MESSAGE_PREFIX
 			}
 
 /***********************************************************************
@@ -327,9 +380,11 @@ TraceManager::WalkAlongSingleEdge
 				EdgeDesc& edgeDesc
 			)
 			{
+#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::WalkAlongSingleEdge(vint, vint, vint, Trace*, vint, EdgeDesc&)#"
 				vint32_t state = edgeDesc.toState;
 				vint32_t returnStack = trace->returnStack;
 				vint32_t executedReturn = -1;
+				Trace* ambiguityTraceToMerge = nullptr;
 
 				// attend a competition hold by the current trace if the priority is set for this output transition
 				vint32_t acId = AttendCompetitionIfNecessary(trace, edgeDesc);
@@ -338,7 +393,7 @@ TraceManager::WalkAlongSingleEdge
 				{
 					// an EndingInput transition consume return record in the return stack
 					// such return will be popped from the return stack and stored in Trace::executedReturn
-					CHECK_ERROR(edgeDesc.returnIndices.count == 0, L"vl::glr::automaton::TraceManager::WalkAlongSingleEdge(vint, vint, vint, Trace*, vint, EdgeDesc&)#Ending input edge is not allowed to push something into the return stack.");
+					CHECK_ERROR(edgeDesc.returnIndices.count == 0, ERROR_MESSAGE_PREFIX L"Ending input edge is not allowed to push something into the return stack.");
 					if (returnStack != -1)
 					{
 						auto rs = GetReturnStack(returnStack);
@@ -363,39 +418,112 @@ TraceManager::WalkAlongSingleEdge
 						auto candidate = backupTraces->Get(i);
 						if (AreTwoTraceEqual(state, returnStack, executedReturn, acId, candidate))
 						{
-							AddTraceToCollection(candidate, trace, &Trace::predecessors);
-							return nullptr;
+							ambiguityTraceToMerge = candidate;
+							break;
 						}
 					}
 				}
 
-				// if ambiguity resolving doesn't happen
-				// create an instance of the target trace
-				// and connect the current trace to this target trace
-				auto newTrace = AllocateTrace();
-				AddTrace(newTrace);
-
-				newTrace->predecessors.first = trace->allocatedIndex;
-				newTrace->predecessors.last = trace->allocatedIndex;
-				newTrace->state = state;
-				newTrace->returnStack = returnStack;
-				newTrace->executedReturn = executedReturn;
-				newTrace->byEdge = byEdge;
-				newTrace->byInput = input;
-				newTrace->currentTokenIndex = currentTokenIndex;
-				newTrace->runtimeRouting.attendingCompetitions = acId;
-
-				// push returns to the return stack if the transition requires
-				for (vint returnRef = 0; returnRef < edgeDesc.returnIndices.count; returnRef++)
+				if (ambiguityTraceToMerge)
 				{
-					auto returnIndex = executable.returnIndices[edgeDesc.returnIndices.start + returnRef];
-					auto returnStack = AllocateReturnStack();
-					returnStack->previous = newTrace->returnStack;
-					returnStack->returnIndex = returnIndex;
-					newTrace->returnStack = returnStack->allocatedIndex;
-				}
+					// if ambiguity resolving happens
+					// find the instruction postfix
+					// the instruction postfix starts from EndObject of a trace
+					// and both instruction postfix should equal
+					auto& oldEdge = executable.edges[ambiguityTraceToMerge->byEdge];
+					vint32_t postfix = GetInstructionPostfix(oldEdge, edgeDesc);
 
-				return newTrace;
+					if (ambiguityTraceToMerge->ambiguityInsPostfix == -1)
+					{
+						if (oldEdge.insBeforeInput.count == postfix)
+						{
+							// if EndObject is the first instruction
+							// no need to insert another trace
+							ambiguityTraceToMerge->ambiguityInsPostfix = postfix;
+						}
+						else
+						{
+							// if EndObject is not the first instruction
+							// insert another trace before ambiguityTraceMerge
+							// and ambiguityTraceMerge should not have had multiple predecessors at this moment
+							CHECK_ERROR(ambiguityTraceToMerge->predecessors.first == ambiguityTraceToMerge->predecessors.last, ERROR_MESSAGE_PREFIX L"An ambiguity resolving traces should have been cut.");
+
+							// although executedReturn is executed by EndObject
+							// but executedReturn is stored in the first trace
+							// and EndObject is available in the second trace
+							// so newTrace->executedReturn should be -1
+
+							auto formerTrace = AllocateTrace();
+							{
+								vint32_t formerId = formerTrace->allocatedIndex;
+								*formerTrace = *ambiguityTraceToMerge;
+								formerTrace->allocatedIndex = formerId;
+							}
+
+							// ambiguity is filled by PrepareTraceRoute, skipped
+							// runtimeRouting.holdingCompetition always belong to the second trace
+							// runtimeRouting.attendingCompetitions is inherited
+							formerTrace->runtimeRouting = {};
+							formerTrace->runtimeRouting.attendingCompetitions = ambiguityTraceToMerge->runtimeRouting.attendingCompetitions;
+
+							// both traces need to have the same ambiguityInsPostfix
+							formerTrace->ambiguityInsPostfix = postfix;
+							ambiguityTraceToMerge->ambiguityInsPostfix = postfix;
+
+							// connect two traces
+							// formerTrace has already copied predecessors, skipped
+							// successors of both traces are filled byPrepareTraceRoute, skipped
+							// insert formerTrace before ambiguityTraceToMerge because
+							// we don't successors of ambiguityTraceToMerge, cannot redirect their predecessors
+							ambiguityTraceToMerge->predecessors.first = formerTrace->allocatedIndex;
+							ambiguityTraceToMerge->predecessors.last = formerTrace->allocatedIndex;
+						}
+					}
+
+					if (edgeDesc.insBeforeInput.count == postfix)
+					{
+						// if EndObject is the first instruction of the new trace
+						// then no need to create the new trace
+						AddTraceToCollection(ambiguityTraceToMerge, trace, &Trace::predecessors);
+					}
+					else
+					{
+
+					}
+
+					return nullptr;
+				}
+				else
+				{
+					// if ambiguity resolving doesn't happen
+					// create an instance of the target trace
+					// and connect the current trace to this target trace
+					auto newTrace = AllocateTrace();
+					AddTrace(newTrace);
+
+					newTrace->predecessors.first = trace->allocatedIndex;
+					newTrace->predecessors.last = trace->allocatedIndex;
+					newTrace->state = state;
+					newTrace->returnStack = returnStack;
+					newTrace->executedReturn = executedReturn;
+					newTrace->byEdge = byEdge;
+					newTrace->byInput = input;
+					newTrace->currentTokenIndex = currentTokenIndex;
+					newTrace->runtimeRouting.attendingCompetitions = acId;
+
+					// push returns to the return stack if the transition requires
+					for (vint returnRef = 0; returnRef < edgeDesc.returnIndices.count; returnRef++)
+					{
+						auto returnIndex = executable.returnIndices[edgeDesc.returnIndices.start + returnRef];
+						auto returnStack = AllocateReturnStack();
+						returnStack->previous = newTrace->returnStack;
+						returnStack->returnIndex = returnIndex;
+						newTrace->returnStack = returnStack->allocatedIndex;
+					}
+
+					return newTrace;
+				}
+#undef ERROR_MESSAGE_PREFIX
 			}
 
 /***********************************************************************
