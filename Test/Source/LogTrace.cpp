@@ -200,7 +200,7 @@ void RenderTrace(
 			{
 				vint insIndex = edgeDesc.insBeforeInput.start + insRef;
 				auto& ins = executable.instructions[insIndex];
-				writer.WriteString(L"  > ");
+				writer.WriteString(L"  - ");
 				LogInstruction(ins, typeName, fieldName, writer);
 				if (insRef == trace->ambiguity.insEndObject)
 				{
@@ -215,7 +215,7 @@ void RenderTrace(
 			{
 				vint insIndex = edgeDesc.insAfterInput.start + insRef;
 				auto& ins = executable.instructions[insIndex];
-				writer.WriteString(L"  > ");
+				writer.WriteString(L"  + ");
 				LogInstruction(ins, typeName, fieldName, writer);
 				if (c1 + insRef == trace->ambiguity.insEndObject)
 				{
