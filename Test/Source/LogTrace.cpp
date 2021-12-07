@@ -198,6 +198,11 @@ void RenderTrace(
 
 			for (vint insRef = 0; insRef < edgeDesc.insBeforeInput.count; insRef++)
 			{
+				if (trace->ambiguityInsPostfix != -1 && insRef == edgeDesc.insBeforeInput.count - trace->ambiguityInsPostfix)
+				{
+					writer.WriteLine(L"    --------------------");
+				}
+
 				vint insIndex = edgeDesc.insBeforeInput.start + insRef;
 				auto& ins = executable.instructions[insIndex];
 				writer.WriteString(L"  - ");
@@ -210,11 +215,6 @@ void RenderTrace(
 						L"].Ins[" +
 						itow(trace->ambiguity.insBeginObject) +
 						L"]");
-				}
-
-				if (trace->ambiguityInsPostfix != -1 && insRef == edgeDesc.insBeforeInput.count - trace->ambiguityInsPostfix)
-				{
-					writer.WriteLine(L"    --------------------");
 				}
 			}
 

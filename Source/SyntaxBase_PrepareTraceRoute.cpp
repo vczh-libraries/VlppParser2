@@ -134,9 +134,15 @@ TraceManager::PrepareTraceRoute
 					}
 					else
 					{
-						CHECK_ERROR(trace->ambiguityInsPostfix == -1, ERROR_MESSAGE_PREFIX L"Not Implemented.");
 						// if there is only one predecessor
 						// run all instructions until we find the correct BeginObject or BeginObjectLeftRecursive instruction
+
+						if (trace->ambiguityInsPostfix != -1)
+						{
+							vint32_t start = insLists.c1 - trace->ambiguityInsPostfix - 1;
+							if (instruction > start) instruction = start;
+						}
+
 						for (auto i = instruction; i >= 0; i--)
 						{
 							if (RunInstruction(i, insLists, objectCount))
@@ -182,7 +188,6 @@ TraceManager::PrepareTraceRoute
 				TraceInsLists insLists;
 				ReadInstructionList(trace, insLists);
 
-				CHECK_ERROR(trace->ambiguityInsPostfix == -1, ERROR_MESSAGE_PREFIX L"Not Implemented.");
 				vint32_t insEndObject = -1;
 				for (vint32_t i = 0; i < insLists.c3; i++)
 				{
@@ -200,13 +205,10 @@ TraceManager::PrepareTraceRoute
 				// so we don't really need to call RunInstruction on it
 				// we could begin the counter from 1
 				vint32_t objectCount = 1;
-				for (vint32_t i = insEndObject - 1; i >= 0; i--)
-				{
-					if (RunInstruction(i, insLists, objectCount))
-					{
-						CHECK_FAIL(ERROR_MESSAGE_PREFIX L"BeginObject for the EndObject in the merging trace is impossible to be in the same trace.");
-					}
-				}
+
+				// if EndObject is not the first instruction
+				// then the all instruction prefix are stored in predecessors
+				// so no need to really touch the prefix in this trace.
 
 				vint32_t insBeginObject = -1;
 				vint32_t traceBeginObject = -1;
@@ -240,6 +242,7 @@ TraceManager::PrepareTraceRoute
 				}
 
 				{
+					CHECK_ERROR(insEndObject == insLists.c1 - trace->ambiguityInsPostfix, L"ambiguityInsPostfix and insEndObject does not match.");
 					trace->ambiguity.insEndObject = insEndObject;
 					trace->ambiguity.insBeginObject = insBeginObject;
 					trace->ambiguity.traceBeginObject = traceBeginObject;
@@ -249,33 +252,6 @@ TraceManager::PrepareTraceRoute
 					auto ins = ReadInstruction(insBeginObject, insLists);
 					trace->ambiguity.ambiguityType = ins.param;
 				}
-
-				// // if the object closed by EndObject is created by BeginObjectLeftRecursive
-				// // we need to find the BeginObject which creates an object that is consumed by BeginObjectLeftRecursive
-				// {
-				// 	trace->ambiguity.insEndObject = insEndObject;
-				// 
-				// 	auto currentTrace = GetTrace(traceBeginObject);
-				// 	vint32_t currentIns = insBeginObject;
-				// 
-				// 	ReadInstructionList(currentTrace, insLists);
-				// 	auto ins = ReadInstruction(currentIns, insLists);
-				// 	trace->ambiguity.ambiguityType = ins.param;
-				// 
-				// 	vint32_t objectCount = 0;
-				// 	// the object consumed by BeginObjectLeftRecursive could be created by a former BeginObjectLeftRecursive
-				// 	// we need to search until we reach the BeginObject instruction
-				// 	while (ins.type == AstInsType::BeginObjectLeftRecursive)
-				// 	{
-				// 		currentIns--;
-				// 		FindBalancedBeginObject(currentTrace, currentIns, objectCount);
-				// 		ReadInstructionList(currentTrace, insLists);
-				// 		ins = ReadInstruction(currentIns, insLists);
-				// 	}
-				// 
-				// 	trace->ambiguity.insBeginObject = currentIns;
-				// 	trace->ambiguity.traceBeginObject = currentTrace->allocatedIndex;
-				// }
 #undef ERROR_MESSAGE_PREFIX
 			}
 

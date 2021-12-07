@@ -510,6 +510,8 @@ TraceManager::WalkAlongSingleEdge
 						newTrace->runtimeRouting.attendingCompetitions = acId;
 
 						newTrace->ambiguityInsPostfix = postfix;
+
+						AddTraceToCollection(ambiguityTraceToMerge, newTrace, &Trace::predecessors);
 					}
 
 					// return nullptr so that there is no WalkAlongEpsilonEdges following WalkAlongSingleEdge
