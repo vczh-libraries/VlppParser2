@@ -320,8 +320,6 @@ Execution
 				void								EndSwap();
 				void								AddTraceToCollection(Trace* owner, Trace* element, TraceCollection(Trace::* collection));
 
-				bool								AreReturnDescEqual(vint32_t ri1, vint32_t ri2);
-				bool								AreReturnStackEqual(vint32_t r1, vint32_t r2);
 				bool								AreTwoTraceEqual(vint32_t state, vint32_t returnStack, vint32_t executedReturn, vint32_t acId, Trace* candidate);
 				vint32_t							GetInstructionPostfix(EdgeDesc& oldEdge, EdgeDesc& newEdge);
 

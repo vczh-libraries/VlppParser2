@@ -11,66 +11,65 @@ namespace vl
 Resolving Ambiguity
 ***********************************************************************/
 
-			bool TraceManager::AreReturnDescEqual(vint32_t ri1, vint32_t ri2)
-			{
-				// two returns equal to each other if
-				//   1) they shares the same id, so we are comparing a return with itself
-				//   2) they have exactly the same data
-
-				// we cannot just compare ri1 == ri2 because
-				// if two alternative branches ends with the same rule and same instructions
-				// then two ReturnDesc will have the same data in it
-				// TODO: verify (this function could be deleted if AreReturnStackEqual doesn't need it anymore)
-
-				if (ri1 == ri2) return true;
-				auto& rd1 = executable.returns[ri1];
-				auto& rd2 = executable.returns[ri2];
-				if (rd1.returnState != rd2.returnState) return false;
-				if (rd1.insAfterInput.count != rd2.insAfterInput.count) return false;
-				for (vint insRef = 0; insRef < rd1.insAfterInput.count; insRef++)
-				{
-					auto& ins1 = executable.instructions[rd1.insAfterInput.start + insRef];
-					auto& ins2 = executable.instructions[rd2.insAfterInput.start + insRef];
-					if (ins1 != ins2) return false;
-				}
-				return true;
-			}
-
-			bool TraceManager::AreReturnStackEqual(vint32_t r1, vint32_t r2)
-			{
-				return r1 == r2;
-
-				// two return stacks equal to each other if
-				//   1) they shares the same id, so we are comparing a return stack with itself
-				//   2) both top returns equal, and both remaining return stack equals
-
-				// could we just compare r1 == r2 (TODO: verify)
-				// Ambiguity resolving requires different branchs should share
-				// BeginObject, BeginObjectLeftRecursive and EndObject in exactly the same place (trace + ins)
-				// so their return stack should just be the same object
-
-				// TODO: when ambiguity is created because two left recursive clauses consume the same series of inputs
-				// then the BeginObjectLeftRecursive could belong to different traces
-				// maybe we should just compare the BeginObject before merging branches
-				// instead of try to find the BeginObject from BeginObjectLeftRecursive after merging branches
-
-				// TODO: is it possible that we must (or not just could) compare r1 == r2?
-				// try to build this case
-
-				while (true)
-				{
-					if (r1 == r2) return true;
-					if (r1 == -1 || r2 == -1) return false;
-					auto rs1 = GetReturnStack(r1);
-					auto rs2 = GetReturnStack(r2);
-					if (!AreReturnDescEqual(rs1->returnIndex, rs2->returnIndex))
-					{
-						return false;
-					}
-					r1 = rs1->previous;
-					r2 = rs2->previous;
-				}
-			}
+			// The following code is useful only when it is proven that
+			// AreTwoTraceEqual could not just compare two returnStack object
+			// The code should be deleted when I have enough confidence
+			//
+			// bool TraceManager::AreReturnDescEqual(vint32_t ri1, vint32_t ri2)
+			// {
+			// 	// two returns equal to each other if
+			// 	//   1) they shares the same id, so we are comparing a return with itself
+			// 	//   2) they have exactly the same data
+			// 
+			// 	// we cannot just compare ri1 == ri2 because
+			// 	// if two alternative branches ends with the same rule and same instructions
+			// 	// then two ReturnDesc will have the same data in it
+			// 	// TODO: verify (this function could be deleted if AreReturnStackEqual doesn't need it anymore)
+			// 
+			// 	if (ri1 == ri2) return true;
+			// 	auto& rd1 = executable.returns[ri1];
+			// 	auto& rd2 = executable.returns[ri2];
+			// 	if (rd1.returnState != rd2.returnState) return false;
+			// 	if (rd1.insAfterInput.count != rd2.insAfterInput.count) return false;
+			// 	for (vint insRef = 0; insRef < rd1.insAfterInput.count; insRef++)
+			// 	{
+			// 		auto& ins1 = executable.instructions[rd1.insAfterInput.start + insRef];
+			// 		auto& ins2 = executable.instructions[rd2.insAfterInput.start + insRef];
+			// 		if (ins1 != ins2) return false;
+			// 	}
+			// 	return true;
+			// }
+			// 
+			// bool TraceManager::AreReturnStackEqual(vint32_t r1, vint32_t r2)
+			// {
+			// 	return r1 == r2;
+			// 
+			// 	// two return stacks equal to each other if
+			// 	//   1) they shares the same id, so we are comparing a return stack with itself
+			// 	//   2) both top returns equal, and both remaining return stack equals
+			// 
+			// 	// could we just compare r1 == r2 (TODO: verify)
+			// 	// Ambiguity resolving requires different branchs should share
+			// 	// BeginObject, BeginObjectLeftRecursive and EndObject in exactly the same place (trace + ins)
+			// 	// so their return stack should just be the same object
+			// 
+			// 	// TODO: is it possible that we must (or not just could) compare r1 == r2?
+			// 	// try to build this case
+			// 
+			// 	while (true)
+			// 	{
+			// 		if (r1 == r2) return true;
+			// 		if (r1 == -1 || r2 == -1) return false;
+			// 		auto rs1 = GetReturnStack(r1);
+			// 		auto rs2 = GetReturnStack(r2);
+			// 		if (!AreReturnDescEqual(rs1->returnIndex, rs2->returnIndex))
+			// 		{
+			// 			return false;
+			// 		}
+			// 		r1 = rs1->previous;
+			// 		r2 = rs2->previous;
+			// 	}
+			// }
 
 			bool TraceManager::AreTwoTraceEqual(vint32_t state, vint32_t returnStack, vint32_t executedReturn, vint32_t acId, Trace* candidate)
 			{
@@ -83,9 +82,16 @@ Resolving Ambiguity
 					executedReturn == candidate->executedReturn &&
 					acId == candidate->runtimeRouting.attendingCompetitions)
 				{
+					// we compare if they have executed the same return edge
+					// and than compare if the remaining ReturnStack objects are the same object (not content)
+					// two traces could be merged into one ambiguity resolving trace if they share the same state after executing EndObject
+					// executedReturn is executed by EndObject
+					// returnStack here is the same returnStack when BeginObject for this EndObject was executed
+					// since it requires both trace to share the same BeginObject in the same trace
+					// than two ReturnStack object should also be the same
 					auto r1 = returnStack;
 					auto r2 = candidate->returnStack;
-					if (AreReturnStackEqual(r1, r2))
+					if (r1 == r2)
 					{
 						return true;
 					}
