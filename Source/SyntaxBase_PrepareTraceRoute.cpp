@@ -113,7 +113,6 @@ TraceManager::PrepareTraceRoute
 						// if there are multiple predecessors
 						// then this is a ambiguity resolving trace
 						FillAmbiguityInfoForMergingTrace(trace);
-						CHECK_ERROR(trace->ambiguityInsPostfix == -1, ERROR_MESSAGE_PREFIX L"Not Implemented.");
 
 						// execute all instructions until it reaches the first EndObject instruction
 						// and this EndObject instruction is not executed
