@@ -192,9 +192,9 @@ WriteSyntaxCppFile
 							idToClasses[v] = k;
 						}
 
-						writer.WriteLine(prefix + L"\tif (class1 < 0 || class1 >= " + itow(idToClasses.Count()) + L") throw vl::glr::AstInsException(L\"The type id does not exist.\", vl::glr::AstInsErrorType::UnknownType, type);");
-						writer.WriteLine(prefix + L"\tif (class2 < 0 || class2 >= " + itow(idToClasses.Count()) + L") throw vl::glr::AstInsException(L\"The type id does not exist.\", vl::glr::AstInsErrorType::UnknownType, type);");
-						writer.WriteLine(prefix + L"\tstatic vl::vint32_t results[][] = {");
+						writer.WriteLine(prefix + L"\tif (class1 < 0 || class1 >= " + itow(idToClasses.Count()) + L") throw vl::glr::AstInsException(L\"The type id does not exist.\", vl::glr::AstInsErrorType::UnknownType, class1);");
+						writer.WriteLine(prefix + L"\tif (class2 < 0 || class2 >= " + itow(idToClasses.Count()) + L") throw vl::glr::AstInsException(L\"The type id does not exist.\", vl::glr::AstInsErrorType::UnknownType, class2);");
+						writer.WriteLine(prefix + L"\tstatic vl::vint32_t results[" + itow(idToClasses.Count()) + L"][" + itow(idToClasses.Count()) + L"] = {");
 						for (auto [c1, i1] : indexed(idToClasses))
 						{
 							writer.WriteString(prefix + L"\t\t{");

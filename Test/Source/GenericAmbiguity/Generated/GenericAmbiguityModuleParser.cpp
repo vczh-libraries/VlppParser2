@@ -101,9 +101,9 @@ namespace genericambiguity
 
 	vl::vint32_t ModuleParser::FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2)
 	{
-		if (class1 < 0 || class1 >= 9) throw vl::glr::AstInsException(L"The type id does not exist.", vl::glr::AstInsErrorType::UnknownType, type);
-		if (class2 < 0 || class2 >= 9) throw vl::glr::AstInsException(L"The type id does not exist.", vl::glr::AstInsErrorType::UnknownType, type);
-		static vl::vint32_t results[][] = {
+		if (class1 < 0 || class1 >= 9) throw vl::glr::AstInsException(L"The type id does not exist.", vl::glr::AstInsErrorType::UnknownType, class1);
+		if (class2 < 0 || class2 >= 9) throw vl::glr::AstInsException(L"The type id does not exist.", vl::glr::AstInsErrorType::UnknownType, class2);
+		static vl::vint32_t results[9][9] = {
 			{0, 3, 3, 3, 3, 3, -1, 3, 3, },
 			{3, 1, 3, 3, 3, 3, -1, 3, 3, },
 			{3, 3, 2, 3, 3, 3, -1, 3, 3, },
