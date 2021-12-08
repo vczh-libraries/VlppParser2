@@ -217,6 +217,7 @@ Competitions
 					//   1) such EndingInput transitions ends the clause where the state of the trace holding competition is in the same clause
 					//      we ensure this by comparing both returnStack object (not content)
 					//      because a ReturnStack object is created when entering a new clause
+					//      TODO: will a high priority win affect competitions hold in other clauses of the same rule?
 					//   2) if the EndingInput transition begins from the trace holding the competition, it cannot be a low priority transition
 					//      visiting such transitions only mean a low priority trace survives the clause
 					//   3) the competition has not been settled

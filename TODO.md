@@ -54,6 +54,7 @@
 - [ ] Priority in alternative syntax, but don't let it ends a clause if a high priority branch could be empty (add compile error)
 - [ ] Priority in returnDesc / left recursive transition
 - [ ] Priority with left recursion
+- [ ] Priority in different clauses of the same rule (`TraceManager::CheckAttendingCompetitionsOnEndingEdge`)
 - [x] Ambiguity with left recursion, when ASTs creates from left recursion clauses belong to a bigger part of ambiguity resolving
 - [x] Ambiguity with left recursion, when two left recursive clauses consume the same series of inputs
 - [ ] Priority with ambiguity
@@ -63,6 +64,7 @@
 
 - fix todo in `TraceManager::AreReturnDescEqual`
 - fix todo in `TraceManager::AreReturnDescEqual`
+- fix todo in `TraceManager::CheckAttendingCompetitionsOnEndingEdge`
 - `EndObject` after `ReopenObject` doesn't update `ParsingAstBase::codeRange::start`.
   - for example, when `Exp` is reopened to run `( Exp @ )`, then the created ast begins from `Exp` but ends at `)`.
 - Optimize `CrossReferencedNFA` to merge prefix (two states can be merged if their `InEdges` are identical, `FromState` in `InEdges` are replaced by merged states).
