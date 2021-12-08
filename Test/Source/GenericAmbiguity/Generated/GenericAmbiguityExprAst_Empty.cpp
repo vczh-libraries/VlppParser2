@@ -37,6 +37,10 @@ ExprVisitor
 		{
 		}
 
+		void ExprVisitor::Visit(DecrementExpr* node)
+		{
+		}
+
 		void ExprVisitor::Visit(BinaryExpr* node)
 		{
 		}

@@ -14,6 +14,7 @@ namespace genericambiguity
 		void ExprAstVisitor::Traverse(vl::glr::ParsingAstBase* node) {}
 		void ExprAstVisitor::Traverse(BinaryExpr* node) {}
 		void ExprAstVisitor::Traverse(CallExpr* node) {}
+		void ExprAstVisitor::Traverse(DecrementExpr* node) {}
 		void ExprAstVisitor::Traverse(Expr* node) {}
 		void ExprAstVisitor::Traverse(ExprToResolve* node) {}
 		void ExprAstVisitor::Traverse(GenericExpr* node) {}
@@ -24,6 +25,7 @@ namespace genericambiguity
 		void ExprAstVisitor::Finishing(vl::glr::ParsingAstBase* node) {}
 		void ExprAstVisitor::Finishing(BinaryExpr* node) {}
 		void ExprAstVisitor::Finishing(CallExpr* node) {}
+		void ExprAstVisitor::Finishing(DecrementExpr* node) {}
 		void ExprAstVisitor::Finishing(Expr* node) {}
 		void ExprAstVisitor::Finishing(ExprToResolve* node) {}
 		void ExprAstVisitor::Finishing(GenericExpr* node) {}
@@ -98,6 +100,18 @@ namespace genericambiguity
 			Traverse(static_cast<PostfixExpr*>(node));
 			InspectInto(node->expr.Obj());
 			Finishing(static_cast<PostfixExpr*>(node));
+			Finishing(static_cast<Expr*>(node));
+			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+		}
+
+		void ExprAstVisitor::Visit(DecrementExpr* node)
+		{
+			if (!node) return;
+			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+			Traverse(static_cast<Expr*>(node));
+			Traverse(static_cast<DecrementExpr*>(node));
+			InspectInto(node->expr.Obj());
+			Finishing(static_cast<DecrementExpr*>(node));
 			Finishing(static_cast<Expr*>(node));
 			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 		}

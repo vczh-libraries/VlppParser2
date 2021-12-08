@@ -23,6 +23,7 @@ namespace genericambiguity
 			virtual void Traverse(vl::glr::ParsingAstBase* node);
 			virtual void Traverse(BinaryExpr* node);
 			virtual void Traverse(CallExpr* node);
+			virtual void Traverse(DecrementExpr* node);
 			virtual void Traverse(Expr* node);
 			virtual void Traverse(ExprToResolve* node);
 			virtual void Traverse(GenericExpr* node);
@@ -34,6 +35,7 @@ namespace genericambiguity
 			virtual void Finishing(vl::glr::ParsingAstBase* node);
 			virtual void Finishing(BinaryExpr* node);
 			virtual void Finishing(CallExpr* node);
+			virtual void Finishing(DecrementExpr* node);
 			virtual void Finishing(Expr* node);
 			virtual void Finishing(ExprToResolve* node);
 			virtual void Finishing(GenericExpr* node);
@@ -47,6 +49,7 @@ namespace genericambiguity
 			void Visit(GenericExpr* node) override;
 			void Visit(CallExpr* node) override;
 			void Visit(PostfixExpr* node) override;
+			void Visit(DecrementExpr* node) override;
 			void Visit(BinaryExpr* node) override;
 
 		public:

@@ -21,6 +21,7 @@ namespace genericambiguity
 		protected:
 			virtual void PrintFields(BinaryExpr* node);
 			virtual void PrintFields(CallExpr* node);
+			virtual void PrintFields(DecrementExpr* node);
 			virtual void PrintFields(Expr* node);
 			virtual void PrintFields(ExprToResolve* node);
 			virtual void PrintFields(GenericExpr* node);
@@ -34,6 +35,7 @@ namespace genericambiguity
 			void Visit(GenericExpr* node) override;
 			void Visit(CallExpr* node) override;
 			void Visit(PostfixExpr* node) override;
+			void Visit(DecrementExpr* node) override;
 			void Visit(BinaryExpr* node) override;
 
 		public:

@@ -34,6 +34,15 @@ namespace genericambiguity
 			CallExprBuilder& func(const vl::Ptr<Expr>& value);
 		};
 
+		class DecrementExprBuilder
+		{
+		private:
+			DecrementExpr* node;
+		public:
+			DecrementExprBuilder(DecrementExpr* _node) : node(_node) {}
+			DecrementExprBuilder& expr(const vl::Ptr<Expr>& value);
+		};
+
 		class ExprToResolveBuilder
 		{
 		private:
@@ -83,6 +92,7 @@ namespace genericambiguity
 
 		using MakeBinaryExpr = vl::glr::ParsingAstBuilder<BinaryExpr, BinaryExprBuilder>;
 		using MakeCallExpr = vl::glr::ParsingAstBuilder<CallExpr, CallExprBuilder>;
+		using MakeDecrementExpr = vl::glr::ParsingAstBuilder<DecrementExpr, DecrementExprBuilder>;
 		using MakeExprToResolve = vl::glr::ParsingAstBuilder<ExprToResolve, ExprToResolveBuilder>;
 		using MakeGenericExpr = vl::glr::ParsingAstBuilder<GenericExpr, GenericExprBuilder>;
 		using MakeModule = vl::glr::ParsingAstBuilder<Module, ModuleBuilder>;

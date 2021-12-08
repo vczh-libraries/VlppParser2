@@ -17,8 +17,8 @@ namespace genericambiguity
 		Exp0 = 0,
 		Exp1 = 11,
 		Exp2 = 19,
-		Exp = 27,
-		Module = 36,
+		Exp = 32,
+		Module = 41,
 	};
 
 	template<ModuleParserStates> struct ModuleParserStateTypes;

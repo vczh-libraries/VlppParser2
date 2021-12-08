@@ -21,6 +21,7 @@ namespace genericambiguity
 		protected:
 			void CopyFields(BinaryExpr* from, BinaryExpr* to);
 			void CopyFields(CallExpr* from, CallExpr* to);
+			void CopyFields(DecrementExpr* from, DecrementExpr* to);
 			void CopyFields(Expr* from, Expr* to);
 			void CopyFields(ExprToResolve* from, ExprToResolve* to);
 			void CopyFields(GenericExpr* from, GenericExpr* to);
@@ -36,6 +37,7 @@ namespace genericambiguity
 			void Visit(GenericExpr* node) override;
 			void Visit(CallExpr* node) override;
 			void Visit(PostfixExpr* node) override;
+			void Visit(DecrementExpr* node) override;
 			void Visit(BinaryExpr* node) override;
 
 		public:

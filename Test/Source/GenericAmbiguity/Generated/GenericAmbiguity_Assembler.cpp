@@ -21,6 +21,8 @@ GenericAmbiguityAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return new genericambiguity::BinaryExpr();
 		case GenericAmbiguityClasses::CallExpr:
 			return new genericambiguity::CallExpr();
+		case GenericAmbiguityClasses::DecrementExpr:
+			return new genericambiguity::DecrementExpr();
 		case GenericAmbiguityClasses::Expr:
 			throw vl::glr::AstInsException(L"Unable to create abstract class \"genericambiguity::Expr\".", vl::glr::AstInsErrorType::UnknownType, type);
 		case GenericAmbiguityClasses::ExprToResolve:
@@ -79,6 +81,16 @@ GenericAmbiguityAstInsReceiver : public vl::glr::AstInsReceiverBase
 				auto typedValue = value.Cast<genericambiguity::Expr>();
 				if (!typedValue) throw vl::glr::AstInsException(L"Field \"genericambiguity::CallExpr::func\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 				typedObject->func = typedValue;
+			}
+			break;
+		case GenericAmbiguityFields::DecrementExpr_expr:
+			{
+				auto typedObject = dynamic_cast<genericambiguity::DecrementExpr*>(object);
+				if (!typedObject) throw vl::glr::AstInsException(L"Field \"genericambiguity::DecrementExpr::expr\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+				if (typedObject->expr) throw vl::glr::AstInsException(L"Field \"genericambiguity::DecrementExpr::expr\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
+				auto typedValue = value.Cast<genericambiguity::Expr>();
+				if (!typedValue) throw vl::glr::AstInsException(L"Field \"genericambiguity::DecrementExpr::expr\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				typedObject->expr = typedValue;
 			}
 			break;
 		case GenericAmbiguityFields::ExprToResolve_candidates:
@@ -162,6 +174,8 @@ GenericAmbiguityAstInsReceiver : public vl::glr::AstInsReceiverBase
 			throw vl::glr::AstInsException(L"Field \"genericambiguity::CallExpr::args\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 		case GenericAmbiguityFields::CallExpr_func:
 			throw vl::glr::AstInsException(L"Field \"genericambiguity::CallExpr::func\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+		case GenericAmbiguityFields::DecrementExpr_expr:
+			throw vl::glr::AstInsException(L"Field \"genericambiguity::DecrementExpr::expr\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 		case GenericAmbiguityFields::ExprToResolve_candidates:
 			throw vl::glr::AstInsException(L"Field \"genericambiguity::ExprToResolve::candidates\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 		case GenericAmbiguityFields::GenericExpr_args:
@@ -205,6 +219,8 @@ GenericAmbiguityAstInsReceiver : public vl::glr::AstInsReceiverBase
 			throw vl::glr::AstInsException(L"Field \"genericambiguity::CallExpr::args\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 		case GenericAmbiguityFields::CallExpr_func:
 			throw vl::glr::AstInsException(L"Field \"genericambiguity::CallExpr::func\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+		case GenericAmbiguityFields::DecrementExpr_expr:
+			throw vl::glr::AstInsException(L"Field \"genericambiguity::DecrementExpr::expr\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 		case GenericAmbiguityFields::ExprToResolve_candidates:
 			throw vl::glr::AstInsException(L"Field \"genericambiguity::ExprToResolve::candidates\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 		case GenericAmbiguityFields::GenericExpr_args:
@@ -227,6 +243,7 @@ GenericAmbiguityAstInsReceiver : public vl::glr::AstInsReceiverBase
 		const wchar_t* results[] = {
 			L"BinaryExpr",
 			L"CallExpr",
+			L"DecrementExpr",
 			L"Expr",
 			L"ExprToResolve",
 			L"GenericExpr",
@@ -235,7 +252,7 @@ GenericAmbiguityAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"RefExpr",
 		};
 		vl::vint index = (vl::vint)type;
-		return 0 <= index && index < 8 ? results[index] : nullptr;
+		return 0 <= index && index < 9 ? results[index] : nullptr;
 	}
 
 	const wchar_t* GenericAmbiguityFieldName(GenericAmbiguityFields field)
@@ -252,6 +269,8 @@ GenericAmbiguityAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return L"CallExpr::args";
 		case GenericAmbiguityFields::CallExpr_func:
 			return L"CallExpr::func";
+		case GenericAmbiguityFields::DecrementExpr_expr:
+			return L"DecrementExpr::expr";
 		case GenericAmbiguityFields::ExprToResolve_candidates:
 			return L"ExprToResolve::candidates";
 		case GenericAmbiguityFields::GenericExpr_args:
@@ -292,6 +311,17 @@ GenericAmbiguityAstInsReceiver : public vl::glr::AstInsReceiverBase
 				for (auto candidate : candidates)
 				{
 					auto typedAst = candidate.Cast<genericambiguity::CallExpr>();
+					if (!typedAst) throw vl::glr::AstInsException(L"The type of the ambiguous candidate is not compatible to the required type", vl::glr::AstInsErrorType::UnexpectedAmbiguousCandidate, type);
+					ast->candidates.Add(typedAst);
+				}
+				return ast;
+			}
+		case GenericAmbiguityClasses::DecrementExpr:
+			{
+				vl::Ptr<genericambiguity::ExprToResolve> ast = new genericambiguity::ExprToResolve();
+				for (auto candidate : candidates)
+				{
+					auto typedAst = candidate.Cast<genericambiguity::DecrementExpr>();
 					if (!typedAst) throw vl::glr::AstInsException(L"The type of the ambiguous candidate is not compatible to the required type", vl::glr::AstInsErrorType::UnexpectedAmbiguousCandidate, type);
 					ast->candidates.Add(typedAst);
 				}

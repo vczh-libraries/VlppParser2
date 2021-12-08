@@ -15,12 +15,13 @@ namespace genericambiguity
 	{
 		BinaryExpr = 0,
 		CallExpr = 1,
-		Expr = 2,
-		ExprToResolve = 3,
-		GenericExpr = 4,
-		Module = 5,
-		PostfixExpr = 6,
-		RefExpr = 7,
+		DecrementExpr = 2,
+		Expr = 3,
+		ExprToResolve = 4,
+		GenericExpr = 5,
+		Module = 6,
+		PostfixExpr = 7,
+		RefExpr = 8,
 	};
 
 	enum class GenericAmbiguityFields : vl::vint32_t
@@ -30,6 +31,7 @@ namespace genericambiguity
 		BinaryExpr_right = (static_cast<vl::vint32_t>(GenericAmbiguityClasses::BinaryExpr) << 8) + 2,
 		CallExpr_args = (static_cast<vl::vint32_t>(GenericAmbiguityClasses::CallExpr) << 8) + 0,
 		CallExpr_func = (static_cast<vl::vint32_t>(GenericAmbiguityClasses::CallExpr) << 8) + 1,
+		DecrementExpr_expr = (static_cast<vl::vint32_t>(GenericAmbiguityClasses::DecrementExpr) << 8) + 0,
 		ExprToResolve_candidates = (static_cast<vl::vint32_t>(GenericAmbiguityClasses::ExprToResolve) << 8) + 0,
 		GenericExpr_args = (static_cast<vl::vint32_t>(GenericAmbiguityClasses::GenericExpr) << 8) + 0,
 		GenericExpr_name = (static_cast<vl::vint32_t>(GenericAmbiguityClasses::GenericExpr) << 8) + 1,
