@@ -272,7 +272,7 @@ Builder
 
 					StateSymbol* CreateState()
 					{
-						return ruleSymbol->Owner()->CreateState(ruleSymbol);
+						return ruleSymbol->Owner()->CreateState(ruleSymbol, ruleSymbol->CurrentClauseId());
 					}
 
 					EdgeSymbol* CreateEdge(StateSymbol* from, StateSymbol* to)
@@ -513,6 +513,8 @@ Builder
 					template<typename C>
 					void Assign(const C& clause)
 					{
+						ruleSymbol->NewClause();
+
 						clauseDisplayText = L"";
 						startPoses.Clear();
 						endPoses.Clear();

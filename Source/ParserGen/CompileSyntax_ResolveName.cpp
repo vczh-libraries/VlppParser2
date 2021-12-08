@@ -15,8 +15,8 @@ ResolveNameVisitor
 
 			class ResolveNameVisitor
 				: public Object
-				, public virtual GlrSyntax::IVisitor
-				, public virtual GlrClause::IVisitor
+				, protected virtual GlrSyntax::IVisitor
+				, protected virtual GlrClause::IVisitor
 			{
 			protected:
 				VisitorContext&				context;
@@ -57,6 +57,12 @@ ResolveNameVisitor
 				{
 				}
 
+				void ResolveClause(Ptr<GlrClause> clause)
+				{
+					clause->Accept(this);
+				}
+
+			protected:
 				void Visit(GlrRefSyntax* node) override
 				{
 					vint tokenIndex = context.lexerManager.TokenOrder().IndexOf(node->name.value);
@@ -199,7 +205,7 @@ ResolveName
 						ResolveNameVisitor visitor(context, ruleSymbol);
 						for (auto clause : rule->clauses)
 						{
-							clause->Accept(&visitor);
+							visitor.ResolveClause(clause);
 						}
 					}
 				}

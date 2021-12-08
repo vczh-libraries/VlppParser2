@@ -15,8 +15,8 @@ ValidateStructureCountingVisitor
 
 			class ValidateStructureCountingVisitor
 				: public Object
-				, public virtual GlrSyntax::IVisitor
-				, public virtual GlrClause::IVisitor
+				, protected virtual GlrSyntax::IVisitor
+				, protected virtual GlrClause::IVisitor
 			{
 			protected:
 				VisitorContext&				context;
@@ -40,6 +40,12 @@ ValidateStructureCountingVisitor
 				{
 				}
 
+				void ValidateClause(Ptr<GlrClause> clause)
+				{
+					clause->Accept(this);
+				}
+
+			protected:
 				void Visit(GlrRefSyntax* node) override
 				{
 					syntaxMinLength = 1;
@@ -253,8 +259,8 @@ ValidateStructureRelationshipVisitor
 
 			class ValidateStructureRelationshipVisitor
 				: public Object
-				, public virtual GlrSyntax::IVisitor
-				, public virtual GlrClause::IVisitor
+				, protected virtual GlrSyntax::IVisitor
+				, protected virtual GlrClause::IVisitor
 			{
 				struct Link
 				{
@@ -389,6 +395,12 @@ ValidateStructureRelationshipVisitor
 					}
 				}
 
+				void ValidateClause(Ptr<GlrClause> clause)
+				{
+					clause->Accept(this);
+				}
+
+			protected:
 				void Visit(GlrRefSyntax* node) override
 				{
 					if (node->field)
@@ -542,8 +554,8 @@ ValidateStructure
 						for (auto clause : rule->clauses)
 						{
 							ValidateStructureRelationshipVisitor visitor2(context, ruleSymbol);
-							clause->Accept(&visitor1);
-							clause->Accept(&visitor2);
+							visitor1.ValidateClause(clause);
+							visitor2.ValidateClause(clause);
 						}
 					}
 				}

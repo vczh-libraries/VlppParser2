@@ -15,23 +15,14 @@ ValidateTypesVisitor
 
 			class ValidateTypesVisitor
 				: public Object
-				, public virtual GlrSyntax::IVisitor
-				, public virtual GlrClause::IVisitor
+				, protected virtual GlrSyntax::IVisitor
+				, protected virtual GlrClause::IVisitor
 			{
 			protected:
 				VisitorContext&				context;
 				RuleSymbol*					ruleSymbol;
 				GlrClause*					clause = nullptr;
-
-			public:
-				ValidateTypesVisitor(
-					VisitorContext& _context,
-					RuleSymbol* _ruleSymbol
-				)
-					: context(_context)
-					, ruleSymbol(_ruleSymbol)
-				{
-				}
+				
 
 				AstClassPropSymbol* FindField(AstClassSymbol*& clauseType, const WString& name)
 				{
@@ -71,6 +62,22 @@ ValidateTypesVisitor
 					return false;
 				}
 
+			public:
+				ValidateTypesVisitor(
+					VisitorContext& _context,
+					RuleSymbol* _ruleSymbol
+				)
+					: context(_context)
+					, ruleSymbol(_ruleSymbol)
+				{
+				}
+
+				void ValidateClause(Ptr<GlrClause> clause)
+				{
+					clause->Accept(this);
+				}
+
+			protected:
 				void Visit(GlrRefSyntax* node) override
 				{
 					vint ruleIndex = context.syntaxManager.Rules().Keys().IndexOf(node->name.value);
@@ -268,7 +275,7 @@ ValidateTypes
 						ValidateTypesVisitor visitor(context, ruleSymbol);
 						for (auto clause : rule->clauses)
 						{
-							clause->Accept(&visitor);
+							visitor.ValidateClause(clause);
 						}
 					}
 				}

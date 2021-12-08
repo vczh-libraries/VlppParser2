@@ -15,8 +15,8 @@ CompileSyntaxVisitor
 
 			class CompileSyntaxVisitor
 				: public Object
-				, public virtual GlrSyntax::IVisitor
-				, public virtual GlrClause::IVisitor
+				, protected virtual GlrSyntax::IVisitor
+				, protected virtual GlrClause::IVisitor
 			{
 			protected:
 				struct StatePair
@@ -38,7 +38,7 @@ CompileSyntaxVisitor
 
 				StateSymbol* CreateState()
 				{
-					return ruleSymbol->Owner()->CreateState(ruleSymbol);
+					return ruleSymbol->Owner()->CreateState(ruleSymbol, ruleSymbol->CurrentClauseId());
 				}
 
 				EdgeSymbol* CreateEdge(StateSymbol* from, StateSymbol* to)
@@ -69,6 +69,8 @@ CompileSyntaxVisitor
 
 				void AssignClause(const Ptr<GlrClause>& node)
 				{
+					ruleSymbol->NewClause();
+
 					clauseDisplayText = L"";
 					startPoses.Clear();
 					endPoses.Clear();
@@ -88,6 +90,7 @@ CompileSyntaxVisitor
 					}
 				}
 
+			protected:
 				void Visit(GlrRefSyntax* node) override
 				{
 					{

@@ -51,6 +51,7 @@ namespace vl
 
 			BEGIN_SERIALIZATION(StateDesc)
 				SERIALIZE(rule)
+				SERIALIZE(clause)
 				SERIALIZE(endingState)
 			END_SERIALIZATION
 

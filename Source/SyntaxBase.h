@@ -64,6 +64,7 @@ Automaton
 			struct StateDesc
 			{
 				vint32_t							rule = -1;
+				vint32_t							clause = -1;
 				bool								endingState = false;
 			};
 
@@ -201,6 +202,11 @@ Execution
 																				// if all candidates fail, it could be Holding forever
 
 				vint32_t				ownerTrace = -1;			// the id of the Trace that holds this competition
+
+				vint32_t				ruleId = -1;				// the rule id of state, when an edge starts this competition
+				vint32_t				clauseId = -1;				// the clause id of the state, when an edge starts this competition
+																	// an state must be picked up and ensure that, the syntax creating the priority and the state belong to the same clause
+
 				vint32_t				highBet = -1;				// the id of the high bet AttendingCompetitions for this competition
 				vint32_t				lowBet = -1;				// the id of the low bet AttendingCompetitions for this competition
 

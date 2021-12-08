@@ -51,6 +51,7 @@ SyntaxSymbolManager::BuildAutomaton
 				{
 					auto&& stateDesc = executable.states[index];
 					stateDesc.rule = (vint32_t)rulesInOrder.IndexOf(state->Rule());
+					stateDesc.clause = state->ClauseId();
 					stateDesc.endingState = state->endingState;
 				}
 

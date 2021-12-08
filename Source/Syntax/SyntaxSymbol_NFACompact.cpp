@@ -185,7 +185,7 @@ CompactSyntaxBuilder
 					}
 					else
 					{
-						auto newState = new StateSymbol(rule);
+						auto newState = new StateSymbol(rule, state->ClauseId());
 						newState->label = state->label;
 						newStates.Add(newState);
 						oldToNew.Add(state, newState);
@@ -268,7 +268,7 @@ SyntaxSymbolManager::EliminateEpsilonEdges
 
 			StateSymbol* SyntaxSymbolManager::EliminateEpsilonEdges(RuleSymbol* rule, StateList& newStates, EdgeList& newEdges)
 			{
-				auto psuedoState = CreateState(rule);
+				auto psuedoState = CreateState(rule, -1);
 				for (auto startState : rule->startStates)
 				{
 					CreateEdge(psuedoState, startState);
@@ -278,7 +278,7 @@ SyntaxSymbolManager::EliminateEpsilonEdges
 				auto compactStartState = builder.CreateCompactState(psuedoState);
 				compactStartState->label = L" BEGIN ";
 
-				auto compactEndState = new StateSymbol(rule);
+				auto compactEndState = new StateSymbol(rule, -1);
 				compactEndState->label = L" END ";
 				compactEndState->endingState = true;
 				newStates.Add(compactEndState);
