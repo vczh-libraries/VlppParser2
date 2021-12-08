@@ -89,11 +89,9 @@ TraceManager::PrepareTraceRoute
 					break;
 				}
 
-				// if we found a ReopenObject or BeginObjectLeftRecursive which creates the bottom object in stack
-				// then we should continue until we reach the BeginObject
-				// because such BeginObject creates objects that eventually become part of ReopenObject or BeginObjectLeftRecursive created objects
-				// we cannot allow sharing the same child AST object in different parent AST objects.
-				return objectCount == 0 && ins.type == AstInsType::BeginObject;
+				// if we found a ReopenObject
+				// we should continue to search until we reach BeginObject or BeginObjectLeftRecursive
+				return objectCount == 0 && (ins.type == AstInsType::BeginObject || ins.type == AstInsType::BeginObjectLeftRecursive);
 #undef ERROR_MESSAGE_PREFIX
 			}
 
@@ -211,6 +209,7 @@ TraceManager::PrepareTraceRoute
 
 				vint32_t insBeginObject = -1;
 				vint32_t traceBeginObject = -1;
+				vint32_t ambiguityType = -1;
 
 				// call FindBalancedBeginObject on all predecessors
 				auto predecessorId = trace->predecessors.first;
@@ -226,7 +225,34 @@ TraceManager::PrepareTraceRoute
 						vint32_t branchObjectCount = objectCount;
 						FindBalancedBeginObject(branchTrace, branchInstruction, branchObjectCount);
 
-						// the instruction found from different predecessors must be the same
+						// no matter if we found BeginObject or BeginObjectLeftRecursive
+						// we now know what type of the AST we need to resolve
+						ReadInstructionList(branchTrace, branchInsLists);
+						auto ins = ReadInstruction(branchInstruction, branchInsLists);
+						vint32_t branchType = ins.param;
+						if (ambiguityType == -1)
+						{
+							ambiguityType = branchType;
+						}
+						else
+						{
+							CHECK_ERROR(ambiguityType == branchType, ERROR_MESSAGE_PREFIX L"Not Implemented");
+						}
+
+						// if we found a BeginObjectLeftRecursive which creates the bottom object in stack
+						// then we should continue until we reach the BeginObject
+						// because such BeginObject creates objects that eventually become part of BeginObjectLeftRecursive created objects
+						// we cannot allow sharing the same child AST object in different parent AST objects.
+						branchObjectCount = 0;
+						while (ins.type == AstInsType::BeginObjectLeftRecursive)
+						{
+							branchInstruction--;
+							FindBalancedBeginObject(branchTrace, branchInstruction, branchObjectCount);
+							ReadInstructionList(branchTrace, branchInsLists);
+							ins = ReadInstruction(branchInstruction, branchInsLists);
+						}
+
+						// BeginObject found from different predecessors must be the same
 						if (traceBeginObject == -1)
 						{
 							traceBeginObject = branchTrace->allocatedIndex;
@@ -245,11 +271,7 @@ TraceManager::PrepareTraceRoute
 					trace->ambiguity.insEndObject = insEndObject;
 					trace->ambiguity.insBeginObject = insBeginObject;
 					trace->ambiguity.traceBeginObject = traceBeginObject;
-
-					auto currentTrace = GetTrace(traceBeginObject);
-					ReadInstructionList(currentTrace, insLists);
-					auto ins = ReadInstruction(insBeginObject, insLists);
-					trace->ambiguity.ambiguityType = ins.param;
+					trace->ambiguity.ambiguityType = ambiguityType;
 				}
 #undef ERROR_MESSAGE_PREFIX
 			}
