@@ -34,7 +34,7 @@
       1. [x] `Calculator.
       2. [x] `IfElseAmbiguity`. (Equal)
       3. [x] `IfElsePriority`. (PreferTake)
-      4. [x] `GenericAmbiguity` (Ambiguity happens in loop)
+      4. [x] `GenericAmbiguity` (Ambiguity in loop, ambiguity in left recursive clauses)
       5. [ ] `IfElsePriority2`. (PreferSkip, but don't let `-[C]` ends a clause (add compile error), or it will always win)
       6. [ ] `GenericPriority` (?)
    2. [ ] Generate JSON parser

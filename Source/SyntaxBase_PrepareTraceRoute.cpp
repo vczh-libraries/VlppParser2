@@ -172,7 +172,7 @@ TraceManager::PrepareTraceRoute
 				// by executing from such BeginObject instead of BeginObjectLeftRecursive for all branches
 				// we prevent the object created by such BeginObject to be shared in multiple other objects
 
-#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::SearchSingleTraceForBeginObject(Trace*&, vint&, vint&)#"
+#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::FillAmbiguityInfoForMergingTrace(Trace*)#"
 				// skip if the instruction has been found
 				if (trace->ambiguity.traceBeginObject != -1)
 				{
