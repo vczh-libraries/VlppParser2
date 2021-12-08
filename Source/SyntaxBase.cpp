@@ -145,8 +145,9 @@ TraceManager
 				}
 			}
 
-			TraceManager::TraceManager(Executable& _executable)
-				:executable(_executable)
+			TraceManager::TraceManager(Executable& _executable, ITypeCallback* _typeCallback)
+				: executable(_executable)
+				, typeCallback(_typeCallback)
 			{
 			}
 

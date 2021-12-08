@@ -230,13 +230,20 @@ TraceManager::PrepareTraceRoute
 						ReadInstructionList(branchTrace, branchInsLists);
 						auto ins = ReadInstruction(branchInstruction, branchInsLists);
 						vint32_t branchType = ins.param;
-						if (ambiguityType == -1)
+
+						if (!typeCallback)
+						{
+							CHECK_ERROR(ambiguityType == branchType, ERROR_MESSAGE_PREFIX L"TraceManager::ITypeCallback is not installed, unable to merge from ambiguity types.");
+						}
+						else if (ambiguityType == -1)
 						{
 							ambiguityType = branchType;
 						}
-						else
+						else if (typeCallback)
 						{
-							CHECK_ERROR(ambiguityType == branchType, ERROR_MESSAGE_PREFIX L"Not Implemented");
+							vint32_t newType = typeCallback->FindCommonBaseClass(ambiguityType, branchType);
+							CHECK_ERROR(newType != -1, ERROR_MESSAGE_PREFIX L"Failed to merge from ambiguity types.");
+							ambiguityType = newType;
 						}
 
 						// if we found a BeginObjectLeftRecursive which creates the bottom object in stack
