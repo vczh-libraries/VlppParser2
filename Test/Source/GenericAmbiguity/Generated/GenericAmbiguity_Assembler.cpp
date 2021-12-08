@@ -327,6 +327,28 @@ GenericAmbiguityAstInsReceiver : public vl::glr::AstInsReceiverBase
 				}
 				return ast;
 			}
+		case GenericAmbiguityClasses::Expr:
+			{
+				vl::Ptr<genericambiguity::ExprToResolve> ast = new genericambiguity::ExprToResolve();
+				for (auto candidate : candidates)
+				{
+					auto typedAst = candidate.Cast<genericambiguity::Expr>();
+					if (!typedAst) throw vl::glr::AstInsException(L"The type of the ambiguous candidate is not compatible to the required type", vl::glr::AstInsErrorType::UnexpectedAmbiguousCandidate, type);
+					ast->candidates.Add(typedAst);
+				}
+				return ast;
+			}
+		case GenericAmbiguityClasses::ExprToResolve:
+			{
+				vl::Ptr<genericambiguity::ExprToResolve> ast = new genericambiguity::ExprToResolve();
+				for (auto candidate : candidates)
+				{
+					auto typedAst = candidate.Cast<genericambiguity::ExprToResolve>();
+					if (!typedAst) throw vl::glr::AstInsException(L"The type of the ambiguous candidate is not compatible to the required type", vl::glr::AstInsErrorType::UnexpectedAmbiguousCandidate, type);
+					ast->candidates.Add(typedAst);
+				}
+				return ast;
+			}
 		case GenericAmbiguityClasses::GenericExpr:
 			{
 				vl::Ptr<genericambiguity::ExprToResolve> ast = new genericambiguity::ExprToResolve();
@@ -360,8 +382,6 @@ GenericAmbiguityAstInsReceiver : public vl::glr::AstInsReceiverBase
 				}
 				return ast;
 			}
-		case GenericAmbiguityClasses::Expr:
-		case GenericAmbiguityClasses::ExprToResolve:
 		case GenericAmbiguityClasses::Module:
 			throw vl::glr::AstInsException(L"The type is not configured to allow ambiguity.", vl::glr::AstInsErrorType::UnsupportedAmbiguityType, type);
 		default:

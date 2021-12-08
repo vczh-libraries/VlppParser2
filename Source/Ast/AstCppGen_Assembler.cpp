@@ -323,7 +323,7 @@ WriteAstAssemblerCppFile
 					}
 
 					/***********************************************************************
-					ResolveAmbiguity
+					TypeName
 					***********************************************************************/
 					{
 						writer.WriteLine(L"");
@@ -346,7 +346,7 @@ WriteAstAssemblerCppFile
 					}
 
 					/***********************************************************************
-					ResolveAmbiguity
+					FieldName
 					***********************************************************************/
 					{
 						writer.WriteLine(L"");
@@ -391,10 +391,7 @@ WriteAstAssemblerCppFile
 								{
 									if (current->ambiguousDerivedClass)
 									{
-										if (classSymbol != current && classSymbol != current->ambiguousDerivedClass)
-										{
-											resolvables.Add(classSymbol, current->ambiguousDerivedClass);
-										}
+										resolvables.Add(classSymbol, current->ambiguousDerivedClass);
 										break;
 									}
 									current = current->baseClass;

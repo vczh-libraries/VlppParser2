@@ -188,6 +188,17 @@ IfElseAmbiguityAstInsReceiver : public vl::glr::AstInsReceiverBase
 	{
 		switch((IfElseAmbiguityClasses)type)
 		{
+		case IfElseAmbiguityClasses::IfContent:
+			{
+				vl::Ptr<ifelseambiguity::IfContentToResolve> ast = new ifelseambiguity::IfContentToResolve();
+				for (auto candidate : candidates)
+				{
+					auto typedAst = candidate.Cast<ifelseambiguity::IfContent>();
+					if (!typedAst) throw vl::glr::AstInsException(L"The type of the ambiguous candidate is not compatible to the required type", vl::glr::AstInsErrorType::UnexpectedAmbiguousCandidate, type);
+					ast->candidates.Add(typedAst);
+				}
+				return ast;
+			}
 		case IfElseAmbiguityClasses::IfContentCandidate:
 			{
 				vl::Ptr<ifelseambiguity::IfContentToResolve> ast = new ifelseambiguity::IfContentToResolve();
@@ -199,10 +210,19 @@ IfElseAmbiguityAstInsReceiver : public vl::glr::AstInsReceiverBase
 				}
 				return ast;
 			}
+		case IfElseAmbiguityClasses::IfContentToResolve:
+			{
+				vl::Ptr<ifelseambiguity::IfContentToResolve> ast = new ifelseambiguity::IfContentToResolve();
+				for (auto candidate : candidates)
+				{
+					auto typedAst = candidate.Cast<ifelseambiguity::IfContentToResolve>();
+					if (!typedAst) throw vl::glr::AstInsException(L"The type of the ambiguous candidate is not compatible to the required type", vl::glr::AstInsErrorType::UnexpectedAmbiguousCandidate, type);
+					ast->candidates.Add(typedAst);
+				}
+				return ast;
+			}
 		case IfElseAmbiguityClasses::BlockStat:
 		case IfElseAmbiguityClasses::DoStat:
-		case IfElseAmbiguityClasses::IfContent:
-		case IfElseAmbiguityClasses::IfContentToResolve:
 		case IfElseAmbiguityClasses::IfStat:
 		case IfElseAmbiguityClasses::Module:
 		case IfElseAmbiguityClasses::Stat:
