@@ -172,36 +172,44 @@ WriteSyntaxCppFile
 				}
 
 				{
-					Array<AstClassSymbol*> idToClasses;
-					for (auto [k, v] : output->classIds)
-					{
-						idToClasses[v] = k;
-					}
 
 					writer.WriteLine(L"");
 					writer.WriteLine(prefix + L"vl::vint32_t " + manager.name + L"::FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2)");
 					writer.WriteLine(prefix + L"{");
-					writer.WriteLine(prefix + L"\tif (class1 < 0 || class1 >= " + itow(idToClasses.Count()) + L") throw vl::glr::AstInsException(L\"The type id does not exist.\", vl::glr::AstInsErrorType::UnknownType, type);");
-					writer.WriteLine(prefix + L"\tif (class2 < 0 || class2 >= " + itow(idToClasses.Count()) + L") throw vl::glr::AstInsException(L\"The type id does not exist.\", vl::glr::AstInsErrorType::UnknownType, type);");
-					writer.WriteLine(prefix + L"\tstatic vl::vint32_t results[][] = {");
-					for (auto [c1, i1] : indexed(idToClasses))
+					if (output->classIds.Count() == 0)
 					{
-						writer.WriteString(prefix + L"\t\t{");
-						for (auto [c2, i2] : indexed(idToClasses))
-						{
-							if (auto baseClass = FindCommonBaseClass(c1, c2))
-							{
-								writer.WriteString(itow(output->classIds[baseClass]) + L", ");
-							}
-							else
-							{
-								writer.WriteString(L"-1, ");
-							}
-						}
-						writer.WriteLine(L"},");
+						writer.WriteLine(prefix + L"\treturn -1;"); 
 					}
-					writer.WriteLine(prefix + L"\t};");
-					writer.WriteLine(prefix + L"\treturn results[class1][class2];");
+					else
+					{
+						Array<AstClassSymbol*> idToClasses;
+						for (auto [k, v] : output->classIds)
+						{
+							idToClasses[v] = k;
+						}
+
+						writer.WriteLine(prefix + L"\tif (class1 < 0 || class1 >= " + itow(idToClasses.Count()) + L") throw vl::glr::AstInsException(L\"The type id does not exist.\", vl::glr::AstInsErrorType::UnknownType, type);");
+						writer.WriteLine(prefix + L"\tif (class2 < 0 || class2 >= " + itow(idToClasses.Count()) + L") throw vl::glr::AstInsException(L\"The type id does not exist.\", vl::glr::AstInsErrorType::UnknownType, type);");
+						writer.WriteLine(prefix + L"\tstatic vl::vint32_t results[][] = {");
+						for (auto [c1, i1] : indexed(idToClasses))
+						{
+							writer.WriteString(prefix + L"\t\t{");
+							for (auto [c2, i2] : indexed(idToClasses))
+							{
+								if (auto baseClass = FindCommonBaseClass(c1, c2))
+								{
+									writer.WriteString(itow(output->classIds[baseClass]) + L", ");
+								}
+								else
+								{
+									writer.WriteString(L"-1, ");
+								}
+							}
+							writer.WriteLine(L"},");
+						}
+						writer.WriteLine(prefix + L"\t};");
+						writer.WriteLine(prefix + L"\treturn results[class1][class2];");
+					}
 					writer.WriteLine(prefix + L"};");
 				}
 
