@@ -63,51 +63,6 @@ ValidatePartialRules
 CalculateRuleAndClauseTypes
 ***********************************************************************/
 
-			AstClassSymbol* MergeClassSymbol(AstClassSymbol* c1, AstClassSymbol* c2)
-			{
-				if (c1 == c2) return c1;
-				if (!c1) return c2;
-				if (!c2) return c1;
-
-				// find common base classes
-				vint n1 = 0, n2 = 0;
-				{
-					auto c = c1;
-					while (c)
-					{
-						n1++;
-						c = c->baseClass;
-					}
-				}
-				{
-					auto c = c2;
-					while (c)
-					{
-						n2++;
-						c = c->baseClass;
-					}
-				}
-
-				while (n1 > n2)
-				{
-					n1--;
-					c1 = c1->baseClass;
-				}
-				while (n2 > n1)
-				{
-					n2--;
-					c2 = c2->baseClass;
-				}
-
-				while (c1 && c2)
-				{
-					if (c1 == c2) return c1;
-					c1 = c1->baseClass;
-					c2 = c2->baseClass;
-				}
-				return nullptr;
-			}
-
 			void CalculateRuleAndClauseTypes(VisitorContext& context)
 			{
 				// find cyclic dependencies in "Rule ::= !Rule"
@@ -139,7 +94,7 @@ CalculateRuleAndClauseTypes
 						vint index = context.clauseTypes.Keys().IndexOf(clause.Obj());
 						if (index != -1)
 						{
-							rule->ruleType = MergeClassSymbol(rule->ruleType, context.clauseTypes.Values()[index]);
+							rule->ruleType = FindCommonBaseClass(rule->ruleType, context.clauseTypes.Values()[index]);
 							if (!rule->ruleType)
 							{
 								context.global.AddError(
@@ -165,11 +120,11 @@ CalculateRuleAndClauseTypes
 							AstClassSymbol* type = nullptr;
 							for (auto dep : context.ruleReuseDependencies.GetByIndex(index))
 							{
-								type = MergeClassSymbol(type, dep->ruleType);
+								type = FindCommonBaseClass(type, dep->ruleType);
 							}
 							if (type)
 							{
-								rule->ruleType = MergeClassSymbol(rule->ruleType, type);
+								rule->ruleType = FindCommonBaseClass(rule->ruleType, type);
 								if (!rule->ruleType)
 								{
 									context.global.AddError(
@@ -214,7 +169,7 @@ CalculateRuleAndClauseTypes
 							AstClassSymbol* type = nullptr;
 							for (auto dep : context.clauseReuseDependencies.GetByIndex(index))
 							{
-								type = MergeClassSymbol(type, dep->ruleType);
+								type = FindCommonBaseClass(type, dep->ruleType);
 							}
 
 							if (type)

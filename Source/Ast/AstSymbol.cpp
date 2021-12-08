@@ -182,6 +182,55 @@ AstClassSymbol
 			}
 
 /***********************************************************************
+FindCommonBaseClass
+***********************************************************************/
+
+			AstClassSymbol* FindCommonBaseClass(AstClassSymbol* c1, AstClassSymbol* c2)
+			{
+				if (c1 == c2) return c1;
+				if (!c1) return c2;
+				if (!c2) return c1;
+
+				// find common base classes
+				vint n1 = 0, n2 = 0;
+				{
+					auto c = c1;
+					while (c)
+					{
+						n1++;
+						c = c->baseClass;
+					}
+				}
+				{
+					auto c = c2;
+					while (c)
+					{
+						n2++;
+						c = c->baseClass;
+					}
+				}
+
+				while (n1 > n2)
+				{
+					n1--;
+					c1 = c1->baseClass;
+				}
+				while (n2 > n1)
+				{
+					n2--;
+					c2 = c2->baseClass;
+				}
+
+				while (c1 && c2)
+				{
+					if (c1 == c2) return c1;
+					c1 = c1->baseClass;
+					c2 = c2->baseClass;
+				}
+				return nullptr;
+			}
+
+/***********************************************************************
 AstDefFile
 ***********************************************************************/
 

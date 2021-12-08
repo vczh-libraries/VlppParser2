@@ -110,6 +110,8 @@ AstClassSymbol
 				const auto&							PropOrder() { return props.order; }
 			};
 
+			extern AstClassSymbol*					FindCommonBaseClass(AstClassSymbol* c1, AstClassSymbol* c2);
+
 /***********************************************************************
 AstDefFile
 ***********************************************************************/
