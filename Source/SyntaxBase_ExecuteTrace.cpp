@@ -84,7 +84,6 @@ TraceManager::ExecuteTrace
 						}
 					}
 
-					startIns = 0;
 					if (trace->ambiguity.traceBeginObject != -1)
 					{
 						// execute the EndObject instruction
@@ -146,6 +145,7 @@ TraceManager::ExecuteTrace
 							submitter.Submit(ins, token);
 						}
 					}
+					startIns = 0;
 
 					if (trace->successors.first == -1)
 					{
