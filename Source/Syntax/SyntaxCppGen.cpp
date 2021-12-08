@@ -172,17 +172,21 @@ WriteSyntaxCppFile
 				}
 
 				{
-
 					writer.WriteLine(L"");
 					writer.WriteLine(prefix + L"vl::vint32_t " + manager.name + L"::FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2)");
 					writer.WriteLine(prefix + L"{");
-					if (output->classIds.Count() == 0)
+					if (
+						output->classIds.Count() == 0 ||
+						From(output->classIds.Keys())
+							.Where([](auto c) { return c->ambiguousDerivedClass != nullptr; })
+							.IsEmpty()
+						)
 					{
 						writer.WriteLine(prefix + L"\treturn -1;"); 
 					}
 					else
 					{
-						Array<AstClassSymbol*> idToClasses;
+						Array<AstClassSymbol*> idToClasses(output->classIds.Count());
 						for (auto [k, v] : output->classIds)
 						{
 							idToClasses[v] = k;

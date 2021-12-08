@@ -76,7 +76,19 @@ namespace ifelseambiguity
 
 	vl::vint32_t ModuleParser::FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2)
 	{
-		return -1;
+		if (class1 < 0 || class1 >= 8) throw vl::glr::AstInsException(L"The type id does not exist.", vl::glr::AstInsErrorType::UnknownType, type);
+		if (class2 < 0 || class2 >= 8) throw vl::glr::AstInsException(L"The type id does not exist.", vl::glr::AstInsErrorType::UnknownType, type);
+		static vl::vint32_t results[][] = {
+			{0, 7, -1, -1, -1, 7, -1, 7, },
+			{7, 1, -1, -1, -1, 7, -1, 7, },
+			{-1, -1, 2, 2, 2, -1, -1, -1, },
+			{-1, -1, 2, 3, 2, -1, -1, -1, },
+			{-1, -1, 2, 2, 4, -1, -1, -1, },
+			{7, 7, -1, -1, -1, 5, -1, 7, },
+			{-1, -1, -1, -1, -1, -1, 6, -1, },
+			{7, 7, -1, -1, -1, 7, -1, 7, },
+		};
+		return results[class1][class2];
 	};
 
 	vl::Ptr<ifelseambiguity::Module> ModuleParser::ParseModule(const vl::WString & input, vl::vint codeIndex)
