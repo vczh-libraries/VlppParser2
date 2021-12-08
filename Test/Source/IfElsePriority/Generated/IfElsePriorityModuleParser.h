@@ -28,8 +28,12 @@ namespace ifelsepriority
 	const wchar_t* ModuleParserStateLabel(vl::vint index);
 	extern void IfElsePriorityModuleParserData(vl::stream::IStream& outputStream);
 
-	class ModuleParser: public vl::glr::ParserBase<IfElsePriorityTokens, ModuleParserStates, IfElsePriorityAstInsReceiver, ModuleParserStateTypes>
+	class ModuleParser
+		: public vl::glr::ParserBase<IfElsePriorityTokens, ModuleParserStates, IfElsePriorityAstInsReceiver, ModuleParserStateTypes>
+		, protected vl::glr::automaton::TraceManager::ITypeCallback
 	{
+	protected:
+		vl::vint32_t FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2) override;
 	public:
 		ModuleParser();
 

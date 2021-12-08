@@ -406,15 +406,16 @@ Parser
 				}
 			}
 
+		protected:
 			template<TStates State>
-			auto Parse(const WString& input, vint codeIndex = -1)
+			auto Parse(const WString& input, automaton::TraceManager::ITypeCallback* typeCallback, vint codeIndex)
 			{
 				#define ERROR_MESSAGE_PREFIX L"vl::glr::ParserBase<...>::ParseWithReceiver<TReceiver2>(const WString&, TState, TReceiver2&, vint)#"
 
 				TokenList tokens;
 				lexer->Parse(input, {}, codeIndex).ReadToEnd(tokens, deleter);
 
-				automaton::TraceManager tm(*executable.Obj());
+				automaton::TraceManager tm(*executable.Obj(), typeCallback);
 				tm.Initialize((vint32_t)State);
 				for (vint32_t i = 0; i < tokens.Count(); i++)
 				{

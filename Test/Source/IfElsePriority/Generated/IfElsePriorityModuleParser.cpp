@@ -74,8 +74,13 @@ namespace ifelsepriority
 	{
 	};
 
+	vl::vint32_t ModuleParser::FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2)
+	{
+		return -1;
+	};
+
 	vl::Ptr<ifelsepriority::Module> ModuleParser::ParseModule(const vl::WString & input, vl::vint codeIndex)
 	{
-		 return Parse<ModuleParserStates::Module>(input, codeIndex);
+		 return Parse<ModuleParserStates::Module>(input, this, codeIndex);
 	};
 }

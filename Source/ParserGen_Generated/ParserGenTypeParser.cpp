@@ -108,9 +108,14 @@ namespace vl
 			{
 			};
 
+			vl::vint32_t TypeParser::FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2)
+			{
+				return -1;
+			};
+
 			vl::Ptr<vl::glr::parsergen::GlrAstFile> TypeParser::ParseFile(const vl::WString & input, vl::vint codeIndex)
 			{
-				 return Parse<TypeParserStates::File>(input, codeIndex);
+				 return Parse<TypeParserStates::File>(input, this, codeIndex);
 			};
 		}
 	}

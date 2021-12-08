@@ -77,12 +77,16 @@ WriteSyntaxHeaderFile
 				}
 				{
 					writer.WriteLine(L"");
-					writer.WriteString(prefix + L"class " + manager.name + L": public vl::glr::ParserBase<");
+					writer.WriteLine(prefix + L"class " + manager.name);
+					writer.WriteString(prefix+L"\t: public vl::glr::ParserBase<");
 					writer.WriteString(manager.Global().name + L"Tokens, ");
 					writer.WriteString(manager.name + L"States, ");
 					writer.WriteString(manager.Global().name + L"AstInsReceiver, ");
 					writer.WriteLine(manager.name + L"StateTypes>");
+					writer.WriteLine(prefix + L"\t, protected vl::glr::automaton::TraceManager::ITypeCallback");
 					writer.WriteLine(prefix + L"{");
+					writer.WriteLine(prefix + L"protected:");
+					writer.WriteLine(prefix + L"\tvl::vint32_t FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2) override;");
 					writer.WriteLine(prefix + L"public:");
 					writer.WriteLine(prefix + L"\t" + manager.name + L"();");
 					writer.WriteLine(L"");
@@ -166,6 +170,14 @@ WriteSyntaxCppFile
 					writer.WriteLine(prefix + L"};");
 				}
 
+				{
+					writer.WriteLine(L"");
+					writer.WriteLine(prefix + L"vl::vint32_t " + manager.name + L"::FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2)");
+					writer.WriteLine(prefix + L"{");
+					writer.WriteLine(prefix + L"\treturn -1;");
+					writer.WriteLine(prefix + L"};");
+				}
+
 				for (auto ruleName : manager.RuleOrder())
 				{
 					auto ruleSymbol = manager.Rules()[ruleName];
@@ -175,7 +187,7 @@ WriteSyntaxCppFile
 						writer.WriteLine(L"");
 						writer.WriteLine(prefix + L"vl::Ptr<" + astType + L"> " + manager.name + L"::Parse" + ruleName + L"(const vl::WString & input, vl::vint codeIndex)");
 						writer.WriteLine(prefix + L"{");
-						writer.WriteLine(prefix + L"\t return Parse<" + manager.name + L"States::" + ruleName + L">(input, codeIndex);");
+						writer.WriteLine(prefix + L"\t return Parse<" + manager.name + L"States::" + ruleName + L">(input, this, codeIndex);");
 						writer.WriteLine(prefix + L"};");
 					}
 				}

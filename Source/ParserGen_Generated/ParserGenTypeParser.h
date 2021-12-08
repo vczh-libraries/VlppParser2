@@ -35,8 +35,12 @@ namespace vl
 			const wchar_t* TypeParserStateLabel(vl::vint index);
 			extern void ParserGenTypeParserData(vl::stream::IStream& outputStream);
 
-			class TypeParser: public vl::glr::ParserBase<ParserGenTokens, TypeParserStates, ParserGenAstInsReceiver, TypeParserStateTypes>
+			class TypeParser
+				: public vl::glr::ParserBase<ParserGenTokens, TypeParserStates, ParserGenAstInsReceiver, TypeParserStateTypes>
+				, protected vl::glr::automaton::TraceManager::ITypeCallback
 			{
+			protected:
+				vl::vint32_t FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2) override;
 			public:
 				TypeParser();
 

@@ -148,9 +148,14 @@ namespace vl
 			{
 			};
 
+			vl::vint32_t RuleParser::FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2)
+			{
+				return -1;
+			};
+
 			vl::Ptr<vl::glr::parsergen::GlrSyntaxFile> RuleParser::ParseFile(const vl::WString & input, vl::vint codeIndex)
 			{
-				 return Parse<RuleParserStates::File>(input, codeIndex);
+				 return Parse<RuleParserStates::File>(input, this, codeIndex);
 			};
 		}
 	}
