@@ -141,72 +141,44 @@ GenericAmbiguityAstInsReceiver : public vl::glr::AstInsReceiverBase
 
 	const wchar_t* GenericAmbiguityFieldName(GenericAmbiguityFields field)
 	{
-		switch(field)
-		{
-		case GenericAmbiguityFields::BinaryExpr_left:
-			return L"BinaryExpr::left";
-		case GenericAmbiguityFields::BinaryExpr_op:
-			return L"BinaryExpr::op";
-		case GenericAmbiguityFields::BinaryExpr_right:
-			return L"BinaryExpr::right";
-		case GenericAmbiguityFields::CallExpr_args:
-			return L"CallExpr::args";
-		case GenericAmbiguityFields::CallExpr_func:
-			return L"CallExpr::func";
-		case GenericAmbiguityFields::DecrementExpr_expr:
-			return L"DecrementExpr::expr";
-		case GenericAmbiguityFields::ExprToResolve_candidates:
-			return L"ExprToResolve::candidates";
-		case GenericAmbiguityFields::GenericExpr_args:
-			return L"GenericExpr::args";
-		case GenericAmbiguityFields::GenericExpr_name:
-			return L"GenericExpr::name";
-		case GenericAmbiguityFields::Module_expr:
-			return L"Module::expr";
-		case GenericAmbiguityFields::PostfixExpr_expr:
-			return L"PostfixExpr::expr";
-		case GenericAmbiguityFields::PostfixExpr_op:
-			return L"PostfixExpr::op";
-		case GenericAmbiguityFields::RefExpr_name:
-			return L"RefExpr::name";
-		default:
-			return nullptr;
-		}
+		const wchar_t* results[] = {
+			L"BinaryExpr::left",
+			L"BinaryExpr::op",
+			L"BinaryExpr::right",
+			L"CallExpr::args",
+			L"CallExpr::func",
+			L"DecrementExpr::expr",
+			L"ExprToResolve::candidates",
+			L"GenericExpr::args",
+			L"GenericExpr::name",
+			L"Module::expr",
+			L"PostfixExpr::expr",
+			L"PostfixExpr::op",
+			L"RefExpr::name",
+		};
+		vl::vint index = (vl::vint)field;
+		return 0 <= index && index < 13 ? results[index] : nullptr;
 	}
 
 	const wchar_t* GenericAmbiguityCppFieldName(GenericAmbiguityFields field)
 	{
-		switch(field)
-		{
-		case GenericAmbiguityFields::BinaryExpr_left:
-			return L"genericambiguity::BinaryExpr::left";
-		case GenericAmbiguityFields::BinaryExpr_op:
-			return L"genericambiguity::BinaryExpr::op";
-		case GenericAmbiguityFields::BinaryExpr_right:
-			return L"genericambiguity::BinaryExpr::right";
-		case GenericAmbiguityFields::CallExpr_args:
-			return L"genericambiguity::CallExpr::args";
-		case GenericAmbiguityFields::CallExpr_func:
-			return L"genericambiguity::CallExpr::func";
-		case GenericAmbiguityFields::DecrementExpr_expr:
-			return L"genericambiguity::DecrementExpr::expr";
-		case GenericAmbiguityFields::ExprToResolve_candidates:
-			return L"genericambiguity::ExprToResolve::candidates";
-		case GenericAmbiguityFields::GenericExpr_args:
-			return L"genericambiguity::GenericExpr::args";
-		case GenericAmbiguityFields::GenericExpr_name:
-			return L"genericambiguity::GenericExpr::name";
-		case GenericAmbiguityFields::Module_expr:
-			return L"genericambiguity::Module::expr";
-		case GenericAmbiguityFields::PostfixExpr_expr:
-			return L"genericambiguity::PostfixExpr::expr";
-		case GenericAmbiguityFields::PostfixExpr_op:
-			return L"genericambiguity::PostfixExpr::op";
-		case GenericAmbiguityFields::RefExpr_name:
-			return L"genericambiguity::RefExpr::name";
-		default:
-			return nullptr;
-		}
+		const wchar_t* results[] = {
+			L"genericambiguity::BinaryExpr::left",
+			L"genericambiguity::BinaryExpr::op",
+			L"genericambiguity::BinaryExpr::right",
+			L"genericambiguity::CallExpr::args",
+			L"genericambiguity::CallExpr::func",
+			L"genericambiguity::DecrementExpr::expr",
+			L"genericambiguity::ExprToResolve::candidates",
+			L"genericambiguity::GenericExpr::args",
+			L"genericambiguity::GenericExpr::name",
+			L"genericambiguity::Module::expr",
+			L"genericambiguity::PostfixExpr::expr",
+			L"genericambiguity::PostfixExpr::op",
+			L"genericambiguity::RefExpr::name",
+		};
+		vl::vint index = (vl::vint)field;
+		return 0 <= index && index < 13 ? results[index] : nullptr;
 	}
 
 	vl::Ptr<vl::glr::ParsingAstBase> GenericAmbiguityAstInsReceiver::ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates)

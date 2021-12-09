@@ -115,44 +115,30 @@ IfElseAmbiguityAstInsReceiver : public vl::glr::AstInsReceiverBase
 
 	const wchar_t* IfElseAmbiguityFieldName(IfElseAmbiguityFields field)
 	{
-		switch(field)
-		{
-		case IfElseAmbiguityFields::BlockStat_stats:
-			return L"BlockStat::stats";
-		case IfElseAmbiguityFields::IfContentCandidate_elseBranch:
-			return L"IfContentCandidate::elseBranch";
-		case IfElseAmbiguityFields::IfContentCandidate_thenBranch:
-			return L"IfContentCandidate::thenBranch";
-		case IfElseAmbiguityFields::IfContentToResolve_candidates:
-			return L"IfContentToResolve::candidates";
-		case IfElseAmbiguityFields::IfStat_content:
-			return L"IfStat::content";
-		case IfElseAmbiguityFields::Module_stat:
-			return L"Module::stat";
-		default:
-			return nullptr;
-		}
+		const wchar_t* results[] = {
+			L"BlockStat::stats",
+			L"IfContentCandidate::elseBranch",
+			L"IfContentCandidate::thenBranch",
+			L"IfContentToResolve::candidates",
+			L"IfStat::content",
+			L"Module::stat",
+		};
+		vl::vint index = (vl::vint)field;
+		return 0 <= index && index < 6 ? results[index] : nullptr;
 	}
 
 	const wchar_t* IfElseAmbiguityCppFieldName(IfElseAmbiguityFields field)
 	{
-		switch(field)
-		{
-		case IfElseAmbiguityFields::BlockStat_stats:
-			return L"ifelseambiguity::BlockStat::stats";
-		case IfElseAmbiguityFields::IfContentCandidate_elseBranch:
-			return L"ifelseambiguity::IfContentCandidate::elseBranch";
-		case IfElseAmbiguityFields::IfContentCandidate_thenBranch:
-			return L"ifelseambiguity::IfContentCandidate::thenBranch";
-		case IfElseAmbiguityFields::IfContentToResolve_candidates:
-			return L"ifelseambiguity::IfContentToResolve::candidates";
-		case IfElseAmbiguityFields::IfStat_content:
-			return L"ifelseambiguity::IfStat::content";
-		case IfElseAmbiguityFields::Module_stat:
-			return L"ifelseambiguity::Module::stat";
-		default:
-			return nullptr;
-		}
+		const wchar_t* results[] = {
+			L"ifelseambiguity::BlockStat::stats",
+			L"ifelseambiguity::IfContentCandidate::elseBranch",
+			L"ifelseambiguity::IfContentCandidate::thenBranch",
+			L"ifelseambiguity::IfContentToResolve::candidates",
+			L"ifelseambiguity::IfStat::content",
+			L"ifelseambiguity::Module::stat",
+		};
+		vl::vint index = (vl::vint)field;
+		return 0 <= index && index < 6 ? results[index] : nullptr;
 	}
 
 	vl::Ptr<vl::glr::ParsingAstBase> IfElseAmbiguityAstInsReceiver::ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates)

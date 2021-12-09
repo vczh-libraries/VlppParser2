@@ -173,96 +173,56 @@ CalculatorAstInsReceiver : public vl::glr::AstInsReceiverBase
 
 	const wchar_t* CalculatorFieldName(CalculatorFields field)
 	{
-		switch(field)
-		{
-		case CalculatorFields::Arg_name:
-			return L"Arg::name";
-		case CalculatorFields::Binary_left:
-			return L"Binary::left";
-		case CalculatorFields::Binary_op:
-			return L"Binary::op";
-		case CalculatorFields::Binary_right:
-			return L"Binary::right";
-		case CalculatorFields::Call_args:
-			return L"Call::args";
-		case CalculatorFields::Call_func:
-			return L"Call::func";
-		case CalculatorFields::Expandable_expanded:
-			return L"Expandable::expanded";
-		case CalculatorFields::Func_args:
-			return L"Func::args";
-		case CalculatorFields::Func_value:
-			return L"Func::value";
-		case CalculatorFields::Import_name:
-			return L"Import::name";
-		case CalculatorFields::LetExpr_name:
-			return L"LetExpr::name";
-		case CalculatorFields::LetExpr_result:
-			return L"LetExpr::result";
-		case CalculatorFields::LetExpr_value:
-			return L"LetExpr::value";
-		case CalculatorFields::Module_exported:
-			return L"Module::exported";
-		case CalculatorFields::Module_imports:
-			return L"Module::imports";
-		case CalculatorFields::NumExpr_value:
-			return L"NumExpr::value";
-		case CalculatorFields::Ref_name:
-			return L"Ref::name";
-		case CalculatorFields::Unary_op:
-			return L"Unary::op";
-		case CalculatorFields::Unary_operand:
-			return L"Unary::operand";
-		default:
-			return nullptr;
-		}
+		const wchar_t* results[] = {
+			L"Arg::name",
+			L"Binary::left",
+			L"Binary::op",
+			L"Binary::right",
+			L"Call::args",
+			L"Call::func",
+			L"Expandable::expanded",
+			L"Func::args",
+			L"Func::value",
+			L"Import::name",
+			L"LetExpr::name",
+			L"LetExpr::result",
+			L"LetExpr::value",
+			L"Module::exported",
+			L"Module::imports",
+			L"NumExpr::value",
+			L"Ref::name",
+			L"Unary::op",
+			L"Unary::operand",
+		};
+		vl::vint index = (vl::vint)field;
+		return 0 <= index && index < 19 ? results[index] : nullptr;
 	}
 
 	const wchar_t* CalculatorCppFieldName(CalculatorFields field)
 	{
-		switch(field)
-		{
-		case CalculatorFields::Arg_name:
-			return L"calculator::Arg::name";
-		case CalculatorFields::Binary_left:
-			return L"calculator::Binary::left";
-		case CalculatorFields::Binary_op:
-			return L"calculator::Binary::op";
-		case CalculatorFields::Binary_right:
-			return L"calculator::Binary::right";
-		case CalculatorFields::Call_args:
-			return L"calculator::Call::args";
-		case CalculatorFields::Call_func:
-			return L"calculator::Call::func";
-		case CalculatorFields::Expandable_expanded:
-			return L"calculator::Expandable::expanded";
-		case CalculatorFields::Func_args:
-			return L"calculator::Func::args";
-		case CalculatorFields::Func_value:
-			return L"calculator::Func::value";
-		case CalculatorFields::Import_name:
-			return L"calculator::Import::name";
-		case CalculatorFields::LetExpr_name:
-			return L"calculator::LetExpr::name";
-		case CalculatorFields::LetExpr_result:
-			return L"calculator::LetExpr::result";
-		case CalculatorFields::LetExpr_value:
-			return L"calculator::LetExpr::value";
-		case CalculatorFields::Module_exported:
-			return L"calculator::Module::exported";
-		case CalculatorFields::Module_imports:
-			return L"calculator::Module::imports";
-		case CalculatorFields::NumExpr_value:
-			return L"calculator::NumExpr::value";
-		case CalculatorFields::Ref_name:
-			return L"calculator::Ref::name";
-		case CalculatorFields::Unary_op:
-			return L"calculator::Unary::op";
-		case CalculatorFields::Unary_operand:
-			return L"calculator::Unary::operand";
-		default:
-			return nullptr;
-		}
+		const wchar_t* results[] = {
+			L"calculator::Arg::name",
+			L"calculator::Binary::left",
+			L"calculator::Binary::op",
+			L"calculator::Binary::right",
+			L"calculator::Call::args",
+			L"calculator::Call::func",
+			L"calculator::Expandable::expanded",
+			L"calculator::Func::args",
+			L"calculator::Func::value",
+			L"calculator::Import::name",
+			L"calculator::LetExpr::name",
+			L"calculator::LetExpr::result",
+			L"calculator::LetExpr::value",
+			L"calculator::Module::exported",
+			L"calculator::Module::imports",
+			L"calculator::NumExpr::value",
+			L"calculator::Ref::name",
+			L"calculator::Unary::op",
+			L"calculator::Unary::operand",
+		};
+		vl::vint index = (vl::vint)field;
+		return 0 <= index && index < 19 ? results[index] : nullptr;
 	}
 
 	vl::Ptr<vl::glr::ParsingAstBase> CalculatorAstInsReceiver::ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates)

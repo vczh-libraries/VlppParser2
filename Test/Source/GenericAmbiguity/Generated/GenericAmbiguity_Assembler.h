@@ -26,19 +26,19 @@ namespace genericambiguity
 
 	enum class GenericAmbiguityFields : vl::vint32_t
 	{
-		BinaryExpr_left = (static_cast<vl::vint32_t>(GenericAmbiguityClasses::BinaryExpr) << 8) + 0,
-		BinaryExpr_op = (static_cast<vl::vint32_t>(GenericAmbiguityClasses::BinaryExpr) << 8) + 1,
-		BinaryExpr_right = (static_cast<vl::vint32_t>(GenericAmbiguityClasses::BinaryExpr) << 8) + 2,
-		CallExpr_args = (static_cast<vl::vint32_t>(GenericAmbiguityClasses::CallExpr) << 8) + 0,
-		CallExpr_func = (static_cast<vl::vint32_t>(GenericAmbiguityClasses::CallExpr) << 8) + 1,
-		DecrementExpr_expr = (static_cast<vl::vint32_t>(GenericAmbiguityClasses::DecrementExpr) << 8) + 0,
-		ExprToResolve_candidates = (static_cast<vl::vint32_t>(GenericAmbiguityClasses::ExprToResolve) << 8) + 0,
-		GenericExpr_args = (static_cast<vl::vint32_t>(GenericAmbiguityClasses::GenericExpr) << 8) + 0,
-		GenericExpr_name = (static_cast<vl::vint32_t>(GenericAmbiguityClasses::GenericExpr) << 8) + 1,
-		Module_expr = (static_cast<vl::vint32_t>(GenericAmbiguityClasses::Module) << 8) + 0,
-		PostfixExpr_expr = (static_cast<vl::vint32_t>(GenericAmbiguityClasses::PostfixExpr) << 8) + 0,
-		PostfixExpr_op = (static_cast<vl::vint32_t>(GenericAmbiguityClasses::PostfixExpr) << 8) + 1,
-		RefExpr_name = (static_cast<vl::vint32_t>(GenericAmbiguityClasses::RefExpr) << 8) + 0,
+		BinaryExpr_left = 0,
+		BinaryExpr_op = 1,
+		BinaryExpr_right = 2,
+		CallExpr_args = 3,
+		CallExpr_func = 4,
+		DecrementExpr_expr = 5,
+		ExprToResolve_candidates = 6,
+		GenericExpr_args = 7,
+		GenericExpr_name = 8,
+		Module_expr = 9,
+		PostfixExpr_expr = 10,
+		PostfixExpr_op = 11,
+		RefExpr_name = 12,
 	};
 
 	extern const wchar_t* GenericAmbiguityTypeName(GenericAmbiguityClasses type);

@@ -22,10 +22,10 @@ namespace ifelsepriority
 
 	enum class IfElsePriorityFields : vl::vint32_t
 	{
-		BlockStat_stats = (static_cast<vl::vint32_t>(IfElsePriorityClasses::BlockStat) << 8) + 0,
-		IfStat_elseBranch = (static_cast<vl::vint32_t>(IfElsePriorityClasses::IfStat) << 8) + 0,
-		IfStat_thenBranch = (static_cast<vl::vint32_t>(IfElsePriorityClasses::IfStat) << 8) + 1,
-		Module_stat = (static_cast<vl::vint32_t>(IfElsePriorityClasses::Module) << 8) + 0,
+		BlockStat_stats = 0,
+		IfStat_elseBranch = 1,
+		IfStat_thenBranch = 2,
+		Module_stat = 3,
 	};
 
 	extern const wchar_t* IfElsePriorityTypeName(IfElsePriorityClasses type);

@@ -99,36 +99,26 @@ IfElsePriorityAstInsReceiver : public vl::glr::AstInsReceiverBase
 
 	const wchar_t* IfElsePriorityFieldName(IfElsePriorityFields field)
 	{
-		switch(field)
-		{
-		case IfElsePriorityFields::BlockStat_stats:
-			return L"BlockStat::stats";
-		case IfElsePriorityFields::IfStat_elseBranch:
-			return L"IfStat::elseBranch";
-		case IfElsePriorityFields::IfStat_thenBranch:
-			return L"IfStat::thenBranch";
-		case IfElsePriorityFields::Module_stat:
-			return L"Module::stat";
-		default:
-			return nullptr;
-		}
+		const wchar_t* results[] = {
+			L"BlockStat::stats",
+			L"IfStat::elseBranch",
+			L"IfStat::thenBranch",
+			L"Module::stat",
+		};
+		vl::vint index = (vl::vint)field;
+		return 0 <= index && index < 4 ? results[index] : nullptr;
 	}
 
 	const wchar_t* IfElsePriorityCppFieldName(IfElsePriorityFields field)
 	{
-		switch(field)
-		{
-		case IfElsePriorityFields::BlockStat_stats:
-			return L"ifelsepriority::BlockStat::stats";
-		case IfElsePriorityFields::IfStat_elseBranch:
-			return L"ifelsepriority::IfStat::elseBranch";
-		case IfElsePriorityFields::IfStat_thenBranch:
-			return L"ifelsepriority::IfStat::thenBranch";
-		case IfElsePriorityFields::Module_stat:
-			return L"ifelsepriority::Module::stat";
-		default:
-			return nullptr;
-		}
+		const wchar_t* results[] = {
+			L"ifelsepriority::BlockStat::stats",
+			L"ifelsepriority::IfStat::elseBranch",
+			L"ifelsepriority::IfStat::thenBranch",
+			L"ifelsepriority::Module::stat",
+		};
+		vl::vint index = (vl::vint)field;
+		return 0 <= index && index < 4 ? results[index] : nullptr;
 	}
 
 	vl::Ptr<vl::glr::ParsingAstBase> IfElsePriorityAstInsReceiver::ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates)

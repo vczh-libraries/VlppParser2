@@ -35,6 +35,7 @@ WriteAstAssemblerHeaderFile
 						writer.WriteLine(prefix + L"};");
 					}
 					{
+						vint index = 0;
 						writer.WriteLine(L"");
 						writer.WriteLine(prefix + L"enum class " + manager.Global().name + L"Fields : vl::vint32_t");
 						writer.WriteLine(prefix + L"{");
@@ -42,13 +43,11 @@ WriteAstAssemblerHeaderFile
 						{
 							if (auto classSymbol = dynamic_cast<AstClassSymbol*>(typeSymbol))
 							{
-								for (auto [propSymbol, index] : indexed(classSymbol->Props().Values()))
+								for (auto propSymbol : classSymbol->Props().Values())
 								{
-									output->fieldIds.Add(propSymbol, (vint32_t)((output->classIds[classSymbol] << 8) + index));
-									writer.WriteString(prefix + L"\t" + classSymbol->Name() + L"_" + propSymbol->Name());
-									writer.WriteString(L" = ");
-									writer.WriteString(L"(static_cast<vl::vint32_t>(" + manager.Global().name + L"Classes::" + classSymbol->Name() + L") << 8) + " + itow(index));
-									writer.WriteLine(L",");
+									output->fieldIds.Add(propSymbol, (vint32_t)index);
+									writer.WriteLine(prefix + L"\t" + classSymbol->Name() + L"_" + propSymbol->Name() + L" = " + itow(index) + L",");
+									index++;
 								}
 							}
 						}
@@ -306,18 +305,21 @@ WriteAstAssemblerCppFile
 						writer.WriteLine(prefix + L"const wchar_t* " + manager.Global().name + L"TypeName(" + manager.Global().name + L"Classes type)");
 						writer.WriteLine(prefix + L"{");
 						writer.WriteLine(prefix + L"\tconst wchar_t* results[] = {");
-						vint count = 0;
-						for (auto typeSymbol : manager.Symbols().Values())
+
+						Array<AstClassSymbol*> idToClasses(output->classIds.Count());
+						for (auto [k, v] : output->classIds)
 						{
-							if (auto classSymbol = dynamic_cast<AstClassSymbol*>(typeSymbol))
-							{
-								writer.WriteLine(prefix + L"\t\tL\"" + classSymbol->Name() + L"\",");
-								count++;
-							}
+							idToClasses[v] = k;
 						}
+
+						for (auto classSymbol : idToClasses)
+						{
+							writer.WriteLine(prefix + L"\t\tL\"" + classSymbol->Name() + L"\",");
+						}
+
 						writer.WriteLine(prefix + L"\t};");
 						writer.WriteLine(prefix + L"\tvl::vint index = (vl::vint)type;");
-						writer.WriteLine(prefix + L"\treturn 0 <= index && index < " + itow(count) + L" ? results[index] : nullptr;");
+						writer.WriteLine(prefix + L"\treturn 0 <= index && index < " + itow(idToClasses.Count()) + L" ? results[index] : nullptr;");
 						writer.WriteLine(prefix + L"}");
 					}
 
@@ -329,20 +331,23 @@ WriteAstAssemblerCppFile
 						writer.WriteLine(prefix + L"const wchar_t* " + manager.Global().name + L"CppTypeName(" + manager.Global().name + L"Classes type)");
 						writer.WriteLine(prefix + L"{");
 						writer.WriteLine(prefix + L"\tconst wchar_t* results[] = {");
-						vint count = 0;
-						for (auto typeSymbol : manager.Symbols().Values())
+
+						Array<AstClassSymbol*> idToClasses(output->classIds.Count());
+						for (auto [k, v] : output->classIds)
 						{
-							if (auto classSymbol = dynamic_cast<AstClassSymbol*>(typeSymbol))
-							{
-								writer.WriteString(prefix + L"\t\tL\"");
-								PrintCppType(nullptr, classSymbol, writer);
-								writer.WriteLine(L"\",");
-								count++;
-							}
+							idToClasses[v] = k;
 						}
+
+						for (auto classSymbol : idToClasses)
+						{
+							writer.WriteString(prefix + L"\t\tL\"");
+							PrintCppType(nullptr, classSymbol, writer);
+							writer.WriteLine(L"\",");
+						}
+
 						writer.WriteLine(prefix + L"\t};");
 						writer.WriteLine(prefix + L"\tvl::vint index = (vl::vint)type;");
-						writer.WriteLine(prefix + L"\treturn 0 <= index && index < " + itow(count) + L" ? results[index] : nullptr;");
+						writer.WriteLine(prefix + L"\treturn 0 <= index && index < " + itow(idToClasses.Count()) + L" ? results[index] : nullptr;");
 						writer.WriteLine(prefix + L"}");
 					}
 
@@ -353,22 +358,23 @@ WriteAstAssemblerCppFile
 						writer.WriteLine(L"");
 						writer.WriteLine(prefix + L"const wchar_t* " + manager.Global().name + L"FieldName(" + manager.Global().name + L"Fields field)");
 						writer.WriteLine(prefix + L"{");
-						writer.WriteLine(prefix + L"\tswitch(field)");
-						writer.WriteLine(prefix + L"\t{");
-						for (auto typeSymbol : manager.Symbols().Values())
+						writer.WriteLine(prefix + L"\tconst wchar_t* results[] = {");
+
+						Array<AstClassPropSymbol*> idToFields(output->fieldIds.Count());
+						for (auto [k, v] : output->fieldIds)
 						{
-							if (auto classSymbol = dynamic_cast<AstClassSymbol*>(typeSymbol))
-							{
-								for (auto [propSymbol, index] : indexed(classSymbol->Props().Values()))
-								{
-									writer.WriteLine(prefix + L"\tcase " + manager.Global().name + L"Fields::" + classSymbol->Name() + L"_" + propSymbol->Name() + L":");
-									writer.WriteLine(prefix + L"\t\treturn L\"" + classSymbol->Name() + L"::" + propSymbol->Name() + L"\";");
-								}
-							}
+							idToFields[v] = k;
 						}
-						writer.WriteLine(prefix + L"\tdefault:");
-						writer.WriteLine(prefix + L"\t\treturn nullptr;");
-						writer.WriteLine(prefix + L"\t}");
+
+						for (auto propSymbol : idToFields)
+						{
+							auto classSymbol = propSymbol->Parent();
+							writer.WriteLine(prefix + L"\t\tL\"" + classSymbol->Name() + L"::" + propSymbol->Name() + L"\",");
+						}
+
+						writer.WriteLine(prefix + L"\t};");
+						writer.WriteLine(prefix + L"\tvl::vint index = (vl::vint)field;");
+						writer.WriteLine(prefix + L"\treturn 0 <= index && index < " + itow(idToFields.Count()) + L" ? results[index] : nullptr;");
 						writer.WriteLine(prefix + L"}");
 					}
 
@@ -379,24 +385,25 @@ WriteAstAssemblerCppFile
 						writer.WriteLine(L"");
 						writer.WriteLine(prefix + L"const wchar_t* " + manager.Global().name + L"CppFieldName(" + manager.Global().name + L"Fields field)");
 						writer.WriteLine(prefix + L"{");
-						writer.WriteLine(prefix + L"\tswitch(field)");
-						writer.WriteLine(prefix + L"\t{");
-						for (auto typeSymbol : manager.Symbols().Values())
+						writer.WriteLine(prefix + L"\tconst wchar_t* results[] = {");
+
+						Array<AstClassPropSymbol*> idToFields(output->fieldIds.Count());
+						for (auto [k, v] : output->fieldIds)
 						{
-							if (auto classSymbol = dynamic_cast<AstClassSymbol*>(typeSymbol))
-							{
-								for (auto [propSymbol, index] : indexed(classSymbol->Props().Values()))
-								{
-									writer.WriteLine(prefix + L"\tcase " + manager.Global().name + L"Fields::" + classSymbol->Name() + L"_" + propSymbol->Name() + L":");
-									writer.WriteString(prefix + L"\t\treturn L\"");
-									PrintCppType(nullptr, classSymbol, writer);
-									writer.WriteLine(L"::" + propSymbol->Name() + L"\";");
-								}
-							}
+							idToFields[v] = k;
 						}
-						writer.WriteLine(prefix + L"\tdefault:");
-						writer.WriteLine(prefix + L"\t\treturn nullptr;");
-						writer.WriteLine(prefix + L"\t}");
+
+						for (auto propSymbol : idToFields)
+						{
+							auto classSymbol = propSymbol->Parent();
+							writer.WriteString(prefix + L"\t\tL\"");
+							PrintCppType(nullptr, classSymbol, writer);
+							writer.WriteLine(L"::" + propSymbol->Name() + L"\",");
+						}
+
+						writer.WriteLine(prefix + L"\t};");
+						writer.WriteLine(prefix + L"\tvl::vint index = (vl::vint)field;");
+						writer.WriteLine(prefix + L"\treturn 0 <= index && index < " + itow(idToFields.Count()) + L" ? results[index] : nullptr;");
 						writer.WriteLine(prefix + L"}");
 					}
 
