@@ -133,8 +133,8 @@ WriteAstAssemblerCppFile
 						writer.WriteLine(prefix + L"void " + manager.Global().name + L"AstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::Ptr<vl::glr::ParsingAstBase> value)");
 						writer.WriteLine(prefix + L"{");
 						writer.WriteLine(prefix + L"\tauto cppFieldName = " + manager.Global().name + L"CppFieldName((" + manager.Global().name + L"Fields)field);");
-						writer.WriteLine(prefix + L"\tswitch((" + manager.Global().name + L"Fields)field)");
-						writer.WriteLine(prefix + L"\t{");
+
+						List<AstClassPropSymbol*> props;
 						for (auto typeSymbol : manager.Symbols().Values())
 						{
 							if (auto classSymbol = dynamic_cast<AstClassSymbol*>(typeSymbol))
@@ -145,23 +145,41 @@ WriteAstAssemblerCppFile
 									{
 										if (dynamic_cast<AstClassSymbol*>(propSymbol->propSymbol))
 										{
-											writer.WriteLine(prefix + L"\tcase " + manager.Global().name + L"Fields::" + classSymbol->Name() + L"_" + propSymbol->Name() + L":");
-											writer.WriteString(prefix + L"\t\treturn vl::glr::AssemblerSetObjectField(&");
-											PrintCppType(nullptr, classSymbol, writer);
-											writer.WriteString(L"::");
-											writer.WriteString(propSymbol->Name());
-											writer.WriteLine(L", object, field, value, cppFieldName);");
+											props.Add(propSymbol);
 										}
 									}
 								}
 							}
 						}
-						writer.WriteLine(prefix + L"\tdefault:");
-						writer.WriteLine(prefix + L"\t\tif (cppFieldName)");
-						writer.WriteLine(prefix + L"\t\t\tthrow vl::glr::AstInsException(vl::WString::Unmanaged(L\"Field \\\"\") + vl::WString::Unmanaged(cppFieldName) + vl::WString::Unmanaged(L\"\\\" is not an object.\"), vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);");
-						writer.WriteLine(prefix + L"\t\telse");
-						writer.WriteLine(prefix + L"\t\t\tthrow vl::glr::AstInsException(L\"The field id does not exist.\", vl::glr::AstInsErrorType::UnknownField, field);");
-						writer.WriteLine(prefix + L"\t}");
+
+						if (props.Count() > 0)
+						{
+							writer.WriteLine(prefix + L"\tswitch((" + manager.Global().name + L"Fields)field)");
+							writer.WriteLine(prefix + L"\t{");
+							for (auto propSymbol : props)
+							{
+								auto classSymbol = propSymbol->Parent();
+								writer.WriteLine(prefix + L"\tcase " + manager.Global().name + L"Fields::" + classSymbol->Name() + L"_" + propSymbol->Name() + L":");
+								writer.WriteString(prefix + L"\t\treturn vl::glr::AssemblerSetObjectField(&");
+								PrintCppType(nullptr, classSymbol, writer);
+								writer.WriteString(L"::");
+								writer.WriteString(propSymbol->Name());
+								writer.WriteLine(L", object, field, value, cppFieldName);");
+							}
+							writer.WriteLine(prefix + L"\tdefault:");
+							writer.WriteLine(prefix + L"\t\tif (cppFieldName)");
+							writer.WriteLine(prefix + L"\t\t\tthrow vl::glr::AstInsException(vl::WString::Unmanaged(L\"Field \\\"\") + vl::WString::Unmanaged(cppFieldName) + vl::WString::Unmanaged(L\"\\\" is not an object.\"), vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);");
+							writer.WriteLine(prefix + L"\t\telse");
+							writer.WriteLine(prefix + L"\t\t\tthrow vl::glr::AstInsException(L\"The field id does not exist.\", vl::glr::AstInsErrorType::UnknownField, field);");
+							writer.WriteLine(prefix + L"\t}");
+						}
+						else
+						{
+							writer.WriteLine(prefix + L"\tif (cppFieldName)");
+							writer.WriteLine(prefix + L"\t\tthrow vl::glr::AstInsException(vl::WString::Unmanaged(L\"Field \\\"\") + vl::WString::Unmanaged(cppFieldName) + vl::WString::Unmanaged(L\"\\\" is not an object.\"), vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);");
+							writer.WriteLine(prefix + L"\telse");
+							writer.WriteLine(prefix + L"\t\tthrow vl::glr::AstInsException(L\"The field id does not exist.\", vl::glr::AstInsErrorType::UnknownField, field);");
+						}
 						writer.WriteLine(prefix + L"}");
 					}
 
@@ -174,8 +192,8 @@ WriteAstAssemblerCppFile
 						writer.WriteLine(prefix + L"void " + manager.Global().name + L"AstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, const vl::regex::RegexToken& token)");
 						writer.WriteLine(prefix + L"{");
 						writer.WriteLine(prefix + L"\tauto cppFieldName = " + manager.Global().name + L"CppFieldName((" + manager.Global().name + L"Fields)field);");
-						writer.WriteLine(prefix + L"\tswitch((" + manager.Global().name + L"Fields)field)");
-						writer.WriteLine(prefix + L"\t{");
+
+						List<AstClassPropSymbol*> props;
 						for (auto typeSymbol : manager.Symbols().Values())
 						{
 							if (auto classSymbol = dynamic_cast<AstClassSymbol*>(typeSymbol))
@@ -184,22 +202,40 @@ WriteAstAssemblerCppFile
 								{
 									if (propSymbol->propType == AstPropType::Token)
 									{
-										writer.WriteLine(prefix + L"\tcase " + manager.Global().name + L"Fields::" + classSymbol->Name() + L"_" + propSymbol->Name() + L":");
-										writer.WriteString(prefix + L"\t\treturn vl::glr::AssemblerSetTokenField(&");
-										PrintCppType(nullptr, classSymbol, writer);
-										writer.WriteString(L"::");
-										writer.WriteString(propSymbol->Name());
-										writer.WriteLine(L", object, field, token,cppFieldName);");
+										props.Add(propSymbol);
 									}
 								}
 							}
 						}
-						writer.WriteLine(prefix + L"\tdefault:");
-						writer.WriteLine(prefix + L"\t\tif (cppFieldName)");
-						writer.WriteLine(prefix + L"\t\t\tthrow vl::glr::AstInsException(vl::WString::Unmanaged(L\"Field \\\"\") + vl::WString::Unmanaged(cppFieldName) + vl::WString::Unmanaged(L\"\\\" is not a token.\"), vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);");
-						writer.WriteLine(prefix + L"\t\telse");
-						writer.WriteLine(prefix + L"\t\t\tthrow vl::glr::AstInsException(L\"The field id does not exist.\", vl::glr::AstInsErrorType::UnknownField, field);");
-						writer.WriteLine(prefix + L"\t}");
+
+						if (props.Count() > 0)
+						{
+							writer.WriteLine(prefix + L"\tswitch((" + manager.Global().name + L"Fields)field)");
+							writer.WriteLine(prefix + L"\t{");
+							for (auto propSymbol : props)
+							{
+								auto classSymbol = propSymbol->Parent();
+								writer.WriteLine(prefix + L"\tcase " + manager.Global().name + L"Fields::" + classSymbol->Name() + L"_" + propSymbol->Name() + L":");
+								writer.WriteString(prefix + L"\t\treturn vl::glr::AssemblerSetTokenField(&");
+								PrintCppType(nullptr, classSymbol, writer);
+								writer.WriteString(L"::");
+								writer.WriteString(propSymbol->Name());
+								writer.WriteLine(L", object, field, token,cppFieldName);");
+							}
+							writer.WriteLine(prefix + L"\tdefault:");
+							writer.WriteLine(prefix + L"\t\tif (cppFieldName)");
+							writer.WriteLine(prefix + L"\t\t\tthrow vl::glr::AstInsException(vl::WString::Unmanaged(L\"Field \\\"\") + vl::WString::Unmanaged(cppFieldName) + vl::WString::Unmanaged(L\"\\\" is not a token.\"), vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);");
+							writer.WriteLine(prefix + L"\t\telse");
+							writer.WriteLine(prefix + L"\t\t\tthrow vl::glr::AstInsException(L\"The field id does not exist.\", vl::glr::AstInsErrorType::UnknownField, field);");
+							writer.WriteLine(prefix + L"\t}");
+						}
+						else
+						{
+							writer.WriteLine(prefix + L"\tif (cppFieldName)");
+							writer.WriteLine(prefix + L"\t\tthrow vl::glr::AstInsException(vl::WString::Unmanaged(L\"Field \\\"\") + vl::WString::Unmanaged(cppFieldName) + vl::WString::Unmanaged(L\"\\\" is not a token.\"), vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);");
+							writer.WriteLine(prefix + L"\telse");
+							writer.WriteLine(prefix + L"\t\tthrow vl::glr::AstInsException(L\"The field id does not exist.\", vl::glr::AstInsErrorType::UnknownField, field);");
+						}
 						writer.WriteLine(prefix + L"}");
 					}
 
@@ -212,8 +248,8 @@ WriteAstAssemblerCppFile
 						writer.WriteLine(prefix + L"void " + manager.Global().name + L"AstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::vint32_t enumItem)");
 						writer.WriteLine(prefix + L"{");
 						writer.WriteLine(prefix + L"\tauto cppFieldName = " + manager.Global().name + L"CppFieldName((" + manager.Global().name + L"Fields)field);");
-						writer.WriteLine(prefix + L"\tswitch((" + manager.Global().name + L"Fields)field)");
-						writer.WriteLine(prefix + L"\t{");
+
+						List<AstClassPropSymbol*> props;
 						for (auto typeSymbol : manager.Symbols().Values())
 						{
 							if (auto classSymbol = dynamic_cast<AstClassSymbol*>(typeSymbol))
@@ -222,25 +258,43 @@ WriteAstAssemblerCppFile
 								{
 									if (propSymbol->propType == AstPropType::Type)
 									{
-										if (auto propEnumSymbol = dynamic_cast<AstEnumSymbol*>(propSymbol->propSymbol))
+										if (dynamic_cast<AstEnumSymbol*>(propSymbol->propSymbol))
 										{
-											writer.WriteLine(prefix + L"\tcase " + manager.Global().name + L"Fields::" + classSymbol->Name() + L"_" + propSymbol->Name() + L":");
-											writer.WriteString(prefix + L"\t\treturn vl::glr::AssemblerSetEnumField(&");
-											PrintCppType(nullptr, classSymbol, writer);
-											writer.WriteString(L"::");
-											writer.WriteString(propSymbol->Name());
-											writer.WriteLine(L", object, field, enumItem, cppFieldName);");
+											props.Add(propSymbol);
 										}
 									}
 								}
 							}
 						}
-						writer.WriteLine(prefix + L"\tdefault:");
-						writer.WriteLine(prefix + L"\t\tif (cppFieldName)");
-						writer.WriteLine(prefix + L"\t\t\tthrow vl::glr::AstInsException(vl::WString::Unmanaged(L\"Field \\\"\") + vl::WString::Unmanaged(cppFieldName) + vl::WString::Unmanaged(L\"\\\" is not an enum item.\"), vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);");
-						writer.WriteLine(prefix + L"\t\telse");
-						writer.WriteLine(prefix + L"\t\t\tthrow vl::glr::AstInsException(L\"The field id does not exist.\", vl::glr::AstInsErrorType::UnknownField, field);");
-						writer.WriteLine(prefix + L"\t}");
+
+						if (props.Count() > 0)
+						{
+							writer.WriteLine(prefix + L"\tswitch((" + manager.Global().name + L"Fields)field)");
+							writer.WriteLine(prefix + L"\t{");
+							for (auto propSymbol : props)
+							{
+								auto classSymbol = propSymbol->Parent();
+								writer.WriteLine(prefix + L"\tcase " + manager.Global().name + L"Fields::" + classSymbol->Name() + L"_" + propSymbol->Name() + L":");
+								writer.WriteString(prefix + L"\t\treturn vl::glr::AssemblerSetEnumField(&");
+								PrintCppType(nullptr, classSymbol, writer);
+								writer.WriteString(L"::");
+								writer.WriteString(propSymbol->Name());
+								writer.WriteLine(L", object, field, enumItem, cppFieldName);");
+							}
+							writer.WriteLine(prefix + L"\tdefault:");
+							writer.WriteLine(prefix + L"\t\tif (cppFieldName)");
+							writer.WriteLine(prefix + L"\t\t\tthrow vl::glr::AstInsException(vl::WString::Unmanaged(L\"Field \\\"\") + vl::WString::Unmanaged(cppFieldName) + vl::WString::Unmanaged(L\"\\\" is not an enum item.\"), vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);");
+							writer.WriteLine(prefix + L"\t\telse");
+							writer.WriteLine(prefix + L"\t\t\tthrow vl::glr::AstInsException(L\"The field id does not exist.\", vl::glr::AstInsErrorType::UnknownField, field);");
+							writer.WriteLine(prefix + L"\t}");
+						}
+						else
+						{
+							writer.WriteLine(prefix + L"\tif (cppFieldName)");
+							writer.WriteLine(prefix + L"\t\tthrow vl::glr::AstInsException(vl::WString::Unmanaged(L\"Field \\\"\") + vl::WString::Unmanaged(cppFieldName) + vl::WString::Unmanaged(L\"\\\" is not an enum item.\"), vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);");
+							writer.WriteLine(prefix + L"\telse");
+							writer.WriteLine(prefix + L"\t\tthrow vl::glr::AstInsException(L\"The field id does not exist.\", vl::glr::AstInsErrorType::UnknownField, field);");
+						}
 						writer.WriteLine(prefix + L"}");
 					}
 

@@ -56,27 +56,19 @@ IfElsePriorityAstInsReceiver : public vl::glr::AstInsReceiverBase
 	void IfElsePriorityAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, const vl::regex::RegexToken& token)
 	{
 		auto cppFieldName = IfElsePriorityCppFieldName((IfElsePriorityFields)field);
-		switch((IfElsePriorityFields)field)
-		{
-		default:
-			if (cppFieldName)
-				throw vl::glr::AstInsException(vl::WString::Unmanaged(L"Field \"") + vl::WString::Unmanaged(cppFieldName) + vl::WString::Unmanaged(L"\" is not a token."), vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-			else
-				throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
-		}
+		if (cppFieldName)
+			throw vl::glr::AstInsException(vl::WString::Unmanaged(L"Field \"") + vl::WString::Unmanaged(cppFieldName) + vl::WString::Unmanaged(L"\" is not a token."), vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+		else
+			throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
 	}
 
 	void IfElsePriorityAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::vint32_t enumItem)
 	{
 		auto cppFieldName = IfElsePriorityCppFieldName((IfElsePriorityFields)field);
-		switch((IfElsePriorityFields)field)
-		{
-		default:
-			if (cppFieldName)
-				throw vl::glr::AstInsException(vl::WString::Unmanaged(L"Field \"") + vl::WString::Unmanaged(cppFieldName) + vl::WString::Unmanaged(L"\" is not an enum item."), vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-			else
-				throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
-		}
+		if (cppFieldName)
+			throw vl::glr::AstInsException(vl::WString::Unmanaged(L"Field \"") + vl::WString::Unmanaged(cppFieldName) + vl::WString::Unmanaged(L"\" is not an enum item."), vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+		else
+			throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
 	}
 
 	const wchar_t* IfElsePriorityTypeName(IfElsePriorityClasses type)
