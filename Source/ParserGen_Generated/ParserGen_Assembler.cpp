@@ -244,42 +244,11 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 						typedObject->rules.Add(typedValue);
 					}
 					break;
-				case ParserGenFields::Assignment_field:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrAssignment::field\" is not an object.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::Assignment_value:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrAssignment::value\" is not an object.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::Class_ambiguity:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrClass::ambiguity\" is not an object.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::Class_baseClass:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrClass::baseClass\" is not an object.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::ClassProp_name:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrClassProp::name\" is not an object.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::ClassProp_propType:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrClassProp::propType\" is not an object.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::ClassProp_propTypeName:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrClassProp::propTypeName\" is not an object.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::CreateClause_type:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrCreateClause::type\" is not an object.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::EnumItem_name:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrEnumItem::name\" is not an object.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::LiteralSyntax_value:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrLiteralSyntax::value\" is not an object.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::OptionalSyntax_priority:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrOptionalSyntax::priority\" is not an object.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::PartialClause_type:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrPartialClause::type\" is not an object.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::RefSyntax_field:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrRefSyntax::field\" is not an object.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::RefSyntax_name:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrRefSyntax::name\" is not an object.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::Rule_name:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrRule::name\" is not an object.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::Type_name:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrType::name\" is not an object.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::UseSyntax_name:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrUseSyntax::name\" is not an object.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 				default:
-					throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
+					if (auto cppFieldName = ParserGenCppFieldName((ParserGenFields)field))
+						throw vl::glr::AstInsException(vl::WString::Unmanaged(L"Field \"") + vl::WString::Unmanaged(cppFieldName) + vl::WString::Unmanaged(L"\" is not an object."), vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+					else
+						throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
 				}
 			}
 
@@ -399,50 +368,11 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 						AssignToken(typedObject->name, token);
 					}
 					break;
-				case ParserGenFields::AlternativeSyntax_first:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrAlternativeSyntax::first\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::AlternativeSyntax_second:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrAlternativeSyntax::second\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::AstFile_types:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrAstFile::types\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::Class_ambiguity:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrClass::ambiguity\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::Class_props:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrClass::props\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::ClassProp_propType:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrClassProp::propType\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::CreateClause_assignments:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrCreateClause::assignments\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::CreateClause_syntax:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrCreateClause::syntax\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::Enum_items:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrEnum::items\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::LoopSyntax_delimiter:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrLoopSyntax::delimiter\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::LoopSyntax_syntax:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrLoopSyntax::syntax\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::OptionalSyntax_priority:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrOptionalSyntax::priority\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::OptionalSyntax_syntax:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrOptionalSyntax::syntax\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::PartialClause_assignments:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrPartialClause::assignments\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::PartialClause_syntax:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrPartialClause::syntax\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::ReuseClause_assignments:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrReuseClause::assignments\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::ReuseClause_syntax:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrReuseClause::syntax\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::Rule_clauses:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrRule::clauses\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::SequenceSyntax_first:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrSequenceSyntax::first\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::SequenceSyntax_second:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrSequenceSyntax::second\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::SyntaxFile_rules:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrSyntaxFile::rules\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 				default:
-					throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
+					if (auto cppFieldName = ParserGenCppFieldName((ParserGenFields)field))
+						throw vl::glr::AstInsException(vl::WString::Unmanaged(L"Field \"") + vl::WString::Unmanaged(cppFieldName) + vl::WString::Unmanaged(L"\" is not a token."), vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+					else
+						throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
 				}
 			}
 
@@ -474,72 +404,11 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 						typedObject->priority = (vl::glr::parsergen::GlrOptionalPriority)enumItem;
 					}
 					break;
-				case ParserGenFields::AlternativeSyntax_first:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrAlternativeSyntax::first\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::AlternativeSyntax_second:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrAlternativeSyntax::second\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::Assignment_field:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrAssignment::field\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::Assignment_value:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrAssignment::value\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::AstFile_types:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrAstFile::types\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::Class_baseClass:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrClass::baseClass\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::Class_props:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrClass::props\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::ClassProp_name:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrClassProp::name\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::ClassProp_propTypeName:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrClassProp::propTypeName\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::CreateClause_assignments:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrCreateClause::assignments\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::CreateClause_syntax:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrCreateClause::syntax\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::CreateClause_type:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrCreateClause::type\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::Enum_items:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrEnum::items\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::EnumItem_name:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrEnumItem::name\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::LiteralSyntax_value:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrLiteralSyntax::value\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::LoopSyntax_delimiter:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrLoopSyntax::delimiter\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::LoopSyntax_syntax:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrLoopSyntax::syntax\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::OptionalSyntax_syntax:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrOptionalSyntax::syntax\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::PartialClause_assignments:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrPartialClause::assignments\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::PartialClause_syntax:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrPartialClause::syntax\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::PartialClause_type:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrPartialClause::type\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::RefSyntax_field:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrRefSyntax::field\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::RefSyntax_name:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrRefSyntax::name\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::ReuseClause_assignments:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrReuseClause::assignments\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::ReuseClause_syntax:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrReuseClause::syntax\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::Rule_clauses:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrRule::clauses\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::Rule_name:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrRule::name\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::SequenceSyntax_first:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrSequenceSyntax::first\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::SequenceSyntax_second:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrSequenceSyntax::second\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::SyntaxFile_rules:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrSyntaxFile::rules\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::Type_name:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrType::name\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				case ParserGenFields::UseSyntax_name:
-					throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrUseSyntax::name\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 				default:
-					throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
+					if (auto cppFieldName = ParserGenCppFieldName((ParserGenFields)field))
+						throw vl::glr::AstInsException(vl::WString::Unmanaged(L"Field \"") + vl::WString::Unmanaged(cppFieldName) + vl::WString::Unmanaged(L"\" is not an enum item."), vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+					else
+						throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
 				}
 			}
 

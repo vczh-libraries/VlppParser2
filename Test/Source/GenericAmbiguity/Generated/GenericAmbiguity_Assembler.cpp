@@ -131,16 +131,11 @@ GenericAmbiguityAstInsReceiver : public vl::glr::AstInsReceiverBase
 				typedObject->expr = typedValue;
 			}
 			break;
-		case GenericAmbiguityFields::BinaryExpr_op:
-			throw vl::glr::AstInsException(L"Field \"genericambiguity::BinaryExpr::op\" is not an object.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-		case GenericAmbiguityFields::GenericExpr_name:
-			throw vl::glr::AstInsException(L"Field \"genericambiguity::GenericExpr::name\" is not an object.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-		case GenericAmbiguityFields::PostfixExpr_op:
-			throw vl::glr::AstInsException(L"Field \"genericambiguity::PostfixExpr::op\" is not an object.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-		case GenericAmbiguityFields::RefExpr_name:
-			throw vl::glr::AstInsException(L"Field \"genericambiguity::RefExpr::name\" is not an object.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 		default:
-			throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
+			if (auto cppFieldName = GenericAmbiguityCppFieldName((GenericAmbiguityFields)field))
+				throw vl::glr::AstInsException(vl::WString::Unmanaged(L"Field \"") + vl::WString::Unmanaged(cppFieldName) + vl::WString::Unmanaged(L"\" is not an object."), vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+			else
+				throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
 		}
 	}
 
@@ -164,30 +159,11 @@ GenericAmbiguityAstInsReceiver : public vl::glr::AstInsReceiverBase
 				AssignToken(typedObject->name, token);
 			}
 			break;
-		case GenericAmbiguityFields::BinaryExpr_left:
-			throw vl::glr::AstInsException(L"Field \"genericambiguity::BinaryExpr::left\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-		case GenericAmbiguityFields::BinaryExpr_op:
-			throw vl::glr::AstInsException(L"Field \"genericambiguity::BinaryExpr::op\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-		case GenericAmbiguityFields::BinaryExpr_right:
-			throw vl::glr::AstInsException(L"Field \"genericambiguity::BinaryExpr::right\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-		case GenericAmbiguityFields::CallExpr_args:
-			throw vl::glr::AstInsException(L"Field \"genericambiguity::CallExpr::args\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-		case GenericAmbiguityFields::CallExpr_func:
-			throw vl::glr::AstInsException(L"Field \"genericambiguity::CallExpr::func\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-		case GenericAmbiguityFields::DecrementExpr_expr:
-			throw vl::glr::AstInsException(L"Field \"genericambiguity::DecrementExpr::expr\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-		case GenericAmbiguityFields::ExprToResolve_candidates:
-			throw vl::glr::AstInsException(L"Field \"genericambiguity::ExprToResolve::candidates\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-		case GenericAmbiguityFields::GenericExpr_args:
-			throw vl::glr::AstInsException(L"Field \"genericambiguity::GenericExpr::args\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-		case GenericAmbiguityFields::Module_expr:
-			throw vl::glr::AstInsException(L"Field \"genericambiguity::Module::expr\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-		case GenericAmbiguityFields::PostfixExpr_expr:
-			throw vl::glr::AstInsException(L"Field \"genericambiguity::PostfixExpr::expr\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-		case GenericAmbiguityFields::PostfixExpr_op:
-			throw vl::glr::AstInsException(L"Field \"genericambiguity::PostfixExpr::op\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 		default:
-			throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
+			if (auto cppFieldName = GenericAmbiguityCppFieldName((GenericAmbiguityFields)field))
+				throw vl::glr::AstInsException(vl::WString::Unmanaged(L"Field \"") + vl::WString::Unmanaged(cppFieldName) + vl::WString::Unmanaged(L"\" is not a token."), vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+			else
+				throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
 		}
 	}
 
@@ -211,30 +187,11 @@ GenericAmbiguityAstInsReceiver : public vl::glr::AstInsReceiverBase
 				typedObject->op = (genericambiguity::PostfixOp)enumItem;
 			}
 			break;
-		case GenericAmbiguityFields::BinaryExpr_left:
-			throw vl::glr::AstInsException(L"Field \"genericambiguity::BinaryExpr::left\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-		case GenericAmbiguityFields::BinaryExpr_right:
-			throw vl::glr::AstInsException(L"Field \"genericambiguity::BinaryExpr::right\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-		case GenericAmbiguityFields::CallExpr_args:
-			throw vl::glr::AstInsException(L"Field \"genericambiguity::CallExpr::args\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-		case GenericAmbiguityFields::CallExpr_func:
-			throw vl::glr::AstInsException(L"Field \"genericambiguity::CallExpr::func\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-		case GenericAmbiguityFields::DecrementExpr_expr:
-			throw vl::glr::AstInsException(L"Field \"genericambiguity::DecrementExpr::expr\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-		case GenericAmbiguityFields::ExprToResolve_candidates:
-			throw vl::glr::AstInsException(L"Field \"genericambiguity::ExprToResolve::candidates\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-		case GenericAmbiguityFields::GenericExpr_args:
-			throw vl::glr::AstInsException(L"Field \"genericambiguity::GenericExpr::args\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-		case GenericAmbiguityFields::GenericExpr_name:
-			throw vl::glr::AstInsException(L"Field \"genericambiguity::GenericExpr::name\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-		case GenericAmbiguityFields::Module_expr:
-			throw vl::glr::AstInsException(L"Field \"genericambiguity::Module::expr\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-		case GenericAmbiguityFields::PostfixExpr_expr:
-			throw vl::glr::AstInsException(L"Field \"genericambiguity::PostfixExpr::expr\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-		case GenericAmbiguityFields::RefExpr_name:
-			throw vl::glr::AstInsException(L"Field \"genericambiguity::RefExpr::name\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 		default:
-			throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
+			if (auto cppFieldName = GenericAmbiguityCppFieldName((GenericAmbiguityFields)field))
+				throw vl::glr::AstInsException(vl::WString::Unmanaged(L"Field \"") + vl::WString::Unmanaged(cppFieldName) + vl::WString::Unmanaged(L"\" is not an enum item."), vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+			else
+				throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
 		}
 	}
 

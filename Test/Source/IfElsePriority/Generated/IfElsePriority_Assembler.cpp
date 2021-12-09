@@ -76,7 +76,10 @@ IfElsePriorityAstInsReceiver : public vl::glr::AstInsReceiverBase
 			}
 			break;
 		default:
-			throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
+			if (auto cppFieldName = IfElsePriorityCppFieldName((IfElsePriorityFields)field))
+				throw vl::glr::AstInsException(vl::WString::Unmanaged(L"Field \"") + vl::WString::Unmanaged(cppFieldName) + vl::WString::Unmanaged(L"\" is not an object."), vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+			else
+				throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
 		}
 	}
 
@@ -84,16 +87,11 @@ IfElsePriorityAstInsReceiver : public vl::glr::AstInsReceiverBase
 	{
 		switch((IfElsePriorityFields)field)
 		{
-		case IfElsePriorityFields::BlockStat_stats:
-			throw vl::glr::AstInsException(L"Field \"ifelsepriority::BlockStat::stats\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-		case IfElsePriorityFields::IfStat_elseBranch:
-			throw vl::glr::AstInsException(L"Field \"ifelsepriority::IfStat::elseBranch\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-		case IfElsePriorityFields::IfStat_thenBranch:
-			throw vl::glr::AstInsException(L"Field \"ifelsepriority::IfStat::thenBranch\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-		case IfElsePriorityFields::Module_stat:
-			throw vl::glr::AstInsException(L"Field \"ifelsepriority::Module::stat\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 		default:
-			throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
+			if (auto cppFieldName = IfElsePriorityCppFieldName((IfElsePriorityFields)field))
+				throw vl::glr::AstInsException(vl::WString::Unmanaged(L"Field \"") + vl::WString::Unmanaged(cppFieldName) + vl::WString::Unmanaged(L"\" is not a token."), vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+			else
+				throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
 		}
 	}
 
@@ -101,16 +99,11 @@ IfElsePriorityAstInsReceiver : public vl::glr::AstInsReceiverBase
 	{
 		switch((IfElsePriorityFields)field)
 		{
-		case IfElsePriorityFields::BlockStat_stats:
-			throw vl::glr::AstInsException(L"Field \"ifelsepriority::BlockStat::stats\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-		case IfElsePriorityFields::IfStat_elseBranch:
-			throw vl::glr::AstInsException(L"Field \"ifelsepriority::IfStat::elseBranch\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-		case IfElsePriorityFields::IfStat_thenBranch:
-			throw vl::glr::AstInsException(L"Field \"ifelsepriority::IfStat::thenBranch\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-		case IfElsePriorityFields::Module_stat:
-			throw vl::glr::AstInsException(L"Field \"ifelsepriority::Module::stat\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 		default:
-			throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
+			if (auto cppFieldName = IfElsePriorityCppFieldName((IfElsePriorityFields)field))
+				throw vl::glr::AstInsException(vl::WString::Unmanaged(L"Field \"") + vl::WString::Unmanaged(cppFieldName) + vl::WString::Unmanaged(L"\" is not an enum item."), vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+			else
+				throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
 		}
 	}
 

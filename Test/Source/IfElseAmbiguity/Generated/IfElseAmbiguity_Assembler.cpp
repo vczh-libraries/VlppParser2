@@ -101,7 +101,10 @@ IfElseAmbiguityAstInsReceiver : public vl::glr::AstInsReceiverBase
 			}
 			break;
 		default:
-			throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
+			if (auto cppFieldName = IfElseAmbiguityCppFieldName((IfElseAmbiguityFields)field))
+				throw vl::glr::AstInsException(vl::WString::Unmanaged(L"Field \"") + vl::WString::Unmanaged(cppFieldName) + vl::WString::Unmanaged(L"\" is not an object."), vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+			else
+				throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
 		}
 	}
 
@@ -109,20 +112,11 @@ IfElseAmbiguityAstInsReceiver : public vl::glr::AstInsReceiverBase
 	{
 		switch((IfElseAmbiguityFields)field)
 		{
-		case IfElseAmbiguityFields::BlockStat_stats:
-			throw vl::glr::AstInsException(L"Field \"ifelseambiguity::BlockStat::stats\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-		case IfElseAmbiguityFields::IfContentCandidate_elseBranch:
-			throw vl::glr::AstInsException(L"Field \"ifelseambiguity::IfContentCandidate::elseBranch\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-		case IfElseAmbiguityFields::IfContentCandidate_thenBranch:
-			throw vl::glr::AstInsException(L"Field \"ifelseambiguity::IfContentCandidate::thenBranch\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-		case IfElseAmbiguityFields::IfContentToResolve_candidates:
-			throw vl::glr::AstInsException(L"Field \"ifelseambiguity::IfContentToResolve::candidates\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-		case IfElseAmbiguityFields::IfStat_content:
-			throw vl::glr::AstInsException(L"Field \"ifelseambiguity::IfStat::content\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-		case IfElseAmbiguityFields::Module_stat:
-			throw vl::glr::AstInsException(L"Field \"ifelseambiguity::Module::stat\" is not a token.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 		default:
-			throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
+			if (auto cppFieldName = IfElseAmbiguityCppFieldName((IfElseAmbiguityFields)field))
+				throw vl::glr::AstInsException(vl::WString::Unmanaged(L"Field \"") + vl::WString::Unmanaged(cppFieldName) + vl::WString::Unmanaged(L"\" is not a token."), vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+			else
+				throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
 		}
 	}
 
@@ -130,20 +124,11 @@ IfElseAmbiguityAstInsReceiver : public vl::glr::AstInsReceiverBase
 	{
 		switch((IfElseAmbiguityFields)field)
 		{
-		case IfElseAmbiguityFields::BlockStat_stats:
-			throw vl::glr::AstInsException(L"Field \"ifelseambiguity::BlockStat::stats\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-		case IfElseAmbiguityFields::IfContentCandidate_elseBranch:
-			throw vl::glr::AstInsException(L"Field \"ifelseambiguity::IfContentCandidate::elseBranch\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-		case IfElseAmbiguityFields::IfContentCandidate_thenBranch:
-			throw vl::glr::AstInsException(L"Field \"ifelseambiguity::IfContentCandidate::thenBranch\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-		case IfElseAmbiguityFields::IfContentToResolve_candidates:
-			throw vl::glr::AstInsException(L"Field \"ifelseambiguity::IfContentToResolve::candidates\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-		case IfElseAmbiguityFields::IfStat_content:
-			throw vl::glr::AstInsException(L"Field \"ifelseambiguity::IfStat::content\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-		case IfElseAmbiguityFields::Module_stat:
-			throw vl::glr::AstInsException(L"Field \"ifelseambiguity::Module::stat\" is not an enum item.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 		default:
-			throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
+			if (auto cppFieldName = IfElseAmbiguityCppFieldName((IfElseAmbiguityFields)field))
+				throw vl::glr::AstInsException(vl::WString::Unmanaged(L"Field \"") + vl::WString::Unmanaged(cppFieldName) + vl::WString::Unmanaged(L"\" is not an enum item."), vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+			else
+				throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
 		}
 	}
 
