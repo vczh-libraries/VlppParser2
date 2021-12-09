@@ -52,127 +52,35 @@ CalculatorAstInsReceiver : public vl::glr::AstInsReceiverBase
 
 	void CalculatorAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::Ptr<vl::glr::ParsingAstBase> value)
 	{
+		auto cppFieldName = CalculatorCppFieldName((CalculatorFields)field);
 		switch((CalculatorFields)field)
 		{
 		case CalculatorFields::Binary_left:
-			{
-				auto typedObject = dynamic_cast<calculator::Binary*>(object);
-				if (!typedObject) throw vl::glr::AstInsException(L"Field \"calculator::Binary::left\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-				if (typedObject->left) throw vl::glr::AstInsException(L"Field \"calculator::Binary::left\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-				auto typedValue = value.Cast<calculator::Expr>();
-				if (!typedValue) throw vl::glr::AstInsException(L"Field \"calculator::Binary::left\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				typedObject->left = typedValue;
-			}
-			break;
+			return vl::glr::AssemblerSetObjectField(&calculator::Binary::left, object, field, value, cppFieldName);
 		case CalculatorFields::Binary_right:
-			{
-				auto typedObject = dynamic_cast<calculator::Binary*>(object);
-				if (!typedObject) throw vl::glr::AstInsException(L"Field \"calculator::Binary::right\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-				if (typedObject->right) throw vl::glr::AstInsException(L"Field \"calculator::Binary::right\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-				auto typedValue = value.Cast<calculator::Expr>();
-				if (!typedValue) throw vl::glr::AstInsException(L"Field \"calculator::Binary::right\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				typedObject->right = typedValue;
-			}
-			break;
+			return vl::glr::AssemblerSetObjectField(&calculator::Binary::right, object, field, value, cppFieldName);
 		case CalculatorFields::Call_args:
-			{
-				auto typedObject = dynamic_cast<calculator::Call*>(object);
-				if (!typedObject) throw vl::glr::AstInsException(L"Field \"calculator::Call::args\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-				auto typedValue = value.Cast<calculator::Expr>();
-				if (!typedValue) throw vl::glr::AstInsException(L"Field \"calculator::Call::args\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				typedObject->args.Add(typedValue);
-			}
-			break;
+			return vl::glr::AssemblerSetObjectField(&calculator::Call::args, object, field, value, cppFieldName);
 		case CalculatorFields::Call_func:
-			{
-				auto typedObject = dynamic_cast<calculator::Call*>(object);
-				if (!typedObject) throw vl::glr::AstInsException(L"Field \"calculator::Call::func\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-				if (typedObject->func) throw vl::glr::AstInsException(L"Field \"calculator::Call::func\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-				auto typedValue = value.Cast<calculator::Expr>();
-				if (!typedValue) throw vl::glr::AstInsException(L"Field \"calculator::Call::func\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				typedObject->func = typedValue;
-			}
-			break;
+			return vl::glr::AssemblerSetObjectField(&calculator::Call::func, object, field, value, cppFieldName);
 		case CalculatorFields::Expandable_expanded:
-			{
-				auto typedObject = dynamic_cast<calculator::Expandable*>(object);
-				if (!typedObject) throw vl::glr::AstInsException(L"Field \"calculator::Expandable::expanded\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-				if (typedObject->expanded) throw vl::glr::AstInsException(L"Field \"calculator::Expandable::expanded\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-				auto typedValue = value.Cast<calculator::Expr>();
-				if (!typedValue) throw vl::glr::AstInsException(L"Field \"calculator::Expandable::expanded\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				typedObject->expanded = typedValue;
-			}
-			break;
+			return vl::glr::AssemblerSetObjectField(&calculator::Expandable::expanded, object, field, value, cppFieldName);
 		case CalculatorFields::Func_args:
-			{
-				auto typedObject = dynamic_cast<calculator::Func*>(object);
-				if (!typedObject) throw vl::glr::AstInsException(L"Field \"calculator::Func::args\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-				auto typedValue = value.Cast<calculator::Arg>();
-				if (!typedValue) throw vl::glr::AstInsException(L"Field \"calculator::Func::args\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				typedObject->args.Add(typedValue);
-			}
-			break;
+			return vl::glr::AssemblerSetObjectField(&calculator::Func::args, object, field, value, cppFieldName);
 		case CalculatorFields::Func_value:
-			{
-				auto typedObject = dynamic_cast<calculator::Func*>(object);
-				if (!typedObject) throw vl::glr::AstInsException(L"Field \"calculator::Func::value\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-				if (typedObject->value) throw vl::glr::AstInsException(L"Field \"calculator::Func::value\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-				auto typedValue = value.Cast<calculator::Expr>();
-				if (!typedValue) throw vl::glr::AstInsException(L"Field \"calculator::Func::value\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				typedObject->value = typedValue;
-			}
-			break;
+			return vl::glr::AssemblerSetObjectField(&calculator::Func::value, object, field, value, cppFieldName);
 		case CalculatorFields::LetExpr_result:
-			{
-				auto typedObject = dynamic_cast<calculator::LetExpr*>(object);
-				if (!typedObject) throw vl::glr::AstInsException(L"Field \"calculator::LetExpr::result\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-				if (typedObject->result) throw vl::glr::AstInsException(L"Field \"calculator::LetExpr::result\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-				auto typedValue = value.Cast<calculator::Expr>();
-				if (!typedValue) throw vl::glr::AstInsException(L"Field \"calculator::LetExpr::result\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				typedObject->result = typedValue;
-			}
-			break;
+			return vl::glr::AssemblerSetObjectField(&calculator::LetExpr::result, object, field, value, cppFieldName);
 		case CalculatorFields::LetExpr_value:
-			{
-				auto typedObject = dynamic_cast<calculator::LetExpr*>(object);
-				if (!typedObject) throw vl::glr::AstInsException(L"Field \"calculator::LetExpr::value\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-				if (typedObject->value) throw vl::glr::AstInsException(L"Field \"calculator::LetExpr::value\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-				auto typedValue = value.Cast<calculator::Expr>();
-				if (!typedValue) throw vl::glr::AstInsException(L"Field \"calculator::LetExpr::value\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				typedObject->value = typedValue;
-			}
-			break;
+			return vl::glr::AssemblerSetObjectField(&calculator::LetExpr::value, object, field, value, cppFieldName);
 		case CalculatorFields::Module_exported:
-			{
-				auto typedObject = dynamic_cast<calculator::Module*>(object);
-				if (!typedObject) throw vl::glr::AstInsException(L"Field \"calculator::Module::exported\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-				if (typedObject->exported) throw vl::glr::AstInsException(L"Field \"calculator::Module::exported\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-				auto typedValue = value.Cast<calculator::Expr>();
-				if (!typedValue) throw vl::glr::AstInsException(L"Field \"calculator::Module::exported\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				typedObject->exported = typedValue;
-			}
-			break;
+			return vl::glr::AssemblerSetObjectField(&calculator::Module::exported, object, field, value, cppFieldName);
 		case CalculatorFields::Module_imports:
-			{
-				auto typedObject = dynamic_cast<calculator::Module*>(object);
-				if (!typedObject) throw vl::glr::AstInsException(L"Field \"calculator::Module::imports\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-				auto typedValue = value.Cast<calculator::Import>();
-				if (!typedValue) throw vl::glr::AstInsException(L"Field \"calculator::Module::imports\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				typedObject->imports.Add(typedValue);
-			}
-			break;
+			return vl::glr::AssemblerSetObjectField(&calculator::Module::imports, object, field, value, cppFieldName);
 		case CalculatorFields::Unary_operand:
-			{
-				auto typedObject = dynamic_cast<calculator::Unary*>(object);
-				if (!typedObject) throw vl::glr::AstInsException(L"Field \"calculator::Unary::operand\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-				if (typedObject->operand) throw vl::glr::AstInsException(L"Field \"calculator::Unary::operand\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-				auto typedValue = value.Cast<calculator::Expr>();
-				if (!typedValue) throw vl::glr::AstInsException(L"Field \"calculator::Unary::operand\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				typedObject->operand = typedValue;
-			}
-			break;
+			return vl::glr::AssemblerSetObjectField(&calculator::Unary::operand, object, field, value, cppFieldName);
 		default:
-			if (auto cppFieldName = CalculatorCppFieldName((CalculatorFields)field))
+			if (cppFieldName)
 				throw vl::glr::AstInsException(vl::WString::Unmanaged(L"Field \"") + vl::WString::Unmanaged(cppFieldName) + vl::WString::Unmanaged(L"\" is not an object."), vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 			else
 				throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
@@ -181,50 +89,21 @@ CalculatorAstInsReceiver : public vl::glr::AstInsReceiverBase
 
 	void CalculatorAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, const vl::regex::RegexToken& token)
 	{
+		auto cppFieldName = CalculatorCppFieldName((CalculatorFields)field);
 		switch((CalculatorFields)field)
 		{
 		case CalculatorFields::Arg_name:
-			{
-				auto typedObject = dynamic_cast<calculator::Arg*>(object);
-				if (!typedObject) throw vl::glr::AstInsException(L"Field \"calculator::Arg::name\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-				if (typedObject->name.value.Length() != 0) throw vl::glr::AstInsException(L"Field \"calculator::Arg::name\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-				AssignToken(typedObject->name, token);
-			}
-			break;
+			return vl::glr::AssemblerSetTokenField(&calculator::Arg::name, object, field, token,cppFieldName);
 		case CalculatorFields::Import_name:
-			{
-				auto typedObject = dynamic_cast<calculator::Import*>(object);
-				if (!typedObject) throw vl::glr::AstInsException(L"Field \"calculator::Import::name\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-				if (typedObject->name.value.Length() != 0) throw vl::glr::AstInsException(L"Field \"calculator::Import::name\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-				AssignToken(typedObject->name, token);
-			}
-			break;
+			return vl::glr::AssemblerSetTokenField(&calculator::Import::name, object, field, token,cppFieldName);
 		case CalculatorFields::LetExpr_name:
-			{
-				auto typedObject = dynamic_cast<calculator::LetExpr*>(object);
-				if (!typedObject) throw vl::glr::AstInsException(L"Field \"calculator::LetExpr::name\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-				if (typedObject->name.value.Length() != 0) throw vl::glr::AstInsException(L"Field \"calculator::LetExpr::name\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-				AssignToken(typedObject->name, token);
-			}
-			break;
+			return vl::glr::AssemblerSetTokenField(&calculator::LetExpr::name, object, field, token,cppFieldName);
 		case CalculatorFields::NumExpr_value:
-			{
-				auto typedObject = dynamic_cast<calculator::NumExpr*>(object);
-				if (!typedObject) throw vl::glr::AstInsException(L"Field \"calculator::NumExpr::value\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-				if (typedObject->value.value.Length() != 0) throw vl::glr::AstInsException(L"Field \"calculator::NumExpr::value\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-				AssignToken(typedObject->value, token);
-			}
-			break;
+			return vl::glr::AssemblerSetTokenField(&calculator::NumExpr::value, object, field, token,cppFieldName);
 		case CalculatorFields::Ref_name:
-			{
-				auto typedObject = dynamic_cast<calculator::Ref*>(object);
-				if (!typedObject) throw vl::glr::AstInsException(L"Field \"calculator::Ref::name\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-				if (typedObject->name.value.Length() != 0) throw vl::glr::AstInsException(L"Field \"calculator::Ref::name\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-				AssignToken(typedObject->name, token);
-			}
-			break;
+			return vl::glr::AssemblerSetTokenField(&calculator::Ref::name, object, field, token,cppFieldName);
 		default:
-			if (auto cppFieldName = CalculatorCppFieldName((CalculatorFields)field))
+			if (cppFieldName)
 				throw vl::glr::AstInsException(vl::WString::Unmanaged(L"Field \"") + vl::WString::Unmanaged(cppFieldName) + vl::WString::Unmanaged(L"\" is not a token."), vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 			else
 				throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
@@ -233,26 +112,15 @@ CalculatorAstInsReceiver : public vl::glr::AstInsReceiverBase
 
 	void CalculatorAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::vint32_t enumItem)
 	{
+		auto cppFieldName = CalculatorCppFieldName((CalculatorFields)field);
 		switch((CalculatorFields)field)
 		{
 		case CalculatorFields::Binary_op:
-			{
-				auto typedObject = dynamic_cast<calculator::Binary*>(object);
-				if (!typedObject) throw vl::glr::AstInsException(L"Field \"calculator::Binary::op\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-				if (typedObject->op == calculator::BinaryOp::UNDEFINED_ENUM_ITEM_VALUE) throw vl::glr::AstInsException(L"Field \"calculator::Binary::op\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-				typedObject->op = (calculator::BinaryOp)enumItem;
-			}
-			break;
+			return vl::glr::AssemblerSetEnumField(&calculator::Binary::op, object, field, enumItem, cppFieldName);
 		case CalculatorFields::Unary_op:
-			{
-				auto typedObject = dynamic_cast<calculator::Unary*>(object);
-				if (!typedObject) throw vl::glr::AstInsException(L"Field \"calculator::Unary::op\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-				if (typedObject->op == calculator::UnaryOp::UNDEFINED_ENUM_ITEM_VALUE) throw vl::glr::AstInsException(L"Field \"calculator::Unary::op\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-				typedObject->op = (calculator::UnaryOp)enumItem;
-			}
-			break;
+			return vl::glr::AssemblerSetEnumField(&calculator::Unary::op, object, field, enumItem, cppFieldName);
 		default:
-			if (auto cppFieldName = CalculatorCppFieldName((CalculatorFields)field))
+			if (cppFieldName)
 				throw vl::glr::AstInsException(vl::WString::Unmanaged(L"Field \"") + vl::WString::Unmanaged(cppFieldName) + vl::WString::Unmanaged(L"\" is not an enum item."), vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 			else
 				throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);

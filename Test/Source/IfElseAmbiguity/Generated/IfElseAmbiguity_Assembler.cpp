@@ -40,68 +40,23 @@ IfElseAmbiguityAstInsReceiver : public vl::glr::AstInsReceiverBase
 
 	void IfElseAmbiguityAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::Ptr<vl::glr::ParsingAstBase> value)
 	{
+		auto cppFieldName = IfElseAmbiguityCppFieldName((IfElseAmbiguityFields)field);
 		switch((IfElseAmbiguityFields)field)
 		{
 		case IfElseAmbiguityFields::BlockStat_stats:
-			{
-				auto typedObject = dynamic_cast<ifelseambiguity::BlockStat*>(object);
-				if (!typedObject) throw vl::glr::AstInsException(L"Field \"ifelseambiguity::BlockStat::stats\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-				auto typedValue = value.Cast<ifelseambiguity::Stat>();
-				if (!typedValue) throw vl::glr::AstInsException(L"Field \"ifelseambiguity::BlockStat::stats\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				typedObject->stats.Add(typedValue);
-			}
-			break;
+			return vl::glr::AssemblerSetObjectField(&ifelseambiguity::BlockStat::stats, object, field, value, cppFieldName);
 		case IfElseAmbiguityFields::IfContentCandidate_elseBranch:
-			{
-				auto typedObject = dynamic_cast<ifelseambiguity::IfContentCandidate*>(object);
-				if (!typedObject) throw vl::glr::AstInsException(L"Field \"ifelseambiguity::IfContentCandidate::elseBranch\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-				if (typedObject->elseBranch) throw vl::glr::AstInsException(L"Field \"ifelseambiguity::IfContentCandidate::elseBranch\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-				auto typedValue = value.Cast<ifelseambiguity::Stat>();
-				if (!typedValue) throw vl::glr::AstInsException(L"Field \"ifelseambiguity::IfContentCandidate::elseBranch\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				typedObject->elseBranch = typedValue;
-			}
-			break;
+			return vl::glr::AssemblerSetObjectField(&ifelseambiguity::IfContentCandidate::elseBranch, object, field, value, cppFieldName);
 		case IfElseAmbiguityFields::IfContentCandidate_thenBranch:
-			{
-				auto typedObject = dynamic_cast<ifelseambiguity::IfContentCandidate*>(object);
-				if (!typedObject) throw vl::glr::AstInsException(L"Field \"ifelseambiguity::IfContentCandidate::thenBranch\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-				if (typedObject->thenBranch) throw vl::glr::AstInsException(L"Field \"ifelseambiguity::IfContentCandidate::thenBranch\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-				auto typedValue = value.Cast<ifelseambiguity::Stat>();
-				if (!typedValue) throw vl::glr::AstInsException(L"Field \"ifelseambiguity::IfContentCandidate::thenBranch\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				typedObject->thenBranch = typedValue;
-			}
-			break;
+			return vl::glr::AssemblerSetObjectField(&ifelseambiguity::IfContentCandidate::thenBranch, object, field, value, cppFieldName);
 		case IfElseAmbiguityFields::IfContentToResolve_candidates:
-			{
-				auto typedObject = dynamic_cast<ifelseambiguity::IfContentToResolve*>(object);
-				if (!typedObject) throw vl::glr::AstInsException(L"Field \"ifelseambiguity::IfContentToResolve::candidates\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-				auto typedValue = value.Cast<ifelseambiguity::IfContent>();
-				if (!typedValue) throw vl::glr::AstInsException(L"Field \"ifelseambiguity::IfContentToResolve::candidates\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				typedObject->candidates.Add(typedValue);
-			}
-			break;
+			return vl::glr::AssemblerSetObjectField(&ifelseambiguity::IfContentToResolve::candidates, object, field, value, cppFieldName);
 		case IfElseAmbiguityFields::IfStat_content:
-			{
-				auto typedObject = dynamic_cast<ifelseambiguity::IfStat*>(object);
-				if (!typedObject) throw vl::glr::AstInsException(L"Field \"ifelseambiguity::IfStat::content\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-				if (typedObject->content) throw vl::glr::AstInsException(L"Field \"ifelseambiguity::IfStat::content\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-				auto typedValue = value.Cast<ifelseambiguity::IfContent>();
-				if (!typedValue) throw vl::glr::AstInsException(L"Field \"ifelseambiguity::IfStat::content\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				typedObject->content = typedValue;
-			}
-			break;
+			return vl::glr::AssemblerSetObjectField(&ifelseambiguity::IfStat::content, object, field, value, cppFieldName);
 		case IfElseAmbiguityFields::Module_stat:
-			{
-				auto typedObject = dynamic_cast<ifelseambiguity::Module*>(object);
-				if (!typedObject) throw vl::glr::AstInsException(L"Field \"ifelseambiguity::Module::stat\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-				if (typedObject->stat) throw vl::glr::AstInsException(L"Field \"ifelseambiguity::Module::stat\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-				auto typedValue = value.Cast<ifelseambiguity::Stat>();
-				if (!typedValue) throw vl::glr::AstInsException(L"Field \"ifelseambiguity::Module::stat\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				typedObject->stat = typedValue;
-			}
-			break;
+			return vl::glr::AssemblerSetObjectField(&ifelseambiguity::Module::stat, object, field, value, cppFieldName);
 		default:
-			if (auto cppFieldName = IfElseAmbiguityCppFieldName((IfElseAmbiguityFields)field))
+			if (cppFieldName)
 				throw vl::glr::AstInsException(vl::WString::Unmanaged(L"Field \"") + vl::WString::Unmanaged(cppFieldName) + vl::WString::Unmanaged(L"\" is not an object."), vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 			else
 				throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
@@ -110,10 +65,11 @@ IfElseAmbiguityAstInsReceiver : public vl::glr::AstInsReceiverBase
 
 	void IfElseAmbiguityAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, const vl::regex::RegexToken& token)
 	{
+		auto cppFieldName = IfElseAmbiguityCppFieldName((IfElseAmbiguityFields)field);
 		switch((IfElseAmbiguityFields)field)
 		{
 		default:
-			if (auto cppFieldName = IfElseAmbiguityCppFieldName((IfElseAmbiguityFields)field))
+			if (cppFieldName)
 				throw vl::glr::AstInsException(vl::WString::Unmanaged(L"Field \"") + vl::WString::Unmanaged(cppFieldName) + vl::WString::Unmanaged(L"\" is not a token."), vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 			else
 				throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
@@ -122,10 +78,11 @@ IfElseAmbiguityAstInsReceiver : public vl::glr::AstInsReceiverBase
 
 	void IfElseAmbiguityAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::vint32_t enumItem)
 	{
+		auto cppFieldName = IfElseAmbiguityCppFieldName((IfElseAmbiguityFields)field);
 		switch((IfElseAmbiguityFields)field)
 		{
 		default:
-			if (auto cppFieldName = IfElseAmbiguityCppFieldName((IfElseAmbiguityFields)field))
+			if (cppFieldName)
 				throw vl::glr::AstInsException(vl::WString::Unmanaged(L"Field \"") + vl::WString::Unmanaged(cppFieldName) + vl::WString::Unmanaged(L"\" is not an enum item."), vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 			else
 				throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);

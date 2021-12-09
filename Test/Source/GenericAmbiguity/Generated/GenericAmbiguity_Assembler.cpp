@@ -42,97 +42,29 @@ GenericAmbiguityAstInsReceiver : public vl::glr::AstInsReceiverBase
 
 	void GenericAmbiguityAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::Ptr<vl::glr::ParsingAstBase> value)
 	{
+		auto cppFieldName = GenericAmbiguityCppFieldName((GenericAmbiguityFields)field);
 		switch((GenericAmbiguityFields)field)
 		{
 		case GenericAmbiguityFields::BinaryExpr_left:
-			{
-				auto typedObject = dynamic_cast<genericambiguity::BinaryExpr*>(object);
-				if (!typedObject) throw vl::glr::AstInsException(L"Field \"genericambiguity::BinaryExpr::left\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-				if (typedObject->left) throw vl::glr::AstInsException(L"Field \"genericambiguity::BinaryExpr::left\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-				auto typedValue = value.Cast<genericambiguity::Expr>();
-				if (!typedValue) throw vl::glr::AstInsException(L"Field \"genericambiguity::BinaryExpr::left\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				typedObject->left = typedValue;
-			}
-			break;
+			return vl::glr::AssemblerSetObjectField(&genericambiguity::BinaryExpr::left, object, field, value, cppFieldName);
 		case GenericAmbiguityFields::BinaryExpr_right:
-			{
-				auto typedObject = dynamic_cast<genericambiguity::BinaryExpr*>(object);
-				if (!typedObject) throw vl::glr::AstInsException(L"Field \"genericambiguity::BinaryExpr::right\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-				if (typedObject->right) throw vl::glr::AstInsException(L"Field \"genericambiguity::BinaryExpr::right\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-				auto typedValue = value.Cast<genericambiguity::Expr>();
-				if (!typedValue) throw vl::glr::AstInsException(L"Field \"genericambiguity::BinaryExpr::right\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				typedObject->right = typedValue;
-			}
-			break;
+			return vl::glr::AssemblerSetObjectField(&genericambiguity::BinaryExpr::right, object, field, value, cppFieldName);
 		case GenericAmbiguityFields::CallExpr_args:
-			{
-				auto typedObject = dynamic_cast<genericambiguity::CallExpr*>(object);
-				if (!typedObject) throw vl::glr::AstInsException(L"Field \"genericambiguity::CallExpr::args\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-				auto typedValue = value.Cast<genericambiguity::Expr>();
-				if (!typedValue) throw vl::glr::AstInsException(L"Field \"genericambiguity::CallExpr::args\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				typedObject->args.Add(typedValue);
-			}
-			break;
+			return vl::glr::AssemblerSetObjectField(&genericambiguity::CallExpr::args, object, field, value, cppFieldName);
 		case GenericAmbiguityFields::CallExpr_func:
-			{
-				auto typedObject = dynamic_cast<genericambiguity::CallExpr*>(object);
-				if (!typedObject) throw vl::glr::AstInsException(L"Field \"genericambiguity::CallExpr::func\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-				if (typedObject->func) throw vl::glr::AstInsException(L"Field \"genericambiguity::CallExpr::func\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-				auto typedValue = value.Cast<genericambiguity::Expr>();
-				if (!typedValue) throw vl::glr::AstInsException(L"Field \"genericambiguity::CallExpr::func\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				typedObject->func = typedValue;
-			}
-			break;
+			return vl::glr::AssemblerSetObjectField(&genericambiguity::CallExpr::func, object, field, value, cppFieldName);
 		case GenericAmbiguityFields::DecrementExpr_expr:
-			{
-				auto typedObject = dynamic_cast<genericambiguity::DecrementExpr*>(object);
-				if (!typedObject) throw vl::glr::AstInsException(L"Field \"genericambiguity::DecrementExpr::expr\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-				if (typedObject->expr) throw vl::glr::AstInsException(L"Field \"genericambiguity::DecrementExpr::expr\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-				auto typedValue = value.Cast<genericambiguity::Expr>();
-				if (!typedValue) throw vl::glr::AstInsException(L"Field \"genericambiguity::DecrementExpr::expr\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				typedObject->expr = typedValue;
-			}
-			break;
+			return vl::glr::AssemblerSetObjectField(&genericambiguity::DecrementExpr::expr, object, field, value, cppFieldName);
 		case GenericAmbiguityFields::ExprToResolve_candidates:
-			{
-				auto typedObject = dynamic_cast<genericambiguity::ExprToResolve*>(object);
-				if (!typedObject) throw vl::glr::AstInsException(L"Field \"genericambiguity::ExprToResolve::candidates\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-				auto typedValue = value.Cast<genericambiguity::Expr>();
-				if (!typedValue) throw vl::glr::AstInsException(L"Field \"genericambiguity::ExprToResolve::candidates\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				typedObject->candidates.Add(typedValue);
-			}
-			break;
+			return vl::glr::AssemblerSetObjectField(&genericambiguity::ExprToResolve::candidates, object, field, value, cppFieldName);
 		case GenericAmbiguityFields::GenericExpr_args:
-			{
-				auto typedObject = dynamic_cast<genericambiguity::GenericExpr*>(object);
-				if (!typedObject) throw vl::glr::AstInsException(L"Field \"genericambiguity::GenericExpr::args\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-				auto typedValue = value.Cast<genericambiguity::Expr>();
-				if (!typedValue) throw vl::glr::AstInsException(L"Field \"genericambiguity::GenericExpr::args\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				typedObject->args.Add(typedValue);
-			}
-			break;
+			return vl::glr::AssemblerSetObjectField(&genericambiguity::GenericExpr::args, object, field, value, cppFieldName);
 		case GenericAmbiguityFields::Module_expr:
-			{
-				auto typedObject = dynamic_cast<genericambiguity::Module*>(object);
-				if (!typedObject) throw vl::glr::AstInsException(L"Field \"genericambiguity::Module::expr\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-				if (typedObject->expr) throw vl::glr::AstInsException(L"Field \"genericambiguity::Module::expr\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-				auto typedValue = value.Cast<genericambiguity::Expr>();
-				if (!typedValue) throw vl::glr::AstInsException(L"Field \"genericambiguity::Module::expr\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				typedObject->expr = typedValue;
-			}
-			break;
+			return vl::glr::AssemblerSetObjectField(&genericambiguity::Module::expr, object, field, value, cppFieldName);
 		case GenericAmbiguityFields::PostfixExpr_expr:
-			{
-				auto typedObject = dynamic_cast<genericambiguity::PostfixExpr*>(object);
-				if (!typedObject) throw vl::glr::AstInsException(L"Field \"genericambiguity::PostfixExpr::expr\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-				if (typedObject->expr) throw vl::glr::AstInsException(L"Field \"genericambiguity::PostfixExpr::expr\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-				auto typedValue = value.Cast<genericambiguity::Expr>();
-				if (!typedValue) throw vl::glr::AstInsException(L"Field \"genericambiguity::PostfixExpr::expr\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				typedObject->expr = typedValue;
-			}
-			break;
+			return vl::glr::AssemblerSetObjectField(&genericambiguity::PostfixExpr::expr, object, field, value, cppFieldName);
 		default:
-			if (auto cppFieldName = GenericAmbiguityCppFieldName((GenericAmbiguityFields)field))
+			if (cppFieldName)
 				throw vl::glr::AstInsException(vl::WString::Unmanaged(L"Field \"") + vl::WString::Unmanaged(cppFieldName) + vl::WString::Unmanaged(L"\" is not an object."), vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 			else
 				throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
@@ -141,26 +73,15 @@ GenericAmbiguityAstInsReceiver : public vl::glr::AstInsReceiverBase
 
 	void GenericAmbiguityAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, const vl::regex::RegexToken& token)
 	{
+		auto cppFieldName = GenericAmbiguityCppFieldName((GenericAmbiguityFields)field);
 		switch((GenericAmbiguityFields)field)
 		{
 		case GenericAmbiguityFields::GenericExpr_name:
-			{
-				auto typedObject = dynamic_cast<genericambiguity::GenericExpr*>(object);
-				if (!typedObject) throw vl::glr::AstInsException(L"Field \"genericambiguity::GenericExpr::name\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-				if (typedObject->name.value.Length() != 0) throw vl::glr::AstInsException(L"Field \"genericambiguity::GenericExpr::name\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-				AssignToken(typedObject->name, token);
-			}
-			break;
+			return vl::glr::AssemblerSetTokenField(&genericambiguity::GenericExpr::name, object, field, token,cppFieldName);
 		case GenericAmbiguityFields::RefExpr_name:
-			{
-				auto typedObject = dynamic_cast<genericambiguity::RefExpr*>(object);
-				if (!typedObject) throw vl::glr::AstInsException(L"Field \"genericambiguity::RefExpr::name\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-				if (typedObject->name.value.Length() != 0) throw vl::glr::AstInsException(L"Field \"genericambiguity::RefExpr::name\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-				AssignToken(typedObject->name, token);
-			}
-			break;
+			return vl::glr::AssemblerSetTokenField(&genericambiguity::RefExpr::name, object, field, token,cppFieldName);
 		default:
-			if (auto cppFieldName = GenericAmbiguityCppFieldName((GenericAmbiguityFields)field))
+			if (cppFieldName)
 				throw vl::glr::AstInsException(vl::WString::Unmanaged(L"Field \"") + vl::WString::Unmanaged(cppFieldName) + vl::WString::Unmanaged(L"\" is not a token."), vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 			else
 				throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
@@ -169,26 +90,15 @@ GenericAmbiguityAstInsReceiver : public vl::glr::AstInsReceiverBase
 
 	void GenericAmbiguityAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::vint32_t enumItem)
 	{
+		auto cppFieldName = GenericAmbiguityCppFieldName((GenericAmbiguityFields)field);
 		switch((GenericAmbiguityFields)field)
 		{
 		case GenericAmbiguityFields::BinaryExpr_op:
-			{
-				auto typedObject = dynamic_cast<genericambiguity::BinaryExpr*>(object);
-				if (!typedObject) throw vl::glr::AstInsException(L"Field \"genericambiguity::BinaryExpr::op\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-				if (typedObject->op == genericambiguity::BinaryOp::UNDEFINED_ENUM_ITEM_VALUE) throw vl::glr::AstInsException(L"Field \"genericambiguity::BinaryExpr::op\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-				typedObject->op = (genericambiguity::BinaryOp)enumItem;
-			}
-			break;
+			return vl::glr::AssemblerSetEnumField(&genericambiguity::BinaryExpr::op, object, field, enumItem, cppFieldName);
 		case GenericAmbiguityFields::PostfixExpr_op:
-			{
-				auto typedObject = dynamic_cast<genericambiguity::PostfixExpr*>(object);
-				if (!typedObject) throw vl::glr::AstInsException(L"Field \"genericambiguity::PostfixExpr::op\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-				if (typedObject->op == genericambiguity::PostfixOp::UNDEFINED_ENUM_ITEM_VALUE) throw vl::glr::AstInsException(L"Field \"genericambiguity::PostfixExpr::op\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-				typedObject->op = (genericambiguity::PostfixOp)enumItem;
-			}
-			break;
+			return vl::glr::AssemblerSetEnumField(&genericambiguity::PostfixExpr::op, object, field, enumItem, cppFieldName);
 		default:
-			if (auto cppFieldName = GenericAmbiguityCppFieldName((GenericAmbiguityFields)field))
+			if (cppFieldName)
 				throw vl::glr::AstInsException(vl::WString::Unmanaged(L"Field \"") + vl::WString::Unmanaged(cppFieldName) + vl::WString::Unmanaged(L"\" is not an enum item."), vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 			else
 				throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);

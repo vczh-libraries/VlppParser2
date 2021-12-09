@@ -85,7 +85,7 @@ namespace genericambiguity
 	class PostfixExpr : public Expr, vl::reflection::Description<PostfixExpr>
 	{
 	public:
-		PostfixOp op;
+		PostfixOp op = PostfixOp::UNDEFINED_ENUM_ITEM_VALUE;
 		vl::Ptr<Expr> expr;
 
 		void Accept(Expr::IVisitor* visitor) override;
@@ -102,7 +102,7 @@ namespace genericambiguity
 	class BinaryExpr : public Expr, vl::reflection::Description<BinaryExpr>
 	{
 	public:
-		BinaryOp op;
+		BinaryOp op = BinaryOp::UNDEFINED_ENUM_ITEM_VALUE;
 		vl::Ptr<Expr> left;
 		vl::Ptr<Expr> right;
 

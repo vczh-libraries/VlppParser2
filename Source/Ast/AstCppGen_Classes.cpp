@@ -208,6 +208,12 @@ WriteTypeDefinitions
 							PrintFieldType(file, propSymbol->propType, propSymbol->propSymbol, writer);
 							writer.WriteString(L" ");
 							writer.WriteString(propName);
+							if (dynamic_cast<AstEnumSymbol*>(propSymbol->propSymbol))
+							{
+								writer.WriteString(L" = ");
+								PrintCppType(file, propSymbol->propSymbol, writer);
+								writer.WriteString(L"::UNDEFINED_ENUM_ITEM_VALUE");
+							}
 							writer.WriteLine(L";");
 						}
 

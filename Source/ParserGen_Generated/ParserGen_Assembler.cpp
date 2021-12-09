@@ -70,182 +70,47 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 
 			void ParserGenAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::Ptr<vl::glr::ParsingAstBase> value)
 			{
+				auto cppFieldName = ParserGenCppFieldName((ParserGenFields)field);
 				switch((ParserGenFields)field)
 				{
 				case ParserGenFields::AlternativeSyntax_first:
-					{
-						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrAlternativeSyntax*>(object);
-						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrAlternativeSyntax::first\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-						if (typedObject->first) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrAlternativeSyntax::first\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-						auto typedValue = value.Cast<vl::glr::parsergen::GlrSyntax>();
-						if (!typedValue) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrAlternativeSyntax::first\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-						typedObject->first = typedValue;
-					}
-					break;
+					return vl::glr::AssemblerSetObjectField(&vl::glr::parsergen::GlrAlternativeSyntax::first, object, field, value, cppFieldName);
 				case ParserGenFields::AlternativeSyntax_second:
-					{
-						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrAlternativeSyntax*>(object);
-						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrAlternativeSyntax::second\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-						if (typedObject->second) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrAlternativeSyntax::second\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-						auto typedValue = value.Cast<vl::glr::parsergen::GlrSyntax>();
-						if (!typedValue) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrAlternativeSyntax::second\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-						typedObject->second = typedValue;
-					}
-					break;
+					return vl::glr::AssemblerSetObjectField(&vl::glr::parsergen::GlrAlternativeSyntax::second, object, field, value, cppFieldName);
 				case ParserGenFields::AstFile_types:
-					{
-						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrAstFile*>(object);
-						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrAstFile::types\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-						auto typedValue = value.Cast<vl::glr::parsergen::GlrType>();
-						if (!typedValue) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrAstFile::types\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-						typedObject->types.Add(typedValue);
-					}
-					break;
+					return vl::glr::AssemblerSetObjectField(&vl::glr::parsergen::GlrAstFile::types, object, field, value, cppFieldName);
 				case ParserGenFields::Class_props:
-					{
-						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrClass*>(object);
-						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrClass::props\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-						auto typedValue = value.Cast<vl::glr::parsergen::GlrClassProp>();
-						if (!typedValue) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrClass::props\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-						typedObject->props.Add(typedValue);
-					}
-					break;
+					return vl::glr::AssemblerSetObjectField(&vl::glr::parsergen::GlrClass::props, object, field, value, cppFieldName);
 				case ParserGenFields::CreateClause_assignments:
-					{
-						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrCreateClause*>(object);
-						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrCreateClause::assignments\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-						auto typedValue = value.Cast<vl::glr::parsergen::GlrAssignment>();
-						if (!typedValue) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrCreateClause::assignments\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-						typedObject->assignments.Add(typedValue);
-					}
-					break;
+					return vl::glr::AssemblerSetObjectField(&vl::glr::parsergen::GlrCreateClause::assignments, object, field, value, cppFieldName);
 				case ParserGenFields::CreateClause_syntax:
-					{
-						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrCreateClause*>(object);
-						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrCreateClause::syntax\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-						if (typedObject->syntax) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrCreateClause::syntax\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-						auto typedValue = value.Cast<vl::glr::parsergen::GlrSyntax>();
-						if (!typedValue) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrCreateClause::syntax\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-						typedObject->syntax = typedValue;
-					}
-					break;
+					return vl::glr::AssemblerSetObjectField(&vl::glr::parsergen::GlrCreateClause::syntax, object, field, value, cppFieldName);
 				case ParserGenFields::Enum_items:
-					{
-						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrEnum*>(object);
-						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrEnum::items\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-						auto typedValue = value.Cast<vl::glr::parsergen::GlrEnumItem>();
-						if (!typedValue) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrEnum::items\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-						typedObject->items.Add(typedValue);
-					}
-					break;
+					return vl::glr::AssemblerSetObjectField(&vl::glr::parsergen::GlrEnum::items, object, field, value, cppFieldName);
 				case ParserGenFields::LoopSyntax_delimiter:
-					{
-						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrLoopSyntax*>(object);
-						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrLoopSyntax::delimiter\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-						if (typedObject->delimiter) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrLoopSyntax::delimiter\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-						auto typedValue = value.Cast<vl::glr::parsergen::GlrSyntax>();
-						if (!typedValue) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrLoopSyntax::delimiter\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-						typedObject->delimiter = typedValue;
-					}
-					break;
+					return vl::glr::AssemblerSetObjectField(&vl::glr::parsergen::GlrLoopSyntax::delimiter, object, field, value, cppFieldName);
 				case ParserGenFields::LoopSyntax_syntax:
-					{
-						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrLoopSyntax*>(object);
-						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrLoopSyntax::syntax\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-						if (typedObject->syntax) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrLoopSyntax::syntax\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-						auto typedValue = value.Cast<vl::glr::parsergen::GlrSyntax>();
-						if (!typedValue) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrLoopSyntax::syntax\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-						typedObject->syntax = typedValue;
-					}
-					break;
+					return vl::glr::AssemblerSetObjectField(&vl::glr::parsergen::GlrLoopSyntax::syntax, object, field, value, cppFieldName);
 				case ParserGenFields::OptionalSyntax_syntax:
-					{
-						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrOptionalSyntax*>(object);
-						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrOptionalSyntax::syntax\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-						if (typedObject->syntax) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrOptionalSyntax::syntax\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-						auto typedValue = value.Cast<vl::glr::parsergen::GlrSyntax>();
-						if (!typedValue) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrOptionalSyntax::syntax\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-						typedObject->syntax = typedValue;
-					}
-					break;
+					return vl::glr::AssemblerSetObjectField(&vl::glr::parsergen::GlrOptionalSyntax::syntax, object, field, value, cppFieldName);
 				case ParserGenFields::PartialClause_assignments:
-					{
-						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrPartialClause*>(object);
-						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrPartialClause::assignments\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-						auto typedValue = value.Cast<vl::glr::parsergen::GlrAssignment>();
-						if (!typedValue) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrPartialClause::assignments\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-						typedObject->assignments.Add(typedValue);
-					}
-					break;
+					return vl::glr::AssemblerSetObjectField(&vl::glr::parsergen::GlrPartialClause::assignments, object, field, value, cppFieldName);
 				case ParserGenFields::PartialClause_syntax:
-					{
-						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrPartialClause*>(object);
-						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrPartialClause::syntax\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-						if (typedObject->syntax) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrPartialClause::syntax\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-						auto typedValue = value.Cast<vl::glr::parsergen::GlrSyntax>();
-						if (!typedValue) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrPartialClause::syntax\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-						typedObject->syntax = typedValue;
-					}
-					break;
+					return vl::glr::AssemblerSetObjectField(&vl::glr::parsergen::GlrPartialClause::syntax, object, field, value, cppFieldName);
 				case ParserGenFields::ReuseClause_assignments:
-					{
-						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrReuseClause*>(object);
-						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrReuseClause::assignments\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-						auto typedValue = value.Cast<vl::glr::parsergen::GlrAssignment>();
-						if (!typedValue) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrReuseClause::assignments\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-						typedObject->assignments.Add(typedValue);
-					}
-					break;
+					return vl::glr::AssemblerSetObjectField(&vl::glr::parsergen::GlrReuseClause::assignments, object, field, value, cppFieldName);
 				case ParserGenFields::ReuseClause_syntax:
-					{
-						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrReuseClause*>(object);
-						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrReuseClause::syntax\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-						if (typedObject->syntax) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrReuseClause::syntax\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-						auto typedValue = value.Cast<vl::glr::parsergen::GlrSyntax>();
-						if (!typedValue) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrReuseClause::syntax\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-						typedObject->syntax = typedValue;
-					}
-					break;
+					return vl::glr::AssemblerSetObjectField(&vl::glr::parsergen::GlrReuseClause::syntax, object, field, value, cppFieldName);
 				case ParserGenFields::Rule_clauses:
-					{
-						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrRule*>(object);
-						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrRule::clauses\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-						auto typedValue = value.Cast<vl::glr::parsergen::GlrClause>();
-						if (!typedValue) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrRule::clauses\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-						typedObject->clauses.Add(typedValue);
-					}
-					break;
+					return vl::glr::AssemblerSetObjectField(&vl::glr::parsergen::GlrRule::clauses, object, field, value, cppFieldName);
 				case ParserGenFields::SequenceSyntax_first:
-					{
-						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrSequenceSyntax*>(object);
-						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrSequenceSyntax::first\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-						if (typedObject->first) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrSequenceSyntax::first\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-						auto typedValue = value.Cast<vl::glr::parsergen::GlrSyntax>();
-						if (!typedValue) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrSequenceSyntax::first\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-						typedObject->first = typedValue;
-					}
-					break;
+					return vl::glr::AssemblerSetObjectField(&vl::glr::parsergen::GlrSequenceSyntax::first, object, field, value, cppFieldName);
 				case ParserGenFields::SequenceSyntax_second:
-					{
-						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrSequenceSyntax*>(object);
-						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrSequenceSyntax::second\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-						if (typedObject->second) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrSequenceSyntax::second\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-						auto typedValue = value.Cast<vl::glr::parsergen::GlrSyntax>();
-						if (!typedValue) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrSequenceSyntax::second\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-						typedObject->second = typedValue;
-					}
-					break;
+					return vl::glr::AssemblerSetObjectField(&vl::glr::parsergen::GlrSequenceSyntax::second, object, field, value, cppFieldName);
 				case ParserGenFields::SyntaxFile_rules:
-					{
-						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrSyntaxFile*>(object);
-						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrSyntaxFile::rules\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-						auto typedValue = value.Cast<vl::glr::parsergen::GlrRule>();
-						if (!typedValue) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrSyntaxFile::rules\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-						typedObject->rules.Add(typedValue);
-					}
-					break;
+					return vl::glr::AssemblerSetObjectField(&vl::glr::parsergen::GlrSyntaxFile::rules, object, field, value, cppFieldName);
 				default:
-					if (auto cppFieldName = ParserGenCppFieldName((ParserGenFields)field))
+					if (cppFieldName)
 						throw vl::glr::AstInsException(vl::WString::Unmanaged(L"Field \"") + vl::WString::Unmanaged(cppFieldName) + vl::WString::Unmanaged(L"\" is not an object."), vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 					else
 						throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
@@ -254,122 +119,39 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 
 			void ParserGenAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, const vl::regex::RegexToken& token)
 			{
+				auto cppFieldName = ParserGenCppFieldName((ParserGenFields)field);
 				switch((ParserGenFields)field)
 				{
 				case ParserGenFields::Assignment_field:
-					{
-						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrAssignment*>(object);
-						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrAssignment::field\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-						if (typedObject->field.value.Length() != 0) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrAssignment::field\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-						AssignToken(typedObject->field, token);
-					}
-					break;
+					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrAssignment::field, object, field, token,cppFieldName);
 				case ParserGenFields::Assignment_value:
-					{
-						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrAssignment*>(object);
-						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrAssignment::value\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-						if (typedObject->value.value.Length() != 0) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrAssignment::value\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-						AssignToken(typedObject->value, token);
-					}
-					break;
+					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrAssignment::value, object, field, token,cppFieldName);
 				case ParserGenFields::Class_baseClass:
-					{
-						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrClass*>(object);
-						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrClass::baseClass\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-						if (typedObject->baseClass.value.Length() != 0) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrClass::baseClass\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-						AssignToken(typedObject->baseClass, token);
-					}
-					break;
+					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrClass::baseClass, object, field, token,cppFieldName);
 				case ParserGenFields::ClassProp_name:
-					{
-						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrClassProp*>(object);
-						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrClassProp::name\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-						if (typedObject->name.value.Length() != 0) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrClassProp::name\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-						AssignToken(typedObject->name, token);
-					}
-					break;
+					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrClassProp::name, object, field, token,cppFieldName);
 				case ParserGenFields::ClassProp_propTypeName:
-					{
-						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrClassProp*>(object);
-						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrClassProp::propTypeName\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-						if (typedObject->propTypeName.value.Length() != 0) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrClassProp::propTypeName\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-						AssignToken(typedObject->propTypeName, token);
-					}
-					break;
+					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrClassProp::propTypeName, object, field, token,cppFieldName);
 				case ParserGenFields::CreateClause_type:
-					{
-						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrCreateClause*>(object);
-						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrCreateClause::type\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-						if (typedObject->type.value.Length() != 0) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrCreateClause::type\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-						AssignToken(typedObject->type, token);
-					}
-					break;
+					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrCreateClause::type, object, field, token,cppFieldName);
 				case ParserGenFields::EnumItem_name:
-					{
-						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrEnumItem*>(object);
-						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrEnumItem::name\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-						if (typedObject->name.value.Length() != 0) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrEnumItem::name\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-						AssignToken(typedObject->name, token);
-					}
-					break;
+					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrEnumItem::name, object, field, token,cppFieldName);
 				case ParserGenFields::LiteralSyntax_value:
-					{
-						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrLiteralSyntax*>(object);
-						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrLiteralSyntax::value\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-						if (typedObject->value.value.Length() != 0) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrLiteralSyntax::value\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-						AssignToken(typedObject->value, token);
-					}
-					break;
+					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrLiteralSyntax::value, object, field, token,cppFieldName);
 				case ParserGenFields::PartialClause_type:
-					{
-						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrPartialClause*>(object);
-						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrPartialClause::type\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-						if (typedObject->type.value.Length() != 0) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrPartialClause::type\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-						AssignToken(typedObject->type, token);
-					}
-					break;
+					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrPartialClause::type, object, field, token,cppFieldName);
 				case ParserGenFields::RefSyntax_field:
-					{
-						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrRefSyntax*>(object);
-						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrRefSyntax::field\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-						if (typedObject->field.value.Length() != 0) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrRefSyntax::field\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-						AssignToken(typedObject->field, token);
-					}
-					break;
+					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrRefSyntax::field, object, field, token,cppFieldName);
 				case ParserGenFields::RefSyntax_name:
-					{
-						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrRefSyntax*>(object);
-						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrRefSyntax::name\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-						if (typedObject->name.value.Length() != 0) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrRefSyntax::name\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-						AssignToken(typedObject->name, token);
-					}
-					break;
+					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrRefSyntax::name, object, field, token,cppFieldName);
 				case ParserGenFields::Rule_name:
-					{
-						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrRule*>(object);
-						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrRule::name\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-						if (typedObject->name.value.Length() != 0) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrRule::name\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-						AssignToken(typedObject->name, token);
-					}
-					break;
+					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrRule::name, object, field, token,cppFieldName);
 				case ParserGenFields::Type_name:
-					{
-						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrType*>(object);
-						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrType::name\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-						if (typedObject->name.value.Length() != 0) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrType::name\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-						AssignToken(typedObject->name, token);
-					}
-					break;
+					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrType::name, object, field, token,cppFieldName);
 				case ParserGenFields::UseSyntax_name:
-					{
-						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrUseSyntax*>(object);
-						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrUseSyntax::name\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-						if (typedObject->name.value.Length() != 0) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrUseSyntax::name\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-						AssignToken(typedObject->name, token);
-					}
-					break;
+					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrUseSyntax::name, object, field, token,cppFieldName);
 				default:
-					if (auto cppFieldName = ParserGenCppFieldName((ParserGenFields)field))
+					if (cppFieldName)
 						throw vl::glr::AstInsException(vl::WString::Unmanaged(L"Field \"") + vl::WString::Unmanaged(cppFieldName) + vl::WString::Unmanaged(L"\" is not a token."), vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 					else
 						throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
@@ -378,34 +160,17 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 
 			void ParserGenAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::vint32_t enumItem)
 			{
+				auto cppFieldName = ParserGenCppFieldName((ParserGenFields)field);
 				switch((ParserGenFields)field)
 				{
 				case ParserGenFields::Class_ambiguity:
-					{
-						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrClass*>(object);
-						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrClass::ambiguity\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-						if (typedObject->ambiguity == vl::glr::parsergen::GlrClassAmbiguity::UNDEFINED_ENUM_ITEM_VALUE) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrClass::ambiguity\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-						typedObject->ambiguity = (vl::glr::parsergen::GlrClassAmbiguity)enumItem;
-					}
-					break;
+					return vl::glr::AssemblerSetEnumField(&vl::glr::parsergen::GlrClass::ambiguity, object, field, enumItem, cppFieldName);
 				case ParserGenFields::ClassProp_propType:
-					{
-						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrClassProp*>(object);
-						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrClassProp::propType\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-						if (typedObject->propType == vl::glr::parsergen::GlrPropType::UNDEFINED_ENUM_ITEM_VALUE) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrClassProp::propType\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-						typedObject->propType = (vl::glr::parsergen::GlrPropType)enumItem;
-					}
-					break;
+					return vl::glr::AssemblerSetEnumField(&vl::glr::parsergen::GlrClassProp::propType, object, field, enumItem, cppFieldName);
 				case ParserGenFields::OptionalSyntax_priority:
-					{
-						auto typedObject = dynamic_cast<vl::glr::parsergen::GlrOptionalSyntax*>(object);
-						if (!typedObject) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrOptionalSyntax::priority\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-						if (typedObject->priority == vl::glr::parsergen::GlrOptionalPriority::UNDEFINED_ENUM_ITEM_VALUE) throw vl::glr::AstInsException(L"Field \"vl::glr::parsergen::GlrOptionalSyntax::priority\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-						typedObject->priority = (vl::glr::parsergen::GlrOptionalPriority)enumItem;
-					}
-					break;
+					return vl::glr::AssemblerSetEnumField(&vl::glr::parsergen::GlrOptionalSyntax::priority, object, field, enumItem, cppFieldName);
 				default:
-					if (auto cppFieldName = ParserGenCppFieldName((ParserGenFields)field))
+					if (cppFieldName)
 						throw vl::glr::AstInsException(vl::WString::Unmanaged(L"Field \"") + vl::WString::Unmanaged(cppFieldName) + vl::WString::Unmanaged(L"\" is not an enum item."), vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 					else
 						throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);

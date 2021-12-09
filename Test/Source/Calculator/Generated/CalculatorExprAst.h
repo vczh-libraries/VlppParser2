@@ -153,7 +153,7 @@ namespace calculator
 	class Unary : public Expandable, vl::reflection::Description<Unary>
 	{
 	public:
-		UnaryOp op;
+		UnaryOp op = UnaryOp::UNDEFINED_ENUM_ITEM_VALUE;
 		vl::Ptr<Expr> operand;
 
 		void Accept(Expandable::IVisitor* visitor) override;
@@ -162,7 +162,7 @@ namespace calculator
 	class Binary : public Expandable, vl::reflection::Description<Binary>
 	{
 	public:
-		BinaryOp op;
+		BinaryOp op = BinaryOp::UNDEFINED_ENUM_ITEM_VALUE;
 		vl::Ptr<Expr> left;
 		vl::Ptr<Expr> right;
 

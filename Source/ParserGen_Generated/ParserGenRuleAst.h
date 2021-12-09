@@ -96,7 +96,7 @@ namespace vl
 			class GlrOptionalSyntax : public GlrSyntax, vl::reflection::Description<GlrOptionalSyntax>
 			{
 			public:
-				GlrOptionalPriority priority;
+				GlrOptionalPriority priority = GlrOptionalPriority::UNDEFINED_ENUM_ITEM_VALUE;
 				vl::Ptr<GlrSyntax> syntax;
 
 				void Accept(GlrSyntax::IVisitor* visitor) override;

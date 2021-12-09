@@ -34,49 +34,19 @@ IfElsePriorityAstInsReceiver : public vl::glr::AstInsReceiverBase
 
 	void IfElsePriorityAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::Ptr<vl::glr::ParsingAstBase> value)
 	{
+		auto cppFieldName = IfElsePriorityCppFieldName((IfElsePriorityFields)field);
 		switch((IfElsePriorityFields)field)
 		{
 		case IfElsePriorityFields::BlockStat_stats:
-			{
-				auto typedObject = dynamic_cast<ifelsepriority::BlockStat*>(object);
-				if (!typedObject) throw vl::glr::AstInsException(L"Field \"ifelsepriority::BlockStat::stats\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-				auto typedValue = value.Cast<ifelsepriority::Stat>();
-				if (!typedValue) throw vl::glr::AstInsException(L"Field \"ifelsepriority::BlockStat::stats\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				typedObject->stats.Add(typedValue);
-			}
-			break;
+			return vl::glr::AssemblerSetObjectField(&ifelsepriority::BlockStat::stats, object, field, value, cppFieldName);
 		case IfElsePriorityFields::IfStat_elseBranch:
-			{
-				auto typedObject = dynamic_cast<ifelsepriority::IfStat*>(object);
-				if (!typedObject) throw vl::glr::AstInsException(L"Field \"ifelsepriority::IfStat::elseBranch\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-				if (typedObject->elseBranch) throw vl::glr::AstInsException(L"Field \"ifelsepriority::IfStat::elseBranch\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-				auto typedValue = value.Cast<ifelsepriority::Stat>();
-				if (!typedValue) throw vl::glr::AstInsException(L"Field \"ifelsepriority::IfStat::elseBranch\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				typedObject->elseBranch = typedValue;
-			}
-			break;
+			return vl::glr::AssemblerSetObjectField(&ifelsepriority::IfStat::elseBranch, object, field, value, cppFieldName);
 		case IfElsePriorityFields::IfStat_thenBranch:
-			{
-				auto typedObject = dynamic_cast<ifelsepriority::IfStat*>(object);
-				if (!typedObject) throw vl::glr::AstInsException(L"Field \"ifelsepriority::IfStat::thenBranch\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-				if (typedObject->thenBranch) throw vl::glr::AstInsException(L"Field \"ifelsepriority::IfStat::thenBranch\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-				auto typedValue = value.Cast<ifelsepriority::Stat>();
-				if (!typedValue) throw vl::glr::AstInsException(L"Field \"ifelsepriority::IfStat::thenBranch\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				typedObject->thenBranch = typedValue;
-			}
-			break;
+			return vl::glr::AssemblerSetObjectField(&ifelsepriority::IfStat::thenBranch, object, field, value, cppFieldName);
 		case IfElsePriorityFields::Module_stat:
-			{
-				auto typedObject = dynamic_cast<ifelsepriority::Module*>(object);
-				if (!typedObject) throw vl::glr::AstInsException(L"Field \"ifelsepriority::Module::stat\" does not exist in the current object.", vl::glr::AstInsErrorType::FieldNotExistsInType, field);
-				if (typedObject->stat) throw vl::glr::AstInsException(L"Field \"ifelsepriority::Module::stat\" has already been assigned.", vl::glr::AstInsErrorType::FieldReassigned, field);
-				auto typedValue = value.Cast<ifelsepriority::Stat>();
-				if (!typedValue) throw vl::glr::AstInsException(L"Field \"ifelsepriority::Module::stat\" cannot be assigned with an uncompatible value.", vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-				typedObject->stat = typedValue;
-			}
-			break;
+			return vl::glr::AssemblerSetObjectField(&ifelsepriority::Module::stat, object, field, value, cppFieldName);
 		default:
-			if (auto cppFieldName = IfElsePriorityCppFieldName((IfElsePriorityFields)field))
+			if (cppFieldName)
 				throw vl::glr::AstInsException(vl::WString::Unmanaged(L"Field \"") + vl::WString::Unmanaged(cppFieldName) + vl::WString::Unmanaged(L"\" is not an object."), vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 			else
 				throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
@@ -85,10 +55,11 @@ IfElsePriorityAstInsReceiver : public vl::glr::AstInsReceiverBase
 
 	void IfElsePriorityAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, const vl::regex::RegexToken& token)
 	{
+		auto cppFieldName = IfElsePriorityCppFieldName((IfElsePriorityFields)field);
 		switch((IfElsePriorityFields)field)
 		{
 		default:
-			if (auto cppFieldName = IfElsePriorityCppFieldName((IfElsePriorityFields)field))
+			if (cppFieldName)
 				throw vl::glr::AstInsException(vl::WString::Unmanaged(L"Field \"") + vl::WString::Unmanaged(cppFieldName) + vl::WString::Unmanaged(L"\" is not a token."), vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 			else
 				throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
@@ -97,10 +68,11 @@ IfElsePriorityAstInsReceiver : public vl::glr::AstInsReceiverBase
 
 	void IfElsePriorityAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::vint32_t enumItem)
 	{
+		auto cppFieldName = IfElsePriorityCppFieldName((IfElsePriorityFields)field);
 		switch((IfElsePriorityFields)field)
 		{
 		default:
-			if (auto cppFieldName = IfElsePriorityCppFieldName((IfElsePriorityFields)field))
+			if (cppFieldName)
 				throw vl::glr::AstInsException(vl::WString::Unmanaged(L"Field \"") + vl::WString::Unmanaged(cppFieldName) + vl::WString::Unmanaged(L"\" is not an enum item."), vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
 			else
 				throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);

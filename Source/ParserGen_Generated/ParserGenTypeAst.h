@@ -71,7 +71,7 @@ namespace vl
 			{
 			public:
 				vl::glr::ParsingToken name;
-				GlrPropType propType;
+				GlrPropType propType = GlrPropType::UNDEFINED_ENUM_ITEM_VALUE;
 				vl::glr::ParsingToken propTypeName;
 			};
 
@@ -79,7 +79,7 @@ namespace vl
 			{
 			public:
 				vl::glr::ParsingToken baseClass;
-				GlrClassAmbiguity ambiguity;
+				GlrClassAmbiguity ambiguity = GlrClassAmbiguity::UNDEFINED_ENUM_ITEM_VALUE;
 				vl::collections::List<vl::Ptr<GlrClassProp>> props;
 
 				void Accept(GlrType::IVisitor* visitor) override;

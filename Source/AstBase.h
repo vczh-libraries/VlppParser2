@@ -177,7 +177,7 @@ AST
 		};
 
 /***********************************************************************
-Utility
+AST (Builder)
 ***********************************************************************/
 
 		template<typename TAst, typename ...TBase>
@@ -198,6 +198,10 @@ Utility
 				return node;
 			}
 		};
+
+/***********************************************************************
+AST (Visitor)
+***********************************************************************/
 
 		class CopyVisitorBase : public Object
 		{
@@ -319,6 +323,10 @@ Instructions
 			}
 		};
 
+/***********************************************************************
+IAstInsReceiver
+***********************************************************************/
+
 		class IAstInsReceiver : public virtual Interface
 		{
 		public:
@@ -361,7 +369,6 @@ Instructions
 			virtual void								SetField(ParsingAstBase* object, vint32_t field, vint32_t enumValue) = 0;
 			virtual Ptr<ParsingAstBase>					ResolveAmbiguity(vint32_t type, collections::Array<Ptr<ParsingAstBase>>& candidates) = 0;
 
-			void										AssignToken(ParsingToken& parsingToken, const regex::RegexToken& regexToken);
 		public:
 			AstInsReceiverBase() = default;
 			~AstInsReceiverBase() = default;
@@ -369,6 +376,122 @@ Instructions
 			void										Execute(AstIns instruction, const regex::RegexToken& token) override;
 			Ptr<ParsingAstBase>							Finished() override;
 		};
+
+/***********************************************************************
+IAstInsReceiver (Code Generation Templates)
+***********************************************************************/
+
+		template<typename TClass, typename TField>
+		void AssemblerSetObjectField(Ptr<TField>(TClass::* member), ParsingAstBase* object, vint32_t field, Ptr<ParsingAstBase> value, const wchar_t* cppFieldName)
+		{
+			auto typedObject = dynamic_cast<TClass*>(object);
+			if (!typedObject)
+			{
+				throw vl::glr::AstInsException(
+					WString::Unmanaged(L"Field \"") +
+					WString::Unmanaged(cppFieldName) +
+					WString::Unmanaged(L"\" does not exist in the current object."),
+					vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+			}
+			if ((typedObject->*member))
+			{
+				throw vl::glr::AstInsException(
+					WString::Unmanaged(L"Field \"") +
+					WString::Unmanaged(cppFieldName) +
+					WString::Unmanaged(L"\" has already been assigned."),
+					vl::glr::AstInsErrorType::FieldReassigned, field);
+			}
+
+			auto typedValue = value.Cast<TField>();
+			if (!typedValue)
+			{
+				throw vl::glr::AstInsException(
+					WString::Unmanaged(L"Field \"") +
+					WString::Unmanaged(cppFieldName) +
+					WString::Unmanaged(L"\" cannot be assigned with an uncompatible value."),
+					vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+			}
+			(typedObject->*member) = typedValue;
+		}
+
+		template<typename TClass, typename TField>
+		void AssemblerSetObjectField(collections::List<Ptr<TField>>(TClass::* member), ParsingAstBase* object, vint32_t field, Ptr<ParsingAstBase> value, const wchar_t* cppFieldName)
+		{
+			auto typedObject = dynamic_cast<TClass*>(object);
+			if (!typedObject)
+			{
+				throw vl::glr::AstInsException(
+					WString::Unmanaged(L"Field \"") +
+					WString::Unmanaged(cppFieldName) +
+					WString::Unmanaged(L"\" does not exist in the current object."),
+					vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+			}
+
+			auto typedValue = value.Cast<TField>();
+			if (!typedValue)
+			{
+				throw vl::glr::AstInsException(
+					WString::Unmanaged(L"Field \"") +
+					WString::Unmanaged(cppFieldName) +
+					WString::Unmanaged(L"\" cannot be assigned with an uncompatible value."),
+					vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+			}
+			(typedObject->*member).Add(typedValue);
+		}
+
+		template<typename TClass>
+		void AssemblerSetTokenField(ParsingToken(TClass::* member), ParsingAstBase* object, vint32_t field, const regex::RegexToken& token, const wchar_t* cppFieldName)
+		{
+			auto typedObject = dynamic_cast<TClass*>(object);
+			if (!typedObject)
+			{
+				throw vl::glr::AstInsException(
+					WString::Unmanaged(L"Field \"") +
+					WString::Unmanaged(cppFieldName) +
+					WString::Unmanaged(L"\" does not exist in the current object."),
+					vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+			}
+			if ((typedObject->*member).value.Length() != 0)
+			{
+				throw vl::glr::AstInsException(
+					WString::Unmanaged(L"Field \"") +
+					WString::Unmanaged(cppFieldName) +
+					WString::Unmanaged(L"\" has already been assigned."),
+					vl::glr::AstInsErrorType::FieldReassigned, field);
+			}
+
+			ParsingToken& tokenField = typedObject->*member;
+			tokenField.codeRange.start.row = token.rowStart;
+			tokenField.codeRange.start.column = token.columnStart;
+			tokenField.codeRange.end.row = token.rowEnd;
+			tokenField.codeRange.end.column = token.columnEnd;
+			tokenField.codeRange.codeIndex = token.codeIndex;
+			tokenField.tokenIndex = token.token;
+			tokenField.value = WString::CopyFrom(token.reading, token.length);
+		}
+
+		template<typename TClass, typename TField>
+		void AssemblerSetEnumField(TField(TClass::* member), ParsingAstBase* object, vint32_t field, vint32_t enumItem, const wchar_t* cppFieldName)
+		{
+			auto typedObject = dynamic_cast<TClass*>(object);
+			if (!typedObject)
+			{
+				throw vl::glr::AstInsException(
+					WString::Unmanaged(L"Field \"") +
+					WString::Unmanaged(cppFieldName) +
+					WString::Unmanaged(L"\" does not exist in the current object."),
+					vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+			}
+			if ((typedObject->*member) != TField::UNDEFINED_ENUM_ITEM_VALUE)
+			{
+				throw vl::glr::AstInsException(
+					WString::Unmanaged(L"Field \"") +
+					WString::Unmanaged(cppFieldName) +
+					WString::Unmanaged(L"\" has already been assigned."),
+					vl::glr::AstInsErrorType::FieldReassigned, field);
+			}
+			(typedObject->*member) = (TField)enumItem;
+		}
 
 /***********************************************************************
 Compression

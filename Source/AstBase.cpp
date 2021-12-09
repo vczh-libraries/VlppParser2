@@ -269,17 +269,6 @@ AstInsReceiverBase
 			}
 		}
 
-		void AstInsReceiverBase::AssignToken(ParsingToken& parsingToken, const regex::RegexToken& regexToken)
-		{
-			parsingToken.codeRange.start.row = regexToken.rowStart;
-			parsingToken.codeRange.start.column = regexToken.columnStart;
-			parsingToken.codeRange.end.row = regexToken.rowEnd;
-			parsingToken.codeRange.end.column = regexToken.columnEnd;
-			parsingToken.codeRange.codeIndex = regexToken.codeIndex;
-			parsingToken.tokenIndex = regexToken.token;
-			parsingToken.value = WString::CopyFrom(regexToken.reading, regexToken.length);
-		}
-
 		void AstInsReceiverBase::Execute(AstIns instruction, const regex::RegexToken& token)
 		{
 			EnsureContinuable();
