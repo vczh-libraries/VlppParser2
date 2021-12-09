@@ -353,6 +353,7 @@ WriteAstAssemblerCppFile
 						writer.WriteLine(L"");
 						writer.WriteLine(prefix + L"vl::Ptr<vl::glr::ParsingAstBase> " + manager.Global().name + L"AstInsReceiver::ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates)");
 						writer.WriteLine(prefix + L"{");
+						writer.WriteLine(prefix + L"\tauto cppTypeName = " + manager.Global().name + L"CppTypeName((" + manager.Global().name + L"Classes)type);");
 						writer.WriteLine(prefix + L"\tswitch((" + manager.Global().name + L"Classes)type)");
 						writer.WriteLine(prefix + L"\t{");
 
@@ -382,39 +383,19 @@ WriteAstAssemblerCppFile
 								{
 									auto ambiguousClassSymbol = resolvables[classSymbol];
 									writer.WriteLine(prefix + L"\tcase " + manager.Global().name + L"Classes::" + classSymbol->Name() + L":");
-									writer.WriteLine(prefix + L"\t\t{");
-									writer.WriteString(prefix + L"\t\t\tvl::Ptr<");
-									PrintCppType(nullptr, ambiguousClassSymbol, writer);
-									writer.WriteString(L"> ast = new ");
-									PrintCppType(nullptr, ambiguousClassSymbol, writer);
-									writer.WriteLine(L"();");
-									writer.WriteLine(prefix + L"\t\t\tfor (auto candidate : candidates)");
-									writer.WriteLine(prefix + L"\t\t\t{");
-									writer.WriteString(prefix + L"\t\t\t\tauto typedAst = candidate.Cast<");
+									writer.WriteString(prefix + L"\t\treturn vl::glr::AssemblerResolveAmbiguity<");
 									PrintCppType(nullptr, classSymbol, writer);
-									writer.WriteLine(L">();");
-									writer.WriteLine(prefix + L"\t\t\t\tif (!typedAst) throw vl::glr::AstInsException(L\"The type of the ambiguous candidate is not compatible to the required type\", vl::glr::AstInsErrorType::UnexpectedAmbiguousCandidate, type);");
-									writer.WriteLine(prefix + L"\t\t\t\tast->candidates.Add(typedAst);");
-									writer.WriteLine(prefix + L"\t\t\t}");
-									writer.WriteLine(prefix + L"\t\t\treturn ast;");
-									writer.WriteLine(prefix + L"\t\t}");
+									writer.WriteString(L", ");
+									PrintCppType(nullptr, ambiguousClassSymbol, writer);
+									writer.WriteLine(L">(type, candidates, cppTypeName);");
 								}
 							}
 						}
-
-						for (auto typeSymbol : manager.Symbols().Values())
-						{
-							if (auto classSymbol = dynamic_cast<AstClassSymbol*>(typeSymbol))
-							{
-								if (!resolvables.Keys().Contains(classSymbol))
-								{
-									writer.WriteLine(prefix + L"\tcase " + manager.Global().name + L"Classes::" + classSymbol->Name() + L":");
-								}
-							}
-						}
-						writer.WriteLine(prefix + L"\t\tthrow vl::glr::AstInsException(L\"The type is not configured to allow ambiguity.\", vl::glr::AstInsErrorType::UnsupportedAmbiguityType, type);");
 						writer.WriteLine(prefix + L"\tdefault:");
-						writer.WriteLine(prefix + L"\t\tthrow vl::glr::AstInsException(L\"The type id does not exist.\", vl::glr::AstInsErrorType::UnknownType, type);");
+						writer.WriteLine(prefix + L"\t\tif (cppTypeName)");
+						writer.WriteLine(prefix + L"\t\t\tthrow vl::glr::AstInsException(vl::WString::Unmanaged(L\"Type \\\"\") + vl::WString::Unmanaged(cppTypeName) + vl::WString::Unmanaged(L\"\\\" is not configured to allow ambiguity.\"), vl::glr::AstInsErrorType::UnsupportedAmbiguityType, type);");
+						writer.WriteLine(prefix + L"\t\telse");
+						writer.WriteLine(prefix + L"\t\t\tthrow vl::glr::AstInsException(L\"The type id does not exist.\", vl::glr::AstInsErrorType::UnknownType, type);");
 						writer.WriteLine(prefix + L"\t}");
 						writer.WriteLine(prefix + L"}");
 					}

@@ -267,25 +267,14 @@ CalculatorAstInsReceiver : public vl::glr::AstInsReceiverBase
 
 	vl::Ptr<vl::glr::ParsingAstBase> CalculatorAstInsReceiver::ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates)
 	{
+		auto cppTypeName = CalculatorCppTypeName((CalculatorClasses)type);
 		switch((CalculatorClasses)type)
 		{
-		case CalculatorClasses::Arg:
-		case CalculatorClasses::Binary:
-		case CalculatorClasses::Call:
-		case CalculatorClasses::Expandable:
-		case CalculatorClasses::Expr:
-		case CalculatorClasses::False:
-		case CalculatorClasses::Func:
-		case CalculatorClasses::Import:
-		case CalculatorClasses::LetExpr:
-		case CalculatorClasses::Module:
-		case CalculatorClasses::NumExpr:
-		case CalculatorClasses::Ref:
-		case CalculatorClasses::True:
-		case CalculatorClasses::Unary:
-			throw vl::glr::AstInsException(L"The type is not configured to allow ambiguity.", vl::glr::AstInsErrorType::UnsupportedAmbiguityType, type);
 		default:
-			throw vl::glr::AstInsException(L"The type id does not exist.", vl::glr::AstInsErrorType::UnknownType, type);
+			if (cppTypeName)
+				throw vl::glr::AstInsException(vl::WString::Unmanaged(L"Type \"") + vl::WString::Unmanaged(cppTypeName) + vl::WString::Unmanaged(L"\" is not configured to allow ambiguity."), vl::glr::AstInsErrorType::UnsupportedAmbiguityType, type);
+			else
+				throw vl::glr::AstInsException(L"The type id does not exist.", vl::glr::AstInsErrorType::UnknownType, type);
 		}
 	}
 }

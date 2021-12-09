@@ -165,49 +165,20 @@ IfElseAmbiguityAstInsReceiver : public vl::glr::AstInsReceiverBase
 
 	vl::Ptr<vl::glr::ParsingAstBase> IfElseAmbiguityAstInsReceiver::ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates)
 	{
+		auto cppTypeName = IfElseAmbiguityCppTypeName((IfElseAmbiguityClasses)type);
 		switch((IfElseAmbiguityClasses)type)
 		{
 		case IfElseAmbiguityClasses::IfContent:
-			{
-				vl::Ptr<ifelseambiguity::IfContentToResolve> ast = new ifelseambiguity::IfContentToResolve();
-				for (auto candidate : candidates)
-				{
-					auto typedAst = candidate.Cast<ifelseambiguity::IfContent>();
-					if (!typedAst) throw vl::glr::AstInsException(L"The type of the ambiguous candidate is not compatible to the required type", vl::glr::AstInsErrorType::UnexpectedAmbiguousCandidate, type);
-					ast->candidates.Add(typedAst);
-				}
-				return ast;
-			}
+			return vl::glr::AssemblerResolveAmbiguity<ifelseambiguity::IfContent, ifelseambiguity::IfContentToResolve>(type, candidates, cppTypeName);
 		case IfElseAmbiguityClasses::IfContentCandidate:
-			{
-				vl::Ptr<ifelseambiguity::IfContentToResolve> ast = new ifelseambiguity::IfContentToResolve();
-				for (auto candidate : candidates)
-				{
-					auto typedAst = candidate.Cast<ifelseambiguity::IfContentCandidate>();
-					if (!typedAst) throw vl::glr::AstInsException(L"The type of the ambiguous candidate is not compatible to the required type", vl::glr::AstInsErrorType::UnexpectedAmbiguousCandidate, type);
-					ast->candidates.Add(typedAst);
-				}
-				return ast;
-			}
+			return vl::glr::AssemblerResolveAmbiguity<ifelseambiguity::IfContentCandidate, ifelseambiguity::IfContentToResolve>(type, candidates, cppTypeName);
 		case IfElseAmbiguityClasses::IfContentToResolve:
-			{
-				vl::Ptr<ifelseambiguity::IfContentToResolve> ast = new ifelseambiguity::IfContentToResolve();
-				for (auto candidate : candidates)
-				{
-					auto typedAst = candidate.Cast<ifelseambiguity::IfContentToResolve>();
-					if (!typedAst) throw vl::glr::AstInsException(L"The type of the ambiguous candidate is not compatible to the required type", vl::glr::AstInsErrorType::UnexpectedAmbiguousCandidate, type);
-					ast->candidates.Add(typedAst);
-				}
-				return ast;
-			}
-		case IfElseAmbiguityClasses::BlockStat:
-		case IfElseAmbiguityClasses::DoStat:
-		case IfElseAmbiguityClasses::IfStat:
-		case IfElseAmbiguityClasses::Module:
-		case IfElseAmbiguityClasses::Stat:
-			throw vl::glr::AstInsException(L"The type is not configured to allow ambiguity.", vl::glr::AstInsErrorType::UnsupportedAmbiguityType, type);
+			return vl::glr::AssemblerResolveAmbiguity<ifelseambiguity::IfContentToResolve, ifelseambiguity::IfContentToResolve>(type, candidates, cppTypeName);
 		default:
-			throw vl::glr::AstInsException(L"The type id does not exist.", vl::glr::AstInsErrorType::UnknownType, type);
+			if (cppTypeName)
+				throw vl::glr::AstInsException(vl::WString::Unmanaged(L"Type \"") + vl::WString::Unmanaged(cppTypeName) + vl::WString::Unmanaged(L"\" is not configured to allow ambiguity."), vl::glr::AstInsErrorType::UnsupportedAmbiguityType, type);
+			else
+				throw vl::glr::AstInsException(L"The type id does not exist.", vl::glr::AstInsErrorType::UnknownType, type);
 		}
 	}
 }

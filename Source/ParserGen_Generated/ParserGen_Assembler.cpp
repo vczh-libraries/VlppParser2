@@ -395,32 +395,14 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 
 			vl::Ptr<vl::glr::ParsingAstBase> ParserGenAstInsReceiver::ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates)
 			{
+				auto cppTypeName = ParserGenCppTypeName((ParserGenClasses)type);
 				switch((ParserGenClasses)type)
 				{
-				case ParserGenClasses::AlternativeSyntax:
-				case ParserGenClasses::Assignment:
-				case ParserGenClasses::AstFile:
-				case ParserGenClasses::Class:
-				case ParserGenClasses::ClassProp:
-				case ParserGenClasses::Clause:
-				case ParserGenClasses::CreateClause:
-				case ParserGenClasses::Enum:
-				case ParserGenClasses::EnumItem:
-				case ParserGenClasses::LiteralSyntax:
-				case ParserGenClasses::LoopSyntax:
-				case ParserGenClasses::OptionalSyntax:
-				case ParserGenClasses::PartialClause:
-				case ParserGenClasses::RefSyntax:
-				case ParserGenClasses::ReuseClause:
-				case ParserGenClasses::Rule:
-				case ParserGenClasses::SequenceSyntax:
-				case ParserGenClasses::Syntax:
-				case ParserGenClasses::SyntaxFile:
-				case ParserGenClasses::Type:
-				case ParserGenClasses::UseSyntax:
-					throw vl::glr::AstInsException(L"The type is not configured to allow ambiguity.", vl::glr::AstInsErrorType::UnsupportedAmbiguityType, type);
 				default:
-					throw vl::glr::AstInsException(L"The type id does not exist.", vl::glr::AstInsErrorType::UnknownType, type);
+					if (cppTypeName)
+						throw vl::glr::AstInsException(vl::WString::Unmanaged(L"Type \"") + vl::WString::Unmanaged(cppTypeName) + vl::WString::Unmanaged(L"\" is not configured to allow ambiguity."), vl::glr::AstInsErrorType::UnsupportedAmbiguityType, type);
+					else
+						throw vl::glr::AstInsException(L"The type id does not exist.", vl::glr::AstInsErrorType::UnknownType, type);
 				}
 			}
 		}

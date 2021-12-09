@@ -493,6 +493,26 @@ IAstInsReceiver (Code Generation Templates)
 			(typedObject->*member) = (TField)enumItem;
 		}
 
+		template<typename TElement, typename TAmbiguity>
+		Ptr<ParsingAstBase> AssemblerResolveAmbiguity(vint32_t type, collections::Array<Ptr<ParsingAstBase>>& candidates, const wchar_t* cppTypeName)
+		{
+			vl::Ptr<TAmbiguity> ast = new TAmbiguity();
+			for (auto candidate : candidates)
+			{
+				auto typedAst = candidate.Cast<TElement>();
+				if (!typedAst)
+				{
+					throw vl::glr::AstInsException(
+						WString::Unmanaged(L"The type of the ambiguous candidate is not compatible to the required type \"") +
+						WString::Unmanaged(cppTypeName) +
+						WString::Unmanaged(L"\"."),
+						vl::glr::AstInsErrorType::UnexpectedAmbiguousCandidate, type);
+				}
+				ast->candidates.Add(typedAst);
+			}
+			return ast;
+		}
+
 /***********************************************************************
 Compression
 ***********************************************************************/

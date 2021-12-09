@@ -211,100 +211,30 @@ GenericAmbiguityAstInsReceiver : public vl::glr::AstInsReceiverBase
 
 	vl::Ptr<vl::glr::ParsingAstBase> GenericAmbiguityAstInsReceiver::ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates)
 	{
+		auto cppTypeName = GenericAmbiguityCppTypeName((GenericAmbiguityClasses)type);
 		switch((GenericAmbiguityClasses)type)
 		{
 		case GenericAmbiguityClasses::BinaryExpr:
-			{
-				vl::Ptr<genericambiguity::ExprToResolve> ast = new genericambiguity::ExprToResolve();
-				for (auto candidate : candidates)
-				{
-					auto typedAst = candidate.Cast<genericambiguity::BinaryExpr>();
-					if (!typedAst) throw vl::glr::AstInsException(L"The type of the ambiguous candidate is not compatible to the required type", vl::glr::AstInsErrorType::UnexpectedAmbiguousCandidate, type);
-					ast->candidates.Add(typedAst);
-				}
-				return ast;
-			}
+			return vl::glr::AssemblerResolveAmbiguity<genericambiguity::BinaryExpr, genericambiguity::ExprToResolve>(type, candidates, cppTypeName);
 		case GenericAmbiguityClasses::CallExpr:
-			{
-				vl::Ptr<genericambiguity::ExprToResolve> ast = new genericambiguity::ExprToResolve();
-				for (auto candidate : candidates)
-				{
-					auto typedAst = candidate.Cast<genericambiguity::CallExpr>();
-					if (!typedAst) throw vl::glr::AstInsException(L"The type of the ambiguous candidate is not compatible to the required type", vl::glr::AstInsErrorType::UnexpectedAmbiguousCandidate, type);
-					ast->candidates.Add(typedAst);
-				}
-				return ast;
-			}
+			return vl::glr::AssemblerResolveAmbiguity<genericambiguity::CallExpr, genericambiguity::ExprToResolve>(type, candidates, cppTypeName);
 		case GenericAmbiguityClasses::DecrementExpr:
-			{
-				vl::Ptr<genericambiguity::ExprToResolve> ast = new genericambiguity::ExprToResolve();
-				for (auto candidate : candidates)
-				{
-					auto typedAst = candidate.Cast<genericambiguity::DecrementExpr>();
-					if (!typedAst) throw vl::glr::AstInsException(L"The type of the ambiguous candidate is not compatible to the required type", vl::glr::AstInsErrorType::UnexpectedAmbiguousCandidate, type);
-					ast->candidates.Add(typedAst);
-				}
-				return ast;
-			}
+			return vl::glr::AssemblerResolveAmbiguity<genericambiguity::DecrementExpr, genericambiguity::ExprToResolve>(type, candidates, cppTypeName);
 		case GenericAmbiguityClasses::Expr:
-			{
-				vl::Ptr<genericambiguity::ExprToResolve> ast = new genericambiguity::ExprToResolve();
-				for (auto candidate : candidates)
-				{
-					auto typedAst = candidate.Cast<genericambiguity::Expr>();
-					if (!typedAst) throw vl::glr::AstInsException(L"The type of the ambiguous candidate is not compatible to the required type", vl::glr::AstInsErrorType::UnexpectedAmbiguousCandidate, type);
-					ast->candidates.Add(typedAst);
-				}
-				return ast;
-			}
+			return vl::glr::AssemblerResolveAmbiguity<genericambiguity::Expr, genericambiguity::ExprToResolve>(type, candidates, cppTypeName);
 		case GenericAmbiguityClasses::ExprToResolve:
-			{
-				vl::Ptr<genericambiguity::ExprToResolve> ast = new genericambiguity::ExprToResolve();
-				for (auto candidate : candidates)
-				{
-					auto typedAst = candidate.Cast<genericambiguity::ExprToResolve>();
-					if (!typedAst) throw vl::glr::AstInsException(L"The type of the ambiguous candidate is not compatible to the required type", vl::glr::AstInsErrorType::UnexpectedAmbiguousCandidate, type);
-					ast->candidates.Add(typedAst);
-				}
-				return ast;
-			}
+			return vl::glr::AssemblerResolveAmbiguity<genericambiguity::ExprToResolve, genericambiguity::ExprToResolve>(type, candidates, cppTypeName);
 		case GenericAmbiguityClasses::GenericExpr:
-			{
-				vl::Ptr<genericambiguity::ExprToResolve> ast = new genericambiguity::ExprToResolve();
-				for (auto candidate : candidates)
-				{
-					auto typedAst = candidate.Cast<genericambiguity::GenericExpr>();
-					if (!typedAst) throw vl::glr::AstInsException(L"The type of the ambiguous candidate is not compatible to the required type", vl::glr::AstInsErrorType::UnexpectedAmbiguousCandidate, type);
-					ast->candidates.Add(typedAst);
-				}
-				return ast;
-			}
+			return vl::glr::AssemblerResolveAmbiguity<genericambiguity::GenericExpr, genericambiguity::ExprToResolve>(type, candidates, cppTypeName);
 		case GenericAmbiguityClasses::PostfixExpr:
-			{
-				vl::Ptr<genericambiguity::ExprToResolve> ast = new genericambiguity::ExprToResolve();
-				for (auto candidate : candidates)
-				{
-					auto typedAst = candidate.Cast<genericambiguity::PostfixExpr>();
-					if (!typedAst) throw vl::glr::AstInsException(L"The type of the ambiguous candidate is not compatible to the required type", vl::glr::AstInsErrorType::UnexpectedAmbiguousCandidate, type);
-					ast->candidates.Add(typedAst);
-				}
-				return ast;
-			}
+			return vl::glr::AssemblerResolveAmbiguity<genericambiguity::PostfixExpr, genericambiguity::ExprToResolve>(type, candidates, cppTypeName);
 		case GenericAmbiguityClasses::RefExpr:
-			{
-				vl::Ptr<genericambiguity::ExprToResolve> ast = new genericambiguity::ExprToResolve();
-				for (auto candidate : candidates)
-				{
-					auto typedAst = candidate.Cast<genericambiguity::RefExpr>();
-					if (!typedAst) throw vl::glr::AstInsException(L"The type of the ambiguous candidate is not compatible to the required type", vl::glr::AstInsErrorType::UnexpectedAmbiguousCandidate, type);
-					ast->candidates.Add(typedAst);
-				}
-				return ast;
-			}
-		case GenericAmbiguityClasses::Module:
-			throw vl::glr::AstInsException(L"The type is not configured to allow ambiguity.", vl::glr::AstInsErrorType::UnsupportedAmbiguityType, type);
+			return vl::glr::AssemblerResolveAmbiguity<genericambiguity::RefExpr, genericambiguity::ExprToResolve>(type, candidates, cppTypeName);
 		default:
-			throw vl::glr::AstInsException(L"The type id does not exist.", vl::glr::AstInsErrorType::UnknownType, type);
+			if (cppTypeName)
+				throw vl::glr::AstInsException(vl::WString::Unmanaged(L"Type \"") + vl::WString::Unmanaged(cppTypeName) + vl::WString::Unmanaged(L"\" is not configured to allow ambiguity."), vl::glr::AstInsErrorType::UnsupportedAmbiguityType, type);
+			else
+				throw vl::glr::AstInsException(L"The type id does not exist.", vl::glr::AstInsErrorType::UnknownType, type);
 		}
 	}
 }
