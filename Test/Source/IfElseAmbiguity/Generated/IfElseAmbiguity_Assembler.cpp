@@ -163,6 +163,22 @@ IfElseAmbiguityAstInsReceiver : public vl::glr::AstInsReceiverBase
 		return 0 <= index && index < 8 ? results[index] : nullptr;
 	}
 
+	const wchar_t* IfElseAmbiguityCppTypeName(IfElseAmbiguityClasses type)
+	{
+		const wchar_t* results[] = {
+			L"ifelseambiguity::BlockStat",
+			L"ifelseambiguity::DoStat",
+			L"ifelseambiguity::IfContent",
+			L"ifelseambiguity::IfContentCandidate",
+			L"ifelseambiguity::IfContentToResolve",
+			L"ifelseambiguity::IfStat",
+			L"ifelseambiguity::Module",
+			L"ifelseambiguity::Stat",
+		};
+		vl::vint index = (vl::vint)type;
+		return 0 <= index && index < 8 ? results[index] : nullptr;
+	}
+
 	const wchar_t* IfElseAmbiguityFieldName(IfElseAmbiguityFields field)
 	{
 		switch(field)
@@ -179,6 +195,27 @@ IfElseAmbiguityAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return L"IfStat::content";
 		case IfElseAmbiguityFields::Module_stat:
 			return L"Module::stat";
+		default:
+			return nullptr;
+		}
+	}
+
+	const wchar_t* IfElseAmbiguityCppFieldName(IfElseAmbiguityFields field)
+	{
+		switch(field)
+		{
+		case IfElseAmbiguityFields::BlockStat_stats:
+			return L"ifelseambiguity::BlockStat::stats";
+		case IfElseAmbiguityFields::IfContentCandidate_elseBranch:
+			return L"ifelseambiguity::IfContentCandidate::elseBranch";
+		case IfElseAmbiguityFields::IfContentCandidate_thenBranch:
+			return L"ifelseambiguity::IfContentCandidate::thenBranch";
+		case IfElseAmbiguityFields::IfContentToResolve_candidates:
+			return L"ifelseambiguity::IfContentToResolve::candidates";
+		case IfElseAmbiguityFields::IfStat_content:
+			return L"ifelseambiguity::IfStat::content";
+		case IfElseAmbiguityFields::Module_stat:
+			return L"ifelseambiguity::Module::stat";
 		default:
 			return nullptr;
 		}

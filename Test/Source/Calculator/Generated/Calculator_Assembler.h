@@ -53,7 +53,9 @@ namespace calculator
 	};
 
 	extern const wchar_t* CalculatorTypeName(CalculatorClasses type);
+	extern const wchar_t* CalculatorCppTypeName(CalculatorClasses type);
 	extern const wchar_t* CalculatorFieldName(CalculatorFields field);
+	extern const wchar_t* CalculatorCppFieldName(CalculatorFields field);
 
 	class CalculatorAstInsReceiver : public vl::glr::AstInsReceiverBase
 	{

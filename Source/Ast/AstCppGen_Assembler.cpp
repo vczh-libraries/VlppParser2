@@ -57,7 +57,9 @@ WriteAstAssemblerHeaderFile
 					{
 						writer.WriteLine(L"");
 						writer.WriteLine(prefix + L"extern const wchar_t* " + manager.Global().name + L"TypeName(" + manager.Global().name + L"Classes type);");
+						writer.WriteLine(prefix + L"extern const wchar_t* " + manager.Global().name + L"CppTypeName(" + manager.Global().name + L"Classes type);");
 						writer.WriteLine(prefix + L"extern const wchar_t* " + manager.Global().name + L"FieldName(" + manager.Global().name + L"Fields field);");
+						writer.WriteLine(prefix + L"extern const wchar_t* " + manager.Global().name + L"CppFieldName(" + manager.Global().name + L"Fields field);");
 					}
 					{
 						writer.WriteLine(L"");
@@ -346,6 +348,31 @@ WriteAstAssemblerCppFile
 					}
 
 					/***********************************************************************
+					CppTypeName
+					***********************************************************************/
+					{
+						writer.WriteLine(L"");
+						writer.WriteLine(prefix + L"const wchar_t* " + manager.Global().name + L"CppTypeName(" + manager.Global().name + L"Classes type)");
+						writer.WriteLine(prefix + L"{");
+						writer.WriteLine(prefix + L"\tconst wchar_t* results[] = {");
+						vint count = 0;
+						for (auto typeSymbol : manager.Symbols().Values())
+						{
+							if (auto classSymbol = dynamic_cast<AstClassSymbol*>(typeSymbol))
+							{
+								writer.WriteString(prefix + L"\t\tL\"");
+								PrintCppType(nullptr, classSymbol, writer);
+								writer.WriteLine(L"\",");
+								count++;
+							}
+						}
+						writer.WriteLine(prefix + L"\t};");
+						writer.WriteLine(prefix + L"\tvl::vint index = (vl::vint)type;");
+						writer.WriteLine(prefix + L"\treturn 0 <= index && index < " + itow(count) + L" ? results[index] : nullptr;");
+						writer.WriteLine(prefix + L"}");
+					}
+
+					/***********************************************************************
 					FieldName
 					***********************************************************************/
 					{
@@ -362,6 +389,34 @@ WriteAstAssemblerCppFile
 								{
 									writer.WriteLine(prefix + L"\tcase " + manager.Global().name + L"Fields::" + classSymbol->Name() + L"_" + propSymbol->Name() + L":");
 									writer.WriteLine(prefix + L"\t\treturn L\"" + classSymbol->Name() + L"::" + propSymbol->Name() + L"\";");
+								}
+							}
+						}
+						writer.WriteLine(prefix + L"\tdefault:");
+						writer.WriteLine(prefix + L"\t\treturn nullptr;");
+						writer.WriteLine(prefix + L"\t}");
+						writer.WriteLine(prefix + L"}");
+					}
+
+					/***********************************************************************
+					CppFieldName
+					***********************************************************************/
+					{
+						writer.WriteLine(L"");
+						writer.WriteLine(prefix + L"const wchar_t* " + manager.Global().name + L"CppFieldName(" + manager.Global().name + L"Fields field)");
+						writer.WriteLine(prefix + L"{");
+						writer.WriteLine(prefix + L"\tswitch(field)");
+						writer.WriteLine(prefix + L"\t{");
+						for (auto typeSymbol : manager.Symbols().Values())
+						{
+							if (auto classSymbol = dynamic_cast<AstClassSymbol*>(typeSymbol))
+							{
+								for (auto [propSymbol, index] : indexed(classSymbol->Props().Values()))
+								{
+									writer.WriteLine(prefix + L"\tcase " + manager.Global().name + L"Fields::" + classSymbol->Name() + L"_" + propSymbol->Name() + L":");
+									writer.WriteString(prefix + L"\t\treturn L\"");
+									PrintCppType(nullptr, classSymbol, writer);
+									writer.WriteLine(L"::" + propSymbol->Name() + L"\";");
 								}
 							}
 						}

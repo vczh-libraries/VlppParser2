@@ -34,7 +34,9 @@ namespace ifelseambiguity
 	};
 
 	extern const wchar_t* IfElseAmbiguityTypeName(IfElseAmbiguityClasses type);
+	extern const wchar_t* IfElseAmbiguityCppTypeName(IfElseAmbiguityClasses type);
 	extern const wchar_t* IfElseAmbiguityFieldName(IfElseAmbiguityFields field);
+	extern const wchar_t* IfElseAmbiguityCppFieldName(IfElseAmbiguityFields field);
 
 	class IfElseAmbiguityAstInsReceiver : public vl::glr::AstInsReceiverBase
 	{

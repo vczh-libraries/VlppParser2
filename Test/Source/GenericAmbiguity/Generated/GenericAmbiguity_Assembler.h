@@ -42,7 +42,9 @@ namespace genericambiguity
 	};
 
 	extern const wchar_t* GenericAmbiguityTypeName(GenericAmbiguityClasses type);
+	extern const wchar_t* GenericAmbiguityCppTypeName(GenericAmbiguityClasses type);
 	extern const wchar_t* GenericAmbiguityFieldName(GenericAmbiguityFields field);
+	extern const wchar_t* GenericAmbiguityCppFieldName(GenericAmbiguityFields field);
 
 	class GenericAmbiguityAstInsReceiver : public vl::glr::AstInsReceiverBase
 	{

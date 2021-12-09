@@ -572,6 +572,35 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 				return 0 <= index && index < 21 ? results[index] : nullptr;
 			}
 
+			const wchar_t* ParserGenCppTypeName(ParserGenClasses type)
+			{
+				const wchar_t* results[] = {
+					L"vl::glr::parsergen::GlrAlternativeSyntax",
+					L"vl::glr::parsergen::GlrAssignment",
+					L"vl::glr::parsergen::GlrAstFile",
+					L"vl::glr::parsergen::GlrClass",
+					L"vl::glr::parsergen::GlrClassProp",
+					L"vl::glr::parsergen::GlrClause",
+					L"vl::glr::parsergen::GlrCreateClause",
+					L"vl::glr::parsergen::GlrEnum",
+					L"vl::glr::parsergen::GlrEnumItem",
+					L"vl::glr::parsergen::GlrLiteralSyntax",
+					L"vl::glr::parsergen::GlrLoopSyntax",
+					L"vl::glr::parsergen::GlrOptionalSyntax",
+					L"vl::glr::parsergen::GlrPartialClause",
+					L"vl::glr::parsergen::GlrRefSyntax",
+					L"vl::glr::parsergen::GlrReuseClause",
+					L"vl::glr::parsergen::GlrRule",
+					L"vl::glr::parsergen::GlrSequenceSyntax",
+					L"vl::glr::parsergen::GlrSyntax",
+					L"vl::glr::parsergen::GlrSyntaxFile",
+					L"vl::glr::parsergen::GlrType",
+					L"vl::glr::parsergen::GlrUseSyntax",
+				};
+				vl::vint index = (vl::vint)type;
+				return 0 <= index && index < 21 ? results[index] : nullptr;
+			}
+
 			const wchar_t* ParserGenFieldName(ParserGenFields field)
 			{
 				switch(field)
@@ -646,6 +675,85 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					return L"Type::name";
 				case ParserGenFields::UseSyntax_name:
 					return L"UseSyntax::name";
+				default:
+					return nullptr;
+				}
+			}
+
+			const wchar_t* ParserGenCppFieldName(ParserGenFields field)
+			{
+				switch(field)
+				{
+				case ParserGenFields::AlternativeSyntax_first:
+					return L"vl::glr::parsergen::GlrAlternativeSyntax::first";
+				case ParserGenFields::AlternativeSyntax_second:
+					return L"vl::glr::parsergen::GlrAlternativeSyntax::second";
+				case ParserGenFields::Assignment_field:
+					return L"vl::glr::parsergen::GlrAssignment::field";
+				case ParserGenFields::Assignment_value:
+					return L"vl::glr::parsergen::GlrAssignment::value";
+				case ParserGenFields::AstFile_types:
+					return L"vl::glr::parsergen::GlrAstFile::types";
+				case ParserGenFields::Class_ambiguity:
+					return L"vl::glr::parsergen::GlrClass::ambiguity";
+				case ParserGenFields::Class_baseClass:
+					return L"vl::glr::parsergen::GlrClass::baseClass";
+				case ParserGenFields::Class_props:
+					return L"vl::glr::parsergen::GlrClass::props";
+				case ParserGenFields::ClassProp_name:
+					return L"vl::glr::parsergen::GlrClassProp::name";
+				case ParserGenFields::ClassProp_propType:
+					return L"vl::glr::parsergen::GlrClassProp::propType";
+				case ParserGenFields::ClassProp_propTypeName:
+					return L"vl::glr::parsergen::GlrClassProp::propTypeName";
+				case ParserGenFields::CreateClause_assignments:
+					return L"vl::glr::parsergen::GlrCreateClause::assignments";
+				case ParserGenFields::CreateClause_syntax:
+					return L"vl::glr::parsergen::GlrCreateClause::syntax";
+				case ParserGenFields::CreateClause_type:
+					return L"vl::glr::parsergen::GlrCreateClause::type";
+				case ParserGenFields::Enum_items:
+					return L"vl::glr::parsergen::GlrEnum::items";
+				case ParserGenFields::EnumItem_name:
+					return L"vl::glr::parsergen::GlrEnumItem::name";
+				case ParserGenFields::LiteralSyntax_value:
+					return L"vl::glr::parsergen::GlrLiteralSyntax::value";
+				case ParserGenFields::LoopSyntax_delimiter:
+					return L"vl::glr::parsergen::GlrLoopSyntax::delimiter";
+				case ParserGenFields::LoopSyntax_syntax:
+					return L"vl::glr::parsergen::GlrLoopSyntax::syntax";
+				case ParserGenFields::OptionalSyntax_priority:
+					return L"vl::glr::parsergen::GlrOptionalSyntax::priority";
+				case ParserGenFields::OptionalSyntax_syntax:
+					return L"vl::glr::parsergen::GlrOptionalSyntax::syntax";
+				case ParserGenFields::PartialClause_assignments:
+					return L"vl::glr::parsergen::GlrPartialClause::assignments";
+				case ParserGenFields::PartialClause_syntax:
+					return L"vl::glr::parsergen::GlrPartialClause::syntax";
+				case ParserGenFields::PartialClause_type:
+					return L"vl::glr::parsergen::GlrPartialClause::type";
+				case ParserGenFields::RefSyntax_field:
+					return L"vl::glr::parsergen::GlrRefSyntax::field";
+				case ParserGenFields::RefSyntax_name:
+					return L"vl::glr::parsergen::GlrRefSyntax::name";
+				case ParserGenFields::ReuseClause_assignments:
+					return L"vl::glr::parsergen::GlrReuseClause::assignments";
+				case ParserGenFields::ReuseClause_syntax:
+					return L"vl::glr::parsergen::GlrReuseClause::syntax";
+				case ParserGenFields::Rule_clauses:
+					return L"vl::glr::parsergen::GlrRule::clauses";
+				case ParserGenFields::Rule_name:
+					return L"vl::glr::parsergen::GlrRule::name";
+				case ParserGenFields::SequenceSyntax_first:
+					return L"vl::glr::parsergen::GlrSequenceSyntax::first";
+				case ParserGenFields::SequenceSyntax_second:
+					return L"vl::glr::parsergen::GlrSequenceSyntax::second";
+				case ParserGenFields::SyntaxFile_rules:
+					return L"vl::glr::parsergen::GlrSyntaxFile::rules";
+				case ParserGenFields::Type_name:
+					return L"vl::glr::parsergen::GlrType::name";
+				case ParserGenFields::UseSyntax_name:
+					return L"vl::glr::parsergen::GlrUseSyntax::name";
 				default:
 					return nullptr;
 				}

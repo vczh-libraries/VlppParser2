@@ -29,7 +29,9 @@ namespace ifelsepriority
 	};
 
 	extern const wchar_t* IfElsePriorityTypeName(IfElsePriorityClasses type);
+	extern const wchar_t* IfElsePriorityCppTypeName(IfElsePriorityClasses type);
 	extern const wchar_t* IfElsePriorityFieldName(IfElsePriorityFields field);
+	extern const wchar_t* IfElsePriorityCppFieldName(IfElsePriorityFields field);
 
 	class IfElsePriorityAstInsReceiver : public vl::glr::AstInsReceiverBase
 	{

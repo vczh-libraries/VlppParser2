@@ -348,6 +348,28 @@ CalculatorAstInsReceiver : public vl::glr::AstInsReceiverBase
 		return 0 <= index && index < 14 ? results[index] : nullptr;
 	}
 
+	const wchar_t* CalculatorCppTypeName(CalculatorClasses type)
+	{
+		const wchar_t* results[] = {
+			L"calculator::Arg",
+			L"calculator::Binary",
+			L"calculator::Call",
+			L"calculator::Expandable",
+			L"calculator::Expr",
+			L"calculator::False",
+			L"calculator::Func",
+			L"calculator::Import",
+			L"calculator::LetExpr",
+			L"calculator::Module",
+			L"calculator::NumExpr",
+			L"calculator::Ref",
+			L"calculator::True",
+			L"calculator::Unary",
+		};
+		vl::vint index = (vl::vint)type;
+		return 0 <= index && index < 14 ? results[index] : nullptr;
+	}
+
 	const wchar_t* CalculatorFieldName(CalculatorFields field)
 	{
 		switch(field)
@@ -390,6 +412,53 @@ CalculatorAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return L"Unary::op";
 		case CalculatorFields::Unary_operand:
 			return L"Unary::operand";
+		default:
+			return nullptr;
+		}
+	}
+
+	const wchar_t* CalculatorCppFieldName(CalculatorFields field)
+	{
+		switch(field)
+		{
+		case CalculatorFields::Arg_name:
+			return L"calculator::Arg::name";
+		case CalculatorFields::Binary_left:
+			return L"calculator::Binary::left";
+		case CalculatorFields::Binary_op:
+			return L"calculator::Binary::op";
+		case CalculatorFields::Binary_right:
+			return L"calculator::Binary::right";
+		case CalculatorFields::Call_args:
+			return L"calculator::Call::args";
+		case CalculatorFields::Call_func:
+			return L"calculator::Call::func";
+		case CalculatorFields::Expandable_expanded:
+			return L"calculator::Expandable::expanded";
+		case CalculatorFields::Func_args:
+			return L"calculator::Func::args";
+		case CalculatorFields::Func_value:
+			return L"calculator::Func::value";
+		case CalculatorFields::Import_name:
+			return L"calculator::Import::name";
+		case CalculatorFields::LetExpr_name:
+			return L"calculator::LetExpr::name";
+		case CalculatorFields::LetExpr_result:
+			return L"calculator::LetExpr::result";
+		case CalculatorFields::LetExpr_value:
+			return L"calculator::LetExpr::value";
+		case CalculatorFields::Module_exported:
+			return L"calculator::Module::exported";
+		case CalculatorFields::Module_imports:
+			return L"calculator::Module::imports";
+		case CalculatorFields::NumExpr_value:
+			return L"calculator::NumExpr::value";
+		case CalculatorFields::Ref_name:
+			return L"calculator::Ref::name";
+		case CalculatorFields::Unary_op:
+			return L"calculator::Unary::op";
+		case CalculatorFields::Unary_operand:
+			return L"calculator::Unary::operand";
 		default:
 			return nullptr;
 		}

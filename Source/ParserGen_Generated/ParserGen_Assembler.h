@@ -81,7 +81,9 @@ namespace vl
 			};
 
 			extern const wchar_t* ParserGenTypeName(ParserGenClasses type);
+			extern const wchar_t* ParserGenCppTypeName(ParserGenClasses type);
 			extern const wchar_t* ParserGenFieldName(ParserGenFields field);
+			extern const wchar_t* ParserGenCppFieldName(ParserGenFields field);
 
 			class ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 			{

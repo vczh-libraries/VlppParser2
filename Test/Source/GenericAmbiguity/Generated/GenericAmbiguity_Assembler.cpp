@@ -255,6 +255,23 @@ GenericAmbiguityAstInsReceiver : public vl::glr::AstInsReceiverBase
 		return 0 <= index && index < 9 ? results[index] : nullptr;
 	}
 
+	const wchar_t* GenericAmbiguityCppTypeName(GenericAmbiguityClasses type)
+	{
+		const wchar_t* results[] = {
+			L"genericambiguity::BinaryExpr",
+			L"genericambiguity::CallExpr",
+			L"genericambiguity::DecrementExpr",
+			L"genericambiguity::Expr",
+			L"genericambiguity::ExprToResolve",
+			L"genericambiguity::GenericExpr",
+			L"genericambiguity::Module",
+			L"genericambiguity::PostfixExpr",
+			L"genericambiguity::RefExpr",
+		};
+		vl::vint index = (vl::vint)type;
+		return 0 <= index && index < 9 ? results[index] : nullptr;
+	}
+
 	const wchar_t* GenericAmbiguityFieldName(GenericAmbiguityFields field)
 	{
 		switch(field)
@@ -285,6 +302,41 @@ GenericAmbiguityAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return L"PostfixExpr::op";
 		case GenericAmbiguityFields::RefExpr_name:
 			return L"RefExpr::name";
+		default:
+			return nullptr;
+		}
+	}
+
+	const wchar_t* GenericAmbiguityCppFieldName(GenericAmbiguityFields field)
+	{
+		switch(field)
+		{
+		case GenericAmbiguityFields::BinaryExpr_left:
+			return L"genericambiguity::BinaryExpr::left";
+		case GenericAmbiguityFields::BinaryExpr_op:
+			return L"genericambiguity::BinaryExpr::op";
+		case GenericAmbiguityFields::BinaryExpr_right:
+			return L"genericambiguity::BinaryExpr::right";
+		case GenericAmbiguityFields::CallExpr_args:
+			return L"genericambiguity::CallExpr::args";
+		case GenericAmbiguityFields::CallExpr_func:
+			return L"genericambiguity::CallExpr::func";
+		case GenericAmbiguityFields::DecrementExpr_expr:
+			return L"genericambiguity::DecrementExpr::expr";
+		case GenericAmbiguityFields::ExprToResolve_candidates:
+			return L"genericambiguity::ExprToResolve::candidates";
+		case GenericAmbiguityFields::GenericExpr_args:
+			return L"genericambiguity::GenericExpr::args";
+		case GenericAmbiguityFields::GenericExpr_name:
+			return L"genericambiguity::GenericExpr::name";
+		case GenericAmbiguityFields::Module_expr:
+			return L"genericambiguity::Module::expr";
+		case GenericAmbiguityFields::PostfixExpr_expr:
+			return L"genericambiguity::PostfixExpr::expr";
+		case GenericAmbiguityFields::PostfixExpr_op:
+			return L"genericambiguity::PostfixExpr::op";
+		case GenericAmbiguityFields::RefExpr_name:
+			return L"genericambiguity::RefExpr::name";
 		default:
 			return nullptr;
 		}
