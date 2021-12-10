@@ -18,6 +18,8 @@ FeatureTestAstInsReceiver : public vl::glr::AstInsReceiverBase
 		auto cppTypeName = FeatureTestCppTypeName((FeatureTestClasses)type);
 		switch((FeatureTestClasses)type)
 		{
+		case FeatureTestClasses::AlternativeFeature:
+			return new featuretest::AlternativeFeature();
 		case FeatureTestClasses::FeatureToResolve:
 			return new featuretest::FeatureToResolve();
 		case FeatureTestClasses::OptionalFeature:
@@ -66,25 +68,27 @@ FeatureTestAstInsReceiver : public vl::glr::AstInsReceiverBase
 	const wchar_t* FeatureTestTypeName(FeatureTestClasses type)
 	{
 		const wchar_t* results[] = {
+			L"AlternativeFeature",
 			L"Feature",
 			L"FeatureToResolve",
 			L"OptionalFeature",
 			L"Plus",
 		};
 		vl::vint index = (vl::vint)type;
-		return 0 <= index && index < 4 ? results[index] : nullptr;
+		return 0 <= index && index < 5 ? results[index] : nullptr;
 	}
 
 	const wchar_t* FeatureTestCppTypeName(FeatureTestClasses type)
 	{
 		const wchar_t* results[] = {
+			L"featuretest::AlternativeFeature",
 			L"featuretest::Feature",
 			L"featuretest::FeatureToResolve",
 			L"featuretest::OptionalFeature",
 			L"featuretest::Plus",
 		};
 		vl::vint index = (vl::vint)type;
-		return 0 <= index && index < 4 ? results[index] : nullptr;
+		return 0 <= index && index < 5 ? results[index] : nullptr;
 	}
 
 	const wchar_t* FeatureTestFieldName(FeatureTestFields field)
@@ -116,6 +120,8 @@ FeatureTestAstInsReceiver : public vl::glr::AstInsReceiverBase
 		auto cppTypeName = FeatureTestCppTypeName((FeatureTestClasses)type);
 		switch((FeatureTestClasses)type)
 		{
+		case FeatureTestClasses::AlternativeFeature:
+			return vl::glr::AssemblerResolveAmbiguity<featuretest::AlternativeFeature, featuretest::FeatureToResolve>(type, candidates, cppTypeName);
 		case FeatureTestClasses::Feature:
 			return vl::glr::AssemblerResolveAmbiguity<featuretest::Feature, featuretest::FeatureToResolve>(type, candidates, cppTypeName);
 		case FeatureTestClasses::FeatureToResolve:

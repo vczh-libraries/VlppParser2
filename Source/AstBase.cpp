@@ -276,11 +276,27 @@ AstInsReceiverBase
 			{
 				if (created.Count() == 0 && instruction.type != AstInsType::BeginObject)
 				{
-					throw AstInsException(
-						L"There is no created objects.",
-						AstInsErrorType::NoRootObject
-						);
+					switch (instruction.type)
+					{
+					case AstInsType::BeginObject:
+					case AstInsType::BeginObjectLeftRecursive:
+					case AstInsType::ReopenObject:
+					case AstInsType::ResolveAmbiguity:
+						break;
+					default:
+						throw AstInsException(
+							L"There is no created objects.",
+							AstInsErrorType::NoRootObject
+							);
+					}
 				}
+
+				vint expectedLeavings = 0;
+				if (created.Count() > 0)
+				{
+					expectedLeavings = created[created.Count() - 1].pushedCount;
+				}
+
 				switch (instruction.type)
 				{
 				case AstInsType::Token:
@@ -306,7 +322,6 @@ AstInsReceiverBase
 					break;
 				case AstInsType::BeginObjectLeftRecursive:
 					{
-						vint expectedLeavings = created[created.Count() - 1].pushedCount;
 						if (pushed.Count() < expectedLeavings + 1)
 						{
 							throw AstInsException(
@@ -333,7 +348,6 @@ AstInsReceiverBase
 					break;
 				case AstInsType::ReopenObject:
 					{
-						vint expectedLeavings = created[created.Count() - 1].pushedCount;
 						if (pushed.Count() < expectedLeavings + 1)
 						{
 							throw AstInsException(
@@ -423,7 +437,6 @@ AstInsReceiverBase
 					break;
 				case AstInsType::ResolveAmbiguity:
 					{
-						vint expectedLeavings = created[created.Count() - 1].pushedCount;
 						if (instruction.count <= 0 || pushed.Count() < expectedLeavings + instruction.count)
 						{
 							throw AstInsException(

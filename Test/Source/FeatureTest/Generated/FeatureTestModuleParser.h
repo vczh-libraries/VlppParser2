@@ -18,11 +18,12 @@ namespace featuretest
 		EqualOptional = 3,
 		PositiveOptional = 9,
 		NegativeOptional = 15,
-		Module = 21,
+		Alternative = 21,
+		Module = 24,
 	};
 
 	template<ModuleParserStates> struct ModuleParserStateTypes;
-	template<> struct ModuleParserStateTypes<ModuleParserStates::Module> { using Type = featuretest::OptionalFeature; };
+	template<> struct ModuleParserStateTypes<ModuleParserStates::Module> { using Type = featuretest::Feature; };
 
 	const wchar_t* ModuleParserRuleName(vl::vint index);
 	const wchar_t* ModuleParserStateLabel(vl::vint index);
@@ -37,7 +38,7 @@ namespace featuretest
 	public:
 		ModuleParser();
 
-		vl::Ptr<featuretest::OptionalFeature> ParseModule(const vl::WString & input, vl::vint codeIndex = -1);
+		vl::Ptr<featuretest::Feature> ParseModule(const vl::WString & input, vl::vint codeIndex = -1);
 	};
 }
 #endif

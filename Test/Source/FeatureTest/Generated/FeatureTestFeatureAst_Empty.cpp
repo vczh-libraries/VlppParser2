@@ -24,5 +24,9 @@ FeatureVisitor
 		void FeatureVisitor::Visit(OptionalFeature* node)
 		{
 		}
+
+		void FeatureVisitor::Visit(AlternativeFeature* node)
+		{
+		}
 	}
 }

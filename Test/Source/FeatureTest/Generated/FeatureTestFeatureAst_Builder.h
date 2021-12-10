@@ -33,6 +33,7 @@ namespace featuretest
 			OptionalFeatureBuilder& priority(OptionalProprity value);
 		};
 
+		using MakeAlternativeFeature = vl::glr::ParsingAstBuilder<AlternativeFeature>;
 		using MakeFeatureToResolve = vl::glr::ParsingAstBuilder<FeatureToResolve, FeatureToResolveBuilder>;
 		using MakeOptionalFeature = vl::glr::ParsingAstBuilder<OptionalFeature, OptionalFeatureBuilder>;
 		using MakePlus = vl::glr::ParsingAstBuilder<Plus>;

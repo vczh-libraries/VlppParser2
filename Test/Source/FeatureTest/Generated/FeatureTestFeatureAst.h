@@ -12,6 +12,7 @@ Licensed under https://github.com/vczh-libraries/License
 
 namespace featuretest
 {
+	class AlternativeFeature;
 	class Feature;
 	class FeatureToResolve;
 	class OptionalFeature;
@@ -38,6 +39,7 @@ namespace featuretest
 		public:
 			virtual void Visit(FeatureToResolve* node) = 0;
 			virtual void Visit(OptionalFeature* node) = 0;
+			virtual void Visit(AlternativeFeature* node) = 0;
 		};
 
 		virtual void Accept(Feature::IVisitor* visitor) = 0;
@@ -50,6 +52,13 @@ namespace featuretest
 		OptionalProprity priority = OptionalProprity::UNDEFINED_ENUM_ITEM_VALUE;
 		vl::Ptr<Plus> optional;
 		vl::collections::List<vl::Ptr<Plus>> loop;
+
+		void Accept(Feature::IVisitor* visitor) override;
+	};
+
+	class AlternativeFeature : public Feature, vl::reflection::Description<AlternativeFeature>
+	{
+	public:
 
 		void Accept(Feature::IVisitor* visitor) override;
 	};
@@ -74,6 +83,7 @@ namespace vl
 			DECL_TYPE_INFO(featuretest::Feature::IVisitor)
 			DECL_TYPE_INFO(featuretest::OptionalProprity)
 			DECL_TYPE_INFO(featuretest::OptionalFeature)
+			DECL_TYPE_INFO(featuretest::AlternativeFeature)
 			DECL_TYPE_INFO(featuretest::FeatureToResolve)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
@@ -85,6 +95,11 @@ namespace vl
 				}
 
 				void Visit(featuretest::OptionalFeature* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+				void Visit(featuretest::AlternativeFeature* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}

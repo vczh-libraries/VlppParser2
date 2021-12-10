@@ -13,10 +13,11 @@ namespace featuretest
 {
 	enum class FeatureTestClasses : vl::vint32_t
 	{
-		Feature = 0,
-		FeatureToResolve = 1,
-		OptionalFeature = 2,
-		Plus = 3,
+		AlternativeFeature = 0,
+		Feature = 1,
+		FeatureToResolve = 2,
+		OptionalFeature = 3,
+		Plus = 4,
 	};
 
 	enum class FeatureTestFields : vl::vint32_t

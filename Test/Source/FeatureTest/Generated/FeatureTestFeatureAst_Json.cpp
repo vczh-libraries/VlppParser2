@@ -10,6 +10,9 @@ namespace featuretest
 {
 	namespace json_visitor
 	{
+		void FeatureAstVisitor::PrintFields(AlternativeFeature* node)
+		{
+		}
 		void FeatureAstVisitor::PrintFields(Feature* node)
 		{
 		}
@@ -87,6 +90,20 @@ namespace featuretest
 			WriteType(L"OptionalFeature", node);
 			PrintFields(static_cast<Feature*>(node));
 			PrintFields(static_cast<OptionalFeature*>(node));
+			EndObject();
+		}
+
+		void FeatureAstVisitor::Visit(AlternativeFeature* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"AlternativeFeature", node);
+			PrintFields(static_cast<Feature*>(node));
+			PrintFields(static_cast<AlternativeFeature*>(node));
 			EndObject();
 		}
 

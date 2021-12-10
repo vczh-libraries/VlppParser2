@@ -12,12 +12,14 @@ namespace featuretest
 	{
 		void FeatureAstVisitor::Traverse(vl::glr::ParsingToken& token) {}
 		void FeatureAstVisitor::Traverse(vl::glr::ParsingAstBase* node) {}
+		void FeatureAstVisitor::Traverse(AlternativeFeature* node) {}
 		void FeatureAstVisitor::Traverse(Feature* node) {}
 		void FeatureAstVisitor::Traverse(FeatureToResolve* node) {}
 		void FeatureAstVisitor::Traverse(OptionalFeature* node) {}
 		void FeatureAstVisitor::Traverse(Plus* node) {}
 
 		void FeatureAstVisitor::Finishing(vl::glr::ParsingAstBase* node) {}
+		void FeatureAstVisitor::Finishing(AlternativeFeature* node) {}
 		void FeatureAstVisitor::Finishing(Feature* node) {}
 		void FeatureAstVisitor::Finishing(FeatureToResolve* node) {}
 		void FeatureAstVisitor::Finishing(OptionalFeature* node) {}
@@ -50,6 +52,17 @@ namespace featuretest
 			}
 			InspectInto(node->optional.Obj());
 			Finishing(static_cast<OptionalFeature*>(node));
+			Finishing(static_cast<Feature*>(node));
+			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+		}
+
+		void FeatureAstVisitor::Visit(AlternativeFeature* node)
+		{
+			if (!node) return;
+			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+			Traverse(static_cast<Feature*>(node));
+			Traverse(static_cast<AlternativeFeature*>(node));
+			Finishing(static_cast<AlternativeFeature*>(node));
 			Finishing(static_cast<Feature*>(node));
 			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 		}

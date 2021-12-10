@@ -19,6 +19,7 @@ namespace featuretest
 			, protected virtual Feature::IVisitor
 		{
 		protected:
+			virtual void PrintFields(AlternativeFeature* node);
 			virtual void PrintFields(Feature* node);
 			virtual void PrintFields(FeatureToResolve* node);
 			virtual void PrintFields(OptionalFeature* node);
@@ -27,6 +28,7 @@ namespace featuretest
 		protected:
 			void Visit(FeatureToResolve* node) override;
 			void Visit(OptionalFeature* node) override;
+			void Visit(AlternativeFeature* node) override;
 
 		public:
 			FeatureAstVisitor(vl::stream::StreamWriter& _writer);

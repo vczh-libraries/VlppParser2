@@ -21,6 +21,7 @@ namespace featuretest
 		protected:
 			virtual void Traverse(vl::glr::ParsingToken& token);
 			virtual void Traverse(vl::glr::ParsingAstBase* node);
+			virtual void Traverse(AlternativeFeature* node);
 			virtual void Traverse(Feature* node);
 			virtual void Traverse(FeatureToResolve* node);
 			virtual void Traverse(OptionalFeature* node);
@@ -28,6 +29,7 @@ namespace featuretest
 
 		protected:
 			virtual void Finishing(vl::glr::ParsingAstBase* node);
+			virtual void Finishing(AlternativeFeature* node);
 			virtual void Finishing(Feature* node);
 			virtual void Finishing(FeatureToResolve* node);
 			virtual void Finishing(OptionalFeature* node);
@@ -36,6 +38,7 @@ namespace featuretest
 		protected:
 			void Visit(FeatureToResolve* node) override;
 			void Visit(OptionalFeature* node) override;
+			void Visit(AlternativeFeature* node) override;
 
 		public:
 			void InspectInto(Feature* node);

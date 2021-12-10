@@ -23,6 +23,7 @@ namespace featuretest
 			// Visitor Members -----------------------------------
 			void Visit(FeatureToResolve* node) override;
 			void Visit(OptionalFeature* node) override;
+			void Visit(AlternativeFeature* node) override;
 		};
 
 	}
