@@ -10,9 +10,6 @@ namespace featuretest
 {
 	namespace json_visitor
 	{
-		void FeatureAstVisitor::PrintFields(AlternativeFeature* node)
-		{
-		}
 		void FeatureAstVisitor::PrintFields(Feature* node)
 		{
 		}
@@ -21,6 +18,31 @@ namespace featuretest
 			BeginField(L"candidates");
 			BeginArray();
 			for (auto&& listItem : node->candidates)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+		}
+		void FeatureAstVisitor::PrintFields(NestedOptionalFeature* node)
+		{
+			BeginField(L"optional");
+			Print(node->optional.Obj());
+			EndField();
+			BeginField(L"tail1");
+			Print(node->tail1.Obj());
+			EndField();
+			BeginField(L"tail2");
+			Print(node->tail2.Obj());
+			EndField();
+			BeginField(L"tail3");
+			Print(node->tail3.Obj());
+			EndField();
+			BeginField(L"tails");
+			BeginArray();
+			for (auto&& listItem : node->tails)
 			{
 				BeginArrayItem();
 				Print(listItem.Obj());
@@ -93,7 +115,7 @@ namespace featuretest
 			EndObject();
 		}
 
-		void FeatureAstVisitor::Visit(AlternativeFeature* node)
+		void FeatureAstVisitor::Visit(NestedOptionalFeature* node)
 		{
 			if (!node)
 			{
@@ -101,9 +123,9 @@ namespace featuretest
 				return;
 			}
 			BeginObject();
-			WriteType(L"AlternativeFeature", node);
+			WriteType(L"NestedOptionalFeature", node);
 			PrintFields(static_cast<Feature*>(node));
-			PrintFields(static_cast<AlternativeFeature*>(node));
+			PrintFields(static_cast<NestedOptionalFeature*>(node));
 			EndObject();
 		}
 

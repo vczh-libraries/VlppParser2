@@ -22,6 +22,19 @@ namespace featuretest
 			FeatureToResolveBuilder& candidates(const vl::Ptr<Feature>& value);
 		};
 
+		class NestedOptionalFeatureBuilder
+		{
+		private:
+			NestedOptionalFeature* node;
+		public:
+			NestedOptionalFeatureBuilder(NestedOptionalFeature* _node) : node(_node) {}
+			NestedOptionalFeatureBuilder& optional(const vl::Ptr<Plus>& value);
+			NestedOptionalFeatureBuilder& tail1(const vl::Ptr<Plus>& value);
+			NestedOptionalFeatureBuilder& tail2(const vl::Ptr<Plus>& value);
+			NestedOptionalFeatureBuilder& tail3(const vl::Ptr<Plus>& value);
+			NestedOptionalFeatureBuilder& tails(const vl::Ptr<Plus>& value);
+		};
+
 		class OptionalFeatureBuilder
 		{
 		private:
@@ -33,8 +46,8 @@ namespace featuretest
 			OptionalFeatureBuilder& priority(OptionalProprity value);
 		};
 
-		using MakeAlternativeFeature = vl::glr::ParsingAstBuilder<AlternativeFeature>;
 		using MakeFeatureToResolve = vl::glr::ParsingAstBuilder<FeatureToResolve, FeatureToResolveBuilder>;
+		using MakeNestedOptionalFeature = vl::glr::ParsingAstBuilder<NestedOptionalFeature, NestedOptionalFeatureBuilder>;
 		using MakeOptionalFeature = vl::glr::ParsingAstBuilder<OptionalFeature, OptionalFeatureBuilder>;
 		using MakePlus = vl::glr::ParsingAstBuilder<Plus>;
 	}

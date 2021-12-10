@@ -10,11 +10,6 @@ namespace featuretest
 {
 	namespace copy_visitor
 	{
-		void FeatureAstVisitor::CopyFields(AlternativeFeature* from, AlternativeFeature* to)
-		{
-			CopyFields(static_cast<Feature*>(from), static_cast<Feature*>(to));
-		}
-
 		void FeatureAstVisitor::CopyFields(Feature* from, Feature* to)
 		{
 		}
@@ -25,6 +20,19 @@ namespace featuretest
 			for (auto&& listItem : from->candidates)
 			{
 				to->candidates.Add(CopyNode(listItem.Obj()));
+			}
+		}
+
+		void FeatureAstVisitor::CopyFields(NestedOptionalFeature* from, NestedOptionalFeature* to)
+		{
+			CopyFields(static_cast<Feature*>(from), static_cast<Feature*>(to));
+			to->optional = CopyNode(from->optional.Obj());
+			to->tail1 = CopyNode(from->tail1.Obj());
+			to->tail2 = CopyNode(from->tail2.Obj());
+			to->tail3 = CopyNode(from->tail3.Obj());
+			for (auto&& listItem : from->tails)
+			{
+				to->tails.Add(CopyNode(listItem.Obj()));
 			}
 		}
 
@@ -64,9 +72,9 @@ namespace featuretest
 			this->result = newNode;
 		}
 
-		void FeatureAstVisitor::Visit(AlternativeFeature* node)
+		void FeatureAstVisitor::Visit(NestedOptionalFeature* node)
 		{
-			auto newNode = vl::MakePtr<AlternativeFeature>();
+			auto newNode = vl::MakePtr<NestedOptionalFeature>();
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}

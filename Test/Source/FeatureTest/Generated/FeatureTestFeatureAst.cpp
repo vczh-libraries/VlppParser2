@@ -17,7 +17,7 @@ Visitor Pattern Implementation
 		visitor->Visit(this);
 	}
 
-	void AlternativeFeature::Accept(Feature::IVisitor* visitor)
+	void NestedOptionalFeature::Accept(Feature::IVisitor* visitor)
 	{
 		visitor->Visit(this);
 	}
@@ -40,7 +40,7 @@ namespace vl
 			IMPL_TYPE_INFO_RENAME(featuretest::Feature::IVisitor, featuretest::Feature::IVisitor)
 			IMPL_TYPE_INFO_RENAME(featuretest::OptionalProprity, featuretest::OptionalProprity)
 			IMPL_TYPE_INFO_RENAME(featuretest::OptionalFeature, featuretest::OptionalFeature)
-			IMPL_TYPE_INFO_RENAME(featuretest::AlternativeFeature, featuretest::AlternativeFeature)
+			IMPL_TYPE_INFO_RENAME(featuretest::NestedOptionalFeature, featuretest::NestedOptionalFeature)
 			IMPL_TYPE_INFO_RENAME(featuretest::FeatureToResolve, featuretest::FeatureToResolve)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
@@ -74,12 +74,17 @@ namespace vl
 				CLASS_MEMBER_FIELD(loop)
 			END_CLASS_MEMBER(featuretest::OptionalFeature)
 
-			BEGIN_CLASS_MEMBER(featuretest::AlternativeFeature)
+			BEGIN_CLASS_MEMBER(featuretest::NestedOptionalFeature)
 				CLASS_MEMBER_BASE(featuretest::Feature)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<featuretest::AlternativeFeature>(), NO_PARAMETER)
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<featuretest::NestedOptionalFeature>(), NO_PARAMETER)
 
-			END_CLASS_MEMBER(featuretest::AlternativeFeature)
+				CLASS_MEMBER_FIELD(optional)
+				CLASS_MEMBER_FIELD(tail1)
+				CLASS_MEMBER_FIELD(tail2)
+				CLASS_MEMBER_FIELD(tail3)
+				CLASS_MEMBER_FIELD(tails)
+			END_CLASS_MEMBER(featuretest::NestedOptionalFeature)
 
 			BEGIN_CLASS_MEMBER(featuretest::FeatureToResolve)
 				CLASS_MEMBER_BASE(featuretest::Feature)
@@ -92,7 +97,7 @@ namespace vl
 			BEGIN_INTERFACE_MEMBER(featuretest::Feature::IVisitor)
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(featuretest::Feature::IVisitor::*)(featuretest::FeatureToResolve* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(featuretest::Feature::IVisitor::*)(featuretest::OptionalFeature* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(featuretest::Feature::IVisitor::*)(featuretest::AlternativeFeature* node))
+				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(featuretest::Feature::IVisitor::*)(featuretest::NestedOptionalFeature* node))
 			END_INTERFACE_MEMBER(featuretest::Feature)
 
 #endif
@@ -108,7 +113,7 @@ namespace vl
 					ADD_TYPE_INFO(featuretest::Feature::IVisitor)
 					ADD_TYPE_INFO(featuretest::OptionalProprity)
 					ADD_TYPE_INFO(featuretest::OptionalFeature)
-					ADD_TYPE_INFO(featuretest::AlternativeFeature)
+					ADD_TYPE_INFO(featuretest::NestedOptionalFeature)
 					ADD_TYPE_INFO(featuretest::FeatureToResolve)
 				}
 

@@ -14,13 +14,47 @@ NegativeOptional
   ::= "negative_optional" -[Plus:optional] "+" {Plus:loop} as OptionalFeature {priority = PreferSkip}
   ;
 
-Alternative
-  ::= "alternative" as AlternativeFeature
+NO1
+  ::= [Plus:optional] Plus:tail1 as partial NestedOptionalFeature
+  ;
+
+PositiveNO1
+  ::= +[Plus:optional] Plus:tail1 as partial NestedOptionalFeature
+  ;
+
+NegativeNO1
+  ::= -[Plus:optional] Plus:tail1 as partial NestedOptionalFeature
+  ;
+
+NO2
+  ::= [NO1] Plus:tail2 as partial NestedOptionalFeature
+  ;
+
+PositiveNO2
+  ::= +[PositiveNO1] Plus:tail2 as partial NestedOptionalFeature
+  ;
+
+NegativeNO2
+  ::= -[NegativeNO1] Plus:tail2 as partial NestedOptionalFeature
+  ;
+
+NestedOptional
+  ::= "nested_optional" [NO2] Plus:tail3 {Plus:tails} as NestedOptionalFeature
+  ;
+
+NestedPositiveOptional
+  ::= "nested_positive_optional" +[PositiveNO2] Plus:tail3 {Plus:tails} as NestedOptionalFeature
+  ;
+
+NestedNegativeOptional
+  ::= "nested_negative_optional" -[NegativeNO2] Plus:tail3 {Plus:tails} as NestedOptionalFeature
   ;
 
 Module
   ::= !EqualOptional
   ::= !PositiveOptional
   ::= !NegativeOptional
-  ::= !Alternative
+  ::= !NestedOptional
+  ::= !NestedPositiveOptional
+  ::= !NestedNegativeOptional
   ;

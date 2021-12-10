@@ -18,8 +18,16 @@ namespace featuretest
 		EqualOptional = 3,
 		PositiveOptional = 9,
 		NegativeOptional = 15,
-		Alternative = 21,
-		Module = 24,
+		NO1 = 21,
+		PositiveNO1 = 25,
+		NegativeNO1 = 29,
+		NO2 = 33,
+		PositiveNO2 = 37,
+		NegativeNO2 = 41,
+		NestedOptional = 45,
+		NestedPositiveOptional = 51,
+		NestedNegativeOptional = 57,
+		Module = 63,
 	};
 
 	template<ModuleParserStates> struct ModuleParserStateTypes;

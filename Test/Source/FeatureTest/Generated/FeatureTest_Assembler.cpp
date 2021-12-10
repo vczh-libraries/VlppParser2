@@ -18,10 +18,10 @@ FeatureTestAstInsReceiver : public vl::glr::AstInsReceiverBase
 		auto cppTypeName = FeatureTestCppTypeName((FeatureTestClasses)type);
 		switch((FeatureTestClasses)type)
 		{
-		case FeatureTestClasses::AlternativeFeature:
-			return new featuretest::AlternativeFeature();
 		case FeatureTestClasses::FeatureToResolve:
 			return new featuretest::FeatureToResolve();
+		case FeatureTestClasses::NestedOptionalFeature:
+			return new featuretest::NestedOptionalFeature();
 		case FeatureTestClasses::OptionalFeature:
 			return new featuretest::OptionalFeature();
 		case FeatureTestClasses::Plus:
@@ -38,6 +38,16 @@ FeatureTestAstInsReceiver : public vl::glr::AstInsReceiverBase
 		{
 		case FeatureTestFields::FeatureToResolve_candidates:
 			return vl::glr::AssemblerSetObjectField(&featuretest::FeatureToResolve::candidates, object, field, value, cppFieldName);
+		case FeatureTestFields::NestedOptionalFeature_optional:
+			return vl::glr::AssemblerSetObjectField(&featuretest::NestedOptionalFeature::optional, object, field, value, cppFieldName);
+		case FeatureTestFields::NestedOptionalFeature_tail1:
+			return vl::glr::AssemblerSetObjectField(&featuretest::NestedOptionalFeature::tail1, object, field, value, cppFieldName);
+		case FeatureTestFields::NestedOptionalFeature_tail2:
+			return vl::glr::AssemblerSetObjectField(&featuretest::NestedOptionalFeature::tail2, object, field, value, cppFieldName);
+		case FeatureTestFields::NestedOptionalFeature_tail3:
+			return vl::glr::AssemblerSetObjectField(&featuretest::NestedOptionalFeature::tail3, object, field, value, cppFieldName);
+		case FeatureTestFields::NestedOptionalFeature_tails:
+			return vl::glr::AssemblerSetObjectField(&featuretest::NestedOptionalFeature::tails, object, field, value, cppFieldName);
 		case FeatureTestFields::OptionalFeature_loop:
 			return vl::glr::AssemblerSetObjectField(&featuretest::OptionalFeature::loop, object, field, value, cppFieldName);
 		case FeatureTestFields::OptionalFeature_optional:
@@ -68,9 +78,9 @@ FeatureTestAstInsReceiver : public vl::glr::AstInsReceiverBase
 	const wchar_t* FeatureTestTypeName(FeatureTestClasses type)
 	{
 		const wchar_t* results[] = {
-			L"AlternativeFeature",
 			L"Feature",
 			L"FeatureToResolve",
+			L"NestedOptionalFeature",
 			L"OptionalFeature",
 			L"Plus",
 		};
@@ -81,9 +91,9 @@ FeatureTestAstInsReceiver : public vl::glr::AstInsReceiverBase
 	const wchar_t* FeatureTestCppTypeName(FeatureTestClasses type)
 	{
 		const wchar_t* results[] = {
-			L"featuretest::AlternativeFeature",
 			L"featuretest::Feature",
 			L"featuretest::FeatureToResolve",
+			L"featuretest::NestedOptionalFeature",
 			L"featuretest::OptionalFeature",
 			L"featuretest::Plus",
 		};
@@ -95,24 +105,34 @@ FeatureTestAstInsReceiver : public vl::glr::AstInsReceiverBase
 	{
 		const wchar_t* results[] = {
 			L"FeatureToResolve::candidates",
+			L"NestedOptionalFeature::optional",
+			L"NestedOptionalFeature::tail1",
+			L"NestedOptionalFeature::tail2",
+			L"NestedOptionalFeature::tail3",
+			L"NestedOptionalFeature::tails",
 			L"OptionalFeature::loop",
 			L"OptionalFeature::optional",
 			L"OptionalFeature::priority",
 		};
 		vl::vint index = (vl::vint)field;
-		return 0 <= index && index < 4 ? results[index] : nullptr;
+		return 0 <= index && index < 9 ? results[index] : nullptr;
 	}
 
 	const wchar_t* FeatureTestCppFieldName(FeatureTestFields field)
 	{
 		const wchar_t* results[] = {
 			L"featuretest::FeatureToResolve::candidates",
+			L"featuretest::NestedOptionalFeature::optional",
+			L"featuretest::NestedOptionalFeature::tail1",
+			L"featuretest::NestedOptionalFeature::tail2",
+			L"featuretest::NestedOptionalFeature::tail3",
+			L"featuretest::NestedOptionalFeature::tails",
 			L"featuretest::OptionalFeature::loop",
 			L"featuretest::OptionalFeature::optional",
 			L"featuretest::OptionalFeature::priority",
 		};
 		vl::vint index = (vl::vint)field;
-		return 0 <= index && index < 4 ? results[index] : nullptr;
+		return 0 <= index && index < 9 ? results[index] : nullptr;
 	}
 
 	vl::Ptr<vl::glr::ParsingAstBase> FeatureTestAstInsReceiver::ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates)
@@ -120,12 +140,12 @@ FeatureTestAstInsReceiver : public vl::glr::AstInsReceiverBase
 		auto cppTypeName = FeatureTestCppTypeName((FeatureTestClasses)type);
 		switch((FeatureTestClasses)type)
 		{
-		case FeatureTestClasses::AlternativeFeature:
-			return vl::glr::AssemblerResolveAmbiguity<featuretest::AlternativeFeature, featuretest::FeatureToResolve>(type, candidates, cppTypeName);
 		case FeatureTestClasses::Feature:
 			return vl::glr::AssemblerResolveAmbiguity<featuretest::Feature, featuretest::FeatureToResolve>(type, candidates, cppTypeName);
 		case FeatureTestClasses::FeatureToResolve:
 			return vl::glr::AssemblerResolveAmbiguity<featuretest::FeatureToResolve, featuretest::FeatureToResolve>(type, candidates, cppTypeName);
+		case FeatureTestClasses::NestedOptionalFeature:
+			return vl::glr::AssemblerResolveAmbiguity<featuretest::NestedOptionalFeature, featuretest::FeatureToResolve>(type, candidates, cppTypeName);
 		case FeatureTestClasses::OptionalFeature:
 			return vl::glr::AssemblerResolveAmbiguity<featuretest::OptionalFeature, featuretest::FeatureToResolve>(type, candidates, cppTypeName);
 		default:

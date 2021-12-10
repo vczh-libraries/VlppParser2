@@ -19,9 +19,9 @@ namespace featuretest
 			, protected virtual Feature::IVisitor
 		{
 		protected:
-			void CopyFields(AlternativeFeature* from, AlternativeFeature* to);
 			void CopyFields(Feature* from, Feature* to);
 			void CopyFields(FeatureToResolve* from, FeatureToResolve* to);
+			void CopyFields(NestedOptionalFeature* from, NestedOptionalFeature* to);
 			void CopyFields(OptionalFeature* from, OptionalFeature* to);
 			void CopyFields(Plus* from, Plus* to);
 
@@ -30,7 +30,7 @@ namespace featuretest
 
 			void Visit(FeatureToResolve* node) override;
 			void Visit(OptionalFeature* node) override;
-			void Visit(AlternativeFeature* node) override;
+			void Visit(NestedOptionalFeature* node) override;
 
 		public:
 			virtual vl::Ptr<Feature> CopyNode(Feature* node);

@@ -25,7 +25,7 @@ FeatureVisitor
 		{
 		}
 
-		void FeatureVisitor::Visit(AlternativeFeature* node)
+		void FeatureVisitor::Visit(NestedOptionalFeature* node)
 		{
 		}
 	}

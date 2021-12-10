@@ -22,6 +22,40 @@ FeatureToResolveBuilder
 		}
 
 /***********************************************************************
+NestedOptionalFeatureBuilder
+***********************************************************************/
+
+		NestedOptionalFeatureBuilder& NestedOptionalFeatureBuilder::optional(const vl::Ptr<Plus>& value)
+		{
+			node->optional = value;
+			return *this;
+		}
+
+		NestedOptionalFeatureBuilder& NestedOptionalFeatureBuilder::tail1(const vl::Ptr<Plus>& value)
+		{
+			node->tail1 = value;
+			return *this;
+		}
+
+		NestedOptionalFeatureBuilder& NestedOptionalFeatureBuilder::tail2(const vl::Ptr<Plus>& value)
+		{
+			node->tail2 = value;
+			return *this;
+		}
+
+		NestedOptionalFeatureBuilder& NestedOptionalFeatureBuilder::tail3(const vl::Ptr<Plus>& value)
+		{
+			node->tail3 = value;
+			return *this;
+		}
+
+		NestedOptionalFeatureBuilder& NestedOptionalFeatureBuilder::tails(const vl::Ptr<Plus>& value)
+		{
+			node->tails.Add(value);
+			return *this;
+		}
+
+/***********************************************************************
 OptionalFeatureBuilder
 ***********************************************************************/
 

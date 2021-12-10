@@ -12,9 +12,9 @@ Licensed under https://github.com/vczh-libraries/License
 
 namespace featuretest
 {
-	class AlternativeFeature;
 	class Feature;
 	class FeatureToResolve;
+	class NestedOptionalFeature;
 	class OptionalFeature;
 	class Plus;
 
@@ -39,7 +39,7 @@ namespace featuretest
 		public:
 			virtual void Visit(FeatureToResolve* node) = 0;
 			virtual void Visit(OptionalFeature* node) = 0;
-			virtual void Visit(AlternativeFeature* node) = 0;
+			virtual void Visit(NestedOptionalFeature* node) = 0;
 		};
 
 		virtual void Accept(Feature::IVisitor* visitor) = 0;
@@ -56,9 +56,14 @@ namespace featuretest
 		void Accept(Feature::IVisitor* visitor) override;
 	};
 
-	class AlternativeFeature : public Feature, vl::reflection::Description<AlternativeFeature>
+	class NestedOptionalFeature : public Feature, vl::reflection::Description<NestedOptionalFeature>
 	{
 	public:
+		vl::Ptr<Plus> optional;
+		vl::Ptr<Plus> tail1;
+		vl::Ptr<Plus> tail2;
+		vl::Ptr<Plus> tail3;
+		vl::collections::List<vl::Ptr<Plus>> tails;
 
 		void Accept(Feature::IVisitor* visitor) override;
 	};
@@ -83,7 +88,7 @@ namespace vl
 			DECL_TYPE_INFO(featuretest::Feature::IVisitor)
 			DECL_TYPE_INFO(featuretest::OptionalProprity)
 			DECL_TYPE_INFO(featuretest::OptionalFeature)
-			DECL_TYPE_INFO(featuretest::AlternativeFeature)
+			DECL_TYPE_INFO(featuretest::NestedOptionalFeature)
 			DECL_TYPE_INFO(featuretest::FeatureToResolve)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
@@ -99,7 +104,7 @@ namespace vl
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(featuretest::AlternativeFeature* node) override
+				void Visit(featuretest::NestedOptionalFeature* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}

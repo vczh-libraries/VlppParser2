@@ -17,12 +17,14 @@ namespace featuretest
 		OPTIONAL = 0,
 		POSITIVE_OPTIONAL = 1,
 		NEGATIVE_OPTIONAL = 2,
-		ALTERNATIVE = 3,
-		PLUS = 4,
-		SPACE = 5,
+		NESTED_OPTIONAL = 3,
+		NESTED_POSITIVE_OPTIONAL = 4,
+		NESTED_NEGATIVE_OPTIONAL = 5,
+		PLUS = 6,
+		SPACE = 7,
 	};
 
-	constexpr vl::vint FeatureTestTokenCount = 6;
+	constexpr vl::vint FeatureTestTokenCount = 8;
 	extern bool FeatureTestTokenDeleter(vl::vint token);
 	extern const wchar_t* FeatureTestTokenId(FeatureTestTokens token);
 	extern const wchar_t* FeatureTestTokenDisplayText(FeatureTestTokens token);
