@@ -65,6 +65,20 @@ GetPriorityFromEdge
 				//   4) Competition::next -> nextActiveCompetition
 				//   5) add Competition::nextCompetitionOfTrace, serves RuntimeRouting::holdingCompetition
 
+				{
+					vint counter = 0;
+					if (edgeDesc.returnIndices.count > 0)
+					{
+						for (vint32_t i = 0; i < edgeDesc.returnIndices.count; i++)
+						{
+							auto&& returnDesc = executable.returns[executable.returnIndices[edgeDesc.returnIndices.start + i]];
+							if (returnDesc.priority != EdgePriority::NoCompetition) counter++;
+						}
+					}
+					if (edgeDesc.priority != EdgePriority::NoCompetition) counter++;
+					CHECK_ERROR(counter < 2, L"Not Implemented: multiple competitions on one edge.");
+				}
+
 				// the priority of this cross-referenced edge is stored in the first compact edge
 				if (edgeDesc.returnIndices.count > 0)
 				{
