@@ -51,6 +51,7 @@
 - [x] Ambiguity
 - [x] Priority in positive optional syntax
 - [x] Priority in negative optional syntax
+- [ ] Priority in multiple rule input edges, and they get compressed to one edge in CrossReferencedNFA.
 - [ ] Priority in alternative syntax, but don't let it ends a clause if a high priority branch could be empty (add compile error)
 - [ ] Priority in returnDesc / left recursive transition
 - [ ] Priority with left recursion
