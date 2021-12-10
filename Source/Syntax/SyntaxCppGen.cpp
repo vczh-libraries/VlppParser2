@@ -192,8 +192,6 @@ WriteSyntaxCppFile
 							idToClasses[v] = k;
 						}
 
-						writer.WriteLine(prefix + L"\tif (class1 < 0 || class1 >= " + itow(idToClasses.Count()) + L") throw vl::glr::AstInsException(L\"The type id does not exist.\", vl::glr::AstInsErrorType::UnknownType, class1);");
-						writer.WriteLine(prefix + L"\tif (class2 < 0 || class2 >= " + itow(idToClasses.Count()) + L") throw vl::glr::AstInsException(L\"The type id does not exist.\", vl::glr::AstInsErrorType::UnknownType, class2);");
 						writer.WriteLine(prefix + L"\tstatic vl::vint32_t results[" + itow(idToClasses.Count()) + L"][" + itow(idToClasses.Count()) + L"] = {");
 						for (auto [c1, i1] : indexed(idToClasses))
 						{
@@ -212,7 +210,7 @@ WriteSyntaxCppFile
 							writer.WriteLine(L"},");
 						}
 						writer.WriteLine(prefix + L"\t};");
-						writer.WriteLine(prefix + L"\treturn results[class1][class2];");
+						writer.WriteLine(prefix + L"\treturn vl::glr::AssemblerFindCommonBaseClass(class1, class2, results);");
 					}
 					writer.WriteLine(prefix + L"};");
 				}

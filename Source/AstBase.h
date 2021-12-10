@@ -514,6 +514,14 @@ IAstInsReceiver (Code Generation Templates)
 			return ast;
 		}
 
+		template<vint32_t Size>
+		vint32_t AssemblerFindCommonBaseClass(vint32_t class1, vint32_t class2, vint32_t(&matrix)[Size][Size])
+		{
+			if (class1 < 0 || class1 >= 9) throw vl::glr::AstInsException(L"The type id does not exist.", vl::glr::AstInsErrorType::UnknownType, class1);
+			if (class2 < 0 || class2 >= 9) throw vl::glr::AstInsException(L"The type id does not exist.", vl::glr::AstInsErrorType::UnknownType, class2);
+			return matrix[class1][class2];
+		}
+
 /***********************************************************************
 IAstInsReceiver (Code Generation Error Templates)
 ***********************************************************************/

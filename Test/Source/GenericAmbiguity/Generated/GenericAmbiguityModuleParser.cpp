@@ -101,8 +101,6 @@ namespace genericambiguity
 
 	vl::vint32_t ModuleParser::FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2)
 	{
-		if (class1 < 0 || class1 >= 9) throw vl::glr::AstInsException(L"The type id does not exist.", vl::glr::AstInsErrorType::UnknownType, class1);
-		if (class2 < 0 || class2 >= 9) throw vl::glr::AstInsException(L"The type id does not exist.", vl::glr::AstInsErrorType::UnknownType, class2);
 		static vl::vint32_t results[9][9] = {
 			{0, 3, 3, 3, 3, 3, -1, 3, 3, },
 			{3, 1, 3, 3, 3, 3, -1, 3, 3, },
@@ -114,7 +112,7 @@ namespace genericambiguity
 			{3, 3, 3, 3, 3, 3, -1, 7, 3, },
 			{3, 3, 3, 3, 3, 3, -1, 3, 8, },
 		};
-		return results[class1][class2];
+		return vl::glr::AssemblerFindCommonBaseClass(class1, class2, results);
 	};
 
 	vl::Ptr<genericambiguity::Module> ModuleParser::ParseModule(const vl::WString & input, vl::vint codeIndex)
