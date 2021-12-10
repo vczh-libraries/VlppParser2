@@ -16,9 +16,9 @@ namespace featuretest
 	{
 		Plus = 0,
 		EqualOptional = 3,
-		PositiveOptional = 8,
-		NegativeOptional = 13,
-		Module = 18,
+		PositiveOptional = 9,
+		NegativeOptional = 15,
+		Module = 21,
 	};
 
 	template<ModuleParserStates> struct ModuleParserStateTypes;
