@@ -280,7 +280,7 @@ Competitions
 				while (acId != -1)
 				{
 					// when executing an EndingInput transition, we announce high priority win a competition if
-					//   1) such EndingInput transitions ends the clause where the state of the trace holding competition is in the same clause
+					//   1) such EndingInput transitions ends the clause, and the state of the trace holding competition belongs to the same clause
 					//      we ensure this by comparing rule id, clause id and returnStack object (not content)
 					//      because a ReturnStack object is created when entering a new clause
 					//   2) if the EndingInput transition begins from the trace holding the competition, it cannot be a low priority transition
