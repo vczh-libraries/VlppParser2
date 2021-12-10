@@ -55,7 +55,7 @@
 - [ ] Priority in alternative syntax, but don't let it ends a clause if a high priority branch could be empty (add compile error)
 - [ ] Priority in returnDesc / left recursive transition
 - [ ] Priority with left recursion
-- [ ] Priority in different clauses of the same rule (`TraceManager::CheckAttendingCompetitionsOnEndingEdge`)
+- [ ] Priority in different clauses of the same rule (`TraceManager::GetPriorityFromEdge`)
 - [x] Ambiguity with left recursion, when ASTs creates from left recursion clauses belong to a bigger part of ambiguity resolving
 - [x] Ambiguity with left recursion, when two left recursive clauses consume the same series of inputs
 - [ ] Priority with ambiguity
