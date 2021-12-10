@@ -96,21 +96,16 @@ WriteAstAssemblerCppFile
 						writer.WriteLine(L"");
 						writer.WriteLine(prefix + L"vl::Ptr<vl::glr::ParsingAstBase> " + manager.Global().name + L"AstInsReceiver::CreateAstNode(vl::vint32_t type)");
 						writer.WriteLine(prefix + L"{");
+						writer.WriteLine(prefix + L"\tauto cppTypeName = " + manager.Global().name + L"CppTypeName((" + manager.Global().name + L"Classes)type);");
 						writer.WriteLine(prefix + L"\tswitch((" + manager.Global().name + L"Classes)type)");
 						writer.WriteLine(prefix + L"\t{");
 						for (auto typeSymbol : manager.Symbols().Values())
 						{
 							if (auto classSymbol = dynamic_cast<AstClassSymbol*>(typeSymbol))
 							{
-								writer.WriteLine(prefix + L"\tcase " + manager.Global().name + L"Classes::" + classSymbol->Name() + L":");
-								if (classSymbol->derivedClasses.Count() > 0)
+								if (classSymbol->derivedClasses.Count() == 0)
 								{
-									writer.WriteString(prefix + L"\t\tthrow vl::glr::AstInsException(L\"Unable to create abstract class \\\"");
-									PrintCppType(nullptr, classSymbol, writer);
-									writer.WriteLine(L"\\\".\", vl::glr::AstInsErrorType::UnknownType, type);");
-								}
-								else
-								{
+									writer.WriteLine(prefix + L"\tcase " + manager.Global().name + L"Classes::" + classSymbol->Name() + L":");
 									writer.WriteString(prefix + L"\t\treturn new ");
 									PrintCppType(nullptr, classSymbol, writer);
 									writer.WriteLine(L"();");
@@ -118,7 +113,7 @@ WriteAstAssemblerCppFile
 							}
 						}
 						writer.WriteLine(prefix + L"\tdefault:");
-						writer.WriteLine(prefix + L"\t\tthrow vl::glr::AstInsException(L\"The type id does not exist.\", vl::glr::AstInsErrorType::UnknownType, type);");
+						writer.WriteLine(prefix + L"\t\treturn vl::glr::AssemblyThrowCannotCreateAbstractType(type, cppTypeName);");
 						writer.WriteLine(prefix + L"\t}");
 						writer.WriteLine(prefix + L"}");
 					}
@@ -166,18 +161,12 @@ WriteAstAssemblerCppFile
 								writer.WriteLine(L", object, field, value, cppFieldName);");
 							}
 							writer.WriteLine(prefix + L"\tdefault:");
-							writer.WriteLine(prefix + L"\t\tif (cppFieldName)");
-							writer.WriteLine(prefix + L"\t\t\tthrow vl::glr::AstInsException(vl::WString::Unmanaged(L\"Field \\\"\") + vl::WString::Unmanaged(cppFieldName) + vl::WString::Unmanaged(L\"\\\" is not an object.\"), vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);");
-							writer.WriteLine(prefix + L"\t\telse");
-							writer.WriteLine(prefix + L"\t\t\tthrow vl::glr::AstInsException(L\"The field id does not exist.\", vl::glr::AstInsErrorType::UnknownField, field);");
+							writer.WriteLine(prefix + L"\t\treturn vl::glr::AssemblyThrowFieldNotObject(field, cppFieldName);");
 							writer.WriteLine(prefix + L"\t}");
 						}
 						else
 						{
-							writer.WriteLine(prefix + L"\tif (cppFieldName)");
-							writer.WriteLine(prefix + L"\t\tthrow vl::glr::AstInsException(vl::WString::Unmanaged(L\"Field \\\"\") + vl::WString::Unmanaged(cppFieldName) + vl::WString::Unmanaged(L\"\\\" is not an object.\"), vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);");
-							writer.WriteLine(prefix + L"\telse");
-							writer.WriteLine(prefix + L"\t\tthrow vl::glr::AstInsException(L\"The field id does not exist.\", vl::glr::AstInsErrorType::UnknownField, field);");
+							writer.WriteLine(prefix + L"\treturn vl::glr::AssemblyThrowFieldNotObject(field, cppFieldName);");
 						}
 						writer.WriteLine(prefix + L"}");
 					}
@@ -222,18 +211,12 @@ WriteAstAssemblerCppFile
 								writer.WriteLine(L", object, field, token,cppFieldName);");
 							}
 							writer.WriteLine(prefix + L"\tdefault:");
-							writer.WriteLine(prefix + L"\t\tif (cppFieldName)");
-							writer.WriteLine(prefix + L"\t\t\tthrow vl::glr::AstInsException(vl::WString::Unmanaged(L\"Field \\\"\") + vl::WString::Unmanaged(cppFieldName) + vl::WString::Unmanaged(L\"\\\" is not a token.\"), vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);");
-							writer.WriteLine(prefix + L"\t\telse");
-							writer.WriteLine(prefix + L"\t\t\tthrow vl::glr::AstInsException(L\"The field id does not exist.\", vl::glr::AstInsErrorType::UnknownField, field);");
+							writer.WriteLine(prefix + L"\t\treturn vl::glr::AssemblyThrowFieldNotToken(field, cppFieldName);");
 							writer.WriteLine(prefix + L"\t}");
 						}
 						else
 						{
-							writer.WriteLine(prefix + L"\tif (cppFieldName)");
-							writer.WriteLine(prefix + L"\t\tthrow vl::glr::AstInsException(vl::WString::Unmanaged(L\"Field \\\"\") + vl::WString::Unmanaged(cppFieldName) + vl::WString::Unmanaged(L\"\\\" is not a token.\"), vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);");
-							writer.WriteLine(prefix + L"\telse");
-							writer.WriteLine(prefix + L"\t\tthrow vl::glr::AstInsException(L\"The field id does not exist.\", vl::glr::AstInsErrorType::UnknownField, field);");
+							writer.WriteLine(prefix + L"\treturn vl::glr::AssemblyThrowFieldNotToken(field, cppFieldName);");
 						}
 						writer.WriteLine(prefix + L"}");
 					}
@@ -281,18 +264,12 @@ WriteAstAssemblerCppFile
 								writer.WriteLine(L", object, field, enumItem, cppFieldName);");
 							}
 							writer.WriteLine(prefix + L"\tdefault:");
-							writer.WriteLine(prefix + L"\t\tif (cppFieldName)");
-							writer.WriteLine(prefix + L"\t\t\tthrow vl::glr::AstInsException(vl::WString::Unmanaged(L\"Field \\\"\") + vl::WString::Unmanaged(cppFieldName) + vl::WString::Unmanaged(L\"\\\" is not an enum item.\"), vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);");
-							writer.WriteLine(prefix + L"\t\telse");
-							writer.WriteLine(prefix + L"\t\t\tthrow vl::glr::AstInsException(L\"The field id does not exist.\", vl::glr::AstInsErrorType::UnknownField, field);");
+							writer.WriteLine(prefix + L"\t\treturn vl::glr::AssemblyThrowFieldNotEnum(field, cppFieldName);");
 							writer.WriteLine(prefix + L"\t}");
 						}
 						else
 						{
-							writer.WriteLine(prefix + L"\tif (cppFieldName)");
-							writer.WriteLine(prefix + L"\t\tthrow vl::glr::AstInsException(vl::WString::Unmanaged(L\"Field \\\"\") + vl::WString::Unmanaged(cppFieldName) + vl::WString::Unmanaged(L\"\\\" is not an enum item.\"), vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);");
-							writer.WriteLine(prefix + L"\telse");
-							writer.WriteLine(prefix + L"\t\tthrow vl::glr::AstInsException(L\"The field id does not exist.\", vl::glr::AstInsErrorType::UnknownField, field);");
+							writer.WriteLine(prefix + L"\treturn vl::glr::AssemblyThrowFieldNotEnum(field, cppFieldName);");
 						}
 						writer.WriteLine(prefix + L"}");
 					}
@@ -457,18 +434,12 @@ WriteAstAssemblerCppFile
 							}
 
 							writer.WriteLine(prefix + L"\tdefault:");
-							writer.WriteLine(prefix + L"\t\tif (cppTypeName)");
-							writer.WriteLine(prefix + L"\t\t\tthrow vl::glr::AstInsException(vl::WString::Unmanaged(L\"Type \\\"\") + vl::WString::Unmanaged(cppTypeName) + vl::WString::Unmanaged(L\"\\\" is not configured to allow ambiguity.\"), vl::glr::AstInsErrorType::UnsupportedAmbiguityType, type);");
-							writer.WriteLine(prefix + L"\t\telse");
-							writer.WriteLine(prefix + L"\t\t\tthrow vl::glr::AstInsException(L\"The type id does not exist.\", vl::glr::AstInsErrorType::UnknownType, type);");
+							writer.WriteLine(prefix + L"\t\treturn vl::glr::AssemblyThrowTypeNotAllowAmbiguity(type, cppTypeName);");
 							writer.WriteLine(prefix + L"\t}");
 						}
 						else
 						{
-							writer.WriteLine(prefix + L"\tif (cppTypeName)");
-							writer.WriteLine(prefix + L"\t\tthrow vl::glr::AstInsException(vl::WString::Unmanaged(L\"Type \\\"\") + vl::WString::Unmanaged(cppTypeName) + vl::WString::Unmanaged(L\"\\\" is not configured to allow ambiguity.\"), vl::glr::AstInsErrorType::UnsupportedAmbiguityType, type);");
-							writer.WriteLine(prefix + L"\telse");
-							writer.WriteLine(prefix + L"\t\tthrow vl::glr::AstInsException(L\"The type id does not exist.\", vl::glr::AstInsErrorType::UnknownType, type);");
+							writer.WriteLine(prefix + L"\treturn vl::glr::AssemblyThrowTypeNotAllowAmbiguity(type, cppTypeName);");
 						}
 						writer.WriteLine(prefix + L"}");
 					}

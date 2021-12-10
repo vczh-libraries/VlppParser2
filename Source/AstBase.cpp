@@ -496,6 +496,90 @@ AstInsReceiverBase
 		}
 
 /***********************************************************************
+IAstInsReceiver (Code Generation Error Templates)
+***********************************************************************/
+
+		Ptr<ParsingAstBase> AssemblyThrowCannotCreateAbstractType(vint32_t type, const wchar_t* cppTypeName)
+		{
+			if (cppTypeName)
+			{
+				throw vl::glr::AstInsException(
+					vl::WString::Unmanaged(L"Unable to create abstract class \"") +
+					vl::WString::Unmanaged(cppTypeName) +
+					vl::WString::Unmanaged(L"\"."),
+					vl::glr::AstInsErrorType::UnsupportedAbstractType, type);
+			}
+			else
+			{
+				throw vl::glr::AstInsException(L"The type id does not exist.", vl::glr::AstInsErrorType::UnknownType, type);
+			}
+		}
+
+		void AssemblyThrowFieldNotObject(vint32_t field, const wchar_t* cppFieldName)
+		{
+			if (cppFieldName)
+			{
+				throw vl::glr::AstInsException(
+					vl::WString::Unmanaged(L"Field \"") +
+					vl::WString::Unmanaged(cppFieldName) +
+					vl::WString::Unmanaged(L"\" is not an object."),
+					vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+			}
+			else
+			{
+				throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
+			}
+		}
+
+		void AssemblyThrowFieldNotToken(vint32_t field, const wchar_t* cppFieldName)
+		{
+			if (cppFieldName)
+			{
+				throw vl::glr::AstInsException(
+					vl::WString::Unmanaged(L"Field \"") +
+					vl::WString::Unmanaged(cppFieldName) +
+					vl::WString::Unmanaged(L"\" is not a token."),
+					vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+			}
+			else
+			{
+				throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
+			}
+		}
+
+		void AssemblyThrowFieldNotEnum(vint32_t field, const wchar_t* cppFieldName)
+		{
+			if (cppFieldName)
+			{
+				throw vl::glr::AstInsException(
+					vl::WString::Unmanaged(L"Field \"") +
+					vl::WString::Unmanaged(cppFieldName) +
+					vl::WString::Unmanaged(L"\" is not an enum item."),
+					vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+			}
+			else
+			{
+				throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
+			}
+		}
+
+		Ptr<ParsingAstBase> AssemblyThrowTypeNotAllowAmbiguity(vint32_t type, const wchar_t* cppTypeName)
+		{
+			if (cppTypeName)
+			{
+				throw vl::glr::AstInsException(
+					vl::WString::Unmanaged(L"Type \"") +
+					vl::WString::Unmanaged(cppTypeName) +
+					vl::WString::Unmanaged(L"\" is not configured to allow ambiguity."),
+					vl::glr::AstInsErrorType::UnsupportedAmbiguityType, type);
+			}
+			else
+			{
+				throw vl::glr::AstInsException(L"The type id does not exist.", vl::glr::AstInsErrorType::UnknownType, type);
+			}
+		}
+
+/***********************************************************************
 Compression
 ***********************************************************************/
 

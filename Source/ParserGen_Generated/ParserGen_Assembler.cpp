@@ -19,6 +19,7 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 
 			vl::Ptr<vl::glr::ParsingAstBase> ParserGenAstInsReceiver::CreateAstNode(vl::vint32_t type)
 			{
+				auto cppTypeName = ParserGenCppTypeName((ParserGenClasses)type);
 				switch((ParserGenClasses)type)
 				{
 				case ParserGenClasses::AlternativeSyntax:
@@ -31,8 +32,6 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					return new vl::glr::parsergen::GlrClass();
 				case ParserGenClasses::ClassProp:
 					return new vl::glr::parsergen::GlrClassProp();
-				case ParserGenClasses::Clause:
-					throw vl::glr::AstInsException(L"Unable to create abstract class \"vl::glr::parsergen::GlrClause\".", vl::glr::AstInsErrorType::UnknownType, type);
 				case ParserGenClasses::CreateClause:
 					return new vl::glr::parsergen::GlrCreateClause();
 				case ParserGenClasses::Enum:
@@ -55,16 +54,12 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					return new vl::glr::parsergen::GlrRule();
 				case ParserGenClasses::SequenceSyntax:
 					return new vl::glr::parsergen::GlrSequenceSyntax();
-				case ParserGenClasses::Syntax:
-					throw vl::glr::AstInsException(L"Unable to create abstract class \"vl::glr::parsergen::GlrSyntax\".", vl::glr::AstInsErrorType::UnknownType, type);
 				case ParserGenClasses::SyntaxFile:
 					return new vl::glr::parsergen::GlrSyntaxFile();
-				case ParserGenClasses::Type:
-					throw vl::glr::AstInsException(L"Unable to create abstract class \"vl::glr::parsergen::GlrType\".", vl::glr::AstInsErrorType::UnknownType, type);
 				case ParserGenClasses::UseSyntax:
 					return new vl::glr::parsergen::GlrUseSyntax();
 				default:
-					throw vl::glr::AstInsException(L"The type id does not exist.", vl::glr::AstInsErrorType::UnknownType, type);
+					return vl::glr::AssemblyThrowCannotCreateAbstractType(type, cppTypeName);
 				}
 			}
 
@@ -110,10 +105,7 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 				case ParserGenFields::SyntaxFile_rules:
 					return vl::glr::AssemblerSetObjectField(&vl::glr::parsergen::GlrSyntaxFile::rules, object, field, value, cppFieldName);
 				default:
-					if (cppFieldName)
-						throw vl::glr::AstInsException(vl::WString::Unmanaged(L"Field \"") + vl::WString::Unmanaged(cppFieldName) + vl::WString::Unmanaged(L"\" is not an object."), vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-					else
-						throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
+					return vl::glr::AssemblyThrowFieldNotObject(field, cppFieldName);
 				}
 			}
 
@@ -151,10 +143,7 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 				case ParserGenFields::UseSyntax_name:
 					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrUseSyntax::name, object, field, token,cppFieldName);
 				default:
-					if (cppFieldName)
-						throw vl::glr::AstInsException(vl::WString::Unmanaged(L"Field \"") + vl::WString::Unmanaged(cppFieldName) + vl::WString::Unmanaged(L"\" is not a token."), vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-					else
-						throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
+					return vl::glr::AssemblyThrowFieldNotToken(field, cppFieldName);
 				}
 			}
 
@@ -170,10 +159,7 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 				case ParserGenFields::OptionalSyntax_priority:
 					return vl::glr::AssemblerSetEnumField(&vl::glr::parsergen::GlrOptionalSyntax::priority, object, field, enumItem, cppFieldName);
 				default:
-					if (cppFieldName)
-						throw vl::glr::AstInsException(vl::WString::Unmanaged(L"Field \"") + vl::WString::Unmanaged(cppFieldName) + vl::WString::Unmanaged(L"\" is not an enum item."), vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-					else
-						throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
+					return vl::glr::AssemblyThrowFieldNotEnum(field, cppFieldName);
 				}
 			}
 
@@ -324,10 +310,7 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 			vl::Ptr<vl::glr::ParsingAstBase> ParserGenAstInsReceiver::ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates)
 			{
 				auto cppTypeName = ParserGenCppTypeName((ParserGenClasses)type);
-				if (cppTypeName)
-					throw vl::glr::AstInsException(vl::WString::Unmanaged(L"Type \"") + vl::WString::Unmanaged(cppTypeName) + vl::WString::Unmanaged(L"\" is not configured to allow ambiguity."), vl::glr::AstInsErrorType::UnsupportedAmbiguityType, type);
-				else
-					throw vl::glr::AstInsException(L"The type id does not exist.", vl::glr::AstInsErrorType::UnknownType, type);
+				return vl::glr::AssemblyThrowTypeNotAllowAmbiguity(type, cppTypeName);
 			}
 		}
 	}

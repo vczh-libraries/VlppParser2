@@ -15,6 +15,7 @@ IfElsePriorityAstInsReceiver : public vl::glr::AstInsReceiverBase
 
 	vl::Ptr<vl::glr::ParsingAstBase> IfElsePriorityAstInsReceiver::CreateAstNode(vl::vint32_t type)
 	{
+		auto cppTypeName = IfElsePriorityCppTypeName((IfElsePriorityClasses)type);
 		switch((IfElsePriorityClasses)type)
 		{
 		case IfElsePriorityClasses::BlockStat:
@@ -25,10 +26,8 @@ IfElsePriorityAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return new ifelsepriority::IfStat();
 		case IfElsePriorityClasses::Module:
 			return new ifelsepriority::Module();
-		case IfElsePriorityClasses::Stat:
-			throw vl::glr::AstInsException(L"Unable to create abstract class \"ifelsepriority::Stat\".", vl::glr::AstInsErrorType::UnknownType, type);
 		default:
-			throw vl::glr::AstInsException(L"The type id does not exist.", vl::glr::AstInsErrorType::UnknownType, type);
+			return vl::glr::AssemblyThrowCannotCreateAbstractType(type, cppTypeName);
 		}
 	}
 
@@ -46,29 +45,20 @@ IfElsePriorityAstInsReceiver : public vl::glr::AstInsReceiverBase
 		case IfElsePriorityFields::Module_stat:
 			return vl::glr::AssemblerSetObjectField(&ifelsepriority::Module::stat, object, field, value, cppFieldName);
 		default:
-			if (cppFieldName)
-				throw vl::glr::AstInsException(vl::WString::Unmanaged(L"Field \"") + vl::WString::Unmanaged(cppFieldName) + vl::WString::Unmanaged(L"\" is not an object."), vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-			else
-				throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
+			return vl::glr::AssemblyThrowFieldNotObject(field, cppFieldName);
 		}
 	}
 
 	void IfElsePriorityAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, const vl::regex::RegexToken& token)
 	{
 		auto cppFieldName = IfElsePriorityCppFieldName((IfElsePriorityFields)field);
-		if (cppFieldName)
-			throw vl::glr::AstInsException(vl::WString::Unmanaged(L"Field \"") + vl::WString::Unmanaged(cppFieldName) + vl::WString::Unmanaged(L"\" is not a token."), vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-		else
-			throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
+		return vl::glr::AssemblyThrowFieldNotToken(field, cppFieldName);
 	}
 
 	void IfElsePriorityAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::vint32_t enumItem)
 	{
 		auto cppFieldName = IfElsePriorityCppFieldName((IfElsePriorityFields)field);
-		if (cppFieldName)
-			throw vl::glr::AstInsException(vl::WString::Unmanaged(L"Field \"") + vl::WString::Unmanaged(cppFieldName) + vl::WString::Unmanaged(L"\" is not an enum item."), vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-		else
-			throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
+		return vl::glr::AssemblyThrowFieldNotEnum(field, cppFieldName);
 	}
 
 	const wchar_t* IfElsePriorityTypeName(IfElsePriorityClasses type)
@@ -124,9 +114,6 @@ IfElsePriorityAstInsReceiver : public vl::glr::AstInsReceiverBase
 	vl::Ptr<vl::glr::ParsingAstBase> IfElsePriorityAstInsReceiver::ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates)
 	{
 		auto cppTypeName = IfElsePriorityCppTypeName((IfElsePriorityClasses)type);
-		if (cppTypeName)
-			throw vl::glr::AstInsException(vl::WString::Unmanaged(L"Type \"") + vl::WString::Unmanaged(cppTypeName) + vl::WString::Unmanaged(L"\" is not configured to allow ambiguity."), vl::glr::AstInsErrorType::UnsupportedAmbiguityType, type);
-		else
-			throw vl::glr::AstInsException(L"The type id does not exist.", vl::glr::AstInsErrorType::UnknownType, type);
+		return vl::glr::AssemblyThrowTypeNotAllowAmbiguity(type, cppTypeName);
 	}
 }

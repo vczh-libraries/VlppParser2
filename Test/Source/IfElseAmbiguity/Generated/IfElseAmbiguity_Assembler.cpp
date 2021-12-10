@@ -15,14 +15,13 @@ IfElseAmbiguityAstInsReceiver : public vl::glr::AstInsReceiverBase
 
 	vl::Ptr<vl::glr::ParsingAstBase> IfElseAmbiguityAstInsReceiver::CreateAstNode(vl::vint32_t type)
 	{
+		auto cppTypeName = IfElseAmbiguityCppTypeName((IfElseAmbiguityClasses)type);
 		switch((IfElseAmbiguityClasses)type)
 		{
 		case IfElseAmbiguityClasses::BlockStat:
 			return new ifelseambiguity::BlockStat();
 		case IfElseAmbiguityClasses::DoStat:
 			return new ifelseambiguity::DoStat();
-		case IfElseAmbiguityClasses::IfContent:
-			throw vl::glr::AstInsException(L"Unable to create abstract class \"ifelseambiguity::IfContent\".", vl::glr::AstInsErrorType::UnknownType, type);
 		case IfElseAmbiguityClasses::IfContentCandidate:
 			return new ifelseambiguity::IfContentCandidate();
 		case IfElseAmbiguityClasses::IfContentToResolve:
@@ -31,10 +30,8 @@ IfElseAmbiguityAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return new ifelseambiguity::IfStat();
 		case IfElseAmbiguityClasses::Module:
 			return new ifelseambiguity::Module();
-		case IfElseAmbiguityClasses::Stat:
-			throw vl::glr::AstInsException(L"Unable to create abstract class \"ifelseambiguity::Stat\".", vl::glr::AstInsErrorType::UnknownType, type);
 		default:
-			throw vl::glr::AstInsException(L"The type id does not exist.", vl::glr::AstInsErrorType::UnknownType, type);
+			return vl::glr::AssemblyThrowCannotCreateAbstractType(type, cppTypeName);
 		}
 	}
 
@@ -56,29 +53,20 @@ IfElseAmbiguityAstInsReceiver : public vl::glr::AstInsReceiverBase
 		case IfElseAmbiguityFields::Module_stat:
 			return vl::glr::AssemblerSetObjectField(&ifelseambiguity::Module::stat, object, field, value, cppFieldName);
 		default:
-			if (cppFieldName)
-				throw vl::glr::AstInsException(vl::WString::Unmanaged(L"Field \"") + vl::WString::Unmanaged(cppFieldName) + vl::WString::Unmanaged(L"\" is not an object."), vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-			else
-				throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
+			return vl::glr::AssemblyThrowFieldNotObject(field, cppFieldName);
 		}
 	}
 
 	void IfElseAmbiguityAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, const vl::regex::RegexToken& token)
 	{
 		auto cppFieldName = IfElseAmbiguityCppFieldName((IfElseAmbiguityFields)field);
-		if (cppFieldName)
-			throw vl::glr::AstInsException(vl::WString::Unmanaged(L"Field \"") + vl::WString::Unmanaged(cppFieldName) + vl::WString::Unmanaged(L"\" is not a token."), vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-		else
-			throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
+		return vl::glr::AssemblyThrowFieldNotToken(field, cppFieldName);
 	}
 
 	void IfElseAmbiguityAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::vint32_t enumItem)
 	{
 		auto cppFieldName = IfElseAmbiguityCppFieldName((IfElseAmbiguityFields)field);
-		if (cppFieldName)
-			throw vl::glr::AstInsException(vl::WString::Unmanaged(L"Field \"") + vl::WString::Unmanaged(cppFieldName) + vl::WString::Unmanaged(L"\" is not an enum item."), vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-		else
-			throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
+		return vl::glr::AssemblyThrowFieldNotEnum(field, cppFieldName);
 	}
 
 	const wchar_t* IfElseAmbiguityTypeName(IfElseAmbiguityClasses type)
@@ -153,10 +141,7 @@ IfElseAmbiguityAstInsReceiver : public vl::glr::AstInsReceiverBase
 		case IfElseAmbiguityClasses::IfContentToResolve:
 			return vl::glr::AssemblerResolveAmbiguity<ifelseambiguity::IfContentToResolve, ifelseambiguity::IfContentToResolve>(type, candidates, cppTypeName);
 		default:
-			if (cppTypeName)
-				throw vl::glr::AstInsException(vl::WString::Unmanaged(L"Type \"") + vl::WString::Unmanaged(cppTypeName) + vl::WString::Unmanaged(L"\" is not configured to allow ambiguity."), vl::glr::AstInsErrorType::UnsupportedAmbiguityType, type);
-			else
-				throw vl::glr::AstInsException(L"The type id does not exist.", vl::glr::AstInsErrorType::UnknownType, type);
+			return vl::glr::AssemblyThrowTypeNotAllowAmbiguity(type, cppTypeName);
 		}
 	}
 }

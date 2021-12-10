@@ -287,6 +287,7 @@ Instructions
 		{
 			UnknownType,								// UnknownType(Type)					: The type id does not exist.
 			UnknownField,								// UnknownField(Field)					: The field id does not exist.
+			UnsupportedAbstractType,					// UnsupportedAbstractType(Type)		: Unable to create abstract class.
 			UnsupportedAmbiguityType,					// UnsupportedAmbiguityType(Type)		: The type is not configured to allow ambiguity.
 			UnexpectedAmbiguousCandidate,				// UnexpectedAmbiguousCandidate(Type)	: The type of the ambiguous candidate is not compatible to the required type.
 			FieldNotExistsInType,						// FieldNotExistsInType(Field)			: The type doesn't have such field.
@@ -512,6 +513,16 @@ IAstInsReceiver (Code Generation Templates)
 			}
 			return ast;
 		}
+
+/***********************************************************************
+IAstInsReceiver (Code Generation Error Templates)
+***********************************************************************/
+
+		extern Ptr<ParsingAstBase>	AssemblyThrowCannotCreateAbstractType(vint32_t type, const wchar_t* cppTypeName);
+		extern void					AssemblyThrowFieldNotObject(vint32_t field, const wchar_t* cppFieldName);
+		extern void					AssemblyThrowFieldNotToken(vint32_t field, const wchar_t* cppFieldName);
+		extern void					AssemblyThrowFieldNotEnum(vint32_t field, const wchar_t* cppFieldName);
+		extern Ptr<ParsingAstBase>	AssemblyThrowTypeNotAllowAmbiguity(vint32_t type, const wchar_t* cppTypeName);
 
 /***********************************************************************
 Compression

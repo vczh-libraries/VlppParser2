@@ -15,6 +15,7 @@ CalculatorAstInsReceiver : public vl::glr::AstInsReceiverBase
 
 	vl::Ptr<vl::glr::ParsingAstBase> CalculatorAstInsReceiver::CreateAstNode(vl::vint32_t type)
 	{
+		auto cppTypeName = CalculatorCppTypeName((CalculatorClasses)type);
 		switch((CalculatorClasses)type)
 		{
 		case CalculatorClasses::Arg:
@@ -23,10 +24,6 @@ CalculatorAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return new calculator::Binary();
 		case CalculatorClasses::Call:
 			return new calculator::Call();
-		case CalculatorClasses::Expandable:
-			throw vl::glr::AstInsException(L"Unable to create abstract class \"calculator::Expandable\".", vl::glr::AstInsErrorType::UnknownType, type);
-		case CalculatorClasses::Expr:
-			throw vl::glr::AstInsException(L"Unable to create abstract class \"calculator::Expr\".", vl::glr::AstInsErrorType::UnknownType, type);
 		case CalculatorClasses::False:
 			return new calculator::False();
 		case CalculatorClasses::Func:
@@ -46,7 +43,7 @@ CalculatorAstInsReceiver : public vl::glr::AstInsReceiverBase
 		case CalculatorClasses::Unary:
 			return new calculator::Unary();
 		default:
-			throw vl::glr::AstInsException(L"The type id does not exist.", vl::glr::AstInsErrorType::UnknownType, type);
+			return vl::glr::AssemblyThrowCannotCreateAbstractType(type, cppTypeName);
 		}
 	}
 
@@ -80,10 +77,7 @@ CalculatorAstInsReceiver : public vl::glr::AstInsReceiverBase
 		case CalculatorFields::Unary_operand:
 			return vl::glr::AssemblerSetObjectField(&calculator::Unary::operand, object, field, value, cppFieldName);
 		default:
-			if (cppFieldName)
-				throw vl::glr::AstInsException(vl::WString::Unmanaged(L"Field \"") + vl::WString::Unmanaged(cppFieldName) + vl::WString::Unmanaged(L"\" is not an object."), vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-			else
-				throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
+			return vl::glr::AssemblyThrowFieldNotObject(field, cppFieldName);
 		}
 	}
 
@@ -103,10 +97,7 @@ CalculatorAstInsReceiver : public vl::glr::AstInsReceiverBase
 		case CalculatorFields::Ref_name:
 			return vl::glr::AssemblerSetTokenField(&calculator::Ref::name, object, field, token,cppFieldName);
 		default:
-			if (cppFieldName)
-				throw vl::glr::AstInsException(vl::WString::Unmanaged(L"Field \"") + vl::WString::Unmanaged(cppFieldName) + vl::WString::Unmanaged(L"\" is not a token."), vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-			else
-				throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
+			return vl::glr::AssemblyThrowFieldNotToken(field, cppFieldName);
 		}
 	}
 
@@ -120,10 +111,7 @@ CalculatorAstInsReceiver : public vl::glr::AstInsReceiverBase
 		case CalculatorFields::Unary_op:
 			return vl::glr::AssemblerSetEnumField(&calculator::Unary::op, object, field, enumItem, cppFieldName);
 		default:
-			if (cppFieldName)
-				throw vl::glr::AstInsException(vl::WString::Unmanaged(L"Field \"") + vl::WString::Unmanaged(cppFieldName) + vl::WString::Unmanaged(L"\" is not an enum item."), vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
-			else
-				throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
+			return vl::glr::AssemblyThrowFieldNotEnum(field, cppFieldName);
 		}
 	}
 
@@ -228,9 +216,6 @@ CalculatorAstInsReceiver : public vl::glr::AstInsReceiverBase
 	vl::Ptr<vl::glr::ParsingAstBase> CalculatorAstInsReceiver::ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates)
 	{
 		auto cppTypeName = CalculatorCppTypeName((CalculatorClasses)type);
-		if (cppTypeName)
-			throw vl::glr::AstInsException(vl::WString::Unmanaged(L"Type \"") + vl::WString::Unmanaged(cppTypeName) + vl::WString::Unmanaged(L"\" is not configured to allow ambiguity."), vl::glr::AstInsErrorType::UnsupportedAmbiguityType, type);
-		else
-			throw vl::glr::AstInsException(L"The type id does not exist.", vl::glr::AstInsErrorType::UnknownType, type);
+		return vl::glr::AssemblyThrowTypeNotAllowAmbiguity(type, cppTypeName);
 	}
 }
