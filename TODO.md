@@ -31,10 +31,11 @@
 
 1. [x] `ParserTest_ParserGen_Compiler`
    1. [ ] Prepare more parser test cases for advanced features
-      1. [x] `Calculator.
+      1. [x] `Calculator`.
       2. [x] `IfElseAmbiguity`. (Equal)
       3. [x] `IfElsePriority`. (PreferTake)
       4. [x] `GenericAmbiguity` (Ambiguity in loop, ambiguity in left recursive clauses)
+      5. [ ] `FeatureTest` (Test syntax features)
    2. [ ] Generate JSON parser
    3. [ ] Generate XML parser
 1. [x] `ParserTest_ParserGen_Generated`
@@ -48,7 +49,8 @@
 ## Work Items (GLR features)
 
 - [x] Ambiguity
-- [x] Priority
+- [x] Priority in positive optional syntax
+- [x] Priority in negative optional syntax
 - [ ] Priority in alternative syntax, but don't let it ends a clause if a high priority branch could be empty (add compile error)
 - [ ] Priority in returnDesc / left recursive transition
 - [ ] Priority with left recursion
