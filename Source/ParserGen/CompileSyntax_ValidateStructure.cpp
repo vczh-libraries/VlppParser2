@@ -25,6 +25,7 @@ ValidateStructureCountingVisitor
 
 				vint						optionalCounter = 0;
 				vint						loopCounter = 0;
+				bool						lastSyntaxPiece = true;
 
 				vint						syntaxMinLength = 0;
 				vint						syntaxMinUseRuleCount = 0;
@@ -141,7 +142,7 @@ ValidateStructureCountingVisitor
 						context.global.AddError(
 							ParserErrorType::LoopBodyCouldExpandToEmptySequence,
 							ruleSymbol->Name()
-						);
+							);
 					}
 					syntaxMinLength = 0;
 					syntaxMinUseRuleCount = 0;
@@ -163,6 +164,14 @@ ValidateStructureCountingVisitor
 							ruleSymbol->Name()
 							);
 					}
+
+					if (node->priority == GlrOptionalPriority::PreferSkip && lastSyntaxPiece)
+					{
+						context.global.AddError(
+							ParserErrorType::NegativeOptionalEndsAClause,
+							ruleSymbol->Name()
+							);
+					}
 					syntaxMinLength = 0;
 					syntaxMinUseRuleCount = 0;
 
@@ -171,10 +180,14 @@ ValidateStructureCountingVisitor
 
 				void Visit(GlrSequenceSyntax* node) override
 				{
+					bool last = lastSyntaxPiece;
+
+					lastSyntaxPiece = false;
 					node->first->Accept(this);
 					vint firstMinLength = syntaxMinLength;
 					vint firstMinUseRuleCount = syntaxMinUseRuleCount;
 					vint firstMaxUseRuleCount = syntaxMaxUseRuleCount;
+					lastSyntaxPiece = last;
 
 					node->second->Accept(this);
 					vint secondMinLength = syntaxMinLength;

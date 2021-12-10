@@ -105,6 +105,7 @@ ParserSymbolManager
 				ClauseCouldExpandToEmptySequence,			// (ruleName)
 				LoopBodyCouldExpandToEmptySequence,			// (ruleName)
 				OptionalBodyCouldExpandToEmptySequence,		// (ruleName)
+				NegativeOptionalEndsAClause,				// (ruleName)													: Negative optional syntax cannot ends a clause.
 
 				// SyntaxAst (ValidateStructure, relationship) ----------------------------------------
 				UseRuleAppearAfterField,					// (ruleName, useRuleName, fieldName)

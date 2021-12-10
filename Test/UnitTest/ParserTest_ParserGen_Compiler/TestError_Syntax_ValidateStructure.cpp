@@ -613,4 +613,76 @@ Exp0
 			{ ParserErrorType::FieldAssignedMoreThanOnce,L"Exp0",L"NumExpr",L"value" }
 			);
 	});
+
+	TEST_CASE(L"PrioritizedOptionalEndsClause 1")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= "+" -[NUM:value] as NumExpr
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::NegativeOptionalEndsAClause,L"Exp0" }
+			);
+	});
+
+	TEST_CASE(L"PrioritizedOptionalEndsClause 2")
+	{
+		const wchar_t* syntaxCode =
+			LR"SYNTAX(
+Exp0
+  ::= ("+" | "*" -[NUM:value]) as NumExpr
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::NegativeOptionalEndsAClause,L"Exp0" }
+		);
+	});
+
+	TEST_CASE(L"PrioritizedOptionalEndsClause 3")
+	{
+		const wchar_t* syntaxCode =
+			LR"SYNTAX(
+Exp0
+  ::= NUM:value {"+" -["*"]} as NumExpr
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::NegativeOptionalEndsAClause,L"Exp0" }
+		);
+	});
+
+	TEST_CASE(L"PrioritizedOptionalEndsClause 4")
+	{
+		const wchar_t* syntaxCode =
+			LR"SYNTAX(
+Exp0
+  ::= NUM:value {"(" ")" ; "+" -["*"]} as NumExpr
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::NegativeOptionalEndsAClause,L"Exp0" }
+		);
+	});
 }
