@@ -388,29 +388,29 @@ IAstInsReceiver (Code Generation Templates)
 			auto typedObject = dynamic_cast<TClass*>(object);
 			if (!typedObject)
 			{
-				throw vl::glr::AstInsException(
+				throw AstInsException(
 					WString::Unmanaged(L"Field \"") +
 					WString::Unmanaged(cppFieldName) +
 					WString::Unmanaged(L"\" does not exist in the current object."),
-					vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+					AstInsErrorType::FieldNotExistsInType, field);
 			}
 			if ((typedObject->*member))
 			{
-				throw vl::glr::AstInsException(
+				throw AstInsException(
 					WString::Unmanaged(L"Field \"") +
 					WString::Unmanaged(cppFieldName) +
 					WString::Unmanaged(L"\" has already been assigned."),
-					vl::glr::AstInsErrorType::FieldReassigned, field);
+					AstInsErrorType::FieldReassigned, field);
 			}
 
 			auto typedValue = value.Cast<TField>();
 			if (!typedValue)
 			{
-				throw vl::glr::AstInsException(
+				throw AstInsException(
 					WString::Unmanaged(L"Field \"") +
 					WString::Unmanaged(cppFieldName) +
 					WString::Unmanaged(L"\" cannot be assigned with an uncompatible value."),
-					vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+					AstInsErrorType::ObjectTypeMismatchedToField, field);
 			}
 			(typedObject->*member) = typedValue;
 		}
@@ -421,21 +421,21 @@ IAstInsReceiver (Code Generation Templates)
 			auto typedObject = dynamic_cast<TClass*>(object);
 			if (!typedObject)
 			{
-				throw vl::glr::AstInsException(
+				throw AstInsException(
 					WString::Unmanaged(L"Field \"") +
 					WString::Unmanaged(cppFieldName) +
 					WString::Unmanaged(L"\" does not exist in the current object."),
-					vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+					AstInsErrorType::FieldNotExistsInType, field);
 			}
 
 			auto typedValue = value.Cast<TField>();
 			if (!typedValue)
 			{
-				throw vl::glr::AstInsException(
+				throw AstInsException(
 					WString::Unmanaged(L"Field \"") +
 					WString::Unmanaged(cppFieldName) +
 					WString::Unmanaged(L"\" cannot be assigned with an uncompatible value."),
-					vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+					AstInsErrorType::ObjectTypeMismatchedToField, field);
 			}
 			(typedObject->*member).Add(typedValue);
 		}
@@ -446,19 +446,19 @@ IAstInsReceiver (Code Generation Templates)
 			auto typedObject = dynamic_cast<TClass*>(object);
 			if (!typedObject)
 			{
-				throw vl::glr::AstInsException(
+				throw AstInsException(
 					WString::Unmanaged(L"Field \"") +
 					WString::Unmanaged(cppFieldName) +
 					WString::Unmanaged(L"\" does not exist in the current object."),
-					vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+					AstInsErrorType::FieldNotExistsInType, field);
 			}
 			if ((typedObject->*member).value.Length() != 0)
 			{
-				throw vl::glr::AstInsException(
+				throw AstInsException(
 					WString::Unmanaged(L"Field \"") +
 					WString::Unmanaged(cppFieldName) +
 					WString::Unmanaged(L"\" has already been assigned."),
-					vl::glr::AstInsErrorType::FieldReassigned, field);
+					AstInsErrorType::FieldReassigned, field);
 			}
 
 			ParsingToken& tokenField = typedObject->*member;
@@ -477,19 +477,19 @@ IAstInsReceiver (Code Generation Templates)
 			auto typedObject = dynamic_cast<TClass*>(object);
 			if (!typedObject)
 			{
-				throw vl::glr::AstInsException(
+				throw AstInsException(
 					WString::Unmanaged(L"Field \"") +
 					WString::Unmanaged(cppFieldName) +
 					WString::Unmanaged(L"\" does not exist in the current object."),
-					vl::glr::AstInsErrorType::FieldNotExistsInType, field);
+					AstInsErrorType::FieldNotExistsInType, field);
 			}
 			if ((typedObject->*member) != TField::UNDEFINED_ENUM_ITEM_VALUE)
 			{
-				throw vl::glr::AstInsException(
+				throw AstInsException(
 					WString::Unmanaged(L"Field \"") +
 					WString::Unmanaged(cppFieldName) +
 					WString::Unmanaged(L"\" has already been assigned."),
-					vl::glr::AstInsErrorType::FieldReassigned, field);
+					AstInsErrorType::FieldReassigned, field);
 			}
 			(typedObject->*member) = (TField)enumItem;
 		}
@@ -503,11 +503,11 @@ IAstInsReceiver (Code Generation Templates)
 				auto typedAst = candidate.Cast<TElement>();
 				if (!typedAst)
 				{
-					throw vl::glr::AstInsException(
+					throw AstInsException(
 						WString::Unmanaged(L"The type of the ambiguous candidate is not compatible to the required type \"") +
 						WString::Unmanaged(cppTypeName) +
 						WString::Unmanaged(L"\"."),
-						vl::glr::AstInsErrorType::UnexpectedAmbiguousCandidate, type);
+						AstInsErrorType::UnexpectedAmbiguousCandidate, type);
 				}
 				ast->candidates.Add(typedAst);
 			}
