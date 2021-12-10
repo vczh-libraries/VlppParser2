@@ -6,6 +6,8 @@
 #include "../../Source/IfElsePriority/Generated/IfElsePriorityModuleParser.h"
 #include "../../Source/GenericAmbiguity/Generated/GenericAmbiguityExprAst_Json.h"
 #include "../../Source/GenericAmbiguity/Generated/GenericAmbiguityModuleParser.h"
+#include "../../Source/FeatureTest/Generated/FeatureTestFeatureAst_Json.h"
+#include "../../Source/FeatureTest/Generated/FeatureTestModuleParser.h"
 #include "../../Source/LogTrace.h"
 
 extern WString GetTestParserInputPath(const WString& parserName);
@@ -135,5 +137,14 @@ TEST_FILE
 		&genericambiguity::GenericAmbiguityTokenId,
 		&genericambiguity::ModuleParserRuleName,
 		&genericambiguity::ModuleParserStateLabel
+		);
+	TestParser<featuretest::ModuleParser, featuretest::json_visitor::FeatureAstVisitor>(
+		L"FeatureTest",
+		featuretest::ModuleParserStates::Module,
+		&featuretest::FeatureTestTypeName,
+		&featuretest::FeatureTestFieldName,
+		&featuretest::FeatureTestTokenId,
+		&featuretest::ModuleParserRuleName,
+		&featuretest::ModuleParserStateLabel
 		);
 }
