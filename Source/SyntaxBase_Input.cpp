@@ -198,6 +198,12 @@ Competitions
 				// TODO: this is not correct
 				// we need to check all compacted edges
 				// it could attend multiple competitions
+				// since one trace maps to multiple competitions, we should
+				//   1) remove Competition::ownerTrace
+				//   2) add Competition::returnStack, copying from the trace that holds this competition
+				//   3) RuntimeRouting::holdingCompetition -> holdingCompetitions
+				//   4) Competition::next -> nextActiveCompetition
+				//   5) add Competition::nextCompetitionOfTrace, serves RuntimeRouting::holdingCompetition
 
 				// the priority of this cross-referenced edge is stored in the first compact edge
 				if (edgeDesc.returnIndices.count > 0)
@@ -283,26 +289,23 @@ Competitions
 					//   1) such EndingInput transitions ends the clause, and the state of the trace holding competition belongs to the same clause
 					//      we ensure this by comparing rule id, clause id and returnStack object (not content)
 					//      because a ReturnStack object is created when entering a new clause
-					//   2) if the EndingInput transition begins from the trace holding the competition, it cannot be a low priority transition
-					//      visiting such transitions only mean a low priority trace survives the clause
+					//   2) this trace bets high
 					//   3) the competition has not been settled
 					auto ac = GetAttendingCompetitions(acId);
 					auto cpt = GetCompetition(ac->competition);
 					auto cptr = GetTrace(cpt->ownerTrace);
 					if (cptr->returnStack == returnStack)
 					{
+						// ensure that this EndingInput edge and the competition belong to the same clause
 						auto&& stateDesc = executable.states[edgeDesc.fromState];
 						if (cpt->ruleId == stateDesc.rule && cpt->clauseId == stateDesc.clause)
 						{
-							auto edgePriority = GetPriorityFromEdge(edgeDesc);
-							if (cptr != trace || edgePriority != EdgePriority::LowPriority)
+							// check if it is a high bet
+							if (ac->forHighPriority && cpt->status == CompetitionStatus::Holding)
 							{
-								if (cpt->status != CompetitionStatus::LowPriorityWin)
-								{
-									cpt->status = CompetitionStatus::HighPriorityWin;
-									break;
-								}
+								cpt->status = CompetitionStatus::HighPriorityWin;
 							}
+							break;
 						}
 					}
 					acId = ac->next;
