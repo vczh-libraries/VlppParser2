@@ -375,6 +375,20 @@ export 1
 			);
 	});
 
+	TEST_CASE(L"UnsupportedAbstractType")
+	{
+		WString input = LR"(
+export 1
+)";
+		LEXER(input, tokens);
+		CalculatorAstInsReceiver receiver;
+		TEST_EXCEPTION(
+			receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::Expr }, tokens[1]),
+			AstInsException,
+			[](const AstInsException& e) { TEST_ASSERT(e.error == AstInsErrorType::UnsupportedAbstractType); }
+			);
+	});
+
 	TEST_CASE(L"UnsupportedAmbiguityType")
 	{
 		WString input = LR"(
