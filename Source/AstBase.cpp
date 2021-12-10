@@ -503,15 +503,15 @@ IAstInsReceiver (Code Generation Error Templates)
 		{
 			if (cppTypeName)
 			{
-				throw vl::glr::AstInsException(
-					vl::WString::Unmanaged(L"Unable to create abstract class \"") +
-					vl::WString::Unmanaged(cppTypeName) +
-					vl::WString::Unmanaged(L"\"."),
-					vl::glr::AstInsErrorType::UnsupportedAbstractType, type);
+				throw AstInsException(
+					WString::Unmanaged(L"Unable to create abstract class \"") +
+					WString::Unmanaged(cppTypeName) +
+					WString::Unmanaged(L"\"."),
+					AstInsErrorType::UnsupportedAbstractType, type);
 			}
 			else
 			{
-				throw vl::glr::AstInsException(L"The type id does not exist.", vl::glr::AstInsErrorType::UnknownType, type);
+				throw AstInsException(L"The type id does not exist.", vl::glr::AstInsErrorType::UnknownType, type);
 			}
 		}
 
@@ -519,15 +519,15 @@ IAstInsReceiver (Code Generation Error Templates)
 		{
 			if (cppFieldName)
 			{
-				throw vl::glr::AstInsException(
-					vl::WString::Unmanaged(L"Field \"") +
-					vl::WString::Unmanaged(cppFieldName) +
-					vl::WString::Unmanaged(L"\" is not an object."),
-					vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				throw AstInsException(
+					WString::Unmanaged(L"Field \"") +
+					WString::Unmanaged(cppFieldName) +
+					WString::Unmanaged(L"\" is not an object."),
+					AstInsErrorType::ObjectTypeMismatchedToField, field);
 			}
 			else
 			{
-				throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
+				throw AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
 			}
 		}
 
@@ -535,15 +535,15 @@ IAstInsReceiver (Code Generation Error Templates)
 		{
 			if (cppFieldName)
 			{
-				throw vl::glr::AstInsException(
-					vl::WString::Unmanaged(L"Field \"") +
-					vl::WString::Unmanaged(cppFieldName) +
-					vl::WString::Unmanaged(L"\" is not a token."),
-					vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				throw AstInsException(
+					WString::Unmanaged(L"Field \"") +
+					WString::Unmanaged(cppFieldName) +
+					WString::Unmanaged(L"\" is not a token."),
+					AstInsErrorType::ObjectTypeMismatchedToField, field);
 			}
 			else
 			{
-				throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
+				throw AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
 			}
 		}
 
@@ -551,15 +551,15 @@ IAstInsReceiver (Code Generation Error Templates)
 		{
 			if (cppFieldName)
 			{
-				throw vl::glr::AstInsException(
-					vl::WString::Unmanaged(L"Field \"") +
-					vl::WString::Unmanaged(cppFieldName) +
-					vl::WString::Unmanaged(L"\" is not an enum item."),
-					vl::glr::AstInsErrorType::ObjectTypeMismatchedToField, field);
+				throw AstInsException(
+					WString::Unmanaged(L"Field \"") +
+					WString::Unmanaged(cppFieldName) +
+					WString::Unmanaged(L"\" is not an enum item."),
+					AstInsErrorType::ObjectTypeMismatchedToField, field);
 			}
 			else
 			{
-				throw vl::glr::AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
+				throw AstInsException(L"The field id does not exist.", vl::glr::AstInsErrorType::UnknownField, field);
 			}
 		}
 
@@ -567,15 +567,15 @@ IAstInsReceiver (Code Generation Error Templates)
 		{
 			if (cppTypeName)
 			{
-				throw vl::glr::AstInsException(
-					vl::WString::Unmanaged(L"Type \"") +
-					vl::WString::Unmanaged(cppTypeName) +
-					vl::WString::Unmanaged(L"\" is not configured to allow ambiguity."),
-					vl::glr::AstInsErrorType::UnsupportedAmbiguityType, type);
+				throw AstInsException(
+					WString::Unmanaged(L"Type \"") +
+					WString::Unmanaged(cppTypeName) +
+					WString::Unmanaged(L"\" is not configured to allow ambiguity."),
+					AstInsErrorType::UnsupportedAmbiguityType, type);
 			}
 			else
 			{
-				throw vl::glr::AstInsException(L"The type id does not exist.", vl::glr::AstInsErrorType::UnknownType, type);
+				throw AstInsException(L"The type id does not exist.", vl::glr::AstInsErrorType::UnknownType, type);
 			}
 		}
 
