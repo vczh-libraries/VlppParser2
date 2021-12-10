@@ -323,6 +323,8 @@ Execution
 				bool								AreTwoTraceEqual(vint32_t state, vint32_t returnStack, vint32_t executedReturn, vint32_t acId, Trace* candidate);
 				vint32_t							GetInstructionPostfix(EdgeDesc& oldEdge, EdgeDesc& newEdge);
 
+				StateDesc&							FindStateFromEdgeInSameClause(EdgeDesc& edgeDesc);
+				EdgePriority						GetPriorityFromEdge(EdgeDesc& edgeDesc);
 				vint32_t							AttendCompetitionIfNecessary(Trace* trace, EdgeDesc& edgeDesc);
 				void								CheckAttendingCompetitionsOnEndingEdge(Trace* trace, EdgeDesc& edgeDesc, vint32_t acId, vint32_t returnStack);
 				void								CheckBackupTracesBeforeSwapping(vint32_t currentTokenIndex);

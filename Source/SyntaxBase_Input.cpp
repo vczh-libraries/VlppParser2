@@ -158,10 +158,66 @@ Resolving Ambiguity
 Competitions
 ***********************************************************************/
 
+			StateDesc& TraceManager::FindStateFromEdgeInSameClause(EdgeDesc& edgeDesc)
+			{
+				// find the rule and the clause for the competition
+				// if the edge pushes return edges, we pick the first return edge
+				// otherwise, we pick the edge itself
+
+				StateDesc* fromState = &executable.states[edgeDesc.fromState];
+				StateDesc* toState = nullptr;
+				if (edgeDesc.returnIndices.count > 0)
+				{
+					auto&& returnDesc = executable.returns[executable.returnIndices[edgeDesc.returnIndices.start]];
+					toState = &executable.states[returnDesc.returnState];
+				}
+				else
+				{
+					toState = &executable.states[edgeDesc.toState];
+				}
+
+				// if toState is an ending state, we pick fromState
+				// otherwise, we pick toState
+				// because there is no edge connection directly from the start state to the ending state in a rule
+				//   1) any edge to an ending state is a EndingInput edge
+				//   2) no EndingInput edge is allowed from the start state to the ending state
+				//      because a rule should not accept an empty input series, which has already been ensured by the syntax checking
+
+				if (toState->endingState)
+				{
+					return *fromState;
+				}
+				else
+				{
+					return *toState;
+				}
+			}
+
+			EdgePriority TraceManager::GetPriorityFromEdge(EdgeDesc& edgeDesc)
+			{
+				// TODO: this is not correct
+				// we need to check all compacted edges
+				// it could attend multiple competitions
+
+				// the priority of this cross-referenced edge is stored in the first compact edge
+				if (edgeDesc.returnIndices.count > 0)
+				{
+					auto&& returnDesc = executable.returns[executable.returnIndices[edgeDesc.returnIndices.start]];
+					return returnDesc.priority;
+				}
+				else
+				{
+					return edgeDesc.priority;
+				}
+			}
+
 			vint32_t TraceManager::AttendCompetitionIfNecessary(Trace* trace, EdgeDesc& edgeDesc)
 			{
+				// check the priority of this transition
+				auto edgePriority = GetPriorityFromEdge(edgeDesc);
+
 				// attend a competition if the priority of the transition is set
-				if (edgeDesc.priority != EdgePriority::NoCompetition)
+				if (edgePriority != EdgePriority::NoCompetition)
 				{
 					// check if a competition object has been created for this trace
 					Competition* competition = nullptr;
@@ -171,39 +227,9 @@ Competitions
 						competition->ownerTrace = trace->allocatedIndex;
 						trace->runtimeRouting.holdingCompetition = competition->allocatedIndex;
 
-						// find the rule and the clause for the competition
-						// if the edge pushes return edges, we pick the first return edge
-						// otherwise, we pick the edge itself
-
-						StateDesc* fromState = &executable.states[edgeDesc.fromState];
-						StateDesc* toState = nullptr;
-						if (edgeDesc.returnIndices.count > 0)
-						{
-							auto&& returnDesc = executable.returns[executable.returnIndices[edgeDesc.returnIndices.start]];
-							toState = &executable.states[returnDesc.returnState];
-						}
-						else
-						{
-							toState = &executable.states[edgeDesc.toState];
-						}
-
-						// if toState is an ending state, we pick fromState
-						// otherwise, we pick toState
-						// because there is no edge connection directly from the start state to the ending state in a rule
-						//   1) any edge to an ending state is a EndingInput edge
-						//   2) no EndingInput edge is allowed from the start state to the ending state
-						//      because a rule should not accept an empty input series, which has already been ensured by the syntax checking
-
-						if (toState->endingState)
-						{
-							competition->ruleId = fromState->rule;
-							competition->clauseId = fromState->clause;
-						}
-						else
-						{
-							competition->ruleId = toState->rule;
-							competition->clauseId = toState->clause;
-						}
+						auto&& stateInSameClause = FindStateFromEdgeInSameClause(edgeDesc);
+						competition->ruleId = stateInSameClause.rule;
+						competition->clauseId = stateInSameClause.clause;
 
 						competition->next = activeCompetitions;
 						activeCompetitions = competition->allocatedIndex;
@@ -220,7 +246,7 @@ Competitions
 					// AttendingCompetitions objects for this competition is going to be removed anyway
 					// sharing a linked list doesn't change the result
 
-					switch (edgeDesc.priority)
+					switch (edgePriority)
 					{
 					case EdgePriority::HighPriority:
 						if (competition->highBet == -1)
@@ -268,7 +294,8 @@ Competitions
 						auto&& stateDesc = executable.states[edgeDesc.fromState];
 						if (cpt->ruleId == stateDesc.rule && cpt->clauseId == stateDesc.clause)
 						{
-							if (cptr != trace || edgeDesc.priority != EdgePriority::LowPriority)
+							auto edgePriority = GetPriorityFromEdge(edgeDesc);
+							if (cptr != trace || edgePriority != EdgePriority::LowPriority)
 							{
 								if (cpt->status != CompetitionStatus::LowPriorityWin)
 								{
