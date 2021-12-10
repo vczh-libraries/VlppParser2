@@ -1,0 +1,21 @@
+Plus
+  ::= "+" as Plus
+  ;
+
+EqualOptional
+  ::= [Plus:optional] "+" {Plus:loop} as OptionalFeature {priority = Equal}
+  ;
+
+PositiveOptional
+  ::= +[Plus:optional] "+" {Plus:loop} as OptionalFeature {priority = PreferTake}
+  ;
+
+NegativeOptional
+  ::= -[Plus:optional] "+" {Plus:loop} as OptionalFeature {priority = PreferSkip}
+  ;
+
+Module
+  ::= !EqualOptional
+  ::= !PositiveOptional
+  ::= !NegativeOptional
+  ;

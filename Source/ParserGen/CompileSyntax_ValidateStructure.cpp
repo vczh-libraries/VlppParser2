@@ -180,19 +180,18 @@ ValidateStructureCountingVisitor
 
 				void Visit(GlrSequenceSyntax* node) override
 				{
-					bool last = lastSyntaxPiece;
+					node->second->Accept(this);
+					vint secondMinLength = syntaxMinLength;
+					vint secondMinUseRuleCount = syntaxMinUseRuleCount;
+					vint secondMaxUseRuleCount = syntaxMaxUseRuleCount;
 
-					lastSyntaxPiece = false;
+					bool last = lastSyntaxPiece;
+					lastSyntaxPiece = secondMinLength == 0;
 					node->first->Accept(this);
 					vint firstMinLength = syntaxMinLength;
 					vint firstMinUseRuleCount = syntaxMinUseRuleCount;
 					vint firstMaxUseRuleCount = syntaxMaxUseRuleCount;
 					lastSyntaxPiece = last;
-
-					node->second->Accept(this);
-					vint secondMinLength = syntaxMinLength;
-					vint secondMinUseRuleCount = syntaxMinUseRuleCount;
-					vint secondMaxUseRuleCount = syntaxMaxUseRuleCount;
 
 					syntaxMinLength = firstMinLength + secondMinLength;
 					syntaxMinUseRuleCount = firstMinUseRuleCount + secondMinUseRuleCount;
