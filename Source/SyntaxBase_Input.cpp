@@ -200,7 +200,10 @@ Competitions
 				// it could attend multiple competitions
 				// since one trace maps to multiple competitions, we should
 				//   1) remove Competition::ownerTrace
-				//   2) add Competition::returnStack, copying from the trace that holds this competition
+				//   2) add Competition::returnStack, carefully setting this value if edgeDesc.returnIndices.count > 0
+				//      after one ReturnDesc is examined, fill Competition::returnStack, and then call AllocateReturnStack
+				//      since it could not be an EndingInput edge, therefore no merging is happening
+				//      so maybe we could run AllocateReturnStack (currently by WalkAlongSingleEdge) first and get all return stack objects
 				//   3) RuntimeRouting::holdingCompetition -> holdingCompetitions
 				//   4) Competition::next -> nextActiveCompetition
 				//   5) add Competition::nextCompetitionOfTrace, serves RuntimeRouting::holdingCompetition
