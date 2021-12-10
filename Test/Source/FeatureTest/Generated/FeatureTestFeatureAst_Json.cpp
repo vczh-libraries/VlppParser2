@@ -13,6 +13,19 @@ namespace featuretest
 		void FeatureAstVisitor::PrintFields(Feature* node)
 		{
 		}
+		void FeatureAstVisitor::PrintFields(FeatureToResolve* node)
+		{
+			BeginField(L"candidates");
+			BeginArray();
+			for (auto&& listItem : node->candidates)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+		}
 		void FeatureAstVisitor::PrintFields(OptionalFeature* node)
 		{
 			BeginField(L"loop");
@@ -47,6 +60,20 @@ namespace featuretest
 		}
 		void FeatureAstVisitor::PrintFields(Plus* node)
 		{
+		}
+
+		void FeatureAstVisitor::Visit(FeatureToResolve* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"FeatureToResolve", node);
+			PrintFields(static_cast<Feature*>(node));
+			PrintFields(static_cast<FeatureToResolve*>(node));
+			EndObject();
 		}
 
 		void FeatureAstVisitor::Visit(OptionalFeature* node)

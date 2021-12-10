@@ -16,6 +16,11 @@ Visitor Pattern Implementation
 	{
 		visitor->Visit(this);
 	}
+
+	void FeatureToResolve::Accept(Feature::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
 }
 namespace vl
 {
@@ -30,6 +35,7 @@ namespace vl
 			IMPL_TYPE_INFO_RENAME(featuretest::Feature::IVisitor, featuretest::Feature::IVisitor)
 			IMPL_TYPE_INFO_RENAME(featuretest::OptionalProprity, featuretest::OptionalProprity)
 			IMPL_TYPE_INFO_RENAME(featuretest::OptionalFeature, featuretest::OptionalFeature)
+			IMPL_TYPE_INFO_RENAME(featuretest::FeatureToResolve, featuretest::FeatureToResolve)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 
@@ -62,7 +68,16 @@ namespace vl
 				CLASS_MEMBER_FIELD(loop)
 			END_CLASS_MEMBER(featuretest::OptionalFeature)
 
+			BEGIN_CLASS_MEMBER(featuretest::FeatureToResolve)
+				CLASS_MEMBER_BASE(featuretest::Feature)
+
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<featuretest::FeatureToResolve>(), NO_PARAMETER)
+
+				CLASS_MEMBER_FIELD(candidates)
+			END_CLASS_MEMBER(featuretest::FeatureToResolve)
+
 			BEGIN_INTERFACE_MEMBER(featuretest::Feature::IVisitor)
+				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(featuretest::Feature::IVisitor::*)(featuretest::FeatureToResolve* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(featuretest::Feature::IVisitor::*)(featuretest::OptionalFeature* node))
 			END_INTERFACE_MEMBER(featuretest::Feature)
 
@@ -79,6 +94,7 @@ namespace vl
 					ADD_TYPE_INFO(featuretest::Feature::IVisitor)
 					ADD_TYPE_INFO(featuretest::OptionalProprity)
 					ADD_TYPE_INFO(featuretest::OptionalFeature)
+					ADD_TYPE_INFO(featuretest::FeatureToResolve)
 				}
 
 				void Unload(ITypeManager* manager)

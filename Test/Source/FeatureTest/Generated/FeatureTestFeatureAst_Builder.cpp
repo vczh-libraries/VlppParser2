@@ -12,6 +12,16 @@ namespace featuretest
 	{
 
 /***********************************************************************
+FeatureToResolveBuilder
+***********************************************************************/
+
+		FeatureToResolveBuilder& FeatureToResolveBuilder::candidates(const vl::Ptr<Feature>& value)
+		{
+			node->candidates.Add(value);
+			return *this;
+		}
+
+/***********************************************************************
 OptionalFeatureBuilder
 ***********************************************************************/
 

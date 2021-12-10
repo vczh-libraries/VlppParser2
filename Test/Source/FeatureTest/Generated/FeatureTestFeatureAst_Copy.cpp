@@ -14,6 +14,15 @@ namespace featuretest
 		{
 		}
 
+		void FeatureAstVisitor::CopyFields(FeatureToResolve* from, FeatureToResolve* to)
+		{
+			CopyFields(static_cast<Feature*>(from), static_cast<Feature*>(to));
+			for (auto&& listItem : from->candidates)
+			{
+				to->candidates.Add(CopyNode(listItem.Obj()));
+			}
+		}
+
 		void FeatureAstVisitor::CopyFields(OptionalFeature* from, OptionalFeature* to)
 		{
 			CopyFields(static_cast<Feature*>(from), static_cast<Feature*>(to));
@@ -32,6 +41,13 @@ namespace featuretest
 		void FeatureAstVisitor::Visit(Plus* node)
 		{
 			auto newNode = vl::MakePtr<Plus>();
+			CopyFields(node, newNode.Obj());
+			this->result = newNode;
+		}
+
+		void FeatureAstVisitor::Visit(FeatureToResolve* node)
+		{
+			auto newNode = vl::MakePtr<FeatureToResolve>();
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}

@@ -22,16 +22,19 @@ namespace featuretest
 			virtual void Traverse(vl::glr::ParsingToken& token);
 			virtual void Traverse(vl::glr::ParsingAstBase* node);
 			virtual void Traverse(Feature* node);
+			virtual void Traverse(FeatureToResolve* node);
 			virtual void Traverse(OptionalFeature* node);
 			virtual void Traverse(Plus* node);
 
 		protected:
 			virtual void Finishing(vl::glr::ParsingAstBase* node);
 			virtual void Finishing(Feature* node);
+			virtual void Finishing(FeatureToResolve* node);
 			virtual void Finishing(OptionalFeature* node);
 			virtual void Finishing(Plus* node);
 
 		protected:
+			void Visit(FeatureToResolve* node) override;
 			void Visit(OptionalFeature* node) override;
 
 		public:

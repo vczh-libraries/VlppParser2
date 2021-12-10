@@ -14,15 +14,17 @@ namespace featuretest
 	enum class FeatureTestClasses : vl::vint32_t
 	{
 		Feature = 0,
-		OptionalFeature = 1,
-		Plus = 2,
+		FeatureToResolve = 1,
+		OptionalFeature = 2,
+		Plus = 3,
 	};
 
 	enum class FeatureTestFields : vl::vint32_t
 	{
-		OptionalFeature_loop = 0,
-		OptionalFeature_optional = 1,
-		OptionalFeature_priority = 2,
+		FeatureToResolve_candidates = 0,
+		OptionalFeature_loop = 1,
+		OptionalFeature_optional = 2,
+		OptionalFeature_priority = 3,
 	};
 
 	extern const wchar_t* FeatureTestTypeName(FeatureTestClasses type);

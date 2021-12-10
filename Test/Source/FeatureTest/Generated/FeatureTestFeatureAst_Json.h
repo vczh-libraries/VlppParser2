@@ -20,10 +20,12 @@ namespace featuretest
 		{
 		protected:
 			virtual void PrintFields(Feature* node);
+			virtual void PrintFields(FeatureToResolve* node);
 			virtual void PrintFields(OptionalFeature* node);
 			virtual void PrintFields(Plus* node);
 
 		protected:
+			void Visit(FeatureToResolve* node) override;
 			void Visit(OptionalFeature* node) override;
 
 		public:

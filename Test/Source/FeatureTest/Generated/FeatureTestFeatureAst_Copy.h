@@ -20,12 +20,14 @@ namespace featuretest
 		{
 		protected:
 			void CopyFields(Feature* from, Feature* to);
+			void CopyFields(FeatureToResolve* from, FeatureToResolve* to);
 			void CopyFields(OptionalFeature* from, OptionalFeature* to);
 			void CopyFields(Plus* from, Plus* to);
 
 		protected:
 			virtual void Visit(Plus* node);
 
+			void Visit(FeatureToResolve* node) override;
 			void Visit(OptionalFeature* node) override;
 
 		public:

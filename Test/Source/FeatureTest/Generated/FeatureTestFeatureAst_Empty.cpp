@@ -17,6 +17,10 @@ FeatureVisitor
 
 		// Visitor Members -----------------------------------
 
+		void FeatureVisitor::Visit(FeatureToResolve* node)
+		{
+		}
+
 		void FeatureVisitor::Visit(OptionalFeature* node)
 		{
 		}

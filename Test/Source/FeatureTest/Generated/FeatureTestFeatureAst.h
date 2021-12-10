@@ -13,6 +13,7 @@ Licensed under https://github.com/vczh-libraries/License
 namespace featuretest
 {
 	class Feature;
+	class FeatureToResolve;
 	class OptionalFeature;
 	class Plus;
 
@@ -35,6 +36,7 @@ namespace featuretest
 		class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
 		{
 		public:
+			virtual void Visit(FeatureToResolve* node) = 0;
 			virtual void Visit(OptionalFeature* node) = 0;
 		};
 
@@ -51,6 +53,14 @@ namespace featuretest
 
 		void Accept(Feature::IVisitor* visitor) override;
 	};
+
+	class FeatureToResolve : public Feature, vl::reflection::Description<FeatureToResolve>
+	{
+	public:
+		vl::collections::List<vl::Ptr<Feature>> candidates;
+
+		void Accept(Feature::IVisitor* visitor) override;
+	};
 }
 namespace vl
 {
@@ -64,10 +74,16 @@ namespace vl
 			DECL_TYPE_INFO(featuretest::Feature::IVisitor)
 			DECL_TYPE_INFO(featuretest::OptionalProprity)
 			DECL_TYPE_INFO(featuretest::OptionalFeature)
+			DECL_TYPE_INFO(featuretest::FeatureToResolve)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 
 			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(featuretest::Feature::IVisitor)
+				void Visit(featuretest::FeatureToResolve* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
 				void Visit(featuretest::OptionalFeature* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);

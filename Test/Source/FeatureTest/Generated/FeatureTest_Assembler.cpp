@@ -18,6 +18,8 @@ FeatureTestAstInsReceiver : public vl::glr::AstInsReceiverBase
 		auto cppTypeName = FeatureTestCppTypeName((FeatureTestClasses)type);
 		switch((FeatureTestClasses)type)
 		{
+		case FeatureTestClasses::FeatureToResolve:
+			return new featuretest::FeatureToResolve();
 		case FeatureTestClasses::OptionalFeature:
 			return new featuretest::OptionalFeature();
 		case FeatureTestClasses::Plus:
@@ -32,6 +34,8 @@ FeatureTestAstInsReceiver : public vl::glr::AstInsReceiverBase
 		auto cppFieldName = FeatureTestCppFieldName((FeatureTestFields)field);
 		switch((FeatureTestFields)field)
 		{
+		case FeatureTestFields::FeatureToResolve_candidates:
+			return vl::glr::AssemblerSetObjectField(&featuretest::FeatureToResolve::candidates, object, field, value, cppFieldName);
 		case FeatureTestFields::OptionalFeature_loop:
 			return vl::glr::AssemblerSetObjectField(&featuretest::OptionalFeature::loop, object, field, value, cppFieldName);
 		case FeatureTestFields::OptionalFeature_optional:
@@ -63,49 +67,63 @@ FeatureTestAstInsReceiver : public vl::glr::AstInsReceiverBase
 	{
 		const wchar_t* results[] = {
 			L"Feature",
+			L"FeatureToResolve",
 			L"OptionalFeature",
 			L"Plus",
 		};
 		vl::vint index = (vl::vint)type;
-		return 0 <= index && index < 3 ? results[index] : nullptr;
+		return 0 <= index && index < 4 ? results[index] : nullptr;
 	}
 
 	const wchar_t* FeatureTestCppTypeName(FeatureTestClasses type)
 	{
 		const wchar_t* results[] = {
 			L"featuretest::Feature",
+			L"featuretest::FeatureToResolve",
 			L"featuretest::OptionalFeature",
 			L"featuretest::Plus",
 		};
 		vl::vint index = (vl::vint)type;
-		return 0 <= index && index < 3 ? results[index] : nullptr;
+		return 0 <= index && index < 4 ? results[index] : nullptr;
 	}
 
 	const wchar_t* FeatureTestFieldName(FeatureTestFields field)
 	{
 		const wchar_t* results[] = {
+			L"FeatureToResolve::candidates",
 			L"OptionalFeature::loop",
 			L"OptionalFeature::optional",
 			L"OptionalFeature::priority",
 		};
 		vl::vint index = (vl::vint)field;
-		return 0 <= index && index < 3 ? results[index] : nullptr;
+		return 0 <= index && index < 4 ? results[index] : nullptr;
 	}
 
 	const wchar_t* FeatureTestCppFieldName(FeatureTestFields field)
 	{
 		const wchar_t* results[] = {
+			L"featuretest::FeatureToResolve::candidates",
 			L"featuretest::OptionalFeature::loop",
 			L"featuretest::OptionalFeature::optional",
 			L"featuretest::OptionalFeature::priority",
 		};
 		vl::vint index = (vl::vint)field;
-		return 0 <= index && index < 3 ? results[index] : nullptr;
+		return 0 <= index && index < 4 ? results[index] : nullptr;
 	}
 
 	vl::Ptr<vl::glr::ParsingAstBase> FeatureTestAstInsReceiver::ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates)
 	{
 		auto cppTypeName = FeatureTestCppTypeName((FeatureTestClasses)type);
-		return vl::glr::AssemblyThrowTypeNotAllowAmbiguity(type, cppTypeName);
+		switch((FeatureTestClasses)type)
+		{
+		case FeatureTestClasses::Feature:
+			return vl::glr::AssemblerResolveAmbiguity<featuretest::Feature, featuretest::FeatureToResolve>(type, candidates, cppTypeName);
+		case FeatureTestClasses::FeatureToResolve:
+			return vl::glr::AssemblerResolveAmbiguity<featuretest::FeatureToResolve, featuretest::FeatureToResolve>(type, candidates, cppTypeName);
+		case FeatureTestClasses::OptionalFeature:
+			return vl::glr::AssemblerResolveAmbiguity<featuretest::OptionalFeature, featuretest::FeatureToResolve>(type, candidates, cppTypeName);
+		default:
+			return vl::glr::AssemblyThrowTypeNotAllowAmbiguity(type, cppTypeName);
+		}
 	}
 }

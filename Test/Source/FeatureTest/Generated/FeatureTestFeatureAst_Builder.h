@@ -13,6 +13,15 @@ namespace featuretest
 {
 	namespace builder
 	{
+		class FeatureToResolveBuilder
+		{
+		private:
+			FeatureToResolve* node;
+		public:
+			FeatureToResolveBuilder(FeatureToResolve* _node) : node(_node) {}
+			FeatureToResolveBuilder& candidates(const vl::Ptr<Feature>& value);
+		};
+
 		class OptionalFeatureBuilder
 		{
 		private:
@@ -24,6 +33,7 @@ namespace featuretest
 			OptionalFeatureBuilder& priority(OptionalProprity value);
 		};
 
+		using MakeFeatureToResolve = vl::glr::ParsingAstBuilder<FeatureToResolve, FeatureToResolveBuilder>;
 		using MakeOptionalFeature = vl::glr::ParsingAstBuilder<OptionalFeature, OptionalFeatureBuilder>;
 		using MakePlus = vl::glr::ParsingAstBuilder<Plus>;
 	}

@@ -21,6 +21,7 @@ namespace featuretest
 
 		public:
 			// Visitor Members -----------------------------------
+			void Visit(FeatureToResolve* node) override;
 			void Visit(OptionalFeature* node) override;
 		};
 
