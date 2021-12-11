@@ -6,7 +6,6 @@ namespace vl
 	{
 		namespace automaton
 		{
-
 			// The following code is useful only when it is proven that
 			// AreTwoTraceEqual could not just compare two returnStack object
 			// The code should be deleted when I have enough confidence

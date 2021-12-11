@@ -323,21 +323,25 @@ Execution
 				void								EndSwap();
 				void								AddTraceToCollection(Trace* owner, Trace* element, TraceCollection(Trace::* collection));
 
+				// Ambiguity
 				bool								AreTwoTraceEqual(vint32_t state, vint32_t returnStack, vint32_t executedReturn, vint32_t acId, Trace* candidate);
 				vint32_t							GetInstructionPostfix(EdgeDesc& oldEdge, EdgeDesc& newEdge);
 
+				// Competition
 				StateDesc&							FindStateFromEdgeInSameClause(EdgeDesc& edgeDesc);
 				EdgePriority						GetPriorityFromEdge(EdgeDesc& edgeDesc);
 				void								AttendCompetitionIfNecessary(Trace* trace, EdgeDesc& edgeDesc, vint32_t& newAttendingCompetitions, vint32_t& newReturnStack);
 				void								CheckAttendingCompetitionsOnEndingEdge(Trace* trace, EdgeDesc& edgeDesc, vint32_t acId, vint32_t returnStack);
 				void								CheckBackupTracesBeforeSwapping(vint32_t currentTokenIndex);
 
+				// Walk
 				Trace*								WalkAlongSingleEdge(vint32_t currentTokenIndex, vint32_t input, Trace* trace, vint32_t byEdge, EdgeDesc& edgeDesc);
 				void								WalkAlongLeftrecEdges(vint32_t currentTokenIndex, Trace* trace, EdgeArray& edgeArray);
 				void								WalkAlongEndingEdges(vint32_t currentTokenIndex, Trace* trace, EdgeArray& edgeArray);
 				void								WalkAlongEpsilonEdges(vint32_t currentTokenIndex, Trace* trace);
 				void								WalkAlongTokenEdges(vint32_t currentTokenIndex, vint32_t input, Trace* trace, EdgeArray& edgeArray);
 
+				// PrepareTraceRoute
 				void								ReadInstructionList(Trace* trace, TraceInsLists& insLists);
 				AstIns&								ReadInstruction(vint32_t instruction, TraceInsLists& insLists);
 				bool								RunInstruction(vint32_t instruction, TraceInsLists& insLists, vint32_t& objectCount);
