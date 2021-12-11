@@ -171,28 +171,35 @@ void RenderTrace(
 
 		writer.WriteLine(stateLabel((vint32_t)trace->state));
 
+		if (trace->runtimeRouting.holdingCompetitions != -1)
 		{
+			writer.WriteLine(L"[HOLDING COMPETITION]:");
 			vint32_t cid = trace->runtimeRouting.holdingCompetitions;
 			while (cid != -1)
 			{
 				auto competition = tm.GetCompetition(cid);
-				writer.WriteString(L"[" + itow(competition->allocatedIndex) + L"][COMPETITION: ");
+				writer.WriteString(L"  [" + itow(competition->allocatedIndex) + L"]");
 				switch (competition->status)
 				{
 				case CompetitionStatus::Holding:
-					writer.WriteLine(L"HOLDING]");
+					writer.WriteString(L"[HOLDING]");
 					break;
 				case CompetitionStatus::HighPriorityWin:
-					writer.WriteLine(L"HIGH PRIORITY WIN]");
+					writer.WriteString(L"[HIGH PRIORITY WIN]");
 					break;
 				case CompetitionStatus::LowPriorityWin:
-					writer.WriteLine(L"LOW PRIORITY WIN]");
+					writer.WriteString(L"[LOW PRIORITY WIN]");
 					break;
 				}
+				writer.WriteLine(
+					L"[ROW: " + itow(competition->ruleId) +
+					L"][CLAUSE: " + itow(competition->clauseId) +
+					L"][RS: " + itow(competition->returnStack) + L"]");
 				cid = competition->nextHoldCompetition;
 			}
 		}
 
+		writer.WriteLine(L"[INSTRUCTIONS]:");
 		vint c1 = 0, c2 = 0;
 		if (trace->byEdge != -1)
 		{
