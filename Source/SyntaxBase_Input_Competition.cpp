@@ -95,7 +95,7 @@ GetPriorityFromEdge
 AttendCompetitionIfNecessary
 ***********************************************************************/
 
-			vint32_t TraceManager::AttendCompetitionIfNecessary(Trace* trace, EdgeDesc& edgeDesc)
+			void TraceManager::AttendCompetitionIfNecessary(Trace* trace, EdgeDesc& edgeDesc, vint32_t& newAttendingCompetitions, vint32_t& newReturnStack)
 			{
 				// check the priority of this transition
 				auto edgePriority = GetPriorityFromEdge(edgeDesc);

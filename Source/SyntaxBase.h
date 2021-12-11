@@ -195,13 +195,16 @@ Execution
 			struct Competition
 			{
 				vint32_t				allocatedIndex = -1;
-				vint32_t				next = -1;					// next active Competition
+				vint32_t				nextActiveCompetition = -1;				// next active Competition
+				vint32_t				nextHoldCompetition = -1;				// next Competition hold by this trace
 
 				CompetitionStatus		status = CompetitionStatus::Holding;	// if predecessors from this trace have different priority, the competition begins
 																				// when the competition is over, it will be changed to HighPriorityWin or LowPriorityWin
 																				// if all candidates fail, it could be Holding forever
 
-				vint32_t				ownerTrace = -1;			// the id of the Trace that holds this competition
+				vint32_t				returnStack = -1;			// the ReturnStack object for the competition
+																	// if the competition is attended by a ReturnDesc
+																	// then the ReturnStack object is the one before a ReturnDesc transition happens
 
 				vint32_t				ruleId = -1;				// the rule id of state, when an edge starts this competition
 				vint32_t				clauseId = -1;				// the clause id of the state, when an edge starts this competition
@@ -236,7 +239,7 @@ Execution
 																	// if these branches are contained in a larger ambiguity resolving loop, all branches could be visited multiple times
 																	// (filled by ExecuteTrace)
 
-				vint32_t				holdingCompetition = -1;	// the id of the active Competition
+				vint32_t				holdingCompetitions = -1;	// the id of the active Competition
 
 				vint32_t				attendingCompetitions = -1;	// a linked list containing all AttendingCompetitions that this trace is attending
 																	// predecessors could share and modify the same linked list
@@ -325,7 +328,7 @@ Execution
 
 				StateDesc&							FindStateFromEdgeInSameClause(EdgeDesc& edgeDesc);
 				EdgePriority						GetPriorityFromEdge(EdgeDesc& edgeDesc);
-				vint32_t							AttendCompetitionIfNecessary(Trace* trace, EdgeDesc& edgeDesc);
+				void								AttendCompetitionIfNecessary(Trace* trace, EdgeDesc& edgeDesc, vint32_t& newAttendingCompetitions, vint32_t& newReturnStack);
 				void								CheckAttendingCompetitionsOnEndingEdge(Trace* trace, EdgeDesc& edgeDesc, vint32_t acId, vint32_t returnStack);
 				void								CheckBackupTracesBeforeSwapping(vint32_t currentTokenIndex);
 
