@@ -202,10 +202,6 @@ Execution
 																				// when the competition is over, it will be changed to HighPriorityWin or LowPriorityWin
 																				// if all candidates fail, it could be Holding forever
 
-				vint32_t				returnStack = -1;			// the ReturnStack object for the competition
-																	// if the competition is attended by a ReturnDesc
-																	// then the ReturnStack object is the one before a ReturnDesc transition happens
-
 				vint32_t				currentTokenIndex = -1;		// currentTokenIndex from the trace that creates this competition
 				vint32_t				ruleId = -1;				// the rule id of state, when an edge starts this competition
 				vint32_t				clauseId = -1;				// the clause id of the state, when an edge starts this competition
@@ -224,6 +220,10 @@ Execution
 				vint32_t				nextCarriedAC = -1;			// the next AttendingCompetitions for RuntimeRouting::carriedCompetitions
 				vint32_t				competition = -1;			// the id of the Competition
 				bool					forHighPriority = false;	// bet of this competition
+
+				vint32_t				returnStack = -1;			// the ReturnStack object for the competition
+																	// if the competition is attended by a ReturnDesc
+																	// then the ReturnStack object is the one before a ReturnDesc transition happens
 
 				bool					closed = false;				// true if the competition has been closed
 																	// this flag is not always updated for discarded AttendingCompetitions objects

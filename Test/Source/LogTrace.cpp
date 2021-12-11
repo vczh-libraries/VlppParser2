@@ -193,8 +193,7 @@ void RenderTrace(
 				}
 				writer.WriteLine(
 					L"[RULE: " + itow(competition->ruleId) +
-					L"][CLAUSE: " + itow(competition->clauseId) +
-					L"][RS: " + itow(competition->returnStack) + L"]");
+					L"][CLAUSE: " + itow(competition->clauseId) + L"]");
 				cid = competition->nextHoldCompetition;
 			}
 		}
@@ -290,6 +289,7 @@ void RenderTrace(
 				writer.WriteLine(
 					L"  [" + itow(ac->allocatedIndex) +
 					L"]: competition[" + itow(cpt->allocatedIndex) +
+					L"][RS: " + itow(ac->returnStack) +
 					L"] " + (ac->forHighPriority ? L"high" : L"low"));
 				acId = ac->nextCarriedAC;
 			}

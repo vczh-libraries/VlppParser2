@@ -13,7 +13,9 @@ AttendCompetition
 
 			void TraceManager::AttendCompetition(Trace* trace, vint32_t& newAttendingCompetitions, vint32_t& newCarriedCompetitions, vint32_t returnStack, vint32_t ruleId, vint32_t clauseId, bool forHighPriority)
 			{
-				// a competition is defined by its rule, clause and ReturnStack
+				// a competition is defined by its rule, clause and the owner trace
+				// but we don't need to compare the trace
+				// since only transitions starting from that trace will search competitions in that trace
 				// we only create a new Competition object if it has not been created for the trace yet
 				Competition* competition = nullptr;
 				{
@@ -21,7 +23,7 @@ AttendCompetition
 					while (cid != -1)
 					{
 						auto cpt = GetCompetition(cid);
-						if (cpt->ruleId == ruleId && cpt->clauseId == clauseId && cpt->returnStack == returnStack)
+						if (cpt->ruleId == ruleId && cpt->clauseId == clauseId)
 						{
 							competition = cpt;
 							break;
@@ -37,7 +39,6 @@ AttendCompetition
 					competition->nextHoldCompetition = trace->runtimeRouting.holdingCompetitions;
 					trace->runtimeRouting.holdingCompetitions = competition->allocatedIndex;
 
-					competition->returnStack = returnStack;
 					competition->currentTokenIndex = trace->currentTokenIndex;
 					competition->ruleId = ruleId;
 					competition->clauseId = clauseId;
@@ -56,6 +57,7 @@ AttendCompetition
 				auto ac = AllocateAttendingCompetitions();
 				ac->competition = competition->allocatedIndex;
 				ac->forHighPriority = forHighPriority;
+				ac->returnStack = returnStack;
 
 				ac->nextActiveAC = newAttendingCompetitions;
 				newAttendingCompetitions = ac->allocatedIndex;
@@ -138,14 +140,16 @@ CheckAttendingCompetitionsOnEndingEdge
 				{
 					// when executing an EndingInput transition, we announce high priority win a competition if
 					//   1) such EndingInput transitions ends the clause, and the state of the trace holding competition belongs to the same clause
-					//      we ensure this by comparing rule id, clause id and returnStack object (not content)
-					//      because a ReturnStack object is created when entering a new clause
+					//      we ensure this by comparing rule id, clause id in Competition
+					//      and compare ReturnStack object (not content) in AttendingCompetitions
+					//      the reason returnStack is not in Competition is that
+					//      different transitions always create new ReturnStack objects
 					//   2) this trace bets high
 					//   3) the competition has not been settled
 					auto ac = GetAttendingCompetitions(acId);
-					auto cpt = GetCompetition(ac->competition);
-					if (cpt->returnStack == returnStack)
+					if (ac->returnStack == returnStack)
 					{
+						auto cpt = GetCompetition(ac->competition);
 						// ensure that this EndingInput edge and the competition belong to the same clause
 						auto&& stateDesc = executable.states[edgeDesc.fromState];
 						if (cpt->ruleId == stateDesc.rule && cpt->clauseId == stateDesc.clause)
