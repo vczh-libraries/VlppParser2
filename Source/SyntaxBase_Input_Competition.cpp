@@ -20,12 +20,13 @@ AttendCompetition
 					vint32_t cid = trace->runtimeRouting.holdingCompetitions;
 					while (cid != -1)
 					{
-						competition = GetCompetition(cid);
-						if (competition->ruleId == ruleId && competition->clauseId == clauseId && competition->returnStack == returnStack)
+						auto cpt = GetCompetition(cid);
+						if (cpt->ruleId == ruleId && cpt->clauseId == clauseId && cpt->returnStack == returnStack)
 						{
+							competition = cpt;
 							break;
 						}
-						cid = competition->nextHoldCompetition;
+						cid = cpt->nextHoldCompetition;
 					}
 				}
 
