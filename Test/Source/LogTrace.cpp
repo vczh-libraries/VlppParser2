@@ -271,6 +271,22 @@ void RenderTrace(
 				returnStack = tm.GetReturnStack(returnStack->previous);
 			}
 		}
+
+		if (trace->runtimeRouting.carriedCompetitions != -1)
+		{
+			writer.WriteLine(L"[CARRIED COMPETITION]:");
+			auto acId = trace->runtimeRouting.carriedCompetitions;
+			while (acId != -1)
+			{
+				auto ac = tm.GetAttendingCompetitions(acId);
+				auto cpt = tm.GetCompetition(ac->competition);
+				writer.WriteLine(
+					L"  [" + itow(ac->allocatedIndex) +
+					L"]: competition[" + itow(cpt->allocatedIndex) +
+					L"] " + (ac->forHighPriority ? L"high" : L"low"));
+				acId = ac->nextCarriedAC;
+			}
+		}
 	}));
 
 	List<WString> lines;

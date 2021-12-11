@@ -220,7 +220,8 @@ Execution
 			struct AttendingCompetitions
 			{
 				vint32_t				allocatedIndex = -1;		// id of this AttendingCompetitions
-				vint32_t				next = -1;					// the next AttendingCompetitions
+				vint32_t				nextActiveAC = -1;			// the next AttendingCompetitions for RuntimeRouting::attendingCompetitions
+				vint32_t				nextCarriedAC = -1;			// the next AttendingCompetitions for RuntimeRouting::carriedCompetitions
 				vint32_t				competition = -1;			// the id of the Competition
 				bool					forHighPriority = false;	// bet of this competition
 
@@ -243,6 +244,8 @@ Execution
 																	// predecessors could share and modify the same linked list
 																	// if a competition is over, node could be removed from the linked list
 																	// one competition only creates two AttendingCompetitions, traces with the same bet share the object
+
+				vint32_t				carriedCompetitions = -1;	// all attended competitions regardless of the status of the competition
 			};
 
 			struct Trace
@@ -326,8 +329,8 @@ Execution
 				vint32_t							GetInstructionPostfix(EdgeDesc& oldEdge, EdgeDesc& newEdge);
 
 				// Competition
-				void								AttendCompetition(Trace* trace, vint32_t& newAttendingCompetitions, vint32_t returnStack, vint32_t ruleId, vint32_t clauseId, bool forHighPriority);
-				void								AttendCompetitionIfNecessary(Trace* trace, EdgeDesc& edgeDesc, vint32_t& newAttendingCompetitions, vint32_t& newReturnStack);
+				void								AttendCompetition(Trace* trace, vint32_t& newAttendingCompetitions, vint32_t& newCarriedCompetitions, vint32_t returnStack, vint32_t ruleId, vint32_t clauseId, bool forHighPriority);
+				void								AttendCompetitionIfNecessary(Trace* trace, EdgeDesc& edgeDesc, vint32_t& newAttendingCompetitions, vint32_t& newCarriedCompetitions, vint32_t& newReturnStack);
 				void								CheckAttendingCompetitionsOnEndingEdge(Trace* trace, EdgeDesc& edgeDesc, vint32_t acId, vint32_t returnStack);
 				void								CheckBackupTracesBeforeSwapping(vint32_t currentTokenIndex);
 

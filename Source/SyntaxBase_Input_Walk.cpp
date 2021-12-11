@@ -23,11 +23,12 @@ TraceManager::WalkAlongSingleEdge
 				vint32_t state = edgeDesc.toState;
 				vint32_t returnStack = -1;
 				vint32_t attendingCompetitions = -1;
+				vint32_t carriedCompetitions = -1;
 				vint32_t executedReturn = -1;
 				Trace* ambiguityTraceToMerge = nullptr;
 
 				// attend a competition hold by the current trace if the priority is set for this output transition
-				AttendCompetitionIfNecessary(trace, edgeDesc, attendingCompetitions, returnStack);
+				AttendCompetitionIfNecessary(trace, edgeDesc, attendingCompetitions, carriedCompetitions, returnStack);
 
 				if (input == Executable::EndingInput)
 				{
@@ -108,8 +109,10 @@ TraceManager::WalkAlongSingleEdge
 							// ambiguity is filled by PrepareTraceRoute, skipped
 							// runtimeRouting.holdingCompetition always belong to the second trace
 							// runtimeRouting.attendingCompetitions is inherited
+							// runtimeRouting.carriedCompetitions is inherited
 							formerTrace->runtimeRouting = {};
 							formerTrace->runtimeRouting.attendingCompetitions = ambiguityTraceToMerge->runtimeRouting.attendingCompetitions;
+							formerTrace->runtimeRouting.carriedCompetitions = ambiguityTraceToMerge->runtimeRouting.carriedCompetitions;
 
 							// both traces need to have the same ambiguityInsPostfix
 							formerTrace->ambiguityInsPostfix = postfix;
@@ -146,8 +149,10 @@ TraceManager::WalkAlongSingleEdge
 						// executedReturn == ambiguityTraceToMerge->executedReturn is ensured
 						// so no need to assign executedReturn to newTrace
 						// acid == ambiguityTraceToMerge->runtimeRouting.attendingCompetitions is ensure
+						//   this is affected by TODO: in TraceManager::AreTwoTraceEqual
 						// and ambiguityTraceToMerge is supposed to inherit this value
 						newTrace->runtimeRouting.attendingCompetitions = attendingCompetitions;
+						newTrace->runtimeRouting.carriedCompetitions = carriedCompetitions;
 
 						newTrace->ambiguityInsPostfix = postfix;
 
@@ -174,6 +179,7 @@ TraceManager::WalkAlongSingleEdge
 					newTrace->byInput = input;
 					newTrace->currentTokenIndex = currentTokenIndex;
 					newTrace->runtimeRouting.attendingCompetitions = attendingCompetitions;
+					newTrace->runtimeRouting.carriedCompetitions = carriedCompetitions;
 
 					return newTrace;
 				}

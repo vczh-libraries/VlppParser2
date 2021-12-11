@@ -11,7 +11,7 @@ namespace vl
 AttendCompetition
 ***********************************************************************/
 
-			void TraceManager::AttendCompetition(Trace* trace, vint32_t& newAttendingCompetitions, vint32_t returnStack, vint32_t ruleId, vint32_t clauseId, bool forHighPriority)
+			void TraceManager::AttendCompetition(Trace* trace, vint32_t& newAttendingCompetitions, vint32_t& newCarriedCompetitions, vint32_t returnStack, vint32_t ruleId, vint32_t clauseId, bool forHighPriority)
 			{
 				// a competition is defined by its rule, clause and ReturnStack
 				// we only create a new Competition object if it has not been created for the trace yet
@@ -53,20 +53,25 @@ AttendCompetition
 				// sharing a linked list doesn't change the result
 
 				auto ac = AllocateAttendingCompetitions();
-				ac->next = newAttendingCompetitions;
 				ac->competition = competition->allocatedIndex;
 				ac->forHighPriority = forHighPriority;
+
+				ac->nextActiveAC = newAttendingCompetitions;
 				newAttendingCompetitions = ac->allocatedIndex;
+
+				ac->nextCarriedAC = newCarriedCompetitions;
+				newCarriedCompetitions = ac->allocatedIndex;
 			}
 
 /***********************************************************************
 AttendCompetitionIfNecessary
 ***********************************************************************/
 
-			void TraceManager::AttendCompetitionIfNecessary(Trace* trace, EdgeDesc& edgeDesc, vint32_t& newAttendingCompetitions, vint32_t& newReturnStack)
+			void TraceManager::AttendCompetitionIfNecessary(Trace* trace, EdgeDesc& edgeDesc, vint32_t& newAttendingCompetitions, vint32_t& newCarriedCompetitions, vint32_t& newReturnStack)
 			{
 #define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::AttendCompetitionIfNecessary(Trace*, EdgeDesc&, vint32_t&, vint32_t&)#"
 				newAttendingCompetitions = trace->runtimeRouting.attendingCompetitions;
+				newCarriedCompetitions = trace->runtimeRouting.carriedCompetitions;
 				newReturnStack = trace->returnStack;
 
 				// visit each compact transition in order
@@ -92,7 +97,7 @@ AttendCompetitionIfNecessary
 						vint32_t competitionRule = stateForClause.rule;
 						vint32_t competitionClause = stateForClause.clause;
 						CHECK_ERROR(competitionRule != -1 && competitionClause != -1, ERROR_MESSAGE_PREFIX L"Illegal rule or clause id.");
-						AttendCompetition(trace, newAttendingCompetitions, newReturnStack, competitionRule, competitionClause, returnDesc.priority == EdgePriority::HighPriority);
+						AttendCompetition(trace, newAttendingCompetitions, newCarriedCompetitions, newReturnStack, competitionRule, competitionClause, returnDesc.priority == EdgePriority::HighPriority);
 					}
 
 					// push this ReturnDesc to the ReturnStack
@@ -118,7 +123,7 @@ AttendCompetitionIfNecessary
 						competitionClause = fromState.clause;
 					}
 					CHECK_ERROR(competitionRule != -1 && competitionClause != -1, ERROR_MESSAGE_PREFIX L"Illegal rule or clause id.");
-					AttendCompetition(trace, newAttendingCompetitions, newReturnStack, competitionRule, competitionClause, edgeDesc.priority == EdgePriority::HighPriority);
+					AttendCompetition(trace, newAttendingCompetitions, newCarriedCompetitions, newReturnStack, competitionRule, competitionClause, edgeDesc.priority == EdgePriority::HighPriority);
 				}
 			}
 
@@ -152,7 +157,7 @@ CheckAttendingCompetitionsOnEndingEdge
 							break;
 						}
 					}
-					acId = ac->next;
+					acId = ac->nextActiveAC;
 				}
 			}
 
@@ -187,7 +192,7 @@ CheckBackupTracesBeforeSwapping
 						auto ac = GetAttendingCompetitions(acId);
 						auto cpt = GetCompetition(ac->competition);
 						(ac->forHighPriority ? cpt->highCounter : cpt->lowCounter)++;
-						acId = ac->next;
+						acId = ac->nextActiveAC;
 					}
 				}
 
@@ -247,7 +252,7 @@ CheckBackupTracesBeforeSwapping
 								goto TRACE_REMOVED;
 							}
 						}
-						acId = ac->next;
+						acId = ac->nextActiveAC;
 					}
 				TRACE_REMOVED:;
 				}
@@ -279,11 +284,11 @@ CheckBackupTracesBeforeSwapping
 						auto ac = GetAttendingCompetitions(*pnext);
 						if (ac->closed)
 						{
-							*pnext = ac->next;
+							*pnext = ac->nextActiveAC;
 						}
 						else
 						{
-							pnext = &ac->next;
+							pnext = &ac->nextActiveAC;
 						}
 					}
 				}
