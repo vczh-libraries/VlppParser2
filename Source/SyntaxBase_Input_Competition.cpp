@@ -36,6 +36,7 @@ AttendCompetition
 					competition->nextHoldCompetition = trace->runtimeRouting.holdingCompetitions;
 					trace->runtimeRouting.holdingCompetitions = competition->allocatedIndex;
 
+					competition->returnStack = returnStack;
 					competition->currentTokenIndex = trace->currentTokenIndex;
 					competition->ruleId = ruleId;
 					competition->clauseId = clauseId;

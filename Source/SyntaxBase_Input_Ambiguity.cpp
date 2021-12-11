@@ -77,6 +77,7 @@ AreTwoTraceEqual
 				//   2) they have the same executedReturn
 				//   3) they are attending same competitions
 				//   4) they have the same return stack
+				// TODO: verify if we can do "acId == candidate->runtimeRouting.attendingCompetitions" or not
 				if (state == candidate->state &&
 					executedReturn == candidate->executedReturn &&
 					acId == candidate->runtimeRouting.attendingCompetitions)
