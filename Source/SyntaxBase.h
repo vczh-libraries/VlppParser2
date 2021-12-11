@@ -328,8 +328,6 @@ Execution
 				vint32_t							GetInstructionPostfix(EdgeDesc& oldEdge, EdgeDesc& newEdge);
 
 				// Competition
-				StateDesc&							FindStateFromEdgeInSameClause(EdgeDesc& edgeDesc);
-				EdgePriority						GetPriorityFromEdge(EdgeDesc& edgeDesc);
 				void								AttendCompetitionIfNecessary(Trace* trace, EdgeDesc& edgeDesc, vint32_t& newAttendingCompetitions, vint32_t& newReturnStack);
 				void								CheckAttendingCompetitionsOnEndingEdge(Trace* trace, EdgeDesc& edgeDesc, vint32_t acId, vint32_t returnStack);
 				void								CheckBackupTracesBeforeSwapping(vint32_t currentTokenIndex);

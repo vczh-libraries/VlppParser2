@@ -8,95 +8,65 @@ namespace vl
 		{
 
 /***********************************************************************
-FindStateFromEdgeInSameClause
-***********************************************************************/
-
-			StateDesc& TraceManager::FindStateFromEdgeInSameClause(EdgeDesc& edgeDesc)
-			{
-				// find the rule and the clause for the competition
-				// if the edge pushes return edges, we pick the first return edge
-				// otherwise, we pick the edge itself
-
-				StateDesc* fromState = &executable.states[edgeDesc.fromState];
-				StateDesc* toState = nullptr;
-				if (edgeDesc.returnIndices.count > 0)
-				{
-					auto&& returnDesc = executable.returns[executable.returnIndices[edgeDesc.returnIndices.start]];
-					toState = &executable.states[returnDesc.returnState];
-				}
-				else
-				{
-					toState = &executable.states[edgeDesc.toState];
-				}
-
-				// if toState is an ending state, we pick fromState
-				// otherwise, we pick toState
-				// because there is no edge connection directly from the start state to the ending state in a rule
-				//   1) any edge to an ending state is a EndingInput edge
-				//   2) no EndingInput edge is allowed from the start state to the ending state
-				//      because a rule should not accept an empty input series, which has already been ensured by the syntax checking
-
-				if (toState->endingState)
-				{
-					return *fromState;
-				}
-				else
-				{
-					return *toState;
-				}
-			}
-
-/***********************************************************************
-GetPriorityFromEdge
-***********************************************************************/
-
-			EdgePriority TraceManager::GetPriorityFromEdge(EdgeDesc& edgeDesc)
-			{
-				// TODO: this is not correct
-				// we need to check all compacted edges
-				// it could attend multiple competitions
-				// since one trace maps to multiple competitions, we should
-				//   1) remove Competition::ownerTrace
-				//   2) add Competition::returnStack, carefully setting this value if edgeDesc.returnIndices.count > 0
-				//      after one ReturnDesc is examined, fill Competition::returnStack, and then call AllocateReturnStack
-				//      since it could not be an EndingInput edge, therefore no merging is happening
-				//      so maybe we could run AllocateReturnStack (currently by WalkAlongSingleEdge) first and get all return stack objects
-				//   3) RuntimeRouting::holdingCompetition -> holdingCompetitions
-				//   4) Competition::next -> nextActiveCompetition
-				//   5) add Competition::nextCompetitionOfTrace, serves RuntimeRouting::holdingCompetition
-
-				{
-					vint counter = 0;
-					if (edgeDesc.returnIndices.count > 0)
-					{
-						for (vint32_t i = 0; i < edgeDesc.returnIndices.count; i++)
-						{
-							auto&& returnDesc = executable.returns[executable.returnIndices[edgeDesc.returnIndices.start + i]];
-							if (returnDesc.priority != EdgePriority::NoCompetition) counter++;
-						}
-					}
-					if (edgeDesc.priority != EdgePriority::NoCompetition) counter++;
-					CHECK_ERROR(counter < 2, L"Not Implemented: multiple competitions on one edge.");
-				}
-
-				// the priority of this cross-referenced edge is stored in the first compact edge
-				if (edgeDesc.returnIndices.count > 0)
-				{
-					auto&& returnDesc = executable.returns[executable.returnIndices[edgeDesc.returnIndices.start]];
-					return returnDesc.priority;
-				}
-				else
-				{
-					return edgeDesc.priority;
-				}
-			}
-
-/***********************************************************************
 AttendCompetitionIfNecessary
 ***********************************************************************/
 
 			void TraceManager::AttendCompetitionIfNecessary(Trace* trace, EdgeDesc& edgeDesc, vint32_t& newAttendingCompetitions, vint32_t& newReturnStack)
 			{
+#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::AttendCompetitionIfNecessary(Trace*, EdgeDesc&, vint32_t&, vint32_t&)#"
+				newAttendingCompetitions = trace->runtimeRouting.attendingCompetitions;
+				newReturnStack = trace->returnStack;
+
+				// visit each compact transition in order
+				//   1) returns + token
+				//   2) ending
+				//   3) leftrec
+				// find out if any of them attends a competition
+
+				vint32_t edgeFromState = edgeDesc.fromState;
+				for (vint32_t returnRef = 0; returnRef < edgeDesc.returnIndices.count; returnRef++)
+				{
+					auto returnIndex = executable.returnIndices[edgeDesc.returnIndices.start + returnRef];
+					auto&& returnDesc = executable.returns[returnIndex];
+
+					if (returnDesc.priority != EdgePriority::NoCompetition)
+					{
+						// attend a competition from a ReturnDesc edge
+						// find out the rule id and the clause id for this competition
+						// a ReturnDesc is a compact transition which consumes a rule
+						// so it does not points to the ending state
+						// therefore we just need the toState of this ReturnDesc for reference
+						auto&& stateForClause = executable.states[returnDesc.returnState];
+						vint32_t competitionRule = stateForClause.rule;
+						vint32_t competitionClause = stateForClause.clause;
+						CHECK_ERROR(competitionRule != -1 && competitionClause != -1, ERROR_MESSAGE_PREFIX L"Illegal rule or clause id.");
+					}
+
+					// push this ReturnDesc to the ReturnStack
+					auto returnStack = AllocateReturnStack();
+					returnStack->previous = newReturnStack;
+					returnStack->returnIndex = returnIndex;
+					newReturnStack = returnStack->allocatedIndex;
+
+					edgeFromState = executable.ruleStartStates[returnDesc.consumedRule];
+				}
+
+				if (edgeDesc.priority != EdgePriority::NoCompetition)
+				{
+					// attend a competition from a EdgeDesc edge
+					// find out the rule id and the clause id for this competition
+					auto&& fromState = executable.states[edgeFromState];
+					auto&& toState = executable.states[edgeDesc.toState];
+					vint32_t competitionRule = toState.rule;
+					vint32_t competitionClause = toState.clause;
+					if (toState.endingState)
+					{
+						competitionRule = fromState.rule;
+						competitionClause = fromState.clause;
+					}
+					CHECK_ERROR(competitionRule != -1 && competitionClause != -1, ERROR_MESSAGE_PREFIX L"Illegal rule or clause id.");
+				}
+
 				// check the priority of this transition
 				auto edgePriority = GetPriorityFromEdge(edgeDesc);
 
