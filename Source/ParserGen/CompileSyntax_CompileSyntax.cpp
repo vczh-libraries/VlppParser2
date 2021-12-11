@@ -245,7 +245,18 @@ CompileSyntaxVisitor
 					pair.end = CreateState();
 					startPoses.Add(pair.begin, clauseDisplayText.Length());
 
-					clauseDisplayText += L"[ ";
+					switch (node->priority)
+					{
+					case GlrOptionalPriority::Equal:
+						clauseDisplayText += L"[ ";
+						break;
+					case GlrOptionalPriority::PreferTake:
+						clauseDisplayText += L"+[ ";
+						break;
+					case GlrOptionalPriority::PreferSkip:
+						clauseDisplayText += L"-[ ";
+						break;
+					}
 					auto bodyPair = Build(node->syntax);
 					clauseDisplayText += L" ]";
 
