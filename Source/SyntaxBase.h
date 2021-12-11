@@ -206,6 +206,7 @@ Execution
 																	// if the competition is attended by a ReturnDesc
 																	// then the ReturnStack object is the one before a ReturnDesc transition happens
 
+				vint32_t				currentTokenIndex = -1;		// currentTokenIndex from the trace that creates this competition
 				vint32_t				ruleId = -1;				// the rule id of state, when an edge starts this competition
 				vint32_t				clauseId = -1;				// the clause id of the state, when an edge starts this competition
 																	// an state must be picked up and ensure that, the syntax creating the priority and the state belong to the same clause

@@ -21,12 +21,13 @@ TraceManager::WalkAlongSingleEdge
 			{
 #define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::WalkAlongSingleEdge(vint, vint, vint, Trace*, vint, EdgeDesc&)#"
 				vint32_t state = edgeDesc.toState;
-				vint32_t returnStack = trace->returnStack;
+				vint32_t returnStack = -1;
+				vint32_t attendingCompetitions = -1;
 				vint32_t executedReturn = -1;
 				Trace* ambiguityTraceToMerge = nullptr;
 
 				// attend a competition hold by the current trace if the priority is set for this output transition
-				vint32_t acId = AttendCompetitionIfNecessary(trace, edgeDesc);
+				AttendCompetitionIfNecessary(trace, edgeDesc, attendingCompetitions, returnStack);
 
 				if (input == Executable::EndingInput)
 				{
@@ -47,7 +48,7 @@ TraceManager::WalkAlongSingleEdge
 					//   3) the target trace bets high priority
 					// in this case, high priority traces wins the competition
 					// but no traces are being removed for now, just mark the competition
-					CheckAttendingCompetitionsOnEndingEdge(trace, edgeDesc, acId, trace->returnStack);
+					CheckAttendingCompetitionsOnEndingEdge(trace, edgeDesc, attendingCompetitions, trace->returnStack);
 
 					// if the target trace has exactly the same to another surviving trace
 					// stop creating a Trace instance for the target trace
@@ -55,7 +56,7 @@ TraceManager::WalkAlongSingleEdge
 					for (vint i = 0; i < concurrentCount; i++)
 					{
 						auto candidate = backupTraces->Get(i);
-						if (AreTwoTraceEqual(state, returnStack, executedReturn, acId, candidate))
+						if (AreTwoTraceEqual(state, returnStack, executedReturn, attendingCompetitions, candidate))
 						{
 							ambiguityTraceToMerge = candidate;
 							break;
@@ -137,7 +138,7 @@ TraceManager::WalkAlongSingleEdge
 						newTrace->predecessors.first = trace->allocatedIndex;
 						newTrace->predecessors.last = trace->allocatedIndex;
 						newTrace->state = state;
-						newTrace->returnStack = trace->returnStack;
+						newTrace->returnStack = returnStack;
 						newTrace->byEdge = byEdge;
 						newTrace->byInput = input;
 						newTrace->currentTokenIndex = currentTokenIndex;
@@ -146,7 +147,7 @@ TraceManager::WalkAlongSingleEdge
 						// so no need to assign executedReturn to newTrace
 						// acid == ambiguityTraceToMerge->runtimeRouting.attendingCompetitions is ensure
 						// and ambiguityTraceToMerge is supposed to inherit this value
-						newTrace->runtimeRouting.attendingCompetitions = acId;
+						newTrace->runtimeRouting.attendingCompetitions = attendingCompetitions;
 
 						newTrace->ambiguityInsPostfix = postfix;
 
@@ -172,17 +173,7 @@ TraceManager::WalkAlongSingleEdge
 					newTrace->byEdge = byEdge;
 					newTrace->byInput = input;
 					newTrace->currentTokenIndex = currentTokenIndex;
-					newTrace->runtimeRouting.attendingCompetitions = acId;
-
-					// push returns to the return stack if the transition requires
-					for (vint returnRef = 0; returnRef < edgeDesc.returnIndices.count; returnRef++)
-					{
-						auto returnIndex = executable.returnIndices[edgeDesc.returnIndices.start + returnRef];
-						auto returnStack = AllocateReturnStack();
-						returnStack->previous = newTrace->returnStack;
-						returnStack->returnIndex = returnIndex;
-						newTrace->returnStack = returnStack->allocatedIndex;
-					}
+					newTrace->runtimeRouting.attendingCompetitions = attendingCompetitions;
 
 					return newTrace;
 				}

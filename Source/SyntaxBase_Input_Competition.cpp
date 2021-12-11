@@ -17,7 +17,7 @@ AttendCompetition
 				// we only create a new Competition object if it has not been created for the trace yet
 				Competition* competition = nullptr;
 				{
-					vint cid = trace->runtimeRouting.holdingCompetitions;
+					vint32_t cid = trace->runtimeRouting.holdingCompetitions;
 					while (cid != -1)
 					{
 						competition = GetCompetition(cid);
@@ -36,6 +36,7 @@ AttendCompetition
 					competition->nextHoldCompetition = trace->runtimeRouting.holdingCompetitions;
 					trace->runtimeRouting.holdingCompetitions = competition->allocatedIndex;
 
+					competition->currentTokenIndex = trace->currentTokenIndex;
 					competition->ruleId = ruleId;
 					competition->clauseId = clauseId;
 
@@ -136,8 +137,7 @@ CheckAttendingCompetitionsOnEndingEdge
 					//   3) the competition has not been settled
 					auto ac = GetAttendingCompetitions(acId);
 					auto cpt = GetCompetition(ac->competition);
-					auto cptr = GetTrace(cpt->ownerTrace);
-					if (cptr->returnStack == returnStack)
+					if (cpt->returnStack == returnStack)
 					{
 						// ensure that this EndingInput edge and the competition belong to the same clause
 						auto&& stateDesc = executable.states[edgeDesc.fromState];
@@ -171,7 +171,7 @@ CheckBackupTracesBeforeSwapping
 						auto cpt = GetCompetition(cId);
 						cpt->highCounter = 0;
 						cpt->lowCounter = 0;
-						cId = cpt->next;
+						cId = cpt->nextActiveCompetition;
 					}
 				}
 
@@ -207,22 +207,21 @@ CheckBackupTracesBeforeSwapping
 							}
 							else if (cpt->highCounter == 0 && cpt->lowCounter > 0)
 							{
-								// if only low bet traces survive, low priority win
-								// after at least one token is consumed from when the competition is created
+								// if only low bet traces survive
+								// low priority win after at least one token is consumed from when the competition is created
 								// low priority epsilon transitions could have been visited right after a competition is created
 								// but high priority token transitions could only be visited when consuming the next token
-								// if all high priority transitions are token token transitions
+								// if all high priority transitions are token transitions
 								// and all low priority transitions are epsilon transitions
 								// closing the competition too early will direct to a wrong result
 								// so we need to wait at least one step to see if any trace will visit the high priority transition in the future
-								auto cptr = GetTrace(cpt->ownerTrace);
-								if (cptr->currentTokenIndex != currentTokenIndex)
+								if (cpt->currentTokenIndex != currentTokenIndex)
 								{
 									cpt->status = CompetitionStatus::LowPriorityWin;
 								}
 							}
 						}
-						cId = cpt->next;
+						cId = cpt->nextActiveCompetition;
 					}
 				}
 
@@ -260,11 +259,11 @@ CheckBackupTracesBeforeSwapping
 						auto cpt = GetCompetition(*pnext);
 						if (cpt->status != CompetitionStatus::Holding || (cpt->highCounter == 0 && cpt->lowCounter == 0))
 						{
-							*pnext = cpt->next;
+							*pnext = cpt->nextActiveCompetition;
 						}
 						else
 						{
-							pnext = &cpt->next;
+							pnext = &cpt->nextActiveCompetition;
 						}
 					}
 				}
