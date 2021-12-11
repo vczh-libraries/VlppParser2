@@ -210,9 +210,6 @@ Execution
 				vint32_t				clauseId = -1;				// the clause id of the state, when an edge starts this competition
 																	// an state must be picked up and ensure that, the syntax creating the priority and the state belong to the same clause
 
-				vint32_t				highBet = -1;				// the id of the high bet AttendingCompetitions for this competition
-				vint32_t				lowBet = -1;				// the id of the low bet AttendingCompetitions for this competition
-
 				vint32_t				highCounter = 0;			// temporary counter for all existing high bets
 																	// in the current step of input
 				vint32_t				lowCounter = 0;				// temporary counter for all existing low bets
@@ -328,6 +325,7 @@ Execution
 				vint32_t							GetInstructionPostfix(EdgeDesc& oldEdge, EdgeDesc& newEdge);
 
 				// Competition
+				void								AttendCompetition(Trace* trace, vint32_t& newAttendingCompetitions, vint32_t returnStack, vint32_t ruleId, vint32_t clauseId, bool forHighPriority);
 				void								AttendCompetitionIfNecessary(Trace* trace, EdgeDesc& edgeDesc, vint32_t& newAttendingCompetitions, vint32_t& newReturnStack);
 				void								CheckAttendingCompetitionsOnEndingEdge(Trace* trace, EdgeDesc& edgeDesc, vint32_t acId, vint32_t returnStack);
 				void								CheckBackupTracesBeforeSwapping(vint32_t currentTokenIndex);

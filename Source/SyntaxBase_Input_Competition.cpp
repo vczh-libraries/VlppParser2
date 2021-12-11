@@ -8,6 +8,56 @@ namespace vl
 		{
 
 /***********************************************************************
+AttendCompetition
+***********************************************************************/
+
+			void TraceManager::AttendCompetition(Trace* trace, vint32_t& newAttendingCompetitions, vint32_t returnStack, vint32_t ruleId, vint32_t clauseId, bool forHighPriority)
+			{
+				// a competition is defined by its rule, clause and ReturnStack
+				// we only create a new Competition object if it has not been created for the trace yet
+				Competition* competition = nullptr;
+				{
+					vint cid = trace->runtimeRouting.holdingCompetitions;
+					while (cid != -1)
+					{
+						competition = GetCompetition(cid);
+						if (competition->ruleId == ruleId && competition->clauseId == clauseId && competition->returnStack == returnStack)
+						{
+							break;
+						}
+						cid = competition->nextHoldCompetition;
+					}
+				}
+
+				if (!competition)
+				{
+					// create a Competition object
+					competition = AllocateCompetition();
+					competition->nextHoldCompetition = trace->runtimeRouting.holdingCompetitions;
+					trace->runtimeRouting.holdingCompetitions = competition->allocatedIndex;
+
+					competition->ruleId = ruleId;
+					competition->clauseId = clauseId;
+
+					competition->nextActiveCompetition = activeCompetitions;
+					activeCompetitions = competition->allocatedIndex;
+				}
+
+				// target traces from the current trace could attend different competitions
+				// but they also inherit all attending competitions from the current trace
+				// it is fine for different traces share all or part of AttendingCompetitions in their RuntimeRouting::attendingCompetitions linked list
+				// because if a competition is settled in the future
+				// AttendingCompetitions objects for this competition is going to be removed anyway
+				// sharing a linked list doesn't change the result
+
+				auto ac = AllocateAttendingCompetitions();
+				ac->next = newAttendingCompetitions;
+				ac->competition = competition->allocatedIndex;
+				ac->forHighPriority = forHighPriority;
+				newAttendingCompetitions = ac->allocatedIndex;
+			}
+
+/***********************************************************************
 AttendCompetitionIfNecessary
 ***********************************************************************/
 
@@ -40,6 +90,7 @@ AttendCompetitionIfNecessary
 						vint32_t competitionRule = stateForClause.rule;
 						vint32_t competitionClause = stateForClause.clause;
 						CHECK_ERROR(competitionRule != -1 && competitionClause != -1, ERROR_MESSAGE_PREFIX L"Illegal rule or clause id.");
+						AttendCompetition(trace, newAttendingCompetitions, newReturnStack, competitionRule, competitionClause, returnDesc.priority == EdgePriority::HighPriority);
 					}
 
 					// push this ReturnDesc to the ReturnStack
@@ -65,68 +116,8 @@ AttendCompetitionIfNecessary
 						competitionClause = fromState.clause;
 					}
 					CHECK_ERROR(competitionRule != -1 && competitionClause != -1, ERROR_MESSAGE_PREFIX L"Illegal rule or clause id.");
+					AttendCompetition(trace, newAttendingCompetitions, newReturnStack, competitionRule, competitionClause, edgeDesc.priority == EdgePriority::HighPriority);
 				}
-
-				// check the priority of this transition
-				auto edgePriority = GetPriorityFromEdge(edgeDesc);
-
-				// attend a competition if the priority of the transition is set
-				if (edgePriority != EdgePriority::NoCompetition)
-				{
-					// check if a competition object has been created for this trace
-					Competition* competition = nullptr;
-					if (trace->runtimeRouting.holdingCompetition == -1)
-					{
-						competition = AllocateCompetition();
-						competition->ownerTrace = trace->allocatedIndex;
-						trace->runtimeRouting.holdingCompetition = competition->allocatedIndex;
-
-						auto&& stateInSameClause = FindStateFromEdgeInSameClause(edgeDesc);
-						competition->ruleId = stateInSameClause.rule;
-						competition->clauseId = stateInSameClause.clause;
-
-						competition->next = activeCompetitions;
-						activeCompetitions = competition->allocatedIndex;
-					}
-					else
-					{
-						competition = GetCompetition(trace->runtimeRouting.holdingCompetition);
-					}
-
-					// target traces from the current trace should attend all competitions that the current trace attends
-					// so only one AttendingCompetitions object needs to be created per bet
-					// it is fine for different traces share all or part of AttendingCompetitions in their RuntimeRouting::attendingCompetitions linked list
-					// because if a competition is settled in the future
-					// AttendingCompetitions objects for this competition is going to be removed anyway
-					// sharing a linked list doesn't change the result
-
-					switch (edgePriority)
-					{
-					case EdgePriority::HighPriority:
-						if (competition->highBet == -1)
-						{
-							// create an AttendingCompetitions for this competition for high priority bet if it is not created
-							auto ac = AllocateAttendingCompetitions();
-							ac->next = trace->runtimeRouting.attendingCompetitions;
-							ac->competition = competition->allocatedIndex;
-							ac->forHighPriority = true;
-							competition->highBet = ac->allocatedIndex;
-						}
-						return competition->highBet;
-					case EdgePriority::LowPriority:
-						if (competition->lowBet == -1)
-						{
-							// create an AttendingCompetitions for this competition for high priority bet if it is not created
-							auto ac = AllocateAttendingCompetitions();
-							ac->next = trace->runtimeRouting.attendingCompetitions;
-							ac->competition = competition->allocatedIndex;
-							ac->forHighPriority = false;
-							competition->lowBet = ac->allocatedIndex;
-						}
-						return competition->lowBet;
-					}
-				}
-				return trace->runtimeRouting.attendingCompetitions;
 			}
 
 /***********************************************************************
