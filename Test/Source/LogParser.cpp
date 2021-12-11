@@ -33,6 +33,7 @@ FilePath LogSyntaxWithPath(
 		List<EdgeSymbol*> orderedEdges;
 		state->GetOutEdgesInStableOrder(order, orderedEdges);
 		writer.WriteLine(labels[state]);
+		writer.WriteLine(L"[ROW: " + itow(manager.RuleOrder().IndexOf(state->Rule()->Name())) + L"][CLAUSE: " + itow(state->ClauseId()) + L"]");
 		for (auto edge : orderedEdges)
 		{
 			switch (edge->input.type)
