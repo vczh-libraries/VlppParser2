@@ -192,7 +192,7 @@ void RenderTrace(
 					break;
 				}
 				writer.WriteLine(
-					L"[ROW: " + itow(competition->ruleId) +
+					L"[RULE: " + itow(competition->ruleId) +
 					L"][CLAUSE: " + itow(competition->clauseId) +
 					L"][RS: " + itow(competition->returnStack) + L"]");
 				cid = competition->nextHoldCompetition;

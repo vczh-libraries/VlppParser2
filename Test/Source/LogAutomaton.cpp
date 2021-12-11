@@ -24,7 +24,7 @@ FilePath LogAutomatonWithPath(
 	for (auto&& [state, stateIndex] : indexed(executable.states))
 	{
 		writer.WriteLine(metadata.stateLabels[stateIndex]);
-		writer.WriteLine(L"[ROW: " + itow(state.rule) + L"][CLAUSE: " + itow(state.clause) + L"]");
+		writer.WriteLine(L"[RULE: " + itow(state.rule) + L"][CLAUSE: " + itow(state.clause) + L"]");
 		for (vint input = 0; input < Executable::TokenBegin + executable.tokenCount; input++)
 		{
 			auto&& transition = executable.transitions[stateIndex * (Executable::TokenBegin + executable.tokenCount) + input];
