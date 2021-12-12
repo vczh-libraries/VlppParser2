@@ -57,7 +57,7 @@ TraceManager::WalkAlongSingleEdge
 					for (vint i = 0; i < concurrentCount; i++)
 					{
 						auto candidate = backupTraces->Get(i);
-						if (AreTwoTraceEqual(state, returnStack, executedReturn, attendingCompetitions, candidate))
+						if (AreTwoEndingInputTraceEqual(state, returnStack, executedReturn, attendingCompetitions, candidate))
 						{
 							ambiguityTraceToMerge = candidate;
 							break;
@@ -149,7 +149,7 @@ TraceManager::WalkAlongSingleEdge
 						// executedReturn == ambiguityTraceToMerge->executedReturn is ensured
 						// so no need to assign executedReturn to newTrace
 						// acid == ambiguityTraceToMerge->runtimeRouting.attendingCompetitions is ensure
-						//   this is affected by TODO: in TraceManager::AreTwoTraceEqual
+						//   this is affected by TODO: in TraceManager::AreTwoEndingInputTraceEqual
 						// and ambiguityTraceToMerge is supposed to inherit this value
 						newTrace->runtimeRouting.attendingCompetitions = attendingCompetitions;
 						newTrace->runtimeRouting.carriedCompetitions = carriedCompetitions;

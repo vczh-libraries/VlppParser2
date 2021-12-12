@@ -7,7 +7,7 @@ namespace vl
 		namespace automaton
 		{
 			// The following code is useful only when it is proven that
-			// AreTwoTraceEqual could not just compare two returnStack object
+			// AreTwoEndingInputTraceEqual could not just compare two returnStack object
 			// The code should be deleted when I have enough confidence
 			//
 			// bool TraceManager::AreReturnDescEqual(vint32_t ri1, vint32_t ri2)
@@ -70,17 +70,19 @@ namespace vl
 AreTwoTraceEqual
 ***********************************************************************/
 
-			bool TraceManager::AreTwoTraceEqual(vint32_t state, vint32_t returnStack, vint32_t executedReturn, vint32_t acId, Trace* candidate)
+			bool TraceManager::AreTwoEndingInputTraceEqual(vint32_t state, vint32_t returnStack, vint32_t executedReturn, vint32_t acId, Trace* candidate)
 			{
 				// two traces equal to each other if
 				//   1) they are in the same state
 				//   2) they have the same executedReturn
 				//   3) they are attending same competitions
-				//   4) they have the same return stack
+				//   4) the candidate has an ending input
+				//   5) they have the same return stack
 				// TODO: verify if we can do "acId == candidate->runtimeRouting.attendingCompetitions" or not
 				if (state == candidate->state &&
 					executedReturn == candidate->executedReturn &&
-					acId == candidate->runtimeRouting.attendingCompetitions)
+					acId == candidate->runtimeRouting.attendingCompetitions &&
+					candidate->byInput == Executable::EndingInput)
 				{
 					// we compare if they have executed the same return edge
 					// and than compare if the remaining ReturnStack objects are the same object (not content)
