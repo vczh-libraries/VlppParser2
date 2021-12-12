@@ -190,8 +190,7 @@ MergeTwoEndingInputTrace
 				{
 					// otherwise, create a new trace with the instruction prefix
 					auto newTrace = AllocateTrace();
-					newTrace->predecessors.first = trace->allocatedIndex;
-					newTrace->predecessors.last = trace->allocatedIndex;
+					AddTraceToCollection(newTrace, trace, &Trace::predecessors);
 					newTrace->state = state;
 					newTrace->returnStack = returnStack;
 					newTrace->byEdge = byEdge;

@@ -90,6 +90,7 @@ TraceManager::WalkAlongSingleEdge
 					// and connect the current trace to this target trace
 					auto newTrace = AllocateTrace();
 					AddTrace(newTrace);
+					AddTraceToCollection(newTrace, trace, &Trace::predecessors);
 
 					newTrace->predecessors.first = trace->allocatedIndex;
 					newTrace->predecessors.last = trace->allocatedIndex;

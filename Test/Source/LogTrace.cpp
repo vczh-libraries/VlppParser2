@@ -297,7 +297,7 @@ void RenderTrace(
 
 		if (trace->predecessors.first != -1)
 		{
-			writer.WriteString(L"[PREDECESSORS]: ");
+			writer.WriteString(L"[PREDECESSORS " + itow(trace->predecessors.first) + L"-" + itow(trace->predecessors.last) + L"]: ");
 			auto tid = trace->predecessors.first;
 			while (tid != -1)
 			{
@@ -310,7 +310,7 @@ void RenderTrace(
 
 		if (trace->successors.first != -1)
 		{
-			writer.WriteString(L"[SUCCESSORS]: ");
+			writer.WriteString(L"[SUCCESORS " + itow(trace->successors.first) + L"-" + itow(trace->successors.last) + L"]: ");
 			auto tid = trace->successors.first;
 			while (tid != -1)
 			{
