@@ -123,26 +123,66 @@ TraceManager
 			void TraceManager::AddTraceToCollection(Trace* owner, Trace* element, TraceCollection(Trace::* collection))
 			{
 				auto errorMessage = L"vl::glr::automaton::TraceManager::AddTraceToCollection(Trace*, Trace*, TraceCollection(Trace::*))#Multiple to multiple predecessor-successor relationship is not supported.";
-
-				auto&& ownerCollection = owner->*collection;
 				auto&& elementCollection = element->*collection;
-				CHECK_ERROR(elementCollection.siblingNext == -1, errorMessage);
-				CHECK_ERROR(elementCollection.siblingPrev == -1, errorMessage);
-
-				if (ownerCollection.first == -1)
+				if (elementCollection.siblingNext == -1 && elementCollection.siblingPrev == -1)
 				{
-					ownerCollection.first = element->allocatedIndex;
-					ownerCollection.last = element->allocatedIndex;
+					auto&& ownerCollection = owner->*collection;
+					if (ownerCollection.first == -1)
+					{
+						ownerCollection.first = element->allocatedIndex;
+						ownerCollection.last = element->allocatedIndex;
+					}
+					else
+					{
+						auto sibling = GetTrace(ownerCollection.last);
+						auto&& siblingCollection = sibling->*collection;
+						CHECK_ERROR(siblingCollection.siblingNext == -1, errorMessage);
+
+						siblingCollection.siblingNext = element->allocatedIndex;
+						elementCollection.siblingPrev = sibling->allocatedIndex;
+						ownerCollection.last = element->allocatedIndex;
+					}
+				}
+				else if (collection == &Trace::predecessors)
+				{
+					// there is a valid scenario when
+					//                B(ending) ---+
+					//                             |
+					// O(origin) -+-> A(ending) -+-+-> C(merged)
+					//                           |
+					//                           +---> D(token)
+
+					// in this case, we need to copy A(ending) to avoid the multiple to multiple relationship
+					// the reason we cannot have such relationship is that
+					// TraceCollection::(siblingPrev|siblingNext) is a linked list
+					// it represents a predecessor collections of owner
+					// if a trace is shared in two predecessor collections
+					// there is no place for a second linked list
+					// the data structure is not able to represent such relationship
+
+					auto copiedElement = AllocateTrace();
+					{
+						vint32_t copiedId = copiedElement->allocatedIndex;
+						*copiedElement = *element;
+						copiedElement->allocatedIndex = copiedId;
+					}
+
+					// clear sibilingPrev and sibilingNext because it belongs to no collection at this moment
+					// keep first and last so that it still knows its predecessors
+					copiedElement->predecessors.siblingPrev = -1;
+					copiedElement->predecessors.siblingNext = -1;
+
+					// now it becomes
+					//                B(ending) -+
+					//                           |
+					// O(origin) -+-> A(ending) -+-> C(merged)
+					//            |
+					//            +-> X(ending) ---> D(token)
+					AddTraceToCollection(owner, copiedElement, collection);
 				}
 				else
 				{
-					auto sibling = GetTrace(ownerCollection.last);
-					auto&& siblingCollection = sibling->*collection;
-					CHECK_ERROR(siblingCollection.siblingNext == -1, errorMessage);
-
-					siblingCollection.siblingNext = element->allocatedIndex;
-					elementCollection.siblingPrev = sibling->allocatedIndex;
-					ownerCollection.last = element->allocatedIndex;
+					CHECK_FAIL(errorMessage);
 				}
 			}
 
