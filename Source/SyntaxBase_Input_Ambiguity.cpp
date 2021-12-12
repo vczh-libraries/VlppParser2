@@ -6,65 +6,6 @@ namespace vl
 	{
 		namespace automaton
 		{
-			// The following code is useful only when it is proven that
-			// AreTwoEndingInputTraceEqual could not just compare two returnStack object
-			// The code should be deleted when I have enough confidence
-			//
-			// bool TraceManager::AreReturnDescEqual(vint32_t ri1, vint32_t ri2)
-			// {
-			// 	// two returns equal to each other if
-			// 	//   1) they shares the same id, so we are comparing a return with itself
-			// 	//   2) they have exactly the same data
-			// 
-			// 	// we cannot just compare ri1 == ri2 because
-			// 	// if two alternative branches ends with the same rule and same instructions
-			// 	// then two ReturnDesc will have the same data in it
-			// 	// TODO: verify (this function could be deleted if AreReturnStackEqual doesn't need it anymore)
-			// 
-			// 	if (ri1 == ri2) return true;
-			// 	auto& rd1 = executable.returns[ri1];
-			// 	auto& rd2 = executable.returns[ri2];
-			// 	if (rd1.returnState != rd2.returnState) return false;
-			// 	if (rd1.insAfterInput.count != rd2.insAfterInput.count) return false;
-			// 	for (vint insRef = 0; insRef < rd1.insAfterInput.count; insRef++)
-			// 	{
-			// 		auto& ins1 = executable.instructions[rd1.insAfterInput.start + insRef];
-			// 		auto& ins2 = executable.instructions[rd2.insAfterInput.start + insRef];
-			// 		if (ins1 != ins2) return false;
-			// 	}
-			// 	return true;
-			// }
-			// 
-			// bool TraceManager::AreReturnStackEqual(vint32_t r1, vint32_t r2)
-			// {
-			// 	return r1 == r2;
-			// 
-			// 	// two return stacks equal to each other if
-			// 	//   1) they shares the same id, so we are comparing a return stack with itself
-			// 	//   2) both top returns equal, and both remaining return stack equals
-			// 
-			// 	// could we just compare r1 == r2 (TODO: verify)
-			// 	// Ambiguity resolving requires different branchs should share
-			// 	// BeginObject, BeginObjectLeftRecursive and EndObject in exactly the same place (trace + ins)
-			// 	// so their return stack should just be the same object
-			// 
-			// 	// TODO: is it possible that we must (or not just could) compare r1 == r2?
-			// 	// try to build this case
-			// 
-			// 	while (true)
-			// 	{
-			// 		if (r1 == r2) return true;
-			// 		if (r1 == -1 || r2 == -1) return false;
-			// 		auto rs1 = GetReturnStack(r1);
-			// 		auto rs2 = GetReturnStack(r2);
-			// 		if (!AreReturnDescEqual(rs1->returnIndex, rs2->returnIndex))
-			// 		{
-			// 			return false;
-			// 		}
-			// 		r1 = rs1->previous;
-			// 		r2 = rs2->previous;
-			// 	}
-			// }
 
 /***********************************************************************
 AreTwoTraceEqual
@@ -157,6 +98,118 @@ GetInstructionPostfix
 					CHECK_ERROR(ins1 == ins2, L"Two instruction postfix after EndObject not equal.");
 				}
 				return postfix;
+#undef ERROR_MESSAGE_PREFIX
+			}
+
+/***********************************************************************
+MergeTwoEndingInputTrace
+***********************************************************************/
+
+			void TraceManager::MergeTwoEndingInputTrace(
+				Trace* trace,
+				Trace* ambiguityTraceToMerge,
+				vint32_t currentTokenIndex,
+				vint32_t input,
+				vint32_t byEdge,
+				EdgeDesc& edgeDesc,
+				vint32_t state,
+				vint32_t returnStack,
+				vint32_t attendingCompetitions,
+				vint32_t carriedCompetitions,
+				vint32_t executedReturn)
+			{
+#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::MergeTwoEndingInputTrace(...)#"
+				// if ambiguity resolving happens
+				// find the instruction postfix
+				// the instruction postfix starts from EndObject of a trace
+				// and both instruction postfix should equal
+				auto& oldEdge = executable.edges[ambiguityTraceToMerge->byEdge];
+				vint32_t postfix = GetInstructionPostfix(oldEdge, edgeDesc);
+
+				if (ambiguityTraceToMerge->ambiguityInsPostfix == -1)
+				{
+					if (oldEdge.insBeforeInput.count == postfix)
+					{
+						// if EndObject is the first instruction
+						// no need to insert another trace
+						ambiguityTraceToMerge->ambiguityInsPostfix = postfix;
+					}
+					else
+					{
+						// if EndObject is not the first instruction
+						// insert another trace before ambiguityTraceMerge
+						// and ambiguityTraceMerge should not have had multiple predecessors at this moment
+						CHECK_ERROR(ambiguityTraceToMerge->predecessors.first == ambiguityTraceToMerge->predecessors.last, ERROR_MESSAGE_PREFIX L"An ambiguity resolving traces should have been cut.");
+
+						auto formerTrace = AllocateTrace();
+						{
+							vint32_t formerId = formerTrace->allocatedIndex;
+							*formerTrace = *ambiguityTraceToMerge;
+							formerTrace->allocatedIndex = formerId;
+						}
+
+						// executedReturn is from the EndObject instruction
+						// which is available in the instruction postfix
+						// so formerTrace->executedReturn should be -1 and keep the previous return stack
+						formerTrace->executedReturn = -1;
+						if (ambiguityTraceToMerge->predecessors.first != -1)
+						{
+							auto predecessor = GetTrace(ambiguityTraceToMerge->predecessors.first);
+							formerTrace->returnStack = predecessor->returnStack;
+						}
+
+						// ambiguity is filled by PrepareTraceRoute, skipped
+						// runtimeRouting.holdingCompetition always belong to the second trace
+						// runtimeRouting.attendingCompetitions is inherited
+						// runtimeRouting.carriedCompetitions is inherited
+						formerTrace->runtimeRouting = {};
+						formerTrace->runtimeRouting.attendingCompetitions = ambiguityTraceToMerge->runtimeRouting.attendingCompetitions;
+						formerTrace->runtimeRouting.carriedCompetitions = ambiguityTraceToMerge->runtimeRouting.carriedCompetitions;
+
+						// both traces need to have the same ambiguityInsPostfix
+						formerTrace->ambiguityInsPostfix = postfix;
+						ambiguityTraceToMerge->ambiguityInsPostfix = postfix;
+
+						// connect two traces
+						// formerTrace has already copied predecessors, skipped
+						// successors of both traces are filled byPrepareTraceRoute, skipped
+						// insert formerTrace before ambiguityTraceToMerge because
+						// we don't successors of ambiguityTraceToMerge, cannot redirect their predecessors
+						ambiguityTraceToMerge->predecessors.first = formerTrace->allocatedIndex;
+						ambiguityTraceToMerge->predecessors.last = formerTrace->allocatedIndex;
+					}
+				}
+
+				if (edgeDesc.insBeforeInput.count == postfix)
+				{
+					// if EndObject is the first instruction of the new trace
+					// then no need to create the new trace
+					AddTraceToCollection(ambiguityTraceToMerge, trace, &Trace::predecessors);
+				}
+				else
+				{
+					// otherwise, create a new trace with the instruction prefix
+					auto newTrace = AllocateTrace();
+					newTrace->predecessors.first = trace->allocatedIndex;
+					newTrace->predecessors.last = trace->allocatedIndex;
+					newTrace->state = state;
+					newTrace->returnStack = returnStack;
+					newTrace->byEdge = byEdge;
+					newTrace->byInput = input;
+					newTrace->currentTokenIndex = currentTokenIndex;
+
+					// executedReturn == ambiguityTraceToMerge->executedReturn is ensured
+					// so no need to assign executedReturn to newTrace
+					// acid == ambiguityTraceToMerge->runtimeRouting.attendingCompetitions is ensure
+					//   this is affected by TODO: in TraceManager::AreTwoEndingInputTraceEqual
+					// and ambiguityTraceToMerge is supposed to inherit this value
+					newTrace->runtimeRouting.attendingCompetitions = attendingCompetitions;
+					newTrace->runtimeRouting.carriedCompetitions = carriedCompetitions;
+
+					newTrace->ambiguityInsPostfix = postfix;
+
+					AddTraceToCollection(ambiguityTraceToMerge, newTrace, &Trace::predecessors);
+				}
 #undef ERROR_MESSAGE_PREFIX
 			}
 		}

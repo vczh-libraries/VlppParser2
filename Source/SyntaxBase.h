@@ -327,6 +327,18 @@ Execution
 				// Ambiguity
 				bool								AreTwoEndingInputTraceEqual(vint32_t state, vint32_t returnStack, vint32_t executedReturn, vint32_t acId, Trace* candidate);
 				vint32_t							GetInstructionPostfix(EdgeDesc& oldEdge, EdgeDesc& newEdge);
+				void								MergeTwoEndingInputTrace(
+														Trace* trace,
+														Trace* ambiguityTraceToMerge,
+														vint32_t currentTokenIndex,
+														vint32_t input,
+														vint32_t byEdge,
+														EdgeDesc& edgeDesc,
+														vint32_t state,
+														vint32_t returnStack,
+														vint32_t attendingCompetitions,
+														vint32_t carriedCompetitions,
+														vint32_t executedReturn);
 
 				// Competition
 				void								AttendCompetition(Trace* trace, vint32_t& newAttendingCompetitions, vint32_t& newCarriedCompetitions, vint32_t returnStack, vint32_t ruleId, vint32_t clauseId, bool forHighPriority);
