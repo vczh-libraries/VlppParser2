@@ -294,6 +294,32 @@ void RenderTrace(
 				acId = ac->nextCarriedAC;
 			}
 		}
+
+		if (trace->predecessors.first != -1)
+		{
+			writer.WriteString(L"[PREDECESSORS]: ");
+			auto tid = trace->predecessors.first;
+			while (tid != -1)
+			{
+				auto t = tm.GetTrace(tid);
+				writer.WriteString(L"[" + itow(t->allocatedIndex) + L"]");
+				tid = t->predecessors.siblingNext;
+			}
+			writer.WriteLine(L"");
+		}
+
+		if (trace->successors.first != -1)
+		{
+			writer.WriteString(L"[SUCCESSORS]: ");
+			auto tid = trace->successors.first;
+			while (tid != -1)
+			{
+				auto t = tm.GetTrace(tid);
+				writer.WriteString(L"[" + itow(t->allocatedIndex) + L"]");
+				tid = t->successors.siblingNext;
+			}
+			writer.WriteLine(L"");
+		}
 	}));
 
 	List<WString> lines;
