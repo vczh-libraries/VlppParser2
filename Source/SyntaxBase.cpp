@@ -179,6 +179,8 @@ TraceManager
 					//            |
 					//            +-> X(ending) ---> D(token)
 					AddTraceToCollection(owner, copiedElement, collection);
+
+					// TODO: what if A also has multiple predecessors?
 				}
 				else
 				{

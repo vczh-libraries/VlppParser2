@@ -64,6 +64,7 @@
 ## Work Items (issues)
 
 - Fix todo in `TraceManager::AreTwoEndingInputTraceEqual`.
+- Fix todo in `TraceManager::AddTraceToCollection`.
 - `EndObject` after `ReopenObject` doesn't update `ParsingAstBase::codeRange::start`.
   - for example, when `Exp` is reopened to run `( Exp @ )`, then the created ast begins from `Exp` but ends at `)`.
 - Optimize `CrossReferencedNFA` to merge prefix (two states can be merged if their `InEdges` are identical, `FromState` in `InEdges` are replaced by merged states).
