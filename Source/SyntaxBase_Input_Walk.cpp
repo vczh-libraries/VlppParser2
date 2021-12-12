@@ -91,9 +91,6 @@ TraceManager::WalkAlongSingleEdge
 					auto newTrace = AllocateTrace();
 					AddTrace(newTrace);
 					AddTraceToCollection(newTrace, trace, &Trace::predecessors);
-
-					newTrace->predecessors.first = trace->allocatedIndex;
-					newTrace->predecessors.last = trace->allocatedIndex;
 					newTrace->state = state;
 					newTrace->returnStack = returnStack;
 					newTrace->executedReturn = executedReturn;
