@@ -9,7 +9,7 @@ namespace vl
 			using namespace collections;
 
 /***********************************************************************
-TraceManager::PrepareTraceRoute
+ReadInstructionList
 ***********************************************************************/
 
 			void TraceManager::ReadInstructionList(Trace* trace, TraceInsLists& insLists)
@@ -45,6 +45,10 @@ TraceManager::PrepareTraceRoute
 				insLists.c3 = (vint32_t)(insLists.c2 + insLists.returnInsAfterInput.count);
 			}
 
+/***********************************************************************
+ReadInstruction
+***********************************************************************/
+
 			AstIns& TraceManager::ReadInstruction(vint32_t instruction, TraceInsLists& insLists)
 			{
 				// access the instruction object from a trace
@@ -75,6 +79,10 @@ TraceManager::PrepareTraceRoute
 #undef ERROR_MESSAGE_PREFIX
 			}
 
+/***********************************************************************
+RunInstruction
+***********************************************************************/
+
 			bool TraceManager::RunInstruction(vint32_t instruction, TraceInsLists& insLists, vint32_t& objectCount)
 			{
 				// run an instruction to simulate the number of extra constructing AST objects in the stack
@@ -99,12 +107,16 @@ TraceManager::PrepareTraceRoute
 #undef ERROR_MESSAGE_PREFIX
 			}
 
-			void TraceManager::FindBalancedBeginObject(Trace*& trace, vint32_t& instruction, vint32_t& objectCount)
+/***********************************************************************
+FindBalancedBoOrBolr
+***********************************************************************/
+
+			void TraceManager::FindBalancedBoOrBolr(Trace*& trace, vint32_t& instruction, vint32_t& objectCount)
 			{
 				// given the current instruction and the current constructing AST objects
 				// find the nearlest BeginObject or BeginObjectLeftRecursive before the current instruction
 				// that creates the bottom object
-#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::FindBalancedBeginObject(Trace*&, vint&, vint&)#"
+#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::FindBalancedBoOrBolr(Trace*&, vint&, vint&)#"
 				TraceInsLists insLists;
 				ReadInstructionList(trace, insLists);
 
@@ -165,6 +177,45 @@ TraceManager::PrepareTraceRoute
 #undef ERROR_MESSAGE_PREFIX
 			}
 
+/***********************************************************************
+FindBalancedBeginObject
+***********************************************************************/
+
+			void TraceManager::FindBalancedBeginObject(Trace* trace, vint32_t objectCount, Trace*& branchTrace, vint32_t& branchInstruction, vint32_t& branchType)
+			{
+				// find the first balanced BeginObject or BeginObjectLeftRecursive
+				TraceInsLists branchInsLists;
+				ReadInstructionList(trace, branchInsLists);
+
+				branchTrace = trace;
+				branchInstruction = branchInsLists.c3 - 1;
+				vint32_t branchObjectCount = objectCount;
+				FindBalancedBoOrBolr(branchTrace, branchInstruction, branchObjectCount);
+
+				// no matter if we found BeginObject or BeginObjectLeftRecursive
+				// we now know what type of the AST we need to resolve
+				ReadInstructionList(branchTrace, branchInsLists);
+				auto ins = ReadInstruction(branchInstruction, branchInsLists);
+				branchType = ins.param;
+
+				// if we found a BeginObjectLeftRecursive which creates the bottom object in stack
+				// then we should continue until we reach the BeginObject
+				// because such BeginObject creates objects that eventually become part of BeginObjectLeftRecursive created objects
+				// we cannot allow sharing the same child AST object in different parent AST objects.
+				branchObjectCount = 0;
+				while (ins.type == AstInsType::BeginObjectLeftRecursive)
+				{
+					branchInstruction--;
+					FindBalancedBoOrBolr(branchTrace, branchInstruction, branchObjectCount);
+					ReadInstructionList(branchTrace, branchInsLists);
+					ins = ReadInstruction(branchInstruction, branchInsLists);
+				}
+			}
+
+/***********************************************************************
+FillAmbiguityInfoForMergingTrace
+***********************************************************************/
+
 			void TraceManager::FillAmbiguityInfoForMergingTrace(Trace* trace)
 			{
 				// assuming that this is a ambiguity resolving trace
@@ -201,45 +252,32 @@ TraceManager::PrepareTraceRoute
 				}
 				CHECK_ERROR(insEndObject != -1, ERROR_MESSAGE_PREFIX L"Cannot find EndObject instruction in the merging trace.");
 
-				// run all instructions before and including the EndObject instruction
-				// since we know EndObject addes 1 to the counter
-				// so we don't really need to call RunInstruction on it
-				// we could begin the counter from 1
-				vint32_t objectCount = 1;
-
-				// if EndObject is not the first instruction
-				// then the all instruction prefix are stored in predecessors
-				// so no need to really touch the prefix in this trace.
-
 				vint32_t insBeginObject = -1;
 				vint32_t traceBeginObject = -1;
 				vint32_t ambiguityType = -1;
 
-				// call FindBalancedBeginObject on all predecessors
+				// call FindBalancedBoOrBolr on all predecessors
 				auto predecessorId = trace->predecessors.first;
 				while (predecessorId != -1)
 				{
 					auto predecessor = GetTrace(predecessorId);
 					{
-						TraceInsLists branchInsLists;
-						ReadInstructionList(predecessor, branchInsLists);
+						Trace* branchTrace = nullptr;
+						vint32_t branchInstruction = -1;
+						vint32_t branchType = -1;
 
-						auto branchTrace = predecessor;
-						vint32_t branchInstruction = branchInsLists.c3 - 1;
-						vint32_t branchObjectCount = objectCount;
-						FindBalancedBeginObject(branchTrace, branchInstruction, branchObjectCount);
+						// run all instructions before and including the EndObject instruction
+						// since we know EndObject addes 1 to the counter
+						// so we don't really need to call RunInstruction on it
+						// we could begin the counter from 1
 
-						// no matter if we found BeginObject or BeginObjectLeftRecursive
-						// we now know what type of the AST we need to resolve
-						ReadInstructionList(branchTrace, branchInsLists);
-						auto ins = ReadInstruction(branchInstruction, branchInsLists);
-						vint32_t branchType = ins.param;
+						FindBalancedBeginObject(predecessor, 1, branchTrace, branchInstruction, branchType);
 
-						if (!typeCallback)
-						{
-							CHECK_ERROR(ambiguityType == branchType, ERROR_MESSAGE_PREFIX L"TraceManager::ITypeCallback is not installed, unable to merge from ambiguity types.");
-						}
-						else if (ambiguityType == -1)
+						// if EndObject is not the first instruction
+						// then the all instruction prefix are stored in predecessors
+						// so no need to really touch the prefix in this trace.
+
+						if (ambiguityType == -1)
 						{
 							ambiguityType = branchType;
 						}
@@ -249,18 +287,9 @@ TraceManager::PrepareTraceRoute
 							CHECK_ERROR(newType != -1, ERROR_MESSAGE_PREFIX L"Failed to merge from ambiguity types.");
 							ambiguityType = newType;
 						}
-
-						// if we found a BeginObjectLeftRecursive which creates the bottom object in stack
-						// then we should continue until we reach the BeginObject
-						// because such BeginObject creates objects that eventually become part of BeginObjectLeftRecursive created objects
-						// we cannot allow sharing the same child AST object in different parent AST objects.
-						branchObjectCount = 0;
-						while (ins.type == AstInsType::BeginObjectLeftRecursive)
+						else
 						{
-							branchInstruction--;
-							FindBalancedBeginObject(branchTrace, branchInstruction, branchObjectCount);
-							ReadInstructionList(branchTrace, branchInsLists);
-							ins = ReadInstruction(branchInstruction, branchInsLists);
+							CHECK_ERROR(ambiguityType == branchType, ERROR_MESSAGE_PREFIX L"TraceManager::ITypeCallback is not installed, unable to merge from ambiguity types.");
 						}
 
 						// BeginObject found from different predecessors must be the same
@@ -286,6 +315,10 @@ TraceManager::PrepareTraceRoute
 				}
 #undef ERROR_MESSAGE_PREFIX
 			}
+
+/***********************************************************************
+FillAmbiguityInfoForPredecessorTraces
+***********************************************************************/
 
 			void TraceManager::FillAmbiguityInfoForPredecessorTraces(Trace* trace)
 			{
@@ -314,6 +347,10 @@ TraceManager::PrepareTraceRoute
 					}
 				}
 			}
+
+/***********************************************************************
+PrepareTraceRoute
+***********************************************************************/
 
 			Trace* TraceManager::PrepareTraceRoute()
 			{
