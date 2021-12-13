@@ -18,15 +18,17 @@ TraceManager::ExecuteTrace
 
 				void Submit(AstIns& ins, regex::RegexToken& token)
 				{
-					// ReopenObject cancels the previous EndObject, so we don't execute {EndObject, ReopenObject} if they appear together
+					// ReopenObject and EndObject cancel each other
+					// so we don't execute adjacent {EndObject, ReopenObject} or {ReopenObject, EndObject}
 					// when an instruction is submitted
 					// the previous instruction is executed and the current one is put on wait
-					// but when a ReopenObject instruction is submitted
-					// if the waiting instruction is EndObject, we cancel all of them, otherwise execute the previous instruction and put ReopenObject on wait
+					// it gives us a chance to detect the pattern and cancel both instructions
 
-					if (submittedInstruction && submittedInstruction->type == AstInsType::EndObject)
+					if (submittedInstruction)
 					{
-						if (ins.type == AstInsType::ReopenObject)
+						if (
+							(submittedInstruction->type == AstInsType::EndObject && ins.type == AstInsType::ReopenObject) ||
+							(submittedInstruction->type == AstInsType::ReopenObject && ins.type == AstInsType::EndObject))
 						{
 							submittedInstruction = nullptr;
 							submittedToken = nullptr;
