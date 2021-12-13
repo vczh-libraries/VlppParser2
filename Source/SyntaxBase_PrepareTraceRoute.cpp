@@ -396,6 +396,32 @@ CreateLastMergingTrace
 					successorId = branchTrace->successors.siblingNext;
 				}
 				CHECK_ERROR(successorId == -1, ERROR_MESSAGE_PREFIX L"All surviving traces must be independent branches.");
+
+				// create a merging trace with no instruction
+				auto trace = AllocateTrace();
+				{
+					auto survivingTrace = concurrentTraces->Get(0);
+					trace->state = survivingTrace->state;
+					trace->currentTokenIndex = survivingTrace->currentTokenIndex;
+				}
+
+				for (vint i = 0; i < concurrentCount; i++)
+				{
+					auto survivingTrace = concurrentTraces->Get(i);
+					AddTraceToCollection(trace, survivingTrace, &Trace::predecessors);
+					AddTraceToCollection(survivingTrace, trace, &Trace::successors);
+
+					// the root trace and the merging trace have no instruction
+					// ExecuteTrace should handle this case correctly
+					trace->ambiguity.insEndObject = 0;
+					trace->ambiguity.traceBeginObject = rootTraceCandidate->allocatedIndex;
+					trace->ambiguity.insBeginObject = 0;
+					trace->ambiguity.ambiguityType = ambiguityType;
+				}
+
+				BeginSwap();
+				AddTrace(trace);
+				EndSwap();
 #undef ERROR_MESSAGE_PREFIX
 			}
 

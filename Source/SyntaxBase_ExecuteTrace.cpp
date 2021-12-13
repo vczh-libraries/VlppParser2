@@ -88,11 +88,17 @@ TraceManager::ExecuteTrace
 
 					if (trace->ambiguity.traceBeginObject != -1)
 					{
-						// execute the EndObject instruction
+						if (0 <= trace->ambiguity.insEndObject && trace->ambiguity.insEndObject < insLists.c3)
 						{
+							// execute the EndObject instruction if insEndObject exists
 							auto& ins = ReadInstruction(trace->ambiguity.insEndObject, insLists);
 							auto& token = tokens[trace->currentTokenIndex];
 							submitter.Submit(ins, token);
+						}
+						else
+						{
+							// otherwise this must be the trace created by CreateLastMergingTrace
+							CHECK_ERROR(insLists.c3 == 0 && trace->successors.first == -1 && trace->successors.last == -1, ERROR_MESSAGE_PREFIX L"Instruction index out of range.");
 						}
 
 						// for any ambiguity resolving trace
