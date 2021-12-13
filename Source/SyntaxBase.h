@@ -367,6 +367,7 @@ Execution
 				void								MergeAmbiguityType(vint32_t& ambiguityType, vint32_t branchType);
 				void								FillAmbiguityInfoForMergingTrace(Trace* trace);
 				void								FillAmbiguityInfoForPredecessorTraces(Trace* trace);
+				void								CreateLastMergingTrace(Trace* rootTraceCandidate, vint32_t& ambiguityType);
 			public:
 				TraceManager(Executable& _executable, ITypeCallback* _typeCallback = nullptr);
 

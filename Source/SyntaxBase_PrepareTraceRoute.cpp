@@ -360,6 +360,46 @@ FillAmbiguityInfoForPredecessorTraces
 			}
 
 /***********************************************************************
+CreateLastMergingTrace
+***********************************************************************/
+
+			void TraceManager::CreateLastMergingTrace(Trace* rootTraceCandidate, vint32_t& ambiguityType)
+			{
+#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::CreateLastMergingTrace()#"
+
+				// the number of surviving trace must equal to the number of successors from the root trace
+				vint32_t successorId = rootTraceCandidate->successors.first;
+
+				// check each surviving trace
+				for (vint i = 0; i < concurrentCount; i++)
+				{
+					CHECK_ERROR(successorId != -1, ERROR_MESSAGE_PREFIX L"All surviving traces must be independent branches.");
+					auto survivingTrace = concurrentTraces->Get(i);
+
+					// EndObject must be its last instruction
+					TraceInsLists insLists;
+					ReadInstructionList(survivingTrace, insLists);
+					CHECK_ERROR(insLists.c3 > 0, ERROR_MESSAGE_PREFIX L"Last instruction is not EndObject.");
+
+					auto&& lastIns = ReadInstruction(insLists.c3 - 1, insLists);
+					CHECK_ERROR(lastIns.type == AstInsType::EndObject, ERROR_MESSAGE_PREFIX L"Last instruction is not EndObject.");
+
+					// find the BeginObject instruction
+					Trace* branchTrace = nullptr;
+					vint32_t branchInstruction = -1;
+					vint32_t branchType = -1;
+					FindBalancedBeginObject(survivingTrace, 0, branchTrace, branchInstruction, branchType);
+
+					// check if the BeginObject instruction the first instruction of the current successor trace from the root trace
+					CHECK_ERROR(branchTrace->allocatedIndex == successorId && branchInstruction == 0, ERROR_MESSAGE_PREFIX L"Unable to resolve ambiguity from multiple root AST objects.");
+					MergeAmbiguityType(ambiguityType, branchType);
+					successorId = branchTrace->successors.siblingNext;
+				}
+				CHECK_ERROR(successorId == -1, ERROR_MESSAGE_PREFIX L"All surviving traces must be independent branches.");
+#undef ERROR_MESSAGE_PREFIX
+			}
+
+/***********************************************************************
 PrepareTraceRoute
 ***********************************************************************/
 
@@ -414,6 +454,14 @@ PrepareTraceRoute
 				{
 					auto trace = concurrentTraces->Get(i);
 					FillAmbiguityInfoForPredecessorTraces(trace);
+				}
+
+				// if there are multiple surviving traces
+				// check if the ambiguity happens in the root AST
+				if (concurrentCount > 1)
+				{
+					vint32_t ambiguityType = -1;
+					CreateLastMergingTrace(rootTraceCandidate, ambiguityType);
 				}
 
 				rootTrace = rootTraceCandidate;
