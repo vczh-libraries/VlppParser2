@@ -97,8 +97,8 @@ TraceManager::WalkAlongSingleEdge
 					newTrace->byEdge = byEdge;
 					newTrace->byInput = input;
 					newTrace->currentTokenIndex = currentTokenIndex;
-					newTrace->runtimeRouting.attendingCompetitions = attendingCompetitions;
-					newTrace->runtimeRouting.carriedCompetitions = carriedCompetitions;
+					newTrace->competitionRouting.attendingCompetitions = attendingCompetitions;
+					newTrace->competitionRouting.carriedCompetitions = carriedCompetitions;
 
 					return newTrace;
 				}

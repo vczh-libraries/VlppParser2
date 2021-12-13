@@ -19,7 +19,7 @@ AttendCompetition
 				// we only create a new Competition object if it has not been created for the trace yet
 				Competition* competition = nullptr;
 				{
-					vint32_t cid = trace->runtimeRouting.holdingCompetitions;
+					vint32_t cid = trace->competitionRouting.holdingCompetitions;
 					while (cid != -1)
 					{
 						auto cpt = GetCompetition(cid);
@@ -36,8 +36,8 @@ AttendCompetition
 				{
 					// create a Competition object
 					competition = AllocateCompetition();
-					competition->nextHoldCompetition = trace->runtimeRouting.holdingCompetitions;
-					trace->runtimeRouting.holdingCompetitions = competition->allocatedIndex;
+					competition->nextHoldCompetition = trace->competitionRouting.holdingCompetitions;
+					trace->competitionRouting.holdingCompetitions = competition->allocatedIndex;
 
 					competition->currentTokenIndex = trace->currentTokenIndex;
 					competition->ruleId = ruleId;
@@ -73,8 +73,8 @@ AttendCompetitionIfNecessary
 			void TraceManager::AttendCompetitionIfNecessary(Trace* trace, EdgeDesc& edgeDesc, vint32_t& newAttendingCompetitions, vint32_t& newCarriedCompetitions, vint32_t& newReturnStack)
 			{
 #define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::AttendCompetitionIfNecessary(Trace*, EdgeDesc&, vint32_t&, vint32_t&)#"
-				newAttendingCompetitions = trace->runtimeRouting.attendingCompetitions;
-				newCarriedCompetitions = trace->runtimeRouting.carriedCompetitions;
+				newAttendingCompetitions = trace->competitionRouting.attendingCompetitions;
+				newCarriedCompetitions = trace->competitionRouting.carriedCompetitions;
 				newReturnStack = trace->returnStack;
 
 				// visit each compact transition in order
@@ -191,7 +191,7 @@ CheckBackupTracesBeforeSwapping
 				for (vint i = 0; i < concurrentCount; i++)
 				{
 					auto trace = backupTraces->Get(i);
-					auto acId = trace->runtimeRouting.attendingCompetitions;
+					auto acId = trace->competitionRouting.attendingCompetitions;
 					while (acId != -1)
 					{
 						auto ac = GetAttendingCompetitions(acId);
@@ -242,7 +242,7 @@ CheckBackupTracesBeforeSwapping
 				for (vint i = concurrentCount - 1; i >= 0; i--)
 				{
 					auto trace = backupTraces->Get(i);
-					auto acId = trace->runtimeRouting.attendingCompetitions;
+					auto acId = trace->competitionRouting.attendingCompetitions;
 					while (acId != -1)
 					{
 						auto ac = GetAttendingCompetitions(acId);
@@ -283,7 +283,7 @@ CheckBackupTracesBeforeSwapping
 				for (vint i = 0; i < concurrentCount; i++)
 				{
 					auto trace = backupTraces->Get(i);
-					vint32_t* pnext = &trace->runtimeRouting.attendingCompetitions;
+					vint32_t* pnext = &trace->competitionRouting.attendingCompetitions;
 					while (*pnext != -1)
 					{
 						auto ac = GetAttendingCompetitions(*pnext);

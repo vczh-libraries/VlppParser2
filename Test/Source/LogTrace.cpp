@@ -171,10 +171,10 @@ void RenderTrace(
 
 		writer.WriteLine(stateLabel((vint32_t)trace->state));
 
-		if (trace->runtimeRouting.holdingCompetitions != -1)
+		if (trace->competitionRouting.holdingCompetitions != -1)
 		{
 			writer.WriteLine(L"[HOLDING COMPETITION]:");
-			vint32_t cid = trace->runtimeRouting.holdingCompetitions;
+			vint32_t cid = trace->competitionRouting.holdingCompetitions;
 			while (cid != -1)
 			{
 				auto competition = tm.GetCompetition(cid);
@@ -278,10 +278,10 @@ void RenderTrace(
 			}
 		}
 
-		if (trace->runtimeRouting.carriedCompetitions != -1)
+		if (trace->competitionRouting.carriedCompetitions != -1)
 		{
 			writer.WriteLine(L"[CARRIED COMPETITION]:");
-			auto acId = trace->runtimeRouting.carriedCompetitions;
+			auto acId = trace->competitionRouting.carriedCompetitions;
 			while (acId != -1)
 			{
 				auto ac = tm.GetAttendingCompetitions(acId);

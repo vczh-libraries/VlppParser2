@@ -229,15 +229,8 @@ Execution
 																	// this flag is not always updated for discarded AttendingCompetitions objects
 			};
 
-			struct RuntimeRouting
+			struct CompetitionRouting
 			{
-				vint32_t				predecessorCount = -1;		// the number of predecessors
-																	// (filled by ExecuteTrace)
-
-				vint32_t				branchVisited = 0;			// the number of visited branches in the current loop.
-																	// if these branches are contained in a larger ambiguity resolving loop, all branches could be visited multiple times
-																	// (filled by ExecuteTrace)
-
 				vint32_t				holdingCompetitions = -1;	// the id of the active Competition
 
 				vint32_t				attendingCompetitions = -1;	// a linked list containing all AttendingCompetitions that this trace is attending
@@ -246,6 +239,16 @@ Execution
 																	// one competition only creates two AttendingCompetitions, traces with the same bet share the object
 
 				vint32_t				carriedCompetitions = -1;	// all attended competitions regardless of the status of the competition
+			};
+
+			struct AmbiguityRouting
+			{
+				vint32_t				predecessorCount = -1;		// the number of predecessors
+																	// (filled by ExecuteTrace)
+
+				vint32_t				branchVisited = 0;			// the number of visited branches in the current loop.
+																	// if these branches are contained in a larger ambiguity resolving loop, all branches could be visited multiple times
+																	// (filled by ExecuteTrace)
 			};
 
 			struct Trace
@@ -272,7 +275,9 @@ Execution
 																	// when the only successor of a trace has multiple predecessors
 																	// only execute the specified prefix of instructions
 
-				RuntimeRouting			runtimeRouting;				// a data structure guiding instruction execution when a trace need to be executed multiple times
+				CompetitionRouting		competitionRouting;			// a data structure carrying priority and competition information
+
+				AmbiguityRouting		ambiguityRouting;			// a data structure guiding instruction execution when a trace need to be executed multiple times
 																	// this member is useful when it has multiple predecessors or successors
 			};
 

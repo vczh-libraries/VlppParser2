@@ -22,7 +22,7 @@ AreTwoTraceEqual
 				// TODO: verify if we can do "acId == candidate->runtimeRouting.attendingCompetitions" or not
 				if (state == candidate->state &&
 					executedReturn == candidate->executedReturn &&
-					acId == candidate->runtimeRouting.attendingCompetitions &&
+					acId == candidate->competitionRouting.attendingCompetitions &&
 					candidate->byInput == Executable::EndingInput)
 				{
 					// we compare if they have executed the same return edge
@@ -162,9 +162,9 @@ MergeTwoEndingInputTrace
 						// runtimeRouting.holdingCompetition always belong to the second trace
 						// runtimeRouting.attendingCompetitions is inherited
 						// runtimeRouting.carriedCompetitions is inherited
-						formerTrace->runtimeRouting = {};
-						formerTrace->runtimeRouting.attendingCompetitions = ambiguityTraceToMerge->runtimeRouting.attendingCompetitions;
-						formerTrace->runtimeRouting.carriedCompetitions = ambiguityTraceToMerge->runtimeRouting.carriedCompetitions;
+						formerTrace->competitionRouting = {};
+						formerTrace->competitionRouting.attendingCompetitions = ambiguityTraceToMerge->competitionRouting.attendingCompetitions;
+						formerTrace->competitionRouting.carriedCompetitions = ambiguityTraceToMerge->competitionRouting.carriedCompetitions;
 
 						// both traces need to have the same ambiguityInsPostfix
 						formerTrace->ambiguityInsPostfix = postfix;
@@ -202,8 +202,8 @@ MergeTwoEndingInputTrace
 					// acid == ambiguityTraceToMerge->runtimeRouting.attendingCompetitions is ensure
 					//   this is affected by TODO: in TraceManager::AreTwoEndingInputTraceEqual
 					// and ambiguityTraceToMerge is supposed to inherit this value
-					newTrace->runtimeRouting.attendingCompetitions = attendingCompetitions;
-					newTrace->runtimeRouting.carriedCompetitions = carriedCompetitions;
+					newTrace->competitionRouting.attendingCompetitions = attendingCompetitions;
+					newTrace->competitionRouting.carriedCompetitions = carriedCompetitions;
 
 					newTrace->ambiguityInsPostfix = postfix;
 

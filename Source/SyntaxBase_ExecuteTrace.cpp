@@ -71,15 +71,15 @@ TraceManager::ExecuteTrace
 					// if yes, we continue
 					// if no, we jump to the BeginObject and repeat it again
 
-					if (trace->ambiguity.traceBeginObject != -1 && trace->runtimeRouting.predecessorCount == -1)
+					if (trace->ambiguity.traceBeginObject != -1 && trace->ambiguityRouting.predecessorCount == -1)
 					{
 						// we need to know how many predecessors there
 						// the number is calculated and cached when an ambiguity resolving trace is visited for the first time
-						trace->runtimeRouting.predecessorCount = 0;
+						trace->ambiguityRouting.predecessorCount = 0;
 						auto predecessorId = trace->predecessors.first;
 						while (predecessorId != -1)
 						{
-							trace->runtimeRouting.predecessorCount++;
+							trace->ambiguityRouting.predecessorCount++;
 							predecessorId = GetTrace(predecessorId)->predecessors.siblingNext;
 						}
 					}
@@ -95,19 +95,19 @@ TraceManager::ExecuteTrace
 
 						// for any ambiguity resolving trace
 						// we check all predecessors has been visited
-						trace->runtimeRouting.branchVisited++;
+						trace->ambiguityRouting.branchVisited++;
 						auto traceBeginObject = GetTrace(trace->ambiguity.traceBeginObject);
 
-						if (trace->runtimeRouting.branchVisited == trace->runtimeRouting.predecessorCount)
+						if (trace->ambiguityRouting.branchVisited == trace->ambiguityRouting.predecessorCount)
 						{
 							// if all predecessors has been visited
 							// we reset the number to 0
 							// because TraceManager::ExecuteTrace could be called multiple time
-							trace->runtimeRouting.branchVisited = 0;
+							trace->ambiguityRouting.branchVisited = 0;
 							{
 								// submit a ResolveAmbiguity instruction
 								auto& token = tokens[trace->currentTokenIndex];
-								AstIns insResolve = { AstInsType::ResolveAmbiguity,trace->ambiguity.ambiguityType,trace->runtimeRouting.predecessorCount };
+								AstIns insResolve = { AstInsType::ResolveAmbiguity,trace->ambiguity.ambiguityType,trace->ambiguityRouting.predecessorCount };
 								submitter.Submit(insResolve, token);
 							}
 
@@ -162,7 +162,7 @@ TraceManager::ExecuteTrace
 						// we pick a different successor to continue
 						auto nextSuccessorId = trace->successors.first;
 						Trace* successor = nullptr;
-						for (vint i = 0; i <= trace->runtimeRouting.branchVisited; i++)
+						for (vint i = 0; i <= trace->ambiguityRouting.branchVisited; i++)
 						{
 							CHECK_ERROR(nextSuccessorId != -1, ERROR_MESSAGE_PREFIX L"branchVisited corrupted.");
 							successor = GetTrace(nextSuccessorId);
@@ -171,11 +171,11 @@ TraceManager::ExecuteTrace
 
 						if (nextSuccessorId == -1)
 						{
-							trace->runtimeRouting.branchVisited = 0;
+							trace->ambiguityRouting.branchVisited = 0;
 						}
 						else
 						{
-							trace->runtimeRouting.branchVisited++;
+							trace->ambiguityRouting.branchVisited++;
 						}
 
 						trace = successor;
