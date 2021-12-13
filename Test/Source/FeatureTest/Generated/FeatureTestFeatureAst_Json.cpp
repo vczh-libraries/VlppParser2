@@ -10,6 +10,34 @@ namespace featuretest
 {
 	namespace json_visitor
 	{
+		void FeatureAstVisitor::PrintFields(BranchedOptionalFeature* node)
+		{
+			BeginField(L"first");
+			Print(node->first.Obj());
+			EndField();
+			BeginField(L"second");
+			Print(node->second.Obj());
+			EndField();
+			BeginField(L"type");
+			switch (node->type)
+			{
+			case featuretest::BranchType::MinusMinus:
+				WriteString(L"MinusMinus");
+				break;
+			case featuretest::BranchType::MinusPlus:
+				WriteString(L"MinusPlus");
+				break;
+			case featuretest::BranchType::PlusMinus:
+				WriteString(L"PlusMinus");
+				break;
+			case featuretest::BranchType::PlusPlus:
+				WriteString(L"PlusPlus");
+				break;
+			default:
+				WriteNull();
+			}
+			EndField();
+		}
 		void FeatureAstVisitor::PrintFields(Feature* node)
 		{
 		}
@@ -126,6 +154,20 @@ namespace featuretest
 			WriteType(L"NestedOptionalFeature", node);
 			PrintFields(static_cast<Feature*>(node));
 			PrintFields(static_cast<NestedOptionalFeature*>(node));
+			EndObject();
+		}
+
+		void FeatureAstVisitor::Visit(BranchedOptionalFeature* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"BranchedOptionalFeature", node);
+			PrintFields(static_cast<Feature*>(node));
+			PrintFields(static_cast<BranchedOptionalFeature*>(node));
 			EndObject();
 		}
 

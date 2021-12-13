@@ -28,5 +28,9 @@ FeatureVisitor
 		void FeatureVisitor::Visit(NestedOptionalFeature* node)
 		{
 		}
+
+		void FeatureVisitor::Visit(BranchedOptionalFeature* node)
+		{
+		}
 	}
 }

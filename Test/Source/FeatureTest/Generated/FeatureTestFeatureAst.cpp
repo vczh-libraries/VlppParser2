@@ -22,6 +22,11 @@ Visitor Pattern Implementation
 		visitor->Visit(this);
 	}
 
+	void BranchedOptionalFeature::Accept(Feature::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
 	void FeatureToResolve::Accept(Feature::IVisitor* visitor)
 	{
 		visitor->Visit(this);
@@ -41,6 +46,8 @@ namespace vl
 			IMPL_TYPE_INFO_RENAME(featuretest::OptionalProprity, featuretest::OptionalProprity)
 			IMPL_TYPE_INFO_RENAME(featuretest::OptionalFeature, featuretest::OptionalFeature)
 			IMPL_TYPE_INFO_RENAME(featuretest::NestedOptionalFeature, featuretest::NestedOptionalFeature)
+			IMPL_TYPE_INFO_RENAME(featuretest::BranchType, featuretest::BranchType)
+			IMPL_TYPE_INFO_RENAME(featuretest::BranchedOptionalFeature, featuretest::BranchedOptionalFeature)
 			IMPL_TYPE_INFO_RENAME(featuretest::FeatureToResolve, featuretest::FeatureToResolve)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
@@ -86,6 +93,24 @@ namespace vl
 				CLASS_MEMBER_FIELD(tails)
 			END_CLASS_MEMBER(featuretest::NestedOptionalFeature)
 
+			BEGIN_ENUM_ITEM(featuretest::BranchType)
+				ENUM_ITEM_NAMESPACE(featuretest::BranchType)
+				ENUM_NAMESPACE_ITEM(PlusPlus)
+				ENUM_NAMESPACE_ITEM(PlusMinus)
+				ENUM_NAMESPACE_ITEM(MinusPlus)
+				ENUM_NAMESPACE_ITEM(MinusMinus)
+			END_ENUM_ITEM(featuretest::BranchType)
+
+			BEGIN_CLASS_MEMBER(featuretest::BranchedOptionalFeature)
+				CLASS_MEMBER_BASE(featuretest::Feature)
+
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<featuretest::BranchedOptionalFeature>(), NO_PARAMETER)
+
+				CLASS_MEMBER_FIELD(type)
+				CLASS_MEMBER_FIELD(first)
+				CLASS_MEMBER_FIELD(second)
+			END_CLASS_MEMBER(featuretest::BranchedOptionalFeature)
+
 			BEGIN_CLASS_MEMBER(featuretest::FeatureToResolve)
 				CLASS_MEMBER_BASE(featuretest::Feature)
 
@@ -98,6 +123,7 @@ namespace vl
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(featuretest::Feature::IVisitor::*)(featuretest::FeatureToResolve* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(featuretest::Feature::IVisitor::*)(featuretest::OptionalFeature* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(featuretest::Feature::IVisitor::*)(featuretest::NestedOptionalFeature* node))
+				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(featuretest::Feature::IVisitor::*)(featuretest::BranchedOptionalFeature* node))
 			END_INTERFACE_MEMBER(featuretest::Feature)
 
 #endif
@@ -114,6 +140,8 @@ namespace vl
 					ADD_TYPE_INFO(featuretest::OptionalProprity)
 					ADD_TYPE_INFO(featuretest::OptionalFeature)
 					ADD_TYPE_INFO(featuretest::NestedOptionalFeature)
+					ADD_TYPE_INFO(featuretest::BranchType)
+					ADD_TYPE_INFO(featuretest::BranchedOptionalFeature)
 					ADD_TYPE_INFO(featuretest::FeatureToResolve)
 				}
 

@@ -186,7 +186,7 @@ ValidateStructureCountingVisitor
 					vint secondMaxUseRuleCount = syntaxMaxUseRuleCount;
 
 					bool last = lastSyntaxPiece;
-					lastSyntaxPiece = secondMinLength == 0;
+					lastSyntaxPiece = last && secondMinLength == 0;
 					node->first->Accept(this);
 					vint firstMinLength = syntaxMinLength;
 					vint firstMinUseRuleCount = syntaxMinUseRuleCount;

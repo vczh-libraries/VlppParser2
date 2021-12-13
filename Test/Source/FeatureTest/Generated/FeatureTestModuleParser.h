@@ -27,7 +27,8 @@ namespace featuretest
 		NestedOptional = 45,
 		NestedPositiveOptional = 51,
 		NestedNegativeOptional = 57,
-		Module = 63,
+		BranchedOptional = 63,
+		Module = 81,
 	};
 
 	template<ModuleParserStates> struct ModuleParserStateTypes;

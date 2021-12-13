@@ -12,6 +12,7 @@ Licensed under https://github.com/vczh-libraries/License
 
 namespace featuretest
 {
+	class BranchedOptionalFeature;
 	class Feature;
 	class FeatureToResolve;
 	class NestedOptionalFeature;
@@ -24,6 +25,15 @@ namespace featuretest
 		Equal = 0,
 		PreferTake = 1,
 		PreferSkip = 2,
+	};
+
+	enum class BranchType
+	{
+		UNDEFINED_ENUM_ITEM_VALUE = -1,
+		PlusPlus = 0,
+		PlusMinus = 1,
+		MinusPlus = 2,
+		MinusMinus = 3,
 	};
 
 	class Plus : public vl::glr::ParsingAstBase, vl::reflection::Description<Plus>
@@ -40,6 +50,7 @@ namespace featuretest
 			virtual void Visit(FeatureToResolve* node) = 0;
 			virtual void Visit(OptionalFeature* node) = 0;
 			virtual void Visit(NestedOptionalFeature* node) = 0;
+			virtual void Visit(BranchedOptionalFeature* node) = 0;
 		};
 
 		virtual void Accept(Feature::IVisitor* visitor) = 0;
@@ -68,6 +79,16 @@ namespace featuretest
 		void Accept(Feature::IVisitor* visitor) override;
 	};
 
+	class BranchedOptionalFeature : public Feature, vl::reflection::Description<BranchedOptionalFeature>
+	{
+	public:
+		BranchType type = BranchType::UNDEFINED_ENUM_ITEM_VALUE;
+		vl::Ptr<Plus> first;
+		vl::Ptr<Plus> second;
+
+		void Accept(Feature::IVisitor* visitor) override;
+	};
+
 	class FeatureToResolve : public Feature, vl::reflection::Description<FeatureToResolve>
 	{
 	public:
@@ -89,6 +110,8 @@ namespace vl
 			DECL_TYPE_INFO(featuretest::OptionalProprity)
 			DECL_TYPE_INFO(featuretest::OptionalFeature)
 			DECL_TYPE_INFO(featuretest::NestedOptionalFeature)
+			DECL_TYPE_INFO(featuretest::BranchType)
+			DECL_TYPE_INFO(featuretest::BranchedOptionalFeature)
 			DECL_TYPE_INFO(featuretest::FeatureToResolve)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
@@ -105,6 +128,11 @@ namespace vl
 				}
 
 				void Visit(featuretest::NestedOptionalFeature* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+				void Visit(featuretest::BranchedOptionalFeature* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}

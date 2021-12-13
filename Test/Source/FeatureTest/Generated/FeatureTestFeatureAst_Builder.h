@@ -13,6 +13,17 @@ namespace featuretest
 {
 	namespace builder
 	{
+		class BranchedOptionalFeatureBuilder
+		{
+		private:
+			BranchedOptionalFeature* node;
+		public:
+			BranchedOptionalFeatureBuilder(BranchedOptionalFeature* _node) : node(_node) {}
+			BranchedOptionalFeatureBuilder& first(const vl::Ptr<Plus>& value);
+			BranchedOptionalFeatureBuilder& second(const vl::Ptr<Plus>& value);
+			BranchedOptionalFeatureBuilder& type(BranchType value);
+		};
+
 		class FeatureToResolveBuilder
 		{
 		private:
@@ -46,6 +57,7 @@ namespace featuretest
 			OptionalFeatureBuilder& priority(OptionalProprity value);
 		};
 
+		using MakeBranchedOptionalFeature = vl::glr::ParsingAstBuilder<BranchedOptionalFeature, BranchedOptionalFeatureBuilder>;
 		using MakeFeatureToResolve = vl::glr::ParsingAstBuilder<FeatureToResolve, FeatureToResolveBuilder>;
 		using MakeNestedOptionalFeature = vl::glr::ParsingAstBuilder<NestedOptionalFeature, NestedOptionalFeatureBuilder>;
 		using MakeOptionalFeature = vl::glr::ParsingAstBuilder<OptionalFeature, OptionalFeatureBuilder>;

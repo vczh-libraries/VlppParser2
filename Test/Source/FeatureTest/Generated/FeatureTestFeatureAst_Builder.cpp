@@ -12,6 +12,28 @@ namespace featuretest
 	{
 
 /***********************************************************************
+BranchedOptionalFeatureBuilder
+***********************************************************************/
+
+		BranchedOptionalFeatureBuilder& BranchedOptionalFeatureBuilder::first(const vl::Ptr<Plus>& value)
+		{
+			node->first = value;
+			return *this;
+		}
+
+		BranchedOptionalFeatureBuilder& BranchedOptionalFeatureBuilder::second(const vl::Ptr<Plus>& value)
+		{
+			node->second = value;
+			return *this;
+		}
+
+		BranchedOptionalFeatureBuilder& BranchedOptionalFeatureBuilder::type(BranchType value)
+		{
+			node->type = value;
+			return *this;
+		}
+
+/***********************************************************************
 FeatureToResolveBuilder
 ***********************************************************************/
 

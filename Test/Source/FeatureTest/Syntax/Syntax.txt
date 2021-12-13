@@ -50,6 +50,13 @@ NestedNegativeOptional
   ::= "nested_negative_optional" -[NegativeNO2] Plus:tail3 {Plus:tails} as NestedOptionalFeature
   ;
 
+BranchedOptional
+  ::= "branched_optional" +[Plus:first] +[Plus:second] Plus as BranchedOptionalFeature {type = PlusPlus}
+  ::= "branched_optional" +[Plus:first] -[Plus:second] Plus as BranchedOptionalFeature {type = PlusMinus}
+  ::= "branched_optional" -[Plus:first] +[Plus:second] Plus as BranchedOptionalFeature {type = MinusPlus}
+  ::= "branched_optional" -[Plus:first] -[Plus:second] Plus as BranchedOptionalFeature {type = MinusMinus}
+  ;
+
 Module
   ::= !EqualOptional
   ::= !PositiveOptional
@@ -57,4 +64,5 @@ Module
   ::= !NestedOptional
   ::= !NestedPositiveOptional
   ::= !NestedNegativeOptional
+  ::= !BranchedOptional
   ;
