@@ -213,6 +213,30 @@ FindBalancedBeginObject
 			}
 
 /***********************************************************************
+MergeAmbiguityType
+***********************************************************************/
+
+			void TraceManager::MergeAmbiguityType(vint32_t& ambiguityType, vint32_t branchType)
+			{
+#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::MergeAmbiguityType(vint32_t&, vint32_t)#"
+				if (ambiguityType == -1)
+				{
+					ambiguityType = branchType;
+				}
+				else if (typeCallback)
+				{
+					vint32_t newType = typeCallback->FindCommonBaseClass(ambiguityType, branchType);
+					CHECK_ERROR(newType != -1, ERROR_MESSAGE_PREFIX L"Failed to merge from ambiguity types.");
+					ambiguityType = newType;
+				}
+				else
+				{
+					CHECK_ERROR(ambiguityType == branchType, ERROR_MESSAGE_PREFIX L"TraceManager::ITypeCallback is not installed, unable to merge from ambiguity types.");
+				}
+#undef ERROR_MESSAGE_PREFIX
+			}
+
+/***********************************************************************
 FillAmbiguityInfoForMergingTrace
 ***********************************************************************/
 
@@ -277,20 +301,7 @@ FillAmbiguityInfoForMergingTrace
 						// then the all instruction prefix are stored in predecessors
 						// so no need to really touch the prefix in this trace.
 
-						if (ambiguityType == -1)
-						{
-							ambiguityType = branchType;
-						}
-						else if (typeCallback)
-						{
-							vint32_t newType = typeCallback->FindCommonBaseClass(ambiguityType, branchType);
-							CHECK_ERROR(newType != -1, ERROR_MESSAGE_PREFIX L"Failed to merge from ambiguity types.");
-							ambiguityType = newType;
-						}
-						else
-						{
-							CHECK_ERROR(ambiguityType == branchType, ERROR_MESSAGE_PREFIX L"TraceManager::ITypeCallback is not installed, unable to merge from ambiguity types.");
-						}
+						MergeAmbiguityType(ambiguityType, branchType);
 
 						// BeginObject found from different predecessors must be the same
 						if (traceBeginObject == -1)

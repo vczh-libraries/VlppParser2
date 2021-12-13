@@ -364,6 +364,7 @@ Execution
 				bool								RunInstruction(vint32_t instruction, TraceInsLists& insLists, vint32_t& objectCount);
 				void								FindBalancedBoOrBolr(Trace*& trace, vint32_t& instruction, vint32_t& objectCount);
 				void								FindBalancedBeginObject(Trace* trace, vint32_t objectCount, Trace*& branchTrace, vint32_t& branchInstruction, vint32_t& branchType);
+				void								MergeAmbiguityType(vint32_t& ambiguityType, vint32_t branchType);
 				void								FillAmbiguityInfoForMergingTrace(Trace* trace);
 				void								FillAmbiguityInfoForPredecessorTraces(Trace* trace);
 			public:
