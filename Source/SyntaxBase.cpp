@@ -160,6 +160,15 @@ TraceManager
 					// there is no place for a second linked list
 					// the data structure is not able to represent such relationship
 
+					// but this it is not doable if A also has multiple predecessors
+					// because copying A replaces a new multiple to multiple relationship to an old one like this
+					// O1(origin) -+-+   B(ending) -+
+					//             | |              |
+					// O2(origin) -+-+-> A(ending) -+-> C(merged)
+					//             |
+					//             +---> X(ending) ---> D(token)
+					CHECK_ERROR(element->predecessors.first == element->predecessors.last, errorMessage);
+
 					auto copiedElement = AllocateTrace();
 					{
 						vint32_t copiedId = copiedElement->allocatedIndex;
@@ -179,11 +188,13 @@ TraceManager
 					//            |
 					//            +-> X(ending) ---> D(token)
 					AddTraceToCollection(owner, copiedElement, collection);
-
-					// TODO: what if A also has multiple predecessors?
 				}
 				else
 				{
+					// Trace::predecessors is filled by Input
+					// Trace::successors is filled by PrepareTraceRoute
+					// if Input and EndOfInput succeeded
+					// there should not be any multiple to multiple relationship
 					CHECK_FAIL(errorMessage);
 				}
 			}

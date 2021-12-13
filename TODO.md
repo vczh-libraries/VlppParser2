@@ -53,7 +53,7 @@
 - [x] Priority in negative optional syntax
 - [x] Priority in multiple rule input edges, and they get compressed to one edge in CrossReferencedNFA
 - [ ] Multiple competitions in the same clause
-- [ ] Priority in alternative syntax, but don't let it ends a clause if a high priority branch could be empty (add compile error)
+- [ ] Priority in alternative syntax, but all branches must not consume empty input series (add compile error)
 - [ ] Priority in left recursive transition
 - [ ] Priority in different clauses of the same rule
 - [x] Ambiguity with left recursion, when ASTs creates from left recursion clauses belong to a bigger part of ambiguity resolving
@@ -64,7 +64,6 @@
 ## Work Items (issues)
 
 - Fix todo in `TraceManager::AreTwoEndingInputTraceEqual`.
-- Fix todo in `TraceManager::AddTraceToCollection`.
 - `EndObject` after `ReopenObject` doesn't update `ParsingAstBase::codeRange::start`.
   - for example, when `Exp` is reopened to run `( Exp @ )`, then the created ast begins from `Exp` but ends at `)`.
 - Optimize `CrossReferencedNFA` to merge prefix (two states can be merged if their `InEdges` are identical, `FromState` in `InEdges` are replaced by merged states).
