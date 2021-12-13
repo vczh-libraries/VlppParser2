@@ -170,7 +170,7 @@ Execution
 			struct TraceAmbiguity
 			{
 				vint32_t				insEndObject = -1;			// the index of the first EndObject instruction
-																	// in {byEdge.insBeforeInput, byEdge.insAfterInput, executedReturn.insAfterInput} combined
+																	// in {byEdge.insBeforeInput, byEdge.insAfterInput, executedReturnStack.returnIndex.insAfterInput} combined
 																	// when this member is valid, the trace should satisfies:
 																	// trace.ambiguity.insEndObject == trace.byEdge.insBeforeInput.count - trace.ambiguityInsPostfix
 
@@ -179,7 +179,7 @@ Execution
 
 				vint32_t				insBeginObject = -1;		// the index of the BeginObject instruction
 																	// from traceBeginObject
-																	// in {byEdge.insBeforeInput, byEdge.insAfterInput, executedReturn.insAfterInput} combined
+																	// in {byEdge.insBeforeInput, byEdge.insAfterInput, executedReturnStack.returnIndex.insAfterInput} combined
 
 				vint32_t				ambiguityType = -1;			// when the BeginObject creates an object that later be consumed by BeginObjectLeftRecursive
 																	// than the correct type is the type in BeginObjectLeftRecursive
@@ -259,7 +259,7 @@ Execution
 
 				vint32_t				state = -1;					// id of the current StateDesc
 				vint32_t				returnStack = -1;			// id of the current ReturnStack
-				vint32_t				executedReturn = -1;		// id of the executed ReturnDesc
+				vint32_t				executedReturnStack = -1;	// id of the executed ReturnStack that contains the ReturnDesc being executed
 				vint32_t				byEdge = -1;				// id of the last EdgeDesc that make this trace
 				vint32_t				byInput = -1;				// the last input that make this trace
 				vint32_t				currentTokenIndex = -1;		// the index of the token that is byInput
@@ -330,7 +330,7 @@ Execution
 				void								AddTraceToCollection(Trace* owner, Trace* element, TraceCollection(Trace::* collection));
 
 				// Ambiguity
-				bool								AreTwoEndingInputTraceEqual(vint32_t state, vint32_t returnStack, vint32_t executedReturn, vint32_t acId, Trace* candidate);
+				bool								AreTwoEndingInputTraceEqual(vint32_t state, vint32_t returnStack, vint32_t executedReturnStack, vint32_t acId, Trace* candidate);
 				vint32_t							GetInstructionPostfix(EdgeDesc& oldEdge, EdgeDesc& newEdge);
 				void								MergeTwoEndingInputTrace(
 														Trace* trace,
@@ -343,7 +343,7 @@ Execution
 														vint32_t returnStack,
 														vint32_t attendingCompetitions,
 														vint32_t carriedCompetitions,
-														vint32_t executedReturn);
+														vint32_t executedReturnStack);
 
 				// Competition
 				void								AttendCompetition(Trace* trace, vint32_t& newAttendingCompetitions, vint32_t& newCarriedCompetitions, vint32_t returnStack, vint32_t ruleId, vint32_t clauseId, bool forHighPriority);

@@ -24,7 +24,7 @@ TraceManager::WalkAlongSingleEdge
 				vint32_t returnStack = -1;
 				vint32_t attendingCompetitions = -1;
 				vint32_t carriedCompetitions = -1;
-				vint32_t executedReturn = -1;
+				vint32_t executedReturnStack = -1;
 				Trace* ambiguityTraceToMerge = nullptr;
 
 				// attend a competition hold by the current trace if the priority is set for this output transition
@@ -33,14 +33,14 @@ TraceManager::WalkAlongSingleEdge
 				if (input == Executable::EndingInput)
 				{
 					// an EndingInput transition consume return record in the return stack
-					// such return will be popped from the return stack and stored in Trace::executedReturn
+					// such return will be popped from the return stack and stored in Trace::executedReturnStack
 					CHECK_ERROR(edgeDesc.returnIndices.count == 0, ERROR_MESSAGE_PREFIX L"Ending input edge is not allowed to push something into the return stack.");
 					if (returnStack != -1)
 					{
+						executedReturnStack = returnStack;
 						auto rs = GetReturnStack(returnStack);
 						returnStack = rs->previous;
-						executedReturn = rs->returnIndex;
-						state = executable.returns[executedReturn].returnState;
+						state = executable.returns[rs->returnIndex].returnState;
 					}
 
 					// an EndingInput transition also settle a competition if
@@ -57,7 +57,7 @@ TraceManager::WalkAlongSingleEdge
 					for (vint i = 0; i < concurrentCount; i++)
 					{
 						auto candidate = backupTraces->Get(i);
-						if (AreTwoEndingInputTraceEqual(state, returnStack, executedReturn, attendingCompetitions, candidate))
+						if (AreTwoEndingInputTraceEqual(state, returnStack, executedReturnStack, attendingCompetitions, candidate))
 						{
 							ambiguityTraceToMerge = candidate;
 							break;
@@ -78,7 +78,7 @@ TraceManager::WalkAlongSingleEdge
 						returnStack,
 						attendingCompetitions,
 						carriedCompetitions,
-						executedReturn);
+						executedReturnStack);
 
 					// return nullptr so that there is no WalkAlongEpsilonEdges following WalkAlongSingleEdge
 					return nullptr;
@@ -93,7 +93,7 @@ TraceManager::WalkAlongSingleEdge
 					AddTraceToCollection(newTrace, trace, &Trace::predecessors);
 					newTrace->state = state;
 					newTrace->returnStack = returnStack;
-					newTrace->executedReturn = executedReturn;
+					newTrace->executedReturnStack = executedReturnStack;
 					newTrace->byEdge = byEdge;
 					newTrace->byInput = input;
 					newTrace->currentTokenIndex = currentTokenIndex;

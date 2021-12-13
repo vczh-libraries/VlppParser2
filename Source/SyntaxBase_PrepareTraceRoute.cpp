@@ -14,7 +14,10 @@ TraceManager::PrepareTraceRoute
 
 			void TraceManager::ReadInstructionList(Trace* trace, TraceInsLists& insLists)
 			{
-				// this function collects byEdge's insBeforeInput, byEdge's insAfterInput, executedReturn's insAfterInput in order
+				// this function collects the following instructions in order:
+				//   1) byEdge.insBeforeInput
+				//   2) byEdge.insAfterInput
+				//   3) executedReturnStack.returnIndex.insAfterInput in order
 				if (trace->byEdge != -1)
 				{
 					auto& edgeDesc = executable.edges[trace->byEdge];
@@ -26,9 +29,10 @@ TraceManager::PrepareTraceRoute
 					insLists.edgeInsBeforeInput = {};
 					insLists.edgeInsAfterInput = {};
 				}
-				if (trace->executedReturn != -1)
+				if (trace->executedReturnStack != -1)
 				{
-					auto& returnDesc = executable.returns[trace->executedReturn];
+					auto returnStack = GetReturnStack(trace->executedReturnStack);
+					auto& returnDesc = executable.returns[returnStack->returnIndex];
 					insLists.returnInsAfterInput = returnDesc.insAfterInput;
 				}
 				else

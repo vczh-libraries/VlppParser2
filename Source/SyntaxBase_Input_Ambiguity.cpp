@@ -11,27 +11,27 @@ namespace vl
 AreTwoTraceEqual
 ***********************************************************************/
 
-			bool TraceManager::AreTwoEndingInputTraceEqual(vint32_t state, vint32_t returnStack, vint32_t executedReturn, vint32_t acId, Trace* candidate)
+			bool TraceManager::AreTwoEndingInputTraceEqual(vint32_t state, vint32_t returnStack, vint32_t executedReturnStack, vint32_t acId, Trace* candidate)
 			{
 				// two traces equal to each other if
 				//   1) they are in the same state
-				//   2) they have the same executedReturn
+				//   2) they have the same ReturnStack before executing thie EndingInput transitions
 				//   3) they are attending same competitions
 				//   4) the candidate has an ending input
 				//   5) they have the same return stack
 				// TODO: verify if we can do "acId == candidate->runtimeRouting.attendingCompetitions" or not
 				if (state == candidate->state &&
-					executedReturn == candidate->executedReturn &&
+					executedReturnStack == candidate->executedReturnStack &&
 					acId == candidate->competitionRouting.attendingCompetitions &&
 					candidate->byInput == Executable::EndingInput)
 				{
-					// we compare if they have executed the same return edge
-					// and than compare if the remaining ReturnStack objects are the same object (not content)
-					// two traces could be merged into one ambiguity resolving trace if they share the same state after executing EndObject
-					// executedReturn is executed by EndObject
-					// returnStack here is the same returnStack when BeginObject for this EndObject was executed
-					// since it requires both trace to share the same BeginObject in the same trace
-					// than two ReturnStack object should also be the same
+					// two traces could be merged into one ambiguity resolving trace if
+					//   1) they have the same ReturnStack object before executing the EndingInput transition
+					//      because two EndingObject are required to be tracable to the BeginObject instruction in the same trace
+					//      the ReturnStack object before executing the EndingInput transition
+					//      is the ReturnStack object in that common trace
+					//      which is something after executing a transition
+					//   2) they share the same state after executing EndObject
 					auto r1 = returnStack;
 					auto r2 = candidate->returnStack;
 					if (r1 == r2)
@@ -116,7 +116,7 @@ MergeTwoEndingInputTrace
 				vint32_t returnStack,
 				vint32_t attendingCompetitions,
 				vint32_t carriedCompetitions,
-				vint32_t executedReturn)
+				vint32_t executedReturnStack)
 			{
 #define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::MergeTwoEndingInputTrace(...)#"
 				// if ambiguity resolving happens
@@ -148,10 +148,10 @@ MergeTwoEndingInputTrace
 							formerTrace->allocatedIndex = formerId;
 						}
 
-						// executedReturn is from the EndObject instruction
+						// executedReturnStack is from the EndObject instruction
 						// which is available in the instruction postfix
-						// so formerTrace->executedReturn should be -1 and keep the previous return stack
-						formerTrace->executedReturn = -1;
+						// so formerTrace->executedReturnStack should be -1 and keep the previous return stack
+						formerTrace->executedReturnStack = -1;
 						if (ambiguityTraceToMerge->predecessors.first != -1)
 						{
 							auto predecessor = GetTrace(ambiguityTraceToMerge->predecessors.first);
@@ -197,8 +197,8 @@ MergeTwoEndingInputTrace
 					newTrace->byInput = input;
 					newTrace->currentTokenIndex = currentTokenIndex;
 
-					// executedReturn == ambiguityTraceToMerge->executedReturn is ensured
-					// so no need to assign executedReturn to newTrace
+					// executedReturnStack == ambiguityTraceToMerge->executedReturnStack is ensured
+					// so no need to assign executedReturnStack to newTrace
 					// acid == ambiguityTraceToMerge->runtimeRouting.attendingCompetitions is ensure
 					//   this is affected by TODO: in TraceManager::AreTwoEndingInputTraceEqual
 					// and ambiguityTraceToMerge is supposed to inherit this value

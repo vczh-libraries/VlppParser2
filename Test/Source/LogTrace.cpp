@@ -245,9 +245,10 @@ void RenderTrace(
 			}
 		}
 
-		if (trace->executedReturn != -1)
+		if (trace->executedReturnStack != -1)
 		{
-			auto& returnDesc = executable.returns[trace->executedReturn];
+			auto returnStack = tm.GetReturnStack(trace->executedReturnStack);
+			auto& returnDesc = executable.returns[returnStack->returnIndex];
 			for (vint insRef = 0; insRef < returnDesc.insAfterInput.count; insRef++)
 			{
 				vint insIndex = returnDesc.insAfterInput.start + insRef;
