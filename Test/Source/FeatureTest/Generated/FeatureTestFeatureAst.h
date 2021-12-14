@@ -30,10 +30,9 @@ namespace featuretest
 	enum class BranchType
 	{
 		UNDEFINED_ENUM_ITEM_VALUE = -1,
-		PlusPlus = 0,
-		PlusMinus = 1,
-		MinusPlus = 2,
-		MinusMinus = 3,
+		Plus = 0,
+		Minus = 1,
+		NoCompetition = 2,
 	};
 
 	class Plus : public vl::glr::ParsingAstBase, vl::reflection::Description<Plus>
@@ -83,8 +82,8 @@ namespace featuretest
 	{
 	public:
 		BranchType type = BranchType::UNDEFINED_ENUM_ITEM_VALUE;
-		vl::Ptr<Plus> first;
-		vl::Ptr<Plus> second;
+		vl::Ptr<Plus> optional;
+		vl::collections::List<vl::Ptr<Plus>> tails;
 
 		void Accept(Feature::IVisitor* visitor) override;
 	};

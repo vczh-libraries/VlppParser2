@@ -38,10 +38,10 @@ FeatureTestAstInsReceiver : public vl::glr::AstInsReceiverBase
 		auto cppFieldName = FeatureTestCppFieldName((FeatureTestFields)field);
 		switch((FeatureTestFields)field)
 		{
-		case FeatureTestFields::BranchedOptionalFeature_first:
-			return vl::glr::AssemblerSetObjectField(&featuretest::BranchedOptionalFeature::first, object, field, value, cppFieldName);
-		case FeatureTestFields::BranchedOptionalFeature_second:
-			return vl::glr::AssemblerSetObjectField(&featuretest::BranchedOptionalFeature::second, object, field, value, cppFieldName);
+		case FeatureTestFields::BranchedOptionalFeature_optional:
+			return vl::glr::AssemblerSetObjectField(&featuretest::BranchedOptionalFeature::optional, object, field, value, cppFieldName);
+		case FeatureTestFields::BranchedOptionalFeature_tails:
+			return vl::glr::AssemblerSetObjectField(&featuretest::BranchedOptionalFeature::tails, object, field, value, cppFieldName);
 		case FeatureTestFields::FeatureToResolve_candidates:
 			return vl::glr::AssemblerSetObjectField(&featuretest::FeatureToResolve::candidates, object, field, value, cppFieldName);
 		case FeatureTestFields::NestedOptionalFeature_optional:
@@ -114,8 +114,8 @@ FeatureTestAstInsReceiver : public vl::glr::AstInsReceiverBase
 	const wchar_t* FeatureTestFieldName(FeatureTestFields field)
 	{
 		const wchar_t* results[] = {
-			L"BranchedOptionalFeature::first",
-			L"BranchedOptionalFeature::second",
+			L"BranchedOptionalFeature::optional",
+			L"BranchedOptionalFeature::tails",
 			L"BranchedOptionalFeature::type",
 			L"FeatureToResolve::candidates",
 			L"NestedOptionalFeature::optional",
@@ -134,8 +134,8 @@ FeatureTestAstInsReceiver : public vl::glr::AstInsReceiverBase
 	const wchar_t* FeatureTestCppFieldName(FeatureTestFields field)
 	{
 		const wchar_t* results[] = {
-			L"featuretest::BranchedOptionalFeature::first",
-			L"featuretest::BranchedOptionalFeature::second",
+			L"featuretest::BranchedOptionalFeature::optional",
+			L"featuretest::BranchedOptionalFeature::tails",
 			L"featuretest::BranchedOptionalFeature::type",
 			L"featuretest::FeatureToResolve::candidates",
 			L"featuretest::NestedOptionalFeature::optional",

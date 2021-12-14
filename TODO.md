@@ -52,13 +52,13 @@
 - [x] Priority in positive optional syntax
 - [x] Priority in negative optional syntax
 - [x] Priority in multiple rule input edges, and they get compressed to one edge in CrossReferencedNFA
-- [x] Multiple competitions in the same clause
 - [ ] Priority in alternative syntax, but all branches must not consume empty input series (add compile error)
 - [ ] Priority in left recursive transition
 - [x] Priority in different clauses of the same rule
 - [x] Ambiguity with left recursion, when ASTs creates from left recursion clauses belong to a bigger part of ambiguity resolving
 - [x] Ambiguity with left recursion, when two left recursive clauses consume the same series of inputs
 - [ ] Priority with ambiguity
+- [ ] Priority in entry rule
 - [ ] Everything together
 
 ## Work Items (issues)

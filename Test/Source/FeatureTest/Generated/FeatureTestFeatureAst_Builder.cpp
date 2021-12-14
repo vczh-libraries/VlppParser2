@@ -15,15 +15,15 @@ namespace featuretest
 BranchedOptionalFeatureBuilder
 ***********************************************************************/
 
-		BranchedOptionalFeatureBuilder& BranchedOptionalFeatureBuilder::first(const vl::Ptr<Plus>& value)
+		BranchedOptionalFeatureBuilder& BranchedOptionalFeatureBuilder::optional(const vl::Ptr<Plus>& value)
 		{
-			node->first = value;
+			node->optional = value;
 			return *this;
 		}
 
-		BranchedOptionalFeatureBuilder& BranchedOptionalFeatureBuilder::second(const vl::Ptr<Plus>& value)
+		BranchedOptionalFeatureBuilder& BranchedOptionalFeatureBuilder::tails(const vl::Ptr<Plus>& value)
 		{
-			node->second = value;
+			node->tails.Add(value);
 			return *this;
 		}
 

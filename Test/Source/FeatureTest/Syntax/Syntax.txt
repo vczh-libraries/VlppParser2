@@ -51,14 +51,9 @@ NestedNegativeOptional
   ;
 
 BranchedOptional
-  ::= "branched_optional" +[Plus:first] +[Plus:second] Plus as BranchedOptionalFeature {type = PlusPlus}
-  ::= "branched_optional" +[Plus:first] -[Plus:second] Plus as BranchedOptionalFeature {type = PlusMinus}
-  ::= "branched_optional" -[Plus:first] +[Plus:second] Plus as BranchedOptionalFeature {type = MinusPlus}
-  ::= "branched_optional" -[Plus:first] -[Plus:second] Plus as BranchedOptionalFeature {type = MinusMinus}
-  ::= "branched_optional_2" +[Plus:first] Plus +[Plus:second] Plus as BranchedOptionalFeature {type = PlusPlus}
-  ::= "branched_optional_2" +[Plus:first] Plus -[Plus:second] Plus as BranchedOptionalFeature {type = PlusMinus}
-  ::= "branched_optional_2" -[Plus:first] Plus +[Plus:second] Plus as BranchedOptionalFeature {type = MinusPlus}
-  ::= "branched_optional_2" -[Plus:first] Plus -[Plus:second] Plus as BranchedOptionalFeature {type = MinusMinus}
+  ::= "branched_optional" +[Plus:optional] Plus {Plus:tails} as BranchedOptionalFeature {type = Plus}
+  ::= "branched_optional" -[Plus:optional] Plus {Plus:tails} as BranchedOptionalFeature {type = Minus}
+  ::= "branched_optional" [Plus:optional] Plus {Plus:tails} as BranchedOptionalFeature {type = NoCompetition}
   ;
 
 Module

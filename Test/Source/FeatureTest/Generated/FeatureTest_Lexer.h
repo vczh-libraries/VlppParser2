@@ -21,12 +21,11 @@ namespace featuretest
 		NESTED_POSITIVE_OPTIONAL = 4,
 		NESTED_NEGATIVE_OPTIONAL = 5,
 		BRANCHED_OPTIONAL = 6,
-		BRANCHED_OPTIONAL_2 = 7,
-		PLUS = 8,
-		SPACE = 9,
+		PLUS = 7,
+		SPACE = 8,
 	};
 
-	constexpr vl::vint FeatureTestTokenCount = 10;
+	constexpr vl::vint FeatureTestTokenCount = 9;
 	extern bool FeatureTestTokenDeleter(vl::vint token);
 	extern const wchar_t* FeatureTestTokenId(FeatureTestTokens token);
 	extern const wchar_t* FeatureTestTokenDisplayText(FeatureTestTokens token);

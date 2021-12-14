@@ -12,26 +12,30 @@ namespace featuretest
 	{
 		void FeatureAstVisitor::PrintFields(BranchedOptionalFeature* node)
 		{
-			BeginField(L"first");
-			Print(node->first.Obj());
+			BeginField(L"optional");
+			Print(node->optional.Obj());
 			EndField();
-			BeginField(L"second");
-			Print(node->second.Obj());
+			BeginField(L"tails");
+			BeginArray();
+			for (auto&& listItem : node->tails)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
 			EndField();
 			BeginField(L"type");
 			switch (node->type)
 			{
-			case featuretest::BranchType::MinusMinus:
-				WriteString(L"MinusMinus");
+			case featuretest::BranchType::Minus:
+				WriteString(L"Minus");
 				break;
-			case featuretest::BranchType::MinusPlus:
-				WriteString(L"MinusPlus");
+			case featuretest::BranchType::NoCompetition:
+				WriteString(L"NoCompetition");
 				break;
-			case featuretest::BranchType::PlusMinus:
-				WriteString(L"PlusMinus");
-				break;
-			case featuretest::BranchType::PlusPlus:
-				WriteString(L"PlusPlus");
+			case featuretest::BranchType::Plus:
+				WriteString(L"Plus");
 				break;
 			default:
 				WriteNull();

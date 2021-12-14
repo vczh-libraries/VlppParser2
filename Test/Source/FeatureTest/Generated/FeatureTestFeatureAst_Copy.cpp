@@ -13,8 +13,11 @@ namespace featuretest
 		void FeatureAstVisitor::CopyFields(BranchedOptionalFeature* from, BranchedOptionalFeature* to)
 		{
 			CopyFields(static_cast<Feature*>(from), static_cast<Feature*>(to));
-			to->first = CopyNode(from->first.Obj());
-			to->second = CopyNode(from->second.Obj());
+			to->optional = CopyNode(from->optional.Obj());
+			for (auto&& listItem : from->tails)
+			{
+				to->tails.Add(CopyNode(listItem.Obj()));
+			}
 			to->type = from->type;
 		}
 

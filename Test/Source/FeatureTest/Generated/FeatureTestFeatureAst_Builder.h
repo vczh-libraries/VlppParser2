@@ -19,8 +19,8 @@ namespace featuretest
 			BranchedOptionalFeature* node;
 		public:
 			BranchedOptionalFeatureBuilder(BranchedOptionalFeature* _node) : node(_node) {}
-			BranchedOptionalFeatureBuilder& first(const vl::Ptr<Plus>& value);
-			BranchedOptionalFeatureBuilder& second(const vl::Ptr<Plus>& value);
+			BranchedOptionalFeatureBuilder& optional(const vl::Ptr<Plus>& value);
+			BranchedOptionalFeatureBuilder& tails(const vl::Ptr<Plus>& value);
 			BranchedOptionalFeatureBuilder& type(BranchType value);
 		};
 

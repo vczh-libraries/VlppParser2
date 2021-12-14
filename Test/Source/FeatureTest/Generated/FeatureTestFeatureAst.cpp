@@ -95,10 +95,9 @@ namespace vl
 
 			BEGIN_ENUM_ITEM(featuretest::BranchType)
 				ENUM_ITEM_NAMESPACE(featuretest::BranchType)
-				ENUM_NAMESPACE_ITEM(PlusPlus)
-				ENUM_NAMESPACE_ITEM(PlusMinus)
-				ENUM_NAMESPACE_ITEM(MinusPlus)
-				ENUM_NAMESPACE_ITEM(MinusMinus)
+				ENUM_NAMESPACE_ITEM(Plus)
+				ENUM_NAMESPACE_ITEM(Minus)
+				ENUM_NAMESPACE_ITEM(NoCompetition)
 			END_ENUM_ITEM(featuretest::BranchType)
 
 			BEGIN_CLASS_MEMBER(featuretest::BranchedOptionalFeature)
@@ -107,8 +106,8 @@ namespace vl
 				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<featuretest::BranchedOptionalFeature>(), NO_PARAMETER)
 
 				CLASS_MEMBER_FIELD(type)
-				CLASS_MEMBER_FIELD(first)
-				CLASS_MEMBER_FIELD(second)
+				CLASS_MEMBER_FIELD(optional)
+				CLASS_MEMBER_FIELD(tails)
 			END_CLASS_MEMBER(featuretest::BranchedOptionalFeature)
 
 			BEGIN_CLASS_MEMBER(featuretest::FeatureToResolve)

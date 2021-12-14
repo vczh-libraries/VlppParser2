@@ -23,8 +23,8 @@ namespace featuretest
 
 	enum class FeatureTestFields : vl::vint32_t
 	{
-		BranchedOptionalFeature_first = 0,
-		BranchedOptionalFeature_second = 1,
+		BranchedOptionalFeature_optional = 0,
+		BranchedOptionalFeature_tails = 1,
 		BranchedOptionalFeature_type = 2,
 		FeatureToResolve_candidates = 3,
 		NestedOptionalFeature_optional = 4,

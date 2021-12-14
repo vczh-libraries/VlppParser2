@@ -83,8 +83,11 @@ namespace featuretest
 			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
 			Traverse(static_cast<Feature*>(node));
 			Traverse(static_cast<BranchedOptionalFeature*>(node));
-			InspectInto(node->first.Obj());
-			InspectInto(node->second.Obj());
+			InspectInto(node->optional.Obj());
+			for (auto&& listItem : node->tails)
+			{
+				InspectInto(listItem.Obj());
+			}
 			Finishing(static_cast<BranchedOptionalFeature*>(node));
 			Finishing(static_cast<Feature*>(node));
 			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
