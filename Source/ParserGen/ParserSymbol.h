@@ -106,6 +106,7 @@ ParserSymbolManager
 				LoopBodyCouldExpandToEmptySequence,			// (ruleName)
 				OptionalBodyCouldExpandToEmptySequence,		// (ruleName)
 				NegativeOptionalEndsAClause,				// (ruleName)													: Negative optional syntax cannot ends a clause.
+				MultiplePrioritySyntaxInAClause,			// (ruleName)													: Too many syntax with priority in the a clause.
 
 				// SyntaxAst (ValidateStructure, relationship) ----------------------------------------
 				UseRuleAppearAfterField,					// (ruleName, useRuleName, fieldName)

@@ -26,6 +26,7 @@ ValidateStructureCountingVisitor
 				vint						optionalCounter = 0;
 				vint						loopCounter = 0;
 				bool						lastSyntaxPiece = true;
+				bool						prioritySyntaxOccurred = false;
 
 				vint						syntaxMinLength = 0;
 				vint						syntaxMinUseRuleCount = 0;
@@ -43,6 +44,10 @@ ValidateStructureCountingVisitor
 
 				void ValidateClause(Ptr<GlrClause> clause)
 				{
+					optionalCounter = 0;
+					loopCounter = 0;
+					lastSyntaxPiece = true;
+					prioritySyntaxOccurred = false;
 					clause->Accept(this);
 				}
 
@@ -153,6 +158,20 @@ ValidateStructureCountingVisitor
 
 				void Visit(GlrOptionalSyntax* node) override
 				{
+					if (node->priority != GlrOptionalPriority::Equal)
+					{
+						if (prioritySyntaxOccurred)
+						{
+							context.global.AddError(
+								ParserErrorType::MultiplePrioritySyntaxInAClause,
+								ruleSymbol->Name()
+								);
+						}
+						else
+						{
+							prioritySyntaxOccurred = true;
+						}
+					}
 					optionalCounter++;
 
 					node->syntax->Accept(this);

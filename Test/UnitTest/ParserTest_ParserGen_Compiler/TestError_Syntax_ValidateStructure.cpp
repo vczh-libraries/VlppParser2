@@ -635,7 +635,7 @@ Exp0
 	TEST_CASE(L"PrioritizedOptionalEndsClause 2")
 	{
 		const wchar_t* syntaxCode =
-			LR"SYNTAX(
+LR"SYNTAX(
 Exp0
   ::= ("+" | "*" -[NUM:value]) as NumExpr
   ;
@@ -647,13 +647,13 @@ Exp0
 			lexerCode,
 			syntaxCode,
 			{ ParserErrorType::NegativeOptionalEndsAClause,L"Exp0" }
-		);
+			);
 	});
 
 	TEST_CASE(L"PrioritizedOptionalEndsClause 3")
 	{
 		const wchar_t* syntaxCode =
-			LR"SYNTAX(
+LR"SYNTAX(
 Exp0
   ::= NUM:value {"+" -["*"]} as NumExpr
   ;
@@ -665,13 +665,13 @@ Exp0
 			lexerCode,
 			syntaxCode,
 			{ ParserErrorType::NegativeOptionalEndsAClause,L"Exp0" }
-		);
+			);
 	});
 
 	TEST_CASE(L"PrioritizedOptionalEndsClause 4")
 	{
 		const wchar_t* syntaxCode =
-			LR"SYNTAX(
+LR"SYNTAX(
 Exp0
   ::= NUM:value {"(" ")" ; "+" -["*"]} as NumExpr
   ;
@@ -683,13 +683,13 @@ Exp0
 			lexerCode,
 			syntaxCode,
 			{ ParserErrorType::NegativeOptionalEndsAClause,L"Exp0" }
-		);
+			);
 	});
 
 	TEST_CASE(L"PrioritizedOptionalEndsClause 5")
 	{
 		const wchar_t* syntaxCode =
-			LR"SYNTAX(
+LR"SYNTAX(
 Exp0
   ::= -[NUM:value] {"+"} as NumExpr
   ;
@@ -701,6 +701,42 @@ Exp0
 			lexerCode,
 			syntaxCode,
 			{ ParserErrorType::NegativeOptionalEndsAClause,L"Exp0" }
-		);
+			);
+	});
+
+	TEST_CASE(L"MultiplePrioritySyntaxInAClause 1")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= +[NUM:value] -[NUM:value] NUM as NumExpr
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::MultiplePrioritySyntaxInAClause,L"Exp0" }
+			);
+	});
+
+	TEST_CASE(L"MultiplePrioritySyntaxInAClause 2")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= +[-[NUM:value] NUM] as NumExpr
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::MultiplePrioritySyntaxInAClause,L"Exp0" }
+			);
 	});
 }
