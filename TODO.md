@@ -52,8 +52,6 @@
 - [x] Priority in positive optional syntax
 - [x] Priority in negative optional syntax
 - [x] Priority in multiple rule input edges, and they get compressed to one edge in CrossReferencedNFA
-- [ ] Priority in alternative syntax, but all branches must not consume empty input series (add compile error)
-- [ ] Priority in left recursive transition
 - [x] Priority in different clauses of the same rule
 - [x] Ambiguity with left recursion, when ASTs creates from left recursion clauses belong to a bigger part of ambiguity resolving
 - [x] Ambiguity with left recursion, when two left recursive clauses consume the same series of inputs
@@ -80,6 +78,9 @@
   - Refactor some properties in `LexerSymbolManager` into `LexerFile` with a name.
 - AST uses classes from another AST file in dependency as fields.
 - Printing AST classes that created from a memory pool.
+- New priority syntax
+  - Priority in alternative syntax, but all branches must not consume empty input series (add compile error)
+  - Priority in left recursive transition (which clause starts this competition?)
 - Error message generating.
   - Allow users to customize error messages.
   - Support localization.
