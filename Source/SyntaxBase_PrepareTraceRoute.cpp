@@ -141,9 +141,19 @@ FindBalancedBoOrBolr
 
 						// since the BeginObject instruction for this EndObject instruction will be executed after calling FillAmbiguityInfoForMergingTrace
 						// must jump to the instruction before that BeginObject instruction
-						instruction = trace->ambiguity.insBeginObject - 1;
-						trace = GetTrace(trace->ambiguity.traceBeginObject);
-						ReadInstructionList(trace, insLists);
+
+						if (objectCount == 0)
+						{
+							instruction = trace->ambiguity.insBeginObject;
+							trace = GetTrace(trace->ambiguity.traceBeginObject);
+							return;
+						}
+						else
+						{
+							instruction = trace->ambiguity.insBeginObject - 1;
+							trace = GetTrace(trace->ambiguity.traceBeginObject);
+							ReadInstructionList(trace, insLists);
+						}
 					}
 					else
 					{
@@ -167,7 +177,6 @@ FindBalancedBoOrBolr
 
 						// if not found, then we continue searching in the predecessor trace
 						CHECK_ERROR(trace->predecessors.first != -1, ERROR_MESSAGE_PREFIX L"Encountered unbalanced instructions.");
-						auto lastBranch = trace;
 
 						trace = GetTrace(trace->predecessors.first);
 						ReadInstructionList(trace, insLists);

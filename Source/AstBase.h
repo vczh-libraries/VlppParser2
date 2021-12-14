@@ -497,11 +497,18 @@ IAstInsReceiver (Code Generation Templates)
 		template<typename TElement, typename TAmbiguity>
 		Ptr<ParsingAstBase> AssemblerResolveAmbiguity(vint32_t type, collections::Array<Ptr<ParsingAstBase>>& candidates, const wchar_t* cppTypeName)
 		{
-			vl::Ptr<TAmbiguity> ast = new TAmbiguity();
+			Ptr<TAmbiguity> ast = new TAmbiguity();
 			for (auto candidate : candidates)
 			{
-				auto typedAst = candidate.Cast<TElement>();
-				if (!typedAst)
+				if (auto typedAst = candidate.Cast<TElement>())
+				{
+					ast->candidates.Add(typedAst);
+				}
+				else if (auto ambiguityAst = candidate.Cast<TAmbiguity>())
+				{
+					CopyFrom(ast->candidates, ambiguityAst->candidates, true);
+				}
+				else
 				{
 					throw AstInsException(
 						WString::Unmanaged(L"The type of the ambiguous candidate is not compatible to the required type \"") +
@@ -509,7 +516,6 @@ IAstInsReceiver (Code Generation Templates)
 						WString::Unmanaged(L"\"."),
 						AstInsErrorType::UnexpectedAmbiguousCandidate, type);
 				}
-				ast->candidates.Add(typedAst);
 			}
 			return ast;
 		}
@@ -517,8 +523,8 @@ IAstInsReceiver (Code Generation Templates)
 		template<vint32_t Size>
 		vint32_t AssemblerFindCommonBaseClass(vint32_t class1, vint32_t class2, vint32_t(&matrix)[Size][Size])
 		{
-			if (class1 < 0 || class1 >= 9) throw vl::glr::AstInsException(L"The type id does not exist.", vl::glr::AstInsErrorType::UnknownType, class1);
-			if (class2 < 0 || class2 >= 9) throw vl::glr::AstInsException(L"The type id does not exist.", vl::glr::AstInsErrorType::UnknownType, class2);
+			if (class1 < 0 || class1 >= 9) throw glr::AstInsException(L"The type id does not exist.", glr::AstInsErrorType::UnknownType, class1);
+			if (class2 < 0 || class2 >= 9) throw glr::AstInsException(L"The type id does not exist.", glr::AstInsErrorType::UnknownType, class2);
 			return matrix[class1][class2];
 		}
 
