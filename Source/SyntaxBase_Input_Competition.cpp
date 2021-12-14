@@ -159,7 +159,6 @@ CheckAttendingCompetitionsOnEndingEdge
 							{
 								cpt->status = CompetitionStatus::HighPriorityWin;
 							}
-							break;
 						}
 					}
 					acId = ac->nextActiveAC;
