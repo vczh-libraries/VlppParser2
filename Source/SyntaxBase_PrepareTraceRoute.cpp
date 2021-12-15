@@ -372,17 +372,35 @@ FillAmbiguityInfoForPredecessorTraces
 CreateLastMergingTrace
 ***********************************************************************/
 
+			struct SurvivingTraceAmbiguity
+			{
+				Trace*		traceBeginObject = nullptr;
+				vint32_t	insBeginObject = -1;
+				vint32_t	type = -1;
+			};
+
 			void TraceManager::CreateLastMergingTrace(Trace* rootTraceCandidate, vint32_t& ambiguityType)
 			{
 #define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::CreateLastMergingTrace()#"
 
-				// the number of surviving trace must equal to the number of successors from the root trace
-				vint32_t successorId = rootTraceCandidate->successors.first;
+				// collect all successor traces from the root trace
+				List<Trace*> orderedRootSuccessors;
+				{
+					vint32_t successorId = rootTraceCandidate->successors.first;
+					while (successorId != -1)
+					{
+						auto successor = GetTrace(successorId);
+						orderedRootSuccessors.Add(successor);
+						successorId = successor->successors.siblingNext;
+					}
+				}
 
-				// check each surviving trace
+				// find the BeginObject instruction for all surviving traces
+				Group<Trace*, Trace*> successorToSurvivings;
+				Dictionary<Trace*, SurvivingTraceAmbiguity> ambiguities;
+
 				for (vint i = 0; i < concurrentCount; i++)
 				{
-					CHECK_ERROR(successorId != -1, ERROR_MESSAGE_PREFIX L"All surviving traces must be independent branches.");
 					auto survivingTrace = concurrentTraces->Get(i);
 
 					// EndObject must be its last instruction
@@ -394,29 +412,55 @@ CreateLastMergingTrace
 					CHECK_ERROR(lastIns.type == AstInsType::EndObject, ERROR_MESSAGE_PREFIX L"Last instruction is not EndObject.");
 
 					// find the BeginObject instruction
-					Trace* branchTrace = nullptr;
-					vint32_t branchInstruction = -1;
-					vint32_t branchType = -1;
-					FindBalancedBeginObject(survivingTrace, 0, branchTrace, branchInstruction, branchType);
+					SurvivingTraceAmbiguity ambiguity;
+					FindBalancedBeginObject(
+						survivingTrace,
+						0,
+						ambiguity.traceBeginObject,
+						ambiguity.insBeginObject,
+						ambiguity.type
+						);
 
-					// check if the BeginObject instruction the first instruction of the current successor trace from the root trace
-					CHECK_ERROR(branchTrace->allocatedIndex == successorId && branchInstruction == 0, ERROR_MESSAGE_PREFIX L"Unable to resolve ambiguity from multiple root AST objects.");
-					MergeAmbiguityType(ambiguityType, branchType);
-					successorId = branchTrace->successors.siblingNext;
+					CHECK_ERROR(ambiguity.traceBeginObject->predecessors.first == rootTraceCandidate->allocatedIndex, ERROR_MESSAGE_PREFIX L"The BeginObject instruction for the last EndObject instruction must locate in a successor trace from the root trace.");
+
+					MergeAmbiguityType(ambiguityType, ambiguity.type);
+					successorToSurvivings.Add(ambiguity.traceBeginObject, survivingTrace);
+					ambiguities.Add(survivingTrace, ambiguity);
 				}
-				CHECK_ERROR(successorId == -1, ERROR_MESSAGE_PREFIX L"All surviving traces must be independent branches.");
+
+				// create merging traces for surviving traces that share the same traceBeginObject and insBeginObject
+				List<Trace*> mergedSurvivingTraces;
+				for (auto successor : orderedRootSuccessors)
+				{
+					auto&& survivings = successorToSurvivings.Get(successor);
+					if (survivings.Count() == 1)
+					{
+						mergedSurvivingTraces.Add(survivings[0]);
+					}
+					else
+					{
+						auto&& firstAmbiguity = ambiguities[survivings[0]];
+						for (auto survivingTrace : From(survivings).Skip(1))
+						{
+							auto&& nextAmbiguity = ambiguities[survivingTrace];
+							CHECK_ERROR(
+								firstAmbiguity.traceBeginObject == nextAmbiguity.traceBeginObject && firstAmbiguity.insBeginObject == nextAmbiguity.insBeginObject,
+								ERROR_MESSAGE_PREFIX L"BeginObject searched from different surviving traces are not the same."
+								);
+						}
+					}
+				}
 
 				// create a merging trace with no instruction
 				auto trace = AllocateTrace();
 				{
-					auto survivingTrace = concurrentTraces->Get(0);
+					auto survivingTrace = mergedSurvivingTraces[0];
 					trace->state = survivingTrace->state;
 					trace->currentTokenIndex = survivingTrace->currentTokenIndex;
 				}
 
-				for (vint i = 0; i < concurrentCount; i++)
+				for (auto survivingTrace : mergedSurvivingTraces)
 				{
-					auto survivingTrace = concurrentTraces->Get(i);
 					AddTraceToCollection(trace, survivingTrace, &Trace::predecessors);
 					AddTraceToCollection(survivingTrace, trace, &Trace::successors);
 
