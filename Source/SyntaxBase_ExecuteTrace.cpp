@@ -12,8 +12,9 @@ TraceManager::ExecuteTrace
 
 			struct TraceManagerSubmitter
 			{
-				AstIns*					submittedInstruction = nullptr;
+				AstIns					submittedInstruction;
 				regex::RegexToken*		submittedToken = nullptr;
+				bool					submitted = false;
 				IAstInsReceiver*		receiver = nullptr;
 
 				void Submit(AstIns& ins, regex::RegexToken& token)
@@ -24,30 +25,31 @@ TraceManager::ExecuteTrace
 					// the previous instruction is executed and the current one is put on wait
 					// it gives us a chance to detect the pattern and cancel both instructions
 
-					if (submittedInstruction)
+					if (submitted)
 					{
 						if (
-							(submittedInstruction->type == AstInsType::EndObject && ins.type == AstInsType::ReopenObject) ||
-							(submittedInstruction->type == AstInsType::ReopenObject && ins.type == AstInsType::EndObject))
+							(submittedInstruction.type == AstInsType::EndObject && ins.type == AstInsType::ReopenObject) ||
+							(submittedInstruction.type == AstInsType::ReopenObject && ins.type == AstInsType::EndObject))
 						{
-							submittedInstruction = nullptr;
+							submitted = false;
 							submittedToken = nullptr;
 							return;
 						}
 					}
 
 					ExecuteSubmitted();
-					submittedInstruction = &ins;
+					submittedInstruction = ins;
 					submittedToken = &token;
+					submitted = true;
 				}
 
 				void ExecuteSubmitted()
 				{
-					if (submittedInstruction)
+					if (submitted)
 					{
-						receiver->Execute(*submittedInstruction, *submittedToken);
-						submittedInstruction = nullptr;
+						receiver->Execute(submittedInstruction, *submittedToken);
 						submittedToken = nullptr;
+						submitted = false;
 					}
 				}
 			};

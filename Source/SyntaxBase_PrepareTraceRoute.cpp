@@ -476,6 +476,8 @@ CreateLastMergingTrace
 							trace->ambiguity.insEndObject = insLists.c3 - 1;
 						}
 
+						trace->predecessors.first = -1;
+						trace->predecessors.last = -1;
 						for (auto survivingTrace : survivings)
 						{
 							AddTraceToCollection(trace, survivingTrace, &Trace::predecessors);
