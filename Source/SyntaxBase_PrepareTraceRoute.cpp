@@ -432,6 +432,10 @@ CreateLastMergingTrace
 				List<Trace*> mergedSurvivingTraces;
 				for (auto successor : orderedRootSuccessors)
 				{
+					// if this successor trace doesn't branch
+					// put the surviving trace to the list
+					// otherwise put the merging trace to the list
+
 					auto&& survivings = successorToSurvivings.Get(successor);
 					if (survivings.Count() == 1)
 					{
@@ -439,6 +443,7 @@ CreateLastMergingTrace
 					}
 					else
 					{
+						// check if they are mergable
 						auto&& firstAmbiguity = ambiguities[survivings[0]];
 						for (auto survivingTrace : From(survivings).Skip(1))
 						{
@@ -447,6 +452,37 @@ CreateLastMergingTrace
 								firstAmbiguity.traceBeginObject == nextAmbiguity.traceBeginObject && firstAmbiguity.insBeginObject == nextAmbiguity.insBeginObject,
 								ERROR_MESSAGE_PREFIX L"BeginObject searched from different surviving traces are not the same."
 								);
+						}
+
+						// create a merging trace
+						auto trace = AllocateTrace();
+						mergedSurvivingTraces.Add(trace);
+						{
+							auto tid = trace->allocatedIndex;
+							*trace = *survivings[0];
+							trace->allocatedIndex = tid;
+						}
+
+						// ambiguityInsPostfix begins with the EndingObject instruction
+						// which has been verified to be the last instruction in surviving traces
+						// so ambiguityInsPostfix is always 1
+						trace->ambiguityInsPostfix = 1;
+						trace->ambiguity.traceBeginObject = firstAmbiguity.traceBeginObject->allocatedIndex;
+						trace->ambiguity.insBeginObject = firstAmbiguity.insBeginObject;
+						trace->ambiguity.ambiguityType = ambiguityType;
+						{
+							TraceInsLists insLists;
+							ReadInstructionList(trace, insLists);
+							trace->ambiguity.insEndObject = insLists.c3 - 1;
+						}
+
+						for (auto survivingTrace : survivings)
+						{
+							AddTraceToCollection(trace, survivingTrace, &Trace::predecessors);
+							AddTraceToCollection(survivingTrace, trace, &Trace::successors);
+
+							survivingTrace->executedReturnStack = -1;
+							survivingTrace->ambiguityInsPostfix = 1;
 						}
 					}
 				}
