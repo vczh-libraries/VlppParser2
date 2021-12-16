@@ -1,0 +1,30 @@
+rule JLiteral
+	::= STRING:content as String
+	::= NUMBER:content as Number
+	::= "true" as Literal with {value = "True"}
+	::= "false" as Literal with {value = "False"}
+	::= "null" as Literal with {value = "Null"}
+	;
+
+rule JField
+	::= STRING:name ":" JValue:value as ObjectField
+	;
+
+rule JObject
+	::= "{" {JField:fields ; ","} "}" as Object
+	;
+
+rule JArray
+	::= "[" {JValue:items ; ","} "]" as Array
+	;
+
+rule JValue
+	::= !JLiteral
+	::= !JObject
+	::= !JArray
+	;
+
+rule JRoot
+	::= !JObject
+	::= !JArray
+	;
