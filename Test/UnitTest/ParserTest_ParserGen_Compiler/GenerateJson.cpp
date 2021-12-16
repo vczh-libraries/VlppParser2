@@ -113,4 +113,9 @@ TEST_FILE
 		}
 		WriteSyntaxFiles(syntaxManager, executable, metadata, output, files);
 	});
+
+	if (global.Errors().Count() == 0)
+	{
+		WriteFilesIfChanged(dirGenerated, files);
+	}
 }
