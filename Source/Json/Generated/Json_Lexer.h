@@ -18,9 +18,9 @@ namespace vl
 		{
 			enum class JsonTokens : vl::vint32_t
 			{
-				TRUE = 0,
-				FALSE = 1,
-				NULL = 2,
+				TRUE_VALUE = 0,
+				FALSE_VALUE = 1,
+				NULL_VALUE = 2,
 				OBJOPEN = 3,
 				OBJCLOSE = 4,
 				ARROPEN = 5,

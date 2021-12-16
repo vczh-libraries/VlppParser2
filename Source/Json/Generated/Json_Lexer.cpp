@@ -26,9 +26,9 @@ namespace vl
 			const wchar_t* JsonTokenId(JsonTokens token)
 			{
 				static const wchar_t* results[] = {
-					L"TRUE",
-					L"FALSE",
-					L"NULL",
+					L"TRUE_VALUE",
+					L"FALSE_VALUE",
+					L"NULL_VALUE",
 					L"OBJOPEN",
 					L"OBJCLOSE",
 					L"ARROPEN",
