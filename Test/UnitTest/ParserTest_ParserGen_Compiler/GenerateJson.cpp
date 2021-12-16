@@ -56,9 +56,9 @@ TEST_FILE
 	Fill(global.includes, L"../../AstBase.h", L"../../SyntaxBase.h");
 	Fill(global.cppNss, L"vl", L"glr", L"json");
 	global.headerGuard = L"VCZH_PARSER2_BUILTIN_JSON";
-	syntaxManager.name = L"JsonParser";
+	syntaxManager.name = L"Parser";
 
-	auto astDefFile = astManager.CreateFile(L"JsonAst");
+	auto astDefFile = astManager.CreateFile(L"Ast");
 	auto output = GenerateParserFileNames(global);
 	GenerateAstFileNames(astManager, output);
 	GenerateSyntaxFileNames(syntaxManager, output);

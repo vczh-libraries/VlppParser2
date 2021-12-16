@@ -4,8 +4,8 @@ From parser definition:Json
 Licensed under https://github.com/vczh-libraries/License
 ***********************************************************************/
 
-#ifndef VCZH_PARSER2_BUILTIN_JSON_JSONPARSER_SYNTAX
-#define VCZH_PARSER2_BUILTIN_JSON_JSONPARSER_SYNTAX
+#ifndef VCZH_PARSER2_BUILTIN_JSON_PARSER_SYNTAX
+#define VCZH_PARSER2_BUILTIN_JSON_PARSER_SYNTAX
 
 #include "Json_Assembler.h"
 #include "Json_Lexer.h"
@@ -16,7 +16,7 @@ namespace vl
 	{
 		namespace json
 		{
-			enum class JsonParserStates
+			enum class ParserStates
 			{
 				JLiteral = 0,
 				JField = 7,
@@ -26,21 +26,21 @@ namespace vl
 				JRoot = 29,
 			};
 
-			template<JsonParserStates> struct JsonParserStateTypes;
-			template<> struct JsonParserStateTypes<JsonParserStates::JRoot> { using Type = vl::glr::json::JsonNode; };
+			template<ParserStates> struct ParserStateTypes;
+			template<> struct ParserStateTypes<ParserStates::JRoot> { using Type = vl::glr::json::JsonNode; };
 
-			const wchar_t* JsonParserRuleName(vl::vint index);
-			const wchar_t* JsonParserStateLabel(vl::vint index);
-			extern void JsonJsonParserData(vl::stream::IStream& outputStream);
+			const wchar_t* ParserRuleName(vl::vint index);
+			const wchar_t* ParserStateLabel(vl::vint index);
+			extern void JsonParserData(vl::stream::IStream& outputStream);
 
-			class JsonParser
-				: public vl::glr::ParserBase<JsonTokens, JsonParserStates, JsonAstInsReceiver, JsonParserStateTypes>
+			class Parser
+				: public vl::glr::ParserBase<JsonTokens, ParserStates, JsonAstInsReceiver, ParserStateTypes>
 				, protected vl::glr::automaton::TraceManager::ITypeCallback
 			{
 			protected:
 				vl::vint32_t FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2) override;
 			public:
-				JsonParser();
+				Parser();
 
 				vl::Ptr<vl::glr::json::JsonNode> ParseJRoot(const vl::WString & input, vl::vint codeIndex = -1);
 			};

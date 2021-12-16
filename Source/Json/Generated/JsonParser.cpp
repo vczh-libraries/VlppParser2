@@ -4,7 +4,7 @@ From parser definition:Json
 Licensed under https://github.com/vczh-libraries/License
 ***********************************************************************/
 
-#include "JsonJsonParser.h"
+#include "JsonParser.h"
 
 namespace vl
 {
@@ -12,7 +12,7 @@ namespace vl
 	{
 		namespace json
 		{
-			void JsonJsonParserData(vl::stream::IStream& outputStream)
+			void JsonParserData(vl::stream::IStream& outputStream)
 			{
 				static const vl::vint dataLength = 1778; // 15497 bytes before compressing
 				static const vl::vint dataBlock = 256;
@@ -31,7 +31,7 @@ namespace vl
 				vl::glr::DecompressSerializedData(compressed, true, dataSolidRows, dataRows, dataBlock, dataRemain, outputStream);
 			}
 
-			const wchar_t* JsonParserRuleName(vl::vint index)
+			const wchar_t* ParserRuleName(vl::vint index)
 			{
 				static const wchar_t* results[] = {
 					L"JLiteral",
@@ -44,7 +44,7 @@ namespace vl
 				return results[index];
 			}
 
-			const wchar_t* JsonParserStateLabel(vl::vint index)
+			const wchar_t* ParserStateLabel(vl::vint index)
 			{
 				static const wchar_t* results[] = {
 					L"[0][JLiteral] BEGIN ",
@@ -84,19 +84,19 @@ namespace vl
 				return results[index];
 			}
 
-			JsonParser::JsonParser()
-				: vl::glr::ParserBase<JsonTokens, JsonParserStates, JsonAstInsReceiver, JsonParserStateTypes>(&JsonTokenDeleter, &JsonLexerData, &JsonJsonParserData)
+			Parser::Parser()
+				: vl::glr::ParserBase<JsonTokens, ParserStates, JsonAstInsReceiver, ParserStateTypes>(&JsonTokenDeleter, &JsonLexerData, &JsonParserData)
 			{
 			};
 
-			vl::vint32_t JsonParser::FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2)
+			vl::vint32_t Parser::FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2)
 			{
 				return -1;
 			};
 
-			vl::Ptr<vl::glr::json::JsonNode> JsonParser::ParseJRoot(const vl::WString & input, vl::vint codeIndex)
+			vl::Ptr<vl::glr::json::JsonNode> Parser::ParseJRoot(const vl::WString & input, vl::vint codeIndex)
 			{
-				 return Parse<JsonParserStates::JRoot>(input, this, codeIndex);
+				 return Parse<ParserStates::JRoot>(input, this, codeIndex);
 			};
 		}
 	}

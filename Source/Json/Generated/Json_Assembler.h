@@ -7,7 +7,7 @@ Licensed under https://github.com/vczh-libraries/License
 #ifndef VCZH_PARSER2_BUILTIN_JSON_AST_ASSEMBLER
 #define VCZH_PARSER2_BUILTIN_JSON_AST_ASSEMBLER
 
-#include "JsonJsonAst.h"
+#include "JsonAst.h"
 
 namespace vl
 {
