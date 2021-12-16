@@ -1,0 +1,31 @@
+XAttribute
+  ::= NAME:name "=" ATTVALUE:value as Attribute
+  ;
+
+XText
+  ::= (NAME:content | EQUAL:content | ATTVALUE:content | TEXT:content) as Text
+  ;
+
+XCData
+  ::= CDATA:content as CData
+  ;
+
+XComment
+  ::= COMMENT:content as Comment
+  ;
+
+XElement
+  ::= "<" NAME:name {XAttribute:attributes} ("/>" | ">" {XSubNode:subNodes} "</" NAME:closingName ">") as Element
+  ;
+
+XSubNode
+  ::= !XText | !XCData | !XComment | !XElement
+  ;
+
+XInstruction
+ ::= "<?" NAME:name {XAttribute:attributes} "?>" as Instruction
+ ;
+
+XDocument
+ ::= {XInstruction:prologs | XComment:prologs} XElement:rootElement as Document
+ ;

@@ -1,0 +1,44 @@
+class Node
+{
+}
+
+class Text : Node
+{
+    var content : token;
+}
+
+class CData : Node
+{
+    var context : token;
+}
+
+class Attribute
+{
+    var name : token;
+    var value : token;
+}
+
+class Comment : Node
+{
+    var content : token;
+}
+
+class Element : Node
+{
+    var name : token;
+    var closingName : token;
+    var attributes : Attributes[];
+    var subNodes : Node[];
+}
+
+class Instruction : Node
+{
+    var name : token;
+    var attributes : Attributes[];
+}
+
+class Document : Node
+{
+    var prologs : Node[];
+    var rootElement : Element;
+}
