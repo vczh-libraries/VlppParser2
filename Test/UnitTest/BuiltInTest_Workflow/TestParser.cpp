@@ -36,13 +36,18 @@ TEST_FILE
 
 				TEST_CASE(caseName)
 				{
-					TEST_ASSERT(caseName != L"ElementInSet");
-					TEST_ASSERT(caseName != L"BindLet");
-					TEST_ASSERT(caseName != L"BindComplex");
-					TEST_ASSERT(caseName != L"NestedLambda");
-					TEST_ASSERT(caseName != L"CoAsync2");
+					// one second:
 					TEST_ASSERT(caseName != L"List");
 					TEST_ASSERT(caseName != L"Map");
+
+					// three seconds:
+					TEST_ASSERT(caseName != L"ElementInSet");
+					TEST_ASSERT(caseName != L"BindComplex");
+					TEST_ASSERT(caseName != L"CoAsync2");
+
+					// very slow:
+					TEST_ASSERT(caseName != L"NestedLambda");
+					TEST_ASSERT(caseName != L"BindLet");
 
 					WString inputCode = File(dirWorkflow / indexName / (caseName + L".txt")).ReadAllTextByBom();
 					if (indexName == L"Declaration")
