@@ -183,8 +183,13 @@ _Block
     ::= "{" {_Statement : statements} [NAME : endLabel ":" ";"] "}" as BlockStatement
     ;
 
+_ElseStat
+    ::= !_Block
+    ::= !_If
+    ;
+
 _If
-    ::= "if" "(" ["var" NAME : name ":" _Type : type "="] _Expression : expression ")" _Block : trueBranch +["else" (_Block : falseBranch | _If : falseBranch)] as IfStatement
+    ::= "if" "(" ["var" NAME : name ":" _Type : type "="] _Expression : expression ")" _Block : trueBranch +["else" _ElseStat : falseBranch] as IfStatement
     ;
 
 _ForOperator
@@ -279,16 +284,23 @@ _FunctionArgument
     ;
 
 _FunctionArgumentList
-    ::= {_FunctionArgument : arguments ; ","} as partial FunctionDeclaration
+    ::= "(" {_FunctionArgument : arguments ; ","} ")" as partial FunctionDeclaration
+    ;
+
+_FunctionStat
+    ::= !_Block
+    ::= !_CoProvider
     ;
 
 _FunctionBody
-    ::= (_Block : statement | _CoProvider : statement | ";") as partial FunctionDeclaration
+    ::= "(" {_FunctionArgument : arguments ; ","} ")"
+        ":" _Type : returnType
+        (_FunctionStat : statement | ";") as partial FunctionDeclaration
     ;
 
 _Function
-    ::= "func" NAME : name "(" _FunctionArgumentList ")" ":" _Type : returnType _FunctionBody as FunctionDeclaration {anonymity = Named}
-    ::= "func" "(" _FunctionArgumentList ")" ":" _Type : returnType _FunctionBody as FunctionDeclaration {anonymity = Anonymous}
+    ::= "func" NAME : name _FunctionBody as FunctionDeclaration {anonymity = Named}
+    ::= "func" _FunctionBody as FunctionDeclaration {anonymity = Anonymous}
     ;
 
 _Variable
