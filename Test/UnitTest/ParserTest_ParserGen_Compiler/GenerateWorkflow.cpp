@@ -10,13 +10,13 @@
 
 using namespace vl::glr::parsergen;
 
-extern WString GetSourcePath();
+extern WString GetTestParserInputPath(const WString& parserName);
 extern FilePath GetOutputDir(const WString& parserName);
 extern void WriteFilesIfChanged(FilePath outputDir, Dictionary<WString, WString>& files);
 
 TEST_FILE
 {
-	FilePath dirParser = FilePath(GetSourcePath()) / L"Xml";
+	FilePath dirParser = GetTestParserInputPath(L"BuiltIn-Workflow");
 	FilePath dirOutput = GetOutputDir(L"ParserGen");
 	FilePath dirGenerated = dirParser / L"Generated";
 	if (!Folder(dirGenerated).Exists())
@@ -44,7 +44,7 @@ TEST_FILE
 		auto actualJson = PrintAstJson<json_visitor::RuleAstVisitor>(syntaxFile);
 		File(dirOutput / (L"Syntax[BuiltIn-Workflow].txt")).WriteAllText(actualJson, true, BomEncoder::Utf8);
 	});
-
+*/
 	ParserSymbolManager global;
 	AstSymbolManager astManager(global);
 	LexerSymbolManager lexerManager(global);
@@ -53,7 +53,7 @@ TEST_FILE
 	Metadata metadata;
 
 	global.name = L"Workflow";
-	Fill(global.includes, L"../../AstBase.h", L"../../SyntaxBase.h");
+	Fill(global.includes, L"../../../../Source/AstBase.h", L"../../../../Source/SyntaxBase.h");
 	Fill(global.cppNss, L"vl", L"glr", L"workflow");
 	global.headerGuard = L"VCZH_PARSER2_BUILTIN_WORKFLOW";
 	syntaxManager.name = L"Parser";
@@ -61,7 +61,7 @@ TEST_FILE
 	auto astDefFile = astManager.CreateFile(L"Ast");
 	auto output = GenerateParserFileNames(global);
 	GenerateAstFileNames(astManager, output);
-	GenerateSyntaxFileNames(syntaxManager, output);
+	//GenerateSyntaxFileNames(syntaxManager, output);
 
 	Dictionary<WString, WString> files;
 	TEST_CASE(L"CompilerAst")
@@ -75,47 +75,47 @@ TEST_FILE
 		WriteAstFiles(astManager, output, files);
 	});
 
-	TEST_CASE(L"CompilerLexer")
-	{
-		auto lexerInput = File(dirParser / L"Syntax/Lexer.txt").ReadAllTextByBom();
-		CompileLexer(lexerManager, lexerInput);
-		TEST_ASSERT(global.Errors().Count() == 0);
-		WriteLexerFiles(lexerManager, output, files);
-	});
+	//TEST_CASE(L"CompilerLexer")
+	//{
+	//	auto lexerInput = File(dirParser / L"Syntax/Lexer.txt").ReadAllTextByBom();
+	//	CompileLexer(lexerManager, lexerInput);
+	//	TEST_ASSERT(global.Errors().Count() == 0);
+	//	WriteLexerFiles(lexerManager, output, files);
+	//});
 
-	TEST_CASE(L"CompilerSyntax")
-	{
-		List<Ptr<GlrSyntaxFile>> syntaxFiles;
-		syntaxFiles.Add(syntaxFile);
-		CompileSyntax(astManager, lexerManager, syntaxManager, output, syntaxFiles);
-		TEST_ASSERT(global.Errors().Count() == 0);
-
-		syntaxManager.BuildCompactNFA();
-		TEST_ASSERT(global.Errors().Count() == 0);
-		syntaxManager.BuildCrossReferencedNFA();
-		TEST_ASSERT(global.Errors().Count() == 0);
-		syntaxManager.BuildAutomaton(lexerManager.Tokens().Count(), executable, metadata);
-		TEST_ASSERT(global.Errors().Count() == 0);
-
-		LogAutomatonWithPath(
-			dirOutput / (L"Automaton[BuiltIn-Workflow].txt"),
-			executable,
-			metadata,
-			[&](vint32_t index) { auto type = output->classIds.Keys()[output->classIds.Values().IndexOf(index)]; return type->Name(); },
-			[&](vint32_t index) { auto prop = output->fieldIds.Keys()[output->fieldIds.Values().IndexOf(index)]; return prop->Parent()->Name() + L"::" + prop->Name(); },
-			[&](vint32_t index) { auto token = lexerManager.Tokens()[lexerManager.TokenOrder()[index]]; return token->displayText == L"" ? token->Name() : L"\"" + token->displayText + L"\""; }
-			);
-
-		{
-			auto rule = syntaxManager.Rules()[L"XElement"];
-			syntaxManager.parsableRules.Add(rule);
-			syntaxManager.ruleTypes.Add(rule, L"vl::glr::xml::XmlElement");
-		}
-		WriteSyntaxFiles(syntaxManager, executable, metadata, output, files);
-	});
+	//TEST_CASE(L"CompilerSyntax")
+	//{
+	//	List<Ptr<GlrSyntaxFile>> syntaxFiles;
+	//	syntaxFiles.Add(syntaxFile);
+	//	CompileSyntax(astManager, lexerManager, syntaxManager, output, syntaxFiles);
+	//	TEST_ASSERT(global.Errors().Count() == 0);
+	//
+	//	syntaxManager.BuildCompactNFA();
+	//	TEST_ASSERT(global.Errors().Count() == 0);
+	//	syntaxManager.BuildCrossReferencedNFA();
+	//	TEST_ASSERT(global.Errors().Count() == 0);
+	//	syntaxManager.BuildAutomaton(lexerManager.Tokens().Count(), executable, metadata);
+	//	TEST_ASSERT(global.Errors().Count() == 0);
+	//
+	//	LogAutomatonWithPath(
+	//		dirOutput / (L"Automaton[BuiltIn-Workflow].txt"),
+	//		executable,
+	//		metadata,
+	//		[&](vint32_t index) { auto type = output->classIds.Keys()[output->classIds.Values().IndexOf(index)]; return type->Name(); },
+	//		[&](vint32_t index) { auto prop = output->fieldIds.Keys()[output->fieldIds.Values().IndexOf(index)]; return prop->Parent()->Name() + L"::" + prop->Name(); },
+	//		[&](vint32_t index) { auto token = lexerManager.Tokens()[lexerManager.TokenOrder()[index]]; return token->displayText == L"" ? token->Name() : L"\"" + token->displayText + L"\""; }
+	//		);
+	//
+	//	{
+	//		auto rule = syntaxManager.Rules()[L"XElement"];
+	//		syntaxManager.parsableRules.Add(rule);
+	//		syntaxManager.ruleTypes.Add(rule, L"vl::glr::xml::XmlElement");
+	//	}
+	//	WriteSyntaxFiles(syntaxManager, executable, metadata, output, files);
+	//});
 
 	if (global.Errors().Count() == 0)
 	{
 		WriteFilesIfChanged(dirGenerated, files);
 	}
-*/}
+}
