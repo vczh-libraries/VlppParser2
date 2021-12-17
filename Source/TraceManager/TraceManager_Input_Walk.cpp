@@ -151,10 +151,54 @@ TraceManager::WalkAlongEpsilonEdges
 
 				vint32_t endingCount = -1;
 
-				// but if there is no more tokens
-				// then we have to go all the way to the end anyway
-				if (lookAhead != -1)
+				if (lookAhead == -1)
 				{
+					// if there is no more tokens
+					// then we have to go all the way to the end anyway
+					vint32_t currentState = trace->state;
+					vint32_t currentReturnStack = trace->returnStack;
+
+					while (currentState != -1)
+					{
+						vint32_t transitionIndex = executable.GetTransitionIndex(currentState, Executable::EndingInput);
+						auto&& edgeArray = executable.transitions[transitionIndex];
+
+						// at most one EndingInput transition could exist from any state
+						CHECK_ERROR(edgeArray.count < 2, L"vl::glr::automaton::TraceManager::WalkAlongEpsilonEdges(vint32_t, vint32_t, Trace*)#Too many EndingInput transitions.");
+
+						if (edgeArray.count == 0)
+						{
+							// if there is no more EndingInput to go
+							// and the current state is not an ending state
+							// then we just give up
+
+							auto&& stateDesc = executable.states[currentState];
+							if (stateDesc.endingState)
+							{
+								currentState = -1;
+							}
+							else
+							{
+								return;
+							}
+						}
+						else if (currentReturnStack == -1)
+						{
+							vint32_t byEdge = edgeArray.start;
+							auto& edgeDesc = executable.edges[byEdge];
+							currentState = edgeDesc.toState;
+						}
+						else
+						{
+							auto rs = GetReturnStack(currentReturnStack);
+							currentReturnStack = rs->previous;
+							currentState = executable.returns[rs->returnIndex].returnState;
+						}
+					}
+				}
+				else
+				{
+					// otherwise we see how many EndingInput transition we need to walk along
 					vint32_t currentCount = 0;
 					vint32_t currentState = trace->state;
 					vint32_t currentReturnStack = trace->returnStack;
