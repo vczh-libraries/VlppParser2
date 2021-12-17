@@ -25,8 +25,8 @@ namespace vl
 				Syntax = 37,
 				Assignment = 40,
 				Clause = 45,
-				Rule = 64,
-				File = 70,
+				Rule = 67,
+				File = 73,
 			};
 
 			template<RuleParserStates> struct RuleParserStateTypes;

@@ -84,14 +84,14 @@ CreateParserGenRuleSyntax
 				// ID:field "=" STRING:value as partial Assignment
 				Clause{ _assignment } = create(tok(T::ID, F::Assignment_field) + tok(T::ASSIGN) + tok(T::ID, F::Assignment_value), C::Assignment);
 
-				// Syntax:syntax "as" ID:type ["{" {Assignment:assignments} "}"] as CreateClause
-				Clause{ _clause } = create(rule(_syntax, F::CreateClause_syntax) + tok(T::AS) + tok(T::ID, F::CreateClause_type) + opt(tok(T::OPEN_CURLY) + loop(rule(_assignment, F::CreateClause_assignments)) + tok(T::CLOSE_CURLY)), C::CreateClause);
+				// Syntax:syntax "as" ID:type ["{" {Assignment:assignments ; ","} "}"] as CreateClause
+				Clause{ _clause } = create(rule(_syntax, F::CreateClause_syntax) + tok(T::AS) + tok(T::ID, F::CreateClause_type) + opt(tok(T::OPEN_CURLY) + loop(rule(_assignment, F::CreateClause_assignments), tok(T::COMMA)) + tok(T::CLOSE_CURLY)), C::CreateClause);
 
-				// Syntax:syntax "as" "partial" ID:type ["{" {Assignment:assignments} "}"] as PartialClause
-				Clause{ _clause } = create(rule(_syntax, F::PartialClause_syntax) + tok(T::AS) + tok(T::PARTIAL) + tok(T::ID, F::PartialClause_type) + opt(tok(T::OPEN_CURLY) + loop(rule(_assignment, F::PartialClause_assignments)) + tok(T::CLOSE_CURLY)), C::PartialClause);
+				// Syntax:syntax "as" "partial" ID:type ["{" {Assignment:assignments ; ","} "}"] as PartialClause
+				Clause{ _clause } = create(rule(_syntax, F::PartialClause_syntax) + tok(T::AS) + tok(T::PARTIAL) + tok(T::ID, F::PartialClause_type) + opt(tok(T::OPEN_CURLY) + loop(rule(_assignment, F::PartialClause_assignments), tok(T::COMMA)) + tok(T::CLOSE_CURLY)), C::PartialClause);
 
-				// Syntax:syntax ["{" {Assignment:assignments} "}"] as ReuseClause
-				Clause{ _clause } = create(rule(_syntax, F::ReuseClause_syntax) + opt(tok(T::OPEN_CURLY) + loop(rule(_assignment, F::ReuseClause_assignments)) + tok(T::CLOSE_CURLY)), C::ReuseClause);
+				// Syntax:syntax ["{" {Assignment:assignments ; ","} "}"] as ReuseClause
+				Clause{ _clause } = create(rule(_syntax, F::ReuseClause_syntax) + opt(tok(T::OPEN_CURLY) + loop(rule(_assignment, F::ReuseClause_assignments), tok(T::COMMA)) + tok(T::CLOSE_CURLY)), C::ReuseClause);
 
 				// ID:name {"::=" Clause:clauses} ";" as Rule
 				Clause{ _rule } = create(tok(T::ID, F::Rule_name) + loop(tok(T::INFER) + rule(_clause, F::Rule_clauses)) + tok(T::SEMICOLON), C::Rule);
