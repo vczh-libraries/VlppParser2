@@ -2,13 +2,6 @@
 // AST (Root Types)
 //////////////////////////////////////////////////////////////////
 
-enum ClassMemberKind
-{
-	Static,
-	Override,
-	Normal,
-}
-
 class Type
 {
 }
@@ -31,8 +24,14 @@ class Attribute
 class Declaration
 {
     var attributes : Attribute[];
-    var classMemberKind : ClassMemberKind;
     var name : token;
+}
+
+enum FunctionKind
+{
+	Static,
+	Override,
+	Normal,
 }
 
 //////////////////////////////////////////////////////////////////
@@ -142,6 +141,7 @@ enum FunctionAnonymity
 
 class FunctionDeclaration : Declaration
 {
+    var functionKind : FunctionKind;
     var anonymity : FunctionAnonymity;
     var arguments : FunctionArgument[];
     var returnType : Type;
@@ -286,6 +286,7 @@ enum APObserve
 
 class AutoPropertyDeclaration : VirtualCfeDeclaration
 {
+    var functionKind : FunctionKind;
     var type : Type;
     var configConst : APConst;
     var configObserve : APObserve;

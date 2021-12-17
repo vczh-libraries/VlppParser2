@@ -298,9 +298,14 @@ _FunctionBody
         (_FunctionStat : statement | ";") as partial FunctionDeclaration
     ;
 
+_FunctionKind
+    ::= "static" as partial FunctionDeclaration {functionKind = Static}
+    ::= "override" as partial FunctionDeclaration {functionKind = Override}
+    ;
+
 _Function
-    ::= "func" NAME : name _FunctionBody as FunctionDeclaration {anonymity = Named}
-    ::= "func" _FunctionBody as FunctionDeclaration {anonymity = Anonymous}
+    ::= [_FunctionKind] "func" NAME : name _FunctionBody as FunctionDeclaration {anonymity = Named}
+    ::= [_FunctionKind] "func" _FunctionBody as FunctionDeclaration {anonymity = Anonymous}
     ;
 
 _Variable
@@ -385,8 +390,13 @@ _APConfig
             {configConst = Readonly, configObserve = NotObservable}
     ;
 
+_AutoPropertyKind
+    ::= "static" as partial AutoPropertyDeclaration {functionKind = Static}
+    ::= "override" as partial AutoPropertyDeclaration {functionKind = Override}
+    ;
+
 _AutoProperty
-    ::= "prop" NAME : name ":" _Type : type ["=" _Expression : expression] _APConfig as AutoPropertyDeclaration
+    ::= [_AutoPropertyKind] "prop" NAME : name ":" _Type : type ["=" _Expression : expression] _APConfig as AutoPropertyDeclaration
     ;
 
 _CastResultInterface
@@ -397,13 +407,7 @@ _CastResultInterface
 // Rule (Declaration -- Branches)
 //////////////////////////////////////////////////////////////////
 
-_MemberDeclarationBranch
-    ::= !_Function
-    ::= !_AutoProperty
-    ;
-
 _DeclarationBranch
-    ::= !_MemberDeclarationBranch
     ::= !_Namespace
     ::= !_Variable
     ::= !_Event
@@ -416,18 +420,18 @@ _DeclarationBranch
     ::= !_CastResultInterface
     ;
 
-_Declaration
-    ::= {_Attribute : attributes} !_DeclarationBranch {classMemberKind = Normal}
+_MemberDeclarationBranch
+    ::= !_DeclarationBranch
+    ::= !_Function
+    ::= !_AutoProperty
     ;
 
-_MemberDeclarationBody
-    ::= !_DeclarationBranch {classMemberKind = Normal}
-    ::= "static" !_MemberDeclarationBranch {classMemberKind = Static}
-    ::= "override" !_MemberDeclarationBranch {classMemberKind = Override}
+_Declaration
+    ::= {_Attribute : attributes} !_DeclarationBranch
     ;
 
 _MemberDeclaration
-    ::= {_Attribute : attributes} !_MemberDeclarationBody
+    ::= {_Attribute : attributes} !_MemberDeclarationBranch
     ;
 
 //////////////////////////////////////////////////////////////////
