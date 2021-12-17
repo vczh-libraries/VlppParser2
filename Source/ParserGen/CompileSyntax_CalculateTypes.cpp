@@ -72,8 +72,11 @@ CalculateRuleAndClauseTypes
 				pop.Sort();
 
 				// remove cyclic dependended rules from ruleReuseDependencies
+				List<List<RuleSymbol*>> cyclicReuseDependencies;
 				for (auto&& component : pop.components)
 				{
+					if (component.nodeCount == 1) continue;
+
 					for (vint i = 0; i < component.nodeCount - 1; i++)
 					{
 						for (vint j = i + 1; j < component.nodeCount; j++)
@@ -84,6 +87,13 @@ CalculateRuleAndClauseTypes
 							context.ruleReuseDependencies.Remove(r2, r1);
 						}
 					}
+
+					List<RuleSymbol*> cyclicRules;
+					for (vint i = 0; i < component.nodeCount; i++)
+					{
+						cyclicRules.Add(rules[component.firstNode[i]]);
+					}
+					cyclicReuseDependencies.Add(std::move(cyclicRules));
 				}
 
 				// calculate types for rules from clauses with known types
@@ -130,7 +140,7 @@ CalculateRuleAndClauseTypes
 									context.global.AddError(
 										ParserErrorType::RuleCannotResolveToDeterministicType,
 										rule->Name()
-									);
+										);
 									break;
 								}
 							}
@@ -138,6 +148,34 @@ CalculateRuleAndClauseTypes
 					}
 				}
 				if (context.global.Errors().Count() > 0) return;
+
+				// calculate types for rules that contain cyclic reuse dependency
+				for (auto&& cyclicRules : cyclicReuseDependencies)
+				{
+					AstClassSymbol* type = nullptr;
+					for (auto rule : cyclicRules)
+					{
+						type = FindCommonBaseClass(type, rule->ruleType);
+					}
+
+					if (!type)
+					{
+						for (auto rule : cyclicRules)
+						{
+							context.global.AddError(
+								ParserErrorType::CyclicDependedRuleTypeIncompatible,
+								rule->Name()
+								);
+						}
+					}
+					else
+					{
+						for (auto rule : cyclicRules)
+						{
+							rule->ruleType = type;
+						}
+					}
+				}
 
 				// prompt errors
 				for (auto rule : rules)
