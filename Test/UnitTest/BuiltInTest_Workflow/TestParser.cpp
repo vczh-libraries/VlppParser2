@@ -20,18 +20,53 @@ TEST_FILE
 	Regex regexCaseName(L"^(-)?(<name>/w+)(@/d+)?(/=/.*)?$");
 	vint NAME = regexCaseName.CaptureNames().IndexOf(L"name");
 
+	WString indexName;
+	WString caseName;
+
+	parser.OnEndOfInput.Add(
+		[&](List<RegexToken>& tokens, Executable& executable, TraceManager& tm, Trace* rootTrace)
+		{
+			LogTraceManager(
+				L"BuiltIn-Workflow",
+				indexName + L"_" + caseName,
+				executable,
+				tm,
+				rootTrace,
+				tokens,
+				[=](vint32_t type) { return WString::Unmanaged(WorkflowTypeName((WorkflowClasses)type)); },
+				[=](vint32_t field) { return WString::Unmanaged(WorkflowFieldName((WorkflowFields)field)); },
+				[=](vint32_t token) { return WString::Unmanaged(WorkflowTokenId((WorkflowTokens)token)); },
+				[=](vint32_t rule) { return WString::Unmanaged(ParserRuleName(rule)); },
+				[=](vint32_t state) { return WString::Unmanaged(ParserStateLabel(state)); }
+			);
+
+			if (tm.concurrentCount == 1)
+			{
+				LogTraceExecution(
+					L"BuiltIn-Workflow",
+					indexName + L"_" + caseName,
+					[=](vint32_t type) { return WString::Unmanaged(WorkflowTypeName((WorkflowClasses)type)); },
+					[=](vint32_t field) { return WString::Unmanaged(WorkflowFieldName((WorkflowFields)field)); },
+					[=](vint32_t token) { return WString::Unmanaged(WorkflowTokenId((WorkflowTokens)token)); },
+					[&](IAstInsReceiver& receiver)
+					{
+						tm.ExecuteTrace(rootTrace, receiver, tokens);
+					});
+			}
+		});
+
 	for (auto indexFile : indexFiles)
 	{
-		WString indexName = indexFile.GetFilePath().GetName();
+		indexName = indexFile.GetFilePath().GetName();
 		indexName = indexName.Sub(5, indexName.Length() - 9);
 
 		TEST_CATEGORY(L"Test Workflow on Index: " + indexName)
 		{
-			List<WString> caseNames;
-			indexFile.ReadAllLinesByBom(caseNames);
-			for (auto caseName : caseNames)
+			List<WString> caseDescs;
+			indexFile.ReadAllLinesByBom(caseDescs);
+			for (auto caseDesc : caseDescs)
 			{
-				auto match = regexCaseName.MatchHead(caseName);
+				auto match = regexCaseName.MatchHead(caseDesc);
 				caseName = match->Groups()[NAME][0].Value();
 
 				TEST_CASE(caseName)
