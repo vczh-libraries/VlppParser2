@@ -26,8 +26,8 @@ Input
 				for (vint32_t traceIndex = 0; traceIndex < traceCount; traceIndex++)
 				{
 					auto trace = concurrentTraces->Get(traceIndex);
-					vint32_t transactionIndex = trace->state * (Executable::TokenBegin + executable.tokenCount) + input;
-					auto&& edgeArray = executable.transitions[transactionIndex];
+					vint32_t transitionIndex = trace->state * (Executable::TokenBegin + executable.tokenCount) + input;
+					auto&& edgeArray = executable.transitions[transitionIndex];
 					WalkAlongTokenEdges(currentTokenIndex, input, lookAhead, trace, edgeArray);
 				}
 

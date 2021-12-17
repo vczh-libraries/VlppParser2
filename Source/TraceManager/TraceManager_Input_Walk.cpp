@@ -116,10 +116,21 @@ TraceManager::WalkAlongEpsilonEdges
 				EdgeArray& edgeArray
 			)
 			{
+				// if there is no more token
+				// then it is not possible for more left recursions
+				if (lookAhead == -1) return;
+
 				for (vint32_t edgeRef = 0; edgeRef < edgeArray.count; edgeRef++)
 				{
 					vint32_t byEdge = edgeArray.start + edgeRef;
 					auto& edgeDesc = executable.edges[edgeArray.start + edgeRef];
+
+					// see if the target state could consume that token
+					vint32_t lookAheadTransitionIndex = edgeDesc.toState * (Executable::TokenBegin + executable.tokenCount) + (Executable::TokenBegin + lookAhead);
+					auto& lookAheadEdgeArray = executable.transitions[lookAheadTransitionIndex];
+					if (lookAheadEdgeArray.count == 0) continue;
+
+					// proceed only if it can
 					WalkAlongSingleEdge(currentTokenIndex, Executable::LeftrecInput, trace, byEdge, edgeDesc);
 
 					// A LeftrecInput transition points to a non ending state in another clause
@@ -154,14 +165,14 @@ TraceManager::WalkAlongEpsilonEdges
 			{
 				{
 					// LeftrecInput transition is an epsilon transition
-					vint32_t transactionIndex = trace->state * (Executable::TokenBegin + executable.tokenCount) + Executable::LeftrecInput;
-					auto&& edgeArray = executable.transitions[transactionIndex];
+					vint32_t transitionIndex = trace->state * (Executable::TokenBegin + executable.tokenCount) + Executable::LeftrecInput;
+					auto&& edgeArray = executable.transitions[transitionIndex];
 					WalkAlongLeftrecEdges(currentTokenIndex, lookAhead, trace, edgeArray);
 				}
 				{
 					// EndingInput transition is an epsilon transition
-					vint32_t transactionIndex = trace->state * (Executable::TokenBegin + executable.tokenCount) + Executable::EndingInput;
-					auto&& edgeArray = executable.transitions[transactionIndex];
+					vint32_t transitionIndex = trace->state * (Executable::TokenBegin + executable.tokenCount) + Executable::EndingInput;
+					auto&& edgeArray = executable.transitions[transitionIndex];
 					WalkAlongEndingEdges(currentTokenIndex, lookAhead, trace, edgeArray);
 				}
 			}
