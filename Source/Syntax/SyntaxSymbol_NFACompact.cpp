@@ -246,10 +246,9 @@ SyntaxSymbolManager::EliminateLeftRecursion
 				List<EdgeSymbol*> lrecEdges;
 				for (auto edge : startState->OutEdges())
 				{
-					if (edge->input.type == EdgeInputType::Rule && edge->input.rule == rule)
-					{
-						lrecEdges.Add(edge);
-					}
+					if (edge->input.type != EdgeInputType::Rule) continue;
+					if (edge->input.rule != rule) continue;
+					lrecEdges.Add(edge);
 				}
 
 				for (auto lrecEdge : lrecEdges)
@@ -283,6 +282,7 @@ SyntaxSymbolManager::EliminateEpsilonEdges
 				for (auto edge : startState->OutEdges())
 				{
 					if (edge->input.type != EdgeInputType::Rule) continue;
+					if (edge->input.rule == rule) continue;
 					auto state = edge->To();
 					if (state->InEdges().Count() > 1) continue;
 
@@ -312,6 +312,8 @@ SyntaxSymbolManager::EliminateEpsilonEdges
 
 				for (auto continuationEdge : continuationEdges)
 				{
+					vint prefixIndex = prefixEdges.Keys().IndexOf(continuationEdge->input.rule);
+					if (prefixIndex == -1) continue;
 					continuationEdge->From()->outEdges.Remove(continuationEdge);
 					continuationEdge->To()->inEdges.Remove(continuationEdge);
 					newEdges.Remove(continuationEdge);
