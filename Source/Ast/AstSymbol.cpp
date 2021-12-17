@@ -231,6 +231,25 @@ FindCommonBaseClass
 			}
 
 /***********************************************************************
+FindPropSymbol
+***********************************************************************/
+				
+			AstClassPropSymbol* FindPropSymbol(AstClassSymbol*& type, const WString& name)
+			{
+				auto currentType = type;
+				while (currentType)
+				{
+					vint index = currentType->Props().Keys().IndexOf(name);
+					if (index != -1)
+					{
+						return currentType->Props().Values()[index];
+					}
+					currentType = currentType->baseClass;
+				}
+				return nullptr;
+			}
+
+/***********************************************************************
 AstDefFile
 ***********************************************************************/
 

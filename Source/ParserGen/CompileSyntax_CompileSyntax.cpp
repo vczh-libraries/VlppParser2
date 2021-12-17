@@ -109,7 +109,7 @@ CompileSyntaxVisitor
 								edge->input.token = (vint32_t)index;
 								if (node->field)
 								{
-									auto propSymbol = clauseType->Props()[node->field.value];
+									auto propSymbol = FindPropSymbol(clauseType, node->field.value);
 									edge->insAfterInput.Add({ AstInsType::Token });
 									edge->insAfterInput.Add({ AstInsType::Field,context.output->fieldIds[propSymbol] });
 								}
@@ -137,7 +137,7 @@ CompileSyntaxVisitor
 								edge->input.rule = rule;
 								if (node->field)
 								{
-									auto propSymbol = clauseType->Props()[node->field.value];
+									auto propSymbol = FindPropSymbol(clauseType, node->field.value);
 									edge->insAfterInput.Add({ AstInsType::Field,context.output->fieldIds[propSymbol] });
 								}
 								else if (!rule->isPartial)
@@ -313,7 +313,7 @@ CompileSyntaxVisitor
 					auto withState = CreateState();
 					auto edge = CreateEdge(pair.end, withState);
 
-					auto propSymbol = clauseType->Props()[node->field.value];
+					auto propSymbol = FindPropSymbol(clauseType, node->field.value);
 					auto enumSymbol = dynamic_cast<AstEnumSymbol*>(propSymbol->propSymbol);
 					edge->insBeforeInput.Add({ AstInsType::EnumItem,(vint32_t)enumSymbol->ItemOrder().IndexOf(node->value.value) });
 					edge->insBeforeInput.Add({ AstInsType::Field,context.output->fieldIds[propSymbol] });

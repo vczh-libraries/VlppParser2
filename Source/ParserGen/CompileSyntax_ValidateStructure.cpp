@@ -64,7 +64,7 @@ ValidateStructureCountingVisitor
 
 						if (node->field)
 						{
-							auto prop = clauseType->Props()[node->field.value];
+							auto prop = FindPropSymbol(clauseType, node->field.value);
 							if (prop->propType != AstPropType::Array)
 							{
 								context.global.AddError(
@@ -535,7 +535,7 @@ ValidateStructureRelationshipVisitor
 					auto clauseType = context.clauseTypes[clause];
 					for (auto [key, value] : counters)
 					{
-						auto prop = clauseType->Props()[key];
+						auto prop = FindPropSymbol(clauseType, key);
 						if (prop->propType != AstPropType::Array && value > 1)
 						{
 							context.global.AddError(

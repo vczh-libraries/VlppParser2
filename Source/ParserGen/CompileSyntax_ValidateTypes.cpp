@@ -23,33 +23,27 @@ ValidateTypesVisitor
 				RuleSymbol*					ruleSymbol;
 				GlrClause*					clause = nullptr;
 				
-
 				AstClassPropSymbol* FindField(AstClassSymbol*& clauseType, const WString& name)
 				{
 					clauseType = context.clauseTypes[clause];
-					auto currentType = clauseType;
-					while (currentType)
+					if (auto prop = FindPropSymbol(clauseType, name))
 					{
-						vint index = currentType->Props().Keys().IndexOf(name);
-						if (index != -1)
+						if (prop->propType != AstPropType::Array)
 						{
-							auto prop = currentType->Props().Values()[index];
-							if (prop->propType != AstPropType::Array)
-							{
-								ruleSymbol->assignedNonArrayField = true;
-							}
-							return prop;
+							ruleSymbol->assignedNonArrayField = true;
 						}
-						currentType = currentType->baseClass;
+						return prop;
 					}
-
-					context.global.AddError(
-						ParserErrorType::FieldNotExistsInClause,
-						ruleSymbol->Name(),
-						clauseType->Name(),
-						name
-						);
-					return nullptr;
+					else
+					{
+						context.global.AddError(
+							ParserErrorType::FieldNotExistsInClause,
+							ruleSymbol->Name(),
+							clauseType->Name(),
+							name
+							);
+						return nullptr;
+					}
 				}
 
 				bool ConvertibleTo(AstClassSymbol* from, AstClassSymbol* to)

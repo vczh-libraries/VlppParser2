@@ -111,6 +111,7 @@ AstClassSymbol
 			};
 
 			extern AstClassSymbol*					FindCommonBaseClass(AstClassSymbol* c1, AstClassSymbol* c2);
+			extern AstClassPropSymbol*				FindPropSymbol(AstClassSymbol*& type, const WString& name);
 
 /***********************************************************************
 AstDefFile
