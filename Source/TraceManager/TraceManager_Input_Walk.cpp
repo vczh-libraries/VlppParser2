@@ -123,7 +123,7 @@ TraceManager::WalkAlongEpsilonEdges
 				for (vint32_t edgeRef = 0; edgeRef < edgeArray.count; edgeRef++)
 				{
 					vint32_t byEdge = edgeArray.start + edgeRef;
-					auto& edgeDesc = executable.edges[edgeArray.start + edgeRef];
+					auto& edgeDesc = executable.edges[byEdge];
 
 					// see if the target state could consume that token
 					vint32_t lookAheadTransitionIndex = edgeDesc.toState * (Executable::TokenBegin + executable.tokenCount) + (Executable::TokenBegin + lookAhead);
@@ -138,42 +138,40 @@ TraceManager::WalkAlongEpsilonEdges
 				}
 			}
 
-			void TraceManager::WalkAlongEndingEdges(
-				vint32_t currentTokenIndex,
-				vint32_t lookAhead,
-				Trace* trace,
-				EdgeArray& edgeArray
-			)
-			{
-				for (vint32_t edgeRef = 0; edgeRef < edgeArray.count; edgeRef++)
-				{
-					vint32_t byEdge = edgeArray.start + edgeRef;
-					auto& edgeDesc = executable.edges[edgeArray.start + edgeRef];
-					if (auto newTrace = WalkAlongSingleEdge(currentTokenIndex, Executable::EndingInput, trace, byEdge, edgeDesc))
-					{
-						// EndingInput could be followed by EndingInput or LeftrecInput
-						WalkAlongEpsilonEdges(currentTokenIndex, lookAhead, newTrace);
-					}
-				}
-			}
-
 			void TraceManager::WalkAlongEpsilonEdges(
 				vint32_t currentTokenIndex,
 				vint32_t lookAhead,
 				Trace* trace
 			)
 			{
+				while (trace)
 				{
-					// LeftrecInput transition is an epsilon transition
-					vint32_t transitionIndex = trace->state * (Executable::TokenBegin + executable.tokenCount) + Executable::LeftrecInput;
-					auto&& edgeArray = executable.transitions[transitionIndex];
-					WalkAlongLeftrecEdges(currentTokenIndex, lookAhead, trace, edgeArray);
-				}
-				{
+					{
+						// LeftrecInput transition is an epsilon transition
+						vint32_t transitionIndex = trace->state * (Executable::TokenBegin + executable.tokenCount) + Executable::LeftrecInput;
+						auto&& edgeArray = executable.transitions[transitionIndex];
+						WalkAlongLeftrecEdges(currentTokenIndex, lookAhead, trace, edgeArray);
+					}
+
 					// EndingInput transition is an epsilon transition
 					vint32_t transitionIndex = trace->state * (Executable::TokenBegin + executable.tokenCount) + Executable::EndingInput;
 					auto&& edgeArray = executable.transitions[transitionIndex];
-					WalkAlongEndingEdges(currentTokenIndex, lookAhead, trace, edgeArray);
+
+					// at most one EndingInput transition could exist from any state
+					CHECK_ERROR(edgeArray.count < 2, L"vl::glr::automaton::TraceManager::WalkAlongEpsilonEdges(vint32_t, vint32_t, Trace*)#Too many EndingInput transitions.");
+
+					if (edgeArray.count == 0)
+					{
+						trace = nullptr;
+					}
+					else
+					{
+						vint32_t byEdge = edgeArray.start;
+						auto& edgeDesc = executable.edges[byEdge];
+						trace = WalkAlongSingleEdge(currentTokenIndex, Executable::EndingInput, trace, byEdge, edgeDesc);
+
+						// EndingInput could be followed by EndingInput or LeftrecInput
+					}
 				}
 			}
 

@@ -279,7 +279,6 @@ TraceManager
 				// Walk
 				Trace*								WalkAlongSingleEdge(vint32_t currentTokenIndex, vint32_t input, Trace* trace, vint32_t byEdge, EdgeDesc& edgeDesc);
 				void								WalkAlongLeftrecEdges(vint32_t currentTokenIndex, vint32_t lookAhead, Trace* trace, EdgeArray& edgeArray);
-				void								WalkAlongEndingEdges(vint32_t currentTokenIndex, vint32_t lookAhead, Trace* trace, EdgeArray& edgeArray);
 				void								WalkAlongEpsilonEdges(vint32_t currentTokenIndex, vint32_t lookAhead, Trace* trace);
 				void								WalkAlongTokenEdges(vint32_t currentTokenIndex, vint32_t input, vint32_t lookAhead, Trace* trace, EdgeArray& edgeArray);
 
