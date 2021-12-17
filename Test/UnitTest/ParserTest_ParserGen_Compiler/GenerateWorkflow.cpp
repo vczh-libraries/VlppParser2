@@ -35,7 +35,7 @@ TEST_FILE
 		auto actualJson = PrintAstJson<json_visitor::TypeAstVisitor>(astFile);
 		File(dirOutput / (L"Ast[BuiltIn-Workflow].txt")).WriteAllText(actualJson, true, BomEncoder::Utf8);
 	});
-/*
+
 	TEST_CASE(L"Parse Syntax.txt")
 	{
 		RuleParser ruleParser;
@@ -44,7 +44,7 @@ TEST_FILE
 		auto actualJson = PrintAstJson<json_visitor::RuleAstVisitor>(syntaxFile);
 		File(dirOutput / (L"Syntax[BuiltIn-Workflow].txt")).WriteAllText(actualJson, true, BomEncoder::Utf8);
 	});
-*/
+
 	ParserSymbolManager global;
 	AstSymbolManager astManager(global);
 	LexerSymbolManager lexerManager(global);
@@ -61,7 +61,7 @@ TEST_FILE
 	auto astDefFile = astManager.CreateFile(L"Ast");
 	auto output = GenerateParserFileNames(global);
 	GenerateAstFileNames(astManager, output);
-	//GenerateSyntaxFileNames(syntaxManager, output);
+	GenerateSyntaxFileNames(syntaxManager, output);
 
 	Dictionary<WString, WString> files;
 	TEST_CASE(L"CompilerAst")
