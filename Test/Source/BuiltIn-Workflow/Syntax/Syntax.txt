@@ -385,7 +385,7 @@ _CastResultInterface
 // Rule (Declaration -- Branches)
 //////////////////////////////////////////////////////////////////
 
-rule Declaration _SharedDeclarationBranch
+_SharedDeclarationBranch
     ::= !_Namespace
     ::= !_Variable
     ::= !_Event
@@ -398,43 +398,44 @@ rule Declaration _SharedDeclarationBranch
     ::= !_CastResultInterface
     ;
 
-rule Declaration _MemberDeclarationBranch
+_MemberDeclarationBranch
     ::= !_Function
     ::= !_AutoProperty
     ;
 
-rule Declaration _Declaration
-    ::= {_Attribute : attributes} !_SharedDeclarationBranch
-    ::= {_Attribute : attributes} !_MemberDeclarationBranch
+_Declaration
+    ::= {_Attribute : attributes} !_SharedDeclarationBranch {classMemberKind = Normal}
+    ::= {_Attribute : attributes} !_MemberDeclarationBranch {classMemberKind = Normal}
     ;
 
-rule ClassMember _ClassMember
-    ::=    "static" as ClassMember {kind = Static}
-    ::=    "override" as ClassMember {kind = Override}
-    ;
-
-rule Declaration _MemberDeclaration
-    ::= {_Attribute : attributes} !_SharedDeclarationBranch
-    ::= {_Attribute : attributes} [_ClassMember : classMember] !_MemberDeclarationBranch
+_MemberDeclaration
+    ::= !_Declaration
+    ::= {_Attribute : attributes} "static" !_MemberDeclarationBranch {classMemberKind = Static}
+    ::= {_Attribute : attributes} "override" !_MemberDeclarationBranch {classMemberKind = Override}
     ;
 
 //////////////////////////////////////////////////////////////////
 // Rule (Module)
 //////////////////////////////////////////////////////////////////
 
-rule ModuleUsingFragment _UsingFragment
+_UsingFragment
     ::= NAME : name as ModuleUsingNameFragment
     ::= "*" as ModuleUsingWildCardFragment
     ;
-rule ModuleUsingItem _UsingItem
+
+_UsingItem
     ::= _UsingFragment : fragments {_UsingFragment : fragments} as ModuleUsingItem
     ;
-rule ModuleUsingPath _UsingPath
+
+_UsingPath
     ::= "using" _UsingItem : items {"::" _UsingItem : items} ";" as ModuleUsingPath
     ;
-rule Module _Module
-    ::= (
-        ("module" {moduleType = Module})
-        | ("unit" {moduleType = Unit})
-        ) NAME : name ";" {_UsingPath : paths} {_Declaration : declarations} as Module
+
+_ModuleBody
+    ::= NAME : name ";" {_UsingPath : paths} {_Declaration : declarations} as partial Module
+    ;
+
+_Module
+    ::= "module" _ModuleBody as Module {moduleType = Module}
+    ::= "unit" _ModuleBody as Module {moduleType = Unit}
     ;
