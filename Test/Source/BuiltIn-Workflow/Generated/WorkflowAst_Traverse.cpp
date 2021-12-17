@@ -29,7 +29,6 @@ namespace vl
 				void AstVisitor::Traverse(WorkflowChildExpression* node) {}
 				void AstVisitor::Traverse(WorkflowChildType* node) {}
 				void AstVisitor::Traverse(WorkflowClassDeclaration* node) {}
-				void AstVisitor::Traverse(WorkflowClassMember* node) {}
 				void AstVisitor::Traverse(WorkflowCoOperatorExpression* node) {}
 				void AstVisitor::Traverse(WorkflowCoOperatorStatement* node) {}
 				void AstVisitor::Traverse(WorkflowCoPauseStatement* node) {}
@@ -141,7 +140,6 @@ namespace vl
 				void AstVisitor::Finishing(WorkflowChildExpression* node) {}
 				void AstVisitor::Finishing(WorkflowChildType* node) {}
 				void AstVisitor::Finishing(WorkflowClassDeclaration* node) {}
-				void AstVisitor::Finishing(WorkflowClassMember* node) {}
 				void AstVisitor::Finishing(WorkflowCoOperatorExpression* node) {}
 				void AstVisitor::Finishing(WorkflowCoOperatorStatement* node) {}
 				void AstVisitor::Finishing(WorkflowCoPauseStatement* node) {}
@@ -964,7 +962,6 @@ namespace vl
 					{
 						InspectInto(listItem.Obj());
 					}
-					InspectInto(node->classMember.Obj());
 					Traverse(node->name);
 					Finishing(static_cast<WorkflowNamespaceDeclaration*>(node));
 					Finishing(static_cast<WorkflowDeclaration*>(node));
@@ -987,7 +984,6 @@ namespace vl
 					{
 						InspectInto(listItem.Obj());
 					}
-					InspectInto(node->classMember.Obj());
 					Traverse(node->name);
 					Finishing(static_cast<WorkflowFunctionDeclaration*>(node));
 					Finishing(static_cast<WorkflowDeclaration*>(node));
@@ -1006,7 +1002,6 @@ namespace vl
 					{
 						InspectInto(listItem.Obj());
 					}
-					InspectInto(node->classMember.Obj());
 					Traverse(node->name);
 					Finishing(static_cast<WorkflowVariableDeclaration*>(node));
 					Finishing(static_cast<WorkflowDeclaration*>(node));
@@ -1027,7 +1022,6 @@ namespace vl
 					{
 						InspectInto(listItem.Obj());
 					}
-					InspectInto(node->classMember.Obj());
 					Traverse(node->name);
 					Finishing(static_cast<WorkflowEventDeclaration*>(node));
 					Finishing(static_cast<WorkflowDeclaration*>(node));
@@ -1048,7 +1042,6 @@ namespace vl
 					{
 						InspectInto(listItem.Obj());
 					}
-					InspectInto(node->classMember.Obj());
 					Traverse(node->name);
 					Finishing(static_cast<WorkflowPropertyDeclaration*>(node));
 					Finishing(static_cast<WorkflowDeclaration*>(node));
@@ -1074,7 +1067,6 @@ namespace vl
 					{
 						InspectInto(listItem.Obj());
 					}
-					InspectInto(node->classMember.Obj());
 					Traverse(node->name);
 					Finishing(static_cast<WorkflowConstructorDeclaration*>(node));
 					Finishing(static_cast<WorkflowDeclaration*>(node));
@@ -1092,7 +1084,6 @@ namespace vl
 					{
 						InspectInto(listItem.Obj());
 					}
-					InspectInto(node->classMember.Obj());
 					Traverse(node->name);
 					Finishing(static_cast<WorkflowDestructorDeclaration*>(node));
 					Finishing(static_cast<WorkflowDeclaration*>(node));
@@ -1117,7 +1108,6 @@ namespace vl
 					{
 						InspectInto(listItem.Obj());
 					}
-					InspectInto(node->classMember.Obj());
 					Traverse(node->name);
 					Finishing(static_cast<WorkflowClassDeclaration*>(node));
 					Finishing(static_cast<WorkflowDeclaration*>(node));
@@ -1138,7 +1128,6 @@ namespace vl
 					{
 						InspectInto(listItem.Obj());
 					}
-					InspectInto(node->classMember.Obj());
 					Traverse(node->name);
 					Finishing(static_cast<WorkflowEnumDeclaration*>(node));
 					Finishing(static_cast<WorkflowDeclaration*>(node));
@@ -1159,7 +1148,6 @@ namespace vl
 					{
 						InspectInto(listItem.Obj());
 					}
-					InspectInto(node->classMember.Obj());
 					Traverse(node->name);
 					Finishing(static_cast<WorkflowStructDeclaration*>(node));
 					Finishing(static_cast<WorkflowDeclaration*>(node));
@@ -1193,7 +1181,6 @@ namespace vl
 					{
 						InspectInto(listItem.Obj());
 					}
-					InspectInto(node->classMember.Obj());
 					Traverse(node->name);
 					Finishing(static_cast<WorkflowAutoPropertyDeclaration*>(node));
 					Finishing(static_cast<WorkflowVirtualCfeDeclaration*>(node));
@@ -1218,7 +1205,6 @@ namespace vl
 					{
 						InspectInto(listItem.Obj());
 					}
-					InspectInto(node->classMember.Obj());
 					Traverse(node->name);
 					Finishing(static_cast<WorkflowCastResultInterfaceDeclaration*>(node));
 					Finishing(static_cast<WorkflowVirtualCfeDeclaration*>(node));
@@ -1249,7 +1235,6 @@ namespace vl
 					{
 						InspectInto(listItem.Obj());
 					}
-					InspectInto(node->classMember.Obj());
 					Traverse(node->name);
 					Finishing(static_cast<WorkflowStateMachineDeclaration*>(node));
 					Finishing(static_cast<WorkflowVirtualCseDeclaration*>(node));
@@ -1521,15 +1506,6 @@ namespace vl
 				{
 					if (!node) return;
 					node->Accept(static_cast<WorkflowModuleUsingFragment::IVisitor*>(this));
-				}
-
-				void AstVisitor::InspectInto(WorkflowClassMember* node)
-				{
-					if (!node) return;
-					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowClassMember*>(node));
-					Finishing(static_cast<WorkflowClassMember*>(node));
-					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
 				void AstVisitor::InspectInto(WorkflowAttribute* node)

@@ -142,15 +142,6 @@ namespace vl
 					ClassDeclarationBuilder& kind(WorkflowClassKind value);
 				};
 
-				class ClassMemberBuilder
-				{
-				private:
-					WorkflowClassMember* node;
-				public:
-					ClassMemberBuilder(WorkflowClassMember* _node) : node(_node) {}
-					ClassMemberBuilder& kind(WorkflowClassMemberKind value);
-				};
-
 				class CoOperatorExpressionBuilder
 				{
 				private:
@@ -228,7 +219,7 @@ namespace vl
 				public:
 					DeclarationBuilder(WorkflowDeclaration* _node) : node(_node) {}
 					DeclarationBuilder& attributes(const vl::Ptr<WorkflowAttribute>& value);
-					DeclarationBuilder& classMember(const vl::Ptr<WorkflowClassMember>& value);
+					DeclarationBuilder& classMemberKind(WorkflowClassMemberKind value);
 					DeclarationBuilder& name(const vl::WString& value);
 				};
 
@@ -1027,7 +1018,6 @@ namespace vl
 				using MakeChildExpression = vl::glr::ParsingAstBuilder<WorkflowChildExpression, ChildExpressionBuilder>;
 				using MakeChildType = vl::glr::ParsingAstBuilder<WorkflowChildType, ChildTypeBuilder>;
 				using MakeClassDeclaration = vl::glr::ParsingAstBuilder<WorkflowClassDeclaration, ClassDeclarationBuilder, DeclarationBuilder>;
-				using MakeClassMember = vl::glr::ParsingAstBuilder<WorkflowClassMember, ClassMemberBuilder>;
 				using MakeCoOperatorExpression = vl::glr::ParsingAstBuilder<WorkflowCoOperatorExpression, CoOperatorExpressionBuilder, VirtualCseExpressionBuilder>;
 				using MakeCoOperatorStatement = vl::glr::ParsingAstBuilder<WorkflowCoOperatorStatement, CoOperatorStatementBuilder>;
 				using MakeCoPauseStatement = vl::glr::ParsingAstBuilder<WorkflowCoPauseStatement, CoPauseStatementBuilder>;

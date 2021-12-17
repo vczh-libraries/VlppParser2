@@ -29,7 +29,6 @@ namespace vl
 			class WorkflowChildExpression;
 			class WorkflowChildType;
 			class WorkflowClassDeclaration;
-			class WorkflowClassMember;
 			class WorkflowCoOperatorExpression;
 			class WorkflowCoOperatorStatement;
 			class WorkflowCoPauseStatement;
@@ -318,12 +317,6 @@ namespace vl
 				Unit = 1,
 			};
 
-			class WorkflowClassMember : public vl::glr::ParsingAstBase, vl::reflection::Description<WorkflowClassMember>
-			{
-			public:
-				WorkflowClassMemberKind kind = WorkflowClassMemberKind::UNDEFINED_ENUM_ITEM_VALUE;
-			};
-
 			class WorkflowType abstract : public vl::glr::ParsingAstBase, vl::reflection::Description<WorkflowType>
 			{
 			public:
@@ -450,7 +443,7 @@ namespace vl
 
 				vl::collections::List<vl::Ptr<WorkflowAttribute>> attributes;
 				vl::glr::ParsingToken name;
-				vl::Ptr<WorkflowClassMember> classMember;
+				WorkflowClassMemberKind classMemberKind = WorkflowClassMemberKind::UNDEFINED_ENUM_ITEM_VALUE;
 			};
 
 			class WorkflowPredefinedType : public WorkflowType, vl::reflection::Description<WorkflowPredefinedType>
@@ -1423,7 +1416,6 @@ namespace vl
 		{
 #ifndef VCZH_DEBUG_NO_REFLECTION
 			DECL_TYPE_INFO(vl::glr::workflow::WorkflowClassMemberKind)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowClassMember)
 			DECL_TYPE_INFO(vl::glr::workflow::WorkflowType)
 			DECL_TYPE_INFO(vl::glr::workflow::WorkflowType::IVisitor)
 			DECL_TYPE_INFO(vl::glr::workflow::WorkflowExpression)

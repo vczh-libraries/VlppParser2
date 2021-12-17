@@ -47,7 +47,6 @@ namespace vl
 					void CopyFields(WorkflowChildExpression* from, WorkflowChildExpression* to);
 					void CopyFields(WorkflowChildType* from, WorkflowChildType* to);
 					void CopyFields(WorkflowClassDeclaration* from, WorkflowClassDeclaration* to);
-					void CopyFields(WorkflowClassMember* from, WorkflowClassMember* to);
 					void CopyFields(WorkflowCoOperatorExpression* from, WorkflowCoOperatorExpression* to);
 					void CopyFields(WorkflowCoOperatorStatement* from, WorkflowCoOperatorStatement* to);
 					void CopyFields(WorkflowCoPauseStatement* from, WorkflowCoPauseStatement* to);
@@ -146,7 +145,6 @@ namespace vl
 					void CopyFields(WorkflowWhileStatement* from, WorkflowWhileStatement* to);
 
 				protected:
-					virtual void Visit(WorkflowClassMember* node);
 					virtual void Visit(WorkflowAttribute* node);
 					virtual void Visit(WorkflowFunctionArgument* node);
 					virtual void Visit(WorkflowBaseConstructorCall* node);
@@ -270,7 +268,6 @@ namespace vl
 					virtual vl::Ptr<WorkflowStatement> CopyNode(WorkflowStatement* node);
 					virtual vl::Ptr<WorkflowDeclaration> CopyNode(WorkflowDeclaration* node);
 					virtual vl::Ptr<WorkflowModuleUsingFragment> CopyNode(WorkflowModuleUsingFragment* node);
-					virtual vl::Ptr<WorkflowClassMember> CopyNode(WorkflowClassMember* node);
 					virtual vl::Ptr<WorkflowAttribute> CopyNode(WorkflowAttribute* node);
 					virtual vl::Ptr<WorkflowFunctionArgument> CopyNode(WorkflowFunctionArgument* node);
 					virtual vl::Ptr<WorkflowBaseConstructorCall> CopyNode(WorkflowBaseConstructorCall* node);

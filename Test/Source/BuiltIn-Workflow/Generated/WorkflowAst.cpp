@@ -467,7 +467,6 @@ namespace vl
 #ifndef VCZH_DEBUG_NO_REFLECTION
 
 			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WorkflowClassMemberKind, system::workflow::WorkflowClassMemberKind)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WorkflowClassMember, system::workflow::WorkflowClassMember)
 			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WorkflowType, system::workflow::WorkflowType)
 			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WorkflowType::IVisitor, system::workflow::WorkflowType::IVisitor)
 			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WorkflowExpression, system::workflow::WorkflowExpression)
@@ -620,14 +619,6 @@ namespace vl
 				ENUM_NAMESPACE_ITEM(Normal)
 			END_ENUM_ITEM(vl::glr::workflow::WorkflowClassMemberKind)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WorkflowClassMember)
-				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
-
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WorkflowClassMember>(), NO_PARAMETER)
-
-				CLASS_MEMBER_FIELD(kind)
-			END_CLASS_MEMBER(vl::glr::workflow::WorkflowClassMember)
-
 			BEGIN_CLASS_MEMBER(vl::glr::workflow::WorkflowType)
 				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
@@ -658,7 +649,7 @@ namespace vl
 
 				CLASS_MEMBER_FIELD(attributes)
 				CLASS_MEMBER_FIELD(name)
-				CLASS_MEMBER_FIELD(classMember)
+				CLASS_MEMBER_FIELD(classMemberKind)
 			END_CLASS_MEMBER(vl::glr::workflow::WorkflowDeclaration)
 
 			BEGIN_ENUM_ITEM(vl::glr::workflow::WorkflowPredefinedTypeName)
@@ -1858,7 +1849,6 @@ namespace vl
 				void Load(ITypeManager* manager)
 				{
 					ADD_TYPE_INFO(vl::glr::workflow::WorkflowClassMemberKind)
-					ADD_TYPE_INFO(vl::glr::workflow::WorkflowClassMember)
 					ADD_TYPE_INFO(vl::glr::workflow::WorkflowType)
 					ADD_TYPE_INFO(vl::glr::workflow::WorkflowType::IVisitor)
 					ADD_TYPE_INFO(vl::glr::workflow::WorkflowExpression)

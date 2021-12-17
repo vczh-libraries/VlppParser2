@@ -238,16 +238,6 @@ ClassDeclarationBuilder
 				}
 
 /***********************************************************************
-ClassMemberBuilder
-***********************************************************************/
-
-				ClassMemberBuilder& ClassMemberBuilder::kind(WorkflowClassMemberKind value)
-				{
-					node->kind = value;
-					return *this;
-				}
-
-/***********************************************************************
 CoOperatorExpressionBuilder
 ***********************************************************************/
 
@@ -369,9 +359,9 @@ DeclarationBuilder
 					return *this;
 				}
 
-				DeclarationBuilder& DeclarationBuilder::classMember(const vl::Ptr<WorkflowClassMember>& value)
+				DeclarationBuilder& DeclarationBuilder::classMemberKind(WorkflowClassMemberKind value)
 				{
-					node->classMember = value;
+					node->classMemberKind = value;
 					return *this;
 				}
 

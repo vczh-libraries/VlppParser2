@@ -121,11 +121,6 @@ namespace vl
 					to->kind = from->kind;
 				}
 
-				void AstVisitor::CopyFields(WorkflowClassMember* from, WorkflowClassMember* to)
-				{
-					to->kind = from->kind;
-				}
-
 				void AstVisitor::CopyFields(WorkflowCoOperatorExpression* from, WorkflowCoOperatorExpression* to)
 				{
 					CopyFields(static_cast<WorkflowVirtualCseExpression*>(from), static_cast<WorkflowVirtualCseExpression*>(to));
@@ -202,7 +197,7 @@ namespace vl
 					{
 						to->attributes.Add(CopyNode(listItem.Obj()));
 					}
-					to->classMember = CopyNode(from->classMember.Obj());
+					to->classMemberKind = from->classMemberKind;
 					to->name = from->name;
 				}
 
@@ -851,13 +846,6 @@ namespace vl
 					CopyFields(static_cast<WorkflowStatement*>(from), static_cast<WorkflowStatement*>(to));
 					to->condition = CopyNode(from->condition.Obj());
 					to->statement = CopyNode(from->statement.Obj());
-				}
-
-				void AstVisitor::Visit(WorkflowClassMember* node)
-				{
-					auto newNode = vl::MakePtr<WorkflowClassMember>();
-					CopyFields(node, newNode.Obj());
-					this->result = newNode;
 				}
 
 				void AstVisitor::Visit(WorkflowAttribute* node)
@@ -1607,13 +1595,6 @@ namespace vl
 					if (!node) return nullptr;
 					node->Accept(static_cast<WorkflowModuleUsingFragment::IVisitor*>(this));
 					return this->result.Cast<WorkflowModuleUsingFragment>();
-				}
-
-				vl::Ptr<WorkflowClassMember> AstVisitor::CopyNode(WorkflowClassMember* node)
-				{
-					if (!node) return nullptr;
-					Visit(node);
-					return this->result.Cast<WorkflowClassMember>();
 				}
 
 				vl::Ptr<WorkflowAttribute> AstVisitor::CopyNode(WorkflowAttribute* node)

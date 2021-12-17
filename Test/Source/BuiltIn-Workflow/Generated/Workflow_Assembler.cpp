@@ -48,8 +48,6 @@ WorkflowAstInsReceiver : public vl::glr::AstInsReceiverBase
 					return new vl::glr::workflow::WorkflowChildType();
 				case WorkflowClasses::ClassDeclaration:
 					return new vl::glr::workflow::WorkflowClassDeclaration();
-				case WorkflowClasses::ClassMember:
-					return new vl::glr::workflow::WorkflowClassMember();
 				case WorkflowClasses::CoOperatorExpression:
 					return new vl::glr::workflow::WorkflowCoOperatorExpression();
 				case WorkflowClasses::CoOperatorStatement:
@@ -286,8 +284,6 @@ WorkflowAstInsReceiver : public vl::glr::AstInsReceiverBase
 					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WorkflowConstructorExpression::arguments, object, field, value, cppFieldName);
 				case WorkflowFields::Declaration_attributes:
 					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WorkflowDeclaration::attributes, object, field, value, cppFieldName);
-				case WorkflowFields::Declaration_classMember:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WorkflowDeclaration::classMember, object, field, value, cppFieldName);
 				case WorkflowFields::DeleteStatement_expression:
 					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WorkflowDeleteStatement::expression, object, field, value, cppFieldName);
 				case WorkflowFields::DestructorDeclaration_statement:
@@ -602,10 +598,10 @@ WorkflowAstInsReceiver : public vl::glr::AstInsReceiverBase
 					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WorkflowClassDeclaration::constructorType, object, field, enumItem, cppFieldName);
 				case WorkflowFields::ClassDeclaration_kind:
 					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WorkflowClassDeclaration::kind, object, field, enumItem, cppFieldName);
-				case WorkflowFields::ClassMember_kind:
-					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WorkflowClassMember::kind, object, field, enumItem, cppFieldName);
 				case WorkflowFields::ConstructorDeclaration_constructorType:
 					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WorkflowConstructorDeclaration::constructorType, object, field, enumItem, cppFieldName);
+				case WorkflowFields::Declaration_classMemberKind:
+					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WorkflowDeclaration::classMemberKind, object, field, enumItem, cppFieldName);
 				case WorkflowFields::EnumDeclaration_kind:
 					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WorkflowEnumDeclaration::kind, object, field, enumItem, cppFieldName);
 				case WorkflowFields::EnumItem_kind:
@@ -663,7 +659,6 @@ WorkflowAstInsReceiver : public vl::glr::AstInsReceiverBase
 					L"ChildExpression",
 					L"ChildType",
 					L"ClassDeclaration",
-					L"ClassMember",
 					L"CoOperatorExpression",
 					L"CoOperatorStatement",
 					L"CoPauseStatement",
@@ -762,7 +757,7 @@ WorkflowAstInsReceiver : public vl::glr::AstInsReceiverBase
 					L"WhileStatement",
 				};
 				vl::vint index = (vl::vint)type;
-				return 0 <= index && index < 110 ? results[index] : nullptr;
+				return 0 <= index && index < 109 ? results[index] : nullptr;
 			}
 
 			const wchar_t* WorkflowCppTypeName(WorkflowClasses type)
@@ -781,7 +776,6 @@ WorkflowAstInsReceiver : public vl::glr::AstInsReceiverBase
 					L"vl::glr::workflow::WorkflowChildExpression",
 					L"vl::glr::workflow::WorkflowChildType",
 					L"vl::glr::workflow::WorkflowClassDeclaration",
-					L"vl::glr::workflow::WorkflowClassMember",
 					L"vl::glr::workflow::WorkflowCoOperatorExpression",
 					L"vl::glr::workflow::WorkflowCoOperatorStatement",
 					L"vl::glr::workflow::WorkflowCoPauseStatement",
@@ -880,7 +874,7 @@ WorkflowAstInsReceiver : public vl::glr::AstInsReceiverBase
 					L"vl::glr::workflow::WorkflowWhileStatement",
 				};
 				vl::vint index = (vl::vint)type;
-				return 0 <= index && index < 110 ? results[index] : nullptr;
+				return 0 <= index && index < 109 ? results[index] : nullptr;
 			}
 
 			const wchar_t* WorkflowFieldName(WorkflowFields field)
@@ -915,7 +909,6 @@ WorkflowAstInsReceiver : public vl::glr::AstInsReceiverBase
 					L"ClassDeclaration::constructorType",
 					L"ClassDeclaration::declarations",
 					L"ClassDeclaration::kind",
-					L"ClassMember::kind",
 					L"CoOperatorExpression::name",
 					L"CoOperatorStatement::arguments",
 					L"CoOperatorStatement::opName",
@@ -931,7 +924,7 @@ WorkflowAstInsReceiver : public vl::glr::AstInsReceiverBase
 					L"ConstructorDeclaration::statement",
 					L"ConstructorExpression::arguments",
 					L"Declaration::attributes",
-					L"Declaration::classMember",
+					L"Declaration::classMemberKind",
 					L"Declaration::name",
 					L"DeleteStatement::expression",
 					L"DestructorDeclaration::statement",
@@ -1085,7 +1078,7 @@ WorkflowAstInsReceiver : public vl::glr::AstInsReceiverBase
 					L"WhileStatement::statement",
 				};
 				vl::vint index = (vl::vint)field;
-				return 0 <= index && index < 197 ? results[index] : nullptr;
+				return 0 <= index && index < 196 ? results[index] : nullptr;
 			}
 
 			const wchar_t* WorkflowCppFieldName(WorkflowFields field)
@@ -1120,7 +1113,6 @@ WorkflowAstInsReceiver : public vl::glr::AstInsReceiverBase
 					L"vl::glr::workflow::WorkflowClassDeclaration::constructorType",
 					L"vl::glr::workflow::WorkflowClassDeclaration::declarations",
 					L"vl::glr::workflow::WorkflowClassDeclaration::kind",
-					L"vl::glr::workflow::WorkflowClassMember::kind",
 					L"vl::glr::workflow::WorkflowCoOperatorExpression::name",
 					L"vl::glr::workflow::WorkflowCoOperatorStatement::arguments",
 					L"vl::glr::workflow::WorkflowCoOperatorStatement::opName",
@@ -1136,7 +1128,7 @@ WorkflowAstInsReceiver : public vl::glr::AstInsReceiverBase
 					L"vl::glr::workflow::WorkflowConstructorDeclaration::statement",
 					L"vl::glr::workflow::WorkflowConstructorExpression::arguments",
 					L"vl::glr::workflow::WorkflowDeclaration::attributes",
-					L"vl::glr::workflow::WorkflowDeclaration::classMember",
+					L"vl::glr::workflow::WorkflowDeclaration::classMemberKind",
 					L"vl::glr::workflow::WorkflowDeclaration::name",
 					L"vl::glr::workflow::WorkflowDeleteStatement::expression",
 					L"vl::glr::workflow::WorkflowDestructorDeclaration::statement",
@@ -1290,7 +1282,7 @@ WorkflowAstInsReceiver : public vl::glr::AstInsReceiverBase
 					L"vl::glr::workflow::WorkflowWhileStatement::statement",
 				};
 				vl::vint index = (vl::vint)field;
-				return 0 <= index && index < 197 ? results[index] : nullptr;
+				return 0 <= index && index < 196 ? results[index] : nullptr;
 			}
 
 			vl::Ptr<vl::glr::ParsingAstBase> WorkflowAstInsReceiver::ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates)

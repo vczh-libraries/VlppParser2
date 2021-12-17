@@ -288,25 +288,6 @@ namespace vl
 					}
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowClassMember* node)
-				{
-					BeginField(L"kind");
-					switch (node->kind)
-					{
-					case vl::glr::workflow::WorkflowClassMemberKind::Normal:
-						WriteString(L"Normal");
-						break;
-					case vl::glr::workflow::WorkflowClassMemberKind::Override:
-						WriteString(L"Override");
-						break;
-					case vl::glr::workflow::WorkflowClassMemberKind::Static:
-						WriteString(L"Static");
-						break;
-					default:
-						WriteNull();
-					}
-					EndField();
-				}
 				void AstVisitor::PrintFields(WorkflowCoOperatorExpression* node)
 				{
 					BeginField(L"name");
@@ -429,8 +410,21 @@ namespace vl
 					}
 					EndArray();
 					EndField();
-					BeginField(L"classMember");
-					Print(node->classMember.Obj());
+					BeginField(L"classMemberKind");
+					switch (node->classMemberKind)
+					{
+					case vl::glr::workflow::WorkflowClassMemberKind::Normal:
+						WriteString(L"Normal");
+						break;
+					case vl::glr::workflow::WorkflowClassMemberKind::Override:
+						WriteString(L"Override");
+						break;
+					case vl::glr::workflow::WorkflowClassMemberKind::Static:
+						WriteString(L"Static");
+						break;
+					default:
+						WriteNull();
+					}
 					EndField();
 					BeginField(L"name");
 					WriteToken(node->name);
@@ -2804,19 +2798,6 @@ namespace vl
 						return;
 					}
 					node->Accept(static_cast<WorkflowModuleUsingFragment::IVisitor*>(this));
-				}
-
-				void AstVisitor::Print(WorkflowClassMember* node)
-				{
-					if (!node)
-					{
-						WriteNull();
-						return;
-					}
-					BeginObject();
-					WriteType(L"ClassMember", node);
-					PrintFields(static_cast<WorkflowClassMember*>(node));
-					EndObject();
 				}
 
 				void AstVisitor::Print(WorkflowAttribute* node)

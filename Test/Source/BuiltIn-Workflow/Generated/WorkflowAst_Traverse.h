@@ -49,7 +49,6 @@ namespace vl
 					virtual void Traverse(WorkflowChildExpression* node);
 					virtual void Traverse(WorkflowChildType* node);
 					virtual void Traverse(WorkflowClassDeclaration* node);
-					virtual void Traverse(WorkflowClassMember* node);
 					virtual void Traverse(WorkflowCoOperatorExpression* node);
 					virtual void Traverse(WorkflowCoOperatorStatement* node);
 					virtual void Traverse(WorkflowCoPauseStatement* node);
@@ -162,7 +161,6 @@ namespace vl
 					virtual void Finishing(WorkflowChildExpression* node);
 					virtual void Finishing(WorkflowChildType* node);
 					virtual void Finishing(WorkflowClassDeclaration* node);
-					virtual void Finishing(WorkflowClassMember* node);
 					virtual void Finishing(WorkflowCoOperatorExpression* node);
 					virtual void Finishing(WorkflowCoOperatorStatement* node);
 					virtual void Finishing(WorkflowCoPauseStatement* node);
@@ -367,7 +365,6 @@ namespace vl
 					void InspectInto(WorkflowStatement* node);
 					void InspectInto(WorkflowDeclaration* node);
 					void InspectInto(WorkflowModuleUsingFragment* node);
-					void InspectInto(WorkflowClassMember* node);
 					void InspectInto(WorkflowAttribute* node);
 					void InspectInto(WorkflowFunctionArgument* node);
 					void InspectInto(WorkflowBaseConstructorCall* node);

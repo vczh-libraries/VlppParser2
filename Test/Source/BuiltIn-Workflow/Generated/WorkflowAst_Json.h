@@ -47,7 +47,6 @@ namespace vl
 					virtual void PrintFields(WorkflowChildExpression* node);
 					virtual void PrintFields(WorkflowChildType* node);
 					virtual void PrintFields(WorkflowClassDeclaration* node);
-					virtual void PrintFields(WorkflowClassMember* node);
 					virtual void PrintFields(WorkflowCoOperatorExpression* node);
 					virtual void PrintFields(WorkflowCoOperatorStatement* node);
 					virtual void PrintFields(WorkflowCoPauseStatement* node);
@@ -254,7 +253,6 @@ namespace vl
 					void Print(WorkflowStatement* node);
 					void Print(WorkflowDeclaration* node);
 					void Print(WorkflowModuleUsingFragment* node);
-					void Print(WorkflowClassMember* node);
 					void Print(WorkflowAttribute* node);
 					void Print(WorkflowFunctionArgument* node);
 					void Print(WorkflowBaseConstructorCall* node);
