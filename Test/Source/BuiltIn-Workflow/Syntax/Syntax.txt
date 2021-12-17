@@ -250,15 +250,15 @@ _Statement
 // Rule (Declaration -- State Machine)
 //////////////////////////////////////////////////////////////////
 
-rule StateInput _StateInput
-    ::= "$state_input" NAME : name "(" [_FunctionArgument : arguments {"," _FunctionArgument : arguments}] ")" ";" as StateInput
+_StateInput
+    ::= "$state_input" NAME : name "(" {_FunctionArgument : arguments ; ","} ")" ";" as StateInput
     ;
 
-rule StateDeclaration _StateDecl
-    ::= "$state" ("default" | NAME : name) "(" [_FunctionArgument : arguments {"," _FunctionArgument : arguments}] ")" _Block : statement as StateDeclaration
+_StateDecl
+    ::= "$state" ("default" | NAME : name) "(" {_FunctionArgument : arguments ; ","} ")" _Block : statement as StateDeclaration
     ;
 
-rule StateMachineDeclaration _StateMachine
+_StateMachine
     ::= "$state_machine" "{" { _StateInput : inputs | _StateDecl : states} "}" as StateMachineDeclaration
     ;
 
