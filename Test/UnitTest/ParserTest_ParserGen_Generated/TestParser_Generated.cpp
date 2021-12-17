@@ -8,6 +8,8 @@
 #include "../../Source/GenericAmbiguity/Generated/GenericAmbiguityModuleParser.h"
 #include "../../Source/FeatureTest/Generated/FeatureTestFeatureAst_Json.h"
 #include "../../Source/FeatureTest/Generated/FeatureTestModuleParser.h"
+#include "../../Source/BinaryOp/Generated/BinaryOpExprAst_Json.h"
+#include "../../Source/BinaryOp/Generated/BinaryOpModuleParser.h"
 #include "../../Source/LogTrace.h"
 
 extern WString GetTestParserInputPath(const WString& parserName);
@@ -147,5 +149,14 @@ TEST_FILE
 		&featuretest::FeatureTestTokenId,
 		&featuretest::ModuleParserRuleName,
 		&featuretest::ModuleParserStateLabel
+		);
+	TestParser<binaryop::ModuleParser, binaryop::json_visitor::ExprAstVisitor>(
+		L"BinaryOp",
+		binaryop::ModuleParserStates::Module,
+		&binaryop::BinaryOpTypeName,
+		&binaryop::BinaryOpFieldName,
+		&binaryop::BinaryOpTokenId,
+		&binaryop::ModuleParserRuleName,
+		&binaryop::ModuleParserStateLabel
 		);
 }
