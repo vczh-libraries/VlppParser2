@@ -75,13 +75,13 @@ TEST_FILE
 		WriteAstFiles(astManager, output, files);
 	});
 
-	//TEST_CASE(L"CompilerLexer")
-	//{
-	//	auto lexerInput = File(dirParser / L"Syntax/Lexer.txt").ReadAllTextByBom();
-	//	CompileLexer(lexerManager, lexerInput);
-	//	TEST_ASSERT(global.Errors().Count() == 0);
-	//	WriteLexerFiles(lexerManager, output, files);
-	//});
+	TEST_CASE(L"CompilerLexer")
+	{
+		auto lexerInput = File(dirParser / L"Syntax/Lexer.txt").ReadAllTextByBom();
+		CompileLexer(lexerManager, lexerInput);
+		TEST_ASSERT(global.Errors().Count() == 0);
+		WriteLexerFiles(lexerManager, output, files);
+	});
 
 	//TEST_CASE(L"CompilerSyntax")
 	//{
