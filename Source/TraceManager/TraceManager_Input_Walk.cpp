@@ -126,7 +126,7 @@ TraceManager::WalkAlongEpsilonEdges
 					auto& edgeDesc = executable.edges[byEdge];
 
 					// see if the target state could consume that token
-					vint32_t lookAheadTransitionIndex = edgeDesc.toState * (Executable::TokenBegin + executable.tokenCount) + (Executable::TokenBegin + lookAhead);
+					vint32_t lookAheadTransitionIndex = executable.GetTransitionIndex(edgeDesc.toState, Executable::TokenBegin + lookAhead);
 					auto& lookAheadEdgeArray = executable.transitions[lookAheadTransitionIndex];
 					if (lookAheadEdgeArray.count == 0) continue;
 
@@ -144,17 +144,33 @@ TraceManager::WalkAlongEpsilonEdges
 				Trace* trace
 			)
 			{
+				// if we could walk along multiple EndingInput transition
+				// but the last several transition will fail
+				// then creating them is wasting the performance
+				// so we count how many EndingInput transition we could walk along first
+
+				//vint32_t endingCount = 0;
+				//{
+				//	vint32_t currentCount = 0;
+				//	auto currentTrace = trace;
+				//	while (currentTrace)
+				//	{
+				//		currentCount++;
+				//		vint32_t transitionIndex = executable.GetTransitionIndex(currentTrace->state, Executable::EndingInput);
+				//		auto&& edgeArray = executable.transitions[transitionIndex];
+				//	}
+				//}
 				while (trace)
 				{
 					{
 						// LeftrecInput transition is an epsilon transition
-						vint32_t transitionIndex = trace->state * (Executable::TokenBegin + executable.tokenCount) + Executable::LeftrecInput;
+						vint32_t transitionIndex = executable.GetTransitionIndex(trace->state, Executable::LeftrecInput);
 						auto&& edgeArray = executable.transitions[transitionIndex];
 						WalkAlongLeftrecEdges(currentTokenIndex, lookAhead, trace, edgeArray);
 					}
 
 					// EndingInput transition is an epsilon transition
-					vint32_t transitionIndex = trace->state * (Executable::TokenBegin + executable.tokenCount) + Executable::EndingInput;
+					vint32_t transitionIndex = executable.GetTransitionIndex(trace->state, Executable::EndingInput);
 					auto&& edgeArray = executable.transitions[transitionIndex];
 
 					// at most one EndingInput transition could exist from any state

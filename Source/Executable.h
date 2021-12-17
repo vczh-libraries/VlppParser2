@@ -89,6 +89,11 @@ Executable
 				Executable(stream::IStream& inputStream);
 
 				void								Serialize(stream::IStream& outputStream);
+
+				vint32_t GetTransitionIndex(vint32_t state, vint32_t input)
+				{
+					return state * (TokenBegin + tokenCount) + input;
+				}
 			};
 
 			struct Metadata

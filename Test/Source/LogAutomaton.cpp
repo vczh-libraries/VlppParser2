@@ -27,7 +27,7 @@ FilePath LogAutomatonWithPath(
 		writer.WriteLine(L"[RULE: " + itow(state.rule) + L"][CLAUSE: " + itow(state.clause) + L"]");
 		for (vint input = 0; input < Executable::TokenBegin + executable.tokenCount; input++)
 		{
-			auto&& transition = executable.transitions[stateIndex * (Executable::TokenBegin + executable.tokenCount) + input];
+			auto&& transition = executable.transitions[executable.GetTransitionIndex(stateIndex, input)];
 			for (vint edgeRef = 0; edgeRef < transition.count; edgeRef++)
 			{
 				auto&& edge = executable.edges[transition.start + edgeRef];
