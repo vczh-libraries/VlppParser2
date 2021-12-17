@@ -57,6 +57,8 @@
   - Test Traverse Visitors
 - `ParserTest_LexerAndParser`
   - Check `codeRange` of all nodes. (use the previous/current token(calculate codeRange) v.s. before/after rule deduction (move instructions to different places))
+- Generate LL parser if possible (print error if failed but forced to do)
+- Generate SLR parser if possible (print error if failed but forced to do)
 
 ## Work Items (enhancement)
 
