@@ -278,10 +278,10 @@ TraceManager
 
 				// Walk
 				Trace*								WalkAlongSingleEdge(vint32_t currentTokenIndex, vint32_t input, Trace* trace, vint32_t byEdge, EdgeDesc& edgeDesc);
-				void								WalkAlongLeftrecEdges(vint32_t currentTokenIndex, Trace* trace, EdgeArray& edgeArray);
-				void								WalkAlongEndingEdges(vint32_t currentTokenIndex, Trace* trace, EdgeArray& edgeArray);
-				void								WalkAlongEpsilonEdges(vint32_t currentTokenIndex, Trace* trace);
-				void								WalkAlongTokenEdges(vint32_t currentTokenIndex, vint32_t input, Trace* trace, EdgeArray& edgeArray);
+				void								WalkAlongLeftrecEdges(vint32_t currentTokenIndex, vint32_t lookAhead, Trace* trace, EdgeArray& edgeArray);
+				void								WalkAlongEndingEdges(vint32_t currentTokenIndex, vint32_t lookAhead, Trace* trace, EdgeArray& edgeArray);
+				void								WalkAlongEpsilonEdges(vint32_t currentTokenIndex, vint32_t lookAhead, Trace* trace);
+				void								WalkAlongTokenEdges(vint32_t currentTokenIndex, vint32_t input, vint32_t lookAhead, Trace* trace, EdgeArray& edgeArray);
 
 				// PrepareTraceRoute
 				void								ReadInstructionList(Trace* trace, TraceInsLists& insLists);
@@ -310,7 +310,7 @@ TraceManager
 				AttendingCompetitions*				AllocateAttendingCompetitions();
 
 				void								Initialize(vint32_t startState);
-				void								Input(vint32_t currentTokenIndex, vint32_t token);
+				void								Input(vint32_t currentTokenIndex, vint32_t token, vint32_t lookAhead);
 				void								EndOfInput();
 				Trace*								PrepareTraceRoute();
 				Ptr<ParsingAstBase>					ExecuteTrace(Trace* trace, IAstInsReceiver& receiver, collections::List<regex::RegexToken>& tokens);

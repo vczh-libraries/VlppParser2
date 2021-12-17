@@ -111,6 +111,7 @@ TraceManager::WalkAlongEpsilonEdges
 
 			void TraceManager::WalkAlongLeftrecEdges(
 				vint32_t currentTokenIndex,
+				vint32_t lookAhead,
 				Trace* trace,
 				EdgeArray& edgeArray
 			)
@@ -128,6 +129,7 @@ TraceManager::WalkAlongEpsilonEdges
 
 			void TraceManager::WalkAlongEndingEdges(
 				vint32_t currentTokenIndex,
+				vint32_t lookAhead,
 				Trace* trace,
 				EdgeArray& edgeArray
 			)
@@ -139,13 +141,14 @@ TraceManager::WalkAlongEpsilonEdges
 					if (auto newTrace = WalkAlongSingleEdge(currentTokenIndex, Executable::EndingInput, trace, byEdge, edgeDesc))
 					{
 						// EndingInput could be followed by EndingInput or LeftrecInput
-						WalkAlongEpsilonEdges(currentTokenIndex, newTrace);
+						WalkAlongEpsilonEdges(currentTokenIndex, lookAhead, newTrace);
 					}
 				}
 			}
 
 			void TraceManager::WalkAlongEpsilonEdges(
 				vint32_t currentTokenIndex,
+				vint32_t lookAhead,
 				Trace* trace
 			)
 			{
@@ -153,13 +156,13 @@ TraceManager::WalkAlongEpsilonEdges
 					// LeftrecInput transition is an epsilon transition
 					vint32_t transactionIndex = trace->state * (Executable::TokenBegin + executable.tokenCount) + Executable::LeftrecInput;
 					auto&& edgeArray = executable.transitions[transactionIndex];
-					WalkAlongLeftrecEdges(currentTokenIndex, trace, edgeArray);
+					WalkAlongLeftrecEdges(currentTokenIndex, lookAhead, trace, edgeArray);
 				}
 				{
 					// EndingInput transition is an epsilon transition
 					vint32_t transactionIndex = trace->state * (Executable::TokenBegin + executable.tokenCount) + Executable::EndingInput;
 					auto&& edgeArray = executable.transitions[transactionIndex];
-					WalkAlongEndingEdges(currentTokenIndex, trace, edgeArray);
+					WalkAlongEndingEdges(currentTokenIndex, lookAhead, trace, edgeArray);
 				}
 			}
 
@@ -170,6 +173,7 @@ TraceManager::WalkAlongTokenEdges
 			void TraceManager::WalkAlongTokenEdges(
 				vint32_t currentTokenIndex,
 				vint32_t input,
+				vint32_t lookAhead,
 				Trace* trace,
 				EdgeArray& edgeArray
 			)
@@ -185,7 +189,7 @@ TraceManager::WalkAlongTokenEdges
 					{
 						// continue with as much EndingInput and LeftrecInput transitions as possible
 						// TokenInput could be followed by EndingInput or LeftrecInput
-						WalkAlongEpsilonEdges(currentTokenIndex, newTrace);
+						WalkAlongEpsilonEdges(currentTokenIndex, lookAhead, newTrace);
 					}
 				}
 			}

@@ -11,7 +11,7 @@ namespace vl
 Input
 ***********************************************************************/
 
-			void TraceManager::Input(vint32_t currentTokenIndex, vint32_t token)
+			void TraceManager::Input(vint32_t currentTokenIndex, vint32_t token, vint32_t lookAhead)
 			{
 				CHECK_ERROR(state == TraceManagerState::WaitingForInput, L"vl::glr::automaton::TraceManager::Input(vint, vint)#Wrong timing to call this function.");
 				vint32_t traceCount = concurrentCount;
@@ -28,7 +28,7 @@ Input
 					auto trace = concurrentTraces->Get(traceIndex);
 					vint32_t transactionIndex = trace->state * (Executable::TokenBegin + executable.tokenCount) + input;
 					auto&& edgeArray = executable.transitions[transactionIndex];
-					WalkAlongTokenEdges(currentTokenIndex, input, trace, edgeArray);
+					WalkAlongTokenEdges(currentTokenIndex, input, lookAhead, trace, edgeArray);
 				}
 
 				// if competitions happen between new surviving traces

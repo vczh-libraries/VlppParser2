@@ -53,7 +53,8 @@ namespace TestSyntax_TestObjects
 		for (vint32_t i = 0; i < tokens.Count(); i++)
 		{
 			auto&& token = tokens[i];
-			tm.Input(i, (vint32_t)token.token);
+			auto lookAhead = i == tokens.Count() - 1 ? -1 : tokens[i + 1].token;
+			tm.Input(i, (vint32_t)token.token, (vint32_t)lookAhead);
 			TEST_ASSERT(tm.concurrentCount > 0);
 		}
 

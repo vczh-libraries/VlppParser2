@@ -73,7 +73,8 @@ ParserBase<TTokens, TStates, TReceiver, TStateTypes>
 				for (vint32_t i = 0; i < tokens.Count(); i++)
 				{
 					auto&& token = tokens[i];
-					tm.Input(i, (vint32_t)token.token);
+					auto lookAhead = i == tokens.Count() - 1 ? -1 : tokens[i + 1].token;
+					tm.Input(i, (vint32_t)token.token, (vint32_t)lookAhead);
 					// TODO: log errors instead of crashing (failed to parse)
 					CHECK_ERROR(tm.concurrentCount > 0, ERROR_MESSAGE_PREFIX L"Error happens during parsing.");
 				}
