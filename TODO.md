@@ -29,10 +29,6 @@
 
 ## Development
 
-1. [x] `ParserTest_ParserGen_Compiler`
-   1. [x] Generate JSON parser
-   2. [x] Generate XML parser
-   3. [ ] Generate Workflow parser
 1. [x] `ParserTest_ParserGen_Generated`
    1. [ ] Test JSON parser.
       1. [ ] Manual test cases.
@@ -41,8 +37,8 @@
       1. [ ] Manual test cases.
       2. [x] GacUI DarkSkin test cases.
    3. [ ] Test Workflow parser.
-      1. [ ] Workflow test cases
-3. [ ] Port `CodePack` and `ParserGen` to `VlppParser2`, do not write to an existing file if the content is not changed.
+      1. [x] Workflow test cases
+2. [ ] Port `CodePack` and `ParserGen` to `VlppParser2`, do not write to an existing file if the content is not changed.
    1. [ ] Create a new repo `BuildTools` and adapt the release license instead of the development license.
 
 ## Work Items (issues)

@@ -1,0 +1,38 @@
+Exp0
+  ::= ID:name as RefExpr
+  ::= "(" !Exp ")"
+  ;
+
+Exp1
+  ::= !Exp0
+  ::= Exp1:left "^" Exp0:right as BinaryExpr {op = Exp}
+  ;
+
+Exp2
+  ::= !Exp1
+  ::= Exp2:left "*" Exp1:right as BinaryExpr {op = Mul}
+  ;
+
+Exp3
+  ::= !Exp2
+  ::= Exp3:left "+" Exp2:right as BinaryExpr {op = Add}
+  ;
+
+Exp4
+  ::= !Exp3
+  ::= Exp3:left "=" Exp4:right as BinaryExpr {op = Assign}
+  ;
+
+Exp5
+  ::= !Exp4
+  ::= Exp4:left "?" Exp5:right as BinaryExpr {op = Try}
+  ;
+
+Exp6
+  ::= !Exp5
+  ::= Exp5:left "$" Exp6:right as BinaryExpr {op = Dollar}
+  ;
+
+Exp
+  ::= !Exp6
+  ;
