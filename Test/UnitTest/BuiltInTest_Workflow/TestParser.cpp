@@ -2,6 +2,7 @@
 #include "../../Source/BuiltIn-Workflow/Generated/WorkflowAst_Json.h"
 #include "../../Source/LogTrace.h"
 
+using namespace vl::regex;
 using namespace vl::glr::workflow;
 
 extern WString GetSourcePath();
@@ -16,6 +17,8 @@ TEST_FILE
 	Folder(dirWorkflow).GetFiles(indexFiles);
 
 	workflow::Parser parser;
+	Regex regexCaseName(L"^(-)?(<name>/w+)(@/d+)?(/=/.*)?$");
+	vint NAME = regexCaseName.CaptureNames().IndexOf(L"name");
 
 	for (auto indexFile : indexFiles)
 	{
@@ -28,13 +31,8 @@ TEST_FILE
 			indexFile.ReadAllLinesByBom(caseNames);
 			for (auto caseName : caseNames)
 			{
-				{
-					vint eq = caseName.IndexOf(L'=');
-					if (eq != -1)
-					{
-						caseName = caseName.Left(eq);
-					}
-				}
+				auto match = regexCaseName.MatchHead(caseName);
+				caseName = match->Groups()[NAME][0].Value();
 
 				TEST_CASE(caseName)
 				{

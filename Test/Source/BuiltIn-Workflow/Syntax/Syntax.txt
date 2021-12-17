@@ -54,7 +54,7 @@ _BeginBoundary
 
 _EndBoundary
     ::= ")" as partial RangeExpression {endBoundary = Exclusive}
-    ::= "}" as partial RangeExpression {endBoundary = Inclusive}
+    ::= "]" as partial RangeExpression {endBoundary = Inclusive}
     ;
 
 _SetTestingOperator
@@ -76,8 +76,11 @@ _ExpPrimitive
     ::= "[" _Expression : body "]" as OrderedLambdaExpression
     ::= _Function : function as FunctionExpression
     ::= "let" _LetVariable : variables {"," _LetVariable : variables} "in" "(" _Expression : expression ")" as LetExpression
-    ::= _BeginBoundary _Expression : begin "," _Expression : end _EndBoundary as RangeExpression
-    ::= "{" ({_CtorFragment : arguments} | {_CtorFragment : arguments ";"}) "}" as ConstructorExpression
+    ::= "range" _BeginBoundary _Expression : begin "," _Expression : end _EndBoundary as RangeExpression
+    ::= "{" [
+            _CtorFragment : arguments
+            ({_CtorFragment : arguments} |{";" _CtorFragment : arguments} ";")
+        ] "}" as ConstructorExpression
     ::= "new" _Type : type "(" {_Expression : arguments ; ","} ")" as NewClassExpression
     ::= "new" _Type : type "{" {_Declaration : declarations} "}" as NewInterfaceExpression
     ::= _ExpPrimitive : parent "." "observe" "(" _Expression : expression ["on" _Expression : events {"," _Expression : events}]")" as ObserveExpression {observeType = SimpleObserve}
@@ -333,7 +336,7 @@ _ConstructorType
 _Constructor
     ::= {_Attribute : attributes} _ConstructorType
         "(" {_FunctionArgument : arguments ; ","} ")"
-        ":" {_BaseConstructorCall : baseConstructorCalls ; ","}
+        [":" {_BaseConstructorCall : baseConstructorCalls ; ","}]
         _Block : statement as ConstructorDeclaration
     ;
 
