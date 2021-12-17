@@ -397,7 +397,13 @@ _CastResultInterface
 // Rule (Declaration -- Branches)
 //////////////////////////////////////////////////////////////////
 
-_SharedDeclarationBranch
+_MemberDeclarationBranch
+    ::= !_Function
+    ::= !_AutoProperty
+    ;
+
+_DeclarationBranch
+    ::= !_MemberDeclarationBranch
     ::= !_Namespace
     ::= !_Variable
     ::= !_Event
@@ -410,20 +416,18 @@ _SharedDeclarationBranch
     ::= !_CastResultInterface
     ;
 
-_MemberDeclarationBranch
-    ::= !_Function
-    ::= !_AutoProperty
+_Declaration
+    ::= {_Attribute : attributes} _DeclarationBranch : declBody as Declaration {classMemberKind = Normal}
     ;
 
-_Declaration
-    ::= {_Attribute : attributes} !_SharedDeclarationBranch {classMemberKind = Normal}
-    ::= {_Attribute : attributes} !_MemberDeclarationBranch {classMemberKind = Normal}
+_MemberDeclarationBody
+    ::= _DeclarationBranch : declBody as partial Declaration {classMemberKind = Normal}
+    ::= "static" _MemberDeclarationBranch : declBody as partial Declaration {classMemberKind = Static}
+    ::= "override" _MemberDeclarationBranch : declBody as partial Declaration {classMemberKind = Override}
     ;
 
 _MemberDeclaration
-    ::= !_Declaration
-    ::= {_Attribute : attributes} "static" !_MemberDeclarationBranch {classMemberKind = Static}
-    ::= {_Attribute : attributes} "override" !_MemberDeclarationBranch {classMemberKind = Override}
+    ::= {_Attribute : attributes} _MemberDeclarationBody as Declaration
     ;
 
 //////////////////////////////////////////////////////////////////
