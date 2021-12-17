@@ -104,6 +104,17 @@ CompactSyntaxBuilder
 					List<StateSymbol*>& visited,
 					List<EdgeSymbol*>& accumulatedEdges)
 				{
+					/*
+					* walkingOldState  : a state in the epsilon-NFA
+					* newState         : a state in the compact-NFA
+					*                    it represents the mirrored walkingOldState in the first call when accumulatedEdges is empty
+					*                    in future recursive calls, walkingOldState keeps changing, but newState stays the same
+					* endState         : the ending state of the rule
+					* visited          : stores any new discovered epsilon-NFA states
+					*                    duplicated states will not be added to this list
+					* accumulatedEdges : epsilon edges from the first walkingOldState to the current walkingOldState
+					*/
+
 					for (auto edge : walkingOldState->OutEdges())
 					{
 						accumulatedEdges.Add(edge);
@@ -388,6 +399,9 @@ SyntaxSymbolManager::EliminateEpsilonEdges
 				*    +-(e1,e3,y)---+
 				*/
 
+				// epsilon-NFAs are per clause
+				// now we need to create a start state and an ending state
+				// to connect all epsilon-NFAs of its clauses together
 				auto psuedoState = CreateState(rule, -1);
 				for (auto startState : rule->startStates)
 				{
@@ -406,14 +420,18 @@ SyntaxSymbolManager::EliminateEpsilonEdges
 				List<StateSymbol*> visited;
 				visited.Add(compactStartState);
 
+				// all epsilon-NFAs of its clauses become one connected epsilon-NFA of this rule
+				// we can build the compact-NFA out of this epsilon-NFA starting from the start state
 				for (vint i = 0; i < visited.Count(); i++)
 				{
 					auto current = visited[i];
 					builder.BuildEpsilonEliminatedEdges(current, compactEndState, visited);
 				}
 
+				// optimize
 				EliminateLeftRecursion(rule, compactStartState, compactEndState, newStates, newEdges);
 				EliminateSingleRulePrefix(rule, compactStartState, compactEndState, newStates, newEdges);
+
 				return compactStartState;
 			}
 
@@ -434,6 +452,8 @@ SyntaxSymbolManager::BuildCompactNFAInternal
 				CopyFrom(states, newStates);
 				CopyFrom(edges, newEdges);
 
+				// only when a state has any important out edge
+				// its out edges are marked accordingly
 				for (auto state : states)
 				{
 					bool competition = false;
