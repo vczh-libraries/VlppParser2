@@ -126,7 +126,7 @@ namespace vl
 			class WorkflowVirtualCseStatement;
 			class WorkflowWhileStatement;
 
-			enum class WorkflowClassMemberKind
+			enum class WorkflowFunctionKind
 			{
 				UNDEFINED_ENUM_ITEM_VALUE = -1,
 				Static = 0,
@@ -443,7 +443,6 @@ namespace vl
 
 				vl::collections::List<vl::Ptr<WorkflowAttribute>> attributes;
 				vl::glr::ParsingToken name;
-				WorkflowClassMemberKind classMemberKind = WorkflowClassMemberKind::UNDEFINED_ENUM_ITEM_VALUE;
 			};
 
 			class WorkflowPredefinedType : public WorkflowType, vl::reflection::Description<WorkflowPredefinedType>
@@ -557,6 +556,7 @@ namespace vl
 			class WorkflowFunctionDeclaration : public WorkflowDeclaration, vl::reflection::Description<WorkflowFunctionDeclaration>
 			{
 			public:
+				WorkflowFunctionKind functionKind = WorkflowFunctionKind::UNDEFINED_ENUM_ITEM_VALUE;
 				WorkflowFunctionAnonymity anonymity = WorkflowFunctionAnonymity::UNDEFINED_ENUM_ITEM_VALUE;
 				vl::collections::List<vl::Ptr<WorkflowFunctionArgument>> arguments;
 				vl::Ptr<WorkflowType> returnType;
@@ -691,6 +691,7 @@ namespace vl
 			class WorkflowAutoPropertyDeclaration : public WorkflowVirtualCfeDeclaration, vl::reflection::Description<WorkflowAutoPropertyDeclaration>
 			{
 			public:
+				WorkflowFunctionKind functionKind = WorkflowFunctionKind::UNDEFINED_ENUM_ITEM_VALUE;
 				vl::Ptr<WorkflowType> type;
 				WorkflowAPConst configConst = WorkflowAPConst::UNDEFINED_ENUM_ITEM_VALUE;
 				WorkflowAPObserve configObserve = WorkflowAPObserve::UNDEFINED_ENUM_ITEM_VALUE;
@@ -1415,7 +1416,6 @@ namespace vl
 		namespace description
 		{
 #ifndef VCZH_DEBUG_NO_REFLECTION
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowClassMemberKind)
 			DECL_TYPE_INFO(vl::glr::workflow::WorkflowType)
 			DECL_TYPE_INFO(vl::glr::workflow::WorkflowType::IVisitor)
 			DECL_TYPE_INFO(vl::glr::workflow::WorkflowExpression)
@@ -1425,6 +1425,7 @@ namespace vl
 			DECL_TYPE_INFO(vl::glr::workflow::WorkflowAttribute)
 			DECL_TYPE_INFO(vl::glr::workflow::WorkflowDeclaration)
 			DECL_TYPE_INFO(vl::glr::workflow::WorkflowDeclaration::IVisitor)
+			DECL_TYPE_INFO(vl::glr::workflow::WorkflowFunctionKind)
 			DECL_TYPE_INFO(vl::glr::workflow::WorkflowPredefinedTypeName)
 			DECL_TYPE_INFO(vl::glr::workflow::WorkflowPredefinedType)
 			DECL_TYPE_INFO(vl::glr::workflow::WorkflowTopQualifiedType)

@@ -66,6 +66,22 @@ namespace vl
 					BeginField(L"expression");
 					Print(node->expression.Obj());
 					EndField();
+					BeginField(L"functionKind");
+					switch (node->functionKind)
+					{
+					case vl::glr::workflow::WorkflowFunctionKind::Normal:
+						WriteString(L"Normal");
+						break;
+					case vl::glr::workflow::WorkflowFunctionKind::Override:
+						WriteString(L"Override");
+						break;
+					case vl::glr::workflow::WorkflowFunctionKind::Static:
+						WriteString(L"Static");
+						break;
+					default:
+						WriteNull();
+					}
+					EndField();
 					BeginField(L"type");
 					Print(node->type.Obj());
 					EndField();
@@ -410,22 +426,6 @@ namespace vl
 					}
 					EndArray();
 					EndField();
-					BeginField(L"classMemberKind");
-					switch (node->classMemberKind)
-					{
-					case vl::glr::workflow::WorkflowClassMemberKind::Normal:
-						WriteString(L"Normal");
-						break;
-					case vl::glr::workflow::WorkflowClassMemberKind::Override:
-						WriteString(L"Override");
-						break;
-					case vl::glr::workflow::WorkflowClassMemberKind::Static:
-						WriteString(L"Static");
-						break;
-					default:
-						WriteNull();
-					}
-					EndField();
 					BeginField(L"name");
 					WriteToken(node->name);
 					EndField();
@@ -652,6 +652,22 @@ namespace vl
 						EndArrayItem();
 					}
 					EndArray();
+					EndField();
+					BeginField(L"functionKind");
+					switch (node->functionKind)
+					{
+					case vl::glr::workflow::WorkflowFunctionKind::Normal:
+						WriteString(L"Normal");
+						break;
+					case vl::glr::workflow::WorkflowFunctionKind::Override:
+						WriteString(L"Override");
+						break;
+					case vl::glr::workflow::WorkflowFunctionKind::Static:
+						WriteString(L"Static");
+						break;
+					default:
+						WriteNull();
+					}
 					EndField();
 					BeginField(L"returnType");
 					Print(node->returnType.Obj());

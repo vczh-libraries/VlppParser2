@@ -592,6 +592,8 @@ WorkflowAstInsReceiver : public vl::glr::AstInsReceiverBase
 					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WorkflowAutoPropertyDeclaration::configConst, object, field, enumItem, cppFieldName);
 				case WorkflowFields::AutoPropertyDeclaration_configObserve:
 					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WorkflowAutoPropertyDeclaration::configObserve, object, field, enumItem, cppFieldName);
+				case WorkflowFields::AutoPropertyDeclaration_functionKind:
+					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WorkflowAutoPropertyDeclaration::functionKind, object, field, enumItem, cppFieldName);
 				case WorkflowFields::BinaryExpression_op:
 					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WorkflowBinaryExpression::op, object, field, enumItem, cppFieldName);
 				case WorkflowFields::ClassDeclaration_constructorType:
@@ -600,8 +602,6 @@ WorkflowAstInsReceiver : public vl::glr::AstInsReceiverBase
 					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WorkflowClassDeclaration::kind, object, field, enumItem, cppFieldName);
 				case WorkflowFields::ConstructorDeclaration_constructorType:
 					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WorkflowConstructorDeclaration::constructorType, object, field, enumItem, cppFieldName);
-				case WorkflowFields::Declaration_classMemberKind:
-					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WorkflowDeclaration::classMemberKind, object, field, enumItem, cppFieldName);
 				case WorkflowFields::EnumDeclaration_kind:
 					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WorkflowEnumDeclaration::kind, object, field, enumItem, cppFieldName);
 				case WorkflowFields::EnumItem_kind:
@@ -612,6 +612,8 @@ WorkflowAstInsReceiver : public vl::glr::AstInsReceiverBase
 					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WorkflowForEachStatement::direction, object, field, enumItem, cppFieldName);
 				case WorkflowFields::FunctionDeclaration_anonymity:
 					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WorkflowFunctionDeclaration::anonymity, object, field, enumItem, cppFieldName);
+				case WorkflowFields::FunctionDeclaration_functionKind:
+					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WorkflowFunctionDeclaration::functionKind, object, field, enumItem, cppFieldName);
 				case WorkflowFields::LiteralExpression_value:
 					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WorkflowLiteralExpression::value, object, field, enumItem, cppFieldName);
 				case WorkflowFields::MapType_writability:
@@ -888,6 +890,7 @@ WorkflowAstInsReceiver : public vl::glr::AstInsReceiverBase
 					L"AutoPropertyDeclaration::configConst",
 					L"AutoPropertyDeclaration::configObserve",
 					L"AutoPropertyDeclaration::expression",
+					L"AutoPropertyDeclaration::functionKind",
 					L"AutoPropertyDeclaration::type",
 					L"BaseConstructorCall::arguments",
 					L"BaseConstructorCall::type",
@@ -924,7 +927,6 @@ WorkflowAstInsReceiver : public vl::glr::AstInsReceiverBase
 					L"ConstructorDeclaration::statement",
 					L"ConstructorExpression::arguments",
 					L"Declaration::attributes",
-					L"Declaration::classMemberKind",
 					L"Declaration::name",
 					L"DeleteStatement::expression",
 					L"DestructorDeclaration::statement",
@@ -954,6 +956,7 @@ WorkflowAstInsReceiver : public vl::glr::AstInsReceiverBase
 					L"FunctionArgument::type",
 					L"FunctionDeclaration::anonymity",
 					L"FunctionDeclaration::arguments",
+					L"FunctionDeclaration::functionKind",
 					L"FunctionDeclaration::returnType",
 					L"FunctionDeclaration::statement",
 					L"FunctionExpression::function",
@@ -1078,7 +1081,7 @@ WorkflowAstInsReceiver : public vl::glr::AstInsReceiverBase
 					L"WhileStatement::statement",
 				};
 				vl::vint index = (vl::vint)field;
-				return 0 <= index && index < 196 ? results[index] : nullptr;
+				return 0 <= index && index < 197 ? results[index] : nullptr;
 			}
 
 			const wchar_t* WorkflowCppFieldName(WorkflowFields field)
@@ -1092,6 +1095,7 @@ WorkflowAstInsReceiver : public vl::glr::AstInsReceiverBase
 					L"vl::glr::workflow::WorkflowAutoPropertyDeclaration::configConst",
 					L"vl::glr::workflow::WorkflowAutoPropertyDeclaration::configObserve",
 					L"vl::glr::workflow::WorkflowAutoPropertyDeclaration::expression",
+					L"vl::glr::workflow::WorkflowAutoPropertyDeclaration::functionKind",
 					L"vl::glr::workflow::WorkflowAutoPropertyDeclaration::type",
 					L"vl::glr::workflow::WorkflowBaseConstructorCall::arguments",
 					L"vl::glr::workflow::WorkflowBaseConstructorCall::type",
@@ -1128,7 +1132,6 @@ WorkflowAstInsReceiver : public vl::glr::AstInsReceiverBase
 					L"vl::glr::workflow::WorkflowConstructorDeclaration::statement",
 					L"vl::glr::workflow::WorkflowConstructorExpression::arguments",
 					L"vl::glr::workflow::WorkflowDeclaration::attributes",
-					L"vl::glr::workflow::WorkflowDeclaration::classMemberKind",
 					L"vl::glr::workflow::WorkflowDeclaration::name",
 					L"vl::glr::workflow::WorkflowDeleteStatement::expression",
 					L"vl::glr::workflow::WorkflowDestructorDeclaration::statement",
@@ -1158,6 +1161,7 @@ WorkflowAstInsReceiver : public vl::glr::AstInsReceiverBase
 					L"vl::glr::workflow::WorkflowFunctionArgument::type",
 					L"vl::glr::workflow::WorkflowFunctionDeclaration::anonymity",
 					L"vl::glr::workflow::WorkflowFunctionDeclaration::arguments",
+					L"vl::glr::workflow::WorkflowFunctionDeclaration::functionKind",
 					L"vl::glr::workflow::WorkflowFunctionDeclaration::returnType",
 					L"vl::glr::workflow::WorkflowFunctionDeclaration::statement",
 					L"vl::glr::workflow::WorkflowFunctionExpression::function",
@@ -1282,7 +1286,7 @@ WorkflowAstInsReceiver : public vl::glr::AstInsReceiverBase
 					L"vl::glr::workflow::WorkflowWhileStatement::statement",
 				};
 				vl::vint index = (vl::vint)field;
-				return 0 <= index && index < 196 ? results[index] : nullptr;
+				return 0 <= index && index < 197 ? results[index] : nullptr;
 			}
 
 			vl::Ptr<vl::glr::ParsingAstBase> WorkflowAstInsReceiver::ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates)

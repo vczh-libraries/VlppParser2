@@ -34,6 +34,7 @@ namespace vl
 					to->configConst = from->configConst;
 					to->configObserve = from->configObserve;
 					to->expression = CopyNode(from->expression.Obj());
+					to->functionKind = from->functionKind;
 					to->type = CopyNode(from->type.Obj());
 				}
 
@@ -197,7 +198,6 @@ namespace vl
 					{
 						to->attributes.Add(CopyNode(listItem.Obj()));
 					}
-					to->classMemberKind = from->classMemberKind;
 					to->name = from->name;
 				}
 
@@ -321,6 +321,7 @@ namespace vl
 					{
 						to->arguments.Add(CopyNode(listItem.Obj()));
 					}
+					to->functionKind = from->functionKind;
 					to->returnType = CopyNode(from->returnType.Obj());
 					to->statement = CopyNode(from->statement.Obj());
 				}

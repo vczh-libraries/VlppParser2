@@ -47,6 +47,7 @@ namespace vl
 					AutoPropertyDeclarationBuilder& configConst(WorkflowAPConst value);
 					AutoPropertyDeclarationBuilder& configObserve(WorkflowAPObserve value);
 					AutoPropertyDeclarationBuilder& expression(const vl::Ptr<WorkflowExpression>& value);
+					AutoPropertyDeclarationBuilder& functionKind(WorkflowFunctionKind value);
 					AutoPropertyDeclarationBuilder& type(const vl::Ptr<WorkflowType>& value);
 				};
 
@@ -219,7 +220,6 @@ namespace vl
 				public:
 					DeclarationBuilder(WorkflowDeclaration* _node) : node(_node) {}
 					DeclarationBuilder& attributes(const vl::Ptr<WorkflowAttribute>& value);
-					DeclarationBuilder& classMemberKind(WorkflowClassMemberKind value);
 					DeclarationBuilder& name(const vl::WString& value);
 				};
 
@@ -369,6 +369,7 @@ namespace vl
 					FunctionDeclarationBuilder(WorkflowFunctionDeclaration* _node) : node(_node) {}
 					FunctionDeclarationBuilder& anonymity(WorkflowFunctionAnonymity value);
 					FunctionDeclarationBuilder& arguments(const vl::Ptr<WorkflowFunctionArgument>& value);
+					FunctionDeclarationBuilder& functionKind(WorkflowFunctionKind value);
 					FunctionDeclarationBuilder& returnType(const vl::Ptr<WorkflowType>& value);
 					FunctionDeclarationBuilder& statement(const vl::Ptr<WorkflowStatement>& value);
 				};

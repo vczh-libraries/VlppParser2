@@ -75,6 +75,12 @@ AutoPropertyDeclarationBuilder
 					return *this;
 				}
 
+				AutoPropertyDeclarationBuilder& AutoPropertyDeclarationBuilder::functionKind(WorkflowFunctionKind value)
+				{
+					node->functionKind = value;
+					return *this;
+				}
+
 				AutoPropertyDeclarationBuilder& AutoPropertyDeclarationBuilder::type(const vl::Ptr<WorkflowType>& value)
 				{
 					node->type = value;
@@ -359,12 +365,6 @@ DeclarationBuilder
 					return *this;
 				}
 
-				DeclarationBuilder& DeclarationBuilder::classMemberKind(WorkflowClassMemberKind value)
-				{
-					node->classMemberKind = value;
-					return *this;
-				}
-
 				DeclarationBuilder& DeclarationBuilder::name(const vl::WString& value)
 				{
 					node->name.value = value;
@@ -596,6 +596,12 @@ FunctionDeclarationBuilder
 				FunctionDeclarationBuilder& FunctionDeclarationBuilder::arguments(const vl::Ptr<WorkflowFunctionArgument>& value)
 				{
 					node->arguments.Add(value);
+					return *this;
+				}
+
+				FunctionDeclarationBuilder& FunctionDeclarationBuilder::functionKind(WorkflowFunctionKind value)
+				{
+					node->functionKind = value;
 					return *this;
 				}
 

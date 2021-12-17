@@ -79,7 +79,7 @@ _ExpPrimitive
     ::= _BeginBoundary _Expression : begin "," _Expression : end _EndBoundary as RangeExpression
     ::= "{" ({_CtorFragment : arguments} | {_CtorFragment : arguments ";"}) "}" as ConstructorExpression
     ::= "new" _Type : type "(" {_Expression : arguments ; ","} ")" as NewClassExpression
-    ::= "new" _Type : type "{" {_MemberDeclaration : declarations} "}" as NewInterfaceExpression
+    ::= "new" _Type : type "{" {_Declaration : declarations} "}" as NewInterfaceExpression
     ::= _ExpPrimitive : parent "." "observe" "(" _Expression : expression ["on" _Expression : events {"," _Expression : events}]")" as ObserveExpression {observeType = SimpleObserve}
     ::= _ExpPrimitive : parent "." "observe" "as" NAME : name "(" _Expression : expression ["on" _Expression : events {"," _Expression : events}]")" as ObserveExpression {observeType = ExtendedObserve}
     ::= _ExpPrimitive : function "(" [_Expression : arguments {"," _Expression : arguments}] ")" as CallExpression
@@ -276,7 +276,7 @@ _Attribute
     ;
 
 _Namespace
-    ::= "namespace" NAME : name "{" {_Declaration : declarations} "}" as NamespaceDeclaration
+    ::= {_Attribute : attributes} "namespace" NAME : name "{" {_Declaration : declarations} "}" as NamespaceDeclaration
     ;
 
 _FunctionArgument
@@ -305,20 +305,20 @@ _FunctionKind
     ;
 
 _Function
-    ::= _FunctionKind NAME : name _FunctionBody as FunctionDeclaration {anonymity = Named}
-    ::= _FunctionKind _FunctionBody as FunctionDeclaration {anonymity = Anonymous}
+    ::= {_Attribute : attributes} _FunctionKind NAME : name _FunctionBody as FunctionDeclaration {anonymity = Named}
+    ::= {_Attribute : attributes} _FunctionKind _FunctionBody as FunctionDeclaration {anonymity = Anonymous}
     ;
 
 _Variable
-    ::= "var" NAME : name [":" _Type : type] "=" _Expression : expression ";" as VariableDeclaration
+    ::= {_Attribute : attributes} "var" NAME : name [":" _Type : type] "=" _Expression : expression ";" as VariableDeclaration
     ;
 
 _Event
-    ::= "event" NAME : name "(" {_Type : arguments ; ","} ")" ";" as EventDeclaration
+    ::= {_Attribute : attributes} "event" NAME : name "(" {_Type : arguments ; ","} ")" ";" as EventDeclaration
     ;
 
 _Property
-    ::= "prop" NAME : name ":" _Type : type "{" NAME : getter ["," NAME : setter] [":" NAME : valueChangedEvent] "}" as PropertyDeclaration
+    ::= {_Attribute : attributes} "prop" NAME : name ":" _Type : type "{" NAME : getter ["," NAME : setter] [":" NAME : valueChangedEvent] "}" as PropertyDeclaration
     ;
 
 _BaseConstructorCall
@@ -331,24 +331,24 @@ _ConstructorType
     ;
 
 _Constructor
-    ::= _ConstructorType
+    ::= {_Attribute : attributes} _ConstructorType
         "(" {_FunctionArgument : arguments ; ","} ")"
         ":" {_BaseConstructorCall : baseConstructorCalls ; ","}
         _Block : statement as ConstructorDeclaration
     ;
 
 _Destructor
-    ::= "delete" _Block : statement as DestructorDeclaration
+    ::= {_Attribute : attributes} "delete" _Block : statement as DestructorDeclaration
     ;
 
 _ClassBody
-    ::= [":" {_Type : baseTypes ; ","}] "{" {_MemberDeclaration : declarations} [_StateMachine : declarations] "}" as partial ClassDeclaration
+    ::= [":" {_Type : baseTypes ; ","}] "{" {_Declaration : declarations} [_StateMachine : declarations] "}" as partial ClassDeclaration
     ;
 
 _Class
-    ::= "class" NAME : name _ClassBody as ClassDeclaration {kind = Class, constructorType = Undefined}
-    ::= "interface" NAME : name _ClassBody as ClassDeclaration {kind = Interface, constructorType = SharedPtr}
-    ::= "interface" NAME : name "*" _ClassBody as ClassDeclaration {kind = Interface, constructorType = RawPtr}
+    ::= {_Attribute : attributes} "class" NAME : name _ClassBody as ClassDeclaration {kind = Class, constructorType = Undefined}
+    ::= {_Attribute : attributes} "interface" NAME : name _ClassBody as ClassDeclaration {kind = Interface, constructorType = SharedPtr}
+    ::= {_Attribute : attributes} "interface" NAME : name "*" _ClassBody as ClassDeclaration {kind = Interface, constructorType = RawPtr}
     ;
 
 _EnumItemInt
@@ -364,8 +364,8 @@ _EnumItemB
     ;
 
 _Enum
-    ::= "enum" NAME : name "{" _EnumItemA : items {_EnumItemA : items} "}" as EnumDeclaration {kind = Normal}
-    ::= "flagenum" NAME : name "{" _EnumItemA : items {_EnumItemA : items} {_EnumItemB : items} "}" as EnumDeclaration {kind = Flag}
+    ::= {_Attribute : attributes} "enum" NAME : name "{" _EnumItemA : items {_EnumItemA : items} "}" as EnumDeclaration {kind = Normal}
+    ::= {_Attribute : attributes} "flagenum" NAME : name "{" _EnumItemA : items {_EnumItemA : items} {_EnumItemB : items} "}" as EnumDeclaration {kind = Flag}
     ;
 
 _StructMember
@@ -373,7 +373,7 @@ _StructMember
     ;
 
 _Struct
-    ::= "struct" NAME : name "{" {_StructMember : members} "}" as StructDeclaration
+    ::= {_Attribute : attributes} "struct" NAME : name "{" {_StructMember : members} "}" as StructDeclaration
     ;
 
 _APConfig
@@ -398,18 +398,18 @@ _AutoPropertyKind
     ;
 
 _AutoProperty
-    ::= _AutoPropertyKind NAME : name ":" _Type : type ["=" _Expression : expression] _APConfig as AutoPropertyDeclaration
+    ::= {_Attribute : attributes} _AutoPropertyKind NAME : name ":" _Type : type ["=" _Expression : expression] _APConfig as AutoPropertyDeclaration
     ;
 
 _CastResultInterface
-    ::= "$interface" NAME : name ":" _Type : baseType "<" _Type : elementType ">" ";" as CastResultInterfaceDeclaration
+    ::= {_Attribute : attributes} "$interface" NAME : name ":" _Type : baseType "<" _Type : elementType ">" ";" as CastResultInterfaceDeclaration
     ;
 
 //////////////////////////////////////////////////////////////////
 // Rule (Declaration -- Branches)
 //////////////////////////////////////////////////////////////////
 
-_DeclarationBranch
+_Declaration
     ::= !_Namespace
     ::= !_Variable
     ::= !_Event
@@ -420,20 +420,6 @@ _DeclarationBranch
     ::= !_Enum
     ::= !_Struct
     ::= !_CastResultInterface
-    ;
-
-_MemberDeclarationBranch
-    ::= !_DeclarationBranch
-    ::= !_Function
-    ::= !_AutoProperty
-    ;
-
-_Declaration
-    ::= {_Attribute : attributes} !_DeclarationBranch
-    ;
-
-_MemberDeclaration
-    ::= {_Attribute : attributes} !_MemberDeclarationBranch
     ;
 
 //////////////////////////////////////////////////////////////////

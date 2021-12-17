@@ -466,7 +466,6 @@ namespace vl
 		{
 #ifndef VCZH_DEBUG_NO_REFLECTION
 
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WorkflowClassMemberKind, system::workflow::WorkflowClassMemberKind)
 			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WorkflowType, system::workflow::WorkflowType)
 			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WorkflowType::IVisitor, system::workflow::WorkflowType::IVisitor)
 			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WorkflowExpression, system::workflow::WorkflowExpression)
@@ -476,6 +475,7 @@ namespace vl
 			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WorkflowAttribute, system::workflow::WorkflowAttribute)
 			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WorkflowDeclaration, system::workflow::WorkflowDeclaration)
 			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WorkflowDeclaration::IVisitor, system::workflow::WorkflowDeclaration::IVisitor)
+			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WorkflowFunctionKind, system::workflow::WorkflowFunctionKind)
 			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WorkflowPredefinedTypeName, system::workflow::WorkflowPredefinedTypeName)
 			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WorkflowPredefinedType, system::workflow::WorkflowPredefinedType)
 			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WorkflowTopQualifiedType, system::workflow::WorkflowTopQualifiedType)
@@ -612,13 +612,6 @@ namespace vl
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 
-			BEGIN_ENUM_ITEM(vl::glr::workflow::WorkflowClassMemberKind)
-				ENUM_ITEM_NAMESPACE(vl::glr::workflow::WorkflowClassMemberKind)
-				ENUM_NAMESPACE_ITEM(Static)
-				ENUM_NAMESPACE_ITEM(Override)
-				ENUM_NAMESPACE_ITEM(Normal)
-			END_ENUM_ITEM(vl::glr::workflow::WorkflowClassMemberKind)
-
 			BEGIN_CLASS_MEMBER(vl::glr::workflow::WorkflowType)
 				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
@@ -649,8 +642,14 @@ namespace vl
 
 				CLASS_MEMBER_FIELD(attributes)
 				CLASS_MEMBER_FIELD(name)
-				CLASS_MEMBER_FIELD(classMemberKind)
 			END_CLASS_MEMBER(vl::glr::workflow::WorkflowDeclaration)
+
+			BEGIN_ENUM_ITEM(vl::glr::workflow::WorkflowFunctionKind)
+				ENUM_ITEM_NAMESPACE(vl::glr::workflow::WorkflowFunctionKind)
+				ENUM_NAMESPACE_ITEM(Static)
+				ENUM_NAMESPACE_ITEM(Override)
+				ENUM_NAMESPACE_ITEM(Normal)
+			END_ENUM_ITEM(vl::glr::workflow::WorkflowFunctionKind)
 
 			BEGIN_ENUM_ITEM(vl::glr::workflow::WorkflowPredefinedTypeName)
 				ENUM_ITEM_NAMESPACE(vl::glr::workflow::WorkflowPredefinedTypeName)
@@ -793,6 +792,7 @@ namespace vl
 
 				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WorkflowFunctionDeclaration>(), NO_PARAMETER)
 
+				CLASS_MEMBER_FIELD(functionKind)
 				CLASS_MEMBER_FIELD(anonymity)
 				CLASS_MEMBER_FIELD(arguments)
 				CLASS_MEMBER_FIELD(returnType)
@@ -961,6 +961,7 @@ namespace vl
 
 				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WorkflowAutoPropertyDeclaration>(), NO_PARAMETER)
 
+				CLASS_MEMBER_FIELD(functionKind)
 				CLASS_MEMBER_FIELD(type)
 				CLASS_MEMBER_FIELD(configConst)
 				CLASS_MEMBER_FIELD(configObserve)
@@ -1848,7 +1849,6 @@ namespace vl
 			public:
 				void Load(ITypeManager* manager)
 				{
-					ADD_TYPE_INFO(vl::glr::workflow::WorkflowClassMemberKind)
 					ADD_TYPE_INFO(vl::glr::workflow::WorkflowType)
 					ADD_TYPE_INFO(vl::glr::workflow::WorkflowType::IVisitor)
 					ADD_TYPE_INFO(vl::glr::workflow::WorkflowExpression)
@@ -1858,6 +1858,7 @@ namespace vl
 					ADD_TYPE_INFO(vl::glr::workflow::WorkflowAttribute)
 					ADD_TYPE_INFO(vl::glr::workflow::WorkflowDeclaration)
 					ADD_TYPE_INFO(vl::glr::workflow::WorkflowDeclaration::IVisitor)
+					ADD_TYPE_INFO(vl::glr::workflow::WorkflowFunctionKind)
 					ADD_TYPE_INFO(vl::glr::workflow::WorkflowPredefinedTypeName)
 					ADD_TYPE_INFO(vl::glr::workflow::WorkflowPredefinedType)
 					ADD_TYPE_INFO(vl::glr::workflow::WorkflowTopQualifiedType)
