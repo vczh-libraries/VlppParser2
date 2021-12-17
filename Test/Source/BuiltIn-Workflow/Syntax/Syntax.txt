@@ -417,17 +417,17 @@ _DeclarationBranch
     ;
 
 _Declaration
-    ::= {_Attribute : attributes} _DeclarationBranch : declBody as Declaration {classMemberKind = Normal}
+    ::= {_Attribute : attributes} !_DeclarationBranch {classMemberKind = Normal}
     ;
 
 _MemberDeclarationBody
-    ::= _DeclarationBranch : declBody as partial Declaration {classMemberKind = Normal}
-    ::= "static" _MemberDeclarationBranch : declBody as partial Declaration {classMemberKind = Static}
-    ::= "override" _MemberDeclarationBranch : declBody as partial Declaration {classMemberKind = Override}
+    ::= !_DeclarationBranch {classMemberKind = Normal}
+    ::= "static" !_MemberDeclarationBranch {classMemberKind = Static}
+    ::= "override" !_MemberDeclarationBranch {classMemberKind = Override}
     ;
 
 _MemberDeclaration
-    ::= {_Attribute : attributes} _MemberDeclarationBody as Declaration
+    ::= {_Attribute : attributes} !_MemberDeclarationBody
     ;
 
 //////////////////////////////////////////////////////////////////

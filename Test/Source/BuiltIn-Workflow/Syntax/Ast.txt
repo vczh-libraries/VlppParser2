@@ -28,16 +28,11 @@ class Attribute
     var value : Expression;
 }
 
-class DeclBody
-{
-    var name : token;
-}
-
 class Declaration
 {
     var attributes : Attribute[];
     var classMemberKind : ClassMemberKind;
-    var declBoby : DeclBody;
+    var name : token;
 }
 
 //////////////////////////////////////////////////////////////////
@@ -127,7 +122,7 @@ class ChildType : Type
 // AST (Declarations)
 //////////////////////////////////////////////////////////////////
 
-class NamespaceDeclaration : DeclBody
+class NamespaceDeclaration : Declaration
 {
     var declarations : Declaration[];
 }
@@ -145,7 +140,7 @@ enum FunctionAnonymity
 	Anonymous,
 }
 
-class FunctionDeclaration : DeclBody
+class FunctionDeclaration : Declaration
 {
     var anonymity : FunctionAnonymity;
     var arguments : FunctionArgument[];
@@ -153,18 +148,18 @@ class FunctionDeclaration : DeclBody
     var statement : Statement;
 }
 
-class VariableDeclaration : DeclBody
+class VariableDeclaration : Declaration
 {
     var type : Type;
     var expression : Expression;
 }
 
-class EventDeclaration : DeclBody
+class EventDeclaration : Declaration
 {
     var arguments : Type[];
 }
 
-class PropertyDeclaration : DeclBody
+class PropertyDeclaration : Declaration
 {
     var type : Type;
     var getter : token;
@@ -195,7 +190,7 @@ class BaseConstructorCall
     var arguments : Expression[];
 }
 
-class ConstructorDeclaration : DeclBody
+class ConstructorDeclaration : Declaration
 {
     var constructorType : ConstructorType;
     var baseConstructorCalls : BaseConstructorCall[];
@@ -203,12 +198,12 @@ class ConstructorDeclaration : DeclBody
     var statement : Statement;
 }
 
-class DestructorDeclaration : DeclBody
+class DestructorDeclaration : Declaration
 {
     var statement : Statement;
 }
 
-class ClassDeclaration : DeclBody
+class ClassDeclaration : Declaration
 {
     var kind : ClassKind;
     var constructorType : ConstructorType;
@@ -246,7 +241,7 @@ class EnumItem
     var intersections : EnumItemIntersection[];
 }
 
-class EnumDeclaration : DeclBody
+class EnumDeclaration : Declaration
 {
     var kind : EnumKind;
     var items : EnumItem[];
@@ -263,7 +258,7 @@ class StructMember
     var type : Type;
 }
 
-class StructDeclaration : DeclBody
+class StructDeclaration : Declaration
 {
     var members : StructMember[];
 }
@@ -272,7 +267,7 @@ class StructDeclaration : DeclBody
 // AST (Virtual Context Free Expandable Declarations)
 //////////////////////////////////////////////////////////////////
 
-class VirtualCfeDeclaration : DeclBody
+class VirtualCfeDeclaration : Declaration
 {
     var expandedDeclarations : Declaration[];
 }
@@ -307,7 +302,7 @@ class CastResultInterfaceDeclaration : VirtualCfeDeclaration
 // AST (Virtual Context Sensitive Expandable Declarations)
 //////////////////////////////////////////////////////////////////
 
-class VirtualCseDeclaration : DeclBody
+class VirtualCseDeclaration : Declaration
 {
     var expandedDeclarations : Declaration[];
 }
