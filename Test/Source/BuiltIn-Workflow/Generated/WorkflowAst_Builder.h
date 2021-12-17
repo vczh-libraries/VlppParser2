@@ -20,145 +20,145 @@ namespace vl
 				class AttachEventExpressionBuilder
 				{
 				private:
-					WorkflowAttachEventExpression* node;
+					WfAttachEventExpression* node;
 				public:
-					AttachEventExpressionBuilder(WorkflowAttachEventExpression* _node) : node(_node) {}
-					AttachEventExpressionBuilder& event(const vl::Ptr<WorkflowExpression>& value);
-					AttachEventExpressionBuilder& function(const vl::Ptr<WorkflowExpression>& value);
+					AttachEventExpressionBuilder(WfAttachEventExpression* _node) : node(_node) {}
+					AttachEventExpressionBuilder& event(const vl::Ptr<WfExpression>& value);
+					AttachEventExpressionBuilder& function(const vl::Ptr<WfExpression>& value);
 				};
 
 				class AttributeBuilder
 				{
 				private:
-					WorkflowAttribute* node;
+					WfAttribute* node;
 				public:
-					AttributeBuilder(WorkflowAttribute* _node) : node(_node) {}
+					AttributeBuilder(WfAttribute* _node) : node(_node) {}
 					AttributeBuilder& category(const vl::WString& value);
 					AttributeBuilder& name(const vl::WString& value);
-					AttributeBuilder& value(const vl::Ptr<WorkflowExpression>& value);
+					AttributeBuilder& value(const vl::Ptr<WfExpression>& value);
 				};
 
 				class AutoPropertyDeclarationBuilder
 				{
 				private:
-					WorkflowAutoPropertyDeclaration* node;
+					WfAutoPropertyDeclaration* node;
 				public:
-					AutoPropertyDeclarationBuilder(WorkflowAutoPropertyDeclaration* _node) : node(_node) {}
-					AutoPropertyDeclarationBuilder& configConst(WorkflowAPConst value);
-					AutoPropertyDeclarationBuilder& configObserve(WorkflowAPObserve value);
-					AutoPropertyDeclarationBuilder& expression(const vl::Ptr<WorkflowExpression>& value);
-					AutoPropertyDeclarationBuilder& functionKind(WorkflowFunctionKind value);
-					AutoPropertyDeclarationBuilder& type(const vl::Ptr<WorkflowType>& value);
+					AutoPropertyDeclarationBuilder(WfAutoPropertyDeclaration* _node) : node(_node) {}
+					AutoPropertyDeclarationBuilder& configConst(WfAPConst value);
+					AutoPropertyDeclarationBuilder& configObserve(WfAPObserve value);
+					AutoPropertyDeclarationBuilder& expression(const vl::Ptr<WfExpression>& value);
+					AutoPropertyDeclarationBuilder& functionKind(WfFunctionKind value);
+					AutoPropertyDeclarationBuilder& type(const vl::Ptr<WfType>& value);
 				};
 
 				class BaseConstructorCallBuilder
 				{
 				private:
-					WorkflowBaseConstructorCall* node;
+					WfBaseConstructorCall* node;
 				public:
-					BaseConstructorCallBuilder(WorkflowBaseConstructorCall* _node) : node(_node) {}
-					BaseConstructorCallBuilder& arguments(const vl::Ptr<WorkflowExpression>& value);
-					BaseConstructorCallBuilder& type(const vl::Ptr<WorkflowType>& value);
+					BaseConstructorCallBuilder(WfBaseConstructorCall* _node) : node(_node) {}
+					BaseConstructorCallBuilder& arguments(const vl::Ptr<WfExpression>& value);
+					BaseConstructorCallBuilder& type(const vl::Ptr<WfType>& value);
 				};
 
 				class BinaryExpressionBuilder
 				{
 				private:
-					WorkflowBinaryExpression* node;
+					WfBinaryExpression* node;
 				public:
-					BinaryExpressionBuilder(WorkflowBinaryExpression* _node) : node(_node) {}
-					BinaryExpressionBuilder& first(const vl::Ptr<WorkflowExpression>& value);
-					BinaryExpressionBuilder& op(WorkflowBinaryOperator value);
-					BinaryExpressionBuilder& second(const vl::Ptr<WorkflowExpression>& value);
+					BinaryExpressionBuilder(WfBinaryExpression* _node) : node(_node) {}
+					BinaryExpressionBuilder& first(const vl::Ptr<WfExpression>& value);
+					BinaryExpressionBuilder& op(WfBinaryOperator value);
+					BinaryExpressionBuilder& second(const vl::Ptr<WfExpression>& value);
 				};
 
 				class BindExpressionBuilder
 				{
 				private:
-					WorkflowBindExpression* node;
+					WfBindExpression* node;
 				public:
-					BindExpressionBuilder(WorkflowBindExpression* _node) : node(_node) {}
-					BindExpressionBuilder& expression(const vl::Ptr<WorkflowExpression>& value);
+					BindExpressionBuilder(WfBindExpression* _node) : node(_node) {}
+					BindExpressionBuilder& expression(const vl::Ptr<WfExpression>& value);
 				};
 
 				class BlockStatementBuilder
 				{
 				private:
-					WorkflowBlockStatement* node;
+					WfBlockStatement* node;
 				public:
-					BlockStatementBuilder(WorkflowBlockStatement* _node) : node(_node) {}
+					BlockStatementBuilder(WfBlockStatement* _node) : node(_node) {}
 					BlockStatementBuilder& endLabel(const vl::WString& value);
-					BlockStatementBuilder& statements(const vl::Ptr<WorkflowStatement>& value);
+					BlockStatementBuilder& statements(const vl::Ptr<WfStatement>& value);
 				};
 
 				class CallExpressionBuilder
 				{
 				private:
-					WorkflowCallExpression* node;
+					WfCallExpression* node;
 				public:
-					CallExpressionBuilder(WorkflowCallExpression* _node) : node(_node) {}
-					CallExpressionBuilder& arguments(const vl::Ptr<WorkflowExpression>& value);
-					CallExpressionBuilder& function(const vl::Ptr<WorkflowExpression>& value);
+					CallExpressionBuilder(WfCallExpression* _node) : node(_node) {}
+					CallExpressionBuilder& arguments(const vl::Ptr<WfExpression>& value);
+					CallExpressionBuilder& function(const vl::Ptr<WfExpression>& value);
 				};
 
 				class CastResultInterfaceDeclarationBuilder
 				{
 				private:
-					WorkflowCastResultInterfaceDeclaration* node;
+					WfCastResultInterfaceDeclaration* node;
 				public:
-					CastResultInterfaceDeclarationBuilder(WorkflowCastResultInterfaceDeclaration* _node) : node(_node) {}
-					CastResultInterfaceDeclarationBuilder& baseType(const vl::Ptr<WorkflowType>& value);
-					CastResultInterfaceDeclarationBuilder& elementType(const vl::Ptr<WorkflowType>& value);
+					CastResultInterfaceDeclarationBuilder(WfCastResultInterfaceDeclaration* _node) : node(_node) {}
+					CastResultInterfaceDeclarationBuilder& baseType(const vl::Ptr<WfType>& value);
+					CastResultInterfaceDeclarationBuilder& elementType(const vl::Ptr<WfType>& value);
 				};
 
 				class ChildExpressionBuilder
 				{
 				private:
-					WorkflowChildExpression* node;
+					WfChildExpression* node;
 				public:
-					ChildExpressionBuilder(WorkflowChildExpression* _node) : node(_node) {}
+					ChildExpressionBuilder(WfChildExpression* _node) : node(_node) {}
 					ChildExpressionBuilder& name(const vl::WString& value);
-					ChildExpressionBuilder& parent(const vl::Ptr<WorkflowExpression>& value);
+					ChildExpressionBuilder& parent(const vl::Ptr<WfExpression>& value);
 				};
 
 				class ChildTypeBuilder
 				{
 				private:
-					WorkflowChildType* node;
+					WfChildType* node;
 				public:
-					ChildTypeBuilder(WorkflowChildType* _node) : node(_node) {}
+					ChildTypeBuilder(WfChildType* _node) : node(_node) {}
 					ChildTypeBuilder& name(const vl::WString& value);
-					ChildTypeBuilder& parent(const vl::Ptr<WorkflowType>& value);
+					ChildTypeBuilder& parent(const vl::Ptr<WfType>& value);
 				};
 
 				class ClassDeclarationBuilder
 				{
 				private:
-					WorkflowClassDeclaration* node;
+					WfClassDeclaration* node;
 				public:
-					ClassDeclarationBuilder(WorkflowClassDeclaration* _node) : node(_node) {}
-					ClassDeclarationBuilder& baseTypes(const vl::Ptr<WorkflowType>& value);
-					ClassDeclarationBuilder& constructorType(WorkflowConstructorType value);
-					ClassDeclarationBuilder& declarations(const vl::Ptr<WorkflowDeclaration>& value);
-					ClassDeclarationBuilder& kind(WorkflowClassKind value);
+					ClassDeclarationBuilder(WfClassDeclaration* _node) : node(_node) {}
+					ClassDeclarationBuilder& baseTypes(const vl::Ptr<WfType>& value);
+					ClassDeclarationBuilder& constructorType(WfConstructorType value);
+					ClassDeclarationBuilder& declarations(const vl::Ptr<WfDeclaration>& value);
+					ClassDeclarationBuilder& kind(WfClassKind value);
 				};
 
 				class CoOperatorExpressionBuilder
 				{
 				private:
-					WorkflowCoOperatorExpression* node;
+					WfCoOperatorExpression* node;
 				public:
-					CoOperatorExpressionBuilder(WorkflowCoOperatorExpression* _node) : node(_node) {}
+					CoOperatorExpressionBuilder(WfCoOperatorExpression* _node) : node(_node) {}
 					CoOperatorExpressionBuilder& name(const vl::WString& value);
 				};
 
 				class CoOperatorStatementBuilder
 				{
 				private:
-					WorkflowCoOperatorStatement* node;
+					WfCoOperatorStatement* node;
 				public:
-					CoOperatorStatementBuilder(WorkflowCoOperatorStatement* _node) : node(_node) {}
-					CoOperatorStatementBuilder& arguments(const vl::Ptr<WorkflowExpression>& value);
+					CoOperatorStatementBuilder(WfCoOperatorStatement* _node) : node(_node) {}
+					CoOperatorStatementBuilder& arguments(const vl::Ptr<WfExpression>& value);
 					CoOperatorStatementBuilder& opName(const vl::WString& value);
 					CoOperatorStatementBuilder& varName(const vl::WString& value);
 				};
@@ -166,110 +166,110 @@ namespace vl
 				class CoPauseStatementBuilder
 				{
 				private:
-					WorkflowCoPauseStatement* node;
+					WfCoPauseStatement* node;
 				public:
-					CoPauseStatementBuilder(WorkflowCoPauseStatement* _node) : node(_node) {}
-					CoPauseStatementBuilder& statement(const vl::Ptr<WorkflowStatement>& value);
+					CoPauseStatementBuilder(WfCoPauseStatement* _node) : node(_node) {}
+					CoPauseStatementBuilder& statement(const vl::Ptr<WfStatement>& value);
 				};
 
 				class CoProviderStatementBuilder
 				{
 				private:
-					WorkflowCoProviderStatement* node;
+					WfCoProviderStatement* node;
 				public:
-					CoProviderStatementBuilder(WorkflowCoProviderStatement* _node) : node(_node) {}
+					CoProviderStatementBuilder(WfCoProviderStatement* _node) : node(_node) {}
 					CoProviderStatementBuilder& name(const vl::WString& value);
-					CoProviderStatementBuilder& statement(const vl::Ptr<WorkflowStatement>& value);
+					CoProviderStatementBuilder& statement(const vl::Ptr<WfStatement>& value);
 				};
 
 				class ConstructorArgumentBuilder
 				{
 				private:
-					WorkflowConstructorArgument* node;
+					WfConstructorArgument* node;
 				public:
-					ConstructorArgumentBuilder(WorkflowConstructorArgument* _node) : node(_node) {}
-					ConstructorArgumentBuilder& key(const vl::Ptr<WorkflowExpression>& value);
-					ConstructorArgumentBuilder& value(const vl::Ptr<WorkflowExpression>& value);
+					ConstructorArgumentBuilder(WfConstructorArgument* _node) : node(_node) {}
+					ConstructorArgumentBuilder& key(const vl::Ptr<WfExpression>& value);
+					ConstructorArgumentBuilder& value(const vl::Ptr<WfExpression>& value);
 				};
 
 				class ConstructorDeclarationBuilder
 				{
 				private:
-					WorkflowConstructorDeclaration* node;
+					WfConstructorDeclaration* node;
 				public:
-					ConstructorDeclarationBuilder(WorkflowConstructorDeclaration* _node) : node(_node) {}
-					ConstructorDeclarationBuilder& arguments(const vl::Ptr<WorkflowFunctionArgument>& value);
-					ConstructorDeclarationBuilder& baseConstructorCalls(const vl::Ptr<WorkflowBaseConstructorCall>& value);
-					ConstructorDeclarationBuilder& constructorType(WorkflowConstructorType value);
-					ConstructorDeclarationBuilder& statement(const vl::Ptr<WorkflowStatement>& value);
+					ConstructorDeclarationBuilder(WfConstructorDeclaration* _node) : node(_node) {}
+					ConstructorDeclarationBuilder& arguments(const vl::Ptr<WfFunctionArgument>& value);
+					ConstructorDeclarationBuilder& baseConstructorCalls(const vl::Ptr<WfBaseConstructorCall>& value);
+					ConstructorDeclarationBuilder& constructorType(WfConstructorType value);
+					ConstructorDeclarationBuilder& statement(const vl::Ptr<WfStatement>& value);
 				};
 
 				class ConstructorExpressionBuilder
 				{
 				private:
-					WorkflowConstructorExpression* node;
+					WfConstructorExpression* node;
 				public:
-					ConstructorExpressionBuilder(WorkflowConstructorExpression* _node) : node(_node) {}
-					ConstructorExpressionBuilder& arguments(const vl::Ptr<WorkflowConstructorArgument>& value);
+					ConstructorExpressionBuilder(WfConstructorExpression* _node) : node(_node) {}
+					ConstructorExpressionBuilder& arguments(const vl::Ptr<WfConstructorArgument>& value);
 				};
 
 				class DeclarationBuilder
 				{
 				private:
-					WorkflowDeclaration* node;
+					WfDeclaration* node;
 				public:
-					DeclarationBuilder(WorkflowDeclaration* _node) : node(_node) {}
-					DeclarationBuilder& attributes(const vl::Ptr<WorkflowAttribute>& value);
+					DeclarationBuilder(WfDeclaration* _node) : node(_node) {}
+					DeclarationBuilder& attributes(const vl::Ptr<WfAttribute>& value);
 					DeclarationBuilder& name(const vl::WString& value);
 				};
 
 				class DeleteStatementBuilder
 				{
 				private:
-					WorkflowDeleteStatement* node;
+					WfDeleteStatement* node;
 				public:
-					DeleteStatementBuilder(WorkflowDeleteStatement* _node) : node(_node) {}
-					DeleteStatementBuilder& expression(const vl::Ptr<WorkflowExpression>& value);
+					DeleteStatementBuilder(WfDeleteStatement* _node) : node(_node) {}
+					DeleteStatementBuilder& expression(const vl::Ptr<WfExpression>& value);
 				};
 
 				class DestructorDeclarationBuilder
 				{
 				private:
-					WorkflowDestructorDeclaration* node;
+					WfDestructorDeclaration* node;
 				public:
-					DestructorDeclarationBuilder(WorkflowDestructorDeclaration* _node) : node(_node) {}
-					DestructorDeclarationBuilder& statement(const vl::Ptr<WorkflowStatement>& value);
+					DestructorDeclarationBuilder(WfDestructorDeclaration* _node) : node(_node) {}
+					DestructorDeclarationBuilder& statement(const vl::Ptr<WfStatement>& value);
 				};
 
 				class DetachEventExpressionBuilder
 				{
 				private:
-					WorkflowDetachEventExpression* node;
+					WfDetachEventExpression* node;
 				public:
-					DetachEventExpressionBuilder(WorkflowDetachEventExpression* _node) : node(_node) {}
-					DetachEventExpressionBuilder& event(const vl::Ptr<WorkflowExpression>& value);
-					DetachEventExpressionBuilder& handler(const vl::Ptr<WorkflowExpression>& value);
+					DetachEventExpressionBuilder(WfDetachEventExpression* _node) : node(_node) {}
+					DetachEventExpressionBuilder& event(const vl::Ptr<WfExpression>& value);
+					DetachEventExpressionBuilder& handler(const vl::Ptr<WfExpression>& value);
 				};
 
 				class EnumDeclarationBuilder
 				{
 				private:
-					WorkflowEnumDeclaration* node;
+					WfEnumDeclaration* node;
 				public:
-					EnumDeclarationBuilder(WorkflowEnumDeclaration* _node) : node(_node) {}
-					EnumDeclarationBuilder& items(const vl::Ptr<WorkflowEnumItem>& value);
-					EnumDeclarationBuilder& kind(WorkflowEnumKind value);
+					EnumDeclarationBuilder(WfEnumDeclaration* _node) : node(_node) {}
+					EnumDeclarationBuilder& items(const vl::Ptr<WfEnumItem>& value);
+					EnumDeclarationBuilder& kind(WfEnumKind value);
 				};
 
 				class EnumItemBuilder
 				{
 				private:
-					WorkflowEnumItem* node;
+					WfEnumItem* node;
 				public:
-					EnumItemBuilder(WorkflowEnumItem* _node) : node(_node) {}
-					EnumItemBuilder& attributes(const vl::Ptr<WorkflowAttribute>& value);
-					EnumItemBuilder& intersections(const vl::Ptr<WorkflowEnumItemIntersection>& value);
-					EnumItemBuilder& kind(WorkflowEnumItemKind value);
+					EnumItemBuilder(WfEnumItem* _node) : node(_node) {}
+					EnumItemBuilder& attributes(const vl::Ptr<WfAttribute>& value);
+					EnumItemBuilder& intersections(const vl::Ptr<WfEnumItemIntersection>& value);
+					EnumItemBuilder& kind(WfEnumItemKind value);
 					EnumItemBuilder& name(const vl::WString& value);
 					EnumItemBuilder& number(const vl::WString& value);
 				};
@@ -277,832 +277,832 @@ namespace vl
 				class EnumItemIntersectionBuilder
 				{
 				private:
-					WorkflowEnumItemIntersection* node;
+					WfEnumItemIntersection* node;
 				public:
-					EnumItemIntersectionBuilder(WorkflowEnumItemIntersection* _node) : node(_node) {}
+					EnumItemIntersectionBuilder(WfEnumItemIntersection* _node) : node(_node) {}
 					EnumItemIntersectionBuilder& name(const vl::WString& value);
 				};
 
 				class EnumerableTypeBuilder
 				{
 				private:
-					WorkflowEnumerableType* node;
+					WfEnumerableType* node;
 				public:
-					EnumerableTypeBuilder(WorkflowEnumerableType* _node) : node(_node) {}
-					EnumerableTypeBuilder& element(const vl::Ptr<WorkflowType>& value);
+					EnumerableTypeBuilder(WfEnumerableType* _node) : node(_node) {}
+					EnumerableTypeBuilder& element(const vl::Ptr<WfType>& value);
 				};
 
 				class EventDeclarationBuilder
 				{
 				private:
-					WorkflowEventDeclaration* node;
+					WfEventDeclaration* node;
 				public:
-					EventDeclarationBuilder(WorkflowEventDeclaration* _node) : node(_node) {}
-					EventDeclarationBuilder& arguments(const vl::Ptr<WorkflowType>& value);
+					EventDeclarationBuilder(WfEventDeclaration* _node) : node(_node) {}
+					EventDeclarationBuilder& arguments(const vl::Ptr<WfType>& value);
 				};
 
 				class ExpectedTypeCastExpressionBuilder
 				{
 				private:
-					WorkflowExpectedTypeCastExpression* node;
+					WfExpectedTypeCastExpression* node;
 				public:
-					ExpectedTypeCastExpressionBuilder(WorkflowExpectedTypeCastExpression* _node) : node(_node) {}
-					ExpectedTypeCastExpressionBuilder& expression(const vl::Ptr<WorkflowExpression>& value);
-					ExpectedTypeCastExpressionBuilder& strategy(WorkflowTypeCastingStrategy value);
+					ExpectedTypeCastExpressionBuilder(WfExpectedTypeCastExpression* _node) : node(_node) {}
+					ExpectedTypeCastExpressionBuilder& expression(const vl::Ptr<WfExpression>& value);
+					ExpectedTypeCastExpressionBuilder& strategy(WfTypeCastingStrategy value);
 				};
 
 				class ExpressionStatementBuilder
 				{
 				private:
-					WorkflowExpressionStatement* node;
+					WfExpressionStatement* node;
 				public:
-					ExpressionStatementBuilder(WorkflowExpressionStatement* _node) : node(_node) {}
-					ExpressionStatementBuilder& expression(const vl::Ptr<WorkflowExpression>& value);
+					ExpressionStatementBuilder(WfExpressionStatement* _node) : node(_node) {}
+					ExpressionStatementBuilder& expression(const vl::Ptr<WfExpression>& value);
 				};
 
 				class FloatingExpressionBuilder
 				{
 				private:
-					WorkflowFloatingExpression* node;
+					WfFloatingExpression* node;
 				public:
-					FloatingExpressionBuilder(WorkflowFloatingExpression* _node) : node(_node) {}
+					FloatingExpressionBuilder(WfFloatingExpression* _node) : node(_node) {}
 					FloatingExpressionBuilder& value(const vl::WString& value);
 				};
 
 				class ForEachStatementBuilder
 				{
 				private:
-					WorkflowForEachStatement* node;
+					WfForEachStatement* node;
 				public:
-					ForEachStatementBuilder(WorkflowForEachStatement* _node) : node(_node) {}
-					ForEachStatementBuilder& collection(const vl::Ptr<WorkflowExpression>& value);
-					ForEachStatementBuilder& direction(WorkflowForEachDirection value);
+					ForEachStatementBuilder(WfForEachStatement* _node) : node(_node) {}
+					ForEachStatementBuilder& collection(const vl::Ptr<WfExpression>& value);
+					ForEachStatementBuilder& direction(WfForEachDirection value);
 					ForEachStatementBuilder& name(const vl::WString& value);
-					ForEachStatementBuilder& statement(const vl::Ptr<WorkflowStatement>& value);
+					ForEachStatementBuilder& statement(const vl::Ptr<WfStatement>& value);
 				};
 
 				class FormatExpressionBuilder
 				{
 				private:
-					WorkflowFormatExpression* node;
+					WfFormatExpression* node;
 				public:
-					FormatExpressionBuilder(WorkflowFormatExpression* _node) : node(_node) {}
+					FormatExpressionBuilder(WfFormatExpression* _node) : node(_node) {}
 					FormatExpressionBuilder& value(const vl::WString& value);
 				};
 
 				class FunctionArgumentBuilder
 				{
 				private:
-					WorkflowFunctionArgument* node;
+					WfFunctionArgument* node;
 				public:
-					FunctionArgumentBuilder(WorkflowFunctionArgument* _node) : node(_node) {}
-					FunctionArgumentBuilder& attributes(const vl::Ptr<WorkflowAttribute>& value);
+					FunctionArgumentBuilder(WfFunctionArgument* _node) : node(_node) {}
+					FunctionArgumentBuilder& attributes(const vl::Ptr<WfAttribute>& value);
 					FunctionArgumentBuilder& name(const vl::WString& value);
-					FunctionArgumentBuilder& type(const vl::Ptr<WorkflowType>& value);
+					FunctionArgumentBuilder& type(const vl::Ptr<WfType>& value);
 				};
 
 				class FunctionDeclarationBuilder
 				{
 				private:
-					WorkflowFunctionDeclaration* node;
+					WfFunctionDeclaration* node;
 				public:
-					FunctionDeclarationBuilder(WorkflowFunctionDeclaration* _node) : node(_node) {}
-					FunctionDeclarationBuilder& anonymity(WorkflowFunctionAnonymity value);
-					FunctionDeclarationBuilder& arguments(const vl::Ptr<WorkflowFunctionArgument>& value);
-					FunctionDeclarationBuilder& functionKind(WorkflowFunctionKind value);
-					FunctionDeclarationBuilder& returnType(const vl::Ptr<WorkflowType>& value);
-					FunctionDeclarationBuilder& statement(const vl::Ptr<WorkflowStatement>& value);
+					FunctionDeclarationBuilder(WfFunctionDeclaration* _node) : node(_node) {}
+					FunctionDeclarationBuilder& anonymity(WfFunctionAnonymity value);
+					FunctionDeclarationBuilder& arguments(const vl::Ptr<WfFunctionArgument>& value);
+					FunctionDeclarationBuilder& functionKind(WfFunctionKind value);
+					FunctionDeclarationBuilder& returnType(const vl::Ptr<WfType>& value);
+					FunctionDeclarationBuilder& statement(const vl::Ptr<WfStatement>& value);
 				};
 
 				class FunctionExpressionBuilder
 				{
 				private:
-					WorkflowFunctionExpression* node;
+					WfFunctionExpression* node;
 				public:
-					FunctionExpressionBuilder(WorkflowFunctionExpression* _node) : node(_node) {}
-					FunctionExpressionBuilder& function(const vl::Ptr<WorkflowFunctionDeclaration>& value);
+					FunctionExpressionBuilder(WfFunctionExpression* _node) : node(_node) {}
+					FunctionExpressionBuilder& function(const vl::Ptr<WfFunctionDeclaration>& value);
 				};
 
 				class FunctionTypeBuilder
 				{
 				private:
-					WorkflowFunctionType* node;
+					WfFunctionType* node;
 				public:
-					FunctionTypeBuilder(WorkflowFunctionType* _node) : node(_node) {}
-					FunctionTypeBuilder& arguments(const vl::Ptr<WorkflowType>& value);
-					FunctionTypeBuilder& result(const vl::Ptr<WorkflowType>& value);
+					FunctionTypeBuilder(WfFunctionType* _node) : node(_node) {}
+					FunctionTypeBuilder& arguments(const vl::Ptr<WfType>& value);
+					FunctionTypeBuilder& result(const vl::Ptr<WfType>& value);
 				};
 
 				class GotoStatementBuilder
 				{
 				private:
-					WorkflowGotoStatement* node;
+					WfGotoStatement* node;
 				public:
-					GotoStatementBuilder(WorkflowGotoStatement* _node) : node(_node) {}
+					GotoStatementBuilder(WfGotoStatement* _node) : node(_node) {}
 					GotoStatementBuilder& label(const vl::WString& value);
 				};
 
 				class IfExpressionBuilder
 				{
 				private:
-					WorkflowIfExpression* node;
+					WfIfExpression* node;
 				public:
-					IfExpressionBuilder(WorkflowIfExpression* _node) : node(_node) {}
-					IfExpressionBuilder& condition(const vl::Ptr<WorkflowExpression>& value);
-					IfExpressionBuilder& falseBranch(const vl::Ptr<WorkflowExpression>& value);
-					IfExpressionBuilder& trueBranch(const vl::Ptr<WorkflowExpression>& value);
+					IfExpressionBuilder(WfIfExpression* _node) : node(_node) {}
+					IfExpressionBuilder& condition(const vl::Ptr<WfExpression>& value);
+					IfExpressionBuilder& falseBranch(const vl::Ptr<WfExpression>& value);
+					IfExpressionBuilder& trueBranch(const vl::Ptr<WfExpression>& value);
 				};
 
 				class IfStatementBuilder
 				{
 				private:
-					WorkflowIfStatement* node;
+					WfIfStatement* node;
 				public:
-					IfStatementBuilder(WorkflowIfStatement* _node) : node(_node) {}
-					IfStatementBuilder& expression(const vl::Ptr<WorkflowExpression>& value);
-					IfStatementBuilder& falseBranch(const vl::Ptr<WorkflowStatement>& value);
+					IfStatementBuilder(WfIfStatement* _node) : node(_node) {}
+					IfStatementBuilder& expression(const vl::Ptr<WfExpression>& value);
+					IfStatementBuilder& falseBranch(const vl::Ptr<WfStatement>& value);
 					IfStatementBuilder& name(const vl::WString& value);
-					IfStatementBuilder& trueBranch(const vl::Ptr<WorkflowStatement>& value);
-					IfStatementBuilder& type(const vl::Ptr<WorkflowType>& value);
+					IfStatementBuilder& trueBranch(const vl::Ptr<WfStatement>& value);
+					IfStatementBuilder& type(const vl::Ptr<WfType>& value);
 				};
 
 				class InferExpressionBuilder
 				{
 				private:
-					WorkflowInferExpression* node;
+					WfInferExpression* node;
 				public:
-					InferExpressionBuilder(WorkflowInferExpression* _node) : node(_node) {}
-					InferExpressionBuilder& expression(const vl::Ptr<WorkflowExpression>& value);
-					InferExpressionBuilder& type(const vl::Ptr<WorkflowType>& value);
+					InferExpressionBuilder(WfInferExpression* _node) : node(_node) {}
+					InferExpressionBuilder& expression(const vl::Ptr<WfExpression>& value);
+					InferExpressionBuilder& type(const vl::Ptr<WfType>& value);
 				};
 
 				class IntegerExpressionBuilder
 				{
 				private:
-					WorkflowIntegerExpression* node;
+					WfIntegerExpression* node;
 				public:
-					IntegerExpressionBuilder(WorkflowIntegerExpression* _node) : node(_node) {}
+					IntegerExpressionBuilder(WfIntegerExpression* _node) : node(_node) {}
 					IntegerExpressionBuilder& value(const vl::WString& value);
 				};
 
 				class LetExpressionBuilder
 				{
 				private:
-					WorkflowLetExpression* node;
+					WfLetExpression* node;
 				public:
-					LetExpressionBuilder(WorkflowLetExpression* _node) : node(_node) {}
-					LetExpressionBuilder& expression(const vl::Ptr<WorkflowExpression>& value);
-					LetExpressionBuilder& variables(const vl::Ptr<WorkflowLetVariable>& value);
+					LetExpressionBuilder(WfLetExpression* _node) : node(_node) {}
+					LetExpressionBuilder& expression(const vl::Ptr<WfExpression>& value);
+					LetExpressionBuilder& variables(const vl::Ptr<WfLetVariable>& value);
 				};
 
 				class LetVariableBuilder
 				{
 				private:
-					WorkflowLetVariable* node;
+					WfLetVariable* node;
 				public:
-					LetVariableBuilder(WorkflowLetVariable* _node) : node(_node) {}
+					LetVariableBuilder(WfLetVariable* _node) : node(_node) {}
 					LetVariableBuilder& name(const vl::WString& value);
-					LetVariableBuilder& value(const vl::Ptr<WorkflowExpression>& value);
+					LetVariableBuilder& value(const vl::Ptr<WfExpression>& value);
 				};
 
 				class LiteralExpressionBuilder
 				{
 				private:
-					WorkflowLiteralExpression* node;
+					WfLiteralExpression* node;
 				public:
-					LiteralExpressionBuilder(WorkflowLiteralExpression* _node) : node(_node) {}
-					LiteralExpressionBuilder& value(WorkflowLiteralValue value);
+					LiteralExpressionBuilder(WfLiteralExpression* _node) : node(_node) {}
+					LiteralExpressionBuilder& value(WfLiteralValue value);
 				};
 
 				class MapTypeBuilder
 				{
 				private:
-					WorkflowMapType* node;
+					WfMapType* node;
 				public:
-					MapTypeBuilder(WorkflowMapType* _node) : node(_node) {}
-					MapTypeBuilder& key(const vl::Ptr<WorkflowType>& value);
-					MapTypeBuilder& value(const vl::Ptr<WorkflowType>& value);
-					MapTypeBuilder& writability(WorkflowMapWritability value);
+					MapTypeBuilder(WfMapType* _node) : node(_node) {}
+					MapTypeBuilder& key(const vl::Ptr<WfType>& value);
+					MapTypeBuilder& value(const vl::Ptr<WfType>& value);
+					MapTypeBuilder& writability(WfMapWritability value);
 				};
 
 				class MemberExpressionBuilder
 				{
 				private:
-					WorkflowMemberExpression* node;
+					WfMemberExpression* node;
 				public:
-					MemberExpressionBuilder(WorkflowMemberExpression* _node) : node(_node) {}
+					MemberExpressionBuilder(WfMemberExpression* _node) : node(_node) {}
 					MemberExpressionBuilder& name(const vl::WString& value);
-					MemberExpressionBuilder& parent(const vl::Ptr<WorkflowExpression>& value);
+					MemberExpressionBuilder& parent(const vl::Ptr<WfExpression>& value);
 				};
 
 				class MixinCastExpressionBuilder
 				{
 				private:
-					WorkflowMixinCastExpression* node;
+					WfMixinCastExpression* node;
 				public:
-					MixinCastExpressionBuilder(WorkflowMixinCastExpression* _node) : node(_node) {}
-					MixinCastExpressionBuilder& expression(const vl::Ptr<WorkflowExpression>& value);
-					MixinCastExpressionBuilder& type(const vl::Ptr<WorkflowType>& value);
+					MixinCastExpressionBuilder(WfMixinCastExpression* _node) : node(_node) {}
+					MixinCastExpressionBuilder& expression(const vl::Ptr<WfExpression>& value);
+					MixinCastExpressionBuilder& type(const vl::Ptr<WfType>& value);
 				};
 
 				class ModuleBuilder
 				{
 				private:
-					WorkflowModule* node;
+					WfModule* node;
 				public:
-					ModuleBuilder(WorkflowModule* _node) : node(_node) {}
-					ModuleBuilder& declarations(const vl::Ptr<WorkflowDeclaration>& value);
-					ModuleBuilder& moduleType(WorkflowModuleType value);
+					ModuleBuilder(WfModule* _node) : node(_node) {}
+					ModuleBuilder& declarations(const vl::Ptr<WfDeclaration>& value);
+					ModuleBuilder& moduleType(WfModuleType value);
 					ModuleBuilder& name(const vl::WString& value);
-					ModuleBuilder& paths(const vl::Ptr<WorkflowModuleUsingPath>& value);
+					ModuleBuilder& paths(const vl::Ptr<WfModuleUsingPath>& value);
 				};
 
 				class ModuleUsingItemBuilder
 				{
 				private:
-					WorkflowModuleUsingItem* node;
+					WfModuleUsingItem* node;
 				public:
-					ModuleUsingItemBuilder(WorkflowModuleUsingItem* _node) : node(_node) {}
-					ModuleUsingItemBuilder& fragments(const vl::Ptr<WorkflowModuleUsingFragment>& value);
+					ModuleUsingItemBuilder(WfModuleUsingItem* _node) : node(_node) {}
+					ModuleUsingItemBuilder& fragments(const vl::Ptr<WfModuleUsingFragment>& value);
 				};
 
 				class ModuleUsingNameFragmentBuilder
 				{
 				private:
-					WorkflowModuleUsingNameFragment* node;
+					WfModuleUsingNameFragment* node;
 				public:
-					ModuleUsingNameFragmentBuilder(WorkflowModuleUsingNameFragment* _node) : node(_node) {}
+					ModuleUsingNameFragmentBuilder(WfModuleUsingNameFragment* _node) : node(_node) {}
 					ModuleUsingNameFragmentBuilder& name(const vl::WString& value);
 				};
 
 				class ModuleUsingPathBuilder
 				{
 				private:
-					WorkflowModuleUsingPath* node;
+					WfModuleUsingPath* node;
 				public:
-					ModuleUsingPathBuilder(WorkflowModuleUsingPath* _node) : node(_node) {}
-					ModuleUsingPathBuilder& items(const vl::Ptr<WorkflowModuleUsingItem>& value);
+					ModuleUsingPathBuilder(WfModuleUsingPath* _node) : node(_node) {}
+					ModuleUsingPathBuilder& items(const vl::Ptr<WfModuleUsingItem>& value);
 				};
 
 				class NamespaceDeclarationBuilder
 				{
 				private:
-					WorkflowNamespaceDeclaration* node;
+					WfNamespaceDeclaration* node;
 				public:
-					NamespaceDeclarationBuilder(WorkflowNamespaceDeclaration* _node) : node(_node) {}
-					NamespaceDeclarationBuilder& declarations(const vl::Ptr<WorkflowDeclaration>& value);
+					NamespaceDeclarationBuilder(WfNamespaceDeclaration* _node) : node(_node) {}
+					NamespaceDeclarationBuilder& declarations(const vl::Ptr<WfDeclaration>& value);
 				};
 
 				class NewClassExpressionBuilder
 				{
 				private:
-					WorkflowNewClassExpression* node;
+					WfNewClassExpression* node;
 				public:
-					NewClassExpressionBuilder(WorkflowNewClassExpression* _node) : node(_node) {}
-					NewClassExpressionBuilder& arguments(const vl::Ptr<WorkflowExpression>& value);
-					NewClassExpressionBuilder& type(const vl::Ptr<WorkflowType>& value);
+					NewClassExpressionBuilder(WfNewClassExpression* _node) : node(_node) {}
+					NewClassExpressionBuilder& arguments(const vl::Ptr<WfExpression>& value);
+					NewClassExpressionBuilder& type(const vl::Ptr<WfType>& value);
 				};
 
 				class NewCoroutineExpressionBuilder
 				{
 				private:
-					WorkflowNewCoroutineExpression* node;
+					WfNewCoroutineExpression* node;
 				public:
-					NewCoroutineExpressionBuilder(WorkflowNewCoroutineExpression* _node) : node(_node) {}
+					NewCoroutineExpressionBuilder(WfNewCoroutineExpression* _node) : node(_node) {}
 					NewCoroutineExpressionBuilder& name(const vl::WString& value);
-					NewCoroutineExpressionBuilder& statement(const vl::Ptr<WorkflowStatement>& value);
+					NewCoroutineExpressionBuilder& statement(const vl::Ptr<WfStatement>& value);
 				};
 
 				class NewInterfaceExpressionBuilder
 				{
 				private:
-					WorkflowNewInterfaceExpression* node;
+					WfNewInterfaceExpression* node;
 				public:
-					NewInterfaceExpressionBuilder(WorkflowNewInterfaceExpression* _node) : node(_node) {}
-					NewInterfaceExpressionBuilder& declarations(const vl::Ptr<WorkflowDeclaration>& value);
-					NewInterfaceExpressionBuilder& type(const vl::Ptr<WorkflowType>& value);
+					NewInterfaceExpressionBuilder(WfNewInterfaceExpression* _node) : node(_node) {}
+					NewInterfaceExpressionBuilder& declarations(const vl::Ptr<WfDeclaration>& value);
+					NewInterfaceExpressionBuilder& type(const vl::Ptr<WfType>& value);
 				};
 
 				class NullableTypeBuilder
 				{
 				private:
-					WorkflowNullableType* node;
+					WfNullableType* node;
 				public:
-					NullableTypeBuilder(WorkflowNullableType* _node) : node(_node) {}
-					NullableTypeBuilder& element(const vl::Ptr<WorkflowType>& value);
+					NullableTypeBuilder(WfNullableType* _node) : node(_node) {}
+					NullableTypeBuilder& element(const vl::Ptr<WfType>& value);
 				};
 
 				class ObservableListTypeBuilder
 				{
 				private:
-					WorkflowObservableListType* node;
+					WfObservableListType* node;
 				public:
-					ObservableListTypeBuilder(WorkflowObservableListType* _node) : node(_node) {}
-					ObservableListTypeBuilder& element(const vl::Ptr<WorkflowType>& value);
+					ObservableListTypeBuilder(WfObservableListType* _node) : node(_node) {}
+					ObservableListTypeBuilder& element(const vl::Ptr<WfType>& value);
 				};
 
 				class ObserveExpressionBuilder
 				{
 				private:
-					WorkflowObserveExpression* node;
+					WfObserveExpression* node;
 				public:
-					ObserveExpressionBuilder(WorkflowObserveExpression* _node) : node(_node) {}
-					ObserveExpressionBuilder& events(const vl::Ptr<WorkflowExpression>& value);
-					ObserveExpressionBuilder& expression(const vl::Ptr<WorkflowExpression>& value);
+					ObserveExpressionBuilder(WfObserveExpression* _node) : node(_node) {}
+					ObserveExpressionBuilder& events(const vl::Ptr<WfExpression>& value);
+					ObserveExpressionBuilder& expression(const vl::Ptr<WfExpression>& value);
 					ObserveExpressionBuilder& name(const vl::WString& value);
-					ObserveExpressionBuilder& observeType(WorkflowObserveType value);
-					ObserveExpressionBuilder& parent(const vl::Ptr<WorkflowExpression>& value);
+					ObserveExpressionBuilder& observeType(WfObserveType value);
+					ObserveExpressionBuilder& parent(const vl::Ptr<WfExpression>& value);
 				};
 
 				class OrderedLambdaExpressionBuilder
 				{
 				private:
-					WorkflowOrderedLambdaExpression* node;
+					WfOrderedLambdaExpression* node;
 				public:
-					OrderedLambdaExpressionBuilder(WorkflowOrderedLambdaExpression* _node) : node(_node) {}
-					OrderedLambdaExpressionBuilder& body(const vl::Ptr<WorkflowExpression>& value);
+					OrderedLambdaExpressionBuilder(WfOrderedLambdaExpression* _node) : node(_node) {}
+					OrderedLambdaExpressionBuilder& body(const vl::Ptr<WfExpression>& value);
 				};
 
 				class OrderedNameExpressionBuilder
 				{
 				private:
-					WorkflowOrderedNameExpression* node;
+					WfOrderedNameExpression* node;
 				public:
-					OrderedNameExpressionBuilder(WorkflowOrderedNameExpression* _node) : node(_node) {}
+					OrderedNameExpressionBuilder(WfOrderedNameExpression* _node) : node(_node) {}
 					OrderedNameExpressionBuilder& name(const vl::WString& value);
 				};
 
 				class PredefinedTypeBuilder
 				{
 				private:
-					WorkflowPredefinedType* node;
+					WfPredefinedType* node;
 				public:
-					PredefinedTypeBuilder(WorkflowPredefinedType* _node) : node(_node) {}
-					PredefinedTypeBuilder& name(WorkflowPredefinedTypeName value);
+					PredefinedTypeBuilder(WfPredefinedType* _node) : node(_node) {}
+					PredefinedTypeBuilder& name(WfPredefinedTypeName value);
 				};
 
 				class PropertyDeclarationBuilder
 				{
 				private:
-					WorkflowPropertyDeclaration* node;
+					WfPropertyDeclaration* node;
 				public:
-					PropertyDeclarationBuilder(WorkflowPropertyDeclaration* _node) : node(_node) {}
+					PropertyDeclarationBuilder(WfPropertyDeclaration* _node) : node(_node) {}
 					PropertyDeclarationBuilder& getter(const vl::WString& value);
 					PropertyDeclarationBuilder& setter(const vl::WString& value);
-					PropertyDeclarationBuilder& type(const vl::Ptr<WorkflowType>& value);
+					PropertyDeclarationBuilder& type(const vl::Ptr<WfType>& value);
 					PropertyDeclarationBuilder& valueChangedEvent(const vl::WString& value);
 				};
 
 				class RaiseExceptionStatementBuilder
 				{
 				private:
-					WorkflowRaiseExceptionStatement* node;
+					WfRaiseExceptionStatement* node;
 				public:
-					RaiseExceptionStatementBuilder(WorkflowRaiseExceptionStatement* _node) : node(_node) {}
-					RaiseExceptionStatementBuilder& expression(const vl::Ptr<WorkflowExpression>& value);
+					RaiseExceptionStatementBuilder(WfRaiseExceptionStatement* _node) : node(_node) {}
+					RaiseExceptionStatementBuilder& expression(const vl::Ptr<WfExpression>& value);
 				};
 
 				class RangeExpressionBuilder
 				{
 				private:
-					WorkflowRangeExpression* node;
+					WfRangeExpression* node;
 				public:
-					RangeExpressionBuilder(WorkflowRangeExpression* _node) : node(_node) {}
-					RangeExpressionBuilder& begin(const vl::Ptr<WorkflowExpression>& value);
-					RangeExpressionBuilder& beginBoundary(WorkflowRangeBoundary value);
-					RangeExpressionBuilder& end(const vl::Ptr<WorkflowExpression>& value);
-					RangeExpressionBuilder& endBoundary(WorkflowRangeBoundary value);
+					RangeExpressionBuilder(WfRangeExpression* _node) : node(_node) {}
+					RangeExpressionBuilder& begin(const vl::Ptr<WfExpression>& value);
+					RangeExpressionBuilder& beginBoundary(WfRangeBoundary value);
+					RangeExpressionBuilder& end(const vl::Ptr<WfExpression>& value);
+					RangeExpressionBuilder& endBoundary(WfRangeBoundary value);
 				};
 
 				class RawPointerTypeBuilder
 				{
 				private:
-					WorkflowRawPointerType* node;
+					WfRawPointerType* node;
 				public:
-					RawPointerTypeBuilder(WorkflowRawPointerType* _node) : node(_node) {}
-					RawPointerTypeBuilder& element(const vl::Ptr<WorkflowType>& value);
+					RawPointerTypeBuilder(WfRawPointerType* _node) : node(_node) {}
+					RawPointerTypeBuilder& element(const vl::Ptr<WfType>& value);
 				};
 
 				class ReferenceExpressionBuilder
 				{
 				private:
-					WorkflowReferenceExpression* node;
+					WfReferenceExpression* node;
 				public:
-					ReferenceExpressionBuilder(WorkflowReferenceExpression* _node) : node(_node) {}
+					ReferenceExpressionBuilder(WfReferenceExpression* _node) : node(_node) {}
 					ReferenceExpressionBuilder& name(const vl::WString& value);
 				};
 
 				class ReferenceTypeBuilder
 				{
 				private:
-					WorkflowReferenceType* node;
+					WfReferenceType* node;
 				public:
-					ReferenceTypeBuilder(WorkflowReferenceType* _node) : node(_node) {}
+					ReferenceTypeBuilder(WfReferenceType* _node) : node(_node) {}
 					ReferenceTypeBuilder& name(const vl::WString& value);
 				};
 
 				class ReturnStatementBuilder
 				{
 				private:
-					WorkflowReturnStatement* node;
+					WfReturnStatement* node;
 				public:
-					ReturnStatementBuilder(WorkflowReturnStatement* _node) : node(_node) {}
-					ReturnStatementBuilder& expression(const vl::Ptr<WorkflowExpression>& value);
+					ReturnStatementBuilder(WfReturnStatement* _node) : node(_node) {}
+					ReturnStatementBuilder& expression(const vl::Ptr<WfExpression>& value);
 				};
 
 				class SetTestingExpressionBuilder
 				{
 				private:
-					WorkflowSetTestingExpression* node;
+					WfSetTestingExpression* node;
 				public:
-					SetTestingExpressionBuilder(WorkflowSetTestingExpression* _node) : node(_node) {}
-					SetTestingExpressionBuilder& collection(const vl::Ptr<WorkflowExpression>& value);
-					SetTestingExpressionBuilder& element(const vl::Ptr<WorkflowExpression>& value);
-					SetTestingExpressionBuilder& test(WorkflowSetTesting value);
+					SetTestingExpressionBuilder(WfSetTestingExpression* _node) : node(_node) {}
+					SetTestingExpressionBuilder& collection(const vl::Ptr<WfExpression>& value);
+					SetTestingExpressionBuilder& element(const vl::Ptr<WfExpression>& value);
+					SetTestingExpressionBuilder& test(WfSetTesting value);
 				};
 
 				class SharedPointerTypeBuilder
 				{
 				private:
-					WorkflowSharedPointerType* node;
+					WfSharedPointerType* node;
 				public:
-					SharedPointerTypeBuilder(WorkflowSharedPointerType* _node) : node(_node) {}
-					SharedPointerTypeBuilder& element(const vl::Ptr<WorkflowType>& value);
+					SharedPointerTypeBuilder(WfSharedPointerType* _node) : node(_node) {}
+					SharedPointerTypeBuilder& element(const vl::Ptr<WfType>& value);
 				};
 
 				class StateDeclarationBuilder
 				{
 				private:
-					WorkflowStateDeclaration* node;
+					WfStateDeclaration* node;
 				public:
-					StateDeclarationBuilder(WorkflowStateDeclaration* _node) : node(_node) {}
-					StateDeclarationBuilder& arguments(const vl::Ptr<WorkflowFunctionArgument>& value);
+					StateDeclarationBuilder(WfStateDeclaration* _node) : node(_node) {}
+					StateDeclarationBuilder& arguments(const vl::Ptr<WfFunctionArgument>& value);
 					StateDeclarationBuilder& name(const vl::WString& value);
-					StateDeclarationBuilder& statement(const vl::Ptr<WorkflowStatement>& value);
+					StateDeclarationBuilder& statement(const vl::Ptr<WfStatement>& value);
 				};
 
 				class StateInputBuilder
 				{
 				private:
-					WorkflowStateInput* node;
+					WfStateInput* node;
 				public:
-					StateInputBuilder(WorkflowStateInput* _node) : node(_node) {}
-					StateInputBuilder& arguments(const vl::Ptr<WorkflowFunctionArgument>& value);
+					StateInputBuilder(WfStateInput* _node) : node(_node) {}
+					StateInputBuilder& arguments(const vl::Ptr<WfFunctionArgument>& value);
 					StateInputBuilder& name(const vl::WString& value);
 				};
 
 				class StateInvokeStatementBuilder
 				{
 				private:
-					WorkflowStateInvokeStatement* node;
+					WfStateInvokeStatement* node;
 				public:
-					StateInvokeStatementBuilder(WorkflowStateInvokeStatement* _node) : node(_node) {}
-					StateInvokeStatementBuilder& arguments(const vl::Ptr<WorkflowExpression>& value);
+					StateInvokeStatementBuilder(WfStateInvokeStatement* _node) : node(_node) {}
+					StateInvokeStatementBuilder& arguments(const vl::Ptr<WfExpression>& value);
 					StateInvokeStatementBuilder& name(const vl::WString& value);
-					StateInvokeStatementBuilder& type(WorkflowStateInvokeType value);
+					StateInvokeStatementBuilder& type(WfStateInvokeType value);
 				};
 
 				class StateMachineDeclarationBuilder
 				{
 				private:
-					WorkflowStateMachineDeclaration* node;
+					WfStateMachineDeclaration* node;
 				public:
-					StateMachineDeclarationBuilder(WorkflowStateMachineDeclaration* _node) : node(_node) {}
-					StateMachineDeclarationBuilder& inputs(const vl::Ptr<WorkflowStateInput>& value);
-					StateMachineDeclarationBuilder& states(const vl::Ptr<WorkflowStateDeclaration>& value);
+					StateMachineDeclarationBuilder(WfStateMachineDeclaration* _node) : node(_node) {}
+					StateMachineDeclarationBuilder& inputs(const vl::Ptr<WfStateInput>& value);
+					StateMachineDeclarationBuilder& states(const vl::Ptr<WfStateDeclaration>& value);
 				};
 
 				class StateSwitchArgumentBuilder
 				{
 				private:
-					WorkflowStateSwitchArgument* node;
+					WfStateSwitchArgument* node;
 				public:
-					StateSwitchArgumentBuilder(WorkflowStateSwitchArgument* _node) : node(_node) {}
+					StateSwitchArgumentBuilder(WfStateSwitchArgument* _node) : node(_node) {}
 					StateSwitchArgumentBuilder& name(const vl::WString& value);
 				};
 
 				class StateSwitchCaseBuilder
 				{
 				private:
-					WorkflowStateSwitchCase* node;
+					WfStateSwitchCase* node;
 				public:
-					StateSwitchCaseBuilder(WorkflowStateSwitchCase* _node) : node(_node) {}
-					StateSwitchCaseBuilder& arguments(const vl::Ptr<WorkflowStateSwitchArgument>& value);
+					StateSwitchCaseBuilder(WfStateSwitchCase* _node) : node(_node) {}
+					StateSwitchCaseBuilder& arguments(const vl::Ptr<WfStateSwitchArgument>& value);
 					StateSwitchCaseBuilder& name(const vl::WString& value);
-					StateSwitchCaseBuilder& statement(const vl::Ptr<WorkflowStatement>& value);
+					StateSwitchCaseBuilder& statement(const vl::Ptr<WfStatement>& value);
 				};
 
 				class StateSwitchStatementBuilder
 				{
 				private:
-					WorkflowStateSwitchStatement* node;
+					WfStateSwitchStatement* node;
 				public:
-					StateSwitchStatementBuilder(WorkflowStateSwitchStatement* _node) : node(_node) {}
-					StateSwitchStatementBuilder& caseBranches(const vl::Ptr<WorkflowStateSwitchCase>& value);
-					StateSwitchStatementBuilder& type(WorkflowStateSwitchType value);
+					StateSwitchStatementBuilder(WfStateSwitchStatement* _node) : node(_node) {}
+					StateSwitchStatementBuilder& caseBranches(const vl::Ptr<WfStateSwitchCase>& value);
+					StateSwitchStatementBuilder& type(WfStateSwitchType value);
 				};
 
 				class StringExpressionBuilder
 				{
 				private:
-					WorkflowStringExpression* node;
+					WfStringExpression* node;
 				public:
-					StringExpressionBuilder(WorkflowStringExpression* _node) : node(_node) {}
+					StringExpressionBuilder(WfStringExpression* _node) : node(_node) {}
 					StringExpressionBuilder& value(const vl::WString& value);
 				};
 
 				class StructDeclarationBuilder
 				{
 				private:
-					WorkflowStructDeclaration* node;
+					WfStructDeclaration* node;
 				public:
-					StructDeclarationBuilder(WorkflowStructDeclaration* _node) : node(_node) {}
-					StructDeclarationBuilder& members(const vl::Ptr<WorkflowStructMember>& value);
+					StructDeclarationBuilder(WfStructDeclaration* _node) : node(_node) {}
+					StructDeclarationBuilder& members(const vl::Ptr<WfStructMember>& value);
 				};
 
 				class StructMemberBuilder
 				{
 				private:
-					WorkflowStructMember* node;
+					WfStructMember* node;
 				public:
-					StructMemberBuilder(WorkflowStructMember* _node) : node(_node) {}
-					StructMemberBuilder& attributes(const vl::Ptr<WorkflowAttribute>& value);
+					StructMemberBuilder(WfStructMember* _node) : node(_node) {}
+					StructMemberBuilder& attributes(const vl::Ptr<WfAttribute>& value);
 					StructMemberBuilder& name(const vl::WString& value);
-					StructMemberBuilder& type(const vl::Ptr<WorkflowType>& value);
+					StructMemberBuilder& type(const vl::Ptr<WfType>& value);
 				};
 
 				class SwitchCaseBuilder
 				{
 				private:
-					WorkflowSwitchCase* node;
+					WfSwitchCase* node;
 				public:
-					SwitchCaseBuilder(WorkflowSwitchCase* _node) : node(_node) {}
-					SwitchCaseBuilder& expression(const vl::Ptr<WorkflowExpression>& value);
-					SwitchCaseBuilder& statement(const vl::Ptr<WorkflowStatement>& value);
+					SwitchCaseBuilder(WfSwitchCase* _node) : node(_node) {}
+					SwitchCaseBuilder& expression(const vl::Ptr<WfExpression>& value);
+					SwitchCaseBuilder& statement(const vl::Ptr<WfStatement>& value);
 				};
 
 				class SwitchStatementBuilder
 				{
 				private:
-					WorkflowSwitchStatement* node;
+					WfSwitchStatement* node;
 				public:
-					SwitchStatementBuilder(WorkflowSwitchStatement* _node) : node(_node) {}
-					SwitchStatementBuilder& caseBranches(const vl::Ptr<WorkflowSwitchCase>& value);
-					SwitchStatementBuilder& defaultBranch(const vl::Ptr<WorkflowStatement>& value);
-					SwitchStatementBuilder& expression(const vl::Ptr<WorkflowExpression>& value);
+					SwitchStatementBuilder(WfSwitchStatement* _node) : node(_node) {}
+					SwitchStatementBuilder& caseBranches(const vl::Ptr<WfSwitchCase>& value);
+					SwitchStatementBuilder& defaultBranch(const vl::Ptr<WfStatement>& value);
+					SwitchStatementBuilder& expression(const vl::Ptr<WfExpression>& value);
 				};
 
 				class TopQualifiedExpressionBuilder
 				{
 				private:
-					WorkflowTopQualifiedExpression* node;
+					WfTopQualifiedExpression* node;
 				public:
-					TopQualifiedExpressionBuilder(WorkflowTopQualifiedExpression* _node) : node(_node) {}
+					TopQualifiedExpressionBuilder(WfTopQualifiedExpression* _node) : node(_node) {}
 					TopQualifiedExpressionBuilder& name(const vl::WString& value);
 				};
 
 				class TopQualifiedTypeBuilder
 				{
 				private:
-					WorkflowTopQualifiedType* node;
+					WfTopQualifiedType* node;
 				public:
-					TopQualifiedTypeBuilder(WorkflowTopQualifiedType* _node) : node(_node) {}
+					TopQualifiedTypeBuilder(WfTopQualifiedType* _node) : node(_node) {}
 					TopQualifiedTypeBuilder& name(const vl::WString& value);
 				};
 
 				class TryStatementBuilder
 				{
 				private:
-					WorkflowTryStatement* node;
+					WfTryStatement* node;
 				public:
-					TryStatementBuilder(WorkflowTryStatement* _node) : node(_node) {}
-					TryStatementBuilder& catchStatement(const vl::Ptr<WorkflowStatement>& value);
-					TryStatementBuilder& finallyStatement(const vl::Ptr<WorkflowStatement>& value);
+					TryStatementBuilder(WfTryStatement* _node) : node(_node) {}
+					TryStatementBuilder& catchStatement(const vl::Ptr<WfStatement>& value);
+					TryStatementBuilder& finallyStatement(const vl::Ptr<WfStatement>& value);
 					TryStatementBuilder& name(const vl::WString& value);
-					TryStatementBuilder& protectedStatement(const vl::Ptr<WorkflowStatement>& value);
+					TryStatementBuilder& protectedStatement(const vl::Ptr<WfStatement>& value);
 				};
 
 				class TypeCastingExpressionBuilder
 				{
 				private:
-					WorkflowTypeCastingExpression* node;
+					WfTypeCastingExpression* node;
 				public:
-					TypeCastingExpressionBuilder(WorkflowTypeCastingExpression* _node) : node(_node) {}
-					TypeCastingExpressionBuilder& expression(const vl::Ptr<WorkflowExpression>& value);
-					TypeCastingExpressionBuilder& strategy(WorkflowTypeCastingStrategy value);
-					TypeCastingExpressionBuilder& type(const vl::Ptr<WorkflowType>& value);
+					TypeCastingExpressionBuilder(WfTypeCastingExpression* _node) : node(_node) {}
+					TypeCastingExpressionBuilder& expression(const vl::Ptr<WfExpression>& value);
+					TypeCastingExpressionBuilder& strategy(WfTypeCastingStrategy value);
+					TypeCastingExpressionBuilder& type(const vl::Ptr<WfType>& value);
 				};
 
 				class TypeOfExpressionExpressionBuilder
 				{
 				private:
-					WorkflowTypeOfExpressionExpression* node;
+					WfTypeOfExpressionExpression* node;
 				public:
-					TypeOfExpressionExpressionBuilder(WorkflowTypeOfExpressionExpression* _node) : node(_node) {}
-					TypeOfExpressionExpressionBuilder& expression(const vl::Ptr<WorkflowExpression>& value);
+					TypeOfExpressionExpressionBuilder(WfTypeOfExpressionExpression* _node) : node(_node) {}
+					TypeOfExpressionExpressionBuilder& expression(const vl::Ptr<WfExpression>& value);
 				};
 
 				class TypeOfTypeExpressionBuilder
 				{
 				private:
-					WorkflowTypeOfTypeExpression* node;
+					WfTypeOfTypeExpression* node;
 				public:
-					TypeOfTypeExpressionBuilder(WorkflowTypeOfTypeExpression* _node) : node(_node) {}
-					TypeOfTypeExpressionBuilder& type(const vl::Ptr<WorkflowType>& value);
+					TypeOfTypeExpressionBuilder(WfTypeOfTypeExpression* _node) : node(_node) {}
+					TypeOfTypeExpressionBuilder& type(const vl::Ptr<WfType>& value);
 				};
 
 				class TypeTestingExpressionBuilder
 				{
 				private:
-					WorkflowTypeTestingExpression* node;
+					WfTypeTestingExpression* node;
 				public:
-					TypeTestingExpressionBuilder(WorkflowTypeTestingExpression* _node) : node(_node) {}
-					TypeTestingExpressionBuilder& expression(const vl::Ptr<WorkflowExpression>& value);
-					TypeTestingExpressionBuilder& test(WorkflowTypeTesting value);
-					TypeTestingExpressionBuilder& type(const vl::Ptr<WorkflowType>& value);
+					TypeTestingExpressionBuilder(WfTypeTestingExpression* _node) : node(_node) {}
+					TypeTestingExpressionBuilder& expression(const vl::Ptr<WfExpression>& value);
+					TypeTestingExpressionBuilder& test(WfTypeTesting value);
+					TypeTestingExpressionBuilder& type(const vl::Ptr<WfType>& value);
 				};
 
 				class UnaryExpressionBuilder
 				{
 				private:
-					WorkflowUnaryExpression* node;
+					WfUnaryExpression* node;
 				public:
-					UnaryExpressionBuilder(WorkflowUnaryExpression* _node) : node(_node) {}
-					UnaryExpressionBuilder& op(WorkflowUnaryOperator value);
-					UnaryExpressionBuilder& operand(const vl::Ptr<WorkflowExpression>& value);
+					UnaryExpressionBuilder(WfUnaryExpression* _node) : node(_node) {}
+					UnaryExpressionBuilder& op(WfUnaryOperator value);
+					UnaryExpressionBuilder& operand(const vl::Ptr<WfExpression>& value);
 				};
 
 				class VariableDeclarationBuilder
 				{
 				private:
-					WorkflowVariableDeclaration* node;
+					WfVariableDeclaration* node;
 				public:
-					VariableDeclarationBuilder(WorkflowVariableDeclaration* _node) : node(_node) {}
-					VariableDeclarationBuilder& expression(const vl::Ptr<WorkflowExpression>& value);
-					VariableDeclarationBuilder& type(const vl::Ptr<WorkflowType>& value);
+					VariableDeclarationBuilder(WfVariableDeclaration* _node) : node(_node) {}
+					VariableDeclarationBuilder& expression(const vl::Ptr<WfExpression>& value);
+					VariableDeclarationBuilder& type(const vl::Ptr<WfType>& value);
 				};
 
 				class VariableStatementBuilder
 				{
 				private:
-					WorkflowVariableStatement* node;
+					WfVariableStatement* node;
 				public:
-					VariableStatementBuilder(WorkflowVariableStatement* _node) : node(_node) {}
-					VariableStatementBuilder& variable(const vl::Ptr<WorkflowVariableDeclaration>& value);
+					VariableStatementBuilder(WfVariableStatement* _node) : node(_node) {}
+					VariableStatementBuilder& variable(const vl::Ptr<WfVariableDeclaration>& value);
 				};
 
 				class VirtualCfeDeclarationBuilder
 				{
 				private:
-					WorkflowVirtualCfeDeclaration* node;
+					WfVirtualCfeDeclaration* node;
 				public:
-					VirtualCfeDeclarationBuilder(WorkflowVirtualCfeDeclaration* _node) : node(_node) {}
-					VirtualCfeDeclarationBuilder& expandedDeclarations(const vl::Ptr<WorkflowDeclaration>& value);
+					VirtualCfeDeclarationBuilder(WfVirtualCfeDeclaration* _node) : node(_node) {}
+					VirtualCfeDeclarationBuilder& expandedDeclarations(const vl::Ptr<WfDeclaration>& value);
 				};
 
 				class VirtualCfeExpressionBuilder
 				{
 				private:
-					WorkflowVirtualCfeExpression* node;
+					WfVirtualCfeExpression* node;
 				public:
-					VirtualCfeExpressionBuilder(WorkflowVirtualCfeExpression* _node) : node(_node) {}
-					VirtualCfeExpressionBuilder& expandedExpression(const vl::Ptr<WorkflowExpression>& value);
+					VirtualCfeExpressionBuilder(WfVirtualCfeExpression* _node) : node(_node) {}
+					VirtualCfeExpressionBuilder& expandedExpression(const vl::Ptr<WfExpression>& value);
 				};
 
 				class VirtualCseDeclarationBuilder
 				{
 				private:
-					WorkflowVirtualCseDeclaration* node;
+					WfVirtualCseDeclaration* node;
 				public:
-					VirtualCseDeclarationBuilder(WorkflowVirtualCseDeclaration* _node) : node(_node) {}
-					VirtualCseDeclarationBuilder& expandedDeclarations(const vl::Ptr<WorkflowDeclaration>& value);
+					VirtualCseDeclarationBuilder(WfVirtualCseDeclaration* _node) : node(_node) {}
+					VirtualCseDeclarationBuilder& expandedDeclarations(const vl::Ptr<WfDeclaration>& value);
 				};
 
 				class VirtualCseExpressionBuilder
 				{
 				private:
-					WorkflowVirtualCseExpression* node;
+					WfVirtualCseExpression* node;
 				public:
-					VirtualCseExpressionBuilder(WorkflowVirtualCseExpression* _node) : node(_node) {}
-					VirtualCseExpressionBuilder& expandedExpression(const vl::Ptr<WorkflowExpression>& value);
+					VirtualCseExpressionBuilder(WfVirtualCseExpression* _node) : node(_node) {}
+					VirtualCseExpressionBuilder& expandedExpression(const vl::Ptr<WfExpression>& value);
 				};
 
 				class VirtualCseStatementBuilder
 				{
 				private:
-					WorkflowVirtualCseStatement* node;
+					WfVirtualCseStatement* node;
 				public:
-					VirtualCseStatementBuilder(WorkflowVirtualCseStatement* _node) : node(_node) {}
-					VirtualCseStatementBuilder& expandedStatement(const vl::Ptr<WorkflowStatement>& value);
+					VirtualCseStatementBuilder(WfVirtualCseStatement* _node) : node(_node) {}
+					VirtualCseStatementBuilder& expandedStatement(const vl::Ptr<WfStatement>& value);
 				};
 
 				class WhileStatementBuilder
 				{
 				private:
-					WorkflowWhileStatement* node;
+					WfWhileStatement* node;
 				public:
-					WhileStatementBuilder(WorkflowWhileStatement* _node) : node(_node) {}
-					WhileStatementBuilder& condition(const vl::Ptr<WorkflowExpression>& value);
-					WhileStatementBuilder& statement(const vl::Ptr<WorkflowStatement>& value);
+					WhileStatementBuilder(WfWhileStatement* _node) : node(_node) {}
+					WhileStatementBuilder& condition(const vl::Ptr<WfExpression>& value);
+					WhileStatementBuilder& statement(const vl::Ptr<WfStatement>& value);
 				};
 
-				using MakeAttachEventExpression = vl::glr::ParsingAstBuilder<WorkflowAttachEventExpression, AttachEventExpressionBuilder>;
-				using MakeAttribute = vl::glr::ParsingAstBuilder<WorkflowAttribute, AttributeBuilder>;
-				using MakeAutoPropertyDeclaration = vl::glr::ParsingAstBuilder<WorkflowAutoPropertyDeclaration, AutoPropertyDeclarationBuilder, VirtualCfeDeclarationBuilder, DeclarationBuilder>;
-				using MakeBaseConstructorCall = vl::glr::ParsingAstBuilder<WorkflowBaseConstructorCall, BaseConstructorCallBuilder>;
-				using MakeBinaryExpression = vl::glr::ParsingAstBuilder<WorkflowBinaryExpression, BinaryExpressionBuilder>;
-				using MakeBindExpression = vl::glr::ParsingAstBuilder<WorkflowBindExpression, BindExpressionBuilder, VirtualCseExpressionBuilder>;
-				using MakeBlockStatement = vl::glr::ParsingAstBuilder<WorkflowBlockStatement, BlockStatementBuilder>;
-				using MakeBreakStatement = vl::glr::ParsingAstBuilder<WorkflowBreakStatement>;
-				using MakeCallExpression = vl::glr::ParsingAstBuilder<WorkflowCallExpression, CallExpressionBuilder>;
-				using MakeCastResultInterfaceDeclaration = vl::glr::ParsingAstBuilder<WorkflowCastResultInterfaceDeclaration, CastResultInterfaceDeclarationBuilder, VirtualCfeDeclarationBuilder, DeclarationBuilder>;
-				using MakeChildExpression = vl::glr::ParsingAstBuilder<WorkflowChildExpression, ChildExpressionBuilder>;
-				using MakeChildType = vl::glr::ParsingAstBuilder<WorkflowChildType, ChildTypeBuilder>;
-				using MakeClassDeclaration = vl::glr::ParsingAstBuilder<WorkflowClassDeclaration, ClassDeclarationBuilder, DeclarationBuilder>;
-				using MakeCoOperatorExpression = vl::glr::ParsingAstBuilder<WorkflowCoOperatorExpression, CoOperatorExpressionBuilder, VirtualCseExpressionBuilder>;
-				using MakeCoOperatorStatement = vl::glr::ParsingAstBuilder<WorkflowCoOperatorStatement, CoOperatorStatementBuilder>;
-				using MakeCoPauseStatement = vl::glr::ParsingAstBuilder<WorkflowCoPauseStatement, CoPauseStatementBuilder>;
-				using MakeCoProviderStatement = vl::glr::ParsingAstBuilder<WorkflowCoProviderStatement, CoProviderStatementBuilder, VirtualCseStatementBuilder>;
-				using MakeConstructorArgument = vl::glr::ParsingAstBuilder<WorkflowConstructorArgument, ConstructorArgumentBuilder>;
-				using MakeConstructorDeclaration = vl::glr::ParsingAstBuilder<WorkflowConstructorDeclaration, ConstructorDeclarationBuilder, DeclarationBuilder>;
-				using MakeConstructorExpression = vl::glr::ParsingAstBuilder<WorkflowConstructorExpression, ConstructorExpressionBuilder>;
-				using MakeContinueStatement = vl::glr::ParsingAstBuilder<WorkflowContinueStatement>;
-				using MakeDeleteStatement = vl::glr::ParsingAstBuilder<WorkflowDeleteStatement, DeleteStatementBuilder>;
-				using MakeDestructorDeclaration = vl::glr::ParsingAstBuilder<WorkflowDestructorDeclaration, DestructorDeclarationBuilder, DeclarationBuilder>;
-				using MakeDetachEventExpression = vl::glr::ParsingAstBuilder<WorkflowDetachEventExpression, DetachEventExpressionBuilder>;
-				using MakeEnumDeclaration = vl::glr::ParsingAstBuilder<WorkflowEnumDeclaration, EnumDeclarationBuilder, DeclarationBuilder>;
-				using MakeEnumItem = vl::glr::ParsingAstBuilder<WorkflowEnumItem, EnumItemBuilder>;
-				using MakeEnumItemIntersection = vl::glr::ParsingAstBuilder<WorkflowEnumItemIntersection, EnumItemIntersectionBuilder>;
-				using MakeEnumerableType = vl::glr::ParsingAstBuilder<WorkflowEnumerableType, EnumerableTypeBuilder>;
-				using MakeEventDeclaration = vl::glr::ParsingAstBuilder<WorkflowEventDeclaration, EventDeclarationBuilder, DeclarationBuilder>;
-				using MakeExpectedTypeCastExpression = vl::glr::ParsingAstBuilder<WorkflowExpectedTypeCastExpression, ExpectedTypeCastExpressionBuilder, VirtualCseExpressionBuilder>;
-				using MakeExpressionStatement = vl::glr::ParsingAstBuilder<WorkflowExpressionStatement, ExpressionStatementBuilder>;
-				using MakeFloatingExpression = vl::glr::ParsingAstBuilder<WorkflowFloatingExpression, FloatingExpressionBuilder>;
-				using MakeForEachStatement = vl::glr::ParsingAstBuilder<WorkflowForEachStatement, ForEachStatementBuilder, VirtualCseStatementBuilder>;
-				using MakeFormatExpression = vl::glr::ParsingAstBuilder<WorkflowFormatExpression, FormatExpressionBuilder, VirtualCfeExpressionBuilder>;
-				using MakeFunctionArgument = vl::glr::ParsingAstBuilder<WorkflowFunctionArgument, FunctionArgumentBuilder>;
-				using MakeFunctionDeclaration = vl::glr::ParsingAstBuilder<WorkflowFunctionDeclaration, FunctionDeclarationBuilder, DeclarationBuilder>;
-				using MakeFunctionExpression = vl::glr::ParsingAstBuilder<WorkflowFunctionExpression, FunctionExpressionBuilder>;
-				using MakeFunctionType = vl::glr::ParsingAstBuilder<WorkflowFunctionType, FunctionTypeBuilder>;
-				using MakeGotoStatement = vl::glr::ParsingAstBuilder<WorkflowGotoStatement, GotoStatementBuilder>;
-				using MakeIfExpression = vl::glr::ParsingAstBuilder<WorkflowIfExpression, IfExpressionBuilder>;
-				using MakeIfStatement = vl::glr::ParsingAstBuilder<WorkflowIfStatement, IfStatementBuilder>;
-				using MakeInferExpression = vl::glr::ParsingAstBuilder<WorkflowInferExpression, InferExpressionBuilder>;
-				using MakeIntegerExpression = vl::glr::ParsingAstBuilder<WorkflowIntegerExpression, IntegerExpressionBuilder>;
-				using MakeLetExpression = vl::glr::ParsingAstBuilder<WorkflowLetExpression, LetExpressionBuilder>;
-				using MakeLetVariable = vl::glr::ParsingAstBuilder<WorkflowLetVariable, LetVariableBuilder>;
-				using MakeLiteralExpression = vl::glr::ParsingAstBuilder<WorkflowLiteralExpression, LiteralExpressionBuilder>;
-				using MakeMapType = vl::glr::ParsingAstBuilder<WorkflowMapType, MapTypeBuilder>;
-				using MakeMemberExpression = vl::glr::ParsingAstBuilder<WorkflowMemberExpression, MemberExpressionBuilder>;
-				using MakeMixinCastExpression = vl::glr::ParsingAstBuilder<WorkflowMixinCastExpression, MixinCastExpressionBuilder, VirtualCseExpressionBuilder>;
-				using MakeModule = vl::glr::ParsingAstBuilder<WorkflowModule, ModuleBuilder>;
-				using MakeModuleUsingItem = vl::glr::ParsingAstBuilder<WorkflowModuleUsingItem, ModuleUsingItemBuilder>;
-				using MakeModuleUsingNameFragment = vl::glr::ParsingAstBuilder<WorkflowModuleUsingNameFragment, ModuleUsingNameFragmentBuilder>;
-				using MakeModuleUsingPath = vl::glr::ParsingAstBuilder<WorkflowModuleUsingPath, ModuleUsingPathBuilder>;
-				using MakeModuleUsingWildCardFragment = vl::glr::ParsingAstBuilder<WorkflowModuleUsingWildCardFragment>;
-				using MakeNamespaceDeclaration = vl::glr::ParsingAstBuilder<WorkflowNamespaceDeclaration, NamespaceDeclarationBuilder, DeclarationBuilder>;
-				using MakeNewClassExpression = vl::glr::ParsingAstBuilder<WorkflowNewClassExpression, NewClassExpressionBuilder>;
-				using MakeNewCoroutineExpression = vl::glr::ParsingAstBuilder<WorkflowNewCoroutineExpression, NewCoroutineExpressionBuilder, VirtualCseExpressionBuilder>;
-				using MakeNewInterfaceExpression = vl::glr::ParsingAstBuilder<WorkflowNewInterfaceExpression, NewInterfaceExpressionBuilder>;
-				using MakeNullableType = vl::glr::ParsingAstBuilder<WorkflowNullableType, NullableTypeBuilder>;
-				using MakeObservableListType = vl::glr::ParsingAstBuilder<WorkflowObservableListType, ObservableListTypeBuilder>;
-				using MakeObserveExpression = vl::glr::ParsingAstBuilder<WorkflowObserveExpression, ObserveExpressionBuilder>;
-				using MakeOrderedLambdaExpression = vl::glr::ParsingAstBuilder<WorkflowOrderedLambdaExpression, OrderedLambdaExpressionBuilder>;
-				using MakeOrderedNameExpression = vl::glr::ParsingAstBuilder<WorkflowOrderedNameExpression, OrderedNameExpressionBuilder>;
-				using MakePredefinedType = vl::glr::ParsingAstBuilder<WorkflowPredefinedType, PredefinedTypeBuilder>;
-				using MakePropertyDeclaration = vl::glr::ParsingAstBuilder<WorkflowPropertyDeclaration, PropertyDeclarationBuilder, DeclarationBuilder>;
-				using MakeRaiseExceptionStatement = vl::glr::ParsingAstBuilder<WorkflowRaiseExceptionStatement, RaiseExceptionStatementBuilder>;
-				using MakeRangeExpression = vl::glr::ParsingAstBuilder<WorkflowRangeExpression, RangeExpressionBuilder>;
-				using MakeRawPointerType = vl::glr::ParsingAstBuilder<WorkflowRawPointerType, RawPointerTypeBuilder>;
-				using MakeReferenceExpression = vl::glr::ParsingAstBuilder<WorkflowReferenceExpression, ReferenceExpressionBuilder>;
-				using MakeReferenceType = vl::glr::ParsingAstBuilder<WorkflowReferenceType, ReferenceTypeBuilder>;
-				using MakeReturnStatement = vl::glr::ParsingAstBuilder<WorkflowReturnStatement, ReturnStatementBuilder>;
-				using MakeSetTestingExpression = vl::glr::ParsingAstBuilder<WorkflowSetTestingExpression, SetTestingExpressionBuilder>;
-				using MakeSharedPointerType = vl::glr::ParsingAstBuilder<WorkflowSharedPointerType, SharedPointerTypeBuilder>;
-				using MakeStateDeclaration = vl::glr::ParsingAstBuilder<WorkflowStateDeclaration, StateDeclarationBuilder>;
-				using MakeStateInput = vl::glr::ParsingAstBuilder<WorkflowStateInput, StateInputBuilder>;
-				using MakeStateInvokeStatement = vl::glr::ParsingAstBuilder<WorkflowStateInvokeStatement, StateInvokeStatementBuilder>;
-				using MakeStateMachineDeclaration = vl::glr::ParsingAstBuilder<WorkflowStateMachineDeclaration, StateMachineDeclarationBuilder, VirtualCseDeclarationBuilder, DeclarationBuilder>;
-				using MakeStateSwitchArgument = vl::glr::ParsingAstBuilder<WorkflowStateSwitchArgument, StateSwitchArgumentBuilder>;
-				using MakeStateSwitchCase = vl::glr::ParsingAstBuilder<WorkflowStateSwitchCase, StateSwitchCaseBuilder>;
-				using MakeStateSwitchStatement = vl::glr::ParsingAstBuilder<WorkflowStateSwitchStatement, StateSwitchStatementBuilder>;
-				using MakeStringExpression = vl::glr::ParsingAstBuilder<WorkflowStringExpression, StringExpressionBuilder>;
-				using MakeStructDeclaration = vl::glr::ParsingAstBuilder<WorkflowStructDeclaration, StructDeclarationBuilder, DeclarationBuilder>;
-				using MakeStructMember = vl::glr::ParsingAstBuilder<WorkflowStructMember, StructMemberBuilder>;
-				using MakeSwitchCase = vl::glr::ParsingAstBuilder<WorkflowSwitchCase, SwitchCaseBuilder>;
-				using MakeSwitchStatement = vl::glr::ParsingAstBuilder<WorkflowSwitchStatement, SwitchStatementBuilder, VirtualCseStatementBuilder>;
-				using MakeThisExpression = vl::glr::ParsingAstBuilder<WorkflowThisExpression>;
-				using MakeTopQualifiedExpression = vl::glr::ParsingAstBuilder<WorkflowTopQualifiedExpression, TopQualifiedExpressionBuilder>;
-				using MakeTopQualifiedType = vl::glr::ParsingAstBuilder<WorkflowTopQualifiedType, TopQualifiedTypeBuilder>;
-				using MakeTryStatement = vl::glr::ParsingAstBuilder<WorkflowTryStatement, TryStatementBuilder>;
-				using MakeTypeCastingExpression = vl::glr::ParsingAstBuilder<WorkflowTypeCastingExpression, TypeCastingExpressionBuilder>;
-				using MakeTypeOfExpressionExpression = vl::glr::ParsingAstBuilder<WorkflowTypeOfExpressionExpression, TypeOfExpressionExpressionBuilder>;
-				using MakeTypeOfTypeExpression = vl::glr::ParsingAstBuilder<WorkflowTypeOfTypeExpression, TypeOfTypeExpressionBuilder>;
-				using MakeTypeTestingExpression = vl::glr::ParsingAstBuilder<WorkflowTypeTestingExpression, TypeTestingExpressionBuilder>;
-				using MakeUnaryExpression = vl::glr::ParsingAstBuilder<WorkflowUnaryExpression, UnaryExpressionBuilder>;
-				using MakeVariableDeclaration = vl::glr::ParsingAstBuilder<WorkflowVariableDeclaration, VariableDeclarationBuilder, DeclarationBuilder>;
-				using MakeVariableStatement = vl::glr::ParsingAstBuilder<WorkflowVariableStatement, VariableStatementBuilder>;
-				using MakeWhileStatement = vl::glr::ParsingAstBuilder<WorkflowWhileStatement, WhileStatementBuilder>;
+				using MakeAttachEventExpression = vl::glr::ParsingAstBuilder<WfAttachEventExpression, AttachEventExpressionBuilder>;
+				using MakeAttribute = vl::glr::ParsingAstBuilder<WfAttribute, AttributeBuilder>;
+				using MakeAutoPropertyDeclaration = vl::glr::ParsingAstBuilder<WfAutoPropertyDeclaration, AutoPropertyDeclarationBuilder, VirtualCfeDeclarationBuilder, DeclarationBuilder>;
+				using MakeBaseConstructorCall = vl::glr::ParsingAstBuilder<WfBaseConstructorCall, BaseConstructorCallBuilder>;
+				using MakeBinaryExpression = vl::glr::ParsingAstBuilder<WfBinaryExpression, BinaryExpressionBuilder>;
+				using MakeBindExpression = vl::glr::ParsingAstBuilder<WfBindExpression, BindExpressionBuilder, VirtualCseExpressionBuilder>;
+				using MakeBlockStatement = vl::glr::ParsingAstBuilder<WfBlockStatement, BlockStatementBuilder>;
+				using MakeBreakStatement = vl::glr::ParsingAstBuilder<WfBreakStatement>;
+				using MakeCallExpression = vl::glr::ParsingAstBuilder<WfCallExpression, CallExpressionBuilder>;
+				using MakeCastResultInterfaceDeclaration = vl::glr::ParsingAstBuilder<WfCastResultInterfaceDeclaration, CastResultInterfaceDeclarationBuilder, VirtualCfeDeclarationBuilder, DeclarationBuilder>;
+				using MakeChildExpression = vl::glr::ParsingAstBuilder<WfChildExpression, ChildExpressionBuilder>;
+				using MakeChildType = vl::glr::ParsingAstBuilder<WfChildType, ChildTypeBuilder>;
+				using MakeClassDeclaration = vl::glr::ParsingAstBuilder<WfClassDeclaration, ClassDeclarationBuilder, DeclarationBuilder>;
+				using MakeCoOperatorExpression = vl::glr::ParsingAstBuilder<WfCoOperatorExpression, CoOperatorExpressionBuilder, VirtualCseExpressionBuilder>;
+				using MakeCoOperatorStatement = vl::glr::ParsingAstBuilder<WfCoOperatorStatement, CoOperatorStatementBuilder>;
+				using MakeCoPauseStatement = vl::glr::ParsingAstBuilder<WfCoPauseStatement, CoPauseStatementBuilder>;
+				using MakeCoProviderStatement = vl::glr::ParsingAstBuilder<WfCoProviderStatement, CoProviderStatementBuilder, VirtualCseStatementBuilder>;
+				using MakeConstructorArgument = vl::glr::ParsingAstBuilder<WfConstructorArgument, ConstructorArgumentBuilder>;
+				using MakeConstructorDeclaration = vl::glr::ParsingAstBuilder<WfConstructorDeclaration, ConstructorDeclarationBuilder, DeclarationBuilder>;
+				using MakeConstructorExpression = vl::glr::ParsingAstBuilder<WfConstructorExpression, ConstructorExpressionBuilder>;
+				using MakeContinueStatement = vl::glr::ParsingAstBuilder<WfContinueStatement>;
+				using MakeDeleteStatement = vl::glr::ParsingAstBuilder<WfDeleteStatement, DeleteStatementBuilder>;
+				using MakeDestructorDeclaration = vl::glr::ParsingAstBuilder<WfDestructorDeclaration, DestructorDeclarationBuilder, DeclarationBuilder>;
+				using MakeDetachEventExpression = vl::glr::ParsingAstBuilder<WfDetachEventExpression, DetachEventExpressionBuilder>;
+				using MakeEnumDeclaration = vl::glr::ParsingAstBuilder<WfEnumDeclaration, EnumDeclarationBuilder, DeclarationBuilder>;
+				using MakeEnumItem = vl::glr::ParsingAstBuilder<WfEnumItem, EnumItemBuilder>;
+				using MakeEnumItemIntersection = vl::glr::ParsingAstBuilder<WfEnumItemIntersection, EnumItemIntersectionBuilder>;
+				using MakeEnumerableType = vl::glr::ParsingAstBuilder<WfEnumerableType, EnumerableTypeBuilder>;
+				using MakeEventDeclaration = vl::glr::ParsingAstBuilder<WfEventDeclaration, EventDeclarationBuilder, DeclarationBuilder>;
+				using MakeExpectedTypeCastExpression = vl::glr::ParsingAstBuilder<WfExpectedTypeCastExpression, ExpectedTypeCastExpressionBuilder, VirtualCseExpressionBuilder>;
+				using MakeExpressionStatement = vl::glr::ParsingAstBuilder<WfExpressionStatement, ExpressionStatementBuilder>;
+				using MakeFloatingExpression = vl::glr::ParsingAstBuilder<WfFloatingExpression, FloatingExpressionBuilder>;
+				using MakeForEachStatement = vl::glr::ParsingAstBuilder<WfForEachStatement, ForEachStatementBuilder, VirtualCseStatementBuilder>;
+				using MakeFormatExpression = vl::glr::ParsingAstBuilder<WfFormatExpression, FormatExpressionBuilder, VirtualCfeExpressionBuilder>;
+				using MakeFunctionArgument = vl::glr::ParsingAstBuilder<WfFunctionArgument, FunctionArgumentBuilder>;
+				using MakeFunctionDeclaration = vl::glr::ParsingAstBuilder<WfFunctionDeclaration, FunctionDeclarationBuilder, DeclarationBuilder>;
+				using MakeFunctionExpression = vl::glr::ParsingAstBuilder<WfFunctionExpression, FunctionExpressionBuilder>;
+				using MakeFunctionType = vl::glr::ParsingAstBuilder<WfFunctionType, FunctionTypeBuilder>;
+				using MakeGotoStatement = vl::glr::ParsingAstBuilder<WfGotoStatement, GotoStatementBuilder>;
+				using MakeIfExpression = vl::glr::ParsingAstBuilder<WfIfExpression, IfExpressionBuilder>;
+				using MakeIfStatement = vl::glr::ParsingAstBuilder<WfIfStatement, IfStatementBuilder>;
+				using MakeInferExpression = vl::glr::ParsingAstBuilder<WfInferExpression, InferExpressionBuilder>;
+				using MakeIntegerExpression = vl::glr::ParsingAstBuilder<WfIntegerExpression, IntegerExpressionBuilder>;
+				using MakeLetExpression = vl::glr::ParsingAstBuilder<WfLetExpression, LetExpressionBuilder>;
+				using MakeLetVariable = vl::glr::ParsingAstBuilder<WfLetVariable, LetVariableBuilder>;
+				using MakeLiteralExpression = vl::glr::ParsingAstBuilder<WfLiteralExpression, LiteralExpressionBuilder>;
+				using MakeMapType = vl::glr::ParsingAstBuilder<WfMapType, MapTypeBuilder>;
+				using MakeMemberExpression = vl::glr::ParsingAstBuilder<WfMemberExpression, MemberExpressionBuilder>;
+				using MakeMixinCastExpression = vl::glr::ParsingAstBuilder<WfMixinCastExpression, MixinCastExpressionBuilder, VirtualCseExpressionBuilder>;
+				using MakeModule = vl::glr::ParsingAstBuilder<WfModule, ModuleBuilder>;
+				using MakeModuleUsingItem = vl::glr::ParsingAstBuilder<WfModuleUsingItem, ModuleUsingItemBuilder>;
+				using MakeModuleUsingNameFragment = vl::glr::ParsingAstBuilder<WfModuleUsingNameFragment, ModuleUsingNameFragmentBuilder>;
+				using MakeModuleUsingPath = vl::glr::ParsingAstBuilder<WfModuleUsingPath, ModuleUsingPathBuilder>;
+				using MakeModuleUsingWildCardFragment = vl::glr::ParsingAstBuilder<WfModuleUsingWildCardFragment>;
+				using MakeNamespaceDeclaration = vl::glr::ParsingAstBuilder<WfNamespaceDeclaration, NamespaceDeclarationBuilder, DeclarationBuilder>;
+				using MakeNewClassExpression = vl::glr::ParsingAstBuilder<WfNewClassExpression, NewClassExpressionBuilder>;
+				using MakeNewCoroutineExpression = vl::glr::ParsingAstBuilder<WfNewCoroutineExpression, NewCoroutineExpressionBuilder, VirtualCseExpressionBuilder>;
+				using MakeNewInterfaceExpression = vl::glr::ParsingAstBuilder<WfNewInterfaceExpression, NewInterfaceExpressionBuilder>;
+				using MakeNullableType = vl::glr::ParsingAstBuilder<WfNullableType, NullableTypeBuilder>;
+				using MakeObservableListType = vl::glr::ParsingAstBuilder<WfObservableListType, ObservableListTypeBuilder>;
+				using MakeObserveExpression = vl::glr::ParsingAstBuilder<WfObserveExpression, ObserveExpressionBuilder>;
+				using MakeOrderedLambdaExpression = vl::glr::ParsingAstBuilder<WfOrderedLambdaExpression, OrderedLambdaExpressionBuilder>;
+				using MakeOrderedNameExpression = vl::glr::ParsingAstBuilder<WfOrderedNameExpression, OrderedNameExpressionBuilder>;
+				using MakePredefinedType = vl::glr::ParsingAstBuilder<WfPredefinedType, PredefinedTypeBuilder>;
+				using MakePropertyDeclaration = vl::glr::ParsingAstBuilder<WfPropertyDeclaration, PropertyDeclarationBuilder, DeclarationBuilder>;
+				using MakeRaiseExceptionStatement = vl::glr::ParsingAstBuilder<WfRaiseExceptionStatement, RaiseExceptionStatementBuilder>;
+				using MakeRangeExpression = vl::glr::ParsingAstBuilder<WfRangeExpression, RangeExpressionBuilder>;
+				using MakeRawPointerType = vl::glr::ParsingAstBuilder<WfRawPointerType, RawPointerTypeBuilder>;
+				using MakeReferenceExpression = vl::glr::ParsingAstBuilder<WfReferenceExpression, ReferenceExpressionBuilder>;
+				using MakeReferenceType = vl::glr::ParsingAstBuilder<WfReferenceType, ReferenceTypeBuilder>;
+				using MakeReturnStatement = vl::glr::ParsingAstBuilder<WfReturnStatement, ReturnStatementBuilder>;
+				using MakeSetTestingExpression = vl::glr::ParsingAstBuilder<WfSetTestingExpression, SetTestingExpressionBuilder>;
+				using MakeSharedPointerType = vl::glr::ParsingAstBuilder<WfSharedPointerType, SharedPointerTypeBuilder>;
+				using MakeStateDeclaration = vl::glr::ParsingAstBuilder<WfStateDeclaration, StateDeclarationBuilder>;
+				using MakeStateInput = vl::glr::ParsingAstBuilder<WfStateInput, StateInputBuilder>;
+				using MakeStateInvokeStatement = vl::glr::ParsingAstBuilder<WfStateInvokeStatement, StateInvokeStatementBuilder>;
+				using MakeStateMachineDeclaration = vl::glr::ParsingAstBuilder<WfStateMachineDeclaration, StateMachineDeclarationBuilder, VirtualCseDeclarationBuilder, DeclarationBuilder>;
+				using MakeStateSwitchArgument = vl::glr::ParsingAstBuilder<WfStateSwitchArgument, StateSwitchArgumentBuilder>;
+				using MakeStateSwitchCase = vl::glr::ParsingAstBuilder<WfStateSwitchCase, StateSwitchCaseBuilder>;
+				using MakeStateSwitchStatement = vl::glr::ParsingAstBuilder<WfStateSwitchStatement, StateSwitchStatementBuilder>;
+				using MakeStringExpression = vl::glr::ParsingAstBuilder<WfStringExpression, StringExpressionBuilder>;
+				using MakeStructDeclaration = vl::glr::ParsingAstBuilder<WfStructDeclaration, StructDeclarationBuilder, DeclarationBuilder>;
+				using MakeStructMember = vl::glr::ParsingAstBuilder<WfStructMember, StructMemberBuilder>;
+				using MakeSwitchCase = vl::glr::ParsingAstBuilder<WfSwitchCase, SwitchCaseBuilder>;
+				using MakeSwitchStatement = vl::glr::ParsingAstBuilder<WfSwitchStatement, SwitchStatementBuilder, VirtualCseStatementBuilder>;
+				using MakeThisExpression = vl::glr::ParsingAstBuilder<WfThisExpression>;
+				using MakeTopQualifiedExpression = vl::glr::ParsingAstBuilder<WfTopQualifiedExpression, TopQualifiedExpressionBuilder>;
+				using MakeTopQualifiedType = vl::glr::ParsingAstBuilder<WfTopQualifiedType, TopQualifiedTypeBuilder>;
+				using MakeTryStatement = vl::glr::ParsingAstBuilder<WfTryStatement, TryStatementBuilder>;
+				using MakeTypeCastingExpression = vl::glr::ParsingAstBuilder<WfTypeCastingExpression, TypeCastingExpressionBuilder>;
+				using MakeTypeOfExpressionExpression = vl::glr::ParsingAstBuilder<WfTypeOfExpressionExpression, TypeOfExpressionExpressionBuilder>;
+				using MakeTypeOfTypeExpression = vl::glr::ParsingAstBuilder<WfTypeOfTypeExpression, TypeOfTypeExpressionBuilder>;
+				using MakeTypeTestingExpression = vl::glr::ParsingAstBuilder<WfTypeTestingExpression, TypeTestingExpressionBuilder>;
+				using MakeUnaryExpression = vl::glr::ParsingAstBuilder<WfUnaryExpression, UnaryExpressionBuilder>;
+				using MakeVariableDeclaration = vl::glr::ParsingAstBuilder<WfVariableDeclaration, VariableDeclarationBuilder, DeclarationBuilder>;
+				using MakeVariableStatement = vl::glr::ParsingAstBuilder<WfVariableStatement, VariableStatementBuilder>;
+				using MakeWhileStatement = vl::glr::ParsingAstBuilder<WfWhileStatement, WhileStatementBuilder>;
 			}
 		}
 	}

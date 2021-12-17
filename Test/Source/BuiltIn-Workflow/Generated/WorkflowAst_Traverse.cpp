@@ -16,687 +16,687 @@ namespace vl
 			{
 				void AstVisitor::Traverse(vl::glr::ParsingToken& token) {}
 				void AstVisitor::Traverse(vl::glr::ParsingAstBase* node) {}
-				void AstVisitor::Traverse(WorkflowAttachEventExpression* node) {}
-				void AstVisitor::Traverse(WorkflowAttribute* node) {}
-				void AstVisitor::Traverse(WorkflowAutoPropertyDeclaration* node) {}
-				void AstVisitor::Traverse(WorkflowBaseConstructorCall* node) {}
-				void AstVisitor::Traverse(WorkflowBinaryExpression* node) {}
-				void AstVisitor::Traverse(WorkflowBindExpression* node) {}
-				void AstVisitor::Traverse(WorkflowBlockStatement* node) {}
-				void AstVisitor::Traverse(WorkflowBreakStatement* node) {}
-				void AstVisitor::Traverse(WorkflowCallExpression* node) {}
-				void AstVisitor::Traverse(WorkflowCastResultInterfaceDeclaration* node) {}
-				void AstVisitor::Traverse(WorkflowChildExpression* node) {}
-				void AstVisitor::Traverse(WorkflowChildType* node) {}
-				void AstVisitor::Traverse(WorkflowClassDeclaration* node) {}
-				void AstVisitor::Traverse(WorkflowCoOperatorExpression* node) {}
-				void AstVisitor::Traverse(WorkflowCoOperatorStatement* node) {}
-				void AstVisitor::Traverse(WorkflowCoPauseStatement* node) {}
-				void AstVisitor::Traverse(WorkflowCoProviderStatement* node) {}
-				void AstVisitor::Traverse(WorkflowConstructorArgument* node) {}
-				void AstVisitor::Traverse(WorkflowConstructorDeclaration* node) {}
-				void AstVisitor::Traverse(WorkflowConstructorExpression* node) {}
-				void AstVisitor::Traverse(WorkflowContinueStatement* node) {}
-				void AstVisitor::Traverse(WorkflowCoroutineStatement* node) {}
-				void AstVisitor::Traverse(WorkflowDeclaration* node) {}
-				void AstVisitor::Traverse(WorkflowDeleteStatement* node) {}
-				void AstVisitor::Traverse(WorkflowDestructorDeclaration* node) {}
-				void AstVisitor::Traverse(WorkflowDetachEventExpression* node) {}
-				void AstVisitor::Traverse(WorkflowEnumDeclaration* node) {}
-				void AstVisitor::Traverse(WorkflowEnumItem* node) {}
-				void AstVisitor::Traverse(WorkflowEnumItemIntersection* node) {}
-				void AstVisitor::Traverse(WorkflowEnumerableType* node) {}
-				void AstVisitor::Traverse(WorkflowEventDeclaration* node) {}
-				void AstVisitor::Traverse(WorkflowExpectedTypeCastExpression* node) {}
-				void AstVisitor::Traverse(WorkflowExpression* node) {}
-				void AstVisitor::Traverse(WorkflowExpressionStatement* node) {}
-				void AstVisitor::Traverse(WorkflowFloatingExpression* node) {}
-				void AstVisitor::Traverse(WorkflowForEachStatement* node) {}
-				void AstVisitor::Traverse(WorkflowFormatExpression* node) {}
-				void AstVisitor::Traverse(WorkflowFunctionArgument* node) {}
-				void AstVisitor::Traverse(WorkflowFunctionDeclaration* node) {}
-				void AstVisitor::Traverse(WorkflowFunctionExpression* node) {}
-				void AstVisitor::Traverse(WorkflowFunctionType* node) {}
-				void AstVisitor::Traverse(WorkflowGotoStatement* node) {}
-				void AstVisitor::Traverse(WorkflowIfExpression* node) {}
-				void AstVisitor::Traverse(WorkflowIfStatement* node) {}
-				void AstVisitor::Traverse(WorkflowInferExpression* node) {}
-				void AstVisitor::Traverse(WorkflowIntegerExpression* node) {}
-				void AstVisitor::Traverse(WorkflowLetExpression* node) {}
-				void AstVisitor::Traverse(WorkflowLetVariable* node) {}
-				void AstVisitor::Traverse(WorkflowLiteralExpression* node) {}
-				void AstVisitor::Traverse(WorkflowMapType* node) {}
-				void AstVisitor::Traverse(WorkflowMemberExpression* node) {}
-				void AstVisitor::Traverse(WorkflowMixinCastExpression* node) {}
-				void AstVisitor::Traverse(WorkflowModule* node) {}
-				void AstVisitor::Traverse(WorkflowModuleUsingFragment* node) {}
-				void AstVisitor::Traverse(WorkflowModuleUsingItem* node) {}
-				void AstVisitor::Traverse(WorkflowModuleUsingNameFragment* node) {}
-				void AstVisitor::Traverse(WorkflowModuleUsingPath* node) {}
-				void AstVisitor::Traverse(WorkflowModuleUsingWildCardFragment* node) {}
-				void AstVisitor::Traverse(WorkflowNamespaceDeclaration* node) {}
-				void AstVisitor::Traverse(WorkflowNewClassExpression* node) {}
-				void AstVisitor::Traverse(WorkflowNewCoroutineExpression* node) {}
-				void AstVisitor::Traverse(WorkflowNewInterfaceExpression* node) {}
-				void AstVisitor::Traverse(WorkflowNullableType* node) {}
-				void AstVisitor::Traverse(WorkflowObservableListType* node) {}
-				void AstVisitor::Traverse(WorkflowObserveExpression* node) {}
-				void AstVisitor::Traverse(WorkflowOrderedLambdaExpression* node) {}
-				void AstVisitor::Traverse(WorkflowOrderedNameExpression* node) {}
-				void AstVisitor::Traverse(WorkflowPredefinedType* node) {}
-				void AstVisitor::Traverse(WorkflowPropertyDeclaration* node) {}
-				void AstVisitor::Traverse(WorkflowRaiseExceptionStatement* node) {}
-				void AstVisitor::Traverse(WorkflowRangeExpression* node) {}
-				void AstVisitor::Traverse(WorkflowRawPointerType* node) {}
-				void AstVisitor::Traverse(WorkflowReferenceExpression* node) {}
-				void AstVisitor::Traverse(WorkflowReferenceType* node) {}
-				void AstVisitor::Traverse(WorkflowReturnStatement* node) {}
-				void AstVisitor::Traverse(WorkflowSetTestingExpression* node) {}
-				void AstVisitor::Traverse(WorkflowSharedPointerType* node) {}
-				void AstVisitor::Traverse(WorkflowStateDeclaration* node) {}
-				void AstVisitor::Traverse(WorkflowStateInput* node) {}
-				void AstVisitor::Traverse(WorkflowStateInvokeStatement* node) {}
-				void AstVisitor::Traverse(WorkflowStateMachineDeclaration* node) {}
-				void AstVisitor::Traverse(WorkflowStateMachineStatement* node) {}
-				void AstVisitor::Traverse(WorkflowStateSwitchArgument* node) {}
-				void AstVisitor::Traverse(WorkflowStateSwitchCase* node) {}
-				void AstVisitor::Traverse(WorkflowStateSwitchStatement* node) {}
-				void AstVisitor::Traverse(WorkflowStatement* node) {}
-				void AstVisitor::Traverse(WorkflowStringExpression* node) {}
-				void AstVisitor::Traverse(WorkflowStructDeclaration* node) {}
-				void AstVisitor::Traverse(WorkflowStructMember* node) {}
-				void AstVisitor::Traverse(WorkflowSwitchCase* node) {}
-				void AstVisitor::Traverse(WorkflowSwitchStatement* node) {}
-				void AstVisitor::Traverse(WorkflowThisExpression* node) {}
-				void AstVisitor::Traverse(WorkflowTopQualifiedExpression* node) {}
-				void AstVisitor::Traverse(WorkflowTopQualifiedType* node) {}
-				void AstVisitor::Traverse(WorkflowTryStatement* node) {}
-				void AstVisitor::Traverse(WorkflowType* node) {}
-				void AstVisitor::Traverse(WorkflowTypeCastingExpression* node) {}
-				void AstVisitor::Traverse(WorkflowTypeOfExpressionExpression* node) {}
-				void AstVisitor::Traverse(WorkflowTypeOfTypeExpression* node) {}
-				void AstVisitor::Traverse(WorkflowTypeTestingExpression* node) {}
-				void AstVisitor::Traverse(WorkflowUnaryExpression* node) {}
-				void AstVisitor::Traverse(WorkflowVariableDeclaration* node) {}
-				void AstVisitor::Traverse(WorkflowVariableStatement* node) {}
-				void AstVisitor::Traverse(WorkflowVirtualCfeDeclaration* node) {}
-				void AstVisitor::Traverse(WorkflowVirtualCfeExpression* node) {}
-				void AstVisitor::Traverse(WorkflowVirtualCseDeclaration* node) {}
-				void AstVisitor::Traverse(WorkflowVirtualCseExpression* node) {}
-				void AstVisitor::Traverse(WorkflowVirtualCseStatement* node) {}
-				void AstVisitor::Traverse(WorkflowWhileStatement* node) {}
+				void AstVisitor::Traverse(WfAttachEventExpression* node) {}
+				void AstVisitor::Traverse(WfAttribute* node) {}
+				void AstVisitor::Traverse(WfAutoPropertyDeclaration* node) {}
+				void AstVisitor::Traverse(WfBaseConstructorCall* node) {}
+				void AstVisitor::Traverse(WfBinaryExpression* node) {}
+				void AstVisitor::Traverse(WfBindExpression* node) {}
+				void AstVisitor::Traverse(WfBlockStatement* node) {}
+				void AstVisitor::Traverse(WfBreakStatement* node) {}
+				void AstVisitor::Traverse(WfCallExpression* node) {}
+				void AstVisitor::Traverse(WfCastResultInterfaceDeclaration* node) {}
+				void AstVisitor::Traverse(WfChildExpression* node) {}
+				void AstVisitor::Traverse(WfChildType* node) {}
+				void AstVisitor::Traverse(WfClassDeclaration* node) {}
+				void AstVisitor::Traverse(WfCoOperatorExpression* node) {}
+				void AstVisitor::Traverse(WfCoOperatorStatement* node) {}
+				void AstVisitor::Traverse(WfCoPauseStatement* node) {}
+				void AstVisitor::Traverse(WfCoProviderStatement* node) {}
+				void AstVisitor::Traverse(WfConstructorArgument* node) {}
+				void AstVisitor::Traverse(WfConstructorDeclaration* node) {}
+				void AstVisitor::Traverse(WfConstructorExpression* node) {}
+				void AstVisitor::Traverse(WfContinueStatement* node) {}
+				void AstVisitor::Traverse(WfCoroutineStatement* node) {}
+				void AstVisitor::Traverse(WfDeclaration* node) {}
+				void AstVisitor::Traverse(WfDeleteStatement* node) {}
+				void AstVisitor::Traverse(WfDestructorDeclaration* node) {}
+				void AstVisitor::Traverse(WfDetachEventExpression* node) {}
+				void AstVisitor::Traverse(WfEnumDeclaration* node) {}
+				void AstVisitor::Traverse(WfEnumItem* node) {}
+				void AstVisitor::Traverse(WfEnumItemIntersection* node) {}
+				void AstVisitor::Traverse(WfEnumerableType* node) {}
+				void AstVisitor::Traverse(WfEventDeclaration* node) {}
+				void AstVisitor::Traverse(WfExpectedTypeCastExpression* node) {}
+				void AstVisitor::Traverse(WfExpression* node) {}
+				void AstVisitor::Traverse(WfExpressionStatement* node) {}
+				void AstVisitor::Traverse(WfFloatingExpression* node) {}
+				void AstVisitor::Traverse(WfForEachStatement* node) {}
+				void AstVisitor::Traverse(WfFormatExpression* node) {}
+				void AstVisitor::Traverse(WfFunctionArgument* node) {}
+				void AstVisitor::Traverse(WfFunctionDeclaration* node) {}
+				void AstVisitor::Traverse(WfFunctionExpression* node) {}
+				void AstVisitor::Traverse(WfFunctionType* node) {}
+				void AstVisitor::Traverse(WfGotoStatement* node) {}
+				void AstVisitor::Traverse(WfIfExpression* node) {}
+				void AstVisitor::Traverse(WfIfStatement* node) {}
+				void AstVisitor::Traverse(WfInferExpression* node) {}
+				void AstVisitor::Traverse(WfIntegerExpression* node) {}
+				void AstVisitor::Traverse(WfLetExpression* node) {}
+				void AstVisitor::Traverse(WfLetVariable* node) {}
+				void AstVisitor::Traverse(WfLiteralExpression* node) {}
+				void AstVisitor::Traverse(WfMapType* node) {}
+				void AstVisitor::Traverse(WfMemberExpression* node) {}
+				void AstVisitor::Traverse(WfMixinCastExpression* node) {}
+				void AstVisitor::Traverse(WfModule* node) {}
+				void AstVisitor::Traverse(WfModuleUsingFragment* node) {}
+				void AstVisitor::Traverse(WfModuleUsingItem* node) {}
+				void AstVisitor::Traverse(WfModuleUsingNameFragment* node) {}
+				void AstVisitor::Traverse(WfModuleUsingPath* node) {}
+				void AstVisitor::Traverse(WfModuleUsingWildCardFragment* node) {}
+				void AstVisitor::Traverse(WfNamespaceDeclaration* node) {}
+				void AstVisitor::Traverse(WfNewClassExpression* node) {}
+				void AstVisitor::Traverse(WfNewCoroutineExpression* node) {}
+				void AstVisitor::Traverse(WfNewInterfaceExpression* node) {}
+				void AstVisitor::Traverse(WfNullableType* node) {}
+				void AstVisitor::Traverse(WfObservableListType* node) {}
+				void AstVisitor::Traverse(WfObserveExpression* node) {}
+				void AstVisitor::Traverse(WfOrderedLambdaExpression* node) {}
+				void AstVisitor::Traverse(WfOrderedNameExpression* node) {}
+				void AstVisitor::Traverse(WfPredefinedType* node) {}
+				void AstVisitor::Traverse(WfPropertyDeclaration* node) {}
+				void AstVisitor::Traverse(WfRaiseExceptionStatement* node) {}
+				void AstVisitor::Traverse(WfRangeExpression* node) {}
+				void AstVisitor::Traverse(WfRawPointerType* node) {}
+				void AstVisitor::Traverse(WfReferenceExpression* node) {}
+				void AstVisitor::Traverse(WfReferenceType* node) {}
+				void AstVisitor::Traverse(WfReturnStatement* node) {}
+				void AstVisitor::Traverse(WfSetTestingExpression* node) {}
+				void AstVisitor::Traverse(WfSharedPointerType* node) {}
+				void AstVisitor::Traverse(WfStateDeclaration* node) {}
+				void AstVisitor::Traverse(WfStateInput* node) {}
+				void AstVisitor::Traverse(WfStateInvokeStatement* node) {}
+				void AstVisitor::Traverse(WfStateMachineDeclaration* node) {}
+				void AstVisitor::Traverse(WfStateMachineStatement* node) {}
+				void AstVisitor::Traverse(WfStateSwitchArgument* node) {}
+				void AstVisitor::Traverse(WfStateSwitchCase* node) {}
+				void AstVisitor::Traverse(WfStateSwitchStatement* node) {}
+				void AstVisitor::Traverse(WfStatement* node) {}
+				void AstVisitor::Traverse(WfStringExpression* node) {}
+				void AstVisitor::Traverse(WfStructDeclaration* node) {}
+				void AstVisitor::Traverse(WfStructMember* node) {}
+				void AstVisitor::Traverse(WfSwitchCase* node) {}
+				void AstVisitor::Traverse(WfSwitchStatement* node) {}
+				void AstVisitor::Traverse(WfThisExpression* node) {}
+				void AstVisitor::Traverse(WfTopQualifiedExpression* node) {}
+				void AstVisitor::Traverse(WfTopQualifiedType* node) {}
+				void AstVisitor::Traverse(WfTryStatement* node) {}
+				void AstVisitor::Traverse(WfType* node) {}
+				void AstVisitor::Traverse(WfTypeCastingExpression* node) {}
+				void AstVisitor::Traverse(WfTypeOfExpressionExpression* node) {}
+				void AstVisitor::Traverse(WfTypeOfTypeExpression* node) {}
+				void AstVisitor::Traverse(WfTypeTestingExpression* node) {}
+				void AstVisitor::Traverse(WfUnaryExpression* node) {}
+				void AstVisitor::Traverse(WfVariableDeclaration* node) {}
+				void AstVisitor::Traverse(WfVariableStatement* node) {}
+				void AstVisitor::Traverse(WfVirtualCfeDeclaration* node) {}
+				void AstVisitor::Traverse(WfVirtualCfeExpression* node) {}
+				void AstVisitor::Traverse(WfVirtualCseDeclaration* node) {}
+				void AstVisitor::Traverse(WfVirtualCseExpression* node) {}
+				void AstVisitor::Traverse(WfVirtualCseStatement* node) {}
+				void AstVisitor::Traverse(WfWhileStatement* node) {}
 
 				void AstVisitor::Finishing(vl::glr::ParsingAstBase* node) {}
-				void AstVisitor::Finishing(WorkflowAttachEventExpression* node) {}
-				void AstVisitor::Finishing(WorkflowAttribute* node) {}
-				void AstVisitor::Finishing(WorkflowAutoPropertyDeclaration* node) {}
-				void AstVisitor::Finishing(WorkflowBaseConstructorCall* node) {}
-				void AstVisitor::Finishing(WorkflowBinaryExpression* node) {}
-				void AstVisitor::Finishing(WorkflowBindExpression* node) {}
-				void AstVisitor::Finishing(WorkflowBlockStatement* node) {}
-				void AstVisitor::Finishing(WorkflowBreakStatement* node) {}
-				void AstVisitor::Finishing(WorkflowCallExpression* node) {}
-				void AstVisitor::Finishing(WorkflowCastResultInterfaceDeclaration* node) {}
-				void AstVisitor::Finishing(WorkflowChildExpression* node) {}
-				void AstVisitor::Finishing(WorkflowChildType* node) {}
-				void AstVisitor::Finishing(WorkflowClassDeclaration* node) {}
-				void AstVisitor::Finishing(WorkflowCoOperatorExpression* node) {}
-				void AstVisitor::Finishing(WorkflowCoOperatorStatement* node) {}
-				void AstVisitor::Finishing(WorkflowCoPauseStatement* node) {}
-				void AstVisitor::Finishing(WorkflowCoProviderStatement* node) {}
-				void AstVisitor::Finishing(WorkflowConstructorArgument* node) {}
-				void AstVisitor::Finishing(WorkflowConstructorDeclaration* node) {}
-				void AstVisitor::Finishing(WorkflowConstructorExpression* node) {}
-				void AstVisitor::Finishing(WorkflowContinueStatement* node) {}
-				void AstVisitor::Finishing(WorkflowCoroutineStatement* node) {}
-				void AstVisitor::Finishing(WorkflowDeclaration* node) {}
-				void AstVisitor::Finishing(WorkflowDeleteStatement* node) {}
-				void AstVisitor::Finishing(WorkflowDestructorDeclaration* node) {}
-				void AstVisitor::Finishing(WorkflowDetachEventExpression* node) {}
-				void AstVisitor::Finishing(WorkflowEnumDeclaration* node) {}
-				void AstVisitor::Finishing(WorkflowEnumItem* node) {}
-				void AstVisitor::Finishing(WorkflowEnumItemIntersection* node) {}
-				void AstVisitor::Finishing(WorkflowEnumerableType* node) {}
-				void AstVisitor::Finishing(WorkflowEventDeclaration* node) {}
-				void AstVisitor::Finishing(WorkflowExpectedTypeCastExpression* node) {}
-				void AstVisitor::Finishing(WorkflowExpression* node) {}
-				void AstVisitor::Finishing(WorkflowExpressionStatement* node) {}
-				void AstVisitor::Finishing(WorkflowFloatingExpression* node) {}
-				void AstVisitor::Finishing(WorkflowForEachStatement* node) {}
-				void AstVisitor::Finishing(WorkflowFormatExpression* node) {}
-				void AstVisitor::Finishing(WorkflowFunctionArgument* node) {}
-				void AstVisitor::Finishing(WorkflowFunctionDeclaration* node) {}
-				void AstVisitor::Finishing(WorkflowFunctionExpression* node) {}
-				void AstVisitor::Finishing(WorkflowFunctionType* node) {}
-				void AstVisitor::Finishing(WorkflowGotoStatement* node) {}
-				void AstVisitor::Finishing(WorkflowIfExpression* node) {}
-				void AstVisitor::Finishing(WorkflowIfStatement* node) {}
-				void AstVisitor::Finishing(WorkflowInferExpression* node) {}
-				void AstVisitor::Finishing(WorkflowIntegerExpression* node) {}
-				void AstVisitor::Finishing(WorkflowLetExpression* node) {}
-				void AstVisitor::Finishing(WorkflowLetVariable* node) {}
-				void AstVisitor::Finishing(WorkflowLiteralExpression* node) {}
-				void AstVisitor::Finishing(WorkflowMapType* node) {}
-				void AstVisitor::Finishing(WorkflowMemberExpression* node) {}
-				void AstVisitor::Finishing(WorkflowMixinCastExpression* node) {}
-				void AstVisitor::Finishing(WorkflowModule* node) {}
-				void AstVisitor::Finishing(WorkflowModuleUsingFragment* node) {}
-				void AstVisitor::Finishing(WorkflowModuleUsingItem* node) {}
-				void AstVisitor::Finishing(WorkflowModuleUsingNameFragment* node) {}
-				void AstVisitor::Finishing(WorkflowModuleUsingPath* node) {}
-				void AstVisitor::Finishing(WorkflowModuleUsingWildCardFragment* node) {}
-				void AstVisitor::Finishing(WorkflowNamespaceDeclaration* node) {}
-				void AstVisitor::Finishing(WorkflowNewClassExpression* node) {}
-				void AstVisitor::Finishing(WorkflowNewCoroutineExpression* node) {}
-				void AstVisitor::Finishing(WorkflowNewInterfaceExpression* node) {}
-				void AstVisitor::Finishing(WorkflowNullableType* node) {}
-				void AstVisitor::Finishing(WorkflowObservableListType* node) {}
-				void AstVisitor::Finishing(WorkflowObserveExpression* node) {}
-				void AstVisitor::Finishing(WorkflowOrderedLambdaExpression* node) {}
-				void AstVisitor::Finishing(WorkflowOrderedNameExpression* node) {}
-				void AstVisitor::Finishing(WorkflowPredefinedType* node) {}
-				void AstVisitor::Finishing(WorkflowPropertyDeclaration* node) {}
-				void AstVisitor::Finishing(WorkflowRaiseExceptionStatement* node) {}
-				void AstVisitor::Finishing(WorkflowRangeExpression* node) {}
-				void AstVisitor::Finishing(WorkflowRawPointerType* node) {}
-				void AstVisitor::Finishing(WorkflowReferenceExpression* node) {}
-				void AstVisitor::Finishing(WorkflowReferenceType* node) {}
-				void AstVisitor::Finishing(WorkflowReturnStatement* node) {}
-				void AstVisitor::Finishing(WorkflowSetTestingExpression* node) {}
-				void AstVisitor::Finishing(WorkflowSharedPointerType* node) {}
-				void AstVisitor::Finishing(WorkflowStateDeclaration* node) {}
-				void AstVisitor::Finishing(WorkflowStateInput* node) {}
-				void AstVisitor::Finishing(WorkflowStateInvokeStatement* node) {}
-				void AstVisitor::Finishing(WorkflowStateMachineDeclaration* node) {}
-				void AstVisitor::Finishing(WorkflowStateMachineStatement* node) {}
-				void AstVisitor::Finishing(WorkflowStateSwitchArgument* node) {}
-				void AstVisitor::Finishing(WorkflowStateSwitchCase* node) {}
-				void AstVisitor::Finishing(WorkflowStateSwitchStatement* node) {}
-				void AstVisitor::Finishing(WorkflowStatement* node) {}
-				void AstVisitor::Finishing(WorkflowStringExpression* node) {}
-				void AstVisitor::Finishing(WorkflowStructDeclaration* node) {}
-				void AstVisitor::Finishing(WorkflowStructMember* node) {}
-				void AstVisitor::Finishing(WorkflowSwitchCase* node) {}
-				void AstVisitor::Finishing(WorkflowSwitchStatement* node) {}
-				void AstVisitor::Finishing(WorkflowThisExpression* node) {}
-				void AstVisitor::Finishing(WorkflowTopQualifiedExpression* node) {}
-				void AstVisitor::Finishing(WorkflowTopQualifiedType* node) {}
-				void AstVisitor::Finishing(WorkflowTryStatement* node) {}
-				void AstVisitor::Finishing(WorkflowType* node) {}
-				void AstVisitor::Finishing(WorkflowTypeCastingExpression* node) {}
-				void AstVisitor::Finishing(WorkflowTypeOfExpressionExpression* node) {}
-				void AstVisitor::Finishing(WorkflowTypeOfTypeExpression* node) {}
-				void AstVisitor::Finishing(WorkflowTypeTestingExpression* node) {}
-				void AstVisitor::Finishing(WorkflowUnaryExpression* node) {}
-				void AstVisitor::Finishing(WorkflowVariableDeclaration* node) {}
-				void AstVisitor::Finishing(WorkflowVariableStatement* node) {}
-				void AstVisitor::Finishing(WorkflowVirtualCfeDeclaration* node) {}
-				void AstVisitor::Finishing(WorkflowVirtualCfeExpression* node) {}
-				void AstVisitor::Finishing(WorkflowVirtualCseDeclaration* node) {}
-				void AstVisitor::Finishing(WorkflowVirtualCseExpression* node) {}
-				void AstVisitor::Finishing(WorkflowVirtualCseStatement* node) {}
-				void AstVisitor::Finishing(WorkflowWhileStatement* node) {}
+				void AstVisitor::Finishing(WfAttachEventExpression* node) {}
+				void AstVisitor::Finishing(WfAttribute* node) {}
+				void AstVisitor::Finishing(WfAutoPropertyDeclaration* node) {}
+				void AstVisitor::Finishing(WfBaseConstructorCall* node) {}
+				void AstVisitor::Finishing(WfBinaryExpression* node) {}
+				void AstVisitor::Finishing(WfBindExpression* node) {}
+				void AstVisitor::Finishing(WfBlockStatement* node) {}
+				void AstVisitor::Finishing(WfBreakStatement* node) {}
+				void AstVisitor::Finishing(WfCallExpression* node) {}
+				void AstVisitor::Finishing(WfCastResultInterfaceDeclaration* node) {}
+				void AstVisitor::Finishing(WfChildExpression* node) {}
+				void AstVisitor::Finishing(WfChildType* node) {}
+				void AstVisitor::Finishing(WfClassDeclaration* node) {}
+				void AstVisitor::Finishing(WfCoOperatorExpression* node) {}
+				void AstVisitor::Finishing(WfCoOperatorStatement* node) {}
+				void AstVisitor::Finishing(WfCoPauseStatement* node) {}
+				void AstVisitor::Finishing(WfCoProviderStatement* node) {}
+				void AstVisitor::Finishing(WfConstructorArgument* node) {}
+				void AstVisitor::Finishing(WfConstructorDeclaration* node) {}
+				void AstVisitor::Finishing(WfConstructorExpression* node) {}
+				void AstVisitor::Finishing(WfContinueStatement* node) {}
+				void AstVisitor::Finishing(WfCoroutineStatement* node) {}
+				void AstVisitor::Finishing(WfDeclaration* node) {}
+				void AstVisitor::Finishing(WfDeleteStatement* node) {}
+				void AstVisitor::Finishing(WfDestructorDeclaration* node) {}
+				void AstVisitor::Finishing(WfDetachEventExpression* node) {}
+				void AstVisitor::Finishing(WfEnumDeclaration* node) {}
+				void AstVisitor::Finishing(WfEnumItem* node) {}
+				void AstVisitor::Finishing(WfEnumItemIntersection* node) {}
+				void AstVisitor::Finishing(WfEnumerableType* node) {}
+				void AstVisitor::Finishing(WfEventDeclaration* node) {}
+				void AstVisitor::Finishing(WfExpectedTypeCastExpression* node) {}
+				void AstVisitor::Finishing(WfExpression* node) {}
+				void AstVisitor::Finishing(WfExpressionStatement* node) {}
+				void AstVisitor::Finishing(WfFloatingExpression* node) {}
+				void AstVisitor::Finishing(WfForEachStatement* node) {}
+				void AstVisitor::Finishing(WfFormatExpression* node) {}
+				void AstVisitor::Finishing(WfFunctionArgument* node) {}
+				void AstVisitor::Finishing(WfFunctionDeclaration* node) {}
+				void AstVisitor::Finishing(WfFunctionExpression* node) {}
+				void AstVisitor::Finishing(WfFunctionType* node) {}
+				void AstVisitor::Finishing(WfGotoStatement* node) {}
+				void AstVisitor::Finishing(WfIfExpression* node) {}
+				void AstVisitor::Finishing(WfIfStatement* node) {}
+				void AstVisitor::Finishing(WfInferExpression* node) {}
+				void AstVisitor::Finishing(WfIntegerExpression* node) {}
+				void AstVisitor::Finishing(WfLetExpression* node) {}
+				void AstVisitor::Finishing(WfLetVariable* node) {}
+				void AstVisitor::Finishing(WfLiteralExpression* node) {}
+				void AstVisitor::Finishing(WfMapType* node) {}
+				void AstVisitor::Finishing(WfMemberExpression* node) {}
+				void AstVisitor::Finishing(WfMixinCastExpression* node) {}
+				void AstVisitor::Finishing(WfModule* node) {}
+				void AstVisitor::Finishing(WfModuleUsingFragment* node) {}
+				void AstVisitor::Finishing(WfModuleUsingItem* node) {}
+				void AstVisitor::Finishing(WfModuleUsingNameFragment* node) {}
+				void AstVisitor::Finishing(WfModuleUsingPath* node) {}
+				void AstVisitor::Finishing(WfModuleUsingWildCardFragment* node) {}
+				void AstVisitor::Finishing(WfNamespaceDeclaration* node) {}
+				void AstVisitor::Finishing(WfNewClassExpression* node) {}
+				void AstVisitor::Finishing(WfNewCoroutineExpression* node) {}
+				void AstVisitor::Finishing(WfNewInterfaceExpression* node) {}
+				void AstVisitor::Finishing(WfNullableType* node) {}
+				void AstVisitor::Finishing(WfObservableListType* node) {}
+				void AstVisitor::Finishing(WfObserveExpression* node) {}
+				void AstVisitor::Finishing(WfOrderedLambdaExpression* node) {}
+				void AstVisitor::Finishing(WfOrderedNameExpression* node) {}
+				void AstVisitor::Finishing(WfPredefinedType* node) {}
+				void AstVisitor::Finishing(WfPropertyDeclaration* node) {}
+				void AstVisitor::Finishing(WfRaiseExceptionStatement* node) {}
+				void AstVisitor::Finishing(WfRangeExpression* node) {}
+				void AstVisitor::Finishing(WfRawPointerType* node) {}
+				void AstVisitor::Finishing(WfReferenceExpression* node) {}
+				void AstVisitor::Finishing(WfReferenceType* node) {}
+				void AstVisitor::Finishing(WfReturnStatement* node) {}
+				void AstVisitor::Finishing(WfSetTestingExpression* node) {}
+				void AstVisitor::Finishing(WfSharedPointerType* node) {}
+				void AstVisitor::Finishing(WfStateDeclaration* node) {}
+				void AstVisitor::Finishing(WfStateInput* node) {}
+				void AstVisitor::Finishing(WfStateInvokeStatement* node) {}
+				void AstVisitor::Finishing(WfStateMachineDeclaration* node) {}
+				void AstVisitor::Finishing(WfStateMachineStatement* node) {}
+				void AstVisitor::Finishing(WfStateSwitchArgument* node) {}
+				void AstVisitor::Finishing(WfStateSwitchCase* node) {}
+				void AstVisitor::Finishing(WfStateSwitchStatement* node) {}
+				void AstVisitor::Finishing(WfStatement* node) {}
+				void AstVisitor::Finishing(WfStringExpression* node) {}
+				void AstVisitor::Finishing(WfStructDeclaration* node) {}
+				void AstVisitor::Finishing(WfStructMember* node) {}
+				void AstVisitor::Finishing(WfSwitchCase* node) {}
+				void AstVisitor::Finishing(WfSwitchStatement* node) {}
+				void AstVisitor::Finishing(WfThisExpression* node) {}
+				void AstVisitor::Finishing(WfTopQualifiedExpression* node) {}
+				void AstVisitor::Finishing(WfTopQualifiedType* node) {}
+				void AstVisitor::Finishing(WfTryStatement* node) {}
+				void AstVisitor::Finishing(WfType* node) {}
+				void AstVisitor::Finishing(WfTypeCastingExpression* node) {}
+				void AstVisitor::Finishing(WfTypeOfExpressionExpression* node) {}
+				void AstVisitor::Finishing(WfTypeOfTypeExpression* node) {}
+				void AstVisitor::Finishing(WfTypeTestingExpression* node) {}
+				void AstVisitor::Finishing(WfUnaryExpression* node) {}
+				void AstVisitor::Finishing(WfVariableDeclaration* node) {}
+				void AstVisitor::Finishing(WfVariableStatement* node) {}
+				void AstVisitor::Finishing(WfVirtualCfeDeclaration* node) {}
+				void AstVisitor::Finishing(WfVirtualCfeExpression* node) {}
+				void AstVisitor::Finishing(WfVirtualCseDeclaration* node) {}
+				void AstVisitor::Finishing(WfVirtualCseExpression* node) {}
+				void AstVisitor::Finishing(WfVirtualCseStatement* node) {}
+				void AstVisitor::Finishing(WfWhileStatement* node) {}
 
-				void AstVisitor::Visit(WorkflowPredefinedType* node)
+				void AstVisitor::Visit(WfPredefinedType* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowType*>(node));
-					Traverse(static_cast<WorkflowPredefinedType*>(node));
-					Finishing(static_cast<WorkflowPredefinedType*>(node));
-					Finishing(static_cast<WorkflowType*>(node));
+					Traverse(static_cast<WfType*>(node));
+					Traverse(static_cast<WfPredefinedType*>(node));
+					Finishing(static_cast<WfPredefinedType*>(node));
+					Finishing(static_cast<WfType*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowTopQualifiedType* node)
+				void AstVisitor::Visit(WfTopQualifiedType* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowType*>(node));
-					Traverse(static_cast<WorkflowTopQualifiedType*>(node));
+					Traverse(static_cast<WfType*>(node));
+					Traverse(static_cast<WfTopQualifiedType*>(node));
 					Traverse(node->name);
-					Finishing(static_cast<WorkflowTopQualifiedType*>(node));
-					Finishing(static_cast<WorkflowType*>(node));
+					Finishing(static_cast<WfTopQualifiedType*>(node));
+					Finishing(static_cast<WfType*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowReferenceType* node)
+				void AstVisitor::Visit(WfReferenceType* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowType*>(node));
-					Traverse(static_cast<WorkflowReferenceType*>(node));
+					Traverse(static_cast<WfType*>(node));
+					Traverse(static_cast<WfReferenceType*>(node));
 					Traverse(node->name);
-					Finishing(static_cast<WorkflowReferenceType*>(node));
-					Finishing(static_cast<WorkflowType*>(node));
+					Finishing(static_cast<WfReferenceType*>(node));
+					Finishing(static_cast<WfType*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowRawPointerType* node)
+				void AstVisitor::Visit(WfRawPointerType* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowType*>(node));
-					Traverse(static_cast<WorkflowRawPointerType*>(node));
+					Traverse(static_cast<WfType*>(node));
+					Traverse(static_cast<WfRawPointerType*>(node));
 					InspectInto(node->element.Obj());
-					Finishing(static_cast<WorkflowRawPointerType*>(node));
-					Finishing(static_cast<WorkflowType*>(node));
+					Finishing(static_cast<WfRawPointerType*>(node));
+					Finishing(static_cast<WfType*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowSharedPointerType* node)
+				void AstVisitor::Visit(WfSharedPointerType* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowType*>(node));
-					Traverse(static_cast<WorkflowSharedPointerType*>(node));
+					Traverse(static_cast<WfType*>(node));
+					Traverse(static_cast<WfSharedPointerType*>(node));
 					InspectInto(node->element.Obj());
-					Finishing(static_cast<WorkflowSharedPointerType*>(node));
-					Finishing(static_cast<WorkflowType*>(node));
+					Finishing(static_cast<WfSharedPointerType*>(node));
+					Finishing(static_cast<WfType*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowNullableType* node)
+				void AstVisitor::Visit(WfNullableType* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowType*>(node));
-					Traverse(static_cast<WorkflowNullableType*>(node));
+					Traverse(static_cast<WfType*>(node));
+					Traverse(static_cast<WfNullableType*>(node));
 					InspectInto(node->element.Obj());
-					Finishing(static_cast<WorkflowNullableType*>(node));
-					Finishing(static_cast<WorkflowType*>(node));
+					Finishing(static_cast<WfNullableType*>(node));
+					Finishing(static_cast<WfType*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowEnumerableType* node)
+				void AstVisitor::Visit(WfEnumerableType* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowType*>(node));
-					Traverse(static_cast<WorkflowEnumerableType*>(node));
+					Traverse(static_cast<WfType*>(node));
+					Traverse(static_cast<WfEnumerableType*>(node));
 					InspectInto(node->element.Obj());
-					Finishing(static_cast<WorkflowEnumerableType*>(node));
-					Finishing(static_cast<WorkflowType*>(node));
+					Finishing(static_cast<WfEnumerableType*>(node));
+					Finishing(static_cast<WfType*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowMapType* node)
+				void AstVisitor::Visit(WfMapType* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowType*>(node));
-					Traverse(static_cast<WorkflowMapType*>(node));
+					Traverse(static_cast<WfType*>(node));
+					Traverse(static_cast<WfMapType*>(node));
 					InspectInto(node->key.Obj());
 					InspectInto(node->value.Obj());
-					Finishing(static_cast<WorkflowMapType*>(node));
-					Finishing(static_cast<WorkflowType*>(node));
+					Finishing(static_cast<WfMapType*>(node));
+					Finishing(static_cast<WfType*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowObservableListType* node)
+				void AstVisitor::Visit(WfObservableListType* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowType*>(node));
-					Traverse(static_cast<WorkflowObservableListType*>(node));
+					Traverse(static_cast<WfType*>(node));
+					Traverse(static_cast<WfObservableListType*>(node));
 					InspectInto(node->element.Obj());
-					Finishing(static_cast<WorkflowObservableListType*>(node));
-					Finishing(static_cast<WorkflowType*>(node));
+					Finishing(static_cast<WfObservableListType*>(node));
+					Finishing(static_cast<WfType*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowFunctionType* node)
+				void AstVisitor::Visit(WfFunctionType* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowType*>(node));
-					Traverse(static_cast<WorkflowFunctionType*>(node));
+					Traverse(static_cast<WfType*>(node));
+					Traverse(static_cast<WfFunctionType*>(node));
 					for (auto&& listItem : node->arguments)
 					{
 						InspectInto(listItem.Obj());
 					}
 					InspectInto(node->result.Obj());
-					Finishing(static_cast<WorkflowFunctionType*>(node));
-					Finishing(static_cast<WorkflowType*>(node));
+					Finishing(static_cast<WfFunctionType*>(node));
+					Finishing(static_cast<WfType*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowChildType* node)
+				void AstVisitor::Visit(WfChildType* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowType*>(node));
-					Traverse(static_cast<WorkflowChildType*>(node));
+					Traverse(static_cast<WfType*>(node));
+					Traverse(static_cast<WfChildType*>(node));
 					Traverse(node->name);
 					InspectInto(node->parent.Obj());
-					Finishing(static_cast<WorkflowChildType*>(node));
-					Finishing(static_cast<WorkflowType*>(node));
+					Finishing(static_cast<WfChildType*>(node));
+					Finishing(static_cast<WfType*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowThisExpression* node)
+				void AstVisitor::Visit(WfThisExpression* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowExpression*>(node));
-					Traverse(static_cast<WorkflowThisExpression*>(node));
-					Finishing(static_cast<WorkflowThisExpression*>(node));
-					Finishing(static_cast<WorkflowExpression*>(node));
+					Traverse(static_cast<WfExpression*>(node));
+					Traverse(static_cast<WfThisExpression*>(node));
+					Finishing(static_cast<WfThisExpression*>(node));
+					Finishing(static_cast<WfExpression*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowTopQualifiedExpression* node)
+				void AstVisitor::Visit(WfTopQualifiedExpression* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowExpression*>(node));
-					Traverse(static_cast<WorkflowTopQualifiedExpression*>(node));
+					Traverse(static_cast<WfExpression*>(node));
+					Traverse(static_cast<WfTopQualifiedExpression*>(node));
 					Traverse(node->name);
-					Finishing(static_cast<WorkflowTopQualifiedExpression*>(node));
-					Finishing(static_cast<WorkflowExpression*>(node));
+					Finishing(static_cast<WfTopQualifiedExpression*>(node));
+					Finishing(static_cast<WfExpression*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowReferenceExpression* node)
+				void AstVisitor::Visit(WfReferenceExpression* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowExpression*>(node));
-					Traverse(static_cast<WorkflowReferenceExpression*>(node));
+					Traverse(static_cast<WfExpression*>(node));
+					Traverse(static_cast<WfReferenceExpression*>(node));
 					Traverse(node->name);
-					Finishing(static_cast<WorkflowReferenceExpression*>(node));
-					Finishing(static_cast<WorkflowExpression*>(node));
+					Finishing(static_cast<WfReferenceExpression*>(node));
+					Finishing(static_cast<WfExpression*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowOrderedNameExpression* node)
+				void AstVisitor::Visit(WfOrderedNameExpression* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowExpression*>(node));
-					Traverse(static_cast<WorkflowOrderedNameExpression*>(node));
+					Traverse(static_cast<WfExpression*>(node));
+					Traverse(static_cast<WfOrderedNameExpression*>(node));
 					Traverse(node->name);
-					Finishing(static_cast<WorkflowOrderedNameExpression*>(node));
-					Finishing(static_cast<WorkflowExpression*>(node));
+					Finishing(static_cast<WfOrderedNameExpression*>(node));
+					Finishing(static_cast<WfExpression*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowOrderedLambdaExpression* node)
+				void AstVisitor::Visit(WfOrderedLambdaExpression* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowExpression*>(node));
-					Traverse(static_cast<WorkflowOrderedLambdaExpression*>(node));
+					Traverse(static_cast<WfExpression*>(node));
+					Traverse(static_cast<WfOrderedLambdaExpression*>(node));
 					InspectInto(node->body.Obj());
-					Finishing(static_cast<WorkflowOrderedLambdaExpression*>(node));
-					Finishing(static_cast<WorkflowExpression*>(node));
+					Finishing(static_cast<WfOrderedLambdaExpression*>(node));
+					Finishing(static_cast<WfExpression*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowMemberExpression* node)
+				void AstVisitor::Visit(WfMemberExpression* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowExpression*>(node));
-					Traverse(static_cast<WorkflowMemberExpression*>(node));
+					Traverse(static_cast<WfExpression*>(node));
+					Traverse(static_cast<WfMemberExpression*>(node));
 					Traverse(node->name);
 					InspectInto(node->parent.Obj());
-					Finishing(static_cast<WorkflowMemberExpression*>(node));
-					Finishing(static_cast<WorkflowExpression*>(node));
+					Finishing(static_cast<WfMemberExpression*>(node));
+					Finishing(static_cast<WfExpression*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowChildExpression* node)
+				void AstVisitor::Visit(WfChildExpression* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowExpression*>(node));
-					Traverse(static_cast<WorkflowChildExpression*>(node));
+					Traverse(static_cast<WfExpression*>(node));
+					Traverse(static_cast<WfChildExpression*>(node));
 					Traverse(node->name);
 					InspectInto(node->parent.Obj());
-					Finishing(static_cast<WorkflowChildExpression*>(node));
-					Finishing(static_cast<WorkflowExpression*>(node));
+					Finishing(static_cast<WfChildExpression*>(node));
+					Finishing(static_cast<WfExpression*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowLiteralExpression* node)
+				void AstVisitor::Visit(WfLiteralExpression* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowExpression*>(node));
-					Traverse(static_cast<WorkflowLiteralExpression*>(node));
-					Finishing(static_cast<WorkflowLiteralExpression*>(node));
-					Finishing(static_cast<WorkflowExpression*>(node));
+					Traverse(static_cast<WfExpression*>(node));
+					Traverse(static_cast<WfLiteralExpression*>(node));
+					Finishing(static_cast<WfLiteralExpression*>(node));
+					Finishing(static_cast<WfExpression*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowFloatingExpression* node)
+				void AstVisitor::Visit(WfFloatingExpression* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowExpression*>(node));
-					Traverse(static_cast<WorkflowFloatingExpression*>(node));
+					Traverse(static_cast<WfExpression*>(node));
+					Traverse(static_cast<WfFloatingExpression*>(node));
 					Traverse(node->value);
-					Finishing(static_cast<WorkflowFloatingExpression*>(node));
-					Finishing(static_cast<WorkflowExpression*>(node));
+					Finishing(static_cast<WfFloatingExpression*>(node));
+					Finishing(static_cast<WfExpression*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowIntegerExpression* node)
+				void AstVisitor::Visit(WfIntegerExpression* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowExpression*>(node));
-					Traverse(static_cast<WorkflowIntegerExpression*>(node));
+					Traverse(static_cast<WfExpression*>(node));
+					Traverse(static_cast<WfIntegerExpression*>(node));
 					Traverse(node->value);
-					Finishing(static_cast<WorkflowIntegerExpression*>(node));
-					Finishing(static_cast<WorkflowExpression*>(node));
+					Finishing(static_cast<WfIntegerExpression*>(node));
+					Finishing(static_cast<WfExpression*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowStringExpression* node)
+				void AstVisitor::Visit(WfStringExpression* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowExpression*>(node));
-					Traverse(static_cast<WorkflowStringExpression*>(node));
+					Traverse(static_cast<WfExpression*>(node));
+					Traverse(static_cast<WfStringExpression*>(node));
 					Traverse(node->value);
-					Finishing(static_cast<WorkflowStringExpression*>(node));
-					Finishing(static_cast<WorkflowExpression*>(node));
+					Finishing(static_cast<WfStringExpression*>(node));
+					Finishing(static_cast<WfExpression*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowUnaryExpression* node)
+				void AstVisitor::Visit(WfUnaryExpression* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowExpression*>(node));
-					Traverse(static_cast<WorkflowUnaryExpression*>(node));
+					Traverse(static_cast<WfExpression*>(node));
+					Traverse(static_cast<WfUnaryExpression*>(node));
 					InspectInto(node->operand.Obj());
-					Finishing(static_cast<WorkflowUnaryExpression*>(node));
-					Finishing(static_cast<WorkflowExpression*>(node));
+					Finishing(static_cast<WfUnaryExpression*>(node));
+					Finishing(static_cast<WfExpression*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowBinaryExpression* node)
+				void AstVisitor::Visit(WfBinaryExpression* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowExpression*>(node));
-					Traverse(static_cast<WorkflowBinaryExpression*>(node));
+					Traverse(static_cast<WfExpression*>(node));
+					Traverse(static_cast<WfBinaryExpression*>(node));
 					InspectInto(node->first.Obj());
 					InspectInto(node->second.Obj());
-					Finishing(static_cast<WorkflowBinaryExpression*>(node));
-					Finishing(static_cast<WorkflowExpression*>(node));
+					Finishing(static_cast<WfBinaryExpression*>(node));
+					Finishing(static_cast<WfExpression*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowLetExpression* node)
+				void AstVisitor::Visit(WfLetExpression* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowExpression*>(node));
-					Traverse(static_cast<WorkflowLetExpression*>(node));
+					Traverse(static_cast<WfExpression*>(node));
+					Traverse(static_cast<WfLetExpression*>(node));
 					InspectInto(node->expression.Obj());
 					for (auto&& listItem : node->variables)
 					{
 						InspectInto(listItem.Obj());
 					}
-					Finishing(static_cast<WorkflowLetExpression*>(node));
-					Finishing(static_cast<WorkflowExpression*>(node));
+					Finishing(static_cast<WfLetExpression*>(node));
+					Finishing(static_cast<WfExpression*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowIfExpression* node)
+				void AstVisitor::Visit(WfIfExpression* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowExpression*>(node));
-					Traverse(static_cast<WorkflowIfExpression*>(node));
+					Traverse(static_cast<WfExpression*>(node));
+					Traverse(static_cast<WfIfExpression*>(node));
 					InspectInto(node->condition.Obj());
 					InspectInto(node->falseBranch.Obj());
 					InspectInto(node->trueBranch.Obj());
-					Finishing(static_cast<WorkflowIfExpression*>(node));
-					Finishing(static_cast<WorkflowExpression*>(node));
+					Finishing(static_cast<WfIfExpression*>(node));
+					Finishing(static_cast<WfExpression*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowRangeExpression* node)
+				void AstVisitor::Visit(WfRangeExpression* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowExpression*>(node));
-					Traverse(static_cast<WorkflowRangeExpression*>(node));
+					Traverse(static_cast<WfExpression*>(node));
+					Traverse(static_cast<WfRangeExpression*>(node));
 					InspectInto(node->begin.Obj());
 					InspectInto(node->end.Obj());
-					Finishing(static_cast<WorkflowRangeExpression*>(node));
-					Finishing(static_cast<WorkflowExpression*>(node));
+					Finishing(static_cast<WfRangeExpression*>(node));
+					Finishing(static_cast<WfExpression*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowSetTestingExpression* node)
+				void AstVisitor::Visit(WfSetTestingExpression* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowExpression*>(node));
-					Traverse(static_cast<WorkflowSetTestingExpression*>(node));
+					Traverse(static_cast<WfExpression*>(node));
+					Traverse(static_cast<WfSetTestingExpression*>(node));
 					InspectInto(node->collection.Obj());
 					InspectInto(node->element.Obj());
-					Finishing(static_cast<WorkflowSetTestingExpression*>(node));
-					Finishing(static_cast<WorkflowExpression*>(node));
+					Finishing(static_cast<WfSetTestingExpression*>(node));
+					Finishing(static_cast<WfExpression*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowConstructorExpression* node)
+				void AstVisitor::Visit(WfConstructorExpression* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowExpression*>(node));
-					Traverse(static_cast<WorkflowConstructorExpression*>(node));
+					Traverse(static_cast<WfExpression*>(node));
+					Traverse(static_cast<WfConstructorExpression*>(node));
 					for (auto&& listItem : node->arguments)
 					{
 						InspectInto(listItem.Obj());
 					}
-					Finishing(static_cast<WorkflowConstructorExpression*>(node));
-					Finishing(static_cast<WorkflowExpression*>(node));
+					Finishing(static_cast<WfConstructorExpression*>(node));
+					Finishing(static_cast<WfExpression*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowInferExpression* node)
+				void AstVisitor::Visit(WfInferExpression* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowExpression*>(node));
-					Traverse(static_cast<WorkflowInferExpression*>(node));
+					Traverse(static_cast<WfExpression*>(node));
+					Traverse(static_cast<WfInferExpression*>(node));
 					InspectInto(node->expression.Obj());
 					InspectInto(node->type.Obj());
-					Finishing(static_cast<WorkflowInferExpression*>(node));
-					Finishing(static_cast<WorkflowExpression*>(node));
+					Finishing(static_cast<WfInferExpression*>(node));
+					Finishing(static_cast<WfExpression*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowTypeCastingExpression* node)
+				void AstVisitor::Visit(WfTypeCastingExpression* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowExpression*>(node));
-					Traverse(static_cast<WorkflowTypeCastingExpression*>(node));
+					Traverse(static_cast<WfExpression*>(node));
+					Traverse(static_cast<WfTypeCastingExpression*>(node));
 					InspectInto(node->expression.Obj());
 					InspectInto(node->type.Obj());
-					Finishing(static_cast<WorkflowTypeCastingExpression*>(node));
-					Finishing(static_cast<WorkflowExpression*>(node));
+					Finishing(static_cast<WfTypeCastingExpression*>(node));
+					Finishing(static_cast<WfExpression*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowTypeTestingExpression* node)
+				void AstVisitor::Visit(WfTypeTestingExpression* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowExpression*>(node));
-					Traverse(static_cast<WorkflowTypeTestingExpression*>(node));
+					Traverse(static_cast<WfExpression*>(node));
+					Traverse(static_cast<WfTypeTestingExpression*>(node));
 					InspectInto(node->expression.Obj());
 					InspectInto(node->type.Obj());
-					Finishing(static_cast<WorkflowTypeTestingExpression*>(node));
-					Finishing(static_cast<WorkflowExpression*>(node));
+					Finishing(static_cast<WfTypeTestingExpression*>(node));
+					Finishing(static_cast<WfExpression*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowTypeOfTypeExpression* node)
+				void AstVisitor::Visit(WfTypeOfTypeExpression* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowExpression*>(node));
-					Traverse(static_cast<WorkflowTypeOfTypeExpression*>(node));
+					Traverse(static_cast<WfExpression*>(node));
+					Traverse(static_cast<WfTypeOfTypeExpression*>(node));
 					InspectInto(node->type.Obj());
-					Finishing(static_cast<WorkflowTypeOfTypeExpression*>(node));
-					Finishing(static_cast<WorkflowExpression*>(node));
+					Finishing(static_cast<WfTypeOfTypeExpression*>(node));
+					Finishing(static_cast<WfExpression*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowTypeOfExpressionExpression* node)
+				void AstVisitor::Visit(WfTypeOfExpressionExpression* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowExpression*>(node));
-					Traverse(static_cast<WorkflowTypeOfExpressionExpression*>(node));
+					Traverse(static_cast<WfExpression*>(node));
+					Traverse(static_cast<WfTypeOfExpressionExpression*>(node));
 					InspectInto(node->expression.Obj());
-					Finishing(static_cast<WorkflowTypeOfExpressionExpression*>(node));
-					Finishing(static_cast<WorkflowExpression*>(node));
+					Finishing(static_cast<WfTypeOfExpressionExpression*>(node));
+					Finishing(static_cast<WfExpression*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowAttachEventExpression* node)
+				void AstVisitor::Visit(WfAttachEventExpression* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowExpression*>(node));
-					Traverse(static_cast<WorkflowAttachEventExpression*>(node));
+					Traverse(static_cast<WfExpression*>(node));
+					Traverse(static_cast<WfAttachEventExpression*>(node));
 					InspectInto(node->event.Obj());
 					InspectInto(node->function.Obj());
-					Finishing(static_cast<WorkflowAttachEventExpression*>(node));
-					Finishing(static_cast<WorkflowExpression*>(node));
+					Finishing(static_cast<WfAttachEventExpression*>(node));
+					Finishing(static_cast<WfExpression*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowDetachEventExpression* node)
+				void AstVisitor::Visit(WfDetachEventExpression* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowExpression*>(node));
-					Traverse(static_cast<WorkflowDetachEventExpression*>(node));
+					Traverse(static_cast<WfExpression*>(node));
+					Traverse(static_cast<WfDetachEventExpression*>(node));
 					InspectInto(node->event.Obj());
 					InspectInto(node->handler.Obj());
-					Finishing(static_cast<WorkflowDetachEventExpression*>(node));
-					Finishing(static_cast<WorkflowExpression*>(node));
+					Finishing(static_cast<WfDetachEventExpression*>(node));
+					Finishing(static_cast<WfExpression*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowObserveExpression* node)
+				void AstVisitor::Visit(WfObserveExpression* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowExpression*>(node));
-					Traverse(static_cast<WorkflowObserveExpression*>(node));
+					Traverse(static_cast<WfExpression*>(node));
+					Traverse(static_cast<WfObserveExpression*>(node));
 					for (auto&& listItem : node->events)
 					{
 						InspectInto(listItem.Obj());
@@ -704,256 +704,256 @@ namespace vl
 					InspectInto(node->expression.Obj());
 					Traverse(node->name);
 					InspectInto(node->parent.Obj());
-					Finishing(static_cast<WorkflowObserveExpression*>(node));
-					Finishing(static_cast<WorkflowExpression*>(node));
+					Finishing(static_cast<WfObserveExpression*>(node));
+					Finishing(static_cast<WfExpression*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowCallExpression* node)
+				void AstVisitor::Visit(WfCallExpression* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowExpression*>(node));
-					Traverse(static_cast<WorkflowCallExpression*>(node));
+					Traverse(static_cast<WfExpression*>(node));
+					Traverse(static_cast<WfCallExpression*>(node));
 					for (auto&& listItem : node->arguments)
 					{
 						InspectInto(listItem.Obj());
 					}
 					InspectInto(node->function.Obj());
-					Finishing(static_cast<WorkflowCallExpression*>(node));
-					Finishing(static_cast<WorkflowExpression*>(node));
+					Finishing(static_cast<WfCallExpression*>(node));
+					Finishing(static_cast<WfExpression*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowFunctionExpression* node)
+				void AstVisitor::Visit(WfFunctionExpression* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowExpression*>(node));
-					Traverse(static_cast<WorkflowFunctionExpression*>(node));
+					Traverse(static_cast<WfExpression*>(node));
+					Traverse(static_cast<WfFunctionExpression*>(node));
 					InspectInto(node->function.Obj());
-					Finishing(static_cast<WorkflowFunctionExpression*>(node));
-					Finishing(static_cast<WorkflowExpression*>(node));
+					Finishing(static_cast<WfFunctionExpression*>(node));
+					Finishing(static_cast<WfExpression*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowNewClassExpression* node)
+				void AstVisitor::Visit(WfNewClassExpression* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowExpression*>(node));
-					Traverse(static_cast<WorkflowNewClassExpression*>(node));
+					Traverse(static_cast<WfExpression*>(node));
+					Traverse(static_cast<WfNewClassExpression*>(node));
 					for (auto&& listItem : node->arguments)
 					{
 						InspectInto(listItem.Obj());
 					}
 					InspectInto(node->type.Obj());
-					Finishing(static_cast<WorkflowNewClassExpression*>(node));
-					Finishing(static_cast<WorkflowExpression*>(node));
+					Finishing(static_cast<WfNewClassExpression*>(node));
+					Finishing(static_cast<WfExpression*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowNewInterfaceExpression* node)
+				void AstVisitor::Visit(WfNewInterfaceExpression* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowExpression*>(node));
-					Traverse(static_cast<WorkflowNewInterfaceExpression*>(node));
+					Traverse(static_cast<WfExpression*>(node));
+					Traverse(static_cast<WfNewInterfaceExpression*>(node));
 					for (auto&& listItem : node->declarations)
 					{
 						InspectInto(listItem.Obj());
 					}
 					InspectInto(node->type.Obj());
-					Finishing(static_cast<WorkflowNewInterfaceExpression*>(node));
-					Finishing(static_cast<WorkflowExpression*>(node));
+					Finishing(static_cast<WfNewInterfaceExpression*>(node));
+					Finishing(static_cast<WfExpression*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowVirtualCfeExpression* node)
+				void AstVisitor::Visit(WfVirtualCfeExpression* node)
 				{
-					node->Accept(static_cast<WorkflowVirtualCfeExpression::IVisitor*>(this));
+					node->Accept(static_cast<WfVirtualCfeExpression::IVisitor*>(this));
 				}
 
-				void AstVisitor::Visit(WorkflowVirtualCseExpression* node)
+				void AstVisitor::Visit(WfVirtualCseExpression* node)
 				{
-					node->Accept(static_cast<WorkflowVirtualCseExpression::IVisitor*>(this));
+					node->Accept(static_cast<WfVirtualCseExpression::IVisitor*>(this));
 				}
 
-				void AstVisitor::Visit(WorkflowBreakStatement* node)
+				void AstVisitor::Visit(WfBreakStatement* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowStatement*>(node));
-					Traverse(static_cast<WorkflowBreakStatement*>(node));
-					Finishing(static_cast<WorkflowBreakStatement*>(node));
-					Finishing(static_cast<WorkflowStatement*>(node));
+					Traverse(static_cast<WfStatement*>(node));
+					Traverse(static_cast<WfBreakStatement*>(node));
+					Finishing(static_cast<WfBreakStatement*>(node));
+					Finishing(static_cast<WfStatement*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowContinueStatement* node)
+				void AstVisitor::Visit(WfContinueStatement* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowStatement*>(node));
-					Traverse(static_cast<WorkflowContinueStatement*>(node));
-					Finishing(static_cast<WorkflowContinueStatement*>(node));
-					Finishing(static_cast<WorkflowStatement*>(node));
+					Traverse(static_cast<WfStatement*>(node));
+					Traverse(static_cast<WfContinueStatement*>(node));
+					Finishing(static_cast<WfContinueStatement*>(node));
+					Finishing(static_cast<WfStatement*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowReturnStatement* node)
+				void AstVisitor::Visit(WfReturnStatement* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowStatement*>(node));
-					Traverse(static_cast<WorkflowReturnStatement*>(node));
+					Traverse(static_cast<WfStatement*>(node));
+					Traverse(static_cast<WfReturnStatement*>(node));
 					InspectInto(node->expression.Obj());
-					Finishing(static_cast<WorkflowReturnStatement*>(node));
-					Finishing(static_cast<WorkflowStatement*>(node));
+					Finishing(static_cast<WfReturnStatement*>(node));
+					Finishing(static_cast<WfStatement*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowDeleteStatement* node)
+				void AstVisitor::Visit(WfDeleteStatement* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowStatement*>(node));
-					Traverse(static_cast<WorkflowDeleteStatement*>(node));
+					Traverse(static_cast<WfStatement*>(node));
+					Traverse(static_cast<WfDeleteStatement*>(node));
 					InspectInto(node->expression.Obj());
-					Finishing(static_cast<WorkflowDeleteStatement*>(node));
-					Finishing(static_cast<WorkflowStatement*>(node));
+					Finishing(static_cast<WfDeleteStatement*>(node));
+					Finishing(static_cast<WfStatement*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowRaiseExceptionStatement* node)
+				void AstVisitor::Visit(WfRaiseExceptionStatement* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowStatement*>(node));
-					Traverse(static_cast<WorkflowRaiseExceptionStatement*>(node));
+					Traverse(static_cast<WfStatement*>(node));
+					Traverse(static_cast<WfRaiseExceptionStatement*>(node));
 					InspectInto(node->expression.Obj());
-					Finishing(static_cast<WorkflowRaiseExceptionStatement*>(node));
-					Finishing(static_cast<WorkflowStatement*>(node));
+					Finishing(static_cast<WfRaiseExceptionStatement*>(node));
+					Finishing(static_cast<WfStatement*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowIfStatement* node)
+				void AstVisitor::Visit(WfIfStatement* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowStatement*>(node));
-					Traverse(static_cast<WorkflowIfStatement*>(node));
+					Traverse(static_cast<WfStatement*>(node));
+					Traverse(static_cast<WfIfStatement*>(node));
 					InspectInto(node->expression.Obj());
 					InspectInto(node->falseBranch.Obj());
 					Traverse(node->name);
 					InspectInto(node->trueBranch.Obj());
 					InspectInto(node->type.Obj());
-					Finishing(static_cast<WorkflowIfStatement*>(node));
-					Finishing(static_cast<WorkflowStatement*>(node));
+					Finishing(static_cast<WfIfStatement*>(node));
+					Finishing(static_cast<WfStatement*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowWhileStatement* node)
+				void AstVisitor::Visit(WfWhileStatement* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowStatement*>(node));
-					Traverse(static_cast<WorkflowWhileStatement*>(node));
+					Traverse(static_cast<WfStatement*>(node));
+					Traverse(static_cast<WfWhileStatement*>(node));
 					InspectInto(node->condition.Obj());
 					InspectInto(node->statement.Obj());
-					Finishing(static_cast<WorkflowWhileStatement*>(node));
-					Finishing(static_cast<WorkflowStatement*>(node));
+					Finishing(static_cast<WfWhileStatement*>(node));
+					Finishing(static_cast<WfStatement*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowTryStatement* node)
+				void AstVisitor::Visit(WfTryStatement* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowStatement*>(node));
-					Traverse(static_cast<WorkflowTryStatement*>(node));
+					Traverse(static_cast<WfStatement*>(node));
+					Traverse(static_cast<WfTryStatement*>(node));
 					InspectInto(node->catchStatement.Obj());
 					InspectInto(node->finallyStatement.Obj());
 					Traverse(node->name);
 					InspectInto(node->protectedStatement.Obj());
-					Finishing(static_cast<WorkflowTryStatement*>(node));
-					Finishing(static_cast<WorkflowStatement*>(node));
+					Finishing(static_cast<WfTryStatement*>(node));
+					Finishing(static_cast<WfStatement*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowBlockStatement* node)
+				void AstVisitor::Visit(WfBlockStatement* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowStatement*>(node));
-					Traverse(static_cast<WorkflowBlockStatement*>(node));
+					Traverse(static_cast<WfStatement*>(node));
+					Traverse(static_cast<WfBlockStatement*>(node));
 					Traverse(node->endLabel);
 					for (auto&& listItem : node->statements)
 					{
 						InspectInto(listItem.Obj());
 					}
-					Finishing(static_cast<WorkflowBlockStatement*>(node));
-					Finishing(static_cast<WorkflowStatement*>(node));
+					Finishing(static_cast<WfBlockStatement*>(node));
+					Finishing(static_cast<WfStatement*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowGotoStatement* node)
+				void AstVisitor::Visit(WfGotoStatement* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowStatement*>(node));
-					Traverse(static_cast<WorkflowGotoStatement*>(node));
+					Traverse(static_cast<WfStatement*>(node));
+					Traverse(static_cast<WfGotoStatement*>(node));
 					Traverse(node->label);
-					Finishing(static_cast<WorkflowGotoStatement*>(node));
-					Finishing(static_cast<WorkflowStatement*>(node));
+					Finishing(static_cast<WfGotoStatement*>(node));
+					Finishing(static_cast<WfStatement*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowVariableStatement* node)
+				void AstVisitor::Visit(WfVariableStatement* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowStatement*>(node));
-					Traverse(static_cast<WorkflowVariableStatement*>(node));
+					Traverse(static_cast<WfStatement*>(node));
+					Traverse(static_cast<WfVariableStatement*>(node));
 					InspectInto(node->variable.Obj());
-					Finishing(static_cast<WorkflowVariableStatement*>(node));
-					Finishing(static_cast<WorkflowStatement*>(node));
+					Finishing(static_cast<WfVariableStatement*>(node));
+					Finishing(static_cast<WfStatement*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowExpressionStatement* node)
+				void AstVisitor::Visit(WfExpressionStatement* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowStatement*>(node));
-					Traverse(static_cast<WorkflowExpressionStatement*>(node));
+					Traverse(static_cast<WfStatement*>(node));
+					Traverse(static_cast<WfExpressionStatement*>(node));
 					InspectInto(node->expression.Obj());
-					Finishing(static_cast<WorkflowExpressionStatement*>(node));
-					Finishing(static_cast<WorkflowStatement*>(node));
+					Finishing(static_cast<WfExpressionStatement*>(node));
+					Finishing(static_cast<WfStatement*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowVirtualCseStatement* node)
+				void AstVisitor::Visit(WfVirtualCseStatement* node)
 				{
-					node->Accept(static_cast<WorkflowVirtualCseStatement::IVisitor*>(this));
+					node->Accept(static_cast<WfVirtualCseStatement::IVisitor*>(this));
 				}
 
-				void AstVisitor::Visit(WorkflowCoroutineStatement* node)
+				void AstVisitor::Visit(WfCoroutineStatement* node)
 				{
-					node->Accept(static_cast<WorkflowCoroutineStatement::IVisitor*>(this));
+					node->Accept(static_cast<WfCoroutineStatement::IVisitor*>(this));
 				}
 
-				void AstVisitor::Visit(WorkflowStateMachineStatement* node)
+				void AstVisitor::Visit(WfStateMachineStatement* node)
 				{
-					node->Accept(static_cast<WorkflowStateMachineStatement::IVisitor*>(this));
+					node->Accept(static_cast<WfStateMachineStatement::IVisitor*>(this));
 				}
 
-				void AstVisitor::Visit(WorkflowNamespaceDeclaration* node)
+				void AstVisitor::Visit(WfNamespaceDeclaration* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowDeclaration*>(node));
-					Traverse(static_cast<WorkflowNamespaceDeclaration*>(node));
+					Traverse(static_cast<WfDeclaration*>(node));
+					Traverse(static_cast<WfNamespaceDeclaration*>(node));
 					for (auto&& listItem : node->declarations)
 					{
 						InspectInto(listItem.Obj());
@@ -963,17 +963,17 @@ namespace vl
 						InspectInto(listItem.Obj());
 					}
 					Traverse(node->name);
-					Finishing(static_cast<WorkflowNamespaceDeclaration*>(node));
-					Finishing(static_cast<WorkflowDeclaration*>(node));
+					Finishing(static_cast<WfNamespaceDeclaration*>(node));
+					Finishing(static_cast<WfDeclaration*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowFunctionDeclaration* node)
+				void AstVisitor::Visit(WfFunctionDeclaration* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowDeclaration*>(node));
-					Traverse(static_cast<WorkflowFunctionDeclaration*>(node));
+					Traverse(static_cast<WfDeclaration*>(node));
+					Traverse(static_cast<WfFunctionDeclaration*>(node));
 					for (auto&& listItem : node->arguments)
 					{
 						InspectInto(listItem.Obj());
@@ -985,17 +985,17 @@ namespace vl
 						InspectInto(listItem.Obj());
 					}
 					Traverse(node->name);
-					Finishing(static_cast<WorkflowFunctionDeclaration*>(node));
-					Finishing(static_cast<WorkflowDeclaration*>(node));
+					Finishing(static_cast<WfFunctionDeclaration*>(node));
+					Finishing(static_cast<WfDeclaration*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowVariableDeclaration* node)
+				void AstVisitor::Visit(WfVariableDeclaration* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowDeclaration*>(node));
-					Traverse(static_cast<WorkflowVariableDeclaration*>(node));
+					Traverse(static_cast<WfDeclaration*>(node));
+					Traverse(static_cast<WfVariableDeclaration*>(node));
 					InspectInto(node->expression.Obj());
 					InspectInto(node->type.Obj());
 					for (auto&& listItem : node->attributes)
@@ -1003,17 +1003,17 @@ namespace vl
 						InspectInto(listItem.Obj());
 					}
 					Traverse(node->name);
-					Finishing(static_cast<WorkflowVariableDeclaration*>(node));
-					Finishing(static_cast<WorkflowDeclaration*>(node));
+					Finishing(static_cast<WfVariableDeclaration*>(node));
+					Finishing(static_cast<WfDeclaration*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowEventDeclaration* node)
+				void AstVisitor::Visit(WfEventDeclaration* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowDeclaration*>(node));
-					Traverse(static_cast<WorkflowEventDeclaration*>(node));
+					Traverse(static_cast<WfDeclaration*>(node));
+					Traverse(static_cast<WfEventDeclaration*>(node));
 					for (auto&& listItem : node->arguments)
 					{
 						InspectInto(listItem.Obj());
@@ -1023,17 +1023,17 @@ namespace vl
 						InspectInto(listItem.Obj());
 					}
 					Traverse(node->name);
-					Finishing(static_cast<WorkflowEventDeclaration*>(node));
-					Finishing(static_cast<WorkflowDeclaration*>(node));
+					Finishing(static_cast<WfEventDeclaration*>(node));
+					Finishing(static_cast<WfDeclaration*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowPropertyDeclaration* node)
+				void AstVisitor::Visit(WfPropertyDeclaration* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowDeclaration*>(node));
-					Traverse(static_cast<WorkflowPropertyDeclaration*>(node));
+					Traverse(static_cast<WfDeclaration*>(node));
+					Traverse(static_cast<WfPropertyDeclaration*>(node));
 					Traverse(node->getter);
 					Traverse(node->setter);
 					InspectInto(node->type.Obj());
@@ -1043,17 +1043,17 @@ namespace vl
 						InspectInto(listItem.Obj());
 					}
 					Traverse(node->name);
-					Finishing(static_cast<WorkflowPropertyDeclaration*>(node));
-					Finishing(static_cast<WorkflowDeclaration*>(node));
+					Finishing(static_cast<WfPropertyDeclaration*>(node));
+					Finishing(static_cast<WfDeclaration*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowConstructorDeclaration* node)
+				void AstVisitor::Visit(WfConstructorDeclaration* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowDeclaration*>(node));
-					Traverse(static_cast<WorkflowConstructorDeclaration*>(node));
+					Traverse(static_cast<WfDeclaration*>(node));
+					Traverse(static_cast<WfConstructorDeclaration*>(node));
 					for (auto&& listItem : node->arguments)
 					{
 						InspectInto(listItem.Obj());
@@ -1068,34 +1068,34 @@ namespace vl
 						InspectInto(listItem.Obj());
 					}
 					Traverse(node->name);
-					Finishing(static_cast<WorkflowConstructorDeclaration*>(node));
-					Finishing(static_cast<WorkflowDeclaration*>(node));
+					Finishing(static_cast<WfConstructorDeclaration*>(node));
+					Finishing(static_cast<WfDeclaration*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowDestructorDeclaration* node)
+				void AstVisitor::Visit(WfDestructorDeclaration* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowDeclaration*>(node));
-					Traverse(static_cast<WorkflowDestructorDeclaration*>(node));
+					Traverse(static_cast<WfDeclaration*>(node));
+					Traverse(static_cast<WfDestructorDeclaration*>(node));
 					InspectInto(node->statement.Obj());
 					for (auto&& listItem : node->attributes)
 					{
 						InspectInto(listItem.Obj());
 					}
 					Traverse(node->name);
-					Finishing(static_cast<WorkflowDestructorDeclaration*>(node));
-					Finishing(static_cast<WorkflowDeclaration*>(node));
+					Finishing(static_cast<WfDestructorDeclaration*>(node));
+					Finishing(static_cast<WfDeclaration*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowClassDeclaration* node)
+				void AstVisitor::Visit(WfClassDeclaration* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowDeclaration*>(node));
-					Traverse(static_cast<WorkflowClassDeclaration*>(node));
+					Traverse(static_cast<WfDeclaration*>(node));
+					Traverse(static_cast<WfClassDeclaration*>(node));
 					for (auto&& listItem : node->baseTypes)
 					{
 						InspectInto(listItem.Obj());
@@ -1109,17 +1109,17 @@ namespace vl
 						InspectInto(listItem.Obj());
 					}
 					Traverse(node->name);
-					Finishing(static_cast<WorkflowClassDeclaration*>(node));
-					Finishing(static_cast<WorkflowDeclaration*>(node));
+					Finishing(static_cast<WfClassDeclaration*>(node));
+					Finishing(static_cast<WfDeclaration*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowEnumDeclaration* node)
+				void AstVisitor::Visit(WfEnumDeclaration* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowDeclaration*>(node));
-					Traverse(static_cast<WorkflowEnumDeclaration*>(node));
+					Traverse(static_cast<WfDeclaration*>(node));
+					Traverse(static_cast<WfEnumDeclaration*>(node));
 					for (auto&& listItem : node->items)
 					{
 						InspectInto(listItem.Obj());
@@ -1129,17 +1129,17 @@ namespace vl
 						InspectInto(listItem.Obj());
 					}
 					Traverse(node->name);
-					Finishing(static_cast<WorkflowEnumDeclaration*>(node));
-					Finishing(static_cast<WorkflowDeclaration*>(node));
+					Finishing(static_cast<WfEnumDeclaration*>(node));
+					Finishing(static_cast<WfDeclaration*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowStructDeclaration* node)
+				void AstVisitor::Visit(WfStructDeclaration* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowDeclaration*>(node));
-					Traverse(static_cast<WorkflowStructDeclaration*>(node));
+					Traverse(static_cast<WfDeclaration*>(node));
+					Traverse(static_cast<WfStructDeclaration*>(node));
 					for (auto&& listItem : node->members)
 					{
 						InspectInto(listItem.Obj());
@@ -1149,28 +1149,28 @@ namespace vl
 						InspectInto(listItem.Obj());
 					}
 					Traverse(node->name);
-					Finishing(static_cast<WorkflowStructDeclaration*>(node));
-					Finishing(static_cast<WorkflowDeclaration*>(node));
+					Finishing(static_cast<WfStructDeclaration*>(node));
+					Finishing(static_cast<WfDeclaration*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowVirtualCfeDeclaration* node)
+				void AstVisitor::Visit(WfVirtualCfeDeclaration* node)
 				{
-					node->Accept(static_cast<WorkflowVirtualCfeDeclaration::IVisitor*>(this));
+					node->Accept(static_cast<WfVirtualCfeDeclaration::IVisitor*>(this));
 				}
 
-				void AstVisitor::Visit(WorkflowVirtualCseDeclaration* node)
+				void AstVisitor::Visit(WfVirtualCseDeclaration* node)
 				{
-					node->Accept(static_cast<WorkflowVirtualCseDeclaration::IVisitor*>(this));
+					node->Accept(static_cast<WfVirtualCseDeclaration::IVisitor*>(this));
 				}
 
-				void AstVisitor::Visit(WorkflowAutoPropertyDeclaration* node)
+				void AstVisitor::Visit(WfAutoPropertyDeclaration* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowDeclaration*>(node));
-					Traverse(static_cast<WorkflowVirtualCfeDeclaration*>(node));
-					Traverse(static_cast<WorkflowAutoPropertyDeclaration*>(node));
+					Traverse(static_cast<WfDeclaration*>(node));
+					Traverse(static_cast<WfVirtualCfeDeclaration*>(node));
+					Traverse(static_cast<WfAutoPropertyDeclaration*>(node));
 					InspectInto(node->expression.Obj());
 					InspectInto(node->type.Obj());
 					for (auto&& listItem : node->expandedDeclarations)
@@ -1182,19 +1182,19 @@ namespace vl
 						InspectInto(listItem.Obj());
 					}
 					Traverse(node->name);
-					Finishing(static_cast<WorkflowAutoPropertyDeclaration*>(node));
-					Finishing(static_cast<WorkflowVirtualCfeDeclaration*>(node));
-					Finishing(static_cast<WorkflowDeclaration*>(node));
+					Finishing(static_cast<WfAutoPropertyDeclaration*>(node));
+					Finishing(static_cast<WfVirtualCfeDeclaration*>(node));
+					Finishing(static_cast<WfDeclaration*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowCastResultInterfaceDeclaration* node)
+				void AstVisitor::Visit(WfCastResultInterfaceDeclaration* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowDeclaration*>(node));
-					Traverse(static_cast<WorkflowVirtualCfeDeclaration*>(node));
-					Traverse(static_cast<WorkflowCastResultInterfaceDeclaration*>(node));
+					Traverse(static_cast<WfDeclaration*>(node));
+					Traverse(static_cast<WfVirtualCfeDeclaration*>(node));
+					Traverse(static_cast<WfCastResultInterfaceDeclaration*>(node));
 					InspectInto(node->baseType.Obj());
 					InspectInto(node->elementType.Obj());
 					for (auto&& listItem : node->expandedDeclarations)
@@ -1206,19 +1206,19 @@ namespace vl
 						InspectInto(listItem.Obj());
 					}
 					Traverse(node->name);
-					Finishing(static_cast<WorkflowCastResultInterfaceDeclaration*>(node));
-					Finishing(static_cast<WorkflowVirtualCfeDeclaration*>(node));
-					Finishing(static_cast<WorkflowDeclaration*>(node));
+					Finishing(static_cast<WfCastResultInterfaceDeclaration*>(node));
+					Finishing(static_cast<WfVirtualCfeDeclaration*>(node));
+					Finishing(static_cast<WfDeclaration*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowStateMachineDeclaration* node)
+				void AstVisitor::Visit(WfStateMachineDeclaration* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowDeclaration*>(node));
-					Traverse(static_cast<WorkflowVirtualCseDeclaration*>(node));
-					Traverse(static_cast<WorkflowStateMachineDeclaration*>(node));
+					Traverse(static_cast<WfDeclaration*>(node));
+					Traverse(static_cast<WfVirtualCseDeclaration*>(node));
+					Traverse(static_cast<WfStateMachineDeclaration*>(node));
 					for (auto&& listItem : node->inputs)
 					{
 						InspectInto(listItem.Obj());
@@ -1236,36 +1236,36 @@ namespace vl
 						InspectInto(listItem.Obj());
 					}
 					Traverse(node->name);
-					Finishing(static_cast<WorkflowStateMachineDeclaration*>(node));
-					Finishing(static_cast<WorkflowVirtualCseDeclaration*>(node));
-					Finishing(static_cast<WorkflowDeclaration*>(node));
+					Finishing(static_cast<WfStateMachineDeclaration*>(node));
+					Finishing(static_cast<WfVirtualCseDeclaration*>(node));
+					Finishing(static_cast<WfDeclaration*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowForEachStatement* node)
+				void AstVisitor::Visit(WfForEachStatement* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowStatement*>(node));
-					Traverse(static_cast<WorkflowVirtualCseStatement*>(node));
-					Traverse(static_cast<WorkflowForEachStatement*>(node));
+					Traverse(static_cast<WfStatement*>(node));
+					Traverse(static_cast<WfVirtualCseStatement*>(node));
+					Traverse(static_cast<WfForEachStatement*>(node));
 					InspectInto(node->collection.Obj());
 					Traverse(node->name);
 					InspectInto(node->statement.Obj());
 					InspectInto(node->expandedStatement.Obj());
-					Finishing(static_cast<WorkflowForEachStatement*>(node));
-					Finishing(static_cast<WorkflowVirtualCseStatement*>(node));
-					Finishing(static_cast<WorkflowStatement*>(node));
+					Finishing(static_cast<WfForEachStatement*>(node));
+					Finishing(static_cast<WfVirtualCseStatement*>(node));
+					Finishing(static_cast<WfStatement*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowSwitchStatement* node)
+				void AstVisitor::Visit(WfSwitchStatement* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowStatement*>(node));
-					Traverse(static_cast<WorkflowVirtualCseStatement*>(node));
-					Traverse(static_cast<WorkflowSwitchStatement*>(node));
+					Traverse(static_cast<WfStatement*>(node));
+					Traverse(static_cast<WfVirtualCseStatement*>(node));
+					Traverse(static_cast<WfSwitchStatement*>(node));
 					for (auto&& listItem : node->caseBranches)
 					{
 						InspectInto(listItem.Obj());
@@ -1273,297 +1273,297 @@ namespace vl
 					InspectInto(node->defaultBranch.Obj());
 					InspectInto(node->expression.Obj());
 					InspectInto(node->expandedStatement.Obj());
-					Finishing(static_cast<WorkflowSwitchStatement*>(node));
-					Finishing(static_cast<WorkflowVirtualCseStatement*>(node));
-					Finishing(static_cast<WorkflowStatement*>(node));
+					Finishing(static_cast<WfSwitchStatement*>(node));
+					Finishing(static_cast<WfVirtualCseStatement*>(node));
+					Finishing(static_cast<WfStatement*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowCoProviderStatement* node)
+				void AstVisitor::Visit(WfCoProviderStatement* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowStatement*>(node));
-					Traverse(static_cast<WorkflowVirtualCseStatement*>(node));
-					Traverse(static_cast<WorkflowCoProviderStatement*>(node));
+					Traverse(static_cast<WfStatement*>(node));
+					Traverse(static_cast<WfVirtualCseStatement*>(node));
+					Traverse(static_cast<WfCoProviderStatement*>(node));
 					Traverse(node->name);
 					InspectInto(node->statement.Obj());
 					InspectInto(node->expandedStatement.Obj());
-					Finishing(static_cast<WorkflowCoProviderStatement*>(node));
-					Finishing(static_cast<WorkflowVirtualCseStatement*>(node));
-					Finishing(static_cast<WorkflowStatement*>(node));
+					Finishing(static_cast<WfCoProviderStatement*>(node));
+					Finishing(static_cast<WfVirtualCseStatement*>(node));
+					Finishing(static_cast<WfStatement*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowCoPauseStatement* node)
+				void AstVisitor::Visit(WfCoPauseStatement* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowStatement*>(node));
-					Traverse(static_cast<WorkflowCoroutineStatement*>(node));
-					Traverse(static_cast<WorkflowCoPauseStatement*>(node));
+					Traverse(static_cast<WfStatement*>(node));
+					Traverse(static_cast<WfCoroutineStatement*>(node));
+					Traverse(static_cast<WfCoPauseStatement*>(node));
 					InspectInto(node->statement.Obj());
-					Finishing(static_cast<WorkflowCoPauseStatement*>(node));
-					Finishing(static_cast<WorkflowCoroutineStatement*>(node));
-					Finishing(static_cast<WorkflowStatement*>(node));
+					Finishing(static_cast<WfCoPauseStatement*>(node));
+					Finishing(static_cast<WfCoroutineStatement*>(node));
+					Finishing(static_cast<WfStatement*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowCoOperatorStatement* node)
+				void AstVisitor::Visit(WfCoOperatorStatement* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowStatement*>(node));
-					Traverse(static_cast<WorkflowCoroutineStatement*>(node));
-					Traverse(static_cast<WorkflowCoOperatorStatement*>(node));
+					Traverse(static_cast<WfStatement*>(node));
+					Traverse(static_cast<WfCoroutineStatement*>(node));
+					Traverse(static_cast<WfCoOperatorStatement*>(node));
 					for (auto&& listItem : node->arguments)
 					{
 						InspectInto(listItem.Obj());
 					}
 					Traverse(node->opName);
 					Traverse(node->varName);
-					Finishing(static_cast<WorkflowCoOperatorStatement*>(node));
-					Finishing(static_cast<WorkflowCoroutineStatement*>(node));
-					Finishing(static_cast<WorkflowStatement*>(node));
+					Finishing(static_cast<WfCoOperatorStatement*>(node));
+					Finishing(static_cast<WfCoroutineStatement*>(node));
+					Finishing(static_cast<WfStatement*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowStateSwitchStatement* node)
+				void AstVisitor::Visit(WfStateSwitchStatement* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowStatement*>(node));
-					Traverse(static_cast<WorkflowStateMachineStatement*>(node));
-					Traverse(static_cast<WorkflowStateSwitchStatement*>(node));
+					Traverse(static_cast<WfStatement*>(node));
+					Traverse(static_cast<WfStateMachineStatement*>(node));
+					Traverse(static_cast<WfStateSwitchStatement*>(node));
 					for (auto&& listItem : node->caseBranches)
 					{
 						InspectInto(listItem.Obj());
 					}
-					Finishing(static_cast<WorkflowStateSwitchStatement*>(node));
-					Finishing(static_cast<WorkflowStateMachineStatement*>(node));
-					Finishing(static_cast<WorkflowStatement*>(node));
+					Finishing(static_cast<WfStateSwitchStatement*>(node));
+					Finishing(static_cast<WfStateMachineStatement*>(node));
+					Finishing(static_cast<WfStatement*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowStateInvokeStatement* node)
+				void AstVisitor::Visit(WfStateInvokeStatement* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowStatement*>(node));
-					Traverse(static_cast<WorkflowStateMachineStatement*>(node));
-					Traverse(static_cast<WorkflowStateInvokeStatement*>(node));
+					Traverse(static_cast<WfStatement*>(node));
+					Traverse(static_cast<WfStateMachineStatement*>(node));
+					Traverse(static_cast<WfStateInvokeStatement*>(node));
 					for (auto&& listItem : node->arguments)
 					{
 						InspectInto(listItem.Obj());
 					}
 					Traverse(node->name);
-					Finishing(static_cast<WorkflowStateInvokeStatement*>(node));
-					Finishing(static_cast<WorkflowStateMachineStatement*>(node));
-					Finishing(static_cast<WorkflowStatement*>(node));
+					Finishing(static_cast<WfStateInvokeStatement*>(node));
+					Finishing(static_cast<WfStateMachineStatement*>(node));
+					Finishing(static_cast<WfStatement*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowFormatExpression* node)
+				void AstVisitor::Visit(WfFormatExpression* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowExpression*>(node));
-					Traverse(static_cast<WorkflowVirtualCfeExpression*>(node));
-					Traverse(static_cast<WorkflowFormatExpression*>(node));
+					Traverse(static_cast<WfExpression*>(node));
+					Traverse(static_cast<WfVirtualCfeExpression*>(node));
+					Traverse(static_cast<WfFormatExpression*>(node));
 					Traverse(node->value);
 					InspectInto(node->expandedExpression.Obj());
-					Finishing(static_cast<WorkflowFormatExpression*>(node));
-					Finishing(static_cast<WorkflowVirtualCfeExpression*>(node));
-					Finishing(static_cast<WorkflowExpression*>(node));
+					Finishing(static_cast<WfFormatExpression*>(node));
+					Finishing(static_cast<WfVirtualCfeExpression*>(node));
+					Finishing(static_cast<WfExpression*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowBindExpression* node)
+				void AstVisitor::Visit(WfBindExpression* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowExpression*>(node));
-					Traverse(static_cast<WorkflowVirtualCseExpression*>(node));
-					Traverse(static_cast<WorkflowBindExpression*>(node));
+					Traverse(static_cast<WfExpression*>(node));
+					Traverse(static_cast<WfVirtualCseExpression*>(node));
+					Traverse(static_cast<WfBindExpression*>(node));
 					InspectInto(node->expression.Obj());
 					InspectInto(node->expandedExpression.Obj());
-					Finishing(static_cast<WorkflowBindExpression*>(node));
-					Finishing(static_cast<WorkflowVirtualCseExpression*>(node));
-					Finishing(static_cast<WorkflowExpression*>(node));
+					Finishing(static_cast<WfBindExpression*>(node));
+					Finishing(static_cast<WfVirtualCseExpression*>(node));
+					Finishing(static_cast<WfExpression*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowNewCoroutineExpression* node)
+				void AstVisitor::Visit(WfNewCoroutineExpression* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowExpression*>(node));
-					Traverse(static_cast<WorkflowVirtualCseExpression*>(node));
-					Traverse(static_cast<WorkflowNewCoroutineExpression*>(node));
+					Traverse(static_cast<WfExpression*>(node));
+					Traverse(static_cast<WfVirtualCseExpression*>(node));
+					Traverse(static_cast<WfNewCoroutineExpression*>(node));
 					Traverse(node->name);
 					InspectInto(node->statement.Obj());
 					InspectInto(node->expandedExpression.Obj());
-					Finishing(static_cast<WorkflowNewCoroutineExpression*>(node));
-					Finishing(static_cast<WorkflowVirtualCseExpression*>(node));
-					Finishing(static_cast<WorkflowExpression*>(node));
+					Finishing(static_cast<WfNewCoroutineExpression*>(node));
+					Finishing(static_cast<WfVirtualCseExpression*>(node));
+					Finishing(static_cast<WfExpression*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowMixinCastExpression* node)
+				void AstVisitor::Visit(WfMixinCastExpression* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowExpression*>(node));
-					Traverse(static_cast<WorkflowVirtualCseExpression*>(node));
-					Traverse(static_cast<WorkflowMixinCastExpression*>(node));
+					Traverse(static_cast<WfExpression*>(node));
+					Traverse(static_cast<WfVirtualCseExpression*>(node));
+					Traverse(static_cast<WfMixinCastExpression*>(node));
 					InspectInto(node->expression.Obj());
 					InspectInto(node->type.Obj());
 					InspectInto(node->expandedExpression.Obj());
-					Finishing(static_cast<WorkflowMixinCastExpression*>(node));
-					Finishing(static_cast<WorkflowVirtualCseExpression*>(node));
-					Finishing(static_cast<WorkflowExpression*>(node));
+					Finishing(static_cast<WfMixinCastExpression*>(node));
+					Finishing(static_cast<WfVirtualCseExpression*>(node));
+					Finishing(static_cast<WfExpression*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowExpectedTypeCastExpression* node)
+				void AstVisitor::Visit(WfExpectedTypeCastExpression* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowExpression*>(node));
-					Traverse(static_cast<WorkflowVirtualCseExpression*>(node));
-					Traverse(static_cast<WorkflowExpectedTypeCastExpression*>(node));
+					Traverse(static_cast<WfExpression*>(node));
+					Traverse(static_cast<WfVirtualCseExpression*>(node));
+					Traverse(static_cast<WfExpectedTypeCastExpression*>(node));
 					InspectInto(node->expression.Obj());
 					InspectInto(node->expandedExpression.Obj());
-					Finishing(static_cast<WorkflowExpectedTypeCastExpression*>(node));
-					Finishing(static_cast<WorkflowVirtualCseExpression*>(node));
-					Finishing(static_cast<WorkflowExpression*>(node));
+					Finishing(static_cast<WfExpectedTypeCastExpression*>(node));
+					Finishing(static_cast<WfVirtualCseExpression*>(node));
+					Finishing(static_cast<WfExpression*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowCoOperatorExpression* node)
+				void AstVisitor::Visit(WfCoOperatorExpression* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowExpression*>(node));
-					Traverse(static_cast<WorkflowVirtualCseExpression*>(node));
-					Traverse(static_cast<WorkflowCoOperatorExpression*>(node));
+					Traverse(static_cast<WfExpression*>(node));
+					Traverse(static_cast<WfVirtualCseExpression*>(node));
+					Traverse(static_cast<WfCoOperatorExpression*>(node));
 					Traverse(node->name);
 					InspectInto(node->expandedExpression.Obj());
-					Finishing(static_cast<WorkflowCoOperatorExpression*>(node));
-					Finishing(static_cast<WorkflowVirtualCseExpression*>(node));
-					Finishing(static_cast<WorkflowExpression*>(node));
+					Finishing(static_cast<WfCoOperatorExpression*>(node));
+					Finishing(static_cast<WfVirtualCseExpression*>(node));
+					Finishing(static_cast<WfExpression*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowModuleUsingNameFragment* node)
+				void AstVisitor::Visit(WfModuleUsingNameFragment* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowModuleUsingFragment*>(node));
-					Traverse(static_cast<WorkflowModuleUsingNameFragment*>(node));
+					Traverse(static_cast<WfModuleUsingFragment*>(node));
+					Traverse(static_cast<WfModuleUsingNameFragment*>(node));
 					Traverse(node->name);
-					Finishing(static_cast<WorkflowModuleUsingNameFragment*>(node));
-					Finishing(static_cast<WorkflowModuleUsingFragment*>(node));
+					Finishing(static_cast<WfModuleUsingNameFragment*>(node));
+					Finishing(static_cast<WfModuleUsingFragment*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::Visit(WorkflowModuleUsingWildCardFragment* node)
+				void AstVisitor::Visit(WfModuleUsingWildCardFragment* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowModuleUsingFragment*>(node));
-					Traverse(static_cast<WorkflowModuleUsingWildCardFragment*>(node));
-					Finishing(static_cast<WorkflowModuleUsingWildCardFragment*>(node));
-					Finishing(static_cast<WorkflowModuleUsingFragment*>(node));
+					Traverse(static_cast<WfModuleUsingFragment*>(node));
+					Traverse(static_cast<WfModuleUsingWildCardFragment*>(node));
+					Finishing(static_cast<WfModuleUsingWildCardFragment*>(node));
+					Finishing(static_cast<WfModuleUsingFragment*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::InspectInto(WorkflowType* node)
+				void AstVisitor::InspectInto(WfType* node)
 				{
 					if (!node) return;
-					node->Accept(static_cast<WorkflowType::IVisitor*>(this));
+					node->Accept(static_cast<WfType::IVisitor*>(this));
 				}
 
-				void AstVisitor::InspectInto(WorkflowExpression* node)
+				void AstVisitor::InspectInto(WfExpression* node)
 				{
 					if (!node) return;
-					node->Accept(static_cast<WorkflowExpression::IVisitor*>(this));
+					node->Accept(static_cast<WfExpression::IVisitor*>(this));
 				}
 
-				void AstVisitor::InspectInto(WorkflowStatement* node)
+				void AstVisitor::InspectInto(WfStatement* node)
 				{
 					if (!node) return;
-					node->Accept(static_cast<WorkflowStatement::IVisitor*>(this));
+					node->Accept(static_cast<WfStatement::IVisitor*>(this));
 				}
 
-				void AstVisitor::InspectInto(WorkflowDeclaration* node)
+				void AstVisitor::InspectInto(WfDeclaration* node)
 				{
 					if (!node) return;
-					node->Accept(static_cast<WorkflowDeclaration::IVisitor*>(this));
+					node->Accept(static_cast<WfDeclaration::IVisitor*>(this));
 				}
 
-				void AstVisitor::InspectInto(WorkflowModuleUsingFragment* node)
+				void AstVisitor::InspectInto(WfModuleUsingFragment* node)
 				{
 					if (!node) return;
-					node->Accept(static_cast<WorkflowModuleUsingFragment::IVisitor*>(this));
+					node->Accept(static_cast<WfModuleUsingFragment::IVisitor*>(this));
 				}
 
-				void AstVisitor::InspectInto(WorkflowAttribute* node)
+				void AstVisitor::InspectInto(WfAttribute* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowAttribute*>(node));
+					Traverse(static_cast<WfAttribute*>(node));
 					Traverse(node->category);
 					Traverse(node->name);
 					InspectInto(node->value.Obj());
-					Finishing(static_cast<WorkflowAttribute*>(node));
+					Finishing(static_cast<WfAttribute*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::InspectInto(WorkflowFunctionArgument* node)
+				void AstVisitor::InspectInto(WfFunctionArgument* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowFunctionArgument*>(node));
+					Traverse(static_cast<WfFunctionArgument*>(node));
 					for (auto&& listItem : node->attributes)
 					{
 						InspectInto(listItem.Obj());
 					}
 					Traverse(node->name);
 					InspectInto(node->type.Obj());
-					Finishing(static_cast<WorkflowFunctionArgument*>(node));
+					Finishing(static_cast<WfFunctionArgument*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::InspectInto(WorkflowBaseConstructorCall* node)
+				void AstVisitor::InspectInto(WfBaseConstructorCall* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowBaseConstructorCall*>(node));
+					Traverse(static_cast<WfBaseConstructorCall*>(node));
 					for (auto&& listItem : node->arguments)
 					{
 						InspectInto(listItem.Obj());
 					}
 					InspectInto(node->type.Obj());
-					Finishing(static_cast<WorkflowBaseConstructorCall*>(node));
+					Finishing(static_cast<WfBaseConstructorCall*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::InspectInto(WorkflowEnumItemIntersection* node)
+				void AstVisitor::InspectInto(WfEnumItemIntersection* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowEnumItemIntersection*>(node));
+					Traverse(static_cast<WfEnumItemIntersection*>(node));
 					Traverse(node->name);
-					Finishing(static_cast<WorkflowEnumItemIntersection*>(node));
+					Finishing(static_cast<WfEnumItemIntersection*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::InspectInto(WorkflowEnumItem* node)
+				void AstVisitor::InspectInto(WfEnumItem* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowEnumItem*>(node));
+					Traverse(static_cast<WfEnumItem*>(node));
 					for (auto&& listItem : node->attributes)
 					{
 						InspectInto(listItem.Obj());
@@ -1574,143 +1574,143 @@ namespace vl
 					}
 					Traverse(node->name);
 					Traverse(node->number);
-					Finishing(static_cast<WorkflowEnumItem*>(node));
+					Finishing(static_cast<WfEnumItem*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::InspectInto(WorkflowStructMember* node)
+				void AstVisitor::InspectInto(WfStructMember* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowStructMember*>(node));
+					Traverse(static_cast<WfStructMember*>(node));
 					for (auto&& listItem : node->attributes)
 					{
 						InspectInto(listItem.Obj());
 					}
 					Traverse(node->name);
 					InspectInto(node->type.Obj());
-					Finishing(static_cast<WorkflowStructMember*>(node));
+					Finishing(static_cast<WfStructMember*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::InspectInto(WorkflowStateInput* node)
+				void AstVisitor::InspectInto(WfStateInput* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowStateInput*>(node));
+					Traverse(static_cast<WfStateInput*>(node));
 					for (auto&& listItem : node->arguments)
 					{
 						InspectInto(listItem.Obj());
 					}
 					Traverse(node->name);
-					Finishing(static_cast<WorkflowStateInput*>(node));
+					Finishing(static_cast<WfStateInput*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::InspectInto(WorkflowStateDeclaration* node)
+				void AstVisitor::InspectInto(WfStateDeclaration* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowStateDeclaration*>(node));
+					Traverse(static_cast<WfStateDeclaration*>(node));
 					for (auto&& listItem : node->arguments)
 					{
 						InspectInto(listItem.Obj());
 					}
 					Traverse(node->name);
 					InspectInto(node->statement.Obj());
-					Finishing(static_cast<WorkflowStateDeclaration*>(node));
+					Finishing(static_cast<WfStateDeclaration*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::InspectInto(WorkflowSwitchCase* node)
+				void AstVisitor::InspectInto(WfSwitchCase* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowSwitchCase*>(node));
+					Traverse(static_cast<WfSwitchCase*>(node));
 					InspectInto(node->expression.Obj());
 					InspectInto(node->statement.Obj());
-					Finishing(static_cast<WorkflowSwitchCase*>(node));
+					Finishing(static_cast<WfSwitchCase*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::InspectInto(WorkflowStateSwitchArgument* node)
+				void AstVisitor::InspectInto(WfStateSwitchArgument* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowStateSwitchArgument*>(node));
+					Traverse(static_cast<WfStateSwitchArgument*>(node));
 					Traverse(node->name);
-					Finishing(static_cast<WorkflowStateSwitchArgument*>(node));
+					Finishing(static_cast<WfStateSwitchArgument*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::InspectInto(WorkflowStateSwitchCase* node)
+				void AstVisitor::InspectInto(WfStateSwitchCase* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowStateSwitchCase*>(node));
+					Traverse(static_cast<WfStateSwitchCase*>(node));
 					for (auto&& listItem : node->arguments)
 					{
 						InspectInto(listItem.Obj());
 					}
 					Traverse(node->name);
 					InspectInto(node->statement.Obj());
-					Finishing(static_cast<WorkflowStateSwitchCase*>(node));
+					Finishing(static_cast<WfStateSwitchCase*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::InspectInto(WorkflowLetVariable* node)
+				void AstVisitor::InspectInto(WfLetVariable* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowLetVariable*>(node));
+					Traverse(static_cast<WfLetVariable*>(node));
 					Traverse(node->name);
 					InspectInto(node->value.Obj());
-					Finishing(static_cast<WorkflowLetVariable*>(node));
+					Finishing(static_cast<WfLetVariable*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::InspectInto(WorkflowConstructorArgument* node)
+				void AstVisitor::InspectInto(WfConstructorArgument* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowConstructorArgument*>(node));
+					Traverse(static_cast<WfConstructorArgument*>(node));
 					InspectInto(node->key.Obj());
 					InspectInto(node->value.Obj());
-					Finishing(static_cast<WorkflowConstructorArgument*>(node));
+					Finishing(static_cast<WfConstructorArgument*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::InspectInto(WorkflowModuleUsingItem* node)
+				void AstVisitor::InspectInto(WfModuleUsingItem* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowModuleUsingItem*>(node));
+					Traverse(static_cast<WfModuleUsingItem*>(node));
 					for (auto&& listItem : node->fragments)
 					{
 						InspectInto(listItem.Obj());
 					}
-					Finishing(static_cast<WorkflowModuleUsingItem*>(node));
+					Finishing(static_cast<WfModuleUsingItem*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::InspectInto(WorkflowModuleUsingPath* node)
+				void AstVisitor::InspectInto(WfModuleUsingPath* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowModuleUsingPath*>(node));
+					Traverse(static_cast<WfModuleUsingPath*>(node));
 					for (auto&& listItem : node->items)
 					{
 						InspectInto(listItem.Obj());
 					}
-					Finishing(static_cast<WorkflowModuleUsingPath*>(node));
+					Finishing(static_cast<WfModuleUsingPath*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
-				void AstVisitor::InspectInto(WorkflowModule* node)
+				void AstVisitor::InspectInto(WfModule* node)
 				{
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<WorkflowModule*>(node));
+					Traverse(static_cast<WfModule*>(node));
 					for (auto&& listItem : node->declarations)
 					{
 						InspectInto(listItem.Obj());
@@ -1720,7 +1720,7 @@ namespace vl
 					{
 						InspectInto(listItem.Obj());
 					}
-					Finishing(static_cast<WorkflowModule*>(node));
+					Finishing(static_cast<WfModule*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 

@@ -14,23 +14,23 @@ namespace vl
 		{
 			namespace copy_visitor
 			{
-				void AstVisitor::CopyFields(WorkflowAttachEventExpression* from, WorkflowAttachEventExpression* to)
+				void AstVisitor::CopyFields(WfAttachEventExpression* from, WfAttachEventExpression* to)
 				{
-					CopyFields(static_cast<WorkflowExpression*>(from), static_cast<WorkflowExpression*>(to));
+					CopyFields(static_cast<WfExpression*>(from), static_cast<WfExpression*>(to));
 					to->event = CopyNode(from->event.Obj());
 					to->function = CopyNode(from->function.Obj());
 				}
 
-				void AstVisitor::CopyFields(WorkflowAttribute* from, WorkflowAttribute* to)
+				void AstVisitor::CopyFields(WfAttribute* from, WfAttribute* to)
 				{
 					to->category = from->category;
 					to->name = from->name;
 					to->value = CopyNode(from->value.Obj());
 				}
 
-				void AstVisitor::CopyFields(WorkflowAutoPropertyDeclaration* from, WorkflowAutoPropertyDeclaration* to)
+				void AstVisitor::CopyFields(WfAutoPropertyDeclaration* from, WfAutoPropertyDeclaration* to)
 				{
-					CopyFields(static_cast<WorkflowVirtualCfeDeclaration*>(from), static_cast<WorkflowVirtualCfeDeclaration*>(to));
+					CopyFields(static_cast<WfVirtualCfeDeclaration*>(from), static_cast<WfVirtualCfeDeclaration*>(to));
 					to->configConst = from->configConst;
 					to->configObserve = from->configObserve;
 					to->expression = CopyNode(from->expression.Obj());
@@ -38,7 +38,7 @@ namespace vl
 					to->type = CopyNode(from->type.Obj());
 				}
 
-				void AstVisitor::CopyFields(WorkflowBaseConstructorCall* from, WorkflowBaseConstructorCall* to)
+				void AstVisitor::CopyFields(WfBaseConstructorCall* from, WfBaseConstructorCall* to)
 				{
 					for (auto&& listItem : from->arguments)
 					{
@@ -47,23 +47,23 @@ namespace vl
 					to->type = CopyNode(from->type.Obj());
 				}
 
-				void AstVisitor::CopyFields(WorkflowBinaryExpression* from, WorkflowBinaryExpression* to)
+				void AstVisitor::CopyFields(WfBinaryExpression* from, WfBinaryExpression* to)
 				{
-					CopyFields(static_cast<WorkflowExpression*>(from), static_cast<WorkflowExpression*>(to));
+					CopyFields(static_cast<WfExpression*>(from), static_cast<WfExpression*>(to));
 					to->first = CopyNode(from->first.Obj());
 					to->op = from->op;
 					to->second = CopyNode(from->second.Obj());
 				}
 
-				void AstVisitor::CopyFields(WorkflowBindExpression* from, WorkflowBindExpression* to)
+				void AstVisitor::CopyFields(WfBindExpression* from, WfBindExpression* to)
 				{
-					CopyFields(static_cast<WorkflowVirtualCseExpression*>(from), static_cast<WorkflowVirtualCseExpression*>(to));
+					CopyFields(static_cast<WfVirtualCseExpression*>(from), static_cast<WfVirtualCseExpression*>(to));
 					to->expression = CopyNode(from->expression.Obj());
 				}
 
-				void AstVisitor::CopyFields(WorkflowBlockStatement* from, WorkflowBlockStatement* to)
+				void AstVisitor::CopyFields(WfBlockStatement* from, WfBlockStatement* to)
 				{
-					CopyFields(static_cast<WorkflowStatement*>(from), static_cast<WorkflowStatement*>(to));
+					CopyFields(static_cast<WfStatement*>(from), static_cast<WfStatement*>(to));
 					to->endLabel = from->endLabel;
 					for (auto&& listItem : from->statements)
 					{
@@ -71,14 +71,14 @@ namespace vl
 					}
 				}
 
-				void AstVisitor::CopyFields(WorkflowBreakStatement* from, WorkflowBreakStatement* to)
+				void AstVisitor::CopyFields(WfBreakStatement* from, WfBreakStatement* to)
 				{
-					CopyFields(static_cast<WorkflowStatement*>(from), static_cast<WorkflowStatement*>(to));
+					CopyFields(static_cast<WfStatement*>(from), static_cast<WfStatement*>(to));
 				}
 
-				void AstVisitor::CopyFields(WorkflowCallExpression* from, WorkflowCallExpression* to)
+				void AstVisitor::CopyFields(WfCallExpression* from, WfCallExpression* to)
 				{
-					CopyFields(static_cast<WorkflowExpression*>(from), static_cast<WorkflowExpression*>(to));
+					CopyFields(static_cast<WfExpression*>(from), static_cast<WfExpression*>(to));
 					for (auto&& listItem : from->arguments)
 					{
 						to->arguments.Add(CopyNode(listItem.Obj()));
@@ -86,30 +86,30 @@ namespace vl
 					to->function = CopyNode(from->function.Obj());
 				}
 
-				void AstVisitor::CopyFields(WorkflowCastResultInterfaceDeclaration* from, WorkflowCastResultInterfaceDeclaration* to)
+				void AstVisitor::CopyFields(WfCastResultInterfaceDeclaration* from, WfCastResultInterfaceDeclaration* to)
 				{
-					CopyFields(static_cast<WorkflowVirtualCfeDeclaration*>(from), static_cast<WorkflowVirtualCfeDeclaration*>(to));
+					CopyFields(static_cast<WfVirtualCfeDeclaration*>(from), static_cast<WfVirtualCfeDeclaration*>(to));
 					to->baseType = CopyNode(from->baseType.Obj());
 					to->elementType = CopyNode(from->elementType.Obj());
 				}
 
-				void AstVisitor::CopyFields(WorkflowChildExpression* from, WorkflowChildExpression* to)
+				void AstVisitor::CopyFields(WfChildExpression* from, WfChildExpression* to)
 				{
-					CopyFields(static_cast<WorkflowExpression*>(from), static_cast<WorkflowExpression*>(to));
+					CopyFields(static_cast<WfExpression*>(from), static_cast<WfExpression*>(to));
 					to->name = from->name;
 					to->parent = CopyNode(from->parent.Obj());
 				}
 
-				void AstVisitor::CopyFields(WorkflowChildType* from, WorkflowChildType* to)
+				void AstVisitor::CopyFields(WfChildType* from, WfChildType* to)
 				{
-					CopyFields(static_cast<WorkflowType*>(from), static_cast<WorkflowType*>(to));
+					CopyFields(static_cast<WfType*>(from), static_cast<WfType*>(to));
 					to->name = from->name;
 					to->parent = CopyNode(from->parent.Obj());
 				}
 
-				void AstVisitor::CopyFields(WorkflowClassDeclaration* from, WorkflowClassDeclaration* to)
+				void AstVisitor::CopyFields(WfClassDeclaration* from, WfClassDeclaration* to)
 				{
-					CopyFields(static_cast<WorkflowDeclaration*>(from), static_cast<WorkflowDeclaration*>(to));
+					CopyFields(static_cast<WfDeclaration*>(from), static_cast<WfDeclaration*>(to));
 					for (auto&& listItem : from->baseTypes)
 					{
 						to->baseTypes.Add(CopyNode(listItem.Obj()));
@@ -122,15 +122,15 @@ namespace vl
 					to->kind = from->kind;
 				}
 
-				void AstVisitor::CopyFields(WorkflowCoOperatorExpression* from, WorkflowCoOperatorExpression* to)
+				void AstVisitor::CopyFields(WfCoOperatorExpression* from, WfCoOperatorExpression* to)
 				{
-					CopyFields(static_cast<WorkflowVirtualCseExpression*>(from), static_cast<WorkflowVirtualCseExpression*>(to));
+					CopyFields(static_cast<WfVirtualCseExpression*>(from), static_cast<WfVirtualCseExpression*>(to));
 					to->name = from->name;
 				}
 
-				void AstVisitor::CopyFields(WorkflowCoOperatorStatement* from, WorkflowCoOperatorStatement* to)
+				void AstVisitor::CopyFields(WfCoOperatorStatement* from, WfCoOperatorStatement* to)
 				{
-					CopyFields(static_cast<WorkflowCoroutineStatement*>(from), static_cast<WorkflowCoroutineStatement*>(to));
+					CopyFields(static_cast<WfCoroutineStatement*>(from), static_cast<WfCoroutineStatement*>(to));
 					for (auto&& listItem : from->arguments)
 					{
 						to->arguments.Add(CopyNode(listItem.Obj()));
@@ -139,28 +139,28 @@ namespace vl
 					to->varName = from->varName;
 				}
 
-				void AstVisitor::CopyFields(WorkflowCoPauseStatement* from, WorkflowCoPauseStatement* to)
+				void AstVisitor::CopyFields(WfCoPauseStatement* from, WfCoPauseStatement* to)
 				{
-					CopyFields(static_cast<WorkflowCoroutineStatement*>(from), static_cast<WorkflowCoroutineStatement*>(to));
+					CopyFields(static_cast<WfCoroutineStatement*>(from), static_cast<WfCoroutineStatement*>(to));
 					to->statement = CopyNode(from->statement.Obj());
 				}
 
-				void AstVisitor::CopyFields(WorkflowCoProviderStatement* from, WorkflowCoProviderStatement* to)
+				void AstVisitor::CopyFields(WfCoProviderStatement* from, WfCoProviderStatement* to)
 				{
-					CopyFields(static_cast<WorkflowVirtualCseStatement*>(from), static_cast<WorkflowVirtualCseStatement*>(to));
+					CopyFields(static_cast<WfVirtualCseStatement*>(from), static_cast<WfVirtualCseStatement*>(to));
 					to->name = from->name;
 					to->statement = CopyNode(from->statement.Obj());
 				}
 
-				void AstVisitor::CopyFields(WorkflowConstructorArgument* from, WorkflowConstructorArgument* to)
+				void AstVisitor::CopyFields(WfConstructorArgument* from, WfConstructorArgument* to)
 				{
 					to->key = CopyNode(from->key.Obj());
 					to->value = CopyNode(from->value.Obj());
 				}
 
-				void AstVisitor::CopyFields(WorkflowConstructorDeclaration* from, WorkflowConstructorDeclaration* to)
+				void AstVisitor::CopyFields(WfConstructorDeclaration* from, WfConstructorDeclaration* to)
 				{
-					CopyFields(static_cast<WorkflowDeclaration*>(from), static_cast<WorkflowDeclaration*>(to));
+					CopyFields(static_cast<WfDeclaration*>(from), static_cast<WfDeclaration*>(to));
 					for (auto&& listItem : from->arguments)
 					{
 						to->arguments.Add(CopyNode(listItem.Obj()));
@@ -173,26 +173,26 @@ namespace vl
 					to->statement = CopyNode(from->statement.Obj());
 				}
 
-				void AstVisitor::CopyFields(WorkflowConstructorExpression* from, WorkflowConstructorExpression* to)
+				void AstVisitor::CopyFields(WfConstructorExpression* from, WfConstructorExpression* to)
 				{
-					CopyFields(static_cast<WorkflowExpression*>(from), static_cast<WorkflowExpression*>(to));
+					CopyFields(static_cast<WfExpression*>(from), static_cast<WfExpression*>(to));
 					for (auto&& listItem : from->arguments)
 					{
 						to->arguments.Add(CopyNode(listItem.Obj()));
 					}
 				}
 
-				void AstVisitor::CopyFields(WorkflowContinueStatement* from, WorkflowContinueStatement* to)
+				void AstVisitor::CopyFields(WfContinueStatement* from, WfContinueStatement* to)
 				{
-					CopyFields(static_cast<WorkflowStatement*>(from), static_cast<WorkflowStatement*>(to));
+					CopyFields(static_cast<WfStatement*>(from), static_cast<WfStatement*>(to));
 				}
 
-				void AstVisitor::CopyFields(WorkflowCoroutineStatement* from, WorkflowCoroutineStatement* to)
+				void AstVisitor::CopyFields(WfCoroutineStatement* from, WfCoroutineStatement* to)
 				{
-					CopyFields(static_cast<WorkflowStatement*>(from), static_cast<WorkflowStatement*>(to));
+					CopyFields(static_cast<WfStatement*>(from), static_cast<WfStatement*>(to));
 				}
 
-				void AstVisitor::CopyFields(WorkflowDeclaration* from, WorkflowDeclaration* to)
+				void AstVisitor::CopyFields(WfDeclaration* from, WfDeclaration* to)
 				{
 					for (auto&& listItem : from->attributes)
 					{
@@ -201,28 +201,28 @@ namespace vl
 					to->name = from->name;
 				}
 
-				void AstVisitor::CopyFields(WorkflowDeleteStatement* from, WorkflowDeleteStatement* to)
+				void AstVisitor::CopyFields(WfDeleteStatement* from, WfDeleteStatement* to)
 				{
-					CopyFields(static_cast<WorkflowStatement*>(from), static_cast<WorkflowStatement*>(to));
+					CopyFields(static_cast<WfStatement*>(from), static_cast<WfStatement*>(to));
 					to->expression = CopyNode(from->expression.Obj());
 				}
 
-				void AstVisitor::CopyFields(WorkflowDestructorDeclaration* from, WorkflowDestructorDeclaration* to)
+				void AstVisitor::CopyFields(WfDestructorDeclaration* from, WfDestructorDeclaration* to)
 				{
-					CopyFields(static_cast<WorkflowDeclaration*>(from), static_cast<WorkflowDeclaration*>(to));
+					CopyFields(static_cast<WfDeclaration*>(from), static_cast<WfDeclaration*>(to));
 					to->statement = CopyNode(from->statement.Obj());
 				}
 
-				void AstVisitor::CopyFields(WorkflowDetachEventExpression* from, WorkflowDetachEventExpression* to)
+				void AstVisitor::CopyFields(WfDetachEventExpression* from, WfDetachEventExpression* to)
 				{
-					CopyFields(static_cast<WorkflowExpression*>(from), static_cast<WorkflowExpression*>(to));
+					CopyFields(static_cast<WfExpression*>(from), static_cast<WfExpression*>(to));
 					to->event = CopyNode(from->event.Obj());
 					to->handler = CopyNode(from->handler.Obj());
 				}
 
-				void AstVisitor::CopyFields(WorkflowEnumDeclaration* from, WorkflowEnumDeclaration* to)
+				void AstVisitor::CopyFields(WfEnumDeclaration* from, WfEnumDeclaration* to)
 				{
-					CopyFields(static_cast<WorkflowDeclaration*>(from), static_cast<WorkflowDeclaration*>(to));
+					CopyFields(static_cast<WfDeclaration*>(from), static_cast<WfDeclaration*>(to));
 					for (auto&& listItem : from->items)
 					{
 						to->items.Add(CopyNode(listItem.Obj()));
@@ -230,7 +230,7 @@ namespace vl
 					to->kind = from->kind;
 				}
 
-				void AstVisitor::CopyFields(WorkflowEnumItem* from, WorkflowEnumItem* to)
+				void AstVisitor::CopyFields(WfEnumItem* from, WfEnumItem* to)
 				{
 					for (auto&& listItem : from->attributes)
 					{
@@ -245,65 +245,65 @@ namespace vl
 					to->number = from->number;
 				}
 
-				void AstVisitor::CopyFields(WorkflowEnumItemIntersection* from, WorkflowEnumItemIntersection* to)
+				void AstVisitor::CopyFields(WfEnumItemIntersection* from, WfEnumItemIntersection* to)
 				{
 					to->name = from->name;
 				}
 
-				void AstVisitor::CopyFields(WorkflowEnumerableType* from, WorkflowEnumerableType* to)
+				void AstVisitor::CopyFields(WfEnumerableType* from, WfEnumerableType* to)
 				{
-					CopyFields(static_cast<WorkflowType*>(from), static_cast<WorkflowType*>(to));
+					CopyFields(static_cast<WfType*>(from), static_cast<WfType*>(to));
 					to->element = CopyNode(from->element.Obj());
 				}
 
-				void AstVisitor::CopyFields(WorkflowEventDeclaration* from, WorkflowEventDeclaration* to)
+				void AstVisitor::CopyFields(WfEventDeclaration* from, WfEventDeclaration* to)
 				{
-					CopyFields(static_cast<WorkflowDeclaration*>(from), static_cast<WorkflowDeclaration*>(to));
+					CopyFields(static_cast<WfDeclaration*>(from), static_cast<WfDeclaration*>(to));
 					for (auto&& listItem : from->arguments)
 					{
 						to->arguments.Add(CopyNode(listItem.Obj()));
 					}
 				}
 
-				void AstVisitor::CopyFields(WorkflowExpectedTypeCastExpression* from, WorkflowExpectedTypeCastExpression* to)
+				void AstVisitor::CopyFields(WfExpectedTypeCastExpression* from, WfExpectedTypeCastExpression* to)
 				{
-					CopyFields(static_cast<WorkflowVirtualCseExpression*>(from), static_cast<WorkflowVirtualCseExpression*>(to));
+					CopyFields(static_cast<WfVirtualCseExpression*>(from), static_cast<WfVirtualCseExpression*>(to));
 					to->expression = CopyNode(from->expression.Obj());
 					to->strategy = from->strategy;
 				}
 
-				void AstVisitor::CopyFields(WorkflowExpression* from, WorkflowExpression* to)
+				void AstVisitor::CopyFields(WfExpression* from, WfExpression* to)
 				{
 				}
 
-				void AstVisitor::CopyFields(WorkflowExpressionStatement* from, WorkflowExpressionStatement* to)
+				void AstVisitor::CopyFields(WfExpressionStatement* from, WfExpressionStatement* to)
 				{
-					CopyFields(static_cast<WorkflowStatement*>(from), static_cast<WorkflowStatement*>(to));
+					CopyFields(static_cast<WfStatement*>(from), static_cast<WfStatement*>(to));
 					to->expression = CopyNode(from->expression.Obj());
 				}
 
-				void AstVisitor::CopyFields(WorkflowFloatingExpression* from, WorkflowFloatingExpression* to)
+				void AstVisitor::CopyFields(WfFloatingExpression* from, WfFloatingExpression* to)
 				{
-					CopyFields(static_cast<WorkflowExpression*>(from), static_cast<WorkflowExpression*>(to));
+					CopyFields(static_cast<WfExpression*>(from), static_cast<WfExpression*>(to));
 					to->value = from->value;
 				}
 
-				void AstVisitor::CopyFields(WorkflowForEachStatement* from, WorkflowForEachStatement* to)
+				void AstVisitor::CopyFields(WfForEachStatement* from, WfForEachStatement* to)
 				{
-					CopyFields(static_cast<WorkflowVirtualCseStatement*>(from), static_cast<WorkflowVirtualCseStatement*>(to));
+					CopyFields(static_cast<WfVirtualCseStatement*>(from), static_cast<WfVirtualCseStatement*>(to));
 					to->collection = CopyNode(from->collection.Obj());
 					to->direction = from->direction;
 					to->name = from->name;
 					to->statement = CopyNode(from->statement.Obj());
 				}
 
-				void AstVisitor::CopyFields(WorkflowFormatExpression* from, WorkflowFormatExpression* to)
+				void AstVisitor::CopyFields(WfFormatExpression* from, WfFormatExpression* to)
 				{
-					CopyFields(static_cast<WorkflowVirtualCfeExpression*>(from), static_cast<WorkflowVirtualCfeExpression*>(to));
+					CopyFields(static_cast<WfVirtualCfeExpression*>(from), static_cast<WfVirtualCfeExpression*>(to));
 					to->value = from->value;
 				}
 
-				void AstVisitor::CopyFields(WorkflowFunctionArgument* from, WorkflowFunctionArgument* to)
+				void AstVisitor::CopyFields(WfFunctionArgument* from, WfFunctionArgument* to)
 				{
 					for (auto&& listItem : from->attributes)
 					{
@@ -313,9 +313,9 @@ namespace vl
 					to->type = CopyNode(from->type.Obj());
 				}
 
-				void AstVisitor::CopyFields(WorkflowFunctionDeclaration* from, WorkflowFunctionDeclaration* to)
+				void AstVisitor::CopyFields(WfFunctionDeclaration* from, WfFunctionDeclaration* to)
 				{
-					CopyFields(static_cast<WorkflowDeclaration*>(from), static_cast<WorkflowDeclaration*>(to));
+					CopyFields(static_cast<WfDeclaration*>(from), static_cast<WfDeclaration*>(to));
 					to->anonymity = from->anonymity;
 					for (auto&& listItem : from->arguments)
 					{
@@ -326,15 +326,15 @@ namespace vl
 					to->statement = CopyNode(from->statement.Obj());
 				}
 
-				void AstVisitor::CopyFields(WorkflowFunctionExpression* from, WorkflowFunctionExpression* to)
+				void AstVisitor::CopyFields(WfFunctionExpression* from, WfFunctionExpression* to)
 				{
-					CopyFields(static_cast<WorkflowExpression*>(from), static_cast<WorkflowExpression*>(to));
+					CopyFields(static_cast<WfExpression*>(from), static_cast<WfExpression*>(to));
 					to->function = CopyNode(from->function.Obj());
 				}
 
-				void AstVisitor::CopyFields(WorkflowFunctionType* from, WorkflowFunctionType* to)
+				void AstVisitor::CopyFields(WfFunctionType* from, WfFunctionType* to)
 				{
-					CopyFields(static_cast<WorkflowType*>(from), static_cast<WorkflowType*>(to));
+					CopyFields(static_cast<WfType*>(from), static_cast<WfType*>(to));
 					for (auto&& listItem : from->arguments)
 					{
 						to->arguments.Add(CopyNode(listItem.Obj()));
@@ -342,23 +342,23 @@ namespace vl
 					to->result = CopyNode(from->result.Obj());
 				}
 
-				void AstVisitor::CopyFields(WorkflowGotoStatement* from, WorkflowGotoStatement* to)
+				void AstVisitor::CopyFields(WfGotoStatement* from, WfGotoStatement* to)
 				{
-					CopyFields(static_cast<WorkflowStatement*>(from), static_cast<WorkflowStatement*>(to));
+					CopyFields(static_cast<WfStatement*>(from), static_cast<WfStatement*>(to));
 					to->label = from->label;
 				}
 
-				void AstVisitor::CopyFields(WorkflowIfExpression* from, WorkflowIfExpression* to)
+				void AstVisitor::CopyFields(WfIfExpression* from, WfIfExpression* to)
 				{
-					CopyFields(static_cast<WorkflowExpression*>(from), static_cast<WorkflowExpression*>(to));
+					CopyFields(static_cast<WfExpression*>(from), static_cast<WfExpression*>(to));
 					to->condition = CopyNode(from->condition.Obj());
 					to->falseBranch = CopyNode(from->falseBranch.Obj());
 					to->trueBranch = CopyNode(from->trueBranch.Obj());
 				}
 
-				void AstVisitor::CopyFields(WorkflowIfStatement* from, WorkflowIfStatement* to)
+				void AstVisitor::CopyFields(WfIfStatement* from, WfIfStatement* to)
 				{
-					CopyFields(static_cast<WorkflowStatement*>(from), static_cast<WorkflowStatement*>(to));
+					CopyFields(static_cast<WfStatement*>(from), static_cast<WfStatement*>(to));
 					to->expression = CopyNode(from->expression.Obj());
 					to->falseBranch = CopyNode(from->falseBranch.Obj());
 					to->name = from->name;
@@ -366,22 +366,22 @@ namespace vl
 					to->type = CopyNode(from->type.Obj());
 				}
 
-				void AstVisitor::CopyFields(WorkflowInferExpression* from, WorkflowInferExpression* to)
+				void AstVisitor::CopyFields(WfInferExpression* from, WfInferExpression* to)
 				{
-					CopyFields(static_cast<WorkflowExpression*>(from), static_cast<WorkflowExpression*>(to));
+					CopyFields(static_cast<WfExpression*>(from), static_cast<WfExpression*>(to));
 					to->expression = CopyNode(from->expression.Obj());
 					to->type = CopyNode(from->type.Obj());
 				}
 
-				void AstVisitor::CopyFields(WorkflowIntegerExpression* from, WorkflowIntegerExpression* to)
+				void AstVisitor::CopyFields(WfIntegerExpression* from, WfIntegerExpression* to)
 				{
-					CopyFields(static_cast<WorkflowExpression*>(from), static_cast<WorkflowExpression*>(to));
+					CopyFields(static_cast<WfExpression*>(from), static_cast<WfExpression*>(to));
 					to->value = from->value;
 				}
 
-				void AstVisitor::CopyFields(WorkflowLetExpression* from, WorkflowLetExpression* to)
+				void AstVisitor::CopyFields(WfLetExpression* from, WfLetExpression* to)
 				{
-					CopyFields(static_cast<WorkflowExpression*>(from), static_cast<WorkflowExpression*>(to));
+					CopyFields(static_cast<WfExpression*>(from), static_cast<WfExpression*>(to));
 					to->expression = CopyNode(from->expression.Obj());
 					for (auto&& listItem : from->variables)
 					{
@@ -389,41 +389,41 @@ namespace vl
 					}
 				}
 
-				void AstVisitor::CopyFields(WorkflowLetVariable* from, WorkflowLetVariable* to)
+				void AstVisitor::CopyFields(WfLetVariable* from, WfLetVariable* to)
 				{
 					to->name = from->name;
 					to->value = CopyNode(from->value.Obj());
 				}
 
-				void AstVisitor::CopyFields(WorkflowLiteralExpression* from, WorkflowLiteralExpression* to)
+				void AstVisitor::CopyFields(WfLiteralExpression* from, WfLiteralExpression* to)
 				{
-					CopyFields(static_cast<WorkflowExpression*>(from), static_cast<WorkflowExpression*>(to));
+					CopyFields(static_cast<WfExpression*>(from), static_cast<WfExpression*>(to));
 					to->value = from->value;
 				}
 
-				void AstVisitor::CopyFields(WorkflowMapType* from, WorkflowMapType* to)
+				void AstVisitor::CopyFields(WfMapType* from, WfMapType* to)
 				{
-					CopyFields(static_cast<WorkflowType*>(from), static_cast<WorkflowType*>(to));
+					CopyFields(static_cast<WfType*>(from), static_cast<WfType*>(to));
 					to->key = CopyNode(from->key.Obj());
 					to->value = CopyNode(from->value.Obj());
 					to->writability = from->writability;
 				}
 
-				void AstVisitor::CopyFields(WorkflowMemberExpression* from, WorkflowMemberExpression* to)
+				void AstVisitor::CopyFields(WfMemberExpression* from, WfMemberExpression* to)
 				{
-					CopyFields(static_cast<WorkflowExpression*>(from), static_cast<WorkflowExpression*>(to));
+					CopyFields(static_cast<WfExpression*>(from), static_cast<WfExpression*>(to));
 					to->name = from->name;
 					to->parent = CopyNode(from->parent.Obj());
 				}
 
-				void AstVisitor::CopyFields(WorkflowMixinCastExpression* from, WorkflowMixinCastExpression* to)
+				void AstVisitor::CopyFields(WfMixinCastExpression* from, WfMixinCastExpression* to)
 				{
-					CopyFields(static_cast<WorkflowVirtualCseExpression*>(from), static_cast<WorkflowVirtualCseExpression*>(to));
+					CopyFields(static_cast<WfVirtualCseExpression*>(from), static_cast<WfVirtualCseExpression*>(to));
 					to->expression = CopyNode(from->expression.Obj());
 					to->type = CopyNode(from->type.Obj());
 				}
 
-				void AstVisitor::CopyFields(WorkflowModule* from, WorkflowModule* to)
+				void AstVisitor::CopyFields(WfModule* from, WfModule* to)
 				{
 					for (auto&& listItem : from->declarations)
 					{
@@ -437,11 +437,11 @@ namespace vl
 					}
 				}
 
-				void AstVisitor::CopyFields(WorkflowModuleUsingFragment* from, WorkflowModuleUsingFragment* to)
+				void AstVisitor::CopyFields(WfModuleUsingFragment* from, WfModuleUsingFragment* to)
 				{
 				}
 
-				void AstVisitor::CopyFields(WorkflowModuleUsingItem* from, WorkflowModuleUsingItem* to)
+				void AstVisitor::CopyFields(WfModuleUsingItem* from, WfModuleUsingItem* to)
 				{
 					for (auto&& listItem : from->fragments)
 					{
@@ -449,13 +449,13 @@ namespace vl
 					}
 				}
 
-				void AstVisitor::CopyFields(WorkflowModuleUsingNameFragment* from, WorkflowModuleUsingNameFragment* to)
+				void AstVisitor::CopyFields(WfModuleUsingNameFragment* from, WfModuleUsingNameFragment* to)
 				{
-					CopyFields(static_cast<WorkflowModuleUsingFragment*>(from), static_cast<WorkflowModuleUsingFragment*>(to));
+					CopyFields(static_cast<WfModuleUsingFragment*>(from), static_cast<WfModuleUsingFragment*>(to));
 					to->name = from->name;
 				}
 
-				void AstVisitor::CopyFields(WorkflowModuleUsingPath* from, WorkflowModuleUsingPath* to)
+				void AstVisitor::CopyFields(WfModuleUsingPath* from, WfModuleUsingPath* to)
 				{
 					for (auto&& listItem : from->items)
 					{
@@ -463,23 +463,23 @@ namespace vl
 					}
 				}
 
-				void AstVisitor::CopyFields(WorkflowModuleUsingWildCardFragment* from, WorkflowModuleUsingWildCardFragment* to)
+				void AstVisitor::CopyFields(WfModuleUsingWildCardFragment* from, WfModuleUsingWildCardFragment* to)
 				{
-					CopyFields(static_cast<WorkflowModuleUsingFragment*>(from), static_cast<WorkflowModuleUsingFragment*>(to));
+					CopyFields(static_cast<WfModuleUsingFragment*>(from), static_cast<WfModuleUsingFragment*>(to));
 				}
 
-				void AstVisitor::CopyFields(WorkflowNamespaceDeclaration* from, WorkflowNamespaceDeclaration* to)
+				void AstVisitor::CopyFields(WfNamespaceDeclaration* from, WfNamespaceDeclaration* to)
 				{
-					CopyFields(static_cast<WorkflowDeclaration*>(from), static_cast<WorkflowDeclaration*>(to));
+					CopyFields(static_cast<WfDeclaration*>(from), static_cast<WfDeclaration*>(to));
 					for (auto&& listItem : from->declarations)
 					{
 						to->declarations.Add(CopyNode(listItem.Obj()));
 					}
 				}
 
-				void AstVisitor::CopyFields(WorkflowNewClassExpression* from, WorkflowNewClassExpression* to)
+				void AstVisitor::CopyFields(WfNewClassExpression* from, WfNewClassExpression* to)
 				{
-					CopyFields(static_cast<WorkflowExpression*>(from), static_cast<WorkflowExpression*>(to));
+					CopyFields(static_cast<WfExpression*>(from), static_cast<WfExpression*>(to));
 					for (auto&& listItem : from->arguments)
 					{
 						to->arguments.Add(CopyNode(listItem.Obj()));
@@ -487,16 +487,16 @@ namespace vl
 					to->type = CopyNode(from->type.Obj());
 				}
 
-				void AstVisitor::CopyFields(WorkflowNewCoroutineExpression* from, WorkflowNewCoroutineExpression* to)
+				void AstVisitor::CopyFields(WfNewCoroutineExpression* from, WfNewCoroutineExpression* to)
 				{
-					CopyFields(static_cast<WorkflowVirtualCseExpression*>(from), static_cast<WorkflowVirtualCseExpression*>(to));
+					CopyFields(static_cast<WfVirtualCseExpression*>(from), static_cast<WfVirtualCseExpression*>(to));
 					to->name = from->name;
 					to->statement = CopyNode(from->statement.Obj());
 				}
 
-				void AstVisitor::CopyFields(WorkflowNewInterfaceExpression* from, WorkflowNewInterfaceExpression* to)
+				void AstVisitor::CopyFields(WfNewInterfaceExpression* from, WfNewInterfaceExpression* to)
 				{
-					CopyFields(static_cast<WorkflowExpression*>(from), static_cast<WorkflowExpression*>(to));
+					CopyFields(static_cast<WfExpression*>(from), static_cast<WfExpression*>(to));
 					for (auto&& listItem : from->declarations)
 					{
 						to->declarations.Add(CopyNode(listItem.Obj()));
@@ -504,21 +504,21 @@ namespace vl
 					to->type = CopyNode(from->type.Obj());
 				}
 
-				void AstVisitor::CopyFields(WorkflowNullableType* from, WorkflowNullableType* to)
+				void AstVisitor::CopyFields(WfNullableType* from, WfNullableType* to)
 				{
-					CopyFields(static_cast<WorkflowType*>(from), static_cast<WorkflowType*>(to));
+					CopyFields(static_cast<WfType*>(from), static_cast<WfType*>(to));
 					to->element = CopyNode(from->element.Obj());
 				}
 
-				void AstVisitor::CopyFields(WorkflowObservableListType* from, WorkflowObservableListType* to)
+				void AstVisitor::CopyFields(WfObservableListType* from, WfObservableListType* to)
 				{
-					CopyFields(static_cast<WorkflowType*>(from), static_cast<WorkflowType*>(to));
+					CopyFields(static_cast<WfType*>(from), static_cast<WfType*>(to));
 					to->element = CopyNode(from->element.Obj());
 				}
 
-				void AstVisitor::CopyFields(WorkflowObserveExpression* from, WorkflowObserveExpression* to)
+				void AstVisitor::CopyFields(WfObserveExpression* from, WfObserveExpression* to)
 				{
-					CopyFields(static_cast<WorkflowExpression*>(from), static_cast<WorkflowExpression*>(to));
+					CopyFields(static_cast<WfExpression*>(from), static_cast<WfExpression*>(to));
 					for (auto&& listItem : from->events)
 					{
 						to->events.Add(CopyNode(listItem.Obj()));
@@ -529,87 +529,87 @@ namespace vl
 					to->parent = CopyNode(from->parent.Obj());
 				}
 
-				void AstVisitor::CopyFields(WorkflowOrderedLambdaExpression* from, WorkflowOrderedLambdaExpression* to)
+				void AstVisitor::CopyFields(WfOrderedLambdaExpression* from, WfOrderedLambdaExpression* to)
 				{
-					CopyFields(static_cast<WorkflowExpression*>(from), static_cast<WorkflowExpression*>(to));
+					CopyFields(static_cast<WfExpression*>(from), static_cast<WfExpression*>(to));
 					to->body = CopyNode(from->body.Obj());
 				}
 
-				void AstVisitor::CopyFields(WorkflowOrderedNameExpression* from, WorkflowOrderedNameExpression* to)
+				void AstVisitor::CopyFields(WfOrderedNameExpression* from, WfOrderedNameExpression* to)
 				{
-					CopyFields(static_cast<WorkflowExpression*>(from), static_cast<WorkflowExpression*>(to));
+					CopyFields(static_cast<WfExpression*>(from), static_cast<WfExpression*>(to));
 					to->name = from->name;
 				}
 
-				void AstVisitor::CopyFields(WorkflowPredefinedType* from, WorkflowPredefinedType* to)
+				void AstVisitor::CopyFields(WfPredefinedType* from, WfPredefinedType* to)
 				{
-					CopyFields(static_cast<WorkflowType*>(from), static_cast<WorkflowType*>(to));
+					CopyFields(static_cast<WfType*>(from), static_cast<WfType*>(to));
 					to->name = from->name;
 				}
 
-				void AstVisitor::CopyFields(WorkflowPropertyDeclaration* from, WorkflowPropertyDeclaration* to)
+				void AstVisitor::CopyFields(WfPropertyDeclaration* from, WfPropertyDeclaration* to)
 				{
-					CopyFields(static_cast<WorkflowDeclaration*>(from), static_cast<WorkflowDeclaration*>(to));
+					CopyFields(static_cast<WfDeclaration*>(from), static_cast<WfDeclaration*>(to));
 					to->getter = from->getter;
 					to->setter = from->setter;
 					to->type = CopyNode(from->type.Obj());
 					to->valueChangedEvent = from->valueChangedEvent;
 				}
 
-				void AstVisitor::CopyFields(WorkflowRaiseExceptionStatement* from, WorkflowRaiseExceptionStatement* to)
+				void AstVisitor::CopyFields(WfRaiseExceptionStatement* from, WfRaiseExceptionStatement* to)
 				{
-					CopyFields(static_cast<WorkflowStatement*>(from), static_cast<WorkflowStatement*>(to));
+					CopyFields(static_cast<WfStatement*>(from), static_cast<WfStatement*>(to));
 					to->expression = CopyNode(from->expression.Obj());
 				}
 
-				void AstVisitor::CopyFields(WorkflowRangeExpression* from, WorkflowRangeExpression* to)
+				void AstVisitor::CopyFields(WfRangeExpression* from, WfRangeExpression* to)
 				{
-					CopyFields(static_cast<WorkflowExpression*>(from), static_cast<WorkflowExpression*>(to));
+					CopyFields(static_cast<WfExpression*>(from), static_cast<WfExpression*>(to));
 					to->begin = CopyNode(from->begin.Obj());
 					to->beginBoundary = from->beginBoundary;
 					to->end = CopyNode(from->end.Obj());
 					to->endBoundary = from->endBoundary;
 				}
 
-				void AstVisitor::CopyFields(WorkflowRawPointerType* from, WorkflowRawPointerType* to)
+				void AstVisitor::CopyFields(WfRawPointerType* from, WfRawPointerType* to)
 				{
-					CopyFields(static_cast<WorkflowType*>(from), static_cast<WorkflowType*>(to));
+					CopyFields(static_cast<WfType*>(from), static_cast<WfType*>(to));
 					to->element = CopyNode(from->element.Obj());
 				}
 
-				void AstVisitor::CopyFields(WorkflowReferenceExpression* from, WorkflowReferenceExpression* to)
+				void AstVisitor::CopyFields(WfReferenceExpression* from, WfReferenceExpression* to)
 				{
-					CopyFields(static_cast<WorkflowExpression*>(from), static_cast<WorkflowExpression*>(to));
+					CopyFields(static_cast<WfExpression*>(from), static_cast<WfExpression*>(to));
 					to->name = from->name;
 				}
 
-				void AstVisitor::CopyFields(WorkflowReferenceType* from, WorkflowReferenceType* to)
+				void AstVisitor::CopyFields(WfReferenceType* from, WfReferenceType* to)
 				{
-					CopyFields(static_cast<WorkflowType*>(from), static_cast<WorkflowType*>(to));
+					CopyFields(static_cast<WfType*>(from), static_cast<WfType*>(to));
 					to->name = from->name;
 				}
 
-				void AstVisitor::CopyFields(WorkflowReturnStatement* from, WorkflowReturnStatement* to)
+				void AstVisitor::CopyFields(WfReturnStatement* from, WfReturnStatement* to)
 				{
-					CopyFields(static_cast<WorkflowStatement*>(from), static_cast<WorkflowStatement*>(to));
+					CopyFields(static_cast<WfStatement*>(from), static_cast<WfStatement*>(to));
 					to->expression = CopyNode(from->expression.Obj());
 				}
 
-				void AstVisitor::CopyFields(WorkflowSetTestingExpression* from, WorkflowSetTestingExpression* to)
+				void AstVisitor::CopyFields(WfSetTestingExpression* from, WfSetTestingExpression* to)
 				{
-					CopyFields(static_cast<WorkflowExpression*>(from), static_cast<WorkflowExpression*>(to));
+					CopyFields(static_cast<WfExpression*>(from), static_cast<WfExpression*>(to));
 					to->collection = CopyNode(from->collection.Obj());
 					to->element = CopyNode(from->element.Obj());
 					to->test = from->test;
 				}
 
-				void AstVisitor::CopyFields(WorkflowSharedPointerType* from, WorkflowSharedPointerType* to)
+				void AstVisitor::CopyFields(WfSharedPointerType* from, WfSharedPointerType* to)
 				{
-					CopyFields(static_cast<WorkflowType*>(from), static_cast<WorkflowType*>(to));
+					CopyFields(static_cast<WfType*>(from), static_cast<WfType*>(to));
 					to->element = CopyNode(from->element.Obj());
 				}
 
-				void AstVisitor::CopyFields(WorkflowStateDeclaration* from, WorkflowStateDeclaration* to)
+				void AstVisitor::CopyFields(WfStateDeclaration* from, WfStateDeclaration* to)
 				{
 					for (auto&& listItem : from->arguments)
 					{
@@ -619,7 +619,7 @@ namespace vl
 					to->statement = CopyNode(from->statement.Obj());
 				}
 
-				void AstVisitor::CopyFields(WorkflowStateInput* from, WorkflowStateInput* to)
+				void AstVisitor::CopyFields(WfStateInput* from, WfStateInput* to)
 				{
 					for (auto&& listItem : from->arguments)
 					{
@@ -628,9 +628,9 @@ namespace vl
 					to->name = from->name;
 				}
 
-				void AstVisitor::CopyFields(WorkflowStateInvokeStatement* from, WorkflowStateInvokeStatement* to)
+				void AstVisitor::CopyFields(WfStateInvokeStatement* from, WfStateInvokeStatement* to)
 				{
-					CopyFields(static_cast<WorkflowStateMachineStatement*>(from), static_cast<WorkflowStateMachineStatement*>(to));
+					CopyFields(static_cast<WfStateMachineStatement*>(from), static_cast<WfStateMachineStatement*>(to));
 					for (auto&& listItem : from->arguments)
 					{
 						to->arguments.Add(CopyNode(listItem.Obj()));
@@ -639,9 +639,9 @@ namespace vl
 					to->type = from->type;
 				}
 
-				void AstVisitor::CopyFields(WorkflowStateMachineDeclaration* from, WorkflowStateMachineDeclaration* to)
+				void AstVisitor::CopyFields(WfStateMachineDeclaration* from, WfStateMachineDeclaration* to)
 				{
-					CopyFields(static_cast<WorkflowVirtualCseDeclaration*>(from), static_cast<WorkflowVirtualCseDeclaration*>(to));
+					CopyFields(static_cast<WfVirtualCseDeclaration*>(from), static_cast<WfVirtualCseDeclaration*>(to));
 					for (auto&& listItem : from->inputs)
 					{
 						to->inputs.Add(CopyNode(listItem.Obj()));
@@ -652,17 +652,17 @@ namespace vl
 					}
 				}
 
-				void AstVisitor::CopyFields(WorkflowStateMachineStatement* from, WorkflowStateMachineStatement* to)
+				void AstVisitor::CopyFields(WfStateMachineStatement* from, WfStateMachineStatement* to)
 				{
-					CopyFields(static_cast<WorkflowStatement*>(from), static_cast<WorkflowStatement*>(to));
+					CopyFields(static_cast<WfStatement*>(from), static_cast<WfStatement*>(to));
 				}
 
-				void AstVisitor::CopyFields(WorkflowStateSwitchArgument* from, WorkflowStateSwitchArgument* to)
+				void AstVisitor::CopyFields(WfStateSwitchArgument* from, WfStateSwitchArgument* to)
 				{
 					to->name = from->name;
 				}
 
-				void AstVisitor::CopyFields(WorkflowStateSwitchCase* from, WorkflowStateSwitchCase* to)
+				void AstVisitor::CopyFields(WfStateSwitchCase* from, WfStateSwitchCase* to)
 				{
 					for (auto&& listItem : from->arguments)
 					{
@@ -672,9 +672,9 @@ namespace vl
 					to->statement = CopyNode(from->statement.Obj());
 				}
 
-				void AstVisitor::CopyFields(WorkflowStateSwitchStatement* from, WorkflowStateSwitchStatement* to)
+				void AstVisitor::CopyFields(WfStateSwitchStatement* from, WfStateSwitchStatement* to)
 				{
-					CopyFields(static_cast<WorkflowStateMachineStatement*>(from), static_cast<WorkflowStateMachineStatement*>(to));
+					CopyFields(static_cast<WfStateMachineStatement*>(from), static_cast<WfStateMachineStatement*>(to));
 					for (auto&& listItem : from->caseBranches)
 					{
 						to->caseBranches.Add(CopyNode(listItem.Obj()));
@@ -682,26 +682,26 @@ namespace vl
 					to->type = from->type;
 				}
 
-				void AstVisitor::CopyFields(WorkflowStatement* from, WorkflowStatement* to)
+				void AstVisitor::CopyFields(WfStatement* from, WfStatement* to)
 				{
 				}
 
-				void AstVisitor::CopyFields(WorkflowStringExpression* from, WorkflowStringExpression* to)
+				void AstVisitor::CopyFields(WfStringExpression* from, WfStringExpression* to)
 				{
-					CopyFields(static_cast<WorkflowExpression*>(from), static_cast<WorkflowExpression*>(to));
+					CopyFields(static_cast<WfExpression*>(from), static_cast<WfExpression*>(to));
 					to->value = from->value;
 				}
 
-				void AstVisitor::CopyFields(WorkflowStructDeclaration* from, WorkflowStructDeclaration* to)
+				void AstVisitor::CopyFields(WfStructDeclaration* from, WfStructDeclaration* to)
 				{
-					CopyFields(static_cast<WorkflowDeclaration*>(from), static_cast<WorkflowDeclaration*>(to));
+					CopyFields(static_cast<WfDeclaration*>(from), static_cast<WfDeclaration*>(to));
 					for (auto&& listItem : from->members)
 					{
 						to->members.Add(CopyNode(listItem.Obj()));
 					}
 				}
 
-				void AstVisitor::CopyFields(WorkflowStructMember* from, WorkflowStructMember* to)
+				void AstVisitor::CopyFields(WfStructMember* from, WfStructMember* to)
 				{
 					for (auto&& listItem : from->attributes)
 					{
@@ -711,15 +711,15 @@ namespace vl
 					to->type = CopyNode(from->type.Obj());
 				}
 
-				void AstVisitor::CopyFields(WorkflowSwitchCase* from, WorkflowSwitchCase* to)
+				void AstVisitor::CopyFields(WfSwitchCase* from, WfSwitchCase* to)
 				{
 					to->expression = CopyNode(from->expression.Obj());
 					to->statement = CopyNode(from->statement.Obj());
 				}
 
-				void AstVisitor::CopyFields(WorkflowSwitchStatement* from, WorkflowSwitchStatement* to)
+				void AstVisitor::CopyFields(WfSwitchStatement* from, WfSwitchStatement* to)
 				{
-					CopyFields(static_cast<WorkflowVirtualCseStatement*>(from), static_cast<WorkflowVirtualCseStatement*>(to));
+					CopyFields(static_cast<WfVirtualCseStatement*>(from), static_cast<WfVirtualCseStatement*>(to));
 					for (auto&& listItem : from->caseBranches)
 					{
 						to->caseBranches.Add(CopyNode(listItem.Obj()));
@@ -728,1514 +728,1514 @@ namespace vl
 					to->expression = CopyNode(from->expression.Obj());
 				}
 
-				void AstVisitor::CopyFields(WorkflowThisExpression* from, WorkflowThisExpression* to)
+				void AstVisitor::CopyFields(WfThisExpression* from, WfThisExpression* to)
 				{
-					CopyFields(static_cast<WorkflowExpression*>(from), static_cast<WorkflowExpression*>(to));
+					CopyFields(static_cast<WfExpression*>(from), static_cast<WfExpression*>(to));
 				}
 
-				void AstVisitor::CopyFields(WorkflowTopQualifiedExpression* from, WorkflowTopQualifiedExpression* to)
+				void AstVisitor::CopyFields(WfTopQualifiedExpression* from, WfTopQualifiedExpression* to)
 				{
-					CopyFields(static_cast<WorkflowExpression*>(from), static_cast<WorkflowExpression*>(to));
+					CopyFields(static_cast<WfExpression*>(from), static_cast<WfExpression*>(to));
 					to->name = from->name;
 				}
 
-				void AstVisitor::CopyFields(WorkflowTopQualifiedType* from, WorkflowTopQualifiedType* to)
+				void AstVisitor::CopyFields(WfTopQualifiedType* from, WfTopQualifiedType* to)
 				{
-					CopyFields(static_cast<WorkflowType*>(from), static_cast<WorkflowType*>(to));
+					CopyFields(static_cast<WfType*>(from), static_cast<WfType*>(to));
 					to->name = from->name;
 				}
 
-				void AstVisitor::CopyFields(WorkflowTryStatement* from, WorkflowTryStatement* to)
+				void AstVisitor::CopyFields(WfTryStatement* from, WfTryStatement* to)
 				{
-					CopyFields(static_cast<WorkflowStatement*>(from), static_cast<WorkflowStatement*>(to));
+					CopyFields(static_cast<WfStatement*>(from), static_cast<WfStatement*>(to));
 					to->catchStatement = CopyNode(from->catchStatement.Obj());
 					to->finallyStatement = CopyNode(from->finallyStatement.Obj());
 					to->name = from->name;
 					to->protectedStatement = CopyNode(from->protectedStatement.Obj());
 				}
 
-				void AstVisitor::CopyFields(WorkflowType* from, WorkflowType* to)
+				void AstVisitor::CopyFields(WfType* from, WfType* to)
 				{
 				}
 
-				void AstVisitor::CopyFields(WorkflowTypeCastingExpression* from, WorkflowTypeCastingExpression* to)
+				void AstVisitor::CopyFields(WfTypeCastingExpression* from, WfTypeCastingExpression* to)
 				{
-					CopyFields(static_cast<WorkflowExpression*>(from), static_cast<WorkflowExpression*>(to));
+					CopyFields(static_cast<WfExpression*>(from), static_cast<WfExpression*>(to));
 					to->expression = CopyNode(from->expression.Obj());
 					to->strategy = from->strategy;
 					to->type = CopyNode(from->type.Obj());
 				}
 
-				void AstVisitor::CopyFields(WorkflowTypeOfExpressionExpression* from, WorkflowTypeOfExpressionExpression* to)
+				void AstVisitor::CopyFields(WfTypeOfExpressionExpression* from, WfTypeOfExpressionExpression* to)
 				{
-					CopyFields(static_cast<WorkflowExpression*>(from), static_cast<WorkflowExpression*>(to));
+					CopyFields(static_cast<WfExpression*>(from), static_cast<WfExpression*>(to));
 					to->expression = CopyNode(from->expression.Obj());
 				}
 
-				void AstVisitor::CopyFields(WorkflowTypeOfTypeExpression* from, WorkflowTypeOfTypeExpression* to)
+				void AstVisitor::CopyFields(WfTypeOfTypeExpression* from, WfTypeOfTypeExpression* to)
 				{
-					CopyFields(static_cast<WorkflowExpression*>(from), static_cast<WorkflowExpression*>(to));
+					CopyFields(static_cast<WfExpression*>(from), static_cast<WfExpression*>(to));
 					to->type = CopyNode(from->type.Obj());
 				}
 
-				void AstVisitor::CopyFields(WorkflowTypeTestingExpression* from, WorkflowTypeTestingExpression* to)
+				void AstVisitor::CopyFields(WfTypeTestingExpression* from, WfTypeTestingExpression* to)
 				{
-					CopyFields(static_cast<WorkflowExpression*>(from), static_cast<WorkflowExpression*>(to));
+					CopyFields(static_cast<WfExpression*>(from), static_cast<WfExpression*>(to));
 					to->expression = CopyNode(from->expression.Obj());
 					to->test = from->test;
 					to->type = CopyNode(from->type.Obj());
 				}
 
-				void AstVisitor::CopyFields(WorkflowUnaryExpression* from, WorkflowUnaryExpression* to)
+				void AstVisitor::CopyFields(WfUnaryExpression* from, WfUnaryExpression* to)
 				{
-					CopyFields(static_cast<WorkflowExpression*>(from), static_cast<WorkflowExpression*>(to));
+					CopyFields(static_cast<WfExpression*>(from), static_cast<WfExpression*>(to));
 					to->op = from->op;
 					to->operand = CopyNode(from->operand.Obj());
 				}
 
-				void AstVisitor::CopyFields(WorkflowVariableDeclaration* from, WorkflowVariableDeclaration* to)
+				void AstVisitor::CopyFields(WfVariableDeclaration* from, WfVariableDeclaration* to)
 				{
-					CopyFields(static_cast<WorkflowDeclaration*>(from), static_cast<WorkflowDeclaration*>(to));
+					CopyFields(static_cast<WfDeclaration*>(from), static_cast<WfDeclaration*>(to));
 					to->expression = CopyNode(from->expression.Obj());
 					to->type = CopyNode(from->type.Obj());
 				}
 
-				void AstVisitor::CopyFields(WorkflowVariableStatement* from, WorkflowVariableStatement* to)
+				void AstVisitor::CopyFields(WfVariableStatement* from, WfVariableStatement* to)
 				{
-					CopyFields(static_cast<WorkflowStatement*>(from), static_cast<WorkflowStatement*>(to));
+					CopyFields(static_cast<WfStatement*>(from), static_cast<WfStatement*>(to));
 					to->variable = CopyNode(from->variable.Obj());
 				}
 
-				void AstVisitor::CopyFields(WorkflowVirtualCfeDeclaration* from, WorkflowVirtualCfeDeclaration* to)
+				void AstVisitor::CopyFields(WfVirtualCfeDeclaration* from, WfVirtualCfeDeclaration* to)
 				{
-					CopyFields(static_cast<WorkflowDeclaration*>(from), static_cast<WorkflowDeclaration*>(to));
+					CopyFields(static_cast<WfDeclaration*>(from), static_cast<WfDeclaration*>(to));
 					for (auto&& listItem : from->expandedDeclarations)
 					{
 						to->expandedDeclarations.Add(CopyNode(listItem.Obj()));
 					}
 				}
 
-				void AstVisitor::CopyFields(WorkflowVirtualCfeExpression* from, WorkflowVirtualCfeExpression* to)
+				void AstVisitor::CopyFields(WfVirtualCfeExpression* from, WfVirtualCfeExpression* to)
 				{
-					CopyFields(static_cast<WorkflowExpression*>(from), static_cast<WorkflowExpression*>(to));
+					CopyFields(static_cast<WfExpression*>(from), static_cast<WfExpression*>(to));
 					to->expandedExpression = CopyNode(from->expandedExpression.Obj());
 				}
 
-				void AstVisitor::CopyFields(WorkflowVirtualCseDeclaration* from, WorkflowVirtualCseDeclaration* to)
+				void AstVisitor::CopyFields(WfVirtualCseDeclaration* from, WfVirtualCseDeclaration* to)
 				{
-					CopyFields(static_cast<WorkflowDeclaration*>(from), static_cast<WorkflowDeclaration*>(to));
+					CopyFields(static_cast<WfDeclaration*>(from), static_cast<WfDeclaration*>(to));
 					for (auto&& listItem : from->expandedDeclarations)
 					{
 						to->expandedDeclarations.Add(CopyNode(listItem.Obj()));
 					}
 				}
 
-				void AstVisitor::CopyFields(WorkflowVirtualCseExpression* from, WorkflowVirtualCseExpression* to)
+				void AstVisitor::CopyFields(WfVirtualCseExpression* from, WfVirtualCseExpression* to)
 				{
-					CopyFields(static_cast<WorkflowExpression*>(from), static_cast<WorkflowExpression*>(to));
+					CopyFields(static_cast<WfExpression*>(from), static_cast<WfExpression*>(to));
 					to->expandedExpression = CopyNode(from->expandedExpression.Obj());
 				}
 
-				void AstVisitor::CopyFields(WorkflowVirtualCseStatement* from, WorkflowVirtualCseStatement* to)
+				void AstVisitor::CopyFields(WfVirtualCseStatement* from, WfVirtualCseStatement* to)
 				{
-					CopyFields(static_cast<WorkflowStatement*>(from), static_cast<WorkflowStatement*>(to));
+					CopyFields(static_cast<WfStatement*>(from), static_cast<WfStatement*>(to));
 					to->expandedStatement = CopyNode(from->expandedStatement.Obj());
 				}
 
-				void AstVisitor::CopyFields(WorkflowWhileStatement* from, WorkflowWhileStatement* to)
+				void AstVisitor::CopyFields(WfWhileStatement* from, WfWhileStatement* to)
 				{
-					CopyFields(static_cast<WorkflowStatement*>(from), static_cast<WorkflowStatement*>(to));
+					CopyFields(static_cast<WfStatement*>(from), static_cast<WfStatement*>(to));
 					to->condition = CopyNode(from->condition.Obj());
 					to->statement = CopyNode(from->statement.Obj());
 				}
 
-				void AstVisitor::Visit(WorkflowAttribute* node)
+				void AstVisitor::Visit(WfAttribute* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowAttribute>();
+					auto newNode = vl::MakePtr<WfAttribute>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowFunctionArgument* node)
+				void AstVisitor::Visit(WfFunctionArgument* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowFunctionArgument>();
+					auto newNode = vl::MakePtr<WfFunctionArgument>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowBaseConstructorCall* node)
+				void AstVisitor::Visit(WfBaseConstructorCall* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowBaseConstructorCall>();
+					auto newNode = vl::MakePtr<WfBaseConstructorCall>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowEnumItemIntersection* node)
+				void AstVisitor::Visit(WfEnumItemIntersection* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowEnumItemIntersection>();
+					auto newNode = vl::MakePtr<WfEnumItemIntersection>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowEnumItem* node)
+				void AstVisitor::Visit(WfEnumItem* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowEnumItem>();
+					auto newNode = vl::MakePtr<WfEnumItem>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowStructMember* node)
+				void AstVisitor::Visit(WfStructMember* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowStructMember>();
+					auto newNode = vl::MakePtr<WfStructMember>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowStateInput* node)
+				void AstVisitor::Visit(WfStateInput* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowStateInput>();
+					auto newNode = vl::MakePtr<WfStateInput>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowStateDeclaration* node)
+				void AstVisitor::Visit(WfStateDeclaration* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowStateDeclaration>();
+					auto newNode = vl::MakePtr<WfStateDeclaration>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowSwitchCase* node)
+				void AstVisitor::Visit(WfSwitchCase* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowSwitchCase>();
+					auto newNode = vl::MakePtr<WfSwitchCase>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowStateSwitchArgument* node)
+				void AstVisitor::Visit(WfStateSwitchArgument* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowStateSwitchArgument>();
+					auto newNode = vl::MakePtr<WfStateSwitchArgument>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowStateSwitchCase* node)
+				void AstVisitor::Visit(WfStateSwitchCase* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowStateSwitchCase>();
+					auto newNode = vl::MakePtr<WfStateSwitchCase>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowLetVariable* node)
+				void AstVisitor::Visit(WfLetVariable* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowLetVariable>();
+					auto newNode = vl::MakePtr<WfLetVariable>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowConstructorArgument* node)
+				void AstVisitor::Visit(WfConstructorArgument* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowConstructorArgument>();
+					auto newNode = vl::MakePtr<WfConstructorArgument>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowModuleUsingItem* node)
+				void AstVisitor::Visit(WfModuleUsingItem* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowModuleUsingItem>();
+					auto newNode = vl::MakePtr<WfModuleUsingItem>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowModuleUsingPath* node)
+				void AstVisitor::Visit(WfModuleUsingPath* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowModuleUsingPath>();
+					auto newNode = vl::MakePtr<WfModuleUsingPath>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowModule* node)
+				void AstVisitor::Visit(WfModule* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowModule>();
+					auto newNode = vl::MakePtr<WfModule>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowPredefinedType* node)
+				void AstVisitor::Visit(WfPredefinedType* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowPredefinedType>();
+					auto newNode = vl::MakePtr<WfPredefinedType>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowTopQualifiedType* node)
+				void AstVisitor::Visit(WfTopQualifiedType* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowTopQualifiedType>();
+					auto newNode = vl::MakePtr<WfTopQualifiedType>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowReferenceType* node)
+				void AstVisitor::Visit(WfReferenceType* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowReferenceType>();
+					auto newNode = vl::MakePtr<WfReferenceType>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowRawPointerType* node)
+				void AstVisitor::Visit(WfRawPointerType* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowRawPointerType>();
+					auto newNode = vl::MakePtr<WfRawPointerType>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowSharedPointerType* node)
+				void AstVisitor::Visit(WfSharedPointerType* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowSharedPointerType>();
+					auto newNode = vl::MakePtr<WfSharedPointerType>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowNullableType* node)
+				void AstVisitor::Visit(WfNullableType* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowNullableType>();
+					auto newNode = vl::MakePtr<WfNullableType>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowEnumerableType* node)
+				void AstVisitor::Visit(WfEnumerableType* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowEnumerableType>();
+					auto newNode = vl::MakePtr<WfEnumerableType>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowMapType* node)
+				void AstVisitor::Visit(WfMapType* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowMapType>();
+					auto newNode = vl::MakePtr<WfMapType>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowObservableListType* node)
+				void AstVisitor::Visit(WfObservableListType* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowObservableListType>();
+					auto newNode = vl::MakePtr<WfObservableListType>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowFunctionType* node)
+				void AstVisitor::Visit(WfFunctionType* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowFunctionType>();
+					auto newNode = vl::MakePtr<WfFunctionType>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowChildType* node)
+				void AstVisitor::Visit(WfChildType* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowChildType>();
+					auto newNode = vl::MakePtr<WfChildType>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowThisExpression* node)
+				void AstVisitor::Visit(WfThisExpression* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowThisExpression>();
+					auto newNode = vl::MakePtr<WfThisExpression>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowTopQualifiedExpression* node)
+				void AstVisitor::Visit(WfTopQualifiedExpression* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowTopQualifiedExpression>();
+					auto newNode = vl::MakePtr<WfTopQualifiedExpression>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowReferenceExpression* node)
+				void AstVisitor::Visit(WfReferenceExpression* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowReferenceExpression>();
+					auto newNode = vl::MakePtr<WfReferenceExpression>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowOrderedNameExpression* node)
+				void AstVisitor::Visit(WfOrderedNameExpression* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowOrderedNameExpression>();
+					auto newNode = vl::MakePtr<WfOrderedNameExpression>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowOrderedLambdaExpression* node)
+				void AstVisitor::Visit(WfOrderedLambdaExpression* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowOrderedLambdaExpression>();
+					auto newNode = vl::MakePtr<WfOrderedLambdaExpression>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowMemberExpression* node)
+				void AstVisitor::Visit(WfMemberExpression* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowMemberExpression>();
+					auto newNode = vl::MakePtr<WfMemberExpression>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowChildExpression* node)
+				void AstVisitor::Visit(WfChildExpression* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowChildExpression>();
+					auto newNode = vl::MakePtr<WfChildExpression>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowLiteralExpression* node)
+				void AstVisitor::Visit(WfLiteralExpression* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowLiteralExpression>();
+					auto newNode = vl::MakePtr<WfLiteralExpression>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowFloatingExpression* node)
+				void AstVisitor::Visit(WfFloatingExpression* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowFloatingExpression>();
+					auto newNode = vl::MakePtr<WfFloatingExpression>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowIntegerExpression* node)
+				void AstVisitor::Visit(WfIntegerExpression* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowIntegerExpression>();
+					auto newNode = vl::MakePtr<WfIntegerExpression>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowStringExpression* node)
+				void AstVisitor::Visit(WfStringExpression* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowStringExpression>();
+					auto newNode = vl::MakePtr<WfStringExpression>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowUnaryExpression* node)
+				void AstVisitor::Visit(WfUnaryExpression* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowUnaryExpression>();
+					auto newNode = vl::MakePtr<WfUnaryExpression>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowBinaryExpression* node)
+				void AstVisitor::Visit(WfBinaryExpression* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowBinaryExpression>();
+					auto newNode = vl::MakePtr<WfBinaryExpression>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowLetExpression* node)
+				void AstVisitor::Visit(WfLetExpression* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowLetExpression>();
+					auto newNode = vl::MakePtr<WfLetExpression>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowIfExpression* node)
+				void AstVisitor::Visit(WfIfExpression* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowIfExpression>();
+					auto newNode = vl::MakePtr<WfIfExpression>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowRangeExpression* node)
+				void AstVisitor::Visit(WfRangeExpression* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowRangeExpression>();
+					auto newNode = vl::MakePtr<WfRangeExpression>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowSetTestingExpression* node)
+				void AstVisitor::Visit(WfSetTestingExpression* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowSetTestingExpression>();
+					auto newNode = vl::MakePtr<WfSetTestingExpression>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowConstructorExpression* node)
+				void AstVisitor::Visit(WfConstructorExpression* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowConstructorExpression>();
+					auto newNode = vl::MakePtr<WfConstructorExpression>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowInferExpression* node)
+				void AstVisitor::Visit(WfInferExpression* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowInferExpression>();
+					auto newNode = vl::MakePtr<WfInferExpression>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowTypeCastingExpression* node)
+				void AstVisitor::Visit(WfTypeCastingExpression* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowTypeCastingExpression>();
+					auto newNode = vl::MakePtr<WfTypeCastingExpression>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowTypeTestingExpression* node)
+				void AstVisitor::Visit(WfTypeTestingExpression* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowTypeTestingExpression>();
+					auto newNode = vl::MakePtr<WfTypeTestingExpression>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowTypeOfTypeExpression* node)
+				void AstVisitor::Visit(WfTypeOfTypeExpression* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowTypeOfTypeExpression>();
+					auto newNode = vl::MakePtr<WfTypeOfTypeExpression>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowTypeOfExpressionExpression* node)
+				void AstVisitor::Visit(WfTypeOfExpressionExpression* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowTypeOfExpressionExpression>();
+					auto newNode = vl::MakePtr<WfTypeOfExpressionExpression>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowAttachEventExpression* node)
+				void AstVisitor::Visit(WfAttachEventExpression* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowAttachEventExpression>();
+					auto newNode = vl::MakePtr<WfAttachEventExpression>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowDetachEventExpression* node)
+				void AstVisitor::Visit(WfDetachEventExpression* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowDetachEventExpression>();
+					auto newNode = vl::MakePtr<WfDetachEventExpression>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowObserveExpression* node)
+				void AstVisitor::Visit(WfObserveExpression* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowObserveExpression>();
+					auto newNode = vl::MakePtr<WfObserveExpression>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowCallExpression* node)
+				void AstVisitor::Visit(WfCallExpression* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowCallExpression>();
+					auto newNode = vl::MakePtr<WfCallExpression>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowFunctionExpression* node)
+				void AstVisitor::Visit(WfFunctionExpression* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowFunctionExpression>();
+					auto newNode = vl::MakePtr<WfFunctionExpression>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowNewClassExpression* node)
+				void AstVisitor::Visit(WfNewClassExpression* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowNewClassExpression>();
+					auto newNode = vl::MakePtr<WfNewClassExpression>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowNewInterfaceExpression* node)
+				void AstVisitor::Visit(WfNewInterfaceExpression* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowNewInterfaceExpression>();
+					auto newNode = vl::MakePtr<WfNewInterfaceExpression>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowVirtualCfeExpression* node)
+				void AstVisitor::Visit(WfVirtualCfeExpression* node)
 				{
-					node->Accept(static_cast<WorkflowVirtualCfeExpression::IVisitor*>(this));
+					node->Accept(static_cast<WfVirtualCfeExpression::IVisitor*>(this));
 				}
 
-				void AstVisitor::Visit(WorkflowVirtualCseExpression* node)
+				void AstVisitor::Visit(WfVirtualCseExpression* node)
 				{
-					node->Accept(static_cast<WorkflowVirtualCseExpression::IVisitor*>(this));
+					node->Accept(static_cast<WfVirtualCseExpression::IVisitor*>(this));
 				}
 
-				void AstVisitor::Visit(WorkflowBreakStatement* node)
+				void AstVisitor::Visit(WfBreakStatement* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowBreakStatement>();
+					auto newNode = vl::MakePtr<WfBreakStatement>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowContinueStatement* node)
+				void AstVisitor::Visit(WfContinueStatement* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowContinueStatement>();
+					auto newNode = vl::MakePtr<WfContinueStatement>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowReturnStatement* node)
+				void AstVisitor::Visit(WfReturnStatement* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowReturnStatement>();
+					auto newNode = vl::MakePtr<WfReturnStatement>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowDeleteStatement* node)
+				void AstVisitor::Visit(WfDeleteStatement* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowDeleteStatement>();
+					auto newNode = vl::MakePtr<WfDeleteStatement>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowRaiseExceptionStatement* node)
+				void AstVisitor::Visit(WfRaiseExceptionStatement* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowRaiseExceptionStatement>();
+					auto newNode = vl::MakePtr<WfRaiseExceptionStatement>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowIfStatement* node)
+				void AstVisitor::Visit(WfIfStatement* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowIfStatement>();
+					auto newNode = vl::MakePtr<WfIfStatement>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowWhileStatement* node)
+				void AstVisitor::Visit(WfWhileStatement* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowWhileStatement>();
+					auto newNode = vl::MakePtr<WfWhileStatement>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowTryStatement* node)
+				void AstVisitor::Visit(WfTryStatement* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowTryStatement>();
+					auto newNode = vl::MakePtr<WfTryStatement>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowBlockStatement* node)
+				void AstVisitor::Visit(WfBlockStatement* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowBlockStatement>();
+					auto newNode = vl::MakePtr<WfBlockStatement>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowGotoStatement* node)
+				void AstVisitor::Visit(WfGotoStatement* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowGotoStatement>();
+					auto newNode = vl::MakePtr<WfGotoStatement>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowVariableStatement* node)
+				void AstVisitor::Visit(WfVariableStatement* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowVariableStatement>();
+					auto newNode = vl::MakePtr<WfVariableStatement>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowExpressionStatement* node)
+				void AstVisitor::Visit(WfExpressionStatement* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowExpressionStatement>();
+					auto newNode = vl::MakePtr<WfExpressionStatement>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowVirtualCseStatement* node)
+				void AstVisitor::Visit(WfVirtualCseStatement* node)
 				{
-					node->Accept(static_cast<WorkflowVirtualCseStatement::IVisitor*>(this));
+					node->Accept(static_cast<WfVirtualCseStatement::IVisitor*>(this));
 				}
 
-				void AstVisitor::Visit(WorkflowCoroutineStatement* node)
+				void AstVisitor::Visit(WfCoroutineStatement* node)
 				{
-					node->Accept(static_cast<WorkflowCoroutineStatement::IVisitor*>(this));
+					node->Accept(static_cast<WfCoroutineStatement::IVisitor*>(this));
 				}
 
-				void AstVisitor::Visit(WorkflowStateMachineStatement* node)
+				void AstVisitor::Visit(WfStateMachineStatement* node)
 				{
-					node->Accept(static_cast<WorkflowStateMachineStatement::IVisitor*>(this));
+					node->Accept(static_cast<WfStateMachineStatement::IVisitor*>(this));
 				}
 
-				void AstVisitor::Visit(WorkflowNamespaceDeclaration* node)
+				void AstVisitor::Visit(WfNamespaceDeclaration* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowNamespaceDeclaration>();
+					auto newNode = vl::MakePtr<WfNamespaceDeclaration>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowFunctionDeclaration* node)
+				void AstVisitor::Visit(WfFunctionDeclaration* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowFunctionDeclaration>();
+					auto newNode = vl::MakePtr<WfFunctionDeclaration>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowVariableDeclaration* node)
+				void AstVisitor::Visit(WfVariableDeclaration* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowVariableDeclaration>();
+					auto newNode = vl::MakePtr<WfVariableDeclaration>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowEventDeclaration* node)
+				void AstVisitor::Visit(WfEventDeclaration* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowEventDeclaration>();
+					auto newNode = vl::MakePtr<WfEventDeclaration>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowPropertyDeclaration* node)
+				void AstVisitor::Visit(WfPropertyDeclaration* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowPropertyDeclaration>();
+					auto newNode = vl::MakePtr<WfPropertyDeclaration>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowConstructorDeclaration* node)
+				void AstVisitor::Visit(WfConstructorDeclaration* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowConstructorDeclaration>();
+					auto newNode = vl::MakePtr<WfConstructorDeclaration>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowDestructorDeclaration* node)
+				void AstVisitor::Visit(WfDestructorDeclaration* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowDestructorDeclaration>();
+					auto newNode = vl::MakePtr<WfDestructorDeclaration>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowClassDeclaration* node)
+				void AstVisitor::Visit(WfClassDeclaration* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowClassDeclaration>();
+					auto newNode = vl::MakePtr<WfClassDeclaration>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowEnumDeclaration* node)
+				void AstVisitor::Visit(WfEnumDeclaration* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowEnumDeclaration>();
+					auto newNode = vl::MakePtr<WfEnumDeclaration>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowStructDeclaration* node)
+				void AstVisitor::Visit(WfStructDeclaration* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowStructDeclaration>();
+					auto newNode = vl::MakePtr<WfStructDeclaration>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowVirtualCfeDeclaration* node)
+				void AstVisitor::Visit(WfVirtualCfeDeclaration* node)
 				{
-					node->Accept(static_cast<WorkflowVirtualCfeDeclaration::IVisitor*>(this));
+					node->Accept(static_cast<WfVirtualCfeDeclaration::IVisitor*>(this));
 				}
 
-				void AstVisitor::Visit(WorkflowVirtualCseDeclaration* node)
+				void AstVisitor::Visit(WfVirtualCseDeclaration* node)
 				{
-					node->Accept(static_cast<WorkflowVirtualCseDeclaration::IVisitor*>(this));
+					node->Accept(static_cast<WfVirtualCseDeclaration::IVisitor*>(this));
 				}
 
-				void AstVisitor::Visit(WorkflowAutoPropertyDeclaration* node)
+				void AstVisitor::Visit(WfAutoPropertyDeclaration* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowAutoPropertyDeclaration>();
+					auto newNode = vl::MakePtr<WfAutoPropertyDeclaration>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowCastResultInterfaceDeclaration* node)
+				void AstVisitor::Visit(WfCastResultInterfaceDeclaration* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowCastResultInterfaceDeclaration>();
+					auto newNode = vl::MakePtr<WfCastResultInterfaceDeclaration>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowStateMachineDeclaration* node)
+				void AstVisitor::Visit(WfStateMachineDeclaration* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowStateMachineDeclaration>();
+					auto newNode = vl::MakePtr<WfStateMachineDeclaration>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowForEachStatement* node)
+				void AstVisitor::Visit(WfForEachStatement* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowForEachStatement>();
+					auto newNode = vl::MakePtr<WfForEachStatement>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowSwitchStatement* node)
+				void AstVisitor::Visit(WfSwitchStatement* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowSwitchStatement>();
+					auto newNode = vl::MakePtr<WfSwitchStatement>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowCoProviderStatement* node)
+				void AstVisitor::Visit(WfCoProviderStatement* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowCoProviderStatement>();
+					auto newNode = vl::MakePtr<WfCoProviderStatement>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowCoPauseStatement* node)
+				void AstVisitor::Visit(WfCoPauseStatement* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowCoPauseStatement>();
+					auto newNode = vl::MakePtr<WfCoPauseStatement>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowCoOperatorStatement* node)
+				void AstVisitor::Visit(WfCoOperatorStatement* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowCoOperatorStatement>();
+					auto newNode = vl::MakePtr<WfCoOperatorStatement>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowStateSwitchStatement* node)
+				void AstVisitor::Visit(WfStateSwitchStatement* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowStateSwitchStatement>();
+					auto newNode = vl::MakePtr<WfStateSwitchStatement>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowStateInvokeStatement* node)
+				void AstVisitor::Visit(WfStateInvokeStatement* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowStateInvokeStatement>();
+					auto newNode = vl::MakePtr<WfStateInvokeStatement>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowFormatExpression* node)
+				void AstVisitor::Visit(WfFormatExpression* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowFormatExpression>();
+					auto newNode = vl::MakePtr<WfFormatExpression>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowBindExpression* node)
+				void AstVisitor::Visit(WfBindExpression* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowBindExpression>();
+					auto newNode = vl::MakePtr<WfBindExpression>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowNewCoroutineExpression* node)
+				void AstVisitor::Visit(WfNewCoroutineExpression* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowNewCoroutineExpression>();
+					auto newNode = vl::MakePtr<WfNewCoroutineExpression>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowMixinCastExpression* node)
+				void AstVisitor::Visit(WfMixinCastExpression* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowMixinCastExpression>();
+					auto newNode = vl::MakePtr<WfMixinCastExpression>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowExpectedTypeCastExpression* node)
+				void AstVisitor::Visit(WfExpectedTypeCastExpression* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowExpectedTypeCastExpression>();
+					auto newNode = vl::MakePtr<WfExpectedTypeCastExpression>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowCoOperatorExpression* node)
+				void AstVisitor::Visit(WfCoOperatorExpression* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowCoOperatorExpression>();
+					auto newNode = vl::MakePtr<WfCoOperatorExpression>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowModuleUsingNameFragment* node)
+				void AstVisitor::Visit(WfModuleUsingNameFragment* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowModuleUsingNameFragment>();
+					auto newNode = vl::MakePtr<WfModuleUsingNameFragment>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				void AstVisitor::Visit(WorkflowModuleUsingWildCardFragment* node)
+				void AstVisitor::Visit(WfModuleUsingWildCardFragment* node)
 				{
-					auto newNode = vl::MakePtr<WorkflowModuleUsingWildCardFragment>();
+					auto newNode = vl::MakePtr<WfModuleUsingWildCardFragment>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
-				vl::Ptr<WorkflowType> AstVisitor::CopyNode(WorkflowType* node)
+				vl::Ptr<WfType> AstVisitor::CopyNode(WfType* node)
 				{
 					if (!node) return nullptr;
-					node->Accept(static_cast<WorkflowType::IVisitor*>(this));
-					return this->result.Cast<WorkflowType>();
+					node->Accept(static_cast<WfType::IVisitor*>(this));
+					return this->result.Cast<WfType>();
 				}
 
-				vl::Ptr<WorkflowExpression> AstVisitor::CopyNode(WorkflowExpression* node)
+				vl::Ptr<WfExpression> AstVisitor::CopyNode(WfExpression* node)
 				{
 					if (!node) return nullptr;
-					node->Accept(static_cast<WorkflowExpression::IVisitor*>(this));
-					return this->result.Cast<WorkflowExpression>();
+					node->Accept(static_cast<WfExpression::IVisitor*>(this));
+					return this->result.Cast<WfExpression>();
 				}
 
-				vl::Ptr<WorkflowStatement> AstVisitor::CopyNode(WorkflowStatement* node)
+				vl::Ptr<WfStatement> AstVisitor::CopyNode(WfStatement* node)
 				{
 					if (!node) return nullptr;
-					node->Accept(static_cast<WorkflowStatement::IVisitor*>(this));
-					return this->result.Cast<WorkflowStatement>();
+					node->Accept(static_cast<WfStatement::IVisitor*>(this));
+					return this->result.Cast<WfStatement>();
 				}
 
-				vl::Ptr<WorkflowDeclaration> AstVisitor::CopyNode(WorkflowDeclaration* node)
+				vl::Ptr<WfDeclaration> AstVisitor::CopyNode(WfDeclaration* node)
 				{
 					if (!node) return nullptr;
-					node->Accept(static_cast<WorkflowDeclaration::IVisitor*>(this));
-					return this->result.Cast<WorkflowDeclaration>();
+					node->Accept(static_cast<WfDeclaration::IVisitor*>(this));
+					return this->result.Cast<WfDeclaration>();
 				}
 
-				vl::Ptr<WorkflowModuleUsingFragment> AstVisitor::CopyNode(WorkflowModuleUsingFragment* node)
+				vl::Ptr<WfModuleUsingFragment> AstVisitor::CopyNode(WfModuleUsingFragment* node)
 				{
 					if (!node) return nullptr;
-					node->Accept(static_cast<WorkflowModuleUsingFragment::IVisitor*>(this));
-					return this->result.Cast<WorkflowModuleUsingFragment>();
+					node->Accept(static_cast<WfModuleUsingFragment::IVisitor*>(this));
+					return this->result.Cast<WfModuleUsingFragment>();
 				}
 
-				vl::Ptr<WorkflowAttribute> AstVisitor::CopyNode(WorkflowAttribute* node)
-				{
-					if (!node) return nullptr;
-					Visit(node);
-					return this->result.Cast<WorkflowAttribute>();
-				}
-
-				vl::Ptr<WorkflowFunctionArgument> AstVisitor::CopyNode(WorkflowFunctionArgument* node)
+				vl::Ptr<WfAttribute> AstVisitor::CopyNode(WfAttribute* node)
 				{
 					if (!node) return nullptr;
 					Visit(node);
-					return this->result.Cast<WorkflowFunctionArgument>();
+					return this->result.Cast<WfAttribute>();
 				}
 
-				vl::Ptr<WorkflowBaseConstructorCall> AstVisitor::CopyNode(WorkflowBaseConstructorCall* node)
+				vl::Ptr<WfFunctionArgument> AstVisitor::CopyNode(WfFunctionArgument* node)
 				{
 					if (!node) return nullptr;
 					Visit(node);
-					return this->result.Cast<WorkflowBaseConstructorCall>();
+					return this->result.Cast<WfFunctionArgument>();
 				}
 
-				vl::Ptr<WorkflowEnumItemIntersection> AstVisitor::CopyNode(WorkflowEnumItemIntersection* node)
+				vl::Ptr<WfBaseConstructorCall> AstVisitor::CopyNode(WfBaseConstructorCall* node)
 				{
 					if (!node) return nullptr;
 					Visit(node);
-					return this->result.Cast<WorkflowEnumItemIntersection>();
+					return this->result.Cast<WfBaseConstructorCall>();
 				}
 
-				vl::Ptr<WorkflowEnumItem> AstVisitor::CopyNode(WorkflowEnumItem* node)
+				vl::Ptr<WfEnumItemIntersection> AstVisitor::CopyNode(WfEnumItemIntersection* node)
 				{
 					if (!node) return nullptr;
 					Visit(node);
-					return this->result.Cast<WorkflowEnumItem>();
+					return this->result.Cast<WfEnumItemIntersection>();
 				}
 
-				vl::Ptr<WorkflowStructMember> AstVisitor::CopyNode(WorkflowStructMember* node)
+				vl::Ptr<WfEnumItem> AstVisitor::CopyNode(WfEnumItem* node)
 				{
 					if (!node) return nullptr;
 					Visit(node);
-					return this->result.Cast<WorkflowStructMember>();
+					return this->result.Cast<WfEnumItem>();
 				}
 
-				vl::Ptr<WorkflowStateInput> AstVisitor::CopyNode(WorkflowStateInput* node)
+				vl::Ptr<WfStructMember> AstVisitor::CopyNode(WfStructMember* node)
 				{
 					if (!node) return nullptr;
 					Visit(node);
-					return this->result.Cast<WorkflowStateInput>();
+					return this->result.Cast<WfStructMember>();
 				}
 
-				vl::Ptr<WorkflowStateDeclaration> AstVisitor::CopyNode(WorkflowStateDeclaration* node)
+				vl::Ptr<WfStateInput> AstVisitor::CopyNode(WfStateInput* node)
 				{
 					if (!node) return nullptr;
 					Visit(node);
-					return this->result.Cast<WorkflowStateDeclaration>();
+					return this->result.Cast<WfStateInput>();
 				}
 
-				vl::Ptr<WorkflowSwitchCase> AstVisitor::CopyNode(WorkflowSwitchCase* node)
+				vl::Ptr<WfStateDeclaration> AstVisitor::CopyNode(WfStateDeclaration* node)
 				{
 					if (!node) return nullptr;
 					Visit(node);
-					return this->result.Cast<WorkflowSwitchCase>();
+					return this->result.Cast<WfStateDeclaration>();
 				}
 
-				vl::Ptr<WorkflowStateSwitchArgument> AstVisitor::CopyNode(WorkflowStateSwitchArgument* node)
+				vl::Ptr<WfSwitchCase> AstVisitor::CopyNode(WfSwitchCase* node)
 				{
 					if (!node) return nullptr;
 					Visit(node);
-					return this->result.Cast<WorkflowStateSwitchArgument>();
+					return this->result.Cast<WfSwitchCase>();
 				}
 
-				vl::Ptr<WorkflowStateSwitchCase> AstVisitor::CopyNode(WorkflowStateSwitchCase* node)
+				vl::Ptr<WfStateSwitchArgument> AstVisitor::CopyNode(WfStateSwitchArgument* node)
 				{
 					if (!node) return nullptr;
 					Visit(node);
-					return this->result.Cast<WorkflowStateSwitchCase>();
+					return this->result.Cast<WfStateSwitchArgument>();
 				}
 
-				vl::Ptr<WorkflowLetVariable> AstVisitor::CopyNode(WorkflowLetVariable* node)
+				vl::Ptr<WfStateSwitchCase> AstVisitor::CopyNode(WfStateSwitchCase* node)
 				{
 					if (!node) return nullptr;
 					Visit(node);
-					return this->result.Cast<WorkflowLetVariable>();
+					return this->result.Cast<WfStateSwitchCase>();
 				}
 
-				vl::Ptr<WorkflowConstructorArgument> AstVisitor::CopyNode(WorkflowConstructorArgument* node)
+				vl::Ptr<WfLetVariable> AstVisitor::CopyNode(WfLetVariable* node)
 				{
 					if (!node) return nullptr;
 					Visit(node);
-					return this->result.Cast<WorkflowConstructorArgument>();
+					return this->result.Cast<WfLetVariable>();
 				}
 
-				vl::Ptr<WorkflowModuleUsingItem> AstVisitor::CopyNode(WorkflowModuleUsingItem* node)
+				vl::Ptr<WfConstructorArgument> AstVisitor::CopyNode(WfConstructorArgument* node)
 				{
 					if (!node) return nullptr;
 					Visit(node);
-					return this->result.Cast<WorkflowModuleUsingItem>();
+					return this->result.Cast<WfConstructorArgument>();
 				}
 
-				vl::Ptr<WorkflowModuleUsingPath> AstVisitor::CopyNode(WorkflowModuleUsingPath* node)
+				vl::Ptr<WfModuleUsingItem> AstVisitor::CopyNode(WfModuleUsingItem* node)
 				{
 					if (!node) return nullptr;
 					Visit(node);
-					return this->result.Cast<WorkflowModuleUsingPath>();
+					return this->result.Cast<WfModuleUsingItem>();
 				}
 
-				vl::Ptr<WorkflowModule> AstVisitor::CopyNode(WorkflowModule* node)
+				vl::Ptr<WfModuleUsingPath> AstVisitor::CopyNode(WfModuleUsingPath* node)
 				{
 					if (!node) return nullptr;
 					Visit(node);
-					return this->result.Cast<WorkflowModule>();
+					return this->result.Cast<WfModuleUsingPath>();
 				}
 
-				vl::Ptr<WorkflowAttachEventExpression> AstVisitor::CopyNode(WorkflowAttachEventExpression* node)
+				vl::Ptr<WfModule> AstVisitor::CopyNode(WfModule* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowExpression*>(node)).Cast<WorkflowAttachEventExpression>();
+					Visit(node);
+					return this->result.Cast<WfModule>();
 				}
 
-				vl::Ptr<WorkflowAutoPropertyDeclaration> AstVisitor::CopyNode(WorkflowAutoPropertyDeclaration* node)
+				vl::Ptr<WfAttachEventExpression> AstVisitor::CopyNode(WfAttachEventExpression* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowDeclaration*>(node)).Cast<WorkflowAutoPropertyDeclaration>();
+					return CopyNode(static_cast<WfExpression*>(node)).Cast<WfAttachEventExpression>();
 				}
 
-				vl::Ptr<WorkflowBinaryExpression> AstVisitor::CopyNode(WorkflowBinaryExpression* node)
+				vl::Ptr<WfAutoPropertyDeclaration> AstVisitor::CopyNode(WfAutoPropertyDeclaration* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowExpression*>(node)).Cast<WorkflowBinaryExpression>();
+					return CopyNode(static_cast<WfDeclaration*>(node)).Cast<WfAutoPropertyDeclaration>();
 				}
 
-				vl::Ptr<WorkflowBindExpression> AstVisitor::CopyNode(WorkflowBindExpression* node)
+				vl::Ptr<WfBinaryExpression> AstVisitor::CopyNode(WfBinaryExpression* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowExpression*>(node)).Cast<WorkflowBindExpression>();
+					return CopyNode(static_cast<WfExpression*>(node)).Cast<WfBinaryExpression>();
 				}
 
-				vl::Ptr<WorkflowBlockStatement> AstVisitor::CopyNode(WorkflowBlockStatement* node)
+				vl::Ptr<WfBindExpression> AstVisitor::CopyNode(WfBindExpression* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowStatement*>(node)).Cast<WorkflowBlockStatement>();
+					return CopyNode(static_cast<WfExpression*>(node)).Cast<WfBindExpression>();
 				}
 
-				vl::Ptr<WorkflowBreakStatement> AstVisitor::CopyNode(WorkflowBreakStatement* node)
+				vl::Ptr<WfBlockStatement> AstVisitor::CopyNode(WfBlockStatement* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowStatement*>(node)).Cast<WorkflowBreakStatement>();
+					return CopyNode(static_cast<WfStatement*>(node)).Cast<WfBlockStatement>();
 				}
 
-				vl::Ptr<WorkflowCallExpression> AstVisitor::CopyNode(WorkflowCallExpression* node)
+				vl::Ptr<WfBreakStatement> AstVisitor::CopyNode(WfBreakStatement* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowExpression*>(node)).Cast<WorkflowCallExpression>();
+					return CopyNode(static_cast<WfStatement*>(node)).Cast<WfBreakStatement>();
 				}
 
-				vl::Ptr<WorkflowCastResultInterfaceDeclaration> AstVisitor::CopyNode(WorkflowCastResultInterfaceDeclaration* node)
+				vl::Ptr<WfCallExpression> AstVisitor::CopyNode(WfCallExpression* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowDeclaration*>(node)).Cast<WorkflowCastResultInterfaceDeclaration>();
+					return CopyNode(static_cast<WfExpression*>(node)).Cast<WfCallExpression>();
 				}
 
-				vl::Ptr<WorkflowChildExpression> AstVisitor::CopyNode(WorkflowChildExpression* node)
+				vl::Ptr<WfCastResultInterfaceDeclaration> AstVisitor::CopyNode(WfCastResultInterfaceDeclaration* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowExpression*>(node)).Cast<WorkflowChildExpression>();
+					return CopyNode(static_cast<WfDeclaration*>(node)).Cast<WfCastResultInterfaceDeclaration>();
 				}
 
-				vl::Ptr<WorkflowChildType> AstVisitor::CopyNode(WorkflowChildType* node)
+				vl::Ptr<WfChildExpression> AstVisitor::CopyNode(WfChildExpression* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowType*>(node)).Cast<WorkflowChildType>();
+					return CopyNode(static_cast<WfExpression*>(node)).Cast<WfChildExpression>();
 				}
 
-				vl::Ptr<WorkflowClassDeclaration> AstVisitor::CopyNode(WorkflowClassDeclaration* node)
+				vl::Ptr<WfChildType> AstVisitor::CopyNode(WfChildType* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowDeclaration*>(node)).Cast<WorkflowClassDeclaration>();
+					return CopyNode(static_cast<WfType*>(node)).Cast<WfChildType>();
 				}
 
-				vl::Ptr<WorkflowCoOperatorExpression> AstVisitor::CopyNode(WorkflowCoOperatorExpression* node)
+				vl::Ptr<WfClassDeclaration> AstVisitor::CopyNode(WfClassDeclaration* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowExpression*>(node)).Cast<WorkflowCoOperatorExpression>();
+					return CopyNode(static_cast<WfDeclaration*>(node)).Cast<WfClassDeclaration>();
 				}
 
-				vl::Ptr<WorkflowCoOperatorStatement> AstVisitor::CopyNode(WorkflowCoOperatorStatement* node)
+				vl::Ptr<WfCoOperatorExpression> AstVisitor::CopyNode(WfCoOperatorExpression* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowStatement*>(node)).Cast<WorkflowCoOperatorStatement>();
+					return CopyNode(static_cast<WfExpression*>(node)).Cast<WfCoOperatorExpression>();
 				}
 
-				vl::Ptr<WorkflowCoPauseStatement> AstVisitor::CopyNode(WorkflowCoPauseStatement* node)
+				vl::Ptr<WfCoOperatorStatement> AstVisitor::CopyNode(WfCoOperatorStatement* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowStatement*>(node)).Cast<WorkflowCoPauseStatement>();
+					return CopyNode(static_cast<WfStatement*>(node)).Cast<WfCoOperatorStatement>();
 				}
 
-				vl::Ptr<WorkflowCoProviderStatement> AstVisitor::CopyNode(WorkflowCoProviderStatement* node)
+				vl::Ptr<WfCoPauseStatement> AstVisitor::CopyNode(WfCoPauseStatement* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowStatement*>(node)).Cast<WorkflowCoProviderStatement>();
+					return CopyNode(static_cast<WfStatement*>(node)).Cast<WfCoPauseStatement>();
 				}
 
-				vl::Ptr<WorkflowConstructorDeclaration> AstVisitor::CopyNode(WorkflowConstructorDeclaration* node)
+				vl::Ptr<WfCoProviderStatement> AstVisitor::CopyNode(WfCoProviderStatement* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowDeclaration*>(node)).Cast<WorkflowConstructorDeclaration>();
+					return CopyNode(static_cast<WfStatement*>(node)).Cast<WfCoProviderStatement>();
 				}
 
-				vl::Ptr<WorkflowConstructorExpression> AstVisitor::CopyNode(WorkflowConstructorExpression* node)
+				vl::Ptr<WfConstructorDeclaration> AstVisitor::CopyNode(WfConstructorDeclaration* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowExpression*>(node)).Cast<WorkflowConstructorExpression>();
+					return CopyNode(static_cast<WfDeclaration*>(node)).Cast<WfConstructorDeclaration>();
 				}
 
-				vl::Ptr<WorkflowContinueStatement> AstVisitor::CopyNode(WorkflowContinueStatement* node)
+				vl::Ptr<WfConstructorExpression> AstVisitor::CopyNode(WfConstructorExpression* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowStatement*>(node)).Cast<WorkflowContinueStatement>();
+					return CopyNode(static_cast<WfExpression*>(node)).Cast<WfConstructorExpression>();
 				}
 
-				vl::Ptr<WorkflowCoroutineStatement> AstVisitor::CopyNode(WorkflowCoroutineStatement* node)
+				vl::Ptr<WfContinueStatement> AstVisitor::CopyNode(WfContinueStatement* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowStatement*>(node)).Cast<WorkflowCoroutineStatement>();
+					return CopyNode(static_cast<WfStatement*>(node)).Cast<WfContinueStatement>();
 				}
 
-				vl::Ptr<WorkflowDeleteStatement> AstVisitor::CopyNode(WorkflowDeleteStatement* node)
+				vl::Ptr<WfCoroutineStatement> AstVisitor::CopyNode(WfCoroutineStatement* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowStatement*>(node)).Cast<WorkflowDeleteStatement>();
+					return CopyNode(static_cast<WfStatement*>(node)).Cast<WfCoroutineStatement>();
 				}
 
-				vl::Ptr<WorkflowDestructorDeclaration> AstVisitor::CopyNode(WorkflowDestructorDeclaration* node)
+				vl::Ptr<WfDeleteStatement> AstVisitor::CopyNode(WfDeleteStatement* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowDeclaration*>(node)).Cast<WorkflowDestructorDeclaration>();
+					return CopyNode(static_cast<WfStatement*>(node)).Cast<WfDeleteStatement>();
 				}
 
-				vl::Ptr<WorkflowDetachEventExpression> AstVisitor::CopyNode(WorkflowDetachEventExpression* node)
+				vl::Ptr<WfDestructorDeclaration> AstVisitor::CopyNode(WfDestructorDeclaration* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowExpression*>(node)).Cast<WorkflowDetachEventExpression>();
+					return CopyNode(static_cast<WfDeclaration*>(node)).Cast<WfDestructorDeclaration>();
 				}
 
-				vl::Ptr<WorkflowEnumDeclaration> AstVisitor::CopyNode(WorkflowEnumDeclaration* node)
+				vl::Ptr<WfDetachEventExpression> AstVisitor::CopyNode(WfDetachEventExpression* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowDeclaration*>(node)).Cast<WorkflowEnumDeclaration>();
+					return CopyNode(static_cast<WfExpression*>(node)).Cast<WfDetachEventExpression>();
 				}
 
-				vl::Ptr<WorkflowEnumerableType> AstVisitor::CopyNode(WorkflowEnumerableType* node)
+				vl::Ptr<WfEnumDeclaration> AstVisitor::CopyNode(WfEnumDeclaration* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowType*>(node)).Cast<WorkflowEnumerableType>();
+					return CopyNode(static_cast<WfDeclaration*>(node)).Cast<WfEnumDeclaration>();
 				}
 
-				vl::Ptr<WorkflowEventDeclaration> AstVisitor::CopyNode(WorkflowEventDeclaration* node)
+				vl::Ptr<WfEnumerableType> AstVisitor::CopyNode(WfEnumerableType* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowDeclaration*>(node)).Cast<WorkflowEventDeclaration>();
+					return CopyNode(static_cast<WfType*>(node)).Cast<WfEnumerableType>();
 				}
 
-				vl::Ptr<WorkflowExpectedTypeCastExpression> AstVisitor::CopyNode(WorkflowExpectedTypeCastExpression* node)
+				vl::Ptr<WfEventDeclaration> AstVisitor::CopyNode(WfEventDeclaration* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowExpression*>(node)).Cast<WorkflowExpectedTypeCastExpression>();
+					return CopyNode(static_cast<WfDeclaration*>(node)).Cast<WfEventDeclaration>();
 				}
 
-				vl::Ptr<WorkflowExpressionStatement> AstVisitor::CopyNode(WorkflowExpressionStatement* node)
+				vl::Ptr<WfExpectedTypeCastExpression> AstVisitor::CopyNode(WfExpectedTypeCastExpression* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowStatement*>(node)).Cast<WorkflowExpressionStatement>();
+					return CopyNode(static_cast<WfExpression*>(node)).Cast<WfExpectedTypeCastExpression>();
 				}
 
-				vl::Ptr<WorkflowFloatingExpression> AstVisitor::CopyNode(WorkflowFloatingExpression* node)
+				vl::Ptr<WfExpressionStatement> AstVisitor::CopyNode(WfExpressionStatement* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowExpression*>(node)).Cast<WorkflowFloatingExpression>();
+					return CopyNode(static_cast<WfStatement*>(node)).Cast<WfExpressionStatement>();
 				}
 
-				vl::Ptr<WorkflowForEachStatement> AstVisitor::CopyNode(WorkflowForEachStatement* node)
+				vl::Ptr<WfFloatingExpression> AstVisitor::CopyNode(WfFloatingExpression* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowStatement*>(node)).Cast<WorkflowForEachStatement>();
+					return CopyNode(static_cast<WfExpression*>(node)).Cast<WfFloatingExpression>();
 				}
 
-				vl::Ptr<WorkflowFormatExpression> AstVisitor::CopyNode(WorkflowFormatExpression* node)
+				vl::Ptr<WfForEachStatement> AstVisitor::CopyNode(WfForEachStatement* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowExpression*>(node)).Cast<WorkflowFormatExpression>();
+					return CopyNode(static_cast<WfStatement*>(node)).Cast<WfForEachStatement>();
 				}
 
-				vl::Ptr<WorkflowFunctionDeclaration> AstVisitor::CopyNode(WorkflowFunctionDeclaration* node)
+				vl::Ptr<WfFormatExpression> AstVisitor::CopyNode(WfFormatExpression* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowDeclaration*>(node)).Cast<WorkflowFunctionDeclaration>();
+					return CopyNode(static_cast<WfExpression*>(node)).Cast<WfFormatExpression>();
 				}
 
-				vl::Ptr<WorkflowFunctionExpression> AstVisitor::CopyNode(WorkflowFunctionExpression* node)
+				vl::Ptr<WfFunctionDeclaration> AstVisitor::CopyNode(WfFunctionDeclaration* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowExpression*>(node)).Cast<WorkflowFunctionExpression>();
+					return CopyNode(static_cast<WfDeclaration*>(node)).Cast<WfFunctionDeclaration>();
 				}
 
-				vl::Ptr<WorkflowFunctionType> AstVisitor::CopyNode(WorkflowFunctionType* node)
+				vl::Ptr<WfFunctionExpression> AstVisitor::CopyNode(WfFunctionExpression* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowType*>(node)).Cast<WorkflowFunctionType>();
+					return CopyNode(static_cast<WfExpression*>(node)).Cast<WfFunctionExpression>();
 				}
 
-				vl::Ptr<WorkflowGotoStatement> AstVisitor::CopyNode(WorkflowGotoStatement* node)
+				vl::Ptr<WfFunctionType> AstVisitor::CopyNode(WfFunctionType* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowStatement*>(node)).Cast<WorkflowGotoStatement>();
+					return CopyNode(static_cast<WfType*>(node)).Cast<WfFunctionType>();
 				}
 
-				vl::Ptr<WorkflowIfExpression> AstVisitor::CopyNode(WorkflowIfExpression* node)
+				vl::Ptr<WfGotoStatement> AstVisitor::CopyNode(WfGotoStatement* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowExpression*>(node)).Cast<WorkflowIfExpression>();
+					return CopyNode(static_cast<WfStatement*>(node)).Cast<WfGotoStatement>();
 				}
 
-				vl::Ptr<WorkflowIfStatement> AstVisitor::CopyNode(WorkflowIfStatement* node)
+				vl::Ptr<WfIfExpression> AstVisitor::CopyNode(WfIfExpression* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowStatement*>(node)).Cast<WorkflowIfStatement>();
+					return CopyNode(static_cast<WfExpression*>(node)).Cast<WfIfExpression>();
 				}
 
-				vl::Ptr<WorkflowInferExpression> AstVisitor::CopyNode(WorkflowInferExpression* node)
+				vl::Ptr<WfIfStatement> AstVisitor::CopyNode(WfIfStatement* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowExpression*>(node)).Cast<WorkflowInferExpression>();
+					return CopyNode(static_cast<WfStatement*>(node)).Cast<WfIfStatement>();
 				}
 
-				vl::Ptr<WorkflowIntegerExpression> AstVisitor::CopyNode(WorkflowIntegerExpression* node)
+				vl::Ptr<WfInferExpression> AstVisitor::CopyNode(WfInferExpression* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowExpression*>(node)).Cast<WorkflowIntegerExpression>();
+					return CopyNode(static_cast<WfExpression*>(node)).Cast<WfInferExpression>();
 				}
 
-				vl::Ptr<WorkflowLetExpression> AstVisitor::CopyNode(WorkflowLetExpression* node)
+				vl::Ptr<WfIntegerExpression> AstVisitor::CopyNode(WfIntegerExpression* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowExpression*>(node)).Cast<WorkflowLetExpression>();
+					return CopyNode(static_cast<WfExpression*>(node)).Cast<WfIntegerExpression>();
 				}
 
-				vl::Ptr<WorkflowLiteralExpression> AstVisitor::CopyNode(WorkflowLiteralExpression* node)
+				vl::Ptr<WfLetExpression> AstVisitor::CopyNode(WfLetExpression* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowExpression*>(node)).Cast<WorkflowLiteralExpression>();
+					return CopyNode(static_cast<WfExpression*>(node)).Cast<WfLetExpression>();
 				}
 
-				vl::Ptr<WorkflowMapType> AstVisitor::CopyNode(WorkflowMapType* node)
+				vl::Ptr<WfLiteralExpression> AstVisitor::CopyNode(WfLiteralExpression* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowType*>(node)).Cast<WorkflowMapType>();
+					return CopyNode(static_cast<WfExpression*>(node)).Cast<WfLiteralExpression>();
 				}
 
-				vl::Ptr<WorkflowMemberExpression> AstVisitor::CopyNode(WorkflowMemberExpression* node)
+				vl::Ptr<WfMapType> AstVisitor::CopyNode(WfMapType* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowExpression*>(node)).Cast<WorkflowMemberExpression>();
+					return CopyNode(static_cast<WfType*>(node)).Cast<WfMapType>();
 				}
 
-				vl::Ptr<WorkflowMixinCastExpression> AstVisitor::CopyNode(WorkflowMixinCastExpression* node)
+				vl::Ptr<WfMemberExpression> AstVisitor::CopyNode(WfMemberExpression* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowExpression*>(node)).Cast<WorkflowMixinCastExpression>();
+					return CopyNode(static_cast<WfExpression*>(node)).Cast<WfMemberExpression>();
 				}
 
-				vl::Ptr<WorkflowModuleUsingNameFragment> AstVisitor::CopyNode(WorkflowModuleUsingNameFragment* node)
+				vl::Ptr<WfMixinCastExpression> AstVisitor::CopyNode(WfMixinCastExpression* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowModuleUsingFragment*>(node)).Cast<WorkflowModuleUsingNameFragment>();
+					return CopyNode(static_cast<WfExpression*>(node)).Cast<WfMixinCastExpression>();
 				}
 
-				vl::Ptr<WorkflowModuleUsingWildCardFragment> AstVisitor::CopyNode(WorkflowModuleUsingWildCardFragment* node)
+				vl::Ptr<WfModuleUsingNameFragment> AstVisitor::CopyNode(WfModuleUsingNameFragment* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowModuleUsingFragment*>(node)).Cast<WorkflowModuleUsingWildCardFragment>();
+					return CopyNode(static_cast<WfModuleUsingFragment*>(node)).Cast<WfModuleUsingNameFragment>();
 				}
 
-				vl::Ptr<WorkflowNamespaceDeclaration> AstVisitor::CopyNode(WorkflowNamespaceDeclaration* node)
+				vl::Ptr<WfModuleUsingWildCardFragment> AstVisitor::CopyNode(WfModuleUsingWildCardFragment* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowDeclaration*>(node)).Cast<WorkflowNamespaceDeclaration>();
+					return CopyNode(static_cast<WfModuleUsingFragment*>(node)).Cast<WfModuleUsingWildCardFragment>();
 				}
 
-				vl::Ptr<WorkflowNewClassExpression> AstVisitor::CopyNode(WorkflowNewClassExpression* node)
+				vl::Ptr<WfNamespaceDeclaration> AstVisitor::CopyNode(WfNamespaceDeclaration* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowExpression*>(node)).Cast<WorkflowNewClassExpression>();
+					return CopyNode(static_cast<WfDeclaration*>(node)).Cast<WfNamespaceDeclaration>();
 				}
 
-				vl::Ptr<WorkflowNewCoroutineExpression> AstVisitor::CopyNode(WorkflowNewCoroutineExpression* node)
+				vl::Ptr<WfNewClassExpression> AstVisitor::CopyNode(WfNewClassExpression* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowExpression*>(node)).Cast<WorkflowNewCoroutineExpression>();
+					return CopyNode(static_cast<WfExpression*>(node)).Cast<WfNewClassExpression>();
 				}
 
-				vl::Ptr<WorkflowNewInterfaceExpression> AstVisitor::CopyNode(WorkflowNewInterfaceExpression* node)
+				vl::Ptr<WfNewCoroutineExpression> AstVisitor::CopyNode(WfNewCoroutineExpression* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowExpression*>(node)).Cast<WorkflowNewInterfaceExpression>();
+					return CopyNode(static_cast<WfExpression*>(node)).Cast<WfNewCoroutineExpression>();
 				}
 
-				vl::Ptr<WorkflowNullableType> AstVisitor::CopyNode(WorkflowNullableType* node)
+				vl::Ptr<WfNewInterfaceExpression> AstVisitor::CopyNode(WfNewInterfaceExpression* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowType*>(node)).Cast<WorkflowNullableType>();
+					return CopyNode(static_cast<WfExpression*>(node)).Cast<WfNewInterfaceExpression>();
 				}
 
-				vl::Ptr<WorkflowObservableListType> AstVisitor::CopyNode(WorkflowObservableListType* node)
+				vl::Ptr<WfNullableType> AstVisitor::CopyNode(WfNullableType* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowType*>(node)).Cast<WorkflowObservableListType>();
+					return CopyNode(static_cast<WfType*>(node)).Cast<WfNullableType>();
 				}
 
-				vl::Ptr<WorkflowObserveExpression> AstVisitor::CopyNode(WorkflowObserveExpression* node)
+				vl::Ptr<WfObservableListType> AstVisitor::CopyNode(WfObservableListType* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowExpression*>(node)).Cast<WorkflowObserveExpression>();
+					return CopyNode(static_cast<WfType*>(node)).Cast<WfObservableListType>();
 				}
 
-				vl::Ptr<WorkflowOrderedLambdaExpression> AstVisitor::CopyNode(WorkflowOrderedLambdaExpression* node)
+				vl::Ptr<WfObserveExpression> AstVisitor::CopyNode(WfObserveExpression* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowExpression*>(node)).Cast<WorkflowOrderedLambdaExpression>();
+					return CopyNode(static_cast<WfExpression*>(node)).Cast<WfObserveExpression>();
 				}
 
-				vl::Ptr<WorkflowOrderedNameExpression> AstVisitor::CopyNode(WorkflowOrderedNameExpression* node)
+				vl::Ptr<WfOrderedLambdaExpression> AstVisitor::CopyNode(WfOrderedLambdaExpression* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowExpression*>(node)).Cast<WorkflowOrderedNameExpression>();
+					return CopyNode(static_cast<WfExpression*>(node)).Cast<WfOrderedLambdaExpression>();
 				}
 
-				vl::Ptr<WorkflowPredefinedType> AstVisitor::CopyNode(WorkflowPredefinedType* node)
+				vl::Ptr<WfOrderedNameExpression> AstVisitor::CopyNode(WfOrderedNameExpression* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowType*>(node)).Cast<WorkflowPredefinedType>();
+					return CopyNode(static_cast<WfExpression*>(node)).Cast<WfOrderedNameExpression>();
 				}
 
-				vl::Ptr<WorkflowPropertyDeclaration> AstVisitor::CopyNode(WorkflowPropertyDeclaration* node)
+				vl::Ptr<WfPredefinedType> AstVisitor::CopyNode(WfPredefinedType* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowDeclaration*>(node)).Cast<WorkflowPropertyDeclaration>();
+					return CopyNode(static_cast<WfType*>(node)).Cast<WfPredefinedType>();
 				}
 
-				vl::Ptr<WorkflowRaiseExceptionStatement> AstVisitor::CopyNode(WorkflowRaiseExceptionStatement* node)
+				vl::Ptr<WfPropertyDeclaration> AstVisitor::CopyNode(WfPropertyDeclaration* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowStatement*>(node)).Cast<WorkflowRaiseExceptionStatement>();
+					return CopyNode(static_cast<WfDeclaration*>(node)).Cast<WfPropertyDeclaration>();
 				}
 
-				vl::Ptr<WorkflowRangeExpression> AstVisitor::CopyNode(WorkflowRangeExpression* node)
+				vl::Ptr<WfRaiseExceptionStatement> AstVisitor::CopyNode(WfRaiseExceptionStatement* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowExpression*>(node)).Cast<WorkflowRangeExpression>();
+					return CopyNode(static_cast<WfStatement*>(node)).Cast<WfRaiseExceptionStatement>();
 				}
 
-				vl::Ptr<WorkflowRawPointerType> AstVisitor::CopyNode(WorkflowRawPointerType* node)
+				vl::Ptr<WfRangeExpression> AstVisitor::CopyNode(WfRangeExpression* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowType*>(node)).Cast<WorkflowRawPointerType>();
+					return CopyNode(static_cast<WfExpression*>(node)).Cast<WfRangeExpression>();
 				}
 
-				vl::Ptr<WorkflowReferenceExpression> AstVisitor::CopyNode(WorkflowReferenceExpression* node)
+				vl::Ptr<WfRawPointerType> AstVisitor::CopyNode(WfRawPointerType* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowExpression*>(node)).Cast<WorkflowReferenceExpression>();
+					return CopyNode(static_cast<WfType*>(node)).Cast<WfRawPointerType>();
 				}
 
-				vl::Ptr<WorkflowReferenceType> AstVisitor::CopyNode(WorkflowReferenceType* node)
+				vl::Ptr<WfReferenceExpression> AstVisitor::CopyNode(WfReferenceExpression* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowType*>(node)).Cast<WorkflowReferenceType>();
+					return CopyNode(static_cast<WfExpression*>(node)).Cast<WfReferenceExpression>();
 				}
 
-				vl::Ptr<WorkflowReturnStatement> AstVisitor::CopyNode(WorkflowReturnStatement* node)
+				vl::Ptr<WfReferenceType> AstVisitor::CopyNode(WfReferenceType* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowStatement*>(node)).Cast<WorkflowReturnStatement>();
+					return CopyNode(static_cast<WfType*>(node)).Cast<WfReferenceType>();
 				}
 
-				vl::Ptr<WorkflowSetTestingExpression> AstVisitor::CopyNode(WorkflowSetTestingExpression* node)
+				vl::Ptr<WfReturnStatement> AstVisitor::CopyNode(WfReturnStatement* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowExpression*>(node)).Cast<WorkflowSetTestingExpression>();
+					return CopyNode(static_cast<WfStatement*>(node)).Cast<WfReturnStatement>();
 				}
 
-				vl::Ptr<WorkflowSharedPointerType> AstVisitor::CopyNode(WorkflowSharedPointerType* node)
+				vl::Ptr<WfSetTestingExpression> AstVisitor::CopyNode(WfSetTestingExpression* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowType*>(node)).Cast<WorkflowSharedPointerType>();
+					return CopyNode(static_cast<WfExpression*>(node)).Cast<WfSetTestingExpression>();
 				}
 
-				vl::Ptr<WorkflowStateInvokeStatement> AstVisitor::CopyNode(WorkflowStateInvokeStatement* node)
+				vl::Ptr<WfSharedPointerType> AstVisitor::CopyNode(WfSharedPointerType* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowStatement*>(node)).Cast<WorkflowStateInvokeStatement>();
+					return CopyNode(static_cast<WfType*>(node)).Cast<WfSharedPointerType>();
 				}
 
-				vl::Ptr<WorkflowStateMachineDeclaration> AstVisitor::CopyNode(WorkflowStateMachineDeclaration* node)
+				vl::Ptr<WfStateInvokeStatement> AstVisitor::CopyNode(WfStateInvokeStatement* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowDeclaration*>(node)).Cast<WorkflowStateMachineDeclaration>();
+					return CopyNode(static_cast<WfStatement*>(node)).Cast<WfStateInvokeStatement>();
 				}
 
-				vl::Ptr<WorkflowStateMachineStatement> AstVisitor::CopyNode(WorkflowStateMachineStatement* node)
+				vl::Ptr<WfStateMachineDeclaration> AstVisitor::CopyNode(WfStateMachineDeclaration* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowStatement*>(node)).Cast<WorkflowStateMachineStatement>();
+					return CopyNode(static_cast<WfDeclaration*>(node)).Cast<WfStateMachineDeclaration>();
 				}
 
-				vl::Ptr<WorkflowStateSwitchStatement> AstVisitor::CopyNode(WorkflowStateSwitchStatement* node)
+				vl::Ptr<WfStateMachineStatement> AstVisitor::CopyNode(WfStateMachineStatement* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowStatement*>(node)).Cast<WorkflowStateSwitchStatement>();
+					return CopyNode(static_cast<WfStatement*>(node)).Cast<WfStateMachineStatement>();
 				}
 
-				vl::Ptr<WorkflowStringExpression> AstVisitor::CopyNode(WorkflowStringExpression* node)
+				vl::Ptr<WfStateSwitchStatement> AstVisitor::CopyNode(WfStateSwitchStatement* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowExpression*>(node)).Cast<WorkflowStringExpression>();
+					return CopyNode(static_cast<WfStatement*>(node)).Cast<WfStateSwitchStatement>();
 				}
 
-				vl::Ptr<WorkflowStructDeclaration> AstVisitor::CopyNode(WorkflowStructDeclaration* node)
+				vl::Ptr<WfStringExpression> AstVisitor::CopyNode(WfStringExpression* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowDeclaration*>(node)).Cast<WorkflowStructDeclaration>();
+					return CopyNode(static_cast<WfExpression*>(node)).Cast<WfStringExpression>();
 				}
 
-				vl::Ptr<WorkflowSwitchStatement> AstVisitor::CopyNode(WorkflowSwitchStatement* node)
+				vl::Ptr<WfStructDeclaration> AstVisitor::CopyNode(WfStructDeclaration* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowStatement*>(node)).Cast<WorkflowSwitchStatement>();
+					return CopyNode(static_cast<WfDeclaration*>(node)).Cast<WfStructDeclaration>();
 				}
 
-				vl::Ptr<WorkflowThisExpression> AstVisitor::CopyNode(WorkflowThisExpression* node)
+				vl::Ptr<WfSwitchStatement> AstVisitor::CopyNode(WfSwitchStatement* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowExpression*>(node)).Cast<WorkflowThisExpression>();
+					return CopyNode(static_cast<WfStatement*>(node)).Cast<WfSwitchStatement>();
 				}
 
-				vl::Ptr<WorkflowTopQualifiedExpression> AstVisitor::CopyNode(WorkflowTopQualifiedExpression* node)
+				vl::Ptr<WfThisExpression> AstVisitor::CopyNode(WfThisExpression* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowExpression*>(node)).Cast<WorkflowTopQualifiedExpression>();
+					return CopyNode(static_cast<WfExpression*>(node)).Cast<WfThisExpression>();
 				}
 
-				vl::Ptr<WorkflowTopQualifiedType> AstVisitor::CopyNode(WorkflowTopQualifiedType* node)
+				vl::Ptr<WfTopQualifiedExpression> AstVisitor::CopyNode(WfTopQualifiedExpression* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowType*>(node)).Cast<WorkflowTopQualifiedType>();
+					return CopyNode(static_cast<WfExpression*>(node)).Cast<WfTopQualifiedExpression>();
 				}
 
-				vl::Ptr<WorkflowTryStatement> AstVisitor::CopyNode(WorkflowTryStatement* node)
+				vl::Ptr<WfTopQualifiedType> AstVisitor::CopyNode(WfTopQualifiedType* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowStatement*>(node)).Cast<WorkflowTryStatement>();
+					return CopyNode(static_cast<WfType*>(node)).Cast<WfTopQualifiedType>();
 				}
 
-				vl::Ptr<WorkflowTypeCastingExpression> AstVisitor::CopyNode(WorkflowTypeCastingExpression* node)
+				vl::Ptr<WfTryStatement> AstVisitor::CopyNode(WfTryStatement* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowExpression*>(node)).Cast<WorkflowTypeCastingExpression>();
+					return CopyNode(static_cast<WfStatement*>(node)).Cast<WfTryStatement>();
 				}
 
-				vl::Ptr<WorkflowTypeOfExpressionExpression> AstVisitor::CopyNode(WorkflowTypeOfExpressionExpression* node)
+				vl::Ptr<WfTypeCastingExpression> AstVisitor::CopyNode(WfTypeCastingExpression* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowExpression*>(node)).Cast<WorkflowTypeOfExpressionExpression>();
+					return CopyNode(static_cast<WfExpression*>(node)).Cast<WfTypeCastingExpression>();
 				}
 
-				vl::Ptr<WorkflowTypeOfTypeExpression> AstVisitor::CopyNode(WorkflowTypeOfTypeExpression* node)
+				vl::Ptr<WfTypeOfExpressionExpression> AstVisitor::CopyNode(WfTypeOfExpressionExpression* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowExpression*>(node)).Cast<WorkflowTypeOfTypeExpression>();
+					return CopyNode(static_cast<WfExpression*>(node)).Cast<WfTypeOfExpressionExpression>();
 				}
 
-				vl::Ptr<WorkflowTypeTestingExpression> AstVisitor::CopyNode(WorkflowTypeTestingExpression* node)
+				vl::Ptr<WfTypeOfTypeExpression> AstVisitor::CopyNode(WfTypeOfTypeExpression* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowExpression*>(node)).Cast<WorkflowTypeTestingExpression>();
+					return CopyNode(static_cast<WfExpression*>(node)).Cast<WfTypeOfTypeExpression>();
 				}
 
-				vl::Ptr<WorkflowUnaryExpression> AstVisitor::CopyNode(WorkflowUnaryExpression* node)
+				vl::Ptr<WfTypeTestingExpression> AstVisitor::CopyNode(WfTypeTestingExpression* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowExpression*>(node)).Cast<WorkflowUnaryExpression>();
+					return CopyNode(static_cast<WfExpression*>(node)).Cast<WfTypeTestingExpression>();
 				}
 
-				vl::Ptr<WorkflowVariableDeclaration> AstVisitor::CopyNode(WorkflowVariableDeclaration* node)
+				vl::Ptr<WfUnaryExpression> AstVisitor::CopyNode(WfUnaryExpression* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowDeclaration*>(node)).Cast<WorkflowVariableDeclaration>();
+					return CopyNode(static_cast<WfExpression*>(node)).Cast<WfUnaryExpression>();
 				}
 
-				vl::Ptr<WorkflowVariableStatement> AstVisitor::CopyNode(WorkflowVariableStatement* node)
+				vl::Ptr<WfVariableDeclaration> AstVisitor::CopyNode(WfVariableDeclaration* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowStatement*>(node)).Cast<WorkflowVariableStatement>();
+					return CopyNode(static_cast<WfDeclaration*>(node)).Cast<WfVariableDeclaration>();
 				}
 
-				vl::Ptr<WorkflowVirtualCfeDeclaration> AstVisitor::CopyNode(WorkflowVirtualCfeDeclaration* node)
+				vl::Ptr<WfVariableStatement> AstVisitor::CopyNode(WfVariableStatement* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowDeclaration*>(node)).Cast<WorkflowVirtualCfeDeclaration>();
+					return CopyNode(static_cast<WfStatement*>(node)).Cast<WfVariableStatement>();
 				}
 
-				vl::Ptr<WorkflowVirtualCfeExpression> AstVisitor::CopyNode(WorkflowVirtualCfeExpression* node)
+				vl::Ptr<WfVirtualCfeDeclaration> AstVisitor::CopyNode(WfVirtualCfeDeclaration* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowExpression*>(node)).Cast<WorkflowVirtualCfeExpression>();
+					return CopyNode(static_cast<WfDeclaration*>(node)).Cast<WfVirtualCfeDeclaration>();
 				}
 
-				vl::Ptr<WorkflowVirtualCseDeclaration> AstVisitor::CopyNode(WorkflowVirtualCseDeclaration* node)
+				vl::Ptr<WfVirtualCfeExpression> AstVisitor::CopyNode(WfVirtualCfeExpression* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowDeclaration*>(node)).Cast<WorkflowVirtualCseDeclaration>();
+					return CopyNode(static_cast<WfExpression*>(node)).Cast<WfVirtualCfeExpression>();
 				}
 
-				vl::Ptr<WorkflowVirtualCseExpression> AstVisitor::CopyNode(WorkflowVirtualCseExpression* node)
+				vl::Ptr<WfVirtualCseDeclaration> AstVisitor::CopyNode(WfVirtualCseDeclaration* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowExpression*>(node)).Cast<WorkflowVirtualCseExpression>();
+					return CopyNode(static_cast<WfDeclaration*>(node)).Cast<WfVirtualCseDeclaration>();
 				}
 
-				vl::Ptr<WorkflowVirtualCseStatement> AstVisitor::CopyNode(WorkflowVirtualCseStatement* node)
+				vl::Ptr<WfVirtualCseExpression> AstVisitor::CopyNode(WfVirtualCseExpression* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowStatement*>(node)).Cast<WorkflowVirtualCseStatement>();
+					return CopyNode(static_cast<WfExpression*>(node)).Cast<WfVirtualCseExpression>();
 				}
 
-				vl::Ptr<WorkflowWhileStatement> AstVisitor::CopyNode(WorkflowWhileStatement* node)
+				vl::Ptr<WfVirtualCseStatement> AstVisitor::CopyNode(WfVirtualCseStatement* node)
 				{
 					if (!node) return nullptr;
-					return CopyNode(static_cast<WorkflowStatement*>(node)).Cast<WorkflowWhileStatement>();
+					return CopyNode(static_cast<WfStatement*>(node)).Cast<WfVirtualCseStatement>();
+				}
+
+				vl::Ptr<WfWhileStatement> AstVisitor::CopyNode(WfWhileStatement* node)
+				{
+					if (!node) return nullptr;
+					return CopyNode(static_cast<WfStatement*>(node)).Cast<WfWhileStatement>();
 				}
 
 			}

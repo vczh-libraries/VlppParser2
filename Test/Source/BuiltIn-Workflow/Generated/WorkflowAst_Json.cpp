@@ -14,7 +14,7 @@ namespace vl
 		{
 			namespace json_visitor
 			{
-				void AstVisitor::PrintFields(WorkflowAttachEventExpression* node)
+				void AstVisitor::PrintFields(WfAttachEventExpression* node)
 				{
 					BeginField(L"event");
 					Print(node->event.Obj());
@@ -23,7 +23,7 @@ namespace vl
 					Print(node->function.Obj());
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowAttribute* node)
+				void AstVisitor::PrintFields(WfAttribute* node)
 				{
 					BeginField(L"category");
 					WriteToken(node->category);
@@ -35,15 +35,15 @@ namespace vl
 					Print(node->value.Obj());
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowAutoPropertyDeclaration* node)
+				void AstVisitor::PrintFields(WfAutoPropertyDeclaration* node)
 				{
 					BeginField(L"configConst");
 					switch (node->configConst)
 					{
-					case vl::glr::workflow::WorkflowAPConst::Readonly:
+					case vl::glr::workflow::WfAPConst::Readonly:
 						WriteString(L"Readonly");
 						break;
-					case vl::glr::workflow::WorkflowAPConst::Writable:
+					case vl::glr::workflow::WfAPConst::Writable:
 						WriteString(L"Writable");
 						break;
 					default:
@@ -53,10 +53,10 @@ namespace vl
 					BeginField(L"configObserve");
 					switch (node->configObserve)
 					{
-					case vl::glr::workflow::WorkflowAPObserve::NotObservable:
+					case vl::glr::workflow::WfAPObserve::NotObservable:
 						WriteString(L"NotObservable");
 						break;
-					case vl::glr::workflow::WorkflowAPObserve::Observable:
+					case vl::glr::workflow::WfAPObserve::Observable:
 						WriteString(L"Observable");
 						break;
 					default:
@@ -69,13 +69,13 @@ namespace vl
 					BeginField(L"functionKind");
 					switch (node->functionKind)
 					{
-					case vl::glr::workflow::WorkflowFunctionKind::Normal:
+					case vl::glr::workflow::WfFunctionKind::Normal:
 						WriteString(L"Normal");
 						break;
-					case vl::glr::workflow::WorkflowFunctionKind::Override:
+					case vl::glr::workflow::WfFunctionKind::Override:
 						WriteString(L"Override");
 						break;
-					case vl::glr::workflow::WorkflowFunctionKind::Static:
+					case vl::glr::workflow::WfFunctionKind::Static:
 						WriteString(L"Static");
 						break;
 					default:
@@ -86,7 +86,7 @@ namespace vl
 					Print(node->type.Obj());
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowBaseConstructorCall* node)
+				void AstVisitor::PrintFields(WfBaseConstructorCall* node)
 				{
 					BeginField(L"arguments");
 					BeginArray();
@@ -102,7 +102,7 @@ namespace vl
 					Print(node->type.Obj());
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowBinaryExpression* node)
+				void AstVisitor::PrintFields(WfBinaryExpression* node)
 				{
 					BeginField(L"first");
 					Print(node->first.Obj());
@@ -110,70 +110,70 @@ namespace vl
 					BeginField(L"op");
 					switch (node->op)
 					{
-					case vl::glr::workflow::WorkflowBinaryOperator::Add:
+					case vl::glr::workflow::WfBinaryOperator::Add:
 						WriteString(L"Add");
 						break;
-					case vl::glr::workflow::WorkflowBinaryOperator::And:
+					case vl::glr::workflow::WfBinaryOperator::And:
 						WriteString(L"And");
 						break;
-					case vl::glr::workflow::WorkflowBinaryOperator::Assign:
+					case vl::glr::workflow::WfBinaryOperator::Assign:
 						WriteString(L"Assign");
 						break;
-					case vl::glr::workflow::WorkflowBinaryOperator::Div:
+					case vl::glr::workflow::WfBinaryOperator::Div:
 						WriteString(L"Div");
 						break;
-					case vl::glr::workflow::WorkflowBinaryOperator::EQ:
+					case vl::glr::workflow::WfBinaryOperator::EQ:
 						WriteString(L"EQ");
 						break;
-					case vl::glr::workflow::WorkflowBinaryOperator::Exp:
+					case vl::glr::workflow::WfBinaryOperator::Exp:
 						WriteString(L"Exp");
 						break;
-					case vl::glr::workflow::WorkflowBinaryOperator::FailedThen:
+					case vl::glr::workflow::WfBinaryOperator::FailedThen:
 						WriteString(L"FailedThen");
 						break;
-					case vl::glr::workflow::WorkflowBinaryOperator::FlagAnd:
+					case vl::glr::workflow::WfBinaryOperator::FlagAnd:
 						WriteString(L"FlagAnd");
 						break;
-					case vl::glr::workflow::WorkflowBinaryOperator::FlagOr:
+					case vl::glr::workflow::WfBinaryOperator::FlagOr:
 						WriteString(L"FlagOr");
 						break;
-					case vl::glr::workflow::WorkflowBinaryOperator::GE:
+					case vl::glr::workflow::WfBinaryOperator::GE:
 						WriteString(L"GE");
 						break;
-					case vl::glr::workflow::WorkflowBinaryOperator::GT:
+					case vl::glr::workflow::WfBinaryOperator::GT:
 						WriteString(L"GT");
 						break;
-					case vl::glr::workflow::WorkflowBinaryOperator::Index:
+					case vl::glr::workflow::WfBinaryOperator::Index:
 						WriteString(L"Index");
 						break;
-					case vl::glr::workflow::WorkflowBinaryOperator::LE:
+					case vl::glr::workflow::WfBinaryOperator::LE:
 						WriteString(L"LE");
 						break;
-					case vl::glr::workflow::WorkflowBinaryOperator::LT:
+					case vl::glr::workflow::WfBinaryOperator::LT:
 						WriteString(L"LT");
 						break;
-					case vl::glr::workflow::WorkflowBinaryOperator::Mod:
+					case vl::glr::workflow::WfBinaryOperator::Mod:
 						WriteString(L"Mod");
 						break;
-					case vl::glr::workflow::WorkflowBinaryOperator::Mul:
+					case vl::glr::workflow::WfBinaryOperator::Mul:
 						WriteString(L"Mul");
 						break;
-					case vl::glr::workflow::WorkflowBinaryOperator::NE:
+					case vl::glr::workflow::WfBinaryOperator::NE:
 						WriteString(L"NE");
 						break;
-					case vl::glr::workflow::WorkflowBinaryOperator::Or:
+					case vl::glr::workflow::WfBinaryOperator::Or:
 						WriteString(L"Or");
 						break;
-					case vl::glr::workflow::WorkflowBinaryOperator::Shl:
+					case vl::glr::workflow::WfBinaryOperator::Shl:
 						WriteString(L"Shl");
 						break;
-					case vl::glr::workflow::WorkflowBinaryOperator::Shr:
+					case vl::glr::workflow::WfBinaryOperator::Shr:
 						WriteString(L"Shr");
 						break;
-					case vl::glr::workflow::WorkflowBinaryOperator::Sub:
+					case vl::glr::workflow::WfBinaryOperator::Sub:
 						WriteString(L"Sub");
 						break;
-					case vl::glr::workflow::WorkflowBinaryOperator::Xor:
+					case vl::glr::workflow::WfBinaryOperator::Xor:
 						WriteString(L"Xor");
 						break;
 					default:
@@ -184,13 +184,13 @@ namespace vl
 					Print(node->second.Obj());
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowBindExpression* node)
+				void AstVisitor::PrintFields(WfBindExpression* node)
 				{
 					BeginField(L"expression");
 					Print(node->expression.Obj());
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowBlockStatement* node)
+				void AstVisitor::PrintFields(WfBlockStatement* node)
 				{
 					BeginField(L"endLabel");
 					WriteToken(node->endLabel);
@@ -206,10 +206,10 @@ namespace vl
 					EndArray();
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowBreakStatement* node)
+				void AstVisitor::PrintFields(WfBreakStatement* node)
 				{
 				}
-				void AstVisitor::PrintFields(WorkflowCallExpression* node)
+				void AstVisitor::PrintFields(WfCallExpression* node)
 				{
 					BeginField(L"arguments");
 					BeginArray();
@@ -225,7 +225,7 @@ namespace vl
 					Print(node->function.Obj());
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowCastResultInterfaceDeclaration* node)
+				void AstVisitor::PrintFields(WfCastResultInterfaceDeclaration* node)
 				{
 					BeginField(L"baseType");
 					Print(node->baseType.Obj());
@@ -234,7 +234,7 @@ namespace vl
 					Print(node->elementType.Obj());
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowChildExpression* node)
+				void AstVisitor::PrintFields(WfChildExpression* node)
 				{
 					BeginField(L"name");
 					WriteToken(node->name);
@@ -243,7 +243,7 @@ namespace vl
 					Print(node->parent.Obj());
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowChildType* node)
+				void AstVisitor::PrintFields(WfChildType* node)
 				{
 					BeginField(L"name");
 					WriteToken(node->name);
@@ -252,7 +252,7 @@ namespace vl
 					Print(node->parent.Obj());
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowClassDeclaration* node)
+				void AstVisitor::PrintFields(WfClassDeclaration* node)
 				{
 					BeginField(L"baseTypes");
 					BeginArray();
@@ -267,13 +267,13 @@ namespace vl
 					BeginField(L"constructorType");
 					switch (node->constructorType)
 					{
-					case vl::glr::workflow::WorkflowConstructorType::RawPtr:
+					case vl::glr::workflow::WfConstructorType::RawPtr:
 						WriteString(L"RawPtr");
 						break;
-					case vl::glr::workflow::WorkflowConstructorType::SharedPtr:
+					case vl::glr::workflow::WfConstructorType::SharedPtr:
 						WriteString(L"SharedPtr");
 						break;
-					case vl::glr::workflow::WorkflowConstructorType::Undefined:
+					case vl::glr::workflow::WfConstructorType::Undefined:
 						WriteString(L"Undefined");
 						break;
 					default:
@@ -293,10 +293,10 @@ namespace vl
 					BeginField(L"kind");
 					switch (node->kind)
 					{
-					case vl::glr::workflow::WorkflowClassKind::Class:
+					case vl::glr::workflow::WfClassKind::Class:
 						WriteString(L"Class");
 						break;
-					case vl::glr::workflow::WorkflowClassKind::Interface:
+					case vl::glr::workflow::WfClassKind::Interface:
 						WriteString(L"Interface");
 						break;
 					default:
@@ -304,13 +304,13 @@ namespace vl
 					}
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowCoOperatorExpression* node)
+				void AstVisitor::PrintFields(WfCoOperatorExpression* node)
 				{
 					BeginField(L"name");
 					WriteToken(node->name);
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowCoOperatorStatement* node)
+				void AstVisitor::PrintFields(WfCoOperatorStatement* node)
 				{
 					BeginField(L"arguments");
 					BeginArray();
@@ -329,13 +329,13 @@ namespace vl
 					WriteToken(node->varName);
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowCoPauseStatement* node)
+				void AstVisitor::PrintFields(WfCoPauseStatement* node)
 				{
 					BeginField(L"statement");
 					Print(node->statement.Obj());
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowCoProviderStatement* node)
+				void AstVisitor::PrintFields(WfCoProviderStatement* node)
 				{
 					BeginField(L"name");
 					WriteToken(node->name);
@@ -344,7 +344,7 @@ namespace vl
 					Print(node->statement.Obj());
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowConstructorArgument* node)
+				void AstVisitor::PrintFields(WfConstructorArgument* node)
 				{
 					BeginField(L"key");
 					Print(node->key.Obj());
@@ -353,7 +353,7 @@ namespace vl
 					Print(node->value.Obj());
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowConstructorDeclaration* node)
+				void AstVisitor::PrintFields(WfConstructorDeclaration* node)
 				{
 					BeginField(L"arguments");
 					BeginArray();
@@ -378,13 +378,13 @@ namespace vl
 					BeginField(L"constructorType");
 					switch (node->constructorType)
 					{
-					case vl::glr::workflow::WorkflowConstructorType::RawPtr:
+					case vl::glr::workflow::WfConstructorType::RawPtr:
 						WriteString(L"RawPtr");
 						break;
-					case vl::glr::workflow::WorkflowConstructorType::SharedPtr:
+					case vl::glr::workflow::WfConstructorType::SharedPtr:
 						WriteString(L"SharedPtr");
 						break;
-					case vl::glr::workflow::WorkflowConstructorType::Undefined:
+					case vl::glr::workflow::WfConstructorType::Undefined:
 						WriteString(L"Undefined");
 						break;
 					default:
@@ -395,7 +395,7 @@ namespace vl
 					Print(node->statement.Obj());
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowConstructorExpression* node)
+				void AstVisitor::PrintFields(WfConstructorExpression* node)
 				{
 					BeginField(L"arguments");
 					BeginArray();
@@ -408,13 +408,13 @@ namespace vl
 					EndArray();
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowContinueStatement* node)
+				void AstVisitor::PrintFields(WfContinueStatement* node)
 				{
 				}
-				void AstVisitor::PrintFields(WorkflowCoroutineStatement* node)
+				void AstVisitor::PrintFields(WfCoroutineStatement* node)
 				{
 				}
-				void AstVisitor::PrintFields(WorkflowDeclaration* node)
+				void AstVisitor::PrintFields(WfDeclaration* node)
 				{
 					BeginField(L"attributes");
 					BeginArray();
@@ -430,19 +430,19 @@ namespace vl
 					WriteToken(node->name);
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowDeleteStatement* node)
+				void AstVisitor::PrintFields(WfDeleteStatement* node)
 				{
 					BeginField(L"expression");
 					Print(node->expression.Obj());
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowDestructorDeclaration* node)
+				void AstVisitor::PrintFields(WfDestructorDeclaration* node)
 				{
 					BeginField(L"statement");
 					Print(node->statement.Obj());
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowDetachEventExpression* node)
+				void AstVisitor::PrintFields(WfDetachEventExpression* node)
 				{
 					BeginField(L"event");
 					Print(node->event.Obj());
@@ -451,7 +451,7 @@ namespace vl
 					Print(node->handler.Obj());
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowEnumDeclaration* node)
+				void AstVisitor::PrintFields(WfEnumDeclaration* node)
 				{
 					BeginField(L"items");
 					BeginArray();
@@ -466,10 +466,10 @@ namespace vl
 					BeginField(L"kind");
 					switch (node->kind)
 					{
-					case vl::glr::workflow::WorkflowEnumKind::Flag:
+					case vl::glr::workflow::WfEnumKind::Flag:
 						WriteString(L"Flag");
 						break;
-					case vl::glr::workflow::WorkflowEnumKind::Normal:
+					case vl::glr::workflow::WfEnumKind::Normal:
 						WriteString(L"Normal");
 						break;
 					default:
@@ -477,7 +477,7 @@ namespace vl
 					}
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowEnumItem* node)
+				void AstVisitor::PrintFields(WfEnumItem* node)
 				{
 					BeginField(L"attributes");
 					BeginArray();
@@ -502,10 +502,10 @@ namespace vl
 					BeginField(L"kind");
 					switch (node->kind)
 					{
-					case vl::glr::workflow::WorkflowEnumItemKind::Constant:
+					case vl::glr::workflow::WfEnumItemKind::Constant:
 						WriteString(L"Constant");
 						break;
-					case vl::glr::workflow::WorkflowEnumItemKind::Intersection:
+					case vl::glr::workflow::WfEnumItemKind::Intersection:
 						WriteString(L"Intersection");
 						break;
 					default:
@@ -519,19 +519,19 @@ namespace vl
 					WriteToken(node->number);
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowEnumItemIntersection* node)
+				void AstVisitor::PrintFields(WfEnumItemIntersection* node)
 				{
 					BeginField(L"name");
 					WriteToken(node->name);
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowEnumerableType* node)
+				void AstVisitor::PrintFields(WfEnumerableType* node)
 				{
 					BeginField(L"element");
 					Print(node->element.Obj());
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowEventDeclaration* node)
+				void AstVisitor::PrintFields(WfEventDeclaration* node)
 				{
 					BeginField(L"arguments");
 					BeginArray();
@@ -544,7 +544,7 @@ namespace vl
 					EndArray();
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowExpectedTypeCastExpression* node)
+				void AstVisitor::PrintFields(WfExpectedTypeCastExpression* node)
 				{
 					BeginField(L"expression");
 					Print(node->expression.Obj());
@@ -552,10 +552,10 @@ namespace vl
 					BeginField(L"strategy");
 					switch (node->strategy)
 					{
-					case vl::glr::workflow::WorkflowTypeCastingStrategy::Strong:
+					case vl::glr::workflow::WfTypeCastingStrategy::Strong:
 						WriteString(L"Strong");
 						break;
-					case vl::glr::workflow::WorkflowTypeCastingStrategy::Weak:
+					case vl::glr::workflow::WfTypeCastingStrategy::Weak:
 						WriteString(L"Weak");
 						break;
 					default:
@@ -563,22 +563,22 @@ namespace vl
 					}
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowExpression* node)
+				void AstVisitor::PrintFields(WfExpression* node)
 				{
 				}
-				void AstVisitor::PrintFields(WorkflowExpressionStatement* node)
+				void AstVisitor::PrintFields(WfExpressionStatement* node)
 				{
 					BeginField(L"expression");
 					Print(node->expression.Obj());
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowFloatingExpression* node)
+				void AstVisitor::PrintFields(WfFloatingExpression* node)
 				{
 					BeginField(L"value");
 					WriteToken(node->value);
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowForEachStatement* node)
+				void AstVisitor::PrintFields(WfForEachStatement* node)
 				{
 					BeginField(L"collection");
 					Print(node->collection.Obj());
@@ -586,10 +586,10 @@ namespace vl
 					BeginField(L"direction");
 					switch (node->direction)
 					{
-					case vl::glr::workflow::WorkflowForEachDirection::Normal:
+					case vl::glr::workflow::WfForEachDirection::Normal:
 						WriteString(L"Normal");
 						break;
-					case vl::glr::workflow::WorkflowForEachDirection::Reversed:
+					case vl::glr::workflow::WfForEachDirection::Reversed:
 						WriteString(L"Reversed");
 						break;
 					default:
@@ -603,13 +603,13 @@ namespace vl
 					Print(node->statement.Obj());
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowFormatExpression* node)
+				void AstVisitor::PrintFields(WfFormatExpression* node)
 				{
 					BeginField(L"value");
 					WriteToken(node->value);
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowFunctionArgument* node)
+				void AstVisitor::PrintFields(WfFunctionArgument* node)
 				{
 					BeginField(L"attributes");
 					BeginArray();
@@ -628,15 +628,15 @@ namespace vl
 					Print(node->type.Obj());
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowFunctionDeclaration* node)
+				void AstVisitor::PrintFields(WfFunctionDeclaration* node)
 				{
 					BeginField(L"anonymity");
 					switch (node->anonymity)
 					{
-					case vl::glr::workflow::WorkflowFunctionAnonymity::Anonymous:
+					case vl::glr::workflow::WfFunctionAnonymity::Anonymous:
 						WriteString(L"Anonymous");
 						break;
-					case vl::glr::workflow::WorkflowFunctionAnonymity::Named:
+					case vl::glr::workflow::WfFunctionAnonymity::Named:
 						WriteString(L"Named");
 						break;
 					default:
@@ -656,13 +656,13 @@ namespace vl
 					BeginField(L"functionKind");
 					switch (node->functionKind)
 					{
-					case vl::glr::workflow::WorkflowFunctionKind::Normal:
+					case vl::glr::workflow::WfFunctionKind::Normal:
 						WriteString(L"Normal");
 						break;
-					case vl::glr::workflow::WorkflowFunctionKind::Override:
+					case vl::glr::workflow::WfFunctionKind::Override:
 						WriteString(L"Override");
 						break;
-					case vl::glr::workflow::WorkflowFunctionKind::Static:
+					case vl::glr::workflow::WfFunctionKind::Static:
 						WriteString(L"Static");
 						break;
 					default:
@@ -676,13 +676,13 @@ namespace vl
 					Print(node->statement.Obj());
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowFunctionExpression* node)
+				void AstVisitor::PrintFields(WfFunctionExpression* node)
 				{
 					BeginField(L"function");
 					Print(node->function.Obj());
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowFunctionType* node)
+				void AstVisitor::PrintFields(WfFunctionType* node)
 				{
 					BeginField(L"arguments");
 					BeginArray();
@@ -698,13 +698,13 @@ namespace vl
 					Print(node->result.Obj());
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowGotoStatement* node)
+				void AstVisitor::PrintFields(WfGotoStatement* node)
 				{
 					BeginField(L"label");
 					WriteToken(node->label);
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowIfExpression* node)
+				void AstVisitor::PrintFields(WfIfExpression* node)
 				{
 					BeginField(L"condition");
 					Print(node->condition.Obj());
@@ -716,7 +716,7 @@ namespace vl
 					Print(node->trueBranch.Obj());
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowIfStatement* node)
+				void AstVisitor::PrintFields(WfIfStatement* node)
 				{
 					BeginField(L"expression");
 					Print(node->expression.Obj());
@@ -734,7 +734,7 @@ namespace vl
 					Print(node->type.Obj());
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowInferExpression* node)
+				void AstVisitor::PrintFields(WfInferExpression* node)
 				{
 					BeginField(L"expression");
 					Print(node->expression.Obj());
@@ -743,13 +743,13 @@ namespace vl
 					Print(node->type.Obj());
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowIntegerExpression* node)
+				void AstVisitor::PrintFields(WfIntegerExpression* node)
 				{
 					BeginField(L"value");
 					WriteToken(node->value);
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowLetExpression* node)
+				void AstVisitor::PrintFields(WfLetExpression* node)
 				{
 					BeginField(L"expression");
 					Print(node->expression.Obj());
@@ -765,7 +765,7 @@ namespace vl
 					EndArray();
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowLetVariable* node)
+				void AstVisitor::PrintFields(WfLetVariable* node)
 				{
 					BeginField(L"name");
 					WriteToken(node->name);
@@ -774,18 +774,18 @@ namespace vl
 					Print(node->value.Obj());
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowLiteralExpression* node)
+				void AstVisitor::PrintFields(WfLiteralExpression* node)
 				{
 					BeginField(L"value");
 					switch (node->value)
 					{
-					case vl::glr::workflow::WorkflowLiteralValue::False:
+					case vl::glr::workflow::WfLiteralValue::False:
 						WriteString(L"False");
 						break;
-					case vl::glr::workflow::WorkflowLiteralValue::Null:
+					case vl::glr::workflow::WfLiteralValue::Null:
 						WriteString(L"Null");
 						break;
-					case vl::glr::workflow::WorkflowLiteralValue::True:
+					case vl::glr::workflow::WfLiteralValue::True:
 						WriteString(L"True");
 						break;
 					default:
@@ -793,7 +793,7 @@ namespace vl
 					}
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowMapType* node)
+				void AstVisitor::PrintFields(WfMapType* node)
 				{
 					BeginField(L"key");
 					Print(node->key.Obj());
@@ -804,10 +804,10 @@ namespace vl
 					BeginField(L"writability");
 					switch (node->writability)
 					{
-					case vl::glr::workflow::WorkflowMapWritability::Readonly:
+					case vl::glr::workflow::WfMapWritability::Readonly:
 						WriteString(L"Readonly");
 						break;
-					case vl::glr::workflow::WorkflowMapWritability::Writable:
+					case vl::glr::workflow::WfMapWritability::Writable:
 						WriteString(L"Writable");
 						break;
 					default:
@@ -815,7 +815,7 @@ namespace vl
 					}
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowMemberExpression* node)
+				void AstVisitor::PrintFields(WfMemberExpression* node)
 				{
 					BeginField(L"name");
 					WriteToken(node->name);
@@ -824,7 +824,7 @@ namespace vl
 					Print(node->parent.Obj());
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowMixinCastExpression* node)
+				void AstVisitor::PrintFields(WfMixinCastExpression* node)
 				{
 					BeginField(L"expression");
 					Print(node->expression.Obj());
@@ -833,7 +833,7 @@ namespace vl
 					Print(node->type.Obj());
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowModule* node)
+				void AstVisitor::PrintFields(WfModule* node)
 				{
 					BeginField(L"declarations");
 					BeginArray();
@@ -848,10 +848,10 @@ namespace vl
 					BeginField(L"moduleType");
 					switch (node->moduleType)
 					{
-					case vl::glr::workflow::WorkflowModuleType::Module:
+					case vl::glr::workflow::WfModuleType::Module:
 						WriteString(L"Module");
 						break;
-					case vl::glr::workflow::WorkflowModuleType::Unit:
+					case vl::glr::workflow::WfModuleType::Unit:
 						WriteString(L"Unit");
 						break;
 					default:
@@ -872,10 +872,10 @@ namespace vl
 					EndArray();
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowModuleUsingFragment* node)
+				void AstVisitor::PrintFields(WfModuleUsingFragment* node)
 				{
 				}
-				void AstVisitor::PrintFields(WorkflowModuleUsingItem* node)
+				void AstVisitor::PrintFields(WfModuleUsingItem* node)
 				{
 					BeginField(L"fragments");
 					BeginArray();
@@ -888,13 +888,13 @@ namespace vl
 					EndArray();
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowModuleUsingNameFragment* node)
+				void AstVisitor::PrintFields(WfModuleUsingNameFragment* node)
 				{
 					BeginField(L"name");
 					WriteToken(node->name);
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowModuleUsingPath* node)
+				void AstVisitor::PrintFields(WfModuleUsingPath* node)
 				{
 					BeginField(L"items");
 					BeginArray();
@@ -907,10 +907,10 @@ namespace vl
 					EndArray();
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowModuleUsingWildCardFragment* node)
+				void AstVisitor::PrintFields(WfModuleUsingWildCardFragment* node)
 				{
 				}
-				void AstVisitor::PrintFields(WorkflowNamespaceDeclaration* node)
+				void AstVisitor::PrintFields(WfNamespaceDeclaration* node)
 				{
 					BeginField(L"declarations");
 					BeginArray();
@@ -923,7 +923,7 @@ namespace vl
 					EndArray();
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowNewClassExpression* node)
+				void AstVisitor::PrintFields(WfNewClassExpression* node)
 				{
 					BeginField(L"arguments");
 					BeginArray();
@@ -939,7 +939,7 @@ namespace vl
 					Print(node->type.Obj());
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowNewCoroutineExpression* node)
+				void AstVisitor::PrintFields(WfNewCoroutineExpression* node)
 				{
 					BeginField(L"name");
 					WriteToken(node->name);
@@ -948,7 +948,7 @@ namespace vl
 					Print(node->statement.Obj());
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowNewInterfaceExpression* node)
+				void AstVisitor::PrintFields(WfNewInterfaceExpression* node)
 				{
 					BeginField(L"declarations");
 					BeginArray();
@@ -964,19 +964,19 @@ namespace vl
 					Print(node->type.Obj());
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowNullableType* node)
+				void AstVisitor::PrintFields(WfNullableType* node)
 				{
 					BeginField(L"element");
 					Print(node->element.Obj());
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowObservableListType* node)
+				void AstVisitor::PrintFields(WfObservableListType* node)
 				{
 					BeginField(L"element");
 					Print(node->element.Obj());
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowObserveExpression* node)
+				void AstVisitor::PrintFields(WfObserveExpression* node)
 				{
 					BeginField(L"events");
 					BeginArray();
@@ -997,10 +997,10 @@ namespace vl
 					BeginField(L"observeType");
 					switch (node->observeType)
 					{
-					case vl::glr::workflow::WorkflowObserveType::ExtendedObserve:
+					case vl::glr::workflow::WfObserveType::ExtendedObserve:
 						WriteString(L"ExtendedObserve");
 						break;
-					case vl::glr::workflow::WorkflowObserveType::SimpleObserve:
+					case vl::glr::workflow::WfObserveType::SimpleObserve:
 						WriteString(L"SimpleObserve");
 						break;
 					default:
@@ -1011,51 +1011,51 @@ namespace vl
 					Print(node->parent.Obj());
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowOrderedLambdaExpression* node)
+				void AstVisitor::PrintFields(WfOrderedLambdaExpression* node)
 				{
 					BeginField(L"body");
 					Print(node->body.Obj());
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowOrderedNameExpression* node)
+				void AstVisitor::PrintFields(WfOrderedNameExpression* node)
 				{
 					BeginField(L"name");
 					WriteToken(node->name);
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowPredefinedType* node)
+				void AstVisitor::PrintFields(WfPredefinedType* node)
 				{
 					BeginField(L"name");
 					switch (node->name)
 					{
-					case vl::glr::workflow::WorkflowPredefinedTypeName::Bool:
+					case vl::glr::workflow::WfPredefinedTypeName::Bool:
 						WriteString(L"Bool");
 						break;
-					case vl::glr::workflow::WorkflowPredefinedTypeName::Char:
+					case vl::glr::workflow::WfPredefinedTypeName::Char:
 						WriteString(L"Char");
 						break;
-					case vl::glr::workflow::WorkflowPredefinedTypeName::Double:
+					case vl::glr::workflow::WfPredefinedTypeName::Double:
 						WriteString(L"Double");
 						break;
-					case vl::glr::workflow::WorkflowPredefinedTypeName::Float:
+					case vl::glr::workflow::WfPredefinedTypeName::Float:
 						WriteString(L"Float");
 						break;
-					case vl::glr::workflow::WorkflowPredefinedTypeName::Int:
+					case vl::glr::workflow::WfPredefinedTypeName::Int:
 						WriteString(L"Int");
 						break;
-					case vl::glr::workflow::WorkflowPredefinedTypeName::Interface:
+					case vl::glr::workflow::WfPredefinedTypeName::Interface:
 						WriteString(L"Interface");
 						break;
-					case vl::glr::workflow::WorkflowPredefinedTypeName::Object:
+					case vl::glr::workflow::WfPredefinedTypeName::Object:
 						WriteString(L"Object");
 						break;
-					case vl::glr::workflow::WorkflowPredefinedTypeName::String:
+					case vl::glr::workflow::WfPredefinedTypeName::String:
 						WriteString(L"String");
 						break;
-					case vl::glr::workflow::WorkflowPredefinedTypeName::UInt:
+					case vl::glr::workflow::WfPredefinedTypeName::UInt:
 						WriteString(L"UInt");
 						break;
-					case vl::glr::workflow::WorkflowPredefinedTypeName::Void:
+					case vl::glr::workflow::WfPredefinedTypeName::Void:
 						WriteString(L"Void");
 						break;
 					default:
@@ -1063,7 +1063,7 @@ namespace vl
 					}
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowPropertyDeclaration* node)
+				void AstVisitor::PrintFields(WfPropertyDeclaration* node)
 				{
 					BeginField(L"getter");
 					WriteToken(node->getter);
@@ -1078,13 +1078,13 @@ namespace vl
 					WriteToken(node->valueChangedEvent);
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowRaiseExceptionStatement* node)
+				void AstVisitor::PrintFields(WfRaiseExceptionStatement* node)
 				{
 					BeginField(L"expression");
 					Print(node->expression.Obj());
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowRangeExpression* node)
+				void AstVisitor::PrintFields(WfRangeExpression* node)
 				{
 					BeginField(L"begin");
 					Print(node->begin.Obj());
@@ -1092,10 +1092,10 @@ namespace vl
 					BeginField(L"beginBoundary");
 					switch (node->beginBoundary)
 					{
-					case vl::glr::workflow::WorkflowRangeBoundary::Exclusive:
+					case vl::glr::workflow::WfRangeBoundary::Exclusive:
 						WriteString(L"Exclusive");
 						break;
-					case vl::glr::workflow::WorkflowRangeBoundary::Inclusive:
+					case vl::glr::workflow::WfRangeBoundary::Inclusive:
 						WriteString(L"Inclusive");
 						break;
 					default:
@@ -1108,10 +1108,10 @@ namespace vl
 					BeginField(L"endBoundary");
 					switch (node->endBoundary)
 					{
-					case vl::glr::workflow::WorkflowRangeBoundary::Exclusive:
+					case vl::glr::workflow::WfRangeBoundary::Exclusive:
 						WriteString(L"Exclusive");
 						break;
-					case vl::glr::workflow::WorkflowRangeBoundary::Inclusive:
+					case vl::glr::workflow::WfRangeBoundary::Inclusive:
 						WriteString(L"Inclusive");
 						break;
 					default:
@@ -1119,31 +1119,31 @@ namespace vl
 					}
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowRawPointerType* node)
+				void AstVisitor::PrintFields(WfRawPointerType* node)
 				{
 					BeginField(L"element");
 					Print(node->element.Obj());
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowReferenceExpression* node)
+				void AstVisitor::PrintFields(WfReferenceExpression* node)
 				{
 					BeginField(L"name");
 					WriteToken(node->name);
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowReferenceType* node)
+				void AstVisitor::PrintFields(WfReferenceType* node)
 				{
 					BeginField(L"name");
 					WriteToken(node->name);
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowReturnStatement* node)
+				void AstVisitor::PrintFields(WfReturnStatement* node)
 				{
 					BeginField(L"expression");
 					Print(node->expression.Obj());
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowSetTestingExpression* node)
+				void AstVisitor::PrintFields(WfSetTestingExpression* node)
 				{
 					BeginField(L"collection");
 					Print(node->collection.Obj());
@@ -1154,10 +1154,10 @@ namespace vl
 					BeginField(L"test");
 					switch (node->test)
 					{
-					case vl::glr::workflow::WorkflowSetTesting::In:
+					case vl::glr::workflow::WfSetTesting::In:
 						WriteString(L"In");
 						break;
-					case vl::glr::workflow::WorkflowSetTesting::NotIn:
+					case vl::glr::workflow::WfSetTesting::NotIn:
 						WriteString(L"NotIn");
 						break;
 					default:
@@ -1165,13 +1165,13 @@ namespace vl
 					}
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowSharedPointerType* node)
+				void AstVisitor::PrintFields(WfSharedPointerType* node)
 				{
 					BeginField(L"element");
 					Print(node->element.Obj());
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowStateDeclaration* node)
+				void AstVisitor::PrintFields(WfStateDeclaration* node)
 				{
 					BeginField(L"arguments");
 					BeginArray();
@@ -1190,7 +1190,7 @@ namespace vl
 					Print(node->statement.Obj());
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowStateInput* node)
+				void AstVisitor::PrintFields(WfStateInput* node)
 				{
 					BeginField(L"arguments");
 					BeginArray();
@@ -1206,7 +1206,7 @@ namespace vl
 					WriteToken(node->name);
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowStateInvokeStatement* node)
+				void AstVisitor::PrintFields(WfStateInvokeStatement* node)
 				{
 					BeginField(L"arguments");
 					BeginArray();
@@ -1224,10 +1224,10 @@ namespace vl
 					BeginField(L"type");
 					switch (node->type)
 					{
-					case vl::glr::workflow::WorkflowStateInvokeType::Goto:
+					case vl::glr::workflow::WfStateInvokeType::Goto:
 						WriteString(L"Goto");
 						break;
-					case vl::glr::workflow::WorkflowStateInvokeType::Push:
+					case vl::glr::workflow::WfStateInvokeType::Push:
 						WriteString(L"Push");
 						break;
 					default:
@@ -1235,7 +1235,7 @@ namespace vl
 					}
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowStateMachineDeclaration* node)
+				void AstVisitor::PrintFields(WfStateMachineDeclaration* node)
 				{
 					BeginField(L"inputs");
 					BeginArray();
@@ -1258,16 +1258,16 @@ namespace vl
 					EndArray();
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowStateMachineStatement* node)
+				void AstVisitor::PrintFields(WfStateMachineStatement* node)
 				{
 				}
-				void AstVisitor::PrintFields(WorkflowStateSwitchArgument* node)
+				void AstVisitor::PrintFields(WfStateSwitchArgument* node)
 				{
 					BeginField(L"name");
 					WriteToken(node->name);
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowStateSwitchCase* node)
+				void AstVisitor::PrintFields(WfStateSwitchCase* node)
 				{
 					BeginField(L"arguments");
 					BeginArray();
@@ -1286,7 +1286,7 @@ namespace vl
 					Print(node->statement.Obj());
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowStateSwitchStatement* node)
+				void AstVisitor::PrintFields(WfStateSwitchStatement* node)
 				{
 					BeginField(L"caseBranches");
 					BeginArray();
@@ -1301,19 +1301,19 @@ namespace vl
 					BeginField(L"type");
 					switch (node->type)
 					{
-					case vl::glr::workflow::WorkflowStateSwitchType::Default:
+					case vl::glr::workflow::WfStateSwitchType::Default:
 						WriteString(L"Default");
 						break;
-					case vl::glr::workflow::WorkflowStateSwitchType::Ignore:
+					case vl::glr::workflow::WfStateSwitchType::Ignore:
 						WriteString(L"Ignore");
 						break;
-					case vl::glr::workflow::WorkflowStateSwitchType::IgnoreAndReturn:
+					case vl::glr::workflow::WfStateSwitchType::IgnoreAndReturn:
 						WriteString(L"IgnoreAndReturn");
 						break;
-					case vl::glr::workflow::WorkflowStateSwitchType::Pass:
+					case vl::glr::workflow::WfStateSwitchType::Pass:
 						WriteString(L"Pass");
 						break;
-					case vl::glr::workflow::WorkflowStateSwitchType::PassAndReturn:
+					case vl::glr::workflow::WfStateSwitchType::PassAndReturn:
 						WriteString(L"PassAndReturn");
 						break;
 					default:
@@ -1321,16 +1321,16 @@ namespace vl
 					}
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowStatement* node)
+				void AstVisitor::PrintFields(WfStatement* node)
 				{
 				}
-				void AstVisitor::PrintFields(WorkflowStringExpression* node)
+				void AstVisitor::PrintFields(WfStringExpression* node)
 				{
 					BeginField(L"value");
 					WriteToken(node->value);
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowStructDeclaration* node)
+				void AstVisitor::PrintFields(WfStructDeclaration* node)
 				{
 					BeginField(L"members");
 					BeginArray();
@@ -1343,7 +1343,7 @@ namespace vl
 					EndArray();
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowStructMember* node)
+				void AstVisitor::PrintFields(WfStructMember* node)
 				{
 					BeginField(L"attributes");
 					BeginArray();
@@ -1362,7 +1362,7 @@ namespace vl
 					Print(node->type.Obj());
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowSwitchCase* node)
+				void AstVisitor::PrintFields(WfSwitchCase* node)
 				{
 					BeginField(L"expression");
 					Print(node->expression.Obj());
@@ -1371,7 +1371,7 @@ namespace vl
 					Print(node->statement.Obj());
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowSwitchStatement* node)
+				void AstVisitor::PrintFields(WfSwitchStatement* node)
 				{
 					BeginField(L"caseBranches");
 					BeginArray();
@@ -1390,22 +1390,22 @@ namespace vl
 					Print(node->expression.Obj());
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowThisExpression* node)
+				void AstVisitor::PrintFields(WfThisExpression* node)
 				{
 				}
-				void AstVisitor::PrintFields(WorkflowTopQualifiedExpression* node)
-				{
-					BeginField(L"name");
-					WriteToken(node->name);
-					EndField();
-				}
-				void AstVisitor::PrintFields(WorkflowTopQualifiedType* node)
+				void AstVisitor::PrintFields(WfTopQualifiedExpression* node)
 				{
 					BeginField(L"name");
 					WriteToken(node->name);
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowTryStatement* node)
+				void AstVisitor::PrintFields(WfTopQualifiedType* node)
+				{
+					BeginField(L"name");
+					WriteToken(node->name);
+					EndField();
+				}
+				void AstVisitor::PrintFields(WfTryStatement* node)
 				{
 					BeginField(L"catchStatement");
 					Print(node->catchStatement.Obj());
@@ -1420,10 +1420,10 @@ namespace vl
 					Print(node->protectedStatement.Obj());
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowType* node)
+				void AstVisitor::PrintFields(WfType* node)
 				{
 				}
-				void AstVisitor::PrintFields(WorkflowTypeCastingExpression* node)
+				void AstVisitor::PrintFields(WfTypeCastingExpression* node)
 				{
 					BeginField(L"expression");
 					Print(node->expression.Obj());
@@ -1431,10 +1431,10 @@ namespace vl
 					BeginField(L"strategy");
 					switch (node->strategy)
 					{
-					case vl::glr::workflow::WorkflowTypeCastingStrategy::Strong:
+					case vl::glr::workflow::WfTypeCastingStrategy::Strong:
 						WriteString(L"Strong");
 						break;
-					case vl::glr::workflow::WorkflowTypeCastingStrategy::Weak:
+					case vl::glr::workflow::WfTypeCastingStrategy::Weak:
 						WriteString(L"Weak");
 						break;
 					default:
@@ -1445,19 +1445,19 @@ namespace vl
 					Print(node->type.Obj());
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowTypeOfExpressionExpression* node)
+				void AstVisitor::PrintFields(WfTypeOfExpressionExpression* node)
 				{
 					BeginField(L"expression");
 					Print(node->expression.Obj());
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowTypeOfTypeExpression* node)
+				void AstVisitor::PrintFields(WfTypeOfTypeExpression* node)
 				{
 					BeginField(L"type");
 					Print(node->type.Obj());
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowTypeTestingExpression* node)
+				void AstVisitor::PrintFields(WfTypeTestingExpression* node)
 				{
 					BeginField(L"expression");
 					Print(node->expression.Obj());
@@ -1465,16 +1465,16 @@ namespace vl
 					BeginField(L"test");
 					switch (node->test)
 					{
-					case vl::glr::workflow::WorkflowTypeTesting::IsNotNull:
+					case vl::glr::workflow::WfTypeTesting::IsNotNull:
 						WriteString(L"IsNotNull");
 						break;
-					case vl::glr::workflow::WorkflowTypeTesting::IsNotType:
+					case vl::glr::workflow::WfTypeTesting::IsNotType:
 						WriteString(L"IsNotType");
 						break;
-					case vl::glr::workflow::WorkflowTypeTesting::IsNull:
+					case vl::glr::workflow::WfTypeTesting::IsNull:
 						WriteString(L"IsNull");
 						break;
-					case vl::glr::workflow::WorkflowTypeTesting::IsType:
+					case vl::glr::workflow::WfTypeTesting::IsType:
 						WriteString(L"IsType");
 						break;
 					default:
@@ -1485,18 +1485,18 @@ namespace vl
 					Print(node->type.Obj());
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowUnaryExpression* node)
+				void AstVisitor::PrintFields(WfUnaryExpression* node)
 				{
 					BeginField(L"op");
 					switch (node->op)
 					{
-					case vl::glr::workflow::WorkflowUnaryOperator::Negative:
+					case vl::glr::workflow::WfUnaryOperator::Negative:
 						WriteString(L"Negative");
 						break;
-					case vl::glr::workflow::WorkflowUnaryOperator::Not:
+					case vl::glr::workflow::WfUnaryOperator::Not:
 						WriteString(L"Not");
 						break;
-					case vl::glr::workflow::WorkflowUnaryOperator::Positive:
+					case vl::glr::workflow::WfUnaryOperator::Positive:
 						WriteString(L"Positive");
 						break;
 					default:
@@ -1507,7 +1507,7 @@ namespace vl
 					Print(node->operand.Obj());
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowVariableDeclaration* node)
+				void AstVisitor::PrintFields(WfVariableDeclaration* node)
 				{
 					BeginField(L"expression");
 					Print(node->expression.Obj());
@@ -1516,13 +1516,13 @@ namespace vl
 					Print(node->type.Obj());
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowVariableStatement* node)
+				void AstVisitor::PrintFields(WfVariableStatement* node)
 				{
 					BeginField(L"variable");
 					Print(node->variable.Obj());
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowVirtualCfeDeclaration* node)
+				void AstVisitor::PrintFields(WfVirtualCfeDeclaration* node)
 				{
 					BeginField(L"expandedDeclarations");
 					BeginArray();
@@ -1535,13 +1535,13 @@ namespace vl
 					EndArray();
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowVirtualCfeExpression* node)
+				void AstVisitor::PrintFields(WfVirtualCfeExpression* node)
 				{
 					BeginField(L"expandedExpression");
 					Print(node->expandedExpression.Obj());
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowVirtualCseDeclaration* node)
+				void AstVisitor::PrintFields(WfVirtualCseDeclaration* node)
 				{
 					BeginField(L"expandedDeclarations");
 					BeginArray();
@@ -1554,19 +1554,19 @@ namespace vl
 					EndArray();
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowVirtualCseExpression* node)
+				void AstVisitor::PrintFields(WfVirtualCseExpression* node)
 				{
 					BeginField(L"expandedExpression");
 					Print(node->expandedExpression.Obj());
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowVirtualCseStatement* node)
+				void AstVisitor::PrintFields(WfVirtualCseStatement* node)
 				{
 					BeginField(L"expandedStatement");
 					Print(node->expandedStatement.Obj());
 					EndField();
 				}
-				void AstVisitor::PrintFields(WorkflowWhileStatement* node)
+				void AstVisitor::PrintFields(WfWhileStatement* node)
 				{
 					BeginField(L"condition");
 					Print(node->condition.Obj());
@@ -1576,7 +1576,7 @@ namespace vl
 					EndField();
 				}
 
-				void AstVisitor::Visit(WorkflowPredefinedType* node)
+				void AstVisitor::Visit(WfPredefinedType* node)
 				{
 					if (!node)
 					{
@@ -1585,12 +1585,12 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"PredefinedType", node);
-					PrintFields(static_cast<WorkflowType*>(node));
-					PrintFields(static_cast<WorkflowPredefinedType*>(node));
+					PrintFields(static_cast<WfType*>(node));
+					PrintFields(static_cast<WfPredefinedType*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowTopQualifiedType* node)
+				void AstVisitor::Visit(WfTopQualifiedType* node)
 				{
 					if (!node)
 					{
@@ -1599,12 +1599,12 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"TopQualifiedType", node);
-					PrintFields(static_cast<WorkflowType*>(node));
-					PrintFields(static_cast<WorkflowTopQualifiedType*>(node));
+					PrintFields(static_cast<WfType*>(node));
+					PrintFields(static_cast<WfTopQualifiedType*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowReferenceType* node)
+				void AstVisitor::Visit(WfReferenceType* node)
 				{
 					if (!node)
 					{
@@ -1613,12 +1613,12 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"ReferenceType", node);
-					PrintFields(static_cast<WorkflowType*>(node));
-					PrintFields(static_cast<WorkflowReferenceType*>(node));
+					PrintFields(static_cast<WfType*>(node));
+					PrintFields(static_cast<WfReferenceType*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowRawPointerType* node)
+				void AstVisitor::Visit(WfRawPointerType* node)
 				{
 					if (!node)
 					{
@@ -1627,12 +1627,12 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"RawPointerType", node);
-					PrintFields(static_cast<WorkflowType*>(node));
-					PrintFields(static_cast<WorkflowRawPointerType*>(node));
+					PrintFields(static_cast<WfType*>(node));
+					PrintFields(static_cast<WfRawPointerType*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowSharedPointerType* node)
+				void AstVisitor::Visit(WfSharedPointerType* node)
 				{
 					if (!node)
 					{
@@ -1641,12 +1641,12 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"SharedPointerType", node);
-					PrintFields(static_cast<WorkflowType*>(node));
-					PrintFields(static_cast<WorkflowSharedPointerType*>(node));
+					PrintFields(static_cast<WfType*>(node));
+					PrintFields(static_cast<WfSharedPointerType*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowNullableType* node)
+				void AstVisitor::Visit(WfNullableType* node)
 				{
 					if (!node)
 					{
@@ -1655,12 +1655,12 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"NullableType", node);
-					PrintFields(static_cast<WorkflowType*>(node));
-					PrintFields(static_cast<WorkflowNullableType*>(node));
+					PrintFields(static_cast<WfType*>(node));
+					PrintFields(static_cast<WfNullableType*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowEnumerableType* node)
+				void AstVisitor::Visit(WfEnumerableType* node)
 				{
 					if (!node)
 					{
@@ -1669,12 +1669,12 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"EnumerableType", node);
-					PrintFields(static_cast<WorkflowType*>(node));
-					PrintFields(static_cast<WorkflowEnumerableType*>(node));
+					PrintFields(static_cast<WfType*>(node));
+					PrintFields(static_cast<WfEnumerableType*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowMapType* node)
+				void AstVisitor::Visit(WfMapType* node)
 				{
 					if (!node)
 					{
@@ -1683,12 +1683,12 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"MapType", node);
-					PrintFields(static_cast<WorkflowType*>(node));
-					PrintFields(static_cast<WorkflowMapType*>(node));
+					PrintFields(static_cast<WfType*>(node));
+					PrintFields(static_cast<WfMapType*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowObservableListType* node)
+				void AstVisitor::Visit(WfObservableListType* node)
 				{
 					if (!node)
 					{
@@ -1697,12 +1697,12 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"ObservableListType", node);
-					PrintFields(static_cast<WorkflowType*>(node));
-					PrintFields(static_cast<WorkflowObservableListType*>(node));
+					PrintFields(static_cast<WfType*>(node));
+					PrintFields(static_cast<WfObservableListType*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowFunctionType* node)
+				void AstVisitor::Visit(WfFunctionType* node)
 				{
 					if (!node)
 					{
@@ -1711,12 +1711,12 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"FunctionType", node);
-					PrintFields(static_cast<WorkflowType*>(node));
-					PrintFields(static_cast<WorkflowFunctionType*>(node));
+					PrintFields(static_cast<WfType*>(node));
+					PrintFields(static_cast<WfFunctionType*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowChildType* node)
+				void AstVisitor::Visit(WfChildType* node)
 				{
 					if (!node)
 					{
@@ -1725,12 +1725,12 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"ChildType", node);
-					PrintFields(static_cast<WorkflowType*>(node));
-					PrintFields(static_cast<WorkflowChildType*>(node));
+					PrintFields(static_cast<WfType*>(node));
+					PrintFields(static_cast<WfChildType*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowThisExpression* node)
+				void AstVisitor::Visit(WfThisExpression* node)
 				{
 					if (!node)
 					{
@@ -1739,12 +1739,12 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"ThisExpression", node);
-					PrintFields(static_cast<WorkflowExpression*>(node));
-					PrintFields(static_cast<WorkflowThisExpression*>(node));
+					PrintFields(static_cast<WfExpression*>(node));
+					PrintFields(static_cast<WfThisExpression*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowTopQualifiedExpression* node)
+				void AstVisitor::Visit(WfTopQualifiedExpression* node)
 				{
 					if (!node)
 					{
@@ -1753,12 +1753,12 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"TopQualifiedExpression", node);
-					PrintFields(static_cast<WorkflowExpression*>(node));
-					PrintFields(static_cast<WorkflowTopQualifiedExpression*>(node));
+					PrintFields(static_cast<WfExpression*>(node));
+					PrintFields(static_cast<WfTopQualifiedExpression*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowReferenceExpression* node)
+				void AstVisitor::Visit(WfReferenceExpression* node)
 				{
 					if (!node)
 					{
@@ -1767,12 +1767,12 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"ReferenceExpression", node);
-					PrintFields(static_cast<WorkflowExpression*>(node));
-					PrintFields(static_cast<WorkflowReferenceExpression*>(node));
+					PrintFields(static_cast<WfExpression*>(node));
+					PrintFields(static_cast<WfReferenceExpression*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowOrderedNameExpression* node)
+				void AstVisitor::Visit(WfOrderedNameExpression* node)
 				{
 					if (!node)
 					{
@@ -1781,12 +1781,12 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"OrderedNameExpression", node);
-					PrintFields(static_cast<WorkflowExpression*>(node));
-					PrintFields(static_cast<WorkflowOrderedNameExpression*>(node));
+					PrintFields(static_cast<WfExpression*>(node));
+					PrintFields(static_cast<WfOrderedNameExpression*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowOrderedLambdaExpression* node)
+				void AstVisitor::Visit(WfOrderedLambdaExpression* node)
 				{
 					if (!node)
 					{
@@ -1795,12 +1795,12 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"OrderedLambdaExpression", node);
-					PrintFields(static_cast<WorkflowExpression*>(node));
-					PrintFields(static_cast<WorkflowOrderedLambdaExpression*>(node));
+					PrintFields(static_cast<WfExpression*>(node));
+					PrintFields(static_cast<WfOrderedLambdaExpression*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowMemberExpression* node)
+				void AstVisitor::Visit(WfMemberExpression* node)
 				{
 					if (!node)
 					{
@@ -1809,12 +1809,12 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"MemberExpression", node);
-					PrintFields(static_cast<WorkflowExpression*>(node));
-					PrintFields(static_cast<WorkflowMemberExpression*>(node));
+					PrintFields(static_cast<WfExpression*>(node));
+					PrintFields(static_cast<WfMemberExpression*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowChildExpression* node)
+				void AstVisitor::Visit(WfChildExpression* node)
 				{
 					if (!node)
 					{
@@ -1823,12 +1823,12 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"ChildExpression", node);
-					PrintFields(static_cast<WorkflowExpression*>(node));
-					PrintFields(static_cast<WorkflowChildExpression*>(node));
+					PrintFields(static_cast<WfExpression*>(node));
+					PrintFields(static_cast<WfChildExpression*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowLiteralExpression* node)
+				void AstVisitor::Visit(WfLiteralExpression* node)
 				{
 					if (!node)
 					{
@@ -1837,12 +1837,12 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"LiteralExpression", node);
-					PrintFields(static_cast<WorkflowExpression*>(node));
-					PrintFields(static_cast<WorkflowLiteralExpression*>(node));
+					PrintFields(static_cast<WfExpression*>(node));
+					PrintFields(static_cast<WfLiteralExpression*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowFloatingExpression* node)
+				void AstVisitor::Visit(WfFloatingExpression* node)
 				{
 					if (!node)
 					{
@@ -1851,12 +1851,12 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"FloatingExpression", node);
-					PrintFields(static_cast<WorkflowExpression*>(node));
-					PrintFields(static_cast<WorkflowFloatingExpression*>(node));
+					PrintFields(static_cast<WfExpression*>(node));
+					PrintFields(static_cast<WfFloatingExpression*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowIntegerExpression* node)
+				void AstVisitor::Visit(WfIntegerExpression* node)
 				{
 					if (!node)
 					{
@@ -1865,12 +1865,12 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"IntegerExpression", node);
-					PrintFields(static_cast<WorkflowExpression*>(node));
-					PrintFields(static_cast<WorkflowIntegerExpression*>(node));
+					PrintFields(static_cast<WfExpression*>(node));
+					PrintFields(static_cast<WfIntegerExpression*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowStringExpression* node)
+				void AstVisitor::Visit(WfStringExpression* node)
 				{
 					if (!node)
 					{
@@ -1879,12 +1879,12 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"StringExpression", node);
-					PrintFields(static_cast<WorkflowExpression*>(node));
-					PrintFields(static_cast<WorkflowStringExpression*>(node));
+					PrintFields(static_cast<WfExpression*>(node));
+					PrintFields(static_cast<WfStringExpression*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowUnaryExpression* node)
+				void AstVisitor::Visit(WfUnaryExpression* node)
 				{
 					if (!node)
 					{
@@ -1893,12 +1893,12 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"UnaryExpression", node);
-					PrintFields(static_cast<WorkflowExpression*>(node));
-					PrintFields(static_cast<WorkflowUnaryExpression*>(node));
+					PrintFields(static_cast<WfExpression*>(node));
+					PrintFields(static_cast<WfUnaryExpression*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowBinaryExpression* node)
+				void AstVisitor::Visit(WfBinaryExpression* node)
 				{
 					if (!node)
 					{
@@ -1907,12 +1907,12 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"BinaryExpression", node);
-					PrintFields(static_cast<WorkflowExpression*>(node));
-					PrintFields(static_cast<WorkflowBinaryExpression*>(node));
+					PrintFields(static_cast<WfExpression*>(node));
+					PrintFields(static_cast<WfBinaryExpression*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowLetExpression* node)
+				void AstVisitor::Visit(WfLetExpression* node)
 				{
 					if (!node)
 					{
@@ -1921,12 +1921,12 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"LetExpression", node);
-					PrintFields(static_cast<WorkflowExpression*>(node));
-					PrintFields(static_cast<WorkflowLetExpression*>(node));
+					PrintFields(static_cast<WfExpression*>(node));
+					PrintFields(static_cast<WfLetExpression*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowIfExpression* node)
+				void AstVisitor::Visit(WfIfExpression* node)
 				{
 					if (!node)
 					{
@@ -1935,12 +1935,12 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"IfExpression", node);
-					PrintFields(static_cast<WorkflowExpression*>(node));
-					PrintFields(static_cast<WorkflowIfExpression*>(node));
+					PrintFields(static_cast<WfExpression*>(node));
+					PrintFields(static_cast<WfIfExpression*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowRangeExpression* node)
+				void AstVisitor::Visit(WfRangeExpression* node)
 				{
 					if (!node)
 					{
@@ -1949,12 +1949,12 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"RangeExpression", node);
-					PrintFields(static_cast<WorkflowExpression*>(node));
-					PrintFields(static_cast<WorkflowRangeExpression*>(node));
+					PrintFields(static_cast<WfExpression*>(node));
+					PrintFields(static_cast<WfRangeExpression*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowSetTestingExpression* node)
+				void AstVisitor::Visit(WfSetTestingExpression* node)
 				{
 					if (!node)
 					{
@@ -1963,12 +1963,12 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"SetTestingExpression", node);
-					PrintFields(static_cast<WorkflowExpression*>(node));
-					PrintFields(static_cast<WorkflowSetTestingExpression*>(node));
+					PrintFields(static_cast<WfExpression*>(node));
+					PrintFields(static_cast<WfSetTestingExpression*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowConstructorExpression* node)
+				void AstVisitor::Visit(WfConstructorExpression* node)
 				{
 					if (!node)
 					{
@@ -1977,12 +1977,12 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"ConstructorExpression", node);
-					PrintFields(static_cast<WorkflowExpression*>(node));
-					PrintFields(static_cast<WorkflowConstructorExpression*>(node));
+					PrintFields(static_cast<WfExpression*>(node));
+					PrintFields(static_cast<WfConstructorExpression*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowInferExpression* node)
+				void AstVisitor::Visit(WfInferExpression* node)
 				{
 					if (!node)
 					{
@@ -1991,12 +1991,12 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"InferExpression", node);
-					PrintFields(static_cast<WorkflowExpression*>(node));
-					PrintFields(static_cast<WorkflowInferExpression*>(node));
+					PrintFields(static_cast<WfExpression*>(node));
+					PrintFields(static_cast<WfInferExpression*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowTypeCastingExpression* node)
+				void AstVisitor::Visit(WfTypeCastingExpression* node)
 				{
 					if (!node)
 					{
@@ -2005,12 +2005,12 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"TypeCastingExpression", node);
-					PrintFields(static_cast<WorkflowExpression*>(node));
-					PrintFields(static_cast<WorkflowTypeCastingExpression*>(node));
+					PrintFields(static_cast<WfExpression*>(node));
+					PrintFields(static_cast<WfTypeCastingExpression*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowTypeTestingExpression* node)
+				void AstVisitor::Visit(WfTypeTestingExpression* node)
 				{
 					if (!node)
 					{
@@ -2019,12 +2019,12 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"TypeTestingExpression", node);
-					PrintFields(static_cast<WorkflowExpression*>(node));
-					PrintFields(static_cast<WorkflowTypeTestingExpression*>(node));
+					PrintFields(static_cast<WfExpression*>(node));
+					PrintFields(static_cast<WfTypeTestingExpression*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowTypeOfTypeExpression* node)
+				void AstVisitor::Visit(WfTypeOfTypeExpression* node)
 				{
 					if (!node)
 					{
@@ -2033,12 +2033,12 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"TypeOfTypeExpression", node);
-					PrintFields(static_cast<WorkflowExpression*>(node));
-					PrintFields(static_cast<WorkflowTypeOfTypeExpression*>(node));
+					PrintFields(static_cast<WfExpression*>(node));
+					PrintFields(static_cast<WfTypeOfTypeExpression*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowTypeOfExpressionExpression* node)
+				void AstVisitor::Visit(WfTypeOfExpressionExpression* node)
 				{
 					if (!node)
 					{
@@ -2047,12 +2047,12 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"TypeOfExpressionExpression", node);
-					PrintFields(static_cast<WorkflowExpression*>(node));
-					PrintFields(static_cast<WorkflowTypeOfExpressionExpression*>(node));
+					PrintFields(static_cast<WfExpression*>(node));
+					PrintFields(static_cast<WfTypeOfExpressionExpression*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowAttachEventExpression* node)
+				void AstVisitor::Visit(WfAttachEventExpression* node)
 				{
 					if (!node)
 					{
@@ -2061,12 +2061,12 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"AttachEventExpression", node);
-					PrintFields(static_cast<WorkflowExpression*>(node));
-					PrintFields(static_cast<WorkflowAttachEventExpression*>(node));
+					PrintFields(static_cast<WfExpression*>(node));
+					PrintFields(static_cast<WfAttachEventExpression*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowDetachEventExpression* node)
+				void AstVisitor::Visit(WfDetachEventExpression* node)
 				{
 					if (!node)
 					{
@@ -2075,12 +2075,12 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"DetachEventExpression", node);
-					PrintFields(static_cast<WorkflowExpression*>(node));
-					PrintFields(static_cast<WorkflowDetachEventExpression*>(node));
+					PrintFields(static_cast<WfExpression*>(node));
+					PrintFields(static_cast<WfDetachEventExpression*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowObserveExpression* node)
+				void AstVisitor::Visit(WfObserveExpression* node)
 				{
 					if (!node)
 					{
@@ -2089,12 +2089,12 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"ObserveExpression", node);
-					PrintFields(static_cast<WorkflowExpression*>(node));
-					PrintFields(static_cast<WorkflowObserveExpression*>(node));
+					PrintFields(static_cast<WfExpression*>(node));
+					PrintFields(static_cast<WfObserveExpression*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowCallExpression* node)
+				void AstVisitor::Visit(WfCallExpression* node)
 				{
 					if (!node)
 					{
@@ -2103,12 +2103,12 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"CallExpression", node);
-					PrintFields(static_cast<WorkflowExpression*>(node));
-					PrintFields(static_cast<WorkflowCallExpression*>(node));
+					PrintFields(static_cast<WfExpression*>(node));
+					PrintFields(static_cast<WfCallExpression*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowFunctionExpression* node)
+				void AstVisitor::Visit(WfFunctionExpression* node)
 				{
 					if (!node)
 					{
@@ -2117,12 +2117,12 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"FunctionExpression", node);
-					PrintFields(static_cast<WorkflowExpression*>(node));
-					PrintFields(static_cast<WorkflowFunctionExpression*>(node));
+					PrintFields(static_cast<WfExpression*>(node));
+					PrintFields(static_cast<WfFunctionExpression*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowNewClassExpression* node)
+				void AstVisitor::Visit(WfNewClassExpression* node)
 				{
 					if (!node)
 					{
@@ -2131,12 +2131,12 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"NewClassExpression", node);
-					PrintFields(static_cast<WorkflowExpression*>(node));
-					PrintFields(static_cast<WorkflowNewClassExpression*>(node));
+					PrintFields(static_cast<WfExpression*>(node));
+					PrintFields(static_cast<WfNewClassExpression*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowNewInterfaceExpression* node)
+				void AstVisitor::Visit(WfNewInterfaceExpression* node)
 				{
 					if (!node)
 					{
@@ -2145,22 +2145,22 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"NewInterfaceExpression", node);
-					PrintFields(static_cast<WorkflowExpression*>(node));
-					PrintFields(static_cast<WorkflowNewInterfaceExpression*>(node));
+					PrintFields(static_cast<WfExpression*>(node));
+					PrintFields(static_cast<WfNewInterfaceExpression*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowVirtualCfeExpression* node)
+				void AstVisitor::Visit(WfVirtualCfeExpression* node)
 				{
-					node->Accept(static_cast<WorkflowVirtualCfeExpression::IVisitor*>(this));
+					node->Accept(static_cast<WfVirtualCfeExpression::IVisitor*>(this));
 				}
 
-				void AstVisitor::Visit(WorkflowVirtualCseExpression* node)
+				void AstVisitor::Visit(WfVirtualCseExpression* node)
 				{
-					node->Accept(static_cast<WorkflowVirtualCseExpression::IVisitor*>(this));
+					node->Accept(static_cast<WfVirtualCseExpression::IVisitor*>(this));
 				}
 
-				void AstVisitor::Visit(WorkflowBreakStatement* node)
+				void AstVisitor::Visit(WfBreakStatement* node)
 				{
 					if (!node)
 					{
@@ -2169,12 +2169,12 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"BreakStatement", node);
-					PrintFields(static_cast<WorkflowStatement*>(node));
-					PrintFields(static_cast<WorkflowBreakStatement*>(node));
+					PrintFields(static_cast<WfStatement*>(node));
+					PrintFields(static_cast<WfBreakStatement*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowContinueStatement* node)
+				void AstVisitor::Visit(WfContinueStatement* node)
 				{
 					if (!node)
 					{
@@ -2183,12 +2183,12 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"ContinueStatement", node);
-					PrintFields(static_cast<WorkflowStatement*>(node));
-					PrintFields(static_cast<WorkflowContinueStatement*>(node));
+					PrintFields(static_cast<WfStatement*>(node));
+					PrintFields(static_cast<WfContinueStatement*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowReturnStatement* node)
+				void AstVisitor::Visit(WfReturnStatement* node)
 				{
 					if (!node)
 					{
@@ -2197,12 +2197,12 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"ReturnStatement", node);
-					PrintFields(static_cast<WorkflowStatement*>(node));
-					PrintFields(static_cast<WorkflowReturnStatement*>(node));
+					PrintFields(static_cast<WfStatement*>(node));
+					PrintFields(static_cast<WfReturnStatement*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowDeleteStatement* node)
+				void AstVisitor::Visit(WfDeleteStatement* node)
 				{
 					if (!node)
 					{
@@ -2211,12 +2211,12 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"DeleteStatement", node);
-					PrintFields(static_cast<WorkflowStatement*>(node));
-					PrintFields(static_cast<WorkflowDeleteStatement*>(node));
+					PrintFields(static_cast<WfStatement*>(node));
+					PrintFields(static_cast<WfDeleteStatement*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowRaiseExceptionStatement* node)
+				void AstVisitor::Visit(WfRaiseExceptionStatement* node)
 				{
 					if (!node)
 					{
@@ -2225,12 +2225,12 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"RaiseExceptionStatement", node);
-					PrintFields(static_cast<WorkflowStatement*>(node));
-					PrintFields(static_cast<WorkflowRaiseExceptionStatement*>(node));
+					PrintFields(static_cast<WfStatement*>(node));
+					PrintFields(static_cast<WfRaiseExceptionStatement*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowIfStatement* node)
+				void AstVisitor::Visit(WfIfStatement* node)
 				{
 					if (!node)
 					{
@@ -2239,12 +2239,12 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"IfStatement", node);
-					PrintFields(static_cast<WorkflowStatement*>(node));
-					PrintFields(static_cast<WorkflowIfStatement*>(node));
+					PrintFields(static_cast<WfStatement*>(node));
+					PrintFields(static_cast<WfIfStatement*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowWhileStatement* node)
+				void AstVisitor::Visit(WfWhileStatement* node)
 				{
 					if (!node)
 					{
@@ -2253,12 +2253,12 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"WhileStatement", node);
-					PrintFields(static_cast<WorkflowStatement*>(node));
-					PrintFields(static_cast<WorkflowWhileStatement*>(node));
+					PrintFields(static_cast<WfStatement*>(node));
+					PrintFields(static_cast<WfWhileStatement*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowTryStatement* node)
+				void AstVisitor::Visit(WfTryStatement* node)
 				{
 					if (!node)
 					{
@@ -2267,12 +2267,12 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"TryStatement", node);
-					PrintFields(static_cast<WorkflowStatement*>(node));
-					PrintFields(static_cast<WorkflowTryStatement*>(node));
+					PrintFields(static_cast<WfStatement*>(node));
+					PrintFields(static_cast<WfTryStatement*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowBlockStatement* node)
+				void AstVisitor::Visit(WfBlockStatement* node)
 				{
 					if (!node)
 					{
@@ -2281,12 +2281,12 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"BlockStatement", node);
-					PrintFields(static_cast<WorkflowStatement*>(node));
-					PrintFields(static_cast<WorkflowBlockStatement*>(node));
+					PrintFields(static_cast<WfStatement*>(node));
+					PrintFields(static_cast<WfBlockStatement*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowGotoStatement* node)
+				void AstVisitor::Visit(WfGotoStatement* node)
 				{
 					if (!node)
 					{
@@ -2295,12 +2295,12 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"GotoStatement", node);
-					PrintFields(static_cast<WorkflowStatement*>(node));
-					PrintFields(static_cast<WorkflowGotoStatement*>(node));
+					PrintFields(static_cast<WfStatement*>(node));
+					PrintFields(static_cast<WfGotoStatement*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowVariableStatement* node)
+				void AstVisitor::Visit(WfVariableStatement* node)
 				{
 					if (!node)
 					{
@@ -2309,12 +2309,12 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"VariableStatement", node);
-					PrintFields(static_cast<WorkflowStatement*>(node));
-					PrintFields(static_cast<WorkflowVariableStatement*>(node));
+					PrintFields(static_cast<WfStatement*>(node));
+					PrintFields(static_cast<WfVariableStatement*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowExpressionStatement* node)
+				void AstVisitor::Visit(WfExpressionStatement* node)
 				{
 					if (!node)
 					{
@@ -2323,27 +2323,27 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"ExpressionStatement", node);
-					PrintFields(static_cast<WorkflowStatement*>(node));
-					PrintFields(static_cast<WorkflowExpressionStatement*>(node));
+					PrintFields(static_cast<WfStatement*>(node));
+					PrintFields(static_cast<WfExpressionStatement*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowVirtualCseStatement* node)
+				void AstVisitor::Visit(WfVirtualCseStatement* node)
 				{
-					node->Accept(static_cast<WorkflowVirtualCseStatement::IVisitor*>(this));
+					node->Accept(static_cast<WfVirtualCseStatement::IVisitor*>(this));
 				}
 
-				void AstVisitor::Visit(WorkflowCoroutineStatement* node)
+				void AstVisitor::Visit(WfCoroutineStatement* node)
 				{
-					node->Accept(static_cast<WorkflowCoroutineStatement::IVisitor*>(this));
+					node->Accept(static_cast<WfCoroutineStatement::IVisitor*>(this));
 				}
 
-				void AstVisitor::Visit(WorkflowStateMachineStatement* node)
+				void AstVisitor::Visit(WfStateMachineStatement* node)
 				{
-					node->Accept(static_cast<WorkflowStateMachineStatement::IVisitor*>(this));
+					node->Accept(static_cast<WfStateMachineStatement::IVisitor*>(this));
 				}
 
-				void AstVisitor::Visit(WorkflowNamespaceDeclaration* node)
+				void AstVisitor::Visit(WfNamespaceDeclaration* node)
 				{
 					if (!node)
 					{
@@ -2352,12 +2352,12 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"NamespaceDeclaration", node);
-					PrintFields(static_cast<WorkflowDeclaration*>(node));
-					PrintFields(static_cast<WorkflowNamespaceDeclaration*>(node));
+					PrintFields(static_cast<WfDeclaration*>(node));
+					PrintFields(static_cast<WfNamespaceDeclaration*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowFunctionDeclaration* node)
+				void AstVisitor::Visit(WfFunctionDeclaration* node)
 				{
 					if (!node)
 					{
@@ -2366,12 +2366,12 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"FunctionDeclaration", node);
-					PrintFields(static_cast<WorkflowDeclaration*>(node));
-					PrintFields(static_cast<WorkflowFunctionDeclaration*>(node));
+					PrintFields(static_cast<WfDeclaration*>(node));
+					PrintFields(static_cast<WfFunctionDeclaration*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowVariableDeclaration* node)
+				void AstVisitor::Visit(WfVariableDeclaration* node)
 				{
 					if (!node)
 					{
@@ -2380,12 +2380,12 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"VariableDeclaration", node);
-					PrintFields(static_cast<WorkflowDeclaration*>(node));
-					PrintFields(static_cast<WorkflowVariableDeclaration*>(node));
+					PrintFields(static_cast<WfDeclaration*>(node));
+					PrintFields(static_cast<WfVariableDeclaration*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowEventDeclaration* node)
+				void AstVisitor::Visit(WfEventDeclaration* node)
 				{
 					if (!node)
 					{
@@ -2394,12 +2394,12 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"EventDeclaration", node);
-					PrintFields(static_cast<WorkflowDeclaration*>(node));
-					PrintFields(static_cast<WorkflowEventDeclaration*>(node));
+					PrintFields(static_cast<WfDeclaration*>(node));
+					PrintFields(static_cast<WfEventDeclaration*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowPropertyDeclaration* node)
+				void AstVisitor::Visit(WfPropertyDeclaration* node)
 				{
 					if (!node)
 					{
@@ -2408,12 +2408,12 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"PropertyDeclaration", node);
-					PrintFields(static_cast<WorkflowDeclaration*>(node));
-					PrintFields(static_cast<WorkflowPropertyDeclaration*>(node));
+					PrintFields(static_cast<WfDeclaration*>(node));
+					PrintFields(static_cast<WfPropertyDeclaration*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowConstructorDeclaration* node)
+				void AstVisitor::Visit(WfConstructorDeclaration* node)
 				{
 					if (!node)
 					{
@@ -2422,12 +2422,12 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"ConstructorDeclaration", node);
-					PrintFields(static_cast<WorkflowDeclaration*>(node));
-					PrintFields(static_cast<WorkflowConstructorDeclaration*>(node));
+					PrintFields(static_cast<WfDeclaration*>(node));
+					PrintFields(static_cast<WfConstructorDeclaration*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowDestructorDeclaration* node)
+				void AstVisitor::Visit(WfDestructorDeclaration* node)
 				{
 					if (!node)
 					{
@@ -2436,12 +2436,12 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"DestructorDeclaration", node);
-					PrintFields(static_cast<WorkflowDeclaration*>(node));
-					PrintFields(static_cast<WorkflowDestructorDeclaration*>(node));
+					PrintFields(static_cast<WfDeclaration*>(node));
+					PrintFields(static_cast<WfDestructorDeclaration*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowClassDeclaration* node)
+				void AstVisitor::Visit(WfClassDeclaration* node)
 				{
 					if (!node)
 					{
@@ -2450,12 +2450,12 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"ClassDeclaration", node);
-					PrintFields(static_cast<WorkflowDeclaration*>(node));
-					PrintFields(static_cast<WorkflowClassDeclaration*>(node));
+					PrintFields(static_cast<WfDeclaration*>(node));
+					PrintFields(static_cast<WfClassDeclaration*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowEnumDeclaration* node)
+				void AstVisitor::Visit(WfEnumDeclaration* node)
 				{
 					if (!node)
 					{
@@ -2464,12 +2464,12 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"EnumDeclaration", node);
-					PrintFields(static_cast<WorkflowDeclaration*>(node));
-					PrintFields(static_cast<WorkflowEnumDeclaration*>(node));
+					PrintFields(static_cast<WfDeclaration*>(node));
+					PrintFields(static_cast<WfEnumDeclaration*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowStructDeclaration* node)
+				void AstVisitor::Visit(WfStructDeclaration* node)
 				{
 					if (!node)
 					{
@@ -2478,22 +2478,22 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"StructDeclaration", node);
-					PrintFields(static_cast<WorkflowDeclaration*>(node));
-					PrintFields(static_cast<WorkflowStructDeclaration*>(node));
+					PrintFields(static_cast<WfDeclaration*>(node));
+					PrintFields(static_cast<WfStructDeclaration*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowVirtualCfeDeclaration* node)
+				void AstVisitor::Visit(WfVirtualCfeDeclaration* node)
 				{
-					node->Accept(static_cast<WorkflowVirtualCfeDeclaration::IVisitor*>(this));
+					node->Accept(static_cast<WfVirtualCfeDeclaration::IVisitor*>(this));
 				}
 
-				void AstVisitor::Visit(WorkflowVirtualCseDeclaration* node)
+				void AstVisitor::Visit(WfVirtualCseDeclaration* node)
 				{
-					node->Accept(static_cast<WorkflowVirtualCseDeclaration::IVisitor*>(this));
+					node->Accept(static_cast<WfVirtualCseDeclaration::IVisitor*>(this));
 				}
 
-				void AstVisitor::Visit(WorkflowAutoPropertyDeclaration* node)
+				void AstVisitor::Visit(WfAutoPropertyDeclaration* node)
 				{
 					if (!node)
 					{
@@ -2502,13 +2502,13 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"AutoPropertyDeclaration", node);
-					PrintFields(static_cast<WorkflowDeclaration*>(node));
-					PrintFields(static_cast<WorkflowVirtualCfeDeclaration*>(node));
-					PrintFields(static_cast<WorkflowAutoPropertyDeclaration*>(node));
+					PrintFields(static_cast<WfDeclaration*>(node));
+					PrintFields(static_cast<WfVirtualCfeDeclaration*>(node));
+					PrintFields(static_cast<WfAutoPropertyDeclaration*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowCastResultInterfaceDeclaration* node)
+				void AstVisitor::Visit(WfCastResultInterfaceDeclaration* node)
 				{
 					if (!node)
 					{
@@ -2517,13 +2517,13 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"CastResultInterfaceDeclaration", node);
-					PrintFields(static_cast<WorkflowDeclaration*>(node));
-					PrintFields(static_cast<WorkflowVirtualCfeDeclaration*>(node));
-					PrintFields(static_cast<WorkflowCastResultInterfaceDeclaration*>(node));
+					PrintFields(static_cast<WfDeclaration*>(node));
+					PrintFields(static_cast<WfVirtualCfeDeclaration*>(node));
+					PrintFields(static_cast<WfCastResultInterfaceDeclaration*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowStateMachineDeclaration* node)
+				void AstVisitor::Visit(WfStateMachineDeclaration* node)
 				{
 					if (!node)
 					{
@@ -2532,13 +2532,13 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"StateMachineDeclaration", node);
-					PrintFields(static_cast<WorkflowDeclaration*>(node));
-					PrintFields(static_cast<WorkflowVirtualCseDeclaration*>(node));
-					PrintFields(static_cast<WorkflowStateMachineDeclaration*>(node));
+					PrintFields(static_cast<WfDeclaration*>(node));
+					PrintFields(static_cast<WfVirtualCseDeclaration*>(node));
+					PrintFields(static_cast<WfStateMachineDeclaration*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowForEachStatement* node)
+				void AstVisitor::Visit(WfForEachStatement* node)
 				{
 					if (!node)
 					{
@@ -2547,13 +2547,13 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"ForEachStatement", node);
-					PrintFields(static_cast<WorkflowStatement*>(node));
-					PrintFields(static_cast<WorkflowVirtualCseStatement*>(node));
-					PrintFields(static_cast<WorkflowForEachStatement*>(node));
+					PrintFields(static_cast<WfStatement*>(node));
+					PrintFields(static_cast<WfVirtualCseStatement*>(node));
+					PrintFields(static_cast<WfForEachStatement*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowSwitchStatement* node)
+				void AstVisitor::Visit(WfSwitchStatement* node)
 				{
 					if (!node)
 					{
@@ -2562,13 +2562,13 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"SwitchStatement", node);
-					PrintFields(static_cast<WorkflowStatement*>(node));
-					PrintFields(static_cast<WorkflowVirtualCseStatement*>(node));
-					PrintFields(static_cast<WorkflowSwitchStatement*>(node));
+					PrintFields(static_cast<WfStatement*>(node));
+					PrintFields(static_cast<WfVirtualCseStatement*>(node));
+					PrintFields(static_cast<WfSwitchStatement*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowCoProviderStatement* node)
+				void AstVisitor::Visit(WfCoProviderStatement* node)
 				{
 					if (!node)
 					{
@@ -2577,13 +2577,13 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"CoProviderStatement", node);
-					PrintFields(static_cast<WorkflowStatement*>(node));
-					PrintFields(static_cast<WorkflowVirtualCseStatement*>(node));
-					PrintFields(static_cast<WorkflowCoProviderStatement*>(node));
+					PrintFields(static_cast<WfStatement*>(node));
+					PrintFields(static_cast<WfVirtualCseStatement*>(node));
+					PrintFields(static_cast<WfCoProviderStatement*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowCoPauseStatement* node)
+				void AstVisitor::Visit(WfCoPauseStatement* node)
 				{
 					if (!node)
 					{
@@ -2592,13 +2592,13 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"CoPauseStatement", node);
-					PrintFields(static_cast<WorkflowStatement*>(node));
-					PrintFields(static_cast<WorkflowCoroutineStatement*>(node));
-					PrintFields(static_cast<WorkflowCoPauseStatement*>(node));
+					PrintFields(static_cast<WfStatement*>(node));
+					PrintFields(static_cast<WfCoroutineStatement*>(node));
+					PrintFields(static_cast<WfCoPauseStatement*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowCoOperatorStatement* node)
+				void AstVisitor::Visit(WfCoOperatorStatement* node)
 				{
 					if (!node)
 					{
@@ -2607,13 +2607,13 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"CoOperatorStatement", node);
-					PrintFields(static_cast<WorkflowStatement*>(node));
-					PrintFields(static_cast<WorkflowCoroutineStatement*>(node));
-					PrintFields(static_cast<WorkflowCoOperatorStatement*>(node));
+					PrintFields(static_cast<WfStatement*>(node));
+					PrintFields(static_cast<WfCoroutineStatement*>(node));
+					PrintFields(static_cast<WfCoOperatorStatement*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowStateSwitchStatement* node)
+				void AstVisitor::Visit(WfStateSwitchStatement* node)
 				{
 					if (!node)
 					{
@@ -2622,13 +2622,13 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"StateSwitchStatement", node);
-					PrintFields(static_cast<WorkflowStatement*>(node));
-					PrintFields(static_cast<WorkflowStateMachineStatement*>(node));
-					PrintFields(static_cast<WorkflowStateSwitchStatement*>(node));
+					PrintFields(static_cast<WfStatement*>(node));
+					PrintFields(static_cast<WfStateMachineStatement*>(node));
+					PrintFields(static_cast<WfStateSwitchStatement*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowStateInvokeStatement* node)
+				void AstVisitor::Visit(WfStateInvokeStatement* node)
 				{
 					if (!node)
 					{
@@ -2637,13 +2637,13 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"StateInvokeStatement", node);
-					PrintFields(static_cast<WorkflowStatement*>(node));
-					PrintFields(static_cast<WorkflowStateMachineStatement*>(node));
-					PrintFields(static_cast<WorkflowStateInvokeStatement*>(node));
+					PrintFields(static_cast<WfStatement*>(node));
+					PrintFields(static_cast<WfStateMachineStatement*>(node));
+					PrintFields(static_cast<WfStateInvokeStatement*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowFormatExpression* node)
+				void AstVisitor::Visit(WfFormatExpression* node)
 				{
 					if (!node)
 					{
@@ -2652,13 +2652,13 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"FormatExpression", node);
-					PrintFields(static_cast<WorkflowExpression*>(node));
-					PrintFields(static_cast<WorkflowVirtualCfeExpression*>(node));
-					PrintFields(static_cast<WorkflowFormatExpression*>(node));
+					PrintFields(static_cast<WfExpression*>(node));
+					PrintFields(static_cast<WfVirtualCfeExpression*>(node));
+					PrintFields(static_cast<WfFormatExpression*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowBindExpression* node)
+				void AstVisitor::Visit(WfBindExpression* node)
 				{
 					if (!node)
 					{
@@ -2667,13 +2667,13 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"BindExpression", node);
-					PrintFields(static_cast<WorkflowExpression*>(node));
-					PrintFields(static_cast<WorkflowVirtualCseExpression*>(node));
-					PrintFields(static_cast<WorkflowBindExpression*>(node));
+					PrintFields(static_cast<WfExpression*>(node));
+					PrintFields(static_cast<WfVirtualCseExpression*>(node));
+					PrintFields(static_cast<WfBindExpression*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowNewCoroutineExpression* node)
+				void AstVisitor::Visit(WfNewCoroutineExpression* node)
 				{
 					if (!node)
 					{
@@ -2682,13 +2682,13 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"NewCoroutineExpression", node);
-					PrintFields(static_cast<WorkflowExpression*>(node));
-					PrintFields(static_cast<WorkflowVirtualCseExpression*>(node));
-					PrintFields(static_cast<WorkflowNewCoroutineExpression*>(node));
+					PrintFields(static_cast<WfExpression*>(node));
+					PrintFields(static_cast<WfVirtualCseExpression*>(node));
+					PrintFields(static_cast<WfNewCoroutineExpression*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowMixinCastExpression* node)
+				void AstVisitor::Visit(WfMixinCastExpression* node)
 				{
 					if (!node)
 					{
@@ -2697,13 +2697,13 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"MixinCastExpression", node);
-					PrintFields(static_cast<WorkflowExpression*>(node));
-					PrintFields(static_cast<WorkflowVirtualCseExpression*>(node));
-					PrintFields(static_cast<WorkflowMixinCastExpression*>(node));
+					PrintFields(static_cast<WfExpression*>(node));
+					PrintFields(static_cast<WfVirtualCseExpression*>(node));
+					PrintFields(static_cast<WfMixinCastExpression*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowExpectedTypeCastExpression* node)
+				void AstVisitor::Visit(WfExpectedTypeCastExpression* node)
 				{
 					if (!node)
 					{
@@ -2712,13 +2712,13 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"ExpectedTypeCastExpression", node);
-					PrintFields(static_cast<WorkflowExpression*>(node));
-					PrintFields(static_cast<WorkflowVirtualCseExpression*>(node));
-					PrintFields(static_cast<WorkflowExpectedTypeCastExpression*>(node));
+					PrintFields(static_cast<WfExpression*>(node));
+					PrintFields(static_cast<WfVirtualCseExpression*>(node));
+					PrintFields(static_cast<WfExpectedTypeCastExpression*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowCoOperatorExpression* node)
+				void AstVisitor::Visit(WfCoOperatorExpression* node)
 				{
 					if (!node)
 					{
@@ -2727,13 +2727,13 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"CoOperatorExpression", node);
-					PrintFields(static_cast<WorkflowExpression*>(node));
-					PrintFields(static_cast<WorkflowVirtualCseExpression*>(node));
-					PrintFields(static_cast<WorkflowCoOperatorExpression*>(node));
+					PrintFields(static_cast<WfExpression*>(node));
+					PrintFields(static_cast<WfVirtualCseExpression*>(node));
+					PrintFields(static_cast<WfCoOperatorExpression*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowModuleUsingNameFragment* node)
+				void AstVisitor::Visit(WfModuleUsingNameFragment* node)
 				{
 					if (!node)
 					{
@@ -2742,12 +2742,12 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"ModuleUsingNameFragment", node);
-					PrintFields(static_cast<WorkflowModuleUsingFragment*>(node));
-					PrintFields(static_cast<WorkflowModuleUsingNameFragment*>(node));
+					PrintFields(static_cast<WfModuleUsingFragment*>(node));
+					PrintFields(static_cast<WfModuleUsingNameFragment*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Visit(WorkflowModuleUsingWildCardFragment* node)
+				void AstVisitor::Visit(WfModuleUsingWildCardFragment* node)
 				{
 					if (!node)
 					{
@@ -2756,8 +2756,8 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"ModuleUsingWildCardFragment", node);
-					PrintFields(static_cast<WorkflowModuleUsingFragment*>(node));
-					PrintFields(static_cast<WorkflowModuleUsingWildCardFragment*>(node));
+					PrintFields(static_cast<WfModuleUsingFragment*>(node));
+					PrintFields(static_cast<WfModuleUsingWildCardFragment*>(node));
 					EndObject();
 				}
 
@@ -2766,57 +2766,57 @@ namespace vl
 				{
 				}
 
-				void AstVisitor::Print(WorkflowType* node)
+				void AstVisitor::Print(WfType* node)
 				{
 					if (!node)
 					{
 						WriteNull();
 						return;
 					}
-					node->Accept(static_cast<WorkflowType::IVisitor*>(this));
+					node->Accept(static_cast<WfType::IVisitor*>(this));
 				}
 
-				void AstVisitor::Print(WorkflowExpression* node)
+				void AstVisitor::Print(WfExpression* node)
 				{
 					if (!node)
 					{
 						WriteNull();
 						return;
 					}
-					node->Accept(static_cast<WorkflowExpression::IVisitor*>(this));
+					node->Accept(static_cast<WfExpression::IVisitor*>(this));
 				}
 
-				void AstVisitor::Print(WorkflowStatement* node)
+				void AstVisitor::Print(WfStatement* node)
 				{
 					if (!node)
 					{
 						WriteNull();
 						return;
 					}
-					node->Accept(static_cast<WorkflowStatement::IVisitor*>(this));
+					node->Accept(static_cast<WfStatement::IVisitor*>(this));
 				}
 
-				void AstVisitor::Print(WorkflowDeclaration* node)
+				void AstVisitor::Print(WfDeclaration* node)
 				{
 					if (!node)
 					{
 						WriteNull();
 						return;
 					}
-					node->Accept(static_cast<WorkflowDeclaration::IVisitor*>(this));
+					node->Accept(static_cast<WfDeclaration::IVisitor*>(this));
 				}
 
-				void AstVisitor::Print(WorkflowModuleUsingFragment* node)
+				void AstVisitor::Print(WfModuleUsingFragment* node)
 				{
 					if (!node)
 					{
 						WriteNull();
 						return;
 					}
-					node->Accept(static_cast<WorkflowModuleUsingFragment::IVisitor*>(this));
+					node->Accept(static_cast<WfModuleUsingFragment::IVisitor*>(this));
 				}
 
-				void AstVisitor::Print(WorkflowAttribute* node)
+				void AstVisitor::Print(WfAttribute* node)
 				{
 					if (!node)
 					{
@@ -2825,11 +2825,11 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"Attribute", node);
-					PrintFields(static_cast<WorkflowAttribute*>(node));
+					PrintFields(static_cast<WfAttribute*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Print(WorkflowFunctionArgument* node)
+				void AstVisitor::Print(WfFunctionArgument* node)
 				{
 					if (!node)
 					{
@@ -2838,11 +2838,11 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"FunctionArgument", node);
-					PrintFields(static_cast<WorkflowFunctionArgument*>(node));
+					PrintFields(static_cast<WfFunctionArgument*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Print(WorkflowBaseConstructorCall* node)
+				void AstVisitor::Print(WfBaseConstructorCall* node)
 				{
 					if (!node)
 					{
@@ -2851,11 +2851,11 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"BaseConstructorCall", node);
-					PrintFields(static_cast<WorkflowBaseConstructorCall*>(node));
+					PrintFields(static_cast<WfBaseConstructorCall*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Print(WorkflowEnumItemIntersection* node)
+				void AstVisitor::Print(WfEnumItemIntersection* node)
 				{
 					if (!node)
 					{
@@ -2864,11 +2864,11 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"EnumItemIntersection", node);
-					PrintFields(static_cast<WorkflowEnumItemIntersection*>(node));
+					PrintFields(static_cast<WfEnumItemIntersection*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Print(WorkflowEnumItem* node)
+				void AstVisitor::Print(WfEnumItem* node)
 				{
 					if (!node)
 					{
@@ -2877,11 +2877,11 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"EnumItem", node);
-					PrintFields(static_cast<WorkflowEnumItem*>(node));
+					PrintFields(static_cast<WfEnumItem*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Print(WorkflowStructMember* node)
+				void AstVisitor::Print(WfStructMember* node)
 				{
 					if (!node)
 					{
@@ -2890,11 +2890,11 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"StructMember", node);
-					PrintFields(static_cast<WorkflowStructMember*>(node));
+					PrintFields(static_cast<WfStructMember*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Print(WorkflowStateInput* node)
+				void AstVisitor::Print(WfStateInput* node)
 				{
 					if (!node)
 					{
@@ -2903,11 +2903,11 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"StateInput", node);
-					PrintFields(static_cast<WorkflowStateInput*>(node));
+					PrintFields(static_cast<WfStateInput*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Print(WorkflowStateDeclaration* node)
+				void AstVisitor::Print(WfStateDeclaration* node)
 				{
 					if (!node)
 					{
@@ -2916,11 +2916,11 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"StateDeclaration", node);
-					PrintFields(static_cast<WorkflowStateDeclaration*>(node));
+					PrintFields(static_cast<WfStateDeclaration*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Print(WorkflowSwitchCase* node)
+				void AstVisitor::Print(WfSwitchCase* node)
 				{
 					if (!node)
 					{
@@ -2929,11 +2929,11 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"SwitchCase", node);
-					PrintFields(static_cast<WorkflowSwitchCase*>(node));
+					PrintFields(static_cast<WfSwitchCase*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Print(WorkflowStateSwitchArgument* node)
+				void AstVisitor::Print(WfStateSwitchArgument* node)
 				{
 					if (!node)
 					{
@@ -2942,11 +2942,11 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"StateSwitchArgument", node);
-					PrintFields(static_cast<WorkflowStateSwitchArgument*>(node));
+					PrintFields(static_cast<WfStateSwitchArgument*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Print(WorkflowStateSwitchCase* node)
+				void AstVisitor::Print(WfStateSwitchCase* node)
 				{
 					if (!node)
 					{
@@ -2955,11 +2955,11 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"StateSwitchCase", node);
-					PrintFields(static_cast<WorkflowStateSwitchCase*>(node));
+					PrintFields(static_cast<WfStateSwitchCase*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Print(WorkflowLetVariable* node)
+				void AstVisitor::Print(WfLetVariable* node)
 				{
 					if (!node)
 					{
@@ -2968,11 +2968,11 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"LetVariable", node);
-					PrintFields(static_cast<WorkflowLetVariable*>(node));
+					PrintFields(static_cast<WfLetVariable*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Print(WorkflowConstructorArgument* node)
+				void AstVisitor::Print(WfConstructorArgument* node)
 				{
 					if (!node)
 					{
@@ -2981,11 +2981,11 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"ConstructorArgument", node);
-					PrintFields(static_cast<WorkflowConstructorArgument*>(node));
+					PrintFields(static_cast<WfConstructorArgument*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Print(WorkflowModuleUsingItem* node)
+				void AstVisitor::Print(WfModuleUsingItem* node)
 				{
 					if (!node)
 					{
@@ -2994,11 +2994,11 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"ModuleUsingItem", node);
-					PrintFields(static_cast<WorkflowModuleUsingItem*>(node));
+					PrintFields(static_cast<WfModuleUsingItem*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Print(WorkflowModuleUsingPath* node)
+				void AstVisitor::Print(WfModuleUsingPath* node)
 				{
 					if (!node)
 					{
@@ -3007,11 +3007,11 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"ModuleUsingPath", node);
-					PrintFields(static_cast<WorkflowModuleUsingPath*>(node));
+					PrintFields(static_cast<WfModuleUsingPath*>(node));
 					EndObject();
 				}
 
-				void AstVisitor::Print(WorkflowModule* node)
+				void AstVisitor::Print(WfModule* node)
 				{
 					if (!node)
 					{
@@ -3020,7 +3020,7 @@ namespace vl
 					}
 					BeginObject();
 					WriteType(L"Module", node);
-					PrintFields(static_cast<WorkflowModule*>(node));
+					PrintFields(static_cast<WfModule*>(node));
 					EndObject();
 				}
 

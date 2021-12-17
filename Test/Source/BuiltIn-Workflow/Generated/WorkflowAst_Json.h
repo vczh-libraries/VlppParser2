@@ -20,255 +20,255 @@ namespace vl
 				/// <summary>A JSON visitor, overriding all abstract methods with AST to JSON serialization code.</summary>
 				class AstVisitor
 					: public vl::glr::JsonVisitorBase
-					, protected virtual WorkflowType::IVisitor
-					, protected virtual WorkflowExpression::IVisitor
-					, protected virtual WorkflowStatement::IVisitor
-					, protected virtual WorkflowDeclaration::IVisitor
-					, protected virtual WorkflowVirtualCfeDeclaration::IVisitor
-					, protected virtual WorkflowVirtualCseDeclaration::IVisitor
-					, protected virtual WorkflowVirtualCseStatement::IVisitor
-					, protected virtual WorkflowCoroutineStatement::IVisitor
-					, protected virtual WorkflowStateMachineStatement::IVisitor
-					, protected virtual WorkflowVirtualCfeExpression::IVisitor
-					, protected virtual WorkflowVirtualCseExpression::IVisitor
-					, protected virtual WorkflowModuleUsingFragment::IVisitor
+					, protected virtual WfType::IVisitor
+					, protected virtual WfExpression::IVisitor
+					, protected virtual WfStatement::IVisitor
+					, protected virtual WfDeclaration::IVisitor
+					, protected virtual WfVirtualCfeDeclaration::IVisitor
+					, protected virtual WfVirtualCseDeclaration::IVisitor
+					, protected virtual WfVirtualCseStatement::IVisitor
+					, protected virtual WfCoroutineStatement::IVisitor
+					, protected virtual WfStateMachineStatement::IVisitor
+					, protected virtual WfVirtualCfeExpression::IVisitor
+					, protected virtual WfVirtualCseExpression::IVisitor
+					, protected virtual WfModuleUsingFragment::IVisitor
 				{
 				protected:
-					virtual void PrintFields(WorkflowAttachEventExpression* node);
-					virtual void PrintFields(WorkflowAttribute* node);
-					virtual void PrintFields(WorkflowAutoPropertyDeclaration* node);
-					virtual void PrintFields(WorkflowBaseConstructorCall* node);
-					virtual void PrintFields(WorkflowBinaryExpression* node);
-					virtual void PrintFields(WorkflowBindExpression* node);
-					virtual void PrintFields(WorkflowBlockStatement* node);
-					virtual void PrintFields(WorkflowBreakStatement* node);
-					virtual void PrintFields(WorkflowCallExpression* node);
-					virtual void PrintFields(WorkflowCastResultInterfaceDeclaration* node);
-					virtual void PrintFields(WorkflowChildExpression* node);
-					virtual void PrintFields(WorkflowChildType* node);
-					virtual void PrintFields(WorkflowClassDeclaration* node);
-					virtual void PrintFields(WorkflowCoOperatorExpression* node);
-					virtual void PrintFields(WorkflowCoOperatorStatement* node);
-					virtual void PrintFields(WorkflowCoPauseStatement* node);
-					virtual void PrintFields(WorkflowCoProviderStatement* node);
-					virtual void PrintFields(WorkflowConstructorArgument* node);
-					virtual void PrintFields(WorkflowConstructorDeclaration* node);
-					virtual void PrintFields(WorkflowConstructorExpression* node);
-					virtual void PrintFields(WorkflowContinueStatement* node);
-					virtual void PrintFields(WorkflowCoroutineStatement* node);
-					virtual void PrintFields(WorkflowDeclaration* node);
-					virtual void PrintFields(WorkflowDeleteStatement* node);
-					virtual void PrintFields(WorkflowDestructorDeclaration* node);
-					virtual void PrintFields(WorkflowDetachEventExpression* node);
-					virtual void PrintFields(WorkflowEnumDeclaration* node);
-					virtual void PrintFields(WorkflowEnumItem* node);
-					virtual void PrintFields(WorkflowEnumItemIntersection* node);
-					virtual void PrintFields(WorkflowEnumerableType* node);
-					virtual void PrintFields(WorkflowEventDeclaration* node);
-					virtual void PrintFields(WorkflowExpectedTypeCastExpression* node);
-					virtual void PrintFields(WorkflowExpression* node);
-					virtual void PrintFields(WorkflowExpressionStatement* node);
-					virtual void PrintFields(WorkflowFloatingExpression* node);
-					virtual void PrintFields(WorkflowForEachStatement* node);
-					virtual void PrintFields(WorkflowFormatExpression* node);
-					virtual void PrintFields(WorkflowFunctionArgument* node);
-					virtual void PrintFields(WorkflowFunctionDeclaration* node);
-					virtual void PrintFields(WorkflowFunctionExpression* node);
-					virtual void PrintFields(WorkflowFunctionType* node);
-					virtual void PrintFields(WorkflowGotoStatement* node);
-					virtual void PrintFields(WorkflowIfExpression* node);
-					virtual void PrintFields(WorkflowIfStatement* node);
-					virtual void PrintFields(WorkflowInferExpression* node);
-					virtual void PrintFields(WorkflowIntegerExpression* node);
-					virtual void PrintFields(WorkflowLetExpression* node);
-					virtual void PrintFields(WorkflowLetVariable* node);
-					virtual void PrintFields(WorkflowLiteralExpression* node);
-					virtual void PrintFields(WorkflowMapType* node);
-					virtual void PrintFields(WorkflowMemberExpression* node);
-					virtual void PrintFields(WorkflowMixinCastExpression* node);
-					virtual void PrintFields(WorkflowModule* node);
-					virtual void PrintFields(WorkflowModuleUsingFragment* node);
-					virtual void PrintFields(WorkflowModuleUsingItem* node);
-					virtual void PrintFields(WorkflowModuleUsingNameFragment* node);
-					virtual void PrintFields(WorkflowModuleUsingPath* node);
-					virtual void PrintFields(WorkflowModuleUsingWildCardFragment* node);
-					virtual void PrintFields(WorkflowNamespaceDeclaration* node);
-					virtual void PrintFields(WorkflowNewClassExpression* node);
-					virtual void PrintFields(WorkflowNewCoroutineExpression* node);
-					virtual void PrintFields(WorkflowNewInterfaceExpression* node);
-					virtual void PrintFields(WorkflowNullableType* node);
-					virtual void PrintFields(WorkflowObservableListType* node);
-					virtual void PrintFields(WorkflowObserveExpression* node);
-					virtual void PrintFields(WorkflowOrderedLambdaExpression* node);
-					virtual void PrintFields(WorkflowOrderedNameExpression* node);
-					virtual void PrintFields(WorkflowPredefinedType* node);
-					virtual void PrintFields(WorkflowPropertyDeclaration* node);
-					virtual void PrintFields(WorkflowRaiseExceptionStatement* node);
-					virtual void PrintFields(WorkflowRangeExpression* node);
-					virtual void PrintFields(WorkflowRawPointerType* node);
-					virtual void PrintFields(WorkflowReferenceExpression* node);
-					virtual void PrintFields(WorkflowReferenceType* node);
-					virtual void PrintFields(WorkflowReturnStatement* node);
-					virtual void PrintFields(WorkflowSetTestingExpression* node);
-					virtual void PrintFields(WorkflowSharedPointerType* node);
-					virtual void PrintFields(WorkflowStateDeclaration* node);
-					virtual void PrintFields(WorkflowStateInput* node);
-					virtual void PrintFields(WorkflowStateInvokeStatement* node);
-					virtual void PrintFields(WorkflowStateMachineDeclaration* node);
-					virtual void PrintFields(WorkflowStateMachineStatement* node);
-					virtual void PrintFields(WorkflowStateSwitchArgument* node);
-					virtual void PrintFields(WorkflowStateSwitchCase* node);
-					virtual void PrintFields(WorkflowStateSwitchStatement* node);
-					virtual void PrintFields(WorkflowStatement* node);
-					virtual void PrintFields(WorkflowStringExpression* node);
-					virtual void PrintFields(WorkflowStructDeclaration* node);
-					virtual void PrintFields(WorkflowStructMember* node);
-					virtual void PrintFields(WorkflowSwitchCase* node);
-					virtual void PrintFields(WorkflowSwitchStatement* node);
-					virtual void PrintFields(WorkflowThisExpression* node);
-					virtual void PrintFields(WorkflowTopQualifiedExpression* node);
-					virtual void PrintFields(WorkflowTopQualifiedType* node);
-					virtual void PrintFields(WorkflowTryStatement* node);
-					virtual void PrintFields(WorkflowType* node);
-					virtual void PrintFields(WorkflowTypeCastingExpression* node);
-					virtual void PrintFields(WorkflowTypeOfExpressionExpression* node);
-					virtual void PrintFields(WorkflowTypeOfTypeExpression* node);
-					virtual void PrintFields(WorkflowTypeTestingExpression* node);
-					virtual void PrintFields(WorkflowUnaryExpression* node);
-					virtual void PrintFields(WorkflowVariableDeclaration* node);
-					virtual void PrintFields(WorkflowVariableStatement* node);
-					virtual void PrintFields(WorkflowVirtualCfeDeclaration* node);
-					virtual void PrintFields(WorkflowVirtualCfeExpression* node);
-					virtual void PrintFields(WorkflowVirtualCseDeclaration* node);
-					virtual void PrintFields(WorkflowVirtualCseExpression* node);
-					virtual void PrintFields(WorkflowVirtualCseStatement* node);
-					virtual void PrintFields(WorkflowWhileStatement* node);
+					virtual void PrintFields(WfAttachEventExpression* node);
+					virtual void PrintFields(WfAttribute* node);
+					virtual void PrintFields(WfAutoPropertyDeclaration* node);
+					virtual void PrintFields(WfBaseConstructorCall* node);
+					virtual void PrintFields(WfBinaryExpression* node);
+					virtual void PrintFields(WfBindExpression* node);
+					virtual void PrintFields(WfBlockStatement* node);
+					virtual void PrintFields(WfBreakStatement* node);
+					virtual void PrintFields(WfCallExpression* node);
+					virtual void PrintFields(WfCastResultInterfaceDeclaration* node);
+					virtual void PrintFields(WfChildExpression* node);
+					virtual void PrintFields(WfChildType* node);
+					virtual void PrintFields(WfClassDeclaration* node);
+					virtual void PrintFields(WfCoOperatorExpression* node);
+					virtual void PrintFields(WfCoOperatorStatement* node);
+					virtual void PrintFields(WfCoPauseStatement* node);
+					virtual void PrintFields(WfCoProviderStatement* node);
+					virtual void PrintFields(WfConstructorArgument* node);
+					virtual void PrintFields(WfConstructorDeclaration* node);
+					virtual void PrintFields(WfConstructorExpression* node);
+					virtual void PrintFields(WfContinueStatement* node);
+					virtual void PrintFields(WfCoroutineStatement* node);
+					virtual void PrintFields(WfDeclaration* node);
+					virtual void PrintFields(WfDeleteStatement* node);
+					virtual void PrintFields(WfDestructorDeclaration* node);
+					virtual void PrintFields(WfDetachEventExpression* node);
+					virtual void PrintFields(WfEnumDeclaration* node);
+					virtual void PrintFields(WfEnumItem* node);
+					virtual void PrintFields(WfEnumItemIntersection* node);
+					virtual void PrintFields(WfEnumerableType* node);
+					virtual void PrintFields(WfEventDeclaration* node);
+					virtual void PrintFields(WfExpectedTypeCastExpression* node);
+					virtual void PrintFields(WfExpression* node);
+					virtual void PrintFields(WfExpressionStatement* node);
+					virtual void PrintFields(WfFloatingExpression* node);
+					virtual void PrintFields(WfForEachStatement* node);
+					virtual void PrintFields(WfFormatExpression* node);
+					virtual void PrintFields(WfFunctionArgument* node);
+					virtual void PrintFields(WfFunctionDeclaration* node);
+					virtual void PrintFields(WfFunctionExpression* node);
+					virtual void PrintFields(WfFunctionType* node);
+					virtual void PrintFields(WfGotoStatement* node);
+					virtual void PrintFields(WfIfExpression* node);
+					virtual void PrintFields(WfIfStatement* node);
+					virtual void PrintFields(WfInferExpression* node);
+					virtual void PrintFields(WfIntegerExpression* node);
+					virtual void PrintFields(WfLetExpression* node);
+					virtual void PrintFields(WfLetVariable* node);
+					virtual void PrintFields(WfLiteralExpression* node);
+					virtual void PrintFields(WfMapType* node);
+					virtual void PrintFields(WfMemberExpression* node);
+					virtual void PrintFields(WfMixinCastExpression* node);
+					virtual void PrintFields(WfModule* node);
+					virtual void PrintFields(WfModuleUsingFragment* node);
+					virtual void PrintFields(WfModuleUsingItem* node);
+					virtual void PrintFields(WfModuleUsingNameFragment* node);
+					virtual void PrintFields(WfModuleUsingPath* node);
+					virtual void PrintFields(WfModuleUsingWildCardFragment* node);
+					virtual void PrintFields(WfNamespaceDeclaration* node);
+					virtual void PrintFields(WfNewClassExpression* node);
+					virtual void PrintFields(WfNewCoroutineExpression* node);
+					virtual void PrintFields(WfNewInterfaceExpression* node);
+					virtual void PrintFields(WfNullableType* node);
+					virtual void PrintFields(WfObservableListType* node);
+					virtual void PrintFields(WfObserveExpression* node);
+					virtual void PrintFields(WfOrderedLambdaExpression* node);
+					virtual void PrintFields(WfOrderedNameExpression* node);
+					virtual void PrintFields(WfPredefinedType* node);
+					virtual void PrintFields(WfPropertyDeclaration* node);
+					virtual void PrintFields(WfRaiseExceptionStatement* node);
+					virtual void PrintFields(WfRangeExpression* node);
+					virtual void PrintFields(WfRawPointerType* node);
+					virtual void PrintFields(WfReferenceExpression* node);
+					virtual void PrintFields(WfReferenceType* node);
+					virtual void PrintFields(WfReturnStatement* node);
+					virtual void PrintFields(WfSetTestingExpression* node);
+					virtual void PrintFields(WfSharedPointerType* node);
+					virtual void PrintFields(WfStateDeclaration* node);
+					virtual void PrintFields(WfStateInput* node);
+					virtual void PrintFields(WfStateInvokeStatement* node);
+					virtual void PrintFields(WfStateMachineDeclaration* node);
+					virtual void PrintFields(WfStateMachineStatement* node);
+					virtual void PrintFields(WfStateSwitchArgument* node);
+					virtual void PrintFields(WfStateSwitchCase* node);
+					virtual void PrintFields(WfStateSwitchStatement* node);
+					virtual void PrintFields(WfStatement* node);
+					virtual void PrintFields(WfStringExpression* node);
+					virtual void PrintFields(WfStructDeclaration* node);
+					virtual void PrintFields(WfStructMember* node);
+					virtual void PrintFields(WfSwitchCase* node);
+					virtual void PrintFields(WfSwitchStatement* node);
+					virtual void PrintFields(WfThisExpression* node);
+					virtual void PrintFields(WfTopQualifiedExpression* node);
+					virtual void PrintFields(WfTopQualifiedType* node);
+					virtual void PrintFields(WfTryStatement* node);
+					virtual void PrintFields(WfType* node);
+					virtual void PrintFields(WfTypeCastingExpression* node);
+					virtual void PrintFields(WfTypeOfExpressionExpression* node);
+					virtual void PrintFields(WfTypeOfTypeExpression* node);
+					virtual void PrintFields(WfTypeTestingExpression* node);
+					virtual void PrintFields(WfUnaryExpression* node);
+					virtual void PrintFields(WfVariableDeclaration* node);
+					virtual void PrintFields(WfVariableStatement* node);
+					virtual void PrintFields(WfVirtualCfeDeclaration* node);
+					virtual void PrintFields(WfVirtualCfeExpression* node);
+					virtual void PrintFields(WfVirtualCseDeclaration* node);
+					virtual void PrintFields(WfVirtualCseExpression* node);
+					virtual void PrintFields(WfVirtualCseStatement* node);
+					virtual void PrintFields(WfWhileStatement* node);
 
 				protected:
-					void Visit(WorkflowPredefinedType* node) override;
-					void Visit(WorkflowTopQualifiedType* node) override;
-					void Visit(WorkflowReferenceType* node) override;
-					void Visit(WorkflowRawPointerType* node) override;
-					void Visit(WorkflowSharedPointerType* node) override;
-					void Visit(WorkflowNullableType* node) override;
-					void Visit(WorkflowEnumerableType* node) override;
-					void Visit(WorkflowMapType* node) override;
-					void Visit(WorkflowObservableListType* node) override;
-					void Visit(WorkflowFunctionType* node) override;
-					void Visit(WorkflowChildType* node) override;
+					void Visit(WfPredefinedType* node) override;
+					void Visit(WfTopQualifiedType* node) override;
+					void Visit(WfReferenceType* node) override;
+					void Visit(WfRawPointerType* node) override;
+					void Visit(WfSharedPointerType* node) override;
+					void Visit(WfNullableType* node) override;
+					void Visit(WfEnumerableType* node) override;
+					void Visit(WfMapType* node) override;
+					void Visit(WfObservableListType* node) override;
+					void Visit(WfFunctionType* node) override;
+					void Visit(WfChildType* node) override;
 
-					void Visit(WorkflowThisExpression* node) override;
-					void Visit(WorkflowTopQualifiedExpression* node) override;
-					void Visit(WorkflowReferenceExpression* node) override;
-					void Visit(WorkflowOrderedNameExpression* node) override;
-					void Visit(WorkflowOrderedLambdaExpression* node) override;
-					void Visit(WorkflowMemberExpression* node) override;
-					void Visit(WorkflowChildExpression* node) override;
-					void Visit(WorkflowLiteralExpression* node) override;
-					void Visit(WorkflowFloatingExpression* node) override;
-					void Visit(WorkflowIntegerExpression* node) override;
-					void Visit(WorkflowStringExpression* node) override;
-					void Visit(WorkflowUnaryExpression* node) override;
-					void Visit(WorkflowBinaryExpression* node) override;
-					void Visit(WorkflowLetExpression* node) override;
-					void Visit(WorkflowIfExpression* node) override;
-					void Visit(WorkflowRangeExpression* node) override;
-					void Visit(WorkflowSetTestingExpression* node) override;
-					void Visit(WorkflowConstructorExpression* node) override;
-					void Visit(WorkflowInferExpression* node) override;
-					void Visit(WorkflowTypeCastingExpression* node) override;
-					void Visit(WorkflowTypeTestingExpression* node) override;
-					void Visit(WorkflowTypeOfTypeExpression* node) override;
-					void Visit(WorkflowTypeOfExpressionExpression* node) override;
-					void Visit(WorkflowAttachEventExpression* node) override;
-					void Visit(WorkflowDetachEventExpression* node) override;
-					void Visit(WorkflowObserveExpression* node) override;
-					void Visit(WorkflowCallExpression* node) override;
-					void Visit(WorkflowFunctionExpression* node) override;
-					void Visit(WorkflowNewClassExpression* node) override;
-					void Visit(WorkflowNewInterfaceExpression* node) override;
-					void Visit(WorkflowVirtualCfeExpression* node) override;
-					void Visit(WorkflowVirtualCseExpression* node) override;
+					void Visit(WfThisExpression* node) override;
+					void Visit(WfTopQualifiedExpression* node) override;
+					void Visit(WfReferenceExpression* node) override;
+					void Visit(WfOrderedNameExpression* node) override;
+					void Visit(WfOrderedLambdaExpression* node) override;
+					void Visit(WfMemberExpression* node) override;
+					void Visit(WfChildExpression* node) override;
+					void Visit(WfLiteralExpression* node) override;
+					void Visit(WfFloatingExpression* node) override;
+					void Visit(WfIntegerExpression* node) override;
+					void Visit(WfStringExpression* node) override;
+					void Visit(WfUnaryExpression* node) override;
+					void Visit(WfBinaryExpression* node) override;
+					void Visit(WfLetExpression* node) override;
+					void Visit(WfIfExpression* node) override;
+					void Visit(WfRangeExpression* node) override;
+					void Visit(WfSetTestingExpression* node) override;
+					void Visit(WfConstructorExpression* node) override;
+					void Visit(WfInferExpression* node) override;
+					void Visit(WfTypeCastingExpression* node) override;
+					void Visit(WfTypeTestingExpression* node) override;
+					void Visit(WfTypeOfTypeExpression* node) override;
+					void Visit(WfTypeOfExpressionExpression* node) override;
+					void Visit(WfAttachEventExpression* node) override;
+					void Visit(WfDetachEventExpression* node) override;
+					void Visit(WfObserveExpression* node) override;
+					void Visit(WfCallExpression* node) override;
+					void Visit(WfFunctionExpression* node) override;
+					void Visit(WfNewClassExpression* node) override;
+					void Visit(WfNewInterfaceExpression* node) override;
+					void Visit(WfVirtualCfeExpression* node) override;
+					void Visit(WfVirtualCseExpression* node) override;
 
-					void Visit(WorkflowBreakStatement* node) override;
-					void Visit(WorkflowContinueStatement* node) override;
-					void Visit(WorkflowReturnStatement* node) override;
-					void Visit(WorkflowDeleteStatement* node) override;
-					void Visit(WorkflowRaiseExceptionStatement* node) override;
-					void Visit(WorkflowIfStatement* node) override;
-					void Visit(WorkflowWhileStatement* node) override;
-					void Visit(WorkflowTryStatement* node) override;
-					void Visit(WorkflowBlockStatement* node) override;
-					void Visit(WorkflowGotoStatement* node) override;
-					void Visit(WorkflowVariableStatement* node) override;
-					void Visit(WorkflowExpressionStatement* node) override;
-					void Visit(WorkflowVirtualCseStatement* node) override;
-					void Visit(WorkflowCoroutineStatement* node) override;
-					void Visit(WorkflowStateMachineStatement* node) override;
+					void Visit(WfBreakStatement* node) override;
+					void Visit(WfContinueStatement* node) override;
+					void Visit(WfReturnStatement* node) override;
+					void Visit(WfDeleteStatement* node) override;
+					void Visit(WfRaiseExceptionStatement* node) override;
+					void Visit(WfIfStatement* node) override;
+					void Visit(WfWhileStatement* node) override;
+					void Visit(WfTryStatement* node) override;
+					void Visit(WfBlockStatement* node) override;
+					void Visit(WfGotoStatement* node) override;
+					void Visit(WfVariableStatement* node) override;
+					void Visit(WfExpressionStatement* node) override;
+					void Visit(WfVirtualCseStatement* node) override;
+					void Visit(WfCoroutineStatement* node) override;
+					void Visit(WfStateMachineStatement* node) override;
 
-					void Visit(WorkflowNamespaceDeclaration* node) override;
-					void Visit(WorkflowFunctionDeclaration* node) override;
-					void Visit(WorkflowVariableDeclaration* node) override;
-					void Visit(WorkflowEventDeclaration* node) override;
-					void Visit(WorkflowPropertyDeclaration* node) override;
-					void Visit(WorkflowConstructorDeclaration* node) override;
-					void Visit(WorkflowDestructorDeclaration* node) override;
-					void Visit(WorkflowClassDeclaration* node) override;
-					void Visit(WorkflowEnumDeclaration* node) override;
-					void Visit(WorkflowStructDeclaration* node) override;
-					void Visit(WorkflowVirtualCfeDeclaration* node) override;
-					void Visit(WorkflowVirtualCseDeclaration* node) override;
+					void Visit(WfNamespaceDeclaration* node) override;
+					void Visit(WfFunctionDeclaration* node) override;
+					void Visit(WfVariableDeclaration* node) override;
+					void Visit(WfEventDeclaration* node) override;
+					void Visit(WfPropertyDeclaration* node) override;
+					void Visit(WfConstructorDeclaration* node) override;
+					void Visit(WfDestructorDeclaration* node) override;
+					void Visit(WfClassDeclaration* node) override;
+					void Visit(WfEnumDeclaration* node) override;
+					void Visit(WfStructDeclaration* node) override;
+					void Visit(WfVirtualCfeDeclaration* node) override;
+					void Visit(WfVirtualCseDeclaration* node) override;
 
-					void Visit(WorkflowAutoPropertyDeclaration* node) override;
-					void Visit(WorkflowCastResultInterfaceDeclaration* node) override;
+					void Visit(WfAutoPropertyDeclaration* node) override;
+					void Visit(WfCastResultInterfaceDeclaration* node) override;
 
-					void Visit(WorkflowStateMachineDeclaration* node) override;
+					void Visit(WfStateMachineDeclaration* node) override;
 
-					void Visit(WorkflowForEachStatement* node) override;
-					void Visit(WorkflowSwitchStatement* node) override;
-					void Visit(WorkflowCoProviderStatement* node) override;
+					void Visit(WfForEachStatement* node) override;
+					void Visit(WfSwitchStatement* node) override;
+					void Visit(WfCoProviderStatement* node) override;
 
-					void Visit(WorkflowCoPauseStatement* node) override;
-					void Visit(WorkflowCoOperatorStatement* node) override;
+					void Visit(WfCoPauseStatement* node) override;
+					void Visit(WfCoOperatorStatement* node) override;
 
-					void Visit(WorkflowStateSwitchStatement* node) override;
-					void Visit(WorkflowStateInvokeStatement* node) override;
+					void Visit(WfStateSwitchStatement* node) override;
+					void Visit(WfStateInvokeStatement* node) override;
 
-					void Visit(WorkflowFormatExpression* node) override;
+					void Visit(WfFormatExpression* node) override;
 
-					void Visit(WorkflowBindExpression* node) override;
-					void Visit(WorkflowNewCoroutineExpression* node) override;
-					void Visit(WorkflowMixinCastExpression* node) override;
-					void Visit(WorkflowExpectedTypeCastExpression* node) override;
-					void Visit(WorkflowCoOperatorExpression* node) override;
+					void Visit(WfBindExpression* node) override;
+					void Visit(WfNewCoroutineExpression* node) override;
+					void Visit(WfMixinCastExpression* node) override;
+					void Visit(WfExpectedTypeCastExpression* node) override;
+					void Visit(WfCoOperatorExpression* node) override;
 
-					void Visit(WorkflowModuleUsingNameFragment* node) override;
-					void Visit(WorkflowModuleUsingWildCardFragment* node) override;
+					void Visit(WfModuleUsingNameFragment* node) override;
+					void Visit(WfModuleUsingWildCardFragment* node) override;
 
 				public:
 					AstVisitor(vl::stream::StreamWriter& _writer);
 
-					void Print(WorkflowType* node);
-					void Print(WorkflowExpression* node);
-					void Print(WorkflowStatement* node);
-					void Print(WorkflowDeclaration* node);
-					void Print(WorkflowModuleUsingFragment* node);
-					void Print(WorkflowAttribute* node);
-					void Print(WorkflowFunctionArgument* node);
-					void Print(WorkflowBaseConstructorCall* node);
-					void Print(WorkflowEnumItemIntersection* node);
-					void Print(WorkflowEnumItem* node);
-					void Print(WorkflowStructMember* node);
-					void Print(WorkflowStateInput* node);
-					void Print(WorkflowStateDeclaration* node);
-					void Print(WorkflowSwitchCase* node);
-					void Print(WorkflowStateSwitchArgument* node);
-					void Print(WorkflowStateSwitchCase* node);
-					void Print(WorkflowLetVariable* node);
-					void Print(WorkflowConstructorArgument* node);
-					void Print(WorkflowModuleUsingItem* node);
-					void Print(WorkflowModuleUsingPath* node);
-					void Print(WorkflowModule* node);
+					void Print(WfType* node);
+					void Print(WfExpression* node);
+					void Print(WfStatement* node);
+					void Print(WfDeclaration* node);
+					void Print(WfModuleUsingFragment* node);
+					void Print(WfAttribute* node);
+					void Print(WfFunctionArgument* node);
+					void Print(WfBaseConstructorCall* node);
+					void Print(WfEnumItemIntersection* node);
+					void Print(WfEnumItem* node);
+					void Print(WfStructMember* node);
+					void Print(WfStateInput* node);
+					void Print(WfStateDeclaration* node);
+					void Print(WfSwitchCase* node);
+					void Print(WfStateSwitchArgument* node);
+					void Print(WfStateSwitchCase* node);
+					void Print(WfLetVariable* node);
+					void Print(WfConstructorArgument* node);
+					void Print(WfModuleUsingItem* node);
+					void Print(WfModuleUsingPath* node);
+					void Print(WfModule* node);
 				};
 			}
 		}

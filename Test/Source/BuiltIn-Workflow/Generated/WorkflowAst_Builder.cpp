@@ -19,13 +19,13 @@ namespace vl
 AttachEventExpressionBuilder
 ***********************************************************************/
 
-				AttachEventExpressionBuilder& AttachEventExpressionBuilder::event(const vl::Ptr<WorkflowExpression>& value)
+				AttachEventExpressionBuilder& AttachEventExpressionBuilder::event(const vl::Ptr<WfExpression>& value)
 				{
 					node->event = value;
 					return *this;
 				}
 
-				AttachEventExpressionBuilder& AttachEventExpressionBuilder::function(const vl::Ptr<WorkflowExpression>& value)
+				AttachEventExpressionBuilder& AttachEventExpressionBuilder::function(const vl::Ptr<WfExpression>& value)
 				{
 					node->function = value;
 					return *this;
@@ -47,7 +47,7 @@ AttributeBuilder
 					return *this;
 				}
 
-				AttributeBuilder& AttributeBuilder::value(const vl::Ptr<WorkflowExpression>& value)
+				AttributeBuilder& AttributeBuilder::value(const vl::Ptr<WfExpression>& value)
 				{
 					node->value = value;
 					return *this;
@@ -57,31 +57,31 @@ AttributeBuilder
 AutoPropertyDeclarationBuilder
 ***********************************************************************/
 
-				AutoPropertyDeclarationBuilder& AutoPropertyDeclarationBuilder::configConst(WorkflowAPConst value)
+				AutoPropertyDeclarationBuilder& AutoPropertyDeclarationBuilder::configConst(WfAPConst value)
 				{
 					node->configConst = value;
 					return *this;
 				}
 
-				AutoPropertyDeclarationBuilder& AutoPropertyDeclarationBuilder::configObserve(WorkflowAPObserve value)
+				AutoPropertyDeclarationBuilder& AutoPropertyDeclarationBuilder::configObserve(WfAPObserve value)
 				{
 					node->configObserve = value;
 					return *this;
 				}
 
-				AutoPropertyDeclarationBuilder& AutoPropertyDeclarationBuilder::expression(const vl::Ptr<WorkflowExpression>& value)
+				AutoPropertyDeclarationBuilder& AutoPropertyDeclarationBuilder::expression(const vl::Ptr<WfExpression>& value)
 				{
 					node->expression = value;
 					return *this;
 				}
 
-				AutoPropertyDeclarationBuilder& AutoPropertyDeclarationBuilder::functionKind(WorkflowFunctionKind value)
+				AutoPropertyDeclarationBuilder& AutoPropertyDeclarationBuilder::functionKind(WfFunctionKind value)
 				{
 					node->functionKind = value;
 					return *this;
 				}
 
-				AutoPropertyDeclarationBuilder& AutoPropertyDeclarationBuilder::type(const vl::Ptr<WorkflowType>& value)
+				AutoPropertyDeclarationBuilder& AutoPropertyDeclarationBuilder::type(const vl::Ptr<WfType>& value)
 				{
 					node->type = value;
 					return *this;
@@ -91,13 +91,13 @@ AutoPropertyDeclarationBuilder
 BaseConstructorCallBuilder
 ***********************************************************************/
 
-				BaseConstructorCallBuilder& BaseConstructorCallBuilder::arguments(const vl::Ptr<WorkflowExpression>& value)
+				BaseConstructorCallBuilder& BaseConstructorCallBuilder::arguments(const vl::Ptr<WfExpression>& value)
 				{
 					node->arguments.Add(value);
 					return *this;
 				}
 
-				BaseConstructorCallBuilder& BaseConstructorCallBuilder::type(const vl::Ptr<WorkflowType>& value)
+				BaseConstructorCallBuilder& BaseConstructorCallBuilder::type(const vl::Ptr<WfType>& value)
 				{
 					node->type = value;
 					return *this;
@@ -107,19 +107,19 @@ BaseConstructorCallBuilder
 BinaryExpressionBuilder
 ***********************************************************************/
 
-				BinaryExpressionBuilder& BinaryExpressionBuilder::first(const vl::Ptr<WorkflowExpression>& value)
+				BinaryExpressionBuilder& BinaryExpressionBuilder::first(const vl::Ptr<WfExpression>& value)
 				{
 					node->first = value;
 					return *this;
 				}
 
-				BinaryExpressionBuilder& BinaryExpressionBuilder::op(WorkflowBinaryOperator value)
+				BinaryExpressionBuilder& BinaryExpressionBuilder::op(WfBinaryOperator value)
 				{
 					node->op = value;
 					return *this;
 				}
 
-				BinaryExpressionBuilder& BinaryExpressionBuilder::second(const vl::Ptr<WorkflowExpression>& value)
+				BinaryExpressionBuilder& BinaryExpressionBuilder::second(const vl::Ptr<WfExpression>& value)
 				{
 					node->second = value;
 					return *this;
@@ -129,7 +129,7 @@ BinaryExpressionBuilder
 BindExpressionBuilder
 ***********************************************************************/
 
-				BindExpressionBuilder& BindExpressionBuilder::expression(const vl::Ptr<WorkflowExpression>& value)
+				BindExpressionBuilder& BindExpressionBuilder::expression(const vl::Ptr<WfExpression>& value)
 				{
 					node->expression = value;
 					return *this;
@@ -145,7 +145,7 @@ BlockStatementBuilder
 					return *this;
 				}
 
-				BlockStatementBuilder& BlockStatementBuilder::statements(const vl::Ptr<WorkflowStatement>& value)
+				BlockStatementBuilder& BlockStatementBuilder::statements(const vl::Ptr<WfStatement>& value)
 				{
 					node->statements.Add(value);
 					return *this;
@@ -155,13 +155,13 @@ BlockStatementBuilder
 CallExpressionBuilder
 ***********************************************************************/
 
-				CallExpressionBuilder& CallExpressionBuilder::arguments(const vl::Ptr<WorkflowExpression>& value)
+				CallExpressionBuilder& CallExpressionBuilder::arguments(const vl::Ptr<WfExpression>& value)
 				{
 					node->arguments.Add(value);
 					return *this;
 				}
 
-				CallExpressionBuilder& CallExpressionBuilder::function(const vl::Ptr<WorkflowExpression>& value)
+				CallExpressionBuilder& CallExpressionBuilder::function(const vl::Ptr<WfExpression>& value)
 				{
 					node->function = value;
 					return *this;
@@ -171,13 +171,13 @@ CallExpressionBuilder
 CastResultInterfaceDeclarationBuilder
 ***********************************************************************/
 
-				CastResultInterfaceDeclarationBuilder& CastResultInterfaceDeclarationBuilder::baseType(const vl::Ptr<WorkflowType>& value)
+				CastResultInterfaceDeclarationBuilder& CastResultInterfaceDeclarationBuilder::baseType(const vl::Ptr<WfType>& value)
 				{
 					node->baseType = value;
 					return *this;
 				}
 
-				CastResultInterfaceDeclarationBuilder& CastResultInterfaceDeclarationBuilder::elementType(const vl::Ptr<WorkflowType>& value)
+				CastResultInterfaceDeclarationBuilder& CastResultInterfaceDeclarationBuilder::elementType(const vl::Ptr<WfType>& value)
 				{
 					node->elementType = value;
 					return *this;
@@ -193,7 +193,7 @@ ChildExpressionBuilder
 					return *this;
 				}
 
-				ChildExpressionBuilder& ChildExpressionBuilder::parent(const vl::Ptr<WorkflowExpression>& value)
+				ChildExpressionBuilder& ChildExpressionBuilder::parent(const vl::Ptr<WfExpression>& value)
 				{
 					node->parent = value;
 					return *this;
@@ -209,7 +209,7 @@ ChildTypeBuilder
 					return *this;
 				}
 
-				ChildTypeBuilder& ChildTypeBuilder::parent(const vl::Ptr<WorkflowType>& value)
+				ChildTypeBuilder& ChildTypeBuilder::parent(const vl::Ptr<WfType>& value)
 				{
 					node->parent = value;
 					return *this;
@@ -219,25 +219,25 @@ ChildTypeBuilder
 ClassDeclarationBuilder
 ***********************************************************************/
 
-				ClassDeclarationBuilder& ClassDeclarationBuilder::baseTypes(const vl::Ptr<WorkflowType>& value)
+				ClassDeclarationBuilder& ClassDeclarationBuilder::baseTypes(const vl::Ptr<WfType>& value)
 				{
 					node->baseTypes.Add(value);
 					return *this;
 				}
 
-				ClassDeclarationBuilder& ClassDeclarationBuilder::constructorType(WorkflowConstructorType value)
+				ClassDeclarationBuilder& ClassDeclarationBuilder::constructorType(WfConstructorType value)
 				{
 					node->constructorType = value;
 					return *this;
 				}
 
-				ClassDeclarationBuilder& ClassDeclarationBuilder::declarations(const vl::Ptr<WorkflowDeclaration>& value)
+				ClassDeclarationBuilder& ClassDeclarationBuilder::declarations(const vl::Ptr<WfDeclaration>& value)
 				{
 					node->declarations.Add(value);
 					return *this;
 				}
 
-				ClassDeclarationBuilder& ClassDeclarationBuilder::kind(WorkflowClassKind value)
+				ClassDeclarationBuilder& ClassDeclarationBuilder::kind(WfClassKind value)
 				{
 					node->kind = value;
 					return *this;
@@ -257,7 +257,7 @@ CoOperatorExpressionBuilder
 CoOperatorStatementBuilder
 ***********************************************************************/
 
-				CoOperatorStatementBuilder& CoOperatorStatementBuilder::arguments(const vl::Ptr<WorkflowExpression>& value)
+				CoOperatorStatementBuilder& CoOperatorStatementBuilder::arguments(const vl::Ptr<WfExpression>& value)
 				{
 					node->arguments.Add(value);
 					return *this;
@@ -279,7 +279,7 @@ CoOperatorStatementBuilder
 CoPauseStatementBuilder
 ***********************************************************************/
 
-				CoPauseStatementBuilder& CoPauseStatementBuilder::statement(const vl::Ptr<WorkflowStatement>& value)
+				CoPauseStatementBuilder& CoPauseStatementBuilder::statement(const vl::Ptr<WfStatement>& value)
 				{
 					node->statement = value;
 					return *this;
@@ -295,7 +295,7 @@ CoProviderStatementBuilder
 					return *this;
 				}
 
-				CoProviderStatementBuilder& CoProviderStatementBuilder::statement(const vl::Ptr<WorkflowStatement>& value)
+				CoProviderStatementBuilder& CoProviderStatementBuilder::statement(const vl::Ptr<WfStatement>& value)
 				{
 					node->statement = value;
 					return *this;
@@ -305,13 +305,13 @@ CoProviderStatementBuilder
 ConstructorArgumentBuilder
 ***********************************************************************/
 
-				ConstructorArgumentBuilder& ConstructorArgumentBuilder::key(const vl::Ptr<WorkflowExpression>& value)
+				ConstructorArgumentBuilder& ConstructorArgumentBuilder::key(const vl::Ptr<WfExpression>& value)
 				{
 					node->key = value;
 					return *this;
 				}
 
-				ConstructorArgumentBuilder& ConstructorArgumentBuilder::value(const vl::Ptr<WorkflowExpression>& value)
+				ConstructorArgumentBuilder& ConstructorArgumentBuilder::value(const vl::Ptr<WfExpression>& value)
 				{
 					node->value = value;
 					return *this;
@@ -321,25 +321,25 @@ ConstructorArgumentBuilder
 ConstructorDeclarationBuilder
 ***********************************************************************/
 
-				ConstructorDeclarationBuilder& ConstructorDeclarationBuilder::arguments(const vl::Ptr<WorkflowFunctionArgument>& value)
+				ConstructorDeclarationBuilder& ConstructorDeclarationBuilder::arguments(const vl::Ptr<WfFunctionArgument>& value)
 				{
 					node->arguments.Add(value);
 					return *this;
 				}
 
-				ConstructorDeclarationBuilder& ConstructorDeclarationBuilder::baseConstructorCalls(const vl::Ptr<WorkflowBaseConstructorCall>& value)
+				ConstructorDeclarationBuilder& ConstructorDeclarationBuilder::baseConstructorCalls(const vl::Ptr<WfBaseConstructorCall>& value)
 				{
 					node->baseConstructorCalls.Add(value);
 					return *this;
 				}
 
-				ConstructorDeclarationBuilder& ConstructorDeclarationBuilder::constructorType(WorkflowConstructorType value)
+				ConstructorDeclarationBuilder& ConstructorDeclarationBuilder::constructorType(WfConstructorType value)
 				{
 					node->constructorType = value;
 					return *this;
 				}
 
-				ConstructorDeclarationBuilder& ConstructorDeclarationBuilder::statement(const vl::Ptr<WorkflowStatement>& value)
+				ConstructorDeclarationBuilder& ConstructorDeclarationBuilder::statement(const vl::Ptr<WfStatement>& value)
 				{
 					node->statement = value;
 					return *this;
@@ -349,7 +349,7 @@ ConstructorDeclarationBuilder
 ConstructorExpressionBuilder
 ***********************************************************************/
 
-				ConstructorExpressionBuilder& ConstructorExpressionBuilder::arguments(const vl::Ptr<WorkflowConstructorArgument>& value)
+				ConstructorExpressionBuilder& ConstructorExpressionBuilder::arguments(const vl::Ptr<WfConstructorArgument>& value)
 				{
 					node->arguments.Add(value);
 					return *this;
@@ -359,7 +359,7 @@ ConstructorExpressionBuilder
 DeclarationBuilder
 ***********************************************************************/
 
-				DeclarationBuilder& DeclarationBuilder::attributes(const vl::Ptr<WorkflowAttribute>& value)
+				DeclarationBuilder& DeclarationBuilder::attributes(const vl::Ptr<WfAttribute>& value)
 				{
 					node->attributes.Add(value);
 					return *this;
@@ -375,7 +375,7 @@ DeclarationBuilder
 DeleteStatementBuilder
 ***********************************************************************/
 
-				DeleteStatementBuilder& DeleteStatementBuilder::expression(const vl::Ptr<WorkflowExpression>& value)
+				DeleteStatementBuilder& DeleteStatementBuilder::expression(const vl::Ptr<WfExpression>& value)
 				{
 					node->expression = value;
 					return *this;
@@ -385,7 +385,7 @@ DeleteStatementBuilder
 DestructorDeclarationBuilder
 ***********************************************************************/
 
-				DestructorDeclarationBuilder& DestructorDeclarationBuilder::statement(const vl::Ptr<WorkflowStatement>& value)
+				DestructorDeclarationBuilder& DestructorDeclarationBuilder::statement(const vl::Ptr<WfStatement>& value)
 				{
 					node->statement = value;
 					return *this;
@@ -395,13 +395,13 @@ DestructorDeclarationBuilder
 DetachEventExpressionBuilder
 ***********************************************************************/
 
-				DetachEventExpressionBuilder& DetachEventExpressionBuilder::event(const vl::Ptr<WorkflowExpression>& value)
+				DetachEventExpressionBuilder& DetachEventExpressionBuilder::event(const vl::Ptr<WfExpression>& value)
 				{
 					node->event = value;
 					return *this;
 				}
 
-				DetachEventExpressionBuilder& DetachEventExpressionBuilder::handler(const vl::Ptr<WorkflowExpression>& value)
+				DetachEventExpressionBuilder& DetachEventExpressionBuilder::handler(const vl::Ptr<WfExpression>& value)
 				{
 					node->handler = value;
 					return *this;
@@ -411,13 +411,13 @@ DetachEventExpressionBuilder
 EnumDeclarationBuilder
 ***********************************************************************/
 
-				EnumDeclarationBuilder& EnumDeclarationBuilder::items(const vl::Ptr<WorkflowEnumItem>& value)
+				EnumDeclarationBuilder& EnumDeclarationBuilder::items(const vl::Ptr<WfEnumItem>& value)
 				{
 					node->items.Add(value);
 					return *this;
 				}
 
-				EnumDeclarationBuilder& EnumDeclarationBuilder::kind(WorkflowEnumKind value)
+				EnumDeclarationBuilder& EnumDeclarationBuilder::kind(WfEnumKind value)
 				{
 					node->kind = value;
 					return *this;
@@ -427,19 +427,19 @@ EnumDeclarationBuilder
 EnumItemBuilder
 ***********************************************************************/
 
-				EnumItemBuilder& EnumItemBuilder::attributes(const vl::Ptr<WorkflowAttribute>& value)
+				EnumItemBuilder& EnumItemBuilder::attributes(const vl::Ptr<WfAttribute>& value)
 				{
 					node->attributes.Add(value);
 					return *this;
 				}
 
-				EnumItemBuilder& EnumItemBuilder::intersections(const vl::Ptr<WorkflowEnumItemIntersection>& value)
+				EnumItemBuilder& EnumItemBuilder::intersections(const vl::Ptr<WfEnumItemIntersection>& value)
 				{
 					node->intersections.Add(value);
 					return *this;
 				}
 
-				EnumItemBuilder& EnumItemBuilder::kind(WorkflowEnumItemKind value)
+				EnumItemBuilder& EnumItemBuilder::kind(WfEnumItemKind value)
 				{
 					node->kind = value;
 					return *this;
@@ -471,7 +471,7 @@ EnumItemIntersectionBuilder
 EnumerableTypeBuilder
 ***********************************************************************/
 
-				EnumerableTypeBuilder& EnumerableTypeBuilder::element(const vl::Ptr<WorkflowType>& value)
+				EnumerableTypeBuilder& EnumerableTypeBuilder::element(const vl::Ptr<WfType>& value)
 				{
 					node->element = value;
 					return *this;
@@ -481,7 +481,7 @@ EnumerableTypeBuilder
 EventDeclarationBuilder
 ***********************************************************************/
 
-				EventDeclarationBuilder& EventDeclarationBuilder::arguments(const vl::Ptr<WorkflowType>& value)
+				EventDeclarationBuilder& EventDeclarationBuilder::arguments(const vl::Ptr<WfType>& value)
 				{
 					node->arguments.Add(value);
 					return *this;
@@ -491,13 +491,13 @@ EventDeclarationBuilder
 ExpectedTypeCastExpressionBuilder
 ***********************************************************************/
 
-				ExpectedTypeCastExpressionBuilder& ExpectedTypeCastExpressionBuilder::expression(const vl::Ptr<WorkflowExpression>& value)
+				ExpectedTypeCastExpressionBuilder& ExpectedTypeCastExpressionBuilder::expression(const vl::Ptr<WfExpression>& value)
 				{
 					node->expression = value;
 					return *this;
 				}
 
-				ExpectedTypeCastExpressionBuilder& ExpectedTypeCastExpressionBuilder::strategy(WorkflowTypeCastingStrategy value)
+				ExpectedTypeCastExpressionBuilder& ExpectedTypeCastExpressionBuilder::strategy(WfTypeCastingStrategy value)
 				{
 					node->strategy = value;
 					return *this;
@@ -507,7 +507,7 @@ ExpectedTypeCastExpressionBuilder
 ExpressionStatementBuilder
 ***********************************************************************/
 
-				ExpressionStatementBuilder& ExpressionStatementBuilder::expression(const vl::Ptr<WorkflowExpression>& value)
+				ExpressionStatementBuilder& ExpressionStatementBuilder::expression(const vl::Ptr<WfExpression>& value)
 				{
 					node->expression = value;
 					return *this;
@@ -527,13 +527,13 @@ FloatingExpressionBuilder
 ForEachStatementBuilder
 ***********************************************************************/
 
-				ForEachStatementBuilder& ForEachStatementBuilder::collection(const vl::Ptr<WorkflowExpression>& value)
+				ForEachStatementBuilder& ForEachStatementBuilder::collection(const vl::Ptr<WfExpression>& value)
 				{
 					node->collection = value;
 					return *this;
 				}
 
-				ForEachStatementBuilder& ForEachStatementBuilder::direction(WorkflowForEachDirection value)
+				ForEachStatementBuilder& ForEachStatementBuilder::direction(WfForEachDirection value)
 				{
 					node->direction = value;
 					return *this;
@@ -545,7 +545,7 @@ ForEachStatementBuilder
 					return *this;
 				}
 
-				ForEachStatementBuilder& ForEachStatementBuilder::statement(const vl::Ptr<WorkflowStatement>& value)
+				ForEachStatementBuilder& ForEachStatementBuilder::statement(const vl::Ptr<WfStatement>& value)
 				{
 					node->statement = value;
 					return *this;
@@ -565,7 +565,7 @@ FormatExpressionBuilder
 FunctionArgumentBuilder
 ***********************************************************************/
 
-				FunctionArgumentBuilder& FunctionArgumentBuilder::attributes(const vl::Ptr<WorkflowAttribute>& value)
+				FunctionArgumentBuilder& FunctionArgumentBuilder::attributes(const vl::Ptr<WfAttribute>& value)
 				{
 					node->attributes.Add(value);
 					return *this;
@@ -577,7 +577,7 @@ FunctionArgumentBuilder
 					return *this;
 				}
 
-				FunctionArgumentBuilder& FunctionArgumentBuilder::type(const vl::Ptr<WorkflowType>& value)
+				FunctionArgumentBuilder& FunctionArgumentBuilder::type(const vl::Ptr<WfType>& value)
 				{
 					node->type = value;
 					return *this;
@@ -587,31 +587,31 @@ FunctionArgumentBuilder
 FunctionDeclarationBuilder
 ***********************************************************************/
 
-				FunctionDeclarationBuilder& FunctionDeclarationBuilder::anonymity(WorkflowFunctionAnonymity value)
+				FunctionDeclarationBuilder& FunctionDeclarationBuilder::anonymity(WfFunctionAnonymity value)
 				{
 					node->anonymity = value;
 					return *this;
 				}
 
-				FunctionDeclarationBuilder& FunctionDeclarationBuilder::arguments(const vl::Ptr<WorkflowFunctionArgument>& value)
+				FunctionDeclarationBuilder& FunctionDeclarationBuilder::arguments(const vl::Ptr<WfFunctionArgument>& value)
 				{
 					node->arguments.Add(value);
 					return *this;
 				}
 
-				FunctionDeclarationBuilder& FunctionDeclarationBuilder::functionKind(WorkflowFunctionKind value)
+				FunctionDeclarationBuilder& FunctionDeclarationBuilder::functionKind(WfFunctionKind value)
 				{
 					node->functionKind = value;
 					return *this;
 				}
 
-				FunctionDeclarationBuilder& FunctionDeclarationBuilder::returnType(const vl::Ptr<WorkflowType>& value)
+				FunctionDeclarationBuilder& FunctionDeclarationBuilder::returnType(const vl::Ptr<WfType>& value)
 				{
 					node->returnType = value;
 					return *this;
 				}
 
-				FunctionDeclarationBuilder& FunctionDeclarationBuilder::statement(const vl::Ptr<WorkflowStatement>& value)
+				FunctionDeclarationBuilder& FunctionDeclarationBuilder::statement(const vl::Ptr<WfStatement>& value)
 				{
 					node->statement = value;
 					return *this;
@@ -621,7 +621,7 @@ FunctionDeclarationBuilder
 FunctionExpressionBuilder
 ***********************************************************************/
 
-				FunctionExpressionBuilder& FunctionExpressionBuilder::function(const vl::Ptr<WorkflowFunctionDeclaration>& value)
+				FunctionExpressionBuilder& FunctionExpressionBuilder::function(const vl::Ptr<WfFunctionDeclaration>& value)
 				{
 					node->function = value;
 					return *this;
@@ -631,13 +631,13 @@ FunctionExpressionBuilder
 FunctionTypeBuilder
 ***********************************************************************/
 
-				FunctionTypeBuilder& FunctionTypeBuilder::arguments(const vl::Ptr<WorkflowType>& value)
+				FunctionTypeBuilder& FunctionTypeBuilder::arguments(const vl::Ptr<WfType>& value)
 				{
 					node->arguments.Add(value);
 					return *this;
 				}
 
-				FunctionTypeBuilder& FunctionTypeBuilder::result(const vl::Ptr<WorkflowType>& value)
+				FunctionTypeBuilder& FunctionTypeBuilder::result(const vl::Ptr<WfType>& value)
 				{
 					node->result = value;
 					return *this;
@@ -657,19 +657,19 @@ GotoStatementBuilder
 IfExpressionBuilder
 ***********************************************************************/
 
-				IfExpressionBuilder& IfExpressionBuilder::condition(const vl::Ptr<WorkflowExpression>& value)
+				IfExpressionBuilder& IfExpressionBuilder::condition(const vl::Ptr<WfExpression>& value)
 				{
 					node->condition = value;
 					return *this;
 				}
 
-				IfExpressionBuilder& IfExpressionBuilder::falseBranch(const vl::Ptr<WorkflowExpression>& value)
+				IfExpressionBuilder& IfExpressionBuilder::falseBranch(const vl::Ptr<WfExpression>& value)
 				{
 					node->falseBranch = value;
 					return *this;
 				}
 
-				IfExpressionBuilder& IfExpressionBuilder::trueBranch(const vl::Ptr<WorkflowExpression>& value)
+				IfExpressionBuilder& IfExpressionBuilder::trueBranch(const vl::Ptr<WfExpression>& value)
 				{
 					node->trueBranch = value;
 					return *this;
@@ -679,13 +679,13 @@ IfExpressionBuilder
 IfStatementBuilder
 ***********************************************************************/
 
-				IfStatementBuilder& IfStatementBuilder::expression(const vl::Ptr<WorkflowExpression>& value)
+				IfStatementBuilder& IfStatementBuilder::expression(const vl::Ptr<WfExpression>& value)
 				{
 					node->expression = value;
 					return *this;
 				}
 
-				IfStatementBuilder& IfStatementBuilder::falseBranch(const vl::Ptr<WorkflowStatement>& value)
+				IfStatementBuilder& IfStatementBuilder::falseBranch(const vl::Ptr<WfStatement>& value)
 				{
 					node->falseBranch = value;
 					return *this;
@@ -697,13 +697,13 @@ IfStatementBuilder
 					return *this;
 				}
 
-				IfStatementBuilder& IfStatementBuilder::trueBranch(const vl::Ptr<WorkflowStatement>& value)
+				IfStatementBuilder& IfStatementBuilder::trueBranch(const vl::Ptr<WfStatement>& value)
 				{
 					node->trueBranch = value;
 					return *this;
 				}
 
-				IfStatementBuilder& IfStatementBuilder::type(const vl::Ptr<WorkflowType>& value)
+				IfStatementBuilder& IfStatementBuilder::type(const vl::Ptr<WfType>& value)
 				{
 					node->type = value;
 					return *this;
@@ -713,13 +713,13 @@ IfStatementBuilder
 InferExpressionBuilder
 ***********************************************************************/
 
-				InferExpressionBuilder& InferExpressionBuilder::expression(const vl::Ptr<WorkflowExpression>& value)
+				InferExpressionBuilder& InferExpressionBuilder::expression(const vl::Ptr<WfExpression>& value)
 				{
 					node->expression = value;
 					return *this;
 				}
 
-				InferExpressionBuilder& InferExpressionBuilder::type(const vl::Ptr<WorkflowType>& value)
+				InferExpressionBuilder& InferExpressionBuilder::type(const vl::Ptr<WfType>& value)
 				{
 					node->type = value;
 					return *this;
@@ -739,13 +739,13 @@ IntegerExpressionBuilder
 LetExpressionBuilder
 ***********************************************************************/
 
-				LetExpressionBuilder& LetExpressionBuilder::expression(const vl::Ptr<WorkflowExpression>& value)
+				LetExpressionBuilder& LetExpressionBuilder::expression(const vl::Ptr<WfExpression>& value)
 				{
 					node->expression = value;
 					return *this;
 				}
 
-				LetExpressionBuilder& LetExpressionBuilder::variables(const vl::Ptr<WorkflowLetVariable>& value)
+				LetExpressionBuilder& LetExpressionBuilder::variables(const vl::Ptr<WfLetVariable>& value)
 				{
 					node->variables.Add(value);
 					return *this;
@@ -761,7 +761,7 @@ LetVariableBuilder
 					return *this;
 				}
 
-				LetVariableBuilder& LetVariableBuilder::value(const vl::Ptr<WorkflowExpression>& value)
+				LetVariableBuilder& LetVariableBuilder::value(const vl::Ptr<WfExpression>& value)
 				{
 					node->value = value;
 					return *this;
@@ -771,7 +771,7 @@ LetVariableBuilder
 LiteralExpressionBuilder
 ***********************************************************************/
 
-				LiteralExpressionBuilder& LiteralExpressionBuilder::value(WorkflowLiteralValue value)
+				LiteralExpressionBuilder& LiteralExpressionBuilder::value(WfLiteralValue value)
 				{
 					node->value = value;
 					return *this;
@@ -781,19 +781,19 @@ LiteralExpressionBuilder
 MapTypeBuilder
 ***********************************************************************/
 
-				MapTypeBuilder& MapTypeBuilder::key(const vl::Ptr<WorkflowType>& value)
+				MapTypeBuilder& MapTypeBuilder::key(const vl::Ptr<WfType>& value)
 				{
 					node->key = value;
 					return *this;
 				}
 
-				MapTypeBuilder& MapTypeBuilder::value(const vl::Ptr<WorkflowType>& value)
+				MapTypeBuilder& MapTypeBuilder::value(const vl::Ptr<WfType>& value)
 				{
 					node->value = value;
 					return *this;
 				}
 
-				MapTypeBuilder& MapTypeBuilder::writability(WorkflowMapWritability value)
+				MapTypeBuilder& MapTypeBuilder::writability(WfMapWritability value)
 				{
 					node->writability = value;
 					return *this;
@@ -809,7 +809,7 @@ MemberExpressionBuilder
 					return *this;
 				}
 
-				MemberExpressionBuilder& MemberExpressionBuilder::parent(const vl::Ptr<WorkflowExpression>& value)
+				MemberExpressionBuilder& MemberExpressionBuilder::parent(const vl::Ptr<WfExpression>& value)
 				{
 					node->parent = value;
 					return *this;
@@ -819,13 +819,13 @@ MemberExpressionBuilder
 MixinCastExpressionBuilder
 ***********************************************************************/
 
-				MixinCastExpressionBuilder& MixinCastExpressionBuilder::expression(const vl::Ptr<WorkflowExpression>& value)
+				MixinCastExpressionBuilder& MixinCastExpressionBuilder::expression(const vl::Ptr<WfExpression>& value)
 				{
 					node->expression = value;
 					return *this;
 				}
 
-				MixinCastExpressionBuilder& MixinCastExpressionBuilder::type(const vl::Ptr<WorkflowType>& value)
+				MixinCastExpressionBuilder& MixinCastExpressionBuilder::type(const vl::Ptr<WfType>& value)
 				{
 					node->type = value;
 					return *this;
@@ -835,13 +835,13 @@ MixinCastExpressionBuilder
 ModuleBuilder
 ***********************************************************************/
 
-				ModuleBuilder& ModuleBuilder::declarations(const vl::Ptr<WorkflowDeclaration>& value)
+				ModuleBuilder& ModuleBuilder::declarations(const vl::Ptr<WfDeclaration>& value)
 				{
 					node->declarations.Add(value);
 					return *this;
 				}
 
-				ModuleBuilder& ModuleBuilder::moduleType(WorkflowModuleType value)
+				ModuleBuilder& ModuleBuilder::moduleType(WfModuleType value)
 				{
 					node->moduleType = value;
 					return *this;
@@ -853,7 +853,7 @@ ModuleBuilder
 					return *this;
 				}
 
-				ModuleBuilder& ModuleBuilder::paths(const vl::Ptr<WorkflowModuleUsingPath>& value)
+				ModuleBuilder& ModuleBuilder::paths(const vl::Ptr<WfModuleUsingPath>& value)
 				{
 					node->paths.Add(value);
 					return *this;
@@ -863,7 +863,7 @@ ModuleBuilder
 ModuleUsingItemBuilder
 ***********************************************************************/
 
-				ModuleUsingItemBuilder& ModuleUsingItemBuilder::fragments(const vl::Ptr<WorkflowModuleUsingFragment>& value)
+				ModuleUsingItemBuilder& ModuleUsingItemBuilder::fragments(const vl::Ptr<WfModuleUsingFragment>& value)
 				{
 					node->fragments.Add(value);
 					return *this;
@@ -883,7 +883,7 @@ ModuleUsingNameFragmentBuilder
 ModuleUsingPathBuilder
 ***********************************************************************/
 
-				ModuleUsingPathBuilder& ModuleUsingPathBuilder::items(const vl::Ptr<WorkflowModuleUsingItem>& value)
+				ModuleUsingPathBuilder& ModuleUsingPathBuilder::items(const vl::Ptr<WfModuleUsingItem>& value)
 				{
 					node->items.Add(value);
 					return *this;
@@ -893,7 +893,7 @@ ModuleUsingPathBuilder
 NamespaceDeclarationBuilder
 ***********************************************************************/
 
-				NamespaceDeclarationBuilder& NamespaceDeclarationBuilder::declarations(const vl::Ptr<WorkflowDeclaration>& value)
+				NamespaceDeclarationBuilder& NamespaceDeclarationBuilder::declarations(const vl::Ptr<WfDeclaration>& value)
 				{
 					node->declarations.Add(value);
 					return *this;
@@ -903,13 +903,13 @@ NamespaceDeclarationBuilder
 NewClassExpressionBuilder
 ***********************************************************************/
 
-				NewClassExpressionBuilder& NewClassExpressionBuilder::arguments(const vl::Ptr<WorkflowExpression>& value)
+				NewClassExpressionBuilder& NewClassExpressionBuilder::arguments(const vl::Ptr<WfExpression>& value)
 				{
 					node->arguments.Add(value);
 					return *this;
 				}
 
-				NewClassExpressionBuilder& NewClassExpressionBuilder::type(const vl::Ptr<WorkflowType>& value)
+				NewClassExpressionBuilder& NewClassExpressionBuilder::type(const vl::Ptr<WfType>& value)
 				{
 					node->type = value;
 					return *this;
@@ -925,7 +925,7 @@ NewCoroutineExpressionBuilder
 					return *this;
 				}
 
-				NewCoroutineExpressionBuilder& NewCoroutineExpressionBuilder::statement(const vl::Ptr<WorkflowStatement>& value)
+				NewCoroutineExpressionBuilder& NewCoroutineExpressionBuilder::statement(const vl::Ptr<WfStatement>& value)
 				{
 					node->statement = value;
 					return *this;
@@ -935,13 +935,13 @@ NewCoroutineExpressionBuilder
 NewInterfaceExpressionBuilder
 ***********************************************************************/
 
-				NewInterfaceExpressionBuilder& NewInterfaceExpressionBuilder::declarations(const vl::Ptr<WorkflowDeclaration>& value)
+				NewInterfaceExpressionBuilder& NewInterfaceExpressionBuilder::declarations(const vl::Ptr<WfDeclaration>& value)
 				{
 					node->declarations.Add(value);
 					return *this;
 				}
 
-				NewInterfaceExpressionBuilder& NewInterfaceExpressionBuilder::type(const vl::Ptr<WorkflowType>& value)
+				NewInterfaceExpressionBuilder& NewInterfaceExpressionBuilder::type(const vl::Ptr<WfType>& value)
 				{
 					node->type = value;
 					return *this;
@@ -951,7 +951,7 @@ NewInterfaceExpressionBuilder
 NullableTypeBuilder
 ***********************************************************************/
 
-				NullableTypeBuilder& NullableTypeBuilder::element(const vl::Ptr<WorkflowType>& value)
+				NullableTypeBuilder& NullableTypeBuilder::element(const vl::Ptr<WfType>& value)
 				{
 					node->element = value;
 					return *this;
@@ -961,7 +961,7 @@ NullableTypeBuilder
 ObservableListTypeBuilder
 ***********************************************************************/
 
-				ObservableListTypeBuilder& ObservableListTypeBuilder::element(const vl::Ptr<WorkflowType>& value)
+				ObservableListTypeBuilder& ObservableListTypeBuilder::element(const vl::Ptr<WfType>& value)
 				{
 					node->element = value;
 					return *this;
@@ -971,13 +971,13 @@ ObservableListTypeBuilder
 ObserveExpressionBuilder
 ***********************************************************************/
 
-				ObserveExpressionBuilder& ObserveExpressionBuilder::events(const vl::Ptr<WorkflowExpression>& value)
+				ObserveExpressionBuilder& ObserveExpressionBuilder::events(const vl::Ptr<WfExpression>& value)
 				{
 					node->events.Add(value);
 					return *this;
 				}
 
-				ObserveExpressionBuilder& ObserveExpressionBuilder::expression(const vl::Ptr<WorkflowExpression>& value)
+				ObserveExpressionBuilder& ObserveExpressionBuilder::expression(const vl::Ptr<WfExpression>& value)
 				{
 					node->expression = value;
 					return *this;
@@ -989,13 +989,13 @@ ObserveExpressionBuilder
 					return *this;
 				}
 
-				ObserveExpressionBuilder& ObserveExpressionBuilder::observeType(WorkflowObserveType value)
+				ObserveExpressionBuilder& ObserveExpressionBuilder::observeType(WfObserveType value)
 				{
 					node->observeType = value;
 					return *this;
 				}
 
-				ObserveExpressionBuilder& ObserveExpressionBuilder::parent(const vl::Ptr<WorkflowExpression>& value)
+				ObserveExpressionBuilder& ObserveExpressionBuilder::parent(const vl::Ptr<WfExpression>& value)
 				{
 					node->parent = value;
 					return *this;
@@ -1005,7 +1005,7 @@ ObserveExpressionBuilder
 OrderedLambdaExpressionBuilder
 ***********************************************************************/
 
-				OrderedLambdaExpressionBuilder& OrderedLambdaExpressionBuilder::body(const vl::Ptr<WorkflowExpression>& value)
+				OrderedLambdaExpressionBuilder& OrderedLambdaExpressionBuilder::body(const vl::Ptr<WfExpression>& value)
 				{
 					node->body = value;
 					return *this;
@@ -1025,7 +1025,7 @@ OrderedNameExpressionBuilder
 PredefinedTypeBuilder
 ***********************************************************************/
 
-				PredefinedTypeBuilder& PredefinedTypeBuilder::name(WorkflowPredefinedTypeName value)
+				PredefinedTypeBuilder& PredefinedTypeBuilder::name(WfPredefinedTypeName value)
 				{
 					node->name = value;
 					return *this;
@@ -1047,7 +1047,7 @@ PropertyDeclarationBuilder
 					return *this;
 				}
 
-				PropertyDeclarationBuilder& PropertyDeclarationBuilder::type(const vl::Ptr<WorkflowType>& value)
+				PropertyDeclarationBuilder& PropertyDeclarationBuilder::type(const vl::Ptr<WfType>& value)
 				{
 					node->type = value;
 					return *this;
@@ -1063,7 +1063,7 @@ PropertyDeclarationBuilder
 RaiseExceptionStatementBuilder
 ***********************************************************************/
 
-				RaiseExceptionStatementBuilder& RaiseExceptionStatementBuilder::expression(const vl::Ptr<WorkflowExpression>& value)
+				RaiseExceptionStatementBuilder& RaiseExceptionStatementBuilder::expression(const vl::Ptr<WfExpression>& value)
 				{
 					node->expression = value;
 					return *this;
@@ -1073,25 +1073,25 @@ RaiseExceptionStatementBuilder
 RangeExpressionBuilder
 ***********************************************************************/
 
-				RangeExpressionBuilder& RangeExpressionBuilder::begin(const vl::Ptr<WorkflowExpression>& value)
+				RangeExpressionBuilder& RangeExpressionBuilder::begin(const vl::Ptr<WfExpression>& value)
 				{
 					node->begin = value;
 					return *this;
 				}
 
-				RangeExpressionBuilder& RangeExpressionBuilder::beginBoundary(WorkflowRangeBoundary value)
+				RangeExpressionBuilder& RangeExpressionBuilder::beginBoundary(WfRangeBoundary value)
 				{
 					node->beginBoundary = value;
 					return *this;
 				}
 
-				RangeExpressionBuilder& RangeExpressionBuilder::end(const vl::Ptr<WorkflowExpression>& value)
+				RangeExpressionBuilder& RangeExpressionBuilder::end(const vl::Ptr<WfExpression>& value)
 				{
 					node->end = value;
 					return *this;
 				}
 
-				RangeExpressionBuilder& RangeExpressionBuilder::endBoundary(WorkflowRangeBoundary value)
+				RangeExpressionBuilder& RangeExpressionBuilder::endBoundary(WfRangeBoundary value)
 				{
 					node->endBoundary = value;
 					return *this;
@@ -1101,7 +1101,7 @@ RangeExpressionBuilder
 RawPointerTypeBuilder
 ***********************************************************************/
 
-				RawPointerTypeBuilder& RawPointerTypeBuilder::element(const vl::Ptr<WorkflowType>& value)
+				RawPointerTypeBuilder& RawPointerTypeBuilder::element(const vl::Ptr<WfType>& value)
 				{
 					node->element = value;
 					return *this;
@@ -1131,7 +1131,7 @@ ReferenceTypeBuilder
 ReturnStatementBuilder
 ***********************************************************************/
 
-				ReturnStatementBuilder& ReturnStatementBuilder::expression(const vl::Ptr<WorkflowExpression>& value)
+				ReturnStatementBuilder& ReturnStatementBuilder::expression(const vl::Ptr<WfExpression>& value)
 				{
 					node->expression = value;
 					return *this;
@@ -1141,19 +1141,19 @@ ReturnStatementBuilder
 SetTestingExpressionBuilder
 ***********************************************************************/
 
-				SetTestingExpressionBuilder& SetTestingExpressionBuilder::collection(const vl::Ptr<WorkflowExpression>& value)
+				SetTestingExpressionBuilder& SetTestingExpressionBuilder::collection(const vl::Ptr<WfExpression>& value)
 				{
 					node->collection = value;
 					return *this;
 				}
 
-				SetTestingExpressionBuilder& SetTestingExpressionBuilder::element(const vl::Ptr<WorkflowExpression>& value)
+				SetTestingExpressionBuilder& SetTestingExpressionBuilder::element(const vl::Ptr<WfExpression>& value)
 				{
 					node->element = value;
 					return *this;
 				}
 
-				SetTestingExpressionBuilder& SetTestingExpressionBuilder::test(WorkflowSetTesting value)
+				SetTestingExpressionBuilder& SetTestingExpressionBuilder::test(WfSetTesting value)
 				{
 					node->test = value;
 					return *this;
@@ -1163,7 +1163,7 @@ SetTestingExpressionBuilder
 SharedPointerTypeBuilder
 ***********************************************************************/
 
-				SharedPointerTypeBuilder& SharedPointerTypeBuilder::element(const vl::Ptr<WorkflowType>& value)
+				SharedPointerTypeBuilder& SharedPointerTypeBuilder::element(const vl::Ptr<WfType>& value)
 				{
 					node->element = value;
 					return *this;
@@ -1173,7 +1173,7 @@ SharedPointerTypeBuilder
 StateDeclarationBuilder
 ***********************************************************************/
 
-				StateDeclarationBuilder& StateDeclarationBuilder::arguments(const vl::Ptr<WorkflowFunctionArgument>& value)
+				StateDeclarationBuilder& StateDeclarationBuilder::arguments(const vl::Ptr<WfFunctionArgument>& value)
 				{
 					node->arguments.Add(value);
 					return *this;
@@ -1185,7 +1185,7 @@ StateDeclarationBuilder
 					return *this;
 				}
 
-				StateDeclarationBuilder& StateDeclarationBuilder::statement(const vl::Ptr<WorkflowStatement>& value)
+				StateDeclarationBuilder& StateDeclarationBuilder::statement(const vl::Ptr<WfStatement>& value)
 				{
 					node->statement = value;
 					return *this;
@@ -1195,7 +1195,7 @@ StateDeclarationBuilder
 StateInputBuilder
 ***********************************************************************/
 
-				StateInputBuilder& StateInputBuilder::arguments(const vl::Ptr<WorkflowFunctionArgument>& value)
+				StateInputBuilder& StateInputBuilder::arguments(const vl::Ptr<WfFunctionArgument>& value)
 				{
 					node->arguments.Add(value);
 					return *this;
@@ -1211,7 +1211,7 @@ StateInputBuilder
 StateInvokeStatementBuilder
 ***********************************************************************/
 
-				StateInvokeStatementBuilder& StateInvokeStatementBuilder::arguments(const vl::Ptr<WorkflowExpression>& value)
+				StateInvokeStatementBuilder& StateInvokeStatementBuilder::arguments(const vl::Ptr<WfExpression>& value)
 				{
 					node->arguments.Add(value);
 					return *this;
@@ -1223,7 +1223,7 @@ StateInvokeStatementBuilder
 					return *this;
 				}
 
-				StateInvokeStatementBuilder& StateInvokeStatementBuilder::type(WorkflowStateInvokeType value)
+				StateInvokeStatementBuilder& StateInvokeStatementBuilder::type(WfStateInvokeType value)
 				{
 					node->type = value;
 					return *this;
@@ -1233,13 +1233,13 @@ StateInvokeStatementBuilder
 StateMachineDeclarationBuilder
 ***********************************************************************/
 
-				StateMachineDeclarationBuilder& StateMachineDeclarationBuilder::inputs(const vl::Ptr<WorkflowStateInput>& value)
+				StateMachineDeclarationBuilder& StateMachineDeclarationBuilder::inputs(const vl::Ptr<WfStateInput>& value)
 				{
 					node->inputs.Add(value);
 					return *this;
 				}
 
-				StateMachineDeclarationBuilder& StateMachineDeclarationBuilder::states(const vl::Ptr<WorkflowStateDeclaration>& value)
+				StateMachineDeclarationBuilder& StateMachineDeclarationBuilder::states(const vl::Ptr<WfStateDeclaration>& value)
 				{
 					node->states.Add(value);
 					return *this;
@@ -1259,7 +1259,7 @@ StateSwitchArgumentBuilder
 StateSwitchCaseBuilder
 ***********************************************************************/
 
-				StateSwitchCaseBuilder& StateSwitchCaseBuilder::arguments(const vl::Ptr<WorkflowStateSwitchArgument>& value)
+				StateSwitchCaseBuilder& StateSwitchCaseBuilder::arguments(const vl::Ptr<WfStateSwitchArgument>& value)
 				{
 					node->arguments.Add(value);
 					return *this;
@@ -1271,7 +1271,7 @@ StateSwitchCaseBuilder
 					return *this;
 				}
 
-				StateSwitchCaseBuilder& StateSwitchCaseBuilder::statement(const vl::Ptr<WorkflowStatement>& value)
+				StateSwitchCaseBuilder& StateSwitchCaseBuilder::statement(const vl::Ptr<WfStatement>& value)
 				{
 					node->statement = value;
 					return *this;
@@ -1281,13 +1281,13 @@ StateSwitchCaseBuilder
 StateSwitchStatementBuilder
 ***********************************************************************/
 
-				StateSwitchStatementBuilder& StateSwitchStatementBuilder::caseBranches(const vl::Ptr<WorkflowStateSwitchCase>& value)
+				StateSwitchStatementBuilder& StateSwitchStatementBuilder::caseBranches(const vl::Ptr<WfStateSwitchCase>& value)
 				{
 					node->caseBranches.Add(value);
 					return *this;
 				}
 
-				StateSwitchStatementBuilder& StateSwitchStatementBuilder::type(WorkflowStateSwitchType value)
+				StateSwitchStatementBuilder& StateSwitchStatementBuilder::type(WfStateSwitchType value)
 				{
 					node->type = value;
 					return *this;
@@ -1307,7 +1307,7 @@ StringExpressionBuilder
 StructDeclarationBuilder
 ***********************************************************************/
 
-				StructDeclarationBuilder& StructDeclarationBuilder::members(const vl::Ptr<WorkflowStructMember>& value)
+				StructDeclarationBuilder& StructDeclarationBuilder::members(const vl::Ptr<WfStructMember>& value)
 				{
 					node->members.Add(value);
 					return *this;
@@ -1317,7 +1317,7 @@ StructDeclarationBuilder
 StructMemberBuilder
 ***********************************************************************/
 
-				StructMemberBuilder& StructMemberBuilder::attributes(const vl::Ptr<WorkflowAttribute>& value)
+				StructMemberBuilder& StructMemberBuilder::attributes(const vl::Ptr<WfAttribute>& value)
 				{
 					node->attributes.Add(value);
 					return *this;
@@ -1329,7 +1329,7 @@ StructMemberBuilder
 					return *this;
 				}
 
-				StructMemberBuilder& StructMemberBuilder::type(const vl::Ptr<WorkflowType>& value)
+				StructMemberBuilder& StructMemberBuilder::type(const vl::Ptr<WfType>& value)
 				{
 					node->type = value;
 					return *this;
@@ -1339,13 +1339,13 @@ StructMemberBuilder
 SwitchCaseBuilder
 ***********************************************************************/
 
-				SwitchCaseBuilder& SwitchCaseBuilder::expression(const vl::Ptr<WorkflowExpression>& value)
+				SwitchCaseBuilder& SwitchCaseBuilder::expression(const vl::Ptr<WfExpression>& value)
 				{
 					node->expression = value;
 					return *this;
 				}
 
-				SwitchCaseBuilder& SwitchCaseBuilder::statement(const vl::Ptr<WorkflowStatement>& value)
+				SwitchCaseBuilder& SwitchCaseBuilder::statement(const vl::Ptr<WfStatement>& value)
 				{
 					node->statement = value;
 					return *this;
@@ -1355,19 +1355,19 @@ SwitchCaseBuilder
 SwitchStatementBuilder
 ***********************************************************************/
 
-				SwitchStatementBuilder& SwitchStatementBuilder::caseBranches(const vl::Ptr<WorkflowSwitchCase>& value)
+				SwitchStatementBuilder& SwitchStatementBuilder::caseBranches(const vl::Ptr<WfSwitchCase>& value)
 				{
 					node->caseBranches.Add(value);
 					return *this;
 				}
 
-				SwitchStatementBuilder& SwitchStatementBuilder::defaultBranch(const vl::Ptr<WorkflowStatement>& value)
+				SwitchStatementBuilder& SwitchStatementBuilder::defaultBranch(const vl::Ptr<WfStatement>& value)
 				{
 					node->defaultBranch = value;
 					return *this;
 				}
 
-				SwitchStatementBuilder& SwitchStatementBuilder::expression(const vl::Ptr<WorkflowExpression>& value)
+				SwitchStatementBuilder& SwitchStatementBuilder::expression(const vl::Ptr<WfExpression>& value)
 				{
 					node->expression = value;
 					return *this;
@@ -1397,13 +1397,13 @@ TopQualifiedTypeBuilder
 TryStatementBuilder
 ***********************************************************************/
 
-				TryStatementBuilder& TryStatementBuilder::catchStatement(const vl::Ptr<WorkflowStatement>& value)
+				TryStatementBuilder& TryStatementBuilder::catchStatement(const vl::Ptr<WfStatement>& value)
 				{
 					node->catchStatement = value;
 					return *this;
 				}
 
-				TryStatementBuilder& TryStatementBuilder::finallyStatement(const vl::Ptr<WorkflowStatement>& value)
+				TryStatementBuilder& TryStatementBuilder::finallyStatement(const vl::Ptr<WfStatement>& value)
 				{
 					node->finallyStatement = value;
 					return *this;
@@ -1415,7 +1415,7 @@ TryStatementBuilder
 					return *this;
 				}
 
-				TryStatementBuilder& TryStatementBuilder::protectedStatement(const vl::Ptr<WorkflowStatement>& value)
+				TryStatementBuilder& TryStatementBuilder::protectedStatement(const vl::Ptr<WfStatement>& value)
 				{
 					node->protectedStatement = value;
 					return *this;
@@ -1425,19 +1425,19 @@ TryStatementBuilder
 TypeCastingExpressionBuilder
 ***********************************************************************/
 
-				TypeCastingExpressionBuilder& TypeCastingExpressionBuilder::expression(const vl::Ptr<WorkflowExpression>& value)
+				TypeCastingExpressionBuilder& TypeCastingExpressionBuilder::expression(const vl::Ptr<WfExpression>& value)
 				{
 					node->expression = value;
 					return *this;
 				}
 
-				TypeCastingExpressionBuilder& TypeCastingExpressionBuilder::strategy(WorkflowTypeCastingStrategy value)
+				TypeCastingExpressionBuilder& TypeCastingExpressionBuilder::strategy(WfTypeCastingStrategy value)
 				{
 					node->strategy = value;
 					return *this;
 				}
 
-				TypeCastingExpressionBuilder& TypeCastingExpressionBuilder::type(const vl::Ptr<WorkflowType>& value)
+				TypeCastingExpressionBuilder& TypeCastingExpressionBuilder::type(const vl::Ptr<WfType>& value)
 				{
 					node->type = value;
 					return *this;
@@ -1447,7 +1447,7 @@ TypeCastingExpressionBuilder
 TypeOfExpressionExpressionBuilder
 ***********************************************************************/
 
-				TypeOfExpressionExpressionBuilder& TypeOfExpressionExpressionBuilder::expression(const vl::Ptr<WorkflowExpression>& value)
+				TypeOfExpressionExpressionBuilder& TypeOfExpressionExpressionBuilder::expression(const vl::Ptr<WfExpression>& value)
 				{
 					node->expression = value;
 					return *this;
@@ -1457,7 +1457,7 @@ TypeOfExpressionExpressionBuilder
 TypeOfTypeExpressionBuilder
 ***********************************************************************/
 
-				TypeOfTypeExpressionBuilder& TypeOfTypeExpressionBuilder::type(const vl::Ptr<WorkflowType>& value)
+				TypeOfTypeExpressionBuilder& TypeOfTypeExpressionBuilder::type(const vl::Ptr<WfType>& value)
 				{
 					node->type = value;
 					return *this;
@@ -1467,19 +1467,19 @@ TypeOfTypeExpressionBuilder
 TypeTestingExpressionBuilder
 ***********************************************************************/
 
-				TypeTestingExpressionBuilder& TypeTestingExpressionBuilder::expression(const vl::Ptr<WorkflowExpression>& value)
+				TypeTestingExpressionBuilder& TypeTestingExpressionBuilder::expression(const vl::Ptr<WfExpression>& value)
 				{
 					node->expression = value;
 					return *this;
 				}
 
-				TypeTestingExpressionBuilder& TypeTestingExpressionBuilder::test(WorkflowTypeTesting value)
+				TypeTestingExpressionBuilder& TypeTestingExpressionBuilder::test(WfTypeTesting value)
 				{
 					node->test = value;
 					return *this;
 				}
 
-				TypeTestingExpressionBuilder& TypeTestingExpressionBuilder::type(const vl::Ptr<WorkflowType>& value)
+				TypeTestingExpressionBuilder& TypeTestingExpressionBuilder::type(const vl::Ptr<WfType>& value)
 				{
 					node->type = value;
 					return *this;
@@ -1489,13 +1489,13 @@ TypeTestingExpressionBuilder
 UnaryExpressionBuilder
 ***********************************************************************/
 
-				UnaryExpressionBuilder& UnaryExpressionBuilder::op(WorkflowUnaryOperator value)
+				UnaryExpressionBuilder& UnaryExpressionBuilder::op(WfUnaryOperator value)
 				{
 					node->op = value;
 					return *this;
 				}
 
-				UnaryExpressionBuilder& UnaryExpressionBuilder::operand(const vl::Ptr<WorkflowExpression>& value)
+				UnaryExpressionBuilder& UnaryExpressionBuilder::operand(const vl::Ptr<WfExpression>& value)
 				{
 					node->operand = value;
 					return *this;
@@ -1505,13 +1505,13 @@ UnaryExpressionBuilder
 VariableDeclarationBuilder
 ***********************************************************************/
 
-				VariableDeclarationBuilder& VariableDeclarationBuilder::expression(const vl::Ptr<WorkflowExpression>& value)
+				VariableDeclarationBuilder& VariableDeclarationBuilder::expression(const vl::Ptr<WfExpression>& value)
 				{
 					node->expression = value;
 					return *this;
 				}
 
-				VariableDeclarationBuilder& VariableDeclarationBuilder::type(const vl::Ptr<WorkflowType>& value)
+				VariableDeclarationBuilder& VariableDeclarationBuilder::type(const vl::Ptr<WfType>& value)
 				{
 					node->type = value;
 					return *this;
@@ -1521,7 +1521,7 @@ VariableDeclarationBuilder
 VariableStatementBuilder
 ***********************************************************************/
 
-				VariableStatementBuilder& VariableStatementBuilder::variable(const vl::Ptr<WorkflowVariableDeclaration>& value)
+				VariableStatementBuilder& VariableStatementBuilder::variable(const vl::Ptr<WfVariableDeclaration>& value)
 				{
 					node->variable = value;
 					return *this;
@@ -1531,7 +1531,7 @@ VariableStatementBuilder
 VirtualCfeDeclarationBuilder
 ***********************************************************************/
 
-				VirtualCfeDeclarationBuilder& VirtualCfeDeclarationBuilder::expandedDeclarations(const vl::Ptr<WorkflowDeclaration>& value)
+				VirtualCfeDeclarationBuilder& VirtualCfeDeclarationBuilder::expandedDeclarations(const vl::Ptr<WfDeclaration>& value)
 				{
 					node->expandedDeclarations.Add(value);
 					return *this;
@@ -1541,7 +1541,7 @@ VirtualCfeDeclarationBuilder
 VirtualCfeExpressionBuilder
 ***********************************************************************/
 
-				VirtualCfeExpressionBuilder& VirtualCfeExpressionBuilder::expandedExpression(const vl::Ptr<WorkflowExpression>& value)
+				VirtualCfeExpressionBuilder& VirtualCfeExpressionBuilder::expandedExpression(const vl::Ptr<WfExpression>& value)
 				{
 					node->expandedExpression = value;
 					return *this;
@@ -1551,7 +1551,7 @@ VirtualCfeExpressionBuilder
 VirtualCseDeclarationBuilder
 ***********************************************************************/
 
-				VirtualCseDeclarationBuilder& VirtualCseDeclarationBuilder::expandedDeclarations(const vl::Ptr<WorkflowDeclaration>& value)
+				VirtualCseDeclarationBuilder& VirtualCseDeclarationBuilder::expandedDeclarations(const vl::Ptr<WfDeclaration>& value)
 				{
 					node->expandedDeclarations.Add(value);
 					return *this;
@@ -1561,7 +1561,7 @@ VirtualCseDeclarationBuilder
 VirtualCseExpressionBuilder
 ***********************************************************************/
 
-				VirtualCseExpressionBuilder& VirtualCseExpressionBuilder::expandedExpression(const vl::Ptr<WorkflowExpression>& value)
+				VirtualCseExpressionBuilder& VirtualCseExpressionBuilder::expandedExpression(const vl::Ptr<WfExpression>& value)
 				{
 					node->expandedExpression = value;
 					return *this;
@@ -1571,7 +1571,7 @@ VirtualCseExpressionBuilder
 VirtualCseStatementBuilder
 ***********************************************************************/
 
-				VirtualCseStatementBuilder& VirtualCseStatementBuilder::expandedStatement(const vl::Ptr<WorkflowStatement>& value)
+				VirtualCseStatementBuilder& VirtualCseStatementBuilder::expandedStatement(const vl::Ptr<WfStatement>& value)
 				{
 					node->expandedStatement = value;
 					return *this;
@@ -1581,13 +1581,13 @@ VirtualCseStatementBuilder
 WhileStatementBuilder
 ***********************************************************************/
 
-				WhileStatementBuilder& WhileStatementBuilder::condition(const vl::Ptr<WorkflowExpression>& value)
+				WhileStatementBuilder& WhileStatementBuilder::condition(const vl::Ptr<WfExpression>& value)
 				{
 					node->condition = value;
 					return *this;
 				}
 
-				WhileStatementBuilder& WhileStatementBuilder::statement(const vl::Ptr<WorkflowStatement>& value)
+				WhileStatementBuilder& WhileStatementBuilder::statement(const vl::Ptr<WfStatement>& value)
 				{
 					node->statement = value;
 					return *this;

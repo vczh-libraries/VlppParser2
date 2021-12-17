@@ -71,7 +71,7 @@ TEST_FILE
 
 		Fill(astDefFile->cppNss, L"vl", L"glr", L"workflow");
 		Fill(astDefFile->refNss, L"system", L"workflow");
-		astDefFile->classPrefix = L"Workflow";
+		astDefFile->classPrefix = L"Wf";
 		WriteAstFiles(astManager, output, files);
 	});
 

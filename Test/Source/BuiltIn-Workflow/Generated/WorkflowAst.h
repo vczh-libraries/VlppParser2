@@ -16,117 +16,117 @@ namespace vl
 	{
 		namespace workflow
 		{
-			class WorkflowAttachEventExpression;
-			class WorkflowAttribute;
-			class WorkflowAutoPropertyDeclaration;
-			class WorkflowBaseConstructorCall;
-			class WorkflowBinaryExpression;
-			class WorkflowBindExpression;
-			class WorkflowBlockStatement;
-			class WorkflowBreakStatement;
-			class WorkflowCallExpression;
-			class WorkflowCastResultInterfaceDeclaration;
-			class WorkflowChildExpression;
-			class WorkflowChildType;
-			class WorkflowClassDeclaration;
-			class WorkflowCoOperatorExpression;
-			class WorkflowCoOperatorStatement;
-			class WorkflowCoPauseStatement;
-			class WorkflowCoProviderStatement;
-			class WorkflowConstructorArgument;
-			class WorkflowConstructorDeclaration;
-			class WorkflowConstructorExpression;
-			class WorkflowContinueStatement;
-			class WorkflowCoroutineStatement;
-			class WorkflowDeclaration;
-			class WorkflowDeleteStatement;
-			class WorkflowDestructorDeclaration;
-			class WorkflowDetachEventExpression;
-			class WorkflowEnumDeclaration;
-			class WorkflowEnumItem;
-			class WorkflowEnumItemIntersection;
-			class WorkflowEnumerableType;
-			class WorkflowEventDeclaration;
-			class WorkflowExpectedTypeCastExpression;
-			class WorkflowExpression;
-			class WorkflowExpressionStatement;
-			class WorkflowFloatingExpression;
-			class WorkflowForEachStatement;
-			class WorkflowFormatExpression;
-			class WorkflowFunctionArgument;
-			class WorkflowFunctionDeclaration;
-			class WorkflowFunctionExpression;
-			class WorkflowFunctionType;
-			class WorkflowGotoStatement;
-			class WorkflowIfExpression;
-			class WorkflowIfStatement;
-			class WorkflowInferExpression;
-			class WorkflowIntegerExpression;
-			class WorkflowLetExpression;
-			class WorkflowLetVariable;
-			class WorkflowLiteralExpression;
-			class WorkflowMapType;
-			class WorkflowMemberExpression;
-			class WorkflowMixinCastExpression;
-			class WorkflowModule;
-			class WorkflowModuleUsingFragment;
-			class WorkflowModuleUsingItem;
-			class WorkflowModuleUsingNameFragment;
-			class WorkflowModuleUsingPath;
-			class WorkflowModuleUsingWildCardFragment;
-			class WorkflowNamespaceDeclaration;
-			class WorkflowNewClassExpression;
-			class WorkflowNewCoroutineExpression;
-			class WorkflowNewInterfaceExpression;
-			class WorkflowNullableType;
-			class WorkflowObservableListType;
-			class WorkflowObserveExpression;
-			class WorkflowOrderedLambdaExpression;
-			class WorkflowOrderedNameExpression;
-			class WorkflowPredefinedType;
-			class WorkflowPropertyDeclaration;
-			class WorkflowRaiseExceptionStatement;
-			class WorkflowRangeExpression;
-			class WorkflowRawPointerType;
-			class WorkflowReferenceExpression;
-			class WorkflowReferenceType;
-			class WorkflowReturnStatement;
-			class WorkflowSetTestingExpression;
-			class WorkflowSharedPointerType;
-			class WorkflowStateDeclaration;
-			class WorkflowStateInput;
-			class WorkflowStateInvokeStatement;
-			class WorkflowStateMachineDeclaration;
-			class WorkflowStateMachineStatement;
-			class WorkflowStateSwitchArgument;
-			class WorkflowStateSwitchCase;
-			class WorkflowStateSwitchStatement;
-			class WorkflowStatement;
-			class WorkflowStringExpression;
-			class WorkflowStructDeclaration;
-			class WorkflowStructMember;
-			class WorkflowSwitchCase;
-			class WorkflowSwitchStatement;
-			class WorkflowThisExpression;
-			class WorkflowTopQualifiedExpression;
-			class WorkflowTopQualifiedType;
-			class WorkflowTryStatement;
-			class WorkflowType;
-			class WorkflowTypeCastingExpression;
-			class WorkflowTypeOfExpressionExpression;
-			class WorkflowTypeOfTypeExpression;
-			class WorkflowTypeTestingExpression;
-			class WorkflowUnaryExpression;
-			class WorkflowVariableDeclaration;
-			class WorkflowVariableStatement;
-			class WorkflowVirtualCfeDeclaration;
-			class WorkflowVirtualCfeExpression;
-			class WorkflowVirtualCseDeclaration;
-			class WorkflowVirtualCseExpression;
-			class WorkflowVirtualCseStatement;
-			class WorkflowWhileStatement;
+			class WfAttachEventExpression;
+			class WfAttribute;
+			class WfAutoPropertyDeclaration;
+			class WfBaseConstructorCall;
+			class WfBinaryExpression;
+			class WfBindExpression;
+			class WfBlockStatement;
+			class WfBreakStatement;
+			class WfCallExpression;
+			class WfCastResultInterfaceDeclaration;
+			class WfChildExpression;
+			class WfChildType;
+			class WfClassDeclaration;
+			class WfCoOperatorExpression;
+			class WfCoOperatorStatement;
+			class WfCoPauseStatement;
+			class WfCoProviderStatement;
+			class WfConstructorArgument;
+			class WfConstructorDeclaration;
+			class WfConstructorExpression;
+			class WfContinueStatement;
+			class WfCoroutineStatement;
+			class WfDeclaration;
+			class WfDeleteStatement;
+			class WfDestructorDeclaration;
+			class WfDetachEventExpression;
+			class WfEnumDeclaration;
+			class WfEnumItem;
+			class WfEnumItemIntersection;
+			class WfEnumerableType;
+			class WfEventDeclaration;
+			class WfExpectedTypeCastExpression;
+			class WfExpression;
+			class WfExpressionStatement;
+			class WfFloatingExpression;
+			class WfForEachStatement;
+			class WfFormatExpression;
+			class WfFunctionArgument;
+			class WfFunctionDeclaration;
+			class WfFunctionExpression;
+			class WfFunctionType;
+			class WfGotoStatement;
+			class WfIfExpression;
+			class WfIfStatement;
+			class WfInferExpression;
+			class WfIntegerExpression;
+			class WfLetExpression;
+			class WfLetVariable;
+			class WfLiteralExpression;
+			class WfMapType;
+			class WfMemberExpression;
+			class WfMixinCastExpression;
+			class WfModule;
+			class WfModuleUsingFragment;
+			class WfModuleUsingItem;
+			class WfModuleUsingNameFragment;
+			class WfModuleUsingPath;
+			class WfModuleUsingWildCardFragment;
+			class WfNamespaceDeclaration;
+			class WfNewClassExpression;
+			class WfNewCoroutineExpression;
+			class WfNewInterfaceExpression;
+			class WfNullableType;
+			class WfObservableListType;
+			class WfObserveExpression;
+			class WfOrderedLambdaExpression;
+			class WfOrderedNameExpression;
+			class WfPredefinedType;
+			class WfPropertyDeclaration;
+			class WfRaiseExceptionStatement;
+			class WfRangeExpression;
+			class WfRawPointerType;
+			class WfReferenceExpression;
+			class WfReferenceType;
+			class WfReturnStatement;
+			class WfSetTestingExpression;
+			class WfSharedPointerType;
+			class WfStateDeclaration;
+			class WfStateInput;
+			class WfStateInvokeStatement;
+			class WfStateMachineDeclaration;
+			class WfStateMachineStatement;
+			class WfStateSwitchArgument;
+			class WfStateSwitchCase;
+			class WfStateSwitchStatement;
+			class WfStatement;
+			class WfStringExpression;
+			class WfStructDeclaration;
+			class WfStructMember;
+			class WfSwitchCase;
+			class WfSwitchStatement;
+			class WfThisExpression;
+			class WfTopQualifiedExpression;
+			class WfTopQualifiedType;
+			class WfTryStatement;
+			class WfType;
+			class WfTypeCastingExpression;
+			class WfTypeOfExpressionExpression;
+			class WfTypeOfTypeExpression;
+			class WfTypeTestingExpression;
+			class WfUnaryExpression;
+			class WfVariableDeclaration;
+			class WfVariableStatement;
+			class WfVirtualCfeDeclaration;
+			class WfVirtualCfeExpression;
+			class WfVirtualCseDeclaration;
+			class WfVirtualCseExpression;
+			class WfVirtualCseStatement;
+			class WfWhileStatement;
 
-			enum class WorkflowFunctionKind
+			enum class WfFunctionKind
 			{
 				UNDEFINED_ENUM_ITEM_VALUE = -1,
 				Static = 0,
@@ -134,7 +134,7 @@ namespace vl
 				Normal = 2,
 			};
 
-			enum class WorkflowPredefinedTypeName
+			enum class WfPredefinedTypeName
 			{
 				UNDEFINED_ENUM_ITEM_VALUE = -1,
 				Void = 0,
@@ -149,28 +149,28 @@ namespace vl
 				Bool = 9,
 			};
 
-			enum class WorkflowMapWritability
+			enum class WfMapWritability
 			{
 				UNDEFINED_ENUM_ITEM_VALUE = -1,
 				Readonly = 0,
 				Writable = 1,
 			};
 
-			enum class WorkflowFunctionAnonymity
+			enum class WfFunctionAnonymity
 			{
 				UNDEFINED_ENUM_ITEM_VALUE = -1,
 				Named = 0,
 				Anonymous = 1,
 			};
 
-			enum class WorkflowClassKind
+			enum class WfClassKind
 			{
 				UNDEFINED_ENUM_ITEM_VALUE = -1,
 				Class = 0,
 				Interface = 1,
 			};
 
-			enum class WorkflowConstructorType
+			enum class WfConstructorType
 			{
 				UNDEFINED_ENUM_ITEM_VALUE = -1,
 				Undefined = 0,
@@ -178,42 +178,42 @@ namespace vl
 				RawPtr = 2,
 			};
 
-			enum class WorkflowEnumKind
+			enum class WfEnumKind
 			{
 				UNDEFINED_ENUM_ITEM_VALUE = -1,
 				Normal = 0,
 				Flag = 1,
 			};
 
-			enum class WorkflowEnumItemKind
+			enum class WfEnumItemKind
 			{
 				UNDEFINED_ENUM_ITEM_VALUE = -1,
 				Constant = 0,
 				Intersection = 1,
 			};
 
-			enum class WorkflowAPConst
+			enum class WfAPConst
 			{
 				UNDEFINED_ENUM_ITEM_VALUE = -1,
 				Readonly = 0,
 				Writable = 1,
 			};
 
-			enum class WorkflowAPObserve
+			enum class WfAPObserve
 			{
 				UNDEFINED_ENUM_ITEM_VALUE = -1,
 				Observable = 0,
 				NotObservable = 1,
 			};
 
-			enum class WorkflowForEachDirection
+			enum class WfForEachDirection
 			{
 				UNDEFINED_ENUM_ITEM_VALUE = -1,
 				Normal = 0,
 				Reversed = 1,
 			};
 
-			enum class WorkflowStateSwitchType
+			enum class WfStateSwitchType
 			{
 				UNDEFINED_ENUM_ITEM_VALUE = -1,
 				Default = 0,
@@ -223,14 +223,14 @@ namespace vl
 				IgnoreAndReturn = 4,
 			};
 
-			enum class WorkflowStateInvokeType
+			enum class WfStateInvokeType
 			{
 				UNDEFINED_ENUM_ITEM_VALUE = -1,
 				Goto = 0,
 				Push = 1,
 			};
 
-			enum class WorkflowLiteralValue
+			enum class WfLiteralValue
 			{
 				UNDEFINED_ENUM_ITEM_VALUE = -1,
 				Null = 0,
@@ -238,7 +238,7 @@ namespace vl
 				False = 2,
 			};
 
-			enum class WorkflowUnaryOperator
+			enum class WfUnaryOperator
 			{
 				UNDEFINED_ENUM_ITEM_VALUE = -1,
 				Positive = 0,
@@ -246,7 +246,7 @@ namespace vl
 				Not = 2,
 			};
 
-			enum class WorkflowBinaryOperator
+			enum class WfBinaryOperator
 			{
 				UNDEFINED_ENUM_ITEM_VALUE = -1,
 				Assign = 0,
@@ -273,28 +273,28 @@ namespace vl
 				Or = 21,
 			};
 
-			enum class WorkflowRangeBoundary
+			enum class WfRangeBoundary
 			{
 				UNDEFINED_ENUM_ITEM_VALUE = -1,
 				Inclusive = 0,
 				Exclusive = 1,
 			};
 
-			enum class WorkflowSetTesting
+			enum class WfSetTesting
 			{
 				UNDEFINED_ENUM_ITEM_VALUE = -1,
 				In = 0,
 				NotIn = 1,
 			};
 
-			enum class WorkflowTypeCastingStrategy
+			enum class WfTypeCastingStrategy
 			{
 				UNDEFINED_ENUM_ITEM_VALUE = -1,
 				Strong = 0,
 				Weak = 1,
 			};
 
-			enum class WorkflowTypeTesting
+			enum class WfTypeTesting
 			{
 				UNDEFINED_ENUM_ITEM_VALUE = -1,
 				IsType = 0,
@@ -303,1108 +303,1108 @@ namespace vl
 				IsNotNull = 3,
 			};
 
-			enum class WorkflowObserveType
+			enum class WfObserveType
 			{
 				UNDEFINED_ENUM_ITEM_VALUE = -1,
 				SimpleObserve = 0,
 				ExtendedObserve = 1,
 			};
 
-			enum class WorkflowModuleType
+			enum class WfModuleType
 			{
 				UNDEFINED_ENUM_ITEM_VALUE = -1,
 				Module = 0,
 				Unit = 1,
 			};
 
-			class WorkflowType abstract : public vl::glr::ParsingAstBase, vl::reflection::Description<WorkflowType>
+			class WfType abstract : public vl::glr::ParsingAstBase, vl::reflection::Description<WfType>
 			{
 			public:
 				class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
 				{
 				public:
-					virtual void Visit(WorkflowPredefinedType* node) = 0;
-					virtual void Visit(WorkflowTopQualifiedType* node) = 0;
-					virtual void Visit(WorkflowReferenceType* node) = 0;
-					virtual void Visit(WorkflowRawPointerType* node) = 0;
-					virtual void Visit(WorkflowSharedPointerType* node) = 0;
-					virtual void Visit(WorkflowNullableType* node) = 0;
-					virtual void Visit(WorkflowEnumerableType* node) = 0;
-					virtual void Visit(WorkflowMapType* node) = 0;
-					virtual void Visit(WorkflowObservableListType* node) = 0;
-					virtual void Visit(WorkflowFunctionType* node) = 0;
-					virtual void Visit(WorkflowChildType* node) = 0;
+					virtual void Visit(WfPredefinedType* node) = 0;
+					virtual void Visit(WfTopQualifiedType* node) = 0;
+					virtual void Visit(WfReferenceType* node) = 0;
+					virtual void Visit(WfRawPointerType* node) = 0;
+					virtual void Visit(WfSharedPointerType* node) = 0;
+					virtual void Visit(WfNullableType* node) = 0;
+					virtual void Visit(WfEnumerableType* node) = 0;
+					virtual void Visit(WfMapType* node) = 0;
+					virtual void Visit(WfObservableListType* node) = 0;
+					virtual void Visit(WfFunctionType* node) = 0;
+					virtual void Visit(WfChildType* node) = 0;
 				};
 
-				virtual void Accept(WorkflowType::IVisitor* visitor) = 0;
+				virtual void Accept(WfType::IVisitor* visitor) = 0;
 
 			};
 
-			class WorkflowExpression abstract : public vl::glr::ParsingAstBase, vl::reflection::Description<WorkflowExpression>
+			class WfExpression abstract : public vl::glr::ParsingAstBase, vl::reflection::Description<WfExpression>
 			{
 			public:
 				class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
 				{
 				public:
-					virtual void Visit(WorkflowThisExpression* node) = 0;
-					virtual void Visit(WorkflowTopQualifiedExpression* node) = 0;
-					virtual void Visit(WorkflowReferenceExpression* node) = 0;
-					virtual void Visit(WorkflowOrderedNameExpression* node) = 0;
-					virtual void Visit(WorkflowOrderedLambdaExpression* node) = 0;
-					virtual void Visit(WorkflowMemberExpression* node) = 0;
-					virtual void Visit(WorkflowChildExpression* node) = 0;
-					virtual void Visit(WorkflowLiteralExpression* node) = 0;
-					virtual void Visit(WorkflowFloatingExpression* node) = 0;
-					virtual void Visit(WorkflowIntegerExpression* node) = 0;
-					virtual void Visit(WorkflowStringExpression* node) = 0;
-					virtual void Visit(WorkflowUnaryExpression* node) = 0;
-					virtual void Visit(WorkflowBinaryExpression* node) = 0;
-					virtual void Visit(WorkflowLetExpression* node) = 0;
-					virtual void Visit(WorkflowIfExpression* node) = 0;
-					virtual void Visit(WorkflowRangeExpression* node) = 0;
-					virtual void Visit(WorkflowSetTestingExpression* node) = 0;
-					virtual void Visit(WorkflowConstructorExpression* node) = 0;
-					virtual void Visit(WorkflowInferExpression* node) = 0;
-					virtual void Visit(WorkflowTypeCastingExpression* node) = 0;
-					virtual void Visit(WorkflowTypeTestingExpression* node) = 0;
-					virtual void Visit(WorkflowTypeOfTypeExpression* node) = 0;
-					virtual void Visit(WorkflowTypeOfExpressionExpression* node) = 0;
-					virtual void Visit(WorkflowAttachEventExpression* node) = 0;
-					virtual void Visit(WorkflowDetachEventExpression* node) = 0;
-					virtual void Visit(WorkflowObserveExpression* node) = 0;
-					virtual void Visit(WorkflowCallExpression* node) = 0;
-					virtual void Visit(WorkflowFunctionExpression* node) = 0;
-					virtual void Visit(WorkflowNewClassExpression* node) = 0;
-					virtual void Visit(WorkflowNewInterfaceExpression* node) = 0;
-					virtual void Visit(WorkflowVirtualCfeExpression* node) = 0;
-					virtual void Visit(WorkflowVirtualCseExpression* node) = 0;
+					virtual void Visit(WfThisExpression* node) = 0;
+					virtual void Visit(WfTopQualifiedExpression* node) = 0;
+					virtual void Visit(WfReferenceExpression* node) = 0;
+					virtual void Visit(WfOrderedNameExpression* node) = 0;
+					virtual void Visit(WfOrderedLambdaExpression* node) = 0;
+					virtual void Visit(WfMemberExpression* node) = 0;
+					virtual void Visit(WfChildExpression* node) = 0;
+					virtual void Visit(WfLiteralExpression* node) = 0;
+					virtual void Visit(WfFloatingExpression* node) = 0;
+					virtual void Visit(WfIntegerExpression* node) = 0;
+					virtual void Visit(WfStringExpression* node) = 0;
+					virtual void Visit(WfUnaryExpression* node) = 0;
+					virtual void Visit(WfBinaryExpression* node) = 0;
+					virtual void Visit(WfLetExpression* node) = 0;
+					virtual void Visit(WfIfExpression* node) = 0;
+					virtual void Visit(WfRangeExpression* node) = 0;
+					virtual void Visit(WfSetTestingExpression* node) = 0;
+					virtual void Visit(WfConstructorExpression* node) = 0;
+					virtual void Visit(WfInferExpression* node) = 0;
+					virtual void Visit(WfTypeCastingExpression* node) = 0;
+					virtual void Visit(WfTypeTestingExpression* node) = 0;
+					virtual void Visit(WfTypeOfTypeExpression* node) = 0;
+					virtual void Visit(WfTypeOfExpressionExpression* node) = 0;
+					virtual void Visit(WfAttachEventExpression* node) = 0;
+					virtual void Visit(WfDetachEventExpression* node) = 0;
+					virtual void Visit(WfObserveExpression* node) = 0;
+					virtual void Visit(WfCallExpression* node) = 0;
+					virtual void Visit(WfFunctionExpression* node) = 0;
+					virtual void Visit(WfNewClassExpression* node) = 0;
+					virtual void Visit(WfNewInterfaceExpression* node) = 0;
+					virtual void Visit(WfVirtualCfeExpression* node) = 0;
+					virtual void Visit(WfVirtualCseExpression* node) = 0;
 				};
 
-				virtual void Accept(WorkflowExpression::IVisitor* visitor) = 0;
+				virtual void Accept(WfExpression::IVisitor* visitor) = 0;
 
 			};
 
-			class WorkflowStatement abstract : public vl::glr::ParsingAstBase, vl::reflection::Description<WorkflowStatement>
+			class WfStatement abstract : public vl::glr::ParsingAstBase, vl::reflection::Description<WfStatement>
 			{
 			public:
 				class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
 				{
 				public:
-					virtual void Visit(WorkflowBreakStatement* node) = 0;
-					virtual void Visit(WorkflowContinueStatement* node) = 0;
-					virtual void Visit(WorkflowReturnStatement* node) = 0;
-					virtual void Visit(WorkflowDeleteStatement* node) = 0;
-					virtual void Visit(WorkflowRaiseExceptionStatement* node) = 0;
-					virtual void Visit(WorkflowIfStatement* node) = 0;
-					virtual void Visit(WorkflowWhileStatement* node) = 0;
-					virtual void Visit(WorkflowTryStatement* node) = 0;
-					virtual void Visit(WorkflowBlockStatement* node) = 0;
-					virtual void Visit(WorkflowGotoStatement* node) = 0;
-					virtual void Visit(WorkflowVariableStatement* node) = 0;
-					virtual void Visit(WorkflowExpressionStatement* node) = 0;
-					virtual void Visit(WorkflowVirtualCseStatement* node) = 0;
-					virtual void Visit(WorkflowCoroutineStatement* node) = 0;
-					virtual void Visit(WorkflowStateMachineStatement* node) = 0;
+					virtual void Visit(WfBreakStatement* node) = 0;
+					virtual void Visit(WfContinueStatement* node) = 0;
+					virtual void Visit(WfReturnStatement* node) = 0;
+					virtual void Visit(WfDeleteStatement* node) = 0;
+					virtual void Visit(WfRaiseExceptionStatement* node) = 0;
+					virtual void Visit(WfIfStatement* node) = 0;
+					virtual void Visit(WfWhileStatement* node) = 0;
+					virtual void Visit(WfTryStatement* node) = 0;
+					virtual void Visit(WfBlockStatement* node) = 0;
+					virtual void Visit(WfGotoStatement* node) = 0;
+					virtual void Visit(WfVariableStatement* node) = 0;
+					virtual void Visit(WfExpressionStatement* node) = 0;
+					virtual void Visit(WfVirtualCseStatement* node) = 0;
+					virtual void Visit(WfCoroutineStatement* node) = 0;
+					virtual void Visit(WfStateMachineStatement* node) = 0;
 				};
 
-				virtual void Accept(WorkflowStatement::IVisitor* visitor) = 0;
+				virtual void Accept(WfStatement::IVisitor* visitor) = 0;
 
 			};
 
-			class WorkflowAttribute : public vl::glr::ParsingAstBase, vl::reflection::Description<WorkflowAttribute>
+			class WfAttribute : public vl::glr::ParsingAstBase, vl::reflection::Description<WfAttribute>
 			{
 			public:
 				vl::glr::ParsingToken category;
 				vl::glr::ParsingToken name;
-				vl::Ptr<WorkflowExpression> value;
+				vl::Ptr<WfExpression> value;
 			};
 
-			class WorkflowDeclaration abstract : public vl::glr::ParsingAstBase, vl::reflection::Description<WorkflowDeclaration>
+			class WfDeclaration abstract : public vl::glr::ParsingAstBase, vl::reflection::Description<WfDeclaration>
 			{
 			public:
 				class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
 				{
 				public:
-					virtual void Visit(WorkflowNamespaceDeclaration* node) = 0;
-					virtual void Visit(WorkflowFunctionDeclaration* node) = 0;
-					virtual void Visit(WorkflowVariableDeclaration* node) = 0;
-					virtual void Visit(WorkflowEventDeclaration* node) = 0;
-					virtual void Visit(WorkflowPropertyDeclaration* node) = 0;
-					virtual void Visit(WorkflowConstructorDeclaration* node) = 0;
-					virtual void Visit(WorkflowDestructorDeclaration* node) = 0;
-					virtual void Visit(WorkflowClassDeclaration* node) = 0;
-					virtual void Visit(WorkflowEnumDeclaration* node) = 0;
-					virtual void Visit(WorkflowStructDeclaration* node) = 0;
-					virtual void Visit(WorkflowVirtualCfeDeclaration* node) = 0;
-					virtual void Visit(WorkflowVirtualCseDeclaration* node) = 0;
+					virtual void Visit(WfNamespaceDeclaration* node) = 0;
+					virtual void Visit(WfFunctionDeclaration* node) = 0;
+					virtual void Visit(WfVariableDeclaration* node) = 0;
+					virtual void Visit(WfEventDeclaration* node) = 0;
+					virtual void Visit(WfPropertyDeclaration* node) = 0;
+					virtual void Visit(WfConstructorDeclaration* node) = 0;
+					virtual void Visit(WfDestructorDeclaration* node) = 0;
+					virtual void Visit(WfClassDeclaration* node) = 0;
+					virtual void Visit(WfEnumDeclaration* node) = 0;
+					virtual void Visit(WfStructDeclaration* node) = 0;
+					virtual void Visit(WfVirtualCfeDeclaration* node) = 0;
+					virtual void Visit(WfVirtualCseDeclaration* node) = 0;
 				};
 
-				virtual void Accept(WorkflowDeclaration::IVisitor* visitor) = 0;
+				virtual void Accept(WfDeclaration::IVisitor* visitor) = 0;
 
-				vl::collections::List<vl::Ptr<WorkflowAttribute>> attributes;
+				vl::collections::List<vl::Ptr<WfAttribute>> attributes;
 				vl::glr::ParsingToken name;
 			};
 
-			class WorkflowPredefinedType : public WorkflowType, vl::reflection::Description<WorkflowPredefinedType>
+			class WfPredefinedType : public WfType, vl::reflection::Description<WfPredefinedType>
 			{
 			public:
-				WorkflowPredefinedTypeName name = WorkflowPredefinedTypeName::UNDEFINED_ENUM_ITEM_VALUE;
+				WfPredefinedTypeName name = WfPredefinedTypeName::UNDEFINED_ENUM_ITEM_VALUE;
 
-				void Accept(WorkflowType::IVisitor* visitor) override;
+				void Accept(WfType::IVisitor* visitor) override;
 			};
 
-			class WorkflowTopQualifiedType : public WorkflowType, vl::reflection::Description<WorkflowTopQualifiedType>
-			{
-			public:
-				vl::glr::ParsingToken name;
-
-				void Accept(WorkflowType::IVisitor* visitor) override;
-			};
-
-			class WorkflowReferenceType : public WorkflowType, vl::reflection::Description<WorkflowReferenceType>
+			class WfTopQualifiedType : public WfType, vl::reflection::Description<WfTopQualifiedType>
 			{
 			public:
 				vl::glr::ParsingToken name;
 
-				void Accept(WorkflowType::IVisitor* visitor) override;
+				void Accept(WfType::IVisitor* visitor) override;
 			};
 
-			class WorkflowRawPointerType : public WorkflowType, vl::reflection::Description<WorkflowRawPointerType>
+			class WfReferenceType : public WfType, vl::reflection::Description<WfReferenceType>
 			{
 			public:
-				vl::Ptr<WorkflowType> element;
-
-				void Accept(WorkflowType::IVisitor* visitor) override;
-			};
-
-			class WorkflowSharedPointerType : public WorkflowType, vl::reflection::Description<WorkflowSharedPointerType>
-			{
-			public:
-				vl::Ptr<WorkflowType> element;
-
-				void Accept(WorkflowType::IVisitor* visitor) override;
-			};
-
-			class WorkflowNullableType : public WorkflowType, vl::reflection::Description<WorkflowNullableType>
-			{
-			public:
-				vl::Ptr<WorkflowType> element;
-
-				void Accept(WorkflowType::IVisitor* visitor) override;
-			};
-
-			class WorkflowEnumerableType : public WorkflowType, vl::reflection::Description<WorkflowEnumerableType>
-			{
-			public:
-				vl::Ptr<WorkflowType> element;
-
-				void Accept(WorkflowType::IVisitor* visitor) override;
-			};
-
-			class WorkflowMapType : public WorkflowType, vl::reflection::Description<WorkflowMapType>
-			{
-			public:
-				WorkflowMapWritability writability = WorkflowMapWritability::UNDEFINED_ENUM_ITEM_VALUE;
-				vl::Ptr<WorkflowType> key;
-				vl::Ptr<WorkflowType> value;
-
-				void Accept(WorkflowType::IVisitor* visitor) override;
-			};
-
-			class WorkflowObservableListType : public WorkflowType, vl::reflection::Description<WorkflowObservableListType>
-			{
-			public:
-				vl::Ptr<WorkflowType> element;
-
-				void Accept(WorkflowType::IVisitor* visitor) override;
-			};
-
-			class WorkflowFunctionType : public WorkflowType, vl::reflection::Description<WorkflowFunctionType>
-			{
-			public:
-				vl::Ptr<WorkflowType> result;
-				vl::collections::List<vl::Ptr<WorkflowType>> arguments;
-
-				void Accept(WorkflowType::IVisitor* visitor) override;
-			};
-
-			class WorkflowChildType : public WorkflowType, vl::reflection::Description<WorkflowChildType>
-			{
-			public:
-				vl::Ptr<WorkflowType> parent;
 				vl::glr::ParsingToken name;
 
-				void Accept(WorkflowType::IVisitor* visitor) override;
+				void Accept(WfType::IVisitor* visitor) override;
 			};
 
-			class WorkflowNamespaceDeclaration : public WorkflowDeclaration, vl::reflection::Description<WorkflowNamespaceDeclaration>
+			class WfRawPointerType : public WfType, vl::reflection::Description<WfRawPointerType>
 			{
 			public:
-				vl::collections::List<vl::Ptr<WorkflowDeclaration>> declarations;
+				vl::Ptr<WfType> element;
 
-				void Accept(WorkflowDeclaration::IVisitor* visitor) override;
+				void Accept(WfType::IVisitor* visitor) override;
 			};
 
-			class WorkflowFunctionArgument : public vl::glr::ParsingAstBase, vl::reflection::Description<WorkflowFunctionArgument>
+			class WfSharedPointerType : public WfType, vl::reflection::Description<WfSharedPointerType>
 			{
 			public:
-				vl::collections::List<vl::Ptr<WorkflowAttribute>> attributes;
+				vl::Ptr<WfType> element;
+
+				void Accept(WfType::IVisitor* visitor) override;
+			};
+
+			class WfNullableType : public WfType, vl::reflection::Description<WfNullableType>
+			{
+			public:
+				vl::Ptr<WfType> element;
+
+				void Accept(WfType::IVisitor* visitor) override;
+			};
+
+			class WfEnumerableType : public WfType, vl::reflection::Description<WfEnumerableType>
+			{
+			public:
+				vl::Ptr<WfType> element;
+
+				void Accept(WfType::IVisitor* visitor) override;
+			};
+
+			class WfMapType : public WfType, vl::reflection::Description<WfMapType>
+			{
+			public:
+				WfMapWritability writability = WfMapWritability::UNDEFINED_ENUM_ITEM_VALUE;
+				vl::Ptr<WfType> key;
+				vl::Ptr<WfType> value;
+
+				void Accept(WfType::IVisitor* visitor) override;
+			};
+
+			class WfObservableListType : public WfType, vl::reflection::Description<WfObservableListType>
+			{
+			public:
+				vl::Ptr<WfType> element;
+
+				void Accept(WfType::IVisitor* visitor) override;
+			};
+
+			class WfFunctionType : public WfType, vl::reflection::Description<WfFunctionType>
+			{
+			public:
+				vl::Ptr<WfType> result;
+				vl::collections::List<vl::Ptr<WfType>> arguments;
+
+				void Accept(WfType::IVisitor* visitor) override;
+			};
+
+			class WfChildType : public WfType, vl::reflection::Description<WfChildType>
+			{
+			public:
+				vl::Ptr<WfType> parent;
 				vl::glr::ParsingToken name;
-				vl::Ptr<WorkflowType> type;
+
+				void Accept(WfType::IVisitor* visitor) override;
 			};
 
-			class WorkflowFunctionDeclaration : public WorkflowDeclaration, vl::reflection::Description<WorkflowFunctionDeclaration>
+			class WfNamespaceDeclaration : public WfDeclaration, vl::reflection::Description<WfNamespaceDeclaration>
 			{
 			public:
-				WorkflowFunctionKind functionKind = WorkflowFunctionKind::UNDEFINED_ENUM_ITEM_VALUE;
-				WorkflowFunctionAnonymity anonymity = WorkflowFunctionAnonymity::UNDEFINED_ENUM_ITEM_VALUE;
-				vl::collections::List<vl::Ptr<WorkflowFunctionArgument>> arguments;
-				vl::Ptr<WorkflowType> returnType;
-				vl::Ptr<WorkflowStatement> statement;
+				vl::collections::List<vl::Ptr<WfDeclaration>> declarations;
 
-				void Accept(WorkflowDeclaration::IVisitor* visitor) override;
+				void Accept(WfDeclaration::IVisitor* visitor) override;
 			};
 
-			class WorkflowVariableDeclaration : public WorkflowDeclaration, vl::reflection::Description<WorkflowVariableDeclaration>
+			class WfFunctionArgument : public vl::glr::ParsingAstBase, vl::reflection::Description<WfFunctionArgument>
 			{
 			public:
-				vl::Ptr<WorkflowType> type;
-				vl::Ptr<WorkflowExpression> expression;
-
-				void Accept(WorkflowDeclaration::IVisitor* visitor) override;
+				vl::collections::List<vl::Ptr<WfAttribute>> attributes;
+				vl::glr::ParsingToken name;
+				vl::Ptr<WfType> type;
 			};
 
-			class WorkflowEventDeclaration : public WorkflowDeclaration, vl::reflection::Description<WorkflowEventDeclaration>
+			class WfFunctionDeclaration : public WfDeclaration, vl::reflection::Description<WfFunctionDeclaration>
 			{
 			public:
-				vl::collections::List<vl::Ptr<WorkflowType>> arguments;
+				WfFunctionKind functionKind = WfFunctionKind::UNDEFINED_ENUM_ITEM_VALUE;
+				WfFunctionAnonymity anonymity = WfFunctionAnonymity::UNDEFINED_ENUM_ITEM_VALUE;
+				vl::collections::List<vl::Ptr<WfFunctionArgument>> arguments;
+				vl::Ptr<WfType> returnType;
+				vl::Ptr<WfStatement> statement;
 
-				void Accept(WorkflowDeclaration::IVisitor* visitor) override;
+				void Accept(WfDeclaration::IVisitor* visitor) override;
 			};
 
-			class WorkflowPropertyDeclaration : public WorkflowDeclaration, vl::reflection::Description<WorkflowPropertyDeclaration>
+			class WfVariableDeclaration : public WfDeclaration, vl::reflection::Description<WfVariableDeclaration>
 			{
 			public:
-				vl::Ptr<WorkflowType> type;
+				vl::Ptr<WfType> type;
+				vl::Ptr<WfExpression> expression;
+
+				void Accept(WfDeclaration::IVisitor* visitor) override;
+			};
+
+			class WfEventDeclaration : public WfDeclaration, vl::reflection::Description<WfEventDeclaration>
+			{
+			public:
+				vl::collections::List<vl::Ptr<WfType>> arguments;
+
+				void Accept(WfDeclaration::IVisitor* visitor) override;
+			};
+
+			class WfPropertyDeclaration : public WfDeclaration, vl::reflection::Description<WfPropertyDeclaration>
+			{
+			public:
+				vl::Ptr<WfType> type;
 				vl::glr::ParsingToken getter;
 				vl::glr::ParsingToken setter;
 				vl::glr::ParsingToken valueChangedEvent;
 
-				void Accept(WorkflowDeclaration::IVisitor* visitor) override;
+				void Accept(WfDeclaration::IVisitor* visitor) override;
 			};
 
-			class WorkflowBaseConstructorCall : public vl::glr::ParsingAstBase, vl::reflection::Description<WorkflowBaseConstructorCall>
+			class WfBaseConstructorCall : public vl::glr::ParsingAstBase, vl::reflection::Description<WfBaseConstructorCall>
 			{
 			public:
-				vl::Ptr<WorkflowType> type;
-				vl::collections::List<vl::Ptr<WorkflowExpression>> arguments;
+				vl::Ptr<WfType> type;
+				vl::collections::List<vl::Ptr<WfExpression>> arguments;
 			};
 
-			class WorkflowConstructorDeclaration : public WorkflowDeclaration, vl::reflection::Description<WorkflowConstructorDeclaration>
+			class WfConstructorDeclaration : public WfDeclaration, vl::reflection::Description<WfConstructorDeclaration>
 			{
 			public:
-				WorkflowConstructorType constructorType = WorkflowConstructorType::UNDEFINED_ENUM_ITEM_VALUE;
-				vl::collections::List<vl::Ptr<WorkflowBaseConstructorCall>> baseConstructorCalls;
-				vl::collections::List<vl::Ptr<WorkflowFunctionArgument>> arguments;
-				vl::Ptr<WorkflowStatement> statement;
+				WfConstructorType constructorType = WfConstructorType::UNDEFINED_ENUM_ITEM_VALUE;
+				vl::collections::List<vl::Ptr<WfBaseConstructorCall>> baseConstructorCalls;
+				vl::collections::List<vl::Ptr<WfFunctionArgument>> arguments;
+				vl::Ptr<WfStatement> statement;
 
-				void Accept(WorkflowDeclaration::IVisitor* visitor) override;
+				void Accept(WfDeclaration::IVisitor* visitor) override;
 			};
 
-			class WorkflowDestructorDeclaration : public WorkflowDeclaration, vl::reflection::Description<WorkflowDestructorDeclaration>
+			class WfDestructorDeclaration : public WfDeclaration, vl::reflection::Description<WfDestructorDeclaration>
 			{
 			public:
-				vl::Ptr<WorkflowStatement> statement;
+				vl::Ptr<WfStatement> statement;
 
-				void Accept(WorkflowDeclaration::IVisitor* visitor) override;
+				void Accept(WfDeclaration::IVisitor* visitor) override;
 			};
 
-			class WorkflowClassDeclaration : public WorkflowDeclaration, vl::reflection::Description<WorkflowClassDeclaration>
+			class WfClassDeclaration : public WfDeclaration, vl::reflection::Description<WfClassDeclaration>
 			{
 			public:
-				WorkflowClassKind kind = WorkflowClassKind::UNDEFINED_ENUM_ITEM_VALUE;
-				WorkflowConstructorType constructorType = WorkflowConstructorType::UNDEFINED_ENUM_ITEM_VALUE;
-				vl::collections::List<vl::Ptr<WorkflowType>> baseTypes;
-				vl::collections::List<vl::Ptr<WorkflowDeclaration>> declarations;
+				WfClassKind kind = WfClassKind::UNDEFINED_ENUM_ITEM_VALUE;
+				WfConstructorType constructorType = WfConstructorType::UNDEFINED_ENUM_ITEM_VALUE;
+				vl::collections::List<vl::Ptr<WfType>> baseTypes;
+				vl::collections::List<vl::Ptr<WfDeclaration>> declarations;
 
-				void Accept(WorkflowDeclaration::IVisitor* visitor) override;
+				void Accept(WfDeclaration::IVisitor* visitor) override;
 			};
 
-			class WorkflowEnumItemIntersection : public vl::glr::ParsingAstBase, vl::reflection::Description<WorkflowEnumItemIntersection>
+			class WfEnumItemIntersection : public vl::glr::ParsingAstBase, vl::reflection::Description<WfEnumItemIntersection>
 			{
 			public:
 				vl::glr::ParsingToken name;
 			};
 
-			class WorkflowEnumItem : public vl::glr::ParsingAstBase, vl::reflection::Description<WorkflowEnumItem>
+			class WfEnumItem : public vl::glr::ParsingAstBase, vl::reflection::Description<WfEnumItem>
 			{
 			public:
-				vl::collections::List<vl::Ptr<WorkflowAttribute>> attributes;
+				vl::collections::List<vl::Ptr<WfAttribute>> attributes;
 				vl::glr::ParsingToken name;
-				WorkflowEnumItemKind kind = WorkflowEnumItemKind::UNDEFINED_ENUM_ITEM_VALUE;
+				WfEnumItemKind kind = WfEnumItemKind::UNDEFINED_ENUM_ITEM_VALUE;
 				vl::glr::ParsingToken number;
-				vl::collections::List<vl::Ptr<WorkflowEnumItemIntersection>> intersections;
+				vl::collections::List<vl::Ptr<WfEnumItemIntersection>> intersections;
 			};
 
-			class WorkflowEnumDeclaration : public WorkflowDeclaration, vl::reflection::Description<WorkflowEnumDeclaration>
+			class WfEnumDeclaration : public WfDeclaration, vl::reflection::Description<WfEnumDeclaration>
 			{
 			public:
-				WorkflowEnumKind kind = WorkflowEnumKind::UNDEFINED_ENUM_ITEM_VALUE;
-				vl::collections::List<vl::Ptr<WorkflowEnumItem>> items;
+				WfEnumKind kind = WfEnumKind::UNDEFINED_ENUM_ITEM_VALUE;
+				vl::collections::List<vl::Ptr<WfEnumItem>> items;
 
-				void Accept(WorkflowDeclaration::IVisitor* visitor) override;
+				void Accept(WfDeclaration::IVisitor* visitor) override;
 			};
 
-			class WorkflowStructMember : public vl::glr::ParsingAstBase, vl::reflection::Description<WorkflowStructMember>
+			class WfStructMember : public vl::glr::ParsingAstBase, vl::reflection::Description<WfStructMember>
 			{
 			public:
-				vl::collections::List<vl::Ptr<WorkflowAttribute>> attributes;
+				vl::collections::List<vl::Ptr<WfAttribute>> attributes;
 				vl::glr::ParsingToken name;
-				vl::Ptr<WorkflowType> type;
+				vl::Ptr<WfType> type;
 			};
 
-			class WorkflowStructDeclaration : public WorkflowDeclaration, vl::reflection::Description<WorkflowStructDeclaration>
+			class WfStructDeclaration : public WfDeclaration, vl::reflection::Description<WfStructDeclaration>
 			{
 			public:
-				vl::collections::List<vl::Ptr<WorkflowStructMember>> members;
+				vl::collections::List<vl::Ptr<WfStructMember>> members;
 
-				void Accept(WorkflowDeclaration::IVisitor* visitor) override;
+				void Accept(WfDeclaration::IVisitor* visitor) override;
 			};
 
-			class WorkflowVirtualCfeDeclaration abstract : public WorkflowDeclaration, vl::reflection::Description<WorkflowVirtualCfeDeclaration>
+			class WfVirtualCfeDeclaration abstract : public WfDeclaration, vl::reflection::Description<WfVirtualCfeDeclaration>
 			{
 			public:
 				class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
 				{
 				public:
-					virtual void Visit(WorkflowAutoPropertyDeclaration* node) = 0;
-					virtual void Visit(WorkflowCastResultInterfaceDeclaration* node) = 0;
+					virtual void Visit(WfAutoPropertyDeclaration* node) = 0;
+					virtual void Visit(WfCastResultInterfaceDeclaration* node) = 0;
 				};
 
-				virtual void Accept(WorkflowVirtualCfeDeclaration::IVisitor* visitor) = 0;
+				virtual void Accept(WfVirtualCfeDeclaration::IVisitor* visitor) = 0;
 
-				vl::collections::List<vl::Ptr<WorkflowDeclaration>> expandedDeclarations;
+				vl::collections::List<vl::Ptr<WfDeclaration>> expandedDeclarations;
 
-				void Accept(WorkflowDeclaration::IVisitor* visitor) override;
+				void Accept(WfDeclaration::IVisitor* visitor) override;
 			};
 
-			class WorkflowAutoPropertyDeclaration : public WorkflowVirtualCfeDeclaration, vl::reflection::Description<WorkflowAutoPropertyDeclaration>
+			class WfAutoPropertyDeclaration : public WfVirtualCfeDeclaration, vl::reflection::Description<WfAutoPropertyDeclaration>
 			{
 			public:
-				WorkflowFunctionKind functionKind = WorkflowFunctionKind::UNDEFINED_ENUM_ITEM_VALUE;
-				vl::Ptr<WorkflowType> type;
-				WorkflowAPConst configConst = WorkflowAPConst::UNDEFINED_ENUM_ITEM_VALUE;
-				WorkflowAPObserve configObserve = WorkflowAPObserve::UNDEFINED_ENUM_ITEM_VALUE;
-				vl::Ptr<WorkflowExpression> expression;
+				WfFunctionKind functionKind = WfFunctionKind::UNDEFINED_ENUM_ITEM_VALUE;
+				vl::Ptr<WfType> type;
+				WfAPConst configConst = WfAPConst::UNDEFINED_ENUM_ITEM_VALUE;
+				WfAPObserve configObserve = WfAPObserve::UNDEFINED_ENUM_ITEM_VALUE;
+				vl::Ptr<WfExpression> expression;
 
-				void Accept(WorkflowVirtualCfeDeclaration::IVisitor* visitor) override;
+				void Accept(WfVirtualCfeDeclaration::IVisitor* visitor) override;
 			};
 
-			class WorkflowCastResultInterfaceDeclaration : public WorkflowVirtualCfeDeclaration, vl::reflection::Description<WorkflowCastResultInterfaceDeclaration>
+			class WfCastResultInterfaceDeclaration : public WfVirtualCfeDeclaration, vl::reflection::Description<WfCastResultInterfaceDeclaration>
 			{
 			public:
-				vl::Ptr<WorkflowType> baseType;
-				vl::Ptr<WorkflowType> elementType;
+				vl::Ptr<WfType> baseType;
+				vl::Ptr<WfType> elementType;
 
-				void Accept(WorkflowVirtualCfeDeclaration::IVisitor* visitor) override;
+				void Accept(WfVirtualCfeDeclaration::IVisitor* visitor) override;
 			};
 
-			class WorkflowVirtualCseDeclaration abstract : public WorkflowDeclaration, vl::reflection::Description<WorkflowVirtualCseDeclaration>
+			class WfVirtualCseDeclaration abstract : public WfDeclaration, vl::reflection::Description<WfVirtualCseDeclaration>
 			{
 			public:
 				class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
 				{
 				public:
-					virtual void Visit(WorkflowStateMachineDeclaration* node) = 0;
+					virtual void Visit(WfStateMachineDeclaration* node) = 0;
 				};
 
-				virtual void Accept(WorkflowVirtualCseDeclaration::IVisitor* visitor) = 0;
+				virtual void Accept(WfVirtualCseDeclaration::IVisitor* visitor) = 0;
 
-				vl::collections::List<vl::Ptr<WorkflowDeclaration>> expandedDeclarations;
+				vl::collections::List<vl::Ptr<WfDeclaration>> expandedDeclarations;
 
-				void Accept(WorkflowDeclaration::IVisitor* visitor) override;
+				void Accept(WfDeclaration::IVisitor* visitor) override;
 			};
 
-			class WorkflowStateInput : public vl::glr::ParsingAstBase, vl::reflection::Description<WorkflowStateInput>
+			class WfStateInput : public vl::glr::ParsingAstBase, vl::reflection::Description<WfStateInput>
 			{
 			public:
 				vl::glr::ParsingToken name;
-				vl::collections::List<vl::Ptr<WorkflowFunctionArgument>> arguments;
+				vl::collections::List<vl::Ptr<WfFunctionArgument>> arguments;
 			};
 
-			class WorkflowStateDeclaration : public vl::glr::ParsingAstBase, vl::reflection::Description<WorkflowStateDeclaration>
+			class WfStateDeclaration : public vl::glr::ParsingAstBase, vl::reflection::Description<WfStateDeclaration>
 			{
 			public:
 				vl::glr::ParsingToken name;
-				vl::collections::List<vl::Ptr<WorkflowFunctionArgument>> arguments;
-				vl::Ptr<WorkflowStatement> statement;
+				vl::collections::List<vl::Ptr<WfFunctionArgument>> arguments;
+				vl::Ptr<WfStatement> statement;
 			};
 
-			class WorkflowStateMachineDeclaration : public WorkflowVirtualCseDeclaration, vl::reflection::Description<WorkflowStateMachineDeclaration>
+			class WfStateMachineDeclaration : public WfVirtualCseDeclaration, vl::reflection::Description<WfStateMachineDeclaration>
 			{
 			public:
-				vl::collections::List<vl::Ptr<WorkflowStateInput>> inputs;
-				vl::collections::List<vl::Ptr<WorkflowStateDeclaration>> states;
+				vl::collections::List<vl::Ptr<WfStateInput>> inputs;
+				vl::collections::List<vl::Ptr<WfStateDeclaration>> states;
 
-				void Accept(WorkflowVirtualCseDeclaration::IVisitor* visitor) override;
+				void Accept(WfVirtualCseDeclaration::IVisitor* visitor) override;
 			};
 
-			class WorkflowBreakStatement : public WorkflowStatement, vl::reflection::Description<WorkflowBreakStatement>
-			{
-			public:
-
-				void Accept(WorkflowStatement::IVisitor* visitor) override;
-			};
-
-			class WorkflowContinueStatement : public WorkflowStatement, vl::reflection::Description<WorkflowContinueStatement>
+			class WfBreakStatement : public WfStatement, vl::reflection::Description<WfBreakStatement>
 			{
 			public:
 
-				void Accept(WorkflowStatement::IVisitor* visitor) override;
+				void Accept(WfStatement::IVisitor* visitor) override;
 			};
 
-			class WorkflowReturnStatement : public WorkflowStatement, vl::reflection::Description<WorkflowReturnStatement>
+			class WfContinueStatement : public WfStatement, vl::reflection::Description<WfContinueStatement>
 			{
 			public:
-				vl::Ptr<WorkflowExpression> expression;
 
-				void Accept(WorkflowStatement::IVisitor* visitor) override;
+				void Accept(WfStatement::IVisitor* visitor) override;
 			};
 
-			class WorkflowDeleteStatement : public WorkflowStatement, vl::reflection::Description<WorkflowDeleteStatement>
+			class WfReturnStatement : public WfStatement, vl::reflection::Description<WfReturnStatement>
 			{
 			public:
-				vl::Ptr<WorkflowExpression> expression;
+				vl::Ptr<WfExpression> expression;
 
-				void Accept(WorkflowStatement::IVisitor* visitor) override;
+				void Accept(WfStatement::IVisitor* visitor) override;
 			};
 
-			class WorkflowRaiseExceptionStatement : public WorkflowStatement, vl::reflection::Description<WorkflowRaiseExceptionStatement>
+			class WfDeleteStatement : public WfStatement, vl::reflection::Description<WfDeleteStatement>
 			{
 			public:
-				vl::Ptr<WorkflowExpression> expression;
+				vl::Ptr<WfExpression> expression;
 
-				void Accept(WorkflowStatement::IVisitor* visitor) override;
+				void Accept(WfStatement::IVisitor* visitor) override;
 			};
 
-			class WorkflowIfStatement : public WorkflowStatement, vl::reflection::Description<WorkflowIfStatement>
+			class WfRaiseExceptionStatement : public WfStatement, vl::reflection::Description<WfRaiseExceptionStatement>
 			{
 			public:
-				vl::Ptr<WorkflowType> type;
+				vl::Ptr<WfExpression> expression;
+
+				void Accept(WfStatement::IVisitor* visitor) override;
+			};
+
+			class WfIfStatement : public WfStatement, vl::reflection::Description<WfIfStatement>
+			{
+			public:
+				vl::Ptr<WfType> type;
 				vl::glr::ParsingToken name;
-				vl::Ptr<WorkflowExpression> expression;
-				vl::Ptr<WorkflowStatement> trueBranch;
-				vl::Ptr<WorkflowStatement> falseBranch;
+				vl::Ptr<WfExpression> expression;
+				vl::Ptr<WfStatement> trueBranch;
+				vl::Ptr<WfStatement> falseBranch;
 
-				void Accept(WorkflowStatement::IVisitor* visitor) override;
+				void Accept(WfStatement::IVisitor* visitor) override;
 			};
 
-			class WorkflowWhileStatement : public WorkflowStatement, vl::reflection::Description<WorkflowWhileStatement>
+			class WfWhileStatement : public WfStatement, vl::reflection::Description<WfWhileStatement>
 			{
 			public:
-				vl::Ptr<WorkflowExpression> condition;
-				vl::Ptr<WorkflowStatement> statement;
+				vl::Ptr<WfExpression> condition;
+				vl::Ptr<WfStatement> statement;
 
-				void Accept(WorkflowStatement::IVisitor* visitor) override;
+				void Accept(WfStatement::IVisitor* visitor) override;
 			};
 
-			class WorkflowTryStatement : public WorkflowStatement, vl::reflection::Description<WorkflowTryStatement>
+			class WfTryStatement : public WfStatement, vl::reflection::Description<WfTryStatement>
 			{
 			public:
-				vl::Ptr<WorkflowStatement> protectedStatement;
+				vl::Ptr<WfStatement> protectedStatement;
 				vl::glr::ParsingToken name;
-				vl::Ptr<WorkflowStatement> catchStatement;
-				vl::Ptr<WorkflowStatement> finallyStatement;
+				vl::Ptr<WfStatement> catchStatement;
+				vl::Ptr<WfStatement> finallyStatement;
 
-				void Accept(WorkflowStatement::IVisitor* visitor) override;
+				void Accept(WfStatement::IVisitor* visitor) override;
 			};
 
-			class WorkflowBlockStatement : public WorkflowStatement, vl::reflection::Description<WorkflowBlockStatement>
+			class WfBlockStatement : public WfStatement, vl::reflection::Description<WfBlockStatement>
 			{
 			public:
-				vl::collections::List<vl::Ptr<WorkflowStatement>> statements;
+				vl::collections::List<vl::Ptr<WfStatement>> statements;
 				vl::glr::ParsingToken endLabel;
 
-				void Accept(WorkflowStatement::IVisitor* visitor) override;
+				void Accept(WfStatement::IVisitor* visitor) override;
 			};
 
-			class WorkflowGotoStatement : public WorkflowStatement, vl::reflection::Description<WorkflowGotoStatement>
+			class WfGotoStatement : public WfStatement, vl::reflection::Description<WfGotoStatement>
 			{
 			public:
 				vl::glr::ParsingToken label;
 
-				void Accept(WorkflowStatement::IVisitor* visitor) override;
+				void Accept(WfStatement::IVisitor* visitor) override;
 			};
 
-			class WorkflowVariableStatement : public WorkflowStatement, vl::reflection::Description<WorkflowVariableStatement>
+			class WfVariableStatement : public WfStatement, vl::reflection::Description<WfVariableStatement>
 			{
 			public:
-				vl::Ptr<WorkflowVariableDeclaration> variable;
+				vl::Ptr<WfVariableDeclaration> variable;
 
-				void Accept(WorkflowStatement::IVisitor* visitor) override;
+				void Accept(WfStatement::IVisitor* visitor) override;
 			};
 
-			class WorkflowExpressionStatement : public WorkflowStatement, vl::reflection::Description<WorkflowExpressionStatement>
+			class WfExpressionStatement : public WfStatement, vl::reflection::Description<WfExpressionStatement>
 			{
 			public:
-				vl::Ptr<WorkflowExpression> expression;
+				vl::Ptr<WfExpression> expression;
 
-				void Accept(WorkflowStatement::IVisitor* visitor) override;
+				void Accept(WfStatement::IVisitor* visitor) override;
 			};
 
-			class WorkflowVirtualCseStatement abstract : public WorkflowStatement, vl::reflection::Description<WorkflowVirtualCseStatement>
-			{
-			public:
-				class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
-				{
-				public:
-					virtual void Visit(WorkflowForEachStatement* node) = 0;
-					virtual void Visit(WorkflowSwitchStatement* node) = 0;
-					virtual void Visit(WorkflowCoProviderStatement* node) = 0;
-				};
-
-				virtual void Accept(WorkflowVirtualCseStatement::IVisitor* visitor) = 0;
-
-				vl::Ptr<WorkflowStatement> expandedStatement;
-
-				void Accept(WorkflowStatement::IVisitor* visitor) override;
-			};
-
-			class WorkflowForEachStatement : public WorkflowVirtualCseStatement, vl::reflection::Description<WorkflowForEachStatement>
-			{
-			public:
-				vl::glr::ParsingToken name;
-				WorkflowForEachDirection direction = WorkflowForEachDirection::UNDEFINED_ENUM_ITEM_VALUE;
-				vl::Ptr<WorkflowExpression> collection;
-				vl::Ptr<WorkflowStatement> statement;
-
-				void Accept(WorkflowVirtualCseStatement::IVisitor* visitor) override;
-			};
-
-			class WorkflowSwitchCase : public vl::glr::ParsingAstBase, vl::reflection::Description<WorkflowSwitchCase>
-			{
-			public:
-				vl::Ptr<WorkflowExpression> expression;
-				vl::Ptr<WorkflowStatement> statement;
-			};
-
-			class WorkflowSwitchStatement : public WorkflowVirtualCseStatement, vl::reflection::Description<WorkflowSwitchStatement>
-			{
-			public:
-				vl::Ptr<WorkflowExpression> expression;
-				vl::collections::List<vl::Ptr<WorkflowSwitchCase>> caseBranches;
-				vl::Ptr<WorkflowStatement> defaultBranch;
-
-				void Accept(WorkflowVirtualCseStatement::IVisitor* visitor) override;
-			};
-
-			class WorkflowCoProviderStatement : public WorkflowVirtualCseStatement, vl::reflection::Description<WorkflowCoProviderStatement>
-			{
-			public:
-				vl::glr::ParsingToken name;
-				vl::Ptr<WorkflowStatement> statement;
-
-				void Accept(WorkflowVirtualCseStatement::IVisitor* visitor) override;
-			};
-
-			class WorkflowCoroutineStatement abstract : public WorkflowStatement, vl::reflection::Description<WorkflowCoroutineStatement>
+			class WfVirtualCseStatement abstract : public WfStatement, vl::reflection::Description<WfVirtualCseStatement>
 			{
 			public:
 				class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
 				{
 				public:
-					virtual void Visit(WorkflowCoPauseStatement* node) = 0;
-					virtual void Visit(WorkflowCoOperatorStatement* node) = 0;
+					virtual void Visit(WfForEachStatement* node) = 0;
+					virtual void Visit(WfSwitchStatement* node) = 0;
+					virtual void Visit(WfCoProviderStatement* node) = 0;
 				};
 
-				virtual void Accept(WorkflowCoroutineStatement::IVisitor* visitor) = 0;
+				virtual void Accept(WfVirtualCseStatement::IVisitor* visitor) = 0;
 
+				vl::Ptr<WfStatement> expandedStatement;
 
-				void Accept(WorkflowStatement::IVisitor* visitor) override;
+				void Accept(WfStatement::IVisitor* visitor) override;
 			};
 
-			class WorkflowCoPauseStatement : public WorkflowCoroutineStatement, vl::reflection::Description<WorkflowCoPauseStatement>
+			class WfForEachStatement : public WfVirtualCseStatement, vl::reflection::Description<WfForEachStatement>
 			{
 			public:
-				vl::Ptr<WorkflowStatement> statement;
+				vl::glr::ParsingToken name;
+				WfForEachDirection direction = WfForEachDirection::UNDEFINED_ENUM_ITEM_VALUE;
+				vl::Ptr<WfExpression> collection;
+				vl::Ptr<WfStatement> statement;
 
-				void Accept(WorkflowCoroutineStatement::IVisitor* visitor) override;
+				void Accept(WfVirtualCseStatement::IVisitor* visitor) override;
 			};
 
-			class WorkflowCoOperatorStatement : public WorkflowCoroutineStatement, vl::reflection::Description<WorkflowCoOperatorStatement>
+			class WfSwitchCase : public vl::glr::ParsingAstBase, vl::reflection::Description<WfSwitchCase>
+			{
+			public:
+				vl::Ptr<WfExpression> expression;
+				vl::Ptr<WfStatement> statement;
+			};
+
+			class WfSwitchStatement : public WfVirtualCseStatement, vl::reflection::Description<WfSwitchStatement>
+			{
+			public:
+				vl::Ptr<WfExpression> expression;
+				vl::collections::List<vl::Ptr<WfSwitchCase>> caseBranches;
+				vl::Ptr<WfStatement> defaultBranch;
+
+				void Accept(WfVirtualCseStatement::IVisitor* visitor) override;
+			};
+
+			class WfCoProviderStatement : public WfVirtualCseStatement, vl::reflection::Description<WfCoProviderStatement>
+			{
+			public:
+				vl::glr::ParsingToken name;
+				vl::Ptr<WfStatement> statement;
+
+				void Accept(WfVirtualCseStatement::IVisitor* visitor) override;
+			};
+
+			class WfCoroutineStatement abstract : public WfStatement, vl::reflection::Description<WfCoroutineStatement>
+			{
+			public:
+				class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
+				{
+				public:
+					virtual void Visit(WfCoPauseStatement* node) = 0;
+					virtual void Visit(WfCoOperatorStatement* node) = 0;
+				};
+
+				virtual void Accept(WfCoroutineStatement::IVisitor* visitor) = 0;
+
+
+				void Accept(WfStatement::IVisitor* visitor) override;
+			};
+
+			class WfCoPauseStatement : public WfCoroutineStatement, vl::reflection::Description<WfCoPauseStatement>
+			{
+			public:
+				vl::Ptr<WfStatement> statement;
+
+				void Accept(WfCoroutineStatement::IVisitor* visitor) override;
+			};
+
+			class WfCoOperatorStatement : public WfCoroutineStatement, vl::reflection::Description<WfCoOperatorStatement>
 			{
 			public:
 				vl::glr::ParsingToken varName;
 				vl::glr::ParsingToken opName;
-				vl::collections::List<vl::Ptr<WorkflowExpression>> arguments;
+				vl::collections::List<vl::Ptr<WfExpression>> arguments;
 
-				void Accept(WorkflowCoroutineStatement::IVisitor* visitor) override;
+				void Accept(WfCoroutineStatement::IVisitor* visitor) override;
 			};
 
-			class WorkflowStateMachineStatement abstract : public WorkflowStatement, vl::reflection::Description<WorkflowStateMachineStatement>
+			class WfStateMachineStatement abstract : public WfStatement, vl::reflection::Description<WfStateMachineStatement>
 			{
 			public:
 				class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
 				{
 				public:
-					virtual void Visit(WorkflowStateSwitchStatement* node) = 0;
-					virtual void Visit(WorkflowStateInvokeStatement* node) = 0;
+					virtual void Visit(WfStateSwitchStatement* node) = 0;
+					virtual void Visit(WfStateInvokeStatement* node) = 0;
 				};
 
-				virtual void Accept(WorkflowStateMachineStatement::IVisitor* visitor) = 0;
+				virtual void Accept(WfStateMachineStatement::IVisitor* visitor) = 0;
 
 
-				void Accept(WorkflowStatement::IVisitor* visitor) override;
+				void Accept(WfStatement::IVisitor* visitor) override;
 			};
 
-			class WorkflowStateSwitchArgument : public vl::glr::ParsingAstBase, vl::reflection::Description<WorkflowStateSwitchArgument>
+			class WfStateSwitchArgument : public vl::glr::ParsingAstBase, vl::reflection::Description<WfStateSwitchArgument>
 			{
 			public:
 				vl::glr::ParsingToken name;
 			};
 
-			class WorkflowStateSwitchCase : public vl::glr::ParsingAstBase, vl::reflection::Description<WorkflowStateSwitchCase>
+			class WfStateSwitchCase : public vl::glr::ParsingAstBase, vl::reflection::Description<WfStateSwitchCase>
 			{
 			public:
 				vl::glr::ParsingToken name;
-				vl::collections::List<vl::Ptr<WorkflowStateSwitchArgument>> arguments;
-				vl::Ptr<WorkflowStatement> statement;
+				vl::collections::List<vl::Ptr<WfStateSwitchArgument>> arguments;
+				vl::Ptr<WfStatement> statement;
 			};
 
-			class WorkflowStateSwitchStatement : public WorkflowStateMachineStatement, vl::reflection::Description<WorkflowStateSwitchStatement>
+			class WfStateSwitchStatement : public WfStateMachineStatement, vl::reflection::Description<WfStateSwitchStatement>
 			{
 			public:
-				WorkflowStateSwitchType type = WorkflowStateSwitchType::UNDEFINED_ENUM_ITEM_VALUE;
-				vl::collections::List<vl::Ptr<WorkflowStateSwitchCase>> caseBranches;
+				WfStateSwitchType type = WfStateSwitchType::UNDEFINED_ENUM_ITEM_VALUE;
+				vl::collections::List<vl::Ptr<WfStateSwitchCase>> caseBranches;
 
-				void Accept(WorkflowStateMachineStatement::IVisitor* visitor) override;
+				void Accept(WfStateMachineStatement::IVisitor* visitor) override;
 			};
 
-			class WorkflowStateInvokeStatement : public WorkflowStateMachineStatement, vl::reflection::Description<WorkflowStateInvokeStatement>
+			class WfStateInvokeStatement : public WfStateMachineStatement, vl::reflection::Description<WfStateInvokeStatement>
 			{
 			public:
-				WorkflowStateInvokeType type = WorkflowStateInvokeType::UNDEFINED_ENUM_ITEM_VALUE;
+				WfStateInvokeType type = WfStateInvokeType::UNDEFINED_ENUM_ITEM_VALUE;
 				vl::glr::ParsingToken name;
-				vl::collections::List<vl::Ptr<WorkflowExpression>> arguments;
+				vl::collections::List<vl::Ptr<WfExpression>> arguments;
 
-				void Accept(WorkflowStateMachineStatement::IVisitor* visitor) override;
+				void Accept(WfStateMachineStatement::IVisitor* visitor) override;
 			};
 
-			class WorkflowThisExpression : public WorkflowExpression, vl::reflection::Description<WorkflowThisExpression>
+			class WfThisExpression : public WfExpression, vl::reflection::Description<WfThisExpression>
 			{
 			public:
 
-				void Accept(WorkflowExpression::IVisitor* visitor) override;
+				void Accept(WfExpression::IVisitor* visitor) override;
 			};
 
-			class WorkflowTopQualifiedExpression : public WorkflowExpression, vl::reflection::Description<WorkflowTopQualifiedExpression>
-			{
-			public:
-				vl::glr::ParsingToken name;
-
-				void Accept(WorkflowExpression::IVisitor* visitor) override;
-			};
-
-			class WorkflowReferenceExpression : public WorkflowExpression, vl::reflection::Description<WorkflowReferenceExpression>
+			class WfTopQualifiedExpression : public WfExpression, vl::reflection::Description<WfTopQualifiedExpression>
 			{
 			public:
 				vl::glr::ParsingToken name;
 
-				void Accept(WorkflowExpression::IVisitor* visitor) override;
+				void Accept(WfExpression::IVisitor* visitor) override;
 			};
 
-			class WorkflowOrderedNameExpression : public WorkflowExpression, vl::reflection::Description<WorkflowOrderedNameExpression>
+			class WfReferenceExpression : public WfExpression, vl::reflection::Description<WfReferenceExpression>
 			{
 			public:
 				vl::glr::ParsingToken name;
 
-				void Accept(WorkflowExpression::IVisitor* visitor) override;
+				void Accept(WfExpression::IVisitor* visitor) override;
 			};
 
-			class WorkflowOrderedLambdaExpression : public WorkflowExpression, vl::reflection::Description<WorkflowOrderedLambdaExpression>
+			class WfOrderedNameExpression : public WfExpression, vl::reflection::Description<WfOrderedNameExpression>
 			{
 			public:
-				vl::Ptr<WorkflowExpression> body;
-
-				void Accept(WorkflowExpression::IVisitor* visitor) override;
-			};
-
-			class WorkflowMemberExpression : public WorkflowExpression, vl::reflection::Description<WorkflowMemberExpression>
-			{
-			public:
-				vl::Ptr<WorkflowExpression> parent;
 				vl::glr::ParsingToken name;
 
-				void Accept(WorkflowExpression::IVisitor* visitor) override;
+				void Accept(WfExpression::IVisitor* visitor) override;
 			};
 
-			class WorkflowChildExpression : public WorkflowExpression, vl::reflection::Description<WorkflowChildExpression>
+			class WfOrderedLambdaExpression : public WfExpression, vl::reflection::Description<WfOrderedLambdaExpression>
 			{
 			public:
-				vl::Ptr<WorkflowExpression> parent;
+				vl::Ptr<WfExpression> body;
+
+				void Accept(WfExpression::IVisitor* visitor) override;
+			};
+
+			class WfMemberExpression : public WfExpression, vl::reflection::Description<WfMemberExpression>
+			{
+			public:
+				vl::Ptr<WfExpression> parent;
 				vl::glr::ParsingToken name;
 
-				void Accept(WorkflowExpression::IVisitor* visitor) override;
+				void Accept(WfExpression::IVisitor* visitor) override;
 			};
 
-			class WorkflowLiteralExpression : public WorkflowExpression, vl::reflection::Description<WorkflowLiteralExpression>
+			class WfChildExpression : public WfExpression, vl::reflection::Description<WfChildExpression>
 			{
 			public:
-				WorkflowLiteralValue value = WorkflowLiteralValue::UNDEFINED_ENUM_ITEM_VALUE;
+				vl::Ptr<WfExpression> parent;
+				vl::glr::ParsingToken name;
 
-				void Accept(WorkflowExpression::IVisitor* visitor) override;
+				void Accept(WfExpression::IVisitor* visitor) override;
 			};
 
-			class WorkflowFloatingExpression : public WorkflowExpression, vl::reflection::Description<WorkflowFloatingExpression>
+			class WfLiteralExpression : public WfExpression, vl::reflection::Description<WfLiteralExpression>
+			{
+			public:
+				WfLiteralValue value = WfLiteralValue::UNDEFINED_ENUM_ITEM_VALUE;
+
+				void Accept(WfExpression::IVisitor* visitor) override;
+			};
+
+			class WfFloatingExpression : public WfExpression, vl::reflection::Description<WfFloatingExpression>
 			{
 			public:
 				vl::glr::ParsingToken value;
 
-				void Accept(WorkflowExpression::IVisitor* visitor) override;
+				void Accept(WfExpression::IVisitor* visitor) override;
 			};
 
-			class WorkflowIntegerExpression : public WorkflowExpression, vl::reflection::Description<WorkflowIntegerExpression>
+			class WfIntegerExpression : public WfExpression, vl::reflection::Description<WfIntegerExpression>
 			{
 			public:
 				vl::glr::ParsingToken value;
 
-				void Accept(WorkflowExpression::IVisitor* visitor) override;
+				void Accept(WfExpression::IVisitor* visitor) override;
 			};
 
-			class WorkflowStringExpression : public WorkflowExpression, vl::reflection::Description<WorkflowStringExpression>
+			class WfStringExpression : public WfExpression, vl::reflection::Description<WfStringExpression>
 			{
 			public:
 				vl::glr::ParsingToken value;
 
-				void Accept(WorkflowExpression::IVisitor* visitor) override;
+				void Accept(WfExpression::IVisitor* visitor) override;
 			};
 
-			class WorkflowUnaryExpression : public WorkflowExpression, vl::reflection::Description<WorkflowUnaryExpression>
+			class WfUnaryExpression : public WfExpression, vl::reflection::Description<WfUnaryExpression>
 			{
 			public:
-				WorkflowUnaryOperator op = WorkflowUnaryOperator::UNDEFINED_ENUM_ITEM_VALUE;
-				vl::Ptr<WorkflowExpression> operand;
+				WfUnaryOperator op = WfUnaryOperator::UNDEFINED_ENUM_ITEM_VALUE;
+				vl::Ptr<WfExpression> operand;
 
-				void Accept(WorkflowExpression::IVisitor* visitor) override;
+				void Accept(WfExpression::IVisitor* visitor) override;
 			};
 
-			class WorkflowBinaryExpression : public WorkflowExpression, vl::reflection::Description<WorkflowBinaryExpression>
+			class WfBinaryExpression : public WfExpression, vl::reflection::Description<WfBinaryExpression>
 			{
 			public:
-				WorkflowBinaryOperator op = WorkflowBinaryOperator::UNDEFINED_ENUM_ITEM_VALUE;
-				vl::Ptr<WorkflowExpression> first;
-				vl::Ptr<WorkflowExpression> second;
+				WfBinaryOperator op = WfBinaryOperator::UNDEFINED_ENUM_ITEM_VALUE;
+				vl::Ptr<WfExpression> first;
+				vl::Ptr<WfExpression> second;
 
-				void Accept(WorkflowExpression::IVisitor* visitor) override;
+				void Accept(WfExpression::IVisitor* visitor) override;
 			};
 
-			class WorkflowLetVariable : public vl::glr::ParsingAstBase, vl::reflection::Description<WorkflowLetVariable>
+			class WfLetVariable : public vl::glr::ParsingAstBase, vl::reflection::Description<WfLetVariable>
 			{
 			public:
 				vl::glr::ParsingToken name;
-				vl::Ptr<WorkflowExpression> value;
+				vl::Ptr<WfExpression> value;
 			};
 
-			class WorkflowLetExpression : public WorkflowExpression, vl::reflection::Description<WorkflowLetExpression>
+			class WfLetExpression : public WfExpression, vl::reflection::Description<WfLetExpression>
 			{
 			public:
-				vl::collections::List<vl::Ptr<WorkflowLetVariable>> variables;
-				vl::Ptr<WorkflowExpression> expression;
+				vl::collections::List<vl::Ptr<WfLetVariable>> variables;
+				vl::Ptr<WfExpression> expression;
 
-				void Accept(WorkflowExpression::IVisitor* visitor) override;
+				void Accept(WfExpression::IVisitor* visitor) override;
 			};
 
-			class WorkflowIfExpression : public WorkflowExpression, vl::reflection::Description<WorkflowIfExpression>
+			class WfIfExpression : public WfExpression, vl::reflection::Description<WfIfExpression>
 			{
 			public:
-				vl::Ptr<WorkflowExpression> condition;
-				vl::Ptr<WorkflowExpression> trueBranch;
-				vl::Ptr<WorkflowExpression> falseBranch;
+				vl::Ptr<WfExpression> condition;
+				vl::Ptr<WfExpression> trueBranch;
+				vl::Ptr<WfExpression> falseBranch;
 
-				void Accept(WorkflowExpression::IVisitor* visitor) override;
+				void Accept(WfExpression::IVisitor* visitor) override;
 			};
 
-			class WorkflowRangeExpression : public WorkflowExpression, vl::reflection::Description<WorkflowRangeExpression>
+			class WfRangeExpression : public WfExpression, vl::reflection::Description<WfRangeExpression>
 			{
 			public:
-				vl::Ptr<WorkflowExpression> begin;
-				WorkflowRangeBoundary beginBoundary = WorkflowRangeBoundary::UNDEFINED_ENUM_ITEM_VALUE;
-				vl::Ptr<WorkflowExpression> end;
-				WorkflowRangeBoundary endBoundary = WorkflowRangeBoundary::UNDEFINED_ENUM_ITEM_VALUE;
+				vl::Ptr<WfExpression> begin;
+				WfRangeBoundary beginBoundary = WfRangeBoundary::UNDEFINED_ENUM_ITEM_VALUE;
+				vl::Ptr<WfExpression> end;
+				WfRangeBoundary endBoundary = WfRangeBoundary::UNDEFINED_ENUM_ITEM_VALUE;
 
-				void Accept(WorkflowExpression::IVisitor* visitor) override;
+				void Accept(WfExpression::IVisitor* visitor) override;
 			};
 
-			class WorkflowSetTestingExpression : public WorkflowExpression, vl::reflection::Description<WorkflowSetTestingExpression>
+			class WfSetTestingExpression : public WfExpression, vl::reflection::Description<WfSetTestingExpression>
 			{
 			public:
-				WorkflowSetTesting test = WorkflowSetTesting::UNDEFINED_ENUM_ITEM_VALUE;
-				vl::Ptr<WorkflowExpression> element;
-				vl::Ptr<WorkflowExpression> collection;
+				WfSetTesting test = WfSetTesting::UNDEFINED_ENUM_ITEM_VALUE;
+				vl::Ptr<WfExpression> element;
+				vl::Ptr<WfExpression> collection;
 
-				void Accept(WorkflowExpression::IVisitor* visitor) override;
+				void Accept(WfExpression::IVisitor* visitor) override;
 			};
 
-			class WorkflowConstructorArgument : public vl::glr::ParsingAstBase, vl::reflection::Description<WorkflowConstructorArgument>
+			class WfConstructorArgument : public vl::glr::ParsingAstBase, vl::reflection::Description<WfConstructorArgument>
 			{
 			public:
-				vl::Ptr<WorkflowExpression> key;
-				vl::Ptr<WorkflowExpression> value;
+				vl::Ptr<WfExpression> key;
+				vl::Ptr<WfExpression> value;
 			};
 
-			class WorkflowConstructorExpression : public WorkflowExpression, vl::reflection::Description<WorkflowConstructorExpression>
+			class WfConstructorExpression : public WfExpression, vl::reflection::Description<WfConstructorExpression>
 			{
 			public:
-				vl::collections::List<vl::Ptr<WorkflowConstructorArgument>> arguments;
+				vl::collections::List<vl::Ptr<WfConstructorArgument>> arguments;
 
-				void Accept(WorkflowExpression::IVisitor* visitor) override;
+				void Accept(WfExpression::IVisitor* visitor) override;
 			};
 
-			class WorkflowInferExpression : public WorkflowExpression, vl::reflection::Description<WorkflowInferExpression>
+			class WfInferExpression : public WfExpression, vl::reflection::Description<WfInferExpression>
 			{
 			public:
-				vl::Ptr<WorkflowExpression> expression;
-				vl::Ptr<WorkflowType> type;
+				vl::Ptr<WfExpression> expression;
+				vl::Ptr<WfType> type;
 
-				void Accept(WorkflowExpression::IVisitor* visitor) override;
+				void Accept(WfExpression::IVisitor* visitor) override;
 			};
 
-			class WorkflowTypeCastingExpression : public WorkflowExpression, vl::reflection::Description<WorkflowTypeCastingExpression>
+			class WfTypeCastingExpression : public WfExpression, vl::reflection::Description<WfTypeCastingExpression>
 			{
 			public:
-				WorkflowTypeCastingStrategy strategy = WorkflowTypeCastingStrategy::UNDEFINED_ENUM_ITEM_VALUE;
-				vl::Ptr<WorkflowExpression> expression;
-				vl::Ptr<WorkflowType> type;
+				WfTypeCastingStrategy strategy = WfTypeCastingStrategy::UNDEFINED_ENUM_ITEM_VALUE;
+				vl::Ptr<WfExpression> expression;
+				vl::Ptr<WfType> type;
 
-				void Accept(WorkflowExpression::IVisitor* visitor) override;
+				void Accept(WfExpression::IVisitor* visitor) override;
 			};
 
-			class WorkflowTypeTestingExpression : public WorkflowExpression, vl::reflection::Description<WorkflowTypeTestingExpression>
+			class WfTypeTestingExpression : public WfExpression, vl::reflection::Description<WfTypeTestingExpression>
 			{
 			public:
-				WorkflowTypeTesting test = WorkflowTypeTesting::UNDEFINED_ENUM_ITEM_VALUE;
-				vl::Ptr<WorkflowExpression> expression;
-				vl::Ptr<WorkflowType> type;
+				WfTypeTesting test = WfTypeTesting::UNDEFINED_ENUM_ITEM_VALUE;
+				vl::Ptr<WfExpression> expression;
+				vl::Ptr<WfType> type;
 
-				void Accept(WorkflowExpression::IVisitor* visitor) override;
+				void Accept(WfExpression::IVisitor* visitor) override;
 			};
 
-			class WorkflowTypeOfTypeExpression : public WorkflowExpression, vl::reflection::Description<WorkflowTypeOfTypeExpression>
+			class WfTypeOfTypeExpression : public WfExpression, vl::reflection::Description<WfTypeOfTypeExpression>
 			{
 			public:
-				vl::Ptr<WorkflowType> type;
+				vl::Ptr<WfType> type;
 
-				void Accept(WorkflowExpression::IVisitor* visitor) override;
+				void Accept(WfExpression::IVisitor* visitor) override;
 			};
 
-			class WorkflowTypeOfExpressionExpression : public WorkflowExpression, vl::reflection::Description<WorkflowTypeOfExpressionExpression>
+			class WfTypeOfExpressionExpression : public WfExpression, vl::reflection::Description<WfTypeOfExpressionExpression>
 			{
 			public:
-				vl::Ptr<WorkflowExpression> expression;
+				vl::Ptr<WfExpression> expression;
 
-				void Accept(WorkflowExpression::IVisitor* visitor) override;
+				void Accept(WfExpression::IVisitor* visitor) override;
 			};
 
-			class WorkflowAttachEventExpression : public WorkflowExpression, vl::reflection::Description<WorkflowAttachEventExpression>
+			class WfAttachEventExpression : public WfExpression, vl::reflection::Description<WfAttachEventExpression>
 			{
 			public:
-				vl::Ptr<WorkflowExpression> event;
-				vl::Ptr<WorkflowExpression> function;
+				vl::Ptr<WfExpression> event;
+				vl::Ptr<WfExpression> function;
 
-				void Accept(WorkflowExpression::IVisitor* visitor) override;
+				void Accept(WfExpression::IVisitor* visitor) override;
 			};
 
-			class WorkflowDetachEventExpression : public WorkflowExpression, vl::reflection::Description<WorkflowDetachEventExpression>
+			class WfDetachEventExpression : public WfExpression, vl::reflection::Description<WfDetachEventExpression>
 			{
 			public:
-				vl::Ptr<WorkflowExpression> event;
-				vl::Ptr<WorkflowExpression> handler;
+				vl::Ptr<WfExpression> event;
+				vl::Ptr<WfExpression> handler;
 
-				void Accept(WorkflowExpression::IVisitor* visitor) override;
+				void Accept(WfExpression::IVisitor* visitor) override;
 			};
 
-			class WorkflowObserveExpression : public WorkflowExpression, vl::reflection::Description<WorkflowObserveExpression>
+			class WfObserveExpression : public WfExpression, vl::reflection::Description<WfObserveExpression>
 			{
 			public:
-				vl::Ptr<WorkflowExpression> parent;
-				WorkflowObserveType observeType = WorkflowObserveType::UNDEFINED_ENUM_ITEM_VALUE;
+				vl::Ptr<WfExpression> parent;
+				WfObserveType observeType = WfObserveType::UNDEFINED_ENUM_ITEM_VALUE;
 				vl::glr::ParsingToken name;
-				vl::Ptr<WorkflowExpression> expression;
-				vl::collections::List<vl::Ptr<WorkflowExpression>> events;
+				vl::Ptr<WfExpression> expression;
+				vl::collections::List<vl::Ptr<WfExpression>> events;
 
-				void Accept(WorkflowExpression::IVisitor* visitor) override;
+				void Accept(WfExpression::IVisitor* visitor) override;
 			};
 
-			class WorkflowCallExpression : public WorkflowExpression, vl::reflection::Description<WorkflowCallExpression>
+			class WfCallExpression : public WfExpression, vl::reflection::Description<WfCallExpression>
 			{
 			public:
-				vl::Ptr<WorkflowExpression> function;
-				vl::collections::List<vl::Ptr<WorkflowExpression>> arguments;
+				vl::Ptr<WfExpression> function;
+				vl::collections::List<vl::Ptr<WfExpression>> arguments;
 
-				void Accept(WorkflowExpression::IVisitor* visitor) override;
+				void Accept(WfExpression::IVisitor* visitor) override;
 			};
 
-			class WorkflowFunctionExpression : public WorkflowExpression, vl::reflection::Description<WorkflowFunctionExpression>
+			class WfFunctionExpression : public WfExpression, vl::reflection::Description<WfFunctionExpression>
 			{
 			public:
-				vl::Ptr<WorkflowFunctionDeclaration> function;
+				vl::Ptr<WfFunctionDeclaration> function;
 
-				void Accept(WorkflowExpression::IVisitor* visitor) override;
+				void Accept(WfExpression::IVisitor* visitor) override;
 			};
 
-			class WorkflowNewClassExpression : public WorkflowExpression, vl::reflection::Description<WorkflowNewClassExpression>
+			class WfNewClassExpression : public WfExpression, vl::reflection::Description<WfNewClassExpression>
 			{
 			public:
-				vl::Ptr<WorkflowType> type;
-				vl::collections::List<vl::Ptr<WorkflowExpression>> arguments;
+				vl::Ptr<WfType> type;
+				vl::collections::List<vl::Ptr<WfExpression>> arguments;
 
-				void Accept(WorkflowExpression::IVisitor* visitor) override;
+				void Accept(WfExpression::IVisitor* visitor) override;
 			};
 
-			class WorkflowNewInterfaceExpression : public WorkflowExpression, vl::reflection::Description<WorkflowNewInterfaceExpression>
+			class WfNewInterfaceExpression : public WfExpression, vl::reflection::Description<WfNewInterfaceExpression>
 			{
 			public:
-				vl::Ptr<WorkflowType> type;
-				vl::collections::List<vl::Ptr<WorkflowDeclaration>> declarations;
+				vl::Ptr<WfType> type;
+				vl::collections::List<vl::Ptr<WfDeclaration>> declarations;
 
-				void Accept(WorkflowExpression::IVisitor* visitor) override;
+				void Accept(WfExpression::IVisitor* visitor) override;
 			};
 
-			class WorkflowVirtualCfeExpression abstract : public WorkflowExpression, vl::reflection::Description<WorkflowVirtualCfeExpression>
+			class WfVirtualCfeExpression abstract : public WfExpression, vl::reflection::Description<WfVirtualCfeExpression>
 			{
 			public:
 				class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
 				{
 				public:
-					virtual void Visit(WorkflowFormatExpression* node) = 0;
+					virtual void Visit(WfFormatExpression* node) = 0;
 				};
 
-				virtual void Accept(WorkflowVirtualCfeExpression::IVisitor* visitor) = 0;
+				virtual void Accept(WfVirtualCfeExpression::IVisitor* visitor) = 0;
 
-				vl::Ptr<WorkflowExpression> expandedExpression;
+				vl::Ptr<WfExpression> expandedExpression;
 
-				void Accept(WorkflowExpression::IVisitor* visitor) override;
+				void Accept(WfExpression::IVisitor* visitor) override;
 			};
 
-			class WorkflowFormatExpression : public WorkflowVirtualCfeExpression, vl::reflection::Description<WorkflowFormatExpression>
+			class WfFormatExpression : public WfVirtualCfeExpression, vl::reflection::Description<WfFormatExpression>
 			{
 			public:
 				vl::glr::ParsingToken value;
 
-				void Accept(WorkflowVirtualCfeExpression::IVisitor* visitor) override;
+				void Accept(WfVirtualCfeExpression::IVisitor* visitor) override;
 			};
 
-			class WorkflowVirtualCseExpression abstract : public WorkflowExpression, vl::reflection::Description<WorkflowVirtualCseExpression>
+			class WfVirtualCseExpression abstract : public WfExpression, vl::reflection::Description<WfVirtualCseExpression>
 			{
 			public:
 				class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
 				{
 				public:
-					virtual void Visit(WorkflowBindExpression* node) = 0;
-					virtual void Visit(WorkflowNewCoroutineExpression* node) = 0;
-					virtual void Visit(WorkflowMixinCastExpression* node) = 0;
-					virtual void Visit(WorkflowExpectedTypeCastExpression* node) = 0;
-					virtual void Visit(WorkflowCoOperatorExpression* node) = 0;
+					virtual void Visit(WfBindExpression* node) = 0;
+					virtual void Visit(WfNewCoroutineExpression* node) = 0;
+					virtual void Visit(WfMixinCastExpression* node) = 0;
+					virtual void Visit(WfExpectedTypeCastExpression* node) = 0;
+					virtual void Visit(WfCoOperatorExpression* node) = 0;
 				};
 
-				virtual void Accept(WorkflowVirtualCseExpression::IVisitor* visitor) = 0;
+				virtual void Accept(WfVirtualCseExpression::IVisitor* visitor) = 0;
 
-				vl::Ptr<WorkflowExpression> expandedExpression;
+				vl::Ptr<WfExpression> expandedExpression;
 
-				void Accept(WorkflowExpression::IVisitor* visitor) override;
+				void Accept(WfExpression::IVisitor* visitor) override;
 			};
 
-			class WorkflowBindExpression : public WorkflowVirtualCseExpression, vl::reflection::Description<WorkflowBindExpression>
+			class WfBindExpression : public WfVirtualCseExpression, vl::reflection::Description<WfBindExpression>
 			{
 			public:
-				vl::Ptr<WorkflowExpression> expression;
+				vl::Ptr<WfExpression> expression;
 
-				void Accept(WorkflowVirtualCseExpression::IVisitor* visitor) override;
+				void Accept(WfVirtualCseExpression::IVisitor* visitor) override;
 			};
 
-			class WorkflowNewCoroutineExpression : public WorkflowVirtualCseExpression, vl::reflection::Description<WorkflowNewCoroutineExpression>
-			{
-			public:
-				vl::glr::ParsingToken name;
-				vl::Ptr<WorkflowStatement> statement;
-
-				void Accept(WorkflowVirtualCseExpression::IVisitor* visitor) override;
-			};
-
-			class WorkflowMixinCastExpression : public WorkflowVirtualCseExpression, vl::reflection::Description<WorkflowMixinCastExpression>
-			{
-			public:
-				vl::Ptr<WorkflowType> type;
-				vl::Ptr<WorkflowExpression> expression;
-
-				void Accept(WorkflowVirtualCseExpression::IVisitor* visitor) override;
-			};
-
-			class WorkflowExpectedTypeCastExpression : public WorkflowVirtualCseExpression, vl::reflection::Description<WorkflowExpectedTypeCastExpression>
-			{
-			public:
-				WorkflowTypeCastingStrategy strategy = WorkflowTypeCastingStrategy::UNDEFINED_ENUM_ITEM_VALUE;
-				vl::Ptr<WorkflowExpression> expression;
-
-				void Accept(WorkflowVirtualCseExpression::IVisitor* visitor) override;
-			};
-
-			class WorkflowCoOperatorExpression : public WorkflowVirtualCseExpression, vl::reflection::Description<WorkflowCoOperatorExpression>
+			class WfNewCoroutineExpression : public WfVirtualCseExpression, vl::reflection::Description<WfNewCoroutineExpression>
 			{
 			public:
 				vl::glr::ParsingToken name;
+				vl::Ptr<WfStatement> statement;
 
-				void Accept(WorkflowVirtualCseExpression::IVisitor* visitor) override;
+				void Accept(WfVirtualCseExpression::IVisitor* visitor) override;
 			};
 
-			class WorkflowModuleUsingFragment abstract : public vl::glr::ParsingAstBase, vl::reflection::Description<WorkflowModuleUsingFragment>
+			class WfMixinCastExpression : public WfVirtualCseExpression, vl::reflection::Description<WfMixinCastExpression>
+			{
+			public:
+				vl::Ptr<WfType> type;
+				vl::Ptr<WfExpression> expression;
+
+				void Accept(WfVirtualCseExpression::IVisitor* visitor) override;
+			};
+
+			class WfExpectedTypeCastExpression : public WfVirtualCseExpression, vl::reflection::Description<WfExpectedTypeCastExpression>
+			{
+			public:
+				WfTypeCastingStrategy strategy = WfTypeCastingStrategy::UNDEFINED_ENUM_ITEM_VALUE;
+				vl::Ptr<WfExpression> expression;
+
+				void Accept(WfVirtualCseExpression::IVisitor* visitor) override;
+			};
+
+			class WfCoOperatorExpression : public WfVirtualCseExpression, vl::reflection::Description<WfCoOperatorExpression>
+			{
+			public:
+				vl::glr::ParsingToken name;
+
+				void Accept(WfVirtualCseExpression::IVisitor* visitor) override;
+			};
+
+			class WfModuleUsingFragment abstract : public vl::glr::ParsingAstBase, vl::reflection::Description<WfModuleUsingFragment>
 			{
 			public:
 				class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
 				{
 				public:
-					virtual void Visit(WorkflowModuleUsingNameFragment* node) = 0;
-					virtual void Visit(WorkflowModuleUsingWildCardFragment* node) = 0;
+					virtual void Visit(WfModuleUsingNameFragment* node) = 0;
+					virtual void Visit(WfModuleUsingWildCardFragment* node) = 0;
 				};
 
-				virtual void Accept(WorkflowModuleUsingFragment::IVisitor* visitor) = 0;
+				virtual void Accept(WfModuleUsingFragment::IVisitor* visitor) = 0;
 
 			};
 
-			class WorkflowModuleUsingNameFragment : public WorkflowModuleUsingFragment, vl::reflection::Description<WorkflowModuleUsingNameFragment>
+			class WfModuleUsingNameFragment : public WfModuleUsingFragment, vl::reflection::Description<WfModuleUsingNameFragment>
 			{
 			public:
 				vl::glr::ParsingToken name;
 
-				void Accept(WorkflowModuleUsingFragment::IVisitor* visitor) override;
+				void Accept(WfModuleUsingFragment::IVisitor* visitor) override;
 			};
 
-			class WorkflowModuleUsingWildCardFragment : public WorkflowModuleUsingFragment, vl::reflection::Description<WorkflowModuleUsingWildCardFragment>
+			class WfModuleUsingWildCardFragment : public WfModuleUsingFragment, vl::reflection::Description<WfModuleUsingWildCardFragment>
 			{
 			public:
 
-				void Accept(WorkflowModuleUsingFragment::IVisitor* visitor) override;
+				void Accept(WfModuleUsingFragment::IVisitor* visitor) override;
 			};
 
-			class WorkflowModuleUsingItem : public vl::glr::ParsingAstBase, vl::reflection::Description<WorkflowModuleUsingItem>
+			class WfModuleUsingItem : public vl::glr::ParsingAstBase, vl::reflection::Description<WfModuleUsingItem>
 			{
 			public:
-				vl::collections::List<vl::Ptr<WorkflowModuleUsingFragment>> fragments;
+				vl::collections::List<vl::Ptr<WfModuleUsingFragment>> fragments;
 			};
 
-			class WorkflowModuleUsingPath : public vl::glr::ParsingAstBase, vl::reflection::Description<WorkflowModuleUsingPath>
+			class WfModuleUsingPath : public vl::glr::ParsingAstBase, vl::reflection::Description<WfModuleUsingPath>
 			{
 			public:
-				vl::collections::List<vl::Ptr<WorkflowModuleUsingItem>> items;
+				vl::collections::List<vl::Ptr<WfModuleUsingItem>> items;
 			};
 
-			class WorkflowModule : public vl::glr::ParsingAstBase, vl::reflection::Description<WorkflowModule>
+			class WfModule : public vl::glr::ParsingAstBase, vl::reflection::Description<WfModule>
 			{
 			public:
-				WorkflowModuleType moduleType = WorkflowModuleType::UNDEFINED_ENUM_ITEM_VALUE;
+				WfModuleType moduleType = WfModuleType::UNDEFINED_ENUM_ITEM_VALUE;
 				vl::glr::ParsingToken name;
-				vl::collections::List<vl::Ptr<WorkflowModuleUsingPath>> paths;
-				vl::collections::List<vl::Ptr<WorkflowDeclaration>> declarations;
+				vl::collections::List<vl::Ptr<WfModuleUsingPath>> paths;
+				vl::collections::List<vl::Ptr<WfDeclaration>> declarations;
 			};
 		}
 	}
@@ -1416,627 +1416,627 @@ namespace vl
 		namespace description
 		{
 #ifndef VCZH_DEBUG_NO_REFLECTION
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowType)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowType::IVisitor)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowExpression::IVisitor)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowStatement)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowStatement::IVisitor)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowAttribute)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowDeclaration)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowDeclaration::IVisitor)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowFunctionKind)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowPredefinedTypeName)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowPredefinedType)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowTopQualifiedType)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowReferenceType)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowRawPointerType)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowSharedPointerType)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowNullableType)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowEnumerableType)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowMapWritability)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowMapType)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowObservableListType)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowFunctionType)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowChildType)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowNamespaceDeclaration)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowFunctionArgument)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowFunctionAnonymity)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowFunctionDeclaration)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowVariableDeclaration)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowEventDeclaration)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowPropertyDeclaration)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowClassKind)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowConstructorType)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowBaseConstructorCall)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowConstructorDeclaration)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowDestructorDeclaration)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowClassDeclaration)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowEnumKind)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowEnumItemKind)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowEnumItemIntersection)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowEnumItem)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowEnumDeclaration)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowStructMember)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowStructDeclaration)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowVirtualCfeDeclaration)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowVirtualCfeDeclaration::IVisitor)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowAPConst)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowAPObserve)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowAutoPropertyDeclaration)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowCastResultInterfaceDeclaration)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowVirtualCseDeclaration)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowVirtualCseDeclaration::IVisitor)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowStateInput)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowStateDeclaration)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowStateMachineDeclaration)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowBreakStatement)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowContinueStatement)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowReturnStatement)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowDeleteStatement)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowRaiseExceptionStatement)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowIfStatement)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowWhileStatement)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowTryStatement)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowBlockStatement)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowGotoStatement)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowVariableStatement)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowExpressionStatement)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowVirtualCseStatement)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowVirtualCseStatement::IVisitor)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowForEachDirection)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowForEachStatement)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowSwitchCase)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowSwitchStatement)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowCoProviderStatement)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowCoroutineStatement)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowCoroutineStatement::IVisitor)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowCoPauseStatement)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowCoOperatorStatement)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowStateSwitchType)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowStateInvokeType)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowStateMachineStatement)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowStateMachineStatement::IVisitor)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowStateSwitchArgument)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowStateSwitchCase)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowStateSwitchStatement)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowStateInvokeStatement)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowThisExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowTopQualifiedExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowReferenceExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowOrderedNameExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowOrderedLambdaExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowMemberExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowChildExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowLiteralValue)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowLiteralExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowFloatingExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowIntegerExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowStringExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowUnaryOperator)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowUnaryExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowBinaryOperator)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowBinaryExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowLetVariable)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowLetExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowIfExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowRangeBoundary)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowRangeExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowSetTesting)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowSetTestingExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowConstructorArgument)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowConstructorExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowInferExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowTypeCastingStrategy)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowTypeCastingExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowTypeTesting)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowTypeTestingExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowTypeOfTypeExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowTypeOfExpressionExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowAttachEventExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowDetachEventExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowObserveType)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowObserveExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowCallExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowFunctionExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowNewClassExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowNewInterfaceExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowVirtualCfeExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowVirtualCfeExpression::IVisitor)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowFormatExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowVirtualCseExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowVirtualCseExpression::IVisitor)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowBindExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowNewCoroutineExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowMixinCastExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowExpectedTypeCastExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowCoOperatorExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowModuleUsingFragment)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowModuleUsingFragment::IVisitor)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowModuleUsingNameFragment)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowModuleUsingWildCardFragment)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowModuleUsingItem)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowModuleUsingPath)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowModuleType)
-			DECL_TYPE_INFO(vl::glr::workflow::WorkflowModule)
+			DECL_TYPE_INFO(vl::glr::workflow::WfType)
+			DECL_TYPE_INFO(vl::glr::workflow::WfType::IVisitor)
+			DECL_TYPE_INFO(vl::glr::workflow::WfExpression)
+			DECL_TYPE_INFO(vl::glr::workflow::WfExpression::IVisitor)
+			DECL_TYPE_INFO(vl::glr::workflow::WfStatement)
+			DECL_TYPE_INFO(vl::glr::workflow::WfStatement::IVisitor)
+			DECL_TYPE_INFO(vl::glr::workflow::WfAttribute)
+			DECL_TYPE_INFO(vl::glr::workflow::WfDeclaration)
+			DECL_TYPE_INFO(vl::glr::workflow::WfDeclaration::IVisitor)
+			DECL_TYPE_INFO(vl::glr::workflow::WfFunctionKind)
+			DECL_TYPE_INFO(vl::glr::workflow::WfPredefinedTypeName)
+			DECL_TYPE_INFO(vl::glr::workflow::WfPredefinedType)
+			DECL_TYPE_INFO(vl::glr::workflow::WfTopQualifiedType)
+			DECL_TYPE_INFO(vl::glr::workflow::WfReferenceType)
+			DECL_TYPE_INFO(vl::glr::workflow::WfRawPointerType)
+			DECL_TYPE_INFO(vl::glr::workflow::WfSharedPointerType)
+			DECL_TYPE_INFO(vl::glr::workflow::WfNullableType)
+			DECL_TYPE_INFO(vl::glr::workflow::WfEnumerableType)
+			DECL_TYPE_INFO(vl::glr::workflow::WfMapWritability)
+			DECL_TYPE_INFO(vl::glr::workflow::WfMapType)
+			DECL_TYPE_INFO(vl::glr::workflow::WfObservableListType)
+			DECL_TYPE_INFO(vl::glr::workflow::WfFunctionType)
+			DECL_TYPE_INFO(vl::glr::workflow::WfChildType)
+			DECL_TYPE_INFO(vl::glr::workflow::WfNamespaceDeclaration)
+			DECL_TYPE_INFO(vl::glr::workflow::WfFunctionArgument)
+			DECL_TYPE_INFO(vl::glr::workflow::WfFunctionAnonymity)
+			DECL_TYPE_INFO(vl::glr::workflow::WfFunctionDeclaration)
+			DECL_TYPE_INFO(vl::glr::workflow::WfVariableDeclaration)
+			DECL_TYPE_INFO(vl::glr::workflow::WfEventDeclaration)
+			DECL_TYPE_INFO(vl::glr::workflow::WfPropertyDeclaration)
+			DECL_TYPE_INFO(vl::glr::workflow::WfClassKind)
+			DECL_TYPE_INFO(vl::glr::workflow::WfConstructorType)
+			DECL_TYPE_INFO(vl::glr::workflow::WfBaseConstructorCall)
+			DECL_TYPE_INFO(vl::glr::workflow::WfConstructorDeclaration)
+			DECL_TYPE_INFO(vl::glr::workflow::WfDestructorDeclaration)
+			DECL_TYPE_INFO(vl::glr::workflow::WfClassDeclaration)
+			DECL_TYPE_INFO(vl::glr::workflow::WfEnumKind)
+			DECL_TYPE_INFO(vl::glr::workflow::WfEnumItemKind)
+			DECL_TYPE_INFO(vl::glr::workflow::WfEnumItemIntersection)
+			DECL_TYPE_INFO(vl::glr::workflow::WfEnumItem)
+			DECL_TYPE_INFO(vl::glr::workflow::WfEnumDeclaration)
+			DECL_TYPE_INFO(vl::glr::workflow::WfStructMember)
+			DECL_TYPE_INFO(vl::glr::workflow::WfStructDeclaration)
+			DECL_TYPE_INFO(vl::glr::workflow::WfVirtualCfeDeclaration)
+			DECL_TYPE_INFO(vl::glr::workflow::WfVirtualCfeDeclaration::IVisitor)
+			DECL_TYPE_INFO(vl::glr::workflow::WfAPConst)
+			DECL_TYPE_INFO(vl::glr::workflow::WfAPObserve)
+			DECL_TYPE_INFO(vl::glr::workflow::WfAutoPropertyDeclaration)
+			DECL_TYPE_INFO(vl::glr::workflow::WfCastResultInterfaceDeclaration)
+			DECL_TYPE_INFO(vl::glr::workflow::WfVirtualCseDeclaration)
+			DECL_TYPE_INFO(vl::glr::workflow::WfVirtualCseDeclaration::IVisitor)
+			DECL_TYPE_INFO(vl::glr::workflow::WfStateInput)
+			DECL_TYPE_INFO(vl::glr::workflow::WfStateDeclaration)
+			DECL_TYPE_INFO(vl::glr::workflow::WfStateMachineDeclaration)
+			DECL_TYPE_INFO(vl::glr::workflow::WfBreakStatement)
+			DECL_TYPE_INFO(vl::glr::workflow::WfContinueStatement)
+			DECL_TYPE_INFO(vl::glr::workflow::WfReturnStatement)
+			DECL_TYPE_INFO(vl::glr::workflow::WfDeleteStatement)
+			DECL_TYPE_INFO(vl::glr::workflow::WfRaiseExceptionStatement)
+			DECL_TYPE_INFO(vl::glr::workflow::WfIfStatement)
+			DECL_TYPE_INFO(vl::glr::workflow::WfWhileStatement)
+			DECL_TYPE_INFO(vl::glr::workflow::WfTryStatement)
+			DECL_TYPE_INFO(vl::glr::workflow::WfBlockStatement)
+			DECL_TYPE_INFO(vl::glr::workflow::WfGotoStatement)
+			DECL_TYPE_INFO(vl::glr::workflow::WfVariableStatement)
+			DECL_TYPE_INFO(vl::glr::workflow::WfExpressionStatement)
+			DECL_TYPE_INFO(vl::glr::workflow::WfVirtualCseStatement)
+			DECL_TYPE_INFO(vl::glr::workflow::WfVirtualCseStatement::IVisitor)
+			DECL_TYPE_INFO(vl::glr::workflow::WfForEachDirection)
+			DECL_TYPE_INFO(vl::glr::workflow::WfForEachStatement)
+			DECL_TYPE_INFO(vl::glr::workflow::WfSwitchCase)
+			DECL_TYPE_INFO(vl::glr::workflow::WfSwitchStatement)
+			DECL_TYPE_INFO(vl::glr::workflow::WfCoProviderStatement)
+			DECL_TYPE_INFO(vl::glr::workflow::WfCoroutineStatement)
+			DECL_TYPE_INFO(vl::glr::workflow::WfCoroutineStatement::IVisitor)
+			DECL_TYPE_INFO(vl::glr::workflow::WfCoPauseStatement)
+			DECL_TYPE_INFO(vl::glr::workflow::WfCoOperatorStatement)
+			DECL_TYPE_INFO(vl::glr::workflow::WfStateSwitchType)
+			DECL_TYPE_INFO(vl::glr::workflow::WfStateInvokeType)
+			DECL_TYPE_INFO(vl::glr::workflow::WfStateMachineStatement)
+			DECL_TYPE_INFO(vl::glr::workflow::WfStateMachineStatement::IVisitor)
+			DECL_TYPE_INFO(vl::glr::workflow::WfStateSwitchArgument)
+			DECL_TYPE_INFO(vl::glr::workflow::WfStateSwitchCase)
+			DECL_TYPE_INFO(vl::glr::workflow::WfStateSwitchStatement)
+			DECL_TYPE_INFO(vl::glr::workflow::WfStateInvokeStatement)
+			DECL_TYPE_INFO(vl::glr::workflow::WfThisExpression)
+			DECL_TYPE_INFO(vl::glr::workflow::WfTopQualifiedExpression)
+			DECL_TYPE_INFO(vl::glr::workflow::WfReferenceExpression)
+			DECL_TYPE_INFO(vl::glr::workflow::WfOrderedNameExpression)
+			DECL_TYPE_INFO(vl::glr::workflow::WfOrderedLambdaExpression)
+			DECL_TYPE_INFO(vl::glr::workflow::WfMemberExpression)
+			DECL_TYPE_INFO(vl::glr::workflow::WfChildExpression)
+			DECL_TYPE_INFO(vl::glr::workflow::WfLiteralValue)
+			DECL_TYPE_INFO(vl::glr::workflow::WfLiteralExpression)
+			DECL_TYPE_INFO(vl::glr::workflow::WfFloatingExpression)
+			DECL_TYPE_INFO(vl::glr::workflow::WfIntegerExpression)
+			DECL_TYPE_INFO(vl::glr::workflow::WfStringExpression)
+			DECL_TYPE_INFO(vl::glr::workflow::WfUnaryOperator)
+			DECL_TYPE_INFO(vl::glr::workflow::WfUnaryExpression)
+			DECL_TYPE_INFO(vl::glr::workflow::WfBinaryOperator)
+			DECL_TYPE_INFO(vl::glr::workflow::WfBinaryExpression)
+			DECL_TYPE_INFO(vl::glr::workflow::WfLetVariable)
+			DECL_TYPE_INFO(vl::glr::workflow::WfLetExpression)
+			DECL_TYPE_INFO(vl::glr::workflow::WfIfExpression)
+			DECL_TYPE_INFO(vl::glr::workflow::WfRangeBoundary)
+			DECL_TYPE_INFO(vl::glr::workflow::WfRangeExpression)
+			DECL_TYPE_INFO(vl::glr::workflow::WfSetTesting)
+			DECL_TYPE_INFO(vl::glr::workflow::WfSetTestingExpression)
+			DECL_TYPE_INFO(vl::glr::workflow::WfConstructorArgument)
+			DECL_TYPE_INFO(vl::glr::workflow::WfConstructorExpression)
+			DECL_TYPE_INFO(vl::glr::workflow::WfInferExpression)
+			DECL_TYPE_INFO(vl::glr::workflow::WfTypeCastingStrategy)
+			DECL_TYPE_INFO(vl::glr::workflow::WfTypeCastingExpression)
+			DECL_TYPE_INFO(vl::glr::workflow::WfTypeTesting)
+			DECL_TYPE_INFO(vl::glr::workflow::WfTypeTestingExpression)
+			DECL_TYPE_INFO(vl::glr::workflow::WfTypeOfTypeExpression)
+			DECL_TYPE_INFO(vl::glr::workflow::WfTypeOfExpressionExpression)
+			DECL_TYPE_INFO(vl::glr::workflow::WfAttachEventExpression)
+			DECL_TYPE_INFO(vl::glr::workflow::WfDetachEventExpression)
+			DECL_TYPE_INFO(vl::glr::workflow::WfObserveType)
+			DECL_TYPE_INFO(vl::glr::workflow::WfObserveExpression)
+			DECL_TYPE_INFO(vl::glr::workflow::WfCallExpression)
+			DECL_TYPE_INFO(vl::glr::workflow::WfFunctionExpression)
+			DECL_TYPE_INFO(vl::glr::workflow::WfNewClassExpression)
+			DECL_TYPE_INFO(vl::glr::workflow::WfNewInterfaceExpression)
+			DECL_TYPE_INFO(vl::glr::workflow::WfVirtualCfeExpression)
+			DECL_TYPE_INFO(vl::glr::workflow::WfVirtualCfeExpression::IVisitor)
+			DECL_TYPE_INFO(vl::glr::workflow::WfFormatExpression)
+			DECL_TYPE_INFO(vl::glr::workflow::WfVirtualCseExpression)
+			DECL_TYPE_INFO(vl::glr::workflow::WfVirtualCseExpression::IVisitor)
+			DECL_TYPE_INFO(vl::glr::workflow::WfBindExpression)
+			DECL_TYPE_INFO(vl::glr::workflow::WfNewCoroutineExpression)
+			DECL_TYPE_INFO(vl::glr::workflow::WfMixinCastExpression)
+			DECL_TYPE_INFO(vl::glr::workflow::WfExpectedTypeCastExpression)
+			DECL_TYPE_INFO(vl::glr::workflow::WfCoOperatorExpression)
+			DECL_TYPE_INFO(vl::glr::workflow::WfModuleUsingFragment)
+			DECL_TYPE_INFO(vl::glr::workflow::WfModuleUsingFragment::IVisitor)
+			DECL_TYPE_INFO(vl::glr::workflow::WfModuleUsingNameFragment)
+			DECL_TYPE_INFO(vl::glr::workflow::WfModuleUsingWildCardFragment)
+			DECL_TYPE_INFO(vl::glr::workflow::WfModuleUsingItem)
+			DECL_TYPE_INFO(vl::glr::workflow::WfModuleUsingPath)
+			DECL_TYPE_INFO(vl::glr::workflow::WfModuleType)
+			DECL_TYPE_INFO(vl::glr::workflow::WfModule)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 
-			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(vl::glr::workflow::WorkflowType::IVisitor)
-				void Visit(vl::glr::workflow::WorkflowPredefinedType* node) override
+			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(vl::glr::workflow::WfType::IVisitor)
+				void Visit(vl::glr::workflow::WfPredefinedType* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowTopQualifiedType* node) override
+				void Visit(vl::glr::workflow::WfTopQualifiedType* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowReferenceType* node) override
+				void Visit(vl::glr::workflow::WfReferenceType* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowRawPointerType* node) override
+				void Visit(vl::glr::workflow::WfRawPointerType* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowSharedPointerType* node) override
+				void Visit(vl::glr::workflow::WfSharedPointerType* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowNullableType* node) override
+				void Visit(vl::glr::workflow::WfNullableType* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowEnumerableType* node) override
+				void Visit(vl::glr::workflow::WfEnumerableType* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowMapType* node) override
+				void Visit(vl::glr::workflow::WfMapType* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowObservableListType* node) override
+				void Visit(vl::glr::workflow::WfObservableListType* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowFunctionType* node) override
+				void Visit(vl::glr::workflow::WfFunctionType* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowChildType* node) override
+				void Visit(vl::glr::workflow::WfChildType* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-			END_INTERFACE_PROXY(vl::glr::workflow::WorkflowType::IVisitor)
+			END_INTERFACE_PROXY(vl::glr::workflow::WfType::IVisitor)
 
-			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(vl::glr::workflow::WorkflowExpression::IVisitor)
-				void Visit(vl::glr::workflow::WorkflowThisExpression* node) override
+			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(vl::glr::workflow::WfExpression::IVisitor)
+				void Visit(vl::glr::workflow::WfThisExpression* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowTopQualifiedExpression* node) override
+				void Visit(vl::glr::workflow::WfTopQualifiedExpression* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowReferenceExpression* node) override
+				void Visit(vl::glr::workflow::WfReferenceExpression* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowOrderedNameExpression* node) override
+				void Visit(vl::glr::workflow::WfOrderedNameExpression* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowOrderedLambdaExpression* node) override
+				void Visit(vl::glr::workflow::WfOrderedLambdaExpression* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowMemberExpression* node) override
+				void Visit(vl::glr::workflow::WfMemberExpression* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowChildExpression* node) override
+				void Visit(vl::glr::workflow::WfChildExpression* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowLiteralExpression* node) override
+				void Visit(vl::glr::workflow::WfLiteralExpression* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowFloatingExpression* node) override
+				void Visit(vl::glr::workflow::WfFloatingExpression* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowIntegerExpression* node) override
+				void Visit(vl::glr::workflow::WfIntegerExpression* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowStringExpression* node) override
+				void Visit(vl::glr::workflow::WfStringExpression* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowUnaryExpression* node) override
+				void Visit(vl::glr::workflow::WfUnaryExpression* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowBinaryExpression* node) override
+				void Visit(vl::glr::workflow::WfBinaryExpression* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowLetExpression* node) override
+				void Visit(vl::glr::workflow::WfLetExpression* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowIfExpression* node) override
+				void Visit(vl::glr::workflow::WfIfExpression* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowRangeExpression* node) override
+				void Visit(vl::glr::workflow::WfRangeExpression* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowSetTestingExpression* node) override
+				void Visit(vl::glr::workflow::WfSetTestingExpression* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowConstructorExpression* node) override
+				void Visit(vl::glr::workflow::WfConstructorExpression* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowInferExpression* node) override
+				void Visit(vl::glr::workflow::WfInferExpression* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowTypeCastingExpression* node) override
+				void Visit(vl::glr::workflow::WfTypeCastingExpression* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowTypeTestingExpression* node) override
+				void Visit(vl::glr::workflow::WfTypeTestingExpression* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowTypeOfTypeExpression* node) override
+				void Visit(vl::glr::workflow::WfTypeOfTypeExpression* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowTypeOfExpressionExpression* node) override
+				void Visit(vl::glr::workflow::WfTypeOfExpressionExpression* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowAttachEventExpression* node) override
+				void Visit(vl::glr::workflow::WfAttachEventExpression* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowDetachEventExpression* node) override
+				void Visit(vl::glr::workflow::WfDetachEventExpression* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowObserveExpression* node) override
+				void Visit(vl::glr::workflow::WfObserveExpression* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowCallExpression* node) override
+				void Visit(vl::glr::workflow::WfCallExpression* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowFunctionExpression* node) override
+				void Visit(vl::glr::workflow::WfFunctionExpression* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowNewClassExpression* node) override
+				void Visit(vl::glr::workflow::WfNewClassExpression* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowNewInterfaceExpression* node) override
+				void Visit(vl::glr::workflow::WfNewInterfaceExpression* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowVirtualCfeExpression* node) override
+				void Visit(vl::glr::workflow::WfVirtualCfeExpression* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowVirtualCseExpression* node) override
+				void Visit(vl::glr::workflow::WfVirtualCseExpression* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-			END_INTERFACE_PROXY(vl::glr::workflow::WorkflowExpression::IVisitor)
+			END_INTERFACE_PROXY(vl::glr::workflow::WfExpression::IVisitor)
 
-			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(vl::glr::workflow::WorkflowStatement::IVisitor)
-				void Visit(vl::glr::workflow::WorkflowBreakStatement* node) override
+			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(vl::glr::workflow::WfStatement::IVisitor)
+				void Visit(vl::glr::workflow::WfBreakStatement* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowContinueStatement* node) override
+				void Visit(vl::glr::workflow::WfContinueStatement* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowReturnStatement* node) override
+				void Visit(vl::glr::workflow::WfReturnStatement* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowDeleteStatement* node) override
+				void Visit(vl::glr::workflow::WfDeleteStatement* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowRaiseExceptionStatement* node) override
+				void Visit(vl::glr::workflow::WfRaiseExceptionStatement* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowIfStatement* node) override
+				void Visit(vl::glr::workflow::WfIfStatement* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowWhileStatement* node) override
+				void Visit(vl::glr::workflow::WfWhileStatement* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowTryStatement* node) override
+				void Visit(vl::glr::workflow::WfTryStatement* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowBlockStatement* node) override
+				void Visit(vl::glr::workflow::WfBlockStatement* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowGotoStatement* node) override
+				void Visit(vl::glr::workflow::WfGotoStatement* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowVariableStatement* node) override
+				void Visit(vl::glr::workflow::WfVariableStatement* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowExpressionStatement* node) override
+				void Visit(vl::glr::workflow::WfExpressionStatement* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowVirtualCseStatement* node) override
+				void Visit(vl::glr::workflow::WfVirtualCseStatement* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowCoroutineStatement* node) override
+				void Visit(vl::glr::workflow::WfCoroutineStatement* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowStateMachineStatement* node) override
+				void Visit(vl::glr::workflow::WfStateMachineStatement* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-			END_INTERFACE_PROXY(vl::glr::workflow::WorkflowStatement::IVisitor)
+			END_INTERFACE_PROXY(vl::glr::workflow::WfStatement::IVisitor)
 
-			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(vl::glr::workflow::WorkflowDeclaration::IVisitor)
-				void Visit(vl::glr::workflow::WorkflowNamespaceDeclaration* node) override
+			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(vl::glr::workflow::WfDeclaration::IVisitor)
+				void Visit(vl::glr::workflow::WfNamespaceDeclaration* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowFunctionDeclaration* node) override
+				void Visit(vl::glr::workflow::WfFunctionDeclaration* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowVariableDeclaration* node) override
+				void Visit(vl::glr::workflow::WfVariableDeclaration* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowEventDeclaration* node) override
+				void Visit(vl::glr::workflow::WfEventDeclaration* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowPropertyDeclaration* node) override
+				void Visit(vl::glr::workflow::WfPropertyDeclaration* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowConstructorDeclaration* node) override
+				void Visit(vl::glr::workflow::WfConstructorDeclaration* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowDestructorDeclaration* node) override
+				void Visit(vl::glr::workflow::WfDestructorDeclaration* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowClassDeclaration* node) override
+				void Visit(vl::glr::workflow::WfClassDeclaration* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowEnumDeclaration* node) override
+				void Visit(vl::glr::workflow::WfEnumDeclaration* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowStructDeclaration* node) override
+				void Visit(vl::glr::workflow::WfStructDeclaration* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowVirtualCfeDeclaration* node) override
+				void Visit(vl::glr::workflow::WfVirtualCfeDeclaration* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowVirtualCseDeclaration* node) override
+				void Visit(vl::glr::workflow::WfVirtualCseDeclaration* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-			END_INTERFACE_PROXY(vl::glr::workflow::WorkflowDeclaration::IVisitor)
+			END_INTERFACE_PROXY(vl::glr::workflow::WfDeclaration::IVisitor)
 
-			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(vl::glr::workflow::WorkflowVirtualCfeDeclaration::IVisitor)
-				void Visit(vl::glr::workflow::WorkflowAutoPropertyDeclaration* node) override
+			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(vl::glr::workflow::WfVirtualCfeDeclaration::IVisitor)
+				void Visit(vl::glr::workflow::WfAutoPropertyDeclaration* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowCastResultInterfaceDeclaration* node) override
+				void Visit(vl::glr::workflow::WfCastResultInterfaceDeclaration* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-			END_INTERFACE_PROXY(vl::glr::workflow::WorkflowVirtualCfeDeclaration::IVisitor)
+			END_INTERFACE_PROXY(vl::glr::workflow::WfVirtualCfeDeclaration::IVisitor)
 
-			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(vl::glr::workflow::WorkflowVirtualCseDeclaration::IVisitor)
-				void Visit(vl::glr::workflow::WorkflowStateMachineDeclaration* node) override
+			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(vl::glr::workflow::WfVirtualCseDeclaration::IVisitor)
+				void Visit(vl::glr::workflow::WfStateMachineDeclaration* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-			END_INTERFACE_PROXY(vl::glr::workflow::WorkflowVirtualCseDeclaration::IVisitor)
+			END_INTERFACE_PROXY(vl::glr::workflow::WfVirtualCseDeclaration::IVisitor)
 
-			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(vl::glr::workflow::WorkflowVirtualCseStatement::IVisitor)
-				void Visit(vl::glr::workflow::WorkflowForEachStatement* node) override
+			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(vl::glr::workflow::WfVirtualCseStatement::IVisitor)
+				void Visit(vl::glr::workflow::WfForEachStatement* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowSwitchStatement* node) override
+				void Visit(vl::glr::workflow::WfSwitchStatement* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowCoProviderStatement* node) override
+				void Visit(vl::glr::workflow::WfCoProviderStatement* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-			END_INTERFACE_PROXY(vl::glr::workflow::WorkflowVirtualCseStatement::IVisitor)
+			END_INTERFACE_PROXY(vl::glr::workflow::WfVirtualCseStatement::IVisitor)
 
-			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(vl::glr::workflow::WorkflowCoroutineStatement::IVisitor)
-				void Visit(vl::glr::workflow::WorkflowCoPauseStatement* node) override
+			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(vl::glr::workflow::WfCoroutineStatement::IVisitor)
+				void Visit(vl::glr::workflow::WfCoPauseStatement* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowCoOperatorStatement* node) override
+				void Visit(vl::glr::workflow::WfCoOperatorStatement* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-			END_INTERFACE_PROXY(vl::glr::workflow::WorkflowCoroutineStatement::IVisitor)
+			END_INTERFACE_PROXY(vl::glr::workflow::WfCoroutineStatement::IVisitor)
 
-			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(vl::glr::workflow::WorkflowStateMachineStatement::IVisitor)
-				void Visit(vl::glr::workflow::WorkflowStateSwitchStatement* node) override
+			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(vl::glr::workflow::WfStateMachineStatement::IVisitor)
+				void Visit(vl::glr::workflow::WfStateSwitchStatement* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowStateInvokeStatement* node) override
+				void Visit(vl::glr::workflow::WfStateInvokeStatement* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-			END_INTERFACE_PROXY(vl::glr::workflow::WorkflowStateMachineStatement::IVisitor)
+			END_INTERFACE_PROXY(vl::glr::workflow::WfStateMachineStatement::IVisitor)
 
-			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(vl::glr::workflow::WorkflowVirtualCfeExpression::IVisitor)
-				void Visit(vl::glr::workflow::WorkflowFormatExpression* node) override
+			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(vl::glr::workflow::WfVirtualCfeExpression::IVisitor)
+				void Visit(vl::glr::workflow::WfFormatExpression* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-			END_INTERFACE_PROXY(vl::glr::workflow::WorkflowVirtualCfeExpression::IVisitor)
+			END_INTERFACE_PROXY(vl::glr::workflow::WfVirtualCfeExpression::IVisitor)
 
-			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(vl::glr::workflow::WorkflowVirtualCseExpression::IVisitor)
-				void Visit(vl::glr::workflow::WorkflowBindExpression* node) override
+			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(vl::glr::workflow::WfVirtualCseExpression::IVisitor)
+				void Visit(vl::glr::workflow::WfBindExpression* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowNewCoroutineExpression* node) override
+				void Visit(vl::glr::workflow::WfNewCoroutineExpression* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowMixinCastExpression* node) override
+				void Visit(vl::glr::workflow::WfMixinCastExpression* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowExpectedTypeCastExpression* node) override
+				void Visit(vl::glr::workflow::WfExpectedTypeCastExpression* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowCoOperatorExpression* node) override
+				void Visit(vl::glr::workflow::WfCoOperatorExpression* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-			END_INTERFACE_PROXY(vl::glr::workflow::WorkflowVirtualCseExpression::IVisitor)
+			END_INTERFACE_PROXY(vl::glr::workflow::WfVirtualCseExpression::IVisitor)
 
-			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(vl::glr::workflow::WorkflowModuleUsingFragment::IVisitor)
-				void Visit(vl::glr::workflow::WorkflowModuleUsingNameFragment* node) override
+			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(vl::glr::workflow::WfModuleUsingFragment::IVisitor)
+				void Visit(vl::glr::workflow::WfModuleUsingNameFragment* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(vl::glr::workflow::WorkflowModuleUsingWildCardFragment* node) override
+				void Visit(vl::glr::workflow::WfModuleUsingWildCardFragment* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-			END_INTERFACE_PROXY(vl::glr::workflow::WorkflowModuleUsingFragment::IVisitor)
+			END_INTERFACE_PROXY(vl::glr::workflow::WfModuleUsingFragment::IVisitor)
 
 #endif
 #endif
