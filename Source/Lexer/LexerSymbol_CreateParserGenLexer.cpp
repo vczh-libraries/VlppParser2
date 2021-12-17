@@ -44,6 +44,7 @@ CreateParserGenAst
 				manager.CreateToken(L"STRING", L"(\"[^\"]*\")+");
 
 				manager.CreateDiscardedToken(L"SPACE", L"/s+");
+				manager.CreateDiscardedToken(L"COMMENT", L"////[^/r/n]*");
 			}
 		}
 	}

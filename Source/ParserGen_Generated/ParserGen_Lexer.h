@@ -43,9 +43,10 @@ namespace vl
 				ID = 22,
 				STRING = 23,
 				SPACE = 24,
+				COMMENT = 25,
 			};
 
-			constexpr vl::vint ParserGenTokenCount = 25;
+			constexpr vl::vint ParserGenTokenCount = 26;
 			extern bool ParserGenTokenDeleter(vl::vint token);
 			extern const wchar_t* ParserGenTokenId(ParserGenTokens token);
 			extern const wchar_t* ParserGenTokenDisplayText(ParserGenTokens token);
