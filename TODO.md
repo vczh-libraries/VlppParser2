@@ -70,6 +70,7 @@
   - Priority in alternative syntax, but all branches must not consume empty input series (add compile error)
   - Priority in left recursive transition (which clause starts this competition?)
 - Error message generating.
+  - Token error messages.
   - Allow users to customize error messages.
   - Support localization.
 - Error recovering.
