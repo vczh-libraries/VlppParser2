@@ -243,6 +243,27 @@ SyntaxSymbolManager::EliminateLeftRecursion
 
 			void SyntaxSymbolManager::EliminateLeftRecursion(RuleSymbol* rule, StateSymbol* startState, StateSymbol* endState, StateList& newStates, EdgeList& newEdges)
 			{
+				/*
+				* Move the single rule prefix from the rule begin state
+				* if it is left recursive
+				* 
+				* [BEFORE] (r is the current rule)
+				*    +-> ... -> A --------(ending)-+
+				*    |                          |
+				* S -+-(r)----> ... -> B -(ending)-+-> E
+				*    |    ---                      |
+				*    +-(r)----> ... -> C -(ending)-+
+				* 
+				* [AFTER]
+				*                 +---------------(ending)-----+
+				*                 |                            V
+				* S-> ... -> A -+-+-> ... -> B -+-(ending)-+-> E
+				*               ^ |             |
+				*               | +-> ... -> C -+-(leftrec)-+
+				*               |                           |
+				*               +---------------------------+
+				*/
+
 				List<EdgeSymbol*> lrecEdges;
 				for (auto edge : startState->OutEdges())
 				{
@@ -276,6 +297,27 @@ SyntaxSymbolManager::EliminateEpsilonEdges
 
 			void SyntaxSymbolManager::EliminateSingleRulePrefix(RuleSymbol* rule, StateSymbol* startState, StateSymbol* endState, StateList& newStates, EdgeList& newEdges)
 			{
+				/*
+				* Move the single rule prefix from the rule begin state
+				* if there is any single rule clause consist of the same rule
+				*
+				* [BEFORE]
+				*    +-(x)-> A --------(ending)-+
+				*    |                          |
+				* S -+-(x)-> ... -> B -(ending)-+-> E
+				*    |                          |
+				*    +-(x)-> ... -> C -(ending)-+
+				*
+				* [AFTER]
+				*              +---------------(ending)-----+
+				*              |                            V
+				* S-(x)-> A -+-+-> ... -> B -+-(ending)-+-> E
+				*            ^ |             |
+				*            | +-> ... -> C -+-(leftrec)-+
+				*            |                           |
+				*            +---------------------------+
+				*/
+
 				Group<RuleSymbol*, EdgeSymbol*> prefixEdges;
 				List<EdgeSymbol*> continuationEdges;
 
@@ -326,6 +368,26 @@ SyntaxSymbolManager::EliminateEpsilonEdges
 
 			StateSymbol* SyntaxSymbolManager::EliminateEpsilonEdges(RuleSymbol* rule, StateList& newStates, EdgeList& newEdges)
 			{
+				/*
+				* For any transition that goes through some epsilon edge and ends with a non-epsilon edge
+				* we copy all instructions from epsilon edges and the non-epsilon edge in order
+				* and create a new edge directly pointing to the toState of the non-epsilon edge
+				* 
+				* [BEFORE]
+				*         +-(x)-> B
+				*         |
+				* A -(e1)-+-(e2)-> C -+-(y)-> E
+				*         |           |
+				*         +-(e3)-> D -+
+				* 
+				* [AFTER]
+				*    +-(e1,x)-> B
+				*    |
+				* A -+-(e1,e2,y)-> E
+				*    |             ^
+				*    +-(e1,e3,y)---+
+				*/
+
 				auto psuedoState = CreateState(rule, -1);
 				for (auto startState : rule->startStates)
 				{
