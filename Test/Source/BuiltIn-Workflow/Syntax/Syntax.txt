@@ -175,35 +175,38 @@ _Expression
 // Rule (Statement)
 //////////////////////////////////////////////////////////////////
 
-rule SwitchCase _SwitchCase
+_SwitchCase
     ::= "case" _Expression : expression ":" _Block : statement as SwitchCase
     ;
 
-rule Statement _Block
+_Block
     ::= "{" {_Statement : statements} [NAME : endLabel ":" ";"] "}" as BlockStatement
     ;
 
-rule IfStatement _If
-    ::= "if" "(" ["var" NAME : name ":" _Type : type "="] _Expression : expression ")" _Block : trueBranch ["else" (_Block : falseBranch | _If : falseBranch)] as IfStatement
+_If
+    ::= "if" "(" ["var" NAME : name ":" _Type : type "="] _Expression : expression ")" _Block : trueBranch +["else" (_Block : falseBranch | _If : falseBranch)] as IfStatement
     ;
 
-rule Statement _VirtualStatement
+_ForOperator
+    ::= "in" as partial ForEachStatement {direction = Normal}
+    ::= "in" "reversed" as partial ForEachStatement {direction = Reversed}
+    ;
+
+_VirtualStatement
     ::= "switch" "(" _Expression : expression ")" "{" {_SwitchCase : caseBranches} ["default" ":" _Block : defaultBranch] "}" as SwitchStatement
-    ::= "for" "(" NAME : name 
-        (("in" {direction = Normal}) | ("in" "reversed" {direction = Reversed}))
-        _Expression : collection ")" _Block : statement as ForEachStatement
+    ::= "for" "(" NAME : name _ForOperator _Expression : collection ")" _Block : statement as ForEachStatement
     ;
 
-rule Statement _CoStatement
+_CoStatement
     ::= "$pause" (";" | _Block : statement) as CoPauseStatement
-    ::= ["var" NAME : varName "="] COROUTINE_OPERATOR : opName [_Expression : arguments {"," _Expression : arguments}] ";" as CoOperatorStatement
+    ::= ["var" NAME : varName "="] COROUTINE_OPERATOR : opName {_Expression : arguments ;"," } ";" as CoOperatorStatement
     ;
 
-rule Statement _CoProvider
+_CoProvider
     ::= ("$" | COROUTINE_OPERATOR : name) _Block : statement as CoProviderStatement
     ;
 
-rule StateSwitchStatement _StateSwitchHead
+_StateSwitchHead
     ::= "$switch" "(" "raise" ")" as StateSwitchStatement {type = Default}
     ::= "$switch" "(" "continue" ")" as StateSwitchStatement {type = Pass}
     ::= "$switch" "(" "continue" "," "return" ")" as StateSwitchStatement {type = PassAndReturn}
@@ -211,21 +214,21 @@ rule StateSwitchStatement _StateSwitchHead
     ::= "$switch" "(" "return" ")" as StateSwitchStatement {type = IgnoreAndReturn}
     ;
 
-rule StateSwitchArgument _StateSwitchArgument
+_StateSwitchArgument
     ::= NAME : name as StateSwitchArgument
     ;
 
-rule StateSwitchCase _StateSwitchCase
+_StateSwitchCase
     ::= "case" NAME : name "(" [_StateSwitchArgument : arguments {"," _StateSwitchArgument : arguments}] ")" ":" _Block : statement as StateSwitchCase
     ;
 
-rule Statement _StateStatement
+_StateStatement
     ::= !_StateSwitchHead "{" {_StateSwitchCase : caseBranches} "}"
-    ::= ( ("$goto_state" {type = Goto}) | ("$push_state" {type = Push}) )
-        NAME : name "(" [_Expression : arguments {"," _Expression : arguments}] ")" ";" as StateInvokeStatement
+    ::= "$goto_state" NAME : name "(" {_Expression : arguments ; ","} ")" ";" as StateInvokeStatement {type = Goto}
+    ::= "$push_state" NAME : name "(" {_Expression : arguments ; ","} ")" ";" as StateInvokeStatement {type = Push}
     ;
 
-rule Statement _Statement
+_Statement
     ::= !_Block
     ::= "goto" NAME : label ";" as GotoStatement
     ::= _Variable : variable as VariableStatement
