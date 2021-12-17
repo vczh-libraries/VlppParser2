@@ -25,9 +25,9 @@ FilePath LogAutomatonWithPath(
 	{
 		writer.WriteLine(metadata.stateLabels[stateIndex]);
 		writer.WriteLine(L"[RULE: " + itow(state.rule) + L"][CLAUSE: " + itow(state.clause) + L"]");
-		for (vint input = 0; input < Executable::TokenBegin + executable.tokenCount; input++)
+		for (vint32_t input = 0; input < Executable::TokenBegin + executable.tokenCount; input++)
 		{
-			auto&& transition = executable.transitions[executable.GetTransitionIndex(stateIndex, input)];
+			auto&& transition = executable.transitions[executable.GetTransitionIndex((vint32_t)stateIndex, input)];
 			for (vint edgeRef = 0; edgeRef < transition.count; edgeRef++)
 			{
 				auto&& edge = executable.edges[transition.start + edgeRef];
