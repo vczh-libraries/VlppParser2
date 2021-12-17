@@ -205,6 +205,39 @@ CompactSyntaxBuilder
 			};
 
 /***********************************************************************
+SyntaxSymbolManager::CreateLeftRecEdge
+***********************************************************************/
+
+			void SyntaxSymbolManager::BuildLeftRecEdge(EdgeSymbol* newEdge, EdgeSymbol* endingEdge, EdgeSymbol* lrecPrefixEdge)
+			{
+				newEdge->important |= endingEdge->important;
+				newEdge->important |= lrecPrefixEdge->important;
+
+				newEdge->input.type = EdgeInputType::LeftRec;
+				CopyFrom(newEdge->insBeforeInput, endingEdge->insBeforeInput, true);
+				CopyFrom(newEdge->insAfterInput, endingEdge->insAfterInput, true);
+				CopyFrom(newEdge->insBeforeInput, lrecPrefixEdge->insBeforeInput, true);
+				CopyFrom(newEdge->insAfterInput, lrecPrefixEdge->insAfterInput, true);
+
+				for (vint i = 0; i < newEdge->insBeforeInput.Count(); i++)
+				{
+					auto& ins = newEdge->insBeforeInput[i];
+					if (ins.type == AstInsType::BeginObject)
+					{
+						ins.type = AstInsType::BeginObjectLeftRecursive;
+					}
+				}
+				for (vint i = 0; i < newEdge->insAfterInput.Count(); i++)
+				{
+					auto& ins = newEdge->insAfterInput[i];
+					if (ins.type == AstInsType::BeginObject)
+					{
+						ins.type = AstInsType::BeginObjectLeftRecursive;
+					}
+				}
+			}
+
+/***********************************************************************
 SyntaxSymbolManager::EliminateLeftRecursion
 ***********************************************************************/
 
@@ -226,31 +259,7 @@ SyntaxSymbolManager::EliminateLeftRecursion
 						auto state = endingEdge->From();
 						auto newEdge = new EdgeSymbol(state, lrecEdge->To());
 						newEdges.Add(newEdge);
-						newEdge->important |= endingEdge->important;
-						newEdge->important |= lrecEdge->important;
-
-						newEdge->input.type = EdgeInputType::LeftRec;
-						CopyFrom(newEdge->insBeforeInput, endingEdge->insBeforeInput, true);
-						CopyFrom(newEdge->insAfterInput, endingEdge->insAfterInput, true);
-						CopyFrom(newEdge->insBeforeInput, lrecEdge->insBeforeInput, true);
-						CopyFrom(newEdge->insAfterInput, lrecEdge->insAfterInput, true);
-
-						for (vint i = 0; i < newEdge->insBeforeInput.Count(); i++)
-						{
-							auto& ins = newEdge->insBeforeInput[i];
-							if (ins.type == AstInsType::BeginObject)
-							{
-								ins.type = AstInsType::BeginObjectLeftRecursive;
-							}
-						}
-						for (vint i = 0; i < newEdge->insAfterInput.Count(); i++)
-						{
-							auto& ins = newEdge->insAfterInput[i];
-							if (ins.type == AstInsType::BeginObject)
-							{
-								ins.type = AstInsType::BeginObjectLeftRecursive;
-							}
-						}
+						BuildLeftRecEdge(newEdge, endingEdge, lrecEdge);
 					}
 				}
 
@@ -259,6 +268,53 @@ SyntaxSymbolManager::EliminateLeftRecursion
 					lrecEdge->From()->outEdges.Remove(lrecEdge);
 					lrecEdge->To()->inEdges.Remove(lrecEdge);
 					newEdges.Remove(lrecEdge);
+				}
+			}
+
+/***********************************************************************
+SyntaxSymbolManager::EliminateEpsilonEdges
+***********************************************************************/
+
+			void SyntaxSymbolManager::EliminateSingleRulePrefix(RuleSymbol* rule, StateSymbol* startState, StateSymbol* endState, StateList& newStates, EdgeList& newEdges)
+			{
+				Group<RuleSymbol*, EdgeSymbol*> prefixEdges;
+				List<EdgeSymbol*> continuationEdges;
+
+				for (auto edge : startState->OutEdges())
+				{
+					if (edge->input.type != EdgeInputType::Rule) continue;
+					auto state = edge->To();
+					if (state->InEdges().Count() > 1) continue;
+
+					if (state->OutEdges().Count() == 1 && state->OutEdges()[0]->input.type == EdgeInputType::Ending)
+					{
+						prefixEdges.Add(edge->input.rule, edge);
+					}
+					else
+					{
+						continuationEdges.Add(edge);
+					}
+				}
+
+				for (auto continuationEdge : continuationEdges)
+				{
+					vint prefixIndex = prefixEdges.Keys().IndexOf(continuationEdge->input.rule);
+					if (prefixIndex == -1) continue;
+					for (auto prefixEdge : prefixEdges.GetByIndex(prefixIndex))
+					{
+						auto state = prefixEdge->To();
+						auto endingEdge = state->OutEdges()[0];
+						auto newEdge = new EdgeSymbol(state, continuationEdge->To());
+						newEdges.Add(newEdge);
+						BuildLeftRecEdge(newEdge, endingEdge, continuationEdge);
+					}
+				}
+
+				for (auto continuationEdge : continuationEdges)
+				{
+					continuationEdge->From()->outEdges.Remove(continuationEdge);
+					continuationEdge->To()->inEdges.Remove(continuationEdge);
+					newEdges.Remove(continuationEdge);
 				}
 			}
 
@@ -293,6 +349,7 @@ SyntaxSymbolManager::EliminateEpsilonEdges
 				}
 
 				EliminateLeftRecursion(rule, compactStartState, compactEndState, newStates, newEdges);
+				EliminateSingleRulePrefix(rule, compactStartState, compactEndState, newStates, newEdges);
 				return compactStartState;
 			}
 
