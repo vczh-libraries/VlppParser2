@@ -13,6 +13,7 @@ TEST_FILE
 	WString parserName;
 	WString caseName;
 
+#if !defined _DEBUG || defined NDEBUG
 	parser.OnEndOfInput.Add(
 		[&](List<RegexToken>& tokens, Executable& executable, TraceManager& tm, Trace* rootTrace)
 		{
@@ -44,6 +45,7 @@ TEST_FILE
 					});
 			}
 		});
+#endif
 
 	List<WString> parserNames;
 	parserNames.Add(L"Calculator");

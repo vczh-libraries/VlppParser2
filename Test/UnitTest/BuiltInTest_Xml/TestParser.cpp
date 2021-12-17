@@ -12,6 +12,7 @@ TEST_FILE
 	xml::Parser parser;
 	WString caseName;
 
+#if !defined _DEBUG || defined NDEBUG
 	parser.OnEndOfInput.Add(
 		[&](List<RegexToken>& tokens, Executable& executable, TraceManager& tm, Trace* rootTrace)
 		{
@@ -43,6 +44,7 @@ TEST_FILE
 					});
 			}
 		});
+#endif
 
 	TEST_CATEGORY(L"Test JSON on Outputs: DarkSkin")
 	{
