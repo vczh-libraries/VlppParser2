@@ -18,7 +18,7 @@ _Type
     ::= _Type : element "*" as RawPointerType
     ::= _Type : element "^" as SharedPointerType
     ::= _Type : element "?" as NullableType
-    ::= _Type : element {" "}" as EnumerableType
+    ::= _Type : element "{" "}" as EnumerableType
     ::= _Type : value "[" [_Type : key] "]" as MapType {writability=Writable}
     ::= "observe" _Type : element "[" "]" as ObservableListType
     ::= "const" _Type : value "[" [_Type : key] "]" as MapType {writability=Readonly}
@@ -66,9 +66,9 @@ rule Expression _ExpPrimitive
         _Expression : begin "," _Expression : end
         ((")" {endBoundary = "Exclusive"}) | ("]" {endBoundary = "Inclusive"}))
         as RangeExpression
-    ::= {" ({_CtorFragment : arguments} | {_CtorFragment : arguments ";"}) "}" as ConstructorExpression
+    ::= "{" ({_CtorFragment : arguments} | {_CtorFragment : arguments ";"}) "}" as ConstructorExpression
     ::= "new" _Type : type "(" [_Expression : arguments {"," _Expression : arguments}] ")" as NewClassExpression
-    ::= "new" _Type : type {" {_MemberDeclaration : declarations} "}" as NewInterfaceExpression
+    ::= "new" _Type : type "{" {_MemberDeclaration : declarations} "}" as NewInterfaceExpression
     ::= _ExpPrimitive : parent "." "observe" "(" _Expression : expression ["on" _Expression : events {"," _Expression : events}]")" as ObserveExpression {observeType = "SimpleObserve"}
     ::= _ExpPrimitive : parent "." "observe" "as" NAME : name "(" _Expression : expression ["on" _Expression : events {"," _Expression : events}]")" as ObserveExpression {observeType = "ExtendedObserve"}
     ::= _ExpPrimitive : function "(" [_Expression : arguments {"," _Expression : arguments}] ")" as CallExpression
@@ -178,7 +178,7 @@ rule SwitchCase _SwitchCase
     ;
 
 rule Statement _Block
-    ::= {" {_Statement : statements} [NAME : endLabel ":" ";"] "}" as BlockStatement
+    ::= "{" {_Statement : statements} [NAME : endLabel ":" ";"] "}" as BlockStatement
     ;
 
 rule IfStatement _If
@@ -186,7 +186,7 @@ rule IfStatement _If
     ;
 
 rule Statement _VirtualStatement
-    ::= "switch" "(" _Expression : expression ")" {" {_SwitchCase : caseBranches} ["default" ":" _Block : defaultBranch] "}" as SwitchStatement
+    ::= "switch" "(" _Expression : expression ")" "{" {_SwitchCase : caseBranches} ["default" ":" _Block : defaultBranch] "}" as SwitchStatement
     ::= "for" "(" NAME : name 
         (("in" {direction=Normal}) | ("in" "reversed" {direction=Reversed}))
         _Expression : collection ")" _Block : statement as ForEachStatement
@@ -218,7 +218,7 @@ rule StateSwitchCase _StateSwitchCase
     ;
 
 rule Statement _StateStatement
-    ::= !_StateSwitchHead {" {_StateSwitchCase : caseBranches} "}"
+    ::= !_StateSwitchHead "{" {_StateSwitchCase : caseBranches} "}"
     ::= ( ("$goto_state" {type = "Goto"}) | ("$push_state" {type = "Push"}) )
         NAME : name "(" [_Expression : arguments {"," _Expression : arguments}] ")" ";" as StateInvokeStatement
     ;
@@ -254,7 +254,7 @@ rule StateDeclaration _StateDecl
     ;
 
 rule StateMachineDeclaration _StateMachine
-    ::= "$state_machine" {" { _StateInput : inputs | _StateDecl : states} "}" as StateMachineDeclaration
+    ::= "$state_machine" "{" { _StateInput : inputs | _StateDecl : states} "}" as StateMachineDeclaration
     ;
 
 //////////////////////////////////////////////////////////////////
@@ -266,7 +266,7 @@ rule Attribute _Attribute
     ;
 
 rule NamespaceDeclaration _Namespace
-    ::= "namespace" NAME : name {" {_Declaration : declarations} "}" as NamespaceDeclaration
+    ::= "namespace" NAME : name "{" {_Declaration : declarations} "}" as NamespaceDeclaration
     ;
 
 rule FunctionArgument _FunctionArgument
@@ -290,7 +290,7 @@ rule EventDeclaration _Event
     ;
 
 rule PropertyDeclaration _Property
-    ::= "prop" NAME : name ":" _Type : type {" NAME : getter ["," NAME : setter] [":" NAME : valueChangedEvent] "}" as PropertyDeclaration
+    ::= "prop" NAME : name ":" _Type : type "{" NAME : getter ["," NAME : setter] [":" NAME : valueChangedEvent] "}" as PropertyDeclaration
     ;
 
 rule BaseConstructorCall _BaseConstructorCall
@@ -311,7 +311,7 @@ rule DestructorDeclaration _Destructor
     ;
 
 rule ClassDeclaration _ClassBody
-    ::= [":" _Type : baseTypes {"," _Type : baseTypes}] {" {_MemberDeclaration : declarations} [_StateMachine : declarations] "}" as ClassDeclaration
+    ::= [":" _Type : baseTypes {"," _Type : baseTypes}] "{" {_MemberDeclaration : declarations} [_StateMachine : declarations] "}" as ClassDeclaration
     ;
 
 rule ClassDeclaration _Class
@@ -333,8 +333,8 @@ rule EnumItem _EnumItemB
     ;
 
 rule EnumDeclaration _Enum
-    ::= "enum" NAME : name {" _EnumItemA : items {_EnumItemA : items} "}" as EnumDeclaration {kind = "Normal"}
-    ::= "flagenum" NAME : name {" _EnumItemA : items {_EnumItemA : items} {_EnumItemB : items} "}" as EnumDeclaration {kind = "Flag"}
+    ::= "enum" NAME : name "{" _EnumItemA : items {_EnumItemA : items} "}" as EnumDeclaration {kind = "Normal"}
+    ::= "flagenum" NAME : name "{" _EnumItemA : items {_EnumItemA : items} {_EnumItemB : items} "}" as EnumDeclaration {kind = "Flag"}
     ;
 
 rule StructMember _StructMember
@@ -342,20 +342,20 @@ rule StructMember _StructMember
     ;
 
 rule StructDeclaration _Struct
-    ::= "struct" NAME : name {" {_StructMember : members} "}" as StructDeclaration
+    ::= "struct" NAME : name "{" {_StructMember : members} "}" as StructDeclaration
     ;
 
 rule AutoPropertyDeclaration _APConfig
-    ::= {" "}"
+    ::= "{" "}"
             as AutoPropertyDeclaration
             {configConst=Writable} {configObserve=Observable}
-    ::= {" "const" "}"
+    ::= "{" "const" "}"
             as AutoPropertyDeclaration
             {configConst=Readonly} {configObserve=Observable}
-    ::= {" "not" "observe" "}"
+    ::= "{" "not" "observe" "}"
             as AutoPropertyDeclaration
             {configConst=Writable} {configObserve=NotObservable}
-    ::= {" "const" "," "not" "observe" "}"
+    ::= "{" "const" "," "not" "observe" "}"
             as AutoPropertyDeclaration
             {configConst=Readonly} {configObserve=NotObservable}
     ;
