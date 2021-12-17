@@ -63,6 +63,17 @@ namespace vl
 					virtual vl::Ptr<GlrAssignment> CopyNode(GlrAssignment* node);
 					virtual vl::Ptr<GlrRule> CopyNode(GlrRule* node);
 					virtual vl::Ptr<GlrSyntaxFile> CopyNode(GlrSyntaxFile* node);
+
+					vl::Ptr<GlrAlternativeSyntax> CopyNode(GlrAlternativeSyntax* node);
+					vl::Ptr<GlrCreateClause> CopyNode(GlrCreateClause* node);
+					vl::Ptr<GlrLiteralSyntax> CopyNode(GlrLiteralSyntax* node);
+					vl::Ptr<GlrLoopSyntax> CopyNode(GlrLoopSyntax* node);
+					vl::Ptr<GlrOptionalSyntax> CopyNode(GlrOptionalSyntax* node);
+					vl::Ptr<GlrPartialClause> CopyNode(GlrPartialClause* node);
+					vl::Ptr<GlrRefSyntax> CopyNode(GlrRefSyntax* node);
+					vl::Ptr<GlrReuseClause> CopyNode(GlrReuseClause* node);
+					vl::Ptr<GlrSequenceSyntax> CopyNode(GlrSequenceSyntax* node);
+					vl::Ptr<GlrUseSyntax> CopyNode(GlrUseSyntax* node);
 				};
 			}
 		}

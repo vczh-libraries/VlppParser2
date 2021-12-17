@@ -43,6 +43,12 @@ namespace vl
 				public:
 					virtual vl::Ptr<JsonNode> CopyNode(JsonNode* node);
 					virtual vl::Ptr<JsonObjectField> CopyNode(JsonObjectField* node);
+
+					vl::Ptr<JsonArray> CopyNode(JsonArray* node);
+					vl::Ptr<JsonLiteral> CopyNode(JsonLiteral* node);
+					vl::Ptr<JsonNumber> CopyNode(JsonNumber* node);
+					vl::Ptr<JsonObject> CopyNode(JsonObject* node);
+					vl::Ptr<JsonString> CopyNode(JsonString* node);
 				};
 			}
 		}

@@ -111,5 +111,29 @@ namespace featuretest
 			return this->result.Cast<Plus>();
 		}
 
+		vl::Ptr<BranchedOptionalFeature> FeatureAstVisitor::CopyNode(BranchedOptionalFeature* node)
+		{
+			if (!node) return nullptr;
+			return CopyNode(static_cast<Feature*>(node)).Cast<BranchedOptionalFeature>();
+		}
+
+		vl::Ptr<FeatureToResolve> FeatureAstVisitor::CopyNode(FeatureToResolve* node)
+		{
+			if (!node) return nullptr;
+			return CopyNode(static_cast<Feature*>(node)).Cast<FeatureToResolve>();
+		}
+
+		vl::Ptr<NestedOptionalFeature> FeatureAstVisitor::CopyNode(NestedOptionalFeature* node)
+		{
+			if (!node) return nullptr;
+			return CopyNode(static_cast<Feature*>(node)).Cast<NestedOptionalFeature>();
+		}
+
+		vl::Ptr<OptionalFeature> FeatureAstVisitor::CopyNode(OptionalFeature* node)
+		{
+			if (!node) return nullptr;
+			return CopyNode(static_cast<Feature*>(node)).Cast<OptionalFeature>();
+		}
+
 	}
 }

@@ -221,5 +221,65 @@ namespace calculator
 			return this->result.Cast<Module>();
 		}
 
+		vl::Ptr<Binary> ExprAstVisitor::CopyNode(Binary* node)
+		{
+			if (!node) return nullptr;
+			return CopyNode(static_cast<Expr*>(node)).Cast<Binary>();
+		}
+
+		vl::Ptr<Call> ExprAstVisitor::CopyNode(Call* node)
+		{
+			if (!node) return nullptr;
+			return CopyNode(static_cast<Expr*>(node)).Cast<Call>();
+		}
+
+		vl::Ptr<Expandable> ExprAstVisitor::CopyNode(Expandable* node)
+		{
+			if (!node) return nullptr;
+			return CopyNode(static_cast<Expr*>(node)).Cast<Expandable>();
+		}
+
+		vl::Ptr<False> ExprAstVisitor::CopyNode(False* node)
+		{
+			if (!node) return nullptr;
+			return CopyNode(static_cast<Expr*>(node)).Cast<False>();
+		}
+
+		vl::Ptr<Func> ExprAstVisitor::CopyNode(Func* node)
+		{
+			if (!node) return nullptr;
+			return CopyNode(static_cast<Expr*>(node)).Cast<Func>();
+		}
+
+		vl::Ptr<LetExpr> ExprAstVisitor::CopyNode(LetExpr* node)
+		{
+			if (!node) return nullptr;
+			return CopyNode(static_cast<Expr*>(node)).Cast<LetExpr>();
+		}
+
+		vl::Ptr<NumExpr> ExprAstVisitor::CopyNode(NumExpr* node)
+		{
+			if (!node) return nullptr;
+			return CopyNode(static_cast<Expr*>(node)).Cast<NumExpr>();
+		}
+
+		vl::Ptr<Ref> ExprAstVisitor::CopyNode(Ref* node)
+		{
+			if (!node) return nullptr;
+			return CopyNode(static_cast<Expr*>(node)).Cast<Ref>();
+		}
+
+		vl::Ptr<True> ExprAstVisitor::CopyNode(True* node)
+		{
+			if (!node) return nullptr;
+			return CopyNode(static_cast<Expr*>(node)).Cast<True>();
+		}
+
+		vl::Ptr<Unary> ExprAstVisitor::CopyNode(Unary* node)
+		{
+			if (!node) return nullptr;
+			return CopyNode(static_cast<Expr*>(node)).Cast<Unary>();
+		}
+
 	}
 }

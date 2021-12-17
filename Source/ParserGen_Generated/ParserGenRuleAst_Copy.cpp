@@ -250,6 +250,66 @@ namespace vl
 					return this->result.Cast<GlrSyntaxFile>();
 				}
 
+				vl::Ptr<GlrAlternativeSyntax> RuleAstVisitor::CopyNode(GlrAlternativeSyntax* node)
+				{
+					if (!node) return nullptr;
+					return CopyNode(static_cast<GlrSyntax*>(node)).Cast<GlrAlternativeSyntax>();
+				}
+
+				vl::Ptr<GlrCreateClause> RuleAstVisitor::CopyNode(GlrCreateClause* node)
+				{
+					if (!node) return nullptr;
+					return CopyNode(static_cast<GlrClause*>(node)).Cast<GlrCreateClause>();
+				}
+
+				vl::Ptr<GlrLiteralSyntax> RuleAstVisitor::CopyNode(GlrLiteralSyntax* node)
+				{
+					if (!node) return nullptr;
+					return CopyNode(static_cast<GlrSyntax*>(node)).Cast<GlrLiteralSyntax>();
+				}
+
+				vl::Ptr<GlrLoopSyntax> RuleAstVisitor::CopyNode(GlrLoopSyntax* node)
+				{
+					if (!node) return nullptr;
+					return CopyNode(static_cast<GlrSyntax*>(node)).Cast<GlrLoopSyntax>();
+				}
+
+				vl::Ptr<GlrOptionalSyntax> RuleAstVisitor::CopyNode(GlrOptionalSyntax* node)
+				{
+					if (!node) return nullptr;
+					return CopyNode(static_cast<GlrSyntax*>(node)).Cast<GlrOptionalSyntax>();
+				}
+
+				vl::Ptr<GlrPartialClause> RuleAstVisitor::CopyNode(GlrPartialClause* node)
+				{
+					if (!node) return nullptr;
+					return CopyNode(static_cast<GlrClause*>(node)).Cast<GlrPartialClause>();
+				}
+
+				vl::Ptr<GlrRefSyntax> RuleAstVisitor::CopyNode(GlrRefSyntax* node)
+				{
+					if (!node) return nullptr;
+					return CopyNode(static_cast<GlrSyntax*>(node)).Cast<GlrRefSyntax>();
+				}
+
+				vl::Ptr<GlrReuseClause> RuleAstVisitor::CopyNode(GlrReuseClause* node)
+				{
+					if (!node) return nullptr;
+					return CopyNode(static_cast<GlrClause*>(node)).Cast<GlrReuseClause>();
+				}
+
+				vl::Ptr<GlrSequenceSyntax> RuleAstVisitor::CopyNode(GlrSequenceSyntax* node)
+				{
+					if (!node) return nullptr;
+					return CopyNode(static_cast<GlrSyntax*>(node)).Cast<GlrSequenceSyntax>();
+				}
+
+				vl::Ptr<GlrUseSyntax> RuleAstVisitor::CopyNode(GlrUseSyntax* node)
+				{
+					if (!node) return nullptr;
+					return CopyNode(static_cast<GlrSyntax*>(node)).Cast<GlrUseSyntax>();
+				}
+
 			}
 		}
 	}

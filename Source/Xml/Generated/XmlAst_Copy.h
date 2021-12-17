@@ -45,6 +45,13 @@ namespace vl
 				public:
 					virtual vl::Ptr<XmlNode> CopyNode(XmlNode* node);
 					virtual vl::Ptr<XmlAttribute> CopyNode(XmlAttribute* node);
+
+					vl::Ptr<XmlCData> CopyNode(XmlCData* node);
+					vl::Ptr<XmlComment> CopyNode(XmlComment* node);
+					vl::Ptr<XmlDocument> CopyNode(XmlDocument* node);
+					vl::Ptr<XmlElement> CopyNode(XmlElement* node);
+					vl::Ptr<XmlInstruction> CopyNode(XmlInstruction* node);
+					vl::Ptr<XmlText> CopyNode(XmlText* node);
 				};
 			}
 		}

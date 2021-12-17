@@ -82,5 +82,23 @@ namespace ifelsepriority
 			return this->result.Cast<Module>();
 		}
 
+		vl::Ptr<BlockStat> StatAstVisitor::CopyNode(BlockStat* node)
+		{
+			if (!node) return nullptr;
+			return CopyNode(static_cast<Stat*>(node)).Cast<BlockStat>();
+		}
+
+		vl::Ptr<DoStat> StatAstVisitor::CopyNode(DoStat* node)
+		{
+			if (!node) return nullptr;
+			return CopyNode(static_cast<Stat*>(node)).Cast<DoStat>();
+		}
+
+		vl::Ptr<IfStat> StatAstVisitor::CopyNode(IfStat* node)
+		{
+			if (!node) return nullptr;
+			return CopyNode(static_cast<Stat*>(node)).Cast<IfStat>();
+		}
+
 	}
 }

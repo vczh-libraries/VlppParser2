@@ -116,6 +116,36 @@ namespace vl
 					return this->result.Cast<JsonObjectField>();
 				}
 
+				vl::Ptr<JsonArray> AstVisitor::CopyNode(JsonArray* node)
+				{
+					if (!node) return nullptr;
+					return CopyNode(static_cast<JsonNode*>(node)).Cast<JsonArray>();
+				}
+
+				vl::Ptr<JsonLiteral> AstVisitor::CopyNode(JsonLiteral* node)
+				{
+					if (!node) return nullptr;
+					return CopyNode(static_cast<JsonNode*>(node)).Cast<JsonLiteral>();
+				}
+
+				vl::Ptr<JsonNumber> AstVisitor::CopyNode(JsonNumber* node)
+				{
+					if (!node) return nullptr;
+					return CopyNode(static_cast<JsonNode*>(node)).Cast<JsonNumber>();
+				}
+
+				vl::Ptr<JsonObject> AstVisitor::CopyNode(JsonObject* node)
+				{
+					if (!node) return nullptr;
+					return CopyNode(static_cast<JsonNode*>(node)).Cast<JsonObject>();
+				}
+
+				vl::Ptr<JsonString> AstVisitor::CopyNode(JsonString* node)
+				{
+					if (!node) return nullptr;
+					return CopyNode(static_cast<JsonNode*>(node)).Cast<JsonString>();
+				}
+
 			}
 		}
 	}

@@ -43,6 +43,9 @@ namespace vl
 					virtual vl::Ptr<GlrEnumItem> CopyNode(GlrEnumItem* node);
 					virtual vl::Ptr<GlrClassProp> CopyNode(GlrClassProp* node);
 					virtual vl::Ptr<GlrAstFile> CopyNode(GlrAstFile* node);
+
+					vl::Ptr<GlrClass> CopyNode(GlrClass* node);
+					vl::Ptr<GlrEnum> CopyNode(GlrEnum* node);
 				};
 			}
 		}

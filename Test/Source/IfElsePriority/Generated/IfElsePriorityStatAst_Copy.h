@@ -35,6 +35,10 @@ namespace ifelsepriority
 		public:
 			virtual vl::Ptr<Stat> CopyNode(Stat* node);
 			virtual vl::Ptr<Module> CopyNode(Module* node);
+
+			vl::Ptr<BlockStat> CopyNode(BlockStat* node);
+			vl::Ptr<DoStat> CopyNode(DoStat* node);
+			vl::Ptr<IfStat> CopyNode(IfStat* node);
 		};
 	}
 }

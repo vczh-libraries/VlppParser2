@@ -145,5 +145,47 @@ namespace genericambiguity
 			return this->result.Cast<Module>();
 		}
 
+		vl::Ptr<BinaryExpr> ExprAstVisitor::CopyNode(BinaryExpr* node)
+		{
+			if (!node) return nullptr;
+			return CopyNode(static_cast<Expr*>(node)).Cast<BinaryExpr>();
+		}
+
+		vl::Ptr<CallExpr> ExprAstVisitor::CopyNode(CallExpr* node)
+		{
+			if (!node) return nullptr;
+			return CopyNode(static_cast<Expr*>(node)).Cast<CallExpr>();
+		}
+
+		vl::Ptr<DecrementExpr> ExprAstVisitor::CopyNode(DecrementExpr* node)
+		{
+			if (!node) return nullptr;
+			return CopyNode(static_cast<Expr*>(node)).Cast<DecrementExpr>();
+		}
+
+		vl::Ptr<ExprToResolve> ExprAstVisitor::CopyNode(ExprToResolve* node)
+		{
+			if (!node) return nullptr;
+			return CopyNode(static_cast<Expr*>(node)).Cast<ExprToResolve>();
+		}
+
+		vl::Ptr<GenericExpr> ExprAstVisitor::CopyNode(GenericExpr* node)
+		{
+			if (!node) return nullptr;
+			return CopyNode(static_cast<Expr*>(node)).Cast<GenericExpr>();
+		}
+
+		vl::Ptr<PostfixExpr> ExprAstVisitor::CopyNode(PostfixExpr* node)
+		{
+			if (!node) return nullptr;
+			return CopyNode(static_cast<Expr*>(node)).Cast<PostfixExpr>();
+		}
+
+		vl::Ptr<RefExpr> ExprAstVisitor::CopyNode(RefExpr* node)
+		{
+			if (!node) return nullptr;
+			return CopyNode(static_cast<Expr*>(node)).Cast<RefExpr>();
+		}
+
 	}
 }

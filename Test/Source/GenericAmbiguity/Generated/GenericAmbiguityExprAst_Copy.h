@@ -43,6 +43,14 @@ namespace genericambiguity
 		public:
 			virtual vl::Ptr<Expr> CopyNode(Expr* node);
 			virtual vl::Ptr<Module> CopyNode(Module* node);
+
+			vl::Ptr<BinaryExpr> CopyNode(BinaryExpr* node);
+			vl::Ptr<CallExpr> CopyNode(CallExpr* node);
+			vl::Ptr<DecrementExpr> CopyNode(DecrementExpr* node);
+			vl::Ptr<ExprToResolve> CopyNode(ExprToResolve* node);
+			vl::Ptr<GenericExpr> CopyNode(GenericExpr* node);
+			vl::Ptr<PostfixExpr> CopyNode(PostfixExpr* node);
+			vl::Ptr<RefExpr> CopyNode(RefExpr* node);
 		};
 	}
 }

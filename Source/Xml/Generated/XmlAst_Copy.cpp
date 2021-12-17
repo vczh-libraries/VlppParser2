@@ -140,6 +140,42 @@ namespace vl
 					return this->result.Cast<XmlAttribute>();
 				}
 
+				vl::Ptr<XmlCData> AstVisitor::CopyNode(XmlCData* node)
+				{
+					if (!node) return nullptr;
+					return CopyNode(static_cast<XmlNode*>(node)).Cast<XmlCData>();
+				}
+
+				vl::Ptr<XmlComment> AstVisitor::CopyNode(XmlComment* node)
+				{
+					if (!node) return nullptr;
+					return CopyNode(static_cast<XmlNode*>(node)).Cast<XmlComment>();
+				}
+
+				vl::Ptr<XmlDocument> AstVisitor::CopyNode(XmlDocument* node)
+				{
+					if (!node) return nullptr;
+					return CopyNode(static_cast<XmlNode*>(node)).Cast<XmlDocument>();
+				}
+
+				vl::Ptr<XmlElement> AstVisitor::CopyNode(XmlElement* node)
+				{
+					if (!node) return nullptr;
+					return CopyNode(static_cast<XmlNode*>(node)).Cast<XmlElement>();
+				}
+
+				vl::Ptr<XmlInstruction> AstVisitor::CopyNode(XmlInstruction* node)
+				{
+					if (!node) return nullptr;
+					return CopyNode(static_cast<XmlNode*>(node)).Cast<XmlInstruction>();
+				}
+
+				vl::Ptr<XmlText> AstVisitor::CopyNode(XmlText* node)
+				{
+					if (!node) return nullptr;
+					return CopyNode(static_cast<XmlNode*>(node)).Cast<XmlText>();
+				}
+
 			}
 		}
 	}

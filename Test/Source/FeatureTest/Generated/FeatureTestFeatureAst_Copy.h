@@ -37,6 +37,11 @@ namespace featuretest
 		public:
 			virtual vl::Ptr<Feature> CopyNode(Feature* node);
 			virtual vl::Ptr<Plus> CopyNode(Plus* node);
+
+			vl::Ptr<BranchedOptionalFeature> CopyNode(BranchedOptionalFeature* node);
+			vl::Ptr<FeatureToResolve> CopyNode(FeatureToResolve* node);
+			vl::Ptr<NestedOptionalFeature> CopyNode(NestedOptionalFeature* node);
+			vl::Ptr<OptionalFeature> CopyNode(OptionalFeature* node);
 		};
 	}
 }

@@ -57,6 +57,17 @@ namespace calculator
 			virtual vl::Ptr<Arg> CopyNode(Arg* node);
 			virtual vl::Ptr<Import> CopyNode(Import* node);
 			virtual vl::Ptr<Module> CopyNode(Module* node);
+
+			vl::Ptr<Binary> CopyNode(Binary* node);
+			vl::Ptr<Call> CopyNode(Call* node);
+			vl::Ptr<Expandable> CopyNode(Expandable* node);
+			vl::Ptr<False> CopyNode(False* node);
+			vl::Ptr<Func> CopyNode(Func* node);
+			vl::Ptr<LetExpr> CopyNode(LetExpr* node);
+			vl::Ptr<NumExpr> CopyNode(NumExpr* node);
+			vl::Ptr<Ref> CopyNode(Ref* node);
+			vl::Ptr<True> CopyNode(True* node);
+			vl::Ptr<Unary> CopyNode(Unary* node);
 		};
 	}
 }

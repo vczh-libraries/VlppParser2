@@ -122,5 +122,35 @@ namespace ifelseambiguity
 			return this->result.Cast<Module>();
 		}
 
+		vl::Ptr<BlockStat> StatAstVisitor::CopyNode(BlockStat* node)
+		{
+			if (!node) return nullptr;
+			return CopyNode(static_cast<Stat*>(node)).Cast<BlockStat>();
+		}
+
+		vl::Ptr<DoStat> StatAstVisitor::CopyNode(DoStat* node)
+		{
+			if (!node) return nullptr;
+			return CopyNode(static_cast<Stat*>(node)).Cast<DoStat>();
+		}
+
+		vl::Ptr<IfContentCandidate> StatAstVisitor::CopyNode(IfContentCandidate* node)
+		{
+			if (!node) return nullptr;
+			return CopyNode(static_cast<IfContent*>(node)).Cast<IfContentCandidate>();
+		}
+
+		vl::Ptr<IfContentToResolve> StatAstVisitor::CopyNode(IfContentToResolve* node)
+		{
+			if (!node) return nullptr;
+			return CopyNode(static_cast<IfContent*>(node)).Cast<IfContentToResolve>();
+		}
+
+		vl::Ptr<IfStat> StatAstVisitor::CopyNode(IfStat* node)
+		{
+			if (!node) return nullptr;
+			return CopyNode(static_cast<Stat*>(node)).Cast<IfStat>();
+		}
+
 	}
 }

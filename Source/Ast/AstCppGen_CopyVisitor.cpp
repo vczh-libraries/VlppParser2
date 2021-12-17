@@ -112,11 +112,25 @@ WriteCopyVisitorHeaderFile
 					writer.WriteLine(prefix + L"public:");
 					for (auto classSymbol :
 						From(visitors)
-							.Where([](AstClassSymbol* visitor) { return !visitor->baseClass; })
+							.Where([](AstClassSymbol* visitor) { return visitor->baseClass == nullptr; })
 							.Concat(concreteClasses)
 						)
 					{
 						writer.WriteString(prefix + L"\tvirtual vl::Ptr<");
+						PrintCppType(file, classSymbol, writer);
+						writer.WriteString(L"> CopyNode(");
+						PrintCppType(file, classSymbol, writer);
+						writer.WriteLine(L"* node);");
+					}
+
+					writer.WriteLine(L"");
+					for (auto classSymbol :
+						From(file->Symbols().Values())
+							.Select([](AstSymbol* derivedClass) { return dynamic_cast<AstClassSymbol*>(derivedClass); })
+							.Where([](AstClassSymbol* derivedClass) { return derivedClass && derivedClass->baseClass != nullptr; })
+						)
+					{
+						writer.WriteString(prefix + L"\tvl::Ptr<");
 						PrintCppType(file, classSymbol, writer);
 						writer.WriteString(L"> CopyNode(");
 						PrintCppType(file, classSymbol, writer);
@@ -228,6 +242,34 @@ WriteCopyVisitorCppFile
 						writer.WriteLine(prefix + L"\tif (!node) return nullptr;");
 						writer.WriteLine(prefix + L"\tVisit(node);");
 						writer.WriteString(prefix + L"\treturn this->result.Cast<");
+						PrintCppType(file, classSymbol, writer);
+						writer.WriteLine(L">();");
+						writer.WriteLine(prefix + L"}");
+						writer.WriteLine(L"");
+					}
+
+					for (auto classSymbol :
+						From(file->Symbols().Values())
+							.Select([](AstSymbol* derivedClass) { return dynamic_cast<AstClassSymbol*>(derivedClass); })
+							.Where([](AstClassSymbol* derivedClass) { return derivedClass && derivedClass->baseClass != nullptr; })
+						)
+					{
+						auto rootBaseClass = classSymbol;
+						while (rootBaseClass->baseClass)
+						{
+							rootBaseClass = rootBaseClass->baseClass;
+						}
+
+						writer.WriteString(prefix + L"vl::Ptr<");
+						PrintCppType(file, classSymbol, writer);
+						writer.WriteString(L"> " + file->Name() + L"Visitor::CopyNode(");
+						PrintCppType(file, classSymbol, writer);
+						writer.WriteLine(L"* node)");
+						writer.WriteLine(prefix + L"{");
+						writer.WriteLine(prefix + L"\tif (!node) return nullptr;");
+						writer.WriteString(prefix + L"\treturn CopyNode(static_cast<");
+						PrintCppType(file, rootBaseClass, writer);
+						writer.WriteString(L"*>(node)).Cast<");
 						PrintCppType(file, classSymbol, writer);
 						writer.WriteLine(L">();");
 						writer.WriteLine(prefix + L"}");

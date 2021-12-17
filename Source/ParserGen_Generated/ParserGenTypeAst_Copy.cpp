@@ -122,6 +122,18 @@ namespace vl
 					return this->result.Cast<GlrAstFile>();
 				}
 
+				vl::Ptr<GlrClass> TypeAstVisitor::CopyNode(GlrClass* node)
+				{
+					if (!node) return nullptr;
+					return CopyNode(static_cast<GlrType*>(node)).Cast<GlrClass>();
+				}
+
+				vl::Ptr<GlrEnum> TypeAstVisitor::CopyNode(GlrEnum* node)
+				{
+					if (!node) return nullptr;
+					return CopyNode(static_cast<GlrType*>(node)).Cast<GlrEnum>();
+				}
+
 			}
 		}
 	}
