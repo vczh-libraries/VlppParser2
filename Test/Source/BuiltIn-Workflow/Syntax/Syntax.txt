@@ -299,13 +299,14 @@ _FunctionBody
     ;
 
 _FunctionKind
-    ::= "static" as partial FunctionDeclaration {functionKind = Static}
-    ::= "override" as partial FunctionDeclaration {functionKind = Override}
+    ::= "static" "func" as partial FunctionDeclaration {functionKind = Static}
+    ::= "override" "func" as partial FunctionDeclaration {functionKind = Override}
+    ::= "func" as partial FunctionDeclaration {functionKind = Normal}
     ;
 
 _Function
-    ::= [_FunctionKind] "func" NAME : name _FunctionBody as FunctionDeclaration {anonymity = Named}
-    ::= [_FunctionKind] "func" _FunctionBody as FunctionDeclaration {anonymity = Anonymous}
+    ::= _FunctionKind NAME : name _FunctionBody as FunctionDeclaration {anonymity = Named}
+    ::= _FunctionKind _FunctionBody as FunctionDeclaration {anonymity = Anonymous}
     ;
 
 _Variable
@@ -391,12 +392,13 @@ _APConfig
     ;
 
 _AutoPropertyKind
-    ::= "static" as partial AutoPropertyDeclaration {functionKind = Static}
-    ::= "override" as partial AutoPropertyDeclaration {functionKind = Override}
+    ::= "static" "prop" as partial AutoPropertyDeclaration {functionKind = Static}
+    ::= "override" "prop" as partial AutoPropertyDeclaration {functionKind = Override}
+    ::= "prop" as partial AutoPropertyDeclaration {functionKind = Normal}
     ;
 
 _AutoProperty
-    ::= [_AutoPropertyKind] "prop" NAME : name ":" _Type : type ["=" _Expression : expression] _APConfig as AutoPropertyDeclaration
+    ::= _AutoPropertyKind NAME : name ":" _Type : type ["=" _Expression : expression] _APConfig as AutoPropertyDeclaration
     ;
 
 _CastResultInterface
