@@ -83,11 +83,11 @@ namespace vl
 				_AutoProperty = 765,
 				_CastResultInterface = 775,
 				_Declaration = 786,
-				_UsingFragment = 798,
-				_UsingItem = 802,
-				_UsingPath = 806,
-				_ModuleBody = 813,
-				_Module = 819,
+				_UsingFragment = 800,
+				_UsingItem = 804,
+				_UsingPath = 808,
+				_ModuleBody = 815,
+				_Module = 821,
 			};
 
 			template<ParserStates> struct ParserStateTypes;
