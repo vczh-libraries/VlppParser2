@@ -240,7 +240,7 @@ FindBalancedBeginObject
 					while (true)
 					{
 						branchInstruction--;
-						if (branchInstruction == -1)
+						if (branchInstruction < 0)
 						{
 							// a merging trace must at least have one EndObject before the balanced BeginObject
 							// so it is not possible to see it here
