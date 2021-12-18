@@ -260,19 +260,21 @@ SyntaxSymbolManager::EliminateLeftRecursion
 				* 
 				* [BEFORE] (r is the current rule)
 				*    +-> ... -> A --------(ending)-+
-				*    |                          |
+				*    |                             |
 				* S -+-(r)----> ... -> B -(ending)-+-> E
 				*    |    ---                      |
 				*    +-(r)----> ... -> C -(ending)-+
 				* 
-				* [AFTER]
-				*                 +---------------(ending)-----+
-				*                 |                            V
-				* S-> ... -> A -+-+-> ... -> B -+-(ending)-+-> E
-				*               ^ |             |
-				*               | +-> ... -> C -+-(leftrec)-+
-				*               |                           |
-				*               +---------------------------+
+				* [AFTER] (the epsilon edge doesn't exist, it is for demo only)
+				*            +----(epsilon)----------+
+				*            |                       |
+				*            |  +-(leftrec)-> ... -> B -(ending)---+
+				*            v  |                                  v
+				* S-> ... -> A -+-----------------------(ending)-> E
+				*            ^  |                                  ^
+				*            |  +-(leftrec)-> ... -> C -(ending)---+
+				*            |                       |
+				*            +----(epsilon)----------+
 				*/
 
 				List<EdgeSymbol*> lrecEdges;
@@ -320,13 +322,11 @@ SyntaxSymbolManager::EliminateEpsilonEdges
 				*    +-(x)-> ... -> C -(ending)-+
 				*
 				* [AFTER]
-				*              +---------------(ending)-----+
-				*              |                            V
-				* S-(x)-> A -+-+-> ... -> B -+-(ending)-+-> E
-				*            ^ |             |
-				*            | +-> ... -> C -+-(leftrec)-+
-				*            |                           |
-				*            +---------------------------+
+				*            +-(leftrec)-> ... -> B -(ending)---+
+				*            |                                  v
+				* S-(x)-> A -+-----------------------(ending)-> E
+				*            |                                  ^
+				*            +-(leftrec)-> ... -> C -(ending)---+
 				*/
 
 				Group<RuleSymbol*, EdgeSymbol*> prefixEdges;
