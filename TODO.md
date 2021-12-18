@@ -54,7 +54,10 @@
 - Allow field assignment / partial rule before use rule.
   - Exactly one use rule is ensured in any possible combination of inputs for a reuse clause.
   - We can count and cache how many fields are assigned before a use rule in the receiver.
-  - Verify ambiguity containing field assignment / partial rule before use rule.
+  - Verify ambiguity.
+    - `<common prefix> !branch1` with `<common prefix> !branch2`.
+  - Verify left recursion.
+    - `<common prefix> !rule-with-left-recursive`, we cannot assign fields at the beginning of `rule-with-left-recursive`, we must wait until it reduces.
 - `JsonEscapeString` `JsonUnescapeString` handle surrogate pairs correctly.
 - `ParserTest_AstParserGen`
   - Test Copy Visitors
