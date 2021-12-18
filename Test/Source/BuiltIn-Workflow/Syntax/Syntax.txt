@@ -279,7 +279,7 @@ _Attribute
     ;
 
 _Namespace
-    ::= {_Attribute : attributes} "namespace" NAME : name "{" {_Declaration : declarations} "}" as NamespaceDeclaration
+    ::= "namespace" NAME : name "{" {_Declaration : declarations} "}" as NamespaceDeclaration
     ;
 
 _FunctionArgument
@@ -308,20 +308,20 @@ _FunctionKind
     ;
 
 _Function
-    ::= {_Attribute : attributes} _FunctionKind NAME : name _FunctionBody as FunctionDeclaration {anonymity = Named}
-    ::= {_Attribute : attributes} _FunctionKind _FunctionBody as FunctionDeclaration {anonymity = Anonymous}
+    ::= _FunctionKind NAME : name _FunctionBody as FunctionDeclaration {anonymity = Named}
+    ::= _FunctionKind _FunctionBody as FunctionDeclaration {anonymity = Anonymous}
     ;
 
 _Variable
-    ::= {_Attribute : attributes} "var" NAME : name [":" _Type : type] "=" _Expression : expression ";" as VariableDeclaration
+    ::= "var" NAME : name [":" _Type : type] "=" _Expression : expression ";" as VariableDeclaration
     ;
 
 _Event
-    ::= {_Attribute : attributes} "event" NAME : name "(" {_Type : arguments ; ","} ")" ";" as EventDeclaration
+    ::= "event" NAME : name "(" {_Type : arguments ; ","} ")" ";" as EventDeclaration
     ;
 
 _Property
-    ::= {_Attribute : attributes} "prop" NAME : name ":" _Type : type "{" NAME : getter ["," NAME : setter] [":" NAME : valueChangedEvent] "}" as PropertyDeclaration
+    ::= "prop" NAME : name ":" _Type : type "{" NAME : getter ["," NAME : setter] [":" NAME : valueChangedEvent] "}" as PropertyDeclaration
     ;
 
 _BaseConstructorCall
@@ -334,14 +334,14 @@ _ConstructorType
     ;
 
 _Constructor
-    ::= {_Attribute : attributes} _ConstructorType
+    ::= _ConstructorType
         "(" {_FunctionArgument : arguments ; ","} ")"
         [":" {_BaseConstructorCall : baseConstructorCalls ; ","}]
         _Block : statement as ConstructorDeclaration
     ;
 
 _Destructor
-    ::= {_Attribute : attributes} "delete" _Block : statement as DestructorDeclaration
+    ::= "delete" _Block : statement as DestructorDeclaration
     ;
 
 _ClassBody
@@ -349,9 +349,9 @@ _ClassBody
     ;
 
 _Class
-    ::= {_Attribute : attributes} "class" NAME : name _ClassBody as ClassDeclaration {kind = Class, constructorType = Undefined}
-    ::= {_Attribute : attributes} "interface" NAME : name _ClassBody as ClassDeclaration {kind = Interface, constructorType = SharedPtr}
-    ::= {_Attribute : attributes} "interface" NAME : name "*" _ClassBody as ClassDeclaration {kind = Interface, constructorType = RawPtr}
+    ::= "class" NAME : name _ClassBody as ClassDeclaration {kind = Class, constructorType = Undefined}
+    ::= "interface" NAME : name _ClassBody as ClassDeclaration {kind = Interface, constructorType = SharedPtr}
+    ::= "interface" NAME : name "*" _ClassBody as ClassDeclaration {kind = Interface, constructorType = RawPtr}
     ;
 
 _EnumItemInt
@@ -367,8 +367,8 @@ _EnumItemB
     ;
 
 _Enum
-    ::= {_Attribute : attributes} "enum" NAME : name "{" _EnumItemA : items {_EnumItemA : items} "}" as EnumDeclaration {kind = Normal}
-    ::= {_Attribute : attributes} "flagenum" NAME : name "{" _EnumItemA : items {_EnumItemA : items} {_EnumItemB : items} "}" as EnumDeclaration {kind = Flag}
+    ::= "enum" NAME : name "{" _EnumItemA : items {_EnumItemA : items} "}" as EnumDeclaration {kind = Normal}
+    ::= "flagenum" NAME : name "{" _EnumItemA : items {_EnumItemA : items} {_EnumItemB : items} "}" as EnumDeclaration {kind = Flag}
     ;
 
 _StructMember
@@ -376,7 +376,7 @@ _StructMember
     ;
 
 _Struct
-    ::= {_Attribute : attributes} "struct" NAME : name "{" {_StructMember : members} "}" as StructDeclaration
+    ::= "struct" NAME : name "{" {_StructMember : members} "}" as StructDeclaration
     ;
 
 _APConfig
@@ -401,18 +401,18 @@ _AutoPropertyKind
     ;
 
 _AutoProperty
-    ::= {_Attribute : attributes} _AutoPropertyKind NAME : name ":" _Type : type ["=" _Expression : expression] _APConfig as AutoPropertyDeclaration
+    ::= _AutoPropertyKind NAME : name ":" _Type : type ["=" _Expression : expression] _APConfig as AutoPropertyDeclaration
     ;
 
 _CastResultInterface
-    ::= {_Attribute : attributes} "$interface" NAME : name ":" _Type : baseType "<" _Type : elementType ">" ";" as CastResultInterfaceDeclaration
+    ::= "$interface" NAME : name ":" _Type : baseType "<" _Type : elementType ">" ";" as CastResultInterfaceDeclaration
     ;
 
 //////////////////////////////////////////////////////////////////
 // Rule (Declaration -- Branches)
 //////////////////////////////////////////////////////////////////
 
-_Declaration
+_DeclarationCandidates
     ::= !_Namespace
     ::= !_Variable
     ::= !_Event
@@ -425,6 +425,10 @@ _Declaration
     ::= !_CastResultInterface
     ::= !_Function
     ::= !_AutoProperty
+    ;
+
+_Declaration
+    ::= {_Attribute : attributes} !_DeclarationCandidates
     ;
 
 //////////////////////////////////////////////////////////////////

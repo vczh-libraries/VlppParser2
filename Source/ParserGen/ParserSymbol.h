@@ -110,8 +110,6 @@ ParserSymbolManager
 				MultiplePrioritySyntaxInAClause,			// (ruleName)													: Too many syntax with priority in the a clause.
 
 				// SyntaxAst (ValidateStructure, relationship) ----------------------------------------
-				UseRuleAppearAfterField,					// (ruleName, useRuleName, fieldName)
-				UseRuleAppearAfterPartialRule,				// (ruleName, useRuleName, partialRuleName)
 				FieldAssignedMoreThanOnce,					// (ruleName, clauseType, fieldName)
 			};
 

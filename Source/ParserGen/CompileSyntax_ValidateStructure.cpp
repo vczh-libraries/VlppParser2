@@ -456,24 +456,6 @@ ValidateStructureRelationshipVisitor
 
 				void Visit(GlrUseSyntax* node) override
 				{
-					if (existingFields)
-					{
-						context.global.AddError(
-							ParserErrorType::UseRuleAppearAfterField,
-							ruleSymbol->Name(),
-							node->name.value,
-							existingFields.last->ref->field.value
-							);
-					}
-					else if (existingPartials)
-					{
-						context.global.AddError(
-							ParserErrorType::UseRuleAppearAfterPartialRule,
-							ruleSymbol->Name(),
-							node->name.value,
-							existingPartials.last->ref->name.value
-							);
-					}
 				}
 
 				void Visit(GlrLoopSyntax* node) override
