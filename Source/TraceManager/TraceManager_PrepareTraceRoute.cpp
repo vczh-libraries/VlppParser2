@@ -240,7 +240,7 @@ FindBalancedBeginObject
 					while (true)
 					{
 						branchInstruction--;
-						if (branchInstruction < 0)
+						if (branchInstruction == -1)
 						{
 							// a merging trace must at least have one EndObject before the balanced BeginObject
 							// so it is not possible to see it here
@@ -248,7 +248,7 @@ FindBalancedBeginObject
 							CHECK_ERROR(branchTrace->predecessors.first != -1, ERROR_MESSAGE_PREFIX L"Unexpected root trace when searching for DelayFieldAssignment.");
 							branchTrace = GetTrace(branchTrace->predecessors.first);
 							ReadInstructionList(branchTrace, branchInsLists);
-							branchInstruction = branchInsLists.c3 - 1;
+							branchInstruction = branchInsLists.c3;
 						}
 						else
 						{
