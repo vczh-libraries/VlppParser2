@@ -44,6 +44,21 @@ export 1
 			);
 	});
 
+	TEST_CASE(L"NoRootObjectAfterDfa")
+	{
+		WString input = LR"(
+export 1
+)";
+		LEXER(input, tokens);
+		CalculatorAstInsReceiver receiver;
+		receiver.Execute({ AstInsType::DelayFieldAssignment }, tokens[1]);
+		TEST_EXCEPTION(
+			receiver.Execute({ AstInsType::EndObject }, tokens[1]),
+			AstInsException,
+			[](const AstInsException& e) { TEST_ASSERT(e.error == AstInsErrorType::NoRootObjectAfterDfa); }
+			);
+	});
+
 	TEST_CASE(L"MissingLeftRecursiveValue")
 	{
 		WString input = LR"(
@@ -108,6 +123,22 @@ export 1
 			receiver.Execute({ AstInsType::ReopenObject }, tokens[1]),
 			AstInsException,
 			[](const AstInsException& e) { TEST_ASSERT(e.error == AstInsErrorType::TooManyUnassignedValues); }
+			);
+	});
+
+	TEST_CASE(L"MissingDfaBeforeReopen")
+	{
+		WString input = LR"(
+export 1
+)";
+		LEXER(input, tokens);
+		CalculatorAstInsReceiver receiver;
+		receiver.Execute({ AstInsType::DelayFieldAssignment }, tokens[1]);
+		receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::Module }, tokens[0]);
+		TEST_EXCEPTION(
+			receiver.Execute({ AstInsType::ReopenObject }, tokens[1]),
+			AstInsException,
+			[](const AstInsException& e) { TEST_ASSERT(e.error == AstInsErrorType::MissingDfaBeforeReopen); }
 			);
 	});
 
