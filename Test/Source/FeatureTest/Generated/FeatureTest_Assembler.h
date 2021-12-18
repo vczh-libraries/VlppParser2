@@ -16,9 +16,12 @@ namespace featuretest
 		BranchedOptionalFeature = 0,
 		Feature = 1,
 		FeatureToResolve = 2,
-		NestedOptionalFeature = 3,
-		OptionalFeature = 4,
-		Plus = 5,
+		Gt = 3,
+		Lt = 4,
+		NestedOptionalFeature = 5,
+		OptionalFeature = 6,
+		PbaFeature = 7,
+		Plus = 8,
 	};
 
 	enum class FeatureTestFields : vl::vint32_t
@@ -35,6 +38,11 @@ namespace featuretest
 		OptionalFeature_loop = 9,
 		OptionalFeature_optional = 10,
 		OptionalFeature_priority = 11,
+		PbaFeature_gts = 12,
+		PbaFeature_lts = 13,
+		PbaFeature_optional = 14,
+		PbaFeature_tail = 15,
+		PbaFeature_tails = 16,
 	};
 
 	extern const wchar_t* FeatureTestTypeName(FeatureTestClasses type);

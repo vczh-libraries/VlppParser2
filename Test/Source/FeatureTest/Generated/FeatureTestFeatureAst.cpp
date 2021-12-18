@@ -27,6 +27,11 @@ Visitor Pattern Implementation
 		visitor->Visit(this);
 	}
 
+	void PbaFeature::Accept(Feature::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
 	void FeatureToResolve::Accept(Feature::IVisitor* visitor)
 	{
 		visitor->Visit(this);
@@ -41,6 +46,8 @@ namespace vl
 #ifndef VCZH_DEBUG_NO_REFLECTION
 
 			IMPL_TYPE_INFO_RENAME(featuretest::Plus, featuretest::Plus)
+			IMPL_TYPE_INFO_RENAME(featuretest::Lt, featuretest::Lt)
+			IMPL_TYPE_INFO_RENAME(featuretest::Gt, featuretest::Gt)
 			IMPL_TYPE_INFO_RENAME(featuretest::Feature, featuretest::Feature)
 			IMPL_TYPE_INFO_RENAME(featuretest::Feature::IVisitor, featuretest::Feature::IVisitor)
 			IMPL_TYPE_INFO_RENAME(featuretest::OptionalProprity, featuretest::OptionalProprity)
@@ -48,6 +55,7 @@ namespace vl
 			IMPL_TYPE_INFO_RENAME(featuretest::NestedOptionalFeature, featuretest::NestedOptionalFeature)
 			IMPL_TYPE_INFO_RENAME(featuretest::BranchType, featuretest::BranchType)
 			IMPL_TYPE_INFO_RENAME(featuretest::BranchedOptionalFeature, featuretest::BranchedOptionalFeature)
+			IMPL_TYPE_INFO_RENAME(featuretest::PbaFeature, featuretest::PbaFeature)
 			IMPL_TYPE_INFO_RENAME(featuretest::FeatureToResolve, featuretest::FeatureToResolve)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
@@ -58,6 +66,20 @@ namespace vl
 				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<featuretest::Plus>(), NO_PARAMETER)
 
 			END_CLASS_MEMBER(featuretest::Plus)
+
+			BEGIN_CLASS_MEMBER(featuretest::Lt)
+				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<featuretest::Lt>(), NO_PARAMETER)
+
+			END_CLASS_MEMBER(featuretest::Lt)
+
+			BEGIN_CLASS_MEMBER(featuretest::Gt)
+				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<featuretest::Gt>(), NO_PARAMETER)
+
+			END_CLASS_MEMBER(featuretest::Gt)
 
 			BEGIN_CLASS_MEMBER(featuretest::Feature)
 				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
@@ -110,6 +132,18 @@ namespace vl
 				CLASS_MEMBER_FIELD(tails)
 			END_CLASS_MEMBER(featuretest::BranchedOptionalFeature)
 
+			BEGIN_CLASS_MEMBER(featuretest::PbaFeature)
+				CLASS_MEMBER_BASE(featuretest::Feature)
+
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<featuretest::PbaFeature>(), NO_PARAMETER)
+
+				CLASS_MEMBER_FIELD(lts)
+				CLASS_MEMBER_FIELD(gts)
+				CLASS_MEMBER_FIELD(optional)
+				CLASS_MEMBER_FIELD(tail)
+				CLASS_MEMBER_FIELD(tails)
+			END_CLASS_MEMBER(featuretest::PbaFeature)
+
 			BEGIN_CLASS_MEMBER(featuretest::FeatureToResolve)
 				CLASS_MEMBER_BASE(featuretest::Feature)
 
@@ -123,6 +157,7 @@ namespace vl
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(featuretest::Feature::IVisitor::*)(featuretest::OptionalFeature* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(featuretest::Feature::IVisitor::*)(featuretest::NestedOptionalFeature* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(featuretest::Feature::IVisitor::*)(featuretest::BranchedOptionalFeature* node))
+				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(featuretest::Feature::IVisitor::*)(featuretest::PbaFeature* node))
 			END_INTERFACE_MEMBER(featuretest::Feature)
 
 #endif
@@ -134,6 +169,8 @@ namespace vl
 				void Load(ITypeManager* manager)
 				{
 					ADD_TYPE_INFO(featuretest::Plus)
+					ADD_TYPE_INFO(featuretest::Lt)
+					ADD_TYPE_INFO(featuretest::Gt)
 					ADD_TYPE_INFO(featuretest::Feature)
 					ADD_TYPE_INFO(featuretest::Feature::IVisitor)
 					ADD_TYPE_INFO(featuretest::OptionalProprity)
@@ -141,6 +178,7 @@ namespace vl
 					ADD_TYPE_INFO(featuretest::NestedOptionalFeature)
 					ADD_TYPE_INFO(featuretest::BranchType)
 					ADD_TYPE_INFO(featuretest::BranchedOptionalFeature)
+					ADD_TYPE_INFO(featuretest::PbaFeature)
 					ADD_TYPE_INFO(featuretest::FeatureToResolve)
 				}
 

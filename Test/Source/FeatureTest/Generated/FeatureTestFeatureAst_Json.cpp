@@ -58,6 +58,12 @@ namespace featuretest
 			EndArray();
 			EndField();
 		}
+		void FeatureAstVisitor::PrintFields(Gt* node)
+		{
+		}
+		void FeatureAstVisitor::PrintFields(Lt* node)
+		{
+		}
 		void FeatureAstVisitor::PrintFields(NestedOptionalFeature* node)
 		{
 			BeginField(L"optional");
@@ -113,6 +119,45 @@ namespace featuretest
 			default:
 				WriteNull();
 			}
+			EndField();
+		}
+		void FeatureAstVisitor::PrintFields(PbaFeature* node)
+		{
+			BeginField(L"gts");
+			BeginArray();
+			for (auto&& listItem : node->gts)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+			BeginField(L"lts");
+			BeginArray();
+			for (auto&& listItem : node->lts)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+			BeginField(L"optional");
+			Print(node->optional.Obj());
+			EndField();
+			BeginField(L"tail");
+			Print(node->tail.Obj());
+			EndField();
+			BeginField(L"tails");
+			BeginArray();
+			for (auto&& listItem : node->tails)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
 			EndField();
 		}
 		void FeatureAstVisitor::PrintFields(Plus* node)
@@ -175,6 +220,20 @@ namespace featuretest
 			EndObject();
 		}
 
+		void FeatureAstVisitor::Visit(PbaFeature* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"PbaFeature", node);
+			PrintFields(static_cast<Feature*>(node));
+			PrintFields(static_cast<PbaFeature*>(node));
+			EndObject();
+		}
+
 		FeatureAstVisitor::FeatureAstVisitor(vl::stream::StreamWriter& _writer)
 			: vl::glr::JsonVisitorBase(_writer)
 		{
@@ -200,6 +259,32 @@ namespace featuretest
 			BeginObject();
 			WriteType(L"Plus", node);
 			PrintFields(static_cast<Plus*>(node));
+			EndObject();
+		}
+
+		void FeatureAstVisitor::Print(Lt* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"Lt", node);
+			PrintFields(static_cast<Lt*>(node));
+			EndObject();
+		}
+
+		void FeatureAstVisitor::Print(Gt* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"Gt", node);
+			PrintFields(static_cast<Gt*>(node));
 			EndObject();
 		}
 

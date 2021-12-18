@@ -32,5 +32,9 @@ FeatureVisitor
 		void FeatureVisitor::Visit(BranchedOptionalFeature* node)
 		{
 		}
+
+		void FeatureVisitor::Visit(PbaFeature* node)
+		{
+		}
 	}
 }

@@ -34,6 +34,14 @@ namespace featuretest
 			}
 		}
 
+		void FeatureAstVisitor::CopyFields(Gt* from, Gt* to)
+		{
+		}
+
+		void FeatureAstVisitor::CopyFields(Lt* from, Lt* to)
+		{
+		}
+
 		void FeatureAstVisitor::CopyFields(NestedOptionalFeature* from, NestedOptionalFeature* to)
 		{
 			CopyFields(static_cast<Feature*>(from), static_cast<Feature*>(to));
@@ -58,6 +66,25 @@ namespace featuretest
 			to->priority = from->priority;
 		}
 
+		void FeatureAstVisitor::CopyFields(PbaFeature* from, PbaFeature* to)
+		{
+			CopyFields(static_cast<Feature*>(from), static_cast<Feature*>(to));
+			for (auto&& listItem : from->gts)
+			{
+				to->gts.Add(CopyNode(listItem.Obj()));
+			}
+			for (auto&& listItem : from->lts)
+			{
+				to->lts.Add(CopyNode(listItem.Obj()));
+			}
+			to->optional = CopyNode(from->optional.Obj());
+			to->tail = CopyNode(from->tail.Obj());
+			for (auto&& listItem : from->tails)
+			{
+				to->tails.Add(CopyNode(listItem.Obj()));
+			}
+		}
+
 		void FeatureAstVisitor::CopyFields(Plus* from, Plus* to)
 		{
 		}
@@ -65,6 +92,20 @@ namespace featuretest
 		void FeatureAstVisitor::Visit(Plus* node)
 		{
 			auto newNode = vl::MakePtr<Plus>();
+			CopyFields(node, newNode.Obj());
+			this->result = newNode;
+		}
+
+		void FeatureAstVisitor::Visit(Lt* node)
+		{
+			auto newNode = vl::MakePtr<Lt>();
+			CopyFields(node, newNode.Obj());
+			this->result = newNode;
+		}
+
+		void FeatureAstVisitor::Visit(Gt* node)
+		{
+			auto newNode = vl::MakePtr<Gt>();
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
@@ -97,6 +138,13 @@ namespace featuretest
 			this->result = newNode;
 		}
 
+		void FeatureAstVisitor::Visit(PbaFeature* node)
+		{
+			auto newNode = vl::MakePtr<PbaFeature>();
+			CopyFields(node, newNode.Obj());
+			this->result = newNode;
+		}
+
 		vl::Ptr<Feature> FeatureAstVisitor::CopyNode(Feature* node)
 		{
 			if (!node) return nullptr;
@@ -109,6 +157,20 @@ namespace featuretest
 			if (!node) return nullptr;
 			Visit(node);
 			return this->result.Cast<Plus>();
+		}
+
+		vl::Ptr<Lt> FeatureAstVisitor::CopyNode(Lt* node)
+		{
+			if (!node) return nullptr;
+			Visit(node);
+			return this->result.Cast<Lt>();
+		}
+
+		vl::Ptr<Gt> FeatureAstVisitor::CopyNode(Gt* node)
+		{
+			if (!node) return nullptr;
+			Visit(node);
+			return this->result.Cast<Gt>();
 		}
 
 		vl::Ptr<BranchedOptionalFeature> FeatureAstVisitor::CopyNode(BranchedOptionalFeature* node)
@@ -133,6 +195,12 @@ namespace featuretest
 		{
 			if (!node) return nullptr;
 			return CopyNode(static_cast<Feature*>(node)).Cast<OptionalFeature>();
+		}
+
+		vl::Ptr<PbaFeature> FeatureAstVisitor::CopyNode(PbaFeature* node)
+		{
+			if (!node) return nullptr;
+			return CopyNode(static_cast<Feature*>(node)).Cast<PbaFeature>();
 		}
 
 	}

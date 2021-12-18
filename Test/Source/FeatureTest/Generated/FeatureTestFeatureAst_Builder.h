@@ -57,10 +57,26 @@ namespace featuretest
 			OptionalFeatureBuilder& priority(OptionalProprity value);
 		};
 
+		class PbaFeatureBuilder
+		{
+		private:
+			PbaFeature* node;
+		public:
+			PbaFeatureBuilder(PbaFeature* _node) : node(_node) {}
+			PbaFeatureBuilder& gts(const vl::Ptr<Gt>& value);
+			PbaFeatureBuilder& lts(const vl::Ptr<Lt>& value);
+			PbaFeatureBuilder& optional(const vl::Ptr<Plus>& value);
+			PbaFeatureBuilder& tail(const vl::Ptr<Plus>& value);
+			PbaFeatureBuilder& tails(const vl::Ptr<Plus>& value);
+		};
+
 		using MakeBranchedOptionalFeature = vl::glr::ParsingAstBuilder<BranchedOptionalFeature, BranchedOptionalFeatureBuilder>;
 		using MakeFeatureToResolve = vl::glr::ParsingAstBuilder<FeatureToResolve, FeatureToResolveBuilder>;
+		using MakeGt = vl::glr::ParsingAstBuilder<Gt>;
+		using MakeLt = vl::glr::ParsingAstBuilder<Lt>;
 		using MakeNestedOptionalFeature = vl::glr::ParsingAstBuilder<NestedOptionalFeature, NestedOptionalFeatureBuilder>;
 		using MakeOptionalFeature = vl::glr::ParsingAstBuilder<OptionalFeature, OptionalFeatureBuilder>;
+		using MakePbaFeature = vl::glr::ParsingAstBuilder<PbaFeature, PbaFeatureBuilder>;
 		using MakePlus = vl::glr::ParsingAstBuilder<Plus>;
 	}
 }

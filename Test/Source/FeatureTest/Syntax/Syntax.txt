@@ -2,6 +2,14 @@ Plus
   ::= "+" as Plus
   ;
 
+Lt
+  ::= "<" as Lt
+  ;
+
+Gt
+  ::= ">" as Gt
+  ;
+
 EqualOptional
   ::= "optional" [Plus:optional] "+" {Plus:loop} as OptionalFeature {priority = Equal}
   ;
@@ -56,6 +64,14 @@ BranchedOptional
   ::= "branched_optional" [Plus:optional] Plus {Plus:tails} as BranchedOptionalFeature {type = NoCompetition}
   ;
 
+PbaGts
+  ::= Gt:gts {Gt:gts} as partial PbaFeature
+  ;
+
+Pba
+  ::= "prefix_before_ambiguity" {Lt:lts} PbaGts [Plus:optional] Plus {Plus:tails} as PbaFeature
+  ;
+
 Module
   ::= !EqualOptional
   ::= !PositiveOptional
@@ -67,4 +83,5 @@ Module
   ::= "entry_rule_priority" +[Plus:optional] Plus {Plus:tails} as BranchedOptionalFeature {type = Plus}
   ::= "entry_rule_priority" -[Plus:optional] Plus {Plus:tails} as BranchedOptionalFeature {type = Minus}
   ::= "entry_rule_priority" [Plus:optional] Plus {Plus:tails} as BranchedOptionalFeature {type = NoCompetition}
+  ::= !Pba
   ;

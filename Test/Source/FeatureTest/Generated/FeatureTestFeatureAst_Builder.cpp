@@ -98,5 +98,39 @@ OptionalFeatureBuilder
 			node->priority = value;
 			return *this;
 		}
+
+/***********************************************************************
+PbaFeatureBuilder
+***********************************************************************/
+
+		PbaFeatureBuilder& PbaFeatureBuilder::gts(const vl::Ptr<Gt>& value)
+		{
+			node->gts.Add(value);
+			return *this;
+		}
+
+		PbaFeatureBuilder& PbaFeatureBuilder::lts(const vl::Ptr<Lt>& value)
+		{
+			node->lts.Add(value);
+			return *this;
+		}
+
+		PbaFeatureBuilder& PbaFeatureBuilder::optional(const vl::Ptr<Plus>& value)
+		{
+			node->optional = value;
+			return *this;
+		}
+
+		PbaFeatureBuilder& PbaFeatureBuilder::tail(const vl::Ptr<Plus>& value)
+		{
+			node->tail = value;
+			return *this;
+		}
+
+		PbaFeatureBuilder& PbaFeatureBuilder::tails(const vl::Ptr<Plus>& value)
+		{
+			node->tails.Add(value);
+			return *this;
+		}
 	}
 }

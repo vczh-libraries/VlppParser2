@@ -15,8 +15,11 @@ namespace featuretest
 	class BranchedOptionalFeature;
 	class Feature;
 	class FeatureToResolve;
+	class Gt;
+	class Lt;
 	class NestedOptionalFeature;
 	class OptionalFeature;
+	class PbaFeature;
 	class Plus;
 
 	enum class OptionalProprity
@@ -40,6 +43,16 @@ namespace featuretest
 	public:
 	};
 
+	class Lt : public vl::glr::ParsingAstBase, vl::reflection::Description<Lt>
+	{
+	public:
+	};
+
+	class Gt : public vl::glr::ParsingAstBase, vl::reflection::Description<Gt>
+	{
+	public:
+	};
+
 	class Feature abstract : public vl::glr::ParsingAstBase, vl::reflection::Description<Feature>
 	{
 	public:
@@ -50,6 +63,7 @@ namespace featuretest
 			virtual void Visit(OptionalFeature* node) = 0;
 			virtual void Visit(NestedOptionalFeature* node) = 0;
 			virtual void Visit(BranchedOptionalFeature* node) = 0;
+			virtual void Visit(PbaFeature* node) = 0;
 		};
 
 		virtual void Accept(Feature::IVisitor* visitor) = 0;
@@ -88,6 +102,18 @@ namespace featuretest
 		void Accept(Feature::IVisitor* visitor) override;
 	};
 
+	class PbaFeature : public Feature, vl::reflection::Description<PbaFeature>
+	{
+	public:
+		vl::collections::List<vl::Ptr<Lt>> lts;
+		vl::collections::List<vl::Ptr<Gt>> gts;
+		vl::Ptr<Plus> optional;
+		vl::Ptr<Plus> tail;
+		vl::collections::List<vl::Ptr<Plus>> tails;
+
+		void Accept(Feature::IVisitor* visitor) override;
+	};
+
 	class FeatureToResolve : public Feature, vl::reflection::Description<FeatureToResolve>
 	{
 	public:
@@ -104,6 +130,8 @@ namespace vl
 		{
 #ifndef VCZH_DEBUG_NO_REFLECTION
 			DECL_TYPE_INFO(featuretest::Plus)
+			DECL_TYPE_INFO(featuretest::Lt)
+			DECL_TYPE_INFO(featuretest::Gt)
 			DECL_TYPE_INFO(featuretest::Feature)
 			DECL_TYPE_INFO(featuretest::Feature::IVisitor)
 			DECL_TYPE_INFO(featuretest::OptionalProprity)
@@ -111,6 +139,7 @@ namespace vl
 			DECL_TYPE_INFO(featuretest::NestedOptionalFeature)
 			DECL_TYPE_INFO(featuretest::BranchType)
 			DECL_TYPE_INFO(featuretest::BranchedOptionalFeature)
+			DECL_TYPE_INFO(featuretest::PbaFeature)
 			DECL_TYPE_INFO(featuretest::FeatureToResolve)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
@@ -132,6 +161,11 @@ namespace vl
 				}
 
 				void Visit(featuretest::BranchedOptionalFeature* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+				void Visit(featuretest::PbaFeature* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}

@@ -22,10 +22,16 @@ FeatureTestAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return new featuretest::BranchedOptionalFeature();
 		case FeatureTestClasses::FeatureToResolve:
 			return new featuretest::FeatureToResolve();
+		case FeatureTestClasses::Gt:
+			return new featuretest::Gt();
+		case FeatureTestClasses::Lt:
+			return new featuretest::Lt();
 		case FeatureTestClasses::NestedOptionalFeature:
 			return new featuretest::NestedOptionalFeature();
 		case FeatureTestClasses::OptionalFeature:
 			return new featuretest::OptionalFeature();
+		case FeatureTestClasses::PbaFeature:
+			return new featuretest::PbaFeature();
 		case FeatureTestClasses::Plus:
 			return new featuretest::Plus();
 		default:
@@ -58,6 +64,16 @@ FeatureTestAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::glr::AssemblerSetObjectField(&featuretest::OptionalFeature::loop, object, field, value, cppFieldName);
 		case FeatureTestFields::OptionalFeature_optional:
 			return vl::glr::AssemblerSetObjectField(&featuretest::OptionalFeature::optional, object, field, value, cppFieldName);
+		case FeatureTestFields::PbaFeature_gts:
+			return vl::glr::AssemblerSetObjectField(&featuretest::PbaFeature::gts, object, field, value, cppFieldName);
+		case FeatureTestFields::PbaFeature_lts:
+			return vl::glr::AssemblerSetObjectField(&featuretest::PbaFeature::lts, object, field, value, cppFieldName);
+		case FeatureTestFields::PbaFeature_optional:
+			return vl::glr::AssemblerSetObjectField(&featuretest::PbaFeature::optional, object, field, value, cppFieldName);
+		case FeatureTestFields::PbaFeature_tail:
+			return vl::glr::AssemblerSetObjectField(&featuretest::PbaFeature::tail, object, field, value, cppFieldName);
+		case FeatureTestFields::PbaFeature_tails:
+			return vl::glr::AssemblerSetObjectField(&featuretest::PbaFeature::tails, object, field, value, cppFieldName);
 		default:
 			return vl::glr::AssemblyThrowFieldNotObject(field, cppFieldName);
 		}
@@ -89,12 +105,15 @@ FeatureTestAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"BranchedOptionalFeature",
 			L"Feature",
 			L"FeatureToResolve",
+			L"Gt",
+			L"Lt",
 			L"NestedOptionalFeature",
 			L"OptionalFeature",
+			L"PbaFeature",
 			L"Plus",
 		};
 		vl::vint index = (vl::vint)type;
-		return 0 <= index && index < 6 ? results[index] : nullptr;
+		return 0 <= index && index < 9 ? results[index] : nullptr;
 	}
 
 	const wchar_t* FeatureTestCppTypeName(FeatureTestClasses type)
@@ -103,12 +122,15 @@ FeatureTestAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"featuretest::BranchedOptionalFeature",
 			L"featuretest::Feature",
 			L"featuretest::FeatureToResolve",
+			L"featuretest::Gt",
+			L"featuretest::Lt",
 			L"featuretest::NestedOptionalFeature",
 			L"featuretest::OptionalFeature",
+			L"featuretest::PbaFeature",
 			L"featuretest::Plus",
 		};
 		vl::vint index = (vl::vint)type;
-		return 0 <= index && index < 6 ? results[index] : nullptr;
+		return 0 <= index && index < 9 ? results[index] : nullptr;
 	}
 
 	const wchar_t* FeatureTestFieldName(FeatureTestFields field)
@@ -126,9 +148,14 @@ FeatureTestAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"OptionalFeature::loop",
 			L"OptionalFeature::optional",
 			L"OptionalFeature::priority",
+			L"PbaFeature::gts",
+			L"PbaFeature::lts",
+			L"PbaFeature::optional",
+			L"PbaFeature::tail",
+			L"PbaFeature::tails",
 		};
 		vl::vint index = (vl::vint)field;
-		return 0 <= index && index < 12 ? results[index] : nullptr;
+		return 0 <= index && index < 17 ? results[index] : nullptr;
 	}
 
 	const wchar_t* FeatureTestCppFieldName(FeatureTestFields field)
@@ -146,9 +173,14 @@ FeatureTestAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"featuretest::OptionalFeature::loop",
 			L"featuretest::OptionalFeature::optional",
 			L"featuretest::OptionalFeature::priority",
+			L"featuretest::PbaFeature::gts",
+			L"featuretest::PbaFeature::lts",
+			L"featuretest::PbaFeature::optional",
+			L"featuretest::PbaFeature::tail",
+			L"featuretest::PbaFeature::tails",
 		};
 		vl::vint index = (vl::vint)field;
-		return 0 <= index && index < 12 ? results[index] : nullptr;
+		return 0 <= index && index < 17 ? results[index] : nullptr;
 	}
 
 	vl::Ptr<vl::glr::ParsingAstBase> FeatureTestAstInsReceiver::ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates)
@@ -166,6 +198,8 @@ FeatureTestAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::glr::AssemblerResolveAmbiguity<featuretest::NestedOptionalFeature, featuretest::FeatureToResolve>(type, candidates, cppTypeName);
 		case FeatureTestClasses::OptionalFeature:
 			return vl::glr::AssemblerResolveAmbiguity<featuretest::OptionalFeature, featuretest::FeatureToResolve>(type, candidates, cppTypeName);
+		case FeatureTestClasses::PbaFeature:
+			return vl::glr::AssemblerResolveAmbiguity<featuretest::PbaFeature, featuretest::FeatureToResolve>(type, candidates, cppTypeName);
 		default:
 			return vl::glr::AssemblyThrowTypeNotAllowAmbiguity(type, cppTypeName);
 		}

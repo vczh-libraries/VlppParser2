@@ -22,26 +22,35 @@ namespace featuretest
 			void CopyFields(BranchedOptionalFeature* from, BranchedOptionalFeature* to);
 			void CopyFields(Feature* from, Feature* to);
 			void CopyFields(FeatureToResolve* from, FeatureToResolve* to);
+			void CopyFields(Gt* from, Gt* to);
+			void CopyFields(Lt* from, Lt* to);
 			void CopyFields(NestedOptionalFeature* from, NestedOptionalFeature* to);
 			void CopyFields(OptionalFeature* from, OptionalFeature* to);
+			void CopyFields(PbaFeature* from, PbaFeature* to);
 			void CopyFields(Plus* from, Plus* to);
 
 		protected:
 			virtual void Visit(Plus* node);
+			virtual void Visit(Lt* node);
+			virtual void Visit(Gt* node);
 
 			void Visit(FeatureToResolve* node) override;
 			void Visit(OptionalFeature* node) override;
 			void Visit(NestedOptionalFeature* node) override;
 			void Visit(BranchedOptionalFeature* node) override;
+			void Visit(PbaFeature* node) override;
 
 		public:
 			virtual vl::Ptr<Feature> CopyNode(Feature* node);
 			virtual vl::Ptr<Plus> CopyNode(Plus* node);
+			virtual vl::Ptr<Lt> CopyNode(Lt* node);
+			virtual vl::Ptr<Gt> CopyNode(Gt* node);
 
 			vl::Ptr<BranchedOptionalFeature> CopyNode(BranchedOptionalFeature* node);
 			vl::Ptr<FeatureToResolve> CopyNode(FeatureToResolve* node);
 			vl::Ptr<NestedOptionalFeature> CopyNode(NestedOptionalFeature* node);
 			vl::Ptr<OptionalFeature> CopyNode(OptionalFeature* node);
+			vl::Ptr<PbaFeature> CopyNode(PbaFeature* node);
 		};
 	}
 }
