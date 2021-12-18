@@ -344,6 +344,7 @@ AstInsReceiverBase
 					case AstInsType::BeginObjectLeftRecursive:
 					case AstInsType::DelayFieldAssignment:
 					case AstInsType::ResolveAmbiguity:
+					case AstInsType::AccumulatedDfa:
 						break;
 					default:
 						throw AstInsException(
