@@ -296,6 +296,7 @@ Instructions
 			ObjectTypeMismatchedToField,				// ObjectTypeMismatchedToField(Field)	: Unable to assign an object to a field because the type does not match.
 
 			NoRootObject,								// NoRootObject()						: There is no created objects.
+			NoRootObjectAfterDfa,						// NoRootObjectAfterDfa()				: There is no created objects after DelayFieldAssignment.
 			MissingLeftRecursiveValue,					// MissingLeftRecursiveValue()			: There is no pushed value to create left recursive object.
 			LeftRecursiveValueIsNotObject,				// LeftRecursiveValueIsNotObject()		: The pushed value to create left recursive object is not an object.
 			TooManyUnassignedValues,					// LeavingUnassignedValues()			: The value to reopen is not the only unassigned value.
@@ -340,14 +341,6 @@ IAstInsReceiver
 		class AstInsReceiverBase : public Object, public virtual IAstInsReceiver
 		{
 		private:
-			struct CreatedObject
-			{
-				Ptr<ParsingAstBase>						object;
-				vint									pushedCount;
-
-				explicit CreatedObject(Ptr<ParsingAstBase> _object, vint _pushedCount) : object(_object), pushedCount(_pushedCount) {}
-			};
-
 			struct ObjectOrToken
 			{
 				Ptr<ParsingAstBase>						object;
@@ -359,12 +352,28 @@ IAstInsReceiver
 				explicit ObjectOrToken(const regex::RegexToken& _token) : token(_token) {}
 			};
 
+			struct FieldAssignment
+			{
+				ObjectOrToken							value;
+				vint32_t								field;
+			};
+
+			struct CreatedObject
+			{
+				Ptr<ParsingAstBase>						object;
+				vint									pushedCount;
+				collections::List<FieldAssignment>		delayedFieldAssignments;
+
+				explicit CreatedObject(Ptr<ParsingAstBase> _object, vint _pushedCount) : object(_object), pushedCount(_pushedCount) {}
+			};
+
 			collections::List<CreatedObject>			created;
 			collections::List<ObjectOrToken>			pushed;
 			bool										finished = false;
 			bool										corrupted = false;
 
 			void										EnsureContinuable();
+			void										SetField(ParsingAstBase* object, vint32_t field, const ObjectOrToken& value);
 		protected:
 			virtual Ptr<ParsingAstBase>					CreateAstNode(vint32_t type) = 0;
 			virtual void								SetField(ParsingAstBase* object, vint32_t field, Ptr<ParsingAstBase> value) = 0;

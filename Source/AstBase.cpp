@@ -269,6 +269,22 @@ AstInsReceiverBase
 			}
 		}
 
+		void AstInsReceiverBase::SetField(ParsingAstBase* object, vint32_t field, const ObjectOrToken& value)
+		{
+			if (value.object)
+			{
+				SetField(object, field, value.object);
+			}
+			else if (value.enumItem != -1)
+			{
+				SetField(object, field, value.enumItem);
+			}
+			else
+			{
+				SetField(object, field, value.token);
+			}
+		}
+
 		void AstInsReceiverBase::Execute(AstIns instruction, const regex::RegexToken& token)
 		{
 			EnsureContinuable();
@@ -381,6 +397,12 @@ AstInsReceiverBase
 						{
 							pushed.RemoveAt(pushed.Count() - 1);
 							createdObject.object = value.object;
+
+							for (auto&& dfa : createdObject.delayedFieldAssignments)
+							{
+								SetField(createdObject.object.Obj(), dfa.field, dfa.value);
+							}
+							createdObject.delayedFieldAssignments.Clear();
 						}
 						else
 						{
@@ -393,24 +415,36 @@ AstInsReceiverBase
 					break;
 				case AstInsType::EndObject:
 					{
-						auto createdObject = created[created.Count() - 1];
-						if (pushed.Count() > createdObject.pushedCount)
+						Ptr<ParsingAstBase> objectToPush;
 						{
-							throw AstInsException(
-								L"There are still values to assign to fields before finishing an object.",
-								AstInsErrorType::LeavingUnassignedValues
+							auto& createdObject = created[created.Count() - 1];
+							if (!createdObject.object)
+							{
+								throw AstInsException(
+									L"There is no created objects after DelayFieldAssignment.",
+									AstInsErrorType::NoRootObjectAfterDfa
+									);
+							}
+							if (pushed.Count() > createdObject.pushedCount)
+							{
+								throw AstInsException(
+									L"There are still values to assign to fields before finishing an object.",
+									AstInsErrorType::LeavingUnassignedValues
 								);
-						}
-						created.RemoveAt(created.Count() - 1);
+							}
 
-						createdObject.object->codeRange.end.row = token.rowEnd;
-						createdObject.object->codeRange.end.column = token.columnEnd;
-						pushed.Add(ObjectOrToken{ createdObject.object });
+							objectToPush = createdObject.object;
+							created.RemoveAt(created.Count() - 1);
+						}
+
+						objectToPush->codeRange.end.row = token.rowEnd;
+						objectToPush->codeRange.end.column = token.columnEnd;
+						pushed.Add(ObjectOrToken{ objectToPush });
 					}
 					break;
 				case AstInsType::DiscardValue:
 					{
-						auto createdObject = created[created.Count() - 1];
+						auto& createdObject = created[created.Count() - 1];
 						if (pushed.Count() <= createdObject.pushedCount)
 						{
 							throw AstInsException(
@@ -423,7 +457,7 @@ AstInsReceiverBase
 					break;
 				case AstInsType::Field:
 					{
-						auto createdObject = created[created.Count() - 1];
+						auto& createdObject = created[created.Count() - 1];
 						if (pushed.Count() <= createdObject.pushedCount)
 						{
 							throw AstInsException(
@@ -434,17 +468,14 @@ AstInsReceiverBase
 
 						auto value = pushed[pushed.Count() - 1];
 						pushed.RemoveAt(pushed.Count() - 1);
-						if (value.object)
+
+						if (createdObject.object)
 						{
-							SetField(createdObject.object.Obj(), instruction.param, value.object);
-						}
-						else if (value.enumItem != -1)
-						{
-							SetField(createdObject.object.Obj(), instruction.param, value.enumItem);
+							SetField(createdObject.object.Obj(), instruction.param, value);
 						}
 						else
 						{
-							SetField(createdObject.object.Obj(), instruction.param, value.token);
+							createdObject.delayedFieldAssignments.Add({ value,instruction.param });
 						}
 					}
 					break;
