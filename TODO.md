@@ -8,6 +8,7 @@
   - Generate **ToString** algorithm
 - Loop priority
 - Document the algorithm in a markdown file
+- From a given state and a few tokens, if none of state.returnStacks is reduced, and no new competition record is created, then the trace graph could be copied directly.
 
 ## Configurations
 
