@@ -287,7 +287,23 @@ AstInsReceiverBase
 
 		void AstInsReceiverBase::PushCreated(CreatedObject&& createdObject)
 		{
-			created.Add(std::move(createdObject));
+			if (created.Count() == 0)
+			{
+				created.Add(std::move(createdObject));
+			}
+			else
+			{
+				auto& top = created[created.Count() - 1];
+				if (!top.object && top.delayedFieldAssignments.Count() == 0 && top.pushedCount == createdObject.pushedCount)
+				{
+					top.object = createdObject.object;
+					top.extraEmptyDfaBelow++;
+				}
+				else
+				{
+					created.Add(std::move(createdObject));
+				}
+			}
 		}
 
 		const AstInsReceiverBase::CreatedObject& AstInsReceiverBase::TopCreated()
@@ -297,7 +313,17 @@ AstInsReceiverBase
 
 		void AstInsReceiverBase::PopCreated()
 		{
-			created.RemoveAt(created.Count() - 1);
+			auto& top = created[created.Count() - 1];
+			if (top.extraEmptyDfaBelow == 0)
+			{
+				created.RemoveAt(created.Count() - 1);
+			}
+			else if (top.object)
+			{
+				top.object = nullptr;
+				top.delayedFieldAssignments.Clear();
+				top.extraEmptyDfaBelow--;
+			}
 		}
 
 		void AstInsReceiverBase::DelayAssign(FieldAssignment&& fa)
