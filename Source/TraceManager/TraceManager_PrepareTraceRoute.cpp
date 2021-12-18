@@ -83,7 +83,7 @@ ReadInstruction
 RunInstruction
 ***********************************************************************/
 
-			bool TraceManager::RunInstruction(vint32_t instruction, TraceInsLists& insLists, vint32_t& objectCount)
+			bool TraceManager::RunInstruction(vint32_t instruction, TraceInsLists& insLists, vint32_t& objectCount, vint32_t& reopenCount)
 			{
 				// run an instruction to simulate the number of extra constructing AST objects in the stack
 #define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::SearchSingleTraceForBeginObject(Trace*&, vint&, vint&)#"
@@ -101,6 +101,16 @@ RunInstruction
 					break;
 				}
 
+				switch (ins.type)
+				{
+				case AstInsType::ReopenObject:
+					reopenCount++;
+					break;
+				case AstInsType::DelayFieldAssignment:
+					reopenCount--;
+					break;
+				}
+
 				// if we found a ReopenObject
 				// we should continue to search until we reach BeginObject or BeginObjectLeftRecursive
 				return objectCount == 0 && (ins.type == AstInsType::BeginObject || ins.type == AstInsType::BeginObjectLeftRecursive);
@@ -111,7 +121,7 @@ RunInstruction
 FindBalancedBoOrBolr
 ***********************************************************************/
 
-			void TraceManager::FindBalancedBoOrBolr(Trace*& trace, vint32_t& instruction, vint32_t& objectCount)
+			void TraceManager::FindBalancedBoOrBolr(Trace*& trace, vint32_t& instruction, vint32_t& objectCount, vint32_t& reopenCount)
 			{
 				// given the current instruction and the current constructing AST objects
 				// find the nearlest BeginObject or BeginObjectLeftRecursive before the current instruction
@@ -132,7 +142,7 @@ FindBalancedBoOrBolr
 						// and this EndObject instruction is not executed
 						for (auto i = instruction; i > trace->ambiguity.insEndObject; i--)
 						{
-							if (RunInstruction(i, insLists, objectCount))
+							if (RunInstruction(i, insLists, objectCount, reopenCount))
 							{
 								instruction = i;
 								return;
@@ -168,7 +178,7 @@ FindBalancedBoOrBolr
 
 						for (auto i = instruction; i >= 0; i--)
 						{
-							if (RunInstruction(i, insLists, objectCount))
+							if (RunInstruction(i, insLists, objectCount, reopenCount))
 							{
 								instruction = i;
 								return;
@@ -192,6 +202,7 @@ FindBalancedBeginObject
 
 			void TraceManager::FindBalancedBeginObject(Trace* trace, vint32_t objectCount, Trace*& branchTrace, vint32_t& branchInstruction, vint32_t& branchType)
 			{
+#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::FindBalancedBeginObject(Trace*, vint32_t, Trace*&, vint32_t&, vint32_t&)#"
 				// find the first balanced BeginObject or BeginObjectLeftRecursive
 				TraceInsLists branchInsLists;
 				ReadInstructionList(trace, branchInsLists);
@@ -199,7 +210,8 @@ FindBalancedBeginObject
 				branchTrace = trace;
 				branchInstruction = branchInsLists.c3 - 1;
 				vint32_t branchObjectCount = objectCount;
-				FindBalancedBoOrBolr(branchTrace, branchInstruction, branchObjectCount);
+				vint32_t branchReopenCount = 0;
+				FindBalancedBoOrBolr(branchTrace, branchInstruction, branchObjectCount, branchReopenCount);
 
 				// no matter if we found BeginObject or BeginObjectLeftRecursive
 				// we now know what type of the AST we need to resolve
@@ -211,14 +223,58 @@ FindBalancedBeginObject
 				// then we should continue until we reach the BeginObject
 				// because such BeginObject creates objects that eventually become part of BeginObjectLeftRecursive created objects
 				// we cannot allow sharing the same child AST object in different parent AST objects.
-				branchObjectCount = 0;
 				while (ins.type == AstInsType::BeginObjectLeftRecursive)
 				{
 					branchInstruction--;
-					FindBalancedBoOrBolr(branchTrace, branchInstruction, branchObjectCount);
+					FindBalancedBoOrBolr(branchTrace, branchInstruction, branchObjectCount, branchReopenCount);
 					ReadInstructionList(branchTrace, branchInsLists);
 					ins = ReadInstruction(branchInstruction, branchInsLists);
 				}
+
+				// if branchReopenCount > 0
+				// it means there must be this amount of DelayFieldAssignment instruction before BeginOpen
+				// the first DelayFieldAssignment must be located
+				if (branchReopenCount > 0)
+				{
+					ReadInstructionList(branchTrace, branchInsLists);
+					while (true)
+					{
+						branchInstruction--;
+						if (branchInstruction == -1)
+						{
+							// a merging trace must at least have one EndObject before the balanced BeginObject
+							// so it is not possible to see it here
+							CHECK_ERROR(branchTrace->predecessors.first == branchTrace->predecessors.last, ERROR_MESSAGE_PREFIX L"Unexpected merging trace when searching for DelayFieldAssignment.");
+							CHECK_ERROR(branchTrace->predecessors.first != -1, ERROR_MESSAGE_PREFIX L"Unexpected root trace when searching for DelayFieldAssignment.");
+							branchTrace = GetTrace(branchTrace->predecessors.first);
+							ReadInstructionList(branchTrace, branchInsLists);
+							branchInstruction = branchInsLists.c3 - 1;
+						}
+						else
+						{
+							auto& ins = ReadInstruction(branchInstruction, branchInsLists);
+							switch (ins.type)
+							{
+							case AstInsType::EndObject:
+								// if we see EndObject, find its balanced BeginObject or BeginObjectLeftRecursive
+								FindBalancedBoOrBolr(branchTrace, branchInstruction, branchObjectCount, branchReopenCount);
+								ReadInstructionList(branchTrace, branchInsLists);
+								break;
+							case AstInsType::ReopenObject:
+								branchReopenCount++;
+								break;
+							case AstInsType::DelayFieldAssignment:
+								branchReopenCount--;
+								if (branchReopenCount == 0)
+								{
+									return;
+								}
+								break;
+							}
+						}
+					}
+				}
+#undef ERROR_MESSAGE_PREFIX
 			}
 
 /***********************************************************************

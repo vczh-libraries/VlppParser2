@@ -60,6 +60,7 @@
     - `ReopenObject` put itself to the top created object (assert that it is fake), cached field assignments are executed
   - Verify ambiguity.
     - `<common prefix> !branch1` with `<common prefix> !branch2`.
+    - ambiguity in `<common prefix>`
   - Verify left recursion.
     - `<common prefix> !rule-with-left-recursive`, we cannot assign fields at the beginning of `rule-with-left-recursive`, we must wait until it reduces.
   - Optimize `Delay, Delay, Delay ... End, Reopen, End, Reopen, End, Reopen`
