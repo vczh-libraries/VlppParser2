@@ -163,6 +163,32 @@ namespace featuretest
 		void FeatureAstVisitor::PrintFields(Plus* node)
 		{
 		}
+		void FeatureAstVisitor::PrintFields(Pwa1Feature* node)
+		{
+			BeginField(L"gts");
+			BeginArray();
+			for (auto&& listItem : node->gts)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+			BeginField(L"lts");
+			BeginArray();
+			for (auto&& listItem : node->lts)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+			BeginField(L"pba");
+			Print(node->pba.Obj());
+			EndField();
+		}
 
 		void FeatureAstVisitor::Visit(FeatureToResolve* node)
 		{
@@ -231,6 +257,20 @@ namespace featuretest
 			WriteType(L"PbaFeature", node);
 			PrintFields(static_cast<Feature*>(node));
 			PrintFields(static_cast<PbaFeature*>(node));
+			EndObject();
+		}
+
+		void FeatureAstVisitor::Visit(Pwa1Feature* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"Pwa1Feature", node);
+			PrintFields(static_cast<Feature*>(node));
+			PrintFields(static_cast<Pwa1Feature*>(node));
 			EndObject();
 		}
 

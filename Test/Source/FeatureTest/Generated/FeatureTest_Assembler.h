@@ -22,6 +22,7 @@ namespace featuretest
 		OptionalFeature = 6,
 		PbaFeature = 7,
 		Plus = 8,
+		Pwa1Feature = 9,
 	};
 
 	enum class FeatureTestFields : vl::vint32_t
@@ -43,6 +44,9 @@ namespace featuretest
 		PbaFeature_optional = 14,
 		PbaFeature_tail = 15,
 		PbaFeature_tails = 16,
+		Pwa1Feature_gts = 17,
+		Pwa1Feature_lts = 18,
+		Pwa1Feature_pba = 19,
 	};
 
 	extern const wchar_t* FeatureTestTypeName(FeatureTestClasses type);

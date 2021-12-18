@@ -68,8 +68,32 @@ PbaGts
   ::= Gt:gts {Gt:gts} as partial PbaFeature
   ;
 
+PbaBody
+  ::= [Plus:optional] Plus {Plus:tails} as PbaFeature
+  ;
+
 Pba
-  ::= "prefix_before_ambiguity" {Lt:lts} PbaGts [Plus:optional] Plus {Plus:tails} as PbaFeature
+  ::= "prefix_before_ambiguity" {Lt:lts} PbaGts !PbaBody
+  ;
+
+Pwa1Prefix
+  ::= [Plus:optional] Plus {Plus:tails} as PbaFeature
+  ;
+
+Pwa1Body
+  ::= Lt:lts {Lt:lts} {Gt:gts} as Pwa1Feature
+  ;
+
+Pwa1
+  ::= "prefix_with_ambiguity_1" Pwa1Prefix:pba !Pwa1Body
+  ;
+
+Pwa2Body
+  ::= Lt:lts {Lt:lts} {Gt:gts} as PbaFeature
+  ;
+
+Pwa2
+  ::= "prefix_with_ambiguity_2" [Plus:optional] Plus {Plus:tails} !Pwa2Body
   ;
 
 Module
@@ -84,4 +108,6 @@ Module
   ::= "entry_rule_priority" -[Plus:optional] Plus {Plus:tails} as BranchedOptionalFeature {type = Minus}
   ::= "entry_rule_priority" [Plus:optional] Plus {Plus:tails} as BranchedOptionalFeature {type = NoCompetition}
   ::= !Pba
+  ::= !Pwa1
+  ::= !Pwa2
   ;

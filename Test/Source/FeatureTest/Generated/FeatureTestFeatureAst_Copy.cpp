@@ -89,6 +89,20 @@ namespace featuretest
 		{
 		}
 
+		void FeatureAstVisitor::CopyFields(Pwa1Feature* from, Pwa1Feature* to)
+		{
+			CopyFields(static_cast<Feature*>(from), static_cast<Feature*>(to));
+			for (auto&& listItem : from->gts)
+			{
+				to->gts.Add(CopyNode(listItem.Obj()));
+			}
+			for (auto&& listItem : from->lts)
+			{
+				to->lts.Add(CopyNode(listItem.Obj()));
+			}
+			to->pba = CopyNode(from->pba.Obj());
+		}
+
 		void FeatureAstVisitor::Visit(Plus* node)
 		{
 			auto newNode = vl::MakePtr<Plus>();
@@ -141,6 +155,13 @@ namespace featuretest
 		void FeatureAstVisitor::Visit(PbaFeature* node)
 		{
 			auto newNode = vl::MakePtr<PbaFeature>();
+			CopyFields(node, newNode.Obj());
+			this->result = newNode;
+		}
+
+		void FeatureAstVisitor::Visit(Pwa1Feature* node)
+		{
+			auto newNode = vl::MakePtr<Pwa1Feature>();
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
@@ -201,6 +222,12 @@ namespace featuretest
 		{
 			if (!node) return nullptr;
 			return CopyNode(static_cast<Feature*>(node)).Cast<PbaFeature>();
+		}
+
+		vl::Ptr<Pwa1Feature> FeatureAstVisitor::CopyNode(Pwa1Feature* node)
+		{
+			if (!node) return nullptr;
+			return CopyNode(static_cast<Feature*>(node)).Cast<Pwa1Feature>();
 		}
 
 	}

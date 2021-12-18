@@ -39,9 +39,6 @@
       1. [ ] Escaping / unescaping
       2. [ ] Manual test cases.
       3. [x] GacUI DarkSkin test cases.
-   3. [ ] Test Workflow parser.
-      1. [x] Workflow test cases
-      2. [ ] Optimize field assignment / partial rule before use rule, move `{Attribute:attributes}` back in `_Declaration`
 2. [ ] Port `CodePack` and `ParserGen` to `VlppParser2`, do not write to an existing file if the content is not changed.
    1. [ ] Create a new repo `BuildTools` and adapt the release license instead of the development license.
 
@@ -54,9 +51,6 @@
 - Optimize `CrossReferencedNFA` to merge prefix (two states can be merged if their `InEdges` are identical, `FromState` in `InEdges` are replaced by merged states).
   - Issue: `X ::= ([a] | [b]) c` fails because when both optional syntax fail it creates two trace routes to c and causes ambiguity.
 - Allow field assignment / partial rule before use rule.
-  - Verify ambiguity.
-    - `<common prefix> !branch1` with `<common prefix> !branch2`.
-    - ambiguity in `<common prefix>`
   - Verify left recursion.
     - `<common prefix> !rule-with-left-recursive`, we cannot assign fields at the beginning of `rule-with-left-recursive`, we must wait until it reduces.
 - `JsonEscapeString` `JsonUnescapeString` handle surrogate pairs correctly.

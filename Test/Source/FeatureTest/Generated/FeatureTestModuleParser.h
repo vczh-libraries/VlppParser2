@@ -31,8 +31,14 @@ namespace featuretest
 		NestedNegativeOptional = 63,
 		BranchedOptional = 69,
 		PbaGts = 83,
-		Pba = 87,
-		Module = 95,
+		PbaBody = 87,
+		Pba = 92,
+		Pwa1Prefix = 98,
+		Pwa1Body = 103,
+		Pwa1 = 108,
+		Pwa2Body = 113,
+		Pwa2 = 118,
+		Module = 125,
 	};
 
 	template<ModuleParserStates> struct ModuleParserStateTypes;

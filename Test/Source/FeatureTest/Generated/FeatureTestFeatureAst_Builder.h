@@ -70,6 +70,17 @@ namespace featuretest
 			PbaFeatureBuilder& tails(const vl::Ptr<Plus>& value);
 		};
 
+		class Pwa1FeatureBuilder
+		{
+		private:
+			Pwa1Feature* node;
+		public:
+			Pwa1FeatureBuilder(Pwa1Feature* _node) : node(_node) {}
+			Pwa1FeatureBuilder& gts(const vl::Ptr<Gt>& value);
+			Pwa1FeatureBuilder& lts(const vl::Ptr<Lt>& value);
+			Pwa1FeatureBuilder& pba(const vl::Ptr<PbaFeature>& value);
+		};
+
 		using MakeBranchedOptionalFeature = vl::glr::ParsingAstBuilder<BranchedOptionalFeature, BranchedOptionalFeatureBuilder>;
 		using MakeFeatureToResolve = vl::glr::ParsingAstBuilder<FeatureToResolve, FeatureToResolveBuilder>;
 		using MakeGt = vl::glr::ParsingAstBuilder<Gt>;
@@ -78,6 +89,7 @@ namespace featuretest
 		using MakeOptionalFeature = vl::glr::ParsingAstBuilder<OptionalFeature, OptionalFeatureBuilder>;
 		using MakePbaFeature = vl::glr::ParsingAstBuilder<PbaFeature, PbaFeatureBuilder>;
 		using MakePlus = vl::glr::ParsingAstBuilder<Plus>;
+		using MakePwa1Feature = vl::glr::ParsingAstBuilder<Pwa1Feature, Pwa1FeatureBuilder>;
 	}
 }
 #endif

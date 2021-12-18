@@ -132,5 +132,27 @@ PbaFeatureBuilder
 			node->tails.Add(value);
 			return *this;
 		}
+
+/***********************************************************************
+Pwa1FeatureBuilder
+***********************************************************************/
+
+		Pwa1FeatureBuilder& Pwa1FeatureBuilder::gts(const vl::Ptr<Gt>& value)
+		{
+			node->gts.Add(value);
+			return *this;
+		}
+
+		Pwa1FeatureBuilder& Pwa1FeatureBuilder::lts(const vl::Ptr<Lt>& value)
+		{
+			node->lts.Add(value);
+			return *this;
+		}
+
+		Pwa1FeatureBuilder& Pwa1FeatureBuilder::pba(const vl::Ptr<PbaFeature>& value)
+		{
+			node->pba = value;
+			return *this;
+		}
 	}
 }
