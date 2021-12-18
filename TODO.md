@@ -54,6 +54,10 @@
 - Allow field assignment / partial rule before use rule.
   - Exactly one use rule is ensured in any possible combination of inputs for a reuse clause.
   - We can count and cache how many fields are assigned before a use rule in the receiver.
+  - Add a new instruction like `DelayFieldAssignment` for reuse clause
+    - `DelayFieldAssignment` creates a fake created object
+    - If the top created object is fake, field assignments are cached inside it
+    - `ReopenObject` put itself to the top created object (assert that it is fake), cached field assignments are executed
   - Verify ambiguity.
     - `<common prefix> !branch1` with `<common prefix> !branch2`.
   - Verify left recursion.
