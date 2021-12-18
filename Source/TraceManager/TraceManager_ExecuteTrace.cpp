@@ -37,6 +37,7 @@ TraceManager::ExecuteTrace
 						if (aeoroToken == nullptr && cachedToken == nullptr && (adfaToken == nullptr || adfaToken == &token))
 						{
 							adfaCount++;
+							adfaToken = &token;
 						}
 						else
 						{
@@ -103,12 +104,14 @@ TraceManager::ExecuteTrace
 							AstIns ins = { AstInsType::AccumulatedDfa,-1,adfaCount };
 							receiver->Execute(ins, *adfaToken);
 						}
+						adfaCount = 0;
 						adfaToken = nullptr;
 					}
 					if (aeoroToken)
 					{
 						AstIns ins = { AstInsType::AccumulatedEoRo,-1,aeoroCount };
 						receiver->Execute(ins, *aeoroToken);
+						aeoroCount = 0;
 						aeoroToken = nullptr;
 					}
 					if (cachedToken)
