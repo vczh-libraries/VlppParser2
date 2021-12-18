@@ -46,6 +46,12 @@ void LogInstruction(
 	case AstInsType::ResolveAmbiguity:
 		writer.WriteLine(L"ResolveAmbiguity(" + typeName(ins.param) + L", " + itow(ins.count) + L")");
 		break;
+	case AstInsType::AccumulatedDfa:
+		writer.WriteLine(L"AccumulatedDfa(" + itow(ins.count) + L")");
+		break;
+	case AstInsType::AccumulatedEoRo:
+		writer.WriteLine(L"AccumulatedEoRo(" + itow(ins.count) + L")");
+		break;
 	default:
 		writer.WriteLine(L"<UNKNOWN-INSTRUCTION>");
 	}

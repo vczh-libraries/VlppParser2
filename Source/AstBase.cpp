@@ -557,6 +557,8 @@ AstInsReceiverBase
 						pushed.Add(ObjectOrToken{ ResolveAmbiguity(instruction.param, candidates) });
 					}
 					break;
+				default:
+					CHECK_FAIL(L"vl::glr::AstInsReceiverBase::Execute(AstIns, const regex::RegexToken&)#Unknown Instruction.");
 				}
 			}
 			catch (const AstInsException&)

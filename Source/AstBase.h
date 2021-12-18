@@ -259,6 +259,9 @@ Instructions
 			DiscardValue,								// DiscardValue()					: Remove a pushed value.
 			Field,										// Field(Field)						: Associate a field name with the top object.
 			ResolveAmbiguity,							// ResolveAmbiguity(Type, Count)	: Combine several top objects to one using an ambiguity node. Type is the type of each top object.
+
+			AccumulatedDfa,								// AccumulatedDfa(Count)			: Multiple DelayFieldAssignment
+			AccumulatedEoRo,							// AccumulatedEoRo(Count)			: Multiple EndObject + ReopenObject
 		};
 
 		struct AstIns

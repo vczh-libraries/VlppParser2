@@ -12,46 +12,110 @@ TraceManager::ExecuteTrace
 
 			struct TraceManagerSubmitter
 			{
-				//AstIns					submittedInstruction;
-				//regex::RegexToken*		submittedToken = nullptr;
-				//bool					submitted = false;
+				// AccumulatedDfa
+				vint32_t				adfaCount = 0;
+				regex::RegexToken*		adfaToken = nullptr;
+
+				// AccumulatedEoRo
+				vint32_t				aeoroCount = 0;
+				regex::RegexToken*		aeoroToken = nullptr;
+
+				// Caching
+				AstIns					cachedIns;
+				regex::RegexToken*		cachedToken = nullptr;
+
 				IAstInsReceiver*		receiver = nullptr;
 
 				void Submit(AstIns& ins, regex::RegexToken& token)
 				{
-					receiver->Execute(ins, token);
-					// ReopenObject and EndObject cancel each other
-					// so we don't execute adjacent {EndObject, ReopenObject} or {ReopenObject, EndObject}
-					// when an instruction is submitted
-					// the previous instruction is executed and the current one is put on wait
-					// it gives us a chance to detect the pattern and cancel both instructions
+					// multiple DelayFieldAssignment are compressed to single AccumulatedDfa
+					// multiple EndObject+ReopenObject are compressed to single AccumulatedEoRo
 
-					//if (submitted)
-					//{
-					//	if (
-					//		(submittedInstruction.type == AstInsType::EndObject && ins.type == AstInsType::ReopenObject) ||
-					//		(submittedInstruction.type == AstInsType::ReopenObject && ins.type == AstInsType::EndObject))
-					//	{
-					//		submitted = false;
-					//		submittedToken = nullptr;
-					//		return;
-					//	}
-					//}
-					//
-					//ExecuteSubmitted();
-					//submittedInstruction = ins;
-					//submittedToken = &token;
-					//submitted = true;
+					switch (ins.type)
+					{
+					case AstInsType::DelayFieldAssignment:
+						if (aeoroToken == nullptr && cachedToken == nullptr && (adfaToken == nullptr || adfaToken == &token))
+						{
+							adfaCount++;
+						}
+						else
+						{
+							ExecuteSubmitted();
+							adfaCount = 1;
+							adfaToken = &token;
+						}
+						break;
+					case AstInsType::EndObject:
+						if (adfaToken == nullptr && cachedToken == nullptr)
+						{
+							cachedIns = ins;
+							cachedToken = &token;
+						}
+						else
+						{
+							ExecuteSubmitted();
+							cachedIns = ins;
+							cachedToken = &token;
+						}
+						break;
+					case AstInsType::ReopenObject:
+						if (adfaToken != nullptr || cachedToken == nullptr || cachedIns.type != AstInsType::EndObject)
+						{
+							ExecuteSubmitted();
+							receiver->Execute(ins, token);
+						}
+						else if ((aeoroToken == nullptr || aeoroToken == &token) && cachedToken == &token)
+						{
+							aeoroCount++;
+							aeoroToken = &token;
+							cachedToken = nullptr;
+						}
+						else if (cachedToken == &token)
+						{
+							cachedToken = nullptr;
+							ExecuteSubmitted();
+							aeoroCount = 1;
+							aeoroToken = &token;
+						}
+						else
+						{
+							ExecuteSubmitted();
+							receiver->Execute(ins, token);
+						}
+						break;
+					default:
+						ExecuteSubmitted();
+						receiver->Execute(ins, token);
+					}
 				}
 
 				void ExecuteSubmitted()
 				{
-					//if (submitted)
-					//{
-					//	receiver->Execute(submittedInstruction, *submittedToken);
-					//	submittedToken = nullptr;
-					//	submitted = false;
-					//}
+					if (adfaToken)
+					{
+						if (adfaCount == 1)
+						{
+							AstIns ins = { AstInsType::DelayFieldAssignment };
+							receiver->Execute(ins, *adfaToken);
+						}
+						else
+						{
+							AstIns ins = { AstInsType::AccumulatedDfa,-1,adfaCount };
+							receiver->Execute(ins, *adfaToken);
+						}
+						adfaToken = nullptr;
+					}
+					if (aeoroToken)
+					{
+						AstIns ins = { AstInsType::AccumulatedEoRo,-1,aeoroCount };
+						receiver->Execute(ins, *aeoroToken);
+						aeoroToken = nullptr;
+					}
+					if (cachedToken)
+					{
+						receiver->Execute(cachedIns, *cachedToken);
+						cachedToken = nullptr;
+					}
 				}
 			};
 
