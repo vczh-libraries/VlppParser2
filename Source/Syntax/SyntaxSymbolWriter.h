@@ -501,7 +501,10 @@ Builder
 						clauseDisplayText += L"<< ";
 						auto bodyPair = Build(clause.body);
 						clauseDisplayText += L" >>";
-						CreateEdge(pair.begin, bodyPair.begin);
+						{
+							auto edge = CreateEdge(pair.begin, bodyPair.begin);
+							edge->insBeforeInput.Add({ AstInsType::DelayFieldAssignment });
+						}
 						{
 							auto edge = CreateEdge(bodyPair.end, pair.end);
 							edge->insBeforeInput.Add({ AstInsType::EndObject });

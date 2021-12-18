@@ -375,7 +375,10 @@ CompileSyntaxVisitor
 						bodyPair = Visit(bodyPair, assignment.Obj());
 					}
 					clauseDisplayText += L" >>";
-					CreateEdge(pair.begin, bodyPair.begin);
+					{
+						auto edge = CreateEdge(pair.begin, bodyPair.begin);
+						edge->insBeforeInput.Add({ AstInsType::DelayFieldAssignment });
+					}
 					{
 						auto edge = CreateEdge(bodyPair.end, pair.end);
 						edge->insBeforeInput.Add({ AstInsType::EndObject });

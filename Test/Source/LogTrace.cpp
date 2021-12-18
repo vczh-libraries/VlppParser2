@@ -28,6 +28,9 @@ void LogInstruction(
 	case AstInsType::BeginObjectLeftRecursive:
 		writer.WriteLine(L"BeginObjectLeftRecursive(" + typeName(ins.param) + L")");
 		break;
+	case AstInsType::DelayFieldAssignment:
+		writer.WriteLine(L"DelayFieldAssignment()");
+		break;
 	case AstInsType::ReopenObject:
 		writer.WriteLine(L"ReopenObject()");
 		break;

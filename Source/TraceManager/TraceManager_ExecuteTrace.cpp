@@ -12,45 +12,46 @@ TraceManager::ExecuteTrace
 
 			struct TraceManagerSubmitter
 			{
-				AstIns					submittedInstruction;
-				regex::RegexToken*		submittedToken = nullptr;
-				bool					submitted = false;
+				//AstIns					submittedInstruction;
+				//regex::RegexToken*		submittedToken = nullptr;
+				//bool					submitted = false;
 				IAstInsReceiver*		receiver = nullptr;
 
 				void Submit(AstIns& ins, regex::RegexToken& token)
 				{
+					receiver->Execute(ins, token);
 					// ReopenObject and EndObject cancel each other
 					// so we don't execute adjacent {EndObject, ReopenObject} or {ReopenObject, EndObject}
 					// when an instruction is submitted
 					// the previous instruction is executed and the current one is put on wait
 					// it gives us a chance to detect the pattern and cancel both instructions
 
-					if (submitted)
-					{
-						if (
-							(submittedInstruction.type == AstInsType::EndObject && ins.type == AstInsType::ReopenObject) ||
-							(submittedInstruction.type == AstInsType::ReopenObject && ins.type == AstInsType::EndObject))
-						{
-							submitted = false;
-							submittedToken = nullptr;
-							return;
-						}
-					}
-
-					ExecuteSubmitted();
-					submittedInstruction = ins;
-					submittedToken = &token;
-					submitted = true;
+					//if (submitted)
+					//{
+					//	if (
+					//		(submittedInstruction.type == AstInsType::EndObject && ins.type == AstInsType::ReopenObject) ||
+					//		(submittedInstruction.type == AstInsType::ReopenObject && ins.type == AstInsType::EndObject))
+					//	{
+					//		submitted = false;
+					//		submittedToken = nullptr;
+					//		return;
+					//	}
+					//}
+					//
+					//ExecuteSubmitted();
+					//submittedInstruction = ins;
+					//submittedToken = &token;
+					//submitted = true;
 				}
 
 				void ExecuteSubmitted()
 				{
-					if (submitted)
-					{
-						receiver->Execute(submittedInstruction, *submittedToken);
-						submittedToken = nullptr;
-						submitted = false;
-					}
+					//if (submitted)
+					//{
+					//	receiver->Execute(submittedInstruction, *submittedToken);
+					//	submittedToken = nullptr;
+					//	submitted = false;
+					//}
 				}
 			};
 
