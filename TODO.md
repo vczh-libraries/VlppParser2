@@ -31,13 +31,16 @@
 
 1. [x] `ParserTest_ParserGen_Generated`
    1. [ ] Test JSON parser.
-      1. [ ] Manual test cases.
-      2. [x] Parser output test cases.
+      1. [ ] Escaping / unescaping
+      2. [ ] Manual test cases.
+      3. [x] Parser output test cases.
    2. [ ] Test XML parser.
-      1. [ ] Manual test cases.
-      2. [x] GacUI DarkSkin test cases.
+      1. [ ] Escaping / unescaping
+      2. [ ] Manual test cases.
+      3. [x] GacUI DarkSkin test cases.
    3. [ ] Test Workflow parser.
       1. [x] Workflow test cases
+      2. [ ] Optimize field assignment / partial rule before use rule, move `{Attribute:attributes}` back in `_Declaration`
 2. [ ] Port `CodePack` and `ParserGen` to `VlppParser2`, do not write to an existing file if the content is not changed.
    1. [ ] Create a new repo `BuildTools` and adapt the release license instead of the development license.
 
@@ -48,6 +51,10 @@
   - for example, when `Exp` is reopened to run `( Exp @ )`, then the created ast begins from `Exp` but ends at `)`.
 - Optimize `CrossReferencedNFA` to merge prefix (two states can be merged if their `InEdges` are identical, `FromState` in `InEdges` are replaced by merged states).
   - Issue: `X ::= ([a] | [b]) c` fails because when both optional syntax fail it creates two trace routes to c and causes ambiguity.
+- Allow field assignment / partial rule before use rule.
+  - Exactly one use rule is ensured in any possible combination of inputs for a reuse clause.
+  - We can count and cache how many fields are assigned before a use rule in the receiver.
+  - Verify ambiguity containing field assignment / partial rule before use rule.
 - `JsonEscapeString` `JsonUnescapeString` handle surrogate pairs correctly.
 - `ParserTest_AstParserGen`
   - Test Copy Visitors
