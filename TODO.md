@@ -64,6 +64,8 @@
   - Verify left recursion.
     - `<common prefix> !rule-with-left-recursive`, we cannot assign fields at the beginning of `rule-with-left-recursive`, we must wait until it reduces.
   - Optimize `Delay, Delay, Delay ... End, Reopen, End, Reopen, End, Reopen`
+    - Compress multiple consecutive `Delay 1` to `Delay count`
+    - Compress multiple consecutive `End, Reopen` to `EndObjectReopenObject count`
 - `JsonEscapeString` `JsonUnescapeString` handle surrogate pairs correctly.
 - `ParserTest_AstParserGen`
   - Test Copy Visitors
