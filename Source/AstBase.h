@@ -362,7 +362,9 @@ IAstInsReceiver
 			{
 				Ptr<ParsingAstBase>						object;
 				vint									pushedCount;
+
 				collections::List<FieldAssignment>		delayedFieldAssignments;
+				vint									extraEmptyDfaBelow = 0;
 
 				explicit CreatedObject(Ptr<ParsingAstBase> _object, vint _pushedCount) : object(_object), pushedCount(_pushedCount) {}
 			};
@@ -374,6 +376,9 @@ IAstInsReceiver
 
 			void										EnsureContinuable();
 			void										SetField(ParsingAstBase* object, vint32_t field, const ObjectOrToken& value);
+			void										PushCreated(CreatedObject&& createdObject);
+			void										ReplaceTopCreated(Ptr<ParsingAstBase> astObject);
+			void										PopCreated();
 		protected:
 			virtual Ptr<ParsingAstBase>					CreateAstNode(vint32_t type) = 0;
 			virtual void								SetField(ParsingAstBase* object, vint32_t field, Ptr<ParsingAstBase> value) = 0;

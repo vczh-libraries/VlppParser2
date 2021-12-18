@@ -285,6 +285,16 @@ AstInsReceiverBase
 			}
 		}
 
+		void AstInsReceiverBase::PushCreated(CreatedObject&& createdObject)
+		{
+			created.Add(std::move(createdObject));
+		}
+
+		void AstInsReceiverBase::PopCreated()
+		{
+			created.RemoveAt(created.Count() - 1);
+		}
+
 		void AstInsReceiverBase::Execute(AstIns instruction, const regex::RegexToken& token)
 		{
 			EnsureContinuable();
@@ -333,7 +343,7 @@ AstInsReceiverBase
 						value->codeRange.end.row = token.rowEnd;
 						value->codeRange.end.column = token.columnEnd;
 						value->codeRange.codeIndex = token.codeIndex;
-						created.Add(CreatedObject{ value,pushed.Count() });
+						PushCreated(CreatedObject{ value,pushed.Count() });
 					}
 					break;
 				case AstInsType::BeginObjectLeftRecursive:
@@ -351,7 +361,7 @@ AstInsReceiverBase
 						{
 							auto value = CreateAstNode(instruction.param);
 							value->codeRange = subValue.object->codeRange;
-							created.Add(CreatedObject{ value,pushed.Count() - 1 });
+							PushCreated(CreatedObject{ value,pushed.Count() - 1 });
 						}
 						else
 						{
@@ -364,7 +374,7 @@ AstInsReceiverBase
 					break;
 				case AstInsType::DelayFieldAssignment:
 					{
-						created.Add(CreatedObject{ nullptr,pushed.Count() });
+						PushCreated(CreatedObject{ nullptr,pushed.Count() });
 					}
 					break;
 				case AstInsType::ReopenObject:
@@ -430,11 +440,11 @@ AstInsReceiverBase
 								throw AstInsException(
 									L"There are still values to assign to fields before finishing an object.",
 									AstInsErrorType::LeavingUnassignedValues
-								);
+									);
 							}
 
 							objectToPush = createdObject.object;
-							created.RemoveAt(created.Count() - 1);
+							PopCreated();
 						}
 
 						objectToPush->codeRange.end.row = token.rowEnd;
