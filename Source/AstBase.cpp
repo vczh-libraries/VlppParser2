@@ -290,9 +290,19 @@ AstInsReceiverBase
 			created.Add(std::move(createdObject));
 		}
 
+		const AstInsReceiverBase::CreatedObject& AstInsReceiverBase::TopCreated()
+		{
+			return created[created.Count() - 1];
+		}
+
 		void AstInsReceiverBase::PopCreated()
 		{
 			created.RemoveAt(created.Count() - 1);
+		}
+
+		void AstInsReceiverBase::DelayAssign(FieldAssignment&& fa)
+		{
+			created[created.Count() - 1].delayedFieldAssignments.Add(std::move(fa));
 		}
 
 		void AstInsReceiverBase::Execute(AstIns instruction, const regex::RegexToken& token)
@@ -320,7 +330,7 @@ AstInsReceiverBase
 				vint expectedLeavings = 0;
 				if (created.Count() > 0)
 				{
-					expectedLeavings = created[created.Count() - 1].pushedCount;
+					expectedLeavings = TopCreated().pushedCount;
 				}
 
 				switch (instruction.type)
@@ -427,7 +437,7 @@ AstInsReceiverBase
 					{
 						Ptr<ParsingAstBase> objectToPush;
 						{
-							auto& createdObject = created[created.Count() - 1];
+							auto& createdObject = TopCreated();
 							if (!createdObject.object)
 							{
 								throw AstInsException(
@@ -454,7 +464,7 @@ AstInsReceiverBase
 					break;
 				case AstInsType::DiscardValue:
 					{
-						auto& createdObject = created[created.Count() - 1];
+						auto& createdObject = TopCreated();
 						if (pushed.Count() <= createdObject.pushedCount)
 						{
 							throw AstInsException(
@@ -467,7 +477,7 @@ AstInsReceiverBase
 					break;
 				case AstInsType::Field:
 					{
-						auto& createdObject = created[created.Count() - 1];
+						auto& createdObject = TopCreated();
 						if (pushed.Count() <= createdObject.pushedCount)
 						{
 							throw AstInsException(
@@ -485,7 +495,7 @@ AstInsReceiverBase
 						}
 						else
 						{
-							createdObject.delayedFieldAssignments.Add({ value,instruction.param });
+							DelayAssign({ value,instruction.param });
 						}
 					}
 					break;

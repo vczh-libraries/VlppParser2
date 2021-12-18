@@ -376,9 +376,11 @@ IAstInsReceiver
 
 			void										EnsureContinuable();
 			void										SetField(ParsingAstBase* object, vint32_t field, const ObjectOrToken& value);
+
 			void										PushCreated(CreatedObject&& createdObject);
-			void										ReplaceTopCreated(Ptr<ParsingAstBase> astObject);
+			const CreatedObject&						TopCreated();
 			void										PopCreated();
+			void										DelayAssign(FieldAssignment&& fa);
 		protected:
 			virtual Ptr<ParsingAstBase>					CreateAstNode(vint32_t type) = 0;
 			virtual void								SetField(ParsingAstBase* object, vint32_t field, Ptr<ParsingAstBase> value) = 0;
