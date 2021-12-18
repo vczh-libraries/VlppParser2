@@ -94,6 +94,7 @@ export (1)
 		TEST_ASSERT(tokens.Count() == 4);
 		CalculatorAstInsReceiver receiver;
 		receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::Module }, tokens[0]);
+		receiver.Execute({ AstInsType::DelayFieldAssignment }, tokens[2]);
 		receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::NumExpr }, tokens[2]);
 		receiver.Execute({ AstInsType::Token }, tokens[2]);
 		receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::NumExpr_value }, tokens[2]);

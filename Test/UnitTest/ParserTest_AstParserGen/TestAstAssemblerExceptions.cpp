@@ -99,6 +99,7 @@ export 1
 		LEXER(input, tokens);
 		CalculatorAstInsReceiver receiver;
 		receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::Module }, tokens[0]);
+		receiver.Execute({ AstInsType::DelayFieldAssignment }, tokens[1]);
 		receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::NumExpr }, tokens[1]);
 		receiver.Execute({ AstInsType::EndObject }, tokens[1]);
 		receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::NumExpr }, tokens[1]);
@@ -119,6 +120,7 @@ export 1
 		CalculatorAstInsReceiver receiver;
 		receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::Module }, tokens[0]);
 		receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::NumExpr }, tokens[1]);
+		receiver.Execute({ AstInsType::DelayFieldAssignment }, tokens[1]);
 		TEST_EXCEPTION(
 			receiver.Execute({ AstInsType::ReopenObject }, tokens[1]),
 			AstInsException,
@@ -134,6 +136,7 @@ export 1
 		LEXER(input, tokens);
 		CalculatorAstInsReceiver receiver;
 		receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::Module }, tokens[0]);
+		receiver.Execute({ AstInsType::DelayFieldAssignment }, tokens[1]);
 		receiver.Execute({ AstInsType::Token }, tokens[1]);
 		TEST_EXCEPTION(
 			receiver.Execute({ AstInsType::ReopenObject }, tokens[1]),
@@ -150,6 +153,7 @@ export 1
 		LEXER(input, tokens);
 		CalculatorAstInsReceiver receiver;
 		receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::Module }, tokens[0]);
+		receiver.Execute({ AstInsType::DelayFieldAssignment }, tokens[1]);
 		receiver.Execute({ AstInsType::EnumItem, 0 }, tokens[1]);
 		TEST_EXCEPTION(
 			receiver.Execute({ AstInsType::ReopenObject }, tokens[1]),

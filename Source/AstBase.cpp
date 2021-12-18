@@ -280,7 +280,7 @@ AstInsReceiverBase
 					{
 					case AstInsType::BeginObject:
 					case AstInsType::BeginObjectLeftRecursive:
-					case AstInsType::ReopenObject:
+					case AstInsType::DelayFieldAssignment:
 					case AstInsType::ResolveAmbiguity:
 						break;
 					default:
@@ -346,8 +346,21 @@ AstInsReceiverBase
 						}
 					}
 					break;
+				case AstInsType::DelayFieldAssignment:
+					{
+						created.Add(CreatedObject{ nullptr,pushed.Count() });
+					}
+					break;
 				case AstInsType::ReopenObject:
 					{
+						auto& createdObject = created[created.Count() - 1];
+						if (createdObject.object)
+						{
+							throw AstInsException(
+								L"DelayFieldAssignment is not submitted before ReopenObject.",
+								AstInsErrorType::MissingDfaBeforeReopen
+								);
+						}
 						if (pushed.Count() < expectedLeavings + 1)
 						{
 							throw AstInsException(
@@ -367,7 +380,7 @@ AstInsReceiverBase
 						if (value.object)
 						{
 							pushed.RemoveAt(pushed.Count() - 1);
-							created.Add(CreatedObject{ value.object,pushed.Count() });
+							createdObject.object = value.object;
 						}
 						else
 						{
