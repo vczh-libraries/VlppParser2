@@ -557,6 +557,47 @@ AstInsReceiverBase
 						pushed.Add(ObjectOrToken{ ResolveAmbiguity(instruction.param, candidates) });
 					}
 					break;
+				case AstInsType::AccumulatedDfa:
+					{
+						PushCreated(CreatedObject{ nullptr,pushed.Count() });
+						created[created.Count() - 1].extraEmptyDfaBelow += instruction.count - 1;
+					}
+					break;
+				case AstInsType::AccumulatedEoRo:
+					{
+						while (instruction.count > 0)
+						{
+							auto& createdObject = created[created.Count() - 1];
+							if (!createdObject.object)
+							{
+								throw AstInsException(
+									L"There is no created objects after DelayFieldAssignment.",
+									AstInsErrorType::NoRootObjectAfterDfa
+									);
+							}
+							if (pushed.Count() > createdObject.pushedCount)
+							{
+								throw AstInsException(
+									L"There are still values to assign to fields before finishing an object.",
+									AstInsErrorType::LeavingUnassignedValues
+									);
+							}
+
+							if (createdObject.extraEmptyDfaBelow >= instruction.count)
+							{
+								createdObject.extraEmptyDfaBelow -= instruction.count;
+								instruction.count = 0;
+							}
+							else
+							{
+								instruction.count -= createdObject.extraEmptyDfaBelow + 1;
+								createdObject.extraEmptyDfaBelow = 0;
+								Execute({ AstInsType::EndObject }, token);
+								Execute({ AstInsType::ReopenObject }, token);
+							}
+						}
+					}
+					break;
 				default:
 					CHECK_FAIL(L"vl::glr::AstInsReceiverBase::Execute(AstIns, const regex::RegexToken&)#Unknown Instruction.");
 				}
