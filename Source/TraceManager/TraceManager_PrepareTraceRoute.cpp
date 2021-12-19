@@ -533,7 +533,8 @@ CreateLastMergingTrace
 				}
 
 				// second, create a merging ending trace
-				// instructions before the last EndObject could be different
+				// such merging ending trace has no instruction
+				// it just merges all ending traces
 				auto mergingTrace = AllocateTrace();
 				for (vint i = 0; i < concurrentCount; i++)
 				{
@@ -542,7 +543,6 @@ CreateLastMergingTrace
 					{
 						// copy data from the first one
 						mergingTrace->state = trace->state;
-						mergingTrace->byEdge = trace->byEdge;
 						mergingTrace->byInput = trace->byInput;
 						mergingTrace->currentTokenIndex = trace->currentTokenIndex;
 
@@ -553,47 +553,12 @@ CreateLastMergingTrace
 						ReadInstructionList(mergingTrace, insLists);
 						mergingTrace->ambiguity.traceBeginObject = rootTraceCandidate->allocatedIndex;
 						mergingTrace->ambiguity.insBeginObject = 0;
-						mergingTrace->ambiguity.insEndObject = insLists.c3 - 1;
+						mergingTrace->ambiguity.insEndObject = 0;
 						mergingTrace->ambiguity.ambiguityType = ambiguityType;
-						mergingTrace->ambiguityInsPostfix = 1;
 					}
 
-					if (trace->predecessors.first == trace->predecessors.last)
-					{
-						// if this trace has only one predecessor
-						// set the postfix size
-						trace->ambiguityInsPostfix = 1;
-						AddTraceToCollection(mergingTrace, trace, &Trace::predecessors);
-						AddTraceToCollection(trace, mergingTrace, &Trace::successors);
-					}
-					else
-					{
-						// otherwise, we need to copy it for all predecessors
-						// so that we could set the postfix size
-						vint32_t predecessorId = trace->predecessors.first;
-						while (predecessorId != -1)
-						{
-							auto predecessor = GetTrace(predecessorId);
-							predecessorId = predecessor->predecessors.siblingNext;
-
-							predecessor->predecessors.siblingNext = -1;
-							predecessor->predecessors.siblingPrev = -1;
-							predecessor->successors = {};
-
-							auto endingTrace = AllocateTrace();
-							endingTrace->state = trace->state;
-							endingTrace->byEdge = trace->byEdge;
-							endingTrace->byInput = trace->byInput;
-							endingTrace->currentTokenIndex = trace->currentTokenIndex;
-							endingTrace->competitionRouting = trace->competitionRouting;
-							endingTrace->ambiguityInsPostfix = 1;
-
-							AddTraceToCollection(endingTrace, predecessor, &Trace::predecessors);
-							AddTraceToCollection(predecessor, endingTrace, &Trace::successors);
-							AddTraceToCollection(mergingTrace, endingTrace, &Trace::predecessors);
-							AddTraceToCollection(endingTrace, mergingTrace, &Trace::successors);
-						}
-					}
+					AddTraceToCollection(mergingTrace, trace, &Trace::predecessors);
+					AddTraceToCollection(trace, mergingTrace, &Trace::successors);
 				}
 
 				// finally, the new merging trace should be the only surviving trace

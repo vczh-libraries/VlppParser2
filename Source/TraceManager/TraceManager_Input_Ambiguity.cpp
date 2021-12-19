@@ -13,12 +13,6 @@ AreTwoTraceEqual
 
 			bool TraceManager::AreTwoEndingInputTraceEqual(vint32_t state, vint32_t returnStack, vint32_t executedReturnStack, vint32_t acId, Trace* candidate)
 			{
-				// merging ending traces are handled by CreateLastMergingTrace
-				if (executable.states[state].endingState)
-				{
-					return false;
-				}
-
 				// two traces equal to each other if
 				//   1) they are in the same state
 				//   2) they have the same returnStack before executing the EndingInput transitions
