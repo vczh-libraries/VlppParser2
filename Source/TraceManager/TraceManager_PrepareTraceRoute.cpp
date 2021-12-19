@@ -118,6 +118,21 @@ RunInstruction
 			}
 
 /***********************************************************************
+AdjustToRealTrace
+***********************************************************************/
+
+			void TraceManager::AdjustToRealTrace(SharedBeginObject& shared)
+			{
+				TraceInsLists insLists;
+				ReadInstructionList(shared.traceBeginObject, insLists);
+				if (shared.insBeginObject >= insLists.c3)
+				{
+					shared.traceBeginObject = GetTrace(shared.traceBeginObject->successors.first);
+					shared.insBeginObject -= insLists.c3;
+				}
+			}
+
+/***********************************************************************
 FindBalancedBoOrBolr
 ***********************************************************************/
 

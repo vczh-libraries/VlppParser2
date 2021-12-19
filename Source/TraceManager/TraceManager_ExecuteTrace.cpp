@@ -260,7 +260,7 @@ TraceManager::ExecuteTrace
 						// this could happen when all BeginObject are in successors
 						// if the current successor is the first successor
 						// then we need to execute the prefix
-						if (startIns > insLists.c3)
+						if (startIns >= insLists.c3)
 						{
 							startIns -= insLists.c3;
 							if (trace->successors.first == successor->allocatedIndex)

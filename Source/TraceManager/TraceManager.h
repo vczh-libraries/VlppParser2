@@ -295,6 +295,8 @@ TraceManager
 				void								ReadInstructionList(Trace* trace, TraceInsLists& insLists);
 				AstIns&								ReadInstruction(vint32_t instruction, TraceInsLists& insLists);
 				bool								RunInstruction(vint32_t instruction, TraceInsLists& insLists, vint32_t& objectCount, vint32_t& reopenCount);
+				void								AdjustToRealTrace(SharedBeginObject& shared);
+
 				void								FindBalancedBoOrBolr(SharedBeginObject& balanced, vint32_t& objectCount, vint32_t& reopenCount);
 				void								FindBalancedBeginObject(Trace* trace, vint32_t objectCount, SharedBeginObject& branch);
 				void								MergeAmbiguityType(vint32_t& ambiguityType, vint32_t branchType);
