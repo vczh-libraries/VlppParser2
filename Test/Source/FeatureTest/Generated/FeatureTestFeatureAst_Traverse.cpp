@@ -154,7 +154,7 @@ namespace featuretest
 			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
 			Traverse(static_cast<Feature*>(node));
 			Traverse(static_cast<PwlFeature*>(node));
-			for (auto&& listItem : node->lt)
+			for (auto&& listItem : node->one)
 			{
 				InspectInto(listItem.Obj());
 			}
@@ -163,6 +163,10 @@ namespace featuretest
 				InspectInto(listItem.Obj());
 			}
 			InspectInto(node->prev.Obj());
+			for (auto&& listItem : node->two)
+			{
+				InspectInto(listItem.Obj());
+			}
 			Finishing(static_cast<PwlFeature*>(node));
 			Finishing(static_cast<Feature*>(node));
 			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));

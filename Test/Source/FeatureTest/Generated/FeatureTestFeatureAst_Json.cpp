@@ -191,9 +191,9 @@ namespace featuretest
 		}
 		void FeatureAstVisitor::PrintFields(PwlFeature* node)
 		{
-			BeginField(L"lt");
+			BeginField(L"one");
 			BeginArray();
-			for (auto&& listItem : node->lt)
+			for (auto&& listItem : node->one)
 			{
 				BeginArrayItem();
 				Print(listItem.Obj());
@@ -213,6 +213,16 @@ namespace featuretest
 			EndField();
 			BeginField(L"prev");
 			Print(node->prev.Obj());
+			EndField();
+			BeginField(L"two");
+			BeginArray();
+			for (auto&& listItem : node->two)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
 			EndField();
 		}
 

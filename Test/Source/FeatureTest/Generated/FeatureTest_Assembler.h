@@ -48,9 +48,10 @@ namespace featuretest
 		Pwa1Feature_gts = 17,
 		Pwa1Feature_lts = 18,
 		Pwa1Feature_pba = 19,
-		PwlFeature_lt = 20,
+		PwlFeature_one = 20,
 		PwlFeature_prefix = 21,
 		PwlFeature_prev = 22,
+		PwlFeature_two = 23,
 	};
 
 	extern const wchar_t* FeatureTestTypeName(FeatureTestClasses type);

@@ -87,9 +87,10 @@ namespace featuretest
 			PwlFeature* node;
 		public:
 			PwlFeatureBuilder(PwlFeature* _node) : node(_node) {}
-			PwlFeatureBuilder& lt(const vl::Ptr<Lt>& value);
+			PwlFeatureBuilder& one(const vl::Ptr<Lt>& value);
 			PwlFeatureBuilder& prefix(const vl::Ptr<Plus>& value);
 			PwlFeatureBuilder& prev(const vl::Ptr<PwlFeature>& value);
+			PwlFeatureBuilder& two(const vl::Ptr<Lt>& value);
 		};
 
 		using MakeBranchedOptionalFeature = vl::glr::ParsingAstBuilder<BranchedOptionalFeature, BranchedOptionalFeatureBuilder>;

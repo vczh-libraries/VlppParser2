@@ -172,7 +172,8 @@ namespace vl
 				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<featuretest::PwlFeature>(), NO_PARAMETER)
 
 				CLASS_MEMBER_FIELD(prefix)
-				CLASS_MEMBER_FIELD(lt)
+				CLASS_MEMBER_FIELD(one)
+				CLASS_MEMBER_FIELD(two)
 				CLASS_MEMBER_FIELD(prev)
 			END_CLASS_MEMBER(featuretest::PwlFeature)
 

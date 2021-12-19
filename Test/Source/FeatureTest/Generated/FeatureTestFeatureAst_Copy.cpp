@@ -106,15 +106,19 @@ namespace featuretest
 		void FeatureAstVisitor::CopyFields(PwlFeature* from, PwlFeature* to)
 		{
 			CopyFields(static_cast<Feature*>(from), static_cast<Feature*>(to));
-			for (auto&& listItem : from->lt)
+			for (auto&& listItem : from->one)
 			{
-				to->lt.Add(CopyNode(listItem.Obj()));
+				to->one.Add(CopyNode(listItem.Obj()));
 			}
 			for (auto&& listItem : from->prefix)
 			{
 				to->prefix.Add(CopyNode(listItem.Obj()));
 			}
 			to->prev = CopyNode(from->prev.Obj());
+			for (auto&& listItem : from->two)
+			{
+				to->two.Add(CopyNode(listItem.Obj()));
+			}
 		}
 
 		void FeatureAstVisitor::Visit(Plus* node)

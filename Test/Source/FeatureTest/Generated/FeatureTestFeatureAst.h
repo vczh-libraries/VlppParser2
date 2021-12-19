@@ -132,7 +132,8 @@ namespace featuretest
 	{
 	public:
 		vl::collections::List<vl::Ptr<Plus>> prefix;
-		vl::collections::List<vl::Ptr<Lt>> lt;
+		vl::collections::List<vl::Ptr<Lt>> one;
+		vl::collections::List<vl::Ptr<Lt>> two;
 		vl::Ptr<PwlFeature> prev;
 
 		void Accept(Feature::IVisitor* visitor) override;
