@@ -221,18 +221,18 @@ FindBalancedBeginObject
 				// find the first balanced BeginObject or BeginObjectLeftRecursive
 				TraceInsLists branchInsLists;
 				ReadInstructionList(trace, branchInsLists);
-
-				branchTrace = trace;
-				branchInstruction = branchInsLists.c3 - 1;
+				branch.traceBeginObject = trace;
+				branch.insBeginObject = branchInsLists.c3 - 1;
 				vint32_t branchObjectCount = objectCount;
 				vint32_t branchReopenCount = 0;
-				FindBalancedBoOrBolr(branchTrace, branchInstruction, branchObjectCount, branchReopenCount);
+				FindBalancedBoOrBolr(branch, branchObjectCount, branchReopenCount);
 
 				// no matter if we found BeginObject or BeginObjectLeftRecursive
 				// we now know what type of the AST we need to resolve
-				ReadInstructionList(branchTrace, branchInsLists);
-				auto ins = ReadInstruction(branchInstruction, branchInsLists);
-				branchType = ins.param;
+				AdjustToRealTrace(branch);
+				ReadInstructionList(branch.traceBeginObject, branchInsLists);
+				auto ins = ReadInstruction(branch.insBeginObject, branchInsLists);
+				branch.type = ins.param;
 
 				// if we found a BeginObjectLeftRecursive which creates the bottom object in stack
 				// then we should continue until we reach the BeginObject
@@ -240,10 +240,11 @@ FindBalancedBeginObject
 				// we cannot allow sharing the same child AST object in different parent AST objects.
 				while (ins.type == AstInsType::BeginObjectLeftRecursive)
 				{
-					branchInstruction--;
-					FindBalancedBoOrBolr(branchTrace, branchInstruction, branchObjectCount, branchReopenCount);
-					ReadInstructionList(branchTrace, branchInsLists);
-					ins = ReadInstruction(branchInstruction, branchInsLists);
+					branch.insBeginObject--;
+					FindBalancedBoOrBolr(branch, branchObjectCount, branchReopenCount);
+					AdjustToRealTrace(branch);
+					ReadInstructionList(branch.traceBeginObject, branchInsLists);
+					ins = ReadInstruction(branch.insBeginObject, branchInsLists);
 				}
 
 				// if branchReopenCount > 0
@@ -251,29 +252,38 @@ FindBalancedBeginObject
 				// the first DelayFieldAssignment must be located
 				if (branchReopenCount > 0)
 				{
-					ReadInstructionList(branchTrace, branchInsLists);
+					ReadInstructionList(branch.traceBeginObject, branchInsLists);
 					while (true)
 					{
-						branchInstruction--;
-						if (branchInstruction == -1)
+						branch.insBeginObject--;
+						if (branch.insBeginObject == -1)
 						{
 							// a merging trace must at least have one EndObject before the balanced BeginObject
 							// so it is not possible to see it here
-							CHECK_ERROR(branchTrace->predecessors.first == branchTrace->predecessors.last, ERROR_MESSAGE_PREFIX L"Unexpected merging trace when searching for DelayFieldAssignment.");
-							CHECK_ERROR(branchTrace->predecessors.first != -1, ERROR_MESSAGE_PREFIX L"Unexpected root trace when searching for DelayFieldAssignment.");
-							branchTrace = GetTrace(branchTrace->predecessors.first);
-							ReadInstructionList(branchTrace, branchInsLists);
-							branchInstruction = branchInsLists.c3;
+
+							CHECK_ERROR(
+								branch.traceBeginObject->predecessors.first == branch.traceBeginObject->predecessors.last,
+								ERROR_MESSAGE_PREFIX L"Unexpected merging trace when searching for DelayFieldAssignment."
+								);
+							CHECK_ERROR(
+								branch.traceBeginObject->predecessors.first != -1,
+								ERROR_MESSAGE_PREFIX L"Unexpected root trace when searching for DelayFieldAssignment."
+								);
+
+							branch.traceBeginObject = GetTrace(branch.traceBeginObject->predecessors.first);
+							ReadInstructionList(branch.traceBeginObject, branchInsLists);
+							branch.insBeginObject = branchInsLists.c3;
 						}
 						else
 						{
-							auto& ins = ReadInstruction(branchInstruction, branchInsLists);
+							auto& ins = ReadInstruction(branch.insBeginObject, branchInsLists);
 							switch (ins.type)
 							{
 							case AstInsType::EndObject:
 								// if we see EndObject, find its balanced BeginObject or BeginObjectLeftRecursive
-								FindBalancedBoOrBolr(branchTrace, branchInstruction, branchObjectCount, branchReopenCount);
-								ReadInstructionList(branchTrace, branchInsLists);
+								FindBalancedBoOrBolr(branch, branchObjectCount, branchReopenCount);
+								AdjustToRealTrace(branch);
+								ReadInstructionList(branch.traceBeginObject, branchInsLists);
 								break;
 							case AstInsType::ReopenObject:
 								branchReopenCount++;
