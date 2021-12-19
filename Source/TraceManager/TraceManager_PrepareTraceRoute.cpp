@@ -369,14 +369,56 @@ FillAmbiguityInfoForMergingTrace
 						MergeAmbiguityType(ambiguityType, branchType);
 
 						// BeginObject found from different predecessors must be the same
+						// Otherwise, multiple BeginObject must belong to successors of the same trace, and the instructions prefix before these BeginObject must be identical
 						if (traceBeginObject == -1)
 						{
 							traceBeginObject = branchTrace->allocatedIndex;
 							insBeginObject = branchInstruction;
 						}
+						else if (traceBeginObject == branchTrace->allocatedIndex)
+						{
+							CHECK_ERROR(insBeginObject == branchInstruction, ERROR_MESSAGE_PREFIX L"BeginObject searched from different branches are not the same.");
+						}
 						else
 						{
-							CHECK_ERROR(traceBeginObject == branchTrace->allocatedIndex && insBeginObject == branchInstruction, ERROR_MESSAGE_PREFIX L"BeginObject searched from different branches are not the same.");
+							// ensure traces containing these BeginObject share the same predecessor
+							TraceInsLists parentInsLists;
+							Trace* parentTrace = GetTrace(traceBeginObject);
+
+#define ERROR_MESSAGE ERROR_MESSAGE_PREFIX L"Failed to merge prefix from BeginObject of multiple successors."
+							CHECK_ERROR(branchTrace->predecessors.first == branchTrace->predecessors.last, ERROR_MESSAGE);
+							if (parentTrace->allocatedIndex!= branchTrace->predecessors.first)
+							{
+								CHECK_ERROR(parentTrace->predecessors.first == parentTrace->predecessors.last, ERROR_MESSAGE);
+								parentTrace = GetTrace(parentTrace->predecessors.first);
+
+								ReadInstructionList(parentTrace, parentInsLists);
+								traceBeginObject = parentTrace->allocatedIndex;
+								insBeginObject += parentInsLists.c3;
+							}
+							else
+							{
+								CHECK_ERROR(parentTrace->allocatedIndex == branchTrace->predecessors.last, ERROR_MESSAGE);
+								ReadInstructionList(parentTrace, parentInsLists);
+							}
+
+							// ensure all instruction prefix before BeginObject are identical
+							Trace* firstBranch = GetTrace(parentTrace->successors.first);
+							CHECK_ERROR(firstBranch != branchTrace, ERROR_MESSAGE);
+
+							TraceInsLists firstBranchInsLists, branchInsLists;
+							ReadInstructionList(firstBranch, firstBranchInsLists);
+							ReadInstructionList(branchTrace, branchInsLists);
+
+							vint32_t firstInstruction = insBeginObject - parentInsLists.c3;
+							CHECK_ERROR(firstInstruction == branchInstruction, ERROR_MESSAGE);
+							for (vint32_t i = 0; i < firstInstruction; i++)
+							{
+								auto& ins1 = ReadInstruction(i, firstBranchInsLists);
+								auto& ins2 = ReadInstruction(i, branchInsLists);
+								CHECK_ERROR(ins1 == ins2, ERROR_MESSAGE);
+							}
+#undef ERROR_MESSAGE
 						}
 					}
 					predecessorId = predecessor->predecessors.siblingNext;

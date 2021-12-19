@@ -95,12 +95,14 @@ TraceManager (Data Structures)
 																	// when this member is valid, the trace should satisfies:
 																	// trace.ambiguity.insEndObject == trace.byEdge.insBeforeInput.count - trace.ambiguityInsPostfix
 
-				vint32_t				traceBeginObject = -1;		// id of the trace containing BeginObject
+				vint32_t				traceBeginObject = -1;		// id of the trace containing BeginObject or DelayFieldAssignment
 																	// that ends by the above EndObject
 
 				vint32_t				insBeginObject = -1;		// the index of the BeginObject instruction
 																	// from traceBeginObject
 																	// in {byEdge.insBeforeInput, byEdge.insAfterInput, executedReturnStack.returnIndex.insAfterInput} combined
+																	// if insBeginObject is larger than the number of instructions in traceBeginObject
+																	// then the branches begin from the (insBeginObject - instruction-count(traceBeginObject))-th instruction (starting from 0) in all successors
 
 				vint32_t				ambiguityType = -1;			// when the BeginObject creates an object that later be consumed by BeginObjectLeftRecursive
 																	// than the correct type is the type in BeginObjectLeftRecursive

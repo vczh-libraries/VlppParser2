@@ -34,7 +34,8 @@ AreTwoTraceEqual
 				//   5) they have the same return stack
 				// TODO: verify if we can do "acId == candidate->runtimeRouting.attendingCompetitions" or not
 				if (state == candidate->state &&
-					executedReturnStack == candidate->executedReturnStack &&
+					//executedReturnStack == candidate->executedReturnStack &&
+					GetReturnStack(executedReturnStack)->returnIndex == GetReturnStack(candidate->executedReturnStack)->returnIndex &&
 					acId == candidate->competitionRouting.attendingCompetitions &&
 					candidate->byInput == Executable::EndingInput)
 				{

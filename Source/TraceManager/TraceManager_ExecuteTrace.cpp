@@ -223,15 +223,16 @@ TraceManager::ExecuteTrace
 							submitter.Submit(ins, token);
 						}
 					}
-					startIns = 0;
 
 					if (trace->successors.first == -1)
 					{
 						trace = nullptr;
+						startIns = 0;
 					}
 					else if (trace->successors.first == trace->successors.last)
 					{
 						trace = GetTrace(trace->successors.first);
+						startIns = 0;
 					}
 					else
 					{
@@ -256,6 +257,27 @@ TraceManager::ExecuteTrace
 							trace->ambiguityRouting.branchVisited++;
 						}
 
+						// this could happen when all BeginObject are in successors
+						// if the current successor is the first successor
+						// then we need to execute the prefix
+						if (startIns > insLists.c3)
+						{
+							startIns -= insLists.c3;
+							if (trace->successors.first == successor->allocatedIndex)
+							{
+								ReadInstructionList(successor, insLists);
+								for (vint32_t i = 0; i < startIns; i++)
+								{
+									auto& ins = ReadInstruction(i, insLists);
+									auto& token = tokens[successor->currentTokenIndex];
+									submitter.Submit(ins, token);
+								}
+							}
+						}
+						else
+						{
+							startIns = 0;
+						}
 						trace = successor;
 					}
 				FOUND_NEXT_TRACE:;
