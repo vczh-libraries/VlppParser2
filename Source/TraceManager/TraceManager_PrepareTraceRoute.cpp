@@ -326,12 +326,12 @@ MergeAmbiguityType
 			}
 
 /***********************************************************************
-MergeSharedBeginObjects
+MergeSharedBeginObjectsSingleRoot
 ***********************************************************************/
 
-			TraceManager::SharedBeginObject TraceManager::MergeSharedBeginObjects(Trace* trace, collections::Dictionary<Trace*, SharedBeginObject>& predecessorToBranches)
+			TraceManager::SharedBeginObject TraceManager::MergeSharedBeginObjectsSingleRoot(Trace* trace, collections::Dictionary<Trace*, SharedBeginObject>& predecessorToBranches)
 			{
-#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::MergeSharedBeginObjects(Trace*, Dictionary<Trace*, SharedBeginObject>&)#"
+#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::MergeSharedBeginObjectsSingleRoot(Trace*, Dictionary<Trace*, SharedBeginObject>&)#"
 				SharedBeginObject shared;
 				vint32_t predecessorId = trace->predecessors.first;
 				while (predecessorId != -1)
@@ -340,53 +340,78 @@ MergeSharedBeginObjects
 					auto branch = predecessorToBranches[predecessor];
 
 					// BeginObject found from different predecessors must be the same
-					// Otherwise, multiple BeginObject must belong to successors of the same trace, and the instructions prefix before these BeginObject must be identical
 					if (shared.traceBeginObject == nullptr)
 					{
-						shared.traceBeginObject = branch.traceBeginObject;
-						shared.insBeginObject = branch.insBeginObject;
-					}
-					else if (shared.traceBeginObject == branch.traceBeginObject)
-					{
-						CHECK_ERROR(shared.insBeginObject == branch.insBeginObject, ERROR_MESSAGE_PREFIX L"BeginObject searched from different branches are not the same.");
+						shared = branch;
 					}
 					else
 					{
-						// ensure traces containing these BeginObject share the same predecessor
+						CHECK_ERROR(shared.traceBeginObject == branch.traceBeginObject && shared.insBeginObject == branch.insBeginObject, ERROR_MESSAGE_PREFIX L"BeginObject searched from different branches are not the same.");
+					}
+
+					predecessorId = predecessor->predecessors.siblingNext;
+				}
+
+				shared.type = -1;
+				return shared;
+#undef ERROR_MESSAGE_PREFIX
+			}
+
+/***********************************************************************
+MergeSharedBeginObjectsMultipleRoot
+***********************************************************************/
+
+			TraceManager::SharedBeginObject TraceManager::MergeSharedBeginObjectsMultipleRoot(Trace* trace, collections::Dictionary<Trace*, SharedBeginObject>& predecessorToBranches)
+			{
+#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::MergeSharedBeginObjectsMultipleRoot(Trace*, Dictionary<Trace*, SharedBeginObject>&)#"
+				SharedBeginObject shared;
+				vint32_t predecessorId = trace->predecessors.first;
+
+				Trace* firstBranch = nullptr;
+				while (predecessorId != -1)
+				{
+					auto predecessor = GetTrace(predecessorId);
+					auto branch = predecessorToBranches[predecessor];
+					if (firstBranch == nullptr)
+					{
+						firstBranch = branch.traceBeginObject;
+					}
+					Trace* currentBranch = branch.traceBeginObject;
+
+					// adjust branch to locate on its predecessor
+					{
 						TraceInsLists parentInsLists;
-						Trace* parentTrace = shared.traceBeginObject;
+						Trace* parentTrace = GetTrace(branch.traceBeginObject->predecessors.first);
 
+						ReadInstructionList(parentTrace, parentInsLists);
+						branch.traceBeginObject = parentTrace;
+						branch.insBeginObject += parentInsLists.c3;
+					}
+
+					// multiple BeginObject must belong to successors of the same trace
+					// and the instructions prefix before these BeginObject must be identical
+					if (shared.traceBeginObject == nullptr)
+					{
+						shared = branch;
+					}
+					else
+					{
 #define ERROR_MESSAGE ERROR_MESSAGE_PREFIX L"Failed to merge prefix from BeginObject of multiple successors."
-						CHECK_ERROR(branch.traceBeginObject->predecessors.first == branch.traceBeginObject->predecessors.last, ERROR_MESSAGE);
-						if (parentTrace->allocatedIndex != branch.traceBeginObject->predecessors.first)
+						CHECK_ERROR(shared.traceBeginObject == branch.traceBeginObject && shared.insBeginObject == branch.insBeginObject, ERROR_MESSAGE);
+
+						TraceInsLists sharedInsLists, firstInsLists, currentInsLists;
+						ReadInstructionList(shared.traceBeginObject, sharedInsLists);
+						ReadInstructionList(firstBranch, firstInsLists);
+						ReadInstructionList(currentBranch, currentInsLists);
+
+						vint32_t insBeginObject = shared.insBeginObject - sharedInsLists.c3;
+						CHECK_ERROR(insBeginObject < firstInsLists.c3, ERROR_MESSAGE);
+						CHECK_ERROR(insBeginObject < currentInsLists.c3, ERROR_MESSAGE);
+
+						for (vint32_t i = 0; i < insBeginObject; i++)
 						{
-							CHECK_ERROR(parentTrace->predecessors.first == parentTrace->predecessors.last, ERROR_MESSAGE);
-							parentTrace = GetTrace(parentTrace->predecessors.first);
-
-							ReadInstructionList(parentTrace, parentInsLists);
-							shared.traceBeginObject = parentTrace;
-							shared.insBeginObject += parentInsLists.c3;
-						}
-						else
-						{
-							CHECK_ERROR(parentTrace->allocatedIndex == branch.traceBeginObject->predecessors.last, ERROR_MESSAGE);
-							ReadInstructionList(parentTrace, parentInsLists);
-						}
-
-						// ensure all instruction prefix before BeginObject are identical
-						Trace* firstBranch = GetTrace(parentTrace->successors.first);
-						CHECK_ERROR(firstBranch != branch.traceBeginObject, ERROR_MESSAGE);
-
-						TraceInsLists firstBranchInsLists, branchInsLists;
-						ReadInstructionList(firstBranch, firstBranchInsLists);
-						ReadInstructionList(branch.traceBeginObject, branchInsLists);
-
-						vint32_t firstInstruction = shared.insBeginObject - parentInsLists.c3;
-						CHECK_ERROR(firstInstruction == branch.insBeginObject, ERROR_MESSAGE);
-						for (vint32_t i = 0; i < firstInstruction; i++)
-						{
-							auto& ins1 = ReadInstruction(i, firstBranchInsLists);
-							auto& ins2 = ReadInstruction(i, branchInsLists);
+							auto& ins1 = ReadInstruction(i, firstInsLists);
+							auto& ins2 = ReadInstruction(i, currentInsLists);
 							CHECK_ERROR(ins1 == ins2, ERROR_MESSAGE);
 						}
 #undef ERROR_MESSAGE
@@ -394,8 +419,21 @@ MergeSharedBeginObjects
 
 					predecessorId = predecessor->predecessors.siblingNext;
 				}
-#undef ERROR_MESSAGE_PREFIX
+
+				shared.type = -1;
 				return shared;
+#undef ERROR_MESSAGE_PREFIX
+			}
+
+/***********************************************************************
+MergeSharedBeginObjectsMultipleRoot
+***********************************************************************/
+
+			TraceManager::SharedBeginObject TraceManager::MergeSharedBeginObjectsPartialMultipleRoot(Trace* trace, collections::Group<Trace*, Trace*>& beginToPredecessors, collections::Dictionary<Trace*, SharedBeginObject>& predecessorToBranches)
+			{
+#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::MergeSharedBeginObjectsPartialMultipleRoot(Trace*, Group<Trace*, Trace*>&, Dictionary<Trace*, SharedBeginObject>&)#"
+				CHECK_FAIL(ERROR_MESSAGE_PREFIX L"Not Implemented.");
+#undef ERROR_MESSAGE_PREFIX
 			}
 
 /***********************************************************************
@@ -474,10 +512,20 @@ FillAmbiguityInfoForMergingTrace
 					predecessorId = predecessor->predecessors.siblingNext;
 				}
 
-				// check if any predecessor subset share a same traceBeginObject
-				CHECK_ERROR(beginToPredecessors.Count() == 1 || beginToPredecessors.Count() == predecessorCount, ERROR_MESSAGE_PREFIX L"Not Implemented.");
+				SharedBeginObject shared;
+				if (beginToPredecessors.Count() == 1)
+				{
+					shared = MergeSharedBeginObjectsSingleRoot(trace, predecessorToBranches);
+				}
+				else if (beginToPredecessors.Count() == predecessorCount)
+				{
+					shared = MergeSharedBeginObjectsMultipleRoot(trace, predecessorToBranches);
+				}
+				else
+				{
+					shared = MergeSharedBeginObjectsPartialMultipleRoot(trace, beginToPredecessors, predecessorToBranches);
+				}
 
-				auto shared = MergeSharedBeginObjects(trace, predecessorToBranches);
 				trace->ambiguity.insEndObject = insEndObject;
 				trace->ambiguity.insBeginObject = shared.insBeginObject;
 				trace->ambiguity.traceBeginObject = shared.traceBeginObject->allocatedIndex;
