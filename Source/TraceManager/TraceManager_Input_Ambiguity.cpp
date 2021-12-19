@@ -131,6 +131,7 @@ MergeTwoEndingInputTrace
 				auto& oldEdge = executable.edges[ambiguityTraceToMerge->byEdge];
 				vint32_t oldInsCount = oldEdge.insBeforeInput.count + oldEdge.insAfterInput.count;
 				vint32_t newInsCount = edgeDesc.insBeforeInput.count + edgeDesc.insAfterInput.count;
+				vint32_t returnInsCount = 0;
 				vint32_t postfix = GetInstructionPostfix(oldEdge, edgeDesc);
 
 				// if two state can merge
@@ -141,9 +142,10 @@ MergeTwoEndingInputTrace
 				{
 					auto rs = GetReturnStack(executedReturnStack);
 					auto& rd = executable.returns[rs->returnIndex];
-					postfix += rd.insAfterInput.count;
-					oldInsCount += rd.insAfterInput.count;
-					newInsCount += rd.insAfterInput.count;
+					returnInsCount = rd.insAfterInput.count;
+					postfix += returnInsCount;
+					oldInsCount += returnInsCount;
+					newInsCount += returnInsCount;
 				}
 
 				if (ambiguityTraceToMerge->ambiguityMergeInsPostfix == -1)
@@ -185,8 +187,10 @@ MergeTwoEndingInputTrace
 						formerTrace->competitionRouting.attendingCompetitions = ambiguityTraceToMerge->competitionRouting.attendingCompetitions;
 						formerTrace->competitionRouting.carriedCompetitions = ambiguityTraceToMerge->competitionRouting.carriedCompetitions;
 
-						// both traces need to have the same ambiguityInsPostfix
-						formerTrace->ambiguityBranchInsPostfix = postfix;
+						// both traces need to have the same postfix
+						// since formerTrace doesn't have executedReturnStack but ambiguityTraceToMerge has
+						// the amount of returnInsCount need to cut from the postfix
+						formerTrace->ambiguityBranchInsPostfix = postfix - returnInsCount;
 						ambiguityTraceToMerge->ambiguityMergeInsPostfix = postfix;
 
 						// connect two traces
@@ -224,6 +228,9 @@ MergeTwoEndingInputTrace
 					newTrace->competitionRouting.attendingCompetitions = attendingCompetitions;
 					newTrace->competitionRouting.carriedCompetitions = carriedCompetitions;
 
+					// both traces need to have the same postfix
+					// since newTrace doesn't have executedReturnStack but ambiguityTraceToMerge has
+					// the amount of returnInsCount need to cut from the postfix
 					newTrace->ambiguityBranchInsPostfix = postfix;
 
 					AddTraceToCollection(ambiguityTraceToMerge, newTrace, &Trace::predecessors);
