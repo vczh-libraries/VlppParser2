@@ -184,13 +184,22 @@ FindBalancedBoOrBolr
 						// if there is only one predecessor
 						// run all instructions until we find the correct BeginObject or BeginObjectLeftRecursive instruction
 
-						if (balanced.traceBeginObject->ambiguityInsPostfix != -1)
+						vint32_t minIns = 0;
+						vint32_t maxIns = insLists.c3;
+						if (balanced.traceBeginObject->ambiguityMergeInsPostfix != -1)
 						{
-							vint32_t start = insLists.c1 - balanced.traceBeginObject->ambiguityInsPostfix - 1;
-							if (balanced.insBeginObject > start) balanced.insBeginObject = start;
+							minIns = insLists.c3 - balanced.traceBeginObject->ambiguityMergeInsPostfix;
+						}
+						if (balanced.traceBeginObject->ambiguityBranchInsPostfix != -1)
+						{
+							maxIns = insLists.c3 - balanced.traceBeginObject->ambiguityBranchInsPostfix - 1;
+						}
+						if (balanced.insBeginObject > maxIns)
+						{
+							balanced.insBeginObject = maxIns;
 						}
 
-						for (auto i = balanced.insBeginObject; i >= 0; i--)
+						for (auto i = balanced.insBeginObject; i >= minIns; i--)
 						{
 							if (RunInstruction(i, insLists, objectCount, reopenCount))
 							{
@@ -527,23 +536,17 @@ MergeSharedBeginObjectsMultipleRoot
 					predecessor->ambiguity.traceBeginObject = branch.traceBeginObject->allocatedIndex;
 					predecessor->ambiguity.insBeginObject = branch.insBeginObject;
 					predecessor->ambiguity.ambiguityType = ambiguityType;
-					if (predecessor->ambiguityInsPostfix != -1)
+
+					for (vint32_t i = 0; i < insLists.c3; i++)
 					{
-						predecessor->ambiguity.insEndObject = insLists.c3 - predecessor->ambiguityInsPostfix;
-					}
-					else
-					{
-						for (vint32_t i = 0; i < insLists.c3; i++)
+						auto& ins = ReadInstruction(i, insLists);
+						if (ins.type == AstInsType::EndObject)
 						{
-							auto& ins = ReadInstruction(i, insLists);
-							if (ins.type == AstInsType::EndObject)
-							{
-								predecessor->ambiguity.insEndObject = i;
-								break;
-							}
+							predecessor->ambiguity.insEndObject = i;
+							break;
 						}
-						CHECK_ERROR(predecessor->ambiguity.insEndObject != -1, ERROR_MESSAGE);
 					}
+					CHECK_ERROR(predecessor->ambiguity.insEndObject != -1, ERROR_MESSAGE);
 #undef ERROR_MESSAGE
 				}
 				return MergeSharedBeginObjectsMultipleRoot(trace, predecessorToBranches);
@@ -593,7 +596,10 @@ FillAmbiguityInfoForMergingTrace
 					}
 				}
 				CHECK_ERROR(insEndObject != -1, ERROR_MESSAGE_PREFIX L"Cannot find EndObject instruction in the merging trace.");
-				CHECK_ERROR(insEndObject == insLists.c1 - trace->ambiguityInsPostfix, L"ambiguityInsPostfix and insEndObject does not match.");
+				if (trace->ambiguityMergeInsPostfix != -1)
+				{
+					CHECK_ERROR(insEndObject == insLists.c1 - trace->ambiguityMergeInsPostfix - 1, L"ambiguityMergeInsPostfix and insEndObject does not match.");
+				}
 
 				vint32_t ambiguityType = -1;
 				Group<Trace*, Trace*> beginToPredecessors;
