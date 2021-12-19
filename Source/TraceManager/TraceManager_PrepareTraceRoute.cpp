@@ -331,6 +331,9 @@ MergeSharedBeginObjectsSingleRoot
 
 			TraceManager::SharedBeginObject TraceManager::MergeSharedBeginObjectsSingleRoot(Trace* trace, collections::Dictionary<Trace*, SharedBeginObject>& predecessorToBranches)
 			{
+				// predecessorToBranches.Count() == 1
+				// it means all values in predecessorToBranches must be identical
+
 #define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::MergeSharedBeginObjectsSingleRoot(Trace*, Dictionary<Trace*, SharedBeginObject>&)#"
 				SharedBeginObject shared;
 				vint32_t predecessorId = trace->predecessors.first;
@@ -338,6 +341,7 @@ MergeSharedBeginObjectsSingleRoot
 				{
 					auto predecessor = GetTrace(predecessorId);
 					auto branch = predecessorToBranches[predecessor];
+					predecessorId = predecessor->predecessors.siblingNext;
 
 					// BeginObject found from different predecessors must be the same
 					if (shared.traceBeginObject == nullptr)
@@ -348,8 +352,6 @@ MergeSharedBeginObjectsSingleRoot
 					{
 						CHECK_ERROR(shared.traceBeginObject == branch.traceBeginObject && shared.insBeginObject == branch.insBeginObject, ERROR_MESSAGE_PREFIX L"BeginObject searched from different branches are not the same.");
 					}
-
-					predecessorId = predecessor->predecessors.siblingNext;
 				}
 
 				shared.type = -1;
@@ -363,6 +365,10 @@ MergeSharedBeginObjectsMultipleRoot
 
 			TraceManager::SharedBeginObject TraceManager::MergeSharedBeginObjectsMultipleRoot(Trace* trace, collections::Dictionary<Trace*, SharedBeginObject>& predecessorToBranches)
 			{
+				// predecessorToBranches.Count() == number of predecessors
+				// it means all values in predecessorToBranches must be identical
+				// after they are adjusted to locate in the common predecessor
+
 #define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::MergeSharedBeginObjectsMultipleRoot(Trace*, Dictionary<Trace*, SharedBeginObject>&)#"
 				SharedBeginObject shared;
 				vint32_t predecessorId = trace->predecessors.first;
@@ -372,13 +378,15 @@ MergeSharedBeginObjectsMultipleRoot
 				{
 					auto predecessor = GetTrace(predecessorId);
 					auto branch = predecessorToBranches[predecessor];
+					predecessorId = predecessor->predecessors.siblingNext;
+
 					if (firstBranch == nullptr)
 					{
 						firstBranch = branch.traceBeginObject;
 					}
 					Trace* currentBranch = branch.traceBeginObject;
 
-					// adjust branch to locate on its predecessor
+					// adjust branch to locate in its predecessor
 					{
 						TraceInsLists parentInsLists;
 						Trace* parentTrace = GetTrace(branch.traceBeginObject->predecessors.first);
@@ -416,8 +424,6 @@ MergeSharedBeginObjectsMultipleRoot
 						}
 #undef ERROR_MESSAGE
 					}
-
-					predecessorId = predecessor->predecessors.siblingNext;
 				}
 
 				shared.type = -1;
@@ -431,8 +437,26 @@ MergeSharedBeginObjectsMultipleRoot
 
 			TraceManager::SharedBeginObject TraceManager::MergeSharedBeginObjectsPartialMultipleRoot(Trace* trace, collections::Group<Trace*, Trace*>& beginToPredecessors, collections::Dictionary<Trace*, SharedBeginObject>& predecessorToBranches)
 			{
+				// some values in predecessorToBranches are the same but some are not
+				// the result is the same to one when all values in predecessorToBranches are different
+				// but we need to merge subset of predecessors which share the same value
+
 #define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::MergeSharedBeginObjectsPartialMultipleRoot(Trace*, Group<Trace*, Trace*>&, Dictionary<Trace*, SharedBeginObject>&)#"
-				CHECK_FAIL(ERROR_MESSAGE_PREFIX L"Not Implemented.");
+				vint32_t predecessorId = trace->predecessors.first;
+				while (predecessorId != -1)
+				{
+					auto predecessor = GetTrace(predecessorId);
+					auto branch = predecessorToBranches[predecessor];
+					predecessorId = predecessor->predecessors.siblingNext;
+
+					// we start with the first predecessor from all subset
+					{
+						auto& subset = beginToPredecessors[branch.traceBeginObject];
+						if (subset.Count()==1 || predecessor != subset[0]) continue;
+					}
+					CHECK_FAIL(ERROR_MESSAGE_PREFIX L"Not Implemented");
+				}
+				return MergeSharedBeginObjectsMultipleRoot(trace, predecessorToBranches);
 #undef ERROR_MESSAGE_PREFIX
 			}
 
