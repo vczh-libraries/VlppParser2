@@ -547,10 +547,12 @@ CreateLastMergingTrace
 						mergingTrace->currentTokenIndex = trace->currentTokenIndex;
 
 						// set the ambiguity data
+						// rootTraceCandidate has no instruction
+						// the first instructions of all successors are all we need
 						TraceInsLists insLists;
 						ReadInstructionList(mergingTrace, insLists);
-						mergingTrace->ambiguity.traceBeginObject = 0;
-						mergingTrace->ambiguity.insBeginObject = 1;
+						mergingTrace->ambiguity.traceBeginObject = rootTraceCandidate->allocatedIndex;
+						mergingTrace->ambiguity.insBeginObject = 0;
 						mergingTrace->ambiguity.insEndObject = insLists.c3 - 1;
 						mergingTrace->ambiguity.ambiguityType = ambiguityType;
 						mergingTrace->ambiguityInsPostfix = 1;
