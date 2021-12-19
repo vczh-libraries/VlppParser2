@@ -13,19 +13,6 @@ AreTwoTraceEqual
 
 			bool TraceManager::AreTwoEndingInputTraceEqual(vint32_t state, vint32_t returnStack, vint32_t executedReturnStack, vint32_t acId, Trace* candidate)
 			{
-				// if the current state is an ending state
-				// it means the parser has reached the end
-				// otherwise the ReturnStack object will guide it away from an ending state
-				// the EndingObject in this trace (to be created) is the last EndingObject instruction in the sequence
-				// two ending states are not able to merge here
-				// because their BeginObject instructions are in different successor from the root trace
-				// merging last traces are supposed to be done in PrepareTraceRoute
-				// so we don't merge them here
-				if (executable.states[state].endingState)
-				{
-					return false;
-				}
-
 				// two traces equal to each other if
 				//   1) they are in the same state
 				//   2) they have the same ReturnStack before executing thie EndingInput transitions
@@ -33,27 +20,33 @@ AreTwoTraceEqual
 				//   4) the candidate has an ending input
 				//   5) they have the same return stack
 				// TODO: verify if we can do "acId == candidate->runtimeRouting.attendingCompetitions" or not
-				if (state == candidate->state &&
-					//executedReturnStack == candidate->executedReturnStack &&
-					GetReturnStack(executedReturnStack)->returnIndex == GetReturnStack(candidate->executedReturnStack)->returnIndex &&
-					acId == candidate->competitionRouting.attendingCompetitions &&
-					candidate->byInput == Executable::EndingInput)
+
+				if (state != candidate->state) return false;
+				if (acId != candidate->competitionRouting.attendingCompetitions) return false;
+				if (candidate->byEdge != Executable::EndingInput) return false;
+
+				if (executedReturnStack != candidate->executedReturnStack)
 				{
-					// two traces could be merged into one ambiguity resolving trace if
-					//   1) they have the same ReturnStack object before executing the EndingInput transition
-					//      because two EndingObject are required to be tracable to the BeginObject instruction in the same trace
-					//      the ReturnStack object before executing the EndingInput transition
-					//      is the ReturnStack object in that common trace
-					//      which is something after executing a transition
-					//   2) they share the same state after executing EndObject
-					auto r1 = returnStack;
-					auto r2 = candidate->returnStack;
-					if (r1 == r2)
-					{
-						return true;
-					}
+					if (executedReturnStack == -1) return false;
+					if (candidate->executedReturnStack == -1) return false;
+
+					auto rs1 = GetReturnStack(executedReturnStack);
+					auto rs2 = GetReturnStack(candidate->executedReturnStack);
+					if (rs1->returnIndex != rs2->returnIndex) return false;
 				}
-				return false;
+
+				// two traces could be merged into one ambiguity resolving trace if
+				//   1) they have the same ReturnStack object before executing the EndingInput transition
+				//      because two EndingObject are required to be tracable to the BeginObject instruction in the same trace
+				//      the ReturnStack object before executing the EndingInput transition
+				//      is the ReturnStack object in that common trace
+				//      which is something after executing a transition
+				//   2) they share the same state after executing EndObject
+				auto r1 = returnStack;
+				auto r2 = candidate->returnStack;
+				if (r1 != r2) return false;
+
+				return true;
 			}
 
 /***********************************************************************
