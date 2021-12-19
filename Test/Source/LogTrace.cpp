@@ -267,7 +267,7 @@ void RenderTrace(
 			}
 		}
 
-		if (trace->ambiguityBranchInsPostfix = 0)
+		if (trace->ambiguityBranchInsPostfix == 0)
 		{
 			writer.WriteLine(L"    vvvvvvvvvvvvvvvvvvvv");
 		}
