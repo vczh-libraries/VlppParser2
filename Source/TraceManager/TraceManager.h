@@ -298,11 +298,13 @@ TraceManager
 				void								AdjustToRealTrace(SharedBeginObject& shared);
 
 				void								FindBalancedBoOrBolr(SharedBeginObject& balanced, vint32_t& objectCount, vint32_t& reopenCount);
-				void								FindBalancedBeginObject(Trace* trace, vint32_t objectCount, SharedBeginObject& branch);
+				void								FindBalancedBoOrDfa(Trace* trace, vint32_t objectCount, SharedBeginObject& branch);
+
 				void								MergeAmbiguityType(vint32_t& ambiguityType, vint32_t branchType);
 				SharedBeginObject					MergeSharedBeginObjectsSingleRoot(Trace* trace, collections::Dictionary<Trace*, SharedBeginObject>& predecessorToBranches);
 				SharedBeginObject					MergeSharedBeginObjectsMultipleRoot(Trace* trace, collections::Dictionary<Trace*, SharedBeginObject>& predecessorToBranches);
 				SharedBeginObject					MergeSharedBeginObjectsPartialMultipleRoot(Trace* trace, collections::Group<Trace*, Trace*>& beginToPredecessors, collections::Dictionary<Trace*, SharedBeginObject>& predecessorToBranches);
+
 				SharedBeginObject					FillAmbiguityInfoForMergingTrace(Trace* trace);
 				void								FillAmbiguityInfoForPredecessorTraces(Trace* trace);
 				void								CreateLastMergingTrace(Trace* rootTraceCandidate);

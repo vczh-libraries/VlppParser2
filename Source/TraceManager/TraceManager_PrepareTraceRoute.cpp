@@ -211,12 +211,12 @@ FindBalancedBoOrBolr
 			}
 
 /***********************************************************************
-FindBalancedBeginObject
+FindBalancedBoOrDfa
 ***********************************************************************/
 
-			void TraceManager::FindBalancedBeginObject(Trace* trace, vint32_t objectCount, SharedBeginObject& branch)
+			void TraceManager::FindBalancedBoOrDfa(Trace* trace, vint32_t objectCount, SharedBeginObject& branch)
 			{
-#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::FindBalancedBeginObject(Trace*, vint32_t, Trace*&, vint32_t&, vint32_t&)#"
+#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::FindBalancedBoOrDfa(Trace*, vint32_t, Trace*&, vint32_t&, vint32_t&)#"
 				// find the first balanced BeginObject or BeginObjectLeftRecursive
 				TraceInsLists branchInsLists;
 				ReadInstructionList(trace, branchInsLists);
@@ -498,7 +498,7 @@ FillAmbiguityInfoForMergingTrace
 					// we could begin the counter from 1
 
 					SharedBeginObject branch;
-					FindBalancedBeginObject(predecessor, 1, branch);
+					FindBalancedBoOrDfa(predecessor, 1, branch);
 
 					beginToPredecessors.Add(branch.traceBeginObject, predecessor);
 					predecessorToBranches.Add(predecessor, branch);
