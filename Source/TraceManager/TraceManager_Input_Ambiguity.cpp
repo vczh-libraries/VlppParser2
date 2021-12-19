@@ -231,7 +231,7 @@ MergeTwoEndingInputTrace
 					// both traces need to have the same postfix
 					// since newTrace doesn't have executedReturnStack but ambiguityTraceToMerge has
 					// the amount of returnInsCount need to cut from the postfix
-					newTrace->ambiguityBranchInsPostfix = postfix;
+					newTrace->ambiguityBranchInsPostfix = postfix - returnInsCount;
 
 					AddTraceToCollection(ambiguityTraceToMerge, newTrace, &Trace::predecessors);
 				}

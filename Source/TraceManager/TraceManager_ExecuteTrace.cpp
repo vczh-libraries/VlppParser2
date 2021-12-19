@@ -172,7 +172,10 @@ TraceManager::ExecuteTrace
 						if (0 <= trace->ambiguity.insEndObject && trace->ambiguity.insEndObject < insLists.c3)
 						{
 							// execute from the beginning to EndObject instruction if it exists
-							CHECK_ERROR(minIns <= trace->ambiguity.insEndObject && trace->ambiguity.insEndObject <= maxIns, ERROR_MESSAGE_PREFIX L"insEndObject corrupted.");
+							// if ambiguityMergeInsPostfix exists
+							// then insEndObject will be the last instruction in the prefix
+							// so it is skipped and this loop does nothing
+							// the EndObject instruction has already been executed by its predecessors
 							for (vint32_t i = minIns; i <= trace->ambiguity.insEndObject; i++)
 							{
 								auto& ins = ReadInstruction(i, insLists);
