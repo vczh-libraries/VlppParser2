@@ -78,6 +78,15 @@ TraceManager (Data Structures)
 				vint32_t				allocatedIndex = -1;		// id of this ReturnStack
 				vint32_t				previous = -1;				// id of the previous ReturnStack
 				vint32_t				returnIndex = -1;			// index of ReturnDesc
+
+				vint32_t				tokenIndex = -1;			// index of the token when this ReturnStack has its first successor
+																	// the following members records all successors
+																	// that is created at the token index
+
+				vint32_t				first = -1;					// first successor
+				vint32_t				last = -1;					// last successor
+				vint32_t				prev = -1;					// previous successor of ReturnStack::previous
+				vint32_t				next = -1;					// next successor of ReturnStack::previous
 			};
 
 			struct TraceCollection

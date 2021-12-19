@@ -72,9 +72,49 @@ AttendCompetitionIfNecessary
 
 			ReturnStack* TraceManager::PushReturnStack(vint32_t base, vint32_t returnIndex, vint32_t currentTokenIndex)
 			{
+				auto baseStack = base == -1 ? nullptr : GetReturnStack(base);
+
+				if (baseStack)
+				{
+					if (baseStack->tokenIndex == -1)
+					{
+						baseStack->tokenIndex = currentTokenIndex;
+					}
+
+					if (baseStack->tokenIndex == currentTokenIndex)
+					{
+						vint32_t successorId = baseStack->first;
+						while (successorId != -1)
+						{
+							auto successor = GetReturnStack(successorId);
+							successorId = successor->next;
+
+							if (successor->returnIndex == returnIndex)
+							{
+								return successor;
+							}
+						}
+					}
+				}
+
 				auto returnStack = AllocateReturnStack();
 				returnStack->previous = base;
 				returnStack->returnIndex = returnIndex;
+
+				if (baseStack && baseStack->tokenIndex == currentTokenIndex)
+				{
+					if (baseStack->first == -1)
+					{
+						baseStack->first = returnStack->allocatedIndex;
+						baseStack->last = returnStack->allocatedIndex;
+					}
+					else
+					{
+						GetReturnStack(baseStack->last)->next = returnStack->allocatedIndex;
+						returnStack->prev = baseStack->last;
+						baseStack->last = returnStack->allocatedIndex;
+					}
+				}
 				return returnStack;
 			}
 
