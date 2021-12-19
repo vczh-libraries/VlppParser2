@@ -300,6 +300,7 @@ TraceManager
 				void								FindBalancedBoOrBolr(SharedBeginObject& balanced, vint32_t& objectCount, vint32_t& reopenCount);
 				void								FindBalancedBeginObject(Trace* trace, vint32_t objectCount, SharedBeginObject& branch);
 				void								MergeAmbiguityType(vint32_t& ambiguityType, vint32_t branchType);
+				SharedBeginObject					MergeSharedBeginObjects(Trace* trace, collections::Dictionary<Trace*, SharedBeginObject>& predecessorToBranches);
 				SharedBeginObject					FillAmbiguityInfoForMergingTrace(Trace* trace);
 				void								FillAmbiguityInfoForPredecessorTraces(Trace* trace);
 				void								CreateLastMergingTrace(Trace* rootTraceCandidate);
