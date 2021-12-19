@@ -370,80 +370,103 @@ FillAmbiguityInfoForMergingTrace
 				CHECK_ERROR(insEndObject != -1, ERROR_MESSAGE_PREFIX L"Cannot find EndObject instruction in the merging trace.");
 
 				SharedBeginObject shared;
+				Group<Trace*, Trace*> beginToPredecessors;
+				Dictionary<Trace*, SharedBeginObject> predecessorToBranches;
 
 				// call FindBalancedBoOrBolr on all predecessors
 				auto predecessorId = trace->predecessors.first;
 				while (predecessorId != -1)
 				{
 					auto predecessor = GetTrace(predecessorId);
+					// run all instructions before and including the EndObject instruction
+					// since we know EndObject addes 1 to the counter
+					// so we don't really need to call RunInstruction on it
+					// we could begin the counter from 1
+
+					SharedBeginObject branch;
+					FindBalancedBeginObject(predecessor, 1, branch);
+
+					beginToPredecessors.Add(branch.traceBeginObject, predecessor);
+					predecessorToBranches.Add(predecessor, branch);
+
+					// if EndObject is not the first instruction
+					// then the all instruction prefix are stored in predecessors
+					// so no need to really touch the prefix in this trace.
+
+					MergeAmbiguityType(shared.type, branch.type);
+
+					predecessorId = predecessor->predecessors.siblingNext;
+				}
+
+				// check if any predecessor subset share a same traceBeginObject
+				if (beginToPredecessors.Count() > 1)
+				{
+					for (vint i = 0; i < beginToPredecessors.Count(); i++)
 					{
-						// run all instructions before and including the EndObject instruction
-						// since we know EndObject addes 1 to the counter
-						// so we don't really need to call RunInstruction on it
-						// we could begin the counter from 1
+						CHECK_ERROR(beginToPredecessors.GetByIndex(i).Count() > 1, ERROR_MESSAGE_PREFIX L"Not Implemented.");
+					}
+				}
 
-						SharedBeginObject branch;
-						FindBalancedBeginObject(predecessor, 1, branch);
+				// adjust trace->ambiguity
+				predecessorId = trace->predecessors.first;
+				while (predecessorId != -1)
+				{
+					auto predecessor = GetTrace(predecessorId);
+					auto branch = predecessorToBranches[predecessor];
 
-						// if EndObject is not the first instruction
-						// then the all instruction prefix are stored in predecessors
-						// so no need to really touch the prefix in this trace.
+					// BeginObject found from different predecessors must be the same
+					// Otherwise, multiple BeginObject must belong to successors of the same trace, and the instructions prefix before these BeginObject must be identical
+					if (shared.traceBeginObject == nullptr)
+					{
+						shared.traceBeginObject = branch.traceBeginObject;
+						shared.insBeginObject = branch.insBeginObject;
+					}
+					else if (shared.traceBeginObject == branch.traceBeginObject)
+					{
+						CHECK_ERROR(shared.insBeginObject == branch.insBeginObject, ERROR_MESSAGE_PREFIX L"BeginObject searched from different branches are not the same.");
+					}
+					else
+					{
+						// ensure traces containing these BeginObject share the same predecessor
+						TraceInsLists parentInsLists;
+						Trace* parentTrace = shared.traceBeginObject;
 
-						MergeAmbiguityType(shared.type, branch.type);
-
-						// BeginObject found from different predecessors must be the same
-						// Otherwise, multiple BeginObject must belong to successors of the same trace, and the instructions prefix before these BeginObject must be identical
-						if (shared.traceBeginObject == nullptr)
+#define ERROR_MESSAGE ERROR_MESSAGE_PREFIX L"Failed to merge prefix from BeginObject of multiple successors."
+						CHECK_ERROR(branch.traceBeginObject->predecessors.first == branch.traceBeginObject->predecessors.last, ERROR_MESSAGE);
+						if (parentTrace->allocatedIndex != branch.traceBeginObject->predecessors.first)
 						{
-							shared.traceBeginObject = branch.traceBeginObject;
-							shared.insBeginObject = branch.insBeginObject;
-						}
-						else if (shared.traceBeginObject == branch.traceBeginObject)
-						{
-							CHECK_ERROR(shared.insBeginObject == branch.insBeginObject, ERROR_MESSAGE_PREFIX L"BeginObject searched from different branches are not the same.");
+							CHECK_ERROR(parentTrace->predecessors.first == parentTrace->predecessors.last, ERROR_MESSAGE);
+							parentTrace = GetTrace(parentTrace->predecessors.first);
+
+							ReadInstructionList(parentTrace, parentInsLists);
+							shared.traceBeginObject = parentTrace;
+							shared.insBeginObject += parentInsLists.c3;
 						}
 						else
 						{
-							// ensure traces containing these BeginObject share the same predecessor
-							TraceInsLists parentInsLists;
-							Trace* parentTrace = shared.traceBeginObject;
-
-#define ERROR_MESSAGE ERROR_MESSAGE_PREFIX L"Failed to merge prefix from BeginObject of multiple successors."
-							CHECK_ERROR(branch.traceBeginObject->predecessors.first == branch.traceBeginObject->predecessors.last, ERROR_MESSAGE);
-							if (parentTrace->allocatedIndex != branch.traceBeginObject->predecessors.first)
-							{
-								CHECK_ERROR(parentTrace->predecessors.first == parentTrace->predecessors.last, ERROR_MESSAGE);
-								parentTrace = GetTrace(parentTrace->predecessors.first);
-
-								ReadInstructionList(parentTrace, parentInsLists);
-								shared.traceBeginObject = parentTrace;
-								shared.insBeginObject += parentInsLists.c3;
-							}
-							else
-							{
-								CHECK_ERROR(parentTrace->allocatedIndex == branch.traceBeginObject->predecessors.last, ERROR_MESSAGE);
-								ReadInstructionList(parentTrace, parentInsLists);
-							}
-
-							// ensure all instruction prefix before BeginObject are identical
-							Trace* firstBranch = GetTrace(parentTrace->successors.first);
-							CHECK_ERROR(firstBranch != branch.traceBeginObject, ERROR_MESSAGE);
-
-							TraceInsLists firstBranchInsLists, branchInsLists;
-							ReadInstructionList(firstBranch, firstBranchInsLists);
-							ReadInstructionList(branch.traceBeginObject, branchInsLists);
-
-							vint32_t firstInstruction = shared.insBeginObject - parentInsLists.c3;
-							CHECK_ERROR(firstInstruction == branch.insBeginObject, ERROR_MESSAGE);
-							for (vint32_t i = 0; i < firstInstruction; i++)
-							{
-								auto& ins1 = ReadInstruction(i, firstBranchInsLists);
-								auto& ins2 = ReadInstruction(i, branchInsLists);
-								CHECK_ERROR(ins1 == ins2, ERROR_MESSAGE);
-							}
-#undef ERROR_MESSAGE
+							CHECK_ERROR(parentTrace->allocatedIndex == branch.traceBeginObject->predecessors.last, ERROR_MESSAGE);
+							ReadInstructionList(parentTrace, parentInsLists);
 						}
+
+						// ensure all instruction prefix before BeginObject are identical
+						Trace* firstBranch = GetTrace(parentTrace->successors.first);
+						CHECK_ERROR(firstBranch != branch.traceBeginObject, ERROR_MESSAGE);
+
+						TraceInsLists firstBranchInsLists, branchInsLists;
+						ReadInstructionList(firstBranch, firstBranchInsLists);
+						ReadInstructionList(branch.traceBeginObject, branchInsLists);
+
+						vint32_t firstInstruction = shared.insBeginObject - parentInsLists.c3;
+						CHECK_ERROR(firstInstruction == branch.insBeginObject, ERROR_MESSAGE);
+						for (vint32_t i = 0; i < firstInstruction; i++)
+						{
+							auto& ins1 = ReadInstruction(i, firstBranchInsLists);
+							auto& ins2 = ReadInstruction(i, branchInsLists);
+							CHECK_ERROR(ins1 == ins2, ERROR_MESSAGE);
+						}
+#undef ERROR_MESSAGE
 					}
+
 					predecessorId = predecessor->predecessors.siblingNext;
 				}
 
