@@ -125,22 +125,33 @@ MergeTwoEndingInputTrace
 				// find the instruction postfix
 				// the instruction prefix ends at EndObject of a trace
 				// and both instruction postfix should equal
+
+				// old == ambiguityTraceToMerge
+				// new == the trace that is being created (could skip)
 				auto& oldEdge = executable.edges[ambiguityTraceToMerge->byEdge];
+				vint32_t oldInsCount = oldEdge.insBeforeInput.count + oldEdge.insAfterInput.count;
+				vint32_t newInsCount = edgeDesc.insBeforeInput.count + edgeDesc.insAfterInput.count;
 				vint32_t postfix = GetInstructionPostfix(oldEdge, edgeDesc);
+
+				// if two state can merge
+				// then executedReturnStack.returnIndex == ambiguityTraceToMerge.executedReturnStack.returnIndex
+				// so two ReturnDesc.insAfterInput.count are identical
+				// and also instructions
 				if (executedReturnStack != -1)
 				{
 					auto rs = GetReturnStack(executedReturnStack);
 					auto& rd = executable.returns[rs->returnIndex];
 					postfix += rd.insAfterInput.count;
+					oldInsCount += rd.insAfterInput.count;
+					newInsCount += rd.insAfterInput.count;
 				}
 
 				if (ambiguityTraceToMerge->ambiguityMergeInsPostfix == -1)
 				{
-					if (oldEdge.insBeforeInput.count == postfix + 1)
+					if (oldInsCount == postfix + 1)
 					{
 						// if EndObject is the first instruction
 						// no need to insert another trace
-						ambiguityTraceToMerge->ambiguityMergeInsPostfix = postfix;
 					}
 					else
 					{
@@ -188,7 +199,7 @@ MergeTwoEndingInputTrace
 					}
 				}
 
-				if (edgeDesc.insBeforeInput.count == postfix + 1)
+				if (newInsCount == postfix + 1)
 				{
 					// if EndObject is the first instruction of the new trace
 					// then no need to create the new trace

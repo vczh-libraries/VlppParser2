@@ -208,76 +208,72 @@ void RenderTrace(
 		}
 
 		writer.WriteLine(L"[INSTRUCTIONS]:");
-		vint c1 = 0, c2 = 0;
+		vint32_t c1 = 0, c2 = 0, c3 = 0;
 		if (trace->byEdge != -1)
 		{
 			auto& edgeDesc = executable.edges[trace->byEdge];
 			c1 = edgeDesc.insBeforeInput.count;
 			c2 = c1 + edgeDesc.insAfterInput.count;
-
-			for (vint insRef = 0; insRef < edgeDesc.insBeforeInput.count; insRef++)
-			{
-				if (trace->ambiguityBranchInsPostfix != -1 && insRef == edgeDesc.insBeforeInput.count - trace->ambiguityBranchInsPostfix)
-				{
-					writer.WriteLine(L"    vvvvvvvvvvvvvvvvvvvv");
-				}
-
-				if (trace->ambiguityMergeInsPostfix != -1 && insRef == edgeDesc.insBeforeInput.count - trace->ambiguityMergeInsPostfix)
-				{
-					writer.WriteLine(L"    ^^^^^^^^^^^^^^^^^^^^");
-				}
-
-				vint insIndex = edgeDesc.insBeforeInput.start + insRef;
-				auto& ins = executable.instructions[insIndex];
-				writer.WriteString(L"  - ");
-				LogInstruction(ins, typeName, fieldName, writer);
-
-				if (insRef == trace->ambiguity.insEndObject)
-				{
-					writer.WriteLine(L"      AMB => Trace[" +
-						itow(trace->ambiguity.traceBeginObject) +
-						L"].Ins[" +
-						itow(trace->ambiguity.insBeginObject) +
-						L"]");
-				}
-			}
-
-			for (vint insRef = 0; insRef < edgeDesc.insAfterInput.count; insRef++)
-			{
-				vint insIndex = edgeDesc.insAfterInput.start + insRef;
-				auto& ins = executable.instructions[insIndex];
-				writer.WriteString(L"  + ");
-				LogInstruction(ins, typeName, fieldName, writer);
-				if (c1 + insRef == trace->ambiguity.insEndObject)
-				{
-					writer.WriteLine(L"      AMB => State[" +
-						itow(trace->ambiguity.traceBeginObject) +
-						L"].Ins[" +
-						itow(trace->ambiguity.insBeginObject) +
-						L"]");
-				}
-			}
 		}
-
 		if (trace->executedReturnStack != -1)
 		{
 			auto returnStack = tm.GetReturnStack(trace->executedReturnStack);
 			auto& returnDesc = executable.returns[returnStack->returnIndex];
-			for (vint insRef = 0; insRef < returnDesc.insAfterInput.count; insRef++)
+			c3 = c2 + returnDesc.insAfterInput.count;
+		}
+
+		for (vint32_t i = 0; i < c3; i++)
+		{
+			if (trace->ambiguityBranchInsPostfix != -1 && i == c3 - trace->ambiguityBranchInsPostfix)
 			{
-				vint insIndex = returnDesc.insAfterInput.start + insRef;
-				auto& ins = executable.instructions[insIndex];
-				writer.WriteString(L"  > ");
-				LogInstruction(ins, typeName, fieldName, writer);
-				if (c2 + insRef == trace->ambiguity.insEndObject)
-				{
-					writer.WriteLine(L"      AMB => State[" +
-						itow(trace->ambiguity.traceBeginObject) +
-						L"].Ins[" +
-						itow(trace->ambiguity.insBeginObject) +
-						L"]");
-				}
+				writer.WriteLine(L"    vvvvvvvvvvvvvvvvvvvv");
 			}
+
+			if (trace->ambiguityMergeInsPostfix != -1 && i == c3 - trace->ambiguityMergeInsPostfix)
+			{
+				writer.WriteLine(L"    ^^^^^^^^^^^^^^^^^^^^");
+			}
+
+			AstIns ins;
+			if (i < c1)
+			{
+				auto& edgeDesc = executable.edges[trace->byEdge];
+				ins = executable.instructions[edgeDesc.insBeforeInput.start + i];
+				writer.WriteString(L"  - ");
+			}
+			else if (i < c2)
+			{
+				auto& edgeDesc = executable.edges[trace->byEdge];
+				ins = executable.instructions[edgeDesc.insAfterInput.start + (i - c1)];
+				writer.WriteString(L"  + ");
+			}
+			else
+			{
+				auto returnStack = tm.GetReturnStack(trace->executedReturnStack);
+				auto& returnDesc = executable.returns[returnStack->returnIndex];
+				ins = executable.instructions[returnDesc.insAfterInput.start + (i - c2)];
+				writer.WriteString(L"  > ");
+			}
+
+			LogInstruction(ins, typeName, fieldName, writer);
+			if (i == trace->ambiguity.insEndObject)
+			{
+				writer.WriteLine(L"      AMB => State[" +
+					itow(trace->ambiguity.traceBeginObject) +
+					L"].Ins[" +
+					itow(trace->ambiguity.insBeginObject) +
+					L"]");
+			}
+		}
+
+		if (trace->ambiguityBranchInsPostfix = 0)
+		{
+			writer.WriteLine(L"    vvvvvvvvvvvvvvvvvvvv");
+		}
+
+		if (trace->ambiguityMergeInsPostfix == 0)
+		{
+			writer.WriteLine(L"    ^^^^^^^^^^^^^^^^^^^^");
 		}
 
 		if (trace->returnStack != -1)

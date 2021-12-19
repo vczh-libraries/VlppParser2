@@ -598,7 +598,7 @@ FillAmbiguityInfoForMergingTrace
 				CHECK_ERROR(insEndObject != -1, ERROR_MESSAGE_PREFIX L"Cannot find EndObject instruction in the merging trace.");
 				if (trace->ambiguityMergeInsPostfix != -1)
 				{
-					CHECK_ERROR(insEndObject == insLists.c1 - trace->ambiguityMergeInsPostfix - 1, L"ambiguityMergeInsPostfix and insEndObject does not match.");
+					CHECK_ERROR(insEndObject == insLists.c3 - trace->ambiguityMergeInsPostfix - 1, L"ambiguityMergeInsPostfix and insEndObject does not match.");
 				}
 
 				vint32_t ambiguityType = -1;
