@@ -612,13 +612,21 @@ FillAmbiguityInfoForMergingTrace
 				{
 					predecessorCount++;
 					auto predecessor = GetTrace(predecessorId);
-					// run all instructions before and including the EndObject instruction
-					// since we know EndObject addes 1 to the counter
-					// so we don't really need to call RunInstruction on it
-					// we could begin the counter from 1
 
 					SharedBeginObject branch;
-					FindBalancedBoOrDfa(predecessor, 1, branch);
+					if (trace->ambiguityMergeInsPostfix == -1)
+					{
+						// theoretically we need to run from EndObject to the first instruction
+						// but there will be nothing interested before EndObject
+						// so just set objectCount to 1
+						FindBalancedBoOrDfa(predecessor, 1, branch);
+					}
+					else
+					{
+						// having a postfix means the predecessor is another half of this trace
+						// the EndObject instruction is in the predecessor
+						FindBalancedBoOrDfa(predecessor, 0, branch);
+					}
 
 					beginToPredecessors.Add(branch.traceBeginObject, predecessor);
 					predecessorToBranches.Add(predecessor, branch);
