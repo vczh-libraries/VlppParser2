@@ -13,16 +13,12 @@ AreTwoTraceEqual
 
 			bool TraceManager::AreTwoEndingInputTraceEqual(vint32_t state, vint32_t returnStack, vint32_t executedReturnStack, vint32_t acId, Trace* candidate)
 			{
-				if (state == 19 && candidate->allocatedIndex == 23)
-				{
-					int a = 0;
-				}
 				// two traces equal to each other if
 				//   1) they are in the same state
-				//   2) they have the same ReturnStack before executing thie EndingInput transitions
-				//   3) they are attending same competitions
-				//   4) the candidate has an ending input
-				//   5) they have the same return stack
+				//   2) they executed the same ReturnDesc
+				//   3) they have the same returnStack
+				//   4) they are attending same competitions
+				//   5) the candidate has an ending input
 				// TODO: verify if we can do "acId == candidate->runtimeRouting.attendingCompetitions" or not
 
 				if (state != candidate->state) return false;

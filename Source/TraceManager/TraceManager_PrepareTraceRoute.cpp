@@ -494,134 +494,113 @@ FillAmbiguityInfoForPredecessorTraces
 CreateLastMergingTrace
 ***********************************************************************/
 
-			void TraceManager::CreateLastMergingTrace(Trace* rootTraceCandidate, vint32_t& ambiguityType)
+			void TraceManager::CreateLastMergingTrace(Trace* rootTraceCandidate)
 			{
-#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::CreateLastMergingTrace()#"
+				// if there are multiple surviving traces
+				// they are all EndingInput transition to the ending state
+				// and their last instruction are EndObject
+				// so we could merge every surviving trace to one
 
-				// collect all successor traces from the root trace
-				List<Trace*> orderedRootSuccessors;
-				{
-					vint32_t successorId = rootTraceCandidate->successors.first;
-					while (successorId != -1)
-					{
-						auto successor = GetTrace(successorId);
-						orderedRootSuccessors.Add(successor);
-						successorId = successor->successors.siblingNext;
-					}
-				}
-
-				// find the BeginObject instruction for all surviving traces
-				Group<Trace*, Trace*> successorToSurvivings;
-				Dictionary<Trace*, SharedBeginObject> ambiguities;
-
+				// first, we need to determine the ambiguity type
+				vint32_t ambiguityType = -1;
 				for (vint i = 0; i < concurrentCount; i++)
 				{
-					auto survivingTrace = concurrentTraces->Get(i);
-
-					// EndObject must be its last instruction
-					TraceInsLists insLists;
-					ReadInstructionList(survivingTrace, insLists);
-					CHECK_ERROR(insLists.c3 > 0, ERROR_MESSAGE_PREFIX L"Last instruction is not EndObject.");
-
-					auto&& lastIns = ReadInstruction(insLists.c3 - 1, insLists);
-					CHECK_ERROR(lastIns.type == AstInsType::EndObject, ERROR_MESSAGE_PREFIX L"Last instruction is not EndObject.");
-
-					// find the BeginObject instruction
-					SharedBeginObject shared;
-					FindBalancedBeginObject(survivingTrace, 0, shared);
-					CHECK_ERROR(shared.traceBeginObject->predecessors.first == rootTraceCandidate->allocatedIndex, ERROR_MESSAGE_PREFIX L"The BeginObject instruction for the last EndObject instruction must locate in a successor trace from the root trace.");
-
-					MergeAmbiguityType(ambiguityType, shared.type);
-					successorToSurvivings.Add(shared.traceBeginObject, survivingTrace);
-					ambiguities.Add(survivingTrace, shared);
-				}
-
-				// create merging traces for surviving traces that share the same traceBeginObject and insBeginObject
-				List<Trace*> mergedSurvivingTraces;
-				for (auto successor : orderedRootSuccessors)
-				{
-					// if this successor trace doesn't branch
-					// put the surviving trace to the list
-					// otherwise put the merging trace to the list
-
-					auto&& survivings = successorToSurvivings.Get(successor);
-					if (survivings.Count() == 1)
+					auto trace = concurrentTraces->Get(i);
+					if (trace->predecessors.first == trace->predecessors.last)
 					{
-						mergedSurvivingTraces.Add(survivings[0]);
+						// if this trace has only one predecessor
+						// find its BeginObject or BeginObjectLeftRecursive instruction for the type
+						TraceInsLists insLists;
+						ReadInstructionList(trace, insLists);
+
+						SharedBeginObject balanced;
+						balanced.traceBeginObject = trace;
+						balanced.insBeginObject = insLists.c3 - 1;
+						vint32_t objectCount = 0;
+						vint32_t reopenCount = 0;
+						FindBalancedBoOrBolr(balanced, objectCount, reopenCount);
+
+						AdjustToRealTrace(balanced);
+						ReadInstructionList(balanced.traceBeginObject, insLists);
+						auto ins = ReadInstruction(balanced.insBeginObject, insLists);
+						MergeAmbiguityType(ambiguityType, ins.param);
 					}
 					else
 					{
-						// check if they are mergable
-						auto&& firstAmbiguity = ambiguities[survivings[0]];
-						for (auto survivingTrace : From(survivings).Skip(1))
-						{
-							auto&& nextAmbiguity = ambiguities[survivingTrace];
-							CHECK_ERROR(
-								firstAmbiguity.traceBeginObject == nextAmbiguity.traceBeginObject && firstAmbiguity.insBeginObject == nextAmbiguity.insBeginObject,
-								ERROR_MESSAGE_PREFIX L"BeginObject searched from different surviving traces are not the same."
-								);
-						}
+						// otherwise, the type has been calculated before
+						MergeAmbiguityType(ambiguityType, trace->ambiguity.ambiguityType);
+					}
+				}
 
-						// create a merging trace
-						auto trace = AllocateTrace();
-						mergedSurvivingTraces.Add(trace);
-						{
-							auto tid = trace->allocatedIndex;
-							*trace = *survivings[0];
-							trace->allocatedIndex = tid;
-						}
+				// second, create a merging ending trace
+				// instructions before the last EndObject could be different
+				auto mergingTrace = AllocateTrace();
+				for (vint i = 0; i < concurrentCount; i++)
+				{
+					auto trace = concurrentTraces->Get(i);
+					if (i == 0)
+					{
+						// copy data from the first one
+						mergingTrace->state = trace->state;
+						mergingTrace->byEdge = trace->byEdge;
+						mergingTrace->byInput = trace->byInput;
+						mergingTrace->currentTokenIndex = trace->currentTokenIndex;
 
-						// ambiguityInsPostfix begins with the EndingObject instruction
-						// which has been verified to be the last instruction in surviving traces
-						// so ambiguityInsPostfix is always 1
+						// set the ambiguity data
+						TraceInsLists insLists;
+						ReadInstructionList(mergingTrace, insLists);
+						mergingTrace->ambiguity.traceBeginObject = 0;
+						mergingTrace->ambiguity.insBeginObject = 1;
+						mergingTrace->ambiguity.insEndObject = insLists.c3 - 1;
+						mergingTrace->ambiguity.ambiguityType = ambiguityType;
+						mergingTrace->ambiguityInsPostfix = 1;
+					}
+
+					if (trace->predecessors.first == trace->predecessors.last)
+					{
+						// if this trace has only one predecessor
+						// set the postfix size
 						trace->ambiguityInsPostfix = 1;
-						trace->ambiguity.traceBeginObject = firstAmbiguity.traceBeginObject->allocatedIndex;
-						trace->ambiguity.insBeginObject = firstAmbiguity.insBeginObject;
-						trace->ambiguity.ambiguityType = ambiguityType;
+						AddTraceToCollection(mergingTrace, trace, &Trace::predecessors);
+						AddTraceToCollection(trace, mergingTrace, &Trace::successors);
+					}
+					else
+					{
+						// otherwise, we need to copy it for all predecessors
+						// so that we could set the postfix size
+						vint32_t predecessorId = trace->predecessors.first;
+						while (predecessorId != -1)
 						{
-							TraceInsLists insLists;
-							ReadInstructionList(trace, insLists);
-							trace->ambiguity.insEndObject = insLists.c3 - 1;
-						}
+							auto predecessor = GetTrace(predecessorId);
+							predecessorId = predecessor->predecessors.siblingNext;
 
-						trace->predecessors.first = -1;
-						trace->predecessors.last = -1;
-						for (auto survivingTrace : survivings)
-						{
-							AddTraceToCollection(trace, survivingTrace, &Trace::predecessors);
-							AddTraceToCollection(survivingTrace, trace, &Trace::successors);
+							predecessor->predecessors.siblingNext = -1;
+							predecessor->predecessors.siblingPrev = -1;
+							predecessor->successors = {};
 
-							survivingTrace->executedReturnStack = -1;
-							survivingTrace->ambiguityInsPostfix = 1;
+							auto endingTrace = AllocateTrace();
+							endingTrace->state = trace->state;
+							endingTrace->byEdge = trace->byEdge;
+							endingTrace->byInput = trace->byInput;
+							endingTrace->currentTokenIndex = trace->currentTokenIndex;
+							endingTrace->competitionRouting = trace->competitionRouting;
+							endingTrace->ambiguityInsPostfix = 1;
+
+							AddTraceToCollection(endingTrace, predecessor, &Trace::predecessors);
+							AddTraceToCollection(predecessor, endingTrace, &Trace::successors);
+							AddTraceToCollection(mergingTrace, endingTrace, &Trace::predecessors);
+							AddTraceToCollection(endingTrace, mergingTrace, &Trace::successors);
 						}
 					}
 				}
 
-				// create a merging trace with no instruction
-				auto trace = AllocateTrace();
+				// finally, the new merging trace should be the only surviving trace
+				concurrentCount = 1;
+				concurrentTraces->Set(0, mergingTrace);
+				for (vint i = 1; i < concurrentTraces->Count(); i++)
 				{
-					auto survivingTrace = mergedSurvivingTraces[0];
-					trace->state = survivingTrace->state;
-					trace->currentTokenIndex = survivingTrace->currentTokenIndex;
+					concurrentTraces->Set(i, nullptr);
 				}
-
-				for (auto survivingTrace : mergedSurvivingTraces)
-				{
-					AddTraceToCollection(trace, survivingTrace, &Trace::predecessors);
-					AddTraceToCollection(survivingTrace, trace, &Trace::successors);
-
-					// the root trace and the merging trace have no instruction
-					// ExecuteTrace should handle this case correctly
-					trace->ambiguity.insEndObject = 0;
-					trace->ambiguity.traceBeginObject = rootTraceCandidate->allocatedIndex;
-					trace->ambiguity.insBeginObject = 0;
-					trace->ambiguity.ambiguityType = ambiguityType;
-				}
-
-				BeginSwap();
-				AddTrace(trace);
-				EndSwap();
-#undef ERROR_MESSAGE_PREFIX
 			}
 
 /***********************************************************************
@@ -685,8 +664,7 @@ PrepareTraceRoute
 				// check if the ambiguity happens in the root AST
 				if (concurrentCount > 1)
 				{
-					vint32_t ambiguityType = -1;
-					CreateLastMergingTrace(rootTraceCandidate, ambiguityType);
+					CreateLastMergingTrace(rootTraceCandidate);
 				}
 
 				rootTrace = rootTraceCandidate;
