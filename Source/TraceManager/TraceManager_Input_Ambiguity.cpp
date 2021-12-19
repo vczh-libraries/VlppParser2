@@ -52,7 +52,7 @@ GetInstructionPostfix
 			{
 #define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::GetInstructionPostfix(EdgeDesc&, EdgeDesc&)#"
 				// given two equal traces, calculate their common instruction postfix length
-				// EndObject is the first instruction of the postfix
+				// EndObject is the last instruction of the prefix
 
 				// EndObject may not be the first instruction in both edges
 				// and instructions before EndObject could be different
@@ -92,11 +92,11 @@ GetInstructionPostfix
 				// ensure they have the same instruction postfix starting from EndObject
 				CHECK_ERROR(oldEdge.insBeforeInput.count - i1 == newEdge.insBeforeInput.count - i2, L"Two instruction postfix after EndObject not equal.");
 
-				vint32_t postfix = oldEdge.insBeforeInput.count - i1;
+				vint32_t postfix = oldEdge.insBeforeInput.count - i1 - 1;
 				for (vint32_t postfixRef = 0; postfixRef < postfix; postfixRef++)
 				{
-					auto&& ins1 = executable.instructions[oldEdge.insBeforeInput.start + i1 + postfixRef];
-					auto&& ins2 = executable.instructions[newEdge.insBeforeInput.start + i2 + postfixRef];
+					auto&& ins1 = executable.instructions[oldEdge.insBeforeInput.start + i1 + 1 + postfixRef];
+					auto&& ins2 = executable.instructions[newEdge.insBeforeInput.start + i2 + 1 + postfixRef];
 					CHECK_ERROR(ins1 == ins2, L"Two instruction postfix after EndObject not equal.");
 				}
 				return postfix;
@@ -123,18 +123,18 @@ MergeTwoEndingInputTrace
 #define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::MergeTwoEndingInputTrace(...)#"
 				// if ambiguity resolving happens
 				// find the instruction postfix
-				// the instruction postfix starts from EndObject of a trace
+				// the instruction prefix ends at EndObject of a trace
 				// and both instruction postfix should equal
 				auto& oldEdge = executable.edges[ambiguityTraceToMerge->byEdge];
 				vint32_t postfix = GetInstructionPostfix(oldEdge, edgeDesc);
 
-				if (ambiguityTraceToMerge->ambiguityInsPostfix == -1)
+				if (ambiguityTraceToMerge->ambiguityMergeInsPostfix == -1)
 				{
-					if (oldEdge.insBeforeInput.count == postfix)
+					if (oldEdge.insBeforeInput.count == postfix + 1)
 					{
 						// if EndObject is the first instruction
 						// no need to insert another trace
-						ambiguityTraceToMerge->ambiguityInsPostfix = postfix;
+						ambiguityTraceToMerge->ambiguityMergeInsPostfix = postfix;
 					}
 					else
 					{
@@ -169,8 +169,8 @@ MergeTwoEndingInputTrace
 						formerTrace->competitionRouting.carriedCompetitions = ambiguityTraceToMerge->competitionRouting.carriedCompetitions;
 
 						// both traces need to have the same ambiguityInsPostfix
-						formerTrace->ambiguityInsPostfix = postfix;
-						ambiguityTraceToMerge->ambiguityInsPostfix = postfix;
+						formerTrace->ambiguityBranchInsPostfix = postfix;
+						ambiguityTraceToMerge->ambiguityMergeInsPostfix = postfix;
 
 						// connect two traces
 						// formerTrace has already copied predecessors, skipped
@@ -182,7 +182,7 @@ MergeTwoEndingInputTrace
 					}
 				}
 
-				if (edgeDesc.insBeforeInput.count == postfix)
+				if (edgeDesc.insBeforeInput.count == postfix + 1)
 				{
 					// if EndObject is the first instruction of the new trace
 					// then no need to create the new trace
@@ -207,7 +207,7 @@ MergeTwoEndingInputTrace
 					newTrace->competitionRouting.attendingCompetitions = attendingCompetitions;
 					newTrace->competitionRouting.carriedCompetitions = carriedCompetitions;
 
-					newTrace->ambiguityInsPostfix = postfix;
+					newTrace->ambiguityBranchInsPostfix = postfix;
 
 					AddTraceToCollection(ambiguityTraceToMerge, newTrace, &Trace::predecessors);
 				}
