@@ -143,23 +143,23 @@ FindBalancedBoOrBolr
 				// that creates the bottom object
 #define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::FindBalancedBoOrBolr(Trace*&, vint&, vint&)#"
 				TraceInsLists insLists;
-				ReadInstructionList(trace, insLists);
+				ReadInstructionList(balanced.traceBeginObject, insLists);
 
 				while (true)
 				{
-					if (trace->predecessors.first != trace->predecessors.last)
+					if (balanced.traceBeginObject->predecessors.first != balanced.traceBeginObject->predecessors.last)
 					{
 						// if there are multiple predecessors
 						// then this is a ambiguity resolving trace
-						FillAmbiguityInfoForMergingTrace(trace);
+						auto ambiguityBegin = FillAmbiguityInfoForMergingTrace(balanced.traceBeginObject);
 
 						// execute all instructions until it reaches the first EndObject instruction
 						// and this EndObject instruction is not executed
-						for (auto i = instruction; i > trace->ambiguity.insEndObject; i--)
+						for (auto i = balanced.insBeginObject; i > balanced.traceBeginObject->ambiguity.insEndObject; i--)
 						{
 							if (RunInstruction(i, insLists, objectCount, reopenCount))
 							{
-								instruction = i;
+								balanced.insBeginObject = i;
 								return;
 							}
 						}
@@ -167,17 +167,16 @@ FindBalancedBoOrBolr
 						// since the BeginObject instruction for this EndObject instruction will be executed after calling FillAmbiguityInfoForMergingTrace
 						// must jump to the instruction before that BeginObject instruction
 
+						balanced = ambiguityBegin;
 						if (objectCount == 0)
 						{
-							instruction = trace->ambiguity.insBeginObject;
-							trace = GetTrace(trace->ambiguity.traceBeginObject);
 							return;
 						}
 						else
 						{
-							instruction = trace->ambiguity.insBeginObject - 1;
-							trace = GetTrace(trace->ambiguity.traceBeginObject);
-							ReadInstructionList(trace, insLists);
+							AdjustToRealTrace(balanced);
+							balanced.insBeginObject--;
+							ReadInstructionList(balanced.traceBeginObject, insLists);
 						}
 					}
 					else
@@ -185,27 +184,27 @@ FindBalancedBoOrBolr
 						// if there is only one predecessor
 						// run all instructions until we find the correct BeginObject or BeginObjectLeftRecursive instruction
 
-						if (trace->ambiguityInsPostfix != -1)
+						if (balanced.traceBeginObject->ambiguityInsPostfix != -1)
 						{
-							vint32_t start = insLists.c1 - trace->ambiguityInsPostfix - 1;
-							if (instruction > start) instruction = start;
+							vint32_t start = insLists.c1 - balanced.traceBeginObject->ambiguityInsPostfix - 1;
+							if (balanced.insBeginObject > start) balanced.insBeginObject = start;
 						}
 
-						for (auto i = instruction; i >= 0; i--)
+						for (auto i = balanced.insBeginObject; i >= 0; i--)
 						{
 							if (RunInstruction(i, insLists, objectCount, reopenCount))
 							{
-								instruction = i;
+								balanced.insBeginObject = i;
 								return;
 							}
 						}
 
 						// if not found, then we continue searching in the predecessor trace
-						CHECK_ERROR(trace->predecessors.first != -1, ERROR_MESSAGE_PREFIX L"Encountered unbalanced instructions.");
+						CHECK_ERROR(balanced.traceBeginObject->predecessors.first != -1, ERROR_MESSAGE_PREFIX L"Encountered unbalanced instructions.");
 
-						trace = GetTrace(trace->predecessors.first);
-						ReadInstructionList(trace, insLists);
-						instruction = insLists.c3 - 1;
+						balanced.traceBeginObject = GetTrace(balanced.traceBeginObject->predecessors.first);
+						ReadInstructionList(balanced.traceBeginObject, insLists);
+						balanced.insBeginObject = insLists.c3 - 1;
 					}
 				}
 #undef ERROR_MESSAGE_PREFIX
