@@ -214,6 +214,7 @@ void RenderTrace(
 			auto& edgeDesc = executable.edges[trace->byEdge];
 			c1 = edgeDesc.insBeforeInput.count;
 			c2 = c1 + edgeDesc.insAfterInput.count;
+			c3 = c2;
 		}
 		if (trace->executedReturnStack != -1)
 		{
