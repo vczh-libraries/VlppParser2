@@ -121,7 +121,7 @@ RunInstruction
 FindBalancedBoOrBolr
 ***********************************************************************/
 
-			void TraceManager::FindBalancedBoOrBolr(Trace*& trace, vint32_t& instruction, vint32_t& objectCount, vint32_t& reopenCount)
+			void TraceManager::FindBalancedBoOrBolr(SharedBeginObject& balanced, vint32_t& objectCount, vint32_t& reopenCount)
 			{
 				// given the current instruction and the current constructing AST objects
 				// find the nearlest BeginObject or BeginObjectLeftRecursive before the current instruction
@@ -200,7 +200,7 @@ FindBalancedBoOrBolr
 FindBalancedBeginObject
 ***********************************************************************/
 
-			void TraceManager::FindBalancedBeginObject(Trace* trace, vint32_t objectCount, Trace*& branchTrace, vint32_t& branchInstruction, vint32_t& branchType)
+			void TraceManager::FindBalancedBeginObject(Trace* trace, vint32_t objectCount, SharedBeginObject& branch)
 			{
 #define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::FindBalancedBeginObject(Trace*, vint32_t, Trace*&, vint32_t&, vint32_t&)#"
 				// find the first balanced BeginObject or BeginObjectLeftRecursive
@@ -305,7 +305,7 @@ MergeAmbiguityType
 FillAmbiguityInfoForMergingTrace
 ***********************************************************************/
 
-			void TraceManager::FillAmbiguityInfoForMergingTrace(Trace* trace)
+			SharedBeginObject TraceManager::FillAmbiguityInfoForMergingTrace(Trace* trace)
 			{
 				// assuming that this is a ambiguity resolving trace
 				// find the first instruction that accesses the object which is closed by the first EndObject in this trace

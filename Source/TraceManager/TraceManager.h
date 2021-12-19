@@ -285,13 +285,20 @@ TraceManager
 				void								WalkAlongTokenEdges(vint32_t currentTokenIndex, vint32_t input, vint32_t lookAhead, Trace* trace, EdgeArray& edgeArray);
 
 				// PrepareTraceRoute
+				struct SharedBeginObject
+				{
+					Trace*							traceBeginObject = nullptr;
+					vint32_t						insBeginObject = -1;
+					vint32_t						type = -1;
+				};
+
 				void								ReadInstructionList(Trace* trace, TraceInsLists& insLists);
 				AstIns&								ReadInstruction(vint32_t instruction, TraceInsLists& insLists);
 				bool								RunInstruction(vint32_t instruction, TraceInsLists& insLists, vint32_t& objectCount, vint32_t& reopenCount);
-				void								FindBalancedBoOrBolr(Trace*& trace, vint32_t& instruction, vint32_t& objectCount, vint32_t& reopenCount);
-				void								FindBalancedBeginObject(Trace* trace, vint32_t objectCount, Trace*& branchTrace, vint32_t& branchInstruction, vint32_t& branchType);
+				void								FindBalancedBoOrBolr(SharedBeginObject& balanced, vint32_t& objectCount, vint32_t& reopenCount);
+				void								FindBalancedBeginObject(Trace* trace, vint32_t objectCount, SharedBeginObject& branch);
 				void								MergeAmbiguityType(vint32_t& ambiguityType, vint32_t branchType);
-				void								FillAmbiguityInfoForMergingTrace(Trace* trace);
+				SharedBeginObject					FillAmbiguityInfoForMergingTrace(Trace* trace);
 				void								FillAmbiguityInfoForPredecessorTraces(Trace* trace);
 				void								CreateLastMergingTrace(Trace* rootTraceCandidate, vint32_t& ambiguityType);
 			public:
