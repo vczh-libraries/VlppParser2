@@ -780,7 +780,7 @@ PrepareTraceRoute
 
 			Trace* TraceManager::PrepareTraceRoute()
 			{
-				if (state == TraceManagerState::PreparedTraceRoute) return rootTrace;
+				if (state == TraceManagerState::PreparedTraceRoute) return initialTrace;
 				CHECK_ERROR(state == TraceManagerState::Finished, L"vl::glr::automaton::TraceManager::PrepareTraceRoute()#Wrong timing to call this function.");
 				state = TraceManagerState::PreparedTraceRoute;
 
@@ -789,7 +789,6 @@ PrepareTraceRoute
 				// until we reach the end
 				// so that we could skip all failed traces
 
-				Trace* rootTraceCandidate = nullptr;
 				SortedList<Trace*> available;
 				List<Trace*> visited;
 
@@ -804,13 +803,6 @@ PrepareTraceRoute
 					auto visiting = visited[i];
 					if (available.Contains(visiting)) continue;
 					available.Add(visiting);
-
-					// ensure that there is only one root trace
-					if (visiting->predecessors.first == -1)
-					{
-						CHECK_ERROR(rootTraceCandidate == nullptr, L"vl::glr::automaton::TraceManager::PrepareTraceRoute()#Impossible to have more than one root trace.");
-						rootTraceCandidate = visiting;
-					}
 
 					// add the current trace to its predecessors' successors collection
 					// so that a succeeded trace only have other succeeded successors in its successor collection
@@ -835,11 +827,10 @@ PrepareTraceRoute
 				// check if the ambiguity happens in the root AST
 				if (concurrentCount > 1)
 				{
-					CreateLastMergingTrace(rootTraceCandidate);
+					CreateLastMergingTrace(initialTrace);
 				}
 
-				rootTrace = rootTraceCandidate;
-				return rootTrace;
+				return initialTrace;
 			}
 		}
 	}

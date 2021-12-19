@@ -72,27 +72,24 @@ AttendCompetitionIfNecessary
 
 			ReturnStack* TraceManager::PushReturnStack(vint32_t base, vint32_t returnIndex, vint32_t currentTokenIndex)
 			{
-				auto baseStack = base == -1 ? nullptr : GetReturnStack(base);
+				auto siblings = base == -1 ? &initialReturnStackSuccessors : &GetReturnStack(base)->successors;
 
-				if (baseStack)
+				if (siblings->successorTokenIndex == -1 && currentTokenIndex - siblings->createdTokenIndex <= 1)
 				{
-					if (baseStack->tokenIndex == -1)
-					{
-						baseStack->tokenIndex = currentTokenIndex;
-					}
+					siblings->successorTokenIndex = currentTokenIndex;
+				}
 
-					if (baseStack->tokenIndex == currentTokenIndex)
+				if (siblings->successorTokenIndex == currentTokenIndex)
+				{
+					vint32_t successorId = siblings->first;
+					while (successorId != -1)
 					{
-						vint32_t successorId = baseStack->first;
-						while (successorId != -1)
+						auto successor = GetReturnStack(successorId);
+						successorId = successor->successors.next;
+
+						if (successor->returnIndex == returnIndex)
 						{
-							auto successor = GetReturnStack(successorId);
-							successorId = successor->next;
-
-							if (successor->returnIndex == returnIndex)
-							{
-								return successor;
-							}
+							return successor;
 						}
 					}
 				}
@@ -100,19 +97,20 @@ AttendCompetitionIfNecessary
 				auto returnStack = AllocateReturnStack();
 				returnStack->previous = base;
 				returnStack->returnIndex = returnIndex;
+				returnStack->successors.createdTokenIndex = currentTokenIndex;
 
-				if (baseStack && baseStack->tokenIndex == currentTokenIndex)
+				if (siblings->successorTokenIndex == currentTokenIndex)
 				{
-					if (baseStack->first == -1)
+					if (siblings->first == -1)
 					{
-						baseStack->first = returnStack->allocatedIndex;
-						baseStack->last = returnStack->allocatedIndex;
+						siblings->first = returnStack->allocatedIndex;
+						siblings->last = returnStack->allocatedIndex;
 					}
 					else
 					{
-						GetReturnStack(baseStack->last)->next = returnStack->allocatedIndex;
-						returnStack->prev = baseStack->last;
-						baseStack->last = returnStack->allocatedIndex;
+						GetReturnStack(siblings->last)->successors.next = returnStack->allocatedIndex;
+						returnStack->successors.prev = siblings->last;
+						siblings->last = returnStack->allocatedIndex;
 					}
 				}
 				return returnStack;

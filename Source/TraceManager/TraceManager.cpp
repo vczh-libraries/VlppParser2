@@ -175,13 +175,13 @@ TraceManager
 				concurrentTraces = &traces1;
 				backupTraces = &traces2;
 
-				rootTrace = nullptr;
 				activeCompetitions = -1;
+				initialReturnStackSuccessors = {};
 
-				auto trace = AllocateTrace();
-				trace->state = startState;
+				initialTrace = AllocateTrace();
+				initialTrace->state = startState;
 				concurrentCount = 1;
-				concurrentTraces->Add(trace);
+				concurrentTraces->Add(initialTrace);
 			}
 		}
 	}

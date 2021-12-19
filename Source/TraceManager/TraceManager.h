@@ -73,13 +73,10 @@ AllocateOnly<T>
 TraceManager (Data Structures)
 ***********************************************************************/
 
-			struct ReturnStack
+			struct ReturnStackSuccessors
 			{
-				vint32_t				allocatedIndex = -1;		// id of this ReturnStack
-				vint32_t				previous = -1;				// id of the previous ReturnStack
-				vint32_t				returnIndex = -1;			// index of ReturnDesc
-
-				vint32_t				tokenIndex = -1;			// index of the token when this ReturnStack has its first successor
+				vint32_t				createdTokenIndex = -1;		// index of the token when this ReturnStack is created
+				vint32_t				successorTokenIndex = -1;	// index of the token when this ReturnStack has its first successor
 																	// the following members records all successors
 																	// that is created at the token index
 
@@ -87,6 +84,14 @@ TraceManager (Data Structures)
 				vint32_t				last = -1;					// last successor
 				vint32_t				prev = -1;					// previous successor of ReturnStack::previous
 				vint32_t				next = -1;					// next successor of ReturnStack::previous
+			};
+
+			struct ReturnStack
+			{
+				vint32_t				allocatedIndex = -1;		// id of this ReturnStack
+				vint32_t				previous = -1;				// id of the previous ReturnStack
+				vint32_t				returnIndex = -1;			// index of ReturnDesc
+				ReturnStackSuccessors	successors;
 			};
 
 			struct TraceCollection
@@ -262,8 +267,9 @@ TraceManager
 				collections::List<Trace*>			traces1;
 				collections::List<Trace*>			traces2;
 
-				Trace*								rootTrace = nullptr;
+				Trace*								initialTrace = nullptr;
 				vint32_t							activeCompetitions = -1;
+				ReturnStackSuccessors				initialReturnStackSuccessors;
 
 				void								BeginSwap();
 				void								AddTrace(Trace* trace);
