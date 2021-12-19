@@ -28,7 +28,7 @@ TraceManager::WalkAlongSingleEdge
 				Trace* ambiguityTraceToMerge = nullptr;
 
 				// attend a competition hold by the current trace if the priority is set for this output transition
-				AttendCompetitionIfNecessary(trace, edgeDesc, attendingCompetitions, carriedCompetitions, returnStack);
+				AttendCompetitionIfNecessary(trace, currentTokenIndex, edgeDesc, attendingCompetitions, carriedCompetitions, returnStack);
 
 				if (input == Executable::EndingInput)
 				{

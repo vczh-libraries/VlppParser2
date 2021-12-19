@@ -70,7 +70,19 @@ AttendCompetition
 AttendCompetitionIfNecessary
 ***********************************************************************/
 
-			void TraceManager::AttendCompetitionIfNecessary(Trace* trace, EdgeDesc& edgeDesc, vint32_t& newAttendingCompetitions, vint32_t& newCarriedCompetitions, vint32_t& newReturnStack)
+			ReturnStack* TraceManager::PushReturnStack(vint32_t base, vint32_t returnIndex, vint32_t currentTokenIndex)
+			{
+				auto returnStack = AllocateReturnStack();
+				returnStack->previous = base;
+				returnStack->returnIndex = returnIndex;
+				return returnStack;
+			}
+
+/***********************************************************************
+AttendCompetitionIfNecessary
+***********************************************************************/
+
+			void TraceManager::AttendCompetitionIfNecessary(Trace* trace, vint32_t currentTokenIndex, EdgeDesc& edgeDesc, vint32_t& newAttendingCompetitions, vint32_t& newCarriedCompetitions, vint32_t& newReturnStack)
 			{
 #define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::AttendCompetitionIfNecessary(Trace*, EdgeDesc&, vint32_t&, vint32_t&)#"
 				newAttendingCompetitions = trace->competitionRouting.attendingCompetitions;
@@ -104,11 +116,7 @@ AttendCompetitionIfNecessary
 					}
 
 					// push this ReturnDesc to the ReturnStack
-					auto returnStack = AllocateReturnStack();
-					returnStack->previous = newReturnStack;
-					returnStack->returnIndex = returnIndex;
-					newReturnStack = returnStack->allocatedIndex;
-
+					newReturnStack = PushReturnStack(newReturnStack, returnIndex, currentTokenIndex)->allocatedIndex;
 					edgeFromState = executable.ruleStartStates[returnDesc.consumedRule];
 				}
 
