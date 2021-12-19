@@ -51,7 +51,7 @@ GetInstructionPostfix
 			vint32_t TraceManager::GetInstructionPostfix(EdgeDesc& oldEdge, EdgeDesc& newEdge)
 			{
 #define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::GetInstructionPostfix(EdgeDesc&, EdgeDesc&)#"
-				// given two equal traces, calculate their common instruction postfix length
+				// given two equal traces, calculate their common instruction postfix length in insBeforeInput
 				// EndObject is the last instruction of the prefix
 
 				// EndObject may not be the first instruction in both edges
@@ -127,6 +127,12 @@ MergeTwoEndingInputTrace
 				// and both instruction postfix should equal
 				auto& oldEdge = executable.edges[ambiguityTraceToMerge->byEdge];
 				vint32_t postfix = GetInstructionPostfix(oldEdge, edgeDesc);
+				if (executedReturnStack != -1)
+				{
+					auto rs = GetReturnStack(executedReturnStack);
+					auto& rd = executable.returns[rs->returnIndex];
+					postfix += rd.insAfterInput.count;
+				}
 
 				if (ambiguityTraceToMerge->ambiguityMergeInsPostfix == -1)
 				{

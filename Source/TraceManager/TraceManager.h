@@ -192,12 +192,14 @@ TraceManager (Data Structures)
 																	// (filled by PrepareTraceRoute)
 
 				vint32_t				ambiguityBranchInsPostfix = -1;		// this member is useful when it is not -1 and the trace has multiple successors
-																			// specifying the length of the postfix of byEdge.insBeforeInput in this trace
+																			// specifying the length of the postfix
+																			// of {byEdge.insBeforeInput, byEdge.insAfterInput, executedReturnStack.returnIndex.insAfterInput} combined
 																			// only execute the specified prefix of instructions
 																			// usually EndObject is the last instruction in the prefix
 
 				vint32_t				ambiguityMergeInsPostfix = -1;		// this member is useful when it is not -1 and the trace has multiple predecessors
-																			// specifying the length of the postfix of byEdge.insBeforeInput in this trace
+																			// specifying the length of the postfix
+																			// of {byEdge.insBeforeInput, byEdge.insAfterInput, executedReturnStack.returnIndex.insAfterInput} combined
 																			// only execute the specified postfix of instructions
 																			// usually EndObject is the last instruction in the prefix
 

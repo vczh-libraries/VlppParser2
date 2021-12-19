@@ -139,7 +139,7 @@ TraceManager::ExecuteTrace
 					ReadInstructionList(trace, insLists);
 
 					vint32_t minIns = 0;
-					vint32_t maxIns = insLists.c3;
+					vint32_t maxIns = insLists.c3 - 1;
 					if (trace->ambiguityMergeInsPostfix != -1)
 					{
 						minIns = insLists.c3 - trace->ambiguityMergeInsPostfix;
