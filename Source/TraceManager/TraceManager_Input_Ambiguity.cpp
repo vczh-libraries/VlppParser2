@@ -148,21 +148,19 @@ MergeTwoEndingInputTrace
 					newInsCount += returnInsCount;
 				}
 
-				// TODO: if one is cut, another must cut
+				// a trace needs to be cut if EndObject is not its first instruction
+				bool needCut = oldInsCount > postfix + 1 || newInsCount > postfix + 1;
 
-				if (ambiguityTraceToMerge->ambiguityMergeInsPostfix == -1)
+				if (ambiguityTraceToMerge->ambiguityMergeInsPostfix == -1 && needCut)
 				{
-					if (oldInsCount == postfix + 1)
+					// append an extra trace after predecessors of ambiguityTraceToMerge
+					Trace* firstFormer = nullptr;
+					Trace* lastFormer = nullptr;
+					vint32_t predecessorId = ambiguityTraceToMerge->predecessors.first;
+					while (predecessorId != -1)
 					{
-						// if EndObject is the first instruction
-						// no need to insert another trace
-					}
-					else
-					{
-						// if EndObject is not the first instruction
-						// insert another trace before ambiguityTraceMerge
-						// and ambiguityTraceMerge should not have had multiple predecessors at this moment
-						CHECK_ERROR(ambiguityTraceToMerge->predecessors.first == ambiguityTraceToMerge->predecessors.last, ERROR_MESSAGE_PREFIX L"An ambiguity resolving traces should have been cut.");
+						auto predecessor = GetTrace(predecessorId);
+						predecessorId = predecessor->predecessors.siblingNext;
 
 						auto formerTrace = AllocateTrace();
 						{
@@ -171,15 +169,30 @@ MergeTwoEndingInputTrace
 							formerTrace->allocatedIndex = formerId;
 						}
 
+						// connect predecessor and formerTrace
+						formerTrace->predecessors.first = predecessor->allocatedIndex;
+						formerTrace->predecessors.last = predecessor->allocatedIndex;
+						formerTrace->predecessors.siblingPrev = -1;
+						formerTrace->predecessors.siblingNext = -1;
+
+						// connect ambiguityTraceToMerge and formerTrace
+						if (firstFormer == nullptr)
+						{
+							firstFormer = formerTrace;
+							lastFormer = formerTrace;
+						}
+						else
+						{
+							lastFormer->predecessors.siblingNext = formerTrace->allocatedIndex;
+							formerTrace->predecessors.siblingPrev = lastFormer->allocatedIndex;
+							lastFormer = formerTrace;
+						}
+
 						// executedReturnStack is from the EndObject instruction
 						// which is available in the instruction postfix
 						// so formerTrace->executedReturnStack should be -1 and keep the previous return stack
 						formerTrace->executedReturnStack = -1;
-						if (ambiguityTraceToMerge->predecessors.first != -1)
-						{
-							auto predecessor = GetTrace(ambiguityTraceToMerge->predecessors.first);
-							formerTrace->returnStack = predecessor->returnStack;
-						}
+						formerTrace->returnStack = predecessor->returnStack;
 
 						// ambiguity is filled by PrepareTraceRoute, skipped
 						// runtimeRouting.holdingCompetition always belong to the second trace
@@ -193,25 +206,14 @@ MergeTwoEndingInputTrace
 						// since formerTrace doesn't have executedReturnStack but ambiguityTraceToMerge has
 						// the amount of returnInsCount need to cut from the postfix
 						formerTrace->ambiguityBranchInsPostfix = postfix - returnInsCount;
-						ambiguityTraceToMerge->ambiguityMergeInsPostfix = postfix;
-
-						// connect two traces
-						// formerTrace has already copied predecessors, skipped
-						// successors of both traces are filled byPrepareTraceRoute, skipped
-						// insert formerTrace before ambiguityTraceToMerge because
-						// we don't successors of ambiguityTraceToMerge, cannot redirect their predecessors
-						ambiguityTraceToMerge->predecessors.first = formerTrace->allocatedIndex;
-						ambiguityTraceToMerge->predecessors.last = formerTrace->allocatedIndex;
 					}
+
+					ambiguityTraceToMerge->ambiguityMergeInsPostfix = postfix;
+					ambiguityTraceToMerge->predecessors.first = firstFormer->allocatedIndex;
+					ambiguityTraceToMerge->predecessors.last = lastFormer->allocatedIndex;
 				}
 
-				if (newInsCount == postfix + 1)
-				{
-					// if EndObject is the first instruction of the new trace
-					// then no need to create the new trace
-					AddTraceToCollection(ambiguityTraceToMerge, trace, &Trace::predecessors);
-				}
-				else
+				if (needCut)
 				{
 					// otherwise, create a new trace with the instruction prefix
 					auto newTrace = AllocateTrace();
@@ -236,6 +238,12 @@ MergeTwoEndingInputTrace
 					newTrace->ambiguityBranchInsPostfix = postfix - returnInsCount;
 
 					AddTraceToCollection(ambiguityTraceToMerge, newTrace, &Trace::predecessors);
+				}
+				else
+				{
+					// if EndObject is the first instruction of the new trace
+					// then no need to create the new trace
+					AddTraceToCollection(ambiguityTraceToMerge, trace, &Trace::predecessors);
 				}
 #undef ERROR_MESSAGE_PREFIX
 			}
