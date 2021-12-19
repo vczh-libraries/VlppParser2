@@ -305,7 +305,7 @@ MergeAmbiguityType
 FillAmbiguityInfoForMergingTrace
 ***********************************************************************/
 
-			SharedBeginObject TraceManager::FillAmbiguityInfoForMergingTrace(Trace* trace)
+			TraceManager::SharedBeginObject TraceManager::FillAmbiguityInfoForMergingTrace(Trace* trace)
 			{
 				// assuming that this is a ambiguity resolving trace
 				// find the first instruction that accesses the object which is closed by the first EndObject in this trace
@@ -320,7 +320,11 @@ FillAmbiguityInfoForMergingTrace
 				// skip if the instruction has been found
 				if (trace->ambiguity.traceBeginObject != -1)
 				{
-					return;
+					SharedBeginObject shared;
+					shared.traceBeginObject = GetTrace(trace->ambiguity.traceBeginObject);
+					shared.insBeginObject = trace->ambiguity.insBeginObject;
+					shared.type = trace->ambiguity.ambiguityType;
+					return shared;
 				}
 
 				CHECK_ERROR(trace->predecessors.first != trace->predecessors.last, L"This function is not allowed to run on non-merging traces.");
@@ -341,9 +345,7 @@ FillAmbiguityInfoForMergingTrace
 				}
 				CHECK_ERROR(insEndObject != -1, ERROR_MESSAGE_PREFIX L"Cannot find EndObject instruction in the merging trace.");
 
-				vint32_t insBeginObject = -1;
-				vint32_t traceBeginObject = -1;
-				vint32_t ambiguityType = -1;
+				SharedBeginObject shared;
 
 				// call FindBalancedBoOrBolr on all predecessors
 				auto predecessorId = trace->predecessors.first;
@@ -351,67 +353,64 @@ FillAmbiguityInfoForMergingTrace
 				{
 					auto predecessor = GetTrace(predecessorId);
 					{
-						Trace* branchTrace = nullptr;
-						vint32_t branchInstruction = -1;
-						vint32_t branchType = -1;
-
 						// run all instructions before and including the EndObject instruction
 						// since we know EndObject addes 1 to the counter
 						// so we don't really need to call RunInstruction on it
 						// we could begin the counter from 1
 
-						FindBalancedBeginObject(predecessor, 1, branchTrace, branchInstruction, branchType);
+						SharedBeginObject branch;
+						FindBalancedBeginObject(predecessor, 1, branch);
 
 						// if EndObject is not the first instruction
 						// then the all instruction prefix are stored in predecessors
 						// so no need to really touch the prefix in this trace.
 
-						MergeAmbiguityType(ambiguityType, branchType);
+						MergeAmbiguityType(shared.type, branch.type);
 
 						// BeginObject found from different predecessors must be the same
 						// Otherwise, multiple BeginObject must belong to successors of the same trace, and the instructions prefix before these BeginObject must be identical
-						if (traceBeginObject == -1)
+						if (shared.traceBeginObject == nullptr)
 						{
-							traceBeginObject = branchTrace->allocatedIndex;
-							insBeginObject = branchInstruction;
+							shared.traceBeginObject = branch.traceBeginObject;
+							shared.insBeginObject = branch.insBeginObject;
 						}
-						else if (traceBeginObject == branchTrace->allocatedIndex)
+						else if (shared.traceBeginObject == branch.traceBeginObject)
 						{
-							CHECK_ERROR(insBeginObject == branchInstruction, ERROR_MESSAGE_PREFIX L"BeginObject searched from different branches are not the same.");
+							CHECK_ERROR(shared.insBeginObject == branch.insBeginObject, ERROR_MESSAGE_PREFIX L"BeginObject searched from different branches are not the same.");
 						}
 						else
 						{
 							// ensure traces containing these BeginObject share the same predecessor
 							TraceInsLists parentInsLists;
-							Trace* parentTrace = GetTrace(traceBeginObject);
+							Trace* parentTrace = shared.traceBeginObject;
 
 #define ERROR_MESSAGE ERROR_MESSAGE_PREFIX L"Failed to merge prefix from BeginObject of multiple successors."
-							CHECK_ERROR(branchTrace->predecessors.first == branchTrace->predecessors.last, ERROR_MESSAGE);
-							if (parentTrace->allocatedIndex!= branchTrace->predecessors.first)
+							CHECK_ERROR(branch.traceBeginObject->predecessors.first == branch.traceBeginObject->predecessors.last, ERROR_MESSAGE);
+							if (parentTrace->allocatedIndex != branch.traceBeginObject->predecessors.first)
 							{
 								CHECK_ERROR(parentTrace->predecessors.first == parentTrace->predecessors.last, ERROR_MESSAGE);
 								parentTrace = GetTrace(parentTrace->predecessors.first);
 
 								ReadInstructionList(parentTrace, parentInsLists);
-								traceBeginObject = parentTrace->allocatedIndex;
-								insBeginObject += parentInsLists.c3;
+								shared.traceBeginObject = parentTrace;
+								shared.insBeginObject += parentInsLists.c3;
 							}
 							else
 							{
-								CHECK_ERROR(parentTrace->allocatedIndex == branchTrace->predecessors.last, ERROR_MESSAGE);
+								CHECK_ERROR(parentTrace->allocatedIndex == branch.traceBeginObject->predecessors.last, ERROR_MESSAGE);
 								ReadInstructionList(parentTrace, parentInsLists);
 							}
 
 							// ensure all instruction prefix before BeginObject are identical
 							Trace* firstBranch = GetTrace(parentTrace->successors.first);
-							CHECK_ERROR(firstBranch != branchTrace, ERROR_MESSAGE);
+							CHECK_ERROR(firstBranch != branch.traceBeginObject, ERROR_MESSAGE);
 
 							TraceInsLists firstBranchInsLists, branchInsLists;
 							ReadInstructionList(firstBranch, firstBranchInsLists);
-							ReadInstructionList(branchTrace, branchInsLists);
+							ReadInstructionList(branch.traceBeginObject, branchInsLists);
 
-							vint32_t firstInstruction = insBeginObject - parentInsLists.c3;
-							CHECK_ERROR(firstInstruction == branchInstruction, ERROR_MESSAGE);
+							vint32_t firstInstruction = shared.insBeginObject - parentInsLists.c3;
+							CHECK_ERROR(firstInstruction == branch.insBeginObject, ERROR_MESSAGE);
 							for (vint32_t i = 0; i < firstInstruction; i++)
 							{
 								auto& ins1 = ReadInstruction(i, firstBranchInsLists);
@@ -427,9 +426,10 @@ FillAmbiguityInfoForMergingTrace
 				{
 					CHECK_ERROR(insEndObject == insLists.c1 - trace->ambiguityInsPostfix, L"ambiguityInsPostfix and insEndObject does not match.");
 					trace->ambiguity.insEndObject = insEndObject;
-					trace->ambiguity.insBeginObject = insBeginObject;
-					trace->ambiguity.traceBeginObject = traceBeginObject;
-					trace->ambiguity.ambiguityType = ambiguityType;
+					trace->ambiguity.insBeginObject = shared.insBeginObject;
+					trace->ambiguity.traceBeginObject = shared.traceBeginObject->allocatedIndex;
+					trace->ambiguity.ambiguityType = shared.type;
+					return shared;
 				}
 #undef ERROR_MESSAGE_PREFIX
 			}
@@ -470,13 +470,6 @@ FillAmbiguityInfoForPredecessorTraces
 CreateLastMergingTrace
 ***********************************************************************/
 
-			struct SurvivingTraceAmbiguity
-			{
-				Trace*		traceBeginObject = nullptr;
-				vint32_t	insBeginObject = -1;
-				vint32_t	type = -1;
-			};
-
 			void TraceManager::CreateLastMergingTrace(Trace* rootTraceCandidate, vint32_t& ambiguityType)
 			{
 #define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::CreateLastMergingTrace()#"
@@ -495,7 +488,7 @@ CreateLastMergingTrace
 
 				// find the BeginObject instruction for all surviving traces
 				Group<Trace*, Trace*> successorToSurvivings;
-				Dictionary<Trace*, SurvivingTraceAmbiguity> ambiguities;
+				Dictionary<Trace*, SharedBeginObject> ambiguities;
 
 				for (vint i = 0; i < concurrentCount; i++)
 				{
@@ -510,20 +503,13 @@ CreateLastMergingTrace
 					CHECK_ERROR(lastIns.type == AstInsType::EndObject, ERROR_MESSAGE_PREFIX L"Last instruction is not EndObject.");
 
 					// find the BeginObject instruction
-					SurvivingTraceAmbiguity ambiguity;
-					FindBalancedBeginObject(
-						survivingTrace,
-						0,
-						ambiguity.traceBeginObject,
-						ambiguity.insBeginObject,
-						ambiguity.type
-						);
+					SharedBeginObject shared;
+					FindBalancedBeginObject(survivingTrace, 0, shared);
+					CHECK_ERROR(shared.traceBeginObject->predecessors.first == rootTraceCandidate->allocatedIndex, ERROR_MESSAGE_PREFIX L"The BeginObject instruction for the last EndObject instruction must locate in a successor trace from the root trace.");
 
-					CHECK_ERROR(ambiguity.traceBeginObject->predecessors.first == rootTraceCandidate->allocatedIndex, ERROR_MESSAGE_PREFIX L"The BeginObject instruction for the last EndObject instruction must locate in a successor trace from the root trace.");
-
-					MergeAmbiguityType(ambiguityType, ambiguity.type);
-					successorToSurvivings.Add(ambiguity.traceBeginObject, survivingTrace);
-					ambiguities.Add(survivingTrace, ambiguity);
+					MergeAmbiguityType(ambiguityType, shared.type);
+					successorToSurvivings.Add(shared.traceBeginObject, survivingTrace);
+					ambiguities.Add(survivingTrace, shared);
 				}
 
 				// create merging traces for surviving traces that share the same traceBeginObject and insBeginObject
