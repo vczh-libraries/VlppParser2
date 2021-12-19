@@ -435,13 +435,13 @@ MergeSharedBeginObjectsMultipleRoot
 MergeSharedBeginObjectsMultipleRoot
 ***********************************************************************/
 
-			TraceManager::SharedBeginObject TraceManager::MergeSharedBeginObjectsPartialMultipleRoot(Trace* trace, collections::Group<Trace*, Trace*>& beginToPredecessors, collections::Dictionary<Trace*, SharedBeginObject>& predecessorToBranches)
+			TraceManager::SharedBeginObject TraceManager::MergeSharedBeginObjectsPartialMultipleRoot(Trace* trace, vint32_t ambiguityType, collections::Group<Trace*, Trace*>& beginToPredecessors, collections::Dictionary<Trace*, SharedBeginObject>& predecessorToBranches)
 			{
 				// some values in predecessorToBranches are the same but some are not
 				// the result is the same to one when all values in predecessorToBranches are different
 				// but we need to merge subset of predecessors which share the same value
 
-#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::MergeSharedBeginObjectsPartialMultipleRoot(Trace*, Group<Trace*, Trace*>&, Dictionary<Trace*, SharedBeginObject>&)#"
+#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::MergeSharedBeginObjectsPartialMultipleRoot(Trace*, vint32_t, Group<Trace*, Trace*>&, Dictionary<Trace*, SharedBeginObject>&)#"
 				vint32_t predecessorId = trace->predecessors.first;
 				while (predecessorId != -1)
 				{
@@ -450,11 +450,101 @@ MergeSharedBeginObjectsMultipleRoot
 					predecessorId = predecessor->predecessors.siblingNext;
 
 					// we start with the first predecessor from all subset
+					auto& subset = beginToPredecessors[branch.traceBeginObject];
+					if (subset.Count()==1 || predecessor != subset[0]) continue;
+
+#define ERROR_MESSAGE ERROR_MESSAGE_PREFIX L"Failed to merge prefix from BeginObject of multiple successors."
+					// ensure all value in the subset are identical
+					for (vint i = 1; i < subset.Count(); i++)
 					{
-						auto& subset = beginToPredecessors[branch.traceBeginObject];
-						if (subset.Count()==1 || predecessor != subset[0]) continue;
+						auto anotherBranch = predecessorToBranches[subset[i]];
+						CHECK_ERROR(branch.traceBeginObject == anotherBranch.traceBeginObject && branch.insBeginObject == anotherBranch.insBeginObject, ERROR_MESSAGE);
 					}
-					CHECK_FAIL(ERROR_MESSAGE_PREFIX L"Not Implemented");
+
+					// ensure all predecessor in the subset are identical in their critical content
+					TraceInsLists insLists;
+					ReadInstructionList(predecessor, insLists);
+					for (vint i = 1; i < subset.Count(); i++)
+					{
+						auto anotherPredecessor = subset[i];
+						CHECK_ERROR(predecessor->state == anotherPredecessor->state, ERROR_MESSAGE);
+						CHECK_ERROR(predecessor->byInput == anotherPredecessor->byInput, ERROR_MESSAGE);
+						CHECK_ERROR(predecessor->currentTokenIndex == anotherPredecessor->currentTokenIndex, ERROR_MESSAGE);
+						CHECK_ERROR(predecessor->returnStack == anotherPredecessor->returnStack, ERROR_MESSAGE);
+
+						TraceInsLists anotherInsLists;
+						ReadInstructionList(anotherPredecessor, anotherInsLists);
+						CHECK_ERROR(insLists.c3 == anotherInsLists.c3, ERROR_MESSAGE);
+						for (vint32_t j = 0; j < insLists.c3; j++)
+						{
+							auto& ins1 = ReadInstruction(j, insLists);
+							auto& ins2 = ReadInstruction(j, anotherInsLists);
+							CHECK_ERROR(ins1 == ins2, ERROR_MESSAGE);
+						}
+					}
+
+					// ensure all predecessor in the subset has only one predecessor
+					// otherwise we are replacing the current issue with another same issue
+					for (vint i = 0; i < subset.Count(); i++)
+					{
+						auto anotherPredecessor = subset[i];
+						CHECK_ERROR(anotherPredecessor->predecessors.first == anotherPredecessor->predecessors.last, ERROR_MESSAGE);
+					}
+
+					// connect all predecessors of predecessors in the subset to the first one
+					for (vint i = 1; i < subset.Count(); i++)
+					{
+						auto p1 = subset[i];
+						auto p2 = GetTrace(p1->predecessors.first);
+						p2->successors = {};
+						AddTraceToCollection(predecessor, p2, &Trace::predecessors);
+						AddTraceToCollection(p2, predecessor, &Trace::successors);
+					}
+
+					// remove all predecessors in the subset except the first one
+					for (vint i = 1; i < subset.Count(); i++)
+					{
+						auto p = subset[i];
+						if (p->predecessors.siblingPrev != -1)
+						{
+							GetTrace(p->predecessors.siblingPrev)->predecessors.siblingNext = p->predecessors.siblingNext;
+						}
+						if (p->predecessors.siblingNext != -1)
+						{
+							GetTrace(p->predecessors.siblingNext)->predecessors.siblingPrev = p->predecessors.siblingPrev;
+						}
+						if (trace->predecessors.first == p->allocatedIndex)
+						{
+							trace->predecessors.first = p->predecessors.siblingNext;
+						}
+						if (trace->predecessors.last == p->allocatedIndex)
+						{
+							trace->predecessors.last = p->predecessors.siblingPrev;
+						}
+					}
+
+					// fix predecessor->ambiguity
+					predecessor->ambiguity.traceBeginObject = branch.traceBeginObject->allocatedIndex;
+					predecessor->ambiguity.insBeginObject = branch.insBeginObject;
+					predecessor->ambiguity.ambiguityType = ambiguityType;
+					if (predecessor->ambiguityInsPostfix != -1)
+					{
+						predecessor->ambiguity.insEndObject = insLists.c3 - predecessor->ambiguityInsPostfix;
+					}
+					else
+					{
+						for (vint32_t i = 0; i < insLists.c3; i++)
+						{
+							auto& ins = ReadInstruction(i, insLists);
+							if (ins.type == AstInsType::EndObject)
+							{
+								predecessor->ambiguity.insEndObject = i;
+								break;
+							}
+						}
+						CHECK_ERROR(predecessor->ambiguity.insEndObject != -1, ERROR_MESSAGE);
+					}
+#undef ERROR_MESSAGE
 				}
 				return MergeSharedBeginObjectsMultipleRoot(trace, predecessorToBranches);
 #undef ERROR_MESSAGE_PREFIX
@@ -547,7 +637,7 @@ FillAmbiguityInfoForMergingTrace
 				}
 				else
 				{
-					shared = MergeSharedBeginObjectsPartialMultipleRoot(trace, beginToPredecessors, predecessorToBranches);
+					shared = MergeSharedBeginObjectsPartialMultipleRoot(trace, ambiguityType, beginToPredecessors, predecessorToBranches);
 				}
 
 				trace->ambiguity.insEndObject = insEndObject;

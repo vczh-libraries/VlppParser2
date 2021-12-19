@@ -303,7 +303,7 @@ TraceManager
 				void								MergeAmbiguityType(vint32_t& ambiguityType, vint32_t branchType);
 				SharedBeginObject					MergeSharedBeginObjectsSingleRoot(Trace* trace, collections::Dictionary<Trace*, SharedBeginObject>& predecessorToBranches);
 				SharedBeginObject					MergeSharedBeginObjectsMultipleRoot(Trace* trace, collections::Dictionary<Trace*, SharedBeginObject>& predecessorToBranches);
-				SharedBeginObject					MergeSharedBeginObjectsPartialMultipleRoot(Trace* trace, collections::Group<Trace*, Trace*>& beginToPredecessors, collections::Dictionary<Trace*, SharedBeginObject>& predecessorToBranches);
+				SharedBeginObject					MergeSharedBeginObjectsPartialMultipleRoot(Trace* trace, vint32_t ambiguityType, collections::Group<Trace*, Trace*>& beginToPredecessors, collections::Dictionary<Trace*, SharedBeginObject>& predecessorToBranches);
 
 				SharedBeginObject					FillAmbiguityInfoForMergingTrace(Trace* trace);
 				void								FillAmbiguityInfoForPredecessorTraces(Trace* trace);
