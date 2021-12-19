@@ -15,7 +15,7 @@ AreTwoTraceEqual
 			{
 				// two traces equal to each other if
 				//   1) they are in the same state
-				//   2) they have the same returnStack and the same executed return index
+				//   2) they have the same executedReturnStack (and therefore the same returnStack)
 				//   3) they are attending same competitions
 				//   4) the candidate has an ending input
 				// TODO: verify if we can do "acId == candidate->runtimeRouting.attendingCompetitions" or not
@@ -24,22 +24,7 @@ AreTwoTraceEqual
 				if (acId != candidate->competitionRouting.attendingCompetitions) return false;
 				if (candidate->byInput != Executable::EndingInput) return false;
 
-				if (executedReturnStack != candidate->executedReturnStack)
-				{
-					// by compare the executed return index instead of the executed return stack
-					// we could possibly get this
-					//    +-> B ---> D -+
-					//    |             |
-					// A -+-> C -+-> E -+-> G
-					//           |      |
-					//           +-> F -+
-					if (executedReturnStack == -1) return false;
-					if (candidate->executedReturnStack == -1) return false;
-					auto rs1 = GetReturnStack(executedReturnStack);
-					auto rs2 = GetReturnStack(candidate->executedReturnStack);
-					if (rs1->returnIndex != rs2->returnIndex) return false;
-				}
-
+				if (executedReturnStack != candidate->executedReturnStack) return false;
 				if (returnStack != candidate->returnStack) return false;
 				return true;
 			}
@@ -135,7 +120,7 @@ MergeTwoEndingInputTrace
 				vint32_t postfix = GetInstructionPostfix(oldEdge, edgeDesc);
 
 				// if two state can merge
-				// then executedReturnStack.returnIndex == ambiguityTraceToMerge.executedReturnStack.returnIndex
+				// then executedReturnStack == ambiguityTraceToMerge.executedReturnStack
 				// so two ReturnDesc.insAfterInput.count are identical
 				// and also instructions
 				if (executedReturnStack != -1)
