@@ -217,9 +217,14 @@ void RenderTrace(
 
 			for (vint insRef = 0; insRef < edgeDesc.insBeforeInput.count; insRef++)
 			{
-				if (trace->ambiguityInsPostfix != -1 && insRef == edgeDesc.insBeforeInput.count - trace->ambiguityInsPostfix)
+				if (trace->ambiguityBranchInsPostfix != -1 && insRef == edgeDesc.insBeforeInput.count - trace->ambiguityBranchInsPostfix)
 				{
-					writer.WriteLine(L"    --------------------");
+					writer.WriteLine(L"    vvvvvvvvvvvvvvvvvvvv");
+				}
+
+				if (trace->ambiguityMergeInsPostfix != -1 && insRef == edgeDesc.insBeforeInput.count - trace->ambiguityMergeInsPostfix)
+				{
+					writer.WriteLine(L"    ^^^^^^^^^^^^^^^^^^^^");
 				}
 
 				vint insIndex = edgeDesc.insBeforeInput.start + insRef;
