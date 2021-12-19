@@ -119,7 +119,7 @@ namespace featuretest
 	class Pwa1Feature : public Feature, vl::reflection::Description<Pwa1Feature>
 	{
 	public:
-		vl::Ptr<PbaFeature> pba;
+		vl::Ptr<Feature> pba;
 		vl::collections::List<vl::Ptr<Lt>> lts;
 		vl::collections::List<vl::Ptr<Gt>> gts;
 

@@ -78,7 +78,7 @@ namespace featuretest
 			Pwa1FeatureBuilder(Pwa1Feature* _node) : node(_node) {}
 			Pwa1FeatureBuilder& gts(const vl::Ptr<Gt>& value);
 			Pwa1FeatureBuilder& lts(const vl::Ptr<Lt>& value);
-			Pwa1FeatureBuilder& pba(const vl::Ptr<PbaFeature>& value);
+			Pwa1FeatureBuilder& pba(const vl::Ptr<Feature>& value);
 		};
 
 		using MakeBranchedOptionalFeature = vl::glr::ParsingAstBuilder<BranchedOptionalFeature, BranchedOptionalFeatureBuilder>;

@@ -149,7 +149,7 @@ Pwa1FeatureBuilder
 			return *this;
 		}
 
-		Pwa1FeatureBuilder& Pwa1FeatureBuilder::pba(const vl::Ptr<PbaFeature>& value)
+		Pwa1FeatureBuilder& Pwa1FeatureBuilder::pba(const vl::Ptr<Feature>& value)
 		{
 			node->pba = value;
 			return *this;
