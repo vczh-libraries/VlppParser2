@@ -148,6 +148,8 @@ MergeTwoEndingInputTrace
 					newInsCount += returnInsCount;
 				}
 
+				// TODO: if one is cut, another must cut
+
 				if (ambiguityTraceToMerge->ambiguityMergeInsPostfix == -1)
 				{
 					if (oldInsCount == postfix + 1)
