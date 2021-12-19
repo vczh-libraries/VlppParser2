@@ -154,5 +154,27 @@ Pwa1FeatureBuilder
 			node->pba = value;
 			return *this;
 		}
+
+/***********************************************************************
+PwlFeatureBuilder
+***********************************************************************/
+
+		PwlFeatureBuilder& PwlFeatureBuilder::lt(const vl::Ptr<Lt>& value)
+		{
+			node->lt.Add(value);
+			return *this;
+		}
+
+		PwlFeatureBuilder& PwlFeatureBuilder::prefix(const vl::Ptr<Plus>& value)
+		{
+			node->prefix.Add(value);
+			return *this;
+		}
+
+		PwlFeatureBuilder& PwlFeatureBuilder::prev(const vl::Ptr<PwlFeature>& value)
+		{
+			node->prev = value;
+			return *this;
+		}
 	}
 }

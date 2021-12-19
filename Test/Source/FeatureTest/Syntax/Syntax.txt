@@ -96,6 +96,25 @@ Pwa2
   ::= "prefix_with_ambiguity_2" [Plus:optional] Plus {Plus:tails} !Pwa2Body
   ;
 
+Pwl1_P
+  ::= Lt:lt as PwlFeature
+  ::= Plus:prefix !Pwl1_P
+  ;
+
+Pwl1
+  ::= !Pwl1_P
+  ::= Pwl1:prev Lt:lt as PwlFeature
+  ;
+
+Pwl2_P
+  ::= Lt:lt as PwlFeature
+  ::= Pwl2_P:prev Lt:lt as PwlFeature
+  ;
+
+Pwl2
+  ::= {Plus:prefix} !Pwl2_P
+  ;
+
 Module
   ::= !EqualOptional
   ::= !PositiveOptional
@@ -110,4 +129,6 @@ Module
   ::= !Pba
   ::= !Pwa1
   ::= !Pwa2
+  ::= "prefix_with_leftrec" !Pwl1
+  ::= "prefix_with_leftrec" !Pwl2
   ;

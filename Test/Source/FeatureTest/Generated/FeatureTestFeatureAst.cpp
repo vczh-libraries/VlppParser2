@@ -37,6 +37,11 @@ Visitor Pattern Implementation
 		visitor->Visit(this);
 	}
 
+	void PwlFeature::Accept(Feature::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
 	void FeatureToResolve::Accept(Feature::IVisitor* visitor)
 	{
 		visitor->Visit(this);
@@ -62,6 +67,7 @@ namespace vl
 			IMPL_TYPE_INFO_RENAME(featuretest::BranchedOptionalFeature, featuretest::BranchedOptionalFeature)
 			IMPL_TYPE_INFO_RENAME(featuretest::PbaFeature, featuretest::PbaFeature)
 			IMPL_TYPE_INFO_RENAME(featuretest::Pwa1Feature, featuretest::Pwa1Feature)
+			IMPL_TYPE_INFO_RENAME(featuretest::PwlFeature, featuretest::PwlFeature)
 			IMPL_TYPE_INFO_RENAME(featuretest::FeatureToResolve, featuretest::FeatureToResolve)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
@@ -160,6 +166,16 @@ namespace vl
 				CLASS_MEMBER_FIELD(gts)
 			END_CLASS_MEMBER(featuretest::Pwa1Feature)
 
+			BEGIN_CLASS_MEMBER(featuretest::PwlFeature)
+				CLASS_MEMBER_BASE(featuretest::Feature)
+
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<featuretest::PwlFeature>(), NO_PARAMETER)
+
+				CLASS_MEMBER_FIELD(prefix)
+				CLASS_MEMBER_FIELD(lt)
+				CLASS_MEMBER_FIELD(prev)
+			END_CLASS_MEMBER(featuretest::PwlFeature)
+
 			BEGIN_CLASS_MEMBER(featuretest::FeatureToResolve)
 				CLASS_MEMBER_BASE(featuretest::Feature)
 
@@ -175,6 +191,7 @@ namespace vl
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(featuretest::Feature::IVisitor::*)(featuretest::BranchedOptionalFeature* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(featuretest::Feature::IVisitor::*)(featuretest::PbaFeature* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(featuretest::Feature::IVisitor::*)(featuretest::Pwa1Feature* node))
+				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(featuretest::Feature::IVisitor::*)(featuretest::PwlFeature* node))
 			END_INTERFACE_MEMBER(featuretest::Feature)
 
 #endif
@@ -197,6 +214,7 @@ namespace vl
 					ADD_TYPE_INFO(featuretest::BranchedOptionalFeature)
 					ADD_TYPE_INFO(featuretest::PbaFeature)
 					ADD_TYPE_INFO(featuretest::Pwa1Feature)
+					ADD_TYPE_INFO(featuretest::PwlFeature)
 					ADD_TYPE_INFO(featuretest::FeatureToResolve)
 				}
 

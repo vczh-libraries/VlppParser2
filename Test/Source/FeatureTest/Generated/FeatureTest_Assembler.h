@@ -23,6 +23,7 @@ namespace featuretest
 		PbaFeature = 7,
 		Plus = 8,
 		Pwa1Feature = 9,
+		PwlFeature = 10,
 	};
 
 	enum class FeatureTestFields : vl::vint32_t
@@ -47,6 +48,9 @@ namespace featuretest
 		Pwa1Feature_gts = 17,
 		Pwa1Feature_lts = 18,
 		Pwa1Feature_pba = 19,
+		PwlFeature_lt = 20,
+		PwlFeature_prefix = 21,
+		PwlFeature_prev = 22,
 	};
 
 	extern const wchar_t* FeatureTestTypeName(FeatureTestClasses type);

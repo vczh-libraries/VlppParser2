@@ -40,5 +40,9 @@ FeatureVisitor
 		void FeatureVisitor::Visit(Pwa1Feature* node)
 		{
 		}
+
+		void FeatureVisitor::Visit(PwlFeature* node)
+		{
+		}
 	}
 }

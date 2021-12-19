@@ -27,6 +27,7 @@ namespace featuretest
 			void Visit(BranchedOptionalFeature* node) override;
 			void Visit(PbaFeature* node) override;
 			void Visit(Pwa1Feature* node) override;
+			void Visit(PwlFeature* node) override;
 		};
 
 	}

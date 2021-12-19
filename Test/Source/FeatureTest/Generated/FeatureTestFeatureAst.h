@@ -22,6 +22,7 @@ namespace featuretest
 	class PbaFeature;
 	class Plus;
 	class Pwa1Feature;
+	class PwlFeature;
 
 	enum class OptionalProprity
 	{
@@ -66,6 +67,7 @@ namespace featuretest
 			virtual void Visit(BranchedOptionalFeature* node) = 0;
 			virtual void Visit(PbaFeature* node) = 0;
 			virtual void Visit(Pwa1Feature* node) = 0;
+			virtual void Visit(PwlFeature* node) = 0;
 		};
 
 		virtual void Accept(Feature::IVisitor* visitor) = 0;
@@ -126,6 +128,16 @@ namespace featuretest
 		void Accept(Feature::IVisitor* visitor) override;
 	};
 
+	class PwlFeature : public Feature, vl::reflection::Description<PwlFeature>
+	{
+	public:
+		vl::collections::List<vl::Ptr<Plus>> prefix;
+		vl::collections::List<vl::Ptr<Lt>> lt;
+		vl::Ptr<PwlFeature> prev;
+
+		void Accept(Feature::IVisitor* visitor) override;
+	};
+
 	class FeatureToResolve : public Feature, vl::reflection::Description<FeatureToResolve>
 	{
 	public:
@@ -153,6 +165,7 @@ namespace vl
 			DECL_TYPE_INFO(featuretest::BranchedOptionalFeature)
 			DECL_TYPE_INFO(featuretest::PbaFeature)
 			DECL_TYPE_INFO(featuretest::Pwa1Feature)
+			DECL_TYPE_INFO(featuretest::PwlFeature)
 			DECL_TYPE_INFO(featuretest::FeatureToResolve)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
@@ -184,6 +197,11 @@ namespace vl
 				}
 
 				void Visit(featuretest::Pwa1Feature* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+				void Visit(featuretest::PwlFeature* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}

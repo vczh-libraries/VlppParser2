@@ -36,6 +36,8 @@ FeatureTestAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return new featuretest::Plus();
 		case FeatureTestClasses::Pwa1Feature:
 			return new featuretest::Pwa1Feature();
+		case FeatureTestClasses::PwlFeature:
+			return new featuretest::PwlFeature();
 		default:
 			return vl::glr::AssemblyThrowCannotCreateAbstractType(type, cppTypeName);
 		}
@@ -82,6 +84,12 @@ FeatureTestAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::glr::AssemblerSetObjectField(&featuretest::Pwa1Feature::lts, object, field, value, cppFieldName);
 		case FeatureTestFields::Pwa1Feature_pba:
 			return vl::glr::AssemblerSetObjectField(&featuretest::Pwa1Feature::pba, object, field, value, cppFieldName);
+		case FeatureTestFields::PwlFeature_lt:
+			return vl::glr::AssemblerSetObjectField(&featuretest::PwlFeature::lt, object, field, value, cppFieldName);
+		case FeatureTestFields::PwlFeature_prefix:
+			return vl::glr::AssemblerSetObjectField(&featuretest::PwlFeature::prefix, object, field, value, cppFieldName);
+		case FeatureTestFields::PwlFeature_prev:
+			return vl::glr::AssemblerSetObjectField(&featuretest::PwlFeature::prev, object, field, value, cppFieldName);
 		default:
 			return vl::glr::AssemblyThrowFieldNotObject(field, cppFieldName);
 		}
@@ -120,9 +128,10 @@ FeatureTestAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"PbaFeature",
 			L"Plus",
 			L"Pwa1Feature",
+			L"PwlFeature",
 		};
 		vl::vint index = (vl::vint)type;
-		return 0 <= index && index < 10 ? results[index] : nullptr;
+		return 0 <= index && index < 11 ? results[index] : nullptr;
 	}
 
 	const wchar_t* FeatureTestCppTypeName(FeatureTestClasses type)
@@ -138,9 +147,10 @@ FeatureTestAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"featuretest::PbaFeature",
 			L"featuretest::Plus",
 			L"featuretest::Pwa1Feature",
+			L"featuretest::PwlFeature",
 		};
 		vl::vint index = (vl::vint)type;
-		return 0 <= index && index < 10 ? results[index] : nullptr;
+		return 0 <= index && index < 11 ? results[index] : nullptr;
 	}
 
 	const wchar_t* FeatureTestFieldName(FeatureTestFields field)
@@ -166,9 +176,12 @@ FeatureTestAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"Pwa1Feature::gts",
 			L"Pwa1Feature::lts",
 			L"Pwa1Feature::pba",
+			L"PwlFeature::lt",
+			L"PwlFeature::prefix",
+			L"PwlFeature::prev",
 		};
 		vl::vint index = (vl::vint)field;
-		return 0 <= index && index < 20 ? results[index] : nullptr;
+		return 0 <= index && index < 23 ? results[index] : nullptr;
 	}
 
 	const wchar_t* FeatureTestCppFieldName(FeatureTestFields field)
@@ -194,9 +207,12 @@ FeatureTestAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"featuretest::Pwa1Feature::gts",
 			L"featuretest::Pwa1Feature::lts",
 			L"featuretest::Pwa1Feature::pba",
+			L"featuretest::PwlFeature::lt",
+			L"featuretest::PwlFeature::prefix",
+			L"featuretest::PwlFeature::prev",
 		};
 		vl::vint index = (vl::vint)field;
-		return 0 <= index && index < 20 ? results[index] : nullptr;
+		return 0 <= index && index < 23 ? results[index] : nullptr;
 	}
 
 	vl::Ptr<vl::glr::ParsingAstBase> FeatureTestAstInsReceiver::ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates)
@@ -218,6 +234,8 @@ FeatureTestAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::glr::AssemblerResolveAmbiguity<featuretest::PbaFeature, featuretest::FeatureToResolve>(type, candidates, cppTypeName);
 		case FeatureTestClasses::Pwa1Feature:
 			return vl::glr::AssemblerResolveAmbiguity<featuretest::Pwa1Feature, featuretest::FeatureToResolve>(type, candidates, cppTypeName);
+		case FeatureTestClasses::PwlFeature:
+			return vl::glr::AssemblerResolveAmbiguity<featuretest::PwlFeature, featuretest::FeatureToResolve>(type, candidates, cppTypeName);
 		default:
 			return vl::glr::AssemblyThrowTypeNotAllowAmbiguity(type, cppTypeName);
 		}

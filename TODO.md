@@ -51,9 +51,6 @@
   - We could store the first token in `DelayFieldAssignment`.
 - Optimize `CrossReferencedNFA` to merge prefix (two states can be merged if their `InEdges` are identical, `FromState` in `InEdges` are replaced by merged states).
   - Issue: `X ::= ([a] | [b]) c` fails because when both optional syntax fail it creates two trace routes to c and causes ambiguity.
-- Allow field assignment / partial rule before use rule.
-  - Verify left recursion.
-    - `<common prefix> !rule-with-left-recursive`, we cannot assign fields at the beginning of `rule-with-left-recursive`, we must wait until it reduces.
 - `JsonEscapeString` `JsonUnescapeString` handle surrogate pairs correctly.
 - `ParserTest_AstParserGen`
   - Test Copy Visitors

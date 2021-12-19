@@ -22,6 +22,7 @@ namespace featuretest
 		void FeatureAstVisitor::Traverse(PbaFeature* node) {}
 		void FeatureAstVisitor::Traverse(Plus* node) {}
 		void FeatureAstVisitor::Traverse(Pwa1Feature* node) {}
+		void FeatureAstVisitor::Traverse(PwlFeature* node) {}
 
 		void FeatureAstVisitor::Finishing(vl::glr::ParsingAstBase* node) {}
 		void FeatureAstVisitor::Finishing(BranchedOptionalFeature* node) {}
@@ -34,6 +35,7 @@ namespace featuretest
 		void FeatureAstVisitor::Finishing(PbaFeature* node) {}
 		void FeatureAstVisitor::Finishing(Plus* node) {}
 		void FeatureAstVisitor::Finishing(Pwa1Feature* node) {}
+		void FeatureAstVisitor::Finishing(PwlFeature* node) {}
 
 		void FeatureAstVisitor::Visit(FeatureToResolve* node)
 		{
@@ -142,6 +144,26 @@ namespace featuretest
 			}
 			InspectInto(node->pba.Obj());
 			Finishing(static_cast<Pwa1Feature*>(node));
+			Finishing(static_cast<Feature*>(node));
+			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+		}
+
+		void FeatureAstVisitor::Visit(PwlFeature* node)
+		{
+			if (!node) return;
+			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+			Traverse(static_cast<Feature*>(node));
+			Traverse(static_cast<PwlFeature*>(node));
+			for (auto&& listItem : node->lt)
+			{
+				InspectInto(listItem.Obj());
+			}
+			for (auto&& listItem : node->prefix)
+			{
+				InspectInto(listItem.Obj());
+			}
+			InspectInto(node->prev.Obj());
+			Finishing(static_cast<PwlFeature*>(node));
 			Finishing(static_cast<Feature*>(node));
 			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 		}

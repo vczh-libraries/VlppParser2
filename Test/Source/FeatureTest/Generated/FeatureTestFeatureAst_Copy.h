@@ -29,6 +29,7 @@ namespace featuretest
 			void CopyFields(PbaFeature* from, PbaFeature* to);
 			void CopyFields(Plus* from, Plus* to);
 			void CopyFields(Pwa1Feature* from, Pwa1Feature* to);
+			void CopyFields(PwlFeature* from, PwlFeature* to);
 
 		protected:
 			virtual void Visit(Plus* node);
@@ -41,6 +42,7 @@ namespace featuretest
 			void Visit(BranchedOptionalFeature* node) override;
 			void Visit(PbaFeature* node) override;
 			void Visit(Pwa1Feature* node) override;
+			void Visit(PwlFeature* node) override;
 
 		public:
 			virtual vl::Ptr<Feature> CopyNode(Feature* node);
@@ -54,6 +56,7 @@ namespace featuretest
 			vl::Ptr<OptionalFeature> CopyNode(OptionalFeature* node);
 			vl::Ptr<PbaFeature> CopyNode(PbaFeature* node);
 			vl::Ptr<Pwa1Feature> CopyNode(Pwa1Feature* node);
+			vl::Ptr<PwlFeature> CopyNode(PwlFeature* node);
 		};
 	}
 }

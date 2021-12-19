@@ -38,7 +38,11 @@ namespace featuretest
 		Pwa1 = 108,
 		Pwa2Body = 113,
 		Pwa2 = 118,
-		Module = 125,
+		Pwl1_P = 125,
+		Pwl1 = 130,
+		Pwl2_P = 135,
+		Pwl2 = 140,
+		Module = 144,
 	};
 
 	template<ModuleParserStates> struct ModuleParserStateTypes;
