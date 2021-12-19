@@ -32,25 +32,27 @@ AreTwoTraceEqual
 
 				if (executedReturnStack != candidate->executedReturnStack)
 				{
+					// the reason we compare executedReturnStack instead of executedReturnStack.returnIndex is that
+					// 
+					// we don't want this to happen:
+					//    +-> B ---> D -+
+					//    |             |
+					// A -+-> C -+-> E -+-> G
+					//           |      |
+					//           +-> F -+
+					// 
+					// instead it should be
+					//    +-> B ----------> D -+
+					//    |                    |
+					// A -+-> C -+-> E -+-> G -+-> H
+					//           |      |
+					//           +-> F -+
 					return false;
-					// if (executedReturnStack == -1) return false;
-					// if (candidate->executedReturnStack == -1) return false;
-					// auto rs1 = GetReturnStack(executedReturnStack);
-					// auto rs2 = GetReturnStack(candidate->executedReturnStack);
-					// if (rs1->returnIndex != rs2->returnIndex) return false;
 				}
 
-				// two traces could be merged into one ambiguity resolving trace if
-				//   1) they have the same ReturnStack object before executing the EndingInput transition
-				//      because two EndingObject are required to be tracable to the BeginObject instruction in the same trace
-				//      the ReturnStack object before executing the EndingInput transition
-				//      is the ReturnStack object in that common trace
-				//      which is something after executing a transition
-				//   2) they share the same state after executing EndObject
-				auto r1 = returnStack;
-				auto r2 = candidate->returnStack;
-				if (r1 != r2) return false;
-
+				// since executedReturnStack are the same
+				// returnStack should be the same too
+				// don't need to actually compare them
 				return true;
 			}
 
