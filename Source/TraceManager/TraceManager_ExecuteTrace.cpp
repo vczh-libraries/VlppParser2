@@ -138,6 +138,17 @@ TraceManager::ExecuteTrace
 					TraceInsLists insLists;
 					ReadInstructionList(trace, insLists);
 
+					vint32_t minIns = 0;
+					vint32_t maxIns = insLists.c3;
+					if (trace->ambiguityMergeInsPostfix != -1)
+					{
+						minIns = insLists.c3 - trace->ambiguityMergeInsPostfix;
+					}
+					if (trace->ambiguityBranchInsPostfix != -1)
+					{
+						maxIns = insLists.c3 - trace->ambiguityBranchInsPostfix - 1;
+					}
+
 					// if the current trace is an ambiguity resolving trace
 					// we check if all predecessors has been visited
 					// if yes, we continue
@@ -160,10 +171,14 @@ TraceManager::ExecuteTrace
 					{
 						if (0 <= trace->ambiguity.insEndObject && trace->ambiguity.insEndObject < insLists.c3)
 						{
-							// execute the EndObject instruction if insEndObject exists
-							auto& ins = ReadInstruction(trace->ambiguity.insEndObject, insLists);
-							auto& token = tokens[trace->currentTokenIndex];
-							submitter.Submit(ins, token);
+							// execute from the beginning to EndObject instruction if it exists
+							CHECK_ERROR(minIns <= trace->ambiguity.insEndObject && trace->ambiguity.insEndObject <= maxIns, ERROR_MESSAGE_PREFIX L"insEndObject corrupted.");
+							for (vint32_t i = minIns; i <= trace->ambiguity.insEndObject; i++)
+							{
+								auto& ins = ReadInstruction(i, insLists);
+								auto& token = tokens[trace->currentTokenIndex];
+								submitter.Submit(ins, token);
+							}
 						}
 						else
 						{
@@ -191,7 +206,7 @@ TraceManager::ExecuteTrace
 
 							// execute all instructions after EndObject
 							// these part should not be repeated
-							for (vint32_t i = trace->ambiguity.insEndObject + 1; i < insLists.c3; i++)
+							for (vint32_t i = trace->ambiguity.insEndObject + 1; i <= maxIns; i++)
 							{
 								auto& ins = ReadInstruction(i, insLists);
 								auto& token = tokens[trace->currentTokenIndex];
@@ -210,13 +225,8 @@ TraceManager::ExecuteTrace
 					else
 					{
 						// otherwise, just submit instructions
-						vint32_t endIns = insLists.c3 - 1;
-						if (trace->ambiguityInsPostfix != -1)
-						{
-							endIns = insLists.c1 - trace->ambiguityInsPostfix - 1;
-						}
-
-						for (vint32_t i = startIns; i <= endIns; i++)
+						CHECK_ERROR(minIns <= startIns, ERROR_MESSAGE_PREFIX L"startIns corrupted.");
+						for (vint32_t i = startIns; i <= maxIns; i++)
 						{
 							auto& ins = ReadInstruction(i, insLists);
 							auto& token = tokens[trace->currentTokenIndex];
