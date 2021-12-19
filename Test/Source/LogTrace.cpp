@@ -258,7 +258,7 @@ void RenderTrace(
 			LogInstruction(ins, typeName, fieldName, writer);
 			if (i == trace->ambiguity.insEndObject)
 			{
-				writer.WriteLine(L"      AMB => State[" +
+				writer.WriteLine(L"      AMB => Trace[" +
 					itow(trace->ambiguity.traceBeginObject) +
 					L"].Ins[" +
 					itow(trace->ambiguity.insBeginObject) +
