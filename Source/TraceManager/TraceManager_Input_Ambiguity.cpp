@@ -13,12 +13,17 @@ AreTwoTraceEqual
 
 			bool TraceManager::AreTwoEndingInputTraceEqual(vint32_t state, vint32_t returnStack, vint32_t executedReturnStack, vint32_t acId, Trace* candidate)
 			{
+				// merging ending traces are handled by CreateLastMergingTrace
+				if (executable.states[state].endingState)
+				{
+					return false;
+				}
+
 				// two traces equal to each other if
 				//   1) they are in the same state
-				//   2) they executed the same ReturnDesc
-				//   3) they have the same returnStack
-				//   4) they are attending same competitions
-				//   5) the candidate has an ending input
+				//   2) they have the same returnStack before executing the EndingInput transitions
+				//   3) they are attending same competitions
+				//   4) the candidate has an ending input
 				// TODO: verify if we can do "acId == candidate->runtimeRouting.attendingCompetitions" or not
 
 				if (state != candidate->state) return false;
@@ -27,12 +32,12 @@ AreTwoTraceEqual
 
 				if (executedReturnStack != candidate->executedReturnStack)
 				{
-					if (executedReturnStack == -1) return false;
-					if (candidate->executedReturnStack == -1) return false;
-
-					auto rs1 = GetReturnStack(executedReturnStack);
-					auto rs2 = GetReturnStack(candidate->executedReturnStack);
-					if (rs1->returnIndex != rs2->returnIndex) return false;
+					return false;
+					// if (executedReturnStack == -1) return false;
+					// if (candidate->executedReturnStack == -1) return false;
+					// auto rs1 = GetReturnStack(executedReturnStack);
+					// auto rs2 = GetReturnStack(candidate->executedReturnStack);
+					// if (rs1->returnIndex != rs2->returnIndex) return false;
 				}
 
 				// two traces could be merged into one ambiguity resolving trace if
