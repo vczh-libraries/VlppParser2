@@ -15,7 +15,7 @@ AreTwoTraceEqual
 			{
 				// two traces equal to each other if
 				//   1) they are in the same state
-				//   2) they have the same returnStack before executing the EndingInput transitions
+				//   2) they have the same returnStack and the same executed return index
 				//   3) they are attending same competitions
 				//   4) the candidate has an ending input
 				// TODO: verify if we can do "acId == candidate->runtimeRouting.attendingCompetitions" or not
@@ -26,27 +26,21 @@ AreTwoTraceEqual
 
 				if (executedReturnStack != candidate->executedReturnStack)
 				{
-					// the reason we compare executedReturnStack instead of executedReturnStack.returnIndex is that
-					// 
-					// we don't want this to happen:
+					// by compare the executed return index instead of the executed return stack
+					// we could possibly get this
 					//    +-> B ---> D -+
 					//    |             |
 					// A -+-> C -+-> E -+-> G
 					//           |      |
 					//           +-> F -+
-					// 
-					// instead it should be
-					//    +-> B ----------> D -+
-					//    |                    |
-					// A -+-> C -+-> E -+-> G -+-> H
-					//           |      |
-					//           +-> F -+
-					return false;
+					if (executedReturnStack == -1) return false;
+					if (candidate->executedReturnStack == -1) return false;
+					auto rs1 = GetReturnStack(executedReturnStack);
+					auto rs2 = GetReturnStack(candidate->executedReturnStack);
+					if (rs1->returnIndex != rs2->returnIndex) return false;
 				}
 
-				// since executedReturnStack are the same
-				// returnStack should be the same too
-				// don't need to actually compare them
+				if (returnStack != candidate->returnStack) return false;
 				return true;
 			}
 
