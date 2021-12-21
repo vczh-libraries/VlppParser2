@@ -30,14 +30,9 @@
 
 ## Development
 
-1. [x] `ParserTest_ParserGen_Generated`
-   1. [ ] Test XML parser.
-      1. [ ] Escaping / unescaping
-      2. [ ] Manual test cases.
-      3. [x] GacUI DarkSkin test cases.
-2. [ ] Port `CodePack` and `ParserGen` to `VlppParser2`, do not write to an existing file if the content is not changed.
+1. [ ] Port `CodePack` and `ParserGen` to `VlppParser2`, do not write to an existing file if the content is not changed.
    1. [ ] Create a new repo `BuildTools` and adapt the release license instead of the development license.
-3. [ ] Review all comments.
+2. [ ] Review all comments.
 
 ## Work Items (issues)
 

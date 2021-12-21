@@ -5,8 +5,8 @@ Parser::ParsingJson_Parser
 
 ***********************************************************************/
 
-#ifndef VCZH_PARSER2_BUILTIN_JSON_PARSER
-#define VCZH_PARSER2_BUILTIN_JSON_PARSER
+#ifndef VCZH_PARSER2_BUILTIN_JSON
+#define VCZH_PARSER2_BUILTIN_JSON
 
 #include "Generated/JsonParser.h"
 
