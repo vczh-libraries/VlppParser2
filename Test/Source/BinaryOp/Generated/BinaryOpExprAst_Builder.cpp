@@ -12,32 +12,32 @@ namespace binaryop
 	{
 
 /***********************************************************************
-BinaryExprBuilder
+MakeBinaryExpr
 ***********************************************************************/
 
-		BinaryExprBuilder& BinaryExprBuilder::left(const vl::Ptr<Expr>& value)
+		MakeBinaryExpr& MakeBinaryExpr::left(const vl::Ptr<Expr>& value)
 		{
 			node->left = value;
 			return *this;
 		}
 
-		BinaryExprBuilder& BinaryExprBuilder::op(BinaryOp value)
+		MakeBinaryExpr& MakeBinaryExpr::op(BinaryOp value)
 		{
 			node->op = value;
 			return *this;
 		}
 
-		BinaryExprBuilder& BinaryExprBuilder::right(const vl::Ptr<Expr>& value)
+		MakeBinaryExpr& MakeBinaryExpr::right(const vl::Ptr<Expr>& value)
 		{
 			node->right = value;
 			return *this;
 		}
 
 /***********************************************************************
-RefExprBuilder
+MakeRefExpr
 ***********************************************************************/
 
-		RefExprBuilder& RefExprBuilder::name(const vl::WString& value)
+		MakeRefExpr& MakeRefExpr::name(const vl::WString& value)
 		{
 			node->name.value = value;
 			return *this;

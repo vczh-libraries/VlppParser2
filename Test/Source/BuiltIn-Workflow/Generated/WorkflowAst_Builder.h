@@ -17,1092 +17,740 @@ namespace vl
 		{
 			namespace builder
 			{
-				class AttachEventExpressionBuilder
+				class MakeAttachEventExpression : public vl::glr::ParsingAstBuilder<WfAttachEventExpression>
 				{
-				private:
-					WfAttachEventExpression* node;
 				public:
-					AttachEventExpressionBuilder(WfAttachEventExpression* _node) : node(_node) {}
-					AttachEventExpressionBuilder& event(const vl::Ptr<WfExpression>& value);
-					AttachEventExpressionBuilder& function(const vl::Ptr<WfExpression>& value);
+					MakeAttachEventExpression& event(const vl::Ptr<WfExpression>& value);
+					MakeAttachEventExpression& function(const vl::Ptr<WfExpression>& value);
 				};
 
-				class AttributeBuilder
+				class MakeAttribute : public vl::glr::ParsingAstBuilder<WfAttribute>
 				{
-				private:
-					WfAttribute* node;
 				public:
-					AttributeBuilder(WfAttribute* _node) : node(_node) {}
-					AttributeBuilder& category(const vl::WString& value);
-					AttributeBuilder& name(const vl::WString& value);
-					AttributeBuilder& value(const vl::Ptr<WfExpression>& value);
+					MakeAttribute& category(const vl::WString& value);
+					MakeAttribute& name(const vl::WString& value);
+					MakeAttribute& value(const vl::Ptr<WfExpression>& value);
 				};
 
-				class AutoPropertyDeclarationBuilder
+				class MakeAutoPropertyDeclaration : public vl::glr::ParsingAstBuilder<WfAutoPropertyDeclaration>
 				{
-				private:
-					WfAutoPropertyDeclaration* node;
 				public:
-					AutoPropertyDeclarationBuilder(WfAutoPropertyDeclaration* _node) : node(_node) {}
-					AutoPropertyDeclarationBuilder& configConst(WfAPConst value);
-					AutoPropertyDeclarationBuilder& configObserve(WfAPObserve value);
-					AutoPropertyDeclarationBuilder& expression(const vl::Ptr<WfExpression>& value);
-					AutoPropertyDeclarationBuilder& functionKind(WfFunctionKind value);
-					AutoPropertyDeclarationBuilder& type(const vl::Ptr<WfType>& value);
+					MakeAutoPropertyDeclaration& configConst(WfAPConst value);
+					MakeAutoPropertyDeclaration& configObserve(WfAPObserve value);
+					MakeAutoPropertyDeclaration& expression(const vl::Ptr<WfExpression>& value);
+					MakeAutoPropertyDeclaration& functionKind(WfFunctionKind value);
+					MakeAutoPropertyDeclaration& type(const vl::Ptr<WfType>& value);
+					MakeAutoPropertyDeclaration& expandedDeclarations(const vl::Ptr<WfDeclaration>& value);
+					MakeAutoPropertyDeclaration& attributes(const vl::Ptr<WfAttribute>& value);
+					MakeAutoPropertyDeclaration& name(const vl::WString& value);
 				};
 
-				class BaseConstructorCallBuilder
+				class MakeBaseConstructorCall : public vl::glr::ParsingAstBuilder<WfBaseConstructorCall>
 				{
-				private:
-					WfBaseConstructorCall* node;
 				public:
-					BaseConstructorCallBuilder(WfBaseConstructorCall* _node) : node(_node) {}
-					BaseConstructorCallBuilder& arguments(const vl::Ptr<WfExpression>& value);
-					BaseConstructorCallBuilder& type(const vl::Ptr<WfType>& value);
+					MakeBaseConstructorCall& arguments(const vl::Ptr<WfExpression>& value);
+					MakeBaseConstructorCall& type(const vl::Ptr<WfType>& value);
 				};
 
-				class BinaryExpressionBuilder
+				class MakeBinaryExpression : public vl::glr::ParsingAstBuilder<WfBinaryExpression>
 				{
-				private:
-					WfBinaryExpression* node;
 				public:
-					BinaryExpressionBuilder(WfBinaryExpression* _node) : node(_node) {}
-					BinaryExpressionBuilder& first(const vl::Ptr<WfExpression>& value);
-					BinaryExpressionBuilder& op(WfBinaryOperator value);
-					BinaryExpressionBuilder& second(const vl::Ptr<WfExpression>& value);
+					MakeBinaryExpression& first(const vl::Ptr<WfExpression>& value);
+					MakeBinaryExpression& op(WfBinaryOperator value);
+					MakeBinaryExpression& second(const vl::Ptr<WfExpression>& value);
 				};
 
-				class BindExpressionBuilder
+				class MakeBindExpression : public vl::glr::ParsingAstBuilder<WfBindExpression>
 				{
-				private:
-					WfBindExpression* node;
 				public:
-					BindExpressionBuilder(WfBindExpression* _node) : node(_node) {}
-					BindExpressionBuilder& expression(const vl::Ptr<WfExpression>& value);
+					MakeBindExpression& expression(const vl::Ptr<WfExpression>& value);
+					MakeBindExpression& expandedExpression(const vl::Ptr<WfExpression>& value);
 				};
 
-				class BlockStatementBuilder
+				class MakeBlockStatement : public vl::glr::ParsingAstBuilder<WfBlockStatement>
 				{
-				private:
-					WfBlockStatement* node;
 				public:
-					BlockStatementBuilder(WfBlockStatement* _node) : node(_node) {}
-					BlockStatementBuilder& endLabel(const vl::WString& value);
-					BlockStatementBuilder& statements(const vl::Ptr<WfStatement>& value);
+					MakeBlockStatement& endLabel(const vl::WString& value);
+					MakeBlockStatement& statements(const vl::Ptr<WfStatement>& value);
 				};
 
-				class CallExpressionBuilder
+				class MakeCallExpression : public vl::glr::ParsingAstBuilder<WfCallExpression>
 				{
-				private:
-					WfCallExpression* node;
 				public:
-					CallExpressionBuilder(WfCallExpression* _node) : node(_node) {}
-					CallExpressionBuilder& arguments(const vl::Ptr<WfExpression>& value);
-					CallExpressionBuilder& function(const vl::Ptr<WfExpression>& value);
+					MakeCallExpression& arguments(const vl::Ptr<WfExpression>& value);
+					MakeCallExpression& function(const vl::Ptr<WfExpression>& value);
 				};
 
-				class CastResultInterfaceDeclarationBuilder
+				class MakeCastResultInterfaceDeclaration : public vl::glr::ParsingAstBuilder<WfCastResultInterfaceDeclaration>
 				{
-				private:
-					WfCastResultInterfaceDeclaration* node;
 				public:
-					CastResultInterfaceDeclarationBuilder(WfCastResultInterfaceDeclaration* _node) : node(_node) {}
-					CastResultInterfaceDeclarationBuilder& baseType(const vl::Ptr<WfType>& value);
-					CastResultInterfaceDeclarationBuilder& elementType(const vl::Ptr<WfType>& value);
+					MakeCastResultInterfaceDeclaration& baseType(const vl::Ptr<WfType>& value);
+					MakeCastResultInterfaceDeclaration& elementType(const vl::Ptr<WfType>& value);
+					MakeCastResultInterfaceDeclaration& expandedDeclarations(const vl::Ptr<WfDeclaration>& value);
+					MakeCastResultInterfaceDeclaration& attributes(const vl::Ptr<WfAttribute>& value);
+					MakeCastResultInterfaceDeclaration& name(const vl::WString& value);
 				};
 
-				class ChildExpressionBuilder
+				class MakeChildExpression : public vl::glr::ParsingAstBuilder<WfChildExpression>
 				{
-				private:
-					WfChildExpression* node;
 				public:
-					ChildExpressionBuilder(WfChildExpression* _node) : node(_node) {}
-					ChildExpressionBuilder& name(const vl::WString& value);
-					ChildExpressionBuilder& parent(const vl::Ptr<WfExpression>& value);
+					MakeChildExpression& name(const vl::WString& value);
+					MakeChildExpression& parent(const vl::Ptr<WfExpression>& value);
 				};
 
-				class ChildTypeBuilder
+				class MakeChildType : public vl::glr::ParsingAstBuilder<WfChildType>
 				{
-				private:
-					WfChildType* node;
 				public:
-					ChildTypeBuilder(WfChildType* _node) : node(_node) {}
-					ChildTypeBuilder& name(const vl::WString& value);
-					ChildTypeBuilder& parent(const vl::Ptr<WfType>& value);
+					MakeChildType& name(const vl::WString& value);
+					MakeChildType& parent(const vl::Ptr<WfType>& value);
 				};
 
-				class ClassDeclarationBuilder
+				class MakeClassDeclaration : public vl::glr::ParsingAstBuilder<WfClassDeclaration>
 				{
-				private:
-					WfClassDeclaration* node;
 				public:
-					ClassDeclarationBuilder(WfClassDeclaration* _node) : node(_node) {}
-					ClassDeclarationBuilder& baseTypes(const vl::Ptr<WfType>& value);
-					ClassDeclarationBuilder& constructorType(WfConstructorType value);
-					ClassDeclarationBuilder& declarations(const vl::Ptr<WfDeclaration>& value);
-					ClassDeclarationBuilder& kind(WfClassKind value);
+					MakeClassDeclaration& baseTypes(const vl::Ptr<WfType>& value);
+					MakeClassDeclaration& constructorType(WfConstructorType value);
+					MakeClassDeclaration& declarations(const vl::Ptr<WfDeclaration>& value);
+					MakeClassDeclaration& kind(WfClassKind value);
+					MakeClassDeclaration& attributes(const vl::Ptr<WfAttribute>& value);
+					MakeClassDeclaration& name(const vl::WString& value);
 				};
 
-				class CoOperatorExpressionBuilder
+				class MakeCoOperatorExpression : public vl::glr::ParsingAstBuilder<WfCoOperatorExpression>
 				{
-				private:
-					WfCoOperatorExpression* node;
 				public:
-					CoOperatorExpressionBuilder(WfCoOperatorExpression* _node) : node(_node) {}
-					CoOperatorExpressionBuilder& name(const vl::WString& value);
+					MakeCoOperatorExpression& name(const vl::WString& value);
+					MakeCoOperatorExpression& expandedExpression(const vl::Ptr<WfExpression>& value);
 				};
 
-				class CoOperatorStatementBuilder
+				class MakeCoOperatorStatement : public vl::glr::ParsingAstBuilder<WfCoOperatorStatement>
 				{
-				private:
-					WfCoOperatorStatement* node;
 				public:
-					CoOperatorStatementBuilder(WfCoOperatorStatement* _node) : node(_node) {}
-					CoOperatorStatementBuilder& arguments(const vl::Ptr<WfExpression>& value);
-					CoOperatorStatementBuilder& opName(const vl::WString& value);
-					CoOperatorStatementBuilder& varName(const vl::WString& value);
+					MakeCoOperatorStatement& arguments(const vl::Ptr<WfExpression>& value);
+					MakeCoOperatorStatement& opName(const vl::WString& value);
+					MakeCoOperatorStatement& varName(const vl::WString& value);
 				};
 
-				class CoPauseStatementBuilder
+				class MakeCoPauseStatement : public vl::glr::ParsingAstBuilder<WfCoPauseStatement>
 				{
-				private:
-					WfCoPauseStatement* node;
 				public:
-					CoPauseStatementBuilder(WfCoPauseStatement* _node) : node(_node) {}
-					CoPauseStatementBuilder& statement(const vl::Ptr<WfStatement>& value);
+					MakeCoPauseStatement& statement(const vl::Ptr<WfStatement>& value);
 				};
 
-				class CoProviderStatementBuilder
+				class MakeCoProviderStatement : public vl::glr::ParsingAstBuilder<WfCoProviderStatement>
 				{
-				private:
-					WfCoProviderStatement* node;
 				public:
-					CoProviderStatementBuilder(WfCoProviderStatement* _node) : node(_node) {}
-					CoProviderStatementBuilder& name(const vl::WString& value);
-					CoProviderStatementBuilder& statement(const vl::Ptr<WfStatement>& value);
+					MakeCoProviderStatement& name(const vl::WString& value);
+					MakeCoProviderStatement& statement(const vl::Ptr<WfStatement>& value);
+					MakeCoProviderStatement& expandedStatement(const vl::Ptr<WfStatement>& value);
 				};
 
-				class ConstructorArgumentBuilder
+				class MakeConstructorArgument : public vl::glr::ParsingAstBuilder<WfConstructorArgument>
 				{
-				private:
-					WfConstructorArgument* node;
 				public:
-					ConstructorArgumentBuilder(WfConstructorArgument* _node) : node(_node) {}
-					ConstructorArgumentBuilder& key(const vl::Ptr<WfExpression>& value);
-					ConstructorArgumentBuilder& value(const vl::Ptr<WfExpression>& value);
+					MakeConstructorArgument& key(const vl::Ptr<WfExpression>& value);
+					MakeConstructorArgument& value(const vl::Ptr<WfExpression>& value);
 				};
 
-				class ConstructorDeclarationBuilder
+				class MakeConstructorDeclaration : public vl::glr::ParsingAstBuilder<WfConstructorDeclaration>
 				{
-				private:
-					WfConstructorDeclaration* node;
 				public:
-					ConstructorDeclarationBuilder(WfConstructorDeclaration* _node) : node(_node) {}
-					ConstructorDeclarationBuilder& arguments(const vl::Ptr<WfFunctionArgument>& value);
-					ConstructorDeclarationBuilder& baseConstructorCalls(const vl::Ptr<WfBaseConstructorCall>& value);
-					ConstructorDeclarationBuilder& constructorType(WfConstructorType value);
-					ConstructorDeclarationBuilder& statement(const vl::Ptr<WfStatement>& value);
+					MakeConstructorDeclaration& arguments(const vl::Ptr<WfFunctionArgument>& value);
+					MakeConstructorDeclaration& baseConstructorCalls(const vl::Ptr<WfBaseConstructorCall>& value);
+					MakeConstructorDeclaration& constructorType(WfConstructorType value);
+					MakeConstructorDeclaration& statement(const vl::Ptr<WfStatement>& value);
+					MakeConstructorDeclaration& attributes(const vl::Ptr<WfAttribute>& value);
+					MakeConstructorDeclaration& name(const vl::WString& value);
 				};
 
-				class ConstructorExpressionBuilder
+				class MakeConstructorExpression : public vl::glr::ParsingAstBuilder<WfConstructorExpression>
 				{
-				private:
-					WfConstructorExpression* node;
 				public:
-					ConstructorExpressionBuilder(WfConstructorExpression* _node) : node(_node) {}
-					ConstructorExpressionBuilder& arguments(const vl::Ptr<WfConstructorArgument>& value);
+					MakeConstructorExpression& arguments(const vl::Ptr<WfConstructorArgument>& value);
 				};
 
-				class DeclarationBuilder
+				class MakeDeclaration : public vl::glr::ParsingAstBuilder<WfDeclaration>
 				{
-				private:
-					WfDeclaration* node;
 				public:
-					DeclarationBuilder(WfDeclaration* _node) : node(_node) {}
-					DeclarationBuilder& attributes(const vl::Ptr<WfAttribute>& value);
-					DeclarationBuilder& name(const vl::WString& value);
+					MakeDeclaration& attributes(const vl::Ptr<WfAttribute>& value);
+					MakeDeclaration& name(const vl::WString& value);
 				};
 
-				class DeleteStatementBuilder
+				class MakeDeleteStatement : public vl::glr::ParsingAstBuilder<WfDeleteStatement>
 				{
-				private:
-					WfDeleteStatement* node;
 				public:
-					DeleteStatementBuilder(WfDeleteStatement* _node) : node(_node) {}
-					DeleteStatementBuilder& expression(const vl::Ptr<WfExpression>& value);
+					MakeDeleteStatement& expression(const vl::Ptr<WfExpression>& value);
 				};
 
-				class DestructorDeclarationBuilder
+				class MakeDestructorDeclaration : public vl::glr::ParsingAstBuilder<WfDestructorDeclaration>
 				{
-				private:
-					WfDestructorDeclaration* node;
 				public:
-					DestructorDeclarationBuilder(WfDestructorDeclaration* _node) : node(_node) {}
-					DestructorDeclarationBuilder& statement(const vl::Ptr<WfStatement>& value);
+					MakeDestructorDeclaration& statement(const vl::Ptr<WfStatement>& value);
+					MakeDestructorDeclaration& attributes(const vl::Ptr<WfAttribute>& value);
+					MakeDestructorDeclaration& name(const vl::WString& value);
 				};
 
-				class DetachEventExpressionBuilder
+				class MakeDetachEventExpression : public vl::glr::ParsingAstBuilder<WfDetachEventExpression>
 				{
-				private:
-					WfDetachEventExpression* node;
 				public:
-					DetachEventExpressionBuilder(WfDetachEventExpression* _node) : node(_node) {}
-					DetachEventExpressionBuilder& event(const vl::Ptr<WfExpression>& value);
-					DetachEventExpressionBuilder& handler(const vl::Ptr<WfExpression>& value);
+					MakeDetachEventExpression& event(const vl::Ptr<WfExpression>& value);
+					MakeDetachEventExpression& handler(const vl::Ptr<WfExpression>& value);
 				};
 
-				class EnumDeclarationBuilder
+				class MakeEnumDeclaration : public vl::glr::ParsingAstBuilder<WfEnumDeclaration>
 				{
-				private:
-					WfEnumDeclaration* node;
 				public:
-					EnumDeclarationBuilder(WfEnumDeclaration* _node) : node(_node) {}
-					EnumDeclarationBuilder& items(const vl::Ptr<WfEnumItem>& value);
-					EnumDeclarationBuilder& kind(WfEnumKind value);
+					MakeEnumDeclaration& items(const vl::Ptr<WfEnumItem>& value);
+					MakeEnumDeclaration& kind(WfEnumKind value);
+					MakeEnumDeclaration& attributes(const vl::Ptr<WfAttribute>& value);
+					MakeEnumDeclaration& name(const vl::WString& value);
 				};
 
-				class EnumItemBuilder
+				class MakeEnumItem : public vl::glr::ParsingAstBuilder<WfEnumItem>
 				{
-				private:
-					WfEnumItem* node;
 				public:
-					EnumItemBuilder(WfEnumItem* _node) : node(_node) {}
-					EnumItemBuilder& attributes(const vl::Ptr<WfAttribute>& value);
-					EnumItemBuilder& intersections(const vl::Ptr<WfEnumItemIntersection>& value);
-					EnumItemBuilder& kind(WfEnumItemKind value);
-					EnumItemBuilder& name(const vl::WString& value);
-					EnumItemBuilder& number(const vl::WString& value);
+					MakeEnumItem& attributes(const vl::Ptr<WfAttribute>& value);
+					MakeEnumItem& intersections(const vl::Ptr<WfEnumItemIntersection>& value);
+					MakeEnumItem& kind(WfEnumItemKind value);
+					MakeEnumItem& name(const vl::WString& value);
+					MakeEnumItem& number(const vl::WString& value);
 				};
 
-				class EnumItemIntersectionBuilder
+				class MakeEnumItemIntersection : public vl::glr::ParsingAstBuilder<WfEnumItemIntersection>
 				{
-				private:
-					WfEnumItemIntersection* node;
 				public:
-					EnumItemIntersectionBuilder(WfEnumItemIntersection* _node) : node(_node) {}
-					EnumItemIntersectionBuilder& name(const vl::WString& value);
+					MakeEnumItemIntersection& name(const vl::WString& value);
 				};
 
-				class EnumerableTypeBuilder
+				class MakeEnumerableType : public vl::glr::ParsingAstBuilder<WfEnumerableType>
 				{
-				private:
-					WfEnumerableType* node;
 				public:
-					EnumerableTypeBuilder(WfEnumerableType* _node) : node(_node) {}
-					EnumerableTypeBuilder& element(const vl::Ptr<WfType>& value);
+					MakeEnumerableType& element(const vl::Ptr<WfType>& value);
 				};
 
-				class EventDeclarationBuilder
+				class MakeEventDeclaration : public vl::glr::ParsingAstBuilder<WfEventDeclaration>
 				{
-				private:
-					WfEventDeclaration* node;
 				public:
-					EventDeclarationBuilder(WfEventDeclaration* _node) : node(_node) {}
-					EventDeclarationBuilder& arguments(const vl::Ptr<WfType>& value);
+					MakeEventDeclaration& arguments(const vl::Ptr<WfType>& value);
+					MakeEventDeclaration& attributes(const vl::Ptr<WfAttribute>& value);
+					MakeEventDeclaration& name(const vl::WString& value);
 				};
 
-				class ExpectedTypeCastExpressionBuilder
+				class MakeExpectedTypeCastExpression : public vl::glr::ParsingAstBuilder<WfExpectedTypeCastExpression>
 				{
-				private:
-					WfExpectedTypeCastExpression* node;
 				public:
-					ExpectedTypeCastExpressionBuilder(WfExpectedTypeCastExpression* _node) : node(_node) {}
-					ExpectedTypeCastExpressionBuilder& expression(const vl::Ptr<WfExpression>& value);
-					ExpectedTypeCastExpressionBuilder& strategy(WfTypeCastingStrategy value);
+					MakeExpectedTypeCastExpression& expression(const vl::Ptr<WfExpression>& value);
+					MakeExpectedTypeCastExpression& strategy(WfTypeCastingStrategy value);
+					MakeExpectedTypeCastExpression& expandedExpression(const vl::Ptr<WfExpression>& value);
 				};
 
-				class ExpressionStatementBuilder
+				class MakeExpressionStatement : public vl::glr::ParsingAstBuilder<WfExpressionStatement>
 				{
-				private:
-					WfExpressionStatement* node;
 				public:
-					ExpressionStatementBuilder(WfExpressionStatement* _node) : node(_node) {}
-					ExpressionStatementBuilder& expression(const vl::Ptr<WfExpression>& value);
+					MakeExpressionStatement& expression(const vl::Ptr<WfExpression>& value);
 				};
 
-				class FloatingExpressionBuilder
+				class MakeFloatingExpression : public vl::glr::ParsingAstBuilder<WfFloatingExpression>
 				{
-				private:
-					WfFloatingExpression* node;
 				public:
-					FloatingExpressionBuilder(WfFloatingExpression* _node) : node(_node) {}
-					FloatingExpressionBuilder& value(const vl::WString& value);
+					MakeFloatingExpression& value(const vl::WString& value);
 				};
 
-				class ForEachStatementBuilder
+				class MakeForEachStatement : public vl::glr::ParsingAstBuilder<WfForEachStatement>
 				{
-				private:
-					WfForEachStatement* node;
 				public:
-					ForEachStatementBuilder(WfForEachStatement* _node) : node(_node) {}
-					ForEachStatementBuilder& collection(const vl::Ptr<WfExpression>& value);
-					ForEachStatementBuilder& direction(WfForEachDirection value);
-					ForEachStatementBuilder& name(const vl::WString& value);
-					ForEachStatementBuilder& statement(const vl::Ptr<WfStatement>& value);
+					MakeForEachStatement& collection(const vl::Ptr<WfExpression>& value);
+					MakeForEachStatement& direction(WfForEachDirection value);
+					MakeForEachStatement& name(const vl::WString& value);
+					MakeForEachStatement& statement(const vl::Ptr<WfStatement>& value);
+					MakeForEachStatement& expandedStatement(const vl::Ptr<WfStatement>& value);
 				};
 
-				class FormatExpressionBuilder
+				class MakeFormatExpression : public vl::glr::ParsingAstBuilder<WfFormatExpression>
 				{
-				private:
-					WfFormatExpression* node;
 				public:
-					FormatExpressionBuilder(WfFormatExpression* _node) : node(_node) {}
-					FormatExpressionBuilder& value(const vl::WString& value);
+					MakeFormatExpression& value(const vl::WString& value);
+					MakeFormatExpression& expandedExpression(const vl::Ptr<WfExpression>& value);
 				};
 
-				class FunctionArgumentBuilder
+				class MakeFunctionArgument : public vl::glr::ParsingAstBuilder<WfFunctionArgument>
 				{
-				private:
-					WfFunctionArgument* node;
 				public:
-					FunctionArgumentBuilder(WfFunctionArgument* _node) : node(_node) {}
-					FunctionArgumentBuilder& attributes(const vl::Ptr<WfAttribute>& value);
-					FunctionArgumentBuilder& name(const vl::WString& value);
-					FunctionArgumentBuilder& type(const vl::Ptr<WfType>& value);
+					MakeFunctionArgument& attributes(const vl::Ptr<WfAttribute>& value);
+					MakeFunctionArgument& name(const vl::WString& value);
+					MakeFunctionArgument& type(const vl::Ptr<WfType>& value);
 				};
 
-				class FunctionDeclarationBuilder
+				class MakeFunctionDeclaration : public vl::glr::ParsingAstBuilder<WfFunctionDeclaration>
 				{
-				private:
-					WfFunctionDeclaration* node;
 				public:
-					FunctionDeclarationBuilder(WfFunctionDeclaration* _node) : node(_node) {}
-					FunctionDeclarationBuilder& anonymity(WfFunctionAnonymity value);
-					FunctionDeclarationBuilder& arguments(const vl::Ptr<WfFunctionArgument>& value);
-					FunctionDeclarationBuilder& functionKind(WfFunctionKind value);
-					FunctionDeclarationBuilder& returnType(const vl::Ptr<WfType>& value);
-					FunctionDeclarationBuilder& statement(const vl::Ptr<WfStatement>& value);
+					MakeFunctionDeclaration& anonymity(WfFunctionAnonymity value);
+					MakeFunctionDeclaration& arguments(const vl::Ptr<WfFunctionArgument>& value);
+					MakeFunctionDeclaration& functionKind(WfFunctionKind value);
+					MakeFunctionDeclaration& returnType(const vl::Ptr<WfType>& value);
+					MakeFunctionDeclaration& statement(const vl::Ptr<WfStatement>& value);
+					MakeFunctionDeclaration& attributes(const vl::Ptr<WfAttribute>& value);
+					MakeFunctionDeclaration& name(const vl::WString& value);
 				};
 
-				class FunctionExpressionBuilder
+				class MakeFunctionExpression : public vl::glr::ParsingAstBuilder<WfFunctionExpression>
 				{
-				private:
-					WfFunctionExpression* node;
 				public:
-					FunctionExpressionBuilder(WfFunctionExpression* _node) : node(_node) {}
-					FunctionExpressionBuilder& function(const vl::Ptr<WfFunctionDeclaration>& value);
+					MakeFunctionExpression& function(const vl::Ptr<WfFunctionDeclaration>& value);
 				};
 
-				class FunctionTypeBuilder
+				class MakeFunctionType : public vl::glr::ParsingAstBuilder<WfFunctionType>
 				{
-				private:
-					WfFunctionType* node;
 				public:
-					FunctionTypeBuilder(WfFunctionType* _node) : node(_node) {}
-					FunctionTypeBuilder& arguments(const vl::Ptr<WfType>& value);
-					FunctionTypeBuilder& result(const vl::Ptr<WfType>& value);
+					MakeFunctionType& arguments(const vl::Ptr<WfType>& value);
+					MakeFunctionType& result(const vl::Ptr<WfType>& value);
 				};
 
-				class GotoStatementBuilder
+				class MakeGotoStatement : public vl::glr::ParsingAstBuilder<WfGotoStatement>
 				{
-				private:
-					WfGotoStatement* node;
 				public:
-					GotoStatementBuilder(WfGotoStatement* _node) : node(_node) {}
-					GotoStatementBuilder& label(const vl::WString& value);
+					MakeGotoStatement& label(const vl::WString& value);
 				};
 
-				class IfExpressionBuilder
+				class MakeIfExpression : public vl::glr::ParsingAstBuilder<WfIfExpression>
 				{
-				private:
-					WfIfExpression* node;
 				public:
-					IfExpressionBuilder(WfIfExpression* _node) : node(_node) {}
-					IfExpressionBuilder& condition(const vl::Ptr<WfExpression>& value);
-					IfExpressionBuilder& falseBranch(const vl::Ptr<WfExpression>& value);
-					IfExpressionBuilder& trueBranch(const vl::Ptr<WfExpression>& value);
+					MakeIfExpression& condition(const vl::Ptr<WfExpression>& value);
+					MakeIfExpression& falseBranch(const vl::Ptr<WfExpression>& value);
+					MakeIfExpression& trueBranch(const vl::Ptr<WfExpression>& value);
 				};
 
-				class IfStatementBuilder
+				class MakeIfStatement : public vl::glr::ParsingAstBuilder<WfIfStatement>
 				{
-				private:
-					WfIfStatement* node;
 				public:
-					IfStatementBuilder(WfIfStatement* _node) : node(_node) {}
-					IfStatementBuilder& expression(const vl::Ptr<WfExpression>& value);
-					IfStatementBuilder& falseBranch(const vl::Ptr<WfStatement>& value);
-					IfStatementBuilder& name(const vl::WString& value);
-					IfStatementBuilder& trueBranch(const vl::Ptr<WfStatement>& value);
-					IfStatementBuilder& type(const vl::Ptr<WfType>& value);
+					MakeIfStatement& expression(const vl::Ptr<WfExpression>& value);
+					MakeIfStatement& falseBranch(const vl::Ptr<WfStatement>& value);
+					MakeIfStatement& name(const vl::WString& value);
+					MakeIfStatement& trueBranch(const vl::Ptr<WfStatement>& value);
+					MakeIfStatement& type(const vl::Ptr<WfType>& value);
 				};
 
-				class InferExpressionBuilder
+				class MakeInferExpression : public vl::glr::ParsingAstBuilder<WfInferExpression>
 				{
-				private:
-					WfInferExpression* node;
 				public:
-					InferExpressionBuilder(WfInferExpression* _node) : node(_node) {}
-					InferExpressionBuilder& expression(const vl::Ptr<WfExpression>& value);
-					InferExpressionBuilder& type(const vl::Ptr<WfType>& value);
+					MakeInferExpression& expression(const vl::Ptr<WfExpression>& value);
+					MakeInferExpression& type(const vl::Ptr<WfType>& value);
 				};
 
-				class IntegerExpressionBuilder
+				class MakeIntegerExpression : public vl::glr::ParsingAstBuilder<WfIntegerExpression>
 				{
-				private:
-					WfIntegerExpression* node;
 				public:
-					IntegerExpressionBuilder(WfIntegerExpression* _node) : node(_node) {}
-					IntegerExpressionBuilder& value(const vl::WString& value);
+					MakeIntegerExpression& value(const vl::WString& value);
 				};
 
-				class LetExpressionBuilder
+				class MakeLetExpression : public vl::glr::ParsingAstBuilder<WfLetExpression>
 				{
-				private:
-					WfLetExpression* node;
 				public:
-					LetExpressionBuilder(WfLetExpression* _node) : node(_node) {}
-					LetExpressionBuilder& expression(const vl::Ptr<WfExpression>& value);
-					LetExpressionBuilder& variables(const vl::Ptr<WfLetVariable>& value);
+					MakeLetExpression& expression(const vl::Ptr<WfExpression>& value);
+					MakeLetExpression& variables(const vl::Ptr<WfLetVariable>& value);
 				};
 
-				class LetVariableBuilder
+				class MakeLetVariable : public vl::glr::ParsingAstBuilder<WfLetVariable>
 				{
-				private:
-					WfLetVariable* node;
 				public:
-					LetVariableBuilder(WfLetVariable* _node) : node(_node) {}
-					LetVariableBuilder& name(const vl::WString& value);
-					LetVariableBuilder& value(const vl::Ptr<WfExpression>& value);
+					MakeLetVariable& name(const vl::WString& value);
+					MakeLetVariable& value(const vl::Ptr<WfExpression>& value);
 				};
 
-				class LiteralExpressionBuilder
+				class MakeLiteralExpression : public vl::glr::ParsingAstBuilder<WfLiteralExpression>
 				{
-				private:
-					WfLiteralExpression* node;
 				public:
-					LiteralExpressionBuilder(WfLiteralExpression* _node) : node(_node) {}
-					LiteralExpressionBuilder& value(WfLiteralValue value);
+					MakeLiteralExpression& value(WfLiteralValue value);
 				};
 
-				class MapTypeBuilder
+				class MakeMapType : public vl::glr::ParsingAstBuilder<WfMapType>
 				{
-				private:
-					WfMapType* node;
 				public:
-					MapTypeBuilder(WfMapType* _node) : node(_node) {}
-					MapTypeBuilder& key(const vl::Ptr<WfType>& value);
-					MapTypeBuilder& value(const vl::Ptr<WfType>& value);
-					MapTypeBuilder& writability(WfMapWritability value);
+					MakeMapType& key(const vl::Ptr<WfType>& value);
+					MakeMapType& value(const vl::Ptr<WfType>& value);
+					MakeMapType& writability(WfMapWritability value);
 				};
 
-				class MemberExpressionBuilder
+				class MakeMemberExpression : public vl::glr::ParsingAstBuilder<WfMemberExpression>
 				{
-				private:
-					WfMemberExpression* node;
 				public:
-					MemberExpressionBuilder(WfMemberExpression* _node) : node(_node) {}
-					MemberExpressionBuilder& name(const vl::WString& value);
-					MemberExpressionBuilder& parent(const vl::Ptr<WfExpression>& value);
+					MakeMemberExpression& name(const vl::WString& value);
+					MakeMemberExpression& parent(const vl::Ptr<WfExpression>& value);
 				};
 
-				class MixinCastExpressionBuilder
+				class MakeMixinCastExpression : public vl::glr::ParsingAstBuilder<WfMixinCastExpression>
 				{
-				private:
-					WfMixinCastExpression* node;
 				public:
-					MixinCastExpressionBuilder(WfMixinCastExpression* _node) : node(_node) {}
-					MixinCastExpressionBuilder& expression(const vl::Ptr<WfExpression>& value);
-					MixinCastExpressionBuilder& type(const vl::Ptr<WfType>& value);
+					MakeMixinCastExpression& expression(const vl::Ptr<WfExpression>& value);
+					MakeMixinCastExpression& type(const vl::Ptr<WfType>& value);
+					MakeMixinCastExpression& expandedExpression(const vl::Ptr<WfExpression>& value);
 				};
 
-				class ModuleBuilder
+				class MakeModule : public vl::glr::ParsingAstBuilder<WfModule>
 				{
-				private:
-					WfModule* node;
 				public:
-					ModuleBuilder(WfModule* _node) : node(_node) {}
-					ModuleBuilder& declarations(const vl::Ptr<WfDeclaration>& value);
-					ModuleBuilder& moduleType(WfModuleType value);
-					ModuleBuilder& name(const vl::WString& value);
-					ModuleBuilder& paths(const vl::Ptr<WfModuleUsingPath>& value);
+					MakeModule& declarations(const vl::Ptr<WfDeclaration>& value);
+					MakeModule& moduleType(WfModuleType value);
+					MakeModule& name(const vl::WString& value);
+					MakeModule& paths(const vl::Ptr<WfModuleUsingPath>& value);
 				};
 
-				class ModuleUsingItemBuilder
+				class MakeModuleUsingItem : public vl::glr::ParsingAstBuilder<WfModuleUsingItem>
 				{
-				private:
-					WfModuleUsingItem* node;
 				public:
-					ModuleUsingItemBuilder(WfModuleUsingItem* _node) : node(_node) {}
-					ModuleUsingItemBuilder& fragments(const vl::Ptr<WfModuleUsingFragment>& value);
+					MakeModuleUsingItem& fragments(const vl::Ptr<WfModuleUsingFragment>& value);
 				};
 
-				class ModuleUsingNameFragmentBuilder
+				class MakeModuleUsingNameFragment : public vl::glr::ParsingAstBuilder<WfModuleUsingNameFragment>
 				{
-				private:
-					WfModuleUsingNameFragment* node;
 				public:
-					ModuleUsingNameFragmentBuilder(WfModuleUsingNameFragment* _node) : node(_node) {}
-					ModuleUsingNameFragmentBuilder& name(const vl::WString& value);
+					MakeModuleUsingNameFragment& name(const vl::WString& value);
 				};
 
-				class ModuleUsingPathBuilder
+				class MakeModuleUsingPath : public vl::glr::ParsingAstBuilder<WfModuleUsingPath>
 				{
-				private:
-					WfModuleUsingPath* node;
 				public:
-					ModuleUsingPathBuilder(WfModuleUsingPath* _node) : node(_node) {}
-					ModuleUsingPathBuilder& items(const vl::Ptr<WfModuleUsingItem>& value);
+					MakeModuleUsingPath& items(const vl::Ptr<WfModuleUsingItem>& value);
 				};
 
-				class NamespaceDeclarationBuilder
+				class MakeNamespaceDeclaration : public vl::glr::ParsingAstBuilder<WfNamespaceDeclaration>
 				{
-				private:
-					WfNamespaceDeclaration* node;
 				public:
-					NamespaceDeclarationBuilder(WfNamespaceDeclaration* _node) : node(_node) {}
-					NamespaceDeclarationBuilder& declarations(const vl::Ptr<WfDeclaration>& value);
+					MakeNamespaceDeclaration& declarations(const vl::Ptr<WfDeclaration>& value);
+					MakeNamespaceDeclaration& attributes(const vl::Ptr<WfAttribute>& value);
+					MakeNamespaceDeclaration& name(const vl::WString& value);
 				};
 
-				class NewClassExpressionBuilder
+				class MakeNewClassExpression : public vl::glr::ParsingAstBuilder<WfNewClassExpression>
 				{
-				private:
-					WfNewClassExpression* node;
 				public:
-					NewClassExpressionBuilder(WfNewClassExpression* _node) : node(_node) {}
-					NewClassExpressionBuilder& arguments(const vl::Ptr<WfExpression>& value);
-					NewClassExpressionBuilder& type(const vl::Ptr<WfType>& value);
+					MakeNewClassExpression& arguments(const vl::Ptr<WfExpression>& value);
+					MakeNewClassExpression& type(const vl::Ptr<WfType>& value);
 				};
 
-				class NewCoroutineExpressionBuilder
+				class MakeNewCoroutineExpression : public vl::glr::ParsingAstBuilder<WfNewCoroutineExpression>
 				{
-				private:
-					WfNewCoroutineExpression* node;
 				public:
-					NewCoroutineExpressionBuilder(WfNewCoroutineExpression* _node) : node(_node) {}
-					NewCoroutineExpressionBuilder& name(const vl::WString& value);
-					NewCoroutineExpressionBuilder& statement(const vl::Ptr<WfStatement>& value);
+					MakeNewCoroutineExpression& name(const vl::WString& value);
+					MakeNewCoroutineExpression& statement(const vl::Ptr<WfStatement>& value);
+					MakeNewCoroutineExpression& expandedExpression(const vl::Ptr<WfExpression>& value);
 				};
 
-				class NewInterfaceExpressionBuilder
+				class MakeNewInterfaceExpression : public vl::glr::ParsingAstBuilder<WfNewInterfaceExpression>
 				{
-				private:
-					WfNewInterfaceExpression* node;
 				public:
-					NewInterfaceExpressionBuilder(WfNewInterfaceExpression* _node) : node(_node) {}
-					NewInterfaceExpressionBuilder& declarations(const vl::Ptr<WfDeclaration>& value);
-					NewInterfaceExpressionBuilder& type(const vl::Ptr<WfType>& value);
+					MakeNewInterfaceExpression& declarations(const vl::Ptr<WfDeclaration>& value);
+					MakeNewInterfaceExpression& type(const vl::Ptr<WfType>& value);
 				};
 
-				class NullableTypeBuilder
+				class MakeNullableType : public vl::glr::ParsingAstBuilder<WfNullableType>
 				{
-				private:
-					WfNullableType* node;
 				public:
-					NullableTypeBuilder(WfNullableType* _node) : node(_node) {}
-					NullableTypeBuilder& element(const vl::Ptr<WfType>& value);
+					MakeNullableType& element(const vl::Ptr<WfType>& value);
 				};
 
-				class ObservableListTypeBuilder
+				class MakeObservableListType : public vl::glr::ParsingAstBuilder<WfObservableListType>
 				{
-				private:
-					WfObservableListType* node;
 				public:
-					ObservableListTypeBuilder(WfObservableListType* _node) : node(_node) {}
-					ObservableListTypeBuilder& element(const vl::Ptr<WfType>& value);
+					MakeObservableListType& element(const vl::Ptr<WfType>& value);
 				};
 
-				class ObserveExpressionBuilder
+				class MakeObserveExpression : public vl::glr::ParsingAstBuilder<WfObserveExpression>
 				{
-				private:
-					WfObserveExpression* node;
 				public:
-					ObserveExpressionBuilder(WfObserveExpression* _node) : node(_node) {}
-					ObserveExpressionBuilder& events(const vl::Ptr<WfExpression>& value);
-					ObserveExpressionBuilder& expression(const vl::Ptr<WfExpression>& value);
-					ObserveExpressionBuilder& name(const vl::WString& value);
-					ObserveExpressionBuilder& observeType(WfObserveType value);
-					ObserveExpressionBuilder& parent(const vl::Ptr<WfExpression>& value);
+					MakeObserveExpression& events(const vl::Ptr<WfExpression>& value);
+					MakeObserveExpression& expression(const vl::Ptr<WfExpression>& value);
+					MakeObserveExpression& name(const vl::WString& value);
+					MakeObserveExpression& observeType(WfObserveType value);
+					MakeObserveExpression& parent(const vl::Ptr<WfExpression>& value);
 				};
 
-				class OrderedLambdaExpressionBuilder
+				class MakeOrderedLambdaExpression : public vl::glr::ParsingAstBuilder<WfOrderedLambdaExpression>
 				{
-				private:
-					WfOrderedLambdaExpression* node;
 				public:
-					OrderedLambdaExpressionBuilder(WfOrderedLambdaExpression* _node) : node(_node) {}
-					OrderedLambdaExpressionBuilder& body(const vl::Ptr<WfExpression>& value);
+					MakeOrderedLambdaExpression& body(const vl::Ptr<WfExpression>& value);
 				};
 
-				class OrderedNameExpressionBuilder
+				class MakeOrderedNameExpression : public vl::glr::ParsingAstBuilder<WfOrderedNameExpression>
 				{
-				private:
-					WfOrderedNameExpression* node;
 				public:
-					OrderedNameExpressionBuilder(WfOrderedNameExpression* _node) : node(_node) {}
-					OrderedNameExpressionBuilder& name(const vl::WString& value);
+					MakeOrderedNameExpression& name(const vl::WString& value);
 				};
 
-				class PredefinedTypeBuilder
+				class MakePredefinedType : public vl::glr::ParsingAstBuilder<WfPredefinedType>
 				{
-				private:
-					WfPredefinedType* node;
 				public:
-					PredefinedTypeBuilder(WfPredefinedType* _node) : node(_node) {}
-					PredefinedTypeBuilder& name(WfPredefinedTypeName value);
+					MakePredefinedType& name(WfPredefinedTypeName value);
 				};
 
-				class PropertyDeclarationBuilder
+				class MakePropertyDeclaration : public vl::glr::ParsingAstBuilder<WfPropertyDeclaration>
 				{
-				private:
-					WfPropertyDeclaration* node;
 				public:
-					PropertyDeclarationBuilder(WfPropertyDeclaration* _node) : node(_node) {}
-					PropertyDeclarationBuilder& getter(const vl::WString& value);
-					PropertyDeclarationBuilder& setter(const vl::WString& value);
-					PropertyDeclarationBuilder& type(const vl::Ptr<WfType>& value);
-					PropertyDeclarationBuilder& valueChangedEvent(const vl::WString& value);
+					MakePropertyDeclaration& getter(const vl::WString& value);
+					MakePropertyDeclaration& setter(const vl::WString& value);
+					MakePropertyDeclaration& type(const vl::Ptr<WfType>& value);
+					MakePropertyDeclaration& valueChangedEvent(const vl::WString& value);
+					MakePropertyDeclaration& attributes(const vl::Ptr<WfAttribute>& value);
+					MakePropertyDeclaration& name(const vl::WString& value);
 				};
 
-				class RaiseExceptionStatementBuilder
+				class MakeRaiseExceptionStatement : public vl::glr::ParsingAstBuilder<WfRaiseExceptionStatement>
 				{
-				private:
-					WfRaiseExceptionStatement* node;
 				public:
-					RaiseExceptionStatementBuilder(WfRaiseExceptionStatement* _node) : node(_node) {}
-					RaiseExceptionStatementBuilder& expression(const vl::Ptr<WfExpression>& value);
+					MakeRaiseExceptionStatement& expression(const vl::Ptr<WfExpression>& value);
 				};
 
-				class RangeExpressionBuilder
+				class MakeRangeExpression : public vl::glr::ParsingAstBuilder<WfRangeExpression>
 				{
-				private:
-					WfRangeExpression* node;
 				public:
-					RangeExpressionBuilder(WfRangeExpression* _node) : node(_node) {}
-					RangeExpressionBuilder& begin(const vl::Ptr<WfExpression>& value);
-					RangeExpressionBuilder& beginBoundary(WfRangeBoundary value);
-					RangeExpressionBuilder& end(const vl::Ptr<WfExpression>& value);
-					RangeExpressionBuilder& endBoundary(WfRangeBoundary value);
+					MakeRangeExpression& begin(const vl::Ptr<WfExpression>& value);
+					MakeRangeExpression& beginBoundary(WfRangeBoundary value);
+					MakeRangeExpression& end(const vl::Ptr<WfExpression>& value);
+					MakeRangeExpression& endBoundary(WfRangeBoundary value);
 				};
 
-				class RawPointerTypeBuilder
+				class MakeRawPointerType : public vl::glr::ParsingAstBuilder<WfRawPointerType>
 				{
-				private:
-					WfRawPointerType* node;
 				public:
-					RawPointerTypeBuilder(WfRawPointerType* _node) : node(_node) {}
-					RawPointerTypeBuilder& element(const vl::Ptr<WfType>& value);
+					MakeRawPointerType& element(const vl::Ptr<WfType>& value);
 				};
 
-				class ReferenceExpressionBuilder
+				class MakeReferenceExpression : public vl::glr::ParsingAstBuilder<WfReferenceExpression>
 				{
-				private:
-					WfReferenceExpression* node;
 				public:
-					ReferenceExpressionBuilder(WfReferenceExpression* _node) : node(_node) {}
-					ReferenceExpressionBuilder& name(const vl::WString& value);
+					MakeReferenceExpression& name(const vl::WString& value);
 				};
 
-				class ReferenceTypeBuilder
+				class MakeReferenceType : public vl::glr::ParsingAstBuilder<WfReferenceType>
 				{
-				private:
-					WfReferenceType* node;
 				public:
-					ReferenceTypeBuilder(WfReferenceType* _node) : node(_node) {}
-					ReferenceTypeBuilder& name(const vl::WString& value);
+					MakeReferenceType& name(const vl::WString& value);
 				};
 
-				class ReturnStatementBuilder
+				class MakeReturnStatement : public vl::glr::ParsingAstBuilder<WfReturnStatement>
 				{
-				private:
-					WfReturnStatement* node;
 				public:
-					ReturnStatementBuilder(WfReturnStatement* _node) : node(_node) {}
-					ReturnStatementBuilder& expression(const vl::Ptr<WfExpression>& value);
+					MakeReturnStatement& expression(const vl::Ptr<WfExpression>& value);
 				};
 
-				class SetTestingExpressionBuilder
+				class MakeSetTestingExpression : public vl::glr::ParsingAstBuilder<WfSetTestingExpression>
 				{
-				private:
-					WfSetTestingExpression* node;
 				public:
-					SetTestingExpressionBuilder(WfSetTestingExpression* _node) : node(_node) {}
-					SetTestingExpressionBuilder& collection(const vl::Ptr<WfExpression>& value);
-					SetTestingExpressionBuilder& element(const vl::Ptr<WfExpression>& value);
-					SetTestingExpressionBuilder& test(WfSetTesting value);
+					MakeSetTestingExpression& collection(const vl::Ptr<WfExpression>& value);
+					MakeSetTestingExpression& element(const vl::Ptr<WfExpression>& value);
+					MakeSetTestingExpression& test(WfSetTesting value);
 				};
 
-				class SharedPointerTypeBuilder
+				class MakeSharedPointerType : public vl::glr::ParsingAstBuilder<WfSharedPointerType>
 				{
-				private:
-					WfSharedPointerType* node;
 				public:
-					SharedPointerTypeBuilder(WfSharedPointerType* _node) : node(_node) {}
-					SharedPointerTypeBuilder& element(const vl::Ptr<WfType>& value);
+					MakeSharedPointerType& element(const vl::Ptr<WfType>& value);
 				};
 
-				class StateDeclarationBuilder
+				class MakeStateDeclaration : public vl::glr::ParsingAstBuilder<WfStateDeclaration>
 				{
-				private:
-					WfStateDeclaration* node;
 				public:
-					StateDeclarationBuilder(WfStateDeclaration* _node) : node(_node) {}
-					StateDeclarationBuilder& arguments(const vl::Ptr<WfFunctionArgument>& value);
-					StateDeclarationBuilder& name(const vl::WString& value);
-					StateDeclarationBuilder& statement(const vl::Ptr<WfStatement>& value);
+					MakeStateDeclaration& arguments(const vl::Ptr<WfFunctionArgument>& value);
+					MakeStateDeclaration& name(const vl::WString& value);
+					MakeStateDeclaration& statement(const vl::Ptr<WfStatement>& value);
 				};
 
-				class StateInputBuilder
+				class MakeStateInput : public vl::glr::ParsingAstBuilder<WfStateInput>
 				{
-				private:
-					WfStateInput* node;
 				public:
-					StateInputBuilder(WfStateInput* _node) : node(_node) {}
-					StateInputBuilder& arguments(const vl::Ptr<WfFunctionArgument>& value);
-					StateInputBuilder& name(const vl::WString& value);
+					MakeStateInput& arguments(const vl::Ptr<WfFunctionArgument>& value);
+					MakeStateInput& name(const vl::WString& value);
 				};
 
-				class StateInvokeStatementBuilder
+				class MakeStateInvokeStatement : public vl::glr::ParsingAstBuilder<WfStateInvokeStatement>
 				{
-				private:
-					WfStateInvokeStatement* node;
 				public:
-					StateInvokeStatementBuilder(WfStateInvokeStatement* _node) : node(_node) {}
-					StateInvokeStatementBuilder& arguments(const vl::Ptr<WfExpression>& value);
-					StateInvokeStatementBuilder& name(const vl::WString& value);
-					StateInvokeStatementBuilder& type(WfStateInvokeType value);
+					MakeStateInvokeStatement& arguments(const vl::Ptr<WfExpression>& value);
+					MakeStateInvokeStatement& name(const vl::WString& value);
+					MakeStateInvokeStatement& type(WfStateInvokeType value);
 				};
 
-				class StateMachineDeclarationBuilder
+				class MakeStateMachineDeclaration : public vl::glr::ParsingAstBuilder<WfStateMachineDeclaration>
 				{
-				private:
-					WfStateMachineDeclaration* node;
 				public:
-					StateMachineDeclarationBuilder(WfStateMachineDeclaration* _node) : node(_node) {}
-					StateMachineDeclarationBuilder& inputs(const vl::Ptr<WfStateInput>& value);
-					StateMachineDeclarationBuilder& states(const vl::Ptr<WfStateDeclaration>& value);
+					MakeStateMachineDeclaration& inputs(const vl::Ptr<WfStateInput>& value);
+					MakeStateMachineDeclaration& states(const vl::Ptr<WfStateDeclaration>& value);
+					MakeStateMachineDeclaration& expandedDeclarations(const vl::Ptr<WfDeclaration>& value);
+					MakeStateMachineDeclaration& attributes(const vl::Ptr<WfAttribute>& value);
+					MakeStateMachineDeclaration& name(const vl::WString& value);
 				};
 
-				class StateSwitchArgumentBuilder
+				class MakeStateSwitchArgument : public vl::glr::ParsingAstBuilder<WfStateSwitchArgument>
 				{
-				private:
-					WfStateSwitchArgument* node;
 				public:
-					StateSwitchArgumentBuilder(WfStateSwitchArgument* _node) : node(_node) {}
-					StateSwitchArgumentBuilder& name(const vl::WString& value);
+					MakeStateSwitchArgument& name(const vl::WString& value);
 				};
 
-				class StateSwitchCaseBuilder
+				class MakeStateSwitchCase : public vl::glr::ParsingAstBuilder<WfStateSwitchCase>
 				{
-				private:
-					WfStateSwitchCase* node;
 				public:
-					StateSwitchCaseBuilder(WfStateSwitchCase* _node) : node(_node) {}
-					StateSwitchCaseBuilder& arguments(const vl::Ptr<WfStateSwitchArgument>& value);
-					StateSwitchCaseBuilder& name(const vl::WString& value);
-					StateSwitchCaseBuilder& statement(const vl::Ptr<WfStatement>& value);
+					MakeStateSwitchCase& arguments(const vl::Ptr<WfStateSwitchArgument>& value);
+					MakeStateSwitchCase& name(const vl::WString& value);
+					MakeStateSwitchCase& statement(const vl::Ptr<WfStatement>& value);
 				};
 
-				class StateSwitchStatementBuilder
+				class MakeStateSwitchStatement : public vl::glr::ParsingAstBuilder<WfStateSwitchStatement>
 				{
-				private:
-					WfStateSwitchStatement* node;
 				public:
-					StateSwitchStatementBuilder(WfStateSwitchStatement* _node) : node(_node) {}
-					StateSwitchStatementBuilder& caseBranches(const vl::Ptr<WfStateSwitchCase>& value);
-					StateSwitchStatementBuilder& type(WfStateSwitchType value);
+					MakeStateSwitchStatement& caseBranches(const vl::Ptr<WfStateSwitchCase>& value);
+					MakeStateSwitchStatement& type(WfStateSwitchType value);
 				};
 
-				class StringExpressionBuilder
+				class MakeStringExpression : public vl::glr::ParsingAstBuilder<WfStringExpression>
 				{
-				private:
-					WfStringExpression* node;
 				public:
-					StringExpressionBuilder(WfStringExpression* _node) : node(_node) {}
-					StringExpressionBuilder& value(const vl::WString& value);
+					MakeStringExpression& value(const vl::WString& value);
 				};
 
-				class StructDeclarationBuilder
+				class MakeStructDeclaration : public vl::glr::ParsingAstBuilder<WfStructDeclaration>
 				{
-				private:
-					WfStructDeclaration* node;
 				public:
-					StructDeclarationBuilder(WfStructDeclaration* _node) : node(_node) {}
-					StructDeclarationBuilder& members(const vl::Ptr<WfStructMember>& value);
+					MakeStructDeclaration& members(const vl::Ptr<WfStructMember>& value);
+					MakeStructDeclaration& attributes(const vl::Ptr<WfAttribute>& value);
+					MakeStructDeclaration& name(const vl::WString& value);
 				};
 
-				class StructMemberBuilder
+				class MakeStructMember : public vl::glr::ParsingAstBuilder<WfStructMember>
 				{
-				private:
-					WfStructMember* node;
 				public:
-					StructMemberBuilder(WfStructMember* _node) : node(_node) {}
-					StructMemberBuilder& attributes(const vl::Ptr<WfAttribute>& value);
-					StructMemberBuilder& name(const vl::WString& value);
-					StructMemberBuilder& type(const vl::Ptr<WfType>& value);
+					MakeStructMember& attributes(const vl::Ptr<WfAttribute>& value);
+					MakeStructMember& name(const vl::WString& value);
+					MakeStructMember& type(const vl::Ptr<WfType>& value);
 				};
 
-				class SwitchCaseBuilder
+				class MakeSwitchCase : public vl::glr::ParsingAstBuilder<WfSwitchCase>
 				{
-				private:
-					WfSwitchCase* node;
 				public:
-					SwitchCaseBuilder(WfSwitchCase* _node) : node(_node) {}
-					SwitchCaseBuilder& expression(const vl::Ptr<WfExpression>& value);
-					SwitchCaseBuilder& statement(const vl::Ptr<WfStatement>& value);
+					MakeSwitchCase& expression(const vl::Ptr<WfExpression>& value);
+					MakeSwitchCase& statement(const vl::Ptr<WfStatement>& value);
 				};
 
-				class SwitchStatementBuilder
+				class MakeSwitchStatement : public vl::glr::ParsingAstBuilder<WfSwitchStatement>
 				{
-				private:
-					WfSwitchStatement* node;
 				public:
-					SwitchStatementBuilder(WfSwitchStatement* _node) : node(_node) {}
-					SwitchStatementBuilder& caseBranches(const vl::Ptr<WfSwitchCase>& value);
-					SwitchStatementBuilder& defaultBranch(const vl::Ptr<WfStatement>& value);
-					SwitchStatementBuilder& expression(const vl::Ptr<WfExpression>& value);
+					MakeSwitchStatement& caseBranches(const vl::Ptr<WfSwitchCase>& value);
+					MakeSwitchStatement& defaultBranch(const vl::Ptr<WfStatement>& value);
+					MakeSwitchStatement& expression(const vl::Ptr<WfExpression>& value);
+					MakeSwitchStatement& expandedStatement(const vl::Ptr<WfStatement>& value);
 				};
 
-				class TopQualifiedExpressionBuilder
+				class MakeTopQualifiedExpression : public vl::glr::ParsingAstBuilder<WfTopQualifiedExpression>
 				{
-				private:
-					WfTopQualifiedExpression* node;
 				public:
-					TopQualifiedExpressionBuilder(WfTopQualifiedExpression* _node) : node(_node) {}
-					TopQualifiedExpressionBuilder& name(const vl::WString& value);
+					MakeTopQualifiedExpression& name(const vl::WString& value);
 				};
 
-				class TopQualifiedTypeBuilder
+				class MakeTopQualifiedType : public vl::glr::ParsingAstBuilder<WfTopQualifiedType>
 				{
-				private:
-					WfTopQualifiedType* node;
 				public:
-					TopQualifiedTypeBuilder(WfTopQualifiedType* _node) : node(_node) {}
-					TopQualifiedTypeBuilder& name(const vl::WString& value);
+					MakeTopQualifiedType& name(const vl::WString& value);
 				};
 
-				class TryStatementBuilder
+				class MakeTryStatement : public vl::glr::ParsingAstBuilder<WfTryStatement>
 				{
-				private:
-					WfTryStatement* node;
 				public:
-					TryStatementBuilder(WfTryStatement* _node) : node(_node) {}
-					TryStatementBuilder& catchStatement(const vl::Ptr<WfStatement>& value);
-					TryStatementBuilder& finallyStatement(const vl::Ptr<WfStatement>& value);
-					TryStatementBuilder& name(const vl::WString& value);
-					TryStatementBuilder& protectedStatement(const vl::Ptr<WfStatement>& value);
+					MakeTryStatement& catchStatement(const vl::Ptr<WfStatement>& value);
+					MakeTryStatement& finallyStatement(const vl::Ptr<WfStatement>& value);
+					MakeTryStatement& name(const vl::WString& value);
+					MakeTryStatement& protectedStatement(const vl::Ptr<WfStatement>& value);
 				};
 
-				class TypeCastingExpressionBuilder
+				class MakeTypeCastingExpression : public vl::glr::ParsingAstBuilder<WfTypeCastingExpression>
 				{
-				private:
-					WfTypeCastingExpression* node;
 				public:
-					TypeCastingExpressionBuilder(WfTypeCastingExpression* _node) : node(_node) {}
-					TypeCastingExpressionBuilder& expression(const vl::Ptr<WfExpression>& value);
-					TypeCastingExpressionBuilder& strategy(WfTypeCastingStrategy value);
-					TypeCastingExpressionBuilder& type(const vl::Ptr<WfType>& value);
+					MakeTypeCastingExpression& expression(const vl::Ptr<WfExpression>& value);
+					MakeTypeCastingExpression& strategy(WfTypeCastingStrategy value);
+					MakeTypeCastingExpression& type(const vl::Ptr<WfType>& value);
 				};
 
-				class TypeOfExpressionExpressionBuilder
+				class MakeTypeOfExpressionExpression : public vl::glr::ParsingAstBuilder<WfTypeOfExpressionExpression>
 				{
-				private:
-					WfTypeOfExpressionExpression* node;
 				public:
-					TypeOfExpressionExpressionBuilder(WfTypeOfExpressionExpression* _node) : node(_node) {}
-					TypeOfExpressionExpressionBuilder& expression(const vl::Ptr<WfExpression>& value);
+					MakeTypeOfExpressionExpression& expression(const vl::Ptr<WfExpression>& value);
 				};
 
-				class TypeOfTypeExpressionBuilder
+				class MakeTypeOfTypeExpression : public vl::glr::ParsingAstBuilder<WfTypeOfTypeExpression>
 				{
-				private:
-					WfTypeOfTypeExpression* node;
 				public:
-					TypeOfTypeExpressionBuilder(WfTypeOfTypeExpression* _node) : node(_node) {}
-					TypeOfTypeExpressionBuilder& type(const vl::Ptr<WfType>& value);
+					MakeTypeOfTypeExpression& type(const vl::Ptr<WfType>& value);
 				};
 
-				class TypeTestingExpressionBuilder
+				class MakeTypeTestingExpression : public vl::glr::ParsingAstBuilder<WfTypeTestingExpression>
 				{
-				private:
-					WfTypeTestingExpression* node;
 				public:
-					TypeTestingExpressionBuilder(WfTypeTestingExpression* _node) : node(_node) {}
-					TypeTestingExpressionBuilder& expression(const vl::Ptr<WfExpression>& value);
-					TypeTestingExpressionBuilder& test(WfTypeTesting value);
-					TypeTestingExpressionBuilder& type(const vl::Ptr<WfType>& value);
+					MakeTypeTestingExpression& expression(const vl::Ptr<WfExpression>& value);
+					MakeTypeTestingExpression& test(WfTypeTesting value);
+					MakeTypeTestingExpression& type(const vl::Ptr<WfType>& value);
 				};
 
-				class UnaryExpressionBuilder
+				class MakeUnaryExpression : public vl::glr::ParsingAstBuilder<WfUnaryExpression>
 				{
-				private:
-					WfUnaryExpression* node;
 				public:
-					UnaryExpressionBuilder(WfUnaryExpression* _node) : node(_node) {}
-					UnaryExpressionBuilder& op(WfUnaryOperator value);
-					UnaryExpressionBuilder& operand(const vl::Ptr<WfExpression>& value);
+					MakeUnaryExpression& op(WfUnaryOperator value);
+					MakeUnaryExpression& operand(const vl::Ptr<WfExpression>& value);
 				};
 
-				class VariableDeclarationBuilder
+				class MakeVariableDeclaration : public vl::glr::ParsingAstBuilder<WfVariableDeclaration>
 				{
-				private:
-					WfVariableDeclaration* node;
 				public:
-					VariableDeclarationBuilder(WfVariableDeclaration* _node) : node(_node) {}
-					VariableDeclarationBuilder& expression(const vl::Ptr<WfExpression>& value);
-					VariableDeclarationBuilder& type(const vl::Ptr<WfType>& value);
+					MakeVariableDeclaration& expression(const vl::Ptr<WfExpression>& value);
+					MakeVariableDeclaration& type(const vl::Ptr<WfType>& value);
+					MakeVariableDeclaration& attributes(const vl::Ptr<WfAttribute>& value);
+					MakeVariableDeclaration& name(const vl::WString& value);
 				};
 
-				class VariableStatementBuilder
+				class MakeVariableStatement : public vl::glr::ParsingAstBuilder<WfVariableStatement>
 				{
-				private:
-					WfVariableStatement* node;
 				public:
-					VariableStatementBuilder(WfVariableStatement* _node) : node(_node) {}
-					VariableStatementBuilder& variable(const vl::Ptr<WfVariableDeclaration>& value);
+					MakeVariableStatement& variable(const vl::Ptr<WfVariableDeclaration>& value);
 				};
 
-				class VirtualCfeDeclarationBuilder
+				class MakeVirtualCfeDeclaration : public vl::glr::ParsingAstBuilder<WfVirtualCfeDeclaration>
 				{
-				private:
-					WfVirtualCfeDeclaration* node;
 				public:
-					VirtualCfeDeclarationBuilder(WfVirtualCfeDeclaration* _node) : node(_node) {}
-					VirtualCfeDeclarationBuilder& expandedDeclarations(const vl::Ptr<WfDeclaration>& value);
+					MakeVirtualCfeDeclaration& expandedDeclarations(const vl::Ptr<WfDeclaration>& value);
+					MakeVirtualCfeDeclaration& attributes(const vl::Ptr<WfAttribute>& value);
+					MakeVirtualCfeDeclaration& name(const vl::WString& value);
 				};
 
-				class VirtualCfeExpressionBuilder
+				class MakeVirtualCfeExpression : public vl::glr::ParsingAstBuilder<WfVirtualCfeExpression>
 				{
-				private:
-					WfVirtualCfeExpression* node;
 				public:
-					VirtualCfeExpressionBuilder(WfVirtualCfeExpression* _node) : node(_node) {}
-					VirtualCfeExpressionBuilder& expandedExpression(const vl::Ptr<WfExpression>& value);
+					MakeVirtualCfeExpression& expandedExpression(const vl::Ptr<WfExpression>& value);
 				};
 
-				class VirtualCseDeclarationBuilder
+				class MakeVirtualCseDeclaration : public vl::glr::ParsingAstBuilder<WfVirtualCseDeclaration>
 				{
-				private:
-					WfVirtualCseDeclaration* node;
 				public:
-					VirtualCseDeclarationBuilder(WfVirtualCseDeclaration* _node) : node(_node) {}
-					VirtualCseDeclarationBuilder& expandedDeclarations(const vl::Ptr<WfDeclaration>& value);
+					MakeVirtualCseDeclaration& expandedDeclarations(const vl::Ptr<WfDeclaration>& value);
+					MakeVirtualCseDeclaration& attributes(const vl::Ptr<WfAttribute>& value);
+					MakeVirtualCseDeclaration& name(const vl::WString& value);
 				};
 
-				class VirtualCseExpressionBuilder
+				class MakeVirtualCseExpression : public vl::glr::ParsingAstBuilder<WfVirtualCseExpression>
 				{
-				private:
-					WfVirtualCseExpression* node;
 				public:
-					VirtualCseExpressionBuilder(WfVirtualCseExpression* _node) : node(_node) {}
-					VirtualCseExpressionBuilder& expandedExpression(const vl::Ptr<WfExpression>& value);
+					MakeVirtualCseExpression& expandedExpression(const vl::Ptr<WfExpression>& value);
 				};
 
-				class VirtualCseStatementBuilder
+				class MakeVirtualCseStatement : public vl::glr::ParsingAstBuilder<WfVirtualCseStatement>
 				{
-				private:
-					WfVirtualCseStatement* node;
 				public:
-					VirtualCseStatementBuilder(WfVirtualCseStatement* _node) : node(_node) {}
-					VirtualCseStatementBuilder& expandedStatement(const vl::Ptr<WfStatement>& value);
+					MakeVirtualCseStatement& expandedStatement(const vl::Ptr<WfStatement>& value);
 				};
 
-				class WhileStatementBuilder
+				class MakeWhileStatement : public vl::glr::ParsingAstBuilder<WfWhileStatement>
 				{
-				private:
-					WfWhileStatement* node;
 				public:
-					WhileStatementBuilder(WfWhileStatement* _node) : node(_node) {}
-					WhileStatementBuilder& condition(const vl::Ptr<WfExpression>& value);
-					WhileStatementBuilder& statement(const vl::Ptr<WfStatement>& value);
+					MakeWhileStatement& condition(const vl::Ptr<WfExpression>& value);
+					MakeWhileStatement& statement(const vl::Ptr<WfStatement>& value);
 				};
 
-				using MakeAttachEventExpression = vl::glr::ParsingAstBuilder<WfAttachEventExpression, AttachEventExpressionBuilder>;
-				using MakeAttribute = vl::glr::ParsingAstBuilder<WfAttribute, AttributeBuilder>;
-				using MakeAutoPropertyDeclaration = vl::glr::ParsingAstBuilder<WfAutoPropertyDeclaration, AutoPropertyDeclarationBuilder, VirtualCfeDeclarationBuilder, DeclarationBuilder>;
-				using MakeBaseConstructorCall = vl::glr::ParsingAstBuilder<WfBaseConstructorCall, BaseConstructorCallBuilder>;
-				using MakeBinaryExpression = vl::glr::ParsingAstBuilder<WfBinaryExpression, BinaryExpressionBuilder>;
-				using MakeBindExpression = vl::glr::ParsingAstBuilder<WfBindExpression, BindExpressionBuilder, VirtualCseExpressionBuilder>;
-				using MakeBlockStatement = vl::glr::ParsingAstBuilder<WfBlockStatement, BlockStatementBuilder>;
-				using MakeBreakStatement = vl::glr::ParsingAstBuilder<WfBreakStatement>;
-				using MakeCallExpression = vl::glr::ParsingAstBuilder<WfCallExpression, CallExpressionBuilder>;
-				using MakeCastResultInterfaceDeclaration = vl::glr::ParsingAstBuilder<WfCastResultInterfaceDeclaration, CastResultInterfaceDeclarationBuilder, VirtualCfeDeclarationBuilder, DeclarationBuilder>;
-				using MakeChildExpression = vl::glr::ParsingAstBuilder<WfChildExpression, ChildExpressionBuilder>;
-				using MakeChildType = vl::glr::ParsingAstBuilder<WfChildType, ChildTypeBuilder>;
-				using MakeClassDeclaration = vl::glr::ParsingAstBuilder<WfClassDeclaration, ClassDeclarationBuilder, DeclarationBuilder>;
-				using MakeCoOperatorExpression = vl::glr::ParsingAstBuilder<WfCoOperatorExpression, CoOperatorExpressionBuilder, VirtualCseExpressionBuilder>;
-				using MakeCoOperatorStatement = vl::glr::ParsingAstBuilder<WfCoOperatorStatement, CoOperatorStatementBuilder>;
-				using MakeCoPauseStatement = vl::glr::ParsingAstBuilder<WfCoPauseStatement, CoPauseStatementBuilder>;
-				using MakeCoProviderStatement = vl::glr::ParsingAstBuilder<WfCoProviderStatement, CoProviderStatementBuilder, VirtualCseStatementBuilder>;
-				using MakeConstructorArgument = vl::glr::ParsingAstBuilder<WfConstructorArgument, ConstructorArgumentBuilder>;
-				using MakeConstructorDeclaration = vl::glr::ParsingAstBuilder<WfConstructorDeclaration, ConstructorDeclarationBuilder, DeclarationBuilder>;
-				using MakeConstructorExpression = vl::glr::ParsingAstBuilder<WfConstructorExpression, ConstructorExpressionBuilder>;
-				using MakeContinueStatement = vl::glr::ParsingAstBuilder<WfContinueStatement>;
-				using MakeDeleteStatement = vl::glr::ParsingAstBuilder<WfDeleteStatement, DeleteStatementBuilder>;
-				using MakeDestructorDeclaration = vl::glr::ParsingAstBuilder<WfDestructorDeclaration, DestructorDeclarationBuilder, DeclarationBuilder>;
-				using MakeDetachEventExpression = vl::glr::ParsingAstBuilder<WfDetachEventExpression, DetachEventExpressionBuilder>;
-				using MakeEnumDeclaration = vl::glr::ParsingAstBuilder<WfEnumDeclaration, EnumDeclarationBuilder, DeclarationBuilder>;
-				using MakeEnumItem = vl::glr::ParsingAstBuilder<WfEnumItem, EnumItemBuilder>;
-				using MakeEnumItemIntersection = vl::glr::ParsingAstBuilder<WfEnumItemIntersection, EnumItemIntersectionBuilder>;
-				using MakeEnumerableType = vl::glr::ParsingAstBuilder<WfEnumerableType, EnumerableTypeBuilder>;
-				using MakeEventDeclaration = vl::glr::ParsingAstBuilder<WfEventDeclaration, EventDeclarationBuilder, DeclarationBuilder>;
-				using MakeExpectedTypeCastExpression = vl::glr::ParsingAstBuilder<WfExpectedTypeCastExpression, ExpectedTypeCastExpressionBuilder, VirtualCseExpressionBuilder>;
-				using MakeExpressionStatement = vl::glr::ParsingAstBuilder<WfExpressionStatement, ExpressionStatementBuilder>;
-				using MakeFloatingExpression = vl::glr::ParsingAstBuilder<WfFloatingExpression, FloatingExpressionBuilder>;
-				using MakeForEachStatement = vl::glr::ParsingAstBuilder<WfForEachStatement, ForEachStatementBuilder, VirtualCseStatementBuilder>;
-				using MakeFormatExpression = vl::glr::ParsingAstBuilder<WfFormatExpression, FormatExpressionBuilder, VirtualCfeExpressionBuilder>;
-				using MakeFunctionArgument = vl::glr::ParsingAstBuilder<WfFunctionArgument, FunctionArgumentBuilder>;
-				using MakeFunctionDeclaration = vl::glr::ParsingAstBuilder<WfFunctionDeclaration, FunctionDeclarationBuilder, DeclarationBuilder>;
-				using MakeFunctionExpression = vl::glr::ParsingAstBuilder<WfFunctionExpression, FunctionExpressionBuilder>;
-				using MakeFunctionType = vl::glr::ParsingAstBuilder<WfFunctionType, FunctionTypeBuilder>;
-				using MakeGotoStatement = vl::glr::ParsingAstBuilder<WfGotoStatement, GotoStatementBuilder>;
-				using MakeIfExpression = vl::glr::ParsingAstBuilder<WfIfExpression, IfExpressionBuilder>;
-				using MakeIfStatement = vl::glr::ParsingAstBuilder<WfIfStatement, IfStatementBuilder>;
-				using MakeInferExpression = vl::glr::ParsingAstBuilder<WfInferExpression, InferExpressionBuilder>;
-				using MakeIntegerExpression = vl::glr::ParsingAstBuilder<WfIntegerExpression, IntegerExpressionBuilder>;
-				using MakeLetExpression = vl::glr::ParsingAstBuilder<WfLetExpression, LetExpressionBuilder>;
-				using MakeLetVariable = vl::glr::ParsingAstBuilder<WfLetVariable, LetVariableBuilder>;
-				using MakeLiteralExpression = vl::glr::ParsingAstBuilder<WfLiteralExpression, LiteralExpressionBuilder>;
-				using MakeMapType = vl::glr::ParsingAstBuilder<WfMapType, MapTypeBuilder>;
-				using MakeMemberExpression = vl::glr::ParsingAstBuilder<WfMemberExpression, MemberExpressionBuilder>;
-				using MakeMixinCastExpression = vl::glr::ParsingAstBuilder<WfMixinCastExpression, MixinCastExpressionBuilder, VirtualCseExpressionBuilder>;
-				using MakeModule = vl::glr::ParsingAstBuilder<WfModule, ModuleBuilder>;
-				using MakeModuleUsingItem = vl::glr::ParsingAstBuilder<WfModuleUsingItem, ModuleUsingItemBuilder>;
-				using MakeModuleUsingNameFragment = vl::glr::ParsingAstBuilder<WfModuleUsingNameFragment, ModuleUsingNameFragmentBuilder>;
-				using MakeModuleUsingPath = vl::glr::ParsingAstBuilder<WfModuleUsingPath, ModuleUsingPathBuilder>;
-				using MakeModuleUsingWildCardFragment = vl::glr::ParsingAstBuilder<WfModuleUsingWildCardFragment>;
-				using MakeNamespaceDeclaration = vl::glr::ParsingAstBuilder<WfNamespaceDeclaration, NamespaceDeclarationBuilder, DeclarationBuilder>;
-				using MakeNewClassExpression = vl::glr::ParsingAstBuilder<WfNewClassExpression, NewClassExpressionBuilder>;
-				using MakeNewCoroutineExpression = vl::glr::ParsingAstBuilder<WfNewCoroutineExpression, NewCoroutineExpressionBuilder, VirtualCseExpressionBuilder>;
-				using MakeNewInterfaceExpression = vl::glr::ParsingAstBuilder<WfNewInterfaceExpression, NewInterfaceExpressionBuilder>;
-				using MakeNullableType = vl::glr::ParsingAstBuilder<WfNullableType, NullableTypeBuilder>;
-				using MakeObservableListType = vl::glr::ParsingAstBuilder<WfObservableListType, ObservableListTypeBuilder>;
-				using MakeObserveExpression = vl::glr::ParsingAstBuilder<WfObserveExpression, ObserveExpressionBuilder>;
-				using MakeOrderedLambdaExpression = vl::glr::ParsingAstBuilder<WfOrderedLambdaExpression, OrderedLambdaExpressionBuilder>;
-				using MakeOrderedNameExpression = vl::glr::ParsingAstBuilder<WfOrderedNameExpression, OrderedNameExpressionBuilder>;
-				using MakePredefinedType = vl::glr::ParsingAstBuilder<WfPredefinedType, PredefinedTypeBuilder>;
-				using MakePropertyDeclaration = vl::glr::ParsingAstBuilder<WfPropertyDeclaration, PropertyDeclarationBuilder, DeclarationBuilder>;
-				using MakeRaiseExceptionStatement = vl::glr::ParsingAstBuilder<WfRaiseExceptionStatement, RaiseExceptionStatementBuilder>;
-				using MakeRangeExpression = vl::glr::ParsingAstBuilder<WfRangeExpression, RangeExpressionBuilder>;
-				using MakeRawPointerType = vl::glr::ParsingAstBuilder<WfRawPointerType, RawPointerTypeBuilder>;
-				using MakeReferenceExpression = vl::glr::ParsingAstBuilder<WfReferenceExpression, ReferenceExpressionBuilder>;
-				using MakeReferenceType = vl::glr::ParsingAstBuilder<WfReferenceType, ReferenceTypeBuilder>;
-				using MakeReturnStatement = vl::glr::ParsingAstBuilder<WfReturnStatement, ReturnStatementBuilder>;
-				using MakeSetTestingExpression = vl::glr::ParsingAstBuilder<WfSetTestingExpression, SetTestingExpressionBuilder>;
-				using MakeSharedPointerType = vl::glr::ParsingAstBuilder<WfSharedPointerType, SharedPointerTypeBuilder>;
-				using MakeStateDeclaration = vl::glr::ParsingAstBuilder<WfStateDeclaration, StateDeclarationBuilder>;
-				using MakeStateInput = vl::glr::ParsingAstBuilder<WfStateInput, StateInputBuilder>;
-				using MakeStateInvokeStatement = vl::glr::ParsingAstBuilder<WfStateInvokeStatement, StateInvokeStatementBuilder>;
-				using MakeStateMachineDeclaration = vl::glr::ParsingAstBuilder<WfStateMachineDeclaration, StateMachineDeclarationBuilder, VirtualCseDeclarationBuilder, DeclarationBuilder>;
-				using MakeStateSwitchArgument = vl::glr::ParsingAstBuilder<WfStateSwitchArgument, StateSwitchArgumentBuilder>;
-				using MakeStateSwitchCase = vl::glr::ParsingAstBuilder<WfStateSwitchCase, StateSwitchCaseBuilder>;
-				using MakeStateSwitchStatement = vl::glr::ParsingAstBuilder<WfStateSwitchStatement, StateSwitchStatementBuilder>;
-				using MakeStringExpression = vl::glr::ParsingAstBuilder<WfStringExpression, StringExpressionBuilder>;
-				using MakeStructDeclaration = vl::glr::ParsingAstBuilder<WfStructDeclaration, StructDeclarationBuilder, DeclarationBuilder>;
-				using MakeStructMember = vl::glr::ParsingAstBuilder<WfStructMember, StructMemberBuilder>;
-				using MakeSwitchCase = vl::glr::ParsingAstBuilder<WfSwitchCase, SwitchCaseBuilder>;
-				using MakeSwitchStatement = vl::glr::ParsingAstBuilder<WfSwitchStatement, SwitchStatementBuilder, VirtualCseStatementBuilder>;
-				using MakeThisExpression = vl::glr::ParsingAstBuilder<WfThisExpression>;
-				using MakeTopQualifiedExpression = vl::glr::ParsingAstBuilder<WfTopQualifiedExpression, TopQualifiedExpressionBuilder>;
-				using MakeTopQualifiedType = vl::glr::ParsingAstBuilder<WfTopQualifiedType, TopQualifiedTypeBuilder>;
-				using MakeTryStatement = vl::glr::ParsingAstBuilder<WfTryStatement, TryStatementBuilder>;
-				using MakeTypeCastingExpression = vl::glr::ParsingAstBuilder<WfTypeCastingExpression, TypeCastingExpressionBuilder>;
-				using MakeTypeOfExpressionExpression = vl::glr::ParsingAstBuilder<WfTypeOfExpressionExpression, TypeOfExpressionExpressionBuilder>;
-				using MakeTypeOfTypeExpression = vl::glr::ParsingAstBuilder<WfTypeOfTypeExpression, TypeOfTypeExpressionBuilder>;
-				using MakeTypeTestingExpression = vl::glr::ParsingAstBuilder<WfTypeTestingExpression, TypeTestingExpressionBuilder>;
-				using MakeUnaryExpression = vl::glr::ParsingAstBuilder<WfUnaryExpression, UnaryExpressionBuilder>;
-				using MakeVariableDeclaration = vl::glr::ParsingAstBuilder<WfVariableDeclaration, VariableDeclarationBuilder, DeclarationBuilder>;
-				using MakeVariableStatement = vl::glr::ParsingAstBuilder<WfVariableStatement, VariableStatementBuilder>;
-				using MakeWhileStatement = vl::glr::ParsingAstBuilder<WfWhileStatement, WhileStatementBuilder>;
 			}
 		}
 	}

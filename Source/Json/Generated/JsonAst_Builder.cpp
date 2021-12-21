@@ -16,66 +16,66 @@ namespace vl
 			{
 
 /***********************************************************************
-ArrayBuilder
+MakeArray
 ***********************************************************************/
 
-				ArrayBuilder& ArrayBuilder::items(const vl::Ptr<JsonNode>& value)
+				MakeArray& MakeArray::items(const vl::Ptr<JsonNode>& value)
 				{
 					node->items.Add(value);
 					return *this;
 				}
 
 /***********************************************************************
-LiteralBuilder
+MakeLiteral
 ***********************************************************************/
 
-				LiteralBuilder& LiteralBuilder::value(JsonLiteralValue value)
+				MakeLiteral& MakeLiteral::value(JsonLiteralValue value)
 				{
 					node->value = value;
 					return *this;
 				}
 
 /***********************************************************************
-NumberBuilder
+MakeNumber
 ***********************************************************************/
 
-				NumberBuilder& NumberBuilder::content(const vl::WString& value)
+				MakeNumber& MakeNumber::content(const vl::WString& value)
 				{
 					node->content.value = value;
 					return *this;
 				}
 
 /***********************************************************************
-ObjectBuilder
+MakeObject
 ***********************************************************************/
 
-				ObjectBuilder& ObjectBuilder::fields(const vl::Ptr<JsonObjectField>& value)
+				MakeObject& MakeObject::fields(const vl::Ptr<JsonObjectField>& value)
 				{
 					node->fields.Add(value);
 					return *this;
 				}
 
 /***********************************************************************
-ObjectFieldBuilder
+MakeObjectField
 ***********************************************************************/
 
-				ObjectFieldBuilder& ObjectFieldBuilder::name(const vl::WString& value)
+				MakeObjectField& MakeObjectField::name(const vl::WString& value)
 				{
 					node->name.value = value;
 					return *this;
 				}
 
-				ObjectFieldBuilder& ObjectFieldBuilder::value(const vl::Ptr<JsonNode>& value)
+				MakeObjectField& MakeObjectField::value(const vl::Ptr<JsonNode>& value)
 				{
 					node->value = value;
 					return *this;
 				}
 
 /***********************************************************************
-StringBuilder
+MakeString
 ***********************************************************************/
 
-				StringBuilder& StringBuilder::content(const vl::WString& value)
+				MakeString& MakeString::content(const vl::WString& value)
 				{
 					node->content.value = value;
 					return *this;

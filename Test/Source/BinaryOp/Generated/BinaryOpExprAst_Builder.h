@@ -13,28 +13,20 @@ namespace binaryop
 {
 	namespace builder
 	{
-		class BinaryExprBuilder
+		class MakeBinaryExpr : public vl::glr::ParsingAstBuilder<BinaryExpr>
 		{
-		private:
-			BinaryExpr* node;
 		public:
-			BinaryExprBuilder(BinaryExpr* _node) : node(_node) {}
-			BinaryExprBuilder& left(const vl::Ptr<Expr>& value);
-			BinaryExprBuilder& op(BinaryOp value);
-			BinaryExprBuilder& right(const vl::Ptr<Expr>& value);
+			MakeBinaryExpr& left(const vl::Ptr<Expr>& value);
+			MakeBinaryExpr& op(BinaryOp value);
+			MakeBinaryExpr& right(const vl::Ptr<Expr>& value);
 		};
 
-		class RefExprBuilder
+		class MakeRefExpr : public vl::glr::ParsingAstBuilder<RefExpr>
 		{
-		private:
-			RefExpr* node;
 		public:
-			RefExprBuilder(RefExpr* _node) : node(_node) {}
-			RefExprBuilder& name(const vl::WString& value);
+			MakeRefExpr& name(const vl::WString& value);
 		};
 
-		using MakeBinaryExpr = vl::glr::ParsingAstBuilder<BinaryExpr, BinaryExprBuilder>;
-		using MakeRefExpr = vl::glr::ParsingAstBuilder<RefExpr, RefExprBuilder>;
 	}
 }
 #endif

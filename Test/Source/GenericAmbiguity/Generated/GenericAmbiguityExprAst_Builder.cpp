@@ -12,110 +12,110 @@ namespace genericambiguity
 	{
 
 /***********************************************************************
-BinaryExprBuilder
+MakeBinaryExpr
 ***********************************************************************/
 
-		BinaryExprBuilder& BinaryExprBuilder::left(const vl::Ptr<Expr>& value)
+		MakeBinaryExpr& MakeBinaryExpr::left(const vl::Ptr<Expr>& value)
 		{
 			node->left = value;
 			return *this;
 		}
 
-		BinaryExprBuilder& BinaryExprBuilder::op(BinaryOp value)
+		MakeBinaryExpr& MakeBinaryExpr::op(BinaryOp value)
 		{
 			node->op = value;
 			return *this;
 		}
 
-		BinaryExprBuilder& BinaryExprBuilder::right(const vl::Ptr<Expr>& value)
+		MakeBinaryExpr& MakeBinaryExpr::right(const vl::Ptr<Expr>& value)
 		{
 			node->right = value;
 			return *this;
 		}
 
 /***********************************************************************
-CallExprBuilder
+MakeCallExpr
 ***********************************************************************/
 
-		CallExprBuilder& CallExprBuilder::args(const vl::Ptr<Expr>& value)
+		MakeCallExpr& MakeCallExpr::args(const vl::Ptr<Expr>& value)
 		{
 			node->args.Add(value);
 			return *this;
 		}
 
-		CallExprBuilder& CallExprBuilder::func(const vl::Ptr<Expr>& value)
+		MakeCallExpr& MakeCallExpr::func(const vl::Ptr<Expr>& value)
 		{
 			node->func = value;
 			return *this;
 		}
 
 /***********************************************************************
-DecrementExprBuilder
+MakeDecrementExpr
 ***********************************************************************/
 
-		DecrementExprBuilder& DecrementExprBuilder::expr(const vl::Ptr<Expr>& value)
+		MakeDecrementExpr& MakeDecrementExpr::expr(const vl::Ptr<Expr>& value)
 		{
 			node->expr = value;
 			return *this;
 		}
 
 /***********************************************************************
-ExprToResolveBuilder
+MakeExprToResolve
 ***********************************************************************/
 
-		ExprToResolveBuilder& ExprToResolveBuilder::candidates(const vl::Ptr<Expr>& value)
+		MakeExprToResolve& MakeExprToResolve::candidates(const vl::Ptr<Expr>& value)
 		{
 			node->candidates.Add(value);
 			return *this;
 		}
 
 /***********************************************************************
-GenericExprBuilder
+MakeGenericExpr
 ***********************************************************************/
 
-		GenericExprBuilder& GenericExprBuilder::args(const vl::Ptr<Expr>& value)
+		MakeGenericExpr& MakeGenericExpr::args(const vl::Ptr<Expr>& value)
 		{
 			node->args.Add(value);
 			return *this;
 		}
 
-		GenericExprBuilder& GenericExprBuilder::name(const vl::WString& value)
+		MakeGenericExpr& MakeGenericExpr::name(const vl::WString& value)
 		{
 			node->name.value = value;
 			return *this;
 		}
 
 /***********************************************************************
-ModuleBuilder
+MakeModule
 ***********************************************************************/
 
-		ModuleBuilder& ModuleBuilder::expr(const vl::Ptr<Expr>& value)
+		MakeModule& MakeModule::expr(const vl::Ptr<Expr>& value)
 		{
 			node->expr = value;
 			return *this;
 		}
 
 /***********************************************************************
-PostfixExprBuilder
+MakePostfixExpr
 ***********************************************************************/
 
-		PostfixExprBuilder& PostfixExprBuilder::expr(const vl::Ptr<Expr>& value)
+		MakePostfixExpr& MakePostfixExpr::expr(const vl::Ptr<Expr>& value)
 		{
 			node->expr = value;
 			return *this;
 		}
 
-		PostfixExprBuilder& PostfixExprBuilder::op(PostfixOp value)
+		MakePostfixExpr& MakePostfixExpr::op(PostfixOp value)
 		{
 			node->op = value;
 			return *this;
 		}
 
 /***********************************************************************
-RefExprBuilder
+MakeRefExpr
 ***********************************************************************/
 
-		RefExprBuilder& RefExprBuilder::name(const vl::WString& value)
+		MakeRefExpr& MakeRefExpr::name(const vl::WString& value)
 		{
 			node->name.value = value;
 			return *this;

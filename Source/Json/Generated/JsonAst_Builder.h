@@ -17,67 +17,43 @@ namespace vl
 		{
 			namespace builder
 			{
-				class ArrayBuilder
+				class MakeArray : public vl::glr::ParsingAstBuilder<JsonArray>
 				{
-				private:
-					JsonArray* node;
 				public:
-					ArrayBuilder(JsonArray* _node) : node(_node) {}
-					ArrayBuilder& items(const vl::Ptr<JsonNode>& value);
+					MakeArray& items(const vl::Ptr<JsonNode>& value);
 				};
 
-				class LiteralBuilder
+				class MakeLiteral : public vl::glr::ParsingAstBuilder<JsonLiteral>
 				{
-				private:
-					JsonLiteral* node;
 				public:
-					LiteralBuilder(JsonLiteral* _node) : node(_node) {}
-					LiteralBuilder& value(JsonLiteralValue value);
+					MakeLiteral& value(JsonLiteralValue value);
 				};
 
-				class NumberBuilder
+				class MakeNumber : public vl::glr::ParsingAstBuilder<JsonNumber>
 				{
-				private:
-					JsonNumber* node;
 				public:
-					NumberBuilder(JsonNumber* _node) : node(_node) {}
-					NumberBuilder& content(const vl::WString& value);
+					MakeNumber& content(const vl::WString& value);
 				};
 
-				class ObjectBuilder
+				class MakeObject : public vl::glr::ParsingAstBuilder<JsonObject>
 				{
-				private:
-					JsonObject* node;
 				public:
-					ObjectBuilder(JsonObject* _node) : node(_node) {}
-					ObjectBuilder& fields(const vl::Ptr<JsonObjectField>& value);
+					MakeObject& fields(const vl::Ptr<JsonObjectField>& value);
 				};
 
-				class ObjectFieldBuilder
+				class MakeObjectField : public vl::glr::ParsingAstBuilder<JsonObjectField>
 				{
-				private:
-					JsonObjectField* node;
 				public:
-					ObjectFieldBuilder(JsonObjectField* _node) : node(_node) {}
-					ObjectFieldBuilder& name(const vl::WString& value);
-					ObjectFieldBuilder& value(const vl::Ptr<JsonNode>& value);
+					MakeObjectField& name(const vl::WString& value);
+					MakeObjectField& value(const vl::Ptr<JsonNode>& value);
 				};
 
-				class StringBuilder
+				class MakeString : public vl::glr::ParsingAstBuilder<JsonString>
 				{
-				private:
-					JsonString* node;
 				public:
-					StringBuilder(JsonString* _node) : node(_node) {}
-					StringBuilder& content(const vl::WString& value);
+					MakeString& content(const vl::WString& value);
 				};
 
-				using MakeArray = vl::glr::ParsingAstBuilder<JsonArray, ArrayBuilder>;
-				using MakeLiteral = vl::glr::ParsingAstBuilder<JsonLiteral, LiteralBuilder>;
-				using MakeNumber = vl::glr::ParsingAstBuilder<JsonNumber, NumberBuilder>;
-				using MakeObject = vl::glr::ParsingAstBuilder<JsonObject, ObjectBuilder>;
-				using MakeObjectField = vl::glr::ParsingAstBuilder<JsonObjectField, ObjectFieldBuilder>;
-				using MakeString = vl::glr::ParsingAstBuilder<JsonString, StringBuilder>;
 			}
 		}
 	}

@@ -13,38 +13,25 @@ namespace ifelsepriority
 {
 	namespace builder
 	{
-		class BlockStatBuilder
+		class MakeBlockStat : public vl::glr::ParsingAstBuilder<BlockStat>
 		{
-		private:
-			BlockStat* node;
 		public:
-			BlockStatBuilder(BlockStat* _node) : node(_node) {}
-			BlockStatBuilder& stats(const vl::Ptr<Stat>& value);
+			MakeBlockStat& stats(const vl::Ptr<Stat>& value);
 		};
 
-		class IfStatBuilder
+		class MakeIfStat : public vl::glr::ParsingAstBuilder<IfStat>
 		{
-		private:
-			IfStat* node;
 		public:
-			IfStatBuilder(IfStat* _node) : node(_node) {}
-			IfStatBuilder& elseBranch(const vl::Ptr<Stat>& value);
-			IfStatBuilder& thenBranch(const vl::Ptr<Stat>& value);
+			MakeIfStat& elseBranch(const vl::Ptr<Stat>& value);
+			MakeIfStat& thenBranch(const vl::Ptr<Stat>& value);
 		};
 
-		class ModuleBuilder
+		class MakeModule : public vl::glr::ParsingAstBuilder<Module>
 		{
-		private:
-			Module* node;
 		public:
-			ModuleBuilder(Module* _node) : node(_node) {}
-			ModuleBuilder& stat(const vl::Ptr<Stat>& value);
+			MakeModule& stat(const vl::Ptr<Stat>& value);
 		};
 
-		using MakeBlockStat = vl::glr::ParsingAstBuilder<BlockStat, BlockStatBuilder>;
-		using MakeDoStat = vl::glr::ParsingAstBuilder<DoStat>;
-		using MakeIfStat = vl::glr::ParsingAstBuilder<IfStat, IfStatBuilder>;
-		using MakeModule = vl::glr::ParsingAstBuilder<Module, ModuleBuilder>;
 	}
 }
 #endif

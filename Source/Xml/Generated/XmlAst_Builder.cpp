@@ -16,106 +16,106 @@ namespace vl
 			{
 
 /***********************************************************************
-AttributeBuilder
+MakeAttribute
 ***********************************************************************/
 
-				AttributeBuilder& AttributeBuilder::name(const vl::WString& value)
+				MakeAttribute& MakeAttribute::name(const vl::WString& value)
 				{
 					node->name.value = value;
 					return *this;
 				}
 
-				AttributeBuilder& AttributeBuilder::value(const vl::WString& value)
+				MakeAttribute& MakeAttribute::value(const vl::WString& value)
 				{
 					node->value.value = value;
 					return *this;
 				}
 
 /***********************************************************************
-CDataBuilder
+MakeCData
 ***********************************************************************/
 
-				CDataBuilder& CDataBuilder::content(const vl::WString& value)
+				MakeCData& MakeCData::content(const vl::WString& value)
 				{
 					node->content.value = value;
 					return *this;
 				}
 
 /***********************************************************************
-CommentBuilder
+MakeComment
 ***********************************************************************/
 
-				CommentBuilder& CommentBuilder::content(const vl::WString& value)
+				MakeComment& MakeComment::content(const vl::WString& value)
 				{
 					node->content.value = value;
 					return *this;
 				}
 
 /***********************************************************************
-DocumentBuilder
+MakeDocument
 ***********************************************************************/
 
-				DocumentBuilder& DocumentBuilder::prologs(const vl::Ptr<XmlNode>& value)
+				MakeDocument& MakeDocument::prologs(const vl::Ptr<XmlNode>& value)
 				{
 					node->prologs.Add(value);
 					return *this;
 				}
 
-				DocumentBuilder& DocumentBuilder::rootElement(const vl::Ptr<XmlElement>& value)
+				MakeDocument& MakeDocument::rootElement(const vl::Ptr<XmlElement>& value)
 				{
 					node->rootElement = value;
 					return *this;
 				}
 
 /***********************************************************************
-ElementBuilder
+MakeElement
 ***********************************************************************/
 
-				ElementBuilder& ElementBuilder::attributes(const vl::Ptr<XmlAttribute>& value)
+				MakeElement& MakeElement::attributes(const vl::Ptr<XmlAttribute>& value)
 				{
 					node->attributes.Add(value);
 					return *this;
 				}
 
-				ElementBuilder& ElementBuilder::closingName(const vl::WString& value)
+				MakeElement& MakeElement::closingName(const vl::WString& value)
 				{
 					node->closingName.value = value;
 					return *this;
 				}
 
-				ElementBuilder& ElementBuilder::name(const vl::WString& value)
+				MakeElement& MakeElement::name(const vl::WString& value)
 				{
 					node->name.value = value;
 					return *this;
 				}
 
-				ElementBuilder& ElementBuilder::subNodes(const vl::Ptr<XmlNode>& value)
+				MakeElement& MakeElement::subNodes(const vl::Ptr<XmlNode>& value)
 				{
 					node->subNodes.Add(value);
 					return *this;
 				}
 
 /***********************************************************************
-InstructionBuilder
+MakeInstruction
 ***********************************************************************/
 
-				InstructionBuilder& InstructionBuilder::attributes(const vl::Ptr<XmlAttribute>& value)
+				MakeInstruction& MakeInstruction::attributes(const vl::Ptr<XmlAttribute>& value)
 				{
 					node->attributes.Add(value);
 					return *this;
 				}
 
-				InstructionBuilder& InstructionBuilder::name(const vl::WString& value)
+				MakeInstruction& MakeInstruction::name(const vl::WString& value)
 				{
 					node->name.value = value;
 					return *this;
 				}
 
 /***********************************************************************
-TextBuilder
+MakeText
 ***********************************************************************/
 
-				TextBuilder& TextBuilder::content(const vl::WString& value)
+				MakeText& MakeText::content(const vl::WString& value)
 				{
 					node->content.value = value;
 					return *this;

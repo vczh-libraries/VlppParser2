@@ -12,36 +12,36 @@ namespace ifelsepriority
 	{
 
 /***********************************************************************
-BlockStatBuilder
+MakeBlockStat
 ***********************************************************************/
 
-		BlockStatBuilder& BlockStatBuilder::stats(const vl::Ptr<Stat>& value)
+		MakeBlockStat& MakeBlockStat::stats(const vl::Ptr<Stat>& value)
 		{
 			node->stats.Add(value);
 			return *this;
 		}
 
 /***********************************************************************
-IfStatBuilder
+MakeIfStat
 ***********************************************************************/
 
-		IfStatBuilder& IfStatBuilder::elseBranch(const vl::Ptr<Stat>& value)
+		MakeIfStat& MakeIfStat::elseBranch(const vl::Ptr<Stat>& value)
 		{
 			node->elseBranch = value;
 			return *this;
 		}
 
-		IfStatBuilder& IfStatBuilder::thenBranch(const vl::Ptr<Stat>& value)
+		MakeIfStat& MakeIfStat::thenBranch(const vl::Ptr<Stat>& value)
 		{
 			node->thenBranch = value;
 			return *this;
 		}
 
 /***********************************************************************
-ModuleBuilder
+MakeModule
 ***********************************************************************/
 
-		ModuleBuilder& ModuleBuilder::stat(const vl::Ptr<Stat>& value)
+		MakeModule& MakeModule::stat(const vl::Ptr<Stat>& value)
 		{
 			node->stat = value;
 			return *this;

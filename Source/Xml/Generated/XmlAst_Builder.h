@@ -17,82 +17,54 @@ namespace vl
 		{
 			namespace builder
 			{
-				class AttributeBuilder
+				class MakeAttribute : public vl::glr::ParsingAstBuilder<XmlAttribute>
 				{
-				private:
-					XmlAttribute* node;
 				public:
-					AttributeBuilder(XmlAttribute* _node) : node(_node) {}
-					AttributeBuilder& name(const vl::WString& value);
-					AttributeBuilder& value(const vl::WString& value);
+					MakeAttribute& name(const vl::WString& value);
+					MakeAttribute& value(const vl::WString& value);
 				};
 
-				class CDataBuilder
+				class MakeCData : public vl::glr::ParsingAstBuilder<XmlCData>
 				{
-				private:
-					XmlCData* node;
 				public:
-					CDataBuilder(XmlCData* _node) : node(_node) {}
-					CDataBuilder& content(const vl::WString& value);
+					MakeCData& content(const vl::WString& value);
 				};
 
-				class CommentBuilder
+				class MakeComment : public vl::glr::ParsingAstBuilder<XmlComment>
 				{
-				private:
-					XmlComment* node;
 				public:
-					CommentBuilder(XmlComment* _node) : node(_node) {}
-					CommentBuilder& content(const vl::WString& value);
+					MakeComment& content(const vl::WString& value);
 				};
 
-				class DocumentBuilder
+				class MakeDocument : public vl::glr::ParsingAstBuilder<XmlDocument>
 				{
-				private:
-					XmlDocument* node;
 				public:
-					DocumentBuilder(XmlDocument* _node) : node(_node) {}
-					DocumentBuilder& prologs(const vl::Ptr<XmlNode>& value);
-					DocumentBuilder& rootElement(const vl::Ptr<XmlElement>& value);
+					MakeDocument& prologs(const vl::Ptr<XmlNode>& value);
+					MakeDocument& rootElement(const vl::Ptr<XmlElement>& value);
 				};
 
-				class ElementBuilder
+				class MakeElement : public vl::glr::ParsingAstBuilder<XmlElement>
 				{
-				private:
-					XmlElement* node;
 				public:
-					ElementBuilder(XmlElement* _node) : node(_node) {}
-					ElementBuilder& attributes(const vl::Ptr<XmlAttribute>& value);
-					ElementBuilder& closingName(const vl::WString& value);
-					ElementBuilder& name(const vl::WString& value);
-					ElementBuilder& subNodes(const vl::Ptr<XmlNode>& value);
+					MakeElement& attributes(const vl::Ptr<XmlAttribute>& value);
+					MakeElement& closingName(const vl::WString& value);
+					MakeElement& name(const vl::WString& value);
+					MakeElement& subNodes(const vl::Ptr<XmlNode>& value);
 				};
 
-				class InstructionBuilder
+				class MakeInstruction : public vl::glr::ParsingAstBuilder<XmlInstruction>
 				{
-				private:
-					XmlInstruction* node;
 				public:
-					InstructionBuilder(XmlInstruction* _node) : node(_node) {}
-					InstructionBuilder& attributes(const vl::Ptr<XmlAttribute>& value);
-					InstructionBuilder& name(const vl::WString& value);
+					MakeInstruction& attributes(const vl::Ptr<XmlAttribute>& value);
+					MakeInstruction& name(const vl::WString& value);
 				};
 
-				class TextBuilder
+				class MakeText : public vl::glr::ParsingAstBuilder<XmlText>
 				{
-				private:
-					XmlText* node;
 				public:
-					TextBuilder(XmlText* _node) : node(_node) {}
-					TextBuilder& content(const vl::WString& value);
+					MakeText& content(const vl::WString& value);
 				};
 
-				using MakeAttribute = vl::glr::ParsingAstBuilder<XmlAttribute, AttributeBuilder>;
-				using MakeCData = vl::glr::ParsingAstBuilder<XmlCData, CDataBuilder>;
-				using MakeComment = vl::glr::ParsingAstBuilder<XmlComment, CommentBuilder>;
-				using MakeDocument = vl::glr::ParsingAstBuilder<XmlDocument, DocumentBuilder>;
-				using MakeElement = vl::glr::ParsingAstBuilder<XmlElement, ElementBuilder>;
-				using MakeInstruction = vl::glr::ParsingAstBuilder<XmlInstruction, InstructionBuilder>;
-				using MakeText = vl::glr::ParsingAstBuilder<XmlText, TextBuilder>;
 			}
 		}
 	}

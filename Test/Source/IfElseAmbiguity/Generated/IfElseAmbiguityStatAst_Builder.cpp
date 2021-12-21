@@ -12,56 +12,56 @@ namespace ifelseambiguity
 	{
 
 /***********************************************************************
-BlockStatBuilder
+MakeBlockStat
 ***********************************************************************/
 
-		BlockStatBuilder& BlockStatBuilder::stats(const vl::Ptr<Stat>& value)
+		MakeBlockStat& MakeBlockStat::stats(const vl::Ptr<Stat>& value)
 		{
 			node->stats.Add(value);
 			return *this;
 		}
 
 /***********************************************************************
-IfContentCandidateBuilder
+MakeIfContentCandidate
 ***********************************************************************/
 
-		IfContentCandidateBuilder& IfContentCandidateBuilder::elseBranch(const vl::Ptr<Stat>& value)
+		MakeIfContentCandidate& MakeIfContentCandidate::elseBranch(const vl::Ptr<Stat>& value)
 		{
 			node->elseBranch = value;
 			return *this;
 		}
 
-		IfContentCandidateBuilder& IfContentCandidateBuilder::thenBranch(const vl::Ptr<Stat>& value)
+		MakeIfContentCandidate& MakeIfContentCandidate::thenBranch(const vl::Ptr<Stat>& value)
 		{
 			node->thenBranch = value;
 			return *this;
 		}
 
 /***********************************************************************
-IfContentToResolveBuilder
+MakeIfContentToResolve
 ***********************************************************************/
 
-		IfContentToResolveBuilder& IfContentToResolveBuilder::candidates(const vl::Ptr<IfContent>& value)
+		MakeIfContentToResolve& MakeIfContentToResolve::candidates(const vl::Ptr<IfContent>& value)
 		{
 			node->candidates.Add(value);
 			return *this;
 		}
 
 /***********************************************************************
-IfStatBuilder
+MakeIfStat
 ***********************************************************************/
 
-		IfStatBuilder& IfStatBuilder::content(const vl::Ptr<IfContent>& value)
+		MakeIfStat& MakeIfStat::content(const vl::Ptr<IfContent>& value)
 		{
 			node->content = value;
 			return *this;
 		}
 
 /***********************************************************************
-ModuleBuilder
+MakeModule
 ***********************************************************************/
 
-		ModuleBuilder& ModuleBuilder::stat(const vl::Ptr<Stat>& value)
+		MakeModule& MakeModule::stat(const vl::Ptr<Stat>& value)
 		{
 			node->stat = value;
 			return *this;

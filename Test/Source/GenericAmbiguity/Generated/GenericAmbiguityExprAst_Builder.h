@@ -13,91 +13,59 @@ namespace genericambiguity
 {
 	namespace builder
 	{
-		class BinaryExprBuilder
+		class MakeBinaryExpr : public vl::glr::ParsingAstBuilder<BinaryExpr>
 		{
-		private:
-			BinaryExpr* node;
 		public:
-			BinaryExprBuilder(BinaryExpr* _node) : node(_node) {}
-			BinaryExprBuilder& left(const vl::Ptr<Expr>& value);
-			BinaryExprBuilder& op(BinaryOp value);
-			BinaryExprBuilder& right(const vl::Ptr<Expr>& value);
+			MakeBinaryExpr& left(const vl::Ptr<Expr>& value);
+			MakeBinaryExpr& op(BinaryOp value);
+			MakeBinaryExpr& right(const vl::Ptr<Expr>& value);
 		};
 
-		class CallExprBuilder
+		class MakeCallExpr : public vl::glr::ParsingAstBuilder<CallExpr>
 		{
-		private:
-			CallExpr* node;
 		public:
-			CallExprBuilder(CallExpr* _node) : node(_node) {}
-			CallExprBuilder& args(const vl::Ptr<Expr>& value);
-			CallExprBuilder& func(const vl::Ptr<Expr>& value);
+			MakeCallExpr& args(const vl::Ptr<Expr>& value);
+			MakeCallExpr& func(const vl::Ptr<Expr>& value);
 		};
 
-		class DecrementExprBuilder
+		class MakeDecrementExpr : public vl::glr::ParsingAstBuilder<DecrementExpr>
 		{
-		private:
-			DecrementExpr* node;
 		public:
-			DecrementExprBuilder(DecrementExpr* _node) : node(_node) {}
-			DecrementExprBuilder& expr(const vl::Ptr<Expr>& value);
+			MakeDecrementExpr& expr(const vl::Ptr<Expr>& value);
 		};
 
-		class ExprToResolveBuilder
+		class MakeExprToResolve : public vl::glr::ParsingAstBuilder<ExprToResolve>
 		{
-		private:
-			ExprToResolve* node;
 		public:
-			ExprToResolveBuilder(ExprToResolve* _node) : node(_node) {}
-			ExprToResolveBuilder& candidates(const vl::Ptr<Expr>& value);
+			MakeExprToResolve& candidates(const vl::Ptr<Expr>& value);
 		};
 
-		class GenericExprBuilder
+		class MakeGenericExpr : public vl::glr::ParsingAstBuilder<GenericExpr>
 		{
-		private:
-			GenericExpr* node;
 		public:
-			GenericExprBuilder(GenericExpr* _node) : node(_node) {}
-			GenericExprBuilder& args(const vl::Ptr<Expr>& value);
-			GenericExprBuilder& name(const vl::WString& value);
+			MakeGenericExpr& args(const vl::Ptr<Expr>& value);
+			MakeGenericExpr& name(const vl::WString& value);
 		};
 
-		class ModuleBuilder
+		class MakeModule : public vl::glr::ParsingAstBuilder<Module>
 		{
-		private:
-			Module* node;
 		public:
-			ModuleBuilder(Module* _node) : node(_node) {}
-			ModuleBuilder& expr(const vl::Ptr<Expr>& value);
+			MakeModule& expr(const vl::Ptr<Expr>& value);
 		};
 
-		class PostfixExprBuilder
+		class MakePostfixExpr : public vl::glr::ParsingAstBuilder<PostfixExpr>
 		{
-		private:
-			PostfixExpr* node;
 		public:
-			PostfixExprBuilder(PostfixExpr* _node) : node(_node) {}
-			PostfixExprBuilder& expr(const vl::Ptr<Expr>& value);
-			PostfixExprBuilder& op(PostfixOp value);
+			MakePostfixExpr& expr(const vl::Ptr<Expr>& value);
+			MakePostfixExpr& op(PostfixOp value);
 		};
 
-		class RefExprBuilder
+		class MakeRefExpr : public vl::glr::ParsingAstBuilder<RefExpr>
 		{
-		private:
-			RefExpr* node;
 		public:
-			RefExprBuilder(RefExpr* _node) : node(_node) {}
-			RefExprBuilder& name(const vl::WString& value);
+			MakeRefExpr& name(const vl::WString& value);
 		};
 
-		using MakeBinaryExpr = vl::glr::ParsingAstBuilder<BinaryExpr, BinaryExprBuilder>;
-		using MakeCallExpr = vl::glr::ParsingAstBuilder<CallExpr, CallExprBuilder>;
-		using MakeDecrementExpr = vl::glr::ParsingAstBuilder<DecrementExpr, DecrementExprBuilder>;
-		using MakeExprToResolve = vl::glr::ParsingAstBuilder<ExprToResolve, ExprToResolveBuilder>;
-		using MakeGenericExpr = vl::glr::ParsingAstBuilder<GenericExpr, GenericExprBuilder>;
-		using MakeModule = vl::glr::ParsingAstBuilder<Module, ModuleBuilder>;
-		using MakePostfixExpr = vl::glr::ParsingAstBuilder<PostfixExpr, PostfixExprBuilder>;
-		using MakeRefExpr = vl::glr::ParsingAstBuilder<RefExpr, RefExprBuilder>;
 	}
 }
 #endif

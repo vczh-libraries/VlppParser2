@@ -16,1578 +16,1830 @@ namespace vl
 			{
 
 /***********************************************************************
-AttachEventExpressionBuilder
+MakeAttachEventExpression
 ***********************************************************************/
 
-				AttachEventExpressionBuilder& AttachEventExpressionBuilder::event(const vl::Ptr<WfExpression>& value)
+				MakeAttachEventExpression& MakeAttachEventExpression::event(const vl::Ptr<WfExpression>& value)
 				{
 					node->event = value;
 					return *this;
 				}
 
-				AttachEventExpressionBuilder& AttachEventExpressionBuilder::function(const vl::Ptr<WfExpression>& value)
+				MakeAttachEventExpression& MakeAttachEventExpression::function(const vl::Ptr<WfExpression>& value)
 				{
 					node->function = value;
 					return *this;
 				}
 
 /***********************************************************************
-AttributeBuilder
+MakeAttribute
 ***********************************************************************/
 
-				AttributeBuilder& AttributeBuilder::category(const vl::WString& value)
+				MakeAttribute& MakeAttribute::category(const vl::WString& value)
 				{
 					node->category.value = value;
 					return *this;
 				}
 
-				AttributeBuilder& AttributeBuilder::name(const vl::WString& value)
+				MakeAttribute& MakeAttribute::name(const vl::WString& value)
 				{
 					node->name.value = value;
 					return *this;
 				}
 
-				AttributeBuilder& AttributeBuilder::value(const vl::Ptr<WfExpression>& value)
+				MakeAttribute& MakeAttribute::value(const vl::Ptr<WfExpression>& value)
 				{
 					node->value = value;
 					return *this;
 				}
 
 /***********************************************************************
-AutoPropertyDeclarationBuilder
+MakeAutoPropertyDeclaration
 ***********************************************************************/
 
-				AutoPropertyDeclarationBuilder& AutoPropertyDeclarationBuilder::configConst(WfAPConst value)
+				MakeAutoPropertyDeclaration& MakeAutoPropertyDeclaration::configConst(WfAPConst value)
 				{
 					node->configConst = value;
 					return *this;
 				}
 
-				AutoPropertyDeclarationBuilder& AutoPropertyDeclarationBuilder::configObserve(WfAPObserve value)
+				MakeAutoPropertyDeclaration& MakeAutoPropertyDeclaration::configObserve(WfAPObserve value)
 				{
 					node->configObserve = value;
 					return *this;
 				}
 
-				AutoPropertyDeclarationBuilder& AutoPropertyDeclarationBuilder::expression(const vl::Ptr<WfExpression>& value)
+				MakeAutoPropertyDeclaration& MakeAutoPropertyDeclaration::expression(const vl::Ptr<WfExpression>& value)
 				{
 					node->expression = value;
 					return *this;
 				}
 
-				AutoPropertyDeclarationBuilder& AutoPropertyDeclarationBuilder::functionKind(WfFunctionKind value)
+				MakeAutoPropertyDeclaration& MakeAutoPropertyDeclaration::functionKind(WfFunctionKind value)
 				{
 					node->functionKind = value;
 					return *this;
 				}
 
-				AutoPropertyDeclarationBuilder& AutoPropertyDeclarationBuilder::type(const vl::Ptr<WfType>& value)
+				MakeAutoPropertyDeclaration& MakeAutoPropertyDeclaration::type(const vl::Ptr<WfType>& value)
 				{
 					node->type = value;
 					return *this;
 				}
 
+				MakeAutoPropertyDeclaration& MakeAutoPropertyDeclaration::expandedDeclarations(const vl::Ptr<WfDeclaration>& value)
+				{
+					node->expandedDeclarations.Add(value);
+					return *this;
+				}
+
+				MakeAutoPropertyDeclaration& MakeAutoPropertyDeclaration::attributes(const vl::Ptr<WfAttribute>& value)
+				{
+					node->attributes.Add(value);
+					return *this;
+				}
+
+				MakeAutoPropertyDeclaration& MakeAutoPropertyDeclaration::name(const vl::WString& value)
+				{
+					node->name.value = value;
+					return *this;
+				}
+
 /***********************************************************************
-BaseConstructorCallBuilder
+MakeBaseConstructorCall
 ***********************************************************************/
 
-				BaseConstructorCallBuilder& BaseConstructorCallBuilder::arguments(const vl::Ptr<WfExpression>& value)
+				MakeBaseConstructorCall& MakeBaseConstructorCall::arguments(const vl::Ptr<WfExpression>& value)
 				{
 					node->arguments.Add(value);
 					return *this;
 				}
 
-				BaseConstructorCallBuilder& BaseConstructorCallBuilder::type(const vl::Ptr<WfType>& value)
+				MakeBaseConstructorCall& MakeBaseConstructorCall::type(const vl::Ptr<WfType>& value)
 				{
 					node->type = value;
 					return *this;
 				}
 
 /***********************************************************************
-BinaryExpressionBuilder
+MakeBinaryExpression
 ***********************************************************************/
 
-				BinaryExpressionBuilder& BinaryExpressionBuilder::first(const vl::Ptr<WfExpression>& value)
+				MakeBinaryExpression& MakeBinaryExpression::first(const vl::Ptr<WfExpression>& value)
 				{
 					node->first = value;
 					return *this;
 				}
 
-				BinaryExpressionBuilder& BinaryExpressionBuilder::op(WfBinaryOperator value)
+				MakeBinaryExpression& MakeBinaryExpression::op(WfBinaryOperator value)
 				{
 					node->op = value;
 					return *this;
 				}
 
-				BinaryExpressionBuilder& BinaryExpressionBuilder::second(const vl::Ptr<WfExpression>& value)
+				MakeBinaryExpression& MakeBinaryExpression::second(const vl::Ptr<WfExpression>& value)
 				{
 					node->second = value;
 					return *this;
 				}
 
 /***********************************************************************
-BindExpressionBuilder
+MakeBindExpression
 ***********************************************************************/
 
-				BindExpressionBuilder& BindExpressionBuilder::expression(const vl::Ptr<WfExpression>& value)
+				MakeBindExpression& MakeBindExpression::expression(const vl::Ptr<WfExpression>& value)
 				{
 					node->expression = value;
 					return *this;
 				}
 
+				MakeBindExpression& MakeBindExpression::expandedExpression(const vl::Ptr<WfExpression>& value)
+				{
+					node->expandedExpression = value;
+					return *this;
+				}
+
 /***********************************************************************
-BlockStatementBuilder
+MakeBlockStatement
 ***********************************************************************/
 
-				BlockStatementBuilder& BlockStatementBuilder::endLabel(const vl::WString& value)
+				MakeBlockStatement& MakeBlockStatement::endLabel(const vl::WString& value)
 				{
 					node->endLabel.value = value;
 					return *this;
 				}
 
-				BlockStatementBuilder& BlockStatementBuilder::statements(const vl::Ptr<WfStatement>& value)
+				MakeBlockStatement& MakeBlockStatement::statements(const vl::Ptr<WfStatement>& value)
 				{
 					node->statements.Add(value);
 					return *this;
 				}
 
 /***********************************************************************
-CallExpressionBuilder
+MakeCallExpression
 ***********************************************************************/
 
-				CallExpressionBuilder& CallExpressionBuilder::arguments(const vl::Ptr<WfExpression>& value)
+				MakeCallExpression& MakeCallExpression::arguments(const vl::Ptr<WfExpression>& value)
 				{
 					node->arguments.Add(value);
 					return *this;
 				}
 
-				CallExpressionBuilder& CallExpressionBuilder::function(const vl::Ptr<WfExpression>& value)
+				MakeCallExpression& MakeCallExpression::function(const vl::Ptr<WfExpression>& value)
 				{
 					node->function = value;
 					return *this;
 				}
 
 /***********************************************************************
-CastResultInterfaceDeclarationBuilder
+MakeCastResultInterfaceDeclaration
 ***********************************************************************/
 
-				CastResultInterfaceDeclarationBuilder& CastResultInterfaceDeclarationBuilder::baseType(const vl::Ptr<WfType>& value)
+				MakeCastResultInterfaceDeclaration& MakeCastResultInterfaceDeclaration::baseType(const vl::Ptr<WfType>& value)
 				{
 					node->baseType = value;
 					return *this;
 				}
 
-				CastResultInterfaceDeclarationBuilder& CastResultInterfaceDeclarationBuilder::elementType(const vl::Ptr<WfType>& value)
+				MakeCastResultInterfaceDeclaration& MakeCastResultInterfaceDeclaration::elementType(const vl::Ptr<WfType>& value)
 				{
 					node->elementType = value;
 					return *this;
 				}
 
-/***********************************************************************
-ChildExpressionBuilder
-***********************************************************************/
+				MakeCastResultInterfaceDeclaration& MakeCastResultInterfaceDeclaration::expandedDeclarations(const vl::Ptr<WfDeclaration>& value)
+				{
+					node->expandedDeclarations.Add(value);
+					return *this;
+				}
 
-				ChildExpressionBuilder& ChildExpressionBuilder::name(const vl::WString& value)
+				MakeCastResultInterfaceDeclaration& MakeCastResultInterfaceDeclaration::attributes(const vl::Ptr<WfAttribute>& value)
+				{
+					node->attributes.Add(value);
+					return *this;
+				}
+
+				MakeCastResultInterfaceDeclaration& MakeCastResultInterfaceDeclaration::name(const vl::WString& value)
 				{
 					node->name.value = value;
 					return *this;
 				}
 
-				ChildExpressionBuilder& ChildExpressionBuilder::parent(const vl::Ptr<WfExpression>& value)
+/***********************************************************************
+MakeChildExpression
+***********************************************************************/
+
+				MakeChildExpression& MakeChildExpression::name(const vl::WString& value)
+				{
+					node->name.value = value;
+					return *this;
+				}
+
+				MakeChildExpression& MakeChildExpression::parent(const vl::Ptr<WfExpression>& value)
 				{
 					node->parent = value;
 					return *this;
 				}
 
 /***********************************************************************
-ChildTypeBuilder
+MakeChildType
 ***********************************************************************/
 
-				ChildTypeBuilder& ChildTypeBuilder::name(const vl::WString& value)
+				MakeChildType& MakeChildType::name(const vl::WString& value)
 				{
 					node->name.value = value;
 					return *this;
 				}
 
-				ChildTypeBuilder& ChildTypeBuilder::parent(const vl::Ptr<WfType>& value)
+				MakeChildType& MakeChildType::parent(const vl::Ptr<WfType>& value)
 				{
 					node->parent = value;
 					return *this;
 				}
 
 /***********************************************************************
-ClassDeclarationBuilder
+MakeClassDeclaration
 ***********************************************************************/
 
-				ClassDeclarationBuilder& ClassDeclarationBuilder::baseTypes(const vl::Ptr<WfType>& value)
+				MakeClassDeclaration& MakeClassDeclaration::baseTypes(const vl::Ptr<WfType>& value)
 				{
 					node->baseTypes.Add(value);
 					return *this;
 				}
 
-				ClassDeclarationBuilder& ClassDeclarationBuilder::constructorType(WfConstructorType value)
+				MakeClassDeclaration& MakeClassDeclaration::constructorType(WfConstructorType value)
 				{
 					node->constructorType = value;
 					return *this;
 				}
 
-				ClassDeclarationBuilder& ClassDeclarationBuilder::declarations(const vl::Ptr<WfDeclaration>& value)
+				MakeClassDeclaration& MakeClassDeclaration::declarations(const vl::Ptr<WfDeclaration>& value)
 				{
 					node->declarations.Add(value);
 					return *this;
 				}
 
-				ClassDeclarationBuilder& ClassDeclarationBuilder::kind(WfClassKind value)
+				MakeClassDeclaration& MakeClassDeclaration::kind(WfClassKind value)
 				{
 					node->kind = value;
 					return *this;
 				}
 
-/***********************************************************************
-CoOperatorExpressionBuilder
-***********************************************************************/
+				MakeClassDeclaration& MakeClassDeclaration::attributes(const vl::Ptr<WfAttribute>& value)
+				{
+					node->attributes.Add(value);
+					return *this;
+				}
 
-				CoOperatorExpressionBuilder& CoOperatorExpressionBuilder::name(const vl::WString& value)
+				MakeClassDeclaration& MakeClassDeclaration::name(const vl::WString& value)
 				{
 					node->name.value = value;
 					return *this;
 				}
 
 /***********************************************************************
-CoOperatorStatementBuilder
+MakeCoOperatorExpression
 ***********************************************************************/
 
-				CoOperatorStatementBuilder& CoOperatorStatementBuilder::arguments(const vl::Ptr<WfExpression>& value)
+				MakeCoOperatorExpression& MakeCoOperatorExpression::name(const vl::WString& value)
+				{
+					node->name.value = value;
+					return *this;
+				}
+
+				MakeCoOperatorExpression& MakeCoOperatorExpression::expandedExpression(const vl::Ptr<WfExpression>& value)
+				{
+					node->expandedExpression = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeCoOperatorStatement
+***********************************************************************/
+
+				MakeCoOperatorStatement& MakeCoOperatorStatement::arguments(const vl::Ptr<WfExpression>& value)
 				{
 					node->arguments.Add(value);
 					return *this;
 				}
 
-				CoOperatorStatementBuilder& CoOperatorStatementBuilder::opName(const vl::WString& value)
+				MakeCoOperatorStatement& MakeCoOperatorStatement::opName(const vl::WString& value)
 				{
 					node->opName.value = value;
 					return *this;
 				}
 
-				CoOperatorStatementBuilder& CoOperatorStatementBuilder::varName(const vl::WString& value)
+				MakeCoOperatorStatement& MakeCoOperatorStatement::varName(const vl::WString& value)
 				{
 					node->varName.value = value;
 					return *this;
 				}
 
 /***********************************************************************
-CoPauseStatementBuilder
+MakeCoPauseStatement
 ***********************************************************************/
 
-				CoPauseStatementBuilder& CoPauseStatementBuilder::statement(const vl::Ptr<WfStatement>& value)
+				MakeCoPauseStatement& MakeCoPauseStatement::statement(const vl::Ptr<WfStatement>& value)
 				{
 					node->statement = value;
 					return *this;
 				}
 
 /***********************************************************************
-CoProviderStatementBuilder
+MakeCoProviderStatement
 ***********************************************************************/
 
-				CoProviderStatementBuilder& CoProviderStatementBuilder::name(const vl::WString& value)
+				MakeCoProviderStatement& MakeCoProviderStatement::name(const vl::WString& value)
 				{
 					node->name.value = value;
 					return *this;
 				}
 
-				CoProviderStatementBuilder& CoProviderStatementBuilder::statement(const vl::Ptr<WfStatement>& value)
+				MakeCoProviderStatement& MakeCoProviderStatement::statement(const vl::Ptr<WfStatement>& value)
 				{
 					node->statement = value;
 					return *this;
 				}
 
-/***********************************************************************
-ConstructorArgumentBuilder
-***********************************************************************/
-
-				ConstructorArgumentBuilder& ConstructorArgumentBuilder::key(const vl::Ptr<WfExpression>& value)
-				{
-					node->key = value;
-					return *this;
-				}
-
-				ConstructorArgumentBuilder& ConstructorArgumentBuilder::value(const vl::Ptr<WfExpression>& value)
-				{
-					node->value = value;
-					return *this;
-				}
-
-/***********************************************************************
-ConstructorDeclarationBuilder
-***********************************************************************/
-
-				ConstructorDeclarationBuilder& ConstructorDeclarationBuilder::arguments(const vl::Ptr<WfFunctionArgument>& value)
-				{
-					node->arguments.Add(value);
-					return *this;
-				}
-
-				ConstructorDeclarationBuilder& ConstructorDeclarationBuilder::baseConstructorCalls(const vl::Ptr<WfBaseConstructorCall>& value)
-				{
-					node->baseConstructorCalls.Add(value);
-					return *this;
-				}
-
-				ConstructorDeclarationBuilder& ConstructorDeclarationBuilder::constructorType(WfConstructorType value)
-				{
-					node->constructorType = value;
-					return *this;
-				}
-
-				ConstructorDeclarationBuilder& ConstructorDeclarationBuilder::statement(const vl::Ptr<WfStatement>& value)
-				{
-					node->statement = value;
-					return *this;
-				}
-
-/***********************************************************************
-ConstructorExpressionBuilder
-***********************************************************************/
-
-				ConstructorExpressionBuilder& ConstructorExpressionBuilder::arguments(const vl::Ptr<WfConstructorArgument>& value)
-				{
-					node->arguments.Add(value);
-					return *this;
-				}
-
-/***********************************************************************
-DeclarationBuilder
-***********************************************************************/
-
-				DeclarationBuilder& DeclarationBuilder::attributes(const vl::Ptr<WfAttribute>& value)
-				{
-					node->attributes.Add(value);
-					return *this;
-				}
-
-				DeclarationBuilder& DeclarationBuilder::name(const vl::WString& value)
-				{
-					node->name.value = value;
-					return *this;
-				}
-
-/***********************************************************************
-DeleteStatementBuilder
-***********************************************************************/
-
-				DeleteStatementBuilder& DeleteStatementBuilder::expression(const vl::Ptr<WfExpression>& value)
-				{
-					node->expression = value;
-					return *this;
-				}
-
-/***********************************************************************
-DestructorDeclarationBuilder
-***********************************************************************/
-
-				DestructorDeclarationBuilder& DestructorDeclarationBuilder::statement(const vl::Ptr<WfStatement>& value)
-				{
-					node->statement = value;
-					return *this;
-				}
-
-/***********************************************************************
-DetachEventExpressionBuilder
-***********************************************************************/
-
-				DetachEventExpressionBuilder& DetachEventExpressionBuilder::event(const vl::Ptr<WfExpression>& value)
-				{
-					node->event = value;
-					return *this;
-				}
-
-				DetachEventExpressionBuilder& DetachEventExpressionBuilder::handler(const vl::Ptr<WfExpression>& value)
-				{
-					node->handler = value;
-					return *this;
-				}
-
-/***********************************************************************
-EnumDeclarationBuilder
-***********************************************************************/
-
-				EnumDeclarationBuilder& EnumDeclarationBuilder::items(const vl::Ptr<WfEnumItem>& value)
-				{
-					node->items.Add(value);
-					return *this;
-				}
-
-				EnumDeclarationBuilder& EnumDeclarationBuilder::kind(WfEnumKind value)
-				{
-					node->kind = value;
-					return *this;
-				}
-
-/***********************************************************************
-EnumItemBuilder
-***********************************************************************/
-
-				EnumItemBuilder& EnumItemBuilder::attributes(const vl::Ptr<WfAttribute>& value)
-				{
-					node->attributes.Add(value);
-					return *this;
-				}
-
-				EnumItemBuilder& EnumItemBuilder::intersections(const vl::Ptr<WfEnumItemIntersection>& value)
-				{
-					node->intersections.Add(value);
-					return *this;
-				}
-
-				EnumItemBuilder& EnumItemBuilder::kind(WfEnumItemKind value)
-				{
-					node->kind = value;
-					return *this;
-				}
-
-				EnumItemBuilder& EnumItemBuilder::name(const vl::WString& value)
-				{
-					node->name.value = value;
-					return *this;
-				}
-
-				EnumItemBuilder& EnumItemBuilder::number(const vl::WString& value)
-				{
-					node->number.value = value;
-					return *this;
-				}
-
-/***********************************************************************
-EnumItemIntersectionBuilder
-***********************************************************************/
-
-				EnumItemIntersectionBuilder& EnumItemIntersectionBuilder::name(const vl::WString& value)
-				{
-					node->name.value = value;
-					return *this;
-				}
-
-/***********************************************************************
-EnumerableTypeBuilder
-***********************************************************************/
-
-				EnumerableTypeBuilder& EnumerableTypeBuilder::element(const vl::Ptr<WfType>& value)
-				{
-					node->element = value;
-					return *this;
-				}
-
-/***********************************************************************
-EventDeclarationBuilder
-***********************************************************************/
-
-				EventDeclarationBuilder& EventDeclarationBuilder::arguments(const vl::Ptr<WfType>& value)
-				{
-					node->arguments.Add(value);
-					return *this;
-				}
-
-/***********************************************************************
-ExpectedTypeCastExpressionBuilder
-***********************************************************************/
-
-				ExpectedTypeCastExpressionBuilder& ExpectedTypeCastExpressionBuilder::expression(const vl::Ptr<WfExpression>& value)
-				{
-					node->expression = value;
-					return *this;
-				}
-
-				ExpectedTypeCastExpressionBuilder& ExpectedTypeCastExpressionBuilder::strategy(WfTypeCastingStrategy value)
-				{
-					node->strategy = value;
-					return *this;
-				}
-
-/***********************************************************************
-ExpressionStatementBuilder
-***********************************************************************/
-
-				ExpressionStatementBuilder& ExpressionStatementBuilder::expression(const vl::Ptr<WfExpression>& value)
-				{
-					node->expression = value;
-					return *this;
-				}
-
-/***********************************************************************
-FloatingExpressionBuilder
-***********************************************************************/
-
-				FloatingExpressionBuilder& FloatingExpressionBuilder::value(const vl::WString& value)
-				{
-					node->value.value = value;
-					return *this;
-				}
-
-/***********************************************************************
-ForEachStatementBuilder
-***********************************************************************/
-
-				ForEachStatementBuilder& ForEachStatementBuilder::collection(const vl::Ptr<WfExpression>& value)
-				{
-					node->collection = value;
-					return *this;
-				}
-
-				ForEachStatementBuilder& ForEachStatementBuilder::direction(WfForEachDirection value)
-				{
-					node->direction = value;
-					return *this;
-				}
-
-				ForEachStatementBuilder& ForEachStatementBuilder::name(const vl::WString& value)
-				{
-					node->name.value = value;
-					return *this;
-				}
-
-				ForEachStatementBuilder& ForEachStatementBuilder::statement(const vl::Ptr<WfStatement>& value)
-				{
-					node->statement = value;
-					return *this;
-				}
-
-/***********************************************************************
-FormatExpressionBuilder
-***********************************************************************/
-
-				FormatExpressionBuilder& FormatExpressionBuilder::value(const vl::WString& value)
-				{
-					node->value.value = value;
-					return *this;
-				}
-
-/***********************************************************************
-FunctionArgumentBuilder
-***********************************************************************/
-
-				FunctionArgumentBuilder& FunctionArgumentBuilder::attributes(const vl::Ptr<WfAttribute>& value)
-				{
-					node->attributes.Add(value);
-					return *this;
-				}
-
-				FunctionArgumentBuilder& FunctionArgumentBuilder::name(const vl::WString& value)
-				{
-					node->name.value = value;
-					return *this;
-				}
-
-				FunctionArgumentBuilder& FunctionArgumentBuilder::type(const vl::Ptr<WfType>& value)
-				{
-					node->type = value;
-					return *this;
-				}
-
-/***********************************************************************
-FunctionDeclarationBuilder
-***********************************************************************/
-
-				FunctionDeclarationBuilder& FunctionDeclarationBuilder::anonymity(WfFunctionAnonymity value)
-				{
-					node->anonymity = value;
-					return *this;
-				}
-
-				FunctionDeclarationBuilder& FunctionDeclarationBuilder::arguments(const vl::Ptr<WfFunctionArgument>& value)
-				{
-					node->arguments.Add(value);
-					return *this;
-				}
-
-				FunctionDeclarationBuilder& FunctionDeclarationBuilder::functionKind(WfFunctionKind value)
-				{
-					node->functionKind = value;
-					return *this;
-				}
-
-				FunctionDeclarationBuilder& FunctionDeclarationBuilder::returnType(const vl::Ptr<WfType>& value)
-				{
-					node->returnType = value;
-					return *this;
-				}
-
-				FunctionDeclarationBuilder& FunctionDeclarationBuilder::statement(const vl::Ptr<WfStatement>& value)
-				{
-					node->statement = value;
-					return *this;
-				}
-
-/***********************************************************************
-FunctionExpressionBuilder
-***********************************************************************/
-
-				FunctionExpressionBuilder& FunctionExpressionBuilder::function(const vl::Ptr<WfFunctionDeclaration>& value)
-				{
-					node->function = value;
-					return *this;
-				}
-
-/***********************************************************************
-FunctionTypeBuilder
-***********************************************************************/
-
-				FunctionTypeBuilder& FunctionTypeBuilder::arguments(const vl::Ptr<WfType>& value)
-				{
-					node->arguments.Add(value);
-					return *this;
-				}
-
-				FunctionTypeBuilder& FunctionTypeBuilder::result(const vl::Ptr<WfType>& value)
-				{
-					node->result = value;
-					return *this;
-				}
-
-/***********************************************************************
-GotoStatementBuilder
-***********************************************************************/
-
-				GotoStatementBuilder& GotoStatementBuilder::label(const vl::WString& value)
-				{
-					node->label.value = value;
-					return *this;
-				}
-
-/***********************************************************************
-IfExpressionBuilder
-***********************************************************************/
-
-				IfExpressionBuilder& IfExpressionBuilder::condition(const vl::Ptr<WfExpression>& value)
-				{
-					node->condition = value;
-					return *this;
-				}
-
-				IfExpressionBuilder& IfExpressionBuilder::falseBranch(const vl::Ptr<WfExpression>& value)
-				{
-					node->falseBranch = value;
-					return *this;
-				}
-
-				IfExpressionBuilder& IfExpressionBuilder::trueBranch(const vl::Ptr<WfExpression>& value)
-				{
-					node->trueBranch = value;
-					return *this;
-				}
-
-/***********************************************************************
-IfStatementBuilder
-***********************************************************************/
-
-				IfStatementBuilder& IfStatementBuilder::expression(const vl::Ptr<WfExpression>& value)
-				{
-					node->expression = value;
-					return *this;
-				}
-
-				IfStatementBuilder& IfStatementBuilder::falseBranch(const vl::Ptr<WfStatement>& value)
-				{
-					node->falseBranch = value;
-					return *this;
-				}
-
-				IfStatementBuilder& IfStatementBuilder::name(const vl::WString& value)
-				{
-					node->name.value = value;
-					return *this;
-				}
-
-				IfStatementBuilder& IfStatementBuilder::trueBranch(const vl::Ptr<WfStatement>& value)
-				{
-					node->trueBranch = value;
-					return *this;
-				}
-
-				IfStatementBuilder& IfStatementBuilder::type(const vl::Ptr<WfType>& value)
-				{
-					node->type = value;
-					return *this;
-				}
-
-/***********************************************************************
-InferExpressionBuilder
-***********************************************************************/
-
-				InferExpressionBuilder& InferExpressionBuilder::expression(const vl::Ptr<WfExpression>& value)
-				{
-					node->expression = value;
-					return *this;
-				}
-
-				InferExpressionBuilder& InferExpressionBuilder::type(const vl::Ptr<WfType>& value)
-				{
-					node->type = value;
-					return *this;
-				}
-
-/***********************************************************************
-IntegerExpressionBuilder
-***********************************************************************/
-
-				IntegerExpressionBuilder& IntegerExpressionBuilder::value(const vl::WString& value)
-				{
-					node->value.value = value;
-					return *this;
-				}
-
-/***********************************************************************
-LetExpressionBuilder
-***********************************************************************/
-
-				LetExpressionBuilder& LetExpressionBuilder::expression(const vl::Ptr<WfExpression>& value)
-				{
-					node->expression = value;
-					return *this;
-				}
-
-				LetExpressionBuilder& LetExpressionBuilder::variables(const vl::Ptr<WfLetVariable>& value)
-				{
-					node->variables.Add(value);
-					return *this;
-				}
-
-/***********************************************************************
-LetVariableBuilder
-***********************************************************************/
-
-				LetVariableBuilder& LetVariableBuilder::name(const vl::WString& value)
-				{
-					node->name.value = value;
-					return *this;
-				}
-
-				LetVariableBuilder& LetVariableBuilder::value(const vl::Ptr<WfExpression>& value)
-				{
-					node->value = value;
-					return *this;
-				}
-
-/***********************************************************************
-LiteralExpressionBuilder
-***********************************************************************/
-
-				LiteralExpressionBuilder& LiteralExpressionBuilder::value(WfLiteralValue value)
-				{
-					node->value = value;
-					return *this;
-				}
-
-/***********************************************************************
-MapTypeBuilder
-***********************************************************************/
-
-				MapTypeBuilder& MapTypeBuilder::key(const vl::Ptr<WfType>& value)
-				{
-					node->key = value;
-					return *this;
-				}
-
-				MapTypeBuilder& MapTypeBuilder::value(const vl::Ptr<WfType>& value)
-				{
-					node->value = value;
-					return *this;
-				}
-
-				MapTypeBuilder& MapTypeBuilder::writability(WfMapWritability value)
-				{
-					node->writability = value;
-					return *this;
-				}
-
-/***********************************************************************
-MemberExpressionBuilder
-***********************************************************************/
-
-				MemberExpressionBuilder& MemberExpressionBuilder::name(const vl::WString& value)
-				{
-					node->name.value = value;
-					return *this;
-				}
-
-				MemberExpressionBuilder& MemberExpressionBuilder::parent(const vl::Ptr<WfExpression>& value)
-				{
-					node->parent = value;
-					return *this;
-				}
-
-/***********************************************************************
-MixinCastExpressionBuilder
-***********************************************************************/
-
-				MixinCastExpressionBuilder& MixinCastExpressionBuilder::expression(const vl::Ptr<WfExpression>& value)
-				{
-					node->expression = value;
-					return *this;
-				}
-
-				MixinCastExpressionBuilder& MixinCastExpressionBuilder::type(const vl::Ptr<WfType>& value)
-				{
-					node->type = value;
-					return *this;
-				}
-
-/***********************************************************************
-ModuleBuilder
-***********************************************************************/
-
-				ModuleBuilder& ModuleBuilder::declarations(const vl::Ptr<WfDeclaration>& value)
-				{
-					node->declarations.Add(value);
-					return *this;
-				}
-
-				ModuleBuilder& ModuleBuilder::moduleType(WfModuleType value)
-				{
-					node->moduleType = value;
-					return *this;
-				}
-
-				ModuleBuilder& ModuleBuilder::name(const vl::WString& value)
-				{
-					node->name.value = value;
-					return *this;
-				}
-
-				ModuleBuilder& ModuleBuilder::paths(const vl::Ptr<WfModuleUsingPath>& value)
-				{
-					node->paths.Add(value);
-					return *this;
-				}
-
-/***********************************************************************
-ModuleUsingItemBuilder
-***********************************************************************/
-
-				ModuleUsingItemBuilder& ModuleUsingItemBuilder::fragments(const vl::Ptr<WfModuleUsingFragment>& value)
-				{
-					node->fragments.Add(value);
-					return *this;
-				}
-
-/***********************************************************************
-ModuleUsingNameFragmentBuilder
-***********************************************************************/
-
-				ModuleUsingNameFragmentBuilder& ModuleUsingNameFragmentBuilder::name(const vl::WString& value)
-				{
-					node->name.value = value;
-					return *this;
-				}
-
-/***********************************************************************
-ModuleUsingPathBuilder
-***********************************************************************/
-
-				ModuleUsingPathBuilder& ModuleUsingPathBuilder::items(const vl::Ptr<WfModuleUsingItem>& value)
-				{
-					node->items.Add(value);
-					return *this;
-				}
-
-/***********************************************************************
-NamespaceDeclarationBuilder
-***********************************************************************/
-
-				NamespaceDeclarationBuilder& NamespaceDeclarationBuilder::declarations(const vl::Ptr<WfDeclaration>& value)
-				{
-					node->declarations.Add(value);
-					return *this;
-				}
-
-/***********************************************************************
-NewClassExpressionBuilder
-***********************************************************************/
-
-				NewClassExpressionBuilder& NewClassExpressionBuilder::arguments(const vl::Ptr<WfExpression>& value)
-				{
-					node->arguments.Add(value);
-					return *this;
-				}
-
-				NewClassExpressionBuilder& NewClassExpressionBuilder::type(const vl::Ptr<WfType>& value)
-				{
-					node->type = value;
-					return *this;
-				}
-
-/***********************************************************************
-NewCoroutineExpressionBuilder
-***********************************************************************/
-
-				NewCoroutineExpressionBuilder& NewCoroutineExpressionBuilder::name(const vl::WString& value)
-				{
-					node->name.value = value;
-					return *this;
-				}
-
-				NewCoroutineExpressionBuilder& NewCoroutineExpressionBuilder::statement(const vl::Ptr<WfStatement>& value)
-				{
-					node->statement = value;
-					return *this;
-				}
-
-/***********************************************************************
-NewInterfaceExpressionBuilder
-***********************************************************************/
-
-				NewInterfaceExpressionBuilder& NewInterfaceExpressionBuilder::declarations(const vl::Ptr<WfDeclaration>& value)
-				{
-					node->declarations.Add(value);
-					return *this;
-				}
-
-				NewInterfaceExpressionBuilder& NewInterfaceExpressionBuilder::type(const vl::Ptr<WfType>& value)
-				{
-					node->type = value;
-					return *this;
-				}
-
-/***********************************************************************
-NullableTypeBuilder
-***********************************************************************/
-
-				NullableTypeBuilder& NullableTypeBuilder::element(const vl::Ptr<WfType>& value)
-				{
-					node->element = value;
-					return *this;
-				}
-
-/***********************************************************************
-ObservableListTypeBuilder
-***********************************************************************/
-
-				ObservableListTypeBuilder& ObservableListTypeBuilder::element(const vl::Ptr<WfType>& value)
-				{
-					node->element = value;
-					return *this;
-				}
-
-/***********************************************************************
-ObserveExpressionBuilder
-***********************************************************************/
-
-				ObserveExpressionBuilder& ObserveExpressionBuilder::events(const vl::Ptr<WfExpression>& value)
-				{
-					node->events.Add(value);
-					return *this;
-				}
-
-				ObserveExpressionBuilder& ObserveExpressionBuilder::expression(const vl::Ptr<WfExpression>& value)
-				{
-					node->expression = value;
-					return *this;
-				}
-
-				ObserveExpressionBuilder& ObserveExpressionBuilder::name(const vl::WString& value)
-				{
-					node->name.value = value;
-					return *this;
-				}
-
-				ObserveExpressionBuilder& ObserveExpressionBuilder::observeType(WfObserveType value)
-				{
-					node->observeType = value;
-					return *this;
-				}
-
-				ObserveExpressionBuilder& ObserveExpressionBuilder::parent(const vl::Ptr<WfExpression>& value)
-				{
-					node->parent = value;
-					return *this;
-				}
-
-/***********************************************************************
-OrderedLambdaExpressionBuilder
-***********************************************************************/
-
-				OrderedLambdaExpressionBuilder& OrderedLambdaExpressionBuilder::body(const vl::Ptr<WfExpression>& value)
-				{
-					node->body = value;
-					return *this;
-				}
-
-/***********************************************************************
-OrderedNameExpressionBuilder
-***********************************************************************/
-
-				OrderedNameExpressionBuilder& OrderedNameExpressionBuilder::name(const vl::WString& value)
-				{
-					node->name.value = value;
-					return *this;
-				}
-
-/***********************************************************************
-PredefinedTypeBuilder
-***********************************************************************/
-
-				PredefinedTypeBuilder& PredefinedTypeBuilder::name(WfPredefinedTypeName value)
-				{
-					node->name = value;
-					return *this;
-				}
-
-/***********************************************************************
-PropertyDeclarationBuilder
-***********************************************************************/
-
-				PropertyDeclarationBuilder& PropertyDeclarationBuilder::getter(const vl::WString& value)
-				{
-					node->getter.value = value;
-					return *this;
-				}
-
-				PropertyDeclarationBuilder& PropertyDeclarationBuilder::setter(const vl::WString& value)
-				{
-					node->setter.value = value;
-					return *this;
-				}
-
-				PropertyDeclarationBuilder& PropertyDeclarationBuilder::type(const vl::Ptr<WfType>& value)
-				{
-					node->type = value;
-					return *this;
-				}
-
-				PropertyDeclarationBuilder& PropertyDeclarationBuilder::valueChangedEvent(const vl::WString& value)
-				{
-					node->valueChangedEvent.value = value;
-					return *this;
-				}
-
-/***********************************************************************
-RaiseExceptionStatementBuilder
-***********************************************************************/
-
-				RaiseExceptionStatementBuilder& RaiseExceptionStatementBuilder::expression(const vl::Ptr<WfExpression>& value)
-				{
-					node->expression = value;
-					return *this;
-				}
-
-/***********************************************************************
-RangeExpressionBuilder
-***********************************************************************/
-
-				RangeExpressionBuilder& RangeExpressionBuilder::begin(const vl::Ptr<WfExpression>& value)
-				{
-					node->begin = value;
-					return *this;
-				}
-
-				RangeExpressionBuilder& RangeExpressionBuilder::beginBoundary(WfRangeBoundary value)
-				{
-					node->beginBoundary = value;
-					return *this;
-				}
-
-				RangeExpressionBuilder& RangeExpressionBuilder::end(const vl::Ptr<WfExpression>& value)
-				{
-					node->end = value;
-					return *this;
-				}
-
-				RangeExpressionBuilder& RangeExpressionBuilder::endBoundary(WfRangeBoundary value)
-				{
-					node->endBoundary = value;
-					return *this;
-				}
-
-/***********************************************************************
-RawPointerTypeBuilder
-***********************************************************************/
-
-				RawPointerTypeBuilder& RawPointerTypeBuilder::element(const vl::Ptr<WfType>& value)
-				{
-					node->element = value;
-					return *this;
-				}
-
-/***********************************************************************
-ReferenceExpressionBuilder
-***********************************************************************/
-
-				ReferenceExpressionBuilder& ReferenceExpressionBuilder::name(const vl::WString& value)
-				{
-					node->name.value = value;
-					return *this;
-				}
-
-/***********************************************************************
-ReferenceTypeBuilder
-***********************************************************************/
-
-				ReferenceTypeBuilder& ReferenceTypeBuilder::name(const vl::WString& value)
-				{
-					node->name.value = value;
-					return *this;
-				}
-
-/***********************************************************************
-ReturnStatementBuilder
-***********************************************************************/
-
-				ReturnStatementBuilder& ReturnStatementBuilder::expression(const vl::Ptr<WfExpression>& value)
-				{
-					node->expression = value;
-					return *this;
-				}
-
-/***********************************************************************
-SetTestingExpressionBuilder
-***********************************************************************/
-
-				SetTestingExpressionBuilder& SetTestingExpressionBuilder::collection(const vl::Ptr<WfExpression>& value)
-				{
-					node->collection = value;
-					return *this;
-				}
-
-				SetTestingExpressionBuilder& SetTestingExpressionBuilder::element(const vl::Ptr<WfExpression>& value)
-				{
-					node->element = value;
-					return *this;
-				}
-
-				SetTestingExpressionBuilder& SetTestingExpressionBuilder::test(WfSetTesting value)
-				{
-					node->test = value;
-					return *this;
-				}
-
-/***********************************************************************
-SharedPointerTypeBuilder
-***********************************************************************/
-
-				SharedPointerTypeBuilder& SharedPointerTypeBuilder::element(const vl::Ptr<WfType>& value)
-				{
-					node->element = value;
-					return *this;
-				}
-
-/***********************************************************************
-StateDeclarationBuilder
-***********************************************************************/
-
-				StateDeclarationBuilder& StateDeclarationBuilder::arguments(const vl::Ptr<WfFunctionArgument>& value)
-				{
-					node->arguments.Add(value);
-					return *this;
-				}
-
-				StateDeclarationBuilder& StateDeclarationBuilder::name(const vl::WString& value)
-				{
-					node->name.value = value;
-					return *this;
-				}
-
-				StateDeclarationBuilder& StateDeclarationBuilder::statement(const vl::Ptr<WfStatement>& value)
-				{
-					node->statement = value;
-					return *this;
-				}
-
-/***********************************************************************
-StateInputBuilder
-***********************************************************************/
-
-				StateInputBuilder& StateInputBuilder::arguments(const vl::Ptr<WfFunctionArgument>& value)
-				{
-					node->arguments.Add(value);
-					return *this;
-				}
-
-				StateInputBuilder& StateInputBuilder::name(const vl::WString& value)
-				{
-					node->name.value = value;
-					return *this;
-				}
-
-/***********************************************************************
-StateInvokeStatementBuilder
-***********************************************************************/
-
-				StateInvokeStatementBuilder& StateInvokeStatementBuilder::arguments(const vl::Ptr<WfExpression>& value)
-				{
-					node->arguments.Add(value);
-					return *this;
-				}
-
-				StateInvokeStatementBuilder& StateInvokeStatementBuilder::name(const vl::WString& value)
-				{
-					node->name.value = value;
-					return *this;
-				}
-
-				StateInvokeStatementBuilder& StateInvokeStatementBuilder::type(WfStateInvokeType value)
-				{
-					node->type = value;
-					return *this;
-				}
-
-/***********************************************************************
-StateMachineDeclarationBuilder
-***********************************************************************/
-
-				StateMachineDeclarationBuilder& StateMachineDeclarationBuilder::inputs(const vl::Ptr<WfStateInput>& value)
-				{
-					node->inputs.Add(value);
-					return *this;
-				}
-
-				StateMachineDeclarationBuilder& StateMachineDeclarationBuilder::states(const vl::Ptr<WfStateDeclaration>& value)
-				{
-					node->states.Add(value);
-					return *this;
-				}
-
-/***********************************************************************
-StateSwitchArgumentBuilder
-***********************************************************************/
-
-				StateSwitchArgumentBuilder& StateSwitchArgumentBuilder::name(const vl::WString& value)
-				{
-					node->name.value = value;
-					return *this;
-				}
-
-/***********************************************************************
-StateSwitchCaseBuilder
-***********************************************************************/
-
-				StateSwitchCaseBuilder& StateSwitchCaseBuilder::arguments(const vl::Ptr<WfStateSwitchArgument>& value)
-				{
-					node->arguments.Add(value);
-					return *this;
-				}
-
-				StateSwitchCaseBuilder& StateSwitchCaseBuilder::name(const vl::WString& value)
-				{
-					node->name.value = value;
-					return *this;
-				}
-
-				StateSwitchCaseBuilder& StateSwitchCaseBuilder::statement(const vl::Ptr<WfStatement>& value)
-				{
-					node->statement = value;
-					return *this;
-				}
-
-/***********************************************************************
-StateSwitchStatementBuilder
-***********************************************************************/
-
-				StateSwitchStatementBuilder& StateSwitchStatementBuilder::caseBranches(const vl::Ptr<WfStateSwitchCase>& value)
-				{
-					node->caseBranches.Add(value);
-					return *this;
-				}
-
-				StateSwitchStatementBuilder& StateSwitchStatementBuilder::type(WfStateSwitchType value)
-				{
-					node->type = value;
-					return *this;
-				}
-
-/***********************************************************************
-StringExpressionBuilder
-***********************************************************************/
-
-				StringExpressionBuilder& StringExpressionBuilder::value(const vl::WString& value)
-				{
-					node->value.value = value;
-					return *this;
-				}
-
-/***********************************************************************
-StructDeclarationBuilder
-***********************************************************************/
-
-				StructDeclarationBuilder& StructDeclarationBuilder::members(const vl::Ptr<WfStructMember>& value)
-				{
-					node->members.Add(value);
-					return *this;
-				}
-
-/***********************************************************************
-StructMemberBuilder
-***********************************************************************/
-
-				StructMemberBuilder& StructMemberBuilder::attributes(const vl::Ptr<WfAttribute>& value)
-				{
-					node->attributes.Add(value);
-					return *this;
-				}
-
-				StructMemberBuilder& StructMemberBuilder::name(const vl::WString& value)
-				{
-					node->name.value = value;
-					return *this;
-				}
-
-				StructMemberBuilder& StructMemberBuilder::type(const vl::Ptr<WfType>& value)
-				{
-					node->type = value;
-					return *this;
-				}
-
-/***********************************************************************
-SwitchCaseBuilder
-***********************************************************************/
-
-				SwitchCaseBuilder& SwitchCaseBuilder::expression(const vl::Ptr<WfExpression>& value)
-				{
-					node->expression = value;
-					return *this;
-				}
-
-				SwitchCaseBuilder& SwitchCaseBuilder::statement(const vl::Ptr<WfStatement>& value)
-				{
-					node->statement = value;
-					return *this;
-				}
-
-/***********************************************************************
-SwitchStatementBuilder
-***********************************************************************/
-
-				SwitchStatementBuilder& SwitchStatementBuilder::caseBranches(const vl::Ptr<WfSwitchCase>& value)
-				{
-					node->caseBranches.Add(value);
-					return *this;
-				}
-
-				SwitchStatementBuilder& SwitchStatementBuilder::defaultBranch(const vl::Ptr<WfStatement>& value)
-				{
-					node->defaultBranch = value;
-					return *this;
-				}
-
-				SwitchStatementBuilder& SwitchStatementBuilder::expression(const vl::Ptr<WfExpression>& value)
-				{
-					node->expression = value;
-					return *this;
-				}
-
-/***********************************************************************
-TopQualifiedExpressionBuilder
-***********************************************************************/
-
-				TopQualifiedExpressionBuilder& TopQualifiedExpressionBuilder::name(const vl::WString& value)
-				{
-					node->name.value = value;
-					return *this;
-				}
-
-/***********************************************************************
-TopQualifiedTypeBuilder
-***********************************************************************/
-
-				TopQualifiedTypeBuilder& TopQualifiedTypeBuilder::name(const vl::WString& value)
-				{
-					node->name.value = value;
-					return *this;
-				}
-
-/***********************************************************************
-TryStatementBuilder
-***********************************************************************/
-
-				TryStatementBuilder& TryStatementBuilder::catchStatement(const vl::Ptr<WfStatement>& value)
-				{
-					node->catchStatement = value;
-					return *this;
-				}
-
-				TryStatementBuilder& TryStatementBuilder::finallyStatement(const vl::Ptr<WfStatement>& value)
-				{
-					node->finallyStatement = value;
-					return *this;
-				}
-
-				TryStatementBuilder& TryStatementBuilder::name(const vl::WString& value)
-				{
-					node->name.value = value;
-					return *this;
-				}
-
-				TryStatementBuilder& TryStatementBuilder::protectedStatement(const vl::Ptr<WfStatement>& value)
-				{
-					node->protectedStatement = value;
-					return *this;
-				}
-
-/***********************************************************************
-TypeCastingExpressionBuilder
-***********************************************************************/
-
-				TypeCastingExpressionBuilder& TypeCastingExpressionBuilder::expression(const vl::Ptr<WfExpression>& value)
-				{
-					node->expression = value;
-					return *this;
-				}
-
-				TypeCastingExpressionBuilder& TypeCastingExpressionBuilder::strategy(WfTypeCastingStrategy value)
-				{
-					node->strategy = value;
-					return *this;
-				}
-
-				TypeCastingExpressionBuilder& TypeCastingExpressionBuilder::type(const vl::Ptr<WfType>& value)
-				{
-					node->type = value;
-					return *this;
-				}
-
-/***********************************************************************
-TypeOfExpressionExpressionBuilder
-***********************************************************************/
-
-				TypeOfExpressionExpressionBuilder& TypeOfExpressionExpressionBuilder::expression(const vl::Ptr<WfExpression>& value)
-				{
-					node->expression = value;
-					return *this;
-				}
-
-/***********************************************************************
-TypeOfTypeExpressionBuilder
-***********************************************************************/
-
-				TypeOfTypeExpressionBuilder& TypeOfTypeExpressionBuilder::type(const vl::Ptr<WfType>& value)
-				{
-					node->type = value;
-					return *this;
-				}
-
-/***********************************************************************
-TypeTestingExpressionBuilder
-***********************************************************************/
-
-				TypeTestingExpressionBuilder& TypeTestingExpressionBuilder::expression(const vl::Ptr<WfExpression>& value)
-				{
-					node->expression = value;
-					return *this;
-				}
-
-				TypeTestingExpressionBuilder& TypeTestingExpressionBuilder::test(WfTypeTesting value)
-				{
-					node->test = value;
-					return *this;
-				}
-
-				TypeTestingExpressionBuilder& TypeTestingExpressionBuilder::type(const vl::Ptr<WfType>& value)
-				{
-					node->type = value;
-					return *this;
-				}
-
-/***********************************************************************
-UnaryExpressionBuilder
-***********************************************************************/
-
-				UnaryExpressionBuilder& UnaryExpressionBuilder::op(WfUnaryOperator value)
-				{
-					node->op = value;
-					return *this;
-				}
-
-				UnaryExpressionBuilder& UnaryExpressionBuilder::operand(const vl::Ptr<WfExpression>& value)
-				{
-					node->operand = value;
-					return *this;
-				}
-
-/***********************************************************************
-VariableDeclarationBuilder
-***********************************************************************/
-
-				VariableDeclarationBuilder& VariableDeclarationBuilder::expression(const vl::Ptr<WfExpression>& value)
-				{
-					node->expression = value;
-					return *this;
-				}
-
-				VariableDeclarationBuilder& VariableDeclarationBuilder::type(const vl::Ptr<WfType>& value)
-				{
-					node->type = value;
-					return *this;
-				}
-
-/***********************************************************************
-VariableStatementBuilder
-***********************************************************************/
-
-				VariableStatementBuilder& VariableStatementBuilder::variable(const vl::Ptr<WfVariableDeclaration>& value)
-				{
-					node->variable = value;
-					return *this;
-				}
-
-/***********************************************************************
-VirtualCfeDeclarationBuilder
-***********************************************************************/
-
-				VirtualCfeDeclarationBuilder& VirtualCfeDeclarationBuilder::expandedDeclarations(const vl::Ptr<WfDeclaration>& value)
-				{
-					node->expandedDeclarations.Add(value);
-					return *this;
-				}
-
-/***********************************************************************
-VirtualCfeExpressionBuilder
-***********************************************************************/
-
-				VirtualCfeExpressionBuilder& VirtualCfeExpressionBuilder::expandedExpression(const vl::Ptr<WfExpression>& value)
-				{
-					node->expandedExpression = value;
-					return *this;
-				}
-
-/***********************************************************************
-VirtualCseDeclarationBuilder
-***********************************************************************/
-
-				VirtualCseDeclarationBuilder& VirtualCseDeclarationBuilder::expandedDeclarations(const vl::Ptr<WfDeclaration>& value)
-				{
-					node->expandedDeclarations.Add(value);
-					return *this;
-				}
-
-/***********************************************************************
-VirtualCseExpressionBuilder
-***********************************************************************/
-
-				VirtualCseExpressionBuilder& VirtualCseExpressionBuilder::expandedExpression(const vl::Ptr<WfExpression>& value)
-				{
-					node->expandedExpression = value;
-					return *this;
-				}
-
-/***********************************************************************
-VirtualCseStatementBuilder
-***********************************************************************/
-
-				VirtualCseStatementBuilder& VirtualCseStatementBuilder::expandedStatement(const vl::Ptr<WfStatement>& value)
+				MakeCoProviderStatement& MakeCoProviderStatement::expandedStatement(const vl::Ptr<WfStatement>& value)
 				{
 					node->expandedStatement = value;
 					return *this;
 				}
 
 /***********************************************************************
-WhileStatementBuilder
+MakeConstructorArgument
 ***********************************************************************/
 
-				WhileStatementBuilder& WhileStatementBuilder::condition(const vl::Ptr<WfExpression>& value)
+				MakeConstructorArgument& MakeConstructorArgument::key(const vl::Ptr<WfExpression>& value)
+				{
+					node->key = value;
+					return *this;
+				}
+
+				MakeConstructorArgument& MakeConstructorArgument::value(const vl::Ptr<WfExpression>& value)
+				{
+					node->value = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeConstructorDeclaration
+***********************************************************************/
+
+				MakeConstructorDeclaration& MakeConstructorDeclaration::arguments(const vl::Ptr<WfFunctionArgument>& value)
+				{
+					node->arguments.Add(value);
+					return *this;
+				}
+
+				MakeConstructorDeclaration& MakeConstructorDeclaration::baseConstructorCalls(const vl::Ptr<WfBaseConstructorCall>& value)
+				{
+					node->baseConstructorCalls.Add(value);
+					return *this;
+				}
+
+				MakeConstructorDeclaration& MakeConstructorDeclaration::constructorType(WfConstructorType value)
+				{
+					node->constructorType = value;
+					return *this;
+				}
+
+				MakeConstructorDeclaration& MakeConstructorDeclaration::statement(const vl::Ptr<WfStatement>& value)
+				{
+					node->statement = value;
+					return *this;
+				}
+
+				MakeConstructorDeclaration& MakeConstructorDeclaration::attributes(const vl::Ptr<WfAttribute>& value)
+				{
+					node->attributes.Add(value);
+					return *this;
+				}
+
+				MakeConstructorDeclaration& MakeConstructorDeclaration::name(const vl::WString& value)
+				{
+					node->name.value = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeConstructorExpression
+***********************************************************************/
+
+				MakeConstructorExpression& MakeConstructorExpression::arguments(const vl::Ptr<WfConstructorArgument>& value)
+				{
+					node->arguments.Add(value);
+					return *this;
+				}
+
+/***********************************************************************
+MakeDeclaration
+***********************************************************************/
+
+				MakeDeclaration& MakeDeclaration::attributes(const vl::Ptr<WfAttribute>& value)
+				{
+					node->attributes.Add(value);
+					return *this;
+				}
+
+				MakeDeclaration& MakeDeclaration::name(const vl::WString& value)
+				{
+					node->name.value = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeDeleteStatement
+***********************************************************************/
+
+				MakeDeleteStatement& MakeDeleteStatement::expression(const vl::Ptr<WfExpression>& value)
+				{
+					node->expression = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeDestructorDeclaration
+***********************************************************************/
+
+				MakeDestructorDeclaration& MakeDestructorDeclaration::statement(const vl::Ptr<WfStatement>& value)
+				{
+					node->statement = value;
+					return *this;
+				}
+
+				MakeDestructorDeclaration& MakeDestructorDeclaration::attributes(const vl::Ptr<WfAttribute>& value)
+				{
+					node->attributes.Add(value);
+					return *this;
+				}
+
+				MakeDestructorDeclaration& MakeDestructorDeclaration::name(const vl::WString& value)
+				{
+					node->name.value = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeDetachEventExpression
+***********************************************************************/
+
+				MakeDetachEventExpression& MakeDetachEventExpression::event(const vl::Ptr<WfExpression>& value)
+				{
+					node->event = value;
+					return *this;
+				}
+
+				MakeDetachEventExpression& MakeDetachEventExpression::handler(const vl::Ptr<WfExpression>& value)
+				{
+					node->handler = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeEnumDeclaration
+***********************************************************************/
+
+				MakeEnumDeclaration& MakeEnumDeclaration::items(const vl::Ptr<WfEnumItem>& value)
+				{
+					node->items.Add(value);
+					return *this;
+				}
+
+				MakeEnumDeclaration& MakeEnumDeclaration::kind(WfEnumKind value)
+				{
+					node->kind = value;
+					return *this;
+				}
+
+				MakeEnumDeclaration& MakeEnumDeclaration::attributes(const vl::Ptr<WfAttribute>& value)
+				{
+					node->attributes.Add(value);
+					return *this;
+				}
+
+				MakeEnumDeclaration& MakeEnumDeclaration::name(const vl::WString& value)
+				{
+					node->name.value = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeEnumItem
+***********************************************************************/
+
+				MakeEnumItem& MakeEnumItem::attributes(const vl::Ptr<WfAttribute>& value)
+				{
+					node->attributes.Add(value);
+					return *this;
+				}
+
+				MakeEnumItem& MakeEnumItem::intersections(const vl::Ptr<WfEnumItemIntersection>& value)
+				{
+					node->intersections.Add(value);
+					return *this;
+				}
+
+				MakeEnumItem& MakeEnumItem::kind(WfEnumItemKind value)
+				{
+					node->kind = value;
+					return *this;
+				}
+
+				MakeEnumItem& MakeEnumItem::name(const vl::WString& value)
+				{
+					node->name.value = value;
+					return *this;
+				}
+
+				MakeEnumItem& MakeEnumItem::number(const vl::WString& value)
+				{
+					node->number.value = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeEnumItemIntersection
+***********************************************************************/
+
+				MakeEnumItemIntersection& MakeEnumItemIntersection::name(const vl::WString& value)
+				{
+					node->name.value = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeEnumerableType
+***********************************************************************/
+
+				MakeEnumerableType& MakeEnumerableType::element(const vl::Ptr<WfType>& value)
+				{
+					node->element = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeEventDeclaration
+***********************************************************************/
+
+				MakeEventDeclaration& MakeEventDeclaration::arguments(const vl::Ptr<WfType>& value)
+				{
+					node->arguments.Add(value);
+					return *this;
+				}
+
+				MakeEventDeclaration& MakeEventDeclaration::attributes(const vl::Ptr<WfAttribute>& value)
+				{
+					node->attributes.Add(value);
+					return *this;
+				}
+
+				MakeEventDeclaration& MakeEventDeclaration::name(const vl::WString& value)
+				{
+					node->name.value = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeExpectedTypeCastExpression
+***********************************************************************/
+
+				MakeExpectedTypeCastExpression& MakeExpectedTypeCastExpression::expression(const vl::Ptr<WfExpression>& value)
+				{
+					node->expression = value;
+					return *this;
+				}
+
+				MakeExpectedTypeCastExpression& MakeExpectedTypeCastExpression::strategy(WfTypeCastingStrategy value)
+				{
+					node->strategy = value;
+					return *this;
+				}
+
+				MakeExpectedTypeCastExpression& MakeExpectedTypeCastExpression::expandedExpression(const vl::Ptr<WfExpression>& value)
+				{
+					node->expandedExpression = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeExpressionStatement
+***********************************************************************/
+
+				MakeExpressionStatement& MakeExpressionStatement::expression(const vl::Ptr<WfExpression>& value)
+				{
+					node->expression = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeFloatingExpression
+***********************************************************************/
+
+				MakeFloatingExpression& MakeFloatingExpression::value(const vl::WString& value)
+				{
+					node->value.value = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeForEachStatement
+***********************************************************************/
+
+				MakeForEachStatement& MakeForEachStatement::collection(const vl::Ptr<WfExpression>& value)
+				{
+					node->collection = value;
+					return *this;
+				}
+
+				MakeForEachStatement& MakeForEachStatement::direction(WfForEachDirection value)
+				{
+					node->direction = value;
+					return *this;
+				}
+
+				MakeForEachStatement& MakeForEachStatement::name(const vl::WString& value)
+				{
+					node->name.value = value;
+					return *this;
+				}
+
+				MakeForEachStatement& MakeForEachStatement::statement(const vl::Ptr<WfStatement>& value)
+				{
+					node->statement = value;
+					return *this;
+				}
+
+				MakeForEachStatement& MakeForEachStatement::expandedStatement(const vl::Ptr<WfStatement>& value)
+				{
+					node->expandedStatement = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeFormatExpression
+***********************************************************************/
+
+				MakeFormatExpression& MakeFormatExpression::value(const vl::WString& value)
+				{
+					node->value.value = value;
+					return *this;
+				}
+
+				MakeFormatExpression& MakeFormatExpression::expandedExpression(const vl::Ptr<WfExpression>& value)
+				{
+					node->expandedExpression = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeFunctionArgument
+***********************************************************************/
+
+				MakeFunctionArgument& MakeFunctionArgument::attributes(const vl::Ptr<WfAttribute>& value)
+				{
+					node->attributes.Add(value);
+					return *this;
+				}
+
+				MakeFunctionArgument& MakeFunctionArgument::name(const vl::WString& value)
+				{
+					node->name.value = value;
+					return *this;
+				}
+
+				MakeFunctionArgument& MakeFunctionArgument::type(const vl::Ptr<WfType>& value)
+				{
+					node->type = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeFunctionDeclaration
+***********************************************************************/
+
+				MakeFunctionDeclaration& MakeFunctionDeclaration::anonymity(WfFunctionAnonymity value)
+				{
+					node->anonymity = value;
+					return *this;
+				}
+
+				MakeFunctionDeclaration& MakeFunctionDeclaration::arguments(const vl::Ptr<WfFunctionArgument>& value)
+				{
+					node->arguments.Add(value);
+					return *this;
+				}
+
+				MakeFunctionDeclaration& MakeFunctionDeclaration::functionKind(WfFunctionKind value)
+				{
+					node->functionKind = value;
+					return *this;
+				}
+
+				MakeFunctionDeclaration& MakeFunctionDeclaration::returnType(const vl::Ptr<WfType>& value)
+				{
+					node->returnType = value;
+					return *this;
+				}
+
+				MakeFunctionDeclaration& MakeFunctionDeclaration::statement(const vl::Ptr<WfStatement>& value)
+				{
+					node->statement = value;
+					return *this;
+				}
+
+				MakeFunctionDeclaration& MakeFunctionDeclaration::attributes(const vl::Ptr<WfAttribute>& value)
+				{
+					node->attributes.Add(value);
+					return *this;
+				}
+
+				MakeFunctionDeclaration& MakeFunctionDeclaration::name(const vl::WString& value)
+				{
+					node->name.value = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeFunctionExpression
+***********************************************************************/
+
+				MakeFunctionExpression& MakeFunctionExpression::function(const vl::Ptr<WfFunctionDeclaration>& value)
+				{
+					node->function = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeFunctionType
+***********************************************************************/
+
+				MakeFunctionType& MakeFunctionType::arguments(const vl::Ptr<WfType>& value)
+				{
+					node->arguments.Add(value);
+					return *this;
+				}
+
+				MakeFunctionType& MakeFunctionType::result(const vl::Ptr<WfType>& value)
+				{
+					node->result = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeGotoStatement
+***********************************************************************/
+
+				MakeGotoStatement& MakeGotoStatement::label(const vl::WString& value)
+				{
+					node->label.value = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeIfExpression
+***********************************************************************/
+
+				MakeIfExpression& MakeIfExpression::condition(const vl::Ptr<WfExpression>& value)
 				{
 					node->condition = value;
 					return *this;
 				}
 
-				WhileStatementBuilder& WhileStatementBuilder::statement(const vl::Ptr<WfStatement>& value)
+				MakeIfExpression& MakeIfExpression::falseBranch(const vl::Ptr<WfExpression>& value)
+				{
+					node->falseBranch = value;
+					return *this;
+				}
+
+				MakeIfExpression& MakeIfExpression::trueBranch(const vl::Ptr<WfExpression>& value)
+				{
+					node->trueBranch = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeIfStatement
+***********************************************************************/
+
+				MakeIfStatement& MakeIfStatement::expression(const vl::Ptr<WfExpression>& value)
+				{
+					node->expression = value;
+					return *this;
+				}
+
+				MakeIfStatement& MakeIfStatement::falseBranch(const vl::Ptr<WfStatement>& value)
+				{
+					node->falseBranch = value;
+					return *this;
+				}
+
+				MakeIfStatement& MakeIfStatement::name(const vl::WString& value)
+				{
+					node->name.value = value;
+					return *this;
+				}
+
+				MakeIfStatement& MakeIfStatement::trueBranch(const vl::Ptr<WfStatement>& value)
+				{
+					node->trueBranch = value;
+					return *this;
+				}
+
+				MakeIfStatement& MakeIfStatement::type(const vl::Ptr<WfType>& value)
+				{
+					node->type = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeInferExpression
+***********************************************************************/
+
+				MakeInferExpression& MakeInferExpression::expression(const vl::Ptr<WfExpression>& value)
+				{
+					node->expression = value;
+					return *this;
+				}
+
+				MakeInferExpression& MakeInferExpression::type(const vl::Ptr<WfType>& value)
+				{
+					node->type = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeIntegerExpression
+***********************************************************************/
+
+				MakeIntegerExpression& MakeIntegerExpression::value(const vl::WString& value)
+				{
+					node->value.value = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeLetExpression
+***********************************************************************/
+
+				MakeLetExpression& MakeLetExpression::expression(const vl::Ptr<WfExpression>& value)
+				{
+					node->expression = value;
+					return *this;
+				}
+
+				MakeLetExpression& MakeLetExpression::variables(const vl::Ptr<WfLetVariable>& value)
+				{
+					node->variables.Add(value);
+					return *this;
+				}
+
+/***********************************************************************
+MakeLetVariable
+***********************************************************************/
+
+				MakeLetVariable& MakeLetVariable::name(const vl::WString& value)
+				{
+					node->name.value = value;
+					return *this;
+				}
+
+				MakeLetVariable& MakeLetVariable::value(const vl::Ptr<WfExpression>& value)
+				{
+					node->value = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeLiteralExpression
+***********************************************************************/
+
+				MakeLiteralExpression& MakeLiteralExpression::value(WfLiteralValue value)
+				{
+					node->value = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeMapType
+***********************************************************************/
+
+				MakeMapType& MakeMapType::key(const vl::Ptr<WfType>& value)
+				{
+					node->key = value;
+					return *this;
+				}
+
+				MakeMapType& MakeMapType::value(const vl::Ptr<WfType>& value)
+				{
+					node->value = value;
+					return *this;
+				}
+
+				MakeMapType& MakeMapType::writability(WfMapWritability value)
+				{
+					node->writability = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeMemberExpression
+***********************************************************************/
+
+				MakeMemberExpression& MakeMemberExpression::name(const vl::WString& value)
+				{
+					node->name.value = value;
+					return *this;
+				}
+
+				MakeMemberExpression& MakeMemberExpression::parent(const vl::Ptr<WfExpression>& value)
+				{
+					node->parent = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeMixinCastExpression
+***********************************************************************/
+
+				MakeMixinCastExpression& MakeMixinCastExpression::expression(const vl::Ptr<WfExpression>& value)
+				{
+					node->expression = value;
+					return *this;
+				}
+
+				MakeMixinCastExpression& MakeMixinCastExpression::type(const vl::Ptr<WfType>& value)
+				{
+					node->type = value;
+					return *this;
+				}
+
+				MakeMixinCastExpression& MakeMixinCastExpression::expandedExpression(const vl::Ptr<WfExpression>& value)
+				{
+					node->expandedExpression = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeModule
+***********************************************************************/
+
+				MakeModule& MakeModule::declarations(const vl::Ptr<WfDeclaration>& value)
+				{
+					node->declarations.Add(value);
+					return *this;
+				}
+
+				MakeModule& MakeModule::moduleType(WfModuleType value)
+				{
+					node->moduleType = value;
+					return *this;
+				}
+
+				MakeModule& MakeModule::name(const vl::WString& value)
+				{
+					node->name.value = value;
+					return *this;
+				}
+
+				MakeModule& MakeModule::paths(const vl::Ptr<WfModuleUsingPath>& value)
+				{
+					node->paths.Add(value);
+					return *this;
+				}
+
+/***********************************************************************
+MakeModuleUsingItem
+***********************************************************************/
+
+				MakeModuleUsingItem& MakeModuleUsingItem::fragments(const vl::Ptr<WfModuleUsingFragment>& value)
+				{
+					node->fragments.Add(value);
+					return *this;
+				}
+
+/***********************************************************************
+MakeModuleUsingNameFragment
+***********************************************************************/
+
+				MakeModuleUsingNameFragment& MakeModuleUsingNameFragment::name(const vl::WString& value)
+				{
+					node->name.value = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeModuleUsingPath
+***********************************************************************/
+
+				MakeModuleUsingPath& MakeModuleUsingPath::items(const vl::Ptr<WfModuleUsingItem>& value)
+				{
+					node->items.Add(value);
+					return *this;
+				}
+
+/***********************************************************************
+MakeNamespaceDeclaration
+***********************************************************************/
+
+				MakeNamespaceDeclaration& MakeNamespaceDeclaration::declarations(const vl::Ptr<WfDeclaration>& value)
+				{
+					node->declarations.Add(value);
+					return *this;
+				}
+
+				MakeNamespaceDeclaration& MakeNamespaceDeclaration::attributes(const vl::Ptr<WfAttribute>& value)
+				{
+					node->attributes.Add(value);
+					return *this;
+				}
+
+				MakeNamespaceDeclaration& MakeNamespaceDeclaration::name(const vl::WString& value)
+				{
+					node->name.value = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeNewClassExpression
+***********************************************************************/
+
+				MakeNewClassExpression& MakeNewClassExpression::arguments(const vl::Ptr<WfExpression>& value)
+				{
+					node->arguments.Add(value);
+					return *this;
+				}
+
+				MakeNewClassExpression& MakeNewClassExpression::type(const vl::Ptr<WfType>& value)
+				{
+					node->type = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeNewCoroutineExpression
+***********************************************************************/
+
+				MakeNewCoroutineExpression& MakeNewCoroutineExpression::name(const vl::WString& value)
+				{
+					node->name.value = value;
+					return *this;
+				}
+
+				MakeNewCoroutineExpression& MakeNewCoroutineExpression::statement(const vl::Ptr<WfStatement>& value)
+				{
+					node->statement = value;
+					return *this;
+				}
+
+				MakeNewCoroutineExpression& MakeNewCoroutineExpression::expandedExpression(const vl::Ptr<WfExpression>& value)
+				{
+					node->expandedExpression = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeNewInterfaceExpression
+***********************************************************************/
+
+				MakeNewInterfaceExpression& MakeNewInterfaceExpression::declarations(const vl::Ptr<WfDeclaration>& value)
+				{
+					node->declarations.Add(value);
+					return *this;
+				}
+
+				MakeNewInterfaceExpression& MakeNewInterfaceExpression::type(const vl::Ptr<WfType>& value)
+				{
+					node->type = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeNullableType
+***********************************************************************/
+
+				MakeNullableType& MakeNullableType::element(const vl::Ptr<WfType>& value)
+				{
+					node->element = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeObservableListType
+***********************************************************************/
+
+				MakeObservableListType& MakeObservableListType::element(const vl::Ptr<WfType>& value)
+				{
+					node->element = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeObserveExpression
+***********************************************************************/
+
+				MakeObserveExpression& MakeObserveExpression::events(const vl::Ptr<WfExpression>& value)
+				{
+					node->events.Add(value);
+					return *this;
+				}
+
+				MakeObserveExpression& MakeObserveExpression::expression(const vl::Ptr<WfExpression>& value)
+				{
+					node->expression = value;
+					return *this;
+				}
+
+				MakeObserveExpression& MakeObserveExpression::name(const vl::WString& value)
+				{
+					node->name.value = value;
+					return *this;
+				}
+
+				MakeObserveExpression& MakeObserveExpression::observeType(WfObserveType value)
+				{
+					node->observeType = value;
+					return *this;
+				}
+
+				MakeObserveExpression& MakeObserveExpression::parent(const vl::Ptr<WfExpression>& value)
+				{
+					node->parent = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeOrderedLambdaExpression
+***********************************************************************/
+
+				MakeOrderedLambdaExpression& MakeOrderedLambdaExpression::body(const vl::Ptr<WfExpression>& value)
+				{
+					node->body = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeOrderedNameExpression
+***********************************************************************/
+
+				MakeOrderedNameExpression& MakeOrderedNameExpression::name(const vl::WString& value)
+				{
+					node->name.value = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakePredefinedType
+***********************************************************************/
+
+				MakePredefinedType& MakePredefinedType::name(WfPredefinedTypeName value)
+				{
+					node->name = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakePropertyDeclaration
+***********************************************************************/
+
+				MakePropertyDeclaration& MakePropertyDeclaration::getter(const vl::WString& value)
+				{
+					node->getter.value = value;
+					return *this;
+				}
+
+				MakePropertyDeclaration& MakePropertyDeclaration::setter(const vl::WString& value)
+				{
+					node->setter.value = value;
+					return *this;
+				}
+
+				MakePropertyDeclaration& MakePropertyDeclaration::type(const vl::Ptr<WfType>& value)
+				{
+					node->type = value;
+					return *this;
+				}
+
+				MakePropertyDeclaration& MakePropertyDeclaration::valueChangedEvent(const vl::WString& value)
+				{
+					node->valueChangedEvent.value = value;
+					return *this;
+				}
+
+				MakePropertyDeclaration& MakePropertyDeclaration::attributes(const vl::Ptr<WfAttribute>& value)
+				{
+					node->attributes.Add(value);
+					return *this;
+				}
+
+				MakePropertyDeclaration& MakePropertyDeclaration::name(const vl::WString& value)
+				{
+					node->name.value = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeRaiseExceptionStatement
+***********************************************************************/
+
+				MakeRaiseExceptionStatement& MakeRaiseExceptionStatement::expression(const vl::Ptr<WfExpression>& value)
+				{
+					node->expression = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeRangeExpression
+***********************************************************************/
+
+				MakeRangeExpression& MakeRangeExpression::begin(const vl::Ptr<WfExpression>& value)
+				{
+					node->begin = value;
+					return *this;
+				}
+
+				MakeRangeExpression& MakeRangeExpression::beginBoundary(WfRangeBoundary value)
+				{
+					node->beginBoundary = value;
+					return *this;
+				}
+
+				MakeRangeExpression& MakeRangeExpression::end(const vl::Ptr<WfExpression>& value)
+				{
+					node->end = value;
+					return *this;
+				}
+
+				MakeRangeExpression& MakeRangeExpression::endBoundary(WfRangeBoundary value)
+				{
+					node->endBoundary = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeRawPointerType
+***********************************************************************/
+
+				MakeRawPointerType& MakeRawPointerType::element(const vl::Ptr<WfType>& value)
+				{
+					node->element = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeReferenceExpression
+***********************************************************************/
+
+				MakeReferenceExpression& MakeReferenceExpression::name(const vl::WString& value)
+				{
+					node->name.value = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeReferenceType
+***********************************************************************/
+
+				MakeReferenceType& MakeReferenceType::name(const vl::WString& value)
+				{
+					node->name.value = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeReturnStatement
+***********************************************************************/
+
+				MakeReturnStatement& MakeReturnStatement::expression(const vl::Ptr<WfExpression>& value)
+				{
+					node->expression = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeSetTestingExpression
+***********************************************************************/
+
+				MakeSetTestingExpression& MakeSetTestingExpression::collection(const vl::Ptr<WfExpression>& value)
+				{
+					node->collection = value;
+					return *this;
+				}
+
+				MakeSetTestingExpression& MakeSetTestingExpression::element(const vl::Ptr<WfExpression>& value)
+				{
+					node->element = value;
+					return *this;
+				}
+
+				MakeSetTestingExpression& MakeSetTestingExpression::test(WfSetTesting value)
+				{
+					node->test = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeSharedPointerType
+***********************************************************************/
+
+				MakeSharedPointerType& MakeSharedPointerType::element(const vl::Ptr<WfType>& value)
+				{
+					node->element = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeStateDeclaration
+***********************************************************************/
+
+				MakeStateDeclaration& MakeStateDeclaration::arguments(const vl::Ptr<WfFunctionArgument>& value)
+				{
+					node->arguments.Add(value);
+					return *this;
+				}
+
+				MakeStateDeclaration& MakeStateDeclaration::name(const vl::WString& value)
+				{
+					node->name.value = value;
+					return *this;
+				}
+
+				MakeStateDeclaration& MakeStateDeclaration::statement(const vl::Ptr<WfStatement>& value)
+				{
+					node->statement = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeStateInput
+***********************************************************************/
+
+				MakeStateInput& MakeStateInput::arguments(const vl::Ptr<WfFunctionArgument>& value)
+				{
+					node->arguments.Add(value);
+					return *this;
+				}
+
+				MakeStateInput& MakeStateInput::name(const vl::WString& value)
+				{
+					node->name.value = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeStateInvokeStatement
+***********************************************************************/
+
+				MakeStateInvokeStatement& MakeStateInvokeStatement::arguments(const vl::Ptr<WfExpression>& value)
+				{
+					node->arguments.Add(value);
+					return *this;
+				}
+
+				MakeStateInvokeStatement& MakeStateInvokeStatement::name(const vl::WString& value)
+				{
+					node->name.value = value;
+					return *this;
+				}
+
+				MakeStateInvokeStatement& MakeStateInvokeStatement::type(WfStateInvokeType value)
+				{
+					node->type = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeStateMachineDeclaration
+***********************************************************************/
+
+				MakeStateMachineDeclaration& MakeStateMachineDeclaration::inputs(const vl::Ptr<WfStateInput>& value)
+				{
+					node->inputs.Add(value);
+					return *this;
+				}
+
+				MakeStateMachineDeclaration& MakeStateMachineDeclaration::states(const vl::Ptr<WfStateDeclaration>& value)
+				{
+					node->states.Add(value);
+					return *this;
+				}
+
+				MakeStateMachineDeclaration& MakeStateMachineDeclaration::expandedDeclarations(const vl::Ptr<WfDeclaration>& value)
+				{
+					node->expandedDeclarations.Add(value);
+					return *this;
+				}
+
+				MakeStateMachineDeclaration& MakeStateMachineDeclaration::attributes(const vl::Ptr<WfAttribute>& value)
+				{
+					node->attributes.Add(value);
+					return *this;
+				}
+
+				MakeStateMachineDeclaration& MakeStateMachineDeclaration::name(const vl::WString& value)
+				{
+					node->name.value = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeStateSwitchArgument
+***********************************************************************/
+
+				MakeStateSwitchArgument& MakeStateSwitchArgument::name(const vl::WString& value)
+				{
+					node->name.value = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeStateSwitchCase
+***********************************************************************/
+
+				MakeStateSwitchCase& MakeStateSwitchCase::arguments(const vl::Ptr<WfStateSwitchArgument>& value)
+				{
+					node->arguments.Add(value);
+					return *this;
+				}
+
+				MakeStateSwitchCase& MakeStateSwitchCase::name(const vl::WString& value)
+				{
+					node->name.value = value;
+					return *this;
+				}
+
+				MakeStateSwitchCase& MakeStateSwitchCase::statement(const vl::Ptr<WfStatement>& value)
+				{
+					node->statement = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeStateSwitchStatement
+***********************************************************************/
+
+				MakeStateSwitchStatement& MakeStateSwitchStatement::caseBranches(const vl::Ptr<WfStateSwitchCase>& value)
+				{
+					node->caseBranches.Add(value);
+					return *this;
+				}
+
+				MakeStateSwitchStatement& MakeStateSwitchStatement::type(WfStateSwitchType value)
+				{
+					node->type = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeStringExpression
+***********************************************************************/
+
+				MakeStringExpression& MakeStringExpression::value(const vl::WString& value)
+				{
+					node->value.value = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeStructDeclaration
+***********************************************************************/
+
+				MakeStructDeclaration& MakeStructDeclaration::members(const vl::Ptr<WfStructMember>& value)
+				{
+					node->members.Add(value);
+					return *this;
+				}
+
+				MakeStructDeclaration& MakeStructDeclaration::attributes(const vl::Ptr<WfAttribute>& value)
+				{
+					node->attributes.Add(value);
+					return *this;
+				}
+
+				MakeStructDeclaration& MakeStructDeclaration::name(const vl::WString& value)
+				{
+					node->name.value = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeStructMember
+***********************************************************************/
+
+				MakeStructMember& MakeStructMember::attributes(const vl::Ptr<WfAttribute>& value)
+				{
+					node->attributes.Add(value);
+					return *this;
+				}
+
+				MakeStructMember& MakeStructMember::name(const vl::WString& value)
+				{
+					node->name.value = value;
+					return *this;
+				}
+
+				MakeStructMember& MakeStructMember::type(const vl::Ptr<WfType>& value)
+				{
+					node->type = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeSwitchCase
+***********************************************************************/
+
+				MakeSwitchCase& MakeSwitchCase::expression(const vl::Ptr<WfExpression>& value)
+				{
+					node->expression = value;
+					return *this;
+				}
+
+				MakeSwitchCase& MakeSwitchCase::statement(const vl::Ptr<WfStatement>& value)
+				{
+					node->statement = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeSwitchStatement
+***********************************************************************/
+
+				MakeSwitchStatement& MakeSwitchStatement::caseBranches(const vl::Ptr<WfSwitchCase>& value)
+				{
+					node->caseBranches.Add(value);
+					return *this;
+				}
+
+				MakeSwitchStatement& MakeSwitchStatement::defaultBranch(const vl::Ptr<WfStatement>& value)
+				{
+					node->defaultBranch = value;
+					return *this;
+				}
+
+				MakeSwitchStatement& MakeSwitchStatement::expression(const vl::Ptr<WfExpression>& value)
+				{
+					node->expression = value;
+					return *this;
+				}
+
+				MakeSwitchStatement& MakeSwitchStatement::expandedStatement(const vl::Ptr<WfStatement>& value)
+				{
+					node->expandedStatement = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeTopQualifiedExpression
+***********************************************************************/
+
+				MakeTopQualifiedExpression& MakeTopQualifiedExpression::name(const vl::WString& value)
+				{
+					node->name.value = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeTopQualifiedType
+***********************************************************************/
+
+				MakeTopQualifiedType& MakeTopQualifiedType::name(const vl::WString& value)
+				{
+					node->name.value = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeTryStatement
+***********************************************************************/
+
+				MakeTryStatement& MakeTryStatement::catchStatement(const vl::Ptr<WfStatement>& value)
+				{
+					node->catchStatement = value;
+					return *this;
+				}
+
+				MakeTryStatement& MakeTryStatement::finallyStatement(const vl::Ptr<WfStatement>& value)
+				{
+					node->finallyStatement = value;
+					return *this;
+				}
+
+				MakeTryStatement& MakeTryStatement::name(const vl::WString& value)
+				{
+					node->name.value = value;
+					return *this;
+				}
+
+				MakeTryStatement& MakeTryStatement::protectedStatement(const vl::Ptr<WfStatement>& value)
+				{
+					node->protectedStatement = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeTypeCastingExpression
+***********************************************************************/
+
+				MakeTypeCastingExpression& MakeTypeCastingExpression::expression(const vl::Ptr<WfExpression>& value)
+				{
+					node->expression = value;
+					return *this;
+				}
+
+				MakeTypeCastingExpression& MakeTypeCastingExpression::strategy(WfTypeCastingStrategy value)
+				{
+					node->strategy = value;
+					return *this;
+				}
+
+				MakeTypeCastingExpression& MakeTypeCastingExpression::type(const vl::Ptr<WfType>& value)
+				{
+					node->type = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeTypeOfExpressionExpression
+***********************************************************************/
+
+				MakeTypeOfExpressionExpression& MakeTypeOfExpressionExpression::expression(const vl::Ptr<WfExpression>& value)
+				{
+					node->expression = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeTypeOfTypeExpression
+***********************************************************************/
+
+				MakeTypeOfTypeExpression& MakeTypeOfTypeExpression::type(const vl::Ptr<WfType>& value)
+				{
+					node->type = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeTypeTestingExpression
+***********************************************************************/
+
+				MakeTypeTestingExpression& MakeTypeTestingExpression::expression(const vl::Ptr<WfExpression>& value)
+				{
+					node->expression = value;
+					return *this;
+				}
+
+				MakeTypeTestingExpression& MakeTypeTestingExpression::test(WfTypeTesting value)
+				{
+					node->test = value;
+					return *this;
+				}
+
+				MakeTypeTestingExpression& MakeTypeTestingExpression::type(const vl::Ptr<WfType>& value)
+				{
+					node->type = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeUnaryExpression
+***********************************************************************/
+
+				MakeUnaryExpression& MakeUnaryExpression::op(WfUnaryOperator value)
+				{
+					node->op = value;
+					return *this;
+				}
+
+				MakeUnaryExpression& MakeUnaryExpression::operand(const vl::Ptr<WfExpression>& value)
+				{
+					node->operand = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeVariableDeclaration
+***********************************************************************/
+
+				MakeVariableDeclaration& MakeVariableDeclaration::expression(const vl::Ptr<WfExpression>& value)
+				{
+					node->expression = value;
+					return *this;
+				}
+
+				MakeVariableDeclaration& MakeVariableDeclaration::type(const vl::Ptr<WfType>& value)
+				{
+					node->type = value;
+					return *this;
+				}
+
+				MakeVariableDeclaration& MakeVariableDeclaration::attributes(const vl::Ptr<WfAttribute>& value)
+				{
+					node->attributes.Add(value);
+					return *this;
+				}
+
+				MakeVariableDeclaration& MakeVariableDeclaration::name(const vl::WString& value)
+				{
+					node->name.value = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeVariableStatement
+***********************************************************************/
+
+				MakeVariableStatement& MakeVariableStatement::variable(const vl::Ptr<WfVariableDeclaration>& value)
+				{
+					node->variable = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeVirtualCfeDeclaration
+***********************************************************************/
+
+				MakeVirtualCfeDeclaration& MakeVirtualCfeDeclaration::expandedDeclarations(const vl::Ptr<WfDeclaration>& value)
+				{
+					node->expandedDeclarations.Add(value);
+					return *this;
+				}
+
+				MakeVirtualCfeDeclaration& MakeVirtualCfeDeclaration::attributes(const vl::Ptr<WfAttribute>& value)
+				{
+					node->attributes.Add(value);
+					return *this;
+				}
+
+				MakeVirtualCfeDeclaration& MakeVirtualCfeDeclaration::name(const vl::WString& value)
+				{
+					node->name.value = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeVirtualCfeExpression
+***********************************************************************/
+
+				MakeVirtualCfeExpression& MakeVirtualCfeExpression::expandedExpression(const vl::Ptr<WfExpression>& value)
+				{
+					node->expandedExpression = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeVirtualCseDeclaration
+***********************************************************************/
+
+				MakeVirtualCseDeclaration& MakeVirtualCseDeclaration::expandedDeclarations(const vl::Ptr<WfDeclaration>& value)
+				{
+					node->expandedDeclarations.Add(value);
+					return *this;
+				}
+
+				MakeVirtualCseDeclaration& MakeVirtualCseDeclaration::attributes(const vl::Ptr<WfAttribute>& value)
+				{
+					node->attributes.Add(value);
+					return *this;
+				}
+
+				MakeVirtualCseDeclaration& MakeVirtualCseDeclaration::name(const vl::WString& value)
+				{
+					node->name.value = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeVirtualCseExpression
+***********************************************************************/
+
+				MakeVirtualCseExpression& MakeVirtualCseExpression::expandedExpression(const vl::Ptr<WfExpression>& value)
+				{
+					node->expandedExpression = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeVirtualCseStatement
+***********************************************************************/
+
+				MakeVirtualCseStatement& MakeVirtualCseStatement::expandedStatement(const vl::Ptr<WfStatement>& value)
+				{
+					node->expandedStatement = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeWhileStatement
+***********************************************************************/
+
+				MakeWhileStatement& MakeWhileStatement::condition(const vl::Ptr<WfExpression>& value)
+				{
+					node->condition = value;
+					return *this;
+				}
+
+				MakeWhileStatement& MakeWhileStatement::statement(const vl::Ptr<WfStatement>& value)
 				{
 					node->statement = value;
 					return *this;

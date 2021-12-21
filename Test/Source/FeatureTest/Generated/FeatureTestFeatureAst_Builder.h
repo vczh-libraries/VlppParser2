@@ -13,96 +13,65 @@ namespace featuretest
 {
 	namespace builder
 	{
-		class BranchedOptionalFeatureBuilder
+		class MakeBranchedOptionalFeature : public vl::glr::ParsingAstBuilder<BranchedOptionalFeature>
 		{
-		private:
-			BranchedOptionalFeature* node;
 		public:
-			BranchedOptionalFeatureBuilder(BranchedOptionalFeature* _node) : node(_node) {}
-			BranchedOptionalFeatureBuilder& optional(const vl::Ptr<Plus>& value);
-			BranchedOptionalFeatureBuilder& tails(const vl::Ptr<Plus>& value);
-			BranchedOptionalFeatureBuilder& type(BranchType value);
+			MakeBranchedOptionalFeature& optional(const vl::Ptr<Plus>& value);
+			MakeBranchedOptionalFeature& tails(const vl::Ptr<Plus>& value);
+			MakeBranchedOptionalFeature& type(BranchType value);
 		};
 
-		class FeatureToResolveBuilder
+		class MakeFeatureToResolve : public vl::glr::ParsingAstBuilder<FeatureToResolve>
 		{
-		private:
-			FeatureToResolve* node;
 		public:
-			FeatureToResolveBuilder(FeatureToResolve* _node) : node(_node) {}
-			FeatureToResolveBuilder& candidates(const vl::Ptr<Feature>& value);
+			MakeFeatureToResolve& candidates(const vl::Ptr<Feature>& value);
 		};
 
-		class NestedOptionalFeatureBuilder
+		class MakeNestedOptionalFeature : public vl::glr::ParsingAstBuilder<NestedOptionalFeature>
 		{
-		private:
-			NestedOptionalFeature* node;
 		public:
-			NestedOptionalFeatureBuilder(NestedOptionalFeature* _node) : node(_node) {}
-			NestedOptionalFeatureBuilder& optional(const vl::Ptr<Plus>& value);
-			NestedOptionalFeatureBuilder& tail1(const vl::Ptr<Plus>& value);
-			NestedOptionalFeatureBuilder& tail2(const vl::Ptr<Plus>& value);
-			NestedOptionalFeatureBuilder& tail3(const vl::Ptr<Plus>& value);
-			NestedOptionalFeatureBuilder& tails(const vl::Ptr<Plus>& value);
+			MakeNestedOptionalFeature& optional(const vl::Ptr<Plus>& value);
+			MakeNestedOptionalFeature& tail1(const vl::Ptr<Plus>& value);
+			MakeNestedOptionalFeature& tail2(const vl::Ptr<Plus>& value);
+			MakeNestedOptionalFeature& tail3(const vl::Ptr<Plus>& value);
+			MakeNestedOptionalFeature& tails(const vl::Ptr<Plus>& value);
 		};
 
-		class OptionalFeatureBuilder
+		class MakeOptionalFeature : public vl::glr::ParsingAstBuilder<OptionalFeature>
 		{
-		private:
-			OptionalFeature* node;
 		public:
-			OptionalFeatureBuilder(OptionalFeature* _node) : node(_node) {}
-			OptionalFeatureBuilder& loop(const vl::Ptr<Plus>& value);
-			OptionalFeatureBuilder& optional(const vl::Ptr<Plus>& value);
-			OptionalFeatureBuilder& priority(OptionalProprity value);
+			MakeOptionalFeature& loop(const vl::Ptr<Plus>& value);
+			MakeOptionalFeature& optional(const vl::Ptr<Plus>& value);
+			MakeOptionalFeature& priority(OptionalProprity value);
 		};
 
-		class PbaFeatureBuilder
+		class MakePbaFeature : public vl::glr::ParsingAstBuilder<PbaFeature>
 		{
-		private:
-			PbaFeature* node;
 		public:
-			PbaFeatureBuilder(PbaFeature* _node) : node(_node) {}
-			PbaFeatureBuilder& gts(const vl::Ptr<Gt>& value);
-			PbaFeatureBuilder& lts(const vl::Ptr<Lt>& value);
-			PbaFeatureBuilder& optional(const vl::Ptr<Plus>& value);
-			PbaFeatureBuilder& tail(const vl::Ptr<Plus>& value);
-			PbaFeatureBuilder& tails(const vl::Ptr<Plus>& value);
+			MakePbaFeature& gts(const vl::Ptr<Gt>& value);
+			MakePbaFeature& lts(const vl::Ptr<Lt>& value);
+			MakePbaFeature& optional(const vl::Ptr<Plus>& value);
+			MakePbaFeature& tail(const vl::Ptr<Plus>& value);
+			MakePbaFeature& tails(const vl::Ptr<Plus>& value);
 		};
 
-		class Pwa1FeatureBuilder
+		class MakePwa1Feature : public vl::glr::ParsingAstBuilder<Pwa1Feature>
 		{
-		private:
-			Pwa1Feature* node;
 		public:
-			Pwa1FeatureBuilder(Pwa1Feature* _node) : node(_node) {}
-			Pwa1FeatureBuilder& gts(const vl::Ptr<Gt>& value);
-			Pwa1FeatureBuilder& lts(const vl::Ptr<Lt>& value);
-			Pwa1FeatureBuilder& pba(const vl::Ptr<Feature>& value);
+			MakePwa1Feature& gts(const vl::Ptr<Gt>& value);
+			MakePwa1Feature& lts(const vl::Ptr<Lt>& value);
+			MakePwa1Feature& pba(const vl::Ptr<Feature>& value);
 		};
 
-		class PwlFeatureBuilder
+		class MakePwlFeature : public vl::glr::ParsingAstBuilder<PwlFeature>
 		{
-		private:
-			PwlFeature* node;
 		public:
-			PwlFeatureBuilder(PwlFeature* _node) : node(_node) {}
-			PwlFeatureBuilder& one(const vl::Ptr<Lt>& value);
-			PwlFeatureBuilder& prefix(const vl::Ptr<Plus>& value);
-			PwlFeatureBuilder& prev(const vl::Ptr<PwlFeature>& value);
-			PwlFeatureBuilder& two(const vl::Ptr<Lt>& value);
+			MakePwlFeature& one(const vl::Ptr<Lt>& value);
+			MakePwlFeature& prefix(const vl::Ptr<Plus>& value);
+			MakePwlFeature& prev(const vl::Ptr<PwlFeature>& value);
+			MakePwlFeature& two(const vl::Ptr<Lt>& value);
 		};
 
-		using MakeBranchedOptionalFeature = vl::glr::ParsingAstBuilder<BranchedOptionalFeature, BranchedOptionalFeatureBuilder>;
-		using MakeFeatureToResolve = vl::glr::ParsingAstBuilder<FeatureToResolve, FeatureToResolveBuilder>;
-		using MakeGt = vl::glr::ParsingAstBuilder<Gt>;
-		using MakeLt = vl::glr::ParsingAstBuilder<Lt>;
-		using MakeNestedOptionalFeature = vl::glr::ParsingAstBuilder<NestedOptionalFeature, NestedOptionalFeatureBuilder>;
-		using MakeOptionalFeature = vl::glr::ParsingAstBuilder<OptionalFeature, OptionalFeatureBuilder>;
-		using MakePbaFeature = vl::glr::ParsingAstBuilder<PbaFeature, PbaFeatureBuilder>;
-		using MakePlus = vl::glr::ParsingAstBuilder<Plus>;
-		using MakePwa1Feature = vl::glr::ParsingAstBuilder<Pwa1Feature, Pwa1FeatureBuilder>;
-		using MakePwlFeature = vl::glr::ParsingAstBuilder<PwlFeature, PwlFeatureBuilder>;
 	}
 }
 #endif
