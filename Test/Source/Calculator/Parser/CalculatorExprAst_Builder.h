@@ -13,125 +13,83 @@ namespace calculator
 {
 	namespace builder
 	{
-		class ArgBuilder
+		class MakeArg : public vl::glr::ParsingAstBuilder<Arg>
 		{
-		private:
-			Arg* node;
 		public:
-			ArgBuilder(Arg* _node) : node(_node) {}
-			ArgBuilder& name(const vl::WString& value);
+			MakeArg& name(const vl::WString& value);
 		};
 
-		class BinaryBuilder
+		class MakeBinary : public vl::glr::ParsingAstBuilder<Binary>
 		{
-		private:
-			Binary* node;
 		public:
-			BinaryBuilder(Binary* _node) : node(_node) {}
-			BinaryBuilder& left(const vl::Ptr<Expr>& value);
-			BinaryBuilder& op(BinaryOp value);
-			BinaryBuilder& right(const vl::Ptr<Expr>& value);
+			MakeBinary& left(const vl::Ptr<Expr>& value);
+			MakeBinary& op(BinaryOp value);
+			MakeBinary& right(const vl::Ptr<Expr>& value);
+			MakeBinary& expanded(const vl::Ptr<Expr>& value);
 		};
 
-		class CallBuilder
+		class MakeCall : public vl::glr::ParsingAstBuilder<Call>
 		{
-		private:
-			Call* node;
 		public:
-			CallBuilder(Call* _node) : node(_node) {}
-			CallBuilder& args(const vl::Ptr<Expr>& value);
-			CallBuilder& func(const vl::Ptr<Expr>& value);
+			MakeCall& args(const vl::Ptr<Expr>& value);
+			MakeCall& func(const vl::Ptr<Expr>& value);
 		};
 
-		class ExpandableBuilder
+		class MakeExpandable : public vl::glr::ParsingAstBuilder<Expandable>
 		{
-		private:
-			Expandable* node;
 		public:
-			ExpandableBuilder(Expandable* _node) : node(_node) {}
-			ExpandableBuilder& expanded(const vl::Ptr<Expr>& value);
+			MakeExpandable& expanded(const vl::Ptr<Expr>& value);
 		};
 
-		class FuncBuilder
+		class MakeFunc : public vl::glr::ParsingAstBuilder<Func>
 		{
-		private:
-			Func* node;
 		public:
-			FuncBuilder(Func* _node) : node(_node) {}
-			FuncBuilder& args(const vl::Ptr<Arg>& value);
-			FuncBuilder& value(const vl::Ptr<Expr>& value);
+			MakeFunc& args(const vl::Ptr<Arg>& value);
+			MakeFunc& value(const vl::Ptr<Expr>& value);
 		};
 
-		class ImportBuilder
+		class MakeImport : public vl::glr::ParsingAstBuilder<Import>
 		{
-		private:
-			Import* node;
 		public:
-			ImportBuilder(Import* _node) : node(_node) {}
-			ImportBuilder& name(const vl::WString& value);
+			MakeImport& name(const vl::WString& value);
 		};
 
-		class LetExprBuilder
+		class MakeLetExpr : public vl::glr::ParsingAstBuilder<LetExpr>
 		{
-		private:
-			LetExpr* node;
 		public:
-			LetExprBuilder(LetExpr* _node) : node(_node) {}
-			LetExprBuilder& name(const vl::WString& value);
-			LetExprBuilder& result(const vl::Ptr<Expr>& value);
-			LetExprBuilder& value(const vl::Ptr<Expr>& value);
+			MakeLetExpr& name(const vl::WString& value);
+			MakeLetExpr& result(const vl::Ptr<Expr>& value);
+			MakeLetExpr& value(const vl::Ptr<Expr>& value);
+			MakeLetExpr& expanded(const vl::Ptr<Expr>& value);
 		};
 
-		class ModuleBuilder
+		class MakeModule : public vl::glr::ParsingAstBuilder<Module>
 		{
-		private:
-			Module* node;
 		public:
-			ModuleBuilder(Module* _node) : node(_node) {}
-			ModuleBuilder& exported(const vl::Ptr<Expr>& value);
-			ModuleBuilder& imports(const vl::Ptr<Import>& value);
+			MakeModule& exported(const vl::Ptr<Expr>& value);
+			MakeModule& imports(const vl::Ptr<Import>& value);
 		};
 
-		class NumExprBuilder
+		class MakeNumExpr : public vl::glr::ParsingAstBuilder<NumExpr>
 		{
-		private:
-			NumExpr* node;
 		public:
-			NumExprBuilder(NumExpr* _node) : node(_node) {}
-			NumExprBuilder& value(const vl::WString& value);
+			MakeNumExpr& value(const vl::WString& value);
 		};
 
-		class RefBuilder
+		class MakeRef : public vl::glr::ParsingAstBuilder<Ref>
 		{
-		private:
-			Ref* node;
 		public:
-			RefBuilder(Ref* _node) : node(_node) {}
-			RefBuilder& name(const vl::WString& value);
+			MakeRef& name(const vl::WString& value);
 		};
 
-		class UnaryBuilder
+		class MakeUnary : public vl::glr::ParsingAstBuilder<Unary>
 		{
-		private:
-			Unary* node;
 		public:
-			UnaryBuilder(Unary* _node) : node(_node) {}
-			UnaryBuilder& op(UnaryOp value);
-			UnaryBuilder& operand(const vl::Ptr<Expr>& value);
+			MakeUnary& op(UnaryOp value);
+			MakeUnary& operand(const vl::Ptr<Expr>& value);
+			MakeUnary& expanded(const vl::Ptr<Expr>& value);
 		};
 
-		using MakeArg = vl::glr::ParsingAstBuilder<Arg, ArgBuilder>;
-		using MakeBinary = vl::glr::ParsingAstBuilder<Binary, BinaryBuilder, ExpandableBuilder>;
-		using MakeCall = vl::glr::ParsingAstBuilder<Call, CallBuilder>;
-		using MakeFalse = vl::glr::ParsingAstBuilder<False>;
-		using MakeFunc = vl::glr::ParsingAstBuilder<Func, FuncBuilder>;
-		using MakeImport = vl::glr::ParsingAstBuilder<Import, ImportBuilder>;
-		using MakeLetExpr = vl::glr::ParsingAstBuilder<LetExpr, LetExprBuilder, ExpandableBuilder>;
-		using MakeModule = vl::glr::ParsingAstBuilder<Module, ModuleBuilder>;
-		using MakeNumExpr = vl::glr::ParsingAstBuilder<NumExpr, NumExprBuilder>;
-		using MakeRef = vl::glr::ParsingAstBuilder<Ref, RefBuilder>;
-		using MakeTrue = vl::glr::ParsingAstBuilder<True>;
-		using MakeUnary = vl::glr::ParsingAstBuilder<Unary, UnaryBuilder, ExpandableBuilder>;
 	}
 }
 #endif

@@ -16,202 +16,202 @@ namespace vl
 			{
 
 /***********************************************************************
-AlternativeSyntaxBuilder
+MakeAlternativeSyntax
 ***********************************************************************/
 
-				AlternativeSyntaxBuilder& AlternativeSyntaxBuilder::first(const vl::Ptr<GlrSyntax>& value)
+				MakeAlternativeSyntax& MakeAlternativeSyntax::first(const vl::Ptr<GlrSyntax>& value)
 				{
 					node->first = value;
 					return *this;
 				}
 
-				AlternativeSyntaxBuilder& AlternativeSyntaxBuilder::second(const vl::Ptr<GlrSyntax>& value)
+				MakeAlternativeSyntax& MakeAlternativeSyntax::second(const vl::Ptr<GlrSyntax>& value)
 				{
 					node->second = value;
 					return *this;
 				}
 
 /***********************************************************************
-AssignmentBuilder
+MakeAssignment
 ***********************************************************************/
 
-				AssignmentBuilder& AssignmentBuilder::field(const vl::WString& value)
+				MakeAssignment& MakeAssignment::field(const vl::WString& value)
 				{
 					node->field.value = value;
 					return *this;
 				}
 
-				AssignmentBuilder& AssignmentBuilder::value(const vl::WString& value)
+				MakeAssignment& MakeAssignment::value(const vl::WString& value)
 				{
 					node->value.value = value;
 					return *this;
 				}
 
 /***********************************************************************
-CreateClauseBuilder
+MakeCreateClause
 ***********************************************************************/
 
-				CreateClauseBuilder& CreateClauseBuilder::assignments(const vl::Ptr<GlrAssignment>& value)
+				MakeCreateClause& MakeCreateClause::assignments(const vl::Ptr<GlrAssignment>& value)
 				{
 					node->assignments.Add(value);
 					return *this;
 				}
 
-				CreateClauseBuilder& CreateClauseBuilder::syntax(const vl::Ptr<GlrSyntax>& value)
+				MakeCreateClause& MakeCreateClause::syntax(const vl::Ptr<GlrSyntax>& value)
 				{
 					node->syntax = value;
 					return *this;
 				}
 
-				CreateClauseBuilder& CreateClauseBuilder::type(const vl::WString& value)
+				MakeCreateClause& MakeCreateClause::type(const vl::WString& value)
 				{
 					node->type.value = value;
 					return *this;
 				}
 
 /***********************************************************************
-LiteralSyntaxBuilder
+MakeLiteralSyntax
 ***********************************************************************/
 
-				LiteralSyntaxBuilder& LiteralSyntaxBuilder::value(const vl::WString& value)
+				MakeLiteralSyntax& MakeLiteralSyntax::value(const vl::WString& value)
 				{
 					node->value.value = value;
 					return *this;
 				}
 
 /***********************************************************************
-LoopSyntaxBuilder
+MakeLoopSyntax
 ***********************************************************************/
 
-				LoopSyntaxBuilder& LoopSyntaxBuilder::delimiter(const vl::Ptr<GlrSyntax>& value)
+				MakeLoopSyntax& MakeLoopSyntax::delimiter(const vl::Ptr<GlrSyntax>& value)
 				{
 					node->delimiter = value;
 					return *this;
 				}
 
-				LoopSyntaxBuilder& LoopSyntaxBuilder::syntax(const vl::Ptr<GlrSyntax>& value)
+				MakeLoopSyntax& MakeLoopSyntax::syntax(const vl::Ptr<GlrSyntax>& value)
 				{
 					node->syntax = value;
 					return *this;
 				}
 
 /***********************************************************************
-OptionalSyntaxBuilder
+MakeOptionalSyntax
 ***********************************************************************/
 
-				OptionalSyntaxBuilder& OptionalSyntaxBuilder::priority(GlrOptionalPriority value)
+				MakeOptionalSyntax& MakeOptionalSyntax::priority(GlrOptionalPriority value)
 				{
 					node->priority = value;
 					return *this;
 				}
 
-				OptionalSyntaxBuilder& OptionalSyntaxBuilder::syntax(const vl::Ptr<GlrSyntax>& value)
+				MakeOptionalSyntax& MakeOptionalSyntax::syntax(const vl::Ptr<GlrSyntax>& value)
 				{
 					node->syntax = value;
 					return *this;
 				}
 
 /***********************************************************************
-PartialClauseBuilder
+MakePartialClause
 ***********************************************************************/
 
-				PartialClauseBuilder& PartialClauseBuilder::assignments(const vl::Ptr<GlrAssignment>& value)
+				MakePartialClause& MakePartialClause::assignments(const vl::Ptr<GlrAssignment>& value)
 				{
 					node->assignments.Add(value);
 					return *this;
 				}
 
-				PartialClauseBuilder& PartialClauseBuilder::syntax(const vl::Ptr<GlrSyntax>& value)
+				MakePartialClause& MakePartialClause::syntax(const vl::Ptr<GlrSyntax>& value)
 				{
 					node->syntax = value;
 					return *this;
 				}
 
-				PartialClauseBuilder& PartialClauseBuilder::type(const vl::WString& value)
+				MakePartialClause& MakePartialClause::type(const vl::WString& value)
 				{
 					node->type.value = value;
 					return *this;
 				}
 
 /***********************************************************************
-RefSyntaxBuilder
+MakeRefSyntax
 ***********************************************************************/
 
-				RefSyntaxBuilder& RefSyntaxBuilder::field(const vl::WString& value)
+				MakeRefSyntax& MakeRefSyntax::field(const vl::WString& value)
 				{
 					node->field.value = value;
 					return *this;
 				}
 
-				RefSyntaxBuilder& RefSyntaxBuilder::name(const vl::WString& value)
+				MakeRefSyntax& MakeRefSyntax::name(const vl::WString& value)
 				{
 					node->name.value = value;
 					return *this;
 				}
 
 /***********************************************************************
-ReuseClauseBuilder
+MakeReuseClause
 ***********************************************************************/
 
-				ReuseClauseBuilder& ReuseClauseBuilder::assignments(const vl::Ptr<GlrAssignment>& value)
+				MakeReuseClause& MakeReuseClause::assignments(const vl::Ptr<GlrAssignment>& value)
 				{
 					node->assignments.Add(value);
 					return *this;
 				}
 
-				ReuseClauseBuilder& ReuseClauseBuilder::syntax(const vl::Ptr<GlrSyntax>& value)
+				MakeReuseClause& MakeReuseClause::syntax(const vl::Ptr<GlrSyntax>& value)
 				{
 					node->syntax = value;
 					return *this;
 				}
 
 /***********************************************************************
-RuleBuilder
+MakeRule
 ***********************************************************************/
 
-				RuleBuilder& RuleBuilder::clauses(const vl::Ptr<GlrClause>& value)
+				MakeRule& MakeRule::clauses(const vl::Ptr<GlrClause>& value)
 				{
 					node->clauses.Add(value);
 					return *this;
 				}
 
-				RuleBuilder& RuleBuilder::name(const vl::WString& value)
+				MakeRule& MakeRule::name(const vl::WString& value)
 				{
 					node->name.value = value;
 					return *this;
 				}
 
 /***********************************************************************
-SequenceSyntaxBuilder
+MakeSequenceSyntax
 ***********************************************************************/
 
-				SequenceSyntaxBuilder& SequenceSyntaxBuilder::first(const vl::Ptr<GlrSyntax>& value)
+				MakeSequenceSyntax& MakeSequenceSyntax::first(const vl::Ptr<GlrSyntax>& value)
 				{
 					node->first = value;
 					return *this;
 				}
 
-				SequenceSyntaxBuilder& SequenceSyntaxBuilder::second(const vl::Ptr<GlrSyntax>& value)
+				MakeSequenceSyntax& MakeSequenceSyntax::second(const vl::Ptr<GlrSyntax>& value)
 				{
 					node->second = value;
 					return *this;
 				}
 
 /***********************************************************************
-SyntaxFileBuilder
+MakeSyntaxFile
 ***********************************************************************/
 
-				SyntaxFileBuilder& SyntaxFileBuilder::rules(const vl::Ptr<GlrRule>& value)
+				MakeSyntaxFile& MakeSyntaxFile::rules(const vl::Ptr<GlrRule>& value)
 				{
 					node->rules.Add(value);
 					return *this;
 				}
 
 /***********************************************************************
-UseSyntaxBuilder
+MakeUseSyntax
 ***********************************************************************/
 
-				UseSyntaxBuilder& UseSyntaxBuilder::name(const vl::WString& value)
+				MakeUseSyntax& MakeUseSyntax::name(const vl::WString& value)
 				{
 					node->name.value = value;
 					return *this;

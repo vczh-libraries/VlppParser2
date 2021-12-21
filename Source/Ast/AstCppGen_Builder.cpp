@@ -25,66 +25,43 @@ WriteAstBuilderHeaderFile
 						{
 							if (classSymbol->Props().Count() > 0)
 							{
-								WString className = classSymbol->Name() + L"Builder";
-								writer.WriteLine(prefix + L"class " + className);
+								WString className = L"Make" + classSymbol->Name();
+								writer.WriteString(prefix + L"class " + className);
+								writer.WriteString(L" : public vl::glr::ParsingAstBuilder<");
+								PrintCppType(file, classSymbol, writer);
+								writer.WriteLine(L">");
 								writer.WriteLine(prefix + L"{");
-								writer.WriteLine(prefix + L"private:");
-								writer.WriteString(prefix + L"\t");
-								PrintCppType(file, classSymbol, writer);
-								writer.WriteLine(L"* node;");
 								writer.WriteLine(prefix + L"public:");
-								writer.WriteString(prefix + L"\t" + classSymbol->Name() + L"Builder(");
-								PrintCppType(file, classSymbol, writer);
-								writer.WriteLine(L"* _node) : node(_node) {}");
-								for (auto propSymbol : classSymbol->Props().Values())
+
+								auto currentClass = classSymbol;
+								while (currentClass)
 								{
-									switch (propSymbol->propType)
+									for (auto propSymbol : currentClass->Props().Values())
 									{
-									case AstPropType::Token:
-										writer.WriteLine(prefix + L"\t" + className + L"& " + propSymbol->Name() + L"(const vl::WString& value);");
-										break;
-									case AstPropType::Type:
-										if (dynamic_cast<AstEnumSymbol*>(propSymbol->propSymbol))
+										switch (propSymbol->propType)
 										{
-											writer.WriteString(prefix + L"\t" + className + L"& " + propSymbol->Name() + L"(");
+										case AstPropType::Token:
+											writer.WriteLine(prefix + L"\t" + className + L"& " + propSymbol->Name() + L"(const vl::WString& value);");
+											break;
+										case AstPropType::Type:
+											if (dynamic_cast<AstEnumSymbol*>(propSymbol->propSymbol))
+											{
+												writer.WriteString(prefix + L"\t" + className + L"& " + propSymbol->Name() + L"(");
+												PrintCppType(file, propSymbol->propSymbol, writer);
+												writer.WriteLine(L" value);");
+												break;
+											}
+										case AstPropType::Array:
+											writer.WriteString(prefix + L"\t" + className + L"& " + propSymbol->Name() + L"(const vl::Ptr<");
 											PrintCppType(file, propSymbol->propSymbol, writer);
-											writer.WriteLine(L" value);");
+											writer.WriteLine(L">& value);");
 											break;
 										}
-									case AstPropType::Array:
-										writer.WriteString(prefix + L"\t" + className + L"& " + propSymbol->Name() + L"(const vl::Ptr<");
-										PrintCppType(file, propSymbol->propSymbol, writer);
-										writer.WriteLine(L">& value);");
-										break;
 									}
+									currentClass = currentClass->baseClass;
 								}
 								writer.WriteLine(prefix + L"};");
 								writer.WriteLine(L"");
-							}
-						}
-					}
-
-					for (auto typeSymbol : file->Symbols().Values())
-					{
-						if (auto classSymbol = dynamic_cast<AstClassSymbol*>(typeSymbol))
-						{
-							if (classSymbol->derivedClasses.Count() == 0)
-							{
-								writer.WriteString(prefix + L"using Make" + classSymbol->Name() + L" = ");
-								writer.WriteString(L"vl::glr::ParsingAstBuilder<");
-								PrintCppType(file, classSymbol, writer);
-								{
-									auto current = classSymbol;
-									while (current)
-									{
-										if (current->Props().Count() > 0)
-										{
-											writer.WriteString(L", " + current->Name() + L"Builder");
-										}
-										current = current->baseClass;
-									}
-								}
-								writer.WriteLine(L">;");
 							}
 						}
 					}
@@ -105,52 +82,57 @@ WriteAstBuilderCppFile
 						{
 							if (classSymbol->Props().Count() > 0)
 							{
-								WString className = classSymbol->Name() + L"Builder";
+								WString className = L"Make" + classSymbol->Name();
 								writer.WriteLine(L"");
 								writer.WriteLine(L"/***********************************************************************");
 								writer.WriteLine(className);
 								writer.WriteLine(L"***********************************************************************/");
 
-								for (auto propSymbol : classSymbol->Props().Values())
+								auto currentClass = classSymbol;
+								while (currentClass)
 								{
-									writer.WriteLine(L"");
-									switch (propSymbol->propType)
+									for (auto propSymbol : currentClass->Props().Values())
 									{
-									case AstPropType::Token:
-										writer.WriteLine(prefix + className + L"& " + className + L"::" + propSymbol->Name() + L"(const vl::WString& value)");
-										writer.WriteLine(prefix + L"{");
-										writer.WriteLine(prefix + L"\tnode->" + propSymbol->Name() + L".value = value;");
-										writer.WriteLine(prefix + L"\treturn *this;");
-										writer.WriteLine(prefix + L"}");
-										break;
-									case AstPropType::Type:
-										if (dynamic_cast<AstEnumSymbol*>(propSymbol->propSymbol))
+										writer.WriteLine(L"");
+										switch (propSymbol->propType)
 										{
-											writer.WriteString(prefix + className + L"& " + className + L"::" + propSymbol->Name() + L"(");
-											PrintCppType(file, propSymbol->propSymbol, writer);
-											writer.WriteLine(L" value)");
-										}
-										if (dynamic_cast<AstClassSymbol*>(propSymbol->propSymbol))
-										{
+										case AstPropType::Token:
+											writer.WriteLine(prefix + className + L"& " + className + L"::" + propSymbol->Name() + L"(const vl::WString& value)");
+											writer.WriteLine(prefix + L"{");
+											writer.WriteLine(prefix + L"\tnode->" + propSymbol->Name() + L".value = value;");
+											writer.WriteLine(prefix + L"\treturn *this;");
+											writer.WriteLine(prefix + L"}");
+											break;
+										case AstPropType::Type:
+											if (dynamic_cast<AstEnumSymbol*>(propSymbol->propSymbol))
+											{
+												writer.WriteString(prefix + className + L"& " + className + L"::" + propSymbol->Name() + L"(");
+												PrintCppType(file, propSymbol->propSymbol, writer);
+												writer.WriteLine(L" value)");
+											}
+											if (dynamic_cast<AstClassSymbol*>(propSymbol->propSymbol))
+											{
+												writer.WriteString(prefix + className + L"& " + className + L"::" + propSymbol->Name() + L"(const vl::Ptr<");
+												PrintCppType(file, propSymbol->propSymbol, writer);
+												writer.WriteLine(L">& value)");
+											}
+											writer.WriteLine(prefix + L"{");
+											writer.WriteLine(prefix + L"\tnode->" + propSymbol->Name() + L" = value;");
+											writer.WriteLine(prefix + L"\treturn *this;");
+											writer.WriteLine(prefix + L"}");
+											break;
+										case AstPropType::Array:
 											writer.WriteString(prefix + className + L"& " + className + L"::" + propSymbol->Name() + L"(const vl::Ptr<");
 											PrintCppType(file, propSymbol->propSymbol, writer);
 											writer.WriteLine(L">& value)");
+											writer.WriteLine(prefix + L"{");
+											writer.WriteLine(prefix + L"\tnode->" + propSymbol->Name() + L".Add(value);");
+											writer.WriteLine(prefix + L"\treturn *this;");
+											writer.WriteLine(prefix + L"}");
+											break;
 										}
-										writer.WriteLine(prefix + L"{");
-										writer.WriteLine(prefix + L"\tnode->" + propSymbol->Name() + L" = value;");
-										writer.WriteLine(prefix + L"\treturn *this;");
-										writer.WriteLine(prefix + L"}");
-										break;
-									case AstPropType::Array:
-										writer.WriteString(prefix + className + L"& " + className + L"::" + propSymbol->Name() + L"(const vl::Ptr<");
-										PrintCppType(file, propSymbol->propSymbol, writer);
-										writer.WriteLine(L">& value)");
-										writer.WriteLine(prefix + L"{");
-										writer.WriteLine(prefix + L"\tnode->" + propSymbol->Name() + L".Add(value);");
-										writer.WriteLine(prefix + L"\treturn *this;");
-										writer.WriteLine(prefix + L"}");
-										break;
 									}
+									currentClass = currentClass->baseClass;
 								}
 							}
 						}

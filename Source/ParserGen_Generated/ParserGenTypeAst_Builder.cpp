@@ -16,84 +16,96 @@ namespace vl
 			{
 
 /***********************************************************************
-AstFileBuilder
+MakeAstFile
 ***********************************************************************/
 
-				AstFileBuilder& AstFileBuilder::types(const vl::Ptr<GlrType>& value)
+				MakeAstFile& MakeAstFile::types(const vl::Ptr<GlrType>& value)
 				{
 					node->types.Add(value);
 					return *this;
 				}
 
 /***********************************************************************
-ClassBuilder
+MakeClass
 ***********************************************************************/
 
-				ClassBuilder& ClassBuilder::ambiguity(GlrClassAmbiguity value)
+				MakeClass& MakeClass::ambiguity(GlrClassAmbiguity value)
 				{
 					node->ambiguity = value;
 					return *this;
 				}
 
-				ClassBuilder& ClassBuilder::baseClass(const vl::WString& value)
+				MakeClass& MakeClass::baseClass(const vl::WString& value)
 				{
 					node->baseClass.value = value;
 					return *this;
 				}
 
-				ClassBuilder& ClassBuilder::props(const vl::Ptr<GlrClassProp>& value)
+				MakeClass& MakeClass::props(const vl::Ptr<GlrClassProp>& value)
 				{
 					node->props.Add(value);
 					return *this;
 				}
 
-/***********************************************************************
-ClassPropBuilder
-***********************************************************************/
-
-				ClassPropBuilder& ClassPropBuilder::name(const vl::WString& value)
+				MakeClass& MakeClass::name(const vl::WString& value)
 				{
 					node->name.value = value;
 					return *this;
 				}
 
-				ClassPropBuilder& ClassPropBuilder::propType(GlrPropType value)
+/***********************************************************************
+MakeClassProp
+***********************************************************************/
+
+				MakeClassProp& MakeClassProp::name(const vl::WString& value)
+				{
+					node->name.value = value;
+					return *this;
+				}
+
+				MakeClassProp& MakeClassProp::propType(GlrPropType value)
 				{
 					node->propType = value;
 					return *this;
 				}
 
-				ClassPropBuilder& ClassPropBuilder::propTypeName(const vl::WString& value)
+				MakeClassProp& MakeClassProp::propTypeName(const vl::WString& value)
 				{
 					node->propTypeName.value = value;
 					return *this;
 				}
 
 /***********************************************************************
-EnumBuilder
+MakeEnum
 ***********************************************************************/
 
-				EnumBuilder& EnumBuilder::items(const vl::Ptr<GlrEnumItem>& value)
+				MakeEnum& MakeEnum::items(const vl::Ptr<GlrEnumItem>& value)
 				{
 					node->items.Add(value);
 					return *this;
 				}
 
-/***********************************************************************
-EnumItemBuilder
-***********************************************************************/
-
-				EnumItemBuilder& EnumItemBuilder::name(const vl::WString& value)
+				MakeEnum& MakeEnum::name(const vl::WString& value)
 				{
 					node->name.value = value;
 					return *this;
 				}
 
 /***********************************************************************
-TypeBuilder
+MakeEnumItem
 ***********************************************************************/
 
-				TypeBuilder& TypeBuilder::name(const vl::WString& value)
+				MakeEnumItem& MakeEnumItem::name(const vl::WString& value)
+				{
+					node->name.value = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeType
+***********************************************************************/
+
+				MakeType& MakeType::name(const vl::WString& value)
 				{
 					node->name.value = value;
 					return *this;

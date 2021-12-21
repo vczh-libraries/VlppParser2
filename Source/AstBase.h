@@ -182,15 +182,16 @@ AST
 AST (Builder)
 ***********************************************************************/
 
-		template<typename TAst, typename ...TBase>
-		class ParsingAstBuilder : public Object, public TBase...
+		template<typename TAst>
+		class ParsingAstBuilder
 		{
 		protected:
-			Ptr<TAst>				node = MakePtr<TAst>();
+			Ptr<TAst> node = MakePtr<TAst>();
+			ParsingAstBuilder() {}
 		public:
-			ParsingAstBuilder() : TBase(node.Obj())... {}
 
-			operator const Ptr<TAst>& () const
+			template<typename TExpected>
+			operator Ptr<TExpected>() const
 			{
 				return node;
 			}

@@ -12,160 +12,178 @@ namespace calculator
 	{
 
 /***********************************************************************
-ArgBuilder
+MakeArg
 ***********************************************************************/
 
-		ArgBuilder& ArgBuilder::name(const vl::WString& value)
+		MakeArg& MakeArg::name(const vl::WString& value)
 		{
 			node->name.value = value;
 			return *this;
 		}
 
 /***********************************************************************
-BinaryBuilder
+MakeBinary
 ***********************************************************************/
 
-		BinaryBuilder& BinaryBuilder::left(const vl::Ptr<Expr>& value)
+		MakeBinary& MakeBinary::left(const vl::Ptr<Expr>& value)
 		{
 			node->left = value;
 			return *this;
 		}
 
-		BinaryBuilder& BinaryBuilder::op(BinaryOp value)
+		MakeBinary& MakeBinary::op(BinaryOp value)
 		{
 			node->op = value;
 			return *this;
 		}
 
-		BinaryBuilder& BinaryBuilder::right(const vl::Ptr<Expr>& value)
+		MakeBinary& MakeBinary::right(const vl::Ptr<Expr>& value)
 		{
 			node->right = value;
 			return *this;
 		}
 
-/***********************************************************************
-CallBuilder
-***********************************************************************/
-
-		CallBuilder& CallBuilder::args(const vl::Ptr<Expr>& value)
-		{
-			node->args.Add(value);
-			return *this;
-		}
-
-		CallBuilder& CallBuilder::func(const vl::Ptr<Expr>& value)
-		{
-			node->func = value;
-			return *this;
-		}
-
-/***********************************************************************
-ExpandableBuilder
-***********************************************************************/
-
-		ExpandableBuilder& ExpandableBuilder::expanded(const vl::Ptr<Expr>& value)
+		MakeBinary& MakeBinary::expanded(const vl::Ptr<Expr>& value)
 		{
 			node->expanded = value;
 			return *this;
 		}
 
 /***********************************************************************
-FuncBuilder
+MakeCall
 ***********************************************************************/
 
-		FuncBuilder& FuncBuilder::args(const vl::Ptr<Arg>& value)
+		MakeCall& MakeCall::args(const vl::Ptr<Expr>& value)
 		{
 			node->args.Add(value);
 			return *this;
 		}
 
-		FuncBuilder& FuncBuilder::value(const vl::Ptr<Expr>& value)
+		MakeCall& MakeCall::func(const vl::Ptr<Expr>& value)
+		{
+			node->func = value;
+			return *this;
+		}
+
+/***********************************************************************
+MakeExpandable
+***********************************************************************/
+
+		MakeExpandable& MakeExpandable::expanded(const vl::Ptr<Expr>& value)
+		{
+			node->expanded = value;
+			return *this;
+		}
+
+/***********************************************************************
+MakeFunc
+***********************************************************************/
+
+		MakeFunc& MakeFunc::args(const vl::Ptr<Arg>& value)
+		{
+			node->args.Add(value);
+			return *this;
+		}
+
+		MakeFunc& MakeFunc::value(const vl::Ptr<Expr>& value)
 		{
 			node->value = value;
 			return *this;
 		}
 
 /***********************************************************************
-ImportBuilder
+MakeImport
 ***********************************************************************/
 
-		ImportBuilder& ImportBuilder::name(const vl::WString& value)
+		MakeImport& MakeImport::name(const vl::WString& value)
 		{
 			node->name.value = value;
 			return *this;
 		}
 
 /***********************************************************************
-LetExprBuilder
+MakeLetExpr
 ***********************************************************************/
 
-		LetExprBuilder& LetExprBuilder::name(const vl::WString& value)
+		MakeLetExpr& MakeLetExpr::name(const vl::WString& value)
 		{
 			node->name.value = value;
 			return *this;
 		}
 
-		LetExprBuilder& LetExprBuilder::result(const vl::Ptr<Expr>& value)
+		MakeLetExpr& MakeLetExpr::result(const vl::Ptr<Expr>& value)
 		{
 			node->result = value;
 			return *this;
 		}
 
-		LetExprBuilder& LetExprBuilder::value(const vl::Ptr<Expr>& value)
+		MakeLetExpr& MakeLetExpr::value(const vl::Ptr<Expr>& value)
 		{
 			node->value = value;
 			return *this;
 		}
 
+		MakeLetExpr& MakeLetExpr::expanded(const vl::Ptr<Expr>& value)
+		{
+			node->expanded = value;
+			return *this;
+		}
+
 /***********************************************************************
-ModuleBuilder
+MakeModule
 ***********************************************************************/
 
-		ModuleBuilder& ModuleBuilder::exported(const vl::Ptr<Expr>& value)
+		MakeModule& MakeModule::exported(const vl::Ptr<Expr>& value)
 		{
 			node->exported = value;
 			return *this;
 		}
 
-		ModuleBuilder& ModuleBuilder::imports(const vl::Ptr<Import>& value)
+		MakeModule& MakeModule::imports(const vl::Ptr<Import>& value)
 		{
 			node->imports.Add(value);
 			return *this;
 		}
 
 /***********************************************************************
-NumExprBuilder
+MakeNumExpr
 ***********************************************************************/
 
-		NumExprBuilder& NumExprBuilder::value(const vl::WString& value)
+		MakeNumExpr& MakeNumExpr::value(const vl::WString& value)
 		{
 			node->value.value = value;
 			return *this;
 		}
 
 /***********************************************************************
-RefBuilder
+MakeRef
 ***********************************************************************/
 
-		RefBuilder& RefBuilder::name(const vl::WString& value)
+		MakeRef& MakeRef::name(const vl::WString& value)
 		{
 			node->name.value = value;
 			return *this;
 		}
 
 /***********************************************************************
-UnaryBuilder
+MakeUnary
 ***********************************************************************/
 
-		UnaryBuilder& UnaryBuilder::op(UnaryOp value)
+		MakeUnary& MakeUnary::op(UnaryOp value)
 		{
 			node->op = value;
 			return *this;
 		}
 
-		UnaryBuilder& UnaryBuilder::operand(const vl::Ptr<Expr>& value)
+		MakeUnary& MakeUnary::operand(const vl::Ptr<Expr>& value)
 		{
 			node->operand = value;
+			return *this;
+		}
+
+		MakeUnary& MakeUnary::expanded(const vl::Ptr<Expr>& value)
+		{
+			node->expanded = value;
 			return *this;
 		}
 	}

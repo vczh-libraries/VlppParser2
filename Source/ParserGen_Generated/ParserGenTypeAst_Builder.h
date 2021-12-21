@@ -17,69 +17,48 @@ namespace vl
 		{
 			namespace builder
 			{
-				class AstFileBuilder
+				class MakeAstFile : public vl::glr::ParsingAstBuilder<GlrAstFile>
 				{
-				private:
-					GlrAstFile* node;
 				public:
-					AstFileBuilder(GlrAstFile* _node) : node(_node) {}
-					AstFileBuilder& types(const vl::Ptr<GlrType>& value);
+					MakeAstFile& types(const vl::Ptr<GlrType>& value);
 				};
 
-				class ClassBuilder
+				class MakeClass : public vl::glr::ParsingAstBuilder<GlrClass>
 				{
-				private:
-					GlrClass* node;
 				public:
-					ClassBuilder(GlrClass* _node) : node(_node) {}
-					ClassBuilder& ambiguity(GlrClassAmbiguity value);
-					ClassBuilder& baseClass(const vl::WString& value);
-					ClassBuilder& props(const vl::Ptr<GlrClassProp>& value);
+					MakeClass& ambiguity(GlrClassAmbiguity value);
+					MakeClass& baseClass(const vl::WString& value);
+					MakeClass& props(const vl::Ptr<GlrClassProp>& value);
+					MakeClass& name(const vl::WString& value);
 				};
 
-				class ClassPropBuilder
+				class MakeClassProp : public vl::glr::ParsingAstBuilder<GlrClassProp>
 				{
-				private:
-					GlrClassProp* node;
 				public:
-					ClassPropBuilder(GlrClassProp* _node) : node(_node) {}
-					ClassPropBuilder& name(const vl::WString& value);
-					ClassPropBuilder& propType(GlrPropType value);
-					ClassPropBuilder& propTypeName(const vl::WString& value);
+					MakeClassProp& name(const vl::WString& value);
+					MakeClassProp& propType(GlrPropType value);
+					MakeClassProp& propTypeName(const vl::WString& value);
 				};
 
-				class EnumBuilder
+				class MakeEnum : public vl::glr::ParsingAstBuilder<GlrEnum>
 				{
-				private:
-					GlrEnum* node;
 				public:
-					EnumBuilder(GlrEnum* _node) : node(_node) {}
-					EnumBuilder& items(const vl::Ptr<GlrEnumItem>& value);
+					MakeEnum& items(const vl::Ptr<GlrEnumItem>& value);
+					MakeEnum& name(const vl::WString& value);
 				};
 
-				class EnumItemBuilder
+				class MakeEnumItem : public vl::glr::ParsingAstBuilder<GlrEnumItem>
 				{
-				private:
-					GlrEnumItem* node;
 				public:
-					EnumItemBuilder(GlrEnumItem* _node) : node(_node) {}
-					EnumItemBuilder& name(const vl::WString& value);
+					MakeEnumItem& name(const vl::WString& value);
 				};
 
-				class TypeBuilder
+				class MakeType : public vl::glr::ParsingAstBuilder<GlrType>
 				{
-				private:
-					GlrType* node;
 				public:
-					TypeBuilder(GlrType* _node) : node(_node) {}
-					TypeBuilder& name(const vl::WString& value);
+					MakeType& name(const vl::WString& value);
 				};
 
-				using MakeAstFile = vl::glr::ParsingAstBuilder<GlrAstFile, AstFileBuilder>;
-				using MakeClass = vl::glr::ParsingAstBuilder<GlrClass, ClassBuilder, TypeBuilder>;
-				using MakeClassProp = vl::glr::ParsingAstBuilder<GlrClassProp, ClassPropBuilder>;
-				using MakeEnum = vl::glr::ParsingAstBuilder<GlrEnum, EnumBuilder, TypeBuilder>;
-				using MakeEnumItem = vl::glr::ParsingAstBuilder<GlrEnumItem, EnumItemBuilder>;
 			}
 		}
 	}
