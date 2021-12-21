@@ -355,7 +355,7 @@ IAstInsReceiver
 
 				explicit ObjectOrToken(Ptr<ParsingAstBase> _object) : object(_object) {}
 				explicit ObjectOrToken(vint32_t _enumItem) : enumItem(_enumItem) {}
-				explicit ObjectOrToken(const regex::RegexToken& _token, vint32_t tokenIndex) : token(_token) {}
+				explicit ObjectOrToken(const regex::RegexToken& _token, vint32_t _tokenIndex) : token(_token), tokenIndex(_tokenIndex) {}
 			};
 
 			struct FieldAssignment

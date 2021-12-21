@@ -73,13 +73,13 @@ XmlUnescapeVisitor
 
 							if (beginTokenIndex > 0)
 							{
-								auto& previousToken = tokens[beginTokenIndex];
+								auto& previousToken = tokens[beginTokenIndex - 1];
 								textBegin = previousToken.reading + previousToken.length;
 							}
 
 							if (endTokenIndex < tokens.Count() - 1)
 							{
-								auto& nextToken = tokens[endTokenIndex];
+								auto& nextToken = tokens[endTokenIndex + 1];
 								textEnd = nextToken.reading;
 							}
 
