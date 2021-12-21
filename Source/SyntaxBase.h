@@ -69,6 +69,11 @@ ParserBase<TTokens, TStates, TReceiver, TStateTypes>
 				return deleter;
 			}
 
+			void Tokenize(const WString& input, TokenList& tokens, vint codeIndex = -1) const
+			{
+				lexer->Parse(input, {}, codeIndex).ReadToEnd(tokens, deleter);
+			}
+
 		protected:
 			template<TStates State>
 			auto Parse(TokenList& tokens, const automaton::TraceManager::ITypeCallback* typeCallback) const
@@ -106,7 +111,7 @@ ParserBase<TTokens, TStates, TReceiver, TStateTypes>
 			auto Parse(const WString& input, const automaton::TraceManager::ITypeCallback* typeCallback, vint codeIndex) const
 			{
 				TokenList tokens;
-				lexer->Parse(input, {}, codeIndex).ReadToEnd(tokens, deleter);
+				Tokenize(input, tokens, codeIndex);
 				return Parse<State>(tokens, typeCallback);
 			}
 		};
