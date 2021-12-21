@@ -366,10 +366,22 @@ IAstInsReceiver
 				Ptr<ParsingAstBase>						object;
 				vint									pushedCount;
 
+				regex::RegexToken						delayedToken;
 				collections::List<FieldAssignment>		delayedFieldAssignments;
 				vint									extraEmptyDfaBelow = 0;
 
-				explicit CreatedObject(Ptr<ParsingAstBase> _object, vint _pushedCount) : object(_object), pushedCount(_pushedCount) {}
+				CreatedObject(Ptr<ParsingAstBase> _object, vint _pushedCount)
+					: object(_object)
+					, pushedCount(_pushedCount)
+				{
+				}
+
+				CreatedObject(Ptr<ParsingAstBase> _object, vint _pushedCount, const regex::RegexToken& _delayedToken)
+					: object(_object)
+					, pushedCount(_pushedCount)
+					, delayedToken(_delayedToken)
+				{
+				}
 			};
 
 			collections::List<CreatedObject>			created;
@@ -380,7 +392,7 @@ IAstInsReceiver
 			void										EnsureContinuable();
 			void										SetField(ParsingAstBase* object, vint32_t field, const ObjectOrToken& value);
 
-			void										PushCreated(CreatedObject&& createdObject);
+			CreatedObject&								PushCreated(CreatedObject&& createdObject);
 			const CreatedObject&						TopCreated();
 			void										PopCreated();
 			void										DelayAssign(FieldAssignment&& fa);

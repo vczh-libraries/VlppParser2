@@ -240,7 +240,7 @@ export abs((sin(x) + cos(y)))
 
 		TEST_CASE(L"Test json_visitor::ExprAstVisitor")
 		{
-			ast = ParseCalculator(input, lexer, executable, metadata, L"Calculator");
+			ast = ParseCalculator(input, lexer, executable, metadata, L"Calculator2");
 			AssertAst<json_visitor::ExprAstVisitor>(ast, output);
 		});
 
@@ -292,7 +292,7 @@ export abs((sin(x) + cos(y)))
 			expected.Add(L"y");
 			expected.Add(L"cos");
 			expected.Add(L"cos(y)");
-			expected.Add(L"sin(x) + cos(y)");
+			expected.Add(L"(sin(x) + cos(y))");
 			expected.Add(L"abs");
 			expected.Add(L"abs((sin(x) + cos(y)))");
 

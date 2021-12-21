@@ -283,7 +283,7 @@ AstInsReceiverBase
 			}
 		}
 
-		void AstInsReceiverBase::PushCreated(CreatedObject&& createdObject)
+		AstInsReceiverBase::CreatedObject& AstInsReceiverBase::PushCreated(CreatedObject&& createdObject)
 		{
 			if (created.Count() == 0)
 			{
@@ -292,7 +292,12 @@ AstInsReceiverBase
 			else
 			{
 				auto& top = created[created.Count() - 1];
-				if (!top.object && top.delayedFieldAssignments.Count() == 0 && top.pushedCount == createdObject.pushedCount)
+				if (
+					!top.object &&
+					top.pushedCount == createdObject.pushedCount &&
+					top.delayedToken.reading == createdObject.delayedToken.reading &&
+					top.delayedFieldAssignments.Count() == 0
+					)
 				{
 					top.object = createdObject.object;
 					top.extraEmptyDfaBelow++;
@@ -302,6 +307,7 @@ AstInsReceiverBase
 					created.Add(std::move(createdObject));
 				}
 			}
+			return created[created.Count() - 1];
 		}
 
 		const AstInsReceiverBase::CreatedObject& AstInsReceiverBase::TopCreated()
@@ -405,7 +411,7 @@ AstInsReceiverBase
 					break;
 				case AstInsType::DelayFieldAssignment:
 					{
-						PushCreated(CreatedObject{ nullptr,pushed.Count() });
+						PushCreated(CreatedObject{ nullptr,pushed.Count(),token });
 					}
 					break;
 				case AstInsType::ReopenObject:
@@ -438,6 +444,7 @@ AstInsReceiverBase
 						{
 							pushed.RemoveAt(pushed.Count() - 1);
 							createdObject.object = value.object;
+							createdObject.object->codeRange.start = ParsingTextPos::Start(&createdObject.delayedToken);
 
 							for (auto&& dfa : createdObject.delayedFieldAssignments)
 							{
@@ -553,8 +560,8 @@ AstInsReceiverBase
 					break;
 				case AstInsType::AccumulatedDfa:
 					{
-						PushCreated(CreatedObject{ nullptr,pushed.Count() });
-						created[created.Count() - 1].extraEmptyDfaBelow += instruction.count - 1;
+						auto&& createdObject = PushCreated(CreatedObject{ nullptr,pushed.Count(),token });
+						createdObject.extraEmptyDfaBelow += instruction.count - 1;
 					}
 					break;
 				case AstInsType::AccumulatedEoRo:
@@ -579,6 +586,8 @@ AstInsReceiverBase
 
 							if (createdObject.extraEmptyDfaBelow >= instruction.count)
 							{
+								createdObject.object->codeRange.start = ParsingTextPos::Start(&createdObject.delayedToken);
+								createdObject.object->codeRange.end = ParsingTextPos::End(&token);
 								createdObject.extraEmptyDfaBelow -= instruction.count;
 								instruction.count = 0;
 							}

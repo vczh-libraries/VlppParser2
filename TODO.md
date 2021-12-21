@@ -40,14 +40,9 @@
 ## Work Items (issues)
 
 - Fix todo in `ParserBase<..>::Parse`.
-- `EndObject` after `ReopenObject` doesn't update `ParsingAstBase::codeRange::start`.
-  - for example, when `Exp` is reopened to run `( Exp @ )`, then the created ast begins from `Exp` but ends at `)`.
-  - We could store the first token in `DelayFieldAssignment`.
 - Optimize `CrossReferencedNFA` to merge prefix (two states can be merged if their `InEdges` are identical, `FromState` in `InEdges` are replaced by merged states).
   - Issue: `X ::= ([a] | [b]) c` fails because when both optional syntax fail it creates two trace routes to c and causes ambiguity.
 - `JsonEscapeString` `JsonUnescapeString` handle surrogate pairs correctly.
-- `ParserTest_LexerAndParser`
-  - Check `codeRange` of all nodes. (use the previous/current token(calculate codeRange) v.s. before/after rule deduction (move instructions to different places))
 
 ## Work Items (investigation)
 
