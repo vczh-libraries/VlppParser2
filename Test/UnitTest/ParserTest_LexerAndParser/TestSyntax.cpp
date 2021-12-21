@@ -1,3 +1,5 @@
+#include "../../Source/Calculator/Parser/CalculatorExprAst_Copy.h"
+#include "../../Source/Calculator/Parser/CalculatorExprAst_Traverse.h"
 #include "../../Source/Calculator/Parser/CalculatorExprAst_Json.h"
 #include "../../Source/Calculator/Parser/Calculator_Assembler.h"
 #include "../../Source/Calculator/Parser/Calculator_Lexer.h"
@@ -201,6 +203,9 @@ export abs(sin(x) + cos(y))
 })";
 		auto ast = ParseCalculator(input, lexer, executable, metadata, L"Calculator");
 		AssertAst<json_visitor::ExprAstVisitor>(ast, output);
+
+		auto copiedAst = copy_visitor::ExprAstVisitor().CopyNode(ast.Obj());
+		AssertAst<json_visitor::ExprAstVisitor>(copiedAst, output);
 	});
 
 	MemoryStream executableStream;
