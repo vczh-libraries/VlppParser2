@@ -18,6 +18,24 @@ XmlUnescapeVisitor
 			class XmlUnescapeVisitor : public traverse_visitor::AstVisitor
 			{
 			protected:
+				void Traverse(XmlAttribute* node) override
+				{
+					node->value.value = XmlUnescapeValue(node->value.value.Sub(1, node->value.value.Length() - 2));
+				}
+
+				void Traverse(XmlCData* node) override
+				{
+					node->content.value = XmlUnescapeCData(node->content.value);
+				}
+
+				void Traverse(XmlComment* node) override
+				{
+					node->content.value = XmlUnescapeComment(node->content.value);
+				}
+
+				void Traverse(XmlElement* node) override
+				{
+				}
 			};
 
 /***********************************************************************
