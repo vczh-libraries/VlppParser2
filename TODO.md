@@ -39,6 +39,7 @@
 
 ## Work Items (issues)
 
+- Record codeRange in ParserGen errors (parsing, ast, lexer, syntax)
 - Optimize `CrossReferencedNFA` to merge prefix (two states can be merged if their `InEdges` are identical, `FromState` in `InEdges` are replaced by merged states).
   - Issue: `X ::= ([a] | [b]) c` fails because when both optional syntax fail it creates two trace routes to c and causes ambiguity.
 - `JsonEscapeString` `JsonUnescapeString` handle surrogate pairs correctly.
