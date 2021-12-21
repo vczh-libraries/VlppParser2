@@ -294,7 +294,7 @@ Parsing and Printing
 			Ptr<XmlDocument> XmlParseDocument(const WString& input, const Parser& parser)
 			{
 				List<RegexToken> tokens;
-				parser.Lexer().Parse(input.Buffer()).ReadToEnd(tokens, parser.LexerDeleter());
+				parser.Lexer().Parse(input).ReadToEnd(tokens, parser.LexerDeleter());
 				auto ast = parser.ParseXDocument(tokens);
 				XmlUnescapeVisitor(tokens).InspectInto(ast.Obj());
 				return ast;
@@ -303,7 +303,7 @@ Parsing and Printing
 			Ptr<XmlElement> XmlParseElement(const WString& input, const Parser& parser)
 			{
 				List<RegexToken> tokens;
-				parser.Lexer().Parse(input.Buffer()).ReadToEnd(tokens, parser.LexerDeleter());
+				parser.Lexer().Parse(input).ReadToEnd(tokens, parser.LexerDeleter());
 				auto ast = parser.ParseXElement(tokens);
 				XmlUnescapeVisitor(tokens).InspectInto(ast.Obj());
 				return ast;
