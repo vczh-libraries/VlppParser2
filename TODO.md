@@ -31,11 +31,7 @@
 ## Development
 
 1. [x] `ParserTest_ParserGen_Generated`
-   1. [ ] Test JSON parser.
-      1. [ ] Escaping / unescaping
-      2. [ ] Manual test cases.
-      3. [x] Parser output test cases.
-   2. [ ] Test XML parser.
+   1. [ ] Test XML parser.
       1. [ ] Escaping / unescaping
       2. [ ] Manual test cases.
       3. [x] GacUI DarkSkin test cases.
