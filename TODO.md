@@ -49,6 +49,7 @@
 - `ParserTest_AstParserGen`
   - Test Copy Visitors
   - Test Traverse Visitors
+  - Test Builder
 - `ParserTest_LexerAndParser`
   - Check `codeRange` of all nodes. (use the previous/current token(calculate codeRange) v.s. before/after rule deduction (move instructions to different places))
 

@@ -144,6 +144,64 @@ export 1
 })");
 	});
 
+	TEST_CASE(L"Test Generated Utilities")
+	{
+		WString input = LR"(
+import sin
+import cos
+import abs
+export abs(sin(x) + cos(y))
+)";
+		const wchar_t* output = LR"({
+    "$ast": "Module",
+    "exported": {
+        "$ast": "Call",
+        "args": [{
+            "ast": "Binary",
+            "left": {
+                "ast": "Call",
+                "args": [{
+                    "ast": "Ref",
+                    "name": "x"
+                }],
+                "func": {
+                    "ast": "Ref",
+                    "name": "sin"
+                }
+            },
+            "op": "Add",
+            "right": {
+                "ast": "Call",
+                "args": [{
+                    "ast": "Ref",
+                    "name": "y"
+                }],
+                "func": {
+                    "ast": "Ref",
+                    "name": "cos"
+                }
+            }
+        }],
+        "func": {
+            "ast": "Ref",
+            "name": "abs"
+        }
+    },
+    "imports": [{
+        "ast": "Import",
+        "name": "sin"
+    }, {
+        "ast": "Import",
+        "name": "cos"
+    }, {
+        "ast": "Import",
+        "name": "abs"
+    }]
+})";
+		auto ast = ParseCalculator(input, lexer, executable, metadata, L"Calculator");
+		AssertAst<json_visitor::ExprAstVisitor>(ast, output);
+	});
+
 	MemoryStream executableStream;
 	executable.Serialize(executableStream);
 	executableStream.SeekFromBegin(0);
