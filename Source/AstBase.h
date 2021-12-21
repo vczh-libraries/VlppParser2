@@ -191,11 +191,7 @@ AST (Builder)
 			ParsingAstBuilder() : TBase(node.Obj())... {}
 
 			template<typename TExpected>
-			auto operator()() const ->
-				std::enable_if_t<
-					std::is_convertible_v<TAst*, TExpected*>,
-					Ptr<TExpected>
-					>
+			operator Ptr<TExpected>() const
 			{
 				return node;
 			}

@@ -1,11 +1,13 @@
+#include "../../Source/Calculator/Parser/CalculatorExprAst_Builder.h"
 #include "../../Source/Calculator/Parser/CalculatorExprAst_Copy.h"
-#include "../../Source/Calculator/Parser/CalculatorExprAst_Traverse.h"
 #include "../../Source/Calculator/Parser/CalculatorExprAst_Json.h"
+#include "../../Source/Calculator/Parser/CalculatorExprAst_Traverse.h"
 #include "../../Source/Calculator/Parser/Calculator_Assembler.h"
 #include "../../Source/Calculator/Parser/Calculator_Lexer.h"
 #include "../../Source/LogParser.h"
 
 using namespace calculator;
+using namespace calculator::builder;
 
 extern WString GetTestParserInputPath(const WString& parserName);
 extern FilePath GetOutputDir(const WString& parserName);
@@ -218,6 +220,26 @@ export abs(sin(x) + cos(y))
 
 		auto copiedAst = copy_visitor::ExprAstVisitor().CopyNode(ast.Obj());
 		AssertAst<json_visitor::ExprAstVisitor>(copiedAst, output);
+
+		Ptr<Module> makedAst = MakeModule()
+			.imports(MakeImport().name(L"sin"))
+			.imports(MakeImport().name(L"cos"))
+			.imports(MakeImport().name(L"abs"))
+			.exported(MakeCall()
+				.func(MakeRef().name(L"abs"))
+				.args(MakeBinary()
+					.op(BinaryOp::Add)
+					.left(MakeCall()
+						.func(MakeRef().name(L"sin"))
+						.args(MakeRef().name(L"x"))
+						)
+					.right(MakeCall()
+						.func(MakeRef().name(L"cos"))
+						.args(MakeRef().name(L"y"))
+						)
+					)
+				);
+		AssertAst<json_visitor::ExprAstVisitor>(makedAst, output);
 
 		CalculatorAstTraverseVisitor traverseVisitor;
 		traverseVisitor.InspectInto(ast.Obj());
