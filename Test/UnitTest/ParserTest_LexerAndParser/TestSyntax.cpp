@@ -157,44 +157,45 @@ export abs(sin(x) + cos(y))
     "exported": {
         "$ast": "Call",
         "args": [{
-            "ast": "Binary",
+            "$ast": "Binary",
+            "expanded": null,
             "left": {
-                "ast": "Call",
+                "$ast": "Call",
                 "args": [{
-                    "ast": "Ref",
+                    "$ast": "Ref",
                     "name": "x"
                 }],
                 "func": {
-                    "ast": "Ref",
+                    "$ast": "Ref",
                     "name": "sin"
                 }
             },
             "op": "Add",
             "right": {
-                "ast": "Call",
+                "$ast": "Call",
                 "args": [{
-                    "ast": "Ref",
+                    "$ast": "Ref",
                     "name": "y"
                 }],
                 "func": {
-                    "ast": "Ref",
+                    "$ast": "Ref",
                     "name": "cos"
                 }
             }
         }],
         "func": {
-            "ast": "Ref",
+            "$ast": "Ref",
             "name": "abs"
         }
     },
     "imports": [{
-        "ast": "Import",
+        "$ast": "Import",
         "name": "sin"
     }, {
-        "ast": "Import",
+        "$ast": "Import",
         "name": "cos"
     }, {
-        "ast": "Import",
+        "$ast": "Import",
         "name": "abs"
     }]
 })";
