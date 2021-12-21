@@ -221,25 +221,26 @@ export abs(sin(x) + cos(y))
 		auto copiedAst = copy_visitor::ExprAstVisitor().CopyNode(ast.Obj());
 		AssertAst<json_visitor::ExprAstVisitor>(copiedAst, output);
 
-		Ptr<Module> makedAst = MakeModule()
-			.imports(MakeImport().name(L"sin"))
-			.imports(MakeImport().name(L"cos"))
-			.imports(MakeImport().name(L"abs"))
-			.exported(MakeCall()
-				.func(MakeRef().name(L"abs"))
-				.args(MakeBinary()
-					.op(BinaryOp::Add)
-					.left(MakeCall()
-						.func(MakeRef().name(L"sin"))
-						.args(MakeRef().name(L"x"))
-						)
-					.right(MakeCall()
-						.func(MakeRef().name(L"cos"))
-						.args(MakeRef().name(L"y"))
-						)
-					)
-				);
-		AssertAst<json_visitor::ExprAstVisitor>(makedAst, output);
+		Ptr<Import> makedImport = MakeImport().name(L"sin");
+		//Ptr<Module> makedAst = MakeModule()
+		//	.imports(MakeImport().name(L"sin"))
+		//	.imports(MakeImport().name(L"cos"))
+		//	.imports(MakeImport().name(L"abs"))
+		//	.exported(MakeCall()
+		//		.func(MakeRef().name(L"abs"))
+		//		.args(MakeBinary()
+		//			.op(BinaryOp::Add)
+		//			.left(MakeCall()
+		//				.func(MakeRef().name(L"sin"))
+		//				.args(MakeRef().name(L"x"))
+		//				)
+		//			.right(MakeCall()
+		//				.func(MakeRef().name(L"cos"))
+		//				.args(MakeRef().name(L"y"))
+		//				)
+		//			)
+		//		);
+		//AssertAst<json_visitor::ExprAstVisitor>(makedAst, output);
 
 		CalculatorAstTraverseVisitor traverseVisitor;
 		traverseVisitor.InspectInto(ast.Obj());

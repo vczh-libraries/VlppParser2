@@ -190,8 +190,7 @@ AST (Builder)
 		public:
 			ParsingAstBuilder() : TBase(node.Obj())... {}
 
-			template<typename TExpected>
-			operator Ptr<TExpected>() const
+			operator const Ptr<TAst>& () const
 			{
 				return node;
 			}
