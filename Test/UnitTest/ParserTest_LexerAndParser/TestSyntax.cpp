@@ -100,7 +100,7 @@ namespace TestSyntax_TestObjects
 		return astModule;
 	}
 
-	class CalculatorAstTraverseVisitor : public traverse_visitor::ExprAstVisitor
+	class CalculatorInspectTokenVisitor : public traverse_visitor::ExprAstVisitor
 	{
 	public:
 		WString			visitedTokens;
@@ -109,6 +109,27 @@ namespace TestSyntax_TestObjects
 		void Traverse(vl::glr::ParsingToken& token) override
 		{
 			visitedTokens += L"[" + token.value + L"]";
+		}
+	};
+
+	class CalculatorInspectExprVisitor : public traverse_visitor::ExprAstVisitor
+	{
+	public:
+		WString			input;
+		List<WString>	visitorExprs;
+
+		CalculatorInspectExprVisitor(const WString& _input)
+			: input(_input)
+		{
+		}
+
+	protected:
+		void Traverse(Expr* node) override
+		{
+			visitorExprs.Add(input.Sub(
+				node->codeRange.start.index,
+				node->codeRange.end.index - node->codeRange.start.index + 1
+				));
 		}
 	};
 }
@@ -166,7 +187,7 @@ export 1
 import sin
 import cos
 import abs
-export abs(sin(x) + cos(y))
+export abs((sin(x) + cos(y)))
 )";
 		const wchar_t* output = LR"({
     "$ast": "Module",
@@ -231,9 +252,9 @@ export abs(sin(x) + cos(y))
 
 		TEST_CASE(L"Test traverse_visitor::ExprAstVisitor")
 		{
-			CalculatorAstTraverseVisitor traverseVisitor;
-			traverseVisitor.InspectInto(ast.Obj());
-			TEST_ASSERT(traverseVisitor.visitedTokens == L"[x][sin][y][cos][abs][sin][cos][abs]");
+			CalculatorInspectTokenVisitor visitor;
+			visitor.InspectInto(ast.Obj());
+			TEST_ASSERT(visitor.visitedTokens == L"[x][sin][y][cos][abs][sin][cos][abs]");
 		});
 
 		TEST_CASE(L"Test Builder")
@@ -257,6 +278,22 @@ export abs(sin(x) + cos(y))
 						)
 					);
 			AssertAst<json_visitor::ExprAstVisitor>(makedAst, output);
+		});
+
+		TEST_CASE(L"Test CodeRange")
+		{
+			CalculatorInspectExprVisitor visitor(input);
+			visitor.InspectInto(ast.Obj());
+
+			List<WString> expected;
+			expected.Add(L"x");
+			expected.Add(L"sin(x)");
+			expected.Add(L"y");
+			expected.Add(L"cos(y)");
+			expected.Add(L"sin(x) + cos(y)");
+			expected.Add(L"abs((sin(x) + cos(y)))");
+
+			TEST_ASSERT(CompareEnumerable(expected, visitor.visitorExprs) == 0);
 		});
 	});
 
