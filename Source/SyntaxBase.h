@@ -59,14 +59,21 @@ ParserBase<TTokens, TStates, TReceiver, TStateTypes>
 				}
 			}
 
+			regex::RegexLexer& Lexer() const
+			{
+				return *lexer.Obj();
+			}
+
+			Deleter LexerDeleter() const
+			{
+				return deleter;
+			}
+
 		protected:
 			template<TStates State>
-			auto Parse(const WString& input, automaton::TraceManager::ITypeCallback* typeCallback, vint codeIndex)
+			auto Parse(TokenList& tokens, const automaton::TraceManager::ITypeCallback* typeCallback) const
 			{
-				#define ERROR_MESSAGE_PREFIX L"vl::glr::ParserBase<...>::ParseWithReceiver<TReceiver2>(const WString&, TState, TReceiver2&, vint)#"
-
-				TokenList tokens;
-				lexer->Parse(input, {}, codeIndex).ReadToEnd(tokens, deleter);
+#define ERROR_MESSAGE_PREFIX L"vl::glr::ParserBase<...>::Parse<TStates>(List<RegexToken>&, TraceManager::ITypeCallback*)#"
 
 				automaton::TraceManager tm(*executable.Obj(), typeCallback);
 				tm.Initialize((vint32_t)State);
@@ -92,7 +99,15 @@ ParserBase<TTokens, TStates, TReceiver, TStateTypes>
 				CHECK_ERROR(typedAst, ERROR_MESSAGE_PREFIX L"#Unexpected type of the created AST.");
 				return typedAst;
 
-				#undef ERROR_MESSAGE_PREFIX
+#undef ERROR_MESSAGE_PREFIX
+			}
+
+			template<TStates State>
+			auto Parse(const WString& input, const automaton::TraceManager::ITypeCallback* typeCallback, vint codeIndex) const
+			{
+				TokenList tokens;
+				lexer->Parse(input, {}, codeIndex).ReadToEnd(tokens, deleter);
+				return Parse<State>(tokens, typeCallback);
 			}
 		};
 	}

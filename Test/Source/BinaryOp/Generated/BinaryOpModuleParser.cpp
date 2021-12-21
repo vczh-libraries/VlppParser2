@@ -102,13 +102,18 @@ namespace binaryop
 	{
 	};
 
-	vl::vint32_t ModuleParser::FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2)
+	vl::vint32_t ModuleParser::FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2) const
 	{
 		return -1;
 	};
 
-	vl::Ptr<binaryop::BinaryExpr> ModuleParser::ParseModule(const vl::WString & input, vl::vint codeIndex)
+	vl::Ptr<binaryop::BinaryExpr> ModuleParser::ParseModule(const vl::WString& input, vl::vint codeIndex) const
 	{
 		 return Parse<ModuleParserStates::Module>(input, this, codeIndex);
+	};
+
+	vl::Ptr<binaryop::BinaryExpr> ModuleParser::ParseModule(vl::collections::List<vl::regex::RegexToken>& tokens) const
+	{
+		 return Parse<ModuleParserStates::Module>(tokens, this);
 	};
 }

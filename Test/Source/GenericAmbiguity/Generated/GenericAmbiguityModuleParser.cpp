@@ -100,7 +100,7 @@ namespace genericambiguity
 	{
 	};
 
-	vl::vint32_t ModuleParser::FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2)
+	vl::vint32_t ModuleParser::FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2) const
 	{
 		static vl::vint32_t results[9][9] = {
 			{0, 3, 3, 3, 3, 3, -1, 3, 3, },
@@ -116,8 +116,13 @@ namespace genericambiguity
 		return vl::glr::AssemblerFindCommonBaseClass(class1, class2, results);
 	};
 
-	vl::Ptr<genericambiguity::Module> ModuleParser::ParseModule(const vl::WString & input, vl::vint codeIndex)
+	vl::Ptr<genericambiguity::Module> ModuleParser::ParseModule(const vl::WString& input, vl::vint codeIndex) const
 	{
 		 return Parse<ModuleParserStates::Module>(input, this, codeIndex);
+	};
+
+	vl::Ptr<genericambiguity::Module> ModuleParser::ParseModule(vl::collections::List<vl::regex::RegexToken>& tokens) const
+	{
+		 return Parse<ModuleParserStates::Module>(tokens, this);
 	};
 }

@@ -57,11 +57,12 @@ namespace featuretest
 		, protected vl::glr::automaton::TraceManager::ITypeCallback
 	{
 	protected:
-		vl::vint32_t FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2) override;
+		vl::vint32_t FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2) const override;
 	public:
 		ModuleParser();
 
-		vl::Ptr<featuretest::Feature> ParseModule(const vl::WString & input, vl::vint codeIndex = -1);
+		vl::Ptr<featuretest::Feature> ParseModule(const vl::WString& input, vl::vint codeIndex = -1) const;
+		vl::Ptr<featuretest::Feature> ParseModule(vl::collections::List<vl::regex::RegexToken>& tokens) const;
 	};
 }
 #endif

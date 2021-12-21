@@ -106,19 +106,29 @@ namespace vl
 			{
 			};
 
-			vl::vint32_t Parser::FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2)
+			vl::vint32_t Parser::FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2) const
 			{
 				return -1;
 			};
 
-			vl::Ptr<vl::glr::xml::XmlElement> Parser::ParseXElement(const vl::WString & input, vl::vint codeIndex)
+			vl::Ptr<vl::glr::xml::XmlElement> Parser::ParseXElement(const vl::WString& input, vl::vint codeIndex) const
 			{
 				 return Parse<ParserStates::XElement>(input, this, codeIndex);
 			};
 
-			vl::Ptr<vl::glr::xml::XmlDocument> Parser::ParseXDocument(const vl::WString & input, vl::vint codeIndex)
+			vl::Ptr<vl::glr::xml::XmlElement> Parser::ParseXElement(vl::collections::List<vl::regex::RegexToken>& tokens) const
+			{
+				 return Parse<ParserStates::XElement>(tokens, this);
+			};
+
+			vl::Ptr<vl::glr::xml::XmlDocument> Parser::ParseXDocument(const vl::WString& input, vl::vint codeIndex) const
 			{
 				 return Parse<ParserStates::XDocument>(input, this, codeIndex);
+			};
+
+			vl::Ptr<vl::glr::xml::XmlDocument> Parser::ParseXDocument(vl::collections::List<vl::regex::RegexToken>& tokens) const
+			{
+				 return Parse<ParserStates::XDocument>(tokens, this);
 			};
 		}
 	}

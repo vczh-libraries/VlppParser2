@@ -155,14 +155,19 @@ namespace vl
 			{
 			};
 
-			vl::vint32_t RuleParser::FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2)
+			vl::vint32_t RuleParser::FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2) const
 			{
 				return -1;
 			};
 
-			vl::Ptr<vl::glr::parsergen::GlrSyntaxFile> RuleParser::ParseFile(const vl::WString & input, vl::vint codeIndex)
+			vl::Ptr<vl::glr::parsergen::GlrSyntaxFile> RuleParser::ParseFile(const vl::WString& input, vl::vint codeIndex) const
 			{
 				 return Parse<RuleParserStates::File>(input, this, codeIndex);
+			};
+
+			vl::Ptr<vl::glr::parsergen::GlrSyntaxFile> RuleParser::ParseFile(vl::collections::List<vl::regex::RegexToken>& tokens) const
+			{
+				 return Parse<RuleParserStates::File>(tokens, this);
 			};
 		}
 	}

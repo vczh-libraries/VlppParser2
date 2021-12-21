@@ -27,13 +27,13 @@ namespace vl
 			/// <returns>The deserialized XML node.</returns>
 			/// <param name="input">The XML code.</param>
 			/// <param name="parser">The generated parser.</param>
-			extern Ptr<XmlDocument>								XmlParseDocument(const WString& input, Parser& parser);
+			extern Ptr<XmlDocument>								XmlParseDocument(const WString& input, const Parser& parser);
 
 			/// <summary>Deserialize XML element from string.</summary>
 			/// <returns>The deserialized XML node.</returns>
 			/// <param name="input">The XML code.</param>
 			/// <param name="parser">The generated parser.</param>
-			extern Ptr<XmlElement>								XmlParseElement(const WString& input, Parser& parser);
+			extern Ptr<XmlElement>								XmlParseElement(const WString& input, const Parser& parser);
 
 			/// <summary>Serialize XML to string.</summary>
 			/// <param name="node">The XML node to serialize.</param>

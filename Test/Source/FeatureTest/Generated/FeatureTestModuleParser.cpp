@@ -272,7 +272,7 @@ namespace featuretest
 	{
 	};
 
-	vl::vint32_t ModuleParser::FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2)
+	vl::vint32_t ModuleParser::FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2) const
 	{
 		static vl::vint32_t results[11][11] = {
 			{0, 1, 1, -1, -1, 1, 1, 1, -1, 1, 1, },
@@ -290,8 +290,13 @@ namespace featuretest
 		return vl::glr::AssemblerFindCommonBaseClass(class1, class2, results);
 	};
 
-	vl::Ptr<featuretest::Feature> ModuleParser::ParseModule(const vl::WString & input, vl::vint codeIndex)
+	vl::Ptr<featuretest::Feature> ModuleParser::ParseModule(const vl::WString& input, vl::vint codeIndex) const
 	{
 		 return Parse<ModuleParserStates::Module>(input, this, codeIndex);
+	};
+
+	vl::Ptr<featuretest::Feature> ModuleParser::ParseModule(vl::collections::List<vl::regex::RegexToken>& tokens) const
+	{
+		 return Parse<ModuleParserStates::Module>(tokens, this);
 	};
 }

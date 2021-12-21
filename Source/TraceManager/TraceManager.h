@@ -251,12 +251,12 @@ TraceManager
 				class ITypeCallback : public virtual Interface
 				{
 				public:
-					virtual vint32_t				FindCommonBaseClass(vint32_t class1, vint32_t class2) = 0;
+					virtual vint32_t				FindCommonBaseClass(vint32_t class1, vint32_t class2) const= 0;
 				};
 
 			protected:
 				Executable&							executable;
-				ITypeCallback*						typeCallback = nullptr;
+				const ITypeCallback*				typeCallback = nullptr;
 
 				TraceManagerState					state = TraceManagerState::Uninitialized;
 				AllocateOnly<ReturnStack>			returnStacks;
@@ -330,7 +330,7 @@ TraceManager
 				void								FillAmbiguityInfoForPredecessorTraces(Trace* trace);
 				void								CreateLastMergingTrace(Trace* rootTraceCandidate);
 			public:
-				TraceManager(Executable& _executable, ITypeCallback* _typeCallback = nullptr);
+				TraceManager(Executable& _executable, const ITypeCallback* _typeCallback = nullptr);
 
 				vint32_t							concurrentCount = 0;
 				collections::List<Trace*>*			concurrentTraces = nullptr;

@@ -115,7 +115,7 @@ TraceManager
 				}
 			}
 
-			TraceManager::TraceManager(Executable& _executable, ITypeCallback* _typeCallback)
+			TraceManager::TraceManager(Executable& _executable, const ITypeCallback* _typeCallback)
 				: executable(_executable)
 				, typeCallback(_typeCallback)
 			{

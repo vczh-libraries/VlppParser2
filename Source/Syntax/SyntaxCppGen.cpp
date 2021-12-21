@@ -87,7 +87,7 @@ WriteSyntaxHeaderFile
 					writer.WriteLine(prefix + L"\t, protected vl::glr::automaton::TraceManager::ITypeCallback");
 					writer.WriteLine(prefix + L"{");
 					writer.WriteLine(prefix + L"protected:");
-					writer.WriteLine(prefix + L"\tvl::vint32_t FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2) override;");
+					writer.WriteLine(prefix + L"\tvl::vint32_t FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2) const override;");
 					writer.WriteLine(prefix + L"public:");
 					writer.WriteLine(prefix + L"\t" + manager.name + L"();");
 					writer.WriteLine(L"");
@@ -97,7 +97,8 @@ WriteSyntaxHeaderFile
 						if (manager.parsableRules.Contains(ruleSymbol))
 						{
 							auto astType = manager.ruleTypes[ruleSymbol];
-							writer.WriteLine(prefix + L"\tvl::Ptr<" + astType + L"> Parse" + ruleName + L"(const vl::WString & input, vl::vint codeIndex = -1);");
+							writer.WriteLine(prefix + L"\tvl::Ptr<" + astType + L"> Parse" + ruleName + L"(const vl::WString& input, vl::vint codeIndex = -1) const;");
+							writer.WriteLine(prefix + L"\tvl::Ptr<" + astType + L"> Parse" + ruleName + L"(vl::collections::List<vl::regex::RegexToken>& tokens) const;");
 						}
 					}
 					writer.WriteLine(prefix + L"};");
@@ -173,7 +174,7 @@ WriteSyntaxCppFile
 
 				{
 					writer.WriteLine(L"");
-					writer.WriteLine(prefix + L"vl::vint32_t " + manager.name + L"::FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2)");
+					writer.WriteLine(prefix + L"vl::vint32_t " + manager.name + L"::FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2) const");
 					writer.WriteLine(prefix + L"{");
 					if (
 						output->classIds.Count() == 0 ||
@@ -222,9 +223,14 @@ WriteSyntaxCppFile
 					{
 						auto astType = manager.ruleTypes[ruleSymbol];
 						writer.WriteLine(L"");
-						writer.WriteLine(prefix + L"vl::Ptr<" + astType + L"> " + manager.name + L"::Parse" + ruleName + L"(const vl::WString & input, vl::vint codeIndex)");
+						writer.WriteLine(prefix + L"vl::Ptr<" + astType + L"> " + manager.name + L"::Parse" + ruleName + L"(const vl::WString& input, vl::vint codeIndex) const");
 						writer.WriteLine(prefix + L"{");
 						writer.WriteLine(prefix + L"\t return Parse<" + manager.name + L"States::" + ruleName + L">(input, this, codeIndex);");
+						writer.WriteLine(prefix + L"};");
+						writer.WriteLine(L"");
+						writer.WriteLine(prefix + L"vl::Ptr<" + astType + L"> " + manager.name + L"::Parse" + ruleName + L"(vl::collections::List<vl::regex::RegexToken>& tokens) const");
+						writer.WriteLine(prefix + L"{");
+						writer.WriteLine(prefix + L"\t return Parse<" + manager.name + L"States::" + ruleName + L">(tokens, this);");
 						writer.WriteLine(prefix + L"};");
 					}
 				}

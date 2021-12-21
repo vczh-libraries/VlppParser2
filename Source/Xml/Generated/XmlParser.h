@@ -41,12 +41,14 @@ namespace vl
 				, protected vl::glr::automaton::TraceManager::ITypeCallback
 			{
 			protected:
-				vl::vint32_t FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2) override;
+				vl::vint32_t FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2) const override;
 			public:
 				Parser();
 
-				vl::Ptr<vl::glr::xml::XmlElement> ParseXElement(const vl::WString & input, vl::vint codeIndex = -1);
-				vl::Ptr<vl::glr::xml::XmlDocument> ParseXDocument(const vl::WString & input, vl::vint codeIndex = -1);
+				vl::Ptr<vl::glr::xml::XmlElement> ParseXElement(const vl::WString& input, vl::vint codeIndex = -1) const;
+				vl::Ptr<vl::glr::xml::XmlElement> ParseXElement(vl::collections::List<vl::regex::RegexToken>& tokens) const;
+				vl::Ptr<vl::glr::xml::XmlDocument> ParseXDocument(const vl::WString& input, vl::vint codeIndex = -1) const;
+				vl::Ptr<vl::glr::xml::XmlDocument> ParseXDocument(vl::collections::List<vl::regex::RegexToken>& tokens) const;
 			};
 		}
 	}

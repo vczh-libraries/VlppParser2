@@ -108,7 +108,7 @@ JsonPrintVisitor
 API
 ***********************************************************************/
 
-			Ptr<JsonNode> JsonParse(const WString& input, Parser& parser)
+			Ptr<JsonNode> JsonParse(const WString& input, const Parser& parser)
 			{
 				auto ast = parser.ParseJRoot(input);
 				JsonUnescapeVisitor().InspectInto(ast.Obj());

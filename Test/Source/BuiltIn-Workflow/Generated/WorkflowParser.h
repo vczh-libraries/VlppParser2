@@ -107,15 +107,20 @@ namespace vl
 				, protected vl::glr::automaton::TraceManager::ITypeCallback
 			{
 			protected:
-				vl::vint32_t FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2) override;
+				vl::vint32_t FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2) const override;
 			public:
 				Parser();
 
-				vl::Ptr<vl::glr::workflow::WfType> Parse_Type(const vl::WString & input, vl::vint codeIndex = -1);
-				vl::Ptr<vl::glr::workflow::WfExpression> Parse_Expression(const vl::WString & input, vl::vint codeIndex = -1);
-				vl::Ptr<vl::glr::workflow::WfStatement> Parse_Statement(const vl::WString & input, vl::vint codeIndex = -1);
-				vl::Ptr<vl::glr::workflow::WfDeclaration> Parse_Declaration(const vl::WString & input, vl::vint codeIndex = -1);
-				vl::Ptr<vl::glr::workflow::WfModule> Parse_Module(const vl::WString & input, vl::vint codeIndex = -1);
+				vl::Ptr<vl::glr::workflow::WfType> Parse_Type(const vl::WString& input, vl::vint codeIndex = -1) const;
+				vl::Ptr<vl::glr::workflow::WfType> Parse_Type(vl::collections::List<vl::regex::RegexToken>& tokens) const;
+				vl::Ptr<vl::glr::workflow::WfExpression> Parse_Expression(const vl::WString& input, vl::vint codeIndex = -1) const;
+				vl::Ptr<vl::glr::workflow::WfExpression> Parse_Expression(vl::collections::List<vl::regex::RegexToken>& tokens) const;
+				vl::Ptr<vl::glr::workflow::WfStatement> Parse_Statement(const vl::WString& input, vl::vint codeIndex = -1) const;
+				vl::Ptr<vl::glr::workflow::WfStatement> Parse_Statement(vl::collections::List<vl::regex::RegexToken>& tokens) const;
+				vl::Ptr<vl::glr::workflow::WfDeclaration> Parse_Declaration(const vl::WString& input, vl::vint codeIndex = -1) const;
+				vl::Ptr<vl::glr::workflow::WfDeclaration> Parse_Declaration(vl::collections::List<vl::regex::RegexToken>& tokens) const;
+				vl::Ptr<vl::glr::workflow::WfModule> Parse_Module(const vl::WString& input, vl::vint codeIndex = -1) const;
+				vl::Ptr<vl::glr::workflow::WfModule> Parse_Module(vl::collections::List<vl::regex::RegexToken>& tokens) const;
 			};
 		}
 	}

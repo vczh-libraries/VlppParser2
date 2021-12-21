@@ -20,7 +20,7 @@ namespace vl
 			/// <returns>The deserialized JSON node.</returns>
 			/// <param name="input">The JSON code.</param>
 			/// <param name="parser">The generated parser.</param>
-			extern Ptr<JsonNode>			JsonParse(const WString& input, Parser& parser);
+			extern Ptr<JsonNode>			JsonParse(const WString& input, const Parser& parser);
 
 			/// <summary>Serialize JSON to string.</summary>
 			/// <param name="node">The JSON node to serialize.</param>

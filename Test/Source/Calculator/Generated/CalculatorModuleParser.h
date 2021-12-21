@@ -39,12 +39,14 @@ namespace calculator
 		, protected vl::glr::automaton::TraceManager::ITypeCallback
 	{
 	protected:
-		vl::vint32_t FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2) override;
+		vl::vint32_t FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2) const override;
 	public:
 		ModuleParser();
 
-		vl::Ptr<calculator::Expr> ParseExp(const vl::WString & input, vl::vint codeIndex = -1);
-		vl::Ptr<calculator::Module> ParseModule(const vl::WString & input, vl::vint codeIndex = -1);
+		vl::Ptr<calculator::Expr> ParseExp(const vl::WString& input, vl::vint codeIndex = -1) const;
+		vl::Ptr<calculator::Expr> ParseExp(vl::collections::List<vl::regex::RegexToken>& tokens) const;
+		vl::Ptr<calculator::Module> ParseModule(const vl::WString& input, vl::vint codeIndex = -1) const;
+		vl::Ptr<calculator::Module> ParseModule(vl::collections::List<vl::regex::RegexToken>& tokens) const;
 	};
 }
 #endif
