@@ -18,10 +18,10 @@ ParserBase<TTokens, TStates, TReceiver, TStateTypes>
 
 		enum class ParserErrors
 		{
-			UnrecognizedToken,		// the token is not recognizable to the tokenizer
-			InvalidToken,			// the token cause the parser to stop
-			InputIncomplete,		// all traces do not reach the end
-			UnexpectedAstType,		// unexpected type of the created AST
+			UnrecognizedToken,		// (token)										the token is not recognizable to the tokenizer
+			InvalidToken,			// (token, tokens, executable, traceManager)	the token cause the parser to stop
+			InputIncomplete,		// (tokens, executable, traceManager)			all traces do not reach the end
+			UnexpectedAstType,		// (tokens, executable, traceManager, ast)		unexpected type of the created AST
 		};
 
 		struct EndOfInputArgs
@@ -34,7 +34,65 @@ ParserBase<TTokens, TStates, TReceiver, TStateTypes>
 
 		struct ErrorArgs
 		{
-			bool											checkFail;
+			bool											throwError;
+			ParserErrors									error;
+			regex::RegexToken&								token;
+			collections::List<regex::RegexToken>&			tokens;
+			automaton::Executable&							executable;
+			automaton::TraceManager&						traceManager;
+			Ptr<ParsingAstBase>								ast;
+
+			static ErrorArgs UnrecognizedToken(const regex::RegexToken& token)
+			{
+				return {
+					true,
+					ParserErrors::UnrecognizedToken,
+					const_cast<regex::RegexToken&>(token),
+					*static_cast<collections::List<regex::RegexToken>*>(nullptr),
+					*static_cast<automaton::Executable*>(nullptr),
+					*static_cast<automaton::TraceManager*>(nullptr),
+					nullptr
+				};
+			}
+
+			static ErrorArgs InvalidToken(regex::RegexToken& token, collections::List<regex::RegexToken>& tokens, automaton::Executable& executable, automaton::TraceManager& traceManager)
+			{
+				return {
+					true,
+					ParserErrors::InvalidToken,
+					token,
+					tokens,
+					executable,
+					traceManager,
+					nullptr
+				};
+			}
+
+			static ErrorArgs InputIncomplete(collections::List<regex::RegexToken>& tokens, automaton::Executable& executable, automaton::TraceManager& traceManager)
+			{
+				return {
+					true,
+					ParserErrors::InputIncomplete,
+					*static_cast<regex::RegexToken*>(nullptr),
+					tokens,
+					executable,
+					traceManager,
+					nullptr
+				};
+			}
+
+			static ErrorArgs UnexpectedAstType(collections::List<regex::RegexToken>& tokens, automaton::Executable& executable, automaton::TraceManager& traceManager, Ptr<ParsingAstBase> ast)
+			{
+				return {
+					true,
+					ParserErrors::UnexpectedAstType,
+					*static_cast<regex::RegexToken*>(nullptr),
+					tokens,
+					executable,
+					traceManager,
+					ast
+				};
+			}
 		};
 
 		template<
@@ -94,12 +152,31 @@ ParserBase<TTokens, TStates, TReceiver, TStateTypes>
 
 			void Tokenize(const WString& input, TokenList& tokens, vint codeIndex = -1) const
 			{
-				lexer->Parse(input, {}, codeIndex).ReadToEnd(tokens, deleter);
+				auto enumerable = lexer->Parse(input, {}, codeIndex);
+				Ptr<collections::IEnumerator<regex::RegexToken>> enumerator = enumerable.CreateEnumerator();
+				while (enumerator->Next())
+				{
+					auto&& token = enumerator->Current();
+					if (token.token == -1)
+					{
+						auto args = ErrorArgs::UnrecognizedToken(token);
+						args.throwError = false;
+						OnError(args);
+						if (args.throwError)
+						{
+							CHECK_FAIL(L"vl::glr::ParserBase<...>::Tokenize(const WString&, List<RegexToken>&, vint)#Unrecognized token.");
+						}
+					}
+					else if (!deleter(token.token))
+					{
+						tokens.Add(token);
+					}
+				}
 			}
 
 		protected:
 			template<TStates State>
-			auto Parse(TokenList& tokens, const automaton::TraceManager::ITypeCallback* typeCallback) const
+			auto Parse(TokenList& tokens, const automaton::TraceManager::ITypeCallback* typeCallback) const -> Ptr<typename TStateTypes<State>::Type>
 			{
 #define ERROR_MESSAGE_PREFIX L"vl::glr::ParserBase<...>::Parse<TStates>(List<RegexToken>&, TraceManager::ITypeCallback*)#"
 
@@ -110,24 +187,42 @@ ParserBase<TTokens, TStates, TReceiver, TStateTypes>
 					auto&& token = tokens[i];
 					auto lookAhead = i == tokens.Count() - 1 ? -1 : tokens[i + 1].token;
 					tm.Input(i, (vint32_t)token.token, (vint32_t)lookAhead);
-					// TODO: log errors instead of crashing (failed to parse)
-					CHECK_ERROR(tm.concurrentCount > 0, ERROR_MESSAGE_PREFIX L"Error happens during parsing.");
+
+					if (tm.concurrentCount == 0)
+					{
+						auto args = ErrorArgs::InvalidToken(token, tokens, *executable.Obj(), tm);
+						OnError(args);
+						if (args.throwError) CHECK_FAIL(ERROR_MESSAGE_PREFIX L"Error happens during parsing.");
+						return nullptr;
+					}
 				}
 
 				tm.EndOfInput();
+				if (tm.concurrentCount == 0)
+				{
+					auto args = ErrorArgs::InputIncomplete(tokens, *executable.Obj(), tm);
+					OnError(args);
+					if (args.throwError) CHECK_FAIL(ERROR_MESSAGE_PREFIX L"Input is incomplete.");
+					return nullptr;
+				}
+
 				auto rootTrace = tm.PrepareTraceRoute();
 				{
 					EndOfInputArgs args = { tokens, *executable.Obj(), tm, rootTrace };
 					OnEndOfInput(args);
 				}
-				// TODO: log errors instead of crashing (input not complete, unresolvable ambiguity)
-				CHECK_ERROR(tm.concurrentCount == 1, ERROR_MESSAGE_PREFIX L"Ambiguity not fully resolved.");
-				CHECK_ERROR(executable->states[tm.concurrentTraces->Get(0)->state].endingState, ERROR_MESSAGE_PREFIX L"Input is incomplete.");
 
 				TReceiver receiver;
 				auto ast = tm.ExecuteTrace(rootTrace, receiver, tokens);
 				auto typedAst = ast.Cast<typename TStateTypes<State>::Type>();
-				CHECK_ERROR(typedAst, ERROR_MESSAGE_PREFIX L"#Unexpected type of the created AST.");
+
+				if (!typedAst)
+				{
+					auto args = ErrorArgs::UnexpectedAstType(tokens, *executable.Obj(), tm, ast);
+					OnError(args);
+					if (args.throwError) CHECK_FAIL(ERROR_MESSAGE_PREFIX L"Unexpected type of the created AST.");
+					return nullptr;
+				}
 				return typedAst;
 
 #undef ERROR_MESSAGE_PREFIX
