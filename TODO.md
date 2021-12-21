@@ -8,7 +8,10 @@
   - Generate **ToString** algorithm
 - Loop priority
 - Document the algorithm in a markdown file
-- From a given state and a few tokens, if none of state.returnStacks is reduced, and no new competition record is created, then the trace graph could be copied directly.
+- From a given state and a few tokens, the trace graph could be copied directly if:
+  - none of state.returnStacks is reduced
+  - competitions created before the first token are not attended
+  - completitions created after the first token are closed
 
 ## Configurations
 
@@ -36,7 +39,7 @@
 
 ## Work Items (issues)
 
-- Fix todo in `TraceManager::AreTwoEndingInputTraceEqual`.
+- Fix todo in `ParserBase<..>::Parse`.
 - `EndObject` after `ReopenObject` doesn't update `ParsingAstBase::codeRange::start`.
   - for example, when `Exp` is reopened to run `( Exp @ )`, then the created ast begins from `Exp` but ends at `)`.
   - We could store the first token in `DelayFieldAssignment`.
@@ -48,6 +51,10 @@
   - Test Traverse Visitors
 - `ParserTest_LexerAndParser`
   - Check `codeRange` of all nodes. (use the previous/current token(calculate codeRange) v.s. before/after rule deduction (move instructions to different places))
+
+## Work Items (investigation)
+
+- Fix todo in `TraceManager::AreTwoEndingInputTraceEqual`.
 - Generate LL parser if possible (print error if failed but forced to do)
 - Generate SLR parser if possible (print error if failed but forced to do)
 
