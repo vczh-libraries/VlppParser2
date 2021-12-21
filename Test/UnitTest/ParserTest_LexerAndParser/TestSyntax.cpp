@@ -124,7 +124,7 @@ namespace TestSyntax_TestObjects
 		}
 
 	protected:
-		void Traverse(Expr* node) override
+		void Finishing(Expr* node) override
 		{
 			visitorExprs.Add(input.Sub(
 				node->codeRange.start.index,
@@ -287,10 +287,13 @@ export abs((sin(x) + cos(y)))
 
 			List<WString> expected;
 			expected.Add(L"x");
+			expected.Add(L"sin");
 			expected.Add(L"sin(x)");
 			expected.Add(L"y");
+			expected.Add(L"cos");
 			expected.Add(L"cos(y)");
 			expected.Add(L"sin(x) + cos(y)");
+			expected.Add(L"abs");
 			expected.Add(L"abs((sin(x) + cos(y)))");
 
 			TEST_ASSERT(CompareEnumerable(expected, visitor.visitorExprs) == 0);

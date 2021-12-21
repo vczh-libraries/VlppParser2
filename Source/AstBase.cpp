@@ -373,11 +373,7 @@ AstInsReceiverBase
 				case AstInsType::BeginObject:
 					{
 						auto value = CreateAstNode(instruction.param);
-						value->codeRange.start.row = token.rowStart;
-						value->codeRange.start.column = token.columnStart;
-						value->codeRange.end.row = token.rowEnd;
-						value->codeRange.end.column = token.columnEnd;
-						value->codeRange.codeIndex = token.codeIndex;
+						value->codeRange = { &token,&token };
 						PushCreated(CreatedObject{ value,pushed.Count() });
 					}
 					break;
@@ -482,8 +478,7 @@ AstInsReceiverBase
 							PopCreated();
 						}
 
-						objectToPush->codeRange.end.row = token.rowEnd;
-						objectToPush->codeRange.end.column = token.columnEnd;
+						objectToPush->codeRange.end = ParsingTextPos::End(&token);
 						pushed.Add(ObjectOrToken{ objectToPush });
 					}
 					break;

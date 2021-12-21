@@ -62,6 +62,16 @@ ParsingTextPos
 				return index < 0 && row < 0 && column < 0;
 			}
 
+			static ParsingTextPos Start(const regex::RegexToken* token)
+			{
+				return { token->start,token->rowStart,token->columnStart };
+			}
+
+			static ParsingTextPos End(const regex::RegexToken* token)
+			{
+				return { token->start + token->length - 1,token->rowEnd,token->columnEnd };
+			}
+
 			static vint Compare(const ParsingTextPos& a, const ParsingTextPos& b)
 			{
 				if (a.IsInvalid() && b.IsInvalid())
@@ -117,31 +127,22 @@ ParsingTextRange
 			/// <summary>Text position for the last character.</summary>
 			ParsingTextPos	end;
 			/// <summary>Code index, refer to [F:vl.regex.RegexToken.codeIndex]</summary>
-			vint			codeIndex;
+			vint			codeIndex = -1;
 
-			ParsingTextRange()
-				:codeIndex(-1)
-			{
-				end.index = -1;
-				end.column = -1;
-			}
+			ParsingTextRange() = default;
 
 			ParsingTextRange(const ParsingTextPos& _start, const ParsingTextPos& _end, vint _codeIndex = -1)
-				:start(_start)
+				: start(_start)
 				, end(_end)
 				, codeIndex(_codeIndex)
 			{
 			}
 
 			ParsingTextRange(const regex::RegexToken* startToken, const regex::RegexToken* endToken)
-				:codeIndex(startToken->codeIndex)
+				: start(ParsingTextPos::Start(startToken))
+				, end(ParsingTextPos::End(endToken))
+				, codeIndex(startToken->codeIndex)
 			{
-				start.index = startToken->start;
-				start.row = startToken->rowStart;
-				start.column = startToken->columnStart;
-				end.index = endToken->start + endToken->length - 1;
-				end.row = endToken->rowEnd;
-				end.column = endToken->columnEnd;
 			}
 
 			bool operator==(const ParsingTextRange& range)const { return start == range.start && end == range.end; }
@@ -482,11 +483,7 @@ IAstInsReceiver (Code Generation Templates)
 			}
 
 			ParsingToken& tokenField = typedObject->*member;
-			tokenField.codeRange.start.row = token.rowStart;
-			tokenField.codeRange.start.column = token.columnStart;
-			tokenField.codeRange.end.row = token.rowEnd;
-			tokenField.codeRange.end.column = token.columnEnd;
-			tokenField.codeRange.codeIndex = token.codeIndex;
+			tokenField.codeRange = { &token,&token };
 			tokenField.index = tokenIndex;
 			tokenField.token = token.token;
 			tokenField.value = WString::CopyFrom(token.reading, token.length);
