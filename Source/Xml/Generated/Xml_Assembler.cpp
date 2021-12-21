@@ -61,27 +61,27 @@ XmlAstInsReceiver : public vl::glr::AstInsReceiverBase
 				}
 			}
 
-			void XmlAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, const vl::regex::RegexToken& token)
+			void XmlAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, const vl::regex::RegexToken& token, vl::vint32_t tokenIndex)
 			{
 				auto cppFieldName = XmlCppFieldName((XmlFields)field);
 				switch((XmlFields)field)
 				{
 				case XmlFields::Attribute_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::xml::XmlAttribute::name, object, field, token,cppFieldName);
+					return vl::glr::AssemblerSetTokenField(&vl::glr::xml::XmlAttribute::name, object, field, token, tokenIndex, cppFieldName);
 				case XmlFields::Attribute_value:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::xml::XmlAttribute::value, object, field, token,cppFieldName);
+					return vl::glr::AssemblerSetTokenField(&vl::glr::xml::XmlAttribute::value, object, field, token, tokenIndex, cppFieldName);
 				case XmlFields::CData_content:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::xml::XmlCData::content, object, field, token,cppFieldName);
+					return vl::glr::AssemblerSetTokenField(&vl::glr::xml::XmlCData::content, object, field, token, tokenIndex, cppFieldName);
 				case XmlFields::Comment_content:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::xml::XmlComment::content, object, field, token,cppFieldName);
+					return vl::glr::AssemblerSetTokenField(&vl::glr::xml::XmlComment::content, object, field, token, tokenIndex, cppFieldName);
 				case XmlFields::Element_closingName:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::xml::XmlElement::closingName, object, field, token,cppFieldName);
+					return vl::glr::AssemblerSetTokenField(&vl::glr::xml::XmlElement::closingName, object, field, token, tokenIndex, cppFieldName);
 				case XmlFields::Element_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::xml::XmlElement::name, object, field, token,cppFieldName);
+					return vl::glr::AssemblerSetTokenField(&vl::glr::xml::XmlElement::name, object, field, token, tokenIndex, cppFieldName);
 				case XmlFields::Instruction_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::xml::XmlInstruction::name, object, field, token,cppFieldName);
+					return vl::glr::AssemblerSetTokenField(&vl::glr::xml::XmlInstruction::name, object, field, token, tokenIndex, cppFieldName);
 				case XmlFields::Text_content:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::xml::XmlText::content, object, field, token,cppFieldName);
+					return vl::glr::AssemblerSetTokenField(&vl::glr::xml::XmlText::content, object, field, token, tokenIndex, cppFieldName);
 				default:
 					return vl::glr::AssemblyThrowFieldNotToken(field, cppFieldName);
 				}

@@ -49,7 +49,7 @@ IfElsePriorityAstInsReceiver : public vl::glr::AstInsReceiverBase
 		}
 	}
 
-	void IfElsePriorityAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, const vl::regex::RegexToken& token)
+	void IfElsePriorityAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, const vl::regex::RegexToken& token, vl::vint32_t tokenIndex)
 	{
 		auto cppFieldName = IfElsePriorityCppFieldName((IfElsePriorityFields)field);
 		return vl::glr::AssemblyThrowFieldNotToken(field, cppFieldName);

@@ -168,10 +168,12 @@ AST
 		public:
 			/// <summary>Range of all tokens that form this object.</summary>
 			ParsingTextRange					codeRange;
+			/// <summary>Index of the token in the token list provided to the parser.</summary>
+			vint								index = -1;
 			/// <summary>Type of the token, representing the index of a regular expression that creates this token in the regular expression list in the grammar file.</summary>
-			vint								tokenIndex = -1;
+			vint								token = -1;
 			/// <summary>Content of the token.</summary>
-			WString								value; 
+			WString								value;
 
 			operator bool() const { return value.Length() > 0; }
 		};
@@ -337,7 +339,7 @@ IAstInsReceiver
 		class IAstInsReceiver : public virtual Interface
 		{
 		public:
-			virtual void								Execute(AstIns instruction, const regex::RegexToken& token) = 0;
+			virtual void								Execute(AstIns instruction, const regex::RegexToken& token, vint32_t tokenIndex) = 0;
 			virtual Ptr<ParsingAstBase>					Finished() = 0;
 		};
 
@@ -349,10 +351,11 @@ IAstInsReceiver
 				Ptr<ParsingAstBase>						object;
 				vint32_t								enumItem = -1;
 				regex::RegexToken						token = {};
+				vint32_t								tokenIndex = -1;
 
 				explicit ObjectOrToken(Ptr<ParsingAstBase> _object) : object(_object) {}
 				explicit ObjectOrToken(vint32_t _enumItem) : enumItem(_enumItem) {}
-				explicit ObjectOrToken(const regex::RegexToken& _token) : token(_token) {}
+				explicit ObjectOrToken(const regex::RegexToken& _token, vint32_t tokenIndex) : token(_token) {}
 			};
 
 			struct FieldAssignment
@@ -387,7 +390,7 @@ IAstInsReceiver
 		protected:
 			virtual Ptr<ParsingAstBase>					CreateAstNode(vint32_t type) = 0;
 			virtual void								SetField(ParsingAstBase* object, vint32_t field, Ptr<ParsingAstBase> value) = 0;
-			virtual void								SetField(ParsingAstBase* object, vint32_t field, const regex::RegexToken& token) = 0;
+			virtual void								SetField(ParsingAstBase* object, vint32_t field, const regex::RegexToken& token, vint32_t tokenIndex) = 0;
 			virtual void								SetField(ParsingAstBase* object, vint32_t field, vint32_t enumValue) = 0;
 			virtual Ptr<ParsingAstBase>					ResolveAmbiguity(vint32_t type, collections::Array<Ptr<ParsingAstBase>>& candidates) = 0;
 
@@ -395,7 +398,7 @@ IAstInsReceiver
 			AstInsReceiverBase() = default;
 			~AstInsReceiverBase() = default;
 
-			void										Execute(AstIns instruction, const regex::RegexToken& token) override;
+			void										Execute(AstIns instruction, const regex::RegexToken& token, vint32_t tokenIndex) override;
 			Ptr<ParsingAstBase>							Finished() override;
 		};
 
@@ -462,7 +465,7 @@ IAstInsReceiver (Code Generation Templates)
 		}
 
 		template<typename TClass>
-		void AssemblerSetTokenField(ParsingToken(TClass::* member), ParsingAstBase* object, vint32_t field, const regex::RegexToken& token, const wchar_t* cppFieldName)
+		void AssemblerSetTokenField(ParsingToken(TClass::* member), ParsingAstBase* object, vint32_t field, const regex::RegexToken& token, vint32_t tokenIndex, const wchar_t* cppFieldName)
 		{
 			auto typedObject = dynamic_cast<TClass*>(object);
 			if (!typedObject)
@@ -488,7 +491,8 @@ IAstInsReceiver (Code Generation Templates)
 			tokenField.codeRange.end.row = token.rowEnd;
 			tokenField.codeRange.end.column = token.columnEnd;
 			tokenField.codeRange.codeIndex = token.codeIndex;
-			tokenField.tokenIndex = token.token;
+			tokenField.index = tokenIndex;
+			tokenField.token = token.token;
 			tokenField.value = WString::CopyFrom(token.reading, token.length);
 		}
 

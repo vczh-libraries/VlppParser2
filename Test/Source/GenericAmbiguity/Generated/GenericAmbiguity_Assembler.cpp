@@ -67,15 +67,15 @@ GenericAmbiguityAstInsReceiver : public vl::glr::AstInsReceiverBase
 		}
 	}
 
-	void GenericAmbiguityAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, const vl::regex::RegexToken& token)
+	void GenericAmbiguityAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, const vl::regex::RegexToken& token, vl::vint32_t tokenIndex)
 	{
 		auto cppFieldName = GenericAmbiguityCppFieldName((GenericAmbiguityFields)field);
 		switch((GenericAmbiguityFields)field)
 		{
 		case GenericAmbiguityFields::GenericExpr_name:
-			return vl::glr::AssemblerSetTokenField(&genericambiguity::GenericExpr::name, object, field, token,cppFieldName);
+			return vl::glr::AssemblerSetTokenField(&genericambiguity::GenericExpr::name, object, field, token, tokenIndex, cppFieldName);
 		case GenericAmbiguityFields::RefExpr_name:
-			return vl::glr::AssemblerSetTokenField(&genericambiguity::RefExpr::name, object, field, token,cppFieldName);
+			return vl::glr::AssemblerSetTokenField(&genericambiguity::RefExpr::name, object, field, token, tokenIndex, cppFieldName);
 		default:
 			return vl::glr::AssemblyThrowFieldNotToken(field, cppFieldName);
 		}

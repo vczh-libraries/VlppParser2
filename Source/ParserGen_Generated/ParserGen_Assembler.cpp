@@ -109,39 +109,39 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 				}
 			}
 
-			void ParserGenAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, const vl::regex::RegexToken& token)
+			void ParserGenAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, const vl::regex::RegexToken& token, vl::vint32_t tokenIndex)
 			{
 				auto cppFieldName = ParserGenCppFieldName((ParserGenFields)field);
 				switch((ParserGenFields)field)
 				{
 				case ParserGenFields::Assignment_field:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrAssignment::field, object, field, token,cppFieldName);
+					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrAssignment::field, object, field, token, tokenIndex, cppFieldName);
 				case ParserGenFields::Assignment_value:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrAssignment::value, object, field, token,cppFieldName);
+					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrAssignment::value, object, field, token, tokenIndex, cppFieldName);
 				case ParserGenFields::Class_baseClass:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrClass::baseClass, object, field, token,cppFieldName);
+					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrClass::baseClass, object, field, token, tokenIndex, cppFieldName);
 				case ParserGenFields::ClassProp_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrClassProp::name, object, field, token,cppFieldName);
+					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrClassProp::name, object, field, token, tokenIndex, cppFieldName);
 				case ParserGenFields::ClassProp_propTypeName:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrClassProp::propTypeName, object, field, token,cppFieldName);
+					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrClassProp::propTypeName, object, field, token, tokenIndex, cppFieldName);
 				case ParserGenFields::CreateClause_type:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrCreateClause::type, object, field, token,cppFieldName);
+					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrCreateClause::type, object, field, token, tokenIndex, cppFieldName);
 				case ParserGenFields::EnumItem_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrEnumItem::name, object, field, token,cppFieldName);
+					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrEnumItem::name, object, field, token, tokenIndex, cppFieldName);
 				case ParserGenFields::LiteralSyntax_value:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrLiteralSyntax::value, object, field, token,cppFieldName);
+					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrLiteralSyntax::value, object, field, token, tokenIndex, cppFieldName);
 				case ParserGenFields::PartialClause_type:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrPartialClause::type, object, field, token,cppFieldName);
+					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrPartialClause::type, object, field, token, tokenIndex, cppFieldName);
 				case ParserGenFields::RefSyntax_field:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrRefSyntax::field, object, field, token,cppFieldName);
+					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrRefSyntax::field, object, field, token, tokenIndex, cppFieldName);
 				case ParserGenFields::RefSyntax_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrRefSyntax::name, object, field, token,cppFieldName);
+					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrRefSyntax::name, object, field, token, tokenIndex, cppFieldName);
 				case ParserGenFields::Rule_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrRule::name, object, field, token,cppFieldName);
+					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrRule::name, object, field, token, tokenIndex, cppFieldName);
 				case ParserGenFields::Type_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrType::name, object, field, token,cppFieldName);
+					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrType::name, object, field, token, tokenIndex, cppFieldName);
 				case ParserGenFields::UseSyntax_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrUseSyntax::name, object, field, token,cppFieldName);
+					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrUseSyntax::name, object, field, token, tokenIndex, cppFieldName);
 				default:
 					return vl::glr::AssemblyThrowFieldNotToken(field, cppFieldName);
 				}

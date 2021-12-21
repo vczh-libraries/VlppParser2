@@ -489,95 +489,95 @@ WorkflowAstInsReceiver : public vl::glr::AstInsReceiverBase
 				}
 			}
 
-			void WorkflowAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, const vl::regex::RegexToken& token)
+			void WorkflowAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, const vl::regex::RegexToken& token, vl::vint32_t tokenIndex)
 			{
 				auto cppFieldName = WorkflowCppFieldName((WorkflowFields)field);
 				switch((WorkflowFields)field)
 				{
 				case WorkflowFields::Attribute_category:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfAttribute::category, object, field, token,cppFieldName);
+					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfAttribute::category, object, field, token, tokenIndex, cppFieldName);
 				case WorkflowFields::Attribute_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfAttribute::name, object, field, token,cppFieldName);
+					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfAttribute::name, object, field, token, tokenIndex, cppFieldName);
 				case WorkflowFields::BlockStatement_endLabel:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfBlockStatement::endLabel, object, field, token,cppFieldName);
+					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfBlockStatement::endLabel, object, field, token, tokenIndex, cppFieldName);
 				case WorkflowFields::ChildExpression_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfChildExpression::name, object, field, token,cppFieldName);
+					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfChildExpression::name, object, field, token, tokenIndex, cppFieldName);
 				case WorkflowFields::ChildType_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfChildType::name, object, field, token,cppFieldName);
+					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfChildType::name, object, field, token, tokenIndex, cppFieldName);
 				case WorkflowFields::CoOperatorExpression_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfCoOperatorExpression::name, object, field, token,cppFieldName);
+					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfCoOperatorExpression::name, object, field, token, tokenIndex, cppFieldName);
 				case WorkflowFields::CoOperatorStatement_opName:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfCoOperatorStatement::opName, object, field, token,cppFieldName);
+					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfCoOperatorStatement::opName, object, field, token, tokenIndex, cppFieldName);
 				case WorkflowFields::CoOperatorStatement_varName:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfCoOperatorStatement::varName, object, field, token,cppFieldName);
+					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfCoOperatorStatement::varName, object, field, token, tokenIndex, cppFieldName);
 				case WorkflowFields::CoProviderStatement_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfCoProviderStatement::name, object, field, token,cppFieldName);
+					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfCoProviderStatement::name, object, field, token, tokenIndex, cppFieldName);
 				case WorkflowFields::Declaration_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfDeclaration::name, object, field, token,cppFieldName);
+					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfDeclaration::name, object, field, token, tokenIndex, cppFieldName);
 				case WorkflowFields::EnumItem_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfEnumItem::name, object, field, token,cppFieldName);
+					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfEnumItem::name, object, field, token, tokenIndex, cppFieldName);
 				case WorkflowFields::EnumItem_number:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfEnumItem::number, object, field, token,cppFieldName);
+					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfEnumItem::number, object, field, token, tokenIndex, cppFieldName);
 				case WorkflowFields::EnumItemIntersection_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfEnumItemIntersection::name, object, field, token,cppFieldName);
+					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfEnumItemIntersection::name, object, field, token, tokenIndex, cppFieldName);
 				case WorkflowFields::FloatingExpression_value:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfFloatingExpression::value, object, field, token,cppFieldName);
+					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfFloatingExpression::value, object, field, token, tokenIndex, cppFieldName);
 				case WorkflowFields::ForEachStatement_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfForEachStatement::name, object, field, token,cppFieldName);
+					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfForEachStatement::name, object, field, token, tokenIndex, cppFieldName);
 				case WorkflowFields::FormatExpression_value:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfFormatExpression::value, object, field, token,cppFieldName);
+					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfFormatExpression::value, object, field, token, tokenIndex, cppFieldName);
 				case WorkflowFields::FunctionArgument_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfFunctionArgument::name, object, field, token,cppFieldName);
+					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfFunctionArgument::name, object, field, token, tokenIndex, cppFieldName);
 				case WorkflowFields::GotoStatement_label:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfGotoStatement::label, object, field, token,cppFieldName);
+					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfGotoStatement::label, object, field, token, tokenIndex, cppFieldName);
 				case WorkflowFields::IfStatement_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfIfStatement::name, object, field, token,cppFieldName);
+					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfIfStatement::name, object, field, token, tokenIndex, cppFieldName);
 				case WorkflowFields::IntegerExpression_value:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfIntegerExpression::value, object, field, token,cppFieldName);
+					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfIntegerExpression::value, object, field, token, tokenIndex, cppFieldName);
 				case WorkflowFields::LetVariable_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfLetVariable::name, object, field, token,cppFieldName);
+					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfLetVariable::name, object, field, token, tokenIndex, cppFieldName);
 				case WorkflowFields::MemberExpression_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfMemberExpression::name, object, field, token,cppFieldName);
+					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfMemberExpression::name, object, field, token, tokenIndex, cppFieldName);
 				case WorkflowFields::Module_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfModule::name, object, field, token,cppFieldName);
+					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfModule::name, object, field, token, tokenIndex, cppFieldName);
 				case WorkflowFields::ModuleUsingNameFragment_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfModuleUsingNameFragment::name, object, field, token,cppFieldName);
+					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfModuleUsingNameFragment::name, object, field, token, tokenIndex, cppFieldName);
 				case WorkflowFields::NewCoroutineExpression_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfNewCoroutineExpression::name, object, field, token,cppFieldName);
+					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfNewCoroutineExpression::name, object, field, token, tokenIndex, cppFieldName);
 				case WorkflowFields::ObserveExpression_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfObserveExpression::name, object, field, token,cppFieldName);
+					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfObserveExpression::name, object, field, token, tokenIndex, cppFieldName);
 				case WorkflowFields::OrderedNameExpression_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfOrderedNameExpression::name, object, field, token,cppFieldName);
+					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfOrderedNameExpression::name, object, field, token, tokenIndex, cppFieldName);
 				case WorkflowFields::PropertyDeclaration_getter:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfPropertyDeclaration::getter, object, field, token,cppFieldName);
+					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfPropertyDeclaration::getter, object, field, token, tokenIndex, cppFieldName);
 				case WorkflowFields::PropertyDeclaration_setter:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfPropertyDeclaration::setter, object, field, token,cppFieldName);
+					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfPropertyDeclaration::setter, object, field, token, tokenIndex, cppFieldName);
 				case WorkflowFields::PropertyDeclaration_valueChangedEvent:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfPropertyDeclaration::valueChangedEvent, object, field, token,cppFieldName);
+					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfPropertyDeclaration::valueChangedEvent, object, field, token, tokenIndex, cppFieldName);
 				case WorkflowFields::ReferenceExpression_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfReferenceExpression::name, object, field, token,cppFieldName);
+					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfReferenceExpression::name, object, field, token, tokenIndex, cppFieldName);
 				case WorkflowFields::ReferenceType_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfReferenceType::name, object, field, token,cppFieldName);
+					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfReferenceType::name, object, field, token, tokenIndex, cppFieldName);
 				case WorkflowFields::StateDeclaration_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfStateDeclaration::name, object, field, token,cppFieldName);
+					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfStateDeclaration::name, object, field, token, tokenIndex, cppFieldName);
 				case WorkflowFields::StateInput_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfStateInput::name, object, field, token,cppFieldName);
+					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfStateInput::name, object, field, token, tokenIndex, cppFieldName);
 				case WorkflowFields::StateInvokeStatement_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfStateInvokeStatement::name, object, field, token,cppFieldName);
+					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfStateInvokeStatement::name, object, field, token, tokenIndex, cppFieldName);
 				case WorkflowFields::StateSwitchArgument_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfStateSwitchArgument::name, object, field, token,cppFieldName);
+					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfStateSwitchArgument::name, object, field, token, tokenIndex, cppFieldName);
 				case WorkflowFields::StateSwitchCase_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfStateSwitchCase::name, object, field, token,cppFieldName);
+					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfStateSwitchCase::name, object, field, token, tokenIndex, cppFieldName);
 				case WorkflowFields::StringExpression_value:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfStringExpression::value, object, field, token,cppFieldName);
+					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfStringExpression::value, object, field, token, tokenIndex, cppFieldName);
 				case WorkflowFields::StructMember_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfStructMember::name, object, field, token,cppFieldName);
+					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfStructMember::name, object, field, token, tokenIndex, cppFieldName);
 				case WorkflowFields::TopQualifiedExpression_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfTopQualifiedExpression::name, object, field, token,cppFieldName);
+					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfTopQualifiedExpression::name, object, field, token, tokenIndex, cppFieldName);
 				case WorkflowFields::TopQualifiedType_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfTopQualifiedType::name, object, field, token,cppFieldName);
+					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfTopQualifiedType::name, object, field, token, tokenIndex, cppFieldName);
 				case WorkflowFields::TryStatement_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfTryStatement::name, object, field, token,cppFieldName);
+					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfTryStatement::name, object, field, token, tokenIndex, cppFieldName);
 				default:
 					return vl::glr::AssemblyThrowFieldNotToken(field, cppFieldName);
 				}

@@ -62,35 +62,27 @@ XmlUnescapeVisitor
 						}
 						if (begin != -1 && end != -1)
 						{
-							vint tokenBegin = node->subNodes[begin].Cast<XmlText>()->content.tokenIndex;
-							vint tokenEnd = node->subNodes[end].Cast<XmlText>()->content.tokenIndex;
-							while (tokenBegin > 0)
+							vint beginTokenIndex = node->subNodes[begin].Cast<XmlText>()->content.index;
+							vint endTokenIndex = node->subNodes[end].Cast<XmlText>()->content.index;
+
+							auto& beginToken = tokens[beginTokenIndex];
+							auto& endToken = tokens[endTokenIndex];
+
+							auto textBegin = beginToken.reading;
+							auto textEnd = endToken.reading + endToken.length;
+
+							if (beginTokenIndex > 0)
 							{
-								if (tokens.Get(tokenBegin - 1).token == (vint)XmlTokens::SPACE || tokens.Get(tokenBegin - 1).token == -1)
-								{
-									tokenBegin--;
-								}
-								else
-								{
-									break;
-								}
-							}
-							while (tokenEnd < tokens.Count() - 1)
-							{
-								if (tokens.Get(tokenEnd + 1).token == (vint)XmlTokens::SPACE || tokens.Get(tokenEnd + 1).token == -1)
-								{
-									tokenEnd++;
-								}
-								else
-								{
-									break;
-								}
+								auto& previousToken = tokens[beginTokenIndex];
+								textBegin = previousToken.reading + previousToken.length;
 							}
 
-							const RegexToken& beginToken = tokens.Get(tokenBegin);
-							const RegexToken& endToken = tokens.Get(tokenEnd);
-							const wchar_t* textBegin = beginToken.reading;
-							const wchar_t* textEnd = endToken.reading + endToken.length;
+							if (endTokenIndex < tokens.Count() - 1)
+							{
+								auto& nextToken = tokens[endTokenIndex];
+								textEnd = nextToken.reading;
+							}
+
 							WString text = WString::CopyFrom(textBegin, vint(textEnd - textBegin));
 							ParsingTextRange range(&beginToken, &endToken);
 

@@ -81,21 +81,21 @@ CalculatorAstInsReceiver : public vl::glr::AstInsReceiverBase
 		}
 	}
 
-	void CalculatorAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, const vl::regex::RegexToken& token)
+	void CalculatorAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, const vl::regex::RegexToken& token, vl::vint32_t tokenIndex)
 	{
 		auto cppFieldName = CalculatorCppFieldName((CalculatorFields)field);
 		switch((CalculatorFields)field)
 		{
 		case CalculatorFields::Arg_name:
-			return vl::glr::AssemblerSetTokenField(&calculator::Arg::name, object, field, token,cppFieldName);
+			return vl::glr::AssemblerSetTokenField(&calculator::Arg::name, object, field, token, tokenIndex, cppFieldName);
 		case CalculatorFields::Import_name:
-			return vl::glr::AssemblerSetTokenField(&calculator::Import::name, object, field, token,cppFieldName);
+			return vl::glr::AssemblerSetTokenField(&calculator::Import::name, object, field, token, tokenIndex, cppFieldName);
 		case CalculatorFields::LetExpr_name:
-			return vl::glr::AssemblerSetTokenField(&calculator::LetExpr::name, object, field, token,cppFieldName);
+			return vl::glr::AssemblerSetTokenField(&calculator::LetExpr::name, object, field, token, tokenIndex, cppFieldName);
 		case CalculatorFields::NumExpr_value:
-			return vl::glr::AssemblerSetTokenField(&calculator::NumExpr::value, object, field, token,cppFieldName);
+			return vl::glr::AssemblerSetTokenField(&calculator::NumExpr::value, object, field, token, tokenIndex, cppFieldName);
 		case CalculatorFields::Ref_name:
-			return vl::glr::AssemblerSetTokenField(&calculator::Ref::name, object, field, token,cppFieldName);
+			return vl::glr::AssemblerSetTokenField(&calculator::Ref::name, object, field, token, tokenIndex, cppFieldName);
 		default:
 			return vl::glr::AssemblyThrowFieldNotToken(field, cppFieldName);
 		}

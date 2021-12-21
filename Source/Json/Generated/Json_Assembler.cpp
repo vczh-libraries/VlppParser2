@@ -55,17 +55,17 @@ JsonAstInsReceiver : public vl::glr::AstInsReceiverBase
 				}
 			}
 
-			void JsonAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, const vl::regex::RegexToken& token)
+			void JsonAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, const vl::regex::RegexToken& token, vl::vint32_t tokenIndex)
 			{
 				auto cppFieldName = JsonCppFieldName((JsonFields)field);
 				switch((JsonFields)field)
 				{
 				case JsonFields::Number_content:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::json::JsonNumber::content, object, field, token,cppFieldName);
+					return vl::glr::AssemblerSetTokenField(&vl::glr::json::JsonNumber::content, object, field, token, tokenIndex, cppFieldName);
 				case JsonFields::ObjectField_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::json::JsonObjectField::name, object, field, token,cppFieldName);
+					return vl::glr::AssemblerSetTokenField(&vl::glr::json::JsonObjectField::name, object, field, token, tokenIndex, cppFieldName);
 				case JsonFields::String_content:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::json::JsonString::content, object, field, token,cppFieldName);
+					return vl::glr::AssemblerSetTokenField(&vl::glr::json::JsonString::content, object, field, token, tokenIndex, cppFieldName);
 				default:
 					return vl::glr::AssemblyThrowFieldNotToken(field, cppFieldName);
 				}

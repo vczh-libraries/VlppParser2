@@ -41,13 +41,13 @@ BinaryOpAstInsReceiver : public vl::glr::AstInsReceiverBase
 		}
 	}
 
-	void BinaryOpAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, const vl::regex::RegexToken& token)
+	void BinaryOpAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, const vl::regex::RegexToken& token, vl::vint32_t tokenIndex)
 	{
 		auto cppFieldName = BinaryOpCppFieldName((BinaryOpFields)field);
 		switch((BinaryOpFields)field)
 		{
 		case BinaryOpFields::RefExpr_name:
-			return vl::glr::AssemblerSetTokenField(&binaryop::RefExpr::name, object, field, token,cppFieldName);
+			return vl::glr::AssemblerSetTokenField(&binaryop::RefExpr::name, object, field, token, tokenIndex, cppFieldName);
 		default:
 			return vl::glr::AssemblyThrowFieldNotToken(field, cppFieldName);
 		}

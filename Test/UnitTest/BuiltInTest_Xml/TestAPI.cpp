@@ -34,8 +34,8 @@ TEST_FILE
 			TEST_CASE(output[i])
 			{
 				auto ast = XmlParseDocument(WString::Unmanaged(input[i]), parser);
-				auto json = XmlToString(ast);
-				TEST_ASSERT(json == output[i]);
+				auto xml = XmlToString(ast);
+				TEST_ASSERT(xml == output[i]);
 			});
 		}
 	});

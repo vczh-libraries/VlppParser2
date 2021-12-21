@@ -14,19 +14,22 @@ TraceManager::ExecuteTrace
 			{
 				// AccumulatedDfa
 				vint32_t				adfaCount = 0;
+				vint32_t				adfaIndex = -1;
 				regex::RegexToken*		adfaToken = nullptr;
 
 				// AccumulatedEoRo
 				vint32_t				aeoroCount = 0;
+				vint32_t				aeoroIndex = -1;
 				regex::RegexToken*		aeoroToken = nullptr;
 
 				// Caching
 				AstIns					cachedIns;
+				vint32_t				cachedIndex = -1;
 				regex::RegexToken*		cachedToken = nullptr;
 
 				IAstInsReceiver*		receiver = nullptr;
 
-				void Submit(AstIns& ins, regex::RegexToken& token)
+				void Submit(AstIns& ins, regex::RegexToken& token, vint32_t tokenIndex)
 				{
 					// multiple DelayFieldAssignment are compressed to single AccumulatedDfa
 					// multiple EndObject+ReopenObject are compressed to single AccumulatedEoRo
@@ -37,12 +40,14 @@ TraceManager::ExecuteTrace
 						if (aeoroToken == nullptr && cachedToken == nullptr && (adfaToken == nullptr || adfaToken == &token))
 						{
 							adfaCount++;
+							adfaIndex = tokenIndex;
 							adfaToken = &token;
 						}
 						else
 						{
 							ExecuteSubmitted();
 							adfaCount = 1;
+							adfaIndex = tokenIndex;
 							adfaToken = &token;
 						}
 						break;
@@ -50,12 +55,14 @@ TraceManager::ExecuteTrace
 						if (adfaToken == nullptr && cachedToken == nullptr)
 						{
 							cachedIns = ins;
+							cachedIndex = tokenIndex;
 							cachedToken = &token;
 						}
 						else
 						{
 							ExecuteSubmitted();
 							cachedIns = ins;
+							cachedIndex = tokenIndex;
 							cachedToken = &token;
 						}
 						break;
@@ -63,11 +70,12 @@ TraceManager::ExecuteTrace
 						if (adfaToken != nullptr || cachedToken == nullptr || cachedIns.type != AstInsType::EndObject)
 						{
 							ExecuteSubmitted();
-							receiver->Execute(ins, token);
+							receiver->Execute(ins, token, tokenIndex);
 						}
 						else if ((aeoroToken == nullptr || aeoroToken == &token) && cachedToken == &token)
 						{
 							aeoroCount++;
+							aeoroIndex = tokenIndex;
 							aeoroToken = &token;
 							cachedToken = nullptr;
 						}
@@ -76,17 +84,18 @@ TraceManager::ExecuteTrace
 							cachedToken = nullptr;
 							ExecuteSubmitted();
 							aeoroCount = 1;
+							aeoroIndex = tokenIndex;
 							aeoroToken = &token;
 						}
 						else
 						{
 							ExecuteSubmitted();
-							receiver->Execute(ins, token);
+							receiver->Execute(ins, token, tokenIndex);
 						}
 						break;
 					default:
 						ExecuteSubmitted();
-						receiver->Execute(ins, token);
+						receiver->Execute(ins, token, tokenIndex);
 					}
 				}
 
@@ -97,12 +106,12 @@ TraceManager::ExecuteTrace
 						if (adfaCount == 1)
 						{
 							AstIns ins = { AstInsType::DelayFieldAssignment };
-							receiver->Execute(ins, *adfaToken);
+							receiver->Execute(ins, *adfaToken, adfaIndex);
 						}
 						else
 						{
 							AstIns ins = { AstInsType::AccumulatedDfa,-1,adfaCount };
-							receiver->Execute(ins, *adfaToken);
+							receiver->Execute(ins, *adfaToken, adfaIndex);
 						}
 						adfaCount = 0;
 						adfaToken = nullptr;
@@ -110,13 +119,13 @@ TraceManager::ExecuteTrace
 					if (aeoroToken)
 					{
 						AstIns ins = { AstInsType::AccumulatedEoRo,-1,aeoroCount };
-						receiver->Execute(ins, *aeoroToken);
+						receiver->Execute(ins, *aeoroToken, aeoroIndex);
 						aeoroCount = 0;
 						aeoroToken = nullptr;
 					}
 					if (cachedToken)
 					{
-						receiver->Execute(cachedIns, *cachedToken);
+						receiver->Execute(cachedIns, *cachedToken, aeoroIndex);
 						cachedToken = nullptr;
 					}
 				}
@@ -180,7 +189,7 @@ TraceManager::ExecuteTrace
 							{
 								auto& ins = ReadInstruction(i, insLists);
 								auto& token = tokens[trace->currentTokenIndex];
-								submitter.Submit(ins, token);
+								submitter.Submit(ins, token, trace->currentTokenIndex);
 							}
 						}
 						else
@@ -204,7 +213,7 @@ TraceManager::ExecuteTrace
 								// submit a ResolveAmbiguity instruction
 								auto& token = tokens[trace->currentTokenIndex];
 								AstIns insResolve = { AstInsType::ResolveAmbiguity,trace->ambiguity.ambiguityType,trace->ambiguityRouting.predecessorCount };
-								submitter.Submit(insResolve, token);
+								submitter.Submit(insResolve, token, trace->currentTokenIndex);
 							}
 
 							// execute all instructions after EndObject
@@ -213,7 +222,7 @@ TraceManager::ExecuteTrace
 							{
 								auto& ins = ReadInstruction(i, insLists);
 								auto& token = tokens[trace->currentTokenIndex];
-								submitter.Submit(ins, token);
+								submitter.Submit(ins, token, trace->currentTokenIndex);
 							}
 						}
 						else
@@ -233,7 +242,7 @@ TraceManager::ExecuteTrace
 						{
 							auto& ins = ReadInstruction(i, insLists);
 							auto& token = tokens[trace->currentTokenIndex];
-							submitter.Submit(ins, token);
+							submitter.Submit(ins, token, trace->currentTokenIndex);
 						}
 					}
 
@@ -283,7 +292,7 @@ TraceManager::ExecuteTrace
 								{
 									auto& ins = ReadInstruction(i, insLists);
 									auto& token = tokens[successor->currentTokenIndex];
-									submitter.Submit(ins, token);
+									submitter.Submit(ins, token, trace->currentTokenIndex);
 								}
 							}
 						}

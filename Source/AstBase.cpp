@@ -106,8 +106,6 @@ JsonVisitorBase
 			{
 				writer.WriteString(L"{ \"value\": ");
 				WriteString(token.value);
-				writer.WriteString(L", \"tokenIndex\": ");
-				writer.WriteString(itow(token.tokenIndex));
 				writer.WriteString(L", \"codeRange\": ");
 				WriteRange(token.codeRange);
 				writer.WriteString(L"}");
@@ -281,7 +279,7 @@ AstInsReceiverBase
 			}
 			else
 			{
-				SetField(object, field, value.token);
+				SetField(object, field, value.token, value.tokenIndex);
 			}
 		}
 
@@ -331,7 +329,7 @@ AstInsReceiverBase
 			created[created.Count() - 1].delayedFieldAssignments.Add(std::move(fa));
 		}
 
-		void AstInsReceiverBase::Execute(AstIns instruction, const regex::RegexToken& token)
+		void AstInsReceiverBase::Execute(AstIns instruction, const regex::RegexToken& token, vint32_t tokenIndex)
 		{
 			EnsureContinuable();
 			try
@@ -364,7 +362,7 @@ AstInsReceiverBase
 				{
 				case AstInsType::Token:
 					{
-						pushed.Add(ObjectOrToken{ token });
+						pushed.Add(ObjectOrToken{ token,tokenIndex });
 					}
 					break;
 				case AstInsType::EnumItem:
@@ -593,8 +591,8 @@ AstInsReceiverBase
 							{
 								instruction.count -= createdObject.extraEmptyDfaBelow + 1;
 								createdObject.extraEmptyDfaBelow = 0;
-								Execute({ AstInsType::EndObject }, token);
-								Execute({ AstInsType::ReopenObject }, token);
+								Execute({ AstInsType::EndObject }, token, tokenIndex);
+								Execute({ AstInsType::ReopenObject }, token, tokenIndex);
 							}
 						}
 					}
@@ -780,7 +778,8 @@ Reflection
 
 			BEGIN_STRUCT_MEMBER(vl::glr::ParsingToken)
 				STRUCT_MEMBER(codeRange)
-				STRUCT_MEMBER(tokenIndex)
+				STRUCT_MEMBER(index)
+				STRUCT_MEMBER(token)
 				STRUCT_MEMBER(value)
 			END_STRUCT_MEMBER(vl::glr::ParsingToken)
 

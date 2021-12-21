@@ -81,9 +81,11 @@ public:
 	{
 	}
 
-	void Execute(AstIns instruction, const regex::RegexToken& token) override
+	void Execute(AstIns instruction, const regex::RegexToken& token, vint32_t tokenIndex) override
 	{
-		writer.WriteString(L"<");
+		writer.WriteString(L"<[");
+		writer.WriteString(itow(tokenIndex));
+		writer.WriteString(L"]");
 		writer.WriteString(tokenName((vint32_t)token.token));
 		writer.WriteString(L":");
 		writer.WriteString(token.reading, token.length);
