@@ -16,6 +16,27 @@ namespace vl
 ParserBase<TTokens, TStates, TReceiver, TStateTypes>
 ***********************************************************************/
 
+		enum class ParserErrors
+		{
+			UnrecognizedToken,		// the token is not recognizable to the tokenizer
+			InvalidToken,			// the token cause the parser to stop
+			InputIncomplete,		// all traces do not reach the end
+			UnexpectedAstType,		// unexpected type of the created AST
+		};
+
+		struct EndOfInputArgs
+		{
+			collections::List<regex::RegexToken>&			tokens;
+			automaton::Executable&							executable;
+			automaton::TraceManager&						traceManager;
+			automaton::Trace*								rootTrace;
+		};
+
+		struct ErrorArgs
+		{
+			bool											checkFail;
+		};
+
 		template<
 			typename TTokens,
 			typename TStates,
@@ -30,14 +51,16 @@ ParserBase<TTokens, TStates, TReceiver, TStateTypes>
 
 			using Deleter = bool(*)(vint);
 			using TokenList = collections::List<regex::RegexToken>;
-			using Callback = void(TokenList&, automaton::Executable&, automaton::TraceManager&, automaton::Trace*);
+			using EndOfInputCallback = void(EndOfInputArgs&);
+			using ErrorCallback = void(ErrorArgs&);
 		protected:
 			Deleter									deleter;
 			Ptr<regex::RegexLexer>					lexer;
 			Ptr<automaton::Executable>				executable;
 
 		public:
-			Event<Callback>							OnEndOfInput;
+			Event<EndOfInputCallback>				OnEndOfInput;
+			Event<ErrorCallback>					OnError;
 
 			ParserBase(
 				Deleter _deleter,
@@ -93,7 +116,10 @@ ParserBase<TTokens, TStates, TReceiver, TStateTypes>
 
 				tm.EndOfInput();
 				auto rootTrace = tm.PrepareTraceRoute();
-				OnEndOfInput(tokens, *executable.Obj(), tm, rootTrace);
+				{
+					EndOfInputArgs args = { tokens, *executable.Obj(), tm, rootTrace };
+					OnEndOfInput(args);
+				}
 				// TODO: log errors instead of crashing (input not complete, unresolvable ambiguity)
 				CHECK_ERROR(tm.concurrentCount == 1, ERROR_MESSAGE_PREFIX L"Ambiguity not fully resolved.");
 				CHECK_ERROR(executable->states[tm.concurrentTraces->Get(0)->state].endingState, ERROR_MESSAGE_PREFIX L"Input is incomplete.");

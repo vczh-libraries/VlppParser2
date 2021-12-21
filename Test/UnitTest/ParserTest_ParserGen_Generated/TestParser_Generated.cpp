@@ -39,15 +39,15 @@ namespace TestParser_Generated_TestObjects
 		WString caseName;
 
 		parser.OnEndOfInput.Add(
-			[&](List<RegexToken>& tokens, Executable& executable, TraceManager& tm, Trace* rootTrace)
+			[&](EndOfInputArgs& args)
 			{
 				LogTraceManager(
 					L"Generated-" + parserName,
 					caseName,
-					executable,
-					tm,
-					rootTrace,
-					tokens,
+					args.executable,
+					args.traceManager,
+					args.rootTrace,
+					args.tokens,
 					[=](vint32_t type) { return WString::Unmanaged(typeName((TClasses)type)); },
 					[=](vint32_t field) { return WString::Unmanaged(fieldName((TFields)field)); },
 					[=](vint32_t token) { return WString::Unmanaged(tokenId((TTokens)token)); },
@@ -55,7 +55,7 @@ namespace TestParser_Generated_TestObjects
 					[=](vint32_t state) { return WString::Unmanaged(stateLabel(state)); }
 				);
 
-				if (tm.concurrentCount == 1)
+				if (args.traceManager.concurrentCount == 1)
 				{
 					LogTraceExecution(
 						L"Generated-" + parserName,
@@ -65,7 +65,7 @@ namespace TestParser_Generated_TestObjects
 						[=](vint32_t token) { return WString::Unmanaged(tokenId((TTokens)token)); },
 						[&](IAstInsReceiver& receiver)
 						{
-							tm.ExecuteTrace(rootTrace, receiver, tokens);
+							args.traceManager.ExecuteTrace(args.rootTrace, receiver, args.tokens);
 						});
 				}
 			});
