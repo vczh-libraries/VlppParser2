@@ -97,6 +97,18 @@ namespace TestSyntax_TestObjects
 
 		return astModule;
 	}
+
+	class CalculatorAstTraverseVisitor : public traverse_visitor::ExprAstVisitor
+	{
+	public:
+		WString			visitedTokens;
+
+	protected:
+		void Traverse(vl::glr::ParsingToken& token) override
+		{
+			visitedTokens += L"[" + token.value + L"]";
+		}
+	};
 }
 using namespace TestSyntax_TestObjects;
 
@@ -206,6 +218,10 @@ export abs(sin(x) + cos(y))
 
 		auto copiedAst = copy_visitor::ExprAstVisitor().CopyNode(ast.Obj());
 		AssertAst<json_visitor::ExprAstVisitor>(copiedAst, output);
+
+		CalculatorAstTraverseVisitor traverseVisitor;
+		traverseVisitor.InspectInto(ast.Obj());
+		TEST_ASSERT(traverseVisitor.visitedTokens == L"[x][sin][y][cos][abs][sin][cos][abs]");
 	});
 
 	MemoryStream executableStream;
