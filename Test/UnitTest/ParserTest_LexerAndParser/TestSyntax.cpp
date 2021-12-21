@@ -160,7 +160,7 @@ export 1
 })");
 	});
 
-	TEST_CASE(L"Test Generated Utilities")
+	TEST_CATEGORY(L"Test Generated Utilities")
 	{
 		WString input = LR"(
 import sin
@@ -215,35 +215,49 @@ export abs(sin(x) + cos(y))
         "name": "abs"
     }]
 })";
-		auto ast = ParseCalculator(input, lexer, executable, metadata, L"Calculator");
-		AssertAst<json_visitor::ExprAstVisitor>(ast, output);
+		Ptr<Module> ast;
 
-		auto copiedAst = copy_visitor::ExprAstVisitor().CopyNode(ast.Obj());
-		AssertAst<json_visitor::ExprAstVisitor>(copiedAst, output);
+		TEST_CASE(L"Test json_visitor::ExprAstVisitor")
+		{
+			ast = ParseCalculator(input, lexer, executable, metadata, L"Calculator");
+			AssertAst<json_visitor::ExprAstVisitor>(ast, output);
+		});
 
-		Ptr<Module> makedAst = MakeModule()
-			.imports(MakeImport().name(L"sin"))
-			.imports(MakeImport().name(L"cos"))
-			.imports(MakeImport().name(L"abs"))
-			.exported(MakeCall()
-				.func(MakeRef().name(L"abs"))
-				.args(MakeBinary()
-					.op(BinaryOp::Add)
-					.left(MakeCall()
-						.func(MakeRef().name(L"sin"))
-						.args(MakeRef().name(L"x"))
+		TEST_CASE(L"Test copy_visitor::ExprAstVisitor")
+		{
+			auto copiedAst = copy_visitor::ExprAstVisitor().CopyNode(ast.Obj());
+			AssertAst<json_visitor::ExprAstVisitor>(copiedAst, output);
+		});
+
+		TEST_CASE(L"Test traverse_visitor::ExprAstVisitor")
+		{
+			CalculatorAstTraverseVisitor traverseVisitor;
+			traverseVisitor.InspectInto(ast.Obj());
+			TEST_ASSERT(traverseVisitor.visitedTokens == L"[x][sin][y][cos][abs][sin][cos][abs]");
+		});
+
+		TEST_CASE(L"Test Builder")
+		{
+			Ptr<Module> makedAst = MakeModule()
+				.imports(MakeImport().name(L"sin"))
+				.imports(MakeImport().name(L"cos"))
+				.imports(MakeImport().name(L"abs"))
+				.exported(MakeCall()
+					.func(MakeRef().name(L"abs"))
+					.args(MakeBinary()
+						.op(BinaryOp::Add)
+						.left(MakeCall()
+							.func(MakeRef().name(L"sin"))
+							.args(MakeRef().name(L"x"))
+							)
+						.right(MakeCall()
+							.func(MakeRef().name(L"cos"))
+							.args(MakeRef().name(L"y"))
+							)
 						)
-					.right(MakeCall()
-						.func(MakeRef().name(L"cos"))
-						.args(MakeRef().name(L"y"))
-						)
-					)
-				);
-		AssertAst<json_visitor::ExprAstVisitor>(makedAst, output);
-
-		CalculatorAstTraverseVisitor traverseVisitor;
-		traverseVisitor.InspectInto(ast.Obj());
-		TEST_ASSERT(traverseVisitor.visitedTokens == L"[x][sin][y][cos][abs][sin][cos][abs]");
+					);
+			AssertAst<json_visitor::ExprAstVisitor>(makedAst, output);
+		});
 	});
 
 	MemoryStream executableStream;
