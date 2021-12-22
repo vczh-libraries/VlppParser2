@@ -37,14 +37,15 @@ AstEnumSymbol
 			{
 			}
 
-			AstEnumItemSymbol* AstEnumSymbol::CreateItem(const WString& itemName)
+			AstEnumItemSymbol* AstEnumSymbol::CreateItem(const WString& itemName, ParsingTextRange codeRange)
 			{
 				auto symbol = new AstEnumItemSymbol(this, itemName);
 				symbol->value = items.items.Count();
 				if (!items.Add(itemName, symbol))
 				{
-					ownerFile->Owner()->Global().AddError(
+					ownerFile->AddError(
 						ParserErrorType::DuplicatedEnumItem,
+						codeRange,
 						ownerFile->Name(),
 						name,
 						itemName
@@ -63,7 +64,7 @@ AstClassPropSymbol
 			{
 			}
 
-			bool AstClassPropSymbol::SetPropType(AstPropType _type, const WString& typeName)
+			bool AstClassPropSymbol::SetPropType(AstPropType _type, const WString& typeName, ParsingTextRange codeRange)
 			{
 				propType = _type;
 				if (_type == AstPropType::Token) return true;
@@ -72,8 +73,9 @@ AstClassPropSymbol
 				vint index = symbols.Keys().IndexOf(typeName);
 				if (index == -1)
 				{
-					ownerFile->Owner()->Global().AddError(
+					ownerFile->AddError(
 						ParserErrorType::FieldTypeNotExists,
+						codeRange,
 						ownerFile->Name(),
 						parent->Name(),
 						name
@@ -86,8 +88,9 @@ AstClassPropSymbol
 
 				if (!dynamic_cast<AstClassSymbol*>(propSymbol))
 				{
-					parent->Owner()->Owner()->Global().AddError(
+					ownerFile->AddError(
 						ParserErrorType::FieldTypeNotClass,
+						codeRange,
 						parent->Owner()->Name(),
 						parent->Name(),
 						name
@@ -106,20 +109,32 @@ AstClassSymbol
 			{
 			}
 
-			bool AstClassSymbol::SetBaseClass(const WString& typeName)
+			bool AstClassSymbol::SetBaseClass(const WString& typeName, ParsingTextRange codeRange)
 			{
 				auto& symbols = ownerFile->Symbols();
 				vint index = symbols.Keys().IndexOf(typeName);
 				if (index == -1)
 				{
-					ownerFile->Owner()->Global().AddError(ParserErrorType::BaseClassNotExists, ownerFile->Name(), name, typeName);
+					ownerFile->AddError(
+						ParserErrorType::BaseClassNotExists,
+						codeRange,
+						ownerFile->Name(),
+						name,
+						typeName
+						);
 					return false;
 				}
 
 				auto newBaseClass = dynamic_cast<AstClassSymbol*>(symbols.Values()[index]);
 				if (!newBaseClass)
 				{
-					ownerFile->Owner()->Global().AddError(ParserErrorType::BaseClassNotClass, ownerFile->Name(), name, typeName);
+					ownerFile->AddError(
+						ParserErrorType::BaseClassNotClass,
+						codeRange,
+						ownerFile->Name(),
+						name,
+						typeName
+						);
 					return false;
 				}
 
@@ -130,8 +145,9 @@ AstClassSymbol
 					auto currentSymbol = visited[i];
 					if (currentSymbol == this)
 					{
-						ownerFile->Owner()->Global().AddError(
+						ownerFile->AddError(
 							ParserErrorType::BaseClassCyclicDependency,
+							codeRange,
 							ownerFile->Name(),
 							name
 						);
@@ -149,15 +165,15 @@ AstClassSymbol
 				return true;
 			}
 
-			AstClassSymbol* AstClassSymbol::CreateAmbiguousDerivedClass()
+			AstClassSymbol* AstClassSymbol::CreateAmbiguousDerivedClass(ParsingTextRange codeRange)
 			{
 				if (!ambiguousDerivedClass)
 				{
-					auto derived = ownerFile->CreateClass(name + L"ToResolve");
+					auto derived = ownerFile->CreateClass(name + L"ToResolve", codeRange);
 					derived->baseClass = this;
 					derivedClasses.Add(derived);
 
-					auto prop = derived->CreateProp(L"candidates");
+					auto prop = derived->CreateProp(L"candidates", codeRange);
 					prop->propType = AstPropType::Array;
 					prop->propSymbol = this;
 
@@ -166,13 +182,14 @@ AstClassSymbol
 				return ambiguousDerivedClass;
 			}
 
-			AstClassPropSymbol* AstClassSymbol::CreateProp(const WString& propName)
+			AstClassPropSymbol* AstClassSymbol::CreateProp(const WString& propName, ParsingTextRange codeRange)
 			{
 				auto symbol = new AstClassPropSymbol(this, propName);
 				if (!props.Add(propName, symbol))
 				{
-					ownerFile->Owner()->Global().AddError(
+					ownerFile->AddError(
 						ParserErrorType::DuplicatedClassProp,
+						codeRange,
 						ownerFile->Name(),
 						name,
 						propName
@@ -254,13 +271,14 @@ AstDefFile
 ***********************************************************************/
 
 			template<typename T>
-			T* AstDefFile::CreateSymbol(const WString& symbolName)
+			T* AstDefFile::CreateSymbol(const WString& symbolName, ParsingTextRange codeRange)
 			{
 				auto symbol = new T(this, symbolName);
 				if (!symbols.Add(symbolName, symbol))
 				{
-					ownerManager->Global().AddError(
+					AddError(
 						ParserErrorType::DuplicatedSymbol,
+						codeRange,
 						name,
 						symbolName
 						);
@@ -271,8 +289,9 @@ AstDefFile
 				}
 				else
 				{
-					ownerManager->Global().AddError(
+					AddError(
 						ParserErrorType::DuplicatedSymbolGlobally,
+						codeRange,
 						name,
 						symbolName,
 						ownerManager->symbolMap[symbolName]->Owner()->name
@@ -282,19 +301,20 @@ AstDefFile
 				return symbol;
 			}
 
-			AstDefFile::AstDefFile(AstSymbolManager* _ownerManager, const WString& _name)
+			AstDefFile::AstDefFile(ParserSymbolManager* _global, AstSymbolManager* _ownerManager, const WString& _name)
 				: ownerManager(_ownerManager)
 				, name(_name)
 			{
 			}
 
-			bool AstDefFile::AddDependency(const WString& dependency)
+			bool AstDefFile::AddDependency(const WString& dependency, ParsingTextRange codeRange)
 			{
 				if (dependencies.Contains(dependency)) return true;
 				if (!ownerManager->Files().Keys().Contains(dependency))
 				{
-					ownerManager->Global().AddError(
+					AddError(
 						ParserErrorType::FileDependencyNotExists,
+						codeRange,
 						name,
 						dependency
 						);
@@ -308,8 +328,9 @@ AstDefFile
 					auto currentName = visited[i];
 					if (currentName == name)
 					{
-						ownerManager->Global().AddError(
+						AddError(
 							ParserErrorType::FileCyclicDependency,
+							codeRange,
 							name,
 							dependency
 							);
@@ -330,14 +351,14 @@ AstDefFile
 				return true;
 			}
 
-			AstEnumSymbol* AstDefFile::CreateEnum(const WString& symbolName)
+			AstEnumSymbol* AstDefFile::CreateEnum(const WString& symbolName, ParsingTextRange codeRange)
 			{
-				return CreateSymbol<AstEnumSymbol>(symbolName);
+				return CreateSymbol<AstEnumSymbol>(symbolName, codeRange);
 			}
 
-			AstClassSymbol* AstDefFile::CreateClass(const WString& symbolName)
+			AstClassSymbol* AstDefFile::CreateClass(const WString& symbolName, ParsingTextRange codeRange)
 			{
-				return CreateSymbol<AstClassSymbol>(symbolName);
+				return CreateSymbol<AstClassSymbol>(symbolName, codeRange);
 			}
 
 /***********************************************************************
@@ -351,11 +372,12 @@ AstSymbolManager
 
 			AstDefFile* AstSymbolManager::CreateFile(const WString& name)
 			{
-				auto file = new AstDefFile(this, name);
+				auto file = new AstDefFile(&global, this, name);
 				if (!files.Add(name, file))
 				{
-					global.AddError(
+					file->AddError(
 						ParserErrorType::DuplicatedFile,
+						{},
 						name
 						);
 				}

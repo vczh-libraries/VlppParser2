@@ -23,12 +23,12 @@ CompileAst
 
 				void Visit(GlrEnum* node) override
 				{
-					astDefFile->CreateEnum(node->name.value);
+					astDefFile->CreateEnum(node->name.value, node->name.codeRange);
 				}
 
 				void Visit(GlrClass* node) override
 				{
-					astDefFile->CreateClass(node->name.value);
+					astDefFile->CreateClass(node->name.value, node->name.codeRange);
 				}
 			};
 
@@ -47,7 +47,7 @@ CompileAst
 					auto enumSymbol = dynamic_cast<AstEnumSymbol*>(astDefFile->Symbols()[node->name.value]);
 					for (auto item : node->items)
 					{
-						enumSymbol->CreateItem(item->name.value);
+						enumSymbol->CreateItem(item->name.value, item->name.codeRange);
 					}
 				}
 
@@ -56,25 +56,25 @@ CompileAst
 					auto classSymbol = dynamic_cast<AstClassSymbol*>(astDefFile->Symbols()[node->name.value]);
 					if (node->baseClass)
 					{
-						classSymbol->SetBaseClass(node->baseClass.value);
+						classSymbol->SetBaseClass(node->baseClass.value, node->baseClass.codeRange);
 					}
 					if (node->ambiguity == GlrClassAmbiguity::Yes)
 					{
-						classSymbol->CreateAmbiguousDerivedClass();
+						classSymbol->CreateAmbiguousDerivedClass(node->name.codeRange);
 					}
 					for (auto prop : node->props)
 					{
-						auto propSymbol = classSymbol->CreateProp(prop->name.value);
+						auto propSymbol = classSymbol->CreateProp(prop->name.value, prop->name.codeRange);
 						switch (prop->propType)
 						{
 						case GlrPropType::Token:
 							propSymbol->SetPropType(AstPropType::Token);
 							break;
 						case GlrPropType::Type:
-							propSymbol->SetPropType(AstPropType::Type, prop->propTypeName.value);
+							propSymbol->SetPropType(AstPropType::Type, prop->propTypeName.value, prop->propTypeName.codeRange);
 							break;
 						case GlrPropType::Array:
-							propSymbol->SetPropType(AstPropType::Array, prop->propTypeName.value);
+							propSymbol->SetPropType(AstPropType::Array, prop->propTypeName.value, prop->propTypeName.codeRange);
 							break;
 						}
 					}

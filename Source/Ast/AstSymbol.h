@@ -60,7 +60,7 @@ AstEnumSymbol
 
 				AstEnumSymbol(AstDefFile* _file, const WString& _name);
 			public:
-				AstEnumItemSymbol*					CreateItem(const WString& itemName);
+				AstEnumItemSymbol*					CreateItem(const WString& itemName, ParsingTextRange codeRange = {});
 				const auto&							Items() { return items.map; }
 				const auto&							ItemOrder() { return items.order; }
 			};
@@ -88,7 +88,7 @@ AstClassSymbol
 				AstSymbol*							propSymbol = nullptr;
 
 				AstClassSymbol*						Parent() { return parent; }
-				bool								SetPropType(AstPropType _type, const WString& typeName = WString::Empty);
+				bool								SetPropType(AstPropType _type, const WString& typeName = WString::Empty, ParsingTextRange codeRange = {});
 			};
 
 			class AstClassSymbol : public AstSymbol
@@ -103,9 +103,9 @@ AstClassSymbol
 				AstClassSymbol*						ambiguousDerivedClass = nullptr;
 				collections::List<AstClassSymbol*>	derivedClasses;
 
-				bool								SetBaseClass(const WString& typeName);
-				AstClassSymbol*						CreateAmbiguousDerivedClass();
-				AstClassPropSymbol*					CreateProp(const WString& propName);
+				bool								SetBaseClass(const WString& typeName, ParsingTextRange codeRange = {});
+				AstClassSymbol*						CreateAmbiguousDerivedClass(ParsingTextRange codeRange);
+				AstClassPropSymbol*					CreateProp(const WString& propName, ParsingTextRange codeRange = {});
 				const auto&							Props() { return props.map; }
 				const auto&							PropOrder() { return props.order; }
 			};
@@ -124,14 +124,15 @@ AstDefFile
 				using DependenciesList = collections::List<WString>;
 				using StringItems = collections::List<WString>;
 			protected:
+				ParserSymbolManager*		global = nullptr;
 				AstSymbolManager*			ownerManager = nullptr;
 				WString						name;
 				MappedOwning<AstSymbol>		symbols;
 
 				template<typename T>
-				T*							CreateSymbol(const WString& symbolName);
+				T*							CreateSymbol(const WString& symbolName, ParsingTextRange codeRange);
 
-				AstDefFile(AstSymbolManager* _ownerManager, const WString& _name);
+				AstDefFile(ParserSymbolManager* _global, AstSymbolManager* _ownerManager, const WString& _name);
 			public:
 				DependenciesList			dependencies;
 				StringItems					cppNss;
@@ -140,11 +141,17 @@ AstDefFile
 
 				AstSymbolManager*			Owner() { return ownerManager; }
 				const WString&				Name() { return name; }
-				bool						AddDependency(const WString& dependency);
-				AstEnumSymbol*				CreateEnum(const WString& symbolName);
-				AstClassSymbol*				CreateClass(const WString& symbolName);
+				bool						AddDependency(const WString& dependency, ParsingTextRange codeRange = {});
+				AstEnumSymbol*				CreateEnum(const WString& symbolName, ParsingTextRange codeRange = {});
+				AstClassSymbol*				CreateClass(const WString& symbolName, ParsingTextRange codeRange = {});
 				const auto&					Symbols() { return symbols.map; }
 				const auto&					SymbolOrder() { return symbols.order; }
+
+				template<typename ...TArgs>
+				void AddError(ParserErrorType type, ParsingTextRange codeRange, TArgs&&... args)
+				{
+					global->AddError(type, { ParserDefFileType::Ast,name,codeRange }, std::forward<TArgs&&>(args)...);
+				}
 			};
 
 /***********************************************************************
