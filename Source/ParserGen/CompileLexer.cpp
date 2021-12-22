@@ -21,6 +21,7 @@ CompileLexer
 				vint _regex = regexToken.CaptureNames().IndexOf(L"regex");
 
 				StringReader reader(input);
+				vint lineIndex = 0;
 				while (!reader.IsEnd())
 				{
 					auto line = reader.ReadLine();
@@ -42,8 +43,13 @@ CompileLexer
 					}
 					else
 					{
-						lexerManager.Global().AddError(ParserErrorType::InvalidTokenDefinition, line);
+						lexerManager.Global().AddError(
+							ParserErrorType::InvalidTokenDefinition,
+							{ ParserDefFileType::Lexer, WString::Empty, { {lineIndex,0}, {lineIndex,0}}},
+							line
+							);
 					}
+					lineIndex++;
 				}
 			}
 		}
