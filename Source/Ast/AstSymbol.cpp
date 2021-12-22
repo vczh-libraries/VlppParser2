@@ -302,7 +302,8 @@ AstDefFile
 			}
 
 			AstDefFile::AstDefFile(ParserSymbolManager* _global, AstSymbolManager* _ownerManager, const WString& _name)
-				: ownerManager(_ownerManager)
+				: global(_global)
+				, ownerManager(_ownerManager)
 				, name(_name)
 			{
 			}
