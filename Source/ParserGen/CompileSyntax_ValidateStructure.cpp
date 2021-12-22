@@ -67,8 +67,9 @@ ValidateStructureCountingVisitor
 							auto prop = FindPropSymbol(clauseType, node->field.value);
 							if (prop->propType != AstPropType::Array)
 							{
-								context.global.AddError(
+								context.syntaxManager.AddError(
 									ParserErrorType::NonArrayFieldAssignedInLoop,
+									node->codeRange,
 									ruleSymbol->Name(),
 									clauseType->Name(),
 									prop->Name()
@@ -82,8 +83,9 @@ ValidateStructureCountingVisitor
 							auto fieldRule = context.syntaxManager.Rules().Values()[ruleIndex];
 							if (fieldRule->isPartial && fieldRule->assignedNonArrayField)
 							{
-								context.global.AddError(
+								context.syntaxManager.AddError(
 									ParserErrorType::NonLoopablePartialRuleUsedInLoop,
+									node->codeRange,
 									ruleSymbol->Name(),
 									clauseType->Name(),
 									fieldRule->Name()
@@ -108,16 +110,18 @@ ValidateStructureCountingVisitor
 
 					if (loopCounter > 0)
 					{
-						context.global.AddError(
+						context.syntaxManager.AddError(
 							ParserErrorType::UseRuleUsedInLoopBody,
+							node->codeRange,
 							ruleSymbol->Name(),
 							node->name.value
 							);
 					}
 					if (optionalCounter > 0)
 					{
-						context.global.AddError(
+						context.syntaxManager.AddError(
 							ParserErrorType::UseRuleUsedInOptionalBody,
+							node->codeRange,
 							ruleSymbol->Name(),
 							node->name.value
 							);
@@ -144,8 +148,9 @@ ValidateStructureCountingVisitor
 
 					if (delimiterMinLength + bodyMinLength == 0)
 					{
-						context.global.AddError(
+						context.syntaxManager.AddError(
 							ParserErrorType::LoopBodyCouldExpandToEmptySequence,
+							node->codeRange,
 							ruleSymbol->Name()
 							);
 					}
@@ -162,8 +167,9 @@ ValidateStructureCountingVisitor
 					{
 						if (prioritySyntaxOccurred)
 						{
-							context.global.AddError(
+							context.syntaxManager.AddError(
 								ParserErrorType::MultiplePrioritySyntaxInAClause,
+								node->codeRange,
 								ruleSymbol->Name()
 								);
 						}
@@ -178,16 +184,18 @@ ValidateStructureCountingVisitor
 
 					if (syntaxMinLength == 0)
 					{
-						context.global.AddError(
+						context.syntaxManager.AddError(
 							ParserErrorType::OptionalBodyCouldExpandToEmptySequence,
+							node->codeRange,
 							ruleSymbol->Name()
 							);
 					}
 
 					if (node->priority == GlrOptionalPriority::PreferSkip && lastSyntaxPiece)
 					{
-						context.global.AddError(
+						context.syntaxManager.AddError(
 							ParserErrorType::NegativeOptionalEndsAClause,
+							node->codeRange,
 							ruleSymbol->Name()
 							);
 					}
@@ -234,12 +242,13 @@ ValidateStructureCountingVisitor
 					syntaxMaxUseRuleCount = firstMaxUseRuleCount > secondMaxUseRuleCount ? firstMaxUseRuleCount : secondMaxUseRuleCount;
 				}
 
-				void CheckAfterClause(bool reuseClause)
+				void CheckAfterClause(GlrClause* node, bool reuseClause)
 				{
 					if (syntaxMinLength == 0)
 					{
-						context.global.AddError(
+						context.syntaxManager.AddError(
 							ParserErrorType::ClauseCouldExpandToEmptySequence,
+							node->codeRange,
 							ruleSymbol->Name()
 							);
 					}
@@ -247,15 +256,17 @@ ValidateStructureCountingVisitor
 					{
 						if (syntaxMinUseRuleCount == 0)
 						{
-							context.global.AddError(
+							context.syntaxManager.AddError(
 								ParserErrorType::ClauseNotCreateObject,
+								node->codeRange,
 								ruleSymbol->Name()
 							);
 						}
 						if (syntaxMaxUseRuleCount > 1)
 						{
-							context.global.AddError(
+							context.syntaxManager.AddError(
 								ParserErrorType::ClauseTooManyUseRule,
+								node->codeRange,
 								ruleSymbol->Name()
 							);
 						}
@@ -266,21 +277,21 @@ ValidateStructureCountingVisitor
 				{
 					clause = node;
 					node->syntax->Accept(this);
-					CheckAfterClause(false);
+					CheckAfterClause(node, false);
 				}
 
 				void Visit(GlrPartialClause* node) override
 				{
 					clause = node;
 					node->syntax->Accept(this);
-					CheckAfterClause(false);
+					CheckAfterClause(node, false);
 				}
 
 				void Visit(GlrReuseClause* node) override
 				{
 					clause = node;
 					node->syntax->Accept(this);
-					CheckAfterClause(true);
+					CheckAfterClause(node, true);
 				}
 			};
 
@@ -495,7 +506,7 @@ ValidateStructureRelationshipVisitor
 					existingPartials = existingPartials.Connect(firstPartials);
 				}
 
-				void CheckAfterClause()
+				void CheckAfterClause(GlrClause* node)
 				{
 					Dictionary<WString, vint> counters;
 					auto c = existingFields.first;
@@ -520,8 +531,9 @@ ValidateStructureRelationshipVisitor
 						auto prop = FindPropSymbol(clauseType, key);
 						if (prop->propType != AstPropType::Array && value > 1)
 						{
-							context.global.AddError(
+							context.syntaxManager.AddError(
 								ParserErrorType::FieldAssignedMoreThanOnce,
+								node->codeRange,
 								ruleSymbol->Name(),
 								clauseType->Name(),
 								prop->Name()
@@ -534,21 +546,21 @@ ValidateStructureRelationshipVisitor
 				{
 					clause = node;
 					node->syntax->Accept(this);
-					CheckAfterClause();
+					CheckAfterClause(node);
 				}
 
 				void Visit(GlrPartialClause* node) override
 				{
 					clause = node;
 					node->syntax->Accept(this);
-					CheckAfterClause();
+					CheckAfterClause(node);
 				}
 
 				void Visit(GlrReuseClause* node) override
 				{
 					clause = node;
 					node->syntax->Accept(this);
-					CheckAfterClause();
+					CheckAfterClause(node);
 				}
 			};
 

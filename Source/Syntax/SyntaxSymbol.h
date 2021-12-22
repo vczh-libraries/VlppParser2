@@ -185,7 +185,7 @@ SyntaxSymbolManager
 				RuleTypeMap					ruleTypes;
 				RuleList					parsableRules;
 
-				RuleSymbol*					CreateRule(const WString& name);
+				RuleSymbol*					CreateRule(const WString& name, ParsingTextRange codeRange = {});
 				StateSymbol*				CreateState(RuleSymbol* rule, vint32_t clauseId);
 				EdgeSymbol*					CreateEdge(StateSymbol* from, StateSymbol* to);
 
@@ -199,6 +199,12 @@ SyntaxSymbolManager
 				const auto&					Rules() { return rules.map; }
 				const auto&					RuleOrder() { return rules.order; }
 				SyntaxPhase					Phase() { return phase; }
+
+				template<typename ...TArgs>
+				void AddError(ParserErrorType type, ParsingTextRange codeRange, TArgs&&... args)
+				{
+					global.AddError(type, { ParserDefFileType::Syntax,WString::Empty,codeRange }, std::forward<TArgs&&>(args)...);
+				}
 			};
 
 			extern void						CreateParserGenTypeSyntax(SyntaxSymbolManager& manager);

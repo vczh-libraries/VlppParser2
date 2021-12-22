@@ -23,15 +23,16 @@ ResolveNameVisitor
 				RuleSymbol*					ruleSymbol;
 				GlrClause*					clause = nullptr;
 
-				AstClassSymbol* GetRuleClass(const WString& typeName)
+				AstClassSymbol* GetRuleClass(ParsingToken& typeName)
 				{
-					vint index = context.astManager.Symbols().Keys().IndexOf(typeName);
+					vint index = context.astManager.Symbols().Keys().IndexOf(typeName.value);
 					if (index == -1)
 					{
-						context.global.AddError(
+						context.syntaxManager.AddError(
 							ParserErrorType::TypeNotExistsInRule,
+							typeName.codeRange,
 							ruleSymbol->Name(),
-							typeName
+							typeName.value
 							);
 						return nullptr;
 					}
@@ -39,10 +40,11 @@ ResolveNameVisitor
 					auto classSymbol = dynamic_cast<AstClassSymbol*>(context.astManager.Symbols().Values()[index]);
 					if (!classSymbol)
 					{
-						context.global.AddError(
+						context.syntaxManager.AddError(
 							ParserErrorType::TypeNotClassInRule,
+							typeName.codeRange,
 							ruleSymbol->Name(),
-							typeName
+							typeName.value
 							);
 					}
 					return classSymbol;
@@ -69,8 +71,9 @@ ResolveNameVisitor
 					vint ruleIndex = context.syntaxManager.Rules().Keys().IndexOf(node->name.value);
 					if (tokenIndex == -1 && ruleIndex == -1)
 					{
-						context.global.AddError(
+						context.syntaxManager.AddError(
 							ParserErrorType::TokenOrRuleNotExistsInRule,
+							node->codeRange,
 							ruleSymbol->Name(),
 							node->name.value
 							);
@@ -106,8 +109,9 @@ ResolveNameVisitor
 							}
 						}
 					}
-					context.global.AddError(
+					context.syntaxManager.AddError(
 						ParserErrorType::TokenOrRuleNotExistsInRule,
+						node->codeRange,
 						ruleSymbol->Name(),
 						node->value.value
 						);
@@ -118,8 +122,9 @@ ResolveNameVisitor
 					vint ruleIndex = context.syntaxManager.Rules().Keys().IndexOf(node->name.value);
 					if (ruleIndex == -1)
 					{
-						context.global.AddError(
+						context.syntaxManager.AddError(
 							ParserErrorType::TokenOrRuleNotExistsInRule,
+							node->codeRange,
 							ruleSymbol->Name(),
 							node->name.value
 							);
@@ -166,7 +171,7 @@ ResolveNameVisitor
 
 				void Visit(GlrCreateClause* node) override
 				{
-					if (auto classSymbol = GetRuleClass(node->type.value))
+					if (auto classSymbol = GetRuleClass(node->type))
 					{
 						context.ruleKnownTypes.Add(ruleSymbol, classSymbol);
 						context.clauseTypes.Add(node, classSymbol);
@@ -176,7 +181,7 @@ ResolveNameVisitor
 
 				void Visit(GlrPartialClause* node) override
 				{
-					if (auto classSymbol = GetRuleClass(node->type.value))
+					if (auto classSymbol = GetRuleClass(node->type))
 					{
 						context.ruleKnownTypes.Add(ruleSymbol, classSymbol);
 						context.clauseTypes.Add(node, classSymbol);

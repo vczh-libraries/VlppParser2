@@ -80,14 +80,15 @@ SyntaxSymbolManager
 			{
 			}
 
-			RuleSymbol* SyntaxSymbolManager::CreateRule(const WString& name)
+			RuleSymbol* SyntaxSymbolManager::CreateRule(const WString& name, ParsingTextRange codeRange)
 			{
 				CHECK_ERROR(states.Count() + edges.Count() == 0, L"vl::gre::parsergen::SyntaxSymbolManager::CreateRule(const WString&)#Cannot create new rules after building the automaton.");
 				auto rule = new RuleSymbol(this, name);
 				if (!rules.Add(name, rule))
 				{
-					global.AddError(
+					AddError(
 						ParserErrorType::DuplicatedRule,
+						codeRange,
 						name
 						);
 				}

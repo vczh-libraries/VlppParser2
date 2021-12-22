@@ -30,14 +30,15 @@ CompileSyntax
 					{
 						if (context.lexerManager.Tokens().Keys().Contains(rule->name.value))
 						{
-							context.syntaxManager.Global().AddError(
+							context.syntaxManager.AddError(
 								ParserErrorType::RuleNameConflictedWithToken,
+								rule->codeRange,
 								rule->name.value
 							);
 						}
 						else
 						{
-							auto ruleSymbol = context.syntaxManager.CreateRule(rule->name.value);
+							auto ruleSymbol = context.syntaxManager.CreateRule(rule->name.value, rule->codeRange);
 							context.astRules.Add(ruleSymbol, rule.Obj());
 						}
 					}

@@ -180,8 +180,9 @@ CompileSyntaxVisitor
 					vint index = context.syntaxManager.Rules().Keys().IndexOf(node->name.value);
 					if (index == -1)
 					{
-						context.global.AddError(
+						context.syntaxManager.AddError(
 							ParserErrorType::TokenOrRuleNotExistsInRule,
+							node->codeRange,
 							node->name.value
 							);
 						return;

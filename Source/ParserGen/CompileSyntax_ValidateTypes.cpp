@@ -23,10 +23,10 @@ ValidateTypesVisitor
 				RuleSymbol*					ruleSymbol;
 				GlrClause*					clause = nullptr;
 				
-				AstClassPropSymbol* FindField(AstClassSymbol*& clauseType, const WString& name)
+				AstClassPropSymbol* FindField(AstClassSymbol*& clauseType, ParsingToken& name)
 				{
 					clauseType = context.clauseTypes[clause];
-					if (auto prop = FindPropSymbol(clauseType, name))
+					if (auto prop = FindPropSymbol(clauseType, name.value))
 					{
 						if (prop->propType != AstPropType::Array)
 						{
@@ -36,11 +36,12 @@ ValidateTypesVisitor
 					}
 					else
 					{
-						context.global.AddError(
+						context.syntaxManager.AddError(
 							ParserErrorType::FieldNotExistsInClause,
+							name.codeRange,
 							ruleSymbol->Name(),
 							clauseType->Name(),
-							name
+							name.value
 							);
 						return nullptr;
 					}
@@ -82,8 +83,9 @@ ValidateTypesVisitor
 					{
 						if (!ConvertibleTo(clauseType, fieldRule->ruleType))
 						{
-							context.global.AddError(
+							context.syntaxManager.AddError(
 								ParserErrorType::ClauseTypeMismatchedToPartialRule,
+								node->codeRange,
 								ruleSymbol->Name(),
 								clauseType->Name(),
 								fieldRule->Name(),
@@ -95,14 +97,15 @@ ValidateTypesVisitor
 					if (node->field)
 					{
 						AstClassSymbol* clauseType = nullptr;
-						if (auto prop = FindField(clauseType, node->field.value))
+						if (auto prop = FindField(clauseType, node->field))
 						{
 							if (fieldRule)
 							{
 								if (fieldRule->isPartial)
 								{
-									context.global.AddError(
+									context.syntaxManager.AddError(
 										ParserErrorType::PartialRuleUsedOnField,
+										node->codeRange,
 										ruleSymbol->Name(),
 										clauseType->Name(),
 										fieldRule->Name(),
@@ -117,8 +120,9 @@ ValidateTypesVisitor
 										goto PASS_FIELD_TYPE;
 									}
 								}
-								context.global.AddError(
+								context.syntaxManager.AddError(
 									ParserErrorType::RuleTypeMismatchedToField,
+									node->codeRange,
 									ruleSymbol->Name(),
 									clauseType->Name(),
 									node->field.value,
@@ -130,8 +134,9 @@ ValidateTypesVisitor
 							{
 								if (prop->propType != AstPropType::Token)
 								{
-									context.global.AddError(
+									context.syntaxManager.AddError(
 										ParserErrorType::RuleTypeMismatchedToField,
+										node->codeRange,
 										ruleSymbol->Name(),
 										clauseType->Name(),
 										node->field.value,
@@ -152,16 +157,18 @@ ValidateTypesVisitor
 					auto fieldRule = context.syntaxManager.Rules()[node->name.value];
 					if (fieldRule->isPartial)
 					{
-						context.global.AddError(
+						context.syntaxManager.AddError(
 							ParserErrorType::UseRuleWithPartialRule,
+							node->codeRange,
 							ruleSymbol->Name(),
 							node->name.value
 							);
 					}
 					if (!dynamic_cast<GlrReuseClause*>(clause))
 					{
-						context.global.AddError(
+						context.syntaxManager.AddError(
 							ParserErrorType::UseRuleInNonReuseClause,
+							node->codeRange,
 							ruleSymbol->Name(),
 							node->name.value
 							);
@@ -197,14 +204,15 @@ ValidateTypesVisitor
 				void Visit(GlrAssignment* node)
 				{
 					AstClassSymbol* clauseType = nullptr;
-					if (auto prop = FindField(clauseType, node->field.value))
+					if (auto prop = FindField(clauseType, node->field))
 					{
 						if (auto enumPropSymbol = dynamic_cast<AstEnumSymbol*>(prop->propSymbol))
 						{
 							if (!enumPropSymbol->Items().Keys().Contains(node->value.value))
 							{
-								context.global.AddError(
+								context.syntaxManager.AddError(
 									ParserErrorType::EnumItemMismatchedToField,
+									node->codeRange,
 									ruleSymbol->Name(),
 									clauseType->Name(),
 									node->field.value,
@@ -214,8 +222,9 @@ ValidateTypesVisitor
 						}
 						else
 						{
-							context.global.AddError(
+							context.syntaxManager.AddError(
 								ParserErrorType::AssignmentToNonEnumField,
+								node->codeRange,
 								ruleSymbol->Name(),
 								clauseType->Name(),
 								node->field.value

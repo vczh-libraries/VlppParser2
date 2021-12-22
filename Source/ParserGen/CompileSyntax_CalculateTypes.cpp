@@ -28,8 +28,9 @@ ValidatePartialRules
 
 						if (partialClauses.Count() != rule->clauses.Count())
 						{
-							context.syntaxManager.Global().AddError(
+							context.syntaxManager.AddError(
 								ParserErrorType::RuleMixedPartialClauseWithOtherClause,
+								rule->codeRange,
 								ruleSymbol->Name()
 								);
 						}
@@ -47,8 +48,9 @@ ValidatePartialRules
 								}
 								else if (type && partialType != type)
 								{
-									context.syntaxManager.Global().AddError(
+									context.syntaxManager.AddError(
 										ParserErrorType::RuleWithDifferentPartialTypes,
+										rule->codeRange,
 										ruleSymbol->Name()
 										);
 									break;
@@ -107,8 +109,9 @@ CalculateRuleAndClauseTypes
 							rule->ruleType = FindCommonBaseClass(rule->ruleType, context.clauseTypes.Values()[index]);
 							if (!rule->ruleType)
 							{
-								context.global.AddError(
+								context.syntaxManager.AddError(
 									ParserErrorType::RuleCannotResolveToDeterministicType,
+									context.astRules[rule]->codeRange,
 									rule->Name()
 									);
 								break;
@@ -137,8 +140,9 @@ CalculateRuleAndClauseTypes
 								rule->ruleType = FindCommonBaseClass(rule->ruleType, type);
 								if (!rule->ruleType)
 								{
-									context.global.AddError(
+									context.syntaxManager.AddError(
 										ParserErrorType::RuleCannotResolveToDeterministicType,
+										context.astRules[rule]->codeRange,
 										rule->Name()
 										);
 									break;
@@ -162,8 +166,9 @@ CalculateRuleAndClauseTypes
 					{
 						for (auto rule : cyclicRules)
 						{
-							context.global.AddError(
+							context.syntaxManager.AddError(
 								ParserErrorType::CyclicDependedRuleTypeIncompatible,
+								context.astRules[rule]->codeRange,
 								rule->Name()
 								);
 						}
@@ -182,8 +187,9 @@ CalculateRuleAndClauseTypes
 				{
 					if (!rule->ruleType)
 					{
-						context.global.AddError(
+						context.syntaxManager.AddError(
 							ParserErrorType::RuleCannotResolveToDeterministicType,
+							context.astRules[rule]->codeRange,
 							rule->Name()
 							);
 					}
@@ -197,8 +203,9 @@ CalculateRuleAndClauseTypes
 						vint index = context.clauseReuseDependencies.Keys().IndexOf(clause.Obj());
 						if (index == -1)
 						{
-							context.global.AddError(
+							context.syntaxManager.AddError(
 								ParserErrorType::ReuseClauseContainsNoUseRule,
+								clause->codeRange,
 								astRule->name.value
 								);
 						}
@@ -216,8 +223,9 @@ CalculateRuleAndClauseTypes
 							}
 							else
 							{
-								context.global.AddError(
+								context.syntaxManager.AddError(
 									ParserErrorType::ReuseClauseCannotResolveToDeterministicType,
+									clause->codeRange,
 									astRule->name.value
 									);
 							}
