@@ -44,8 +44,9 @@ SyntaxSymbolManager::FixCrossReferencedRuleEdge
 					case EdgeInputType::Rule:
 						if (accumulatedEdges.Contains(edge))
 						{
-							global.AddError(
+							AddError(
 								ParserErrorType::RuleIsIndirectlyLeftRecursive,
+								{},
 								edge->input.rule->Name()
 								);
 						}
