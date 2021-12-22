@@ -6,7 +6,7 @@ Licensed under https://github.com/vczh-libraries/License
 #ifndef VCZH_PARSER2_PARSERGEN_PARSERSYMBOl
 #define VCZH_PARSER2_PARSERGEN_PARSERSYMBOl
 
-#include <Vlpp.h>
+#include "../AstBase.h"
 
 namespace vl
 {
@@ -113,9 +113,24 @@ ParserSymbolManager
 				FieldAssignedMoreThanOnce,					// (ruleName, clauseType, fieldName)
 			};
 
+			enum class ParserDefFileType
+			{
+				Ast,
+				Lexer,
+				Syntax,
+			};
+
+			struct ParserErrorLocation
+			{
+				ParserDefFileType			type;
+				WString						name;
+				ParsingTextRange			codeRange;
+			};
+
 			struct ParserError
 			{
 				ParserErrorType				type;
+				ParserErrorLocation			location;
 				WString						arg1;
 				WString						arg2;
 				WString						arg3;
@@ -138,10 +153,11 @@ ParserSymbolManager
 				const auto&					Errors() { return errors; }
 
 				template<typename ...TArgs>
-				void AddError(ParserErrorType type, TArgs&& ...args)
+				void AddError(ParserErrorType type, ParserErrorLocation location, TArgs&& ...args)
 				{
 					ParserError error;
 					error.type = type;
+					error.location = location;
 
 					WString sargs[] = { WString(args)... };
 					WString* dargs[] = { &error.arg1,&error.arg2,&error.arg3,&error.arg4 };
