@@ -25,6 +25,7 @@ CompileLexer
 				while (!reader.IsEnd())
 				{
 					auto line = reader.ReadLine();
+					ParsingTextRange codeRange = { {lineIndex,0}, {lineIndex,0} };
 					if (auto match = regexToken.MatchHead(line))
 					{
 						if (match->Groups().Keys().Contains(_name))
@@ -33,19 +34,19 @@ CompileLexer
 							auto tokenRegex = match->Groups()[_regex][0].Value();
 							if (match->Groups().Keys().Contains(_discard))
 							{
-								lexerManager.CreateDiscardedToken(tokenName, tokenRegex);
+								lexerManager.CreateDiscardedToken(tokenName, tokenRegex, codeRange);
 							}
 							else
 							{
-								lexerManager.CreateToken(tokenName, tokenRegex);
+								lexerManager.CreateToken(tokenName, tokenRegex, codeRange);
 							}
 						}
 					}
 					else
 					{
-						lexerManager.Global().AddError(
+						lexerManager.AddError(
 							ParserErrorType::InvalidTokenDefinition,
-							{ ParserDefFileType::Lexer, WString::Empty, { {lineIndex,0}, {lineIndex,0}}},
+							codeRange,
 							line
 							);
 					}

@@ -49,13 +49,19 @@ LexerSymbolManager
 			public:
 				LexerSymbolManager(ParserSymbolManager& _global);
 
-				TokenSymbol*				CreateToken(const WString& _name, const WString& _regex);
-				TokenSymbol*				CreateDiscardedToken(const WString& _name, const WString& _regex);
+				TokenSymbol*				CreateToken(const WString& _name, const WString& _regex, ParsingTextRange codeRange = {});
+				TokenSymbol*				CreateDiscardedToken(const WString& _name, const WString& _regex, ParsingTextRange codeRange = {});
 
 				ParserSymbolManager&		Global() { return global; }
 				const auto&					Tokens() { return tokens.map; }
 				const auto&					TokensByDisplayText() { return tokensByDisplayText; }
 				const auto&					TokenOrder() { return tokens.order; }
+
+				template<typename ...TArgs>
+				void AddError(ParserErrorType type, ParsingTextRange codeRange, TArgs&&... args)
+				{
+					global.AddError(type, { ParserDefFileType::Lexer,WString::Empty,codeRange }, std::forward<TArgs&&>(args)...);
+				}
 			};
 
 			extern void						CreateParserGenLexer(LexerSymbolManager& manager);

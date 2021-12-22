@@ -27,14 +27,15 @@ LexerSymbolManager
 			{
 			}
 
-			TokenSymbol* LexerSymbolManager::CreateToken(const WString& _name, const WString& _regex)
+			TokenSymbol* LexerSymbolManager::CreateToken(const WString& _name, const WString& _regex, ParsingTextRange codeRange)
 			{
 				auto token = new TokenSymbol(this, _name);
 				token->regex = _regex;
 				if (!tokens.Add(_name, token))
 				{
-					global.AddError(
+					AddError(
 						ParserErrorType::DuplicatedToken,
+						codeRange,
 						_name
 						);
 				}
@@ -43,8 +44,9 @@ LexerSymbolManager
 					auto expr = regex_internal::ParseRegexExpression(wtou32(_regex));
 					if (!expr->expression->HasNoExtension())
 					{
-						global.AddError(
+						AddError(
 							ParserErrorType::TokenRegexNotPure,
+							codeRange,
 							_name
 							);
 					}
@@ -87,8 +89,9 @@ LexerSymbolManager
 						token->displayText = u32tow(U32String::Unmanaged(&buffer[0]));
 						if (tokensByDisplayText.Keys().Contains(token->displayText))
 						{
-							global.AddError(
+							AddError(
 								ParserErrorType::DuplicatedTokenByDisplayText,
+								codeRange,
 								_name
 								);
 						}
@@ -100,8 +103,9 @@ LexerSymbolManager
 				}
 				catch (const regex_internal::RegexException& e)
 				{
-					global.AddError(
+					AddError(
 						ParserErrorType::InvalidTokenRegex,
+						codeRange,
 						_name,
 						(e.Message() + L" : " + itow(e.position) + L" : " + _regex)
 						);
@@ -109,9 +113,9 @@ LexerSymbolManager
 				return token;
 			}
 
-			TokenSymbol* LexerSymbolManager::CreateDiscardedToken(const WString& _name, const WString& _regex)
+			TokenSymbol* LexerSymbolManager::CreateDiscardedToken(const WString& _name, const WString& _regex, ParsingTextRange codeRange)
 			{
-				auto token = CreateToken(_name, _regex);
+				auto token = CreateToken(_name, _regex, codeRange);
 				token->discarded = true;
 				return token;
 			}
