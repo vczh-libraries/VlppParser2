@@ -1,20 +1,4 @@
-#include "../../../Source/ParserGen_Generated/ParserGenTypeParser.h"
-#include "../../../Source/ParserGen/Compiler.h"
-
-using namespace vl;
-using namespace vl::glr;
-using namespace vl::glr::parsergen;
-
-void AssertError(ParserSymbolManager& global, ParserError expectedError)
-{
-	TEST_ASSERT(global.Errors().Count() > 0);
-	auto&& error = global.Errors()[0];
-	TEST_ASSERT(error.type == expectedError.type);
-	TEST_ASSERT(error.arg1 == expectedError.arg1);
-	TEST_ASSERT(error.arg2 == expectedError.arg2);
-	TEST_ASSERT(error.arg3 == expectedError.arg3);
-	TEST_ASSERT(error.arg4 == expectedError.arg4);
-}
+#include "TestError.h"
 
 namespace TestError_Ast_TestObjects
 {
@@ -26,7 +10,7 @@ namespace TestError_Ast_TestObjects
 		return astDefFile;
 	}
 
-	void ExpectError(TypeParser& parser, const WString& astCode, ParserError expectedError)
+	void ExpectError(TypeParser& parser, const WString& astCode, ParserErrorWithoutLocation expectedError)
 	{
 		ParserSymbolManager global;
 		AstSymbolManager astManager(global);

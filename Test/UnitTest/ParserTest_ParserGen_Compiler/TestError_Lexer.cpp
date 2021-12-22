@@ -1,14 +1,8 @@
-#include "../../../Source/ParserGen/Compiler.h"
-
-using namespace vl;
-using namespace vl::glr;
-using namespace vl::glr::parsergen;
-
-extern void AssertError(ParserSymbolManager& global, ParserError expectedError);
+#include "TestError.h"
 
 namespace TestError_Lexer_TestObjects
 {
-	void ExpectError(const WString& lexerCode , ParserError expectedError)
+	void ExpectError(const WString& lexerCode , ParserErrorWithoutLocation expectedError)
 	{
 		ParserSymbolManager global;
 		LexerSymbolManager lexerManager(global);
