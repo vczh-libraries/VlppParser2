@@ -46,9 +46,9 @@ namespace vl
 				Parser();
 
 				vl::Ptr<vl::glr::xml::XmlElement> ParseXElement(const vl::WString& input, vl::vint codeIndex = -1) const;
-				vl::Ptr<vl::glr::xml::XmlElement> ParseXElement(vl::collections::List<vl::regex::RegexToken>& tokens) const;
+				vl::Ptr<vl::glr::xml::XmlElement> ParseXElement(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
 				vl::Ptr<vl::glr::xml::XmlDocument> ParseXDocument(const vl::WString& input, vl::vint codeIndex = -1) const;
-				vl::Ptr<vl::glr::xml::XmlDocument> ParseXDocument(vl::collections::List<vl::regex::RegexToken>& tokens) const;
+				vl::Ptr<vl::glr::xml::XmlDocument> ParseXDocument(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
 			};
 		}
 	}

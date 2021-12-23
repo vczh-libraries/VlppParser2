@@ -100,9 +100,9 @@ namespace vl
 				 return Parse<ParserStates::JRoot>(input, this, codeIndex);
 			};
 
-			vl::Ptr<vl::glr::json::JsonNode> Parser::ParseJRoot(vl::collections::List<vl::regex::RegexToken>& tokens) const
+			vl::Ptr<vl::glr::json::JsonNode> Parser::ParseJRoot(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex) const
 			{
-				 return Parse<ParserStates::JRoot>(tokens, this);
+				 return Parse<ParserStates::JRoot>(tokens, this, codeIndex);
 			};
 		}
 	}

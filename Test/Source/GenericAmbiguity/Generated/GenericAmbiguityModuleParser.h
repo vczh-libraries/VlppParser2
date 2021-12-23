@@ -38,7 +38,7 @@ namespace genericambiguity
 		ModuleParser();
 
 		vl::Ptr<genericambiguity::Module> ParseModule(const vl::WString& input, vl::vint codeIndex = -1) const;
-		vl::Ptr<genericambiguity::Module> ParseModule(vl::collections::List<vl::regex::RegexToken>& tokens) const;
+		vl::Ptr<genericambiguity::Module> ParseModule(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
 	};
 }
 #endif

@@ -98,7 +98,7 @@ WriteSyntaxHeaderFile
 						{
 							auto astType = manager.ruleTypes[ruleSymbol];
 							writer.WriteLine(prefix + L"\tvl::Ptr<" + astType + L"> Parse" + ruleName + L"(const vl::WString& input, vl::vint codeIndex = -1) const;");
-							writer.WriteLine(prefix + L"\tvl::Ptr<" + astType + L"> Parse" + ruleName + L"(vl::collections::List<vl::regex::RegexToken>& tokens) const;");
+							writer.WriteLine(prefix + L"\tvl::Ptr<" + astType + L"> Parse" + ruleName + L"(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;");
 						}
 					}
 					writer.WriteLine(prefix + L"};");
@@ -228,9 +228,9 @@ WriteSyntaxCppFile
 						writer.WriteLine(prefix + L"\t return Parse<" + manager.name + L"States::" + ruleName + L">(input, this, codeIndex);");
 						writer.WriteLine(prefix + L"};");
 						writer.WriteLine(L"");
-						writer.WriteLine(prefix + L"vl::Ptr<" + astType + L"> " + manager.name + L"::Parse" + ruleName + L"(vl::collections::List<vl::regex::RegexToken>& tokens) const");
+						writer.WriteLine(prefix + L"vl::Ptr<" + astType + L"> " + manager.name + L"::Parse" + ruleName + L"(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex) const");
 						writer.WriteLine(prefix + L"{");
-						writer.WriteLine(prefix + L"\t return Parse<" + manager.name + L"States::" + ruleName + L">(tokens, this);");
+						writer.WriteLine(prefix + L"\t return Parse<" + manager.name + L"States::" + ruleName + L">(tokens, this, codeIndex);");
 						writer.WriteLine(prefix + L"};");
 					}
 				}

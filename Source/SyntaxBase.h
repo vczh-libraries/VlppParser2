@@ -135,6 +135,10 @@ ParserBase<TTokens, TStates, TReceiver, TStateTypes>
 			auto Parse(TokenList& tokens, const automaton::TraceManager::ITypeCallback* typeCallback, vint codeIndex) const -> Ptr<typename TStateTypes<State>::Type>
 			{
 #define ERROR_MESSAGE_PREFIX L"vl::glr::ParserBase<...>::Parse<TStates>(List<RegexToken>&, TraceManager::ITypeCallback*)#"
+				if (codeIndex == -1 && tokens.Count() > 0)
+				{
+					codeIndex = tokens[0].codeIndex;
+				}
 
 				automaton::TraceManager tm(*executable.Obj(), typeCallback);
 				tm.Initialize((vint32_t)State);
@@ -156,7 +160,7 @@ ParserBase<TTokens, TStates, TReceiver, TStateTypes>
 				tm.EndOfInput();
 				if (tm.concurrentCount == 0)
 				{
-					auto args = ErrorArgs::InputIncomplete(tokens, *executable.Obj(), tm);
+					auto args = ErrorArgs::InputIncomplete(codeIndex, tokens, *executable.Obj(), tm);
 					OnError(args);
 					if (args.throwError) CHECK_FAIL(ERROR_MESSAGE_PREFIX L"Input is incomplete.");
 					return nullptr;

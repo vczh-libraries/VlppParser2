@@ -118,9 +118,9 @@ namespace vl
 				 return Parse<TypeParserStates::File>(input, this, codeIndex);
 			};
 
-			vl::Ptr<vl::glr::parsergen::GlrAstFile> TypeParser::ParseFile(vl::collections::List<vl::regex::RegexToken>& tokens) const
+			vl::Ptr<vl::glr::parsergen::GlrAstFile> TypeParser::ParseFile(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex) const
 			{
-				 return Parse<TypeParserStates::File>(tokens, this);
+				 return Parse<TypeParserStates::File>(tokens, this, codeIndex);
 			};
 		}
 	}

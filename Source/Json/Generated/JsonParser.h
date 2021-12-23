@@ -43,7 +43,7 @@ namespace vl
 				Parser();
 
 				vl::Ptr<vl::glr::json::JsonNode> ParseJRoot(const vl::WString& input, vl::vint codeIndex = -1) const;
-				vl::Ptr<vl::glr::json::JsonNode> ParseJRoot(vl::collections::List<vl::regex::RegexToken>& tokens) const;
+				vl::Ptr<vl::glr::json::JsonNode> ParseJRoot(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
 			};
 		}
 	}

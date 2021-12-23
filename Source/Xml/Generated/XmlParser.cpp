@@ -116,9 +116,9 @@ namespace vl
 				 return Parse<ParserStates::XElement>(input, this, codeIndex);
 			};
 
-			vl::Ptr<vl::glr::xml::XmlElement> Parser::ParseXElement(vl::collections::List<vl::regex::RegexToken>& tokens) const
+			vl::Ptr<vl::glr::xml::XmlElement> Parser::ParseXElement(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex) const
 			{
-				 return Parse<ParserStates::XElement>(tokens, this);
+				 return Parse<ParserStates::XElement>(tokens, this, codeIndex);
 			};
 
 			vl::Ptr<vl::glr::xml::XmlDocument> Parser::ParseXDocument(const vl::WString& input, vl::vint codeIndex) const
@@ -126,9 +126,9 @@ namespace vl
 				 return Parse<ParserStates::XDocument>(input, this, codeIndex);
 			};
 
-			vl::Ptr<vl::glr::xml::XmlDocument> Parser::ParseXDocument(vl::collections::List<vl::regex::RegexToken>& tokens) const
+			vl::Ptr<vl::glr::xml::XmlDocument> Parser::ParseXDocument(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex) const
 			{
-				 return Parse<ParserStates::XDocument>(tokens, this);
+				 return Parse<ParserStates::XDocument>(tokens, this, codeIndex);
 			};
 		}
 	}

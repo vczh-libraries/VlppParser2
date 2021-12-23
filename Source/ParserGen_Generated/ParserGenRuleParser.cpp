@@ -165,9 +165,9 @@ namespace vl
 				 return Parse<RuleParserStates::File>(input, this, codeIndex);
 			};
 
-			vl::Ptr<vl::glr::parsergen::GlrSyntaxFile> RuleParser::ParseFile(vl::collections::List<vl::regex::RegexToken>& tokens) const
+			vl::Ptr<vl::glr::parsergen::GlrSyntaxFile> RuleParser::ParseFile(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex) const
 			{
-				 return Parse<RuleParserStates::File>(tokens, this);
+				 return Parse<RuleParserStates::File>(tokens, this, codeIndex);
 			};
 		}
 	}

@@ -38,7 +38,7 @@ namespace ifelseambiguity
 		ModuleParser();
 
 		vl::Ptr<ifelseambiguity::Module> ParseModule(const vl::WString& input, vl::vint codeIndex = -1) const;
-		vl::Ptr<ifelseambiguity::Module> ParseModule(vl::collections::List<vl::regex::RegexToken>& tokens) const;
+		vl::Ptr<ifelseambiguity::Module> ParseModule(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
 	};
 }
 #endif

@@ -187,9 +187,9 @@ namespace calculator
 		 return Parse<ModuleParserStates::Exp>(input, this, codeIndex);
 	};
 
-	vl::Ptr<calculator::Expr> ModuleParser::ParseExp(vl::collections::List<vl::regex::RegexToken>& tokens) const
+	vl::Ptr<calculator::Expr> ModuleParser::ParseExp(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex) const
 	{
-		 return Parse<ModuleParserStates::Exp>(tokens, this);
+		 return Parse<ModuleParserStates::Exp>(tokens, this, codeIndex);
 	};
 
 	vl::Ptr<calculator::Module> ModuleParser::ParseModule(const vl::WString& input, vl::vint codeIndex) const
@@ -197,8 +197,8 @@ namespace calculator
 		 return Parse<ModuleParserStates::Module>(input, this, codeIndex);
 	};
 
-	vl::Ptr<calculator::Module> ModuleParser::ParseModule(vl::collections::List<vl::regex::RegexToken>& tokens) const
+	vl::Ptr<calculator::Module> ModuleParser::ParseModule(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex) const
 	{
-		 return Parse<ModuleParserStates::Module>(tokens, this);
+		 return Parse<ModuleParserStates::Module>(tokens, this, codeIndex);
 	};
 }

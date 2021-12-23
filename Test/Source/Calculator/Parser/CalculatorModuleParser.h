@@ -44,9 +44,9 @@ namespace calculator
 		ModuleParser();
 
 		vl::Ptr<calculator::Expr> ParseExp(const vl::WString& input, vl::vint codeIndex = -1) const;
-		vl::Ptr<calculator::Expr> ParseExp(vl::collections::List<vl::regex::RegexToken>& tokens) const;
+		vl::Ptr<calculator::Expr> ParseExp(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
 		vl::Ptr<calculator::Module> ParseModule(const vl::WString& input, vl::vint codeIndex = -1) const;
-		vl::Ptr<calculator::Module> ParseModule(vl::collections::List<vl::regex::RegexToken>& tokens) const;
+		vl::Ptr<calculator::Module> ParseModule(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
 	};
 }
 #endif

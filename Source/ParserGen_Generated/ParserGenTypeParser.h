@@ -45,7 +45,7 @@ namespace vl
 				TypeParser();
 
 				vl::Ptr<vl::glr::parsergen::GlrAstFile> ParseFile(const vl::WString& input, vl::vint codeIndex = -1) const;
-				vl::Ptr<vl::glr::parsergen::GlrAstFile> ParseFile(vl::collections::List<vl::regex::RegexToken>& tokens) const;
+				vl::Ptr<vl::glr::parsergen::GlrAstFile> ParseFile(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
 			};
 		}
 	}

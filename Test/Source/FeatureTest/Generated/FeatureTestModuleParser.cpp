@@ -295,8 +295,8 @@ namespace featuretest
 		 return Parse<ModuleParserStates::Module>(input, this, codeIndex);
 	};
 
-	vl::Ptr<featuretest::Feature> ModuleParser::ParseModule(vl::collections::List<vl::regex::RegexToken>& tokens) const
+	vl::Ptr<featuretest::Feature> ModuleParser::ParseModule(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex) const
 	{
-		 return Parse<ModuleParserStates::Module>(tokens, this);
+		 return Parse<ModuleParserStates::Module>(tokens, this, codeIndex);
 	};
 }
