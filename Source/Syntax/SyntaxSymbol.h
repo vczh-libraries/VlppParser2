@@ -7,7 +7,7 @@ Licensed under https://github.com/vczh-libraries/License
 #define VCZH_PARSER2_SYNTAX_SYNTAXSYMBOL
 
 #include "../ParserGen/ParserSymbol.h"
-#include "../../../Source/SyntaxBase.h"
+#include "../SyntaxBase.h"
 
 namespace vl
 {
