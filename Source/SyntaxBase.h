@@ -56,6 +56,7 @@ ParserBase<TTokens, TStates, TReceiver, TStateTypes>
 		{
 			return parser.OnError.Add([&errors](ErrorArgs& args)
 			{
+				args.throwError = false;
 				errors.Add(args.ToParsingError());
 			});
 		}

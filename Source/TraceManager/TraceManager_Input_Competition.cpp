@@ -174,6 +174,7 @@ AttendCompetitionIfNecessary
 					CHECK_ERROR(competitionRule != -1 && competitionClause != -1, ERROR_MESSAGE_PREFIX L"Illegal rule or clause id.");
 					AttendCompetition(trace, newAttendingCompetitions, newCarriedCompetitions, newReturnStack, competitionRule, competitionClause, edgeDesc.priority == EdgePriority::HighPriority);
 				}
+#undef ERROR_MESSAGE_PREFIX
 			}
 
 /***********************************************************************
