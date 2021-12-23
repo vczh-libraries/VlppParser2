@@ -26,8 +26,16 @@ TEST_FILE
 
 			TEST_CASE(caseName)
 			{
+				List<ParsingError> errors;
 				auto input = inputFile.ReadAllTextByBom();
+
+				auto handler = InstallDefaultErrorMessageGenerator(parser, errors);
 				auto ast = parser.ParseModule(input);
+				parser.OnError.Remove(handler);
+
+				TEST_ASSERT(ast);
+				TEST_ASSERT(errors.Count() == 0);
+
 				auto actualJson = PrintAstJson<json_visitor::ExprAstVisitor>(ast);
 				auto expectedJson = File(dirBaseline / (caseName + L".json")).ReadAllTextByBom();
 				AssertLines(expectedJson, actualJson);

@@ -51,6 +51,15 @@ ParserBase<TTokens, TStates, TReceiver, TStateTypes>
 			ParsingError									ToParsingError();
 		};
 
+		template<typename TParser>
+		Ptr<EventHandler> InstallDefaultErrorMessageGenerator(TParser& parser, collections::List<ParsingError>& errors)
+		{
+			return parser.OnError.Add([&errors](ErrorArgs& args)
+			{
+				errors.Add(args.ToParsingError());
+			});
+		}
+
 		template<
 			typename TTokens,
 			typename TStates,

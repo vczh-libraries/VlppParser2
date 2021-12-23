@@ -69,13 +69,35 @@ ErrorArgs
 			switch (error)
 			{
 			case ErrorType::UnrecognizedToken:
-				break;
+				return {
+					{&token,&token},
+					WString::Unmanaged(L"Unrecognized token: \"") + WString::CopyFrom(token.reading,token.length) + WString::Unmanaged(L"\".")
+				};
 			case ErrorType::InvalidToken:
-				break;
+				return {
+					{&token,&token},
+					WString::Unmanaged(L"Parser stops at incorrect input: \"") + WString::CopyFrom(token.reading,token.length) + WString::Unmanaged(L"\".")
+				};
 			case ErrorType::InputIncomplete:
-				break;
+				if (tokens.Count() == 0)
+				{
+					return {
+						{&tokens[tokens.Count()-1],&tokens[tokens.Count() - 1]},
+						L"Input is incomplete."
+					};
+				}
+				else
+				{
+					return {
+						{{0,0,0},{0,0,0},codeIndex},
+						L"Input is incomplete."
+					};
+				}
 			case ErrorType::UnexpectedAstType:
-				break;
+				return {
+					ast->codeRange,
+					L"Unexpected type of the created AST."
+				};
 			default:
 				CHECK_FAIL(L"vl::glr::ErrorArgs::ToParsingError()#Unknown error type.");
 			}
