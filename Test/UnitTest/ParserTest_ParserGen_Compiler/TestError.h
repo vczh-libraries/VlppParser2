@@ -17,10 +17,10 @@ namespace TestError_Syntax_TestObjects
 	struct ParserErrorWithoutLocation
 	{
 		ParserErrorType				type;
-		const wchar_t* arg1 = nullptr;
-		const wchar_t* arg2 = nullptr;
-		const wchar_t* arg3 = nullptr;
-		const wchar_t* arg4 = nullptr;
+		const wchar_t*				arg1 = nullptr;
+		const wchar_t*				arg2 = nullptr;
+		const wchar_t*				arg3 = nullptr;
+		const wchar_t*				arg4 = nullptr;
 	};
 
 	extern void AssertError(ParserSymbolManager& global, ParserErrorWithoutLocation expectedError);

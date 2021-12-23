@@ -59,10 +59,7 @@
 - New priority syntax
   - Priority in alternative syntax, but all branches must not consume empty input series (add compile error)
   - Priority in left recursive transition (which clause starts this competition?)
-- Error message generating.
-  - Token error messages.
-  - Allow users to customize error messages.
-  - Support localization.
+- Custom error in syntax.
 - Error recovering.
 - Extensible tokens, for example, recognize `R"[^\s(]\(` and invoke a callback function to determine the end of the string.
   - Offer two options: using (rich regex | C++) to search for complete token.

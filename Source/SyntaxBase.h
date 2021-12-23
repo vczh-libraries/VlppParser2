@@ -16,7 +16,7 @@ namespace vl
 ParserBase<TTokens, TStates, TReceiver, TStateTypes>
 ***********************************************************************/
 
-		enum class ParserErrors
+		enum class ErrorType
 		{
 			UnrecognizedToken,		// (token)										the token is not recognizable to the tokenizer
 			InvalidToken,			// (token, tokens, executable, traceManager)	the token cause the parser to stop
@@ -35,64 +35,20 @@ ParserBase<TTokens, TStates, TReceiver, TStateTypes>
 		struct ErrorArgs
 		{
 			bool											throwError;
-			ParserErrors									error;
+			ErrorType										error;
+			vint											codeIndex;
 			regex::RegexToken&								token;
 			collections::List<regex::RegexToken>&			tokens;
 			automaton::Executable&							executable;
 			automaton::TraceManager&						traceManager;
 			Ptr<ParsingAstBase>								ast;
 
-			static ErrorArgs UnrecognizedToken(const regex::RegexToken& token)
-			{
-				return {
-					true,
-					ParserErrors::UnrecognizedToken,
-					const_cast<regex::RegexToken&>(token),
-					*static_cast<collections::List<regex::RegexToken>*>(nullptr),
-					*static_cast<automaton::Executable*>(nullptr),
-					*static_cast<automaton::TraceManager*>(nullptr),
-					nullptr
-				};
-			}
+			static ErrorArgs								UnrecognizedToken	(const regex::RegexToken& token);
+			static ErrorArgs								InvalidToken		(regex::RegexToken& token, collections::List<regex::RegexToken>& tokens, automaton::Executable& executable, automaton::TraceManager& traceManager);
+			static ErrorArgs								InputIncomplete		(vint codeIndex, collections::List<regex::RegexToken>& tokens, automaton::Executable& executable, automaton::TraceManager& traceManager);
+			static ErrorArgs								UnexpectedAstType	(collections::List<regex::RegexToken>& tokens, automaton::Executable& executable, automaton::TraceManager& traceManager, Ptr<ParsingAstBase> ast);
 
-			static ErrorArgs InvalidToken(regex::RegexToken& token, collections::List<regex::RegexToken>& tokens, automaton::Executable& executable, automaton::TraceManager& traceManager)
-			{
-				return {
-					true,
-					ParserErrors::InvalidToken,
-					token,
-					tokens,
-					executable,
-					traceManager,
-					nullptr
-				};
-			}
-
-			static ErrorArgs InputIncomplete(collections::List<regex::RegexToken>& tokens, automaton::Executable& executable, automaton::TraceManager& traceManager)
-			{
-				return {
-					true,
-					ParserErrors::InputIncomplete,
-					*static_cast<regex::RegexToken*>(nullptr),
-					tokens,
-					executable,
-					traceManager,
-					nullptr
-				};
-			}
-
-			static ErrorArgs UnexpectedAstType(collections::List<regex::RegexToken>& tokens, automaton::Executable& executable, automaton::TraceManager& traceManager, Ptr<ParsingAstBase> ast)
-			{
-				return {
-					true,
-					ParserErrors::UnexpectedAstType,
-					*static_cast<regex::RegexToken*>(nullptr),
-					tokens,
-					executable,
-					traceManager,
-					ast
-				};
-			}
+			ParsingError									ToParsingError();
 		};
 
 		template<
@@ -176,7 +132,7 @@ ParserBase<TTokens, TStates, TReceiver, TStateTypes>
 
 		protected:
 			template<TStates State>
-			auto Parse(TokenList& tokens, const automaton::TraceManager::ITypeCallback* typeCallback) const -> Ptr<typename TStateTypes<State>::Type>
+			auto Parse(TokenList& tokens, const automaton::TraceManager::ITypeCallback* typeCallback, vint codeIndex) const -> Ptr<typename TStateTypes<State>::Type>
 			{
 #define ERROR_MESSAGE_PREFIX L"vl::glr::ParserBase<...>::Parse<TStates>(List<RegexToken>&, TraceManager::ITypeCallback*)#"
 
@@ -233,7 +189,7 @@ ParserBase<TTokens, TStates, TReceiver, TStateTypes>
 			{
 				TokenList tokens;
 				Tokenize(input, tokens, codeIndex);
-				return Parse<State>(tokens, typeCallback);
+				return Parse<State>(tokens, typeCallback, codeIndex);
 			}
 		};
 	}
