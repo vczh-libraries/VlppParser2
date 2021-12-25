@@ -158,12 +158,15 @@ void PrintCompileErrors(ParserSymbolManager& global)
 			L"[" L ## #P4 L":" + error.arg4 + L"]"\
 			);\
 
-#define CASE_CALL(ARG1, ARG2, ARG3, ARG4, ARG5, FUNC, ...)\
+#define CASE_CALL2(ARG1, ARG2, ARG3, ARG4, ARG5, FUNC, ...)\
 		FUNC(ARG1, ARG2, ARG3, ARG4, ARG5)
+
+#define CASE_CALL(ARGS)\
+		CASE_CALL2 ARGS
 
 #define CASE(LABEL, ...)\
 		case ParserErrorType::LABEL:\
-			CASE_CALL(LABEL, __VA_ARGS__, CASE_4, CASE_3, CASE_2, CASE_1)\
+			CASE_CALL((LABEL, __VA_ARGS__, CASE_4, CASE_3, CASE_2, CASE_1))\
 			break;\
 		
 
@@ -240,6 +243,7 @@ void PrintCompileErrors(ParserSymbolManager& global)
 
 #undef CASE
 #undef CASE_CALL
+#undef CASE_CALL2
 #undef CASE_4
 #undef CASE_3
 #undef CASE_2
@@ -370,6 +374,7 @@ int main(int argc, char* argv[])
 
 		List<Ptr<GlrSyntaxFile>> syntaxFiles;
 		syntaxFiles.Add(syntax);
+		syntaxManager.name = name;
 		CompileSyntax(astManager, lexerManager, syntaxManager, output, syntaxFiles);
 		EXIT_IF_COMPILE_FAIL(global);
 
