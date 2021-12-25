@@ -426,5 +426,72 @@ int main(int argc, char* argv[])
 		EXIT_ERROR(L"Missing /Parser/Asts");
 	}
 
+	{
+		auto elementAsts = XmlGetElement(config->rootElement, L"Asts");
+		for (auto elementAst : XmlGetElements(elementAsts, L"Ast"))
+		{
+			auto name = XmlGetAttribute(elementAst, L"name")->value.value;
+			auto astOutput = output->astOutputs[astManager.Files()[name]];
+
+			if (auto elementBlocked = XmlGetElement(elementAst, L"BlockedUtilities"))
+			{
+				for (auto elementUtility : XmlGetElements(elementBlocked))
+				{
+					auto utility = elementUtility->name.value;
+					if (utility == L"Empty")
+					{
+						files.Remove(astOutput->emptyH);
+						files.Remove(astOutput->emptyCpp);
+					}
+					else if (utility == L"Copy")
+					{
+						files.Remove(astOutput->copyH);
+						files.Remove(astOutput->copyCpp);
+					}
+					else if (utility == L"Traverse")
+					{
+						files.Remove(astOutput->traverseH);
+						files.Remove(astOutput->traverseCpp);
+					}
+					else if (utility == L"Json")
+					{
+						files.Remove(astOutput->jsonH);
+						files.Remove(astOutput->jsonCpp);
+					}
+					else if (utility == L"Builder")
+					{
+						files.Remove(astOutput->builderH);
+						files.Remove(astOutput->builderCpp);
+					}
+					else
+					{
+						EXIT_ERROR(L"Unknown utility \"" + utility + L"\" in /Parser/Asts/Ast[@name=\"" + name + L"\"]/BlockedUtilities/*");
+					}
+				}
+			}
+		}
+	}
+
+	{
+		if (!Folder(generatedDir).Exists())
+		{
+			Folder(generatedDir).Create(true);
+		}
+
+		for (auto [key, index] : indexed(files.Keys()))
+		{
+			File outputFile = generatedDir / key;
+			auto content = files.Values()[index];
+			if (outputFile.Exists())
+			{
+				auto existing = outputFile.ReadAllTextByBom();
+				if (content == existing)
+				{
+					continue;
+				}
+			}
+			outputFile.WriteAllText(content, false, BomEncoder::Utf8);
+		}
+	}
 	return 0;
 }
