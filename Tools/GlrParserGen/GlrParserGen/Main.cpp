@@ -487,9 +487,16 @@ int main(int argc, char* argv[])
 				auto existing = outputFile.ReadAllTextByBom();
 				if (content == existing)
 				{
+					Console::SetColor(true, true, false, true);
+					Console::WriteLine(outputFile.GetFilePath().GetFullPath());
+					Console::SetColor(true, true, true, false);
 					continue;
 				}
 			}
+
+			Console::SetColor(false, true, false, true);
+			Console::WriteLine(outputFile.GetFilePath().GetFullPath());
+			Console::SetColor(true, true, true, false);
 			outputFile.WriteAllText(content, false, BomEncoder::Utf8);
 		}
 	}
