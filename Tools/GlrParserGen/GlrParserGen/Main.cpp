@@ -150,7 +150,9 @@ int main(int argc, char* argv[])
 			WString name, file;
 			READ_ATTRIBUTE(name, elementAst, L"name", L"/Parser/Asts/Ast@name");
 			READ_ATTRIBUTE(file, elementAst, L"file", L"/Parser/Asts/Ast@file[@name=\"" + name + L"\"]");
-			File astFile = workingDir/file;
+			Console::WriteLine(L"Processing " + file + L" ...");
+
+			File astFile = workingDir / file;
 			if (!astFile.Exists()) EXIT_ERROR(L"Missing ast definition file: " + astFile.GetFilePath().GetFullPath());
 			auto astInput = astFile.ReadAllTextByBom();
 			auto ast = typeParser.ParseFile(astInput);
@@ -173,7 +175,14 @@ int main(int argc, char* argv[])
 
 	if (auto elementLexer = XmlGetElement(config->rootElement, L"Lexer"))
 	{
+		WString file;
+		READ_ATTRIBUTE(file, elementLexer, L"file", L"/Parser/Lexer@file");
+		Console::WriteLine(L"Processing " + file + L" ...");
 
+		File lexerFile = workingDir / file;
+		auto lexerInput = lexerFile.ReadAllTextByBom();
+		CompileLexer(lexerManager, lexerInput);
+		WriteLexerFiles(lexerManager, output, files);
 	}
 	else
 	{
