@@ -132,8 +132,6 @@ int main(int argc, char* argv[])
 	}
 
 	auto output = GenerateParserFileNames(global);
-	GenerateAstFileNames(astManager, output);
-	GenerateSyntaxFileNames(syntaxManager, output);
 
 	TypeParser typeParser;
 	RuleParser ruleParser;
@@ -162,7 +160,10 @@ int main(int argc, char* argv[])
 			READ_ELEMENT_ITEMS(astDefFile->cppNss, regexNamespace, elementAst, L"CppNamespace", L"/Parser/Asts/Ast@file[@name=\"" + name + L"\"]/CppNamespace");
 			READ_ELEMENT_ITEMS(astDefFile->refNss, regexNamespace, elementAst, L"ReflectionNamespace", L"/Parser/Asts/Ast@file[@name=\"" + name + L"\"]/ReflectionNamespace");
 			READ_ELEMENT(astDefFile->classPrefix, elementAst, L"ClassPrefix", L"/Parser/Asts/Ast@file[@name=\"" + name + L"\"]/ClassPrefix");
+			CompileAst(astManager, astDefFile, ast);
 		}
+
+		GenerateAstFileNames(astManager, output);
 		WriteAstFiles(astManager, output, files);
 	}
 	else
@@ -181,7 +182,7 @@ int main(int argc, char* argv[])
 
 	if (auto elementSyntax = XmlGetElement(config->rootElement, L"Syntax"))
 	{
-
+		GenerateSyntaxFileNames(syntaxManager, output);
 	}
 	else
 	{

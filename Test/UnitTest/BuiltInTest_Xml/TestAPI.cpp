@@ -14,6 +14,7 @@ TEST_FILE
 			L"<?xml version = \"1.0\" encoding = \"utf16\" ?>\r\n<!--this is a comment-->\r\n<name att1 = \"value1\" att2 = \"value2\" />",
 			L"<button name = \'&lt;&gt;&amp;&apos;&quot;\'> <![CDATA[ButtonText]]> <![CDATA[!]!]]!]>!>!]]> </button>",
 			L"<text> This is a single line of text </text>",
+			L"<comment><!-- <This-is-a-single-line-of/> <Comment/> --></comment>",
 			L"<text> normal <b>bold</b> normal <!--comment--> <i>italic</i> normal </text>",
 			L"<text> \"normal\" <b>bold</b> \"normal\' <!--comment--> <i>italic</i> \'normal\" </text>",
 		};
@@ -24,6 +25,7 @@ TEST_FILE
 			L"<?xml version=\"1.0\" encoding=\"utf16\"?><!--this is a comment--><name att1=\"value1\" att2=\"value2\"/>",
 			L"<button name=\"&lt;&gt;&amp;&apos;&quot;\"><![CDATA[ButtonText]]><![CDATA[!]!]]!]>!>!]]></button>",
 			L"<text> This is a single line of text </text>",
+			L"<comment><!-- <This-is-a-single-line-of/> <Comment/> --></comment>",
 			L"<text> normal <b>bold</b> normal <!--comment--><i>italic</i> normal </text>",
 			L"<text> &quot;normal&quot; <b>bold</b> &quot;normal&apos; <!--comment--><i>italic</i> &apos;normal&quot; </text>",
 		};
