@@ -8,6 +8,7 @@ DEVELOPER: Zihan Chen(vczh)
 #include "VlppRegex.h"
 
 #include "..\..\Source\AstBase.h"
+#include "..\..\Source\AstPrint.h"
 #include "..\..\Source\Executable.h"
 #include "..\..\Source\TraceManager\TraceManager.h"
 #include "..\..\Source\SyntaxBase.h"

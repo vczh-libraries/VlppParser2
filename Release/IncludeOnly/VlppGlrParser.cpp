@@ -5,6 +5,7 @@ DEVELOPER: Zihan Chen(vczh)
 #include "VlppGlrParser.h"
 
 #include "..\..\Source\AstBase.cpp"
+#include "..\..\Source\AstPrint.cpp"
 #include "..\..\Source\Executable.cpp"
 #include "..\..\Source\SyntaxBase.cpp"
 #include "..\..\Source\Json\GlrJson.cpp"
