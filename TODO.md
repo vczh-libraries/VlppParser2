@@ -33,8 +33,7 @@
 
 ## Development
 
-1. [ ] Port `ParserGen` to `VlppParser2`, do not write to an existing file if the content is not changed.
-   1. [ ] Create a new repo `BuildTools` and adapt the release license instead of the development license.
+1. [ ] Create a new repo `BuildTools` and adapt the release license instead of the development license.
 2. [ ] Review all comments.
 
 ## Work Items (issues)
