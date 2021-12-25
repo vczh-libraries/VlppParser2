@@ -7,6 +7,7 @@ using namespace vl::stream;
 using namespace vl::filesystem;
 using namespace vl::regex;
 using namespace vl::glr;
+using namespace vl::glr::automaton;
 using namespace vl::glr::parsergen;
 using namespace vl::glr::xml;
 
@@ -26,11 +27,20 @@ using namespace vl::glr::xml;
 		{\
 			Console::SetColor(true, false, false, true);\
 			Console::WriteLine(TITLE);\
-			for (auto error : ERRORS)\
-			{\
-				Console::WriteLine(L"[row:" + itow(error.codeRange.start.row + 1) + L"][column:" + itow(error.codeRange.start.column + 1) + L"]: " + error.message);\
-			}\
+			PrintParsingErrors(ERRORS);\
 			Console::SetColor(true, true, true, false);\
+			return 1;\
+		}\
+	} while(false)
+
+#define EXIT_IF_COMPILE_FAIL(GLOBAL)\
+	do\
+	{\
+		if (GLOBAL.Errors().Count() > 0)\
+		{\
+			Console::SetColor(true, false, false, true);\
+			Console::WriteLine(L"Failed to compile the syntax:");\
+			PrintCompileErrors(GLOBAL);\
 			return 1;\
 		}\
 	} while(false)
@@ -84,7 +94,21 @@ using namespace vl::glr::xml;
 			EXIT_ERROR(L"Missing " PATH L".");\
 		}\
 	} while(false)\
-	
+
+void PrintParsingErrors(List<ParsingError>& errors)
+{
+	for (auto error : errors)
+	{
+		Console::WriteLine(
+			L"[row:" + itow(error.codeRange.start.row + 1) + L"]"
+			L"[column:" + itow(error.codeRange.start.column + 1) + L"]"
+			L": " + error.message); 
+	}
+}
+
+void PrintCompileErrors(ParserSymbolManager & global)
+{
+}
 
 int main(int argc, char* argv[])
 {
@@ -114,6 +138,9 @@ int main(int argc, char* argv[])
 	AstSymbolManager astManager(global);
 	LexerSymbolManager	lexerManager(global);
 	SyntaxSymbolManager syntaxManager(global);
+	Executable executable;
+	Metadata metadata;
+
 	FilePath generatedDir;
 	Dictionary<WString, WString> files;
 
@@ -165,6 +192,7 @@ int main(int argc, char* argv[])
 			CompileAst(astManager, astDefFile, ast);
 		}
 
+		EXIT_IF_COMPILE_FAIL(global);
 		GenerateAstFileNames(astManager, output);
 		WriteAstFiles(astManager, output, files);
 	}
@@ -182,6 +210,8 @@ int main(int argc, char* argv[])
 		File lexerFile = workingDir / file;
 		auto lexerInput = lexerFile.ReadAllTextByBom();
 		CompileLexer(lexerManager, lexerInput);
+
+		EXIT_IF_COMPILE_FAIL(global);
 		WriteLexerFiles(lexerManager, output, files);
 	}
 	else
@@ -191,7 +221,30 @@ int main(int argc, char* argv[])
 
 	if (auto elementSyntax = XmlGetElement(config->rootElement, L"Syntax"))
 	{
+		WString name, file;
+		READ_ATTRIBUTE(name, elementSyntax, L"name", L"/Parser/Syntax@name");
+		READ_ATTRIBUTE(file, elementSyntax, L"file", L"/Parser/Syntax@file[@name=\"" + name + L"\"]");
+		Console::WriteLine(L"Processing " + file + L" ...");
+
+		File syntaxFile = workingDir / file;
+		auto syntaxInput = syntaxFile.ReadAllTextByBom();
+		auto syntax = ruleParser.ParseFile(syntaxInput);
+		EXIT_IF_PARSER_FAIL(errors, L"Syntax errors found in file: " + syntaxFile.GetFilePath().GetFullPath());
+
+		List<Ptr<GlrSyntaxFile>> syntaxFiles;
+		syntaxFiles.Add(syntax);
+		CompileSyntax(astManager, lexerManager, syntaxManager, output, syntaxFiles);
+		EXIT_IF_COMPILE_FAIL(global);
+
+		syntaxManager.BuildCompactNFA();
+		EXIT_IF_COMPILE_FAIL(global);
+		syntaxManager.BuildCrossReferencedNFA();
+		EXIT_IF_COMPILE_FAIL(global);
+		syntaxManager.BuildAutomaton(lexerManager.Tokens().Count(), executable, metadata);
+		EXIT_IF_COMPILE_FAIL(global);
+
 		GenerateSyntaxFileNames(syntaxManager, output);
+		WriteSyntaxFiles(syntaxManager, executable, metadata, output, files);
 	}
 	else
 	{
