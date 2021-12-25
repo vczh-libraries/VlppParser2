@@ -13,24 +13,6 @@
   - competitions created before the first token are not attended
   - completitions created after the first token are closed
 
-## Configurations
-
-- [x] Include files in generated C++ header.
-  - [ ] Default to `<VlppParser2.h>`
-- [x] Standalone AST definition file, instead of being part of the syntax like `VlppParser`.
-  - [ ] Global UTF configuration for all `token` in a parser.
-  - [ ] An AST node in one definition files cannot inherits from one in another file, it could only use one in another file as fields.
-  - [x] Reflection supports (opt-out using `VCZH_DEBUG_NO_REFLECTION`).
-    - [ ] If AST memory pool is enabled, add the pool object to the constructor in reflection, redirecting to a static function.
-    - [ ] All `token` property `X` becomes `X_`, paired with a string property `X` to access the text value in `X_`.
-- [x] Standalone lexical analyzer definition files.
-- [x] Standalone syntax analyzer definition files.
-  - [ ] One parser creates one `SyntaxSymbolManager`, could include multiple syntax files.
-- [x] All names of AST must be unique globally.
-- [x] All names of token and rule must be unique.
-- [x] Unique field id will be generated for each fields in each AST node.
-- [ ] One XML "parser project file" to contain all above information, linking to all AST/Lexical Analyzer/Syntax files.
-
 ## Development
 
 1. [ ] Create a new repo `BuildTools` and adapt the release license instead of the development license.
@@ -55,6 +37,7 @@
   - Refactor some properties in `LexerSymbolManager` into `LexerFile` with a name.
 - AST uses classes from another AST file in dependency as fields.
 - Printing AST classes that created from a memory pool.
+- All `token` property `X` becomes `X_`, paired with a string property `X` to access the text value in `X_`.
 - New priority syntax
   - Priority in alternative syntax, but all branches must not consume empty input series (add compile error)
   - Priority in left recursive transition (which clause starts this competition?)
