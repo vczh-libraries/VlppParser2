@@ -203,7 +203,7 @@ SyntaxSymbolManager
 				template<typename ...TArgs>
 				void AddError(ParserErrorType type, ParsingTextRange codeRange, TArgs&&... args)
 				{
-					global.AddError(type, { ParserDefFileType::Syntax,WString::Empty,codeRange }, std::forward<TArgs&&>(args)...);
+					global.AddError(type, { ParserDefFileType::Syntax,name,codeRange }, std::forward<TArgs&&>(args)...);
 				}
 			};
 

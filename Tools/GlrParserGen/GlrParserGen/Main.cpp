@@ -41,6 +41,7 @@ using namespace vl::glr::xml;
 			Console::SetColor(true, false, false, true);\
 			Console::WriteLine(L"Failed to compile the syntax:");\
 			PrintCompileErrors(GLOBAL);\
+			Console::SetColor(true, true, true, false);\
 			return 1;\
 		}\
 	} while(false)
@@ -106,8 +107,144 @@ void PrintParsingErrors(List<ParsingError>& errors)
 	}
 }
 
-void PrintCompileErrors(ParserSymbolManager & global)
+void PrintCompileErrors(ParserSymbolManager& global)
 {
+	for (auto error : global.Errors())
+	{
+		switch (error.location.type)
+		{
+		case ParserDefFileType::Ast:
+			Console::Write(L"[Ast:" + error.location.name + L"]");
+			break;
+		case ParserDefFileType::Lexer:
+			Console::Write(L"[Lexer]");
+			break;
+		case ParserDefFileType::Syntax:
+			Console::Write(L"[Syntax:" + error.location.name + L"]");
+			break;
+		}
+
+		Console::Write(
+			L"[row:" + itow(error.location.codeRange.start.row + 1) + L"]"
+			L"[column:" + itow(error.location.codeRange.start.column + 1) + L"]");
+
+#define CASE_1(LABEL, P1, ...)\
+		Console::WriteLine(\
+			L"[" L ## #LABEL L"]"\
+			L"[" L ## #P1 L":" + error.arg1 + L"]"\
+			);\
+
+#define CASE_2(LABEL, P1, P2, ...)\
+		Console::WriteLine(\
+			L"[" L ## #LABEL L"]"\
+			L"[" L ## #P1 L":" + error.arg1 + L"]"\
+			L"[" L ## #P2 L":" + error.arg2 + L"]"\
+			);\
+
+#define CASE_3(LABEL, P1, P2, P3, ...)\
+		Console::WriteLine(\
+			L"[" L ## #LABEL L"]"\
+			L"[" L ## #P1 L":" + error.arg1 + L"]"\
+			L"[" L ## #P2 L":" + error.arg2 + L"]"\
+			L"[" L ## #P3 L":" + error.arg3 + L"]"\
+			);\
+
+#define CASE_4(LABEL, P1, P2, P3, P4, ...)\
+		Console::WriteLine(\
+			L"[" L ## #LABEL L"]"\
+			L"[" L ## #P1 L":" + error.arg1 + L"]"\
+			L"[" L ## #P2 L":" + error.arg2 + L"]"\
+			L"[" L ## #P3 L":" + error.arg3 + L"]"\
+			L"[" L ## #P4 L":" + error.arg4 + L"]"\
+			);\
+
+#define CASE_CALL(ARG1, ARG2, ARG3, ARG4, ARG5, FUNC, ...)\
+		FUNC(ARG1, ARG2, ARG3, ARG4, ARG5)
+
+#define CASE(LABEL, ...)\
+		case ParserErrorType::LABEL:\
+			CASE_CALL(LABEL, __VA_ARGS__, CASE_4, CASE_3, CASE_2, CASE_1)\
+			break;\
+		
+
+		switch (error.type)
+		{
+		// AstSymbolManager -------------------------------------------------------------------
+		CASE(DuplicatedFile, fileName);
+		CASE(FileDependencyNotExists, fileName, dependency);
+		CASE(FileCyclicDependency, fileName, dependency);
+		CASE(DuplicatedSymbol, fileName, symbolName);
+		CASE(DuplicatedSymbolGlobally, fileName, symbolName, anotherFileName);
+		CASE(DuplicatedClassProp, fileName, className, propName);
+		CASE(DuplicatedEnumItem, fileName, enumName, propName);
+		CASE(BaseClassNotExists, fileName, className, typeName);
+		CASE(BaseClassNotClass, fileName, className, typeName);
+		CASE(BaseClassCyclicDependency, fileName, className);
+		CASE(FieldTypeNotExists, fileName, className, propName);
+		CASE(FieldTypeNotClass, fileName, className, propName);
+
+		// LexerSymbolManager -----------------------------------------------------------------
+		CASE(InvalidTokenDefinition, code);
+		CASE(DuplicatedToken, tokenName);
+		CASE(DuplicatedTokenByDisplayText, tokenName);
+		CASE(InvalidTokenRegex, tokenName, errorMessage);
+		CASE(TokenRegexNotPure, tokenName);
+
+		// SyntaxSymbolManager ----------------------------------------------------------------
+		CASE(DuplicatedRule, ruleName);
+		CASE(RuleIsIndirectlyLeftRecursive, ruleName);
+
+		// SyntaxAst (ResolveName) ------------------------------------------------------------
+		CASE(RuleNameConflictedWithToken, ruleName);
+		CASE(TypeNotExistsInRule, ruleName, name);
+		CASE(TypeNotClassInRule, ruleName, name);
+		CASE(TokenOrRuleNotExistsInRule, ruleName, name);
+
+		// SyntaxAst (CalculateTypes) ---------------------------------------------------------
+		CASE(RuleMixedPartialClauseWithOtherClause, ruleName);
+		CASE(RuleWithDifferentPartialTypes, ruleName);
+		CASE(RuleCannotResolveToDeterministicType, ruleName);
+		CASE(CyclicDependedRuleTypeIncompatible, ruleName);
+		CASE(ReuseClauseCannotResolveToDeterministicType, ruleName);
+		CASE(ReuseClauseContainsNoUseRule, ruleName);
+
+		// SyntaxAst (ValidateTypes) ----------------------------------------------------------
+		CASE(FieldNotExistsInClause, ruleName, clauseType, fieldName);
+		CASE(RuleTypeMismatchedToField, ruleName, clauseType, fieldName, fieldRuleType);
+		CASE(AssignmentToNonEnumField, ruleName, clauseType, fieldName);
+		CASE(EnumItemMismatchedToField, ruleName, clauseType, fieldName, enumItem);
+		CASE(UseRuleWithPartialRule, ruleName, useRuleName);
+		CASE(UseRuleInNonReuseClause, ruleName, useRuleName);
+		CASE(PartialRuleUsedOnField, ruleName, clauseType, partialRuleName, fieldName);
+		CASE(ClauseTypeMismatchedToPartialRule, ruleName, clauseType, partialRuleName, partialRuleType);
+
+		// SyntaxAst (ValidateStructure, counting) --------------------------------------------
+		CASE(ClauseNotCreateObject, ruleName);
+		CASE(UseRuleUsedInOptionalBody, ruleName, useRuleName);
+		CASE(UseRuleUsedInLoopBody, ruleName, useRuleName);
+		CASE(ClauseTooManyUseRule, ruleName);
+		CASE(NonArrayFieldAssignedInLoop, ruleName, clauseType, fieldName);
+		CASE(NonLoopablePartialRuleUsedInLoop, ruleName, clauseType, partialRuleName);
+		CASE(ClauseCouldExpandToEmptySequence, ruleName);
+		CASE(LoopBodyCouldExpandToEmptySequence, ruleName);
+		CASE(OptionalBodyCouldExpandToEmptySequence, ruleName);
+		CASE(NegativeOptionalEndsAClause, ruleName);
+		CASE(MultiplePrioritySyntaxInAClause, ruleName);
+
+		// SyntaxAst (ValidateStructure, relationship) ----------------------------------------
+		CASE(FieldAssignedMoreThanOnce, ruleName, clauseType, fieldName);
+
+		default:
+			Console::WriteLine(L"<UNKNOWN-ERROR>");
+		}
+
+#undef CASE
+#undef CASE_CALL
+#undef CASE_4
+#undef CASE_3
+#undef CASE_2
+#undef CASE_1
+	}
 }
 
 int main(int argc, char* argv[])
