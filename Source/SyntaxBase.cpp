@@ -70,11 +70,13 @@ ErrorArgs
 			{
 			case ErrorType::UnrecognizedToken:
 				return {
+					nullptr,
 					{&token,&token},
 					WString::Unmanaged(L"Unrecognized token: \"") + WString::CopyFrom(token.reading,token.length) + WString::Unmanaged(L"\".")
 				};
 			case ErrorType::InvalidToken:
 				return {
+					nullptr,
 					{&token,&token},
 					WString::Unmanaged(L"Parser stops at incorrect input: \"") + WString::CopyFrom(token.reading,token.length) + WString::Unmanaged(L"\".")
 				};
@@ -82,6 +84,7 @@ ErrorArgs
 				if (tokens.Count() == 0)
 				{
 					return {
+						nullptr,
 						{&tokens[tokens.Count()-1],&tokens[tokens.Count() - 1]},
 						L"Input is incomplete."
 					};
@@ -89,12 +92,14 @@ ErrorArgs
 				else
 				{
 					return {
+						nullptr,
 						{{0,0,0},{0,0,0},codeIndex},
 						L"Input is incomplete."
 					};
 				}
 			case ErrorType::UnexpectedAstType:
 				return {
+					nullptr,
 					ast->codeRange,
 					L"Unexpected type of the created AST."
 				};
