@@ -1026,8 +1026,8 @@ RegexLexer_<T>
 			Automaton::Ref bigEnfa = new Automaton;
 			for (vint i = 0; i < dfas.Count(); i++)
 			{
-				CopyFrom(bigEnfa->states, dfas[i]->states);
-				CopyFrom(bigEnfa->transitions, dfas[i]->transitions);
+				CopyFrom(bigEnfa->states, dfas[i]->states, true);
+				CopyFrom(bigEnfa->transitions, dfas[i]->transitions, true);
 			}
 			bigEnfa->startState = bigEnfa->NewState();
 			for (vint i = 0; i < dfas.Count(); i++)
