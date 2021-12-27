@@ -70,7 +70,7 @@ namespace ifelsepriority
 	}
 
 	ModuleParser::ModuleParser()
-		: vl::glr::ParserBase<IfElsePriorityTokens, ModuleParserStates, IfElsePriorityAstInsReceiver, ModuleParserStateTypes>(&IfElsePriorityTokenDeleter, &IfElsePriorityLexerData, &IfElsePriorityModuleParserData)
+		: vl::glr::ParserBase<IfElsePriorityTokens, ModuleParserStates, IfElsePriorityAstInsReceiver>(&IfElsePriorityTokenDeleter, &IfElsePriorityLexerData, &IfElsePriorityModuleParserData)
 	{
 	};
 
@@ -81,11 +81,11 @@ namespace ifelsepriority
 
 	vl::Ptr<ifelsepriority::Module> ModuleParser::ParseModule(const vl::WString& input, vl::vint codeIndex) const
 	{
-		 return ParseWithString<ModuleParserStates::Module>(input, this, codeIndex);
+		 return ParseWithString<ifelsepriority::Module, ModuleParserStates::Module>(input, this, codeIndex);
 	};
 
 	vl::Ptr<ifelsepriority::Module> ModuleParser::ParseModule(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex) const
 	{
-		 return ParseWithTokens<ModuleParserStates::Module>(tokens, this, codeIndex);
+		 return ParseWithTokens<ifelsepriority::Module, ModuleParserStates::Module>(tokens, this, codeIndex);
 	};
 }

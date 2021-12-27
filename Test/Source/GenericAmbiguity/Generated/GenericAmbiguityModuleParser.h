@@ -21,16 +21,12 @@ namespace genericambiguity
 		Module = 41,
 	};
 
-	template<ModuleParserStates> struct ModuleParserStateTypes;
-	template<> struct ModuleParserStateTypes<ModuleParserStates::Module> { using Type = genericambiguity::Module; };
-
 	const wchar_t* ModuleParserRuleName(vl::vint index);
 	const wchar_t* ModuleParserStateLabel(vl::vint index);
 	extern void GenericAmbiguityModuleParserData(vl::stream::IStream& outputStream);
 
 	class ModuleParser
-		: public vl::glr::ParserBase<GenericAmbiguityTokens, ModuleParserStates, GenericAmbiguityAstInsReceiver, ModuleParserStateTypes>
-		, protected vl::glr::automaton::TraceManager::ITypeCallback
+		: public vl::glr::ParserBase<GenericAmbiguityTokens, ModuleParserStates, GenericAmbiguityAstInsReceiver>		, protected vl::glr::automaton::TraceManager::ITypeCallback
 	{
 	protected:
 		vl::vint32_t FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2) const override;

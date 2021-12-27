@@ -59,19 +59,6 @@ WriteSyntaxHeaderFile
 				}
 				{
 					writer.WriteLine(L"");
-					writer.WriteLine(prefix + L"template<" + manager.name + L"States> struct " + manager.name + L"StateTypes;");
-					for(auto ruleName : manager.RuleOrder())
-					{
-						auto ruleSymbol = manager.Rules()[ruleName];
-						if (manager.parsableRules.Contains(ruleSymbol))
-						{
-							auto astType = manager.ruleTypes[ruleSymbol];
-							writer.WriteLine(prefix + L"template<> struct " + manager.name + L"StateTypes<" + manager.name + L"States::" + ruleName + L"> { using Type = " + astType + L"; };");
-						}
-					}
-				}
-				{
-					writer.WriteLine(L"");
 					writer.WriteLine(prefix + L"const wchar_t* " + manager.name + L"RuleName(vl::vint index);");
 					writer.WriteLine(prefix + L"const wchar_t* " + manager.name + L"StateLabel(vl::vint index);");
 					WriteLoadDataFunctionHeader(prefix, manager.Global().name + manager.name + L"Data", writer);
@@ -82,8 +69,7 @@ WriteSyntaxHeaderFile
 					writer.WriteString(prefix+L"\t: public vl::glr::ParserBase<");
 					writer.WriteString(manager.Global().name + L"Tokens, ");
 					writer.WriteString(manager.name + L"States, ");
-					writer.WriteString(manager.Global().name + L"AstInsReceiver, ");
-					writer.WriteLine(manager.name + L"StateTypes>");
+					writer.WriteString(manager.Global().name + L"AstInsReceiver>");
 					writer.WriteLine(prefix + L"\t, protected vl::glr::automaton::TraceManager::ITypeCallback");
 					writer.WriteLine(prefix + L"{");
 					writer.WriteLine(prefix + L"protected:");
@@ -163,8 +149,7 @@ WriteSyntaxCppFile
 					writer.WriteString(prefix + L"\t: vl::glr::ParserBase<");
 					writer.WriteString(manager.Global().name + L"Tokens, ");
 					writer.WriteString(manager.name + L"States, ");
-					writer.WriteString(manager.Global().name + L"AstInsReceiver, ");
-					writer.WriteString(manager.name + L"StateTypes>(");
+					writer.WriteString(manager.Global().name + L"AstInsReceiver>(");
 					writer.WriteString(L"&" + manager.Global().name + L"TokenDeleter, ");
 					writer.WriteString(L"&" + manager.Global().name + L"LexerData, ");
 					writer.WriteLine(L"&" + manager.Global().name + manager.name + L"Data)");
@@ -225,12 +210,12 @@ WriteSyntaxCppFile
 						writer.WriteLine(L"");
 						writer.WriteLine(prefix + L"vl::Ptr<" + astType + L"> " + manager.name + L"::Parse" + ruleName + L"(const vl::WString& input, vl::vint codeIndex) const");
 						writer.WriteLine(prefix + L"{");
-						writer.WriteLine(prefix + L"\t return ParseWithString<" + manager.name + L"States::" + ruleName + L">(input, this, codeIndex);");
+						writer.WriteLine(prefix + L"\t return ParseWithString<" + astType + L", " + manager.name + L"States::" + ruleName + L">(input, this, codeIndex);");
 						writer.WriteLine(prefix + L"};");
 						writer.WriteLine(L"");
 						writer.WriteLine(prefix + L"vl::Ptr<" + astType + L"> " + manager.name + L"::Parse" + ruleName + L"(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex) const");
 						writer.WriteLine(prefix + L"{");
-						writer.WriteLine(prefix + L"\t return ParseWithTokens<" + manager.name + L"States::" + ruleName + L">(tokens, this, codeIndex);");
+						writer.WriteLine(prefix + L"\t return ParseWithTokens<" + astType + L", " + manager.name + L"States::" + ruleName + L">(tokens, this, codeIndex);");
 						writer.WriteLine(prefix + L"};");
 					}
 				}

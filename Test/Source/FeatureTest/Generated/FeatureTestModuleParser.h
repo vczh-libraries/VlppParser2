@@ -45,16 +45,12 @@ namespace featuretest
 		Module = 144,
 	};
 
-	template<ModuleParserStates> struct ModuleParserStateTypes;
-	template<> struct ModuleParserStateTypes<ModuleParserStates::Module> { using Type = featuretest::Feature; };
-
 	const wchar_t* ModuleParserRuleName(vl::vint index);
 	const wchar_t* ModuleParserStateLabel(vl::vint index);
 	extern void FeatureTestModuleParserData(vl::stream::IStream& outputStream);
 
 	class ModuleParser
-		: public vl::glr::ParserBase<FeatureTestTokens, ModuleParserStates, FeatureTestAstInsReceiver, ModuleParserStateTypes>
-		, protected vl::glr::automaton::TraceManager::ITypeCallback
+		: public vl::glr::ParserBase<FeatureTestTokens, ModuleParserStates, FeatureTestAstInsReceiver>		, protected vl::glr::automaton::TraceManager::ITypeCallback
 	{
 	protected:
 		vl::vint32_t FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2) const override;

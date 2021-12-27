@@ -104,7 +104,7 @@ namespace vl
 			}
 
 			TypeParser::TypeParser()
-				: vl::glr::ParserBase<ParserGenTokens, TypeParserStates, ParserGenAstInsReceiver, TypeParserStateTypes>(&ParserGenTokenDeleter, &ParserGenLexerData, &ParserGenTypeParserData)
+				: vl::glr::ParserBase<ParserGenTokens, TypeParserStates, ParserGenAstInsReceiver>(&ParserGenTokenDeleter, &ParserGenLexerData, &ParserGenTypeParserData)
 			{
 			};
 
@@ -115,12 +115,12 @@ namespace vl
 
 			vl::Ptr<vl::glr::parsergen::GlrAstFile> TypeParser::ParseFile(const vl::WString& input, vl::vint codeIndex) const
 			{
-				 return ParseWithString<TypeParserStates::File>(input, this, codeIndex);
+				 return ParseWithString<vl::glr::parsergen::GlrAstFile, TypeParserStates::File>(input, this, codeIndex);
 			};
 
 			vl::Ptr<vl::glr::parsergen::GlrAstFile> TypeParser::ParseFile(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex) const
 			{
-				 return ParseWithTokens<TypeParserStates::File>(tokens, this, codeIndex);
+				 return ParseWithTokens<vl::glr::parsergen::GlrAstFile, TypeParserStates::File>(tokens, this, codeIndex);
 			};
 		}
 	}

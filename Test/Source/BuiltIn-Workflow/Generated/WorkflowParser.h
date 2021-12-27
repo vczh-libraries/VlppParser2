@@ -91,20 +91,12 @@ namespace vl
 				_Module = 812,
 			};
 
-			template<ParserStates> struct ParserStateTypes;
-			template<> struct ParserStateTypes<ParserStates::_Type> { using Type = vl::glr::workflow::WfType; };
-			template<> struct ParserStateTypes<ParserStates::_Expression> { using Type = vl::glr::workflow::WfExpression; };
-			template<> struct ParserStateTypes<ParserStates::_Statement> { using Type = vl::glr::workflow::WfStatement; };
-			template<> struct ParserStateTypes<ParserStates::_Declaration> { using Type = vl::glr::workflow::WfDeclaration; };
-			template<> struct ParserStateTypes<ParserStates::_Module> { using Type = vl::glr::workflow::WfModule; };
-
 			const wchar_t* ParserRuleName(vl::vint index);
 			const wchar_t* ParserStateLabel(vl::vint index);
 			extern void WorkflowParserData(vl::stream::IStream& outputStream);
 
 			class Parser
-				: public vl::glr::ParserBase<WorkflowTokens, ParserStates, WorkflowAstInsReceiver, ParserStateTypes>
-				, protected vl::glr::automaton::TraceManager::ITypeCallback
+				: public vl::glr::ParserBase<WorkflowTokens, ParserStates, WorkflowAstInsReceiver>				, protected vl::glr::automaton::TraceManager::ITypeCallback
 			{
 			protected:
 				vl::vint32_t FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2) const override;

@@ -64,8 +64,7 @@ ParserBase<TTokens, TStates, TReceiver, TStateTypes>
 		template<
 			typename TTokens,
 			typename TStates,
-			typename TReceiver,
-			template<TStates> class TStateTypes
+			typename TReceiver
 		>
 		class ParserBase : public Object
 		{
@@ -187,31 +186,30 @@ ParserBase<TTokens, TStates, TReceiver, TStateTypes>
 #undef ERROR_MESSAGE_PREFIX
 			}
 
-			template<TStates State>
-			auto ParseWithTokens(TokenList& tokens, const automaton::TraceManager::ITypeCallback* typeCallback, vint codeIndex) const -> Ptr<typename TStateTypes<State>::Type>
+			template<typename TAst, TStates State>
+			Ptr<TAst> ParseWithTokens(TokenList& tokens, const automaton::TraceManager::ITypeCallback* typeCallback, vint codeIndex) const
 			{
-#define ERROR_MESSAGE_PREFIX L"vl::glr::ParserBase<...>::Parse<TStates>(List<RegexToken>& TraceManager::ITypeCallback*)#"
+#define ERROR_MESSAGE_PREFIX L"vl::glr::ParserBase<...>::Parse<TAst, TStates>(List<RegexToken>& TraceManager::ITypeCallback*)#"
 				automaton::TraceManager tm(*executable.Obj(), typeCallback);
 				auto ast = ParseInternal(tokens, (vint32_t)State, tm, typeCallback, codeIndex);
-				auto typedAst = ast.Cast<typename TStateTypes<State>::Type>();
+				auto typedAst = ast.Cast<TAst>();
 
 				if (!typedAst)
 				{
 					auto args = ErrorArgs::UnexpectedAstType(tokens, *executable.Obj(), tm, ast);
 					OnError(args);
 					if (args.throwError) CHECK_FAIL(ERROR_MESSAGE_PREFIX L"Unexpected type of the created AST.");
-					return nullptr;
 				}
 				return typedAst;
 #undef ERROR_MESSAGE_PREFIX
 			}
 
-			template<TStates State>
-			auto ParseWithString(const WString& input, const automaton::TraceManager::ITypeCallback* typeCallback, vint codeIndex) const -> Ptr<typename TStateTypes<State>::Type>
+			template<typename TAst, TStates State>
+			Ptr<TAst> ParseWithString(const WString& input, const automaton::TraceManager::ITypeCallback* typeCallback, vint codeIndex) const
 			{
 				TokenList tokens;
 				Tokenize(input, tokens, codeIndex);
-				return ParseWithTokens<State>(tokens, typeCallback, codeIndex);
+				return ParseWithTokens<TAst, State>(tokens, typeCallback, codeIndex);
 			}
 		};
 	}

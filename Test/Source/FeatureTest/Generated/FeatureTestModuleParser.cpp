@@ -268,7 +268,7 @@ namespace featuretest
 	}
 
 	ModuleParser::ModuleParser()
-		: vl::glr::ParserBase<FeatureTestTokens, ModuleParserStates, FeatureTestAstInsReceiver, ModuleParserStateTypes>(&FeatureTestTokenDeleter, &FeatureTestLexerData, &FeatureTestModuleParserData)
+		: vl::glr::ParserBase<FeatureTestTokens, ModuleParserStates, FeatureTestAstInsReceiver>(&FeatureTestTokenDeleter, &FeatureTestLexerData, &FeatureTestModuleParserData)
 	{
 	};
 
@@ -292,11 +292,11 @@ namespace featuretest
 
 	vl::Ptr<featuretest::Feature> ModuleParser::ParseModule(const vl::WString& input, vl::vint codeIndex) const
 	{
-		 return ParseWithString<ModuleParserStates::Module>(input, this, codeIndex);
+		 return ParseWithString<featuretest::Feature, ModuleParserStates::Module>(input, this, codeIndex);
 	};
 
 	vl::Ptr<featuretest::Feature> ModuleParser::ParseModule(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex) const
 	{
-		 return ParseWithTokens<ModuleParserStates::Module>(tokens, this, codeIndex);
+		 return ParseWithTokens<featuretest::Feature, ModuleParserStates::Module>(tokens, this, codeIndex);
 	};
 }

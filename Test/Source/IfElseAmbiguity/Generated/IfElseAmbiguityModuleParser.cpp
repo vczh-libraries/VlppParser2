@@ -70,7 +70,7 @@ namespace ifelseambiguity
 	}
 
 	ModuleParser::ModuleParser()
-		: vl::glr::ParserBase<IfElseAmbiguityTokens, ModuleParserStates, IfElseAmbiguityAstInsReceiver, ModuleParserStateTypes>(&IfElseAmbiguityTokenDeleter, &IfElseAmbiguityLexerData, &IfElseAmbiguityModuleParserData)
+		: vl::glr::ParserBase<IfElseAmbiguityTokens, ModuleParserStates, IfElseAmbiguityAstInsReceiver>(&IfElseAmbiguityTokenDeleter, &IfElseAmbiguityLexerData, &IfElseAmbiguityModuleParserData)
 	{
 	};
 
@@ -91,11 +91,11 @@ namespace ifelseambiguity
 
 	vl::Ptr<ifelseambiguity::Module> ModuleParser::ParseModule(const vl::WString& input, vl::vint codeIndex) const
 	{
-		 return ParseWithString<ModuleParserStates::Module>(input, this, codeIndex);
+		 return ParseWithString<ifelseambiguity::Module, ModuleParserStates::Module>(input, this, codeIndex);
 	};
 
 	vl::Ptr<ifelseambiguity::Module> ModuleParser::ParseModule(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex) const
 	{
-		 return ParseWithTokens<ModuleParserStates::Module>(tokens, this, codeIndex);
+		 return ParseWithTokens<ifelseambiguity::Module, ModuleParserStates::Module>(tokens, this, codeIndex);
 	};
 }

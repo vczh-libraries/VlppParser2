@@ -24,16 +24,12 @@ namespace binaryop
 		Module = 42,
 	};
 
-	template<ModuleParserStates> struct ModuleParserStateTypes;
-	template<> struct ModuleParserStateTypes<ModuleParserStates::Module> { using Type = binaryop::BinaryExpr; };
-
 	const wchar_t* ModuleParserRuleName(vl::vint index);
 	const wchar_t* ModuleParserStateLabel(vl::vint index);
 	extern void BinaryOpModuleParserData(vl::stream::IStream& outputStream);
 
 	class ModuleParser
-		: public vl::glr::ParserBase<BinaryOpTokens, ModuleParserStates, BinaryOpAstInsReceiver, ModuleParserStateTypes>
-		, protected vl::glr::automaton::TraceManager::ITypeCallback
+		: public vl::glr::ParserBase<BinaryOpTokens, ModuleParserStates, BinaryOpAstInsReceiver>		, protected vl::glr::automaton::TraceManager::ITypeCallback
 	{
 	protected:
 		vl::vint32_t FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2) const override;

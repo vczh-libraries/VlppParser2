@@ -28,16 +28,12 @@ namespace vl
 				File = 44,
 			};
 
-			template<TypeParserStates> struct TypeParserStateTypes;
-			template<> struct TypeParserStateTypes<TypeParserStates::File> { using Type = vl::glr::parsergen::GlrAstFile; };
-
 			const wchar_t* TypeParserRuleName(vl::vint index);
 			const wchar_t* TypeParserStateLabel(vl::vint index);
 			extern void ParserGenTypeParserData(vl::stream::IStream& outputStream);
 
 			class TypeParser
-				: public vl::glr::ParserBase<ParserGenTokens, TypeParserStates, ParserGenAstInsReceiver, TypeParserStateTypes>
-				, protected vl::glr::automaton::TraceManager::ITypeCallback
+				: public vl::glr::ParserBase<ParserGenTokens, TypeParserStates, ParserGenAstInsReceiver>				, protected vl::glr::automaton::TraceManager::ITypeCallback
 			{
 			protected:
 				vl::vint32_t FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2) const override;

@@ -96,7 +96,7 @@ namespace genericambiguity
 	}
 
 	ModuleParser::ModuleParser()
-		: vl::glr::ParserBase<GenericAmbiguityTokens, ModuleParserStates, GenericAmbiguityAstInsReceiver, ModuleParserStateTypes>(&GenericAmbiguityTokenDeleter, &GenericAmbiguityLexerData, &GenericAmbiguityModuleParserData)
+		: vl::glr::ParserBase<GenericAmbiguityTokens, ModuleParserStates, GenericAmbiguityAstInsReceiver>(&GenericAmbiguityTokenDeleter, &GenericAmbiguityLexerData, &GenericAmbiguityModuleParserData)
 	{
 	};
 
@@ -118,11 +118,11 @@ namespace genericambiguity
 
 	vl::Ptr<genericambiguity::Module> ModuleParser::ParseModule(const vl::WString& input, vl::vint codeIndex) const
 	{
-		 return ParseWithString<ModuleParserStates::Module>(input, this, codeIndex);
+		 return ParseWithString<genericambiguity::Module, ModuleParserStates::Module>(input, this, codeIndex);
 	};
 
 	vl::Ptr<genericambiguity::Module> ModuleParser::ParseModule(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex) const
 	{
-		 return ParseWithTokens<ModuleParserStates::Module>(tokens, this, codeIndex);
+		 return ParseWithTokens<genericambiguity::Module, ModuleParserStates::Module>(tokens, this, codeIndex);
 	};
 }

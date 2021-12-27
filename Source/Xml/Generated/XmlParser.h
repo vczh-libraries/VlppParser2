@@ -28,17 +28,12 @@ namespace vl
 				XDocument = 40,
 			};
 
-			template<ParserStates> struct ParserStateTypes;
-			template<> struct ParserStateTypes<ParserStates::XElement> { using Type = vl::glr::xml::XmlElement; };
-			template<> struct ParserStateTypes<ParserStates::XDocument> { using Type = vl::glr::xml::XmlDocument; };
-
 			const wchar_t* ParserRuleName(vl::vint index);
 			const wchar_t* ParserStateLabel(vl::vint index);
 			extern void XmlParserData(vl::stream::IStream& outputStream);
 
 			class Parser
-				: public vl::glr::ParserBase<XmlTokens, ParserStates, XmlAstInsReceiver, ParserStateTypes>
-				, protected vl::glr::automaton::TraceManager::ITypeCallback
+				: public vl::glr::ParserBase<XmlTokens, ParserStates, XmlAstInsReceiver>				, protected vl::glr::automaton::TraceManager::ITypeCallback
 			{
 			protected:
 				vl::vint32_t FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2) const override;

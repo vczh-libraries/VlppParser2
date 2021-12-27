@@ -26,17 +26,12 @@ namespace calculator
 		Module = 85,
 	};
 
-	template<ModuleParserStates> struct ModuleParserStateTypes;
-	template<> struct ModuleParserStateTypes<ModuleParserStates::Exp> { using Type = calculator::Expr; };
-	template<> struct ModuleParserStateTypes<ModuleParserStates::Module> { using Type = calculator::Module; };
-
 	const wchar_t* ModuleParserRuleName(vl::vint index);
 	const wchar_t* ModuleParserStateLabel(vl::vint index);
 	extern void CalculatorModuleParserData(vl::stream::IStream& outputStream);
 
 	class ModuleParser
-		: public vl::glr::ParserBase<CalculatorTokens, ModuleParserStates, CalculatorAstInsReceiver, ModuleParserStateTypes>
-		, protected vl::glr::automaton::TraceManager::ITypeCallback
+		: public vl::glr::ParserBase<CalculatorTokens, ModuleParserStates, CalculatorAstInsReceiver>		, protected vl::glr::automaton::TraceManager::ITypeCallback
 	{
 	protected:
 		vl::vint32_t FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2) const override;

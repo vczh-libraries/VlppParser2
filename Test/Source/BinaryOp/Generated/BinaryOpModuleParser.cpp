@@ -98,7 +98,7 @@ namespace binaryop
 	}
 
 	ModuleParser::ModuleParser()
-		: vl::glr::ParserBase<BinaryOpTokens, ModuleParserStates, BinaryOpAstInsReceiver, ModuleParserStateTypes>(&BinaryOpTokenDeleter, &BinaryOpLexerData, &BinaryOpModuleParserData)
+		: vl::glr::ParserBase<BinaryOpTokens, ModuleParserStates, BinaryOpAstInsReceiver>(&BinaryOpTokenDeleter, &BinaryOpLexerData, &BinaryOpModuleParserData)
 	{
 	};
 
@@ -109,11 +109,11 @@ namespace binaryop
 
 	vl::Ptr<binaryop::BinaryExpr> ModuleParser::ParseModule(const vl::WString& input, vl::vint codeIndex) const
 	{
-		 return ParseWithString<ModuleParserStates::Module>(input, this, codeIndex);
+		 return ParseWithString<binaryop::BinaryExpr, ModuleParserStates::Module>(input, this, codeIndex);
 	};
 
 	vl::Ptr<binaryop::BinaryExpr> ModuleParser::ParseModule(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex) const
 	{
-		 return ParseWithTokens<ModuleParserStates::Module>(tokens, this, codeIndex);
+		 return ParseWithTokens<binaryop::BinaryExpr, ModuleParserStates::Module>(tokens, this, codeIndex);
 	};
 }
