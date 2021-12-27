@@ -51,15 +51,15 @@ namespace vl
 		{
 #ifndef VCZH_DEBUG_NO_REFLECTION
 
-			IMPL_TYPE_INFO_RENAME(vl::glr::json::JsonNode, system::json::JsonNode)
-			IMPL_TYPE_INFO_RENAME(vl::glr::json::JsonNode::IVisitor, system::json::JsonNode::IVisitor)
-			IMPL_TYPE_INFO_RENAME(vl::glr::json::JsonLiteralValue, system::json::JsonLiteralValue)
-			IMPL_TYPE_INFO_RENAME(vl::glr::json::JsonLiteral, system::json::JsonLiteral)
-			IMPL_TYPE_INFO_RENAME(vl::glr::json::JsonString, system::json::JsonString)
-			IMPL_TYPE_INFO_RENAME(vl::glr::json::JsonNumber, system::json::JsonNumber)
-			IMPL_TYPE_INFO_RENAME(vl::glr::json::JsonArray, system::json::JsonArray)
-			IMPL_TYPE_INFO_RENAME(vl::glr::json::JsonObjectField, system::json::JsonObjectField)
-			IMPL_TYPE_INFO_RENAME(vl::glr::json::JsonObject, system::json::JsonObject)
+			IMPL_TYPE_INFO_RENAME(vl::glr::json::JsonNode, system::JsonNode)
+			IMPL_TYPE_INFO_RENAME(vl::glr::json::JsonNode::IVisitor, system::JsonNode::IVisitor)
+			IMPL_TYPE_INFO_RENAME(vl::glr::json::JsonLiteralValue, system::JsonLiteralValue)
+			IMPL_TYPE_INFO_RENAME(vl::glr::json::JsonLiteral, system::JsonLiteral)
+			IMPL_TYPE_INFO_RENAME(vl::glr::json::JsonString, system::JsonString)
+			IMPL_TYPE_INFO_RENAME(vl::glr::json::JsonNumber, system::JsonNumber)
+			IMPL_TYPE_INFO_RENAME(vl::glr::json::JsonArray, system::JsonArray)
+			IMPL_TYPE_INFO_RENAME(vl::glr::json::JsonObjectField, system::JsonObjectField)
+			IMPL_TYPE_INFO_RENAME(vl::glr::json::JsonObject, system::JsonObject)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 

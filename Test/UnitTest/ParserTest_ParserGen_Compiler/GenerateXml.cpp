@@ -70,7 +70,7 @@ TEST_FILE
 		TEST_ASSERT(global.Errors().Count() == 0);
 
 		Fill(astDefFile->cppNss, L"vl", L"glr", L"xml");
-		Fill(astDefFile->refNss, L"system", L"xml");
+		Fill(astDefFile->refNss, L"system");
 		astDefFile->classPrefix = L"Xml";
 		WriteAstFiles(astManager, output, files);
 	});

@@ -70,7 +70,7 @@ TEST_FILE
 		TEST_ASSERT(global.Errors().Count() == 0);
 
 		Fill(astDefFile->cppNss, L"vl", L"glr", L"json");
-		Fill(astDefFile->refNss, L"system", L"json");
+		Fill(astDefFile->refNss, L"system");
 		astDefFile->classPrefix = L"Json";
 		WriteAstFiles(astManager, output, files);
 	});

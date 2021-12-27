@@ -56,15 +56,15 @@ namespace vl
 		{
 #ifndef VCZH_DEBUG_NO_REFLECTION
 
-			IMPL_TYPE_INFO_RENAME(vl::glr::xml::XmlNode, system::xml::XmlNode)
-			IMPL_TYPE_INFO_RENAME(vl::glr::xml::XmlNode::IVisitor, system::xml::XmlNode::IVisitor)
-			IMPL_TYPE_INFO_RENAME(vl::glr::xml::XmlText, system::xml::XmlText)
-			IMPL_TYPE_INFO_RENAME(vl::glr::xml::XmlCData, system::xml::XmlCData)
-			IMPL_TYPE_INFO_RENAME(vl::glr::xml::XmlAttribute, system::xml::XmlAttribute)
-			IMPL_TYPE_INFO_RENAME(vl::glr::xml::XmlComment, system::xml::XmlComment)
-			IMPL_TYPE_INFO_RENAME(vl::glr::xml::XmlElement, system::xml::XmlElement)
-			IMPL_TYPE_INFO_RENAME(vl::glr::xml::XmlInstruction, system::xml::XmlInstruction)
-			IMPL_TYPE_INFO_RENAME(vl::glr::xml::XmlDocument, system::xml::XmlDocument)
+			IMPL_TYPE_INFO_RENAME(vl::glr::xml::XmlNode, system::XmlNode)
+			IMPL_TYPE_INFO_RENAME(vl::glr::xml::XmlNode::IVisitor, system::XmlNode::IVisitor)
+			IMPL_TYPE_INFO_RENAME(vl::glr::xml::XmlText, system::XmlText)
+			IMPL_TYPE_INFO_RENAME(vl::glr::xml::XmlCData, system::XmlCData)
+			IMPL_TYPE_INFO_RENAME(vl::glr::xml::XmlAttribute, system::XmlAttribute)
+			IMPL_TYPE_INFO_RENAME(vl::glr::xml::XmlComment, system::XmlComment)
+			IMPL_TYPE_INFO_RENAME(vl::glr::xml::XmlElement, system::XmlElement)
+			IMPL_TYPE_INFO_RENAME(vl::glr::xml::XmlInstruction, system::XmlInstruction)
+			IMPL_TYPE_INFO_RENAME(vl::glr::xml::XmlDocument, system::XmlDocument)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 
