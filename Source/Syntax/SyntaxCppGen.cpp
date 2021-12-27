@@ -225,12 +225,12 @@ WriteSyntaxCppFile
 						writer.WriteLine(L"");
 						writer.WriteLine(prefix + L"vl::Ptr<" + astType + L"> " + manager.name + L"::Parse" + ruleName + L"(const vl::WString& input, vl::vint codeIndex) const");
 						writer.WriteLine(prefix + L"{");
-						writer.WriteLine(prefix + L"\t return Parse<" + manager.name + L"States::" + ruleName + L">(input, this, codeIndex);");
+						writer.WriteLine(prefix + L"\t return ParseWithString<" + manager.name + L"States::" + ruleName + L">(input, this, codeIndex);");
 						writer.WriteLine(prefix + L"};");
 						writer.WriteLine(L"");
 						writer.WriteLine(prefix + L"vl::Ptr<" + astType + L"> " + manager.name + L"::Parse" + ruleName + L"(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex) const");
 						writer.WriteLine(prefix + L"{");
-						writer.WriteLine(prefix + L"\t return Parse<" + manager.name + L"States::" + ruleName + L">(tokens, this, codeIndex);");
+						writer.WriteLine(prefix + L"\t return ParseWithTokens<" + manager.name + L"States::" + ruleName + L">(tokens, this, codeIndex);");
 						writer.WriteLine(prefix + L"};");
 					}
 				}

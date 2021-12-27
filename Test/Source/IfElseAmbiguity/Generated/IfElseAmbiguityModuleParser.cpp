@@ -91,11 +91,11 @@ namespace ifelseambiguity
 
 	vl::Ptr<ifelseambiguity::Module> ModuleParser::ParseModule(const vl::WString& input, vl::vint codeIndex) const
 	{
-		 return Parse<ModuleParserStates::Module>(input, this, codeIndex);
+		 return ParseWithString<ModuleParserStates::Module>(input, this, codeIndex);
 	};
 
 	vl::Ptr<ifelseambiguity::Module> ModuleParser::ParseModule(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex) const
 	{
-		 return Parse<ModuleParserStates::Module>(tokens, this, codeIndex);
+		 return ParseWithTokens<ModuleParserStates::Module>(tokens, this, codeIndex);
 	};
 }

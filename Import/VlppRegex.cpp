@@ -924,6 +924,7 @@ RegexLexerBase_
 		template<typename T>
 		RegexTokens_<T> RegexLexerBase_::Parse(const ObjectString<T>& code, RegexProc_<T> proc, vint codeIndex)const
 		{
+			code.Buffer();
 			pure->PrepareForRelatedFinalStateTable();
 			return RegexTokens_<T>(pure, stateTokens, code, codeIndex, proc);
 		}

@@ -115,12 +115,12 @@ namespace vl
 
 			vl::Ptr<vl::glr::parsergen::GlrAstFile> TypeParser::ParseFile(const vl::WString& input, vl::vint codeIndex) const
 			{
-				 return Parse<TypeParserStates::File>(input, this, codeIndex);
+				 return ParseWithString<TypeParserStates::File>(input, this, codeIndex);
 			};
 
 			vl::Ptr<vl::glr::parsergen::GlrAstFile> TypeParser::ParseFile(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex) const
 			{
-				 return Parse<TypeParserStates::File>(tokens, this, codeIndex);
+				 return ParseWithTokens<TypeParserStates::File>(tokens, this, codeIndex);
 			};
 		}
 	}
