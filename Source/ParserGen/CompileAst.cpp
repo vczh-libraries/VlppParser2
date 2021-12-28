@@ -76,6 +76,7 @@ CompileAst
 						case GlrPropType::Array:
 							propSymbol->SetPropType(AstPropType::Array, prop->propTypeName.value, prop->propTypeName.codeRange);
 							break;
+						default:;
 						}
 					}
 				}

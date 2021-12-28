@@ -111,6 +111,7 @@ SyntaxSymbolManager::BuildAutomaton
 					case EdgeImportancy::LowPriority:
 						edgeDesc.priority = automaton::EdgePriority::LowPriority;
 						break;
+					default:;
 					}
 
 					edgeDesc.insBeforeInput.start = (vint32_t)instructionsInOrder.Count();
@@ -153,6 +154,7 @@ SyntaxSymbolManager::BuildAutomaton
 					case EdgeImportancy::LowPriority:
 						returnDesc.priority = automaton::EdgePriority::LowPriority;
 						break;
+					default:;
 					}
 
 					returnDesc.insAfterInput.start = (vint32_t)instructionsInOrder.Count();

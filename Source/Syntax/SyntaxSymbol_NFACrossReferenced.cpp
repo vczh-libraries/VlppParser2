@@ -57,6 +57,7 @@ SyntaxSymbolManager::FixCrossReferencedRuleEdge
 							accumulatedEdges.RemoveAt(accumulatedEdges.Count() - 1);
 						}
 						break;
+					default:;
 					}
 				}
 			}

@@ -143,6 +143,7 @@ CompactSyntaxBuilder
 						case EdgeInputType::Epsilon:
 							BuildEpsilonEliminatedEdgesInternal(edge->To(), newState, endState, visited, accumulatedEdges);
 							break;
+						default:;
 						}
 						accumulatedEdges.RemoveAt(accumulatedEdges.Count() - 1);
 					}

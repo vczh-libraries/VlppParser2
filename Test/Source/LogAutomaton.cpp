@@ -51,6 +51,7 @@ FilePath LogAutomatonWithPath(
 				case EdgePriority::LowPriority:
 					writer.WriteString(L" [LOW PRIORITY]");
 					break;
+				default:;
 				}
 				writer.WriteLine(L" -> " + metadata.stateLabels[edge.toState]);
 
@@ -78,6 +79,7 @@ FilePath LogAutomatonWithPath(
 					case EdgePriority::LowPriority:
 						writer.WriteString(L" [LOW PRIORITY]");
 						break;
+					default:;
 					}
 					writer.WriteLine(L": " + metadata.ruleNames[returnDesc.consumedRule] + L" -> " + metadata.stateLabels[returnDesc.returnState]);
 					for (vint insRef = 0; insRef < returnDesc.insAfterInput.count; insRef++)

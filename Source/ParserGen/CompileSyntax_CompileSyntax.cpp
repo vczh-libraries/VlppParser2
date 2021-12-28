@@ -257,6 +257,7 @@ CompileSyntaxVisitor
 					case GlrOptionalPriority::PreferSkip:
 						clauseDisplayText += L"-[ ";
 						break;
+					default:;
 					}
 					auto bodyPair = Build(node->syntax);
 					clauseDisplayText += L" ]";
