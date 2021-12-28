@@ -4,6 +4,7 @@
 #endif
 
 using namespace vl;
+using namespace vl::console;
 using namespace vl::collections;
 using namespace vl::stream;
 using namespace vl::filesystem;
@@ -80,6 +81,7 @@ FilePath GetOutputDir(const WString& parserName)
 
 void WriteFilesIfChanged(FilePath outputDir, Dictionary<WString, WString>& files)
 {
+#if defined VCZH_MSVC
 	for (auto [key, index] : indexed(files.Keys()))
 	{
 		File outputFile = outputDir / key;
@@ -94,6 +96,9 @@ void WriteFilesIfChanged(FilePath outputDir, Dictionary<WString, WString>& files
 		}
 		outputFile.WriteAllText(content, false, BomEncoder::Utf8);
 	}
+#elif defined VCZH_GCC
+	Console::WriteLine(L"**** Skipped updating C++ files in Linux ****");
+#endif
 }
 
 TEST_FILE
