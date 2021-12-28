@@ -8,6 +8,7 @@
 #include "../../../Source/Syntax/SyntaxCppGen.h"
 #include "../../Source/LogAutomaton.h"
 
+using namespace vl::console;
 using namespace vl::glr::parsergen;
 
 extern WString GetTestParserInputPath(const WString& parserName);
@@ -149,6 +150,7 @@ TEST_FILE
 
 				if (parserName == L"Calculator")
 				{
+#if defined VCZH_MSVC
 					TEST_CATEGORY(L"Ensure Calculator Generated Files Identical")
 					{
 						// Compare Source/Calculator/Generated with Source/Calculator/Parser
@@ -163,6 +165,9 @@ TEST_FILE
 							});
 						}
 					});
+#elif defined VCZH_GCC
+					Console::WriteLine(L"**** Skipped comparing C++ files in Linux ****");
+#endif
 				}
 			}
 		});

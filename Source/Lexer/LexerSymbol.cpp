@@ -86,7 +86,7 @@ LexerSymbolManager
 				FINISHED_CALCULATING_DISPLAY_TEXT:
 					if (expanding.Count() == 0)
 					{
-						token->displayText = u32tow(U32String::Unmanaged(&buffer[0]));
+						token->displayText = u32tow(&buffer[0]);
 						if (tokensByDisplayText.Keys().Contains(token->displayText))
 						{
 							AddError(
