@@ -34,8 +34,11 @@ TEST_FILE
 	parsersToLoad.Add(ParserDef{ L"FeatureTest", L"FeatureAst", L"Module" });
 	parsersToLoad.Add(ParserDef{ L"BinaryOp", L"ExprAst", L"Module" });
 
-	for (auto&& [parserName, astName, ruleName] : parsersToLoad)
+	for (auto&& [_parserName, _astName, _ruleName] : parsersToLoad)
 	{
+		auto parserName = _parserName;
+		auto astName = _astName;
+		auto ruleName = _ruleName;
 		TEST_CATEGORY(L"Test ParserGen on " + parserName)
 		{
 			FilePath dirParser = GetTestParserInputPath(parserName);
@@ -149,8 +152,10 @@ TEST_FILE
 					TEST_CATEGORY(L"Ensure Calculator Generated Files Identical")
 					{
 						// Compare Source/Calculator/Generated with Source/Calculator/Parser
-						for (auto&& [name, content] : files)
+						for (auto&& [_name, _content] : files)
 						{
+							auto name = _name;
+							auto content = _content;
 							TEST_CASE(name)
 							{
 								auto expected = File(FilePath(GetTestParserInputPath(parserName)) / L"Parser" / name).ReadAllTextByBom();
