@@ -63,6 +63,7 @@ JsonPrintVisitor
 					case JsonLiteralValue::Null:
 						writer.WriteString(L"null");
 						break;
+					default:;
 					}
 				}
 
