@@ -1,11 +1,14 @@
 #include <VlppOS.h>
+#ifdef VCZH_MSVC
 #include <Windows.h>
+#endif
 
 using namespace vl;
 using namespace vl::collections;
 using namespace vl::stream;
 using namespace vl::filesystem;
 
+#ifdef VCZH_MSVC
 WString GetExePath()
 {
 	wchar_t buffer[65536];
@@ -22,10 +25,13 @@ WString GetExePath()
 	}
 	return WString::CopyFrom(buffer, pos + 1);
 }
+#endif
 
 WString GetSourcePath()
 {
-#ifdef _WIN64
+#if defined VCZH_GCC
+	return L"../../../Source/";
+#elif defined _WIN64
 	return GetExePath() + L"../../../../Source/";
 #else
 	return GetExePath() + L"../../../Source/";
@@ -34,7 +40,9 @@ WString GetSourcePath()
 
 WString GetTestParserInputPath(const WString& parserName)
 {
-#ifdef _WIN64
+#if defined VCZH_GCC
+	return L"../../Source/" + parserName + L"/";
+#elif defined _WIN64
 	return GetExePath() + L"../../../Source/" + parserName + L"/";
 #else
 	return GetExePath() + L"../../Source/" + parserName + L"/";
@@ -43,7 +51,9 @@ WString GetTestParserInputPath(const WString& parserName)
 
 WString GetTestOutputPath()
 {
-#ifdef _WIN64
+#if defined VCZH_GCC
+	return L"../../Output/";
+#elif defined _WIN64
 	return GetExePath() + L"../../../Output/";
 #else
 	return GetExePath() + L"../../Output/";
@@ -91,7 +101,11 @@ TEST_FILE
 	TEST_CASE_ASSERT(Folder(GetTestOutputPath()).Exists());
 }
 
+#if defined VCZH_MSVC
 int wmain(int argc, wchar_t* argv[])
+#elif defined VCZH_GCC
+int main(int argc, char* argv[])
+#endif
 {
 	{
 		Folder folder(GetTestOutputPath());

@@ -99,6 +99,7 @@ RunInstruction
 					CHECK_ERROR(objectCount > 0, ERROR_MESSAGE_PREFIX L"Encountered unbalanced instructions.");
 					objectCount--;
 					break;
+				default:;
 				}
 
 				switch (ins.type)
@@ -109,6 +110,7 @@ RunInstruction
 				case AstInsType::DelayFieldAssignment:
 					reopenCount--;
 					break;
+				default:;
 				}
 
 				// if we found a ReopenObject
@@ -303,6 +305,7 @@ FindBalancedBoOrDfa
 									return;
 								}
 								break;
+							default:;
 							}
 						}
 					}
