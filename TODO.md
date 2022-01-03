@@ -1,5 +1,24 @@
 # TODO
 
+## Roadmap
+
+- Reimplement C++ parser in vczh-libraries/Document using this project.
+  - Move all test cases to `BuiltIn_CppDoc`.
+- Refactor vczh-libraries/Document to generate document using the new parser but skip the code index temporary.
+- Add options and push-pop syntax.
+  - `(OPTION1=VALUE1, ...; SYNTAX)` pushs `OPTION=VALUE` to options, run syntax, and pop.
+  - option can only be boolean.
+  - condition syntax can only be used directly in:
+    - clauses: `CONDITION? SYNTAX`
+    - alternative branches `(CONDITION? SYNTAX1 | CONDITION? SYNTAX2 | ...)`
+      - at most one condition could be just `CONDITION?`, saying this branch accepts nothing when the condition is `true`.
+      - it implements a "conditional optional" syntax, only when a condition is `true` it becomes optional.
+    - optional `[CONDITION? SYNTAX]`
+  - condition could be:
+    - `OPTION=VALUE`
+    - `A && B`
+    - `A || B`
+
 ## Experiments
 
 - Serializing
