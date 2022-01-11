@@ -1,0 +1,35 @@
+struct X
+{
+	int x;
+	int y;
+};
+struct Y
+{
+	double x;
+	double y;
+
+	X* operator->();
+};
+struct Z
+{
+	bool x;
+	bool y;
+
+	Y operator->();
+	X operator()(int);
+	Y operator()(void*);
+	X operator[](const char*);
+	Y operator[](Z&&);
+
+	static int F(double);
+	int G(void*);
+};
+
+X (*x)(int) = nullptr;
+Y (*const y)(int) = nullptr;
+
+X (*(*x2)(void*))(int) = nullptr;
+Y (*const (*const y2)(void*))(int) = nullptr;
+
+Z z;
+Z* pz = nullptr;

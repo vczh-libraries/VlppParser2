@@ -1,0 +1,234 @@
+true
+false
+nullptr
+
+0
+0u
+0U
+0l
+0L
+0ul
+0uL
+0Ul
+0UL
+0i8
+0ui8
+0i16
+0ui16
+0i32
+0ui32
+0i64
+0ui64
+
+1
+1u
+1U
+1l
+1L
+1ll
+1LL
+1ul
+1uL
+1Ul
+1UL
+1ull
+1uLL
+1Ull
+1ULL
+1i8
+1ui8
+1i16
+1ui16
+1i32
+1ui32
+1i64
+1ui64
+
+0x1
+0x1u
+0x1U
+0x1l
+0x1L
+0x1ll
+0x1LL
+0x1i64
+0x1ui64
+0X1ul
+0X1uL
+0X1Ul
+0X1UL
+0X1ull
+0X1uLL
+0X1Ull
+0X1ULL
+0X1i8
+0X1ui8
+0X1i16
+0X1ui16
+0X1i32
+0X1ui32
+0X1i64
+0X1ui64
+
+0b1
+0b1u
+0b1U
+0b1l
+0b1L
+0b1ll
+0b1LL
+0b1i64
+0b1ui64
+0B1ul
+0B1uL
+0B1Ul
+0B1UL
+0B1ull
+0B1uLL
+0B1Ull
+0B1ULL
+0B1i8
+0B1ui8
+0B1i16
+0B1ui16
+0B1i32
+0B1ui32
+0B1i64
+0B1ui64
+
+1.0
+1.0f
+1.0F
+1.0l
+1.0L
+
+1e2
+1e-2
+1.e2
+1.e-2
+.1E2
+.1E-2
+1.1E2
+1.1E-2
+
+0x1p2f
+0x1p-2f
+0x1.p2F
+0x1.p-2F
+0x.1P2l
+0x.1P-2l
+0x1.1P2L
+0x1.1P-2L
+
+1e2f;
+
+'x'
+L'x'
+u'x'
+U'x'
+u8'x'
+
+"x"
+L"x"
+u"x"
+U"x"
+u8"x"
+
+__LPREFIX(__FUNCTION__)
+L"x"  __LPREFIX(  __FUNCTION__  )  L"y"
+
+a
+&a
+::a
+&::a
+a::b
+&a::b
+::a::b
+&::a::b
+a.b
+&a.b
+a()
+
+1?2:3								
+1?2.0:3								
+1?2:3.0								
+
+1?"abc":nullptr					
+1?nullptr:"abc"					
+1?"abc":0							
+1?0:"abc"							
+
+1?(const char*)"abc":nullptr		
+1?nullptr:(const char*)"abc"		
+1?(const char*)"abc":0				
+1?0:(const char*)"abc"				
+
+1?A(0):0								
+1?0:A(0)								
+
+1?a:b								
+1?ca:b								
+1?a:cb								
+1?ca:cb								
+
+1?(A&)a:(A&)b						
+1?(const A&)ca:(A&)b					
+1?(A&)a:(const A&)cb					
+1?(const A&)ca:(const A&)cb			
+
+1?A():b								
+1?a:A()								
+
+1?a.F():b.F()						
+1?0:A(0),true						
+true,1?0:A(0)						
+
+(1?a.F():b.F())						
+(1?0:A(0),true)						
+(true,1?0:A(0))						
+
+typeid(int)
+typeid(0)
+sizeof(int)
+sizeof 0
+throw 0
+
+new type_info
+new type_info(0)
+new type_info{0}
+new(0)type_info
+new(0,1)type_info(0,1)
+new(0,1)type_info{0,1}
+
+new type_info[10]
+new (0)type_info[10]
+new (0,1)type_info[10,20]
+new (0,1)type_info[10][20][30]
+
+delete 0
+delete [] 0
+
+::new type_info
+::new type_info(0)
+::new type_info{0}
+::new(0)type_info
+::new(0,1)type_info(0,1)
+::new(0,1)type_info{0,1}
+
+::new type_info[10]
+::new (0)type_info[10]
+::new (0,1)type_info[10,20]
+::new (0,1)type_info[10][20][30]
+
+::delete 0
+::delete [] 0
+
+{}
+{1}
+{1, 2}
+{nullptr, (a), S()}
+
+[]{}
+[](){}
+[=, *this, a](int x, int y)->void { return; }
+[&, this, &a](int x, int y)mutable throw(char, bool) noexcept(noexcept(1))->double { int z=1; return z; }
