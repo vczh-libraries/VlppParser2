@@ -1,0 +1,16 @@
+struct S
+{
+	using X = int;
+
+	template<typename T>
+	using Y = T*;
+};
+
+template<typename T>
+using X = typename T::X;
+
+template<typename T>
+using Y = typename T::template Y<T>;
+
+template<template<typename> class T, typename U>
+using Z = T<U>;

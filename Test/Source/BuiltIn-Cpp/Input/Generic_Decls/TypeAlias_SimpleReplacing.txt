@@ -1,0 +1,30 @@
+template<typename T>
+using Null = decltype(nullptr);
+
+template<typename T>
+using Int = int;
+
+template<typename T>
+using LRef = T&;
+
+template<typename T>
+using RRef = T&&;
+
+template<typename T>
+using Ptr = T*;
+
+template<typename T>
+using Array = T[10];
+
+template<typename T, typename U>
+using Function = T(*)(U);
+
+template<typename T, typename U>
+using Member = T U::*;
+
+template<typename T>
+using CV = const volatile T;
+
+struct S;
+template<typename T>
+using ComplexType = Member<Function<RRef<Array<Null<char>>>, LRef<Ptr<CV<Int<bool>>>>>, T>;

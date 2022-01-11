@@ -1,0 +1,17 @@
+template<typename T = int*>											using One =				decltype({T{}});
+template<typename T = int*, typename U = char*>						using Two =				decltype({T{}, U{}});
+template<typename... TArgs>											using Vta =				decltype({TArgs{}...});
+template<typename T = int*, typename... TArgs>						using OneVta =			decltype({T{}, TArgs{}...});
+template<typename T = int*, typename U = char*, typename... TArgs>	using TwoVta =			decltype({T{}, U{}, TArgs{}...});
+
+template<typename... Ts>											using ApplyOne =		One<Ts...>;
+template<typename... Ts>											using ApplyTwo =		Two<Ts...>;
+template<typename... Ts>											using ApplyVta =		Vta<Ts...>;
+template<typename... Ts>											using ApplyOneVta =		OneVta<Ts...>;
+template<typename... Ts>											using ApplyTwoVta =		TwoVta<Ts...>;
+
+template<typename T, typename... Ts>								using ApplyOne_1 =		One<T, Ts...>;
+template<typename T, typename... Ts>								using ApplyTwo_1 =		Two<T, Ts...>;
+template<typename T, typename... Ts>								using ApplyVta_1 =		Vta<T, Ts...>;
+template<typename T, typename... Ts>								using ApplyOneVta_1 =	OneVta<T, Ts...>;
+template<typename T, typename... Ts>								using ApplyTwoVta_1 =	TwoVta<T, Ts...>;
