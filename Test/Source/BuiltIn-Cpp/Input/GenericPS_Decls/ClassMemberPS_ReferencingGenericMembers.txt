@@ -1,0 +1,19 @@
+template<typename X>
+struct Field;
+
+template<typename T>
+struct A
+{
+};
+
+template<>
+struct A<int>
+{
+	template<typename U> Field<U> C(char);
+	template<typename U> Field<U> E(char, ...)const;
+};
+
+A<int> a;
+A<int>* pa;
+const A<int> ca;
+volatile A<int>* pva;

@@ -1,0 +1,63 @@
+template<typename TA>
+struct GA
+{
+};
+
+template<>
+struct GA<int>
+{
+	struct CB
+	{
+		struct CC
+		{
+		};
+
+		template<typename TC>
+		struct GC
+		{
+		};
+
+		template<>
+		struct GC<float>
+		{
+		};
+
+		using _CC = CC;
+		using __CC = _CC;
+		template<typename TC> using _GC = GC<TC>;
+		template<typename TC> using __GC = _GC<TC>;
+	};
+
+	template<typename TB>
+	struct GB
+	{
+	};
+
+	template<>
+	struct GB<bool>
+	{
+		struct CC
+		{
+		};
+
+		template<typename TC>
+		struct GC
+		{
+		};
+
+		template<>
+		struct GC<float>
+		{
+		};
+
+		using _CC = CC;
+		using __CC = _CC;
+		template<typename TC> using _GC = GC<TC>;
+		template<typename TC> using __GC = _GC<TC>;
+	};
+
+	using _CB = CB;
+	using __CB = _CB;
+	template<typename TB> using _GB = GB<TB>;
+	template<typename TB> using __GB = _GB<TB>;
+};

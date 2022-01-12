@@ -1,0 +1,44 @@
+template<typename X>
+struct Field;
+
+template<typename T>
+struct S;
+
+template<typename T>
+struct S<T*>
+{
+	Field<T> f;
+	Field<T>& r;
+	const Field<T> c;
+	static Field<T> s;
+
+	template<typename U>	void			M1			(U p)					;
+	template<typename U>	void			C1			(U p)const				;
+	template<typename U>	void			V1			(U p)volatile			;
+	template<typename U>	void			CV1			(U p)const volatile		;
+	template<typename U>	static void		F1			(U p)					;
+
+	template<>				void			M1<char>	(char p)				{}
+	template<>				void			C1<char>	(char p)const			{}
+	template<>				void			V1<char>	(char p)volatile		{}
+	template<>				void			CV1<char>	(char p)const volatile	{}
+	template<>				static void		F1<char>	(char p)				{}
+
+	template<typename U>	void			M2			(U p)					;
+	template<typename U>	void			C2			(U p)const				;
+	template<typename U>	void			V2			(U p)volatile			;
+	template<typename U>	void			CV2			(U p)const volatile		;
+	template<typename U>	static void		F2			(U p)					;
+
+	template<>				void			M2<char>	(char p)				;
+	template<>				void			C2<char>	(char p)const			;
+	template<>				void			V2<char>	(char p)volatile		;
+	template<>				void			CV2<char>	(char p)const volatile	;
+	template<>				static void		F2<char>	(char p)				;
+};
+
+template<typename A>	template<>	void S<A*>::M2<char>(char p)					{}
+template<typename A>	template<>	void S<A*>::C2<char>(char p)const				{}
+template<typename A>	template<>	void S<A*>::V2<char>(char p)volatile			{}
+template<typename A>	template<>	void S<A*>::CV2<char>(char p)const volatile		{}
+template<typename A>	template<>	void S<A*>::F2<char>(char p)					{}

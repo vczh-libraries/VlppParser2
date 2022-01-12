@@ -1,0 +1,58 @@
+namespace ns
+{
+	template<typename T>
+	struct A
+	{
+		template<typename U>
+		struct B
+		{
+			void F();
+			template<typename V> void G();
+			template<> void G<char>();
+		};
+
+		template<>
+		struct B<void>
+		{
+			void F();
+			template<typename V> void G();
+			template<> void G<char>();
+		};
+	};
+
+	template<>
+	struct A<bool>
+	{
+		template<typename U>
+		struct B
+		{
+			void F();
+			template<typename V> void G();
+			template<> void G<char>();
+		};
+
+		template<>
+		struct B<void>
+		{
+			void F();
+			template<typename V> void G();
+			template<> void G<char>();
+		};
+	};
+}
+
+namespace ns
+{
+	template<typename X>	template<typename Y>							void A<X>::		B<Y>::		F()			{}
+	template<typename X>	template<typename Y>	template<typename Z>	void A<X>::		B<Y>::		G()			{}
+	template<typename X>	template<typename Y>							void A<X>::		B<Y>::		G<char>()	{}
+	template<typename X>													void A<X>::		B<void>::	F()			{}
+	template<typename X>							template<typename Z>	void A<X>::		B<void>::	G()			{}
+	template<typename X>													void A<X>::		B<void>::	G<char>()	{}
+							template<typename Y>							void A<bool>::	B<Y>::		F()			{}
+							template<typename Y>	template<typename Z>	void A<bool>::	B<Y>::		G()			{}
+							template<typename Y>							void A<bool>::	B<Y>::		G<char>()	{}
+																			void A<bool>::	B<void>::	F()			{}
+													template<typename Z>	void A<bool>::	B<void>::	G()			{}
+																			void A<bool>::	B<void>::	G<char>()	{}
+}

@@ -1,0 +1,55 @@
+template<typename Tx, typename Ty>
+struct X
+{
+	Tx x;
+	Ty y;
+};
+
+template<typename Tx, typename Ty>
+struct X<Tx&, Ty*>
+{
+	Tx* (&x)[1];
+	Ty* (&y)[1];
+};
+
+template<typename Tx, typename Ty>
+struct Y
+{
+	Tx x;
+	Ty y;
+
+	X<Tx*, Ty&>* operator->();
+};
+
+template<typename Tx, typename Ty>
+struct Y<const Tx, volatile Ty>
+{
+	Tx& x;
+	Ty& y;
+
+	X<Tx&, Ty*>* operator->();
+};
+
+template<typename Tx, typename Ty>
+struct Z
+{
+};
+
+template<typename Tx, typename Ty>
+struct Z<Tx*, Ty*>
+{
+	Tx** x;
+	Ty** y;
+
+	Y<Tx* const, Ty* volatile> operator->();
+	X<Tx* const, Ty* volatile> operator()(int);
+	Y<Tx* const, Ty* volatile> operator()(void*);
+	X<Tx* const, Ty* volatile> operator[](const char*);
+	Y<Tx* const, Ty* volatile> operator[](Z<Tx*, Ty*>&&);
+
+	static Tx F(double);
+	Ty G(void*);
+};
+
+Z<void*, char*> z;
+Z<void*, char*>* pz = nullptr;
