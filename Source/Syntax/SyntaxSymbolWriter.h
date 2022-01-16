@@ -325,7 +325,14 @@ Builder
 
 					StatePair Build(const Rule& clause)
 					{
-						return builder.BuildRuleSyntax(clause.rule, clause.field);
+						switch (clause.field)
+						{
+						case Rule::Partial:
+						case Rule::Discard:
+							return builder.BuildRuleSyntax(clause.rule, -1);
+						default:
+							return builder.BuildRuleSyntax(clause.rule, clause.field);
+						}
 					}
 
 					StatePair Build(const Use& clause)
