@@ -310,208 +310,77 @@ Builder
 
 				struct Clause
 				{
-					using StatePosMap = collections::Dictionary<StateSymbol*, vint>;
+					using StatePair = AutomatonBuilder::StatePair;
 				private:
-					struct StatePair
-					{
-						StateSymbol*			begin;
-						StateSymbol*			end;
-					};
-
-					RuleSymbol*					ruleSymbol;
-					WString						clauseDisplayText;
-					StatePosMap					startPoses;
-					StatePosMap					endPoses;
-
-					StateSymbol* CreateState()
-					{
-						return ruleSymbol->Owner()->CreateState(ruleSymbol, ruleSymbol->CurrentClauseId());
-					}
-
-					EdgeSymbol* CreateEdge(StateSymbol* from, StateSymbol* to)
-					{
-						return ruleSymbol->Owner()->CreateEdge(from, to);
-					}
+					AutomatonBuilder				builder;
 
 					StatePair Build(const Token& clause)
 					{
-						StatePair pair;
-						pair.begin = CreateState();
-						pair.end = CreateState();
-						startPoses.Add(pair.begin, clauseDisplayText.Length());
-
-						{
-							auto edge = CreateEdge(pair.begin, pair.end);
-							edge->input.type = EdgeInputType::Token;
-							edge->input.token = clause.id;
-							if (clause.field != -1)
-							{
-								edge->insAfterInput.Add({ AstInsType::Token });
-								edge->insAfterInput.Add({ AstInsType::Field,clause.field });
-							}
-						}
-
-						clauseDisplayText += clause.display;
-						endPoses.Add(pair.end, clauseDisplayText.Length());
-						return pair;
+						return builder.BuildTokenSyntax(clause.id, clause.display, clause.field);
 					}
 
 					StatePair Build(const Rule& clause)
 					{
-						StatePair pair;
-						pair.begin = CreateState();
-						pair.end = CreateState();
-						startPoses.Add(pair.begin, clauseDisplayText.Length());
-
-						{
-							auto edge = CreateEdge(pair.begin, pair.end);
-							edge->input.type = EdgeInputType::Rule;
-							edge->input.rule = clause.rule;
-							switch (clause.field)
-							{
-							case Rule::Partial:
-								break;
-							case Rule::Discard:
-								edge->insAfterInput.Add({ AstInsType::DiscardValue });
-								break;
-							default:
-								edge->insAfterInput.Add({ AstInsType::Field,clause.field });
-							}
-						}
-
-						clauseDisplayText += clause.rule->Name();
-						endPoses.Add(pair.end, clauseDisplayText.Length());
-						return pair;
+						return builder.BuildRuleSyntax(clause.rule, clause.field);
 					}
 
 					StatePair Build(const Use& clause)
 					{
-						StatePair pair;
-						pair.begin = CreateState();
-						pair.end = CreateState();
-						startPoses.Add(pair.begin, clauseDisplayText.Length());
-
-						{
-							auto edge = CreateEdge(pair.begin, pair.end);
-							edge->input.type = EdgeInputType::Rule;
-							edge->input.rule = clause.rule;
-							edge->insAfterInput.Add({ AstInsType::ReopenObject });
-						}
-
-						clauseDisplayText += L"!" + clause.rule->Name();
-						endPoses.Add(pair.end, clauseDisplayText.Length());
-						return pair;
+						return builder.BuildUseSyntax(clause.rule);
 					}
 
 					template<typename C>
 					StatePair Build(const Loop<C>& clause)
 					{
-						StatePair pair;
-						pair.begin = CreateState();
-						pair.end = CreateState();
-						startPoses.Add(pair.begin, clauseDisplayText.Length());
-
-						clauseDisplayText += L"{ ";
-						auto bodyPair = Build(clause.body);
-						clauseDisplayText += L" }";
-
-						CreateEdge(pair.begin, bodyPair.begin);
-						CreateEdge(bodyPair.end, pair.end);
-						CreateEdge(pair.begin, pair.end);
-						CreateEdge(bodyPair.end, bodyPair.begin);
-
-						endPoses.Add(pair.end, clauseDisplayText.Length());
-						return pair;
+						return builder.BuildLoopSyntax(
+							[this, &clause]() { return Build(clause.body); },
+							{},
+							false
+							);
 					}
 
 					template<typename C1, typename C2>
 					StatePair Build(const LoopSep<C1, C2>& clause)
 					{
-						StatePair pair;
-						pair.begin = CreateState();
-						pair.end = CreateState();
-						startPoses.Add(pair.begin, clauseDisplayText.Length());
-
-						clauseDisplayText += L"{ ";
-						auto bodyPair = Build(clause.body);
-						clauseDisplayText += L" ; ";
-						auto delimiterPair = Build(clause.delimiter);
-						clauseDisplayText += L" }";
-
-						CreateEdge(pair.begin, bodyPair.begin);
-						CreateEdge(bodyPair.end, pair.end);
-						CreateEdge(pair.begin, pair.end);
-						CreateEdge(bodyPair.end, delimiterPair.begin);
-						CreateEdge(delimiterPair.end, bodyPair.begin);
-
-						endPoses.Add(pair.end, clauseDisplayText.Length());
-						return pair;
+						return builder.BuildLoopSyntax(
+							[this, &clause]() { return Build(clause.body); },
+							[this, &clause]() { return Build(clause.delimiter); },
+							true
+							);
 					}
 
 					template<typename C>
 					StatePair Build(const Opt<C>& clause)
 					{
-						StatePair pair;
-						pair.begin = CreateState();
-						pair.end = CreateState();
-						startPoses.Add(pair.begin, clauseDisplayText.Length());
-
-						clauseDisplayText += L"[ ";
-						auto bodyPair = Build(clause.body);
-						clauseDisplayText += L" ]";
-
-						CreateEdge(pair.begin, bodyPair.begin);
-						CreateEdge(bodyPair.end, pair.end);
-						CreateEdge(pair.begin, pair.end);
-
-						endPoses.Add(pair.end, clauseDisplayText.Length());
-						return pair;
+						return builder.BuildOptionalSyntax(
+							false,
+							false,
+							[this, &clause]() { return Build(clause.body); }
+							);
 					}
 
 					template<typename C1, typename C2>
 					StatePair Build(const Seq<C1, C2>& clause)
 					{
-						auto firstPair = Build(clause.first);
-						clauseDisplayText += L" ";
-						auto secondPair = Build(clause.second);
-						CreateEdge(firstPair.end, secondPair.begin);
-						return { firstPair.begin,secondPair.end };
+						return builder.BuildSequenceSyntax(
+							[this, &clause]() { return Build(clause.first); },
+							[this, &clause]() { return Build(clause.second); }
+							);
 					}
 
 					template<typename C1, typename C2>
 					StatePair Build(const Alt<C1, C2>& clause)
 					{
-						StatePair pair;
-						pair.begin = CreateState();
-						pair.end = CreateState();
-						startPoses.Add(pair.begin, clauseDisplayText.Length());
-
-						clauseDisplayText += L"( ";
-						auto firstPair = Build(clause.first);
-						clauseDisplayText += L" | ";
-						auto secondPair = Build(clause.second);
-						clauseDisplayText += L" )";
-
-						CreateEdge(pair.begin, firstPair.begin);
-						CreateEdge(firstPair.end, pair.end);
-						CreateEdge(pair.begin, secondPair.begin);
-						CreateEdge(secondPair.end, pair.end);
-
-						endPoses.Add(pair.end, clauseDisplayText.Length());
-						return pair;
+						return builder.BuildAlternativeSyntax(
+							[this, &clause]() { return Build(clause.first); },
+							[this, &clause]() { return Build(clause.second); }
+							);
 					}
 
 					template<typename C>
 					StatePair Build(const With<C>& clause)
 					{
-						auto pair = Build(clause.body);
-						auto withState = CreateState();
-						auto edge = CreateEdge(pair.end, withState);
-						edge->insBeforeInput.Add({ AstInsType::EnumItem,clause.enumItem });
-						edge->insBeforeInput.Add({ AstInsType::Field,clause.field });
-
-						endPoses.Add(withState, clauseDisplayText.Length());
-						return { pair.begin,withState };
+						return builder.BuildAssignment(Build(clause.body), clause.enumItem, clause.field);
 					}
 
 					template<typename C>
@@ -590,7 +459,7 @@ Builder
 						}
 					}
 				public:
-					Clause(RuleSymbol* _ruleSymbol) : ruleSymbol(_ruleSymbol) {}
+					Clause(RuleSymbol* _ruleSymbol) : builder(_ruleSymbol) {}
 
 					template<typename C>
 					Clause& operator=(const Create<C>& clause)
