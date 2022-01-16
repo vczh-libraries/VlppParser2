@@ -15,18 +15,20 @@ AutomatonBuilder
 
 			class AutomatonBuilder
 			{
-			protected:
+			public:
 				struct StatePair
 				{
 					StateSymbol* begin;
 					StateSymbol* end;
 				};
 
+			protected:
 				using StatePosMap = Dictionary<StateSymbol*, vint>;
 				using StateBuilder = Func<StatePair()>;
 				using AssignmentBuilder = Func<StatePair(StatePair)>;
+
 			protected:
-				VisitorContext&				context;
+				Ptr<CppParserGenOutput>		output;
 				RuleSymbol*					ruleSymbol;
 
 				WString						clauseDisplayText;
@@ -44,10 +46,10 @@ AutomatonBuilder
 				}
 			public:
 				AutomatonBuilder(
-					VisitorContext& _context,
+					Ptr<CppParserGenOutput> _output,
 					RuleSymbol* _ruleSymbol
 				)
-					: context(_context)
+					: output(_output)
 					, ruleSymbol(_ruleSymbol)
 				{
 				}
@@ -279,7 +281,7 @@ AutomatonBuilder
 					clauseDisplayText += L" >";
 					{
 						auto edge = CreateEdge(pair.begin, bodyPair.begin);
-						edge->insBeforeInput.Add({ AstInsType::BeginObject,context.output->classIds[clauseType] });
+						edge->insBeforeInput.Add({ AstInsType::BeginObject,output->classIds[clauseType] });
 					}
 					{
 						auto edge = CreateEdge(bodyPair.end, pair.end);
@@ -323,13 +325,15 @@ CompileSyntaxVisitor
 
 			class CompileSyntaxVisitor
 				: public Object
-				, protected AutomatonBuilder
 				, protected virtual GlrSyntax::IVisitor
 				, protected virtual GlrClause::IVisitor
 			{
+				using StatePair = AutomatonBuilder::StatePair;
 			protected:
-				AstClassSymbol*				clauseType;
-				StatePair					result;
+				AutomatonBuilder	automatonBuilder;
+				VisitorContext&		context;
+				AstClassSymbol*		clauseType;
+				StatePair			result;
 
 				StatePair Build(const Ptr<GlrSyntax>& node)
 				{
@@ -341,7 +345,8 @@ CompileSyntaxVisitor
 					VisitorContext& _context,
 					RuleSymbol* _ruleSymbol
 				)
-					: AutomatonBuilder(_context, _ruleSymbol)
+					: automatonBuilder(_context.output, _ruleSymbol)
+					, context(_context)
 				{
 				}
 
@@ -365,7 +370,7 @@ CompileSyntaxVisitor
 						{
 							auto token = context.lexerManager.Tokens()[node->name.value];
 							auto displayText = token->displayText == L"" ? token->Name() : L"\"" + token->displayText + L"\"";
-							result = BuildTokenSyntax((vint32_t)index, displayText, field);
+							result = automatonBuilder.BuildTokenSyntax((vint32_t)index, displayText, field);
 							return;
 						}
 					}
@@ -374,7 +379,7 @@ CompileSyntaxVisitor
 						if (index != -1)
 						{
 							auto rule = context.syntaxManager.Rules().Values()[index];
-							result = BuildRuleSyntax(rule, field);
+							result = automatonBuilder.BuildRuleSyntax(rule, field);
 							return;
 						}
 					}
@@ -386,18 +391,18 @@ CompileSyntaxVisitor
 					vint index = context.literalTokens[node];
 					auto token = context.lexerManager.Tokens()[context.lexerManager.TokenOrder()[index]];
 					auto displayText = token->displayText == L"" ? token->Name() : L"\"" + token->displayText + L"\"";
-					result = BuildTokenSyntax((vint32_t)index, displayText, -1);
+					result = automatonBuilder.BuildTokenSyntax((vint32_t)index, displayText, -1);
 				}
 
 				void Visit(GlrUseSyntax* node) override
 				{
 					auto rule = context.syntaxManager.Rules()[node->name.value];
-					result = BuildUseSyntax(rule);
+					result = automatonBuilder.BuildUseSyntax(rule);
 				}
 
 				void Visit(GlrLoopSyntax* node) override
 				{
-					result = BuildLoopSyntax(
+					result = automatonBuilder.BuildLoopSyntax(
 						[this, node]() { return Build(node->syntax); },
 						[this, node]() { return Build(node->delimiter); },
 						node->delimiter
@@ -406,7 +411,7 @@ CompileSyntaxVisitor
 
 				void Visit(GlrOptionalSyntax* node) override
 				{
-					result = BuildOptionalSyntax(
+					result = automatonBuilder.BuildOptionalSyntax(
 						node->priority,
 						[this, node]() { return Build(node->syntax); }
 						);
@@ -414,7 +419,7 @@ CompileSyntaxVisitor
 
 				void Visit(GlrSequenceSyntax* node) override
 				{
-					result = BuildSequenceSyntax(
+					result = automatonBuilder.BuildSequenceSyntax(
 						[this, node]() { return Build(node->first); },
 						[this, node]() { return Build(node->second); }
 						);
@@ -422,7 +427,7 @@ CompileSyntaxVisitor
 
 				void Visit(GlrAlternativeSyntax* node) override
 				{
-					result = BuildAlternativeSyntax(
+					result = automatonBuilder.BuildAlternativeSyntax(
 						[this, node]() { return Build(node->first); },
 						[this, node]() { return Build(node->second); }
 						);
@@ -436,7 +441,7 @@ CompileSyntaxVisitor
 						auto enumSymbol = dynamic_cast<AstEnumSymbol*>(propSymbol->propSymbol);
 						auto enumItem = (vint32_t)enumSymbol->ItemOrder().IndexOf(node->value.value);
 						auto field = context.output->fieldIds[propSymbol];
-						pair = BuildAssignment(pair, enumItem, field);
+						pair = automatonBuilder.BuildAssignment(pair, enumItem, field);
 					}
 					return pair;
 				}
@@ -444,9 +449,9 @@ CompileSyntaxVisitor
 				void Visit(GlrCreateClause* node) override
 				{
 					clauseType = context.clauseTypes[node];
-					result = BuildClause([this, node]()
+					result = automatonBuilder.BuildClause([this, node]()
 					{
-						return BuildCreateClause(
+						return automatonBuilder.BuildCreateClause(
 							clauseType,
 							[this, node]() { return Build(node->syntax); },
 							[this, node](StatePair pair) { return CompileAssignments(pair, node->assignments); }
@@ -457,9 +462,9 @@ CompileSyntaxVisitor
 				void Visit(GlrPartialClause* node) override
 				{
 					clauseType = context.clauseTypes[node];
-					result = BuildClause([this, node]()
+					result = automatonBuilder.BuildClause([this, node]()
 					{
-						return BuildPartialClause(
+						return automatonBuilder.BuildPartialClause(
 							[this, node]() { return Build(node->syntax); },
 							[this, node](StatePair pair) { return CompileAssignments(pair, node->assignments); }
 							);
@@ -469,9 +474,9 @@ CompileSyntaxVisitor
 				void Visit(GlrReuseClause* node) override
 				{
 					clauseType = context.clauseTypes[node];
-					result = BuildClause([this, node]()
+					result = automatonBuilder.BuildClause([this, node]()
 					{
-						return BuildReuseClause(
+						return automatonBuilder.BuildReuseClause(
 							[this, node]() { return Build(node->syntax); },
 							[this, node](StatePair pair) { return CompileAssignments(pair, node->assignments); }
 							);
