@@ -75,7 +75,7 @@ ValidateTypesVisitor
 			protected:
 				void Visit(GlrRefSyntax* node) override
 				{
-					vint ruleIndex = context.syntaxManager.Rules().Keys().IndexOf(node->name.value);
+					vint ruleIndex = node->refType==GlrRefType::Id ? context.syntaxManager.Rules().Keys().IndexOf(node->literal.value) : -1;
 					auto clauseType = context.clauseTypes[clause];
 					auto fieldRule = ruleIndex == -1 ? nullptr : context.syntaxManager.Rules().Values()[ruleIndex];
 
@@ -146,10 +146,6 @@ ValidateTypesVisitor
 							}
 						}
 					}
-				}
-
-				void Visit(GlrLiteralSyntax* node) override
-				{
 				}
 
 				void Visit(GlrUseSyntax* node) override

@@ -22,7 +22,7 @@ namespace vl
 			namespace compile_syntax
 			{
 				using GlrRuleMap = collections::Dictionary<RuleSymbol*, GlrRule*>;
-				using LiteralTokenMap = collections::Dictionary<GlrLiteralSyntax*, vint32_t>;
+				using LiteralTokenMap = collections::Dictionary<GlrRefSyntax*, vint32_t>;
 				using RuleReuseDependencies = collections::Group<RuleSymbol*, RuleSymbol*>;
 				using RuleKnownTypes = collections::Group<RuleSymbol*, AstClassSymbol*>;
 				using ClauseReuseDependencies = collections::Group<GlrClause*, RuleSymbol*>;

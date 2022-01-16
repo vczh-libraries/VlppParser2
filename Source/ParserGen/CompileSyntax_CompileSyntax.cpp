@@ -55,34 +55,41 @@ CompileSyntaxVisitor
 						auto propSymbol = FindPropSymbol(clauseType, node->field.value);
 						field = context.output->fieldIds[propSymbol];
 					}
+
+					switch (node->refType)
 					{
-						vint index = context.lexerManager.TokenOrder().IndexOf(node->name.value);
-						if (index != -1)
+					case GlrRefType::Id:
 						{
-							auto token = context.lexerManager.Tokens()[node->name.value];
+							vint index = context.lexerManager.TokenOrder().IndexOf(node->literal.value);
+							if (index != -1)
+							{
+								auto token = context.lexerManager.Tokens()[node->literal.value];
+								auto displayText = token->displayText == L"" ? token->Name() : L"\"" + token->displayText + L"\"";
+								result = automatonBuilder.BuildTokenSyntax((vint32_t)index, displayText, field);
+								return;
+							}
+						}
+						{
+							vint index = context.syntaxManager.Rules().Keys().IndexOf(node->literal.value);
+							if (index != -1)
+							{
+								auto rule = context.syntaxManager.Rules().Values()[index];
+								result = automatonBuilder.BuildRuleSyntax(rule, field);
+								return;
+							}
+						}
+						CHECK_FAIL(L"Should not reach here!");
+						break;
+					case GlrRefType::Literal:
+						{
+							vint index = context.literalTokens[node];
+							auto token = context.lexerManager.Tokens()[context.lexerManager.TokenOrder()[index]];
 							auto displayText = token->displayText == L"" ? token->Name() : L"\"" + token->displayText + L"\"";
 							result = automatonBuilder.BuildTokenSyntax((vint32_t)index, displayText, field);
-							return;
-						}
 					}
-					{
-						vint index = context.syntaxManager.Rules().Keys().IndexOf(node->name.value);
-						if (index != -1)
-						{
-							auto rule = context.syntaxManager.Rules().Values()[index];
-							result = automatonBuilder.BuildRuleSyntax(rule, field);
-							return;
-						}
+						break;
+					default:;
 					}
-					CHECK_FAIL(L"Should not reach here!");
-				}
-
-				void Visit(GlrLiteralSyntax* node) override
-				{
-					vint index = context.literalTokens[node];
-					auto token = context.lexerManager.Tokens()[context.lexerManager.TokenOrder()[index]];
-					auto displayText = token->displayText == L"" ? token->Name() : L"\"" + token->displayText + L"\"";
-					result = automatonBuilder.BuildTokenSyntax((vint32_t)index, displayText, -1);
 				}
 
 				void Visit(GlrUseSyntax* node) override

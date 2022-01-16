@@ -77,29 +77,25 @@ ValidateStructureCountingVisitor
 							}
 						}
 
-						vint ruleIndex = context.syntaxManager.Rules().Keys().IndexOf(node->name.value);
-						if (ruleIndex != -1)
+						if (node->refType == GlrRefType::Id)
 						{
-							auto fieldRule = context.syntaxManager.Rules().Values()[ruleIndex];
-							if (fieldRule->isPartial && fieldRule->assignedNonArrayField)
+							vint ruleIndex = context.syntaxManager.Rules().Keys().IndexOf(node->literal.value);
+							if (ruleIndex != -1)
 							{
-								context.syntaxManager.AddError(
-									ParserErrorType::NonLoopablePartialRuleUsedInLoop,
-									node->codeRange,
-									ruleSymbol->Name(),
-									clauseType->Name(),
-									fieldRule->Name()
+								auto fieldRule = context.syntaxManager.Rules().Values()[ruleIndex];
+								if (fieldRule->isPartial && fieldRule->assignedNonArrayField)
+								{
+									context.syntaxManager.AddError(
+										ParserErrorType::NonLoopablePartialRuleUsedInLoop,
+										node->codeRange,
+										ruleSymbol->Name(),
+										clauseType->Name(),
+										fieldRule->Name()
 									);
+								}
 							}
 						}
 					}
-				}
-
-				void Visit(GlrLiteralSyntax* node) override
-				{
-					syntaxMinLength = 1;
-					syntaxMinUseRuleCount = 0;
-					syntaxMaxUseRuleCount = 0;
 				}
 
 				void Visit(GlrUseSyntax* node) override
@@ -450,19 +446,18 @@ ValidateStructureRelationshipVisitor
 						existingFields = existingFields.Append(new Link(node));
 					}
 
-					vint ruleIndex = context.syntaxManager.Rules().Keys().IndexOf(node->name.value);
-					if (ruleIndex != -1)
+					if (node->refType == GlrRefType::Id)
 					{
-						auto fieldRule = context.syntaxManager.Rules().Values()[ruleIndex];
-						if (fieldRule->isPartial)
+						vint ruleIndex = context.syntaxManager.Rules().Keys().IndexOf(node->literal.value);
+						if (ruleIndex != -1)
 						{
-							existingPartials= existingPartials.Append(new Link(node));
+							auto fieldRule = context.syntaxManager.Rules().Values()[ruleIndex];
+							if (fieldRule->isPartial)
+							{
+								existingPartials = existingPartials.Append(new Link(node));
+							}
 						}
 					}
-				}
-
-				void Visit(GlrLiteralSyntax* node) override
-				{
 				}
 
 				void Visit(GlrUseSyntax* node) override

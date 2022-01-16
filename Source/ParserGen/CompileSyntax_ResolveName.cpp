@@ -67,54 +67,62 @@ ResolveNameVisitor
 			protected:
 				void Visit(GlrRefSyntax* node) override
 				{
-					vint tokenIndex = context.lexerManager.TokenOrder().IndexOf(node->name.value);
-					vint ruleIndex = context.syntaxManager.Rules().Keys().IndexOf(node->name.value);
-					if (tokenIndex == -1 && ruleIndex == -1)
+					switch (node->refType)
 					{
-						context.syntaxManager.AddError(
-							ParserErrorType::TokenOrRuleNotExistsInRule,
-							node->codeRange,
-							ruleSymbol->Name(),
-							node->name.value
-							);
-					}
-				}
-
-				void Visit(GlrLiteralSyntax* node) override
-				{
-					if (node->value.value.Length() > 2)
-					{
-						Array<wchar_t> buffer(node->value.value.Length());
-						wchar_t* writing = &buffer[0];
-
-						for (vint i = 1; i < node->value.value.Length() - 1; i++)
+					case GlrRefType::Id:
 						{
-							wchar_t c = node->value.value[i];
-							*writing++ = c;
-							if (c == L'\"')
+							vint tokenIndex = context.lexerManager.TokenOrder().IndexOf(node->literal.value);
+							vint ruleIndex = context.syntaxManager.Rules().Keys().IndexOf(node->literal.value);
+							if (tokenIndex == -1 && ruleIndex == -1)
 							{
-								i++;
+								context.syntaxManager.AddError(
+									ParserErrorType::TokenOrRuleNotExistsInRule,
+									node->codeRange,
+									ruleSymbol->Name(),
+									node->literal.value
+									);
 							}
 						}
-						*writing = 0;
-
-						auto literalValue = WString::Unmanaged(&buffer[0]);
-						for (auto&& [tokenName, tokenIndex] : indexed(context.lexerManager.TokenOrder()))
+						break;
+					case GlrRefType::Literal:
 						{
-							auto tokenSymbol = context.lexerManager.Tokens()[tokenName];
-							if (tokenSymbol->displayText==literalValue)
+							if (node->literal.value.Length() > 2)
 							{
-								context.literalTokens.Add(node, (vint32_t)tokenIndex);
-								return;
+								Array<wchar_t> buffer(node->literal.value.Length());
+								wchar_t* writing = &buffer[0];
+
+								for (vint i = 1; i < node->literal.value.Length() - 1; i++)
+								{
+									wchar_t c = node->literal.value[i];
+									*writing++ = c;
+									if (c == L'\"')
+									{
+										i++;
+									}
+								}
+								*writing = 0;
+
+								auto literalValue = WString::Unmanaged(&buffer[0]);
+								for (auto&& [tokenName, tokenIndex] : indexed(context.lexerManager.TokenOrder()))
+								{
+									auto tokenSymbol = context.lexerManager.Tokens()[tokenName];
+									if (tokenSymbol->displayText==literalValue)
+									{
+										context.literalTokens.Add(node, (vint32_t)tokenIndex);
+										return;
+									}
+								}
 							}
+							context.syntaxManager.AddError(
+								ParserErrorType::TokenOrRuleNotExistsInRule,
+								node->codeRange,
+								ruleSymbol->Name(),
+								node->literal.value
+								);
 						}
+						break;
+					default:;
 					}
-					context.syntaxManager.AddError(
-						ParserErrorType::TokenOrRuleNotExistsInRule,
-						node->codeRange,
-						ruleSymbol->Name(),
-						node->value.value
-						);
 				}
 
 				void Visit(GlrUseSyntax* node) override
