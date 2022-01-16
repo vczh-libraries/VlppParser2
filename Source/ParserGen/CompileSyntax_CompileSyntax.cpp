@@ -56,6 +56,43 @@ AutomatonBuilder
 				// Syntax
 				////////////////////////////////////////////////////////
 
+				StatePair BuildTokenSyntax(vint32_t tokenId, const WString& displayText)
+				{
+					StatePair pair;
+					pair.begin = CreateState();
+					pair.end = CreateState();
+					startPoses.Add(pair.begin, clauseDisplayText.Length());
+
+					{
+						auto edge = CreateEdge(pair.begin, pair.end);
+						edge->input.type = EdgeInputType::Token;
+						edge->input.token = tokenId;
+					}
+
+					clauseDisplayText += displayText;
+					endPoses.Add(pair.end, clauseDisplayText.Length());
+					return pair;
+				}
+
+				StatePair BuildUseSyntax(RuleSymbol* rule)
+				{
+					StatePair pair;
+					pair.begin = CreateState();
+					pair.end = CreateState();
+					startPoses.Add(pair.begin, clauseDisplayText.Length());
+
+					{
+						auto edge = CreateEdge(pair.begin, pair.end);
+						edge->input.type = EdgeInputType::Rule;
+						edge->input.rule = rule;
+						edge->insAfterInput.Add({ AstInsType::ReopenObject });
+					}
+
+					clauseDisplayText += L"!" + rule->Name();
+					endPoses.Add(pair.end, clauseDisplayText.Length());
+					return pair;
+				}
+
 				StatePair BuildLoopSyntax(const StateBuilder& loopBody, const StateBuilder& loopDelimiter, bool hasDelimiter)
 				{
 					StatePair pair, bodyPair, delimiterPair;
@@ -351,51 +388,14 @@ CompileSyntaxVisitor
 				{
 					vint index = context.literalTokens[node];
 					auto token = context.lexerManager.Tokens()[context.lexerManager.TokenOrder()[index]];
-					StatePair pair;
-					pair.begin = CreateState();
-					pair.end = CreateState();
-					startPoses.Add(pair.begin, clauseDisplayText.Length());
-
-					{
-						auto edge = CreateEdge(pair.begin, pair.end);
-						edge->input.type = EdgeInputType::Token;
-						edge->input.token = context.literalTokens[node];
-					}
-
-					clauseDisplayText += token->displayText == L"" ? token->Name() : L"\"" + token->displayText + L"\"";
-					endPoses.Add(pair.end, clauseDisplayText.Length());
-					result = pair;
+					auto displayText = token->displayText == L"" ? token->Name() : L"\"" + token->displayText + L"\"";
+					result = BuildTokenSyntax((vint32_t)index, displayText);
 				}
 
 				void Visit(GlrUseSyntax* node) override
 				{
-					vint index = context.syntaxManager.Rules().Keys().IndexOf(node->name.value);
-					if (index == -1)
-					{
-						context.syntaxManager.AddError(
-							ParserErrorType::TokenOrRuleNotExistsInRule,
-							node->codeRange,
-							node->name.value
-							);
-						return;
-					}
-
-					auto rule = context.syntaxManager.Rules().Values()[index];
-					StatePair pair;
-					pair.begin = CreateState();
-					pair.end = CreateState();
-					startPoses.Add(pair.begin, clauseDisplayText.Length());
-
-					{
-						auto edge = CreateEdge(pair.begin, pair.end);
-						edge->input.type = EdgeInputType::Rule;
-						edge->input.rule = rule;
-						edge->insAfterInput.Add({ AstInsType::ReopenObject });
-					}
-
-					clauseDisplayText += L"!" + rule->Name();
-					endPoses.Add(pair.end, clauseDisplayText.Length());
-					result = pair;
+					auto rule = context.syntaxManager.Rules()[node->name.value];
+					result = BuildUseSyntax(rule);
 				}
 
 				void Visit(GlrLoopSyntax* node) override
