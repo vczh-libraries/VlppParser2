@@ -1,4 +1,5 @@
 #include "Compiler.h"
+#include "../Syntax/SyntaxSymbolWriter.h"
 
 namespace vl
 {
@@ -8,316 +9,6 @@ namespace vl
 		{
 			using namespace collections;
 			using namespace compile_syntax;
-
-/***********************************************************************
-AutomatonBuilder
-***********************************************************************/
-
-			class AutomatonBuilder
-			{
-			public:
-				struct StatePair
-				{
-					StateSymbol* begin;
-					StateSymbol* end;
-				};
-
-			protected:
-				using StatePosMap = Dictionary<StateSymbol*, vint>;
-				using StateBuilder = Func<StatePair()>;
-				using AssignmentBuilder = Func<StatePair(StatePair)>;
-
-			protected:
-				Ptr<CppParserGenOutput>		output;
-				RuleSymbol*					ruleSymbol;
-
-				WString						clauseDisplayText;
-				StatePosMap					startPoses;
-				StatePosMap					endPoses;
-
-				StateSymbol* CreateState()
-				{
-					return ruleSymbol->Owner()->CreateState(ruleSymbol, ruleSymbol->CurrentClauseId());
-				}
-
-				EdgeSymbol* CreateEdge(StateSymbol* from, StateSymbol* to)
-				{
-					return ruleSymbol->Owner()->CreateEdge(from, to);
-				}
-			public:
-				AutomatonBuilder(
-					Ptr<CppParserGenOutput> _output,
-					RuleSymbol* _ruleSymbol
-				)
-					: output(_output)
-					, ruleSymbol(_ruleSymbol)
-				{
-				}
-
-				////////////////////////////////////////////////////////
-				// Syntax
-				////////////////////////////////////////////////////////
-
-				StatePair BuildTokenSyntax(vint32_t tokenId, const WString& displayText, vint32_t field)
-				{
-					StatePair pair;
-					pair.begin = CreateState();
-					pair.end = CreateState();
-					startPoses.Add(pair.begin, clauseDisplayText.Length());
-
-					{
-						auto edge = CreateEdge(pair.begin, pair.end);
-						edge->input.type = EdgeInputType::Token;
-						edge->input.token = tokenId;
-						if (field != -1)
-						{
-							edge->insAfterInput.Add({ AstInsType::Token });
-							edge->insAfterInput.Add({ AstInsType::Field,field });
-						}
-					}
-
-					clauseDisplayText += displayText;
-					endPoses.Add(pair.end, clauseDisplayText.Length());
-					return pair;
-				}
-
-				StatePair BuildRuleSyntax(RuleSymbol* rule, vint32_t field)
-				{
-					StatePair pair;
-					pair.begin = CreateState();
-					pair.end = CreateState();
-					startPoses.Add(pair.begin, clauseDisplayText.Length());
-
-					{
-						auto edge = CreateEdge(pair.begin, pair.end);
-						edge->input.type = EdgeInputType::Rule;
-						edge->input.rule = rule;
-						if (field != -1)
-						{
-							edge->insAfterInput.Add({ AstInsType::Field,field });
-						}
-						else if (!rule->isPartial)
-						{
-							edge->insAfterInput.Add({ AstInsType::DiscardValue });
-						}
-					}
-
-					clauseDisplayText += rule->Name();
-					endPoses.Add(pair.end, clauseDisplayText.Length());
-					return pair;
-				}
-
-				StatePair BuildUseSyntax(RuleSymbol* rule)
-				{
-					StatePair pair;
-					pair.begin = CreateState();
-					pair.end = CreateState();
-					startPoses.Add(pair.begin, clauseDisplayText.Length());
-
-					{
-						auto edge = CreateEdge(pair.begin, pair.end);
-						edge->input.type = EdgeInputType::Rule;
-						edge->input.rule = rule;
-						edge->insAfterInput.Add({ AstInsType::ReopenObject });
-					}
-
-					clauseDisplayText += L"!" + rule->Name();
-					endPoses.Add(pair.end, clauseDisplayText.Length());
-					return pair;
-				}
-
-				StatePair BuildLoopSyntax(const StateBuilder& loopBody, const StateBuilder& loopDelimiter, bool hasDelimiter)
-				{
-					StatePair pair, bodyPair, delimiterPair;
-					pair.begin = CreateState();
-					pair.end = CreateState();
-					startPoses.Add(pair.begin, clauseDisplayText.Length());
-
-					clauseDisplayText += L"{ ";
-					bodyPair = loopBody();
-					if (hasDelimiter)
-					{
-						clauseDisplayText += L" ; ";
-						delimiterPair = loopDelimiter();
-					}
-					clauseDisplayText += L" }";
-
-					CreateEdge(pair.begin, bodyPair.begin);
-					CreateEdge(bodyPair.end, pair.end);
-					CreateEdge(pair.begin, pair.end);
-					if (hasDelimiter)
-					{
-						CreateEdge(bodyPair.end, delimiterPair.begin);
-						CreateEdge(delimiterPair.end, bodyPair.begin);
-					}
-					else
-					{
-						CreateEdge(bodyPair.end, bodyPair.begin);
-					}
-
-					endPoses.Add(pair.end, clauseDisplayText.Length());
-					return pair;
-				}
-
-				StatePair BuildOptionalSyntax(GlrOptionalPriority priority, const StateBuilder& optionalBody)
-				{
-					StatePair pair;
-					pair.begin = CreateState();
-					pair.end = CreateState();
-					startPoses.Add(pair.begin, clauseDisplayText.Length());
-
-					switch (priority)
-					{
-					case GlrOptionalPriority::Equal:
-						clauseDisplayText += L"[ ";
-						break;
-					case GlrOptionalPriority::PreferTake:
-						clauseDisplayText += L"+[ ";
-						break;
-					case GlrOptionalPriority::PreferSkip:
-						clauseDisplayText += L"-[ ";
-						break;
-					default:;
-					}
-					auto bodyPair = optionalBody();
-					clauseDisplayText += L" ]";
-
-					auto takeEdge = CreateEdge(pair.begin, bodyPair.begin);
-					CreateEdge(bodyPair.end, pair.end);
-					auto skipEdge = CreateEdge(pair.begin, pair.end);
-
-					if (priority == GlrOptionalPriority::PreferTake)
-					{
-						takeEdge->important = true;
-					}
-					if (priority == GlrOptionalPriority::PreferSkip)
-					{
-						skipEdge->important = true;
-					}
-
-					endPoses.Add(pair.end, clauseDisplayText.Length());
-					return pair;
-				}
-
-				StatePair BuildSequenceSyntax(const StateBuilder& firstSequence, const StateBuilder& secondSequence)
-				{
-					auto firstPair = firstSequence();
-					clauseDisplayText += L" ";
-					auto secondPair = secondSequence();
-					CreateEdge(firstPair.end, secondPair.begin);
-					return { firstPair.begin,secondPair.end };
-				}
-
-				StatePair BuildAlternativeSyntax(const StateBuilder& firstBranch, const StateBuilder& secondBranch)
-				{
-					StatePair pair;
-					pair.begin = CreateState();
-					pair.end = CreateState();
-					startPoses.Add(pair.begin, clauseDisplayText.Length());
-
-					clauseDisplayText += L"( ";
-					auto firstPair = firstBranch();
-					clauseDisplayText += L" | ";
-					auto secondPair = secondBranch();
-					clauseDisplayText += L" )";
-
-					CreateEdge(pair.begin, firstPair.begin);
-					CreateEdge(firstPair.end, pair.end);
-					CreateEdge(pair.begin, secondPair.begin);
-					CreateEdge(secondPair.end, pair.end);
-
-					endPoses.Add(pair.end, clauseDisplayText.Length());
-					return pair;
-				}
-
-				////////////////////////////////////////////////////////
-				// Clauses
-				////////////////////////////////////////////////////////
-
-				StatePair BuildClause(const StateBuilder& compileSyntax)
-				{
-					ruleSymbol->NewClause();
-					clauseDisplayText = L"";
-					startPoses.Clear();
-					endPoses.Clear();
-
-					auto pair = compileSyntax();
-
-					ruleSymbol->startStates.Add(pair.begin);
-					pair.end->endingState = true;
-
-					vint l = clauseDisplayText.Length();
-					for (auto [state, pos] : startPoses)
-					{
-						state->label = clauseDisplayText.Left(pos) + L"@ " + clauseDisplayText.Right(l - pos);
-					}
-					for (auto [state, pos] : endPoses)
-					{
-						state->label = clauseDisplayText.Left(pos) + L" @" + clauseDisplayText.Right(l - pos);
-					}
-
-					return pair;
-				}
-
-				StatePair BuildAssignment(StatePair pair, vint32_t enumItem, vint32_t field)
-				{
-					auto withState = CreateState();
-					auto edge = CreateEdge(pair.end, withState);
-					edge->insBeforeInput.Add({ AstInsType::EnumItem,enumItem });
-					edge->insBeforeInput.Add({ AstInsType::Field,field });
-					endPoses.Add(withState, clauseDisplayText.Length());
-					return { pair.begin,withState };
-				}
-
-				StatePair BuildCreateClause(AstClassSymbol* clauseType, const StateBuilder& compileSyntax, const AssignmentBuilder& compileAssignments)
-				{
-					StatePair pair;
-					pair.begin = CreateState();
-					pair.end = CreateState();
-					startPoses.Add(pair.begin, clauseDisplayText.Length());
-
-					clauseDisplayText += L"< ";
-					auto bodyPair = compileAssignments(compileSyntax());
-					clauseDisplayText += L" >";
-					{
-						auto edge = CreateEdge(pair.begin, bodyPair.begin);
-						edge->insBeforeInput.Add({ AstInsType::BeginObject,output->classIds[clauseType] });
-					}
-					{
-						auto edge = CreateEdge(bodyPair.end, pair.end);
-						edge->insBeforeInput.Add({ AstInsType::EndObject });
-					}
-					endPoses.Add(pair.end, clauseDisplayText.Length());
-					return pair;
-				}
-
-				StatePair BuildPartialClause(const StateBuilder& compileSyntax, const AssignmentBuilder& compileAssignments)
-				{
-					return compileAssignments(compileSyntax());
-				}
-
-				StatePair BuildReuseClause(const StateBuilder& compileSyntax, const AssignmentBuilder& compileAssignments)
-				{
-					StatePair pair;
-					pair.begin = CreateState();
-					pair.end = CreateState();
-					startPoses.Add(pair.begin, clauseDisplayText.Length());
-
-					clauseDisplayText += L"<< ";
-					auto bodyPair = compileAssignments(compileSyntax());
-					clauseDisplayText += L" >>";
-					{
-						auto edge = CreateEdge(pair.begin, bodyPair.begin);
-						edge->insBeforeInput.Add({ AstInsType::DelayFieldAssignment });
-					}
-					{
-						auto edge = CreateEdge(bodyPair.end, pair.end);
-						edge->insBeforeInput.Add({ AstInsType::EndObject });
-					}
-					endPoses.Add(pair.end, clauseDisplayText.Length());
-					return pair;
-				}
-			};
 
 /***********************************************************************
 CompileSyntaxVisitor
@@ -345,7 +36,7 @@ CompileSyntaxVisitor
 					VisitorContext& _context,
 					RuleSymbol* _ruleSymbol
 				)
-					: automatonBuilder(_context.output, _ruleSymbol)
+					: automatonBuilder(_ruleSymbol)
 					, context(_context)
 				{
 				}
@@ -412,7 +103,8 @@ CompileSyntaxVisitor
 				void Visit(GlrOptionalSyntax* node) override
 				{
 					result = automatonBuilder.BuildOptionalSyntax(
-						node->priority,
+						node->priority == GlrOptionalPriority::PreferTake,
+						node->priority == GlrOptionalPriority::PreferSkip,
 						[this, node]() { return Build(node->syntax); }
 						);
 				}
@@ -452,7 +144,7 @@ CompileSyntaxVisitor
 					result = automatonBuilder.BuildClause([this, node]()
 					{
 						return automatonBuilder.BuildCreateClause(
-							clauseType,
+							context.output->classIds[clauseType],
 							[this, node]() { return Build(node->syntax); },
 							[this, node](StatePair pair) { return CompileAssignments(pair, node->assignments); }
 							);

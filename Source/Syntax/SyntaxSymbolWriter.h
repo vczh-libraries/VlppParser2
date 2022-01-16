@@ -14,6 +14,59 @@ namespace vl
 	{
 		namespace parsergen
 		{
+
+/***********************************************************************
+AutomatonBuilder
+***********************************************************************/
+
+			class AutomatonBuilder
+			{
+			public:
+				struct StatePair
+				{
+					StateSymbol* begin;
+					StateSymbol* end;
+				};
+
+			protected:
+				using StatePosMap = collections::Dictionary<StateSymbol*, vint>;
+				using StateBuilder = Func<StatePair()>;
+				using AssignmentBuilder = Func<StatePair(StatePair)>;
+
+			protected:
+				RuleSymbol*					ruleSymbol;
+
+				WString						clauseDisplayText;
+				StatePosMap					startPoses;
+				StatePosMap					endPoses;
+
+				StateSymbol* CreateState()
+				{
+					return ruleSymbol->Owner()->CreateState(ruleSymbol, ruleSymbol->CurrentClauseId());
+				}
+
+				EdgeSymbol* CreateEdge(StateSymbol* from, StateSymbol* to)
+				{
+					return ruleSymbol->Owner()->CreateEdge(from, to);
+				}
+			public:
+				AutomatonBuilder(RuleSymbol* _ruleSymbol);
+
+				StatePair					BuildTokenSyntax(vint32_t tokenId, const WString& displayText, vint32_t field);
+				StatePair					BuildRuleSyntax(RuleSymbol* rule, vint32_t field);
+				StatePair					BuildUseSyntax(RuleSymbol* rule);
+				StatePair					BuildLoopSyntax(const StateBuilder& loopBody, const StateBuilder& loopDelimiter, bool hasDelimiter);
+				StatePair					BuildOptionalSyntax(bool preferTake, bool preferSkip, const StateBuilder& optionalBody);
+				StatePair					BuildSequenceSyntax(const StateBuilder& firstSequence, const StateBuilder& secondSequence);
+				StatePair					BuildAlternativeSyntax(const StateBuilder& firstBranch, const StateBuilder& secondBranch);
+
+				StatePair					BuildClause(const StateBuilder& compileSyntax);
+				StatePair					BuildAssignment(StatePair pair, vint32_t enumItem, vint32_t field);
+				StatePair					BuildCreateClause(vint32_t classId, const StateBuilder& compileSyntax, const AssignmentBuilder& compileAssignments);
+				StatePair					BuildPartialClause(const StateBuilder& compileSyntax, const AssignmentBuilder& compileAssignments);
+				StatePair					BuildReuseClause(const StateBuilder& compileSyntax, const AssignmentBuilder& compileAssignments);
+			};
+
 			namespace syntax_writer
 			{
 
