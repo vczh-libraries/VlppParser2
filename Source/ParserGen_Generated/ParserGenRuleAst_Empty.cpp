@@ -25,10 +25,6 @@ SyntaxVisitor
 				{
 				}
 
-				void SyntaxVisitor::Visit(GlrLiteralSyntax* node)
-				{
-				}
-
 				void SyntaxVisitor::Visit(GlrUseSyntax* node)
 				{
 				}

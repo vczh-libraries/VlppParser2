@@ -21,11 +21,6 @@ Visitor Pattern Implementation
 				visitor->Visit(this);
 			}
 
-			void GlrLiteralSyntax::Accept(GlrSyntax::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
 			void GlrUseSyntax::Accept(GlrSyntax::IVisitor* visitor)
 			{
 				visitor->Visit(this);
@@ -78,8 +73,8 @@ namespace vl
 
 			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrSyntax, glr::parsergen::GlrSyntax)
 			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrSyntax::IVisitor, glr::parsergen::GlrSyntax::IVisitor)
+			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrRefType, glr::parsergen::GlrRefType)
 			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrRefSyntax, glr::parsergen::GlrRefSyntax)
-			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrLiteralSyntax, glr::parsergen::GlrLiteralSyntax)
 			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrUseSyntax, glr::parsergen::GlrUseSyntax)
 			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrLoopSyntax, glr::parsergen::GlrLoopSyntax)
 			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrOptionalPriority, glr::parsergen::GlrOptionalPriority)
@@ -102,22 +97,21 @@ namespace vl
 
 			END_CLASS_MEMBER(vl::glr::parsergen::GlrSyntax)
 
+			BEGIN_ENUM_ITEM(vl::glr::parsergen::GlrRefType)
+				ENUM_ITEM_NAMESPACE(vl::glr::parsergen::GlrRefType)
+				ENUM_NAMESPACE_ITEM(Id)
+				ENUM_NAMESPACE_ITEM(Literal)
+			END_ENUM_ITEM(vl::glr::parsergen::GlrRefType)
+
 			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrRefSyntax)
 				CLASS_MEMBER_BASE(vl::glr::parsergen::GlrSyntax)
 
 				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrRefSyntax>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(name)
+				CLASS_MEMBER_FIELD(refType)
+				CLASS_MEMBER_FIELD(literal)
 				CLASS_MEMBER_FIELD(field)
 			END_CLASS_MEMBER(vl::glr::parsergen::GlrRefSyntax)
-
-			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrLiteralSyntax)
-				CLASS_MEMBER_BASE(vl::glr::parsergen::GlrSyntax)
-
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrLiteralSyntax>(), NO_PARAMETER)
-
-				CLASS_MEMBER_FIELD(value)
-			END_CLASS_MEMBER(vl::glr::parsergen::GlrLiteralSyntax)
 
 			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrUseSyntax)
 				CLASS_MEMBER_BASE(vl::glr::parsergen::GlrSyntax)
@@ -232,7 +226,6 @@ namespace vl
 
 			BEGIN_INTERFACE_MEMBER(vl::glr::parsergen::GlrSyntax::IVisitor)
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrSyntax::IVisitor::*)(vl::glr::parsergen::GlrRefSyntax* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrSyntax::IVisitor::*)(vl::glr::parsergen::GlrLiteralSyntax* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrSyntax::IVisitor::*)(vl::glr::parsergen::GlrUseSyntax* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrSyntax::IVisitor::*)(vl::glr::parsergen::GlrLoopSyntax* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrSyntax::IVisitor::*)(vl::glr::parsergen::GlrOptionalSyntax* node))
@@ -256,8 +249,8 @@ namespace vl
 				{
 					ADD_TYPE_INFO(vl::glr::parsergen::GlrSyntax)
 					ADD_TYPE_INFO(vl::glr::parsergen::GlrSyntax::IVisitor)
+					ADD_TYPE_INFO(vl::glr::parsergen::GlrRefType)
 					ADD_TYPE_INFO(vl::glr::parsergen::GlrRefSyntax)
-					ADD_TYPE_INFO(vl::glr::parsergen::GlrLiteralSyntax)
 					ADD_TYPE_INFO(vl::glr::parsergen::GlrUseSyntax)
 					ADD_TYPE_INFO(vl::glr::parsergen::GlrLoopSyntax)
 					ADD_TYPE_INFO(vl::glr::parsergen::GlrOptionalPriority)

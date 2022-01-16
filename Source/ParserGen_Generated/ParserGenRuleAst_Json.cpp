@@ -54,12 +54,6 @@ namespace vl
 					WriteToken(node->type);
 					EndField();
 				}
-				void RuleAstVisitor::PrintFields(GlrLiteralSyntax* node)
-				{
-					BeginField(L"value");
-					WriteToken(node->value);
-					EndField();
-				}
 				void RuleAstVisitor::PrintFields(GlrLoopSyntax* node)
 				{
 					BeginField(L"delimiter");
@@ -115,8 +109,21 @@ namespace vl
 					BeginField(L"field");
 					WriteToken(node->field);
 					EndField();
-					BeginField(L"name");
-					WriteToken(node->name);
+					BeginField(L"literal");
+					WriteToken(node->literal);
+					EndField();
+					BeginField(L"refType");
+					switch (node->refType)
+					{
+					case vl::glr::parsergen::GlrRefType::Id:
+						WriteString(L"Id");
+						break;
+					case vl::glr::parsergen::GlrRefType::Literal:
+						WriteString(L"Literal");
+						break;
+					default:
+						WriteNull();
+					}
 					EndField();
 				}
 				void RuleAstVisitor::PrintFields(GlrReuseClause* node)
@@ -194,20 +201,6 @@ namespace vl
 					WriteType(L"RefSyntax", node);
 					PrintFields(static_cast<GlrSyntax*>(node));
 					PrintFields(static_cast<GlrRefSyntax*>(node));
-					EndObject();
-				}
-
-				void RuleAstVisitor::Visit(GlrLiteralSyntax* node)
-				{
-					if (!node)
-					{
-						WriteNull();
-						return;
-					}
-					BeginObject();
-					WriteType(L"LiteralSyntax", node);
-					PrintFields(static_cast<GlrSyntax*>(node));
-					PrintFields(static_cast<GlrLiteralSyntax*>(node));
 					EndObject();
 				}
 

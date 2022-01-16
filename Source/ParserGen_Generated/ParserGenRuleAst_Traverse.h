@@ -30,7 +30,6 @@ namespace vl
 					virtual void Traverse(GlrAssignment* node);
 					virtual void Traverse(GlrClause* node);
 					virtual void Traverse(GlrCreateClause* node);
-					virtual void Traverse(GlrLiteralSyntax* node);
 					virtual void Traverse(GlrLoopSyntax* node);
 					virtual void Traverse(GlrOptionalSyntax* node);
 					virtual void Traverse(GlrPartialClause* node);
@@ -48,7 +47,6 @@ namespace vl
 					virtual void Finishing(GlrAssignment* node);
 					virtual void Finishing(GlrClause* node);
 					virtual void Finishing(GlrCreateClause* node);
-					virtual void Finishing(GlrLiteralSyntax* node);
 					virtual void Finishing(GlrLoopSyntax* node);
 					virtual void Finishing(GlrOptionalSyntax* node);
 					virtual void Finishing(GlrPartialClause* node);
@@ -62,7 +60,6 @@ namespace vl
 
 				protected:
 					void Visit(GlrRefSyntax* node) override;
-					void Visit(GlrLiteralSyntax* node) override;
 					void Visit(GlrUseSyntax* node) override;
 					void Visit(GlrLoopSyntax* node) override;
 					void Visit(GlrOptionalSyntax* node) override;

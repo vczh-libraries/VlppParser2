@@ -38,8 +38,6 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					return new vl::glr::parsergen::GlrEnum();
 				case ParserGenClasses::EnumItem:
 					return new vl::glr::parsergen::GlrEnumItem();
-				case ParserGenClasses::LiteralSyntax:
-					return new vl::glr::parsergen::GlrLiteralSyntax();
 				case ParserGenClasses::LoopSyntax:
 					return new vl::glr::parsergen::GlrLoopSyntax();
 				case ParserGenClasses::OptionalSyntax:
@@ -128,14 +126,12 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrCreateClause::type, object, field, token, tokenIndex, cppFieldName);
 				case ParserGenFields::EnumItem_name:
 					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrEnumItem::name, object, field, token, tokenIndex, cppFieldName);
-				case ParserGenFields::LiteralSyntax_value:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrLiteralSyntax::value, object, field, token, tokenIndex, cppFieldName);
 				case ParserGenFields::PartialClause_type:
 					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrPartialClause::type, object, field, token, tokenIndex, cppFieldName);
 				case ParserGenFields::RefSyntax_field:
 					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrRefSyntax::field, object, field, token, tokenIndex, cppFieldName);
-				case ParserGenFields::RefSyntax_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrRefSyntax::name, object, field, token, tokenIndex, cppFieldName);
+				case ParserGenFields::RefSyntax_literal:
+					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrRefSyntax::literal, object, field, token, tokenIndex, cppFieldName);
 				case ParserGenFields::Rule_name:
 					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrRule::name, object, field, token, tokenIndex, cppFieldName);
 				case ParserGenFields::Type_name:
@@ -158,6 +154,8 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					return vl::glr::AssemblerSetEnumField(&vl::glr::parsergen::GlrClassProp::propType, object, field, enumItem, cppFieldName);
 				case ParserGenFields::OptionalSyntax_priority:
 					return vl::glr::AssemblerSetEnumField(&vl::glr::parsergen::GlrOptionalSyntax::priority, object, field, enumItem, cppFieldName);
+				case ParserGenFields::RefSyntax_refType:
+					return vl::glr::AssemblerSetEnumField(&vl::glr::parsergen::GlrRefSyntax::refType, object, field, enumItem, cppFieldName);
 				default:
 					return vl::glr::AssemblyThrowFieldNotEnum(field, cppFieldName);
 				}
@@ -175,7 +173,6 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					L"CreateClause",
 					L"Enum",
 					L"EnumItem",
-					L"LiteralSyntax",
 					L"LoopSyntax",
 					L"OptionalSyntax",
 					L"PartialClause",
@@ -189,7 +186,7 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					L"UseSyntax",
 				};
 				vl::vint index = (vl::vint)type;
-				return 0 <= index && index < 21 ? results[index] : nullptr;
+				return 0 <= index && index < 20 ? results[index] : nullptr;
 			}
 
 			const wchar_t* ParserGenCppTypeName(ParserGenClasses type)
@@ -204,7 +201,6 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					L"vl::glr::parsergen::GlrCreateClause",
 					L"vl::glr::parsergen::GlrEnum",
 					L"vl::glr::parsergen::GlrEnumItem",
-					L"vl::glr::parsergen::GlrLiteralSyntax",
 					L"vl::glr::parsergen::GlrLoopSyntax",
 					L"vl::glr::parsergen::GlrOptionalSyntax",
 					L"vl::glr::parsergen::GlrPartialClause",
@@ -218,7 +214,7 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					L"vl::glr::parsergen::GlrUseSyntax",
 				};
 				vl::vint index = (vl::vint)type;
-				return 0 <= index && index < 21 ? results[index] : nullptr;
+				return 0 <= index && index < 20 ? results[index] : nullptr;
 			}
 
 			const wchar_t* ParserGenFieldName(ParserGenFields field)
@@ -240,7 +236,6 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					L"CreateClause::type",
 					L"Enum::items",
 					L"EnumItem::name",
-					L"LiteralSyntax::value",
 					L"LoopSyntax::delimiter",
 					L"LoopSyntax::syntax",
 					L"OptionalSyntax::priority",
@@ -249,7 +244,8 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					L"PartialClause::syntax",
 					L"PartialClause::type",
 					L"RefSyntax::field",
-					L"RefSyntax::name",
+					L"RefSyntax::literal",
+					L"RefSyntax::refType",
 					L"ReuseClause::assignments",
 					L"ReuseClause::syntax",
 					L"Rule::clauses",
@@ -283,7 +279,6 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					L"vl::glr::parsergen::GlrCreateClause::type",
 					L"vl::glr::parsergen::GlrEnum::items",
 					L"vl::glr::parsergen::GlrEnumItem::name",
-					L"vl::glr::parsergen::GlrLiteralSyntax::value",
 					L"vl::glr::parsergen::GlrLoopSyntax::delimiter",
 					L"vl::glr::parsergen::GlrLoopSyntax::syntax",
 					L"vl::glr::parsergen::GlrOptionalSyntax::priority",
@@ -292,7 +287,8 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					L"vl::glr::parsergen::GlrPartialClause::syntax",
 					L"vl::glr::parsergen::GlrPartialClause::type",
 					L"vl::glr::parsergen::GlrRefSyntax::field",
-					L"vl::glr::parsergen::GlrRefSyntax::name",
+					L"vl::glr::parsergen::GlrRefSyntax::literal",
+					L"vl::glr::parsergen::GlrRefSyntax::refType",
 					L"vl::glr::parsergen::GlrReuseClause::assignments",
 					L"vl::glr::parsergen::GlrReuseClause::syntax",
 					L"vl::glr::parsergen::GlrRule::clauses",

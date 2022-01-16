@@ -26,7 +26,6 @@ namespace vl
 				public:
 					// Visitor Members -----------------------------------
 					void Visit(GlrRefSyntax* node) override;
-					void Visit(GlrLiteralSyntax* node) override;
 					void Visit(GlrUseSyntax* node) override;
 					void Visit(GlrLoopSyntax* node) override;
 					void Visit(GlrOptionalSyntax* node) override;

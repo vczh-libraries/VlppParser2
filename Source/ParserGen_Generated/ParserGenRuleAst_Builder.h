@@ -39,12 +39,6 @@ namespace vl
 					MakeCreateClause& type(const vl::WString& value);
 				};
 
-				class MakeLiteralSyntax : public vl::glr::ParsingAstBuilder<GlrLiteralSyntax>
-				{
-				public:
-					MakeLiteralSyntax& value(const vl::WString& value);
-				};
-
 				class MakeLoopSyntax : public vl::glr::ParsingAstBuilder<GlrLoopSyntax>
 				{
 				public:
@@ -71,7 +65,8 @@ namespace vl
 				{
 				public:
 					MakeRefSyntax& field(const vl::WString& value);
-					MakeRefSyntax& name(const vl::WString& value);
+					MakeRefSyntax& literal(const vl::WString& value);
+					MakeRefSyntax& refType(GlrRefType value);
 				};
 
 				class MakeReuseClause : public vl::glr::ParsingAstBuilder<GlrReuseClause>

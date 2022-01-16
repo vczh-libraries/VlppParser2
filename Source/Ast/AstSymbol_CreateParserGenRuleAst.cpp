@@ -21,14 +21,15 @@ CreateParserGenRuleAst
 
 				auto _Syntax = _ast->CreateClass(L"Syntax");
 
+				auto _RefType = _ast->CreateEnum(L"RefType");
+				_RefType->CreateItem(L"Id");
+				_RefType->CreateItem(L"Literal");
+
 				auto _RefSyntax = _ast->CreateClass(L"RefSyntax");
 				_RefSyntax->SetBaseClass(L"Syntax");
-				_RefSyntax->CreateProp(L"name")->SetPropType(AstPropType::Token);
+				_RefSyntax->CreateProp(L"refType")->SetPropType(AstPropType::Type, L"RefType");
+				_RefSyntax->CreateProp(L"literal")->SetPropType(AstPropType::Token);
 				_RefSyntax->CreateProp(L"field")->SetPropType(AstPropType::Token);
-
-				auto _LiteralSyntax = _ast->CreateClass(L"LiteralSyntax");
-				_LiteralSyntax->SetBaseClass(L"Syntax");
-				_LiteralSyntax->CreateProp(L"value")->SetPropType(AstPropType::Token);
 
 				auto _UseSyntax = _ast->CreateClass(L"UseSyntax");
 				_UseSyntax->SetBaseClass(L"Syntax");

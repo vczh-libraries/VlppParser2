@@ -28,7 +28,6 @@ namespace vl
 					void CopyFields(GlrAssignment* from, GlrAssignment* to);
 					void CopyFields(GlrClause* from, GlrClause* to);
 					void CopyFields(GlrCreateClause* from, GlrCreateClause* to);
-					void CopyFields(GlrLiteralSyntax* from, GlrLiteralSyntax* to);
 					void CopyFields(GlrLoopSyntax* from, GlrLoopSyntax* to);
 					void CopyFields(GlrOptionalSyntax* from, GlrOptionalSyntax* to);
 					void CopyFields(GlrPartialClause* from, GlrPartialClause* to);
@@ -46,7 +45,6 @@ namespace vl
 					virtual void Visit(GlrSyntaxFile* node);
 
 					void Visit(GlrRefSyntax* node) override;
-					void Visit(GlrLiteralSyntax* node) override;
 					void Visit(GlrUseSyntax* node) override;
 					void Visit(GlrLoopSyntax* node) override;
 					void Visit(GlrOptionalSyntax* node) override;
@@ -66,7 +64,6 @@ namespace vl
 
 					vl::Ptr<GlrAlternativeSyntax> CopyNode(GlrAlternativeSyntax* node);
 					vl::Ptr<GlrCreateClause> CopyNode(GlrCreateClause* node);
-					vl::Ptr<GlrLiteralSyntax> CopyNode(GlrLiteralSyntax* node);
 					vl::Ptr<GlrLoopSyntax> CopyNode(GlrLoopSyntax* node);
 					vl::Ptr<GlrOptionalSyntax> CopyNode(GlrOptionalSyntax* node);
 					vl::Ptr<GlrPartialClause> CopyNode(GlrPartialClause* node);

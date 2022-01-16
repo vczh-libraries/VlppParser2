@@ -28,7 +28,6 @@ namespace vl
 					virtual void PrintFields(GlrAssignment* node);
 					virtual void PrintFields(GlrClause* node);
 					virtual void PrintFields(GlrCreateClause* node);
-					virtual void PrintFields(GlrLiteralSyntax* node);
 					virtual void PrintFields(GlrLoopSyntax* node);
 					virtual void PrintFields(GlrOptionalSyntax* node);
 					virtual void PrintFields(GlrPartialClause* node);
@@ -42,7 +41,6 @@ namespace vl
 
 				protected:
 					void Visit(GlrRefSyntax* node) override;
-					void Visit(GlrLiteralSyntax* node) override;
 					void Visit(GlrUseSyntax* node) override;
 					void Visit(GlrLoopSyntax* node) override;
 					void Visit(GlrOptionalSyntax* node) override;

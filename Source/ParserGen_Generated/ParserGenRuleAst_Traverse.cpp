@@ -20,7 +20,6 @@ namespace vl
 				void RuleAstVisitor::Traverse(GlrAssignment* node) {}
 				void RuleAstVisitor::Traverse(GlrClause* node) {}
 				void RuleAstVisitor::Traverse(GlrCreateClause* node) {}
-				void RuleAstVisitor::Traverse(GlrLiteralSyntax* node) {}
 				void RuleAstVisitor::Traverse(GlrLoopSyntax* node) {}
 				void RuleAstVisitor::Traverse(GlrOptionalSyntax* node) {}
 				void RuleAstVisitor::Traverse(GlrPartialClause* node) {}
@@ -37,7 +36,6 @@ namespace vl
 				void RuleAstVisitor::Finishing(GlrAssignment* node) {}
 				void RuleAstVisitor::Finishing(GlrClause* node) {}
 				void RuleAstVisitor::Finishing(GlrCreateClause* node) {}
-				void RuleAstVisitor::Finishing(GlrLiteralSyntax* node) {}
 				void RuleAstVisitor::Finishing(GlrLoopSyntax* node) {}
 				void RuleAstVisitor::Finishing(GlrOptionalSyntax* node) {}
 				void RuleAstVisitor::Finishing(GlrPartialClause* node) {}
@@ -56,20 +54,8 @@ namespace vl
 					Traverse(static_cast<GlrSyntax*>(node));
 					Traverse(static_cast<GlrRefSyntax*>(node));
 					Traverse(node->field);
-					Traverse(node->name);
+					Traverse(node->literal);
 					Finishing(static_cast<GlrRefSyntax*>(node));
-					Finishing(static_cast<GlrSyntax*>(node));
-					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
-				}
-
-				void RuleAstVisitor::Visit(GlrLiteralSyntax* node)
-				{
-					if (!node) return;
-					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<GlrSyntax*>(node));
-					Traverse(static_cast<GlrLiteralSyntax*>(node));
-					Traverse(node->value);
-					Finishing(static_cast<GlrLiteralSyntax*>(node));
 					Finishing(static_cast<GlrSyntax*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}

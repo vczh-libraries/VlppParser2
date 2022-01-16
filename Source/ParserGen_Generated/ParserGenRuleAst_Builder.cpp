@@ -70,16 +70,6 @@ MakeCreateClause
 				}
 
 /***********************************************************************
-MakeLiteralSyntax
-***********************************************************************/
-
-				MakeLiteralSyntax& MakeLiteralSyntax::value(const vl::WString& value)
-				{
-					node->value.value = value;
-					return *this;
-				}
-
-/***********************************************************************
 MakeLoopSyntax
 ***********************************************************************/
 
@@ -143,9 +133,15 @@ MakeRefSyntax
 					return *this;
 				}
 
-				MakeRefSyntax& MakeRefSyntax::name(const vl::WString& value)
+				MakeRefSyntax& MakeRefSyntax::literal(const vl::WString& value)
 				{
-					node->name.value = value;
+					node->literal.value = value;
+					return *this;
+				}
+
+				MakeRefSyntax& MakeRefSyntax::refType(GlrRefType value)
+				{
+					node->refType = value;
 					return *this;
 				}
 

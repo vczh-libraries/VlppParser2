@@ -20,7 +20,6 @@ namespace vl
 			class GlrAssignment;
 			class GlrClause;
 			class GlrCreateClause;
-			class GlrLiteralSyntax;
 			class GlrLoopSyntax;
 			class GlrOptionalSyntax;
 			class GlrPartialClause;
@@ -31,6 +30,13 @@ namespace vl
 			class GlrSyntax;
 			class GlrSyntaxFile;
 			class GlrUseSyntax;
+
+			enum class GlrRefType
+			{
+				UNDEFINED_ENUM_ITEM_VALUE = -1,
+				Id = 0,
+				Literal = 1,
+			};
 
 			enum class GlrOptionalPriority
 			{
@@ -47,7 +53,6 @@ namespace vl
 				{
 				public:
 					virtual void Visit(GlrRefSyntax* node) = 0;
-					virtual void Visit(GlrLiteralSyntax* node) = 0;
 					virtual void Visit(GlrUseSyntax* node) = 0;
 					virtual void Visit(GlrLoopSyntax* node) = 0;
 					virtual void Visit(GlrOptionalSyntax* node) = 0;
@@ -62,16 +67,9 @@ namespace vl
 			class GlrRefSyntax : public GlrSyntax, vl::reflection::Description<GlrRefSyntax>
 			{
 			public:
-				vl::glr::ParsingToken name;
+				GlrRefType refType = GlrRefType::UNDEFINED_ENUM_ITEM_VALUE;
+				vl::glr::ParsingToken literal;
 				vl::glr::ParsingToken field;
-
-				void Accept(GlrSyntax::IVisitor* visitor) override;
-			};
-
-			class GlrLiteralSyntax : public GlrSyntax, vl::reflection::Description<GlrLiteralSyntax>
-			{
-			public:
-				vl::glr::ParsingToken value;
 
 				void Accept(GlrSyntax::IVisitor* visitor) override;
 			};
@@ -195,8 +193,8 @@ namespace vl
 #ifndef VCZH_DEBUG_NO_REFLECTION
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrSyntax)
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrSyntax::IVisitor)
+			DECL_TYPE_INFO(vl::glr::parsergen::GlrRefType)
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrRefSyntax)
-			DECL_TYPE_INFO(vl::glr::parsergen::GlrLiteralSyntax)
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrUseSyntax)
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrLoopSyntax)
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrOptionalPriority)
@@ -216,11 +214,6 @@ namespace vl
 
 			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(vl::glr::parsergen::GlrSyntax::IVisitor)
 				void Visit(vl::glr::parsergen::GlrRefSyntax* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::parsergen::GlrLiteralSyntax* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
