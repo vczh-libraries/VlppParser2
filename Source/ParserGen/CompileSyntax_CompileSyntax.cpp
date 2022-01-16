@@ -125,7 +125,7 @@ CompileSyntaxVisitor
 						);
 				}
 
-				StatePair CompileAssignments(StatePair pair, List<Ptr<GlrAssignment>>& assignments)
+				StatePair BuildAssignments(StatePair pair, List<Ptr<GlrAssignment>>& assignments)
 				{
 					for (auto node : assignments)
 					{
@@ -145,8 +145,7 @@ CompileSyntaxVisitor
 					{
 						return automatonBuilder.BuildCreateClause(
 							context.output->classIds[clauseType],
-							[this, node]() { return Build(node->syntax); },
-							[this, node](StatePair pair) { return CompileAssignments(pair, node->assignments); }
+							[this, node]() { return BuildAssignments(Build(node->syntax), node->assignments); }
 							);
 					});
 				}
@@ -157,8 +156,7 @@ CompileSyntaxVisitor
 					result = automatonBuilder.BuildClause([this, node]()
 					{
 						return automatonBuilder.BuildPartialClause(
-							[this, node]() { return Build(node->syntax); },
-							[this, node](StatePair pair) { return CompileAssignments(pair, node->assignments); }
+							[this, node]() { return BuildAssignments(Build(node->syntax), node->assignments); }
 							);
 					});
 				}
@@ -169,8 +167,7 @@ CompileSyntaxVisitor
 					result = automatonBuilder.BuildClause([this, node]()
 					{
 						return automatonBuilder.BuildReuseClause(
-							[this, node]() { return Build(node->syntax); },
-							[this, node](StatePair pair) { return CompileAssignments(pair, node->assignments); }
+							[this, node]() { return BuildAssignments(Build(node->syntax), node->assignments); }
 							);
 					});
 				}

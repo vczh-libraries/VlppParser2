@@ -62,9 +62,9 @@ AutomatonBuilder
 
 				StatePair					BuildClause(const StateBuilder& compileSyntax);
 				StatePair					BuildAssignment(StatePair pair, vint32_t enumItem, vint32_t field);
-				StatePair					BuildCreateClause(vint32_t classId, const StateBuilder& compileSyntax, const AssignmentBuilder& compileAssignments);
-				StatePair					BuildPartialClause(const StateBuilder& compileSyntax, const AssignmentBuilder& compileAssignments);
-				StatePair					BuildReuseClause(const StateBuilder& compileSyntax, const AssignmentBuilder& compileAssignments);
+				StatePair					BuildCreateClause(vint32_t classId, const StateBuilder& compileSyntax);
+				StatePair					BuildPartialClause(const StateBuilder& compileSyntax);
+				StatePair					BuildReuseClause(const StateBuilder& compileSyntax);
 			};
 
 			namespace syntax_writer
@@ -399,8 +399,7 @@ Builder
 					{
 						return builder.BuildCreateClause(
 							clause.type,
-							[this, &clause]() { return Build(clause.body); },
-							[](StatePair pair) { return pair; }
+							[this, &clause]() { return Build(clause.body); }
 							);
 					}
 
@@ -408,8 +407,7 @@ Builder
 					StatePair Build(const Partial<C>& clause)
 					{
 						return builder.BuildPartialClause(
-							[this, &clause]() { return Build(clause.body); },
-							[](StatePair pair) { return pair; }
+							[this, &clause]() { return Build(clause.body); }
 							);
 					}
 
@@ -417,8 +415,7 @@ Builder
 					StatePair Build(const Reuse<C>& clause)
 					{
 						return builder.BuildReuseClause(
-							[this, &clause]() { return Build(clause.body); },
-							[](StatePair pair) { return pair; }
+							[this, &clause]() { return Build(clause.body); }
 							);
 					}
 

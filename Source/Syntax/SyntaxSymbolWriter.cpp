@@ -230,7 +230,7 @@ AutomatonBuilder (Clause)
 				return { pair.begin,withState };
 			}
 
-			AutomatonBuilder::StatePair AutomatonBuilder::BuildCreateClause(vint32_t classId, const StateBuilder& compileSyntax, const AssignmentBuilder& compileAssignments)
+			AutomatonBuilder::StatePair AutomatonBuilder::BuildCreateClause(vint32_t classId, const StateBuilder& compileSyntax)
 			{
 				StatePair pair;
 				pair.begin = CreateState();
@@ -238,7 +238,7 @@ AutomatonBuilder (Clause)
 				startPoses.Add(pair.begin, clauseDisplayText.Length());
 
 				clauseDisplayText += L"< ";
-				auto bodyPair = compileAssignments(compileSyntax());
+				auto bodyPair = compileSyntax();
 				clauseDisplayText += L" >";
 				{
 					auto edge = CreateEdge(pair.begin, bodyPair.begin);
@@ -252,12 +252,12 @@ AutomatonBuilder (Clause)
 				return pair;
 			}
 
-			AutomatonBuilder::StatePair AutomatonBuilder::BuildPartialClause(const StateBuilder& compileSyntax, const AssignmentBuilder& compileAssignments)
+			AutomatonBuilder::StatePair AutomatonBuilder::BuildPartialClause(const StateBuilder& compileSyntax)
 			{
-				return compileAssignments(compileSyntax());
+				return compileSyntax();
 			}
 
-			AutomatonBuilder::StatePair AutomatonBuilder::BuildReuseClause(const StateBuilder& compileSyntax, const AssignmentBuilder& compileAssignments)
+			AutomatonBuilder::StatePair AutomatonBuilder::BuildReuseClause(const StateBuilder& compileSyntax)
 			{
 				StatePair pair;
 				pair.begin = CreateState();
@@ -265,7 +265,7 @@ AutomatonBuilder (Clause)
 				startPoses.Add(pair.begin, clauseDisplayText.Length());
 
 				clauseDisplayText += L"<< ";
-				auto bodyPair = compileAssignments(compileSyntax());
+				auto bodyPair = compileSyntax();
 				clauseDisplayText += L" >>";
 				{
 					auto edge = CreateEdge(pair.begin, bodyPair.begin);
