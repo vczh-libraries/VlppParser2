@@ -56,7 +56,7 @@ AutomatonBuilder
 				// Syntax
 				////////////////////////////////////////////////////////
 
-				StatePair BuildTokenSyntax(vint32_t tokenId, const WString& displayText)
+				StatePair BuildTokenSyntax(vint32_t tokenId, const WString& displayText, vint32_t field)
 				{
 					StatePair pair;
 					pair.begin = CreateState();
@@ -67,9 +67,40 @@ AutomatonBuilder
 						auto edge = CreateEdge(pair.begin, pair.end);
 						edge->input.type = EdgeInputType::Token;
 						edge->input.token = tokenId;
+						if (field != -1)
+						{
+							edge->insAfterInput.Add({ AstInsType::Token });
+							edge->insAfterInput.Add({ AstInsType::Field,field });
+						}
 					}
 
 					clauseDisplayText += displayText;
+					endPoses.Add(pair.end, clauseDisplayText.Length());
+					return pair;
+				}
+
+				StatePair BuildRuleSyntax(RuleSymbol* rule, vint32_t field)
+				{
+					StatePair pair;
+					pair.begin = CreateState();
+					pair.end = CreateState();
+					startPoses.Add(pair.begin, clauseDisplayText.Length());
+
+					{
+						auto edge = CreateEdge(pair.begin, pair.end);
+						edge->input.type = EdgeInputType::Rule;
+						edge->input.rule = rule;
+						if (field != -1)
+						{
+							edge->insAfterInput.Add({ AstInsType::Field,field });
+						}
+						else if (!rule->isPartial)
+						{
+							edge->insAfterInput.Add({ AstInsType::DiscardValue });
+						}
+					}
+
+					clauseDisplayText += rule->Name();
 					endPoses.Add(pair.end, clauseDisplayText.Length());
 					return pair;
 				}
@@ -322,31 +353,19 @@ CompileSyntaxVisitor
 			protected:
 				void Visit(GlrRefSyntax* node) override
 				{
+					vint32_t field = -1;
+					if (node->field)
+					{
+						auto propSymbol = FindPropSymbol(clauseType, node->field.value);
+						field = context.output->fieldIds[propSymbol];
+					}
 					{
 						vint index = context.lexerManager.TokenOrder().IndexOf(node->name.value);
 						if (index != -1)
 						{
 							auto token = context.lexerManager.Tokens()[node->name.value];
-							StatePair pair;
-							pair.begin = CreateState();
-							pair.end = CreateState();
-							startPoses.Add(pair.begin, clauseDisplayText.Length());
-
-							{
-								auto edge = CreateEdge(pair.begin, pair.end);
-								edge->input.type = EdgeInputType::Token;
-								edge->input.token = (vint32_t)index;
-								if (node->field)
-								{
-									auto propSymbol = FindPropSymbol(clauseType, node->field.value);
-									edge->insAfterInput.Add({ AstInsType::Token });
-									edge->insAfterInput.Add({ AstInsType::Field,context.output->fieldIds[propSymbol] });
-								}
-							}
-
-							clauseDisplayText += token->displayText == L"" ? token->Name() : L"\"" + token->displayText + L"\"";
-							endPoses.Add(pair.end, clauseDisplayText.Length());
-							result = pair;
+							auto displayText = token->displayText == L"" ? token->Name() : L"\"" + token->displayText + L"\"";
+							result = BuildTokenSyntax((vint32_t)index, displayText, field);
 							return;
 						}
 					}
@@ -355,29 +374,7 @@ CompileSyntaxVisitor
 						if (index != -1)
 						{
 							auto rule = context.syntaxManager.Rules().Values()[index];
-							StatePair pair;
-							pair.begin = CreateState();
-							pair.end = CreateState();
-							startPoses.Add(pair.begin, clauseDisplayText.Length());
-
-							{
-								auto edge = CreateEdge(pair.begin, pair.end);
-								edge->input.type = EdgeInputType::Rule;
-								edge->input.rule = rule;
-								if (node->field)
-								{
-									auto propSymbol = FindPropSymbol(clauseType, node->field.value);
-									edge->insAfterInput.Add({ AstInsType::Field,context.output->fieldIds[propSymbol] });
-								}
-								else if (!rule->isPartial)
-								{
-									edge->insAfterInput.Add({ AstInsType::DiscardValue });
-								}
-							}
-
-							clauseDisplayText += rule->Name();
-							endPoses.Add(pair.end, clauseDisplayText.Length());
-							result = pair;
+							result = BuildRuleSyntax(rule, field);
 							return;
 						}
 					}
@@ -389,7 +386,7 @@ CompileSyntaxVisitor
 					vint index = context.literalTokens[node];
 					auto token = context.lexerManager.Tokens()[context.lexerManager.TokenOrder()[index]];
 					auto displayText = token->displayText == L"" ? token->Name() : L"\"" + token->displayText + L"\"";
-					result = BuildTokenSyntax((vint32_t)index, displayText);
+					result = BuildTokenSyntax((vint32_t)index, displayText, -1);
 				}
 
 				void Visit(GlrUseSyntax* node) override
