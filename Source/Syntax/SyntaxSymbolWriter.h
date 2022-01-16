@@ -237,22 +237,26 @@ Operators
 
 				inline Rule drule(RuleSymbol* r)
 				{
+					CHECK_ERROR(!r->isPartial, L"vl::glr::parsergen::syntax_writer::drule(RuleSymbol*)#Rule should not be a partial rule.");
 					return { r,Rule::Discard };
 				}
 
 				inline Rule prule(RuleSymbol* r)
 				{
+					CHECK_ERROR(r->isPartial, L"vl::glr::parsergen::syntax_writer::prule(RuleSymbol*)#Rule should be a partial rule.");
 					return { r,Rule::Partial };
 				}
 
 				template<typename F>
 				inline Rule rule(RuleSymbol* r, F field)
 				{
+					CHECK_ERROR(!r->isPartial, L"vl::glr::parsergen::syntax_writer::rule(RuleSymbol*, F)#Rule should not be a partial rule.");
 					return { r,(vint32_t)field };
 				}
 
 				inline Use use(RuleSymbol* r)
 				{
+					CHECK_ERROR(!r->isPartial, L"vl::glr::parsergen::syntax_writer::use(RuleSymbol*)#Rule should not be a partial rule.");
 					return { r };
 				}
 
@@ -386,77 +390,37 @@ Builder
 					template<typename C>
 					StatePair Build(const Create<C>& clause)
 					{
-						StatePair pair;
-						pair.begin = CreateState();
-						pair.end = CreateState();
-						startPoses.Add(pair.begin, clauseDisplayText.Length());
-
-						clauseDisplayText += L"< ";
-						auto bodyPair = Build(clause.body);
-						clauseDisplayText += L" >";
-						{
-							auto edge = CreateEdge(pair.begin, bodyPair.begin);
-							edge->insBeforeInput.Add({ AstInsType::BeginObject,clause.type });
-						}
-						{
-							auto edge = CreateEdge(bodyPair.end, pair.end);
-							edge->insBeforeInput.Add({ AstInsType::EndObject });
-						}
-						endPoses.Add(pair.end, clauseDisplayText.Length());
-						return pair;
+						return builder.BuildCreateClause(
+							clause.type,
+							[this, &clause]() { return Build(clause.body); },
+							[](StatePair pair) { return pair; }
+							);
 					}
 
 					template<typename C>
 					StatePair Build(const Partial<C>& clause)
 					{
-						return Build(clause.body);
+						return builder.BuildPartialClause(
+							[this, &clause]() { return Build(clause.body); },
+							[](StatePair pair) { return pair; }
+							);
 					}
 
 					template<typename C>
 					StatePair Build(const Reuse<C>& clause)
 					{
-						StatePair pair;
-						pair.begin = CreateState();
-						pair.end = CreateState();
-						startPoses.Add(pair.begin, clauseDisplayText.Length());
-
-						clauseDisplayText += L"<< ";
-						auto bodyPair = Build(clause.body);
-						clauseDisplayText += L" >>";
-						{
-							auto edge = CreateEdge(pair.begin, bodyPair.begin);
-							edge->insBeforeInput.Add({ AstInsType::DelayFieldAssignment });
-						}
-						{
-							auto edge = CreateEdge(bodyPair.end, pair.end);
-							edge->insBeforeInput.Add({ AstInsType::EndObject });
-						}
-						endPoses.Add(pair.end, clauseDisplayText.Length());
-						return pair;
+						return builder.BuildReuseClause(
+							[this, &clause]() { return Build(clause.body); },
+							[](StatePair pair) { return pair; }
+							);
 					}
 
 					template<typename C>
 					void Assign(const C& clause)
 					{
-						ruleSymbol->NewClause();
-
-						clauseDisplayText = L"";
-						startPoses.Clear();
-						endPoses.Clear();
-
-						auto pair = Build(clause);
-						ruleSymbol->startStates.Add(pair.begin);
-						pair.end->endingState = true;
-
-						vint l = clauseDisplayText.Length();
-						for (auto [state, pos] : startPoses)
-						{
-							state->label = clauseDisplayText.Left(pos) + L"@ " + clauseDisplayText.Right(l - pos);
-						}
-						for (auto [state, pos] : endPoses)
-						{
-							state->label = clauseDisplayText.Left(pos) + L" @" + clauseDisplayText.Right(l - pos);
-						}
+						builder.BuildClause(
+							[this, &clause]() { return Build(clause); }
+							);
 					}
 				public:
 					Clause(RuleSymbol* _ruleSymbol) : builder(_ruleSymbol) {}

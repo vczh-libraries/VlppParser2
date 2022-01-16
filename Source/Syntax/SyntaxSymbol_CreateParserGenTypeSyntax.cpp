@@ -31,6 +31,9 @@ CreateParserGenTypeSyntax
 				auto _type = manager.CreateRule(L"Type");
 				auto _file = manager.CreateRule(L"File");
 
+				_classPropType->isPartial = true;
+				_classBody->isPartial = true;
+
 				manager.parsableRules.Add(_file);
 				manager.ruleTypes.Add(_file, L"vl::glr::parsergen::GlrAstFile");
 
