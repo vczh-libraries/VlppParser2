@@ -10,13 +10,10 @@ namespace vl
 			using namespace compile_syntax;
 
 /***********************************************************************
-CompileSyntaxVisitor
+AutomatonBuilder
 ***********************************************************************/
 
-			class CompileSyntaxVisitor
-				: public Object
-				, protected virtual GlrSyntax::IVisitor
-				, protected virtual GlrClause::IVisitor
+			class AutomatonBuilder
 			{
 			protected:
 				struct StatePair
@@ -26,15 +23,15 @@ CompileSyntaxVisitor
 				};
 
 				using StatePosMap = Dictionary<StateSymbol*, vint>;
+				using StateBuilder = Func<StatePair()>;
+				using AssignmentBuilder = Func<StatePair(StatePair)>;
 			protected:
 				VisitorContext&				context;
 				RuleSymbol*					ruleSymbol;
-				AstClassSymbol*				clauseType;
 
 				WString						clauseDisplayText;
 				StatePosMap					startPoses;
 				StatePosMap					endPoses;
-				StatePair					result;
 
 				StateSymbol* CreateState()
 				{
@@ -45,20 +42,8 @@ CompileSyntaxVisitor
 				{
 					return ruleSymbol->Owner()->CreateEdge(from, to);
 				}
-
-				StatePair Build(const Ptr<GlrSyntax>& node)
-				{
-					node->Accept(this);
-					return result;
-				}
-
-				StatePair Build(const Ptr<GlrClause>& node)
-				{
-					node->Accept(this);
-					return result;
-				}
 			public:
-				CompileSyntaxVisitor(
+				AutomatonBuilder(
 					VisitorContext& _context,
 					RuleSymbol* _ruleSymbol
 				)
@@ -67,15 +52,23 @@ CompileSyntaxVisitor
 				{
 				}
 
-				void AssignClause(const Ptr<GlrClause>& node)
+				////////////////////////////////////////////////////////
+				// Syntax
+				////////////////////////////////////////////////////////
+
+				////////////////////////////////////////////////////////
+				// Clauses
+				////////////////////////////////////////////////////////
+
+				StatePair BuildClause(const StateBuilder& compileSyntax)
 				{
 					ruleSymbol->NewClause();
-
 					clauseDisplayText = L"";
 					startPoses.Clear();
 					endPoses.Clear();
 
-					auto pair = Build(node);
+					auto pair = compileSyntax();
+
 					ruleSymbol->startStates.Add(pair.begin);
 					pair.end->endingState = true;
 
@@ -88,6 +81,101 @@ CompileSyntaxVisitor
 					{
 						state->label = clauseDisplayText.Left(pos) + L" @" + clauseDisplayText.Right(l - pos);
 					}
+
+					return pair;
+				}
+
+				StatePair BuildAssignment(StatePair pair, vint32_t enumItem, vint32_t field)
+				{
+					auto withState = CreateState();
+					auto edge = CreateEdge(pair.end, withState);
+					edge->insBeforeInput.Add({ AstInsType::EnumItem,enumItem });
+					edge->insBeforeInput.Add({ AstInsType::Field,field });
+					endPoses.Add(withState, clauseDisplayText.Length());
+					return { pair.begin,withState };
+				}
+
+				StatePair BuildCreateClause(AstClassSymbol* clauseType, const StateBuilder& compileSyntax, const AssignmentBuilder& compileAssignments)
+				{
+					StatePair pair;
+					pair.begin = CreateState();
+					pair.end = CreateState();
+					startPoses.Add(pair.begin, clauseDisplayText.Length());
+
+					clauseDisplayText += L"< ";
+					auto bodyPair = compileAssignments(compileSyntax());
+					clauseDisplayText += L" >";
+					{
+						auto edge = CreateEdge(pair.begin, bodyPair.begin);
+						edge->insBeforeInput.Add({ AstInsType::BeginObject,context.output->classIds[clauseType] });
+					}
+					{
+						auto edge = CreateEdge(bodyPair.end, pair.end);
+						edge->insBeforeInput.Add({ AstInsType::EndObject });
+					}
+					endPoses.Add(pair.end, clauseDisplayText.Length());
+					return pair;
+				}
+
+				StatePair BuildPartialClause(const StateBuilder& compileSyntax, const AssignmentBuilder& compileAssignments)
+				{
+					return compileAssignments(compileSyntax());
+				}
+
+				StatePair BuildReuseClause(const StateBuilder& compileSyntax, const AssignmentBuilder& compileAssignments)
+				{
+					StatePair pair;
+					pair.begin = CreateState();
+					pair.end = CreateState();
+					startPoses.Add(pair.begin, clauseDisplayText.Length());
+
+					clauseDisplayText += L"<< ";
+					auto bodyPair = compileAssignments(compileSyntax());
+					clauseDisplayText += L" >>";
+					{
+						auto edge = CreateEdge(pair.begin, bodyPair.begin);
+						edge->insBeforeInput.Add({ AstInsType::DelayFieldAssignment });
+					}
+					{
+						auto edge = CreateEdge(bodyPair.end, pair.end);
+						edge->insBeforeInput.Add({ AstInsType::EndObject });
+					}
+					endPoses.Add(pair.end, clauseDisplayText.Length());
+					return pair;
+				}
+			};
+
+/***********************************************************************
+CompileSyntaxVisitor
+***********************************************************************/
+
+			class CompileSyntaxVisitor
+				: public Object
+				, protected AutomatonBuilder
+				, protected virtual GlrSyntax::IVisitor
+				, protected virtual GlrClause::IVisitor
+			{
+			protected:
+				AstClassSymbol*				clauseType;
+				StatePair					result;
+
+				StatePair Build(const Ptr<GlrSyntax>& node)
+				{
+					node->Accept(this);
+					return result;
+				}
+			public:
+				CompileSyntaxVisitor(
+					VisitorContext& _context,
+					RuleSymbol* _ruleSymbol
+				)
+					: AutomatonBuilder(_context, _ruleSymbol)
+				{
+				}
+
+				void AssignClause(const Ptr<GlrClause>& node)
+				{
+					node->Accept(this);
 				}
 
 			protected:
@@ -310,84 +398,54 @@ CompileSyntaxVisitor
 					result = pair;
 				}
 
-				StatePair Visit(StatePair pair, GlrAssignment* node)
+				StatePair CompileAssignments(StatePair pair, List<Ptr<GlrAssignment>>& assignments)
 				{
-					auto withState = CreateState();
-					auto edge = CreateEdge(pair.end, withState);
-
-					auto propSymbol = FindPropSymbol(clauseType, node->field.value);
-					auto enumSymbol = dynamic_cast<AstEnumSymbol*>(propSymbol->propSymbol);
-					edge->insBeforeInput.Add({ AstInsType::EnumItem,(vint32_t)enumSymbol->ItemOrder().IndexOf(node->value.value) });
-					edge->insBeforeInput.Add({ AstInsType::Field,context.output->fieldIds[propSymbol] });
-
-					endPoses.Add(withState, clauseDisplayText.Length());
-					return { pair.begin,withState };
+					for (auto node : assignments)
+					{
+						auto propSymbol = FindPropSymbol(clauseType, node->field.value);
+						auto enumSymbol = dynamic_cast<AstEnumSymbol*>(propSymbol->propSymbol);
+						auto enumItem = (vint32_t)enumSymbol->ItemOrder().IndexOf(node->value.value);
+						auto field = context.output->fieldIds[propSymbol];
+						pair = BuildAssignment(pair, enumItem, field);
+					}
+					return pair;
 				}
 
 				void Visit(GlrCreateClause* node) override
 				{
 					clauseType = context.clauseTypes[node];
-					StatePair pair;
-					pair.begin = CreateState();
-					pair.end = CreateState();
-					startPoses.Add(pair.begin, clauseDisplayText.Length());
-
-					clauseDisplayText += L"< ";
-					auto bodyPair = Build(node->syntax);
-					for (auto assignment : node->assignments)
+					result = BuildClause([this, node]()
 					{
-						bodyPair = Visit(bodyPair, assignment.Obj());
-					}
-					clauseDisplayText += L" >";
-					{
-						auto classSymbol = dynamic_cast<AstClassSymbol*>(context.astManager.Symbols()[node->type.value]);
-						auto edge = CreateEdge(pair.begin, bodyPair.begin);
-						edge->insBeforeInput.Add({ AstInsType::BeginObject,context.output->classIds[classSymbol] });
-					}
-					{
-						auto edge = CreateEdge(bodyPair.end, pair.end);
-						edge->insBeforeInput.Add({ AstInsType::EndObject });
-					}
-					endPoses.Add(pair.end, clauseDisplayText.Length());
-					result = pair;
+						return BuildCreateClause(
+							clauseType,
+							[this, node]() { return Build(node->syntax); },
+							[this, node](StatePair pair) { return CompileAssignments(pair, node->assignments); }
+							);
+					});
 				}
 
 				void Visit(GlrPartialClause* node) override
 				{
 					clauseType = context.clauseTypes[node];
-					auto bodyPair = Build(node->syntax);
-					for (auto assignment : node->assignments)
+					result = BuildClause([this, node]()
 					{
-						bodyPair = Visit(bodyPair, assignment.Obj());
-					}
-					result = bodyPair;
+						return BuildPartialClause(
+							[this, node]() { return Build(node->syntax); },
+							[this, node](StatePair pair) { return CompileAssignments(pair, node->assignments); }
+							);
+					});
 				}
 
 				void Visit(GlrReuseClause* node) override
 				{
 					clauseType = context.clauseTypes[node];
-					StatePair pair;
-					pair.begin = CreateState();
-					pair.end = CreateState();
-					startPoses.Add(pair.begin, clauseDisplayText.Length());
-
-					clauseDisplayText += L"<< ";
-					auto bodyPair = Build(node->syntax);
-					for (auto assignment : node->assignments)
+					result = BuildClause([this, node]()
 					{
-						bodyPair = Visit(bodyPair, assignment.Obj());
-					}
-					clauseDisplayText += L" >>";
-					{
-						auto edge = CreateEdge(pair.begin, bodyPair.begin);
-						edge->insBeforeInput.Add({ AstInsType::DelayFieldAssignment });
-					}
-					{
-						auto edge = CreateEdge(bodyPair.end, pair.end);
-						edge->insBeforeInput.Add({ AstInsType::EndObject });
-					}
-					endPoses.Add(pair.end, clauseDisplayText.Length());
-					result = pair;
+						return BuildReuseClause(
+							[this, node]() { return Build(node->syntax); },
+							[this, node](StatePair pair) { return CompileAssignments(pair, node->assignments); }
+							);
+					});
 				}
 			};
 
