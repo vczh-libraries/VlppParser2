@@ -48,7 +48,7 @@ CreateParserGenRuleSyntax
 				Clause{ _syntax0 } = create(tok(T::ID, F::RefSyntax_literal) + opt(tok(T::COLON) + tok(T::ID, F::RefSyntax_field)), C::RefSyntax).with(F::RefSyntax_refType, GlrRefType::Id);
 
 				// STRING:value as LiteralSyntax
-				Clause{ _syntax0 } = create(tok(T::STRING, F::RefSyntax_literal), C::RefSyntax).with(F::RefSyntax_refType, GlrRefType::Literal);
+				Clause{ _syntax0 } = create(tok(T::STRING, F::RefSyntax_literal) + opt(tok(T::COLON) + tok(T::ID, F::RefSyntax_field)), C::RefSyntax).with(F::RefSyntax_refType, GlrRefType::Literal);
 
 				// "!" ID:name as UseSyntax
 				Clause{ _syntax0 } = create(tok(T::USE) + tok(T::ID, F::UseSyntax_name), C::UseSyntax);
