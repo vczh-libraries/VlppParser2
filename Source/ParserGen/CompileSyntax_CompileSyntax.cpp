@@ -56,6 +56,110 @@ AutomatonBuilder
 				// Syntax
 				////////////////////////////////////////////////////////
 
+				StatePair BuildLoopSyntax(const StateBuilder& loopBody, const StateBuilder& loopDelimiter, bool hasDelimiter)
+				{
+					StatePair pair, bodyPair, delimiterPair;
+					pair.begin = CreateState();
+					pair.end = CreateState();
+					startPoses.Add(pair.begin, clauseDisplayText.Length());
+
+					clauseDisplayText += L"{ ";
+					bodyPair = loopBody();
+					if (hasDelimiter)
+					{
+						clauseDisplayText += L" ; ";
+						delimiterPair = loopDelimiter();
+					}
+					clauseDisplayText += L" }";
+
+					CreateEdge(pair.begin, bodyPair.begin);
+					CreateEdge(bodyPair.end, pair.end);
+					CreateEdge(pair.begin, pair.end);
+					if (hasDelimiter)
+					{
+						CreateEdge(bodyPair.end, delimiterPair.begin);
+						CreateEdge(delimiterPair.end, bodyPair.begin);
+					}
+					else
+					{
+						CreateEdge(bodyPair.end, bodyPair.begin);
+					}
+
+					endPoses.Add(pair.end, clauseDisplayText.Length());
+					return pair;
+				}
+
+				StatePair BuildOptionalSyntax(GlrOptionalPriority priority, const StateBuilder& optionalBody)
+				{
+					StatePair pair;
+					pair.begin = CreateState();
+					pair.end = CreateState();
+					startPoses.Add(pair.begin, clauseDisplayText.Length());
+
+					switch (priority)
+					{
+					case GlrOptionalPriority::Equal:
+						clauseDisplayText += L"[ ";
+						break;
+					case GlrOptionalPriority::PreferTake:
+						clauseDisplayText += L"+[ ";
+						break;
+					case GlrOptionalPriority::PreferSkip:
+						clauseDisplayText += L"-[ ";
+						break;
+					default:;
+					}
+					auto bodyPair = optionalBody();
+					clauseDisplayText += L" ]";
+
+					auto takeEdge = CreateEdge(pair.begin, bodyPair.begin);
+					CreateEdge(bodyPair.end, pair.end);
+					auto skipEdge = CreateEdge(pair.begin, pair.end);
+
+					if (priority == GlrOptionalPriority::PreferTake)
+					{
+						takeEdge->important = true;
+					}
+					if (priority == GlrOptionalPriority::PreferSkip)
+					{
+						skipEdge->important = true;
+					}
+
+					endPoses.Add(pair.end, clauseDisplayText.Length());
+					return pair;
+				}
+
+				StatePair BuildSequenceSyntax(const StateBuilder& firstSequence, const StateBuilder& secondSequence)
+				{
+					auto firstPair = firstSequence();
+					clauseDisplayText += L" ";
+					auto secondPair = secondSequence();
+					CreateEdge(firstPair.end, secondPair.begin);
+					return { firstPair.begin,secondPair.end };
+				}
+
+				StatePair BuildAlternativeSyntax(const StateBuilder& firstBranch, const StateBuilder& secondBranch)
+				{
+					StatePair pair;
+					pair.begin = CreateState();
+					pair.end = CreateState();
+					startPoses.Add(pair.begin, clauseDisplayText.Length());
+
+					clauseDisplayText += L"( ";
+					auto firstPair = firstBranch();
+					clauseDisplayText += L" | ";
+					auto secondPair = secondBranch();
+					clauseDisplayText += L" )";
+
+					CreateEdge(pair.begin, firstPair.begin);
+					CreateEdge(firstPair.end, pair.end);
+					CreateEdge(pair.begin, secondPair.begin);
+					CreateEdge(secondPair.end, pair.end);
+
+					endPoses.Add(pair.end, clauseDisplayText.Length());
+					return pair;
+				}
+
 				////////////////////////////////////////////////////////
 				// Clauses
 				////////////////////////////////////////////////////////
@@ -296,106 +400,35 @@ CompileSyntaxVisitor
 
 				void Visit(GlrLoopSyntax* node) override
 				{
-					StatePair pair, bodyPair, delimiterPair;
-					pair.begin = CreateState();
-					pair.end = CreateState();
-					startPoses.Add(pair.begin, clauseDisplayText.Length());
-
-					clauseDisplayText += L"{ ";
-					bodyPair = Build(node->syntax);
-					if (node->delimiter)
-					{
-						clauseDisplayText += L" ; ";
-						delimiterPair = Build(node->delimiter);
-					}
-					clauseDisplayText += L" }";
-
-					CreateEdge(pair.begin, bodyPair.begin);
-					CreateEdge(bodyPair.end, pair.end);
-					CreateEdge(pair.begin, pair.end);
-					if (node->delimiter)
-					{
-						CreateEdge(bodyPair.end, delimiterPair.begin);
-						CreateEdge(delimiterPair.end, bodyPair.begin);
-					}
-					else
-					{
-						CreateEdge(bodyPair.end, bodyPair.begin);
-					}
-
-					endPoses.Add(pair.end, clauseDisplayText.Length());
-					result = pair;
+					result = BuildLoopSyntax(
+						[this, node]() { return Build(node->syntax); },
+						[this, node]() { return Build(node->delimiter); },
+						node->delimiter
+						);
 				}
 
 				void Visit(GlrOptionalSyntax* node) override
 				{
-					StatePair pair;
-					pair.begin = CreateState();
-					pair.end = CreateState();
-					startPoses.Add(pair.begin, clauseDisplayText.Length());
-
-					switch (node->priority)
-					{
-					case GlrOptionalPriority::Equal:
-						clauseDisplayText += L"[ ";
-						break;
-					case GlrOptionalPriority::PreferTake:
-						clauseDisplayText += L"+[ ";
-						break;
-					case GlrOptionalPriority::PreferSkip:
-						clauseDisplayText += L"-[ ";
-						break;
-					default:;
-					}
-					auto bodyPair = Build(node->syntax);
-					clauseDisplayText += L" ]";
-
-					auto takeEdge = CreateEdge(pair.begin, bodyPair.begin);
-					CreateEdge(bodyPair.end, pair.end);
-					auto skipEdge = CreateEdge(pair.begin, pair.end);
-
-					if (node->priority == GlrOptionalPriority::PreferTake)
-					{
-						takeEdge->important = true;
-					}
-					if (node->priority == GlrOptionalPriority::PreferSkip)
-					{
-						skipEdge->important = true;
-					}
-
-					endPoses.Add(pair.end, clauseDisplayText.Length());
-					result = pair;
+					result = BuildOptionalSyntax(
+						node->priority,
+						[this, node]() { return Build(node->syntax); }
+						);
 				}
 
 				void Visit(GlrSequenceSyntax* node) override
 				{
-					auto firstPair = Build(node->first);
-					clauseDisplayText += L" ";
-					auto secondPair = Build(node->second);
-					CreateEdge(firstPair.end, secondPair.begin);
-					result = { firstPair.begin,secondPair.end };
+					result = BuildSequenceSyntax(
+						[this, node]() { return Build(node->first); },
+						[this, node]() { return Build(node->second); }
+						);
 				}
 
 				void Visit(GlrAlternativeSyntax* node) override
 				{
-					StatePair pair;
-					pair.begin = CreateState();
-					pair.end = CreateState();
-					startPoses.Add(pair.begin, clauseDisplayText.Length());
-
-					clauseDisplayText += L"( ";
-					auto firstPair = Build(node->first);
-					clauseDisplayText += L" | ";
-					auto secondPair = Build(node->second);
-					clauseDisplayText += L" )";
-
-					CreateEdge(pair.begin, firstPair.begin);
-					CreateEdge(firstPair.end, pair.end);
-					CreateEdge(pair.begin, secondPair.begin);
-					CreateEdge(secondPair.end, pair.end);
-
-					endPoses.Add(pair.end, clauseDisplayText.Length());
-					result = pair;
+					result = BuildAlternativeSyntax(
+						[this, node]() { return Build(node->first); },
+						[this, node]() { return Build(node->second); }
+						);
 				}
 
 				StatePair CompileAssignments(StatePair pair, List<Ptr<GlrAssignment>>& assignments)
