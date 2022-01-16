@@ -1,13 +1,5 @@
 # TODO
 
-## Roadmap
-
-- Reimplement C++ parser in vczh-libraries/Document using this project.
-  - Move all test cases to `BuiltIn_CppDoc`.
-- Refactor vczh-libraries/Document to generate document using the new parser but skip the code index temporary.
-- Create a new repo `BuildTools` and adapt the release license instead of the development license.
-- Review all comments.
-
 ## Features to Add
 
 - Add `'LITERAL'` syntax. Unlike `"LITERAL"`, `'LITERAL'` **CANNOT** be any token's display text.
@@ -40,6 +32,7 @@
 - Optimize `CrossReferencedNFA` to merge prefix (two states can be merged if their `InEdges` are identical, `FromState` in `InEdges` are replaced by merged states).
   - Issue: `X ::= ([a] | [b]) c` fails because when both optional syntax fail it creates two trace routes to c and causes ambiguity.
 - `JsonEscapeString` `JsonUnescapeString` handle surrogate pairs correctly.
+- Review all comments.
 
 ## Experiments
 
