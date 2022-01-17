@@ -49,6 +49,10 @@ FilePath LogSyntaxWithPath(
 				break;
 			case EdgeInputType::Token:
 				writer.WriteString(L"\ttoken: " + tokenName(edge->input.token));
+				if (edge->input.condition)
+				{
+					writer.WriteString(L"=\"" + edge->input.condition.Value() + L"\"");
+				}
 				break;
 			case EdgeInputType::Rule:
 				if (manager.Phase() == SyntaxPhase::CrossReferencedNFA)

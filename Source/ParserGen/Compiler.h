@@ -75,6 +75,7 @@ namespace vl
 Compiler
 ***********************************************************************/
 
+			extern WString						UnescapeLiteral(const WString& literal, wchar_t quot);
 			extern void							CompileAst(AstSymbolManager& astManager, AstDefFile* astDefFile, Ptr<GlrAstFile> file);
 			extern void							CompileLexer(LexerSymbolManager& lexerManager, const WString& input);
 			extern void							CompileSyntax(AstSymbolManager& astManager, LexerSymbolManager& lexerManager, SyntaxSymbolManager& syntaxManager, Ptr<CppParserGenOutput> output, collections::List<Ptr<GlrSyntaxFile>>& files);

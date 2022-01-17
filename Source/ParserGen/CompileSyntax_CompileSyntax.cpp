@@ -65,7 +65,7 @@ CompileSyntaxVisitor
 							{
 								auto token = context.lexerManager.Tokens()[node->literal.value];
 								auto displayText = token->displayText == L"" ? token->Name() : L"\"" + token->displayText + L"\"";
-								result = automatonBuilder.BuildTokenSyntax((vint32_t)index, displayText, field);
+								result = automatonBuilder.BuildTokenSyntax((vint32_t)index, displayText, {}, field);
 								return;
 							}
 						}
@@ -85,15 +85,16 @@ CompileSyntaxVisitor
 							vint index = context.literalTokens[node];
 							auto token = context.lexerManager.Tokens()[context.lexerManager.TokenOrder()[index]];
 							auto displayText = token->displayText == L"" ? token->Name() : L"\"" + token->displayText + L"\"";
-							result = automatonBuilder.BuildTokenSyntax((vint32_t)index, displayText, field);
+							result = automatonBuilder.BuildTokenSyntax((vint32_t)index, displayText, {}, field);
 						}
 						break;
 					case GlrRefType::ConditionalLiteral:
 						{
 							vint index = context.literalTokens[node];
 							auto token = context.lexerManager.Tokens()[context.lexerManager.TokenOrder()[index]];
+							auto condition = UnescapeLiteral(node->literal.value, L'\'');
 							auto displayText = token->displayText == L"" ? token->Name() : L"\"" + token->displayText + L"\"";
-							result = automatonBuilder.BuildTokenSyntax((vint32_t)index, displayText, field);
+							result = automatonBuilder.BuildTokenSyntax((vint32_t)index, displayText, condition, field);
 						}
 						break;
 					default:;

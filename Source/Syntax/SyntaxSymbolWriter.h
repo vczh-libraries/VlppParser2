@@ -52,7 +52,7 @@ AutomatonBuilder
 			public:
 				AutomatonBuilder(RuleSymbol* _ruleSymbol);
 
-				StatePair					BuildTokenSyntax(vint32_t tokenId, const WString& displayText, vint32_t field);
+				StatePair					BuildTokenSyntax(vint32_t tokenId, const WString& displayText, Nullable<WString> condition, vint32_t field);
 				StatePair					BuildRuleSyntax(RuleSymbol* rule, vint32_t field);
 				StatePair					BuildUseSyntax(RuleSymbol* rule);
 				StatePair					BuildLoopSyntax(const StateBuilder& loopBody, const StateBuilder& loopDelimiter, bool hasDelimiter);
@@ -320,7 +320,7 @@ Builder
 
 					StatePair Build(const Token& clause)
 					{
-						return builder.BuildTokenSyntax(clause.id, clause.display, clause.field);
+						return builder.BuildTokenSyntax(clause.id, clause.display, {}, clause.field);
 					}
 
 					StatePair Build(const Rule& clause)

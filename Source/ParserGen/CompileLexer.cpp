@@ -6,8 +6,32 @@ namespace vl
 	{
 		namespace parsergen
 		{
+			using namespace collections;
 			using namespace stream;
 			using namespace regex;
+
+/***********************************************************************
+UnescapeLiteral
+***********************************************************************/
+
+			WString UnescapeLiteral(const WString& literal, wchar_t quot)
+			{
+				Array<wchar_t> buffer(literal.Length());
+				wchar_t* writing = &buffer[0];
+
+				for (vint i = 1; i < literal.Length() - 1; i++)
+				{
+					wchar_t c = literal[i];
+					*writing++ = c;
+					if (c == quot)
+					{
+						i++;
+					}
+				}
+				*writing = 0;
+
+				return &buffer[0];
+			}
 
 /***********************************************************************
 CompileLexer

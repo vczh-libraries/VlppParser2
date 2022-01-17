@@ -35,6 +35,21 @@ StateSymbol
 							{
 							case EdgeInputType::Token:
 								result = e1->input.token - e2->input.token;
+								if (result == 0)
+								{
+									if (e1->input.condition && e2->input.condition)
+									{
+										result = (vint)WString::Compare(e1->input.condition.Value(), e2->input.condition.Value());
+									}
+									else if (e1->input.condition)
+									{
+										result = 1;
+									}
+									else if (e2->input.condition)
+									{
+										result = -1;
+									}
+								}
 								break;
 							case EdgeInputType::Rule:
 								result = ownerManager->RuleOrder().IndexOf(e1->input.rule->Name()) - ownerManager->RuleOrder().IndexOf(e2->input.rule->Name());

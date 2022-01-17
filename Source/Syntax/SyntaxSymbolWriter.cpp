@@ -20,7 +20,7 @@ AutomatonBuilder
 AutomatonBuilder (Syntax)
 ***********************************************************************/
 
-			AutomatonBuilder::StatePair AutomatonBuilder::BuildTokenSyntax(vint32_t tokenId, const WString& displayText, vint32_t field)
+			AutomatonBuilder::StatePair AutomatonBuilder::BuildTokenSyntax(vint32_t tokenId, const WString& displayText, Nullable<WString> condition, vint32_t field)
 			{
 				StatePair pair;
 				pair.begin = CreateState();
@@ -31,6 +31,7 @@ AutomatonBuilder (Syntax)
 					auto edge = CreateEdge(pair.begin, pair.end);
 					edge->input.type = EdgeInputType::Token;
 					edge->input.token = tokenId;
+					edge->input.condition = condition;
 					if (field != -1)
 					{
 						edge->insAfterInput.Add({ AstInsType::Token });
