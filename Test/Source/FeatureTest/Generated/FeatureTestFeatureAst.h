@@ -13,6 +13,7 @@ Licensed under https://github.com/vczh-libraries/License
 namespace featuretest
 {
 	class BranchedOptionalFeature;
+	class ClFeature;
 	class Feature;
 	class FeatureToResolve;
 	class Gt;
@@ -68,6 +69,7 @@ namespace featuretest
 			virtual void Visit(PbaFeature* node) = 0;
 			virtual void Visit(Pwa1Feature* node) = 0;
 			virtual void Visit(PwlFeature* node) = 0;
+			virtual void Visit(ClFeature* node) = 0;
 		};
 
 		virtual void Accept(Feature::IVisitor* visitor) = 0;
@@ -139,6 +141,14 @@ namespace featuretest
 		void Accept(Feature::IVisitor* visitor) override;
 	};
 
+	class ClFeature : public Feature, vl::reflection::Description<ClFeature>
+	{
+	public:
+		vl::glr::ParsingToken id;
+
+		void Accept(Feature::IVisitor* visitor) override;
+	};
+
 	class FeatureToResolve : public Feature, vl::reflection::Description<FeatureToResolve>
 	{
 	public:
@@ -167,6 +177,7 @@ namespace vl
 			DECL_TYPE_INFO(featuretest::PbaFeature)
 			DECL_TYPE_INFO(featuretest::Pwa1Feature)
 			DECL_TYPE_INFO(featuretest::PwlFeature)
+			DECL_TYPE_INFO(featuretest::ClFeature)
 			DECL_TYPE_INFO(featuretest::FeatureToResolve)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
@@ -203,6 +214,11 @@ namespace vl
 				}
 
 				void Visit(featuretest::PwlFeature* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+				void Visit(featuretest::ClFeature* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}

@@ -20,6 +20,8 @@ FeatureTestAstInsReceiver : public vl::glr::AstInsReceiverBase
 		{
 		case FeatureTestClasses::BranchedOptionalFeature:
 			return new featuretest::BranchedOptionalFeature();
+		case FeatureTestClasses::ClFeature:
+			return new featuretest::ClFeature();
 		case FeatureTestClasses::FeatureToResolve:
 			return new featuretest::FeatureToResolve();
 		case FeatureTestClasses::Gt:
@@ -100,7 +102,13 @@ FeatureTestAstInsReceiver : public vl::glr::AstInsReceiverBase
 	void FeatureTestAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, const vl::regex::RegexToken& token, vl::vint32_t tokenIndex)
 	{
 		auto cppFieldName = FeatureTestCppFieldName((FeatureTestFields)field);
-		return vl::glr::AssemblyThrowFieldNotToken(field, cppFieldName);
+		switch((FeatureTestFields)field)
+		{
+		case FeatureTestFields::ClFeature_id:
+			return vl::glr::AssemblerSetTokenField(&featuretest::ClFeature::id, object, field, token, tokenIndex, cppFieldName);
+		default:
+			return vl::glr::AssemblyThrowFieldNotToken(field, cppFieldName);
+		}
 	}
 
 	void FeatureTestAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::vint32_t enumItem)
@@ -121,6 +129,7 @@ FeatureTestAstInsReceiver : public vl::glr::AstInsReceiverBase
 	{
 		const wchar_t* results[] = {
 			L"BranchedOptionalFeature",
+			L"ClFeature",
 			L"Feature",
 			L"FeatureToResolve",
 			L"Gt",
@@ -133,13 +142,14 @@ FeatureTestAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"PwlFeature",
 		};
 		vl::vint index = (vl::vint)type;
-		return 0 <= index && index < 11 ? results[index] : nullptr;
+		return 0 <= index && index < 12 ? results[index] : nullptr;
 	}
 
 	const wchar_t* FeatureTestCppTypeName(FeatureTestClasses type)
 	{
 		const wchar_t* results[] = {
 			L"featuretest::BranchedOptionalFeature",
+			L"featuretest::ClFeature",
 			L"featuretest::Feature",
 			L"featuretest::FeatureToResolve",
 			L"featuretest::Gt",
@@ -152,7 +162,7 @@ FeatureTestAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"featuretest::PwlFeature",
 		};
 		vl::vint index = (vl::vint)type;
-		return 0 <= index && index < 11 ? results[index] : nullptr;
+		return 0 <= index && index < 12 ? results[index] : nullptr;
 	}
 
 	const wchar_t* FeatureTestFieldName(FeatureTestFields field)
@@ -161,6 +171,7 @@ FeatureTestAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"BranchedOptionalFeature::optional",
 			L"BranchedOptionalFeature::tails",
 			L"BranchedOptionalFeature::type",
+			L"ClFeature::id",
 			L"FeatureToResolve::candidates",
 			L"NestedOptionalFeature::optional",
 			L"NestedOptionalFeature::tail1",
@@ -184,7 +195,7 @@ FeatureTestAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"PwlFeature::two",
 		};
 		vl::vint index = (vl::vint)field;
-		return 0 <= index && index < 24 ? results[index] : nullptr;
+		return 0 <= index && index < 25 ? results[index] : nullptr;
 	}
 
 	const wchar_t* FeatureTestCppFieldName(FeatureTestFields field)
@@ -193,6 +204,7 @@ FeatureTestAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"featuretest::BranchedOptionalFeature::optional",
 			L"featuretest::BranchedOptionalFeature::tails",
 			L"featuretest::BranchedOptionalFeature::type",
+			L"featuretest::ClFeature::id",
 			L"featuretest::FeatureToResolve::candidates",
 			L"featuretest::NestedOptionalFeature::optional",
 			L"featuretest::NestedOptionalFeature::tail1",
@@ -216,7 +228,7 @@ FeatureTestAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"featuretest::PwlFeature::two",
 		};
 		vl::vint index = (vl::vint)field;
-		return 0 <= index && index < 24 ? results[index] : nullptr;
+		return 0 <= index && index < 25 ? results[index] : nullptr;
 	}
 
 	vl::Ptr<vl::glr::ParsingAstBase> FeatureTestAstInsReceiver::ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates)
@@ -226,6 +238,8 @@ FeatureTestAstInsReceiver : public vl::glr::AstInsReceiverBase
 		{
 		case FeatureTestClasses::BranchedOptionalFeature:
 			return vl::glr::AssemblerResolveAmbiguity<featuretest::BranchedOptionalFeature, featuretest::FeatureToResolve>(type, candidates, cppTypeName);
+		case FeatureTestClasses::ClFeature:
+			return vl::glr::AssemblerResolveAmbiguity<featuretest::ClFeature, featuretest::FeatureToResolve>(type, candidates, cppTypeName);
 		case FeatureTestClasses::Feature:
 			return vl::glr::AssemblerResolveAmbiguity<featuretest::Feature, featuretest::FeatureToResolve>(type, candidates, cppTypeName);
 		case FeatureTestClasses::FeatureToResolve:

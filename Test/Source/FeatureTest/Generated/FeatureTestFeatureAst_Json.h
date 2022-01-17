@@ -20,6 +20,7 @@ namespace featuretest
 		{
 		protected:
 			virtual void PrintFields(BranchedOptionalFeature* node);
+			virtual void PrintFields(ClFeature* node);
 			virtual void PrintFields(Feature* node);
 			virtual void PrintFields(FeatureToResolve* node);
 			virtual void PrintFields(Gt* node);
@@ -39,6 +40,7 @@ namespace featuretest
 			void Visit(PbaFeature* node) override;
 			void Visit(Pwa1Feature* node) override;
 			void Visit(PwlFeature* node) override;
+			void Visit(ClFeature* node) override;
 
 		public:
 			FeatureAstVisitor(vl::stream::StreamWriter& _writer);

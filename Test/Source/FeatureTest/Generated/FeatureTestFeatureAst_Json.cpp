@@ -42,6 +42,12 @@ namespace featuretest
 			}
 			EndField();
 		}
+		void FeatureAstVisitor::PrintFields(ClFeature* node)
+		{
+			BeginField(L"id");
+			WriteToken(node->id);
+			EndField();
+		}
 		void FeatureAstVisitor::PrintFields(Feature* node)
 		{
 		}
@@ -321,6 +327,20 @@ namespace featuretest
 			WriteType(L"PwlFeature", node);
 			PrintFields(static_cast<Feature*>(node));
 			PrintFields(static_cast<PwlFeature*>(node));
+			EndObject();
+		}
+
+		void FeatureAstVisitor::Visit(ClFeature* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"ClFeature", node);
+			PrintFields(static_cast<Feature*>(node));
+			PrintFields(static_cast<ClFeature*>(node));
 			EndObject();
 		}
 

@@ -26,13 +26,15 @@ namespace featuretest
 		PREFIX_WITH_AMBIGUITY_1 = 9,
 		PREFIX_WITH_AMBIGUITY_2 = 10,
 		PREFIX_WITH_LEFTREC = 11,
-		PLUS = 12,
-		LT = 13,
-		GT = 14,
-		SPACE = 15,
+		CONDITIONAL_LITERAL = 12,
+		PLUS = 13,
+		LT = 14,
+		GT = 15,
+		ID = 16,
+		SPACE = 17,
 	};
 
-	constexpr vl::vint FeatureTestTokenCount = 16;
+	constexpr vl::vint FeatureTestTokenCount = 18;
 	extern bool FeatureTestTokenDeleter(vl::vint token);
 	extern const wchar_t* FeatureTestTokenId(FeatureTestTokens token);
 	extern const wchar_t* FeatureTestTokenDisplayText(FeatureTestTokens token);

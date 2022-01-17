@@ -21,6 +21,12 @@ namespace featuretest
 			MakeBranchedOptionalFeature& type(BranchType value);
 		};
 
+		class MakeClFeature : public vl::glr::ParsingAstBuilder<ClFeature>
+		{
+		public:
+			MakeClFeature& id(const vl::WString& value);
+		};
+
 		class MakeFeatureToResolve : public vl::glr::ParsingAstBuilder<FeatureToResolve>
 		{
 		public:

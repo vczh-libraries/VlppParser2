@@ -89,7 +89,13 @@ CompileSyntaxVisitor
 						}
 						break;
 					case GlrRefType::ConditionalLiteral:
-						CHECK_FAIL(L"Not Implemented!");
+						{
+							vint index = context.literalTokens[node];
+							auto token = context.lexerManager.Tokens()[context.lexerManager.TokenOrder()[index]];
+							auto displayText = token->displayText == L"" ? token->Name() : L"\"" + token->displayText + L"\"";
+							result = automatonBuilder.BuildTokenSyntax((vint32_t)index, displayText, field);
+						}
+						break;
 					default:;
 					}
 				}
