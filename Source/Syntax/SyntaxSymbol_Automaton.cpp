@@ -7,6 +7,7 @@ namespace vl
 		namespace parsergen
 		{
 			using namespace collections;
+			using namespace stream;
 
 /***********************************************************************
 SyntaxSymbolManager::BuildAutomaton
@@ -96,13 +97,42 @@ SyntaxSymbolManager::BuildAutomaton
 					}
 				}
 
+				// executable.stringLiteralBuffer
+				{
+					MemoryStream stringLiteralBuffer;
+					{
+						StreamWriter stringLiteralWriter(stringLiteralBuffer);
+						for (auto edge : edgesInOrder)
+						{
+							if (edge->input.condition)
+							{
+								stringLiteralWriter.WriteString(edge->input.condition.Value());
+							}
+						}
+					}
+					{
+						stringLiteralBuffer.SeekFromBegin(0);
+						StreamReader stringLiteralReader(stringLiteralBuffer);
+						executable.stringLiteralBuffer = stringLiteralReader.ReadToEnd();
+					}
+				}
+
 				// executable.edges
 				executable.edges.Resize(edgesInOrder.Count());
+				vint32_t stringLiteralIndex = 0;
 				for (auto [edge, edgeIndex] : indexed(edgesInOrder))
 				{
 					auto&& edgeDesc = executable.edges[edgeIndex];
 					edgeDesc.fromState = (vint32_t)statesInOrder.IndexOf(edge->From());
 					edgeDesc.toState = (vint32_t)statesInOrder.IndexOf(edge->To());
+					if (edge->input.condition)
+					{
+						vint32_t length = (vint32_t)edge->input.condition.Value().Length();
+						edgeDesc.condition.start = stringLiteralIndex;
+						edgeDesc.condition.count = length;
+						stringLiteralIndex += length;
+					}
+
 					switch (edge->importancy)
 					{
 					case EdgeImportancy::HighPriority:

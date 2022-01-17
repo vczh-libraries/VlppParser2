@@ -41,6 +41,10 @@ FilePath LogAutomatonWithPath(
 					break;
 				default:
 					writer.WriteString(L"\ttoken: " + tokenName((vint32_t)(input - Executable::TokenBegin)));
+					if (edge.condition.start != -1)
+					{
+						writer.WriteString(L"=\"" + executable.stringLiteralBuffer.Sub(edge.condition.start, edge.condition.count) + L"\"");
+					}
 					break;
 				}
 				switch (edge.priority)
