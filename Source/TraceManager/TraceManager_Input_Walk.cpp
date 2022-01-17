@@ -14,7 +14,10 @@ TraceManager::IsQualifiedTokenForCondition
 			bool TraceManager::IsQualifiedTokenForCondition(regex::RegexToken* token, StringLiteral condition)
 			{
 				if (condition.start == -1) return true;
-				return false;
+				if (token->length != condition.count) return false;
+				auto reading = executable.stringLiteralBuffer.Buffer();
+				if (memcmp(token->reading, reading + condition.start, sizeof(wchar_t) * condition.count) != 0) return false;
+				return true;
 			}
 
 /***********************************************************************
