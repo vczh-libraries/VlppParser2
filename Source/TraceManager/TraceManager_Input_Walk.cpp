@@ -111,14 +111,14 @@ TraceManager::WalkAlongEpsilonEdges
 
 			void TraceManager::WalkAlongLeftrecEdges(
 				vint32_t currentTokenIndex,
-				vint32_t lookAhead,
+				regex::RegexToken* lookAhead,
 				Trace* trace,
 				EdgeArray& edgeArray
 			)
 			{
 				// if there is no more token
 				// then it is not possible for more left recursions
-				if (lookAhead == -1) return;
+				if (!lookAhead) return;
 
 				for (vint32_t edgeRef = 0; edgeRef < edgeArray.count; edgeRef++)
 				{
@@ -126,7 +126,7 @@ TraceManager::WalkAlongEpsilonEdges
 					auto& edgeDesc = executable.edges[byEdge];
 
 					// see if the target state could consume that token
-					vint32_t lookAheadTransitionIndex = executable.GetTransitionIndex(edgeDesc.toState, Executable::TokenBegin + lookAhead);
+					vint32_t lookAheadTransitionIndex = executable.GetTransitionIndex(edgeDesc.toState, Executable::TokenBegin + (vint32_t)lookAhead->token);
 					auto& lookAheadEdgeArray = executable.transitions[lookAheadTransitionIndex];
 					if (lookAheadEdgeArray.count == 0) continue;
 
@@ -140,7 +140,7 @@ TraceManager::WalkAlongEpsilonEdges
 
 			void TraceManager::WalkAlongEpsilonEdges(
 				vint32_t currentTokenIndex,
-				vint32_t lookAhead,
+				regex::RegexToken* lookAhead,
 				Trace* trace
 			)
 			{
@@ -151,7 +151,7 @@ TraceManager::WalkAlongEpsilonEdges
 
 				vint32_t endingCount = -1;
 
-				if (lookAhead == -1)
+				if (!lookAhead)
 				{
 					// if there is no more tokens
 					// then we have to go all the way to the end anyway
@@ -215,7 +215,7 @@ TraceManager::WalkAlongEpsilonEdges
 							{
 								vint32_t byEdge = edgeArray.start + edgeRef;
 								auto& edgeDesc = executable.edges[byEdge];
-								vint32_t lookAheadTransitionIndex = executable.GetTransitionIndex(edgeDesc.toState, Executable::TokenBegin + lookAhead);
+								vint32_t lookAheadTransitionIndex = executable.GetTransitionIndex(edgeDesc.toState, Executable::TokenBegin + (vint32_t)lookAhead->token);
 								auto& lookAheadEdgeArray = executable.transitions[lookAheadTransitionIndex];
 
 								// mark this EndingInput if any LeftrecInput + lookAhead transition exists
@@ -229,7 +229,7 @@ TraceManager::WalkAlongEpsilonEdges
 
 						// try lookAhead
 						{
-							vint32_t transitionIndex = executable.GetTransitionIndex(currentState, Executable::TokenBegin + lookAhead);
+							vint32_t transitionIndex = executable.GetTransitionIndex(currentState, Executable::TokenBegin + (vint32_t)lookAhead->token);
 							auto&& edgeArray = executable.transitions[transitionIndex];
 
 							// mark this EndingInput if lookAhead transition exists
@@ -302,7 +302,8 @@ TraceManager::WalkAlongTokenEdges
 			void TraceManager::WalkAlongTokenEdges(
 				vint32_t currentTokenIndex,
 				vint32_t input,
-				vint32_t lookAhead,
+				regex::RegexToken* token,
+				regex::RegexToken* lookAhead,
 				Trace* trace,
 				EdgeArray& edgeArray
 			)

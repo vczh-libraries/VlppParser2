@@ -28,7 +28,7 @@ Input
 					auto trace = concurrentTraces->Get(traceIndex);
 					vint32_t transitionIndex = executable.GetTransitionIndex(trace->state, input);
 					auto&& edgeArray = executable.transitions[transitionIndex];
-					WalkAlongTokenEdges(currentTokenIndex, input, (lookAhead ? (vint32_t)lookAhead->token : -1), trace, edgeArray);
+					WalkAlongTokenEdges(currentTokenIndex, input, token, lookAhead, trace, edgeArray);
 				}
 
 				// if competitions happen between new surviving traces
