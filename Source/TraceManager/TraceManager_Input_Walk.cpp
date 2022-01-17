@@ -8,6 +8,31 @@ namespace vl
 		{
 
 /***********************************************************************
+TraceManager::IsQualifiedTokenForCondition
+***********************************************************************/
+
+			bool TraceManager::IsQualifiedTokenForCondition(regex::RegexToken* token, StringLiteral condition)
+			{
+				if (condition.start == -1) return true;
+				return false;
+			}
+
+/***********************************************************************
+TraceManager::IsQualifiedTokenForEdgeArray
+***********************************************************************/
+
+			bool TraceManager::IsQualifiedTokenForEdgeArray(regex::RegexToken* token, EdgeArray& edgeArray)
+			{
+				for (vint32_t edgeRef = 0; edgeRef < edgeArray.count; edgeRef++)
+				{
+					vint32_t byEdge = edgeArray.start + edgeRef;
+					auto& edgeDesc = executable.edges[byEdge];
+					if (IsQualifiedTokenForCondition(token, edgeDesc.condition)) return true;
+				}
+				return false;
+			}
+
+/***********************************************************************
 TraceManager::WalkAlongSingleEdge
 ***********************************************************************/
 
@@ -128,7 +153,7 @@ TraceManager::WalkAlongEpsilonEdges
 					// see if the target state could consume that token
 					vint32_t lookAheadTransitionIndex = executable.GetTransitionIndex(edgeDesc.toState, Executable::TokenBegin + (vint32_t)lookAhead->token);
 					auto& lookAheadEdgeArray = executable.transitions[lookAheadTransitionIndex];
-					if (lookAheadEdgeArray.count == 0) continue;
+					if (!IsQualifiedTokenForEdgeArray(lookAhead, lookAheadEdgeArray)) continue;
 
 					// proceed only if it can
 					WalkAlongSingleEdge(currentTokenIndex, Executable::LeftrecInput, trace, byEdge, edgeDesc);
@@ -219,7 +244,7 @@ TraceManager::WalkAlongEpsilonEdges
 								auto& lookAheadEdgeArray = executable.transitions[lookAheadTransitionIndex];
 
 								// mark this EndingInput if any LeftrecInput + lookAhead transition exists
-								if (lookAheadEdgeArray.count > 0)
+								if (IsQualifiedTokenForEdgeArray(lookAhead, lookAheadEdgeArray))
 								{
 									endingCount = currentCount;
 									goto TRY_ENDING_INPUT;
@@ -233,7 +258,7 @@ TraceManager::WalkAlongEpsilonEdges
 							auto&& edgeArray = executable.transitions[transitionIndex];
 
 							// mark this EndingInput if lookAhead transition exists
-							if (edgeArray.count > 0)
+							if (IsQualifiedTokenForEdgeArray(lookAhead, edgeArray))
 							{
 								endingCount = currentCount;
 							}
@@ -315,11 +340,14 @@ TraceManager::WalkAlongTokenEdges
 				{
 					vint32_t byEdge = edgeArray.start + edgeRef;
 					auto& edgeDesc = executable.edges[edgeArray.start + edgeRef];
-					if (auto newTrace = WalkAlongSingleEdge(currentTokenIndex, input, trace, byEdge, edgeDesc))
+					if (IsQualifiedTokenForCondition(token, edgeDesc.condition))
 					{
-						// continue with as much EndingInput and LeftrecInput transitions as possible
-						// TokenInput could be followed by EndingInput or LeftrecInput
-						WalkAlongEpsilonEdges(currentTokenIndex, lookAhead, newTrace);
+						if (auto newTrace = WalkAlongSingleEdge(currentTokenIndex, input, trace, byEdge, edgeDesc))
+						{
+							// continue with as much EndingInput and LeftrecInput transitions as possible
+							// TokenInput could be followed by EndingInput or LeftrecInput
+							WalkAlongEpsilonEdges(currentTokenIndex, lookAhead, newTrace);
+						}
 					}
 				}
 			}

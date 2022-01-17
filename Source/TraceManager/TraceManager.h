@@ -300,6 +300,8 @@ TraceManager
 				void								CheckBackupTracesBeforeSwapping(vint32_t currentTokenIndex);
 
 				// Walk
+				bool								IsQualifiedTokenForCondition(regex::RegexToken* token, StringLiteral condition);
+				bool								IsQualifiedTokenForEdgeArray(regex::RegexToken* token, EdgeArray& edgeArray);
 				Trace*								WalkAlongSingleEdge(vint32_t currentTokenIndex, vint32_t input, Trace* trace, vint32_t byEdge, EdgeDesc& edgeDesc);
 				void								WalkAlongLeftrecEdges(vint32_t currentTokenIndex, regex::RegexToken* lookAhead, Trace* trace, EdgeArray& edgeArray);
 				void								WalkAlongEpsilonEdges(vint32_t currentTokenIndex, regex::RegexToken* lookAhead, Trace* trace);
