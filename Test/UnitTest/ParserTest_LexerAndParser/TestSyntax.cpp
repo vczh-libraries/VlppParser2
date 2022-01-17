@@ -56,9 +56,9 @@ namespace TestSyntax_TestObjects
 		tm.Initialize(executable.ruleStartStates[metadata.ruleNames.IndexOf(L"Module")]);
 		for (vint32_t i = 0; i < tokens.Count(); i++)
 		{
-			auto&& token = tokens[i];
-			auto lookAhead = i == tokens.Count() - 1 ? -1 : tokens[i + 1].token;
-			tm.Input(i, (vint32_t)token.token, (vint32_t)lookAhead);
+			auto token = &tokens[i];
+			auto lookAhead = i == tokens.Count() - 1 ? nullptr : &tokens[i + 1];
+			tm.Input(i, token, lookAhead);
 			TEST_ASSERT(tm.concurrentCount > 0);
 		}
 

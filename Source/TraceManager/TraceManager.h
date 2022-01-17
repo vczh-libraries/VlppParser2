@@ -346,7 +346,7 @@ TraceManager
 				AttendingCompetitions*				AllocateAttendingCompetitions();
 
 				void								Initialize(vint32_t startState);
-				void								Input(vint32_t currentTokenIndex, vint32_t token, vint32_t lookAhead);
+				void								Input(vint32_t currentTokenIndex, regex::RegexToken* token, regex::RegexToken* lookAhead);
 				void								EndOfInput();
 				Trace*								PrepareTraceRoute();
 				Ptr<ParsingAstBase>					ExecuteTrace(Trace* trace, IAstInsReceiver& receiver, collections::List<regex::RegexToken>& tokens);

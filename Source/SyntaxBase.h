@@ -152,13 +152,13 @@ ParserBase<TTokens, TStates, TReceiver, TStateTypes>
 				tm.Initialize(state);
 				for (vint32_t i = 0; i < tokens.Count(); i++)
 				{
-					auto&& token = tokens[i];
-					auto lookAhead = i == tokens.Count() - 1 ? -1 : tokens[i + 1].token;
-					tm.Input(i, (vint32_t)token.token, (vint32_t)lookAhead);
+					auto token = &tokens[i];
+					auto lookAhead = i == tokens.Count() - 1 ? nullptr : &tokens[i + 1];
+					tm.Input(i, token, lookAhead);
 
 					if (tm.concurrentCount == 0)
 					{
-						auto args = ErrorArgs::InvalidToken(token, tokens, *executable.Obj(), tm);
+						auto args = ErrorArgs::InvalidToken(*token, tokens, *executable.Obj(), tm);
 						OnError(args);
 						if (args.throwError) CHECK_FAIL(ERROR_MESSAGE_PREFIX L"Error happens during parsing.");
 						return nullptr;
