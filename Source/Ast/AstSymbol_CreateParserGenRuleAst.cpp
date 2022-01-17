@@ -24,6 +24,7 @@ CreateParserGenRuleAst
 				auto _RefType = _ast->CreateEnum(L"RefType");
 				_RefType->CreateItem(L"Id");
 				_RefType->CreateItem(L"Literal");
+				_RefType->CreateItem(L"ConditionalLiteral");
 
 				auto _RefSyntax = _ast->CreateClass(L"RefSyntax");
 				_RefSyntax->SetBaseClass(L"Syntax");

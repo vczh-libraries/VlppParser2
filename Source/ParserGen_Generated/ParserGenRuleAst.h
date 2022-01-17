@@ -36,6 +36,7 @@ namespace vl
 				UNDEFINED_ENUM_ITEM_VALUE = -1,
 				Id = 0,
 				Literal = 1,
+				ConditionalLiteral = 2,
 			};
 
 			enum class GlrOptionalPriority

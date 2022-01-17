@@ -23,6 +23,7 @@ CreateParserGenRuleSyntax
 				manager.name = L"RuleParser";
 
 				auto _optionalBody = manager.CreateRule(L"OptionalBody");
+				auto _token = manager.CreateRule(L"Token");
 				auto _syntax0 = manager.CreateRule(L"Syntax0");
 				auto _syntax1 = manager.CreateRule(L"Syntax1");
 				auto _syntax2 = manager.CreateRule(L"Syntax2");
@@ -33,6 +34,7 @@ CreateParserGenRuleSyntax
 				auto _file = manager.CreateRule(L"File");
 
 				_optionalBody->isPartial = true;
+				_token->isPartial = true;
 
 				manager.parsableRules.Add(_file);
 				manager.ruleTypes.Add(_file, L"vl::glr::parsergen::GlrSyntaxFile");
@@ -44,11 +46,17 @@ CreateParserGenRuleSyntax
 				// "[" Syntax:syntax "]" as partial OptionalSyntax
 				Clause{ _optionalBody } = partial(tok(T::OPEN_SQUARE) + rule(_syntax, F::OptionalSyntax_syntax) + tok(T::CLOSE_SQUARE));
 
-				// ID:name [":" ID:field] as RefSyntax
-				Clause{ _syntax0 } = create(tok(T::ID, F::RefSyntax_literal) + opt(tok(T::COLON) + tok(T::ID, F::RefSyntax_field)), C::RefSyntax).with(F::RefSyntax_refType, GlrRefType::Id);
+				// ID:name as partial RefSyntax {refType = Id}
+				Clause{ _token } = partial(tok(T::ID, F::RefSyntax_literal)).with(F::RefSyntax_refType, GlrRefType::Id);
 
-				// STRING:value as LiteralSyntax
-				Clause{ _syntax0 } = create(tok(T::STRING, F::RefSyntax_literal) + opt(tok(T::COLON) + tok(T::ID, F::RefSyntax_field)), C::RefSyntax).with(F::RefSyntax_refType, GlrRefType::Literal);
+				// STRING:name as partial RefSyntax {refType = Literal}
+				Clause{ _token } = partial(tok(T::STRING, F::RefSyntax_literal)).with(F::RefSyntax_refType, GlrRefType::Literal);
+
+				// CONDITIONAL_LITERAL:name as partial RefSyntax {refType = ConditionalLiteral}
+				Clause{ _token } = partial(tok(T::CONDITIONAL_LITERAL, F::RefSyntax_literal)).with(F::RefSyntax_refType, GlrRefType::ConditionalLiteral);
+
+				// Token [":" ID:field] as RefSyntax
+				Clause{ _syntax0 } = create(prule(_token) + opt(tok(T::COLON) + tok(T::ID, F::RefSyntax_field)), C::RefSyntax);
 
 				// "!" ID:name as UseSyntax
 				Clause{ _syntax0 } = create(tok(T::USE) + tok(T::ID, F::UseSyntax_name), C::UseSyntax);

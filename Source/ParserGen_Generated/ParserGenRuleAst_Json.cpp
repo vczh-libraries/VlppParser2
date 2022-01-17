@@ -115,6 +115,9 @@ namespace vl
 					BeginField(L"refType");
 					switch (node->refType)
 					{
+					case vl::glr::parsergen::GlrRefType::ConditionalLiteral:
+						WriteString(L"ConditionalLiteral");
+						break;
 					case vl::glr::parsergen::GlrRefType::Id:
 						WriteString(L"Id");
 						break;

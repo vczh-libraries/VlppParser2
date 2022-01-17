@@ -42,11 +42,12 @@ namespace vl
 				NEGATIVE = 21,
 				ID = 22,
 				STRING = 23,
-				SPACE = 24,
-				COMMENT = 25,
+				CONDITIONAL_LITERAL = 24,
+				SPACE = 25,
+				COMMENT = 26,
 			};
 
-			constexpr vl::vint ParserGenTokenCount = 26;
+			constexpr vl::vint ParserGenTokenCount = 27;
 			extern bool ParserGenTokenDeleter(vl::vint token);
 			extern const wchar_t* ParserGenTokenId(ParserGenTokens token);
 			extern const wchar_t* ParserGenTokenDisplayText(ParserGenTokens token);

@@ -101,6 +101,7 @@ namespace vl
 				ENUM_ITEM_NAMESPACE(vl::glr::parsergen::GlrRefType)
 				ENUM_NAMESPACE_ITEM(Id)
 				ENUM_NAMESPACE_ITEM(Literal)
+				ENUM_NAMESPACE_ITEM(ConditionalLiteral)
 			END_ENUM_ITEM(vl::glr::parsergen::GlrRefType)
 
 			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrRefSyntax)

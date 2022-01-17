@@ -42,6 +42,7 @@ CreateParserGenAst
 
 				manager.CreateToken(L"ID", L"[a-zA-Z_][a-zA-Z0-9_]*");
 				manager.CreateToken(L"STRING", L"(\"[^\"]*\")+");
+				manager.CreateToken(L"CONDITIONAL_LITERAL", L"(\'[^\']*\')+");
 
 				manager.CreateDiscardedToken(L"SPACE", L"/s+");
 				manager.CreateDiscardedToken(L"COMMENT", L"////[^/r/n]*");

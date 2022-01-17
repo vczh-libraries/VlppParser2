@@ -121,6 +121,8 @@ ResolveNameVisitor
 								);
 						}
 						break;
+					case GlrRefType::ConditionalLiteral:
+						throw 0;
 					default:;
 					}
 				}

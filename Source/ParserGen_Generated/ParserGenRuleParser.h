@@ -19,14 +19,15 @@ namespace vl
 			enum class RuleParserStates
 			{
 				OptionalBody = 0,
-				Syntax0 = 5,
-				Syntax1 = 28,
-				Syntax2 = 33,
-				Syntax = 39,
-				Assignment = 42,
-				Clause = 47,
-				Rule = 69,
-				File = 75,
+				Token = 5,
+				Syntax0 = 10,
+				Syntax1 = 30,
+				Syntax2 = 35,
+				Syntax = 41,
+				Assignment = 44,
+				Clause = 49,
+				Rule = 71,
+				File = 77,
 			};
 
 			const wchar_t* RuleParserRuleName(vl::vint index);
