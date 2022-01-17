@@ -38,6 +38,7 @@ MUL:/*
 OPEN:/(
 CLOSE:/)
 discard SPACE:/s+
+discard MINUS_MINUS:--
 )LEXER";
 
 	TEST_CASE(L"RuleNameConflictedWithToken")
@@ -153,6 +154,22 @@ Exp0 ::= "" NUM:value as NumExpr;
 		);
 	});
 
+	TEST_CASE(L"LiteralIsDiscardedToken")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0 ::= "--" NUM:value as NumExpr;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::LiteralIsDiscardedToken,L"Exp0",L"\"--\"" }
+		);
+	});
+
 	TEST_CASE(L"ConditionalLiteralNotValidToken 1")
 	{
 		const wchar_t* syntaxCode =
@@ -182,6 +199,22 @@ Exp0 ::= '+123':value as NumExpr;
 			lexerCode,
 			syntaxCode,
 			{ ParserErrorType::ConditionalLiteralNotValidToken,L"Exp0",L"\'+123\'" }
+		);
+	});
+
+	TEST_CASE(L"ConditionalLiteralIsDiscardedToken")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0 ::= ' ':value as NumExpr;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::ConditionalLiteralIsDiscardedToken,L"Exp0",L"\' \'" }
 		);
 	});
 

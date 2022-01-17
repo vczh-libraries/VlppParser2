@@ -203,7 +203,9 @@ void PrintCompileErrors(ParserSymbolManager& global)
 		CASE(TypeNotClassInRule, ruleName, name);
 		CASE(TokenOrRuleNotExistsInRule, ruleName, name);
 		CASE(LiteralNotValidToken, ruleName, name);
+		CASE(LiteralIsDiscardedToken, ruleName, name);
 		CASE(ConditionalLiteralNotValidToken, ruleName, name);
+		CASE(ConditionalLiteralIsDiscardedToken, ruleName, name);
 		CASE(ConditionalLiteralIsDisplayText, ruleName, name);
 
 		// SyntaxAst (CalculateTypes) ---------------------------------------------------------

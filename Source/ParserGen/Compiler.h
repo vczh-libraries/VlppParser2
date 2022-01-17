@@ -42,6 +42,7 @@ namespace vl
 					RuleKnownTypes				ruleKnownTypes;
 					ClauseReuseDependencies		clauseReuseDependencies;
 					ClauseTypeMap				clauseTypes;
+					Ptr<regex::RegexLexer>		cachedLexer;
 
 					VisitorContext(
 						AstSymbolManager& _astManager,
@@ -55,6 +56,17 @@ namespace vl
 						, syntaxManager(_syntaxManager)
 						, output(_output)
 					{
+					}
+
+					regex::RegexLexer& GetCachedLexer()
+					{
+						if (!cachedLexer)
+						{
+							auto tokens = From(lexerManager.TokenOrder())
+								.Select([&](const WString& name) { return lexerManager.Tokens()[name]->regex; });
+							cachedLexer = new regex::RegexLexer(tokens);
+						}
+						return *cachedLexer.Obj();
 					}
 				};
 			}

@@ -111,9 +111,21 @@ ResolveNameVisitor
 								for (auto&& [tokenName, tokenIndex] : indexed(context.lexerManager.TokenOrder()))
 								{
 									auto tokenSymbol = context.lexerManager.Tokens()[tokenName];
-									if (tokenSymbol->displayText==literalValue)
+									if (tokenSymbol->displayText == literalValue)
 									{
-										context.literalTokens.Add(node, (vint32_t)tokenIndex);
+										if (tokenSymbol->discarded)
+										{
+											context.syntaxManager.AddError(
+												ParserErrorType::LiteralIsDiscardedToken,
+												node->codeRange,
+												ruleSymbol->Name(),
+												node->literal.value
+												);
+										}
+										else
+										{
+											context.literalTokens.Add(node, (vint32_t)tokenIndex);
+										}
 										return;
 									}
 								}
@@ -131,6 +143,7 @@ ResolveNameVisitor
 							if (node->literal.value.Length() > 2)
 							{
 								auto literalValue = UnescapeLiteral(node->literal.value, L'\'');
+								auto&& lexer = context.GetCachedLexer();
 								CHECK_FAIL(L"Not Implemented!");
 							}
 							context.syntaxManager.AddError(
