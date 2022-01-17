@@ -144,7 +144,32 @@ ResolveNameVisitor
 							{
 								auto literalValue = UnescapeLiteral(node->literal.value, L'\'');
 								auto&& lexer = context.GetCachedLexer();
-								CHECK_FAIL(L"Not Implemented!");
+								List<regex::RegexToken> tokens;
+								lexer.Parse(literalValue).ReadToEnd(tokens);
+								if (tokens.Count() == 1 && tokens[0].token != -1 && tokens[0].completeToken)
+								{
+									auto tokenSymbol = context.lexerManager.Tokens()[context.lexerManager.TokenOrder()[tokens[0].token]];
+									if (tokenSymbol->displayText != L"")
+									{
+										context.syntaxManager.AddError(
+											ParserErrorType::ConditionalLiteralIsDisplayText,
+											node->codeRange,
+											ruleSymbol->Name(),
+											node->literal.value
+											);
+									}
+									if (tokenSymbol->discarded)
+									{
+										context.syntaxManager.AddError(
+											ParserErrorType::ConditionalLiteralIsDiscardedToken,
+											node->codeRange,
+											ruleSymbol->Name(),
+											node->literal.value
+											);
+									}
+									context.literalTokens.Add(node, (vint32_t)tokens[0].token);
+									return;
+								}
 							}
 							context.syntaxManager.AddError(
 								ParserErrorType::ConditionalLiteralNotValidToken,
