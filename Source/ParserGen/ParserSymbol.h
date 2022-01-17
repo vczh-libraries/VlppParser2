@@ -77,6 +77,7 @@ ParserSymbolManager
 				TypeNotExistsInRule,						// (ruleName, name)
 				TypeNotClassInRule,							// (ruleName, name)
 				TokenOrRuleNotExistsInRule,					// (ruleName, name)
+				LiteralNotValidToken,						// (ruleName, name)
 				ConditionalLiteralNotValidToken,			// (ruleName, name)
 				ConditionalLiteralIsDisplayText,			// (ruleName, name)
 

@@ -65,6 +65,25 @@ ResolveNameVisitor
 				}
 
 			protected:
+				WString UnescapeLiteral(const WString& literal, wchar_t quot)
+				{
+					Array<wchar_t> buffer(literal.Length());
+					wchar_t* writing = &buffer[0];
+
+					for (vint i = 1; i < literal.Length() - 1; i++)
+					{
+						wchar_t c = literal[i];
+						*writing++ = c;
+						if (c == quot)
+						{
+							i++;
+						}
+					}
+					*writing = 0;
+
+					return &buffer[0];
+				}
+
 				void Visit(GlrRefSyntax* node) override
 				{
 					switch (node->refType)
@@ -88,21 +107,7 @@ ResolveNameVisitor
 						{
 							if (node->literal.value.Length() > 2)
 							{
-								Array<wchar_t> buffer(node->literal.value.Length());
-								wchar_t* writing = &buffer[0];
-
-								for (vint i = 1; i < node->literal.value.Length() - 1; i++)
-								{
-									wchar_t c = node->literal.value[i];
-									*writing++ = c;
-									if (c == L'\"')
-									{
-										i++;
-									}
-								}
-								*writing = 0;
-
-								auto literalValue = WString::Unmanaged(&buffer[0]);
+								auto literalValue = UnescapeLiteral(node->literal.value, L'\"');
 								for (auto&& [tokenName, tokenIndex] : indexed(context.lexerManager.TokenOrder()))
 								{
 									auto tokenSymbol = context.lexerManager.Tokens()[tokenName];
@@ -114,7 +119,7 @@ ResolveNameVisitor
 								}
 							}
 							context.syntaxManager.AddError(
-								ParserErrorType::TokenOrRuleNotExistsInRule,
+								ParserErrorType::LiteralNotValidToken,
 								node->codeRange,
 								ruleSymbol->Name(),
 								node->literal.value
@@ -122,7 +127,20 @@ ResolveNameVisitor
 						}
 						break;
 					case GlrRefType::ConditionalLiteral:
-						CHECK_FAIL(L"Not Implemented!");
+						{
+							if (node->literal.value.Length() > 2)
+							{
+								auto literalValue = UnescapeLiteral(node->literal.value, L'\'');
+								CHECK_FAIL(L"Not Implemented!");
+							}
+							context.syntaxManager.AddError(
+								ParserErrorType::ConditionalLiteralNotValidToken,
+								node->codeRange,
+								ruleSymbol->Name(),
+								node->literal.value
+								);
+						}
+						break;
 					default:;
 					}
 				}

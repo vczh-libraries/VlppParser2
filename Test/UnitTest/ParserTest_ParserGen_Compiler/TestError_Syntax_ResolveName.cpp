@@ -108,22 +108,6 @@ Exp0 ::= NUM2:value as NumExpr;
 	{
 		const wchar_t* syntaxCode =
 LR"SYNTAX(
-Exp0 ::= "-" NUM:value as NumExpr;
-)SYNTAX";
-		ExpectError(
-			typeParser,
-			ruleParser,
-			astCode,
-			lexerCode,
-			syntaxCode,
-			{ ParserErrorType::TokenOrRuleNotExistsInRule,L"Exp0",L"\"-\"" }
-		);
-	});
-
-	TEST_CASE(L"TokenOrRuleNotExistsInRule 3")
-	{
-		const wchar_t* syntaxCode =
-LR"SYNTAX(
 Exp0 ::= NUM:value as NumExpr;
 Exp1 ::= !Exp;
 )SYNTAX";
@@ -137,7 +121,55 @@ Exp1 ::= !Exp;
 		);
 	});
 
-	TEST_CASE(L"ConditionalLiteralNotValidToken")
+	TEST_CASE(L"LiteralNotValidToken 1")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0 ::= "-" NUM:value as NumExpr;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::LiteralNotValidToken,L"Exp0",L"\"-\"" }
+		);
+	});
+
+	TEST_CASE(L"LiteralNotValidToken 2")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0 ::= "" NUM:value as NumExpr;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::LiteralNotValidToken,L"Exp0",L"\"\"" }
+		);
+	});
+
+	TEST_CASE(L"ConditionalLiteralNotValidToken 1")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0 ::= '':value as NumExpr;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::ConditionalLiteralNotValidToken,L"Exp0",L"\'\'" }
+		);
+	});
+
+	TEST_CASE(L"ConditionalLiteralNotValidToken 2")
 	{
 		const wchar_t* syntaxCode =
 LR"SYNTAX(
