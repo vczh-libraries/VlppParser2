@@ -77,6 +77,8 @@ ParserSymbolManager
 				TypeNotExistsInRule,						// (ruleName, name)
 				TypeNotClassInRule,							// (ruleName, name)
 				TokenOrRuleNotExistsInRule,					// (ruleName, name)
+				ConditionalLiteralNotValidToken,			// (ruleName, name)
+				ConditionalLiteralIsDisplayText,			// (ruleName, name)
 
 				// SyntaxAst (CalculateTypes) ---------------------------------------------------------
 				RuleMixedPartialClauseWithOtherClause,		// (ruleName)

@@ -122,7 +122,7 @@ ResolveNameVisitor
 						}
 						break;
 					case GlrRefType::ConditionalLiteral:
-						throw 0;
+						CHECK_FAIL(L"Not Implemented!");
 					default:;
 					}
 				}

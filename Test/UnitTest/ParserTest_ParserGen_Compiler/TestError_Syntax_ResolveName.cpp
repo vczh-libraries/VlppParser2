@@ -136,4 +136,36 @@ Exp1 ::= !Exp;
 			{ ParserErrorType::TokenOrRuleNotExistsInRule,L"Exp1",L"Exp" }
 		);
 	});
+
+	TEST_CASE(L"ConditionalLiteralNotValidToken")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0 ::= '+123':value as NumExpr;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::ConditionalLiteralNotValidToken,L"Exp0",L"\'+123\'" }
+		);
+	});
+
+	TEST_CASE(L"ConditionalLiteralIsDisplayText")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0 ::= '+':value as NumExpr;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::ConditionalLiteralIsDisplayText,L"Exp0",L"\'+\'" }
+		);
+	});
 }

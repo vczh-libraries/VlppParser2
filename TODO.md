@@ -2,9 +2,6 @@
 
 ## Features to Add
 
-- Add `'LITERAL'` syntax. Unlike `"LITERAL"`, `'LITERAL'` **CANNOT** be any token's display text.
-  - For reversed keywords like `abstract`, which could also be a valid identical.
-  - in `'LITERAL'`, `''` is an escaping of `'`.
 - Add switches and push-pop syntax.
   - switch can only be boolean.
   - switch must have default value.
