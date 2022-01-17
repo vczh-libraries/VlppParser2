@@ -23,6 +23,11 @@ namespace vl
 				SERIALIZE(count)
 			END_SERIALIZATION
 
+			BEGIN_SERIALIZATION(StringLiteral)
+				SERIALIZE(start)
+				SERIALIZE(count)
+			END_SERIALIZATION
+
 			BEGIN_SERIALIZATION(ReturnIndexArray)
 				SERIALIZE(start)
 				SERIALIZE(count)
@@ -43,6 +48,7 @@ namespace vl
 			BEGIN_SERIALIZATION(EdgeDesc)
 				SERIALIZE(fromState)
 				SERIALIZE(toState)
+				SERIALIZE(condition)
 				SERIALIZE(priority)
 				SERIALIZE(insBeforeInput)
 				SERIALIZE(insAfterInput)
@@ -65,6 +71,7 @@ namespace vl
 				SERIALIZE(returns)
 				SERIALIZE(edges)
 				SERIALIZE(states)
+				SERIALIZE(stringLiteralBuffer)
 			END_SERIALIZATION
 		}
 	}

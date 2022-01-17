@@ -24,6 +24,12 @@ Executable
 				vint32_t							count = 0;
 			};
 
+			struct StringLiteral
+			{
+				vint32_t							start = -1;
+				vint32_t							count = 0;
+			};
+
 			struct ReturnIndexArray
 			{
 				vint32_t							start = -1;
@@ -55,6 +61,7 @@ Executable
 			{
 				vint32_t							fromState = -1;
 				vint32_t							toState = -1;
+				StringLiteral						condition;
 				EdgePriority						priority = EdgePriority::NoCompetition;
 				InstructionArray					insBeforeInput;
 				InstructionArray					insAfterInput;
@@ -83,7 +90,8 @@ Executable
 				collections::Array<vint32_t>		returnIndices;			// referenced by ReturnIndexArray
 				collections::Array<ReturnDesc>		returns;				// referenced by Executable::returnIndices
 				collections::Array<EdgeDesc>		edges;					// referenced by EdgeArray
-				collections::Array<StateDesc>		states;					// refereced by returnState/fromState/toState
+				collections::Array<StateDesc>		states;					// referenced by returnState/fromState/toState
+				WString								stringLiteralBuffer;	// referenced by StringLiteral
 
 				Executable() = default;
 				Executable(stream::IStream& inputStream);
