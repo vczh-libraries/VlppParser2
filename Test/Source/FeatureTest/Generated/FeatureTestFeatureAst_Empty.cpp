@@ -48,5 +48,9 @@ FeatureVisitor
 		void FeatureVisitor::Visit(ClFeature* node)
 		{
 		}
+
+		void FeatureVisitor::Visit(FaFeature* node)
+		{
+		}
 	}
 }

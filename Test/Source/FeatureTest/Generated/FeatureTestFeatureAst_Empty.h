@@ -29,6 +29,7 @@ namespace featuretest
 			void Visit(Pwa1Feature* node) override;
 			void Visit(PwlFeature* node) override;
 			void Visit(ClFeature* node) override;
+			void Visit(FaFeature* node) override;
 		};
 
 	}

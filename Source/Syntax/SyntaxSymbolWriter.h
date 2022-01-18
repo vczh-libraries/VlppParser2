@@ -61,7 +61,7 @@ AutomatonBuilder
 				StatePair					BuildAlternativeSyntax(const StateBuilder& firstBranch, const StateBuilder& secondBranch);
 
 				StatePair					BuildClause(const StateBuilder& compileSyntax);
-				StatePair					BuildAssignment(StatePair pair, vint32_t enumItem, vint32_t field);
+				StatePair					BuildAssignment(StatePair pair, vint32_t enumItem, vint32_t field, bool weakAssignment);
 				StatePair					BuildCreateClause(vint32_t classId, const StateBuilder& compileSyntax);
 				StatePair					BuildPartialClause(const StateBuilder& compileSyntax);
 				StatePair					BuildReuseClause(const StateBuilder& compileSyntax);
@@ -391,7 +391,7 @@ Builder
 					template<typename C>
 					StatePair Build(const With<C>& clause)
 					{
-						return builder.BuildAssignment(Build(clause.body), clause.enumItem, clause.field);
+						return builder.BuildAssignment(Build(clause.body), clause.enumItem, clause.field, false);
 					}
 
 					template<typename C>

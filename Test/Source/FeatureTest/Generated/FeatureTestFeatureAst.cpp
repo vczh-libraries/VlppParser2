@@ -47,6 +47,11 @@ Visitor Pattern Implementation
 		visitor->Visit(this);
 	}
 
+	void FaFeature::Accept(Feature::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
 	void FeatureToResolve::Accept(Feature::IVisitor* visitor)
 	{
 		visitor->Visit(this);
@@ -74,6 +79,8 @@ namespace vl
 			IMPL_TYPE_INFO_RENAME(featuretest::Pwa1Feature, featuretest::Pwa1Feature)
 			IMPL_TYPE_INFO_RENAME(featuretest::PwlFeature, featuretest::PwlFeature)
 			IMPL_TYPE_INFO_RENAME(featuretest::ClFeature, featuretest::ClFeature)
+			IMPL_TYPE_INFO_RENAME(featuretest::FieldAssignment, featuretest::FieldAssignment)
+			IMPL_TYPE_INFO_RENAME(featuretest::FaFeature, featuretest::FaFeature)
 			IMPL_TYPE_INFO_RENAME(featuretest::FeatureToResolve, featuretest::FeatureToResolve)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
@@ -191,6 +198,20 @@ namespace vl
 				CLASS_MEMBER_FIELD(id)
 			END_CLASS_MEMBER(featuretest::ClFeature)
 
+			BEGIN_ENUM_ITEM(featuretest::FieldAssignment)
+				ENUM_ITEM_NAMESPACE(featuretest::FieldAssignment)
+				ENUM_NAMESPACE_ITEM(A)
+				ENUM_NAMESPACE_ITEM(B)
+			END_ENUM_ITEM(featuretest::FieldAssignment)
+
+			BEGIN_CLASS_MEMBER(featuretest::FaFeature)
+				CLASS_MEMBER_BASE(featuretest::Feature)
+
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<featuretest::FaFeature>(), NO_PARAMETER)
+
+				CLASS_MEMBER_FIELD(fa)
+			END_CLASS_MEMBER(featuretest::FaFeature)
+
 			BEGIN_CLASS_MEMBER(featuretest::FeatureToResolve)
 				CLASS_MEMBER_BASE(featuretest::Feature)
 
@@ -208,6 +229,7 @@ namespace vl
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(featuretest::Feature::IVisitor::*)(featuretest::Pwa1Feature* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(featuretest::Feature::IVisitor::*)(featuretest::PwlFeature* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(featuretest::Feature::IVisitor::*)(featuretest::ClFeature* node))
+				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(featuretest::Feature::IVisitor::*)(featuretest::FaFeature* node))
 			END_INTERFACE_MEMBER(featuretest::Feature)
 
 #endif
@@ -232,6 +254,8 @@ namespace vl
 					ADD_TYPE_INFO(featuretest::Pwa1Feature)
 					ADD_TYPE_INFO(featuretest::PwlFeature)
 					ADD_TYPE_INFO(featuretest::ClFeature)
+					ADD_TYPE_INFO(featuretest::FieldAssignment)
+					ADD_TYPE_INFO(featuretest::FaFeature)
 					ADD_TYPE_INFO(featuretest::FeatureToResolve)
 				}
 

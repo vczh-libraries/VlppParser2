@@ -23,6 +23,7 @@ namespace featuretest
 			virtual void Traverse(vl::glr::ParsingAstBase* node);
 			virtual void Traverse(BranchedOptionalFeature* node);
 			virtual void Traverse(ClFeature* node);
+			virtual void Traverse(FaFeature* node);
 			virtual void Traverse(Feature* node);
 			virtual void Traverse(FeatureToResolve* node);
 			virtual void Traverse(Gt* node);
@@ -38,6 +39,7 @@ namespace featuretest
 			virtual void Finishing(vl::glr::ParsingAstBase* node);
 			virtual void Finishing(BranchedOptionalFeature* node);
 			virtual void Finishing(ClFeature* node);
+			virtual void Finishing(FaFeature* node);
 			virtual void Finishing(Feature* node);
 			virtual void Finishing(FeatureToResolve* node);
 			virtual void Finishing(Gt* node);
@@ -58,6 +60,7 @@ namespace featuretest
 			void Visit(Pwa1Feature* node) override;
 			void Visit(PwlFeature* node) override;
 			void Visit(ClFeature* node) override;
+			void Visit(FaFeature* node) override;
 
 		public:
 			void InspectInto(Feature* node);

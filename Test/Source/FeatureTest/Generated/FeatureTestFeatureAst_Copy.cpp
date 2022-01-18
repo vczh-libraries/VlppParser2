@@ -27,6 +27,12 @@ namespace featuretest
 			to->id = from->id;
 		}
 
+		void FeatureAstVisitor::CopyFields(FaFeature* from, FaFeature* to)
+		{
+			CopyFields(static_cast<Feature*>(from), static_cast<Feature*>(to));
+			to->fa = from->fa;
+		}
+
 		void FeatureAstVisitor::CopyFields(Feature* from, Feature* to)
 		{
 		}
@@ -204,6 +210,13 @@ namespace featuretest
 			this->result = newNode;
 		}
 
+		void FeatureAstVisitor::Visit(FaFeature* node)
+		{
+			auto newNode = vl::MakePtr<FaFeature>();
+			CopyFields(node, newNode.Obj());
+			this->result = newNode;
+		}
+
 		vl::Ptr<Feature> FeatureAstVisitor::CopyNode(Feature* node)
 		{
 			if (!node) return nullptr;
@@ -242,6 +255,12 @@ namespace featuretest
 		{
 			if (!node) return nullptr;
 			return CopyNode(static_cast<Feature*>(node)).Cast<ClFeature>();
+		}
+
+		vl::Ptr<FaFeature> FeatureAstVisitor::CopyNode(FaFeature* node)
+		{
+			if (!node) return nullptr;
+			return CopyNode(static_cast<Feature*>(node)).Cast<FaFeature>();
 		}
 
 		vl::Ptr<FeatureToResolve> FeatureAstVisitor::CopyNode(FeatureToResolve* node)

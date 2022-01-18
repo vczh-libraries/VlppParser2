@@ -14,6 +14,7 @@ namespace featuretest
 {
 	class BranchedOptionalFeature;
 	class ClFeature;
+	class FaFeature;
 	class Feature;
 	class FeatureToResolve;
 	class Gt;
@@ -39,6 +40,13 @@ namespace featuretest
 		Plus = 0,
 		Minus = 1,
 		NoCompetition = 2,
+	};
+
+	enum class FieldAssignment
+	{
+		UNDEFINED_ENUM_ITEM_VALUE = -1,
+		A = 0,
+		B = 1,
 	};
 
 	class Plus : public vl::glr::ParsingAstBase, vl::reflection::Description<Plus>
@@ -70,6 +78,7 @@ namespace featuretest
 			virtual void Visit(Pwa1Feature* node) = 0;
 			virtual void Visit(PwlFeature* node) = 0;
 			virtual void Visit(ClFeature* node) = 0;
+			virtual void Visit(FaFeature* node) = 0;
 		};
 
 		virtual void Accept(Feature::IVisitor* visitor) = 0;
@@ -149,6 +158,14 @@ namespace featuretest
 		void Accept(Feature::IVisitor* visitor) override;
 	};
 
+	class FaFeature : public Feature, vl::reflection::Description<FaFeature>
+	{
+	public:
+		FieldAssignment fa = FieldAssignment::UNDEFINED_ENUM_ITEM_VALUE;
+
+		void Accept(Feature::IVisitor* visitor) override;
+	};
+
 	class FeatureToResolve : public Feature, vl::reflection::Description<FeatureToResolve>
 	{
 	public:
@@ -178,6 +195,8 @@ namespace vl
 			DECL_TYPE_INFO(featuretest::Pwa1Feature)
 			DECL_TYPE_INFO(featuretest::PwlFeature)
 			DECL_TYPE_INFO(featuretest::ClFeature)
+			DECL_TYPE_INFO(featuretest::FieldAssignment)
+			DECL_TYPE_INFO(featuretest::FaFeature)
 			DECL_TYPE_INFO(featuretest::FeatureToResolve)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
@@ -219,6 +238,11 @@ namespace vl
 				}
 
 				void Visit(featuretest::ClFeature* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+				void Visit(featuretest::FaFeature* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}

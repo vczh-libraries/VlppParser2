@@ -42,7 +42,9 @@ namespace featuretest
 		Pwl1 = 130,
 		Pwl2_P = 135,
 		Pwl2 = 140,
-		Module = 144,
+		FaPrefix = 144,
+		Fa = 147,
+		Module = 151,
 	};
 
 	const wchar_t* ModuleParserRuleName(vl::vint index);

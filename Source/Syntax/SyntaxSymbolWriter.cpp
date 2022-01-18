@@ -221,12 +221,12 @@ AutomatonBuilder (Clause)
 				return pair;
 			}
 
-			AutomatonBuilder::StatePair AutomatonBuilder::BuildAssignment(StatePair pair, vint32_t enumItem, vint32_t field)
+			AutomatonBuilder::StatePair AutomatonBuilder::BuildAssignment(StatePair pair, vint32_t enumItem, vint32_t field, bool weakAssignment)
 			{
 				auto withState = CreateState();
 				auto edge = CreateEdge(pair.end, withState);
 				edge->insBeforeInput.Add({ AstInsType::EnumItem,enumItem });
-				edge->insBeforeInput.Add({ AstInsType::Field,field });
+				edge->insBeforeInput.Add({ (weakAssignment ? AstInsType::FieldIfUnassigned : AstInsType::Field),field});
 				endPoses.Add(withState, clauseDisplayText.Length());
 				return { pair.begin,withState };
 			}

@@ -27,6 +27,12 @@ namespace featuretest
 			MakeClFeature& id(const vl::WString& value);
 		};
 
+		class MakeFaFeature : public vl::glr::ParsingAstBuilder<FaFeature>
+		{
+		public:
+			MakeFaFeature& fa(FieldAssignment value);
+		};
+
 		class MakeFeatureToResolve : public vl::glr::ParsingAstBuilder<FeatureToResolve>
 		{
 		public:

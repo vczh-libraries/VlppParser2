@@ -149,7 +149,7 @@ CompileSyntaxVisitor
 						auto enumSymbol = dynamic_cast<AstEnumSymbol*>(propSymbol->propSymbol);
 						auto enumItem = (vint32_t)enumSymbol->ItemOrder().IndexOf(node->value.value);
 						auto field = context.output->fieldIds[propSymbol];
-						pair = automatonBuilder.BuildAssignment(pair, enumItem, field);
+						pair = automatonBuilder.BuildAssignment(pair, enumItem, field, (node->type == GlrAssignmentType::Weak));
 					}
 					return pair;
 				}

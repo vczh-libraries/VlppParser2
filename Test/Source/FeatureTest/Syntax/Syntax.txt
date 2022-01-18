@@ -115,6 +115,14 @@ Pwl2
   ::= {Plus:prefix} !Pwl2_P
   ;
 
+FaPrefix
+  ::= 'b' as partial FaFeature {fa = B}
+  ;
+
+Fa
+  ::= [FaPrefix] 'a' as FaFeature {fa ?= A}
+  ;
+
 Module
   ::= !EqualOptional
   ::= !PositiveOptional
@@ -133,4 +141,5 @@ Module
   ::= "prefix_with_leftrec" !Pwl2
   ::= "conditional_literal" 'a':id as ClFeature
   ::= "conditional_literal" 'b':id as ClFeature
+  ::= "field_assignment" !Fa
   ;
