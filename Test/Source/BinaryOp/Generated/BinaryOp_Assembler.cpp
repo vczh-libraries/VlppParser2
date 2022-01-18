@@ -53,13 +53,13 @@ BinaryOpAstInsReceiver : public vl::glr::AstInsReceiverBase
 		}
 	}
 
-	void BinaryOpAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::vint32_t enumItem)
+	void BinaryOpAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::vint32_t enumItem, bool weakAssignment)
 	{
 		auto cppFieldName = BinaryOpCppFieldName((BinaryOpFields)field);
 		switch((BinaryOpFields)field)
 		{
 		case BinaryOpFields::BinaryExpr_op:
-			return vl::glr::AssemblerSetEnumField(&binaryop::BinaryExpr::op, object, field, enumItem, cppFieldName);
+			return vl::glr::AssemblerSetEnumField(&binaryop::BinaryExpr::op, object, field, enumItem, weakAssignment, cppFieldName);
 		default:
 			return vl::glr::AssemblyThrowFieldNotEnum(field, cppFieldName);
 		}

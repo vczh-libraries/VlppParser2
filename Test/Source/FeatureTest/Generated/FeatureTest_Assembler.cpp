@@ -111,15 +111,15 @@ FeatureTestAstInsReceiver : public vl::glr::AstInsReceiverBase
 		}
 	}
 
-	void FeatureTestAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::vint32_t enumItem)
+	void FeatureTestAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::vint32_t enumItem, bool weakAssignment)
 	{
 		auto cppFieldName = FeatureTestCppFieldName((FeatureTestFields)field);
 		switch((FeatureTestFields)field)
 		{
 		case FeatureTestFields::BranchedOptionalFeature_type:
-			return vl::glr::AssemblerSetEnumField(&featuretest::BranchedOptionalFeature::type, object, field, enumItem, cppFieldName);
+			return vl::glr::AssemblerSetEnumField(&featuretest::BranchedOptionalFeature::type, object, field, enumItem, weakAssignment, cppFieldName);
 		case FeatureTestFields::OptionalFeature_priority:
-			return vl::glr::AssemblerSetEnumField(&featuretest::OptionalFeature::priority, object, field, enumItem, cppFieldName);
+			return vl::glr::AssemblerSetEnumField(&featuretest::OptionalFeature::priority, object, field, enumItem, weakAssignment, cppFieldName);
 		default:
 			return vl::glr::AssemblyThrowFieldNotEnum(field, cppFieldName);
 		}

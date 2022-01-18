@@ -87,7 +87,7 @@ XmlAstInsReceiver : public vl::glr::AstInsReceiverBase
 				}
 			}
 
-			void XmlAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::vint32_t enumItem)
+			void XmlAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::vint32_t enumItem, bool weakAssignment)
 			{
 				auto cppFieldName = XmlCppFieldName((XmlFields)field);
 				return vl::glr::AssemblyThrowFieldNotEnum(field, cppFieldName);

@@ -101,15 +101,15 @@ CalculatorAstInsReceiver : public vl::glr::AstInsReceiverBase
 		}
 	}
 
-	void CalculatorAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::vint32_t enumItem)
+	void CalculatorAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::vint32_t enumItem, bool weakAssignment)
 	{
 		auto cppFieldName = CalculatorCppFieldName((CalculatorFields)field);
 		switch((CalculatorFields)field)
 		{
 		case CalculatorFields::Binary_op:
-			return vl::glr::AssemblerSetEnumField(&calculator::Binary::op, object, field, enumItem, cppFieldName);
+			return vl::glr::AssemblerSetEnumField(&calculator::Binary::op, object, field, enumItem, weakAssignment, cppFieldName);
 		case CalculatorFields::Unary_op:
-			return vl::glr::AssemblerSetEnumField(&calculator::Unary::op, object, field, enumItem, cppFieldName);
+			return vl::glr::AssemblerSetEnumField(&calculator::Unary::op, object, field, enumItem, weakAssignment, cppFieldName);
 		default:
 			return vl::glr::AssemblyThrowFieldNotEnum(field, cppFieldName);
 		}

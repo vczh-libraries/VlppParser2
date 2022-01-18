@@ -63,7 +63,7 @@ IfElseAmbiguityAstInsReceiver : public vl::glr::AstInsReceiverBase
 		return vl::glr::AssemblyThrowFieldNotToken(field, cppFieldName);
 	}
 
-	void IfElseAmbiguityAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::vint32_t enumItem)
+	void IfElseAmbiguityAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::vint32_t enumItem, bool weakAssignment)
 	{
 		auto cppFieldName = IfElseAmbiguityCppFieldName((IfElseAmbiguityFields)field);
 		return vl::glr::AssemblyThrowFieldNotEnum(field, cppFieldName);

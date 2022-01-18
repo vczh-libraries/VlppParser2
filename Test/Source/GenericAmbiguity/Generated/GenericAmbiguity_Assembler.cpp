@@ -81,15 +81,15 @@ GenericAmbiguityAstInsReceiver : public vl::glr::AstInsReceiverBase
 		}
 	}
 
-	void GenericAmbiguityAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::vint32_t enumItem)
+	void GenericAmbiguityAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::vint32_t enumItem, bool weakAssignment)
 	{
 		auto cppFieldName = GenericAmbiguityCppFieldName((GenericAmbiguityFields)field);
 		switch((GenericAmbiguityFields)field)
 		{
 		case GenericAmbiguityFields::BinaryExpr_op:
-			return vl::glr::AssemblerSetEnumField(&genericambiguity::BinaryExpr::op, object, field, enumItem, cppFieldName);
+			return vl::glr::AssemblerSetEnumField(&genericambiguity::BinaryExpr::op, object, field, enumItem, weakAssignment, cppFieldName);
 		case GenericAmbiguityFields::PostfixExpr_op:
-			return vl::glr::AssemblerSetEnumField(&genericambiguity::PostfixExpr::op, object, field, enumItem, cppFieldName);
+			return vl::glr::AssemblerSetEnumField(&genericambiguity::PostfixExpr::op, object, field, enumItem, weakAssignment, cppFieldName);
 		default:
 			return vl::glr::AssemblyThrowFieldNotEnum(field, cppFieldName);
 		}

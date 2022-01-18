@@ -43,6 +43,9 @@ void LogInstruction(
 	case AstInsType::Field:
 		writer.WriteLine(L"Field(" + fieldName(ins.param) + L")");
 		break;
+	case AstInsType::FieldIfUnassigned:
+		writer.WriteLine(L"FieldIfUnassigned(" + fieldName(ins.param) + L")");
+		break;
 	case AstInsType::ResolveAmbiguity:
 		writer.WriteLine(L"ResolveAmbiguity(" + typeName(ins.param) + L", " + itow(ins.count) + L")");
 		break;

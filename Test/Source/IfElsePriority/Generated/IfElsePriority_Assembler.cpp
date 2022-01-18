@@ -55,7 +55,7 @@ IfElsePriorityAstInsReceiver : public vl::glr::AstInsReceiverBase
 		return vl::glr::AssemblyThrowFieldNotToken(field, cppFieldName);
 	}
 
-	void IfElsePriorityAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::vint32_t enumItem)
+	void IfElsePriorityAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::vint32_t enumItem, bool weakAssignment)
 	{
 		auto cppFieldName = IfElsePriorityCppFieldName((IfElsePriorityFields)field);
 		return vl::glr::AssemblyThrowFieldNotEnum(field, cppFieldName);

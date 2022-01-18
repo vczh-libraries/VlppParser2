@@ -71,13 +71,13 @@ JsonAstInsReceiver : public vl::glr::AstInsReceiverBase
 				}
 			}
 
-			void JsonAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::vint32_t enumItem)
+			void JsonAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::vint32_t enumItem, bool weakAssignment)
 			{
 				auto cppFieldName = JsonCppFieldName((JsonFields)field);
 				switch((JsonFields)field)
 				{
 				case JsonFields::Literal_value:
-					return vl::glr::AssemblerSetEnumField(&vl::glr::json::JsonLiteral::value, object, field, enumItem, cppFieldName);
+					return vl::glr::AssemblerSetEnumField(&vl::glr::json::JsonLiteral::value, object, field, enumItem, weakAssignment, cppFieldName);
 				default:
 					return vl::glr::AssemblyThrowFieldNotEnum(field, cppFieldName);
 				}

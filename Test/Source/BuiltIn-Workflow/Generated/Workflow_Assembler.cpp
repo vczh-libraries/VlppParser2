@@ -583,63 +583,63 @@ WorkflowAstInsReceiver : public vl::glr::AstInsReceiverBase
 				}
 			}
 
-			void WorkflowAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::vint32_t enumItem)
+			void WorkflowAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::vint32_t enumItem, bool weakAssignment)
 			{
 				auto cppFieldName = WorkflowCppFieldName((WorkflowFields)field);
 				switch((WorkflowFields)field)
 				{
 				case WorkflowFields::AutoPropertyDeclaration_configConst:
-					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfAutoPropertyDeclaration::configConst, object, field, enumItem, cppFieldName);
+					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfAutoPropertyDeclaration::configConst, object, field, enumItem, weakAssignment, cppFieldName);
 				case WorkflowFields::AutoPropertyDeclaration_configObserve:
-					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfAutoPropertyDeclaration::configObserve, object, field, enumItem, cppFieldName);
+					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfAutoPropertyDeclaration::configObserve, object, field, enumItem, weakAssignment, cppFieldName);
 				case WorkflowFields::AutoPropertyDeclaration_functionKind:
-					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfAutoPropertyDeclaration::functionKind, object, field, enumItem, cppFieldName);
+					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfAutoPropertyDeclaration::functionKind, object, field, enumItem, weakAssignment, cppFieldName);
 				case WorkflowFields::BinaryExpression_op:
-					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfBinaryExpression::op, object, field, enumItem, cppFieldName);
+					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfBinaryExpression::op, object, field, enumItem, weakAssignment, cppFieldName);
 				case WorkflowFields::ClassDeclaration_constructorType:
-					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfClassDeclaration::constructorType, object, field, enumItem, cppFieldName);
+					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfClassDeclaration::constructorType, object, field, enumItem, weakAssignment, cppFieldName);
 				case WorkflowFields::ClassDeclaration_kind:
-					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfClassDeclaration::kind, object, field, enumItem, cppFieldName);
+					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfClassDeclaration::kind, object, field, enumItem, weakAssignment, cppFieldName);
 				case WorkflowFields::ConstructorDeclaration_constructorType:
-					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfConstructorDeclaration::constructorType, object, field, enumItem, cppFieldName);
+					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfConstructorDeclaration::constructorType, object, field, enumItem, weakAssignment, cppFieldName);
 				case WorkflowFields::EnumDeclaration_kind:
-					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfEnumDeclaration::kind, object, field, enumItem, cppFieldName);
+					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfEnumDeclaration::kind, object, field, enumItem, weakAssignment, cppFieldName);
 				case WorkflowFields::EnumItem_kind:
-					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfEnumItem::kind, object, field, enumItem, cppFieldName);
+					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfEnumItem::kind, object, field, enumItem, weakAssignment, cppFieldName);
 				case WorkflowFields::ExpectedTypeCastExpression_strategy:
-					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfExpectedTypeCastExpression::strategy, object, field, enumItem, cppFieldName);
+					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfExpectedTypeCastExpression::strategy, object, field, enumItem, weakAssignment, cppFieldName);
 				case WorkflowFields::ForEachStatement_direction:
-					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfForEachStatement::direction, object, field, enumItem, cppFieldName);
+					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfForEachStatement::direction, object, field, enumItem, weakAssignment, cppFieldName);
 				case WorkflowFields::FunctionDeclaration_anonymity:
-					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfFunctionDeclaration::anonymity, object, field, enumItem, cppFieldName);
+					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfFunctionDeclaration::anonymity, object, field, enumItem, weakAssignment, cppFieldName);
 				case WorkflowFields::FunctionDeclaration_functionKind:
-					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfFunctionDeclaration::functionKind, object, field, enumItem, cppFieldName);
+					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfFunctionDeclaration::functionKind, object, field, enumItem, weakAssignment, cppFieldName);
 				case WorkflowFields::LiteralExpression_value:
-					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfLiteralExpression::value, object, field, enumItem, cppFieldName);
+					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfLiteralExpression::value, object, field, enumItem, weakAssignment, cppFieldName);
 				case WorkflowFields::MapType_writability:
-					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfMapType::writability, object, field, enumItem, cppFieldName);
+					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfMapType::writability, object, field, enumItem, weakAssignment, cppFieldName);
 				case WorkflowFields::Module_moduleType:
-					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfModule::moduleType, object, field, enumItem, cppFieldName);
+					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfModule::moduleType, object, field, enumItem, weakAssignment, cppFieldName);
 				case WorkflowFields::ObserveExpression_observeType:
-					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfObserveExpression::observeType, object, field, enumItem, cppFieldName);
+					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfObserveExpression::observeType, object, field, enumItem, weakAssignment, cppFieldName);
 				case WorkflowFields::PredefinedType_name:
-					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfPredefinedType::name, object, field, enumItem, cppFieldName);
+					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfPredefinedType::name, object, field, enumItem, weakAssignment, cppFieldName);
 				case WorkflowFields::RangeExpression_beginBoundary:
-					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfRangeExpression::beginBoundary, object, field, enumItem, cppFieldName);
+					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfRangeExpression::beginBoundary, object, field, enumItem, weakAssignment, cppFieldName);
 				case WorkflowFields::RangeExpression_endBoundary:
-					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfRangeExpression::endBoundary, object, field, enumItem, cppFieldName);
+					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfRangeExpression::endBoundary, object, field, enumItem, weakAssignment, cppFieldName);
 				case WorkflowFields::SetTestingExpression_test:
-					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfSetTestingExpression::test, object, field, enumItem, cppFieldName);
+					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfSetTestingExpression::test, object, field, enumItem, weakAssignment, cppFieldName);
 				case WorkflowFields::StateInvokeStatement_type:
-					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfStateInvokeStatement::type, object, field, enumItem, cppFieldName);
+					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfStateInvokeStatement::type, object, field, enumItem, weakAssignment, cppFieldName);
 				case WorkflowFields::StateSwitchStatement_type:
-					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfStateSwitchStatement::type, object, field, enumItem, cppFieldName);
+					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfStateSwitchStatement::type, object, field, enumItem, weakAssignment, cppFieldName);
 				case WorkflowFields::TypeCastingExpression_strategy:
-					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfTypeCastingExpression::strategy, object, field, enumItem, cppFieldName);
+					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfTypeCastingExpression::strategy, object, field, enumItem, weakAssignment, cppFieldName);
 				case WorkflowFields::TypeTestingExpression_test:
-					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfTypeTestingExpression::test, object, field, enumItem, cppFieldName);
+					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfTypeTestingExpression::test, object, field, enumItem, weakAssignment, cppFieldName);
 				case WorkflowFields::UnaryExpression_op:
-					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfUnaryExpression::op, object, field, enumItem, cppFieldName);
+					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfUnaryExpression::op, object, field, enumItem, weakAssignment, cppFieldName);
 				default:
 					return vl::glr::AssemblyThrowFieldNotEnum(field, cppFieldName);
 				}
