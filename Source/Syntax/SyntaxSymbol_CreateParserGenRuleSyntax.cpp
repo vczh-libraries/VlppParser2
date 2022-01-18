@@ -28,6 +28,7 @@ CreateParserGenRuleSyntax
 				auto _syntax1 = manager.CreateRule(L"Syntax1");
 				auto _syntax2 = manager.CreateRule(L"Syntax2");
 				auto _syntax = manager.CreateRule(L"Syntax");
+				auto _assignmentOp = manager.CreateRule(L"AssignmentOp");
 				auto _assignment = manager.CreateRule(L"Assignment");
 				auto _clause = manager.CreateRule(L"Clause");
 				auto _rule = manager.CreateRule(L"Rule");
@@ -35,6 +36,7 @@ CreateParserGenRuleSyntax
 
 				_optionalBody->isPartial = true;
 				_token->isPartial = true;
+				_assignmentOp->isPartial = true;
 
 				manager.parsableRules.Add(_file);
 				manager.ruleTypes.Add(_file, L"vl::glr::parsergen::GlrSyntaxFile");
@@ -91,8 +93,14 @@ CreateParserGenRuleSyntax
 				// !Syntax2
 				Clause{ _syntax } = use(_syntax2);
 
-				// ID:field "=" STRING:value as partial Assignment
-				Clause{ _assignment } = create(tok(T::ID, F::Assignment_field) + tok(T::ASSIGN) + tok(T::ID, F::Assignment_value), C::Assignment);
+				// "=" as partial Assignment {type = Strong}
+				Clause{ _assignmentOp } = partial(tok(T::ASSIGN)).with(F::Assignment_type, GlrAssignmentType::Strong);
+
+				// "?=" as partial Assignment {type = Weak}
+				Clause{ _assignmentOp } = partial(tok(T::WEAK_ASSIGN)).with(F::Assignment_type, GlrAssignmentType::Weak);
+
+				// ID:field AssignmentOp STRING:value as Assignment
+				Clause{ _assignment } = create(tok(T::ID, F::Assignment_field) + prule(_assignmentOp) + tok(T::ID, F::Assignment_value), C::Assignment);
 
 				// Syntax:syntax "as" ID:type ["{" {Assignment:assignments ; ","} "}"] as CreateClause
 				Clause{ _clause } = create(rule(_syntax, F::CreateClause_syntax) + tok(T::AS) + tok(T::ID, F::CreateClause_type) + opt(tok(T::OPEN_CURLY) + loop(rule(_assignment, F::CreateClause_assignments), tok(T::COMMA)) + tok(T::CLOSE_CURLY)), C::CreateClause);

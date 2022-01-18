@@ -83,6 +83,7 @@ namespace vl
 			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrAlternativeSyntax, glr::parsergen::GlrAlternativeSyntax)
 			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrClause, glr::parsergen::GlrClause)
 			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrClause::IVisitor, glr::parsergen::GlrClause::IVisitor)
+			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrAssignmentType, glr::parsergen::GlrAssignmentType)
 			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrAssignment, glr::parsergen::GlrAssignment)
 			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrCreateClause, glr::parsergen::GlrCreateClause)
 			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrPartialClause, glr::parsergen::GlrPartialClause)
@@ -170,11 +171,18 @@ namespace vl
 
 			END_CLASS_MEMBER(vl::glr::parsergen::GlrClause)
 
+			BEGIN_ENUM_ITEM(vl::glr::parsergen::GlrAssignmentType)
+				ENUM_ITEM_NAMESPACE(vl::glr::parsergen::GlrAssignmentType)
+				ENUM_NAMESPACE_ITEM(Strong)
+				ENUM_NAMESPACE_ITEM(Weak)
+			END_ENUM_ITEM(vl::glr::parsergen::GlrAssignmentType)
+
 			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrAssignment)
 				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
 				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrAssignment>(), NO_PARAMETER)
 
+				CLASS_MEMBER_FIELD(type)
 				CLASS_MEMBER_FIELD(field)
 				CLASS_MEMBER_FIELD(value)
 			END_CLASS_MEMBER(vl::glr::parsergen::GlrAssignment)
@@ -260,6 +268,7 @@ namespace vl
 					ADD_TYPE_INFO(vl::glr::parsergen::GlrAlternativeSyntax)
 					ADD_TYPE_INFO(vl::glr::parsergen::GlrClause)
 					ADD_TYPE_INFO(vl::glr::parsergen::GlrClause::IVisitor)
+					ADD_TYPE_INFO(vl::glr::parsergen::GlrAssignmentType)
 					ADD_TYPE_INFO(vl::glr::parsergen::GlrAssignment)
 					ADD_TYPE_INFO(vl::glr::parsergen::GlrCreateClause)
 					ADD_TYPE_INFO(vl::glr::parsergen::GlrPartialClause)

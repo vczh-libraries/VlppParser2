@@ -63,7 +63,12 @@ CreateParserGenRuleAst
 
 				auto _Clause = _ast->CreateClass(L"Clause");
 
+				auto _AssignmentType = _ast->CreateEnum(L"AssignmentType");
+				_AssignmentType->CreateItem(L"Strong");
+				_AssignmentType->CreateItem(L"Weak");
+
 				auto _Assignment = _ast->CreateClass(L"Assignment");
+				_Assignment->CreateProp(L"type")->SetPropType(AstPropType::Type, L"AssignmentType");
 				_Assignment->CreateProp(L"field")->SetPropType(AstPropType::Token);
 				_Assignment->CreateProp(L"value")->SetPropType(AstPropType::Token);
 

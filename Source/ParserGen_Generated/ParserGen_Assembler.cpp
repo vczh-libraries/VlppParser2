@@ -148,6 +148,8 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 				auto cppFieldName = ParserGenCppFieldName((ParserGenFields)field);
 				switch((ParserGenFields)field)
 				{
+				case ParserGenFields::Assignment_type:
+					return vl::glr::AssemblerSetEnumField(&vl::glr::parsergen::GlrAssignment::type, object, field, enumItem, weakAssignment, cppFieldName);
 				case ParserGenFields::Class_ambiguity:
 					return vl::glr::AssemblerSetEnumField(&vl::glr::parsergen::GlrClass::ambiguity, object, field, enumItem, weakAssignment, cppFieldName);
 				case ParserGenFields::ClassProp_propType:
@@ -223,6 +225,7 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					L"AlternativeSyntax::first",
 					L"AlternativeSyntax::second",
 					L"Assignment::field",
+					L"Assignment::type",
 					L"Assignment::value",
 					L"AstFile::types",
 					L"Class::ambiguity",
@@ -257,7 +260,7 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					L"UseSyntax::name",
 				};
 				vl::vint index = (vl::vint)field;
-				return 0 <= index && index < 35 ? results[index] : nullptr;
+				return 0 <= index && index < 36 ? results[index] : nullptr;
 			}
 
 			const wchar_t* ParserGenCppFieldName(ParserGenFields field)
@@ -266,6 +269,7 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					L"vl::glr::parsergen::GlrAlternativeSyntax::first",
 					L"vl::glr::parsergen::GlrAlternativeSyntax::second",
 					L"vl::glr::parsergen::GlrAssignment::field",
+					L"vl::glr::parsergen::GlrAssignment::type",
 					L"vl::glr::parsergen::GlrAssignment::value",
 					L"vl::glr::parsergen::GlrAstFile::types",
 					L"vl::glr::parsergen::GlrClass::ambiguity",
@@ -300,7 +304,7 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					L"vl::glr::parsergen::GlrUseSyntax::name",
 				};
 				vl::vint index = (vl::vint)field;
-				return 0 <= index && index < 35 ? results[index] : nullptr;
+				return 0 <= index && index < 36 ? results[index] : nullptr;
 			}
 
 			vl::Ptr<vl::glr::ParsingAstBase> ParserGenAstInsReceiver::ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates)

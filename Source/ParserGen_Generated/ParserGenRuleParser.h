@@ -24,10 +24,11 @@ namespace vl
 				Syntax1 = 30,
 				Syntax2 = 35,
 				Syntax = 41,
-				Assignment = 44,
-				Clause = 49,
-				Rule = 71,
-				File = 77,
+				AssignmentOp = 44,
+				Assignment = 48,
+				Clause = 53,
+				Rule = 75,
+				File = 81,
 			};
 
 			const wchar_t* RuleParserRuleName(vl::vint index);

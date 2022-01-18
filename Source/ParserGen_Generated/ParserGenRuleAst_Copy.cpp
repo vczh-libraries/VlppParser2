@@ -24,6 +24,7 @@ namespace vl
 				void RuleAstVisitor::CopyFields(GlrAssignment* from, GlrAssignment* to)
 				{
 					to->field = from->field;
+					to->type = from->type;
 					to->value = from->value;
 				}
 

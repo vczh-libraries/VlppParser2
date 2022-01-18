@@ -38,16 +38,17 @@ namespace vl
 				ALTERNATIVE = 17,
 				USE = 18,
 				ASSIGN = 19,
-				POSITIVE = 20,
-				NEGATIVE = 21,
-				ID = 22,
-				STRING = 23,
-				CONDITIONAL_LITERAL = 24,
-				SPACE = 25,
-				COMMENT = 26,
+				WEAK_ASSIGN = 20,
+				POSITIVE = 21,
+				NEGATIVE = 22,
+				ID = 23,
+				STRING = 24,
+				CONDITIONAL_LITERAL = 25,
+				SPACE = 26,
+				COMMENT = 27,
 			};
 
-			constexpr vl::vint ParserGenTokenCount = 27;
+			constexpr vl::vint ParserGenTokenCount = 28;
 			extern bool ParserGenTokenDeleter(vl::vint token);
 			extern const wchar_t* ParserGenTokenId(ParserGenTokens token);
 			extern const wchar_t* ParserGenTokenDisplayText(ParserGenTokens token);

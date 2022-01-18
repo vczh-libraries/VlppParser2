@@ -41,6 +41,12 @@ MakeAssignment
 					return *this;
 				}
 
+				MakeAssignment& MakeAssignment::type(GlrAssignmentType value)
+				{
+					node->type = value;
+					return *this;
+				}
+
 				MakeAssignment& MakeAssignment::value(const vl::WString& value)
 				{
 					node->value.value = value;

@@ -28,6 +28,19 @@ namespace vl
 					BeginField(L"field");
 					WriteToken(node->field);
 					EndField();
+					BeginField(L"type");
+					switch (node->type)
+					{
+					case vl::glr::parsergen::GlrAssignmentType::Strong:
+						WriteString(L"Strong");
+						break;
+					case vl::glr::parsergen::GlrAssignmentType::Weak:
+						WriteString(L"Weak");
+						break;
+					default:
+						WriteNull();
+					}
+					EndField();
 					BeginField(L"value");
 					WriteToken(node->value);
 					EndField();

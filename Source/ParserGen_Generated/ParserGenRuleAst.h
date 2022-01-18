@@ -47,6 +47,13 @@ namespace vl
 				PreferSkip = 2,
 			};
 
+			enum class GlrAssignmentType
+			{
+				UNDEFINED_ENUM_ITEM_VALUE = -1,
+				Strong = 0,
+				Weak = 1,
+			};
+
 			class GlrSyntax abstract : public vl::glr::ParsingAstBase, vl::reflection::Description<GlrSyntax>
 			{
 			public:
@@ -137,6 +144,7 @@ namespace vl
 			class GlrAssignment : public vl::glr::ParsingAstBase, vl::reflection::Description<GlrAssignment>
 			{
 			public:
+				GlrAssignmentType type = GlrAssignmentType::UNDEFINED_ENUM_ITEM_VALUE;
 				vl::glr::ParsingToken field;
 				vl::glr::ParsingToken value;
 			};
@@ -204,6 +212,7 @@ namespace vl
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrAlternativeSyntax)
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrClause)
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrClause::IVisitor)
+			DECL_TYPE_INFO(vl::glr::parsergen::GlrAssignmentType)
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrAssignment)
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrCreateClause)
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrPartialClause)

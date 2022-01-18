@@ -37,6 +37,7 @@ CreateParserGenAst
 				manager.CreateToken(L"ALTERNATIVE", L"/|");
 				manager.CreateToken(L"USE", L"!");
 				manager.CreateToken(L"ASSIGN", L"=");
+				manager.CreateToken(L"WEAK_ASSIGN", L"/?=");
 				manager.CreateToken(L"POSITIVE", L"/+");
 				manager.CreateToken(L"NEGATIVE", L"-");
 

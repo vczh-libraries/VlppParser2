@@ -28,6 +28,7 @@ namespace vl
 				{
 				public:
 					MakeAssignment& field(const vl::WString& value);
+					MakeAssignment& type(GlrAssignmentType value);
 					MakeAssignment& value(const vl::WString& value);
 				};
 
