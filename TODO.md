@@ -16,8 +16,6 @@
     - `OPTION=VALUE`
     - `A && B`
     - `A || B`
-- Add conditional enum field assignment.
-  - `{FIELD ?= ITEM}` only assign `ITEM` to `FIELD` if it has not been assigned.
 - Extensible tokens, for example, recognize `R"[^\s(]\(` and invoke a callback function to determine the end of the string.
   - Offer two options: using (rich regex | C++) to search for complete token.
 
