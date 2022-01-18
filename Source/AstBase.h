@@ -531,14 +531,12 @@ IAstInsReceiver (Code Generation Templates)
 			}
 			if ((typedObject->*member) != TField::UNDEFINED_ENUM_ITEM_VALUE)
 			{
-				if (!weakAssignment)
-				{
-					throw AstInsException(
-						WString::Unmanaged(L"Field \"") +
-						WString::Unmanaged(cppFieldName) +
-						WString::Unmanaged(L"\" has already been assigned."),
-						AstInsErrorType::FieldReassigned, field);
-				}
+				if (weakAssignment) return;
+				throw AstInsException(
+					WString::Unmanaged(L"Field \"") +
+					WString::Unmanaged(cppFieldName) +
+					WString::Unmanaged(L"\" has already been assigned."),
+					AstInsErrorType::FieldReassigned, field);
 			}
 			(typedObject->*member) = (TField)enumItem;
 		}

@@ -464,7 +464,7 @@ AstInsReceiverBase
 
 							for (auto&& dfa : createdObject.delayedFieldAssignments)
 							{
-								SetField(createdObject.object.Obj(), dfa.field, dfa.value);
+								SetField(createdObject.object.Obj(), dfa.field, dfa.value, dfa.weakAssignment);
 							}
 							createdObject.delayedFieldAssignments.Clear();
 						}
@@ -519,6 +519,7 @@ AstInsReceiverBase
 					}
 					break;
 				case AstInsType::Field:
+				case AstInsType::FieldIfUnassigned:
 					{
 						auto& createdObject = TopCreated();
 						if (pushed.Count() <= createdObject.pushedCount)
@@ -532,13 +533,14 @@ AstInsReceiverBase
 						auto value = pushed[pushed.Count() - 1];
 						pushed.RemoveAt(pushed.Count() - 1);
 
+						bool weakAssignment = instruction.type == AstInsType::FieldIfUnassigned;
 						if (createdObject.object)
 						{
-							SetField(createdObject.object.Obj(), instruction.param, value);
+							SetField(createdObject.object.Obj(), instruction.param, value, weakAssignment);
 						}
 						else
 						{
-							DelayAssign({ value,instruction.param });
+							DelayAssign({ value,instruction.param,weakAssignment });
 						}
 					}
 					break;
