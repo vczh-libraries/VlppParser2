@@ -5,17 +5,20 @@
 - Add switches and push-pop syntax.
   - switch can only be boolean.
   - switch must have default value.
-  - `(OPTION1=VALUE1, ...; SYNTAX)` assign `VALUE` to switch `OPTION1` ans so on, run `SYNTAX`, and restores.
-  - condition syntax can only be used directly in:
-    - clauses: `CONDITION? SYNTAX`
-    - alternative branches `(CONDITION? SYNTAX1 | CONDITION? SYNTAX2 | ...)`
-      - at most one condition could be just `CONDITION?`, saying this branch accepts nothing when the condition is `true`.
-      - it implements a "conditional optional" syntax, only when a condition is `true` it becomes optional.
-    - optional `[CONDITION? SYNTAX]`
+  - `(OPTION1, !OPTION2, ...; SYNTAX)` assigns `true` to `OPTION1` and `false` to `OPTION2` etc, runs `SYNTAX`, and restores.
+  - condition syntax: `?(CONDITION1:SYNTAX1 | ...)`.
+    - `SYNTAX1` is valid only if `CONDITION1` is evaluated to `true`.
+    - all branches must be conditional.
+    - all branches must not consume empty sequence except `;`.
+    - if all conditions fail, the syntax fail.
+    - `CONDITION?;` means, if the condition is evaluated to `true`, this syntax consumes no input.
+      - only one branch could be `;`.
   - condition could be:
-    - `OPTION=VALUE`
-    - `A && B`
-    - `A || B`
+    - `OPTION`: means `OPTION == true`
+    - `C1 && C2`
+    - `C1 || C2`
+    - `!C`
+    - `(C)`
 - Extensible tokens, for example, recognize `R"[^\s(]\(` and invoke a callback function to determine the end of the string.
   - Offer two options: using (rich regex | C++) to search for complete token.
 
@@ -25,6 +28,8 @@
 - Print correct codeRange for `ParserErrorType::RuleIsIndirectlyLeftRecursive`.
 - Optimize `CrossReferencedNFA` to merge prefix (two states can be merged if their `InEdges` are identical, `FromState` in `InEdges` are replaced by merged states).
   - Issue: `X ::= ([a] | [b]) c` fails because when both optional syntax fail it creates two trace routes to c and causes ambiguity.
+  - Possible solution: if multiple combinations of consecutive epsilon transitions makes an epsilon transition between two states, treat them as one single epsilon transition.
+    - Merge conditions in these epsilon transitions properly.
 - `JsonEscapeString` `JsonUnescapeString` handle surrogate pairs correctly.
 - Review all comments.
 
