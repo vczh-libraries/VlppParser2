@@ -267,18 +267,34 @@ AstInsReceiverBase
 			}
 		}
 
-		void AstInsReceiverBase::SetField(ParsingAstBase* object, vint32_t field, const ObjectOrToken& value)
+		void AstInsReceiverBase::SetField(ParsingAstBase* object, vint32_t field, const ObjectOrToken& value, bool weakAssignment)
 		{
 			if (value.object)
 			{
+				if (weakAssignment)
+				{
+					throw AstInsException(
+						L"Weak assignment only available for field of enum type",
+						AstInsErrorType::FieldWeakAssignmentOnNonEnum,
+						field
+						);
+				}
 				SetField(object, field, value.object);
 			}
 			else if (value.enumItem != -1)
 			{
-				SetField(object, field, value.enumItem);
+				SetField(object, field, value.enumItem, weakAssignment);
 			}
 			else
 			{
+				if (weakAssignment)
+				{
+					throw AstInsException(
+						L"Weak assignment only available for field of enum type",
+						AstInsErrorType::FieldWeakAssignmentOnNonEnum,
+						field
+						);
+				}
 				SetField(object, field, value.token, value.tokenIndex);
 			}
 		}

@@ -68,7 +68,7 @@ WriteAstAssemblerHeaderFile
 						writer.WriteLine(prefix + L"\tvl::Ptr<vl::glr::ParsingAstBase> CreateAstNode(vl::vint32_t type) override;");
 						writer.WriteLine(prefix + L"\tvoid SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::Ptr<vl::glr::ParsingAstBase> value) override;");
 						writer.WriteLine(prefix + L"\tvoid SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, const vl::regex::RegexToken& token, vl::vint32_t tokenIndex) override;");
-						writer.WriteLine(prefix + L"\tvoid SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::vint32_t enumItem) override;");
+						writer.WriteLine(prefix + L"\tvoid SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::vint32_t enumItem, bool weakAssignment) override;");
 						writer.WriteLine(prefix + L"\tvl::Ptr<vl::glr::ParsingAstBase> ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates) override;");
 						writer.WriteLine(prefix + L"};");
 					}
@@ -227,7 +227,7 @@ WriteAstAssemblerCppFile
 
 					{
 						writer.WriteLine(L"");
-						writer.WriteLine(prefix + L"void " + manager.Global().name + L"AstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::vint32_t enumItem)");
+						writer.WriteLine(prefix + L"void " + manager.Global().name + L"AstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::vint32_t enumItem, bool weakAssignment)");
 						writer.WriteLine(prefix + L"{");
 						writer.WriteLine(prefix + L"\tauto cppFieldName = " + manager.Global().name + L"CppFieldName((" + manager.Global().name + L"Fields)field);");
 
@@ -261,7 +261,7 @@ WriteAstAssemblerCppFile
 								PrintCppType(nullptr, classSymbol, writer);
 								writer.WriteString(L"::");
 								writer.WriteString(propSymbol->Name());
-								writer.WriteLine(L", object, field, enumItem, cppFieldName);");
+								writer.WriteLine(L", object, field, enumItem, weakAssignment, cppFieldName);");
 							}
 							writer.WriteLine(prefix + L"\tdefault:");
 							writer.WriteLine(prefix + L"\t\treturn vl::glr::AssemblyThrowFieldNotEnum(field, cppFieldName);");

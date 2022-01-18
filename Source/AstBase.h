@@ -270,6 +270,7 @@ Instructions
 			EndObject,									// EndObject()						: Finish creating an AST node, all objects pushed after BeginObject are supposed to be its fields.
 			DiscardValue,								// DiscardValue()					: Remove a pushed value.
 			Field,										// Field(Field)						: Associate a field name with the top object.
+			FieldIfUnassigned,							// FieldIfUnassigned(Field)			: Like Field(Field) but only take effect if such field has never been assigned.
 			ResolveAmbiguity,							// ResolveAmbiguity(Type, Count)	: Combine several top objects to one using an ambiguity node. Type is the type of each top object.
 
 			AccumulatedDfa,								// AccumulatedDfa(Count)			: Multiple DelayFieldAssignment
@@ -308,6 +309,7 @@ Instructions
 			UnexpectedAmbiguousCandidate,				// UnexpectedAmbiguousCandidate(Type)	: The type of the ambiguous candidate is not compatible to the required type.
 			FieldNotExistsInType,						// FieldNotExistsInType(Field)			: The type doesn't have such field.
 			FieldReassigned,							// FieldReassigned(Field)				: An object is assigned to a field but this field has already been assigned.
+			FieldWeakAssignmentOnNonEnum,				// FieldWeakAssignmentOnNonEnum(Field)	: Weak assignment only available for field of enum type.
 			ObjectTypeMismatchedToField,				// ObjectTypeMismatchedToField(Field)	: Unable to assign an object to a field because the type does not match.
 
 			NoRootObject,								// NoRootObject()						: There is no created objects.
@@ -371,7 +373,8 @@ IAstInsReceiver
 			struct FieldAssignment
 			{
 				ObjectOrToken							value;
-				vint32_t								field;
+				vint32_t								field = -1;
+				bool									weakAssignment = false;
 			};
 
 			struct CreatedObject
@@ -403,7 +406,7 @@ IAstInsReceiver
 			bool										corrupted = false;
 
 			void										EnsureContinuable();
-			void										SetField(ParsingAstBase* object, vint32_t field, const ObjectOrToken& value);
+			void										SetField(ParsingAstBase* object, vint32_t field, const ObjectOrToken& value, bool weakAssignment);
 
 			CreatedObject&								PushCreated(CreatedObject&& createdObject);
 			const CreatedObject&						TopCreated();
@@ -413,7 +416,7 @@ IAstInsReceiver
 			virtual Ptr<ParsingAstBase>					CreateAstNode(vint32_t type) = 0;
 			virtual void								SetField(ParsingAstBase* object, vint32_t field, Ptr<ParsingAstBase> value) = 0;
 			virtual void								SetField(ParsingAstBase* object, vint32_t field, const regex::RegexToken& token, vint32_t tokenIndex) = 0;
-			virtual void								SetField(ParsingAstBase* object, vint32_t field, vint32_t enumValue) = 0;
+			virtual void								SetField(ParsingAstBase* object, vint32_t field, vint32_t enumValue, bool weakAssignment) = 0;
 			virtual Ptr<ParsingAstBase>					ResolveAmbiguity(vint32_t type, collections::Array<Ptr<ParsingAstBase>>& candidates) = 0;
 
 		public:
@@ -515,7 +518,7 @@ IAstInsReceiver (Code Generation Templates)
 		}
 
 		template<typename TClass, typename TField>
-		void AssemblerSetEnumField(TField(TClass::* member), ParsingAstBase* object, vint32_t field, vint32_t enumItem, const wchar_t* cppFieldName)
+		void AssemblerSetEnumField(TField(TClass::* member), ParsingAstBase* object, vint32_t field, vint32_t enumItem, bool weakAssignment, const wchar_t* cppFieldName)
 		{
 			auto typedObject = dynamic_cast<TClass*>(object);
 			if (!typedObject)
@@ -528,11 +531,14 @@ IAstInsReceiver (Code Generation Templates)
 			}
 			if ((typedObject->*member) != TField::UNDEFINED_ENUM_ITEM_VALUE)
 			{
-				throw AstInsException(
-					WString::Unmanaged(L"Field \"") +
-					WString::Unmanaged(cppFieldName) +
-					WString::Unmanaged(L"\" has already been assigned."),
-					AstInsErrorType::FieldReassigned, field);
+				if (!weakAssignment)
+				{
+					throw AstInsException(
+						WString::Unmanaged(L"Field \"") +
+						WString::Unmanaged(cppFieldName) +
+						WString::Unmanaged(L"\" has already been assigned."),
+						AstInsErrorType::FieldReassigned, field);
+				}
 			}
 			(typedObject->*member) = (TField)enumItem;
 		}

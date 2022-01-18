@@ -143,19 +143,19 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 				}
 			}
 
-			void ParserGenAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::vint32_t enumItem)
+			void ParserGenAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::vint32_t enumItem, bool weakAssignment)
 			{
 				auto cppFieldName = ParserGenCppFieldName((ParserGenFields)field);
 				switch((ParserGenFields)field)
 				{
 				case ParserGenFields::Class_ambiguity:
-					return vl::glr::AssemblerSetEnumField(&vl::glr::parsergen::GlrClass::ambiguity, object, field, enumItem, cppFieldName);
+					return vl::glr::AssemblerSetEnumField(&vl::glr::parsergen::GlrClass::ambiguity, object, field, enumItem, weakAssignment, cppFieldName);
 				case ParserGenFields::ClassProp_propType:
-					return vl::glr::AssemblerSetEnumField(&vl::glr::parsergen::GlrClassProp::propType, object, field, enumItem, cppFieldName);
+					return vl::glr::AssemblerSetEnumField(&vl::glr::parsergen::GlrClassProp::propType, object, field, enumItem, weakAssignment, cppFieldName);
 				case ParserGenFields::OptionalSyntax_priority:
-					return vl::glr::AssemblerSetEnumField(&vl::glr::parsergen::GlrOptionalSyntax::priority, object, field, enumItem, cppFieldName);
+					return vl::glr::AssemblerSetEnumField(&vl::glr::parsergen::GlrOptionalSyntax::priority, object, field, enumItem, weakAssignment, cppFieldName);
 				case ParserGenFields::RefSyntax_refType:
-					return vl::glr::AssemblerSetEnumField(&vl::glr::parsergen::GlrRefSyntax::refType, object, field, enumItem, cppFieldName);
+					return vl::glr::AssemblerSetEnumField(&vl::glr::parsergen::GlrRefSyntax::refType, object, field, enumItem, weakAssignment, cppFieldName);
 				default:
 					return vl::glr::AssemblyThrowFieldNotEnum(field, cppFieldName);
 				}
