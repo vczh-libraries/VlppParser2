@@ -22,7 +22,14 @@ CreateParserGenRuleSyntax
 			{
 				manager.name = L"RuleParser";
 
+				auto _cond0 = manager.CreateRule(L"Cond0");
+				auto _cond1 = manager.CreateRule(L"Cond1");
+				auto _cond2 = manager.CreateRule(L"Cond2");
+				auto _cond = manager.CreateRule(L"Cond");
+				auto _switchItem = manager.CreateRule(L"SwitchItem");
+				auto _switches = manager.CreateRule(L"Switches");
 				auto _optionalBody = manager.CreateRule(L"OptionalBody");
+				auto _testBranch = manager.CreateRule(L"TestBranch");
 				auto _token = manager.CreateRule(L"Token");
 				auto _syntax0 = manager.CreateRule(L"Syntax0");
 				auto _syntax1 = manager.CreateRule(L"Syntax1");
@@ -34,6 +41,7 @@ CreateParserGenRuleSyntax
 				auto _rule = manager.CreateRule(L"Rule");
 				auto _file = manager.CreateRule(L"File");
 
+				_switches->isPartial = true;
 				_optionalBody->isPartial = true;
 				_token->isPartial = true;
 				_assignmentOp->isPartial = true;
@@ -44,6 +52,51 @@ CreateParserGenRuleSyntax
 				using T = ParserGenTokens;
 				using C = ParserGenClasses;
 				using F = ParserGenFields;
+
+				///////////////////////////////////////////////////////////////////////////////////
+				// Condition
+				///////////////////////////////////////////////////////////////////////////////////
+
+				// ID:name as RefCondition
+				Clause{ _cond0 } = create(tok(T::ID, F::RefCondition_name), C::RefCondition);
+
+				// "(" !Cond ")"
+				Clause{ _cond0 } = tok(T::OPEN_ROUND) + use(_cond) + tok(T::CLOSE_ROUND);
+
+				// "!" Cond0:syntax as NotCondition
+				Clause{ _cond0 } = create(tok(T::USE) + rule(_cond0, F::NotCondition_condition), C::NotCondition);
+
+				// !Cond0
+				Clause{ _cond1 } = use(_cond0);
+
+				// Cond1:first "&&" Cond0:second as AndCondition
+				Clause{ _cond1 } = create(rule(_cond1, F::AndCondition_first) + tok(T::AND) + rule(_cond0, F::AndCondition_second), C::AndCondition);
+
+				// !Cond1
+				Clause{ _cond2 } = use(_cond1);
+
+				// Cond2:first "||" Cond1:second as OrCondition
+				Clause{ _cond2 } = create(rule(_cond2, F::OrCondition_first) + tok(T::OR) + rule(_cond1, F::OrCondition_second), C::OrCondition);
+
+				// !Cond2
+				Clause{ _cond } = use(_cond2);
+
+				///////////////////////////////////////////////////////////////////////////////////
+				// Switch
+				///////////////////////////////////////////////////////////////////////////////////
+
+				// ID:name as SwitchItem {value = True}
+				Clause{ _switchItem } = create(tok(T::ID, F::SwitchItem_name), C::SwitchItem).with(F::SwitchItem_value, GlrSwitchValue::True);
+
+				// "!" ID:name as SwitchItem {value = False}
+				Clause{ _switchItem } = create(tok(T::USE) + tok(T::ID, F::SwitchItem_name), C::SwitchItem).with(F::SwitchItem_value, GlrSwitchValue::False);
+
+				// "switch" {SwitchItem:switches ; ","} ";" as partial File
+				Clause{ _switches } = partial(tok(T::SWITCH) + loop(rule(_switchItem, F::SyntaxFile_rules), tok(T::COMMA)) + tok(T::SEMICOLON));
+
+				///////////////////////////////////////////////////////////////////////////////////
+				// Syntax (primitive)
+				///////////////////////////////////////////////////////////////////////////////////
 
 				// "[" Syntax:syntax "]" as partial OptionalSyntax
 				Clause{ _optionalBody } = partial(tok(T::OPEN_SQUARE) + rule(_syntax, F::OptionalSyntax_syntax) + tok(T::CLOSE_SQUARE));
@@ -75,6 +128,23 @@ CreateParserGenRuleSyntax
 				// OptionalBody as OptionalSyntax {priority = Equal}
 				Clause{ _syntax0 } = create(prule(_optionalBody), C::OptionalSyntax).with(F::OptionalSyntax_priority, GlrOptionalPriority::Equal);
 
+				///////////////////////////////////////////////////////////////////////////////////
+				// Syntax (conditional)
+				///////////////////////////////////////////////////////////////////////////////////
+
+				// "!(" {SwitchItem:switches ; ","} ";" Syntax:syntax ")" as PushConditionSyntax
+				Clause{ _syntax0 } = create(tok(T::OPEN_PUSH) + loop(rule(_switchItem, F::PushConditionSyntax_switches), tok(T::COMMA)) + tok(T::SEMICOLON) + rule(_syntax, F::PushConditionSyntax_syntax) + tok(T::CLOSE_ROUND), C::PushConditionSyntax);
+
+				// Condition:condition ":" (Syntax1:syntax | ";") as TestConditionBranch
+				Clause{ _testBranch } = create(rule(_cond, F::TestConditionBranch_condition) + tok(T::COLON) + (rule(_syntax1, F::TestConditionBranch_syntax) | tok(T::SEMICOLON)), C::TestConditionBranch);
+
+				// "?(" {TestBranch:branches ; "|"} ")" as TestConditionSyntax
+				Clause{ _syntax0 } = create(tok(T::OPEN_TEST) + loop(rule(_testBranch, F::TestConditionSyntax_branches), tok(T::ALTERNATIVE)) + tok(T::CLOSE_ROUND), C::TestConditionSyntax);
+
+				///////////////////////////////////////////////////////////////////////////////////
+				// Syntax (left recursive)
+				///////////////////////////////////////////////////////////////////////////////////
+
 				// "(" !Syntax ")"
 				Clause{ _syntax0 } = tok(T::OPEN_ROUND) + use(_syntax) + tok(T::CLOSE_ROUND);
 
@@ -92,6 +162,10 @@ CreateParserGenRuleSyntax
 
 				// !Syntax2
 				Clause{ _syntax } = use(_syntax2);
+
+				///////////////////////////////////////////////////////////////////////////////////
+				// Clause
+				///////////////////////////////////////////////////////////////////////////////////
 
 				// "=" as partial Assignment {type = Strong}
 				Clause{ _assignmentOp } = partial(tok(T::ASSIGN)).with(F::Assignment_type, GlrAssignmentType::Strong);
@@ -114,8 +188,12 @@ CreateParserGenRuleSyntax
 				// ID:name {"::=" Clause:clauses} ";" as Rule
 				Clause{ _rule } = create(tok(T::ID, F::Rule_name) + loop(tok(T::INFER) + rule(_clause, F::Rule_clauses)) + tok(T::SEMICOLON), C::Rule);
 
-				// Rule:rules {Rule:rules} as SyntaxFile
-				Clause{ _file } = create(rule(_rule, F::SyntaxFile_rules) + loop(rule(_rule, F::SyntaxFile_rules)), C::SyntaxFile);
+				///////////////////////////////////////////////////////////////////////////////////
+				// File
+				///////////////////////////////////////////////////////////////////////////////////
+
+				// [Switches] Rule:rules {Rule:rules} as SyntaxFile
+				Clause{ _file } = create(opt(prule(_switches)) + rule(_rule, F::SyntaxFile_rules) + loop(rule(_rule, F::SyntaxFile_rules)), C::SyntaxFile);
 			}
 		}
 	}

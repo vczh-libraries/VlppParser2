@@ -101,6 +101,10 @@ CreateParserGenRuleAst
 				_AlternativeSyntax->CreateProp(L"first")->SetPropType(AstPropType::Type, L"Syntax");
 				_AlternativeSyntax->CreateProp(L"second")->SetPropType(AstPropType::Type, L"Syntax");
 
+				///////////////////////////////////////////////////////////////////////////////////
+				// Conditional Clause
+				///////////////////////////////////////////////////////////////////////////////////
+
 				auto _PushConditionSyntax = _ast->CreateClass(L"PushConditionSyntax");
 				_PushConditionSyntax->SetBaseClass(L"Syntax");
 				_PushConditionSyntax->CreateProp(L"switches")->SetPropType(AstPropType::Type, L"SwitchItem");
