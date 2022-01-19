@@ -5,7 +5,7 @@
 - Add switches and push-pop syntax.
   - switch can only be boolean.
   - switch must have default value.
-  - `(OPTION1, !OPTION2, ...; SYNTAX)` assigns `true` to `OPTION1` and `false` to `OPTION2` etc, runs `SYNTAX`, and restores.
+  - `!(OPTION1, !OPTION2, ...; SYNTAX)` assigns `true` to `OPTION1` and `false` to `OPTION2` etc, runs `SYNTAX`, and restores.
   - condition syntax: `?(CONDITION1:SYNTAX1 | ...)`.
     - `SYNTAX1` is valid only if `CONDITION1` is evaluated to `true`.
     - all branches must be conditional.

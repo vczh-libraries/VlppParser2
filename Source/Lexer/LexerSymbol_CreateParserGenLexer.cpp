@@ -30,6 +30,7 @@ CreateParserGenAst
 				manager.CreateToken(L"OPEN_CURLY", L"/{");
 				manager.CreateToken(L"CLOSE_CURLY", L"/}");
 
+				manager.CreateToken(L"OPEN_PUSH", L"!/(");
 				manager.CreateToken(L"OPEN_TEST", L"/?/(");
 				manager.CreateToken(L"AND", L"&&");
 				manager.CreateToken(L"OR", L"/|/|");
