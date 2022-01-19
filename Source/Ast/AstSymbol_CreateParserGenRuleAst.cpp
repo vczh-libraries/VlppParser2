@@ -107,7 +107,7 @@ CreateParserGenRuleAst
 
 				auto _PushConditionSyntax = _ast->CreateClass(L"PushConditionSyntax");
 				_PushConditionSyntax->SetBaseClass(L"Syntax");
-				_PushConditionSyntax->CreateProp(L"switches")->SetPropType(AstPropType::Type, L"SwitchItem");
+				_PushConditionSyntax->CreateProp(L"switches")->SetPropType(AstPropType::Array, L"SwitchItem");
 				_PushConditionSyntax->CreateProp(L"syntax")->SetPropType(AstPropType::Type, L"Syntax");
 
 				auto _TestConditionBranch = _ast->CreateClass(L"TestConditionBranch");
@@ -116,7 +116,7 @@ CreateParserGenRuleAst
 
 				auto _TestConditionSyntax = _ast->CreateClass(L"TestConditionSyntax");
 				_TestConditionSyntax->SetBaseClass(L"Syntax");
-				_TestConditionSyntax->CreateProp(L"branches")->SetPropType(AstPropType::Type, L"TestConditionBranch");
+				_TestConditionSyntax->CreateProp(L"branches")->SetPropType(AstPropType::Array, L"TestConditionBranch");
 
 				///////////////////////////////////////////////////////////////////////////////////
 				// Clause
@@ -159,7 +159,7 @@ CreateParserGenRuleAst
 				///////////////////////////////////////////////////////////////////////////////////
 
 				auto _File = _ast->CreateClass(L"SyntaxFile");
-				_File->CreateProp(L"switches")->SetPropType(AstPropType::Type, L"SwitchItem");
+				_File->CreateProp(L"switches")->SetPropType(AstPropType::Array, L"SwitchItem");
 				_File->CreateProp(L"rules")->SetPropType(AstPropType::Array, L"Rule");
 
 				return _ast;

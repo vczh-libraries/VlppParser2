@@ -197,7 +197,10 @@ namespace vl
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
 					Traverse(static_cast<GlrSyntax*>(node));
 					Traverse(static_cast<GlrPushConditionSyntax*>(node));
-					InspectInto(node->switches.Obj());
+					for (auto&& listItem : node->switches)
+					{
+						InspectInto(listItem.Obj());
+					}
 					InspectInto(node->syntax.Obj());
 					Finishing(static_cast<GlrPushConditionSyntax*>(node));
 					Finishing(static_cast<GlrSyntax*>(node));
@@ -210,7 +213,10 @@ namespace vl
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
 					Traverse(static_cast<GlrSyntax*>(node));
 					Traverse(static_cast<GlrTestConditionSyntax*>(node));
-					InspectInto(node->branches.Obj());
+					for (auto&& listItem : node->branches)
+					{
+						InspectInto(listItem.Obj());
+					}
 					Finishing(static_cast<GlrTestConditionSyntax*>(node));
 					Finishing(static_cast<GlrSyntax*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
@@ -339,7 +345,10 @@ namespace vl
 					{
 						InspectInto(listItem.Obj());
 					}
-					InspectInto(node->switches.Obj());
+					for (auto&& listItem : node->switches)
+					{
+						InspectInto(listItem.Obj());
+					}
 					Finishing(static_cast<GlrSyntaxFile*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}

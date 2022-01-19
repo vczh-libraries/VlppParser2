@@ -92,7 +92,7 @@ CreateParserGenRuleSyntax
 				Clause{ _switchItem } = create(tok(T::USE) + tok(T::ID, F::SwitchItem_name), C::SwitchItem).with(F::SwitchItem_value, GlrSwitchValue::False);
 
 				// "switch" {SwitchItem:switches ; ","} ";" as partial File
-				Clause{ _switches } = partial(tok(T::SWITCH) + loop(rule(_switchItem, F::SyntaxFile_rules), tok(T::COMMA)) + tok(T::SEMICOLON));
+				Clause{ _switches } = partial(tok(T::SWITCH) + loop(rule(_switchItem, F::SyntaxFile_switches), tok(T::COMMA)) + tok(T::SEMICOLON));
 
 				///////////////////////////////////////////////////////////////////////////////////
 				// Syntax (primitive)

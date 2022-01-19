@@ -204,7 +204,7 @@ namespace vl
 			class GlrPushConditionSyntax : public GlrSyntax, vl::reflection::Description<GlrPushConditionSyntax>
 			{
 			public:
-				vl::Ptr<GlrSwitchItem> switches;
+				vl::collections::List<vl::Ptr<GlrSwitchItem>> switches;
 				vl::Ptr<GlrSyntax> syntax;
 
 				void Accept(GlrSyntax::IVisitor* visitor) override;
@@ -220,7 +220,7 @@ namespace vl
 			class GlrTestConditionSyntax : public GlrSyntax, vl::reflection::Description<GlrTestConditionSyntax>
 			{
 			public:
-				vl::Ptr<GlrTestConditionBranch> branches;
+				vl::collections::List<vl::Ptr<GlrTestConditionBranch>> branches;
 
 				void Accept(GlrSyntax::IVisitor* visitor) override;
 			};
@@ -287,7 +287,7 @@ namespace vl
 			class GlrSyntaxFile : public vl::glr::ParsingAstBase, vl::reflection::Description<GlrSyntaxFile>
 			{
 			public:
-				vl::Ptr<GlrSwitchItem> switches;
+				vl::collections::List<vl::Ptr<GlrSwitchItem>> switches;
 				vl::collections::List<vl::Ptr<GlrRule>> rules;
 			};
 		}

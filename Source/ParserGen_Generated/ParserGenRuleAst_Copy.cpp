@@ -95,7 +95,10 @@ namespace vl
 				void RuleAstVisitor::CopyFields(GlrPushConditionSyntax* from, GlrPushConditionSyntax* to)
 				{
 					CopyFields(static_cast<GlrSyntax*>(from), static_cast<GlrSyntax*>(to));
-					to->switches = CopyNode(from->switches.Obj());
+					for (auto&& listItem : from->switches)
+					{
+						to->switches.Add(CopyNode(listItem.Obj()));
+					}
 					to->syntax = CopyNode(from->syntax.Obj());
 				}
 
@@ -155,7 +158,10 @@ namespace vl
 					{
 						to->rules.Add(CopyNode(listItem.Obj()));
 					}
-					to->switches = CopyNode(from->switches.Obj());
+					for (auto&& listItem : from->switches)
+					{
+						to->switches.Add(CopyNode(listItem.Obj()));
+					}
 				}
 
 				void RuleAstVisitor::CopyFields(GlrTestConditionBranch* from, GlrTestConditionBranch* to)
@@ -167,7 +173,10 @@ namespace vl
 				void RuleAstVisitor::CopyFields(GlrTestConditionSyntax* from, GlrTestConditionSyntax* to)
 				{
 					CopyFields(static_cast<GlrSyntax*>(from), static_cast<GlrSyntax*>(to));
-					to->branches = CopyNode(from->branches.Obj());
+					for (auto&& listItem : from->branches)
+					{
+						to->branches.Add(CopyNode(listItem.Obj()));
+					}
 				}
 
 				void RuleAstVisitor::CopyFields(GlrUseSyntax* from, GlrUseSyntax* to)

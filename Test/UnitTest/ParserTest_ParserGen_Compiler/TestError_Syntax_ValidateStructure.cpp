@@ -495,7 +495,7 @@ Exp0
   ::= NUM:value as NumExpr
   ;
 Exp1
-  ::= Exp0:func !(first; [Exp0:args] [Exp1:args]]) as CallExpr
+  ::= Exp0:func !(first; [Exp0:args] [Exp1:args]) as CallExpr
   ;
 )SYNTAX";
 		ExpectError(
@@ -517,7 +517,7 @@ Exp0
   ::= NUM:value as NumExpr
   ;
 Exp1
-  ::= Exp0:func ?(first: [Exp0:args] [Exp1:args]]) as CallExpr
+  ::= Exp0:func ?(first: [Exp0:args] [Exp1:args]) as CallExpr
   ;
 )SYNTAX";
 		ExpectError(

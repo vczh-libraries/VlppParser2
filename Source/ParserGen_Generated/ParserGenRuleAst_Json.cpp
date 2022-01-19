@@ -147,7 +147,14 @@ namespace vl
 				void RuleAstVisitor::PrintFields(GlrPushConditionSyntax* node)
 				{
 					BeginField(L"switches");
-					Print(node->switches.Obj());
+					BeginArray();
+					for (auto&& listItem : node->switches)
+					{
+						BeginArrayItem();
+						Print(listItem.Obj());
+						EndArrayItem();
+					}
+					EndArray();
 					EndField();
 					BeginField(L"syntax");
 					Print(node->syntax.Obj());
@@ -260,7 +267,14 @@ namespace vl
 					EndArray();
 					EndField();
 					BeginField(L"switches");
-					Print(node->switches.Obj());
+					BeginArray();
+					for (auto&& listItem : node->switches)
+					{
+						BeginArrayItem();
+						Print(listItem.Obj());
+						EndArrayItem();
+					}
+					EndArray();
 					EndField();
 				}
 				void RuleAstVisitor::PrintFields(GlrTestConditionBranch* node)
@@ -275,7 +289,14 @@ namespace vl
 				void RuleAstVisitor::PrintFields(GlrTestConditionSyntax* node)
 				{
 					BeginField(L"branches");
-					Print(node->branches.Obj());
+					BeginArray();
+					for (auto&& listItem : node->branches)
+					{
+						BeginArrayItem();
+						Print(listItem.Obj());
+						EndArrayItem();
+					}
+					EndArray();
 					EndField();
 				}
 				void RuleAstVisitor::PrintFields(GlrUseSyntax* node)

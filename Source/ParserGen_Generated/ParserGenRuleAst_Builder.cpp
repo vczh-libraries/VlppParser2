@@ -177,7 +177,7 @@ MakePushConditionSyntax
 
 				MakePushConditionSyntax& MakePushConditionSyntax::switches(const vl::Ptr<GlrSwitchItem>& value)
 				{
-					node->switches = value;
+					node->switches.Add(value);
 					return *this;
 				}
 
@@ -295,7 +295,7 @@ MakeSyntaxFile
 
 				MakeSyntaxFile& MakeSyntaxFile::switches(const vl::Ptr<GlrSwitchItem>& value)
 				{
-					node->switches = value;
+					node->switches.Add(value);
 					return *this;
 				}
 
@@ -321,7 +321,7 @@ MakeTestConditionSyntax
 
 				MakeTestConditionSyntax& MakeTestConditionSyntax::branches(const vl::Ptr<GlrTestConditionBranch>& value)
 				{
-					node->branches = value;
+					node->branches.Add(value);
 					return *this;
 				}
 
