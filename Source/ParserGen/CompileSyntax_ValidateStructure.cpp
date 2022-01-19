@@ -292,12 +292,12 @@ ValidateStructureCountingVisitor
 
 				void Visit(GlrPushConditionSyntax* node) override
 				{
-					throw 0;
+					CHECK_FAIL(L"Not Implemented!");
 				}
 
 				void Visit(GlrTestConditionSyntax* node) override
 				{
-					throw 0;
+					CHECK_FAIL(L"Not Implemented!");
 				}
 			};
 
@@ -570,12 +570,12 @@ ValidateStructureRelationshipVisitor
 
 				void Visit(GlrPushConditionSyntax* node) override
 				{
-					throw 0;
+					CHECK_FAIL(L"Not Implemented!");
 				}
 
 				void Visit(GlrTestConditionSyntax* node) override
 				{
-					throw 0;
+					CHECK_FAIL(L"Not Implemented!");
 				}
 			};
 
