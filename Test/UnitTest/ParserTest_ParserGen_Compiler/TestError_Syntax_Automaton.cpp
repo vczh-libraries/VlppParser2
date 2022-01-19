@@ -104,4 +104,50 @@ Z
 			{ ParserErrorType::RuleIsIndirectlyLeftRecursive,L"Z" }
 			);
 	});
+
+	TEST_CASE(L"LeftRecursiveClauseInsidePushCondition")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+switch first;
+X
+  ::= A as Ast
+  ;
+Y
+  ::= !X
+  ::= !(first; !Y X)
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::LeftRecursiveClauseInsidePushCondition,L"Y" }
+			);
+	});
+
+	TEST_CASE(L"LeftRecursiveClauseInsideTestCondition")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+switch first;
+X
+  ::= A as Ast
+  ;
+Y
+  ::= !X
+  ::= ?(first: !Y X)
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::LeftRecursiveClauseInsideTestCondition,L"Y" }
+			);
+	});
 }

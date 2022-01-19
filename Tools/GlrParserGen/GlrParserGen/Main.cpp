@@ -196,6 +196,8 @@ void PrintCompileErrors(ParserSymbolManager& global)
 		// SyntaxSymbolManager ----------------------------------------------------------------
 		CASE(DuplicatedRule, ruleName);
 		CASE(RuleIsIndirectlyLeftRecursive, ruleName);
+		CASE(LeftRecursiveClauseInsidePushCondition, ruleName);
+		CASE(LeftRecursiveClauseInsideTestCondition, ruleName);
 
 		// SyntaxAst (ResolveName) ------------------------------------------------------------
 		CASE(RuleNameConflictedWithToken, ruleName);
@@ -207,6 +209,9 @@ void PrintCompileErrors(ParserSymbolManager& global)
 		CASE(ConditionalLiteralNotValidToken, ruleName, name);
 		CASE(ConditionalLiteralIsDiscardedToken, ruleName, name);
 		CASE(ConditionalLiteralIsDisplayText, ruleName, name);
+		CASE(DuplicatedSwitch, switchName);
+		CASE(UnusedSwitch, switchName);
+		CASE(SwitchNotExists, ruleName, switchName);
 
 		// SyntaxAst (CalculateTypes) ---------------------------------------------------------
 		CASE(RuleMixedPartialClauseWithOtherClause, ruleName);
@@ -238,6 +243,9 @@ void PrintCompileErrors(ParserSymbolManager& global)
 		CASE(OptionalBodyCouldExpandToEmptySequence, ruleName);
 		CASE(NegativeOptionalEndsAClause, ruleName);
 		CASE(MultiplePrioritySyntaxInAClause, ruleName);
+		CASE(PushConditionBodyCouldExpandToEmptySequence, ruleName);
+		CASE(TestConditionBodyCouldExpandToEmptySequence, ruleName);
+		CASE(MultipleEmptySyntaxInTestCondition, ruleName);
 
 		// SyntaxAst (ValidateStructure, relationship) ----------------------------------------
 		CASE(FieldAssignedMoreThanOnce, ruleName, clauseType, fieldName);

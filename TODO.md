@@ -64,3 +64,4 @@
 - Escaping and unescaping functions
   - Offer two options: experiment
   - Map positions between escaped and unescaped text
+- Error if any condition is constantly evaluated to true or false

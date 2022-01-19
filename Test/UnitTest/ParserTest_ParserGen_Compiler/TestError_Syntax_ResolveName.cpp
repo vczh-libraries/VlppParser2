@@ -265,4 +265,70 @@ Exp0 ::= '+':value as NumExpr;
 			{ ParserErrorType::ConditionalLiteralIsDisplayText,L"Exp0",L"\'+\'" }
 		);
 	});
+
+	TEST_CASE(L"DuplicatedSwitch")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+switch first,!first;
+Exp0 ::= '+':value as NumExpr;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::DuplicatedSwitch,L"first" }
+		);
+	});
+
+	TEST_CASE(L"UnusedSwitch")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+switch first;
+Exp0 ::= '+':value as NumExpr;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::UnusedSwitch,L"first" }
+		);
+	});
+
+	TEST_CASE(L"SwitchNotExists 1")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0 ::= !(first; '+':value) as NumExpr;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::SwitchNotExists,L"Exp0",L"first"}
+		);
+	});
+
+	TEST_CASE(L"SwitchNotExists 2")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0 ::= ?(first: '+':value) as NumExpr;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::SwitchNotExists,L"Exp0",L"first" }
+		);
+	});
 }

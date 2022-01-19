@@ -71,6 +71,8 @@ ParserSymbolManager
 				// SyntaxSymbolManager ----------------------------------------------------------------
 				DuplicatedRule,								// (ruleName)
 				RuleIsIndirectlyLeftRecursive,				// (ruleName)													: Indirect left recursion must be resolved before.
+				LeftRecursiveClauseInsidePushCondition,		// (ruleName)													: The whole left recursive clause is not allowed to be in a push condition syntax.
+				LeftRecursiveClauseInsideTestCondition,		// (ruleName)													: The whole left recursive clause is not allowed to be in a test condition syntax.
 
 				// SyntaxAst (ResolveName) ------------------------------------------------------------
 				RuleNameConflictedWithToken,				// (ruleName)
@@ -82,6 +84,9 @@ ParserSymbolManager
 				ConditionalLiteralNotValidToken,			// (ruleName, name)
 				ConditionalLiteralIsDiscardedToken,			// (ruleName, name)
 				ConditionalLiteralIsDisplayText,			// (ruleName, name)
+				DuplicatedSwitch,							// (switchName)
+				UnusedSwitch,								// (switchName)
+				SwitchNotExists,							// (ruleName, switchName)
 
 				// SyntaxAst (CalculateTypes) ---------------------------------------------------------
 				RuleMixedPartialClauseWithOtherClause,		// (ruleName)
@@ -113,6 +118,9 @@ ParserSymbolManager
 				OptionalBodyCouldExpandToEmptySequence,		// (ruleName)
 				NegativeOptionalEndsAClause,				// (ruleName)													: Negative optional syntax cannot ends a clause.
 				MultiplePrioritySyntaxInAClause,			// (ruleName)													: Too many syntax with priority in the a clause.
+				PushConditionBodyCouldExpandToEmptySequence,// (ruleName)
+				TestConditionBodyCouldExpandToEmptySequence,// (ruleName)
+				MultipleEmptySyntaxInTestCondition,			// (ruleName)
 
 				// SyntaxAst (ValidateStructure, relationship) ----------------------------------------
 				FieldAssignedMoreThanOnce,					// (ruleName, clauseType, fieldName)
