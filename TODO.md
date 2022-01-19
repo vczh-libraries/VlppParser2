@@ -10,6 +10,7 @@
     - `SYNTAX1` is valid only if `CONDITION1` is evaluated to `true`.
     - all branches must be conditional.
     - all branches must not consume empty sequence except `;`.
+    - if a clause is a left recursive clause, there must be no condition pushing or testing from the start state to the left recursive rule syntax.
     - if all conditions fail, the syntax fail.
     - `CONDITION?;` means, if the condition is evaluated to `true`, this syntax consumes no input.
       - only one branch could be `;`.
