@@ -18,6 +18,7 @@ CreateParserGenAst
 				manager.CreateToken(L"CLASS", L"class");
 				manager.CreateToken(L"ENUM", L"enum");
 				manager.CreateToken(L"VAR", L"var");
+				manager.CreateToken(L"SWITCH", L"switch");
 				manager.CreateToken(L"TOKEN", L"token");
 				manager.CreateToken(L"AS", L"as");
 				manager.CreateToken(L"PARTIAL", L"partial");
@@ -28,6 +29,10 @@ CreateParserGenAst
 				manager.CreateToken(L"CLOSE_SQUARE", L"/]");
 				manager.CreateToken(L"OPEN_CURLY", L"/{");
 				manager.CreateToken(L"CLOSE_CURLY", L"/}");
+
+				manager.CreateToken(L"OPEN_TEST", L"/?/(");
+				manager.CreateToken(L"AND", L"&&");
+				manager.CreateToken(L"OR", L"/|/|");
 
 				manager.CreateToken(L"COMMA", L",");
 				manager.CreateToken(L"COLON", L":");
