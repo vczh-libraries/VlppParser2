@@ -20,6 +20,7 @@ namespace vl
 				/// <summary>A traverse visitor, overriding all abstract methods with AST visiting code.</summary>
 				class RuleAstVisitor
 					: public vl::Object
+					, protected virtual GlrCondition::IVisitor
 					, protected virtual GlrSyntax::IVisitor
 					, protected virtual GlrClause::IVisitor
 				{
@@ -27,52 +28,80 @@ namespace vl
 					virtual void Traverse(vl::glr::ParsingToken& token);
 					virtual void Traverse(vl::glr::ParsingAstBase* node);
 					virtual void Traverse(GlrAlternativeSyntax* node);
+					virtual void Traverse(GlrAndCondition* node);
 					virtual void Traverse(GlrAssignment* node);
 					virtual void Traverse(GlrClause* node);
+					virtual void Traverse(GlrCondition* node);
 					virtual void Traverse(GlrCreateClause* node);
 					virtual void Traverse(GlrLoopSyntax* node);
+					virtual void Traverse(GlrNotCondition* node);
 					virtual void Traverse(GlrOptionalSyntax* node);
+					virtual void Traverse(GlrOrCondition* node);
 					virtual void Traverse(GlrPartialClause* node);
+					virtual void Traverse(GlrPushConditionSyntax* node);
+					virtual void Traverse(GlrRefCondition* node);
 					virtual void Traverse(GlrRefSyntax* node);
 					virtual void Traverse(GlrReuseClause* node);
 					virtual void Traverse(GlrRule* node);
 					virtual void Traverse(GlrSequenceSyntax* node);
+					virtual void Traverse(GlrSwitchItem* node);
 					virtual void Traverse(GlrSyntax* node);
 					virtual void Traverse(GlrSyntaxFile* node);
+					virtual void Traverse(GlrTestConditionBranch* node);
+					virtual void Traverse(GlrTestConditionSyntax* node);
 					virtual void Traverse(GlrUseSyntax* node);
 
 				protected:
 					virtual void Finishing(vl::glr::ParsingAstBase* node);
 					virtual void Finishing(GlrAlternativeSyntax* node);
+					virtual void Finishing(GlrAndCondition* node);
 					virtual void Finishing(GlrAssignment* node);
 					virtual void Finishing(GlrClause* node);
+					virtual void Finishing(GlrCondition* node);
 					virtual void Finishing(GlrCreateClause* node);
 					virtual void Finishing(GlrLoopSyntax* node);
+					virtual void Finishing(GlrNotCondition* node);
 					virtual void Finishing(GlrOptionalSyntax* node);
+					virtual void Finishing(GlrOrCondition* node);
 					virtual void Finishing(GlrPartialClause* node);
+					virtual void Finishing(GlrPushConditionSyntax* node);
+					virtual void Finishing(GlrRefCondition* node);
 					virtual void Finishing(GlrRefSyntax* node);
 					virtual void Finishing(GlrReuseClause* node);
 					virtual void Finishing(GlrRule* node);
 					virtual void Finishing(GlrSequenceSyntax* node);
+					virtual void Finishing(GlrSwitchItem* node);
 					virtual void Finishing(GlrSyntax* node);
 					virtual void Finishing(GlrSyntaxFile* node);
+					virtual void Finishing(GlrTestConditionBranch* node);
+					virtual void Finishing(GlrTestConditionSyntax* node);
 					virtual void Finishing(GlrUseSyntax* node);
 
 				protected:
+					void Visit(GlrRefCondition* node) override;
+					void Visit(GlrNotCondition* node) override;
+					void Visit(GlrAndCondition* node) override;
+					void Visit(GlrOrCondition* node) override;
+
 					void Visit(GlrRefSyntax* node) override;
 					void Visit(GlrUseSyntax* node) override;
 					void Visit(GlrLoopSyntax* node) override;
 					void Visit(GlrOptionalSyntax* node) override;
 					void Visit(GlrSequenceSyntax* node) override;
 					void Visit(GlrAlternativeSyntax* node) override;
+					void Visit(GlrPushConditionSyntax* node) override;
+					void Visit(GlrTestConditionSyntax* node) override;
 
 					void Visit(GlrCreateClause* node) override;
 					void Visit(GlrPartialClause* node) override;
 					void Visit(GlrReuseClause* node) override;
 
 				public:
+					void InspectInto(GlrCondition* node);
 					void InspectInto(GlrSyntax* node);
 					void InspectInto(GlrClause* node);
+					void InspectInto(GlrSwitchItem* node);
+					void InspectInto(GlrTestConditionBranch* node);
 					void InspectInto(GlrAssignment* node);
 					void InspectInto(GlrRule* node);
 					void InspectInto(GlrSyntaxFile* node);

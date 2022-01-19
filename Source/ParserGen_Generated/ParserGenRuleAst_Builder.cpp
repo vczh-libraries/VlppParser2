@@ -32,6 +32,22 @@ MakeAlternativeSyntax
 				}
 
 /***********************************************************************
+MakeAndCondition
+***********************************************************************/
+
+				MakeAndCondition& MakeAndCondition::first(const vl::Ptr<GlrCondition>& value)
+				{
+					node->first = value;
+					return *this;
+				}
+
+				MakeAndCondition& MakeAndCondition::second(const vl::Ptr<GlrCondition>& value)
+				{
+					node->second = value;
+					return *this;
+				}
+
+/***********************************************************************
 MakeAssignment
 ***********************************************************************/
 
@@ -92,6 +108,16 @@ MakeLoopSyntax
 				}
 
 /***********************************************************************
+MakeNotCondition
+***********************************************************************/
+
+				MakeNotCondition& MakeNotCondition::condition(const vl::Ptr<GlrCondition>& value)
+				{
+					node->condition = value;
+					return *this;
+				}
+
+/***********************************************************************
 MakeOptionalSyntax
 ***********************************************************************/
 
@@ -104,6 +130,22 @@ MakeOptionalSyntax
 				MakeOptionalSyntax& MakeOptionalSyntax::syntax(const vl::Ptr<GlrSyntax>& value)
 				{
 					node->syntax = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeOrCondition
+***********************************************************************/
+
+				MakeOrCondition& MakeOrCondition::first(const vl::Ptr<GlrCondition>& value)
+				{
+					node->first = value;
+					return *this;
+				}
+
+				MakeOrCondition& MakeOrCondition::second(const vl::Ptr<GlrCondition>& value)
+				{
+					node->second = value;
 					return *this;
 				}
 
@@ -126,6 +168,32 @@ MakePartialClause
 				MakePartialClause& MakePartialClause::type(const vl::WString& value)
 				{
 					node->type.value = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakePushConditionSyntax
+***********************************************************************/
+
+				MakePushConditionSyntax& MakePushConditionSyntax::switches(const vl::Ptr<GlrSwitchItem>& value)
+				{
+					node->switches = value;
+					return *this;
+				}
+
+				MakePushConditionSyntax& MakePushConditionSyntax::syntax(const vl::Ptr<GlrSyntax>& value)
+				{
+					node->syntax = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeRefCondition
+***********************************************************************/
+
+				MakeRefCondition& MakeRefCondition::name(const vl::WString& value)
+				{
+					node->name.value = value;
 					return *this;
 				}
 
@@ -200,12 +268,60 @@ MakeSequenceSyntax
 				}
 
 /***********************************************************************
+MakeSwitchItem
+***********************************************************************/
+
+				MakeSwitchItem& MakeSwitchItem::name(const vl::WString& value)
+				{
+					node->name.value = value;
+					return *this;
+				}
+
+				MakeSwitchItem& MakeSwitchItem::value(GlrSwitchValue value)
+				{
+					node->value = value;
+					return *this;
+				}
+
+/***********************************************************************
 MakeSyntaxFile
 ***********************************************************************/
 
 				MakeSyntaxFile& MakeSyntaxFile::rules(const vl::Ptr<GlrRule>& value)
 				{
 					node->rules.Add(value);
+					return *this;
+				}
+
+				MakeSyntaxFile& MakeSyntaxFile::switches(const vl::Ptr<GlrSwitchItem>& value)
+				{
+					node->switches = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeTestConditionBranch
+***********************************************************************/
+
+				MakeTestConditionBranch& MakeTestConditionBranch::condition(const vl::Ptr<GlrCondition>& value)
+				{
+					node->condition = value;
+					return *this;
+				}
+
+				MakeTestConditionBranch& MakeTestConditionBranch::syntax(const vl::Ptr<GlrSyntax>& value)
+				{
+					node->syntax = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeTestConditionSyntax
+***********************************************************************/
+
+				MakeTestConditionSyntax& MakeTestConditionSyntax::branches(const vl::Ptr<GlrTestConditionBranch>& value)
+				{
+					node->branches = value;
 					return *this;
 				}
 

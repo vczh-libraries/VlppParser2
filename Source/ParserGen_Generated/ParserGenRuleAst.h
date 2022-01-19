@@ -17,19 +17,35 @@ namespace vl
 		namespace parsergen
 		{
 			class GlrAlternativeSyntax;
+			class GlrAndCondition;
 			class GlrAssignment;
 			class GlrClause;
+			class GlrCondition;
 			class GlrCreateClause;
 			class GlrLoopSyntax;
+			class GlrNotCondition;
 			class GlrOptionalSyntax;
+			class GlrOrCondition;
 			class GlrPartialClause;
+			class GlrPushConditionSyntax;
+			class GlrRefCondition;
 			class GlrRefSyntax;
 			class GlrReuseClause;
 			class GlrRule;
 			class GlrSequenceSyntax;
+			class GlrSwitchItem;
 			class GlrSyntax;
 			class GlrSyntaxFile;
+			class GlrTestConditionBranch;
+			class GlrTestConditionSyntax;
 			class GlrUseSyntax;
+
+			enum class GlrSwitchValue
+			{
+				UNDEFINED_ENUM_ITEM_VALUE = -1,
+				False = 0,
+				True = 1,
+			};
 
 			enum class GlrRefType
 			{
@@ -54,6 +70,63 @@ namespace vl
 				Weak = 1,
 			};
 
+			class GlrCondition abstract : public vl::glr::ParsingAstBase, vl::reflection::Description<GlrCondition>
+			{
+			public:
+				class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
+				{
+				public:
+					virtual void Visit(GlrRefCondition* node) = 0;
+					virtual void Visit(GlrNotCondition* node) = 0;
+					virtual void Visit(GlrAndCondition* node) = 0;
+					virtual void Visit(GlrOrCondition* node) = 0;
+				};
+
+				virtual void Accept(GlrCondition::IVisitor* visitor) = 0;
+
+			};
+
+			class GlrRefCondition : public GlrCondition, vl::reflection::Description<GlrRefCondition>
+			{
+			public:
+				vl::glr::ParsingToken name;
+
+				void Accept(GlrCondition::IVisitor* visitor) override;
+			};
+
+			class GlrNotCondition : public GlrCondition, vl::reflection::Description<GlrNotCondition>
+			{
+			public:
+				vl::Ptr<GlrCondition> condition;
+
+				void Accept(GlrCondition::IVisitor* visitor) override;
+			};
+
+			class GlrAndCondition : public GlrCondition, vl::reflection::Description<GlrAndCondition>
+			{
+			public:
+				vl::Ptr<GlrCondition> first;
+				vl::Ptr<GlrCondition> second;
+
+				void Accept(GlrCondition::IVisitor* visitor) override;
+			};
+
+			class GlrOrCondition : public GlrCondition, vl::reflection::Description<GlrOrCondition>
+			{
+			public:
+				vl::Ptr<GlrCondition> first;
+				vl::Ptr<GlrCondition> second;
+
+				void Accept(GlrCondition::IVisitor* visitor) override;
+			};
+
+			class GlrSwitchItem : public vl::glr::ParsingAstBase, vl::reflection::Description<GlrSwitchItem>
+			{
+			public:
+				vl::glr::ParsingToken name;
+				GlrSwitchValue value = GlrSwitchValue::UNDEFINED_ENUM_ITEM_VALUE;
+			};
+
 			class GlrSyntax abstract : public vl::glr::ParsingAstBase, vl::reflection::Description<GlrSyntax>
 			{
 			public:
@@ -66,6 +139,8 @@ namespace vl
 					virtual void Visit(GlrOptionalSyntax* node) = 0;
 					virtual void Visit(GlrSequenceSyntax* node) = 0;
 					virtual void Visit(GlrAlternativeSyntax* node) = 0;
+					virtual void Visit(GlrPushConditionSyntax* node) = 0;
+					virtual void Visit(GlrTestConditionSyntax* node) = 0;
 				};
 
 				virtual void Accept(GlrSyntax::IVisitor* visitor) = 0;
@@ -122,6 +197,30 @@ namespace vl
 			public:
 				vl::Ptr<GlrSyntax> first;
 				vl::Ptr<GlrSyntax> second;
+
+				void Accept(GlrSyntax::IVisitor* visitor) override;
+			};
+
+			class GlrPushConditionSyntax : public GlrSyntax, vl::reflection::Description<GlrPushConditionSyntax>
+			{
+			public:
+				vl::Ptr<GlrSwitchItem> switches;
+				vl::Ptr<GlrSyntax> syntax;
+
+				void Accept(GlrSyntax::IVisitor* visitor) override;
+			};
+
+			class GlrTestConditionBranch : public vl::glr::ParsingAstBase, vl::reflection::Description<GlrTestConditionBranch>
+			{
+			public:
+				vl::Ptr<GlrCondition> condition;
+				vl::Ptr<GlrSyntax> syntax;
+			};
+
+			class GlrTestConditionSyntax : public GlrSyntax, vl::reflection::Description<GlrTestConditionSyntax>
+			{
+			public:
+				vl::Ptr<GlrTestConditionBranch> branches;
 
 				void Accept(GlrSyntax::IVisitor* visitor) override;
 			};
@@ -188,6 +287,7 @@ namespace vl
 			class GlrSyntaxFile : public vl::glr::ParsingAstBase, vl::reflection::Description<GlrSyntaxFile>
 			{
 			public:
+				vl::Ptr<GlrSwitchItem> switches;
 				vl::collections::List<vl::Ptr<GlrRule>> rules;
 			};
 		}
@@ -200,6 +300,14 @@ namespace vl
 		namespace description
 		{
 #ifndef VCZH_DEBUG_NO_REFLECTION
+			DECL_TYPE_INFO(vl::glr::parsergen::GlrCondition)
+			DECL_TYPE_INFO(vl::glr::parsergen::GlrCondition::IVisitor)
+			DECL_TYPE_INFO(vl::glr::parsergen::GlrRefCondition)
+			DECL_TYPE_INFO(vl::glr::parsergen::GlrNotCondition)
+			DECL_TYPE_INFO(vl::glr::parsergen::GlrAndCondition)
+			DECL_TYPE_INFO(vl::glr::parsergen::GlrOrCondition)
+			DECL_TYPE_INFO(vl::glr::parsergen::GlrSwitchValue)
+			DECL_TYPE_INFO(vl::glr::parsergen::GlrSwitchItem)
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrSyntax)
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrSyntax::IVisitor)
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrRefType)
@@ -210,6 +318,9 @@ namespace vl
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrOptionalSyntax)
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrSequenceSyntax)
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrAlternativeSyntax)
+			DECL_TYPE_INFO(vl::glr::parsergen::GlrPushConditionSyntax)
+			DECL_TYPE_INFO(vl::glr::parsergen::GlrTestConditionBranch)
+			DECL_TYPE_INFO(vl::glr::parsergen::GlrTestConditionSyntax)
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrClause)
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrClause::IVisitor)
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrAssignmentType)
@@ -221,6 +332,29 @@ namespace vl
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrSyntaxFile)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
+
+			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(vl::glr::parsergen::GlrCondition::IVisitor)
+				void Visit(vl::glr::parsergen::GlrRefCondition* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+				void Visit(vl::glr::parsergen::GlrNotCondition* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+				void Visit(vl::glr::parsergen::GlrAndCondition* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+				void Visit(vl::glr::parsergen::GlrOrCondition* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+			END_INTERFACE_PROXY(vl::glr::parsergen::GlrCondition::IVisitor)
 
 			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(vl::glr::parsergen::GlrSyntax::IVisitor)
 				void Visit(vl::glr::parsergen::GlrRefSyntax* node) override
@@ -249,6 +383,16 @@ namespace vl
 				}
 
 				void Visit(vl::glr::parsergen::GlrAlternativeSyntax* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+				void Visit(vl::glr::parsergen::GlrPushConditionSyntax* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+				void Visit(vl::glr::parsergen::GlrTestConditionSyntax* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}

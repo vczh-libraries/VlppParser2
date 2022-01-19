@@ -16,6 +16,28 @@ namespace vl
 			{
 
 /***********************************************************************
+ConditionVisitor
+***********************************************************************/
+
+				// Visitor Members -----------------------------------
+
+				void ConditionVisitor::Visit(GlrRefCondition* node)
+				{
+				}
+
+				void ConditionVisitor::Visit(GlrNotCondition* node)
+				{
+				}
+
+				void ConditionVisitor::Visit(GlrAndCondition* node)
+				{
+				}
+
+				void ConditionVisitor::Visit(GlrOrCondition* node)
+				{
+				}
+
+/***********************************************************************
 SyntaxVisitor
 ***********************************************************************/
 
@@ -42,6 +64,14 @@ SyntaxVisitor
 				}
 
 				void SyntaxVisitor::Visit(GlrAlternativeSyntax* node)
+				{
+				}
+
+				void SyntaxVisitor::Visit(GlrPushConditionSyntax* node)
+				{
+				}
+
+				void SyntaxVisitor::Visit(GlrTestConditionSyntax* node)
 				{
 				}
 

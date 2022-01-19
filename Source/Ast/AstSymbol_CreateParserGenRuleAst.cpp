@@ -19,6 +19,46 @@ CreateParserGenRuleAst
 				Fill(_ast->refNss, L"glr", L"parsergen");
 				_ast->classPrefix = L"Glr";
 
+				///////////////////////////////////////////////////////////////////////////////////
+				// Condition
+				///////////////////////////////////////////////////////////////////////////////////
+
+				auto _Condition = _ast->CreateClass(L"Condition");
+
+				auto _RefCondition = _ast->CreateClass(L"RefCondition");
+				_RefCondition->SetBaseClass(L"Condition");
+				_RefCondition->CreateProp(L"name")->SetPropType(AstPropType::Token);
+
+				auto _NotCondition = _ast->CreateClass(L"NotCondition");
+				_NotCondition->SetBaseClass(L"Condition");
+				_NotCondition->CreateProp(L"condition")->SetPropType(AstPropType::Type, L"Condition");
+
+				auto _AndCondition = _ast->CreateClass(L"AndCondition");
+				_AndCondition->SetBaseClass(L"Condition");
+				_AndCondition->CreateProp(L"first")->SetPropType(AstPropType::Type, L"Condition");
+				_AndCondition->CreateProp(L"second")->SetPropType(AstPropType::Type, L"Condition");
+
+				auto _OrCondition = _ast->CreateClass(L"OrCondition");
+				_OrCondition->SetBaseClass(L"Condition");
+				_OrCondition->CreateProp(L"first")->SetPropType(AstPropType::Type, L"Condition");
+				_OrCondition->CreateProp(L"second")->SetPropType(AstPropType::Type, L"Condition");
+
+				///////////////////////////////////////////////////////////////////////////////////
+				// Switch
+				///////////////////////////////////////////////////////////////////////////////////
+
+				auto _SwitchValue = _ast->CreateEnum(L"SwitchValue");
+				_SwitchValue->CreateItem(L"False");
+				_SwitchValue->CreateItem(L"True");
+
+				auto _Switch = _ast->CreateClass(L"SwitchItem");
+				_Switch->CreateProp(L"name")->SetPropType(AstPropType::Token);
+				_Switch->CreateProp(L"value")->SetPropType(AstPropType::Type, L"SwitchValue");
+
+				///////////////////////////////////////////////////////////////////////////////////
+				// Syntax
+				///////////////////////////////////////////////////////////////////////////////////
+
 				auto _Syntax = _ast->CreateClass(L"Syntax");
 
 				auto _RefType = _ast->CreateEnum(L"RefType");
@@ -61,6 +101,23 @@ CreateParserGenRuleAst
 				_AlternativeSyntax->CreateProp(L"first")->SetPropType(AstPropType::Type, L"Syntax");
 				_AlternativeSyntax->CreateProp(L"second")->SetPropType(AstPropType::Type, L"Syntax");
 
+				auto _PushConditionSyntax = _ast->CreateClass(L"PushConditionSyntax");
+				_PushConditionSyntax->SetBaseClass(L"Syntax");
+				_PushConditionSyntax->CreateProp(L"switches")->SetPropType(AstPropType::Type, L"SwitchItem");
+				_PushConditionSyntax->CreateProp(L"syntax")->SetPropType(AstPropType::Type, L"Syntax");
+
+				auto _TestConditionBranch = _ast->CreateClass(L"TestConditionBranch");
+				_TestConditionBranch->CreateProp(L"condition")->SetPropType(AstPropType::Type, L"Condition");
+				_TestConditionBranch->CreateProp(L"syntax")->SetPropType(AstPropType::Type, L"Syntax");
+
+				auto _TestConditionSyntax = _ast->CreateClass(L"TestConditionSyntax");
+				_TestConditionSyntax->SetBaseClass(L"Syntax");
+				_TestConditionSyntax->CreateProp(L"branches")->SetPropType(AstPropType::Type, L"TestConditionBranch");
+
+				///////////////////////////////////////////////////////////////////////////////////
+				// Clause
+				///////////////////////////////////////////////////////////////////////////////////
+
 				auto _Clause = _ast->CreateClass(L"Clause");
 
 				auto _AssignmentType = _ast->CreateEnum(L"AssignmentType");
@@ -93,7 +150,12 @@ CreateParserGenRuleAst
 				_Rule->CreateProp(L"name")->SetPropType(AstPropType::Token);
 				_Rule->CreateProp(L"clauses")->SetPropType(AstPropType::Array, L"Clause");
 
+				///////////////////////////////////////////////////////////////////////////////////
+				// File
+				///////////////////////////////////////////////////////////////////////////////////
+
 				auto _File = _ast->CreateClass(L"SyntaxFile");
+				_File->CreateProp(L"switches")->SetPropType(AstPropType::Type, L"SwitchItem");
 				_File->CreateProp(L"rules")->SetPropType(AstPropType::Array, L"Rule");
 
 				return _ast;

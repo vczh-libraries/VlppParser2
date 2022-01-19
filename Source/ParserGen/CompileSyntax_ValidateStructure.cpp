@@ -289,6 +289,16 @@ ValidateStructureCountingVisitor
 					node->syntax->Accept(this);
 					CheckAfterClause(node, true);
 				}
+
+				void Visit(GlrPushConditionSyntax* node) override
+				{
+					throw 0;
+				}
+
+				void Visit(GlrTestConditionSyntax* node) override
+				{
+					throw 0;
+				}
 			};
 
 /***********************************************************************
@@ -556,6 +566,16 @@ ValidateStructureRelationshipVisitor
 					clause = node;
 					node->syntax->Accept(this);
 					CheckAfterClause(node);
+				}
+
+				void Visit(GlrPushConditionSyntax* node) override
+				{
+					throw 0;
+				}
+
+				void Visit(GlrTestConditionSyntax* node) override
+				{
+					throw 0;
 				}
 			};
 

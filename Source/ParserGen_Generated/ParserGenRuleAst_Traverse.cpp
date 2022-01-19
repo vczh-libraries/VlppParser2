@@ -17,35 +17,103 @@ namespace vl
 				void RuleAstVisitor::Traverse(vl::glr::ParsingToken& token) {}
 				void RuleAstVisitor::Traverse(vl::glr::ParsingAstBase* node) {}
 				void RuleAstVisitor::Traverse(GlrAlternativeSyntax* node) {}
+				void RuleAstVisitor::Traverse(GlrAndCondition* node) {}
 				void RuleAstVisitor::Traverse(GlrAssignment* node) {}
 				void RuleAstVisitor::Traverse(GlrClause* node) {}
+				void RuleAstVisitor::Traverse(GlrCondition* node) {}
 				void RuleAstVisitor::Traverse(GlrCreateClause* node) {}
 				void RuleAstVisitor::Traverse(GlrLoopSyntax* node) {}
+				void RuleAstVisitor::Traverse(GlrNotCondition* node) {}
 				void RuleAstVisitor::Traverse(GlrOptionalSyntax* node) {}
+				void RuleAstVisitor::Traverse(GlrOrCondition* node) {}
 				void RuleAstVisitor::Traverse(GlrPartialClause* node) {}
+				void RuleAstVisitor::Traverse(GlrPushConditionSyntax* node) {}
+				void RuleAstVisitor::Traverse(GlrRefCondition* node) {}
 				void RuleAstVisitor::Traverse(GlrRefSyntax* node) {}
 				void RuleAstVisitor::Traverse(GlrReuseClause* node) {}
 				void RuleAstVisitor::Traverse(GlrRule* node) {}
 				void RuleAstVisitor::Traverse(GlrSequenceSyntax* node) {}
+				void RuleAstVisitor::Traverse(GlrSwitchItem* node) {}
 				void RuleAstVisitor::Traverse(GlrSyntax* node) {}
 				void RuleAstVisitor::Traverse(GlrSyntaxFile* node) {}
+				void RuleAstVisitor::Traverse(GlrTestConditionBranch* node) {}
+				void RuleAstVisitor::Traverse(GlrTestConditionSyntax* node) {}
 				void RuleAstVisitor::Traverse(GlrUseSyntax* node) {}
 
 				void RuleAstVisitor::Finishing(vl::glr::ParsingAstBase* node) {}
 				void RuleAstVisitor::Finishing(GlrAlternativeSyntax* node) {}
+				void RuleAstVisitor::Finishing(GlrAndCondition* node) {}
 				void RuleAstVisitor::Finishing(GlrAssignment* node) {}
 				void RuleAstVisitor::Finishing(GlrClause* node) {}
+				void RuleAstVisitor::Finishing(GlrCondition* node) {}
 				void RuleAstVisitor::Finishing(GlrCreateClause* node) {}
 				void RuleAstVisitor::Finishing(GlrLoopSyntax* node) {}
+				void RuleAstVisitor::Finishing(GlrNotCondition* node) {}
 				void RuleAstVisitor::Finishing(GlrOptionalSyntax* node) {}
+				void RuleAstVisitor::Finishing(GlrOrCondition* node) {}
 				void RuleAstVisitor::Finishing(GlrPartialClause* node) {}
+				void RuleAstVisitor::Finishing(GlrPushConditionSyntax* node) {}
+				void RuleAstVisitor::Finishing(GlrRefCondition* node) {}
 				void RuleAstVisitor::Finishing(GlrRefSyntax* node) {}
 				void RuleAstVisitor::Finishing(GlrReuseClause* node) {}
 				void RuleAstVisitor::Finishing(GlrRule* node) {}
 				void RuleAstVisitor::Finishing(GlrSequenceSyntax* node) {}
+				void RuleAstVisitor::Finishing(GlrSwitchItem* node) {}
 				void RuleAstVisitor::Finishing(GlrSyntax* node) {}
 				void RuleAstVisitor::Finishing(GlrSyntaxFile* node) {}
+				void RuleAstVisitor::Finishing(GlrTestConditionBranch* node) {}
+				void RuleAstVisitor::Finishing(GlrTestConditionSyntax* node) {}
 				void RuleAstVisitor::Finishing(GlrUseSyntax* node) {}
+
+				void RuleAstVisitor::Visit(GlrRefCondition* node)
+				{
+					if (!node) return;
+					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+					Traverse(static_cast<GlrCondition*>(node));
+					Traverse(static_cast<GlrRefCondition*>(node));
+					Traverse(node->name);
+					Finishing(static_cast<GlrRefCondition*>(node));
+					Finishing(static_cast<GlrCondition*>(node));
+					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+				}
+
+				void RuleAstVisitor::Visit(GlrNotCondition* node)
+				{
+					if (!node) return;
+					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+					Traverse(static_cast<GlrCondition*>(node));
+					Traverse(static_cast<GlrNotCondition*>(node));
+					InspectInto(node->condition.Obj());
+					Finishing(static_cast<GlrNotCondition*>(node));
+					Finishing(static_cast<GlrCondition*>(node));
+					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+				}
+
+				void RuleAstVisitor::Visit(GlrAndCondition* node)
+				{
+					if (!node) return;
+					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+					Traverse(static_cast<GlrCondition*>(node));
+					Traverse(static_cast<GlrAndCondition*>(node));
+					InspectInto(node->first.Obj());
+					InspectInto(node->second.Obj());
+					Finishing(static_cast<GlrAndCondition*>(node));
+					Finishing(static_cast<GlrCondition*>(node));
+					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+				}
+
+				void RuleAstVisitor::Visit(GlrOrCondition* node)
+				{
+					if (!node) return;
+					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+					Traverse(static_cast<GlrCondition*>(node));
+					Traverse(static_cast<GlrOrCondition*>(node));
+					InspectInto(node->first.Obj());
+					InspectInto(node->second.Obj());
+					Finishing(static_cast<GlrOrCondition*>(node));
+					Finishing(static_cast<GlrCondition*>(node));
+					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+				}
 
 				void RuleAstVisitor::Visit(GlrRefSyntax* node)
 				{
@@ -123,6 +191,31 @@ namespace vl
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
+				void RuleAstVisitor::Visit(GlrPushConditionSyntax* node)
+				{
+					if (!node) return;
+					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+					Traverse(static_cast<GlrSyntax*>(node));
+					Traverse(static_cast<GlrPushConditionSyntax*>(node));
+					InspectInto(node->switches.Obj());
+					InspectInto(node->syntax.Obj());
+					Finishing(static_cast<GlrPushConditionSyntax*>(node));
+					Finishing(static_cast<GlrSyntax*>(node));
+					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+				}
+
+				void RuleAstVisitor::Visit(GlrTestConditionSyntax* node)
+				{
+					if (!node) return;
+					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+					Traverse(static_cast<GlrSyntax*>(node));
+					Traverse(static_cast<GlrTestConditionSyntax*>(node));
+					InspectInto(node->branches.Obj());
+					Finishing(static_cast<GlrTestConditionSyntax*>(node));
+					Finishing(static_cast<GlrSyntax*>(node));
+					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+				}
+
 				void RuleAstVisitor::Visit(GlrCreateClause* node)
 				{
 					if (!node) return;
@@ -173,6 +266,12 @@ namespace vl
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
+				void RuleAstVisitor::InspectInto(GlrCondition* node)
+				{
+					if (!node) return;
+					node->Accept(static_cast<GlrCondition::IVisitor*>(this));
+				}
+
 				void RuleAstVisitor::InspectInto(GlrSyntax* node)
 				{
 					if (!node) return;
@@ -183,6 +282,27 @@ namespace vl
 				{
 					if (!node) return;
 					node->Accept(static_cast<GlrClause::IVisitor*>(this));
+				}
+
+				void RuleAstVisitor::InspectInto(GlrSwitchItem* node)
+				{
+					if (!node) return;
+					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+					Traverse(static_cast<GlrSwitchItem*>(node));
+					Traverse(node->name);
+					Finishing(static_cast<GlrSwitchItem*>(node));
+					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+				}
+
+				void RuleAstVisitor::InspectInto(GlrTestConditionBranch* node)
+				{
+					if (!node) return;
+					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+					Traverse(static_cast<GlrTestConditionBranch*>(node));
+					InspectInto(node->condition.Obj());
+					InspectInto(node->syntax.Obj());
+					Finishing(static_cast<GlrTestConditionBranch*>(node));
+					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 
 				void RuleAstVisitor::InspectInto(GlrAssignment* node)
@@ -219,6 +339,7 @@ namespace vl
 					{
 						InspectInto(listItem.Obj());
 					}
+					InspectInto(node->switches.Obj());
 					Finishing(static_cast<GlrSyntaxFile*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}

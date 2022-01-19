@@ -18,6 +18,20 @@ namespace vl
 			namespace empty_visitor
 			{
 				/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
+				class ConditionVisitor : public vl::Object, public GlrCondition::IVisitor
+				{
+				protected:
+					// Dispatch (virtual) --------------------------------
+
+				public:
+					// Visitor Members -----------------------------------
+					void Visit(GlrRefCondition* node) override;
+					void Visit(GlrNotCondition* node) override;
+					void Visit(GlrAndCondition* node) override;
+					void Visit(GlrOrCondition* node) override;
+				};
+
+				/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
 				class SyntaxVisitor : public vl::Object, public GlrSyntax::IVisitor
 				{
 				protected:
@@ -31,6 +45,8 @@ namespace vl
 					void Visit(GlrOptionalSyntax* node) override;
 					void Visit(GlrSequenceSyntax* node) override;
 					void Visit(GlrAlternativeSyntax* node) override;
+					void Visit(GlrPushConditionSyntax* node) override;
+					void Visit(GlrTestConditionSyntax* node) override;
 				};
 
 				/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>

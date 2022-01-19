@@ -20,29 +20,46 @@ namespace vl
 				/// <summary>A copy visitor, overriding all abstract methods with AST copying code.</summary>
 				class RuleAstVisitor
 					: public virtual vl::glr::CopyVisitorBase
+					, protected virtual GlrCondition::IVisitor
 					, protected virtual GlrSyntax::IVisitor
 					, protected virtual GlrClause::IVisitor
 				{
 				protected:
 					void CopyFields(GlrAlternativeSyntax* from, GlrAlternativeSyntax* to);
+					void CopyFields(GlrAndCondition* from, GlrAndCondition* to);
 					void CopyFields(GlrAssignment* from, GlrAssignment* to);
 					void CopyFields(GlrClause* from, GlrClause* to);
+					void CopyFields(GlrCondition* from, GlrCondition* to);
 					void CopyFields(GlrCreateClause* from, GlrCreateClause* to);
 					void CopyFields(GlrLoopSyntax* from, GlrLoopSyntax* to);
+					void CopyFields(GlrNotCondition* from, GlrNotCondition* to);
 					void CopyFields(GlrOptionalSyntax* from, GlrOptionalSyntax* to);
+					void CopyFields(GlrOrCondition* from, GlrOrCondition* to);
 					void CopyFields(GlrPartialClause* from, GlrPartialClause* to);
+					void CopyFields(GlrPushConditionSyntax* from, GlrPushConditionSyntax* to);
+					void CopyFields(GlrRefCondition* from, GlrRefCondition* to);
 					void CopyFields(GlrRefSyntax* from, GlrRefSyntax* to);
 					void CopyFields(GlrReuseClause* from, GlrReuseClause* to);
 					void CopyFields(GlrRule* from, GlrRule* to);
 					void CopyFields(GlrSequenceSyntax* from, GlrSequenceSyntax* to);
+					void CopyFields(GlrSwitchItem* from, GlrSwitchItem* to);
 					void CopyFields(GlrSyntax* from, GlrSyntax* to);
 					void CopyFields(GlrSyntaxFile* from, GlrSyntaxFile* to);
+					void CopyFields(GlrTestConditionBranch* from, GlrTestConditionBranch* to);
+					void CopyFields(GlrTestConditionSyntax* from, GlrTestConditionSyntax* to);
 					void CopyFields(GlrUseSyntax* from, GlrUseSyntax* to);
 
 				protected:
+					virtual void Visit(GlrSwitchItem* node);
+					virtual void Visit(GlrTestConditionBranch* node);
 					virtual void Visit(GlrAssignment* node);
 					virtual void Visit(GlrRule* node);
 					virtual void Visit(GlrSyntaxFile* node);
+
+					void Visit(GlrRefCondition* node) override;
+					void Visit(GlrNotCondition* node) override;
+					void Visit(GlrAndCondition* node) override;
+					void Visit(GlrOrCondition* node) override;
 
 					void Visit(GlrRefSyntax* node) override;
 					void Visit(GlrUseSyntax* node) override;
@@ -50,26 +67,37 @@ namespace vl
 					void Visit(GlrOptionalSyntax* node) override;
 					void Visit(GlrSequenceSyntax* node) override;
 					void Visit(GlrAlternativeSyntax* node) override;
+					void Visit(GlrPushConditionSyntax* node) override;
+					void Visit(GlrTestConditionSyntax* node) override;
 
 					void Visit(GlrCreateClause* node) override;
 					void Visit(GlrPartialClause* node) override;
 					void Visit(GlrReuseClause* node) override;
 
 				public:
+					virtual vl::Ptr<GlrCondition> CopyNode(GlrCondition* node);
 					virtual vl::Ptr<GlrSyntax> CopyNode(GlrSyntax* node);
 					virtual vl::Ptr<GlrClause> CopyNode(GlrClause* node);
+					virtual vl::Ptr<GlrSwitchItem> CopyNode(GlrSwitchItem* node);
+					virtual vl::Ptr<GlrTestConditionBranch> CopyNode(GlrTestConditionBranch* node);
 					virtual vl::Ptr<GlrAssignment> CopyNode(GlrAssignment* node);
 					virtual vl::Ptr<GlrRule> CopyNode(GlrRule* node);
 					virtual vl::Ptr<GlrSyntaxFile> CopyNode(GlrSyntaxFile* node);
 
 					vl::Ptr<GlrAlternativeSyntax> CopyNode(GlrAlternativeSyntax* node);
+					vl::Ptr<GlrAndCondition> CopyNode(GlrAndCondition* node);
 					vl::Ptr<GlrCreateClause> CopyNode(GlrCreateClause* node);
 					vl::Ptr<GlrLoopSyntax> CopyNode(GlrLoopSyntax* node);
+					vl::Ptr<GlrNotCondition> CopyNode(GlrNotCondition* node);
 					vl::Ptr<GlrOptionalSyntax> CopyNode(GlrOptionalSyntax* node);
+					vl::Ptr<GlrOrCondition> CopyNode(GlrOrCondition* node);
 					vl::Ptr<GlrPartialClause> CopyNode(GlrPartialClause* node);
+					vl::Ptr<GlrPushConditionSyntax> CopyNode(GlrPushConditionSyntax* node);
+					vl::Ptr<GlrRefCondition> CopyNode(GlrRefCondition* node);
 					vl::Ptr<GlrRefSyntax> CopyNode(GlrRefSyntax* node);
 					vl::Ptr<GlrReuseClause> CopyNode(GlrReuseClause* node);
 					vl::Ptr<GlrSequenceSyntax> CopyNode(GlrSequenceSyntax* node);
+					vl::Ptr<GlrTestConditionSyntax> CopyNode(GlrTestConditionSyntax* node);
 					vl::Ptr<GlrUseSyntax> CopyNode(GlrUseSyntax* node);
 				};
 			}

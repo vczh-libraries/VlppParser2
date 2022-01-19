@@ -23,6 +23,15 @@ namespace vl
 					Print(node->second.Obj());
 					EndField();
 				}
+				void RuleAstVisitor::PrintFields(GlrAndCondition* node)
+				{
+					BeginField(L"first");
+					Print(node->first.Obj());
+					EndField();
+					BeginField(L"second");
+					Print(node->second.Obj());
+					EndField();
+				}
 				void RuleAstVisitor::PrintFields(GlrAssignment* node)
 				{
 					BeginField(L"field");
@@ -46,6 +55,9 @@ namespace vl
 					EndField();
 				}
 				void RuleAstVisitor::PrintFields(GlrClause* node)
+				{
+				}
+				void RuleAstVisitor::PrintFields(GlrCondition* node)
 				{
 				}
 				void RuleAstVisitor::PrintFields(GlrCreateClause* node)
@@ -76,6 +88,12 @@ namespace vl
 					Print(node->syntax.Obj());
 					EndField();
 				}
+				void RuleAstVisitor::PrintFields(GlrNotCondition* node)
+				{
+					BeginField(L"condition");
+					Print(node->condition.Obj());
+					EndField();
+				}
 				void RuleAstVisitor::PrintFields(GlrOptionalSyntax* node)
 				{
 					BeginField(L"priority");
@@ -98,6 +116,15 @@ namespace vl
 					Print(node->syntax.Obj());
 					EndField();
 				}
+				void RuleAstVisitor::PrintFields(GlrOrCondition* node)
+				{
+					BeginField(L"first");
+					Print(node->first.Obj());
+					EndField();
+					BeginField(L"second");
+					Print(node->second.Obj());
+					EndField();
+				}
 				void RuleAstVisitor::PrintFields(GlrPartialClause* node)
 				{
 					BeginField(L"assignments");
@@ -115,6 +142,21 @@ namespace vl
 					EndField();
 					BeginField(L"type");
 					WriteToken(node->type);
+					EndField();
+				}
+				void RuleAstVisitor::PrintFields(GlrPushConditionSyntax* node)
+				{
+					BeginField(L"switches");
+					Print(node->switches.Obj());
+					EndField();
+					BeginField(L"syntax");
+					Print(node->syntax.Obj());
+					EndField();
+				}
+				void RuleAstVisitor::PrintFields(GlrRefCondition* node)
+				{
+					BeginField(L"name");
+					WriteToken(node->name);
 					EndField();
 				}
 				void RuleAstVisitor::PrintFields(GlrRefSyntax* node)
@@ -183,6 +225,25 @@ namespace vl
 					Print(node->second.Obj());
 					EndField();
 				}
+				void RuleAstVisitor::PrintFields(GlrSwitchItem* node)
+				{
+					BeginField(L"name");
+					WriteToken(node->name);
+					EndField();
+					BeginField(L"value");
+					switch (node->value)
+					{
+					case vl::glr::parsergen::GlrSwitchValue::False:
+						WriteString(L"False");
+						break;
+					case vl::glr::parsergen::GlrSwitchValue::True:
+						WriteString(L"True");
+						break;
+					default:
+						WriteNull();
+					}
+					EndField();
+				}
 				void RuleAstVisitor::PrintFields(GlrSyntax* node)
 				{
 				}
@@ -198,12 +259,86 @@ namespace vl
 					}
 					EndArray();
 					EndField();
+					BeginField(L"switches");
+					Print(node->switches.Obj());
+					EndField();
+				}
+				void RuleAstVisitor::PrintFields(GlrTestConditionBranch* node)
+				{
+					BeginField(L"condition");
+					Print(node->condition.Obj());
+					EndField();
+					BeginField(L"syntax");
+					Print(node->syntax.Obj());
+					EndField();
+				}
+				void RuleAstVisitor::PrintFields(GlrTestConditionSyntax* node)
+				{
+					BeginField(L"branches");
+					Print(node->branches.Obj());
+					EndField();
 				}
 				void RuleAstVisitor::PrintFields(GlrUseSyntax* node)
 				{
 					BeginField(L"name");
 					WriteToken(node->name);
 					EndField();
+				}
+
+				void RuleAstVisitor::Visit(GlrRefCondition* node)
+				{
+					if (!node)
+					{
+						WriteNull();
+						return;
+					}
+					BeginObject();
+					WriteType(L"RefCondition", node);
+					PrintFields(static_cast<GlrCondition*>(node));
+					PrintFields(static_cast<GlrRefCondition*>(node));
+					EndObject();
+				}
+
+				void RuleAstVisitor::Visit(GlrNotCondition* node)
+				{
+					if (!node)
+					{
+						WriteNull();
+						return;
+					}
+					BeginObject();
+					WriteType(L"NotCondition", node);
+					PrintFields(static_cast<GlrCondition*>(node));
+					PrintFields(static_cast<GlrNotCondition*>(node));
+					EndObject();
+				}
+
+				void RuleAstVisitor::Visit(GlrAndCondition* node)
+				{
+					if (!node)
+					{
+						WriteNull();
+						return;
+					}
+					BeginObject();
+					WriteType(L"AndCondition", node);
+					PrintFields(static_cast<GlrCondition*>(node));
+					PrintFields(static_cast<GlrAndCondition*>(node));
+					EndObject();
+				}
+
+				void RuleAstVisitor::Visit(GlrOrCondition* node)
+				{
+					if (!node)
+					{
+						WriteNull();
+						return;
+					}
+					BeginObject();
+					WriteType(L"OrCondition", node);
+					PrintFields(static_cast<GlrCondition*>(node));
+					PrintFields(static_cast<GlrOrCondition*>(node));
+					EndObject();
 				}
 
 				void RuleAstVisitor::Visit(GlrRefSyntax* node)
@@ -290,6 +425,34 @@ namespace vl
 					EndObject();
 				}
 
+				void RuleAstVisitor::Visit(GlrPushConditionSyntax* node)
+				{
+					if (!node)
+					{
+						WriteNull();
+						return;
+					}
+					BeginObject();
+					WriteType(L"PushConditionSyntax", node);
+					PrintFields(static_cast<GlrSyntax*>(node));
+					PrintFields(static_cast<GlrPushConditionSyntax*>(node));
+					EndObject();
+				}
+
+				void RuleAstVisitor::Visit(GlrTestConditionSyntax* node)
+				{
+					if (!node)
+					{
+						WriteNull();
+						return;
+					}
+					BeginObject();
+					WriteType(L"TestConditionSyntax", node);
+					PrintFields(static_cast<GlrSyntax*>(node));
+					PrintFields(static_cast<GlrTestConditionSyntax*>(node));
+					EndObject();
+				}
+
 				void RuleAstVisitor::Visit(GlrCreateClause* node)
 				{
 					if (!node)
@@ -337,6 +500,16 @@ namespace vl
 				{
 				}
 
+				void RuleAstVisitor::Print(GlrCondition* node)
+				{
+					if (!node)
+					{
+						WriteNull();
+						return;
+					}
+					node->Accept(static_cast<GlrCondition::IVisitor*>(this));
+				}
+
 				void RuleAstVisitor::Print(GlrSyntax* node)
 				{
 					if (!node)
@@ -355,6 +528,32 @@ namespace vl
 						return;
 					}
 					node->Accept(static_cast<GlrClause::IVisitor*>(this));
+				}
+
+				void RuleAstVisitor::Print(GlrSwitchItem* node)
+				{
+					if (!node)
+					{
+						WriteNull();
+						return;
+					}
+					BeginObject();
+					WriteType(L"SwitchItem", node);
+					PrintFields(static_cast<GlrSwitchItem*>(node));
+					EndObject();
+				}
+
+				void RuleAstVisitor::Print(GlrTestConditionBranch* node)
+				{
+					if (!node)
+					{
+						WriteNull();
+						return;
+					}
+					BeginObject();
+					WriteType(L"TestConditionBranch", node);
+					PrintFields(static_cast<GlrTestConditionBranch*>(node));
+					EndObject();
 				}
 
 				void RuleAstVisitor::Print(GlrAssignment* node)

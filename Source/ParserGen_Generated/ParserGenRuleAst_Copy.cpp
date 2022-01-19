@@ -21,6 +21,13 @@ namespace vl
 					to->second = CopyNode(from->second.Obj());
 				}
 
+				void RuleAstVisitor::CopyFields(GlrAndCondition* from, GlrAndCondition* to)
+				{
+					CopyFields(static_cast<GlrCondition*>(from), static_cast<GlrCondition*>(to));
+					to->first = CopyNode(from->first.Obj());
+					to->second = CopyNode(from->second.Obj());
+				}
+
 				void RuleAstVisitor::CopyFields(GlrAssignment* from, GlrAssignment* to)
 				{
 					to->field = from->field;
@@ -29,6 +36,10 @@ namespace vl
 				}
 
 				void RuleAstVisitor::CopyFields(GlrClause* from, GlrClause* to)
+				{
+				}
+
+				void RuleAstVisitor::CopyFields(GlrCondition* from, GlrCondition* to)
 				{
 				}
 
@@ -50,11 +61,24 @@ namespace vl
 					to->syntax = CopyNode(from->syntax.Obj());
 				}
 
+				void RuleAstVisitor::CopyFields(GlrNotCondition* from, GlrNotCondition* to)
+				{
+					CopyFields(static_cast<GlrCondition*>(from), static_cast<GlrCondition*>(to));
+					to->condition = CopyNode(from->condition.Obj());
+				}
+
 				void RuleAstVisitor::CopyFields(GlrOptionalSyntax* from, GlrOptionalSyntax* to)
 				{
 					CopyFields(static_cast<GlrSyntax*>(from), static_cast<GlrSyntax*>(to));
 					to->priority = from->priority;
 					to->syntax = CopyNode(from->syntax.Obj());
+				}
+
+				void RuleAstVisitor::CopyFields(GlrOrCondition* from, GlrOrCondition* to)
+				{
+					CopyFields(static_cast<GlrCondition*>(from), static_cast<GlrCondition*>(to));
+					to->first = CopyNode(from->first.Obj());
+					to->second = CopyNode(from->second.Obj());
 				}
 
 				void RuleAstVisitor::CopyFields(GlrPartialClause* from, GlrPartialClause* to)
@@ -66,6 +90,19 @@ namespace vl
 					}
 					to->syntax = CopyNode(from->syntax.Obj());
 					to->type = from->type;
+				}
+
+				void RuleAstVisitor::CopyFields(GlrPushConditionSyntax* from, GlrPushConditionSyntax* to)
+				{
+					CopyFields(static_cast<GlrSyntax*>(from), static_cast<GlrSyntax*>(to));
+					to->switches = CopyNode(from->switches.Obj());
+					to->syntax = CopyNode(from->syntax.Obj());
+				}
+
+				void RuleAstVisitor::CopyFields(GlrRefCondition* from, GlrRefCondition* to)
+				{
+					CopyFields(static_cast<GlrCondition*>(from), static_cast<GlrCondition*>(to));
+					to->name = from->name;
 				}
 
 				void RuleAstVisitor::CopyFields(GlrRefSyntax* from, GlrRefSyntax* to)
@@ -102,6 +139,12 @@ namespace vl
 					to->second = CopyNode(from->second.Obj());
 				}
 
+				void RuleAstVisitor::CopyFields(GlrSwitchItem* from, GlrSwitchItem* to)
+				{
+					to->name = from->name;
+					to->value = from->value;
+				}
+
 				void RuleAstVisitor::CopyFields(GlrSyntax* from, GlrSyntax* to)
 				{
 				}
@@ -112,12 +155,39 @@ namespace vl
 					{
 						to->rules.Add(CopyNode(listItem.Obj()));
 					}
+					to->switches = CopyNode(from->switches.Obj());
+				}
+
+				void RuleAstVisitor::CopyFields(GlrTestConditionBranch* from, GlrTestConditionBranch* to)
+				{
+					to->condition = CopyNode(from->condition.Obj());
+					to->syntax = CopyNode(from->syntax.Obj());
+				}
+
+				void RuleAstVisitor::CopyFields(GlrTestConditionSyntax* from, GlrTestConditionSyntax* to)
+				{
+					CopyFields(static_cast<GlrSyntax*>(from), static_cast<GlrSyntax*>(to));
+					to->branches = CopyNode(from->branches.Obj());
 				}
 
 				void RuleAstVisitor::CopyFields(GlrUseSyntax* from, GlrUseSyntax* to)
 				{
 					CopyFields(static_cast<GlrSyntax*>(from), static_cast<GlrSyntax*>(to));
 					to->name = from->name;
+				}
+
+				void RuleAstVisitor::Visit(GlrSwitchItem* node)
+				{
+					auto newNode = vl::MakePtr<GlrSwitchItem>();
+					CopyFields(node, newNode.Obj());
+					this->result = newNode;
+				}
+
+				void RuleAstVisitor::Visit(GlrTestConditionBranch* node)
+				{
+					auto newNode = vl::MakePtr<GlrTestConditionBranch>();
+					CopyFields(node, newNode.Obj());
+					this->result = newNode;
 				}
 
 				void RuleAstVisitor::Visit(GlrAssignment* node)
@@ -137,6 +207,34 @@ namespace vl
 				void RuleAstVisitor::Visit(GlrSyntaxFile* node)
 				{
 					auto newNode = vl::MakePtr<GlrSyntaxFile>();
+					CopyFields(node, newNode.Obj());
+					this->result = newNode;
+				}
+
+				void RuleAstVisitor::Visit(GlrRefCondition* node)
+				{
+					auto newNode = vl::MakePtr<GlrRefCondition>();
+					CopyFields(node, newNode.Obj());
+					this->result = newNode;
+				}
+
+				void RuleAstVisitor::Visit(GlrNotCondition* node)
+				{
+					auto newNode = vl::MakePtr<GlrNotCondition>();
+					CopyFields(node, newNode.Obj());
+					this->result = newNode;
+				}
+
+				void RuleAstVisitor::Visit(GlrAndCondition* node)
+				{
+					auto newNode = vl::MakePtr<GlrAndCondition>();
+					CopyFields(node, newNode.Obj());
+					this->result = newNode;
+				}
+
+				void RuleAstVisitor::Visit(GlrOrCondition* node)
+				{
+					auto newNode = vl::MakePtr<GlrOrCondition>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
@@ -183,6 +281,20 @@ namespace vl
 					this->result = newNode;
 				}
 
+				void RuleAstVisitor::Visit(GlrPushConditionSyntax* node)
+				{
+					auto newNode = vl::MakePtr<GlrPushConditionSyntax>();
+					CopyFields(node, newNode.Obj());
+					this->result = newNode;
+				}
+
+				void RuleAstVisitor::Visit(GlrTestConditionSyntax* node)
+				{
+					auto newNode = vl::MakePtr<GlrTestConditionSyntax>();
+					CopyFields(node, newNode.Obj());
+					this->result = newNode;
+				}
+
 				void RuleAstVisitor::Visit(GlrCreateClause* node)
 				{
 					auto newNode = vl::MakePtr<GlrCreateClause>();
@@ -204,6 +316,13 @@ namespace vl
 					this->result = newNode;
 				}
 
+				vl::Ptr<GlrCondition> RuleAstVisitor::CopyNode(GlrCondition* node)
+				{
+					if (!node) return nullptr;
+					node->Accept(static_cast<GlrCondition::IVisitor*>(this));
+					return this->result.Cast<GlrCondition>();
+				}
+
 				vl::Ptr<GlrSyntax> RuleAstVisitor::CopyNode(GlrSyntax* node)
 				{
 					if (!node) return nullptr;
@@ -216,6 +335,20 @@ namespace vl
 					if (!node) return nullptr;
 					node->Accept(static_cast<GlrClause::IVisitor*>(this));
 					return this->result.Cast<GlrClause>();
+				}
+
+				vl::Ptr<GlrSwitchItem> RuleAstVisitor::CopyNode(GlrSwitchItem* node)
+				{
+					if (!node) return nullptr;
+					Visit(node);
+					return this->result.Cast<GlrSwitchItem>();
+				}
+
+				vl::Ptr<GlrTestConditionBranch> RuleAstVisitor::CopyNode(GlrTestConditionBranch* node)
+				{
+					if (!node) return nullptr;
+					Visit(node);
+					return this->result.Cast<GlrTestConditionBranch>();
 				}
 
 				vl::Ptr<GlrAssignment> RuleAstVisitor::CopyNode(GlrAssignment* node)
@@ -245,6 +378,12 @@ namespace vl
 					return CopyNode(static_cast<GlrSyntax*>(node)).Cast<GlrAlternativeSyntax>();
 				}
 
+				vl::Ptr<GlrAndCondition> RuleAstVisitor::CopyNode(GlrAndCondition* node)
+				{
+					if (!node) return nullptr;
+					return CopyNode(static_cast<GlrCondition*>(node)).Cast<GlrAndCondition>();
+				}
+
 				vl::Ptr<GlrCreateClause> RuleAstVisitor::CopyNode(GlrCreateClause* node)
 				{
 					if (!node) return nullptr;
@@ -257,16 +396,40 @@ namespace vl
 					return CopyNode(static_cast<GlrSyntax*>(node)).Cast<GlrLoopSyntax>();
 				}
 
+				vl::Ptr<GlrNotCondition> RuleAstVisitor::CopyNode(GlrNotCondition* node)
+				{
+					if (!node) return nullptr;
+					return CopyNode(static_cast<GlrCondition*>(node)).Cast<GlrNotCondition>();
+				}
+
 				vl::Ptr<GlrOptionalSyntax> RuleAstVisitor::CopyNode(GlrOptionalSyntax* node)
 				{
 					if (!node) return nullptr;
 					return CopyNode(static_cast<GlrSyntax*>(node)).Cast<GlrOptionalSyntax>();
 				}
 
+				vl::Ptr<GlrOrCondition> RuleAstVisitor::CopyNode(GlrOrCondition* node)
+				{
+					if (!node) return nullptr;
+					return CopyNode(static_cast<GlrCondition*>(node)).Cast<GlrOrCondition>();
+				}
+
 				vl::Ptr<GlrPartialClause> RuleAstVisitor::CopyNode(GlrPartialClause* node)
 				{
 					if (!node) return nullptr;
 					return CopyNode(static_cast<GlrClause*>(node)).Cast<GlrPartialClause>();
+				}
+
+				vl::Ptr<GlrPushConditionSyntax> RuleAstVisitor::CopyNode(GlrPushConditionSyntax* node)
+				{
+					if (!node) return nullptr;
+					return CopyNode(static_cast<GlrSyntax*>(node)).Cast<GlrPushConditionSyntax>();
+				}
+
+				vl::Ptr<GlrRefCondition> RuleAstVisitor::CopyNode(GlrRefCondition* node)
+				{
+					if (!node) return nullptr;
+					return CopyNode(static_cast<GlrCondition*>(node)).Cast<GlrRefCondition>();
 				}
 
 				vl::Ptr<GlrRefSyntax> RuleAstVisitor::CopyNode(GlrRefSyntax* node)
@@ -285,6 +448,12 @@ namespace vl
 				{
 					if (!node) return nullptr;
 					return CopyNode(static_cast<GlrSyntax*>(node)).Cast<GlrSequenceSyntax>();
+				}
+
+				vl::Ptr<GlrTestConditionSyntax> RuleAstVisitor::CopyNode(GlrTestConditionSyntax* node)
+				{
+					if (!node) return nullptr;
+					return CopyNode(static_cast<GlrSyntax*>(node)).Cast<GlrTestConditionSyntax>();
 				}
 
 				vl::Ptr<GlrUseSyntax> RuleAstVisitor::CopyNode(GlrUseSyntax* node)

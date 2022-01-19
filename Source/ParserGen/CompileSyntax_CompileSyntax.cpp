@@ -187,6 +187,16 @@ CompileSyntaxVisitor
 							);
 					});
 				}
+
+				void Visit(GlrPushConditionSyntax* node) override
+				{
+					throw 0;
+				}
+
+				void Visit(GlrTestConditionSyntax* node) override
+				{
+					throw 0;
+				}
 			};
 
 /***********************************************************************
