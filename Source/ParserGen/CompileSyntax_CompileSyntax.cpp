@@ -47,6 +47,11 @@ CompileSyntaxVisitor
 				}
 
 			protected:
+
+				////////////////////////////////////////////////////////////////////////
+				// GlrSyntax::IVisitor
+				////////////////////////////////////////////////////////////////////////
+
 				void Visit(GlrRefSyntax* node) override
 				{
 					vint32_t field = -1;
@@ -141,6 +146,20 @@ CompileSyntaxVisitor
 						);
 				}
 
+				void Visit(GlrPushConditionSyntax* node) override
+				{
+					CHECK_FAIL(L"Not Implemented!");
+				}
+
+				void Visit(GlrTestConditionSyntax* node) override
+				{
+					CHECK_FAIL(L"Not Implemented!");
+				}
+
+				////////////////////////////////////////////////////////////////////////
+				// GlrClause::IVisitor
+				////////////////////////////////////////////////////////////////////////
+
 				StatePair BuildAssignments(StatePair pair, List<Ptr<GlrAssignment>>& assignments)
 				{
 					for (auto node : assignments)
@@ -186,16 +205,6 @@ CompileSyntaxVisitor
 							[this, node]() { return BuildAssignments(Build(node->syntax), node->assignments); }
 							);
 					});
-				}
-
-				void Visit(GlrPushConditionSyntax* node) override
-				{
-					CHECK_FAIL(L"Not Implemented!");
-				}
-
-				void Visit(GlrTestConditionSyntax* node) override
-				{
-					CHECK_FAIL(L"Not Implemented!");
 				}
 			};
 

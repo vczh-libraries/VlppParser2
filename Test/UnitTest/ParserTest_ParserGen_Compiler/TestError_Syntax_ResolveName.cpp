@@ -271,7 +271,7 @@ Exp0 ::= '+':value as NumExpr;
 		const wchar_t* syntaxCode =
 LR"SYNTAX(
 switch first,!first;
-Exp0 ::= '+':value as NumExpr;
+Exp0 ::= "+":value as NumExpr;
 )SYNTAX";
 		ExpectError(
 			typeParser,
@@ -288,7 +288,7 @@ Exp0 ::= '+':value as NumExpr;
 		const wchar_t* syntaxCode =
 LR"SYNTAX(
 switch first;
-Exp0 ::= '+':value as NumExpr;
+Exp0 ::= "+":value as NumExpr;
 )SYNTAX";
 		ExpectError(
 			typeParser,
@@ -304,7 +304,7 @@ Exp0 ::= '+':value as NumExpr;
 	{
 		const wchar_t* syntaxCode =
 LR"SYNTAX(
-Exp0 ::= !(first; '+':value) as NumExpr;
+Exp0 ::= !(first; "+":value) as NumExpr;
 )SYNTAX";
 		ExpectError(
 			typeParser,
@@ -320,7 +320,7 @@ Exp0 ::= !(first; '+':value) as NumExpr;
 	{
 		const wchar_t* syntaxCode =
 LR"SYNTAX(
-Exp0 ::= ?(first: '+':value) as NumExpr;
+Exp0 ::= ?(first: "+":value) as NumExpr;
 )SYNTAX";
 		ExpectError(
 			typeParser,

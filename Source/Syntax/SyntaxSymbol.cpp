@@ -126,6 +126,24 @@ SyntaxSymbolManager
 				return symbol;
 			}
 
+			bool SyntaxSymbolManager::AddSwitch(const WString& name, bool defaultValue, ParsingTextRange codeRange)
+			{
+				if (switches.Keys().Contains(name))
+				{
+					AddError(
+						ParserErrorType::DuplicatedSwitch,
+						codeRange,
+						name
+						);
+					return false;
+				}
+				else
+				{
+					switches.Add(name, defaultValue);
+					return true;
+				}
+			}
+
 			void SyntaxSymbolManager::BuildCompactNFA()
 			{
 				CHECK_ERROR(global.Errors().Count() == 0, L"vl::gre::parsergen::SyntaxSymbolManager::BuildCompactSyntax()#BuildCompactNFA() cannot be called before errors are resolved.");

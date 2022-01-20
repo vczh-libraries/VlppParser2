@@ -164,6 +164,7 @@ SyntaxSymbolManager
 				using EdgeList = collections::List<Ptr<EdgeSymbol>>;
 				using RuleTypeMap = collections::Dictionary<RuleSymbol*, WString>;
 				using RuleList = collections::List<RuleSymbol*>;
+				using SwitchMap = collections::Dictionary<WString, bool>;
 			protected:
 				MappedOwning<RuleSymbol>	rules;
 				StateList					states;
@@ -183,12 +184,14 @@ SyntaxSymbolManager
 				SyntaxSymbolManager(ParserSymbolManager& _global);
 
 				WString						name;
+				SwitchMap					switches;
 				RuleTypeMap					ruleTypes;
 				RuleList					parsableRules;
 
 				RuleSymbol*					CreateRule(const WString& name, ParsingTextRange codeRange = {});
 				StateSymbol*				CreateState(RuleSymbol* rule, vint32_t clauseId);
 				EdgeSymbol*					CreateEdge(StateSymbol* from, StateSymbol* to);
+				bool						AddSwitch(const WString& name, bool defaultValue, ParsingTextRange codeRange = {});
 
 				void						BuildCompactNFA();
 				void						BuildCrossReferencedNFA();

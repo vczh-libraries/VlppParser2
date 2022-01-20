@@ -73,6 +73,11 @@ ValidateTypesVisitor
 				}
 
 			protected:
+
+				////////////////////////////////////////////////////////////////////////
+				// GlrSyntax::IVisitor
+				////////////////////////////////////////////////////////////////////////
+
 				void Visit(GlrRefSyntax* node) override
 				{
 					vint ruleIndex = node->refType==GlrRefType::Id ? context.syntaxManager.Rules().Keys().IndexOf(node->literal.value) : -1;
@@ -197,6 +202,20 @@ ValidateTypesVisitor
 					node->second->Accept(this);
 				}
 
+				void Visit(GlrPushConditionSyntax* node) override
+				{
+					CHECK_FAIL(L"Not Implemented!");
+				}
+
+				void Visit(GlrTestConditionSyntax* node) override
+				{
+					CHECK_FAIL(L"Not Implemented!");
+				}
+
+				////////////////////////////////////////////////////////////////////////
+				// GlrClause::IVisitor
+				////////////////////////////////////////////////////////////////////////
+
 				void Visit(GlrAssignment* node)
 				{
 					AstClassSymbol* clauseType = nullptr;
@@ -257,16 +276,6 @@ ValidateTypesVisitor
 					{
 						Visit(assignment.Obj());
 					}
-				}
-
-				void Visit(GlrPushConditionSyntax* node) override
-				{
-					CHECK_FAIL(L"Not Implemented!");
-				}
-
-				void Visit(GlrTestConditionSyntax* node) override
-				{
-					CHECK_FAIL(L"Not Implemented!");
 				}
 			};
 

@@ -16,10 +16,12 @@ ResolveNameVisitor
 			class ResolveNameVisitor
 				: public Object
 				, protected virtual GlrSyntax::IVisitor
+				, protected virtual GlrCondition::IVisitor
 				, protected virtual GlrClause::IVisitor
 			{
 			protected:
 				VisitorContext&				context;
+				SortedList<WString>&		accessedSwitches;
 				RuleSymbol*					ruleSymbol;
 				GlrClause*					clause = nullptr;
 
@@ -52,9 +54,11 @@ ResolveNameVisitor
 			public:
 				ResolveNameVisitor(
 					VisitorContext& _context,
+					SortedList<WString>& _accessedSwitches,
 					RuleSymbol* _ruleSymbol
 				)
 					: context(_context)
+					, accessedSwitches(_accessedSwitches)
 					, ruleSymbol(_ruleSymbol)
 				{
 				}
@@ -65,6 +69,10 @@ ResolveNameVisitor
 				}
 
 			protected:
+
+				////////////////////////////////////////////////////////////////////////
+				// GlrSyntax::IVisitor
+				////////////////////////////////////////////////////////////////////////
 
 				void Visit(GlrRefSyntax* node) override
 				{
@@ -217,6 +225,68 @@ ResolveNameVisitor
 					node->second->Accept(this);
 				}
 
+				void Visit(GlrPushConditionSyntax* node) override
+				{
+					for (auto&& switchItem : node->switches)
+					{
+						if (!context.syntaxManager.switches.Keys().Contains(switchItem->name.value))
+						{
+							context.syntaxManager.AddError(
+								ParserErrorType::SwitchNotExists,
+								switchItem->name.codeRange,
+								ruleSymbol->Name(),
+								switchItem->name.value
+								);
+						}
+					}
+				}
+
+				void Visit(GlrTestConditionSyntax* node) override
+				{
+					for (auto&& branch : node->branches)
+					{
+						branch->condition->Accept(this);
+					}
+				}
+
+				////////////////////////////////////////////////////////////////////////
+				// GlrCondition::IVisitor
+				////////////////////////////////////////////////////////////////////////
+
+				void Visit(GlrRefCondition* node) override
+				{
+					if (!context.syntaxManager.switches.Keys().Contains(node->name.value))
+					{
+						context.syntaxManager.AddError(
+							ParserErrorType::SwitchNotExists,
+							node->name.codeRange,
+							ruleSymbol->Name(),
+							node->name.value
+							);
+					}
+				}
+
+				void Visit(GlrNotCondition* node) override
+				{
+					node->condition->Accept(this);
+				}
+
+				void Visit(GlrAndCondition* node) override
+				{
+					node->first->Accept(this);
+					node->second->Accept(this);
+				}
+
+				void Visit(GlrOrCondition* node) override
+				{
+					node->first->Accept(this);
+					node->second->Accept(this);
+				}
+
+				////////////////////////////////////////////////////////////////////////
+				// GlrClause::IVisitor
+				////////////////////////////////////////////////////////////////////////
+
 				void Visit(GlrCreateClause* node) override
 				{
 					if (auto classSymbol = GetRuleClass(node->type))
@@ -242,16 +312,6 @@ ResolveNameVisitor
 					clause = node;
 					node->syntax->Accept(this);
 				}
-
-				void Visit(GlrPushConditionSyntax* node) override
-				{
-					CHECK_FAIL(L"Not Implemented!");
-				}
-
-				void Visit(GlrTestConditionSyntax* node) override
-				{
-					CHECK_FAIL(L"Not Implemented!");
-				}
 			};
 
 /***********************************************************************
@@ -260,16 +320,50 @@ ResolveName
 
 			void ResolveName(VisitorContext& context, List<Ptr<GlrSyntaxFile>>& files)
 			{
+				Dictionary<WString, ParsingTextRange> switchRange;
+				for (auto file : files)
+				{
+					for (auto switchItem : file->switches)
+					{
+						if (context.syntaxManager.AddSwitch(
+							switchItem->name.value,
+							(switchItem->value == GlrSwitchValue::True),
+							switchItem->name.codeRange
+						))
+						{
+							switchRange.Add(switchItem->name.value, switchItem->name.codeRange);
+						}
+					}
+				}
+
+				SortedList<WString> accessedSwitches;
 				for (auto file : files)
 				{
 					for (auto rule : file->rules)
 					{
 						auto ruleSymbol = context.syntaxManager.Rules()[rule->name.value];
-						ResolveNameVisitor visitor(context, ruleSymbol);
+						ResolveNameVisitor visitor(context, accessedSwitches, ruleSymbol);
 						for (auto clause : rule->clauses)
 						{
 							visitor.ResolveClause(clause);
 						}
+					}
+				}
+
+				vint index = 0;
+				for (auto&& switchName : context.syntaxManager.switches.Keys())
+				{
+					if (index == accessedSwitches.Count() || switchName != accessedSwitches[index])
+					{
+						context.syntaxManager.AddError(
+							ParserErrorType::UnusedSwitch,
+							switchRange[switchName],
+							switchName
+							);
+					}
+					else
+					{
+						index++;
 					}
 				}
 			}

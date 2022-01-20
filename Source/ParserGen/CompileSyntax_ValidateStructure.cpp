@@ -52,6 +52,11 @@ ValidateStructureCountingVisitor
 				}
 
 			protected:
+
+				////////////////////////////////////////////////////////////////////////
+				// GlrSyntax::IVisitor
+				////////////////////////////////////////////////////////////////////////
+
 				void Visit(GlrRefSyntax* node) override
 				{
 					syntaxMinLength = 1;
@@ -269,6 +274,20 @@ ValidateStructureCountingVisitor
 					}
 				}
 
+				void Visit(GlrPushConditionSyntax* node) override
+				{
+					CHECK_FAIL(L"Not Implemented!");
+				}
+
+				void Visit(GlrTestConditionSyntax* node) override
+				{
+					CHECK_FAIL(L"Not Implemented!");
+				}
+
+				////////////////////////////////////////////////////////////////////////
+				// GlrClause::IVisitor
+				////////////////////////////////////////////////////////////////////////
+
 				void Visit(GlrCreateClause* node) override
 				{
 					clause = node;
@@ -288,16 +307,6 @@ ValidateStructureCountingVisitor
 					clause = node;
 					node->syntax->Accept(this);
 					CheckAfterClause(node, true);
-				}
-
-				void Visit(GlrPushConditionSyntax* node) override
-				{
-					CHECK_FAIL(L"Not Implemented!");
-				}
-
-				void Visit(GlrTestConditionSyntax* node) override
-				{
-					CHECK_FAIL(L"Not Implemented!");
 				}
 			};
 
@@ -449,6 +458,11 @@ ValidateStructureRelationshipVisitor
 				}
 
 			protected:
+
+				////////////////////////////////////////////////////////////////////////
+				// GlrSyntax::IVisitor
+				////////////////////////////////////////////////////////////////////////
+
 				void Visit(GlrRefSyntax* node) override
 				{
 					if (node->field)
@@ -511,6 +525,20 @@ ValidateStructureRelationshipVisitor
 					existingPartials = existingPartials.Connect(firstPartials);
 				}
 
+				void Visit(GlrPushConditionSyntax* node) override
+				{
+					CHECK_FAIL(L"Not Implemented!");
+				}
+
+				void Visit(GlrTestConditionSyntax* node) override
+				{
+					CHECK_FAIL(L"Not Implemented!");
+				}
+
+				////////////////////////////////////////////////////////////////////////
+				// GlrClause::IVisitor
+				////////////////////////////////////////////////////////////////////////
+
 				void CheckAfterClause(GlrClause* node)
 				{
 					Dictionary<WString, vint> counters;
@@ -566,16 +594,6 @@ ValidateStructureRelationshipVisitor
 					clause = node;
 					node->syntax->Accept(this);
 					CheckAfterClause(node);
-				}
-
-				void Visit(GlrPushConditionSyntax* node) override
-				{
-					CHECK_FAIL(L"Not Implemented!");
-				}
-
-				void Visit(GlrTestConditionSyntax* node) override
-				{
-					CHECK_FAIL(L"Not Implemented!");
 				}
 			};
 
