@@ -204,12 +204,18 @@ ValidateTypesVisitor
 
 				void Visit(GlrPushConditionSyntax* node) override
 				{
-					CHECK_FAIL(L"Not Implemented!");
+					node->syntax->Accept(this);
 				}
 
 				void Visit(GlrTestConditionSyntax* node) override
 				{
-					CHECK_FAIL(L"Not Implemented!");
+					for (auto&& branch : node->branches)
+					{
+						if (branch->syntax)
+						{
+							branch->syntax->Accept(this);
+						}
+					}
 				}
 
 				////////////////////////////////////////////////////////////////////////

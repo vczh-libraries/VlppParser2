@@ -238,6 +238,10 @@ ResolveNameVisitor
 								switchItem->name.value
 								);
 						}
+						else if (!accessedSwitches.Contains(switchItem->name.value))
+						{
+							accessedSwitches.Add(switchItem->name.value);
+						}
 					}
 				}
 
@@ -263,6 +267,10 @@ ResolveNameVisitor
 							ruleSymbol->Name(),
 							node->name.value
 							);
+					}
+					else if (!accessedSwitches.Contains(node->name.value))
+					{
+						accessedSwitches.Add(node->name.value);
 					}
 				}
 

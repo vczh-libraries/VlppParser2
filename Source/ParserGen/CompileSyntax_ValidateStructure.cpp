@@ -243,6 +243,58 @@ ValidateStructureCountingVisitor
 					syntaxMaxUseRuleCount = firstMaxUseRuleCount > secondMaxUseRuleCount ? firstMaxUseRuleCount : secondMaxUseRuleCount;
 				}
 
+				void Visit(GlrPushConditionSyntax* node) override
+				{
+					node->syntax->Accept(this);
+					if (syntaxMinLength == 0)
+					{
+						context.syntaxManager.AddError(
+							ParserErrorType::PushConditionBodyCouldExpandToEmptySequence,
+							node->codeRange,
+							ruleSymbol->Name()
+							);
+					}
+				}
+
+				void Visit(GlrTestConditionSyntax* node) override
+				{
+					vint minLength = 0;
+					vint minUseRuleCount = 0;
+					vint maxUseRuleCount = 0;
+
+					for (auto&& branch : node->branches)
+					{
+						if (branch->syntax)
+						{
+							branch->syntax->Accept(this);
+							if (syntaxMinLength == 0)
+							{
+								context.syntaxManager.AddError(
+									ParserErrorType::TestConditionBodyCouldExpandToEmptySequence,
+									branch->codeRange,
+									ruleSymbol->Name()
+									);
+							}
+
+							vint branchMinLength = syntaxMinLength;
+							vint branchMinUseRuleCount = syntaxMinUseRuleCount;
+							vint branchMaxUseRuleCount = syntaxMaxUseRuleCount;
+
+							if (minLength > branchMinLength) minLength = branchMinLength;
+							if (minUseRuleCount > branchMinUseRuleCount) minUseRuleCount = branchMinUseRuleCount;
+							if (maxUseRuleCount < branchMaxUseRuleCount) maxUseRuleCount = branchMaxUseRuleCount;
+						}
+					}
+
+					syntaxMinLength = minLength;
+					syntaxMinUseRuleCount = minUseRuleCount;
+					syntaxMaxUseRuleCount = maxUseRuleCount;
+				}
+
+				////////////////////////////////////////////////////////////////////////
+				// GlrClause::IVisitor
+				////////////////////////////////////////////////////////////////////////
+
 				void CheckAfterClause(GlrClause* node, bool reuseClause)
 				{
 					if (syntaxMinLength == 0)
@@ -261,7 +313,7 @@ ValidateStructureCountingVisitor
 								ParserErrorType::ClauseNotCreateObject,
 								node->codeRange,
 								ruleSymbol->Name()
-							);
+								);
 						}
 						if (syntaxMaxUseRuleCount > 1)
 						{
@@ -269,24 +321,10 @@ ValidateStructureCountingVisitor
 								ParserErrorType::ClauseTooManyUseRule,
 								node->codeRange,
 								ruleSymbol->Name()
-							);
+								);
 						}
 					}
 				}
-
-				void Visit(GlrPushConditionSyntax* node) override
-				{
-					CHECK_FAIL(L"Not Implemented!");
-				}
-
-				void Visit(GlrTestConditionSyntax* node) override
-				{
-					CHECK_FAIL(L"Not Implemented!");
-				}
-
-				////////////////////////////////////////////////////////////////////////
-				// GlrClause::IVisitor
-				////////////////////////////////////////////////////////////////////////
 
 				void Visit(GlrCreateClause* node) override
 				{
@@ -527,12 +565,34 @@ ValidateStructureRelationshipVisitor
 
 				void Visit(GlrPushConditionSyntax* node) override
 				{
-					CHECK_FAIL(L"Not Implemented!");
+					node->syntax->Accept(this);
 				}
 
 				void Visit(GlrTestConditionSyntax* node) override
 				{
-					CHECK_FAIL(L"Not Implemented!");
+					bool firstEmptyBranch = false;
+					for (auto&& branch : node->branches)
+					{
+						if (branch->syntax)
+						{
+							branch->syntax->Accept(this);
+						}
+						else
+						{
+							if (!firstEmptyBranch)
+							{
+								firstEmptyBranch = true;
+							}
+							else
+							{
+								context.syntaxManager.AddError(
+									ParserErrorType::MultipleEmptySyntaxInTestCondition,
+									branch->codeRange,
+									ruleSymbol->Name()
+									);
+							}
+						}
+					}
 				}
 
 				////////////////////////////////////////////////////////////////////////
