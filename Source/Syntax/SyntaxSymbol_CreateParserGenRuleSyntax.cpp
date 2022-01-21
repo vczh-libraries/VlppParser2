@@ -138,8 +138,8 @@ CreateParserGenRuleSyntax
 				// Condition:condition ":" (Syntax1:syntax | ";") as TestConditionBranch
 				Clause{ _testBranch } = create(rule(_cond, F::TestConditionBranch_condition) + tok(T::COLON) + (rule(_syntax1, F::TestConditionBranch_syntax) | tok(T::SEMICOLON)), C::TestConditionBranch);
 
-				// "?(" {TestBranch:branches ; "|"} ")" as TestConditionSyntax
-				Clause{ _syntax0 } = create(tok(T::OPEN_TEST) + loop(rule(_testBranch, F::TestConditionSyntax_branches), tok(T::ALTERNATIVE)) + tok(T::CLOSE_ROUND), C::TestConditionSyntax);
+				// "?(" TestBranch:branches {"|" TestBranch:branches} ")" as TestConditionSyntax
+				Clause{ _syntax0 } = create(tok(T::OPEN_TEST) + rule(_testBranch, F::TestConditionSyntax_branches) + loop(tok(T::ALTERNATIVE) + rule(_testBranch, F::TestConditionSyntax_branches)) + tok(T::CLOSE_ROUND), C::TestConditionSyntax);
 
 				///////////////////////////////////////////////////////////////////////////////////
 				// Syntax (left recursive)

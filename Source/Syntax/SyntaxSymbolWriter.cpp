@@ -197,6 +197,44 @@ AutomatonBuilder (Syntax)
 				return pair;
 			}
 
+			AutomatonBuilder::StatePair AutomatonBuilder::BuildPushConditionSyntax(collections::Dictionary<vint32_t, bool>& switches, const StateBuilder& pushBody)
+			{
+				StatePair pair;
+				pair.begin = CreateState();
+				pair.end = CreateState();
+
+				clauseDisplayText += L"!(";
+				for (auto [pair, index] : indexed(switches))
+				{
+					if (index > 0) clauseDisplayText += L",";
+					if (!pair.value) clauseDisplayText += L"!";
+					clauseDisplayText += itow(pair.key);
+				}
+
+				clauseDisplayText += L";";
+				auto bodyPair = pushBody();
+				clauseDisplayText += L")";
+
+				auto enterEdge = CreateEdge(pair.begin, bodyPair.begin);
+				auto exitEdge = CreateEdge(bodyPair.end, pair.end);
+
+				enterEdge->insSwitch.Add({ automaton::SwitchInsType::SwitchPushFrame });
+				for (auto [key, value] : switches)
+				{
+					if (value)
+					{
+						enterEdge->insSwitch.Add({ automaton::SwitchInsType::SwitchWriteTrue,key });
+					}
+					else
+					{
+						enterEdge->insSwitch.Add({ automaton::SwitchInsType::SwitchWriteFalse,key });
+					}
+				}
+				exitEdge->insSwitch.Add({ automaton::SwitchInsType::SwitchPopFrame });
+
+				return pair;
+			}
+
 /***********************************************************************
 AutomatonBuilder (Clause)
 ***********************************************************************/

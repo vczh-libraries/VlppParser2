@@ -105,7 +105,7 @@ Z
 			);
 	});
 
-	TEST_CASE(L"LeftRecursiveClauseInsidePushCondition")
+	TEST_CASE(L"LeftRecursiveClauseInsidePushCondition 1")
 	{
 		const wchar_t* syntaxCode =
 LR"SYNTAX(
@@ -128,7 +128,30 @@ Y
 			);
 	});
 
-	TEST_CASE(L"LeftRecursiveClauseInsideTestCondition")
+	TEST_CASE(L"LeftRecursiveClauseInsidePushCondition 2")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+switch first;
+X
+  ::= A as Ast
+  ;
+Y
+  ::= !X
+  ::= !(first; !Y) X
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::LeftRecursiveClauseInsidePushCondition,L"Y" }
+			);
+	});
+
+	TEST_CASE(L"LeftRecursiveClauseInsideTestCondition 1")
 	{
 		const wchar_t* syntaxCode =
 LR"SYNTAX(
@@ -139,6 +162,29 @@ X
 Y
   ::= !X
   ::= ?(first: !Y X)
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::LeftRecursiveClauseInsideTestCondition,L"Y" }
+			);
+	});
+
+	TEST_CASE(L"LeftRecursiveClauseInsideTestCondition 2")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+switch first;
+X
+  ::= A as Ast
+  ;
+Y
+  ::= !X
+  ::= ?(first: !Y) X
   ;
 )SYNTAX";
 		ExpectError(

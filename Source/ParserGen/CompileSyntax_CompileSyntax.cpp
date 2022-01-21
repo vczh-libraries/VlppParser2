@@ -160,7 +160,18 @@ CompileSyntaxVisitor
 
 				void Visit(GlrPushConditionSyntax* node) override
 				{
-					CHECK_FAIL(L"Not Implemented!");
+					Dictionary<vint32_t, bool> switches;
+					for (auto&& switchItem : node->switches)
+					{
+						switches.Add(
+							(vint32_t)context.syntaxManager.switches.Keys().IndexOf(switchItem->name.value),
+							(switchItem->value == GlrSwitchValue::True)
+							);
+					}
+					result = automatonBuilder.BuildPushConditionSyntax(
+						switches,
+						[this, node]() { return Build(node->syntax); }
+						);
 				}
 
 				void Visit(GlrTestConditionSyntax* node) override

@@ -28,14 +28,14 @@ namespace vl
 				TestBranch = 39,
 				Token = 45,
 				Syntax0 = 50,
-				Syntax1 = 80,
-				Syntax2 = 85,
-				Syntax = 91,
-				AssignmentOp = 94,
-				Assignment = 98,
-				Clause = 103,
-				Rule = 125,
-				File = 131,
+				Syntax1 = 81,
+				Syntax2 = 86,
+				Syntax = 92,
+				AssignmentOp = 95,
+				Assignment = 99,
+				Clause = 104,
+				Rule = 126,
+				File = 132,
 			};
 
 			const wchar_t* RuleParserRuleName(vl::vint index);

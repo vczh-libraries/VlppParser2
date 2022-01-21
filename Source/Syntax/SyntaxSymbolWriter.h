@@ -59,6 +59,7 @@ AutomatonBuilder
 				StatePair					BuildOptionalSyntax(bool preferTake, bool preferSkip, const StateBuilder& optionalBody);
 				StatePair					BuildSequenceSyntax(collections::List<StateBuilder>& elements);
 				StatePair					BuildAlternativeSyntax(collections::List<StateBuilder>& elements);
+				StatePair					BuildPushConditionSyntax(collections::Dictionary<vint32_t, bool>& switches, const StateBuilder& pushBody);
 
 				StatePair					BuildClause(const StateBuilder& compileSyntax);
 				StatePair					BuildAssignment(StatePair pair, vint32_t enumItem, vint32_t field, bool weakAssignment);

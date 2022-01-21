@@ -258,9 +258,10 @@ ValidateStructureCountingVisitor
 
 				void Visit(GlrTestConditionSyntax* node) override
 				{
-					vint minLength = 0;
-					vint minUseRuleCount = 0;
-					vint maxUseRuleCount = 0;
+					vint minLength = -1;
+					vint minUseRuleCount = -1;
+					vint maxUseRuleCount = -1;
+					bool hasEmptySyntax = false;
 
 					for (auto&& branch : node->branches)
 					{
@@ -280,10 +281,24 @@ ValidateStructureCountingVisitor
 							vint branchMinUseRuleCount = syntaxMinUseRuleCount;
 							vint branchMaxUseRuleCount = syntaxMaxUseRuleCount;
 
-							if (minLength > branchMinLength) minLength = branchMinLength;
-							if (minUseRuleCount > branchMinUseRuleCount) minUseRuleCount = branchMinUseRuleCount;
-							if (maxUseRuleCount < branchMaxUseRuleCount) maxUseRuleCount = branchMaxUseRuleCount;
+							if (minLength == -1 || minLength > branchMinLength) minLength = branchMinLength;
+							if (minUseRuleCount == -1 || minUseRuleCount > branchMinUseRuleCount) minUseRuleCount = branchMinUseRuleCount;
+							if (maxUseRuleCount == -1 || maxUseRuleCount < branchMaxUseRuleCount) maxUseRuleCount = branchMaxUseRuleCount;
 						}
+						else
+						{
+							hasEmptySyntax = true;
+						}
+					}
+
+					if (minLength == -1) minLength = 0;
+					if (minUseRuleCount == -1) minUseRuleCount = 0;
+					if (maxUseRuleCount == -1) maxUseRuleCount = 0;
+
+					if (hasEmptySyntax)
+					{
+						minLength = 0;
+						minUseRuleCount = 0;
 					}
 
 					syntaxMinLength = minLength;
