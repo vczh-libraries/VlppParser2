@@ -32,7 +32,8 @@ namespace TestParser_Generated_TestObjects
 		const wchar_t* (*fieldName)(TFields),
 		const wchar_t* (*tokenId)(TTokens),
 		const wchar_t* (*ruleName)(vint),
-		const wchar_t* (*stateLabel)(vint)
+		const wchar_t* (*stateLabel)(vint),
+		const wchar_t* (*switchName)(vint)
 		)
 	{
 		TParser parser;
@@ -52,7 +53,8 @@ namespace TestParser_Generated_TestObjects
 					[=](vint32_t field) { return WString::Unmanaged(fieldName((TFields)field)); },
 					[=](vint32_t token) { return WString::Unmanaged(tokenId((TTokens)token)); },
 					[=](vint32_t rule) { return WString::Unmanaged(ruleName(rule)); },
-					[=](vint32_t state) { return WString::Unmanaged(stateLabel(state)); }
+					[=](vint32_t state) { return WString::Unmanaged(stateLabel(state));,
+					[=](vint32_t switchId) { return WString::Unmanaged(switchName(state)); }
 				);
 
 				if (args.traceManager.concurrentCount == 1)
@@ -112,7 +114,8 @@ TEST_FILE
 		&calculator::CalculatorFieldName,
 		&calculator::CalculatorTokenId,
 		&calculator::ModuleParserRuleName,
-		&calculator::ModuleParserStateLabel
+		&calculator::ModuleParserStateLabel,
+		&calculator::ModuleParserSwitchName
 		);
 	TestParser<ifelseambiguity::ModuleParser, ifelseambiguity::json_visitor::StatAstVisitor>(
 		L"IfElseAmbiguity",
@@ -121,7 +124,8 @@ TEST_FILE
 		&ifelseambiguity::IfElseAmbiguityFieldName,
 		&ifelseambiguity::IfElseAmbiguityTokenId,
 		&ifelseambiguity::ModuleParserRuleName,
-		&ifelseambiguity::ModuleParserStateLabel
+		&ifelseambiguity::ModuleParserStateLabel,
+		&ifelseambiguity::ModuleParserSwitchName
 		);
 	TestParser<ifelsepriority::ModuleParser, ifelsepriority::json_visitor::StatAstVisitor>(
 		L"IfElsePriority",
@@ -130,7 +134,8 @@ TEST_FILE
 		&ifelsepriority::IfElsePriorityFieldName,
 		&ifelsepriority::IfElsePriorityTokenId,
 		&ifelsepriority::ModuleParserRuleName,
-		&ifelsepriority::ModuleParserStateLabel
+		&ifelsepriority::ModuleParserStateLabel,
+		&ifelsepriority::ModuleParserSwitchName
 		);
 	TestParser<genericambiguity::ModuleParser, genericambiguity::json_visitor::ExprAstVisitor>(
 		L"GenericAmbiguity",
@@ -139,7 +144,8 @@ TEST_FILE
 		&genericambiguity::GenericAmbiguityFieldName,
 		&genericambiguity::GenericAmbiguityTokenId,
 		&genericambiguity::ModuleParserRuleName,
-		&genericambiguity::ModuleParserStateLabel
+		&genericambiguity::ModuleParserStateLabel,
+		&genericambiguity::ModuleParserSwitchName
 		);
 	TestParser<featuretest::ModuleParser, featuretest::json_visitor::FeatureAstVisitor>(
 		L"FeatureTest",
@@ -148,7 +154,8 @@ TEST_FILE
 		&featuretest::FeatureTestFieldName,
 		&featuretest::FeatureTestTokenId,
 		&featuretest::ModuleParserRuleName,
-		&featuretest::ModuleParserStateLabel
+		&featuretest::ModuleParserStateLabel,
+		&featuretest::ModuleParserSwitchName
 		);
 	TestParser<binaryop::ModuleParser, binaryop::json_visitor::ExprAstVisitor>(
 		L"BinaryOp",
@@ -157,6 +164,7 @@ TEST_FILE
 		&binaryop::BinaryOpFieldName,
 		&binaryop::BinaryOpTokenId,
 		&binaryop::ModuleParserRuleName,
-		&binaryop::ModuleParserStateLabel
+		&binaryop::ModuleParserStateLabel,
+		&binaryop::ModuleParserSwitchName
 		);
 }

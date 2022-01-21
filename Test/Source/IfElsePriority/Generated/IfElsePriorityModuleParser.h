@@ -23,6 +23,7 @@ namespace ifelsepriority
 
 	const wchar_t* ModuleParserRuleName(vl::vint index);
 	const wchar_t* ModuleParserStateLabel(vl::vint index);
+	const wchar_t* ModuleParserSwitchName(vl::vint index);
 	extern void IfElsePriorityModuleParserData(vl::stream::IStream& outputStream);
 
 	class ModuleParser

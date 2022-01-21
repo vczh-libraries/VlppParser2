@@ -93,6 +93,7 @@ namespace vl
 
 			const wchar_t* ParserRuleName(vl::vint index);
 			const wchar_t* ParserStateLabel(vl::vint index);
+			const wchar_t* ParserSwitchName(vl::vint index);
 			extern void WorkflowParserData(vl::stream::IStream& outputStream);
 
 			class Parser
