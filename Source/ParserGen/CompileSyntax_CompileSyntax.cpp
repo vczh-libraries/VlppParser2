@@ -11,6 +11,59 @@ namespace vl
 			using namespace compile_syntax;
 
 /***********************************************************************
+CompileConditionVisitor
+***********************************************************************/
+
+			class CompileConditionVisitor
+				: public Object
+				, protected virtual GlrCondition::IVisitor
+			{
+			protected:
+				VisitorContext& context;
+			public:
+				List<automaton::SwitchIns>				insSwitch;
+
+				CompileConditionVisitor(VisitorContext& _context)
+					: context(_context)
+				{
+				}
+
+				void Compile(const Ptr<GlrCondition>& node)
+				{
+					node->Accept(this);
+				}
+			protected:
+
+				void Visit(GlrRefCondition* node) override
+				{
+					insSwitch.Add({
+						automaton::SwitchInsType::ConditionRead,
+						(vint32_t)context.syntaxManager.switches.Keys().IndexOf(node->name.value)
+						});
+				}
+
+				void Visit(GlrNotCondition* node) override
+				{
+					node->condition->Accept(this);
+					insSwitch.Add({ automaton::SwitchInsType::ConditionNot });
+				}
+
+				void Visit(GlrAndCondition* node) override
+				{
+					node->first->Accept(this);
+					node->second->Accept(this);
+					insSwitch.Add({ automaton::SwitchInsType::ConditionAnd });
+				}
+
+				void Visit(GlrOrCondition* node) override
+				{
+					node->first->Accept(this);
+					node->second->Accept(this);
+					insSwitch.Add({ automaton::SwitchInsType::ConditionOr });
+				}
+			};
+
+/***********************************************************************
 CompileSyntaxVisitor
 ***********************************************************************/
 
@@ -21,10 +74,10 @@ CompileSyntaxVisitor
 			{
 				using StatePair = AutomatonBuilder::StatePair;
 			protected:
-				AutomatonBuilder	automatonBuilder;
-				VisitorContext&		context;
-				AstClassSymbol*		clauseType;
-				StatePair			result;
+				AutomatonBuilder						automatonBuilder;
+				VisitorContext&							context;
+				AstClassSymbol*							clauseType;
+				StatePair								result;
 
 				StatePair Build(const Ptr<GlrSyntax>& node)
 				{
@@ -176,7 +229,42 @@ CompileSyntaxVisitor
 
 				void Visit(GlrTestConditionSyntax* node) override
 				{
-					CHECK_FAIL(L"Not Implemented!");
+					List<Func<StatePair()>> elements;
+					Ptr<GlrTestConditionBranch> emptyBranch;
+
+					for (auto&& branch : node->branches)
+					{
+						if (branch->syntax)
+						{
+							elements.Add([this, branch]()
+							{
+								CompileConditionVisitor visitor(context);
+								visitor.Compile(branch->condition);
+								return automatonBuilder.BuildTestConditionBranch(
+									visitor.insSwitch,
+									[this, branch]() { return Build(branch->syntax); }
+									);
+							});
+						}
+						else
+						{
+							emptyBranch = branch;
+						}
+					}
+
+					if (emptyBranch)
+					{
+						elements.Add([this, emptyBranch]()
+						{
+							CompileConditionVisitor visitor(context);
+							visitor.Compile(emptyBranch->condition);
+							return automatonBuilder.BuildTestConditionBranch(
+								visitor.insSwitch
+								);
+						});
+					}
+
+					result = automatonBuilder.BuildAlternativeSyntax(elements);
 				}
 
 				////////////////////////////////////////////////////////////////////////
