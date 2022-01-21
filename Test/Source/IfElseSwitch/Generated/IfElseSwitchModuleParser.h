@@ -17,9 +17,10 @@ namespace ifelseswitch
 		Do = 0,
 		Block = 4,
 		IfTail = 9,
-		If = 15,
-		Stat = 21,
-		Module = 26,
+		If = 18,
+		OtherStat = 24,
+		Stat = 28,
+		Module = 32,
 	};
 
 	const wchar_t* ModuleParserRuleName(vl::vint index);

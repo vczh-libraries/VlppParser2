@@ -9,18 +9,23 @@ Block
   ;
 
 IfTail
-  ::= ?(allow_half_if: Stat:thenBranch) as partial IfStat
-  ::= !(!allow_half_if; Stat:thenBranch) "else" Stat:elseBranch as partial IfStat
+  ::= OtherStat:thenBranch ("else" Stat:elseBranch | ?(allow_half_if: ;)) as partial IfStat
+  ::= !(!allow_half_if; If:thenBranch) "else" Stat:elseBranch as partial IfStat
+  ::= ?(allow_half_if: If:thenBranch) as partial IfStat
   ;
 
 If
   ::= "if" "cond" "then" IfTail as IfStat
   ;
 
-Stat
+OtherStat
   ::= !Do
-  ::= !(allow_half_if; !Block)
-  ::= !If
+  ::= !Block
+  ;
+
+Stat
+  ::= !OtherStat
+  ::= !(allow_half_if; !If)
   ;
 
 Module
