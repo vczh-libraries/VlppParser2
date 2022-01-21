@@ -31,6 +31,7 @@ CompileConditionVisitor
 				void Compile(const Ptr<GlrCondition>& node)
 				{
 					node->Accept(this);
+					insSwitch.Add({ automaton::SwitchInsType::ConditionTest });
 				}
 			protected:
 
