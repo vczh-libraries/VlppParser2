@@ -30,6 +30,7 @@ namespace vl
 
 			const wchar_t* TypeParserRuleName(vl::vint index);
 			const wchar_t* TypeParserStateLabel(vl::vint index);
+			const wchar_t* TypeParserSwitchName(vl::vint index);
 			extern void ParserGenTypeParserData(vl::stream::IStream& outputStream);
 
 			class TypeParser

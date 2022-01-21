@@ -49,7 +49,9 @@ TEST_FILE
 				typeMetadata,
 				typeName,
 				fieldName,
-				tokenName);
+				tokenName,
+				[&](vint32_t switchId) { return typeSyntaxManager.switches.Keys()[switchId]; }
+				);
 		}
 		{
 			ruleSyntaxManager.BuildCompactNFA();
@@ -64,7 +66,9 @@ TEST_FILE
 				ruleMetadata,
 				typeName,
 				fieldName,
-				tokenName);
+				tokenName,
+				[&](vint32_t switchId) { return ruleSyntaxManager.switches.Keys()[switchId]; }
+				);
 		}
 		auto output = GenerateParserFileNames(global);
 		GenerateSyntaxFileNames(typeSyntaxManager, output);
