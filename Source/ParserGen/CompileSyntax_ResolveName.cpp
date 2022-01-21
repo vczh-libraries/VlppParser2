@@ -243,6 +243,7 @@ ResolveNameVisitor
 							accessedSwitches.Add(switchItem->name.value);
 						}
 					}
+					node->syntax->Accept(this);
 				}
 
 				void Visit(GlrTestConditionSyntax* node) override
@@ -250,6 +251,10 @@ ResolveNameVisitor
 					for (auto&& branch : node->branches)
 					{
 						branch->condition->Accept(this);
+						if (branch->syntax)
+						{
+							branch->syntax->Accept(this);
+						}
 					}
 				}
 

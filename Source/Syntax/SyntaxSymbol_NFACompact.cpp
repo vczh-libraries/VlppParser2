@@ -288,6 +288,37 @@ SyntaxSymbolManager::EliminateLeftRecursion
 					if (edge->input.type != EdgeInputType::Rule) continue;
 					if (edge->input.rule != rule) continue;
 					lrecEdges.Add(edge);
+
+					bool hasPushIns = false;
+					bool hasTestIns = false;
+					for (auto ins : edge->insSwitch)
+					{
+						if (ins.type < automaton::SwitchInsType::ConditionRead)
+						{
+							hasPushIns = true;
+						}
+						else
+						{
+							hasTestIns = true;
+						}
+					}
+
+					if (hasPushIns)
+					{
+						AddError(
+							ParserErrorType::LeftRecursiveClauseInsidePushCondition,
+							{},
+							rule->Name()
+							);
+					}
+					if (hasTestIns)
+					{
+						AddError(
+							ParserErrorType::LeftRecursiveClauseInsideTestCondition,
+							{},
+							rule->Name()
+							);
+					}
 				}
 
 				for (auto lrecEdge : lrecEdges)
@@ -310,7 +341,7 @@ SyntaxSymbolManager::EliminateLeftRecursion
 			}
 
 /***********************************************************************
-SyntaxSymbolManager::EliminateEpsilonEdges
+SyntaxSymbolManager::EliminateSingleRulePrefix
 ***********************************************************************/
 
 			void SyntaxSymbolManager::EliminateSingleRulePrefix(RuleSymbol* rule, StateSymbol* startState, StateSymbol* endState, StateList& newStates, EdgeList& newEdges)
