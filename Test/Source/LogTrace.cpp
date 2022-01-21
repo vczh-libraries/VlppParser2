@@ -4,7 +4,7 @@ extern WString GetTestOutputPath();
 extern FilePath GetOutputDir(const WString& parserName);
 
 /***********************************************************************
-LogInstruction
+LogInstruction (AstIns)
 ***********************************************************************/
 
 void LogInstruction(
@@ -54,6 +54,50 @@ void LogInstruction(
 		break;
 	case AstInsType::AccumulatedEoRo:
 		writer.WriteLine(L"AccumulatedEoRo(" + itow(ins.count) + L")");
+		break;
+	default:
+		writer.WriteLine(L"<UNKNOWN-INSTRUCTION>");
+	}
+}
+
+/***********************************************************************
+LogInstruction (SwitchIns)
+***********************************************************************/
+
+void LogInstruction(
+	SwitchIns ins,
+	const Func<WString(vint32_t)>& switchName,
+	StreamWriter& writer
+)
+{
+	switch (ins.type)
+	{
+	case SwitchInsType::SwitchPushFrame:
+		writer.WriteLine(L"+switches");
+		break;
+	case SwitchInsType::SwitchWriteTrue:
+		writer.WriteLine(switchName(ins.param) + L" <- TRUE");
+		break;
+	case SwitchInsType::SwitchWriteFalse:
+		writer.WriteLine(switchName(ins.param) + L" <- FALSE");
+		break;
+	case SwitchInsType::SwitchPopFrame:
+		writer.WriteLine(L"-switches");
+		break;
+	case SwitchInsType::ConditionRead:
+		writer.WriteLine(L"<- " + switchName(ins.param));
+		break;
+	case SwitchInsType::ConditionNot:
+		writer.WriteLine(L"!");
+		break;
+	case SwitchInsType::ConditionAnd:
+		writer.WriteLine(L"&&");
+		break;
+	case SwitchInsType::ConditionOr:
+		writer.WriteLine(L"||");
+		break;
+	case SwitchInsType::ConditionTest:
+		writer.WriteLine(L"?");
 		break;
 	default:
 		writer.WriteLine(L"<UNKNOWN-INSTRUCTION>");
@@ -158,7 +202,8 @@ void RenderTrace(
 	const Func<WString(vint32_t)>& fieldName,
 	const Func<WString(vint32_t)>& tokenName,
 	const Func<WString(vint32_t)>& ruleName,
-	const Func<WString(vint32_t)>& stateLabel
+	const Func<WString(vint32_t)>& stateLabel,
+	const Func<WString(vint32_t)>& switchName
 )
 {
 	StringReader reader(GenerateToStream([&](StreamWriter& writer)
@@ -212,7 +257,22 @@ void RenderTrace(
 			}
 		}
 
-		writer.WriteLine(L"[INSTRUCTIONS]:");
+		if (trace->byEdge != -1)
+		{
+			auto& edgeDesc = executable.edges[trace->byEdge];
+			if (edgeDesc.insSwitch.start != -1)
+			{
+				writer.WriteLine(L"[SWITCH-INSTRUCTIONS]:");
+				for (vint32_t i = 0; i < edgeDesc.insSwitch.count; i++)
+				{
+					auto ins = executable.switchInstructions[edgeDesc.insSwitch.start + i];
+					writer.WriteString(L"    ");
+					LogInstruction(ins, switchName, writer);
+				}
+			}
+		}
+
+		writer.WriteLine(L"[AST-INSTRUCTIONS]:");
 		vint32_t c1 = 0, c2 = 0, c3 = 0;
 		if (trace->byEdge != -1)
 		{
@@ -244,20 +304,20 @@ void RenderTrace(
 			if (i < c1)
 			{
 				auto& edgeDesc = executable.edges[trace->byEdge];
-				ins = executable.instructions[edgeDesc.insBeforeInput.start + i];
+				ins = executable.astInstructions[edgeDesc.insBeforeInput.start + i];
 				writer.WriteString(L"  - ");
 			}
 			else if (i < c2)
 			{
 				auto& edgeDesc = executable.edges[trace->byEdge];
-				ins = executable.instructions[edgeDesc.insAfterInput.start + (i - c1)];
+				ins = executable.astInstructions[edgeDesc.insAfterInput.start + (i - c1)];
 				writer.WriteString(L"  + ");
 			}
 			else
 			{
 				auto returnStack = tm.GetReturnStack(trace->executedReturnStack);
 				auto& returnDesc = executable.returns[returnStack->returnIndex];
-				ins = executable.instructions[returnDesc.insAfterInput.start + (i - c2)];
+				ins = executable.astInstructions[returnDesc.insAfterInput.start + (i - c2)];
 				writer.WriteString(L"  > ");
 			}
 
@@ -956,7 +1016,8 @@ FilePath LogTraceManager(
 	const Func<WString(vint32_t)>& fieldName,
 	const Func<WString(vint32_t)>& tokenName,
 	const Func<WString(vint32_t)>& ruleName,
-	const Func<WString(vint32_t)>& stateLabel
+	const Func<WString(vint32_t)>& stateLabel,
+	const Func<WString(vint32_t)>& switchName
 )
 {
 	CHECK_ERROR(tm.concurrentCount > 0, L"Cannot log failed traces!");
@@ -983,7 +1044,8 @@ FilePath LogTraceManager(
 					fieldName,
 					tokenName,
 					ruleName,
-					stateLabel
+					stateLabel,
+					switchName
 					);
 
 				auto successorId = trace->successors.first;

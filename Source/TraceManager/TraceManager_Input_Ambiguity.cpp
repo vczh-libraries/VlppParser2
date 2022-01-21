@@ -53,7 +53,7 @@ GetInstructionPostfix
 
 				for (vint32_t insRef = 0; insRef < oldEdge.insBeforeInput.count; insRef++)
 				{
-					auto&& ins = executable.instructions[oldEdge.insBeforeInput.start + insRef];
+					auto&& ins = executable.astInstructions[oldEdge.insBeforeInput.start + insRef];
 					if (ins.type == AstInsType::EndObject)
 					{
 						i1 = insRef;
@@ -63,7 +63,7 @@ GetInstructionPostfix
 
 				for (vint32_t insRef = 0; insRef < newEdge.insBeforeInput.count; insRef++)
 				{
-					auto&& ins = executable.instructions[newEdge.insBeforeInput.start + insRef];
+					auto&& ins = executable.astInstructions[newEdge.insBeforeInput.start + insRef];
 					if (ins.type == AstInsType::EndObject)
 					{
 						i2 = insRef;
@@ -80,8 +80,8 @@ GetInstructionPostfix
 				vint32_t postfix = oldEdge.insBeforeInput.count - i1 - 1;
 				for (vint32_t postfixRef = 0; postfixRef < postfix; postfixRef++)
 				{
-					auto&& ins1 = executable.instructions[oldEdge.insBeforeInput.start + i1 + 1 + postfixRef];
-					auto&& ins2 = executable.instructions[newEdge.insBeforeInput.start + i2 + 1 + postfixRef];
+					auto&& ins1 = executable.astInstructions[oldEdge.insBeforeInput.start + i1 + 1 + postfixRef];
+					auto&& ins2 = executable.astInstructions[newEdge.insBeforeInput.start + i2 + 1 + postfixRef];
 					CHECK_ERROR(ins1 == ins2, L"Two instruction postfix after EndObject not equal.");
 				}
 				return postfix;

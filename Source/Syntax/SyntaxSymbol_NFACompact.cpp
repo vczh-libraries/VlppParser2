@@ -134,6 +134,7 @@ CompactSyntaxBuilder
 								newEdge->important |= edge->important;
 								for (auto accumulatedEdge : accumulatedEdges)
 								{
+									CopyFrom(newEdge->insSwitch, accumulatedEdge->insSwitch, true);
 									CopyFrom(newEdge->insBeforeInput, accumulatedEdge->insBeforeInput, true);
 									CopyFrom(newEdge->insAfterInput, accumulatedEdge->insAfterInput, true);
 									newEdge->important |= accumulatedEdge->important;
@@ -154,6 +155,7 @@ CompactSyntaxBuilder
 						newEdge->input.type = EdgeInputType::Ending;
 						for (auto accumulatedEdge : accumulatedEdges)
 						{
+							CopyFrom(newEdge->insSwitch, accumulatedEdge->insSwitch, true);
 							CopyFrom(newEdge->insBeforeInput, accumulatedEdge->insBeforeInput, true);
 							CopyFrom(newEdge->insAfterInput, accumulatedEdge->insAfterInput, true);
 							newEdge->important |= accumulatedEdge->important;
@@ -226,8 +228,10 @@ SyntaxSymbolManager::CreateLeftRecEdge
 				newEdge->important |= lrecPrefixEdge->important;
 
 				newEdge->input.type = EdgeInputType::LeftRec;
+				CopyFrom(newEdge->insSwitch, endingEdge->insSwitch, true);
 				CopyFrom(newEdge->insBeforeInput, endingEdge->insBeforeInput, true);
 				CopyFrom(newEdge->insAfterInput, endingEdge->insAfterInput, true);
+				CopyFrom(newEdge->insSwitch, lrecPrefixEdge->insSwitch, true);
 				CopyFrom(newEdge->insBeforeInput, lrecPrefixEdge->insBeforeInput, true);
 				CopyFrom(newEdge->insAfterInput, lrecPrefixEdge->insAfterInput, true);
 

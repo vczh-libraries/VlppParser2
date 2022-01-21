@@ -18,6 +18,40 @@ namespace vl
 Executable
 ***********************************************************************/
 
+			enum class SwitchInsType
+			{
+				SwitchPushFrame,	// SwitchPushFrame()			: Push a new switch value frame, inheriting all values from the previous frame
+				SwitchWriteTrue,	// SwitchWriteTrue(switchId)	: Write TRUE to a switch in the current frame
+				SwitchWriteFalse,	// SwitchWriteFalse(switchId)	: Write FALSE to a switch in the current frame
+				SwitchPopFrame,		// SwitchPopFrame()				: Pop the last frame
+
+				ConditionRead,		// ConditionRead(switchId)		: Push the value of a switch to the stack
+				ConditionNot,		// ConditionNot()				: Pop one value from the stack, perform NOT, push the result
+				ConditionAnd,		// ConditionAnd()				: Pop two values from the stack, perform AND, push the result
+				ConditionOr,		// ConditionOr()				: Pop two values from the stack, perform OR, push the result
+				ConditionTest,		// ConditionTest()				: Pop one value from the stack, if it is FALSE, fail the current transition
+			};
+
+			struct SwitchIns
+			{
+				SwitchInsType								type = SwitchInsType::ConditionTest;
+				vint32_t									param = -1;
+
+				vint Compare(const SwitchIns& ins) const
+				{
+					auto result = (vint)type - (vint)ins.type;
+					if (result != 0) return result;
+					return (vint)param - (vint)ins.param;
+				}
+
+				bool operator==(const SwitchIns& ins) const { return Compare(ins) == 0; }
+				bool operator!=(const SwitchIns& ins) const { return Compare(ins) != 0; }
+				bool operator< (const SwitchIns& ins) const { return Compare(ins) < 0; }
+				bool operator<=(const SwitchIns& ins) const { return Compare(ins) <= 0; }
+				bool operator> (const SwitchIns& ins) const { return Compare(ins) > 0; }
+				bool operator>=(const SwitchIns& ins) const { return Compare(ins) >= 0; }
+			};
+
 			struct InstructionArray
 			{
 				vint32_t							start = -1;
@@ -63,6 +97,7 @@ Executable
 				vint32_t							toState = -1;
 				StringLiteral						condition;
 				EdgePriority						priority = EdgePriority::NoCompetition;
+				InstructionArray					insSwitch;
 				InstructionArray					insBeforeInput;
 				InstructionArray					insAfterInput;
 				ReturnIndexArray					returnIndices;
@@ -86,7 +121,8 @@ Executable
 				vint32_t							ruleCount = 0;
 				collections::Array<vint32_t>		ruleStartStates;		// ruleStartStates[rule] = the start state of this rule.
 				collections::Array<EdgeArray>		transitions;			// transitions[state * (TokenBegin + tokenCount) + input] = edges from state with specified input.
-				collections::Array<AstIns>			instructions;			// referenced by InstructionArray
+				collections::Array<AstIns>			astInstructions;		// referenced by EdgeDesc::insBeforeInput and EdgeDesc::insAfterInput
+				collections::Array<SwitchIns>		switchInstructions;		// referenced by EdgeDesc::insSwitch
 				collections::Array<vint32_t>		returnIndices;			// referenced by ReturnIndexArray
 				collections::Array<ReturnDesc>		returns;				// referenced by Executable::returnIndices
 				collections::Array<EdgeDesc>		edges;					// referenced by EdgeArray
@@ -108,6 +144,7 @@ Executable
 			{
 				collections::Array<WString>			ruleNames;
 				collections::Array<WString>			stateLabels;
+				collections::Array<WString>			switchNames;
 			};
 		}
 	}

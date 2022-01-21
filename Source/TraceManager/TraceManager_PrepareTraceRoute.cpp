@@ -75,7 +75,7 @@ ReadInstruction
 					CHECK_FAIL(ERROR_MESSAGE_PREFIX L"Instruction index out of range.");
 				}
 
-				return executable.instructions[insRef];
+				return executable.astInstructions[insRef];
 #undef ERROR_MESSAGE_PREFIX
 			}
 

@@ -34,9 +34,11 @@ SyntaxSymbolManager::FixCrossReferencedRuleEdge
 							newEdge->importancy = edge->importancy;
 							for (auto acc : accumulatedEdges)
 							{
+								CopyFrom(newEdge->insSwitch, acc->insSwitch, true);
 								CopyFrom(newEdge->insBeforeInput, acc->insBeforeInput, true);
 								newEdge->returnEdges.Add(acc);
 							}
+							CopyFrom(newEdge->insSwitch, edge->insSwitch, true);
 							CopyFrom(newEdge->insBeforeInput, edge->insBeforeInput, true);
 							CopyFrom(newEdge->insAfterInput, edge->insAfterInput, true);
 						}
