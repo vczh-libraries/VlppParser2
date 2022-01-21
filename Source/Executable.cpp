@@ -80,6 +80,7 @@ namespace vl
 				SERIALIZE(edges)
 				SERIALIZE(states)
 				SERIALIZE(stringLiteralBuffer)
+				SERIALIZE(switchDefaultValues)
 			END_SERIALIZATION
 		}
 	}

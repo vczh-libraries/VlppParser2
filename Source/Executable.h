@@ -128,6 +128,7 @@ Executable
 				collections::Array<EdgeDesc>		edges;					// referenced by EdgeArray
 				collections::Array<StateDesc>		states;					// referenced by returnState/fromState/toState
 				WString								stringLiteralBuffer;	// referenced by StringLiteral
+				collections::Array<bool>			switchDefaultValues;	// default value of all switches
 
 				Executable() = default;
 				Executable(stream::IStream& inputStream);

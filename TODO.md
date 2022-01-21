@@ -2,24 +2,8 @@
 
 ## Features to Add
 
-- Add switches and push-pop syntax.
-  - switch can only be boolean.
-  - switch must have default value.
-  - `!(OPTION1, !OPTION2, ...; SYNTAX)` assigns `true` to `OPTION1` and `false` to `OPTION2` etc, runs `SYNTAX`, and restores.
-  - condition syntax: `?(CONDITION1:SYNTAX1 | ...)`.
-    - `SYNTAX1` is valid only if `CONDITION1` is evaluated to `true`.
-    - all branches must be conditional.
-    - all branches must not consume empty sequence except `;`.
-    - if a clause is a left recursive clause, there must be no condition pushing or testing from the start state to the left recursive rule syntax.
-    - if all conditions fail, the syntax fail.
-    - `CONDITION?;` means, if the condition is evaluated to `true`, this syntax consumes no input.
-      - only one branch could be `;`.
-  - condition could be:
-    - `OPTION`: means `OPTION == true`
-    - `C1 && C2`
-    - `C1 || C2`
-    - `!C`
-    - `(C)`
+- Implement a rough and quick switch feature.
+- Optimize the above switch feature.
 - Extensible tokens, for example, recognize `R"[^\s(]\(` and invoke a callback function to determine the end of the string.
   - Offer two options: using (rich regex | C++) to search for complete token.
 
@@ -33,6 +17,7 @@
     - Merge conditions in these epsilon transitions properly.
 - `JsonEscapeString` `JsonUnescapeString` handle surrogate pairs correctly.
 - Review all comments.
+- In `IfElseAmbiguity`, it seems the ambiguity cannot be correctly resolved if the `if [else]` clause is expanded into two separate clauses.
 
 ## Experiments
 

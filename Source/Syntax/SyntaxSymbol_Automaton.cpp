@@ -36,6 +36,18 @@ SyntaxSymbolManager::BuildAutomaton
 					metadata.stateLabels[index] = GetStateGlobalLabel(state, index);
 				}
 
+				// metadata.switchNames and executable.switchDefaultValues
+				if (switches.Count() > 0)
+				{
+					metadata.switchNames.Resize(switches.Count());
+					executable.switchDefaultValues.Resize(switches.Count());
+					for (auto [pair, index] : indexed(switches))
+					{
+						metadata.switchNames[index] = pair.key;
+						executable.switchDefaultValues[index] = pair.value;
+					}
+				}
+
 				executable.tokenCount = (vint32_t)tokenCount;
 				executable.ruleCount = (vint32_t)rulesInOrder.Count();
 
