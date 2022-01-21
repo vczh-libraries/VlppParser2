@@ -38,7 +38,8 @@ TEST_FILE
 				[=](vint32_t field) { return WString::Unmanaged(WorkflowFieldName((WorkflowFields)field)); },
 				[=](vint32_t token) { return WString::Unmanaged(WorkflowTokenId((WorkflowTokens)token)); },
 				[=](vint32_t rule) { return WString::Unmanaged(ParserRuleName(rule)); },
-				[=](vint32_t state) { return WString::Unmanaged(ParserStateLabel(state)); }
+				[=](vint32_t state) { return WString::Unmanaged(ParserStateLabel(state)); },
+				[=](vint32_t switchId) { return WString::Unmanaged(ParserSwitchName(switchId)); }
 			);
 
 			if (args.traceManager.concurrentCount == 1)

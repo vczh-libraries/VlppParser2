@@ -53,8 +53,8 @@ namespace TestParser_Generated_TestObjects
 					[=](vint32_t field) { return WString::Unmanaged(fieldName((TFields)field)); },
 					[=](vint32_t token) { return WString::Unmanaged(tokenId((TTokens)token)); },
 					[=](vint32_t rule) { return WString::Unmanaged(ruleName(rule)); },
-					[=](vint32_t state) { return WString::Unmanaged(stateLabel(state));,
-					[=](vint32_t switchId) { return WString::Unmanaged(switchName(state)); }
+					[=](vint32_t state) { return WString::Unmanaged(stateLabel(state)); },
+					[=](vint32_t switchId) { return WString::Unmanaged(switchName(switchId)); }
 				);
 
 				if (args.traceManager.concurrentCount == 1)
