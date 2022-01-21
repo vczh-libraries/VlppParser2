@@ -18,10 +18,12 @@ namespace ifelsemanual
 		Block = 4,
 		HalfIf = 9,
 		CompleteIf = 15,
-		If = 23,
-		CompleteStat = 27,
-		Stat = 32,
-		Module = 37,
+		IfTail = 23,
+		If = 29,
+		OtherStat = 35,
+		CompleteStat = 39,
+		Stat = 43,
+		Module = 47,
 	};
 
 	const wchar_t* ModuleParserRuleName(vl::vint index);

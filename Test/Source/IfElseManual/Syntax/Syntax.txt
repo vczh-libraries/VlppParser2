@@ -14,20 +14,27 @@ CompleteIf
   ::= "if" "cond" "then" CompleteStat:thenBranch "else" Stat:elseBranch as IfStat
   ;
 
+IfTail
+  ::= CompleteStat:thenBranch ["else" Stat:elseBranch] as partial IfStat
+  ::= HalfIf:thenBranch as partial IfStat
+  ;
+
 If
-  ::= !HalfIf
-  ::= !CompleteIf
+  ::= "if" "cond" "then" IfTail as IfStat
+  ;
+
+OtherStat
+  ::= !Do
+  ::= !Block
   ;
 
 CompleteStat
-  ::= !Do
-  ::= !Block
+  ::= !OtherStat
   ::= !CompleteIf
   ;
 
 Stat
-  ::= !Do
-  ::= !Block
+  ::= !OtherStat
   ::= !If
   ;
 
