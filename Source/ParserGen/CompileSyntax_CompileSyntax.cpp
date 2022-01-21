@@ -130,20 +130,32 @@ CompileSyntaxVisitor
 						);
 				}
 
+				template<typename T>
+				void CollectElements(GlrSyntax* node, List<Func<StatePair()>>& elements)
+				{
+					if (auto pair = dynamic_cast<T*>(node))
+					{
+						CollectElements<T>(pair->first.Obj(), elements);
+						CollectElements<T>(pair->second.Obj(), elements);
+					}
+					else
+					{
+						elements.Add([this, node]() { return Build(node); });
+					}
+				}
+
 				void Visit(GlrSequenceSyntax* node) override
 				{
-					result = automatonBuilder.BuildSequenceSyntax(
-						[this, node]() { return Build(node->first); },
-						[this, node]() { return Build(node->second); }
-						);
+					List<Func<StatePair()>> elements;
+					CollectElements<GlrSequenceSyntax>(node, elements);
+					result = automatonBuilder.BuildSequenceSyntax(elements);
 				}
 
 				void Visit(GlrAlternativeSyntax* node) override
 				{
-					result = automatonBuilder.BuildAlternativeSyntax(
-						[this, node]() { return Build(node->first); },
-						[this, node]() { return Build(node->second); }
-						);
+					List<Func<StatePair()>> elements;
+					CollectElements<GlrAlternativeSyntax>(node, elements);
+					result = automatonBuilder.BuildAlternativeSyntax(elements);
 				}
 
 				void Visit(GlrPushConditionSyntax* node) override

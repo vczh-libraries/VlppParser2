@@ -57,8 +57,8 @@ AutomatonBuilder
 				StatePair					BuildUseSyntax(RuleSymbol* rule);
 				StatePair					BuildLoopSyntax(const StateBuilder& loopBody, const StateBuilder& loopDelimiter, bool hasDelimiter);
 				StatePair					BuildOptionalSyntax(bool preferTake, bool preferSkip, const StateBuilder& optionalBody);
-				StatePair					BuildSequenceSyntax(const StateBuilder& firstSequence, const StateBuilder& secondSequence);
-				StatePair					BuildAlternativeSyntax(const StateBuilder& firstBranch, const StateBuilder& secondBranch);
+				StatePair					BuildSequenceSyntax(collections::List<StateBuilder>& elements);
+				StatePair					BuildAlternativeSyntax(collections::List<StateBuilder>& elements);
 
 				StatePair					BuildClause(const StateBuilder& compileSyntax);
 				StatePair					BuildAssignment(StatePair pair, vint32_t enumItem, vint32_t field, bool weakAssignment);
@@ -370,22 +370,46 @@ Builder
 							);
 					}
 
+					template<typename C>
+					void CollectSeq(const C& clause, collections::List<Func<StatePair()>>& elements)
+					{
+						elements.Add([this, &clause] { return Build(clause); });
+					}
+
+					template<typename C1, typename C2>
+					void CollectSeq(const Seq<C1, C2>& clause, collections::List<Func<StatePair()>>& elements)
+					{
+						CollectSeq(clause.first, elements);
+						CollectSeq(clause.second, elements);
+					}
+
 					template<typename C1, typename C2>
 					StatePair Build(const Seq<C1, C2>& clause)
 					{
-						return builder.BuildSequenceSyntax(
-							[this, &clause]() { return Build(clause.first); },
-							[this, &clause]() { return Build(clause.second); }
-							);
+						collections::List<Func<StatePair()>> elements;
+						CollectSeq(clause, elements);
+						return builder.BuildSequenceSyntax(elements);
+					}
+
+					template<typename C>
+					void CollectAlt(const C& clause, collections::List<Func<StatePair()>>& elements)
+					{
+						elements.Add([this, &clause] { return Build(clause); });
+					}
+
+					template<typename C1, typename C2>
+					void CollectAlt(const Alt<C1, C2>& clause, collections::List<Func<StatePair()>>& elements)
+					{
+						CollectAlt(clause.first, elements);
+						CollectAlt(clause.second, elements);
 					}
 
 					template<typename C1, typename C2>
 					StatePair Build(const Alt<C1, C2>& clause)
 					{
-						return builder.BuildAlternativeSyntax(
-							[this, &clause]() { return Build(clause.first); },
-							[this, &clause]() { return Build(clause.second); }
-							);
+						collections::List<Func<StatePair()>> elements;
+						CollectAlt(clause, elements);
+						return builder.BuildAlternativeSyntax(elements);
 					}
 
 					template<typename C>

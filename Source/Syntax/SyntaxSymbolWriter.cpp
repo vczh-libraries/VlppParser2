@@ -161,32 +161,37 @@ AutomatonBuilder (Syntax)
 				return pair;
 			}
 
-			AutomatonBuilder::StatePair AutomatonBuilder::BuildSequenceSyntax(const StateBuilder& firstSequence, const StateBuilder& secondSequence)
+			AutomatonBuilder::StatePair AutomatonBuilder::BuildSequenceSyntax(collections::List<StateBuilder>& elements)
 			{
-				auto firstPair = firstSequence();
-				clauseDisplayText += L" ";
-				auto secondPair = secondSequence();
-				CreateEdge(firstPair.end, secondPair.begin);
-				return { firstPair.begin,secondPair.end };
+				CHECK_ERROR(elements.Count() > 0, L"vl::glr::parsergen::AutomatonBuilder::BuildSequenceSyntax(List<StateBuilder>&)#Elements must not be empty.");
+				auto pair = elements[0]();
+				for (vint i = 1; i < elements.Count(); i++)
+				{
+					clauseDisplayText += L" ";
+					auto nextPair = elements[i]();
+					CreateEdge(pair.end, nextPair.begin);
+					pair.end = nextPair.end;
+				}
+				return pair;
 			}
 
-			AutomatonBuilder::StatePair AutomatonBuilder::BuildAlternativeSyntax(const StateBuilder& firstBranch, const StateBuilder& secondBranch)
+			AutomatonBuilder::StatePair AutomatonBuilder::BuildAlternativeSyntax(collections::List<StateBuilder>& elements)
 			{
+				CHECK_ERROR(elements.Count() > 0, L"vl::glr::parsergen::AutomatonBuilder::BuildAlternativeSyntax(List<StateBuilder>&)#Elements must not be empty.");
 				StatePair pair;
 				pair.begin = CreateState();
 				pair.end = CreateState();
 				startPoses.Add(pair.begin, clauseDisplayText.Length());
 
 				clauseDisplayText += L"( ";
-				auto firstPair = firstBranch();
-				clauseDisplayText += L" | ";
-				auto secondPair = secondBranch();
+				for (vint i = 0; i < elements.Count(); i++)
+				{
+					if (i > 0) clauseDisplayText += L" | ";
+					auto branchPair = elements[i]();
+					CreateEdge(pair.begin, branchPair.begin);
+					CreateEdge(branchPair.end, pair.end);
+				}
 				clauseDisplayText += L" )";
-
-				CreateEdge(pair.begin, firstPair.begin);
-				CreateEdge(firstPair.end, pair.end);
-				CreateEdge(pair.begin, secondPair.begin);
-				CreateEdge(secondPair.end, pair.end);
 
 				endPoses.Add(pair.end, clauseDisplayText.Length());
 				return pair;
