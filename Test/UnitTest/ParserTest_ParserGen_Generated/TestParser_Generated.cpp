@@ -4,6 +4,10 @@
 #include "../../Source/IfElseAmbiguity/Generated/IfElseAmbiguityModuleParser.h"
 #include "../../Source/IfElsePriority/Generated/IfElsePriorityStatAst_Json.h"
 #include "../../Source/IfElsePriority/Generated/IfElsePriorityModuleParser.h"
+#include "../../Source/IfElseManual/Generated/IfElseManualStatAst_Json.h"
+#include "../../Source/IfElseManual/Generated/IfElseManualModuleParser.h"
+#include "../../Source/IfElseSwitch/Generated/IfElseSwitchStatAst_Json.h"
+#include "../../Source/IfElseSwitch/Generated/IfElseSwitchModuleParser.h"
 #include "../../Source/GenericAmbiguity/Generated/GenericAmbiguityExprAst_Json.h"
 #include "../../Source/GenericAmbiguity/Generated/GenericAmbiguityModuleParser.h"
 #include "../../Source/FeatureTest/Generated/FeatureTestFeatureAst_Json.h"
@@ -136,6 +140,26 @@ TEST_FILE
 		&ifelsepriority::ModuleParserRuleName,
 		&ifelsepriority::ModuleParserStateLabel,
 		&ifelsepriority::ModuleParserSwitchName
+		);
+	TestParser<ifelsemanual::ModuleParser, ifelsemanual::json_visitor::StatAstVisitor>(
+		L"IfElseManual",
+		ifelsemanual::ModuleParserStates::Module,
+		&ifelsemanual::IfElseManualTypeName,
+		&ifelsemanual::IfElseManualFieldName,
+		&ifelsemanual::IfElseManualTokenId,
+		&ifelsemanual::ModuleParserRuleName,
+		&ifelsemanual::ModuleParserStateLabel,
+		&ifelsemanual::ModuleParserSwitchName
+		);
+	TestParser<ifelseswitch::ModuleParser, ifelseswitch::json_visitor::StatAstVisitor>(
+		L"IfElseSwitch",
+		ifelseswitch::ModuleParserStates::Module,
+		&ifelseswitch::IfElseSwitchTypeName,
+		&ifelseswitch::IfElseSwitchFieldName,
+		&ifelseswitch::IfElseSwitchTokenId,
+		&ifelseswitch::ModuleParserRuleName,
+		&ifelseswitch::ModuleParserStateLabel,
+		&ifelseswitch::ModuleParserSwitchName
 		);
 	TestParser<genericambiguity::ModuleParser, genericambiguity::json_visitor::ExprAstVisitor>(
 		L"GenericAmbiguity",
