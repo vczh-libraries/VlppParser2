@@ -1,0 +1,36 @@
+Do
+  ::= "do" ";" as DoStat
+  ;
+
+Block
+  ::= "{" { Stat:stats } "}" as BlockStat
+  ;
+
+HalfIf
+  ::= "if" "cond" "then" Stat:thenBranch
+  ;
+
+CompleteIf
+  ::= "if" "cond" "then" CompleteStat:thenBranch "else" State:elseBranch
+  ;
+
+If
+  ::= !HalfIf
+  ::= !CompleteIf
+  ;
+
+CompleteStat
+  ::= !Do
+  ::= !Block
+  ::= !CompleteIf
+  ;
+
+Stat
+  ::= !Do
+  ::= !Block
+  ::= !If
+  ;
+
+Module
+  ::= Stat:stat as Module
+  ;
