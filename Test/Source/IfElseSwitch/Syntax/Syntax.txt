@@ -1,3 +1,5 @@
+switch allow_half_if;
+
 Do
   ::= "do" ";" as DoStat
   ;
@@ -7,12 +9,13 @@ Block
   ;
 
 If
-  ::= "if" "cond" "then" Stat:thenBranch +["else" Stat:elseBranch] as IfStat
+  ::= ?(allow_half_if: "if" "cond" "then" Stat:thenBranch) as IfStat
+  ::= "if" "cond" "then" !(!allow_half_if; Stat:thenBranch) "else" Stat:elseBranch as IfStat
   ;
 
 Stat
   ::= !Do
-  ::= !Block
+  ::= !(allow_half_if; !Block)
   ::= !If
   ;
 
