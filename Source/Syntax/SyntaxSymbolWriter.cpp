@@ -235,6 +235,61 @@ AutomatonBuilder (Syntax)
 				return pair;
 			}
 
+			void AutomatonBuilder::PrintCondition(collections::List<automaton::SwitchIns>& insSwitch)
+			{
+				for (auto ins : insSwitch)
+				{
+					switch (ins.type)
+					{
+					case automaton::SwitchInsType::ConditionRead:
+						clauseDisplayText += L"[" + itow(ins.param) + L"]";
+						break;
+					case automaton::SwitchInsType::ConditionNot:
+						clauseDisplayText += L"!";
+						break;
+					case automaton::SwitchInsType::ConditionAnd:
+						clauseDisplayText += L"&";
+						break;
+					case automaton::SwitchInsType::ConditionOr:
+						clauseDisplayText += L"|";
+						break;
+					case automaton::SwitchInsType::ConditionTest:
+						clauseDisplayText += L"?";
+						break;
+					}
+				}
+			}
+
+			AutomatonBuilder::StatePair AutomatonBuilder::BuildTestConditionBranch(collections::List<automaton::SwitchIns>& insSwitch)
+			{
+				StatePair pair;
+				pair.begin = CreateState();
+				pair.end = CreateState();
+
+				clauseDisplayText += L"(";
+				PrintCondition(insSwitch);
+				clauseDisplayText += L" )";
+
+				auto edge = CreateEdge(pair.begin, pair.end);
+				CopyFrom(edge->insSwitch, insSwitch);
+				return pair;
+			}
+
+			AutomatonBuilder::StatePair AutomatonBuilder::BuildTestConditionBranch(collections::List<automaton::SwitchIns>& insSwitch, const StateBuilder& branchBody)
+			{
+				auto state = CreateState();
+
+				clauseDisplayText += L"(";
+				PrintCondition(insSwitch);
+				clauseDisplayText += L" ";
+				auto pair = branchBody();
+				clauseDisplayText += L")";
+
+				auto edge = CreateEdge(state, pair.begin);
+				CopyFrom(edge->insSwitch, insSwitch);
+				return { state,pair.end };
+			}
+
 /***********************************************************************
 AutomatonBuilder (Clause)
 ***********************************************************************/
