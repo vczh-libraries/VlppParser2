@@ -8,9 +8,13 @@ Block
   ::= "{" { Stat:stats } "}" as BlockStat
   ;
 
+IfTail
+  ::= ?(allow_half_if: Stat:thenBranch) as partial IfStat
+  ::= !(!allow_half_if; Stat:thenBranch) "else" Stat:elseBranch as partial IfStat
+  ;
+
 If
-  ::= ?(allow_half_if: "if" "cond" "then" Stat:thenBranch) as IfStat
-  ::= "if" "cond" "then" !(!allow_half_if; Stat:thenBranch) "else" Stat:elseBranch as IfStat
+  ::= "if" "cond" "then" IfTail as IfStat
   ;
 
 Stat
