@@ -41,7 +41,23 @@ TraceManager::RunEdgeConditionChecking
 
 			vint32_t TraceManager::PushSwitchFrame(Switches* currentSV, vuint32_t* values)
 			{
-				CHECK_FAIL(L"Not Implemented!");
+				auto previous = currentSV->allocatedIndex;
+				vint32_t& checking = currentSV->firstChild;
+				while (checking != -1)
+				{
+					currentSV = switches.Get(checking);
+					checking = currentSV->nextSibling;
+					if (memcmp(values, currentSV->values, sizeof(currentSV->values)) == 0)
+					{
+						return currentSV->allocatedIndex;
+					}
+				}
+
+				checking = switches.Allocate();
+				auto newSV = switches.Get(checking);
+				newSV->previous = previous;
+				memcpy(newSV->values, values, sizeof(newSV->values));
+				return checking;
 			}
 
 /***********************************************************************
@@ -57,7 +73,7 @@ TraceManager::RunEdgeConditionChecking
 
 				auto currentSV = switches.Get(currentSwitchValues);
 				static_assert(sizeof(values) == sizeof(currentSV->values));
-				memcpy(values, currentSV->values, sizeof(values));
+				memcpy(values, currentSV->values, sizeof(currentSV->values));
 
 				bool frameToPush = false;
 
