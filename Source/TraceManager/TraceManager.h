@@ -188,6 +188,15 @@ TraceManager (Data Structures)
 																	// (filled by ExecuteTrace)
 			};
 
+			struct Switches
+			{
+				vint32_t				allocatedIndex = -1;
+				vint32_t				previous = -1;				// id of the previous Switches in the stack
+				vint32_t				firstChild = -1;			// id of the first Swtiches that was ever pushed after the current one
+				vint32_t				nextSibling = -1;			// id of the next Switches in all Switches that were ever pushed after the previous one
+				vuint32_t				values[2] = { 0 };			// switch values, temporary set to 64 slots
+			};
+
 			struct Trace
 			{
 				vint32_t				allocatedIndex = -1;		// id of this Trace
@@ -197,6 +206,7 @@ TraceManager (Data Structures)
 				vint32_t				state = -1;					// id of the current StateDesc
 				vint32_t				returnStack = -1;			// id of the current ReturnStack
 				vint32_t				executedReturnStack = -1;	// id of the executed ReturnStack that contains the ReturnDesc being executed
+				vint32_t				switchValues = -1;			// the id of switch values, it will be -1 if no switch is defined for this parser
 				vint32_t				byEdge = -1;				// id of the last EdgeDesc that make this trace
 				vint32_t				byInput = -1;				// the last input that make this trace
 				vint32_t				currentTokenIndex = -1;		// the index of the token that is byInput
@@ -257,18 +267,21 @@ TraceManager
 			protected:
 				Executable&							executable;
 				const ITypeCallback*				typeCallback = nullptr;
+				vint32_t							maxSwitchValues = 0;
 
 				TraceManagerState					state = TraceManagerState::Uninitialized;
 				AllocateOnly<ReturnStack>			returnStacks;
 				AllocateOnly<Trace>					traces;
 				AllocateOnly<Competition>			competitions;
 				AllocateOnly<AttendingCompetitions>	attendingCompetitions;
+				AllocateOnly<Switches>				switches;
 
 				collections::List<Trace*>			traces1;
 				collections::List<Trace*>			traces2;
 
 				Trace*								initialTrace = nullptr;
 				vint32_t							activeCompetitions = -1;
+				vint32_t							rootSwitchValues = -1;
 				ReturnStackSuccessors				initialReturnStackSuccessors;
 
 				void								BeginSwap();
@@ -277,7 +290,7 @@ TraceManager
 				void								AddTraceToCollection(Trace* owner, Trace* element, TraceCollection(Trace::* collection));
 
 				// Ambiguity
-				bool								AreTwoEndingInputTraceEqual(vint32_t state, vint32_t returnStack, vint32_t executedReturnStack, vint32_t acId, Trace* candidate);
+				bool								AreTwoEndingInputTraceEqual(vint32_t state, vint32_t returnStack, vint32_t executedReturnStack, vint32_t acId, vint32_t switchValues, Trace* candidate);
 				vint32_t							GetInstructionPostfix(EdgeDesc& oldEdge, EdgeDesc& newEdge);
 				void								MergeTwoEndingInputTrace(
 														Trace* trace,
@@ -302,6 +315,7 @@ TraceManager
 				// Walk
 				bool								IsQualifiedTokenForCondition(regex::RegexToken* token, StringLiteral condition);
 				bool								IsQualifiedTokenForEdgeArray(regex::RegexToken* token, EdgeArray& edgeArray);
+				vint32_t							RunEdgeConditionChecking(vint32_t currentSwitchValues, EdgeDesc& edgeDesc);
 				Trace*								WalkAlongSingleEdge(vint32_t currentTokenIndex, vint32_t input, Trace* trace, vint32_t byEdge, EdgeDesc& edgeDesc);
 				void								WalkAlongLeftrecEdges(vint32_t currentTokenIndex, regex::RegexToken* lookAhead, Trace* trace, EdgeArray& edgeArray);
 				void								WalkAlongEpsilonEdges(vint32_t currentTokenIndex, regex::RegexToken* lookAhead, Trace* trace);

@@ -36,6 +36,15 @@ TraceManager::IsQualifiedTokenForEdgeArray
 			}
 
 /***********************************************************************
+TraceManager::RunEdgeConditionChecking
+***********************************************************************/
+
+			vint32_t TraceManager::RunEdgeConditionChecking(vint32_t currentSwitchValues, EdgeDesc& edgeDesc)
+			{
+				CHECK_FAIL(L"Not Implemented!");
+			}
+
+/***********************************************************************
 TraceManager::WalkAlongSingleEdge
 ***********************************************************************/
 
@@ -53,7 +62,14 @@ TraceManager::WalkAlongSingleEdge
 				vint32_t attendingCompetitions = -1;
 				vint32_t carriedCompetitions = -1;
 				vint32_t executedReturnStack = -1;
+				vint32_t switchValues = rootSwitchValues == -1 ? -1 : RunEdgeConditionChecking(trace->switchValues, edgeDesc);
 				Trace* ambiguityTraceToMerge = nullptr;
+
+				if (rootSwitchValues != -1 && switchValues == -1)
+				{
+					// stop if condition checking failed
+					return nullptr;
+				}
 
 				// attend a competition hold by the current trace if the priority is set for this output transition
 				AttendCompetitionIfNecessary(trace, currentTokenIndex, edgeDesc, attendingCompetitions, carriedCompetitions, returnStack);
@@ -85,7 +101,7 @@ TraceManager::WalkAlongSingleEdge
 					for (vint i = 0; i < concurrentCount; i++)
 					{
 						auto candidate = backupTraces->Get(i);
-						if (AreTwoEndingInputTraceEqual(state, returnStack, executedReturnStack, attendingCompetitions, candidate))
+						if (AreTwoEndingInputTraceEqual(state, returnStack, executedReturnStack, attendingCompetitions, switchValues, candidate))
 						{
 							ambiguityTraceToMerge = candidate;
 							break;
@@ -122,6 +138,7 @@ TraceManager::WalkAlongSingleEdge
 					newTrace->state = state;
 					newTrace->returnStack = returnStack;
 					newTrace->executedReturnStack = executedReturnStack;
+					newTrace->switchValues = switchValues;
 					newTrace->byEdge = byEdge;
 					newTrace->byInput = input;
 					newTrace->currentTokenIndex = currentTokenIndex;

@@ -119,6 +119,8 @@ TraceManager
 				: executable(_executable)
 				, typeCallback(_typeCallback)
 			{
+				maxSwitchValues = 8 * sizeof(static_cast<Switches*>(nullptr)->values);
+				CHECK_ERROR(executable.switchDefaultValues.Count() <= maxSwitchValues, L"vl::glr::automaton::TraceManager::TraceManager(Executable&, const ITypeCallback*)#Too many switch defined in the parser.");
 			}
 
 			ReturnStack* TraceManager::GetReturnStack(vint32_t index)
@@ -169,6 +171,7 @@ TraceManager
 				traces.Clear();
 				competitions.Clear();
 				attendingCompetitions.Clear();
+				switches.Clear();
 
 				traces1.Clear();
 				traces2.Clear();
@@ -178,8 +181,26 @@ TraceManager
 				activeCompetitions = -1;
 				initialReturnStackSuccessors = {};
 
+				if (executable.switchDefaultValues.Count() == 0)
+				{
+					rootSwitchValues = -1;
+				}
+				else
+				{
+					rootSwitchValues = switches.Allocate();
+					auto sv = switches.Get(rootSwitchValues);
+					for (vint32_t i = 0; i < executable.switchDefaultValues.Count(); i++)
+					{
+						vint32_t row = i / 8 * sizeof(vuint32_t);
+						vint32_t column = i % 8 * sizeof(vuint32_t);
+						vuint32_t& value = sv->values[row];
+						value |= (vuint32_t)1 << column;
+					}
+				}
+
 				initialTrace = AllocateTrace();
 				initialTrace->state = startState;
+				initialTrace->switchValues = rootSwitchValues;
 				concurrentCount = 1;
 				concurrentTraces->Add(initialTrace);
 			}

@@ -11,17 +11,19 @@ namespace vl
 AreTwoTraceEqual
 ***********************************************************************/
 
-			bool TraceManager::AreTwoEndingInputTraceEqual(vint32_t state, vint32_t returnStack, vint32_t executedReturnStack, vint32_t acId, Trace* candidate)
+			bool TraceManager::AreTwoEndingInputTraceEqual(vint32_t state, vint32_t returnStack, vint32_t executedReturnStack, vint32_t acId, vint32_t switchValues, Trace* candidate)
 			{
 				// two traces equal to each other if
 				//   1) they are in the same state
 				//   2) they have the same executedReturnStack (and therefore the same returnStack)
 				//   3) they are attending same competitions
-				//   4) the candidate has an ending input
+				//   4) they have the same switchValues
+				//   5) the candidate has an ending input
 				// TODO: verify if we can do "acId == candidate->runtimeRouting.attendingCompetitions" or not
 
 				if (state != candidate->state) return false;
 				if (acId != candidate->competitionRouting.attendingCompetitions) return false;
+				if (switchValues != candidate->switchValues) return false;
 				if (candidate->byInput != Executable::EndingInput) return false;
 
 				if (executedReturnStack != candidate->executedReturnStack) return false;
@@ -205,6 +207,7 @@ MergeTwoEndingInputTrace
 					AddTraceToCollection(newTrace, trace, &Trace::predecessors);
 					newTrace->state = state;
 					newTrace->returnStack = returnStack;
+					newTrace->switchValues = ambiguityTraceToMerge->switchValues;
 					newTrace->byEdge = byEdge;
 					newTrace->byInput = input;
 					newTrace->currentTokenIndex = currentTokenIndex;
