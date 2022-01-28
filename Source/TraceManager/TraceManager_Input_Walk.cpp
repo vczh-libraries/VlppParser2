@@ -178,6 +178,7 @@ TraceManager::RunEdgeConditionChecking
 						{
 							CHECK_ERROR(temporaryConditionStackSize == 1, ERROR_MESSAGE_PREFIX L"Switch stack corrupted.");
 							bool operand = temporaryConditionStack[temporaryConditionStackSize - 1];
+							temporaryConditionStackSize--;
 							if (!operand)
 							{
 								return -1;
