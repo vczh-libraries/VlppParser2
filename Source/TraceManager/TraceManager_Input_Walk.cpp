@@ -39,9 +39,146 @@ TraceManager::IsQualifiedTokenForEdgeArray
 TraceManager::RunEdgeConditionChecking
 ***********************************************************************/
 
-			vint32_t TraceManager::RunEdgeConditionChecking(vint32_t currentSwitchValues, EdgeDesc& edgeDesc)
+			vint32_t TraceManager::PushSwitchFrame(Switches* currentSV, vuint32_t* values)
 			{
 				CHECK_FAIL(L"Not Implemented!");
+			}
+
+/***********************************************************************
+TraceManager::RunEdgeConditionChecking
+***********************************************************************/
+
+			vint32_t TraceManager::RunEdgeConditionChecking(vint32_t currentSwitchValues, EdgeDesc& edgeDesc)
+			{
+				if (edgeDesc.insSwitch.count == 0) return currentSwitchValues;
+
+				constexpr vint32_t ComponentCount = sizeof(static_cast<Switches*>(nullptr)->values) / sizeof(vuint32_t);
+				vuint32_t values[ComponentCount];
+
+				auto currentSV = switches.Get(currentSwitchValues);
+				static_assert(sizeof(values) == sizeof(currentSV->values));
+				memcpy(values, currentSV->values, sizeof(values));
+
+				bool frameToPush = false;
+
+#define ENSURE_FRAME_PUSHED																	\
+					do																		\
+					{																		\
+						if (frameToPush)													\
+						{																	\
+							currentSV = switches.Get(PushSwitchFrame(currentSV, values));	\
+							frameToPush = false;											\
+						}																	\
+					} while(false)															\
+
+#define DECODE_SWITCH_ITEM																	\
+					vint32_t row = ins.param / 8 * sizeof(vuint32_t);						\
+					vint32_t column = ins.param % 8 * sizeof(vuint32_t);					\
+					vuint32_t& value = values[row]											\
+
+#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::RunEdgeConditionChecking(vint32_t, EdgeDesc&)#"
+#define ENSURE_NEW_FRAME CHECK_ERROR(frameToPush, ERROR_MESSAGE_PREFIX L"Switch instruction corrupted.")
+
+				for (vint32_t insRef = 0; insRef < edgeDesc.insSwitch.count; insRef++)
+				{
+					auto&& ins = executable.switchInstructions[edgeDesc.insSwitch.start + insRef];
+					switch (ins.type)
+					{
+					case SwitchInsType::SwitchPushFrame:
+						// the new frame inherits from current values
+						// no need to update "values" after changing "currentSV"
+						ENSURE_FRAME_PUSHED;
+						frameToPush = true;
+						break;
+					case SwitchInsType::SwitchWriteTrue:
+						{
+							ENSURE_NEW_FRAME;
+							DECODE_SWITCH_ITEM;
+							value |= (vuint32_t)1 << column;
+						}
+						break;
+					case SwitchInsType::SwitchWriteFalse:
+						{
+							ENSURE_NEW_FRAME;
+							DECODE_SWITCH_ITEM;
+							value &= ~((vuint32_t)1 << column);
+						}
+						break;
+					case SwitchInsType::SwitchPopFrame:
+						if (frameToPush)
+						{
+							// if the new frame has not been submitted
+							// just cancel it
+							frameToPush = false;
+						}
+						else
+						{
+							currentSV = switches.Get(currentSV->previous);
+						}
+						memcpy(values, currentSV->values, sizeof(values));
+						break;
+					case SwitchInsType::ConditionRead:
+						{
+							ENSURE_FRAME_PUSHED;
+							DECODE_SWITCH_ITEM;
+							bool read = (value >> column) % 2 == 1;
+							if (temporaryConditionStackSize < temporaryConditionStack.Count())
+							{
+								temporaryConditionStack[temporaryConditionStackSize] = read;
+							}
+							else
+							{
+								temporaryConditionStack.Add(read);
+							}
+							temporaryConditionStackSize++;
+						}
+						break;
+					case SwitchInsType::ConditionNot:
+						{
+							CHECK_ERROR(temporaryConditionStackSize >= 1, ERROR_MESSAGE_PREFIX L"Switch stack corrupted.");
+							bool& operand = temporaryConditionStack[temporaryConditionStackSize - 1];
+							operand = !operand;
+						}
+						break;
+					case SwitchInsType::ConditionAnd:
+						{
+							CHECK_ERROR(temporaryConditionStackSize >= 2, ERROR_MESSAGE_PREFIX L"Switch stack corrupted.");
+							bool& left = temporaryConditionStack[temporaryConditionStackSize - 2];
+							bool right = temporaryConditionStack[temporaryConditionStackSize - 1];
+							temporaryConditionStackSize--;
+							left &= right;
+						}
+						break;
+					case SwitchInsType::ConditionOr:
+						{
+							CHECK_ERROR(temporaryConditionStackSize >= 2, ERROR_MESSAGE_PREFIX L"Switch stack corrupted.");
+							bool& left = temporaryConditionStack[temporaryConditionStackSize - 2];
+							bool right = temporaryConditionStack[temporaryConditionStackSize - 1];
+							temporaryConditionStackSize--;
+							left |= right;
+						}
+						break;
+					case SwitchInsType::ConditionTest:
+						{
+							CHECK_ERROR(temporaryConditionStackSize == 1, ERROR_MESSAGE_PREFIX L"Switch stack corrupted.");
+							bool operand = temporaryConditionStack[temporaryConditionStackSize - 1];
+							if (!operand)
+							{
+								return -1;
+							}
+						}
+						break;
+					}
+				}
+				ENSURE_FRAME_PUSHED;
+
+				CHECK_ERROR(temporaryConditionStackSize == 0, ERROR_MESSAGE_PREFIX L"Switch stack corrupted.");
+				return currentSV->allocatedIndex;
+
+#undef ERROR_MESSAGE_PREFIX
+#undef ENSURE_NEW_FRAME
+#undef DECODE_SWITCH_ITEM
+#undef ENSURE_FRAME_PUSHED
 			}
 
 /***********************************************************************

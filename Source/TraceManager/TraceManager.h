@@ -284,6 +284,9 @@ TraceManager
 				vint32_t							rootSwitchValues = -1;
 				ReturnStackSuccessors				initialReturnStackSuccessors;
 
+				collections::List<bool>				temporaryConditionStack;
+				vint32_t							temporaryConditionStackSize = 0;
+
 				void								BeginSwap();
 				void								AddTrace(Trace* trace);
 				void								EndSwap();
@@ -315,6 +318,7 @@ TraceManager
 				// Walk
 				bool								IsQualifiedTokenForCondition(regex::RegexToken* token, StringLiteral condition);
 				bool								IsQualifiedTokenForEdgeArray(regex::RegexToken* token, EdgeArray& edgeArray);
+				vint32_t							PushSwitchFrame(Switches* currentSV, vuint32_t* values);
 				vint32_t							RunEdgeConditionChecking(vint32_t currentSwitchValues, EdgeDesc& edgeDesc);
 				Trace*								WalkAlongSingleEdge(vint32_t currentTokenIndex, vint32_t input, Trace* trace, vint32_t byEdge, EdgeDesc& edgeDesc);
 				void								WalkAlongLeftrecEdges(vint32_t currentTokenIndex, regex::RegexToken* lookAhead, Trace* trace, EdgeArray& edgeArray);

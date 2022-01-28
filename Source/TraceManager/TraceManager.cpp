@@ -191,12 +191,18 @@ TraceManager
 					auto sv = switches.Get(rootSwitchValues);
 					for (vint32_t i = 0; i < executable.switchDefaultValues.Count(); i++)
 					{
-						vint32_t row = i / 8 * sizeof(vuint32_t);
-						vint32_t column = i % 8 * sizeof(vuint32_t);
-						vuint32_t& value = sv->values[row];
-						value |= (vuint32_t)1 << column;
+						if (executable.switchDefaultValues[i])
+						{
+							vint32_t row = i / 8 * sizeof(vuint32_t);
+							vint32_t column = i % 8 * sizeof(vuint32_t);
+							vuint32_t& value = sv->values[row];
+							value |= (vuint32_t)1 << column;
+						}
 					}
 				}
+
+				temporaryConditionStack.Clear();
+				temporaryConditionStackSize = 0;
 
 				initialTrace = AllocateTrace();
 				initialTrace->state = startState;
