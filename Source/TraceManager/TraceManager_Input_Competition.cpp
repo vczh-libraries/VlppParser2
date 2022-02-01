@@ -67,25 +67,46 @@ AttendCompetition
 			}
 
 /***********************************************************************
-AttendCompetitionIfNecessary
+GetCurrentSuccessorInReturnStack
+***********************************************************************/
+
+			ReturnStackSuccessors* TraceManager::GetCurrentSuccessorInReturnStack(vint32_t base, vint32_t currentTokenIndex)
+			{
+				auto& cache = base == -1 ? initialReturnStackCache : GetReturnStack(base)->cache;
+				if (cache.successors.tokenIndex == currentTokenIndex)
+				{
+					return &cache.successors;
+				}
+				if (cache.lastSuccessors.tokenIndex == currentTokenIndex)
+				{
+					return &cache.lastSuccessors;
+				}
+
+				CHECK_ERROR(currentTokenIndex > cache.successors.tokenIndex, L"vl::glr::automaton::TraceManager::GetCurrentSuccessorInReturnStack(vint32_t, vint32_t)#ReturnStackSuccessors::tokenIndex corrupted.");
+				if (cache.successors.tokenIndex == -1 && currentTokenIndex - cache.tokenIndex <= 1)
+				{
+					cache.lastSuccessors = cache.successors;
+					cache.successors = {};
+					cache.successors.tokenIndex = currentTokenIndex;
+				}
+				return &cache.successors;
+			}
+
+/***********************************************************************
+PushReturnStack
 ***********************************************************************/
 
 			ReturnStack* TraceManager::PushReturnStack(vint32_t base, vint32_t returnIndex, vint32_t currentTokenIndex)
 			{
-				auto siblings = base == -1 ? &initialReturnStackSuccessors : &GetReturnStack(base)->successors;
+				auto siblings = GetCurrentSuccessorInReturnStack(base, currentTokenIndex);
 
-				if (siblings->successorTokenIndex == -1 && currentTokenIndex - siblings->createdTokenIndex <= 1)
-				{
-					siblings->successorTokenIndex = currentTokenIndex;
-				}
-
-				if (siblings->successorTokenIndex == currentTokenIndex)
+				if (siblings->tokenIndex == currentTokenIndex)
 				{
 					vint32_t successorId = siblings->first;
 					while (successorId != -1)
 					{
 						auto successor = GetReturnStack(successorId);
-						successorId = successor->successors.next;
+						successorId = successor->cache.next;
 
 						if (successor->returnIndex == returnIndex)
 						{
@@ -97,9 +118,9 @@ AttendCompetitionIfNecessary
 				auto returnStack = AllocateReturnStack();
 				returnStack->previous = base;
 				returnStack->returnIndex = returnIndex;
-				returnStack->successors.createdTokenIndex = currentTokenIndex;
+				returnStack->cache.tokenIndex = currentTokenIndex;
 
-				if (siblings->successorTokenIndex == currentTokenIndex)
+				if (siblings->tokenIndex == currentTokenIndex)
 				{
 					if (siblings->first == -1)
 					{
@@ -108,8 +129,8 @@ AttendCompetitionIfNecessary
 					}
 					else
 					{
-						GetReturnStack(siblings->last)->successors.next = returnStack->allocatedIndex;
-						returnStack->successors.prev = siblings->last;
+						GetReturnStack(siblings->last)->cache.next = returnStack->allocatedIndex;
+						returnStack->cache.prev = siblings->last;
 						siblings->last = returnStack->allocatedIndex;
 					}
 				}

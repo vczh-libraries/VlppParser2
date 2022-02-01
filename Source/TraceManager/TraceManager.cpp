@@ -184,7 +184,7 @@ TraceManager
 				backupTraces = &traces2;
 
 				activeCompetitions = -1;
-				initialReturnStackSuccessors = {};
+				initialReturnStackCache = {};
 
 				if (executable.switchDefaultValues.Count() == 0)
 				{
