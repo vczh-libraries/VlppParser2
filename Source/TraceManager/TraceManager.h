@@ -96,7 +96,8 @@ TraceManager (Data Structures)
 			{
 				vint32_t				allocatedIndex = -1;		// id of this ReturnStack
 				vint32_t				previous = -1;				// id of the previous ReturnStack
-				vint32_t				returnIndex = -1;			// index of 
+				vint32_t				returnIndex = -1;			// index of the ReturnDesc
+				vint32_t				fromTrace = -1;				// id of the Trace which has a transition containing this ReturnStack
 				ReturnStackCache		cache;
 			};
 
@@ -315,7 +316,7 @@ TraceManager
 
 				// ReturnStack
 				ReturnStackSuccessors*				GetCurrentSuccessorInReturnStack(vint32_t base, vint32_t currentTokenIndex);
-				ReturnStack*						PushReturnStack(vint32_t base, vint32_t returnIndex, vint32_t currentTokenIndex);
+				ReturnStack*						PushReturnStack(vint32_t base, vint32_t returnIndex, vint32_t fromTrace, vint32_t currentTokenIndex);
 
 				// Walk
 				bool								IsQualifiedTokenForCondition(regex::RegexToken* token, StringLiteral condition);

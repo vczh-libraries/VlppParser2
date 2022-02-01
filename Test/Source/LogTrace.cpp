@@ -349,7 +349,7 @@ void RenderTrace(
 			while (true)
 			{
 				auto&& returnDesc = executable.returns[returnStack->returnIndex];
-				writer.WriteLine(L"  [" + itow(returnStack->allocatedIndex) + L"]: " + ruleName((vint32_t)returnDesc.consumedRule) + L" -> " + stateLabel((vint32_t)returnDesc.returnState));
+				writer.WriteLine(L"  [" + itow(returnStack->allocatedIndex) + L"][" + itow(returnStack->fromTrace) + L"]: " + ruleName((vint32_t)returnDesc.consumedRule) + L" -> " + stateLabel((vint32_t)returnDesc.returnState));
 				if (returnStack->previous == -1) break;
 				returnStack = tm.GetReturnStack(returnStack->previous);
 			}
