@@ -83,12 +83,9 @@ GetCurrentSuccessorInReturnStack
 				}
 
 				CHECK_ERROR(currentTokenIndex > cache.successors.tokenIndex, L"vl::glr::automaton::TraceManager::GetCurrentSuccessorInReturnStack(vint32_t, vint32_t)#ReturnStackSuccessors::tokenIndex corrupted.");
-				if (cache.successors.tokenIndex == -1 && currentTokenIndex - cache.tokenIndex <= 1)
-				{
-					cache.lastSuccessors = cache.successors;
-					cache.successors = {};
-					cache.successors.tokenIndex = currentTokenIndex;
-				}
+				cache.lastSuccessors = cache.successors;
+				cache.successors = {};
+				cache.successors.tokenIndex = currentTokenIndex;
 				return &cache.successors;
 			}
 
@@ -100,7 +97,6 @@ PushReturnStack
 			{
 				auto siblings = GetCurrentSuccessorInReturnStack(base, currentTokenIndex);
 
-				if (siblings->tokenIndex == currentTokenIndex)
 				{
 					vint32_t successorId = siblings->first;
 					while (successorId != -1)
@@ -120,7 +116,6 @@ PushReturnStack
 				returnStack->returnIndex = returnIndex;
 				returnStack->cache.tokenIndex = currentTokenIndex;
 
-				if (siblings->tokenIndex == currentTokenIndex)
 				{
 					if (siblings->first == -1)
 					{
