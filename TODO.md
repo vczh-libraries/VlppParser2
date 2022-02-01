@@ -17,7 +17,6 @@
     - Merge conditions in these epsilon transitions properly.
 - `JsonEscapeString` `JsonUnescapeString` handle surrogate pairs correctly.
 - Review all comments.
-- In `IfElseAmbiguity`, it seems the ambiguity cannot be correctly resolved if the `if [else]` clause is expanded into two separate clauses.
 
 ## Experiments
 
