@@ -70,8 +70,8 @@ WriteSyntaxHeaderFile
 					writer.WriteString(prefix+L"\t: public vl::glr::ParserBase<");
 					writer.WriteString(manager.Global().name + L"Tokens, ");
 					writer.WriteString(manager.name + L"States, ");
-					writer.WriteString(manager.Global().name + L"AstInsReceiver>");
-					writer.WriteLine(prefix + L"\t, protected vl::glr::automaton::TraceManager::ITypeCallback");
+					writer.WriteLine(manager.Global().name + L"AstInsReceiver>");
+					writer.WriteLine(prefix + L"\t, protected vl::glr::automaton::IExecutor::ITypeCallback");
 					writer.WriteLine(prefix + L"{");
 					writer.WriteLine(prefix + L"protected:");
 					writer.WriteLine(prefix + L"\tvl::vint32_t FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2) const override;");

@@ -261,15 +261,8 @@ TraceManager (Data Structures)
 TraceManager
 ***********************************************************************/
 
-			class TraceManager : public Object
+			class TraceManager : public Object, public virtual IExecutor
 			{
-			public:
-				class ITypeCallback : public virtual Interface
-				{
-				public:
-					virtual vint32_t				FindCommonBaseClass(vint32_t class1, vint32_t class2) const= 0;
-				};
-
 			protected:
 				Executable&							executable;
 				const ITypeCallback*				typeCallback = nullptr;
@@ -316,11 +309,13 @@ TraceManager
 
 				// Competition
 				void								AttendCompetition(Trace* trace, vint32_t& newAttendingCompetitions, vint32_t& newCarriedCompetitions, vint32_t returnStack, vint32_t ruleId, vint32_t clauseId, bool forHighPriority);
-				ReturnStackSuccessors*				GetCurrentSuccessorInReturnStack(vint32_t base, vint32_t currentTokenIndex);
-				ReturnStack*						PushReturnStack(vint32_t base, vint32_t returnIndex, vint32_t currentTokenIndex);
 				void								AttendCompetitionIfNecessary(Trace* trace, vint32_t currentTokenIndex, EdgeDesc& edgeDesc, vint32_t& newAttendingCompetitions, vint32_t& newCarriedCompetitions, vint32_t& newReturnStack);
 				void								CheckAttendingCompetitionsOnEndingEdge(Trace* trace, EdgeDesc& edgeDesc, vint32_t acId, vint32_t returnStack);
 				void								CheckBackupTracesBeforeSwapping(vint32_t currentTokenIndex);
+
+				// ReturnStack
+				ReturnStackSuccessors*				GetCurrentSuccessorInReturnStack(vint32_t base, vint32_t currentTokenIndex);
+				ReturnStack*						PushReturnStack(vint32_t base, vint32_t returnIndex, vint32_t currentTokenIndex);
 
 				// Walk
 				bool								IsQualifiedTokenForCondition(regex::RegexToken* token, StringLiteral condition);
@@ -357,7 +352,7 @@ TraceManager
 				void								FillAmbiguityInfoForPredecessorTraces(Trace* trace);
 				void								CreateLastMergingTrace(Trace* rootTraceCandidate);
 			public:
-				TraceManager(Executable& _executable, const ITypeCallback* _typeCallback = nullptr);
+				TraceManager(Executable& _executable, const ITypeCallback* _typeCallback);
 
 				vint32_t							concurrentCount = 0;
 				collections::List<Trace*>*			concurrentTraces = nullptr;
@@ -373,11 +368,11 @@ TraceManager
 				AttendingCompetitions*				AllocateAttendingCompetitions();
 				Switches*							GetSwitches(vint32_t index);
 
-				void								Initialize(vint32_t startState);
-				void								Input(vint32_t currentTokenIndex, regex::RegexToken* token, regex::RegexToken* lookAhead);
-				void								EndOfInput();
-				Trace*								PrepareTraceRoute();
-				Ptr<ParsingAstBase>					ExecuteTrace(Trace* trace, IAstInsReceiver& receiver, collections::List<regex::RegexToken>& tokens);
+				void								Initialize(vint32_t startState) override;
+				bool								Input(vint32_t currentTokenIndex, regex::RegexToken* token, regex::RegexToken* lookAhead) override;
+				bool								EndOfInput() override;
+				Trace*								PrepareTraceRoute() override;
+				Ptr<ParsingAstBase>					ExecuteTrace(Trace* trace, IAstInsReceiver& receiver, collections::List<regex::RegexToken>& tokens) override;
 			};
 		}
 	}

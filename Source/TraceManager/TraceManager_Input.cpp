@@ -11,7 +11,7 @@ namespace vl
 Input
 ***********************************************************************/
 
-			void TraceManager::Input(vint32_t currentTokenIndex, regex::RegexToken* token, regex::RegexToken* lookAhead)
+			bool TraceManager::Input(vint32_t currentTokenIndex, regex::RegexToken* token, regex::RegexToken* lookAhead)
 			{
 				CHECK_ERROR(state == TraceManagerState::WaitingForInput, L"vl::glr::automaton::TraceManager::Input(vint, vint)#Wrong timing to call this function.");
 				vint32_t traceCount = concurrentCount;
@@ -43,13 +43,15 @@ Input
 				{
 					concurrentTraces->Set(traceIndex, nullptr);
 				}
+
+				return concurrentCount > 0;
 			}
 
 /***********************************************************************
 EndOfInput
 ***********************************************************************/
 
-			void TraceManager::EndOfInput()
+			bool TraceManager::EndOfInput()
 			{
 				CHECK_ERROR(state == TraceManagerState::WaitingForInput, L"vl::glr::automaton::TraceManager::EndOfInput()#Wrong timing to call this function.");
 				state = TraceManagerState::Finished;
@@ -72,6 +74,7 @@ EndOfInput
 				}
 
 				EndSwap();
+				return concurrentCount > 0;
 			}
 		}
 	}

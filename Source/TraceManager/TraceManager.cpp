@@ -215,6 +215,15 @@ TraceManager
 				concurrentCount = 1;
 				concurrentTraces->Add(initialTrace);
 			}
+
+/***********************************************************************
+CreateExecutor
+***********************************************************************/
+
+			Ptr<IExecutor> CreateExecutor(Executable& executable, const IExecutor::ITypeCallback* typeCallback)
+			{
+				return new TraceManager(executable, typeCallback);
+			}
 		}
 	}
 }

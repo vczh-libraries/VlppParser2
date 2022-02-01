@@ -56,7 +56,7 @@ namespace TestSyntax_TestObjects
 		List<RegexToken> tokens;
 		lexer.Parse(input).ReadToEnd(tokens, CalculatorTokenDeleter);
 
-		TraceManager tm(executable);
+		TraceManager tm(executable, nullptr);
 		tm.Initialize(executable.ruleStartStates[metadata.ruleNames.IndexOf(L"Module")]);
 		for (vint32_t i = 0; i < tokens.Count(); i++)
 		{

@@ -6,7 +6,7 @@ Licensed under https://github.com/vczh-libraries/License
 #ifndef VCZH_PARSER2_SYNTAXBASE
 #define VCZH_PARSER2_SYNTAXBASE
 
-#include "TraceManager/TraceManager.h"
+#include "Executable.h"
 
 namespace vl
 {
@@ -28,7 +28,7 @@ ParserBase<TTokens, TStates, TReceiver, TStateTypes>
 		{
 			collections::List<regex::RegexToken>&			tokens;
 			automaton::Executable&							executable;
-			automaton::TraceManager&						traceManager;
+			automaton::IExecutor*							executor;
 			automaton::Trace*								rootTrace;
 		};
 
@@ -40,13 +40,13 @@ ParserBase<TTokens, TStates, TReceiver, TStateTypes>
 			regex::RegexToken&								token;
 			collections::List<regex::RegexToken>&			tokens;
 			automaton::Executable&							executable;
-			automaton::TraceManager&						traceManager;
+			automaton::IExecutor*							executor;
 			Ptr<ParsingAstBase>								ast;
 
 			static ErrorArgs								UnrecognizedToken	(const regex::RegexToken& token);
-			static ErrorArgs								InvalidToken		(regex::RegexToken& token, collections::List<regex::RegexToken>& tokens, automaton::Executable& executable, automaton::TraceManager& traceManager);
-			static ErrorArgs								InputIncomplete		(vint codeIndex, collections::List<regex::RegexToken>& tokens, automaton::Executable& executable, automaton::TraceManager& traceManager);
-			static ErrorArgs								UnexpectedAstType	(collections::List<regex::RegexToken>& tokens, automaton::Executable& executable, automaton::TraceManager& traceManager, Ptr<ParsingAstBase> ast);
+			static ErrorArgs								InvalidToken		(regex::RegexToken& token, collections::List<regex::RegexToken>& tokens, automaton::Executable& executable, automaton::IExecutor* executor);
+			static ErrorArgs								InputIncomplete		(vint codeIndex, collections::List<regex::RegexToken>& tokens, automaton::Executable& executable, automaton::IExecutor* executor);
+			static ErrorArgs								UnexpectedAstType	(collections::List<regex::RegexToken>& tokens, automaton::Executable& executable, automaton::IExecutor* executor, Ptr<ParsingAstBase> ast);
 
 			ParsingError									ToParsingError();
 		};
@@ -141,7 +141,7 @@ ParserBase<TTokens, TStates, TReceiver, TStateTypes>
 			}
 
 		protected:
-			Ptr<ParsingAstBase> ParseInternal(TokenList& tokens, vint32_t state, automaton::TraceManager& tm, const automaton::TraceManager::ITypeCallback* typeCallback, vint codeIndex) const
+			Ptr<ParsingAstBase> ParseInternal(TokenList& tokens, vint32_t state, automaton::IExecutor* executor, const automaton::IExecutor::ITypeCallback* typeCallback, vint codeIndex) const
 			{
 #define ERROR_MESSAGE_PREFIX L"vl::glr::ParserBase<...>::ParseInternal(List<RegexToken>&, vint32_t TraceManager::ITypeCallback*)#"
 				if (codeIndex == -1 && tokens.Count() > 0)
@@ -149,54 +149,52 @@ ParserBase<TTokens, TStates, TReceiver, TStateTypes>
 					codeIndex = tokens[0].codeIndex;
 				}
 
-				tm.Initialize(state);
+				executor->Initialize(state);
 				for (vint32_t i = 0; i < tokens.Count(); i++)
 				{
 					auto token = &tokens[i];
 					auto lookAhead = i == tokens.Count() - 1 ? nullptr : &tokens[i + 1];
-					tm.Input(i, token, lookAhead);
 
-					if (tm.concurrentCount == 0)
+					if (!executor->Input(i, token, lookAhead))
 					{
-						auto args = ErrorArgs::InvalidToken(*token, tokens, *executable.Obj(), tm);
+						auto args = ErrorArgs::InvalidToken(*token, tokens, *executable.Obj(), executor);
 						OnError(args);
 						if (args.throwError) CHECK_FAIL(ERROR_MESSAGE_PREFIX L"Error happens during parsing.");
 						return nullptr;
 					}
 				}
 
-				tm.EndOfInput();
-				if (tm.concurrentCount == 0)
+				if (!executor->EndOfInput())
 				{
-					auto args = ErrorArgs::InputIncomplete(codeIndex, tokens, *executable.Obj(), tm);
+					auto args = ErrorArgs::InputIncomplete(codeIndex, tokens, *executable.Obj(), executor);
 					OnError(args);
 					if (args.throwError) CHECK_FAIL(ERROR_MESSAGE_PREFIX L"Input is incomplete.");
 					return nullptr;
 				}
 
-				auto rootTrace = tm.PrepareTraceRoute();
+				auto rootTrace = executor->PrepareTraceRoute();
 				{
-					EndOfInputArgs args = { tokens, *executable.Obj(), tm, rootTrace };
+					EndOfInputArgs args = { tokens, *executable.Obj(), executor, rootTrace };
 					OnEndOfInput(args);
 				}
 
 				TReceiver receiver;
-				return tm.ExecuteTrace(rootTrace, receiver, tokens);
+				return executor->ExecuteTrace(rootTrace, receiver, tokens);
 
 #undef ERROR_MESSAGE_PREFIX
 			}
 
 			template<typename TAst, TStates State>
-			Ptr<TAst> ParseWithTokens(TokenList& tokens, const automaton::TraceManager::ITypeCallback* typeCallback, vint codeIndex) const
+			Ptr<TAst> ParseWithTokens(TokenList& tokens, const automaton::IExecutor::ITypeCallback* typeCallback, vint codeIndex) const
 			{
 #define ERROR_MESSAGE_PREFIX L"vl::glr::ParserBase<...>::Parse<TAst, TStates>(List<RegexToken>& TraceManager::ITypeCallback*)#"
-				automaton::TraceManager tm(*executable.Obj(), typeCallback);
-				auto ast = ParseInternal(tokens, (vint32_t)State, tm, typeCallback, codeIndex);
+				auto executor = automaton::CreateExecutor(*executable.Obj(), typeCallback);
+				auto ast = ParseInternal(tokens, (vint32_t)State, executor.Obj(), typeCallback, codeIndex);
 				auto typedAst = ast.template Cast<TAst>();
 
 				if (ast && !typedAst)
 				{
-					auto args = ErrorArgs::UnexpectedAstType(tokens, *executable.Obj(), tm, ast);
+					auto args = ErrorArgs::UnexpectedAstType(tokens, *executable.Obj(), executor.Obj(), ast);
 					OnError(args);
 					if (args.throwError) CHECK_FAIL(ERROR_MESSAGE_PREFIX L"Unexpected type of the created AST.");
 				}
@@ -205,7 +203,7 @@ ParserBase<TTokens, TStates, TReceiver, TStateTypes>
 			}
 
 			template<typename TAst, TStates State>
-			Ptr<TAst> ParseWithString(const WString& input, const automaton::TraceManager::ITypeCallback* typeCallback, vint codeIndex) const
+			Ptr<TAst> ParseWithString(const WString& input, const automaton::IExecutor::ITypeCallback* typeCallback, vint codeIndex) const
 			{
 				TokenList tokens;
 				Tokenize(input, tokens, codeIndex);

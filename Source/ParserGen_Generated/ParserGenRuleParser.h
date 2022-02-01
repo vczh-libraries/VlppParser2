@@ -44,7 +44,8 @@ namespace vl
 			extern void ParserGenRuleParserData(vl::stream::IStream& outputStream);
 
 			class RuleParser
-				: public vl::glr::ParserBase<ParserGenTokens, RuleParserStates, ParserGenAstInsReceiver>				, protected vl::glr::automaton::TraceManager::ITypeCallback
+				: public vl::glr::ParserBase<ParserGenTokens, RuleParserStates, ParserGenAstInsReceiver>
+				, protected vl::glr::automaton::IExecutor::ITypeCallback
 			{
 			protected:
 				vl::vint32_t FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2) const override;

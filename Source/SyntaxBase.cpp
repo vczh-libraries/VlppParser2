@@ -17,12 +17,12 @@ ErrorArgs
 				const_cast<regex::RegexToken&>(token),
 				*static_cast<collections::List<regex::RegexToken>*>(nullptr),
 				*static_cast<automaton::Executable*>(nullptr),
-				*static_cast<automaton::TraceManager*>(nullptr),
+				nullptr,
 				nullptr
 			};
 		}
 
-		ErrorArgs ErrorArgs::InvalidToken(regex::RegexToken& token, collections::List<regex::RegexToken>& tokens, automaton::Executable& executable, automaton::TraceManager& traceManager)
+		ErrorArgs ErrorArgs::InvalidToken(regex::RegexToken& token, collections::List<regex::RegexToken>& tokens, automaton::Executable& executable, automaton::IExecutor* executor)
 		{
 			return {
 				true,
@@ -31,12 +31,12 @@ ErrorArgs
 				token,
 				tokens,
 				executable,
-				traceManager,
+				executor,
 				nullptr
 			};
 		}
 
-		ErrorArgs ErrorArgs::InputIncomplete(vint codeIndex, collections::List<regex::RegexToken>& tokens, automaton::Executable& executable, automaton::TraceManager& traceManager)
+		ErrorArgs ErrorArgs::InputIncomplete(vint codeIndex, collections::List<regex::RegexToken>& tokens, automaton::Executable& executable, automaton::IExecutor* executor)
 		{
 			return {
 				true,
@@ -45,12 +45,12 @@ ErrorArgs
 				*static_cast<regex::RegexToken*>(nullptr),
 				tokens,
 				executable,
-				traceManager,
+				executor,
 				nullptr
 			};
 		}
 
-		ErrorArgs ErrorArgs::UnexpectedAstType(collections::List<regex::RegexToken>& tokens, automaton::Executable& executable, automaton::TraceManager& traceManager, Ptr<ParsingAstBase> ast)
+		ErrorArgs ErrorArgs::UnexpectedAstType(collections::List<regex::RegexToken>& tokens, automaton::Executable& executable, automaton::IExecutor* executor, Ptr<ParsingAstBase> ast)
 		{
 			return {
 				true,
@@ -59,7 +59,7 @@ ErrorArgs
 				*static_cast<regex::RegexToken*>(nullptr),
 				tokens,
 				executable,
-				traceManager,
+				executor,
 				ast
 			};
 		}

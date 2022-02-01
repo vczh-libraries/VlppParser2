@@ -27,7 +27,8 @@ namespace ifelsepriority
 	extern void IfElsePriorityModuleParserData(vl::stream::IStream& outputStream);
 
 	class ModuleParser
-		: public vl::glr::ParserBase<IfElsePriorityTokens, ModuleParserStates, IfElsePriorityAstInsReceiver>		, protected vl::glr::automaton::TraceManager::ITypeCallback
+		: public vl::glr::ParserBase<IfElsePriorityTokens, ModuleParserStates, IfElsePriorityAstInsReceiver>
+		, protected vl::glr::automaton::IExecutor::ITypeCallback
 	{
 	protected:
 		vl::vint32_t FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2) const override;

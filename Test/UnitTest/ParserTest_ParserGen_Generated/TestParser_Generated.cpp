@@ -48,11 +48,12 @@ namespace TestParser_Generated_TestObjects
 		parser.OnEndOfInput.Add(
 			[&](EndOfInputArgs& args)
 			{
+				auto& traceManager = *dynamic_cast<TraceManager*>(args.executor);
 				LogTraceManager(
 					L"Generated-" + parserName,
 					caseName,
 					args.executable,
-					args.traceManager,
+					traceManager,
 					args.rootTrace,
 					args.tokens,
 					[=](vint32_t type) { return WString::Unmanaged(typeName((TClasses)type)); },
@@ -63,7 +64,7 @@ namespace TestParser_Generated_TestObjects
 					[=](vint32_t switchId) { return WString::Unmanaged(switchName(switchId)); }
 				);
 
-				if (args.traceManager.concurrentCount == 1)
+				if (traceManager.concurrentCount == 1)
 				{
 					LogTraceExecution(
 						L"Generated-" + parserName,
@@ -73,7 +74,7 @@ namespace TestParser_Generated_TestObjects
 						[=](vint32_t token) { return WString::Unmanaged(tokenId((TTokens)token)); },
 						[&](IAstInsReceiver& receiver)
 						{
-							args.traceManager.ExecuteTrace(args.rootTrace, receiver, args.tokens);
+							traceManager.ExecuteTrace(args.rootTrace, receiver, args.tokens);
 						});
 				}
 			});

@@ -147,6 +147,29 @@ Executable
 				collections::Array<WString>			stateLabels;
 				collections::Array<WString>			switchNames;
 			};
+/***********************************************************************
+IExecutor
+***********************************************************************/
+
+			struct Trace;
+
+			class IExecutor : public virtual Interface
+			{
+			public:
+				class ITypeCallback : public virtual Interface
+				{
+				public:
+					virtual vint32_t				FindCommonBaseClass(vint32_t class1, vint32_t class2) const = 0;
+				};
+
+				virtual void						Initialize(vint32_t startState) = 0;
+				virtual bool						Input(vint32_t currentTokenIndex, regex::RegexToken* token, regex::RegexToken* lookAhead) = 0;
+				virtual bool						EndOfInput() = 0;
+				virtual Trace*						PrepareTraceRoute() = 0;
+				virtual Ptr<ParsingAstBase>			ExecuteTrace(Trace* trace, IAstInsReceiver& receiver, collections::List<regex::RegexToken>& tokens) = 0;
+			};
+
+			extern Ptr<IExecutor>					CreateExecutor(Executable& executable, const IExecutor::ITypeCallback* typeCallback = nullptr);
 		}
 	}
 }

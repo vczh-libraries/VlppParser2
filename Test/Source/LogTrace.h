@@ -2,6 +2,7 @@
 #define VCZH_VLPPPARSER2_UNITTEST_LOGTRACE
 
 #include "../../Source/SyntaxBase.h"
+#include "../../Source/TraceManager/TraceManager.h"
 
 using namespace vl;
 using namespace vl::collections;
