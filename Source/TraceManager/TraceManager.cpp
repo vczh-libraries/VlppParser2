@@ -163,6 +163,11 @@ TraceManager
 				return attendingCompetitions.Get(attendingCompetitions.Allocate());
 			}
 
+			Switches* TraceManager::GetSwitches(vint32_t index)
+			{
+				return switches.Get(index);
+			}
+
 			void TraceManager::Initialize(vint32_t startState)
 			{
 				state = TraceManagerState::WaitingForInput;

@@ -372,6 +372,21 @@ void RenderTrace(
 			}
 		}
 
+		if (trace->switchValues != -1)
+		{
+			writer.WriteLine(L"[SWITCHES]:");
+			auto sv = tm.GetSwitches(trace->switchValues);
+			for (vint32_t i = 0; i < executable.switchDefaultValues.Count(); i++)
+			{
+				writer.WriteString(L"  " + switchName(i) + L" : ");
+				vint32_t row = i / 8 * sizeof(vuint32_t);
+				vint32_t column = i % 8 * sizeof(vuint32_t);
+				vuint32_t& value = sv->values[row];
+				bool read = (value >> column) % 2 == 1;
+				writer.WriteLine(read ? L"true" : L"false");
+			}
+		}
+
 		if (trace->predecessors.first != -1)
 		{
 			writer.WriteString(L"[PREDECESSORS " + itow(trace->predecessors.first) + L"-" + itow(trace->predecessors.last) + L"]: ");

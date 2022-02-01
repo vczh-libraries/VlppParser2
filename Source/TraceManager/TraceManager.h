@@ -364,6 +364,7 @@ TraceManager
 				Competition*						AllocateCompetition();
 				AttendingCompetitions*				GetAttendingCompetitions(vint32_t index);
 				AttendingCompetitions*				AllocateAttendingCompetitions();
+				Switches*							GetSwitches(vint32_t index);
 
 				void								Initialize(vint32_t startState);
 				void								Input(vint32_t currentTokenIndex, regex::RegexToken* token, regex::RegexToken* lookAhead);
