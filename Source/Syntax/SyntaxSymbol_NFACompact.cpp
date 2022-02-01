@@ -366,7 +366,7 @@ SyntaxSymbolManager::EliminateSingleRulePrefix
 				*/
 
 				Group<RuleSymbol*, EdgeSymbol*> prefixEdges;
-				List<EdgeSymbol*> continuationEdges;
+				List<EdgeSymbol*> continuationEdges, eliminatedEdges;
 
 				for (auto edge : startState->OutEdges())
 				{
@@ -389,23 +389,37 @@ SyntaxSymbolManager::EliminateSingleRulePrefix
 				{
 					vint prefixIndex = prefixEdges.Keys().IndexOf(continuationEdge->input.rule);
 					if (prefixIndex == -1) continue;
+
+					bool eliminated = false;
 					for (auto prefixEdge : prefixEdges.GetByIndex(prefixIndex))
 					{
+						if (continuationEdge->important != prefixEdge->important) continue;
+						if (CompareEnumerable(continuationEdge->insSwitch, prefixEdge->insSwitch) != 0) continue;
+						if (CompareEnumerable(continuationEdge->insBeforeInput, prefixEdge->insBeforeInput) != 0) continue;
+						if (CompareEnumerable(continuationEdge->insAfterInput, prefixEdge->insAfterInput) != 0) continue;
+						if (CompareEnumerable(continuationEdge->returnEdges, prefixEdge->returnEdges) != 0) continue;
+
+						eliminated = true;
 						auto state = prefixEdge->To();
 						auto endingEdge = state->OutEdges()[0];
 						auto newEdge = new EdgeSymbol(state, continuationEdge->To());
 						newEdges.Add(newEdge);
 						BuildLeftRecEdge(newEdge, endingEdge, continuationEdge);
 					}
+
+					if (eliminated)
+					{
+						eliminatedEdges.Add(continuationEdge);
+					}
 				}
 
-				for (auto continuationEdge : continuationEdges)
+				for (auto eliminatedEdge : eliminatedEdges)
 				{
-					vint prefixIndex = prefixEdges.Keys().IndexOf(continuationEdge->input.rule);
+					vint prefixIndex = prefixEdges.Keys().IndexOf(eliminatedEdge->input.rule);
 					if (prefixIndex == -1) continue;
-					continuationEdge->From()->outEdges.Remove(continuationEdge);
-					continuationEdge->To()->inEdges.Remove(continuationEdge);
-					newEdges.Remove(continuationEdge);
+					eliminatedEdge->From()->outEdges.Remove(eliminatedEdge);
+					eliminatedEdge->To()->inEdges.Remove(eliminatedEdge);
+					newEdges.Remove(eliminatedEdge);
 				}
 			}
 
