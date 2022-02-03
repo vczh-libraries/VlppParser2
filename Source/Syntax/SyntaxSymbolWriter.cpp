@@ -44,8 +44,9 @@ AutomatonBuilder (Syntax)
 				return pair;
 			}
 
-			AutomatonBuilder::StatePair AutomatonBuilder::BuildRuleSyntax(RuleSymbol* rule, vint32_t field)
+			AutomatonBuilder::StatePair AutomatonBuilder::BuildRuleSyntaxInternal(RuleSymbol* rule, vint32_t field, automaton::ReturnRuleType ruleType)
 			{
+#define ERROR_MESSAGE_PREFIX L"vl::glr::parsergen::AutomatonBuilder::BuildRuleSyntaxInternal(RuleSymbol*, vint32_t, ReturnRuleType)#"
 				StatePair pair;
 				pair.begin = CreateState();
 				pair.end = CreateState();
@@ -55,38 +56,60 @@ AutomatonBuilder (Syntax)
 					auto edge = CreateEdge(pair.begin, pair.end);
 					edge->input.type = EdgeInputType::Rule;
 					edge->input.rule = rule;
-					if (field != -1)
+					edge->input.ruleType = ruleType;
+
+					switch (ruleType)
 					{
+					case automaton::ReturnRuleType::Field:
+						CHECK_ERROR(field != -1, ERROR_MESSAGE_PREFIX L"Field must set for ReturnRuleType::Field.");
 						edge->insAfterInput.Add({ AstInsType::Field,field });
-					}
-					else if (!rule->isPartial)
-					{
+						break;
+					case automaton::ReturnRuleType::Partial:
+						CHECK_ERROR(field == -1, ERROR_MESSAGE_PREFIX L"Field must not set for ReturnRuleType::Partial.");
+						break;
+					case automaton::ReturnRuleType::Discard:
+						CHECK_ERROR(field == -1, ERROR_MESSAGE_PREFIX L"Field must not set for ReturnRuleType::Discard.");
 						edge->insAfterInput.Add({ AstInsType::DiscardValue });
+						break;
+					case automaton::ReturnRuleType::Reuse:
+						CHECK_ERROR(field == -1, ERROR_MESSAGE_PREFIX L"Field must not set for ReturnRuleType::Reuse.");
+						edge->insAfterInput.Add({ AstInsType::ReopenObject });
+						break;
 					}
 				}
 
-				clauseDisplayText += rule->Name();
+				switch (ruleType)
+				{
+				case automaton::ReturnRuleType::Reuse:
+					clauseDisplayText += L"!" + rule->Name();
+					break;
+				default:
+					clauseDisplayText += rule->Name();
+					break;
+				}
 				endPoses.Add(pair.end, clauseDisplayText.Length());
 				return pair;
+#undef ERROR_MESSAGE_PREFIX
+			}
+
+			AutomatonBuilder::StatePair AutomatonBuilder::BuildFieldRuleSyntax(RuleSymbol* rule, vint32_t field)
+			{
+				return BuildRuleSyntaxInternal(rule, field, automaton::ReturnRuleType::Field);
+			}
+
+			AutomatonBuilder::StatePair AutomatonBuilder::BuildPartialRuleSyntax(RuleSymbol* rule)
+			{
+				return BuildRuleSyntaxInternal(rule, -1, automaton::ReturnRuleType::Partial);
+			}
+
+			AutomatonBuilder::StatePair AutomatonBuilder::BuildDiscardRuleSyntax(RuleSymbol* rule)
+			{
+				return BuildRuleSyntaxInternal(rule, -1, automaton::ReturnRuleType::Discard);
 			}
 
 			AutomatonBuilder::StatePair AutomatonBuilder::BuildUseSyntax(RuleSymbol* rule)
 			{
-				StatePair pair;
-				pair.begin = CreateState();
-				pair.end = CreateState();
-				startPoses.Add(pair.begin, clauseDisplayText.Length());
-
-				{
-					auto edge = CreateEdge(pair.begin, pair.end);
-					edge->input.type = EdgeInputType::Rule;
-					edge->input.rule = rule;
-					edge->insAfterInput.Add({ AstInsType::ReopenObject });
-				}
-
-				clauseDisplayText += L"!" + rule->Name();
-				endPoses.Add(pair.end, clauseDisplayText.Length());
-				return pair;
+				return BuildRuleSyntaxInternal(rule, -1, automaton::ReturnRuleType::Reuse);
 			}
 
 			AutomatonBuilder::StatePair AutomatonBuilder::BuildLoopSyntax(const StateBuilder& loopBody, const StateBuilder& loopDelimiter, bool hasDelimiter)

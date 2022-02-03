@@ -16,11 +16,12 @@ TEST_FILE
 	parser.OnEndOfInput.Add(
 		[&](EndOfInputArgs& args)
 		{
+			auto& traceManager = *dynamic_cast<TraceManager*>(args.executor);
 			LogTraceManager(
 				L"BuiltIn-Xml",
 				L"DarkSkin_" + caseName,
 				args.executable,
-				args.traceManager,
+				traceManager,
 				args.rootTrace,
 				args.tokens,
 				[=](vint32_t type) { return WString::Unmanaged(XmlTypeName((XmlClasses)type)); },
@@ -31,7 +32,7 @@ TEST_FILE
 				[=](vint32_t switchId) { return WString::Unmanaged(ParserSwitchName(switchId)); }
 			);
 
-			if (args.traceManager.concurrentCount == 1)
+			if (traceManager.concurrentCount == 1)
 			{
 				LogTraceExecution(
 					L"BuiltIn-Xml",
@@ -41,7 +42,7 @@ TEST_FILE
 					[=](vint32_t token) { return WString::Unmanaged(XmlTokenId((XmlTokens)token)); },
 					[&](IAstInsReceiver& receiver)
 					{
-						args.traceManager.ExecuteTrace(args.rootTrace, receiver, args.tokens);
+						traceManager.ExecuteTrace(args.rootTrace, receiver, args.tokens);
 					});
 			}
 		});

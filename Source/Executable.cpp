@@ -12,6 +12,7 @@ namespace vl
 			SERIALIZE_ENUM(AstInsType)
 			SERIALIZE_ENUM(SwitchInsType)
 			SERIALIZE_ENUM(EdgePriority)
+			SERIALIZE_ENUM(ReturnRuleType)
 
 			BEGIN_SERIALIZATION(AstIns)
 				SERIALIZE(type)
@@ -48,6 +49,7 @@ namespace vl
 				SERIALIZE(consumedRule)
 				SERIALIZE(returnState)
 				SERIALIZE(priority)
+				SERIALIZE(ruleType)
 				SERIALIZE(insAfterInput)
 			END_SERIALIZATION
 

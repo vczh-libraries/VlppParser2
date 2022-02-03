@@ -51,11 +51,14 @@ AutomatonBuilder
 				}
 
 				void						PrintCondition(collections::List<automaton::SwitchIns>& insSwitch);
+				StatePair					BuildRuleSyntaxInternal(RuleSymbol* rule, vint32_t field, automaton::ReturnRuleType ruleType);
 			public:
 				AutomatonBuilder(RuleSymbol* _ruleSymbol);
 
 				StatePair					BuildTokenSyntax(vint32_t tokenId, const WString& displayText, Nullable<WString> condition, vint32_t field);
-				StatePair					BuildRuleSyntax(RuleSymbol* rule, vint32_t field);
+				StatePair					BuildFieldRuleSyntax(RuleSymbol* rule, vint32_t field);
+				StatePair					BuildPartialRuleSyntax(RuleSymbol* rule);
+				StatePair					BuildDiscardRuleSyntax(RuleSymbol* rule);
 				StatePair					BuildUseSyntax(RuleSymbol* rule);
 				StatePair					BuildLoopSyntax(const StateBuilder& loopBody, const StateBuilder& loopDelimiter, bool hasDelimiter);
 				StatePair					BuildOptionalSyntax(bool preferTake, bool preferSkip, const StateBuilder& optionalBody);
@@ -333,10 +336,11 @@ Builder
 						switch (clause.field)
 						{
 						case Rule::Partial:
+							return builder.BuildPartialRuleSyntax(clause.rule);
 						case Rule::Discard:
-							return builder.BuildRuleSyntax(clause.rule, -1);
+							return builder.BuildDiscardRuleSyntax(clause.rule);
 						default:
-							return builder.BuildRuleSyntax(clause.rule, clause.field);
+							return builder.BuildFieldRuleSyntax(clause.rule, clause.field);
 						}
 					}
 

@@ -72,7 +72,9 @@ EdgeSymbol
 				EdgeInputType				type = EdgeInputType::Epsilon;
 				vint32_t					token = -1;
 				Nullable<WString>			condition;
-				RuleSymbol*					rule = nullptr;
+
+				automaton::ReturnRuleType	ruleType = automaton::ReturnRuleType::Field;	// useful when type == Rule
+				RuleSymbol*					rule = nullptr;									// useful when type == Rule
 			};
 
 			enum class EdgeImportancy

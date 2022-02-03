@@ -34,10 +34,11 @@ GetCurrentSuccessorInReturnStack
 PushReturnStack
 ***********************************************************************/
 
-			ReturnStack* TraceManager::PushReturnStack(vint32_t base, vint32_t returnIndex, vint32_t fromTrace, vint32_t currentTokenIndex)
+			ReturnStack* TraceManager::PushReturnStack(vint32_t base, vint32_t returnIndex, vint32_t fromTrace, vint32_t currentTokenIndex, bool allowReuse)
 			{
-				auto siblings = GetCurrentSuccessorInReturnStack(base, currentTokenIndex);
+				auto siblings = allowReuse ? GetCurrentSuccessorInReturnStack(base, currentTokenIndex) : nullptr;
 
+				if (siblings)
 				{
 					vint32_t successorId = siblings->first;
 					while (successorId != -1)
@@ -58,6 +59,7 @@ PushReturnStack
 				returnStack->fromTrace = fromTrace;
 				returnStack->cache.tokenIndex = currentTokenIndex;
 
+				if (siblings)
 				{
 					if (siblings->first == -1)
 					{

@@ -316,7 +316,7 @@ TraceManager
 
 				// ReturnStack
 				ReturnStackSuccessors*				GetCurrentSuccessorInReturnStack(vint32_t base, vint32_t currentTokenIndex);
-				ReturnStack*						PushReturnStack(vint32_t base, vint32_t returnIndex, vint32_t fromTrace, vint32_t currentTokenIndex);
+				ReturnStack*						PushReturnStack(vint32_t base, vint32_t returnIndex, vint32_t fromTrace, vint32_t currentTokenIndex, bool allowReuse);
 
 				// Walk
 				bool								IsQualifiedTokenForCondition(regex::RegexToken* token, StringLiteral condition);

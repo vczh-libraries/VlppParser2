@@ -27,11 +27,12 @@ TEST_FILE
 	parser.OnEndOfInput.Add(
 		[&](EndOfInputArgs& args)
 		{
+			auto& traceManager = *dynamic_cast<TraceManager*>(args.executor);
 			LogTraceManager(
 				L"BuiltIn-Workflow",
 				indexName + L"_" + caseName,
 				args.executable,
-				args.traceManager,
+				traceManager,
 				args.rootTrace,
 				args.tokens,
 				[=](vint32_t type) { return WString::Unmanaged(WorkflowTypeName((WorkflowClasses)type)); },
@@ -42,7 +43,7 @@ TEST_FILE
 				[=](vint32_t switchId) { return WString::Unmanaged(ParserSwitchName(switchId)); }
 			);
 
-			if (args.traceManager.concurrentCount == 1)
+			if (traceManager.concurrentCount == 1)
 			{
 				LogTraceExecution(
 					L"BuiltIn-Workflow",
@@ -52,7 +53,7 @@ TEST_FILE
 					[=](vint32_t token) { return WString::Unmanaged(WorkflowTokenId((WorkflowTokens)token)); },
 					[&](IAstInsReceiver& receiver)
 					{
-						args.traceManager.ExecuteTrace(args.rootTrace, receiver, args.tokens);
+						traceManager.ExecuteTrace(args.rootTrace, receiver, args.tokens);
 					});
 			}
 		});

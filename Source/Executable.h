@@ -83,11 +83,20 @@ Executable
 				LowPriority,
 			};
 
+			enum class ReturnRuleType
+			{
+				Field,
+				Partial,
+				Discard,
+				Reuse,
+			};
+
 			struct ReturnDesc
 			{
 				vint32_t							consumedRule = -1;
 				vint32_t							returnState = -1;
 				EdgePriority						priority = EdgePriority::NoCompetition;
+				ReturnRuleType						ruleType = ReturnRuleType::Field;
 				InstructionArray					insAfterInput;
 			};
 

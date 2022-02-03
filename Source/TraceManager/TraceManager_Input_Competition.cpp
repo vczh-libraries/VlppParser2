@@ -104,7 +104,12 @@ AttendCompetitionIfNecessary
 					}
 
 					// push this ReturnDesc to the ReturnStack
-					newReturnStack = PushReturnStack(newReturnStack, returnIndex, trace->allocatedIndex, currentTokenIndex)->allocatedIndex;
+					newReturnStack = PushReturnStack(
+						newReturnStack, returnIndex,
+						trace->allocatedIndex,
+						currentTokenIndex,
+						(returnDesc.ruleType != ReturnRuleType::Reuse)
+					)->allocatedIndex;
 					edgeFromState = executable.ruleStartStates[returnDesc.consumedRule];
 				}
 

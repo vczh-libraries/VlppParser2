@@ -205,6 +205,7 @@ SyntaxSymbolManager::BuildAutomaton
 					default:;
 					}
 
+					returnDesc.ruleType = edge->input.ruleType;
 					returnDesc.insAfterInput.start = (vint32_t)astInsInOrder.Count();
 					CopyFrom(astInsInOrder, edge->insAfterInput, true);
 					returnDesc.insAfterInput.count = (vint32_t)astInsInOrder.Count() - returnDesc.insAfterInput.start;

@@ -133,7 +133,18 @@ CompileSyntaxVisitor
 							if (index != -1)
 							{
 								auto rule = context.syntaxManager.Rules().Values()[index];
-								result = automatonBuilder.BuildRuleSyntax(rule, field);
+								if (rule->isPartial)
+								{
+									result = automatonBuilder.BuildPartialRuleSyntax(rule);
+								}
+								else if (field == -1)
+								{
+									result = automatonBuilder.BuildDiscardRuleSyntax(rule);
+								}
+								else
+								{
+									result = automatonBuilder.BuildFieldRuleSyntax(rule, field);
+								}
 								return;
 							}
 						}
