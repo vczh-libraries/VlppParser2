@@ -2,15 +2,15 @@
 
 ## Features to Add
 
-- Implement a rough and quick switch feature.
-- Optimize the above switch feature.
 - Extensible tokens, for example, recognize `R"[^\s(]\(` and invoke a callback function to determine the end of the string.
   - Offer two options: using (rich regex | C++) to search for complete token.
 
 ## Issues
 
-- Fix todo in `TraceManager::AreTwoEndingInputTraceEqual`.
-- Print correct codeRange for `ParserErrorType::RuleIsIndirectlyLeftRecursive`.
+- Print correct codeRange for:
+  - `ParserErrorType::RuleIsIndirectlyLeftRecursive`
+  - `ParserErrorType::LeftRecursiveClauseInsidePushCondition`
+  - `ParserErrorType::LeftRecursiveClauseInsideTestCondition`
 - Optimize `CrossReferencedNFA` to merge prefix (two states can be merged if their `InEdges` are identical, `FromState` in `InEdges` are replaced by merged states).
   - Issue: `X ::= ([a] | [b]) c` fails because when both optional syntax fail it creates two trace routes to c and causes ambiguity.
   - Possible solution: if multiple combinations of consecutive epsilon transitions makes an epsilon transition between two states, treat them as one single epsilon transition.
@@ -35,6 +35,7 @@
 
 ## Work Items (enhancement)
 
+- Eliminate `Switches::values` size limit.
 - Switching lexical analyzer during parsing.
   - Refactor some properties in `LexerSymbolManager` into `LexerFile` with a name.
 - AST uses classes from another AST file in dependency as fields.

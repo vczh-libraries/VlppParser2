@@ -19,7 +19,6 @@ AreTwoTraceEqual
 				//   3) they are attending same competitions
 				//   4) they have the same switchValues
 				//   5) the candidate has an ending input
-				// TODO: verify if we can do "acId == candidate->runtimeRouting.attendingCompetitions" or not
 
 				if (state != candidate->state) return false;
 				if (acId != candidate->competitionRouting.attendingCompetitions) return false;
@@ -108,6 +107,24 @@ MergeTwoEndingInputTrace
 				vint32_t executedReturnStack)
 			{
 #define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::MergeTwoEndingInputTrace(...)#"
+				// goal of this function is to create a structure
+				// ? -----+-> AMBIGUITY
+				//        |
+				// TRACE -+
+
+				// but AMBIGUITY or the virtual new trace may not begin with EndObject
+				// the structure will have to be twisted so that
+				// 1) AMBIGUITY begins with EndObject
+				// 2) instructions before EndObject in AMBIGUITY is stored in the FORMER trace
+				// 3) instructions before EndObject in the virtual new trace is stored in the NEW trace
+				// which results in such structure
+				// ? -> FORMER --+-> AMBIGUITY
+				//               |
+				// TRACE -> NEW -+
+
+				// FORMER and NEW are only created when corresponding instruction prefix exist
+				// this function handle every possible case to keep the structure small and correct
+
 				// if ambiguity resolving happens
 				// find the instruction postfix
 				// the instruction prefix ends at EndObject of a trace
@@ -140,7 +157,9 @@ MergeTwoEndingInputTrace
 
 				if (ambiguityTraceToMerge->ambiguityMergeInsPostfix == -1 && needCut)
 				{
-					// append an extra trace after predecessors of ambiguityTraceToMerge
+					// create an extra trace between ambiguityTraceToMerge and its predecessors
+					// ? -> FORMER -> AMBIGUITY
+
 					Trace* firstFormer = nullptr;
 					Trace* lastFormer = nullptr;
 					vint32_t predecessorId = ambiguityTraceToMerge->predecessors.first;
@@ -202,7 +221,12 @@ MergeTwoEndingInputTrace
 
 				if (needCut)
 				{
-					// otherwise, create a new trace with the instruction prefix
+					// if EndObject is not the first instruction of the new trace
+					// create a new trace with the instruction prefix
+					// (? | FORMER) -+-> AMBIGUITY
+					//               |
+					// TRACE -> NEW -+
+
 					auto newTrace = AllocateTrace();
 					AddTraceToCollection(newTrace, trace, &Trace::predecessors);
 					newTrace->state = state;
@@ -212,11 +236,11 @@ MergeTwoEndingInputTrace
 					newTrace->byInput = input;
 					newTrace->currentTokenIndex = currentTokenIndex;
 
-					// executedReturnStack == ambiguityTraceToMerge->executedReturnStack is ensured
-					// so no need to assign executedReturnStack to newTrace
-					// acid == ambiguityTraceToMerge->runtimeRouting.attendingCompetitions is ensure
-					//   this is affected by TODO: in TraceManager::AreTwoEndingInputTraceEqual
-					// and ambiguityTraceToMerge is supposed to inherit this value
+					// 1) executedReturnStack == ambiguityTraceToMerge->executedReturnStack is ensured
+					//    in order to prevent executedReturnStack from being executed twice
+					//    no need to assign executedReturnStack to newTrace which cause
+					// 2) acid == ambiguityTraceToMerge->runtimeRouting.attendingCompetitions is ensured
+					//    newTrace is supposed to inherit this value from ambiguityTraceToMerge
 					newTrace->competitionRouting.attendingCompetitions = attendingCompetitions;
 					newTrace->competitionRouting.carriedCompetitions = carriedCompetitions;
 
@@ -229,8 +253,11 @@ MergeTwoEndingInputTrace
 				}
 				else
 				{
-					// if EndObject is the first instruction of the new trace
-					// then no need to create the new trace
+					// otherwise, no need to create the new trace
+					// (? | FORMER) -+-> AMBIGUITY
+					//               |
+					// TRACE --------+
+
 					AddTraceToCollection(ambiguityTraceToMerge, trace, &Trace::predecessors);
 				}
 #undef ERROR_MESSAGE_PREFIX
