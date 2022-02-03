@@ -393,11 +393,11 @@ SyntaxSymbolManager::EliminateSingleRulePrefix
 					bool eliminated = false;
 					for (auto prefixEdge : prefixEdges.GetByIndex(prefixIndex))
 					{
+						// important and insSwitch happen before shifting into the rule
+						// insBeforeInput, insAfterInput and returnEdges happens after reducing from the rule
+						// so we only need to compare the "before"
 						if (continuationEdge->important != prefixEdge->important) continue;
 						if (CompareEnumerable(continuationEdge->insSwitch, prefixEdge->insSwitch) != 0) continue;
-						if (CompareEnumerable(continuationEdge->insBeforeInput, prefixEdge->insBeforeInput) != 0) continue;
-						if (CompareEnumerable(continuationEdge->insAfterInput, prefixEdge->insAfterInput) != 0) continue;
-						if (CompareEnumerable(continuationEdge->returnEdges, prefixEdge->returnEdges) != 0) continue;
 
 						eliminated = true;
 						auto state = prefixEdge->To();
