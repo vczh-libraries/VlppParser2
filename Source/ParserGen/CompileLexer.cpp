@@ -39,7 +39,7 @@ CompileLexer
 
 			void CompileLexer(LexerSymbolManager& lexerManager, const WString& input)
 			{
-				Regex regexToken(L"^(/s*|(<discard>discard/s)?/s*(<name>[a-zA-Z_]/w*):(<regex>/.+))$");
+				Regex regexToken(L"^(/s*|(<discard>discard/s)?/s*(<name>[a-zA-Z_]/w*)/s*:(<regex>/.+))$");
 				vint _discard = regexToken.CaptureNames().IndexOf(L"discard");
 				vint _name = regexToken.CaptureNames().IndexOf(L"name");
 				vint _regex = regexToken.CaptureNames().IndexOf(L"regex");

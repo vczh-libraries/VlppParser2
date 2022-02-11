@@ -1,1 +1,166 @@
-// C++ Token Definitions
+//////////////////////////////////////////////////////////////////
+// KEYWORDS
+//////////////////////////////////////////////////////////////////
+
+ALIGNAS                 :alignas
+__PTR32                 :__ptr32
+__PTR64                 :__ptr64
+OPERATOR                :operator
+NEW                     :new
+DELETE                  :delete
+CONSTEXPR               :constexpr
+CONST                   :const
+VOLATILE                :volatile
+OVERRIDE                :override
+NOEXCEPT                :noexcept
+THROW                   :throw
+DECLTYPE                :decltype
+__CDECL                 :__cdecl
+__CLRCALL               :__clrcall
+__STDCALL               :__stdcall
+__FASTCALL              :__fastcall
+__THISCALL              :__thiscall
+__VECTORCALL            :__vectorcall
+TYPE_AUTO               :auto
+TYPE_VOID               :void
+TYPE_BOOL               :bool
+TYPE_CHAR               :char
+TYPE_WCHAR_T            :wchar_t
+TYPE_CHAR16_T           :char16_t
+TYPE_CHAR32_T           :char32_t
+TYPE_SHORT              :short
+TYPE_INT                :int
+TYPE___INT8             :__int8
+TYPE___INT16            :__int16
+TYPE___INT32            :__int32
+TYPE___INT64            :__int64
+TYPE_LONG               :long
+TYPE_FLOAT              :float
+TYPE_DOUBLE             :double
+SIGNED                  :signed
+UNSIGNED                :unsigned
+STATIC                  :static
+VIRTUAL                 :virtual
+EXPLICIT                :explicit
+INLINE                  :inline
+__INLINE                :__inline
+__FORCEINLINE           :__forceinline
+REGISTER                :register
+MUTABLE                 :mutable
+THREAD_LOCAL            :thread_local
+DECL_ABSTRACT           :abstract
+DECL_FINAL              :final
+DECL_CLASS              :class
+DECL_STRUCT             :struct
+DECL_ENUM               :enum
+DECL_UNION              :union
+DECL_NAMESPACE          :namespace
+DECL_TYPEDEF            :typedef
+DECL_USING              :using
+DECL_FRIEND             :friend
+DECL_EXTERN             :extern
+DECL_TEMPLATE           :template
+STAT_ASM                :__asm
+STAT_RETURN             :return
+STAT_BREAK              :break
+STAT_CONTINUE           :continue
+STAT_GOTO               :goto
+STAT_IF                 :if
+STAT_ELSE               :else
+STAT_WHILE              :while
+STAT_DO                 :do
+STAT_FOR                :for
+STAT_SWITCH             :switch
+STAT_CASE               :case
+STAT_DEFAULT            :default
+STAT_TRY                :try
+STAT_CATCH              :catch
+STAT___TRY              :__try
+STAT___EXCEPT           :__except
+STAT___FINALLY          :__finally
+STAT___LEAVE            :__leave
+STAT___IF_EXISTS        :__if_exists
+STAT___IF_NOT_EXISTS    :__if_not_exists
+EXPR_TRUE               :true
+EXPR_FALSE              :false
+EXPR_THIS               :this
+EXPR_NULLPTR            :nullptr
+EXPR___NULLPTR          :__nullptr
+EXPR_TYPEID             :typeid
+EXPR_SIZEOF             :sizeof
+EXPR_DYNAMIC_CAST       :dynamic_cast
+EXPR_STATIC_CAST        :static_cast
+EXPR_CONST_CAST         :const_cast
+EXPR_REINTERPRET_CAST   :reinterpret_cast
+EXPR_SAFE_CAST          :safe_cast
+TYPENAME                :typename
+PUBLIC                  :public
+PROTECTED               :protected
+PRIVATE                 :private
+__PRAGMA                :__pragma
+__DECLSPEC              :__declspec
+STATIC_ASSERT           :static_assert
+
+//////////////////////////////////////////////////////////////////
+// SIGNS
+//////////////////////////////////////////////////////////////////
+
+LBRACE                  :/{
+RBRACE                  :/}
+LBRACKET                :/[
+RBRACKET                :/]
+LPARENTHESIS            :/(
+RPARENTHESIS            :/)
+LT                      :<
+GT                      :>
+EQ                      :=
+NOT                     :!
+PERCENT                 :%
+COLON                   ::
+SEMICOLON               :;
+DOT                     :.
+QUESTIONMARK            :/?
+COMMA                   :,
+MUL                     :/*
+ADD                     :/+
+SUB                     :-
+DIV                     ://
+XOR                     :/^
+AND                     :&
+OR                      :/|
+REVERT                  :~
+SHARP                   :#
+
+//////////////////////////////////////////////////////////////////
+// NUMBERS
+//////////////////////////////////////////////////////////////////
+
+$CPP_NUMBER_POSTFIX		:[uU]|[lL]|[uU][lL]|[lL][uU]|[lL][lL]|[uU][lL][lL]|[lL][uU][lL]|[lL][lL][uU]|i8|ui8|i16|ui16|i32|ui32|i64|ui64
+$CPP_FLOAT_DIGITS		:(/d+|/d+.|./d+|/d+./d+)
+$CPP_FLOAT_POSTFIX		:([eE][+/-]?/d+)?[fFlL]?
+$CPP_FLOATHEX_DIGITS	:([0-9a-fA-F]+|[0-9a-fA-F]+.|.[0-9a-fA-F]+|[0-9a-fA-F]+.[0-9a-fA-F]+)
+$CPP_FLOATHEX_POSTFIX	:[pP][+/-]?/d+[fFlL]?
+
+INT                     :(/d+('/d+)*)({$CPP_NUMBER_POSTFIX})?
+HEX                     :0[xX][0-9a-fA-F]+({$CPP_NUMBER_POSTFIX})?
+BIN                     :0[bB][01]+({$CPP_NUMBER_POSTFIX})?
+FLOAT					:{$CPP_FLOAT_DIGITS}{$CPP_FLOAT_POSTFIX}
+FLOATHEX				:0[xX]{$CPP_FLOATHEX_DIGITS}{$CPP_FLOATHEX_POSTFIX}
+
+//////////////////////////////////////////////////////////////////
+// STRINGS
+//////////////////////////////////////////////////////////////////
+
+MACRO_LPREFIX			:__LPREFIX/s*/(/s*/w+/s*/)
+STRING				    :([uUL]|u8)?"([^/\"]|/\/.)*"
+CHAR					:([uUL]|u8)?'([^/\']|/\/.)*'
+
+//////////////////////////////////////////////////////////////////
+// MISC
+//////////////////////////////////////////////////////////////////
+
+ID						:[a-zA-Z_][a-zA-Z0-9_]*
+discard SPACE			:[ \t\r\n\v\f]+
+discard DOCUMENT		://////([^//][^\r\n]*)?
+discard COMMENT1		:////[^\r\n]*
+discard COMMENT2		:///*([^*]|/*+[^*//])*/*+//
