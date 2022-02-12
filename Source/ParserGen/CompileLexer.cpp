@@ -39,10 +39,14 @@ CompileLexer
 
 			void CompileLexer(LexerSymbolManager& lexerManager, const WString& input)
 			{
-				Regex regexToken(L"^(/s*|(<discard>discard/s)?/s*(<name>[a-zA-Z_]/w*)/s*:(<regex>/.+))$");
+				Regex regexToken(L"^(/s*|(<discard>discard/s)?/s*(<name>/$?[a-zA-Z_]/w*)/s*:(<regex>/.+))$");
+				Regex regexFragment(L"/{(<fragment>/$[a-zA-Z_]/w*)/}");
 				vint _discard = regexToken.CaptureNames().IndexOf(L"discard");
 				vint _name = regexToken.CaptureNames().IndexOf(L"name");
 				vint _regex = regexToken.CaptureNames().IndexOf(L"regex");
+				vint _fragment = regexFragment.CaptureNames().IndexOf(L"fragment");
+
+				Dictionary<WString, WString> fragments;
 
 				StringReader reader(input);
 				vint lineIndex = 0;
@@ -56,17 +60,73 @@ CompileLexer
 						{
 							auto tokenName = match->Groups()[_name][0].Value();
 							auto tokenRegex = match->Groups()[_regex][0].Value();
-							if (match->Groups().Keys().Contains(_discard))
+							auto tokenDiscard = match->Groups().Keys().Contains(_discard);
+
+							if (tokenName[0] == L'$')
 							{
-								lexerManager.CreateDiscardedToken(tokenName, tokenRegex, codeRange);
+								if (tokenDiscard)
+								{
+									lexerManager.AddError(
+										ParserErrorType::InvalidTokenDefinition,
+										codeRange,
+										line
+										);
+								}
+								else if (fragments.Keys().Contains(tokenName))
+								{
+									lexerManager.AddError(
+										ParserErrorType::DuplicatedTokenFragment,
+										codeRange,
+										tokenName
+										);
+								}
+								else
+								{
+									fragments.Add(tokenName, tokenRegex);
+								}
 							}
 							else
 							{
-								lexerManager.CreateToken(tokenName, tokenRegex, codeRange);
+								WString resolvedRegex;
+								List<Ptr<RegexMatch>> matches;
+								regexFragment.Cut(tokenRegex, false, matches);
+								for (auto&& fragment : matches)
+								{
+									if (fragment->Success())
+									{
+										auto fragmentName = fragment->Groups()[_fragment][0].Value();
+										vint index = fragments.Keys().IndexOf(fragmentName);
+										if (index == -1)
+										{
+											lexerManager.AddError(
+												ParserErrorType::TokenFragmentNotExists,
+												codeRange,
+												fragmentName
+												);
+										}
+										else
+										{
+											resolvedRegex += fragments.Values()[index];
+										}
+									}
+									else
+									{
+										resolvedRegex += fragment->Result().Value();
+									}
+								}
+
+								if (tokenDiscard)
+								{
+									lexerManager.CreateDiscardedToken(tokenName, resolvedRegex, codeRange);
+								}
+								else
+								{
+									lexerManager.CreateToken(tokenName, resolvedRegex, codeRange);
+								}
 							}
 						}
 					}
-					else
+					else if (line.Length() < 2 || line.Left(2) != L"//")
 					{
 						lexerManager.AddError(
 							ParserErrorType::InvalidTokenDefinition,

@@ -67,6 +67,8 @@ ParserSymbolManager
 				DuplicatedTokenByDisplayText,				// (tokenName)
 				InvalidTokenRegex,							// (tokenName, errorMessage)
 				TokenRegexNotPure,							// (tokenName)
+				DuplicatedTokenFragment,					// (fragmentName)
+				TokenFragmentNotExists,						// (fragmentName)
 
 				// SyntaxSymbolManager ----------------------------------------------------------------
 				DuplicatedRule,								// (ruleName)

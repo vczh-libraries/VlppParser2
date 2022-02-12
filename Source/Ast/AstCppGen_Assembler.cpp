@@ -335,23 +335,32 @@ WriteAstAssemblerCppFile
 						writer.WriteLine(L"");
 						writer.WriteLine(prefix + L"const wchar_t* " + manager.Global().name + L"FieldName(" + manager.Global().name + L"Fields field)");
 						writer.WriteLine(prefix + L"{");
-						writer.WriteLine(prefix + L"\tconst wchar_t* results[] = {");
 
-						Array<AstClassPropSymbol*> idToFields(output->fieldIds.Count());
-						for (auto [k, v] : output->fieldIds)
+						if (output->fieldIds.Count() > 0)
 						{
-							idToFields[v] = k;
+							writer.WriteLine(prefix + L"\tconst wchar_t* results[] = {");
+
+							Array<AstClassPropSymbol*> idToFields(output->fieldIds.Count());
+							for (auto [k, v] : output->fieldIds)
+							{
+								idToFields[v] = k;
+							}
+
+							for (auto propSymbol : idToFields)
+							{
+								auto classSymbol = propSymbol->Parent();
+								writer.WriteLine(prefix + L"\t\tL\"" + classSymbol->Name() + L"::" + propSymbol->Name() + L"\",");
+							}
+
+							writer.WriteLine(prefix + L"\t};");
+							writer.WriteLine(prefix + L"\tvl::vint index = (vl::vint)field;");
+							writer.WriteLine(prefix + L"\treturn 0 <= index && index < " + itow(idToFields.Count()) + L" ? results[index] : nullptr;");
+						}
+						else
+						{
+							writer.WriteLine(prefix + L"\treturn nullptr;");
 						}
 
-						for (auto propSymbol : idToFields)
-						{
-							auto classSymbol = propSymbol->Parent();
-							writer.WriteLine(prefix + L"\t\tL\"" + classSymbol->Name() + L"::" + propSymbol->Name() + L"\",");
-						}
-
-						writer.WriteLine(prefix + L"\t};");
-						writer.WriteLine(prefix + L"\tvl::vint index = (vl::vint)field;");
-						writer.WriteLine(prefix + L"\treturn 0 <= index && index < " + itow(idToFields.Count()) + L" ? results[index] : nullptr;");
 						writer.WriteLine(prefix + L"}");
 					}
 
@@ -362,25 +371,34 @@ WriteAstAssemblerCppFile
 						writer.WriteLine(L"");
 						writer.WriteLine(prefix + L"const wchar_t* " + manager.Global().name + L"CppFieldName(" + manager.Global().name + L"Fields field)");
 						writer.WriteLine(prefix + L"{");
-						writer.WriteLine(prefix + L"\tconst wchar_t* results[] = {");
 
-						Array<AstClassPropSymbol*> idToFields(output->fieldIds.Count());
-						for (auto [k, v] : output->fieldIds)
+						if (output->fieldIds.Count() > 0)
 						{
-							idToFields[v] = k;
+							writer.WriteLine(prefix + L"\tconst wchar_t* results[] = {");
+
+							Array<AstClassPropSymbol*> idToFields(output->fieldIds.Count());
+							for (auto [k, v] : output->fieldIds)
+							{
+								idToFields[v] = k;
+							}
+
+							for (auto propSymbol : idToFields)
+							{
+								auto classSymbol = propSymbol->Parent();
+								writer.WriteString(prefix + L"\t\tL\"");
+								PrintCppType(nullptr, classSymbol, writer);
+								writer.WriteLine(L"::" + propSymbol->Name() + L"\",");
+							}
+
+							writer.WriteLine(prefix + L"\t};");
+							writer.WriteLine(prefix + L"\tvl::vint index = (vl::vint)field;");
+							writer.WriteLine(prefix + L"\treturn 0 <= index && index < " + itow(idToFields.Count()) + L" ? results[index] : nullptr;");
+						}
+						else
+						{
+							writer.WriteLine(prefix + L"\treturn nullptr;");
 						}
 
-						for (auto propSymbol : idToFields)
-						{
-							auto classSymbol = propSymbol->Parent();
-							writer.WriteString(prefix + L"\t\tL\"");
-							PrintCppType(nullptr, classSymbol, writer);
-							writer.WriteLine(L"::" + propSymbol->Name() + L"\",");
-						}
-
-						writer.WriteLine(prefix + L"\t};");
-						writer.WriteLine(prefix + L"\tvl::vint index = (vl::vint)field;");
-						writer.WriteLine(prefix + L"\treturn 0 <= index && index < " + itow(idToFields.Count()) + L" ? results[index] : nullptr;");
 						writer.WriteLine(prefix + L"}");
 					}
 

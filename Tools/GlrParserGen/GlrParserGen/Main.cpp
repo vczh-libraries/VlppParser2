@@ -192,6 +192,8 @@ void PrintCompileErrors(ParserSymbolManager& global)
 		CASE(DuplicatedTokenByDisplayText, tokenName);
 		CASE(InvalidTokenRegex, tokenName, errorMessage);
 		CASE(TokenRegexNotPure, tokenName);
+		CASE(DuplicatedTokenFragment, tokenName);
+		CASE(TokenFragmentNotExists, tokenName);
 
 		// SyntaxSymbolManager ----------------------------------------------------------------
 		CASE(DuplicatedRule, ruleName);
