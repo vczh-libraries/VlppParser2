@@ -70,9 +70,6 @@ namespace cpp_parser
 			case cpp_parser::CppOperators::BitwiseOr:
 				WriteString(L"BitwiseOr");
 				break;
-			case cpp_parser::CppOperators::Brace:
-				WriteString(L"Brace");
-				break;
 			case cpp_parser::CppOperators::Bracket:
 				WriteString(L"Bracket");
 				break;
@@ -169,11 +166,11 @@ namespace cpp_parser
 			case cpp_parser::CppOperators::PointerDeref:
 				WriteString(L"PointerDeref");
 				break;
-			case cpp_parser::CppOperators::ReverseAssign:
-				WriteString(L"ReverseAssign");
-				break;
 			case cpp_parser::CppOperators::Revert:
 				WriteString(L"Revert");
+				break;
+			case cpp_parser::CppOperators::RevertAssign:
+				WriteString(L"RevertAssign");
 				break;
 			case cpp_parser::CppOperators::RightShift:
 				WriteString(L"RightShift");

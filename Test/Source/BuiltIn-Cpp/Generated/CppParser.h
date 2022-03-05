@@ -14,7 +14,10 @@ namespace cpp_parser
 {
 	enum class ParserStates
 	{
-		_File = 0,
+		_Name = 0,
+		_OperatorName = 19,
+		_QualifiedName = 101,
+		_File = 105,
 	};
 
 	const wchar_t* ParserRuleName(vl::vint index);
