@@ -14,10 +14,17 @@ namespace cpp_parser
 	enum class CppClasses : vl::vint32_t
 	{
 		File = 0,
+		Name = 1,
+		OperatorName = 2,
+		QualifiedName = 3,
+		TypeOrExpr = 4,
 	};
 
 	enum class CppFields : vl::vint32_t
 	{
+		Name_kind = 0,
+		Name_name = 1,
+		OperatorName_op = 2,
 	};
 
 	extern const wchar_t* CppTypeName(CppClasses type);

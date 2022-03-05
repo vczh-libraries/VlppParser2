@@ -14,6 +14,28 @@ namespace cpp_parser
 		{
 		}
 
+		void AstVisitor::CopyFields(CppName* from, CppName* to)
+		{
+			CopyFields(static_cast<CppQualifiedName*>(from), static_cast<CppQualifiedName*>(to));
+			to->kind = from->kind;
+			to->name = from->name;
+		}
+
+		void AstVisitor::CopyFields(CppOperatorName* from, CppOperatorName* to)
+		{
+			CopyFields(static_cast<CppQualifiedName*>(from), static_cast<CppQualifiedName*>(to));
+			to->op = from->op;
+		}
+
+		void AstVisitor::CopyFields(CppQualifiedName* from, CppQualifiedName* to)
+		{
+			CopyFields(static_cast<CppTypeOrExpr*>(from), static_cast<CppTypeOrExpr*>(to));
+		}
+
+		void AstVisitor::CopyFields(CppTypeOrExpr* from, CppTypeOrExpr* to)
+		{
+		}
+
 		void AstVisitor::Visit(CppFile* node)
 		{
 			auto newNode = vl::MakePtr<CppFile>();
@@ -21,11 +43,55 @@ namespace cpp_parser
 			this->result = newNode;
 		}
 
+		void AstVisitor::Visit(CppQualifiedName* node)
+		{
+			node->Accept(static_cast<CppQualifiedName::IVisitor*>(this));
+		}
+
+		void AstVisitor::Visit(CppName* node)
+		{
+			auto newNode = vl::MakePtr<CppName>();
+			CopyFields(node, newNode.Obj());
+			this->result = newNode;
+		}
+
+		void AstVisitor::Visit(CppOperatorName* node)
+		{
+			auto newNode = vl::MakePtr<CppOperatorName>();
+			CopyFields(node, newNode.Obj());
+			this->result = newNode;
+		}
+
+		vl::Ptr<CppTypeOrExpr> AstVisitor::CopyNode(CppTypeOrExpr* node)
+		{
+			if (!node) return nullptr;
+			node->Accept(static_cast<CppTypeOrExpr::IVisitor*>(this));
+			return this->result.Cast<CppTypeOrExpr>();
+		}
+
 		vl::Ptr<CppFile> AstVisitor::CopyNode(CppFile* node)
 		{
 			if (!node) return nullptr;
 			Visit(node);
 			return this->result.Cast<CppFile>();
+		}
+
+		vl::Ptr<CppName> AstVisitor::CopyNode(CppName* node)
+		{
+			if (!node) return nullptr;
+			return CopyNode(static_cast<CppTypeOrExpr*>(node)).Cast<CppName>();
+		}
+
+		vl::Ptr<CppOperatorName> AstVisitor::CopyNode(CppOperatorName* node)
+		{
+			if (!node) return nullptr;
+			return CopyNode(static_cast<CppTypeOrExpr*>(node)).Cast<CppOperatorName>();
+		}
+
+		vl::Ptr<CppQualifiedName> AstVisitor::CopyNode(CppQualifiedName* node)
+		{
+			if (!node) return nullptr;
+			return CopyNode(static_cast<CppTypeOrExpr*>(node)).Cast<CppQualifiedName>();
 		}
 
 	}

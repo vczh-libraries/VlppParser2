@@ -11,6 +11,21 @@ namespace cpp_parser
 /***********************************************************************
 Visitor Pattern Implementation
 ***********************************************************************/
+
+	void CppQualifiedName::Accept(CppTypeOrExpr::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void CppName::Accept(CppQualifiedName::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void CppOperatorName::Accept(CppQualifiedName::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
 }
 namespace vl
 {
@@ -20,9 +35,105 @@ namespace vl
 		{
 #ifndef VCZH_DEBUG_NO_REFLECTION
 
+			IMPL_TYPE_INFO_RENAME(cpp_parser::CppTypeOrExpr, cpp_parser::CppTypeOrExpr)
+			IMPL_TYPE_INFO_RENAME(cpp_parser::CppTypeOrExpr::IVisitor, cpp_parser::CppTypeOrExpr::IVisitor)
+			IMPL_TYPE_INFO_RENAME(cpp_parser::CppQualifiedName, cpp_parser::CppQualifiedName)
+			IMPL_TYPE_INFO_RENAME(cpp_parser::CppQualifiedName::IVisitor, cpp_parser::CppQualifiedName::IVisitor)
+			IMPL_TYPE_INFO_RENAME(cpp_parser::CppNameKinds, cpp_parser::CppNameKinds)
+			IMPL_TYPE_INFO_RENAME(cpp_parser::CppName, cpp_parser::CppName)
+			IMPL_TYPE_INFO_RENAME(cpp_parser::CppOperators, cpp_parser::CppOperators)
+			IMPL_TYPE_INFO_RENAME(cpp_parser::CppOperatorName, cpp_parser::CppOperatorName)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppFile, cpp_parser::CppFile)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
+
+			BEGIN_CLASS_MEMBER(cpp_parser::CppTypeOrExpr)
+				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+
+			END_CLASS_MEMBER(cpp_parser::CppTypeOrExpr)
+
+			BEGIN_CLASS_MEMBER(cpp_parser::CppQualifiedName)
+				CLASS_MEMBER_BASE(cpp_parser::CppTypeOrExpr)
+
+			END_CLASS_MEMBER(cpp_parser::CppQualifiedName)
+
+			BEGIN_ENUM_ITEM(cpp_parser::CppNameKinds)
+				ENUM_ITEM_NAMESPACE(cpp_parser::CppNameKinds)
+				ENUM_NAMESPACE_ITEM(Normal)
+				ENUM_NAMESPACE_ITEM(Enum)
+				ENUM_NAMESPACE_ITEM(EnumClass)
+				ENUM_NAMESPACE_ITEM(Class)
+				ENUM_NAMESPACE_ITEM(Struct)
+				ENUM_NAMESPACE_ITEM(Union)
+				ENUM_NAMESPACE_ITEM(Dtor)
+				ENUM_NAMESPACE_ITEM(UserDefinedLiteral)
+			END_ENUM_ITEM(cpp_parser::CppNameKinds)
+
+			BEGIN_CLASS_MEMBER(cpp_parser::CppName)
+				CLASS_MEMBER_BASE(cpp_parser::CppQualifiedName)
+
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppName>(), NO_PARAMETER)
+
+				CLASS_MEMBER_FIELD(kind)
+				CLASS_MEMBER_FIELD(name)
+			END_CLASS_MEMBER(cpp_parser::CppName)
+
+			BEGIN_ENUM_ITEM(cpp_parser::CppOperators)
+				ENUM_ITEM_NAMESPACE(cpp_parser::CppOperators)
+				ENUM_NAMESPACE_ITEM(New)
+				ENUM_NAMESPACE_ITEM(NewArray)
+				ENUM_NAMESPACE_ITEM(Delete)
+				ENUM_NAMESPACE_ITEM(DeleteArray)
+				ENUM_NAMESPACE_ITEM(Comma)
+				ENUM_NAMESPACE_ITEM(RoundBracket)
+				ENUM_NAMESPACE_ITEM(Parantheses)
+				ENUM_NAMESPACE_ITEM(Bracket)
+				ENUM_NAMESPACE_ITEM(Brace)
+				ENUM_NAMESPACE_ITEM(PointerDeref)
+				ENUM_NAMESPACE_ITEM(Pointer)
+				ENUM_NAMESPACE_ITEM(EQ)
+				ENUM_NAMESPACE_ITEM(NE)
+				ENUM_NAMESPACE_ITEM(LT)
+				ENUM_NAMESPACE_ITEM(LE)
+				ENUM_NAMESPACE_ITEM(GT)
+				ENUM_NAMESPACE_ITEM(GE)
+				ENUM_NAMESPACE_ITEM(Not)
+				ENUM_NAMESPACE_ITEM(Revert)
+				ENUM_NAMESPACE_ITEM(Xor)
+				ENUM_NAMESPACE_ITEM(And)
+				ENUM_NAMESPACE_ITEM(BitwiseAnd)
+				ENUM_NAMESPACE_ITEM(Or)
+				ENUM_NAMESPACE_ITEM(BitwiseOr)
+				ENUM_NAMESPACE_ITEM(Mul)
+				ENUM_NAMESPACE_ITEM(Div)
+				ENUM_NAMESPACE_ITEM(Mod)
+				ENUM_NAMESPACE_ITEM(Plus)
+				ENUM_NAMESPACE_ITEM(Increase)
+				ENUM_NAMESPACE_ITEM(Minus)
+				ENUM_NAMESPACE_ITEM(Decrease)
+				ENUM_NAMESPACE_ITEM(LeftShift)
+				ENUM_NAMESPACE_ITEM(RightShift)
+				ENUM_NAMESPACE_ITEM(Assign)
+				ENUM_NAMESPACE_ITEM(ReverseAssign)
+				ENUM_NAMESPACE_ITEM(XorAssign)
+				ENUM_NAMESPACE_ITEM(AndAssign)
+				ENUM_NAMESPACE_ITEM(OrAssign)
+				ENUM_NAMESPACE_ITEM(MulAssign)
+				ENUM_NAMESPACE_ITEM(DivAssign)
+				ENUM_NAMESPACE_ITEM(ModAssign)
+				ENUM_NAMESPACE_ITEM(PlusAssign)
+				ENUM_NAMESPACE_ITEM(MinusAssign)
+				ENUM_NAMESPACE_ITEM(LeftShiftAssign)
+				ENUM_NAMESPACE_ITEM(RightShiftAssign)
+			END_ENUM_ITEM(cpp_parser::CppOperators)
+
+			BEGIN_CLASS_MEMBER(cpp_parser::CppOperatorName)
+				CLASS_MEMBER_BASE(cpp_parser::CppQualifiedName)
+
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppOperatorName>(), NO_PARAMETER)
+
+				CLASS_MEMBER_FIELD(op)
+			END_CLASS_MEMBER(cpp_parser::CppOperatorName)
 
 			BEGIN_CLASS_MEMBER(cpp_parser::CppFile)
 				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
@@ -30,6 +141,15 @@ namespace vl
 				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppFile>(), NO_PARAMETER)
 
 			END_CLASS_MEMBER(cpp_parser::CppFile)
+
+			BEGIN_INTERFACE_MEMBER(cpp_parser::CppTypeOrExpr::IVisitor)
+				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppTypeOrExpr::IVisitor::*)(cpp_parser::CppQualifiedName* node))
+			END_INTERFACE_MEMBER(cpp_parser::CppTypeOrExpr)
+
+			BEGIN_INTERFACE_MEMBER(cpp_parser::CppQualifiedName::IVisitor)
+				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppQualifiedName::IVisitor::*)(cpp_parser::CppName* node))
+				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppQualifiedName::IVisitor::*)(cpp_parser::CppOperatorName* node))
+			END_INTERFACE_MEMBER(cpp_parser::CppQualifiedName)
 
 #endif
 
@@ -39,6 +159,14 @@ namespace vl
 			public:
 				void Load(ITypeManager* manager)
 				{
+					ADD_TYPE_INFO(cpp_parser::CppTypeOrExpr)
+					ADD_TYPE_INFO(cpp_parser::CppTypeOrExpr::IVisitor)
+					ADD_TYPE_INFO(cpp_parser::CppQualifiedName)
+					ADD_TYPE_INFO(cpp_parser::CppQualifiedName::IVisitor)
+					ADD_TYPE_INFO(cpp_parser::CppNameKinds)
+					ADD_TYPE_INFO(cpp_parser::CppName)
+					ADD_TYPE_INFO(cpp_parser::CppOperators)
+					ADD_TYPE_INFO(cpp_parser::CppOperatorName)
 					ADD_TYPE_INFO(cpp_parser::CppFile)
 				}
 

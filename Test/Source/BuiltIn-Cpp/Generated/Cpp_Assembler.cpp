@@ -20,6 +20,10 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 		{
 		case CppClasses::File:
 			return new cpp_parser::CppFile();
+		case CppClasses::Name:
+			return new cpp_parser::CppName();
+		case CppClasses::OperatorName:
+			return new cpp_parser::CppOperatorName();
 		default:
 			return vl::glr::AssemblyThrowCannotCreateAbstractType(type, cppTypeName);
 		}
@@ -34,41 +38,75 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 	void CppAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, const vl::regex::RegexToken& token, vl::vint32_t tokenIndex)
 	{
 		auto cppFieldName = CppCppFieldName((CppFields)field);
-		return vl::glr::AssemblyThrowFieldNotToken(field, cppFieldName);
+		switch((CppFields)field)
+		{
+		case CppFields::Name_name:
+			return vl::glr::AssemblerSetTokenField(&cpp_parser::CppName::name, object, field, token, tokenIndex, cppFieldName);
+		default:
+			return vl::glr::AssemblyThrowFieldNotToken(field, cppFieldName);
+		}
 	}
 
 	void CppAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::vint32_t enumItem, bool weakAssignment)
 	{
 		auto cppFieldName = CppCppFieldName((CppFields)field);
-		return vl::glr::AssemblyThrowFieldNotEnum(field, cppFieldName);
+		switch((CppFields)field)
+		{
+		case CppFields::Name_kind:
+			return vl::glr::AssemblerSetEnumField(&cpp_parser::CppName::kind, object, field, enumItem, weakAssignment, cppFieldName);
+		case CppFields::OperatorName_op:
+			return vl::glr::AssemblerSetEnumField(&cpp_parser::CppOperatorName::op, object, field, enumItem, weakAssignment, cppFieldName);
+		default:
+			return vl::glr::AssemblyThrowFieldNotEnum(field, cppFieldName);
+		}
 	}
 
 	const wchar_t* CppTypeName(CppClasses type)
 	{
 		const wchar_t* results[] = {
 			L"File",
+			L"Name",
+			L"OperatorName",
+			L"QualifiedName",
+			L"TypeOrExpr",
 		};
 		vl::vint index = (vl::vint)type;
-		return 0 <= index && index < 1 ? results[index] : nullptr;
+		return 0 <= index && index < 5 ? results[index] : nullptr;
 	}
 
 	const wchar_t* CppCppTypeName(CppClasses type)
 	{
 		const wchar_t* results[] = {
 			L"cpp_parser::CppFile",
+			L"cpp_parser::CppName",
+			L"cpp_parser::CppOperatorName",
+			L"cpp_parser::CppQualifiedName",
+			L"cpp_parser::CppTypeOrExpr",
 		};
 		vl::vint index = (vl::vint)type;
-		return 0 <= index && index < 1 ? results[index] : nullptr;
+		return 0 <= index && index < 5 ? results[index] : nullptr;
 	}
 
 	const wchar_t* CppFieldName(CppFields field)
 	{
-		return nullptr;
+		const wchar_t* results[] = {
+			L"Name::kind",
+			L"Name::name",
+			L"OperatorName::op",
+		};
+		vl::vint index = (vl::vint)field;
+		return 0 <= index && index < 3 ? results[index] : nullptr;
 	}
 
 	const wchar_t* CppCppFieldName(CppFields field)
 	{
-		return nullptr;
+		const wchar_t* results[] = {
+			L"cpp_parser::CppName::kind",
+			L"cpp_parser::CppName::name",
+			L"cpp_parser::CppOperatorName::op",
+		};
+		vl::vint index = (vl::vint)field;
+		return 0 <= index && index < 3 ? results[index] : nullptr;
 	}
 
 	vl::Ptr<vl::glr::ParsingAstBase> CppAstInsReceiver::ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates)

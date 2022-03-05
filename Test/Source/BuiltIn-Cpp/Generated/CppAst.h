@@ -13,6 +13,119 @@ Licensed under https://github.com/vczh-libraries/License
 namespace cpp_parser
 {
 	class CppFile;
+	class CppName;
+	class CppOperatorName;
+	class CppQualifiedName;
+	class CppTypeOrExpr;
+
+	enum class CppNameKinds
+	{
+		UNDEFINED_ENUM_ITEM_VALUE = -1,
+		Normal = 0,
+		Enum = 1,
+		EnumClass = 2,
+		Class = 3,
+		Struct = 4,
+		Union = 5,
+		Dtor = 6,
+		UserDefinedLiteral = 7,
+	};
+
+	enum class CppOperators
+	{
+		UNDEFINED_ENUM_ITEM_VALUE = -1,
+		New = 0,
+		NewArray = 1,
+		Delete = 2,
+		DeleteArray = 3,
+		Comma = 4,
+		RoundBracket = 5,
+		Parantheses = 6,
+		Bracket = 7,
+		Brace = 8,
+		PointerDeref = 9,
+		Pointer = 10,
+		EQ = 11,
+		NE = 12,
+		LT = 13,
+		LE = 14,
+		GT = 15,
+		GE = 16,
+		Not = 17,
+		Revert = 18,
+		Xor = 19,
+		And = 20,
+		BitwiseAnd = 21,
+		Or = 22,
+		BitwiseOr = 23,
+		Mul = 24,
+		Div = 25,
+		Mod = 26,
+		Plus = 27,
+		Increase = 28,
+		Minus = 29,
+		Decrease = 30,
+		LeftShift = 31,
+		RightShift = 32,
+		Assign = 33,
+		ReverseAssign = 34,
+		XorAssign = 35,
+		AndAssign = 36,
+		OrAssign = 37,
+		MulAssign = 38,
+		DivAssign = 39,
+		ModAssign = 40,
+		PlusAssign = 41,
+		MinusAssign = 42,
+		LeftShiftAssign = 43,
+		RightShiftAssign = 44,
+	};
+
+	class CppTypeOrExpr abstract : public vl::glr::ParsingAstBase, vl::reflection::Description<CppTypeOrExpr>
+	{
+	public:
+		class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
+		{
+		public:
+			virtual void Visit(CppQualifiedName* node) = 0;
+		};
+
+		virtual void Accept(CppTypeOrExpr::IVisitor* visitor) = 0;
+
+	};
+
+	class CppQualifiedName abstract : public CppTypeOrExpr, vl::reflection::Description<CppQualifiedName>
+	{
+	public:
+		class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
+		{
+		public:
+			virtual void Visit(CppName* node) = 0;
+			virtual void Visit(CppOperatorName* node) = 0;
+		};
+
+		virtual void Accept(CppQualifiedName::IVisitor* visitor) = 0;
+
+
+		void Accept(CppTypeOrExpr::IVisitor* visitor) override;
+	};
+
+	class CppName : public CppQualifiedName, vl::reflection::Description<CppName>
+	{
+	public:
+		CppNameKinds kind = CppNameKinds::UNDEFINED_ENUM_ITEM_VALUE;
+		vl::glr::ParsingToken name;
+
+		void Accept(CppQualifiedName::IVisitor* visitor) override;
+	};
+
+	class CppOperatorName : public CppQualifiedName, vl::reflection::Description<CppOperatorName>
+	{
+	public:
+		CppOperators op = CppOperators::UNDEFINED_ENUM_ITEM_VALUE;
+
+		void Accept(CppQualifiedName::IVisitor* visitor) override;
+	};
 
 	class CppFile : public vl::glr::ParsingAstBase, vl::reflection::Description<CppFile>
 	{
@@ -26,9 +139,38 @@ namespace vl
 		namespace description
 		{
 #ifndef VCZH_DEBUG_NO_REFLECTION
+			DECL_TYPE_INFO(cpp_parser::CppTypeOrExpr)
+			DECL_TYPE_INFO(cpp_parser::CppTypeOrExpr::IVisitor)
+			DECL_TYPE_INFO(cpp_parser::CppQualifiedName)
+			DECL_TYPE_INFO(cpp_parser::CppQualifiedName::IVisitor)
+			DECL_TYPE_INFO(cpp_parser::CppNameKinds)
+			DECL_TYPE_INFO(cpp_parser::CppName)
+			DECL_TYPE_INFO(cpp_parser::CppOperators)
+			DECL_TYPE_INFO(cpp_parser::CppOperatorName)
 			DECL_TYPE_INFO(cpp_parser::CppFile)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
+
+			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(cpp_parser::CppTypeOrExpr::IVisitor)
+				void Visit(cpp_parser::CppQualifiedName* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+			END_INTERFACE_PROXY(cpp_parser::CppTypeOrExpr::IVisitor)
+
+			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(cpp_parser::CppQualifiedName::IVisitor)
+				void Visit(cpp_parser::CppName* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+				void Visit(cpp_parser::CppOperatorName* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+			END_INTERFACE_PROXY(cpp_parser::CppQualifiedName::IVisitor)
 
 #endif
 #endif

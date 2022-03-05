@@ -13,9 +13,55 @@ namespace cpp_parser
 		void AstVisitor::Traverse(vl::glr::ParsingToken& token) {}
 		void AstVisitor::Traverse(vl::glr::ParsingAstBase* node) {}
 		void AstVisitor::Traverse(CppFile* node) {}
+		void AstVisitor::Traverse(CppName* node) {}
+		void AstVisitor::Traverse(CppOperatorName* node) {}
+		void AstVisitor::Traverse(CppQualifiedName* node) {}
+		void AstVisitor::Traverse(CppTypeOrExpr* node) {}
 
 		void AstVisitor::Finishing(vl::glr::ParsingAstBase* node) {}
 		void AstVisitor::Finishing(CppFile* node) {}
+		void AstVisitor::Finishing(CppName* node) {}
+		void AstVisitor::Finishing(CppOperatorName* node) {}
+		void AstVisitor::Finishing(CppQualifiedName* node) {}
+		void AstVisitor::Finishing(CppTypeOrExpr* node) {}
+
+		void AstVisitor::Visit(CppQualifiedName* node)
+		{
+			node->Accept(static_cast<CppQualifiedName::IVisitor*>(this));
+		}
+
+		void AstVisitor::Visit(CppName* node)
+		{
+			if (!node) return;
+			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+			Traverse(static_cast<CppTypeOrExpr*>(node));
+			Traverse(static_cast<CppQualifiedName*>(node));
+			Traverse(static_cast<CppName*>(node));
+			Traverse(node->name);
+			Finishing(static_cast<CppName*>(node));
+			Finishing(static_cast<CppQualifiedName*>(node));
+			Finishing(static_cast<CppTypeOrExpr*>(node));
+			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+		}
+
+		void AstVisitor::Visit(CppOperatorName* node)
+		{
+			if (!node) return;
+			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+			Traverse(static_cast<CppTypeOrExpr*>(node));
+			Traverse(static_cast<CppQualifiedName*>(node));
+			Traverse(static_cast<CppOperatorName*>(node));
+			Finishing(static_cast<CppOperatorName*>(node));
+			Finishing(static_cast<CppQualifiedName*>(node));
+			Finishing(static_cast<CppTypeOrExpr*>(node));
+			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+		}
+
+		void AstVisitor::InspectInto(CppTypeOrExpr* node)
+		{
+			if (!node) return;
+			node->Accept(static_cast<CppTypeOrExpr::IVisitor*>(this));
+		}
 
 		void AstVisitor::InspectInto(CppFile* node)
 		{

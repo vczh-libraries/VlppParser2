@@ -13,6 +13,19 @@ namespace cpp_parser
 {
 	namespace builder
 	{
+		class MakeName : public vl::glr::ParsingAstBuilder<CppName>
+		{
+		public:
+			MakeName& kind(CppNameKinds value);
+			MakeName& name(const vl::WString& value);
+		};
+
+		class MakeOperatorName : public vl::glr::ParsingAstBuilder<CppOperatorName>
+		{
+		public:
+			MakeOperatorName& op(CppOperators value);
+		};
+
 	}
 }
 #endif

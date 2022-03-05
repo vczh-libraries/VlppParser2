@@ -13,6 +13,30 @@ namespace cpp_parser
 {
 	namespace empty_visitor
 	{
+		/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
+		class TypeOrExprVisitor : public vl::Object, public CppTypeOrExpr::IVisitor
+		{
+		protected:
+			// Dispatch (virtual) --------------------------------
+			virtual void Dispatch(CppQualifiedName* node) = 0;
+
+		public:
+			// Visitor Members -----------------------------------
+			void Visit(CppQualifiedName* node) override;
+		};
+
+		/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
+		class QualifiedNameVisitor : public vl::Object, public CppQualifiedName::IVisitor
+		{
+		protected:
+			// Dispatch (virtual) --------------------------------
+
+		public:
+			// Visitor Members -----------------------------------
+			void Visit(CppName* node) override;
+			void Visit(CppOperatorName* node) override;
+		};
+
 	}
 }
 #endif

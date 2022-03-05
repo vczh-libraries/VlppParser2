@@ -16,18 +16,34 @@ namespace cpp_parser
 		/// <summary>A traverse visitor, overriding all abstract methods with AST visiting code.</summary>
 		class AstVisitor
 			: public vl::Object
+			, protected virtual CppTypeOrExpr::IVisitor
+			, protected virtual CppQualifiedName::IVisitor
 		{
 		protected:
 			virtual void Traverse(vl::glr::ParsingToken& token);
 			virtual void Traverse(vl::glr::ParsingAstBase* node);
 			virtual void Traverse(CppFile* node);
+			virtual void Traverse(CppName* node);
+			virtual void Traverse(CppOperatorName* node);
+			virtual void Traverse(CppQualifiedName* node);
+			virtual void Traverse(CppTypeOrExpr* node);
 
 		protected:
 			virtual void Finishing(vl::glr::ParsingAstBase* node);
 			virtual void Finishing(CppFile* node);
+			virtual void Finishing(CppName* node);
+			virtual void Finishing(CppOperatorName* node);
+			virtual void Finishing(CppQualifiedName* node);
+			virtual void Finishing(CppTypeOrExpr* node);
 
 		protected:
+			void Visit(CppQualifiedName* node) override;
+
+			void Visit(CppName* node) override;
+			void Visit(CppOperatorName* node) override;
+
 		public:
+			void InspectInto(CppTypeOrExpr* node);
 			void InspectInto(CppFile* node);
 		};
 	}

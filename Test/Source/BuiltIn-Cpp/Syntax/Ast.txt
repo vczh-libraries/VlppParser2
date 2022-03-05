@@ -1,5 +1,92 @@
 //////////////////////////////////////////////////////////////////
-// AST
+// Base Types
+//////////////////////////////////////////////////////////////////
+
+class TypeOrExpr
+{
+}
+
+class QualifiedName : TypeOrExpr
+{
+}
+
+//////////////////////////////////////////////////////////////////
+// QualifiedName
+//////////////////////////////////////////////////////////////////
+
+enum NameKinds
+{
+    Normal,
+    Enum,
+    EnumClass,
+    Class,
+    Struct,
+    Union,
+    Dtor,
+    UserDefinedLiteral,
+}
+
+class Name : QualifiedName
+{
+    var kind : NameKinds;
+    var name : token;
+}
+
+enum Operators
+{
+    New,
+    NewArray,
+    Delete,
+    DeleteArray,
+
+    Comma,
+    RoundBracket,
+    Parantheses,
+    Bracket,
+    Brace,
+    PointerDeref,
+    Pointer,
+
+    EQ, NE, LT, LE, GT, GE,
+    Not,
+    Revert,
+    Xor,
+
+    And,
+    BitwiseAnd,
+    Or,
+    BitwiseOr,
+    Mul,
+    Div,
+    Mod,
+    Plus,
+    Increase,
+    Minus,
+    Decrease,
+    LeftShift,
+    RightShift,
+
+    Assign,
+    ReverseAssign,
+    XorAssign,
+    AndAssign,
+    OrAssign,
+    MulAssign,
+    DivAssign,
+    ModAssign,
+    PlusAssign,
+    MinusAssign,
+    LeftShiftAssign,
+    RightShiftAssign,
+}
+
+class OperatorName : QualifiedName
+{
+    var op : Operators;
+}
+
+//////////////////////////////////////////////////////////////////
+// File
 //////////////////////////////////////////////////////////////////
 
 class File

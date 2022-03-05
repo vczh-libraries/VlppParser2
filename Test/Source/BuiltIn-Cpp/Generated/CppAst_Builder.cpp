@@ -10,5 +10,31 @@ namespace cpp_parser
 {
 	namespace builder
 	{
+
+/***********************************************************************
+MakeName
+***********************************************************************/
+
+		MakeName& MakeName::kind(CppNameKinds value)
+		{
+			node->kind = value;
+			return *this;
+		}
+
+		MakeName& MakeName::name(const vl::WString& value)
+		{
+			node->name.value = value;
+			return *this;
+		}
+
+/***********************************************************************
+MakeOperatorName
+***********************************************************************/
+
+		MakeOperatorName& MakeOperatorName::op(CppOperators value)
+		{
+			node->op = value;
+			return *this;
+		}
 	}
 }

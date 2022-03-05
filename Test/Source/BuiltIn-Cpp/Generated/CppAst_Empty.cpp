@@ -10,5 +10,30 @@ namespace cpp_parser
 {
 	namespace empty_visitor
 	{
+
+/***********************************************************************
+TypeOrExprVisitor
+***********************************************************************/
+
+		// Visitor Members -----------------------------------
+
+		void TypeOrExprVisitor::Visit(CppQualifiedName* node)
+		{
+			Dispatch(node);
+		}
+
+/***********************************************************************
+QualifiedNameVisitor
+***********************************************************************/
+
+		// Visitor Members -----------------------------------
+
+		void QualifiedNameVisitor::Visit(CppName* node)
+		{
+		}
+
+		void QualifiedNameVisitor::Visit(CppOperatorName* node)
+		{
+		}
 	}
 }

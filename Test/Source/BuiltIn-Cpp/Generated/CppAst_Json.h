@@ -16,14 +16,26 @@ namespace cpp_parser
 		/// <summary>A JSON visitor, overriding all abstract methods with AST to JSON serialization code.</summary>
 		class AstVisitor
 			: public vl::glr::JsonVisitorBase
+			, protected virtual CppTypeOrExpr::IVisitor
+			, protected virtual CppQualifiedName::IVisitor
 		{
 		protected:
 			virtual void PrintFields(CppFile* node);
+			virtual void PrintFields(CppName* node);
+			virtual void PrintFields(CppOperatorName* node);
+			virtual void PrintFields(CppQualifiedName* node);
+			virtual void PrintFields(CppTypeOrExpr* node);
 
 		protected:
+			void Visit(CppQualifiedName* node) override;
+
+			void Visit(CppName* node) override;
+			void Visit(CppOperatorName* node) override;
+
 		public:
 			AstVisitor(vl::stream::StreamWriter& _writer);
 
+			void Print(CppTypeOrExpr* node);
 			void Print(CppFile* node);
 		};
 	}

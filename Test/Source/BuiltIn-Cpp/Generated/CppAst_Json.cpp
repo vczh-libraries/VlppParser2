@@ -13,10 +13,243 @@ namespace cpp_parser
 		void AstVisitor::PrintFields(CppFile* node)
 		{
 		}
+		void AstVisitor::PrintFields(CppName* node)
+		{
+			BeginField(L"kind");
+			switch (node->kind)
+			{
+			case cpp_parser::CppNameKinds::Class:
+				WriteString(L"Class");
+				break;
+			case cpp_parser::CppNameKinds::Dtor:
+				WriteString(L"Dtor");
+				break;
+			case cpp_parser::CppNameKinds::Enum:
+				WriteString(L"Enum");
+				break;
+			case cpp_parser::CppNameKinds::EnumClass:
+				WriteString(L"EnumClass");
+				break;
+			case cpp_parser::CppNameKinds::Normal:
+				WriteString(L"Normal");
+				break;
+			case cpp_parser::CppNameKinds::Struct:
+				WriteString(L"Struct");
+				break;
+			case cpp_parser::CppNameKinds::Union:
+				WriteString(L"Union");
+				break;
+			case cpp_parser::CppNameKinds::UserDefinedLiteral:
+				WriteString(L"UserDefinedLiteral");
+				break;
+			default:
+				WriteNull();
+			}
+			EndField();
+			BeginField(L"name");
+			WriteToken(node->name);
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppOperatorName* node)
+		{
+			BeginField(L"op");
+			switch (node->op)
+			{
+			case cpp_parser::CppOperators::And:
+				WriteString(L"And");
+				break;
+			case cpp_parser::CppOperators::AndAssign:
+				WriteString(L"AndAssign");
+				break;
+			case cpp_parser::CppOperators::Assign:
+				WriteString(L"Assign");
+				break;
+			case cpp_parser::CppOperators::BitwiseAnd:
+				WriteString(L"BitwiseAnd");
+				break;
+			case cpp_parser::CppOperators::BitwiseOr:
+				WriteString(L"BitwiseOr");
+				break;
+			case cpp_parser::CppOperators::Brace:
+				WriteString(L"Brace");
+				break;
+			case cpp_parser::CppOperators::Bracket:
+				WriteString(L"Bracket");
+				break;
+			case cpp_parser::CppOperators::Comma:
+				WriteString(L"Comma");
+				break;
+			case cpp_parser::CppOperators::Decrease:
+				WriteString(L"Decrease");
+				break;
+			case cpp_parser::CppOperators::Delete:
+				WriteString(L"Delete");
+				break;
+			case cpp_parser::CppOperators::DeleteArray:
+				WriteString(L"DeleteArray");
+				break;
+			case cpp_parser::CppOperators::Div:
+				WriteString(L"Div");
+				break;
+			case cpp_parser::CppOperators::DivAssign:
+				WriteString(L"DivAssign");
+				break;
+			case cpp_parser::CppOperators::EQ:
+				WriteString(L"EQ");
+				break;
+			case cpp_parser::CppOperators::GE:
+				WriteString(L"GE");
+				break;
+			case cpp_parser::CppOperators::GT:
+				WriteString(L"GT");
+				break;
+			case cpp_parser::CppOperators::Increase:
+				WriteString(L"Increase");
+				break;
+			case cpp_parser::CppOperators::LE:
+				WriteString(L"LE");
+				break;
+			case cpp_parser::CppOperators::LT:
+				WriteString(L"LT");
+				break;
+			case cpp_parser::CppOperators::LeftShift:
+				WriteString(L"LeftShift");
+				break;
+			case cpp_parser::CppOperators::LeftShiftAssign:
+				WriteString(L"LeftShiftAssign");
+				break;
+			case cpp_parser::CppOperators::Minus:
+				WriteString(L"Minus");
+				break;
+			case cpp_parser::CppOperators::MinusAssign:
+				WriteString(L"MinusAssign");
+				break;
+			case cpp_parser::CppOperators::Mod:
+				WriteString(L"Mod");
+				break;
+			case cpp_parser::CppOperators::ModAssign:
+				WriteString(L"ModAssign");
+				break;
+			case cpp_parser::CppOperators::Mul:
+				WriteString(L"Mul");
+				break;
+			case cpp_parser::CppOperators::MulAssign:
+				WriteString(L"MulAssign");
+				break;
+			case cpp_parser::CppOperators::NE:
+				WriteString(L"NE");
+				break;
+			case cpp_parser::CppOperators::New:
+				WriteString(L"New");
+				break;
+			case cpp_parser::CppOperators::NewArray:
+				WriteString(L"NewArray");
+				break;
+			case cpp_parser::CppOperators::Not:
+				WriteString(L"Not");
+				break;
+			case cpp_parser::CppOperators::Or:
+				WriteString(L"Or");
+				break;
+			case cpp_parser::CppOperators::OrAssign:
+				WriteString(L"OrAssign");
+				break;
+			case cpp_parser::CppOperators::Parantheses:
+				WriteString(L"Parantheses");
+				break;
+			case cpp_parser::CppOperators::Plus:
+				WriteString(L"Plus");
+				break;
+			case cpp_parser::CppOperators::PlusAssign:
+				WriteString(L"PlusAssign");
+				break;
+			case cpp_parser::CppOperators::Pointer:
+				WriteString(L"Pointer");
+				break;
+			case cpp_parser::CppOperators::PointerDeref:
+				WriteString(L"PointerDeref");
+				break;
+			case cpp_parser::CppOperators::ReverseAssign:
+				WriteString(L"ReverseAssign");
+				break;
+			case cpp_parser::CppOperators::Revert:
+				WriteString(L"Revert");
+				break;
+			case cpp_parser::CppOperators::RightShift:
+				WriteString(L"RightShift");
+				break;
+			case cpp_parser::CppOperators::RightShiftAssign:
+				WriteString(L"RightShiftAssign");
+				break;
+			case cpp_parser::CppOperators::RoundBracket:
+				WriteString(L"RoundBracket");
+				break;
+			case cpp_parser::CppOperators::Xor:
+				WriteString(L"Xor");
+				break;
+			case cpp_parser::CppOperators::XorAssign:
+				WriteString(L"XorAssign");
+				break;
+			default:
+				WriteNull();
+			}
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppQualifiedName* node)
+		{
+		}
+		void AstVisitor::PrintFields(CppTypeOrExpr* node)
+		{
+		}
+
+		void AstVisitor::Visit(CppQualifiedName* node)
+		{
+			node->Accept(static_cast<CppQualifiedName::IVisitor*>(this));
+		}
+
+		void AstVisitor::Visit(CppName* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"Name", node);
+			PrintFields(static_cast<CppTypeOrExpr*>(node));
+			PrintFields(static_cast<CppQualifiedName*>(node));
+			PrintFields(static_cast<CppName*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppOperatorName* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"OperatorName", node);
+			PrintFields(static_cast<CppTypeOrExpr*>(node));
+			PrintFields(static_cast<CppQualifiedName*>(node));
+			PrintFields(static_cast<CppOperatorName*>(node));
+			EndObject();
+		}
 
 		AstVisitor::AstVisitor(vl::stream::StreamWriter& _writer)
 			: vl::glr::JsonVisitorBase(_writer)
 		{
+		}
+
+		void AstVisitor::Print(CppTypeOrExpr* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			node->Accept(static_cast<CppTypeOrExpr::IVisitor*>(this));
 		}
 
 		void AstVisitor::Print(CppFile* node)
