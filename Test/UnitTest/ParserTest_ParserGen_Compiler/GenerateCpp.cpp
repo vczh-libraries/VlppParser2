@@ -106,7 +106,12 @@ TEST_FILE
 			[&](vint32_t index) { auto token = lexerManager.Tokens()[lexerManager.TokenOrder()[index]]; return token->displayText == L"" ? token->Name() : L"\"" + token->displayText + L"\""; },
 			[&](vint32_t index) { return syntaxManager.switches.Keys()[index]; }
 			);
-	
+
+		{
+			auto rule = syntaxManager.Rules()[L"_TypeOrExpr"];
+			syntaxManager.parsableRules.Add(rule);
+			syntaxManager.ruleTypes.Add(rule, L"cpp_parser::CppTypeOrExpr");
+		}
 		{
 			auto rule = syntaxManager.Rules()[L"_File"];
 			syntaxManager.parsableRules.Add(rule);

@@ -17,7 +17,8 @@ namespace cpp_parser
 		_Name = 0,
 		_OperatorName = 19,
 		_QualifiedName = 101,
-		_File = 105,
+		_TypeOrExpr = 105,
+		_File = 108,
 	};
 
 	const wchar_t* ParserRuleName(vl::vint index);
@@ -34,6 +35,8 @@ namespace cpp_parser
 	public:
 		Parser();
 
+		vl::Ptr<cpp_parser::CppTypeOrExpr> Parse_TypeOrExpr(const vl::WString& input, vl::vint codeIndex = -1) const;
+		vl::Ptr<cpp_parser::CppTypeOrExpr> Parse_TypeOrExpr(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
 		vl::Ptr<cpp_parser::CppFile> Parse_File(const vl::WString& input, vl::vint codeIndex = -1) const;
 		vl::Ptr<cpp_parser::CppFile> Parse_File(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
 	};
