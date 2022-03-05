@@ -1,4 +1,66 @@
 //////////////////////////////////////////////////////////////////
+// QualifiedName
+//////////////////////////////////////////////////////////////////
+
+_Name
+  ::= ID:name as Name {NameKind = Normal}
+  ::= "~" ID:name as Name {NameKind = Dtor}
+  ::= "enum" ID:name as Name {NameKind = Enum}
+  ::= "enum" "class" ID:name as Name {NameKind = EnumClass}
+  ::= "class" ID:name as Name {NameKind = Class}
+  ::= "struct" ID:name as Name {NameKind = Struct}
+  ::= "union" ID:name as Name {NameKind = Union}
+  ::= "operator" '""' ID:name as Name {NameKind = UserDefinedLiteral}
+  ;
+
+_OperatorName
+  ::= "operator" ","      {op = Comma}
+  ::= "operator" "(" ")"  {op = Parantheses}
+  ::= "operator" "[" "]"  {op = Bracket}
+  ::= "operator" "->*"    {op = PointerRef}
+  ::= "operator" "->"     {op = Pointer}
+  ::= "operator" "!="     {op = NE}
+  ::= "operator" "!"      {op = Not}
+  ::= "operator" "=="     {op = EQ}
+  ::= "operator" "="      {op = Assign}
+  ::= "operator" "~="     {op = RevertAssign}
+  ::= "operator" "~"      {op = Revert}
+  ::= "operator" "^="     {op = XorAssign}
+  ::= "operator" "^"      {op = Xor}
+  ::= "operator" "&&"     {op = And}
+  ::= "operator" "&="     {op = AndAssign}
+  ::= "operator" "&"      {op = BitwiseAnd}
+  ::= "operator" "||"     {op = Or}
+  ::= "operator" "|="     {op = OrAssign}
+  ::= "operator" "|"      {op = BitwiseOr}
+  ::= "operator" "*="     {op = MulAssign}
+  ::= "operator" "*"      {op = Mul}
+  ::= "operator" "/="     {op = DivAssign}
+  ::= "operator" "/"      {op = Div}
+  ::= "operator" "%="     {op = ModAssign}
+  ::= "operator" "%"      {op = Mod}
+  ::= "operator" "+="     {op = PlusAssign}
+  ::= "operator" "++"     {op = Increase}
+  ::= "operator" "+"      {op = Plus}
+  ::= "operator" "-="     {op = MinusAssign}
+  ::= "operator" "--"     {op = Decrease}
+  ::= "operator" "-"      {op = Minus}
+  ::= "operator" "<<="    {op = LeftShiftAssign}
+  ::= "operator" "<<"     {op = LeftShift}
+  ::= "operator" "<="     {op = LE}
+  ::= "operator" "<"      {op = LT}
+  ::= "operator" ">>="    {op = RightShiftAssign}
+  ::= "operator" ">>"     {op = RightShift}
+  ::= "operator" ">="     {op = GE}
+  ::= "operator" ">"      {op = GT}
+  ;
+
+_QualifiedName
+  ::= !_Name
+  ::= !_OperatorName
+  ;
+
+//////////////////////////////////////////////////////////////////
 // SYNTAX
 //////////////////////////////////////////////////////////////////
 
