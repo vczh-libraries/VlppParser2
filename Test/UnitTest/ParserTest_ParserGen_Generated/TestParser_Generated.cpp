@@ -16,6 +16,8 @@
 #include "../../Source/FeatureTest/Generated/FeatureTestModuleParser.h"
 #include "../../Source/BinaryOp/Generated/BinaryOpExprAst_Json.h"
 #include "../../Source/BinaryOp/Generated/BinaryOpModuleParser.h"
+#include "../../Source/PrefixSubset/Generated/PrefixSubsetTypeOrExpr_Json.h"
+#include "../../Source/PrefixSubset/Generated/PrefixSubsetModuleParser.h"
 #include "../../Source/LogTrace.h"
 
 extern WString GetTestParserInputPath(const WString& parserName);
@@ -203,5 +205,15 @@ TEST_FILE
 		&binaryop::ModuleParserRuleName,
 		&binaryop::ModuleParserStateLabel,
 		&binaryop::ModuleParserSwitchName
+		);
+	TestParser<prefixsubset::ModuleParser, prefixsubset::json_visitor::TypeOrExprVisitor>(
+		L"PrefixSubset",
+		prefixsubset::ModuleParserStates::Module,
+		&prefixsubset::PrefixSubsetTypeName,
+		&prefixsubset::PrefixSubsetFieldName,
+		&prefixsubset::PrefixSubsetTokenId,
+		&prefixsubset::ModuleParserRuleName,
+		&prefixsubset::ModuleParserStateLabel,
+		&prefixsubset::ModuleParserSwitchName
 		);
 }
