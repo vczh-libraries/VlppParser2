@@ -11,7 +11,11 @@ extern WString GetTestParserInputPath(const WString& parserName);
 template<typename T>
 Ptr<T> ParseTypeExpr(cpp_parser::Parser& parser, const WString& code)
 {
-	return {};
+	auto ast = parser.Parse_TypeOrExpr(code);
+	TEST_ASSERT(ast);
+	auto typed = ast.Cast<T>();
+	TEST_ASSERT(typed);
+	return typed;
 }
 
 TEST_FILE
@@ -30,6 +34,7 @@ TEST_FILE
 		{
 			TEST_CASE(line)
 			{
+				ParseTypeExpr<CppQualifiedName>(parser, line);
 			});
 		}
 	});
@@ -44,9 +49,9 @@ TEST_FILE
 		).ReadAllLinesByBom(lines);
 		for (auto&& line : lines)
 		{
-			TEST_CASE(line)
-			{
-			});
+			//TEST_CASE(line)
+			//{
+			//});
 		}
 	});
 
@@ -60,9 +65,9 @@ TEST_FILE
 		).ReadAllLinesByBom(lines);
 		for (auto&& line : lines)
 		{
-			TEST_CASE(line)
-			{
-			});
+			//TEST_CASE(line)
+			//{
+			//});
 		}
 	});
 
@@ -76,9 +81,9 @@ TEST_FILE
 		).ReadAllLinesByBom(lines);
 		for (auto&& line : lines)
 		{
-			TEST_CASE(line)
-			{
-			});
+			//TEST_CASE(line)
+			//{
+			//});
 		}
 	});
 
@@ -92,9 +97,9 @@ TEST_FILE
 		).ReadAllLinesByBom(lines);
 		for (auto&& line : lines)
 		{
-			TEST_CASE(line)
-			{
-			});
+			//TEST_CASE(line)
+			//{
+			//});
 		}
 	});
 
@@ -108,9 +113,9 @@ TEST_FILE
 		).ReadAllLinesByBom(lines);
 		for (auto&& line : lines)
 		{
-			TEST_CASE(line)
-			{
-			});
+			//TEST_CASE(line)
+			//{
+			//});
 		}
 	});
 
@@ -124,9 +129,9 @@ TEST_FILE
 		).ReadAllLinesByBom(lines);
 		for (auto&& line : lines)
 		{
-			TEST_CASE(line)
-			{
-			});
+			//TEST_CASE(line)
+			//{
+			//});
 		}
 	});
 
@@ -140,9 +145,9 @@ TEST_FILE
 		).ReadAllLinesByBom(lines);
 		for (auto&& line : lines)
 		{
-			TEST_CASE(line)
-			{
-			});
+			//TEST_CASE(line)
+			//{
+			//});
 		}
 	});
 }

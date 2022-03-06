@@ -113,79 +113,54 @@ vint CheckTokens(List<RegexToken>& tokens)
 		switch ((CppTokens)token.token)
 		{
 		case CppTokens::LBRACE:
-			TEST_ASSERT(token.length == 1 && *token.reading == L'{');
-			break;
 		case CppTokens::RBRACE:
-			TEST_ASSERT(token.length == 1 && *token.reading == L'}');
-			break;
 		case CppTokens::LBRACKET:
-			TEST_ASSERT(token.length == 1 && *token.reading == L'[');
-			break;
 		case CppTokens::RBRACKET:
-			TEST_ASSERT(token.length == 1 && *token.reading == L']');
-			break;
 		case CppTokens::LPARENTHESIS:
-			TEST_ASSERT(token.length == 1 && *token.reading == L'(');
-			break;
 		case CppTokens::RPARENTHESIS:
-			TEST_ASSERT(token.length == 1 && *token.reading == L')');
-			break;
+		case CppTokens::LSE:
+		case CppTokens::LS:
+		case CppTokens::LE:
 		case CppTokens::LT:
-			TEST_ASSERT(token.length == 1 && *token.reading == L'<');
-			break;
+		case CppTokens::RSE:
+		case CppTokens::RS:
+		case CppTokens::GE:
 		case CppTokens::GT:
-			TEST_ASSERT(token.length == 1 && *token.reading == L'>');
-			break;
 		case CppTokens::EQ:
-			TEST_ASSERT(token.length == 1 && *token.reading == L'=');
-			break;
+		case CppTokens::NE:
+		case CppTokens::ASSIGN:
 		case CppTokens::NOT:
-			TEST_ASSERT(token.length == 1 && *token.reading == L'!');
-			break;
-		case CppTokens::PERCENT:
-			TEST_ASSERT(token.length == 1 && *token.reading == L'%');
-			break;
+		case CppTokens::MOD_ASSIGN:
+		case CppTokens::MOD:
 		case CppTokens::COLON:
-			TEST_ASSERT(token.length == 1 && *token.reading == L':');
-			break;
 		case CppTokens::SEMICOLON:
-			TEST_ASSERT(token.length == 1 && *token.reading == L';');
-			break;
 		case CppTokens::DOT:
-			TEST_ASSERT(token.length == 1 && *token.reading == L'.');
-			break;
 		case CppTokens::QUESTIONMARK:
-			TEST_ASSERT(token.length == 1 && *token.reading == L'?');
-			break;
 		case CppTokens::COMMA:
-			TEST_ASSERT(token.length == 1 && *token.reading == L',');
-			break;
+		case CppTokens::MUL_ASSIGN:
 		case CppTokens::MUL:
-			TEST_ASSERT(token.length == 1 && *token.reading == L'*');
-			break;
-		case CppTokens::ADD:
-			TEST_ASSERT(token.length == 1 && *token.reading == L'+');
-			break;
-		case CppTokens::SUB:
-			TEST_ASSERT(token.length == 1 && *token.reading == L'-');
-			break;
+		case CppTokens::INCREASE:
+		case CppTokens::PLUS_ASSIGN:
+		case CppTokens::PLUS:
+		case CppTokens::POINTER_DEREF:
+		case CppTokens::POINTER:
+		case CppTokens::DECREASE:
+		case CppTokens::MINUS_ASSIGN:
+		case CppTokens::MINUS:
+		case CppTokens::DIV_ASSIGN:
 		case CppTokens::DIV:
-			TEST_ASSERT(token.length == 1 && *token.reading == L'/');
-			break;
+		case CppTokens::XOR_ASSIGN:
 		case CppTokens::XOR:
-			TEST_ASSERT(token.length == 1 && *token.reading == L'^');
-			break;
+		case CppTokens::AND_ASSIGN:
+		case CppTokens::AND_AND:
 		case CppTokens::AND:
-			TEST_ASSERT(token.length == 1 && *token.reading == L'&');
-			break;
+		case CppTokens::OR_ASSIGN:
+		case CppTokens::OR_OR:
 		case CppTokens::OR:
-			TEST_ASSERT(token.length == 1 && *token.reading == L'|');
-			break;
+		case CppTokens::REVERT_ASSIGN:
 		case CppTokens::REVERT:
-			TEST_ASSERT(token.length == 1 && *token.reading == L'~');
-			break;
 		case CppTokens::SHARP:
-			TEST_ASSERT(token.length == 1 && *token.reading == L'#');
+			// skip operators which will be tested during compiling syntax
 			break;
 		case CppTokens::INT:
 			{
@@ -444,7 +419,7 @@ TEST_FILE
 
 	TEST_CASE(L"Punctuators")
 	{
-		WString input = LR"({}[]()<>=!%:;.?,*+-/^&|~#)";
+		WString input = LR"({}[]()=<>!%:;.?,*+-/^&|~#)";
 		List<RegexToken> tokens;
 		cppLexer->Parse(input).ReadToEnd(tokens);
 		TEST_ASSERT(CheckTokens(tokens) == 25);
@@ -527,6 +502,6 @@ int main()
 )";
 		List<RegexToken> tokens;
 		cppLexer->Parse(input).ReadToEnd(tokens);
-		TEST_ASSERT(CheckTokens(tokens) == 31);
+		TEST_ASSERT(CheckTokens(tokens) == 29);
 	});
 }
