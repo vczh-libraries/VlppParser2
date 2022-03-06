@@ -37,6 +37,7 @@ TEST_FILE
 	parsersToLoad.Add(ParserDef{ L"GenericAmbiguity", L"ExprAst", L"Module" });
 	parsersToLoad.Add(ParserDef{ L"FeatureTest", L"FeatureAst", L"Module" });
 	parsersToLoad.Add(ParserDef{ L"BinaryOp", L"ExprAst", L"Module" });
+	parsersToLoad.Add(ParserDef{ L"PrefixSubset", L"TypeOrExpr", L"Module" });
 
 	for (auto&& [_parserName, _astName, _ruleName] : parsersToLoad)
 	{

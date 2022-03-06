@@ -1,0 +1,27 @@
+_Name
+  ::= ID:name as Name
+  ::= _Name:parent "." ID:member as MemberName
+  ;
+
+_ShortType
+  ::= !_Name
+  ::= "const" _ShortType:type as ConstType
+  ;
+
+_LongType
+  ::= !_ShortType
+  ::= _LongType:type "const" as ConstType
+  ::= _LongType:type "*" as PointerType
+  ::= _LongType:returnType "(" {_LongType:args ; ","} ")" as FunctionType
+  ;
+
+_Expr
+  ::= !_Name
+  ::= "(" !_Expr ")"
+  ::= _Expr:func "(" {_Expr:args ; ","} ")" as CallExpr
+  ;
+
+Module
+  ::= !_LongType
+  ::= !_Expr
+  ;
