@@ -15,6 +15,10 @@
   - Issue: `X ::= ([a] | [b]) c` fails because when both optional syntax fail it creates two trace routes to c and causes ambiguity.
   - Possible solution: if multiple combinations of consecutive epsilon transitions makes an epsilon transition between two states, treat them as one single epsilon transition.
     - Merge conditions in these epsilon transitions properly.
+- A subset prefix must be merged into a fullset prefix.
+  - A transition A could be removed if there is transition B where
+    - Instructions and return stacks are exactly the same, except the top returning state
+    - Transitions from returning state SA is a subset of SB
 - `JsonEscapeString` `JsonUnescapeString` handle surrogate pairs correctly.
 - Review all comments.
 
