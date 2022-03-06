@@ -32,10 +32,13 @@ TEST_FILE
 		).ReadAllLinesByBom(lines);
 		for (auto&& line : lines)
 		{
-			TEST_CASE(line)
+			if (line != L"")
 			{
-				ParseTypeExpr<CppQualifiedName>(parser, line);
-			});
+				TEST_CASE(line)
+				{
+					ParseTypeExpr<CppQualifiedName>(parser, line);
+				});
+			}
 		}
 	});
 
@@ -49,9 +52,12 @@ TEST_FILE
 		).ReadAllLinesByBom(lines);
 		for (auto&& line : lines)
 		{
-			//TEST_CASE(line)
-			//{
-			//});
+			if (line != L"")
+			{
+				//TEST_CASE(line)
+				//{
+				//});
+			}
 		}
 	});
 
@@ -65,9 +71,12 @@ TEST_FILE
 		).ReadAllLinesByBom(lines);
 		for (auto&& line : lines)
 		{
-			//TEST_CASE(line)
-			//{
-			//});
+			if (line != L"")
+			{
+				//TEST_CASE(line)
+				//{
+				//});
+			}
 		}
 	});
 
@@ -81,9 +90,12 @@ TEST_FILE
 		).ReadAllLinesByBom(lines);
 		for (auto&& line : lines)
 		{
-			//TEST_CASE(line)
-			//{
-			//});
+			if (line != L"")
+			{
+				//TEST_CASE(line)
+				//{
+				//});
+			}
 		}
 	});
 
@@ -97,9 +109,12 @@ TEST_FILE
 		).ReadAllLinesByBom(lines);
 		for (auto&& line : lines)
 		{
-			//TEST_CASE(line)
-			//{
-			//});
+			if (line != L"")
+			{
+				//TEST_CASE(line)
+				//{
+				//});
+			}
 		}
 	});
 
@@ -113,9 +128,12 @@ TEST_FILE
 		).ReadAllLinesByBom(lines);
 		for (auto&& line : lines)
 		{
-			//TEST_CASE(line)
-			//{
-			//});
+			if (line != L"")
+			{
+				//TEST_CASE(line)
+				//{
+				//});
+			}
 		}
 	});
 
@@ -129,9 +147,12 @@ TEST_FILE
 		).ReadAllLinesByBom(lines);
 		for (auto&& line : lines)
 		{
-			//TEST_CASE(line)
-			//{
-			//});
+			if (line != L"")
+			{
+				//TEST_CASE(line)
+				//{
+				//});
+			}
 		}
 	});
 
@@ -145,9 +166,12 @@ TEST_FILE
 		).ReadAllLinesByBom(lines);
 		for (auto&& line : lines)
 		{
-			//TEST_CASE(line)
-			//{
-			//});
+			if (line != L"")
+			{
+				//TEST_CASE(line)
+				//{
+				//});
+			}
 		}
 	});
 }

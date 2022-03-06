@@ -16,9 +16,9 @@ namespace cpp_parser
 	{
 		_Name = 0,
 		_OperatorName = 19,
-		_QualifiedName = 101,
-		_TypeOrExpr = 105,
-		_File = 108,
+		_QualifiedName = 113,
+		_TypeOrExpr = 117,
+		_File = 120,
 	};
 
 	const wchar_t* ParserRuleName(vl::vint index);
