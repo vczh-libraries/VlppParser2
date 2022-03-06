@@ -65,7 +65,7 @@ _QualifiedName
   ;
 
 //////////////////////////////////////////////////////////////////
-// ExprOnly
+// PrimitiveExpr
 //////////////////////////////////////////////////////////////////
 
 _StringLiteralFragment
@@ -89,12 +89,45 @@ _PrimitiveExpr
   ;
 
 //////////////////////////////////////////////////////////////////
+// PrimitiveType
+//////////////////////////////////////////////////////////////////
+
+_PrimitiveTypeLiteral
+  ::= "wchar_t":literal1                 as partial PrimitiveType
+  ::= "char8_t":literal1                 as partial PrimitiveType
+  ::= "char16_t":literal1                as partial PrimitiveType
+  ::= "char32_t":literal1                as partial PrimitiveType
+  ::= "char":literal1                    as partial PrimitiveType
+  ::= "short":literal1                   as partial PrimitiveType
+  ::= "int":literal1                     as partial PrimitiveType
+  ::= "__int8":literal1                  as partial PrimitiveType
+  ::= "__int16":literal1                 as partial PrimitiveType
+  ::= "__int32":literal1                 as partial PrimitiveType
+  ::= "__int64":literal1                 as partial PrimitiveType
+  ::= "long":literal1                    as partial PrimitiveType
+  ::= "long":literal1 "int":literal2     as partial PrimitiveType
+  ::= "long":literal1 "long":literal2    as partial PrimitiveType
+  ;
+
+_PrimitiveType
+  ::= "signed" [_PrimitiveTypeLiteral]   as PrimitiveType {kind = Signed}
+  ::= "unsigned" [_PrimitiveTypeLiteral] as PrimitiveType {kind = Unsigned}
+  ::= "void":literal1                    as PrimitiveType {kind = Neutral}
+  ::= "bool":literal1                    as PrimitiveType {kind = Neutral}
+  ::= "float":literal1                   as PrimitiveType {kind = Neutral}
+  ::= "double":literal1                  as PrimitiveType {kind = Neutral}
+  ::= "long":literal1 "double":literal2  as PrimitiveType {kind = Neutral}
+  ::= _PrimitiveTypeLiteral              as PrimitiveType {kind = Neutral}
+  ;
+
+//////////////////////////////////////////////////////////////////
 // TypeOrExpr
 //////////////////////////////////////////////////////////////////
 
 _TypeOrExpr
   ::= !_QualifiedName
   ::= !_PrimitiveExpr
+  ::= !_PrimitiveType
   ;
 
 //////////////////////////////////////////////////////////////////

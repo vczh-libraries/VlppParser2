@@ -19,8 +19,10 @@ namespace cpp_parser
 		_QualifiedName = 113,
 		_StringLiteralFragment = 117,
 		_PrimitiveExpr = 121,
-		_TypeOrExpr = 136,
-		_File = 140,
+		_PrimitiveTypeLiteral = 136,
+		_PrimitiveType = 154,
+		_TypeOrExpr = 167,
+		_File = 172,
 	};
 
 	const wchar_t* ParserRuleName(vl::vint index);

@@ -251,6 +251,31 @@ namespace cpp_parser
 			}
 			EndField();
 		}
+		void AstVisitor::PrintFields(CppPrimitiveType* node)
+		{
+			BeginField(L"kind");
+			switch (node->kind)
+			{
+			case cpp_parser::CppPrimitiveTypeKinds::Neutral:
+				WriteString(L"Neutral");
+				break;
+			case cpp_parser::CppPrimitiveTypeKinds::Signed:
+				WriteString(L"Signed");
+				break;
+			case cpp_parser::CppPrimitiveTypeKinds::Unsigned:
+				WriteString(L"Unsigned");
+				break;
+			default:
+				WriteNull();
+			}
+			EndField();
+			BeginField(L"literal1");
+			WriteToken(node->literal1);
+			EndField();
+			BeginField(L"literal2");
+			WriteToken(node->literal2);
+			EndField();
+		}
 		void AstVisitor::PrintFields(CppQualifiedName* node)
 		{
 		}
@@ -286,6 +311,9 @@ namespace cpp_parser
 			WriteToken(node->literal);
 			EndField();
 		}
+		void AstVisitor::PrintFields(CppTypeOnly* node)
+		{
+		}
 		void AstVisitor::PrintFields(CppTypeOrExpr* node)
 		{
 		}
@@ -298,6 +326,11 @@ namespace cpp_parser
 		void AstVisitor::Visit(CppExprOnly* node)
 		{
 			node->Accept(static_cast<CppExprOnly::IVisitor*>(this));
+		}
+
+		void AstVisitor::Visit(CppTypeOnly* node)
+		{
+			node->Accept(static_cast<CppTypeOnly::IVisitor*>(this));
 		}
 
 		void AstVisitor::Visit(CppName* node)
@@ -372,6 +405,21 @@ namespace cpp_parser
 			PrintFields(static_cast<CppTypeOrExpr*>(node));
 			PrintFields(static_cast<CppExprOnly*>(node));
 			PrintFields(static_cast<CppStringLiteral*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppPrimitiveType* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"PrimitiveType", node);
+			PrintFields(static_cast<CppTypeOrExpr*>(node));
+			PrintFields(static_cast<CppTypeOnly*>(node));
+			PrintFields(static_cast<CppPrimitiveType*>(node));
 			EndObject();
 		}
 

@@ -18,9 +18,11 @@ namespace cpp_parser
 		void AstVisitor::Traverse(CppNumericExprLiteral* node) {}
 		void AstVisitor::Traverse(CppOperatorName* node) {}
 		void AstVisitor::Traverse(CppPrimitiveExprLiteral* node) {}
+		void AstVisitor::Traverse(CppPrimitiveType* node) {}
 		void AstVisitor::Traverse(CppQualifiedName* node) {}
 		void AstVisitor::Traverse(CppStringLiteral* node) {}
 		void AstVisitor::Traverse(CppStringLiteralFragment* node) {}
+		void AstVisitor::Traverse(CppTypeOnly* node) {}
 		void AstVisitor::Traverse(CppTypeOrExpr* node) {}
 
 		void AstVisitor::Finishing(vl::glr::ParsingAstBase* node) {}
@@ -30,9 +32,11 @@ namespace cpp_parser
 		void AstVisitor::Finishing(CppNumericExprLiteral* node) {}
 		void AstVisitor::Finishing(CppOperatorName* node) {}
 		void AstVisitor::Finishing(CppPrimitiveExprLiteral* node) {}
+		void AstVisitor::Finishing(CppPrimitiveType* node) {}
 		void AstVisitor::Finishing(CppQualifiedName* node) {}
 		void AstVisitor::Finishing(CppStringLiteral* node) {}
 		void AstVisitor::Finishing(CppStringLiteralFragment* node) {}
+		void AstVisitor::Finishing(CppTypeOnly* node) {}
 		void AstVisitor::Finishing(CppTypeOrExpr* node) {}
 
 		void AstVisitor::Visit(CppQualifiedName* node)
@@ -43,6 +47,11 @@ namespace cpp_parser
 		void AstVisitor::Visit(CppExprOnly* node)
 		{
 			node->Accept(static_cast<CppExprOnly::IVisitor*>(this));
+		}
+
+		void AstVisitor::Visit(CppTypeOnly* node)
+		{
+			node->Accept(static_cast<CppTypeOnly::IVisitor*>(this));
 		}
 
 		void AstVisitor::Visit(CppName* node)
@@ -112,6 +121,21 @@ namespace cpp_parser
 			}
 			Finishing(static_cast<CppStringLiteral*>(node));
 			Finishing(static_cast<CppExprOnly*>(node));
+			Finishing(static_cast<CppTypeOrExpr*>(node));
+			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+		}
+
+		void AstVisitor::Visit(CppPrimitiveType* node)
+		{
+			if (!node) return;
+			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+			Traverse(static_cast<CppTypeOrExpr*>(node));
+			Traverse(static_cast<CppTypeOnly*>(node));
+			Traverse(static_cast<CppPrimitiveType*>(node));
+			Traverse(node->literal1);
+			Traverse(node->literal2);
+			Finishing(static_cast<CppPrimitiveType*>(node));
+			Finishing(static_cast<CppTypeOnly*>(node));
 			Finishing(static_cast<CppTypeOrExpr*>(node));
 			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 		}

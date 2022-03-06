@@ -28,6 +28,8 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return new cpp_parser::CppOperatorName();
 		case CppClasses::PrimitiveExprLiteral:
 			return new cpp_parser::CppPrimitiveExprLiteral();
+		case CppClasses::PrimitiveType:
+			return new cpp_parser::CppPrimitiveType();
 		case CppClasses::StringLiteral:
 			return new cpp_parser::CppStringLiteral();
 		case CppClasses::StringLiteralFragment:
@@ -58,6 +60,10 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::glr::AssemblerSetTokenField(&cpp_parser::CppName::name, object, field, token, tokenIndex, cppFieldName);
 		case CppFields::NumericExprLiteral_literal:
 			return vl::glr::AssemblerSetTokenField(&cpp_parser::CppNumericExprLiteral::literal, object, field, token, tokenIndex, cppFieldName);
+		case CppFields::PrimitiveType_literal1:
+			return vl::glr::AssemblerSetTokenField(&cpp_parser::CppPrimitiveType::literal1, object, field, token, tokenIndex, cppFieldName);
+		case CppFields::PrimitiveType_literal2:
+			return vl::glr::AssemblerSetTokenField(&cpp_parser::CppPrimitiveType::literal2, object, field, token, tokenIndex, cppFieldName);
 		case CppFields::StringLiteralFragment_literal:
 			return vl::glr::AssemblerSetTokenField(&cpp_parser::CppStringLiteralFragment::literal, object, field, token, tokenIndex, cppFieldName);
 		default:
@@ -78,6 +84,8 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::glr::AssemblerSetEnumField(&cpp_parser::CppOperatorName::op, object, field, enumItem, weakAssignment, cppFieldName);
 		case CppFields::PrimitiveExprLiteral_kind:
 			return vl::glr::AssemblerSetEnumField(&cpp_parser::CppPrimitiveExprLiteral::kind, object, field, enumItem, weakAssignment, cppFieldName);
+		case CppFields::PrimitiveType_kind:
+			return vl::glr::AssemblerSetEnumField(&cpp_parser::CppPrimitiveType::kind, object, field, enumItem, weakAssignment, cppFieldName);
 		case CppFields::StringLiteralFragment_kind:
 			return vl::glr::AssemblerSetEnumField(&cpp_parser::CppStringLiteralFragment::kind, object, field, enumItem, weakAssignment, cppFieldName);
 		default:
@@ -94,13 +102,15 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"NumericExprLiteral",
 			L"OperatorName",
 			L"PrimitiveExprLiteral",
+			L"PrimitiveType",
 			L"QualifiedName",
 			L"StringLiteral",
 			L"StringLiteralFragment",
+			L"TypeOnly",
 			L"TypeOrExpr",
 		};
 		vl::vint index = (vl::vint)type;
-		return 0 <= index && index < 10 ? results[index] : nullptr;
+		return 0 <= index && index < 12 ? results[index] : nullptr;
 	}
 
 	const wchar_t* CppCppTypeName(CppClasses type)
@@ -112,13 +122,15 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::CppNumericExprLiteral",
 			L"cpp_parser::CppOperatorName",
 			L"cpp_parser::CppPrimitiveExprLiteral",
+			L"cpp_parser::CppPrimitiveType",
 			L"cpp_parser::CppQualifiedName",
 			L"cpp_parser::CppStringLiteral",
 			L"cpp_parser::CppStringLiteralFragment",
+			L"cpp_parser::CppTypeOnly",
 			L"cpp_parser::CppTypeOrExpr",
 		};
 		vl::vint index = (vl::vint)type;
-		return 0 <= index && index < 10 ? results[index] : nullptr;
+		return 0 <= index && index < 12 ? results[index] : nullptr;
 	}
 
 	const wchar_t* CppFieldName(CppFields field)
@@ -130,12 +142,15 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"NumericExprLiteral::literal",
 			L"OperatorName::op",
 			L"PrimitiveExprLiteral::kind",
+			L"PrimitiveType::kind",
+			L"PrimitiveType::literal1",
+			L"PrimitiveType::literal2",
 			L"StringLiteral::fragments",
 			L"StringLiteralFragment::kind",
 			L"StringLiteralFragment::literal",
 		};
 		vl::vint index = (vl::vint)field;
-		return 0 <= index && index < 9 ? results[index] : nullptr;
+		return 0 <= index && index < 12 ? results[index] : nullptr;
 	}
 
 	const wchar_t* CppCppFieldName(CppFields field)
@@ -147,12 +162,15 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::CppNumericExprLiteral::literal",
 			L"cpp_parser::CppOperatorName::op",
 			L"cpp_parser::CppPrimitiveExprLiteral::kind",
+			L"cpp_parser::CppPrimitiveType::kind",
+			L"cpp_parser::CppPrimitiveType::literal1",
+			L"cpp_parser::CppPrimitiveType::literal2",
 			L"cpp_parser::CppStringLiteral::fragments",
 			L"cpp_parser::CppStringLiteralFragment::kind",
 			L"cpp_parser::CppStringLiteralFragment::literal",
 		};
 		vl::vint index = (vl::vint)field;
-		return 0 <= index && index < 9 ? results[index] : nullptr;
+		return 0 <= index && index < 12 ? results[index] : nullptr;
 	}
 
 	vl::Ptr<vl::glr::ParsingAstBase> CppAstInsReceiver::ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates)

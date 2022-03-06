@@ -19,10 +19,12 @@ namespace cpp_parser
 		NumericExprLiteral = 3,
 		OperatorName = 4,
 		PrimitiveExprLiteral = 5,
-		QualifiedName = 6,
-		StringLiteral = 7,
-		StringLiteralFragment = 8,
-		TypeOrExpr = 9,
+		PrimitiveType = 6,
+		QualifiedName = 7,
+		StringLiteral = 8,
+		StringLiteralFragment = 9,
+		TypeOnly = 10,
+		TypeOrExpr = 11,
 	};
 
 	enum class CppFields : vl::vint32_t
@@ -33,9 +35,12 @@ namespace cpp_parser
 		NumericExprLiteral_literal = 3,
 		OperatorName_op = 4,
 		PrimitiveExprLiteral_kind = 5,
-		StringLiteral_fragments = 6,
-		StringLiteralFragment_kind = 7,
-		StringLiteralFragment_literal = 8,
+		PrimitiveType_kind = 6,
+		PrimitiveType_literal1 = 7,
+		PrimitiveType_literal2 = 8,
+		StringLiteral_fragments = 9,
+		StringLiteralFragment_kind = 10,
+		StringLiteralFragment_literal = 11,
 	};
 
 	extern const wchar_t* CppTypeName(CppClasses type);

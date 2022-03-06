@@ -45,6 +45,14 @@ namespace cpp_parser
 			to->kind = from->kind;
 		}
 
+		void AstVisitor::CopyFields(CppPrimitiveType* from, CppPrimitiveType* to)
+		{
+			CopyFields(static_cast<CppTypeOnly*>(from), static_cast<CppTypeOnly*>(to));
+			to->kind = from->kind;
+			to->literal1 = from->literal1;
+			to->literal2 = from->literal2;
+		}
+
 		void AstVisitor::CopyFields(CppQualifiedName* from, CppQualifiedName* to)
 		{
 			CopyFields(static_cast<CppTypeOrExpr*>(from), static_cast<CppTypeOrExpr*>(to));
@@ -63,6 +71,11 @@ namespace cpp_parser
 		{
 			to->kind = from->kind;
 			to->literal = from->literal;
+		}
+
+		void AstVisitor::CopyFields(CppTypeOnly* from, CppTypeOnly* to)
+		{
+			CopyFields(static_cast<CppTypeOrExpr*>(from), static_cast<CppTypeOrExpr*>(to));
 		}
 
 		void AstVisitor::CopyFields(CppTypeOrExpr* from, CppTypeOrExpr* to)
@@ -91,6 +104,11 @@ namespace cpp_parser
 		void AstVisitor::Visit(CppExprOnly* node)
 		{
 			node->Accept(static_cast<CppExprOnly::IVisitor*>(this));
+		}
+
+		void AstVisitor::Visit(CppTypeOnly* node)
+		{
+			node->Accept(static_cast<CppTypeOnly::IVisitor*>(this));
 		}
 
 		void AstVisitor::Visit(CppName* node)
@@ -124,6 +142,13 @@ namespace cpp_parser
 		void AstVisitor::Visit(CppStringLiteral* node)
 		{
 			auto newNode = vl::MakePtr<CppStringLiteral>();
+			CopyFields(node, newNode.Obj());
+			this->result = newNode;
+		}
+
+		void AstVisitor::Visit(CppPrimitiveType* node)
+		{
+			auto newNode = vl::MakePtr<CppPrimitiveType>();
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
@@ -179,6 +204,12 @@ namespace cpp_parser
 			return CopyNode(static_cast<CppTypeOrExpr*>(node)).Cast<CppPrimitiveExprLiteral>();
 		}
 
+		vl::Ptr<CppPrimitiveType> AstVisitor::CopyNode(CppPrimitiveType* node)
+		{
+			if (!node) return nullptr;
+			return CopyNode(static_cast<CppTypeOrExpr*>(node)).Cast<CppPrimitiveType>();
+		}
+
 		vl::Ptr<CppQualifiedName> AstVisitor::CopyNode(CppQualifiedName* node)
 		{
 			if (!node) return nullptr;
@@ -189,6 +220,12 @@ namespace cpp_parser
 		{
 			if (!node) return nullptr;
 			return CopyNode(static_cast<CppTypeOrExpr*>(node)).Cast<CppStringLiteral>();
+		}
+
+		vl::Ptr<CppTypeOnly> AstVisitor::CopyNode(CppTypeOnly* node)
+		{
+			if (!node) return nullptr;
+			return CopyNode(static_cast<CppTypeOrExpr*>(node)).Cast<CppTypeOnly>();
 		}
 
 	}

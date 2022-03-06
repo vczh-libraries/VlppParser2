@@ -39,6 +39,14 @@ namespace cpp_parser
 			MakePrimitiveExprLiteral& kind(CppPrimitiveExprLiteralKinds value);
 		};
 
+		class MakePrimitiveType : public vl::glr::ParsingAstBuilder<CppPrimitiveType>
+		{
+		public:
+			MakePrimitiveType& kind(CppPrimitiveTypeKinds value);
+			MakePrimitiveType& literal1(const vl::WString& value);
+			MakePrimitiveType& literal2(const vl::WString& value);
+		};
+
 		class MakeStringLiteral : public vl::glr::ParsingAstBuilder<CppStringLiteral>
 		{
 		public:

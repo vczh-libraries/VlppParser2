@@ -64,6 +64,28 @@ MakePrimitiveExprLiteral
 		}
 
 /***********************************************************************
+MakePrimitiveType
+***********************************************************************/
+
+		MakePrimitiveType& MakePrimitiveType::kind(CppPrimitiveTypeKinds value)
+		{
+			node->kind = value;
+			return *this;
+		}
+
+		MakePrimitiveType& MakePrimitiveType::literal1(const vl::WString& value)
+		{
+			node->literal1.value = value;
+			return *this;
+		}
+
+		MakePrimitiveType& MakePrimitiveType::literal2(const vl::WString& value)
+		{
+			node->literal2.value = value;
+			return *this;
+		}
+
+/***********************************************************************
 MakeStringLiteral
 ***********************************************************************/
 

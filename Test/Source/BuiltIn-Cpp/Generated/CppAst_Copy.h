@@ -19,6 +19,7 @@ namespace cpp_parser
 			, protected virtual CppTypeOrExpr::IVisitor
 			, protected virtual CppQualifiedName::IVisitor
 			, protected virtual CppExprOnly::IVisitor
+			, protected virtual CppTypeOnly::IVisitor
 		{
 		protected:
 			void CopyFields(CppExprOnly* from, CppExprOnly* to);
@@ -27,9 +28,11 @@ namespace cpp_parser
 			void CopyFields(CppNumericExprLiteral* from, CppNumericExprLiteral* to);
 			void CopyFields(CppOperatorName* from, CppOperatorName* to);
 			void CopyFields(CppPrimitiveExprLiteral* from, CppPrimitiveExprLiteral* to);
+			void CopyFields(CppPrimitiveType* from, CppPrimitiveType* to);
 			void CopyFields(CppQualifiedName* from, CppQualifiedName* to);
 			void CopyFields(CppStringLiteral* from, CppStringLiteral* to);
 			void CopyFields(CppStringLiteralFragment* from, CppStringLiteralFragment* to);
+			void CopyFields(CppTypeOnly* from, CppTypeOnly* to);
 			void CopyFields(CppTypeOrExpr* from, CppTypeOrExpr* to);
 
 		protected:
@@ -38,6 +41,7 @@ namespace cpp_parser
 
 			void Visit(CppQualifiedName* node) override;
 			void Visit(CppExprOnly* node) override;
+			void Visit(CppTypeOnly* node) override;
 
 			void Visit(CppName* node) override;
 			void Visit(CppOperatorName* node) override;
@@ -45,6 +49,8 @@ namespace cpp_parser
 			void Visit(CppPrimitiveExprLiteral* node) override;
 			void Visit(CppNumericExprLiteral* node) override;
 			void Visit(CppStringLiteral* node) override;
+
+			void Visit(CppPrimitiveType* node) override;
 
 		public:
 			virtual vl::Ptr<CppTypeOrExpr> CopyNode(CppTypeOrExpr* node);
@@ -56,8 +62,10 @@ namespace cpp_parser
 			vl::Ptr<CppNumericExprLiteral> CopyNode(CppNumericExprLiteral* node);
 			vl::Ptr<CppOperatorName> CopyNode(CppOperatorName* node);
 			vl::Ptr<CppPrimitiveExprLiteral> CopyNode(CppPrimitiveExprLiteral* node);
+			vl::Ptr<CppPrimitiveType> CopyNode(CppPrimitiveType* node);
 			vl::Ptr<CppQualifiedName> CopyNode(CppQualifiedName* node);
 			vl::Ptr<CppStringLiteral> CopyNode(CppStringLiteral* node);
+			vl::Ptr<CppTypeOnly> CopyNode(CppTypeOnly* node);
 		};
 	}
 }

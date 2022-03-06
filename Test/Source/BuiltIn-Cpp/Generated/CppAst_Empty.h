@@ -20,11 +20,13 @@ namespace cpp_parser
 			// Dispatch (virtual) --------------------------------
 			virtual void Dispatch(CppQualifiedName* node) = 0;
 			virtual void Dispatch(CppExprOnly* node) = 0;
+			virtual void Dispatch(CppTypeOnly* node) = 0;
 
 		public:
 			// Visitor Members -----------------------------------
 			void Visit(CppQualifiedName* node) override;
 			void Visit(CppExprOnly* node) override;
+			void Visit(CppTypeOnly* node) override;
 		};
 
 		/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
@@ -50,6 +52,17 @@ namespace cpp_parser
 			void Visit(CppPrimitiveExprLiteral* node) override;
 			void Visit(CppNumericExprLiteral* node) override;
 			void Visit(CppStringLiteral* node) override;
+		};
+
+		/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
+		class TypeOnlyVisitor : public vl::Object, public CppTypeOnly::IVisitor
+		{
+		protected:
+			// Dispatch (virtual) --------------------------------
+
+		public:
+			// Visitor Members -----------------------------------
+			void Visit(CppPrimitiveType* node) override;
 		};
 
 	}

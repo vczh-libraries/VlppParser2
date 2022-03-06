@@ -27,6 +27,11 @@ TypeOrExprVisitor
 			Dispatch(node);
 		}
 
+		void TypeOrExprVisitor::Visit(CppTypeOnly* node)
+		{
+			Dispatch(node);
+		}
+
 /***********************************************************************
 QualifiedNameVisitor
 ***********************************************************************/
@@ -56,6 +61,16 @@ ExprOnlyVisitor
 		}
 
 		void ExprOnlyVisitor::Visit(CppStringLiteral* node)
+		{
+		}
+
+/***********************************************************************
+TypeOnlyVisitor
+***********************************************************************/
+
+		// Visitor Members -----------------------------------
+
+		void TypeOnlyVisitor::Visit(CppPrimitiveType* node)
 		{
 		}
 	}
