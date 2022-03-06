@@ -3,17 +3,17 @@
 //////////////////////////////////////////////////////////////////
 
 _Name
-  ::= ID:name                 as Name {kind = Normal}
-  ::= "~" ID:name             as Name {kind = Dtor}
-  ::= "enum" ID:name          as Name {kind = Enum}
-  ::= "enum" "class" ID:name  as Name {kind = EnumClass}
-  ::= "class" ID:name         as Name {kind = Class}
-  ::= "struct" ID:name        as Name {kind = Struct}
-  ::= "union" ID:name         as Name {kind = Union}
-  ::= "operator" '""' ID:name as Name {kind = UserDefinedLiteral}
+  ::= ID:name                       as Name {kind = Normal}
+  ::= "~" ID:name                   as Name {kind = Dtor}
+  ::= "enum" ID:name                as Name {kind = Enum}
+  ::= "enum" "class" ID:name        as Name {kind = EnumClass}
+  ::= "class" ID:name               as Name {kind = Class}
+  ::= "struct" ID:name              as Name {kind = Struct}
+  ::= "union" ID:name               as Name {kind = Union}
   ;
 
 _OperatorName
+  ::= "operator" '""' ID:name       as Name {kind = UserDefinedLiteral}
   ::= "operator" "new"              as OperatorName {op = New}
   ::= "operator" "new" "[" "]"      as OperatorName {op = NewArray}
   ::= "operator" "delete"           as OperatorName {op = Delete}
@@ -120,6 +120,19 @@ _PrimitiveType
   ::= _PrimitiveTypeLiteral              as PrimitiveType {kind = Neutral}
   ;
 
+_ShortType
+  ::= "const" _ShortType:type as ConstType
+  ::= "volatile" _ShortType:type as VolatileType
+  ::= !_QualifiedName
+  ::= !_PrimitiveType
+  ;
+
+_LongType
+  ::= !_ShortType
+  ::= _LongType:type "const" as ConstType
+  ::= _LongType:type "volatile" as VolatileType
+  ;
+
 //////////////////////////////////////////////////////////////////
 // TypeOrExpr
 //////////////////////////////////////////////////////////////////
@@ -127,7 +140,7 @@ _PrimitiveType
 _TypeOrExpr
   ::= !_QualifiedName
   ::= !_PrimitiveExpr
-  ::= !_PrimitiveType
+  ::= !_LongType
   ;
 
 //////////////////////////////////////////////////////////////////

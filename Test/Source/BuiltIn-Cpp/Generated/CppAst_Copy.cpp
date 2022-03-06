@@ -10,6 +10,12 @@ namespace cpp_parser
 {
 	namespace copy_visitor
 	{
+		void AstVisitor::CopyFields(CppConstType* from, CppConstType* to)
+		{
+			CopyFields(static_cast<CppTypeOnly*>(from), static_cast<CppTypeOnly*>(to));
+			to->type = CopyNode(from->type.Obj());
+		}
+
 		void AstVisitor::CopyFields(CppExprOnly* from, CppExprOnly* to)
 		{
 			CopyFields(static_cast<CppTypeOrExpr*>(from), static_cast<CppTypeOrExpr*>(to));
@@ -80,6 +86,12 @@ namespace cpp_parser
 
 		void AstVisitor::CopyFields(CppTypeOrExpr* from, CppTypeOrExpr* to)
 		{
+		}
+
+		void AstVisitor::CopyFields(CppVolatileType* from, CppVolatileType* to)
+		{
+			CopyFields(static_cast<CppTypeOnly*>(from), static_cast<CppTypeOnly*>(to));
+			to->type = CopyNode(from->type.Obj());
 		}
 
 		void AstVisitor::Visit(CppStringLiteralFragment* node)
@@ -153,6 +165,20 @@ namespace cpp_parser
 			this->result = newNode;
 		}
 
+		void AstVisitor::Visit(CppConstType* node)
+		{
+			auto newNode = vl::MakePtr<CppConstType>();
+			CopyFields(node, newNode.Obj());
+			this->result = newNode;
+		}
+
+		void AstVisitor::Visit(CppVolatileType* node)
+		{
+			auto newNode = vl::MakePtr<CppVolatileType>();
+			CopyFields(node, newNode.Obj());
+			this->result = newNode;
+		}
+
 		vl::Ptr<CppTypeOrExpr> AstVisitor::CopyNode(CppTypeOrExpr* node)
 		{
 			if (!node) return nullptr;
@@ -172,6 +198,12 @@ namespace cpp_parser
 			if (!node) return nullptr;
 			Visit(node);
 			return this->result.Cast<CppFile>();
+		}
+
+		vl::Ptr<CppConstType> AstVisitor::CopyNode(CppConstType* node)
+		{
+			if (!node) return nullptr;
+			return CopyNode(static_cast<CppTypeOrExpr*>(node)).Cast<CppConstType>();
 		}
 
 		vl::Ptr<CppExprOnly> AstVisitor::CopyNode(CppExprOnly* node)
@@ -226,6 +258,12 @@ namespace cpp_parser
 		{
 			if (!node) return nullptr;
 			return CopyNode(static_cast<CppTypeOrExpr*>(node)).Cast<CppTypeOnly>();
+		}
+
+		vl::Ptr<CppVolatileType> AstVisitor::CopyNode(CppVolatileType* node)
+		{
+			if (!node) return nullptr;
+			return CopyNode(static_cast<CppTypeOrExpr*>(node)).Cast<CppVolatileType>();
 		}
 
 	}

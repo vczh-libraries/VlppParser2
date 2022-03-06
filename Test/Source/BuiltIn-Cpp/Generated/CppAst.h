@@ -12,6 +12,7 @@ Licensed under https://github.com/vczh-libraries/License
 
 namespace cpp_parser
 {
+	class CppConstType;
 	class CppExprOnly;
 	class CppFile;
 	class CppName;
@@ -24,6 +25,7 @@ namespace cpp_parser
 	class CppStringLiteralFragment;
 	class CppTypeOnly;
 	class CppTypeOrExpr;
+	class CppVolatileType;
 
 	enum class CppNameKinds
 	{
@@ -178,6 +180,8 @@ namespace cpp_parser
 		{
 		public:
 			virtual void Visit(CppPrimitiveType* node) = 0;
+			virtual void Visit(CppConstType* node) = 0;
+			virtual void Visit(CppVolatileType* node) = 0;
 		};
 
 		virtual void Accept(CppTypeOnly::IVisitor* visitor) = 0;
@@ -245,6 +249,22 @@ namespace cpp_parser
 		void Accept(CppTypeOnly::IVisitor* visitor) override;
 	};
 
+	class CppConstType : public CppTypeOnly, vl::reflection::Description<CppConstType>
+	{
+	public:
+		vl::Ptr<CppTypeOrExpr> type;
+
+		void Accept(CppTypeOnly::IVisitor* visitor) override;
+	};
+
+	class CppVolatileType : public CppTypeOnly, vl::reflection::Description<CppVolatileType>
+	{
+	public:
+		vl::Ptr<CppTypeOrExpr> type;
+
+		void Accept(CppTypeOnly::IVisitor* visitor) override;
+	};
+
 	class CppFile : public vl::glr::ParsingAstBase, vl::reflection::Description<CppFile>
 	{
 	public:
@@ -278,6 +298,8 @@ namespace vl
 			DECL_TYPE_INFO(cpp_parser::CppStringLiteral)
 			DECL_TYPE_INFO(cpp_parser::CppPrimitiveTypeKinds)
 			DECL_TYPE_INFO(cpp_parser::CppPrimitiveType)
+			DECL_TYPE_INFO(cpp_parser::CppConstType)
+			DECL_TYPE_INFO(cpp_parser::CppVolatileType)
 			DECL_TYPE_INFO(cpp_parser::CppFile)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
@@ -333,6 +355,16 @@ namespace vl
 
 			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(cpp_parser::CppTypeOnly::IVisitor)
 				void Visit(cpp_parser::CppPrimitiveType* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+				void Visit(cpp_parser::CppConstType* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+				void Visit(cpp_parser::CppVolatileType* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}

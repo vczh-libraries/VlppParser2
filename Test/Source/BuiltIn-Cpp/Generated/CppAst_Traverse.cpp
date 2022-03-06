@@ -12,6 +12,7 @@ namespace cpp_parser
 	{
 		void AstVisitor::Traverse(vl::glr::ParsingToken& token) {}
 		void AstVisitor::Traverse(vl::glr::ParsingAstBase* node) {}
+		void AstVisitor::Traverse(CppConstType* node) {}
 		void AstVisitor::Traverse(CppExprOnly* node) {}
 		void AstVisitor::Traverse(CppFile* node) {}
 		void AstVisitor::Traverse(CppName* node) {}
@@ -24,8 +25,10 @@ namespace cpp_parser
 		void AstVisitor::Traverse(CppStringLiteralFragment* node) {}
 		void AstVisitor::Traverse(CppTypeOnly* node) {}
 		void AstVisitor::Traverse(CppTypeOrExpr* node) {}
+		void AstVisitor::Traverse(CppVolatileType* node) {}
 
 		void AstVisitor::Finishing(vl::glr::ParsingAstBase* node) {}
+		void AstVisitor::Finishing(CppConstType* node) {}
 		void AstVisitor::Finishing(CppExprOnly* node) {}
 		void AstVisitor::Finishing(CppFile* node) {}
 		void AstVisitor::Finishing(CppName* node) {}
@@ -38,6 +41,7 @@ namespace cpp_parser
 		void AstVisitor::Finishing(CppStringLiteralFragment* node) {}
 		void AstVisitor::Finishing(CppTypeOnly* node) {}
 		void AstVisitor::Finishing(CppTypeOrExpr* node) {}
+		void AstVisitor::Finishing(CppVolatileType* node) {}
 
 		void AstVisitor::Visit(CppQualifiedName* node)
 		{
@@ -135,6 +139,34 @@ namespace cpp_parser
 			Traverse(node->literal1);
 			Traverse(node->literal2);
 			Finishing(static_cast<CppPrimitiveType*>(node));
+			Finishing(static_cast<CppTypeOnly*>(node));
+			Finishing(static_cast<CppTypeOrExpr*>(node));
+			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+		}
+
+		void AstVisitor::Visit(CppConstType* node)
+		{
+			if (!node) return;
+			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+			Traverse(static_cast<CppTypeOrExpr*>(node));
+			Traverse(static_cast<CppTypeOnly*>(node));
+			Traverse(static_cast<CppConstType*>(node));
+			InspectInto(node->type.Obj());
+			Finishing(static_cast<CppConstType*>(node));
+			Finishing(static_cast<CppTypeOnly*>(node));
+			Finishing(static_cast<CppTypeOrExpr*>(node));
+			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+		}
+
+		void AstVisitor::Visit(CppVolatileType* node)
+		{
+			if (!node) return;
+			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+			Traverse(static_cast<CppTypeOrExpr*>(node));
+			Traverse(static_cast<CppTypeOnly*>(node));
+			Traverse(static_cast<CppVolatileType*>(node));
+			InspectInto(node->type.Obj());
+			Finishing(static_cast<CppVolatileType*>(node));
 			Finishing(static_cast<CppTypeOnly*>(node));
 			Finishing(static_cast<CppTypeOrExpr*>(node));
 			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));

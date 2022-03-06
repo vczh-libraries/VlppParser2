@@ -63,6 +63,8 @@ namespace cpp_parser
 		public:
 			// Visitor Members -----------------------------------
 			void Visit(CppPrimitiveType* node) override;
+			void Visit(CppConstType* node) override;
+			void Visit(CppVolatileType* node) override;
 		};
 
 	}

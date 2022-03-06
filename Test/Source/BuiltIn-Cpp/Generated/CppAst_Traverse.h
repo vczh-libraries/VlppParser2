@@ -24,6 +24,7 @@ namespace cpp_parser
 		protected:
 			virtual void Traverse(vl::glr::ParsingToken& token);
 			virtual void Traverse(vl::glr::ParsingAstBase* node);
+			virtual void Traverse(CppConstType* node);
 			virtual void Traverse(CppExprOnly* node);
 			virtual void Traverse(CppFile* node);
 			virtual void Traverse(CppName* node);
@@ -36,9 +37,11 @@ namespace cpp_parser
 			virtual void Traverse(CppStringLiteralFragment* node);
 			virtual void Traverse(CppTypeOnly* node);
 			virtual void Traverse(CppTypeOrExpr* node);
+			virtual void Traverse(CppVolatileType* node);
 
 		protected:
 			virtual void Finishing(vl::glr::ParsingAstBase* node);
+			virtual void Finishing(CppConstType* node);
 			virtual void Finishing(CppExprOnly* node);
 			virtual void Finishing(CppFile* node);
 			virtual void Finishing(CppName* node);
@@ -51,6 +54,7 @@ namespace cpp_parser
 			virtual void Finishing(CppStringLiteralFragment* node);
 			virtual void Finishing(CppTypeOnly* node);
 			virtual void Finishing(CppTypeOrExpr* node);
+			virtual void Finishing(CppVolatileType* node);
 
 		protected:
 			void Visit(CppQualifiedName* node) override;
@@ -65,6 +69,8 @@ namespace cpp_parser
 			void Visit(CppStringLiteral* node) override;
 
 			void Visit(CppPrimitiveType* node) override;
+			void Visit(CppConstType* node) override;
+			void Visit(CppVolatileType* node) override;
 
 		public:
 			void InspectInto(CppTypeOrExpr* node);

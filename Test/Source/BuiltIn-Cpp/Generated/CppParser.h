@@ -15,14 +15,16 @@ namespace cpp_parser
 	enum class ParserStates
 	{
 		_Name = 0,
-		_OperatorName = 19,
+		_OperatorName = 16,
 		_QualifiedName = 113,
 		_StringLiteralFragment = 117,
 		_PrimitiveExpr = 121,
 		_PrimitiveTypeLiteral = 136,
 		_PrimitiveType = 154,
-		_TypeOrExpr = 167,
-		_File = 172,
+		_ShortType = 167,
+		_LongType = 175,
+		_TypeOrExpr = 182,
+		_File = 187,
 	};
 
 	const wchar_t* ParserRuleName(vl::vint index);

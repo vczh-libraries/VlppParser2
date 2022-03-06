@@ -56,6 +56,16 @@ Visitor Pattern Implementation
 	{
 		visitor->Visit(this);
 	}
+
+	void CppConstType::Accept(CppTypeOnly::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void CppVolatileType::Accept(CppTypeOnly::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
 }
 namespace vl
 {
@@ -86,6 +96,8 @@ namespace vl
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppStringLiteral, cpp_parser::CppStringLiteral)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppPrimitiveTypeKinds, cpp_parser::CppPrimitiveTypeKinds)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppPrimitiveType, cpp_parser::CppPrimitiveType)
+			IMPL_TYPE_INFO_RENAME(cpp_parser::CppConstType, cpp_parser::CppConstType)
+			IMPL_TYPE_INFO_RENAME(cpp_parser::CppVolatileType, cpp_parser::CppVolatileType)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppFile, cpp_parser::CppFile)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
@@ -263,6 +275,22 @@ namespace vl
 				CLASS_MEMBER_FIELD(literal2)
 			END_CLASS_MEMBER(cpp_parser::CppPrimitiveType)
 
+			BEGIN_CLASS_MEMBER(cpp_parser::CppConstType)
+				CLASS_MEMBER_BASE(cpp_parser::CppTypeOnly)
+
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppConstType>(), NO_PARAMETER)
+
+				CLASS_MEMBER_FIELD(type)
+			END_CLASS_MEMBER(cpp_parser::CppConstType)
+
+			BEGIN_CLASS_MEMBER(cpp_parser::CppVolatileType)
+				CLASS_MEMBER_BASE(cpp_parser::CppTypeOnly)
+
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppVolatileType>(), NO_PARAMETER)
+
+				CLASS_MEMBER_FIELD(type)
+			END_CLASS_MEMBER(cpp_parser::CppVolatileType)
+
 			BEGIN_CLASS_MEMBER(cpp_parser::CppFile)
 				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
@@ -289,6 +317,8 @@ namespace vl
 
 			BEGIN_INTERFACE_MEMBER(cpp_parser::CppTypeOnly::IVisitor)
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppTypeOnly::IVisitor::*)(cpp_parser::CppPrimitiveType* node))
+				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppTypeOnly::IVisitor::*)(cpp_parser::CppConstType* node))
+				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppTypeOnly::IVisitor::*)(cpp_parser::CppVolatileType* node))
 			END_INTERFACE_MEMBER(cpp_parser::CppTypeOnly)
 
 #endif
@@ -320,6 +350,8 @@ namespace vl
 					ADD_TYPE_INFO(cpp_parser::CppStringLiteral)
 					ADD_TYPE_INFO(cpp_parser::CppPrimitiveTypeKinds)
 					ADD_TYPE_INFO(cpp_parser::CppPrimitiveType)
+					ADD_TYPE_INFO(cpp_parser::CppConstType)
+					ADD_TYPE_INFO(cpp_parser::CppVolatileType)
 					ADD_TYPE_INFO(cpp_parser::CppFile)
 				}
 

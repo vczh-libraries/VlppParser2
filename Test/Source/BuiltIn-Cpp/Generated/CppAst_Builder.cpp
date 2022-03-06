@@ -12,6 +12,16 @@ namespace cpp_parser
 	{
 
 /***********************************************************************
+MakeConstType
+***********************************************************************/
+
+		MakeConstType& MakeConstType::type(const vl::Ptr<CppTypeOrExpr>& value)
+		{
+			node->type = value;
+			return *this;
+		}
+
+/***********************************************************************
 MakeName
 ***********************************************************************/
 
@@ -108,6 +118,16 @@ MakeStringLiteralFragment
 		MakeStringLiteralFragment& MakeStringLiteralFragment::literal(const vl::WString& value)
 		{
 			node->literal.value = value;
+			return *this;
+		}
+
+/***********************************************************************
+MakeVolatileType
+***********************************************************************/
+
+		MakeVolatileType& MakeVolatileType::type(const vl::Ptr<CppTypeOrExpr>& value)
+		{
+			node->type = value;
 			return *this;
 		}
 	}

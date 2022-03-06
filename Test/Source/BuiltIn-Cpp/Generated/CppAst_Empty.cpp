@@ -73,5 +73,13 @@ TypeOnlyVisitor
 		void TypeOnlyVisitor::Visit(CppPrimitiveType* node)
 		{
 		}
+
+		void TypeOnlyVisitor::Visit(CppConstType* node)
+		{
+		}
+
+		void TypeOnlyVisitor::Visit(CppVolatileType* node)
+		{
+		}
 	}
 }

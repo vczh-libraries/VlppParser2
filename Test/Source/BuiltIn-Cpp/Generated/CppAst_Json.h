@@ -22,6 +22,7 @@ namespace cpp_parser
 			, protected virtual CppTypeOnly::IVisitor
 		{
 		protected:
+			virtual void PrintFields(CppConstType* node);
 			virtual void PrintFields(CppExprOnly* node);
 			virtual void PrintFields(CppFile* node);
 			virtual void PrintFields(CppName* node);
@@ -34,6 +35,7 @@ namespace cpp_parser
 			virtual void PrintFields(CppStringLiteralFragment* node);
 			virtual void PrintFields(CppTypeOnly* node);
 			virtual void PrintFields(CppTypeOrExpr* node);
+			virtual void PrintFields(CppVolatileType* node);
 
 		protected:
 			void Visit(CppQualifiedName* node) override;
@@ -48,6 +50,8 @@ namespace cpp_parser
 			void Visit(CppStringLiteral* node) override;
 
 			void Visit(CppPrimitiveType* node) override;
+			void Visit(CppConstType* node) override;
+			void Visit(CppVolatileType* node) override;
 
 		public:
 			AstVisitor(vl::stream::StreamWriter& _writer);

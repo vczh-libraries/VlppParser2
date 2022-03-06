@@ -10,6 +10,12 @@ namespace cpp_parser
 {
 	namespace json_visitor
 	{
+		void AstVisitor::PrintFields(CppConstType* node)
+		{
+			BeginField(L"type");
+			Print(node->type.Obj());
+			EndField();
+		}
 		void AstVisitor::PrintFields(CppExprOnly* node)
 		{
 		}
@@ -317,6 +323,12 @@ namespace cpp_parser
 		void AstVisitor::PrintFields(CppTypeOrExpr* node)
 		{
 		}
+		void AstVisitor::PrintFields(CppVolatileType* node)
+		{
+			BeginField(L"type");
+			Print(node->type.Obj());
+			EndField();
+		}
 
 		void AstVisitor::Visit(CppQualifiedName* node)
 		{
@@ -420,6 +432,36 @@ namespace cpp_parser
 			PrintFields(static_cast<CppTypeOrExpr*>(node));
 			PrintFields(static_cast<CppTypeOnly*>(node));
 			PrintFields(static_cast<CppPrimitiveType*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppConstType* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"ConstType", node);
+			PrintFields(static_cast<CppTypeOrExpr*>(node));
+			PrintFields(static_cast<CppTypeOnly*>(node));
+			PrintFields(static_cast<CppConstType*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppVolatileType* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"VolatileType", node);
+			PrintFields(static_cast<CppTypeOrExpr*>(node));
+			PrintFields(static_cast<CppTypeOnly*>(node));
+			PrintFields(static_cast<CppVolatileType*>(node));
 			EndObject();
 		}
 

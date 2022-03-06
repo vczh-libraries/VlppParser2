@@ -8,14 +8,35 @@ using namespace cpp_parser;
 
 extern WString GetTestParserInputPath(const WString& parserName);
 
-template<typename T>
-Ptr<T> ParseTypeExpr(cpp_parser::Parser& parser, const WString& code)
+template<typename ...TArgs>
+struct AssertPtrStruct
+{
+};
+
+template<>
+struct AssertPtrStruct<>
+{
+	static void AssertPtr(CppTypeOrExpr* ast)
+	{
+		TEST_ASSERT(false);
+	}
+};
+
+template<typename T, typename ...TArgs>
+struct AssertPtrStruct<T, TArgs...>
+{
+	static void AssertPtr(CppTypeOrExpr* ast)
+	{
+		if (!dynamic_cast<T*>(ast)) AssertPtrStruct<TArgs...>::AssertPtr(ast);
+	}
+};
+
+template<typename ...TArgs>
+void ParseTypeExpr(cpp_parser::Parser& parser, const WString& code)
 {
 	auto ast = parser.Parse_TypeOrExpr(code);
 	TEST_ASSERT(ast);
-	auto typed = ast.Cast<T>();
-	TEST_ASSERT(typed);
-	return typed;
+	AssertPtrStruct<TArgs...>::AssertPtr(ast.Obj());
 }
 
 TEST_FILE
@@ -94,9 +115,10 @@ TEST_FILE
 		{
 			if (line != L"")
 			{
-				//TEST_CASE(line)
-				//{
-				//});
+				TEST_CASE(line)
+				{
+					ParseTypeExpr<CppConstType, CppVolatileType>(parser, line);
+				});
 			}
 		}
 	});

@@ -18,6 +18,8 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 		auto cppTypeName = CppCppTypeName((CppClasses)type);
 		switch((CppClasses)type)
 		{
+		case CppClasses::ConstType:
+			return new cpp_parser::CppConstType();
 		case CppClasses::File:
 			return new cpp_parser::CppFile();
 		case CppClasses::Name:
@@ -34,6 +36,8 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return new cpp_parser::CppStringLiteral();
 		case CppClasses::StringLiteralFragment:
 			return new cpp_parser::CppStringLiteralFragment();
+		case CppClasses::VolatileType:
+			return new cpp_parser::CppVolatileType();
 		default:
 			return vl::glr::AssemblyThrowCannotCreateAbstractType(type, cppTypeName);
 		}
@@ -44,8 +48,12 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 		auto cppFieldName = CppCppFieldName((CppFields)field);
 		switch((CppFields)field)
 		{
+		case CppFields::ConstType_type:
+			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppConstType::type, object, field, value, cppFieldName);
 		case CppFields::StringLiteral_fragments:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppStringLiteral::fragments, object, field, value, cppFieldName);
+		case CppFields::VolatileType_type:
+			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppVolatileType::type, object, field, value, cppFieldName);
 		default:
 			return vl::glr::AssemblyThrowFieldNotObject(field, cppFieldName);
 		}
@@ -96,6 +104,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 	const wchar_t* CppTypeName(CppClasses type)
 	{
 		const wchar_t* results[] = {
+			L"ConstType",
 			L"ExprOnly",
 			L"File",
 			L"Name",
@@ -108,14 +117,16 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"StringLiteralFragment",
 			L"TypeOnly",
 			L"TypeOrExpr",
+			L"VolatileType",
 		};
 		vl::vint index = (vl::vint)type;
-		return 0 <= index && index < 12 ? results[index] : nullptr;
+		return 0 <= index && index < 14 ? results[index] : nullptr;
 	}
 
 	const wchar_t* CppCppTypeName(CppClasses type)
 	{
 		const wchar_t* results[] = {
+			L"cpp_parser::CppConstType",
 			L"cpp_parser::CppExprOnly",
 			L"cpp_parser::CppFile",
 			L"cpp_parser::CppName",
@@ -128,14 +139,16 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::CppStringLiteralFragment",
 			L"cpp_parser::CppTypeOnly",
 			L"cpp_parser::CppTypeOrExpr",
+			L"cpp_parser::CppVolatileType",
 		};
 		vl::vint index = (vl::vint)type;
-		return 0 <= index && index < 12 ? results[index] : nullptr;
+		return 0 <= index && index < 14 ? results[index] : nullptr;
 	}
 
 	const wchar_t* CppFieldName(CppFields field)
 	{
 		const wchar_t* results[] = {
+			L"ConstType::type",
 			L"Name::kind",
 			L"Name::name",
 			L"NumericExprLiteral::kind",
@@ -148,14 +161,16 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"StringLiteral::fragments",
 			L"StringLiteralFragment::kind",
 			L"StringLiteralFragment::literal",
+			L"VolatileType::type",
 		};
 		vl::vint index = (vl::vint)field;
-		return 0 <= index && index < 12 ? results[index] : nullptr;
+		return 0 <= index && index < 14 ? results[index] : nullptr;
 	}
 
 	const wchar_t* CppCppFieldName(CppFields field)
 	{
 		const wchar_t* results[] = {
+			L"cpp_parser::CppConstType::type",
 			L"cpp_parser::CppName::kind",
 			L"cpp_parser::CppName::name",
 			L"cpp_parser::CppNumericExprLiteral::kind",
@@ -168,9 +183,10 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::CppStringLiteral::fragments",
 			L"cpp_parser::CppStringLiteralFragment::kind",
 			L"cpp_parser::CppStringLiteralFragment::literal",
+			L"cpp_parser::CppVolatileType::type",
 		};
 		vl::vint index = (vl::vint)field;
-		return 0 <= index && index < 12 ? results[index] : nullptr;
+		return 0 <= index && index < 14 ? results[index] : nullptr;
 	}
 
 	vl::Ptr<vl::glr::ParsingAstBase> CppAstInsReceiver::ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates)

@@ -13,6 +13,12 @@ namespace cpp_parser
 {
 	namespace builder
 	{
+		class MakeConstType : public vl::glr::ParsingAstBuilder<CppConstType>
+		{
+		public:
+			MakeConstType& type(const vl::Ptr<CppTypeOrExpr>& value);
+		};
+
 		class MakeName : public vl::glr::ParsingAstBuilder<CppName>
 		{
 		public:
@@ -58,6 +64,12 @@ namespace cpp_parser
 		public:
 			MakeStringLiteralFragment& kind(CppStringLiteralKinds value);
 			MakeStringLiteralFragment& literal(const vl::WString& value);
+		};
+
+		class MakeVolatileType : public vl::glr::ParsingAstBuilder<CppVolatileType>
+		{
+		public:
+			MakeVolatileType& type(const vl::Ptr<CppTypeOrExpr>& value);
 		};
 
 	}
