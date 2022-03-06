@@ -17,12 +17,32 @@ Visitor Pattern Implementation
 		visitor->Visit(this);
 	}
 
+	void CppExprOnly::Accept(CppTypeOrExpr::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
 	void CppName::Accept(CppQualifiedName::IVisitor* visitor)
 	{
 		visitor->Visit(this);
 	}
 
 	void CppOperatorName::Accept(CppQualifiedName::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void CppPrimitiveExprLiteral::Accept(CppExprOnly::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void CppNumericExprLiteral::Accept(CppExprOnly::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void CppStringLiteral::Accept(CppExprOnly::IVisitor* visitor)
 	{
 		visitor->Visit(this);
 	}
@@ -39,10 +59,19 @@ namespace vl
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppTypeOrExpr::IVisitor, cpp_parser::CppTypeOrExpr::IVisitor)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppQualifiedName, cpp_parser::CppQualifiedName)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppQualifiedName::IVisitor, cpp_parser::CppQualifiedName::IVisitor)
+			IMPL_TYPE_INFO_RENAME(cpp_parser::CppExprOnly, cpp_parser::CppExprOnly)
+			IMPL_TYPE_INFO_RENAME(cpp_parser::CppExprOnly::IVisitor, cpp_parser::CppExprOnly::IVisitor)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppNameKinds, cpp_parser::CppNameKinds)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppName, cpp_parser::CppName)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppOperators, cpp_parser::CppOperators)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppOperatorName, cpp_parser::CppOperatorName)
+			IMPL_TYPE_INFO_RENAME(cpp_parser::CppPrimitiveExprLiteralKinds, cpp_parser::CppPrimitiveExprLiteralKinds)
+			IMPL_TYPE_INFO_RENAME(cpp_parser::CppPrimitiveExprLiteral, cpp_parser::CppPrimitiveExprLiteral)
+			IMPL_TYPE_INFO_RENAME(cpp_parser::CppNumericExprLiteralKinds, cpp_parser::CppNumericExprLiteralKinds)
+			IMPL_TYPE_INFO_RENAME(cpp_parser::CppNumericExprLiteral, cpp_parser::CppNumericExprLiteral)
+			IMPL_TYPE_INFO_RENAME(cpp_parser::CppStringLiteralKinds, cpp_parser::CppStringLiteralKinds)
+			IMPL_TYPE_INFO_RENAME(cpp_parser::CppStringLiteralFragment, cpp_parser::CppStringLiteralFragment)
+			IMPL_TYPE_INFO_RENAME(cpp_parser::CppStringLiteral, cpp_parser::CppStringLiteral)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppFile, cpp_parser::CppFile)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
@@ -56,6 +85,11 @@ namespace vl
 				CLASS_MEMBER_BASE(cpp_parser::CppTypeOrExpr)
 
 			END_CLASS_MEMBER(cpp_parser::CppQualifiedName)
+
+			BEGIN_CLASS_MEMBER(cpp_parser::CppExprOnly)
+				CLASS_MEMBER_BASE(cpp_parser::CppTypeOrExpr)
+
+			END_CLASS_MEMBER(cpp_parser::CppExprOnly)
 
 			BEGIN_ENUM_ITEM(cpp_parser::CppNameKinds)
 				ENUM_ITEM_NAMESPACE(cpp_parser::CppNameKinds)
@@ -134,6 +168,65 @@ namespace vl
 				CLASS_MEMBER_FIELD(op)
 			END_CLASS_MEMBER(cpp_parser::CppOperatorName)
 
+			BEGIN_ENUM_ITEM(cpp_parser::CppPrimitiveExprLiteralKinds)
+				ENUM_ITEM_NAMESPACE(cpp_parser::CppPrimitiveExprLiteralKinds)
+				ENUM_NAMESPACE_ITEM(True)
+				ENUM_NAMESPACE_ITEM(False)
+				ENUM_NAMESPACE_ITEM(Nullptr)
+				ENUM_NAMESPACE_ITEM(This)
+				ENUM_NAMESPACE_ITEM(__Nullptr)
+			END_ENUM_ITEM(cpp_parser::CppPrimitiveExprLiteralKinds)
+
+			BEGIN_CLASS_MEMBER(cpp_parser::CppPrimitiveExprLiteral)
+				CLASS_MEMBER_BASE(cpp_parser::CppExprOnly)
+
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppPrimitiveExprLiteral>(), NO_PARAMETER)
+
+				CLASS_MEMBER_FIELD(kind)
+			END_CLASS_MEMBER(cpp_parser::CppPrimitiveExprLiteral)
+
+			BEGIN_ENUM_ITEM(cpp_parser::CppNumericExprLiteralKinds)
+				ENUM_ITEM_NAMESPACE(cpp_parser::CppNumericExprLiteralKinds)
+				ENUM_NAMESPACE_ITEM(Integer)
+				ENUM_NAMESPACE_ITEM(Hex)
+				ENUM_NAMESPACE_ITEM(Binary)
+				ENUM_NAMESPACE_ITEM(Float)
+				ENUM_NAMESPACE_ITEM(FloatHex)
+				ENUM_NAMESPACE_ITEM(Char)
+			END_ENUM_ITEM(cpp_parser::CppNumericExprLiteralKinds)
+
+			BEGIN_CLASS_MEMBER(cpp_parser::CppNumericExprLiteral)
+				CLASS_MEMBER_BASE(cpp_parser::CppExprOnly)
+
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppNumericExprLiteral>(), NO_PARAMETER)
+
+				CLASS_MEMBER_FIELD(kind)
+				CLASS_MEMBER_FIELD(literal)
+			END_CLASS_MEMBER(cpp_parser::CppNumericExprLiteral)
+
+			BEGIN_ENUM_ITEM(cpp_parser::CppStringLiteralKinds)
+				ENUM_ITEM_NAMESPACE(cpp_parser::CppStringLiteralKinds)
+				ENUM_NAMESPACE_ITEM(String)
+				ENUM_NAMESPACE_ITEM(Macro_LPREFIX)
+			END_ENUM_ITEM(cpp_parser::CppStringLiteralKinds)
+
+			BEGIN_CLASS_MEMBER(cpp_parser::CppStringLiteralFragment)
+				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppStringLiteralFragment>(), NO_PARAMETER)
+
+				CLASS_MEMBER_FIELD(kind)
+				CLASS_MEMBER_FIELD(literal)
+			END_CLASS_MEMBER(cpp_parser::CppStringLiteralFragment)
+
+			BEGIN_CLASS_MEMBER(cpp_parser::CppStringLiteral)
+				CLASS_MEMBER_BASE(cpp_parser::CppExprOnly)
+
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppStringLiteral>(), NO_PARAMETER)
+
+				CLASS_MEMBER_FIELD(fragments)
+			END_CLASS_MEMBER(cpp_parser::CppStringLiteral)
+
 			BEGIN_CLASS_MEMBER(cpp_parser::CppFile)
 				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
@@ -143,12 +236,19 @@ namespace vl
 
 			BEGIN_INTERFACE_MEMBER(cpp_parser::CppTypeOrExpr::IVisitor)
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppTypeOrExpr::IVisitor::*)(cpp_parser::CppQualifiedName* node))
+				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppTypeOrExpr::IVisitor::*)(cpp_parser::CppExprOnly* node))
 			END_INTERFACE_MEMBER(cpp_parser::CppTypeOrExpr)
 
 			BEGIN_INTERFACE_MEMBER(cpp_parser::CppQualifiedName::IVisitor)
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppQualifiedName::IVisitor::*)(cpp_parser::CppName* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppQualifiedName::IVisitor::*)(cpp_parser::CppOperatorName* node))
 			END_INTERFACE_MEMBER(cpp_parser::CppQualifiedName)
+
+			BEGIN_INTERFACE_MEMBER(cpp_parser::CppExprOnly::IVisitor)
+				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppExprOnly::IVisitor::*)(cpp_parser::CppPrimitiveExprLiteral* node))
+				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppExprOnly::IVisitor::*)(cpp_parser::CppNumericExprLiteral* node))
+				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppExprOnly::IVisitor::*)(cpp_parser::CppStringLiteral* node))
+			END_INTERFACE_MEMBER(cpp_parser::CppExprOnly)
 
 #endif
 
@@ -162,10 +262,19 @@ namespace vl
 					ADD_TYPE_INFO(cpp_parser::CppTypeOrExpr::IVisitor)
 					ADD_TYPE_INFO(cpp_parser::CppQualifiedName)
 					ADD_TYPE_INFO(cpp_parser::CppQualifiedName::IVisitor)
+					ADD_TYPE_INFO(cpp_parser::CppExprOnly)
+					ADD_TYPE_INFO(cpp_parser::CppExprOnly::IVisitor)
 					ADD_TYPE_INFO(cpp_parser::CppNameKinds)
 					ADD_TYPE_INFO(cpp_parser::CppName)
 					ADD_TYPE_INFO(cpp_parser::CppOperators)
 					ADD_TYPE_INFO(cpp_parser::CppOperatorName)
+					ADD_TYPE_INFO(cpp_parser::CppPrimitiveExprLiteralKinds)
+					ADD_TYPE_INFO(cpp_parser::CppPrimitiveExprLiteral)
+					ADD_TYPE_INFO(cpp_parser::CppNumericExprLiteralKinds)
+					ADD_TYPE_INFO(cpp_parser::CppNumericExprLiteral)
+					ADD_TYPE_INFO(cpp_parser::CppStringLiteralKinds)
+					ADD_TYPE_INFO(cpp_parser::CppStringLiteralFragment)
+					ADD_TYPE_INFO(cpp_parser::CppStringLiteral)
 					ADD_TYPE_INFO(cpp_parser::CppFile)
 				}
 

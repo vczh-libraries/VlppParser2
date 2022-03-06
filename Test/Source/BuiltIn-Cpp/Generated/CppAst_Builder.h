@@ -20,10 +20,36 @@ namespace cpp_parser
 			MakeName& name(const vl::WString& value);
 		};
 
+		class MakeNumericExprLiteral : public vl::glr::ParsingAstBuilder<CppNumericExprLiteral>
+		{
+		public:
+			MakeNumericExprLiteral& kind(CppNumericExprLiteralKinds value);
+			MakeNumericExprLiteral& literal(const vl::WString& value);
+		};
+
 		class MakeOperatorName : public vl::glr::ParsingAstBuilder<CppOperatorName>
 		{
 		public:
 			MakeOperatorName& op(CppOperators value);
+		};
+
+		class MakePrimitiveExprLiteral : public vl::glr::ParsingAstBuilder<CppPrimitiveExprLiteral>
+		{
+		public:
+			MakePrimitiveExprLiteral& kind(CppPrimitiveExprLiteralKinds value);
+		};
+
+		class MakeStringLiteral : public vl::glr::ParsingAstBuilder<CppStringLiteral>
+		{
+		public:
+			MakeStringLiteral& fragments(const vl::Ptr<CppStringLiteralFragment>& value);
+		};
+
+		class MakeStringLiteralFragment : public vl::glr::ParsingAstBuilder<CppStringLiteralFragment>
+		{
+		public:
+			MakeStringLiteralFragment& kind(CppStringLiteralKinds value);
+			MakeStringLiteralFragment& literal(const vl::WString& value);
 		};
 
 	}

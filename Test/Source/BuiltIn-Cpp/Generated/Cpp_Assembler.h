@@ -13,18 +13,29 @@ namespace cpp_parser
 {
 	enum class CppClasses : vl::vint32_t
 	{
-		File = 0,
-		Name = 1,
-		OperatorName = 2,
-		QualifiedName = 3,
-		TypeOrExpr = 4,
+		ExprOnly = 0,
+		File = 1,
+		Name = 2,
+		NumericExprLiteral = 3,
+		OperatorName = 4,
+		PrimitiveExprLiteral = 5,
+		QualifiedName = 6,
+		StringLiteral = 7,
+		StringLiteralFragment = 8,
+		TypeOrExpr = 9,
 	};
 
 	enum class CppFields : vl::vint32_t
 	{
 		Name_kind = 0,
 		Name_name = 1,
-		OperatorName_op = 2,
+		NumericExprLiteral_kind = 2,
+		NumericExprLiteral_literal = 3,
+		OperatorName_op = 4,
+		PrimitiveExprLiteral_kind = 5,
+		StringLiteral_fragments = 6,
+		StringLiteralFragment_kind = 7,
+		StringLiteralFragment_literal = 8,
 	};
 
 	extern const wchar_t* CppTypeName(CppClasses type);

@@ -18,24 +18,36 @@ namespace cpp_parser
 			: public vl::glr::JsonVisitorBase
 			, protected virtual CppTypeOrExpr::IVisitor
 			, protected virtual CppQualifiedName::IVisitor
+			, protected virtual CppExprOnly::IVisitor
 		{
 		protected:
+			virtual void PrintFields(CppExprOnly* node);
 			virtual void PrintFields(CppFile* node);
 			virtual void PrintFields(CppName* node);
+			virtual void PrintFields(CppNumericExprLiteral* node);
 			virtual void PrintFields(CppOperatorName* node);
+			virtual void PrintFields(CppPrimitiveExprLiteral* node);
 			virtual void PrintFields(CppQualifiedName* node);
+			virtual void PrintFields(CppStringLiteral* node);
+			virtual void PrintFields(CppStringLiteralFragment* node);
 			virtual void PrintFields(CppTypeOrExpr* node);
 
 		protected:
 			void Visit(CppQualifiedName* node) override;
+			void Visit(CppExprOnly* node) override;
 
 			void Visit(CppName* node) override;
 			void Visit(CppOperatorName* node) override;
+
+			void Visit(CppPrimitiveExprLiteral* node) override;
+			void Visit(CppNumericExprLiteral* node) override;
+			void Visit(CppStringLiteral* node) override;
 
 		public:
 			AstVisitor(vl::stream::StreamWriter& _writer);
 
 			void Print(CppTypeOrExpr* node);
+			void Print(CppStringLiteralFragment* node);
 			void Print(CppFile* node);
 		};
 	}

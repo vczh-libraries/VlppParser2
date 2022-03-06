@@ -12,10 +12,15 @@ Licensed under https://github.com/vczh-libraries/License
 
 namespace cpp_parser
 {
+	class CppExprOnly;
 	class CppFile;
 	class CppName;
+	class CppNumericExprLiteral;
 	class CppOperatorName;
+	class CppPrimitiveExprLiteral;
 	class CppQualifiedName;
+	class CppStringLiteral;
+	class CppStringLiteralFragment;
 	class CppTypeOrExpr;
 
 	enum class CppNameKinds
@@ -80,6 +85,34 @@ namespace cpp_parser
 		RightShiftAssign = 43,
 	};
 
+	enum class CppPrimitiveExprLiteralKinds
+	{
+		UNDEFINED_ENUM_ITEM_VALUE = -1,
+		True = 0,
+		False = 1,
+		Nullptr = 2,
+		This = 3,
+		__Nullptr = 4,
+	};
+
+	enum class CppNumericExprLiteralKinds
+	{
+		UNDEFINED_ENUM_ITEM_VALUE = -1,
+		Integer = 0,
+		Hex = 1,
+		Binary = 2,
+		Float = 3,
+		FloatHex = 4,
+		Char = 5,
+	};
+
+	enum class CppStringLiteralKinds
+	{
+		UNDEFINED_ENUM_ITEM_VALUE = -1,
+		String = 0,
+		Macro_LPREFIX = 1,
+	};
+
 	class CppTypeOrExpr abstract : public vl::glr::ParsingAstBase, vl::reflection::Description<CppTypeOrExpr>
 	{
 	public:
@@ -87,6 +120,7 @@ namespace cpp_parser
 		{
 		public:
 			virtual void Visit(CppQualifiedName* node) = 0;
+			virtual void Visit(CppExprOnly* node) = 0;
 		};
 
 		virtual void Accept(CppTypeOrExpr::IVisitor* visitor) = 0;
@@ -109,6 +143,23 @@ namespace cpp_parser
 		void Accept(CppTypeOrExpr::IVisitor* visitor) override;
 	};
 
+	class CppExprOnly abstract : public CppTypeOrExpr, vl::reflection::Description<CppExprOnly>
+	{
+	public:
+		class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
+		{
+		public:
+			virtual void Visit(CppPrimitiveExprLiteral* node) = 0;
+			virtual void Visit(CppNumericExprLiteral* node) = 0;
+			virtual void Visit(CppStringLiteral* node) = 0;
+		};
+
+		virtual void Accept(CppExprOnly::IVisitor* visitor) = 0;
+
+
+		void Accept(CppTypeOrExpr::IVisitor* visitor) override;
+	};
+
 	class CppName : public CppQualifiedName, vl::reflection::Description<CppName>
 	{
 	public:
@@ -124,6 +175,38 @@ namespace cpp_parser
 		CppOperators op = CppOperators::UNDEFINED_ENUM_ITEM_VALUE;
 
 		void Accept(CppQualifiedName::IVisitor* visitor) override;
+	};
+
+	class CppPrimitiveExprLiteral : public CppExprOnly, vl::reflection::Description<CppPrimitiveExprLiteral>
+	{
+	public:
+		CppPrimitiveExprLiteralKinds kind = CppPrimitiveExprLiteralKinds::UNDEFINED_ENUM_ITEM_VALUE;
+
+		void Accept(CppExprOnly::IVisitor* visitor) override;
+	};
+
+	class CppNumericExprLiteral : public CppExprOnly, vl::reflection::Description<CppNumericExprLiteral>
+	{
+	public:
+		CppNumericExprLiteralKinds kind = CppNumericExprLiteralKinds::UNDEFINED_ENUM_ITEM_VALUE;
+		vl::glr::ParsingToken literal;
+
+		void Accept(CppExprOnly::IVisitor* visitor) override;
+	};
+
+	class CppStringLiteralFragment : public vl::glr::ParsingAstBase, vl::reflection::Description<CppStringLiteralFragment>
+	{
+	public:
+		CppStringLiteralKinds kind = CppStringLiteralKinds::UNDEFINED_ENUM_ITEM_VALUE;
+		vl::glr::ParsingToken literal;
+	};
+
+	class CppStringLiteral : public CppExprOnly, vl::reflection::Description<CppStringLiteral>
+	{
+	public:
+		vl::collections::List<vl::Ptr<CppStringLiteralFragment>> fragments;
+
+		void Accept(CppExprOnly::IVisitor* visitor) override;
 	};
 
 	class CppFile : public vl::glr::ParsingAstBase, vl::reflection::Description<CppFile>
@@ -142,16 +225,30 @@ namespace vl
 			DECL_TYPE_INFO(cpp_parser::CppTypeOrExpr::IVisitor)
 			DECL_TYPE_INFO(cpp_parser::CppQualifiedName)
 			DECL_TYPE_INFO(cpp_parser::CppQualifiedName::IVisitor)
+			DECL_TYPE_INFO(cpp_parser::CppExprOnly)
+			DECL_TYPE_INFO(cpp_parser::CppExprOnly::IVisitor)
 			DECL_TYPE_INFO(cpp_parser::CppNameKinds)
 			DECL_TYPE_INFO(cpp_parser::CppName)
 			DECL_TYPE_INFO(cpp_parser::CppOperators)
 			DECL_TYPE_INFO(cpp_parser::CppOperatorName)
+			DECL_TYPE_INFO(cpp_parser::CppPrimitiveExprLiteralKinds)
+			DECL_TYPE_INFO(cpp_parser::CppPrimitiveExprLiteral)
+			DECL_TYPE_INFO(cpp_parser::CppNumericExprLiteralKinds)
+			DECL_TYPE_INFO(cpp_parser::CppNumericExprLiteral)
+			DECL_TYPE_INFO(cpp_parser::CppStringLiteralKinds)
+			DECL_TYPE_INFO(cpp_parser::CppStringLiteralFragment)
+			DECL_TYPE_INFO(cpp_parser::CppStringLiteral)
 			DECL_TYPE_INFO(cpp_parser::CppFile)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 
 			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(cpp_parser::CppTypeOrExpr::IVisitor)
 				void Visit(cpp_parser::CppQualifiedName* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+				void Visit(cpp_parser::CppExprOnly* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
@@ -170,6 +267,24 @@ namespace vl
 				}
 
 			END_INTERFACE_PROXY(cpp_parser::CppQualifiedName::IVisitor)
+
+			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(cpp_parser::CppExprOnly::IVisitor)
+				void Visit(cpp_parser::CppPrimitiveExprLiteral* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+				void Visit(cpp_parser::CppNumericExprLiteral* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+				void Visit(cpp_parser::CppStringLiteral* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+			END_INTERFACE_PROXY(cpp_parser::CppExprOnly::IVisitor)
 
 #endif
 #endif

@@ -18,29 +18,46 @@ namespace cpp_parser
 			: public virtual vl::glr::CopyVisitorBase
 			, protected virtual CppTypeOrExpr::IVisitor
 			, protected virtual CppQualifiedName::IVisitor
+			, protected virtual CppExprOnly::IVisitor
 		{
 		protected:
+			void CopyFields(CppExprOnly* from, CppExprOnly* to);
 			void CopyFields(CppFile* from, CppFile* to);
 			void CopyFields(CppName* from, CppName* to);
+			void CopyFields(CppNumericExprLiteral* from, CppNumericExprLiteral* to);
 			void CopyFields(CppOperatorName* from, CppOperatorName* to);
+			void CopyFields(CppPrimitiveExprLiteral* from, CppPrimitiveExprLiteral* to);
 			void CopyFields(CppQualifiedName* from, CppQualifiedName* to);
+			void CopyFields(CppStringLiteral* from, CppStringLiteral* to);
+			void CopyFields(CppStringLiteralFragment* from, CppStringLiteralFragment* to);
 			void CopyFields(CppTypeOrExpr* from, CppTypeOrExpr* to);
 
 		protected:
+			virtual void Visit(CppStringLiteralFragment* node);
 			virtual void Visit(CppFile* node);
 
 			void Visit(CppQualifiedName* node) override;
+			void Visit(CppExprOnly* node) override;
 
 			void Visit(CppName* node) override;
 			void Visit(CppOperatorName* node) override;
 
+			void Visit(CppPrimitiveExprLiteral* node) override;
+			void Visit(CppNumericExprLiteral* node) override;
+			void Visit(CppStringLiteral* node) override;
+
 		public:
 			virtual vl::Ptr<CppTypeOrExpr> CopyNode(CppTypeOrExpr* node);
+			virtual vl::Ptr<CppStringLiteralFragment> CopyNode(CppStringLiteralFragment* node);
 			virtual vl::Ptr<CppFile> CopyNode(CppFile* node);
 
+			vl::Ptr<CppExprOnly> CopyNode(CppExprOnly* node);
 			vl::Ptr<CppName> CopyNode(CppName* node);
+			vl::Ptr<CppNumericExprLiteral> CopyNode(CppNumericExprLiteral* node);
 			vl::Ptr<CppOperatorName> CopyNode(CppOperatorName* node);
+			vl::Ptr<CppPrimitiveExprLiteral> CopyNode(CppPrimitiveExprLiteral* node);
 			vl::Ptr<CppQualifiedName> CopyNode(CppQualifiedName* node);
+			vl::Ptr<CppStringLiteral> CopyNode(CppStringLiteral* node);
 		};
 	}
 }

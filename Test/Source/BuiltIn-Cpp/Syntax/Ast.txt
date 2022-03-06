@@ -10,6 +10,10 @@ class QualifiedName : TypeOrExpr
 {
 }
 
+class ExprOnly : TypeOrExpr
+{
+}
+
 //////////////////////////////////////////////////////////////////
 // QualifiedName
 //////////////////////////////////////////////////////////////////
@@ -82,6 +86,57 @@ enum Operators
 class OperatorName : QualifiedName
 {
     var op : Operators;
+}
+
+//////////////////////////////////////////////////////////////////
+// PrimitiveExpr
+//////////////////////////////////////////////////////////////////
+
+enum PrimitiveExprLiteralKinds
+{
+    True,
+    False,
+    Nullptr,
+    This,
+    __Nullptr,
+}
+
+class PrimitiveExprLiteral : ExprOnly
+{
+    var kind : PrimitiveExprLiteralKinds;
+}
+
+enum NumericExprLiteralKinds
+{
+    Integer,
+    Hex,
+    Binary,
+    Float,
+    FloatHex,
+    Char,
+}
+
+class NumericExprLiteral : ExprOnly
+{
+    var kind : NumericExprLiteralKinds;
+    var literal : token;
+}
+
+enum StringLiteralKinds
+{
+    String,
+    Macro_LPREFIX,
+}
+
+class StringLiteralFragment
+{
+    var kind : StringLiteralKinds;
+    var literal : token;
+}
+
+class StringLiteral : ExprOnly
+{
+    var fragments : StringLiteralFragment[];
 }
 
 //////////////////////////////////////////////////////////////////

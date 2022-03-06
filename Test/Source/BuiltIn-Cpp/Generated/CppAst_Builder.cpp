@@ -28,12 +28,64 @@ MakeName
 		}
 
 /***********************************************************************
+MakeNumericExprLiteral
+***********************************************************************/
+
+		MakeNumericExprLiteral& MakeNumericExprLiteral::kind(CppNumericExprLiteralKinds value)
+		{
+			node->kind = value;
+			return *this;
+		}
+
+		MakeNumericExprLiteral& MakeNumericExprLiteral::literal(const vl::WString& value)
+		{
+			node->literal.value = value;
+			return *this;
+		}
+
+/***********************************************************************
 MakeOperatorName
 ***********************************************************************/
 
 		MakeOperatorName& MakeOperatorName::op(CppOperators value)
 		{
 			node->op = value;
+			return *this;
+		}
+
+/***********************************************************************
+MakePrimitiveExprLiteral
+***********************************************************************/
+
+		MakePrimitiveExprLiteral& MakePrimitiveExprLiteral::kind(CppPrimitiveExprLiteralKinds value)
+		{
+			node->kind = value;
+			return *this;
+		}
+
+/***********************************************************************
+MakeStringLiteral
+***********************************************************************/
+
+		MakeStringLiteral& MakeStringLiteral::fragments(const vl::Ptr<CppStringLiteralFragment>& value)
+		{
+			node->fragments.Add(value);
+			return *this;
+		}
+
+/***********************************************************************
+MakeStringLiteralFragment
+***********************************************************************/
+
+		MakeStringLiteralFragment& MakeStringLiteralFragment::kind(CppStringLiteralKinds value)
+		{
+			node->kind = value;
+			return *this;
+		}
+
+		MakeStringLiteralFragment& MakeStringLiteralFragment::literal(const vl::WString& value)
+		{
+			node->literal.value = value;
 			return *this;
 		}
 	}

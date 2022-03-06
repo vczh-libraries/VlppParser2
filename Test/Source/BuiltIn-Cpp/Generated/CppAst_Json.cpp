@@ -10,6 +10,9 @@ namespace cpp_parser
 {
 	namespace json_visitor
 	{
+		void AstVisitor::PrintFields(CppExprOnly* node)
+		{
+		}
 		void AstVisitor::PrintFields(CppFile* node)
 		{
 		}
@@ -48,6 +51,37 @@ namespace cpp_parser
 			EndField();
 			BeginField(L"name");
 			WriteToken(node->name);
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppNumericExprLiteral* node)
+		{
+			BeginField(L"kind");
+			switch (node->kind)
+			{
+			case cpp_parser::CppNumericExprLiteralKinds::Binary:
+				WriteString(L"Binary");
+				break;
+			case cpp_parser::CppNumericExprLiteralKinds::Char:
+				WriteString(L"Char");
+				break;
+			case cpp_parser::CppNumericExprLiteralKinds::Float:
+				WriteString(L"Float");
+				break;
+			case cpp_parser::CppNumericExprLiteralKinds::FloatHex:
+				WriteString(L"FloatHex");
+				break;
+			case cpp_parser::CppNumericExprLiteralKinds::Hex:
+				WriteString(L"Hex");
+				break;
+			case cpp_parser::CppNumericExprLiteralKinds::Integer:
+				WriteString(L"Integer");
+				break;
+			default:
+				WriteNull();
+			}
+			EndField();
+			BeginField(L"literal");
+			WriteToken(node->literal);
 			EndField();
 		}
 		void AstVisitor::PrintFields(CppOperatorName* node)
@@ -192,8 +226,65 @@ namespace cpp_parser
 			}
 			EndField();
 		}
+		void AstVisitor::PrintFields(CppPrimitiveExprLiteral* node)
+		{
+			BeginField(L"kind");
+			switch (node->kind)
+			{
+			case cpp_parser::CppPrimitiveExprLiteralKinds::False:
+				WriteString(L"False");
+				break;
+			case cpp_parser::CppPrimitiveExprLiteralKinds::Nullptr:
+				WriteString(L"Nullptr");
+				break;
+			case cpp_parser::CppPrimitiveExprLiteralKinds::This:
+				WriteString(L"This");
+				break;
+			case cpp_parser::CppPrimitiveExprLiteralKinds::True:
+				WriteString(L"True");
+				break;
+			case cpp_parser::CppPrimitiveExprLiteralKinds::__Nullptr:
+				WriteString(L"__Nullptr");
+				break;
+			default:
+				WriteNull();
+			}
+			EndField();
+		}
 		void AstVisitor::PrintFields(CppQualifiedName* node)
 		{
+		}
+		void AstVisitor::PrintFields(CppStringLiteral* node)
+		{
+			BeginField(L"fragments");
+			BeginArray();
+			for (auto&& listItem : node->fragments)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppStringLiteralFragment* node)
+		{
+			BeginField(L"kind");
+			switch (node->kind)
+			{
+			case cpp_parser::CppStringLiteralKinds::Macro_LPREFIX:
+				WriteString(L"Macro_LPREFIX");
+				break;
+			case cpp_parser::CppStringLiteralKinds::String:
+				WriteString(L"String");
+				break;
+			default:
+				WriteNull();
+			}
+			EndField();
+			BeginField(L"literal");
+			WriteToken(node->literal);
+			EndField();
 		}
 		void AstVisitor::PrintFields(CppTypeOrExpr* node)
 		{
@@ -202,6 +293,11 @@ namespace cpp_parser
 		void AstVisitor::Visit(CppQualifiedName* node)
 		{
 			node->Accept(static_cast<CppQualifiedName::IVisitor*>(this));
+		}
+
+		void AstVisitor::Visit(CppExprOnly* node)
+		{
+			node->Accept(static_cast<CppExprOnly::IVisitor*>(this));
 		}
 
 		void AstVisitor::Visit(CppName* node)
@@ -234,6 +330,51 @@ namespace cpp_parser
 			EndObject();
 		}
 
+		void AstVisitor::Visit(CppPrimitiveExprLiteral* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"PrimitiveExprLiteral", node);
+			PrintFields(static_cast<CppTypeOrExpr*>(node));
+			PrintFields(static_cast<CppExprOnly*>(node));
+			PrintFields(static_cast<CppPrimitiveExprLiteral*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppNumericExprLiteral* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"NumericExprLiteral", node);
+			PrintFields(static_cast<CppTypeOrExpr*>(node));
+			PrintFields(static_cast<CppExprOnly*>(node));
+			PrintFields(static_cast<CppNumericExprLiteral*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppStringLiteral* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"StringLiteral", node);
+			PrintFields(static_cast<CppTypeOrExpr*>(node));
+			PrintFields(static_cast<CppExprOnly*>(node));
+			PrintFields(static_cast<CppStringLiteral*>(node));
+			EndObject();
+		}
+
 		AstVisitor::AstVisitor(vl::stream::StreamWriter& _writer)
 			: vl::glr::JsonVisitorBase(_writer)
 		{
@@ -247,6 +388,19 @@ namespace cpp_parser
 				return;
 			}
 			node->Accept(static_cast<CppTypeOrExpr::IVisitor*>(this));
+		}
+
+		void AstVisitor::Print(CppStringLiteralFragment* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"StringLiteralFragment", node);
+			PrintFields(static_cast<CppStringLiteralFragment*>(node));
+			EndObject();
 		}
 
 		void AstVisitor::Print(CppFile* node)

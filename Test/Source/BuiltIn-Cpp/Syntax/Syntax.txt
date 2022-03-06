@@ -65,11 +65,36 @@ _QualifiedName
   ;
 
 //////////////////////////////////////////////////////////////////
+// ExprOnly
+//////////////////////////////////////////////////////////////////
+
+_StringLiteralFragment
+  ::= MACRO_LPREFIX as StringLiteralFragment {kind = Macro_LPREFIX}
+  ::= STRING:literal as StringLiteralFragment {kind = String}
+  ;
+
+_PrimitiveExpr
+  ::= "true" as PrimitiveExprLiteral {kind = True}
+  ::= "false" as PrimitiveExprLiteral {kind = False}
+  ::= "nullptr" as PrimitiveExprLiteral {kind = Nullptr}
+  ::= "this" as PrimitiveExprLiteral {kind = This}
+  ::= "__nullptr" as PrimitiveExprLiteral {kind = __Nullptr}
+  ::= INT:literal as NumericExprLiteral {kind = Integer}
+  ::= HEX:literal as NumericExprLiteral {kind = Hex}
+  ::= BIN:literal as NumericExprLiteral {kind = Binary}
+  ::= FLOAT:literal as NumericExprLiteral {kind = Float}
+  ::= FLOATHEX:literal as NumericExprLiteral {kind = FloatHex}
+  ::= CHAR:literal as NumericExprLiteral {kind = Char}
+  ::= _StringLiteralFragment:fragments {_StringLiteralFragment:fragments} as StringLiteral
+  ;
+
+//////////////////////////////////////////////////////////////////
 // TypeOrExpr
 //////////////////////////////////////////////////////////////////
 
 _TypeOrExpr
   ::= !_QualifiedName
+  ::= !_PrimitiveExpr
   ;
 
 //////////////////////////////////////////////////////////////////
