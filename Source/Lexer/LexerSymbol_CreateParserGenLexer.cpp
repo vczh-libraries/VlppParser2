@@ -47,6 +47,8 @@ CreateParserGenAst
 				manager.CreateToken(L"POSITIVE", L"/+");
 				manager.CreateToken(L"NEGATIVE", L"-");
 
+				manager.CreateToken(L"LS_PH", L"left_recursion_place_holder");
+				manager.CreateToken(L"LS_I", L"left_recursion_inject");
 				manager.CreateToken(L"ID", L"[a-zA-Z_][a-zA-Z0-9_]*");
 				manager.CreateToken(L"STRING", L"(\"[^\"]*\")+");
 				manager.CreateToken(L"CONDITIONAL_LITERAL", L"(\'[^\']*\')+");
