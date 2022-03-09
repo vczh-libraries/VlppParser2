@@ -15,12 +15,14 @@ namespace prefixsubset
 	enum class ModuleParserStates
 	{
 		_Name = 0,
-		_ShortType = 6,
-		_LongType = 11,
-		_Expr0 = 23,
-		_Expr1 = 29,
-		_Expr = 37,
-		Module = 43,
+		_PrimitiveShared = 6,
+		_PrimitiveTypeOnly = 9,
+		_PrimitiveExprOnly = 15,
+		_LongType = 20,
+		_Expr0 = 33,
+		_Expr1 = 37,
+		_Expr = 45,
+		Module = 51,
 	};
 
 	const wchar_t* ModuleParserRuleName(vl::vint index);

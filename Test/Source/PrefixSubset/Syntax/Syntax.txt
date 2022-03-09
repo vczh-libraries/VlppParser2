@@ -1,23 +1,44 @@
+////////////////////////////////////////
+// Left Recursive (Primitives)
+////////////////////////////////////////
+
 _Name
   ::= ID:name as Name
   ::= _Name:parent "." ID:member as MemberName
   ;
 
-_ShortType
+_PrimitiveShared
   ::= !_Name
-  ::= "const" _ShortType:type as ConstType
   ;
 
+_PrimitiveTypeOnly
+  ::= "const" _PrimitiveShared:type as ConstType
+  ::= "const" _PrimitiveTypeOnly:type as ConstType
+  ;
+
+_PrimitiveExprOnly
+  ::= "(" !_Expr ")"
+  ;
+
+////////////////////////////////////////
+// Left Recursive (Types)
+////////////////////////////////////////
+
 _LongType
-  ::= !_ShortType
+  ::= !_PrimitiveShared
+  ::= !_PrimitiveTypeOnly
   ::= _LongType:type "const" as ConstType
   ::= _LongType:type "*" as PointerType
   ::= _LongType:returnType "(" {_LongType:args ; ","} ")" as FunctionType
   ;
 
+////////////////////////////////////////
+// Left Recursive (Expressions)
+////////////////////////////////////////
+
 _Expr0
-  ::= !_Name
-  ::= "(" !_Expr ")"
+  ::= !_PrimitiveShared
+  ::= !_PrimitiveExprOnly
   ;
 
 _Expr1
@@ -29,6 +50,10 @@ _Expr
   ::= !_Expr1
   ::= _Expr:first "*" _Expr1:second as MulExpr
   ;
+
+////////////////////////////////////////
+// Left Recursive (Module)
+////////////////////////////////////////
 
 Module
   ::= !_LongType
