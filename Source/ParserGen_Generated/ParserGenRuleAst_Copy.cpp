@@ -57,7 +57,7 @@ namespace vl
 				void RuleAstVisitor::CopyFields(GlrLeftRecursionInjectClause* from, GlrLeftRecursionInjectClause* to)
 				{
 					CopyFields(static_cast<GlrClause*>(from), static_cast<GlrClause*>(to));
-					to->flag = from->flag;
+					to->flag = CopyNode(from->flag.Obj());
 					for (auto&& listItem : from->injectionTargets)
 					{
 						to->injectionTargets.Add(CopyNode(listItem.Obj()));

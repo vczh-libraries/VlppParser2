@@ -38,6 +38,8 @@ CreateParserGenRuleSyntax
 				auto _assignmentOp = manager.CreateRule(L"AssignmentOp");
 				auto _assignment = manager.CreateRule(L"Assignment");
 				auto _clause = manager.CreateRule(L"Clause");
+				auto _placeholder = manager.CreateRule(L"Placeholder");
+				auto _ruleName = manager.CreateRule(L"RuleName");
 				auto _rule = manager.CreateRule(L"Rule");
 				auto _file = manager.CreateRule(L"File");
 
@@ -142,7 +144,7 @@ CreateParserGenRuleSyntax
 				Clause{ _syntax0 } = create(tok(T::OPEN_TEST) + rule(_testBranch, F::TestConditionSyntax_branches) + loop(tok(T::ALTERNATIVE) + rule(_testBranch, F::TestConditionSyntax_branches)) + tok(T::CLOSE_ROUND), C::TestConditionSyntax);
 
 				///////////////////////////////////////////////////////////////////////////////////
-				// Syntax (left recursive)
+				// Syntax (others)
 				///////////////////////////////////////////////////////////////////////////////////
 
 				// "(" !Syntax ")"
@@ -187,6 +189,32 @@ CreateParserGenRuleSyntax
 
 				// ID:name {"::=" Clause:clauses} ";" as Rule
 				Clause{ _rule } = create(tok(T::ID, F::Rule_name) + loop(tok(T::INFER) + rule(_clause, F::Rule_clauses)) + tok(T::SEMICOLON), C::Rule);
+
+				///////////////////////////////////////////////////////////////////////////////////
+				// Clause (left recursive)
+				///////////////////////////////////////////////////////////////////////////////////
+
+				// ID:flag as LeftRecursionPlaceholder
+				Clause{ _placeholder } = create(tok(T::ID, F::LeftRecursionPlaceholder_flag), C::LeftRecursionPlaceholder);
+
+				// ID:literal as RefSyntax {refType = ID}
+				Clause{ _ruleName } = create(tok(T::ID, F::RefSyntax_literal), C::RefSyntax).with(F::RefSyntax_refType, GlrRefType::Id);
+
+				// "left_recursion_placeholder" "(" RuleName:flags {"," ruleName:flags} ")" as LeftRecursionPlaceholderClause
+				Clause{ _clause } = create(
+						tok(T::LS_PH) + tok(T::OPEN_ROUND)
+						+ rule(_placeholder, F::LeftRecursionPlaceholderClause_flags)
+						+ loop(tok(T::COMMA) + rule(_placeholder, F::LeftRecursionPlaceholderClause_flags))
+						+ tok(T::CLOSE_ROUND),
+					C::LeftRecursionPlaceholderClause);
+
+				// "!" RuleName:rule "left_recursion_inject" "(" Placeholder:flag ")" RuleName:injectionTargets {"|" RuleName:injectionTargets}
+				Clause{ _clause } = create(
+						tok(T::USE) + rule(_ruleName, F::LeftRecursionInjectClause_rule)
+						+ tok(T::LS_I) + tok(T::OPEN_ROUND) + rule(_placeholder, F::LeftRecursionInjectClause_flag) + tok(T::OPEN_ROUND)
+						+ rule(_ruleName, F::LeftRecursionInjectClause_injectionTargets)
+						+ loop(tok(T::ALTERNATIVE) + rule(_ruleName, F::LeftRecursionInjectClause_injectionTargets)),
+					C::LeftRecursionInjectClause);
 
 				///////////////////////////////////////////////////////////////////////////////////
 				// File

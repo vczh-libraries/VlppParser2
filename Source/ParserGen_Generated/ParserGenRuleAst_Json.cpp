@@ -82,7 +82,7 @@ namespace vl
 				void RuleAstVisitor::PrintFields(GlrLeftRecursionInjectClause* node)
 				{
 					BeginField(L"flag");
-					WriteToken(node->flag);
+					Print(node->flag.Obj());
 					EndField();
 					BeginField(L"injectionTargets");
 					BeginArray();

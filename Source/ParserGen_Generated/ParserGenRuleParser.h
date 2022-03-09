@@ -34,8 +34,10 @@ namespace vl
 				AssignmentOp = 95,
 				Assignment = 99,
 				Clause = 104,
-				Rule = 126,
-				File = 132,
+				Placeholder = 141,
+				RuleName = 144,
+				Rule = 147,
+				File = 153,
 			};
 
 			const wchar_t* RuleParserRuleName(vl::vint index);

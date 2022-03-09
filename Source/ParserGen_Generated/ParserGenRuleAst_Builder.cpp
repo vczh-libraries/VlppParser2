@@ -95,9 +95,9 @@ MakeCreateClause
 MakeLeftRecursionInjectClause
 ***********************************************************************/
 
-				MakeLeftRecursionInjectClause& MakeLeftRecursionInjectClause::flag(const vl::WString& value)
+				MakeLeftRecursionInjectClause& MakeLeftRecursionInjectClause::flag(const vl::Ptr<GlrLeftRecursionPlaceholder>& value)
 				{
-					node->flag.value = value;
+					node->flag = value;
 					return *this;
 				}
 

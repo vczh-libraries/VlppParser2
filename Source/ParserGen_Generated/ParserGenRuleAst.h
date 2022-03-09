@@ -299,7 +299,7 @@ namespace vl
 			class GlrLeftRecursionInjectClause : public GlrClause, vl::reflection::Description<GlrLeftRecursionInjectClause>
 			{
 			public:
-				vl::glr::ParsingToken flag;
+				vl::Ptr<GlrLeftRecursionPlaceholder> flag;
 				vl::Ptr<GlrRefSyntax> rule;
 				vl::collections::List<vl::Ptr<GlrRefSyntax>> injectionTargets;
 

@@ -163,7 +163,7 @@ CreateParserGenRuleAst
 
 				auto _LriClause = _ast->CreateClass(L"LeftRecursionInjectClause");
 				_LriClause->SetBaseClass(L"Clause");
-				_LriClause->CreateProp(L"flag")->SetPropType(AstPropType::Token);
+				_LriClause->CreateProp(L"flag")->SetPropType(AstPropType::Type, L"LeftRecursionPlaceholder");
 				_LriClause->CreateProp(L"rule")->SetPropType(AstPropType::Type, L"RefSyntax");
 				_LriClause->CreateProp(L"injectionTargets")->SetPropType(AstPropType::Array, L"RefSyntax");
 

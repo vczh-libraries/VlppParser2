@@ -106,6 +106,8 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					return vl::glr::AssemblerSetObjectField(&vl::glr::parsergen::GlrCreateClause::syntax, object, field, value, cppFieldName);
 				case ParserGenFields::Enum_items:
 					return vl::glr::AssemblerSetObjectField(&vl::glr::parsergen::GlrEnum::items, object, field, value, cppFieldName);
+				case ParserGenFields::LeftRecursionInjectClause_flag:
+					return vl::glr::AssemblerSetObjectField(&vl::glr::parsergen::GlrLeftRecursionInjectClause::flag, object, field, value, cppFieldName);
 				case ParserGenFields::LeftRecursionInjectClause_injectionTargets:
 					return vl::glr::AssemblerSetObjectField(&vl::glr::parsergen::GlrLeftRecursionInjectClause::injectionTargets, object, field, value, cppFieldName);
 				case ParserGenFields::LeftRecursionInjectClause_rule:
@@ -176,8 +178,6 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrCreateClause::type, object, field, token, tokenIndex, cppFieldName);
 				case ParserGenFields::EnumItem_name:
 					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrEnumItem::name, object, field, token, tokenIndex, cppFieldName);
-				case ParserGenFields::LeftRecursionInjectClause_flag:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrLeftRecursionInjectClause::flag, object, field, token, tokenIndex, cppFieldName);
 				case ParserGenFields::LeftRecursionPlaceholder_flag:
 					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrLeftRecursionPlaceholder::flag, object, field, token, tokenIndex, cppFieldName);
 				case ParserGenFields::PartialClause_type:

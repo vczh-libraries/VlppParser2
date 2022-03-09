@@ -299,7 +299,7 @@ namespace vl
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
 					Traverse(static_cast<GlrClause*>(node));
 					Traverse(static_cast<GlrLeftRecursionInjectClause*>(node));
-					Traverse(node->flag);
+					InspectInto(node->flag.Obj());
 					for (auto&& listItem : node->injectionTargets)
 					{
 						InspectInto(listItem.Obj());
