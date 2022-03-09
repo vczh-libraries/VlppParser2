@@ -150,6 +150,27 @@ CreateParserGenRuleAst
 				_ReuseClause->CreateProp(L"syntax")->SetPropType(AstPropType::Type, L"Syntax");
 				_ReuseClause->CreateProp(L"assignments")->SetPropType(AstPropType::Array, L"Assignment");
 
+				///////////////////////////////////////////////////////////////////////////////////
+				// Left Recursion Clauses
+				///////////////////////////////////////////////////////////////////////////////////
+
+				auto _Lrp = _ast->CreateClass(L"LeftRecursionPlaceholder");
+				_Lrp->CreateProp(L"flag")->SetPropType(AstPropType::Token);
+
+				auto _LrpClause = _ast->CreateClass(L"LeftRecursionPlaceholderClause");
+				_LrpClause->SetBaseClass(L"Clause");
+				_LrpClause->CreateProp(L"flags")->SetPropType(AstPropType::Array, L"LeftRecursionPlaceholder");
+
+				auto _LriClause = _ast->CreateClass(L"LeftRecursionInjectClause");
+				_LriClause->SetBaseClass(L"Clause");
+				_LriClause->CreateProp(L"flag")->SetPropType(AstPropType::Token);
+				_LriClause->CreateProp(L"rule")->SetPropType(AstPropType::Type, L"RefSyntax");
+				_LriClause->CreateProp(L"injectionTargets")->SetPropType(AstPropType::Array, L"RefSyntax");
+
+				///////////////////////////////////////////////////////////////////////////////////
+				// Rule
+				///////////////////////////////////////////////////////////////////////////////////
+
 				auto _Rule = _ast->CreateClass(L"Rule");
 				_Rule->CreateProp(L"name")->SetPropType(AstPropType::Token);
 				_Rule->CreateProp(L"clauses")->SetPropType(AstPropType::Array, L"Clause");

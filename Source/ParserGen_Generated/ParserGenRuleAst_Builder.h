@@ -47,6 +47,26 @@ namespace vl
 					MakeCreateClause& type(const vl::WString& value);
 				};
 
+				class MakeLeftRecursionInjectClause : public vl::glr::ParsingAstBuilder<GlrLeftRecursionInjectClause>
+				{
+				public:
+					MakeLeftRecursionInjectClause& flag(const vl::WString& value);
+					MakeLeftRecursionInjectClause& injectionTargets(const vl::Ptr<GlrRefSyntax>& value);
+					MakeLeftRecursionInjectClause& rule(const vl::Ptr<GlrRefSyntax>& value);
+				};
+
+				class MakeLeftRecursionPlaceholder : public vl::glr::ParsingAstBuilder<GlrLeftRecursionPlaceholder>
+				{
+				public:
+					MakeLeftRecursionPlaceholder& flag(const vl::WString& value);
+				};
+
+				class MakeLeftRecursionPlaceholderClause : public vl::glr::ParsingAstBuilder<GlrLeftRecursionPlaceholderClause>
+				{
+				public:
+					MakeLeftRecursionPlaceholderClause& flags(const vl::Ptr<GlrLeftRecursionPlaceholder>& value);
+				};
+
 				class MakeLoopSyntax : public vl::glr::ParsingAstBuilder<GlrLoopSyntax>
 				{
 				public:

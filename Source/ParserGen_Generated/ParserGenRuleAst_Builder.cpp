@@ -92,6 +92,48 @@ MakeCreateClause
 				}
 
 /***********************************************************************
+MakeLeftRecursionInjectClause
+***********************************************************************/
+
+				MakeLeftRecursionInjectClause& MakeLeftRecursionInjectClause::flag(const vl::WString& value)
+				{
+					node->flag.value = value;
+					return *this;
+				}
+
+				MakeLeftRecursionInjectClause& MakeLeftRecursionInjectClause::injectionTargets(const vl::Ptr<GlrRefSyntax>& value)
+				{
+					node->injectionTargets.Add(value);
+					return *this;
+				}
+
+				MakeLeftRecursionInjectClause& MakeLeftRecursionInjectClause::rule(const vl::Ptr<GlrRefSyntax>& value)
+				{
+					node->rule = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeLeftRecursionPlaceholder
+***********************************************************************/
+
+				MakeLeftRecursionPlaceholder& MakeLeftRecursionPlaceholder::flag(const vl::WString& value)
+				{
+					node->flag.value = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeLeftRecursionPlaceholderClause
+***********************************************************************/
+
+				MakeLeftRecursionPlaceholderClause& MakeLeftRecursionPlaceholderClause::flags(const vl::Ptr<GlrLeftRecursionPlaceholder>& value)
+				{
+					node->flags.Add(value);
+					return *this;
+				}
+
+/***********************************************************************
 MakeLoopSyntax
 ***********************************************************************/
 

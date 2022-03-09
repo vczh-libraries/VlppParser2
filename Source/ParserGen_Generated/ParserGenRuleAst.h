@@ -22,6 +22,9 @@ namespace vl
 			class GlrClause;
 			class GlrCondition;
 			class GlrCreateClause;
+			class GlrLeftRecursionInjectClause;
+			class GlrLeftRecursionPlaceholder;
+			class GlrLeftRecursionPlaceholderClause;
 			class GlrLoopSyntax;
 			class GlrNotCondition;
 			class GlrOptionalSyntax;
@@ -234,6 +237,8 @@ namespace vl
 					virtual void Visit(GlrCreateClause* node) = 0;
 					virtual void Visit(GlrPartialClause* node) = 0;
 					virtual void Visit(GlrReuseClause* node) = 0;
+					virtual void Visit(GlrLeftRecursionPlaceholderClause* node) = 0;
+					virtual void Visit(GlrLeftRecursionInjectClause* node) = 0;
 				};
 
 				virtual void Accept(GlrClause::IVisitor* visitor) = 0;
@@ -273,6 +278,30 @@ namespace vl
 			public:
 				vl::Ptr<GlrSyntax> syntax;
 				vl::collections::List<vl::Ptr<GlrAssignment>> assignments;
+
+				void Accept(GlrClause::IVisitor* visitor) override;
+			};
+
+			class GlrLeftRecursionPlaceholder : public vl::glr::ParsingAstBase, vl::reflection::Description<GlrLeftRecursionPlaceholder>
+			{
+			public:
+				vl::glr::ParsingToken flag;
+			};
+
+			class GlrLeftRecursionPlaceholderClause : public GlrClause, vl::reflection::Description<GlrLeftRecursionPlaceholderClause>
+			{
+			public:
+				vl::collections::List<vl::Ptr<GlrLeftRecursionPlaceholder>> flags;
+
+				void Accept(GlrClause::IVisitor* visitor) override;
+			};
+
+			class GlrLeftRecursionInjectClause : public GlrClause, vl::reflection::Description<GlrLeftRecursionInjectClause>
+			{
+			public:
+				vl::glr::ParsingToken flag;
+				vl::Ptr<GlrRefSyntax> rule;
+				vl::collections::List<vl::Ptr<GlrRefSyntax>> injectionTargets;
 
 				void Accept(GlrClause::IVisitor* visitor) override;
 			};
@@ -328,6 +357,9 @@ namespace vl
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrCreateClause)
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrPartialClause)
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrReuseClause)
+			DECL_TYPE_INFO(vl::glr::parsergen::GlrLeftRecursionPlaceholder)
+			DECL_TYPE_INFO(vl::glr::parsergen::GlrLeftRecursionPlaceholderClause)
+			DECL_TYPE_INFO(vl::glr::parsergen::GlrLeftRecursionInjectClause)
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrRule)
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrSyntaxFile)
 
@@ -411,6 +443,16 @@ namespace vl
 				}
 
 				void Visit(vl::glr::parsergen::GlrReuseClause* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+				void Visit(vl::glr::parsergen::GlrLeftRecursionPlaceholderClause* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+				void Visit(vl::glr::parsergen::GlrLeftRecursionInjectClause* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}

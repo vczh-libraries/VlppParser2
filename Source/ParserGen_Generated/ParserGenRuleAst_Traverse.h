@@ -33,6 +33,9 @@ namespace vl
 					virtual void Traverse(GlrClause* node);
 					virtual void Traverse(GlrCondition* node);
 					virtual void Traverse(GlrCreateClause* node);
+					virtual void Traverse(GlrLeftRecursionInjectClause* node);
+					virtual void Traverse(GlrLeftRecursionPlaceholder* node);
+					virtual void Traverse(GlrLeftRecursionPlaceholderClause* node);
 					virtual void Traverse(GlrLoopSyntax* node);
 					virtual void Traverse(GlrNotCondition* node);
 					virtual void Traverse(GlrOptionalSyntax* node);
@@ -59,6 +62,9 @@ namespace vl
 					virtual void Finishing(GlrClause* node);
 					virtual void Finishing(GlrCondition* node);
 					virtual void Finishing(GlrCreateClause* node);
+					virtual void Finishing(GlrLeftRecursionInjectClause* node);
+					virtual void Finishing(GlrLeftRecursionPlaceholder* node);
+					virtual void Finishing(GlrLeftRecursionPlaceholderClause* node);
 					virtual void Finishing(GlrLoopSyntax* node);
 					virtual void Finishing(GlrNotCondition* node);
 					virtual void Finishing(GlrOptionalSyntax* node);
@@ -95,6 +101,8 @@ namespace vl
 					void Visit(GlrCreateClause* node) override;
 					void Visit(GlrPartialClause* node) override;
 					void Visit(GlrReuseClause* node) override;
+					void Visit(GlrLeftRecursionPlaceholderClause* node) override;
+					void Visit(GlrLeftRecursionInjectClause* node) override;
 
 				public:
 					void InspectInto(GlrCondition* node);
@@ -103,6 +111,7 @@ namespace vl
 					void InspectInto(GlrSwitchItem* node);
 					void InspectInto(GlrTestConditionBranch* node);
 					void InspectInto(GlrAssignment* node);
+					void InspectInto(GlrLeftRecursionPlaceholder* node);
 					void InspectInto(GlrRule* node);
 					void InspectInto(GlrSyntaxFile* node);
 				};

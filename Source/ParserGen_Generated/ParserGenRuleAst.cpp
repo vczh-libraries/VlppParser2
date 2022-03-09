@@ -90,6 +90,16 @@ Visitor Pattern Implementation
 			{
 				visitor->Visit(this);
 			}
+
+			void GlrLeftRecursionPlaceholderClause::Accept(GlrClause::IVisitor* visitor)
+			{
+				visitor->Visit(this);
+			}
+
+			void GlrLeftRecursionInjectClause::Accept(GlrClause::IVisitor* visitor)
+			{
+				visitor->Visit(this);
+			}
 		}
 	}
 }
@@ -129,6 +139,9 @@ namespace vl
 			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrCreateClause, glr::parsergen::GlrCreateClause)
 			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrPartialClause, glr::parsergen::GlrPartialClause)
 			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrReuseClause, glr::parsergen::GlrReuseClause)
+			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrLeftRecursionPlaceholder, glr::parsergen::GlrLeftRecursionPlaceholder)
+			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrLeftRecursionPlaceholderClause, glr::parsergen::GlrLeftRecursionPlaceholderClause)
+			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrLeftRecursionInjectClause, glr::parsergen::GlrLeftRecursionInjectClause)
 			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrRule, glr::parsergen::GlrRule)
 			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrSyntaxFile, glr::parsergen::GlrSyntaxFile)
 
@@ -337,6 +350,32 @@ namespace vl
 				CLASS_MEMBER_FIELD(assignments)
 			END_CLASS_MEMBER(vl::glr::parsergen::GlrReuseClause)
 
+			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrLeftRecursionPlaceholder)
+				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrLeftRecursionPlaceholder>(), NO_PARAMETER)
+
+				CLASS_MEMBER_FIELD(flag)
+			END_CLASS_MEMBER(vl::glr::parsergen::GlrLeftRecursionPlaceholder)
+
+			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrLeftRecursionPlaceholderClause)
+				CLASS_MEMBER_BASE(vl::glr::parsergen::GlrClause)
+
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrLeftRecursionPlaceholderClause>(), NO_PARAMETER)
+
+				CLASS_MEMBER_FIELD(flags)
+			END_CLASS_MEMBER(vl::glr::parsergen::GlrLeftRecursionPlaceholderClause)
+
+			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrLeftRecursionInjectClause)
+				CLASS_MEMBER_BASE(vl::glr::parsergen::GlrClause)
+
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrLeftRecursionInjectClause>(), NO_PARAMETER)
+
+				CLASS_MEMBER_FIELD(flag)
+				CLASS_MEMBER_FIELD(rule)
+				CLASS_MEMBER_FIELD(injectionTargets)
+			END_CLASS_MEMBER(vl::glr::parsergen::GlrLeftRecursionInjectClause)
+
 			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrRule)
 				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
@@ -377,6 +416,8 @@ namespace vl
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrClause::IVisitor::*)(vl::glr::parsergen::GlrCreateClause* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrClause::IVisitor::*)(vl::glr::parsergen::GlrPartialClause* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrClause::IVisitor::*)(vl::glr::parsergen::GlrReuseClause* node))
+				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrClause::IVisitor::*)(vl::glr::parsergen::GlrLeftRecursionPlaceholderClause* node))
+				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrClause::IVisitor::*)(vl::glr::parsergen::GlrLeftRecursionInjectClause* node))
 			END_INTERFACE_MEMBER(vl::glr::parsergen::GlrClause)
 
 #endif
@@ -415,6 +456,9 @@ namespace vl
 					ADD_TYPE_INFO(vl::glr::parsergen::GlrCreateClause)
 					ADD_TYPE_INFO(vl::glr::parsergen::GlrPartialClause)
 					ADD_TYPE_INFO(vl::glr::parsergen::GlrReuseClause)
+					ADD_TYPE_INFO(vl::glr::parsergen::GlrLeftRecursionPlaceholder)
+					ADD_TYPE_INFO(vl::glr::parsergen::GlrLeftRecursionPlaceholderClause)
+					ADD_TYPE_INFO(vl::glr::parsergen::GlrLeftRecursionInjectClause)
 					ADD_TYPE_INFO(vl::glr::parsergen::GlrRule)
 					ADD_TYPE_INFO(vl::glr::parsergen::GlrSyntaxFile)
 				}

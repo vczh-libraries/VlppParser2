@@ -283,6 +283,16 @@ ValidateTypesVisitor
 						Visit(assignment.Obj());
 					}
 				}
+
+				void Visit(GlrLeftRecursionPlaceholderClause* node) override
+				{
+					CHECK_FAIL(L"Not Implemented!");
+				}
+
+				void Visit(GlrLeftRecursionInjectClause* node) override
+				{
+					CHECK_FAIL(L"Not Implemented!");
+				}
 			};
 
 /***********************************************************************

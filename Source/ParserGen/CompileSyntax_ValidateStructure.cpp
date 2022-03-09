@@ -361,6 +361,16 @@ ValidateStructureCountingVisitor
 					node->syntax->Accept(this);
 					CheckAfterClause(node, true);
 				}
+
+				void Visit(GlrLeftRecursionPlaceholderClause* node) override
+				{
+					CHECK_FAIL(L"Not Implemented!");
+				}
+
+				void Visit(GlrLeftRecursionInjectClause* node) override
+				{
+					CHECK_FAIL(L"Not Implemented!");
+				}
 			};
 
 /***********************************************************************
@@ -669,6 +679,16 @@ ValidateStructureRelationshipVisitor
 					clause = node;
 					node->syntax->Accept(this);
 					CheckAfterClause(node);
+				}
+
+				void Visit(GlrLeftRecursionPlaceholderClause* node) override
+				{
+					CHECK_FAIL(L"Not Implemented!");
+				}
+
+				void Visit(GlrLeftRecursionInjectClause* node) override
+				{
+					CHECK_FAIL(L"Not Implemented!");
 				}
 			};
 

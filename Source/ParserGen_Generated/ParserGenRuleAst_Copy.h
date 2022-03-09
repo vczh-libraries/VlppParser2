@@ -31,6 +31,9 @@ namespace vl
 					void CopyFields(GlrClause* from, GlrClause* to);
 					void CopyFields(GlrCondition* from, GlrCondition* to);
 					void CopyFields(GlrCreateClause* from, GlrCreateClause* to);
+					void CopyFields(GlrLeftRecursionInjectClause* from, GlrLeftRecursionInjectClause* to);
+					void CopyFields(GlrLeftRecursionPlaceholder* from, GlrLeftRecursionPlaceholder* to);
+					void CopyFields(GlrLeftRecursionPlaceholderClause* from, GlrLeftRecursionPlaceholderClause* to);
 					void CopyFields(GlrLoopSyntax* from, GlrLoopSyntax* to);
 					void CopyFields(GlrNotCondition* from, GlrNotCondition* to);
 					void CopyFields(GlrOptionalSyntax* from, GlrOptionalSyntax* to);
@@ -53,6 +56,7 @@ namespace vl
 					virtual void Visit(GlrSwitchItem* node);
 					virtual void Visit(GlrTestConditionBranch* node);
 					virtual void Visit(GlrAssignment* node);
+					virtual void Visit(GlrLeftRecursionPlaceholder* node);
 					virtual void Visit(GlrRule* node);
 					virtual void Visit(GlrSyntaxFile* node);
 
@@ -73,6 +77,8 @@ namespace vl
 					void Visit(GlrCreateClause* node) override;
 					void Visit(GlrPartialClause* node) override;
 					void Visit(GlrReuseClause* node) override;
+					void Visit(GlrLeftRecursionPlaceholderClause* node) override;
+					void Visit(GlrLeftRecursionInjectClause* node) override;
 
 				public:
 					virtual vl::Ptr<GlrCondition> CopyNode(GlrCondition* node);
@@ -81,12 +87,15 @@ namespace vl
 					virtual vl::Ptr<GlrSwitchItem> CopyNode(GlrSwitchItem* node);
 					virtual vl::Ptr<GlrTestConditionBranch> CopyNode(GlrTestConditionBranch* node);
 					virtual vl::Ptr<GlrAssignment> CopyNode(GlrAssignment* node);
+					virtual vl::Ptr<GlrLeftRecursionPlaceholder> CopyNode(GlrLeftRecursionPlaceholder* node);
 					virtual vl::Ptr<GlrRule> CopyNode(GlrRule* node);
 					virtual vl::Ptr<GlrSyntaxFile> CopyNode(GlrSyntaxFile* node);
 
 					vl::Ptr<GlrAlternativeSyntax> CopyNode(GlrAlternativeSyntax* node);
 					vl::Ptr<GlrAndCondition> CopyNode(GlrAndCondition* node);
 					vl::Ptr<GlrCreateClause> CopyNode(GlrCreateClause* node);
+					vl::Ptr<GlrLeftRecursionInjectClause> CopyNode(GlrLeftRecursionInjectClause* node);
+					vl::Ptr<GlrLeftRecursionPlaceholderClause> CopyNode(GlrLeftRecursionPlaceholderClause* node);
 					vl::Ptr<GlrLoopSyntax> CopyNode(GlrLoopSyntax* node);
 					vl::Ptr<GlrNotCondition> CopyNode(GlrNotCondition* node);
 					vl::Ptr<GlrOptionalSyntax> CopyNode(GlrOptionalSyntax* node);

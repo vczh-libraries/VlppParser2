@@ -79,6 +79,44 @@ namespace vl
 					WriteToken(node->type);
 					EndField();
 				}
+				void RuleAstVisitor::PrintFields(GlrLeftRecursionInjectClause* node)
+				{
+					BeginField(L"flag");
+					WriteToken(node->flag);
+					EndField();
+					BeginField(L"injectionTargets");
+					BeginArray();
+					for (auto&& listItem : node->injectionTargets)
+					{
+						BeginArrayItem();
+						Print(listItem.Obj());
+						EndArrayItem();
+					}
+					EndArray();
+					EndField();
+					BeginField(L"rule");
+					Print(node->rule.Obj());
+					EndField();
+				}
+				void RuleAstVisitor::PrintFields(GlrLeftRecursionPlaceholder* node)
+				{
+					BeginField(L"flag");
+					WriteToken(node->flag);
+					EndField();
+				}
+				void RuleAstVisitor::PrintFields(GlrLeftRecursionPlaceholderClause* node)
+				{
+					BeginField(L"flags");
+					BeginArray();
+					for (auto&& listItem : node->flags)
+					{
+						BeginArrayItem();
+						Print(listItem.Obj());
+						EndArrayItem();
+					}
+					EndArray();
+					EndField();
+				}
 				void RuleAstVisitor::PrintFields(GlrLoopSyntax* node)
 				{
 					BeginField(L"delimiter");
@@ -516,6 +554,34 @@ namespace vl
 					EndObject();
 				}
 
+				void RuleAstVisitor::Visit(GlrLeftRecursionPlaceholderClause* node)
+				{
+					if (!node)
+					{
+						WriteNull();
+						return;
+					}
+					BeginObject();
+					WriteType(L"LeftRecursionPlaceholderClause", node);
+					PrintFields(static_cast<GlrClause*>(node));
+					PrintFields(static_cast<GlrLeftRecursionPlaceholderClause*>(node));
+					EndObject();
+				}
+
+				void RuleAstVisitor::Visit(GlrLeftRecursionInjectClause* node)
+				{
+					if (!node)
+					{
+						WriteNull();
+						return;
+					}
+					BeginObject();
+					WriteType(L"LeftRecursionInjectClause", node);
+					PrintFields(static_cast<GlrClause*>(node));
+					PrintFields(static_cast<GlrLeftRecursionInjectClause*>(node));
+					EndObject();
+				}
+
 				RuleAstVisitor::RuleAstVisitor(vl::stream::StreamWriter& _writer)
 					: vl::glr::JsonVisitorBase(_writer)
 				{
@@ -587,6 +653,19 @@ namespace vl
 					BeginObject();
 					WriteType(L"Assignment", node);
 					PrintFields(static_cast<GlrAssignment*>(node));
+					EndObject();
+				}
+
+				void RuleAstVisitor::Print(GlrLeftRecursionPlaceholder* node)
+				{
+					if (!node)
+					{
+						WriteNull();
+						return;
+					}
+					BeginObject();
+					WriteType(L"LeftRecursionPlaceholder", node);
+					PrintFields(static_cast<GlrLeftRecursionPlaceholder*>(node));
 					EndObject();
 				}
 
