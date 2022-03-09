@@ -26,6 +26,7 @@ namespace prefixsubset
 			virtual void Traverse(ConstType* node);
 			virtual void Traverse(FunctionType* node);
 			virtual void Traverse(MemberName* node);
+			virtual void Traverse(MulExpr* node);
 			virtual void Traverse(Name* node);
 			virtual void Traverse(PointerType* node);
 			virtual void Traverse(QualifiedName* node);
@@ -38,6 +39,7 @@ namespace prefixsubset
 			virtual void Finishing(ConstType* node);
 			virtual void Finishing(FunctionType* node);
 			virtual void Finishing(MemberName* node);
+			virtual void Finishing(MulExpr* node);
 			virtual void Finishing(Name* node);
 			virtual void Finishing(PointerType* node);
 			virtual void Finishing(QualifiedName* node);
@@ -48,6 +50,7 @@ namespace prefixsubset
 			void Visit(TypeOrExprToResolve* node) override;
 			void Visit(QualifiedName* node) override;
 			void Visit(CallExpr* node) override;
+			void Visit(MulExpr* node) override;
 			void Visit(ConstType* node) override;
 			void Visit(PointerType* node) override;
 			void Visit(FunctionType* node) override;

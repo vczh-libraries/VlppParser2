@@ -57,6 +57,15 @@ namespace prefixsubset
 			Print(node->parent.Obj());
 			EndField();
 		}
+		void TypeOrExprVisitor::PrintFields(MulExpr* node)
+		{
+			BeginField(L"first");
+			Print(node->first.Obj());
+			EndField();
+			BeginField(L"second");
+			Print(node->second.Obj());
+			EndField();
+		}
 		void TypeOrExprVisitor::PrintFields(Name* node)
 		{
 			BeginField(L"name");
@@ -119,6 +128,20 @@ namespace prefixsubset
 			WriteType(L"CallExpr", node);
 			PrintFields(static_cast<TypeOrExpr*>(node));
 			PrintFields(static_cast<CallExpr*>(node));
+			EndObject();
+		}
+
+		void TypeOrExprVisitor::Visit(MulExpr* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"MulExpr", node);
+			PrintFields(static_cast<TypeOrExpr*>(node));
+			PrintFields(static_cast<MulExpr*>(node));
 			EndObject();
 		}
 

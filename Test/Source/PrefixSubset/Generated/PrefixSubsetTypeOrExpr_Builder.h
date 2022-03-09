@@ -40,6 +40,13 @@ namespace prefixsubset
 			MakeMemberName& parent(const vl::Ptr<QualifiedName>& value);
 		};
 
+		class MakeMulExpr : public vl::glr::ParsingAstBuilder<MulExpr>
+		{
+		public:
+			MakeMulExpr& first(const vl::Ptr<TypeOrExpr>& value);
+			MakeMulExpr& second(const vl::Ptr<TypeOrExpr>& value);
+		};
+
 		class MakeName : public vl::glr::ParsingAstBuilder<Name>
 		{
 		public:

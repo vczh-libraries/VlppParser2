@@ -17,11 +17,12 @@ namespace prefixsubset
 		ConstType = 1,
 		FunctionType = 2,
 		MemberName = 3,
-		Name = 4,
-		PointerType = 5,
-		QualifiedName = 6,
-		TypeOrExpr = 7,
-		TypeOrExprToResolve = 8,
+		MulExpr = 4,
+		Name = 5,
+		PointerType = 6,
+		QualifiedName = 7,
+		TypeOrExpr = 8,
+		TypeOrExprToResolve = 9,
 	};
 
 	enum class PrefixSubsetFields : vl::vint32_t
@@ -33,9 +34,11 @@ namespace prefixsubset
 		FunctionType_returnType = 4,
 		MemberName_member = 5,
 		MemberName_parent = 6,
-		Name_name = 7,
-		PointerType_type = 8,
-		TypeOrExprToResolve_candidates = 9,
+		MulExpr_first = 7,
+		MulExpr_second = 8,
+		Name_name = 9,
+		PointerType_type = 10,
+		TypeOrExprToResolve_candidates = 11,
 	};
 
 	extern const wchar_t* PrefixSubsetTypeName(PrefixSubsetClasses type);

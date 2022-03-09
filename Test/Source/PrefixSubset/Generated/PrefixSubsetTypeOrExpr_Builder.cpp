@@ -70,6 +70,22 @@ MakeMemberName
 		}
 
 /***********************************************************************
+MakeMulExpr
+***********************************************************************/
+
+		MakeMulExpr& MakeMulExpr::first(const vl::Ptr<TypeOrExpr>& value)
+		{
+			node->first = value;
+			return *this;
+		}
+
+		MakeMulExpr& MakeMulExpr::second(const vl::Ptr<TypeOrExpr>& value)
+		{
+			node->second = value;
+			return *this;
+		}
+
+/***********************************************************************
 MakeName
 ***********************************************************************/
 

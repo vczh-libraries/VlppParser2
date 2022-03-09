@@ -24,6 +24,7 @@ namespace prefixsubset
 			void CopyFields(ConstType* from, ConstType* to);
 			void CopyFields(FunctionType* from, FunctionType* to);
 			void CopyFields(MemberName* from, MemberName* to);
+			void CopyFields(MulExpr* from, MulExpr* to);
 			void CopyFields(Name* from, Name* to);
 			void CopyFields(PointerType* from, PointerType* to);
 			void CopyFields(QualifiedName* from, QualifiedName* to);
@@ -35,6 +36,7 @@ namespace prefixsubset
 			void Visit(TypeOrExprToResolve* node) override;
 			void Visit(QualifiedName* node) override;
 			void Visit(CallExpr* node) override;
+			void Visit(MulExpr* node) override;
 			void Visit(ConstType* node) override;
 			void Visit(PointerType* node) override;
 			void Visit(FunctionType* node) override;
@@ -49,6 +51,7 @@ namespace prefixsubset
 			vl::Ptr<ConstType> CopyNode(ConstType* node);
 			vl::Ptr<FunctionType> CopyNode(FunctionType* node);
 			vl::Ptr<MemberName> CopyNode(MemberName* node);
+			vl::Ptr<MulExpr> CopyNode(MulExpr* node);
 			vl::Ptr<Name> CopyNode(Name* node);
 			vl::Ptr<PointerType> CopyNode(PointerType* node);
 			vl::Ptr<QualifiedName> CopyNode(QualifiedName* node);

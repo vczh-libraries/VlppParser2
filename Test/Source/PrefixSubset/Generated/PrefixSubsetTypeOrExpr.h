@@ -16,6 +16,7 @@ namespace prefixsubset
 	class ConstType;
 	class FunctionType;
 	class MemberName;
+	class MulExpr;
 	class Name;
 	class PointerType;
 	class QualifiedName;
@@ -31,6 +32,7 @@ namespace prefixsubset
 			virtual void Visit(TypeOrExprToResolve* node) = 0;
 			virtual void Visit(QualifiedName* node) = 0;
 			virtual void Visit(CallExpr* node) = 0;
+			virtual void Visit(MulExpr* node) = 0;
 			virtual void Visit(ConstType* node) = 0;
 			virtual void Visit(PointerType* node) = 0;
 			virtual void Visit(FunctionType* node) = 0;
@@ -82,6 +84,15 @@ namespace prefixsubset
 		void Accept(TypeOrExpr::IVisitor* visitor) override;
 	};
 
+	class MulExpr : public TypeOrExpr, vl::reflection::Description<MulExpr>
+	{
+	public:
+		vl::Ptr<TypeOrExpr> first;
+		vl::Ptr<TypeOrExpr> second;
+
+		void Accept(TypeOrExpr::IVisitor* visitor) override;
+	};
+
 	class ConstType : public TypeOrExpr, vl::reflection::Description<ConstType>
 	{
 	public:
@@ -129,6 +140,7 @@ namespace vl
 			DECL_TYPE_INFO(prefixsubset::Name)
 			DECL_TYPE_INFO(prefixsubset::MemberName)
 			DECL_TYPE_INFO(prefixsubset::CallExpr)
+			DECL_TYPE_INFO(prefixsubset::MulExpr)
 			DECL_TYPE_INFO(prefixsubset::ConstType)
 			DECL_TYPE_INFO(prefixsubset::PointerType)
 			DECL_TYPE_INFO(prefixsubset::FunctionType)
@@ -148,6 +160,11 @@ namespace vl
 				}
 
 				void Visit(prefixsubset::CallExpr* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+				void Visit(prefixsubset::MulExpr* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}

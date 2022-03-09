@@ -26,6 +26,8 @@ PrefixSubsetAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return new prefixsubset::FunctionType();
 		case PrefixSubsetClasses::MemberName:
 			return new prefixsubset::MemberName();
+		case PrefixSubsetClasses::MulExpr:
+			return new prefixsubset::MulExpr();
 		case PrefixSubsetClasses::Name:
 			return new prefixsubset::Name();
 		case PrefixSubsetClasses::PointerType:
@@ -54,6 +56,10 @@ PrefixSubsetAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::glr::AssemblerSetObjectField(&prefixsubset::FunctionType::returnType, object, field, value, cppFieldName);
 		case PrefixSubsetFields::MemberName_parent:
 			return vl::glr::AssemblerSetObjectField(&prefixsubset::MemberName::parent, object, field, value, cppFieldName);
+		case PrefixSubsetFields::MulExpr_first:
+			return vl::glr::AssemblerSetObjectField(&prefixsubset::MulExpr::first, object, field, value, cppFieldName);
+		case PrefixSubsetFields::MulExpr_second:
+			return vl::glr::AssemblerSetObjectField(&prefixsubset::MulExpr::second, object, field, value, cppFieldName);
 		case PrefixSubsetFields::PointerType_type:
 			return vl::glr::AssemblerSetObjectField(&prefixsubset::PointerType::type, object, field, value, cppFieldName);
 		case PrefixSubsetFields::TypeOrExprToResolve_candidates:
@@ -90,6 +96,7 @@ PrefixSubsetAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"ConstType",
 			L"FunctionType",
 			L"MemberName",
+			L"MulExpr",
 			L"Name",
 			L"PointerType",
 			L"QualifiedName",
@@ -97,7 +104,7 @@ PrefixSubsetAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"TypeOrExprToResolve",
 		};
 		vl::vint index = (vl::vint)type;
-		return 0 <= index && index < 9 ? results[index] : nullptr;
+		return 0 <= index && index < 10 ? results[index] : nullptr;
 	}
 
 	const wchar_t* PrefixSubsetCppTypeName(PrefixSubsetClasses type)
@@ -107,6 +114,7 @@ PrefixSubsetAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"prefixsubset::ConstType",
 			L"prefixsubset::FunctionType",
 			L"prefixsubset::MemberName",
+			L"prefixsubset::MulExpr",
 			L"prefixsubset::Name",
 			L"prefixsubset::PointerType",
 			L"prefixsubset::QualifiedName",
@@ -114,7 +122,7 @@ PrefixSubsetAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"prefixsubset::TypeOrExprToResolve",
 		};
 		vl::vint index = (vl::vint)type;
-		return 0 <= index && index < 9 ? results[index] : nullptr;
+		return 0 <= index && index < 10 ? results[index] : nullptr;
 	}
 
 	const wchar_t* PrefixSubsetFieldName(PrefixSubsetFields field)
@@ -127,12 +135,14 @@ PrefixSubsetAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"FunctionType::returnType",
 			L"MemberName::member",
 			L"MemberName::parent",
+			L"MulExpr::first",
+			L"MulExpr::second",
 			L"Name::name",
 			L"PointerType::type",
 			L"TypeOrExprToResolve::candidates",
 		};
 		vl::vint index = (vl::vint)field;
-		return 0 <= index && index < 10 ? results[index] : nullptr;
+		return 0 <= index && index < 12 ? results[index] : nullptr;
 	}
 
 	const wchar_t* PrefixSubsetCppFieldName(PrefixSubsetFields field)
@@ -145,12 +155,14 @@ PrefixSubsetAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"prefixsubset::FunctionType::returnType",
 			L"prefixsubset::MemberName::member",
 			L"prefixsubset::MemberName::parent",
+			L"prefixsubset::MulExpr::first",
+			L"prefixsubset::MulExpr::second",
 			L"prefixsubset::Name::name",
 			L"prefixsubset::PointerType::type",
 			L"prefixsubset::TypeOrExprToResolve::candidates",
 		};
 		vl::vint index = (vl::vint)field;
-		return 0 <= index && index < 10 ? results[index] : nullptr;
+		return 0 <= index && index < 12 ? results[index] : nullptr;
 	}
 
 	vl::Ptr<vl::glr::ParsingAstBase> PrefixSubsetAstInsReceiver::ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates)
@@ -166,6 +178,8 @@ PrefixSubsetAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::glr::AssemblerResolveAmbiguity<prefixsubset::FunctionType, prefixsubset::TypeOrExprToResolve>(type, candidates, cppTypeName);
 		case PrefixSubsetClasses::MemberName:
 			return vl::glr::AssemblerResolveAmbiguity<prefixsubset::MemberName, prefixsubset::TypeOrExprToResolve>(type, candidates, cppTypeName);
+		case PrefixSubsetClasses::MulExpr:
+			return vl::glr::AssemblerResolveAmbiguity<prefixsubset::MulExpr, prefixsubset::TypeOrExprToResolve>(type, candidates, cppTypeName);
 		case PrefixSubsetClasses::Name:
 			return vl::glr::AssemblerResolveAmbiguity<prefixsubset::Name, prefixsubset::TypeOrExprToResolve>(type, candidates, cppTypeName);
 		case PrefixSubsetClasses::PointerType:

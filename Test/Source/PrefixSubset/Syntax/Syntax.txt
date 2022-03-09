@@ -15,10 +15,19 @@ _LongType
   ::= _LongType:returnType "(" {_LongType:args ; ","} ")" as FunctionType
   ;
 
-_Expr
+_Expr0
   ::= !_Name
   ::= "(" !_Expr ")"
-  ::= _Expr:func "(" {_Expr:args ; ","} ")" as CallExpr
+  ;
+
+_Expr1
+  ::= !_Expr0
+  ::= _Expr1:func "(" {_Expr:args ; ","} ")" as CallExpr
+  ;
+
+_Expr
+  ::= !_Expr1
+  ::= _Expr:first "*" _Expr1:second as MulExpr
   ;
 
 Module

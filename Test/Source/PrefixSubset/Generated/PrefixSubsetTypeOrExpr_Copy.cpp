@@ -43,6 +43,13 @@ namespace prefixsubset
 			to->parent = CopyNode(from->parent.Obj());
 		}
 
+		void TypeOrExprVisitor::CopyFields(MulExpr* from, MulExpr* to)
+		{
+			CopyFields(static_cast<TypeOrExpr*>(from), static_cast<TypeOrExpr*>(to));
+			to->first = CopyNode(from->first.Obj());
+			to->second = CopyNode(from->second.Obj());
+		}
+
 		void TypeOrExprVisitor::CopyFields(Name* from, Name* to)
 		{
 			CopyFields(static_cast<QualifiedName*>(from), static_cast<QualifiedName*>(to));
@@ -88,6 +95,13 @@ namespace prefixsubset
 		void TypeOrExprVisitor::Visit(CallExpr* node)
 		{
 			auto newNode = vl::MakePtr<CallExpr>();
+			CopyFields(node, newNode.Obj());
+			this->result = newNode;
+		}
+
+		void TypeOrExprVisitor::Visit(MulExpr* node)
+		{
+			auto newNode = vl::MakePtr<MulExpr>();
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
@@ -156,6 +170,12 @@ namespace prefixsubset
 		{
 			if (!node) return nullptr;
 			return CopyNode(static_cast<TypeOrExpr*>(node)).Cast<MemberName>();
+		}
+
+		vl::Ptr<MulExpr> TypeOrExprVisitor::CopyNode(MulExpr* node)
+		{
+			if (!node) return nullptr;
+			return CopyNode(static_cast<TypeOrExpr*>(node)).Cast<MulExpr>();
 		}
 
 		vl::Ptr<Name> TypeOrExprVisitor::CopyNode(Name* node)

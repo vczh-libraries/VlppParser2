@@ -16,6 +16,7 @@ namespace prefixsubset
 		void TypeOrExprVisitor::Traverse(ConstType* node) {}
 		void TypeOrExprVisitor::Traverse(FunctionType* node) {}
 		void TypeOrExprVisitor::Traverse(MemberName* node) {}
+		void TypeOrExprVisitor::Traverse(MulExpr* node) {}
 		void TypeOrExprVisitor::Traverse(Name* node) {}
 		void TypeOrExprVisitor::Traverse(PointerType* node) {}
 		void TypeOrExprVisitor::Traverse(QualifiedName* node) {}
@@ -27,6 +28,7 @@ namespace prefixsubset
 		void TypeOrExprVisitor::Finishing(ConstType* node) {}
 		void TypeOrExprVisitor::Finishing(FunctionType* node) {}
 		void TypeOrExprVisitor::Finishing(MemberName* node) {}
+		void TypeOrExprVisitor::Finishing(MulExpr* node) {}
 		void TypeOrExprVisitor::Finishing(Name* node) {}
 		void TypeOrExprVisitor::Finishing(PointerType* node) {}
 		void TypeOrExprVisitor::Finishing(QualifiedName* node) {}
@@ -65,6 +67,19 @@ namespace prefixsubset
 			}
 			InspectInto(node->func.Obj());
 			Finishing(static_cast<CallExpr*>(node));
+			Finishing(static_cast<TypeOrExpr*>(node));
+			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+		}
+
+		void TypeOrExprVisitor::Visit(MulExpr* node)
+		{
+			if (!node) return;
+			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+			Traverse(static_cast<TypeOrExpr*>(node));
+			Traverse(static_cast<MulExpr*>(node));
+			InspectInto(node->first.Obj());
+			InspectInto(node->second.Obj());
+			Finishing(static_cast<MulExpr*>(node));
 			Finishing(static_cast<TypeOrExpr*>(node));
 			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 		}

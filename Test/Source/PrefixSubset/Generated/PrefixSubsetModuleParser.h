@@ -17,8 +17,10 @@ namespace prefixsubset
 		_Name = 0,
 		_ShortType = 6,
 		_LongType = 11,
-		_Expr = 23,
-		Module = 34,
+		_Expr0 = 23,
+		_Expr1 = 29,
+		_Expr = 37,
+		Module = 43,
 	};
 
 	const wchar_t* ModuleParserRuleName(vl::vint index);

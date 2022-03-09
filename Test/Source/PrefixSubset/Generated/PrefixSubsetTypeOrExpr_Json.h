@@ -24,6 +24,7 @@ namespace prefixsubset
 			virtual void PrintFields(ConstType* node);
 			virtual void PrintFields(FunctionType* node);
 			virtual void PrintFields(MemberName* node);
+			virtual void PrintFields(MulExpr* node);
 			virtual void PrintFields(Name* node);
 			virtual void PrintFields(PointerType* node);
 			virtual void PrintFields(QualifiedName* node);
@@ -34,6 +35,7 @@ namespace prefixsubset
 			void Visit(TypeOrExprToResolve* node) override;
 			void Visit(QualifiedName* node) override;
 			void Visit(CallExpr* node) override;
+			void Visit(MulExpr* node) override;
 			void Visit(ConstType* node) override;
 			void Visit(PointerType* node) override;
 			void Visit(FunctionType* node) override;
