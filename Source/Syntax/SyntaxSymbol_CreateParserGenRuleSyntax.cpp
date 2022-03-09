@@ -211,7 +211,7 @@ CreateParserGenRuleSyntax
 				// "!" RuleName:rule "left_recursion_inject" "(" Placeholder:flag ")" RuleName:injectionTargets {"|" RuleName:injectionTargets}
 				Clause{ _clause } = create(
 						tok(T::USE) + rule(_ruleName, F::LeftRecursionInjectClause_rule)
-						+ tok(T::LS_I) + tok(T::OPEN_ROUND) + rule(_placeholder, F::LeftRecursionInjectClause_flag) + tok(T::OPEN_ROUND)
+						+ tok(T::LS_I) + tok(T::OPEN_ROUND) + rule(_placeholder, F::LeftRecursionInjectClause_flag) + tok(T::CLOSE_ROUND)
 						+ rule(_ruleName, F::LeftRecursionInjectClause_injectionTargets)
 						+ loop(tok(T::ALTERNATIVE) + rule(_ruleName, F::LeftRecursionInjectClause_injectionTargets)),
 					C::LeftRecursionInjectClause);
