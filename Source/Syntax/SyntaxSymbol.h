@@ -125,6 +125,7 @@ RuleSymbol
 				friend class SyntaxSymbolManager;
 
 				using StateList = collections::List<StateSymbol*>;
+				using NameList = collections::SortedList<WString>;
 			protected:
 				SyntaxSymbolManager*		ownerManager;
 				WString						name;
@@ -136,6 +137,7 @@ RuleSymbol
 				bool						isPartial = false;
 				bool						assignedNonArrayField = false;
 				AstClassSymbol*				ruleType = nullptr;
+				NameList					lrFlags;
 
 				SyntaxSymbolManager*		Owner() { return ownerManager; }
 				const WString&				Name() { return name; }

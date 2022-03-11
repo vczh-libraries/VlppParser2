@@ -328,6 +328,14 @@ ResolveNameVisitor
 
 				void Visit(GlrLeftRecursionPlaceholderClause* node) override
 				{
+					for (auto flag : node->flags)
+					{
+						auto name = flag->flag.value;
+						if (!ruleSymbol->lrFlags.Contains(name))
+						{
+							ruleSymbol->lrFlags.Add(name);
+						}
+					}
 				}
 
 				void Visit(GlrLeftRecursionInjectClause* node) override
