@@ -351,6 +351,18 @@ ResolveNameVisitor
 								node->rule->literal.value
 								);
 						}
+						else
+						{
+							auto usedRuleSymbol = context.syntaxManager.Rules().Values()[ruleIndex];
+							if (!context.ruleReuseDependencies.Contains(ruleSymbol, usedRuleSymbol))
+							{
+								context.ruleReuseDependencies.Add(ruleSymbol, usedRuleSymbol);
+							}
+							if (!context.clauseReuseDependencies.Contains(clause, usedRuleSymbol))
+							{
+								context.clauseReuseDependencies.Add(clause, usedRuleSymbol);
+							}
+						}
 					}
 					for (auto target : node->injectionTargets)
 					{
@@ -363,6 +375,18 @@ ResolveNameVisitor
 								ruleSymbol->Name(),
 								target->literal.value
 								);
+						}
+						else
+						{
+							auto usedRuleSymbol = context.syntaxManager.Rules().Values()[ruleIndex];
+							if (!context.ruleReuseDependencies.Contains(ruleSymbol, usedRuleSymbol))
+							{
+								context.ruleReuseDependencies.Add(ruleSymbol, usedRuleSymbol);
+							}
+							if (!context.clauseReuseDependencies.Contains(clause, usedRuleSymbol))
+							{
+								context.clauseReuseDependencies.Add(clause, usedRuleSymbol);
+							}
 						}
 					}
 				}
