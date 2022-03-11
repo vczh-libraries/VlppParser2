@@ -540,8 +540,7 @@ Exp1
   ::= Exp1:left "*" Exp0:right as BinaryExpr
   ;
 Exp2
-  ::= !Exp1
-  ::= Exp2:left "+" Exp1:right as BinaryExpr
+  ::= Exp1 "+" as Module
   ;
 Module
   ::= "+" as Module
