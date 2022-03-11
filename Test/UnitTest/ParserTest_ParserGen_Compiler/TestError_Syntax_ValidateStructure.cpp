@@ -533,7 +533,7 @@ Exp1
 	TEST_CASE(L"MultipleEmptySyntaxInTestCondition")
 	{
 		const wchar_t* syntaxCode =
-			LR"SYNTAX(
+LR"SYNTAX(
 switch first;
 Exp0
   ::= NUM:value ?(first:; | first:;) as NumExpr
@@ -546,6 +546,27 @@ Exp0
 			lexerCode,
 			syntaxCode,
 			{ ParserErrorType::MultipleEmptySyntaxInTestCondition,L"Exp0" }
+		);
+	});
+
+	TEST_CASE(L"TooManyLeftRecursionPlaceholderClauses")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+switch first;
+Exp0
+  ::= left_recursion_placeholder(A, B)
+  ::= left_recursion_placeholder(C, D)
+  ::= NUM:value ?(first:; | first:;) as NumExpr
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::TooManyLeftRecursionPlaceholderClauses,L"Exp0" }
 		);
 	});
 }

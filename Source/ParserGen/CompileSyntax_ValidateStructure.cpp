@@ -19,18 +19,19 @@ ValidateStructureCountingVisitor
 				, protected virtual GlrClause::IVisitor
 			{
 			protected:
-				VisitorContext&				context;
-				RuleSymbol*					ruleSymbol;
-				GlrClause*					clause = nullptr;
+				VisitorContext&							context;
+				RuleSymbol*								ruleSymbol;
+				GlrClause*								clause = nullptr;
+				GlrLeftRecursionPlaceholderClause*		lrpClause = nullptr;
 
-				vint						optionalCounter = 0;
-				vint						loopCounter = 0;
-				bool						lastSyntaxPiece = true;
-				bool						prioritySyntaxOccurred = false;
+				vint									optionalCounter = 0;
+				vint									loopCounter = 0;
+				bool									lastSyntaxPiece = true;
+				bool									prioritySyntaxOccurred = false;
 
-				vint						syntaxMinLength = 0;
-				vint						syntaxMinUseRuleCount = 0;
-				vint						syntaxMaxUseRuleCount = 0;
+				vint									syntaxMinLength = 0;
+				vint									syntaxMinUseRuleCount = 0;
+				vint									syntaxMaxUseRuleCount = 0;
 
 			public:
 				ValidateStructureCountingVisitor(
@@ -364,7 +365,18 @@ ValidateStructureCountingVisitor
 
 				void Visit(GlrLeftRecursionPlaceholderClause* node) override
 				{
-					CHECK_FAIL(L"Not Implemented!");
+					if (!lrpClause)
+					{
+						lrpClause = node;
+					}
+					else
+					{
+						context.syntaxManager.AddError(
+							ParserErrorType::TooManyLeftRecursionPlaceholderClauses,
+							node->codeRange,
+							ruleSymbol->Name()
+							);
+					}
 				}
 
 				void Visit(GlrLeftRecursionInjectClause* node) override
@@ -683,7 +695,6 @@ ValidateStructureRelationshipVisitor
 
 				void Visit(GlrLeftRecursionPlaceholderClause* node) override
 				{
-					CHECK_FAIL(L"Not Implemented!");
 				}
 
 				void Visit(GlrLeftRecursionInjectClause* node) override

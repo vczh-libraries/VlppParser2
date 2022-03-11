@@ -248,6 +248,7 @@ void PrintCompileErrors(ParserSymbolManager& global)
 		CASE(PushConditionBodyCouldExpandToEmptySequence, ruleName);
 		CASE(TestConditionBodyCouldExpandToEmptySequence, ruleName);
 		CASE(MultipleEmptySyntaxInTestCondition, ruleName);
+		CASE(TooManyLeftRecursionPlaceholderClauses, ruleName);
 
 		// SyntaxAst (ValidateStructure, relationship) ----------------------------------------
 		CASE(FieldAssignedMoreThanOnce, ruleName, clauseType, fieldName);

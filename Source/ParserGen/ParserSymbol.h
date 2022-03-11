@@ -123,6 +123,7 @@ ParserSymbolManager
 				PushConditionBodyCouldExpandToEmptySequence,// (ruleName)
 				TestConditionBodyCouldExpandToEmptySequence,// (ruleName)
 				MultipleEmptySyntaxInTestCondition,			// (ruleName)
+				TooManyLeftRecursionPlaceholderClauses,		// (ruleName)
 
 				// SyntaxAst (ValidateStructure, relationship) ----------------------------------------
 				FieldAssignedMoreThanOnce,					// (ruleName, clauseType, fieldName)
