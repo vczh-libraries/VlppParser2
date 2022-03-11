@@ -340,7 +340,31 @@ ResolveNameVisitor
 
 				void Visit(GlrLeftRecursionInjectClause* node) override
 				{
-					CHECK_FAIL(L"Not Implemented!");
+					{
+						vint ruleIndex = context.syntaxManager.Rules().Keys().IndexOf(node->rule->literal.value);
+						if (ruleIndex == -1)
+						{
+							context.syntaxManager.AddError(
+								ParserErrorType::TokenOrRuleNotExistsInRule,
+								node->codeRange,
+								ruleSymbol->Name(),
+								node->rule->literal.value
+								);
+						}
+					}
+					for (auto target : node->injectionTargets)
+					{
+						vint ruleIndex = context.syntaxManager.Rules().Keys().IndexOf(target->literal.value);
+						if (ruleIndex == -1)
+						{
+							context.syntaxManager.AddError(
+								ParserErrorType::TokenOrRuleNotExistsInRule,
+								node->codeRange,
+								ruleSymbol->Name(),
+								target->literal.value
+								);
+						}
+					}
 				}
 			};
 
