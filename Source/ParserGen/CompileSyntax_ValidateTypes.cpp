@@ -69,6 +69,7 @@ SearchForLrpVisitor
 				)
 					: context(_context)
 					, flagToSearch(_flag)
+					, typeToMatch(_type)
 				{
 				}
 
