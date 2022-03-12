@@ -9,6 +9,16 @@ namespace vl
 			using namespace collections;
 			using namespace compile_syntax;
 
+			bool ConvertibleTo(AstClassSymbol* from, AstClassSymbol* to)
+			{
+				while (from)
+				{
+					if (from == to) return true;
+					from = from->baseClass;
+				}
+				return false;
+			}
+
 /***********************************************************************
 SearchForLrpVisitor
 ***********************************************************************/
@@ -19,11 +29,15 @@ SearchForLrpVisitor
 				, protected virtual GlrClause::IVisitor
 			{
 			protected:
-				VisitorContext& context;
+				VisitorContext&				context;
 				WString						flagToSearch;
+				AstClassSymbol*				typeToMatch = nullptr;
+
 				vint						counter = 0;
-				bool						couldBeEmpty = false;
 				SortedList<GlrRule*>		searchedRules;
+
+				bool						couldBeEmpty = false;
+				RuleSymbol*					currentPlaceholderRule = nullptr;
 
 				void SearchInRuleInternal(const WString& ruleName)
 				{
@@ -35,16 +49,23 @@ SearchForLrpVisitor
 
 						if (searchedRules.Contains(ruleAst)) return;
 						searchedRules.Add(ruleAst);
+
+						auto oldRule = currentPlaceholderRule;
+						currentPlaceholderRule = ruleSymbol;
 						for (auto clause : ruleAst->clauses)
 						{
 							clause->Accept(this);
 						}
+						currentPlaceholderRule = oldRule;
 					}
 				}
 			public:
+				List<WString>				unmatchedPlaceholderRuleNames;
+
 				SearchForLrpVisitor(
 					VisitorContext& _context,
-					const WString& _flag
+					const WString& _flag,
+					AstClassSymbol* _type
 				)
 					: context(_context)
 					, flagToSearch(_flag)
@@ -55,6 +76,7 @@ SearchForLrpVisitor
 				{
 					counter = 0;
 					searchedRules.Clear();
+					unmatchedPlaceholderRuleNames.Clear();
 					SearchInRuleInternal(ruleName);
 					return counter;
 				}
@@ -154,6 +176,10 @@ SearchForLrpVisitor
 						if (flag->flag.value == flagToSearch)
 						{
 							counter++;
+							if (!ConvertibleTo(typeToMatch, currentPlaceholderRule->ruleType))
+							{
+								unmatchedPlaceholderRuleNames.Add(currentPlaceholderRule->Name());
+							}
 							break;
 						}
 					}
@@ -201,16 +227,6 @@ ValidateTypesVisitor
 							);
 						return nullptr;
 					}
-				}
-
-				bool ConvertibleTo(AstClassSymbol* from, AstClassSymbol* to)
-				{
-					while (from)
-					{
-						if (from == to) return true;
-						from = from->baseClass;
-					}
-					return false;
 				}
 
 			public:
@@ -446,7 +462,7 @@ ValidateTypesVisitor
 
 				void Visit(GlrLeftRecursionInjectClause* node) override
 				{
-					SearchForLrpVisitor visitor(context, node->flag->flag.value);
+					SearchForLrpVisitor visitor(context, node->flag->flag.value, ruleSymbol->ruleType);
 					for (auto target : node->injectionTargets)
 					{
 						vint counter = visitor.SearchInRule(target->literal.value);
@@ -469,6 +485,20 @@ ValidateTypesVisitor
 								node->flag->flag.value,
 								target->literal.value
 								);
+						}
+						else
+						{
+							for (auto ruleName : visitor.unmatchedPlaceholderRuleNames)
+							{
+								context.syntaxManager.AddError(
+									ParserErrorType::LeftRecursionPlaceholderTypeMismatched,
+									node->codeRange,
+									ruleSymbol->Name(),
+									node->flag->flag.value,
+									target->literal.value,
+									ruleName
+									);
+							}
 						}
 					}
 				}
