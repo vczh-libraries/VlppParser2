@@ -10,6 +10,162 @@ namespace vl
 			using namespace compile_syntax;
 
 /***********************************************************************
+SearchForLrpVisitor
+***********************************************************************/
+
+			class SearchForLrpVisitor
+				: public Object
+				, protected virtual GlrSyntax::IVisitor
+				, protected virtual GlrClause::IVisitor
+			{
+			protected:
+				VisitorContext& context;
+				WString						flagToSearch;
+				vint						counter = 0;
+				bool						couldBeEmpty = false;
+				SortedList<GlrRule*>		searchedRules;
+
+				void SearchInRuleInternal(const WString& ruleName)
+				{
+					vint index = context.syntaxManager.Rules().Keys().IndexOf(ruleName);
+					if (index != -1)
+					{
+						auto ruleSymbol = context.syntaxManager.Rules().Values()[index];
+						auto ruleAst = context.astRules[ruleSymbol];
+
+						if (searchedRules.Contains(ruleAst)) return;
+						searchedRules.Add(ruleAst);
+						for (auto clause : ruleAst->clauses)
+						{
+							clause->Accept(this);
+						}
+					}
+				}
+			public:
+				SearchForLrpVisitor(
+					VisitorContext& _context,
+					const WString& _flag
+				)
+					: context(_context)
+					, flagToSearch(_flag)
+				{
+				}
+
+				vint SearchInRule(const WString& ruleName)
+				{
+					counter = 0;
+					searchedRules.Clear();
+					SearchInRuleInternal(ruleName);
+					return counter;
+				}
+			protected:
+
+				////////////////////////////////////////////////////////////////////////
+				// GlrSyntax::IVisitor
+				////////////////////////////////////////////////////////////////////////
+
+				void Visit(GlrRefSyntax* node) override
+				{
+					if (node->refType == GlrRefType::Id)
+					{
+						SearchInRuleInternal(node->literal.value);
+					}
+					couldBeEmpty = false;
+				}
+
+				void Visit(GlrUseSyntax* node) override
+				{
+					SearchInRuleInternal(node->name.value);
+					couldBeEmpty = false;
+				}
+
+				void Visit(GlrLoopSyntax* node) override
+				{
+					node->syntax->Accept(this);
+					couldBeEmpty = true;
+				}
+
+				void Visit(GlrOptionalSyntax* node) override
+				{
+					node->syntax->Accept(this);
+					couldBeEmpty = true;
+				}
+
+				void Visit(GlrSequenceSyntax* node) override
+				{
+					node->first->Accept(this);
+					if (couldBeEmpty) node->second->Accept(this);
+				}
+
+				void Visit(GlrAlternativeSyntax* node) override
+				{
+					node->first->Accept(this);
+					bool firstCouldBeEmpty = couldBeEmpty;
+					node->second->Accept(this);
+					bool secondCouldBeEmpty = couldBeEmpty;
+					couldBeEmpty = firstCouldBeEmpty || secondCouldBeEmpty;
+				}
+
+				void Visit(GlrPushConditionSyntax* node) override
+				{
+					node->syntax->Accept(this);
+				}
+
+				void Visit(GlrTestConditionSyntax* node) override
+				{
+					bool emptyBranch = false;
+					for (auto branch : node->branches)
+					{
+						if (branch->syntax)
+						{
+							branch->syntax->Accept(this);
+						}
+						else
+						{
+							emptyBranch = true;
+						}
+					}
+					couldBeEmpty = emptyBranch;
+				}
+
+				////////////////////////////////////////////////////////////////////////
+				// GlrClause::IVisitor
+				////////////////////////////////////////////////////////////////////////
+
+				void Visit(GlrCreateClause* node) override
+				{
+					node->syntax->Accept(this);
+				}
+
+				void Visit(GlrPartialClause* node) override
+				{
+					node->syntax->Accept(this);
+				}
+
+				void Visit(GlrReuseClause* node) override
+				{
+					node->syntax->Accept(this);
+				}
+
+				void Visit(GlrLeftRecursionPlaceholderClause* node) override
+				{
+					for (auto flag : node->flags)
+					{
+						if (flag->flag.value == flagToSearch)
+						{
+							counter++;
+							break;
+						}
+					}
+				}
+
+				void Visit(GlrLeftRecursionInjectClause* node) override
+				{
+					node->rule->Accept(this);
+				}
+			};
+
+/***********************************************************************
 ValidateTypesVisitor
 ***********************************************************************/
 
@@ -290,7 +446,31 @@ ValidateTypesVisitor
 
 				void Visit(GlrLeftRecursionInjectClause* node) override
 				{
-					CHECK_FAIL(L"Not Implemented!");
+					SearchForLrpVisitor visitor(context, node->flag->flag.value);
+					for (auto target : node->injectionTargets)
+					{
+						vint counter = visitor.SearchInRule(target->literal.value);
+						if (counter == 0)
+						{
+							context.syntaxManager.AddError(
+								ParserErrorType::LeftRecursionPlaceholderNotFoundInRule,
+								node->codeRange,
+								ruleSymbol->Name(),
+								node->flag->flag.value,
+								target->literal.value
+								);
+						}
+						else if (counter > 1)
+						{
+							context.syntaxManager.AddError(
+								ParserErrorType::LeftRecursionPlaceholderNotUnique,
+								node->codeRange,
+								ruleSymbol->Name(),
+								node->flag->flag.value,
+								target->literal.value
+								);
+						}
+					}
 				}
 			};
 
