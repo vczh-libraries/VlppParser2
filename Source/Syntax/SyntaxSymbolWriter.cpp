@@ -400,6 +400,16 @@ AutomatonBuilder (Clause)
 				endPoses.Add(pair.end, clauseDisplayText.Length());
 				return pair;
 			}
+
+			AutomatonBuilder::StatePair AutomatonBuilder::BuildLrpClause(collections::List<vint32_t>& flags)
+			{
+				CHECK_FAIL(L"Not Implemented!");
+			}
+
+			AutomatonBuilder::StatePair AutomatonBuilder::BuildLriClause(RuleSymbol* rule, collections::List<RuleSymbol*>& targetRules)
+			{
+				CHECK_FAIL(L"Not Implemented!");
+			}
 		}
 	}
 }

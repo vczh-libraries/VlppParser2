@@ -332,12 +332,40 @@ CompileSyntaxVisitor
 
 				void Visit(GlrLeftRecursionPlaceholderClause* node) override
 				{
-					CHECK_FAIL(L"Not Implemented!");
+					List<vint32_t> flags;
+					CopyFrom(
+						flags,
+						From(node->flags)
+							.Select([this](Ptr<GlrLeftRecursionPlaceholder> flag)
+							{
+								return (vint32_t)context.syntaxManager.lrpFlags.IndexOf(flag->flag.value);
+							})
+							.Distinct()
+						);
+
+					result = automatonBuilder.BuildClause([this, &flags]()
+					{
+						return automatonBuilder.BuildLrpClause(flags);
+					});
 				}
 
 				void Visit(GlrLeftRecursionInjectClause* node) override
 				{
-					CHECK_FAIL(L"Not Implemented!");
+					auto rule = context.syntaxManager.Rules()[node->rule->literal.value];
+
+					List<RuleSymbol*> targetRules;
+					CopyFrom(
+						targetRules,
+						From(node->injectionTargets)
+							.Select([this](Ptr<GlrRefSyntax> targetRule)
+							{
+								return context.syntaxManager.Rules()[targetRule->literal.value];
+							})
+						);
+					result = automatonBuilder.BuildClause([this, rule, &targetRules]()
+					{
+						return automatonBuilder.BuildLriClause(rule, targetRules);
+					});
 				}
 			};
 

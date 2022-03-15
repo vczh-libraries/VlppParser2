@@ -65,6 +65,8 @@ EdgeSymbol
 				LeftRec,		// An epsilon edge that reduces the current rule, which is the first input of one of its left recursive clause.
 				Token,			// An token is read to execute this edge.
 				Rule,			// A rule is reduced to execute this edge.
+				LrPlaceholder,	// A left recursion placeholder is consumed to execute this edge. EdgeInput::token is the index of SyntaxSymbolManager::lrpFlags.
+				LrInject,		// A left recursion injection.
 			};
 
 			struct EdgeInput
@@ -74,7 +76,7 @@ EdgeSymbol
 				Nullable<WString>			condition;
 
 				automaton::ReturnRuleType	ruleType = automaton::ReturnRuleType::Field;	// useful when type == Rule
-				RuleSymbol*					rule = nullptr;									// useful when type == Rule
+				RuleSymbol*					rule = nullptr;									// useful when type == Rule or LrInject
 			};
 
 			enum class EdgeImportancy
@@ -152,10 +154,12 @@ SyntaxSymbolManager
 			enum class SyntaxPhase
 			{
 				EpsilonNFA,					// An automaton that has edges of Epsilon, Token, Rule.
+
 				CompactNFA,					// Epsilon edges are eliminated by compressing multiple edges into one.
 											// Epsilon edges to the ending state will be compressed to an Ending edge.
 											// The first edge of Rule in left-recursive clauses becomes a LeftRec edge, with its fromState changed to the ending state.
 											// fromState and toState of non-LeftRec edges belong to the same clause.
+
 				CrossReferencedNFA,			// Edges of Rule are compressed to an edge that pointing towards states in other clauses.
 											// Multiple edges of rule are stored in returnEdges in the order of execution.
 											// insBeforeInput of an edge contains insBeforeInput from its returnEdges.
