@@ -171,6 +171,7 @@ SyntaxSymbolManager
 				using RuleTypeMap = collections::Dictionary<RuleSymbol*, WString>;
 				using RuleList = collections::List<RuleSymbol*>;
 				using SwitchMap = collections::Dictionary<WString, bool>;
+				using LrpFlagList = collections::SortedList<WString>;
 			protected:
 				MappedOwning<RuleSymbol>	rules;
 				StateList					states;
@@ -193,6 +194,7 @@ SyntaxSymbolManager
 				SwitchMap					switches;
 				RuleTypeMap					ruleTypes;
 				RuleList					parsableRules;
+				LrpFlagList					lrpFlags;
 
 				RuleSymbol*					CreateRule(const WString& name, ParsingTextRange codeRange = {});
 				StateSymbol*				CreateState(RuleSymbol* rule, vint32_t clauseId);

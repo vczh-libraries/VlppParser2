@@ -381,7 +381,6 @@ ValidateStructureCountingVisitor
 
 				void Visit(GlrLeftRecursionInjectClause* node) override
 				{
-					CHECK_FAIL(L"Not Implemented!");
 				}
 			};
 
@@ -699,7 +698,6 @@ ValidateStructureRelationshipVisitor
 
 				void Visit(GlrLeftRecursionInjectClause* node) override
 				{
-					CHECK_FAIL(L"Not Implemented!");
 				}
 			};
 

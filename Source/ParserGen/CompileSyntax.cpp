@@ -41,6 +41,20 @@ CompileSyntax
 							auto ruleSymbol = context.syntaxManager.CreateRule(rule->name.value, rule->codeRange);
 							context.astRules.Add(ruleSymbol, rule.Obj());
 						}
+
+						for (auto clause : rule->clauses)
+						{
+							if (auto lrpClause = clause.Cast<GlrLeftRecursionPlaceholderClause>())
+							{
+								for (auto flag : lrpClause->flags)
+								{
+									if (!context.syntaxManager.lrpFlags.Contains(flag->flag.value))
+									{
+										context.syntaxManager.lrpFlags.Add(flag->flag.value);
+									}
+								}
+							}
+						}
 					}
 				}
 				if (syntaxManager.Global().Errors().Count() > 0) return;
