@@ -115,6 +115,22 @@ AutomatonBuilder (Syntax)
 
 			AutomatonBuilder::StatePair AutomatonBuilder::BuildLoopSyntax(const StateBuilder& loopBody, const StateBuilder& loopDelimiter, bool hasDelimiter)
 			{
+				/*
+				*     +--------------------+
+				*     |                    V
+				* S --+--+--(loopBody)--+--+--> E
+				*        ^              |
+				*        +--------------+
+				*/
+
+				/*
+				*     +-------------------------+
+				*     |                         V
+				* S --+--+--(  loopBody   )--+--+--> E
+				*        ^                   |
+				*        +--(loopDelimiter)--+
+				*/
+
 				StatePair pair, bodyPair, delimiterPair;
 				pair.begin = CreateState();
 				pair.end = CreateState();
@@ -148,6 +164,12 @@ AutomatonBuilder (Syntax)
 
 			AutomatonBuilder::StatePair AutomatonBuilder::BuildOptionalSyntax(bool preferTake, bool preferSkip, const StateBuilder& optionalBody)
 			{
+				/*
+				*     +------------------+
+				*     |                  V
+				* S --+--(optionalBody)--+--> E
+				*/
+
 				StatePair pair;
 				pair.begin = CreateState();
 				pair.end = CreateState();
@@ -187,6 +209,9 @@ AutomatonBuilder (Syntax)
 
 			AutomatonBuilder::StatePair AutomatonBuilder::BuildSequenceSyntax(collections::List<StateBuilder>& elements)
 			{
+				/*
+				* S --(a)--> ? --(b)--> E
+				*/
 				CHECK_ERROR(elements.Count() > 0, L"vl::glr::parsergen::AutomatonBuilder::BuildSequenceSyntax(List<StateBuilder>&)#Elements must not be empty.");
 				auto pair = elements[0]();
 				for (vint i = 1; i < elements.Count(); i++)
@@ -201,6 +226,12 @@ AutomatonBuilder (Syntax)
 
 			AutomatonBuilder::StatePair AutomatonBuilder::BuildAlternativeSyntax(collections::List<StateBuilder>& elements)
 			{
+				/*
+				*     +--(a)--+
+				*     |       V
+				* S --+--(b)--+--> E
+				*/
+
 				CHECK_ERROR(elements.Count() > 0, L"vl::glr::parsergen::AutomatonBuilder::BuildAlternativeSyntax(List<StateBuilder>&)#Elements must not be empty.");
 				StatePair pair;
 				pair.begin = CreateState();
@@ -404,6 +435,12 @@ AutomatonBuilder (Clause)
 
 			AutomatonBuilder::StatePair AutomatonBuilder::BuildLrpClause(collections::List<vint32_t>& flags, const Func<WString(vint32_t)>& flagName)
 			{
+				/*
+				*     +--(lrp:a)--+
+				*     |           V
+				* S --+--(lrp:b)--+--> E
+				*/
+
 				List<StateBuilder> elements;
 				for (vint32_t flag : flags)
 				{
@@ -430,6 +467,14 @@ AutomatonBuilder (Clause)
 
 			AutomatonBuilder::StatePair AutomatonBuilder::BuildLriClause(RuleSymbol* rule, collections::List<RuleSymbol*>& targetRules)
 			{
+				/*
+				*             +--(lri:a)--+
+				*             |           V
+				* S --(rule)--+--(lri:b)--+--> E
+				*             |           ^
+				*             +-----------+
+				*/
+
 				List<StateBuilder> alts;
 				for (auto targetRule : targetRules)
 				{
