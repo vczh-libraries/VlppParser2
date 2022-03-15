@@ -558,4 +558,33 @@ Exp3
 			{ ParserErrorType::LeftRecursionPlaceholderTypeMismatched,L"Exp3",L"Expression",L"Exp2",L"Exp1"}
 			);
 	});
+
+	TEST_CASE(L"PartialRuleInLeftRecursionInject")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0Partial
+  ::= NUM:value as partial NumExpr
+  ;
+Exp0
+  ::= NUM:value as NumExpr
+  ;
+Exp1
+  ::= left_recursion_placeholder(Expression)
+  ::= !Exp0
+  ::= Exp1:left "+" Exp0:right as BinaryExpr
+  ;
+Exp2
+  ::= !Exp0Partial left_recursion_inject(Expression) Exp1
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::PartialRuleInLeftRecursionInject,L"Exp2",L"Exp0Partial"}
+			);
+	});
 }

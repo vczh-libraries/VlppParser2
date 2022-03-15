@@ -253,7 +253,7 @@ ValidateTypesVisitor
 
 				void Visit(GlrRefSyntax* node) override
 				{
-					vint ruleIndex = node->refType==GlrRefType::Id ? context.syntaxManager.Rules().Keys().IndexOf(node->literal.value) : -1;
+					vint ruleIndex = node->refType == GlrRefType::Id ? context.syntaxManager.Rules().Keys().IndexOf(node->literal.value) : -1;
 					auto clauseType = context.clauseTypes[clause];
 					auto fieldRule = ruleIndex == -1 ? nullptr : context.syntaxManager.Rules().Values()[ruleIndex];
 
@@ -463,6 +463,19 @@ ValidateTypesVisitor
 
 				void Visit(GlrLeftRecursionInjectClause* node) override
 				{
+					{
+						auto rule = context.syntaxManager.Rules()[node->rule->literal.value];
+						if (rule->isPartial)
+						{
+							context.syntaxManager.AddError(
+								ParserErrorType::PartialRuleInLeftRecursionInject,
+								node->codeRange,
+								ruleSymbol->Name(),
+								node->rule->literal.value
+								);
+						}
+					}
+
 					SearchForLrpVisitor visitor(context, node->flag->flag.value, ruleSymbol->ruleType);
 					for (auto target : node->injectionTargets)
 					{
