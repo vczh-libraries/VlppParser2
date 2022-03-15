@@ -75,7 +75,7 @@ EdgeSymbol
 				vint32_t					token = -1;
 				Nullable<WString>			condition;
 
-				automaton::ReturnRuleType	ruleType = automaton::ReturnRuleType::Field;	// useful when type == Rule
+				automaton::ReturnRuleType	ruleType = automaton::ReturnRuleType::Field;	// useful when type == Rule or LrInject
 				RuleSymbol*					rule = nullptr;									// useful when type == Rule or LrInject
 			};
 

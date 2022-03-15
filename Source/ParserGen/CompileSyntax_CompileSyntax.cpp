@@ -345,7 +345,7 @@ CompileSyntaxVisitor
 
 					result = automatonBuilder.BuildClause([this, &flags]()
 					{
-						return automatonBuilder.BuildLrpClause(flags);
+						return automatonBuilder.BuildLrpClause(flags, [&](vint32_t flag) { return context.syntaxManager.lrpFlags[flag]; });
 					});
 				}
 

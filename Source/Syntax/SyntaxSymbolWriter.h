@@ -73,7 +73,7 @@ AutomatonBuilder
 				StatePair					BuildCreateClause(vint32_t classId, const StateBuilder& compileSyntax);
 				StatePair					BuildPartialClause(const StateBuilder& compileSyntax);
 				StatePair					BuildReuseClause(const StateBuilder& compileSyntax);
-				StatePair					BuildLrpClause(collections::List<vint32_t>& flags);
+				StatePair					BuildLrpClause(collections::List<vint32_t>& flags, const Func<WString(vint32_t)>& flagName);
 				StatePair					BuildLriClause(RuleSymbol* rule, collections::List<RuleSymbol*>& targetRules);
 			};
 

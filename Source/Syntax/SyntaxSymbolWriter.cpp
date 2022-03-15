@@ -6,6 +6,7 @@ namespace vl
 	{
 		namespace parsergen
 		{
+			using namespace collections;
 
 /***********************************************************************
 AutomatonBuilder
@@ -401,14 +402,98 @@ AutomatonBuilder (Clause)
 				return pair;
 			}
 
-			AutomatonBuilder::StatePair AutomatonBuilder::BuildLrpClause(collections::List<vint32_t>& flags)
+			AutomatonBuilder::StatePair AutomatonBuilder::BuildLrpClause(collections::List<vint32_t>& flags, const Func<WString(vint32_t)>& flagName)
 			{
-				CHECK_FAIL(L"Not Implemented!");
+				List<StateBuilder> elements;
+				for (vint32_t flag : flags)
+				{
+					elements.Add([this, flag, name = flagName(flag)]()
+					{
+						StatePair pair;
+						pair.begin = CreateState();
+						pair.end = CreateState();
+						startPoses.Add(pair.begin, clauseDisplayText.Length());
+
+						{
+							auto edge = CreateEdge(pair.begin, pair.end);
+							edge->input.type = EdgeInputType::LrPlaceholder;
+							edge->input.token = flag;
+						}
+
+						clauseDisplayText += L"lrp:" + name;
+						endPoses.Add(pair.end, clauseDisplayText.Length());
+						return pair;
+					});
+				}
+				return BuildAlternativeSyntax(elements);
 			}
 
 			AutomatonBuilder::StatePair AutomatonBuilder::BuildLriClause(RuleSymbol* rule, collections::List<RuleSymbol*>& targetRules)
 			{
-				CHECK_FAIL(L"Not Implemented!");
+				List<StateBuilder> alts;
+				for (auto targetRule : targetRules)
+				{
+					alts.Add([this, targetRule]()
+					{
+						StatePair pair;
+						pair.begin = CreateState();
+						pair.end = CreateState();
+						startPoses.Add(pair.begin, clauseDisplayText.Length());
+
+						{
+							auto edge = CreateEdge(pair.begin, pair.end);
+							edge->input.type = EdgeInputType::LrInject;
+							edge->input.rule = targetRule;
+							edge->input.ruleType = automaton::ReturnRuleType::Reuse;
+							edge->insAfterInput.Add({ AstInsType::ReopenObject });
+						}
+
+						clauseDisplayText += L"lri:" + targetRule->Name();
+						endPoses.Add(pair.end, clauseDisplayText.Length());
+						return pair;
+					});
+				}
+				alts.Add([this, rule]()
+				{
+					StatePair pair;
+					pair.begin = CreateState();
+					pair.end = CreateState();
+					startPoses.Add(pair.begin, clauseDisplayText.Length());
+
+					{
+						auto edge = CreateEdge(pair.begin, pair.end);
+						edge->input.type = EdgeInputType::Epsilon;
+						edge->insAfterInput.Add({ AstInsType::ReopenObject });
+					}
+
+					clauseDisplayText += L"lri:<skip>";
+					endPoses.Add(pair.end, clauseDisplayText.Length());
+					return pair;
+				});
+
+				List<StateBuilder> seqs;
+				seqs.Add([this, rule]()
+				{
+					StatePair pair;
+					pair.begin = CreateState();
+					pair.end = CreateState();
+					startPoses.Add(pair.begin, clauseDisplayText.Length());
+
+					{
+						auto edge = CreateEdge(pair.begin, pair.end);
+						edge->input.type = EdgeInputType::LrInject;
+						edge->input.rule = rule;
+						edge->input.ruleType = automaton::ReturnRuleType::Field;
+					}
+
+					clauseDisplayText += L"!" + rule->Name();
+					endPoses.Add(pair.end, clauseDisplayText.Length());
+					return pair;
+				});
+				seqs.Add([this, &alts]() {return BuildAlternativeSyntax(alts); });
+
+				StateBuilder clause = [this, &seqs]() {return BuildSequenceSyntax(seqs); };
+				return BuildReuseClause(clause);
 			}
 		}
 	}

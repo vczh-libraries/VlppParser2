@@ -144,7 +144,12 @@ CompactSyntaxBuilder
 						case EdgeInputType::Epsilon:
 							BuildEpsilonEliminatedEdgesInternal(edge->To(), newState, endState, visited, accumulatedEdges);
 							break;
-						default:;
+						case EdgeInputType::Ending:
+							break;
+						case EdgeInputType::LrPlaceholder:
+						case EdgeInputType::LrInject:
+							CHECK_FAIL(L"Not Implemented <BuildCompactNFAInternal>!");
+							break;
 						}
 						accumulatedEdges.RemoveAt(accumulatedEdges.Count() - 1);
 					}
