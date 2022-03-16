@@ -116,6 +116,10 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 						);
 					return;
 				}
+
+				// search for all possible "LrPlaceholder {Ending} LeftRec Token" transitions
+				// for each transition, compact edges and put injectEdge properly in returnEdges
+				// new instructions could be needed to handle stack balance (LriStore, LriTake)
 				CHECK_FAIL(L"<BuildCrossReferencedNFAInternal>Unhandled!");
 			}
 
