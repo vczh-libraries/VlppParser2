@@ -59,7 +59,14 @@ SyntaxSymbolManager::FixCrossReferencedRuleEdge
 							accumulatedEdges.RemoveAt(accumulatedEdges.Count() - 1);
 						}
 						break;
-					default:;
+					case EdgeInputType::Epsilon:
+						// Epsilon edges do not exist in compact-NFA
+					case EdgeInputType::Ending:
+					case EdgeInputType::LeftRec:
+						// Ending and LeftRec edges are not involved
+						break;
+					default:
+						CHECK_FAIL(L"<BuildCrossReferencedNFAInternal>Unhandled!");
 					}
 				}
 			}

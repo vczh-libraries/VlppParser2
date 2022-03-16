@@ -526,7 +526,7 @@ AutomatonBuilder (Clause)
 
 					{
 						auto edge = CreateEdge(pair.begin, pair.end);
-						edge->input.type = EdgeInputType::LrInject;
+						edge->input.type = EdgeInputType::Rule;
 						edge->input.rule = rule;
 						edge->input.ruleType = automaton::ReturnRuleType::Field;
 					}

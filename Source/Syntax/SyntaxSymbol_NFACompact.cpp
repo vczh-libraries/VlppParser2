@@ -122,7 +122,10 @@ CompactSyntaxBuilder
 						{
 						case EdgeInputType::Token:
 						case EdgeInputType::Rule:
+						case EdgeInputType::LrPlaceholder:
+						case EdgeInputType::LrInject:
 							{
+								// a new edge is created, accumulating multiple epsilon edges, ending with such edge
 								auto targetNewState = CreateCompactState(edge->To());
 								if (!visited.Contains(targetNewState))
 								{
@@ -145,17 +148,21 @@ CompactSyntaxBuilder
 							BuildEpsilonEliminatedEdgesInternal(edge->To(), newState, endState, visited, accumulatedEdges);
 							break;
 						case EdgeInputType::Ending:
+							// Ending is ignored because it doesn't exist in epsilon-NFA
 							break;
-						case EdgeInputType::LrPlaceholder:
-						case EdgeInputType::LrInject:
-							CHECK_FAIL(L"Not Implemented <BuildCompactNFAInternal>!");
-							break;
+						default:
+							CHECK_FAIL(L"<BuildCompactNFAInternal>Unhandled!");
 						}
 						accumulatedEdges.RemoveAt(accumulatedEdges.Count() - 1);
 					}
 
 					if (walkingOldState->endingState)
 					{
+						// if accumulated epsilon edges lead to the epsilon-NFA ending state
+						// create an Ending edge to the compact-NFA ending state
+						// when a non-epsilon edge connects to the ending state directly
+						// this is triggered by examing the epsilon-NFA ending state directly
+						// at this moment accumulatedEdges is an empty collection
 						auto newEdge = new EdgeSymbol(newState, endState);
 						newEdge->input.type = EdgeInputType::Ending;
 						for (auto accumulatedEdge : accumulatedEdges)
@@ -171,6 +178,7 @@ CompactSyntaxBuilder
 							if (endingEdge != newEdge && endingEdge->input.type == EdgeInputType::Ending)
 							{
 								if (
+									CompareEnumerable(endingEdge->insSwitch, newEdge->insSwitch) == 0 &&
 									CompareEnumerable(endingEdge->insBeforeInput, newEdge->insBeforeInput) == 0 &&
 									CompareEnumerable(endingEdge->insAfterInput, newEdge->insAfterInput) == 0)
 								{
