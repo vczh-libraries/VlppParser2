@@ -346,7 +346,7 @@ ResolveNameVisitor
 						{
 							context.syntaxManager.AddError(
 								ParserErrorType::TokenOrRuleNotExistsInRule,
-								node->codeRange,
+								node->rule->codeRange,
 								ruleSymbol->Name(),
 								node->rule->literal.value
 								);
@@ -371,7 +371,7 @@ ResolveNameVisitor
 						{
 							context.syntaxManager.AddError(
 								ParserErrorType::TokenOrRuleNotExistsInRule,
-								node->codeRange,
+								target->codeRange,
 								ruleSymbol->Name(),
 								target->literal.value
 								);

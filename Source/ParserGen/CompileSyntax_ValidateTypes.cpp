@@ -469,7 +469,7 @@ ValidateTypesVisitor
 						{
 							context.syntaxManager.AddError(
 								ParserErrorType::PartialRuleInLeftRecursionInject,
-								node->codeRange,
+								node->rule->codeRange,
 								ruleSymbol->Name(),
 								node->rule->literal.value
 								);
@@ -484,7 +484,7 @@ ValidateTypesVisitor
 						{
 							context.syntaxManager.AddError(
 								ParserErrorType::LeftRecursionPlaceholderNotFoundInRule,
-								node->codeRange,
+								target->codeRange,
 								ruleSymbol->Name(),
 								node->flag->flag.value,
 								target->literal.value
@@ -494,7 +494,7 @@ ValidateTypesVisitor
 						{
 							context.syntaxManager.AddError(
 								ParserErrorType::LeftRecursionPlaceholderNotUnique,
-								node->codeRange,
+								target->codeRange,
 								ruleSymbol->Name(),
 								node->flag->flag.value,
 								target->literal.value
@@ -506,7 +506,7 @@ ValidateTypesVisitor
 							{
 								context.syntaxManager.AddError(
 									ParserErrorType::LeftRecursionPlaceholderTypeMismatched,
-									node->codeRange,
+									target->codeRange,
 									ruleSymbol->Name(),
 									node->flag->flag.value,
 									target->literal.value,
