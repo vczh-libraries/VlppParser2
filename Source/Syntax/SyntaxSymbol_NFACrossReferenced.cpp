@@ -25,6 +25,8 @@ SyntaxSymbolManager::FixCrossReferencedRuleEdge
 					switch (edge->input.type)
 					{
 					case EdgeInputType::Token:
+					case EdgeInputType::LrPlaceholder:
+						// multiple Rule edges followed by one Token or LrPlaceholder edge create a cross-referenced edge
 						if (edge->returnEdges.Count() == 0)
 						{
 							auto newEdge = new EdgeSymbol(startState, edge->To());
@@ -60,10 +62,13 @@ SyntaxSymbolManager::FixCrossReferencedRuleEdge
 						}
 						break;
 					case EdgeInputType::Epsilon:
-						// Epsilon edges do not exist in compact-NFA
 					case EdgeInputType::Ending:
 					case EdgeInputType::LeftRec:
+						// Epsilon edges do not exist in compact-NFA
 						// Ending and LeftRec edges are not involved
+						break;
+					case EdgeInputType::LrInject:
+						CHECK_FAIL(L"<BuildCrossReferencedNFAInternal>LrInject is impossible from a start state");
 						break;
 					default:
 						CHECK_FAIL(L"<BuildCrossReferencedNFAInternal>Unhandled!");
@@ -91,6 +96,11 @@ SyntaxSymbolManager::BuildCrossReferencedNFAInternal
 					}
 				}
 
+				// compact multiple shift (Rule) edges and an input (Token or LrPlaceholder) edge to one edge
+				// when a cross-referenced edge is executed, for each Rule edge:
+				//   insSwitch instructions are executed
+				//   insBeforeInput instructions are executed
+				//   insAfterInput instructions are executed in its returnEdges
 				for (auto state : states)
 				{
 					vint index = orderedEdges.Keys().IndexOf(state);
@@ -103,6 +113,22 @@ SyntaxSymbolManager::BuildCrossReferencedNFAInternal
 								List<EdgeSymbol*> accumulatedEdges;
 								accumulatedEdges.Add(edge);
 								FixCrossReferencedRuleEdge(edge->From(), orderedEdges, accumulatedEdges);
+							}
+						}
+					}
+				}
+
+				// convert LrInject to Token
+				for (auto state : states)
+				{
+					vint index = orderedEdges.Keys().IndexOf(state);
+					if (index != -1)
+					{
+						for (auto edge : orderedEdges.GetByIndex(index))
+						{
+							if (edge->input.type == EdgeInputType::LrInject)
+							{
+								CHECK_FAIL(L"<BuildCrossReferencedNFAInternal>Unhandled!");
 							}
 						}
 					}
