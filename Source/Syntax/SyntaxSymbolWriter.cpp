@@ -465,7 +465,7 @@ AutomatonBuilder (Clause)
 				return BuildAlternativeSyntax(elements);
 			}
 
-			AutomatonBuilder::StatePair AutomatonBuilder::BuildLriClause(RuleSymbol* rule, collections::List<RuleSymbol*>& targetRules)
+			AutomatonBuilder::StatePair AutomatonBuilder::BuildLriClause(RuleSymbol* rule, vint32_t flag, collections::List<RuleSymbol*>& targetRules)
 			{
 				/*
 				*             +--(lri:a)--+
@@ -478,7 +478,7 @@ AutomatonBuilder (Clause)
 				List<StateBuilder> alts;
 				for (auto targetRule : targetRules)
 				{
-					alts.Add([this, targetRule]()
+					alts.Add([this, flag, targetRule]()
 					{
 						StatePair pair;
 						pair.begin = CreateState();
@@ -488,6 +488,7 @@ AutomatonBuilder (Clause)
 						{
 							auto edge = CreateEdge(pair.begin, pair.end);
 							edge->input.type = EdgeInputType::LrInject;
+							edge->input.token = flag;
 							edge->input.rule = targetRule;
 							edge->input.ruleType = automaton::ReturnRuleType::Reuse;
 							edge->insAfterInput.Add({ AstInsType::ReopenObject });

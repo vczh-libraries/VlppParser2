@@ -352,6 +352,7 @@ CompileSyntaxVisitor
 				void Visit(GlrLeftRecursionInjectClause* node) override
 				{
 					auto rule = context.syntaxManager.Rules()[node->rule->literal.value];
+					auto flag = (vint32_t)context.syntaxManager.lrpFlags.IndexOf(node->flag->flag.value);
 
 					List<RuleSymbol*> targetRules;
 					CopyFrom(
@@ -362,9 +363,9 @@ CompileSyntaxVisitor
 								return context.syntaxManager.Rules()[targetRule->literal.value];
 							})
 						);
-					result = automatonBuilder.BuildClause([this, rule, &targetRules]()
+					result = automatonBuilder.BuildClause([this, rule, flag, &targetRules]()
 					{
-						return automatonBuilder.BuildLriClause(rule, targetRules);
+						return automatonBuilder.BuildLriClause(rule, flag, targetRules);
 					});
 				}
 			};
