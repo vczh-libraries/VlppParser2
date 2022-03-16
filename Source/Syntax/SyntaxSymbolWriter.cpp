@@ -470,7 +470,7 @@ AutomatonBuilder (Clause)
 				/*
 				*             +--(lri:a)--+
 				*             |           V
-				* S --(rule)--+--(lri:b)--+--> E
+				* S --(rule)--+--(lri:b)--+--(e:ReopenObject)--> E
 				*             |           ^
 				*             +-----------+
 				*/
@@ -491,7 +491,6 @@ AutomatonBuilder (Clause)
 							edge->input.token = flag;
 							edge->input.rule = targetRule;
 							edge->input.ruleType = automaton::ReturnRuleType::Reuse;
-							edge->insAfterInput.Add({ AstInsType::ReopenObject });
 						}
 
 						clauseDisplayText += L"lri:" + targetRule->Name();
@@ -509,7 +508,6 @@ AutomatonBuilder (Clause)
 					{
 						auto edge = CreateEdge(pair.begin, pair.end);
 						edge->input.type = EdgeInputType::Epsilon;
-						edge->insAfterInput.Add({ AstInsType::ReopenObject });
 					}
 
 					clauseDisplayText += L"lri:<skip>";
@@ -529,7 +527,7 @@ AutomatonBuilder (Clause)
 						auto edge = CreateEdge(pair.begin, pair.end);
 						edge->input.type = EdgeInputType::Rule;
 						edge->input.rule = rule;
-						edge->input.ruleType = automaton::ReturnRuleType::Field;
+						edge->input.ruleType = automaton::ReturnRuleType::Reuse;
 					}
 
 					clauseDisplayText += L"!" + rule->Name();
@@ -537,6 +535,22 @@ AutomatonBuilder (Clause)
 					return pair;
 				});
 				seqs.Add([this, &alts]() {return BuildAlternativeSyntax(alts); });
+				seqs.Add([this, rule]()
+				{
+					StatePair pair;
+					pair.begin = CreateState();
+					pair.end = CreateState();
+					startPoses.Add(pair.begin, clauseDisplayText.Length());
+
+					{
+						auto edge = CreateEdge(pair.begin, pair.end);
+						edge->input.type = EdgeInputType::Epsilon;
+						edge->insAfterInput.Add({ AstInsType::ReopenObject });
+					}
+
+					endPoses.Add(pair.end, clauseDisplayText.Length());
+					return pair;
+				});
 
 				StateBuilder clause = [this, &seqs]() {return BuildSequenceSyntax(seqs); };
 				return BuildReuseClause(clause);
