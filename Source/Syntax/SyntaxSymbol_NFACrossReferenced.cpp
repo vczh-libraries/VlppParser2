@@ -77,6 +77,49 @@ SyntaxSymbolManager::FixCrossReferencedRuleEdge
 			}
 
 /***********************************************************************
+SyntaxSymbolManager::FixLeftRecursionInjectEdge
+***********************************************************************/
+
+			void SyntaxSymbolManager::FixLeftRecursionInjectEdge(StateSymbol* startState, EdgeSymbol* injectEdge)
+			{
+				EdgeSymbol* lrpEdge = nullptr;
+				for (auto outEdge : startState->OutEdges())
+				{
+					if (outEdge->input.type == EdgeInputType::LrPlaceholder && outEdge->input.token == injectEdge->input.token)
+					{
+						if (lrpEdge)
+						{
+							AddError(
+								ParserErrorType::LeftRecursionPlaceholderNotUnique,
+								{},
+								injectEdge->fromState->Rule()->Name(),
+								lrpFlags[injectEdge->input.token],
+								startState->Rule()->Name()
+								);
+							return;
+						}
+						else
+						{
+							lrpEdge = outEdge;
+						}
+					}
+				}
+
+				if (!lrpEdge)
+				{
+					AddError(
+						ParserErrorType::LeftRecursionPlaceholderNotFoundInRule,
+						{},
+						injectEdge->fromState->Rule()->Name(),
+						lrpFlags[injectEdge->input.token],
+						startState->Rule()->Name()
+						);
+					return;
+				}
+				CHECK_FAIL(L"<BuildCrossReferencedNFAInternal>Unhandled!");
+			}
+
+/***********************************************************************
 SyntaxSymbolManager::BuildCrossReferencedNFAInternal
 ***********************************************************************/
 
@@ -128,7 +171,8 @@ SyntaxSymbolManager::BuildCrossReferencedNFAInternal
 						{
 							if (edge->input.type == EdgeInputType::LrInject)
 							{
-								CHECK_FAIL(L"<BuildCrossReferencedNFAInternal>Unhandled!");
+								auto startState = edge->input.rule->startStates[0];
+								FixLeftRecursionInjectEdge(startState, edge);
 							}
 						}
 					}
