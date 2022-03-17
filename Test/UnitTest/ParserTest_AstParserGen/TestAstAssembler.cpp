@@ -408,6 +408,17 @@ export 1 + 2
 })");
 	});
 
+	TEST_CASE(L"export 1 + 2 (left recursion injection)")
+	{
+		WString input = LR"(
+export 1 + 2
+)";
+		LEXER(input, tokens);
+		TEST_ASSERT(tokens.Count() == 4);
+		CalculatorAstInsReceiver receiver;
+		CHECK_FAIL(L"Test Case Not Implemented!");
+	});
+
 	TEST_CASE(L"import ... export ...")
 	{
 		WString input = LR"(

@@ -209,6 +209,88 @@ export 1
 			);
 	});
 
+	TEST_CASE(L"MissingValueToLriStore")
+	{
+		WString input = LR"(
+export 1
+)";
+		LEXER(input, tokens);
+		CalculatorAstInsReceiver receiver;
+		receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::Module }, tokens[0], 0);
+		TEST_EXCEPTION(
+			receiver.Execute({ AstInsType::LriStore }, tokens[1], 1),
+			AstInsException,
+			[](const AstInsException& e) { TEST_ASSERT(e.error == AstInsErrorType::MissingValueToLriStore); }
+			);
+	});
+
+	TEST_CASE(L"LriStoredValueIsNotObject (Token)")
+	{
+		WString input = LR"(
+export 1
+)";
+		LEXER(input, tokens);
+		CalculatorAstInsReceiver receiver;
+		receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::Module }, tokens[0], 0);
+		receiver.Execute({ AstInsType::Token }, tokens[1], 1);
+		TEST_EXCEPTION(
+			receiver.Execute({ AstInsType::LriStore }, tokens[1], 1),
+			AstInsException,
+			[](const AstInsException& e) { TEST_ASSERT(e.error == AstInsErrorType::LriStoredValueIsNotObject); }
+			);
+	});
+
+	TEST_CASE(L"LriStoredValueIsNotObject (EnumItem)")
+	{
+		WString input = LR"(
+export 1
+)";
+		LEXER(input, tokens);
+		CalculatorAstInsReceiver receiver;
+		receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::Module }, tokens[0], 0);
+		receiver.Execute({ AstInsType::EnumItem, 0 }, tokens[1], 1);
+		TEST_EXCEPTION(
+			receiver.Execute({ AstInsType::LriStore }, tokens[1], 1),
+			AstInsException,
+			[](const AstInsException& e) { TEST_ASSERT(e.error == AstInsErrorType::LriStoredValueIsNotObject); }
+			);
+	});
+
+	TEST_CASE(L"LriStoredValueNotCleared")
+	{
+		WString input = LR"(
+export 1
+)";
+		LEXER(input, tokens);
+		CalculatorAstInsReceiver receiver;
+		receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::Module }, tokens[0], 0);
+		receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::NumExpr }, tokens[1], 1);
+		receiver.Execute({ AstInsType::EndObject }, tokens[1], 1);
+		receiver.Execute({ AstInsType::LriStore }, tokens[1], 1),
+		receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::NumExpr }, tokens[1], 1);
+		receiver.Execute({ AstInsType::EndObject }, tokens[1], 1);
+		TEST_EXCEPTION(
+			receiver.Execute({ AstInsType::LriStore }, tokens[1], 1),
+			AstInsException,
+			[](const AstInsException& e) { TEST_ASSERT(e.error == AstInsErrorType::LriStoredValueNotCleared); }
+			);
+	});
+
+	TEST_CASE(L"LriStoredValueNotExists")
+	{
+		WString input = LR"(
+export 1
+)";
+		LEXER(input, tokens);
+		CalculatorAstInsReceiver receiver;
+		receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::Module }, tokens[0], 0);
+		TEST_EXCEPTION(
+			receiver.Execute({ AstInsType::LriFetch }, tokens[1], 1),
+			AstInsException,
+			[](const AstInsException& e) { TEST_ASSERT(e.error == AstInsErrorType::LriStoredValueNotExists); }
+			);
+	});
+
 	TEST_CASE(L"LeavingUnassignedValues")
 	{
 		WString input = LR"(

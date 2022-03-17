@@ -269,6 +269,8 @@ Instructions
 			ReopenObject,								// ReopenObject()					: Move the last pushed object back to creating status.
 			EndObject,									// EndObject()						: Finish creating an AST node, all objects pushed after BeginObject are supposed to be its fields.
 			DiscardValue,								// DiscardValue()					: Remove a pushed value.
+			LriStore,									// LriStore()						: Take the top object away and store to a register temporarily.
+			LriFetch,									// LriFetch()						: Clear the register and put it back as a top object.
 			Field,										// Field(Field)						: Associate a field name with the top object.
 			FieldIfUnassigned,							// FieldIfUnassigned(Field)			: Like Field(Field) but only take effect if such field has never been assigned.
 			ResolveAmbiguity,							// ResolveAmbiguity(Type, Count)	: Combine several top objects to one using an ambiguity node. Type is the type of each top object.
@@ -321,6 +323,10 @@ Instructions
 			MissingValueToReopen,						// MissingValueToReopen()				: There is no pushed value to reopen.
 			ReopenedValueIsNotObject,					// ReopenedValueIsNotObject()			: The pushed value to reopen is not an object.
 			MissingValueToDiscard,						// MissingValueToDiscard()				: There is no pushed value to discard.
+			MissingValueToLriStore,						// MissingValueToLriStore()				: There is no pushed value to run LriStore.
+			LriStoredValueIsNotObject,					// LriStoredValueIsNotObject()			: The value to run LriStore is not an object.
+			LriStoredValueNotCleared,					// LriStoredValueNotCleared()			: LriFetch is not executed before the next LriStore.
+			LriStoredValueNotExists,					// LriStoredValueNotExists()			: LriStore is not executed before the next LriFetch.
 			LeavingUnassignedValues,					// LeavingUnassignedValues()			: There are still values to assign to fields before finishing an object.
 			MissingFieldValue,							// MissingFieldValue()					: There is no pushed value to be assigned to a field.
 			MissingAmbiguityCandidate,					// MissingAmbiguityCandidate()			: There are not enough candidates to create an ambiguity node.
