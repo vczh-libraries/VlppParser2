@@ -416,7 +416,51 @@ export 1 + 2
 		LEXER(input, tokens);
 		TEST_ASSERT(tokens.Count() == 4);
 		CalculatorAstInsReceiver receiver;
-		CHECK_FAIL(L"Test Case Not Implemented!");
+		receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::Module }, tokens[0], 0);
+		receiver.Execute({ AstInsType::DelayFieldAssignment }, tokens[1], 1);
+		receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::NumExpr }, tokens[1], 1);
+		receiver.Execute({ AstInsType::Token }, tokens[1], 1);
+		receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::NumExpr_value }, tokens[1], 1);
+		receiver.Execute({ AstInsType::EndObject }, tokens[1], 1);
+		receiver.Execute({ AstInsType::LriStore }, tokens[1], 1);
+		receiver.Execute({ AstInsType::LriFetch }, tokens[1], 1);
+		receiver.Execute({ AstInsType::BeginObjectLeftRecursive, (vint32_t)CalculatorClasses::Binary }, tokens[1], 1);
+		receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Binary_left }, tokens[1], 1);
+		receiver.Execute({ AstInsType::DelayFieldAssignment }, tokens[3], 3);
+		receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::NumExpr }, tokens[3], 3);
+		receiver.Execute({ AstInsType::Token }, tokens[3], 3);
+		receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::NumExpr_value }, tokens[3], 3);
+		receiver.Execute({ AstInsType::EndObject }, tokens[3], 3);
+		receiver.Execute({ AstInsType::ReopenObject }, tokens[3], 3);
+		receiver.Execute({ AstInsType::EndObject }, tokens[3], 3);
+		receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Binary_right }, tokens[3], 3);
+		receiver.Execute({ AstInsType::EnumItem,(vint32_t)BinaryOp::Add }, tokens[3], 3);
+		receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Binary_op }, tokens[3], 3);
+		receiver.Execute({ AstInsType::EndObject }, tokens[3], 3);
+		receiver.Execute({ AstInsType::ReopenObject }, tokens[3], 3);
+		receiver.Execute({ AstInsType::EndObject }, tokens[3], 3);
+		receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Module_exported }, tokens[3], 3);
+		receiver.Execute({ AstInsType::EndObject }, tokens[3], 3);
+		auto node = receiver.Finished();
+		auto ast = node.Cast<Module>();
+		TEST_ASSERT(ast);
+		AssertAst<json_visitor::ExprAstVisitor>(ast, LR"({
+    "$ast": "Module",
+    "exported": {
+        "$ast": "Binary",
+        "expanded": null,
+        "left": {
+            "$ast": "NumExpr",
+            "value": "1"
+        },
+        "op": "Add",
+        "right": {
+            "$ast": "NumExpr",
+            "value": "2"
+        }
+    },
+    "imports": []
+})");
 	});
 
 	TEST_CASE(L"import ... export ...")
