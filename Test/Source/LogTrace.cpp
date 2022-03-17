@@ -40,6 +40,12 @@ void LogInstruction(
 	case AstInsType::DiscardValue:
 		writer.WriteLine(L"DiscardValue()");
 		break;
+	case AstInsType::LriStore:
+		writer.WriteLine(L"LriStore()");
+		break;
+	case AstInsType::LriFetch:
+		writer.WriteLine(L"LriFetch()");
+		break;
 	case AstInsType::Field:
 		writer.WriteLine(L"Field(" + fieldName(ins.param) + L")");
 		break;
