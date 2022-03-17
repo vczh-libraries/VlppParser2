@@ -518,6 +518,58 @@ AstInsReceiverBase
 						pushed.RemoveAt(pushed.Count() - 1);
 					}
 					break;
+				case AstInsType::LriStore:
+					{
+						auto& createdObject = TopCreated();
+						if (pushed.Count() <= createdObject.pushedCount)
+						{
+							throw AstInsException(
+								L"There is no pushed value to run LriStore.",
+								AstInsErrorType::MissingValueToLriStore
+								);
+						}
+
+						auto value = pushed[pushed.Count() - 1];
+						if (value.object)
+						{
+							if (lriStoredObject)
+							{
+								throw AstInsException(
+									L"LriFetch is not executed before the next LriStore.",
+									AstInsErrorType::LriStoredValueNotCleared
+									);
+							}
+							else
+							{
+								lriStoredObject = value.object;
+								pushed.RemoveAt(pushed.Count() - 1);
+							}
+						}
+						else
+						{
+							throw AstInsException(
+								L"The value to run LriStore is not an object.",
+								AstInsErrorType::LriStoredValueIsNotObject
+								);
+						}
+					}
+					break;
+				case AstInsType::LriFetch:
+					{
+						if (lriStoredObject)
+						{
+							pushed.Add(ObjectOrToken{ lriStoredObject });
+							lriStoredObject = nullptr;
+						}
+						else
+						{
+							throw AstInsException(
+								L"LriStore is not executed before the next LriFetch.",
+								AstInsErrorType::LriStoredValueNotExists
+								);
+						}
+					}
+					break;
 				case AstInsType::Field:
 				case AstInsType::FieldIfUnassigned:
 					{

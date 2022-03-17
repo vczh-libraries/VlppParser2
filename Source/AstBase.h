@@ -408,6 +408,7 @@ IAstInsReceiver
 
 			collections::List<CreatedObject>			created;
 			collections::List<ObjectOrToken>			pushed;
+			Ptr<ParsingAstBase>							lriStoredObject;
 			bool										finished = false;
 			bool										corrupted = false;
 
