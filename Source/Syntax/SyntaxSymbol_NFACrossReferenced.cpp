@@ -137,14 +137,51 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 						}
 					}
 
-					for (auto returnEdge : injectEdge->returnEdges)
+					for (vint i = injectEdge->returnEdges.Count() - 1; i >= 0; i--)
 					{
+						auto endingState =
+							i == injectEdge->returnEdges.Count() - 1
+							? injectEdge->To()
+							: injectEdge->returnEdges[i + 1]->To()
+							;
+						auto endingEdge =
+							From(endingState->OutEdges())
+							.Where([](EdgeSymbol* edge) { return edge->input.type == EdgeInputType::Ending; })
+							.First(nullptr);
+
+						auto returnEdge = injectEdge->returnEdges[i];
+
+						if (!endingEdge)
+						{
+							goto FAILED_INSTRUCTION_CHECKING;
+						}
+						if (endingEdge->insSwitch.Count() > 0)
+						{
+							goto FAILED_INSTRUCTION_CHECKING;
+						}
+						if (endingEdge->insAfterInput.Count() > 0)
+						{
+							goto FAILED_INSTRUCTION_CHECKING;
+						}
+
 						switch (returnEdge->insAfterInput.Count())
 						{
 						case 0:
+							if (endingEdge->insBeforeInput.Count() != 0)
+							{
+								goto FAILED_INSTRUCTION_CHECKING;
+							}
 							break;
 						case 1:
 							if (returnEdge->insAfterInput[0].type != AstInsType::ReopenObject)
+							{
+								goto FAILED_INSTRUCTION_CHECKING;
+							}
+							if (endingEdge->insBeforeInput.Count() != 0)
+							{
+								goto FAILED_INSTRUCTION_CHECKING;
+							}
+							if (endingEdge->insAfterInput[0].type != AstInsType::EndObject)
 							{
 								goto FAILED_INSTRUCTION_CHECKING;
 							}
