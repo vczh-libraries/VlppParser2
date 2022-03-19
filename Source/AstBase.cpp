@@ -365,6 +365,8 @@ AstInsReceiverBase
 					case AstInsType::DelayFieldAssignment:
 					case AstInsType::ResolveAmbiguity:
 					case AstInsType::AccumulatedDfa:
+					case AstInsType::LriStore:
+					case AstInsType::LriFetch:
 						break;
 					default:
 						throw AstInsException(
@@ -520,13 +522,21 @@ AstInsReceiverBase
 					break;
 				case AstInsType::LriStore:
 					{
-						auto& createdObject = TopCreated();
-						if (pushed.Count() <= createdObject.pushedCount)
 						{
-							throw AstInsException(
-								L"There is no pushed value to run LriStore.",
-								AstInsErrorType::MissingValueToLriStore
-								);
+							vint pushedCount = 0;
+							if (created.Count() > 0)
+							{
+								auto& createdObject = TopCreated();
+								pushedCount = createdObject.pushedCount;
+							}
+
+							if (pushed.Count() <= pushedCount)
+							{
+								throw AstInsException(
+									L"There is no pushed value to run LriStore.",
+									AstInsErrorType::MissingValueToLriStore
+									);
+							}
 						}
 
 						auto value = pushed[pushed.Count() - 1];
