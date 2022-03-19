@@ -82,12 +82,12 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 
 			void SyntaxSymbolManager::FixLeftRecursionInjectEdge(StateSymbol* startState, EdgeSymbol* injectEdge)
 			{
-				EdgeSymbol* lrpEdge = nullptr;
+				EdgeSymbol* placeholderEdge = nullptr;
 				for (auto outEdge : startState->OutEdges())
 				{
 					if (outEdge->input.type == EdgeInputType::LrPlaceholder && outEdge->input.token == injectEdge->input.token)
 					{
-						if (lrpEdge)
+						if (placeholderEdge)
 						{
 							AddError(
 								ParserErrorType::LeftRecursionPlaceholderNotUnique,
@@ -100,12 +100,12 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 						}
 						else
 						{
-							lrpEdge = outEdge;
+							placeholderEdge = outEdge;
 						}
 					}
 				}
 
-				if (!lrpEdge)
+				if (!placeholderEdge)
 				{
 					AddError(
 						ParserErrorType::LeftRecursionPlaceholderNotFoundInRule,
@@ -119,18 +119,18 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 
 				List<EdgeSymbol*> endingEdges;
 				{
-					// check if lrpEdge does nothing more than using rules
+					// check if placeholderEdge does nothing more than using rules
 
-					if (lrpEdge->insSwitch.Count() > 0)
+					if (placeholderEdge->insSwitch.Count() > 0)
 					{
 						goto FAILED_INSTRUCTION_CHECKING;
 					}
-					if (lrpEdge->insAfterInput.Count() > 0)
+					if (placeholderEdge->insAfterInput.Count() > 0)
 					{
 						goto FAILED_INSTRUCTION_CHECKING;
 					}
 
-					for (auto ins : lrpEdge->insBeforeInput)
+					for (auto ins : placeholderEdge->insBeforeInput)
 					{
 						if (ins.type != AstInsType::DelayFieldAssignment)
 						{
@@ -138,19 +138,19 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 						}
 					}
 
-					for (vint i = lrpEdge->returnEdges.Count() - 1; i >= 0; i--)
+					for (vint i = placeholderEdge->returnEdges.Count() - 1; i >= 0; i--)
 					{
 						auto endingState =
-							i == lrpEdge->returnEdges.Count() - 1
-							? lrpEdge->To()
-							: lrpEdge->returnEdges[i + 1]->To()
+							i == placeholderEdge->returnEdges.Count() - 1
+							? placeholderEdge->To()
+							: placeholderEdge->returnEdges[i + 1]->To()
 							;
 						auto endingEdge =
 							From(endingState->OutEdges())
 							.Where([](EdgeSymbol* edge) { return edge->input.type == EdgeInputType::Ending; })
 							.First(nullptr);
 
-						auto returnEdge = lrpEdge->returnEdges[i];
+						auto returnEdge = placeholderEdge->returnEdges[i];
 
 						if (!endingEdge)
 						{
@@ -182,18 +182,18 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 				// search for all possible "LrPlaceholder {Ending} LeftRec Token" transitions
 				// for each transition, compact edges and put injectEdge properly in returnEdges
 				// here insBeforeInput has been ensured to be:
-				//   LriStore lrpEdge->insBeforeInput LriFetch {endingEdge->insBeforeInput returnEdge->insAfterInput} --LeftRec--> ...
+				//   LriStore placeholderEdge->insBeforeInput LriFetch {endingEdge->insBeforeInput returnEdge->insAfterInput} --LeftRec--> ...
 
 				vint created = 0;
 				List<AstIns> instructionPrefix;
 				instructionPrefix.Add({ AstInsType::LriStore });
-				CopyFrom(instructionPrefix, lrpEdge->insBeforeInput, true);
+				CopyFrom(instructionPrefix, placeholderEdge->insBeforeInput, true);
 				instructionPrefix.Add({ AstInsType::LriFetch });
 
-				for (vint i = lrpEdge->returnEdges.Count() - 1; i >= 0; i--)
+				for (vint i = placeholderEdge->returnEdges.Count() - 1; i >= 0; i--)
 				{
-					auto endingEdge = endingEdges[lrpEdge->returnEdges.Count() - 1 - i];
-					auto returnEdge = lrpEdge->returnEdges[i];
+					auto endingEdge = endingEdges[placeholderEdge->returnEdges.Count() - 1 - i];
+					auto returnEdge = placeholderEdge->returnEdges[i];
 					CopyFrom(instructionPrefix, endingEdge->insBeforeInput, true);
 					CopyFrom(instructionPrefix, returnEdge->insAfterInput, true);
 
@@ -213,7 +213,7 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 
 									newEdge->input = tokenEdge->input;
 									newEdge->importancy = lrEdge->importancy;
-									CopyFrom(newEdge->returnEdges, From(lrpEdge->returnEdges).Take(i));
+									CopyFrom(newEdge->returnEdges, From(placeholderEdge->returnEdges).Take(i));
 									newEdge->returnEdges.Add(injectEdge);
 
 									CopyFrom(newEdge->insSwitch, lrEdge->insSwitch, true);
