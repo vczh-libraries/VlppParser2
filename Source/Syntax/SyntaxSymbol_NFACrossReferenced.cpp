@@ -118,6 +118,7 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 				}
 
 				List<EdgeSymbol*> endingEdges;
+				List<EdgeSymbol*> returnEdges;
 				{
 					// check if placeholderEdge does nothing more than using rules
 
@@ -138,19 +139,23 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 						}
 					}
 
-					for (vint i = placeholderEdge->returnEdges.Count() - 1; i >= 0; i--)
+					for (vint i = 0; i <= placeholderEdge->returnEdges.Count(); i++)
 					{
+						auto returnEdge =
+							i == 0
+							? injectEdge
+							: placeholderEdge->returnEdges[i - 1]
+							;
+
 						auto endingState =
-							i == placeholderEdge->returnEdges.Count() - 1
+							i == placeholderEdge->returnEdges.Count()
 							? placeholderEdge->To()
-							: placeholderEdge->returnEdges[i + 1]->To()
+							: placeholderEdge->returnEdges[i]->To()
 							;
 						auto endingEdge =
 							From(endingState->OutEdges())
 							.Where([](EdgeSymbol* edge) { return edge->input.type == EdgeInputType::Ending; })
 							.First(nullptr);
-
-						auto returnEdge = placeholderEdge->returnEdges[i];
 
 						if (!endingEdge)
 						{
@@ -165,6 +170,7 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 							goto FAILED_INSTRUCTION_CHECKING;
 						}
 						endingEdges.Add(endingEdge);
+						returnEdges.Add(returnEdge);
 					}
 					goto PASSED_INSTRUCTION_CHECKING;
 				FAILED_INSTRUCTION_CHECKING:
@@ -190,10 +196,10 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 				CopyFrom(instructionPrefix, placeholderEdge->insBeforeInput, true);
 				instructionPrefix.Add({ AstInsType::LriFetch });
 
-				for (vint i = placeholderEdge->returnEdges.Count() - 1; i >= 0; i--)
+				for (vint i = returnEdges.Count() - 1; i >= 0; i--)
 				{
-					auto endingEdge = endingEdges[placeholderEdge->returnEdges.Count() - 1 - i];
-					auto returnEdge = placeholderEdge->returnEdges[i];
+					auto endingEdge = endingEdges[i];
+					auto returnEdge = returnEdges[i];
 
 					// find if there is any LeftRec before this Ending
 					for (auto lrEdge : endingEdge->From()->OutEdges())
@@ -211,7 +217,7 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 
 									newEdge->input = tokenEdge->input;
 									newEdge->importancy = lrEdge->importancy;
-									CopyFrom(newEdge->returnEdges, From(placeholderEdge->returnEdges).Take(i + 1));
+									CopyFrom(newEdge->returnEdges, From(returnEdges).Take(i));
 									newEdge->returnEdges.Add(injectEdge);
 
 									CopyFrom(newEdge->insSwitch, lrEdge->insSwitch, true);
