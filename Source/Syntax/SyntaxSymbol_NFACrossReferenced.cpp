@@ -194,11 +194,9 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 				{
 					auto endingEdge = endingEdges[placeholderEdge->returnEdges.Count() - 1 - i];
 					auto returnEdge = placeholderEdge->returnEdges[i];
-					CopyFrom(instructionPrefix, endingEdge->insBeforeInput, true);
-					CopyFrom(instructionPrefix, returnEdge->insAfterInput, true);
 
-					// find if there is any LeftRec after this Ending
-					for (auto lrEdge : returnEdge->To()->OutEdges())
+					// find if there is any LeftRec before this Ending
+					for (auto lrEdge : endingEdge->From()->OutEdges())
 					{
 						if (lrEdge->input.type == EdgeInputType::LeftRec)
 						{
@@ -213,7 +211,7 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 
 									newEdge->input = tokenEdge->input;
 									newEdge->importancy = lrEdge->importancy;
-									CopyFrom(newEdge->returnEdges, From(placeholderEdge->returnEdges).Take(i));
+									CopyFrom(newEdge->returnEdges, From(placeholderEdge->returnEdges).Take(i + 1));
 									newEdge->returnEdges.Add(injectEdge);
 
 									CopyFrom(newEdge->insSwitch, lrEdge->insSwitch, true);
@@ -229,6 +227,9 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 							}
 						}
 					}
+
+					CopyFrom(instructionPrefix, endingEdge->insBeforeInput, true);
+					CopyFrom(instructionPrefix, returnEdge->insAfterInput, true);
 				}
 
 				// report an error if nothing is created
