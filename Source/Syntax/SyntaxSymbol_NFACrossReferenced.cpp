@@ -117,45 +117,40 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 					return;
 				}
 
-				vint dfaCount = 0;
 				List<EdgeSymbol*> endingEdges;
 				{
-					// check if injectEdge does nothing more than using rules
+					// check if lrpEdge does nothing more than using rules
 
-					if (injectEdge->insSwitch.Count() > 0)
+					if (lrpEdge->insSwitch.Count() > 0)
 					{
 						goto FAILED_INSTRUCTION_CHECKING;
 					}
-					if (injectEdge->insAfterInput.Count() > 0)
+					if (lrpEdge->insAfterInput.Count() > 0)
 					{
 						goto FAILED_INSTRUCTION_CHECKING;
 					}
 
-					for (auto ins : injectEdge->insBeforeInput)
+					for (auto ins : lrpEdge->insBeforeInput)
 					{
-						if (ins.type == AstInsType::DelayFieldAssignment)
-						{
-							dfaCount++;
-						}
-						else
+						if (ins.type != AstInsType::DelayFieldAssignment)
 						{
 							goto FAILED_INSTRUCTION_CHECKING;
 						}
 					}
 
-					for (vint i = injectEdge->returnEdges.Count() - 1; i >= 0; i--)
+					for (vint i = lrpEdge->returnEdges.Count() - 1; i >= 0; i--)
 					{
 						auto endingState =
-							i == injectEdge->returnEdges.Count() - 1
-							? injectEdge->To()
-							: injectEdge->returnEdges[i + 1]->To()
+							i == lrpEdge->returnEdges.Count() - 1
+							? lrpEdge->To()
+							: lrpEdge->returnEdges[i + 1]->To()
 							;
 						auto endingEdge =
 							From(endingState->OutEdges())
 							.Where([](EdgeSymbol* edge) { return edge->input.type == EdgeInputType::Ending; })
 							.First(nullptr);
 
-						auto returnEdge = injectEdge->returnEdges[i];
+						auto returnEdge = lrpEdge->returnEdges[i];
 
 						if (!endingEdge)
 						{
@@ -170,32 +165,6 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 							goto FAILED_INSTRUCTION_CHECKING;
 						}
 						endingEdges.Add(endingEdge);
-
-						switch (returnEdge->insAfterInput.Count())
-						{
-						case 0:
-							if (endingEdge->insBeforeInput.Count() != 0)
-							{
-								goto FAILED_INSTRUCTION_CHECKING;
-							}
-							break;
-						case 1:
-							if (returnEdge->insAfterInput[0].type != AstInsType::ReopenObject)
-							{
-								goto FAILED_INSTRUCTION_CHECKING;
-							}
-							if (endingEdge->insBeforeInput.Count() != 0)
-							{
-								goto FAILED_INSTRUCTION_CHECKING;
-							}
-							if (endingEdge->insAfterInput[0].type != AstInsType::EndObject)
-							{
-								goto FAILED_INSTRUCTION_CHECKING;
-							}
-							break;
-						default:
-							goto FAILED_INSTRUCTION_CHECKING;
-						}
 					}
 					goto PASSED_INSTRUCTION_CHECKING;
 				FAILED_INSTRUCTION_CHECKING:
@@ -213,23 +182,20 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 				// search for all possible "LrPlaceholder {Ending} LeftRec Token" transitions
 				// for each transition, compact edges and put injectEdge properly in returnEdges
 				// here insBeforeInput has been ensured to be:
-				//   LriStore {DelayFieldAssignment} LriFetch {EndObject ReopenObject} --LeftRec--> ...
-				// each pair of DFA and EoRo could be removed
+				//   LriStore lrpEdge->insBeforeInput LriFetch {endingEdge->insBeforeInput returnEdge->insAfterInput} --LeftRec--> ...
 
-				vint eoroCount = 0;
 				vint created = 0;
-				for (vint i = injectEdge->returnEdges.Count() - 1; i >= 0; i--)
-				{
-					auto endingEdge = endingEdges[injectEdge->returnEdges.Count() - 1 - i];
-					auto returnEdge = injectEdge->returnEdges[i];
+				List<AstIns> instructionPrefix;
+				instructionPrefix.Add({ AstInsType::LriStore });
+				CopyFrom(instructionPrefix, lrpEdge->insBeforeInput, true);
+				instructionPrefix.Add({ AstInsType::LriFetch });
 
-					// returnEdge->insAfterInput could only contain zero or one instruction
-					// if it has one instruction, then EoRo will be emitted
-					// in this case, if there are any DFA left, such EoRo will counteract one DFA
-					if (returnEdge->insAfterInput.Count() == 1)
-					{
-						eoroCount++;
-					}
+				for (vint i = lrpEdge->returnEdges.Count() - 1; i >= 0; i--)
+				{
+					auto endingEdge = endingEdges[lrpEdge->returnEdges.Count() - 1 - i];
+					auto returnEdge = lrpEdge->returnEdges[i];
+					CopyFrom(instructionPrefix, endingEdge->insBeforeInput, true);
+					CopyFrom(instructionPrefix, returnEdge->insAfterInput, true);
 
 					// find if there is any LeftRec after this Ending
 					for (auto lrEdge : returnEdge->To()->OutEdges())
@@ -247,27 +213,18 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 
 									newEdge->input = tokenEdge->input;
 									newEdge->importancy = lrEdge->importancy;
-									CopyFrom(newEdge->returnEdges, From(injectEdge->returnEdges).Take(i));
+									CopyFrom(newEdge->returnEdges, From(lrpEdge->returnEdges).Take(i));
+									newEdge->returnEdges.Add(injectEdge);
 
 									CopyFrom(newEdge->insSwitch, lrEdge->insSwitch, true);
 									CopyFrom(newEdge->insSwitch, newEdge->insSwitch, true);
 
-									CopyFrom(newEdge->insAfterInput, lrEdge->insAfterInput, true);
-									CopyFrom(newEdge->insAfterInput, newEdge->insAfterInput, true);
-
-									newEdge->insBeforeInput.Add({ AstInsType::LriStore });
-									for (vint j = 0; j < dfaCount - eoroCount; j++)
-									{
-										newEdge->insBeforeInput.Add({ AstInsType::DelayFieldAssignment });
-									}
-									newEdge->insBeforeInput.Add({ AstInsType::LriFetch });
-									for (vint j = 0; j < eoroCount - dfaCount; j++)
-									{
-										newEdge->insBeforeInput.Add({ AstInsType::EndObject });
-										newEdge->insBeforeInput.Add({ AstInsType::ReopenObject });
-									}
+									CopyFrom(newEdge->insBeforeInput, instructionPrefix, true);
 									CopyFrom(newEdge->insBeforeInput, lrEdge->insBeforeInput, true);
 									CopyFrom(newEdge->insBeforeInput, newEdge->insBeforeInput, true);
+
+									CopyFrom(newEdge->insAfterInput, lrEdge->insAfterInput, true);
+									CopyFrom(newEdge->insAfterInput, newEdge->insAfterInput, true);
 								}
 							}
 						}
