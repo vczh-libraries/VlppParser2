@@ -221,14 +221,14 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 									newEdge->returnEdges.Add(injectEdge);
 
 									CopyFrom(newEdge->insSwitch, lrEdge->insSwitch, true);
-									CopyFrom(newEdge->insSwitch, newEdge->insSwitch, true);
+									CopyFrom(newEdge->insSwitch, tokenEdge->insSwitch, true);
 
 									CopyFrom(newEdge->insBeforeInput, instructionPrefix, true);
 									CopyFrom(newEdge->insBeforeInput, lrEdge->insBeforeInput, true);
-									CopyFrom(newEdge->insBeforeInput, newEdge->insBeforeInput, true);
+									CopyFrom(newEdge->insBeforeInput, tokenEdge->insBeforeInput, true);
 
 									CopyFrom(newEdge->insAfterInput, lrEdge->insAfterInput, true);
-									CopyFrom(newEdge->insAfterInput, newEdge->insAfterInput, true);
+									CopyFrom(newEdge->insAfterInput, tokenEdge->insAfterInput, true);
 								}
 							}
 						}
