@@ -117,9 +117,57 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 					return;
 				}
 
+				{
+					// check if injectEdge does nothing more than using rules
+
+					if (injectEdge->insSwitch.Count() > 0)
+					{
+						goto FAILED_INSTRUCTION_CHECKING;
+					}
+					if (injectEdge->insAfterInput.Count() > 0)
+					{
+						goto FAILED_INSTRUCTION_CHECKING;
+					}
+
+					for (auto ins : injectEdge->insBeforeInput)
+					{
+						if (ins.type != AstInsType::DelayFieldAssignment)
+						{
+							goto FAILED_INSTRUCTION_CHECKING;
+						}
+					}
+
+					for (auto returnEdge : injectEdge->returnEdges)
+					{
+						switch (returnEdge->insAfterInput.Count())
+						{
+						case 0:
+							break;
+						case 1:
+							if (returnEdge->insAfterInput[0].type != AstInsType::ReopenObject)
+							{
+								goto FAILED_INSTRUCTION_CHECKING;
+							}
+							break;
+						default:
+							goto FAILED_INSTRUCTION_CHECKING;
+						}
+					}
+					goto PASSED_INSTRUCTION_CHECKING;
+				FAILED_INSTRUCTION_CHECKING:
+					AddError(
+						ParserErrorType::LeftRecursionInjectIntoNonLeftRecursiveRule,
+						{},
+						injectEdge->fromState->Rule()->Name(),
+						lrpFlags[injectEdge->input.token],
+						startState->Rule()->Name()
+						);
+					return;
+				}
+			PASSED_INSTRUCTION_CHECKING:;
+
 				// search for all possible "LrPlaceholder {Ending} LeftRec Token" transitions
 				// for each transition, compact edges and put injectEdge properly in returnEdges
-				// new instructions could be needed to handle stack balance (LriStore, LriFetch)
 				CHECK_FAIL(L"<BuildCrossReferencedNFAInternal>Unhandled!");
 			}
 

@@ -75,6 +75,7 @@ ParserSymbolManager
 				RuleIsIndirectlyLeftRecursive,							// (ruleName)													: Indirect left recursion must be resolved before.
 				LeftRecursiveClauseInsidePushCondition,					// (ruleName)													: The left recursive clause is not allowed to begin with a push condition syntax.
 				LeftRecursiveClauseInsideTestCondition,					// (ruleName)													: The left recursive clause is not allowed to begin with a test condition syntax.
+				LeftRecursionInjectIntoNonLeftRecursiveRule,			// (ruleName, placeholder, targetRuleName)						: 
 
 				// SyntaxAst (ResolveName) ------------------------------------------------------------
 				RuleNameConflictedWithToken,							// (ruleName)

@@ -200,6 +200,7 @@ void PrintCompileErrors(ParserSymbolManager& global)
 		CASE(RuleIsIndirectlyLeftRecursive, ruleName);
 		CASE(LeftRecursiveClauseInsidePushCondition, ruleName);
 		CASE(LeftRecursiveClauseInsideTestCondition, ruleName);
+		CASE(LeftRecursionInjectIntoNonLeftRecursiveRule, ruleName, placeholder, targetRuleName);
 
 		// SyntaxAst (ResolveName) ------------------------------------------------------------
 		CASE(RuleNameConflictedWithToken, ruleName);
