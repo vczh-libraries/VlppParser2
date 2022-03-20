@@ -94,7 +94,6 @@ namespace TestParser_Generated_TestObjects
 				caseName = inputFile.GetFilePath().GetName();
 				if (caseName.Length() < 4 || caseName.Right(4) != L".txt") continue;
 				caseName = caseName.Left(caseName.Length() - 4);
-				if (caseName != L"Expr2") continue;
 
 				TEST_CASE(caseName)
 				{

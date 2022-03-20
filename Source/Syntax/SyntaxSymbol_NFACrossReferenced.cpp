@@ -217,7 +217,7 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 
 									newEdge->input = tokenEdge->input;
 									newEdge->importancy = lrEdge->importancy;
-									CopyFrom(newEdge->returnEdges, From(returnEdges).Take(i));
+									CopyFrom(newEdge->returnEdges, From(returnEdges).Take(i + 1));
 									newEdge->returnEdges.Add(injectEdge);
 
 									CopyFrom(newEdge->insSwitch, lrEdge->insSwitch, true);
