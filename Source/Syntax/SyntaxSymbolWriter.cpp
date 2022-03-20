@@ -491,6 +491,7 @@ AutomatonBuilder (Clause)
 							edge->input.token = flag;
 							edge->input.rule = targetRule;
 							edge->input.ruleType = automaton::ReturnRuleType::Reuse;
+							edge->insBeforeInput.Add({ AstInsType::DelayFieldAssignment });
 							edge->insAfterInput.Add({ AstInsType::ReopenObject });
 						}
 
