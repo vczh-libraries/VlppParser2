@@ -310,6 +310,7 @@ namespace vl
 			{
 			public:
 				vl::glr::ParsingToken name;
+				vl::glr::ParsingToken type;
 				vl::collections::List<vl::Ptr<GlrClause>> clauses;
 			};
 

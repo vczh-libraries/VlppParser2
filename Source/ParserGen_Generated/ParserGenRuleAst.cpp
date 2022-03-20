@@ -382,6 +382,7 @@ namespace vl
 				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrRule>(), NO_PARAMETER)
 
 				CLASS_MEMBER_FIELD(name)
+				CLASS_MEMBER_FIELD(type)
 				CLASS_MEMBER_FIELD(clauses)
 			END_CLASS_MEMBER(vl::glr::parsergen::GlrRule)
 

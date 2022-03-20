@@ -158,6 +158,7 @@ namespace vl
 						to->clauses.Add(CopyNode(listItem.Obj()));
 					}
 					to->name = from->name;
+					to->type = from->type;
 				}
 
 				void RuleAstVisitor::CopyFields(GlrSequenceSyntax* from, GlrSequenceSyntax* to)

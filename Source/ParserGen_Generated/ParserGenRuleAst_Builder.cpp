@@ -293,6 +293,12 @@ MakeRule
 					return *this;
 				}
 
+				MakeRule& MakeRule::type(const vl::WString& value)
+				{
+					node->type.value = value;
+					return *this;
+				}
+
 /***********************************************************************
 MakeSequenceSyntax
 ***********************************************************************/

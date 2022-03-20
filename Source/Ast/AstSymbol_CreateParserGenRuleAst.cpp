@@ -173,6 +173,7 @@ CreateParserGenRuleAst
 
 				auto _Rule = _ast->CreateClass(L"Rule");
 				_Rule->CreateProp(L"name")->SetPropType(AstPropType::Token);
+				_Rule->CreateProp(L"type")->SetPropType(AstPropType::Token);
 				_Rule->CreateProp(L"clauses")->SetPropType(AstPropType::Array, L"Clause");
 
 				///////////////////////////////////////////////////////////////////////////////////

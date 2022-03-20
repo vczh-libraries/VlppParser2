@@ -135,6 +135,7 @@ namespace vl
 				public:
 					MakeRule& clauses(const vl::Ptr<GlrClause>& value);
 					MakeRule& name(const vl::WString& value);
+					MakeRule& type(const vl::WString& value);
 				};
 
 				class MakeSequenceSyntax : public vl::glr::ParsingAstBuilder<GlrSequenceSyntax>

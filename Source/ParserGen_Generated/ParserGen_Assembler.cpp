@@ -190,6 +190,8 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrRefSyntax::literal, object, field, token, tokenIndex, cppFieldName);
 				case ParserGenFields::Rule_name:
 					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrRule::name, object, field, token, tokenIndex, cppFieldName);
+				case ParserGenFields::Rule_type:
+					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrRule::type, object, field, token, tokenIndex, cppFieldName);
 				case ParserGenFields::SwitchItem_name:
 					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrSwitchItem::name, object, field, token, tokenIndex, cppFieldName);
 				case ParserGenFields::Type_name:
@@ -350,6 +352,7 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					L"ReuseClause::syntax",
 					L"Rule::clauses",
 					L"Rule::name",
+					L"Rule::type",
 					L"SequenceSyntax::first",
 					L"SequenceSyntax::second",
 					L"SwitchItem::name",
@@ -363,7 +366,7 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					L"UseSyntax::name",
 				};
 				vl::vint index = (vl::vint)field;
-				return 0 <= index && index < 55 ? results[index] : nullptr;
+				return 0 <= index && index < 56 ? results[index] : nullptr;
 			}
 
 			const wchar_t* ParserGenCppFieldName(ParserGenFields field)
@@ -413,6 +416,7 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					L"vl::glr::parsergen::GlrReuseClause::syntax",
 					L"vl::glr::parsergen::GlrRule::clauses",
 					L"vl::glr::parsergen::GlrRule::name",
+					L"vl::glr::parsergen::GlrRule::type",
 					L"vl::glr::parsergen::GlrSequenceSyntax::first",
 					L"vl::glr::parsergen::GlrSequenceSyntax::second",
 					L"vl::glr::parsergen::GlrSwitchItem::name",
@@ -426,7 +430,7 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					L"vl::glr::parsergen::GlrUseSyntax::name",
 				};
 				vl::vint index = (vl::vint)field;
-				return 0 <= index && index < 55 ? results[index] : nullptr;
+				return 0 <= index && index < 56 ? results[index] : nullptr;
 			}
 
 			vl::Ptr<vl::glr::ParsingAstBase> ParserGenAstInsReceiver::ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates)

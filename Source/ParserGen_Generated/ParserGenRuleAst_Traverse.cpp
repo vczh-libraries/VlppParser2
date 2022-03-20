@@ -380,6 +380,7 @@ namespace vl
 						InspectInto(listItem.Obj());
 					}
 					Traverse(node->name);
+					Traverse(node->type);
 					Finishing(static_cast<GlrRule*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}

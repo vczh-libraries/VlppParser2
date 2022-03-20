@@ -260,6 +260,9 @@ namespace vl
 					BeginField(L"name");
 					WriteToken(node->name);
 					EndField();
+					BeginField(L"type");
+					WriteToken(node->type);
+					EndField();
 				}
 				void RuleAstVisitor::PrintFields(GlrSequenceSyntax* node)
 				{
