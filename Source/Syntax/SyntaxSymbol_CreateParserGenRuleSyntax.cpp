@@ -187,9 +187,6 @@ CreateParserGenRuleSyntax
 				// Syntax:syntax ["{" {Assignment:assignments ; ","} "}"] as ReuseClause
 				Clause{ _clause } = create(rule(_syntax, F::ReuseClause_syntax) + opt(tok(T::OPEN_CURLY) + loop(rule(_assignment, F::ReuseClause_assignments), tok(T::COMMA)) + tok(T::CLOSE_CURLY)), C::ReuseClause);
 
-				// ID:name {"::=" Clause:clauses} ";" as Rule
-				Clause{ _rule } = create(tok(T::ID, F::Rule_name) + loop(tok(T::INFER) + rule(_clause, F::Rule_clauses)) + tok(T::SEMICOLON), C::Rule);
-
 				///////////////////////////////////////////////////////////////////////////////////
 				// Clause (left recursive)
 				///////////////////////////////////////////////////////////////////////////////////
@@ -219,6 +216,9 @@ CreateParserGenRuleSyntax
 				///////////////////////////////////////////////////////////////////////////////////
 				// File
 				///////////////////////////////////////////////////////////////////////////////////
+
+				// ID:name {"::=" Clause:clauses} ";" as Rule
+				Clause{ _rule } = create(tok(T::ID, F::Rule_name) + opt(tok(T::COLON) + tok(T::ID, F::Rule_type)) + loop(tok(T::INFER) + rule(_clause, F::Rule_clauses)) + tok(T::SEMICOLON), C::Rule);
 
 				// [Switches] Rule:rules {Rule:rules} as SyntaxFile
 				Clause{ _file } = create(opt(prule(_switches)) + rule(_rule, F::SyntaxFile_rules) + loop(rule(_rule, F::SyntaxFile_rules)), C::SyntaxFile);

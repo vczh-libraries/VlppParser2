@@ -37,7 +37,7 @@ namespace vl
 				Placeholder = 141,
 				RuleName = 144,
 				Rule = 147,
-				File = 153,
+				File = 155,
 			};
 
 			const wchar_t* RuleParserRuleName(vl::vint index);
