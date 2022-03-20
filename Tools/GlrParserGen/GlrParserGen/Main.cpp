@@ -219,6 +219,7 @@ void PrintCompileErrors(ParserSymbolManager& global)
 		// SyntaxAst (CalculateTypes) ---------------------------------------------------------
 		CASE(RuleMixedPartialClauseWithOtherClause, ruleName);
 		CASE(RuleWithDifferentPartialTypes, ruleName);
+		CASE(RuleExplicitTypeIsNotCompatibleWithClauseType, ruleName);
 		CASE(RuleCannotResolveToDeterministicType, ruleName);
 		CASE(CyclicDependedRuleTypeIncompatible, ruleName);
 		CASE(ReuseClauseCannotResolveToDeterministicType, ruleName);

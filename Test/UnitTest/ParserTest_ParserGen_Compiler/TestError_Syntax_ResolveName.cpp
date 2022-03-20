@@ -57,7 +57,23 @@ SPACE ::= NUM:value as NumExpr;
 			);
 	});
 
-	TEST_CASE(L"TypeNotExistsInRule")
+	TEST_CASE(L"TypeNotExistsInRule 1")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0 : Unknown ::= NUM:value as NumExpr;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::TypeNotExistsInRule,L"Exp0",L"Unknown" }
+		);
+	});
+
+	TEST_CASE(L"TypeNotExistsInRule 2")
 	{
 		const wchar_t* syntaxCode =
 LR"SYNTAX(

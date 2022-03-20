@@ -25,6 +25,18 @@ ResolveNameVisitor
 				RuleSymbol*					ruleSymbol;
 				GlrClause*					clause = nullptr;
 
+			public:
+				ResolveNameVisitor(
+					VisitorContext& _context,
+					SortedList<WString>& _accessedSwitches,
+					RuleSymbol* _ruleSymbol
+				)
+					: context(_context)
+					, accessedSwitches(_accessedSwitches)
+					, ruleSymbol(_ruleSymbol)
+				{
+				}
+
 				AstClassSymbol* GetRuleClass(ParsingToken& typeName)
 				{
 					vint index = context.astManager.Symbols().Keys().IndexOf(typeName.value);
@@ -50,17 +62,6 @@ ResolveNameVisitor
 							);
 					}
 					return classSymbol;
-				}
-			public:
-				ResolveNameVisitor(
-					VisitorContext& _context,
-					SortedList<WString>& _accessedSwitches,
-					RuleSymbol* _ruleSymbol
-				)
-					: context(_context)
-					, accessedSwitches(_accessedSwitches)
-					, ruleSymbol(_ruleSymbol)
-				{
 				}
 
 				void ResolveClause(Ptr<GlrClause> clause)
@@ -421,6 +422,10 @@ ResolveName
 					{
 						auto ruleSymbol = context.syntaxManager.Rules()[rule->name.value];
 						ResolveNameVisitor visitor(context, accessedSwitches, ruleSymbol);
+						if (rule->type)
+						{
+							ruleSymbol->ruleType = visitor.GetRuleClass(rule->type);
+						}
 						for (auto clause : rule->clauses)
 						{
 							visitor.ResolveClause(clause);

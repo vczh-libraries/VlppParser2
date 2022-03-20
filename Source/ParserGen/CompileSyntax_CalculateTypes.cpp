@@ -98,6 +98,47 @@ CalculateRuleAndClauseTypes
 					cyclicReuseDependencies.Add(std::move(cyclicRules));
 				}
 
+				// do not update explicitly specified rule type
+
+				SortedList<RuleSymbol*> explicitlyTypedRules;
+				for (auto rule : rules)
+				{
+					if (rule->ruleType)
+					{
+						explicitlyTypedRules.Add(rule);
+					}
+				}
+
+				auto updateRuleType = [&context, &explicitlyTypedRules](RuleSymbol* rule, AstClassSymbol* newRuleType, bool promptIfNull)
+				{
+					if (explicitlyTypedRules.Contains(rule))
+					{
+						if (rule->ruleType != newRuleType)
+						{
+							context.syntaxManager.AddError(
+								ParserErrorType::RuleExplicitTypeIsNotCompatibleWithClauseType,
+								context.astRules[rule]->codeRange,
+								rule->Name()
+								);
+							return false;
+						}
+					}
+					else
+					{
+						if (promptIfNull && !newRuleType)
+						{
+							context.syntaxManager.AddError(
+								ParserErrorType::RuleCannotResolveToDeterministicType,
+								context.astRules[rule]->codeRange,
+								rule->Name()
+								);
+							return false;
+						}
+						rule->ruleType = newRuleType;
+					}
+					return true;
+				};
+
 				// calculate types for rules from clauses with known types
 				for (auto rule : rules)
 				{
@@ -106,14 +147,9 @@ CalculateRuleAndClauseTypes
 						vint index = context.clauseTypes.Keys().IndexOf(clause.Obj());
 						if (index != -1)
 						{
-							rule->ruleType = FindCommonBaseClass(rule->ruleType, context.clauseTypes.Values()[index]);
-							if (!rule->ruleType)
+							auto newRuleType = FindCommonBaseClass(rule->ruleType, context.clauseTypes.Values()[index]);
+							if (!updateRuleType(rule, newRuleType, true))
 							{
-								context.syntaxManager.AddError(
-									ParserErrorType::RuleCannotResolveToDeterministicType,
-									context.astRules[rule]->codeRange,
-									rule->Name()
-									);
 								break;
 							}
 						}
@@ -122,6 +158,7 @@ CalculateRuleAndClauseTypes
 				if (context.global.Errors().Count() > 0) return;
 
 				// calculate types for rules that contain reuse dependency
+
 				for (auto&& component : pop.components)
 				{
 					for (vint i = 0; i < component.nodeCount; i++)
@@ -137,14 +174,9 @@ CalculateRuleAndClauseTypes
 							}
 							if (type)
 							{
-								rule->ruleType = FindCommonBaseClass(rule->ruleType, type);
-								if (!rule->ruleType)
+								auto newRuleType = FindCommonBaseClass(rule->ruleType, type);
+								if (!updateRuleType(rule, newRuleType, true))
 								{
-									context.syntaxManager.AddError(
-										ParserErrorType::RuleCannotResolveToDeterministicType,
-										context.astRules[rule]->codeRange,
-										rule->Name()
-										);
 									break;
 								}
 							}
@@ -177,7 +209,7 @@ CalculateRuleAndClauseTypes
 					{
 						for (auto rule : cyclicRules)
 						{
-							rule->ruleType = type;
+							updateRuleType(rule, type, false);
 						}
 					}
 				}

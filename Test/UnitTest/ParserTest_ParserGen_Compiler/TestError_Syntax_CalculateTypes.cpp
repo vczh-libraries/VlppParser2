@@ -111,6 +111,24 @@ Exp0
 			);
 	});
 
+	TEST_CASE(L"RuleExplicitTypeIsNotCompatibleWithClauseType")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0 : Module
+  ::= NUM:value as NumExpr
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::RuleExplicitTypeIsNotCompatibleWithClauseType,L"Exp0" }
+			);
+	});
+
 	TEST_CASE(L"RuleCannotResolveToDeterministicType 1")
 	{
 		const wchar_t* syntaxCode =

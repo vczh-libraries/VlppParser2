@@ -94,6 +94,7 @@ ParserSymbolManager
 				// SyntaxAst (CalculateTypes) ---------------------------------------------------------
 				RuleMixedPartialClauseWithOtherClause,					// (ruleName)
 				RuleWithDifferentPartialTypes,							// (ruleName)
+				RuleExplicitTypeIsNotCompatibleWithClauseType,			// (ruleName)													: The type of the rule is explicitly specified, but it is incompatible with its clauses.
 				RuleCannotResolveToDeterministicType,					// (ruleName)													: Unable to resolve to one type from clauses (token, type) or (create, partial).
 				CyclicDependedRuleTypeIncompatible,						// (ruleName)													: Types of rules are not compatible to each other when they build cyclic dependency by reuse clauses.
 				ReuseClauseCannotResolveToDeterministicType,			// (ruleName)													: A reuse clause contains multiple use rule but their types are not compatible to each other.
