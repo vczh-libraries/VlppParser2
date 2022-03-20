@@ -73,7 +73,7 @@ _StringLiteralFragment
   ::= STRING:literal as StringLiteralFragment {kind = String}
   ;
 
-_PrimitiveExpr
+_PrimitiveExpr : TypeOrExpr
   ::= "true" as PrimitiveExprLiteral {kind = True}
   ::= "false" as PrimitiveExprLiteral {kind = False}
   ::= "nullptr" as PrimitiveExprLiteral {kind = Nullptr}
@@ -120,14 +120,16 @@ _PrimitiveType
   ::= _PrimitiveTypeLiteral              as PrimitiveType {kind = Neutral}
   ;
 
-_ShortType
+_ShortType : TypeOrExpr
+  ::= "const" _QualifiedName:type as ConstType
+  ::= "volatile" _QualifiedName:type as VolatileType
   ::= "const" _ShortType:type as ConstType
   ::= "volatile" _ShortType:type as VolatileType
-  ::= !_QualifiedName
   ::= !_PrimitiveType
   ;
 
 _LongType
+  ::= left_recursion_placeholder(Shared,Type)
   ::= !_ShortType
   ::= _LongType:type "const" as ConstType
   ::= _LongType:type "volatile" as VolatileType
@@ -138,9 +140,9 @@ _LongType
 //////////////////////////////////////////////////////////////////
 
 _TypeOrExpr
-  ::= !_QualifiedName
+  ::= !_QualifiedName left_recursion_inject(Shared) _LongType
+  ::= !_ShortType left_recursion_inject(Type) _LongType
   ::= !_PrimitiveExpr
-  ::= !_LongType
   ;
 
 //////////////////////////////////////////////////////////////////
