@@ -491,6 +491,7 @@ AutomatonBuilder (Clause)
 							edge->input.token = flag;
 							edge->input.rule = targetRule;
 							edge->input.ruleType = automaton::ReturnRuleType::Reuse;
+							edge->insAfterInput.Add({ AstInsType::ReopenObject });
 						}
 
 						clauseDisplayText += L"lri:" + targetRule->Name();
@@ -508,6 +509,7 @@ AutomatonBuilder (Clause)
 					{
 						auto edge = CreateEdge(pair.begin, pair.end);
 						edge->input.type = EdgeInputType::Epsilon;
+						edge->insBeforeInput.Add({ AstInsType::ReopenObject });
 					}
 
 					clauseDisplayText += L"lri:<skip>";
@@ -536,7 +538,8 @@ AutomatonBuilder (Clause)
 				});
 				seqs.Add([this, &alts]() {return BuildAlternativeSyntax(alts); });
 
-				return BuildSequenceSyntax(seqs);
+				StateBuilder clause = [this, &seqs]() {return BuildSequenceSyntax(seqs); };
+				return BuildReuseClause(clause);
 			}
 		}
 	}

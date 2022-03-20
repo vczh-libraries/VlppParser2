@@ -193,6 +193,7 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 				vint created = 0;
 				List<AstIns> instructionPrefix;
 				instructionPrefix.Add({ AstInsType::LriStore });
+				CopyFrom(instructionPrefix, injectEdge->insBeforeInput, true);
 				CopyFrom(instructionPrefix, placeholderEdge->insBeforeInput, true);
 				instructionPrefix.Add({ AstInsType::LriFetch });
 
