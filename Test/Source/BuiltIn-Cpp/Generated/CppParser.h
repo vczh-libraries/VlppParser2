@@ -22,9 +22,9 @@ namespace cpp_parser
 		_PrimitiveTypeLiteral = 136,
 		_PrimitiveType = 154,
 		_ShortType = 167,
-		_LongType = 175,
-		_TypeOrExpr = 182,
-		_File = 187,
+		_LongType = 178,
+		_TypeOrExpr = 187,
+		_File = 194,
 	};
 
 	const wchar_t* ParserRuleName(vl::vint index);
