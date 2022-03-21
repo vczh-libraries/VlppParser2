@@ -98,7 +98,8 @@ namespace cpp_parser
 		Root = 0,
 		Context = 1,
 		Decltype = 2,
-		Member = 3,
+		DecltypeAuto = 3,
+		Member = 4,
 	};
 
 	enum class CppPrimitiveExprLiteralKinds

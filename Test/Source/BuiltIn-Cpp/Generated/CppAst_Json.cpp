@@ -327,6 +327,9 @@ namespace cpp_parser
 			case cpp_parser::CppQualifiedNameKinds::Decltype:
 				WriteString(L"Decltype");
 				break;
+			case cpp_parser::CppQualifiedNameKinds::DecltypeAuto:
+				WriteString(L"DecltypeAuto");
+				break;
 			case cpp_parser::CppQualifiedNameKinds::Member:
 				WriteString(L"Member");
 				break;

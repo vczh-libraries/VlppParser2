@@ -199,4 +199,23 @@ TEST_FILE
 			}
 		}
 	});
+
+	TEST_CATEGORY(L"LambdaExprs")
+	{
+		List<WString> lines;
+		File(
+			FilePath(GetTestParserInputPath(L"BuiltIn-Cpp"))
+			/ L"Input"
+			/ L"TypeOrExpr_Ambiguous.txt"
+		).ReadAllLinesByBom(lines);
+		for (auto&& line : lines)
+		{
+			if (line != L"")
+			{
+				//TEST_CASE(line)
+				//{
+				//});
+			}
+		}
+	});
 }

@@ -80,6 +80,8 @@ _QualifiedNameFragment
 _QualifiedName
   ::= _QualifiedNameFragment as QualifiedName {kind = Context}
   ::= "::" _QualifiedNameFragment as QualifiedName {kind = Root}
+  ::= "decltype" "(" "auto" ")" as QualifiedName {kind = DecltypeAuto}
+  ::= "decltype" "(" _Expr:expr ")" as QualifiedName {kind = Decltype}
   ::= _QualifiedName:parent "::" _QualifiedNameFragment as QualifiedName {kind = Member}
   ;
 
@@ -153,6 +155,24 @@ _LongType
   ::= !_ShortType
   ::= _LongType:type "const" as ConstType
   ::= _LongType:type "volatile" as VolatileType
+  ;
+
+//////////////////////////////////////////////////////////////////
+// _Type
+//////////////////////////////////////////////////////////////////
+
+_Type
+  ::= !_QualifiedName left_recursion_inject(Shared) _LongType
+  ::= !_ShortType left_recursion_inject(Type) _LongType
+  ;
+
+//////////////////////////////////////////////////////////////////
+// _Expr
+//////////////////////////////////////////////////////////////////
+
+_Expr
+  ::= !_QualifiedName
+  ::= !_PrimitiveExpr
   ;
 
 //////////////////////////////////////////////////////////////////
