@@ -73,8 +73,10 @@ _GenericArguments
   ;
 
 _QualifiedName
-  ::= ["::":rootScope] _Identifier:id ["template" _GenericArguments:arguments] as QualifiedName
-  ::= _QualifiedName:parent "::" _Identifier:id ["template" _GenericArguments:arguments] as QualifiedName
+  ::= ["::":rootScope] _Identifier:id [_GenericArguments:arguments] as QualifiedName
+  ::= ["::":rootScope] "template" _Identifier:id _GenericArguments:arguments as QualifiedName
+  ::= _QualifiedName:parent "::" _Identifier:id [_GenericArguments:arguments] as QualifiedName
+  ::= _QualifiedName:parent "::" "template" _Identifier:id _GenericArguments:arguments as QualifiedName
   ;
 
 //////////////////////////////////////////////////////////////////
