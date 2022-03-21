@@ -70,9 +70,10 @@ namespace cpp_parser
 		{
 		public:
 			MakeQualifiedName& arguments(const vl::Ptr<CppGenericArguments>& value);
+			MakeQualifiedName& expr(const vl::Ptr<CppTypeOrExpr>& value);
 			MakeQualifiedName& id(const vl::Ptr<CppIdentifier>& value);
+			MakeQualifiedName& kind(CppQualifiedNameKinds value);
 			MakeQualifiedName& parent(const vl::Ptr<CppQualifiedName>& value);
-			MakeQualifiedName& rootScope(const vl::WString& value);
 		};
 
 		class MakeStringLiteral : public vl::glr::ParsingAstBuilder<CppStringLiteral>

@@ -72,11 +72,15 @@ _GenericArguments
   ::= "<" {_GenericArgument:arguments ; ","} ">" as GenericArguments
   ;
 
+_QualifiedNameFragment
+  ::= _Identifier:id [_GenericArguments:arguments] as partial QualifiedName
+  ::= "template" _Identifier:id _GenericArguments:arguments as partial QualifiedName
+  ;
+
 _QualifiedName
-  ::= ["::":rootScope] _Identifier:id [_GenericArguments:arguments] as QualifiedName
-  ::= ["::":rootScope] "template" _Identifier:id _GenericArguments:arguments as QualifiedName
-  ::= _QualifiedName:parent "::" _Identifier:id [_GenericArguments:arguments] as QualifiedName
-  ::= _QualifiedName:parent "::" "template" _Identifier:id _GenericArguments:arguments as QualifiedName
+  ::= _QualifiedNameFragment as QualifiedName {kind = Context}
+  ::= "::" _QualifiedNameFragment as QualifiedName {kind = Root}
+  ::= _QualifiedName:parent "::" _QualifiedNameFragment as QualifiedName {kind = Member}
   ;
 
 //////////////////////////////////////////////////////////////////

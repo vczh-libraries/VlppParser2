@@ -92,6 +92,15 @@ namespace cpp_parser
 		RightShiftAssign = 43,
 	};
 
+	enum class CppQualifiedNameKinds
+	{
+		UNDEFINED_ENUM_ITEM_VALUE = -1,
+		Root = 0,
+		Context = 1,
+		Decltype = 2,
+		Member = 3,
+	};
+
 	enum class CppPrimitiveExprLiteralKinds
 	{
 		UNDEFINED_ENUM_ITEM_VALUE = -1,
@@ -224,7 +233,8 @@ namespace cpp_parser
 	class CppQualifiedName : public CppTypeOrExpr, vl::reflection::Description<CppQualifiedName>
 	{
 	public:
-		vl::glr::ParsingToken rootScope;
+		CppQualifiedNameKinds kind = CppQualifiedNameKinds::UNDEFINED_ENUM_ITEM_VALUE;
+		vl::Ptr<CppTypeOrExpr> expr;
 		vl::Ptr<CppQualifiedName> parent;
 		vl::Ptr<CppIdentifier> id;
 		vl::Ptr<CppGenericArguments> arguments;
@@ -316,6 +326,7 @@ namespace vl
 			DECL_TYPE_INFO(cpp_parser::CppOperatorIdentifier)
 			DECL_TYPE_INFO(cpp_parser::CppGenericArgument)
 			DECL_TYPE_INFO(cpp_parser::CppGenericArguments)
+			DECL_TYPE_INFO(cpp_parser::CppQualifiedNameKinds)
 			DECL_TYPE_INFO(cpp_parser::CppQualifiedName)
 			DECL_TYPE_INFO(cpp_parser::CppPrimitiveExprLiteralKinds)
 			DECL_TYPE_INFO(cpp_parser::CppPrimitiveExprLiteral)

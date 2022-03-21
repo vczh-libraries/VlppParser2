@@ -103,9 +103,18 @@ class GenericArguments
     var arguments : GenericArgument[];
 }
 
+enum QualifiedNameKinds
+{
+    Root,
+    Context,
+    Decltype,
+    Member,
+}
+
 class QualifiedName : TypeOrExpr
 {
-    var rootScope : token;
+    var kind : QualifiedNameKinds;
+    var expr : TypeOrExpr;
     var parent : QualifiedName;
     var id : Identifier;
     var arguments : GenericArguments;

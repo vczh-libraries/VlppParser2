@@ -81,9 +81,10 @@ namespace cpp_parser
 		{
 			CopyFields(static_cast<CppTypeOrExpr*>(from), static_cast<CppTypeOrExpr*>(to));
 			to->arguments = CopyNode(from->arguments.Obj());
+			to->expr = CopyNode(from->expr.Obj());
 			to->id = CopyNode(from->id.Obj());
+			to->kind = from->kind;
 			to->parent = CopyNode(from->parent.Obj());
-			to->rootScope = from->rootScope;
 		}
 
 		void AstVisitor::CopyFields(CppStringLiteral* from, CppStringLiteral* to)

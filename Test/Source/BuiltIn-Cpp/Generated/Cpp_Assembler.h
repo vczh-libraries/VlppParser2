@@ -48,13 +48,14 @@ namespace cpp_parser
 		PrimitiveType_literal1 = 11,
 		PrimitiveType_literal2 = 12,
 		QualifiedName_arguments = 13,
-		QualifiedName_id = 14,
-		QualifiedName_parent = 15,
-		QualifiedName_rootScope = 16,
-		StringLiteral_fragments = 17,
-		StringLiteralFragment_kind = 18,
-		StringLiteralFragment_literal = 19,
-		VolatileType_type = 20,
+		QualifiedName_expr = 14,
+		QualifiedName_id = 15,
+		QualifiedName_kind = 16,
+		QualifiedName_parent = 17,
+		StringLiteral_fragments = 18,
+		StringLiteralFragment_kind = 19,
+		StringLiteralFragment_literal = 20,
+		VolatileType_type = 21,
 	};
 
 	extern const wchar_t* CppTypeName(CppClasses type);

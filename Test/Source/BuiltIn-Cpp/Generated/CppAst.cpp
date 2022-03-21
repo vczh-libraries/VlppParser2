@@ -89,6 +89,7 @@ namespace vl
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppOperatorIdentifier, cpp_parser::CppOperatorIdentifier)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppGenericArgument, cpp_parser::CppGenericArgument)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppGenericArguments, cpp_parser::CppGenericArguments)
+			IMPL_TYPE_INFO_RENAME(cpp_parser::CppQualifiedNameKinds, cpp_parser::CppQualifiedNameKinds)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppQualifiedName, cpp_parser::CppQualifiedName)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppPrimitiveExprLiteralKinds, cpp_parser::CppPrimitiveExprLiteralKinds)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppPrimitiveExprLiteral, cpp_parser::CppPrimitiveExprLiteral)
@@ -219,12 +220,21 @@ namespace vl
 				CLASS_MEMBER_FIELD(arguments)
 			END_CLASS_MEMBER(cpp_parser::CppGenericArguments)
 
+			BEGIN_ENUM_ITEM(cpp_parser::CppQualifiedNameKinds)
+				ENUM_ITEM_NAMESPACE(cpp_parser::CppQualifiedNameKinds)
+				ENUM_NAMESPACE_ITEM(Root)
+				ENUM_NAMESPACE_ITEM(Context)
+				ENUM_NAMESPACE_ITEM(Decltype)
+				ENUM_NAMESPACE_ITEM(Member)
+			END_ENUM_ITEM(cpp_parser::CppQualifiedNameKinds)
+
 			BEGIN_CLASS_MEMBER(cpp_parser::CppQualifiedName)
 				CLASS_MEMBER_BASE(cpp_parser::CppTypeOrExpr)
 
 				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppQualifiedName>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(rootScope)
+				CLASS_MEMBER_FIELD(kind)
+				CLASS_MEMBER_FIELD(expr)
 				CLASS_MEMBER_FIELD(parent)
 				CLASS_MEMBER_FIELD(id)
 				CLASS_MEMBER_FIELD(arguments)
@@ -374,6 +384,7 @@ namespace vl
 					ADD_TYPE_INFO(cpp_parser::CppOperatorIdentifier)
 					ADD_TYPE_INFO(cpp_parser::CppGenericArgument)
 					ADD_TYPE_INFO(cpp_parser::CppGenericArguments)
+					ADD_TYPE_INFO(cpp_parser::CppQualifiedNameKinds)
 					ADD_TYPE_INFO(cpp_parser::CppQualifiedName)
 					ADD_TYPE_INFO(cpp_parser::CppPrimitiveExprLiteralKinds)
 					ADD_TYPE_INFO(cpp_parser::CppPrimitiveExprLiteral)

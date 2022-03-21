@@ -312,14 +312,33 @@ namespace cpp_parser
 			BeginField(L"arguments");
 			Print(node->arguments.Obj());
 			EndField();
+			BeginField(L"expr");
+			Print(node->expr.Obj());
+			EndField();
 			BeginField(L"id");
 			Print(node->id.Obj());
 			EndField();
+			BeginField(L"kind");
+			switch (node->kind)
+			{
+			case cpp_parser::CppQualifiedNameKinds::Context:
+				WriteString(L"Context");
+				break;
+			case cpp_parser::CppQualifiedNameKinds::Decltype:
+				WriteString(L"Decltype");
+				break;
+			case cpp_parser::CppQualifiedNameKinds::Member:
+				WriteString(L"Member");
+				break;
+			case cpp_parser::CppQualifiedNameKinds::Root:
+				WriteString(L"Root");
+				break;
+			default:
+				WriteNull();
+			}
+			EndField();
 			BeginField(L"parent");
 			Print(node->parent.Obj());
-			EndField();
-			BeginField(L"rootScope");
-			WriteToken(node->rootScope);
 			EndField();
 		}
 		void AstVisitor::PrintFields(CppStringLiteral* node)

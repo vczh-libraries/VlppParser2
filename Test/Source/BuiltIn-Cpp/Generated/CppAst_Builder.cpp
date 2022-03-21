@@ -131,21 +131,27 @@ MakeQualifiedName
 			return *this;
 		}
 
+		MakeQualifiedName& MakeQualifiedName::expr(const vl::Ptr<CppTypeOrExpr>& value)
+		{
+			node->expr = value;
+			return *this;
+		}
+
 		MakeQualifiedName& MakeQualifiedName::id(const vl::Ptr<CppIdentifier>& value)
 		{
 			node->id = value;
 			return *this;
 		}
 
-		MakeQualifiedName& MakeQualifiedName::parent(const vl::Ptr<CppQualifiedName>& value)
+		MakeQualifiedName& MakeQualifiedName::kind(CppQualifiedNameKinds value)
 		{
-			node->parent = value;
+			node->kind = value;
 			return *this;
 		}
 
-		MakeQualifiedName& MakeQualifiedName::rootScope(const vl::WString& value)
+		MakeQualifiedName& MakeQualifiedName::parent(const vl::Ptr<CppQualifiedName>& value)
 		{
-			node->rootScope.value = value;
+			node->parent = value;
 			return *this;
 		}
 

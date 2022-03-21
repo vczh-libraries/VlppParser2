@@ -66,9 +66,9 @@ namespace cpp_parser
 			Traverse(static_cast<CppTypeOrExpr*>(node));
 			Traverse(static_cast<CppQualifiedName*>(node));
 			InspectInto(node->arguments.Obj());
+			InspectInto(node->expr.Obj());
 			InspectInto(node->id.Obj());
 			InspectInto(node->parent.Obj());
-			Traverse(node->rootScope);
 			Finishing(static_cast<CppQualifiedName*>(node));
 			Finishing(static_cast<CppTypeOrExpr*>(node));
 			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));

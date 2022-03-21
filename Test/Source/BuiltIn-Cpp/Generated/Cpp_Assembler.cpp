@@ -62,6 +62,8 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppGenericArguments::arguments, object, field, value, cppFieldName);
 		case CppFields::QualifiedName_arguments:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppQualifiedName::arguments, object, field, value, cppFieldName);
+		case CppFields::QualifiedName_expr:
+			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppQualifiedName::expr, object, field, value, cppFieldName);
 		case CppFields::QualifiedName_id:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppQualifiedName::id, object, field, value, cppFieldName);
 		case CppFields::QualifiedName_parent:
@@ -90,8 +92,6 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::glr::AssemblerSetTokenField(&cpp_parser::CppPrimitiveType::literal1, object, field, token, tokenIndex, cppFieldName);
 		case CppFields::PrimitiveType_literal2:
 			return vl::glr::AssemblerSetTokenField(&cpp_parser::CppPrimitiveType::literal2, object, field, token, tokenIndex, cppFieldName);
-		case CppFields::QualifiedName_rootScope:
-			return vl::glr::AssemblerSetTokenField(&cpp_parser::CppQualifiedName::rootScope, object, field, token, tokenIndex, cppFieldName);
 		case CppFields::StringLiteralFragment_literal:
 			return vl::glr::AssemblerSetTokenField(&cpp_parser::CppStringLiteralFragment::literal, object, field, token, tokenIndex, cppFieldName);
 		default:
@@ -114,6 +114,8 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::glr::AssemblerSetEnumField(&cpp_parser::CppPrimitiveExprLiteral::kind, object, field, enumItem, weakAssignment, cppFieldName);
 		case CppFields::PrimitiveType_kind:
 			return vl::glr::AssemblerSetEnumField(&cpp_parser::CppPrimitiveType::kind, object, field, enumItem, weakAssignment, cppFieldName);
+		case CppFields::QualifiedName_kind:
+			return vl::glr::AssemblerSetEnumField(&cpp_parser::CppQualifiedName::kind, object, field, enumItem, weakAssignment, cppFieldName);
 		case CppFields::StringLiteralFragment_kind:
 			return vl::glr::AssemblerSetEnumField(&cpp_parser::CppStringLiteralFragment::kind, object, field, enumItem, weakAssignment, cppFieldName);
 		default:
@@ -188,16 +190,17 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"PrimitiveType::literal1",
 			L"PrimitiveType::literal2",
 			L"QualifiedName::arguments",
+			L"QualifiedName::expr",
 			L"QualifiedName::id",
+			L"QualifiedName::kind",
 			L"QualifiedName::parent",
-			L"QualifiedName::rootScope",
 			L"StringLiteral::fragments",
 			L"StringLiteralFragment::kind",
 			L"StringLiteralFragment::literal",
 			L"VolatileType::type",
 		};
 		vl::vint index = (vl::vint)field;
-		return 0 <= index && index < 21 ? results[index] : nullptr;
+		return 0 <= index && index < 22 ? results[index] : nullptr;
 	}
 
 	const wchar_t* CppCppFieldName(CppFields field)
@@ -217,16 +220,17 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::CppPrimitiveType::literal1",
 			L"cpp_parser::CppPrimitiveType::literal2",
 			L"cpp_parser::CppQualifiedName::arguments",
+			L"cpp_parser::CppQualifiedName::expr",
 			L"cpp_parser::CppQualifiedName::id",
+			L"cpp_parser::CppQualifiedName::kind",
 			L"cpp_parser::CppQualifiedName::parent",
-			L"cpp_parser::CppQualifiedName::rootScope",
 			L"cpp_parser::CppStringLiteral::fragments",
 			L"cpp_parser::CppStringLiteralFragment::kind",
 			L"cpp_parser::CppStringLiteralFragment::literal",
 			L"cpp_parser::CppVolatileType::type",
 		};
 		vl::vint index = (vl::vint)field;
-		return 0 <= index && index < 21 ? results[index] : nullptr;
+		return 0 <= index && index < 22 ? results[index] : nullptr;
 	}
 
 	vl::Ptr<vl::glr::ParsingAstBase> CppAstInsReceiver::ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates)
