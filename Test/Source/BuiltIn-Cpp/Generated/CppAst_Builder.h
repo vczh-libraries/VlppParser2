@@ -19,11 +19,24 @@ namespace cpp_parser
 			MakeConstType& type(const vl::Ptr<CppTypeOrExpr>& value);
 		};
 
-		class MakeName : public vl::glr::ParsingAstBuilder<CppName>
+		class MakeGenericArgument : public vl::glr::ParsingAstBuilder<CppGenericArgument>
 		{
 		public:
-			MakeName& kind(CppNameKinds value);
-			MakeName& name(const vl::WString& value);
+			MakeGenericArgument& argument(const vl::Ptr<CppTypeOrExpr>& value);
+			MakeGenericArgument& variadic(const vl::WString& value);
+		};
+
+		class MakeGenericArguments : public vl::glr::ParsingAstBuilder<CppGenericArguments>
+		{
+		public:
+			MakeGenericArguments& arguments(const vl::Ptr<CppGenericArgument>& value);
+		};
+
+		class MakeNameIdentifier : public vl::glr::ParsingAstBuilder<CppNameIdentifier>
+		{
+		public:
+			MakeNameIdentifier& kind(CppNameKinds value);
+			MakeNameIdentifier& name(const vl::WString& value);
 		};
 
 		class MakeNumericExprLiteral : public vl::glr::ParsingAstBuilder<CppNumericExprLiteral>
@@ -33,10 +46,10 @@ namespace cpp_parser
 			MakeNumericExprLiteral& literal(const vl::WString& value);
 		};
 
-		class MakeOperatorName : public vl::glr::ParsingAstBuilder<CppOperatorName>
+		class MakeOperatorIdentifier : public vl::glr::ParsingAstBuilder<CppOperatorIdentifier>
 		{
 		public:
-			MakeOperatorName& op(CppOperators value);
+			MakeOperatorIdentifier& op(CppOperators value);
 		};
 
 		class MakePrimitiveExprLiteral : public vl::glr::ParsingAstBuilder<CppPrimitiveExprLiteral>
@@ -51,6 +64,15 @@ namespace cpp_parser
 			MakePrimitiveType& kind(CppPrimitiveTypeKinds value);
 			MakePrimitiveType& literal1(const vl::WString& value);
 			MakePrimitiveType& literal2(const vl::WString& value);
+		};
+
+		class MakeQualifiedName : public vl::glr::ParsingAstBuilder<CppQualifiedName>
+		{
+		public:
+			MakeQualifiedName& arguments(const vl::Ptr<CppGenericArguments>& value);
+			MakeQualifiedName& id(const vl::Ptr<CppIdentifier>& value);
+			MakeQualifiedName& parent(const vl::Ptr<CppQualifiedName>& value);
+			MakeQualifiedName& rootScope(const vl::WString& value);
 		};
 
 		class MakeStringLiteral : public vl::glr::ParsingAstBuilder<CppStringLiteral>

@@ -6,10 +6,6 @@ class TypeOrExpr
 {
 }
 
-class QualifiedName : TypeOrExpr
-{
-}
-
 class ExprOnly : TypeOrExpr
 {
 }
@@ -34,7 +30,11 @@ enum NameKinds
     UserDefinedLiteral,
 }
 
-class Name : QualifiedName
+class Identifier
+{
+}
+
+class NameIdentifier : Identifier
 {
     var kind : NameKinds;
     var name : token;
@@ -87,9 +87,28 @@ enum Operators
     RightShiftAssign,
 }
 
-class OperatorName : QualifiedName
+class OperatorIdentifier : Identifier
 {
     var op : Operators;
+}
+
+class GenericArgument
+{
+    var argument : TypeOrExpr;
+    var variadic : token;
+}
+
+class GenericArguments
+{
+    var arguments : GenericArgument[];
+}
+
+class QualifiedName : TypeOrExpr
+{
+    var rootScope : token;
+    var parent : QualifiedName;
+    var id : Identifier;
+    var arguments : GenericArguments;
 }
 
 //////////////////////////////////////////////////////////////////

@@ -17,17 +17,20 @@ namespace cpp_parser
 		class AstVisitor
 			: public vl::glr::JsonVisitorBase
 			, protected virtual CppTypeOrExpr::IVisitor
-			, protected virtual CppQualifiedName::IVisitor
 			, protected virtual CppExprOnly::IVisitor
 			, protected virtual CppTypeOnly::IVisitor
+			, protected virtual CppIdentifier::IVisitor
 		{
 		protected:
 			virtual void PrintFields(CppConstType* node);
 			virtual void PrintFields(CppExprOnly* node);
 			virtual void PrintFields(CppFile* node);
-			virtual void PrintFields(CppName* node);
+			virtual void PrintFields(CppGenericArgument* node);
+			virtual void PrintFields(CppGenericArguments* node);
+			virtual void PrintFields(CppIdentifier* node);
+			virtual void PrintFields(CppNameIdentifier* node);
 			virtual void PrintFields(CppNumericExprLiteral* node);
-			virtual void PrintFields(CppOperatorName* node);
+			virtual void PrintFields(CppOperatorIdentifier* node);
 			virtual void PrintFields(CppPrimitiveExprLiteral* node);
 			virtual void PrintFields(CppPrimitiveType* node);
 			virtual void PrintFields(CppQualifiedName* node);
@@ -38,12 +41,9 @@ namespace cpp_parser
 			virtual void PrintFields(CppVolatileType* node);
 
 		protected:
-			void Visit(CppQualifiedName* node) override;
 			void Visit(CppExprOnly* node) override;
 			void Visit(CppTypeOnly* node) override;
-
-			void Visit(CppName* node) override;
-			void Visit(CppOperatorName* node) override;
+			void Visit(CppQualifiedName* node) override;
 
 			void Visit(CppPrimitiveExprLiteral* node) override;
 			void Visit(CppNumericExprLiteral* node) override;
@@ -53,10 +53,16 @@ namespace cpp_parser
 			void Visit(CppConstType* node) override;
 			void Visit(CppVolatileType* node) override;
 
+			void Visit(CppNameIdentifier* node) override;
+			void Visit(CppOperatorIdentifier* node) override;
+
 		public:
 			AstVisitor(vl::stream::StreamWriter& _writer);
 
 			void Print(CppTypeOrExpr* node);
+			void Print(CppIdentifier* node);
+			void Print(CppGenericArgument* node);
+			void Print(CppGenericArguments* node);
 			void Print(CppStringLiteralFragment* node);
 			void Print(CppFile* node);
 		};

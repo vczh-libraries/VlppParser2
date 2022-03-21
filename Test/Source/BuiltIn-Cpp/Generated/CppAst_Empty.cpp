@@ -17,11 +17,6 @@ TypeOrExprVisitor
 
 		// Visitor Members -----------------------------------
 
-		void TypeOrExprVisitor::Visit(CppQualifiedName* node)
-		{
-			Dispatch(node);
-		}
-
 		void TypeOrExprVisitor::Visit(CppExprOnly* node)
 		{
 			Dispatch(node);
@@ -32,17 +27,7 @@ TypeOrExprVisitor
 			Dispatch(node);
 		}
 
-/***********************************************************************
-QualifiedNameVisitor
-***********************************************************************/
-
-		// Visitor Members -----------------------------------
-
-		void QualifiedNameVisitor::Visit(CppName* node)
-		{
-		}
-
-		void QualifiedNameVisitor::Visit(CppOperatorName* node)
+		void TypeOrExprVisitor::Visit(CppQualifiedName* node)
 		{
 		}
 
@@ -79,6 +64,20 @@ TypeOnlyVisitor
 		}
 
 		void TypeOnlyVisitor::Visit(CppVolatileType* node)
+		{
+		}
+
+/***********************************************************************
+IdentifierVisitor
+***********************************************************************/
+
+		// Visitor Members -----------------------------------
+
+		void IdentifierVisitor::Visit(CppNameIdentifier* node)
+		{
+		}
+
+		void IdentifierVisitor::Visit(CppOperatorIdentifier* node)
 		{
 		}
 	}

@@ -18,27 +18,14 @@ namespace cpp_parser
 		{
 		protected:
 			// Dispatch (virtual) --------------------------------
-			virtual void Dispatch(CppQualifiedName* node) = 0;
 			virtual void Dispatch(CppExprOnly* node) = 0;
 			virtual void Dispatch(CppTypeOnly* node) = 0;
 
 		public:
 			// Visitor Members -----------------------------------
-			void Visit(CppQualifiedName* node) override;
 			void Visit(CppExprOnly* node) override;
 			void Visit(CppTypeOnly* node) override;
-		};
-
-		/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
-		class QualifiedNameVisitor : public vl::Object, public CppQualifiedName::IVisitor
-		{
-		protected:
-			// Dispatch (virtual) --------------------------------
-
-		public:
-			// Visitor Members -----------------------------------
-			void Visit(CppName* node) override;
-			void Visit(CppOperatorName* node) override;
+			void Visit(CppQualifiedName* node) override;
 		};
 
 		/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
@@ -65,6 +52,18 @@ namespace cpp_parser
 			void Visit(CppPrimitiveType* node) override;
 			void Visit(CppConstType* node) override;
 			void Visit(CppVolatileType* node) override;
+		};
+
+		/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
+		class IdentifierVisitor : public vl::Object, public CppIdentifier::IVisitor
+		{
+		protected:
+			// Dispatch (virtual) --------------------------------
+
+		public:
+			// Visitor Members -----------------------------------
+			void Visit(CppNameIdentifier* node) override;
+			void Visit(CppOperatorIdentifier* node) override;
 		};
 
 	}

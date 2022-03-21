@@ -2,66 +2,79 @@
 // QualifiedName
 //////////////////////////////////////////////////////////////////
 
-_Name
-  ::= ID:name                       as Name {kind = Normal}
-  ::= "~" ID:name                   as Name {kind = Dtor}
-  ::= "enum" ID:name                as Name {kind = Enum}
-  ::= "enum" "class" ID:name        as Name {kind = EnumClass}
-  ::= "class" ID:name               as Name {kind = Class}
-  ::= "struct" ID:name              as Name {kind = Struct}
-  ::= "union" ID:name               as Name {kind = Union}
+_NameIdentifier
+  ::= ID:name                       as NameIdentifier {kind = Normal}
+  ::= "~" ID:name                   as NameIdentifier {kind = Dtor}
+  ::= "enum" ID:name                as NameIdentifier {kind = Enum}
+  ::= "enum" "class" ID:name        as NameIdentifier {kind = EnumClass}
+  ::= "class" ID:name               as NameIdentifier {kind = Class}
+  ::= "struct" ID:name              as NameIdentifier {kind = Struct}
+  ::= "union" ID:name               as NameIdentifier {kind = Union}
   ;
 
-_OperatorName
-  ::= "operator" '""' ID:name       as Name {kind = UserDefinedLiteral}
-  ::= "operator" "new"              as OperatorName {op = New}
-  ::= "operator" "new" "[" "]"      as OperatorName {op = NewArray}
-  ::= "operator" "delete"           as OperatorName {op = Delete}
-  ::= "operator" "delete" "[" "]"   as OperatorName {op = DeleteArray}
-  ::= "operator" ","                as OperatorName {op = Comma}
-  ::= "operator" "(" ")"            as OperatorName {op = Parantheses}
-  ::= "operator" "[" "]"            as OperatorName {op = Bracket}
-  ::= "operator" "->*"              as OperatorName {op = PointerDeref}
-  ::= "operator" "->"               as OperatorName {op = Pointer}
-  ::= "operator" "!="               as OperatorName {op = NE}
-  ::= "operator" "!"                as OperatorName {op = Not}
-  ::= "operator" "=="               as OperatorName {op = EQ}
-  ::= "operator" "="                as OperatorName {op = Assign}
-  ::= "operator" "~="               as OperatorName {op = RevertAssign}
-  ::= "operator" "~"                as OperatorName {op = Revert}
-  ::= "operator" "^="               as OperatorName {op = XorAssign}
-  ::= "operator" "^"                as OperatorName {op = Xor}
-  ::= "operator" "&&"               as OperatorName {op = And}
-  ::= "operator" "&="               as OperatorName {op = AndAssign}
-  ::= "operator" "&"                as OperatorName {op = BitwiseAnd}
-  ::= "operator" "||"               as OperatorName {op = Or}
-  ::= "operator" "|="               as OperatorName {op = OrAssign}
-  ::= "operator" "|"                as OperatorName {op = BitwiseOr}
-  ::= "operator" "*="               as OperatorName {op = MulAssign}
-  ::= "operator" "*"                as OperatorName {op = Mul}
-  ::= "operator" "/="               as OperatorName {op = DivAssign}
-  ::= "operator" "/"                as OperatorName {op = Div}
-  ::= "operator" "%="               as OperatorName {op = ModAssign}
-  ::= "operator" "%"                as OperatorName {op = Mod}
-  ::= "operator" "+="               as OperatorName {op = PlusAssign}
-  ::= "operator" "++"               as OperatorName {op = Increase}
-  ::= "operator" "+"                as OperatorName {op = Plus}
-  ::= "operator" "-="               as OperatorName {op = MinusAssign}
-  ::= "operator" "--"               as OperatorName {op = Decrease}
-  ::= "operator" "-"                as OperatorName {op = Minus}
-  ::= "operator" "<<="              as OperatorName {op = LeftShiftAssign}
-  ::= "operator" "<<"               as OperatorName {op = LeftShift}
-  ::= "operator" "<="               as OperatorName {op = LE}
-  ::= "operator" "<"                as OperatorName {op = LT}
-  ::= "operator" ">>="              as OperatorName {op = RightShiftAssign}
-  ::= "operator" ">>"               as OperatorName {op = RightShift}
-  ::= "operator" ">="               as OperatorName {op = GE}
-  ::= "operator" ">"                as OperatorName {op = GT}
+_OperatorIdentifier
+  ::= "operator" '""' ID:name       as NameIdentifier {kind = UserDefinedLiteral}
+  ::= "operator" "new"              as OperatorIdentifier {op = New}
+  ::= "operator" "new" "[" "]"      as OperatorIdentifier {op = NewArray}
+  ::= "operator" "delete"           as OperatorIdentifier {op = Delete}
+  ::= "operator" "delete" "[" "]"   as OperatorIdentifier {op = DeleteArray}
+  ::= "operator" ","                as OperatorIdentifier {op = Comma}
+  ::= "operator" "(" ")"            as OperatorIdentifier {op = Parantheses}
+  ::= "operator" "[" "]"            as OperatorIdentifier {op = Bracket}
+  ::= "operator" "->*"              as OperatorIdentifier {op = PointerDeref}
+  ::= "operator" "->"               as OperatorIdentifier {op = Pointer}
+  ::= "operator" "!="               as OperatorIdentifier {op = NE}
+  ::= "operator" "!"                as OperatorIdentifier {op = Not}
+  ::= "operator" "=="               as OperatorIdentifier {op = EQ}
+  ::= "operator" "="                as OperatorIdentifier {op = Assign}
+  ::= "operator" "~="               as OperatorIdentifier {op = RevertAssign}
+  ::= "operator" "~"                as OperatorIdentifier {op = Revert}
+  ::= "operator" "^="               as OperatorIdentifier {op = XorAssign}
+  ::= "operator" "^"                as OperatorIdentifier {op = Xor}
+  ::= "operator" "&&"               as OperatorIdentifier {op = And}
+  ::= "operator" "&="               as OperatorIdentifier {op = AndAssign}
+  ::= "operator" "&"                as OperatorIdentifier {op = BitwiseAnd}
+  ::= "operator" "||"               as OperatorIdentifier {op = Or}
+  ::= "operator" "|="               as OperatorIdentifier {op = OrAssign}
+  ::= "operator" "|"                as OperatorIdentifier {op = BitwiseOr}
+  ::= "operator" "*="               as OperatorIdentifier {op = MulAssign}
+  ::= "operator" "*"                as OperatorIdentifier {op = Mul}
+  ::= "operator" "/="               as OperatorIdentifier {op = DivAssign}
+  ::= "operator" "/"                as OperatorIdentifier {op = Div}
+  ::= "operator" "%="               as OperatorIdentifier {op = ModAssign}
+  ::= "operator" "%"                as OperatorIdentifier {op = Mod}
+  ::= "operator" "+="               as OperatorIdentifier {op = PlusAssign}
+  ::= "operator" "++"               as OperatorIdentifier {op = Increase}
+  ::= "operator" "+"                as OperatorIdentifier {op = Plus}
+  ::= "operator" "-="               as OperatorIdentifier {op = MinusAssign}
+  ::= "operator" "--"               as OperatorIdentifier {op = Decrease}
+  ::= "operator" "-"                as OperatorIdentifier {op = Minus}
+  ::= "operator" "<<="              as OperatorIdentifier {op = LeftShiftAssign}
+  ::= "operator" "<<"               as OperatorIdentifier {op = LeftShift}
+  ::= "operator" "<="               as OperatorIdentifier {op = LE}
+  ::= "operator" "<"                as OperatorIdentifier {op = LT}
+  ::= "operator" ">>="              as OperatorIdentifier {op = RightShiftAssign}
+  ::= "operator" ">>"               as OperatorIdentifier {op = RightShift}
+  ::= "operator" ">="               as OperatorIdentifier {op = GE}
+  ::= "operator" ">"                as OperatorIdentifier {op = GT}
+  ;
+
+_Identifier
+  ::= !_NameIdentifier
+  ::= !_OperatorIdentifier
+  ;
+
+_GenericArgument
+  ::= _TypeOrExpr_NoComma_NoLT:argument ["...":variadic] as GenericArgument
+  ;
+
+_GenericArguments
+  ::= "<" {_GenericArgument:arguments ; ","} ">" as GenericArguments
   ;
 
 _QualifiedName
-  ::= !_Name
-  ::= !_OperatorName
+  ::= ["::":rootScope] _Identifier:id ["template" _GenericArguments:arguments] as QualifiedName
+  ::= _QualifiedName:parent "::" _Identifier:id ["template" _GenericArguments:arguments] as QualifiedName
   ;
 
 //////////////////////////////////////////////////////////////////
@@ -118,6 +131,7 @@ _PrimitiveType
   ::= "double":literal1                  as PrimitiveType {kind = Neutral}
   ::= "long":literal1 "double":literal2  as PrimitiveType {kind = Neutral}
   ::= _PrimitiveTypeLiteral              as PrimitiveType {kind = Neutral}
+  ::= "typename" !_QualifiedName
   ;
 
 _ShortType : TypeOrExpr
@@ -143,6 +157,10 @@ _TypeOrExpr
   ::= !_QualifiedName left_recursion_inject(Shared) _LongType
   ::= !_ShortType left_recursion_inject(Type) _LongType
   ::= !_PrimitiveExpr
+  ;
+
+_TypeOrExpr_NoComma_NoLT
+  ::= !_TypeOrExpr
   ;
 
 //////////////////////////////////////////////////////////////////

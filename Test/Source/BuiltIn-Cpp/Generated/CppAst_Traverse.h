@@ -17,9 +17,9 @@ namespace cpp_parser
 		class AstVisitor
 			: public vl::Object
 			, protected virtual CppTypeOrExpr::IVisitor
-			, protected virtual CppQualifiedName::IVisitor
 			, protected virtual CppExprOnly::IVisitor
 			, protected virtual CppTypeOnly::IVisitor
+			, protected virtual CppIdentifier::IVisitor
 		{
 		protected:
 			virtual void Traverse(vl::glr::ParsingToken& token);
@@ -27,9 +27,12 @@ namespace cpp_parser
 			virtual void Traverse(CppConstType* node);
 			virtual void Traverse(CppExprOnly* node);
 			virtual void Traverse(CppFile* node);
-			virtual void Traverse(CppName* node);
+			virtual void Traverse(CppGenericArgument* node);
+			virtual void Traverse(CppGenericArguments* node);
+			virtual void Traverse(CppIdentifier* node);
+			virtual void Traverse(CppNameIdentifier* node);
 			virtual void Traverse(CppNumericExprLiteral* node);
-			virtual void Traverse(CppOperatorName* node);
+			virtual void Traverse(CppOperatorIdentifier* node);
 			virtual void Traverse(CppPrimitiveExprLiteral* node);
 			virtual void Traverse(CppPrimitiveType* node);
 			virtual void Traverse(CppQualifiedName* node);
@@ -44,9 +47,12 @@ namespace cpp_parser
 			virtual void Finishing(CppConstType* node);
 			virtual void Finishing(CppExprOnly* node);
 			virtual void Finishing(CppFile* node);
-			virtual void Finishing(CppName* node);
+			virtual void Finishing(CppGenericArgument* node);
+			virtual void Finishing(CppGenericArguments* node);
+			virtual void Finishing(CppIdentifier* node);
+			virtual void Finishing(CppNameIdentifier* node);
 			virtual void Finishing(CppNumericExprLiteral* node);
-			virtual void Finishing(CppOperatorName* node);
+			virtual void Finishing(CppOperatorIdentifier* node);
 			virtual void Finishing(CppPrimitiveExprLiteral* node);
 			virtual void Finishing(CppPrimitiveType* node);
 			virtual void Finishing(CppQualifiedName* node);
@@ -57,12 +63,9 @@ namespace cpp_parser
 			virtual void Finishing(CppVolatileType* node);
 
 		protected:
-			void Visit(CppQualifiedName* node) override;
 			void Visit(CppExprOnly* node) override;
 			void Visit(CppTypeOnly* node) override;
-
-			void Visit(CppName* node) override;
-			void Visit(CppOperatorName* node) override;
+			void Visit(CppQualifiedName* node) override;
 
 			void Visit(CppPrimitiveExprLiteral* node) override;
 			void Visit(CppNumericExprLiteral* node) override;
@@ -72,8 +75,14 @@ namespace cpp_parser
 			void Visit(CppConstType* node) override;
 			void Visit(CppVolatileType* node) override;
 
+			void Visit(CppNameIdentifier* node) override;
+			void Visit(CppOperatorIdentifier* node) override;
+
 		public:
 			void InspectInto(CppTypeOrExpr* node);
+			void InspectInto(CppIdentifier* node);
+			void InspectInto(CppGenericArgument* node);
+			void InspectInto(CppGenericArguments* node);
 			void InspectInto(CppStringLiteralFragment* node);
 			void InspectInto(CppFile* node);
 		};

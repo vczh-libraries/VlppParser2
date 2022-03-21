@@ -22,16 +22,42 @@ MakeConstType
 		}
 
 /***********************************************************************
-MakeName
+MakeGenericArgument
 ***********************************************************************/
 
-		MakeName& MakeName::kind(CppNameKinds value)
+		MakeGenericArgument& MakeGenericArgument::argument(const vl::Ptr<CppTypeOrExpr>& value)
+		{
+			node->argument = value;
+			return *this;
+		}
+
+		MakeGenericArgument& MakeGenericArgument::variadic(const vl::WString& value)
+		{
+			node->variadic.value = value;
+			return *this;
+		}
+
+/***********************************************************************
+MakeGenericArguments
+***********************************************************************/
+
+		MakeGenericArguments& MakeGenericArguments::arguments(const vl::Ptr<CppGenericArgument>& value)
+		{
+			node->arguments.Add(value);
+			return *this;
+		}
+
+/***********************************************************************
+MakeNameIdentifier
+***********************************************************************/
+
+		MakeNameIdentifier& MakeNameIdentifier::kind(CppNameKinds value)
 		{
 			node->kind = value;
 			return *this;
 		}
 
-		MakeName& MakeName::name(const vl::WString& value)
+		MakeNameIdentifier& MakeNameIdentifier::name(const vl::WString& value)
 		{
 			node->name.value = value;
 			return *this;
@@ -54,10 +80,10 @@ MakeNumericExprLiteral
 		}
 
 /***********************************************************************
-MakeOperatorName
+MakeOperatorIdentifier
 ***********************************************************************/
 
-		MakeOperatorName& MakeOperatorName::op(CppOperators value)
+		MakeOperatorIdentifier& MakeOperatorIdentifier::op(CppOperators value)
 		{
 			node->op = value;
 			return *this;
@@ -92,6 +118,34 @@ MakePrimitiveType
 		MakePrimitiveType& MakePrimitiveType::literal2(const vl::WString& value)
 		{
 			node->literal2.value = value;
+			return *this;
+		}
+
+/***********************************************************************
+MakeQualifiedName
+***********************************************************************/
+
+		MakeQualifiedName& MakeQualifiedName::arguments(const vl::Ptr<CppGenericArguments>& value)
+		{
+			node->arguments = value;
+			return *this;
+		}
+
+		MakeQualifiedName& MakeQualifiedName::id(const vl::Ptr<CppIdentifier>& value)
+		{
+			node->id = value;
+			return *this;
+		}
+
+		MakeQualifiedName& MakeQualifiedName::parent(const vl::Ptr<CppQualifiedName>& value)
+		{
+			node->parent = value;
+			return *this;
+		}
+
+		MakeQualifiedName& MakeQualifiedName::rootScope(const vl::WString& value)
+		{
+			node->rootScope.value = value;
 			return *this;
 		}
 

@@ -22,7 +22,32 @@ namespace cpp_parser
 		void AstVisitor::PrintFields(CppFile* node)
 		{
 		}
-		void AstVisitor::PrintFields(CppName* node)
+		void AstVisitor::PrintFields(CppGenericArgument* node)
+		{
+			BeginField(L"argument");
+			Print(node->argument.Obj());
+			EndField();
+			BeginField(L"variadic");
+			WriteToken(node->variadic);
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppGenericArguments* node)
+		{
+			BeginField(L"arguments");
+			BeginArray();
+			for (auto&& listItem : node->arguments)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppIdentifier* node)
+		{
+		}
+		void AstVisitor::PrintFields(CppNameIdentifier* node)
 		{
 			BeginField(L"kind");
 			switch (node->kind)
@@ -90,7 +115,7 @@ namespace cpp_parser
 			WriteToken(node->literal);
 			EndField();
 		}
-		void AstVisitor::PrintFields(CppOperatorName* node)
+		void AstVisitor::PrintFields(CppOperatorIdentifier* node)
 		{
 			BeginField(L"op");
 			switch (node->op)
@@ -284,6 +309,18 @@ namespace cpp_parser
 		}
 		void AstVisitor::PrintFields(CppQualifiedName* node)
 		{
+			BeginField(L"arguments");
+			Print(node->arguments.Obj());
+			EndField();
+			BeginField(L"id");
+			Print(node->id.Obj());
+			EndField();
+			BeginField(L"parent");
+			Print(node->parent.Obj());
+			EndField();
+			BeginField(L"rootScope");
+			WriteToken(node->rootScope);
+			EndField();
 		}
 		void AstVisitor::PrintFields(CppStringLiteral* node)
 		{
@@ -330,11 +367,6 @@ namespace cpp_parser
 			EndField();
 		}
 
-		void AstVisitor::Visit(CppQualifiedName* node)
-		{
-			node->Accept(static_cast<CppQualifiedName::IVisitor*>(this));
-		}
-
 		void AstVisitor::Visit(CppExprOnly* node)
 		{
 			node->Accept(static_cast<CppExprOnly::IVisitor*>(this));
@@ -345,7 +377,7 @@ namespace cpp_parser
 			node->Accept(static_cast<CppTypeOnly::IVisitor*>(this));
 		}
 
-		void AstVisitor::Visit(CppName* node)
+		void AstVisitor::Visit(CppQualifiedName* node)
 		{
 			if (!node)
 			{
@@ -353,25 +385,9 @@ namespace cpp_parser
 				return;
 			}
 			BeginObject();
-			WriteType(L"Name", node);
+			WriteType(L"QualifiedName", node);
 			PrintFields(static_cast<CppTypeOrExpr*>(node));
 			PrintFields(static_cast<CppQualifiedName*>(node));
-			PrintFields(static_cast<CppName*>(node));
-			EndObject();
-		}
-
-		void AstVisitor::Visit(CppOperatorName* node)
-		{
-			if (!node)
-			{
-				WriteNull();
-				return;
-			}
-			BeginObject();
-			WriteType(L"OperatorName", node);
-			PrintFields(static_cast<CppTypeOrExpr*>(node));
-			PrintFields(static_cast<CppQualifiedName*>(node));
-			PrintFields(static_cast<CppOperatorName*>(node));
 			EndObject();
 		}
 
@@ -465,6 +481,34 @@ namespace cpp_parser
 			EndObject();
 		}
 
+		void AstVisitor::Visit(CppNameIdentifier* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"NameIdentifier", node);
+			PrintFields(static_cast<CppIdentifier*>(node));
+			PrintFields(static_cast<CppNameIdentifier*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppOperatorIdentifier* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"OperatorIdentifier", node);
+			PrintFields(static_cast<CppIdentifier*>(node));
+			PrintFields(static_cast<CppOperatorIdentifier*>(node));
+			EndObject();
+		}
+
 		AstVisitor::AstVisitor(vl::stream::StreamWriter& _writer)
 			: vl::glr::JsonVisitorBase(_writer)
 		{
@@ -478,6 +522,42 @@ namespace cpp_parser
 				return;
 			}
 			node->Accept(static_cast<CppTypeOrExpr::IVisitor*>(this));
+		}
+
+		void AstVisitor::Print(CppIdentifier* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			node->Accept(static_cast<CppIdentifier::IVisitor*>(this));
+		}
+
+		void AstVisitor::Print(CppGenericArgument* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"GenericArgument", node);
+			PrintFields(static_cast<CppGenericArgument*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Print(CppGenericArguments* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"GenericArguments", node);
+			PrintFields(static_cast<CppGenericArguments*>(node));
+			EndObject();
 		}
 
 		void AstVisitor::Print(CppStringLiteralFragment* node)
