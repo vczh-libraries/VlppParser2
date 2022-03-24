@@ -240,29 +240,21 @@ _BExpr10
   ::= _BExpr10:left "||" _BExpr9:right as BinaryExpr {op = Or}
   ;
 
-_BExpr11
-  ::= !_BExpr10
-  ::= _BExpr10:condition "?" _Expr:trueBranch ":" _BExpr11:falseBranch as IfExpr
-  ;
-
-_BExpr12
-  ::= !_BExpr11
-  ::= _BExpr12:left "=" _BExpr11:right as BinaryExpr {op = Assign}
-  ::= _BExpr12:left "*=" _BExpr11:right as BinaryExpr {op = MulAssign}
-  ::= _BExpr12:left "/=" _BExpr11:right as BinaryExpr {op = DivAssign}
-  ::= _BExpr12:left "%=" _BExpr11:right as BinaryExpr {op = ModAssign}
-  ::= _BExpr12:left "+=" _BExpr11:right as BinaryExpr {op = PlusAssign}
-  ::= _BExpr12:left "-=" _BExpr11:right as BinaryExpr {op = MinusAssign}
-  ::= _BExpr12:left "<<=" _BExpr11:right as BinaryExpr {op = LeftShiftAssign}
-  ::= _BExpr12:left ">>=" _BExpr11:right as BinaryExpr {op = RightShiftAssign}
-  ::= _BExpr12:left "&=" _BExpr11:right as BinaryExpr {op = AndAssign}
-  ::= _BExpr12:left "|=" _BExpr11:right as BinaryExpr {op = OrAssign}
-  ::= _BExpr12:left "^=" _BExpr11:right as BinaryExpr {op = XorAssign}
-  ;
-
 _BExpr_NoComma
-  ::= !_BExpr12
-  ::= "throw" [_BExpr12:argument] as ThrowExpr
+  ::= !_BExpr10
+  ::= "throw" [_BExpr10:argument] as ThrowExpr
+  ::= _BExpr10:condition "?" _Expr:trueBranch ":" _BExpr_NoComma:falseBranch as IfExpr
+  ::= _BExpr10:left "=" _BExpr_NoComma:right as BinaryExpr {op = Assign}
+  ::= _BExpr10:left "*=" _BExpr_NoComma:right as BinaryExpr {op = MulAssign}
+  ::= _BExpr10:left "/=" _BExpr_NoComma:right as BinaryExpr {op = DivAssign}
+  ::= _BExpr10:left "%=" _BExpr_NoComma:right as BinaryExpr {op = ModAssign}
+  ::= _BExpr10:left "+=" _BExpr_NoComma:right as BinaryExpr {op = PlusAssign}
+  ::= _BExpr10:left "-=" _BExpr_NoComma:right as BinaryExpr {op = MinusAssign}
+  ::= _BExpr10:left "<<=" _BExpr_NoComma:right as BinaryExpr {op = LeftShiftAssign}
+  ::= _BExpr10:left ">>=" _BExpr_NoComma:right as BinaryExpr {op = RightShiftAssign}
+  ::= _BExpr10:left "&=" _BExpr_NoComma:right as BinaryExpr {op = AndAssign}
+  ::= _BExpr10:left "|=" _BExpr_NoComma:right as BinaryExpr {op = OrAssign}
+  ::= _BExpr10:left "^=" _BExpr_NoComma:right as BinaryExpr {op = XorAssign}
   ;
 
 _BExpr
