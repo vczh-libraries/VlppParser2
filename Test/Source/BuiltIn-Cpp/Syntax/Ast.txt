@@ -202,6 +202,25 @@ class SysFuncExpr : ExprOnly
     var argument : TypeOrExpr;
 }
 
+enum OperatorScope
+{
+    Root,
+    Context,
+}
+
+enum OperatorArray
+{
+    Array,
+    NotArray,
+}
+
+class DeleteExpr : ExprOnly
+{
+    var scope : OperatorScope;
+    var array : OperatorArray;
+    var argument : TypeOrExpr;
+}
+
 //////////////////////////////////////////////////////////////////
 // OperatorExpr
 //////////////////////////////////////////////////////////////////
@@ -235,6 +254,18 @@ class BinaryExpr : ExprOnly
     var op : Operators;
     var left : TypeOrExpr;
     var right : TypeOrExpr;
+}
+
+class IfExpr : ExprOnly
+{
+    var condition : TypeOrExpr;
+    var trueBranch : TypeOrExpr;
+    var falseBranch : TypeOrExpr;
+}
+
+class ThrowExpr : ExprOnly
+{
+    var argument : TypeOrExpr;
 }
 
 //////////////////////////////////////////////////////////////////
