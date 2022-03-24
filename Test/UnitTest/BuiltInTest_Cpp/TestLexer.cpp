@@ -134,7 +134,8 @@ vint CheckTokens(List<RegexToken>& tokens)
 		case CppTokens::MOD:
 		case CppTokens::COLON:
 		case CppTokens::SEMICOLON:
-		case CppTokens::DOT:
+		case CppTokens::MEMBER_DEREF:
+		case CppTokens::MEMBER:
 		case CppTokens::QUESTIONMARK:
 		case CppTokens::COMMA:
 		case CppTokens::MUL_ASSIGN:

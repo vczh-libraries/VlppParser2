@@ -152,6 +152,7 @@ _PrimitiveExpr : TypeOrExpr
 
 _PostfixUnaryExpr
   ::= left_recursion_placeholder(Shared,Expr)
+  ::= !_QualifiedName
   ::= !_PrimitiveExpr
   ::= _PostfixUnaryExpr:operand "++" as PostfixUnaryExpr {op = Increase}
   ::= _PostfixUnaryExpr:operand "--" as PostfixUnaryExpr {op = Decrease}
@@ -290,6 +291,7 @@ _ShortType : TypeOrExpr
 
 _LongType
   ::= left_recursion_placeholder(Shared,Type)
+  ::= !_QualifiedName
   ::= !_ShortType
   ::= _LongType:type "const" as ConstType
   ::= _LongType:type "volatile" as VolatileType
