@@ -108,6 +108,25 @@ namespace cpp_parser
 			to->name = from->name;
 		}
 
+		void AstVisitor::CopyFields(CppNewExpr* from, CppNewExpr* to)
+		{
+			CopyFields(static_cast<CppExprOnly*>(from), static_cast<CppExprOnly*>(to));
+			to->init = from->init;
+			for (auto&& listItem : from->initArguments)
+			{
+				to->initArguments.Add(CopyNode(listItem.Obj()));
+			}
+			for (auto&& listItem : from->placementArguments)
+			{
+				to->placementArguments.Add(CopyNode(listItem.Obj()));
+			}
+			to->scope = from->scope;
+			for (auto&& listItem : from->type)
+			{
+				to->type.Add(CopyNode(listItem.Obj()));
+			}
+		}
+
 		void AstVisitor::CopyFields(CppNumericExprLiteral* from, CppNumericExprLiteral* to)
 		{
 			CopyFields(static_cast<CppExprOnly*>(from), static_cast<CppExprOnly*>(to));
@@ -310,6 +329,13 @@ namespace cpp_parser
 			this->result = newNode;
 		}
 
+		void AstVisitor::Visit(CppNewExpr* node)
+		{
+			auto newNode = vl::MakePtr<CppNewExpr>();
+			CopyFields(node, newNode.Obj());
+			this->result = newNode;
+		}
+
 		void AstVisitor::Visit(CppPrefixUnaryExpr* node)
 		{
 			auto newNode = vl::MakePtr<CppPrefixUnaryExpr>();
@@ -494,6 +520,12 @@ namespace cpp_parser
 		{
 			if (!node) return nullptr;
 			return CopyNode(static_cast<CppIdentifier*>(node)).Cast<CppNameIdentifier>();
+		}
+
+		vl::Ptr<CppNewExpr> AstVisitor::CopyNode(CppNewExpr* node)
+		{
+			if (!node) return nullptr;
+			return CopyNode(static_cast<CppTypeOrExpr*>(node)).Cast<CppNewExpr>();
 		}
 
 		vl::Ptr<CppNumericExprLiteral> AstVisitor::CopyNode(CppNumericExprLiteral* node)

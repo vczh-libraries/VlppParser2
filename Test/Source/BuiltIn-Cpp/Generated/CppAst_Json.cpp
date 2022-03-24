@@ -332,6 +332,71 @@ namespace cpp_parser
 			WriteToken(node->name);
 			EndField();
 		}
+		void AstVisitor::PrintFields(CppNewExpr* node)
+		{
+			BeginField(L"init");
+			switch (node->init)
+			{
+			case cpp_parser::CppOperatorInit::Array:
+				WriteString(L"Array");
+				break;
+			case cpp_parser::CppOperatorInit::Brace:
+				WriteString(L"Brace");
+				break;
+			case cpp_parser::CppOperatorInit::None:
+				WriteString(L"None");
+				break;
+			case cpp_parser::CppOperatorInit::Parenthesis:
+				WriteString(L"Parenthesis");
+				break;
+			default:
+				WriteNull();
+			}
+			EndField();
+			BeginField(L"initArguments");
+			BeginArray();
+			for (auto&& listItem : node->initArguments)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+			BeginField(L"placementArguments");
+			BeginArray();
+			for (auto&& listItem : node->placementArguments)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+			BeginField(L"scope");
+			switch (node->scope)
+			{
+			case cpp_parser::CppOperatorScope::Context:
+				WriteString(L"Context");
+				break;
+			case cpp_parser::CppOperatorScope::Root:
+				WriteString(L"Root");
+				break;
+			default:
+				WriteNull();
+			}
+			EndField();
+			BeginField(L"type");
+			BeginArray();
+			for (auto&& listItem : node->type)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+		}
 		void AstVisitor::PrintFields(CppNumericExprLiteral* node)
 		{
 			BeginField(L"kind");
@@ -1110,6 +1175,21 @@ namespace cpp_parser
 			PrintFields(static_cast<CppTypeOrExpr*>(node));
 			PrintFields(static_cast<CppExprOnly*>(node));
 			PrintFields(static_cast<CppDeleteExpr*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppNewExpr* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"NewExpr", node);
+			PrintFields(static_cast<CppTypeOrExpr*>(node));
+			PrintFields(static_cast<CppExprOnly*>(node));
+			PrintFields(static_cast<CppNewExpr*>(node));
 			EndObject();
 		}
 

@@ -91,6 +91,16 @@ namespace cpp_parser
 			MakeNameIdentifier& name(const vl::WString& value);
 		};
 
+		class MakeNewExpr : public vl::glr::ParsingAstBuilder<CppNewExpr>
+		{
+		public:
+			MakeNewExpr& init(CppOperatorInit value);
+			MakeNewExpr& initArguments(const vl::Ptr<CppTypeOrExpr>& value);
+			MakeNewExpr& placementArguments(const vl::Ptr<CppTypeOrExpr>& value);
+			MakeNewExpr& scope(CppOperatorScope value);
+			MakeNewExpr& type(const vl::Ptr<CppTypeOrExpr>& value);
+		};
+
 		class MakeNumericExprLiteral : public vl::glr::ParsingAstBuilder<CppNumericExprLiteral>
 		{
 		public:

@@ -106,6 +106,21 @@ _StringLiteralFragment
   ::= STRING:literal as StringLiteralFragment {kind = String}
   ;
 
+_NewInit
+  ::= "[" _Expr:initArguments "]" {"[" _Expr:initArguments "]"} as partial NewExpr {init = Array}
+  ::= "(" {_Expr_NoComma:initArguments ; ","} ")" as partial NewExpr {init = Parenthesis}
+  ::= "{" {_Expr_NoComma:initArguments ; ","} "}" as partial NewExpr {init = Brace}
+  ;
+
+_NewFragment
+  ::= ["(" {_Expr_NoComma:placementArguments ; ","} ")"] _QualifiedName:type _NewInit as partial NewExpr {init ?= None}
+  ;
+
+_DeleteFragment
+  ::= _PrimitiveExpr_QualifiedName:argument as partial DeleteExpr {array = NotArray}
+  ::= "[" "]" _PrimitiveExpr_QualifiedName:argument as partial DeleteExpr {array = Array}
+  ;
+
 _PrimitiveExpr : TypeOrExpr
   ::= "true" as PrimitiveExprLiteral {kind = True}
   ::= "false" as PrimitiveExprLiteral {kind = False}
@@ -140,10 +155,10 @@ _PrimitiveExpr : TypeOrExpr
   ::= "+" _PrimitiveExpr_QualifiedName:operand as PrefixUnaryExpr {op = Plus}
   ::= "&" _PrimitiveExpr_QualifiedName:operand as PrefixUnaryExpr {op = BitwiseAnd}
   ::= "*" _PrimitiveExpr_QualifiedName:operand as PrefixUnaryExpr {op = Mul}
-  ::= "delete" _PrimitiveExpr_QualifiedName:argument as DeleteExpr {scope = Context, array = NotArray}
-  ::= "delete" "[" "]" _PrimitiveExpr_QualifiedName:argument as DeleteExpr {scope = Context, array = Array}
-  ::= "::" "delete" _PrimitiveExpr_QualifiedName:argument as DeleteExpr {scope = Root, array = NotArray}
-  ::= "::" "delete" "[" "]" _PrimitiveExpr_QualifiedName:argument as DeleteExpr {scope = Root, array = Array}
+  ::= "new" _NewFragment as NewExpr {scope = Context}
+  ::= "::" "new" _NewFragment as NewExpr {scope = Root}
+  ::= "delete" _DeleteFragment as DeleteExpr {scope = Context}
+  ::= "::" "delete" _DeleteFragment as DeleteExpr {scope = Root}
   ;
 
 _PrimitiveExpr_QualifiedName

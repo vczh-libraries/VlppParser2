@@ -26,6 +26,7 @@ namespace cpp_parser
 	class CppIfExpr;
 	class CppIndexExpr;
 	class CppNameIdentifier;
+	class CppNewExpr;
 	class CppNumericExprLiteral;
 	class CppOperatorIdentifier;
 	class CppParenthesisExpr;
@@ -158,6 +159,15 @@ namespace cpp_parser
 		NotArray = 1,
 	};
 
+	enum class CppOperatorInit
+	{
+		UNDEFINED_ENUM_ITEM_VALUE = -1,
+		None = 0,
+		Array = 1,
+		Parenthesis = 2,
+		Brace = 3,
+	};
+
 	enum class CppPrimitiveTypeKinds
 	{
 		UNDEFINED_ENUM_ITEM_VALUE = -1,
@@ -195,6 +205,7 @@ namespace cpp_parser
 			virtual void Visit(CppCastExpr* node) = 0;
 			virtual void Visit(CppSysFuncExpr* node) = 0;
 			virtual void Visit(CppDeleteExpr* node) = 0;
+			virtual void Visit(CppNewExpr* node) = 0;
 			virtual void Visit(CppPrefixUnaryExpr* node) = 0;
 			virtual void Visit(CppPostfixUnaryExpr* node) = 0;
 			virtual void Visit(CppIndexExpr* node) = 0;
@@ -361,6 +372,18 @@ namespace cpp_parser
 		void Accept(CppExprOnly::IVisitor* visitor) override;
 	};
 
+	class CppNewExpr : public CppExprOnly, vl::reflection::Description<CppNewExpr>
+	{
+	public:
+		CppOperatorScope scope = CppOperatorScope::UNDEFINED_ENUM_ITEM_VALUE;
+		CppOperatorInit init = CppOperatorInit::UNDEFINED_ENUM_ITEM_VALUE;
+		vl::collections::List<vl::Ptr<CppTypeOrExpr>> type;
+		vl::collections::List<vl::Ptr<CppTypeOrExpr>> placementArguments;
+		vl::collections::List<vl::Ptr<CppTypeOrExpr>> initArguments;
+
+		void Accept(CppExprOnly::IVisitor* visitor) override;
+	};
+
 	class CppPrefixUnaryExpr : public CppExprOnly, vl::reflection::Description<CppPrefixUnaryExpr>
 	{
 	public:
@@ -493,6 +516,8 @@ namespace vl
 			DECL_TYPE_INFO(cpp_parser::CppOperatorScope)
 			DECL_TYPE_INFO(cpp_parser::CppOperatorArray)
 			DECL_TYPE_INFO(cpp_parser::CppDeleteExpr)
+			DECL_TYPE_INFO(cpp_parser::CppOperatorInit)
+			DECL_TYPE_INFO(cpp_parser::CppNewExpr)
 			DECL_TYPE_INFO(cpp_parser::CppPrefixUnaryExpr)
 			DECL_TYPE_INFO(cpp_parser::CppPostfixUnaryExpr)
 			DECL_TYPE_INFO(cpp_parser::CppIndexExpr)
@@ -563,6 +588,11 @@ namespace vl
 				}
 
 				void Visit(cpp_parser::CppDeleteExpr* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+				void Visit(cpp_parser::CppNewExpr* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}

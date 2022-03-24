@@ -25,7 +25,12 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\Source\BuiltIn-Cpp\Generated\Cpp_Lexer.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\Source\BuiltIn-Cpp\Generated\CppAst.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\Source\BuiltIn-Cpp\Generated\CppAst.cpp">
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">/bigobj %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">/bigobj %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">/bigobj %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">/bigobj %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\Source\BuiltIn-Cpp\Generated\CppAst_Builder.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\Source\BuiltIn-Cpp\Generated\CppAst_Copy.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\Source\BuiltIn-Cpp\Generated\CppAst_Empty.cpp" />

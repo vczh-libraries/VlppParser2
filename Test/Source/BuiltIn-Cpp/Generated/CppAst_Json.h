@@ -36,6 +36,7 @@ namespace cpp_parser
 			virtual void PrintFields(CppIfExpr* node);
 			virtual void PrintFields(CppIndexExpr* node);
 			virtual void PrintFields(CppNameIdentifier* node);
+			virtual void PrintFields(CppNewExpr* node);
 			virtual void PrintFields(CppNumericExprLiteral* node);
 			virtual void PrintFields(CppOperatorIdentifier* node);
 			virtual void PrintFields(CppParenthesisExpr* node);
@@ -65,6 +66,7 @@ namespace cpp_parser
 			void Visit(CppCastExpr* node) override;
 			void Visit(CppSysFuncExpr* node) override;
 			void Visit(CppDeleteExpr* node) override;
+			void Visit(CppNewExpr* node) override;
 			void Visit(CppPrefixUnaryExpr* node) override;
 			void Visit(CppPostfixUnaryExpr* node) override;
 			void Visit(CppIndexExpr* node) override;

@@ -194,6 +194,40 @@ MakeNameIdentifier
 		}
 
 /***********************************************************************
+MakeNewExpr
+***********************************************************************/
+
+		MakeNewExpr& MakeNewExpr::init(CppOperatorInit value)
+		{
+			node->init = value;
+			return *this;
+		}
+
+		MakeNewExpr& MakeNewExpr::initArguments(const vl::Ptr<CppTypeOrExpr>& value)
+		{
+			node->initArguments.Add(value);
+			return *this;
+		}
+
+		MakeNewExpr& MakeNewExpr::placementArguments(const vl::Ptr<CppTypeOrExpr>& value)
+		{
+			node->placementArguments.Add(value);
+			return *this;
+		}
+
+		MakeNewExpr& MakeNewExpr::scope(CppOperatorScope value)
+		{
+			node->scope = value;
+			return *this;
+		}
+
+		MakeNewExpr& MakeNewExpr::type(const vl::Ptr<CppTypeOrExpr>& value)
+		{
+			node->type.Add(value);
+			return *this;
+		}
+
+/***********************************************************************
 MakeNumericExprLiteral
 ***********************************************************************/
 

@@ -36,6 +36,7 @@ namespace cpp_parser
 			void CopyFields(CppIfExpr* from, CppIfExpr* to);
 			void CopyFields(CppIndexExpr* from, CppIndexExpr* to);
 			void CopyFields(CppNameIdentifier* from, CppNameIdentifier* to);
+			void CopyFields(CppNewExpr* from, CppNewExpr* to);
 			void CopyFields(CppNumericExprLiteral* from, CppNumericExprLiteral* to);
 			void CopyFields(CppOperatorIdentifier* from, CppOperatorIdentifier* to);
 			void CopyFields(CppParenthesisExpr* from, CppParenthesisExpr* to);
@@ -70,6 +71,7 @@ namespace cpp_parser
 			void Visit(CppCastExpr* node) override;
 			void Visit(CppSysFuncExpr* node) override;
 			void Visit(CppDeleteExpr* node) override;
+			void Visit(CppNewExpr* node) override;
 			void Visit(CppPrefixUnaryExpr* node) override;
 			void Visit(CppPostfixUnaryExpr* node) override;
 			void Visit(CppIndexExpr* node) override;
@@ -103,6 +105,7 @@ namespace cpp_parser
 			vl::Ptr<CppIfExpr> CopyNode(CppIfExpr* node);
 			vl::Ptr<CppIndexExpr> CopyNode(CppIndexExpr* node);
 			vl::Ptr<CppNameIdentifier> CopyNode(CppNameIdentifier* node);
+			vl::Ptr<CppNewExpr> CopyNode(CppNewExpr* node);
 			vl::Ptr<CppNumericExprLiteral> CopyNode(CppNumericExprLiteral* node);
 			vl::Ptr<CppOperatorIdentifier> CopyNode(CppOperatorIdentifier* node);
 			vl::Ptr<CppParenthesisExpr> CopyNode(CppParenthesisExpr* node);
