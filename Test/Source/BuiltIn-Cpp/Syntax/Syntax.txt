@@ -71,12 +71,6 @@ _Identifier
   ::= !_OperatorIdentifier
   ;
 
-_MemberOperatorIdentifier
-  ::= !_NameIdentifier
-  ::= !_DtorIdentifier
-  ::= !_OperatorIdentifier
-  ;
-
 _GenericArgument
   ::= _TypeOrExpr_NoComma_NoLT:argument ["...":variadic] as GenericArgument
   ;
@@ -169,10 +163,20 @@ _PostfixUnaryExpr
 // BinaryExpr
 //////////////////////////////////////////////////////////////////
 
+_MemberOperatorIdentifier
+  ::= !_NameIdentifier
+  ::= !_DtorIdentifier
+  ::= !_OperatorIdentifier
+  ;
+
+_MemberOperatorQualifiedName
+  ::= _Identifier:id [_GenericArguments:arguments] as QualifiedName {kind = Context}
+  ;
+
 _BExpr0
   ::= !_PostfixUnaryExpr
-  ::= _BExpr0:left "." _MemberOperatorIdentifier:right as BinaryExpr {op = Member}
-  ::= _BExpr0:left "->" _MemberOperatorIdentifier:right as BinaryExpr {op = Pointer}
+  ::= _BExpr0:left "." _MemberOperatorQualifiedName:right as BinaryExpr {op = Member}
+  ::= _BExpr0:left "->" _MemberOperatorQualifiedName:right as BinaryExpr {op = Pointer}
   ::= _BExpr0:left ".*" _PostfixUnaryExpr:right as BinaryExpr {op = MemberDeref}
   ::= _BExpr0:left "->*" _PostfixUnaryExpr:right as BinaryExpr {op = PointerDeref}
   ;
