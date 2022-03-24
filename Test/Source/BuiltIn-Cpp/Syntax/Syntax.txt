@@ -106,21 +106,6 @@ _StringLiteralFragment
   ::= STRING:literal as StringLiteralFragment {kind = String}
   ;
 
-_NewInit
-  ::= "[" _Expr:initArguments "]" {"[" _Expr:initArguments "]"} as partial NewExpr {init = Array}
-  ::= "(" {_Expr_NoComma:initArguments ; ","} ")" as partial NewExpr {init = Parenthesis}
-  ::= "{" {_Expr_NoComma:initArguments ; ","} "}" as partial NewExpr {init = Brace}
-  ;
-
-_NewFragment
-  ::= ["(" {_Expr_NoComma:placementArguments ; ","} ")"] _QualifiedName:type [_NewInit] as partial NewExpr {init ?= None}
-  ;
-
-_DeleteFragment
-  ::= _PrimitiveExpr_QualifiedName:argument as partial DeleteExpr {array = NotArray}
-  ::= "[" "]" _PrimitiveExpr_QualifiedName:argument as partial DeleteExpr {array = Array}
-  ;
-
 _PrimitiveExpr : TypeOrExpr
   ::= "true" as PrimitiveExprLiteral {kind = True}
   ::= "false" as PrimitiveExprLiteral {kind = False}
@@ -146,19 +131,6 @@ _PrimitiveExpr : TypeOrExpr
   ::= "__alignof":keyword "(" _TypeOrExpr:argument ")" as SysFuncExpr
   ::= "__uuidof":keyword "(" _TypeOrExpr:argument ")" as SysFuncExpr
   ::= "noexcept":keyword "(" _TypeOrExpr:argument ")" as SysFuncExpr
-  ::= "(" _Type:type ")" _PrimitiveExpr_QualifiedName:expr as CastExpr
-  ::= "++" _PrimitiveExpr_QualifiedName:operand as PrefixUnaryExpr {op = Increase}
-  ::= "--" _PrimitiveExpr_QualifiedName:operand as PrefixUnaryExpr {op = Decrease}
-  ::= "~" _PrimitiveExpr_QualifiedName:operand as PrefixUnaryExpr {op = Revert}
-  ::= "!" _PrimitiveExpr_QualifiedName:operand as PrefixUnaryExpr {op = Not}
-  ::= "-" _PrimitiveExpr_QualifiedName:operand as PrefixUnaryExpr {op = Minus}
-  ::= "+" _PrimitiveExpr_QualifiedName:operand as PrefixUnaryExpr {op = Plus}
-  ::= "&" _PrimitiveExpr_QualifiedName:operand as PrefixUnaryExpr {op = BitwiseAnd}
-  ::= "*" _PrimitiveExpr_QualifiedName:operand as PrefixUnaryExpr {op = Mul}
-  ::= "new" _NewFragment as NewExpr {scope = Context}
-  ::= "::" "new" _NewFragment as NewExpr {scope = Root}
-  ::= "delete" _DeleteFragment as DeleteExpr {scope = Context}
-  ::= "::" "delete" _DeleteFragment as DeleteExpr {scope = Root}
   ;
 
 _PrimitiveExpr_QualifiedName
@@ -169,10 +141,48 @@ _PrimitiveExpr_QualifiedName
 _PostfixUnaryExpr
   ::= left_recursion_placeholder(Shared,Expr)
   ::= !_PrimitiveExpr_QualifiedName
+  ::= _PostfixUnaryExpr:left "." _MemberOperatorQualifiedName:right as BinaryExpr {op = Member}
+  ::= _PostfixUnaryExpr:left "->" _MemberOperatorQualifiedName:right as BinaryExpr {op = Pointer}
   ::= _PostfixUnaryExpr:operand "++" as PostfixUnaryExpr {op = Increase}
   ::= _PostfixUnaryExpr:operand "--" as PostfixUnaryExpr {op = Decrease}
   ::= _PostfixUnaryExpr:operand "[" _Expr:index "]" as IndexExpr
   ::= _PostfixUnaryExpr:operand "(" {_Expr_NoComma:arguments ; ","} ")" as CallExpr
+  ;
+
+_NewInit
+  ::= "[" _Expr:initArguments "]" {"[" _Expr:initArguments "]"} as partial NewExpr {init = Array}
+  ::= "(" {_Expr_NoComma:initArguments ; ","} ")" as partial NewExpr {init = Parenthesis}
+  ::= "{" {_Expr_NoComma:initArguments ; ","} "}" as partial NewExpr {init = Brace}
+  ;
+
+_NewFragment
+  ::= ["(" {_Expr_NoComma:placementArguments ; ","} ")"] _QualifiedName:type [_NewInit] as partial NewExpr {init ?= None}
+  ;
+
+_DeleteFragment
+  ::= _PrefixUnaryExpr:argument as partial DeleteExpr {array = NotArray}
+  ::= "[" "]" _PrefixUnaryExpr:argument as partial DeleteExpr {array = Array}
+  ;
+
+_AllPrefixUnaryExpr
+  ::= "++" _PrefixUnaryExpr:operand as PrefixUnaryExpr {op = Increase}
+  ::= "--" _PrefixUnaryExpr:operand as PrefixUnaryExpr {op = Decrease}
+  ::= "~" _PrefixUnaryExpr:operand as PrefixUnaryExpr {op = Revert}
+  ::= "!" _PrefixUnaryExpr:operand as PrefixUnaryExpr {op = Not}
+  ::= "-" _PrefixUnaryExpr:operand as PrefixUnaryExpr {op = Minus}
+  ::= "+" _PrefixUnaryExpr:operand as PrefixUnaryExpr {op = Plus}
+  ::= "&" _PrefixUnaryExpr:operand as PrefixUnaryExpr {op = BitwiseAnd}
+  ::= "*" _PrefixUnaryExpr:operand as PrefixUnaryExpr {op = Mul}
+  ::= "new" _NewFragment as NewExpr {scope = Context}
+  ::= "::" "new" _NewFragment as NewExpr {scope = Root}
+  ::= "delete" _DeleteFragment as DeleteExpr {scope = Context}
+  ::= "::" "delete" _DeleteFragment as DeleteExpr {scope = Root}
+  ::= "(" _Type:type ")" _PrefixUnaryExpr:expr as CastExpr
+  ;
+
+_PrefixUnaryExpr
+  ::= !_PostfixUnaryExpr
+  ::= !_AllPrefixUnaryExpr
   ;
 
 //////////////////////////////////////////////////////////////////
@@ -190,11 +200,9 @@ _MemberOperatorQualifiedName
   ;
 
 _BExpr0
-  ::= !_PostfixUnaryExpr
-  ::= _BExpr0:left "." _MemberOperatorQualifiedName:right as BinaryExpr {op = Member}
-  ::= _BExpr0:left "->" _MemberOperatorQualifiedName:right as BinaryExpr {op = Pointer}
-  ::= _BExpr0:left ".*" _PostfixUnaryExpr:right as BinaryExpr {op = MemberDeref}
-  ::= _BExpr0:left "->*" _PostfixUnaryExpr:right as BinaryExpr {op = PointerDeref}
+  ::= !_PrefixUnaryExpr
+  ::= _BExpr0:left ".*" _PrefixUnaryExpr:right as BinaryExpr {op = MemberDeref}
+  ::= _BExpr0:left "->*" _PrefixUnaryExpr:right as BinaryExpr {op = PointerDeref}
   ;
 
 _BExpr1
@@ -345,16 +353,21 @@ _Type
 // _Expr
 //////////////////////////////////////////////////////////////////
 
+_NonLeftRecursiveExpr
+  ::= !_AllPrefixUnaryExpr
+  ::= !_ThrowExpr
+  ;
+
 _Expr
   ::= !_QualifiedName left_recursion_inject(Shared) _BExpr
   ::= !_PrimitiveExpr left_recursion_inject(Expr) _BExpr
-  ::= !_ThrowExpr
+  ::= !_NonLeftRecursiveExpr
   ;
 
 _Expr_NoComma
   ::= !_QualifiedName left_recursion_inject(Shared) _BExpr_NoComma
   ::= !_PrimitiveExpr left_recursion_inject(Expr) _BExpr_NoComma
-  ::= !_ThrowExpr
+  ::= !_NonLeftRecursiveExpr
   ;
 
 //////////////////////////////////////////////////////////////////
@@ -365,14 +378,14 @@ _TypeOrExpr
   ::= !_QualifiedName left_recursion_inject(Shared) _LongType | _BExpr
   ::= !_ShortType left_recursion_inject(Type) _LongType
   ::= !_PrimitiveExpr left_recursion_inject(Expr) _BExpr
-  ::= !_ThrowExpr
+  ::= !_NonLeftRecursiveExpr
   ;
 
 _TypeOrExpr_NoComma_NoLT
   ::= !_QualifiedName left_recursion_inject(Shared) _LongType | _BExpr_NoComma
   ::= !_ShortType left_recursion_inject(Type) _LongType
   ::= !_PrimitiveExpr left_recursion_inject(Expr) _BExpr_NoComma
-  ::= !_ThrowExpr
+  ::= !_NonLeftRecursiveExpr
   ;
 
 //////////////////////////////////////////////////////////////////
