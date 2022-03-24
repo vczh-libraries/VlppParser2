@@ -240,9 +240,13 @@ _BExpr10
   ::= _BExpr10:left "||" _BExpr9:right as BinaryExpr {op = Or}
   ;
 
+_ThrowExpr
+  ::= "throw" [_BExpr10:argument] as ThrowExpr
+  ;
+
 _BExpr_NoComma
   ::= !_BExpr10
-  ::= "throw" [_BExpr10:argument] as ThrowExpr
+  ::= !_ThrowExpr
   ::= _BExpr10:condition "?" _Expr:trueBranch ":" _BExpr_NoComma:falseBranch as IfExpr
   ::= _BExpr10:left "=" _BExpr_NoComma:right as BinaryExpr {op = Assign}
   ::= _BExpr10:left "*=" _BExpr_NoComma:right as BinaryExpr {op = MulAssign}
@@ -329,11 +333,13 @@ _Type
 _Expr
   ::= !_QualifiedName left_recursion_inject(Shared) _BExpr
   ::= !_PrimitiveExpr left_recursion_inject(Expr) _BExpr
+  ::= !_ThrowExpr
   ;
 
 _Expr_NoComma
   ::= !_QualifiedName left_recursion_inject(Shared) _BExpr_NoComma
   ::= !_PrimitiveExpr left_recursion_inject(Expr) _BExpr_NoComma
+  ::= !_ThrowExpr
   ;
 
 //////////////////////////////////////////////////////////////////
@@ -344,12 +350,14 @@ _TypeOrExpr
   ::= !_QualifiedName left_recursion_inject(Shared) _LongType | _BExpr
   ::= !_ShortType left_recursion_inject(Type) _LongType
   ::= !_PrimitiveExpr left_recursion_inject(Expr) _BExpr
+  ::= !_ThrowExpr
   ;
 
 _TypeOrExpr_NoComma_NoLT
   ::= !_QualifiedName left_recursion_inject(Shared) _LongType | _BExpr_NoComma
   ::= !_ShortType left_recursion_inject(Type) _LongType
   ::= !_PrimitiveExpr left_recursion_inject(Expr) _BExpr_NoComma
+  ::= !_ThrowExpr
   ;
 
 //////////////////////////////////////////////////////////////////
