@@ -107,6 +107,19 @@ _PrimitiveExpr : TypeOrExpr
   ::= FLOATHEX:literal as NumericExprLiteral {kind = FloatHex}
   ::= CHAR:literal as NumericExprLiteral {kind = Char}
   ::= _StringLiteralFragment:fragments {_StringLiteralFragment:fragments} as StringLiteral
+  ::= "(" _Expr:expr ")" as ParanthesisExpr
+  ::= "{" {_Expr_NoComma:arguments ; ","} "}" as BraceExpr
+  ::= "dynamic_cast":keyword "<" _Type:type ">" "(" _Expr:expr ")" as CastExpr
+  ::= "static_cast":keyword "<" _Type:type ">" "(" _Expr:expr ")" as CastExpr
+  ::= "const_cast":keyword "<" _Type:type ">" "(" _Expr:expr ")" as CastExpr
+  ::= "reinterpret_cast":keyword "<" _Type:type ">" "(" _Expr:expr ")" as CastExpr
+  ::= "safe_cast":keyword "<" _Type:type ">" "(" _Expr:expr ")" as CastExpr
+  ::= "(" _Type:type ")" _PrimitiveExpr:expr as CastExpr
+  ::= "typeid":keyword "(" _TypeOrExpr:argument ")" as SysFuncExpr
+  ::= "alignof":keyword "(" _TypeOrExpr:argument ")" as SysFuncExpr
+  ::= "__alignof":keyword "(" _TypeOrExpr:argument ")" as SysFuncExpr
+  ::= "__uuidof":keyword "(" _TypeOrExpr:argument ")" as SysFuncExpr
+  ::= "noexcept":keyword "(" _TypeOrExpr:argument ")" as SysFuncExpr
   ;
 
 //////////////////////////////////////////////////////////////////
@@ -173,6 +186,10 @@ _Type
 _Expr
   ::= !_QualifiedName
   ::= !_PrimitiveExpr
+  ;
+
+_Expr_NoComma
+  ::= !_Expr
   ;
 
 //////////////////////////////////////////////////////////////////

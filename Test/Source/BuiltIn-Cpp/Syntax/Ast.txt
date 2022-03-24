@@ -173,6 +173,34 @@ class StringLiteral : ExprOnly
 }
 
 //////////////////////////////////////////////////////////////////
+// PrimitiveExpr (Composable)
+//////////////////////////////////////////////////////////////////
+
+class ParenthesisExpr : ExprOnly
+{
+    var expr : TypeOrExpr;
+}
+
+class BraceExpr : ExprOnly
+{
+    var arguments : TypeOrExpr[];
+}
+
+class CastExpr : ExprOnly
+{
+    var keyword : token;
+    var type : TypeOrExpr;
+    var expr : TypeOrExpr;
+}
+
+class SysFuncExpr : ExprOnly
+{
+    var keyword : token;
+    var variadic : token;
+    var argument : TypeOrExpr;
+}
+
+//////////////////////////////////////////////////////////////////
 // PrimitiveType
 //////////////////////////////////////////////////////////////////
 
