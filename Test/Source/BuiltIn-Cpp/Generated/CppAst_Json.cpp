@@ -10,6 +10,31 @@ namespace cpp_parser
 {
 	namespace json_visitor
 	{
+		void AstVisitor::PrintFields(CppBraceExpr* node)
+		{
+			BeginField(L"arguments");
+			BeginArray();
+			for (auto&& listItem : node->arguments)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppCastExpr* node)
+		{
+			BeginField(L"expr");
+			Print(node->expr.Obj());
+			EndField();
+			BeginField(L"keyword");
+			WriteToken(node->keyword);
+			EndField();
+			BeginField(L"type");
+			Print(node->type.Obj());
+			EndField();
+		}
 		void AstVisitor::PrintFields(CppConstType* node)
 		{
 			BeginField(L"type");
@@ -257,6 +282,12 @@ namespace cpp_parser
 			}
 			EndField();
 		}
+		void AstVisitor::PrintFields(CppParenthesisExpr* node)
+		{
+			BeginField(L"expr");
+			Print(node->expr.Obj());
+			EndField();
+		}
 		void AstVisitor::PrintFields(CppPrimitiveExprLiteral* node)
 		{
 			BeginField(L"kind");
@@ -376,6 +407,18 @@ namespace cpp_parser
 			WriteToken(node->literal);
 			EndField();
 		}
+		void AstVisitor::PrintFields(CppSysFuncExpr* node)
+		{
+			BeginField(L"argument");
+			Print(node->argument.Obj());
+			EndField();
+			BeginField(L"keyword");
+			WriteToken(node->keyword);
+			EndField();
+			BeginField(L"variadic");
+			WriteToken(node->variadic);
+			EndField();
+		}
 		void AstVisitor::PrintFields(CppTypeOnly* node)
 		{
 		}
@@ -455,6 +498,66 @@ namespace cpp_parser
 			PrintFields(static_cast<CppTypeOrExpr*>(node));
 			PrintFields(static_cast<CppExprOnly*>(node));
 			PrintFields(static_cast<CppStringLiteral*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppParenthesisExpr* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"ParenthesisExpr", node);
+			PrintFields(static_cast<CppTypeOrExpr*>(node));
+			PrintFields(static_cast<CppExprOnly*>(node));
+			PrintFields(static_cast<CppParenthesisExpr*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppBraceExpr* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"BraceExpr", node);
+			PrintFields(static_cast<CppTypeOrExpr*>(node));
+			PrintFields(static_cast<CppExprOnly*>(node));
+			PrintFields(static_cast<CppBraceExpr*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppCastExpr* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"CastExpr", node);
+			PrintFields(static_cast<CppTypeOrExpr*>(node));
+			PrintFields(static_cast<CppExprOnly*>(node));
+			PrintFields(static_cast<CppCastExpr*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppSysFuncExpr* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"SysFuncExpr", node);
+			PrintFields(static_cast<CppTypeOrExpr*>(node));
+			PrintFields(static_cast<CppExprOnly*>(node));
+			PrintFields(static_cast<CppSysFuncExpr*>(node));
 			EndObject();
 		}
 

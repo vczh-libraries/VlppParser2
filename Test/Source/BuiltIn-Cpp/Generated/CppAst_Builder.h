@@ -13,6 +13,20 @@ namespace cpp_parser
 {
 	namespace builder
 	{
+		class MakeBraceExpr : public vl::glr::ParsingAstBuilder<CppBraceExpr>
+		{
+		public:
+			MakeBraceExpr& arguments(const vl::Ptr<CppTypeOrExpr>& value);
+		};
+
+		class MakeCastExpr : public vl::glr::ParsingAstBuilder<CppCastExpr>
+		{
+		public:
+			MakeCastExpr& expr(const vl::Ptr<CppTypeOrExpr>& value);
+			MakeCastExpr& keyword(const vl::WString& value);
+			MakeCastExpr& type(const vl::Ptr<CppTypeOrExpr>& value);
+		};
+
 		class MakeConstType : public vl::glr::ParsingAstBuilder<CppConstType>
 		{
 		public:
@@ -52,6 +66,12 @@ namespace cpp_parser
 			MakeOperatorIdentifier& op(CppOperators value);
 		};
 
+		class MakeParenthesisExpr : public vl::glr::ParsingAstBuilder<CppParenthesisExpr>
+		{
+		public:
+			MakeParenthesisExpr& expr(const vl::Ptr<CppTypeOrExpr>& value);
+		};
+
 		class MakePrimitiveExprLiteral : public vl::glr::ParsingAstBuilder<CppPrimitiveExprLiteral>
 		{
 		public:
@@ -87,6 +107,14 @@ namespace cpp_parser
 		public:
 			MakeStringLiteralFragment& kind(CppStringLiteralKinds value);
 			MakeStringLiteralFragment& literal(const vl::WString& value);
+		};
+
+		class MakeSysFuncExpr : public vl::glr::ParsingAstBuilder<CppSysFuncExpr>
+		{
+		public:
+			MakeSysFuncExpr& argument(const vl::Ptr<CppTypeOrExpr>& value);
+			MakeSysFuncExpr& keyword(const vl::WString& value);
+			MakeSysFuncExpr& variadic(const vl::WString& value);
 		};
 
 		class MakeVolatileType : public vl::glr::ParsingAstBuilder<CppVolatileType>

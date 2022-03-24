@@ -18,6 +18,10 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 		auto cppTypeName = CppCppTypeName((CppClasses)type);
 		switch((CppClasses)type)
 		{
+		case CppClasses::BraceExpr:
+			return new cpp_parser::CppBraceExpr();
+		case CppClasses::CastExpr:
+			return new cpp_parser::CppCastExpr();
 		case CppClasses::ConstType:
 			return new cpp_parser::CppConstType();
 		case CppClasses::File:
@@ -32,6 +36,8 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return new cpp_parser::CppNumericExprLiteral();
 		case CppClasses::OperatorIdentifier:
 			return new cpp_parser::CppOperatorIdentifier();
+		case CppClasses::ParenthesisExpr:
+			return new cpp_parser::CppParenthesisExpr();
 		case CppClasses::PrimitiveExprLiteral:
 			return new cpp_parser::CppPrimitiveExprLiteral();
 		case CppClasses::PrimitiveType:
@@ -42,6 +48,8 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return new cpp_parser::CppStringLiteral();
 		case CppClasses::StringLiteralFragment:
 			return new cpp_parser::CppStringLiteralFragment();
+		case CppClasses::SysFuncExpr:
+			return new cpp_parser::CppSysFuncExpr();
 		case CppClasses::VolatileType:
 			return new cpp_parser::CppVolatileType();
 		default:
@@ -54,12 +62,20 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 		auto cppFieldName = CppCppFieldName((CppFields)field);
 		switch((CppFields)field)
 		{
+		case CppFields::BraceExpr_arguments:
+			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppBraceExpr::arguments, object, field, value, cppFieldName);
+		case CppFields::CastExpr_expr:
+			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppCastExpr::expr, object, field, value, cppFieldName);
+		case CppFields::CastExpr_type:
+			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppCastExpr::type, object, field, value, cppFieldName);
 		case CppFields::ConstType_type:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppConstType::type, object, field, value, cppFieldName);
 		case CppFields::GenericArgument_argument:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppGenericArgument::argument, object, field, value, cppFieldName);
 		case CppFields::GenericArguments_arguments:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppGenericArguments::arguments, object, field, value, cppFieldName);
+		case CppFields::ParenthesisExpr_expr:
+			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppParenthesisExpr::expr, object, field, value, cppFieldName);
 		case CppFields::QualifiedName_arguments:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppQualifiedName::arguments, object, field, value, cppFieldName);
 		case CppFields::QualifiedName_expr:
@@ -70,6 +86,8 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppQualifiedName::parent, object, field, value, cppFieldName);
 		case CppFields::StringLiteral_fragments:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppStringLiteral::fragments, object, field, value, cppFieldName);
+		case CppFields::SysFuncExpr_argument:
+			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppSysFuncExpr::argument, object, field, value, cppFieldName);
 		case CppFields::VolatileType_type:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppVolatileType::type, object, field, value, cppFieldName);
 		default:
@@ -82,6 +100,8 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 		auto cppFieldName = CppCppFieldName((CppFields)field);
 		switch((CppFields)field)
 		{
+		case CppFields::CastExpr_keyword:
+			return vl::glr::AssemblerSetTokenField(&cpp_parser::CppCastExpr::keyword, object, field, token, tokenIndex, cppFieldName);
 		case CppFields::GenericArgument_variadic:
 			return vl::glr::AssemblerSetTokenField(&cpp_parser::CppGenericArgument::variadic, object, field, token, tokenIndex, cppFieldName);
 		case CppFields::NameIdentifier_name:
@@ -94,6 +114,10 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::glr::AssemblerSetTokenField(&cpp_parser::CppPrimitiveType::literal2, object, field, token, tokenIndex, cppFieldName);
 		case CppFields::StringLiteralFragment_literal:
 			return vl::glr::AssemblerSetTokenField(&cpp_parser::CppStringLiteralFragment::literal, object, field, token, tokenIndex, cppFieldName);
+		case CppFields::SysFuncExpr_keyword:
+			return vl::glr::AssemblerSetTokenField(&cpp_parser::CppSysFuncExpr::keyword, object, field, token, tokenIndex, cppFieldName);
+		case CppFields::SysFuncExpr_variadic:
+			return vl::glr::AssemblerSetTokenField(&cpp_parser::CppSysFuncExpr::variadic, object, field, token, tokenIndex, cppFieldName);
 		default:
 			return vl::glr::AssemblyThrowFieldNotToken(field, cppFieldName);
 		}
@@ -126,6 +150,8 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 	const wchar_t* CppTypeName(CppClasses type)
 	{
 		const wchar_t* results[] = {
+			L"BraceExpr",
+			L"CastExpr",
 			L"ConstType",
 			L"ExprOnly",
 			L"File",
@@ -135,22 +161,26 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"NameIdentifier",
 			L"NumericExprLiteral",
 			L"OperatorIdentifier",
+			L"ParenthesisExpr",
 			L"PrimitiveExprLiteral",
 			L"PrimitiveType",
 			L"QualifiedName",
 			L"StringLiteral",
 			L"StringLiteralFragment",
+			L"SysFuncExpr",
 			L"TypeOnly",
 			L"TypeOrExpr",
 			L"VolatileType",
 		};
 		vl::vint index = (vl::vint)type;
-		return 0 <= index && index < 17 ? results[index] : nullptr;
+		return 0 <= index && index < 21 ? results[index] : nullptr;
 	}
 
 	const wchar_t* CppCppTypeName(CppClasses type)
 	{
 		const wchar_t* results[] = {
+			L"cpp_parser::CppBraceExpr",
+			L"cpp_parser::CppCastExpr",
 			L"cpp_parser::CppConstType",
 			L"cpp_parser::CppExprOnly",
 			L"cpp_parser::CppFile",
@@ -160,22 +190,28 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::CppNameIdentifier",
 			L"cpp_parser::CppNumericExprLiteral",
 			L"cpp_parser::CppOperatorIdentifier",
+			L"cpp_parser::CppParenthesisExpr",
 			L"cpp_parser::CppPrimitiveExprLiteral",
 			L"cpp_parser::CppPrimitiveType",
 			L"cpp_parser::CppQualifiedName",
 			L"cpp_parser::CppStringLiteral",
 			L"cpp_parser::CppStringLiteralFragment",
+			L"cpp_parser::CppSysFuncExpr",
 			L"cpp_parser::CppTypeOnly",
 			L"cpp_parser::CppTypeOrExpr",
 			L"cpp_parser::CppVolatileType",
 		};
 		vl::vint index = (vl::vint)type;
-		return 0 <= index && index < 17 ? results[index] : nullptr;
+		return 0 <= index && index < 21 ? results[index] : nullptr;
 	}
 
 	const wchar_t* CppFieldName(CppFields field)
 	{
 		const wchar_t* results[] = {
+			L"BraceExpr::arguments",
+			L"CastExpr::expr",
+			L"CastExpr::keyword",
+			L"CastExpr::type",
 			L"ConstType::type",
 			L"GenericArgument::argument",
 			L"GenericArgument::variadic",
@@ -185,6 +221,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"NumericExprLiteral::kind",
 			L"NumericExprLiteral::literal",
 			L"OperatorIdentifier::op",
+			L"ParenthesisExpr::expr",
 			L"PrimitiveExprLiteral::kind",
 			L"PrimitiveType::kind",
 			L"PrimitiveType::literal1",
@@ -197,15 +234,22 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"StringLiteral::fragments",
 			L"StringLiteralFragment::kind",
 			L"StringLiteralFragment::literal",
+			L"SysFuncExpr::argument",
+			L"SysFuncExpr::keyword",
+			L"SysFuncExpr::variadic",
 			L"VolatileType::type",
 		};
 		vl::vint index = (vl::vint)field;
-		return 0 <= index && index < 22 ? results[index] : nullptr;
+		return 0 <= index && index < 30 ? results[index] : nullptr;
 	}
 
 	const wchar_t* CppCppFieldName(CppFields field)
 	{
 		const wchar_t* results[] = {
+			L"cpp_parser::CppBraceExpr::arguments",
+			L"cpp_parser::CppCastExpr::expr",
+			L"cpp_parser::CppCastExpr::keyword",
+			L"cpp_parser::CppCastExpr::type",
 			L"cpp_parser::CppConstType::type",
 			L"cpp_parser::CppGenericArgument::argument",
 			L"cpp_parser::CppGenericArgument::variadic",
@@ -215,6 +259,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::CppNumericExprLiteral::kind",
 			L"cpp_parser::CppNumericExprLiteral::literal",
 			L"cpp_parser::CppOperatorIdentifier::op",
+			L"cpp_parser::CppParenthesisExpr::expr",
 			L"cpp_parser::CppPrimitiveExprLiteral::kind",
 			L"cpp_parser::CppPrimitiveType::kind",
 			L"cpp_parser::CppPrimitiveType::literal1",
@@ -227,10 +272,13 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::CppStringLiteral::fragments",
 			L"cpp_parser::CppStringLiteralFragment::kind",
 			L"cpp_parser::CppStringLiteralFragment::literal",
+			L"cpp_parser::CppSysFuncExpr::argument",
+			L"cpp_parser::CppSysFuncExpr::keyword",
+			L"cpp_parser::CppSysFuncExpr::variadic",
 			L"cpp_parser::CppVolatileType::type",
 		};
 		vl::vint index = (vl::vint)field;
-		return 0 <= index && index < 22 ? results[index] : nullptr;
+		return 0 <= index && index < 30 ? results[index] : nullptr;
 	}
 
 	vl::Ptr<vl::glr::ParsingAstBase> CppAstInsReceiver::ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates)

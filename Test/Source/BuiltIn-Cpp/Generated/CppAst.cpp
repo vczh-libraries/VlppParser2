@@ -52,6 +52,26 @@ Visitor Pattern Implementation
 		visitor->Visit(this);
 	}
 
+	void CppParenthesisExpr::Accept(CppExprOnly::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void CppBraceExpr::Accept(CppExprOnly::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void CppCastExpr::Accept(CppExprOnly::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void CppSysFuncExpr::Accept(CppExprOnly::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
 	void CppPrimitiveType::Accept(CppTypeOnly::IVisitor* visitor)
 	{
 		visitor->Visit(this);
@@ -98,6 +118,10 @@ namespace vl
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppStringLiteralKinds, cpp_parser::CppStringLiteralKinds)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppStringLiteralFragment, cpp_parser::CppStringLiteralFragment)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppStringLiteral, cpp_parser::CppStringLiteral)
+			IMPL_TYPE_INFO_RENAME(cpp_parser::CppParenthesisExpr, cpp_parser::CppParenthesisExpr)
+			IMPL_TYPE_INFO_RENAME(cpp_parser::CppBraceExpr, cpp_parser::CppBraceExpr)
+			IMPL_TYPE_INFO_RENAME(cpp_parser::CppCastExpr, cpp_parser::CppCastExpr)
+			IMPL_TYPE_INFO_RENAME(cpp_parser::CppSysFuncExpr, cpp_parser::CppSysFuncExpr)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppPrimitiveTypeKinds, cpp_parser::CppPrimitiveTypeKinds)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppPrimitiveType, cpp_parser::CppPrimitiveType)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppConstType, cpp_parser::CppConstType)
@@ -300,6 +324,42 @@ namespace vl
 				CLASS_MEMBER_FIELD(fragments)
 			END_CLASS_MEMBER(cpp_parser::CppStringLiteral)
 
+			BEGIN_CLASS_MEMBER(cpp_parser::CppParenthesisExpr)
+				CLASS_MEMBER_BASE(cpp_parser::CppExprOnly)
+
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppParenthesisExpr>(), NO_PARAMETER)
+
+				CLASS_MEMBER_FIELD(expr)
+			END_CLASS_MEMBER(cpp_parser::CppParenthesisExpr)
+
+			BEGIN_CLASS_MEMBER(cpp_parser::CppBraceExpr)
+				CLASS_MEMBER_BASE(cpp_parser::CppExprOnly)
+
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppBraceExpr>(), NO_PARAMETER)
+
+				CLASS_MEMBER_FIELD(arguments)
+			END_CLASS_MEMBER(cpp_parser::CppBraceExpr)
+
+			BEGIN_CLASS_MEMBER(cpp_parser::CppCastExpr)
+				CLASS_MEMBER_BASE(cpp_parser::CppExprOnly)
+
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppCastExpr>(), NO_PARAMETER)
+
+				CLASS_MEMBER_FIELD(keyword)
+				CLASS_MEMBER_FIELD(type)
+				CLASS_MEMBER_FIELD(expr)
+			END_CLASS_MEMBER(cpp_parser::CppCastExpr)
+
+			BEGIN_CLASS_MEMBER(cpp_parser::CppSysFuncExpr)
+				CLASS_MEMBER_BASE(cpp_parser::CppExprOnly)
+
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppSysFuncExpr>(), NO_PARAMETER)
+
+				CLASS_MEMBER_FIELD(keyword)
+				CLASS_MEMBER_FIELD(variadic)
+				CLASS_MEMBER_FIELD(argument)
+			END_CLASS_MEMBER(cpp_parser::CppSysFuncExpr)
+
 			BEGIN_ENUM_ITEM(cpp_parser::CppPrimitiveTypeKinds)
 				ENUM_ITEM_NAMESPACE(cpp_parser::CppPrimitiveTypeKinds)
 				ENUM_NAMESPACE_ITEM(Neutral)
@@ -350,6 +410,10 @@ namespace vl
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppExprOnly::IVisitor::*)(cpp_parser::CppPrimitiveExprLiteral* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppExprOnly::IVisitor::*)(cpp_parser::CppNumericExprLiteral* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppExprOnly::IVisitor::*)(cpp_parser::CppStringLiteral* node))
+				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppExprOnly::IVisitor::*)(cpp_parser::CppParenthesisExpr* node))
+				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppExprOnly::IVisitor::*)(cpp_parser::CppBraceExpr* node))
+				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppExprOnly::IVisitor::*)(cpp_parser::CppCastExpr* node))
+				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppExprOnly::IVisitor::*)(cpp_parser::CppSysFuncExpr* node))
 			END_INTERFACE_MEMBER(cpp_parser::CppExprOnly)
 
 			BEGIN_INTERFACE_MEMBER(cpp_parser::CppTypeOnly::IVisitor)
@@ -394,6 +458,10 @@ namespace vl
 					ADD_TYPE_INFO(cpp_parser::CppStringLiteralKinds)
 					ADD_TYPE_INFO(cpp_parser::CppStringLiteralFragment)
 					ADD_TYPE_INFO(cpp_parser::CppStringLiteral)
+					ADD_TYPE_INFO(cpp_parser::CppParenthesisExpr)
+					ADD_TYPE_INFO(cpp_parser::CppBraceExpr)
+					ADD_TYPE_INFO(cpp_parser::CppCastExpr)
+					ADD_TYPE_INFO(cpp_parser::CppSysFuncExpr)
 					ADD_TYPE_INFO(cpp_parser::CppPrimitiveTypeKinds)
 					ADD_TYPE_INFO(cpp_parser::CppPrimitiveType)
 					ADD_TYPE_INFO(cpp_parser::CppConstType)

@@ -12,6 +12,8 @@ Licensed under https://github.com/vczh-libraries/License
 
 namespace cpp_parser
 {
+	class CppBraceExpr;
+	class CppCastExpr;
 	class CppConstType;
 	class CppExprOnly;
 	class CppFile;
@@ -21,11 +23,13 @@ namespace cpp_parser
 	class CppNameIdentifier;
 	class CppNumericExprLiteral;
 	class CppOperatorIdentifier;
+	class CppParenthesisExpr;
 	class CppPrimitiveExprLiteral;
 	class CppPrimitiveType;
 	class CppQualifiedName;
 	class CppStringLiteral;
 	class CppStringLiteralFragment;
+	class CppSysFuncExpr;
 	class CppTypeOnly;
 	class CppTypeOrExpr;
 	class CppVolatileType;
@@ -162,6 +166,10 @@ namespace cpp_parser
 			virtual void Visit(CppPrimitiveExprLiteral* node) = 0;
 			virtual void Visit(CppNumericExprLiteral* node) = 0;
 			virtual void Visit(CppStringLiteral* node) = 0;
+			virtual void Visit(CppParenthesisExpr* node) = 0;
+			virtual void Visit(CppBraceExpr* node) = 0;
+			virtual void Visit(CppCastExpr* node) = 0;
+			virtual void Visit(CppSysFuncExpr* node) = 0;
 		};
 
 		virtual void Accept(CppExprOnly::IVisitor* visitor) = 0;
@@ -275,6 +283,42 @@ namespace cpp_parser
 		void Accept(CppExprOnly::IVisitor* visitor) override;
 	};
 
+	class CppParenthesisExpr : public CppExprOnly, vl::reflection::Description<CppParenthesisExpr>
+	{
+	public:
+		vl::Ptr<CppTypeOrExpr> expr;
+
+		void Accept(CppExprOnly::IVisitor* visitor) override;
+	};
+
+	class CppBraceExpr : public CppExprOnly, vl::reflection::Description<CppBraceExpr>
+	{
+	public:
+		vl::collections::List<vl::Ptr<CppTypeOrExpr>> arguments;
+
+		void Accept(CppExprOnly::IVisitor* visitor) override;
+	};
+
+	class CppCastExpr : public CppExprOnly, vl::reflection::Description<CppCastExpr>
+	{
+	public:
+		vl::glr::ParsingToken keyword;
+		vl::Ptr<CppTypeOrExpr> type;
+		vl::Ptr<CppTypeOrExpr> expr;
+
+		void Accept(CppExprOnly::IVisitor* visitor) override;
+	};
+
+	class CppSysFuncExpr : public CppExprOnly, vl::reflection::Description<CppSysFuncExpr>
+	{
+	public:
+		vl::glr::ParsingToken keyword;
+		vl::glr::ParsingToken variadic;
+		vl::Ptr<CppTypeOrExpr> argument;
+
+		void Accept(CppExprOnly::IVisitor* visitor) override;
+	};
+
 	class CppPrimitiveType : public CppTypeOnly, vl::reflection::Description<CppPrimitiveType>
 	{
 	public:
@@ -336,6 +380,10 @@ namespace vl
 			DECL_TYPE_INFO(cpp_parser::CppStringLiteralKinds)
 			DECL_TYPE_INFO(cpp_parser::CppStringLiteralFragment)
 			DECL_TYPE_INFO(cpp_parser::CppStringLiteral)
+			DECL_TYPE_INFO(cpp_parser::CppParenthesisExpr)
+			DECL_TYPE_INFO(cpp_parser::CppBraceExpr)
+			DECL_TYPE_INFO(cpp_parser::CppCastExpr)
+			DECL_TYPE_INFO(cpp_parser::CppSysFuncExpr)
 			DECL_TYPE_INFO(cpp_parser::CppPrimitiveTypeKinds)
 			DECL_TYPE_INFO(cpp_parser::CppPrimitiveType)
 			DECL_TYPE_INFO(cpp_parser::CppConstType)
@@ -374,6 +422,26 @@ namespace vl
 				}
 
 				void Visit(cpp_parser::CppStringLiteral* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+				void Visit(cpp_parser::CppParenthesisExpr* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+				void Visit(cpp_parser::CppBraceExpr* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+				void Visit(cpp_parser::CppCastExpr* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+				void Visit(cpp_parser::CppSysFuncExpr* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}

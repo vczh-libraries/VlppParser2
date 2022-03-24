@@ -12,6 +12,38 @@ namespace cpp_parser
 	{
 
 /***********************************************************************
+MakeBraceExpr
+***********************************************************************/
+
+		MakeBraceExpr& MakeBraceExpr::arguments(const vl::Ptr<CppTypeOrExpr>& value)
+		{
+			node->arguments.Add(value);
+			return *this;
+		}
+
+/***********************************************************************
+MakeCastExpr
+***********************************************************************/
+
+		MakeCastExpr& MakeCastExpr::expr(const vl::Ptr<CppTypeOrExpr>& value)
+		{
+			node->expr = value;
+			return *this;
+		}
+
+		MakeCastExpr& MakeCastExpr::keyword(const vl::WString& value)
+		{
+			node->keyword.value = value;
+			return *this;
+		}
+
+		MakeCastExpr& MakeCastExpr::type(const vl::Ptr<CppTypeOrExpr>& value)
+		{
+			node->type = value;
+			return *this;
+		}
+
+/***********************************************************************
 MakeConstType
 ***********************************************************************/
 
@@ -86,6 +118,16 @@ MakeOperatorIdentifier
 		MakeOperatorIdentifier& MakeOperatorIdentifier::op(CppOperators value)
 		{
 			node->op = value;
+			return *this;
+		}
+
+/***********************************************************************
+MakeParenthesisExpr
+***********************************************************************/
+
+		MakeParenthesisExpr& MakeParenthesisExpr::expr(const vl::Ptr<CppTypeOrExpr>& value)
+		{
+			node->expr = value;
 			return *this;
 		}
 
@@ -178,6 +220,28 @@ MakeStringLiteralFragment
 		MakeStringLiteralFragment& MakeStringLiteralFragment::literal(const vl::WString& value)
 		{
 			node->literal.value = value;
+			return *this;
+		}
+
+/***********************************************************************
+MakeSysFuncExpr
+***********************************************************************/
+
+		MakeSysFuncExpr& MakeSysFuncExpr::argument(const vl::Ptr<CppTypeOrExpr>& value)
+		{
+			node->argument = value;
+			return *this;
+		}
+
+		MakeSysFuncExpr& MakeSysFuncExpr::keyword(const vl::WString& value)
+		{
+			node->keyword.value = value;
+			return *this;
+		}
+
+		MakeSysFuncExpr& MakeSysFuncExpr::variadic(const vl::WString& value)
+		{
+			node->variadic.value = value;
 			return *this;
 		}
 

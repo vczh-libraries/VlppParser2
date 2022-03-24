@@ -49,6 +49,22 @@ ExprOnlyVisitor
 		{
 		}
 
+		void ExprOnlyVisitor::Visit(CppParenthesisExpr* node)
+		{
+		}
+
+		void ExprOnlyVisitor::Visit(CppBraceExpr* node)
+		{
+		}
+
+		void ExprOnlyVisitor::Visit(CppCastExpr* node)
+		{
+		}
+
+		void ExprOnlyVisitor::Visit(CppSysFuncExpr* node)
+		{
+		}
+
 /***********************************************************************
 TypeOnlyVisitor
 ***********************************************************************/
