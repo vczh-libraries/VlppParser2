@@ -120,14 +120,14 @@ _PrimitiveExpr : TypeOrExpr
   ::= "__alignof":keyword "(" _TypeOrExpr:argument ")" as SysFuncExpr
   ::= "__uuidof":keyword "(" _TypeOrExpr:argument ")" as SysFuncExpr
   ::= "noexcept":keyword "(" _TypeOrExpr:argument ")" as SysFuncExpr
-  ::= "++" _PrimitiveExpr:operand as _QualifiedName {op = Increase}
-  ::= "--" _PrimitiveExpr:operand as _QualifiedName {op = Decrease}
-  ::= "~" _PrimitiveExpr:operand as _QualifiedName {op = Revert}
-  ::= "!" _PrimitiveExpr:operand as _QualifiedName {op = Not}
-  ::= "-" _PrimitiveExpr:operand as _QualifiedName {op = Minus}
-  ::= "+" _PrimitiveExpr:operand as _QualifiedName {op = Plus}
-  ::= "&" _PrimitiveExpr:operand as _QualifiedName {op = BitwiseAnd}
-  ::= "*" _PrimitiveExpr:operand as _QualifiedName {op = Mul}
+  ::= "++" _QualifiedName:operand as PrefixUnaryExpr {op = Increase}
+  ::= "--" _QualifiedName:operand as PrefixUnaryExpr {op = Decrease}
+  ::= "~" _QualifiedName:operand as PrefixUnaryExpr {op = Revert}
+  ::= "!" _QualifiedName:operand as PrefixUnaryExpr {op = Not}
+  ::= "-" _QualifiedName:operand as PrefixUnaryExpr {op = Minus}
+  ::= "+" _QualifiedName:operand as PrefixUnaryExpr {op = Plus}
+  ::= "&" _QualifiedName:operand as PrefixUnaryExpr {op = BitwiseAnd}
+  ::= "*" _QualifiedName:operand as PrefixUnaryExpr {op = Mul}
   ::= "++" _PrimitiveExpr:operand as PrefixUnaryExpr {op = Increase}
   ::= "--" _PrimitiveExpr:operand as PrefixUnaryExpr {op = Decrease}
   ::= "~" _PrimitiveExpr:operand as PrefixUnaryExpr {op = Revert}
