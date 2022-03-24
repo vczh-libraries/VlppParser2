@@ -122,6 +122,26 @@ _PrimitiveExpr : TypeOrExpr
   ::= "noexcept":keyword "(" _TypeOrExpr:argument ")" as SysFuncExpr
   ;
 
+_PrefixUnaryExpr
+  ::= !_PrimitiveExpr
+  ::= !__QualifiedName
+  ::= left_recursion_placeholder(Shared,Expr)
+  ::= "++" _PrefixUnaryExpr:operand as PrefixUnaryExpr {op = Increase}
+  ::= "--" _PrefixUnaryExpr:operand as PrefixUnaryExpr {op = Decrease}
+  ::= "~" _PrefixUnaryExpr:operand as PrefixUnaryExpr {op = Revert}
+  ::= "!" _PrefixUnaryExpr:operand as PrefixUnaryExpr {op = Not}
+  ::= "-" _PrefixUnaryExpr:operand as PrefixUnaryExpr {op = Minus}
+  ::= "+" _PrefixUnaryExpr:operand as PrefixUnaryExpr {op = Plus}
+  ::= "&" _PrefixUnaryExpr:operand as PrefixUnaryExpr {op = BitwiseAnd}
+  ::= "*" _PrefixUnaryExpr:operand as PrefixUnaryExpr {op = Mul}
+  ;
+
+_PostfixUnaryExpr
+  ::= !_PrefixUnaryExpr
+  ::= _PostfixUnaryExpr:operand "++" as PostfixUnaryExpr {op = Increase}
+  ::= _PostfixUnaryExpr:operand "--" as PostfixUnaryExpr {op = Decrease}
+  ;
+
 //////////////////////////////////////////////////////////////////
 // PrimitiveType
 //////////////////////////////////////////////////////////////////
@@ -184,8 +204,8 @@ _Type
 //////////////////////////////////////////////////////////////////
 
 _Expr
-  ::= !_QualifiedName
-  ::= !_PrimitiveExpr
+  ::= !_QualifiedName left_recursion_inject(Shared) _PostfixUnaryExpr
+  ::= !_PrimitiveExpr left_recursion_inject(Expr) _PostfixUnaryExpr
   ;
 
 _Expr_NoComma
@@ -197,9 +217,9 @@ _Expr_NoComma
 //////////////////////////////////////////////////////////////////
 
 _TypeOrExpr
-  ::= !_QualifiedName left_recursion_inject(Shared) _LongType
+  ::= !_QualifiedName left_recursion_inject(Shared) _LongType | _PostfixUnaryExpr
   ::= !_ShortType left_recursion_inject(Type) _LongType
-  ::= !_PrimitiveExpr
+  ::= !_PrimitiveExpr left_recursion_inject(Expr) _PostfixUnaryExpr
   ;
 
 _TypeOrExpr_NoComma_NoLT
