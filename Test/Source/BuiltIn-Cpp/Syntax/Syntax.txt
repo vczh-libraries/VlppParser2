@@ -155,6 +155,8 @@ _PostfixUnaryExpr
   ::= !_PrimitiveExpr
   ::= _PostfixUnaryExpr:operand "++" as PostfixUnaryExpr {op = Increase}
   ::= _PostfixUnaryExpr:operand "--" as PostfixUnaryExpr {op = Decrease}
+  ::= _PostfixUnaryExpr:operand "[" _Expr:index "]" as IndexExpr
+  ::= _PostfixUnaryExpr:operand "(" {_Expr_NoComma:arguments ; ","} ")" as CallExpr
   ;
 
 //////////////////////////////////////////////////////////////////

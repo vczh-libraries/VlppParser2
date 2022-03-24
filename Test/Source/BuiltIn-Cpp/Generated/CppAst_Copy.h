@@ -24,6 +24,7 @@ namespace cpp_parser
 		protected:
 			void CopyFields(CppBinaryExpr* from, CppBinaryExpr* to);
 			void CopyFields(CppBraceExpr* from, CppBraceExpr* to);
+			void CopyFields(CppCallExpr* from, CppCallExpr* to);
 			void CopyFields(CppCastExpr* from, CppCastExpr* to);
 			void CopyFields(CppConstType* from, CppConstType* to);
 			void CopyFields(CppExprOnly* from, CppExprOnly* to);
@@ -31,6 +32,7 @@ namespace cpp_parser
 			void CopyFields(CppGenericArgument* from, CppGenericArgument* to);
 			void CopyFields(CppGenericArguments* from, CppGenericArguments* to);
 			void CopyFields(CppIdentifier* from, CppIdentifier* to);
+			void CopyFields(CppIndexExpr* from, CppIndexExpr* to);
 			void CopyFields(CppNameIdentifier* from, CppNameIdentifier* to);
 			void CopyFields(CppNumericExprLiteral* from, CppNumericExprLiteral* to);
 			void CopyFields(CppOperatorIdentifier* from, CppOperatorIdentifier* to);
@@ -66,6 +68,8 @@ namespace cpp_parser
 			void Visit(CppSysFuncExpr* node) override;
 			void Visit(CppPrefixUnaryExpr* node) override;
 			void Visit(CppPostfixUnaryExpr* node) override;
+			void Visit(CppIndexExpr* node) override;
+			void Visit(CppCallExpr* node) override;
 			void Visit(CppBinaryExpr* node) override;
 
 			void Visit(CppPrimitiveType* node) override;
@@ -85,9 +89,11 @@ namespace cpp_parser
 
 			vl::Ptr<CppBinaryExpr> CopyNode(CppBinaryExpr* node);
 			vl::Ptr<CppBraceExpr> CopyNode(CppBraceExpr* node);
+			vl::Ptr<CppCallExpr> CopyNode(CppCallExpr* node);
 			vl::Ptr<CppCastExpr> CopyNode(CppCastExpr* node);
 			vl::Ptr<CppConstType> CopyNode(CppConstType* node);
 			vl::Ptr<CppExprOnly> CopyNode(CppExprOnly* node);
+			vl::Ptr<CppIndexExpr> CopyNode(CppIndexExpr* node);
 			vl::Ptr<CppNameIdentifier> CopyNode(CppNameIdentifier* node);
 			vl::Ptr<CppNumericExprLiteral> CopyNode(CppNumericExprLiteral* node);
 			vl::Ptr<CppOperatorIdentifier> CopyNode(CppOperatorIdentifier* node);

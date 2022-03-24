@@ -44,6 +44,22 @@ MakeBraceExpr
 		}
 
 /***********************************************************************
+MakeCallExpr
+***********************************************************************/
+
+		MakeCallExpr& MakeCallExpr::arguments(const vl::Ptr<CppTypeOrExpr>& value)
+		{
+			node->arguments.Add(value);
+			return *this;
+		}
+
+		MakeCallExpr& MakeCallExpr::operand(const vl::Ptr<CppTypeOrExpr>& value)
+		{
+			node->operand = value;
+			return *this;
+		}
+
+/***********************************************************************
 MakeCastExpr
 ***********************************************************************/
 
@@ -98,6 +114,22 @@ MakeGenericArguments
 		MakeGenericArguments& MakeGenericArguments::arguments(const vl::Ptr<CppGenericArgument>& value)
 		{
 			node->arguments.Add(value);
+			return *this;
+		}
+
+/***********************************************************************
+MakeIndexExpr
+***********************************************************************/
+
+		MakeIndexExpr& MakeIndexExpr::index(const vl::Ptr<CppTypeOrExpr>& value)
+		{
+			node->index = value;
+			return *this;
+		}
+
+		MakeIndexExpr& MakeIndexExpr::operand(const vl::Ptr<CppTypeOrExpr>& value)
+		{
+			node->operand = value;
 			return *this;
 		}
 

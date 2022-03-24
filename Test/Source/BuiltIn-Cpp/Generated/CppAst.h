@@ -14,6 +14,7 @@ namespace cpp_parser
 {
 	class CppBinaryExpr;
 	class CppBraceExpr;
+	class CppCallExpr;
 	class CppCastExpr;
 	class CppConstType;
 	class CppExprOnly;
@@ -21,6 +22,7 @@ namespace cpp_parser
 	class CppGenericArgument;
 	class CppGenericArguments;
 	class CppIdentifier;
+	class CppIndexExpr;
 	class CppNameIdentifier;
 	class CppNumericExprLiteral;
 	class CppOperatorIdentifier;
@@ -175,6 +177,8 @@ namespace cpp_parser
 			virtual void Visit(CppSysFuncExpr* node) = 0;
 			virtual void Visit(CppPrefixUnaryExpr* node) = 0;
 			virtual void Visit(CppPostfixUnaryExpr* node) = 0;
+			virtual void Visit(CppIndexExpr* node) = 0;
+			virtual void Visit(CppCallExpr* node) = 0;
 			virtual void Visit(CppBinaryExpr* node) = 0;
 		};
 
@@ -343,6 +347,24 @@ namespace cpp_parser
 		void Accept(CppExprOnly::IVisitor* visitor) override;
 	};
 
+	class CppIndexExpr : public CppExprOnly, vl::reflection::Description<CppIndexExpr>
+	{
+	public:
+		vl::Ptr<CppTypeOrExpr> operand;
+		vl::Ptr<CppTypeOrExpr> index;
+
+		void Accept(CppExprOnly::IVisitor* visitor) override;
+	};
+
+	class CppCallExpr : public CppExprOnly, vl::reflection::Description<CppCallExpr>
+	{
+	public:
+		vl::Ptr<CppTypeOrExpr> operand;
+		vl::collections::List<vl::Ptr<CppTypeOrExpr>> arguments;
+
+		void Accept(CppExprOnly::IVisitor* visitor) override;
+	};
+
 	class CppBinaryExpr : public CppExprOnly, vl::reflection::Description<CppBinaryExpr>
 	{
 	public:
@@ -420,6 +442,8 @@ namespace vl
 			DECL_TYPE_INFO(cpp_parser::CppSysFuncExpr)
 			DECL_TYPE_INFO(cpp_parser::CppPrefixUnaryExpr)
 			DECL_TYPE_INFO(cpp_parser::CppPostfixUnaryExpr)
+			DECL_TYPE_INFO(cpp_parser::CppIndexExpr)
+			DECL_TYPE_INFO(cpp_parser::CppCallExpr)
 			DECL_TYPE_INFO(cpp_parser::CppBinaryExpr)
 			DECL_TYPE_INFO(cpp_parser::CppPrimitiveTypeKinds)
 			DECL_TYPE_INFO(cpp_parser::CppPrimitiveType)
@@ -489,6 +513,16 @@ namespace vl
 				}
 
 				void Visit(cpp_parser::CppPostfixUnaryExpr* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+				void Visit(cpp_parser::CppIndexExpr* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+				void Visit(cpp_parser::CppCallExpr* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}

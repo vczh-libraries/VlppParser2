@@ -200,6 +200,10 @@ class SysFuncExpr : ExprOnly
     var argument : TypeOrExpr;
 }
 
+//////////////////////////////////////////////////////////////////
+// OperatorExpr
+//////////////////////////////////////////////////////////////////
+
 class PrefixUnaryExpr : ExprOnly
 {
     var op : Operators;
@@ -210,6 +214,18 @@ class PostfixUnaryExpr : ExprOnly
 {
     var op : Operators;
     var operand : TypeOrExpr;
+}
+
+class IndexExpr : ExprOnly
+{
+    var operand : TypeOrExpr;
+    var index : TypeOrExpr;
+}
+
+class CallExpr : ExprOnly
+{
+    var operand : TypeOrExpr;
+    var arguments : TypeOrExpr[];
 }
 
 class BinaryExpr : ExprOnly

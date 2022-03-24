@@ -73,6 +73,14 @@ ExprOnlyVisitor
 		{
 		}
 
+		void ExprOnlyVisitor::Visit(CppIndexExpr* node)
+		{
+		}
+
+		void ExprOnlyVisitor::Visit(CppCallExpr* node)
+		{
+		}
+
 		void ExprOnlyVisitor::Visit(CppBinaryExpr* node)
 		{
 		}

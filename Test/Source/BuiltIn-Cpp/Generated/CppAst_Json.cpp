@@ -171,6 +171,22 @@ namespace cpp_parser
 			EndArray();
 			EndField();
 		}
+		void AstVisitor::PrintFields(CppCallExpr* node)
+		{
+			BeginField(L"arguments");
+			BeginArray();
+			for (auto&& listItem : node->arguments)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+			BeginField(L"operand");
+			Print(node->operand.Obj());
+			EndField();
+		}
 		void AstVisitor::PrintFields(CppCastExpr* node)
 		{
 			BeginField(L"expr");
@@ -219,6 +235,15 @@ namespace cpp_parser
 		}
 		void AstVisitor::PrintFields(CppIdentifier* node)
 		{
+		}
+		void AstVisitor::PrintFields(CppIndexExpr* node)
+		{
+			BeginField(L"index");
+			Print(node->index.Obj());
+			EndField();
+			BeginField(L"operand");
+			Print(node->operand.Obj());
+			EndField();
 		}
 		void AstVisitor::PrintFields(CppNameIdentifier* node)
 		{
@@ -1026,6 +1051,36 @@ namespace cpp_parser
 			PrintFields(static_cast<CppTypeOrExpr*>(node));
 			PrintFields(static_cast<CppExprOnly*>(node));
 			PrintFields(static_cast<CppPostfixUnaryExpr*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppIndexExpr* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"IndexExpr", node);
+			PrintFields(static_cast<CppTypeOrExpr*>(node));
+			PrintFields(static_cast<CppExprOnly*>(node));
+			PrintFields(static_cast<CppIndexExpr*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppCallExpr* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"CallExpr", node);
+			PrintFields(static_cast<CppTypeOrExpr*>(node));
+			PrintFields(static_cast<CppExprOnly*>(node));
+			PrintFields(static_cast<CppCallExpr*>(node));
 			EndObject();
 		}
 

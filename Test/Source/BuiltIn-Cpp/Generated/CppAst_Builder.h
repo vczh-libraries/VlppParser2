@@ -27,6 +27,13 @@ namespace cpp_parser
 			MakeBraceExpr& arguments(const vl::Ptr<CppTypeOrExpr>& value);
 		};
 
+		class MakeCallExpr : public vl::glr::ParsingAstBuilder<CppCallExpr>
+		{
+		public:
+			MakeCallExpr& arguments(const vl::Ptr<CppTypeOrExpr>& value);
+			MakeCallExpr& operand(const vl::Ptr<CppTypeOrExpr>& value);
+		};
+
 		class MakeCastExpr : public vl::glr::ParsingAstBuilder<CppCastExpr>
 		{
 		public:
@@ -52,6 +59,13 @@ namespace cpp_parser
 		{
 		public:
 			MakeGenericArguments& arguments(const vl::Ptr<CppGenericArgument>& value);
+		};
+
+		class MakeIndexExpr : public vl::glr::ParsingAstBuilder<CppIndexExpr>
+		{
+		public:
+			MakeIndexExpr& index(const vl::Ptr<CppTypeOrExpr>& value);
+			MakeIndexExpr& operand(const vl::Ptr<CppTypeOrExpr>& value);
 		};
 
 		class MakeNameIdentifier : public vl::glr::ParsingAstBuilder<CppNameIdentifier>
