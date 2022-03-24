@@ -267,8 +267,8 @@ namespace cpp_parser
 			Traverse(static_cast<CppTypeOrExpr*>(node));
 			Traverse(static_cast<CppExprOnly*>(node));
 			Traverse(static_cast<CppBinaryExpr*>(node));
-			InspectInto(node->first.Obj());
-			InspectInto(node->second.Obj());
+			InspectInto(node->left.Obj());
+			InspectInto(node->right.Obj());
 			Finishing(static_cast<CppBinaryExpr*>(node));
 			Finishing(static_cast<CppExprOnly*>(node));
 			Finishing(static_cast<CppTypeOrExpr*>(node));

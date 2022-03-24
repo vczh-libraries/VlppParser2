@@ -72,10 +72,10 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 		auto cppFieldName = CppCppFieldName((CppFields)field);
 		switch((CppFields)field)
 		{
-		case CppFields::BinaryExpr_first:
-			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppBinaryExpr::first, object, field, value, cppFieldName);
-		case CppFields::BinaryExpr_second:
-			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppBinaryExpr::second, object, field, value, cppFieldName);
+		case CppFields::BinaryExpr_left:
+			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppBinaryExpr::left, object, field, value, cppFieldName);
+		case CppFields::BinaryExpr_right:
+			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppBinaryExpr::right, object, field, value, cppFieldName);
 		case CppFields::BraceExpr_arguments:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppBraceExpr::arguments, object, field, value, cppFieldName);
 		case CppFields::CallExpr_arguments:
@@ -250,9 +250,9 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 	const wchar_t* CppFieldName(CppFields field)
 	{
 		const wchar_t* results[] = {
-			L"BinaryExpr::first",
+			L"BinaryExpr::left",
 			L"BinaryExpr::op",
-			L"BinaryExpr::second",
+			L"BinaryExpr::right",
 			L"BraceExpr::arguments",
 			L"CallExpr::arguments",
 			L"CallExpr::operand",
@@ -299,9 +299,9 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 	const wchar_t* CppCppFieldName(CppFields field)
 	{
 		const wchar_t* results[] = {
-			L"cpp_parser::CppBinaryExpr::first",
+			L"cpp_parser::CppBinaryExpr::left",
 			L"cpp_parser::CppBinaryExpr::op",
-			L"cpp_parser::CppBinaryExpr::second",
+			L"cpp_parser::CppBinaryExpr::right",
 			L"cpp_parser::CppBraceExpr::arguments",
 			L"cpp_parser::CppCallExpr::arguments",
 			L"cpp_parser::CppCallExpr::operand",

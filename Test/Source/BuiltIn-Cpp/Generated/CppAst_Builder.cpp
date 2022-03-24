@@ -15,9 +15,9 @@ namespace cpp_parser
 MakeBinaryExpr
 ***********************************************************************/
 
-		MakeBinaryExpr& MakeBinaryExpr::first(const vl::Ptr<CppTypeOrExpr>& value)
+		MakeBinaryExpr& MakeBinaryExpr::left(const vl::Ptr<CppTypeOrExpr>& value)
 		{
-			node->first = value;
+			node->left = value;
 			return *this;
 		}
 
@@ -27,9 +27,9 @@ MakeBinaryExpr
 			return *this;
 		}
 
-		MakeBinaryExpr& MakeBinaryExpr::second(const vl::Ptr<CppTypeOrExpr>& value)
+		MakeBinaryExpr& MakeBinaryExpr::right(const vl::Ptr<CppTypeOrExpr>& value)
 		{
-			node->second = value;
+			node->right = value;
 			return *this;
 		}
 

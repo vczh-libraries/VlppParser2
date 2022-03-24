@@ -13,9 +13,9 @@ namespace cpp_parser
 		void AstVisitor::CopyFields(CppBinaryExpr* from, CppBinaryExpr* to)
 		{
 			CopyFields(static_cast<CppExprOnly*>(from), static_cast<CppExprOnly*>(to));
-			to->first = CopyNode(from->first.Obj());
+			to->left = CopyNode(from->left.Obj());
 			to->op = from->op;
-			to->second = CopyNode(from->second.Obj());
+			to->right = CopyNode(from->right.Obj());
 		}
 
 		void AstVisitor::CopyFields(CppBraceExpr* from, CppBraceExpr* to)

@@ -213,6 +213,8 @@ namespace vl
 				ENUM_NAMESPACE_ITEM(Bracket)
 				ENUM_NAMESPACE_ITEM(PointerDeref)
 				ENUM_NAMESPACE_ITEM(Pointer)
+				ENUM_NAMESPACE_ITEM(MemberDeref)
+				ENUM_NAMESPACE_ITEM(Member)
 				ENUM_NAMESPACE_ITEM(EQ)
 				ENUM_NAMESPACE_ITEM(NE)
 				ENUM_NAMESPACE_ITEM(LT)
@@ -432,8 +434,8 @@ namespace vl
 				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppBinaryExpr>(), NO_PARAMETER)
 
 				CLASS_MEMBER_FIELD(op)
-				CLASS_MEMBER_FIELD(first)
-				CLASS_MEMBER_FIELD(second)
+				CLASS_MEMBER_FIELD(left)
+				CLASS_MEMBER_FIELD(right)
 			END_CLASS_MEMBER(cpp_parser::CppBinaryExpr)
 
 			BEGIN_ENUM_ITEM(cpp_parser::CppPrimitiveTypeKinds)

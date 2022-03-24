@@ -16,9 +16,9 @@ namespace cpp_parser
 		class MakeBinaryExpr : public vl::glr::ParsingAstBuilder<CppBinaryExpr>
 		{
 		public:
-			MakeBinaryExpr& first(const vl::Ptr<CppTypeOrExpr>& value);
+			MakeBinaryExpr& left(const vl::Ptr<CppTypeOrExpr>& value);
 			MakeBinaryExpr& op(CppOperators value);
-			MakeBinaryExpr& second(const vl::Ptr<CppTypeOrExpr>& value);
+			MakeBinaryExpr& right(const vl::Ptr<CppTypeOrExpr>& value);
 		};
 
 		class MakeBraceExpr : public vl::glr::ParsingAstBuilder<CppBraceExpr>

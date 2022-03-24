@@ -43,9 +43,9 @@ namespace cpp_parser
 
 	enum class CppFields : vl::vint32_t
 	{
-		BinaryExpr_first = 0,
+		BinaryExpr_left = 0,
 		BinaryExpr_op = 1,
-		BinaryExpr_second = 2,
+		BinaryExpr_right = 2,
 		BraceExpr_arguments = 3,
 		CallExpr_arguments = 4,
 		CallExpr_operand = 5,

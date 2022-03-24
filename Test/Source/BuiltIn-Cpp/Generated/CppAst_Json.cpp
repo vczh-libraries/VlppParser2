@@ -12,8 +12,8 @@ namespace cpp_parser
 	{
 		void AstVisitor::PrintFields(CppBinaryExpr* node)
 		{
-			BeginField(L"first");
-			Print(node->first.Obj());
+			BeginField(L"left");
+			Print(node->left.Obj());
 			EndField();
 			BeginField(L"op");
 			switch (node->op)
@@ -77,6 +77,12 @@ namespace cpp_parser
 				break;
 			case cpp_parser::CppOperators::LeftShiftAssign:
 				WriteString(L"LeftShiftAssign");
+				break;
+			case cpp_parser::CppOperators::Member:
+				WriteString(L"Member");
+				break;
+			case cpp_parser::CppOperators::MemberDeref:
+				WriteString(L"MemberDeref");
 				break;
 			case cpp_parser::CppOperators::Minus:
 				WriteString(L"Minus");
@@ -154,8 +160,8 @@ namespace cpp_parser
 				WriteNull();
 			}
 			EndField();
-			BeginField(L"second");
-			Print(node->second.Obj());
+			BeginField(L"right");
+			Print(node->right.Obj());
 			EndField();
 		}
 		void AstVisitor::PrintFields(CppBraceExpr* node)
@@ -378,6 +384,12 @@ namespace cpp_parser
 			case cpp_parser::CppOperators::LeftShiftAssign:
 				WriteString(L"LeftShiftAssign");
 				break;
+			case cpp_parser::CppOperators::Member:
+				WriteString(L"Member");
+				break;
+			case cpp_parser::CppOperators::MemberDeref:
+				WriteString(L"MemberDeref");
+				break;
 			case cpp_parser::CppOperators::Minus:
 				WriteString(L"Minus");
 				break;
@@ -526,6 +538,12 @@ namespace cpp_parser
 			case cpp_parser::CppOperators::LeftShiftAssign:
 				WriteString(L"LeftShiftAssign");
 				break;
+			case cpp_parser::CppOperators::Member:
+				WriteString(L"Member");
+				break;
+			case cpp_parser::CppOperators::MemberDeref:
+				WriteString(L"MemberDeref");
+				break;
 			case cpp_parser::CppOperators::Minus:
 				WriteString(L"Minus");
 				break;
@@ -670,6 +688,12 @@ namespace cpp_parser
 				break;
 			case cpp_parser::CppOperators::LeftShiftAssign:
 				WriteString(L"LeftShiftAssign");
+				break;
+			case cpp_parser::CppOperators::Member:
+				WriteString(L"Member");
+				break;
+			case cpp_parser::CppOperators::MemberDeref:
+				WriteString(L"MemberDeref");
 				break;
 			case cpp_parser::CppOperators::Minus:
 				WriteString(L"Minus");
