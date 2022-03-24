@@ -4,7 +4,13 @@
 
 _NameIdentifier
   ::= ID:name                       as NameIdentifier {kind = Normal}
+  ;
+
+_DtorIdentifier
   ::= "~" ID:name                   as NameIdentifier {kind = Dtor}
+  ;
+
+_TypeIdentifier
   ::= "enum" ID:name                as NameIdentifier {kind = Enum}
   ::= "enum" "class" ID:name        as NameIdentifier {kind = EnumClass}
   ::= "class" ID:name               as NameIdentifier {kind = Class}
@@ -61,6 +67,7 @@ _OperatorIdentifier
 
 _Identifier
   ::= !_NameIdentifier
+  ::= !_TypeIdentifier
   ::= !_OperatorIdentifier
   ;
 
@@ -77,12 +84,17 @@ _QualifiedNameFragment
   ::= "template" _Identifier:id _GenericArguments:arguments as partial QualifiedName
   ;
 
+_MemberQualifiedNameFragment
+  ::= !_QualifiedNameFragment
+  ::= _DtorIdentifier:id as partial QualifiedName
+  ;
+
 _QualifiedName
   ::= _QualifiedNameFragment as QualifiedName {kind = Context}
   ::= "::" _QualifiedNameFragment as QualifiedName {kind = Root}
   ::= "decltype" "(" "auto" ")" as QualifiedName {kind = DecltypeAuto}
   ::= "decltype" "(" _Expr:expr ")" as QualifiedName {kind = Decltype}
-  ::= _QualifiedName:parent "::" _QualifiedNameFragment as QualifiedName {kind = Member}
+  ::= _QualifiedName:parent "::" _MemberQualifiedNameFragment as QualifiedName {kind = Member}
   ;
 
 //////////////////////////////////////////////////////////////////
