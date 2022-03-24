@@ -29,11 +29,13 @@ namespace cpp_parser
 			virtual void Traverse(CppCallExpr* node);
 			virtual void Traverse(CppCastExpr* node);
 			virtual void Traverse(CppConstType* node);
+			virtual void Traverse(CppDeleteExpr* node);
 			virtual void Traverse(CppExprOnly* node);
 			virtual void Traverse(CppFile* node);
 			virtual void Traverse(CppGenericArgument* node);
 			virtual void Traverse(CppGenericArguments* node);
 			virtual void Traverse(CppIdentifier* node);
+			virtual void Traverse(CppIfExpr* node);
 			virtual void Traverse(CppIndexExpr* node);
 			virtual void Traverse(CppNameIdentifier* node);
 			virtual void Traverse(CppNumericExprLiteral* node);
@@ -47,6 +49,7 @@ namespace cpp_parser
 			virtual void Traverse(CppStringLiteral* node);
 			virtual void Traverse(CppStringLiteralFragment* node);
 			virtual void Traverse(CppSysFuncExpr* node);
+			virtual void Traverse(CppThrowExpr* node);
 			virtual void Traverse(CppTypeOnly* node);
 			virtual void Traverse(CppTypeOrExpr* node);
 			virtual void Traverse(CppVolatileType* node);
@@ -58,11 +61,13 @@ namespace cpp_parser
 			virtual void Finishing(CppCallExpr* node);
 			virtual void Finishing(CppCastExpr* node);
 			virtual void Finishing(CppConstType* node);
+			virtual void Finishing(CppDeleteExpr* node);
 			virtual void Finishing(CppExprOnly* node);
 			virtual void Finishing(CppFile* node);
 			virtual void Finishing(CppGenericArgument* node);
 			virtual void Finishing(CppGenericArguments* node);
 			virtual void Finishing(CppIdentifier* node);
+			virtual void Finishing(CppIfExpr* node);
 			virtual void Finishing(CppIndexExpr* node);
 			virtual void Finishing(CppNameIdentifier* node);
 			virtual void Finishing(CppNumericExprLiteral* node);
@@ -76,6 +81,7 @@ namespace cpp_parser
 			virtual void Finishing(CppStringLiteral* node);
 			virtual void Finishing(CppStringLiteralFragment* node);
 			virtual void Finishing(CppSysFuncExpr* node);
+			virtual void Finishing(CppThrowExpr* node);
 			virtual void Finishing(CppTypeOnly* node);
 			virtual void Finishing(CppTypeOrExpr* node);
 			virtual void Finishing(CppVolatileType* node);
@@ -92,11 +98,14 @@ namespace cpp_parser
 			void Visit(CppBraceExpr* node) override;
 			void Visit(CppCastExpr* node) override;
 			void Visit(CppSysFuncExpr* node) override;
+			void Visit(CppDeleteExpr* node) override;
 			void Visit(CppPrefixUnaryExpr* node) override;
 			void Visit(CppPostfixUnaryExpr* node) override;
 			void Visit(CppIndexExpr* node) override;
 			void Visit(CppCallExpr* node) override;
 			void Visit(CppBinaryExpr* node) override;
+			void Visit(CppIfExpr* node) override;
+			void Visit(CppThrowExpr* node) override;
 
 			void Visit(CppPrimitiveType* node) override;
 			void Visit(CppConstType* node) override;

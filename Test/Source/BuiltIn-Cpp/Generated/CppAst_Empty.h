@@ -43,11 +43,14 @@ namespace cpp_parser
 			void Visit(CppBraceExpr* node) override;
 			void Visit(CppCastExpr* node) override;
 			void Visit(CppSysFuncExpr* node) override;
+			void Visit(CppDeleteExpr* node) override;
 			void Visit(CppPrefixUnaryExpr* node) override;
 			void Visit(CppPostfixUnaryExpr* node) override;
 			void Visit(CppIndexExpr* node) override;
 			void Visit(CppCallExpr* node) override;
 			void Visit(CppBinaryExpr* node) override;
+			void Visit(CppIfExpr* node) override;
+			void Visit(CppThrowExpr* node) override;
 		};
 
 		/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>

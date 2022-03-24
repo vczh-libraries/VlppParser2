@@ -17,11 +17,13 @@ namespace cpp_parser
 	class CppCallExpr;
 	class CppCastExpr;
 	class CppConstType;
+	class CppDeleteExpr;
 	class CppExprOnly;
 	class CppFile;
 	class CppGenericArgument;
 	class CppGenericArguments;
 	class CppIdentifier;
+	class CppIfExpr;
 	class CppIndexExpr;
 	class CppNameIdentifier;
 	class CppNumericExprLiteral;
@@ -35,6 +37,7 @@ namespace cpp_parser
 	class CppStringLiteral;
 	class CppStringLiteralFragment;
 	class CppSysFuncExpr;
+	class CppThrowExpr;
 	class CppTypeOnly;
 	class CppTypeOrExpr;
 	class CppVolatileType;
@@ -141,6 +144,20 @@ namespace cpp_parser
 		Macro_LPREFIX = 1,
 	};
 
+	enum class CppOperatorScope
+	{
+		UNDEFINED_ENUM_ITEM_VALUE = -1,
+		Root = 0,
+		Context = 1,
+	};
+
+	enum class CppOperatorArray
+	{
+		UNDEFINED_ENUM_ITEM_VALUE = -1,
+		Array = 0,
+		NotArray = 1,
+	};
+
 	enum class CppPrimitiveTypeKinds
 	{
 		UNDEFINED_ENUM_ITEM_VALUE = -1,
@@ -177,11 +194,14 @@ namespace cpp_parser
 			virtual void Visit(CppBraceExpr* node) = 0;
 			virtual void Visit(CppCastExpr* node) = 0;
 			virtual void Visit(CppSysFuncExpr* node) = 0;
+			virtual void Visit(CppDeleteExpr* node) = 0;
 			virtual void Visit(CppPrefixUnaryExpr* node) = 0;
 			virtual void Visit(CppPostfixUnaryExpr* node) = 0;
 			virtual void Visit(CppIndexExpr* node) = 0;
 			virtual void Visit(CppCallExpr* node) = 0;
 			virtual void Visit(CppBinaryExpr* node) = 0;
+			virtual void Visit(CppIfExpr* node) = 0;
+			virtual void Visit(CppThrowExpr* node) = 0;
 		};
 
 		virtual void Accept(CppExprOnly::IVisitor* visitor) = 0;
@@ -331,6 +351,16 @@ namespace cpp_parser
 		void Accept(CppExprOnly::IVisitor* visitor) override;
 	};
 
+	class CppDeleteExpr : public CppExprOnly, vl::reflection::Description<CppDeleteExpr>
+	{
+	public:
+		CppOperatorScope scope = CppOperatorScope::UNDEFINED_ENUM_ITEM_VALUE;
+		CppOperatorArray array = CppOperatorArray::UNDEFINED_ENUM_ITEM_VALUE;
+		vl::Ptr<CppTypeOrExpr> argument;
+
+		void Accept(CppExprOnly::IVisitor* visitor) override;
+	};
+
 	class CppPrefixUnaryExpr : public CppExprOnly, vl::reflection::Description<CppPrefixUnaryExpr>
 	{
 	public:
@@ -373,6 +403,24 @@ namespace cpp_parser
 		CppOperators op = CppOperators::UNDEFINED_ENUM_ITEM_VALUE;
 		vl::Ptr<CppTypeOrExpr> left;
 		vl::Ptr<CppTypeOrExpr> right;
+
+		void Accept(CppExprOnly::IVisitor* visitor) override;
+	};
+
+	class CppIfExpr : public CppExprOnly, vl::reflection::Description<CppIfExpr>
+	{
+	public:
+		vl::Ptr<CppTypeOrExpr> condition;
+		vl::Ptr<CppTypeOrExpr> trueBranch;
+		vl::Ptr<CppTypeOrExpr> falseBranch;
+
+		void Accept(CppExprOnly::IVisitor* visitor) override;
+	};
+
+	class CppThrowExpr : public CppExprOnly, vl::reflection::Description<CppThrowExpr>
+	{
+	public:
+		vl::Ptr<CppTypeOrExpr> argument;
 
 		void Accept(CppExprOnly::IVisitor* visitor) override;
 	};
@@ -442,11 +490,16 @@ namespace vl
 			DECL_TYPE_INFO(cpp_parser::CppBraceExpr)
 			DECL_TYPE_INFO(cpp_parser::CppCastExpr)
 			DECL_TYPE_INFO(cpp_parser::CppSysFuncExpr)
+			DECL_TYPE_INFO(cpp_parser::CppOperatorScope)
+			DECL_TYPE_INFO(cpp_parser::CppOperatorArray)
+			DECL_TYPE_INFO(cpp_parser::CppDeleteExpr)
 			DECL_TYPE_INFO(cpp_parser::CppPrefixUnaryExpr)
 			DECL_TYPE_INFO(cpp_parser::CppPostfixUnaryExpr)
 			DECL_TYPE_INFO(cpp_parser::CppIndexExpr)
 			DECL_TYPE_INFO(cpp_parser::CppCallExpr)
 			DECL_TYPE_INFO(cpp_parser::CppBinaryExpr)
+			DECL_TYPE_INFO(cpp_parser::CppIfExpr)
+			DECL_TYPE_INFO(cpp_parser::CppThrowExpr)
 			DECL_TYPE_INFO(cpp_parser::CppPrimitiveTypeKinds)
 			DECL_TYPE_INFO(cpp_parser::CppPrimitiveType)
 			DECL_TYPE_INFO(cpp_parser::CppConstType)
@@ -509,6 +562,11 @@ namespace vl
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
+				void Visit(cpp_parser::CppDeleteExpr* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
 				void Visit(cpp_parser::CppPrefixUnaryExpr* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
@@ -530,6 +588,16 @@ namespace vl
 				}
 
 				void Visit(cpp_parser::CppBinaryExpr* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+				void Visit(cpp_parser::CppIfExpr* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+				void Visit(cpp_parser::CppThrowExpr* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}

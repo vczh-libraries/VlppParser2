@@ -211,6 +211,38 @@ namespace cpp_parser
 			Print(node->type.Obj());
 			EndField();
 		}
+		void AstVisitor::PrintFields(CppDeleteExpr* node)
+		{
+			BeginField(L"argument");
+			Print(node->argument.Obj());
+			EndField();
+			BeginField(L"array");
+			switch (node->array)
+			{
+			case cpp_parser::CppOperatorArray::Array:
+				WriteString(L"Array");
+				break;
+			case cpp_parser::CppOperatorArray::NotArray:
+				WriteString(L"NotArray");
+				break;
+			default:
+				WriteNull();
+			}
+			EndField();
+			BeginField(L"scope");
+			switch (node->scope)
+			{
+			case cpp_parser::CppOperatorScope::Context:
+				WriteString(L"Context");
+				break;
+			case cpp_parser::CppOperatorScope::Root:
+				WriteString(L"Root");
+				break;
+			default:
+				WriteNull();
+			}
+			EndField();
+		}
 		void AstVisitor::PrintFields(CppExprOnly* node)
 		{
 		}
@@ -241,6 +273,18 @@ namespace cpp_parser
 		}
 		void AstVisitor::PrintFields(CppIdentifier* node)
 		{
+		}
+		void AstVisitor::PrintFields(CppIfExpr* node)
+		{
+			BeginField(L"condition");
+			Print(node->condition.Obj());
+			EndField();
+			BeginField(L"falseBranch");
+			Print(node->falseBranch.Obj());
+			EndField();
+			BeginField(L"trueBranch");
+			Print(node->trueBranch.Obj());
+			EndField();
 		}
 		void AstVisitor::PrintFields(CppIndexExpr* node)
 		{
@@ -906,6 +950,12 @@ namespace cpp_parser
 			WriteToken(node->variadic);
 			EndField();
 		}
+		void AstVisitor::PrintFields(CppThrowExpr* node)
+		{
+			BeginField(L"argument");
+			Print(node->argument.Obj());
+			EndField();
+		}
 		void AstVisitor::PrintFields(CppTypeOnly* node)
 		{
 		}
@@ -1048,6 +1098,21 @@ namespace cpp_parser
 			EndObject();
 		}
 
+		void AstVisitor::Visit(CppDeleteExpr* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"DeleteExpr", node);
+			PrintFields(static_cast<CppTypeOrExpr*>(node));
+			PrintFields(static_cast<CppExprOnly*>(node));
+			PrintFields(static_cast<CppDeleteExpr*>(node));
+			EndObject();
+		}
+
 		void AstVisitor::Visit(CppPrefixUnaryExpr* node)
 		{
 			if (!node)
@@ -1120,6 +1185,36 @@ namespace cpp_parser
 			PrintFields(static_cast<CppTypeOrExpr*>(node));
 			PrintFields(static_cast<CppExprOnly*>(node));
 			PrintFields(static_cast<CppBinaryExpr*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppIfExpr* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"IfExpr", node);
+			PrintFields(static_cast<CppTypeOrExpr*>(node));
+			PrintFields(static_cast<CppExprOnly*>(node));
+			PrintFields(static_cast<CppIfExpr*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppThrowExpr* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"ThrowExpr", node);
+			PrintFields(static_cast<CppTypeOrExpr*>(node));
+			PrintFields(static_cast<CppExprOnly*>(node));
+			PrintFields(static_cast<CppThrowExpr*>(node));
 			EndObject();
 		}
 

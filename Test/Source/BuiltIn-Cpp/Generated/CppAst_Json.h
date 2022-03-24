@@ -27,11 +27,13 @@ namespace cpp_parser
 			virtual void PrintFields(CppCallExpr* node);
 			virtual void PrintFields(CppCastExpr* node);
 			virtual void PrintFields(CppConstType* node);
+			virtual void PrintFields(CppDeleteExpr* node);
 			virtual void PrintFields(CppExprOnly* node);
 			virtual void PrintFields(CppFile* node);
 			virtual void PrintFields(CppGenericArgument* node);
 			virtual void PrintFields(CppGenericArguments* node);
 			virtual void PrintFields(CppIdentifier* node);
+			virtual void PrintFields(CppIfExpr* node);
 			virtual void PrintFields(CppIndexExpr* node);
 			virtual void PrintFields(CppNameIdentifier* node);
 			virtual void PrintFields(CppNumericExprLiteral* node);
@@ -45,6 +47,7 @@ namespace cpp_parser
 			virtual void PrintFields(CppStringLiteral* node);
 			virtual void PrintFields(CppStringLiteralFragment* node);
 			virtual void PrintFields(CppSysFuncExpr* node);
+			virtual void PrintFields(CppThrowExpr* node);
 			virtual void PrintFields(CppTypeOnly* node);
 			virtual void PrintFields(CppTypeOrExpr* node);
 			virtual void PrintFields(CppVolatileType* node);
@@ -61,11 +64,14 @@ namespace cpp_parser
 			void Visit(CppBraceExpr* node) override;
 			void Visit(CppCastExpr* node) override;
 			void Visit(CppSysFuncExpr* node) override;
+			void Visit(CppDeleteExpr* node) override;
 			void Visit(CppPrefixUnaryExpr* node) override;
 			void Visit(CppPostfixUnaryExpr* node) override;
 			void Visit(CppIndexExpr* node) override;
 			void Visit(CppCallExpr* node) override;
 			void Visit(CppBinaryExpr* node) override;
+			void Visit(CppIfExpr* node) override;
+			void Visit(CppThrowExpr* node) override;
 
 			void Visit(CppPrimitiveType* node) override;
 			void Visit(CppConstType* node) override;

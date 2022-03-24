@@ -72,6 +72,11 @@ Visitor Pattern Implementation
 		visitor->Visit(this);
 	}
 
+	void CppDeleteExpr::Accept(CppExprOnly::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
 	void CppPrefixUnaryExpr::Accept(CppExprOnly::IVisitor* visitor)
 	{
 		visitor->Visit(this);
@@ -93,6 +98,16 @@ Visitor Pattern Implementation
 	}
 
 	void CppBinaryExpr::Accept(CppExprOnly::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void CppIfExpr::Accept(CppExprOnly::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void CppThrowExpr::Accept(CppExprOnly::IVisitor* visitor)
 	{
 		visitor->Visit(this);
 	}
@@ -147,11 +162,16 @@ namespace vl
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppBraceExpr, cpp_parser::CppBraceExpr)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppCastExpr, cpp_parser::CppCastExpr)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppSysFuncExpr, cpp_parser::CppSysFuncExpr)
+			IMPL_TYPE_INFO_RENAME(cpp_parser::CppOperatorScope, cpp_parser::CppOperatorScope)
+			IMPL_TYPE_INFO_RENAME(cpp_parser::CppOperatorArray, cpp_parser::CppOperatorArray)
+			IMPL_TYPE_INFO_RENAME(cpp_parser::CppDeleteExpr, cpp_parser::CppDeleteExpr)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppPrefixUnaryExpr, cpp_parser::CppPrefixUnaryExpr)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppPostfixUnaryExpr, cpp_parser::CppPostfixUnaryExpr)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppIndexExpr, cpp_parser::CppIndexExpr)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppCallExpr, cpp_parser::CppCallExpr)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppBinaryExpr, cpp_parser::CppBinaryExpr)
+			IMPL_TYPE_INFO_RENAME(cpp_parser::CppIfExpr, cpp_parser::CppIfExpr)
+			IMPL_TYPE_INFO_RENAME(cpp_parser::CppThrowExpr, cpp_parser::CppThrowExpr)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppPrimitiveTypeKinds, cpp_parser::CppPrimitiveTypeKinds)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppPrimitiveType, cpp_parser::CppPrimitiveType)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppConstType, cpp_parser::CppConstType)
@@ -392,6 +412,28 @@ namespace vl
 				CLASS_MEMBER_FIELD(argument)
 			END_CLASS_MEMBER(cpp_parser::CppSysFuncExpr)
 
+			BEGIN_ENUM_ITEM(cpp_parser::CppOperatorScope)
+				ENUM_ITEM_NAMESPACE(cpp_parser::CppOperatorScope)
+				ENUM_NAMESPACE_ITEM(Root)
+				ENUM_NAMESPACE_ITEM(Context)
+			END_ENUM_ITEM(cpp_parser::CppOperatorScope)
+
+			BEGIN_ENUM_ITEM(cpp_parser::CppOperatorArray)
+				ENUM_ITEM_NAMESPACE(cpp_parser::CppOperatorArray)
+				ENUM_NAMESPACE_ITEM(Array)
+				ENUM_NAMESPACE_ITEM(NotArray)
+			END_ENUM_ITEM(cpp_parser::CppOperatorArray)
+
+			BEGIN_CLASS_MEMBER(cpp_parser::CppDeleteExpr)
+				CLASS_MEMBER_BASE(cpp_parser::CppExprOnly)
+
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppDeleteExpr>(), NO_PARAMETER)
+
+				CLASS_MEMBER_FIELD(scope)
+				CLASS_MEMBER_FIELD(array)
+				CLASS_MEMBER_FIELD(argument)
+			END_CLASS_MEMBER(cpp_parser::CppDeleteExpr)
+
 			BEGIN_CLASS_MEMBER(cpp_parser::CppPrefixUnaryExpr)
 				CLASS_MEMBER_BASE(cpp_parser::CppExprOnly)
 
@@ -437,6 +479,24 @@ namespace vl
 				CLASS_MEMBER_FIELD(left)
 				CLASS_MEMBER_FIELD(right)
 			END_CLASS_MEMBER(cpp_parser::CppBinaryExpr)
+
+			BEGIN_CLASS_MEMBER(cpp_parser::CppIfExpr)
+				CLASS_MEMBER_BASE(cpp_parser::CppExprOnly)
+
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppIfExpr>(), NO_PARAMETER)
+
+				CLASS_MEMBER_FIELD(condition)
+				CLASS_MEMBER_FIELD(trueBranch)
+				CLASS_MEMBER_FIELD(falseBranch)
+			END_CLASS_MEMBER(cpp_parser::CppIfExpr)
+
+			BEGIN_CLASS_MEMBER(cpp_parser::CppThrowExpr)
+				CLASS_MEMBER_BASE(cpp_parser::CppExprOnly)
+
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppThrowExpr>(), NO_PARAMETER)
+
+				CLASS_MEMBER_FIELD(argument)
+			END_CLASS_MEMBER(cpp_parser::CppThrowExpr)
 
 			BEGIN_ENUM_ITEM(cpp_parser::CppPrimitiveTypeKinds)
 				ENUM_ITEM_NAMESPACE(cpp_parser::CppPrimitiveTypeKinds)
@@ -492,11 +552,14 @@ namespace vl
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppExprOnly::IVisitor::*)(cpp_parser::CppBraceExpr* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppExprOnly::IVisitor::*)(cpp_parser::CppCastExpr* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppExprOnly::IVisitor::*)(cpp_parser::CppSysFuncExpr* node))
+				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppExprOnly::IVisitor::*)(cpp_parser::CppDeleteExpr* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppExprOnly::IVisitor::*)(cpp_parser::CppPrefixUnaryExpr* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppExprOnly::IVisitor::*)(cpp_parser::CppPostfixUnaryExpr* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppExprOnly::IVisitor::*)(cpp_parser::CppIndexExpr* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppExprOnly::IVisitor::*)(cpp_parser::CppCallExpr* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppExprOnly::IVisitor::*)(cpp_parser::CppBinaryExpr* node))
+				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppExprOnly::IVisitor::*)(cpp_parser::CppIfExpr* node))
+				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppExprOnly::IVisitor::*)(cpp_parser::CppThrowExpr* node))
 			END_INTERFACE_MEMBER(cpp_parser::CppExprOnly)
 
 			BEGIN_INTERFACE_MEMBER(cpp_parser::CppTypeOnly::IVisitor)
@@ -545,11 +608,16 @@ namespace vl
 					ADD_TYPE_INFO(cpp_parser::CppBraceExpr)
 					ADD_TYPE_INFO(cpp_parser::CppCastExpr)
 					ADD_TYPE_INFO(cpp_parser::CppSysFuncExpr)
+					ADD_TYPE_INFO(cpp_parser::CppOperatorScope)
+					ADD_TYPE_INFO(cpp_parser::CppOperatorArray)
+					ADD_TYPE_INFO(cpp_parser::CppDeleteExpr)
 					ADD_TYPE_INFO(cpp_parser::CppPrefixUnaryExpr)
 					ADD_TYPE_INFO(cpp_parser::CppPostfixUnaryExpr)
 					ADD_TYPE_INFO(cpp_parser::CppIndexExpr)
 					ADD_TYPE_INFO(cpp_parser::CppCallExpr)
 					ADD_TYPE_INFO(cpp_parser::CppBinaryExpr)
+					ADD_TYPE_INFO(cpp_parser::CppIfExpr)
+					ADD_TYPE_INFO(cpp_parser::CppThrowExpr)
 					ADD_TYPE_INFO(cpp_parser::CppPrimitiveTypeKinds)
 					ADD_TYPE_INFO(cpp_parser::CppPrimitiveType)
 					ADD_TYPE_INFO(cpp_parser::CppConstType)

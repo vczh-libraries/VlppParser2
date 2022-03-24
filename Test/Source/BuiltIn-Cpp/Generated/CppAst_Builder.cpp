@@ -92,6 +92,28 @@ MakeConstType
 		}
 
 /***********************************************************************
+MakeDeleteExpr
+***********************************************************************/
+
+		MakeDeleteExpr& MakeDeleteExpr::argument(const vl::Ptr<CppTypeOrExpr>& value)
+		{
+			node->argument = value;
+			return *this;
+		}
+
+		MakeDeleteExpr& MakeDeleteExpr::array(CppOperatorArray value)
+		{
+			node->array = value;
+			return *this;
+		}
+
+		MakeDeleteExpr& MakeDeleteExpr::scope(CppOperatorScope value)
+		{
+			node->scope = value;
+			return *this;
+		}
+
+/***********************************************************************
 MakeGenericArgument
 ***********************************************************************/
 
@@ -114,6 +136,28 @@ MakeGenericArguments
 		MakeGenericArguments& MakeGenericArguments::arguments(const vl::Ptr<CppGenericArgument>& value)
 		{
 			node->arguments.Add(value);
+			return *this;
+		}
+
+/***********************************************************************
+MakeIfExpr
+***********************************************************************/
+
+		MakeIfExpr& MakeIfExpr::condition(const vl::Ptr<CppTypeOrExpr>& value)
+		{
+			node->condition = value;
+			return *this;
+		}
+
+		MakeIfExpr& MakeIfExpr::falseBranch(const vl::Ptr<CppTypeOrExpr>& value)
+		{
+			node->falseBranch = value;
+			return *this;
+		}
+
+		MakeIfExpr& MakeIfExpr::trueBranch(const vl::Ptr<CppTypeOrExpr>& value)
+		{
+			node->trueBranch = value;
 			return *this;
 		}
 
@@ -328,6 +372,16 @@ MakeSysFuncExpr
 		MakeSysFuncExpr& MakeSysFuncExpr::variadic(const vl::WString& value)
 		{
 			node->variadic.value = value;
+			return *this;
+		}
+
+/***********************************************************************
+MakeThrowExpr
+***********************************************************************/
+
+		MakeThrowExpr& MakeThrowExpr::argument(const vl::Ptr<CppTypeOrExpr>& value)
+		{
+			node->argument = value;
 			return *this;
 		}
 

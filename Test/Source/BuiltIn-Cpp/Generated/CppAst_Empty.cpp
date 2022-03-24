@@ -65,6 +65,10 @@ ExprOnlyVisitor
 		{
 		}
 
+		void ExprOnlyVisitor::Visit(CppDeleteExpr* node)
+		{
+		}
+
 		void ExprOnlyVisitor::Visit(CppPrefixUnaryExpr* node)
 		{
 		}
@@ -82,6 +86,14 @@ ExprOnlyVisitor
 		}
 
 		void ExprOnlyVisitor::Visit(CppBinaryExpr* node)
+		{
+		}
+
+		void ExprOnlyVisitor::Visit(CppIfExpr* node)
+		{
+		}
+
+		void ExprOnlyVisitor::Visit(CppThrowExpr* node)
 		{
 		}
 

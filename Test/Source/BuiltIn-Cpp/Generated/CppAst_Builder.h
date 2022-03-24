@@ -48,6 +48,14 @@ namespace cpp_parser
 			MakeConstType& type(const vl::Ptr<CppTypeOrExpr>& value);
 		};
 
+		class MakeDeleteExpr : public vl::glr::ParsingAstBuilder<CppDeleteExpr>
+		{
+		public:
+			MakeDeleteExpr& argument(const vl::Ptr<CppTypeOrExpr>& value);
+			MakeDeleteExpr& array(CppOperatorArray value);
+			MakeDeleteExpr& scope(CppOperatorScope value);
+		};
+
 		class MakeGenericArgument : public vl::glr::ParsingAstBuilder<CppGenericArgument>
 		{
 		public:
@@ -59,6 +67,14 @@ namespace cpp_parser
 		{
 		public:
 			MakeGenericArguments& arguments(const vl::Ptr<CppGenericArgument>& value);
+		};
+
+		class MakeIfExpr : public vl::glr::ParsingAstBuilder<CppIfExpr>
+		{
+		public:
+			MakeIfExpr& condition(const vl::Ptr<CppTypeOrExpr>& value);
+			MakeIfExpr& falseBranch(const vl::Ptr<CppTypeOrExpr>& value);
+			MakeIfExpr& trueBranch(const vl::Ptr<CppTypeOrExpr>& value);
 		};
 
 		class MakeIndexExpr : public vl::glr::ParsingAstBuilder<CppIndexExpr>
@@ -151,6 +167,12 @@ namespace cpp_parser
 			MakeSysFuncExpr& argument(const vl::Ptr<CppTypeOrExpr>& value);
 			MakeSysFuncExpr& keyword(const vl::WString& value);
 			MakeSysFuncExpr& variadic(const vl::WString& value);
+		};
+
+		class MakeThrowExpr : public vl::glr::ParsingAstBuilder<CppThrowExpr>
+		{
+		public:
+			MakeThrowExpr& argument(const vl::Ptr<CppTypeOrExpr>& value);
 		};
 
 		class MakeVolatileType : public vl::glr::ParsingAstBuilder<CppVolatileType>

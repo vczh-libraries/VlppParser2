@@ -27,11 +27,13 @@ namespace cpp_parser
 			void CopyFields(CppCallExpr* from, CppCallExpr* to);
 			void CopyFields(CppCastExpr* from, CppCastExpr* to);
 			void CopyFields(CppConstType* from, CppConstType* to);
+			void CopyFields(CppDeleteExpr* from, CppDeleteExpr* to);
 			void CopyFields(CppExprOnly* from, CppExprOnly* to);
 			void CopyFields(CppFile* from, CppFile* to);
 			void CopyFields(CppGenericArgument* from, CppGenericArgument* to);
 			void CopyFields(CppGenericArguments* from, CppGenericArguments* to);
 			void CopyFields(CppIdentifier* from, CppIdentifier* to);
+			void CopyFields(CppIfExpr* from, CppIfExpr* to);
 			void CopyFields(CppIndexExpr* from, CppIndexExpr* to);
 			void CopyFields(CppNameIdentifier* from, CppNameIdentifier* to);
 			void CopyFields(CppNumericExprLiteral* from, CppNumericExprLiteral* to);
@@ -45,6 +47,7 @@ namespace cpp_parser
 			void CopyFields(CppStringLiteral* from, CppStringLiteral* to);
 			void CopyFields(CppStringLiteralFragment* from, CppStringLiteralFragment* to);
 			void CopyFields(CppSysFuncExpr* from, CppSysFuncExpr* to);
+			void CopyFields(CppThrowExpr* from, CppThrowExpr* to);
 			void CopyFields(CppTypeOnly* from, CppTypeOnly* to);
 			void CopyFields(CppTypeOrExpr* from, CppTypeOrExpr* to);
 			void CopyFields(CppVolatileType* from, CppVolatileType* to);
@@ -66,11 +69,14 @@ namespace cpp_parser
 			void Visit(CppBraceExpr* node) override;
 			void Visit(CppCastExpr* node) override;
 			void Visit(CppSysFuncExpr* node) override;
+			void Visit(CppDeleteExpr* node) override;
 			void Visit(CppPrefixUnaryExpr* node) override;
 			void Visit(CppPostfixUnaryExpr* node) override;
 			void Visit(CppIndexExpr* node) override;
 			void Visit(CppCallExpr* node) override;
 			void Visit(CppBinaryExpr* node) override;
+			void Visit(CppIfExpr* node) override;
+			void Visit(CppThrowExpr* node) override;
 
 			void Visit(CppPrimitiveType* node) override;
 			void Visit(CppConstType* node) override;
@@ -92,7 +98,9 @@ namespace cpp_parser
 			vl::Ptr<CppCallExpr> CopyNode(CppCallExpr* node);
 			vl::Ptr<CppCastExpr> CopyNode(CppCastExpr* node);
 			vl::Ptr<CppConstType> CopyNode(CppConstType* node);
+			vl::Ptr<CppDeleteExpr> CopyNode(CppDeleteExpr* node);
 			vl::Ptr<CppExprOnly> CopyNode(CppExprOnly* node);
+			vl::Ptr<CppIfExpr> CopyNode(CppIfExpr* node);
 			vl::Ptr<CppIndexExpr> CopyNode(CppIndexExpr* node);
 			vl::Ptr<CppNameIdentifier> CopyNode(CppNameIdentifier* node);
 			vl::Ptr<CppNumericExprLiteral> CopyNode(CppNumericExprLiteral* node);
@@ -105,6 +113,7 @@ namespace cpp_parser
 			vl::Ptr<CppQualifiedName> CopyNode(CppQualifiedName* node);
 			vl::Ptr<CppStringLiteral> CopyNode(CppStringLiteral* node);
 			vl::Ptr<CppSysFuncExpr> CopyNode(CppSysFuncExpr* node);
+			vl::Ptr<CppThrowExpr> CopyNode(CppThrowExpr* node);
 			vl::Ptr<CppTypeOnly> CopyNode(CppTypeOnly* node);
 			vl::Ptr<CppVolatileType> CopyNode(CppVolatileType* node);
 		};

@@ -51,6 +51,14 @@ namespace cpp_parser
 			to->type = CopyNode(from->type.Obj());
 		}
 
+		void AstVisitor::CopyFields(CppDeleteExpr* from, CppDeleteExpr* to)
+		{
+			CopyFields(static_cast<CppExprOnly*>(from), static_cast<CppExprOnly*>(to));
+			to->argument = CopyNode(from->argument.Obj());
+			to->array = from->array;
+			to->scope = from->scope;
+		}
+
 		void AstVisitor::CopyFields(CppExprOnly* from, CppExprOnly* to)
 		{
 			CopyFields(static_cast<CppTypeOrExpr*>(from), static_cast<CppTypeOrExpr*>(to));
@@ -76,6 +84,14 @@ namespace cpp_parser
 
 		void AstVisitor::CopyFields(CppIdentifier* from, CppIdentifier* to)
 		{
+		}
+
+		void AstVisitor::CopyFields(CppIfExpr* from, CppIfExpr* to)
+		{
+			CopyFields(static_cast<CppExprOnly*>(from), static_cast<CppExprOnly*>(to));
+			to->condition = CopyNode(from->condition.Obj());
+			to->falseBranch = CopyNode(from->falseBranch.Obj());
+			to->trueBranch = CopyNode(from->trueBranch.Obj());
 		}
 
 		void AstVisitor::CopyFields(CppIndexExpr* from, CppIndexExpr* to)
@@ -170,6 +186,12 @@ namespace cpp_parser
 			to->argument = CopyNode(from->argument.Obj());
 			to->keyword = from->keyword;
 			to->variadic = from->variadic;
+		}
+
+		void AstVisitor::CopyFields(CppThrowExpr* from, CppThrowExpr* to)
+		{
+			CopyFields(static_cast<CppExprOnly*>(from), static_cast<CppExprOnly*>(to));
+			to->argument = CopyNode(from->argument.Obj());
 		}
 
 		void AstVisitor::CopyFields(CppTypeOnly* from, CppTypeOnly* to)
@@ -281,6 +303,13 @@ namespace cpp_parser
 			this->result = newNode;
 		}
 
+		void AstVisitor::Visit(CppDeleteExpr* node)
+		{
+			auto newNode = vl::MakePtr<CppDeleteExpr>();
+			CopyFields(node, newNode.Obj());
+			this->result = newNode;
+		}
+
 		void AstVisitor::Visit(CppPrefixUnaryExpr* node)
 		{
 			auto newNode = vl::MakePtr<CppPrefixUnaryExpr>();
@@ -312,6 +341,20 @@ namespace cpp_parser
 		void AstVisitor::Visit(CppBinaryExpr* node)
 		{
 			auto newNode = vl::MakePtr<CppBinaryExpr>();
+			CopyFields(node, newNode.Obj());
+			this->result = newNode;
+		}
+
+		void AstVisitor::Visit(CppIfExpr* node)
+		{
+			auto newNode = vl::MakePtr<CppIfExpr>();
+			CopyFields(node, newNode.Obj());
+			this->result = newNode;
+		}
+
+		void AstVisitor::Visit(CppThrowExpr* node)
+		{
+			auto newNode = vl::MakePtr<CppThrowExpr>();
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
@@ -423,10 +466,22 @@ namespace cpp_parser
 			return CopyNode(static_cast<CppTypeOrExpr*>(node)).Cast<CppConstType>();
 		}
 
+		vl::Ptr<CppDeleteExpr> AstVisitor::CopyNode(CppDeleteExpr* node)
+		{
+			if (!node) return nullptr;
+			return CopyNode(static_cast<CppTypeOrExpr*>(node)).Cast<CppDeleteExpr>();
+		}
+
 		vl::Ptr<CppExprOnly> AstVisitor::CopyNode(CppExprOnly* node)
 		{
 			if (!node) return nullptr;
 			return CopyNode(static_cast<CppTypeOrExpr*>(node)).Cast<CppExprOnly>();
+		}
+
+		vl::Ptr<CppIfExpr> AstVisitor::CopyNode(CppIfExpr* node)
+		{
+			if (!node) return nullptr;
+			return CopyNode(static_cast<CppTypeOrExpr*>(node)).Cast<CppIfExpr>();
 		}
 
 		vl::Ptr<CppIndexExpr> AstVisitor::CopyNode(CppIndexExpr* node)
@@ -499,6 +554,12 @@ namespace cpp_parser
 		{
 			if (!node) return nullptr;
 			return CopyNode(static_cast<CppTypeOrExpr*>(node)).Cast<CppSysFuncExpr>();
+		}
+
+		vl::Ptr<CppThrowExpr> AstVisitor::CopyNode(CppThrowExpr* node)
+		{
+			if (!node) return nullptr;
+			return CopyNode(static_cast<CppTypeOrExpr*>(node)).Cast<CppThrowExpr>();
 		}
 
 		vl::Ptr<CppTypeOnly> AstVisitor::CopyNode(CppTypeOnly* node)
