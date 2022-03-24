@@ -85,7 +85,6 @@ _QualifiedNameFragment
   ;
 
 _MemberQualifiedNameFragment
-  ::= !_QualifiedNameFragment
   ::= _DtorIdentifier:id as partial QualifiedName
   ;
 
@@ -94,6 +93,7 @@ _QualifiedName
   ::= "::" _QualifiedNameFragment as QualifiedName {kind = Root}
   ::= "decltype" "(" "auto" ")" as QualifiedName {kind = DecltypeAuto}
   ::= "decltype" "(" _Expr:expr ")" as QualifiedName {kind = Decltype}
+  ::= _QualifiedName:parent "::" _QualifiedNameFragment as QualifiedName {kind = Member}
   ::= _QualifiedName:parent "::" _MemberQualifiedNameFragment as QualifiedName {kind = Member}
   ;
 
