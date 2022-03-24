@@ -22,6 +22,7 @@ namespace cpp_parser
 			, protected virtual CppIdentifier::IVisitor
 		{
 		protected:
+			void CopyFields(CppBinaryExpr* from, CppBinaryExpr* to);
 			void CopyFields(CppBraceExpr* from, CppBraceExpr* to);
 			void CopyFields(CppCastExpr* from, CppCastExpr* to);
 			void CopyFields(CppConstType* from, CppConstType* to);
@@ -34,6 +35,8 @@ namespace cpp_parser
 			void CopyFields(CppNumericExprLiteral* from, CppNumericExprLiteral* to);
 			void CopyFields(CppOperatorIdentifier* from, CppOperatorIdentifier* to);
 			void CopyFields(CppParenthesisExpr* from, CppParenthesisExpr* to);
+			void CopyFields(CppPostfixUnaryExpr* from, CppPostfixUnaryExpr* to);
+			void CopyFields(CppPrefixUnaryExpr* from, CppPrefixUnaryExpr* to);
 			void CopyFields(CppPrimitiveExprLiteral* from, CppPrimitiveExprLiteral* to);
 			void CopyFields(CppPrimitiveType* from, CppPrimitiveType* to);
 			void CopyFields(CppQualifiedName* from, CppQualifiedName* to);
@@ -61,6 +64,9 @@ namespace cpp_parser
 			void Visit(CppBraceExpr* node) override;
 			void Visit(CppCastExpr* node) override;
 			void Visit(CppSysFuncExpr* node) override;
+			void Visit(CppPrefixUnaryExpr* node) override;
+			void Visit(CppPostfixUnaryExpr* node) override;
+			void Visit(CppBinaryExpr* node) override;
 
 			void Visit(CppPrimitiveType* node) override;
 			void Visit(CppConstType* node) override;
@@ -77,6 +83,7 @@ namespace cpp_parser
 			virtual vl::Ptr<CppStringLiteralFragment> CopyNode(CppStringLiteralFragment* node);
 			virtual vl::Ptr<CppFile> CopyNode(CppFile* node);
 
+			vl::Ptr<CppBinaryExpr> CopyNode(CppBinaryExpr* node);
 			vl::Ptr<CppBraceExpr> CopyNode(CppBraceExpr* node);
 			vl::Ptr<CppCastExpr> CopyNode(CppCastExpr* node);
 			vl::Ptr<CppConstType> CopyNode(CppConstType* node);
@@ -85,6 +92,8 @@ namespace cpp_parser
 			vl::Ptr<CppNumericExprLiteral> CopyNode(CppNumericExprLiteral* node);
 			vl::Ptr<CppOperatorIdentifier> CopyNode(CppOperatorIdentifier* node);
 			vl::Ptr<CppParenthesisExpr> CopyNode(CppParenthesisExpr* node);
+			vl::Ptr<CppPostfixUnaryExpr> CopyNode(CppPostfixUnaryExpr* node);
+			vl::Ptr<CppPrefixUnaryExpr> CopyNode(CppPrefixUnaryExpr* node);
 			vl::Ptr<CppPrimitiveExprLiteral> CopyNode(CppPrimitiveExprLiteral* node);
 			vl::Ptr<CppPrimitiveType> CopyNode(CppPrimitiveType* node);
 			vl::Ptr<CppQualifiedName> CopyNode(CppQualifiedName* node);

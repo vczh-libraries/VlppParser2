@@ -72,6 +72,21 @@ Visitor Pattern Implementation
 		visitor->Visit(this);
 	}
 
+	void CppPrefixUnaryExpr::Accept(CppExprOnly::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void CppPostfixUnaryExpr::Accept(CppExprOnly::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void CppBinaryExpr::Accept(CppExprOnly::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
 	void CppPrimitiveType::Accept(CppTypeOnly::IVisitor* visitor)
 	{
 		visitor->Visit(this);
@@ -122,6 +137,9 @@ namespace vl
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppBraceExpr, cpp_parser::CppBraceExpr)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppCastExpr, cpp_parser::CppCastExpr)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppSysFuncExpr, cpp_parser::CppSysFuncExpr)
+			IMPL_TYPE_INFO_RENAME(cpp_parser::CppPrefixUnaryExpr, cpp_parser::CppPrefixUnaryExpr)
+			IMPL_TYPE_INFO_RENAME(cpp_parser::CppPostfixUnaryExpr, cpp_parser::CppPostfixUnaryExpr)
+			IMPL_TYPE_INFO_RENAME(cpp_parser::CppBinaryExpr, cpp_parser::CppBinaryExpr)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppPrimitiveTypeKinds, cpp_parser::CppPrimitiveTypeKinds)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppPrimitiveType, cpp_parser::CppPrimitiveType)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppConstType, cpp_parser::CppConstType)
@@ -360,6 +378,34 @@ namespace vl
 				CLASS_MEMBER_FIELD(argument)
 			END_CLASS_MEMBER(cpp_parser::CppSysFuncExpr)
 
+			BEGIN_CLASS_MEMBER(cpp_parser::CppPrefixUnaryExpr)
+				CLASS_MEMBER_BASE(cpp_parser::CppExprOnly)
+
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppPrefixUnaryExpr>(), NO_PARAMETER)
+
+				CLASS_MEMBER_FIELD(op)
+				CLASS_MEMBER_FIELD(operand)
+			END_CLASS_MEMBER(cpp_parser::CppPrefixUnaryExpr)
+
+			BEGIN_CLASS_MEMBER(cpp_parser::CppPostfixUnaryExpr)
+				CLASS_MEMBER_BASE(cpp_parser::CppExprOnly)
+
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppPostfixUnaryExpr>(), NO_PARAMETER)
+
+				CLASS_MEMBER_FIELD(op)
+				CLASS_MEMBER_FIELD(operand)
+			END_CLASS_MEMBER(cpp_parser::CppPostfixUnaryExpr)
+
+			BEGIN_CLASS_MEMBER(cpp_parser::CppBinaryExpr)
+				CLASS_MEMBER_BASE(cpp_parser::CppExprOnly)
+
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppBinaryExpr>(), NO_PARAMETER)
+
+				CLASS_MEMBER_FIELD(op)
+				CLASS_MEMBER_FIELD(first)
+				CLASS_MEMBER_FIELD(second)
+			END_CLASS_MEMBER(cpp_parser::CppBinaryExpr)
+
 			BEGIN_ENUM_ITEM(cpp_parser::CppPrimitiveTypeKinds)
 				ENUM_ITEM_NAMESPACE(cpp_parser::CppPrimitiveTypeKinds)
 				ENUM_NAMESPACE_ITEM(Neutral)
@@ -414,6 +460,9 @@ namespace vl
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppExprOnly::IVisitor::*)(cpp_parser::CppBraceExpr* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppExprOnly::IVisitor::*)(cpp_parser::CppCastExpr* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppExprOnly::IVisitor::*)(cpp_parser::CppSysFuncExpr* node))
+				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppExprOnly::IVisitor::*)(cpp_parser::CppPrefixUnaryExpr* node))
+				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppExprOnly::IVisitor::*)(cpp_parser::CppPostfixUnaryExpr* node))
+				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppExprOnly::IVisitor::*)(cpp_parser::CppBinaryExpr* node))
 			END_INTERFACE_MEMBER(cpp_parser::CppExprOnly)
 
 			BEGIN_INTERFACE_MEMBER(cpp_parser::CppTypeOnly::IVisitor)
@@ -462,6 +511,9 @@ namespace vl
 					ADD_TYPE_INFO(cpp_parser::CppBraceExpr)
 					ADD_TYPE_INFO(cpp_parser::CppCastExpr)
 					ADD_TYPE_INFO(cpp_parser::CppSysFuncExpr)
+					ADD_TYPE_INFO(cpp_parser::CppPrefixUnaryExpr)
+					ADD_TYPE_INFO(cpp_parser::CppPostfixUnaryExpr)
+					ADD_TYPE_INFO(cpp_parser::CppBinaryExpr)
 					ADD_TYPE_INFO(cpp_parser::CppPrimitiveTypeKinds)
 					ADD_TYPE_INFO(cpp_parser::CppPrimitiveType)
 					ADD_TYPE_INFO(cpp_parser::CppConstType)

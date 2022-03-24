@@ -13,6 +13,14 @@ namespace cpp_parser
 {
 	namespace builder
 	{
+		class MakeBinaryExpr : public vl::glr::ParsingAstBuilder<CppBinaryExpr>
+		{
+		public:
+			MakeBinaryExpr& first(const vl::Ptr<CppTypeOrExpr>& value);
+			MakeBinaryExpr& op(CppOperators value);
+			MakeBinaryExpr& second(const vl::Ptr<CppTypeOrExpr>& value);
+		};
+
 		class MakeBraceExpr : public vl::glr::ParsingAstBuilder<CppBraceExpr>
 		{
 		public:
@@ -70,6 +78,20 @@ namespace cpp_parser
 		{
 		public:
 			MakeParenthesisExpr& expr(const vl::Ptr<CppTypeOrExpr>& value);
+		};
+
+		class MakePostfixUnaryExpr : public vl::glr::ParsingAstBuilder<CppPostfixUnaryExpr>
+		{
+		public:
+			MakePostfixUnaryExpr& op(CppOperators value);
+			MakePostfixUnaryExpr& operand(const vl::Ptr<CppTypeOrExpr>& value);
+		};
+
+		class MakePrefixUnaryExpr : public vl::glr::ParsingAstBuilder<CppPrefixUnaryExpr>
+		{
+		public:
+			MakePrefixUnaryExpr& op(CppOperators value);
+			MakePrefixUnaryExpr& operand(const vl::Ptr<CppTypeOrExpr>& value);
 		};
 
 		class MakePrimitiveExprLiteral : public vl::glr::ParsingAstBuilder<CppPrimitiveExprLiteral>

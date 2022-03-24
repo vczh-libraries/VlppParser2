@@ -65,6 +65,18 @@ ExprOnlyVisitor
 		{
 		}
 
+		void ExprOnlyVisitor::Visit(CppPrefixUnaryExpr* node)
+		{
+		}
+
+		void ExprOnlyVisitor::Visit(CppPostfixUnaryExpr* node)
+		{
+		}
+
+		void ExprOnlyVisitor::Visit(CppBinaryExpr* node)
+		{
+		}
+
 /***********************************************************************
 TypeOnlyVisitor
 ***********************************************************************/

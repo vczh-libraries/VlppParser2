@@ -22,6 +22,7 @@ namespace cpp_parser
 			, protected virtual CppIdentifier::IVisitor
 		{
 		protected:
+			virtual void PrintFields(CppBinaryExpr* node);
 			virtual void PrintFields(CppBraceExpr* node);
 			virtual void PrintFields(CppCastExpr* node);
 			virtual void PrintFields(CppConstType* node);
@@ -34,6 +35,8 @@ namespace cpp_parser
 			virtual void PrintFields(CppNumericExprLiteral* node);
 			virtual void PrintFields(CppOperatorIdentifier* node);
 			virtual void PrintFields(CppParenthesisExpr* node);
+			virtual void PrintFields(CppPostfixUnaryExpr* node);
+			virtual void PrintFields(CppPrefixUnaryExpr* node);
 			virtual void PrintFields(CppPrimitiveExprLiteral* node);
 			virtual void PrintFields(CppPrimitiveType* node);
 			virtual void PrintFields(CppQualifiedName* node);
@@ -56,6 +59,9 @@ namespace cpp_parser
 			void Visit(CppBraceExpr* node) override;
 			void Visit(CppCastExpr* node) override;
 			void Visit(CppSysFuncExpr* node) override;
+			void Visit(CppPrefixUnaryExpr* node) override;
+			void Visit(CppPostfixUnaryExpr* node) override;
+			void Visit(CppBinaryExpr* node) override;
 
 			void Visit(CppPrimitiveType* node) override;
 			void Visit(CppConstType* node) override;

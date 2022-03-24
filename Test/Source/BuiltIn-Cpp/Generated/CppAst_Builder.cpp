@@ -12,6 +12,28 @@ namespace cpp_parser
 	{
 
 /***********************************************************************
+MakeBinaryExpr
+***********************************************************************/
+
+		MakeBinaryExpr& MakeBinaryExpr::first(const vl::Ptr<CppTypeOrExpr>& value)
+		{
+			node->first = value;
+			return *this;
+		}
+
+		MakeBinaryExpr& MakeBinaryExpr::op(CppOperators value)
+		{
+			node->op = value;
+			return *this;
+		}
+
+		MakeBinaryExpr& MakeBinaryExpr::second(const vl::Ptr<CppTypeOrExpr>& value)
+		{
+			node->second = value;
+			return *this;
+		}
+
+/***********************************************************************
 MakeBraceExpr
 ***********************************************************************/
 
@@ -128,6 +150,38 @@ MakeParenthesisExpr
 		MakeParenthesisExpr& MakeParenthesisExpr::expr(const vl::Ptr<CppTypeOrExpr>& value)
 		{
 			node->expr = value;
+			return *this;
+		}
+
+/***********************************************************************
+MakePostfixUnaryExpr
+***********************************************************************/
+
+		MakePostfixUnaryExpr& MakePostfixUnaryExpr::op(CppOperators value)
+		{
+			node->op = value;
+			return *this;
+		}
+
+		MakePostfixUnaryExpr& MakePostfixUnaryExpr::operand(const vl::Ptr<CppTypeOrExpr>& value)
+		{
+			node->operand = value;
+			return *this;
+		}
+
+/***********************************************************************
+MakePrefixUnaryExpr
+***********************************************************************/
+
+		MakePrefixUnaryExpr& MakePrefixUnaryExpr::op(CppOperators value)
+		{
+			node->op = value;
+			return *this;
+		}
+
+		MakePrefixUnaryExpr& MakePrefixUnaryExpr::operand(const vl::Ptr<CppTypeOrExpr>& value)
+		{
+			node->operand = value;
 			return *this;
 		}
 

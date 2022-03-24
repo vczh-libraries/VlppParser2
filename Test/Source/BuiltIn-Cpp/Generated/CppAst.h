@@ -12,6 +12,7 @@ Licensed under https://github.com/vczh-libraries/License
 
 namespace cpp_parser
 {
+	class CppBinaryExpr;
 	class CppBraceExpr;
 	class CppCastExpr;
 	class CppConstType;
@@ -24,6 +25,8 @@ namespace cpp_parser
 	class CppNumericExprLiteral;
 	class CppOperatorIdentifier;
 	class CppParenthesisExpr;
+	class CppPostfixUnaryExpr;
+	class CppPrefixUnaryExpr;
 	class CppPrimitiveExprLiteral;
 	class CppPrimitiveType;
 	class CppQualifiedName;
@@ -170,6 +173,9 @@ namespace cpp_parser
 			virtual void Visit(CppBraceExpr* node) = 0;
 			virtual void Visit(CppCastExpr* node) = 0;
 			virtual void Visit(CppSysFuncExpr* node) = 0;
+			virtual void Visit(CppPrefixUnaryExpr* node) = 0;
+			virtual void Visit(CppPostfixUnaryExpr* node) = 0;
+			virtual void Visit(CppBinaryExpr* node) = 0;
 		};
 
 		virtual void Accept(CppExprOnly::IVisitor* visitor) = 0;
@@ -319,6 +325,34 @@ namespace cpp_parser
 		void Accept(CppExprOnly::IVisitor* visitor) override;
 	};
 
+	class CppPrefixUnaryExpr : public CppExprOnly, vl::reflection::Description<CppPrefixUnaryExpr>
+	{
+	public:
+		CppOperators op = CppOperators::UNDEFINED_ENUM_ITEM_VALUE;
+		vl::Ptr<CppTypeOrExpr> operand;
+
+		void Accept(CppExprOnly::IVisitor* visitor) override;
+	};
+
+	class CppPostfixUnaryExpr : public CppExprOnly, vl::reflection::Description<CppPostfixUnaryExpr>
+	{
+	public:
+		CppOperators op = CppOperators::UNDEFINED_ENUM_ITEM_VALUE;
+		vl::Ptr<CppTypeOrExpr> operand;
+
+		void Accept(CppExprOnly::IVisitor* visitor) override;
+	};
+
+	class CppBinaryExpr : public CppExprOnly, vl::reflection::Description<CppBinaryExpr>
+	{
+	public:
+		CppOperators op = CppOperators::UNDEFINED_ENUM_ITEM_VALUE;
+		vl::Ptr<CppTypeOrExpr> first;
+		vl::Ptr<CppTypeOrExpr> second;
+
+		void Accept(CppExprOnly::IVisitor* visitor) override;
+	};
+
 	class CppPrimitiveType : public CppTypeOnly, vl::reflection::Description<CppPrimitiveType>
 	{
 	public:
@@ -384,6 +418,9 @@ namespace vl
 			DECL_TYPE_INFO(cpp_parser::CppBraceExpr)
 			DECL_TYPE_INFO(cpp_parser::CppCastExpr)
 			DECL_TYPE_INFO(cpp_parser::CppSysFuncExpr)
+			DECL_TYPE_INFO(cpp_parser::CppPrefixUnaryExpr)
+			DECL_TYPE_INFO(cpp_parser::CppPostfixUnaryExpr)
+			DECL_TYPE_INFO(cpp_parser::CppBinaryExpr)
 			DECL_TYPE_INFO(cpp_parser::CppPrimitiveTypeKinds)
 			DECL_TYPE_INFO(cpp_parser::CppPrimitiveType)
 			DECL_TYPE_INFO(cpp_parser::CppConstType)
@@ -442,6 +479,21 @@ namespace vl
 				}
 
 				void Visit(cpp_parser::CppSysFuncExpr* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+				void Visit(cpp_parser::CppPrefixUnaryExpr* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+				void Visit(cpp_parser::CppPostfixUnaryExpr* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+				void Visit(cpp_parser::CppBinaryExpr* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
