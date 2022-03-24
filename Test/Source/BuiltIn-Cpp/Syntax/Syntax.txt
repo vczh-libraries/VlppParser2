@@ -126,38 +126,34 @@ _PrimitiveExpr : TypeOrExpr
   ::= "const_cast":keyword "<" _Type:type ">" "(" _Expr:expr ")" as CastExpr
   ::= "reinterpret_cast":keyword "<" _Type:type ">" "(" _Expr:expr ")" as CastExpr
   ::= "safe_cast":keyword "<" _Type:type ">" "(" _Expr:expr ")" as CastExpr
-  ::= "(" _Type:type ")" _PrimitiveExpr:expr as CastExpr
   ::= "typeid":keyword "(" _TypeOrExpr:argument ")" as SysFuncExpr
   ::= "alignof":keyword "(" _TypeOrExpr:argument ")" as SysFuncExpr
   ::= "__alignof":keyword "(" _TypeOrExpr:argument ")" as SysFuncExpr
   ::= "__uuidof":keyword "(" _TypeOrExpr:argument ")" as SysFuncExpr
   ::= "noexcept":keyword "(" _TypeOrExpr:argument ")" as SysFuncExpr
-  ::= "delete" _PrimitiveExpr:argument as DeleteExpr {scope = Context, array = NotArray}
-  ::= "delete" "[" "]" _PrimitiveExpr:argument as DeleteExpr {scope = Context, array = Array}
-  ::= "::" "delete" _PrimitiveExpr:argument as DeleteExpr {scope = Root, array = NotArray}
-  ::= "::" "delete" "[" "]" _PrimitiveExpr:argument as DeleteExpr {scope = Root, array = Array}
-  ::= "++" _QualifiedName:operand as PrefixUnaryExpr {op = Increase}
-  ::= "--" _QualifiedName:operand as PrefixUnaryExpr {op = Decrease}
-  ::= "~" _QualifiedName:operand as PrefixUnaryExpr {op = Revert}
-  ::= "!" _QualifiedName:operand as PrefixUnaryExpr {op = Not}
-  ::= "-" _QualifiedName:operand as PrefixUnaryExpr {op = Minus}
-  ::= "+" _QualifiedName:operand as PrefixUnaryExpr {op = Plus}
-  ::= "&" _QualifiedName:operand as PrefixUnaryExpr {op = BitwiseAnd}
-  ::= "*" _QualifiedName:operand as PrefixUnaryExpr {op = Mul}
-  ::= "++" _PrimitiveExpr:operand as PrefixUnaryExpr {op = Increase}
-  ::= "--" _PrimitiveExpr:operand as PrefixUnaryExpr {op = Decrease}
-  ::= "~" _PrimitiveExpr:operand as PrefixUnaryExpr {op = Revert}
-  ::= "!" _PrimitiveExpr:operand as PrefixUnaryExpr {op = Not}
-  ::= "-" _PrimitiveExpr:operand as PrefixUnaryExpr {op = Minus}
-  ::= "+" _PrimitiveExpr:operand as PrefixUnaryExpr {op = Plus}
-  ::= "&" _PrimitiveExpr:operand as PrefixUnaryExpr {op = BitwiseAnd}
-  ::= "*" _PrimitiveExpr:operand as PrefixUnaryExpr {op = Mul}
+  ::= "(" _Type:type ")" _PrimitiveExpr_QualifiedName:expr as CastExpr
+  ::= "++" _PrimitiveExpr_QualifiedName:operand as PrefixUnaryExpr {op = Increase}
+  ::= "--" _PrimitiveExpr_QualifiedName:operand as PrefixUnaryExpr {op = Decrease}
+  ::= "~" _PrimitiveExpr_QualifiedName:operand as PrefixUnaryExpr {op = Revert}
+  ::= "!" _PrimitiveExpr_QualifiedName:operand as PrefixUnaryExpr {op = Not}
+  ::= "-" _PrimitiveExpr_QualifiedName:operand as PrefixUnaryExpr {op = Minus}
+  ::= "+" _PrimitiveExpr_QualifiedName:operand as PrefixUnaryExpr {op = Plus}
+  ::= "&" _PrimitiveExpr_QualifiedName:operand as PrefixUnaryExpr {op = BitwiseAnd}
+  ::= "*" _PrimitiveExpr_QualifiedName:operand as PrefixUnaryExpr {op = Mul}
+  ::= "delete" _PrimitiveExpr_QualifiedName:argument as DeleteExpr {scope = Context, array = NotArray}
+  ::= "delete" "[" "]" _PrimitiveExpr_QualifiedName:argument as DeleteExpr {scope = Context, array = Array}
+  ::= "::" "delete" _PrimitiveExpr_QualifiedName:argument as DeleteExpr {scope = Root, array = NotArray}
+  ::= "::" "delete" "[" "]" _PrimitiveExpr_QualifiedName:argument as DeleteExpr {scope = Root, array = Array}
+  ;
+
+_PrimitiveExpr_QualifiedName
+  ::= !_PrimitiveExpr
+  ::= !_QualifiedName
   ;
 
 _PostfixUnaryExpr
   ::= left_recursion_placeholder(Shared,Expr)
-  ::= !_QualifiedName
-  ::= !_PrimitiveExpr
+  ::= !_PrimitiveExpr_QualifiedName
   ::= _PostfixUnaryExpr:operand "++" as PostfixUnaryExpr {op = Increase}
   ::= _PostfixUnaryExpr:operand "--" as PostfixUnaryExpr {op = Decrease}
   ::= _PostfixUnaryExpr:operand "[" _Expr:index "]" as IndexExpr
@@ -308,17 +304,19 @@ _PrimitiveType
   ;
 
 _ShortType : TypeOrExpr
-  ::= "const" _QualifiedName:type as ConstType
-  ::= "volatile" _QualifiedName:type as VolatileType
-  ::= "const" _ShortType:type as ConstType
-  ::= "volatile" _ShortType:type as VolatileType
+  ::= "const" _ShortType_QualifiedName:type as ConstType
+  ::= "volatile" _ShortType_QualifiedName:type as VolatileType
   ::= !_PrimitiveType
+  ;
+
+_ShortType_QualifiedName
+  ::= !_QualifiedName
+  ::= !_ShortType
   ;
 
 _LongType
   ::= left_recursion_placeholder(Shared,Type)
-  ::= !_QualifiedName
-  ::= !_ShortType
+  ::= !_ShortType_QualifiedName
   ::= _LongType:type "const" as ConstType
   ::= _LongType:type "volatile" as VolatileType
   ;
