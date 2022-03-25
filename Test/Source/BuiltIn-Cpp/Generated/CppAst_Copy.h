@@ -45,6 +45,7 @@ namespace cpp_parser
 			void CopyFields(CppPrimitiveExprLiteral* from, CppPrimitiveExprLiteral* to);
 			void CopyFields(CppPrimitiveType* from, CppPrimitiveType* to);
 			void CopyFields(CppQualifiedName* from, CppQualifiedName* to);
+			void CopyFields(CppSizeofExpr* from, CppSizeofExpr* to);
 			void CopyFields(CppStringLiteral* from, CppStringLiteral* to);
 			void CopyFields(CppStringLiteralFragment* from, CppStringLiteralFragment* to);
 			void CopyFields(CppSysFuncExpr* from, CppSysFuncExpr* to);
@@ -70,6 +71,7 @@ namespace cpp_parser
 			void Visit(CppBraceExpr* node) override;
 			void Visit(CppCastExpr* node) override;
 			void Visit(CppSysFuncExpr* node) override;
+			void Visit(CppSizeofExpr* node) override;
 			void Visit(CppDeleteExpr* node) override;
 			void Visit(CppNewExpr* node) override;
 			void Visit(CppPrefixUnaryExpr* node) override;
@@ -114,6 +116,7 @@ namespace cpp_parser
 			vl::Ptr<CppPrimitiveExprLiteral> CopyNode(CppPrimitiveExprLiteral* node);
 			vl::Ptr<CppPrimitiveType> CopyNode(CppPrimitiveType* node);
 			vl::Ptr<CppQualifiedName> CopyNode(CppQualifiedName* node);
+			vl::Ptr<CppSizeofExpr> CopyNode(CppSizeofExpr* node);
 			vl::Ptr<CppStringLiteral> CopyNode(CppStringLiteral* node);
 			vl::Ptr<CppSysFuncExpr> CopyNode(CppSysFuncExpr* node);
 			vl::Ptr<CppThrowExpr> CopyNode(CppThrowExpr* node);

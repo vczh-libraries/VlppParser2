@@ -72,6 +72,11 @@ Visitor Pattern Implementation
 		visitor->Visit(this);
 	}
 
+	void CppSizeofExpr::Accept(CppExprOnly::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
 	void CppDeleteExpr::Accept(CppExprOnly::IVisitor* visitor)
 	{
 		visitor->Visit(this);
@@ -168,6 +173,7 @@ namespace vl
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppCastExpr, cpp_parser::CppCastExpr)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppSysFuncExpr, cpp_parser::CppSysFuncExpr)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppOperatorScope, cpp_parser::CppOperatorScope)
+			IMPL_TYPE_INFO_RENAME(cpp_parser::CppSizeofExpr, cpp_parser::CppSizeofExpr)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppOperatorArray, cpp_parser::CppOperatorArray)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppDeleteExpr, cpp_parser::CppDeleteExpr)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppOperatorInit, cpp_parser::CppOperatorInit)
@@ -425,6 +431,15 @@ namespace vl
 				ENUM_NAMESPACE_ITEM(Context)
 			END_ENUM_ITEM(cpp_parser::CppOperatorScope)
 
+			BEGIN_CLASS_MEMBER(cpp_parser::CppSizeofExpr)
+				CLASS_MEMBER_BASE(cpp_parser::CppExprOnly)
+
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppSizeofExpr>(), NO_PARAMETER)
+
+				CLASS_MEMBER_FIELD(argument)
+				CLASS_MEMBER_FIELD(variadic)
+			END_CLASS_MEMBER(cpp_parser::CppSizeofExpr)
+
 			BEGIN_ENUM_ITEM(cpp_parser::CppOperatorArray)
 				ENUM_ITEM_NAMESPACE(cpp_parser::CppOperatorArray)
 				ENUM_NAMESPACE_ITEM(Array)
@@ -579,6 +594,7 @@ namespace vl
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppExprOnly::IVisitor::*)(cpp_parser::CppBraceExpr* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppExprOnly::IVisitor::*)(cpp_parser::CppCastExpr* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppExprOnly::IVisitor::*)(cpp_parser::CppSysFuncExpr* node))
+				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppExprOnly::IVisitor::*)(cpp_parser::CppSizeofExpr* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppExprOnly::IVisitor::*)(cpp_parser::CppDeleteExpr* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppExprOnly::IVisitor::*)(cpp_parser::CppNewExpr* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppExprOnly::IVisitor::*)(cpp_parser::CppPrefixUnaryExpr* node))
@@ -637,6 +653,7 @@ namespace vl
 					ADD_TYPE_INFO(cpp_parser::CppCastExpr)
 					ADD_TYPE_INFO(cpp_parser::CppSysFuncExpr)
 					ADD_TYPE_INFO(cpp_parser::CppOperatorScope)
+					ADD_TYPE_INFO(cpp_parser::CppSizeofExpr)
 					ADD_TYPE_INFO(cpp_parser::CppOperatorArray)
 					ADD_TYPE_INFO(cpp_parser::CppDeleteExpr)
 					ADD_TYPE_INFO(cpp_parser::CppOperatorInit)

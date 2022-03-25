@@ -43,6 +43,7 @@ namespace cpp_parser
 			void Visit(CppBraceExpr* node) override;
 			void Visit(CppCastExpr* node) override;
 			void Visit(CppSysFuncExpr* node) override;
+			void Visit(CppSizeofExpr* node) override;
 			void Visit(CppDeleteExpr* node) override;
 			void Visit(CppNewExpr* node) override;
 			void Visit(CppPrefixUnaryExpr* node) override;

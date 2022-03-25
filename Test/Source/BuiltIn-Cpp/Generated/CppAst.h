@@ -35,6 +35,7 @@ namespace cpp_parser
 	class CppPrimitiveExprLiteral;
 	class CppPrimitiveType;
 	class CppQualifiedName;
+	class CppSizeofExpr;
 	class CppStringLiteral;
 	class CppStringLiteralFragment;
 	class CppSysFuncExpr;
@@ -204,6 +205,7 @@ namespace cpp_parser
 			virtual void Visit(CppBraceExpr* node) = 0;
 			virtual void Visit(CppCastExpr* node) = 0;
 			virtual void Visit(CppSysFuncExpr* node) = 0;
+			virtual void Visit(CppSizeofExpr* node) = 0;
 			virtual void Visit(CppDeleteExpr* node) = 0;
 			virtual void Visit(CppNewExpr* node) = 0;
 			virtual void Visit(CppPrefixUnaryExpr* node) = 0;
@@ -362,6 +364,15 @@ namespace cpp_parser
 		void Accept(CppExprOnly::IVisitor* visitor) override;
 	};
 
+	class CppSizeofExpr : public CppExprOnly, vl::reflection::Description<CppSizeofExpr>
+	{
+	public:
+		vl::Ptr<CppTypeOrExpr> argument;
+		vl::glr::ParsingToken variadic;
+
+		void Accept(CppExprOnly::IVisitor* visitor) override;
+	};
+
 	class CppDeleteExpr : public CppExprOnly, vl::reflection::Description<CppDeleteExpr>
 	{
 	public:
@@ -514,6 +525,7 @@ namespace vl
 			DECL_TYPE_INFO(cpp_parser::CppCastExpr)
 			DECL_TYPE_INFO(cpp_parser::CppSysFuncExpr)
 			DECL_TYPE_INFO(cpp_parser::CppOperatorScope)
+			DECL_TYPE_INFO(cpp_parser::CppSizeofExpr)
 			DECL_TYPE_INFO(cpp_parser::CppOperatorArray)
 			DECL_TYPE_INFO(cpp_parser::CppDeleteExpr)
 			DECL_TYPE_INFO(cpp_parser::CppOperatorInit)
@@ -583,6 +595,11 @@ namespace vl
 				}
 
 				void Visit(cpp_parser::CppSysFuncExpr* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+				void Visit(cpp_parser::CppSizeofExpr* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}

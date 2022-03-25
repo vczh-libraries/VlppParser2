@@ -158,6 +158,13 @@ namespace cpp_parser
 			MakeQualifiedName& parent(const vl::Ptr<CppQualifiedName>& value);
 		};
 
+		class MakeSizeofExpr : public vl::glr::ParsingAstBuilder<CppSizeofExpr>
+		{
+		public:
+			MakeSizeofExpr& argument(const vl::Ptr<CppTypeOrExpr>& value);
+			MakeSizeofExpr& variadic(const vl::WString& value);
+		};
+
 		class MakeStringLiteral : public vl::glr::ParsingAstBuilder<CppStringLiteral>
 		{
 		public:

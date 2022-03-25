@@ -65,6 +65,10 @@ ExprOnlyVisitor
 		{
 		}
 
+		void ExprOnlyVisitor::Visit(CppSizeofExpr* node)
+		{
+		}
+
 		void ExprOnlyVisitor::Visit(CppDeleteExpr* node)
 		{
 		}

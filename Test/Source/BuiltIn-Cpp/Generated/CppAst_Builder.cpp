@@ -362,6 +362,22 @@ MakeQualifiedName
 		}
 
 /***********************************************************************
+MakeSizeofExpr
+***********************************************************************/
+
+		MakeSizeofExpr& MakeSizeofExpr::argument(const vl::Ptr<CppTypeOrExpr>& value)
+		{
+			node->argument = value;
+			return *this;
+		}
+
+		MakeSizeofExpr& MakeSizeofExpr::variadic(const vl::WString& value)
+		{
+			node->variadic.value = value;
+			return *this;
+		}
+
+/***********************************************************************
 MakeStringLiteral
 ***********************************************************************/
 

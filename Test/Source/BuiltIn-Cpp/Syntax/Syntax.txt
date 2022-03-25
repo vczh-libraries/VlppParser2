@@ -164,7 +164,13 @@ _DeleteFragment
   ::= "[" "]" _PrefixUnaryExpr:argument as partial DeleteExpr {array = Array}
   ;
 
-_AllPrefixUnaryExpr
+_SizeofFragment
+  ::= _PostfixUnaryExpr:argument as partial SizeofExpr
+  ::= _AllPrefixUnaryExpr_NoCStyleCast:argument as partial SizeofExpr
+  ::= "(" _Type:argument ")" as partial SizeofExpr
+  ;
+
+_AllPrefixUnaryExpr_NoCStyleCast
   ::= "++" _PrefixUnaryExpr:operand as PrefixUnaryExpr {op = Increase}
   ::= "--" _PrefixUnaryExpr:operand as PrefixUnaryExpr {op = Decrease}
   ::= "~" _PrefixUnaryExpr:operand as PrefixUnaryExpr {op = Revert}
@@ -177,6 +183,11 @@ _AllPrefixUnaryExpr
   ::= "::" "new" _NewFragment as NewExpr {scope = Root}
   ::= "delete" _DeleteFragment as DeleteExpr {scope = Context}
   ::= "::" "delete" _DeleteFragment as DeleteExpr {scope = Root}
+  ::= "sizeof" ["...":variadic] _SizeofFragment as SizeofExpr
+  ;
+
+_AllPrefixUnaryExpr
+  ::= !_AllPrefixUnaryExpr_NoCStyleCast
   ::= "(" _Type:type ")" _PrefixUnaryExpr:expr as CastExpr
   ;
 

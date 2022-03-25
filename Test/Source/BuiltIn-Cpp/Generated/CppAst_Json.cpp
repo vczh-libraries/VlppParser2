@@ -971,6 +971,15 @@ namespace cpp_parser
 			Print(node->parent.Obj());
 			EndField();
 		}
+		void AstVisitor::PrintFields(CppSizeofExpr* node)
+		{
+			BeginField(L"argument");
+			Print(node->argument.Obj());
+			EndField();
+			BeginField(L"variadic");
+			WriteToken(node->variadic);
+			EndField();
+		}
 		void AstVisitor::PrintFields(CppStringLiteral* node)
 		{
 			BeginField(L"fragments");
@@ -1160,6 +1169,21 @@ namespace cpp_parser
 			PrintFields(static_cast<CppTypeOrExpr*>(node));
 			PrintFields(static_cast<CppExprOnly*>(node));
 			PrintFields(static_cast<CppSysFuncExpr*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppSizeofExpr* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"SizeofExpr", node);
+			PrintFields(static_cast<CppTypeOrExpr*>(node));
+			PrintFields(static_cast<CppExprOnly*>(node));
+			PrintFields(static_cast<CppSizeofExpr*>(node));
 			EndObject();
 		}
 
