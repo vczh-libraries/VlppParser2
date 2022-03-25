@@ -1,4 +1,6 @@
 #include "../../Source/BuiltIn-Cpp/Generated/CppParser.h"
+#include "../../Source/BuiltIn-Cpp/Generated/CppAst_Json.h"
+#include "../../Source/LogTrace.h"
 
 using namespace vl;
 using namespace vl::collections;
@@ -7,6 +9,7 @@ using namespace vl::regex;
 using namespace cpp_parser;
 
 extern WString GetTestParserInputPath(const WString& parserName);
+extern FilePath GetOutputDir(const WString& parserName);
 
 template<typename ...TArgs>
 struct AssertPtrStruct
@@ -39,8 +42,69 @@ void ParseTypeExpr(cpp_parser::Parser& parser, const WString& code)
 	AssertPtrStruct<TArgs...>::AssertPtr(ast.Obj());
 }
 
+void TracedTests()
+{
+	cpp_parser::Parser parser;
+	WString indexName;
+	WString caseName;
+	FilePath dirOutput = GetOutputDir(L"BuiltIn-Cpp");
+	
+	parser.OnEndOfInput.Add(
+		[&](EndOfInputArgs& args)
+		{
+			auto& traceManager = *dynamic_cast<TraceManager*>(args.executor);
+			LogTraceManager(
+				L"BuiltIn-Cpp",
+				indexName + L"_" + caseName,
+				args.executable,
+				traceManager,
+				args.rootTrace,
+				args.tokens,
+				[=](vint32_t type) { return WString::Unmanaged(CppTypeName((CppClasses)type)); },
+				[=](vint32_t field) { return WString::Unmanaged(CppFieldName((CppFields)field)); },
+				[=](vint32_t token) { return WString::Unmanaged(CppTokenId((CppTokens)token)); },
+				[=](vint32_t rule) { return WString::Unmanaged(ParserRuleName(rule)); },
+				[=](vint32_t state) { return WString::Unmanaged(ParserStateLabel(state)); },
+				[=](vint32_t switchId) { return WString::Unmanaged(ParserSwitchName(switchId)); }
+			);
+
+			if (traceManager.concurrentCount == 1)
+			{
+				LogTraceExecution(
+					L"BuiltIn-Cpp",
+					indexName + L"_" + caseName,
+					[=](vint32_t type) { return WString::Unmanaged(CppTypeName((CppClasses)type)); },
+					[=](vint32_t field) { return WString::Unmanaged(CppFieldName((CppFields)field)); },
+					[=](vint32_t token) { return WString::Unmanaged(CppTokenId((CppTokens)token)); },
+					[&](IAstInsReceiver& receiver)
+					{
+						traceManager.ExecuteTrace(args.rootTrace, receiver, args.tokens);
+					});
+			}
+		});
+
+	auto runParser = [&](const wchar_t* _indexName, const wchar_t* _caseName, auto parse)
+	{
+		indexName = WString::Unmanaged(_indexName);
+		caseName = WString::Unmanaged(_caseName);
+		auto ast = parse();
+		auto astJson = PrintAstJson<json_visitor::AstVisitor>(ast);
+		File(dirOutput / (L"Output[" + indexName + L"_" + caseName + L"].json")).WriteAllText(astJson, true, BomEncoder::Utf8);
+	};
+
+	TEST_CASE(L"int*")
+	{
+		runParser(L"TypeOrExpr", L"PointerOfInt", [&]() { return parser.Parse_TypeOrExpr(L"int*"); });
+	});
+}
+
 TEST_FILE
 {
+	TEST_CATEGORY(L"Traced Tests")
+	{
+		TracedTests();
+	});
+
 	cpp_parser::Parser parser;
 
 	TEST_CATEGORY(L"Identifier")
