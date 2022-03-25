@@ -365,15 +365,19 @@ _LongType
 // Declarator
 //////////////////////////////////////////////////////////////////
 
-_AdvancedType
+_AdvancedTypeNoCV
   ::= "&" as AdvancedType {kind = LRef}
   ::= "&&" as AdvancedType {kind = RRef}
-  ::= "const" as AdvancedType {kind = Const}
-  ::= "volatile" as AdvancedType {kind = Volatile}
   ::= "*" as AdvancedType {kind = Pointer}
   ::= "*" "__ptr32" as AdvancedType {kind = Pointer32}
   ::= "*" "__ptr64" as AdvancedType {kind = Pointer64}
   ::= _QualifiedName:parent "::" as AdvancedType {kind = Member}
+  ;
+
+_AdvancedType
+  ::= !_AdvancedTypeNoCV
+  ::= "const" as AdvancedType {kind = Const}
+  ::= "volatile" as AdvancedType {kind = Volatile}
   ;
 
 _DeclaratorKeyword
@@ -397,13 +401,18 @@ _DeclaratorKeyword
   ::= "__vectorcall":keyword as DeclaratorKeyword
   ;
 
-_DeclaratorBeforeId
+_DeclaratorAKFirst
+  ::= _AdvancedTypeNoCV:advancedTypes as partial Declarator
+  ::= _DeclaratorKeyword:keywords as partial Declarator
+  ;
+
+_DeclaratorAKFollow
   ::= _AdvancedType:advancedTypes as partial Declarator
   ::= _DeclaratorKeyword:keywords as partial Declarator
   ;
 
 _Declarator
-  ::= _DeclaratorBeforeId {_DeclaratorBeforeId} as Declarator
+  ::= _DeclaratorAKFirst {_DeclaratorAKFollow} as Declarator
   ;
 
 _TypeOrDeclarator
