@@ -98,7 +98,7 @@ _QualifiedName
   ;
 
 //////////////////////////////////////////////////////////////////
-// PrimitiveExpr + UnaryExpr
+// PrimitiveExpr
 //////////////////////////////////////////////////////////////////
 
 _StringLiteralFragment
@@ -138,6 +138,10 @@ _PrimitiveExpr_QualifiedName
   ::= !_QualifiedName
   ;
 
+//////////////////////////////////////////////////////////////////
+// PostfixUnaryExpr
+//////////////////////////////////////////////////////////////////
+
 _PostfixUnaryExpr
   ::= left_recursion_placeholder(Shared,Expr)
   ::= !_PrimitiveExpr_QualifiedName
@@ -148,6 +152,10 @@ _PostfixUnaryExpr
   ::= _PostfixUnaryExpr:operand "[" _Expr:index "]" as IndexExpr
   ::= _PostfixUnaryExpr:operand "(" {_Expr_NoComma:arguments ; ","} ")" as CallExpr
   ;
+
+//////////////////////////////////////////////////////////////////
+// PrefixUnaryExpr
+//////////////////////////////////////////////////////////////////
 
 _NewInit
   ::= "[" _Expr:initArguments "]" {"[" _Expr:initArguments "]"} as partial NewExpr {init = Array}
@@ -192,6 +200,7 @@ _AllPrefixUnaryExpr
   ;
 
 _PrefixUnaryExpr
+  ::= left_recursion_placeholder(PrefixUnaryExpr)
   ::= !_PostfixUnaryExpr
   ::= !_AllPrefixUnaryExpr
   ;
@@ -296,6 +305,7 @@ _BExpr_NoComma
   ;
 
 _BExpr
+  ::= left_recursion_placeholder(ThrowExpr)
   ::= !_BExpr_NoComma
   ::= _BExpr:left "," _BExpr_NoComma:right as BinaryExpr {op = Comma}
   ;
@@ -364,21 +374,18 @@ _Type
 // _Expr
 //////////////////////////////////////////////////////////////////
 
-_NonLeftRecursiveExpr
-  ::= !_AllPrefixUnaryExpr
-  ::= !_ThrowExpr
-  ;
-
 _Expr
   ::= !_QualifiedName left_recursion_inject(Shared) _BExpr
   ::= !_PrimitiveExpr left_recursion_inject(Expr) _BExpr
-  ::= !_NonLeftRecursiveExpr
+  ::= !_AllPrefixUnaryExpr left_recursion_inject(PrefixUnaryExpr) _BExpr
+  ::= !_ThrowExpr left_recursion_inject(ThrowExpr) _BExpr
   ;
 
 _Expr_NoComma
   ::= !_QualifiedName left_recursion_inject(Shared) _BExpr_NoComma
   ::= !_PrimitiveExpr left_recursion_inject(Expr) _BExpr_NoComma
-  ::= !_NonLeftRecursiveExpr
+  ::= !_AllPrefixUnaryExpr left_recursion_inject(PrefixUnaryExpr) _BExpr_NoComma
+  ::= !_ThrowExpr
   ;
 
 //////////////////////////////////////////////////////////////////
@@ -389,14 +396,16 @@ _TypeOrExpr
   ::= !_QualifiedName left_recursion_inject(Shared) _LongType | _BExpr
   ::= !_ShortType left_recursion_inject(Type) _LongType
   ::= !_PrimitiveExpr left_recursion_inject(Expr) _BExpr
-  ::= !_NonLeftRecursiveExpr
+  ::= !_AllPrefixUnaryExpr left_recursion_inject(PrefixUnaryExpr) _BExpr
+  ::= !_ThrowExpr left_recursion_inject(ThrowExpr) _BExpr
   ;
 
 _TypeOrExpr_NoComma_NoLT
   ::= !_QualifiedName left_recursion_inject(Shared) _LongType | _BExpr_NoComma
   ::= !_ShortType left_recursion_inject(Type) _LongType
   ::= !_PrimitiveExpr left_recursion_inject(Expr) _BExpr_NoComma
-  ::= !_NonLeftRecursiveExpr
+  ::= !_AllPrefixUnaryExpr left_recursion_inject(PrefixUnaryExpr) _BExpr_NoComma
+  ::= !_ThrowExpr
   ;
 
 //////////////////////////////////////////////////////////////////
