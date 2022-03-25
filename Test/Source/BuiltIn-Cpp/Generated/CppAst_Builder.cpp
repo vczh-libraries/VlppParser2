@@ -147,12 +147,6 @@ MakeDeclarator
 			return *this;
 		}
 
-		MakeDeclarator& MakeDeclarator::type(const vl::Ptr<CppTypeOrExpr>& value)
-		{
-			node->type = value;
-			return *this;
-		}
-
 /***********************************************************************
 MakeDeclaratorKeyword
 ***********************************************************************/
@@ -160,6 +154,22 @@ MakeDeclaratorKeyword
 		MakeDeclaratorKeyword& MakeDeclaratorKeyword::keyword(const vl::WString& value)
 		{
 			node->keyword.value = value;
+			return *this;
+		}
+
+/***********************************************************************
+MakeDeclaratorType
+***********************************************************************/
+
+		MakeDeclaratorType& MakeDeclaratorType::declarator(const vl::Ptr<CppDeclarator>& value)
+		{
+			node->declarator = value;
+			return *this;
+		}
+
+		MakeDeclaratorType& MakeDeclaratorType::type(const vl::Ptr<CppTypeOrExpr>& value)
+		{
+			node->type = value;
 			return *this;
 		}
 

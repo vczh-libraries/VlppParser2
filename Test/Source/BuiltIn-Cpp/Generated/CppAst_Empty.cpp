@@ -31,6 +31,10 @@ TypeOrExprVisitor
 		{
 		}
 
+		void TypeOrExprVisitor::Visit(CppDeclaratorType* node)
+		{
+		}
+
 /***********************************************************************
 ExprOnlyVisitor
 ***********************************************************************/
@@ -120,10 +124,6 @@ TypeOnlyVisitor
 		}
 
 		void TypeOnlyVisitor::Visit(CppVolatileType* node)
-		{
-		}
-
-		void TypeOnlyVisitor::Visit(CppDeclarator* node)
 		{
 		}
 

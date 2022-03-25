@@ -31,6 +31,7 @@ namespace cpp_parser
 			void CopyFields(CppConstType* from, CppConstType* to);
 			void CopyFields(CppDeclarator* from, CppDeclarator* to);
 			void CopyFields(CppDeclaratorKeyword* from, CppDeclaratorKeyword* to);
+			void CopyFields(CppDeclaratorType* from, CppDeclaratorType* to);
 			void CopyFields(CppDeleteExpr* from, CppDeleteExpr* to);
 			void CopyFields(CppExprOnly* from, CppExprOnly* to);
 			void CopyFields(CppFile* from, CppFile* to);
@@ -67,11 +68,13 @@ namespace cpp_parser
 			virtual void Visit(CppDeclaratorKeyword* node);
 			virtual void Visit(CppFunctionDeclarator* node);
 			virtual void Visit(CppArrayDeclarator* node);
+			virtual void Visit(CppDeclarator* node);
 			virtual void Visit(CppFile* node);
 
 			void Visit(CppExprOnly* node) override;
 			void Visit(CppTypeOnly* node) override;
 			void Visit(CppQualifiedName* node) override;
+			void Visit(CppDeclaratorType* node) override;
 
 			void Visit(CppPrimitiveExprLiteral* node) override;
 			void Visit(CppNumericExprLiteral* node) override;
@@ -94,7 +97,6 @@ namespace cpp_parser
 			void Visit(CppPrimitiveType* node) override;
 			void Visit(CppConstType* node) override;
 			void Visit(CppVolatileType* node) override;
-			void Visit(CppDeclarator* node) override;
 
 			void Visit(CppNameIdentifier* node) override;
 			void Visit(CppOperatorIdentifier* node) override;
@@ -109,6 +111,7 @@ namespace cpp_parser
 			virtual vl::Ptr<CppDeclaratorKeyword> CopyNode(CppDeclaratorKeyword* node);
 			virtual vl::Ptr<CppFunctionDeclarator> CopyNode(CppFunctionDeclarator* node);
 			virtual vl::Ptr<CppArrayDeclarator> CopyNode(CppArrayDeclarator* node);
+			virtual vl::Ptr<CppDeclarator> CopyNode(CppDeclarator* node);
 			virtual vl::Ptr<CppFile> CopyNode(CppFile* node);
 
 			vl::Ptr<CppBinaryExpr> CopyNode(CppBinaryExpr* node);
@@ -116,7 +119,7 @@ namespace cpp_parser
 			vl::Ptr<CppCallExpr> CopyNode(CppCallExpr* node);
 			vl::Ptr<CppCastExpr> CopyNode(CppCastExpr* node);
 			vl::Ptr<CppConstType> CopyNode(CppConstType* node);
-			vl::Ptr<CppDeclarator> CopyNode(CppDeclarator* node);
+			vl::Ptr<CppDeclaratorType> CopyNode(CppDeclaratorType* node);
 			vl::Ptr<CppDeleteExpr> CopyNode(CppDeleteExpr* node);
 			vl::Ptr<CppExprOnly> CopyNode(CppExprOnly* node);
 			vl::Ptr<CppIfExpr> CopyNode(CppIfExpr* node);

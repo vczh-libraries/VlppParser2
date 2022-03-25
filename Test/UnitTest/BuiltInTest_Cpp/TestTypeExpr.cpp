@@ -175,9 +175,10 @@ TEST_FILE
 		{
 			if (line != L"")
 			{
-				//TEST_CASE(line)
-				//{
-				//});
+				TEST_CASE(line)
+				{
+					ParseTypeExpr<CppDeclaratorType>(parser, line);
+				});
 			}
 		}
 	});

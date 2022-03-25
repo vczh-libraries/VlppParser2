@@ -26,6 +26,7 @@ namespace cpp_parser
 			void Visit(CppExprOnly* node) override;
 			void Visit(CppTypeOnly* node) override;
 			void Visit(CppQualifiedName* node) override;
+			void Visit(CppDeclaratorType* node) override;
 		};
 
 		/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
@@ -66,7 +67,6 @@ namespace cpp_parser
 			void Visit(CppPrimitiveType* node) override;
 			void Visit(CppConstType* node) override;
 			void Visit(CppVolatileType* node) override;
-			void Visit(CppDeclarator* node) override;
 		};
 
 		/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>

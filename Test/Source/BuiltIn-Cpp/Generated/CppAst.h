@@ -21,6 +21,7 @@ namespace cpp_parser
 	class CppConstType;
 	class CppDeclarator;
 	class CppDeclaratorKeyword;
+	class CppDeclaratorType;
 	class CppDeleteExpr;
 	class CppExprOnly;
 	class CppFile;
@@ -204,6 +205,7 @@ namespace cpp_parser
 			virtual void Visit(CppExprOnly* node) = 0;
 			virtual void Visit(CppTypeOnly* node) = 0;
 			virtual void Visit(CppQualifiedName* node) = 0;
+			virtual void Visit(CppDeclaratorType* node) = 0;
 		};
 
 		virtual void Accept(CppTypeOrExpr::IVisitor* visitor) = 0;
@@ -250,7 +252,6 @@ namespace cpp_parser
 			virtual void Visit(CppPrimitiveType* node) = 0;
 			virtual void Visit(CppConstType* node) = 0;
 			virtual void Visit(CppVolatileType* node) = 0;
-			virtual void Visit(CppDeclarator* node) = 0;
 		};
 
 		virtual void Accept(CppTypeOnly::IVisitor* visitor) = 0;
@@ -527,18 +528,24 @@ namespace cpp_parser
 	public:
 	};
 
-	class CppDeclarator : public CppTypeOnly, vl::reflection::Description<CppDeclarator>
+	class CppDeclarator : public vl::glr::ParsingAstBase, vl::reflection::Description<CppDeclarator>
 	{
 	public:
-		vl::Ptr<CppTypeOrExpr> type;
 		vl::collections::List<vl::Ptr<CppDeclaratorKeyword>> keywords;
 		vl::collections::List<vl::Ptr<CppAdvancedType>> advancedTypes;
 		vl::Ptr<CppIdentifier> id;
 		vl::Ptr<CppDeclarator> innerDeclarator;
 		vl::Ptr<CppFunctionDeclarator> funcDecl;
 		vl::collections::List<vl::Ptr<CppArrayDeclarator>> arrayDecls;
+	};
 
-		void Accept(CppTypeOnly::IVisitor* visitor) override;
+	class CppDeclaratorType : public CppTypeOrExpr, vl::reflection::Description<CppDeclaratorType>
+	{
+	public:
+		vl::Ptr<CppTypeOrExpr> type;
+		vl::Ptr<CppDeclarator> declarator;
+
+		void Accept(CppTypeOrExpr::IVisitor* visitor) override;
 	};
 
 	class CppFile : public vl::glr::ParsingAstBase, vl::reflection::Description<CppFile>
@@ -603,6 +610,7 @@ namespace vl
 			DECL_TYPE_INFO(cpp_parser::CppFunctionDeclarator)
 			DECL_TYPE_INFO(cpp_parser::CppArrayDeclarator)
 			DECL_TYPE_INFO(cpp_parser::CppDeclarator)
+			DECL_TYPE_INFO(cpp_parser::CppDeclaratorType)
 			DECL_TYPE_INFO(cpp_parser::CppFile)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
@@ -619,6 +627,11 @@ namespace vl
 				}
 
 				void Visit(cpp_parser::CppQualifiedName* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+				void Visit(cpp_parser::CppDeclaratorType* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
@@ -725,11 +738,6 @@ namespace vl
 				}
 
 				void Visit(cpp_parser::CppVolatileType* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(cpp_parser::CppDeclarator* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}

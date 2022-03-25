@@ -137,7 +137,7 @@ Visitor Pattern Implementation
 		visitor->Visit(this);
 	}
 
-	void CppDeclarator::Accept(CppTypeOnly::IVisitor* visitor)
+	void CppDeclaratorType::Accept(CppTypeOrExpr::IVisitor* visitor)
 	{
 		visitor->Visit(this);
 	}
@@ -200,6 +200,7 @@ namespace vl
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppFunctionDeclarator, cpp_parser::CppFunctionDeclarator)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppArrayDeclarator, cpp_parser::CppArrayDeclarator)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppDeclarator, cpp_parser::CppDeclarator)
+			IMPL_TYPE_INFO_RENAME(cpp_parser::CppDeclaratorType, cpp_parser::CppDeclaratorType)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppFile, cpp_parser::CppFile)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
@@ -628,11 +629,10 @@ namespace vl
 			END_CLASS_MEMBER(cpp_parser::CppArrayDeclarator)
 
 			BEGIN_CLASS_MEMBER(cpp_parser::CppDeclarator)
-				CLASS_MEMBER_BASE(cpp_parser::CppTypeOnly)
+				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
 				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppDeclarator>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(type)
 				CLASS_MEMBER_FIELD(keywords)
 				CLASS_MEMBER_FIELD(advancedTypes)
 				CLASS_MEMBER_FIELD(id)
@@ -640,6 +640,15 @@ namespace vl
 				CLASS_MEMBER_FIELD(funcDecl)
 				CLASS_MEMBER_FIELD(arrayDecls)
 			END_CLASS_MEMBER(cpp_parser::CppDeclarator)
+
+			BEGIN_CLASS_MEMBER(cpp_parser::CppDeclaratorType)
+				CLASS_MEMBER_BASE(cpp_parser::CppTypeOrExpr)
+
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppDeclaratorType>(), NO_PARAMETER)
+
+				CLASS_MEMBER_FIELD(type)
+				CLASS_MEMBER_FIELD(declarator)
+			END_CLASS_MEMBER(cpp_parser::CppDeclaratorType)
 
 			BEGIN_CLASS_MEMBER(cpp_parser::CppFile)
 				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
@@ -652,6 +661,7 @@ namespace vl
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppTypeOrExpr::IVisitor::*)(cpp_parser::CppExprOnly* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppTypeOrExpr::IVisitor::*)(cpp_parser::CppTypeOnly* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppTypeOrExpr::IVisitor::*)(cpp_parser::CppQualifiedName* node))
+				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppTypeOrExpr::IVisitor::*)(cpp_parser::CppDeclaratorType* node))
 			END_INTERFACE_MEMBER(cpp_parser::CppTypeOrExpr)
 
 			BEGIN_INTERFACE_MEMBER(cpp_parser::CppExprOnly::IVisitor)
@@ -678,7 +688,6 @@ namespace vl
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppTypeOnly::IVisitor::*)(cpp_parser::CppPrimitiveType* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppTypeOnly::IVisitor::*)(cpp_parser::CppConstType* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppTypeOnly::IVisitor::*)(cpp_parser::CppVolatileType* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppTypeOnly::IVisitor::*)(cpp_parser::CppDeclarator* node))
 			END_INTERFACE_MEMBER(cpp_parser::CppTypeOnly)
 
 			BEGIN_INTERFACE_MEMBER(cpp_parser::CppIdentifier::IVisitor)
@@ -744,6 +753,7 @@ namespace vl
 					ADD_TYPE_INFO(cpp_parser::CppFunctionDeclarator)
 					ADD_TYPE_INFO(cpp_parser::CppArrayDeclarator)
 					ADD_TYPE_INFO(cpp_parser::CppDeclarator)
+					ADD_TYPE_INFO(cpp_parser::CppDeclaratorType)
 					ADD_TYPE_INFO(cpp_parser::CppFile)
 				}
 

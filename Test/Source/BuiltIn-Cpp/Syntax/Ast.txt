@@ -356,15 +356,20 @@ class ArrayDeclarator
 {
 }
 
-class Declarator : TypeOnly
+class Declarator
 {
-    var type : TypeOrExpr;
     var keywords : DeclaratorKeyword[];
     var advancedTypes : AdvancedType[];
     var id : Identifier;
     var innerDeclarator : Declarator;
     var funcDecl : FunctionDeclarator;
     var arrayDecls : ArrayDeclarator[];
+}
+
+class DeclaratorType : TypeOrExpr
+{
+    var type : TypeOrExpr;
+    var declarator : Declarator;
 }
 
 //////////////////////////////////////////////////////////////////

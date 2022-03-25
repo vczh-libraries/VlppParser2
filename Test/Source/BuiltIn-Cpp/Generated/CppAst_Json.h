@@ -31,6 +31,7 @@ namespace cpp_parser
 			virtual void PrintFields(CppConstType* node);
 			virtual void PrintFields(CppDeclarator* node);
 			virtual void PrintFields(CppDeclaratorKeyword* node);
+			virtual void PrintFields(CppDeclaratorType* node);
 			virtual void PrintFields(CppDeleteExpr* node);
 			virtual void PrintFields(CppExprOnly* node);
 			virtual void PrintFields(CppFile* node);
@@ -63,6 +64,7 @@ namespace cpp_parser
 			void Visit(CppExprOnly* node) override;
 			void Visit(CppTypeOnly* node) override;
 			void Visit(CppQualifiedName* node) override;
+			void Visit(CppDeclaratorType* node) override;
 
 			void Visit(CppPrimitiveExprLiteral* node) override;
 			void Visit(CppNumericExprLiteral* node) override;
@@ -85,7 +87,6 @@ namespace cpp_parser
 			void Visit(CppPrimitiveType* node) override;
 			void Visit(CppConstType* node) override;
 			void Visit(CppVolatileType* node) override;
-			void Visit(CppDeclarator* node) override;
 
 			void Visit(CppNameIdentifier* node) override;
 			void Visit(CppOperatorIdentifier* node) override;
@@ -102,6 +103,7 @@ namespace cpp_parser
 			void Print(CppDeclaratorKeyword* node);
 			void Print(CppFunctionDeclarator* node);
 			void Print(CppArrayDeclarator* node);
+			void Print(CppDeclarator* node);
 			void Print(CppFile* node);
 		};
 	}
