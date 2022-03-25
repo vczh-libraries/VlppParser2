@@ -362,15 +362,65 @@ _LongType
   ;
 
 //////////////////////////////////////////////////////////////////
-// _Type
+// Declarator
+//////////////////////////////////////////////////////////////////
+
+_AdvancedType
+  ::= "&" as AdvancedType {kind = LRef}
+  ::= "&&" as AdvancedType {kind = RRef}
+  ::= "const" as AdvancedType {kind = Const}
+  ::= "volatile" as AdvancedType {kind = Volatile}
+  ::= "*" as AdvancedType {kind = Pointer}
+  ::= "*" "__ptr32" as AdvancedType {kind = Pointer32}
+  ::= "*" "__ptr64" as AdvancedType {kind = Pointer64}
+  ::= _QualifiedName:parent "::" as AdvancedType {kind = Member}
+  ;
+
+_DeclaratorKeyword
+  ::= "constexpr":keyword as DeclaratorKeyword;
+  ::= "extern":keyword as DeclaratorKeyword;
+  ::= "static":keyword as DeclaratorKeyword;
+  ::= "mutable":keyword as DeclaratorKeyword;
+  ::= "thread_local":keyword as DeclaratorKeyword;
+  ::= "virtual":keyword as DeclaratorKeyword;
+  ::= "explicit":keyword as DeclaratorKeyword;
+  ::= "friend":keyword as DeclaratorKeyword;
+  ::= "abstract":keyword as DeclaratorKeyword;
+  ::= "inline":keyword as DeclaratorKeyword;
+  ::= "__inline":keyword as DeclaratorKeyword;
+  ::= "__forceinline":keyword as DeclaratorKeyword;
+  ::= "__cdecl":keyword as DeclaratorKeyword;
+  ::= "__clrcall":keyword as DeclaratorKeyword;
+  ::= "__stdcall":keyword as DeclaratorKeyword;
+  ::= "__fastcall":keyword as DeclaratorKeyword;
+  ::= "__thiscall":keyword as DeclaratorKeyword;
+  ::= "__vectorcall":keyword as DeclaratorKeyword;
+  ;
+
+_DeclaratorBeforeId
+  ::= _AdvancedType:advancedTypes as partial Declarator
+  ::= _DeclaratorKeyword:keywords ad partial Declarator
+  ;
+
+_Declarator
+  ::= _DeclaratorBeforeId {_DeclaratorBeforeId} as Declarator
+  ;
+
+_TypeOrDeclarator
+  ::= !_LongType
+  ::= _LongType:type !_Declarator as Declarator
+  ;
+
+//////////////////////////////////////////////////////////////////
+// Type
 //////////////////////////////////////////////////////////////////
 
 _TypeOnly
-  ::= !_ShortType left_recursion_inject(Type) _LongType
+  ::= !_ShortType left_recursion_inject(Type) _TypeOrDeclarator
   ;
 
 _Type
-  ::= !_QualifiedName left_recursion_inject(Shared) _LongType
+  ::= !_QualifiedName left_recursion_inject(Shared) _TypeOrDeclarator
   ::= !_TypeOnly
   ;
 
@@ -405,13 +455,13 @@ _Expr
 //////////////////////////////////////////////////////////////////
 
 _TypeOrExpr_NoComma_NoLT
-  ::= !_QualifiedName left_recursion_inject(Shared) _LongType | _BExpr_NoComma
+  ::= !_QualifiedName left_recursion_inject(Shared) _TypeOrDeclarator | _BExpr_NoComma
   ::= !_TypeOnly
   ::= !_ExprOnly_NoComma
   ;
 
 _TypeOrExpr
-  ::= !_QualifiedName left_recursion_inject(Shared) _LongType | _BExpr
+  ::= !_QualifiedName left_recursion_inject(Shared) _TypeOrDeclarator | _BExpr
   ::= !_TypeOnly
   ::= !_ExprOnly
   ;

@@ -322,6 +322,52 @@ class VolatileType : TypeOnly
 }
 
 //////////////////////////////////////////////////////////////////
+// Declarator
+//////////////////////////////////////////////////////////////////
+
+enum AdvancedTypeKinds
+{
+    LRef,
+    RRef,
+    Const,
+    Volatile,
+    Pointer,
+    Pointer32,
+    Pointer64,
+    Member,
+}
+
+class AdvancedType
+{
+    var kind : AdvancedTypeKinds;
+    var parent : QualifiedName;
+}
+
+class DeclaratorKeyword
+{
+    var keyword : token;
+}
+
+class FunctionDeclarator
+{
+}
+
+class ArrayDeclarator
+{
+}
+
+class Declarator : TypeOnly
+{
+    var type : TypeOrExpr;
+    var keywords : DeclaratorKeyword[];
+    var advancedTypes : AdvancedType[];
+    var id : Identifier;
+    var innerDeclarator : Declarator;
+    var funcDecl : FunctionDeclarator;
+    var arrayDecls : ArrayDeclarator[];
+}
+
+//////////////////////////////////////////////////////////////////
 // File
 //////////////////////////////////////////////////////////////////
 
