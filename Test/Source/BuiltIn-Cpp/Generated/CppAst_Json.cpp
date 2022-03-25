@@ -10,6 +10,46 @@ namespace cpp_parser
 {
 	namespace json_visitor
 	{
+		void AstVisitor::PrintFields(CppAdvancedType* node)
+		{
+			BeginField(L"kind");
+			switch (node->kind)
+			{
+			case cpp_parser::CppAdvancedTypeKinds::Const:
+				WriteString(L"Const");
+				break;
+			case cpp_parser::CppAdvancedTypeKinds::LRef:
+				WriteString(L"LRef");
+				break;
+			case cpp_parser::CppAdvancedTypeKinds::Member:
+				WriteString(L"Member");
+				break;
+			case cpp_parser::CppAdvancedTypeKinds::Pointer:
+				WriteString(L"Pointer");
+				break;
+			case cpp_parser::CppAdvancedTypeKinds::Pointer32:
+				WriteString(L"Pointer32");
+				break;
+			case cpp_parser::CppAdvancedTypeKinds::Pointer64:
+				WriteString(L"Pointer64");
+				break;
+			case cpp_parser::CppAdvancedTypeKinds::RRef:
+				WriteString(L"RRef");
+				break;
+			case cpp_parser::CppAdvancedTypeKinds::Volatile:
+				WriteString(L"Volatile");
+				break;
+			default:
+				WriteNull();
+			}
+			EndField();
+			BeginField(L"parent");
+			Print(node->parent.Obj());
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppArrayDeclarator* node)
+		{
+		}
 		void AstVisitor::PrintFields(CppBinaryExpr* node)
 		{
 			BeginField(L"left");
@@ -211,6 +251,57 @@ namespace cpp_parser
 			Print(node->type.Obj());
 			EndField();
 		}
+		void AstVisitor::PrintFields(CppDeclarator* node)
+		{
+			BeginField(L"advancedTypes");
+			BeginArray();
+			for (auto&& listItem : node->advancedTypes)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+			BeginField(L"arrayDecls");
+			BeginArray();
+			for (auto&& listItem : node->arrayDecls)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+			BeginField(L"funcDecl");
+			Print(node->funcDecl.Obj());
+			EndField();
+			BeginField(L"id");
+			Print(node->id.Obj());
+			EndField();
+			BeginField(L"innerDeclarator");
+			Print(node->innerDeclarator.Obj());
+			EndField();
+			BeginField(L"keywords");
+			BeginArray();
+			for (auto&& listItem : node->keywords)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+			BeginField(L"type");
+			Print(node->type.Obj());
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppDeclaratorKeyword* node)
+		{
+			BeginField(L"keyword");
+			WriteToken(node->keyword);
+			EndField();
+		}
 		void AstVisitor::PrintFields(CppDeleteExpr* node)
 		{
 			BeginField(L"argument");
@@ -247,6 +338,9 @@ namespace cpp_parser
 		{
 		}
 		void AstVisitor::PrintFields(CppFile* node)
+		{
+		}
+		void AstVisitor::PrintFields(CppFunctionDeclarator* node)
 		{
 		}
 		void AstVisitor::PrintFields(CppGenericArgument* node)
@@ -1367,6 +1461,21 @@ namespace cpp_parser
 			EndObject();
 		}
 
+		void AstVisitor::Visit(CppDeclarator* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"Declarator", node);
+			PrintFields(static_cast<CppTypeOrExpr*>(node));
+			PrintFields(static_cast<CppTypeOnly*>(node));
+			PrintFields(static_cast<CppDeclarator*>(node));
+			EndObject();
+		}
+
 		void AstVisitor::Visit(CppNameIdentifier* node)
 		{
 			if (!node)
@@ -1456,6 +1565,58 @@ namespace cpp_parser
 			BeginObject();
 			WriteType(L"StringLiteralFragment", node);
 			PrintFields(static_cast<CppStringLiteralFragment*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Print(CppAdvancedType* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"AdvancedType", node);
+			PrintFields(static_cast<CppAdvancedType*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Print(CppDeclaratorKeyword* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"DeclaratorKeyword", node);
+			PrintFields(static_cast<CppDeclaratorKeyword*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Print(CppFunctionDeclarator* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"FunctionDeclarator", node);
+			PrintFields(static_cast<CppFunctionDeclarator*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Print(CppArrayDeclarator* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"ArrayDeclarator", node);
+			PrintFields(static_cast<CppArrayDeclarator*>(node));
 			EndObject();
 		}
 

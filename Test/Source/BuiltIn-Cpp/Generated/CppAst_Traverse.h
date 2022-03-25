@@ -24,14 +24,19 @@ namespace cpp_parser
 		protected:
 			virtual void Traverse(vl::glr::ParsingToken& token);
 			virtual void Traverse(vl::glr::ParsingAstBase* node);
+			virtual void Traverse(CppAdvancedType* node);
+			virtual void Traverse(CppArrayDeclarator* node);
 			virtual void Traverse(CppBinaryExpr* node);
 			virtual void Traverse(CppBraceExpr* node);
 			virtual void Traverse(CppCallExpr* node);
 			virtual void Traverse(CppCastExpr* node);
 			virtual void Traverse(CppConstType* node);
+			virtual void Traverse(CppDeclarator* node);
+			virtual void Traverse(CppDeclaratorKeyword* node);
 			virtual void Traverse(CppDeleteExpr* node);
 			virtual void Traverse(CppExprOnly* node);
 			virtual void Traverse(CppFile* node);
+			virtual void Traverse(CppFunctionDeclarator* node);
 			virtual void Traverse(CppGenericArgument* node);
 			virtual void Traverse(CppGenericArguments* node);
 			virtual void Traverse(CppIdentifier* node);
@@ -58,14 +63,19 @@ namespace cpp_parser
 
 		protected:
 			virtual void Finishing(vl::glr::ParsingAstBase* node);
+			virtual void Finishing(CppAdvancedType* node);
+			virtual void Finishing(CppArrayDeclarator* node);
 			virtual void Finishing(CppBinaryExpr* node);
 			virtual void Finishing(CppBraceExpr* node);
 			virtual void Finishing(CppCallExpr* node);
 			virtual void Finishing(CppCastExpr* node);
 			virtual void Finishing(CppConstType* node);
+			virtual void Finishing(CppDeclarator* node);
+			virtual void Finishing(CppDeclaratorKeyword* node);
 			virtual void Finishing(CppDeleteExpr* node);
 			virtual void Finishing(CppExprOnly* node);
 			virtual void Finishing(CppFile* node);
+			virtual void Finishing(CppFunctionDeclarator* node);
 			virtual void Finishing(CppGenericArgument* node);
 			virtual void Finishing(CppGenericArguments* node);
 			virtual void Finishing(CppIdentifier* node);
@@ -116,6 +126,7 @@ namespace cpp_parser
 			void Visit(CppPrimitiveType* node) override;
 			void Visit(CppConstType* node) override;
 			void Visit(CppVolatileType* node) override;
+			void Visit(CppDeclarator* node) override;
 
 			void Visit(CppNameIdentifier* node) override;
 			void Visit(CppOperatorIdentifier* node) override;
@@ -126,6 +137,10 @@ namespace cpp_parser
 			void InspectInto(CppGenericArgument* node);
 			void InspectInto(CppGenericArguments* node);
 			void InspectInto(CppStringLiteralFragment* node);
+			void InspectInto(CppAdvancedType* node);
+			void InspectInto(CppDeclaratorKeyword* node);
+			void InspectInto(CppFunctionDeclarator* node);
+			void InspectInto(CppArrayDeclarator* node);
 			void InspectInto(CppFile* node);
 		};
 	}

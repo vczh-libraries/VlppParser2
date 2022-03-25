@@ -12,14 +12,19 @@ Licensed under https://github.com/vczh-libraries/License
 
 namespace cpp_parser
 {
+	class CppAdvancedType;
+	class CppArrayDeclarator;
 	class CppBinaryExpr;
 	class CppBraceExpr;
 	class CppCallExpr;
 	class CppCastExpr;
 	class CppConstType;
+	class CppDeclarator;
+	class CppDeclaratorKeyword;
 	class CppDeleteExpr;
 	class CppExprOnly;
 	class CppFile;
+	class CppFunctionDeclarator;
 	class CppGenericArgument;
 	class CppGenericArguments;
 	class CppIdentifier;
@@ -177,6 +182,19 @@ namespace cpp_parser
 		Unsigned = 2,
 	};
 
+	enum class CppAdvancedTypeKinds
+	{
+		UNDEFINED_ENUM_ITEM_VALUE = -1,
+		LRef = 0,
+		RRef = 1,
+		Const = 2,
+		Volatile = 3,
+		Pointer = 4,
+		Pointer32 = 5,
+		Pointer64 = 6,
+		Member = 7,
+	};
+
 	class CppTypeOrExpr abstract : public vl::glr::ParsingAstBase, vl::reflection::Description<CppTypeOrExpr>
 	{
 	public:
@@ -232,6 +250,7 @@ namespace cpp_parser
 			virtual void Visit(CppPrimitiveType* node) = 0;
 			virtual void Visit(CppConstType* node) = 0;
 			virtual void Visit(CppVolatileType* node) = 0;
+			virtual void Visit(CppDeclarator* node) = 0;
 		};
 
 		virtual void Accept(CppTypeOnly::IVisitor* visitor) = 0;
@@ -485,6 +504,43 @@ namespace cpp_parser
 		void Accept(CppTypeOnly::IVisitor* visitor) override;
 	};
 
+	class CppAdvancedType : public vl::glr::ParsingAstBase, vl::reflection::Description<CppAdvancedType>
+	{
+	public:
+		CppAdvancedTypeKinds kind = CppAdvancedTypeKinds::UNDEFINED_ENUM_ITEM_VALUE;
+		vl::Ptr<CppQualifiedName> parent;
+	};
+
+	class CppDeclaratorKeyword : public vl::glr::ParsingAstBase, vl::reflection::Description<CppDeclaratorKeyword>
+	{
+	public:
+		vl::glr::ParsingToken keyword;
+	};
+
+	class CppFunctionDeclarator : public vl::glr::ParsingAstBase, vl::reflection::Description<CppFunctionDeclarator>
+	{
+	public:
+	};
+
+	class CppArrayDeclarator : public vl::glr::ParsingAstBase, vl::reflection::Description<CppArrayDeclarator>
+	{
+	public:
+	};
+
+	class CppDeclarator : public CppTypeOnly, vl::reflection::Description<CppDeclarator>
+	{
+	public:
+		vl::Ptr<CppTypeOrExpr> type;
+		vl::collections::List<vl::Ptr<CppDeclaratorKeyword>> keywords;
+		vl::collections::List<vl::Ptr<CppAdvancedType>> advancedTypes;
+		vl::Ptr<CppIdentifier> id;
+		vl::Ptr<CppDeclarator> innerDeclarator;
+		vl::Ptr<CppFunctionDeclarator> funcDecl;
+		vl::collections::List<vl::Ptr<CppArrayDeclarator>> arrayDecls;
+
+		void Accept(CppTypeOnly::IVisitor* visitor) override;
+	};
+
 	class CppFile : public vl::glr::ParsingAstBase, vl::reflection::Description<CppFile>
 	{
 	public:
@@ -541,6 +597,12 @@ namespace vl
 			DECL_TYPE_INFO(cpp_parser::CppPrimitiveType)
 			DECL_TYPE_INFO(cpp_parser::CppConstType)
 			DECL_TYPE_INFO(cpp_parser::CppVolatileType)
+			DECL_TYPE_INFO(cpp_parser::CppAdvancedTypeKinds)
+			DECL_TYPE_INFO(cpp_parser::CppAdvancedType)
+			DECL_TYPE_INFO(cpp_parser::CppDeclaratorKeyword)
+			DECL_TYPE_INFO(cpp_parser::CppFunctionDeclarator)
+			DECL_TYPE_INFO(cpp_parser::CppArrayDeclarator)
+			DECL_TYPE_INFO(cpp_parser::CppDeclarator)
 			DECL_TYPE_INFO(cpp_parser::CppFile)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
@@ -663,6 +725,11 @@ namespace vl
 				}
 
 				void Visit(cpp_parser::CppVolatileType* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+				void Visit(cpp_parser::CppDeclarator* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}

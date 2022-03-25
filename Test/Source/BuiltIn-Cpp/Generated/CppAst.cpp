@@ -136,6 +136,11 @@ Visitor Pattern Implementation
 	{
 		visitor->Visit(this);
 	}
+
+	void CppDeclarator::Accept(CppTypeOnly::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
 }
 namespace vl
 {
@@ -189,6 +194,12 @@ namespace vl
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppPrimitiveType, cpp_parser::CppPrimitiveType)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppConstType, cpp_parser::CppConstType)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppVolatileType, cpp_parser::CppVolatileType)
+			IMPL_TYPE_INFO_RENAME(cpp_parser::CppAdvancedTypeKinds, cpp_parser::CppAdvancedTypeKinds)
+			IMPL_TYPE_INFO_RENAME(cpp_parser::CppAdvancedType, cpp_parser::CppAdvancedType)
+			IMPL_TYPE_INFO_RENAME(cpp_parser::CppDeclaratorKeyword, cpp_parser::CppDeclaratorKeyword)
+			IMPL_TYPE_INFO_RENAME(cpp_parser::CppFunctionDeclarator, cpp_parser::CppFunctionDeclarator)
+			IMPL_TYPE_INFO_RENAME(cpp_parser::CppArrayDeclarator, cpp_parser::CppArrayDeclarator)
+			IMPL_TYPE_INFO_RENAME(cpp_parser::CppDeclarator, cpp_parser::CppDeclarator)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppFile, cpp_parser::CppFile)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
@@ -573,6 +584,63 @@ namespace vl
 				CLASS_MEMBER_FIELD(type)
 			END_CLASS_MEMBER(cpp_parser::CppVolatileType)
 
+			BEGIN_ENUM_ITEM(cpp_parser::CppAdvancedTypeKinds)
+				ENUM_ITEM_NAMESPACE(cpp_parser::CppAdvancedTypeKinds)
+				ENUM_NAMESPACE_ITEM(LRef)
+				ENUM_NAMESPACE_ITEM(RRef)
+				ENUM_NAMESPACE_ITEM(Const)
+				ENUM_NAMESPACE_ITEM(Volatile)
+				ENUM_NAMESPACE_ITEM(Pointer)
+				ENUM_NAMESPACE_ITEM(Pointer32)
+				ENUM_NAMESPACE_ITEM(Pointer64)
+				ENUM_NAMESPACE_ITEM(Member)
+			END_ENUM_ITEM(cpp_parser::CppAdvancedTypeKinds)
+
+			BEGIN_CLASS_MEMBER(cpp_parser::CppAdvancedType)
+				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppAdvancedType>(), NO_PARAMETER)
+
+				CLASS_MEMBER_FIELD(kind)
+				CLASS_MEMBER_FIELD(parent)
+			END_CLASS_MEMBER(cpp_parser::CppAdvancedType)
+
+			BEGIN_CLASS_MEMBER(cpp_parser::CppDeclaratorKeyword)
+				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppDeclaratorKeyword>(), NO_PARAMETER)
+
+				CLASS_MEMBER_FIELD(keyword)
+			END_CLASS_MEMBER(cpp_parser::CppDeclaratorKeyword)
+
+			BEGIN_CLASS_MEMBER(cpp_parser::CppFunctionDeclarator)
+				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppFunctionDeclarator>(), NO_PARAMETER)
+
+			END_CLASS_MEMBER(cpp_parser::CppFunctionDeclarator)
+
+			BEGIN_CLASS_MEMBER(cpp_parser::CppArrayDeclarator)
+				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppArrayDeclarator>(), NO_PARAMETER)
+
+			END_CLASS_MEMBER(cpp_parser::CppArrayDeclarator)
+
+			BEGIN_CLASS_MEMBER(cpp_parser::CppDeclarator)
+				CLASS_MEMBER_BASE(cpp_parser::CppTypeOnly)
+
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppDeclarator>(), NO_PARAMETER)
+
+				CLASS_MEMBER_FIELD(type)
+				CLASS_MEMBER_FIELD(keywords)
+				CLASS_MEMBER_FIELD(advancedTypes)
+				CLASS_MEMBER_FIELD(id)
+				CLASS_MEMBER_FIELD(innerDeclarator)
+				CLASS_MEMBER_FIELD(funcDecl)
+				CLASS_MEMBER_FIELD(arrayDecls)
+			END_CLASS_MEMBER(cpp_parser::CppDeclarator)
+
 			BEGIN_CLASS_MEMBER(cpp_parser::CppFile)
 				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
@@ -610,6 +678,7 @@ namespace vl
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppTypeOnly::IVisitor::*)(cpp_parser::CppPrimitiveType* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppTypeOnly::IVisitor::*)(cpp_parser::CppConstType* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppTypeOnly::IVisitor::*)(cpp_parser::CppVolatileType* node))
+				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppTypeOnly::IVisitor::*)(cpp_parser::CppDeclarator* node))
 			END_INTERFACE_MEMBER(cpp_parser::CppTypeOnly)
 
 			BEGIN_INTERFACE_MEMBER(cpp_parser::CppIdentifier::IVisitor)
@@ -669,6 +738,12 @@ namespace vl
 					ADD_TYPE_INFO(cpp_parser::CppPrimitiveType)
 					ADD_TYPE_INFO(cpp_parser::CppConstType)
 					ADD_TYPE_INFO(cpp_parser::CppVolatileType)
+					ADD_TYPE_INFO(cpp_parser::CppAdvancedTypeKinds)
+					ADD_TYPE_INFO(cpp_parser::CppAdvancedType)
+					ADD_TYPE_INFO(cpp_parser::CppDeclaratorKeyword)
+					ADD_TYPE_INFO(cpp_parser::CppFunctionDeclarator)
+					ADD_TYPE_INFO(cpp_parser::CppArrayDeclarator)
+					ADD_TYPE_INFO(cpp_parser::CppDeclarator)
 					ADD_TYPE_INFO(cpp_parser::CppFile)
 				}
 

@@ -12,6 +12,22 @@ namespace cpp_parser
 	{
 
 /***********************************************************************
+MakeAdvancedType
+***********************************************************************/
+
+		MakeAdvancedType& MakeAdvancedType::kind(CppAdvancedTypeKinds value)
+		{
+			node->kind = value;
+			return *this;
+		}
+
+		MakeAdvancedType& MakeAdvancedType::parent(const vl::Ptr<CppQualifiedName>& value)
+		{
+			node->parent = value;
+			return *this;
+		}
+
+/***********************************************************************
 MakeBinaryExpr
 ***********************************************************************/
 
@@ -88,6 +104,62 @@ MakeConstType
 		MakeConstType& MakeConstType::type(const vl::Ptr<CppTypeOrExpr>& value)
 		{
 			node->type = value;
+			return *this;
+		}
+
+/***********************************************************************
+MakeDeclarator
+***********************************************************************/
+
+		MakeDeclarator& MakeDeclarator::advancedTypes(const vl::Ptr<CppAdvancedType>& value)
+		{
+			node->advancedTypes.Add(value);
+			return *this;
+		}
+
+		MakeDeclarator& MakeDeclarator::arrayDecls(const vl::Ptr<CppArrayDeclarator>& value)
+		{
+			node->arrayDecls.Add(value);
+			return *this;
+		}
+
+		MakeDeclarator& MakeDeclarator::funcDecl(const vl::Ptr<CppFunctionDeclarator>& value)
+		{
+			node->funcDecl = value;
+			return *this;
+		}
+
+		MakeDeclarator& MakeDeclarator::id(const vl::Ptr<CppIdentifier>& value)
+		{
+			node->id = value;
+			return *this;
+		}
+
+		MakeDeclarator& MakeDeclarator::innerDeclarator(const vl::Ptr<CppDeclarator>& value)
+		{
+			node->innerDeclarator = value;
+			return *this;
+		}
+
+		MakeDeclarator& MakeDeclarator::keywords(const vl::Ptr<CppDeclaratorKeyword>& value)
+		{
+			node->keywords.Add(value);
+			return *this;
+		}
+
+		MakeDeclarator& MakeDeclarator::type(const vl::Ptr<CppTypeOrExpr>& value)
+		{
+			node->type = value;
+			return *this;
+		}
+
+/***********************************************************************
+MakeDeclaratorKeyword
+***********************************************************************/
+
+		MakeDeclaratorKeyword& MakeDeclaratorKeyword::keyword(const vl::WString& value)
+		{
+			node->keyword.value = value;
 			return *this;
 		}
 

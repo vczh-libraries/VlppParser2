@@ -13,6 +13,13 @@ namespace cpp_parser
 {
 	namespace builder
 	{
+		class MakeAdvancedType : public vl::glr::ParsingAstBuilder<CppAdvancedType>
+		{
+		public:
+			MakeAdvancedType& kind(CppAdvancedTypeKinds value);
+			MakeAdvancedType& parent(const vl::Ptr<CppQualifiedName>& value);
+		};
+
 		class MakeBinaryExpr : public vl::glr::ParsingAstBuilder<CppBinaryExpr>
 		{
 		public:
@@ -46,6 +53,24 @@ namespace cpp_parser
 		{
 		public:
 			MakeConstType& type(const vl::Ptr<CppTypeOrExpr>& value);
+		};
+
+		class MakeDeclarator : public vl::glr::ParsingAstBuilder<CppDeclarator>
+		{
+		public:
+			MakeDeclarator& advancedTypes(const vl::Ptr<CppAdvancedType>& value);
+			MakeDeclarator& arrayDecls(const vl::Ptr<CppArrayDeclarator>& value);
+			MakeDeclarator& funcDecl(const vl::Ptr<CppFunctionDeclarator>& value);
+			MakeDeclarator& id(const vl::Ptr<CppIdentifier>& value);
+			MakeDeclarator& innerDeclarator(const vl::Ptr<CppDeclarator>& value);
+			MakeDeclarator& keywords(const vl::Ptr<CppDeclaratorKeyword>& value);
+			MakeDeclarator& type(const vl::Ptr<CppTypeOrExpr>& value);
+		};
+
+		class MakeDeclaratorKeyword : public vl::glr::ParsingAstBuilder<CppDeclaratorKeyword>
+		{
+		public:
+			MakeDeclaratorKeyword& keyword(const vl::WString& value);
 		};
 
 		class MakeDeleteExpr : public vl::glr::ParsingAstBuilder<CppDeleteExpr>

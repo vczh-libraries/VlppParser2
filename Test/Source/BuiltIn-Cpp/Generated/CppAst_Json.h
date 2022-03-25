@@ -22,14 +22,19 @@ namespace cpp_parser
 			, protected virtual CppIdentifier::IVisitor
 		{
 		protected:
+			virtual void PrintFields(CppAdvancedType* node);
+			virtual void PrintFields(CppArrayDeclarator* node);
 			virtual void PrintFields(CppBinaryExpr* node);
 			virtual void PrintFields(CppBraceExpr* node);
 			virtual void PrintFields(CppCallExpr* node);
 			virtual void PrintFields(CppCastExpr* node);
 			virtual void PrintFields(CppConstType* node);
+			virtual void PrintFields(CppDeclarator* node);
+			virtual void PrintFields(CppDeclaratorKeyword* node);
 			virtual void PrintFields(CppDeleteExpr* node);
 			virtual void PrintFields(CppExprOnly* node);
 			virtual void PrintFields(CppFile* node);
+			virtual void PrintFields(CppFunctionDeclarator* node);
 			virtual void PrintFields(CppGenericArgument* node);
 			virtual void PrintFields(CppGenericArguments* node);
 			virtual void PrintFields(CppIdentifier* node);
@@ -80,6 +85,7 @@ namespace cpp_parser
 			void Visit(CppPrimitiveType* node) override;
 			void Visit(CppConstType* node) override;
 			void Visit(CppVolatileType* node) override;
+			void Visit(CppDeclarator* node) override;
 
 			void Visit(CppNameIdentifier* node) override;
 			void Visit(CppOperatorIdentifier* node) override;
@@ -92,6 +98,10 @@ namespace cpp_parser
 			void Print(CppGenericArgument* node);
 			void Print(CppGenericArguments* node);
 			void Print(CppStringLiteralFragment* node);
+			void Print(CppAdvancedType* node);
+			void Print(CppDeclaratorKeyword* node);
+			void Print(CppFunctionDeclarator* node);
+			void Print(CppArrayDeclarator* node);
 			void Print(CppFile* node);
 		};
 	}
