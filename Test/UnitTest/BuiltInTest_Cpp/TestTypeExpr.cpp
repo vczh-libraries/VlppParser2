@@ -201,7 +201,7 @@ TEST_FILE
 		}
 	});
 
-	TEST_CATEGORY(L"LambdaExprs")
+	TEST_CATEGORY(L"Ambiguous")
 	{
 		List<WString> lines;
 		File(
