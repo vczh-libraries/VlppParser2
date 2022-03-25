@@ -56,12 +56,15 @@ namespace cpp_parser
 		_ShortType = 538,
 		_ShortType_QualifiedName = 545,
 		_LongType = 549,
-		_Type = 558,
-		_Expr = 564,
+		_TypeOnly = 558,
+		_Type = 562,
+		_ExprOnly_NoComma = 567,
 		_Expr_NoComma = 574,
-		_TypeOrExpr = 583,
-		_TypeOrExpr_NoComma_NoLT = 596,
-		_File = 608,
+		_ExprOnly = 579,
+		_Expr = 587,
+		_TypeOrExpr_NoComma_NoLT = 592,
+		_TypeOrExpr = 599,
+		_File = 606,
 	};
 
 	const wchar_t* ParserRuleName(vl::vint index);

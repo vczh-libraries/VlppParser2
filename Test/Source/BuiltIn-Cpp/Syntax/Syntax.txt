@@ -365,47 +365,55 @@ _LongType
 // _Type
 //////////////////////////////////////////////////////////////////
 
+_TypeOnly
+  ::= !_ShortType left_recursion_inject(Type) _LongType
+  ;
+
 _Type
   ::= !_QualifiedName left_recursion_inject(Shared) _LongType
-  ::= !_ShortType left_recursion_inject(Type) _LongType
+  ::= !_TypeOnly
   ;
 
 //////////////////////////////////////////////////////////////////
 // _Expr
 //////////////////////////////////////////////////////////////////
 
-_Expr
-  ::= !_QualifiedName left_recursion_inject(Shared) _BExpr
+_ExprOnly_NoComma
+  ::= !_PrimitiveExpr left_recursion_inject(Expr) _BExpr_NoComma
+  ::= !_AllPrefixUnaryExpr left_recursion_inject(PrefixUnaryExpr) _BExpr_NoComma
+  ::= !_ThrowExpr
+  ;
+
+_Expr_NoComma
+  ::= !_QualifiedName left_recursion_inject(Shared) _BExpr_NoComma
+  ::= !_ExprOnly_NoComma
+  ;
+
+_ExprOnly
   ::= !_PrimitiveExpr left_recursion_inject(Expr) _BExpr
   ::= !_AllPrefixUnaryExpr left_recursion_inject(PrefixUnaryExpr) _BExpr
   ::= !_ThrowExpr left_recursion_inject(ThrowExpr) _BExpr
   ;
 
-_Expr_NoComma
-  ::= !_QualifiedName left_recursion_inject(Shared) _BExpr_NoComma
-  ::= !_PrimitiveExpr left_recursion_inject(Expr) _BExpr_NoComma
-  ::= !_AllPrefixUnaryExpr left_recursion_inject(PrefixUnaryExpr) _BExpr_NoComma
-  ::= !_ThrowExpr
+_Expr
+  ::= !_QualifiedName left_recursion_inject(Shared) _BExpr
+  ::= !_ExprOnly
   ;
 
 //////////////////////////////////////////////////////////////////
 // TypeOrExpr
 //////////////////////////////////////////////////////////////////
 
-_TypeOrExpr
-  ::= !_QualifiedName left_recursion_inject(Shared) _LongType | _BExpr
-  ::= !_ShortType left_recursion_inject(Type) _LongType
-  ::= !_PrimitiveExpr left_recursion_inject(Expr) _BExpr
-  ::= !_AllPrefixUnaryExpr left_recursion_inject(PrefixUnaryExpr) _BExpr
-  ::= !_ThrowExpr left_recursion_inject(ThrowExpr) _BExpr
-  ;
-
 _TypeOrExpr_NoComma_NoLT
   ::= !_QualifiedName left_recursion_inject(Shared) _LongType | _BExpr_NoComma
-  ::= !_ShortType left_recursion_inject(Type) _LongType
-  ::= !_PrimitiveExpr left_recursion_inject(Expr) _BExpr_NoComma
-  ::= !_AllPrefixUnaryExpr left_recursion_inject(PrefixUnaryExpr) _BExpr_NoComma
-  ::= !_ThrowExpr
+  ::= !_TypeOnly
+  ::= !_ExprOnly_NoComma
+  ;
+
+_TypeOrExpr
+  ::= !_QualifiedName left_recursion_inject(Shared) _LongType | _BExpr
+  ::= !_TypeOnly
+  ::= !_ExprOnly
   ;
 
 //////////////////////////////////////////////////////////////////
