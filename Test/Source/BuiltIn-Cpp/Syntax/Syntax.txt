@@ -362,7 +362,7 @@ _LongType
   ;
 
 //////////////////////////////////////////////////////////////////
-// Declarator
+// Declarator Components
 //////////////////////////////////////////////////////////////////
 
 _AdvancedTypeNoCVNoMember
@@ -415,13 +415,69 @@ _DeclaratorAKFollow
   ::= _DeclaratorKeyword:keywords as partial Declarator
   ;
 
-_Declarator
-  ::= (_DeclaratorAKFirst [_AdvancedTypeMember] | _AdvancedTypeMember) {_DeclaratorAKFollow [_AdvancedTypeMember]} as Declarator
+_DeclaratorFunctionArgument
+  ::= _DeclaratorOptionalName:parameter ["...":variadic] as FunctionParameter
+  ;
+
+_DeclaratorFunctionPart
+  ::= "(" ")" as DeclaratorFunctionPart
+  ::= "(" "void" ")" as DeclaratorFunctionPart
+  ::= "(" "...":variadic ")" as DeclaratorFunctionPart
+  ::= "(" _DeclaratorFunctionArgument:parameters {"," _DeclaratorFunctionArgument:parameters} ["," "...":variadic]) as DeclaratorFunctionPart
+  ;
+
+_DeclaratorArrayPart
+  ::= "[" _Expr:argument "]" as DeclaratorArrayPart
+  ;
+
+_DeclaratorId
+  ::= !_NameIdentifier
+  ::= !_OperatorIdentifier
+  ;
+
+//////////////////////////////////////////////////////////////////
+// Declarator
+//////////////////////////////////////////////////////////////////
+
+_DeclaratorBeforeInner
+  ::= (_DeclaratorAKFirst [_AdvancedTypeMember] | _AdvancedTypeMember) {_DeclaratorAKFollow [_AdvancedTypeMember]} as partial Declarator
+  ;
+
+_DeclaratorAfterInner
+  ::= DeclaratorFunctionPart:funcPart | DeclaratorArrayPart:arrayPart {DeclaratorArrayPart:arrayPart} as partial Declarator
+  ;
+
+_DeclaratorInnerWithoutName
+  ::= "(" _DeclaratorWithoutName:innerDeclarator ")" as partial Declarator
+  ;
+
+_DeclaratorInnerOptionalName
+  ::= "(" _DeclaratorOptionalName:innerDeclarator ")" | _DeclaratorId:id as partial Declarator
+  ;
+
+_DeclaratorInnerWithName
+  ::= "(" _DeclaratorWithName:innerDeclarator ")" | _DeclaratorId:id as partial Declarator
+  ;
+
+_DeclaratorWithoutName
+  ::= _DeclaratorBeforeInner [_DeclaratorInnerWithoutName] [_DeclaratorAfterInner] as Declarator
+  ::= _DeclaratorInnerWithoutName [_DeclaratorAfterInner] as Declarator
+  ::= _DeclaratorAfterInner as Declarator
+  ;
+
+_DeclaratorOptionalName
+  ::= _DeclaratorBeforeInner [_DeclaratorInnerOptionalName] [_DeclaratorAfterInner] as Declarator
+  ::= _DeclaratorInnerOptionalName [_DeclaratorAfterInner] as Declarator
+  ::= _DeclaratorAfterInner as Declarator
+  ;
+
+_DeclaratorWithName
+  ::= [_DeclaratorBeforeInner] _DeclaratorInnerWithName [_DeclaratorAfterInner] as Declarator
   ;
 
 _TypeOrDeclarator
   ::= !_LongType
-  ::= _LongType:type _Declarator:declarator as DeclaratorType
+  ::= _LongType:type _DeclaratorWithoutName:declarator as DeclaratorType
   ;
 
 //////////////////////////////////////////////////////////////////

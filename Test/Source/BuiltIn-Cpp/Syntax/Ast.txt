@@ -349,12 +349,21 @@ class DeclaratorKeyword
     var keyword : token;
 }
 
-class FunctionDeclarator
+class FunctionParameter
 {
+    var parameter : DeclaratorType;
+    var variadic : token;
 }
 
-class ArrayDeclarator
+class DeclaratorFunctionPart
 {
+    var parameters : FunctionParameter[];
+    var variadic : token;
+}
+
+class DeclaratorArrayPart
+{
+    var argument : TypeOrExpr;
 }
 
 class Declarator
@@ -363,8 +372,8 @@ class Declarator
     var advancedTypes : AdvancedType[];
     var id : Identifier;
     var innerDeclarator : Declarator;
-    var funcDecl : FunctionDeclarator;
-    var arrayDecls : ArrayDeclarator[];
+    var funcPart : DeclaratorFunctionPart;
+    var arrayParts : DeclaratorArrayPart[];
 }
 
 class DeclaratorType : TypeOrExpr
