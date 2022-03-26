@@ -415,15 +415,18 @@ _DeclaratorAKFollow
   ::= _DeclaratorKeyword:keywords as partial Declarator
   ;
 
-_DeclaratorFunctionArgument
-  ::= _DeclaratorOptionalName:parameter ["...":variadic] as FunctionParameter
+_DeclaratorFunctionParameter
+  ::= _LongType:type _DeclaratorOptionalName:declarator ["...":variadic] as FunctionParameter
+  ;
+
+_DeclaratorFunctionParameters
+  ::= "void" as partial DeclaratorFunctionPart
+  ::= "...":variadic as partial DeclaratorFunctionPart
+  ::= _DeclaratorFunctionParameter:parameters {"," _DeclaratorFunctionParameter:parameters} ["," "...":variadic] as partial DeclaratorFunctionPart
   ;
 
 _DeclaratorFunctionPart
-  ::= "(" ")" as DeclaratorFunctionPart
-  ::= "(" "void" ")" as DeclaratorFunctionPart
-  ::= "(" "...":variadic ")" as DeclaratorFunctionPart
-  ::= "(" _DeclaratorFunctionArgument:parameters {"," _DeclaratorFunctionArgument:parameters} ["," "...":variadic]) as DeclaratorFunctionPart
+  ::= "(" [_DeclaratorFunctionParameters] ")" as DeclaratorFunctionPart
   ;
 
 _DeclaratorArrayPart
@@ -444,7 +447,7 @@ _DeclaratorBeforeInner
   ;
 
 _DeclaratorAfterInner
-  ::= DeclaratorFunctionPart:funcPart | DeclaratorArrayPart:arrayPart {DeclaratorArrayPart:arrayPart} as partial Declarator
+  ::= _DeclaratorFunctionPart:funcPart | _DeclaratorArrayPart:arrayParts {_DeclaratorArrayPart:arrayParts} as partial Declarator
   ;
 
 _DeclaratorInnerWithoutName
@@ -475,14 +478,14 @@ _DeclaratorWithName
   ::= [_DeclaratorBeforeInner] _DeclaratorInnerWithName [_DeclaratorAfterInner] as Declarator
   ;
 
+//////////////////////////////////////////////////////////////////
+// Type
+//////////////////////////////////////////////////////////////////
+
 _TypeOrDeclarator
   ::= !_LongType
   ::= _LongType:type _DeclaratorWithoutName:declarator as DeclaratorType
   ;
-
-//////////////////////////////////////////////////////////////////
-// Type
-//////////////////////////////////////////////////////////////////
 
 _TypeOnly
   ::= !_ShortType left_recursion_inject(Type) _TypeOrDeclarator
