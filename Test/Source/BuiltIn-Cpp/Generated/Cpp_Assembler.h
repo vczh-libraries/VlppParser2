@@ -54,8 +54,8 @@ namespace cpp_parser
 
 	enum class CppFields : vl::vint32_t
 	{
-		AdvancedType_kind = 0,
-		AdvancedType_parent = 1,
+		AdvancedType_argument = 0,
+		AdvancedType_kind = 1,
 		BinaryExpr_left = 2,
 		BinaryExpr_op = 3,
 		BinaryExpr_right = 4,

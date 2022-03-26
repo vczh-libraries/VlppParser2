@@ -12,9 +12,15 @@ namespace cpp_parser
 	{
 		void AstVisitor::PrintFields(CppAdvancedType* node)
 		{
+			BeginField(L"argument");
+			Print(node->argument.Obj());
+			EndField();
 			BeginField(L"kind");
 			switch (node->kind)
 			{
+			case cpp_parser::CppAdvancedTypeKinds::AlignAs:
+				WriteString(L"AlignAs");
+				break;
 			case cpp_parser::CppAdvancedTypeKinds::Const:
 				WriteString(L"Const");
 				break;
@@ -42,9 +48,6 @@ namespace cpp_parser
 			default:
 				WriteNull();
 			}
-			EndField();
-			BeginField(L"parent");
-			Print(node->parent.Obj());
 			EndField();
 		}
 		void AstVisitor::PrintFields(CppArrayDeclarator* node)

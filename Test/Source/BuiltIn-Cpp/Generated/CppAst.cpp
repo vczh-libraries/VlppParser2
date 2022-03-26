@@ -595,6 +595,7 @@ namespace vl
 				ENUM_NAMESPACE_ITEM(Pointer32)
 				ENUM_NAMESPACE_ITEM(Pointer64)
 				ENUM_NAMESPACE_ITEM(Member)
+				ENUM_NAMESPACE_ITEM(AlignAs)
 			END_ENUM_ITEM(cpp_parser::CppAdvancedTypeKinds)
 
 			BEGIN_CLASS_MEMBER(cpp_parser::CppAdvancedType)
@@ -603,7 +604,7 @@ namespace vl
 				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppAdvancedType>(), NO_PARAMETER)
 
 				CLASS_MEMBER_FIELD(kind)
-				CLASS_MEMBER_FIELD(parent)
+				CLASS_MEMBER_FIELD(argument)
 			END_CLASS_MEMBER(cpp_parser::CppAdvancedType)
 
 			BEGIN_CLASS_MEMBER(cpp_parser::CppDeclaratorKeyword)

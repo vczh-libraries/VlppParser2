@@ -15,15 +15,15 @@ namespace cpp_parser
 MakeAdvancedType
 ***********************************************************************/
 
-		MakeAdvancedType& MakeAdvancedType::kind(CppAdvancedTypeKinds value)
+		MakeAdvancedType& MakeAdvancedType::argument(const vl::Ptr<CppTypeOrExpr>& value)
 		{
-			node->kind = value;
+			node->argument = value;
 			return *this;
 		}
 
-		MakeAdvancedType& MakeAdvancedType::parent(const vl::Ptr<CppQualifiedName>& value)
+		MakeAdvancedType& MakeAdvancedType::kind(CppAdvancedTypeKinds value)
 		{
-			node->parent = value;
+			node->kind = value;
 			return *this;
 		}
 

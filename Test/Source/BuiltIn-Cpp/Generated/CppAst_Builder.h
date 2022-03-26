@@ -16,8 +16,8 @@ namespace cpp_parser
 		class MakeAdvancedType : public vl::glr::ParsingAstBuilder<CppAdvancedType>
 		{
 		public:
+			MakeAdvancedType& argument(const vl::Ptr<CppTypeOrExpr>& value);
 			MakeAdvancedType& kind(CppAdvancedTypeKinds value);
-			MakeAdvancedType& parent(const vl::Ptr<CppQualifiedName>& value);
 		};
 
 		class MakeBinaryExpr : public vl::glr::ParsingAstBuilder<CppBinaryExpr>

@@ -511,7 +511,7 @@ namespace cpp_parser
 			if (!node) return;
 			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
 			Traverse(static_cast<CppAdvancedType*>(node));
-			InspectInto(node->parent.Obj());
+			InspectInto(node->argument.Obj());
 			Finishing(static_cast<CppAdvancedType*>(node));
 			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 		}

@@ -194,6 +194,7 @@ namespace cpp_parser
 		Pointer32 = 5,
 		Pointer64 = 6,
 		Member = 7,
+		AlignAs = 8,
 	};
 
 	class CppTypeOrExpr abstract : public vl::glr::ParsingAstBase, vl::reflection::Description<CppTypeOrExpr>
@@ -509,7 +510,7 @@ namespace cpp_parser
 	{
 	public:
 		CppAdvancedTypeKinds kind = CppAdvancedTypeKinds::UNDEFINED_ENUM_ITEM_VALUE;
-		vl::Ptr<CppQualifiedName> parent;
+		vl::Ptr<CppTypeOrExpr> argument;
 	};
 
 	class CppDeclaratorKeyword : public vl::glr::ParsingAstBase, vl::reflection::Description<CppDeclaratorKeyword>

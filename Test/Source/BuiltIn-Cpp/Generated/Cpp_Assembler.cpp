@@ -94,8 +94,8 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 		auto cppFieldName = CppCppFieldName((CppFields)field);
 		switch((CppFields)field)
 		{
-		case CppFields::AdvancedType_parent:
-			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppAdvancedType::parent, object, field, value, cppFieldName);
+		case CppFields::AdvancedType_argument:
+			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppAdvancedType::argument, object, field, value, cppFieldName);
 		case CppFields::BinaryExpr_left:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppBinaryExpr::left, object, field, value, cppFieldName);
 		case CppFields::BinaryExpr_right:
@@ -344,8 +344,8 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 	const wchar_t* CppFieldName(CppFields field)
 	{
 		const wchar_t* results[] = {
+			L"AdvancedType::argument",
 			L"AdvancedType::kind",
-			L"AdvancedType::parent",
 			L"BinaryExpr::left",
 			L"BinaryExpr::op",
 			L"BinaryExpr::right",
@@ -418,8 +418,8 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 	const wchar_t* CppCppFieldName(CppFields field)
 	{
 		const wchar_t* results[] = {
+			L"cpp_parser::CppAdvancedType::argument",
 			L"cpp_parser::CppAdvancedType::kind",
-			L"cpp_parser::CppAdvancedType::parent",
 			L"cpp_parser::CppBinaryExpr::left",
 			L"cpp_parser::CppBinaryExpr::op",
 			L"cpp_parser::CppBinaryExpr::right",

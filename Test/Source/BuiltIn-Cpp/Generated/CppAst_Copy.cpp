@@ -12,8 +12,8 @@ namespace cpp_parser
 	{
 		void AstVisitor::CopyFields(CppAdvancedType* from, CppAdvancedType* to)
 		{
+			to->argument = CopyNode(from->argument.Obj());
 			to->kind = from->kind;
-			to->parent = CopyNode(from->parent.Obj());
 		}
 
 		void AstVisitor::CopyFields(CppArrayDeclarator* from, CppArrayDeclarator* to)

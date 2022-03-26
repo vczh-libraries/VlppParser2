@@ -371,7 +371,8 @@ _AdvancedTypeNoCV
   ::= "*" as AdvancedType {kind = Pointer}
   ::= "*" "__ptr32" as AdvancedType {kind = Pointer32}
   ::= "*" "__ptr64" as AdvancedType {kind = Pointer64}
-  //::= _QualifiedName:parent "::" as AdvancedType {kind = Member}
+  ::= "alignas" "(" _Expr:argument ")" as AdvancedType {kind = AlignAs}
+  ::= _QualifiedName:argument "::" as AdvancedType {kind = Member}
   ;
 
 _AdvancedType
