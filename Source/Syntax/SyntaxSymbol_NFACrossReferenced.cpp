@@ -224,11 +224,14 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 									CopyFrom(newEdge->insSwitch, lrEdge->insSwitch, true);
 									CopyFrom(newEdge->insSwitch, tokenEdge->insSwitch, true);
 
+									// newEdge consumes a token
+									// lrEdge->insAfterInput happens before consuming this token
+									// so it should be copied to newEdge->insBeforeInput
 									CopyFrom(newEdge->insBeforeInput, instructionPrefix, true);
 									CopyFrom(newEdge->insBeforeInput, lrEdge->insBeforeInput, true);
+									CopyFrom(newEdge->insBeforeInput, lrEdge->insAfterInput, true);
 									CopyFrom(newEdge->insBeforeInput, tokenEdge->insBeforeInput, true);
 
-									CopyFrom(newEdge->insAfterInput, lrEdge->insAfterInput, true);
 									CopyFrom(newEdge->insAfterInput, tokenEdge->insAfterInput, true);
 								}
 							}
