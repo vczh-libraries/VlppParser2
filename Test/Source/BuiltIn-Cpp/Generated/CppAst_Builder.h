@@ -59,11 +59,24 @@ namespace cpp_parser
 		{
 		public:
 			MakeDeclarator& advancedTypes(const vl::Ptr<CppAdvancedType>& value);
-			MakeDeclarator& arrayDecls(const vl::Ptr<CppArrayDeclarator>& value);
-			MakeDeclarator& funcDecl(const vl::Ptr<CppFunctionDeclarator>& value);
+			MakeDeclarator& arrayParts(const vl::Ptr<CppDeclaratorArrayPart>& value);
+			MakeDeclarator& funcPart(const vl::Ptr<CppDeclaratorFunctionPart>& value);
 			MakeDeclarator& id(const vl::Ptr<CppIdentifier>& value);
 			MakeDeclarator& innerDeclarator(const vl::Ptr<CppDeclarator>& value);
 			MakeDeclarator& keywords(const vl::Ptr<CppDeclaratorKeyword>& value);
+		};
+
+		class MakeDeclaratorArrayPart : public vl::glr::ParsingAstBuilder<CppDeclaratorArrayPart>
+		{
+		public:
+			MakeDeclaratorArrayPart& argument(const vl::Ptr<CppTypeOrExpr>& value);
+		};
+
+		class MakeDeclaratorFunctionPart : public vl::glr::ParsingAstBuilder<CppDeclaratorFunctionPart>
+		{
+		public:
+			MakeDeclaratorFunctionPart& parameters(const vl::Ptr<CppFunctionParameter>& value);
+			MakeDeclaratorFunctionPart& variadic(const vl::WString& value);
 		};
 
 		class MakeDeclaratorKeyword : public vl::glr::ParsingAstBuilder<CppDeclaratorKeyword>
@@ -85,6 +98,14 @@ namespace cpp_parser
 			MakeDeleteExpr& argument(const vl::Ptr<CppTypeOrExpr>& value);
 			MakeDeleteExpr& array(CppOperatorArray value);
 			MakeDeleteExpr& scope(CppOperatorScope value);
+		};
+
+		class MakeFunctionParameter : public vl::glr::ParsingAstBuilder<CppFunctionParameter>
+		{
+		public:
+			MakeFunctionParameter& declarator(const vl::Ptr<CppDeclarator>& value);
+			MakeFunctionParameter& type(const vl::Ptr<CppTypeOrExpr>& value);
+			MakeFunctionParameter& variadic(const vl::WString& value);
 		};
 
 		class MakeGenericArgument : public vl::glr::ParsingAstBuilder<CppGenericArgument>

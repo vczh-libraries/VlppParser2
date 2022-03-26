@@ -23,19 +23,20 @@ namespace cpp_parser
 		{
 		protected:
 			void CopyFields(CppAdvancedType* from, CppAdvancedType* to);
-			void CopyFields(CppArrayDeclarator* from, CppArrayDeclarator* to);
 			void CopyFields(CppBinaryExpr* from, CppBinaryExpr* to);
 			void CopyFields(CppBraceExpr* from, CppBraceExpr* to);
 			void CopyFields(CppCallExpr* from, CppCallExpr* to);
 			void CopyFields(CppCastExpr* from, CppCastExpr* to);
 			void CopyFields(CppConstType* from, CppConstType* to);
 			void CopyFields(CppDeclarator* from, CppDeclarator* to);
+			void CopyFields(CppDeclaratorArrayPart* from, CppDeclaratorArrayPart* to);
+			void CopyFields(CppDeclaratorFunctionPart* from, CppDeclaratorFunctionPart* to);
 			void CopyFields(CppDeclaratorKeyword* from, CppDeclaratorKeyword* to);
 			void CopyFields(CppDeclaratorType* from, CppDeclaratorType* to);
 			void CopyFields(CppDeleteExpr* from, CppDeleteExpr* to);
 			void CopyFields(CppExprOnly* from, CppExprOnly* to);
 			void CopyFields(CppFile* from, CppFile* to);
-			void CopyFields(CppFunctionDeclarator* from, CppFunctionDeclarator* to);
+			void CopyFields(CppFunctionParameter* from, CppFunctionParameter* to);
 			void CopyFields(CppGenericArgument* from, CppGenericArgument* to);
 			void CopyFields(CppGenericArguments* from, CppGenericArguments* to);
 			void CopyFields(CppIdentifier* from, CppIdentifier* to);
@@ -66,8 +67,9 @@ namespace cpp_parser
 			virtual void Visit(CppStringLiteralFragment* node);
 			virtual void Visit(CppAdvancedType* node);
 			virtual void Visit(CppDeclaratorKeyword* node);
-			virtual void Visit(CppFunctionDeclarator* node);
-			virtual void Visit(CppArrayDeclarator* node);
+			virtual void Visit(CppFunctionParameter* node);
+			virtual void Visit(CppDeclaratorFunctionPart* node);
+			virtual void Visit(CppDeclaratorArrayPart* node);
 			virtual void Visit(CppDeclarator* node);
 			virtual void Visit(CppFile* node);
 
@@ -109,8 +111,9 @@ namespace cpp_parser
 			virtual vl::Ptr<CppStringLiteralFragment> CopyNode(CppStringLiteralFragment* node);
 			virtual vl::Ptr<CppAdvancedType> CopyNode(CppAdvancedType* node);
 			virtual vl::Ptr<CppDeclaratorKeyword> CopyNode(CppDeclaratorKeyword* node);
-			virtual vl::Ptr<CppFunctionDeclarator> CopyNode(CppFunctionDeclarator* node);
-			virtual vl::Ptr<CppArrayDeclarator> CopyNode(CppArrayDeclarator* node);
+			virtual vl::Ptr<CppFunctionParameter> CopyNode(CppFunctionParameter* node);
+			virtual vl::Ptr<CppDeclaratorFunctionPart> CopyNode(CppDeclaratorFunctionPart* node);
+			virtual vl::Ptr<CppDeclaratorArrayPart> CopyNode(CppDeclaratorArrayPart* node);
 			virtual vl::Ptr<CppDeclarator> CopyNode(CppDeclarator* node);
 			virtual vl::Ptr<CppFile> CopyNode(CppFile* node);
 

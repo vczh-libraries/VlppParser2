@@ -13,19 +13,20 @@ Licensed under https://github.com/vczh-libraries/License
 namespace cpp_parser
 {
 	class CppAdvancedType;
-	class CppArrayDeclarator;
 	class CppBinaryExpr;
 	class CppBraceExpr;
 	class CppCallExpr;
 	class CppCastExpr;
 	class CppConstType;
 	class CppDeclarator;
+	class CppDeclaratorArrayPart;
+	class CppDeclaratorFunctionPart;
 	class CppDeclaratorKeyword;
 	class CppDeclaratorType;
 	class CppDeleteExpr;
 	class CppExprOnly;
 	class CppFile;
-	class CppFunctionDeclarator;
+	class CppFunctionParameter;
 	class CppGenericArgument;
 	class CppGenericArguments;
 	class CppIdentifier;
@@ -519,14 +520,25 @@ namespace cpp_parser
 		vl::glr::ParsingToken keyword;
 	};
 
-	class CppFunctionDeclarator : public vl::glr::ParsingAstBase, vl::reflection::Description<CppFunctionDeclarator>
+	class CppFunctionParameter : public vl::glr::ParsingAstBase, vl::reflection::Description<CppFunctionParameter>
 	{
 	public:
+		vl::Ptr<CppTypeOrExpr> type;
+		vl::Ptr<CppDeclarator> declarator;
+		vl::glr::ParsingToken variadic;
 	};
 
-	class CppArrayDeclarator : public vl::glr::ParsingAstBase, vl::reflection::Description<CppArrayDeclarator>
+	class CppDeclaratorFunctionPart : public vl::glr::ParsingAstBase, vl::reflection::Description<CppDeclaratorFunctionPart>
 	{
 	public:
+		vl::collections::List<vl::Ptr<CppFunctionParameter>> parameters;
+		vl::glr::ParsingToken variadic;
+	};
+
+	class CppDeclaratorArrayPart : public vl::glr::ParsingAstBase, vl::reflection::Description<CppDeclaratorArrayPart>
+	{
+	public:
+		vl::Ptr<CppTypeOrExpr> argument;
 	};
 
 	class CppDeclarator : public vl::glr::ParsingAstBase, vl::reflection::Description<CppDeclarator>
@@ -536,8 +548,8 @@ namespace cpp_parser
 		vl::collections::List<vl::Ptr<CppAdvancedType>> advancedTypes;
 		vl::Ptr<CppIdentifier> id;
 		vl::Ptr<CppDeclarator> innerDeclarator;
-		vl::Ptr<CppFunctionDeclarator> funcDecl;
-		vl::collections::List<vl::Ptr<CppArrayDeclarator>> arrayDecls;
+		vl::Ptr<CppDeclaratorFunctionPart> funcPart;
+		vl::collections::List<vl::Ptr<CppDeclaratorArrayPart>> arrayParts;
 	};
 
 	class CppDeclaratorType : public CppTypeOrExpr, vl::reflection::Description<CppDeclaratorType>
@@ -608,8 +620,9 @@ namespace vl
 			DECL_TYPE_INFO(cpp_parser::CppAdvancedTypeKinds)
 			DECL_TYPE_INFO(cpp_parser::CppAdvancedType)
 			DECL_TYPE_INFO(cpp_parser::CppDeclaratorKeyword)
-			DECL_TYPE_INFO(cpp_parser::CppFunctionDeclarator)
-			DECL_TYPE_INFO(cpp_parser::CppArrayDeclarator)
+			DECL_TYPE_INFO(cpp_parser::CppFunctionParameter)
+			DECL_TYPE_INFO(cpp_parser::CppDeclaratorFunctionPart)
+			DECL_TYPE_INFO(cpp_parser::CppDeclaratorArrayPart)
 			DECL_TYPE_INFO(cpp_parser::CppDeclarator)
 			DECL_TYPE_INFO(cpp_parser::CppDeclaratorType)
 			DECL_TYPE_INFO(cpp_parser::CppFile)

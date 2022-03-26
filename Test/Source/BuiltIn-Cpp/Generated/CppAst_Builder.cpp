@@ -117,15 +117,15 @@ MakeDeclarator
 			return *this;
 		}
 
-		MakeDeclarator& MakeDeclarator::arrayDecls(const vl::Ptr<CppArrayDeclarator>& value)
+		MakeDeclarator& MakeDeclarator::arrayParts(const vl::Ptr<CppDeclaratorArrayPart>& value)
 		{
-			node->arrayDecls.Add(value);
+			node->arrayParts.Add(value);
 			return *this;
 		}
 
-		MakeDeclarator& MakeDeclarator::funcDecl(const vl::Ptr<CppFunctionDeclarator>& value)
+		MakeDeclarator& MakeDeclarator::funcPart(const vl::Ptr<CppDeclaratorFunctionPart>& value)
 		{
-			node->funcDecl = value;
+			node->funcPart = value;
 			return *this;
 		}
 
@@ -144,6 +144,32 @@ MakeDeclarator
 		MakeDeclarator& MakeDeclarator::keywords(const vl::Ptr<CppDeclaratorKeyword>& value)
 		{
 			node->keywords.Add(value);
+			return *this;
+		}
+
+/***********************************************************************
+MakeDeclaratorArrayPart
+***********************************************************************/
+
+		MakeDeclaratorArrayPart& MakeDeclaratorArrayPart::argument(const vl::Ptr<CppTypeOrExpr>& value)
+		{
+			node->argument = value;
+			return *this;
+		}
+
+/***********************************************************************
+MakeDeclaratorFunctionPart
+***********************************************************************/
+
+		MakeDeclaratorFunctionPart& MakeDeclaratorFunctionPart::parameters(const vl::Ptr<CppFunctionParameter>& value)
+		{
+			node->parameters.Add(value);
+			return *this;
+		}
+
+		MakeDeclaratorFunctionPart& MakeDeclaratorFunctionPart::variadic(const vl::WString& value)
+		{
+			node->variadic.value = value;
 			return *this;
 		}
 
@@ -192,6 +218,28 @@ MakeDeleteExpr
 		MakeDeleteExpr& MakeDeleteExpr::scope(CppOperatorScope value)
 		{
 			node->scope = value;
+			return *this;
+		}
+
+/***********************************************************************
+MakeFunctionParameter
+***********************************************************************/
+
+		MakeFunctionParameter& MakeFunctionParameter::declarator(const vl::Ptr<CppDeclarator>& value)
+		{
+			node->declarator = value;
+			return *this;
+		}
+
+		MakeFunctionParameter& MakeFunctionParameter::type(const vl::Ptr<CppTypeOrExpr>& value)
+		{
+			node->type = value;
+			return *this;
+		}
+
+		MakeFunctionParameter& MakeFunctionParameter::variadic(const vl::WString& value)
+		{
+			node->variadic.value = value;
 			return *this;
 		}
 

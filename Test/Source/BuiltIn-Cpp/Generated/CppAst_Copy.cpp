@@ -16,10 +16,6 @@ namespace cpp_parser
 			to->kind = from->kind;
 		}
 
-		void AstVisitor::CopyFields(CppArrayDeclarator* from, CppArrayDeclarator* to)
-		{
-		}
-
 		void AstVisitor::CopyFields(CppBinaryExpr* from, CppBinaryExpr* to)
 		{
 			CopyFields(static_cast<CppExprOnly*>(from), static_cast<CppExprOnly*>(to));
@@ -67,17 +63,31 @@ namespace cpp_parser
 			{
 				to->advancedTypes.Add(CopyNode(listItem.Obj()));
 			}
-			for (auto&& listItem : from->arrayDecls)
+			for (auto&& listItem : from->arrayParts)
 			{
-				to->arrayDecls.Add(CopyNode(listItem.Obj()));
+				to->arrayParts.Add(CopyNode(listItem.Obj()));
 			}
-			to->funcDecl = CopyNode(from->funcDecl.Obj());
+			to->funcPart = CopyNode(from->funcPart.Obj());
 			to->id = CopyNode(from->id.Obj());
 			to->innerDeclarator = CopyNode(from->innerDeclarator.Obj());
 			for (auto&& listItem : from->keywords)
 			{
 				to->keywords.Add(CopyNode(listItem.Obj()));
 			}
+		}
+
+		void AstVisitor::CopyFields(CppDeclaratorArrayPart* from, CppDeclaratorArrayPart* to)
+		{
+			to->argument = CopyNode(from->argument.Obj());
+		}
+
+		void AstVisitor::CopyFields(CppDeclaratorFunctionPart* from, CppDeclaratorFunctionPart* to)
+		{
+			for (auto&& listItem : from->parameters)
+			{
+				to->parameters.Add(CopyNode(listItem.Obj()));
+			}
+			to->variadic = from->variadic;
 		}
 
 		void AstVisitor::CopyFields(CppDeclaratorKeyword* from, CppDeclaratorKeyword* to)
@@ -109,8 +119,11 @@ namespace cpp_parser
 		{
 		}
 
-		void AstVisitor::CopyFields(CppFunctionDeclarator* from, CppFunctionDeclarator* to)
+		void AstVisitor::CopyFields(CppFunctionParameter* from, CppFunctionParameter* to)
 		{
+			to->declarator = CopyNode(from->declarator.Obj());
+			to->type = CopyNode(from->type.Obj());
+			to->variadic = from->variadic;
 		}
 
 		void AstVisitor::CopyFields(CppGenericArgument* from, CppGenericArgument* to)
@@ -315,16 +328,23 @@ namespace cpp_parser
 			this->result = newNode;
 		}
 
-		void AstVisitor::Visit(CppFunctionDeclarator* node)
+		void AstVisitor::Visit(CppFunctionParameter* node)
 		{
-			auto newNode = vl::MakePtr<CppFunctionDeclarator>();
+			auto newNode = vl::MakePtr<CppFunctionParameter>();
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
-		void AstVisitor::Visit(CppArrayDeclarator* node)
+		void AstVisitor::Visit(CppDeclaratorFunctionPart* node)
 		{
-			auto newNode = vl::MakePtr<CppArrayDeclarator>();
+			auto newNode = vl::MakePtr<CppDeclaratorFunctionPart>();
+			CopyFields(node, newNode.Obj());
+			this->result = newNode;
+		}
+
+		void AstVisitor::Visit(CppDeclaratorArrayPart* node)
+		{
+			auto newNode = vl::MakePtr<CppDeclaratorArrayPart>();
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
@@ -570,18 +590,25 @@ namespace cpp_parser
 			return this->result.Cast<CppDeclaratorKeyword>();
 		}
 
-		vl::Ptr<CppFunctionDeclarator> AstVisitor::CopyNode(CppFunctionDeclarator* node)
+		vl::Ptr<CppFunctionParameter> AstVisitor::CopyNode(CppFunctionParameter* node)
 		{
 			if (!node) return nullptr;
 			Visit(node);
-			return this->result.Cast<CppFunctionDeclarator>();
+			return this->result.Cast<CppFunctionParameter>();
 		}
 
-		vl::Ptr<CppArrayDeclarator> AstVisitor::CopyNode(CppArrayDeclarator* node)
+		vl::Ptr<CppDeclaratorFunctionPart> AstVisitor::CopyNode(CppDeclaratorFunctionPart* node)
 		{
 			if (!node) return nullptr;
 			Visit(node);
-			return this->result.Cast<CppArrayDeclarator>();
+			return this->result.Cast<CppDeclaratorFunctionPart>();
+		}
+
+		vl::Ptr<CppDeclaratorArrayPart> AstVisitor::CopyNode(CppDeclaratorArrayPart* node)
+		{
+			if (!node) return nullptr;
+			Visit(node);
+			return this->result.Cast<CppDeclaratorArrayPart>();
 		}
 
 		vl::Ptr<CppDeclarator> AstVisitor::CopyNode(CppDeclarator* node)
