@@ -365,20 +365,23 @@ _LongType
 // Declarator
 //////////////////////////////////////////////////////////////////
 
-_AdvancedTypeNoCV
+_AdvancedTypeNoCVNoMember
   ::= "&" as AdvancedType {kind = LRef}
   ::= "&&" as AdvancedType {kind = RRef}
   ::= "*" as AdvancedType {kind = Pointer}
   ::= "*" "__ptr32" as AdvancedType {kind = Pointer32}
   ::= "*" "__ptr64" as AdvancedType {kind = Pointer64}
   ::= "alignas" "(" _Expr:argument ")" as AdvancedType {kind = AlignAs}
-  ::= _QualifiedName:argument "::" as AdvancedType {kind = Member}
   ;
 
-_AdvancedType
-  ::= !_AdvancedTypeNoCV
+_AdvancedTypeNoMember
+  ::= !_AdvancedTypeNoCVNoMember
   ::= "const" as AdvancedType {kind = Const}
   ::= "volatile" as AdvancedType {kind = Volatile}
+  ;
+
+_AdvancedTypeMember
+  ::= _QualifiedName:argument "::" as AdvancedType {kind = Member}
   ;
 
 _DeclaratorKeyword
@@ -403,17 +406,17 @@ _DeclaratorKeyword
   ;
 
 _DeclaratorAKFirst
-  ::= _AdvancedTypeNoCV:advancedTypes as partial Declarator
+  ::= _AdvancedTypeNoCVNoMember:advancedTypes as partial Declarator
   ::= _DeclaratorKeyword:keywords as partial Declarator
   ;
 
 _DeclaratorAKFollow
-  ::= _AdvancedType:advancedTypes as partial Declarator
+  ::= _AdvancedTypeNoMember:advancedTypes as partial Declarator
   ::= _DeclaratorKeyword:keywords as partial Declarator
   ;
 
 _Declarator
-  ::= _DeclaratorAKFirst {_DeclaratorAKFollow} as Declarator
+  ::= (_DeclaratorAKFirst [_AdvancedTypeMember] | _AdvancedTypeMember) {_DeclaratorAKFollow [_AdvancedTypeMember]} as Declarator
   ;
 
 _TypeOrDeclarator
