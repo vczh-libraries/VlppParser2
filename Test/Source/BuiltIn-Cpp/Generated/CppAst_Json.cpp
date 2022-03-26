@@ -1079,6 +1079,9 @@ namespace cpp_parser
 			BeginField(L"kind");
 			switch (node->kind)
 			{
+			case cpp_parser::CppQualifiedNameKinds::Auto:
+				WriteString(L"Auto");
+				break;
 			case cpp_parser::CppQualifiedNameKinds::Context:
 				WriteString(L"Context");
 				break;

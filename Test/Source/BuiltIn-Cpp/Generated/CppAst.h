@@ -120,9 +120,10 @@ namespace cpp_parser
 		UNDEFINED_ENUM_ITEM_VALUE = -1,
 		Root = 0,
 		Context = 1,
-		Decltype = 2,
-		DecltypeAuto = 3,
-		Member = 4,
+		Auto = 2,
+		Decltype = 3,
+		DecltypeAuto = 4,
+		Member = 5,
 	};
 
 	enum class CppPrimitiveExprLiteralKinds

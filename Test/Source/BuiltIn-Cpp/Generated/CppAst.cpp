@@ -326,6 +326,7 @@ namespace vl
 				ENUM_ITEM_NAMESPACE(cpp_parser::CppQualifiedNameKinds)
 				ENUM_NAMESPACE_ITEM(Root)
 				ENUM_NAMESPACE_ITEM(Context)
+				ENUM_NAMESPACE_ITEM(Auto)
 				ENUM_NAMESPACE_ITEM(Decltype)
 				ENUM_NAMESPACE_ITEM(DecltypeAuto)
 				ENUM_NAMESPACE_ITEM(Member)

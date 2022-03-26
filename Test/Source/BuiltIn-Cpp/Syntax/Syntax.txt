@@ -91,6 +91,7 @@ _MemberQualifiedNameFragment
 _QualifiedName
   ::= _QualifiedNameFragment as QualifiedName {kind = Context}
   ::= "::" _QualifiedNameFragment as QualifiedName {kind = Root}
+  ::= "auto" _QualifiedNameFragment as QualifiedName {kind = Auto}
   ::= "decltype" "(" "auto" ")" as QualifiedName {kind = DecltypeAuto}
   ::= "decltype" "(" _Expr:expr ")" as QualifiedName {kind = Decltype}
   ::= _QualifiedName:parent "::" _QualifiedNameFragment as QualifiedName {kind = Member}
@@ -416,7 +417,7 @@ _DeclaratorAKFollow
   ;
 
 _DeclaratorFunctionParameter
-  ::= _LongType:type _DeclaratorOptionalName:declarator ["...":variadic] as FunctionParameter
+  ::= _LongType:type [_DeclaratorOptionalName:declarator] ["...":variadic] as FunctionParameter
   ;
 
 _DeclaratorFunctionParameters
