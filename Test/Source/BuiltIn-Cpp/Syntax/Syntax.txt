@@ -91,8 +91,7 @@ _MemberQualifiedNameFragment
 _QualifiedName
   ::= _QualifiedNameFragment as QualifiedName {kind = Context}
   ::= "::" _QualifiedNameFragment as QualifiedName {kind = Root}
-  ::= "auto" _QualifiedNameFragment as QualifiedName {kind = Auto}
-  ::= "decltype" "(" "auto" ")" as QualifiedName {kind = DecltypeAuto}
+  ::= "auto" as QualifiedName {kind = Auto}
   ::= "decltype" "(" _Expr:expr ")" as QualifiedName {kind = Decltype}
   ::= _QualifiedName:parent "::" _QualifiedNameFragment as QualifiedName {kind = Member}
   ::= _QualifiedName:parent "::" _MemberQualifiedNameFragment as QualifiedName {kind = Member}
@@ -416,12 +415,15 @@ _DeclaratorAKFollow
   ::= _DeclaratorKeyword:keywords as partial Declarator
   ;
 
+_DeclaratorAKMember
+  ::= _AdvancedTypeMember:advancedTypes as partial Declarator
+  ;
+
 _DeclaratorFunctionParameter
   ::= _LongType:type [_DeclaratorOptionalName:declarator] ["...":variadic] as FunctionParameter
   ;
 
 _DeclaratorFunctionParameters
-  ::= "void" as partial DeclaratorFunctionPart
   ::= "...":variadic as partial DeclaratorFunctionPart
   ::= _DeclaratorFunctionParameter:parameters {"," _DeclaratorFunctionParameter:parameters} ["," "...":variadic] as partial DeclaratorFunctionPart
   ;
@@ -444,7 +446,7 @@ _DeclaratorId
 //////////////////////////////////////////////////////////////////
 
 _DeclaratorBeforeInner
-  ::= (_DeclaratorAKFirst [_AdvancedTypeMember] | _AdvancedTypeMember) {_DeclaratorAKFollow [_AdvancedTypeMember]} as partial Declarator
+  ::= (_DeclaratorAKFirst [_DeclaratorAKMember] | _DeclaratorAKMember) {_DeclaratorAKFollow [_DeclaratorAKMember]} as partial Declarator
   ;
 
 _DeclaratorAfterInner
