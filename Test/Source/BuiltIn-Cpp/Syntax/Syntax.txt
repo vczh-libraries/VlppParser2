@@ -374,10 +374,14 @@ _AdvancedTypeNoCVNoMember
   ::= "alignas" "(" _Expr:argument ")" as AdvancedType {kind = AlignAs}
   ;
 
-_AdvancedTypeNoMember
-  ::= !_AdvancedTypeNoCVNoMember
+_AdvancedTypeCV
   ::= "const" as AdvancedType {kind = Const}
   ::= "volatile" as AdvancedType {kind = Volatile}
+  ;
+
+_AdvancedTypeNoMember
+  ::= !_AdvancedTypeNoCVNoMember
+  ::= !_AdvancedTypeCV
   ;
 
 _AdvancedTypeMember
@@ -405,6 +409,8 @@ _DeclaratorKeyword
   ::= "__vectorcall":keyword as DeclaratorKeyword
   ;
 
+//================================================================
+
 _DeclaratorAKFirst
   ::= _AdvancedTypeNoCVNoMember:advancedTypes as partial Declarator
   ::= _DeclaratorKeyword:keywords as partial Declarator
@@ -415,9 +421,15 @@ _DeclaratorAKFollow
   ::= _DeclaratorKeyword:keywords as partial Declarator
   ;
 
+_DeclaratorAKCV
+  ::= _AdvancedTypeCV:advancedTypes as partial Declarator
+  ;
+
 _DeclaratorAKMember
   ::= _AdvancedTypeMember:advancedTypes as partial Declarator
   ;
+
+//================================================================
 
 _DeclaratorFunctionParameter
   ::= _LongType:type [_DeclaratorOptionalName:declarator] ["...":variadic] as FunctionParameter
@@ -453,17 +465,35 @@ _DeclaratorAfterInner
   ::= _DeclaratorFunctionPart:funcPart | _DeclaratorArrayPart:arrayParts {_DeclaratorArrayPart:arrayParts} as partial Declarator
   ;
 
+//================================================================
+
+_InnerDeclaratorWithoutName
+  ::= {_DeclaratorAKCV} !_DeclaratorWithoutName
+  ;
+
+_InnerDeclaratorInnerOptionalName
+  ::= {_DeclaratorAKCV} !_DeclaratorOptionalName
+  ;
+
+_InnerDeclaratorInnerWithName
+  ::= {_DeclaratorAKCV} !_DeclaratorWithName
+  ;
+
+//================================================================
+
 _DeclaratorInnerWithoutName
-  ::= "(" _DeclaratorWithoutName:innerDeclarator ")" as partial Declarator
+  ::= "(" _InnerDeclaratorWithoutName:innerDeclarator ")" as partial Declarator
   ;
 
 _DeclaratorInnerOptionalName
-  ::= "(" _DeclaratorOptionalName:innerDeclarator ")" | _DeclaratorId:id as partial Declarator
+  ::= "(" _InnerDeclaratorInnerOptionalName:innerDeclarator ")" | _DeclaratorId:id as partial Declarator
   ;
 
 _DeclaratorInnerWithName
-  ::= "(" _DeclaratorWithName:innerDeclarator ")" | _DeclaratorId:id as partial Declarator
+  ::= "(" _InnerDeclaratorInnerWithName:innerDeclarator ")" | _DeclaratorId:id as partial Declarator
   ;
+
+//================================================================
 
 _DeclaratorWithoutName
   ::= _DeclaratorBeforeInner [_DeclaratorInnerWithoutName] [_DeclaratorAfterInner] as Declarator
