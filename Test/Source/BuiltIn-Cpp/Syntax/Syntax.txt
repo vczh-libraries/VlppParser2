@@ -432,7 +432,7 @@ _DeclaratorAKMember
 //================================================================
 
 _DeclaratorFunctionParameter
-  ::= _LongType:type [_DeclaratorOptionalName:declarator] ["...":variadic] ["=" _Expr_NoComma:defaultValue] as FunctionParameter
+  ::= _LongType:type [_DeclaratorOptionalName:declarator] ["=" _Expr_NoComma:defaultValue] as FunctionParameter
   ;
 
 _DeclaratorFunctionParameters
@@ -496,14 +496,18 @@ _InnerDeclaratorInnerWithName
 
 _DeclaratorInnerWithoutName
   ::= "(" _InnerDeclaratorWithoutName:innerDeclarator ")" as partial Declarator
+  ::= "...":variadic as partial Declarator
   ;
 
 _DeclaratorInnerOptionalName
-  ::= "(" _InnerDeclaratorInnerOptionalName:innerDeclarator ")" | _DeclaratorId:id as partial Declarator
+  ::= "(" _InnerDeclaratorInnerOptionalName:innerDeclarator ")" as partial Declarator
+  ::=  _DeclaratorId:id as partial Declarator
+  ::=  "...":variadic [_DeclaratorId:id] as partial Declarator
   ;
 
 _DeclaratorInnerWithName
-  ::= "(" _InnerDeclaratorInnerWithName:innerDeclarator ")" | _DeclaratorId:id as partial Declarator
+  ::= "(" _InnerDeclaratorInnerWithName:innerDeclarator ")" as partial Declarator
+  ::= ["...":variadic] _DeclaratorId:id as partial Declarator
   ;
 
 //================================================================

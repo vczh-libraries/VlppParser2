@@ -147,6 +147,12 @@ MakeDeclarator
 			return *this;
 		}
 
+		MakeDeclarator& MakeDeclarator::variadic(const vl::WString& value)
+		{
+			node->variadic.value = value;
+			return *this;
+		}
+
 /***********************************************************************
 MakeDeclaratorArrayPart
 ***********************************************************************/
@@ -268,12 +274,6 @@ MakeFunctionParameter
 		MakeFunctionParameter& MakeFunctionParameter::type(const vl::Ptr<CppTypeOrExpr>& value)
 		{
 			node->type = value;
-			return *this;
-		}
-
-		MakeFunctionParameter& MakeFunctionParameter::variadic(const vl::WString& value)
-		{
-			node->variadic.value = value;
 			return *this;
 		}
 

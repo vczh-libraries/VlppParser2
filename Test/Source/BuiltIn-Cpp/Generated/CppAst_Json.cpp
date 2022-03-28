@@ -292,6 +292,9 @@ namespace cpp_parser
 			}
 			EndArray();
 			EndField();
+			BeginField(L"variadic");
+			WriteToken(node->variadic);
+			EndField();
 		}
 		void AstVisitor::PrintFields(CppDeclaratorArrayPart* node)
 		{
@@ -407,9 +410,6 @@ namespace cpp_parser
 			EndField();
 			BeginField(L"type");
 			Print(node->type.Obj());
-			EndField();
-			BeginField(L"variadic");
-			WriteToken(node->variadic);
 			EndField();
 		}
 		void AstVisitor::PrintFields(CppGenericArgument* node)

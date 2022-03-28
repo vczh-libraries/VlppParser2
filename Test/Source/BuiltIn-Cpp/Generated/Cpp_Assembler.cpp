@@ -206,14 +206,14 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 		{
 		case CppFields::CastExpr_keyword:
 			return vl::glr::AssemblerSetTokenField(&cpp_parser::CppCastExpr::keyword, object, field, token, tokenIndex, cppFieldName);
+		case CppFields::Declarator_variadic:
+			return vl::glr::AssemblerSetTokenField(&cpp_parser::CppDeclarator::variadic, object, field, token, tokenIndex, cppFieldName);
 		case CppFields::DeclaratorFunctionPart_variadic:
 			return vl::glr::AssemblerSetTokenField(&cpp_parser::CppDeclaratorFunctionPart::variadic, object, field, token, tokenIndex, cppFieldName);
 		case CppFields::DeclaratorKeyword_keyword:
 			return vl::glr::AssemblerSetTokenField(&cpp_parser::CppDeclaratorKeyword::keyword, object, field, token, tokenIndex, cppFieldName);
 		case CppFields::FunctionKeyword_keyword:
 			return vl::glr::AssemblerSetTokenField(&cpp_parser::CppFunctionKeyword::keyword, object, field, token, tokenIndex, cppFieldName);
-		case CppFields::FunctionParameter_variadic:
-			return vl::glr::AssemblerSetTokenField(&cpp_parser::CppFunctionParameter::variadic, object, field, token, tokenIndex, cppFieldName);
 		case CppFields::GenericArgument_variadic:
 			return vl::glr::AssemblerSetTokenField(&cpp_parser::CppGenericArgument::variadic, object, field, token, tokenIndex, cppFieldName);
 		case CppFields::NameIdentifier_name:
@@ -392,6 +392,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"Declarator::id",
 			L"Declarator::innerDeclarator",
 			L"Declarator::keywords",
+			L"Declarator::variadic",
 			L"DeclaratorArrayPart::argument",
 			L"DeclaratorFunctionPart::deferredType",
 			L"DeclaratorFunctionPart::keywords",
@@ -408,7 +409,6 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"FunctionParameter::declarator",
 			L"FunctionParameter::defaultValue",
 			L"FunctionParameter::type",
-			L"FunctionParameter::variadic",
 			L"GenericArgument::argument",
 			L"GenericArgument::variadic",
 			L"GenericArguments::arguments",
@@ -477,6 +477,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::CppDeclarator::id",
 			L"cpp_parser::CppDeclarator::innerDeclarator",
 			L"cpp_parser::CppDeclarator::keywords",
+			L"cpp_parser::CppDeclarator::variadic",
 			L"cpp_parser::CppDeclaratorArrayPart::argument",
 			L"cpp_parser::CppDeclaratorFunctionPart::deferredType",
 			L"cpp_parser::CppDeclaratorFunctionPart::keywords",
@@ -493,7 +494,6 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::CppFunctionParameter::declarator",
 			L"cpp_parser::CppFunctionParameter::defaultValue",
 			L"cpp_parser::CppFunctionParameter::type",
-			L"cpp_parser::CppFunctionParameter::variadic",
 			L"cpp_parser::CppGenericArgument::argument",
 			L"cpp_parser::CppGenericArgument::variadic",
 			L"cpp_parser::CppGenericArguments::arguments",

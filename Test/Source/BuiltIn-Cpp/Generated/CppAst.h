@@ -534,7 +534,6 @@ namespace cpp_parser
 	public:
 		vl::Ptr<CppTypeOrExpr> type;
 		vl::Ptr<CppDeclarator> declarator;
-		vl::glr::ParsingToken variadic;
 		vl::Ptr<CppTypeOrExpr> defaultValue;
 	};
 
@@ -558,6 +557,7 @@ namespace cpp_parser
 	public:
 		vl::collections::List<vl::Ptr<CppDeclaratorKeyword>> keywords;
 		vl::collections::List<vl::Ptr<CppAdvancedType>> advancedTypes;
+		vl::glr::ParsingToken variadic;
 		vl::Ptr<CppIdentifier> id;
 		vl::Ptr<CppDeclarator> innerDeclarator;
 		vl::Ptr<CppDeclaratorFunctionPart> funcPart;

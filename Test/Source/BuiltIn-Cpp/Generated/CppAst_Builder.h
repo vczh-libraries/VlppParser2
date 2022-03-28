@@ -64,6 +64,7 @@ namespace cpp_parser
 			MakeDeclarator& id(const vl::Ptr<CppIdentifier>& value);
 			MakeDeclarator& innerDeclarator(const vl::Ptr<CppDeclarator>& value);
 			MakeDeclarator& keywords(const vl::Ptr<CppDeclaratorKeyword>& value);
+			MakeDeclarator& variadic(const vl::WString& value);
 		};
 
 		class MakeDeclaratorArrayPart : public vl::glr::ParsingAstBuilder<CppDeclaratorArrayPart>
@@ -115,7 +116,6 @@ namespace cpp_parser
 			MakeFunctionParameter& declarator(const vl::Ptr<CppDeclarator>& value);
 			MakeFunctionParameter& defaultValue(const vl::Ptr<CppTypeOrExpr>& value);
 			MakeFunctionParameter& type(const vl::Ptr<CppTypeOrExpr>& value);
-			MakeFunctionParameter& variadic(const vl::WString& value);
 		};
 
 		class MakeGenericArgument : public vl::glr::ParsingAstBuilder<CppGenericArgument>

@@ -74,6 +74,7 @@ namespace cpp_parser
 			{
 				to->keywords.Add(CopyNode(listItem.Obj()));
 			}
+			to->variadic = from->variadic;
 		}
 
 		void AstVisitor::CopyFields(CppDeclaratorArrayPart* from, CppDeclaratorArrayPart* to)
@@ -138,7 +139,6 @@ namespace cpp_parser
 			to->declarator = CopyNode(from->declarator.Obj());
 			to->defaultValue = CopyNode(from->defaultValue.Obj());
 			to->type = CopyNode(from->type.Obj());
-			to->variadic = from->variadic;
 		}
 
 		void AstVisitor::CopyFields(CppGenericArgument* from, CppGenericArgument* to)
