@@ -83,6 +83,11 @@ namespace cpp_parser
 
 		void AstVisitor::CopyFields(CppDeclaratorFunctionPart* from, CppDeclaratorFunctionPart* to)
 		{
+			to->deferredType = CopyNode(from->deferredType.Obj());
+			for (auto&& listItem : from->keywords)
+			{
+				to->keywords.Add(CopyNode(listItem.Obj()));
+			}
 			for (auto&& listItem : from->parameters)
 			{
 				to->parameters.Add(CopyNode(listItem.Obj()));
@@ -117,6 +122,15 @@ namespace cpp_parser
 
 		void AstVisitor::CopyFields(CppFile* from, CppFile* to)
 		{
+		}
+
+		void AstVisitor::CopyFields(CppFunctionKeyword* from, CppFunctionKeyword* to)
+		{
+			for (auto&& listItem : from->arguments)
+			{
+				to->arguments.Add(CopyNode(listItem.Obj()));
+			}
+			to->keyword = from->keyword;
 		}
 
 		void AstVisitor::CopyFields(CppFunctionParameter* from, CppFunctionParameter* to)
@@ -325,6 +339,13 @@ namespace cpp_parser
 		void AstVisitor::Visit(CppDeclaratorKeyword* node)
 		{
 			auto newNode = vl::MakePtr<CppDeclaratorKeyword>();
+			CopyFields(node, newNode.Obj());
+			this->result = newNode;
+		}
+
+		void AstVisitor::Visit(CppFunctionKeyword* node)
+		{
+			auto newNode = vl::MakePtr<CppFunctionKeyword>();
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
@@ -589,6 +610,13 @@ namespace cpp_parser
 			if (!node) return nullptr;
 			Visit(node);
 			return this->result.Cast<CppDeclaratorKeyword>();
+		}
+
+		vl::Ptr<CppFunctionKeyword> AstVisitor::CopyNode(CppFunctionKeyword* node)
+		{
+			if (!node) return nullptr;
+			Visit(node);
+			return this->result.Cast<CppFunctionKeyword>();
 		}
 
 		vl::Ptr<CppFunctionParameter> AstVisitor::CopyNode(CppFunctionParameter* node)

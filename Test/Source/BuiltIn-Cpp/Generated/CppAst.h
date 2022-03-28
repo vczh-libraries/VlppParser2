@@ -26,6 +26,7 @@ namespace cpp_parser
 	class CppDeleteExpr;
 	class CppExprOnly;
 	class CppFile;
+	class CppFunctionKeyword;
 	class CppFunctionParameter;
 	class CppGenericArgument;
 	class CppGenericArguments;
@@ -521,6 +522,13 @@ namespace cpp_parser
 		vl::glr::ParsingToken keyword;
 	};
 
+	class CppFunctionKeyword : public vl::glr::ParsingAstBase, vl::reflection::Description<CppFunctionKeyword>
+	{
+	public:
+		vl::glr::ParsingToken keyword;
+		vl::collections::List<vl::Ptr<CppTypeOrExpr>> arguments;
+	};
+
 	class CppFunctionParameter : public vl::glr::ParsingAstBase, vl::reflection::Description<CppFunctionParameter>
 	{
 	public:
@@ -535,6 +543,8 @@ namespace cpp_parser
 	public:
 		vl::collections::List<vl::Ptr<CppFunctionParameter>> parameters;
 		vl::glr::ParsingToken variadic;
+		vl::collections::List<vl::Ptr<CppFunctionKeyword>> keywords;
+		vl::Ptr<CppTypeOrExpr> deferredType;
 	};
 
 	class CppDeclaratorArrayPart : public vl::glr::ParsingAstBase, vl::reflection::Description<CppDeclaratorArrayPart>
@@ -622,6 +632,7 @@ namespace vl
 			DECL_TYPE_INFO(cpp_parser::CppAdvancedTypeKinds)
 			DECL_TYPE_INFO(cpp_parser::CppAdvancedType)
 			DECL_TYPE_INFO(cpp_parser::CppDeclaratorKeyword)
+			DECL_TYPE_INFO(cpp_parser::CppFunctionKeyword)
 			DECL_TYPE_INFO(cpp_parser::CppFunctionParameter)
 			DECL_TYPE_INFO(cpp_parser::CppDeclaratorFunctionPart)
 			DECL_TYPE_INFO(cpp_parser::CppDeclaratorArrayPart)

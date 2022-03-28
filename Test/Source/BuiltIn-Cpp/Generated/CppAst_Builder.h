@@ -75,6 +75,8 @@ namespace cpp_parser
 		class MakeDeclaratorFunctionPart : public vl::glr::ParsingAstBuilder<CppDeclaratorFunctionPart>
 		{
 		public:
+			MakeDeclaratorFunctionPart& deferredType(const vl::Ptr<CppTypeOrExpr>& value);
+			MakeDeclaratorFunctionPart& keywords(const vl::Ptr<CppFunctionKeyword>& value);
 			MakeDeclaratorFunctionPart& parameters(const vl::Ptr<CppFunctionParameter>& value);
 			MakeDeclaratorFunctionPart& variadic(const vl::WString& value);
 		};
@@ -98,6 +100,13 @@ namespace cpp_parser
 			MakeDeleteExpr& argument(const vl::Ptr<CppTypeOrExpr>& value);
 			MakeDeleteExpr& array(CppOperatorArray value);
 			MakeDeleteExpr& scope(CppOperatorScope value);
+		};
+
+		class MakeFunctionKeyword : public vl::glr::ParsingAstBuilder<CppFunctionKeyword>
+		{
+		public:
+			MakeFunctionKeyword& arguments(const vl::Ptr<CppTypeOrExpr>& value);
+			MakeFunctionKeyword& keyword(const vl::WString& value);
 		};
 
 		class MakeFunctionParameter : public vl::glr::ParsingAstBuilder<CppFunctionParameter>

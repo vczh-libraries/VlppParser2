@@ -197,6 +197,7 @@ namespace vl
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppAdvancedTypeKinds, cpp_parser::CppAdvancedTypeKinds)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppAdvancedType, cpp_parser::CppAdvancedType)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppDeclaratorKeyword, cpp_parser::CppDeclaratorKeyword)
+			IMPL_TYPE_INFO_RENAME(cpp_parser::CppFunctionKeyword, cpp_parser::CppFunctionKeyword)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppFunctionParameter, cpp_parser::CppFunctionParameter)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppDeclaratorFunctionPart, cpp_parser::CppDeclaratorFunctionPart)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppDeclaratorArrayPart, cpp_parser::CppDeclaratorArrayPart)
@@ -617,6 +618,15 @@ namespace vl
 				CLASS_MEMBER_FIELD(keyword)
 			END_CLASS_MEMBER(cpp_parser::CppDeclaratorKeyword)
 
+			BEGIN_CLASS_MEMBER(cpp_parser::CppFunctionKeyword)
+				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppFunctionKeyword>(), NO_PARAMETER)
+
+				CLASS_MEMBER_FIELD(keyword)
+				CLASS_MEMBER_FIELD(arguments)
+			END_CLASS_MEMBER(cpp_parser::CppFunctionKeyword)
+
 			BEGIN_CLASS_MEMBER(cpp_parser::CppFunctionParameter)
 				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
@@ -635,6 +645,8 @@ namespace vl
 
 				CLASS_MEMBER_FIELD(parameters)
 				CLASS_MEMBER_FIELD(variadic)
+				CLASS_MEMBER_FIELD(keywords)
+				CLASS_MEMBER_FIELD(deferredType)
 			END_CLASS_MEMBER(cpp_parser::CppDeclaratorFunctionPart)
 
 			BEGIN_CLASS_MEMBER(cpp_parser::CppDeclaratorArrayPart)
@@ -767,6 +779,7 @@ namespace vl
 					ADD_TYPE_INFO(cpp_parser::CppAdvancedTypeKinds)
 					ADD_TYPE_INFO(cpp_parser::CppAdvancedType)
 					ADD_TYPE_INFO(cpp_parser::CppDeclaratorKeyword)
+					ADD_TYPE_INFO(cpp_parser::CppFunctionKeyword)
 					ADD_TYPE_INFO(cpp_parser::CppFunctionParameter)
 					ADD_TYPE_INFO(cpp_parser::CppDeclaratorFunctionPart)
 					ADD_TYPE_INFO(cpp_parser::CppDeclaratorArrayPart)

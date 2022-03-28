@@ -44,6 +44,8 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return new cpp_parser::CppDeleteExpr();
 		case CppClasses::File:
 			return new cpp_parser::CppFile();
+		case CppClasses::FunctionKeyword:
+			return new cpp_parser::CppFunctionKeyword();
 		case CppClasses::FunctionParameter:
 			return new cpp_parser::CppFunctionParameter();
 		case CppClasses::GenericArgument:
@@ -128,6 +130,10 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppDeclarator::keywords, object, field, value, cppFieldName);
 		case CppFields::DeclaratorArrayPart_argument:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppDeclaratorArrayPart::argument, object, field, value, cppFieldName);
+		case CppFields::DeclaratorFunctionPart_deferredType:
+			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppDeclaratorFunctionPart::deferredType, object, field, value, cppFieldName);
+		case CppFields::DeclaratorFunctionPart_keywords:
+			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppDeclaratorFunctionPart::keywords, object, field, value, cppFieldName);
 		case CppFields::DeclaratorFunctionPart_parameters:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppDeclaratorFunctionPart::parameters, object, field, value, cppFieldName);
 		case CppFields::DeclaratorType_declarator:
@@ -136,6 +142,8 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppDeclaratorType::type, object, field, value, cppFieldName);
 		case CppFields::DeleteExpr_argument:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppDeleteExpr::argument, object, field, value, cppFieldName);
+		case CppFields::FunctionKeyword_arguments:
+			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppFunctionKeyword::arguments, object, field, value, cppFieldName);
 		case CppFields::FunctionParameter_declarator:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppFunctionParameter::declarator, object, field, value, cppFieldName);
 		case CppFields::FunctionParameter_defaultValue:
@@ -202,6 +210,8 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::glr::AssemblerSetTokenField(&cpp_parser::CppDeclaratorFunctionPart::variadic, object, field, token, tokenIndex, cppFieldName);
 		case CppFields::DeclaratorKeyword_keyword:
 			return vl::glr::AssemblerSetTokenField(&cpp_parser::CppDeclaratorKeyword::keyword, object, field, token, tokenIndex, cppFieldName);
+		case CppFields::FunctionKeyword_keyword:
+			return vl::glr::AssemblerSetTokenField(&cpp_parser::CppFunctionKeyword::keyword, object, field, token, tokenIndex, cppFieldName);
 		case CppFields::FunctionParameter_variadic:
 			return vl::glr::AssemblerSetTokenField(&cpp_parser::CppFunctionParameter::variadic, object, field, token, tokenIndex, cppFieldName);
 		case CppFields::GenericArgument_variadic:
@@ -284,6 +294,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"DeleteExpr",
 			L"ExprOnly",
 			L"File",
+			L"FunctionKeyword",
 			L"FunctionParameter",
 			L"GenericArgument",
 			L"GenericArguments",
@@ -310,7 +321,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"VolatileType",
 		};
 		vl::vint index = (vl::vint)type;
-		return 0 <= index && index < 38 ? results[index] : nullptr;
+		return 0 <= index && index < 39 ? results[index] : nullptr;
 	}
 
 	const wchar_t* CppCppTypeName(CppClasses type)
@@ -330,6 +341,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::CppDeleteExpr",
 			L"cpp_parser::CppExprOnly",
 			L"cpp_parser::CppFile",
+			L"cpp_parser::CppFunctionKeyword",
 			L"cpp_parser::CppFunctionParameter",
 			L"cpp_parser::CppGenericArgument",
 			L"cpp_parser::CppGenericArguments",
@@ -356,7 +368,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::CppVolatileType",
 		};
 		vl::vint index = (vl::vint)type;
-		return 0 <= index && index < 38 ? results[index] : nullptr;
+		return 0 <= index && index < 39 ? results[index] : nullptr;
 	}
 
 	const wchar_t* CppFieldName(CppFields field)
@@ -381,6 +393,8 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"Declarator::innerDeclarator",
 			L"Declarator::keywords",
 			L"DeclaratorArrayPart::argument",
+			L"DeclaratorFunctionPart::deferredType",
+			L"DeclaratorFunctionPart::keywords",
 			L"DeclaratorFunctionPart::parameters",
 			L"DeclaratorFunctionPart::variadic",
 			L"DeclaratorKeyword::keyword",
@@ -389,6 +403,8 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"DeleteExpr::argument",
 			L"DeleteExpr::array",
 			L"DeleteExpr::scope",
+			L"FunctionKeyword::arguments",
+			L"FunctionKeyword::keyword",
 			L"FunctionParameter::declarator",
 			L"FunctionParameter::defaultValue",
 			L"FunctionParameter::type",
@@ -437,7 +453,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"VolatileType::type",
 		};
 		vl::vint index = (vl::vint)field;
-		return 0 <= index && index < 73 ? results[index] : nullptr;
+		return 0 <= index && index < 77 ? results[index] : nullptr;
 	}
 
 	const wchar_t* CppCppFieldName(CppFields field)
@@ -462,6 +478,8 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::CppDeclarator::innerDeclarator",
 			L"cpp_parser::CppDeclarator::keywords",
 			L"cpp_parser::CppDeclaratorArrayPart::argument",
+			L"cpp_parser::CppDeclaratorFunctionPart::deferredType",
+			L"cpp_parser::CppDeclaratorFunctionPart::keywords",
 			L"cpp_parser::CppDeclaratorFunctionPart::parameters",
 			L"cpp_parser::CppDeclaratorFunctionPart::variadic",
 			L"cpp_parser::CppDeclaratorKeyword::keyword",
@@ -470,6 +488,8 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::CppDeleteExpr::argument",
 			L"cpp_parser::CppDeleteExpr::array",
 			L"cpp_parser::CppDeleteExpr::scope",
+			L"cpp_parser::CppFunctionKeyword::arguments",
+			L"cpp_parser::CppFunctionKeyword::keyword",
 			L"cpp_parser::CppFunctionParameter::declarator",
 			L"cpp_parser::CppFunctionParameter::defaultValue",
 			L"cpp_parser::CppFunctionParameter::type",
@@ -518,7 +538,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::CppVolatileType::type",
 		};
 		vl::vint index = (vl::vint)field;
-		return 0 <= index && index < 73 ? results[index] : nullptr;
+		return 0 <= index && index < 77 ? results[index] : nullptr;
 	}
 
 	vl::Ptr<vl::glr::ParsingAstBase> CppAstInsReceiver::ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates)

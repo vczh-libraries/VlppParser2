@@ -161,6 +161,18 @@ MakeDeclaratorArrayPart
 MakeDeclaratorFunctionPart
 ***********************************************************************/
 
+		MakeDeclaratorFunctionPart& MakeDeclaratorFunctionPart::deferredType(const vl::Ptr<CppTypeOrExpr>& value)
+		{
+			node->deferredType = value;
+			return *this;
+		}
+
+		MakeDeclaratorFunctionPart& MakeDeclaratorFunctionPart::keywords(const vl::Ptr<CppFunctionKeyword>& value)
+		{
+			node->keywords.Add(value);
+			return *this;
+		}
+
 		MakeDeclaratorFunctionPart& MakeDeclaratorFunctionPart::parameters(const vl::Ptr<CppFunctionParameter>& value)
 		{
 			node->parameters.Add(value);
@@ -218,6 +230,22 @@ MakeDeleteExpr
 		MakeDeleteExpr& MakeDeleteExpr::scope(CppOperatorScope value)
 		{
 			node->scope = value;
+			return *this;
+		}
+
+/***********************************************************************
+MakeFunctionKeyword
+***********************************************************************/
+
+		MakeFunctionKeyword& MakeFunctionKeyword::arguments(const vl::Ptr<CppTypeOrExpr>& value)
+		{
+			node->arguments.Add(value);
+			return *this;
+		}
+
+		MakeFunctionKeyword& MakeFunctionKeyword::keyword(const vl::WString& value)
+		{
+			node->keyword.value = value;
 			return *this;
 		}
 

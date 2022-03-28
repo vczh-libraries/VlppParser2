@@ -36,6 +36,7 @@ namespace cpp_parser
 			virtual void PrintFields(CppDeleteExpr* node);
 			virtual void PrintFields(CppExprOnly* node);
 			virtual void PrintFields(CppFile* node);
+			virtual void PrintFields(CppFunctionKeyword* node);
 			virtual void PrintFields(CppFunctionParameter* node);
 			virtual void PrintFields(CppGenericArgument* node);
 			virtual void PrintFields(CppGenericArguments* node);
@@ -102,6 +103,7 @@ namespace cpp_parser
 			void Print(CppStringLiteralFragment* node);
 			void Print(CppAdvancedType* node);
 			void Print(CppDeclaratorKeyword* node);
+			void Print(CppFunctionKeyword* node);
 			void Print(CppFunctionParameter* node);
 			void Print(CppDeclaratorFunctionPart* node);
 			void Print(CppDeclaratorArrayPart* node);

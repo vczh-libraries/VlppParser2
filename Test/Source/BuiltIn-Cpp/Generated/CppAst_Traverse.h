@@ -38,6 +38,7 @@ namespace cpp_parser
 			virtual void Traverse(CppDeleteExpr* node);
 			virtual void Traverse(CppExprOnly* node);
 			virtual void Traverse(CppFile* node);
+			virtual void Traverse(CppFunctionKeyword* node);
 			virtual void Traverse(CppFunctionParameter* node);
 			virtual void Traverse(CppGenericArgument* node);
 			virtual void Traverse(CppGenericArguments* node);
@@ -79,6 +80,7 @@ namespace cpp_parser
 			virtual void Finishing(CppDeleteExpr* node);
 			virtual void Finishing(CppExprOnly* node);
 			virtual void Finishing(CppFile* node);
+			virtual void Finishing(CppFunctionKeyword* node);
 			virtual void Finishing(CppFunctionParameter* node);
 			virtual void Finishing(CppGenericArgument* node);
 			virtual void Finishing(CppGenericArguments* node);
@@ -143,6 +145,7 @@ namespace cpp_parser
 			void InspectInto(CppStringLiteralFragment* node);
 			void InspectInto(CppAdvancedType* node);
 			void InspectInto(CppDeclaratorKeyword* node);
+			void InspectInto(CppFunctionKeyword* node);
 			void InspectInto(CppFunctionParameter* node);
 			void InspectInto(CppDeclaratorFunctionPart* node);
 			void InspectInto(CppDeclaratorArrayPart* node);

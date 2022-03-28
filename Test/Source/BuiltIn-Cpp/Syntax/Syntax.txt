@@ -440,8 +440,21 @@ _DeclaratorFunctionParameters
   ::= _DeclaratorFunctionParameter:parameters {"," _DeclaratorFunctionParameter:parameters} ["," "...":variadic] as partial DeclaratorFunctionPart
   ;
 
+_FunctionKeyword
+  ::= "constexpr":keyword as FunctionKeyword
+  ::= "&":keyword as FunctionKeyword
+  ::= "&&":keyword as FunctionKeyword
+  ::= "const":keyword as FunctionKeyword
+  ::= "volatile":keyword as FunctionKeyword
+  ::= "override":keyword as FunctionKeyword
+  ::= "final":keyword as FunctionKeyword
+  ::= "mutable":keyword as FunctionKeyword
+  ::= "noexcept":keyword ["(" {_Expr_NoComma:arguments} ")"] as FunctionKeyword
+  ::= "throw":keyword ["(" {_Type:arguments} ")"] as FunctionKeyword
+  ;
+
 _DeclaratorFunctionPart
-  ::= "(" [_DeclaratorFunctionParameters] ")" as DeclaratorFunctionPart
+  ::= "(" [_DeclaratorFunctionParameters] ")" {_FunctionKeyword:keywords} ["->" _Type:deferredType] {_FunctionKeyword:keywords} as DeclaratorFunctionPart
   ;
 
 _DeclaratorArrayPart

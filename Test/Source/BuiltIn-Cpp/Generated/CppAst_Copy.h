@@ -36,6 +36,7 @@ namespace cpp_parser
 			void CopyFields(CppDeleteExpr* from, CppDeleteExpr* to);
 			void CopyFields(CppExprOnly* from, CppExprOnly* to);
 			void CopyFields(CppFile* from, CppFile* to);
+			void CopyFields(CppFunctionKeyword* from, CppFunctionKeyword* to);
 			void CopyFields(CppFunctionParameter* from, CppFunctionParameter* to);
 			void CopyFields(CppGenericArgument* from, CppGenericArgument* to);
 			void CopyFields(CppGenericArguments* from, CppGenericArguments* to);
@@ -67,6 +68,7 @@ namespace cpp_parser
 			virtual void Visit(CppStringLiteralFragment* node);
 			virtual void Visit(CppAdvancedType* node);
 			virtual void Visit(CppDeclaratorKeyword* node);
+			virtual void Visit(CppFunctionKeyword* node);
 			virtual void Visit(CppFunctionParameter* node);
 			virtual void Visit(CppDeclaratorFunctionPart* node);
 			virtual void Visit(CppDeclaratorArrayPart* node);
@@ -111,6 +113,7 @@ namespace cpp_parser
 			virtual vl::Ptr<CppStringLiteralFragment> CopyNode(CppStringLiteralFragment* node);
 			virtual vl::Ptr<CppAdvancedType> CopyNode(CppAdvancedType* node);
 			virtual vl::Ptr<CppDeclaratorKeyword> CopyNode(CppDeclaratorKeyword* node);
+			virtual vl::Ptr<CppFunctionKeyword> CopyNode(CppFunctionKeyword* node);
 			virtual vl::Ptr<CppFunctionParameter> CopyNode(CppFunctionParameter* node);
 			virtual vl::Ptr<CppDeclaratorFunctionPart> CopyNode(CppDeclaratorFunctionPart* node);
 			virtual vl::Ptr<CppDeclaratorArrayPart> CopyNode(CppDeclaratorArrayPart* node);
