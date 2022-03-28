@@ -231,6 +231,12 @@ MakeFunctionParameter
 			return *this;
 		}
 
+		MakeFunctionParameter& MakeFunctionParameter::defaultValue(const vl::Ptr<CppTypeOrExpr>& value)
+		{
+			node->defaultValue = value;
+			return *this;
+		}
+
 		MakeFunctionParameter& MakeFunctionParameter::type(const vl::Ptr<CppTypeOrExpr>& value)
 		{
 			node->type = value;

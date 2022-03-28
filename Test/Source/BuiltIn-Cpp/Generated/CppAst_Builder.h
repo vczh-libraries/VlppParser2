@@ -104,6 +104,7 @@ namespace cpp_parser
 		{
 		public:
 			MakeFunctionParameter& declarator(const vl::Ptr<CppDeclarator>& value);
+			MakeFunctionParameter& defaultValue(const vl::Ptr<CppTypeOrExpr>& value);
 			MakeFunctionParameter& type(const vl::Ptr<CppTypeOrExpr>& value);
 			MakeFunctionParameter& variadic(const vl::WString& value);
 		};

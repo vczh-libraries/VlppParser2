@@ -527,6 +527,7 @@ namespace cpp_parser
 		vl::Ptr<CppTypeOrExpr> type;
 		vl::Ptr<CppDeclarator> declarator;
 		vl::glr::ParsingToken variadic;
+		vl::Ptr<CppTypeOrExpr> defaultValue;
 	};
 
 	class CppDeclaratorFunctionPart : public vl::glr::ParsingAstBase, vl::reflection::Description<CppDeclaratorFunctionPart>

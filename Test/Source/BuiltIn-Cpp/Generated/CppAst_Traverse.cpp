@@ -534,6 +534,7 @@ namespace cpp_parser
 			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
 			Traverse(static_cast<CppFunctionParameter*>(node));
 			InspectInto(node->declarator.Obj());
+			InspectInto(node->defaultValue.Obj());
 			InspectInto(node->type.Obj());
 			Traverse(node->variadic);
 			Finishing(static_cast<CppFunctionParameter*>(node));

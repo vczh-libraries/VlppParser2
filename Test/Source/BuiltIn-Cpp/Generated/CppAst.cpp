@@ -625,6 +625,7 @@ namespace vl
 				CLASS_MEMBER_FIELD(type)
 				CLASS_MEMBER_FIELD(declarator)
 				CLASS_MEMBER_FIELD(variadic)
+				CLASS_MEMBER_FIELD(defaultValue)
 			END_CLASS_MEMBER(cpp_parser::CppFunctionParameter)
 
 			BEGIN_CLASS_MEMBER(cpp_parser::CppDeclaratorFunctionPart)

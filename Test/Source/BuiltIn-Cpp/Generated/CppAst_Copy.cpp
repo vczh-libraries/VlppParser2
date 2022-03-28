@@ -122,6 +122,7 @@ namespace cpp_parser
 		void AstVisitor::CopyFields(CppFunctionParameter* from, CppFunctionParameter* to)
 		{
 			to->declarator = CopyNode(from->declarator.Obj());
+			to->defaultValue = CopyNode(from->defaultValue.Obj());
 			to->type = CopyNode(from->type.Obj());
 			to->variadic = from->variadic;
 		}

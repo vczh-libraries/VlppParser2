@@ -138,6 +138,8 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppDeleteExpr::argument, object, field, value, cppFieldName);
 		case CppFields::FunctionParameter_declarator:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppFunctionParameter::declarator, object, field, value, cppFieldName);
+		case CppFields::FunctionParameter_defaultValue:
+			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppFunctionParameter::defaultValue, object, field, value, cppFieldName);
 		case CppFields::FunctionParameter_type:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppFunctionParameter::type, object, field, value, cppFieldName);
 		case CppFields::GenericArgument_argument:
@@ -388,6 +390,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"DeleteExpr::array",
 			L"DeleteExpr::scope",
 			L"FunctionParameter::declarator",
+			L"FunctionParameter::defaultValue",
 			L"FunctionParameter::type",
 			L"FunctionParameter::variadic",
 			L"GenericArgument::argument",
@@ -434,7 +437,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"VolatileType::type",
 		};
 		vl::vint index = (vl::vint)field;
-		return 0 <= index && index < 72 ? results[index] : nullptr;
+		return 0 <= index && index < 73 ? results[index] : nullptr;
 	}
 
 	const wchar_t* CppCppFieldName(CppFields field)
@@ -468,6 +471,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::CppDeleteExpr::array",
 			L"cpp_parser::CppDeleteExpr::scope",
 			L"cpp_parser::CppFunctionParameter::declarator",
+			L"cpp_parser::CppFunctionParameter::defaultValue",
 			L"cpp_parser::CppFunctionParameter::type",
 			L"cpp_parser::CppFunctionParameter::variadic",
 			L"cpp_parser::CppGenericArgument::argument",
@@ -514,7 +518,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::CppVolatileType::type",
 		};
 		vl::vint index = (vl::vint)field;
-		return 0 <= index && index < 72 ? results[index] : nullptr;
+		return 0 <= index && index < 73 ? results[index] : nullptr;
 	}
 
 	vl::Ptr<vl::glr::ParsingAstBase> CppAstInsReceiver::ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates)

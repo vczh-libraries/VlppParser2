@@ -373,6 +373,9 @@ namespace cpp_parser
 			BeginField(L"declarator");
 			Print(node->declarator.Obj());
 			EndField();
+			BeginField(L"defaultValue");
+			Print(node->defaultValue.Obj());
+			EndField();
 			BeginField(L"type");
 			Print(node->type.Obj());
 			EndField();
