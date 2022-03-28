@@ -532,6 +532,7 @@ namespace cpp_parser
 	class CppFunctionParameter : public vl::glr::ParsingAstBase, vl::reflection::Description<CppFunctionParameter>
 	{
 	public:
+		vl::collections::List<vl::Ptr<CppDeclaratorKeyword>> keywords;
 		vl::Ptr<CppTypeOrExpr> type;
 		vl::Ptr<CppDeclarator> declarator;
 		vl::Ptr<CppTypeOrExpr> defaultValue;
@@ -567,6 +568,7 @@ namespace cpp_parser
 	class CppDeclaratorType : public CppTypeOrExpr, vl::reflection::Description<CppDeclaratorType>
 	{
 	public:
+		vl::collections::List<vl::Ptr<CppDeclaratorKeyword>> keywords;
 		vl::Ptr<CppTypeOrExpr> type;
 		vl::Ptr<CppDeclarator> declarator;
 

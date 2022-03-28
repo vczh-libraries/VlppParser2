@@ -632,6 +632,7 @@ namespace vl
 
 				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppFunctionParameter>(), NO_PARAMETER)
 
+				CLASS_MEMBER_FIELD(keywords)
 				CLASS_MEMBER_FIELD(type)
 				CLASS_MEMBER_FIELD(declarator)
 				CLASS_MEMBER_FIELD(defaultValue)
@@ -675,6 +676,7 @@ namespace vl
 
 				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppDeclaratorType>(), NO_PARAMETER)
 
+				CLASS_MEMBER_FIELD(keywords)
 				CLASS_MEMBER_FIELD(type)
 				CLASS_MEMBER_FIELD(declarator)
 			END_CLASS_MEMBER(cpp_parser::CppDeclaratorType)

@@ -211,6 +211,12 @@ MakeDeclaratorType
 			return *this;
 		}
 
+		MakeDeclaratorType& MakeDeclaratorType::keywords(const vl::Ptr<CppDeclaratorKeyword>& value)
+		{
+			node->keywords.Add(value);
+			return *this;
+		}
+
 		MakeDeclaratorType& MakeDeclaratorType::type(const vl::Ptr<CppTypeOrExpr>& value)
 		{
 			node->type = value;
@@ -268,6 +274,12 @@ MakeFunctionParameter
 		MakeFunctionParameter& MakeFunctionParameter::defaultValue(const vl::Ptr<CppTypeOrExpr>& value)
 		{
 			node->defaultValue = value;
+			return *this;
+		}
+
+		MakeFunctionParameter& MakeFunctionParameter::keywords(const vl::Ptr<CppDeclaratorKeyword>& value)
+		{
+			node->keywords.Add(value);
 			return *this;
 		}
 

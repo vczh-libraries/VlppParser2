@@ -92,6 +92,7 @@ namespace cpp_parser
 		{
 		public:
 			MakeDeclaratorType& declarator(const vl::Ptr<CppDeclarator>& value);
+			MakeDeclaratorType& keywords(const vl::Ptr<CppDeclaratorKeyword>& value);
 			MakeDeclaratorType& type(const vl::Ptr<CppTypeOrExpr>& value);
 		};
 
@@ -115,6 +116,7 @@ namespace cpp_parser
 		public:
 			MakeFunctionParameter& declarator(const vl::Ptr<CppDeclarator>& value);
 			MakeFunctionParameter& defaultValue(const vl::Ptr<CppTypeOrExpr>& value);
+			MakeFunctionParameter& keywords(const vl::Ptr<CppDeclaratorKeyword>& value);
 			MakeFunctionParameter& type(const vl::Ptr<CppTypeOrExpr>& value);
 		};
 

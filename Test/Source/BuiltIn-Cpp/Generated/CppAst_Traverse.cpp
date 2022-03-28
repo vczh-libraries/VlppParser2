@@ -125,6 +125,10 @@ namespace cpp_parser
 			Traverse(static_cast<CppTypeOrExpr*>(node));
 			Traverse(static_cast<CppDeclaratorType*>(node));
 			InspectInto(node->declarator.Obj());
+			for (auto&& listItem : node->keywords)
+			{
+				InspectInto(listItem.Obj());
+			}
 			InspectInto(node->type.Obj());
 			Finishing(static_cast<CppDeclaratorType*>(node));
 			Finishing(static_cast<CppTypeOrExpr*>(node));
@@ -551,6 +555,10 @@ namespace cpp_parser
 			Traverse(static_cast<CppFunctionParameter*>(node));
 			InspectInto(node->declarator.Obj());
 			InspectInto(node->defaultValue.Obj());
+			for (auto&& listItem : node->keywords)
+			{
+				InspectInto(listItem.Obj());
+			}
 			InspectInto(node->type.Obj());
 			Finishing(static_cast<CppFunctionParameter*>(node));
 			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));

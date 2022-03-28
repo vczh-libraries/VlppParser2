@@ -342,6 +342,16 @@ namespace cpp_parser
 			BeginField(L"declarator");
 			Print(node->declarator.Obj());
 			EndField();
+			BeginField(L"keywords");
+			BeginArray();
+			for (auto&& listItem : node->keywords)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
 			BeginField(L"type");
 			Print(node->type.Obj());
 			EndField();
@@ -407,6 +417,16 @@ namespace cpp_parser
 			EndField();
 			BeginField(L"defaultValue");
 			Print(node->defaultValue.Obj());
+			EndField();
+			BeginField(L"keywords");
+			BeginArray();
+			for (auto&& listItem : node->keywords)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
 			EndField();
 			BeginField(L"type");
 			Print(node->type.Obj());

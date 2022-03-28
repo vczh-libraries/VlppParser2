@@ -105,6 +105,10 @@ namespace cpp_parser
 		{
 			CopyFields(static_cast<CppTypeOrExpr*>(from), static_cast<CppTypeOrExpr*>(to));
 			to->declarator = CopyNode(from->declarator.Obj());
+			for (auto&& listItem : from->keywords)
+			{
+				to->keywords.Add(CopyNode(listItem.Obj()));
+			}
 			to->type = CopyNode(from->type.Obj());
 		}
 
@@ -138,6 +142,10 @@ namespace cpp_parser
 		{
 			to->declarator = CopyNode(from->declarator.Obj());
 			to->defaultValue = CopyNode(from->defaultValue.Obj());
+			for (auto&& listItem : from->keywords)
+			{
+				to->keywords.Add(CopyNode(listItem.Obj()));
+			}
 			to->type = CopyNode(from->type.Obj());
 		}
 

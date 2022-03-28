@@ -432,7 +432,7 @@ _DeclaratorAKMember
 //================================================================
 
 _DeclaratorFunctionParameter
-  ::= _LongType:type [_DeclaratorOptionalName:declarator] ["=" _Expr_NoComma:defaultValue] as FunctionParameter
+  ::= {_DeclaratorKeyword:keywords} _LongType:type [_DeclaratorOptionalName:declarator] ["=" _Expr_NoComma:defaultValue] as FunctionParameter
   ;
 
 _DeclaratorFunctionParameters
@@ -539,6 +539,7 @@ _TypeOrDeclarator
 
 _TypeOnly
   ::= !_ShortType left_recursion_inject(Type) _TypeOrDeclarator
+  ::= _DeclaratorKeyword:keywords {_DeclaratorKeyword:keywords} _LongType:type _DeclaratorWithoutName:declarator as DeclaratorType
   ;
 
 _Type
