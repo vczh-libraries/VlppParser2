@@ -267,8 +267,15 @@ class IndexExpr : ExprOnly
     var index : TypeOrExpr;
 }
 
+enum CallKinds
+{
+    Parenthesis,
+    Brace,
+}
+
 class CallExpr : ExprOnly
 {
+    var kind : CallKinds;
     var operand : TypeOrExpr;
     var arguments : TypeOrExpr[];
 }

@@ -69,6 +69,12 @@ MakeCallExpr
 			return *this;
 		}
 
+		MakeCallExpr& MakeCallExpr::kind(CppCallKinds value)
+		{
+			node->kind = value;
+			return *this;
+		}
+
 		MakeCallExpr& MakeCallExpr::operand(const vl::Ptr<CppTypeOrExpr>& value)
 		{
 			node->operand = value;

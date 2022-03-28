@@ -178,6 +178,13 @@ namespace cpp_parser
 		Brace = 3,
 	};
 
+	enum class CppCallKinds
+	{
+		UNDEFINED_ENUM_ITEM_VALUE = -1,
+		Parenthesis = 0,
+		Brace = 1,
+	};
+
 	enum class CppPrimitiveTypeKinds
 	{
 		UNDEFINED_ENUM_ITEM_VALUE = -1,
@@ -449,6 +456,7 @@ namespace cpp_parser
 	class CppCallExpr : public CppExprOnly, vl::reflection::Description<CppCallExpr>
 	{
 	public:
+		CppCallKinds kind = CppCallKinds::UNDEFINED_ENUM_ITEM_VALUE;
 		vl::Ptr<CppTypeOrExpr> operand;
 		vl::collections::List<vl::Ptr<CppTypeOrExpr>> arguments;
 
@@ -623,6 +631,7 @@ namespace vl
 			DECL_TYPE_INFO(cpp_parser::CppPrefixUnaryExpr)
 			DECL_TYPE_INFO(cpp_parser::CppPostfixUnaryExpr)
 			DECL_TYPE_INFO(cpp_parser::CppIndexExpr)
+			DECL_TYPE_INFO(cpp_parser::CppCallKinds)
 			DECL_TYPE_INFO(cpp_parser::CppCallExpr)
 			DECL_TYPE_INFO(cpp_parser::CppBinaryExpr)
 			DECL_TYPE_INFO(cpp_parser::CppIfExpr)

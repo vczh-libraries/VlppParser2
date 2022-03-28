@@ -38,6 +38,7 @@ namespace cpp_parser
 		{
 		public:
 			MakeCallExpr& arguments(const vl::Ptr<CppTypeOrExpr>& value);
+			MakeCallExpr& kind(CppCallKinds value);
 			MakeCallExpr& operand(const vl::Ptr<CppTypeOrExpr>& value);
 		};
 

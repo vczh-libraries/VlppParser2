@@ -186,6 +186,7 @@ namespace vl
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppPrefixUnaryExpr, cpp_parser::CppPrefixUnaryExpr)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppPostfixUnaryExpr, cpp_parser::CppPostfixUnaryExpr)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppIndexExpr, cpp_parser::CppIndexExpr)
+			IMPL_TYPE_INFO_RENAME(cpp_parser::CppCallKinds, cpp_parser::CppCallKinds)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppCallExpr, cpp_parser::CppCallExpr)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppBinaryExpr, cpp_parser::CppBinaryExpr)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppIfExpr, cpp_parser::CppIfExpr)
@@ -518,11 +519,18 @@ namespace vl
 				CLASS_MEMBER_FIELD(index)
 			END_CLASS_MEMBER(cpp_parser::CppIndexExpr)
 
+			BEGIN_ENUM_ITEM(cpp_parser::CppCallKinds)
+				ENUM_ITEM_NAMESPACE(cpp_parser::CppCallKinds)
+				ENUM_NAMESPACE_ITEM(Parenthesis)
+				ENUM_NAMESPACE_ITEM(Brace)
+			END_ENUM_ITEM(cpp_parser::CppCallKinds)
+
 			BEGIN_CLASS_MEMBER(cpp_parser::CppCallExpr)
 				CLASS_MEMBER_BASE(cpp_parser::CppExprOnly)
 
 				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppCallExpr>(), NO_PARAMETER)
 
+				CLASS_MEMBER_FIELD(kind)
 				CLASS_MEMBER_FIELD(operand)
 				CLASS_MEMBER_FIELD(arguments)
 			END_CLASS_MEMBER(cpp_parser::CppCallExpr)
@@ -770,6 +778,7 @@ namespace vl
 					ADD_TYPE_INFO(cpp_parser::CppPrefixUnaryExpr)
 					ADD_TYPE_INFO(cpp_parser::CppPostfixUnaryExpr)
 					ADD_TYPE_INFO(cpp_parser::CppIndexExpr)
+					ADD_TYPE_INFO(cpp_parser::CppCallKinds)
 					ADD_TYPE_INFO(cpp_parser::CppCallExpr)
 					ADD_TYPE_INFO(cpp_parser::CppBinaryExpr)
 					ADD_TYPE_INFO(cpp_parser::CppIfExpr)

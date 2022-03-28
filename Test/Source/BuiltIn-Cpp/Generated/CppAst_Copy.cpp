@@ -40,6 +40,7 @@ namespace cpp_parser
 			{
 				to->arguments.Add(CopyNode(listItem.Obj()));
 			}
+			to->kind = from->kind;
 			to->operand = CopyNode(from->operand.Obj());
 		}
 

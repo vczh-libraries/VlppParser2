@@ -229,6 +229,19 @@ namespace cpp_parser
 			}
 			EndArray();
 			EndField();
+			BeginField(L"kind");
+			switch (node->kind)
+			{
+			case cpp_parser::CppCallKinds::Brace:
+				WriteString(L"Brace");
+				break;
+			case cpp_parser::CppCallKinds::Parenthesis:
+				WriteString(L"Parenthesis");
+				break;
+			default:
+				WriteNull();
+			}
+			EndField();
 			BeginField(L"operand");
 			Print(node->operand.Obj());
 			EndField();

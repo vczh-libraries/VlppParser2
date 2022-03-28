@@ -150,7 +150,7 @@ _PostfixUnaryExpr
   ::= _PostfixUnaryExpr:operand "++" as PostfixUnaryExpr {op = Increase}
   ::= _PostfixUnaryExpr:operand "--" as PostfixUnaryExpr {op = Decrease}
   ::= _PostfixUnaryExpr:operand "[" _Expr:index "]" as IndexExpr
-  ::= _PostfixUnaryExpr:operand "(" {_Expr_NoComma:arguments ; ","} ")" as CallExpr
+  ::= _PostfixUnaryExpr:operand "(" {_Expr_NoComma:arguments ; ","} ")" as CallExpr {kind = Parenthesis}
   ;
 
 //////////////////////////////////////////////////////////////////
@@ -579,14 +579,14 @@ _Expr
 
 _TypeOrExpr_NoComma_NoLT
   ::= !_QualifiedName left_recursion_inject(Shared) _TypeOrDeclarator | _BExpr_NoComma
-  ::= !_TypeOnly
   ::= !_ExprOnly_NoComma
+  ::= !_TypeOnly
   ;
 
 _TypeOrExpr
   ::= !_QualifiedName left_recursion_inject(Shared) _TypeOrDeclarator | _BExpr
-  ::= !_TypeOnly
   ::= !_ExprOnly
+  ::= !_TypeOnly
   ;
 
 //////////////////////////////////////////////////////////////////

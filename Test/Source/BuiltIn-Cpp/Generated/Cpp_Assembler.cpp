@@ -250,6 +250,8 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::glr::AssemblerSetEnumField(&cpp_parser::CppAdvancedType::kind, object, field, enumItem, weakAssignment, cppFieldName);
 		case CppFields::BinaryExpr_op:
 			return vl::glr::AssemblerSetEnumField(&cpp_parser::CppBinaryExpr::op, object, field, enumItem, weakAssignment, cppFieldName);
+		case CppFields::CallExpr_kind:
+			return vl::glr::AssemblerSetEnumField(&cpp_parser::CppCallExpr::kind, object, field, enumItem, weakAssignment, cppFieldName);
 		case CppFields::DeleteExpr_array:
 			return vl::glr::AssemblerSetEnumField(&cpp_parser::CppDeleteExpr::array, object, field, enumItem, weakAssignment, cppFieldName);
 		case CppFields::DeleteExpr_scope:
@@ -385,6 +387,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"BinaryExpr::right",
 			L"BraceExpr::arguments",
 			L"CallExpr::arguments",
+			L"CallExpr::kind",
 			L"CallExpr::operand",
 			L"CastExpr::expr",
 			L"CastExpr::keyword",
@@ -459,7 +462,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"VolatileType::type",
 		};
 		vl::vint index = (vl::vint)field;
-		return 0 <= index && index < 79 ? results[index] : nullptr;
+		return 0 <= index && index < 80 ? results[index] : nullptr;
 	}
 
 	const wchar_t* CppCppFieldName(CppFields field)
@@ -472,6 +475,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::CppBinaryExpr::right",
 			L"cpp_parser::CppBraceExpr::arguments",
 			L"cpp_parser::CppCallExpr::arguments",
+			L"cpp_parser::CppCallExpr::kind",
 			L"cpp_parser::CppCallExpr::operand",
 			L"cpp_parser::CppCastExpr::expr",
 			L"cpp_parser::CppCastExpr::keyword",
@@ -546,7 +550,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::CppVolatileType::type",
 		};
 		vl::vint index = (vl::vint)field;
-		return 0 <= index && index < 79 ? results[index] : nullptr;
+		return 0 <= index && index < 80 ? results[index] : nullptr;
 	}
 
 	vl::Ptr<vl::glr::ParsingAstBase> CppAstInsReceiver::ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates)
