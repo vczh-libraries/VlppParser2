@@ -40,6 +40,9 @@ CreateParserGenRuleSyntax
 				auto _clause = manager.CreateRule(L"Clause");
 				auto _placeholder = manager.CreateRule(L"Placeholder");
 				auto _ruleName = manager.CreateRule(L"RuleName");
+				auto _lriContinuationBody = manager.CreateRule(L"LriContinuationBody");
+				auto _lriContinuation = manager.CreateRule(L"LriContinuation");
+				auto _lriTarget = manager.CreateRule(L"LriTarget");
 				auto _rule = manager.CreateRule(L"Rule");
 				auto _file = manager.CreateRule(L"File");
 
@@ -47,6 +50,7 @@ CreateParserGenRuleSyntax
 				_optionalBody->isPartial = true;
 				_token->isPartial = true;
 				_assignmentOp->isPartial = true;
+				_lriContinuationBody->isPartial = true;
 
 				manager.parsableRules.Add(_file);
 				manager.ruleTypes.Add(_file, L"vl::glr::parsergen::GlrSyntaxFile");
@@ -205,13 +209,24 @@ CreateParserGenRuleSyntax
 						+ tok(T::CLOSE_ROUND),
 					C::LeftRecursionPlaceholderClause);
 
-				// "!" RuleName:rule "left_recursion_inject" "(" Placeholder:flag ")" RuleName:injectionTargets {"|" RuleName:injectionTargets}
-				Clause{ _clause } = create(
-						tok(T::USE) + rule(_ruleName, F::LeftRecursionInjectClause_rule)
-						+ tok(T::LS_I) + tok(T::OPEN_ROUND) + rule(_placeholder, F::LeftRecursionInjectClause_flag) + tok(T::CLOSE_ROUND)
-						+ rule(_ruleName, F::LeftRecursionInjectClause_injectionTargets)
-						+ loop(tok(T::ALTERNATIVE) + rule(_ruleName, F::LeftRecursionInjectClause_injectionTargets)),
-					C::LeftRecursionInjectClause);
+				// "left_recursion_inject" "(" Placeholder:flag ")" LriClause:injectionTargets {"|" LriClause:injectionTargets} as partial LeftRecursionInjectContinuation
+				Clause{ _lriContinuationBody } = partial(
+					tok(T::LS_I) + tok(T::OPEN_ROUND) + rule(_placeholder, F::LeftRecursionInjectContinuation_flag) + tok(T::CLOSE_ROUND)
+					+ rule(_lriTarget, F::LeftRecursionInjectContinuation_injectionTargets)
+					+ loop(tok(T::ALTERNATIVE) + rule(_lriTarget, F::LeftRecursionInjectContinuation_injectionTargets))
+					);
+
+				// LriContinuationBody as LeftRecursionInjectionContinuation {type = Required}
+				Clause{ _lriContinuation } = create(prule(_lriContinuationBody), C::LeftRecursionInjectContinuation).with(F::LeftRecursionInjectContinuation_type, GlrLeftRecursionInjectContinuationType::Required);
+
+				// "[" LriContinuationBody as LeftRecursionInjectionContinuation "]" {type = Optional}
+				Clause{ _lriContinuation } = create(tok(T::OPEN_SQUARE) + prule(_lriContinuationBody) + tok(T::CLOSE_SQUARE), C::LeftRecursionInjectContinuation).with(F::LeftRecursionInjectContinuation_type, GlrLeftRecursionInjectContinuationType::Optional);
+
+				// ID:rule [LriContinuationBody:continuation] as LeftRecursionInjectClause
+				Clause{ _lriTarget } = create(rule(_ruleName, F::LeftRecursionInjectClause_rule) + opt(rule(_lriContinuation, F::LeftRecursionInjectClause_continuation)), C::LeftRecursionInjectClause);
+
+				// "!" ID:rule LriContinuationBody:continuation as LeftRecursionInjectClause
+				Clause{ _clause } = create(tok(T::USE) + rule(_ruleName, F::LeftRecursionInjectClause_rule) + rule(_lriContinuation, F::LeftRecursionInjectClause_continuation), C::LeftRecursionInjectClause);
 
 				///////////////////////////////////////////////////////////////////////////////////
 				// File
