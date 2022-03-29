@@ -351,16 +351,19 @@ CompileSyntaxVisitor
 
 				void Visit(GlrLeftRecursionInjectClause* node) override
 				{
+					CHECK_ERROR(node->continuation->type == GlrLeftRecursionInjectContinuationType::Optional, L"Not Implemented!");
 					auto rule = context.syntaxManager.Rules()[node->rule->literal.value];
-					auto flag = (vint32_t)context.syntaxManager.lrpFlags.IndexOf(node->flag->flag.value);
+					auto flag = (vint32_t)context.syntaxManager.lrpFlags.IndexOf(node->continuation->flag->flag.value);
 
 					List<RuleSymbol*> targetRules;
 					CopyFrom(
 						targetRules,
-						From(node->injectionTargets)
-							.Select([this](Ptr<GlrRefSyntax> targetRule)
+						From(node->continuation->injectionTargets)
+							.Select([this](Ptr<GlrLeftRecursionInjectClause> lriTarget)
 							{
-								return context.syntaxManager.Rules()[targetRule->literal.value];
+								CHECK_ERROR(!lriTarget->continuation, L"Not Implemented!");
+								auto target = lriTarget->rule;
+								return context.syntaxManager.Rules()[target->literal.value];
 							})
 						);
 					result = automatonBuilder.BuildClause([this, rule, flag, &targetRules]()

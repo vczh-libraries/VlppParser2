@@ -463,6 +463,7 @@ ValidateTypesVisitor
 
 				void Visit(GlrLeftRecursionInjectClause* node) override
 				{
+					CHECK_ERROR(node->continuation->type == GlrLeftRecursionInjectContinuationType::Optional, L"Not Implemented!");
 					{
 						auto rule = context.syntaxManager.Rules()[node->rule->literal.value];
 						if (rule->isPartial)
@@ -476,9 +477,11 @@ ValidateTypesVisitor
 						}
 					}
 
-					SearchForLrpVisitor visitor(context, node->flag->flag.value, ruleSymbol->ruleType);
-					for (auto target : node->injectionTargets)
+					SearchForLrpVisitor visitor(context, node->continuation->flag->flag.value, ruleSymbol->ruleType);
+					for (auto lriTarget : node->continuation->injectionTargets)
 					{
+						CHECK_ERROR(!lriTarget->continuation, L"Not Implemented!");
+						auto target = lriTarget->rule;
 						vint counter = visitor.SearchInRule(target->literal.value);
 						if (counter == 0)
 						{
@@ -486,7 +489,7 @@ ValidateTypesVisitor
 								ParserErrorType::LeftRecursionPlaceholderNotFoundInRule,
 								target->codeRange,
 								ruleSymbol->Name(),
-								node->flag->flag.value,
+								node->continuation->flag->flag.value,
 								target->literal.value
 								);
 						}
@@ -496,7 +499,7 @@ ValidateTypesVisitor
 								ParserErrorType::LeftRecursionPlaceholderNotUnique,
 								target->codeRange,
 								ruleSymbol->Name(),
-								node->flag->flag.value,
+								node->continuation->flag->flag.value,
 								target->literal.value
 								);
 						}
@@ -508,7 +511,7 @@ ValidateTypesVisitor
 									ParserErrorType::LeftRecursionPlaceholderTypeMismatched,
 									target->codeRange,
 									ruleSymbol->Name(),
-									node->flag->flag.value,
+									node->continuation->flag->flag.value,
 									target->literal.value,
 									ruleName
 									);

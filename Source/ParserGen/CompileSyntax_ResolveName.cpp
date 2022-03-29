@@ -341,6 +341,7 @@ ResolveNameVisitor
 
 				void Visit(GlrLeftRecursionInjectClause* node) override
 				{
+					CHECK_ERROR(node->continuation->type == GlrLeftRecursionInjectContinuationType::Optional, L"Not Implemented!");
 					{
 						vint ruleIndex = context.syntaxManager.Rules().Keys().IndexOf(node->rule->literal.value);
 						if (ruleIndex == -1)
@@ -365,8 +366,10 @@ ResolveNameVisitor
 							}
 						}
 					}
-					for (auto target : node->injectionTargets)
+					for (auto lriTarget : node->continuation->injectionTargets)
 					{
+						CHECK_ERROR(!lriTarget->continuation, L"Not Implemented!");
+						auto target = lriTarget->rule;
 						vint ruleIndex = context.syntaxManager.Rules().Keys().IndexOf(target->literal.value);
 						if (ruleIndex == -1)
 						{
