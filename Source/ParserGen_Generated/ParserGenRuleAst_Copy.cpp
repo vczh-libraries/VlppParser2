@@ -57,12 +57,18 @@ namespace vl
 				void RuleAstVisitor::CopyFields(GlrLeftRecursionInjectClause* from, GlrLeftRecursionInjectClause* to)
 				{
 					CopyFields(static_cast<GlrClause*>(from), static_cast<GlrClause*>(to));
+					to->continuation = CopyNode(from->continuation.Obj());
+					to->rule = CopyNode(from->rule.Obj());
+				}
+
+				void RuleAstVisitor::CopyFields(GlrLeftRecursionInjectContinuation* from, GlrLeftRecursionInjectContinuation* to)
+				{
 					to->flag = CopyNode(from->flag.Obj());
 					for (auto&& listItem : from->injectionTargets)
 					{
 						to->injectionTargets.Add(CopyNode(listItem.Obj()));
 					}
-					to->rule = CopyNode(from->rule.Obj());
+					to->type = from->type;
 				}
 
 				void RuleAstVisitor::CopyFields(GlrLeftRecursionPlaceholder* from, GlrLeftRecursionPlaceholder* to)
@@ -235,6 +241,13 @@ namespace vl
 				void RuleAstVisitor::Visit(GlrLeftRecursionPlaceholder* node)
 				{
 					auto newNode = vl::MakePtr<GlrLeftRecursionPlaceholder>();
+					CopyFields(node, newNode.Obj());
+					this->result = newNode;
+				}
+
+				void RuleAstVisitor::Visit(GlrLeftRecursionInjectContinuation* node)
+				{
+					auto newNode = vl::MakePtr<GlrLeftRecursionInjectContinuation>();
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
@@ -419,6 +432,13 @@ namespace vl
 					if (!node) return nullptr;
 					Visit(node);
 					return this->result.Cast<GlrLeftRecursionPlaceholder>();
+				}
+
+				vl::Ptr<GlrLeftRecursionInjectContinuation> RuleAstVisitor::CopyNode(GlrLeftRecursionInjectContinuation* node)
+				{
+					if (!node) return nullptr;
+					Visit(node);
+					return this->result.Cast<GlrLeftRecursionInjectContinuation>();
 				}
 
 				vl::Ptr<GlrRule> RuleAstVisitor::CopyNode(GlrRule* node)

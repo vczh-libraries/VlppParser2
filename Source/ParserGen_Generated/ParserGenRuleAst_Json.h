@@ -32,6 +32,7 @@ namespace vl
 					virtual void PrintFields(GlrCondition* node);
 					virtual void PrintFields(GlrCreateClause* node);
 					virtual void PrintFields(GlrLeftRecursionInjectClause* node);
+					virtual void PrintFields(GlrLeftRecursionInjectContinuation* node);
 					virtual void PrintFields(GlrLeftRecursionPlaceholder* node);
 					virtual void PrintFields(GlrLeftRecursionPlaceholderClause* node);
 					virtual void PrintFields(GlrLoopSyntax* node);
@@ -83,6 +84,7 @@ namespace vl
 					void Print(GlrTestConditionBranch* node);
 					void Print(GlrAssignment* node);
 					void Print(GlrLeftRecursionPlaceholder* node);
+					void Print(GlrLeftRecursionInjectContinuation* node);
 					void Print(GlrRule* node);
 					void Print(GlrSyntaxFile* node);
 				};

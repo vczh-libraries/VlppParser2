@@ -141,6 +141,8 @@ namespace vl
 			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrReuseClause, glr::parsergen::GlrReuseClause)
 			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrLeftRecursionPlaceholder, glr::parsergen::GlrLeftRecursionPlaceholder)
 			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrLeftRecursionPlaceholderClause, glr::parsergen::GlrLeftRecursionPlaceholderClause)
+			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrLeftRecursionInjectContinuationType, glr::parsergen::GlrLeftRecursionInjectContinuationType)
+			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrLeftRecursionInjectContinuation, glr::parsergen::GlrLeftRecursionInjectContinuation)
 			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrLeftRecursionInjectClause, glr::parsergen::GlrLeftRecursionInjectClause)
 			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrRule, glr::parsergen::GlrRule)
 			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrSyntaxFile, glr::parsergen::GlrSyntaxFile)
@@ -366,14 +368,29 @@ namespace vl
 				CLASS_MEMBER_FIELD(flags)
 			END_CLASS_MEMBER(vl::glr::parsergen::GlrLeftRecursionPlaceholderClause)
 
+			BEGIN_ENUM_ITEM(vl::glr::parsergen::GlrLeftRecursionInjectContinuationType)
+				ENUM_ITEM_NAMESPACE(vl::glr::parsergen::GlrLeftRecursionInjectContinuationType)
+				ENUM_NAMESPACE_ITEM(Optional)
+				ENUM_NAMESPACE_ITEM(Required)
+			END_ENUM_ITEM(vl::glr::parsergen::GlrLeftRecursionInjectContinuationType)
+
+			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrLeftRecursionInjectContinuation)
+				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrLeftRecursionInjectContinuation>(), NO_PARAMETER)
+
+				CLASS_MEMBER_FIELD(flag)
+				CLASS_MEMBER_FIELD(type)
+				CLASS_MEMBER_FIELD(injectionTargets)
+			END_CLASS_MEMBER(vl::glr::parsergen::GlrLeftRecursionInjectContinuation)
+
 			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrLeftRecursionInjectClause)
 				CLASS_MEMBER_BASE(vl::glr::parsergen::GlrClause)
 
 				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrLeftRecursionInjectClause>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(flag)
 				CLASS_MEMBER_FIELD(rule)
-				CLASS_MEMBER_FIELD(injectionTargets)
+				CLASS_MEMBER_FIELD(continuation)
 			END_CLASS_MEMBER(vl::glr::parsergen::GlrLeftRecursionInjectClause)
 
 			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrRule)
@@ -459,6 +476,8 @@ namespace vl
 					ADD_TYPE_INFO(vl::glr::parsergen::GlrReuseClause)
 					ADD_TYPE_INFO(vl::glr::parsergen::GlrLeftRecursionPlaceholder)
 					ADD_TYPE_INFO(vl::glr::parsergen::GlrLeftRecursionPlaceholderClause)
+					ADD_TYPE_INFO(vl::glr::parsergen::GlrLeftRecursionInjectContinuationType)
+					ADD_TYPE_INFO(vl::glr::parsergen::GlrLeftRecursionInjectContinuation)
 					ADD_TYPE_INFO(vl::glr::parsergen::GlrLeftRecursionInjectClause)
 					ADD_TYPE_INFO(vl::glr::parsergen::GlrRule)
 					ADD_TYPE_INFO(vl::glr::parsergen::GlrSyntaxFile)

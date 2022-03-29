@@ -95,21 +95,37 @@ MakeCreateClause
 MakeLeftRecursionInjectClause
 ***********************************************************************/
 
-				MakeLeftRecursionInjectClause& MakeLeftRecursionInjectClause::flag(const vl::Ptr<GlrLeftRecursionPlaceholder>& value)
+				MakeLeftRecursionInjectClause& MakeLeftRecursionInjectClause::continuation(const vl::Ptr<GlrLeftRecursionInjectContinuation>& value)
 				{
-					node->flag = value;
-					return *this;
-				}
-
-				MakeLeftRecursionInjectClause& MakeLeftRecursionInjectClause::injectionTargets(const vl::Ptr<GlrRefSyntax>& value)
-				{
-					node->injectionTargets.Add(value);
+					node->continuation = value;
 					return *this;
 				}
 
 				MakeLeftRecursionInjectClause& MakeLeftRecursionInjectClause::rule(const vl::Ptr<GlrRefSyntax>& value)
 				{
 					node->rule = value;
+					return *this;
+				}
+
+/***********************************************************************
+MakeLeftRecursionInjectContinuation
+***********************************************************************/
+
+				MakeLeftRecursionInjectContinuation& MakeLeftRecursionInjectContinuation::flag(const vl::Ptr<GlrLeftRecursionPlaceholder>& value)
+				{
+					node->flag = value;
+					return *this;
+				}
+
+				MakeLeftRecursionInjectContinuation& MakeLeftRecursionInjectContinuation::injectionTargets(const vl::Ptr<GlrLeftRecursionInjectClause>& value)
+				{
+					node->injectionTargets.Add(value);
+					return *this;
+				}
+
+				MakeLeftRecursionInjectContinuation& MakeLeftRecursionInjectContinuation::type(GlrLeftRecursionInjectContinuationType value)
+				{
+					node->type = value;
 					return *this;
 				}
 

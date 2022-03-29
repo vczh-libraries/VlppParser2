@@ -23,6 +23,7 @@ namespace vl
 			class GlrCondition;
 			class GlrCreateClause;
 			class GlrLeftRecursionInjectClause;
+			class GlrLeftRecursionInjectContinuation;
 			class GlrLeftRecursionPlaceholder;
 			class GlrLeftRecursionPlaceholderClause;
 			class GlrLoopSyntax;
@@ -71,6 +72,13 @@ namespace vl
 				UNDEFINED_ENUM_ITEM_VALUE = -1,
 				Strong = 0,
 				Weak = 1,
+			};
+
+			enum class GlrLeftRecursionInjectContinuationType
+			{
+				UNDEFINED_ENUM_ITEM_VALUE = -1,
+				Optional = 0,
+				Required = 1,
 			};
 
 			class GlrCondition abstract : public vl::glr::ParsingAstBase, vl::reflection::Description<GlrCondition>
@@ -296,12 +304,19 @@ namespace vl
 				void Accept(GlrClause::IVisitor* visitor) override;
 			};
 
-			class GlrLeftRecursionInjectClause : public GlrClause, vl::reflection::Description<GlrLeftRecursionInjectClause>
+			class GlrLeftRecursionInjectContinuation : public vl::glr::ParsingAstBase, vl::reflection::Description<GlrLeftRecursionInjectContinuation>
 			{
 			public:
 				vl::Ptr<GlrLeftRecursionPlaceholder> flag;
+				GlrLeftRecursionInjectContinuationType type = GlrLeftRecursionInjectContinuationType::UNDEFINED_ENUM_ITEM_VALUE;
+				vl::collections::List<vl::Ptr<GlrLeftRecursionInjectClause>> injectionTargets;
+			};
+
+			class GlrLeftRecursionInjectClause : public GlrClause, vl::reflection::Description<GlrLeftRecursionInjectClause>
+			{
+			public:
 				vl::Ptr<GlrRefSyntax> rule;
-				vl::collections::List<vl::Ptr<GlrRefSyntax>> injectionTargets;
+				vl::Ptr<GlrLeftRecursionInjectContinuation> continuation;
 
 				void Accept(GlrClause::IVisitor* visitor) override;
 			};
@@ -360,6 +375,8 @@ namespace vl
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrReuseClause)
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrLeftRecursionPlaceholder)
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrLeftRecursionPlaceholderClause)
+			DECL_TYPE_INFO(vl::glr::parsergen::GlrLeftRecursionInjectContinuationType)
+			DECL_TYPE_INFO(vl::glr::parsergen::GlrLeftRecursionInjectContinuation)
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrLeftRecursionInjectClause)
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrRule)
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrSyntaxFile)

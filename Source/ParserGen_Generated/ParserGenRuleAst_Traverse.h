@@ -34,6 +34,7 @@ namespace vl
 					virtual void Traverse(GlrCondition* node);
 					virtual void Traverse(GlrCreateClause* node);
 					virtual void Traverse(GlrLeftRecursionInjectClause* node);
+					virtual void Traverse(GlrLeftRecursionInjectContinuation* node);
 					virtual void Traverse(GlrLeftRecursionPlaceholder* node);
 					virtual void Traverse(GlrLeftRecursionPlaceholderClause* node);
 					virtual void Traverse(GlrLoopSyntax* node);
@@ -63,6 +64,7 @@ namespace vl
 					virtual void Finishing(GlrCondition* node);
 					virtual void Finishing(GlrCreateClause* node);
 					virtual void Finishing(GlrLeftRecursionInjectClause* node);
+					virtual void Finishing(GlrLeftRecursionInjectContinuation* node);
 					virtual void Finishing(GlrLeftRecursionPlaceholder* node);
 					virtual void Finishing(GlrLeftRecursionPlaceholderClause* node);
 					virtual void Finishing(GlrLoopSyntax* node);
@@ -112,6 +114,7 @@ namespace vl
 					void InspectInto(GlrTestConditionBranch* node);
 					void InspectInto(GlrAssignment* node);
 					void InspectInto(GlrLeftRecursionPlaceholder* node);
+					void InspectInto(GlrLeftRecursionInjectContinuation* node);
 					void InspectInto(GlrRule* node);
 					void InspectInto(GlrSyntaxFile* node);
 				};

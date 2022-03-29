@@ -23,6 +23,7 @@ namespace vl
 				void RuleAstVisitor::Traverse(GlrCondition* node) {}
 				void RuleAstVisitor::Traverse(GlrCreateClause* node) {}
 				void RuleAstVisitor::Traverse(GlrLeftRecursionInjectClause* node) {}
+				void RuleAstVisitor::Traverse(GlrLeftRecursionInjectContinuation* node) {}
 				void RuleAstVisitor::Traverse(GlrLeftRecursionPlaceholder* node) {}
 				void RuleAstVisitor::Traverse(GlrLeftRecursionPlaceholderClause* node) {}
 				void RuleAstVisitor::Traverse(GlrLoopSyntax* node) {}
@@ -51,6 +52,7 @@ namespace vl
 				void RuleAstVisitor::Finishing(GlrCondition* node) {}
 				void RuleAstVisitor::Finishing(GlrCreateClause* node) {}
 				void RuleAstVisitor::Finishing(GlrLeftRecursionInjectClause* node) {}
+				void RuleAstVisitor::Finishing(GlrLeftRecursionInjectContinuation* node) {}
 				void RuleAstVisitor::Finishing(GlrLeftRecursionPlaceholder* node) {}
 				void RuleAstVisitor::Finishing(GlrLeftRecursionPlaceholderClause* node) {}
 				void RuleAstVisitor::Finishing(GlrLoopSyntax* node) {}
@@ -299,11 +301,7 @@ namespace vl
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
 					Traverse(static_cast<GlrClause*>(node));
 					Traverse(static_cast<GlrLeftRecursionInjectClause*>(node));
-					InspectInto(node->flag.Obj());
-					for (auto&& listItem : node->injectionTargets)
-					{
-						InspectInto(listItem.Obj());
-					}
+					InspectInto(node->continuation.Obj());
 					InspectInto(node->rule.Obj());
 					Finishing(static_cast<GlrLeftRecursionInjectClause*>(node));
 					Finishing(static_cast<GlrClause*>(node));
@@ -367,6 +365,20 @@ namespace vl
 					Traverse(static_cast<GlrLeftRecursionPlaceholder*>(node));
 					Traverse(node->flag);
 					Finishing(static_cast<GlrLeftRecursionPlaceholder*>(node));
+					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+				}
+
+				void RuleAstVisitor::InspectInto(GlrLeftRecursionInjectContinuation* node)
+				{
+					if (!node) return;
+					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+					Traverse(static_cast<GlrLeftRecursionInjectContinuation*>(node));
+					InspectInto(node->flag.Obj());
+					for (auto&& listItem : node->injectionTargets)
+					{
+						InspectInto(listItem.Obj());
+					}
+					Finishing(static_cast<GlrLeftRecursionInjectContinuation*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}
 

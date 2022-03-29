@@ -42,6 +42,8 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					return new vl::glr::parsergen::GlrEnumItem();
 				case ParserGenClasses::LeftRecursionInjectClause:
 					return new vl::glr::parsergen::GlrLeftRecursionInjectClause();
+				case ParserGenClasses::LeftRecursionInjectContinuation:
+					return new vl::glr::parsergen::GlrLeftRecursionInjectContinuation();
 				case ParserGenClasses::LeftRecursionPlaceholder:
 					return new vl::glr::parsergen::GlrLeftRecursionPlaceholder();
 				case ParserGenClasses::LeftRecursionPlaceholderClause:
@@ -106,12 +108,14 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					return vl::glr::AssemblerSetObjectField(&vl::glr::parsergen::GlrCreateClause::syntax, object, field, value, cppFieldName);
 				case ParserGenFields::Enum_items:
 					return vl::glr::AssemblerSetObjectField(&vl::glr::parsergen::GlrEnum::items, object, field, value, cppFieldName);
-				case ParserGenFields::LeftRecursionInjectClause_flag:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::parsergen::GlrLeftRecursionInjectClause::flag, object, field, value, cppFieldName);
-				case ParserGenFields::LeftRecursionInjectClause_injectionTargets:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::parsergen::GlrLeftRecursionInjectClause::injectionTargets, object, field, value, cppFieldName);
+				case ParserGenFields::LeftRecursionInjectClause_continuation:
+					return vl::glr::AssemblerSetObjectField(&vl::glr::parsergen::GlrLeftRecursionInjectClause::continuation, object, field, value, cppFieldName);
 				case ParserGenFields::LeftRecursionInjectClause_rule:
 					return vl::glr::AssemblerSetObjectField(&vl::glr::parsergen::GlrLeftRecursionInjectClause::rule, object, field, value, cppFieldName);
+				case ParserGenFields::LeftRecursionInjectContinuation_flag:
+					return vl::glr::AssemblerSetObjectField(&vl::glr::parsergen::GlrLeftRecursionInjectContinuation::flag, object, field, value, cppFieldName);
+				case ParserGenFields::LeftRecursionInjectContinuation_injectionTargets:
+					return vl::glr::AssemblerSetObjectField(&vl::glr::parsergen::GlrLeftRecursionInjectContinuation::injectionTargets, object, field, value, cppFieldName);
 				case ParserGenFields::LeftRecursionPlaceholderClause_flags:
 					return vl::glr::AssemblerSetObjectField(&vl::glr::parsergen::GlrLeftRecursionPlaceholderClause::flags, object, field, value, cppFieldName);
 				case ParserGenFields::LoopSyntax_delimiter:
@@ -214,6 +218,8 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					return vl::glr::AssemblerSetEnumField(&vl::glr::parsergen::GlrClass::ambiguity, object, field, enumItem, weakAssignment, cppFieldName);
 				case ParserGenFields::ClassProp_propType:
 					return vl::glr::AssemblerSetEnumField(&vl::glr::parsergen::GlrClassProp::propType, object, field, enumItem, weakAssignment, cppFieldName);
+				case ParserGenFields::LeftRecursionInjectContinuation_type:
+					return vl::glr::AssemblerSetEnumField(&vl::glr::parsergen::GlrLeftRecursionInjectContinuation::type, object, field, enumItem, weakAssignment, cppFieldName);
 				case ParserGenFields::OptionalSyntax_priority:
 					return vl::glr::AssemblerSetEnumField(&vl::glr::parsergen::GlrOptionalSyntax::priority, object, field, enumItem, weakAssignment, cppFieldName);
 				case ParserGenFields::RefSyntax_refType:
@@ -240,6 +246,7 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					L"Enum",
 					L"EnumItem",
 					L"LeftRecursionInjectClause",
+					L"LeftRecursionInjectContinuation",
 					L"LeftRecursionPlaceholder",
 					L"LeftRecursionPlaceholderClause",
 					L"LoopSyntax",
@@ -262,7 +269,7 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					L"UseSyntax",
 				};
 				vl::vint index = (vl::vint)type;
-				return 0 <= index && index < 32 ? results[index] : nullptr;
+				return 0 <= index && index < 33 ? results[index] : nullptr;
 			}
 
 			const wchar_t* ParserGenCppTypeName(ParserGenClasses type)
@@ -280,6 +287,7 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					L"vl::glr::parsergen::GlrEnum",
 					L"vl::glr::parsergen::GlrEnumItem",
 					L"vl::glr::parsergen::GlrLeftRecursionInjectClause",
+					L"vl::glr::parsergen::GlrLeftRecursionInjectContinuation",
 					L"vl::glr::parsergen::GlrLeftRecursionPlaceholder",
 					L"vl::glr::parsergen::GlrLeftRecursionPlaceholderClause",
 					L"vl::glr::parsergen::GlrLoopSyntax",
@@ -302,7 +310,7 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					L"vl::glr::parsergen::GlrUseSyntax",
 				};
 				vl::vint index = (vl::vint)type;
-				return 0 <= index && index < 32 ? results[index] : nullptr;
+				return 0 <= index && index < 33 ? results[index] : nullptr;
 			}
 
 			const wchar_t* ParserGenFieldName(ParserGenFields field)
@@ -327,9 +335,11 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					L"CreateClause::type",
 					L"Enum::items",
 					L"EnumItem::name",
-					L"LeftRecursionInjectClause::flag",
-					L"LeftRecursionInjectClause::injectionTargets",
+					L"LeftRecursionInjectClause::continuation",
 					L"LeftRecursionInjectClause::rule",
+					L"LeftRecursionInjectContinuation::flag",
+					L"LeftRecursionInjectContinuation::injectionTargets",
+					L"LeftRecursionInjectContinuation::type",
 					L"LeftRecursionPlaceholder::flag",
 					L"LeftRecursionPlaceholderClause::flags",
 					L"LoopSyntax::delimiter",
@@ -366,7 +376,7 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					L"UseSyntax::name",
 				};
 				vl::vint index = (vl::vint)field;
-				return 0 <= index && index < 56 ? results[index] : nullptr;
+				return 0 <= index && index < 58 ? results[index] : nullptr;
 			}
 
 			const wchar_t* ParserGenCppFieldName(ParserGenFields field)
@@ -391,9 +401,11 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					L"vl::glr::parsergen::GlrCreateClause::type",
 					L"vl::glr::parsergen::GlrEnum::items",
 					L"vl::glr::parsergen::GlrEnumItem::name",
-					L"vl::glr::parsergen::GlrLeftRecursionInjectClause::flag",
-					L"vl::glr::parsergen::GlrLeftRecursionInjectClause::injectionTargets",
+					L"vl::glr::parsergen::GlrLeftRecursionInjectClause::continuation",
 					L"vl::glr::parsergen::GlrLeftRecursionInjectClause::rule",
+					L"vl::glr::parsergen::GlrLeftRecursionInjectContinuation::flag",
+					L"vl::glr::parsergen::GlrLeftRecursionInjectContinuation::injectionTargets",
+					L"vl::glr::parsergen::GlrLeftRecursionInjectContinuation::type",
 					L"vl::glr::parsergen::GlrLeftRecursionPlaceholder::flag",
 					L"vl::glr::parsergen::GlrLeftRecursionPlaceholderClause::flags",
 					L"vl::glr::parsergen::GlrLoopSyntax::delimiter",
@@ -430,7 +442,7 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					L"vl::glr::parsergen::GlrUseSyntax::name",
 				};
 				vl::vint index = (vl::vint)field;
-				return 0 <= index && index < 56 ? results[index] : nullptr;
+				return 0 <= index && index < 58 ? results[index] : nullptr;
 			}
 
 			vl::Ptr<vl::glr::ParsingAstBase> ParserGenAstInsReceiver::ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates)

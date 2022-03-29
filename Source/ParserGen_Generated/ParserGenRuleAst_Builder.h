@@ -50,9 +50,16 @@ namespace vl
 				class MakeLeftRecursionInjectClause : public vl::glr::ParsingAstBuilder<GlrLeftRecursionInjectClause>
 				{
 				public:
-					MakeLeftRecursionInjectClause& flag(const vl::Ptr<GlrLeftRecursionPlaceholder>& value);
-					MakeLeftRecursionInjectClause& injectionTargets(const vl::Ptr<GlrRefSyntax>& value);
+					MakeLeftRecursionInjectClause& continuation(const vl::Ptr<GlrLeftRecursionInjectContinuation>& value);
 					MakeLeftRecursionInjectClause& rule(const vl::Ptr<GlrRefSyntax>& value);
+				};
+
+				class MakeLeftRecursionInjectContinuation : public vl::glr::ParsingAstBuilder<GlrLeftRecursionInjectContinuation>
+				{
+				public:
+					MakeLeftRecursionInjectContinuation& flag(const vl::Ptr<GlrLeftRecursionPlaceholder>& value);
+					MakeLeftRecursionInjectContinuation& injectionTargets(const vl::Ptr<GlrLeftRecursionInjectClause>& value);
+					MakeLeftRecursionInjectContinuation& type(GlrLeftRecursionInjectContinuationType value);
 				};
 
 				class MakeLeftRecursionPlaceholder : public vl::glr::ParsingAstBuilder<GlrLeftRecursionPlaceholder>

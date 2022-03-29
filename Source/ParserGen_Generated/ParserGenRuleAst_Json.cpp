@@ -81,6 +81,15 @@ namespace vl
 				}
 				void RuleAstVisitor::PrintFields(GlrLeftRecursionInjectClause* node)
 				{
+					BeginField(L"continuation");
+					Print(node->continuation.Obj());
+					EndField();
+					BeginField(L"rule");
+					Print(node->rule.Obj());
+					EndField();
+				}
+				void RuleAstVisitor::PrintFields(GlrLeftRecursionInjectContinuation* node)
+				{
 					BeginField(L"flag");
 					Print(node->flag.Obj());
 					EndField();
@@ -94,8 +103,18 @@ namespace vl
 					}
 					EndArray();
 					EndField();
-					BeginField(L"rule");
-					Print(node->rule.Obj());
+					BeginField(L"type");
+					switch (node->type)
+					{
+					case vl::glr::parsergen::GlrLeftRecursionInjectContinuationType::Optional:
+						WriteString(L"Optional");
+						break;
+					case vl::glr::parsergen::GlrLeftRecursionInjectContinuationType::Required:
+						WriteString(L"Required");
+						break;
+					default:
+						WriteNull();
+					}
 					EndField();
 				}
 				void RuleAstVisitor::PrintFields(GlrLeftRecursionPlaceholder* node)
@@ -669,6 +688,19 @@ namespace vl
 					BeginObject();
 					WriteType(L"LeftRecursionPlaceholder", node);
 					PrintFields(static_cast<GlrLeftRecursionPlaceholder*>(node));
+					EndObject();
+				}
+
+				void RuleAstVisitor::Print(GlrLeftRecursionInjectContinuation* node)
+				{
+					if (!node)
+					{
+						WriteNull();
+						return;
+					}
+					BeginObject();
+					WriteType(L"LeftRecursionInjectContinuation", node);
+					PrintFields(static_cast<GlrLeftRecursionInjectContinuation*>(node));
 					EndObject();
 				}
 
