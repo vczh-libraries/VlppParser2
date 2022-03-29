@@ -483,7 +483,7 @@ Exp1
   ::= Exp1:left "+" Exp0:right as BinaryExpr
   ;
 Exp2
-  ::= !Exp0 left_recursion_inject(Expression) Exp1
+  ::= !Exp0 [left_recursion_inject(Expression) Exp1]
   ;
 )SYNTAX";
 		ExpectError(
@@ -514,7 +514,7 @@ Exp2
   ::= Exp2:left "+" Exp1:right as BinaryExpr
   ;
 Exp3
-  ::= !Exp0 left_recursion_inject(Expression) Exp2
+  ::= !Exp0 [left_recursion_inject(Expression) Exp2]
   ;
 )SYNTAX";
 		ExpectError(
@@ -546,7 +546,7 @@ Module
   ::= "+" as Module
   ;
 Exp3
-  ::= !Module left_recursion_inject(Expression) Exp2
+  ::= !Module [left_recursion_inject(Expression) Exp2]
   ;
 )SYNTAX";
 		ExpectError(
@@ -575,7 +575,7 @@ Exp1
   ::= Exp1:left "+" Exp0:right as BinaryExpr
   ;
 Exp2
-  ::= !Exp0Partial left_recursion_inject(Expression) Exp1
+  ::= !Exp0Partial [left_recursion_inject(Expression) Exp1]
   ;
 )SYNTAX";
 		ExpectError(

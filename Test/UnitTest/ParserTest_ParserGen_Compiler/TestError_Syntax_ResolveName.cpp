@@ -145,7 +145,7 @@ LR"SYNTAX(
 Exp0 ::= NUM:value as NumExpr;
 Exp1
   ::= !Exp0
-  ::= !Unknown left_recursion_inject(Something) Exp0
+  ::= !Unknown [left_recursion_inject(Something) Exp0]
   ;
 )SYNTAX";
 		ExpectError(
@@ -165,7 +165,7 @@ LR"SYNTAX(
 Exp0 ::= NUM:value as NumExpr;
 Exp1
   ::= !Exp0
-  ::= !Exp0 left_recursion_inject(Something) Unknown
+  ::= !Exp0 [left_recursion_inject(Something) Unknown]
   ;
 )SYNTAX";
 		ExpectError(

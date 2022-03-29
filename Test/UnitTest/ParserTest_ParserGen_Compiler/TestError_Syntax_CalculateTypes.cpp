@@ -198,7 +198,7 @@ Exp1
 LR"SYNTAX(
 Exp0 ::= NUM:value as NumExpr;
 Exp1 ::= "+" as Module ;
-Exp2 ::= !Exp0 left_recursion_inject(Something) Exp1;
+Exp2 ::= !Exp0 [left_recursion_inject(Something) Exp1];
 )SYNTAX";
 		ExpectError(
 			typeParser,

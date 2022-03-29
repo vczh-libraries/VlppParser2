@@ -39,8 +39,8 @@ namespace vl
 				LriContinuationBody = 141,
 				LriContinuation = 150,
 				LriTarget = 156,
-				Rule = 160,
-				File = 168,
+				Rule = 163,
+				File = 171,
 			};
 
 			const wchar_t* RuleParserRuleName(vl::vint index);
