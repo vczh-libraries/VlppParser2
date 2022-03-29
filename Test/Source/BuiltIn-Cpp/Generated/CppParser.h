@@ -86,12 +86,16 @@ namespace cpp_parser
 		_TypeOnly = 743,
 		_Type = 751,
 		_ExprOnly_NoComma = 756,
-		_Expr_NoComma = 763,
+		_Expr_NoComma_Raw = 763,
 		_ExprOnly = 768,
-		_Expr = 776,
-		_TypeOrExpr_NoComma_NoLT = 781,
-		_TypeOrExpr = 788,
-		_File = 795,
+		_Expr_Raw = 776,
+		_TypeOrExpr_NoComma_Raw = 781,
+		_TypeOrExpr_Raw = 788,
+		_Expr_NoComma = 795,
+		_Expr = 798,
+		_TypeOrExpr_NoComma_NoLT = 801,
+		_TypeOrExpr = 804,
+		_File = 807,
 	};
 
 	const wchar_t* ParserRuleName(vl::vint index);

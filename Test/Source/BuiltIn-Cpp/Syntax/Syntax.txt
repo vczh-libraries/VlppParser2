@@ -1,3 +1,5 @@
+switch allow_LT;
+
 //////////////////////////////////////////////////////////////////
 // QualifiedName
 //////////////////////////////////////////////////////////////////
@@ -246,7 +248,7 @@ _BExpr3
 
 _BExpr4
   ::= !_BExpr3
-  ::= _BExpr4:left "<" _BExpr3:right as BinaryExpr {op = LT}
+  ::= _BExpr4:left ?(allow_LT: "<" _BExpr3:right) as BinaryExpr {op = LT}
   ::= _BExpr4:left ">" _BExpr3:right as BinaryExpr {op = GT}
   ::= _BExpr4:left "<=" _BExpr3:right as BinaryExpr {op = LE}
   ::= _BExpr4:left ">=" _BExpr3:right as BinaryExpr {op = GE}
@@ -560,7 +562,7 @@ _ExprOnly_NoComma
   ::= !_ThrowExpr
   ;
 
-_Expr_NoComma
+_Expr_NoComma_Raw
   ::= !_QualifiedName left_recursion_inject(Shared) _BExpr_NoComma
   ::= !_ExprOnly_NoComma
   ;
@@ -571,26 +573,36 @@ _ExprOnly
   ::= !_ThrowExpr left_recursion_inject(ThrowExpr) _BExpr
   ;
 
-_Expr
+_Expr_Raw
   ::= !_QualifiedName left_recursion_inject(Shared) _BExpr
   ::= !_ExprOnly
   ;
 
 //////////////////////////////////////////////////////////////////
-// TypeOrExpr
+// _TypeOrExpr
 //////////////////////////////////////////////////////////////////
 
-_TypeOrExpr_NoComma_NoLT
+_TypeOrExpr_NoComma_Raw
   ::= !_QualifiedName left_recursion_inject(Shared) _TypeOrDeclarator | _BExpr_NoComma
   ::= !_ExprOnly_NoComma
   ::= !_TypeOnly
   ;
 
-_TypeOrExpr
+_TypeOrExpr_Raw
   ::= !_QualifiedName left_recursion_inject(Shared) _TypeOrDeclarator | _BExpr
   ::= !_ExprOnly
   ::= !_TypeOnly
   ;
+
+//////////////////////////////////////////////////////////////////
+// API
+//////////////////////////////////////////////////////////////////
+
+_Expr_NoComma            ::= !( allow_LT; !_Expr_NoComma_Raw);
+_Expr                    ::= !( allow_LT; !_Expr_Raw);
+
+_TypeOrExpr_NoComma_NoLT ::= !(!allow_LT; !_TypeOrExpr_NoComma_Raw);
+_TypeOrExpr              ::= !( allow_LT; !_TypeOrExpr_Raw);
 
 //////////////////////////////////////////////////////////////////
 // SYNTAX
