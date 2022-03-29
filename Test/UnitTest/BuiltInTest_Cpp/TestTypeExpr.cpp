@@ -279,10 +279,10 @@ TEST_FILE
 		{
 			if (line != L"")
 			{
-				TEST_CASE(line)
-				{
-					ParseTypeExpr<CppTypeOrExpr>(parser, line);
-				});
+				//TEST_CASE(line)
+				//{
+				//	ParseTypeExpr<CppTypeOrExpr>(parser, line);
+				//});
 			}
 		}
 	});
