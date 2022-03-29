@@ -1,4 +1,4 @@
-switch allow_LT;
+switch allow_GT;
 
 //////////////////////////////////////////////////////////////////
 // QualifiedName
@@ -74,7 +74,7 @@ _Identifier
   ;
 
 _GenericArgument
-  ::= _TypeOrExpr_NoComma_NoLT:argument ["...":variadic] as GenericArgument
+  ::= _TypeOrExpr_NoComma_NoGT:argument ["...":variadic] as GenericArgument
   ;
 
 _GenericArguments
@@ -248,8 +248,8 @@ _BExpr3
 
 _BExpr4
   ::= !_BExpr3
-  ::= _BExpr4:left ?(allow_LT: "<" _BExpr3:right) as BinaryExpr {op = LT}
-  ::= _BExpr4:left ">" _BExpr3:right as BinaryExpr {op = GT}
+  ::= _BExpr4:left "<" _BExpr3:right as BinaryExpr {op = LT}
+  ::= _BExpr4:left ?(allow_GT: ">" _BExpr3:right) as BinaryExpr {op = GT}
   ::= _BExpr4:left "<=" _BExpr3:right as BinaryExpr {op = LE}
   ::= _BExpr4:left ">=" _BExpr3:right as BinaryExpr {op = GE}
   ;
@@ -598,11 +598,11 @@ _TypeOrExpr_Raw
 // API
 //////////////////////////////////////////////////////////////////
 
-_Expr_NoComma            ::= !( allow_LT; !_Expr_NoComma_Raw);
-_Expr                    ::= !( allow_LT; !_Expr_Raw);
+_Expr_NoComma            ::= !( allow_GT; !_Expr_NoComma_Raw);
+_Expr                    ::= !( allow_GT; !_Expr_Raw);
 
-_TypeOrExpr_NoComma_NoLT ::= !(!allow_LT; !_TypeOrExpr_NoComma_Raw);
-_TypeOrExpr              ::= !( allow_LT; !_TypeOrExpr_Raw);
+_TypeOrExpr_NoComma_NoGT ::= !(!allow_GT; !_TypeOrExpr_NoComma_Raw);
+_TypeOrExpr              ::= !( allow_GT; !_TypeOrExpr_Raw);
 
 //////////////////////////////////////////////////////////////////
 // SYNTAX

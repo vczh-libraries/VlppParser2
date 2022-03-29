@@ -93,7 +93,7 @@ namespace cpp_parser
 		_TypeOrExpr_Raw = 788,
 		_Expr_NoComma = 795,
 		_Expr = 798,
-		_TypeOrExpr_NoComma_NoLT = 801,
+		_TypeOrExpr_NoComma_NoGT = 801,
 		_TypeOrExpr = 804,
 		_File = 807,
 	};
