@@ -16,8 +16,6 @@ extern void WriteFilesIfChanged(FilePath outputDir, Dictionary<WString, WString>
 
 TEST_FILE
 {
-	TEST_PRINT(L"GenerateCpp.cpp is skipped temporarily");
-	return;
 	FilePath dirParser = GetTestParserInputPath(L"BuiltIn-Cpp");
 	FilePath dirOutput = GetOutputDir(L"ParserGen");
 	FilePath dirGenerated = dirParser / L"Generated";
