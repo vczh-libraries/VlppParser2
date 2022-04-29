@@ -138,46 +138,6 @@ Exp1 ::= !Exp;
 		);
 	});
 
-	TEST_CASE(L"TypeNotExistsInRule 3")
-	{
-		const wchar_t* syntaxCode =
-LR"SYNTAX(
-Exp0 ::= NUM:value as NumExpr;
-Exp1
-  ::= !Exp0
-  ::= !Unknown [left_recursion_inject(Something) Exp0]
-  ;
-)SYNTAX";
-		ExpectError(
-			typeParser,
-			ruleParser,
-			astCode,
-			lexerCode,
-			syntaxCode,
-			{ ParserErrorType::TokenOrRuleNotExistsInRule,L"Exp1",L"Unknown" }
-		);
-	});
-
-	TEST_CASE(L"TypeNotExistsInRule 4")
-	{
-		const wchar_t* syntaxCode =
-LR"SYNTAX(
-Exp0 ::= NUM:value as NumExpr;
-Exp1
-  ::= !Exp0
-  ::= !Exp0 [left_recursion_inject(Something) Unknown]
-  ;
-)SYNTAX";
-		ExpectError(
-			typeParser,
-			ruleParser,
-			astCode,
-			lexerCode,
-			syntaxCode,
-			{ ParserErrorType::TokenOrRuleNotExistsInRule,L"Exp1",L"Unknown" }
-		);
-	});
-
 	TEST_CASE(L"LiteralNotValidToken 1")
 	{
 		const wchar_t* syntaxCode =
@@ -319,72 +279,6 @@ Exp0 ::= '+':value as NumExpr;
 			lexerCode,
 			syntaxCode,
 			{ ParserErrorType::ConditionalLiteralIsDisplayText,L"Exp0",L"\'+\'" }
-		);
-	});
-
-	TEST_CASE(L"DuplicatedSwitch")
-	{
-		const wchar_t* syntaxCode =
-LR"SYNTAX(
-switch first,!first;
-Exp0 ::= "+":value as NumExpr;
-)SYNTAX";
-		ExpectError(
-			typeParser,
-			ruleParser,
-			astCode,
-			lexerCode,
-			syntaxCode,
-			{ ParserErrorType::DuplicatedSwitch,L"first" }
-		);
-	});
-
-	TEST_CASE(L"UnusedSwitch")
-	{
-		const wchar_t* syntaxCode =
-LR"SYNTAX(
-switch first;
-Exp0 ::= "+":value as NumExpr;
-)SYNTAX";
-		ExpectError(
-			typeParser,
-			ruleParser,
-			astCode,
-			lexerCode,
-			syntaxCode,
-			{ ParserErrorType::UnusedSwitch,L"first" }
-		);
-	});
-
-	TEST_CASE(L"SwitchNotExists 1")
-	{
-		const wchar_t* syntaxCode =
-LR"SYNTAX(
-Exp0 ::= !(first; "+":value) as NumExpr;
-)SYNTAX";
-		ExpectError(
-			typeParser,
-			ruleParser,
-			astCode,
-			lexerCode,
-			syntaxCode,
-			{ ParserErrorType::SwitchNotExists,L"Exp0",L"first"}
-		);
-	});
-
-	TEST_CASE(L"SwitchNotExists 2")
-	{
-		const wchar_t* syntaxCode =
-LR"SYNTAX(
-Exp0 ::= ?(first: "+":value) as NumExpr;
-)SYNTAX";
-		ExpectError(
-			typeParser,
-			ruleParser,
-			astCode,
-			lexerCode,
-			syntaxCode,
-			{ ParserErrorType::SwitchNotExists,L"Exp0",L"first" }
 		);
 	});
 }
