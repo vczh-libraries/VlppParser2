@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{da913eaa-73f9-45b3-b524-117a5e010016}</ProjectGuid>
-    <RootNamespace>ParserTestParserGenCompiler</RootNamespace>
+    <ProjectGuid>{60fdea40-43d8-426c-83bc-67d8dd000cb3}</ProjectGuid>
+    <RootNamespace>ParserTestParserGen</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -31,7 +31,6 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
-    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -39,14 +38,12 @@
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
-    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
-    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -54,15 +51,11 @@
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
-    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
   <ImportGroup Label="Shared">
-    <Import Project="..\UnitTest_CalculatorAst\UnitTest_CalculatorAst.vcxitems" Label="Shared" />
-    <Import Project="..\UnitTest_CalculatorLexer\UnitTest_CalculatorLexer.vcxitems" Label="Shared" />
-    <Import Project="..\UnitTest_CalculatorSyntax\UnitTest_CalculatorSyntax.vcxitems" Label="Shared" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -154,6 +147,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\CommonMain.cpp" />
+    <ClCompile Include="TestError_Ast.cpp" />
+    <ClCompile Include="TestError_Lexer.cpp" />
+    <ClCompile Include="TestError_Syntax_Automaton.cpp" />
+    <ClCompile Include="TestError_Syntax_CalculateTypes.cpp" />
+    <ClCompile Include="TestError_Syntax_ResolveName.cpp" />
+    <ClCompile Include="TestError_Syntax_ValidateStructure.cpp" />
+    <ClCompile Include="TestError_Syntax_ValidateTypes.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="TestError.h" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Lib_AstBase\Lib_AstBase.vcxproj">
       <Project>{8ef64899-bcb8-4000-aaf7-07a75398a74f}</Project>
     </ProjectReference>
@@ -181,17 +187,6 @@
     <ProjectReference Include="..\Lib_SyntaxGen\Lib_SyntaxGen.vcxproj">
       <Project>{085bce51-40ef-4011-a6fb-5916c48160f9}</Project>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\..\Source\LogAutomaton.cpp" />
-    <ClCompile Include="..\..\Source\LogTrace.cpp" />
-    <ClCompile Include="..\CommonMain.cpp" />
-    <ClCompile Include="TestParserGen.cpp" />
-    <ClCompile Include="TestSyntax.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\Source\LogAutomaton.h" />
-    <ClInclude Include="..\..\Source\LogTrace.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
