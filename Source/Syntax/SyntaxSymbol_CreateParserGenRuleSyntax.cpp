@@ -209,7 +209,7 @@ CreateParserGenRuleSyntax
 						+ tok(T::CLOSE_ROUND),
 					C::LeftRecursionPlaceholderClause);
 
-				// "left_recursion_inject" "(" Placeholder:flag ")" LriClause:injectionTargets {"|" LriClause:injectionTargets} as partial LeftRecursionInjectContinuation
+				// "left_recursion_inject" "(" Placeholder:flag ")" LriTarget:injectionTargets {"|" LriTarget:injectionTargets} as partial LeftRecursionInjectContinuation
 				Clause{ _lriContinuationBody } = partial(
 					tok(T::LS_I) + tok(T::OPEN_ROUND) + rule(_placeholder, F::LeftRecursionInjectContinuation_flag) + tok(T::CLOSE_ROUND)
 					+ rule(_lriTarget, F::LeftRecursionInjectContinuation_injectionTargets)
@@ -225,10 +225,10 @@ CreateParserGenRuleSyntax
 				// ID:rule as LeftRecursionInjectClause
 				Clause{ _lriTarget } = create(rule(_ruleName, F::LeftRecursionInjectClause_rule), C::LeftRecursionInjectClause);
 
-				// "(" ID:rule LriContinuationBody:continuation")" as LeftRecursionInjectClause
+				// "(" ID:rule LriContinuation:continuation")" as LeftRecursionInjectClause
 				Clause{ _lriTarget } = create(tok(T::OPEN_ROUND) + rule(_ruleName, F::LeftRecursionInjectClause_rule) + rule(_lriContinuation, F::LeftRecursionInjectClause_continuation) + tok(T::CLOSE_ROUND), C::LeftRecursionInjectClause);
 
-				// "!" ID:rule LriContinuationBody:continuation as LeftRecursionInjectClause
+				// "!" ID:rule LriContinuation:continuation as LeftRecursionInjectClause
 				Clause{ _clause } = create(tok(T::USE) + rule(_ruleName, F::LeftRecursionInjectClause_rule) + rule(_lriContinuation, F::LeftRecursionInjectClause_continuation), C::LeftRecursionInjectClause);
 
 				///////////////////////////////////////////////////////////////////////////////////

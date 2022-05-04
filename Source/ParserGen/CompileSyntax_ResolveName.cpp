@@ -341,7 +341,6 @@ ResolveNameVisitor
 
 				void Visit(GlrLeftRecursionInjectClause* node) override
 				{
-					CHECK_ERROR(node->continuation->type == GlrLeftRecursionInjectContinuationType::Optional, L"Not Implemented!");
 					{
 						vint ruleIndex = context.syntaxManager.Rules().Keys().IndexOf(node->rule->literal.value);
 						if (ruleIndex == -1)
@@ -366,31 +365,11 @@ ResolveNameVisitor
 							}
 						}
 					}
-					for (auto lriTarget : node->continuation->injectionTargets)
+					if (node->continuation)
 					{
-						CHECK_ERROR(!lriTarget->continuation, L"Not Implemented!");
-						auto target = lriTarget->rule;
-						vint ruleIndex = context.syntaxManager.Rules().Keys().IndexOf(target->literal.value);
-						if (ruleIndex == -1)
+						for (auto lriTarget : node->continuation->injectionTargets)
 						{
-							context.syntaxManager.AddError(
-								ParserErrorType::TokenOrRuleNotExistsInRule,
-								target->codeRange,
-								ruleSymbol->Name(),
-								target->literal.value
-								);
-						}
-						else
-						{
-							auto usedRuleSymbol = context.syntaxManager.Rules().Values()[ruleIndex];
-							if (!context.ruleReuseDependencies.Contains(ruleSymbol, usedRuleSymbol))
-							{
-								context.ruleReuseDependencies.Add(ruleSymbol, usedRuleSymbol);
-							}
-							if (!context.clauseReuseDependencies.Contains(clause, usedRuleSymbol))
-							{
-								context.clauseReuseDependencies.Add(clause, usedRuleSymbol);
-							}
+							Visit(lriTarget.Obj());
 						}
 					}
 				}
