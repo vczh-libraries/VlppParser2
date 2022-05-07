@@ -382,10 +382,9 @@ Exp1
 Exp2
   ::= Exp1 "+" as Module
   ;
-Module
+Module : Module
   ::= left_recursion_placeholder(Prefix)
-  ::= !Exp0
-  ::= !Module "+" as Module
+  ::= !Module "+"
   ;
 Exp3
   ::= !Exp0 [left_recursion_inject(Prefix) (Module left_recursion_inject(Expression) Exp2)]
@@ -460,32 +459,6 @@ Exp2
 			lexerCode,
 			syntaxCode,
 			{ ParserErrorType::PartialRuleInLeftRecursionInject,L"Exp2",L"Exp0Partial"}
-			);
-	});
-
-	TEST_CASE(L"PartialRuleInLeftRecursionInject 3")
-	{
-		const wchar_t* syntaxCode =
-LR"SYNTAX(
-Exp0
-  ::= NUM:value as NumExpr
-  ;
-Exp1
-  ::= left_recursion_placeholder(Expression)
-  ::= Exp0 as partial BinaryExpr
-  ::= Exp1:left "+" Exp0:right as partial BinaryExpr
-  ;
-Exp2
-  ::= !Exp0Partial [left_recursion_inject(Expression) Exp1]
-  ;
-)SYNTAX";
-		ExpectError(
-			typeParser,
-			ruleParser,
-			astCode,
-			lexerCode,
-			syntaxCode,
-			{ ParserErrorType::PartialRuleInLeftRecursionInject,L"Exp2",L"Exp1"}
 			);
 	});
 }
