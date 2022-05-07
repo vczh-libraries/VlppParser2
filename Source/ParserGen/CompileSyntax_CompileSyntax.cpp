@@ -351,7 +351,7 @@ CompileSyntaxVisitor
 
 				void Visit(GlrLeftRecursionInjectClause* node) override
 				{
-					CHECK_ERROR(node->continuation->type == GlrLeftRecursionInjectContinuationType::Optional, L"Not Implemented!");
+					bool optional = node->continuation->type == GlrLeftRecursionInjectContinuationType::Optional;
 					auto rule = context.syntaxManager.Rules()[node->rule->literal.value];
 					auto flag = (vint32_t)context.syntaxManager.lrpFlags.IndexOf(node->continuation->flag->flag.value);
 
@@ -366,9 +366,9 @@ CompileSyntaxVisitor
 								return context.syntaxManager.Rules()[target->literal.value];
 							})
 						);
-					result = automatonBuilder.BuildClause([this, rule, flag, &targetRules]()
+					result = automatonBuilder.BuildClause([=, &targetRules]()
 					{
-						return automatonBuilder.BuildLriClause(rule, flag, targetRules);
+						return automatonBuilder.BuildLriClause(rule, optional, flag, targetRules);
 					});
 				}
 			};

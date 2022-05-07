@@ -465,14 +465,14 @@ AutomatonBuilder (Clause)
 				return BuildAlternativeSyntax(elements);
 			}
 
-			AutomatonBuilder::StatePair AutomatonBuilder::BuildLriClause(RuleSymbol* rule, vint32_t flag, collections::List<RuleSymbol*>& targetRules)
+			AutomatonBuilder::StatePair AutomatonBuilder::BuildLriClause(RuleSymbol* rule, bool optional, vint32_t flag, collections::List<RuleSymbol*>& targetRules)
 			{
 				/*
 				*             +--(lri:a)--+
 				*             |           V
 				* S --(rule)--+--(lri:b)--+--(e:ReopenObject)--> E
 				*             |           ^
-				*             +-----------+
+				*             +-----------+  {<-- if optional}
 				*/
 
 				List<StateBuilder> alts;
@@ -499,23 +499,27 @@ AutomatonBuilder (Clause)
 						return pair;
 					});
 				}
-				alts.Add([this, rule]()
+
+				if(optional)
 				{
-					StatePair pair;
-					pair.begin = CreateState();
-					pair.end = CreateState();
-					startPoses.Add(pair.begin, clauseDisplayText.Length());
-
+					alts.Add([this, rule]()
 					{
-						auto edge = CreateEdge(pair.begin, pair.end);
-						edge->input.type = EdgeInputType::Epsilon;
-						edge->insBeforeInput.Add({ AstInsType::ReopenObject });
-					}
+						StatePair pair;
+						pair.begin = CreateState();
+						pair.end = CreateState();
+						startPoses.Add(pair.begin, clauseDisplayText.Length());
 
-					clauseDisplayText += L"lri:<skip>";
-					endPoses.Add(pair.end, clauseDisplayText.Length());
-					return pair;
-				});
+						{
+							auto edge = CreateEdge(pair.begin, pair.end);
+							edge->input.type = EdgeInputType::Epsilon;
+							edge->insBeforeInput.Add({ AstInsType::ReopenObject });
+						}
+
+						clauseDisplayText += L"lri:<skip>";
+						endPoses.Add(pair.end, clauseDisplayText.Length());
+						return pair;
+					});
+				}
 
 				List<StateBuilder> seqs;
 				seqs.Add([this, rule]()
