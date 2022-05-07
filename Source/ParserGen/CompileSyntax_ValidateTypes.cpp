@@ -479,7 +479,6 @@ ValidateTypesVisitor
 					SearchForLrpVisitor visitor(context, node->continuation->flag->flag.value, ruleSymbol->ruleType);
 					for (auto lriTarget : node->continuation->injectionTargets)
 					{
-						CHECK_ERROR(!lriTarget->continuation, L"Not Implemented!");
 						auto target = lriTarget->rule;
 						vint counter = visitor.SearchInRule(target->literal.value);
 						if (counter == 0)
@@ -515,6 +514,11 @@ ValidateTypesVisitor
 									ruleName
 									);
 							}
+						}
+
+						if (lriTarget->continuation)
+						{
+							Visit(lriTarget.Obj());
 						}
 					}
 				}
