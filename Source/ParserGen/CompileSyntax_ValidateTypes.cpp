@@ -463,7 +463,6 @@ ValidateTypesVisitor
 
 				void Visit(GlrLeftRecursionInjectClause* node) override
 				{
-					CHECK_ERROR(node->continuation->type == GlrLeftRecursionInjectContinuationType::Optional, L"Not Implemented!");
 					{
 						auto rule = context.syntaxManager.Rules()[node->rule->literal.value];
 						if (rule->isPartial)
