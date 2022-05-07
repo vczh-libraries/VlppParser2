@@ -1,0 +1,46 @@
+ambiguous class TypeOrExpr
+{
+}
+
+class QualifiedName : TypeOrExpr
+{
+}
+
+class Name : QualifiedName
+{
+    var name : token;
+}
+
+class MemberName : QualifiedName
+{
+    var parent : QualifiedName;
+    var member : token;
+}
+
+class CallExpr : TypeOrExpr
+{
+    var func : TypeOrExpr;
+    var args : TypeOrExpr[];
+}
+
+class MulExpr : TypeOrExpr
+{
+    var first : TypeOrExpr;
+    var second : TypeOrExpr;
+}
+
+class ConstType : TypeOrExpr
+{
+    var type : TypeOrExpr;
+}
+
+class PointerType : TypeOrExpr
+{
+    var type : TypeOrExpr;
+}
+
+class FunctionType : TypeOrExpr
+{
+    var returnType : TypeOrExpr;
+    var args : TypeOrExpr[];
+}
