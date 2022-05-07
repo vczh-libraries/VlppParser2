@@ -500,7 +500,7 @@ AutomatonBuilder (Clause)
 					});
 				}
 
-				if(optional)
+				if (optional)
 				{
 					alts.Add([this, rule]()
 					{
