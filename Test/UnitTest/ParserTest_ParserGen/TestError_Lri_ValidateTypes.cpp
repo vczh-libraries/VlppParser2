@@ -122,7 +122,7 @@ Exp2
   ::= Exp2:left "+" Exp0:right as BinaryExpr
   ;
 Exp3
-  ::= !Exp0 [left_recursion_inject(Expression) (Exp1 left_recursion_inject(Expression) Exp1)]
+  ::= !Exp0 [left_recursion_inject(Expression) (Exp1 left_recursion_inject(Expression) Exp2)]
   ;
 )SYNTAX";
 		ExpectError(
