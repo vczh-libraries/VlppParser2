@@ -401,6 +401,17 @@ SyntaxSymbolManager::EliminateSingleRulePrefix
 					}
 				}
 
+				for (auto [ruleSymbol, prefixIndex] : indexed(prefixEdges.Keys()))
+				{
+					auto&& prefixEdgesOfRule = prefixEdges.GetByIndex(prefixIndex);
+					CHECK_ERROR(prefixEdgesOfRule.Count() == 1, L"<EliminateSingleRulePrefix>Multiple prefix edges under the same rule is not supported yet.");
+
+					// TODO:
+					// in this case we need to create a prefix edges to replace all others
+					// it also means unresolvable ambiguity
+					// maybe a better solution is to define it as a kind of invalid syntax
+				}
+
 				// for all prefixEdge and continuationEdge under the same rule
 				// if their insBeforeInput are different
 				// move prefixEdge's insBeforeInput to insAfterInput with help from LriStore and LriFetch

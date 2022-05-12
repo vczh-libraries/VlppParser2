@@ -7,6 +7,7 @@
 
 ## Issues
 
+- TODO in `SyntaxSymbolManager::EliminateSingleRulePrefix`
 - Print correct codeRange for:
   - `ParserErrorType::RuleIsIndirectlyLeftRecursive`
   - `ParserErrorType::LeftRecursiveClauseInsidePushCondition`
