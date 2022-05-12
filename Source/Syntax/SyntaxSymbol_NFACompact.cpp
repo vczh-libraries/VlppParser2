@@ -232,7 +232,7 @@ CompactSyntaxBuilder
 			};
 
 /***********************************************************************
-SyntaxSymbolManager::CreateLeftRecEdge
+SyntaxSymbolManager::BuildLeftRecEdge
 ***********************************************************************/
 
 			void SyntaxSymbolManager::BuildLeftRecEdge(EdgeSymbol* newEdge, EdgeSymbol* endingEdge, EdgeSymbol* lrecPrefixEdge)
@@ -381,6 +381,9 @@ SyntaxSymbolManager::EliminateSingleRulePrefix
 				Group<RuleSymbol*, EdgeSymbol*> prefixEdges;
 				List<EdgeSymbol*> continuationEdges, eliminatedEdges;
 
+				// identify prefix edge and continuation edge
+				// prefix edges are clauses (x)
+				// continuation edges are all qualified clauses with prefix (x) except prefix edges
 				for (auto edge : startState->OutEdges())
 				{
 					if (edge->input.type != EdgeInputType::Rule) continue;
@@ -398,26 +401,99 @@ SyntaxSymbolManager::EliminateSingleRulePrefix
 					}
 				}
 
+				// for all prefixEdge and continuationEdge under the same rule
+				// if their insBeforeInput are different
+				// move prefixEdge's insBeforeInput to insAfterInput with help from LriStore and LriFetch
+				SortedList<RuleSymbol*> compatibleInsBeforeInputPrefixRules;
+				for (auto [ruleSymbol, prefixIndex] : indexed(prefixEdges.Keys()))
+				{
+					// see if all prefixEdges are compatible
+					auto&& prefixEdgesOfRule = prefixEdges.GetByIndex(prefixIndex);
+					auto prefixEdge = prefixEdgesOfRule[0];
+					for (auto otherPrefixEdge : From(prefixEdgesOfRule).Skip(1))
+					{
+						if (CompareEnumerable(prefixEdge->insBeforeInput, otherPrefixEdge->insBeforeInput) != 0)
+						{
+							goto INCOMPATIBLE;
+						}
+					}
+
+					// see if all continuationEdges are compatible
+					for (auto continuationEdge : continuationEdges)
+					{
+						if (continuationEdge->input.rule == prefixEdge->input.rule)
+						{
+							if (CompareEnumerable(prefixEdge->insBeforeInput, continuationEdge->insBeforeInput) != 0)
+							{
+								goto INCOMPATIBLE;
+							}
+						}
+					}
+
+					compatibleInsBeforeInputPrefixRules.Add(ruleSymbol);
+				INCOMPATIBLE:;
+				}
+
+				// for all prefixEdge that fails the above test
+				// move insBeforeInput to insAfterInput with the help from LriStore and LriFetch
+				for (auto [ruleSymbol, prefixIndex] : indexed(prefixEdges.Keys()))
+				{
+					if (!compatibleInsBeforeInputPrefixRules.Contains(ruleSymbol))
+					{
+						for (auto prefixEdge : prefixEdges.GetByIndex(prefixIndex))
+						{
+							if (prefixEdge->insBeforeInput.Count() > 0)
+							{
+								List<AstIns> ins;
+								ins.Add({ AstInsType::LriStore });
+								CopyFrom(ins, prefixEdge->insBeforeInput, true);
+								ins.Add({ AstInsType::LriFetch });
+								CopyFrom(ins, prefixEdge->insAfterInput, true);
+
+								prefixEdge->insBeforeInput.Clear();
+								CopyFrom(prefixEdge->insAfterInput, ins);
+							}
+						}
+					}
+				}
+
+				// for all qualified continuationEdge
+				// create a new edge to run continuationEdge's instruction properly after prefixEdge
+				// remove continuationEdge
 				for (auto continuationEdge : continuationEdges)
 				{
 					vint prefixIndex = prefixEdges.Keys().IndexOf(continuationEdge->input.rule);
 					if (prefixIndex == -1) continue;
 
+					bool compatible = compatibleInsBeforeInputPrefixRules.Contains(continuationEdge->input.rule);
 					bool eliminated = false;
 					for (auto prefixEdge : prefixEdges.GetByIndex(prefixIndex))
 					{
 						// important and insSwitch happen before shifting into the rule
-						// insBeforeInput, insAfterInput and returnEdges happens after reducing from the rule
-						// so we only need to compare the "before"
 						if (continuationEdge->important != prefixEdge->important) continue;
 						if (CompareEnumerable(continuationEdge->insSwitch, prefixEdge->insSwitch) != 0) continue;
 
 						eliminated = true;
 						auto state = prefixEdge->To();
-						auto endingEdge = state->OutEdges()[0];
 						auto newEdge = new EdgeSymbol(state, continuationEdge->To());
 						newEdges.Add(newEdge);
-						BuildLeftRecEdge(newEdge, endingEdge, continuationEdge);
+
+						newEdge->input.type = EdgeInputType::LeftRec;
+						newEdge->important = continuationEdge->important;
+						CopyFrom(newEdge->insSwitch, continuationEdge->insSwitch, true);
+						if (compatible)
+						{
+							CopyFrom(newEdge->insAfterInput, continuationEdge->insAfterInput);
+						}
+						else if (continuationEdge->insBeforeInput.Count() > 0)
+						{
+							// for incompatible continuationEdge
+							// combine insBeforeInput with insAfterInput with the help from LriStore and LriFetch
+							newEdge->insAfterInput.Add({ AstInsType::LriStore });
+							CopyFrom(newEdge->insAfterInput, continuationEdge->insBeforeInput, true);
+							newEdge->insAfterInput.Add({ AstInsType::LriFetch });
+							CopyFrom(newEdge->insAfterInput, continuationEdge->insAfterInput, true);
+						}
 					}
 
 					if (eliminated)
