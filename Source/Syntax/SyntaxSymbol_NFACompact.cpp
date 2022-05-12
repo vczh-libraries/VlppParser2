@@ -435,25 +435,27 @@ SyntaxSymbolManager::EliminateSingleRulePrefix
 				}
 
 				// for all prefixEdge that fails the above test
-				// move insBeforeInput to insAfterInput with the help from LriStore and LriFetch
+				// combine insBeforeInput with insAfterInput with the help from LriStore and LriFetch
+				// properly move instructions from prefixEdge to endingEdge
 				for (auto [ruleSymbol, prefixIndex] : indexed(prefixEdges.Keys()))
 				{
-					if (!compatibleInsBeforeInputPrefixRules.Contains(ruleSymbol))
+					bool compatible = compatibleInsBeforeInputPrefixRules.Contains(ruleSymbol);
+					for (auto prefixEdge : prefixEdges.GetByIndex(prefixIndex))
 					{
-						for (auto prefixEdge : prefixEdges.GetByIndex(prefixIndex))
+						List<AstIns> ins;
+						if (!compatible && prefixEdge->insBeforeInput.Count() > 0)
 						{
-							if (prefixEdge->insBeforeInput.Count() > 0)
-							{
-								List<AstIns> ins;
-								ins.Add({ AstInsType::LriStore });
-								CopyFrom(ins, prefixEdge->insBeforeInput, true);
-								ins.Add({ AstInsType::LriFetch });
-								CopyFrom(ins, prefixEdge->insAfterInput, true);
-
-								prefixEdge->insBeforeInput.Clear();
-								CopyFrom(prefixEdge->insAfterInput, ins);
-							}
+							ins.Add({ AstInsType::LriStore });
+							CopyFrom(ins, prefixEdge->insBeforeInput, true);
+							ins.Add({ AstInsType::LriFetch });
+							prefixEdge->insBeforeInput.Clear();
 						}
+						CopyFrom(ins, prefixEdge->insAfterInput, true);
+						prefixEdge->insAfterInput.Clear();
+
+						auto endingEdge = prefixEdge->To()->OutEdges()[0];
+						CopyFrom(ins, endingEdge->insBeforeInput, true);
+						CopyFrom(endingEdge->insBeforeInput, ins);
 					}
 				}
 
