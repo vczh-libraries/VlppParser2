@@ -512,7 +512,6 @@ AutomatonBuilder (Clause)
 						{
 							auto edge = CreateEdge(pair.begin, pair.end);
 							edge->input.type = EdgeInputType::Epsilon;
-							edge->insBeforeInput.Add({ AstInsType::ReopenObject });
 						}
 
 						clauseDisplayText += L"lri:<skip>";
@@ -534,6 +533,7 @@ AutomatonBuilder (Clause)
 						edge->input.type = EdgeInputType::Rule;
 						edge->input.rule = rule;
 						edge->input.ruleType = automaton::ReturnRuleType::Reuse;
+						edge->insAfterInput.Add({ AstInsType::ReopenObject });
 					}
 
 					clauseDisplayText += L"!" + rule->Name();

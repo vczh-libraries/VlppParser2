@@ -188,13 +188,25 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 				// search for all possible "LrPlaceholder {Ending} LeftRec Token" transitions
 				// for each transition, compact edges and put injectEdge properly in returnEdges
 				// here insBeforeInput has been ensured to be:
-				//   LriStore placeholderEdge->insBeforeInput LriFetch {endingEdge->insBeforeInput returnEdge->insAfterInput} --LeftRec--> ...
+				//   EndObject
+				//   LriStore
+				//   placeholderEdge->insBeforeInput
+				//   DelayFieldAssignment
+				//   LriFetch
+				//   loop {endingEdge->insBeforeInput returnEdge->insAfterInput}
+				//   --LeftRec--> ...
+
+				// EndObject is for the ReopenObject in the use rule transition before
+				// DelayFieldAssignment is for the ReopenObject in injectEdge->insAfterInput
+				// injectEdge is the last returnEdge
 
 				vint created = 0;
 				List<AstIns> instructionPrefix;
-				instructionPrefix.Add({ AstInsType::LriStore });
 				// there is no instruction in injectEdge->insBeforeInput
+				instructionPrefix.Add({ AstInsType::EndObject });
+				instructionPrefix.Add({ AstInsType::LriStore });
 				CopyFrom(instructionPrefix, placeholderEdge->insBeforeInput, true);
+				instructionPrefix.Add({ AstInsType::DelayFieldAssignment });
 				instructionPrefix.Add({ AstInsType::LriFetch });
 
 				for (vint i = returnEdges.Count() - 1; i >= 0; i--)
