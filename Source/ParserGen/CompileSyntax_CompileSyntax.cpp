@@ -356,16 +356,13 @@ CompileSyntaxVisitor
 					auto flag = (vint32_t)context.syntaxManager.lrpFlags.IndexOf(node->continuation->flag->flag.value);
 
 					List<Func<AutomatonBuilder::StatePair()>> targetRules;
-					CopyFrom(
-						targetRules,
-						From(node->continuation->injectionTargets)
-							.Select([this, flag](Ptr<GlrLeftRecursionInjectClause> lriTarget)
-							{
-								CHECK_ERROR(!lriTarget->continuation, L"Not Implemented!");
-								auto lriTargetRule = context.syntaxManager.Rules()[lriTarget->rule->literal.value];
-								return [this, flag, lriTargetRule]() { return automatonBuilder.BuildLriSyntax(flag, lriTargetRule); };
-							})
-						);
+					for (auto lriTarget : node->continuation->injectionTargets)
+					{
+						CHECK_ERROR(!lriTarget->continuation, L"Not Implemented!");
+						auto lriTargetRule = context.syntaxManager.Rules()[lriTarget->rule->literal.value];
+						targetRules.Add([this, flag, lriTargetRule]() { return automatonBuilder.BuildLriSyntax(flag, lriTargetRule); });
+					}
+
 					result = automatonBuilder.BuildClause([=, &targetRules]()
 					{
 						return automatonBuilder.BuildReuseClause([=, &targetRules]()
