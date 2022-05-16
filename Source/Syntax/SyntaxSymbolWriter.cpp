@@ -503,16 +503,7 @@ AutomatonBuilder (Clause)
 				return pair;
 			}
 
-			AutomatonBuilder::StatePair AutomatonBuilder::BuildLriContinuation(bool optional, collections::List<StateBuilder>&& continuations)
-			{
-				if (optional)
-				{
-					continuations.Add([this]() { return BuildLriSkip(); });
-				}
-				return BuildAlternativeSyntax(continuations);
-			}
-
-			AutomatonBuilder::StatePair AutomatonBuilder::BuildLriClauseSyntax(StateBuilder useOrLriSyntax, bool optional, vint32_t flag, collections::List<RuleSymbol*>& targetRules)
+			AutomatonBuilder::StatePair AutomatonBuilder::BuildLriClauseSyntax(StateBuilder useOrLriSyntax, bool optional, collections::List<StateBuilder>&& continuations)
 			{
 				/*
 				*                                                   +--(lri:c:ReopenObject)--+
@@ -526,20 +517,14 @@ AutomatonBuilder (Clause)
 				*                          +----------------------------------------------------+  {<-- if optional}
 				*/
 
-				List<StateBuilder> alts;
-				for (auto targetRule : targetRules)
-				{
-					alts.Add([this, flag, targetRule]() { return BuildLriSyntax(flag, targetRule); });
-				}
-
 				if (optional)
 				{
-					alts.Add([this]() { return BuildLriSkip(); });
+					continuations.Add([this]() { return BuildLriSkip(); });
 				}
 
 				List<StateBuilder> seqs;
 				seqs.Add(useOrLriSyntax);
-				seqs.Add([this, &alts]() { return BuildAlternativeSyntax(alts); });
+				seqs.Add([this, &continuations]() { return BuildAlternativeSyntax(continuations); });
 				return BuildSequenceSyntax(seqs);
 			}
 		}

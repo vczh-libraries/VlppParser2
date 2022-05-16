@@ -355,15 +355,15 @@ CompileSyntaxVisitor
 					auto rule = context.syntaxManager.Rules()[node->rule->literal.value];
 					auto flag = (vint32_t)context.syntaxManager.lrpFlags.IndexOf(node->continuation->flag->flag.value);
 
-					List<RuleSymbol*> targetRules;
+					List<Func<AutomatonBuilder::StatePair()>> targetRules;
 					CopyFrom(
 						targetRules,
 						From(node->continuation->injectionTargets)
-							.Select([this](Ptr<GlrLeftRecursionInjectClause> lriTarget)
+							.Select([this, flag](Ptr<GlrLeftRecursionInjectClause> lriTarget)
 							{
 								CHECK_ERROR(!lriTarget->continuation, L"Not Implemented!");
-								auto target = lriTarget->rule;
-								return context.syntaxManager.Rules()[target->literal.value];
+								auto lriTargetRule = context.syntaxManager.Rules()[lriTarget->rule->literal.value];
+								return [this, flag, lriTargetRule]() { return automatonBuilder.BuildLriSyntax(flag, lriTargetRule); };
 							})
 						);
 					result = automatonBuilder.BuildClause([=, &targetRules]()
@@ -373,8 +373,7 @@ CompileSyntaxVisitor
 							return automatonBuilder.BuildLriClauseSyntax(
 								[this, rule]() { return automatonBuilder.BuildUseSyntax(rule); },
 								optional,
-								flag,
-								targetRules);
+								std::move(targetRules));
 						});
 					});
 				}
