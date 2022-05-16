@@ -512,7 +512,7 @@ AutomatonBuilder (Clause)
 				return BuildAlternativeSyntax(continuations);
 			}
 
-			AutomatonBuilder::StatePair AutomatonBuilder::BuildLriClause(RuleSymbol* rule, bool optional, vint32_t flag, collections::List<RuleSymbol*>& targetRules)
+			AutomatonBuilder::StatePair AutomatonBuilder::BuildLriClauseSyntax(StateBuilder useOrLriSyntax, bool optional, vint32_t flag, collections::List<RuleSymbol*>& targetRules)
 			{
 				/*
 				*                                                   +--(lri:c:ReopenObject)--+
@@ -538,11 +538,9 @@ AutomatonBuilder (Clause)
 				}
 
 				List<StateBuilder> seqs;
-				seqs.Add([this, rule]() { return BuildUseSyntax(rule); });
+				seqs.Add(useOrLriSyntax);
 				seqs.Add([this, &alts]() { return BuildAlternativeSyntax(alts); });
-
-				StateBuilder clause = [this, &seqs]() {return BuildSequenceSyntax(seqs); };
-				return BuildReuseClause(clause);
+				return BuildSequenceSyntax(seqs);
 			}
 		}
 	}

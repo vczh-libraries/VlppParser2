@@ -78,7 +78,7 @@ AutomatonBuilder
 				StatePair					BuildLriSyntax(vint32_t flag, RuleSymbol* rule);
 				StatePair					BuildLriSkip();
 				StatePair					BuildLriContinuation(bool optional, collections::List<StateBuilder>&& continuations);
-				StatePair					BuildLriClause(RuleSymbol* rule, bool optional, vint32_t flag, collections::List<RuleSymbol*>& targetRules);
+				StatePair					BuildLriClauseSyntax(StateBuilder useOrLriSyntax, bool optional, vint32_t flag, collections::List<RuleSymbol*>& targetRules);
 			};
 
 			namespace syntax_writer

@@ -368,7 +368,14 @@ CompileSyntaxVisitor
 						);
 					result = automatonBuilder.BuildClause([=, &targetRules]()
 					{
-						return automatonBuilder.BuildLriClause(rule, optional, flag, targetRules);
+						return automatonBuilder.BuildReuseClause([=, &targetRules]()
+						{
+							return automatonBuilder.BuildLriClauseSyntax(
+								[this, rule]() { return automatonBuilder.BuildUseSyntax(rule); },
+								optional,
+								flag,
+								targetRules);
+						});
 					});
 				}
 			};
