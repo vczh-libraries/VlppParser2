@@ -349,24 +349,31 @@ CompileSyntaxVisitor
 					});
 				}
 
+				using StateBuilder = Func<AutomatonBuilder::StatePair()>;
+
+				StateBuilder CompileLriTarget(vint32_t flag, GlrLeftRecursionInjectClause* lriTarget)
+				{
+					CHECK_ERROR(!lriTarget->continuation, L"Not Implemented!");
+					auto lriTargetRule = context.syntaxManager.Rules()[lriTarget->rule->literal.value];
+					return [this, flag, lriTargetRule]() { return automatonBuilder.BuildLriSyntax(flag, lriTargetRule); };
+				}
+
 				void Visit(GlrLeftRecursionInjectClause* node) override
 				{
-					bool optional = node->continuation->type == GlrLeftRecursionInjectContinuationType::Optional;
-					auto rule = context.syntaxManager.Rules()[node->rule->literal.value];
-					auto flag = (vint32_t)context.syntaxManager.lrpFlags.IndexOf(node->continuation->flag->flag.value);
-
-					List<Func<AutomatonBuilder::StatePair()>> targetRules;
-					for (auto lriTarget : node->continuation->injectionTargets)
+					result = automatonBuilder.BuildClause([this, node]()
 					{
-						CHECK_ERROR(!lriTarget->continuation, L"Not Implemented!");
-						auto lriTargetRule = context.syntaxManager.Rules()[lriTarget->rule->literal.value];
-						targetRules.Add([this, flag, lriTargetRule]() { return automatonBuilder.BuildLriSyntax(flag, lriTargetRule); });
-					}
-
-					result = automatonBuilder.BuildClause([=, &targetRules]()
-					{
-						return automatonBuilder.BuildReuseClause([=, &targetRules]()
+						return automatonBuilder.BuildReuseClause([this, node]()
 						{
+							bool optional = node->continuation->type == GlrLeftRecursionInjectContinuationType::Optional;
+							auto rule = context.syntaxManager.Rules()[node->rule->literal.value];
+							auto flag = (vint32_t)context.syntaxManager.lrpFlags.IndexOf(node->continuation->flag->flag.value);
+
+							List<StateBuilder> targetRules;
+							for (auto lriTarget : node->continuation->injectionTargets)
+							{
+								targetRules.Add(CompileLriTarget(flag, lriTarget.Obj()));
+							}
+
 							return automatonBuilder.BuildLriClauseSyntax(
 								[this, rule]() { return automatonBuilder.BuildUseSyntax(rule); },
 								optional,
