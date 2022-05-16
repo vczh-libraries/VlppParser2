@@ -465,7 +465,7 @@ AutomatonBuilder (Clause)
 				return BuildAlternativeSyntax(elements);
 			}
 
-			AutomatonBuilder::StatePair AutomatonBuilder::BuildLriSyntax(RuleSymbol* rule, vint32_t flag)
+			AutomatonBuilder::StatePair AutomatonBuilder::BuildLriSyntax(vint32_t flag, RuleSymbol* rule)
 			{
 				StatePair pair;
 				pair.begin = CreateState();
@@ -503,29 +503,38 @@ AutomatonBuilder (Clause)
 				return pair;
 			}
 
+			AutomatonBuilder::StatePair AutomatonBuilder::BuildLriContinuation(bool optional, collections::List<StateBuilder>&& continuations)
+			{
+				if (optional)
+				{
+					continuations.Add([this]() { return BuildLriSkip(); });
+				}
+				return BuildAlternativeSyntax(continuations);
+			}
+
 			AutomatonBuilder::StatePair AutomatonBuilder::BuildLriClause(RuleSymbol* rule, bool optional, vint32_t flag, collections::List<RuleSymbol*>& targetRules)
 			{
 				/*
 				*                                                   +--(lri:c:ReopenObject)--+
 				*                                                   |                        |
-				*                          +--(lri:a:ReopenObject)--+--(lri:d:ReopenObject)--+
-				*                          |                        |                        |
-				*                          |                        +------------------------+  {<-- if optional}
-				*                          |                                                 V
-				* S --(rule:ReopenObject)--+--(lri:b:ReopenObject)---------------------------+--> E
-				*                          |                                                 ^
-				*                          +-------------------------------------------------+  {<-- if optional}
+				*                          +--(lri:a:ReopenObject)--+--(lri:d:ReopenObject)--+--+
+				*                          |                        |                        |  |
+				*                          |                        +------------------------+  | {<-- if optional}
+				*                          |                                                    V
+				* S --(rule:ReopenObject)--+--(lri:b:ReopenObject)------------------------------+--> E
+				*                          |                                                    ^
+				*                          +----------------------------------------------------+  {<-- if optional}
 				*/
 
 				List<StateBuilder> alts;
 				for (auto targetRule : targetRules)
 				{
-					alts.Add([this, flag, targetRule]() { return BuildLriSyntax(targetRule, flag); });
+					alts.Add([this, flag, targetRule]() { return BuildLriSyntax(flag, targetRule); });
 				}
 
 				if (optional)
 				{
-					alts.Add([this, rule]() { return BuildLriSkip(); });
+					alts.Add([this]() { return BuildLriSkip(); });
 				}
 
 				List<StateBuilder> seqs;
