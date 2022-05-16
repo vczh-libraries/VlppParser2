@@ -351,34 +351,49 @@ CompileSyntaxVisitor
 
 				using StateBuilder = Func<AutomatonBuilder::StatePair()>;
 
-				StateBuilder CompileLriTarget(vint32_t flag, GlrLeftRecursionInjectClause* lriTarget)
+				StateBuilder CompileLriTarget(vint32_t parentFlag, GlrLeftRecursionInjectClause* lriTarget)
 				{
-					CHECK_ERROR(!lriTarget->continuation, L"Not Implemented!");
-					auto lriTargetRule = context.syntaxManager.Rules()[lriTarget->rule->literal.value];
-					return [this, flag, lriTargetRule]() { return automatonBuilder.BuildLriSyntax(flag, lriTargetRule); };
+					StateBuilder useOrLriSyntax;
+					auto rule = context.syntaxManager.Rules()[lriTarget->rule->literal.value];
+					if (parentFlag == -1)
+					{
+						useOrLriSyntax = [this, rule]() { return automatonBuilder.BuildUseSyntax(rule); };
+					}
+					else
+					{
+						useOrLriSyntax = [this, rule, parentFlag]() { return automatonBuilder.BuildLriSyntax(parentFlag, rule); };
+					}
+
+					if (!lriTarget->continuation)
+					{
+						return useOrLriSyntax;
+					}
+					else
+					{
+						auto cont = lriTarget->continuation;
+						return [this, useOrLriSyntax, cont]()
+						{
+							bool optional = cont->type == GlrLeftRecursionInjectContinuationType::Optional;
+							auto flag = (vint32_t)context.syntaxManager.lrpFlags.IndexOf(cont->flag->flag.value);
+
+							List<StateBuilder> targetRules;
+							for (auto lriTarget : cont->injectionTargets)
+							{
+								targetRules.Add(CompileLriTarget(flag, lriTarget.Obj()));
+							}
+							return automatonBuilder.BuildLriClauseSyntax(
+								useOrLriSyntax,
+								optional,
+								std::move(targetRules));
+						};
+					}
 				}
 
 				void Visit(GlrLeftRecursionInjectClause* node) override
 				{
 					result = automatonBuilder.BuildClause([this, node]()
 					{
-						return automatonBuilder.BuildReuseClause([this, node]()
-						{
-							bool optional = node->continuation->type == GlrLeftRecursionInjectContinuationType::Optional;
-							auto rule = context.syntaxManager.Rules()[node->rule->literal.value];
-							auto flag = (vint32_t)context.syntaxManager.lrpFlags.IndexOf(node->continuation->flag->flag.value);
-
-							List<StateBuilder> targetRules;
-							for (auto lriTarget : node->continuation->injectionTargets)
-							{
-								targetRules.Add(CompileLriTarget(flag, lriTarget.Obj()));
-							}
-
-							return automatonBuilder.BuildLriClauseSyntax(
-								[this, rule]() { return automatonBuilder.BuildUseSyntax(rule); },
-								optional,
-								std::move(targetRules));
-						});
+						return automatonBuilder.BuildReuseClause(CompileLriTarget(-1, node));
 					});
 				}
 			};
