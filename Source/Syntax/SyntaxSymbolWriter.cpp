@@ -465,82 +465,72 @@ AutomatonBuilder (Clause)
 				return BuildAlternativeSyntax(elements);
 			}
 
+			AutomatonBuilder::StatePair AutomatonBuilder::BuildLriSyntax(RuleSymbol* rule, vint32_t flag)
+			{
+				StatePair pair;
+				pair.begin = CreateState();
+				pair.end = CreateState();
+				startPoses.Add(pair.begin, clauseDisplayText.Length());
+
+				{
+					auto edge = CreateEdge(pair.begin, pair.end);
+					edge->input.type = EdgeInputType::LrInject;
+					edge->input.token = flag;
+					edge->input.rule = rule;
+					edge->input.ruleType = automaton::ReturnRuleType::Reuse;
+					edge->insAfterInput.Add({ AstInsType::ReopenObject });
+				}
+
+				clauseDisplayText += L"lri:" + rule->Name();
+				endPoses.Add(pair.end, clauseDisplayText.Length());
+				return pair;
+			}
+
+			AutomatonBuilder::StatePair AutomatonBuilder::BuildLriSkip()
+			{
+				StatePair pair;
+				pair.begin = CreateState();
+				pair.end = CreateState();
+				startPoses.Add(pair.begin, clauseDisplayText.Length());
+
+				{
+					auto edge = CreateEdge(pair.begin, pair.end);
+					edge->input.type = EdgeInputType::Epsilon;
+				}
+
+				clauseDisplayText += L"lri:<skip>";
+				endPoses.Add(pair.end, clauseDisplayText.Length());
+				return pair;
+			}
+
 			AutomatonBuilder::StatePair AutomatonBuilder::BuildLriClause(RuleSymbol* rule, bool optional, vint32_t flag, collections::List<RuleSymbol*>& targetRules)
 			{
 				/*
-				*             +--(lri:a)--+
-				*             |           V
-				* S --(rule)--+--(lri:b)--+--(e:ReopenObject)--> E
-				*             |           ^
-				*             +-----------+  {<-- if optional}
+				*                                                   +--(lri:c:ReopenObject)--+
+				*                                                   |                        |
+				*                          +--(lri:a:ReopenObject)--+--(lri:d:ReopenObject)--+
+				*                          |                        |                        |
+				*                          |                        +------------------------+  {<-- if optional}
+				*                          |                                                 V
+				* S --(rule:ReopenObject)--+--(lri:b:ReopenObject)---------------------------+--> E
+				*                          |                                                 ^
+				*                          +-------------------------------------------------+  {<-- if optional}
 				*/
 
 				List<StateBuilder> alts;
 				for (auto targetRule : targetRules)
 				{
-					alts.Add([this, flag, targetRule]()
-					{
-						StatePair pair;
-						pair.begin = CreateState();
-						pair.end = CreateState();
-						startPoses.Add(pair.begin, clauseDisplayText.Length());
-
-						{
-							auto edge = CreateEdge(pair.begin, pair.end);
-							edge->input.type = EdgeInputType::LrInject;
-							edge->input.token = flag;
-							edge->input.rule = targetRule;
-							edge->input.ruleType = automaton::ReturnRuleType::Reuse;
-							edge->insAfterInput.Add({ AstInsType::ReopenObject });
-						}
-
-						clauseDisplayText += L"lri:" + targetRule->Name();
-						endPoses.Add(pair.end, clauseDisplayText.Length());
-						return pair;
-					});
+					alts.Add([this, flag, targetRule]() { return BuildLriSyntax(targetRule, flag); });
 				}
 
 				if (optional)
 				{
-					alts.Add([this, rule]()
-					{
-						StatePair pair;
-						pair.begin = CreateState();
-						pair.end = CreateState();
-						startPoses.Add(pair.begin, clauseDisplayText.Length());
-
-						{
-							auto edge = CreateEdge(pair.begin, pair.end);
-							edge->input.type = EdgeInputType::Epsilon;
-						}
-
-						clauseDisplayText += L"lri:<skip>";
-						endPoses.Add(pair.end, clauseDisplayText.Length());
-						return pair;
-					});
+					alts.Add([this, rule]() { return BuildLriSkip(); });
 				}
 
 				List<StateBuilder> seqs;
-				seqs.Add([this, rule]()
-				{
-					StatePair pair;
-					pair.begin = CreateState();
-					pair.end = CreateState();
-					startPoses.Add(pair.begin, clauseDisplayText.Length());
-
-					{
-						auto edge = CreateEdge(pair.begin, pair.end);
-						edge->input.type = EdgeInputType::Rule;
-						edge->input.rule = rule;
-						edge->input.ruleType = automaton::ReturnRuleType::Reuse;
-						edge->insAfterInput.Add({ AstInsType::ReopenObject });
-					}
-
-					clauseDisplayText += L"!" + rule->Name();
-					endPoses.Add(pair.end, clauseDisplayText.Length());
-					return pair;
-				});
-				seqs.Add([this, &alts]() {return BuildAlternativeSyntax(alts); });
+				seqs.Add([this, rule]() { return BuildUseSyntax(rule); });
+				seqs.Add([this, &alts]() { return BuildAlternativeSyntax(alts); });
 
 				StateBuilder clause = [this, &seqs]() {return BuildSequenceSyntax(seqs); };
 				return BuildReuseClause(clause);
