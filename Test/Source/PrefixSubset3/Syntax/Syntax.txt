@@ -1,0 +1,67 @@
+////////////////////////////////////////
+// Left Recursive (Primitives)
+////////////////////////////////////////
+
+_Name
+  ::= ID:name as Name
+  ::= _Name:parent "." ID:member as MemberName
+  ;
+
+_PrimitiveShared
+  ::= !_Name
+  ;
+
+_PrimitiveTypeOnly
+  ::= "const" _PrimitiveShared:type as ConstType
+  ::= "const" _PrimitiveTypeOnly:type as ConstType
+  ;
+
+_PrimitiveExprOnly
+  ::= "(" !_Expr ")"
+  ;
+
+////////////////////////////////////////
+// Left Recursive (Types)
+////////////////////////////////////////
+
+_LongType
+  ::= left_recursion_placeholder(Shared,Type)
+  ::= !_PrimitiveShared
+  ::= !_PrimitiveTypeOnly
+  ::= _LongType:type "const" as ConstType
+  ::= _LongType:type "*" as PointerType
+  ::= _LongType:returnType "(" {_LongType:args ; ","} ")" as FunctionType
+  ;
+
+////////////////////////////////////////
+// Left Recursive (Expressions)
+////////////////////////////////////////
+
+_Expr0
+  ::= !_PrimitiveShared
+  ::= !_PrimitiveExprOnly
+  ::= left_recursion_placeholder(Shared,Expr)
+  ;
+
+_Expr1
+  ::= !_Expr0
+  ::= _Expr1:func "(" {_Expr:args ; ","} ")" as CallExpr
+  ;
+
+_Expr
+  ::= !_Expr1
+  ::= _Expr:first "*" _Expr1:second as MulExpr
+  ;
+
+////////////////////////////////////////
+// Left Recursive (Module)
+////////////////////////////////////////
+
+Module
+  ::= !_PrimitiveShared
+  ::= !_PrimitiveTypeOnly
+  ::= !_PrimitiveExprOnly
+  ::= !_PrimitiveShared left_recursion_inject(Shared) _LongType | _Expr
+  ::= !_PrimitiveTypeOnly left_recursion_inject(Type) _LongType
+  ::= !_PrimitiveExprOnly left_recursion_inject(Expr) _Expr
+  ;
