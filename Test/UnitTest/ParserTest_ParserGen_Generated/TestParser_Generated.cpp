@@ -51,6 +51,12 @@ namespace TestParser_Generated_TestObjects
 		TParser parser;
 		WString caseName;
 
+		parser.OnError.Add(
+			[&](ErrorArgs& args)
+			{
+				args.throwError = true;
+			});
+
 		parser.OnEndOfInput.Add(
 			[&](EndOfInputArgs& args)
 			{

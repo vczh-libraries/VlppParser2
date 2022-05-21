@@ -16,15 +16,17 @@ namespace prefixsubset3
 	{
 		OPEN_ROUND = 0,
 		CLOSE_ROUND = 1,
-		COMMA = 2,
-		DOT = 3,
-		CONST = 4,
-		ASTERISK = 5,
-		ID = 6,
-		SPACE = 7,
+		OPEN_BRACE = 2,
+		CLOSE_BRACE = 3,
+		COMMA = 4,
+		DOT = 5,
+		CONST = 6,
+		ASTERISK = 7,
+		ID = 8,
+		SPACE = 9,
 	};
 
-	constexpr vl::vint PrefixSubset3TokenCount = 8;
+	constexpr vl::vint PrefixSubset3TokenCount = 10;
 	extern bool PrefixSubset3TokenDeleter(vl::vint token);
 	extern const wchar_t* PrefixSubset3TokenId(PrefixSubset3Tokens token);
 	extern const wchar_t* PrefixSubset3TokenDisplayText(PrefixSubset3Tokens token);
