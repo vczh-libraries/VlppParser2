@@ -14,6 +14,7 @@ namespace prefixsubset3
 {
 	class CallExpr;
 	class ConstType;
+	class CtorExpr;
 	class FunctionType;
 	class MemberName;
 	class MulExpr;
@@ -32,6 +33,7 @@ namespace prefixsubset3
 			virtual void Visit(TypeOrExprToResolve* node) = 0;
 			virtual void Visit(QualifiedName* node) = 0;
 			virtual void Visit(CallExpr* node) = 0;
+			virtual void Visit(CtorExpr* node) = 0;
 			virtual void Visit(MulExpr* node) = 0;
 			virtual void Visit(ConstType* node) = 0;
 			virtual void Visit(PointerType* node) = 0;
@@ -79,6 +81,15 @@ namespace prefixsubset3
 	{
 	public:
 		vl::Ptr<TypeOrExpr> func;
+		vl::collections::List<vl::Ptr<TypeOrExpr>> args;
+
+		void Accept(TypeOrExpr::IVisitor* visitor) override;
+	};
+
+	class CtorExpr : public TypeOrExpr, vl::reflection::Description<CtorExpr>
+	{
+	public:
+		vl::Ptr<TypeOrExpr> type;
 		vl::collections::List<vl::Ptr<TypeOrExpr>> args;
 
 		void Accept(TypeOrExpr::IVisitor* visitor) override;
@@ -140,6 +151,7 @@ namespace vl
 			DECL_TYPE_INFO(prefixsubset3::Name)
 			DECL_TYPE_INFO(prefixsubset3::MemberName)
 			DECL_TYPE_INFO(prefixsubset3::CallExpr)
+			DECL_TYPE_INFO(prefixsubset3::CtorExpr)
 			DECL_TYPE_INFO(prefixsubset3::MulExpr)
 			DECL_TYPE_INFO(prefixsubset3::ConstType)
 			DECL_TYPE_INFO(prefixsubset3::PointerType)
@@ -160,6 +172,11 @@ namespace vl
 				}
 
 				void Visit(prefixsubset3::CallExpr* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+				void Visit(prefixsubset3::CtorExpr* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}

@@ -30,6 +30,10 @@ TypeOrExprVisitor
 		{
 		}
 
+		void TypeOrExprVisitor::Visit(CtorExpr* node)
+		{
+		}
+
 		void TypeOrExprVisitor::Visit(MulExpr* node)
 		{
 		}

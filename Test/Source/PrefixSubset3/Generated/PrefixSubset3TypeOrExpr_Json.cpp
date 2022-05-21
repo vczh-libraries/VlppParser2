@@ -32,6 +32,22 @@ namespace prefixsubset3
 			Print(node->type.Obj());
 			EndField();
 		}
+		void TypeOrExprVisitor::PrintFields(CtorExpr* node)
+		{
+			BeginField(L"args");
+			BeginArray();
+			for (auto&& listItem : node->args)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+			BeginField(L"type");
+			Print(node->type.Obj());
+			EndField();
+		}
 		void TypeOrExprVisitor::PrintFields(FunctionType* node)
 		{
 			BeginField(L"args");
@@ -128,6 +144,20 @@ namespace prefixsubset3
 			WriteType(L"CallExpr", node);
 			PrintFields(static_cast<TypeOrExpr*>(node));
 			PrintFields(static_cast<CallExpr*>(node));
+			EndObject();
+		}
+
+		void TypeOrExprVisitor::Visit(CtorExpr* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"CtorExpr", node);
+			PrintFields(static_cast<TypeOrExpr*>(node));
+			PrintFields(static_cast<CtorExpr*>(node));
 			EndObject();
 		}
 

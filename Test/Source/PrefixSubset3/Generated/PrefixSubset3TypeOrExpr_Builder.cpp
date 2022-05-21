@@ -38,6 +38,22 @@ MakeConstType
 		}
 
 /***********************************************************************
+MakeCtorExpr
+***********************************************************************/
+
+		MakeCtorExpr& MakeCtorExpr::args(const vl::Ptr<TypeOrExpr>& value)
+		{
+			node->args.Add(value);
+			return *this;
+		}
+
+		MakeCtorExpr& MakeCtorExpr::type(const vl::Ptr<TypeOrExpr>& value)
+		{
+			node->type = value;
+			return *this;
+		}
+
+/***********************************************************************
 MakeFunctionType
 ***********************************************************************/
 

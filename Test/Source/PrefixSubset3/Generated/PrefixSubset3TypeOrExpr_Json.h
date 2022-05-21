@@ -22,6 +22,7 @@ namespace prefixsubset3
 		protected:
 			virtual void PrintFields(CallExpr* node);
 			virtual void PrintFields(ConstType* node);
+			virtual void PrintFields(CtorExpr* node);
 			virtual void PrintFields(FunctionType* node);
 			virtual void PrintFields(MemberName* node);
 			virtual void PrintFields(MulExpr* node);
@@ -35,6 +36,7 @@ namespace prefixsubset3
 			void Visit(TypeOrExprToResolve* node) override;
 			void Visit(QualifiedName* node) override;
 			void Visit(CallExpr* node) override;
+			void Visit(CtorExpr* node) override;
 			void Visit(MulExpr* node) override;
 			void Visit(ConstType* node) override;
 			void Visit(PointerType* node) override;

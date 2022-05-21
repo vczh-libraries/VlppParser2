@@ -14,6 +14,7 @@ namespace prefixsubset3
 		void TypeOrExprVisitor::Traverse(vl::glr::ParsingAstBase* node) {}
 		void TypeOrExprVisitor::Traverse(CallExpr* node) {}
 		void TypeOrExprVisitor::Traverse(ConstType* node) {}
+		void TypeOrExprVisitor::Traverse(CtorExpr* node) {}
 		void TypeOrExprVisitor::Traverse(FunctionType* node) {}
 		void TypeOrExprVisitor::Traverse(MemberName* node) {}
 		void TypeOrExprVisitor::Traverse(MulExpr* node) {}
@@ -26,6 +27,7 @@ namespace prefixsubset3
 		void TypeOrExprVisitor::Finishing(vl::glr::ParsingAstBase* node) {}
 		void TypeOrExprVisitor::Finishing(CallExpr* node) {}
 		void TypeOrExprVisitor::Finishing(ConstType* node) {}
+		void TypeOrExprVisitor::Finishing(CtorExpr* node) {}
 		void TypeOrExprVisitor::Finishing(FunctionType* node) {}
 		void TypeOrExprVisitor::Finishing(MemberName* node) {}
 		void TypeOrExprVisitor::Finishing(MulExpr* node) {}
@@ -67,6 +69,22 @@ namespace prefixsubset3
 			}
 			InspectInto(node->func.Obj());
 			Finishing(static_cast<CallExpr*>(node));
+			Finishing(static_cast<TypeOrExpr*>(node));
+			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+		}
+
+		void TypeOrExprVisitor::Visit(CtorExpr* node)
+		{
+			if (!node) return;
+			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+			Traverse(static_cast<TypeOrExpr*>(node));
+			Traverse(static_cast<CtorExpr*>(node));
+			for (auto&& listItem : node->args)
+			{
+				InspectInto(listItem.Obj());
+			}
+			InspectInto(node->type.Obj());
+			Finishing(static_cast<CtorExpr*>(node));
 			Finishing(static_cast<TypeOrExpr*>(node));
 			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 		}

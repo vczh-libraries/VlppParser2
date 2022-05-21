@@ -26,6 +26,13 @@ namespace prefixsubset3
 			MakeConstType& type(const vl::Ptr<TypeOrExpr>& value);
 		};
 
+		class MakeCtorExpr : public vl::glr::ParsingAstBuilder<CtorExpr>
+		{
+		public:
+			MakeCtorExpr& args(const vl::Ptr<TypeOrExpr>& value);
+			MakeCtorExpr& type(const vl::Ptr<TypeOrExpr>& value);
+		};
+
 		class MakeFunctionType : public vl::glr::ParsingAstBuilder<FunctionType>
 		{
 		public:

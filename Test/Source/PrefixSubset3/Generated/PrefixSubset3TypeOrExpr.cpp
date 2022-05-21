@@ -32,6 +32,11 @@ Visitor Pattern Implementation
 		visitor->Visit(this);
 	}
 
+	void CtorExpr::Accept(TypeOrExpr::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
 	void MulExpr::Accept(TypeOrExpr::IVisitor* visitor)
 	{
 		visitor->Visit(this);
@@ -72,6 +77,7 @@ namespace vl
 			IMPL_TYPE_INFO_RENAME(prefixsubset3::Name, prefixsubset3::Name)
 			IMPL_TYPE_INFO_RENAME(prefixsubset3::MemberName, prefixsubset3::MemberName)
 			IMPL_TYPE_INFO_RENAME(prefixsubset3::CallExpr, prefixsubset3::CallExpr)
+			IMPL_TYPE_INFO_RENAME(prefixsubset3::CtorExpr, prefixsubset3::CtorExpr)
 			IMPL_TYPE_INFO_RENAME(prefixsubset3::MulExpr, prefixsubset3::MulExpr)
 			IMPL_TYPE_INFO_RENAME(prefixsubset3::ConstType, prefixsubset3::ConstType)
 			IMPL_TYPE_INFO_RENAME(prefixsubset3::PointerType, prefixsubset3::PointerType)
@@ -115,6 +121,15 @@ namespace vl
 				CLASS_MEMBER_FIELD(func)
 				CLASS_MEMBER_FIELD(args)
 			END_CLASS_MEMBER(prefixsubset3::CallExpr)
+
+			BEGIN_CLASS_MEMBER(prefixsubset3::CtorExpr)
+				CLASS_MEMBER_BASE(prefixsubset3::TypeOrExpr)
+
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixsubset3::CtorExpr>(), NO_PARAMETER)
+
+				CLASS_MEMBER_FIELD(type)
+				CLASS_MEMBER_FIELD(args)
+			END_CLASS_MEMBER(prefixsubset3::CtorExpr)
 
 			BEGIN_CLASS_MEMBER(prefixsubset3::MulExpr)
 				CLASS_MEMBER_BASE(prefixsubset3::TypeOrExpr)
@@ -162,6 +177,7 @@ namespace vl
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixsubset3::TypeOrExpr::IVisitor::*)(prefixsubset3::TypeOrExprToResolve* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixsubset3::TypeOrExpr::IVisitor::*)(prefixsubset3::QualifiedName* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixsubset3::TypeOrExpr::IVisitor::*)(prefixsubset3::CallExpr* node))
+				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixsubset3::TypeOrExpr::IVisitor::*)(prefixsubset3::CtorExpr* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixsubset3::TypeOrExpr::IVisitor::*)(prefixsubset3::MulExpr* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixsubset3::TypeOrExpr::IVisitor::*)(prefixsubset3::ConstType* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixsubset3::TypeOrExpr::IVisitor::*)(prefixsubset3::PointerType* node))
@@ -188,6 +204,7 @@ namespace vl
 					ADD_TYPE_INFO(prefixsubset3::Name)
 					ADD_TYPE_INFO(prefixsubset3::MemberName)
 					ADD_TYPE_INFO(prefixsubset3::CallExpr)
+					ADD_TYPE_INFO(prefixsubset3::CtorExpr)
 					ADD_TYPE_INFO(prefixsubset3::MulExpr)
 					ADD_TYPE_INFO(prefixsubset3::ConstType)
 					ADD_TYPE_INFO(prefixsubset3::PointerType)

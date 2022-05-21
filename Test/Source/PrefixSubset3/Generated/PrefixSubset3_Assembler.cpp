@@ -22,6 +22,8 @@ PrefixSubset3AstInsReceiver : public vl::glr::AstInsReceiverBase
 			return new prefixsubset3::CallExpr();
 		case PrefixSubset3Classes::ConstType:
 			return new prefixsubset3::ConstType();
+		case PrefixSubset3Classes::CtorExpr:
+			return new prefixsubset3::CtorExpr();
 		case PrefixSubset3Classes::FunctionType:
 			return new prefixsubset3::FunctionType();
 		case PrefixSubset3Classes::MemberName:
@@ -50,6 +52,10 @@ PrefixSubset3AstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::glr::AssemblerSetObjectField(&prefixsubset3::CallExpr::func, object, field, value, cppFieldName);
 		case PrefixSubset3Fields::ConstType_type:
 			return vl::glr::AssemblerSetObjectField(&prefixsubset3::ConstType::type, object, field, value, cppFieldName);
+		case PrefixSubset3Fields::CtorExpr_args:
+			return vl::glr::AssemblerSetObjectField(&prefixsubset3::CtorExpr::args, object, field, value, cppFieldName);
+		case PrefixSubset3Fields::CtorExpr_type:
+			return vl::glr::AssemblerSetObjectField(&prefixsubset3::CtorExpr::type, object, field, value, cppFieldName);
 		case PrefixSubset3Fields::FunctionType_args:
 			return vl::glr::AssemblerSetObjectField(&prefixsubset3::FunctionType::args, object, field, value, cppFieldName);
 		case PrefixSubset3Fields::FunctionType_returnType:
@@ -94,6 +100,7 @@ PrefixSubset3AstInsReceiver : public vl::glr::AstInsReceiverBase
 		const wchar_t* results[] = {
 			L"CallExpr",
 			L"ConstType",
+			L"CtorExpr",
 			L"FunctionType",
 			L"MemberName",
 			L"MulExpr",
@@ -104,7 +111,7 @@ PrefixSubset3AstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"TypeOrExprToResolve",
 		};
 		vl::vint index = (vl::vint)type;
-		return 0 <= index && index < 10 ? results[index] : nullptr;
+		return 0 <= index && index < 11 ? results[index] : nullptr;
 	}
 
 	const wchar_t* PrefixSubset3CppTypeName(PrefixSubset3Classes type)
@@ -112,6 +119,7 @@ PrefixSubset3AstInsReceiver : public vl::glr::AstInsReceiverBase
 		const wchar_t* results[] = {
 			L"prefixsubset3::CallExpr",
 			L"prefixsubset3::ConstType",
+			L"prefixsubset3::CtorExpr",
 			L"prefixsubset3::FunctionType",
 			L"prefixsubset3::MemberName",
 			L"prefixsubset3::MulExpr",
@@ -122,7 +130,7 @@ PrefixSubset3AstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"prefixsubset3::TypeOrExprToResolve",
 		};
 		vl::vint index = (vl::vint)type;
-		return 0 <= index && index < 10 ? results[index] : nullptr;
+		return 0 <= index && index < 11 ? results[index] : nullptr;
 	}
 
 	const wchar_t* PrefixSubset3FieldName(PrefixSubset3Fields field)
@@ -131,6 +139,8 @@ PrefixSubset3AstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"CallExpr::args",
 			L"CallExpr::func",
 			L"ConstType::type",
+			L"CtorExpr::args",
+			L"CtorExpr::type",
 			L"FunctionType::args",
 			L"FunctionType::returnType",
 			L"MemberName::member",
@@ -142,7 +152,7 @@ PrefixSubset3AstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"TypeOrExprToResolve::candidates",
 		};
 		vl::vint index = (vl::vint)field;
-		return 0 <= index && index < 12 ? results[index] : nullptr;
+		return 0 <= index && index < 14 ? results[index] : nullptr;
 	}
 
 	const wchar_t* PrefixSubset3CppFieldName(PrefixSubset3Fields field)
@@ -151,6 +161,8 @@ PrefixSubset3AstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"prefixsubset3::CallExpr::args",
 			L"prefixsubset3::CallExpr::func",
 			L"prefixsubset3::ConstType::type",
+			L"prefixsubset3::CtorExpr::args",
+			L"prefixsubset3::CtorExpr::type",
 			L"prefixsubset3::FunctionType::args",
 			L"prefixsubset3::FunctionType::returnType",
 			L"prefixsubset3::MemberName::member",
@@ -162,7 +174,7 @@ PrefixSubset3AstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"prefixsubset3::TypeOrExprToResolve::candidates",
 		};
 		vl::vint index = (vl::vint)field;
-		return 0 <= index && index < 12 ? results[index] : nullptr;
+		return 0 <= index && index < 14 ? results[index] : nullptr;
 	}
 
 	vl::Ptr<vl::glr::ParsingAstBase> PrefixSubset3AstInsReceiver::ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates)
@@ -174,6 +186,8 @@ PrefixSubset3AstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::glr::AssemblerResolveAmbiguity<prefixsubset3::CallExpr, prefixsubset3::TypeOrExprToResolve>(type, candidates, cppTypeName);
 		case PrefixSubset3Classes::ConstType:
 			return vl::glr::AssemblerResolveAmbiguity<prefixsubset3::ConstType, prefixsubset3::TypeOrExprToResolve>(type, candidates, cppTypeName);
+		case PrefixSubset3Classes::CtorExpr:
+			return vl::glr::AssemblerResolveAmbiguity<prefixsubset3::CtorExpr, prefixsubset3::TypeOrExprToResolve>(type, candidates, cppTypeName);
 		case PrefixSubset3Classes::FunctionType:
 			return vl::glr::AssemblerResolveAmbiguity<prefixsubset3::FunctionType, prefixsubset3::TypeOrExprToResolve>(type, candidates, cppTypeName);
 		case PrefixSubset3Classes::MemberName:

@@ -26,6 +26,16 @@ namespace prefixsubset3
 			to->type = CopyNode(from->type.Obj());
 		}
 
+		void TypeOrExprVisitor::CopyFields(CtorExpr* from, CtorExpr* to)
+		{
+			CopyFields(static_cast<TypeOrExpr*>(from), static_cast<TypeOrExpr*>(to));
+			for (auto&& listItem : from->args)
+			{
+				to->args.Add(CopyNode(listItem.Obj()));
+			}
+			to->type = CopyNode(from->type.Obj());
+		}
+
 		void TypeOrExprVisitor::CopyFields(FunctionType* from, FunctionType* to)
 		{
 			CopyFields(static_cast<TypeOrExpr*>(from), static_cast<TypeOrExpr*>(to));
@@ -99,6 +109,13 @@ namespace prefixsubset3
 			this->result = newNode;
 		}
 
+		void TypeOrExprVisitor::Visit(CtorExpr* node)
+		{
+			auto newNode = vl::MakePtr<CtorExpr>();
+			CopyFields(node, newNode.Obj());
+			this->result = newNode;
+		}
+
 		void TypeOrExprVisitor::Visit(MulExpr* node)
 		{
 			auto newNode = vl::MakePtr<MulExpr>();
@@ -158,6 +175,12 @@ namespace prefixsubset3
 		{
 			if (!node) return nullptr;
 			return CopyNode(static_cast<TypeOrExpr*>(node)).Cast<ConstType>();
+		}
+
+		vl::Ptr<CtorExpr> TypeOrExprVisitor::CopyNode(CtorExpr* node)
+		{
+			if (!node) return nullptr;
+			return CopyNode(static_cast<TypeOrExpr*>(node)).Cast<CtorExpr>();
 		}
 
 		vl::Ptr<FunctionType> TypeOrExprVisitor::CopyNode(FunctionType* node)

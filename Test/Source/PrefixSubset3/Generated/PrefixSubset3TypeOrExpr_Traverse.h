@@ -24,6 +24,7 @@ namespace prefixsubset3
 			virtual void Traverse(vl::glr::ParsingAstBase* node);
 			virtual void Traverse(CallExpr* node);
 			virtual void Traverse(ConstType* node);
+			virtual void Traverse(CtorExpr* node);
 			virtual void Traverse(FunctionType* node);
 			virtual void Traverse(MemberName* node);
 			virtual void Traverse(MulExpr* node);
@@ -37,6 +38,7 @@ namespace prefixsubset3
 			virtual void Finishing(vl::glr::ParsingAstBase* node);
 			virtual void Finishing(CallExpr* node);
 			virtual void Finishing(ConstType* node);
+			virtual void Finishing(CtorExpr* node);
 			virtual void Finishing(FunctionType* node);
 			virtual void Finishing(MemberName* node);
 			virtual void Finishing(MulExpr* node);
@@ -50,6 +52,7 @@ namespace prefixsubset3
 			void Visit(TypeOrExprToResolve* node) override;
 			void Visit(QualifiedName* node) override;
 			void Visit(CallExpr* node) override;
+			void Visit(CtorExpr* node) override;
 			void Visit(MulExpr* node) override;
 			void Visit(ConstType* node) override;
 			void Visit(PointerType* node) override;
