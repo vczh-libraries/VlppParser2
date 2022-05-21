@@ -17,7 +17,7 @@ _PrimitiveTypeOnly
   ;
 
 _PrimitiveExprOnly
-  ::= "(" !_Expr ")"
+  ::= "(" !_Expr_Raw ")"
   ;
 
 ////////////////////////////////////////
@@ -37,15 +37,25 @@ _LongType
 // Left Recursive (Expressions)
 ////////////////////////////////////////
 
-_Expr0
+_Expr0_Shared
   ::= !_PrimitiveShared
+  ::= left_recursion_placeholder(Shared)
+  ;
+
+_Expr0_SharedOrCtor
+  ::= !_Expr0_Shared
+  ::= _Expr0_Shared:type "{" {_Expr_Raw:args ; ","} "}" as CtorExpr
+  ;
+
+_Expr0
+  ::= !_Expr0_SharedOrCtor
   ::= !_PrimitiveExprOnly
-  ::= left_recursion_placeholder(Shared,Expr)
+  ::= left_recursion_placeholder(Expr)
   ;
 
 _Expr1
   ::= !_Expr0
-  ::= _Expr1:func "(" {_Expr:args ; ","} ")" as CallExpr
+  ::= _Expr1:func "(" {_Expr_Raw:args ; ","} ")" as CallExpr
   ;
 
 _Expr
@@ -53,15 +63,18 @@ _Expr
   ::= _Expr:first "*" _Expr1:second as MulExpr
   ;
 
+_Expr_Raw
+  ::= !_PrimitiveShared [left_recursion_inject(Shared) _Expr]
+  ::= !_PrimitiveTypeOnly left_recursion_inject(Type) _Expr | (_LongType left_recursion_inject(Type) _Expr)
+  ::= !_PrimitiveExprOnly [left_recursion_inject(Expr) _Expr]
+  ;
+
 ////////////////////////////////////////
 // Left Recursive (Module)
 ////////////////////////////////////////
 
 Module
-  ::= !_PrimitiveShared
-  ::= !_PrimitiveTypeOnly
-  ::= !_PrimitiveExprOnly
-  ::= !_PrimitiveShared left_recursion_inject(Shared) _LongType | _Expr
-  ::= !_PrimitiveTypeOnly left_recursion_inject(Type) _LongType
-  ::= !_PrimitiveExprOnly left_recursion_inject(Expr) _Expr
+  ::= !_PrimitiveShared [left_recursion_inject(Shared) _LongType | _Expr]
+  ::= !_PrimitiveTypeOnly [left_recursion_inject(Type) _Expr | (_LongType [left_recursion_inject(Type) _Expr])]
+  ::= !_PrimitiveExprOnly [left_recursion_inject(Expr) _Expr]
   ;
