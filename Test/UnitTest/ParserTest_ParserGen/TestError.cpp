@@ -7,10 +7,10 @@ namespace TestError_Syntax_TestObjects
 		TEST_ASSERT(global.Errors().Count() > 0);
 		auto&& error = global.Errors()[0];
 		TEST_ASSERT(error.type == expectedError.type);
-		TEST_ASSERT(error.arg1 == (expectedError.arg1 ?  expectedError.arg1 : L""));
-		TEST_ASSERT(error.arg2 == (expectedError.arg2 ?  expectedError.arg2 : L""));
-		TEST_ASSERT(error.arg3 == (expectedError.arg3 ?  expectedError.arg3 : L""));
-		TEST_ASSERT(error.arg4 == (expectedError.arg4 ?  expectedError.arg4 : L""));
+		TEST_ASSERT(error.arg1 == (expectedError.arg1 ? expectedError.arg1 : L""));
+		TEST_ASSERT(error.arg2 == (expectedError.arg2 ? expectedError.arg2 : L""));
+		TEST_ASSERT(error.arg3 == (expectedError.arg3 ? expectedError.arg3 : L""));
+		TEST_ASSERT(error.arg4 == (expectedError.arg4 ? expectedError.arg4 : L""));
 	}
 
 	void ExpectError(TypeParser& typeParser, RuleParser& ruleParser, const WString& astCode, const WString& lexerCode, const WString& syntaxCode, ParserErrorWithoutLocation expectedError)

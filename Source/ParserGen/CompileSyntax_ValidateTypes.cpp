@@ -463,20 +463,18 @@ ValidateTypesVisitor
 
 				void Visit(GlrLeftRecursionInjectClause* node) override
 				{
+					auto prefixRule = context.syntaxManager.Rules()[node->rule->literal.value];
+					if (prefixRule->isPartial)
 					{
-						auto rule = context.syntaxManager.Rules()[node->rule->literal.value];
-						if (rule->isPartial)
-						{
-							context.syntaxManager.AddError(
-								ParserErrorType::PartialRuleInLeftRecursionInject,
-								node->rule->codeRange,
-								ruleSymbol->Name(),
-								node->rule->literal.value
-								);
-						}
+						context.syntaxManager.AddError(
+							ParserErrorType::PartialRuleInLeftRecursionInject,
+							node->rule->codeRange,
+							ruleSymbol->Name(),
+							node->rule->literal.value
+							);
 					}
 
-					SearchForLrpVisitor visitor(context, node->continuation->flag->flag.value, ruleSymbol->ruleType);
+					SearchForLrpVisitor visitor(context, node->continuation->flag->flag.value, prefixRule->ruleType);
 					for (auto lriTarget : node->continuation->injectionTargets)
 					{
 						auto target = lriTarget->rule;

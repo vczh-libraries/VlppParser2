@@ -396,7 +396,7 @@ Exp3
 			astCode,
 			lexerCode,
 			syntaxCode,
-			{ ParserErrorType::LeftRecursionPlaceholderTypeMismatched,L"Exp3",L"Expression",L"Exp2",L"Exp1"}
+			{ ParserErrorType::LeftRecursionPlaceholderTypeMismatched,L"Exp3",L"Prefix",L"Module",L"Module"}
 			);
 	});
 
