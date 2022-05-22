@@ -37,19 +37,26 @@ _LongType
 // Left Recursive (Expressions)
 ////////////////////////////////////////
 
-_Expr0_Shared
-  ::= !_PrimitiveShared
+// _Expr_Raw and Module are only entries to parse expressions
+// no need to keep complete syntax
+// having only left_recursion_placeholder is enough here
+
+_Expr0_Shared : TypeOrExpr
   ::= left_recursion_placeholder(Shared)
+  ;
+
+_Expr0_Type : TypeOrExpr
+  ::= left_recursion_placeholder(Type)
   ;
 
 _Expr0_SharedOrCtor
   ::= !_Expr0_Shared
   ::= _Expr0_Shared:type "{" {_Expr_Raw:args ; ","} "}" as CtorExpr
+  ::= _Expr0_Type:type "{" {_Expr_Raw:args ; ","} "}" as CtorExpr
   ;
 
 _Expr0
   ::= !_Expr0_SharedOrCtor
-  ::= !_PrimitiveExprOnly
   ::= left_recursion_placeholder(Expr)
   ;
 

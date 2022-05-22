@@ -4,6 +4,8 @@
 
 - Extensible tokens, for example, recognize `R"[^\s(]\(` and invoke a callback function to determine the end of the string.
   - Offer two options: using (rich regex | C++) to search for complete token.
+- Add `left_recursion_inject_multiple` to allow injecting to multiple `left_recursion_placeholder`.
+  - This should simplify C++ type and expression syntax, starting `(Expr)` in expression and type prefix in expression, avoiding `_Expr0_Shared` in PrefixSubset3.
 
 ## Issues
 
