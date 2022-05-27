@@ -209,7 +209,7 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 						case EdgeInputType::Ending:
 							endingEdge = outEdge;
 							break;
-						// find if there is any LeftRec before this Ending
+						// find if there is any LeftRec from this state
 						case EdgeInputType::LeftRec:
 							{
 								auto lrEdge = outEdge;
@@ -223,7 +223,7 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 										edges.Add(newEdge);
 
 										newEdge->input = tokenEdge->input;
-										newEdge->importancy = lrEdge->importancy;
+										newEdge->importancy = tokenEdge->importancy;
 										CopyFrom(newEdge->returnEdges, From(returnEdges).Take(i + 1), true);
 										CopyFrom(newEdge->returnEdges, tokenEdge->returnEdges, true);
 
@@ -243,15 +243,33 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 								}
 							}
 							break;
+						// find if there is any Token from this state
 						case EdgeInputType::Token:
 							{
-								CHECK_FAIL(L"Not Implemented!");
+								created++;
+								auto tokenEdge = outEdge;
+								auto newEdge = new EdgeSymbol(injectEdge->From(), tokenEdge->To());
+								edges.Add(newEdge);
+
+								newEdge->input = tokenEdge->input;
+								newEdge->importancy = tokenEdge->importancy;
+								CopyFrom(newEdge->returnEdges, From(returnEdges).Take(i + 1), true);
+								CopyFrom(newEdge->returnEdges, tokenEdge->returnEdges, true);
+
+								CopyFrom(newEdge->insSwitch, tokenEdge->insSwitch, true);
+
+								// newEdge consumes a token
+								// lrEdge->insAfterInput happens before consuming this token
+								// so it should be copied to newEdge->insBeforeInput
+								CopyFrom(newEdge->insBeforeInput, instructionPrefix, true);
+								CopyFrom(newEdge->insBeforeInput, tokenEdge->insBeforeInput, true);
+								CopyFrom(newEdge->insAfterInput, tokenEdge->insAfterInput, true);
 							}
 							break;
 						}
 					}
 
-					if (endingState)
+					if (endingEdge)
 					{
 						CopyFrom(instructionPrefix, endingEdge->insBeforeInput, true);
 						CopyFrom(instructionPrefix, returnEdge->insAfterInput, true);
