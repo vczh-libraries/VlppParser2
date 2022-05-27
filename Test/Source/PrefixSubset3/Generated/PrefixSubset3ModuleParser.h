@@ -19,10 +19,14 @@ namespace prefixsubset3
 		_PrimitiveTypeOnly = 9,
 		_PrimitiveExprOnly = 15,
 		_LongType = 20,
-		_Expr0 = 35,
-		_Expr1 = 41,
-		_Expr = 49,
-		Module = 55,
+		_Expr0_Shared = 35,
+		_Expr0_Type = 38,
+		_Expr0_SharedOrCtor = 41,
+		_Expr0 = 54,
+		_Expr1 = 58,
+		_Expr = 66,
+		_Expr_Raw = 72,
+		Module = 82,
 	};
 
 	const wchar_t* ModuleParserRuleName(vl::vint index);
