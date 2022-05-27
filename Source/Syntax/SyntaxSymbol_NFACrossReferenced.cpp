@@ -117,7 +117,7 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 					return;
 				}
 
-				List<EdgeSymbol*> endingEdges;
+				List<StateSymbol*> endingStates;
 				List<EdgeSymbol*> returnEdges;
 				{
 					// check if placeholderEdge does nothing more than using rules
@@ -131,14 +131,6 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 						goto FAILED_INSTRUCTION_CHECKING;
 					}
 
-					for (auto ins : placeholderEdge->insBeforeInput)
-					{
-						if (ins.type != AstInsType::DelayFieldAssignment)
-						{
-							goto FAILED_INSTRUCTION_CHECKING;
-						}
-					}
-
 					for (vint i = 0; i <= placeholderEdge->returnEdges.Count(); i++)
 					{
 						auto returnEdge =
@@ -146,36 +138,31 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 							? injectEdge
 							: placeholderEdge->returnEdges[i - 1]
 							;
-
 						auto endingState =
 							i == placeholderEdge->returnEdges.Count()
 							? placeholderEdge->To()
 							: placeholderEdge->returnEdges[i]->To()
 							;
-						auto endingEdge =
-							From(endingState->OutEdges())
-							.Where([](EdgeSymbol* edge) { return edge->input.type == EdgeInputType::Ending; })
-							.First(nullptr);
 
-						if (!endingEdge)
+						for (auto outEdge : endingState->OutEdges())
 						{
-							goto FAILED_INSTRUCTION_CHECKING;
+							if (outEdge->insSwitch.Count() > 0)
+							{
+								goto FAILED_INSTRUCTION_CHECKING;
+							}
+							if (outEdge->input.type == EdgeInputType::Ending && outEdge->insAfterInput.Count() > 0)
+							{
+								goto FAILED_INSTRUCTION_CHECKING;
+							}
 						}
-						if (endingEdge->insSwitch.Count() > 0)
-						{
-							goto FAILED_INSTRUCTION_CHECKING;
-						}
-						if (endingEdge->insAfterInput.Count() > 0)
-						{
-							goto FAILED_INSTRUCTION_CHECKING;
-						}
-						endingEdges.Add(endingEdge);
+
 						returnEdges.Add(returnEdge);
+						endingStates.Add(endingState);
 					}
 					goto PASSED_INSTRUCTION_CHECKING;
 				FAILED_INSTRUCTION_CHECKING:
 					AddError(
-						ParserErrorType::LeftRecursionInjectIntoNonLeftRecursiveRule,
+						ParserErrorType::LeftRecursionPlaceholderMixedWithSwitches,
 						{},
 						injectEdge->fromState->Rule()->Name(),
 						lrpFlags[injectEdge->input.token],
@@ -211,54 +198,75 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 
 				for (vint i = returnEdges.Count() - 1; i >= 0; i--)
 				{
-					auto endingEdge = endingEdges[i];
+					auto endingState = endingStates[i];
 					auto returnEdge = returnEdges[i];
+					EdgeSymbol* endingEdge = nullptr;
 
-					// find if there is any LeftRec before this Ending
-					for (auto lrEdge : endingEdge->From()->OutEdges())
+					for (auto outEdge : endingState->OutEdges())
 					{
-						if (lrEdge->input.type == EdgeInputType::LeftRec)
+						switch (outEdge->input.type)
 						{
-							// compact everything on top of this LeftRec and create an Input
-							for (auto tokenEdge : lrEdge->To()->OutEdges())
+						case EdgeInputType::Ending:
+							endingEdge = outEdge;
+							break;
+						// find if there is any LeftRec before this Ending
+						case EdgeInputType::LeftRec:
 							{
-								if (tokenEdge->input.type == EdgeInputType::Token)
+								auto lrEdge = outEdge;
+								// compact everything on top of this LeftRec and create an Input
+								for (auto tokenEdge : lrEdge->To()->OutEdges())
 								{
-									created++;
-									auto newEdge = new EdgeSymbol(injectEdge->From(), tokenEdge->To());
-									edges.Add(newEdge);
+									if (tokenEdge->input.type == EdgeInputType::Token)
+									{
+										created++;
+										auto newEdge = new EdgeSymbol(injectEdge->From(), tokenEdge->To());
+										edges.Add(newEdge);
 
-									newEdge->input = tokenEdge->input;
-									newEdge->importancy = lrEdge->importancy;
-									CopyFrom(newEdge->returnEdges, From(returnEdges).Take(i + 1), true);
-									CopyFrom(newEdge->returnEdges, tokenEdge->returnEdges, true);
+										newEdge->input = tokenEdge->input;
+										newEdge->importancy = lrEdge->importancy;
+										CopyFrom(newEdge->returnEdges, From(returnEdges).Take(i + 1), true);
+										CopyFrom(newEdge->returnEdges, tokenEdge->returnEdges, true);
 
-									CopyFrom(newEdge->insSwitch, lrEdge->insSwitch, true);
-									CopyFrom(newEdge->insSwitch, tokenEdge->insSwitch, true);
+										CopyFrom(newEdge->insSwitch, lrEdge->insSwitch, true);
+										CopyFrom(newEdge->insSwitch, tokenEdge->insSwitch, true);
 
-									// newEdge consumes a token
-									// lrEdge->insAfterInput happens before consuming this token
-									// so it should be copied to newEdge->insBeforeInput
-									CopyFrom(newEdge->insBeforeInput, instructionPrefix, true);
-									CopyFrom(newEdge->insBeforeInput, lrEdge->insBeforeInput, true);
-									CopyFrom(newEdge->insBeforeInput, lrEdge->insAfterInput, true);
-									CopyFrom(newEdge->insBeforeInput, tokenEdge->insBeforeInput, true);
+										// newEdge consumes a token
+										// lrEdge->insAfterInput happens before consuming this token
+										// so it should be copied to newEdge->insBeforeInput
+										CopyFrom(newEdge->insBeforeInput, instructionPrefix, true);
+										CopyFrom(newEdge->insBeforeInput, lrEdge->insBeforeInput, true);
+										CopyFrom(newEdge->insBeforeInput, lrEdge->insAfterInput, true);
+										CopyFrom(newEdge->insBeforeInput, tokenEdge->insBeforeInput, true);
 
-									CopyFrom(newEdge->insAfterInput, tokenEdge->insAfterInput, true);
+										CopyFrom(newEdge->insAfterInput, tokenEdge->insAfterInput, true);
+									}
 								}
 							}
+							break;
+						case EdgeInputType::Token:
+							{
+								CHECK_FAIL(L"Not Implemented!");
+							}
+							break;
 						}
 					}
 
-					CopyFrom(instructionPrefix, endingEdge->insBeforeInput, true);
-					CopyFrom(instructionPrefix, returnEdge->insAfterInput, true);
+					if (endingState)
+					{
+						CopyFrom(instructionPrefix, endingEdge->insBeforeInput, true);
+						CopyFrom(instructionPrefix, returnEdge->insAfterInput, true);
+					}
+					else
+					{
+						break;
+					}
 				}
 
 				// report an error if nothing is created
 				if (created == 0)
 				{
 					AddError(
-						ParserErrorType::LeftRecursionInjectIntoNonLeftRecursiveRule,
+						ParserErrorType::LeftRecursionInjectHasNoContinuation,
 						{},
 						injectEdge->fromState->Rule()->Name(),
 						lrpFlags[injectEdge->input.token],
