@@ -192,8 +192,8 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 				// there is no instruction in injectEdge->insBeforeInput
 				instructionPrefix.Add({ AstInsType::EndObject });
 				instructionPrefix.Add({ AstInsType::LriStore });
-				CopyFrom(instructionPrefix, placeholderEdge->insBeforeInput, true);
 				instructionPrefix.Add({ AstInsType::DelayFieldAssignment });
+				CopyFrom(instructionPrefix, placeholderEdge->insBeforeInput, true);
 				instructionPrefix.Add({ AstInsType::LriFetch });
 
 				for (vint i = returnEdges.Count() - 1; i >= 0; i--)
