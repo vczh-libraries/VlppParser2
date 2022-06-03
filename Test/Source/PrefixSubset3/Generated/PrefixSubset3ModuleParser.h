@@ -25,8 +25,9 @@ namespace prefixsubset3
 		_Expr0 = 54,
 		_Expr1 = 58,
 		_Expr = 66,
-		_Expr_Raw = 72,
-		Module = 82,
+		_Expr1_Raw = 72,
+		_Expr_Raw = 82,
+		Module = 92,
 	};
 
 	const wchar_t* ModuleParserRuleName(vl::vint index);

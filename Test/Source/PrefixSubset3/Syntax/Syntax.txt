@@ -67,7 +67,13 @@ _Expr1
 
 _Expr
   ::= !_Expr1
-  ::= _Expr:first "*" _Expr1:second as MulExpr
+  ::= _Expr:first "*" _Expr1_Raw:second as MulExpr
+  ;
+
+_Expr1_Raw
+  ::= !_PrimitiveShared [left_recursion_inject(Shared) _Expr1]
+  ::= !_PrimitiveTypeOnly left_recursion_inject(Type) _Expr1 | (_LongType left_recursion_inject(Type) _Expr1)
+  ::= !_PrimitiveExprOnly [left_recursion_inject(Expr) _Expr1]
   ;
 
 _Expr_Raw
