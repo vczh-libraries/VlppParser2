@@ -71,13 +71,13 @@ _Expr
   ;
 
 _Expr1_Raw
-  ::= !_PrimitiveShared [left_recursion_inject(Shared) _Expr1]
+  ::= !_PrimitiveShared [left_recursion_inject(Shared) _Expr1 | (_LongType left_recursion_inject(Type) _Expr1)]
   ::= !_PrimitiveTypeOnly left_recursion_inject(Type) _Expr1 | (_LongType left_recursion_inject(Type) _Expr1)
   ::= !_PrimitiveExprOnly [left_recursion_inject(Expr) _Expr1]
   ;
 
 _Expr_Raw
-  ::= !_PrimitiveShared [left_recursion_inject(Shared) _Expr]
+  ::= !_PrimitiveShared [left_recursion_inject(Shared) _Expr | (_LongType left_recursion_inject(Type) _Expr)]
   ::= !_PrimitiveTypeOnly left_recursion_inject(Type) _Expr | (_LongType left_recursion_inject(Type) _Expr)
   ::= !_PrimitiveExprOnly [left_recursion_inject(Expr) _Expr]
   ;
@@ -87,7 +87,7 @@ _Expr_Raw
 ////////////////////////////////////////
 
 Module
-  ::= !_PrimitiveShared [left_recursion_inject(Shared) _LongType | _Expr]
+  ::= !_PrimitiveShared [left_recursion_inject(Shared) _Expr | (_LongType [left_recursion_inject(Type) _Expr])]
   ::= !_PrimitiveTypeOnly [left_recursion_inject(Type) _Expr | (_LongType [left_recursion_inject(Type) _Expr])]
   ::= !_PrimitiveExprOnly [left_recursion_inject(Expr) _Expr]
   ;
