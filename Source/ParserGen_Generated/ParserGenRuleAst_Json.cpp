@@ -90,6 +90,19 @@ namespace vl
 				}
 				void RuleAstVisitor::PrintFields(GlrLeftRecursionInjectContinuation* node)
 				{
+					BeginField(L"configuration");
+					switch (node->configuration)
+					{
+					case vl::glr::parsergen::GlrLeftRecursionConfiguration::Multiple:
+						WriteString(L"Multiple");
+						break;
+					case vl::glr::parsergen::GlrLeftRecursionConfiguration::Single:
+						WriteString(L"Single");
+						break;
+					default:
+						WriteNull();
+					}
+					EndField();
 					BeginField(L"flag");
 					Print(node->flag.Obj());
 					EndField();

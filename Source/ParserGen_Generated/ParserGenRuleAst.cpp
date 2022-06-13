@@ -141,6 +141,7 @@ namespace vl
 			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrReuseClause, glr::parsergen::GlrReuseClause)
 			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrLeftRecursionPlaceholder, glr::parsergen::GlrLeftRecursionPlaceholder)
 			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrLeftRecursionPlaceholderClause, glr::parsergen::GlrLeftRecursionPlaceholderClause)
+			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrLeftRecursionConfiguration, glr::parsergen::GlrLeftRecursionConfiguration)
 			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrLeftRecursionInjectContinuationType, glr::parsergen::GlrLeftRecursionInjectContinuationType)
 			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrLeftRecursionInjectContinuation, glr::parsergen::GlrLeftRecursionInjectContinuation)
 			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrLeftRecursionInjectClause, glr::parsergen::GlrLeftRecursionInjectClause)
@@ -368,6 +369,12 @@ namespace vl
 				CLASS_MEMBER_FIELD(flags)
 			END_CLASS_MEMBER(vl::glr::parsergen::GlrLeftRecursionPlaceholderClause)
 
+			BEGIN_ENUM_ITEM(vl::glr::parsergen::GlrLeftRecursionConfiguration)
+				ENUM_ITEM_NAMESPACE(vl::glr::parsergen::GlrLeftRecursionConfiguration)
+				ENUM_NAMESPACE_ITEM(Single)
+				ENUM_NAMESPACE_ITEM(Multiple)
+			END_ENUM_ITEM(vl::glr::parsergen::GlrLeftRecursionConfiguration)
+
 			BEGIN_ENUM_ITEM(vl::glr::parsergen::GlrLeftRecursionInjectContinuationType)
 				ENUM_ITEM_NAMESPACE(vl::glr::parsergen::GlrLeftRecursionInjectContinuationType)
 				ENUM_NAMESPACE_ITEM(Optional)
@@ -380,6 +387,7 @@ namespace vl
 				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrLeftRecursionInjectContinuation>(), NO_PARAMETER)
 
 				CLASS_MEMBER_FIELD(flag)
+				CLASS_MEMBER_FIELD(configuration)
 				CLASS_MEMBER_FIELD(type)
 				CLASS_MEMBER_FIELD(injectionTargets)
 			END_CLASS_MEMBER(vl::glr::parsergen::GlrLeftRecursionInjectContinuation)
@@ -476,6 +484,7 @@ namespace vl
 					ADD_TYPE_INFO(vl::glr::parsergen::GlrReuseClause)
 					ADD_TYPE_INFO(vl::glr::parsergen::GlrLeftRecursionPlaceholder)
 					ADD_TYPE_INFO(vl::glr::parsergen::GlrLeftRecursionPlaceholderClause)
+					ADD_TYPE_INFO(vl::glr::parsergen::GlrLeftRecursionConfiguration)
 					ADD_TYPE_INFO(vl::glr::parsergen::GlrLeftRecursionInjectContinuationType)
 					ADD_TYPE_INFO(vl::glr::parsergen::GlrLeftRecursionInjectContinuation)
 					ADD_TYPE_INFO(vl::glr::parsergen::GlrLeftRecursionInjectClause)

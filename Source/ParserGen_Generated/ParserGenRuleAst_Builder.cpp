@@ -111,6 +111,12 @@ MakeLeftRecursionInjectClause
 MakeLeftRecursionInjectContinuation
 ***********************************************************************/
 
+				MakeLeftRecursionInjectContinuation& MakeLeftRecursionInjectContinuation::configuration(GlrLeftRecursionConfiguration value)
+				{
+					node->configuration = value;
+					return *this;
+				}
+
 				MakeLeftRecursionInjectContinuation& MakeLeftRecursionInjectContinuation::flag(const vl::Ptr<GlrLeftRecursionPlaceholder>& value)
 				{
 					node->flag = value;

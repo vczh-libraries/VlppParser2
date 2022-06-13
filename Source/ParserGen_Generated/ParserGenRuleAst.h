@@ -74,6 +74,13 @@ namespace vl
 				Weak = 1,
 			};
 
+			enum class GlrLeftRecursionConfiguration
+			{
+				UNDEFINED_ENUM_ITEM_VALUE = -1,
+				Single = 0,
+				Multiple = 1,
+			};
+
 			enum class GlrLeftRecursionInjectContinuationType
 			{
 				UNDEFINED_ENUM_ITEM_VALUE = -1,
@@ -308,6 +315,7 @@ namespace vl
 			{
 			public:
 				vl::Ptr<GlrLeftRecursionPlaceholder> flag;
+				GlrLeftRecursionConfiguration configuration = GlrLeftRecursionConfiguration::UNDEFINED_ENUM_ITEM_VALUE;
 				GlrLeftRecursionInjectContinuationType type = GlrLeftRecursionInjectContinuationType::UNDEFINED_ENUM_ITEM_VALUE;
 				vl::collections::List<vl::Ptr<GlrLeftRecursionInjectClause>> injectionTargets;
 			};
@@ -375,6 +383,7 @@ namespace vl
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrReuseClause)
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrLeftRecursionPlaceholder)
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrLeftRecursionPlaceholderClause)
+			DECL_TYPE_INFO(vl::glr::parsergen::GlrLeftRecursionConfiguration)
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrLeftRecursionInjectContinuationType)
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrLeftRecursionInjectContinuation)
 			DECL_TYPE_INFO(vl::glr::parsergen::GlrLeftRecursionInjectClause)

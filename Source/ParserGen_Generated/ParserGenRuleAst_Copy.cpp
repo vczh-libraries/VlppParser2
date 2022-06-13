@@ -63,6 +63,7 @@ namespace vl
 
 				void RuleAstVisitor::CopyFields(GlrLeftRecursionInjectContinuation* from, GlrLeftRecursionInjectContinuation* to)
 				{
+					to->configuration = from->configuration;
 					to->flag = CopyNode(from->flag.Obj());
 					for (auto&& listItem : from->injectionTargets)
 					{

@@ -161,6 +161,10 @@ CreateParserGenRuleAst
 				_LrpClause->SetBaseClass(L"Clause");
 				_LrpClause->CreateProp(L"flags")->SetPropType(AstPropType::Array, L"LeftRecursionPlaceholder");
 
+				auto LriConfig = _ast->CreateEnum(L"LeftRecursionConfiguration");
+				LriConfig->CreateItem(L"Single");
+				LriConfig->CreateItem(L"Multiple");
+
 				auto LriContinuationType = _ast->CreateEnum(L"LeftRecursionInjectContinuationType");
 				LriContinuationType->CreateItem(L"Optional");
 				LriContinuationType->CreateItem(L"Required");
@@ -169,6 +173,7 @@ CreateParserGenRuleAst
 				auto _LriClause = _ast->CreateClass(L"LeftRecursionInjectClause");
 
 				_LriContinuation->CreateProp(L"flag")->SetPropType(AstPropType::Type, L"LeftRecursionPlaceholder");
+				_LriContinuation->CreateProp(L"configuration")->SetPropType(AstPropType::Type, L"LeftRecursionConfiguration");
 				_LriContinuation->CreateProp(L"type")->SetPropType(AstPropType::Type, L"LeftRecursionInjectContinuationType");
 				_LriContinuation->CreateProp(L"injectionTargets")->SetPropType(AstPropType::Array, L"LeftRecursionInjectClause");
 
