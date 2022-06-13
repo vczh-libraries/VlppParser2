@@ -48,14 +48,15 @@ namespace vl
 				NEGATIVE = 27,
 				LS_PH = 28,
 				LS_I = 29,
-				ID = 30,
-				STRING = 31,
-				CONDITIONAL_LITERAL = 32,
-				SPACE = 33,
-				COMMENT = 34,
+				LS_IM = 30,
+				ID = 31,
+				STRING = 32,
+				CONDITIONAL_LITERAL = 33,
+				SPACE = 34,
+				COMMENT = 35,
 			};
 
-			constexpr vl::vint ParserGenTokenCount = 35;
+			constexpr vl::vint ParserGenTokenCount = 36;
 			extern bool ParserGenTokenDeleter(vl::vint token);
 			extern const wchar_t* ParserGenTokenId(ParserGenTokens token);
 			extern const wchar_t* ParserGenTokenDisplayText(ParserGenTokens token);
