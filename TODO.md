@@ -8,8 +8,6 @@
 
 - Extensible tokens, for example, recognize `R"[^\s(]\(` and invoke a callback function to determine the end of the string.
   - Offer two options: using (rich regex | C++) to search for complete token.
-- Add `left_recursion_inject_multiple` to allow injecting to multiple `left_recursion_placeholder`.
-  - This should simplify C++ type and expression syntax, `_Expr0_SharedOrCtor` could starts from `_LongType` directly instead of `_Expr0_Type` to avoid repeating `lrp(Shared)`, which means `_Expr0_Shared` and `_Expr0_Type` can be removed.
 - Add `prefix_merge` clause which will be written to `left_recursion_placeholder`, `left_recursion_inject` and `left_recursion_inject_multiple`.
   - A `prefix_merge` clause can only be used on a single `!RULE` syntax, e.g. `prefix_merge !RULE`.
   - When a clause is compiled, it will searches and see if starting rules are all `prefix_merge` rules
