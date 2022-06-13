@@ -40,6 +40,7 @@ CreateParserGenRuleSyntax
 				auto _clause = manager.CreateRule(L"Clause");
 				auto _placeholder = manager.CreateRule(L"Placeholder");
 				auto _ruleName = manager.CreateRule(L"RuleName");
+				auto _lriConfig = manager.CreateRule(L"LriConfig");
 				auto _lriContinuationBody = manager.CreateRule(L"LriContinuationBody");
 				auto _lriContinuation = manager.CreateRule(L"LriContinuation");
 				auto _lriTarget = manager.CreateRule(L"LriTarget");
@@ -50,6 +51,7 @@ CreateParserGenRuleSyntax
 				_optionalBody->isPartial = true;
 				_token->isPartial = true;
 				_assignmentOp->isPartial = true;
+				_lriConfig->isPartial = true;
 				_lriContinuationBody->isPartial = true;
 
 				manager.parsableRules.Add(_file);
@@ -209,9 +211,15 @@ CreateParserGenRuleSyntax
 						+ tok(T::CLOSE_ROUND),
 					C::LeftRecursionPlaceholderClause);
 
+				// "left_recursion_inject" as partial LeftRecursionInjectContinuation {configuration = Single}
+				Clause{ _lriConfig } = partial(tok(T::LS_I)).with(F::LeftRecursionInjectContinuation_configuration, GlrLeftRecursionConfiguration::Single);
+
+				// "left_recursion_inject_multiple" as partial LeftRecursionInjectContinuation {configuration = Multiple}
+				Clause{ _lriConfig } = partial(tok(T::LS_IM)).with(F::LeftRecursionInjectContinuation_configuration, GlrLeftRecursionConfiguration::Single);
+
 				// "left_recursion_inject" "(" Placeholder:flag ")" LriTarget:injectionTargets {"|" LriTarget:injectionTargets} as partial LeftRecursionInjectContinuation
 				Clause{ _lriContinuationBody } = partial(
-					tok(T::LS_I) + tok(T::OPEN_ROUND) + rule(_placeholder, F::LeftRecursionInjectContinuation_flag) + tok(T::CLOSE_ROUND)
+					prule(_lriConfig) + tok(T::OPEN_ROUND) + rule(_placeholder, F::LeftRecursionInjectContinuation_flag) + tok(T::CLOSE_ROUND)
 					+ rule(_lriTarget, F::LeftRecursionInjectContinuation_injectionTargets)
 					+ loop(tok(T::ALTERNATIVE) + rule(_lriTarget, F::LeftRecursionInjectContinuation_injectionTargets))
 					);
