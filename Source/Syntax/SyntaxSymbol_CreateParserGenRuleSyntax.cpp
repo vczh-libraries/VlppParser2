@@ -215,7 +215,7 @@ CreateParserGenRuleSyntax
 				Clause{ _lriConfig } = partial(tok(T::LS_I)).with(F::LeftRecursionInjectContinuation_configuration, GlrLeftRecursionConfiguration::Single);
 
 				// "left_recursion_inject_multiple" as partial LeftRecursionInjectContinuation {configuration = Multiple}
-				Clause{ _lriConfig } = partial(tok(T::LS_IM)).with(F::LeftRecursionInjectContinuation_configuration, GlrLeftRecursionConfiguration::Single);
+				Clause{ _lriConfig } = partial(tok(T::LS_IM)).with(F::LeftRecursionInjectContinuation_configuration, GlrLeftRecursionConfiguration::Multiple);
 
 				// LriConfig "(" Placeholder:flag ")" LriTarget:injectionTargets {"|" LriTarget:injectionTargets} as partial LeftRecursionInjectContinuation
 				Clause{ _lriContinuationBody } = partial(

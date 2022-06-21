@@ -489,7 +489,7 @@ ValidateTypesVisitor
 								target->literal.value
 								);
 						}
-						else if (counter > 1)
+						else if (counter > 1 && node->continuation->configuration == GlrLeftRecursionConfiguration::Single)
 						{
 							context.syntaxManager.AddError(
 								ParserErrorType::LeftRecursionPlaceholderNotUnique,

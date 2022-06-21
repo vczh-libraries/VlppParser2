@@ -25,7 +25,7 @@ _PrimitiveExprOnly
 ////////////////////////////////////////
 
 _LongType
-  ::= left_recursion_placeholder(Shared,Type)
+  ::= left_recursion_placeholder(Shared, Type)
   ::= !_PrimitiveShared
   ::= !_PrimitiveTypeOnly
   ::= _LongType:type "const" as ConstType
@@ -42,8 +42,7 @@ _LongType
 // having only left_recursion_placeholder is enough here
 
 _Expr0
-  ::= left_recursion_placeholder(Expr)
-  ::= left_recursion_placeholder(Shared)
+  ::= left_recursion_placeholder(Shared, Expr)
   ::= !_PrimitiveShared
   ::= !_PrimitiveExprOnly
   ::= _LongType:type "{" {_Expr_Raw:args ; ","} "}" as CtorExpr

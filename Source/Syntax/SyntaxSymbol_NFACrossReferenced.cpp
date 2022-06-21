@@ -89,14 +89,7 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 					{
 						if (placeholderEdge)
 						{
-							AddError(
-								ParserErrorType::LeftRecursionPlaceholderNotUnique,
-								{},
-								injectEdge->fromState->Rule()->Name(),
-								lrpFlags[injectEdge->input.token],
-								startState->Rule()->Name()
-								);
-							return;
+							CHECK_FAIL(L"Not Implemented!");
 						}
 						else
 						{
