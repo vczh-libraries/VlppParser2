@@ -15,10 +15,12 @@
     - If all, rewrite it using `left_recursion_placeholder`, `left_recursion_inject` and `left_recursion_inject_multiple`.
     - If mixed, report errors.
 
-
 ## Issues
 
-- TODO in `SyntaxSymbolManager::EliminateSingleRulePrefix`
+- Deny when `A LRI(Flag) (B ...) | (C ...)` happens, `B` is a prefix of `C`, and both injection could end with a same target X.
+- In `PrefixSubset4`, find a way to optimize `left_recursion_inject_multiple(Shared) _Expr | _LongType`
+- TODO in `SyntaxSymbolManager::EliminateSingleRulePrefix`.
+  - Deny `A ::= !B ::= B as Something ::= ...;`.
 - Print correct codeRange for:
   - `ParserErrorType::RuleIsIndirectlyLeftRecursive`
   - `ParserErrorType::LeftRecursiveClauseInsidePushCondition`

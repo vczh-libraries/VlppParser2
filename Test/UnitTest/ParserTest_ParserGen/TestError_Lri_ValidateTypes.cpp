@@ -404,7 +404,7 @@ Exp3
 	// PartialRuleInLeftRecursionInject
 	//////////////////////////////////////////////////////
 
-	TEST_CASE(L"PartialRuleInLeftRecursionInject ")
+	TEST_CASE(L"PartialRuleInLeftRecursionInject 1")
 	{
 		const wchar_t* syntaxCode =
 LR"SYNTAX(
@@ -459,6 +459,150 @@ Exp2
 			lexerCode,
 			syntaxCode,
 			{ ParserErrorType::PartialRuleInLeftRecursionInject,L"Exp2",L"Exp0Partial"}
+			);
+	});
+
+	//////////////////////////////////////////////////////
+	// LeftRecursionInjectTargetIsPrefixOfAnotherSameEnding
+	//////////////////////////////////////////////////////
+
+	TEST_CASE(L"LeftRecursionInjectTargetIsPrefixOfAnotherSameEnding 1")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= NUM:value as NumExpr
+  ;
+Exp0Something
+  ::= left_recursion_placeholder(Expression)
+  ::= !Exp0
+  ::= !Exp0Something 'something'
+  ;
+Exp1
+  ::= left_recursion_placeholder(Expression)
+  ::= !Exp0
+  ::= !Exp0Something 'anything'
+  ::= Exp1:left "+" Exp0:right as BinaryExpr
+  ;
+Exp2
+  ::= !Exp0 [left_recursion_inject_multiple(Expression) Exp1 | (Exp0Something left_recursion_inject_multiple(Expression) Exp1)]
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::LeftRecursionInjectTargetIsPrefixOfAnotherSameEnding,L"Exp2",L"Expression",L"Exp0Something",L"Exp1"}
+			);
+	});
+
+	TEST_CASE(L"LeftRecursionInjectTargetIsPrefixOfAnotherSameEnding 2")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= NUM:value as NumExpr
+  ;
+Exp0Something
+  ::= left_recursion_placeholder(Expression)
+  ::= !Exp0
+  ::= !Exp0Something 'something'
+  ;
+Exp1
+  ::= left_recursion_placeholder(Expression)
+  ::= !Exp0
+  ::= !Exp0Something 'anything'
+  ::= Exp1:left "+" Exp0:right as BinaryExpr
+  ;
+Exp2
+  ::= !Exp0 [left_recursion_inject_multiple(Expression) (Exp0Something left_recursion_inject_multiple(Expression) Exp1) | Exp1]
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::LeftRecursionInjectTargetIsPrefixOfAnotherSameEnding,L"Exp2",L"Expression",L"Exp0Something",L"Exp1"}
+			);
+	});
+
+	TEST_CASE(L"LeftRecursionInjectTargetIsPrefixOfAnotherSameEnding 3")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= NUM:value as NumExpr
+  ;
+Exp0Something
+  ::= left_recursion_placeholder(Expression)
+  ::= !Exp0
+  ::= !Exp0Something 'something'
+  ;
+Exp1
+  ::= left_recursion_placeholder(Expression)
+  ::= !Exp0
+  ::= !Exp0Something 'anything'
+  ::= Exp1:left "+" Exp0:right as BinaryExpr
+  ;
+RandomThing
+  ::= !Exp1
+  ::= left_recursion_placeholder(Random)
+  ;
+Exp2
+  ::= !Exp0 [left_recursion_inject_multiple(Expression)
+              (Exp0Something left_recursion_inject_multiple(Expression) Exp1) |
+              (Exp1 [left_recursion_inject_multiple(Random) RandomThing])     ]
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::LeftRecursionInjectTargetIsPrefixOfAnotherSameEnding,L"Exp2",L"Expression",L"Exp0Something",L"Exp1"}
+			);
+	});
+
+	TEST_CASE(L"LeftRecursionInjectTargetIsPrefixOfAnotherSameEnding 4")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= NUM:value as NumExpr
+  ;
+Exp0Something
+  ::= left_recursion_placeholder(Expression)
+  ::= !Exp0
+  ::= !Exp0Something 'something'
+  ;
+Exp1
+  ::= left_recursion_placeholder(Expression)
+  ::= !Exp0
+  ::= !Exp0Something 'anything'
+  ::= Exp1:left "+" Exp0:right as BinaryExpr
+  ;
+RandomThing
+  ::= !Exp1
+  ::= left_recursion_placeholder(Random)
+  ;
+Exp2
+  ::= !Exp0 [left_recursion_inject_multiple(Expression)
+              (Exp0Something left_recursion_inject_multiple(Expression) (Exp1 left_recursion_inject_multiple(Random) RandomThing)) |
+              (Exp1 left_recursion_inject_multiple(Random) RandomThing)                                                            ]
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::LeftRecursionInjectTargetIsPrefixOfAnotherSameEnding,L"Exp2",L"Expression",L"Exp0Something",L"Exp1"}
 			);
 	});
 }

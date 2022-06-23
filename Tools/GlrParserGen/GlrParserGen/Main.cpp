@@ -237,6 +237,7 @@ void PrintCompileErrors(ParserSymbolManager& global)
 		CASE(ClauseTypeMismatchedToPartialRule, ruleName, clauseType, partialRuleName, partialRuleType);
 		CASE(LeftRecursionPlaceholderNotFoundInRule, ruleName, placeholder, targetRuleName);
 		CASE(LeftRecursionPlaceholderNotUnique, ruleName, placeholder, targetRuleName);
+		CASE(LeftRecursionInjectTargetIsPrefixOfAnotherSameEnding, ruleName, targetPrefixName, targetRuleName);
 		CASE(LeftRecursionPlaceholderTypeMismatched, ruleName, placeholder, targetRuleName, placeholderRuleName);
 		CASE(PartialRuleInLeftRecursionInject, ruleName, partialRuleName);
 

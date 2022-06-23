@@ -111,7 +111,8 @@ ParserSymbolManager
 				PartialRuleUsedOnField,									// (ruleName, clauseType, partialRuleName, fieldName)			: A partial rule does not create object, it cannot be assigned to a field.
 				ClauseTypeMismatchedToPartialRule,						// (ruleName, clauseType, partialRuleName, partialRuleType)		: A clause uses a partial rule of an incompatible type.
 				LeftRecursionPlaceholderNotFoundInRule,					// (ruleName, placeholder, targetRuleName)						: left_recursion_inject injects to a rule which doesn't accept the specified placeholder.
-				LeftRecursionPlaceholderNotUnique,						// (ruleName, placeholder, targetRuleName)	:					: left_recursion_inject injects to a rule which has multiple places accepting the specified placeholder.
+				LeftRecursionPlaceholderNotUnique,						// (ruleName, placeholder, targetRuleName)						: left_recursion_inject injects to a rule which has multiple places accepting the specified placeholder.
+				LeftRecursionInjectTargetIsPrefixOfAnotherSameEnding,	// (ruleName, placeholder, targetPrefixName, targetRuleName)	: left_recursion_inject injects into two targets, A is a prefix of B, and both injection could end with the same target C, C could be B.
 				LeftRecursionPlaceholderTypeMismatched,					// (ruleName, placeholder, targetRuleName, placeholderRuleName)	:
 				PartialRuleInLeftRecursionInject,						// (ruleName, partialRuleName)
 
