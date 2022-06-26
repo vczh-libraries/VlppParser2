@@ -24,6 +24,8 @@
 #include "../../Source/PrefixSubset3/Generated/PrefixSubset3ModuleParser.h"
 #include "../../Source/PrefixSubset4/Generated/PrefixSubset4TypeOrExpr_Json.h"
 #include "../../Source/PrefixSubset4/Generated/PrefixSubset4ModuleParser.h"
+#include "../../Source/PrefixSubset5/Generated/PrefixSubset5TypeOrExpr_Json.h"
+#include "../../Source/PrefixSubset5/Generated/PrefixSubset5ModuleParser.h"
 #include "../../Source/LogTrace.h"
 
 extern WString GetTestParserInputPath(const WString& parserName);
@@ -257,5 +259,15 @@ TEST_FILE
 		&prefixsubset4::ModuleParserRuleName,
 		&prefixsubset4::ModuleParserStateLabel,
 		&prefixsubset4::ModuleParserSwitchName
+		);
+	TestParser<prefixsubset5::ModuleParser, prefixsubset5::json_visitor::TypeOrExprVisitor>(
+		L"PrefixSubset5",
+		prefixsubset5::ModuleParserStates::Module,
+		&prefixsubset5::PrefixSubset5TypeName,
+		&prefixsubset5::PrefixSubset5FieldName,
+		&prefixsubset5::PrefixSubset5TokenId,
+		&prefixsubset5::ModuleParserRuleName,
+		&prefixsubset5::ModuleParserStateLabel,
+		&prefixsubset5::ModuleParserSwitchName
 		);
 }

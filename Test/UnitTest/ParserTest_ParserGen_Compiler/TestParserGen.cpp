@@ -41,6 +41,7 @@ TEST_FILE
 	parsersToLoad.Add(ParserDef{ L"PrefixSubset2", L"TypeOrExpr", L"Module" });
 	parsersToLoad.Add(ParserDef{ L"PrefixSubset3", L"TypeOrExpr", L"Module" });
 	parsersToLoad.Add(ParserDef{ L"PrefixSubset4", L"TypeOrExpr", L"Module" });
+	parsersToLoad.Add(ParserDef{ L"PrefixSubset5", L"TypeOrExpr", L"Module" });
 
 	for (auto&& [_parserName, _astName, _ruleName] : parsersToLoad)
 	{
