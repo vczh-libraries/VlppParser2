@@ -24,10 +24,10 @@
   - `ParserErrorType::RuleIsIndirectlyLeftRecursive`
   - `ParserErrorType::LeftRecursiveClauseInsidePushCondition`
   - `ParserErrorType::LeftRecursiveClauseInsideTestCondition`
-- Optimize `CrossReferencedNFA` to merge prefix (two states can be merged if their `InEdges` are identical, `FromState` in `InEdges` are replaced by merged states).
-  - Issue: `X ::= ([a] | [b]) c` fails because when both optional syntax fail it creates two trace routes to c and causes ambiguity.
+- `X ::= ([a] | [b]) c` fails because multiple optional syntax create multiple epsilon transition between the same pair of states.
   - Possible solution: if multiple combinations of consecutive epsilon transitions makes an epsilon transition between two states, treat them as one single epsilon transition.
     - Merge conditions in these epsilon transitions properly.
+- Optimize `CrossReferencedNFA` to merge prefix (two states can be merged if their `InEdges` are identical, `FromState` in `InEdges` are replaced by merged states).
 - `JsonEscapeString` `JsonUnescapeString` handle surrogate pairs correctly.
 - Review all comments.
 
