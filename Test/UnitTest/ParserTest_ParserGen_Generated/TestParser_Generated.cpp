@@ -35,23 +35,95 @@ namespace TestParser_Generated_TestObjects
 {
 	template<
 		typename TParser,
+		typename TJsonVisitor
+	>
+		void RunParserSingleTestFolder(
+			TParser& parser,
+			const WString& parserName,
+			const WString& testFolder,
+			FilePath dirOutput
+		)
+	{
+		WString caseName;
+
+		auto inputPath = GetTestParserInputPath(testFolder);
+		Folder dirInput = FilePath(inputPath) / L"Input";
+		FilePath dirBaseline = FilePath(inputPath) / L"Output";
+
+		List<File> inputFiles;
+		dirInput.GetFiles(inputFiles);
+		for (auto&& inputFile : inputFiles)
+		{
+			caseName = inputFile.GetFilePath().GetName();
+			if (caseName.Length() < 4 || caseName.Right(4) != L".txt") continue;
+			caseName = caseName.Left(caseName.Length() - 4);
+
+			TEST_CASE(caseName)
+			{
+				auto input = inputFile.ReadAllTextByBom();
+				auto ast = parser.ParseModule(input);
+				auto actualJson = PrintAstJson<TJsonVisitor>(ast);
+				File(dirOutput / (L"Output[" + caseName + L"].json")).WriteAllText(actualJson, true, BomEncoder::Utf8);
+
+				auto expectedJsonFile = File(dirBaseline / (caseName + L".json"));
+				if (!expectedJsonFile.Exists()) return;
+				TEST_PRINT(L"Compared with expectedJson");
+				auto expectedJson = expectedJsonFile.ReadAllTextByBom();
+				AssertLines(expectedJson, actualJson);
+			});
+		}
+	}
+
+	template<
+		typename TParser,
+		typename TJsonVisitor
+	>
+		void RunParser(
+			TParser& parser,
+			const WString& parserName,
+			const Array<WString>& testFolders
+		)
+	{
+		TEST_CATEGORY(L"Test " + parserName + L" Syntax")
+		{
+			FilePath dirOutput = GetOutputDir(L"Generated-" + parserName);
+			if (testFolders.Count() == 0)
+			{
+				RunParserSingleTestFolder<TParser, TJsonVisitor>(parser, parserName, parserName, dirOutput);
+			}
+			else
+			{
+				for (auto&& testFolder : From(testFolders))
+				{
+					TEST_CATEGORY(testFolder)
+					{
+						RunParserSingleTestFolder<TParser, TJsonVisitor>(parser, parserName, testFolder, dirOutput);
+					});
+				}
+			}
+		});
+	}
+
+	template<
+		typename TParser,
 		typename TJsonVisitor,
-		typename TStates,
 		typename TClasses,
 		typename TFields,
-		typename TTokens
+		typename TTokens,
+		typename ...TTestFolders
 		>
 	void TestParser(
-		const WString& parserName,
-		TStates startState,
+		const wchar_t* parserNameRaw,
 		const wchar_t* (*typeName)(TClasses),
 		const wchar_t* (*fieldName)(TFields),
 		const wchar_t* (*tokenId)(TTokens),
 		const wchar_t* (*ruleName)(vint),
 		const wchar_t* (*stateLabel)(vint),
-		const wchar_t* (*switchName)(vint)
+		const wchar_t* (*switchName)(vint),
+		TTestFolders&& ...testFolders
 		)
 	{
+		auto parserName = WString::Unmanaged(parserNameRaw);
 		TParser parser;
 		WString caseName;
 
@@ -95,35 +167,17 @@ namespace TestParser_Generated_TestObjects
 				}
 			});
 
-		TEST_CATEGORY(L"Test " + parserName + L" Syntax")
+		Array<WString> testFolderArray;
+		if constexpr (sizeof...(testFolders) > 0)
 		{
-			Folder dirInput = FilePath(GetTestParserInputPath(parserName)) / L"Input";
-			FilePath dirBaseline = FilePath(GetTestParserInputPath(parserName)) / L"Output";
-			FilePath dirOutput = GetOutputDir(L"Generated-" + parserName);
-
-			List<File> inputFiles;
-			dirInput.GetFiles(inputFiles);
-			for (auto&& inputFile : inputFiles)
+			const wchar_t* testFolderRawArray[] = { testFolders... };
+			testFolderArray.Resize(sizeof...(testFolders));
+			for (vint i = 0; i < sizeof...(testFolders); i++)
 			{
-				caseName = inputFile.GetFilePath().GetName();
-				if (caseName.Length() < 4 || caseName.Right(4) != L".txt") continue;
-				caseName = caseName.Left(caseName.Length() - 4);
-
-				TEST_CASE(caseName)
-				{
-					auto input = inputFile.ReadAllTextByBom();
-					auto ast = parser.ParseModule(input);
-					auto actualJson = PrintAstJson<TJsonVisitor>(ast);
-					File(dirOutput / (L"Output[" + caseName + L"].json")).WriteAllText(actualJson, true, BomEncoder::Utf8);
-
-					auto expectedJsonFile = File(dirBaseline / (caseName + L".json"));
-					if (!expectedJsonFile.Exists()) return;
-					TEST_PRINT(L"Compared with expectedJson");
-					auto expectedJson = expectedJsonFile.ReadAllTextByBom();
-					AssertLines(expectedJson, actualJson);
-				});
+				testFolderArray[i] =  WString::Unmanaged(testFolderRawArray[i]);
 			}
-		});
+		}
+		RunParser<TParser, TJsonVisitor>(parser, parserName, testFolderArray);
 	}
 }
 using namespace TestParser_Generated_TestObjects;
@@ -132,7 +186,6 @@ TEST_FILE
 {
 	TestParser<calculator::ModuleParser, calculator::json_visitor::ExprAstVisitor>(
 		L"Calculator",
-		calculator::ModuleParserStates::Module,
 		&calculator::CalculatorTypeName,
 		&calculator::CalculatorFieldName,
 		&calculator::CalculatorTokenId,
@@ -142,7 +195,6 @@ TEST_FILE
 		);
 	TestParser<ifelseambiguity::ModuleParser, ifelseambiguity::json_visitor::StatAstVisitor>(
 		L"IfElseAmbiguity",
-		ifelseambiguity::ModuleParserStates::Module,
 		&ifelseambiguity::IfElseAmbiguityTypeName,
 		&ifelseambiguity::IfElseAmbiguityFieldName,
 		&ifelseambiguity::IfElseAmbiguityTokenId,
@@ -152,7 +204,6 @@ TEST_FILE
 		);
 	TestParser<ifelseambiguity2::ModuleParser, ifelseambiguity2::json_visitor::StatAstVisitor>(
 		L"IfElseAmbiguity2",
-		ifelseambiguity2::ModuleParserStates::Module,
 		&ifelseambiguity2::IfElseAmbiguity2TypeName,
 		&ifelseambiguity2::IfElseAmbiguity2FieldName,
 		&ifelseambiguity2::IfElseAmbiguity2TokenId,
@@ -162,7 +213,6 @@ TEST_FILE
 		);
 	TestParser<ifelsepriority::ModuleParser, ifelsepriority::json_visitor::StatAstVisitor>(
 		L"IfElsePriority",
-		ifelsepriority::ModuleParserStates::Module,
 		&ifelsepriority::IfElsePriorityTypeName,
 		&ifelsepriority::IfElsePriorityFieldName,
 		&ifelsepriority::IfElsePriorityTokenId,
@@ -172,7 +222,6 @@ TEST_FILE
 		);
 	TestParser<ifelsemanual::ModuleParser, ifelsemanual::json_visitor::StatAstVisitor>(
 		L"IfElseManual",
-		ifelsemanual::ModuleParserStates::Module,
 		&ifelsemanual::IfElseManualTypeName,
 		&ifelsemanual::IfElseManualFieldName,
 		&ifelsemanual::IfElseManualTokenId,
@@ -182,7 +231,6 @@ TEST_FILE
 		);
 	TestParser<ifelseswitch::ModuleParser, ifelseswitch::json_visitor::StatAstVisitor>(
 		L"IfElseSwitch",
-		ifelseswitch::ModuleParserStates::Module,
 		&ifelseswitch::IfElseSwitchTypeName,
 		&ifelseswitch::IfElseSwitchFieldName,
 		&ifelseswitch::IfElseSwitchTokenId,
@@ -192,7 +240,6 @@ TEST_FILE
 		);
 	TestParser<genericambiguity::ModuleParser, genericambiguity::json_visitor::ExprAstVisitor>(
 		L"GenericAmbiguity",
-		genericambiguity::ModuleParserStates::Module,
 		&genericambiguity::GenericAmbiguityTypeName,
 		&genericambiguity::GenericAmbiguityFieldName,
 		&genericambiguity::GenericAmbiguityTokenId,
@@ -202,7 +249,6 @@ TEST_FILE
 		);
 	TestParser<featuretest::ModuleParser, featuretest::json_visitor::FeatureAstVisitor>(
 		L"FeatureTest",
-		featuretest::ModuleParserStates::Module,
 		&featuretest::FeatureTestTypeName,
 		&featuretest::FeatureTestFieldName,
 		&featuretest::FeatureTestTokenId,
@@ -212,7 +258,6 @@ TEST_FILE
 		);
 	TestParser<binaryop::ModuleParser, binaryop::json_visitor::ExprAstVisitor>(
 		L"BinaryOp",
-		binaryop::ModuleParserStates::Module,
 		&binaryop::BinaryOpTypeName,
 		&binaryop::BinaryOpFieldName,
 		&binaryop::BinaryOpTokenId,
@@ -222,52 +267,55 @@ TEST_FILE
 		);
 	TestParser<prefixsubset::ModuleParser, prefixsubset::json_visitor::TypeOrExprVisitor>(
 		L"PrefixSubset",
-		prefixsubset::ModuleParserStates::Module,
 		&prefixsubset::PrefixSubsetTypeName,
 		&prefixsubset::PrefixSubsetFieldName,
 		&prefixsubset::PrefixSubsetTokenId,
 		&prefixsubset::ModuleParserRuleName,
 		&prefixsubset::ModuleParserStateLabel,
-		&prefixsubset::ModuleParserSwitchName
+		&prefixsubset::ModuleParserSwitchName,
+		L"TestCase_PrefixSubset"
 		);
 	TestParser<prefixsubset2::ModuleParser, prefixsubset2::json_visitor::TypeOrExprVisitor>(
 		L"PrefixSubset2",
-		prefixsubset2::ModuleParserStates::Module,
 		&prefixsubset2::PrefixSubset2TypeName,
 		&prefixsubset2::PrefixSubset2FieldName,
 		&prefixsubset2::PrefixSubset2TokenId,
 		&prefixsubset2::ModuleParserRuleName,
 		&prefixsubset2::ModuleParserStateLabel,
-		&prefixsubset2::ModuleParserSwitchName
+		&prefixsubset2::ModuleParserSwitchName,
+		L"TestCase_PrefixSubset"
 		);
 	TestParser<prefixsubset3::ModuleParser, prefixsubset3::json_visitor::TypeOrExprVisitor>(
 		L"PrefixSubset3",
-		prefixsubset3::ModuleParserStates::Module,
 		&prefixsubset3::PrefixSubset3TypeName,
 		&prefixsubset3::PrefixSubset3FieldName,
 		&prefixsubset3::PrefixSubset3TokenId,
 		&prefixsubset3::ModuleParserRuleName,
 		&prefixsubset3::ModuleParserStateLabel,
-		&prefixsubset3::ModuleParserSwitchName
+		&prefixsubset3::ModuleParserSwitchName,
+		L"TestCase_PrefixSubset",
+		L"TestCase_PrefixSubset_CtorExpr"
 		);
 	TestParser<prefixsubset4::ModuleParser, prefixsubset4::json_visitor::TypeOrExprVisitor>(
 		L"PrefixSubset4",
-		prefixsubset4::ModuleParserStates::Module,
 		&prefixsubset4::PrefixSubset4TypeName,
 		&prefixsubset4::PrefixSubset4FieldName,
 		&prefixsubset4::PrefixSubset4TokenId,
 		&prefixsubset4::ModuleParserRuleName,
 		&prefixsubset4::ModuleParserStateLabel,
-		&prefixsubset4::ModuleParserSwitchName
+		&prefixsubset4::ModuleParserSwitchName,
+		L"TestCase_PrefixSubset",
+		L"TestCase_PrefixSubset_CtorExpr"
 		);
 	TestParser<prefixsubset5::ModuleParser, prefixsubset5::json_visitor::TypeOrExprVisitor>(
 		L"PrefixSubset5",
-		prefixsubset5::ModuleParserStates::Module,
 		&prefixsubset5::PrefixSubset5TypeName,
 		&prefixsubset5::PrefixSubset5FieldName,
 		&prefixsubset5::PrefixSubset5TokenId,
 		&prefixsubset5::ModuleParserRuleName,
 		&prefixsubset5::ModuleParserStateLabel,
-		&prefixsubset5::ModuleParserSwitchName
+		&prefixsubset5::ModuleParserSwitchName,
+		L"TestCase_PrefixSubset",
+		L"TestCase_PrefixSubset_CtorExpr"
 		);
 }
