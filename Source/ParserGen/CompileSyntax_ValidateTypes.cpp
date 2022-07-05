@@ -649,16 +649,20 @@ LriPrefixTestingVisitor
 				: public empty_visitor::ClauseVisitor
 			{
 			protected:
-				VisitorContext&				context;
-				FirstSetMatrixVisitor&		matrix;
+				VisitorContext&									context;
+				FirstSetMatrixVisitor&							matrix;
+				RuleSymbol*										ruleSymbol;
+				Group<GlrLeftRecursionInjectClause*, WString>	lriEndings;
 
 			public:
 				LriPrefixTestingVisitor(
 					VisitorContext& _context,
-					FirstSetMatrixVisitor& _matrix
+					FirstSetMatrixVisitor& _matrix,
+					RuleSymbol* _ruleSymbol
 				)
 					: context(_context)
 					, matrix(matrix)
+					, ruleSymbol(_ruleSymbol)
 				{
 				}
 
@@ -671,8 +675,73 @@ LriPrefixTestingVisitor
 				// GlrClause::IVisitor
 				////////////////////////////////////////////////////////////////////////
 
+				void SearchLriEndings(List<GlrLeftRecursionInjectClause*>& visiting, GlrLeftRecursionInjectClause* node)
+				{
+					if (!node->continuation || node->continuation->type == GlrLeftRecursionInjectContinuationType::Optional)
+					{
+						for (auto lri : visiting)
+						{
+							if (!lriEndings.Contains(lri, node->rule->literal.value))
+							{
+								lriEndings.Add(lri, node->rule->literal.value);
+							}
+						}
+					}
+
+					if (node->continuation)
+					{
+						visiting.Add(node);
+						for (auto target : node->continuation->injectionTargets)
+						{
+							SearchLriEndings(visiting, target.Obj());
+						}
+						visiting.RemoveAt(visiting.Count() - 1);
+					}
+				}
+
+				void VerifyPrefix(GlrLeftRecursionInjectClause* node)
+				{
+					if (node->continuation)
+					{
+						for (auto t1 : node->continuation->injectionTargets)
+						{
+							auto k1 = t1->rule->literal.value;
+							vint i1 = lriEndings.Keys().IndexOf(t1.Obj());
+							if (i1 == -1) continue;
+							for (auto t2 : node->continuation->injectionTargets)
+							{
+								auto k2 = t2->rule->literal.value;
+								vint i2 = lriEndings.Keys().IndexOf(t2.Obj());
+								if (i2 == -1) continue;
+
+								if (t1 != t2 && matrix.IsInFirstSet(k1, k2))
+								{
+									auto&& e1 = lriEndings.GetByIndex(i1);
+									auto&& e2 = lriEndings.GetByIndex(i2);
+									if (!From(e1).Intersect(e2).IsEmpty())
+									{
+										context.syntaxManager.AddError(
+											ParserErrorType::LeftRecursionInjectTargetIsPrefixOfAnotherSameEnding,
+											node->codeRange,
+											ruleSymbol->Name(),
+											node->continuation->flag->flag.value,
+											k1,
+											k2
+											);
+									}
+								}
+							}
+						}
+					}
+				}
+
 				void Visit(GlrLeftRecursionInjectClause* node) override
 				{
+					{
+						List<GlrLeftRecursionInjectClause*> visiting;
+						SearchLriEndings(visiting, node);
+					}
+					VerifyPrefix(node);
 				}
 			};
 
@@ -691,7 +760,7 @@ ValidateTypes
 						ValidateTypesVisitor vtVisitor(context, ruleSymbol);
 						for (auto clause : rule->clauses)
 						{
-							LriPrefixTestingVisitor lptVisitor(context, matrix);
+							LriPrefixTestingVisitor lptVisitor(context, matrix, ruleSymbol);
 							vtVisitor.ValidateClause(clause);
 							lptVisitor.ValidateClause(clause);
 						}
