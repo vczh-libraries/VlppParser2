@@ -1,4 +1,5 @@
 #include "Compiler.h"
+#include "../ParserGen_Generated/ParserGenRuleAst_Empty.h"
 
 namespace vl
 {
@@ -641,21 +642,58 @@ ValidateTypesVisitor
 			};
 
 /***********************************************************************
+LriPrefixTestingVisitor
+***********************************************************************/
+
+			class LriPrefixTestingVisitor
+				: public empty_visitor::ClauseVisitor
+			{
+			protected:
+				VisitorContext&				context;
+				FirstSetMatrixVisitor&		matrix;
+
+			public:
+				LriPrefixTestingVisitor(
+					VisitorContext& _context,
+					FirstSetMatrixVisitor& _matrix
+				)
+					: context(_context)
+					, matrix(matrix)
+				{
+				}
+
+				void ValidateClause(Ptr<GlrClause> clause)
+				{
+					clause->Accept(this);
+				}
+
+				////////////////////////////////////////////////////////////////////////
+				// GlrClause::IVisitor
+				////////////////////////////////////////////////////////////////////////
+
+				void Visit(GlrLeftRecursionInjectClause* node) override
+				{
+				}
+			};
+
+/***********************************************************************
 ValidateTypes
 ***********************************************************************/
 
 			void ValidateTypes(VisitorContext& context, List<Ptr<GlrSyntaxFile>>& files)
 			{
-				FirstSetMatrixVisitor matrixVisitor(context);
+				FirstSetMatrixVisitor matrix(context);
 				for (auto file : files)
 				{
 					for (auto rule : file->rules)
 					{
 						auto ruleSymbol = context.syntaxManager.Rules()[rule->name.value];
-						ValidateTypesVisitor visitor(context, ruleSymbol);
+						ValidateTypesVisitor vtVisitor(context, ruleSymbol);
 						for (auto clause : rule->clauses)
 						{
-							visitor.ValidateClause(clause);
+							LriPrefixTestingVisitor lptVisitor(context, matrix);
+							vtVisitor.ValidateClause(clause);
+							lptVisitor.ValidateClause(clause);
 						}
 					}
 				}
