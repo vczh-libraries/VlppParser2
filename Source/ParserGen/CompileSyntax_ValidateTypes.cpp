@@ -233,15 +233,40 @@ FirstSetMatrixVisitor
 			{
 			protected:
 				Array<bool>					matrix;
+				Array<bool>					evaluated;
 				WString						searchingRuleName;
+
+				void GetIndex(const WString& element, const WString& set, vint& count, vint& i1, vint& i2)
+				{
+					count = context.syntaxManager.Rules().Count();
+					i1 = context.syntaxManager.Rules().Keys().IndexOf(element);
+					i2 = context.syntaxManager.Rules().Keys().IndexOf(set);
+					CHECK_ERROR(i1 != -1 && i2 != -1, L"vl::glr::parsergen::FirstSetMatrixVisitor::GetIndex(const WString&, const WString&, vint&, vint&, vint&)#Internal error.");
+				}
 
 				bool& InFirstSet(const WString& element, const WString& set)
 				{
-					vint count = context.syntaxManager.Rules().Count();
-					vint i1 = context.syntaxManager.Rules().Keys().IndexOf(element);
-					vint i2 = context.syntaxManager.Rules().Keys().IndexOf(set);
-					CHECK_ERROR(i1 != -1 && i2 != -1, L"vl::glr::parsergen::FirstSetMatrixVisitor::InFirstSet(const WString&, const WString&)#Internal error.");
+					vint count, i1, i2;
+					GetIndex(element, set, count, i1, i2);
 					return matrix[i1 * count + i2];
+				}
+
+				bool Evaluate(vint count, vint i1, vint i2)
+				{
+					vint i = i1 * count + i2;
+					if (!evaluated[i])
+					{
+						evaluated[i] = true;
+						for (vint j = 0; j < count; j++)
+						{
+							if (matrix[j * count + i] && Evaluate(count, i1, j))
+							{
+								matrix[i] = true;
+								break;
+							}
+						}
+					}
+					return matrix[i];
 				}
 
 				void SearchInRuleInternal(const WString& ruleName) override
@@ -258,9 +283,11 @@ FirstSetMatrixVisitor
 					vint count = context.syntaxManager.Rules().Count();
 
 					matrix.Resize(count * count);
+					evaluated.Resize(count * count);
 					for (vint i = 0; i < count * count; i++)
 					{
 						matrix[i] = false;
+						evaluated[i] = false;
 					}
 
 					for (vint i = 0; i < count; i++)
@@ -277,7 +304,9 @@ FirstSetMatrixVisitor
 
 				bool IsInFirstSet(const WString& element, const WString& set)
 				{
-					return InFirstSet(element, set);
+					vint count, i1, i2;
+					GetIndex(element, set, count, i1, i2);
+					return Evaluate(count, i1, i2);
 				}
 			};
 
