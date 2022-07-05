@@ -20,66 +20,28 @@ namespace vl
 			}
 
 /***********************************************************************
-SearchForLrpVisitor
+SearchForFirstSetVisitor
 ***********************************************************************/
 
-			class SearchForLrpVisitor
+			class SearchForFirstSetVisitor
 				: public Object
 				, protected virtual GlrSyntax::IVisitor
 				, protected virtual GlrClause::IVisitor
 			{
+			private:
+				bool						couldBeEmpty = false;
+
 			protected:
 				VisitorContext&				context;
-				WString						flagToSearch;
-				AstClassSymbol*				typeToMatch = nullptr;
 
-				vint						counter = 0;
-				SortedList<GlrRule*>		searchedRules;
+				virtual void				SearchInRuleInternal(const WString& ruleName) = 0;
 
-				bool						couldBeEmpty = false;
-				RuleSymbol*					currentPlaceholderRule = nullptr;
-
-				void SearchInRuleInternal(const WString& ruleName)
-				{
-					vint index = context.syntaxManager.Rules().Keys().IndexOf(ruleName);
-					if (index != -1)
-					{
-						auto ruleSymbol = context.syntaxManager.Rules().Values()[index];
-						auto ruleAst = context.astRules[ruleSymbol];
-
-						if (searchedRules.Contains(ruleAst)) return;
-						searchedRules.Add(ruleAst);
-
-						auto oldRule = currentPlaceholderRule;
-						currentPlaceholderRule = ruleSymbol;
-						for (auto clause : ruleAst->clauses)
-						{
-							clause->Accept(this);
-						}
-						currentPlaceholderRule = oldRule;
-					}
-				}
 			public:
-				List<WString>				unmatchedPlaceholderRuleNames;
-
-				SearchForLrpVisitor(
-					VisitorContext& _context,
-					const WString& _flag,
-					AstClassSymbol* _type
+				SearchForFirstSetVisitor(
+					VisitorContext& _context
 				)
 					: context(_context)
-					, flagToSearch(_flag)
-					, typeToMatch(_type)
 				{
-				}
-
-				vint SearchInRule(const WString& ruleName)
-				{
-					counter = 0;
-					searchedRules.Clear();
-					unmatchedPlaceholderRuleNames.Clear();
-					SearchInRuleInternal(ruleName);
-					return counter;
 				}
 			protected:
 
@@ -172,6 +134,79 @@ SearchForLrpVisitor
 
 				void Visit(GlrLeftRecursionPlaceholderClause* node) override
 				{
+				}
+
+				void Visit(GlrLeftRecursionInjectClause* node) override
+				{
+					node->rule->Accept(this);
+				}
+			};
+
+/***********************************************************************
+SearchForLrpVisitor
+***********************************************************************/
+
+			class SearchForLrpVisitor
+				: public SearchForFirstSetVisitor
+			{
+			protected:
+				WString						flagToSearch;
+				AstClassSymbol*				typeToMatch = nullptr;
+
+				vint						counter = 0;
+				SortedList<GlrRule*>		searchedRules;
+				RuleSymbol*					currentPlaceholderRule = nullptr;
+
+				void SearchInRuleInternal(const WString& ruleName) override
+				{
+					vint index = context.syntaxManager.Rules().Keys().IndexOf(ruleName);
+					if (index != -1)
+					{
+						auto ruleSymbol = context.syntaxManager.Rules().Values()[index];
+						auto ruleAst = context.astRules[ruleSymbol];
+
+						if (searchedRules.Contains(ruleAst)) return;
+						searchedRules.Add(ruleAst);
+
+						auto oldRule = currentPlaceholderRule;
+						currentPlaceholderRule = ruleSymbol;
+						for (auto clause : ruleAst->clauses)
+						{
+							clause->Accept(this);
+						}
+						currentPlaceholderRule = oldRule;
+					}
+				}
+			public:
+				List<WString>				unmatchedPlaceholderRuleNames;
+
+				SearchForLrpVisitor(
+					VisitorContext& _context,
+					const WString& _flag,
+					AstClassSymbol* _type
+				)
+					: SearchForFirstSetVisitor(_context)
+					, flagToSearch(_flag)
+					, typeToMatch(_type)
+				{
+				}
+
+				vint SearchInRule(const WString& ruleName)
+				{
+					counter = 0;
+					searchedRules.Clear();
+					unmatchedPlaceholderRuleNames.Clear();
+					SearchInRuleInternal(ruleName);
+					return counter;
+				}
+			protected:
+
+				////////////////////////////////////////////////////////////////////////
+				// GlrClause::IVisitor
+				////////////////////////////////////////////////////////////////////////
+
+				void Visit(GlrLeftRecursionPlaceholderClause* node) override
+				{
 					for (auto flag : node->flags)
 					{
 						if (flag->flag.value == flagToSearch)
@@ -184,11 +219,6 @@ SearchForLrpVisitor
 							break;
 						}
 					}
-				}
-
-				void Visit(GlrLeftRecursionInjectClause* node) override
-				{
-					node->rule->Accept(this);
 				}
 			};
 
