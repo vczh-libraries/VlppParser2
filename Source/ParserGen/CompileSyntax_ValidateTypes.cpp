@@ -53,7 +53,10 @@ SearchForFirstSetVisitor
 				{
 					if (node->refType == GlrRefType::Id)
 					{
-						SearchInRuleInternal(node->literal.value);
+						if (context.syntaxManager.Rules().Keys().Contains(node->literal.value))
+						{
+							SearchInRuleInternal(node->literal.value);
+						}
 					}
 					couldBeEmpty = false;
 				}
@@ -160,22 +163,21 @@ SearchForLrpVisitor
 				void SearchInRuleInternal(const WString& ruleName) override
 				{
 					vint index = context.syntaxManager.Rules().Keys().IndexOf(ruleName);
-					if (index != -1)
+					CHECK_ERROR(index != -1, L"vl::glr::parsergen::SearchForLrpVisitor::SearchInRuleInternal(const WString&)#Internal error.");
+
+					auto ruleSymbol = context.syntaxManager.Rules().Values()[index];
+					auto ruleAst = context.astRules[ruleSymbol];
+
+					if (searchedRules.Contains(ruleAst)) return;
+					searchedRules.Add(ruleAst);
+
+					auto oldRule = currentPlaceholderRule;
+					currentPlaceholderRule = ruleSymbol;
+					for (auto clause : ruleAst->clauses)
 					{
-						auto ruleSymbol = context.syntaxManager.Rules().Values()[index];
-						auto ruleAst = context.astRules[ruleSymbol];
-
-						if (searchedRules.Contains(ruleAst)) return;
-						searchedRules.Add(ruleAst);
-
-						auto oldRule = currentPlaceholderRule;
-						currentPlaceholderRule = ruleSymbol;
-						for (auto clause : ruleAst->clauses)
-						{
-							clause->Accept(this);
-						}
-						currentPlaceholderRule = oldRule;
+						clause->Accept(this);
 					}
+					currentPlaceholderRule = oldRule;
 				}
 			public:
 				List<WString>				unmatchedPlaceholderRuleNames;
@@ -219,6 +221,63 @@ SearchForLrpVisitor
 							break;
 						}
 					}
+				}
+			};
+
+/***********************************************************************
+FirstSetMatrixVisitor
+***********************************************************************/
+
+			class FirstSetMatrixVisitor
+				: public SearchForFirstSetVisitor
+			{
+			protected:
+				Array<bool>					matrix;
+				WString						searchingRuleName;
+
+				bool& InFirstSet(const WString& element, const WString& set)
+				{
+					vint count = context.syntaxManager.Rules().Count();
+					vint i1 = context.syntaxManager.Rules().Keys().IndexOf(element);
+					vint i2 = context.syntaxManager.Rules().Keys().IndexOf(set);
+					CHECK_ERROR(i1 != -1 && i2 != -1, L"vl::glr::parsergen::FirstSetMatrixVisitor::InFirstSet(const WString&, const WString&)#Internal error.");
+					return matrix[i1 * count + i2];
+				}
+
+				void SearchInRuleInternal(const WString& ruleName) override
+				{
+					InFirstSet(ruleName, searchingRuleName) = true;
+				}
+			public:
+
+				FirstSetMatrixVisitor(
+					VisitorContext& _context
+				)
+					: SearchForFirstSetVisitor(_context)
+				{
+					vint count = context.syntaxManager.Rules().Count();
+
+					matrix.Resize(count * count);
+					for (vint i = 0; i < count * count; i++)
+					{
+						matrix[i] = false;
+					}
+
+					for (vint i = 0; i < count; i++)
+					{
+						searchingRuleName = context.syntaxManager.Rules().Keys()[i];
+						auto ruleSymbol = context.syntaxManager.Rules().Values()[i];
+						auto ruleAst = context.astRules[ruleSymbol];
+						for (auto clause : ruleAst->clauses)
+						{
+							clause->Accept(this);
+						}
+					}
+				}
+
+				bool IsInFirstSet(const WString& element, const WString& set)
+				{
+					return InFirstSet(element, set);
 				}
 			};
 
@@ -558,6 +617,7 @@ ValidateTypes
 
 			void ValidateTypes(VisitorContext& context, List<Ptr<GlrSyntaxFile>>& files)
 			{
+				FirstSetMatrixVisitor matrixVisitor(context);
 				for (auto file : files)
 				{
 					for (auto rule : file->rules)
