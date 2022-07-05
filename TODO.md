@@ -17,7 +17,6 @@
 
 ## Issues
 
-- Deny when `A LRI(Flag) (B ...) | (C ...)` happens, `B` is a prefix of `C`, and both injection could end with a same target X.
 - TODO in `SyntaxSymbolManager::EliminateSingleRulePrefix`.
   - Deny `A ::= !B ::= B as Something ::= ...;`.
 - Print correct codeRange for:

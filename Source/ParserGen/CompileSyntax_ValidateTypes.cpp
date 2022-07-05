@@ -260,7 +260,7 @@ FirstSetMatrixVisitor
 						evaluated[i] = true;
 						for (vint j = 0; j < count; j++)
 						{
-							if (matrix[j * count + i] && Evaluate(count, i1, j))
+							if (matrix[j * count + i2] && Evaluate(count, i1, j))
 							{
 								matrix[i] = true;
 								break;
@@ -696,7 +696,7 @@ LriPrefixTestingVisitor
 					RuleSymbol* _ruleSymbol
 				)
 					: context(_context)
-					, matrix(matrix)
+					, matrix(_matrix)
 					, ruleSymbol(_ruleSymbol)
 				{
 				}
@@ -712,6 +712,7 @@ LriPrefixTestingVisitor
 
 				void SearchLriEndings(List<GlrLeftRecursionInjectClause*>& visiting, GlrLeftRecursionInjectClause* node)
 				{
+					visiting.Add(node);
 					if (!node->continuation || node->continuation->type == GlrLeftRecursionInjectContinuationType::Optional)
 					{
 						for (auto lri : visiting)
@@ -725,13 +726,12 @@ LriPrefixTestingVisitor
 
 					if (node->continuation)
 					{
-						visiting.Add(node);
 						for (auto target : node->continuation->injectionTargets)
 						{
 							SearchLriEndings(visiting, target.Obj());
 						}
-						visiting.RemoveAt(visiting.Count() - 1);
 					}
+					visiting.RemoveAt(visiting.Count() - 1);
 				}
 
 				void VerifyPrefix(GlrLeftRecursionInjectClause* node)
