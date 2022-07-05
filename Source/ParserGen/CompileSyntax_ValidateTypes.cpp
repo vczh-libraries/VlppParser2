@@ -582,6 +582,41 @@ ValidateTypesVisitor
 
 				void Visit(GlrLeftRecursionInjectClause* node) override
 				{
+				}
+			};
+
+/***********************************************************************
+LriVerifyTypesVisitor
+***********************************************************************/
+
+			class LriVerifyTypesVisitor
+				: public empty_visitor::ClauseVisitor
+			{
+			protected:
+				VisitorContext&									context;
+				RuleSymbol*										ruleSymbol;
+
+			public:
+				LriVerifyTypesVisitor(
+					VisitorContext& _context,
+					RuleSymbol* _ruleSymbol
+				)
+					: context(_context)
+					, ruleSymbol(_ruleSymbol)
+				{
+				}
+
+				void ValidateClause(Ptr<GlrClause> clause)
+				{
+					clause->Accept(this);
+				}
+
+				////////////////////////////////////////////////////////////////////////
+				// GlrClause::IVisitor
+				////////////////////////////////////////////////////////////////////////
+
+				void Visit(GlrLeftRecursionInjectClause* node) override
+				{
 					auto prefixRule = context.syntaxManager.Rules()[node->rule->literal.value];
 					if (prefixRule->isPartial)
 					{
@@ -760,9 +795,15 @@ ValidateTypes
 						ValidateTypesVisitor vtVisitor(context, ruleSymbol);
 						for (auto clause : rule->clauses)
 						{
-							LriPrefixTestingVisitor lptVisitor(context, matrix, ruleSymbol);
 							vtVisitor.ValidateClause(clause);
-							lptVisitor.ValidateClause(clause);
+							{
+								LriVerifyTypesVisitor lvtVisitor(context, ruleSymbol);
+								lvtVisitor.ValidateClause(clause);
+							}
+							{
+								LriPrefixTestingVisitor lptVisitor(context, matrix, ruleSymbol);
+								lptVisitor.ValidateClause(clause);
+							}
 						}
 					}
 				}
