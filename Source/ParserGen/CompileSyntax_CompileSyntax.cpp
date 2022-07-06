@@ -396,6 +396,11 @@ CompileSyntaxVisitor
 						return automatonBuilder.BuildReuseClause(CompileLriTarget(-1, node));
 					});
 				}
+
+				void Visit(GlrPrefixMergeClause* node) override
+				{
+					CHECK_FAIL(L"Not Implemented!");
+				}
 			};
 
 /***********************************************************************

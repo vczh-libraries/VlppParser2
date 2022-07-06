@@ -144,6 +144,11 @@ SearchForFirstSetVisitor
 				{
 					node->rule->Accept(this);
 				}
+
+				void Visit(GlrPrefixMergeClause* node) override
+				{
+					CHECK_FAIL(L"Not Implemented!");
+				}
 			};
 
 /***********************************************************************
@@ -582,6 +587,11 @@ ValidateTypesVisitor
 
 				void Visit(GlrLeftRecursionInjectClause* node) override
 				{
+				}
+
+				void Visit(GlrPrefixMergeClause* node) override
+				{
+					CHECK_FAIL(L"Not Implemented!");
 				}
 			};
 
