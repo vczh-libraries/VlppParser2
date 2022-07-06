@@ -20,10 +20,13 @@ namespace vl
 CompileSyntax
 ***********************************************************************/
 
-			void CompileSyntax(AstSymbolManager& astManager, LexerSymbolManager& lexerManager, SyntaxSymbolManager& syntaxManager, Ptr<CppParserGenOutput> output, collections::List<Ptr<GlrSyntaxFile>>& files)
+			bool NeedRewritten(collections::List<Ptr<GlrSyntaxFile>>& files)
 			{
-				VisitorContext context(astManager, lexerManager, syntaxManager, output);
+				return false;
+			}
 
+			bool VerifySyntax(VisitorContext& context, collections::List<Ptr<GlrSyntaxFile>>& files)
+			{
 				for (auto file : files)
 				{
 					for (auto rule : file->rules)
@@ -57,24 +60,41 @@ CompileSyntax
 						}
 					}
 				}
-				if (syntaxManager.Global().Errors().Count() > 0) return;
+				if (context.syntaxManager.Global().Errors().Count() > 0) return false;
 
 				ResolveName(context, files);
-				if (syntaxManager.Global().Errors().Count() > 0) return;
+				if (context.syntaxManager.Global().Errors().Count() > 0) return false;
 
 				ValidatePartialRules(context, files);
-				if (syntaxManager.Global().Errors().Count() > 0) return;
+				if (context.syntaxManager.Global().Errors().Count() > 0) return false;
 
 				CalculateRuleAndClauseTypes(context);
-				if (syntaxManager.Global().Errors().Count() > 0) return;
+				if (context.syntaxManager.Global().Errors().Count() > 0) return false;
 
 				ValidateTypes(context, files);
-				if (syntaxManager.Global().Errors().Count() > 0) return;
+				if (context.syntaxManager.Global().Errors().Count() > 0) return false;
 
 				ValidateStructure(context, files);
-				if (syntaxManager.Global().Errors().Count() > 0) return;
+				if (context.syntaxManager.Global().Errors().Count() > 0) return false;
 
-				CompileSyntax(context, files);
+				return true;
+			}
+
+			Ptr<GlrSyntaxFile> CompileSyntax(AstSymbolManager& astManager, LexerSymbolManager& lexerManager, SyntaxSymbolManager& syntaxManager, Ptr<CppParserGenOutput> output, collections::List<Ptr<GlrSyntaxFile>>& files)
+			{
+				if (NeedRewritten(files))
+				{
+					CHECK_FAIL(L"Not Implemented!");
+				}
+				else
+				{
+					VisitorContext context(astManager, lexerManager, syntaxManager, output);
+					if (VerifySyntax(context, files))
+					{
+						CompileSyntax(context, files);
+					}
+					return nullptr;
+				}
 			}
 		}
 	}

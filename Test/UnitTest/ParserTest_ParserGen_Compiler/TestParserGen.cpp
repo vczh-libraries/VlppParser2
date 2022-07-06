@@ -59,7 +59,7 @@ TEST_FILE
 			}
 
 			Ptr<GlrAstFile> astFile;
-			Ptr<GlrSyntaxFile> syntaxFile;
+			Ptr<GlrSyntaxFile> syntaxFile, syntaxRewrittenExpected;
 
 			TEST_CASE(L"Parse Ast.txt")
 			{
@@ -76,6 +76,20 @@ TEST_FILE
 				auto actualJson = PrintAstJson<json_visitor::RuleAstVisitor>(syntaxFile);
 				File(dirOutput / (L"Syntax[" + parserName + L"].txt")).WriteAllText(actualJson, true, BomEncoder::Utf8);
 			});
+
+			{
+				File fileRewritten = dirParser / L"Syntax/SyntaxRewritten.txt";
+				if (fileRewritten.Exists())
+				{
+					TEST_CASE(L"Parse SyntaxRewritten.txt")
+					{
+						auto input = fileRewritten.ReadAllTextByBom();
+						syntaxRewrittenExpected = ruleParser.ParseFile(input);
+						auto actualJson = PrintAstJson<json_visitor::RuleAstVisitor>(syntaxRewrittenExpected);
+						File(dirOutput / (L"SyntaxRewrittenExpected[" + parserName + L"].txt")).WriteAllText(actualJson, true, BomEncoder::Utf8);
+					});
+				}
+			}
 
 			ParserSymbolManager global;
 			AstSymbolManager astManager(global);
@@ -119,8 +133,17 @@ TEST_FILE
 			{
 				List<Ptr<GlrSyntaxFile>> syntaxFiles;
 				syntaxFiles.Add(syntaxFile);
-				CompileSyntax(astManager, lexerManager, syntaxManager, output, syntaxFiles);
+				auto syntaxRewrittenActual = CompileSyntax(astManager, lexerManager, syntaxManager, output, syntaxFiles);
 				TEST_ASSERT(global.Errors().Count() == 0);
+
+				TEST_ASSERT((bool)syntaxRewrittenActual == (bool)syntaxRewrittenExpected);
+				if (syntaxRewrittenExpected)
+				{
+					auto actualJson = PrintAstJson<json_visitor::RuleAstVisitor>(syntaxRewrittenActual);
+					auto expectedJson = PrintAstJson<json_visitor::RuleAstVisitor>(syntaxRewrittenExpected);
+					File(dirOutput / (L"SyntaxRewrittenActual[" + parserName + L"].txt")).WriteAllText(actualJson, true, BomEncoder::Utf8);
+					TEST_ASSERT(actualJson == expectedJson);
+				}
 
 				syntaxManager.BuildCompactNFA();
 				TEST_ASSERT(global.Errors().Count() == 0);
