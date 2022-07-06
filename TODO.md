@@ -14,6 +14,7 @@
     - If none, leave it.
     - If all, rewrite it using `left_recursion_placeholder`, `left_recursion_inject` and `left_recursion_inject_multiple`.
     - If mixed, report errors.
+- Add `throw expression` to `PrefixSubset5` to test `prefix_merge`.
 
 ## Issues
 
