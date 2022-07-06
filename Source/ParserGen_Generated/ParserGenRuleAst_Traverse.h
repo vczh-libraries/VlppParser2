@@ -42,6 +42,7 @@ namespace vl
 					virtual void Traverse(GlrOptionalSyntax* node);
 					virtual void Traverse(GlrOrCondition* node);
 					virtual void Traverse(GlrPartialClause* node);
+					virtual void Traverse(GlrPrefixMergeClause* node);
 					virtual void Traverse(GlrPushConditionSyntax* node);
 					virtual void Traverse(GlrRefCondition* node);
 					virtual void Traverse(GlrRefSyntax* node);
@@ -72,6 +73,7 @@ namespace vl
 					virtual void Finishing(GlrOptionalSyntax* node);
 					virtual void Finishing(GlrOrCondition* node);
 					virtual void Finishing(GlrPartialClause* node);
+					virtual void Finishing(GlrPrefixMergeClause* node);
 					virtual void Finishing(GlrPushConditionSyntax* node);
 					virtual void Finishing(GlrRefCondition* node);
 					virtual void Finishing(GlrRefSyntax* node);
@@ -105,6 +107,7 @@ namespace vl
 					void Visit(GlrReuseClause* node) override;
 					void Visit(GlrLeftRecursionPlaceholderClause* node) override;
 					void Visit(GlrLeftRecursionInjectClause* node) override;
+					void Visit(GlrPrefixMergeClause* node) override;
 
 				public:
 					void InspectInto(GlrCondition* node);

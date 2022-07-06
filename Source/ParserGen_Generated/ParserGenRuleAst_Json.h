@@ -40,6 +40,7 @@ namespace vl
 					virtual void PrintFields(GlrOptionalSyntax* node);
 					virtual void PrintFields(GlrOrCondition* node);
 					virtual void PrintFields(GlrPartialClause* node);
+					virtual void PrintFields(GlrPrefixMergeClause* node);
 					virtual void PrintFields(GlrPushConditionSyntax* node);
 					virtual void PrintFields(GlrRefCondition* node);
 					virtual void PrintFields(GlrRefSyntax* node);
@@ -73,6 +74,7 @@ namespace vl
 					void Visit(GlrReuseClause* node) override;
 					void Visit(GlrLeftRecursionPlaceholderClause* node) override;
 					void Visit(GlrLeftRecursionInjectClause* node) override;
+					void Visit(GlrPrefixMergeClause* node) override;
 
 				public:
 					RuleAstVisitor(vl::stream::StreamWriter& _writer);

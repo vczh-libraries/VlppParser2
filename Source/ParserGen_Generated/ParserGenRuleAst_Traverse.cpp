@@ -31,6 +31,7 @@ namespace vl
 				void RuleAstVisitor::Traverse(GlrOptionalSyntax* node) {}
 				void RuleAstVisitor::Traverse(GlrOrCondition* node) {}
 				void RuleAstVisitor::Traverse(GlrPartialClause* node) {}
+				void RuleAstVisitor::Traverse(GlrPrefixMergeClause* node) {}
 				void RuleAstVisitor::Traverse(GlrPushConditionSyntax* node) {}
 				void RuleAstVisitor::Traverse(GlrRefCondition* node) {}
 				void RuleAstVisitor::Traverse(GlrRefSyntax* node) {}
@@ -60,6 +61,7 @@ namespace vl
 				void RuleAstVisitor::Finishing(GlrOptionalSyntax* node) {}
 				void RuleAstVisitor::Finishing(GlrOrCondition* node) {}
 				void RuleAstVisitor::Finishing(GlrPartialClause* node) {}
+				void RuleAstVisitor::Finishing(GlrPrefixMergeClause* node) {}
 				void RuleAstVisitor::Finishing(GlrPushConditionSyntax* node) {}
 				void RuleAstVisitor::Finishing(GlrRefCondition* node) {}
 				void RuleAstVisitor::Finishing(GlrRefSyntax* node) {}
@@ -304,6 +306,18 @@ namespace vl
 					InspectInto(node->continuation.Obj());
 					InspectInto(node->rule.Obj());
 					Finishing(static_cast<GlrLeftRecursionInjectClause*>(node));
+					Finishing(static_cast<GlrClause*>(node));
+					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+				}
+
+				void RuleAstVisitor::Visit(GlrPrefixMergeClause* node)
+				{
+					if (!node) return;
+					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+					Traverse(static_cast<GlrClause*>(node));
+					Traverse(static_cast<GlrPrefixMergeClause*>(node));
+					InspectInto(node->rule.Obj());
+					Finishing(static_cast<GlrPrefixMergeClause*>(node));
 					Finishing(static_cast<GlrClause*>(node));
 					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 				}

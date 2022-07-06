@@ -100,6 +100,11 @@ Visitor Pattern Implementation
 			{
 				visitor->Visit(this);
 			}
+
+			void GlrPrefixMergeClause::Accept(GlrClause::IVisitor* visitor)
+			{
+				visitor->Visit(this);
+			}
 		}
 	}
 }
@@ -145,6 +150,7 @@ namespace vl
 			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrLeftRecursionInjectContinuationType, glr::parsergen::GlrLeftRecursionInjectContinuationType)
 			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrLeftRecursionInjectContinuation, glr::parsergen::GlrLeftRecursionInjectContinuation)
 			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrLeftRecursionInjectClause, glr::parsergen::GlrLeftRecursionInjectClause)
+			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrPrefixMergeClause, glr::parsergen::GlrPrefixMergeClause)
 			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrRule, glr::parsergen::GlrRule)
 			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrSyntaxFile, glr::parsergen::GlrSyntaxFile)
 
@@ -401,6 +407,14 @@ namespace vl
 				CLASS_MEMBER_FIELD(continuation)
 			END_CLASS_MEMBER(vl::glr::parsergen::GlrLeftRecursionInjectClause)
 
+			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrPrefixMergeClause)
+				CLASS_MEMBER_BASE(vl::glr::parsergen::GlrClause)
+
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrPrefixMergeClause>(), NO_PARAMETER)
+
+				CLASS_MEMBER_FIELD(rule)
+			END_CLASS_MEMBER(vl::glr::parsergen::GlrPrefixMergeClause)
+
 			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrRule)
 				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
@@ -444,6 +458,7 @@ namespace vl
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrClause::IVisitor::*)(vl::glr::parsergen::GlrReuseClause* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrClause::IVisitor::*)(vl::glr::parsergen::GlrLeftRecursionPlaceholderClause* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrClause::IVisitor::*)(vl::glr::parsergen::GlrLeftRecursionInjectClause* node))
+				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrClause::IVisitor::*)(vl::glr::parsergen::GlrPrefixMergeClause* node))
 			END_INTERFACE_MEMBER(vl::glr::parsergen::GlrClause)
 
 #endif
@@ -488,6 +503,7 @@ namespace vl
 					ADD_TYPE_INFO(vl::glr::parsergen::GlrLeftRecursionInjectContinuationType)
 					ADD_TYPE_INFO(vl::glr::parsergen::GlrLeftRecursionInjectContinuation)
 					ADD_TYPE_INFO(vl::glr::parsergen::GlrLeftRecursionInjectClause)
+					ADD_TYPE_INFO(vl::glr::parsergen::GlrPrefixMergeClause)
 					ADD_TYPE_INFO(vl::glr::parsergen::GlrRule)
 					ADD_TYPE_INFO(vl::glr::parsergen::GlrSyntaxFile)
 				}

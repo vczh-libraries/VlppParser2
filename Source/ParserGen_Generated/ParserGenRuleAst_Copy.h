@@ -40,6 +40,7 @@ namespace vl
 					void CopyFields(GlrOptionalSyntax* from, GlrOptionalSyntax* to);
 					void CopyFields(GlrOrCondition* from, GlrOrCondition* to);
 					void CopyFields(GlrPartialClause* from, GlrPartialClause* to);
+					void CopyFields(GlrPrefixMergeClause* from, GlrPrefixMergeClause* to);
 					void CopyFields(GlrPushConditionSyntax* from, GlrPushConditionSyntax* to);
 					void CopyFields(GlrRefCondition* from, GlrRefCondition* to);
 					void CopyFields(GlrRefSyntax* from, GlrRefSyntax* to);
@@ -81,6 +82,7 @@ namespace vl
 					void Visit(GlrReuseClause* node) override;
 					void Visit(GlrLeftRecursionPlaceholderClause* node) override;
 					void Visit(GlrLeftRecursionInjectClause* node) override;
+					void Visit(GlrPrefixMergeClause* node) override;
 
 				public:
 					virtual vl::Ptr<GlrCondition> CopyNode(GlrCondition* node);
@@ -104,6 +106,7 @@ namespace vl
 					vl::Ptr<GlrOptionalSyntax> CopyNode(GlrOptionalSyntax* node);
 					vl::Ptr<GlrOrCondition> CopyNode(GlrOrCondition* node);
 					vl::Ptr<GlrPartialClause> CopyNode(GlrPartialClause* node);
+					vl::Ptr<GlrPrefixMergeClause> CopyNode(GlrPrefixMergeClause* node);
 					vl::Ptr<GlrPushConditionSyntax> CopyNode(GlrPushConditionSyntax* node);
 					vl::Ptr<GlrRefCondition> CopyNode(GlrRefCondition* node);
 					vl::Ptr<GlrRefSyntax> CopyNode(GlrRefSyntax* node);

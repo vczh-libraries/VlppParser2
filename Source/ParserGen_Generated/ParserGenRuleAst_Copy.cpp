@@ -124,6 +124,12 @@ namespace vl
 					to->type = from->type;
 				}
 
+				void RuleAstVisitor::CopyFields(GlrPrefixMergeClause* from, GlrPrefixMergeClause* to)
+				{
+					CopyFields(static_cast<GlrClause*>(from), static_cast<GlrClause*>(to));
+					to->rule = CopyNode(from->rule.Obj());
+				}
+
 				void RuleAstVisitor::CopyFields(GlrPushConditionSyntax* from, GlrPushConditionSyntax* to)
 				{
 					CopyFields(static_cast<GlrSyntax*>(from), static_cast<GlrSyntax*>(to));
@@ -386,6 +392,13 @@ namespace vl
 					this->result = newNode;
 				}
 
+				void RuleAstVisitor::Visit(GlrPrefixMergeClause* node)
+				{
+					auto newNode = vl::MakePtr<GlrPrefixMergeClause>();
+					CopyFields(node, newNode.Obj());
+					this->result = newNode;
+				}
+
 				vl::Ptr<GlrCondition> RuleAstVisitor::CopyNode(GlrCondition* node)
 				{
 					if (!node) return nullptr;
@@ -514,6 +527,12 @@ namespace vl
 				{
 					if (!node) return nullptr;
 					return CopyNode(static_cast<GlrClause*>(node)).Cast<GlrPartialClause>();
+				}
+
+				vl::Ptr<GlrPrefixMergeClause> RuleAstVisitor::CopyNode(GlrPrefixMergeClause* node)
+				{
+					if (!node) return nullptr;
+					return CopyNode(static_cast<GlrClause*>(node)).Cast<GlrPrefixMergeClause>();
 				}
 
 				vl::Ptr<GlrPushConditionSyntax> RuleAstVisitor::CopyNode(GlrPushConditionSyntax* node)

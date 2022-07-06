@@ -62,6 +62,7 @@ namespace vl
 					void Visit(GlrReuseClause* node) override;
 					void Visit(GlrLeftRecursionPlaceholderClause* node) override;
 					void Visit(GlrLeftRecursionInjectClause* node) override;
+					void Visit(GlrPrefixMergeClause* node) override;
 				};
 
 			}

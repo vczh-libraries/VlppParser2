@@ -50,6 +50,7 @@ CreateParserGenAst
 				manager.CreateToken(L"LS_PH", L"left_recursion_placeholder");
 				manager.CreateToken(L"LS_I", L"left_recursion_inject");
 				manager.CreateToken(L"LS_IM", L"left_recursion_inject_multiple");
+				manager.CreateToken(L"LS_PM", L"prefix_merge");
 				manager.CreateToken(L"ID", L"[a-zA-Z_][a-zA-Z0-9_]*");
 				manager.CreateToken(L"STRING", L"(\"[^\"]*\")+");
 				manager.CreateToken(L"CONDITIONAL_LITERAL", L"(\'[^\']*\')+");

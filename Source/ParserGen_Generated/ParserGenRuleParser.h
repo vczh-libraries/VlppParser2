@@ -34,14 +34,14 @@ namespace vl
 				AssignmentOp = 95,
 				Assignment = 99,
 				Clause = 104,
-				Placeholder = 135,
-				RuleName = 138,
-				LriConfig = 141,
-				LriContinuationBody = 145,
-				LriContinuation = 154,
-				LriTarget = 160,
-				Rule = 167,
-				File = 175,
+				Placeholder = 140,
+				RuleName = 143,
+				LriConfig = 146,
+				LriContinuationBody = 150,
+				LriContinuation = 159,
+				LriTarget = 165,
+				Rule = 172,
+				File = 180,
 			};
 
 			const wchar_t* RuleParserRuleName(vl::vint index);

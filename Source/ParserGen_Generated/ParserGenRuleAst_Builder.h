@@ -110,6 +110,12 @@ namespace vl
 					MakePartialClause& type(const vl::WString& value);
 				};
 
+				class MakePrefixMergeClause : public vl::glr::ParsingAstBuilder<GlrPrefixMergeClause>
+				{
+				public:
+					MakePrefixMergeClause& rule(const vl::Ptr<GlrRefSyntax>& value);
+				};
+
 				class MakePushConditionSyntax : public vl::glr::ParsingAstBuilder<GlrPushConditionSyntax>
 				{
 				public:

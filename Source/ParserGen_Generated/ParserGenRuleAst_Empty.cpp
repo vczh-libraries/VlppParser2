@@ -100,6 +100,10 @@ ClauseVisitor
 				void ClauseVisitor::Visit(GlrLeftRecursionInjectClause* node)
 				{
 				}
+
+				void ClauseVisitor::Visit(GlrPrefixMergeClause* node)
+				{
+				}
 			}
 		}
 	}

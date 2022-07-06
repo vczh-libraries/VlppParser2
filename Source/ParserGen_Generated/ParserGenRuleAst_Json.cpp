@@ -214,6 +214,12 @@ namespace vl
 					WriteToken(node->type);
 					EndField();
 				}
+				void RuleAstVisitor::PrintFields(GlrPrefixMergeClause* node)
+				{
+					BeginField(L"rule");
+					Print(node->rule.Obj());
+					EndField();
+				}
 				void RuleAstVisitor::PrintFields(GlrPushConditionSyntax* node)
 				{
 					BeginField(L"switches");
@@ -614,6 +620,20 @@ namespace vl
 					WriteType(L"LeftRecursionInjectClause", node);
 					PrintFields(static_cast<GlrClause*>(node));
 					PrintFields(static_cast<GlrLeftRecursionInjectClause*>(node));
+					EndObject();
+				}
+
+				void RuleAstVisitor::Visit(GlrPrefixMergeClause* node)
+				{
+					if (!node)
+					{
+						WriteNull();
+						return;
+					}
+					BeginObject();
+					WriteType(L"PrefixMergeClause", node);
+					PrintFields(static_cast<GlrClause*>(node));
+					PrintFields(static_cast<GlrPrefixMergeClause*>(node));
 					EndObject();
 				}
 

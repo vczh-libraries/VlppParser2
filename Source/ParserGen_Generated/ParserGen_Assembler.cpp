@@ -58,6 +58,8 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					return new vl::glr::parsergen::GlrOrCondition();
 				case ParserGenClasses::PartialClause:
 					return new vl::glr::parsergen::GlrPartialClause();
+				case ParserGenClasses::PrefixMergeClause:
+					return new vl::glr::parsergen::GlrPrefixMergeClause();
 				case ParserGenClasses::PushConditionSyntax:
 					return new vl::glr::parsergen::GlrPushConditionSyntax();
 				case ParserGenClasses::RefCondition:
@@ -134,6 +136,8 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					return vl::glr::AssemblerSetObjectField(&vl::glr::parsergen::GlrPartialClause::assignments, object, field, value, cppFieldName);
 				case ParserGenFields::PartialClause_syntax:
 					return vl::glr::AssemblerSetObjectField(&vl::glr::parsergen::GlrPartialClause::syntax, object, field, value, cppFieldName);
+				case ParserGenFields::PrefixMergeClause_rule:
+					return vl::glr::AssemblerSetObjectField(&vl::glr::parsergen::GlrPrefixMergeClause::rule, object, field, value, cppFieldName);
 				case ParserGenFields::PushConditionSyntax_switches:
 					return vl::glr::AssemblerSetObjectField(&vl::glr::parsergen::GlrPushConditionSyntax::switches, object, field, value, cppFieldName);
 				case ParserGenFields::PushConditionSyntax_syntax:
@@ -256,6 +260,7 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					L"OptionalSyntax",
 					L"OrCondition",
 					L"PartialClause",
+					L"PrefixMergeClause",
 					L"PushConditionSyntax",
 					L"RefCondition",
 					L"RefSyntax",
@@ -271,7 +276,7 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					L"UseSyntax",
 				};
 				vl::vint index = (vl::vint)type;
-				return 0 <= index && index < 33 ? results[index] : nullptr;
+				return 0 <= index && index < 34 ? results[index] : nullptr;
 			}
 
 			const wchar_t* ParserGenCppTypeName(ParserGenClasses type)
@@ -297,6 +302,7 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					L"vl::glr::parsergen::GlrOptionalSyntax",
 					L"vl::glr::parsergen::GlrOrCondition",
 					L"vl::glr::parsergen::GlrPartialClause",
+					L"vl::glr::parsergen::GlrPrefixMergeClause",
 					L"vl::glr::parsergen::GlrPushConditionSyntax",
 					L"vl::glr::parsergen::GlrRefCondition",
 					L"vl::glr::parsergen::GlrRefSyntax",
@@ -312,7 +318,7 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					L"vl::glr::parsergen::GlrUseSyntax",
 				};
 				vl::vint index = (vl::vint)type;
-				return 0 <= index && index < 33 ? results[index] : nullptr;
+				return 0 <= index && index < 34 ? results[index] : nullptr;
 			}
 
 			const wchar_t* ParserGenFieldName(ParserGenFields field)
@@ -355,6 +361,7 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					L"PartialClause::assignments",
 					L"PartialClause::syntax",
 					L"PartialClause::type",
+					L"PrefixMergeClause::rule",
 					L"PushConditionSyntax::switches",
 					L"PushConditionSyntax::syntax",
 					L"RefCondition::name",
@@ -379,7 +386,7 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					L"UseSyntax::name",
 				};
 				vl::vint index = (vl::vint)field;
-				return 0 <= index && index < 59 ? results[index] : nullptr;
+				return 0 <= index && index < 60 ? results[index] : nullptr;
 			}
 
 			const wchar_t* ParserGenCppFieldName(ParserGenFields field)
@@ -422,6 +429,7 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					L"vl::glr::parsergen::GlrPartialClause::assignments",
 					L"vl::glr::parsergen::GlrPartialClause::syntax",
 					L"vl::glr::parsergen::GlrPartialClause::type",
+					L"vl::glr::parsergen::GlrPrefixMergeClause::rule",
 					L"vl::glr::parsergen::GlrPushConditionSyntax::switches",
 					L"vl::glr::parsergen::GlrPushConditionSyntax::syntax",
 					L"vl::glr::parsergen::GlrRefCondition::name",
@@ -446,7 +454,7 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					L"vl::glr::parsergen::GlrUseSyntax::name",
 				};
 				vl::vint index = (vl::vint)field;
-				return 0 <= index && index < 59 ? results[index] : nullptr;
+				return 0 <= index && index < 60 ? results[index] : nullptr;
 			}
 
 			vl::Ptr<vl::glr::ParsingAstBase> ParserGenAstInsReceiver::ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates)

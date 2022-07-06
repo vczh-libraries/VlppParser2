@@ -236,6 +236,16 @@ MakePartialClause
 				}
 
 /***********************************************************************
+MakePrefixMergeClause
+***********************************************************************/
+
+				MakePrefixMergeClause& MakePrefixMergeClause::rule(const vl::Ptr<GlrRefSyntax>& value)
+				{
+					node->rule = value;
+					return *this;
+				}
+
+/***********************************************************************
 MakePushConditionSyntax
 ***********************************************************************/
 

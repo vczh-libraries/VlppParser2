@@ -14,14 +14,24 @@
     <ProjectCapability Include="SourceItemsFromImports" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\Source\ParserGen_Generated\ParserGenRuleAst.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\Source\ParserGen_Generated\ParserGenRuleAst.cpp">
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">/bigobj %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">/bigobj %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">/bigobj %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">/bigobj %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\Source\ParserGen_Generated\ParserGenRuleAst_Builder.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\Source\ParserGen_Generated\ParserGenRuleAst_Copy.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\Source\ParserGen_Generated\ParserGenRuleAst_Empty.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\Source\ParserGen_Generated\ParserGenRuleAst_Json.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\Source\ParserGen_Generated\ParserGenRuleAst_Traverse.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\Source\ParserGen_Generated\ParserGenRuleParser.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\Source\ParserGen_Generated\ParserGenTypeAst.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\Source\ParserGen_Generated\ParserGenTypeAst.cpp">
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">/bigobj %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">/bigobj %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">/bigobj %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">/bigobj %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\Source\ParserGen_Generated\ParserGenTypeAst_Builder.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\Source\ParserGen_Generated\ParserGenTypeAst_Copy.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\Source\ParserGen_Generated\ParserGenTypeAst_Empty.cpp" />

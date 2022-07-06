@@ -181,6 +181,10 @@ CreateParserGenRuleAst
 				_LriClause->CreateProp(L"rule")->SetPropType(AstPropType::Type, L"RefSyntax");
 				_LriClause->CreateProp(L"continuation")->SetPropType(AstPropType::Type, L"LeftRecursionInjectContinuation");
 
+				auto _PmClause = _ast->CreateClass(L"PrefixMergeClause");
+				_PmClause->SetBaseClass(L"Clause");
+				_PmClause->CreateProp(L"rule")->SetPropType(AstPropType::Type, L"RefSyntax");
+
 				///////////////////////////////////////////////////////////////////////////////////
 				// Rule
 				///////////////////////////////////////////////////////////////////////////////////
