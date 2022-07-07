@@ -24,28 +24,28 @@ _PrimitiveExprOnly
 // Left Recursive (Types)
 ////////////////////////////////////////
 
-_LongType
+_LongType_LRI_Original
   ::= left_recursion_placeholder(LRI__LongType)
   ::= !_PrimitiveShared
   ::= !_PrimitiveTypeOnly
-  ::= _LongType:type "const" as ConstType
-  ::= _LongType:type "*" as PointerType
-  ::= _LongType:returnType "(" {_LongType:args ; ","} ")" as FunctionType
+  ::= _LongType_LRI_Original:type "const" as ConstType
+  ::= _LongType_LRI_Original:type "*" as PointerType
+  ::= _LongType_LRI_Original:returnType "(" {_LongType:args ; ","} ")" as FunctionType
   ;
 
 ////////////////////////////////////////
 // Left Recursive (Expressions)
 ////////////////////////////////////////
 
-_Expr0
-  ::= left_recursion_placeholder(LRI__Expr)
+_Expr0_LRI_Original
+  ::= left_recursion_placeholder(LRI__Expr0)
   ::= !_PrimitiveShared
   ::= !_PrimitiveExprOnly
-  ::= _LongType:type "{" {_Expr:args ; ","} "}" as CtorExpr
+  ::= _LongType_LRI_Original:type "{" {_Expr:args ; ","} "}" as CtorExpr
   ;
 
 _Expr1_LRI_Original
-  ::= !_Expr0
+  ::= !_Expr0_LRI_Original
   ::= _Expr1_LRI_Original:func "(" {_Expr:args ; ","} ")" as CallExpr
   ;
 
@@ -66,23 +66,35 @@ Module_LRI_Original
 // Left Recursive (Rewritten)
 ////////////////////////////////////////
 
+_LongType
+  ::= !_PrimitiveShared [left_recursion_inject(LRI__LongType) _LongType_LRI_Original]
+  ::= !_PrimitiveTypeOnly [left_recursion_inject(LRI__LongType) _LongType_LRI_Original]
+  ;
+
+_Expr0
+  ::= !_PrimitiveShared [left_recursion_inject(LRI__LongType) _Expr0_LRI_Original]
+  ::= !_PrimitiveTypeOnly [left_recursion_inject(LRI__LongType) _Expr0_LRI_Original]
+  ;
+
 _Expr1
-  ::= !_PrimitiveShared [left_recursion_inject_multiple(LRI__Expr) _Expr1_LRI_Original]
+  ::= !_PrimitiveExprOnly [left_recursion_inject(LRI__Expr0) _Expr1_LRI_Original]
+  ::= !_PrimitiveShared [left_recursion_inject_multiple(LRI__Expr0) _Expr1_LRI_Original]
   ::= !_PrimitiveShared left_recursion_inject(LRI__LongType) _Expr1_LRI_Original
   ::= !_PrimitiveTypeOnly left_recursion_inject(LRI__LongType) _Expr1_LRI_Original
-  ::= !_PrimitiveExprOnly [left_recursion_inject(LRI__Expr) _Expr1_LRI_Original]
   ;
 
 _Expr
-  ::= !_PrimitiveShared [left_recursion_inject_multiple(LRI__Expr) _Expr_LRI_Original]
+  ::= !_PrimitiveExprOnly [left_recursion_inject(LRI__Expr0) _Expr_LRI_Original]
+  ::= !_PrimitiveShared [left_recursion_inject_multiple(LRI__Expr0) _Expr_LRI_Original]
   ::= !_PrimitiveShared left_recursion_inject(LRI__LongType) _Expr_LRI_Original
   ::= !_PrimitiveTypeOnly left_recursion_inject(LRI__LongType) _Expr_LRI_Original
-  ::= !_PrimitiveExprOnly [left_recursion_inject(LRI__Expr) _Expr_LRI_Original]
   ;
 
 Module
-  ::= !_PrimitiveShared [left_recursion_inject_multiple(LRI__Expr) _Expr_LRI_Original]
-  ::= !_PrimitiveShared left_recursion_inject(LRI__LongType) _Expr_LRI_Original | _LongType
-  ::= !_PrimitiveTypeOnly [left_recursion_inject(LRI__LongType) _Expr_LRI_Original | _LongType]
-  ::= !_PrimitiveExprOnly [left_recursion_inject(LRI__Expr) _Expr_LRI_Original]
+  ::= !_PrimitiveExprOnly [left_recursion_inject(LRI__Expr0) _Expr_LRI_Original]
+  ::= !_PrimitiveShared [left_recursion_inject_multiple(LRI__Expr0) _Expr_LRI_Original]
+  ::= !_PrimitiveShared left_recursion_inject(LRI__LongType) _Expr_LRI_Original
+  ::= !_PrimitiveShared left_recursion_inject(LRI__LongType) _LongType_LRI_Original
+  ::= !_PrimitiveTypeOnly left_recursion_inject(LRI__LongType) _Expr_LRI_Original
+  ::= !_PrimitiveTypeOnly [left_recursion_inject(LRI__LongType) _LongType_LRI_Original]
   ;
