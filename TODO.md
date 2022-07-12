@@ -24,6 +24,8 @@
     - all clauses should begin with `prefix_merge`
       - put `CHECK_FAIL(L"Not Implemented!")` here since it must be allowed to allow `throw expression` in expressions.
     - all clauses does not begin with `prefix_merge` must be a simple clause: `!RULE`.
+  - Any rule should not go through switch instructions and reach PM/LRP in one token input.
+  - LRI should not inject through switch instructions.
 - Add `throw expression` to `PrefixSubset5` to test `prefix_merge`.
 
 ## Issues
