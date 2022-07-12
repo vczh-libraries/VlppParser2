@@ -45,96 +45,94 @@ namespace vl
 ParserSymbolManager
 ***********************************************************************/
 
+#define GLR_PARSER_ERROR_LIST(ERROR_ITEM)\
+			/* AstSymbolManager */\
+			ERROR_ITEM(DuplicatedFile,											fileName)\
+			ERROR_ITEM(FileDependencyNotExists,									fileName, dependency)\
+			ERROR_ITEM(FileCyclicDependency,									fileName, dependency)\
+			ERROR_ITEM(DuplicatedSymbol,										fileName, symbolName)\
+			ERROR_ITEM(DuplicatedSymbolGlobally,								fileName, symbolName, anotherFileName)\
+			ERROR_ITEM(DuplicatedClassProp,										fileName, className, propName)\
+			ERROR_ITEM(DuplicatedEnumItem,										fileName, enumName, propName)\
+			ERROR_ITEM(BaseClassNotExists,										fileName, className, typeName)\
+			ERROR_ITEM(BaseClassNotClass,										fileName, className, typeName)\
+			ERROR_ITEM(BaseClassCyclicDependency,								fileName, className)\
+			ERROR_ITEM(FieldTypeNotExists,										fileName, className, propName)\
+			ERROR_ITEM(FieldTypeNotClass,										fileName, className, propName)\
+			/* LexerSymbolManager */\
+			ERROR_ITEM(InvalidTokenDefinition,									code)\
+			ERROR_ITEM(DuplicatedToken,											tokenName)\
+			ERROR_ITEM(DuplicatedTokenByDisplayText,							tokenName)\
+			ERROR_ITEM(InvalidTokenRegex,										tokenName, errorMessage)\
+			ERROR_ITEM(TokenRegexNotPure,										tokenName)\
+			ERROR_ITEM(DuplicatedTokenFragment,									fragmentName)\
+			ERROR_ITEM(TokenFragmentNotExists,									fragmentName)\
+			/* SyntaxSymbolManager */\
+			ERROR_ITEM(DuplicatedRule,											ruleName)\
+			ERROR_ITEM(RuleIsIndirectlyLeftRecursive,							ruleName)													/* Indirect left recursion must be resolved before */\
+			ERROR_ITEM(LeftRecursiveClauseInsidePushCondition,					ruleName)													/* The left recursive clause is not allowed to begin with a push condition syntax */\
+			ERROR_ITEM(LeftRecursiveClauseInsideTestCondition,					ruleName)													/* The left recursive clause is not allowed to begin with a test condition syntax */\
+			ERROR_ITEM(LeftRecursionPlaceholderMixedWithSwitches,				ruleName, placeholder, targetRuleName)\
+			ERROR_ITEM(LeftRecursionInjectHasNoContinuation,					ruleName, placeholder, targetRuleName)\
+			/* SyntaxAst(ResolveName) */\
+			ERROR_ITEM(RuleNameConflictedWithToken,								ruleName)\
+			ERROR_ITEM(TypeNotExistsInRule,										ruleName, name)\
+			ERROR_ITEM(TypeNotClassInRule,										ruleName, name)\
+			ERROR_ITEM(TokenOrRuleNotExistsInRule,								ruleName, name)\
+			ERROR_ITEM(LiteralNotValidToken,									ruleName, name)\
+			ERROR_ITEM(LiteralIsDiscardedToken,									ruleName, name)\
+			ERROR_ITEM(ConditionalLiteralNotValidToken,							ruleName, name)\
+			ERROR_ITEM(ConditionalLiteralIsDiscardedToken,						ruleName, name)\
+			ERROR_ITEM(ConditionalLiteralIsDisplayText,							ruleName, name)\
+			ERROR_ITEM(DuplicatedSwitch,										switchName)\
+			ERROR_ITEM(UnusedSwitch,											switchName)\
+			ERROR_ITEM(SwitchNotExists,											ruleName, switchName)\
+			/* SyntaxAst(CalculateTypes) */\
+			ERROR_ITEM(RuleMixedPartialClauseWithOtherClause,					ruleName)\
+			ERROR_ITEM(RuleWithDifferentPartialTypes,							ruleName)\
+			ERROR_ITEM(RuleExplicitTypeIsNotCompatibleWithClauseType,			ruleName)													/* The type of the rule is explicitly specified, but it is incompatible with its clauses */\
+			ERROR_ITEM(RuleCannotResolveToDeterministicType,					ruleName)													/* Unable to resolve to one type from clauses (token, type) or (create, partial) */\
+			ERROR_ITEM(CyclicDependedRuleTypeIncompatible,						ruleName)													/* Types of rules are not compatible to each other when they build cyclic dependency by reuse clauses */\
+			ERROR_ITEM(ReuseClauseCannotResolveToDeterministicType,				ruleName)													/* A reuse clause contains multiple use rule but their types are not compatible to each other */\
+			ERROR_ITEM(ReuseClauseContainsNoUseRule,							ruleName)													/* A reuse clause contains no use rule therefore the type cannot be determined */\
+			/* SyntaxAst(ValidateTypes) */\
+			ERROR_ITEM(FieldNotExistsInClause,									ruleName, clauseType, fieldName)							/* The field does not exist in the type of the clause */\
+			ERROR_ITEM(RuleTypeMismatchedToField,								ruleName, clauseType, fieldName, fieldRuleType)				/* The rule type is not compatible to the assigning field */\
+			ERROR_ITEM(AssignmentToNonEnumField,								ruleName, clauseType, fieldName)							/* Assignment can only assign fields in enum types */\
+			ERROR_ITEM(EnumItemMismatchedToField,								ruleName, clauseType, fieldName, enumItem)					/* Try to assign an unexisting or mismatched enum item to a field in an enum type */\
+			ERROR_ITEM(UseRuleWithPartialRule,									ruleName, useRuleName)										/* A use rule should not be used with a partial rule */\
+			ERROR_ITEM(UseRuleInNonReuseClause,									ruleName, useRuleName)										/* A use rule should only appear in reuse clause */\
+			ERROR_ITEM(PartialRuleUsedOnField,									ruleName, clauseType, partialRuleName, fieldName)			/* A partial rule does not create object, it cannot be assigned to a field */\
+			ERROR_ITEM(ClauseTypeMismatchedToPartialRule,						ruleName, clauseType, partialRuleName, partialRuleType)		/* A clause uses a partial rule of an incompatible type */\
+			ERROR_ITEM(LeftRecursionPlaceholderNotFoundInRule,					ruleName, placeholder, targetRuleName)						/* left_recursion_inject injects to a rule which doesn't accept the specified placeholder */\
+			ERROR_ITEM(LeftRecursionPlaceholderNotUnique,						ruleName, placeholder, targetRuleName)						/* left_recursion_inject injects to a rule which has multiple places accepting the specified placeholder */\
+			ERROR_ITEM(LeftRecursionInjectTargetIsPrefixOfAnotherSameEnding,	ruleName, placeholder, targetPrefixName, targetRuleName)	/* left_recursion_inject injects into two targets, A is a prefix of B, and both injection could end with the same target C, C could be B */\
+			ERROR_ITEM(LeftRecursionPlaceholderTypeMismatched,					ruleName, placeholder, targetRuleName, placeholderRuleName)\
+			ERROR_ITEM(PartialRuleInLeftRecursionInject,						ruleName, partialRuleName)\
+			/* SyntaxAst(ValidateStructure, counting) */\
+			ERROR_ITEM(ClauseNotCreateObject,									ruleName)													/* A reuse clause does not contain use rule in some potential sequences */\
+			ERROR_ITEM(UseRuleUsedInOptionalBody,								ruleName, useRuleName)\
+			ERROR_ITEM(UseRuleUsedInLoopBody,									ruleName, useRuleName)\
+			ERROR_ITEM(ClauseTooManyUseRule,									ruleName)													/* Multiple use rules in a potential sequence in a clause */\
+			ERROR_ITEM(NonArrayFieldAssignedInLoop,								ruleName, clauseType, fieldName)\
+			ERROR_ITEM(NonLoopablePartialRuleUsedInLoop,						ruleName, clauseType, partialRuleName)\
+			ERROR_ITEM(ClauseCouldExpandToEmptySequence,						ruleName)\
+			ERROR_ITEM(LoopBodyCouldExpandToEmptySequence,						ruleName)\
+			ERROR_ITEM(OptionalBodyCouldExpandToEmptySequence,					ruleName)\
+			ERROR_ITEM(NegativeOptionalEndsAClause,								ruleName)													/* Negative optional syntax cannot ends a clause */\
+			ERROR_ITEM(MultiplePrioritySyntaxInAClause,							ruleName)													/* Too many syntax with priority in the a clause */\
+			ERROR_ITEM(PushConditionBodyCouldExpandToEmptySequence,				ruleName)\
+			ERROR_ITEM(TestConditionBodyCouldExpandToEmptySequence,				ruleName)\
+			ERROR_ITEM(MultipleEmptySyntaxInTestCondition,						ruleName)\
+			ERROR_ITEM(TooManyLeftRecursionPlaceholderClauses,					ruleName)\
+			/* SyntaxAst(ValidateStructure, relationship) */\
+			ERROR_ITEM(FieldAssignedMoreThanOnce,								ruleName, clauseType, fieldName)\
+
 			enum class ParserErrorType
 			{
-				// AstSymbolManager -------------------------------------------------------------------
-				DuplicatedFile,											// (fileName)
-				FileDependencyNotExists,								// (fileName, dependency)
-				FileCyclicDependency,									// (fileName, dependency)
-				DuplicatedSymbol,										// (fileName, symbolName)
-				DuplicatedSymbolGlobally,								// (fileName, symbolName, anotherFileName)
-				DuplicatedClassProp,									// (fileName, className, propName)
-				DuplicatedEnumItem,										// (fileName, enumName, propName)
-				BaseClassNotExists,										// (fileName, className, typeName)
-				BaseClassNotClass,										// (fileName, className, typeName)
-				BaseClassCyclicDependency,								// (fileName, className)
-				FieldTypeNotExists,										// (fileName, className, propName)
-				FieldTypeNotClass,										// (fileName, className, propName)
-
-				// LexerSymbolManager -----------------------------------------------------------------
-				InvalidTokenDefinition,									// (code)
-				DuplicatedToken,										// (tokenName)
-				DuplicatedTokenByDisplayText,							// (tokenName)
-				InvalidTokenRegex,										// (tokenName, errorMessage)
-				TokenRegexNotPure,										// (tokenName)
-				DuplicatedTokenFragment,								// (fragmentName)
-				TokenFragmentNotExists,									// (fragmentName)
-
-				// SyntaxSymbolManager ----------------------------------------------------------------
-				DuplicatedRule,											// (ruleName)
-				RuleIsIndirectlyLeftRecursive,							// (ruleName)													: Indirect left recursion must be resolved before.
-				LeftRecursiveClauseInsidePushCondition,					// (ruleName)													: The left recursive clause is not allowed to begin with a push condition syntax.
-				LeftRecursiveClauseInsideTestCondition,					// (ruleName)													: The left recursive clause is not allowed to begin with a test condition syntax.
-				LeftRecursionPlaceholderMixedWithSwitches,				// (ruleName, placeholder, targetRuleName)
-				LeftRecursionInjectHasNoContinuation,					// (ruleName, placeholder, targetRuleName)
-
-				// SyntaxAst (ResolveName) ------------------------------------------------------------
-				RuleNameConflictedWithToken,							// (ruleName)
-				TypeNotExistsInRule,									// (ruleName, name)
-				TypeNotClassInRule,										// (ruleName, name)
-				TokenOrRuleNotExistsInRule,								// (ruleName, name)
-				LiteralNotValidToken,									// (ruleName, name)
-				LiteralIsDiscardedToken,								// (ruleName, name)
-				ConditionalLiteralNotValidToken,						// (ruleName, name)
-				ConditionalLiteralIsDiscardedToken,						// (ruleName, name)
-				ConditionalLiteralIsDisplayText,						// (ruleName, name)
-				DuplicatedSwitch,										// (switchName)
-				UnusedSwitch,											// (switchName)
-				SwitchNotExists,										// (ruleName, switchName)
-
-				// SyntaxAst (CalculateTypes) ---------------------------------------------------------
-				RuleMixedPartialClauseWithOtherClause,					// (ruleName)
-				RuleWithDifferentPartialTypes,							// (ruleName)
-				RuleExplicitTypeIsNotCompatibleWithClauseType,			// (ruleName)													: The type of the rule is explicitly specified, but it is incompatible with its clauses.
-				RuleCannotResolveToDeterministicType,					// (ruleName)													: Unable to resolve to one type from clauses (token, type) or (create, partial).
-				CyclicDependedRuleTypeIncompatible,						// (ruleName)													: Types of rules are not compatible to each other when they build cyclic dependency by reuse clauses.
-				ReuseClauseCannotResolveToDeterministicType,			// (ruleName)													: A reuse clause contains multiple use rule but their types are not compatible to each other.
-				ReuseClauseContainsNoUseRule,							// (ruleName)													: A reuse clause contains no use rule therefore the type cannot be determined.
-
-				// SyntaxAst (ValidateTypes) ----------------------------------------------------------
-				FieldNotExistsInClause,									// (ruleName, clauseType, fieldName)							: The field does not exist in the type of the clause.
-				RuleTypeMismatchedToField,								// (ruleName, clauseType, fieldName, fieldRuleType)				: The rule type is not compatible to the assigning field.
-				AssignmentToNonEnumField,								// (ruleName, clauseType, fieldName)							: Assignment can only assign fields in enum types.
-				EnumItemMismatchedToField,								// (ruleName, clauseType, fieldName, enumItem)					: Try to assign an unexisting or mismatched enum item to a field in an enum type.
-				UseRuleWithPartialRule,									// (ruleName, useRuleName)										: A use rule should not be used with a partial rule.
-				UseRuleInNonReuseClause,								// (ruleName, useRuleName)										: A use rule should only appear in reuse clause.
-				PartialRuleUsedOnField,									// (ruleName, clauseType, partialRuleName, fieldName)			: A partial rule does not create object, it cannot be assigned to a field.
-				ClauseTypeMismatchedToPartialRule,						// (ruleName, clauseType, partialRuleName, partialRuleType)		: A clause uses a partial rule of an incompatible type.
-				LeftRecursionPlaceholderNotFoundInRule,					// (ruleName, placeholder, targetRuleName)						: left_recursion_inject injects to a rule which doesn't accept the specified placeholder.
-				LeftRecursionPlaceholderNotUnique,						// (ruleName, placeholder, targetRuleName)						: left_recursion_inject injects to a rule which has multiple places accepting the specified placeholder.
-				LeftRecursionInjectTargetIsPrefixOfAnotherSameEnding,	// (ruleName, placeholder, targetPrefixName, targetRuleName)	: left_recursion_inject injects into two targets, A is a prefix of B, and both injection could end with the same target C, C could be B.
-				LeftRecursionPlaceholderTypeMismatched,					// (ruleName, placeholder, targetRuleName, placeholderRuleName)	:
-				PartialRuleInLeftRecursionInject,						// (ruleName, partialRuleName)
-
-				// SyntaxAst (ValidateStructure, counting) --------------------------------------------
-				ClauseNotCreateObject,									// (ruleName)													: A reuse clause does not contain use rule in some potential sequences.
-				UseRuleUsedInOptionalBody,								// (ruleName, useRuleName)
-				UseRuleUsedInLoopBody,									// (ruleName, useRuleName)
-				ClauseTooManyUseRule,									// (ruleName)													: Multiple use rules in a potential sequence in a clause.
-				NonArrayFieldAssignedInLoop,							// (ruleName, clauseType, fieldName)
-				NonLoopablePartialRuleUsedInLoop,						// (ruleName, clauseType, partialRuleName)
-				ClauseCouldExpandToEmptySequence,						// (ruleName)
-				LoopBodyCouldExpandToEmptySequence,						// (ruleName)
-				OptionalBodyCouldExpandToEmptySequence,					// (ruleName)
-				NegativeOptionalEndsAClause,							// (ruleName)													: Negative optional syntax cannot ends a clause.
-				MultiplePrioritySyntaxInAClause,						// (ruleName)													: Too many syntax with priority in the a clause.
-				PushConditionBodyCouldExpandToEmptySequence,			// (ruleName)
-				TestConditionBodyCouldExpandToEmptySequence,			// (ruleName)
-				MultipleEmptySyntaxInTestCondition,						// (ruleName)
-				TooManyLeftRecursionPlaceholderClauses,					// (ruleName)
-
-				// SyntaxAst (ValidateStructure, relationship) ----------------------------------------
-				FieldAssignedMoreThanOnce,								// (ruleName, clauseType, fieldName)
+#define ParserErrorType_EnumItem(NAME, ...) NAME,
+				GLR_PARSER_ERROR_LIST(ParserErrorType_EnumItem)
+#undef ParserErrorType_EnumItem
 			};
 
 			enum class ParserDefFileType
