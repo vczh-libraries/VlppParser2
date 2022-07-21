@@ -376,13 +376,22 @@ ResolveNameVisitor
 
 				void Visit(GlrPrefixMergeClause* node) override
 				{
-					CHECK_FAIL(L"Not Implemented!");
+					context.prefixMergeClauses.Add(ruleSymbol, node);
 				}
 			};
 
 /***********************************************************************
 ResolveName
 ***********************************************************************/
+
+			bool IsLegalNameBeforeRewriting(const WString& name)
+			{
+				if (wcsstr(name.Buffer(), L"_LRI")) return false;
+				if (wcsstr(name.Buffer(), L"_LRIP")) return false;
+				if (wcsstr(name.Buffer(), L"LRI_")) return false;
+				if (wcsstr(name.Buffer(), L"LRIP_")) return false;
+				return true;
+			}
 
 			void ResolveName(VisitorContext& context, List<Ptr<GlrSyntaxFile>>& files)
 			{
@@ -420,20 +429,56 @@ ResolveName
 					}
 				}
 
-				vint index = 0;
-				for (auto&& switchName : context.syntaxManager.switches.Keys())
 				{
-					if (index == accessedSwitches.Count() || switchName != accessedSwitches[index])
+					vint index = 0;
+					for (auto&& switchName : context.syntaxManager.switches.Keys())
 					{
-						context.syntaxManager.AddError(
-							ParserErrorType::UnusedSwitch,
-							switchRange[switchName],
-							switchName
-							);
+						if (index == accessedSwitches.Count() || switchName != accessedSwitches[index])
+						{
+							context.syntaxManager.AddError(
+								ParserErrorType::UnusedSwitch,
+								switchRange[switchName],
+								switchName
+								);
+						}
+						else
+						{
+							index++;
+						}
 					}
-					else
+				}
+
+				if (context.prefixMergeClauses.Count() > 0)
+				{
+					for (auto file : files)
 					{
-						index++;
+						for (auto rule : file->rules)
+						{
+							if (!IsLegalNameBeforeRewriting(rule->name.value))
+							{
+								context.syntaxManager.AddError(
+									ParserErrorType::SyntaxInvolvesPrefixMergeWithIllegalRuleName,
+									rule->name.codeRange,
+									rule->name.value
+									);
+							}
+
+							for (auto lrp : From(rule->clauses).FindType<GlrLeftRecursionPlaceholderClause>())
+							{
+								for (auto p : lrp->flags)
+								{
+									if (!IsLegalNameBeforeRewriting(p->flag.value))
+									{
+										context.syntaxManager.AddError(
+											ParserErrorType::SyntaxInvolvesPrefixMergeWithIllegalPlaceholderName,
+											p->flag.codeRange,
+											rule->name.value,
+											p->flag.value
+											);
+									}
+								}
+							}
+						}
 					}
 				}
 			}

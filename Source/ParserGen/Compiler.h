@@ -28,6 +28,8 @@ namespace vl
 				using ClauseReuseDependencies = collections::Group<GlrClause*, RuleSymbol*>;
 				using ClauseTypeMap = collections::Dictionary<GlrClause*, AstClassSymbol*>;
 
+				using PrefixMergeClausesMap = collections::Group<RuleSymbol*, GlrPrefixMergeClause*>;
+
 				struct VisitorContext
 				{
 					ParserSymbolManager&		global;
@@ -43,6 +45,8 @@ namespace vl
 					ClauseReuseDependencies		clauseReuseDependencies;
 					ClauseTypeMap				clauseTypes;
 					Ptr<regex::RegexLexer>		cachedLexer;
+
+					PrefixMergeClausesMap		prefixMergeClauses;
 
 					VisitorContext(
 						AstSymbolManager& _astManager,

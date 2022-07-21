@@ -22,7 +22,11 @@ CompileSyntax
 
 			bool NeedRewritten(collections::List<Ptr<GlrSyntaxFile>>& files)
 			{
-				return false;
+				return !From(files)
+					.SelectMany([](auto file) { return From(file->rules); })
+					.SelectMany([](auto rule) { return From(rule->clauses); })
+					.FindType<GlrPrefixMergeClause>()
+					.IsEmpty();
 			}
 
 			bool VerifySyntax(VisitorContext& context, collections::List<Ptr<GlrSyntaxFile>>& files)
@@ -84,15 +88,17 @@ CompileSyntax
 			{
 				if (NeedRewritten(files))
 				{
+					{
+						VisitorContext context(astManager, lexerManager, syntaxManager, output);
+						if (!VerifySyntax(context, files)) return nullptr;
+					}
 					CHECK_FAIL(L"Not Implemented!");
 				}
 				else
 				{
 					VisitorContext context(astManager, lexerManager, syntaxManager, output);
-					if (VerifySyntax(context, files))
-					{
-						CompileSyntax(context, files);
-					}
+					if (!VerifySyntax(context, files)) return nullptr;
+					CompileSyntax(context, files);
 					return nullptr;
 				}
 			}
