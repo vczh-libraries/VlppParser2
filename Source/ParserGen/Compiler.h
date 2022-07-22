@@ -25,7 +25,7 @@ namespace vl
 				using LiteralTokenMap = collections::Dictionary<GlrRefSyntax*, vint32_t>;
 				using RuleReuseDependencies = collections::Group<RuleSymbol*, RuleSymbol*>;
 				using RuleKnownTypes = collections::Group<RuleSymbol*, AstClassSymbol*>;
-				using ClauseReuseDependencies = collections::Group<GlrClause*, RuleSymbol*>;
+				using ClauseReuseDependencies = collections::Group<GlrReuseClause*, RuleSymbol*>;
 				using ClauseTypeMap = collections::Dictionary<GlrClause*, AstClassSymbol*>;
 
 				using PrefixMergeClausesMap = collections::Group<RuleSymbol*, GlrPrefixMergeClause*>;

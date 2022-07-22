@@ -24,6 +24,26 @@ discard SPACE:/s+
 )LEXER";
 
 	//////////////////////////////////////////////////////
+	// TokenOrRuleNotExistsInRule
+	//////////////////////////////////////////////////////
+
+	TEST_CASE(L"TokenOrRuleNotExistsInRule")
+	{
+		const wchar_t* syntaxCode =
+			LR"SYNTAX(
+Exp0 ::= !prefix_merge(NUM2);
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::TokenOrRuleNotExistsInRule,L"Exp0",L"NUM2" }
+		);
+	});
+
+	//////////////////////////////////////////////////////
 	// SyntaxInvolvesPrefixMergeWithIllegalRuleName
 	//////////////////////////////////////////////////////
 

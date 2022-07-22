@@ -23,7 +23,7 @@ ResolveNameVisitor
 				VisitorContext&				context;
 				SortedList<WString>&		accessedSwitches;
 				RuleSymbol*					ruleSymbol;
-				GlrClause*					clause = nullptr;
+				GlrReuseClause*				reuseClause = nullptr;
 
 			public:
 				ResolveNameVisitor(
@@ -174,30 +174,41 @@ ResolveNameVisitor
 					}
 				}
 
-				void Visit(GlrUseSyntax* node) override
+				void VisitReuseSyntax(ParsingToken& name, bool addRuleReuseDependency)
 				{
-					vint ruleIndex = context.syntaxManager.Rules().Keys().IndexOf(node->name.value);
+					vint ruleIndex = context.syntaxManager.Rules().Keys().IndexOf(name.value);
 					if (ruleIndex == -1)
 					{
 						context.syntaxManager.AddError(
 							ParserErrorType::TokenOrRuleNotExistsInRule,
-							node->codeRange,
+							name.codeRange,
 							ruleSymbol->Name(),
-							node->name.value
+							name.value
 							);
 					}
-					else if (clause)
+					else
 					{
 						auto usedRuleSymbol = context.syntaxManager.Rules().Values()[ruleIndex];
-						if (!context.ruleReuseDependencies.Contains(ruleSymbol, usedRuleSymbol))
+						if (addRuleReuseDependency)
 						{
-							context.ruleReuseDependencies.Add(ruleSymbol, usedRuleSymbol);
+							if (!context.ruleReuseDependencies.Contains(ruleSymbol, usedRuleSymbol))
+							{
+								context.ruleReuseDependencies.Add(ruleSymbol, usedRuleSymbol);
+							}
 						}
-						if (!context.clauseReuseDependencies.Contains(clause, usedRuleSymbol))
+						if (reuseClause)
 						{
-							context.clauseReuseDependencies.Add(clause, usedRuleSymbol);
+							if (!context.clauseReuseDependencies.Contains(reuseClause, usedRuleSymbol))
+							{
+								context.clauseReuseDependencies.Add(reuseClause, usedRuleSymbol);
+							}
 						}
 					}
+				}
+
+				void Visit(GlrUseSyntax* node) override
+				{
+					VisitReuseSyntax(node->name, reuseClause != nullptr);
 				}
 
 				void Visit(GlrLoopSyntax* node) override
@@ -323,7 +334,7 @@ ResolveNameVisitor
 
 				void Visit(GlrReuseClause* node) override
 				{
-					clause = node;
+					reuseClause = node;
 					node->syntax->Accept(this);
 				}
 
@@ -341,30 +352,7 @@ ResolveNameVisitor
 
 				void Visit(GlrLeftRecursionInjectClause* node) override
 				{
-					{
-						vint ruleIndex = context.syntaxManager.Rules().Keys().IndexOf(node->rule->literal.value);
-						if (ruleIndex == -1)
-						{
-							context.syntaxManager.AddError(
-								ParserErrorType::TokenOrRuleNotExistsInRule,
-								node->rule->codeRange,
-								ruleSymbol->Name(),
-								node->rule->literal.value
-								);
-						}
-						else
-						{
-							auto usedRuleSymbol = context.syntaxManager.Rules().Values()[ruleIndex];
-							if (!context.ruleReuseDependencies.Contains(ruleSymbol, usedRuleSymbol))
-							{
-								context.ruleReuseDependencies.Add(ruleSymbol, usedRuleSymbol);
-							}
-							if (!context.clauseReuseDependencies.Contains(clause, usedRuleSymbol))
-							{
-								context.clauseReuseDependencies.Add(clause, usedRuleSymbol);
-							}
-						}
-					}
+					VisitReuseSyntax(node->rule->literal, true);
 					if (node->continuation)
 					{
 						for (auto lriTarget : node->continuation->injectionTargets)
@@ -376,6 +364,7 @@ ResolveNameVisitor
 
 				void Visit(GlrPrefixMergeClause* node) override
 				{
+					VisitReuseSyntax(node->rule->literal, true);
 					context.prefixMergeClauses.Add(ruleSymbol, node);
 				}
 			};
