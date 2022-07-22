@@ -99,7 +99,6 @@ CalculateRuleAndClauseTypes
 				}
 
 				// do not update explicitly specified rule type
-
 				SortedList<RuleSymbol*> explicitlyTypedRules;
 				for (auto rule : rules)
 				{
@@ -109,6 +108,7 @@ CalculateRuleAndClauseTypes
 					}
 				}
 
+				// define updateRuleType function, check clause type added to rule
 				auto updateRuleType = [&context, &explicitlyTypedRules](RuleSymbol* rule, AstClassSymbol* newRuleType, bool promptIfNull)
 				{
 					if (explicitlyTypedRules.Contains(rule))
@@ -158,7 +158,6 @@ CalculateRuleAndClauseTypes
 				if (context.global.Errors().Count() > 0) return;
 
 				// calculate types for rules that contain reuse dependency
-
 				for (auto&& component : pop.components)
 				{
 					for (vint i = 0; i < component.nodeCount; i++)
