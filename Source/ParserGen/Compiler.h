@@ -49,6 +49,7 @@ namespace vl
 
 					LeftRecursionPlaceholderClauseMap	directLrpClauses, indirectLrpClauses;
 					PrefixMergeClausesMap				directPmClauses, indirectPmClauses;
+					RuleReuseDependencies				directStartRules, indirectStartRules;
 
 					VisitorContext(
 						AstSymbolManager& _astManager,
