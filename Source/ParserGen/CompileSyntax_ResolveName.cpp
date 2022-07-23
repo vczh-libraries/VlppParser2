@@ -349,6 +349,7 @@ ResolveNameVisitor
 						}
 					}
 					context.directLrpClauses.Add(ruleSymbol, node);
+					context.lrpClauseToRules.Add(node, ruleSymbol);
 				}
 
 				void Visit(GlrLeftRecursionInjectClause* node) override

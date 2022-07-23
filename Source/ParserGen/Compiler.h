@@ -30,6 +30,7 @@ namespace vl
 
 				using LeftRecursionPlaceholderClauseMap = collections::Group<RuleSymbol*, GlrLeftRecursionPlaceholderClause*>;
 				using LeftRecursionPlaceholderClauseSet = collections::SortedList<collections::Pair<RuleSymbol*, RuleSymbol*>>;
+				using LeftRecursionPlaceholderReverseMap = collections::Dictionary<GlrLeftRecursionPlaceholderClause*, RuleSymbol*>;
 				using PrefixMergeClausesMap = collections::Group<RuleSymbol*, GlrPrefixMergeClause*>;
 
 				struct VisitorContext
@@ -52,6 +53,7 @@ namespace vl
 					PrefixMergeClausesMap				directPmClauses, indirectPmClauses;
 					RuleReuseDependencies				directStartRules, indirectStartRules;
 					LeftRecursionPlaceholderClauseSet	indirectStartRulePairs;
+					LeftRecursionPlaceholderReverseMap	lrpClauseToRules;
 
 					VisitorContext(
 						AstSymbolManager& _astManager,

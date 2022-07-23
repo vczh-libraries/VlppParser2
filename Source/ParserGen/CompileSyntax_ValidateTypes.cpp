@@ -21,216 +21,6 @@ namespace vl
 			}
 
 /***********************************************************************
-SearchForFirstSetVisitor
-***********************************************************************/
-
-			class SearchForFirstSetVisitor
-				: public Object
-				, protected virtual GlrSyntax::IVisitor
-				, protected virtual GlrClause::IVisitor
-			{
-			private:
-				bool						couldBeEmpty = false;
-
-			protected:
-				VisitorContext&				context;
-
-				virtual void				SearchInRuleInternal(const WString& ruleName) = 0;
-
-			public:
-				SearchForFirstSetVisitor(
-					VisitorContext& _context
-				)
-					: context(_context)
-				{
-				}
-			protected:
-
-				////////////////////////////////////////////////////////////////////////
-				// GlrSyntax::IVisitor
-				////////////////////////////////////////////////////////////////////////
-
-				void Visit(GlrRefSyntax* node) override
-				{
-					if (node->refType == GlrRefType::Id)
-					{
-						if (context.syntaxManager.Rules().Keys().Contains(node->literal.value))
-						{
-							SearchInRuleInternal(node->literal.value);
-						}
-					}
-					couldBeEmpty = false;
-				}
-
-				void Visit(GlrUseSyntax* node) override
-				{
-					SearchInRuleInternal(node->name.value);
-					couldBeEmpty = false;
-				}
-
-				void Visit(GlrLoopSyntax* node) override
-				{
-					node->syntax->Accept(this);
-					couldBeEmpty = true;
-				}
-
-				void Visit(GlrOptionalSyntax* node) override
-				{
-					node->syntax->Accept(this);
-					couldBeEmpty = true;
-				}
-
-				void Visit(GlrSequenceSyntax* node) override
-				{
-					node->first->Accept(this);
-					if (couldBeEmpty) node->second->Accept(this);
-				}
-
-				void Visit(GlrAlternativeSyntax* node) override
-				{
-					node->first->Accept(this);
-					bool firstCouldBeEmpty = couldBeEmpty;
-					node->second->Accept(this);
-					bool secondCouldBeEmpty = couldBeEmpty;
-					couldBeEmpty = firstCouldBeEmpty || secondCouldBeEmpty;
-				}
-
-				void Visit(GlrPushConditionSyntax* node) override
-				{
-					node->syntax->Accept(this);
-				}
-
-				void Visit(GlrTestConditionSyntax* node) override
-				{
-					bool emptyBranch = false;
-					for (auto branch : node->branches)
-					{
-						if (branch->syntax)
-						{
-							branch->syntax->Accept(this);
-						}
-						else
-						{
-							emptyBranch = true;
-						}
-					}
-					couldBeEmpty = emptyBranch;
-				}
-
-				////////////////////////////////////////////////////////////////////////
-				// GlrClause::IVisitor
-				////////////////////////////////////////////////////////////////////////
-
-				void Visit(GlrCreateClause* node) override
-				{
-					node->syntax->Accept(this);
-				}
-
-				void Visit(GlrPartialClause* node) override
-				{
-					node->syntax->Accept(this);
-				}
-
-				void Visit(GlrReuseClause* node) override
-				{
-					node->syntax->Accept(this);
-				}
-
-				void Visit(GlrLeftRecursionPlaceholderClause* node) override
-				{
-				}
-
-				void Visit(GlrLeftRecursionInjectClause* node) override
-				{
-					node->rule->Accept(this);
-				}
-
-				void Visit(GlrPrefixMergeClause* node) override
-				{
-					CHECK_FAIL(L"Not Implemented!");
-				}
-			};
-
-/***********************************************************************
-SearchForLrpVisitor
-***********************************************************************/
-
-			class SearchForLrpVisitor
-				: public SearchForFirstSetVisitor
-			{
-			protected:
-				WString						flagToSearch;
-				AstClassSymbol*				typeToMatch = nullptr;
-
-				vint						counter = 0;
-				SortedList<GlrRule*>		searchedRules;
-				RuleSymbol*					currentPlaceholderRule = nullptr;
-
-				void SearchInRuleInternal(const WString& ruleName) override
-				{
-					vint index = context.syntaxManager.Rules().Keys().IndexOf(ruleName);
-					CHECK_ERROR(index != -1, L"vl::glr::parsergen::SearchForLrpVisitor::SearchInRuleInternal(const WString&)#Internal error.");
-
-					auto ruleSymbol = context.syntaxManager.Rules().Values()[index];
-					auto ruleAst = context.astRules[ruleSymbol];
-
-					if (searchedRules.Contains(ruleAst)) return;
-					searchedRules.Add(ruleAst);
-
-					auto oldRule = currentPlaceholderRule;
-					currentPlaceholderRule = ruleSymbol;
-					for (auto clause : ruleAst->clauses)
-					{
-						clause->Accept(this);
-					}
-					currentPlaceholderRule = oldRule;
-				}
-			public:
-				List<WString>				unmatchedPlaceholderRuleNames;
-
-				SearchForLrpVisitor(
-					VisitorContext& _context,
-					const WString& _flag,
-					AstClassSymbol* _type
-				)
-					: SearchForFirstSetVisitor(_context)
-					, flagToSearch(_flag)
-					, typeToMatch(_type)
-				{
-				}
-
-				vint SearchInRule(const WString& ruleName)
-				{
-					counter = 0;
-					searchedRules.Clear();
-					unmatchedPlaceholderRuleNames.Clear();
-					SearchInRuleInternal(ruleName);
-					return counter;
-				}
-			protected:
-
-				////////////////////////////////////////////////////////////////////////
-				// GlrClause::IVisitor
-				////////////////////////////////////////////////////////////////////////
-
-				void Visit(GlrLeftRecursionPlaceholderClause* node) override
-				{
-					for (auto flag : node->flags)
-					{
-						if (flag->flag.value == flagToSearch)
-						{
-							counter++;
-							if (!ConvertibleTo(typeToMatch, currentPlaceholderRule->ruleType))
-							{
-								unmatchedPlaceholderRuleNames.Add(currentPlaceholderRule->Name());
-							}
-							break;
-						}
-					}
-				}
-			};
-
-/***********************************************************************
 ValidateTypesVisitor
 ***********************************************************************/
 
@@ -552,12 +342,9 @@ LriVerifyTypesVisitor
 							);
 					}
 
-					SearchForLrpVisitor visitor(context, node->continuation->flag->flag.value, prefixRule->ruleType);
 					for (auto lriTarget : node->continuation->injectionTargets)
 					{
 						auto target = lriTarget->rule;
-						vint counter2 = visitor.SearchInRule(target->literal.value);
-
 						List<GlrLeftRecursionPlaceholderClause*> lrpClauses;
 						{
 							vint index = context.indirectLrpClauses.Keys().IndexOf(context.syntaxManager.Rules()[target->literal.value]);
@@ -574,7 +361,7 @@ LriVerifyTypesVisitor
 										}));
 							}
 						}
-						CHECK_ERROR(lrpClauses.Count() == counter2, L"Internal error!");
+
 						if (lrpClauses.Count() == 0)
 						{
 							context.syntaxManager.AddError(
@@ -595,9 +382,11 @@ LriVerifyTypesVisitor
 								target->literal.value
 								);
 						}
-						else
+
+						for (auto lrpClause : lrpClauses)
 						{
-							for (auto ruleName : visitor.unmatchedPlaceholderRuleNames)
+							auto lrpClauseRule = context.lrpClauseToRules[lrpClause];
+							if (!ConvertibleTo(prefixRule->ruleType, lrpClauseRule->ruleType))
 							{
 								context.syntaxManager.AddError(
 									ParserErrorType::LeftRecursionPlaceholderTypeMismatched,
@@ -605,7 +394,7 @@ LriVerifyTypesVisitor
 									ruleSymbol->Name(),
 									node->continuation->flag->flag.value,
 									target->literal.value,
-									ruleName
+									lrpClauseRule->Name()
 									);
 							}
 						}
