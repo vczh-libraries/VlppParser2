@@ -12,6 +12,7 @@ namespace vl
 			extern void ResolveName(VisitorContext& context, List<Ptr<GlrSyntaxFile>>& files);
 			extern void ValidatePartialRules(VisitorContext& context, List<Ptr<GlrSyntaxFile>>& files);
 			extern void CalculateRuleAndClauseTypes(VisitorContext& context);
+			extern void CalculateFirstSet(VisitorContext& context);
 			extern void ValidateTypes(VisitorContext& context, List<Ptr<GlrSyntaxFile>>& files);
 			extern void ValidateStructure(VisitorContext& context, List<Ptr<GlrSyntaxFile>>& files);
 			extern void CompileSyntax(VisitorContext& context, List<Ptr<GlrSyntaxFile>>& files);
@@ -73,6 +74,9 @@ CompileSyntax
 				if (context.syntaxManager.Global().Errors().Count() > 0) return false;
 
 				CalculateRuleAndClauseTypes(context);
+				if (context.syntaxManager.Global().Errors().Count() > 0) return false;
+
+				CalculateFirstSet(context);
 				if (context.syntaxManager.Global().Errors().Count() > 0) return false;
 
 				ValidateTypes(context, files);

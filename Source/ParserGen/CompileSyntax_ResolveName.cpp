@@ -348,6 +348,7 @@ ResolveNameVisitor
 							ruleSymbol->lrFlags.Add(name);
 						}
 					}
+					context.directLrpClauses.Add(ruleSymbol, node);
 				}
 
 				void Visit(GlrLeftRecursionInjectClause* node) override
@@ -365,7 +366,7 @@ ResolveNameVisitor
 				void Visit(GlrPrefixMergeClause* node) override
 				{
 					VisitReuseSyntax(node->rule->literal, true);
-					context.prefixMergeClauses.Add(ruleSymbol, node);
+					context.directPmClauses.Add(ruleSymbol, node);
 				}
 			};
 
@@ -437,7 +438,7 @@ ResolveName
 					}
 				}
 
-				if (context.prefixMergeClauses.Count() > 0)
+				if (context.directPmClauses.Count() > 0)
 				{
 					for (auto file : files)
 					{

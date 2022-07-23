@@ -28,25 +28,27 @@ namespace vl
 				using ClauseReuseDependencies = collections::Group<GlrReuseClause*, RuleSymbol*>;
 				using ClauseTypeMap = collections::Dictionary<GlrClause*, AstClassSymbol*>;
 
+				using LeftRecursionPlaceholderClauseMap = collections::Group<RuleSymbol*, GlrLeftRecursionPlaceholderClause*>;
 				using PrefixMergeClausesMap = collections::Group<RuleSymbol*, GlrPrefixMergeClause*>;
 
 				struct VisitorContext
 				{
-					ParserSymbolManager&		global;
-					AstSymbolManager&			astManager;
-					LexerSymbolManager&			lexerManager;
-					SyntaxSymbolManager&		syntaxManager;
-					Ptr<CppParserGenOutput>		output;
+					ParserSymbolManager&				global;
+					AstSymbolManager&					astManager;
+					LexerSymbolManager&					lexerManager;
+					SyntaxSymbolManager&				syntaxManager;
+					Ptr<CppParserGenOutput>				output;
 
-					GlrRuleMap					astRules;
-					LiteralTokenMap				literalTokens;
-					RuleReuseDependencies		ruleReuseDependencies;
-					RuleKnownTypes				ruleKnownTypes;
-					ClauseReuseDependencies		clauseReuseDependencies;
-					ClauseTypeMap				clauseTypes;
-					Ptr<regex::RegexLexer>		cachedLexer;
+					GlrRuleMap							astRules;
+					LiteralTokenMap						literalTokens;
+					RuleReuseDependencies				ruleReuseDependencies;
+					RuleKnownTypes						ruleKnownTypes;
+					ClauseReuseDependencies				clauseReuseDependencies;
+					ClauseTypeMap						clauseTypes;
+					Ptr<regex::RegexLexer>				cachedLexer;
 
-					PrefixMergeClausesMap		prefixMergeClauses;
+					LeftRecursionPlaceholderClauseMap	directLrpClauses, indirectLrpClauses;
+					PrefixMergeClausesMap				directPmClauses, indirectPmClauses;
 
 					VisitorContext(
 						AstSymbolManager& _astManager,
