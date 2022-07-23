@@ -143,6 +143,7 @@ DirectFirstSetVisitor
 
 				void Visit(GlrPrefixMergeClause* node) override
 				{
+					node->rule->Accept(this);
 				}
 			};
 
@@ -216,6 +217,13 @@ CalculateFirstSet
 						if (offset == 0)
 						{
 							break;
+						}
+
+						for (vint index = 0; index < context.indirectStartRules.Count(); index++)
+						{
+							auto&& startRules = context.indirectStartRules.GetByIndex(index);
+							lastCounters[index] = currentCounters[index];
+							currentCounters[index] = startRules.Count();
 						}
 					}
 				}
