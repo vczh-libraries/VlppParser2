@@ -151,9 +151,8 @@ DirectFirstSetVisitor
 CalculateFirstSet
 ***********************************************************************/
 
-			void CalculateFirstSet(VisitorContext& context, List<Ptr<GlrSyntaxFile>>& files)
+			void CalculateFirstSet_DirectStartRules(VisitorContext& context, List<Ptr<GlrSyntaxFile>>& files)
 			{
-				// calculate directStartRules
 				for (auto file : files)
 				{
 					for (auto rule : file->rules)
@@ -166,107 +165,117 @@ CalculateFirstSet
 						}
 					}
 				}
+			}
 
-				// calculate indirectStartRules
+			void CalculateFirstSet_IndirectStartRules(VisitorContext& context, List<Ptr<GlrSyntaxFile>>& files)
+			{
+				Array<vint> lastCounters(context.directStartRules.Count());
+				Array<vint> currentCounters(context.directStartRules.Count());
+				for (auto [rule, index] : indexed(context.directStartRules.Keys()))
 				{
-					Array<vint> lastCounters(context.directStartRules.Count());
-					Array<vint> currentCounters(context.directStartRules.Count());
-					for (auto [rule, index] : indexed(context.directStartRules.Keys()))
+					auto&& startRules = context.directStartRules.GetByIndex(index);
+					lastCounters[index] = 0;
+					currentCounters[index] = startRules.Count();
+					for (auto startRule : startRules)
 					{
-						auto&& startRules = context.directStartRules.GetByIndex(index);
-						lastCounters[index] = 0;
-						currentCounters[index] = startRules.Count();
-						for (auto startRule : startRules)
-						{
-							context.indirectStartRules.Add(rule, startRule);
-							context.indirectStartRulePairs.Add({ rule,startRule });
-						}
+						context.indirectStartRules.Add(rule, startRule);
+						context.indirectStartRulePairs.Add({ rule,startRule });
 					}
+				}
 
-					while (true)
+				while (true)
+				{
+					vint offset = 0;
+					for (auto [rule, index] : indexed(context.indirectStartRules.Keys()))
 					{
-						vint offset = 0;
-						for (auto [rule, index] : indexed(context.indirectStartRules.Keys()))
+						auto&& startRules = context.indirectStartRules.GetByIndex(index);
+						vint last = lastCounters[index];
+						vint current = currentCounters[index];
+						for (vint indexSR = last; indexSR < current; indexSR++)
 						{
-							auto&& startRules = context.indirectStartRules.GetByIndex(index);
-							vint last = lastCounters[index];
-							vint current = currentCounters[index];
-							for (vint indexSR = last; indexSR < current; indexSR++)
+							auto startRule = startRules[indexSR];
+							vint index2 = context.indirectStartRules.Keys().IndexOf(startRule);
+							if (index2 != -1 && index2 != index)
 							{
-								auto startRule = startRules[indexSR];
-								vint index2 = context.indirectStartRules.Keys().IndexOf(startRule);
-								if (index2 != -1 && index2 != index)
+								auto&& startRules2 = context.indirectStartRules.GetByIndex(index2);
+								vint last2 = lastCounters[index2];
+								vint current2 = currentCounters[index2];
+								for (vint indexSR2 = last2; indexSR2 < current2; indexSR2++)
 								{
-									auto&& startRules2 = context.indirectStartRules.GetByIndex(index2);
-									vint last2 = lastCounters[index2];
-									vint current2 = currentCounters[index2];
-									for (vint indexSR2 = last2; indexSR2 < current2; indexSR2++)
+									auto startRule2 = startRules2[indexSR2];
+									if (!context.indirectStartRulePairs.Contains({ rule,startRule2 }))
 									{
-										auto startRule2 = startRules2[indexSR2];
-										if (!context.indirectStartRulePairs.Contains({ rule,startRule2 }))
-										{
-											offset++;
-											context.indirectStartRules.Add(rule, startRule2);
-											context.indirectStartRulePairs.Add({ rule,startRule2 });
-										}
+										offset++;
+										context.indirectStartRules.Add(rule, startRule2);
+										context.indirectStartRulePairs.Add({ rule,startRule2 });
 									}
 								}
 							}
 						}
+					}
 
-						if (offset == 0)
-						{
-							break;
-						}
+					if (offset == 0)
+					{
+						break;
+					}
 
-						for (vint index = 0; index < context.indirectStartRules.Count(); index++)
+					for (vint index = 0; index < context.indirectStartRules.Count(); index++)
+					{
+						auto&& startRules = context.indirectStartRules.GetByIndex(index);
+						lastCounters[index] = currentCounters[index];
+						currentCounters[index] = startRules.Count();
+					}
+				}
+			}
+
+			template<typename TClause>
+			void CalculateFirstSet_MoveFromDirectClauses(
+				SortedList<TClause*>& clauses,
+				Group<RuleSymbol*, TClause*>& indirectClauses,
+				Group<RuleSymbol*, TClause*>& directClauses,
+				RuleSymbol* rule,
+				RuleSymbol* startRule
+			)
+			{
+				vint index = directClauses.Keys().IndexOf(startRule);
+				if (index != -1)
+				{
+					for (auto clause : directClauses.GetByIndex(index))
+					{
+						if (!clauses.Contains(clause))
 						{
-							auto&& startRules = context.indirectStartRules.GetByIndex(index);
-							lastCounters[index] = currentCounters[index];
-							currentCounters[index] = startRules.Count();
+							clauses.Add(clause);
+							indirectClauses.Add(rule, clause);
 						}
 					}
 				}
+			}
 
-				// calculate indirectLrpClauses and indirectPmClauses
+			void CalculateFirstSet_IndirectLrpPmClauses(VisitorContext& context, List<Ptr<GlrSyntaxFile>>& files)
+			{
 				for (auto [rule, index] : indexed(context.indirectStartRules.Keys()))
 				{
 					SortedList<GlrLeftRecursionPlaceholderClause*> lrpClauses;
 					SortedList<GlrPrefixMergeClause*> pmClauses;
+
+					CalculateFirstSet_MoveFromDirectClauses(lrpClauses, context.indirectLrpClauses, context.directLrpClauses, rule, rule);
+					CalculateFirstSet_MoveFromDirectClauses(pmClauses, context.indirectPmClauses, context.directPmClauses, rule, rule);
+
 					auto&& startRules = context.indirectStartRules.GetByIndex(index);
 
 					for (auto startRule : startRules)
 					{
-						{
-							vint indexLrp = context.directLrpClauses.Keys().IndexOf(startRule);
-							if (indexLrp != -1)
-							{
-								for (auto lrp : context.directLrpClauses.GetByIndex(indexLrp))
-								{
-									if (!lrpClauses.Contains(lrp))
-									{
-										lrpClauses.Add(lrp);
-										context.indirectLrpClauses.Add(rule, lrp);
-									}
-								}
-							}
-						}
-						{
-							vint indexPm = context.directPmClauses.Keys().IndexOf(startRule);
-							if (indexPm != -1)
-							{
-								for (auto pm : context.directPmClauses.GetByIndex(indexPm))
-								{
-									if (!pmClauses.Contains(pm))
-									{
-										pmClauses.Add(pm);
-										context.indirectPmClauses.Add(rule, pm);
-									}
-								}
-							}
-						}
+						CalculateFirstSet_MoveFromDirectClauses(lrpClauses, context.indirectLrpClauses, context.directLrpClauses, rule, startRule);
+						CalculateFirstSet_MoveFromDirectClauses(pmClauses, context.indirectPmClauses, context.directPmClauses, rule, startRule);
 					}
 				}
+			}
+
+			void CalculateFirstSet(VisitorContext& context, List<Ptr<GlrSyntaxFile>>& files)
+			{
+				CalculateFirstSet_DirectStartRules(context, files);
+				CalculateFirstSet_IndirectStartRules(context, files);
+				CalculateFirstSet_IndirectLrpPmClauses(context, files);
 			}
 		}
 	}

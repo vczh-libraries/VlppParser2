@@ -556,7 +556,23 @@ LriVerifyTypesVisitor
 					for (auto lriTarget : node->continuation->injectionTargets)
 					{
 						auto target = lriTarget->rule;
-						vint counter = visitor.SearchInRule(target->literal.value);
+						vint counter2 = visitor.SearchInRule(target->literal.value);
+						vint counter = 0;
+						{
+							vint index = context.indirectLrpClauses.Keys().IndexOf(context.syntaxManager.Rules()[target->literal.value]);
+							if (index != -1)
+							{
+								counter = From(context.indirectLrpClauses.GetByIndex(index))
+									.Where([node](auto&& lrp)
+									{
+										return !From(lrp->flags)
+											.Where([node](auto&& flag) { return flag->flag.value == node->continuation->flag->flag.value; })
+											.IsEmpty();
+									})
+									.Count();
+							}
+						}
+						CHECK_ERROR(counter == counter2, L"Internal error!");
 						if (counter == 0)
 						{
 							context.syntaxManager.AddError(
