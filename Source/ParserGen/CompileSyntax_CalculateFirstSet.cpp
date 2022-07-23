@@ -195,7 +195,7 @@ CalculateFirstSet
 							{
 								auto startRule = startRules[indexSR];
 								vint index2 = context.indirectStartRules.Keys().IndexOf(startRule);
-								if (index2 != -1)
+								if (index2 != -1 && index2 != index)
 								{
 									auto&& startRules2 = context.indirectStartRules.GetByIndex(index2);
 									vint last2 = lastCounters[index2];

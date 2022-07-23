@@ -231,92 +231,6 @@ SearchForLrpVisitor
 			};
 
 /***********************************************************************
-FirstSetMatrixVisitor
-***********************************************************************/
-
-			class FirstSetMatrixVisitor
-				: public SearchForFirstSetVisitor
-			{
-			protected:
-				Array<bool>					matrix;
-				Array<bool>					evaluated;
-				WString						searchingRuleName;
-
-				void GetIndex(const WString& element, const WString& set, vint& count, vint& i1, vint& i2)
-				{
-					count = context.syntaxManager.Rules().Count();
-					i1 = context.syntaxManager.Rules().Keys().IndexOf(element);
-					i2 = context.syntaxManager.Rules().Keys().IndexOf(set);
-					CHECK_ERROR(i1 != -1 && i2 != -1, L"vl::glr::parsergen::FirstSetMatrixVisitor::GetIndex(const WString&, const WString&, vint&, vint&, vint&)#Internal error.");
-				}
-
-				bool& InFirstSet(const WString& element, const WString& set)
-				{
-					vint count, i1, i2;
-					GetIndex(element, set, count, i1, i2);
-					return matrix[i1 * count + i2];
-				}
-
-				bool Evaluate(vint count, vint i1, vint i2)
-				{
-					vint i = i1 * count + i2;
-					if (!evaluated[i])
-					{
-						evaluated[i] = true;
-						for (vint j = 0; j < count; j++)
-						{
-							if (matrix[j * count + i2] && Evaluate(count, i1, j))
-							{
-								matrix[i] = true;
-								break;
-							}
-						}
-					}
-					return matrix[i];
-				}
-
-				void SearchInRuleInternal(const WString& ruleName) override
-				{
-					InFirstSet(ruleName, searchingRuleName) = true;
-				}
-			public:
-
-				FirstSetMatrixVisitor(
-					VisitorContext& _context
-				)
-					: SearchForFirstSetVisitor(_context)
-				{
-					vint count = context.syntaxManager.Rules().Count();
-
-					matrix.Resize(count * count);
-					evaluated.Resize(count * count);
-					for (vint i = 0; i < count * count; i++)
-					{
-						matrix[i] = false;
-						evaluated[i] = false;
-					}
-
-					for (vint i = 0; i < count; i++)
-					{
-						searchingRuleName = context.syntaxManager.Rules().Keys()[i];
-						auto ruleSymbol = context.syntaxManager.Rules().Values()[i];
-						auto ruleAst = context.astRules[ruleSymbol];
-						for (auto clause : ruleAst->clauses)
-						{
-							clause->Accept(this);
-						}
-					}
-				}
-
-				bool IsInFirstSet(const WString& element, const WString& set)
-				{
-					vint count, i1, i2;
-					GetIndex(element, set, count, i1, i2);
-					return Evaluate(count, i1, i2);
-				}
-			};
-
-/***********************************************************************
 ValidateTypesVisitor
 ***********************************************************************/
 
@@ -695,18 +609,15 @@ LriPrefixTestingVisitor
 			{
 			protected:
 				VisitorContext&									context;
-				FirstSetMatrixVisitor&							matrix;
 				RuleSymbol*										ruleSymbol;
 				Group<GlrLeftRecursionInjectClause*, WString>	lriEndings;
 
 			public:
 				LriPrefixTestingVisitor(
 					VisitorContext& _context,
-					FirstSetMatrixVisitor& _matrix,
 					RuleSymbol* _ruleSymbol
 				)
 					: context(_context)
-					, matrix(_matrix)
 					, ruleSymbol(_ruleSymbol)
 				{
 				}
@@ -750,16 +661,16 @@ LriPrefixTestingVisitor
 					{
 						for (auto t1 : node->continuation->injectionTargets)
 						{
-							auto k1 = t1->rule->literal.value;
+							auto k1 = context.syntaxManager.Rules()[t1->rule->literal.value];
 							vint i1 = lriEndings.Keys().IndexOf(t1.Obj());
 							if (i1 == -1) continue;
 							for (auto t2 : node->continuation->injectionTargets)
 							{
-								auto k2 = t2->rule->literal.value;
+								auto k2 = context.syntaxManager.Rules()[t2->rule->literal.value];
 								vint i2 = lriEndings.Keys().IndexOf(t2.Obj());
 								if (i2 == -1) continue;
 
-								if (t1 != t2 && matrix.IsInFirstSet(k1, k2))
+								if (t1 != t2 && context.indirectStartRulePairs.Contains({ k2, k1 }))
 								{
 									auto&& e1 = lriEndings.GetByIndex(i1);
 									auto&& e2 = lriEndings.GetByIndex(i2);
@@ -770,8 +681,8 @@ LriPrefixTestingVisitor
 											node->codeRange,
 											ruleSymbol->Name(),
 											node->continuation->flag->flag.value,
-											k1,
-											k2
+											k1->Name(),
+											k2->Name()
 											);
 									}
 								}
@@ -796,7 +707,6 @@ ValidateTypes
 
 			void ValidateTypes(VisitorContext& context, List<Ptr<GlrSyntaxFile>>& files)
 			{
-				FirstSetMatrixVisitor matrix(context);
 				for (auto file : files)
 				{
 					for (auto rule : file->rules)
@@ -811,7 +721,7 @@ ValidateTypes
 								lvtVisitor.ValidateClause(clause);
 							}
 							{
-								LriPrefixTestingVisitor lptVisitor(context, matrix, ruleSymbol);
+								LriPrefixTestingVisitor lptVisitor(context, ruleSymbol);
 								lptVisitor.ValidateClause(clause);
 							}
 						}
