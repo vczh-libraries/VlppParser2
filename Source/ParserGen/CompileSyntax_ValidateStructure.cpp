@@ -385,7 +385,6 @@ ValidateStructureCountingVisitor
 
 				void Visit(GlrPrefixMergeClause* node) override
 				{
-					CHECK_FAIL(L"Not Implemented!");
 				}
 			};
 
@@ -707,7 +706,142 @@ ValidateStructureRelationshipVisitor
 
 				void Visit(GlrPrefixMergeClause* node) override
 				{
-					CHECK_FAIL(L"Not Implemented!");
+				}
+			};
+
+/***********************************************************************
+ValidateStructurePrefixMergeRuleVisitor
+***********************************************************************/
+
+			class ValidateStructurePrefixMergeRuleVisitor
+				: public Object
+				, protected virtual GlrSyntax::IVisitor
+				, protected virtual GlrClause::IVisitor
+			{
+			protected:
+				VisitorContext&				context;
+				RuleSymbol*					ruleSymbol;
+
+			public:
+				ValidateStructurePrefixMergeRuleVisitor(
+					VisitorContext& _context,
+					RuleSymbol* _ruleSymbol
+				)
+					: context(_context)
+					, ruleSymbol(_ruleSymbol)
+				{
+				}
+
+				void ValidateClause(Ptr<GlrClause> clause)
+				{
+					clause->Accept(this);
+				}
+
+			protected:
+
+				void NotBeginWithARule(ParsingAstBase* node)
+				{
+					context.syntaxManager.AddError(
+						ParserErrorType::RuleMixedPrefixMergeWithClauseNotSyntacticallyBeginWithARule,
+						node->codeRange,
+						ruleSymbol->Name()
+						);
+				}
+
+				void VerifyStartRule(ParsingAstBase* node, RuleSymbol* startRule)
+				{
+				}
+
+				////////////////////////////////////////////////////////////////////////
+				// GlrSyntax::IVisitor
+				////////////////////////////////////////////////////////////////////////
+
+				void Visit(GlrRefSyntax* node) override
+				{
+					if (node->refType != GlrRefType::Id)
+					{
+						NotBeginWithARule(node);
+					}
+					else
+					{
+						vint index = context.syntaxManager.Rules().Keys().IndexOf(node->literal.value);
+						if (index == -1)
+						{
+							NotBeginWithARule(node);
+						}
+						else
+						{
+							VerifyStartRule(node, context.syntaxManager.Rules().Values()[index]);
+						}
+					}
+				}
+
+				void Visit(GlrUseSyntax* node) override
+				{
+					VerifyStartRule(node, context.syntaxManager.Rules()[node->name.value]);
+				}
+
+				void Visit(GlrLoopSyntax* node) override
+				{
+					NotBeginWithARule(node);
+				}
+
+				void Visit(GlrOptionalSyntax* node) override
+				{
+					NotBeginWithARule(node);
+				}
+
+				void Visit(GlrSequenceSyntax* node) override
+				{
+					node->first->Accept(this);
+				}
+
+				void Visit(GlrAlternativeSyntax* node) override
+				{
+					NotBeginWithARule(node);
+				}
+
+				void Visit(GlrPushConditionSyntax* node) override
+				{
+					NotBeginWithARule(node);
+				}
+
+				void Visit(GlrTestConditionSyntax* node) override
+				{
+					NotBeginWithARule(node);
+				}
+
+				////////////////////////////////////////////////////////////////////////
+				// GlrClause::IVisitor
+				////////////////////////////////////////////////////////////////////////
+
+				void Visit(GlrCreateClause* node) override
+				{
+					node->syntax->Accept(this);
+				}
+
+				void Visit(GlrPartialClause* node) override
+				{
+					node->syntax->Accept(this);
+				}
+
+				void Visit(GlrReuseClause* node) override
+				{
+					node->syntax->Accept(this);
+				}
+
+				void Visit(GlrLeftRecursionPlaceholderClause* node) override
+				{
+					NotBeginWithARule(node);
+				}
+
+				void Visit(GlrLeftRecursionInjectClause* node) override
+				{
+					NotBeginWithARule(node);
+				}
+
+				void Visit(GlrPrefixMergeClause* node) override
+				{
 				}
 			};
 
@@ -728,6 +862,15 @@ ValidateStructure
 							ValidateStructureRelationshipVisitor visitor2(context, ruleSymbol);
 							visitor1.ValidateClause(clause);
 							visitor2.ValidateClause(clause);
+						}
+
+						if (context.directPmClauses.Keys().Contains(ruleSymbol))
+						{
+							ValidateStructurePrefixMergeRuleVisitor visitor3(context, ruleSymbol);
+							for (auto clause : rule->clauses)
+							{
+								visitor3.ValidateClause(clause);
+							}
 						}
 					}
 				}

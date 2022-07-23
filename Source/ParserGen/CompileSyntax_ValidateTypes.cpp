@@ -295,7 +295,6 @@ ValidateTypesVisitor
 
 				void Visit(GlrPrefixMergeClause* node) override
 				{
-					CHECK_FAIL(L"Not Implemented!");
 				}
 			};
 
