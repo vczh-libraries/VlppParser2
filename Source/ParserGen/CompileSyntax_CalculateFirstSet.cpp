@@ -227,6 +227,46 @@ CalculateFirstSet
 						}
 					}
 				}
+
+				// calculate indirectLrpClauses and indirectPmClauses
+				for (auto [rule, index] : indexed(context.indirectStartRules.Keys()))
+				{
+					SortedList<GlrLeftRecursionPlaceholderClause*> lrpClauses;
+					SortedList<GlrPrefixMergeClause*> pmClauses;
+					auto&& startRules = context.indirectStartRules.GetByIndex(index);
+
+					for (auto startRule : startRules)
+					{
+						{
+							vint indexLrp = context.directLrpClauses.Keys().IndexOf(startRule);
+							if (indexLrp != -1)
+							{
+								for (auto lrp : context.directLrpClauses.GetByIndex(indexLrp))
+								{
+									if (!lrpClauses.Contains(lrp))
+									{
+										lrpClauses.Add(lrp);
+										context.indirectLrpClauses.Add(rule, lrp);
+									}
+								}
+							}
+						}
+						{
+							vint indexPm = context.directPmClauses.Keys().IndexOf(startRule);
+							if (indexPm != -1)
+							{
+								for (auto pm : context.directPmClauses.GetByIndex(indexPm))
+								{
+									if (!pmClauses.Contains(pm))
+									{
+										pmClauses.Add(pm);
+										context.indirectPmClauses.Add(rule, pm);
+									}
+								}
+							}
+						}
+					}
+				}
 			}
 		}
 	}
