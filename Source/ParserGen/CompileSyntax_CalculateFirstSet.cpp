@@ -152,6 +152,7 @@ CalculateFirstSet
 
 			void CalculateFirstSet(VisitorContext& context, List<Ptr<GlrSyntaxFile>>& files)
 			{
+				// calculate directStartRules
 				for (auto file : files)
 				{
 					for (auto rule : file->rules)
@@ -161,6 +162,60 @@ CalculateFirstSet
 						for (auto clause : rule->clauses)
 						{
 							clause->Accept(&visitor);
+						}
+					}
+				}
+
+				// calculate indirectStartRules
+				{
+					Array<vint> lastCounters(context.directStartRules.Count());
+					Array<vint> currentCounters(context.directStartRules.Count());
+					for (auto [rule, index] : indexed(context.directStartRules.Keys()))
+					{
+						auto&& startRules = context.directStartRules.GetByIndex(index);
+						lastCounters[index] = 0;
+						currentCounters[index] = startRules.Count();
+						for (auto startRule : startRules)
+						{
+							context.indirectStartRules.Add(rule, startRule);
+							context.indirectStartRulePairs.Add({ rule,startRule });
+						}
+					}
+
+					while (true)
+					{
+						vint offset = 0;
+						for (auto [rule, index] : indexed(context.indirectStartRules.Keys()))
+						{
+							auto&& startRules = context.indirectStartRules.GetByIndex(index);
+							vint last = lastCounters[index];
+							vint current = currentCounters[index];
+							for (vint indexSR = last; indexSR < current; indexSR++)
+							{
+								auto startRule = startRules[indexSR];
+								vint index2 = context.indirectStartRules.Keys().IndexOf(startRule);
+								if (index2 != -1)
+								{
+									auto&& startRules2 = context.indirectStartRules.GetByIndex(index2);
+									vint last2 = lastCounters[index2];
+									vint current2 = currentCounters[index2];
+									for (vint indexSR2 = last2; indexSR2 < current2; indexSR2++)
+									{
+										auto startRule2 = startRules2[indexSR2];
+										if (!context.indirectStartRulePairs.Contains({ rule,startRule2 }))
+										{
+											offset++;
+											context.indirectStartRules.Add(rule, startRule2);
+											context.indirectStartRulePairs.Add({ rule,startRule2 });
+										}
+									}
+								}
+							}
+						}
+
+						if (offset == 0)
+						{
+							break;
 						}
 					}
 				}
