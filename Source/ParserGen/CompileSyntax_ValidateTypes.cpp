@@ -557,23 +557,25 @@ LriVerifyTypesVisitor
 					{
 						auto target = lriTarget->rule;
 						vint counter2 = visitor.SearchInRule(target->literal.value);
-						vint counter = 0;
+
+						List<GlrLeftRecursionPlaceholderClause*> lrpClauses;
 						{
 							vint index = context.indirectLrpClauses.Keys().IndexOf(context.syntaxManager.Rules()[target->literal.value]);
 							if (index != -1)
 							{
-								counter = From(context.indirectLrpClauses.GetByIndex(index))
-									.Where([node](auto&& lrp)
-									{
-										return !From(lrp->flags)
-											.Where([node](auto&& flag) { return flag->flag.value == node->continuation->flag->flag.value; })
-											.IsEmpty();
-									})
-									.Count();
+								CopyFrom(
+									lrpClauses,
+									From(context.indirectLrpClauses.GetByIndex(index))
+										.Where([node](auto&& lrp)
+										{
+											return !From(lrp->flags)
+												.Where([node](auto&& flag) { return flag->flag.value == node->continuation->flag->flag.value; })
+												.IsEmpty();
+										}));
 							}
 						}
-						CHECK_ERROR(counter == counter2, L"Internal error!");
-						if (counter == 0)
+						CHECK_ERROR(lrpClauses.Count() == counter2, L"Internal error!");
+						if (lrpClauses.Count() == 0)
 						{
 							context.syntaxManager.AddError(
 								ParserErrorType::LeftRecursionPlaceholderNotFoundInRule,
@@ -583,7 +585,7 @@ LriVerifyTypesVisitor
 								target->literal.value
 								);
 						}
-						else if (counter > 1 && node->continuation->configuration == GlrLeftRecursionConfiguration::Single)
+						else if (lrpClauses.Count() > 1 && node->continuation->configuration == GlrLeftRecursionConfiguration::Single)
 						{
 							context.syntaxManager.AddError(
 								ParserErrorType::LeftRecursionPlaceholderNotUnique,
