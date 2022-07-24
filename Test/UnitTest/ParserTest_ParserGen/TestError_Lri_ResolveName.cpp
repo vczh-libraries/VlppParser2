@@ -1,45 +1,16 @@
 #include "TestError.h"
 
+namespace TestError_CalculatorAstAndLexer
+{
+	extern const wchar_t* astCode;
+	extern const wchar_t* lexerCode;
+}
+using namespace TestError_CalculatorAstAndLexer;
+
 TEST_FILE
 {
 	TypeParser typeParser;
 	RuleParser ruleParser;
-
-	const wchar_t* astCode =
-LR"AST(
-class Expr
-{
-}
-
-class NumExpr
-{
-	var value : token;
-}
-
-enum BinaryOp
-{
-	Add,
-	Mul,
-}
-
-class BinaryExpr
-{
-	var op : BinaryOp;
-	var left : Expr;
-	var right : Expr;
-}
-)AST";
-
-	const wchar_t* lexerCode =
-LR"LEXER(
-NUM:/d+(./d+)?
-ADD:/+
-MUL:/*
-OPEN:/(
-CLOSE:/)
-discard SPACE:/s+
-discard MINUS_MINUS:--
-)LEXER";
 
 	TEST_CASE(L"TypeNotExistsInRule 1")
 	{

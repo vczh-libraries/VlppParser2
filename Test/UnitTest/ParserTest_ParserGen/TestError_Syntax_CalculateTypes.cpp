@@ -1,55 +1,16 @@
 #include "TestError.h"
 
+namespace TestError_CalculatorAstAndLexer
+{
+	extern const wchar_t* astCode;
+	extern const wchar_t* lexerCode;
+}
+using namespace TestError_CalculatorAstAndLexer;
+
 TEST_FILE
 {
 	TypeParser typeParser;
 	RuleParser ruleParser;
-
-	const wchar_t* astCode =
-LR"AST(
-class Expr
-{
-}
-
-class RefExpr : Expr
-{
-	var value : token;
-}
-
-class NumExpr : Expr
-{
-	var value : token;
-}
-
-enum BinaryOp
-{
-	Add,
-	Mul,
-}
-
-class BinaryExpr : Expr
-{
-	var op : BinaryOp;
-	var left : Expr;
-	var right : Expr;
-}
-
-class Module
-{
-	var export : Expr;
-}
-)AST";
-
-	const wchar_t* lexerCode =
-LR"LEXER(
-ID:[a-zA-Z_]/w*
-NUM:/d+(./d+)?
-ADD:/+
-MUL:/*
-OPEN:/(
-CLOSE:/)
-discard SPACE:/s+
-)LEXER";
 
 	TEST_CASE(L"RuleMixedPartialClauseWithOtherClause 1")
 	{
