@@ -111,6 +111,7 @@ ParserSymbolManager
 			ERROR_ITEM(LeftRecursionInjectTargetIsPrefixOfAnotherSameEnding,				ruleName, placeholder, targetPrefixName, targetRuleName)	/* left_recursion_inject injects into two targets, A is a prefix of B, and both injection could end with the same target C, C could be B */\
 			ERROR_ITEM(LeftRecursionPlaceholderTypeMismatched,								ruleName, placeholder, targetRuleName, placeholderRuleName)\
 			ERROR_ITEM(PartialRuleInLeftRecursionInject,									ruleName, partialRuleName)\
+			ERROR_ITEM(PartialRuleInPrefixMerge,											ruleName, partialRuleName)\
 			/* SyntaxAst(ValidateStructure, counting) */\
 			ERROR_ITEM(ClauseNotCreateObject,												ruleName)													/* A reuse clause does not contain use rule in some potential sequences */\
 			ERROR_ITEM(UseRuleUsedInOptionalBody,											ruleName, useRuleName)\

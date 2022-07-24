@@ -295,6 +295,16 @@ ValidateTypesVisitor
 
 				void Visit(GlrPrefixMergeClause* node) override
 				{
+					auto prefixRule = context.syntaxManager.Rules()[node->rule->literal.value];
+					if (prefixRule->isPartial)
+					{
+						context.syntaxManager.AddError(
+							ParserErrorType::PartialRuleInPrefixMerge,
+							node->rule->codeRange,
+							ruleSymbol->Name(),
+							node->rule->literal.value
+							);
+					}
 				}
 			};
 
