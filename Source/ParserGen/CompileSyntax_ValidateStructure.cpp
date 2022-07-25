@@ -885,6 +885,7 @@ ValidateStructure
 						{
 							vint indexPm = context.indirectPmClauses.Keys().IndexOf(ruleSymbol);
 							vint indexLrp = context.indirectLrpClauses.Keys().IndexOf(ruleSymbol);
+							vint indexLri = context.indirectLriClauses.Keys().IndexOf(ruleSymbol);
 							if (indexPm != -1 && indexLrp != -1)
 							{
 								auto rulePm = context.pmClauseToRules[context.indirectPmClauses.GetByIndex(indexPm)[0]];
@@ -895,6 +896,18 @@ ValidateStructure
 									ruleSymbol->Name(),
 									rulePm->Name(),
 									ruleLrp->Name()
+									);
+							}
+							if (indexPm != -1 && indexLri != -1)
+							{
+								auto rulePm = context.pmClauseToRules[context.indirectPmClauses.GetByIndex(indexPm)[0]];
+								auto ruleLri = context.lriClauseToRules[context.indirectLriClauses.GetByIndex(indexLri)[0]];
+								context.syntaxManager.AddError(
+									ParserErrorType::RuleIndirectlyBeginsWithPrefixMergeOrLeftRecursionMarkers,
+									rule->name.codeRange,
+									ruleSymbol->Name(),
+									rulePm->Name(),
+									ruleLri->Name()
 									);
 							}
 						}

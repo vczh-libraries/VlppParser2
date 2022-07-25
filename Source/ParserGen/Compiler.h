@@ -31,6 +31,8 @@ namespace vl
 				using LeftRecursionPlaceholderClauseSet = collections::SortedList<collections::Pair<RuleSymbol*, RuleSymbol*>>;
 				using LeftRecursionPlaceholderClauseMap = collections::Group<RuleSymbol*, GlrLeftRecursionPlaceholderClause*>;
 				using LeftRecursionPlaceholderReverseMap = collections::Dictionary<GlrLeftRecursionPlaceholderClause*, RuleSymbol*>;
+				using LeftRecursionInjectClauseMap = collections::Group<RuleSymbol*, GlrLeftRecursionInjectClause*>;
+				using LeftRecursionInjectReverseMap = collections::Dictionary<GlrLeftRecursionInjectClause*, RuleSymbol*>;
 				using PrefixMergeClauseMap = collections::Group<RuleSymbol*, GlrPrefixMergeClause*>;
 				using PrefixMergeClauseReverseMap = collections::Dictionary<GlrPrefixMergeClause*, RuleSymbol*>;
 
@@ -50,10 +52,12 @@ namespace vl
 					ClauseTypeMap						clauseTypes;
 					Ptr<regex::RegexLexer>				cachedLexer;
 
+					LeftRecursionInjectClauseMap		directLriClauses, indirectLriClauses;
 					LeftRecursionPlaceholderClauseMap	directLrpClauses, indirectLrpClauses;
 					PrefixMergeClauseMap				directPmClauses, indirectPmClauses;
 					RuleReuseDependencies				directStartRules, indirectStartRules;
 					LeftRecursionPlaceholderClauseSet	indirectStartRulePairs;
+					LeftRecursionInjectReverseMap		lriClauseToRules;
 					LeftRecursionPlaceholderReverseMap	lrpClauseToRules;
 					PrefixMergeClauseReverseMap			pmClauseToRules;
 

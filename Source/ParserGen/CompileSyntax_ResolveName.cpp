@@ -362,6 +362,8 @@ ResolveNameVisitor
 							Visit(lriTarget.Obj());
 						}
 					}
+					context.directLriClauses.Add(ruleSymbol, node);
+					context.lriClauseToRules.Add(node, ruleSymbol);
 				}
 
 				void Visit(GlrPrefixMergeClause* node) override

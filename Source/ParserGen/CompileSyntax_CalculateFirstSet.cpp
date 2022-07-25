@@ -255,9 +255,11 @@ CalculateFirstSet
 			{
 				for (auto [rule, index] : indexed(context.indirectStartRules.Keys()))
 				{
+					SortedList<GlrLeftRecursionInjectClause*> lriClauses;
 					SortedList<GlrLeftRecursionPlaceholderClause*> lrpClauses;
 					SortedList<GlrPrefixMergeClause*> pmClauses;
 
+					CalculateFirstSet_MoveFromDirectClauses(lriClauses, context.indirectLriClauses, context.directLriClauses, rule, rule);
 					CalculateFirstSet_MoveFromDirectClauses(lrpClauses, context.indirectLrpClauses, context.directLrpClauses, rule, rule);
 					CalculateFirstSet_MoveFromDirectClauses(pmClauses, context.indirectPmClauses, context.directPmClauses, rule, rule);
 
@@ -265,6 +267,7 @@ CalculateFirstSet
 
 					for (auto startRule : startRules)
 					{
+						CalculateFirstSet_MoveFromDirectClauses(lriClauses, context.indirectLriClauses, context.directLriClauses, rule, startRule);
 						CalculateFirstSet_MoveFromDirectClauses(lrpClauses, context.indirectLrpClauses, context.directLrpClauses, rule, startRule);
 						CalculateFirstSet_MoveFromDirectClauses(pmClauses, context.indirectPmClauses, context.directPmClauses, rule, startRule);
 					}
