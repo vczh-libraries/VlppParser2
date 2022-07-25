@@ -189,7 +189,7 @@ Exp1
   ;
 Exp2
   ::= !Exp1
-  ::= Exp0
+  ::= !Exp0
   ;
 )SYNTAX";
 		ExpectError(
