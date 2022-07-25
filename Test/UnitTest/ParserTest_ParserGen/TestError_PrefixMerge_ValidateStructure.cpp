@@ -52,7 +52,7 @@ Exp0
   ;
 Exp1
   ::= !prefix_merge(Exp0)
-  ::= ADD !Exp0
+  ::= !Exp0 ADD
   ::= Exp1:left "+" Exp0:right as BinaryExpr
   ;
 )SYNTAX";
@@ -62,7 +62,7 @@ Exp1
 			astCode,
 			lexerCode,
 			syntaxCode,
-			{ ParserErrorType::RuleMixedPrefixMergeWithClauseNotBeginWithIndirectPrefixMerge,L"Exp1" }
+			{ ParserErrorType::RuleMixedPrefixMergeWithClauseNotBeginWithIndirectPrefixMerge,L"Exp1",L"Exp0"}
 			);
 	});
 
@@ -88,7 +88,7 @@ Exp1
 			astCode,
 			lexerCode,
 			syntaxCode,
-			{ ParserErrorType::RuleMixedPrefixMergeWithClauseNotBeginWithIndirectPrefixMerge,L"Exp1" }
+			{ ParserErrorType::RuleMixedPrefixMergeWithClauseNotBeginWithIndirectPrefixMerge,L"Exp1",L"Something"}
 			);
 	});
 

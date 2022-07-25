@@ -132,7 +132,7 @@ ParserSymbolManager
 			ERROR_ITEM(FieldAssignedMoreThanOnce,											ruleName, clauseType, fieldName)\
 			/* SyntaxAst(ValidateStructure, prefix_merge) */\
 			ERROR_ITEM(RuleMixedPrefixMergeWithClauseNotSyntacticallyBeginWithARule,		ruleName)													/* If a rule has prefix_merge clause, than all other clause must syntactically begins with a rule */\
-			ERROR_ITEM(RuleMixedPrefixMergeWithClauseNotBeginWithIndirectPrefixMerge,		ruleName)													/* If a rule has prefix_merge clause, than all other clause must directly or indirectly starts with prefix_merge */\
+			ERROR_ITEM(RuleMixedPrefixMergeWithClauseNotBeginWithIndirectPrefixMerge,		ruleName, startRule)										/* If a rule has prefix_merge clause, than all other clause must directly or indirectly starts with prefix_merge */\
 			ERROR_ITEM(RuleIndirectlyBeginsWithPrefixMergeOrLeftRecursionMarkers,			ruleName, prefixMergeRule, leftRecursionMarkerRule)\
 			ERROR_ITEM(RuleIndirectlyBeginsWithPrefixMergeMixedNonSimpleUseClause,			ruleName, prefixMergeRule)\
 

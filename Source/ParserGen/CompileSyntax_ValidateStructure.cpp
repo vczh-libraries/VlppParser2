@@ -750,6 +750,15 @@ ValidateStructurePrefixMergeRuleVisitor
 
 				void VerifyStartRule(ParsingAstBase* node, RuleSymbol* startRule)
 				{
+					if (ruleSymbol != startRule && !context.indirectPmClauses.Keys().Contains(startRule))
+					{
+						context.syntaxManager.AddError(
+							ParserErrorType::RuleMixedPrefixMergeWithClauseNotBeginWithIndirectPrefixMerge,
+							node->codeRange,
+							ruleSymbol->Name(),
+							startRule->Name()
+							);
+					}
 				}
 
 				////////////////////////////////////////////////////////////////////////
