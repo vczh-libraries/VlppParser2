@@ -881,6 +881,23 @@ ValidateStructure
 								visitor3.ValidateClause(clause);
 							}
 						}
+
+						{
+							vint indexPm = context.indirectPmClauses.Keys().IndexOf(ruleSymbol);
+							vint indexLrp = context.indirectLrpClauses.Keys().IndexOf(ruleSymbol);
+							if (indexPm != -1 && indexLrp != -1)
+							{
+								auto rulePm = context.pmClauseToRules[context.indirectPmClauses.GetByIndex(indexPm)[0]];
+								auto ruleLrp = context.lrpClauseToRules[context.indirectLrpClauses.GetByIndex(indexLrp)[0]];
+								context.syntaxManager.AddError(
+									ParserErrorType::RuleIndirectlyBeginsWithPrefixMergeOrLeftRecursionMarkers,
+									rule->name.codeRange,
+									ruleSymbol->Name(),
+									rulePm->Name(),
+									ruleLrp->Name()
+									);
+							}
+						}
 					}
 				}
 			}

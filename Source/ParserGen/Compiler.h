@@ -28,10 +28,11 @@ namespace vl
 				using ClauseReuseDependencies = collections::Group<GlrReuseClause*, RuleSymbol*>;
 				using ClauseTypeMap = collections::Dictionary<GlrClause*, AstClassSymbol*>;
 
-				using LeftRecursionPlaceholderClauseMap = collections::Group<RuleSymbol*, GlrLeftRecursionPlaceholderClause*>;
 				using LeftRecursionPlaceholderClauseSet = collections::SortedList<collections::Pair<RuleSymbol*, RuleSymbol*>>;
+				using LeftRecursionPlaceholderClauseMap = collections::Group<RuleSymbol*, GlrLeftRecursionPlaceholderClause*>;
 				using LeftRecursionPlaceholderReverseMap = collections::Dictionary<GlrLeftRecursionPlaceholderClause*, RuleSymbol*>;
-				using PrefixMergeClausesMap = collections::Group<RuleSymbol*, GlrPrefixMergeClause*>;
+				using PrefixMergeClauseMap = collections::Group<RuleSymbol*, GlrPrefixMergeClause*>;
+				using PrefixMergeClauseReverseMap = collections::Dictionary<GlrPrefixMergeClause*, RuleSymbol*>;
 
 				struct VisitorContext
 				{
@@ -50,10 +51,11 @@ namespace vl
 					Ptr<regex::RegexLexer>				cachedLexer;
 
 					LeftRecursionPlaceholderClauseMap	directLrpClauses, indirectLrpClauses;
-					PrefixMergeClausesMap				directPmClauses, indirectPmClauses;
+					PrefixMergeClauseMap				directPmClauses, indirectPmClauses;
 					RuleReuseDependencies				directStartRules, indirectStartRules;
 					LeftRecursionPlaceholderClauseSet	indirectStartRulePairs;
 					LeftRecursionPlaceholderReverseMap	lrpClauseToRules;
+					PrefixMergeClauseReverseMap			pmClauseToRules;
 
 					VisitorContext(
 						AstSymbolManager& _astManager,

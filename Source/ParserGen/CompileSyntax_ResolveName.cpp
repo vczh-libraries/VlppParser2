@@ -368,6 +368,7 @@ ResolveNameVisitor
 				{
 					VisitReuseSyntax(node->rule->literal, true);
 					context.directPmClauses.Add(ruleSymbol, node);
+					context.pmClauseToRules.Add(node, ruleSymbol);
 				}
 			};
 
