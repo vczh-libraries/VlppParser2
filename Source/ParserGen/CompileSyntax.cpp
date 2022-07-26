@@ -30,15 +30,15 @@ CompileSyntax
 					.IsEmpty();
 			}
 
-			bool VerifySyntax(VisitorContext& context, collections::List<Ptr<GlrSyntaxFile>>& files)
+			void CreateSyntaxSymbols(LexerSymbolManager& lexerManager, SyntaxSymbolManager& syntaxManager, collections::List<Ptr<GlrSyntaxFile>>& files)
 			{
 				for (auto file : files)
 				{
 					for (auto rule : file->rules)
 					{
-						if (context.lexerManager.Tokens().Keys().Contains(rule->name.value))
+						if (lexerManager.Tokens().Keys().Contains(rule->name.value))
 						{
-							context.syntaxManager.AddError(
+							syntaxManager.AddError(
 								ParserErrorType::RuleNameConflictedWithToken,
 								rule->codeRange,
 								rule->name.value
@@ -46,8 +46,7 @@ CompileSyntax
 						}
 						else
 						{
-							auto ruleSymbol = context.syntaxManager.CreateRule(rule->name.value, rule->codeRange);
-							context.astRules.Add(ruleSymbol, rule.Obj());
+							auto ruleSymbol = syntaxManager.CreateRule(rule->name.value, rule->codeRange);
 						}
 
 						for (auto clause : rule->clauses)
@@ -56,17 +55,31 @@ CompileSyntax
 							{
 								for (auto flag : lrpClause->flags)
 								{
-									if (!context.syntaxManager.lrpFlags.Contains(flag->flag.value))
+									if (!syntaxManager.lrpFlags.Contains(flag->flag.value))
 									{
-										context.syntaxManager.lrpFlags.Add(flag->flag.value);
+										syntaxManager.lrpFlags.Add(flag->flag.value);
 									}
 								}
 							}
 						}
 					}
 				}
-				if (context.syntaxManager.Global().Errors().Count() > 0) return false;
 
+				for (auto file : files)
+				{
+					for (auto switchItem : file->switches)
+					{
+						syntaxManager.CreateSwitch(
+							switchItem->name.value,
+							(switchItem->value == GlrSwitchValue::True),
+							switchItem->name.codeRange
+							);
+					}
+				}
+			}
+
+			bool VerifySyntax(VisitorContext& context, collections::List<Ptr<GlrSyntaxFile>>& files)
+			{
 				ResolveName(context, files);
 				if (context.syntaxManager.Global().Errors().Count() > 0) return false;
 
@@ -90,6 +103,9 @@ CompileSyntax
 
 			Ptr<GlrSyntaxFile> CompileSyntax(AstSymbolManager& astManager, LexerSymbolManager& lexerManager, SyntaxSymbolManager& syntaxManager, Ptr<CppParserGenOutput> output, collections::List<Ptr<GlrSyntaxFile>>& files)
 			{
+				CreateSyntaxSymbols(lexerManager, syntaxManager, files);
+				if (syntaxManager.Global().Errors().Count() > 0) return nullptr;
+
 				if (NeedRewritten(files))
 				{
 					{

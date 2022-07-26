@@ -180,7 +180,7 @@ ParserSymbolManager
 				StringItems					cppNss;
 				WString						headerGuard;
 
-				const auto&					Errors() { return errors; }
+				const auto&					Errors() const { return errors; }
 
 				template<typename ...TArgs>
 				void AddError(ParserErrorType type, ParserErrorLocation location, TArgs&& ...args)

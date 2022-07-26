@@ -69,8 +69,8 @@ Utility
 
 			extern void							WriteCppStringBody(const WString& body, stream::StreamWriter& writer);
 			extern void							WriteFileComment(const WString& name, stream::StreamWriter& writer);
-			extern WString						WriteNssBegin(collections::List<WString>& cppNss, stream::StreamWriter& writer);
-			extern void							WriteNssEnd(collections::List<WString>& cppNss, stream::StreamWriter& writer);
+			extern WString						WriteNssBegin(const collections::List<WString>& cppNss, stream::StreamWriter& writer);
+			extern void							WriteNssEnd(const collections::List<WString>& cppNss, stream::StreamWriter& writer);
 			extern void							WriteLoadDataFunctionHeader(const WString& prefix, const WString& functionName, stream::StreamWriter& writer);
 			extern void							WriteLoadDataFunctionCpp(const WString& prefix, const WString& functionName, stream::MemoryStream& rawData, bool compressData, stream::StreamWriter& writer);
 		}

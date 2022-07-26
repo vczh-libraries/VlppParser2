@@ -40,10 +40,10 @@ namespace vl
 
 				struct VisitorContext
 				{
-					ParserSymbolManager&				global;
-					AstSymbolManager&					astManager;
-					LexerSymbolManager&					lexerManager;
-					SyntaxSymbolManager&				syntaxManager;
+					const ParserSymbolManager&			global;
+					const AstSymbolManager&				astManager;
+					const LexerSymbolManager&			lexerManager;
+					const SyntaxSymbolManager&			syntaxManager;
 
 					GlrRuleMap							astRules;
 					LiteralTokenMap						literalTokens;
@@ -65,9 +65,9 @@ namespace vl
 					PrefixMergeClauseReverseMap			pmClauseToRules;
 
 					VisitorContext(
-						AstSymbolManager& _astManager,
-						LexerSymbolManager& _lexerManager,
-						SyntaxSymbolManager& _syntaxManager
+						const AstSymbolManager& _astManager,
+						const LexerSymbolManager& _lexerManager,
+						const SyntaxSymbolManager& _syntaxManager
 					)
 						: global(_syntaxManager.Global())
 						, astManager(_astManager)
@@ -76,7 +76,7 @@ namespace vl
 					{
 					}
 
-					regex::RegexLexer& GetCachedLexer()
+					const regex::RegexLexer& GetCachedLexer()
 					{
 						if (!cachedLexer)
 						{

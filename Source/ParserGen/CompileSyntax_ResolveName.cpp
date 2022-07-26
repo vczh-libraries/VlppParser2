@@ -389,19 +389,11 @@ ResolveName
 
 			void ResolveName(VisitorContext& context, List<Ptr<GlrSyntaxFile>>& files)
 			{
-				Dictionary<WString, ParsingTextRange> switchRange;
 				for (auto file : files)
 				{
-					for (auto switchItem : file->switches)
+					for (auto rule : file->rules)
 					{
-						if (context.syntaxManager.AddSwitch(
-							switchItem->name.value,
-							(switchItem->value == GlrSwitchValue::True),
-							switchItem->name.codeRange
-						))
-						{
-							switchRange.Add(switchItem->name.value, switchItem->name.codeRange);
-						}
+						context.astRules.Add(context.syntaxManager.Rules()[rule->name.value], rule.Obj());
 					}
 				}
 
@@ -431,7 +423,7 @@ ResolveName
 						{
 							context.syntaxManager.AddError(
 								ParserErrorType::UnusedSwitch,
-								switchRange[switchName],
+								context.syntaxManager.switches[switchName].codeRange,
 								switchName
 								);
 						}

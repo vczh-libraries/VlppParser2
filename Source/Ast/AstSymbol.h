@@ -173,10 +173,10 @@ AstSymbolManager
 
 				AstDefFile*					CreateFile(const WString& name);
 
-				ParserSymbolManager&		Global() { return global; }
-				const auto&					Files() { return files.map; }
-				const auto&					FileOrder() { return files.order; }
-				const auto&					Symbols() { return symbolMap; }
+				const ParserSymbolManager&	Global() const { return global; }
+				const auto&					Files() const { return files.map; }
+				const auto&					FileOrder() const { return files.order; }
+				const auto&					Symbols() const { return symbolMap; }
 			};
 
 			extern AstDefFile*				CreateParserGenTypeAst(AstSymbolManager& manager);

@@ -168,13 +168,19 @@ SyntaxSymbolManager
 											// automaton::Executable is exactly the same to CrossReferencedNFA, stored a more cache friendly way.
 			};
 
+			struct SyntaxSwitch
+			{
+				bool						defaultValue;
+				ParsingTextRange			codeRange;
+			};
+
 			class SyntaxSymbolManager : public Object
 			{
 				using StateList = collections::List<Ptr<StateSymbol>>;
 				using EdgeList = collections::List<Ptr<EdgeSymbol>>;
 				using RuleTypeMap = collections::Dictionary<RuleSymbol*, WString>;
 				using RuleList = collections::List<RuleSymbol*>;
-				using SwitchMap = collections::Dictionary<WString, bool>;
+				using SwitchMap = collections::Dictionary<WString, SyntaxSwitch>;
 				using LrpFlagList = collections::SortedList<WString>;
 			protected:
 				MappedOwning<RuleSymbol>	rules;
@@ -204,7 +210,7 @@ SyntaxSymbolManager
 				RuleSymbol*					CreateRule(const WString& name, ParsingTextRange codeRange = {});
 				StateSymbol*				CreateState(RuleSymbol* rule, vint32_t clauseId);
 				EdgeSymbol*					CreateEdge(StateSymbol* from, StateSymbol* to);
-				bool						AddSwitch(const WString& name, bool defaultValue, ParsingTextRange codeRange = {});
+				bool						CreateSwitch(const WString& name, bool defaultValue, ParsingTextRange codeRange = {});
 
 				void						BuildCompactNFA();
 				void						BuildCrossReferencedNFA();
@@ -212,13 +218,13 @@ SyntaxSymbolManager
 				void						GetStatesInStableOrder(collections::List<StateSymbol*>& order);
 				WString						GetStateGlobalLabel(StateSymbol* state, vint index);
 
-				ParserSymbolManager&		Global() { return global; }
-				const auto&					Rules() { return rules.map; }
+				const ParserSymbolManager&	Global() const { return global; }
+				const auto&					Rules() const { return rules.map; }
 				const auto&					RuleOrder() { return rules.order; }
 				SyntaxPhase					Phase() { return phase; }
 
 				template<typename ...TArgs>
-				void AddError(ParserErrorType type, ParsingTextRange codeRange, TArgs&&... args)
+				void AddError(ParserErrorType type, ParsingTextRange codeRange, TArgs&&... args) const
 				{
 					global.AddError(type, { ParserDefFileType::Syntax,name,codeRange }, std::forward<TArgs&&>(args)...);
 				}

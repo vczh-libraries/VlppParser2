@@ -44,7 +44,7 @@ SyntaxSymbolManager::BuildAutomaton
 					for (auto [pair, index] : indexed(switches))
 					{
 						metadata.switchNames[index] = pair.key;
-						executable.switchDefaultValues[index] = pair.value;
+						executable.switchDefaultValues[index] = pair.value.defaultValue;
 					}
 				}
 

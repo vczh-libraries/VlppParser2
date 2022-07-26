@@ -126,7 +126,7 @@ SyntaxSymbolManager
 				return symbol;
 			}
 
-			bool SyntaxSymbolManager::AddSwitch(const WString& name, bool defaultValue, ParsingTextRange codeRange)
+			bool SyntaxSymbolManager::CreateSwitch(const WString& name, bool defaultValue, ParsingTextRange codeRange)
 			{
 				if (switches.Keys().Contains(name))
 				{
@@ -139,7 +139,7 @@ SyntaxSymbolManager
 				}
 				else
 				{
-					switches.Add(name, defaultValue);
+					switches.Add(name, { defaultValue, codeRange });
 					return true;
 				}
 			}

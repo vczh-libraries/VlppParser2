@@ -72,7 +72,7 @@ Utility
 				writer.WriteLine(L"");
 			}
 
-			WString WriteNssBegin(collections::List<WString>& cppNss, stream::StreamWriter& writer)
+			WString WriteNssBegin(const collections::List<WString>& cppNss, stream::StreamWriter& writer)
 			{
 				WString prefix;
 				for (auto ns : cppNss)
@@ -84,7 +84,7 @@ Utility
 				return prefix;
 			}
 
-			void WriteNssEnd(collections::List<WString>& cppNss, stream::StreamWriter& writer)
+			void WriteNssEnd(const collections::List<WString>& cppNss, stream::StreamWriter& writer)
 			{
 				vint counter = cppNss.Count();
 				for (auto ns : cppNss)
