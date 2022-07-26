@@ -44,7 +44,6 @@ namespace vl
 					AstSymbolManager&					astManager;
 					LexerSymbolManager&					lexerManager;
 					SyntaxSymbolManager&				syntaxManager;
-					Ptr<CppParserGenOutput>				output;
 
 					GlrRuleMap							astRules;
 					LiteralTokenMap						literalTokens;
@@ -68,14 +67,12 @@ namespace vl
 					VisitorContext(
 						AstSymbolManager& _astManager,
 						LexerSymbolManager& _lexerManager,
-						SyntaxSymbolManager& _syntaxManager,
-						Ptr<CppParserGenOutput> _output
+						SyntaxSymbolManager& _syntaxManager
 					)
 						: global(_syntaxManager.Global())
 						, astManager(_astManager)
 						, lexerManager(_lexerManager)
 						, syntaxManager(_syntaxManager)
-						, output(_output)
 					{
 					}
 

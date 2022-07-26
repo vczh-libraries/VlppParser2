@@ -15,7 +15,7 @@ namespace vl
 			extern void CalculateFirstSet(VisitorContext& context, List<Ptr<GlrSyntaxFile>>& files);
 			extern void ValidateTypes(VisitorContext& context, List<Ptr<GlrSyntaxFile>>& files);
 			extern void ValidateStructure(VisitorContext& context, List<Ptr<GlrSyntaxFile>>& files);
-			extern void CompileSyntax(VisitorContext& context, List<Ptr<GlrSyntaxFile>>& files);
+			extern void CompileSyntax(VisitorContext& context, Ptr<CppParserGenOutput> output, List<Ptr<GlrSyntaxFile>>& files);
 
 /***********************************************************************
 CompileSyntax
@@ -93,16 +93,16 @@ CompileSyntax
 				if (NeedRewritten(files))
 				{
 					{
-						VisitorContext context(astManager, lexerManager, syntaxManager, output);
+						VisitorContext context(astManager, lexerManager, syntaxManager);
 						if (!VerifySyntax(context, files)) return nullptr;
 					}
 					CHECK_FAIL(L"Not Implemented!");
 				}
 				else
 				{
-					VisitorContext context(astManager, lexerManager, syntaxManager, output);
+					VisitorContext context(astManager, lexerManager, syntaxManager);
 					if (!VerifySyntax(context, files)) return nullptr;
-					CompileSyntax(context, files);
+					CompileSyntax(context, output, files);
 					return nullptr;
 				}
 			}

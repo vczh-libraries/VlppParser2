@@ -77,6 +77,7 @@ CompileSyntaxVisitor
 			protected:
 				AutomatonBuilder						automatonBuilder;
 				VisitorContext&							context;
+				Ptr<CppParserGenOutput>					output;
 				AstClassSymbol*							clauseType;
 				StatePair								result;
 
@@ -88,10 +89,12 @@ CompileSyntaxVisitor
 			public:
 				CompileSyntaxVisitor(
 					VisitorContext& _context,
+					Ptr<CppParserGenOutput> _output,
 					RuleSymbol* _ruleSymbol
 				)
 					: automatonBuilder(_ruleSymbol)
 					, context(_context)
+					, output(_output)
 				{
 				}
 
@@ -112,7 +115,7 @@ CompileSyntaxVisitor
 					if (node->field)
 					{
 						auto propSymbol = FindPropSymbol(clauseType, node->field.value);
-						field = context.output->fieldIds[propSymbol];
+						field = output->fieldIds[propSymbol];
 					}
 
 					switch (node->refType)
@@ -290,7 +293,7 @@ CompileSyntaxVisitor
 						auto propSymbol = FindPropSymbol(clauseType, node->field.value);
 						auto enumSymbol = dynamic_cast<AstEnumSymbol*>(propSymbol->propSymbol);
 						auto enumItem = (vint32_t)enumSymbol->ItemOrder().IndexOf(node->value.value);
-						auto field = context.output->fieldIds[propSymbol];
+						auto field = output->fieldIds[propSymbol];
 						pair = automatonBuilder.BuildAssignment(pair, enumItem, field, (node->type == GlrAssignmentType::Weak));
 					}
 					return pair;
@@ -302,7 +305,7 @@ CompileSyntaxVisitor
 					result = automatonBuilder.BuildClause([this, node]()
 					{
 						return automatonBuilder.BuildCreateClause(
-							context.output->classIds[clauseType],
+							output->classIds[clauseType],
 							[this, node]() { return BuildAssignments(Build(node->syntax), node->assignments); }
 							);
 					});
@@ -407,14 +410,14 @@ CompileSyntaxVisitor
 CompileSyntax
 ***********************************************************************/
 
-			void CompileSyntax(VisitorContext& context, List<Ptr<GlrSyntaxFile>>& files)
+			void CompileSyntax(VisitorContext& context, Ptr<CppParserGenOutput> output, List<Ptr<GlrSyntaxFile>>& files)
 			{
 				for (auto file : files)
 				{
 					for (auto rule : file->rules)
 					{
 						auto ruleSymbol = context.syntaxManager.Rules()[rule->name.value];
-						CompileSyntaxVisitor visitor(context, ruleSymbol);
+						CompileSyntaxVisitor visitor(context, output, ruleSymbol);
 						for (auto clause : rule->clauses)
 						{
 							visitor.AssignClause(clause);
