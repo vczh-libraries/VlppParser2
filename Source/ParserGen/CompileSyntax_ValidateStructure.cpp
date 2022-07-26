@@ -855,6 +855,83 @@ ValidateStructurePrefixMergeRuleVisitor
 			};
 
 /***********************************************************************
+ValidateStructurePrefixMergeRuleVisitor
+***********************************************************************/
+
+			class ValidateStructureIndirectPrefixMergeRuleVisitor
+				: public Object
+				, protected virtual GlrClause::IVisitor
+			{
+			protected:
+				VisitorContext&				context;
+				RuleSymbol*					ruleSymbol;
+				RuleSymbol*					pmRuleSymbol;
+
+			public:
+				ValidateStructureIndirectPrefixMergeRuleVisitor(
+					VisitorContext& _context,
+					RuleSymbol* _ruleSymbol,
+					RuleSymbol* _pmRuleSymbol
+				)
+					: context(_context)
+					, ruleSymbol(_ruleSymbol)
+					, pmRuleSymbol(_pmRuleSymbol)
+				{
+				}
+
+				void ValidateClause(Ptr<GlrClause> clause)
+				{
+					clause->Accept(this);
+				}
+
+			protected:
+
+				void NotSimpleUsingRule(ParsingAstBase* node)
+				{
+					context.syntaxManager.AddError(
+						ParserErrorType::RuleIndirectlyBeginsWithPrefixMergeMixedNonSimpleUseClause,
+						node->codeRange,
+						ruleSymbol->Name(),
+						pmRuleSymbol->Name()
+					);
+				}
+
+				////////////////////////////////////////////////////////////////////////
+				// GlrClause::IVisitor
+				////////////////////////////////////////////////////////////////////////
+
+				void Visit(GlrCreateClause* node) override
+				{
+					NotSimpleUsingRule(node);
+				}
+
+				void Visit(GlrPartialClause* node) override
+				{
+					NotSimpleUsingRule(node);
+				}
+
+				void Visit(GlrReuseClause* node) override
+				{
+					if (!dynamic_cast<GlrUseSyntax*>(node->syntax.Obj()))
+					{
+						NotSimpleUsingRule(node);
+					}
+				}
+
+				void Visit(GlrLeftRecursionPlaceholderClause* node) override
+				{
+				}
+
+				void Visit(GlrLeftRecursionInjectClause* node) override
+				{
+				}
+
+				void Visit(GlrPrefixMergeClause* node) override
+				{
+				}
+			};
+
+/***********************************************************************
 ValidateStructure
 ***********************************************************************/
 
@@ -882,13 +959,15 @@ ValidateStructure
 							}
 						}
 
+						vint indexPm = context.indirectPmClauses.Keys().IndexOf(ruleSymbol);
+						vint indexLrp = context.indirectLrpClauses.Keys().IndexOf(ruleSymbol);
+						vint indexLri = context.indirectLriClauses.Keys().IndexOf(ruleSymbol);
+
+						if (indexPm != -1)
 						{
-							vint indexPm = context.indirectPmClauses.Keys().IndexOf(ruleSymbol);
-							vint indexLrp = context.indirectLrpClauses.Keys().IndexOf(ruleSymbol);
-							vint indexLri = context.indirectLriClauses.Keys().IndexOf(ruleSymbol);
-							if (indexPm != -1 && indexLrp != -1)
+							auto rulePm = context.pmClauseToRules[context.indirectPmClauses.GetByIndex(indexPm)[0]];
+							if (indexLrp != -1)
 							{
-								auto rulePm = context.pmClauseToRules[context.indirectPmClauses.GetByIndex(indexPm)[0]];
 								auto ruleLrp = context.lrpClauseToRules[context.indirectLrpClauses.GetByIndex(indexLrp)[0]];
 								context.syntaxManager.AddError(
 									ParserErrorType::RuleIndirectlyBeginsWithPrefixMergeOrLeftRecursionMarkers,
@@ -898,9 +977,8 @@ ValidateStructure
 									ruleLrp->Name()
 									);
 							}
-							if (indexPm != -1 && indexLri != -1)
+							if (indexLri != -1)
 							{
-								auto rulePm = context.pmClauseToRules[context.indirectPmClauses.GetByIndex(indexPm)[0]];
 								auto ruleLri = context.lriClauseToRules[context.indirectLriClauses.GetByIndex(indexLri)[0]];
 								context.syntaxManager.AddError(
 									ParserErrorType::RuleIndirectlyBeginsWithPrefixMergeOrLeftRecursionMarkers,
@@ -909,6 +987,12 @@ ValidateStructure
 									rulePm->Name(),
 									ruleLri->Name()
 									);
+							}
+
+							ValidateStructureIndirectPrefixMergeRuleVisitor visitor3(context, ruleSymbol, rulePm);
+							for (auto clause : rule->clauses)
+							{
+								visitor3.ValidateClause(clause);
 							}
 						}
 					}

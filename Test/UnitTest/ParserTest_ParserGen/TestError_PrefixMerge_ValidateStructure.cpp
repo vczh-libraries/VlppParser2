@@ -214,7 +214,6 @@ PM
   ;
 Exp1
   ::= !PM
-  ::= !Exp1 ADD
   ;
 Exp2
   ::= !Exp1
