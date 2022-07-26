@@ -9,13 +9,14 @@ namespace vl
 			using namespace collections;
 			using namespace compile_syntax;
 
-			extern void ResolveName(VisitorContext& context, List<Ptr<GlrSyntaxFile>>& files);
-			extern void ValidatePartialRules(VisitorContext& context, List<Ptr<GlrSyntaxFile>>& files);
-			extern void CalculateRuleAndClauseTypes(VisitorContext& context);
-			extern void CalculateFirstSet(VisitorContext& context, List<Ptr<GlrSyntaxFile>>& files);
-			extern void ValidateTypes(VisitorContext& context, List<Ptr<GlrSyntaxFile>>& files);
-			extern void ValidateStructure(VisitorContext& context, List<Ptr<GlrSyntaxFile>>& files);
-			extern void CompileSyntax(VisitorContext& context, Ptr<CppParserGenOutput> output, List<Ptr<GlrSyntaxFile>>& files);
+			extern void					ResolveName(VisitorContext& context, List<Ptr<GlrSyntaxFile>>& files);
+			extern void					ValidatePartialRules(VisitorContext& context, List<Ptr<GlrSyntaxFile>>& files);
+			extern void					CalculateRuleAndClauseTypes(VisitorContext& context);
+			extern void					CalculateFirstSet(VisitorContext& context, List<Ptr<GlrSyntaxFile>>& files);
+			extern void					ValidateTypes(VisitorContext& context, List<Ptr<GlrSyntaxFile>>& files);
+			extern void					ValidateStructure(VisitorContext& context, List<Ptr<GlrSyntaxFile>>& files);
+			extern Ptr<GlrSyntaxFile>	RewriteSyntax(VisitorContext& context, collections::List<Ptr<GlrSyntaxFile>>& files);
+			extern void					CompileSyntax(VisitorContext& context, Ptr<CppParserGenOutput> output, List<Ptr<GlrSyntaxFile>>& files);
 
 /***********************************************************************
 CompileSyntax
@@ -101,6 +102,15 @@ CompileSyntax
 				return true;
 			}
 
+			void CompileWithoutRewriting(AstSymbolManager& astManager, LexerSymbolManager& lexerManager, SyntaxSymbolManager& syntaxManager, Ptr<CppParserGenOutput> output, collections::List<Ptr<GlrSyntaxFile>>& files)
+			{
+				VisitorContext context(astManager, lexerManager, syntaxManager);
+				if (VerifySyntax(context, files))
+				{
+					CompileSyntax(context, output, files);
+				}
+			}
+
 			Ptr<GlrSyntaxFile> CompileSyntax(AstSymbolManager& astManager, LexerSymbolManager& lexerManager, SyntaxSymbolManager& syntaxManager, Ptr<CppParserGenOutput> output, collections::List<Ptr<GlrSyntaxFile>>& files)
 			{
 				CreateSyntaxSymbols(lexerManager, syntaxManager, files);
@@ -108,17 +118,21 @@ CompileSyntax
 
 				if (NeedRewritten(files))
 				{
+					Ptr<GlrSyntaxFile> rewritten;
 					{
 						VisitorContext context(astManager, lexerManager, syntaxManager);
 						if (!VerifySyntax(context, files)) return nullptr;
+						rewritten = RewriteSyntax(context, files);
 					}
-					CHECK_FAIL(L"Not Implemented!");
+
+					List<Ptr<GlrSyntaxFile>> rewrittenFiles;
+					rewrittenFiles.Add(rewritten);
+					CompileWithoutRewriting(astManager, lexerManager, syntaxManager, output, rewrittenFiles);
+					return rewritten;
 				}
 				else
 				{
-					VisitorContext context(astManager, lexerManager, syntaxManager);
-					if (!VerifySyntax(context, files)) return nullptr;
-					CompileSyntax(context, output, files);
+					CompileWithoutRewriting(astManager, lexerManager, syntaxManager, output, files);
 					return nullptr;
 				}
 			}
