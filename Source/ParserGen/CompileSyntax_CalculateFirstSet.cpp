@@ -169,13 +169,9 @@ CalculateFirstSet
 
 			void CalculateFirstSet_IndirectStartRules(VisitorContext& context, List<Ptr<GlrSyntaxFile>>& files)
 			{
-				Array<vint> lastCounters(context.directStartRules.Count());
-				Array<vint> currentCounters(context.directStartRules.Count());
 				for (auto [rule, index] : indexed(context.directStartRules.Keys()))
 				{
 					auto&& startRules = context.directStartRules.GetByIndex(index);
-					lastCounters[index] = 0;
-					currentCounters[index] = startRules.Count();
 					for (auto startRule : startRules)
 					{
 						context.indirectStartRules.Add(rule, startRule);
@@ -189,20 +185,14 @@ CalculateFirstSet
 					for (auto [rule, index] : indexed(context.indirectStartRules.Keys()))
 					{
 						auto&& startRules = context.indirectStartRules.GetByIndex(index);
-						vint last = lastCounters[index];
-						vint current = currentCounters[index];
-						for (vint indexSR = last; indexSR < current; indexSR++)
+						for (auto startRule : startRules)
 						{
-							auto startRule = startRules[indexSR];
 							vint index2 = context.indirectStartRules.Keys().IndexOf(startRule);
 							if (index2 != -1 && index2 != index)
 							{
 								auto&& startRules2 = context.indirectStartRules.GetByIndex(index2);
-								vint last2 = lastCounters[index2];
-								vint current2 = currentCounters[index2];
-								for (vint indexSR2 = last2; indexSR2 < current2; indexSR2++)
+								for (auto startRule2 : startRules2)
 								{
-									auto startRule2 = startRules2[indexSR2];
 									if (!context.indirectStartRulePairs.Contains({ rule,startRule2 }))
 									{
 										offset++;
@@ -222,8 +212,6 @@ CalculateFirstSet
 					for (vint index = 0; index < context.indirectStartRules.Count(); index++)
 					{
 						auto&& startRules = context.indirectStartRules.GetByIndex(index);
-						lastCounters[index] = currentCounters[index];
-						currentCounters[index] = startRules.Count();
 					}
 				}
 			}
