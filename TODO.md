@@ -24,7 +24,7 @@
 
 ## Issues
 
-- `RuleIndirectlyBeginsWithPrefixMergeMixedNonSimpleUseClause` must exclude left recursive clauses (not LRI/LRP).
+- Test `X ::= X LRI ...`.
 - Optimize `CalculateFirstSet_IndirectStartRules` using partial ordering.
 - TODO in `SyntaxSymbolManager::EliminateSingleRulePrefix`.
   - Deny `A ::= !B ::= B as Something ::= ...;`.

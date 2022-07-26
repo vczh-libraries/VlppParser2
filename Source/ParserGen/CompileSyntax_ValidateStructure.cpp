@@ -886,14 +886,17 @@ ValidateStructurePrefixMergeRuleVisitor
 
 			protected:
 
-				void NotSimpleUsingRule(ParsingAstBase* node)
+				void NotSimpleUsingRule(GlrClause* node)
 				{
-					context.syntaxManager.AddError(
-						ParserErrorType::RuleIndirectlyBeginsWithPrefixMergeMixedNonSimpleUseClause,
-						node->codeRange,
-						ruleSymbol->Name(),
-						pmRuleSymbol->Name()
-					);
+					if (!context.leftRecursiveClauseParis.Contains({ ruleSymbol,node }))
+					{
+						context.syntaxManager.AddError(
+							ParserErrorType::RuleIndirectlyBeginsWithPrefixMergeMixedNonSimpleUseClause,
+							node->codeRange,
+							ruleSymbol->Name(),
+							pmRuleSymbol->Name()
+							);
+					}
 				}
 
 				////////////////////////////////////////////////////////////////////////
@@ -989,10 +992,13 @@ ValidateStructure
 									);
 							}
 
-							ValidateStructureIndirectPrefixMergeRuleVisitor visitor3(context, ruleSymbol, rulePm);
-							for (auto clause : rule->clauses)
+							if (!context.directPmClauses.Keys().Contains(ruleSymbol))
 							{
-								visitor3.ValidateClause(clause);
+								ValidateStructureIndirectPrefixMergeRuleVisitor visitor3(context, ruleSymbol, rulePm);
+								for (auto clause : rule->clauses)
+								{
+									visitor3.ValidateClause(clause);
+								}
 							}
 						}
 					}

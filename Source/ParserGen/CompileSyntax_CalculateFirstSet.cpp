@@ -15,8 +15,8 @@ DirectFirstSetVisitor
 
 			class DirectFirstSetVisitor
 				: public Object
-				, public virtual GlrSyntax::IVisitor
-				, public virtual GlrClause::IVisitor
+				, protected virtual GlrSyntax::IVisitor
+				, protected virtual GlrClause::IVisitor
 			{
 			private:
 				bool						couldBeEmpty = false;
@@ -24,13 +24,20 @@ DirectFirstSetVisitor
 			protected:
 				VisitorContext&				context;
 				RuleSymbol*					ruleSymbol;
+				GlrClause*					currentClause = nullptr;
 
 				void AddStartRule(const WString& name)
 				{
 					vint index = context.syntaxManager.Rules().Keys().IndexOf(name);
 					if (index != -1)
 					{
-						context.directStartRules.Add(ruleSymbol, context.syntaxManager.Rules().Values()[index]);
+						auto startRule = context.syntaxManager.Rules().Values()[index];
+						context.directStartRules.Add(ruleSymbol, startRule);
+						if (ruleSymbol == startRule)
+						{
+							context.leftRecursiveClauses.Add(ruleSymbol, currentClause);
+							context.leftRecursiveClauseParis.Add({ ruleSymbol,currentClause });
+						}
 					}
 				}
 
@@ -42,6 +49,12 @@ DirectFirstSetVisitor
 					: context(_context)
 					, ruleSymbol(_ruleSymbol)
 				{
+				}
+
+				void VisitClause(Ptr<GlrClause> clause)
+				{
+					currentClause = clause.Obj();
+					clause->Accept(this);
 				}
 			protected:
 
@@ -161,7 +174,7 @@ CalculateFirstSet
 						DirectFirstSetVisitor visitor(context, ruleSymbol);
 						for (auto clause : rule->clauses)
 						{
-							clause->Accept(&visitor);
+							visitor.VisitClause(clause);
 						}
 					}
 				}

@@ -28,7 +28,9 @@ namespace vl
 				using ClauseReuseDependencies = collections::Group<GlrReuseClause*, RuleSymbol*>;
 				using ClauseTypeMap = collections::Dictionary<GlrClause*, AstClassSymbol*>;
 
-				using LeftRecursionPlaceholderClauseSet = collections::SortedList<collections::Pair<RuleSymbol*, RuleSymbol*>>;
+				using LeftRecursiveClauseSet = collections::SortedList<collections::Pair<RuleSymbol*, GlrClause*>>;
+				using LeftRecursiveClauseMap = collections::Group<RuleSymbol*, GlrClause*>;
+				using StartRuleSet = collections::SortedList<collections::Pair<RuleSymbol*, RuleSymbol*>>;
 				using LeftRecursionPlaceholderClauseMap = collections::Group<RuleSymbol*, GlrLeftRecursionPlaceholderClause*>;
 				using LeftRecursionPlaceholderReverseMap = collections::Dictionary<GlrLeftRecursionPlaceholderClause*, RuleSymbol*>;
 				using LeftRecursionInjectClauseMap = collections::Group<RuleSymbol*, GlrLeftRecursionInjectClause*>;
@@ -52,11 +54,13 @@ namespace vl
 					ClauseTypeMap						clauseTypes;
 					Ptr<regex::RegexLexer>				cachedLexer;
 
+					LeftRecursiveClauseSet				leftRecursiveClauseParis;
+					LeftRecursiveClauseMap				leftRecursiveClauses;
 					LeftRecursionInjectClauseMap		directLriClauses, indirectLriClauses;
 					LeftRecursionPlaceholderClauseMap	directLrpClauses, indirectLrpClauses;
 					PrefixMergeClauseMap				directPmClauses, indirectPmClauses;
 					RuleReuseDependencies				directStartRules, indirectStartRules;
-					LeftRecursionPlaceholderClauseSet	indirectStartRulePairs;
+					StartRuleSet						indirectStartRulePairs;
 					LeftRecursionInjectReverseMap		lriClauseToRules;
 					LeftRecursionPlaceholderReverseMap	lrpClauseToRules;
 					PrefixMergeClauseReverseMap			pmClauseToRules;
