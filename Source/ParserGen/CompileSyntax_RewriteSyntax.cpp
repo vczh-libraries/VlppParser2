@@ -106,6 +106,17 @@ RewriteRules
 
 					for (auto [pmName, pmIndex] : indexed(pmClauses.Keys()))
 					{
+						// TODO:
+						//   determine if it needs GLRC::Multiple
+						//   determine if it needs GLRICT::Optional, if yes, only Optional the first lriClause
+						//   if originRule is not left recursive
+						//     do not generate lriClause for the flag created for originRule
+						//     if a pmName does generate some lriClause
+						//       it becomes GLRICT::Optional
+						//     otherwise
+						//       it becomse GLRICT::Single
+						//       generate useSyntax instead of lriClause
+
 						SortedList<WString> flags;
 						for (auto pmClause : pmClauses.GetByIndex(pmIndex))
 						{
