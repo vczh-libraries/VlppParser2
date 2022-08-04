@@ -90,6 +90,35 @@ Rules
 Clauses
 ***********************************************************************/
 
+			void FixPrefixMergeClauses(const VisitorContext& vContext, RewritingContext& rContext, SyntaxSymbolManager& syntaxManager, Ptr<GlrSyntaxFile> rewritten)
+			{
+				for (auto ruleSymbol : vContext.directPmClauses.Keys())
+				{
+					auto originRule = rContext.originRules[ruleSymbol];
+
+					auto lrpClause = MakePtr<GlrLeftRecursionPlaceholderClause>();
+					originRule->clauses.Insert(0, lrpClause);
+
+					auto lrp = MakePtr<GlrLeftRecursionPlaceholder>();
+					lrp->flag.value = L"LRI_" + ruleSymbol->Name();
+					lrpClause->flags.Add(lrp);
+					syntaxManager.lrpFlags.Add(lrp->flag.value);
+
+					for (vint i = 0; i < originRule->clauses.Count(); i++)
+					{
+						if (auto pmClause = originRule->clauses[i].Cast<GlrPrefixMergeClause>())
+						{
+							auto reuseClause = MakePtr<GlrReuseClause>();
+							originRule->clauses[i] = reuseClause;
+
+							auto useSyntax = MakePtr<GlrUseSyntax>();
+							useSyntax->name.value = pmClause->rule->literal.value;
+							reuseClause->syntax = useSyntax;
+						}
+					}
+				}
+			}
+
 /***********************************************************************
 RewriteSyntax
 ***********************************************************************/
@@ -109,7 +138,7 @@ RewriteSyntax
 				RewritingContext rewritingContext;
 				CollectRewritingTargets(context, rewritingContext, rewritten);
 
-				// create rewritten rules
+				// create rewritten rules, rename origin rules
 				CreateRewrittenRules(context, rewritingContext, rewritten);
 
 				// fix rule types (fix syntaxManager.rules, clear RuleSymbol fields)
@@ -118,8 +147,11 @@ RewriteSyntax
 				// create left_recursion_inject clauses in rewritten rules
 
 				// convert prefix_merge to left_recursion_placeholder and reuse clauses (fix syntaxManager.lrpFlags)
+				FixPrefixMergeClauses(context, rewritingContext, syntaxManager, rewritten);
 
 				// rename rule references in origin rules
+
+				// TODO: delete rContext.fixedAstRules if unused
 
 				return rewritten;
 			}
