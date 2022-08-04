@@ -91,8 +91,59 @@ FixRuleTypes
 			}
 
 /***********************************************************************
-Clauses (rewritten)
+RewriteRules
 ***********************************************************************/
+
+			void RewriteRules(const VisitorContext& vContext, RewritingContext& rContext, SyntaxSymbolManager& syntaxManager, Ptr<GlrSyntaxFile> rewritten)
+			{
+				for (auto [ruleSymbol, originRule] : rContext.originRules)
+				{
+					auto lriRule = rContext.lriRules[ruleSymbol];
+
+					Group<WString, GlrPrefixMergeClause*> pmClauses;
+					for (auto pmClause : vContext.indirectPmClauses[ruleSymbol])
+					{
+						pmClauses.Add(pmClause->rule->literal.value, pmClause);
+					}
+
+					for (auto [pmName, pmIndex] : indexed(pmClauses.Keys()))
+					{
+						SortedList<WString> flags;
+						for (auto pmClause : pmClauses.GetByIndex(pmIndex))
+						{
+							flags.Add(L"LRI_" + vContext.pmClauseToRules[pmClause]->Name());
+						}
+
+						for (auto flag : flags)
+						{
+							auto lriClause = MakePtr<GlrLeftRecursionInjectClause>();
+							lriRule->clauses.Add(lriClause);
+
+							auto lriStartRule = MakePtr<GlrRefSyntax>();
+							lriClause->rule = lriStartRule;
+							lriStartRule->refType = GlrRefType::Id;
+							lriStartRule->literal.value = pmName;
+
+							auto lriCont = MakePtr<GlrLeftRecursionInjectContinuation>();
+							lriClause->continuation = lriCont;
+							lriCont->configuration = GlrLeftRecursionConfiguration::Single;
+							lriCont->type = GlrLeftRecursionInjectContinuationType::Optional;
+
+							auto lriContFlag = MakePtr<GlrLeftRecursionPlaceholder>();
+							lriCont->flag = lriContFlag;
+							lriContFlag->flag.value = flag;
+
+							auto lriContTarget = MakePtr<GlrLeftRecursionInjectClause>();
+							lriCont->injectionTargets.Add(lriContTarget);
+
+							auto lriTargetRule = MakePtr<GlrRefSyntax>();
+							lriContTarget->rule = lriTargetRule;
+							lriTargetRule->refType = GlrRefType::Id;
+							lriTargetRule->literal.value = originRule->name.value;
+						}
+					}
+				}
+			}
 
 /***********************************************************************
 FixPrefixMergeClauses
@@ -304,6 +355,7 @@ RewriteSyntax
 				FixRuleTypes(context, rewritingContext, syntaxManager, rewritten);
 
 				// create left_recursion_inject clauses in rewritten rules
+				RewriteRules(context, rewritingContext, syntaxManager, rewritten);
 
 				// convert prefix_merge to left_recursion_placeholder and reuse clauses (fix syntaxManager.lrpFlags)
 				FixPrefixMergeClauses(context, rewritingContext, syntaxManager, rewritten);
