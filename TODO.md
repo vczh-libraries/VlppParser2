@@ -8,12 +8,6 @@
 
 - Extensible tokens, for example, recognize `R"[^\s(]\(` and invoke a callback function to determine the end of the string.
   - Offer two options: using (rich regex | C++) to search for complete token.
-- Add `prefix_merge` clause which will be written to `left_recursion_placeholder`, `left_recursion_inject` and `left_recursion_inject_multiple`.
-  - A `prefix_merge` clause can only be used on a single `!RULE` syntax, e.g. `prefix_merge !RULE`.
-  - When a clause is compiled, it will searches and see if starting rules are all `prefix_merge` rules
-    - If none, leave it.
-    - If all, rewrite it using `left_recursion_placeholder`, `left_recursion_inject` and `left_recursion_inject_multiple`.
-    - If mixed, report errors.
 - Check `prefix_merge` errors
   - If a rule indirectly begins with `prefix_merge`:
     - all clauses should begin with `prefix_merge`
