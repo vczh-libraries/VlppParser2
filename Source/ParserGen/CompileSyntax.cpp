@@ -15,7 +15,7 @@ namespace vl
 			extern void					CalculateFirstSet(VisitorContext& context, List<Ptr<GlrSyntaxFile>>& files);
 			extern void					ValidateTypes(VisitorContext& context, List<Ptr<GlrSyntaxFile>>& files);
 			extern void					ValidateStructure(VisitorContext& context, List<Ptr<GlrSyntaxFile>>& files);
-			extern Ptr<GlrSyntaxFile>	RewriteSyntax(VisitorContext& context, collections::List<Ptr<GlrSyntaxFile>>& files);
+			extern Ptr<GlrSyntaxFile>	RewriteSyntax(VisitorContext& context, SyntaxSymbolManager& syntaxManager, collections::List<Ptr<GlrSyntaxFile>>& files);
 			extern void					CompileSyntax(VisitorContext& context, Ptr<CppParserGenOutput> output, List<Ptr<GlrSyntaxFile>>& files);
 
 /***********************************************************************
@@ -122,12 +122,12 @@ CompileSyntax
 					{
 						VisitorContext context(astManager, lexerManager, syntaxManager);
 						if (!VerifySyntax(context, files)) return nullptr;
-						rewritten = RewriteSyntax(context, files);
+						rewritten = RewriteSyntax(context, syntaxManager, files);
 					}
 
-					List<Ptr<GlrSyntaxFile>> rewrittenFiles;
-					rewrittenFiles.Add(rewritten);
-					CompileWithoutRewriting(astManager, lexerManager, syntaxManager, output, rewrittenFiles);
+					// List<Ptr<GlrSyntaxFile>> rewrittenFiles;
+					// rewrittenFiles.Add(rewritten);
+					// CompileWithoutRewriting(astManager, lexerManager, syntaxManager, output, rewrittenFiles);
 					return rewritten;
 				}
 				else
