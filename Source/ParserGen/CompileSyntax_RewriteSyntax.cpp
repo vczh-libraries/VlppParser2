@@ -117,9 +117,7 @@ RewriteSyntax
 
 				// create left_recursion_inject clauses in rewritten rules
 
-				// convert prefix_merge clauses to left_recursion_placeholder clauses (fix syntaxManager.lrpFlags)
-
-				// rename rule references in normal rules
+				// convert prefix_merge to left_recursion_placeholder and reuse clauses (fix syntaxManager.lrpFlags)
 
 				// rename rule references in origin rules
 
