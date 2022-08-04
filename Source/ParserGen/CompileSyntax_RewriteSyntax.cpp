@@ -121,14 +121,20 @@ RewriteRules
 						for (auto pmClause : pmClauses.GetByIndex(pmIndex))
 						{
 							auto pmRule = vContext.pmClauseToRules[pmClause];
-							if (ruleSymbol == pmRule && !isLeftRecursive)
+							if (ruleSymbol == pmRule)
 							{
-								omittedSelf = true;
+								if (isLeftRecursive)
+								{
+									generateOptionalLri = true;
+								}
+								else
+								{
+									omittedSelf = true;
+									continue;
+								}
 							}
-							else
-							{
-								flags.Add(L"LRI_" + pmRule->Name());
-							}
+
+							flags.Add(L"LRI_" + pmRule->Name());
 						}
 
 						// TODO: determine if it needs GLRICT::Optional (generateOptionalLri)
