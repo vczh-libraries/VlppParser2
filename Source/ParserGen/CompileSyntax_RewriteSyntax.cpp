@@ -18,7 +18,7 @@ namespace vl
 			};
 
 /***********************************************************************
-Calculating
+CollectRewritingTargets
 ***********************************************************************/
 
 			void CollectRewritingTargets(const VisitorContext& vContext, RewritingContext& rContext, Ptr<GlrSyntaxFile> rewritten)
@@ -34,7 +34,7 @@ Calculating
 			}
 
 /***********************************************************************
-Rules
+CreateRewrittenRules
 ***********************************************************************/
 
 			void CreateRewrittenRules(const VisitorContext& vContext, RewritingContext& rContext, Ptr<GlrSyntaxFile> rewritten)
@@ -51,9 +51,13 @@ Rules
 					rContext.lriRules.Add(ruleSymbol, lri.Obj());
 
 					lri->name.value = origin->name.value;
-					origin->name.value += L"_LRI_Origin";
+					origin->name.value += L"_LRI_Original";
 				}
 			}
+
+/***********************************************************************
+FixRuleTypes
+***********************************************************************/
 
 			void FixRuleTypes(const VisitorContext& vContext, RewritingContext& rContext, SyntaxSymbolManager& syntaxManager, Ptr<GlrSyntaxFile> rewritten)
 			{
@@ -87,7 +91,11 @@ Rules
 			}
 
 /***********************************************************************
-Clauses
+Clauses (rewritten)
+***********************************************************************/
+
+/***********************************************************************
+FixPrefixMergeClauses
 ***********************************************************************/
 
 			void FixPrefixMergeClauses(const VisitorContext& vContext, RewritingContext& rContext, SyntaxSymbolManager& syntaxManager, Ptr<GlrSyntaxFile> rewritten)
@@ -115,6 +123,157 @@ Clauses
 							useSyntax->name.value = pmClause->rule->literal.value;
 							reuseClause->syntax = useSyntax;
 						}
+					}
+				}
+			}
+
+/***********************************************************************
+RenamePrefix
+***********************************************************************/
+
+			class RenamePrefixVisitor
+				: public Object
+				, protected virtual GlrSyntax::IVisitor
+				, protected virtual GlrClause::IVisitor
+			{
+			protected:
+				RewritingContext&			rContext;
+				const SyntaxSymbolManager&	syntaxManager;
+
+			public:
+				RenamePrefixVisitor(
+					RewritingContext& _rContext,
+					const SyntaxSymbolManager& _syntaxManager
+				)
+					: rContext(_rContext)
+					, syntaxManager(_syntaxManager)
+				{
+				}
+
+				void FixClause(Ptr<GlrClause> clause)
+				{
+					clause->Accept(this);
+				}
+
+			protected:
+
+				void NotBeginWithARule(ParsingAstBase* node)
+				{
+					CHECK_FAIL(L"vl::glr::parsergen::RenamePrefix(RewritingContext, Ptr<GlrSyntaxFile>)#Internal error: should have been cought by RuleMixedPrefixMergeWithClauseNotSyntacticallyBeginWithARule.");
+				}
+
+				void FixStartRule(ParsingToken& ruleName)
+				{
+					auto ruleSymbol = syntaxManager.Rules()[ruleName.value];
+					vint index = rContext.originRules.Keys().IndexOf(ruleSymbol);
+					if (index != -1)
+					{
+						auto originRule = rContext.originRules.Values()[index];
+						ruleName.value = originRule->name.value;
+					}
+				}
+
+				////////////////////////////////////////////////////////////////////////
+				// GlrSyntax::IVisitor
+				////////////////////////////////////////////////////////////////////////
+
+				void Visit(GlrRefSyntax* node) override
+				{
+					if (node->refType != GlrRefType::Id)
+					{
+						NotBeginWithARule(node);
+					}
+					else
+					{
+						vint index = syntaxManager.Rules().Keys().IndexOf(node->literal.value);
+						if (index == -1)
+						{
+							NotBeginWithARule(node);
+						}
+						else
+						{
+							FixStartRule(node->literal);
+						}
+					}
+				}
+
+				void Visit(GlrUseSyntax* node) override
+				{
+					FixStartRule(node->name);
+				}
+
+				void Visit(GlrLoopSyntax* node) override
+				{
+					NotBeginWithARule(node);
+				}
+
+				void Visit(GlrOptionalSyntax* node) override
+				{
+					NotBeginWithARule(node);
+				}
+
+				void Visit(GlrSequenceSyntax* node) override
+				{
+					node->first->Accept(this);
+				}
+
+				void Visit(GlrAlternativeSyntax* node) override
+				{
+					NotBeginWithARule(node);
+				}
+
+				void Visit(GlrPushConditionSyntax* node) override
+				{
+					NotBeginWithARule(node);
+				}
+
+				void Visit(GlrTestConditionSyntax* node) override
+				{
+					NotBeginWithARule(node);
+				}
+
+				////////////////////////////////////////////////////////////////////////
+				// GlrClause::IVisitor
+				////////////////////////////////////////////////////////////////////////
+
+				void Visit(GlrCreateClause* node) override
+				{
+					node->syntax->Accept(this);
+				}
+
+				void Visit(GlrPartialClause* node) override
+				{
+					node->syntax->Accept(this);
+				}
+
+				void Visit(GlrReuseClause* node) override
+				{
+					node->syntax->Accept(this);
+				}
+
+				void Visit(GlrLeftRecursionPlaceholderClause* node) override
+				{
+				}
+
+				void Visit(GlrLeftRecursionInjectClause* node) override
+				{
+					NotBeginWithARule(node);
+				}
+
+				void Visit(GlrPrefixMergeClause* node) override
+				{
+					NotBeginWithARule(node);
+				}
+			};
+
+			void RenamePrefix(RewritingContext& rContext, const SyntaxSymbolManager& syntaxManager, Ptr<GlrSyntaxFile> rewritten)
+			{
+				RenamePrefixVisitor visitor(rContext, syntaxManager);
+				for (auto originRule : rContext.originRules.Values())
+				{
+					for (auto clause : originRule->clauses)
+					{
+						visitor.FixClause(clause);
 					}
 				}
 			}
@@ -150,6 +309,7 @@ RewriteSyntax
 				FixPrefixMergeClauses(context, rewritingContext, syntaxManager, rewritten);
 
 				// rename rule references in origin rules
+				RenamePrefix(rewritingContext, syntaxManager, rewritten);
 
 				// TODO: delete rContext.fixedAstRules if unused
 
