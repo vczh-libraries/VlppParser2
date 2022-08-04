@@ -41,17 +41,15 @@ CreateRewrittenRules
 			{
 				for (auto ruleSymbol : rContext.pmRules)
 				{
-					rContext.originRules.Add(ruleSymbol, vContext.astRules[ruleSymbol]);
-				}
+					auto originRule = vContext.astRules[ruleSymbol];
+					rContext.originRules.Add(ruleSymbol, originRule);
 
-				for (auto [ruleSymbol, origin] : rContext.originRules)
-				{
 					auto lri = MakePtr<GlrRule>();
 					rewritten->rules.Add(lri);
 					rContext.lriRules.Add(ruleSymbol, lri.Obj());
 
-					lri->name.value = origin->name.value;
-					origin->name.value += L"_LRI_Original";
+					lri->name.value = originRule->name.value;
+					originRule->name.value += L"_LRI_Original";
 				}
 			}
 
