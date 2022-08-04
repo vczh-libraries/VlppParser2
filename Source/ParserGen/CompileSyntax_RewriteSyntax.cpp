@@ -97,6 +97,7 @@ RewriteRules
 				for (auto [ruleSymbol, originRule] : rContext.originRules)
 				{
 					auto lriRule = rContext.lriRules[ruleSymbol];
+					auto isLeftRecursive = vContext.leftRecursiveClauses.Contains(ruleSymbol);
 
 					Group<WString, GlrPrefixMergeClause*> pmClauses;
 					for (auto pmClause : vContext.indirectPmClauses[ruleSymbol])
@@ -106,11 +107,8 @@ RewriteRules
 
 					for (auto [pmName, pmIndex] : indexed(pmClauses.Keys()))
 					{
-						// TODO:
-						//   determine if it needs GLRC::Multiple
-						//   determine if it needs GLRICT::Optional, if yes, only Optional the first lriClause
 						//   if originRule is not left recursive
-						//     do not generate lriClause for the flag created for originRule
+						//     do not generate lriClause for the flag created for originRule, because there is no continuation
 						//     if a pmName does generate some lriClause
 						//       it becomes GLRICT::Optional
 						//     otherwise
@@ -118,9 +116,38 @@ RewriteRules
 						//       generate useSyntax instead of lriClause
 
 						SortedList<WString> flags;
+						bool omittedSelf = false;
+						bool generateOptionalLri = false;
 						for (auto pmClause : pmClauses.GetByIndex(pmIndex))
 						{
-							flags.Add(L"LRI_" + vContext.pmClauseToRules[pmClause]->Name());
+							auto pmRule = vContext.pmClauseToRules[pmClause];
+							if (ruleSymbol == pmRule && !isLeftRecursive)
+							{
+								omittedSelf = true;
+							}
+							else
+							{
+								flags.Add(L"LRI_" + pmRule->Name());
+							}
+						}
+
+						// TODO: determine if it needs GLRICT::Optional (generateOptionalLri)
+
+						if (omittedSelf)
+						{
+							if (flags.Count() > 0)
+							{
+								generateOptionalLri = true;
+							}
+							else
+							{
+								auto reuseClause = MakePtr<GlrReuseClause>();
+								lriRule->clauses.Add(reuseClause);
+
+								auto useSyntax = MakePtr<GlrUseSyntax>();
+								reuseClause->syntax = useSyntax;
+								useSyntax->name.value = pmName;
+							}
 						}
 
 						for (auto flag : flags)
@@ -135,8 +162,17 @@ RewriteRules
 
 							auto lriCont = MakePtr<GlrLeftRecursionInjectContinuation>();
 							lriClause->continuation = lriCont;
+							// TODO: determine if it needs GLRC::Multiple
 							lriCont->configuration = GlrLeftRecursionConfiguration::Single;
-							lriCont->type = GlrLeftRecursionInjectContinuationType::Optional;
+							if (generateOptionalLri)
+							{
+								lriCont->type = GlrLeftRecursionInjectContinuationType::Optional;
+								generateOptionalLri = false;
+							}
+							else
+							{
+								lriCont->type = GlrLeftRecursionInjectContinuationType::Required;
+							}
 
 							auto lriContFlag = MakePtr<GlrLeftRecursionPlaceholder>();
 							lriCont->flag = lriContFlag;

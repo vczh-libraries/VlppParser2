@@ -78,8 +78,9 @@ _LongType : TypeOrExpr
   ;
 
 _Expr0 : TypeOrExpr
+  ::= !_PrimitiveExprOnly
   ::= !_PrimitiveShared [left_recursion_inject(LRI__LongType) _Expr0_LRI_Original]
-  ::= !_PrimitiveTypeOnly [left_recursion_inject(LRI__LongType) _Expr0_LRI_Original]
+  ::= !_PrimitiveTypeOnly left_recursion_inject(LRI__LongType) _Expr0_LRI_Original
   ;
 
 _Expr1 : TypeOrExpr
