@@ -23,7 +23,7 @@ namespace vl
 			{
 				using GlrRuleMap = collections::Dictionary<RuleSymbol*, GlrRule*>;
 				using LiteralTokenMap = collections::Dictionary<GlrRefSyntax*, vint32_t>;
-				using RuleReuseDependencies = collections::Group<RuleSymbol*, RuleSymbol*>;
+				using RuleDependencies = collections::Group<RuleSymbol*, RuleSymbol*>;
 				using RuleKnownTypes = collections::Group<RuleSymbol*, AstClassSymbol*>;
 				using ClauseReuseDependencies = collections::Group<GlrReuseClause*, RuleSymbol*>;
 				using ClauseTypeMap = collections::Dictionary<GlrClause*, AstClassSymbol*>;
@@ -47,7 +47,7 @@ namespace vl
 
 					GlrRuleMap							astRules;
 					LiteralTokenMap						literalTokens;
-					RuleReuseDependencies				ruleReuseDependencies;
+					RuleDependencies					ruleReuseDependencies;
 					RuleKnownTypes						ruleKnownTypes;
 					ClauseReuseDependencies				clauseReuseDependencies;
 					ClauseTypeMap						clauseTypes;
@@ -58,8 +58,10 @@ namespace vl
 					LeftRecursionInjectClauseMap		directLriClauses, indirectLriClauses;
 					LeftRecursionPlaceholderClauseMap	directLrpClauses, indirectLrpClauses;
 					PrefixMergeClauseMap				directPmClauses, indirectPmClauses;
-					RuleReuseDependencies				directStartRules, indirectStartRules;
+					RuleDependencies					directStartRules, indirectStartRules;
+					RuleDependencies					directSimpleUseRules, indirectSimpleUseRules;
 					StartRuleSet						indirectStartRulePairs;
+					StartRuleSet						indirectSimpleUseRulePairs;
 					LeftRecursionInjectReverseMap		lriClauseToRules;
 					LeftRecursionPlaceholderReverseMap	lrpClauseToRules;
 					PrefixMergeClauseReverseMap			pmClauseToRules;

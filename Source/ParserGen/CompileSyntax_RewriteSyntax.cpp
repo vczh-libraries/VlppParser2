@@ -133,11 +133,13 @@ RewriteRules
 									continue;
 								}
 							}
+							else if (vContext.indirectSimpleUseRulePairs.Contains({ ruleSymbol,pmRule }))
+							{
+								generateOptionalLri = true;
+							}
 
 							flags.Add(L"LRI_" + pmRule->Name());
 						}
-
-						// TODO: determine if it needs GLRICT::Optional (generateOptionalLri)
 
 						if (omittedSelf)
 						{
