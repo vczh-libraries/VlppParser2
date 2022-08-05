@@ -919,6 +919,10 @@ ValidateStructurePrefixMergeRuleVisitor
 					{
 						NotSimpleUsingRule(node);
 					}
+					else if (node->assignments.Count() > 0)
+					{
+						NotSimpleUsingRule(node);
+					}
 				}
 
 				void Visit(GlrLeftRecursionPlaceholderClause* node) override
