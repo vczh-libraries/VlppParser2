@@ -9,7 +9,6 @@
 - Extensible tokens, for example, recognize `R"[^\s(]\(` and invoke a callback function to determine the end of the string.
   - Offer two options: using (rich regex | C++) to search for complete token.
 - Check `prefix_merge` errors
-  - When simple using syntax is needed, ensure that there is no assignment in reuse clause.
   - If a rule indirectly begins with `prefix_merge`:
     - all clauses should begin with `prefix_merge`
       - put `CHECK_FAIL(L"Not Implemented!")` during generating instructions since it must be allowed to allow `throw expression` in expressions.
