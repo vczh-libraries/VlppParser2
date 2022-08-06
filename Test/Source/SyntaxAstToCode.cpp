@@ -42,6 +42,11 @@ protected:
 		priority = oldPriority;
 	}
 
+	void VisitCondition(GlrCondition* node)
+	{
+		node->Accept(this);
+	}
+
 	////////////////////////////////////////////////////////////////////////
 	// GlrCondition::IVisitor
 	////////////////////////////////////////////////////////////////////////
@@ -143,10 +148,35 @@ protected:
 
 	void Visit(GlrPushConditionSyntax* node) override
 	{
+		writer.WriteString(L"!(");
+		for (auto [switchItem, index] : indexed(node->switches))
+		{
+			if (index != 0) writer.WriteString(L", ");
+			if (switchItem->value == GlrSwitchValue::False) writer.WriteChar(L'!');
+			writer.WriteString(switchItem->name.value);
+		}
+		writer.WriteString(L"; ");
+		VisitSyntax(node->syntax.Obj());
+		writer.WriteChar(L')');
 	}
 
 	void Visit(GlrTestConditionSyntax* node) override
 	{
+		writer.WriteString(L"?(");
+		for (auto [branch, index] : indexed(node->branches))
+		{
+			if (index != 0) writer.WriteString(L" | ");
+			VisitCondition(branch->condition.Obj());
+			if (branch->syntax)
+			{
+				VisitSyntax(branch->syntax.Obj());
+			}
+			else
+			{
+				writer.WriteChar(L';');
+			}
+		}
+		writer.WriteChar(L')');
 	}
 
 	////////////////////////////////////////////////////////////////////////
