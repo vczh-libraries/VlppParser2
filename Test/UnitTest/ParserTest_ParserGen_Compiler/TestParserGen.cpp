@@ -7,9 +7,9 @@
 #include "../../../Source/Lexer/LexerCppGen.h"
 #include "../../../Source/Syntax/SyntaxCppGen.h"
 #include "../../Source/LogAutomaton.h"
+#include "../../Source/SyntaxAstToCode.h"
 
 using namespace vl::console;
-using namespace vl::glr::parsergen;
 
 extern WString GetTestParserInputPath(const WString& parserName);
 extern FilePath GetOutputDir(const WString& parserName);
@@ -85,8 +85,8 @@ TEST_FILE
 					{
 						auto input = fileRewritten.ReadAllTextByBom();
 						syntaxRewrittenExpected = ruleParser.ParseFile(input);
-						auto actualJson = PrintAstJson<json_visitor::RuleAstVisitor>(syntaxRewrittenExpected);
-						File(dirOutput / (L"SyntaxRewrittenExpected[" + parserName + L"].txt")).WriteAllText(actualJson, true, BomEncoder::Utf8);
+						auto formattedSyntax = GenerateToStream([&](TextWriter& writer) {SyntaxAstToCode(syntaxRewrittenExpected, writer); });
+						File(dirOutput / (L"SyntaxRewrittenExpected[" + parserName + L"].txt")).WriteAllText(formattedSyntax, true, BomEncoder::Utf8);
 					});
 				}
 			}
@@ -139,10 +139,10 @@ TEST_FILE
 				TEST_ASSERT((bool)syntaxRewrittenActual == (bool)syntaxRewrittenExpected);
 				if (syntaxRewrittenExpected)
 				{
-					auto actualJson = PrintAstJson<json_visitor::RuleAstVisitor>(syntaxRewrittenActual);
-					auto expectedJson = PrintAstJson<json_visitor::RuleAstVisitor>(syntaxRewrittenExpected);
-					File(dirOutput / (L"SyntaxRewrittenActual[" + parserName + L"].txt")).WriteAllText(actualJson, true, BomEncoder::Utf8);
-					TEST_ASSERT(actualJson == expectedJson);
+					auto formattedActual = GenerateToStream([&](TextWriter& writer) {SyntaxAstToCode(syntaxRewrittenActual, writer); });
+					auto formattedExpected = GenerateToStream([&](TextWriter& writer) {SyntaxAstToCode(syntaxRewrittenExpected, writer); });
+					File(dirOutput / (L"SyntaxRewrittenActual[" + parserName + L"].txt")).WriteAllText(formattedExpected, true, BomEncoder::Utf8);
+					TEST_ASSERT(formattedActual == formattedExpected);
 				}
 
 				syntaxManager.BuildCompactNFA();
