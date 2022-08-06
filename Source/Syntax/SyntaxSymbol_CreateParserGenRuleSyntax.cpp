@@ -230,16 +230,16 @@ CreateParserGenRuleSyntax
 				// "[" LriContinuationBody as LeftRecursionInjectionContinuation "]" {type = Optional}
 				Clause{ _lriContinuation } = create(tok(T::OPEN_SQUARE) + prule(_lriContinuationBody) + tok(T::CLOSE_SQUARE), C::LeftRecursionInjectContinuation).with(F::LeftRecursionInjectContinuation_type, GlrLeftRecursionInjectContinuationType::Optional);
 
-				// ID:rule as LeftRecursionInjectClause
+				// RuleName:rule as LeftRecursionInjectClause
 				Clause{ _lriTarget } = create(rule(_ruleName, F::LeftRecursionInjectClause_rule), C::LeftRecursionInjectClause);
 
-				// "(" ID:rule LriContinuation:continuation")" as LeftRecursionInjectClause
+				// "(" RuleName:rule LriContinuation:continuation")" as LeftRecursionInjectClause
 				Clause{ _lriTarget } = create(tok(T::OPEN_ROUND) + rule(_ruleName, F::LeftRecursionInjectClause_rule) + rule(_lriContinuation, F::LeftRecursionInjectClause_continuation) + tok(T::CLOSE_ROUND), C::LeftRecursionInjectClause);
 
-				// "!" ID:rule LriContinuation:continuation as LeftRecursionInjectClause
+				// "!" RuleName:rule LriContinuation:continuation as LeftRecursionInjectClause
 				Clause{ _clause } = create(tok(T::USE) + rule(_ruleName, F::LeftRecursionInjectClause_rule) + rule(_lriContinuation, F::LeftRecursionInjectClause_continuation), C::LeftRecursionInjectClause);
 
-				// "!" "prefix_merge" "(" ID:rule ")" as PrefixMergeClause
+				// "!" "prefix_merge" "(" RuleName:rule ")" as PrefixMergeClause
 				Clause{ _clause } = create(tok(T::USE) + tok(T::LS_PM) + tok(T::OPEN_ROUND) + rule(_ruleName, F::PrefixMergeClause_rule) + tok(T::CLOSE_ROUND), C::PrefixMergeClause);
 
 				///////////////////////////////////////////////////////////////////////////////////
