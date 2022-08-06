@@ -109,13 +109,13 @@ CreateParserGenRuleSyntax
 				// "[" Syntax:syntax "]" as partial OptionalSyntax
 				Clause{ _optionalBody } = partial(tok(T::OPEN_SQUARE) + rule(_syntax, F::OptionalSyntax_syntax) + tok(T::CLOSE_SQUARE));
 
-				// ID:name as partial RefSyntax {refType = Id}
+				// ID:literal as partial RefSyntax {refType = Id}
 				Clause{ _token } = partial(tok(T::ID, F::RefSyntax_literal)).with(F::RefSyntax_refType, GlrRefType::Id);
 
-				// STRING:name as partial RefSyntax {refType = Literal}
+				// STRING:literal as partial RefSyntax {refType = Literal}
 				Clause{ _token } = partial(tok(T::STRING, F::RefSyntax_literal)).with(F::RefSyntax_refType, GlrRefType::Literal);
 
-				// CONDITIONAL_LITERAL:name as partial RefSyntax {refType = ConditionalLiteral}
+				// CONDITIONAL_LITERAL:literal as partial RefSyntax {refType = ConditionalLiteral}
 				Clause{ _token } = partial(tok(T::CONDITIONAL_LITERAL, F::RefSyntax_literal)).with(F::RefSyntax_refType, GlrRefType::ConditionalLiteral);
 
 				// Token [":" ID:field] as RefSyntax

@@ -4,11 +4,13 @@ using namespace vl::collections;
 
 class SyntaxAstToStringVisitor
 	: public Object
+	, protected virtual GlrCondition::IVisitor
 	, protected virtual GlrSyntax::IVisitor
 	, protected virtual GlrClause::IVisitor
 {
 protected:
 	TextWriter&					writer;
+	vint						priority = -1;
 
 public:
 	SyntaxAstToStringVisitor(
@@ -28,32 +30,115 @@ protected:
 	{
 	}
 
+	void VisitConditionalLiteral(const WString& str)
+	{
+	}
+
+	void VisitSyntax(GlrSyntax* node, vint _priority = 2)
+	{
+		vint oldPriority = priority;
+		priority = _priority;
+		node->Accept(this);
+		priority = oldPriority;
+	}
+
+	////////////////////////////////////////////////////////////////////////
+	// GlrCondition::IVisitor
+	////////////////////////////////////////////////////////////////////////
+
+	void Visit(GlrRefCondition* node) override
+	{
+	}
+
+	void Visit(GlrNotCondition* node) override
+	{
+	}
+
+	void Visit(GlrAndCondition* node) override
+	{
+	}
+
+	void Visit(GlrOrCondition* node) override
+	{
+	}
+
 	////////////////////////////////////////////////////////////////////////
 	// GlrSyntax::IVisitor
 	////////////////////////////////////////////////////////////////////////
 
 	void Visit(GlrRefSyntax* node) override
 	{
+		switch (node->refType)
+		{
+		case GlrRefType::Id:
+			writer.WriteString(node->literal.value);
+			break;
+		case GlrRefType::Literal:
+			VisitString(node->literal.value);
+			break;
+		case GlrRefType::ConditionalLiteral:
+			VisitConditionalLiteral(node->literal.value);
+			break;
+		}
+		if (node->field)
+		{
+			writer.WriteChar(L':');
+			writer.WriteString(node->field.value);
+		}
 	}
 
 	void Visit(GlrUseSyntax* node) override
 	{
+		writer.WriteChar(L'!');
+		writer.WriteString(node->name.value);
 	}
 
 	void Visit(GlrLoopSyntax* node) override
 	{
+		writer.WriteChar(L'{');
+		VisitSyntax(node->syntax.Obj());
+		if (node->delimiter)
+		{
+			writer.WriteString(L" ; ");
+			VisitSyntax(node->delimiter.Obj());
+		}
+		writer.WriteChar(L'}');
 	}
 
 	void Visit(GlrOptionalSyntax* node) override
 	{
+		switch (node->priority)
+		{
+		case GlrOptionalPriority::PreferTake:
+			writer.WriteChar(L'+');
+			break;
+		case GlrOptionalPriority::PreferSkip:
+			writer.WriteChar(L'-');
+			break;
+		case GlrOptionalPriority::Equal:
+			break;
+		}
+		writer.WriteChar(L'[');
+		VisitSyntax(node->syntax.Obj());
+		writer.WriteChar(L']');
 	}
 
 	void Visit(GlrSequenceSyntax* node) override
 	{
+		if (priority < 1) writer.WriteChar(L'(');
+		VisitSyntax(node->first.Obj(), 1);
+		writer.WriteChar(L' ');
+		VisitSyntax(node->second.Obj(), 1);
+		if (priority < 1) writer.WriteChar(L')');
 	}
 
 	void Visit(GlrAlternativeSyntax* node) override
 	{
+		if (priority < 2) writer.WriteChar(L'(');
+		VisitSyntax(node->first.Obj(), 2);
+		writer.WriteString(L" | ");
+		VisitSyntax(node->second.Obj(), 2);
+		if (priority < 2) writer.WriteChar(L')');
 	}
 
 	void Visit(GlrPushConditionSyntax* node) override
@@ -93,7 +178,7 @@ protected:
 
 	void Visit(GlrCreateClause* node) override
 	{
-		node->syntax->Accept(this);
+		VisitSyntax(node->syntax.Obj());
 		writer.WriteString(L" as ");
 		writer.WriteString(node->type.value);
 		Visit(node->assignments);
@@ -101,7 +186,7 @@ protected:
 
 	void Visit(GlrPartialClause* node) override
 	{
-		node->syntax->Accept(this);
+		VisitSyntax(node->syntax.Obj());
 		writer.WriteString(L" as partial ");
 		writer.WriteString(node->type.value);
 		Visit(node->assignments);
@@ -109,7 +194,7 @@ protected:
 
 	void Visit(GlrReuseClause* node) override
 	{
-		node->syntax->Accept(this);
+		VisitSyntax(node->syntax.Obj());
 		Visit(node->assignments);
 	}
 
