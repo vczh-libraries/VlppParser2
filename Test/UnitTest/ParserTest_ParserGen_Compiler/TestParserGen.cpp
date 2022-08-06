@@ -141,7 +141,7 @@ TEST_FILE
 				{
 					auto formattedActual = GenerateToStream([&](TextWriter& writer) {SyntaxAstToCode(syntaxRewrittenActual, writer); });
 					auto formattedExpected = GenerateToStream([&](TextWriter& writer) {SyntaxAstToCode(syntaxRewrittenExpected, writer); });
-					File(dirOutput / (L"SyntaxRewrittenActual[" + parserName + L"].txt")).WriteAllText(formattedExpected, true, BomEncoder::Utf8);
+					File(dirOutput / (L"SyntaxRewrittenActual[" + parserName + L"].txt")).WriteAllText(formattedActual, true, BomEncoder::Utf8);
 					TEST_ASSERT(formattedActual == formattedExpected);
 				}
 

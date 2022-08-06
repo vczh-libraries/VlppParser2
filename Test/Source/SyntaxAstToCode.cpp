@@ -28,10 +28,12 @@ protected:
 
 	void VisitString(const WString& str)
 	{
+		writer.WriteString(str);
 	}
 
 	void VisitConditionalLiteral(const WString& str)
 	{
+		writer.WriteString(str);
 	}
 
 	void VisitSyntax(GlrSyntax* node, vint _priority = 2)
@@ -270,7 +272,7 @@ protected:
 
 		writer.WriteChar(L'(');
 		writer.WriteString(node->flag->flag.value);
-		writer.WriteChar(L')');
+		writer.WriteString(L") ");
 
 		for (auto [target, index] : indexed(node->injectionTargets))
 		{
