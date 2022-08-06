@@ -18,6 +18,7 @@
 
 ## Issues
 
+- Make a test case to test `prefix_merge` generates `left_recursion_inject_multiple`.
 - Test `X ::= X LRI ...`.
 - Optimize `CalculateFirstSet_IndirectStartRules` using partial ordering.
 - TODO in `SyntaxSymbolManager::EliminateSingleRulePrefix`.
