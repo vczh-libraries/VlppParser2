@@ -145,8 +145,55 @@ RewriteRules
 				}
 			}
 
+			void RewriteRules_EnumerateAccessPaths(
+				const VisitorContext& vContext,
+				RuleSymbol* fromRule,
+				RuleSymbol* currentRule,
+				Dictionary<Pair<RuleSymbol*, RuleSymbol*>, vint>& pathCounter,
+				List<RuleSymbol*>& accessed
+			)
+			{
+				if (accessed.Contains(currentRule)) return;
+				accessed.Add(currentRule);
+
+				vint index = pathCounter.Keys().IndexOf({ fromRule,currentRule });
+				const_cast<List<vint>&>(pathCounter.Values())[index]++;
+
+				index = vContext.directStartRules.Keys().IndexOf(currentRule);
+				if (index == -1) return;
+
+				for (auto startRule : vContext.directStartRules.GetByIndex(index))
+				{
+					RewriteRules_EnumerateAccessPaths(vContext, fromRule, startRule, pathCounter, accessed);
+				}
+
+				accessed.RemoveAt(accessed.Count() - 1);
+			}
+
+			vint RewriteRules_GetAccessPaths(
+				const VisitorContext& vContext,
+				RuleSymbol* fromRule,
+				RuleSymbol* toRule,
+				bool isFromRuleLeftRecursive,
+				Dictionary<Pair<RuleSymbol*, RuleSymbol*>, vint>& pathCounter
+			)
+			{
+				Pair<RuleSymbol*, RuleSymbol*> key = { fromRule, toRule };
+				vint index = pathCounter.Keys().IndexOf(key);
+				if (index != -1) return pathCounter.Values()[index];
+
+				List<RuleSymbol*> accessed;
+				for (auto rule : vContext.syntaxManager.Rules().Values())
+				{
+					pathCounter.Add({ {fromRule, rule}, (fromRule == rule  ? -1 : 0) });
+				}
+				RewriteRules_EnumerateAccessPaths(vContext, fromRule, fromRule, pathCounter, accessed);
+				return pathCounter[key];
+			}
+
 			void RewriteRules(const VisitorContext& vContext, RewritingContext& rContext, SyntaxSymbolManager& syntaxManager, Ptr<GlrSyntaxFile> rewritten)
 			{
+				Dictionary<Pair<RuleSymbol*, RuleSymbol*>, vint> pathCounter;
 				for (auto [ruleSymbol, originRule] : rContext.originRules)
 				{
 					auto lriRule = rContext.lriRules[ruleSymbol];
@@ -195,8 +242,16 @@ RewriteRules
 
 							auto lriCont = MakePtr<GlrLeftRecursionInjectContinuation>();
 							lriClause->continuation = lriCont;
-							// TODO: determine if it needs GLRC::Multiple
-							lriCont->configuration = GlrLeftRecursionConfiguration::Single;
+
+							if (RewriteRules_GetAccessPaths(vContext, ruleSymbol, pmRule, isLeftRecursive, pathCounter) > 1)
+							{
+								lriCont->configuration = GlrLeftRecursionConfiguration::Multiple;
+							}
+							else
+							{
+								lriCont->configuration = GlrLeftRecursionConfiguration::Single;
+							}
+
 							if (generateOptionalLri)
 							{
 								lriCont->type = GlrLeftRecursionInjectContinuationType::Optional;
