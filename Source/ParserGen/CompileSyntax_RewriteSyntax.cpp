@@ -92,6 +92,59 @@ FixRuleTypes
 RewriteRules
 ***********************************************************************/
 
+			void RewriteRules_CollectFlags(
+				const VisitorContext& vContext,
+				RuleSymbol* ruleSymbol,
+				GlrRule* lriRule,
+				bool isLeftRecursive,
+				const WString& pmName,
+				const List<GlrPrefixMergeClause*>& pmClauses,
+				Dictionary<WString, RuleSymbol*>& flags,
+				bool& omittedSelf,
+				bool& generateOptionalLri
+			)
+			{
+				for (auto pmClause : pmClauses)
+				{
+					auto pmRule = vContext.pmClauseToRules[pmClause];
+					if (ruleSymbol == pmRule)
+					{
+						if (isLeftRecursive)
+						{
+							generateOptionalLri = true;
+						}
+						else
+						{
+							omittedSelf = true;
+							continue;
+						}
+					}
+					else if (vContext.indirectSimpleUseRulePairs.Contains({ ruleSymbol,pmRule }))
+					{
+						generateOptionalLri = true;
+					}
+
+					flags.Add(L"LRI_" + pmRule->Name(), pmRule);
+				}
+
+				if (omittedSelf)
+				{
+					if (flags.Count() > 0)
+					{
+						generateOptionalLri = true;
+					}
+					else
+					{
+						auto reuseClause = MakePtr<GlrReuseClause>();
+						lriRule->clauses.Add(reuseClause);
+
+						auto useSyntax = MakePtr<GlrUseSyntax>();
+						reuseClause->syntax = useSyntax;
+						useSyntax->name.value = pmName;
+					}
+				}
+			}
+
 			void RewriteRules(const VisitorContext& vContext, RewritingContext& rContext, SyntaxSymbolManager& syntaxManager, Ptr<GlrSyntaxFile> rewritten)
 			{
 				for (auto [ruleSymbol, originRule] : rContext.originRules)
@@ -115,50 +168,22 @@ RewriteRules
 						//       it becomse GLRICT::Single
 						//       generate useSyntax instead of lriClause
 
-						SortedList<WString> flags;
+						Dictionary<WString, RuleSymbol*> flags;
 						bool omittedSelf = false;
 						bool generateOptionalLri = false;
-						for (auto pmClause : pmClauses.GetByIndex(pmIndex))
-						{
-							auto pmRule = vContext.pmClauseToRules[pmClause];
-							if (ruleSymbol == pmRule)
-							{
-								if (isLeftRecursive)
-								{
-									generateOptionalLri = true;
-								}
-								else
-								{
-									omittedSelf = true;
-									continue;
-								}
-							}
-							else if (vContext.indirectSimpleUseRulePairs.Contains({ ruleSymbol,pmRule }))
-							{
-								generateOptionalLri = true;
-							}
+						RewriteRules_CollectFlags(
+							vContext,
+							ruleSymbol,
+							lriRule,
+							isLeftRecursive,
+							pmName,
+							pmClauses.GetByIndex(pmIndex),
+							flags,
+							omittedSelf,
+							generateOptionalLri
+							);
 
-							flags.Add(L"LRI_" + pmRule->Name());
-						}
-
-						if (omittedSelf)
-						{
-							if (flags.Count() > 0)
-							{
-								generateOptionalLri = true;
-							}
-							else
-							{
-								auto reuseClause = MakePtr<GlrReuseClause>();
-								lriRule->clauses.Add(reuseClause);
-
-								auto useSyntax = MakePtr<GlrUseSyntax>();
-								reuseClause->syntax = useSyntax;
-								useSyntax->name.value = pmName;
-							}
-						}
-
-						for (auto flag : flags)
+						for (auto [flag, pmRule] : flags)
 						{
 							auto lriClause = MakePtr<GlrLeftRecursionInjectClause>();
 							lriRule->clauses.Add(lriClause);
