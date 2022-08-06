@@ -42,9 +42,12 @@ protected:
 		priority = oldPriority;
 	}
 
-	void VisitCondition(GlrCondition* node)
+	void VisitCondition(GlrCondition* node, vint _priority = 2)
 	{
+		vint oldPriority = priority;
+		priority = _priority;
 		node->Accept(this);
+		priority = oldPriority;
 	}
 
 	////////////////////////////////////////////////////////////////////////
@@ -53,18 +56,31 @@ protected:
 
 	void Visit(GlrRefCondition* node) override
 	{
+		writer.WriteString(node->name.value);
 	}
 
 	void Visit(GlrNotCondition* node) override
 	{
+		writer.WriteChar(L'!');
+		VisitCondition(node->condition.Obj(), 0);
 	}
 
 	void Visit(GlrAndCondition* node) override
 	{
+		if (priority < 1) writer.WriteChar(L'(');
+		VisitCondition(node->first.Obj(), 1);
+		writer.WriteString(L"&&");
+		VisitCondition(node->second.Obj(), 1);
+		if (priority < 1) writer.WriteChar(L')');
 	}
 
 	void Visit(GlrOrCondition* node) override
 	{
+		if (priority < 2) writer.WriteChar(L'(');
+		VisitCondition(node->first.Obj(), 2);
+		writer.WriteString(L"||");
+		VisitCondition(node->second.Obj(), 2);
+		if (priority < 2) writer.WriteChar(L')');
 	}
 
 	////////////////////////////////////////////////////////////////////////
