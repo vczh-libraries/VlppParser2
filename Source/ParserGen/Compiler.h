@@ -30,13 +30,11 @@ namespace vl
 
 				using LeftRecursiveClauseSet = collections::SortedList<collections::Pair<RuleSymbol*, GlrClause*>>;
 				using LeftRecursiveClauseMap = collections::Group<RuleSymbol*, GlrClause*>;
-				using StartRuleSet = collections::SortedList<collections::Pair<RuleSymbol*, RuleSymbol*>>;
+				using PathToLastRuleMap = collections::Group<collections::Pair<RuleSymbol*, RuleSymbol*>, collections::Pair<RuleSymbol*, GlrClause*>>;
 				using LeftRecursionPlaceholderClauseMap = collections::Group<RuleSymbol*, GlrLeftRecursionPlaceholderClause*>;
-				using LeftRecursionPlaceholderReverseMap = collections::Dictionary<GlrLeftRecursionPlaceholderClause*, RuleSymbol*>;
 				using LeftRecursionInjectClauseMap = collections::Group<RuleSymbol*, GlrLeftRecursionInjectClause*>;
-				using LeftRecursionInjectReverseMap = collections::Dictionary<GlrLeftRecursionInjectClause*, RuleSymbol*>;
 				using PrefixMergeClauseMap = collections::Group<RuleSymbol*, GlrPrefixMergeClause*>;
-				using PrefixMergeClauseReverseMap = collections::Dictionary<GlrPrefixMergeClause*, RuleSymbol*>;
+				using ClauseToRuleMap = collections::Dictionary<GlrClause*, RuleSymbol*>;
 
 				struct VisitorContext
 				{
@@ -60,11 +58,9 @@ namespace vl
 					PrefixMergeClauseMap				directPmClauses, indirectPmClauses;
 					RuleDependencies					directStartRules, indirectStartRules;
 					RuleDependencies					directSimpleUseRules, indirectSimpleUseRules;
-					StartRuleSet						indirectStartRulePairs;
-					StartRuleSet						indirectSimpleUseRulePairs;
-					LeftRecursionInjectReverseMap		lriClauseToRules;
-					LeftRecursionPlaceholderReverseMap	lrpClauseToRules;
-					PrefixMergeClauseReverseMap			pmClauseToRules;
+					PathToLastRuleMap					indirectStartPathToLastRules;
+					PathToLastRuleMap					indirectSimpleUsePathToLastRules;
+					ClauseToRuleMap						clauseToRules;
 
 					VisitorContext(
 						const AstSymbolManager& _astManager,

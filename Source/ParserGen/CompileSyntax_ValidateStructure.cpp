@@ -972,10 +972,10 @@ ValidateStructure
 
 						if (indexPm != -1)
 						{
-							auto rulePm = context.pmClauseToRules[context.indirectPmClauses.GetByIndex(indexPm)[0]];
+							auto rulePm = context.clauseToRules[context.indirectPmClauses.GetByIndex(indexPm)[0]];
 							if (indexLrp != -1)
 							{
-								auto ruleLrp = context.lrpClauseToRules[context.indirectLrpClauses.GetByIndex(indexLrp)[0]];
+								auto ruleLrp = context.clauseToRules[context.indirectLrpClauses.GetByIndex(indexLrp)[0]];
 								context.syntaxManager.AddError(
 									ParserErrorType::RuleIndirectlyBeginsWithPrefixMergeOrLeftRecursionMarkers,
 									rule->name.codeRange,
@@ -986,7 +986,7 @@ ValidateStructure
 							}
 							if (indexLri != -1)
 							{
-								auto ruleLri = context.lriClauseToRules[context.indirectLriClauses.GetByIndex(indexLri)[0]];
+								auto ruleLri = context.clauseToRules[context.indirectLriClauses.GetByIndex(indexLri)[0]];
 								context.syntaxManager.AddError(
 									ParserErrorType::RuleIndirectlyBeginsWithPrefixMergeOrLeftRecursionMarkers,
 									rule->name.codeRange,

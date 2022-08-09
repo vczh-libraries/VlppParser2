@@ -66,6 +66,7 @@ ResolveNameVisitor
 
 				void ResolveClause(Ptr<GlrClause> clause)
 				{
+					context.clauseToRules.Add(clause.Obj(), ruleSymbol);
 					clause->Accept(this);
 				}
 
@@ -349,7 +350,6 @@ ResolveNameVisitor
 						}
 					}
 					context.directLrpClauses.Add(ruleSymbol, node);
-					context.lrpClauseToRules.Add(node, ruleSymbol);
 				}
 
 				void Visit(GlrLeftRecursionInjectClause* node) override
@@ -363,14 +363,12 @@ ResolveNameVisitor
 						}
 					}
 					context.directLriClauses.Add(ruleSymbol, node);
-					context.lriClauseToRules.Add(node, ruleSymbol);
 				}
 
 				void Visit(GlrPrefixMergeClause* node) override
 				{
 					VisitReuseSyntax(node->rule->literal, true);
 					context.directPmClauses.Add(ruleSymbol, node);
-					context.pmClauseToRules.Add(node, ruleSymbol);
 				}
 			};
 

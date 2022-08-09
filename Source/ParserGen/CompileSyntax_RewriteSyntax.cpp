@@ -106,7 +106,7 @@ RewriteRules
 			{
 				for (auto pmClause : pmClauses)
 				{
-					auto pmRule = vContext.pmClauseToRules[pmClause];
+					auto pmRule = vContext.clauseToRules[pmClause];
 					if (ruleSymbol == pmRule)
 					{
 						if (isLeftRecursive)
@@ -119,7 +119,7 @@ RewriteRules
 							continue;
 						}
 					}
-					else if (vContext.indirectSimpleUseRulePairs.Contains({ ruleSymbol,pmRule }))
+					else if (vContext.indirectSimpleUsePathToLastRules.Keys().Contains({ ruleSymbol,pmRule }))
 					{
 						generateOptionalLri = true;
 					}
@@ -145,32 +145,7 @@ RewriteRules
 				}
 			}
 
-			void RewriteRules_EnumerateAccessPaths(
-				const VisitorContext& vContext,
-				RuleSymbol* fromRule,
-				RuleSymbol* currentRule,
-				Dictionary<Pair<RuleSymbol*, RuleSymbol*>, vint>& pathCounter,
-				List<RuleSymbol*>& accessed
-			)
-			{
-				if (accessed.Contains(currentRule)) return;
-				accessed.Add(currentRule);
-
-				vint index = pathCounter.Keys().IndexOf({ fromRule,currentRule });
-				const_cast<List<vint>&>(pathCounter.Values())[index]++;
-
-				index = vContext.directStartRules.Keys().IndexOf(currentRule);
-				if (index == -1) return;
-
-				for (auto startRule : vContext.directStartRules.GetByIndex(index))
-				{
-					RewriteRules_EnumerateAccessPaths(vContext, fromRule, startRule, pathCounter, accessed);
-				}
-
-				accessed.RemoveAt(accessed.Count() - 1);
-			}
-
-			vint RewriteRules_GetAccessPaths(
+			bool RewriteRules_HasMultiplePaths(
 				const VisitorContext& vContext,
 				RuleSymbol* fromRule,
 				RuleSymbol* toRule,
@@ -182,13 +157,25 @@ RewriteRules
 				vint index = pathCounter.Keys().IndexOf(key);
 				if (index != -1) return pathCounter.Values()[index];
 
-				List<RuleSymbol*> accessed;
-				for (auto rule : vContext.syntaxManager.Rules().Values())
+				RuleSymbol* currentRule = toRule;
+				bool hasMultiplePaths = false;
+
+				while (currentRule != fromRule)
 				{
-					pathCounter.Add({ {fromRule, rule}, (fromRule == rule  ? -1 : 0) });
+					index = vContext.indirectStartPathToLastRules.Keys().IndexOf({ fromRule,currentRule });
+					if (index == -1) goto FINISHED;
+
+					auto&& lastRules = vContext.indirectStartPathToLastRules.GetByIndex(index);
+					if (lastRules.Count() > 0) {
+						hasMultiplePaths = true;
+						goto FINISHED;
+					}
+					currentRule = lastRules[0].key;
 				}
-				RewriteRules_EnumerateAccessPaths(vContext, fromRule, fromRule, pathCounter, accessed);
-				return pathCounter[key];
+
+			FINISHED:
+				pathCounter.Add(key, hasMultiplePaths);
+				return hasMultiplePaths;
 			}
 
 			void RewriteRules(const VisitorContext& vContext, RewritingContext& rContext, SyntaxSymbolManager& syntaxManager, Ptr<GlrSyntaxFile> rewritten)
@@ -243,7 +230,7 @@ RewriteRules
 							auto lriCont = MakePtr<GlrLeftRecursionInjectContinuation>();
 							lriClause->continuation = lriCont;
 
-							if (RewriteRules_GetAccessPaths(vContext, ruleSymbol, pmRule, isLeftRecursive, pathCounter) > 1)
+							if (RewriteRules_HasMultiplePaths(vContext, ruleSymbol, pmRule, isLeftRecursive, pathCounter))
 							{
 								lriCont->configuration = GlrLeftRecursionConfiguration::Multiple;
 							}

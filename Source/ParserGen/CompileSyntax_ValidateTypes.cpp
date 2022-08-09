@@ -394,7 +394,7 @@ LriVerifyTypesVisitor
 
 						for (auto lrpClause : lrpClauses)
 						{
-							auto lrpClauseRule = context.lrpClauseToRules[lrpClause];
+							auto lrpClauseRule = context.clauseToRules[lrpClause];
 							if (!ConvertibleTo(prefixRule->ruleType, lrpClauseRule->ruleType))
 							{
 								context.syntaxManager.AddError(
@@ -486,7 +486,7 @@ LriPrefixTestingVisitor
 								vint i2 = lriEndings.Keys().IndexOf(t2.Obj());
 								if (i2 == -1) continue;
 
-								if (t1 != t2 && context.indirectStartRulePairs.Contains({ k2, k1 }))
+								if (t1 != t2 && context.indirectStartPathToLastRules.Keys().Contains({ k2, k1 }))
 								{
 									auto&& e1 = lriEndings.GetByIndex(i1);
 									auto&& e2 = lriEndings.GetByIndex(i2);
