@@ -11,11 +11,12 @@ namespace vl
 
 			struct RewritingContext
 			{
-				List<RuleSymbol*>						pmRules;
-				Group<RuleSymbol*, RuleClausePair>		extractPrefixClauses;
-				Dictionary<RuleSymbol*, GlrRule*>		originRules;
-				Dictionary<RuleSymbol*, GlrRule*>		lriRules;
-				Dictionary<RuleSymbol*, GlrRule*>		fixedAstRules;
+				List<RuleSymbol*>										pmRules;
+				Group<RuleSymbol*, RuleClausePair>						extractPrefixClauses;
+				Dictionary<RuleSymbol*, GlrRule*>						originRules;
+				Dictionary<RuleSymbol*, GlrRule*>						lriRules;
+				Dictionary<Pair<RuleSymbol*, RuleSymbol*>, GlrRule*>	extractedPrefixRules;
+				Dictionary<RuleSymbol*, GlrRule*>						fixedAstRules;
 			};
 
 /***********************************************************************
@@ -77,6 +78,21 @@ CreateRewrittenRules
 					lri->name.value = originRule->name.value;
 					originRule->name.value += L"_LRI_Original";
 				}
+
+				for (auto [ruleSymbol, index] : indexed(rContext.extractPrefixClauses.Keys()))
+				{
+					auto originRule = vContext.astRules[ruleSymbol];
+					auto&& prefixClauses = rContext.extractPrefixClauses.GetByIndex(index);
+					for (auto [prefixRuleSymbol, prefixClause] : From(prefixClauses)
+						.OrderBy([](auto p1, auto p2) {return WString::Compare(p1.key->Name(), p2.key->Name()); }))
+					{
+						auto ep = MakePtr<GlrRule>();
+						rewritten->rules.Insert(rewritten->rules.IndexOf(originRule), ep);
+						rContext.extractedPrefixRules.Add({ ruleSymbol,prefixRuleSymbol }, ep.Obj());
+
+						ep->name.value = ruleSymbol->Name() + L"_" + prefixRuleSymbol->Name() + L"_LRI_Prefix";
+					}
+				}
 			}
 
 /***********************************************************************
@@ -95,6 +111,14 @@ FixRuleTypes
 					originSymbol->ruleType = ruleSymbol->ruleType;
 					rContext.fixedAstRules.Set(originSymbol, originRule);
 					rContext.fixedAstRules.Set(ruleSymbol, lriRule);
+				}
+
+				for (auto [pair, epRule] : rContext.extractedPrefixRules)
+				{
+					auto originRule = rContext.originRules[pair.key];
+					auto epRuleSymbol = syntaxManager.CreateRule(epRule->name.value, originRule->codeRange);
+					epRuleSymbol->ruleType = pair.value->ruleType;
+					rContext.fixedAstRules.Add(epRuleSymbol, epRule);
 				}
 
 				for (auto [ruleSymbol, rule] : rContext.fixedAstRules)
