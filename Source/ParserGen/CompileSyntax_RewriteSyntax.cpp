@@ -166,7 +166,7 @@ RewriteRules
 					if (index == -1) goto FINISHED;
 
 					auto&& lastRules = vContext.indirectStartPathToLastRules.GetByIndex(index);
-					if (lastRules.Count() > 0) {
+					if (lastRules.Count() > 1) {
 						hasMultiplePaths = true;
 						goto FINISHED;
 					}

@@ -202,7 +202,7 @@ CalculateFirstSet
 					for (auto [startRule, clause] : startRules)
 					{
 						indirect.Add(rule, { startRule,clause });
-						pathToLastRules.Add({ rule,startRule }, { startRule,clause });
+						pathToLastRules.Add({ rule,startRule }, { rule,clause });
 					}
 				}
 
@@ -214,12 +214,14 @@ CalculateFirstSet
 						auto&& startRules1 = indirect.GetByIndex(index);
 						for (auto [startRule1, clause1] : startRules1)
 						{
+							if (rule == startRule1) continue;
 							vint index2 = direct.Keys().IndexOf(startRule1);
 							if (index2 != -1)
 							{
 								auto&& startRules2 = direct.GetByIndex(index2);
 								for (auto [startRule2, clause2] : startRules2)
 								{
+									if (rule == startRule2 || startRule1 == startRule2) continue;
 									if (!pathToLastRules.Contains({ rule,startRule2 }, { startRule1,clause2 }))
 									{
 										offset++;
