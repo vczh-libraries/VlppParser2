@@ -48,6 +48,7 @@ CollectRewritingTargets
 									if (indexExtract == -1) continue;
 									for (auto [extractRule, extractClause] : vContext.indirectStartPathToLastRules.GetByIndex(indexExtract))
 									{
+										if (vContext.directSimpleUseRules.Contains(extractRule, { simpleUseRule,extractClause })) continue;
 										if (!rContext.extractPrefixClauses.Contains(extractRule, { simpleUseRule,extractClause }))
 										{
 											rContext.extractPrefixClauses.Add(extractRule, { simpleUseRule,extractClause });
@@ -358,15 +359,18 @@ RenamePrefix
 				, protected virtual GlrClause::IVisitor
 			{
 			protected:
-				RewritingContext&			rContext;
-				const SyntaxSymbolManager&	syntaxManager;
+				RewritingContext&				rContext;
+				RuleSymbol*						ruleSymbol;
+				const SyntaxSymbolManager&		syntaxManager;
 
 			public:
 				RenamePrefixVisitor(
 					RewritingContext& _rContext,
+					RuleSymbol* _ruleSymbol,
 					const SyntaxSymbolManager& _syntaxManager
 				)
 					: rContext(_rContext)
+					, ruleSymbol(_ruleSymbol)
 					, syntaxManager(_syntaxManager)
 				{
 				}
@@ -385,8 +389,16 @@ RenamePrefix
 
 				void FixStartRule(ParsingToken& ruleName)
 				{
-					auto ruleSymbol = syntaxManager.Rules()[ruleName.value];
-					vint index = rContext.originRules.Keys().IndexOf(ruleSymbol);
+					auto startRuleSymbol = syntaxManager.Rules()[ruleName.value];
+					vint index = rContext.extractedPrefixRules.Keys().IndexOf({ ruleSymbol,startRuleSymbol });
+					if (index != -1)
+					{
+						auto epRule = rContext.extractedPrefixRules.Values()[index];
+						ruleName.value = epRule->name.value;
+						return;
+					}
+
+					index = rContext.originRules.Keys().IndexOf(startRuleSymbol);
 					if (index != -1)
 					{
 						auto originRule = rContext.originRules.Values()[index];
@@ -489,9 +501,9 @@ RenamePrefix
 
 			void RenamePrefix(RewritingContext& rContext, const SyntaxSymbolManager& syntaxManager, Ptr<GlrSyntaxFile> rewritten)
 			{
-				RenamePrefixVisitor visitor(rContext, syntaxManager);
-				for (auto originRule : rContext.originRules.Values())
+				for (auto [ruleSymbol, originRule] : rContext.originRules)
 				{
+					RenamePrefixVisitor visitor(rContext, ruleSymbol, syntaxManager);
 					for (auto clause : originRule->clauses)
 					{
 						visitor.FixClause(clause);
