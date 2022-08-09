@@ -21,6 +21,9 @@ namespace vl
 		{
 			namespace compile_syntax
 			{
+				using RuleSymbolPair = collections::Pair<RuleSymbol*, RuleSymbol*>;
+				using ClauseWithStartRulePair = collections::Pair<RuleSymbol*, GlrClause*>;
+
 				using GlrRuleMap = collections::Dictionary<RuleSymbol*, GlrRule*>;
 				using LiteralTokenMap = collections::Dictionary<GlrRefSyntax*, vint32_t>;
 				using RuleDependencies = collections::Group<RuleSymbol*, RuleSymbol*>;
@@ -28,13 +31,14 @@ namespace vl
 				using ClauseReuseDependencies = collections::Group<GlrReuseClause*, RuleSymbol*>;
 				using ClauseTypeMap = collections::Dictionary<GlrClause*, AstClassSymbol*>;
 
-				using LeftRecursiveClauseSet = collections::SortedList<collections::Pair<RuleSymbol*, GlrClause*>>;
 				using LeftRecursiveClauseMap = collections::Group<RuleSymbol*, GlrClause*>;
-				using PathToLastRuleMap = collections::Group<collections::Pair<RuleSymbol*, RuleSymbol*>, collections::Pair<RuleSymbol*, GlrClause*>>;
-				using LeftRecursionPlaceholderClauseMap = collections::Group<RuleSymbol*, GlrLeftRecursionPlaceholderClause*>;
 				using LeftRecursionInjectClauseMap = collections::Group<RuleSymbol*, GlrLeftRecursionInjectClause*>;
+				using LeftRecursionPlaceholderClauseMap = collections::Group<RuleSymbol*, GlrLeftRecursionPlaceholderClause*>;
 				using PrefixMergeClauseMap = collections::Group<RuleSymbol*, GlrPrefixMergeClause*>;
 				using ClauseToRuleMap = collections::Dictionary<GlrClause*, RuleSymbol*>;
+
+				using RulePathDependencies = collections::Group<RuleSymbol*, ClauseWithStartRulePair>;
+				using PathToLastRuleMap = collections::Group<RuleSymbolPair, ClauseWithStartRulePair>;
 
 				struct VisitorContext
 				{
@@ -51,16 +55,16 @@ namespace vl
 					ClauseTypeMap						clauseTypes;
 					Ptr<regex::RegexLexer>				cachedLexer;
 
-					LeftRecursiveClauseSet				leftRecursiveClauseParis;
 					LeftRecursiveClauseMap				leftRecursiveClauses;
 					LeftRecursionInjectClauseMap		directLriClauses, indirectLriClauses;
 					LeftRecursionPlaceholderClauseMap	directLrpClauses, indirectLrpClauses;
 					PrefixMergeClauseMap				directPmClauses, indirectPmClauses;
-					RuleDependencies					directStartRules, indirectStartRules;
-					RuleDependencies					directSimpleUseRules, indirectSimpleUseRules;
+					ClauseToRuleMap						clauseToRules;
+
+					RulePathDependencies				directStartRules, indirectStartRules;
+					RulePathDependencies				directSimpleUseRules, indirectSimpleUseRules;
 					PathToLastRuleMap					indirectStartPathToLastRules;
 					PathToLastRuleMap					indirectSimpleUsePathToLastRules;
-					ClauseToRuleMap						clauseToRules;
 
 					VisitorContext(
 						const AstSymbolManager& _astManager,

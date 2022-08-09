@@ -41,10 +41,9 @@ DirectFirstSetVisitor
 						{
 							context.directStartRules.Add(ruleSymbol, startRule);
 						}
-						if (ruleSymbol == startRule && !context.leftRecursiveClauseParis.Contains({ ruleSymbol,currentClause }))
+						if (ruleSymbol == startRule && !context.leftRecursiveClauses.Contains(ruleSymbol, currentClause))
 						{
 							context.leftRecursiveClauses.Add(ruleSymbol, currentClause);
-							context.leftRecursiveClauseParis.Add({ ruleSymbol,currentClause });
 						}
 					}
 				}
@@ -201,7 +200,7 @@ CalculateFirstSet
 				}
 			}
 
-			void CalculateFirstSet_RuleClosure(RuleDependencies& direct, RuleDependencies& indirect, StartRuleSet& indirectPairs)
+			void CalculateFirstSet_RuleClosure(RulePathDependencies& direct, RulePathDependencies& indirect, PathToLastRuleMap& pathToLastRules)
 			{
 				for (auto [rule, index] : indexed(direct.Keys()))
 				{
@@ -250,7 +249,7 @@ CalculateFirstSet
 				CalculateFirstSet_RuleClosure(
 					context.directStartRules,
 					context.indirectStartRules,
-					context.indirectStartRulePairs
+					context.indirectStartPathToLastRules
 					);
 			}
 
@@ -259,7 +258,7 @@ CalculateFirstSet
 				CalculateFirstSet_RuleClosure(
 					context.directSimpleUseRules,
 					context.indirectSimpleUseRules,
-					context.indirectSimpleUseRulePairs
+					context.indirectSimpleUsePathToLastRules
 					);
 			}
 
@@ -302,9 +301,9 @@ CalculateFirstSet
 
 					for (auto startRule : startRules)
 					{
-						CalculateFirstSet_MoveFromDirectClauses(lriClauses, context.indirectLriClauses, context.directLriClauses, rule, startRule);
-						CalculateFirstSet_MoveFromDirectClauses(lrpClauses, context.indirectLrpClauses, context.directLrpClauses, rule, startRule);
-						CalculateFirstSet_MoveFromDirectClauses(pmClauses, context.indirectPmClauses, context.directPmClauses, rule, startRule);
+						CalculateFirstSet_MoveFromDirectClauses(lriClauses, context.indirectLriClauses, context.directLriClauses, rule, startRule.key);
+						CalculateFirstSet_MoveFromDirectClauses(lrpClauses, context.indirectLrpClauses, context.directLrpClauses, rule, startRule.key);
+						CalculateFirstSet_MoveFromDirectClauses(pmClauses, context.indirectPmClauses, context.directPmClauses, rule, startRule.key);
 					}
 				}
 			}

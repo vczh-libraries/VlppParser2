@@ -888,7 +888,7 @@ ValidateStructurePrefixMergeRuleVisitor
 
 				void NotSimpleUsingRule(GlrClause* node)
 				{
-					if (!context.leftRecursiveClauseParis.Contains({ ruleSymbol,node }))
+					if (!context.leftRecursiveClauses.Contains(ruleSymbol, node))
 					{
 						context.syntaxManager.AddError(
 							ParserErrorType::RuleIndirectlyBeginsWithPrefixMergeMixedNonSimpleUseClause,
