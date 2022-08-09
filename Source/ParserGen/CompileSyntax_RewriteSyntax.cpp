@@ -100,7 +100,7 @@ CreateRewrittenRules
 FixRuleTypes
 ***********************************************************************/
 
-			void FixRuleTypes(const VisitorContext& vContext, RewritingContext& rContext, SyntaxSymbolManager& syntaxManager, Ptr<GlrSyntaxFile> rewritten)
+			void FixRuleTypes(const VisitorContext& vContext, RewritingContext& rContext, SyntaxSymbolManager& syntaxManager)
 			{
 				CopyFrom(rContext.fixedAstRules, vContext.astRules);
 				for (auto ruleSymbol : rContext.pmRules)
@@ -136,6 +136,33 @@ FixRuleTypes
 					ruleSymbol->assignedNonArrayField = false;
 					ruleSymbol->ruleType = nullptr;
 					ruleSymbol->lrFlags.Clear();
+				}
+			}
+
+/***********************************************************************
+RewriteExtractedPrefixRules
+***********************************************************************/
+
+			void RewriteExtractedPrefixRules(const VisitorContext& vContext, RewritingContext& rContext, SyntaxSymbolManager& syntaxManager)
+			{
+				for (auto [pair, epRule] : rContext.extractedPrefixRules)
+				{
+					{
+						auto lrpClause = MakePtr<GlrLeftRecursionPlaceholderClause>();
+						epRule->clauses.Add(lrpClause);
+
+						auto lrp = MakePtr<GlrLeftRecursionPlaceholder>();
+						lrpClause->flags.Add(lrp);
+						lrp->flag.value = L"LRIP_" + pair.key->Name() + L"_" + pair.value->Name();
+					}
+					{
+						auto reuseClause = MakePtr<GlrReuseClause>();
+						epRule->clauses.Add(reuseClause);
+
+						auto useSyntax = MakePtr<GlrUseSyntax>();
+						reuseClause->syntax = useSyntax;
+						useSyntax->name.value = rContext.originRules[pair.value]->name.value;
+					}
 				}
 			}
 
@@ -229,7 +256,7 @@ RewriteRules
 				return hasMultiplePaths;
 			}
 
-			void RewriteRules(const VisitorContext& vContext, RewritingContext& rContext, SyntaxSymbolManager& syntaxManager, Ptr<GlrSyntaxFile> rewritten)
+			void RewriteRules(const VisitorContext& vContext, RewritingContext& rContext, SyntaxSymbolManager& syntaxManager)
 			{
 				Dictionary<Pair<RuleSymbol*, RuleSymbol*>, vint> pathCounter;
 				for (auto [ruleSymbol, originRule] : rContext.originRules)
@@ -320,7 +347,7 @@ RewriteRules
 FixPrefixMergeClauses
 ***********************************************************************/
 
-			void FixPrefixMergeClauses(const VisitorContext& vContext, RewritingContext& rContext, SyntaxSymbolManager& syntaxManager, Ptr<GlrSyntaxFile> rewritten)
+			void FixPrefixMergeClauses(const VisitorContext& vContext, RewritingContext& rContext, SyntaxSymbolManager& syntaxManager)
 			{
 				for (auto ruleSymbol : vContext.directPmClauses.Keys())
 				{
@@ -499,7 +526,7 @@ RenamePrefix
 				}
 			};
 
-			void RenamePrefix(RewritingContext& rContext, const SyntaxSymbolManager& syntaxManager, Ptr<GlrSyntaxFile> rewritten)
+			void RenamePrefix(RewritingContext& rContext, const SyntaxSymbolManager& syntaxManager)
 			{
 				for (auto [ruleSymbol, originRule] : rContext.originRules)
 				{
@@ -534,16 +561,19 @@ RewriteSyntax
 				CreateRewrittenRules(context, rewritingContext, rewritten);
 
 				// fix rule types (fix syntaxManager.rules, clear RuleSymbol fields)
-				FixRuleTypes(context, rewritingContext, syntaxManager, rewritten);
+				FixRuleTypes(context, rewritingContext, syntaxManager);
+
+				// create clauses in rewritten X_Y_LRI_Prefix rules
+				RewriteExtractedPrefixRules(context, rewritingContext, syntaxManager);
 
 				// create left_recursion_inject clauses in rewritten rules
-				RewriteRules(context, rewritingContext, syntaxManager, rewritten);
+				RewriteRules(context, rewritingContext, syntaxManager);
 
 				// convert prefix_merge to left_recursion_placeholder and reuse clauses (fix syntaxManager.lrpFlags)
-				FixPrefixMergeClauses(context, rewritingContext, syntaxManager, rewritten);
+				FixPrefixMergeClauses(context, rewritingContext, syntaxManager);
 
 				// rename rule references in origin rules
-				RenamePrefix(rewritingContext, syntaxManager, rewritten);
+				RenamePrefix(rewritingContext, syntaxManager);
 
 				// TODO: delete rContext.fixedAstRules if unused
 
