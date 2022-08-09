@@ -37,10 +37,7 @@ DirectFirstSetVisitor
 				{
 					if (auto startRule = TryGetRuleSymbol(name))
 					{
-						if (!context.directStartRules.Contains(ruleSymbol, startRule))
-						{
-							context.directStartRules.Add(ruleSymbol, startRule);
-						}
+						context.directStartRules.Add(ruleSymbol, { startRule,currentClause });
 						if (ruleSymbol == startRule && !context.leftRecursiveClauses.Contains(ruleSymbol, currentClause))
 						{
 							context.leftRecursiveClauses.Add(ruleSymbol, currentClause);
@@ -156,10 +153,7 @@ DirectFirstSetVisitor
 						{
 							if (auto startRule = TryGetRuleSymbol(useSyntax->name.value))
 							{
-								if (!context.directSimpleUseRules.Contains(ruleSymbol, startRule))
-								{
-									context.directSimpleUseRules.Add(ruleSymbol, startRule);
-								}
+								context.directSimpleUseRules.Add(ruleSymbol, { startRule,currentClause });
 							}
 						}
 					}
@@ -205,10 +199,10 @@ CalculateFirstSet
 				for (auto [rule, index] : indexed(direct.Keys()))
 				{
 					auto&& startRules = direct.GetByIndex(index);
-					for (auto startRule : startRules)
+					for (auto [startRule, clause] : startRules)
 					{
-						indirect.Add(rule, startRule);
-						indirectPairs.Add({ rule,startRule });
+						indirect.Add(rule, { startRule,clause });
+						pathToLastRules.Add({ rule,startRule }, { startRule,clause });
 					}
 				}
 
@@ -217,20 +211,23 @@ CalculateFirstSet
 					vint offset = 0;
 					for (auto [rule, index] : indexed(indirect.Keys()))
 					{
-						auto&& startRules = indirect.GetByIndex(index);
-						for (auto startRule : startRules)
+						auto&& startRules1 = indirect.GetByIndex(index);
+						for (auto [startRule1, clause1] : startRules1)
 						{
-							vint index2 = indirect.Keys().IndexOf(startRule);
-							if (index2 != -1 && index2 != index)
+							vint index2 = direct.Keys().IndexOf(startRule1);
+							if (index2 != -1)
 							{
-								auto&& startRules2 = indirect.GetByIndex(index2);
-								for (auto startRule2 : startRules2)
+								auto&& startRules2 = direct.GetByIndex(index2);
+								for (auto [startRule2, clause2] : startRules2)
 								{
-									if (!indirectPairs.Contains({ rule,startRule2 }))
+									if (!pathToLastRules.Contains({ rule,startRule2 }, { startRule1,clause2 }))
 									{
 										offset++;
-										indirect.Add(rule, startRule2);
-										indirectPairs.Add({ rule,startRule2 });
+										if (!indirect.Contains(rule, { startRule2,clause2 }))
+										{
+											indirect.Add(rule, { startRule2,clause2 });
+										}
+										pathToLastRules.Add({ rule,startRule2 }, { startRule1,clause2 });
 									}
 								}
 							}

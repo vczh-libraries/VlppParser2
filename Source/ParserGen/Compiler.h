@@ -22,7 +22,7 @@ namespace vl
 			namespace compile_syntax
 			{
 				using RuleSymbolPair = collections::Pair<RuleSymbol*, RuleSymbol*>;
-				using ClauseWithStartRulePair = collections::Pair<RuleSymbol*, GlrClause*>;
+				using RuleClausePair = collections::Pair<RuleSymbol*, GlrClause*>;
 
 				using GlrRuleMap = collections::Dictionary<RuleSymbol*, GlrRule*>;
 				using LiteralTokenMap = collections::Dictionary<GlrRefSyntax*, vint32_t>;
@@ -37,8 +37,8 @@ namespace vl
 				using PrefixMergeClauseMap = collections::Group<RuleSymbol*, GlrPrefixMergeClause*>;
 				using ClauseToRuleMap = collections::Dictionary<GlrClause*, RuleSymbol*>;
 
-				using RulePathDependencies = collections::Group<RuleSymbol*, ClauseWithStartRulePair>;
-				using PathToLastRuleMap = collections::Group<RuleSymbolPair, ClauseWithStartRulePair>;
+				using RulePathDependencies = collections::Group<RuleSymbol*, RuleClausePair>;
+				using PathToLastRuleMap = collections::Group<RuleSymbolPair, RuleClausePair>;
 
 				struct VisitorContext
 				{
