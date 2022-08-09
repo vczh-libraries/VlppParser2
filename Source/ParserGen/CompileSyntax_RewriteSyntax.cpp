@@ -12,6 +12,7 @@ namespace vl
 			struct RewritingContext
 			{
 				List<RuleSymbol*>						pmRules;
+				Group<RuleSymbol*, RuleClausePair>		extractPrefixClauses;
 				Dictionary<RuleSymbol*, GlrRule*>		originRules;
 				Dictionary<RuleSymbol*, GlrRule*>		lriRules;
 				Dictionary<RuleSymbol*, GlrRule*>		fixedAstRules;
@@ -29,6 +30,31 @@ CollectRewritingTargets
 					if (vContext.indirectPmClauses.Keys().Contains(ruleSymbol))
 					{
 						rContext.pmRules.Add(ruleSymbol);
+
+						vint indexStart = vContext.directStartRules.Keys().IndexOf(ruleSymbol);
+						vint indexSimpleUse = vContext.directSimpleUseRules.Keys().IndexOf(ruleSymbol);
+
+						if (indexStart != -1 && indexSimpleUse != -1)
+						{
+							for (auto [startRule, startClause] : vContext.directStartRules.GetByIndex(indexStart))
+							{
+								if (dynamic_cast<GlrPrefixMergeClause*>(startClause)) continue;
+								if (vContext.leftRecursiveClauses.Contains(ruleSymbol, startClause)) continue;
+								for (auto [simpleUseRule, simpleUseClause] : vContext.directSimpleUseRules.GetByIndex(indexSimpleUse))
+								{
+									if (startRule == simpleUseRule) continue;
+									vint indexExtract = vContext.indirectStartPathToLastRules.Keys().IndexOf({ startRule,simpleUseRule });
+									if (indexExtract == -1) continue;
+									for (auto [extractRule, extractClause] : vContext.indirectStartPathToLastRules.GetByIndex(indexExtract))
+									{
+										if (!rContext.extractPrefixClauses.Contains(extractRule, { simpleUseRule,extractClause }))
+										{
+											rContext.extractPrefixClauses.Add(extractRule, { simpleUseRule,extractClause });
+										}
+									}
+								}
+							}
+						}
 					}
 				}
 			}
