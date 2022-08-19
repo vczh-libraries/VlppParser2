@@ -11,9 +11,9 @@ namespace vl
 
 			struct RewritingPrefixConflict
 			{
-				SortedList<GlrClause*>									unaffected;
-				Group<RuleSymbol*, GlrClause*>							prefixClauses;
-				Group<RuleSymbol*, RuleClausePair>						extractedClauses;
+				SortedList<GlrClause*>									unaffectedClauses;		// clauses that are not affected by prefix extraction
+				SortedList<GlrClause*>									prefixClauses;			// simple use clauses that are prefix themselves
+				Group<GlrClause*, GlrClause*>							conflictedClauses;		// c1 -> c2 if c1's prefix is prefix clause c2
 			};
 
 			struct RewritingContext
@@ -25,7 +25,7 @@ namespace vl
 
 				Group<RuleSymbol*, RuleClausePair>						extractPrefixClauses;	// RuleSymbol -> {rule to be extracted, clause begins with rule}
 				Dictionary<Pair<RuleSymbol*, RuleSymbol*>, GlrRule*>	extractedPrefixRules;	// {rewritten RuleSymbol, prefix RuleSymbol} -> GlrRule ends with _LRI_Prefix
-				Dictionary<RuleSymbol*, Ptr<RewritingPrefixConflict>>	extractedRules;			// rewritten RuleSymbol -> all needed information if prefix extraction affects how it generates left_recursion_inject clauses
+				Dictionary<RuleSymbol*, Ptr<RewritingPrefixConflict>>	extractedConflicts;		// rewritten RuleSymbol -> all needed information if prefix extraction affects how it generates left_recursion_inject clauses
 			};
 
 /***********************************************************************
@@ -46,6 +46,8 @@ CollectRewritingTargets
 
 						if (indexStart != -1 && indexSimpleUse != -1)
 						{
+							Ptr<RewritingPrefixConflict> conflict;
+
 							for (auto [startRule, startClause] : vContext.directStartRules.GetByIndex(indexStart))
 							{
 								// prefix_merge clauses and left recursive clauses are not involved in prefix detection/extraction
@@ -69,6 +71,41 @@ CollectRewritingTargets
 										{
 											rContext.extractPrefixClauses.Add(extractRule, { simpleUseRule,extractClause });
 										}
+
+										// fill conflict information for ruleSymbol
+										if (!conflict)
+										{
+											vint indexConflict = rContext.extractedConflicts.Keys().IndexOf(ruleSymbol);
+											if (indexConflict == -1)
+											{
+												conflict = MakePtr<RewritingPrefixConflict>();
+												rContext.extractedConflicts.Add(ruleSymbol, conflict);
+											}
+											else
+											{
+												conflict = rContext.extractedConflicts.Values()[indexConflict];
+											}
+										}
+
+										if (!conflict->prefixClauses.Contains(simpleUseClause))
+										{
+											conflict->prefixClauses.Add(simpleUseClause);
+										}
+										if (!conflict->conflictedClauses.Contains(startClause, simpleUseClause))
+										{
+											conflict->conflictedClauses.Add(startClause, simpleUseClause);
+										}
+									}
+								}
+							}
+
+							if (conflict)
+							{
+								for (auto clause : vContext.astRules[ruleSymbol]->clauses)
+								{
+									if (!conflict->prefixClauses.Contains(clause.Obj()) && !conflict->conflictedClauses.Contains(clause.Obj()))
+									{
+										conflict->unaffectedClauses.Add(clause.Obj());
 									}
 								}
 							}
