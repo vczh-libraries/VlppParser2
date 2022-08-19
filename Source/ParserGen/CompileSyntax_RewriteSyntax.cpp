@@ -11,6 +11,7 @@ namespace vl
 
 			struct RewritingPrefixConflict
 			{
+				// all clauses are simple use clauses, RuleSymbol* in values are the rule referenced by keys
 				SortedList<GlrClause*>									unaffectedClauses;		// clauses that are not affected by prefix extraction
 				SortedList<GlrClause*>									prefixClauses;			// simple use clauses that are prefix themselves
 				Group<GlrClause*, GlrClause*>							conflictedClauses;		// c1 -> c2 if c1's prefix is prefix clause c2
@@ -27,6 +28,30 @@ namespace vl
 				Dictionary<Pair<RuleSymbol*, RuleSymbol*>, GlrRule*>	extractedPrefixRules;	// {rewritten RuleSymbol, prefix RuleSymbol} -> GlrRule ends with _LRI_Prefix
 				Dictionary<RuleSymbol*, Ptr<RewritingPrefixConflict>>	extractedConflicts;		// rewritten RuleSymbol -> all needed information if prefix extraction affects how it generates left_recursion_inject clauses
 			};
+
+			Ptr<RewritingPrefixConflict> GetConflict(const RewritingContext& rContext, RuleSymbol* ruleSymbol)
+			{
+				vint indexConflict = rContext.extractedConflicts.Keys().IndexOf(ruleSymbol);
+				if (indexConflict == -1)
+				{
+					return nullptr;
+				}
+				else
+				{
+					return rContext.extractedConflicts.Values()[indexConflict];
+				}
+			}
+
+			Ptr<RewritingPrefixConflict> EnsureGetConflict(RewritingContext& rContext, RuleSymbol* ruleSymbol)
+			{
+				auto conflict = GetConflict(rContext, ruleSymbol);
+				if (!conflict)
+				{
+					conflict = MakePtr<RewritingPrefixConflict>();
+					rContext.extractedConflicts.Add(ruleSymbol, conflict);
+				}
+				return conflict;
+			}
 
 /***********************************************************************
 CollectRewritingTargets
@@ -46,6 +71,8 @@ CollectRewritingTargets
 
 						if (indexStart != -1 && indexSimpleUse != -1)
 						{
+							// all clauses should be simple use to enable prefix detection
+							if (vContext.directSimpleUseRules.GetByIndex(indexSimpleUse).Count() != rule->clauses.Count()) continue;
 							Ptr<RewritingPrefixConflict> conflict;
 
 							for (auto [startRule, startClause] : vContext.directStartRules.GetByIndex(indexStart))
@@ -75,16 +102,7 @@ CollectRewritingTargets
 										// fill conflict information for ruleSymbol
 										if (!conflict)
 										{
-											vint indexConflict = rContext.extractedConflicts.Keys().IndexOf(ruleSymbol);
-											if (indexConflict == -1)
-											{
-												conflict = MakePtr<RewritingPrefixConflict>();
-												rContext.extractedConflicts.Add(ruleSymbol, conflict);
-											}
-											else
-											{
-												conflict = rContext.extractedConflicts.Values()[indexConflict];
-											}
+											conflict = EnsureGetConflict(rContext, ruleSymbol);
 										}
 
 										if (!conflict->prefixClauses.Contains(simpleUseClause))
@@ -101,7 +119,7 @@ CollectRewritingTargets
 
 							if (conflict)
 							{
-								for (auto clause : vContext.astRules[ruleSymbol]->clauses)
+								for (auto clause : rule->clauses)
 								{
 									if (!conflict->prefixClauses.Contains(clause.Obj()) && !conflict->conflictedClauses.Contains(clause.Obj()))
 									{
@@ -220,8 +238,45 @@ RewriteExtractedPrefixRules
 			}
 
 /***********************************************************************
-RewriteRules
+RewriteRules (Unaffected)
 ***********************************************************************/
+
+			Ptr<RewritingPrefixConflict> RewriteRules_CollectUnaffectedIndirectPmClauses(
+				const VisitorContext& vContext,
+				const RewritingContext& rContext,
+				RuleSymbol* ruleSymbol,
+				SortedList<RuleSymbol*>& visited,
+				Group<WString, GlrPrefixMergeClause*>& pmClauses
+			)
+			{
+				auto conflict = GetConflict(rContext, ruleSymbol);
+				if (!visited.Contains(ruleSymbol))
+				{
+					visited.Add(ruleSymbol);
+
+					if (conflict)
+					{
+						for (auto pair : vContext.directSimpleUseRules[ruleSymbol])
+						{
+							if (conflict->unaffectedClauses.Contains(pair.value))
+							{
+								RewriteRules_CollectUnaffectedIndirectPmClauses(vContext, rContext, pair.key, visited, pmClauses);
+							}
+						}
+					}
+					else
+					{
+						for (auto pmClause : vContext.indirectPmClauses[ruleSymbol])
+						{
+							if (!pmClauses.Contains(pmClause->rule->literal.value, pmClause))
+							{
+								pmClauses.Add(pmClause->rule->literal.value, pmClause);
+							}
+						}
+					}
+				}
+				return conflict;
+			}
 
 			void RewriteRules_CollectFlags(
 				const VisitorContext& vContext,
@@ -309,7 +364,99 @@ RewriteRules
 				return hasMultiplePaths;
 			}
 
-			void RewriteRules(const VisitorContext& vContext, RewritingContext& rContext, SyntaxSymbolManager& syntaxManager)
+			void RewriteRules_GenerateUnaffectedLRIClauses(
+				const VisitorContext& vContext,
+				RuleSymbol* ruleSymbol,
+				GlrRule* originRule,
+				GlrRule* lriRule,
+				bool isLeftRecursive,
+				Dictionary<Pair<RuleSymbol*, RuleSymbol*>, vint>& pathCounter,
+				Group<WString, GlrPrefixMergeClause*>& pmClauses,
+				SortedList<RuleSymbol*>& knownOptionalFlags
+			)
+			{
+				for (auto [pmName, pmIndex] : indexed(pmClauses.Keys()))
+				{
+					//   if originRule is not left recursive
+					//     do not generate lriClause for the flag created for originRule, because there is no continuation
+					//     if a pmName does generate some lriClause
+					//       it becomes GLRICT::Optional
+					//     otherwise
+					//       it becomse GLRICT::Single
+					//       generate useSyntax instead of lriClause
+
+					Dictionary<WString, RuleSymbol*> flags;
+					bool omittedSelf = false;
+					bool generateOptionalLri = false;
+					RewriteRules_CollectFlags(
+						vContext,
+						ruleSymbol,
+						lriRule,
+						isLeftRecursive,
+						pmName,
+						pmClauses.GetByIndex(pmIndex),
+						flags,
+						omittedSelf,
+						generateOptionalLri
+						);
+
+					for (auto [flag, pmRule] : flags)
+					{
+						auto lriClause = MakePtr<GlrLeftRecursionInjectClause>();
+						lriRule->clauses.Add(lriClause);
+
+						auto lriStartRule = MakePtr<GlrRefSyntax>();
+						lriClause->rule = lriStartRule;
+						lriStartRule->refType = GlrRefType::Id;
+						lriStartRule->literal.value = pmName;
+
+						auto lriCont = MakePtr<GlrLeftRecursionInjectContinuation>();
+						lriClause->continuation = lriCont;
+
+						if (RewriteRules_HasMultiplePaths(vContext, ruleSymbol, pmRule, isLeftRecursive, pathCounter))
+						{
+							lriCont->configuration = GlrLeftRecursionConfiguration::Multiple;
+						}
+						else
+						{
+							lriCont->configuration = GlrLeftRecursionConfiguration::Single;
+						}
+
+						if (generateOptionalLri)
+						{
+							lriCont->type = GlrLeftRecursionInjectContinuationType::Optional;
+							generateOptionalLri = false;
+							knownOptionalFlags.Add(pmRule);
+						}
+						else
+						{
+							lriCont->type = GlrLeftRecursionInjectContinuationType::Required;
+						}
+
+						auto lriContFlag = MakePtr<GlrLeftRecursionPlaceholder>();
+						lriCont->flag = lriContFlag;
+						lriContFlag->flag.value = flag;
+
+						auto lriContTarget = MakePtr<GlrLeftRecursionInjectClause>();
+						lriCont->injectionTargets.Add(lriContTarget);
+
+						auto lriTargetRule = MakePtr<GlrRefSyntax>();
+						lriContTarget->rule = lriTargetRule;
+						lriTargetRule->refType = GlrRefType::Id;
+						lriTargetRule->literal.value = originRule->name.value;
+					}
+				}
+			}
+
+/***********************************************************************
+RewriteRules (Affected)
+***********************************************************************/
+
+/***********************************************************************
+RewriteRules
+***********************************************************************/
+
+			void RewriteRules(const VisitorContext& vContext, const RewritingContext& rContext, SyntaxSymbolManager& syntaxManager)
 			{
 				Dictionary<Pair<RuleSymbol*, RuleSymbol*>, vint> pathCounter;
 				for (auto [ruleSymbol, originRule] : rContext.originRules)
@@ -317,82 +464,30 @@ RewriteRules
 					auto lriRule = rContext.lriRules[ruleSymbol];
 					auto isLeftRecursive = vContext.leftRecursiveClauses.Contains(ruleSymbol);
 
+					Ptr<RewritingPrefixConflict> conflict;
 					Group<WString, GlrPrefixMergeClause*> pmClauses;
-					for (auto pmClause : vContext.indirectPmClauses[ruleSymbol])
 					{
-						pmClauses.Add(pmClause->rule->literal.value, pmClause);
-					}
-
-					for (auto [pmName, pmIndex] : indexed(pmClauses.Keys()))
-					{
-						//   if originRule is not left recursive
-						//     do not generate lriClause for the flag created for originRule, because there is no continuation
-						//     if a pmName does generate some lriClause
-						//       it becomes GLRICT::Optional
-						//     otherwise
-						//       it becomse GLRICT::Single
-						//       generate useSyntax instead of lriClause
-
-						Dictionary<WString, RuleSymbol*> flags;
-						bool omittedSelf = false;
-						bool generateOptionalLri = false;
-						RewriteRules_CollectFlags(
+						SortedList<RuleSymbol*> visited;
+						conflict = RewriteRules_CollectUnaffectedIndirectPmClauses(
 							vContext,
+							rContext,
 							ruleSymbol,
-							lriRule,
-							isLeftRecursive,
-							pmName,
-							pmClauses.GetByIndex(pmIndex),
-							flags,
-							omittedSelf,
-							generateOptionalLri
+							visited,
+							pmClauses
 							);
-
-						for (auto [flag, pmRule] : flags)
-						{
-							auto lriClause = MakePtr<GlrLeftRecursionInjectClause>();
-							lriRule->clauses.Add(lriClause);
-
-							auto lriStartRule = MakePtr<GlrRefSyntax>();
-							lriClause->rule = lriStartRule;
-							lriStartRule->refType = GlrRefType::Id;
-							lriStartRule->literal.value = pmName;
-
-							auto lriCont = MakePtr<GlrLeftRecursionInjectContinuation>();
-							lriClause->continuation = lriCont;
-
-							if (RewriteRules_HasMultiplePaths(vContext, ruleSymbol, pmRule, isLeftRecursive, pathCounter))
-							{
-								lriCont->configuration = GlrLeftRecursionConfiguration::Multiple;
-							}
-							else
-							{
-								lriCont->configuration = GlrLeftRecursionConfiguration::Single;
-							}
-
-							if (generateOptionalLri)
-							{
-								lriCont->type = GlrLeftRecursionInjectContinuationType::Optional;
-								generateOptionalLri = false;
-							}
-							else
-							{
-								lriCont->type = GlrLeftRecursionInjectContinuationType::Required;
-							}
-
-							auto lriContFlag = MakePtr<GlrLeftRecursionPlaceholder>();
-							lriCont->flag = lriContFlag;
-							lriContFlag->flag.value = flag;
-
-							auto lriContTarget = MakePtr<GlrLeftRecursionInjectClause>();
-							lriCont->injectionTargets.Add(lriContTarget);
-
-							auto lriTargetRule = MakePtr<GlrRefSyntax>();
-							lriContTarget->rule = lriTargetRule;
-							lriTargetRule->refType = GlrRefType::Id;
-							lriTargetRule->literal.value = originRule->name.value;
-						}
 					}
+
+					SortedList<RuleSymbol*> knownOptionalFlags;
+					RewriteRules_GenerateUnaffectedLRIClauses(
+						vContext,
+						ruleSymbol,
+						originRule,
+						lriRule,
+						isLeftRecursive,
+						pathCounter,
+						pmClauses,
+						knownOptionalFlags
+						);
 				}
 			}
 
@@ -400,7 +495,7 @@ RewriteRules
 FixPrefixMergeClauses
 ***********************************************************************/
 
-			void FixPrefixMergeClauses(const VisitorContext& vContext, RewritingContext& rContext, SyntaxSymbolManager& syntaxManager)
+			void FixPrefixMergeClauses(const VisitorContext& vContext, const RewritingContext& rContext, SyntaxSymbolManager& syntaxManager)
 			{
 				for (auto ruleSymbol : vContext.directPmClauses.Keys())
 				{
@@ -439,13 +534,13 @@ RenamePrefix
 				, protected virtual GlrClause::IVisitor
 			{
 			protected:
-				RewritingContext&				rContext;
+				const RewritingContext&			rContext;
 				RuleSymbol*						ruleSymbol;
 				const SyntaxSymbolManager&		syntaxManager;
 
 			public:
 				RenamePrefixVisitor(
-					RewritingContext& _rContext,
+					const RewritingContext& _rContext,
 					RuleSymbol* _ruleSymbol,
 					const SyntaxSymbolManager& _syntaxManager
 				)
