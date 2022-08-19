@@ -13,19 +13,19 @@ namespace vl
 			{
 				SortedList<GlrClause*>									unaffected;
 				Group<RuleSymbol*, GlrClause*>							prefixClauses;
-				Group<RuleSymbol*, GlrClause*>							extractedClauses;
+				Group<RuleSymbol*, RuleClausePair>						extractedClauses;
 			};
 
 			struct RewritingContext
 			{
-				List<RuleSymbol*>										pmRules;
-				Dictionary<RuleSymbol*, GlrRule*>						originRules;
-				Dictionary<RuleSymbol*, GlrRule*>						lriRules;
-				Dictionary<RuleSymbol*, GlrRule*>						fixedAstRules;
+				List<RuleSymbol*>										pmRules;				// all rules that need to be rewritten
+				Dictionary<RuleSymbol*, GlrRule*>						originRules;			// rewritten RuleSymbol -> GlrRule ends with _LRI_Original, which is the same GlrRule object before rewritten
+				Dictionary<RuleSymbol*, GlrRule*>						lriRules;				// rewritten RuleSymbol -> GlrRule containing left_recursion_inject clauses
+				Dictionary<RuleSymbol*, GlrRule*>						fixedAstRules;			// RuleSymbol -> GlrRule relationship after rewritten
 
-				Group<RuleSymbol*, RuleClausePair>						extractPrefixClauses;
-				Dictionary<RuleSymbol*, Ptr<RewritingPrefixConflict>>	extractedRules;
-				Dictionary<Pair<RuleSymbol*, RuleSymbol*>, GlrRule*>	extractedPrefixRules;
+				Group<RuleSymbol*, RuleClausePair>						extractPrefixClauses;	// RuleSymbol -> {rule to be extracted, clause begins with rule}
+				Dictionary<Pair<RuleSymbol*, RuleSymbol*>, GlrRule*>	extractedPrefixRules;	// {rewritten RuleSymbol, prefix RuleSymbol} -> GlrRule ends with _LRI_Prefix
+				Dictionary<RuleSymbol*, Ptr<RewritingPrefixConflict>>	extractedRules;			// rewritten RuleSymbol -> all needed information if prefix extraction affects how it generates left_recursion_inject clauses
 			};
 
 /***********************************************************************
