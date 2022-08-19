@@ -404,7 +404,7 @@ RewriteRules (Unaffected)
 					//     if a pmName does generate some lriClause
 					//       it becomes GLRICT::Optional
 					//     otherwise
-					//       it becomse GLRICT::Single
+					//       it becomse GLRICT::Required
 					//       generate useSyntax instead of lriClause
 
 					Dictionary<WString, Pair<RuleSymbol*, RuleSymbol*>> flags;
