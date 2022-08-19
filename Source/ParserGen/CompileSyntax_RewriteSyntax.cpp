@@ -244,12 +244,13 @@ RewriteRules (Unaffected)
 			Ptr<RewritingPrefixConflict> RewriteRules_CollectUnaffectedIndirectPmClauses(
 				const VisitorContext& vContext,
 				const RewritingContext& rContext,
+				RuleSymbol* initiatedRuleSymbol,
 				RuleSymbol* ruleSymbol,
 				SortedList<RuleSymbol*>& visited,
-				Group<WString, GlrPrefixMergeClause*>& pmClauses
+				Group<WString, Pair<RuleSymbol*, GlrPrefixMergeClause*>>& pmClauses
 			)
 			{
-				auto conflict = GetConflict(rContext, ruleSymbol);
+				auto conflict = initiatedRuleSymbol == ruleSymbol ? GetConflict(rContext, ruleSymbol) : nullptr;
 				if (!visited.Contains(ruleSymbol))
 				{
 					visited.Add(ruleSymbol);
@@ -260,7 +261,7 @@ RewriteRules (Unaffected)
 						{
 							if (conflict->unaffectedClauses.Contains(pair.value))
 							{
-								RewriteRules_CollectUnaffectedIndirectPmClauses(vContext, rContext, pair.key, visited, pmClauses);
+								RewriteRules_CollectUnaffectedIndirectPmClauses(vContext, rContext, initiatedRuleSymbol, pair.key, visited, pmClauses);
 							}
 						}
 					}
@@ -268,9 +269,9 @@ RewriteRules (Unaffected)
 					{
 						for (auto pmClause : vContext.indirectPmClauses[ruleSymbol])
 						{
-							if (!pmClauses.Contains(pmClause->rule->literal.value, pmClause))
+							if (!pmClauses.Contains(pmClause->rule->literal.value, { ruleSymbol, pmClause }))
 							{
-								pmClauses.Add(pmClause->rule->literal.value, pmClause);
+								pmClauses.Add(pmClause->rule->literal.value, { ruleSymbol,pmClause });
 							}
 						}
 					}
@@ -284,13 +285,13 @@ RewriteRules (Unaffected)
 				GlrRule* lriRule,
 				bool isLeftRecursive,
 				const WString& pmName,
-				const List<GlrPrefixMergeClause*>& pmClauses,
-				Dictionary<WString, RuleSymbol*>& flags,
+				const List<Pair<RuleSymbol*, GlrPrefixMergeClause*>>& pmClauses,
+				Dictionary<WString, Pair<RuleSymbol*, RuleSymbol*>>& flags,
 				bool& omittedSelf,
 				bool& generateOptionalLri
 			)
 			{
-				for (auto pmClause : pmClauses)
+				for (auto [injectIntoRule, pmClause] : pmClauses)
 				{
 					auto pmRule = vContext.clauseToRules[pmClause];
 					if (ruleSymbol == pmRule)
@@ -310,7 +311,7 @@ RewriteRules (Unaffected)
 						generateOptionalLri = true;
 					}
 
-					flags.Add(L"LRI_" + pmRule->Name(), pmRule);
+					flags.Add(L"LRI_" + pmRule->Name(), { pmRule,injectIntoRule });
 				}
 
 				if (omittedSelf)
@@ -366,12 +367,12 @@ RewriteRules (Unaffected)
 
 			void RewriteRules_GenerateUnaffectedLRIClauses(
 				const VisitorContext& vContext,
+				const RewritingContext& rContext,
 				RuleSymbol* ruleSymbol,
-				GlrRule* originRule,
 				GlrRule* lriRule,
 				bool isLeftRecursive,
 				Dictionary<Pair<RuleSymbol*, RuleSymbol*>, vint>& pathCounter,
-				Group<WString, GlrPrefixMergeClause*>& pmClauses,
+				Group<WString, Pair<RuleSymbol*, GlrPrefixMergeClause*>>& pmClauses,
 				SortedList<RuleSymbol*>& knownOptionalFlags
 			)
 			{
@@ -385,7 +386,7 @@ RewriteRules (Unaffected)
 					//       it becomse GLRICT::Single
 					//       generate useSyntax instead of lriClause
 
-					Dictionary<WString, RuleSymbol*> flags;
+					Dictionary<WString, Pair<RuleSymbol*, RuleSymbol*>> flags;
 					bool omittedSelf = false;
 					bool generateOptionalLri = false;
 					RewriteRules_CollectFlags(
@@ -400,8 +401,9 @@ RewriteRules (Unaffected)
 						generateOptionalLri
 						);
 
-					for (auto [flag, pmRule] : flags)
+					for (auto [flag, pmRulePair] : flags)
 					{
+						auto [pmRule, injectIntoRule] = pmRulePair;
 						auto lriClause = MakePtr<GlrLeftRecursionInjectClause>();
 						lriRule->clauses.Add(lriClause);
 
@@ -443,7 +445,7 @@ RewriteRules (Unaffected)
 						auto lriTargetRule = MakePtr<GlrRefSyntax>();
 						lriContTarget->rule = lriTargetRule;
 						lriTargetRule->refType = GlrRefType::Id;
-						lriTargetRule->literal.value = originRule->name.value;
+						lriTargetRule->literal.value = rContext.originRules[injectIntoRule]->name.value;
 					}
 				}
 			}
@@ -465,12 +467,13 @@ RewriteRules
 					auto isLeftRecursive = vContext.leftRecursiveClauses.Contains(ruleSymbol);
 
 					Ptr<RewritingPrefixConflict> conflict;
-					Group<WString, GlrPrefixMergeClause*> pmClauses;
+					Group<WString, Pair<RuleSymbol*, GlrPrefixMergeClause*>> pmClauses;
 					{
 						SortedList<RuleSymbol*> visited;
 						conflict = RewriteRules_CollectUnaffectedIndirectPmClauses(
 							vContext,
 							rContext,
+							ruleSymbol,
 							ruleSymbol,
 							visited,
 							pmClauses
@@ -480,8 +483,8 @@ RewriteRules
 					SortedList<RuleSymbol*> knownOptionalFlags;
 					RewriteRules_GenerateUnaffectedLRIClauses(
 						vContext,
+						rContext,
 						ruleSymbol,
-						originRule,
 						lriRule,
 						isLeftRecursive,
 						pathCounter,
