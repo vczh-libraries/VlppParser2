@@ -263,6 +263,27 @@ RewriteRules (Unaffected)
 							{
 								RewriteRules_CollectUnaffectedIndirectPmClauses(vContext, rContext, initiatedRuleSymbol, pair.key, visited, pmClauses);
 							}
+							else
+							{
+								vint indexConflicted = conflict->conflictedClauses.Keys().IndexOf(pair.value);
+								if (indexConflicted == -1) continue;
+
+								auto&& prefixClauses = conflict->conflictedClauses.GetByIndex(indexConflicted);
+								for (auto pmClause :
+									From(vContext.indirectPmClauses[ruleSymbol]).Except(
+										From(prefixClauses)
+										.SelectMany([&](GlrClause* prefixClause)
+										{
+											return From(vContext.indirectPmClauses[vContext.simpleUseClauseToReferencedRules[prefixClause]]);
+										})
+									))
+								{
+									if (!pmClauses.Contains(pmClause->rule->literal.value, { pair.key, pmClause }))
+									{
+										pmClauses.Add(pmClause->rule->literal.value, { pair.key,pmClause });
+									}
+								}
+							}
 						}
 					}
 					else

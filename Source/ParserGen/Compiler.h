@@ -63,6 +63,7 @@ namespace vl
 					PrefixMergeClauseMap				directPmClauses, indirectPmClauses;					// RuleSymbol -> contained prefix_merge clauses
 																											// RuleSymbol -> reachable prefix_merge clauses
 					ClauseToRuleMap						clauseToRules;										// GlrClause -> RuleSymbol that contain this clause
+					ClauseToRuleMap						simpleUseClauseToReferencedRules;					// GlrClause -> RuleSymbol when this clause is !RuleSymbol
 
 					RulePathDependencies				directStartRules, indirectStartRules;				// RuleSymbol -> {rule, clause begins with the rule}
 																											// RuleSymbol -> {rule, reachable clause begins with the rule}

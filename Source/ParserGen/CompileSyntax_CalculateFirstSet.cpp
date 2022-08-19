@@ -154,6 +154,7 @@ DirectFirstSetVisitor
 							if (auto startRule = TryGetRuleSymbol(useSyntax->name.value))
 							{
 								context.directSimpleUseRules.Add(ruleSymbol, { startRule,currentClause });
+								context.simpleUseClauseToReferencedRules.Add(currentClause, startRule);
 							}
 						}
 					}
