@@ -9,14 +9,23 @@ namespace vl
 			using namespace collections;
 			using namespace compile_syntax;
 
+			struct RewritingPrefixConflict
+			{
+				SortedList<GlrClause*>									unaffected;
+				Group<RuleSymbol*, GlrClause*>							prefixClauses;
+				Group<RuleSymbol*, GlrClause*>							extractedClauses;
+			};
+
 			struct RewritingContext
 			{
 				List<RuleSymbol*>										pmRules;
-				Group<RuleSymbol*, RuleClausePair>						extractPrefixClauses;
 				Dictionary<RuleSymbol*, GlrRule*>						originRules;
 				Dictionary<RuleSymbol*, GlrRule*>						lriRules;
-				Dictionary<Pair<RuleSymbol*, RuleSymbol*>, GlrRule*>	extractedPrefixRules;
 				Dictionary<RuleSymbol*, GlrRule*>						fixedAstRules;
+
+				Group<RuleSymbol*, RuleClausePair>						extractPrefixClauses;
+				Dictionary<RuleSymbol*, Ptr<RewritingPrefixConflict>>	extractedRules;
+				Dictionary<Pair<RuleSymbol*, RuleSymbol*>, GlrRule*>	extractedPrefixRules;
 			};
 
 /***********************************************************************
@@ -39,16 +48,23 @@ CollectRewritingTargets
 						{
 							for (auto [startRule, startClause] : vContext.directStartRules.GetByIndex(indexStart))
 							{
+								// prefix_merge clauses and left recursive clauses are not involved in prefix detection/extraction
 								if (dynamic_cast<GlrPrefixMergeClause*>(startClause)) continue;
 								if (vContext.leftRecursiveClauses.Contains(ruleSymbol, startClause)) continue;
+
+								// find all clause pair "!X" and "Y ...", see if X is a prefix of Y
 								for (auto [simpleUseRule, simpleUseClause] : vContext.directSimpleUseRules.GetByIndex(indexSimpleUse))
 								{
+									// ignore if X is Y
+									// ignore if Y ::= X directly or indirectly
 									if (startRule == simpleUseRule) continue;
 									vint indexExtract = vContext.indirectStartPathToLastRules.Keys().IndexOf({ startRule,simpleUseRule });
 									if (indexExtract == -1) continue;
 									for (auto [extractRule, extractClause] : vContext.indirectStartPathToLastRules.GetByIndex(indexExtract))
 									{
 										if (vContext.directSimpleUseRules.Contains(extractRule, { simpleUseRule,extractClause })) continue;
+
+										// prefix extraction needed
 										if (!rContext.extractPrefixClauses.Contains(extractRule, { simpleUseRule,extractClause }))
 										{
 											rContext.extractPrefixClauses.Add(extractRule, { simpleUseRule,extractClause });
@@ -574,8 +590,6 @@ RewriteSyntax
 
 				// rename rule references in origin rules
 				RenamePrefix(rewritingContext, syntaxManager);
-
-				// TODO: delete rContext.fixedAstRules if unused
 
 				return rewritten;
 			}
