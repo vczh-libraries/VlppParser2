@@ -43,7 +43,7 @@ CompileSyntax
 								ParserErrorType::RuleNameConflictedWithToken,
 								rule->codeRange,
 								rule->name.value
-							);
+								);
 						}
 						else
 						{

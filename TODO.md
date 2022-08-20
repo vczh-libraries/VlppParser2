@@ -3,6 +3,7 @@
 ## PrefixSubset3
 
 - Add test cases with constructors mixing with binary expressions.
+- Add test casse for PrefixExtractionAffectedRuleReferencedAnother error.
 
 ## Features to Add
 
