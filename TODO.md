@@ -1,9 +1,10 @@
 # TODO
 
-## PrefixSubset3
+## Test Cases
 
 - Add test cases with constructors mixing with binary expressions.
 - Add test casse for PrefixExtractionAffectedRuleReferencedAnother error.
+- TODO in `RewriteRules_GenerateAffectedLRIClausesSubgroup`.
 
 ## Features to Add
 

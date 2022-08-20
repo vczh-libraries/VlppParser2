@@ -346,7 +346,6 @@ RewriteRules (Common)
 				const VisitorContext& vContext,
 				RuleSymbol* fromRule,
 				RuleSymbol* toRule,
-				bool isFromRuleLeftRecursive,
 				Dictionary<Pair<RuleSymbol*, RuleSymbol*>, vint>& pathCounter
 			)
 			{
@@ -399,17 +398,15 @@ RewriteRules (AST Creation)
 				RuleSymbol* ruleSymbol,
 				RuleSymbol* pmRule,
 				RuleSymbol* injectIntoRule,
-				bool isLeftRecursive,
-				const WString& pmName,
 				const WString& flag,
 				Dictionary<Pair<RuleSymbol*, RuleSymbol*>, vint>& pathCounter,
-				bool& generateOptionalLri,
+				bool generateOptionalLri,
 				SortedList<WString>& knownOptionalStartRules
 			)
 			{
 				auto lriCont = MakePtr<GlrLeftRecursionInjectContinuation>();
 
-				if (RewriteRules_HasMultiplePaths(vContext, ruleSymbol, pmRule, isLeftRecursive, pathCounter))
+				if (RewriteRules_HasMultiplePaths(vContext, ruleSymbol, pmRule, pathCounter))
 				{
 					lriCont->configuration = GlrLeftRecursionConfiguration::Multiple;
 				}
@@ -421,8 +418,6 @@ RewriteRules (AST Creation)
 				if (generateOptionalLri)
 				{
 					lriCont->type = GlrLeftRecursionInjectContinuationType::Optional;
-					generateOptionalLri = false;
-					knownOptionalStartRules.Add(pmName);
 				}
 				else
 				{
@@ -499,14 +494,18 @@ RewriteRules (Unaffected)
 							ruleSymbol,
 							pmRule,
 							injectIntoRule,
-							isLeftRecursive,
-							pmName,
 							flag,
 							pathCounter,
 							generateOptionalLri,
 							knownOptionalStartRules
 							);
 						lriClause->continuation = lriCont;
+
+						if (generateOptionalLri)
+						{
+							generateOptionalLri = false;
+							knownOptionalStartRules.Add(pmName);
+						}
 					}
 				}
 			}
@@ -552,86 +551,74 @@ RewriteRules (Affected)
 					}
 				}
 
-				//for (auto [pmName, pmIndex] : indexed(pmClauses.Keys()))
-				//{
-				//	//   if originRule is not left recursive
-				//	//     left_recursion_inject directly into conflictedRuleSymbol
-				//	//     if a pmName does generate some lriClause
-				//	//       it becomes GLRICT::Optional
-				//	//     otherwise
-				//	//       it becomse GLRICT::Required
-				//	//       generate useSyntax instead of lriClause
-				//
-				//	Dictionary<WString, Pair<RuleSymbol*, RuleSymbol*>> flags;
-				//	bool omittedSelf = false;
-				//	bool generateOptionalLri = false;
-				//	RewriteRules_CollectFlags(
-				//		vContext,
-				//		ruleSymbol,
-				//		isLeftRecursive,
-				//		pmClauses.GetByIndex(pmIndex),
-				//		flags,
-				//		omittedSelf,
-				//		generateOptionalLri
-				//		);
-				//
-				//	if (omittedSelf && flags.Count() == 0)
-				//	{
-				//		auto reuseClause = MakePtr<GlrReuseClause>();
-				//		lriRule->clauses.Add(reuseClause);
-				//
-				//		auto useSyntax = MakePtr<GlrUseSyntax>();
-				//		reuseClause->syntax = useSyntax;
-				//		useSyntax->name.value = pmName;
-				//	}
-				//
-				//	for (auto [flag, pmRulePair] : flags)
-				//	{
-				//		auto [pmRule, injectIntoRule] = pmRulePair;
-				//		auto lriClause = MakePtr<GlrLeftRecursionInjectClause>();
-				//		lriRule->clauses.Add(lriClause);
-				//
-				//		auto lriStartRule = MakePtr<GlrRefSyntax>();
-				//		lriClause->rule = lriStartRule;
-				//		lriStartRule->refType = GlrRefType::Id;
-				//		lriStartRule->literal.value = pmName;
-				//
-				//		auto lriCont = MakePtr<GlrLeftRecursionInjectContinuation>();
-				//		lriClause->continuation = lriCont;
-				//
-				//		if (RewriteRules_HasMultiplePaths(vContext, ruleSymbol, pmRule, isLeftRecursive, pathCounter))
-				//		{
-				//			lriCont->configuration = GlrLeftRecursionConfiguration::Multiple;
-				//		}
-				//		else
-				//		{
-				//			lriCont->configuration = GlrLeftRecursionConfiguration::Single;
-				//		}
-				//
-				//		if (generateOptionalLri)
-				//		{
-				//			lriCont->type = GlrLeftRecursionInjectContinuationType::Optional;
-				//			generateOptionalLri = false;
-				//			knownOptionalStartRules.Add(pmName);
-				//		}
-				//		else
-				//		{
-				//			lriCont->type = GlrLeftRecursionInjectContinuationType::Required;
-				//		}
-				//
-				//		auto lriContFlag = MakePtr<GlrLeftRecursionPlaceholder>();
-				//		lriCont->flag = lriContFlag;
-				//		lriContFlag->flag.value = flag;
-				//
-				//		auto lriContTarget = MakePtr<GlrLeftRecursionInjectClause>();
-				//		lriCont->injectionTargets.Add(lriContTarget);
-				//
-				//		auto lriTargetRule = MakePtr<GlrRefSyntax>();
-				//		lriContTarget->rule = lriTargetRule;
-				//		lriTargetRule->refType = GlrRefType::Id;
-				//		lriTargetRule->literal.value = rContext.originRules[injectIntoRule]->name.value;
-				//	}
-				//}
+				for (auto [pmName, pmIndex] : indexed(pmClauses.Keys()))
+				{
+					//   if originRule is not left recursive
+					//     left_recursion_inject directly into conflictedRuleSymbol
+					//     if a pmName does generate some lriClause
+					//       it becomes GLRICT::Optional
+					//     otherwise
+					//       it becomse GLRICT::Required
+					//       generate useSyntax instead of lriClause
+				
+					Dictionary<WString, Pair<RuleSymbol*, RuleSymbol*>> flags;
+					bool omittedSelf = false;
+					bool generateOptionalLri = false;
+					RewriteRules_CollectFlags(
+						vContext,
+						prefixRuleSymbol,
+						isLeftRecursive,
+						pmClauses.GetByIndex(pmIndex),
+						flags,
+						omittedSelf,
+						generateOptionalLri
+						);
+				
+					if (omittedSelf && flags.Count() == 0)
+					{
+						// TODO: add test case
+						for (auto flag : lripFlags)
+						{
+							auto lriClause = CreateLriClause(pmName);
+							lriRule->clauses.Add(lriClause);
+
+							auto lriCont = CreateLriContinuation(
+								vContext,
+								rContext,
+								conflictedRuleSymbol,
+								prefixRuleSymbol,
+								conflictedRuleSymbol,
+								flag,
+								pathCounter,
+								false,
+								knownOptionalStartRules
+								);
+							lriClause->continuation = lriCont;
+						}
+					}
+				
+					//for (auto [flag, pmRulePair] : flags)
+					//{
+					//	auto [pmRule, injectIntoRule] = pmRulePair;
+					//	auto lriClause = CreateLriClause(pmName);
+					//	lriRule->clauses.Add(lriClause);
+					//
+					//	auto lriCont = CreateLriContinuation(
+					//		vContext,
+					//		rContext,
+					//		ruleSymbol,
+					//		pmRule,
+					//		injectIntoRule,
+					//		isLeftRecursive,
+					//		pmName,
+					//		flag,
+					//		pathCounter,
+					//		generateOptionalLri,
+					//		knownOptionalStartRules
+					//		);
+					//	lriClause->continuation = lriCont;
+					//}
+				}
 			}
 
 			void RewriteRules_GenerateAffectedLRIClauses(
