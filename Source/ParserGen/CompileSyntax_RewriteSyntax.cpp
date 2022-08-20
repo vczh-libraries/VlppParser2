@@ -602,52 +602,54 @@ RewriteRules (Affected)
 					for (auto [flag, pmRulePair] : flags)
 					{
 						auto [pmRule, injectIntoRule] = pmRulePair;
-						auto lriClause = CreateLriClause(pmName);
-						lriRule->clauses.Add(lriClause);
-					
-						auto lriCont = CreateLriContinuation(
-							vContext,
-							rContext,
-							prefixRuleSymbol,
-							pmRule,
-							prefixRuleSymbol,
-							flag,
-							pathCounter,
-							generateOptionalLri
-							);
-						lriClause->continuation = lriCont;
-
-						for (auto lripFlag : lripFlags)
 						{
-							auto lriCont2 = CreateLriContinuation(
+							auto lriClause = CreateLriClause(pmName);
+							lriRule->clauses.Add(lriClause);
+					
+							auto lriCont = CreateLriContinuation(
 								vContext,
 								rContext,
-								conflictedRuleSymbol,
 								prefixRuleSymbol,
-								conflictedRuleSymbol,
-								lripFlag,
+								pmRule,
+								prefixRuleSymbol,
+								flag,
 								pathCounter,
-								false
+								generateOptionalLri
 								);
+							lriClause->continuation = lriCont;
 
-							auto branchStart = lriCont->injectionTargets[0];
-							if (branchStart->continuation)
+							for (auto lripFlag : lripFlags)
 							{
-								// TODO: add test case
-								auto newBranchStart = CreateLriClause(branchStart->rule->literal.value);
-								newBranchStart->continuation = lriCont2;
-								lriCont->injectionTargets.Add(newBranchStart);
+								auto lriCont2 = CreateLriContinuation(
+									vContext,
+									rContext,
+									conflictedRuleSymbol,
+									prefixRuleSymbol,
+									conflictedRuleSymbol,
+									lripFlag,
+									pathCounter,
+									true
+									);
 
+								auto branchStart = lriCont->injectionTargets[0];
+								if (branchStart->continuation)
+								{
+									// TODO: add test case
+									auto newBranchStart = CreateLriClause(branchStart->rule->literal.value);
+									newBranchStart->continuation = lriCont2;
+									lriCont->injectionTargets.Add(newBranchStart);
+
+								}
+								else
+								{
+									branchStart->continuation = lriCont2;
+								}
 							}
-							else
+
+							if (generateOptionalLri)
 							{
-								branchStart->continuation = lriCont2;
+								generateOptionalLri = false;
 							}
-						}
-
-						if (generateOptionalLri)
-						{
-							generateOptionalLri = false;
 						}
 					}
 				}
