@@ -400,8 +400,7 @@ RewriteRules (AST Creation)
 				RuleSymbol* injectIntoRule,
 				const WString& flag,
 				Dictionary<Pair<RuleSymbol*, RuleSymbol*>, vint>& pathCounter,
-				bool generateOptionalLri,
-				SortedList<WString>& knownOptionalStartRules
+				bool generateOptionalLri
 			)
 			{
 				auto lriCont = MakePtr<GlrLeftRecursionInjectContinuation>();
@@ -496,8 +495,7 @@ RewriteRules (Unaffected)
 							injectIntoRule,
 							flag,
 							pathCounter,
-							generateOptionalLri,
-							knownOptionalStartRules
+							generateOptionalLri
 							);
 						lriClause->continuation = lriCont;
 
@@ -573,11 +571,16 @@ RewriteRules (Affected)
 						omittedSelf,
 						generateOptionalLri
 						);
-				
+
+					if (knownOptionalStartRules.Contains(pmName))
+					{
+						generateOptionalLri = false;
+					}
+
 					if (omittedSelf && flags.Count() == 0)
 					{
 						// TODO: add test case
-						for (auto flag : lripFlags)
+						for (auto lripFlag : lripFlags)
 						{
 							auto lriClause = CreateLriClause(pmName);
 							lriRule->clauses.Add(lriClause);
@@ -588,36 +591,65 @@ RewriteRules (Affected)
 								conflictedRuleSymbol,
 								prefixRuleSymbol,
 								conflictedRuleSymbol,
-								flag,
+								lripFlag,
 								pathCounter,
-								false,
-								knownOptionalStartRules
+								false
 								);
 							lriClause->continuation = lriCont;
 						}
 					}
-				
-					//for (auto [flag, pmRulePair] : flags)
-					//{
-					//	auto [pmRule, injectIntoRule] = pmRulePair;
-					//	auto lriClause = CreateLriClause(pmName);
-					//	lriRule->clauses.Add(lriClause);
-					//
-					//	auto lriCont = CreateLriContinuation(
-					//		vContext,
-					//		rContext,
-					//		ruleSymbol,
-					//		pmRule,
-					//		injectIntoRule,
-					//		isLeftRecursive,
-					//		pmName,
-					//		flag,
-					//		pathCounter,
-					//		generateOptionalLri,
-					//		knownOptionalStartRules
-					//		);
-					//	lriClause->continuation = lriCont;
-					//}
+
+					for (auto [flag, pmRulePair] : flags)
+					{
+						auto [pmRule, injectIntoRule] = pmRulePair;
+						auto lriClause = CreateLriClause(pmName);
+						lriRule->clauses.Add(lriClause);
+					
+						auto lriCont = CreateLriContinuation(
+							vContext,
+							rContext,
+							prefixRuleSymbol,
+							pmRule,
+							prefixRuleSymbol,
+							flag,
+							pathCounter,
+							generateOptionalLri
+							);
+						lriClause->continuation = lriCont;
+
+						for (auto lripFlag : lripFlags)
+						{
+							auto lriCont2 = CreateLriContinuation(
+								vContext,
+								rContext,
+								conflictedRuleSymbol,
+								prefixRuleSymbol,
+								conflictedRuleSymbol,
+								lripFlag,
+								pathCounter,
+								false
+								);
+
+							auto branchStart = lriCont->injectionTargets[0];
+							if (branchStart->continuation)
+							{
+								// TODO: add test case
+								auto newBranchStart = CreateLriClause(branchStart->rule->literal.value);
+								newBranchStart->continuation = lriCont2;
+								lriCont->injectionTargets.Add(newBranchStart);
+
+							}
+							else
+							{
+								branchStart->continuation = lriCont2;
+							}
+						}
+
+						if (generateOptionalLri)
+						{
+							generateOptionalLri = false;
+						}
+					}
 				}
 			}
 
