@@ -2,9 +2,11 @@
 
 ## Test Cases
 
+- Add more test cases for `PrefixSubset` 1-5.
 - Add test cases with constructors mixing with binary expressions.
 - Add test casse for PrefixExtractionAffectedRuleReferencedAnother error.
 - TODO in `RewriteRules_GenerateAffectedLRIClausesSubgroup`.
+- Make a test case to test `prefix_merge` generates `left_recursion_inject_multiple`.
 
 ## Features to Add
 
@@ -20,7 +22,6 @@
 
 ## Issues
 
-- Make a test case to test `prefix_merge` generates `left_recursion_inject_multiple`.
 - Test `X ::= X LRI ...`.
 - Optimize `CalculateFirstSet_IndirectStartRules` using partial ordering.
 - TODO in `SyntaxSymbolManager::EliminateSingleRulePrefix`.

@@ -225,6 +225,7 @@ RewriteExtractedPrefixRules
 						auto lrp = MakePtr<GlrLeftRecursionPlaceholder>();
 						lrpClause->flags.Add(lrp);
 						lrp->flag.value = L"LRIP_" + pair.key->Name() + L"_" + pair.value->Name();
+						syntaxManager.lrpFlags.Add(lrp->flag.value);
 					}
 					{
 						auto reuseClause = MakePtr<GlrReuseClause>();

@@ -125,9 +125,9 @@ CompileSyntax
 						rewritten = RewriteSyntax(context, syntaxManager, files);
 					}
 
-					// List<Ptr<GlrSyntaxFile>> rewrittenFiles;
-					// rewrittenFiles.Add(rewritten);
-					// CompileWithoutRewriting(astManager, lexerManager, syntaxManager, output, rewrittenFiles);
+					List<Ptr<GlrSyntaxFile>> rewrittenFiles;
+					rewrittenFiles.Add(rewritten);
+					CompileWithoutRewriting(astManager, lexerManager, syntaxManager, output, rewrittenFiles);
 					return rewritten;
 				}
 				else
