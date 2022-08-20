@@ -475,6 +475,34 @@ RewriteRules (Unaffected)
 RewriteRules (Affected)
 ***********************************************************************/
 
+			void RewriteRules_GenerateAffectedLRIClauses(
+				const VisitorContext& vContext,
+				const RewritingContext& rContext,
+				RuleSymbol* ruleSymbol,
+				GlrRule* lriRule,
+				bool isLeftRecursive,
+				Ptr<RewritingPrefixConflict> conflict,
+				Dictionary<Pair<RuleSymbol*, RuleSymbol*>, vint>& pathCounter,
+				Group<WString, Pair<RuleSymbol*, GlrPrefixMergeClause*>>& pmClauses,
+				SortedList<RuleSymbol*>& knownOptionalFlags
+			)
+			{
+				for (auto [conflictedClause, conflictedIndex] : indexed(conflict->conflictedClauses.Keys()))
+				{
+					auto conflictedRuleSymbol = vContext.simpleUseClauseToReferencedRules[conflictedClause];
+					auto&& prefixClauses = conflict->conflictedClauses.GetByIndex(conflictedIndex);
+					for (auto prefixClause : prefixClauses)
+					{
+						auto prefixRuleSymbol = vContext.simpleUseClauseToReferencedRules[prefixClause];
+						SortedList<WString> lripFlags;
+						for (auto extracted : vContext.indirectStartPathToLastRules[{conflictedRuleSymbol, prefixRuleSymbol}])
+						{
+							lripFlags.Add(L"LRIP_" + extracted.key->Name() + L"_" + prefixRuleSymbol->Name());
+						}
+					}
+				}
+			}
+
 /***********************************************************************
 RewriteRules
 ***********************************************************************/
@@ -512,6 +540,21 @@ RewriteRules
 						pmClauses,
 						knownOptionalFlags
 						);
+
+					if (conflict)
+					{
+						RewriteRules_GenerateAffectedLRIClauses(
+							vContext,
+							rContext,
+							ruleSymbol,
+							lriRule,
+							isLeftRecursive,
+							conflict,
+							pathCounter,
+							pmClauses,
+							knownOptionalFlags
+							);
+					}
 				}
 			}
 
