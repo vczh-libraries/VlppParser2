@@ -572,14 +572,9 @@ RewriteRules (Affected)
 						generateOptionalLri
 						);
 
-					if (knownOptionalStartRules.Contains(pmName))
+					if ((omittedSelf && flags.Count() == 0) || generateOptionalLri)
 					{
-						generateOptionalLri = false;
-					}
-
-					if (omittedSelf && flags.Count() == 0)
-					{
-						// TODO: add test case
+						// TODO: add test case for omittedSelf == true
 						for (auto lripFlag : lripFlags)
 						{
 							auto lriClause = CreateLriClause(pmName);
@@ -597,6 +592,11 @@ RewriteRules (Affected)
 								);
 							lriClause->continuation = lriCont;
 						}
+					}
+
+					if (knownOptionalStartRules.Contains(pmName))
+					{
+						generateOptionalLri = false;
 					}
 
 					for (auto [flag, pmRulePair] : flags)
@@ -638,7 +638,6 @@ RewriteRules (Affected)
 									auto newBranchStart = CreateLriClause(branchStart->rule->literal.value);
 									newBranchStart->continuation = lriCont2;
 									lriCont->injectionTargets.Add(newBranchStart);
-
 								}
 								else
 								{
