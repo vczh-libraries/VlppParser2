@@ -303,9 +303,7 @@ RewriteRules (Unaffected)
 			void RewriteRules_CollectFlags(
 				const VisitorContext& vContext,
 				RuleSymbol* ruleSymbol,
-				GlrRule* lriRule,
 				bool isLeftRecursive,
-				const WString& pmName,
 				const List<Pair<RuleSymbol*, GlrPrefixMergeClause*>>& pmClauses,
 				Dictionary<WString, Pair<RuleSymbol*, RuleSymbol*>>& flags,
 				bool& omittedSelf,
@@ -340,15 +338,6 @@ RewriteRules (Unaffected)
 					if (flags.Count() > 0)
 					{
 						generateOptionalLri = true;
-					}
-					else
-					{
-						auto reuseClause = MakePtr<GlrReuseClause>();
-						lriRule->clauses.Add(reuseClause);
-
-						auto useSyntax = MakePtr<GlrUseSyntax>();
-						reuseClause->syntax = useSyntax;
-						useSyntax->name.value = pmName;
 					}
 				}
 			}
@@ -394,7 +383,7 @@ RewriteRules (Unaffected)
 				bool isLeftRecursive,
 				Dictionary<Pair<RuleSymbol*, RuleSymbol*>, vint>& pathCounter,
 				Group<WString, Pair<RuleSymbol*, GlrPrefixMergeClause*>>& pmClauses,
-				SortedList<RuleSymbol*>& knownOptionalFlags
+				SortedList<WString>& knownOptionalStartRules
 			)
 			{
 				for (auto [pmName, pmIndex] : indexed(pmClauses.Keys()))
@@ -413,14 +402,22 @@ RewriteRules (Unaffected)
 					RewriteRules_CollectFlags(
 						vContext,
 						ruleSymbol,
-						lriRule,
 						isLeftRecursive,
-						pmName,
 						pmClauses.GetByIndex(pmIndex),
 						flags,
 						omittedSelf,
 						generateOptionalLri
 						);
+
+					if (omittedSelf && flags.Count() == 0)
+					{
+						auto reuseClause = MakePtr<GlrReuseClause>();
+						lriRule->clauses.Add(reuseClause);
+
+						auto useSyntax = MakePtr<GlrUseSyntax>();
+						reuseClause->syntax = useSyntax;
+						useSyntax->name.value = pmName;
+					}
 
 					for (auto [flag, pmRulePair] : flags)
 					{
@@ -449,7 +446,7 @@ RewriteRules (Unaffected)
 						{
 							lriCont->type = GlrLeftRecursionInjectContinuationType::Optional;
 							generateOptionalLri = false;
-							knownOptionalFlags.Add(pmRule);
+							knownOptionalStartRules.Add(pmName);
 						}
 						else
 						{
@@ -484,7 +481,7 @@ RewriteRules (Affected)
 				Ptr<RewritingPrefixConflict> conflict,
 				Dictionary<Pair<RuleSymbol*, RuleSymbol*>, vint>& pathCounter,
 				Group<WString, Pair<RuleSymbol*, GlrPrefixMergeClause*>>& pmClauses,
-				SortedList<RuleSymbol*>& knownOptionalFlags
+				SortedList<WString>& knownOptionalStartRules
 			)
 			{
 				for (auto [conflictedClause, conflictedIndex] : indexed(conflict->conflictedClauses.Keys()))
@@ -529,7 +526,7 @@ RewriteRules
 							);
 					}
 
-					SortedList<RuleSymbol*> knownOptionalFlags;
+					SortedList<WString> knownOptionalStartRules;
 					RewriteRules_GenerateUnaffectedLRIClauses(
 						vContext,
 						rContext,
@@ -538,7 +535,7 @@ RewriteRules
 						isLeftRecursive,
 						pathCounter,
 						pmClauses,
-						knownOptionalFlags
+						knownOptionalStartRules
 						);
 
 					if (conflict)
@@ -552,7 +549,7 @@ RewriteRules
 							conflict,
 							pathCounter,
 							pmClauses,
-							knownOptionalFlags
+							knownOptionalStartRules
 							);
 					}
 				}
