@@ -16,16 +16,16 @@
 #include "../../Source/FeatureTest/Generated/FeatureTestModuleParser.h"
 #include "../../Source/BinaryOp/Generated/BinaryOpExprAst_Json.h"
 #include "../../Source/BinaryOp/Generated/BinaryOpModuleParser.h"
-#include "../../Source/PrefixSubset/Generated/PrefixSubsetTypeOrExpr_Json.h"
-#include "../../Source/PrefixSubset/Generated/PrefixSubsetModuleParser.h"
-#include "../../Source/PrefixSubset2/Generated/PrefixSubset2TypeOrExpr_Json.h"
-#include "../../Source/PrefixSubset2/Generated/PrefixSubset2ModuleParser.h"
-#include "../../Source/PrefixSubset3/Generated/PrefixSubset3TypeOrExpr_Json.h"
-#include "../../Source/PrefixSubset3/Generated/PrefixSubset3ModuleParser.h"
-#include "../../Source/PrefixSubset4/Generated/PrefixSubset4TypeOrExpr_Json.h"
-#include "../../Source/PrefixSubset4/Generated/PrefixSubset4ModuleParser.h"
-#include "../../Source/PrefixSubset5/Generated/PrefixSubset5TypeOrExpr_Json.h"
-#include "../../Source/PrefixSubset5/Generated/PrefixSubset5ModuleParser.h"
+#include "../../Source/PrefixMerge1_Lri/Generated/PrefixMerge1_LriTypeOrExpr_Json.h"
+#include "../../Source/PrefixMerge1_Lri/Generated/PrefixMerge1_LriModuleParser.h"
+#include "../../Source/PrefixMerge2_LriRequired/Generated/PrefixMerge2_LriRequiredTypeOrExpr_Json.h"
+#include "../../Source/PrefixMerge2_LriRequired/Generated/PrefixMerge2_LriRequiredModuleParser.h"
+#include "../../Source/PrefixMerge3_LriNested/Generated/PrefixMerge3_LriNestedTypeOrExpr_Json.h"
+#include "../../Source/PrefixMerge3_LriNested/Generated/PrefixMerge3_LriNestedModuleParser.h"
+#include "../../Source/PrefixMerge4_LriMultiple/Generated/PrefixMerge4_LriMultipleTypeOrExpr_Json.h"
+#include "../../Source/PrefixMerge4_LriMultiple/Generated/PrefixMerge4_LriMultipleModuleParser.h"
+#include "../../Source/PrefixMerge5_Pm/Generated/PrefixMerge5_PmTypeOrExpr_Json.h"
+#include "../../Source/PrefixMerge5_Pm/Generated/PrefixMerge5_PmModuleParser.h"
 #include "../../Source/LogTrace.h"
 
 extern WString GetTestParserInputPath(const WString& parserName);
@@ -265,57 +265,57 @@ TEST_FILE
 		&binaryop::ModuleParserStateLabel,
 		&binaryop::ModuleParserSwitchName
 		);
-	TestParser<prefixsubset::ModuleParser, prefixsubset::json_visitor::TypeOrExprVisitor>(
-		L"PrefixSubset",
-		&prefixsubset::PrefixSubsetTypeName,
-		&prefixsubset::PrefixSubsetFieldName,
-		&prefixsubset::PrefixSubsetTokenId,
-		&prefixsubset::ModuleParserRuleName,
-		&prefixsubset::ModuleParserStateLabel,
-		&prefixsubset::ModuleParserSwitchName,
-		L"TestCase_PrefixSubset"
+	TestParser<prefixmerge1_lri::ModuleParser, prefixmerge1_lri::json_visitor::TypeOrExprVisitor>(
+		L"PrefixMerge1_Lri",
+		&prefixmerge1_lri::PrefixMerge1_LriTypeName,
+		&prefixmerge1_lri::PrefixMerge1_LriFieldName,
+		&prefixmerge1_lri::PrefixMerge1_LriTokenId,
+		&prefixmerge1_lri::ModuleParserRuleName,
+		&prefixmerge1_lri::ModuleParserStateLabel,
+		&prefixmerge1_lri::ModuleParserSwitchName,
+		L"TestCase_PrefixMerge"
 		);
-	TestParser<prefixsubset2::ModuleParser, prefixsubset2::json_visitor::TypeOrExprVisitor>(
-		L"PrefixSubset2",
-		&prefixsubset2::PrefixSubset2TypeName,
-		&prefixsubset2::PrefixSubset2FieldName,
-		&prefixsubset2::PrefixSubset2TokenId,
-		&prefixsubset2::ModuleParserRuleName,
-		&prefixsubset2::ModuleParserStateLabel,
-		&prefixsubset2::ModuleParserSwitchName,
-		L"TestCase_PrefixSubset"
+	TestParser<prefixmerge2_lrirequired::ModuleParser, prefixmerge2_lrirequired::json_visitor::TypeOrExprVisitor>(
+		L"PrefixMerge2_LriRequired",
+		&prefixmerge2_lrirequired::PrefixMerge2_LriRequiredTypeName,
+		&prefixmerge2_lrirequired::PrefixMerge2_LriRequiredFieldName,
+		&prefixmerge2_lrirequired::PrefixMerge2_LriRequiredTokenId,
+		&prefixmerge2_lrirequired::ModuleParserRuleName,
+		&prefixmerge2_lrirequired::ModuleParserStateLabel,
+		&prefixmerge2_lrirequired::ModuleParserSwitchName,
+		L"TestCase_PrefixMerge"
 		);
-	TestParser<prefixsubset3::ModuleParser, prefixsubset3::json_visitor::TypeOrExprVisitor>(
-		L"PrefixSubset3",
-		&prefixsubset3::PrefixSubset3TypeName,
-		&prefixsubset3::PrefixSubset3FieldName,
-		&prefixsubset3::PrefixSubset3TokenId,
-		&prefixsubset3::ModuleParserRuleName,
-		&prefixsubset3::ModuleParserStateLabel,
-		&prefixsubset3::ModuleParserSwitchName,
-		L"TestCase_PrefixSubset",
-		L"TestCase_PrefixSubset_CtorExpr"
+	TestParser<prefixmerge3_lrinested::ModuleParser, prefixmerge3_lrinested::json_visitor::TypeOrExprVisitor>(
+		L"PrefixMerge3_LriNested",
+		&prefixmerge3_lrinested::PrefixMerge3_LriNestedTypeName,
+		&prefixmerge3_lrinested::PrefixMerge3_LriNestedFieldName,
+		&prefixmerge3_lrinested::PrefixMerge3_LriNestedTokenId,
+		&prefixmerge3_lrinested::ModuleParserRuleName,
+		&prefixmerge3_lrinested::ModuleParserStateLabel,
+		&prefixmerge3_lrinested::ModuleParserSwitchName,
+		L"TestCase_PrefixMerge",
+		L"TestCase_PrefixMerge_CtorExpr"
 		);
-	TestParser<prefixsubset4::ModuleParser, prefixsubset4::json_visitor::TypeOrExprVisitor>(
-		L"PrefixSubset4",
-		&prefixsubset4::PrefixSubset4TypeName,
-		&prefixsubset4::PrefixSubset4FieldName,
-		&prefixsubset4::PrefixSubset4TokenId,
-		&prefixsubset4::ModuleParserRuleName,
-		&prefixsubset4::ModuleParserStateLabel,
-		&prefixsubset4::ModuleParserSwitchName,
-		L"TestCase_PrefixSubset",
-		L"TestCase_PrefixSubset_CtorExpr"
+	TestParser<prefixmerge4_lrimultiple::ModuleParser, prefixmerge4_lrimultiple::json_visitor::TypeOrExprVisitor>(
+		L"PrefixMerge4_LriMultiple",
+		&prefixmerge4_lrimultiple::PrefixMerge4_LriMultipleTypeName,
+		&prefixmerge4_lrimultiple::PrefixMerge4_LriMultipleFieldName,
+		&prefixmerge4_lrimultiple::PrefixMerge4_LriMultipleTokenId,
+		&prefixmerge4_lrimultiple::ModuleParserRuleName,
+		&prefixmerge4_lrimultiple::ModuleParserStateLabel,
+		&prefixmerge4_lrimultiple::ModuleParserSwitchName,
+		L"TestCase_PrefixMerge",
+		L"TestCase_PrefixMerge_CtorExpr"
 		);
-	TestParser<prefixsubset5::ModuleParser, prefixsubset5::json_visitor::TypeOrExprVisitor>(
-		L"PrefixSubset5",
-		&prefixsubset5::PrefixSubset5TypeName,
-		&prefixsubset5::PrefixSubset5FieldName,
-		&prefixsubset5::PrefixSubset5TokenId,
-		&prefixsubset5::ModuleParserRuleName,
-		&prefixsubset5::ModuleParserStateLabel,
-		&prefixsubset5::ModuleParserSwitchName,
-		L"TestCase_PrefixSubset",
-		L"TestCase_PrefixSubset_CtorExpr"
+	TestParser<prefixmerge5_pm::ModuleParser, prefixmerge5_pm::json_visitor::TypeOrExprVisitor>(
+		L"PrefixMerge5_Pm",
+		&prefixmerge5_pm::PrefixMerge5_PmTypeName,
+		&prefixmerge5_pm::PrefixMerge5_PmFieldName,
+		&prefixmerge5_pm::PrefixMerge5_PmTokenId,
+		&prefixmerge5_pm::ModuleParserRuleName,
+		&prefixmerge5_pm::ModuleParserStateLabel,
+		&prefixmerge5_pm::ModuleParserSwitchName,
+		L"TestCase_PrefixMerge",
+		L"TestCase_PrefixMerge_CtorExpr"
 		);
 }
