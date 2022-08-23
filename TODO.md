@@ -2,8 +2,9 @@
 
 ## Test Cases
 
+- Add test cases for `PrefixMerge6_Pm2`.
 - `PrefixMerge` 1-6 add test cases to parse expr and type separately.
-- Add test casse for PrefixExtractionAffectedRuleReferencedAnother error.
+- Add test cases for PrefixExtractionAffectedRuleReferencedAnother error.
 - TODO in `RewriteRules_GenerateAffectedLRIClausesSubgroup`.
 - Make a test case to test `prefix_merge` generates `left_recursion_inject_multiple`.
 

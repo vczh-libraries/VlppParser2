@@ -26,6 +26,8 @@
 #include "../../Source/PrefixMerge4_LriMultiple/Generated/PrefixMerge4_LriMultipleModuleParser.h"
 #include "../../Source/PrefixMerge5_Pm/Generated/PrefixMerge5_PmTypeOrExpr_Json.h"
 #include "../../Source/PrefixMerge5_Pm/Generated/PrefixMerge5_PmModuleParser.h"
+#include "../../Source/PrefixMerge6_Pm2/Generated/PrefixMerge6_Pm2TypeOrExpr_Json.h"
+#include "../../Source/PrefixMerge6_Pm2/Generated/PrefixMerge6_Pm2ModuleParser.h"
 #include "../../Source/LogTrace.h"
 
 extern WString GetTestParserInputPath(const WString& parserName);
@@ -315,6 +317,17 @@ TEST_FILE
 		&prefixmerge5_pm::ModuleParserRuleName,
 		&prefixmerge5_pm::ModuleParserStateLabel,
 		&prefixmerge5_pm::ModuleParserSwitchName,
+		L"TestCase_PrefixMerge",
+		L"TestCase_PrefixMerge_CtorExpr"
+		);
+	TestParser<prefixmerge6_pm2::ModuleParser, prefixmerge6_pm2::json_visitor::TypeOrExprVisitor>(
+		L"PrefixMerge6_Pm2",
+		&prefixmerge6_pm2::PrefixMerge6_Pm2TypeName,
+		&prefixmerge6_pm2::PrefixMerge6_Pm2FieldName,
+		&prefixmerge6_pm2::PrefixMerge6_Pm2TokenId,
+		&prefixmerge6_pm2::ModuleParserRuleName,
+		&prefixmerge6_pm2::ModuleParserStateLabel,
+		&prefixmerge6_pm2::ModuleParserSwitchName,
 		L"TestCase_PrefixMerge",
 		L"TestCase_PrefixMerge_CtorExpr"
 		);
