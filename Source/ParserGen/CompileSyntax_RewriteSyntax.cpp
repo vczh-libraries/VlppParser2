@@ -809,11 +809,6 @@ RenamePrefix
 
 			protected:
 
-				void NotBeginWithARule(ParsingAstBase* node)
-				{
-					CHECK_FAIL(L"vl::glr::parsergen::RenamePrefix(RewritingContext, Ptr<GlrSyntaxFile>)#Internal error: should have been cought by RuleMixedPrefixMergeWithClauseNotSyntacticallyBeginWithARule.");
-				}
-
 				void FixStartRule(ParsingToken& ruleName)
 				{
 					auto startRuleSymbol = syntaxManager.Rules()[ruleName.value];
@@ -839,18 +834,10 @@ RenamePrefix
 
 				void Visit(GlrRefSyntax* node) override
 				{
-					if (node->refType != GlrRefType::Id)
-					{
-						NotBeginWithARule(node);
-					}
-					else
+					if (node->refType == GlrRefType::Id)
 					{
 						vint index = syntaxManager.Rules().Keys().IndexOf(node->literal.value);
-						if (index == -1)
-						{
-							NotBeginWithARule(node);
-						}
-						else
+						if (index != -1)
 						{
 							FixStartRule(node->literal);
 						}
@@ -864,12 +851,10 @@ RenamePrefix
 
 				void Visit(GlrLoopSyntax* node) override
 				{
-					NotBeginWithARule(node);
 				}
 
 				void Visit(GlrOptionalSyntax* node) override
 				{
-					NotBeginWithARule(node);
 				}
 
 				void Visit(GlrSequenceSyntax* node) override
@@ -879,17 +864,14 @@ RenamePrefix
 
 				void Visit(GlrAlternativeSyntax* node) override
 				{
-					NotBeginWithARule(node);
 				}
 
 				void Visit(GlrPushConditionSyntax* node) override
 				{
-					NotBeginWithARule(node);
 				}
 
 				void Visit(GlrTestConditionSyntax* node) override
 				{
-					NotBeginWithARule(node);
 				}
 
 				////////////////////////////////////////////////////////////////////////
@@ -917,12 +899,10 @@ RenamePrefix
 
 				void Visit(GlrLeftRecursionInjectClause* node) override
 				{
-					NotBeginWithARule(node);
 				}
 
 				void Visit(GlrPrefixMergeClause* node) override
 				{
-					NotBeginWithARule(node);
 				}
 			};
 
