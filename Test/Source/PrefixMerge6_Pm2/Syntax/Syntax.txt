@@ -1,0 +1,76 @@
+////////////////////////////////////////
+// Left Recursive (Primitives)
+////////////////////////////////////////
+
+_Name
+  ::= ID:name as Name
+  ::= _Name:parent "." ID:member as MemberName
+  ;
+
+_PrimitiveShared
+  ::= !_Name
+  ;
+
+_PrimitiveTypeOnly
+  ::= "const" _PrimitiveShared:type as ConstType
+  ::= "const" _PrimitiveTypeOnly:type as ConstType
+  ;
+
+_PrimitiveExprOnly
+  ::= "(" !_Expr ")"
+  ;
+
+////////////////////////////////////////
+// Left Recursive (Types)
+////////////////////////////////////////
+
+_LongType
+  ::= !prefix_merge(_PrimitiveShared)
+  ::= !prefix_merge(_PrimitiveTypeOnly)
+  ::= _LongType:type "const" as ConstType
+  ::= _LongType:type "*" as PointerType
+  ::= _LongType:returnType "(" {_LongType:args ; ","} ")" as FunctionType
+  ;
+
+////////////////////////////////////////
+// Left Recursive (Expressions)
+////////////////////////////////////////
+
+_Expr0
+  ::= !prefix_merge(_PrimitiveShared)
+  ::= !prefix_merge(_PrimitiveExprOnly)
+  ::= _LongType:type "{" {_ExprNoComma:args ; ","} "}" as CtorExpr
+  ;
+
+_Expr1
+  ::= !_Expr0
+  ::= _Expr1:func "(" {_ExprNoComma:args ; ","} ")" as CallExpr
+  ;
+
+_Expr2
+  ::= !_Expr1
+  ::= _Expr2:first "*" _Expr1:second as MulExpr
+  ;
+
+_ExprThrow
+  ::= "throw" [_Expr2:arg] as ThrowExpr
+  ;
+
+_ExprNoComma
+  ::= !_Expr2
+  ::= !prefix_merge(_ExprThrow)
+  ;
+
+_Expr
+  ::= !_ExprNoComma
+  ::= _Expr:first "," _ExprNoComma:second as CommaExpr
+  ;
+
+////////////////////////////////////////
+// Left Recursive (Module)
+////////////////////////////////////////
+
+Module
+  ::= !_Expr
+  ::= !_LongType
+  ;
