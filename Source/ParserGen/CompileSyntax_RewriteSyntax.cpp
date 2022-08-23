@@ -57,9 +57,89 @@ namespace vl
 FillMissingPrefixMergeClauses
 ***********************************************************************/
 
-			void FillMissingPrefixMergeClauses(const VisitorContext& vContext, Ptr<GlrSyntaxFile> rewritten)
+			extern void CalculateFirstSet_IndirectStartRules(VisitorContext& context);
+			extern void CalculateFirstSet_IndirectSimpleUseRules(VisitorContext& context);
+
+			void FillMissingPrefixMergeClauses(VisitorContext& vContext, SyntaxSymbolManager& syntaxManager, Ptr<GlrSyntaxFile> rewritten)
 			{
-				CHECK_ERROR(vContext.clauseToConvertedToPrefixMerge.Count() == 0, L"Not Implemented!");
+				// find position of thses clauses in rules
+				for (auto clauseRaw : vContext.clauseToConvertedToPrefixMerge)
+				{
+					auto ruleSymbol = vContext.clauseToRules[clauseRaw];
+					auto ruleRaw = vContext.astRules[ruleSymbol];
+					vint ruleIndex = rewritten->rules.IndexOf(ruleRaw);
+					vint clauseIndex = ruleRaw->clauses.IndexOf(clauseRaw);
+					auto clause = ruleRaw->clauses[clauseIndex];
+
+					// create new rule and replace the clause with prefix_merge
+					auto newRule = MakePtr<GlrRule>();
+					rewritten->rules.Insert(ruleIndex, newRule);
+					newRule->name.value = ruleRaw->name.value + L"LRI_Isolated_" + itow(clauseIndex);
+					newRule->clauses.Add(clause);
+
+					auto newPM = MakePtr<GlrPrefixMergeClause>();
+					ruleRaw->clauses[clauseIndex] = newPM;
+					{
+						auto startRule = MakePtr<GlrRefSyntax>();
+						newPM->rule = startRule;
+
+						startRule->refType = GlrRefType::Id;
+						startRule->literal.value = newRule->name.value;
+					}
+
+					// remove direct references
+					{
+						vint index = vContext.clauseToStartRules.Keys().IndexOf(clause.Obj());
+						if (index != -1)
+						{
+							for (auto value : vContext.clauseToStartRules.GetByIndex(index))
+							{
+								vContext.directStartRules.Remove(ruleSymbol, { value,clause.Obj() });
+							}
+						}
+					}
+					{
+						vint index = vContext.simpleUseClauseToReferencedRules.Keys().IndexOf(clause.Obj());
+						if (index != -1)
+						{
+							auto value = vContext.simpleUseClauseToReferencedRules.Values()[index];
+							vContext.directSimpleUseRules.Remove(ruleSymbol, { value,clause.Obj() });
+						}
+					}
+
+					// fix rule and clause symbols
+					auto newRuleSymbol = syntaxManager.CreateRule(newRule->name.value, ruleRaw->name.codeRange);
+					newRuleSymbol->ruleType = vContext.clauseTypes[clause.Obj()];
+					vContext.astRules.Add(newRuleSymbol, newRule.Obj());
+					vContext.clauseTypes.Add(newPM.Obj(), newRuleSymbol->ruleType);
+					vContext.clauseToRules.Set(clause.Obj(), newRuleSymbol);
+					vContext.clauseToRules.Add(newPM.Obj(), ruleSymbol);
+					vContext.clauseToStartRules.Add(newPM.Obj(), newRuleSymbol);
+
+					// fix	directPmClauses
+					//		indirectPmClauses
+					//		directStartRules
+					vContext.directPmClauses.Add(ruleSymbol, newPM.Obj());
+					vContext.directStartRules.Add(ruleSymbol, { newRuleSymbol, newPM.Obj() });
+					for (auto key : syntaxManager.Rules().Values())
+					{
+						if (vContext.indirectStartPathToLastRules.Contains({ key,ruleSymbol }))
+						{
+							vContext.indirectPmClauses.Add(key, newPM.Obj());
+						}
+					}
+				}
+
+				// fix	indirectStartRules
+				//		indirectSimpleUseRules
+				//		indirectStartPathToLastRules
+				//		indirectSimpleUsePathToLastRules
+				vContext.indirectStartRules.Clear();
+				vContext.indirectSimpleUseRules.Clear();
+				vContext.indirectStartPathToLastRules.Clear();
+				vContext.indirectSimpleUsePathToLastRules.Clear();
+				CalculateFirstSet_IndirectStartRules(vContext);
+				CalculateFirstSet_IndirectSimpleUseRules(vContext);
 			}
 
 /***********************************************************************
@@ -931,7 +1011,7 @@ RenamePrefix
 RewriteSyntax
 ***********************************************************************/
 
-			Ptr<GlrSyntaxFile> RewriteSyntax(const VisitorContext& context, SyntaxSymbolManager& syntaxManager, collections::List<Ptr<GlrSyntaxFile>>& files)
+			Ptr<GlrSyntaxFile> RewriteSyntax(VisitorContext& context, SyntaxSymbolManager& syntaxManager, collections::List<Ptr<GlrSyntaxFile>>& files)
 			{
 				// merge files to single syntax file
 
@@ -943,7 +1023,7 @@ RewriteSyntax
 				}
 
 				// find clauses that need to be converted to prefix_merge and fix VisitorContext
-				FillMissingPrefixMergeClauses(context, rewritten);
+				FillMissingPrefixMergeClauses(context, syntaxManager, rewritten);
 
 				// find rules that need to be rewritten using left_recursion_inject
 				RewritingContext rewritingContext;

@@ -196,7 +196,7 @@ CalculateFirstSet
 				}
 			}
 
-			void CalculateFirstSet_RuleClosure(RulePathDependencies& direct, RulePathDependencies& indirect, PathToLastRuleMap& pathToLastRules)
+			void CalculateFirstSet_RuleClosure(const RulePathDependencies& direct, RulePathDependencies& indirect, PathToLastRuleMap& pathToLastRules)
 			{
 				for (auto [rule, index] : indexed(direct.Keys()))
 				{
