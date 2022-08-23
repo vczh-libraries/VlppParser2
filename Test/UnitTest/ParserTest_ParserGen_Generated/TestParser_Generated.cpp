@@ -329,6 +329,7 @@ TEST_FILE
 		&prefixmerge6_pm2::ModuleParserStateLabel,
 		&prefixmerge6_pm2::ModuleParserSwitchName,
 		L"TestCase_PrefixMerge",
-		L"TestCase_PrefixMerge_CtorExpr"
+		L"TestCase_PrefixMerge_CtorExpr",
+		L"TestCase_PrefixMerge_ThrowComma"
 		);
 }
