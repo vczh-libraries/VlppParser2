@@ -74,7 +74,7 @@ FillMissingPrefixMergeClauses
 					// create new rule and replace the clause with prefix_merge
 					auto newRule = MakePtr<GlrRule>();
 					rewritten->rules.Insert(ruleIndex, newRule);
-					newRule->name.value = ruleRaw->name.value + L"LRI_Isolated_" + itow(clauseIndex);
+					newRule->name.value = ruleRaw->name.value + L"_LRI_Isolated_" + itow(clauseIndex);
 					newRule->clauses.Add(clause);
 
 					auto newPM = MakePtr<GlrPrefixMergeClause>();
@@ -120,6 +120,7 @@ FillMissingPrefixMergeClauses
 					//		indirectPmClauses
 					//		directStartRules
 					vContext.directPmClauses.Add(ruleSymbol, newPM.Obj());
+					vContext.indirectPmClauses.Add(ruleSymbol, newPM.Obj());
 					vContext.directStartRules.Add(ruleSymbol, { newRuleSymbol, newPM.Obj() });
 					for (auto key : syntaxManager.Rules().Values())
 					{
