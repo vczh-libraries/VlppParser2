@@ -741,6 +741,7 @@ ValidateStructurePrefixMergeRuleVisitor
 
 				void NotBeginWithARule(ParsingAstBase* node)
 				{
+					// TODO: Should accept and generate !prefix_merge equivalent effect for this clause automatically
 					context.syntaxManager.AddError(
 						ParserErrorType::RuleMixedPrefixMergeWithClauseNotSyntacticallyBeginWithARule,
 						node->codeRange,
@@ -752,6 +753,8 @@ ValidateStructurePrefixMergeRuleVisitor
 				{
 					if (ruleSymbol != startRule && !context.indirectPmClauses.Keys().Contains(startRule))
 					{
+						// TODO: Should accept and generate !prefix_merge equivalent effect for this clause automatically
+						//       When this is not a left-recursive clause
 						context.syntaxManager.AddError(
 							ParserErrorType::RuleMixedPrefixMergeWithClauseNotBeginWithIndirectPrefixMerge,
 							node->codeRange,
@@ -855,7 +858,7 @@ ValidateStructurePrefixMergeRuleVisitor
 			};
 
 /***********************************************************************
-ValidateStructurePrefixMergeRuleVisitor
+ValidateStructureIndirectPrefixMergeRuleVisitor
 ***********************************************************************/
 
 			class ValidateStructureIndirectPrefixMergeRuleVisitor
@@ -888,15 +891,29 @@ ValidateStructurePrefixMergeRuleVisitor
 
 				void NotSimpleUsingRule(GlrClause* node)
 				{
-					if (!context.leftRecursiveClauses.Contains(ruleSymbol, node))
+					if (context.leftRecursiveClauses.Contains(ruleSymbol, node)) return;
+
+					vint index = context.clauseToStartRules.Keys().IndexOf(node);
+					if (index == -1) return;
+
 					{
-						context.syntaxManager.AddError(
-							ParserErrorType::RuleIndirectlyBeginsWithPrefixMergeMixedNonSimpleUseClause,
-							node->codeRange,
-							ruleSymbol->Name(),
-							pmRuleSymbol->Name()
-							);
+						for (auto ruleSymbol : context.clauseToStartRules.GetByIndex(index))
+						{
+							if (context.indirectPmClauses.Keys().IndexOf(ruleSymbol) != -1)
+							{
+								goto FAILED_CONDITION;
+							}
+						}
+						return;
+					FAILED_CONDITION:;
 					}
+
+					context.syntaxManager.AddError(
+						ParserErrorType::RuleIndirectlyBeginsWithPrefixMergeMixedNonSimpleUseClause,
+						node->codeRange,
+						ruleSymbol->Name(),
+						pmRuleSymbol->Name()
+						);
 				}
 
 				////////////////////////////////////////////////////////////////////////
