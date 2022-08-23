@@ -352,16 +352,21 @@ ResolveNameVisitor
 					context.directLrpClauses.Add(ruleSymbol, node);
 				}
 
-				void Visit(GlrLeftRecursionInjectClause* node) override
+				void VisitLriClause(GlrLeftRecursionInjectClause* node)
 				{
 					VisitReuseSyntax(node->rule->literal, true);
 					if (node->continuation)
 					{
 						for (auto lriTarget : node->continuation->injectionTargets)
 						{
-							Visit(lriTarget.Obj());
+							VisitLriClause(lriTarget.Obj());
 						}
 					}
+				}
+
+				void Visit(GlrLeftRecursionInjectClause* node) override
+				{
+					VisitLriClause(node);
 					context.directLriClauses.Add(ruleSymbol, node);
 				}
 

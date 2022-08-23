@@ -52,13 +52,9 @@ _Expr2
   ::= _Expr2:first "*" _Expr1:second as MulExpr
   ;
 
-_ExprThrow
-  ::= "throw" [_Expr2:arg] as ThrowExpr
-  ;
-
 _ExprNoComma
   ::= !_Expr2
-  ::= !prefix_merge(_ExprThrow)
+  ::= "throw" [_Expr2:arg] as ThrowExpr
   ;
 
 _Expr

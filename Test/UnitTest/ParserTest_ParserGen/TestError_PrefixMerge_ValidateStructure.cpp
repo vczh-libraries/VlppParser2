@@ -96,7 +96,7 @@ Exp1
 	// RuleIndirectlyBeginsWithPrefixMergeOrLeftRecursionMarkers
 	//////////////////////////////////////////////////////
 
-	TEST_CASE(L"RuleIndirectlyBeginsWithPrefixMergeOrLeftRecursionMarkers 1")
+	TEST_CASE(L"RuleIndirectlyBeginsWithPrefixMergeMixedLeftRecursionMarkers 1")
 	{
 		const wchar_t* syntaxCode =
 LR"SYNTAX(
@@ -127,11 +127,11 @@ Exp3
 			astCode,
 			lexerCode,
 			syntaxCode,
-			{ ParserErrorType::RuleIndirectlyBeginsWithPrefixMergeOrLeftRecursionMarkers,L"Exp3",L"PM",L"LRP"}
+			{ ParserErrorType::RuleIndirectlyBeginsWithPrefixMergeMixedLeftRecursionMarkers,L"Exp3",L"PM",L"LRP"}
 			);
 	});
 
-	TEST_CASE(L"RuleIndirectlyBeginsWithPrefixMergeOrLeftRecursionMarkers 2")
+	TEST_CASE(L"RuleIndirectlyBeginsWithPrefixMergeMixedLeftRecursionMarkers 2")
 	{
 		const wchar_t* syntaxCode =
 LR"SYNTAX(
@@ -166,7 +166,7 @@ Exp3
 			astCode,
 			lexerCode,
 			syntaxCode,
-			{ ParserErrorType::RuleIndirectlyBeginsWithPrefixMergeOrLeftRecursionMarkers,L"Exp3",L"PM",L"LRI"}
+			{ ParserErrorType::RuleIndirectlyBeginsWithPrefixMergeMixedLeftRecursionMarkers,L"Exp3",L"PM",L"LRI"}
 			);
 	});
 

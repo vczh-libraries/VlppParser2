@@ -977,7 +977,7 @@ ValidateStructure
 							{
 								auto ruleLrp = context.clauseToRules[context.indirectLrpClauses.GetByIndex(indexLrp)[0]];
 								context.syntaxManager.AddError(
-									ParserErrorType::RuleIndirectlyBeginsWithPrefixMergeOrLeftRecursionMarkers,
+									ParserErrorType::RuleIndirectlyBeginsWithPrefixMergeMixedLeftRecursionMarkers,
 									rule->name.codeRange,
 									ruleSymbol->Name(),
 									rulePm->Name(),
@@ -988,7 +988,7 @@ ValidateStructure
 							{
 								auto ruleLri = context.clauseToRules[context.indirectLriClauses.GetByIndex(indexLri)[0]];
 								context.syntaxManager.AddError(
-									ParserErrorType::RuleIndirectlyBeginsWithPrefixMergeOrLeftRecursionMarkers,
+									ParserErrorType::RuleIndirectlyBeginsWithPrefixMergeMixedLeftRecursionMarkers,
 									rule->name.codeRange,
 									ruleSymbol->Name(),
 									rulePm->Name(),
