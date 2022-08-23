@@ -893,10 +893,9 @@ ValidateStructureIndirectPrefixMergeRuleVisitor
 				{
 					if (context.leftRecursiveClauses.Contains(ruleSymbol, node)) return;
 
-					vint index = context.clauseToStartRules.Keys().IndexOf(node);
-					if (index == -1) return;
-
 					{
+						vint index = context.clauseToStartRules.Keys().IndexOf(node);
+						if (index == -1) goto SUCCEEDED_CONDITION;
 						for (auto ruleSymbol : context.clauseToStartRules.GetByIndex(index))
 						{
 							if (context.indirectPmClauses.Keys().IndexOf(ruleSymbol) != -1)
@@ -904,6 +903,9 @@ ValidateStructureIndirectPrefixMergeRuleVisitor
 								goto FAILED_CONDITION;
 							}
 						}
+
+					SUCCEEDED_CONDITION:
+						context.clauseToConvertedToPrefixMerge.Add(node);
 						return;
 					FAILED_CONDITION:;
 					}

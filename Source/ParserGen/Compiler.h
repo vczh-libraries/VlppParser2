@@ -37,6 +37,7 @@ namespace vl
 				using PrefixMergeClauseMap = collections::Group<RuleSymbol*, GlrPrefixMergeClause*>;
 				using ClauseToRuleMap = collections::Dictionary<GlrClause*, RuleSymbol*>;
 				using ClauseToRuleGroup = collections::Group<GlrClause*, RuleSymbol*>;
+				using ClauseList = collections::List<GlrClause*>;
 
 				using RulePathDependencies = collections::Group<RuleSymbol*, RuleClausePair>;
 				using PathToLastRuleMap = collections::Group<RuleSymbolPair, RuleClausePair>;
@@ -66,6 +67,7 @@ namespace vl
 					ClauseToRuleMap						clauseToRules;										// GlrClause -> RuleSymbol that contain this clause
 					ClauseToRuleMap						simpleUseClauseToReferencedRules;					// GlrClause -> RuleSymbol when this clause is !RuleSymbol
 					ClauseToRuleGroup					clauseToStartRules;									// GlrClause -> RuleSymbol when this clause begins with RuleSymbol
+					ClauseList							clauseToConvertedToPrefixMerge;						// GlrClause when it should be converted to a prefix_merge clause
 
 					RulePathDependencies				directStartRules, indirectStartRules;				// RuleSymbol -> {rule, clause begins with the rule}
 																											// RuleSymbol -> {rule, reachable clause begins with the rule}

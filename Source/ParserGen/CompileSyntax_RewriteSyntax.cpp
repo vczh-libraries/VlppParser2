@@ -54,6 +54,15 @@ namespace vl
 			}
 
 /***********************************************************************
+FillMissingPrefixMergeClauses
+***********************************************************************/
+
+			void FillMissingPrefixMergeClauses(const VisitorContext& vContext, Ptr<GlrSyntaxFile> rewritten)
+			{
+				CHECK_ERROR(vContext.clauseToConvertedToPrefixMerge.Count() == 0, L"Not Implemented!");
+			}
+
+/***********************************************************************
 CollectRewritingTargets
 ***********************************************************************/
 
@@ -932,6 +941,9 @@ RewriteSyntax
 					CopyFrom(rewritten->switches, file->switches, true);
 					CopyFrom(rewritten->rules, file->rules, true);
 				}
+
+				// find clauses that need to be converted to prefix_merge and fix VisitorContext
+				FillMissingPrefixMergeClauses(context, rewritten);
 
 				// find rules that need to be rewritten using left_recursion_inject
 				RewritingContext rewritingContext;
