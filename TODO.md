@@ -2,6 +2,7 @@
 
 ## Test Cases
 
+- `PrefixMerge` 1-6 add test cases to parse expr and type separately.
 - Add test casse for PrefixExtractionAffectedRuleReferencedAnother error.
 - TODO in `RewriteRules_GenerateAffectedLRIClausesSubgroup`.
 - Make a test case to test `prefix_merge` generates `left_recursion_inject_multiple`.
@@ -11,12 +12,9 @@
 - Extensible tokens, for example, recognize `R"[^\s(]\(` and invoke a callback function to determine the end of the string.
   - Offer two options: using (rich regex | C++) to search for complete token.
 - Check `prefix_merge` errors
-  - If a rule indirectly begins with `prefix_merge`:
-    - all clauses should begin with `prefix_merge`
-      - put `CHECK_FAIL(L"Not Implemented!")` during generating instructions since it must be allowed to allow `throw expression` in expressions.
   - Any rule should not go through switch instructions and reach PM/LRP in one token input.
   - LRI should not inject through switch instructions.
-- Add `throw expression` to `PrefixSubset5` to test `prefix_merge`.
+  - Add template expression with `NoGT` switch.
 
 ## Issues
 
