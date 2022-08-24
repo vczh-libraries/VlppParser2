@@ -1,0 +1,91 @@
+////////////////////////////////////////
+// Left Recursive (Primitives)
+////////////////////////////////////////
+
+_Name_NoGeneric
+  ::= ID:name as Name
+  ::= _Name:parent "." ID:member as MemberName
+  ;
+
+_Name
+  ::= !_Name_NoGeneric
+  ::= _Name_NoGeneric:parent "<" {Module_NoGT_NoComma:args ; ","} ">" as GenericName
+  ;
+
+_PrimitiveShared
+  ::= !_Name
+  ;
+
+_PrimitiveTypeOnly
+  ::= "const" _PrimitiveShared:type as ConstType
+  ::= "const" _PrimitiveTypeOnly:type as ConstType
+  ;
+
+_PrimitiveExprOnly
+  ::= "(" !_Expr ")"
+  ;
+
+////////////////////////////////////////
+// Left Recursive (Types)
+////////////////////////////////////////
+
+_LongType
+  ::= !prefix_merge(_PrimitiveShared)
+  ::= !prefix_merge(_PrimitiveTypeOnly)
+  ::= _LongType:type "const" as ConstType
+  ::= _LongType:type "*" as PointerType
+  ::= _LongType:returnType "(" {_LongType:args ; ","} ")" as FunctionType
+  ;
+
+////////////////////////////////////////
+// Left Recursive (Expressions)
+////////////////////////////////////////
+
+_Expr0
+  ::= !prefix_merge(_PrimitiveShared)
+  ::= !prefix_merge(_PrimitiveExprOnly)
+  ::= _LongType:type "{" {_Expr_NoComma:args ; ","} "}" as CtorExpr
+  ;
+
+_Expr1
+  ::= !_Expr0
+  ::= _Expr1:func "(" {_Expr_NoComma:args ; ","} ")" as CallExpr
+  ;
+
+_Expr2
+  ::= !_Expr1
+  ::= _Expr2:first "*" _Expr1:second as MulExpr
+  ;
+
+_Expr3
+  ::= !_Expr2
+  ::= _Expr3:first "<" _Expr2:second as MulExpr
+  ;
+
+_Expr_NoGT_NoComma
+  ::= !_Expr_NoComma
+  ;
+
+_Expr_NoComma
+  ::= !_Expr2
+  ::= "throw" [_Expr2:arg] as ThrowExpr
+  ;
+
+_Expr
+  ::= !_Expr_NoComma
+  ::= _Expr:first "," _Expr_NoComma:second as CommaExpr
+  ;
+
+////////////////////////////////////////
+// Left Recursive (Module)
+////////////////////////////////////////
+
+Module
+  ::= !_Expr
+  ::= !_LongType
+  ;
+
+Module_NoGT_NoComma
+  ::= !_Expr_NoGT_NoComma
+  ::= !_LongType
+  ;

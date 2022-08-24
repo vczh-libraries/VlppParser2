@@ -14,7 +14,6 @@
 - Check `prefix_merge` errors
   - Any rule should not go through switch instructions and reach PM/LRP in one token input.
   - LRI should not inject through switch instructions.
-  - Add template expression with `NoGT` switch.
 
 ## Issues
 
