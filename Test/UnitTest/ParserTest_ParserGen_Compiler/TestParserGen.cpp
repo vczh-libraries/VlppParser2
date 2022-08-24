@@ -79,6 +79,7 @@ TEST_FILE
 				File(dirOutput / (L"Syntax[" + parserName + L"].txt")).WriteAllText(actualJson, true, BomEncoder::Utf8);
 			});
 
+			WString formattedActual, formattedExpected;
 			{
 				File fileRewritten = dirParser / L"Syntax/SyntaxRewritten.txt";
 				if (fileRewritten.Exists())
@@ -87,8 +88,8 @@ TEST_FILE
 					{
 						auto input = fileRewritten.ReadAllTextByBom();
 						syntaxRewrittenExpected = ruleParser.ParseFile(input);
-						auto formattedSyntax = GenerateToStream([&](TextWriter& writer) {SyntaxAstToCode(syntaxRewrittenExpected, writer); });
-						File(dirOutput / (L"SyntaxRewrittenExpected[" + parserName + L"].txt")).WriteAllText(formattedSyntax, true, BomEncoder::Utf8);
+						formattedExpected = GenerateToStream([&](TextWriter& writer) {SyntaxAstToCode(syntaxRewrittenExpected, writer); });
+						File(dirOutput / (L"SyntaxRewrittenExpected[" + parserName + L"].txt")).WriteAllText(formattedExpected, true, BomEncoder::Utf8);
 					});
 				}
 			}
@@ -136,14 +137,16 @@ TEST_FILE
 				List<Ptr<GlrSyntaxFile>> syntaxFiles;
 				syntaxFiles.Add(syntaxFile);
 				auto syntaxRewrittenActual = CompileSyntax(astManager, lexerManager, syntaxManager, output, syntaxFiles);
-				TEST_ASSERT(global.Errors().Count() == 0);
+				if (syntaxRewrittenActual)
+				{
+					formattedActual = GenerateToStream([&](TextWriter& writer) {SyntaxAstToCode(syntaxRewrittenActual, writer); });
+					File(dirOutput / (L"SyntaxRewrittenActual[" + parserName + L"].txt")).WriteAllText(formattedActual, true, BomEncoder::Utf8);
+				}
 
+				TEST_ASSERT(global.Errors().Count() == 0);
 				TEST_ASSERT((bool)syntaxRewrittenActual == (bool)syntaxRewrittenExpected);
 				if (syntaxRewrittenExpected)
 				{
-					auto formattedActual = GenerateToStream([&](TextWriter& writer) {SyntaxAstToCode(syntaxRewrittenActual, writer); });
-					auto formattedExpected = GenerateToStream([&](TextWriter& writer) {SyntaxAstToCode(syntaxRewrittenExpected, writer); });
-					File(dirOutput / (L"SyntaxRewrittenActual[" + parserName + L"].txt")).WriteAllText(formattedActual, true, BomEncoder::Utf8);
 					TEST_ASSERT(formattedActual == formattedExpected);
 				}
 
