@@ -68,7 +68,7 @@ Exp0
 			astCode,
 			lexerCode,
 			syntaxCode,
-			{ ParserErrorType::RuleWithDifferentPartialTypes,L"Exp0" }
+			{ ParserErrorType::RuleWithDifferentPartialTypes,L"Exp0",L"NumExpr",L"RefExpr"}
 			);
 	});
 
@@ -86,7 +86,7 @@ Exp0 : Module
 			astCode,
 			lexerCode,
 			syntaxCode,
-			{ ParserErrorType::RuleExplicitTypeIsNotCompatibleWithClauseType,L"Exp0" }
+			{ ParserErrorType::RuleExplicitTypeIsNotCompatibleWithClauseType,L"Exp0",L"Module",L"NumExpr"}
 			);
 	});
 
@@ -106,7 +106,7 @@ Exp0
 			astCode,
 			lexerCode,
 			syntaxCode,
-			{ ParserErrorType::RuleCannotResolveToDeterministicType,L"Exp0" }
+			{ ParserErrorType::RuleCannotResolveToDeterministicType,L"Exp0",L"NumExpr",L"Module"}
 			);
 	});
 
@@ -126,7 +126,7 @@ Exp0
 			astCode,
 			lexerCode,
 			syntaxCode,
-			{ ParserErrorType::RuleCannotResolveToDeterministicType,L"Exp0" }
+			{ ParserErrorType::RuleCannotResolveToDeterministicType,L"Exp0",L"Expr",L"Module" }
 			);
 	});
 
@@ -149,7 +149,7 @@ Exp1
 			astCode,
 			lexerCode,
 			syntaxCode,
-			{ ParserErrorType::RuleCannotResolveToDeterministicType,L"Exp1" }
+			{ ParserErrorType::RuleCannotResolveToDeterministicType,L"Exp1",L"Module",L"Expr"}
 			);
 	});
 
@@ -175,7 +175,7 @@ Exp2
 			astCode,
 			lexerCode,
 			syntaxCode,
-			{ ParserErrorType::ReuseClauseCannotResolveToDeterministicType,L"Exp2" }
+			{ ParserErrorType::ReuseClauseCannotResolveToDeterministicType,L"Exp2",L"Expr, Module"}
 			);
 	});
 

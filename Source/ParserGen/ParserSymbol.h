@@ -91,11 +91,11 @@ ParserSymbolManager
 			ERROR_ITEM(SyntaxInvolvesPrefixMergeWithIllegalPlaceholderName,					ruleName, placeholderName)									/* A syntax uses prefix_merge should not use placeholder name that has _LRI/_LRIP/LRI_/LRIP_ */\
 			/* SyntaxAst(CalculateTypes) */\
 			ERROR_ITEM(RuleMixedPartialClauseWithOtherClause,								ruleName)\
-			ERROR_ITEM(RuleWithDifferentPartialTypes,										ruleName)\
-			ERROR_ITEM(RuleExplicitTypeIsNotCompatibleWithClauseType,						ruleName)													/* The type of the rule is explicitly specified, but it is incompatible with its clauses */\
-			ERROR_ITEM(RuleCannotResolveToDeterministicType,								ruleName)													/* Unable to resolve to one type from clauses (token, type) or (create, partial) */\
-			ERROR_ITEM(CyclicDependedRuleTypeIncompatible,									ruleName)													/* Types of rules are not compatible to each other when they build cyclic dependency by reuse clauses */\
-			ERROR_ITEM(ReuseClauseCannotResolveToDeterministicType,							ruleName)													/* A reuse clause contains multiple use rule but their types are not compatible to each other */\
+			ERROR_ITEM(RuleWithDifferentPartialTypes,										ruleName, ruleType, newType)\
+			ERROR_ITEM(RuleExplicitTypeIsNotCompatibleWithClauseType,						ruleName, ruleType, newType)								/* The type of the rule is explicitly specified, but it is incompatible with its clauses */\
+			ERROR_ITEM(RuleCannotResolveToDeterministicType,								ruleName, ruleType, newType)								/* Unable to resolve to one type from clauses (token, type) or (create, partial) */\
+			ERROR_ITEM(CyclicDependedRuleTypeIncompatible,									ruleName, ruleTypes)										/* Types of rules are not compatible to each other when they build cyclic dependency by reuse clauses */\
+			ERROR_ITEM(ReuseClauseCannotResolveToDeterministicType,							ruleName, ruleTypes)										/* A reuse clause contains multiple use rule but their types are not compatible to each other */\
 			ERROR_ITEM(ReuseClauseContainsNoUseRule,										ruleName)													/* A reuse clause contains no use rule therefore the type cannot be determined */\
 			/* SyntaxAst(ValidateTypes) */\
 			ERROR_ITEM(FieldNotExistsInClause,												ruleName, clauseType, fieldName)							/* The field does not exist in the type of the clause */\

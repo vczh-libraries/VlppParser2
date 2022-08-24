@@ -51,7 +51,9 @@ ValidatePartialRules
 									context.syntaxManager.AddError(
 										ParserErrorType::RuleWithDifferentPartialTypes,
 										rule->codeRange,
-										ruleSymbol->Name()
+										ruleSymbol->Name(),
+										partialType->Name(),
+										type->Name()
 										);
 									break;
 								}
@@ -64,6 +66,17 @@ ValidatePartialRules
 /***********************************************************************
 CalculateRuleAndClauseTypes
 ***********************************************************************/
+
+			WString GetRuleTypes(const IEnumerable<RuleSymbol*>& rules)
+			{
+				return
+					From(rules)
+					.Select([](auto r) { return r->ruleType; })
+					.Where([](auto rt) { return rt != nullptr; })
+					.Select([](auto rt) { return rt->Name(); })
+					.Aggregate(WString::Empty, [](auto a, auto b) {return a == WString::Empty ? b : a + L", " + b; })
+					;
+			}
 
 			void CalculateRuleAndClauseTypes(VisitorContext& context)
 			{
@@ -109,8 +122,9 @@ CalculateRuleAndClauseTypes
 				}
 
 				// define updateRuleType function, check clause type added to rule
-				auto updateRuleType = [&context, &explicitlyTypedRules](RuleSymbol* rule, AstClassSymbol* newRuleType, bool promptIfNull)
+				auto updateRuleType = [&context, &explicitlyTypedRules](RuleSymbol* rule, AstClassSymbol* newClauseType, bool promptIfNull)
 				{
+					auto newRuleType = FindCommonBaseClass(rule->ruleType, newClauseType);
 					if (explicitlyTypedRules.Contains(rule))
 					{
 						if (rule->ruleType != newRuleType)
@@ -118,7 +132,9 @@ CalculateRuleAndClauseTypes
 							context.syntaxManager.AddError(
 								ParserErrorType::RuleExplicitTypeIsNotCompatibleWithClauseType,
 								context.astRules[rule]->codeRange,
-								rule->Name()
+								rule->Name(),
+								(rule->ruleType ? rule->ruleType->Name() : WString::Empty),
+								(newClauseType ? newClauseType->Name() : WString::Empty)
 								);
 							return false;
 						}
@@ -130,7 +146,9 @@ CalculateRuleAndClauseTypes
 							context.syntaxManager.AddError(
 								ParserErrorType::RuleCannotResolveToDeterministicType,
 								context.astRules[rule]->codeRange,
-								rule->Name()
+								rule->Name(),
+								(rule->ruleType ? rule->ruleType->Name() : WString::Empty),
+								(newClauseType ? newClauseType->Name() : WString::Empty)
 								);
 							return false;
 						}
@@ -147,8 +165,8 @@ CalculateRuleAndClauseTypes
 						vint index = context.clauseTypes.Keys().IndexOf(clause.Obj());
 						if (index != -1)
 						{
-							auto newRuleType = FindCommonBaseClass(rule->ruleType, context.clauseTypes.Values()[index]);
-							if (!updateRuleType(rule, newRuleType, true))
+							auto newClauseType = context.clauseTypes.Values()[index];
+							if (!updateRuleType(rule, newClauseType, true))
 							{
 								break;
 							}
@@ -171,13 +189,9 @@ CalculateRuleAndClauseTypes
 							{
 								type = FindCommonBaseClass(type, dep->ruleType);
 							}
-							if (type)
+							if (type && !updateRuleType(rule, type, true))
 							{
-								auto newRuleType = FindCommonBaseClass(rule->ruleType, type);
-								if (!updateRuleType(rule, newRuleType, true))
-								{
-									break;
-								}
+								break;
 							}
 						}
 					}
@@ -195,12 +209,14 @@ CalculateRuleAndClauseTypes
 
 					if (!type)
 					{
+						auto ruleTypes = GetRuleTypes(cyclicRules);
 						for (auto rule : cyclicRules)
 						{
 							context.syntaxManager.AddError(
 								ParserErrorType::CyclicDependedRuleTypeIncompatible,
 								context.astRules[rule]->codeRange,
-								rule->Name()
+								rule->Name(),
+								ruleTypes
 								);
 						}
 					}
@@ -254,10 +270,12 @@ CalculateRuleAndClauseTypes
 							}
 							else
 							{
+								auto ruleTypes = GetRuleTypes(context.clauseReuseDependencies.GetByIndex(index));
 								context.syntaxManager.AddError(
 									ParserErrorType::ReuseClauseCannotResolveToDeterministicType,
 									clause->codeRange,
-									astRule->name.value
+									astRule->name.value,
+									ruleTypes
 									);
 							}
 						}
