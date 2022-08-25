@@ -88,7 +88,7 @@ TEST_FILE
 					{
 						auto input = fileRewritten.ReadAllTextByBom();
 						syntaxRewrittenExpected = ruleParser.ParseFile(input);
-						formattedExpected = GenerateToStream([&](TextWriter& writer) {SyntaxAstToCode(syntaxRewrittenExpected, writer); });
+						formattedExpected = GenerateToStream([&](TextWriter& writer) { SyntaxAstToCode(syntaxRewrittenExpected, writer); });
 						File(dirOutput / (L"SyntaxRewrittenExpected[" + parserName + L"].txt")).WriteAllText(formattedExpected, true, BomEncoder::Utf8);
 					});
 				}
@@ -139,7 +139,7 @@ TEST_FILE
 				auto syntaxRewrittenActual = CompileSyntax(astManager, lexerManager, syntaxManager, output, syntaxFiles);
 				if (syntaxRewrittenActual)
 				{
-					formattedActual = GenerateToStream([&](TextWriter& writer) {SyntaxAstToCode(syntaxRewrittenActual, writer); });
+					formattedActual = GenerateToStream([&](TextWriter& writer) { SyntaxAstToCode(syntaxRewrittenActual, writer); });
 					File(dirOutput / (L"SyntaxRewrittenActual[" + parserName + L"].txt")).WriteAllText(formattedActual, true, BomEncoder::Utf8);
 				}
 

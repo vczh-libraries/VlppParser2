@@ -28,6 +28,7 @@
 #include "../../Source/PrefixMerge5_Pm/Generated/PrefixMerge5_PmModuleParser.h"
 #include "../../Source/PrefixMerge6_Pm2/Generated/PrefixMerge6_Pm2TypeOrExpr_Json.h"
 #include "../../Source/PrefixMerge6_Pm2/Generated/PrefixMerge6_Pm2ModuleParser.h"
+#include "../../Source/PrefixMerge7_PmSwitch/Generated/PrefixMerge7_PmSwitchTypeOrExpr_Json.h"
 #include "../../Source/LogTrace.h"
 
 extern WString GetTestParserInputPath(const WString& parserName);
