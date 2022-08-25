@@ -38,8 +38,8 @@ namespace binaryop
 	public:
 		ModuleParser();
 
-		vl::Ptr<binaryop::BinaryExpr> ParseModule(const vl::WString& input, vl::vint codeIndex = -1) const;
-		vl::Ptr<binaryop::BinaryExpr> ParseModule(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
+		vl::Ptr<binaryop::Expr> ParseModule(const vl::WString& input, vl::vint codeIndex = -1) const;
+		vl::Ptr<binaryop::Expr> ParseModule(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
 	};
 }
 #endif

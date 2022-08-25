@@ -17,6 +17,7 @@
 
 ## Issues
 
+- TODO in `CalculateRuleAndClauseTypes`.
 - TODO in `ValidateStructurePrefixMergeRuleVisitor`.
 - Test `X ::= X LRI ...`.
 - Optimize `CalculateFirstSet_IndirectStartRules` using partial ordering.

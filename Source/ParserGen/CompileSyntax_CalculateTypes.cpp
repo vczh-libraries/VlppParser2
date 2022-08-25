@@ -87,6 +87,10 @@ CalculateRuleAndClauseTypes
 				pop.Sort();
 
 				// remove cyclic dependended rules from ruleReuseDependencies
+				// TODO: in order to remove the while(ruleTypeChanged) below
+				//       we need to determine the type following the order from PartialOrderingProcessor
+				//       instead of doing a tricky way to solve non-cyclic reusing before cyclic reusing
+				//       and having to while(ruleTypeChanged) because non-cyclic reusing could depends on the result from cyclic reusing
 				List<List<RuleSymbol*>> cyclicReuseDependencies;
 				for (auto&& component : pop.components)
 				{
@@ -122,7 +126,7 @@ CalculateRuleAndClauseTypes
 				}
 
 				// define updateRuleType function, check clause type added to rule
-				auto updateRuleType = [&context, &explicitlyTypedRules](RuleSymbol* rule, AstClassSymbol* newClauseType, bool promptIfNull)
+				auto updateRuleType = [&context, &explicitlyTypedRules](RuleSymbol* rule, AstClassSymbol* newClauseType, bool promptIfNull, bool* ruleTypeChanged = nullptr)
 				{
 					auto newRuleType = FindCommonBaseClass(rule->ruleType, newClauseType);
 					if (explicitlyTypedRules.Contains(rule))
@@ -152,6 +156,10 @@ CalculateRuleAndClauseTypes
 								);
 							return false;
 						}
+						if (ruleTypeChanged && newRuleType && rule->ruleType != newRuleType)
+						{
+							*ruleTypeChanged = true;
+						}
 						rule->ruleType = newRuleType;
 					}
 					return true;
@@ -175,58 +183,66 @@ CalculateRuleAndClauseTypes
 				}
 				if (context.global.Errors().Count() > 0) return;
 
-				// calculate types for rules that contain reuse dependency
-				for (auto&& component : pop.components)
+				bool ruleTypeChanged = true;
+				while(ruleTypeChanged)
 				{
-					for (vint i = 0; i < component.nodeCount; i++)
+					ruleTypeChanged = false;
+
+					// calculate types for rules that contain reuse dependency
+					for (auto&& component : pop.components)
 					{
-						auto rule = rules[component.firstNode[i]];
-						vint index = context.ruleReuseDependencies.Keys().IndexOf(rule);
-						if (index != -1)
+						for (vint i = 0; i < component.nodeCount; i++)
 						{
-							AstClassSymbol* type = nullptr;
-							for (auto dep : context.ruleReuseDependencies.GetByIndex(index))
+							auto rule = rules[component.firstNode[i]];
+							vint index = context.ruleReuseDependencies.Keys().IndexOf(rule);
+							if (index != -1)
 							{
-								type = FindCommonBaseClass(type, dep->ruleType);
-							}
-							if (type && !updateRuleType(rule, type, true))
-							{
-								break;
+								AstClassSymbol* type = nullptr;
+								for (auto dep : context.ruleReuseDependencies.GetByIndex(index))
+								{
+									type = FindCommonBaseClass(type, dep->ruleType);
+								}
+								if (type && !updateRuleType(rule, type, true, &ruleTypeChanged))
+								{
+									break;
+								}
 							}
 						}
 					}
-				}
-				if (context.global.Errors().Count() > 0) return;
+					if (context.global.Errors().Count() > 0) return;
 
-				// calculate types for rules that contain cyclic reuse dependency
-				for (auto&& cyclicRules : cyclicReuseDependencies)
-				{
-					AstClassSymbol* type = nullptr;
-					for (auto rule : cyclicRules)
+					// calculate types for rules that contain cyclic reuse dependency
+					for (auto&& cyclicRules : cyclicReuseDependencies)
 					{
-						type = FindCommonBaseClass(type, rule->ruleType);
-					}
-
-					if (!type)
-					{
-						auto ruleTypes = GetRuleTypes(cyclicRules);
+						AstClassSymbol* type = nullptr;
 						for (auto rule : cyclicRules)
 						{
-							context.syntaxManager.AddError(
-								ParserErrorType::CyclicDependedRuleTypeIncompatible,
-								context.astRules[rule]->codeRange,
-								rule->Name(),
-								ruleTypes
-								);
+							type = FindCommonBaseClass(type, rule->ruleType);
 						}
-					}
-					else
-					{
-						for (auto rule : cyclicRules)
+
+						if (!type)
 						{
-							updateRuleType(rule, type, false);
+							auto ruleTypes = GetRuleTypes(cyclicRules);
+							for (auto rule : cyclicRules)
+							{
+								context.syntaxManager.AddError(
+									ParserErrorType::CyclicDependedRuleTypeIncompatible,
+									context.astRules[rule]->codeRange,
+									rule->Name(),
+									ruleTypes
+									);
+							}
+						}
+						else
+						{
+							for (auto rule : cyclicRules)
+							{
+								updateRuleType(rule, type, false, &ruleTypeChanged);
+							}
 						}
 					}
+
+					if (context.global.Errors().Count() > 0) break;
 				}
 
 				// prompt errors

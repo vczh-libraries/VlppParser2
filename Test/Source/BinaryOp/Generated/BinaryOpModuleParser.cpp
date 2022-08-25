@@ -112,13 +112,13 @@ namespace binaryop
 		return -1;
 	};
 
-	vl::Ptr<binaryop::BinaryExpr> ModuleParser::ParseModule(const vl::WString& input, vl::vint codeIndex) const
+	vl::Ptr<binaryop::Expr> ModuleParser::ParseModule(const vl::WString& input, vl::vint codeIndex) const
 	{
-		 return ParseWithString<binaryop::BinaryExpr, ModuleParserStates::Module>(input, this, codeIndex);
+		 return ParseWithString<binaryop::Expr, ModuleParserStates::Module>(input, this, codeIndex);
 	};
 
-	vl::Ptr<binaryop::BinaryExpr> ModuleParser::ParseModule(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex) const
+	vl::Ptr<binaryop::Expr> ModuleParser::ParseModule(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex) const
 	{
-		 return ParseWithTokens<binaryop::BinaryExpr, ModuleParserStates::Module>(tokens, this, codeIndex);
+		 return ParseWithTokens<binaryop::Expr, ModuleParserStates::Module>(tokens, this, codeIndex);
 	};
 }
