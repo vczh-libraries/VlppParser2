@@ -17,10 +17,20 @@ class MemberName : QualifiedName
     var member : token;
 }
 
-class GenericName : QualifiedName
+class GenericQualifiedName : QualifiedName
+{
+    var args : TypeOrExpr[];
+}
+
+class GenericName : GenericQualifiedName
+{
+    var name : token;
+}
+
+class GenericMemberName : GenericQualifiedName
 {
     var parent : QualifiedName;
-    var args : TypeOrExpr[];
+    var member : token;
 }
 
 class CallExpr : TypeOrExpr

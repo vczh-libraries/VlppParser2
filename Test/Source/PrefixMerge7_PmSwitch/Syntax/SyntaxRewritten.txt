@@ -2,14 +2,15 @@
 // Left Recursive (Primitives)
 ////////////////////////////////////////
 
-_Name_NoGeneric : QualifiedName
-  ::= ID:name as Name
-  ::= _Name:parent "." ID:member as MemberName
+_GenericArguments : GenericQualifiedName
+  ::= "<" {Module_NoGT_NoComma:args ; ","} ">" as GenericQualifiedName
   ;
 
 _Name : QualifiedName
-  ::= !_Name_NoGeneric
-  ::= _Name_NoGeneric:parent "<" {Module_NoGT_NoComma:args ; ","} ">" as GenericName
+  ::= ID:name as Name
+  ::= ID:name _GenericArguments as GenericName
+  ::= _Name:parent "." ID:member as MemberName
+  ::= _Name:parent "." ID:member _GenericArguments as GenericMemberName
   ;
 
 _PrimitiveShared : QualifiedName
