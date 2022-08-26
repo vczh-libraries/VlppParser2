@@ -248,59 +248,39 @@ TraceManager::WalkAlongSingleEdge
 					// in this case, high priority traces wins the competition
 					// but no traces are being removed for now, just mark the competition
 					CheckAttendingCompetitionsOnEndingEdge(trace, edgeDesc, attendingCompetitions, trace->returnStack);
+				}
 
-					// if the target trace has exactly the same to another surviving trace
-					// stop creating a Trace instance for the target trace
-					// instead connect the correct trace to that surviving trace and form a ambiguity resolving structure
+				// create a new trace for this current move
+				auto newTrace = AllocateTrace();
+				AddTraceToCollection(newTrace, trace, &Trace::predecessors);
+				newTrace->state = state;
+				newTrace->returnStack = returnStack;
+				newTrace->executedReturnStack = executedReturnStack;
+				newTrace->switchValues = switchValues;
+				newTrace->byEdge = byEdge;
+				newTrace->byInput = input;
+				newTrace->currentTokenIndex = currentTokenIndex;
+				newTrace->competitionRouting.attendingCompetitions = attendingCompetitions;
+				newTrace->competitionRouting.carriedCompetitions = carriedCompetitions;
+
+				if (input == Executable::EndingInput)
+				{
+					// see if the target trace has the same state to any other surviving trace
 					for (vint i = 0; i < concurrentCount; i++)
 					{
-						auto candidate = backupTraces->Get(i);
-						if (AreTwoEndingInputTraceEqual(state, returnStack, executedReturnStack, attendingCompetitions, switchValues, candidate))
+						auto& candidate = backupTraces->operator[](i);
+						if (AreTwoEndingInputTraceEqual(newTrace, candidate))
 						{
-							ambiguityTraceToMerge = candidate;
-							break;
+							// create a merging 
+							MergeTwoEndingInputTrace(newTrace, candidate);
+							return nullptr;
 						}
 					}
 				}
 
-				if (ambiguityTraceToMerge)
-				{
-					MergeTwoEndingInputTrace(
-						trace,
-						ambiguityTraceToMerge,
-						currentTokenIndex,
-						input,
-						byEdge,
-						edgeDesc,
-						state,
-						returnStack,
-						attendingCompetitions,
-						carriedCompetitions,
-						executedReturnStack);
-
-					// return nullptr so that there is no WalkAlongEpsilonEdges following WalkAlongSingleEdge
-					return nullptr;
-				}
-				else
-				{
-					// if ambiguity resolving doesn't happen
-					// create an instance of the target trace
-					// and connect the current trace to this target trace
-					auto newTrace = AllocateTrace();
-					AddTrace(newTrace);
-					AddTraceToCollection(newTrace, trace, &Trace::predecessors);
-					newTrace->state = state;
-					newTrace->returnStack = returnStack;
-					newTrace->executedReturnStack = executedReturnStack;
-					newTrace->switchValues = switchValues;
-					newTrace->byEdge = byEdge;
-					newTrace->byInput = input;
-					newTrace->currentTokenIndex = currentTokenIndex;
-					newTrace->competitionRouting.attendingCompetitions = attendingCompetitions;
-					newTrace->competitionRouting.carriedCompetitions = carriedCompetitions;
-
-					return newTrace;
-				}
+				// add to the current trace list only if it is not involved in ambiguity resolving
+				AddTrace(newTrace);
+				return newTrace;
 #undef ERROR_MESSAGE_PREFIX
 			}
 

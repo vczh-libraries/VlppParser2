@@ -194,6 +194,10 @@ TraceManager (Data Structures -- Trace)
 				TraceCollection			predecessors;				// id of the predecessor Trace
 				TraceCollection			successors;					// successors (filled by EndOfInput)
 
+				// if state == -1
+				// it means this is an ambiguity resolving trace
+				// all merged traces are in predecessors
+
 				vint32_t				state = -1;					// id of the current StateDesc
 				vint32_t				returnStack = -1;			// id of the current ReturnStack
 				vint32_t				executedReturnStack = -1;	// id of the executed ReturnStack that contains the ReturnDesc being executed
@@ -257,20 +261,8 @@ TraceManager
 				void								AddTraceToCollection(Trace* owner, Trace* element, TraceCollection(Trace::* collection));
 
 				// Ambiguity
-				bool								AreTwoEndingInputTraceEqual(vint32_t state, vint32_t returnStack, vint32_t executedReturnStack, vint32_t acId, vint32_t switchValues, Trace* candidate);
-				vint32_t							GetInstructionPostfix(EdgeDesc& oldEdge, EdgeDesc& newEdge);
-				void								MergeTwoEndingInputTrace(
-														Trace* trace,
-														Trace* ambiguityTraceToMerge,
-														vint32_t currentTokenIndex,
-														vint32_t input,
-														vint32_t byEdge,
-														EdgeDesc& edgeDesc,
-														vint32_t state,
-														vint32_t returnStack,
-														vint32_t attendingCompetitions,
-														vint32_t carriedCompetitions,
-														vint32_t executedReturnStack);
+				bool								AreTwoEndingInputTraceEqual(Trace* newTrace, Trace* candidate);
+				void								MergeTwoEndingInputTrace(Trace* newTrace, Trace*& candidate);
 
 				// Competition
 				void								AttendCompetition(Trace* trace, vint32_t& newAttendingCompetitions, vint32_t& newCarriedCompetitions, vint32_t returnStack, vint32_t ruleId, vint32_t clauseId, bool forHighPriority);
