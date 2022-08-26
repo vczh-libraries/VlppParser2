@@ -344,6 +344,7 @@ TEST_FILE
 		&prefixmerge7_pmswitch::ModuleParserSwitchName,
 		L"TestCase_PrefixMerge",
 		L"TestCase_PrefixMerge_CtorExpr",
-		L"TestCase_PrefixMerge_ThrowComma"
+		L"TestCase_PrefixMerge_ThrowComma",
+		L"TestCase_PrefixMerge_Generic"
 		);
 }
