@@ -391,44 +391,83 @@ RewriteRules (Common)
 				return conflict;
 			}
 
+			void RewriteRules_CheckPath(
+				const VisitorContext& vContext,
+				RuleSymbol* startSymbol,
+				RuleSymbol* endSymbol,
+				bool& hasSimpleUseTransition,
+				bool& hasNonSimpleUseTransition
+			)
+			{
+				// check the path from startSymbol to endSymbol
+				// hasSimpleUseTransition and hasNonSimpleUseTransition must be false before non-recursive calling from outside
+				// if a transition is found
+				// either of one will be set to true
+				// meaning such transition is counted
+
+				bool isEndSymbolLeftRecursive = vContext.leftRecursiveClauses.Keys().Contains(endSymbol);
+				if (isEndSymbolLeftRecursive)
+				{
+					// if endSymbol is left recursive
+					// then we find a non-simple-use transition from startSymbol to endSymbol
+					hasNonSimpleUseTransition = true;
+				}
+
+				if (startSymbol == endSymbol)
+				{
+					// if startSymbol is endSymbol
+					// then we find a simple-use transition
+					// which does not actually transit
+					hasSimpleUseTransition = true;
+				}
+				else
+				{
+					// otherwise we look through all possible path from startSymbol to endSymbol
+					vint index = vContext.indirectStartPathToLastRules.Keys().IndexOf({ startSymbol,endSymbol });
+					if (index != -1)
+					{
+						for (auto [lastRuleSymbol, clause] : vContext.indirectStartPathToLastRules.GetByIndex(index))
+						{
+							if (vContext.simpleUseClauseToReferencedRules.Keys().Contains(clause))
+							{
+								// if we find a simple-use clause
+								// we check how all transitions look like from startSymbol to lastRuleSymbol
+								RewriteRules_CheckPath(vContext, startSymbol, lastRuleSymbol, hasSimpleUseTransition, hasNonSimpleUseTransition);
+							}
+							else
+							{
+								// if we find a non-simple-use clause
+								// then we find a non-simple-use transition from startSymbol to endSymbol
+								hasNonSimpleUseTransition = true;
+							}
+						}
+					}
+				}
+			}
+
 			void RewriteRules_CollectFlags(
 				const VisitorContext& vContext,
 				RuleSymbol* ruleSymbol,
-				bool isLeftRecursive,
 				const List<Pair<RuleSymbol*, GlrPrefixMergeClause*>>& pmClauses,
 				Dictionary<WString, Pair<RuleSymbol*, RuleSymbol*>>& flags,
-				bool& omittedSelf,
 				bool& generateOptionalLri
 			)
 			{
 				for (auto [injectIntoRule, pmClause] : pmClauses)
 				{
 					auto pmRule = vContext.clauseToRules[pmClause];
-					if (ruleSymbol == pmRule)
-					{
-						if (isLeftRecursive)
-						{
-							generateOptionalLri = true;
-						}
-						else
-						{
-							omittedSelf = true;
-							continue;
-						}
-					}
-					else if (vContext.indirectSimpleUsePathToLastRules.Keys().Contains({ ruleSymbol,pmRule }))
+					bool hasSimpleUseTransition = false;
+					bool hasNonSimpleUseTransition = false;
+					RewriteRules_CheckPath(vContext, ruleSymbol, pmRule, hasSimpleUseTransition, hasNonSimpleUseTransition);
+
+					if (hasSimpleUseTransition)
 					{
 						generateOptionalLri = true;
 					}
 
-					flags.Add(L"LRI_" + pmRule->Name(), { pmRule,injectIntoRule });
-				}
-
-				if (omittedSelf)
-				{
-					if (flags.Count() > 0)
+					if (hasNonSimpleUseTransition)
 					{
-						generateOptionalLri = true;
+						flags.Add(L"LRI_" + pmRule->Name(), { pmRule,injectIntoRule });
 					}
 				}
 			}
@@ -533,12 +572,15 @@ RewriteRules (Unaffected)
 				const RewritingContext& rContext,
 				RuleSymbol* ruleSymbol,
 				GlrRule* lriRule,
-				bool isLeftRecursive,
 				Dictionary<Pair<RuleSymbol*, RuleSymbol*>, vint>& pathCounter,
 				Group<WString, Pair<RuleSymbol*, GlrPrefixMergeClause*>>& pmClauses,
 				SortedList<WString>& knownOptionalStartRules
 			)
 			{
+				if (ruleSymbol->Name() == L"_Expr_NoGT_NoComma")
+				{
+					int a = 0;
+				}
 				for (auto [pmName, pmIndex] : indexed(pmClauses.Keys()))
 				{
 					//   if originRule is not left recursive
@@ -550,19 +592,16 @@ RewriteRules (Unaffected)
 					//       generate useSyntax instead of lriClause
 
 					Dictionary<WString, Pair<RuleSymbol*, RuleSymbol*>> flags;
-					bool omittedSelf = false;
 					bool generateOptionalLri = false;
 					RewriteRules_CollectFlags(
 						vContext,
 						ruleSymbol,
-						isLeftRecursive,
 						pmClauses.GetByIndex(pmIndex),
 						flags,
-						omittedSelf,
 						generateOptionalLri
 						);
 
-					if (omittedSelf && flags.Count() == 0)
+					if (generateOptionalLri && flags.Count() == 0)
 					{
 						auto reuseClause = MakePtr<GlrReuseClause>();
 						lriRule->clauses.Add(reuseClause);
@@ -614,7 +653,6 @@ RewriteRules (Affected)
 				SortedList<WString>& knownOptionalStartRules
 			)
 			{
-				auto isLeftRecursive = vContext.leftRecursiveClauses.Contains(prefixRuleSymbol);
 				Group<WString, Pair<RuleSymbol*, GlrPrefixMergeClause*>> pmClauses;
 				{
 					SortedList<RuleSymbol*> visited;
@@ -656,14 +694,12 @@ RewriteRules (Affected)
 					RewriteRules_CollectFlags(
 						vContext,
 						prefixRuleSymbol,
-						isLeftRecursive,
 						pmClauses.GetByIndex(pmIndex),
 						flags,
-						omittedSelf,
 						generateOptionalLri
 						);
 
-					if ((omittedSelf && flags.Count() == 0) || generateOptionalLri)
+					if (generateOptionalLri)
 					{
 						// TODO: add test case for omittedSelf == true
 						for (auto lripFlag : lripFlags)
@@ -791,7 +827,6 @@ RewriteRules
 				for (auto [ruleSymbol, originRule] : rContext.originRules)
 				{
 					auto lriRule = rContext.lriRules[ruleSymbol];
-					auto isLeftRecursive = vContext.leftRecursiveClauses.Contains(ruleSymbol);
 					Ptr<RewritingPrefixConflict> conflict;
 					Group<WString, Pair<RuleSymbol*, GlrPrefixMergeClause*>> pmClauses;
 					{
@@ -812,7 +847,6 @@ RewriteRules
 						rContext,
 						ruleSymbol,
 						lriRule,
-						isLeftRecursive,
 						pathCounter,
 						pmClauses,
 						knownOptionalStartRules

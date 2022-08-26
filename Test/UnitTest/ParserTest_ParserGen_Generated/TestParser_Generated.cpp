@@ -29,6 +29,7 @@
 #include "../../Source/PrefixMerge6_Pm2/Generated/PrefixMerge6_Pm2TypeOrExpr_Json.h"
 #include "../../Source/PrefixMerge6_Pm2/Generated/PrefixMerge6_Pm2ModuleParser.h"
 #include "../../Source/PrefixMerge7_PmSwitch/Generated/PrefixMerge7_PmSwitchTypeOrExpr_Json.h"
+#include "../../Source/PrefixMerge7_PmSwitch/Generated/PrefixMerge7_PmSwitchModuleParser.h"
 #include "../../Source/LogTrace.h"
 
 extern WString GetTestParserInputPath(const WString& parserName);
@@ -329,6 +330,18 @@ TEST_FILE
 		&prefixmerge6_pm2::ModuleParserRuleName,
 		&prefixmerge6_pm2::ModuleParserStateLabel,
 		&prefixmerge6_pm2::ModuleParserSwitchName,
+		L"TestCase_PrefixMerge",
+		L"TestCase_PrefixMerge_CtorExpr",
+		L"TestCase_PrefixMerge_ThrowComma"
+		);
+	TestParser<prefixmerge7_pmswitch::ModuleParser, prefixmerge7_pmswitch::json_visitor::TypeOrExprVisitor>(
+		L"PrefixMerge7_PmSwitch",
+		&prefixmerge7_pmswitch::PrefixMerge7_PmSwitchTypeName,
+		&prefixmerge7_pmswitch::PrefixMerge7_PmSwitchFieldName,
+		&prefixmerge7_pmswitch::PrefixMerge7_PmSwitchTokenId,
+		&prefixmerge7_pmswitch::ModuleParserRuleName,
+		&prefixmerge7_pmswitch::ModuleParserStateLabel,
+		&prefixmerge7_pmswitch::ModuleParserSwitchName,
 		L"TestCase_PrefixMerge",
 		L"TestCase_PrefixMerge_CtorExpr",
 		L"TestCase_PrefixMerge_ThrowComma"
