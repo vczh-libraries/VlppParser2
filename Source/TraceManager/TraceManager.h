@@ -101,34 +101,6 @@ TraceManager (Data Structures)
 				ReturnStackCache		cache;
 			};
 
-			struct TraceCollection
-			{
-				vint32_t				first = -1;					// first trace in the collection
-				vint32_t				last = -1;					// last trace in the collection
-				vint32_t				siblingPrev = -1;			// previous trace in the collection of the owned trace
-				vint32_t				siblingNext = -1;			// next trace in the collection of the owned trace
-			};
-
-			struct TraceAmbiguity
-			{
-				vint32_t				insEndObject = -1;			// the index of the first EndObject instruction
-																	// in {byEdge.insBeforeInput, byEdge.insAfterInput, executedReturnStack.returnIndex.insAfterInput} combined
-																	// when this member is valid, the trace should satisfies:
-																	// trace.ambiguity.insEndObject == trace.byEdge.insBeforeInput.count - trace.ambiguityInsPostfix
-
-				vint32_t				traceBeginObject = -1;		// id of the trace containing BeginObject or DelayFieldAssignment
-																	// that ends by the above EndObject
-
-				vint32_t				insBeginObject = -1;		// the index of the BeginObject instruction
-																	// from traceBeginObject
-																	// in {byEdge.insBeforeInput, byEdge.insAfterInput, executedReturnStack.returnIndex.insAfterInput} combined
-																	// if insBeginObject is larger than the number of instructions in traceBeginObject
-																	// then the branches begin from the (insBeginObject - instruction-count(traceBeginObject))-th instruction (starting from 0) in all successors
-
-				vint32_t				ambiguityType = -1;			// when the BeginObject creates an object that later be consumed by BeginObjectLeftRecursive
-																	// than the correct type is the type in BeginObjectLeftRecursive
-			};
-
 			enum class CompetitionStatus
 			{
 				Holding,
@@ -173,18 +145,6 @@ TraceManager (Data Structures)
 																	// this flag is not always updated for discarded AttendingCompetitions objects
 			};
 
-			struct CompetitionRouting
-			{
-				vint32_t				holdingCompetitions = -1;	// the id of the active Competition
-
-				vint32_t				attendingCompetitions = -1;	// a linked list containing all AttendingCompetitions that this trace is attending
-																	// predecessors could share and modify the same linked list
-																	// if a competition is over, node could be removed from the linked list
-																	// one competition only creates two AttendingCompetitions, traces with the same bet share the object
-
-				vint32_t				carriedCompetitions = -1;	// all attended competitions regardless of the status of the competition
-			};
-
 			struct AmbiguityRouting
 			{
 				vint32_t				predecessorCount = -1;		// the number of predecessors
@@ -204,11 +164,35 @@ TraceManager (Data Structures)
 				vuint32_t				values[2] = { 0 };			// switch values, temporary set to 64 slots
 			};
 
+/***********************************************************************
+TraceManager (Data Structures -- Trace)
+***********************************************************************/
+
+			struct TraceCollection
+			{
+				vint32_t				first = -1;					// first trace in the collection
+				vint32_t				last = -1;					// last trace in the collection
+				vint32_t				siblingPrev = -1;			// previous trace in the collection of the owned trace
+				vint32_t				siblingNext = -1;			// next trace in the collection of the owned trace
+			};
+
+			struct CompetitionRouting
+			{
+				vint32_t				holdingCompetitions = -1;	// the id of the active Competition
+
+				vint32_t				attendingCompetitions = -1;	// a linked list containing all AttendingCompetitions that this trace is attending
+																	// predecessors could share and modify the same linked list
+																	// if a competition is over, node could be removed from the linked list
+																	// one competition only creates two AttendingCompetitions, traces with the same bet share the object
+
+				vint32_t				carriedCompetitions = -1;	// all attended competitions regardless of the status of the competition
+			};
+
 			struct Trace
 			{
 				vint32_t				allocatedIndex = -1;		// id of this Trace
 				TraceCollection			predecessors;				// id of the predecessor Trace
-				TraceCollection			successors;					// successors (filled by PrepareTraceRoute)
+				TraceCollection			successors;					// successors (filled by EndOfInput)
 
 				vint32_t				state = -1;					// id of the current StateDesc
 				vint32_t				returnStack = -1;			// id of the current ReturnStack
@@ -217,28 +201,12 @@ TraceManager (Data Structures)
 				vint32_t				byEdge = -1;				// id of the last EdgeDesc that make this trace
 				vint32_t				byInput = -1;				// the last input that make this trace
 				vint32_t				currentTokenIndex = -1;		// the index of the token that is byInput
-
-				TraceAmbiguity			ambiguity;					// where to end resolving ambiguity in instructions from this trace
-																	// this member is useful when it has multiple predecessors
-																	// (filled by PrepareTraceRoute)
-
-				vint32_t				ambiguityBranchInsPostfix = -1;		// this member is useful when it is not -1 and the trace has multiple successors
-																			// specifying the length of the postfix
-																			// of {byEdge.insBeforeInput, byEdge.insAfterInput, executedReturnStack.returnIndex.insAfterInput} combined
-																			// only execute the specified prefix of instructions
-																			// usually EndObject is the last instruction in the prefix
-
-				vint32_t				ambiguityMergeInsPostfix = -1;		// this member is useful when it is not -1 and the trace has multiple predecessors
-																			// specifying the length of the postfix
-																			// of {byEdge.insBeforeInput, byEdge.insAfterInput, executedReturnStack.returnIndex.insAfterInput} combined
-																			// only execute the specified postfix of instructions
-																			// usually EndObject is the last instruction in the prefix
-
 				CompetitionRouting		competitionRouting;			// a data structure carrying priority and competition information
-
-				AmbiguityRouting		ambiguityRouting;			// a data structure guiding instruction execution when a trace need to be executed multiple times
-																	// this member is useful when it has multiple predecessors or successors
 			};
+
+/***********************************************************************
+TraceManager
+***********************************************************************/
 
 			enum class TraceManagerState
 			{
@@ -257,10 +225,6 @@ TraceManager (Data Structures)
 				vint32_t							c2;
 				vint32_t							c3;
 			};
-
-/***********************************************************************
-TraceManager
-***********************************************************************/
 
 			class TraceManager : public Object, public virtual IExecutor
 			{
@@ -371,8 +335,8 @@ TraceManager
 
 				void								Initialize(vint32_t startState) override;
 				bool								Input(vint32_t currentTokenIndex, regex::RegexToken* token, regex::RegexToken* lookAhead) override;
-				bool								EndOfInput() override;
-				Trace*								PrepareTraceRoute() override;
+				Trace*								EndOfInput() override;
+				void								PrepareTraceRoute() override;
 				Ptr<ParsingAstBase>					ExecuteTrace(Trace* trace, IAstInsReceiver& receiver, collections::List<regex::RegexToken>& tokens) override;
 			};
 		}

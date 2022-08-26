@@ -66,15 +66,31 @@ namespace TestSyntax_TestObjects
 			TEST_ASSERT(tm.concurrentCount > 0);
 		}
 
-		tm.EndOfInput();
-		auto rootTrace = tm.PrepareTraceRoute();
-
+		auto rootTrace = tm.EndOfInput();
 		LogTraceManager(
 			L"Calculator",
 			caseName,
 			executable,
 			tm,
 			rootTrace,
+			true,
+			tokens,
+			[](vint32_t type) { return WString::Unmanaged(CalculatorTypeName((CalculatorClasses)type)); },
+			[](vint32_t field) { return WString::Unmanaged(CalculatorFieldName((CalculatorFields)field)); },
+			[](vint32_t token) { return WString::Unmanaged(CalculatorTokenId((CalculatorTokens)token)); },
+			[&](vint32_t rule) { return metadata.ruleNames[rule]; },
+			[&](vint32_t state) { return metadata.stateLabels[state]; },
+			[&](vint32_t switchId) { return metadata.switchNames[switchId]; }
+			);
+
+		tm.PrepareTraceRoute();
+		LogTraceManager(
+			L"Calculator",
+			caseName,
+			executable,
+			tm,
+			rootTrace,
+			false,
 			tokens,
 			[](vint32_t type) { return WString::Unmanaged(CalculatorTypeName((CalculatorClasses)type)); },
 			[](vint32_t field) { return WString::Unmanaged(CalculatorFieldName((CalculatorFields)field)); },

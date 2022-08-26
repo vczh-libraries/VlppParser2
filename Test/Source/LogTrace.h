@@ -51,6 +51,7 @@ FilePath LogTraceManager(
 	Executable& executable,
 	TraceManager& tm,
 	Trace* rootTrace,
+	bool beforePreparing,
 	List<RegexToken>& tokens,
 	const Func<WString(vint32_t)>& typeName,
 	const Func<WString(vint32_t)>& fieldName,

@@ -296,16 +296,6 @@ void RenderTrace(
 
 		for (vint32_t i = 0; i < c3; i++)
 		{
-			if (trace->ambiguityBranchInsPostfix != -1 && i == c3 - trace->ambiguityBranchInsPostfix)
-			{
-				writer.WriteLine(L"    vvvvvvvvvvvvvvvvvvvv");
-			}
-
-			if (trace->ambiguityMergeInsPostfix != -1 && i == c3 - trace->ambiguityMergeInsPostfix)
-			{
-				writer.WriteLine(L"    ^^^^^^^^^^^^^^^^^^^^");
-			}
-
 			AstIns ins;
 			if (i < c1)
 			{
@@ -328,24 +318,6 @@ void RenderTrace(
 			}
 
 			LogInstruction(ins, typeName, fieldName, writer);
-			if (i == trace->ambiguity.insEndObject)
-			{
-				writer.WriteLine(L"      AMB => Trace[" +
-					itow(trace->ambiguity.traceBeginObject) +
-					L"].Ins[" +
-					itow(trace->ambiguity.insBeginObject) +
-					L"]");
-			}
-		}
-
-		if (trace->ambiguityBranchInsPostfix == 0)
-		{
-			writer.WriteLine(L"    vvvvvvvvvvvvvvvvvvvv");
-		}
-
-		if (trace->ambiguityMergeInsPostfix == 0)
-		{
-			writer.WriteLine(L"    ^^^^^^^^^^^^^^^^^^^^");
 		}
 
 		if (trace->returnStack != -1)
@@ -1032,6 +1004,7 @@ FilePath LogTraceManager(
 	Executable& executable,
 	TraceManager& tm,
 	Trace* rootTrace,
+	bool beforePreparing,
 	List<RegexToken>& tokens,
 	const Func<WString(vint32_t)>& typeName,
 	const Func<WString(vint32_t)>& fieldName,
@@ -1081,7 +1054,7 @@ FilePath LogTraceManager(
 	}
 
 	auto outputDir = GetOutputDir(parserName);
-	auto outputFile = outputDir / (L"Trace[" + caseName + L"].txt");
+	auto outputFile = outputDir / (L"Trace[" + caseName + (beforePreparing ? L"][1].txt" : L"][2].txt"));
 	auto content = GenerateToStream([&](StreamWriter& writer)
 	{
 		RenderTraceTree(rootTrace, tm, traceLogs, writer);
