@@ -108,7 +108,7 @@ TraceManager
 				else
 				{
 					// Trace::predecessors is filled by Input
-					// Trace::successors is filled by PrepareTraceRoute
+					// Trace::successors is filled by EndOfInput
 					// if Input and EndOfInput succeeded
 					// there should not be any multiple to multiple relationship
 					CHECK_FAIL(errorMessage);

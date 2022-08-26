@@ -284,30 +284,12 @@ TraceManager
 				void								WalkAlongEpsilonEdges(vint32_t currentTokenIndex, regex::RegexToken* lookAhead, Trace* trace);
 				void								WalkAlongTokenEdges(vint32_t currentTokenIndex, vint32_t input, regex::RegexToken* token, regex::RegexToken* lookAhead, Trace* trace, EdgeArray& edgeArray);
 
-				// PrepareTraceRoute
-				struct SharedBeginObject
-				{
-					Trace*							traceBeginObject = nullptr;
-					vint32_t						insBeginObject = -1;
-					vint32_t						type = -1;
-				};
+				// EndOfInput
+				void								FillSuccessorsAfterEndOfInput();
 
+				// PrepareTraceRoute
 				void								ReadInstructionList(Trace* trace, TraceInsLists& insLists);
 				AstIns&								ReadInstruction(vint32_t instruction, TraceInsLists& insLists);
-				bool								RunInstruction(vint32_t instruction, TraceInsLists& insLists, vint32_t& objectCount, vint32_t& reopenCount);
-				void								AdjustToRealTrace(SharedBeginObject& shared);
-
-				void								FindBalancedBoOrBolr(SharedBeginObject& balanced, vint32_t& objectCount, vint32_t& reopenCount);
-				void								FindBalancedBoOrDfa(Trace* trace, vint32_t objectCount, SharedBeginObject& branch);
-
-				void								MergeAmbiguityType(vint32_t& ambiguityType, vint32_t branchType);
-				SharedBeginObject					MergeSharedBeginObjectsSingleRoot(Trace* trace, collections::Dictionary<Trace*, SharedBeginObject>& predecessorToBranches);
-				SharedBeginObject					MergeSharedBeginObjectsMultipleRoot(Trace* trace, collections::Dictionary<Trace*, SharedBeginObject>& predecessorToBranches);
-				SharedBeginObject					MergeSharedBeginObjectsPartialMultipleRoot(Trace* trace, vint32_t ambiguityType, collections::Group<Trace*, Trace*>& beginToPredecessors, collections::Dictionary<Trace*, SharedBeginObject>& predecessorToBranches);
-
-				SharedBeginObject					FillAmbiguityInfoForMergingTrace(Trace* trace);
-				void								FillAmbiguityInfoForPredecessorTraces(Trace* trace);
-				void								CreateLastMergingTrace(Trace* rootTraceCandidate);
 			public:
 				TraceManager(Executable& _executable, const ITypeCallback* _typeCallback);
 

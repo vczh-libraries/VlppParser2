@@ -6,6 +6,7 @@ namespace vl
 	{
 		namespace automaton
 		{
+			using namespace collections;
 
 /***********************************************************************
 Input
@@ -48,10 +49,44 @@ Input
 			}
 
 /***********************************************************************
+FillSuccessorsAfterEndOfInput
+***********************************************************************/
+
+			void TraceManager::FillSuccessorsAfterEndOfInput()
+			{
+				List<Trace*> traces;
+				for (vint32_t traceIndex = 0; traceIndex < concurrentCount; traceIndex++)
+				{
+					traces.Add(concurrentTraces->Get(traceIndex));
+				}
+
+				while (traces.Count() > 0)
+				{
+					auto current = traces[traces.Count() - 1];
+					traces.RemoveAt(traces.Count() - 1);
+
+					vint32_t predecessorId = current->predecessors.first;
+					while (predecessorId != -1)
+					{
+						auto predecessor = GetTrace(predecessorId);
+						predecessorId = predecessor->predecessors.siblingNext;
+
+						if (predecessor->successors.first == current->allocatedIndex) continue;
+						if (predecessor->successors.last == current->allocatedIndex) continue;
+						if (current->successors.siblingPrev != -1) continue;
+						if (current->successors.siblingNext != -1) continue;
+
+						AddTraceToCollection(predecessor, current, &Trace::successors);
+						traces.Add(predecessor);
+					}
+				}
+			}
+
+/***********************************************************************
 EndOfInput
 ***********************************************************************/
 
-			bool TraceManager::EndOfInput()
+			Trace* TraceManager::EndOfInput()
 			{
 				CHECK_ERROR(state == TraceManagerState::WaitingForInput, L"vl::glr::automaton::TraceManager::EndOfInput()#Wrong timing to call this function.");
 				state = TraceManagerState::Finished;
@@ -74,7 +109,10 @@ EndOfInput
 				}
 
 				EndSwap();
-				return concurrentCount > 0;
+				if (concurrentCount == 0) return nullptr;
+
+				FillSuccessorsAfterEndOfInput();
+				return initialTrace;
 			}
 		}
 	}
