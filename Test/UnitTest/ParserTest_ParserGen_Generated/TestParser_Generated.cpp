@@ -45,11 +45,10 @@ namespace TestParser_Generated_TestObjects
 			TParser& parser,
 			const WString& parserName,
 			const WString& testFolder,
+			WString& caseName,
 			FilePath dirOutput
 		)
 	{
-		WString caseName;
-
 		auto inputPath = GetTestParserInputPath(testFolder);
 		Folder dirInput = FilePath(inputPath) / L"Input";
 		FilePath dirBaseline = FilePath(inputPath) / L"Output";
@@ -85,6 +84,7 @@ namespace TestParser_Generated_TestObjects
 		void RunParser(
 			TParser& parser,
 			const WString& parserName,
+			WString& caseName,
 			const Array<WString>& testFolders
 		)
 	{
@@ -93,7 +93,7 @@ namespace TestParser_Generated_TestObjects
 			FilePath dirOutput = GetOutputDir(L"Generated-" + parserName);
 			if (testFolders.Count() == 0)
 			{
-				RunParserSingleTestFolder<TParser, TJsonVisitor>(parser, parserName, parserName, dirOutput);
+				RunParserSingleTestFolder<TParser, TJsonVisitor>(parser, parserName, parserName, caseName, dirOutput);
 			}
 			else
 			{
@@ -101,7 +101,7 @@ namespace TestParser_Generated_TestObjects
 				{
 					TEST_CATEGORY(testFolder)
 					{
-						RunParserSingleTestFolder<TParser, TJsonVisitor>(parser, parserName, testFolder, dirOutput);
+						RunParserSingleTestFolder<TParser, TJsonVisitor>(parser, parserName, testFolder, caseName, dirOutput);
 					});
 				}
 			}
@@ -181,7 +181,7 @@ namespace TestParser_Generated_TestObjects
 				testFolderArray[i] =  WString::Unmanaged(testFolderRawArray[i]);
 			}
 		}
-		RunParser<TParser, TJsonVisitor>(parser, parserName, testFolderArray);
+		RunParser<TParser, TJsonVisitor>(parser, parserName, caseName, testFolderArray);
 	}
 }
 using namespace TestParser_Generated_TestObjects;
