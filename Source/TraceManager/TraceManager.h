@@ -274,7 +274,7 @@ TraceManager
 				// Ambiguity
 				Trace*								EnsureTraceWithValidStates(Trace* trace);
 				bool								AreTwoEndingInputTraceEqual(Trace* newTrace, Trace* candidate);
-				void								MergeTwoEndingInputTrace(Trace* newTrace, Trace*& candidate);
+				void								MergeTwoEndingInputTrace(Trace* newTrace, Trace* candidate);
 
 				// Competition
 				void								AttendCompetition(Trace* trace, vint32_t& newAttendingCompetitions, vint32_t& newCarriedCompetitions, vint32_t returnStack, vint32_t ruleId, vint32_t clauseId, bool forHighPriority);

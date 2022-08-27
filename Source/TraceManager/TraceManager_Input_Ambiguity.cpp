@@ -51,25 +51,36 @@ AreTwoEndingInputTraceEqual
 MergeTwoEndingInputTrace
 ***********************************************************************/
 
-			void TraceManager::MergeTwoEndingInputTrace(Trace* newTrace, Trace*& candidate)
+			void TraceManager::MergeTwoEndingInputTrace(Trace* newTrace, Trace* candidate)
 			{
 				// goal of this function is to create a structure
 				// NEWTRACE ---+->AMBIGUITY
 				//             |
 				// CANDIDATE --+
 
-				// create a merged trace if candidate has not been involved in ambiguity
-				Trace* mergedTrace = candidate;
-				if (mergedTrace->state != -1)
+				// if CANDIDATE is not a merged trace
+				// a former trace will copy CANDIDATE and insert before CANDIDATE
+				// and CANDIDATE will be initialized to an empty trace
+
+				if (candidate->state == -1)
 				{
-					mergedTrace = AllocateTrace();
-					AddTraceToCollection(mergedTrace, candidate, &Trace::predecessors);
-
-					// replace the candidate in the current trace list
-					candidate = mergedTrace;
+					AddTraceToCollection(candidate, newTrace, &Trace::predecessors);
 				}
+				else
+				{
+					auto formerTrace = AllocateTrace();
+					auto formerTraceId = formerTrace->allocatedIndex;
+					auto candidateId = candidate->allocatedIndex;
 
-				AddTraceToCollection(mergedTrace, newTrace, &Trace::predecessors);
+					*formerTrace = *candidate;
+					formerTrace->allocatedIndex = formerTraceId;
+
+					*candidate = {};
+					candidate->allocatedIndex = candidateId;
+
+					AddTraceToCollection(candidate, formerTrace, &Trace::predecessors);
+					AddTraceToCollection(candidate, newTrace, &Trace::predecessors);
+				}
 			}
 		}
 	}
