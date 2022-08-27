@@ -83,6 +83,7 @@ ParserBase<TTokens, TStates, TReceiver, TStateTypes>
 
 		public:
 			Event<EndOfInputCallback>				OnEndOfInput;
+			Event<EndOfInputCallback>				OnReadyToExecute;
 			Event<ErrorCallback>					OnError;
 
 			ParserBase(
@@ -164,7 +165,8 @@ ParserBase<TTokens, TStates, TReceiver, TStateTypes>
 					}
 				}
 
-				if (!executor->EndOfInput())
+				auto rootTrace = executor->EndOfInput();
+				if (!rootTrace)
 				{
 					auto args = ErrorArgs::InputIncomplete(codeIndex, tokens, *executable.Obj(), executor);
 					OnError(args);
@@ -172,11 +174,10 @@ ParserBase<TTokens, TStates, TReceiver, TStateTypes>
 					return nullptr;
 				}
 
-				auto rootTrace = executor->PrepareTraceRoute();
-				{
-					EndOfInputArgs args = { tokens, *executable.Obj(), executor, rootTrace };
-					OnEndOfInput(args);
-				}
+				EndOfInputArgs args = { tokens, *executable.Obj(), executor, rootTrace };
+				OnEndOfInput(args);
+				executor->PrepareTraceRoute();
+				OnReadyToExecute(args);
 
 				TReceiver receiver;
 				return executor->ExecuteTrace(rootTrace, receiver, tokens);

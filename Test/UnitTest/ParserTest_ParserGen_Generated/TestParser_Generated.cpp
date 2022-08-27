@@ -131,6 +131,40 @@ namespace TestParser_Generated_TestObjects
 		TParser parser;
 		WString caseName;
 
+		auto logTrace = [&](bool beforePreparing, EndOfInputArgs& args)
+		{
+			auto& traceManager = *dynamic_cast<TraceManager*>(args.executor);
+			LogTraceManager(
+				L"Generated-" + parserName,
+				caseName,
+				args.executable,
+				traceManager,
+				args.rootTrace,
+				beforePreparing,
+				args.tokens,
+				[=](vint32_t type) { return WString::Unmanaged(typeName((TClasses)type)); },
+				[=](vint32_t field) { return WString::Unmanaged(fieldName((TFields)field)); },
+				[=](vint32_t token) { return WString::Unmanaged(tokenId((TTokens)token)); },
+				[=](vint32_t rule) { return WString::Unmanaged(ruleName(rule)); },
+				[=](vint32_t state) { return WString::Unmanaged(stateLabel(state)); },
+				[=](vint32_t switchId) { return WString::Unmanaged(switchName(switchId)); }
+			);
+
+			if (!beforePreparing && traceManager.concurrentCount == 1)
+			{
+				LogTraceExecution(
+					L"Generated-" + parserName,
+					caseName,
+					[=](vint32_t type) { return WString::Unmanaged(typeName((TClasses)type)); },
+					[=](vint32_t field) { return WString::Unmanaged(fieldName((TFields)field)); },
+					[=](vint32_t token) { return WString::Unmanaged(tokenId((TTokens)token)); },
+					[&](IAstInsReceiver& receiver)
+					{
+						traceManager.ExecuteTrace(args.rootTrace, receiver, args.tokens);
+					});
+			}
+		};
+
 		parser.OnError.Add(
 			[&](ErrorArgs& args)
 			{
@@ -140,35 +174,13 @@ namespace TestParser_Generated_TestObjects
 		parser.OnEndOfInput.Add(
 			[&](EndOfInputArgs& args)
 			{
-				auto& traceManager = *dynamic_cast<TraceManager*>(args.executor);
-				LogTraceManager(
-					L"Generated-" + parserName,
-					caseName,
-					args.executable,
-					traceManager,
-					args.rootTrace,
-					args.tokens,
-					[=](vint32_t type) { return WString::Unmanaged(typeName((TClasses)type)); },
-					[=](vint32_t field) { return WString::Unmanaged(fieldName((TFields)field)); },
-					[=](vint32_t token) { return WString::Unmanaged(tokenId((TTokens)token)); },
-					[=](vint32_t rule) { return WString::Unmanaged(ruleName(rule)); },
-					[=](vint32_t state) { return WString::Unmanaged(stateLabel(state)); },
-					[=](vint32_t switchId) { return WString::Unmanaged(switchName(switchId)); }
-				);
+				logTrace(true, args);
+			});
 
-				if (traceManager.concurrentCount == 1)
-				{
-					LogTraceExecution(
-						L"Generated-" + parserName,
-						caseName,
-						[=](vint32_t type) { return WString::Unmanaged(typeName((TClasses)type)); },
-						[=](vint32_t field) { return WString::Unmanaged(fieldName((TFields)field)); },
-						[=](vint32_t token) { return WString::Unmanaged(tokenId((TTokens)token)); },
-						[&](IAstInsReceiver& receiver)
-						{
-							traceManager.ExecuteTrace(args.rootTrace, receiver, args.tokens);
-						});
-				}
+		parser.OnReadyToExecute.Add(
+			[&](EndOfInputArgs& args)
+			{
+				logTrace(false, args);
 			});
 
 		Array<WString> testFolderArray;
