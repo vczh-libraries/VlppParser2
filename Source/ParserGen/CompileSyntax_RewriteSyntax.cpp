@@ -577,10 +577,6 @@ RewriteRules (Unaffected)
 				SortedList<WString>& knownOptionalStartRules
 			)
 			{
-				if (ruleSymbol->Name() == L"_Expr_NoGT_NoComma")
-				{
-					int a = 0;
-				}
 				for (auto [pmName, pmIndex] : indexed(pmClauses.Keys()))
 				{
 					//   if originRule is not left recursive

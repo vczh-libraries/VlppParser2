@@ -202,10 +202,10 @@ TraceManager::RunEdgeConditionChecking
 TraceManager::WalkAlongSingleEdge
 ***********************************************************************/
 
-			Trace* TraceManager::WalkAlongSingleEdge(
+			WalkingTrace TraceManager::WalkAlongSingleEdge(
 				vint32_t currentTokenIndex,
 				vint32_t input,
-				Trace* trace,
+				WalkingTrace trace,
 				vint32_t byEdge,
 				EdgeDesc& edgeDesc
 			)
@@ -216,17 +216,17 @@ TraceManager::WalkAlongSingleEdge
 				vint32_t attendingCompetitions = -1;
 				vint32_t carriedCompetitions = -1;
 				vint32_t executedReturnStack = -1;
-				vint32_t switchValues = rootSwitchValues == -1 ? -1 : RunEdgeConditionChecking(trace->switchValues, edgeDesc);
+				vint32_t switchValues = rootSwitchValues == -1 ? -1 : RunEdgeConditionChecking(trace.stateTrace->switchValues, edgeDesc);
 				Trace* ambiguityTraceToMerge = nullptr;
 
 				if (rootSwitchValues != -1 && switchValues == -1)
 				{
 					// stop if condition checking failed
-					return nullptr;
+					return { nullptr,nullptr };
 				}
 
 				// attend a competition hold by the current trace if the priority is set for this output transition
-				AttendCompetitionIfNecessary(trace, currentTokenIndex, edgeDesc, attendingCompetitions, carriedCompetitions, returnStack);
+				AttendCompetitionIfNecessary(trace.stateTrace, currentTokenIndex, edgeDesc, attendingCompetitions, carriedCompetitions, returnStack);
 
 				if (input == Executable::EndingInput)
 				{
@@ -247,12 +247,12 @@ TraceManager::WalkAlongSingleEdge
 					//   3) the target trace bets high priority
 					// in this case, high priority traces wins the competition
 					// but no traces are being removed for now, just mark the competition
-					CheckAttendingCompetitionsOnEndingEdge(trace, edgeDesc, attendingCompetitions, trace->returnStack);
+					CheckAttendingCompetitionsOnEndingEdge(trace.stateTrace, edgeDesc, attendingCompetitions, trace.stateTrace->returnStack);
 				}
 
 				// create a new trace for this current move
 				auto newTrace = AllocateTrace();
-				AddTraceToCollection(newTrace, trace, &Trace::predecessors);
+				AddTraceToCollection(newTrace, trace.currentTrace, &Trace::predecessors);
 				newTrace->state = state;
 				newTrace->returnStack = returnStack;
 				newTrace->executedReturnStack = executedReturnStack;
@@ -273,14 +273,14 @@ TraceManager::WalkAlongSingleEdge
 						{
 							// create a merging 
 							MergeTwoEndingInputTrace(newTrace, candidate);
-							return nullptr;
+							return { nullptr,nullptr };
 						}
 					}
 				}
 
 				// add to the current trace list only if it is not involved in ambiguity resolving
 				AddTrace(newTrace);
-				return newTrace;
+				return { newTrace,newTrace };
 #undef ERROR_MESSAGE_PREFIX
 			}
 
@@ -291,7 +291,7 @@ TraceManager::WalkAlongEpsilonEdges
 			void TraceManager::WalkAlongLeftrecEdges(
 				vint32_t currentTokenIndex,
 				regex::RegexToken* lookAhead,
-				Trace* trace,
+				WalkingTrace trace,
 				EdgeArray& edgeArray
 			)
 			{
@@ -320,7 +320,7 @@ TraceManager::WalkAlongEpsilonEdges
 			void TraceManager::WalkAlongEpsilonEdges(
 				vint32_t currentTokenIndex,
 				regex::RegexToken* lookAhead,
-				Trace* trace
+				WalkingTrace trace
 			)
 			{
 				// if we could walk along multiple EndingInput transition
@@ -334,8 +334,8 @@ TraceManager::WalkAlongEpsilonEdges
 				{
 					// if there is no more tokens
 					// then we have to go all the way to the end anyway
-					vint32_t currentState = trace->state;
-					vint32_t currentReturnStack = trace->returnStack;
+					vint32_t currentState = trace.stateTrace->state;
+					vint32_t currentReturnStack = trace.stateTrace->returnStack;
 
 					while (currentState != -1)
 					{
@@ -379,8 +379,8 @@ TraceManager::WalkAlongEpsilonEdges
 				{
 					// otherwise we see how many EndingInput transition we need to walk along
 					vint32_t currentCount = 0;
-					vint32_t currentState = trace->state;
-					vint32_t currentReturnStack = trace->returnStack;
+					vint32_t currentState = trace.stateTrace->state;
+					vint32_t currentReturnStack = trace.stateTrace->returnStack;
 
 					while (currentState != -1)
 					{
@@ -449,19 +449,19 @@ TraceManager::WalkAlongEpsilonEdges
 				{
 					{
 						// LeftrecInput transition is an epsilon transition
-						vint32_t transitionIndex = executable.GetTransitionIndex(trace->state, Executable::LeftrecInput);
+						vint32_t transitionIndex = executable.GetTransitionIndex(trace.stateTrace->state, Executable::LeftrecInput);
 						auto&& edgeArray = executable.transitions[transitionIndex];
 						WalkAlongLeftrecEdges(currentTokenIndex, lookAhead, trace, edgeArray);
 					}
 
 					// EndingInput transition is an epsilon transition
-					vint32_t transitionIndex = executable.GetTransitionIndex(trace->state, Executable::EndingInput);
+					vint32_t transitionIndex = executable.GetTransitionIndex(trace.stateTrace->state, Executable::EndingInput);
 					auto&& edgeArray = executable.transitions[transitionIndex];
 
 					// it has been ensured that edgeArray.count < 2
 					if (edgeArray.count == 0)
 					{
-						trace = nullptr;
+						trace = { nullptr,nullptr };
 					}
 					else
 					{
@@ -483,7 +483,7 @@ TraceManager::WalkAlongTokenEdges
 				vint32_t input,
 				regex::RegexToken* token,
 				regex::RegexToken* lookAhead,
-				Trace* trace,
+				WalkingTrace trace,
 				EdgeArray& edgeArray
 			)
 			{

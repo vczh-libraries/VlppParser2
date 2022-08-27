@@ -26,10 +26,11 @@ Input
 				// one surviving trace could create multiple surviving trace
 				for (vint32_t traceIndex = 0; traceIndex < traceCount; traceIndex++)
 				{
-					auto trace = concurrentTraces->Get(traceIndex);
-					vint32_t transitionIndex = executable.GetTransitionIndex(trace->state, input);
+					auto currentTrace = concurrentTraces->Get(traceIndex);
+					auto stateTrace = EnsureTraceWithValidStates(currentTrace);
+					vint32_t transitionIndex = executable.GetTransitionIndex(stateTrace->state, input);
 					auto&& edgeArray = executable.transitions[transitionIndex];
-					WalkAlongTokenEdges(currentTokenIndex, input, token, lookAhead, trace, edgeArray);
+					WalkAlongTokenEdges(currentTokenIndex, input, token, lookAhead, { currentTrace, stateTrace }, edgeArray);
 				}
 
 				// if competitions happen between new surviving traces

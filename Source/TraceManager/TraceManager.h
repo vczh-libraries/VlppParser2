@@ -230,6 +230,17 @@ TraceManager
 				vint32_t							c3;
 			};
 
+			struct WalkingTrace
+			{
+				Trace*								currentTrace;
+				Trace*								stateTrace;
+
+				operator bool() const
+				{
+					return currentTrace && stateTrace;
+				}
+			};
+
 			class TraceManager : public Object, public virtual IExecutor
 			{
 			protected:
@@ -261,6 +272,7 @@ TraceManager
 				void								AddTraceToCollection(Trace* owner, Trace* element, TraceCollection(Trace::* collection));
 
 				// Ambiguity
+				Trace*								EnsureTraceWithValidStates(Trace* trace);
 				bool								AreTwoEndingInputTraceEqual(Trace* newTrace, Trace* candidate);
 				void								MergeTwoEndingInputTrace(Trace* newTrace, Trace*& candidate);
 
@@ -279,10 +291,10 @@ TraceManager
 				bool								IsQualifiedTokenForEdgeArray(regex::RegexToken* token, EdgeArray& edgeArray);
 				vint32_t							PushSwitchFrame(Switches* currentSV, vuint32_t* values);
 				vint32_t							RunEdgeConditionChecking(vint32_t currentSwitchValues, EdgeDesc& edgeDesc);
-				Trace*								WalkAlongSingleEdge(vint32_t currentTokenIndex, vint32_t input, Trace* trace, vint32_t byEdge, EdgeDesc& edgeDesc);
-				void								WalkAlongLeftrecEdges(vint32_t currentTokenIndex, regex::RegexToken* lookAhead, Trace* trace, EdgeArray& edgeArray);
-				void								WalkAlongEpsilonEdges(vint32_t currentTokenIndex, regex::RegexToken* lookAhead, Trace* trace);
-				void								WalkAlongTokenEdges(vint32_t currentTokenIndex, vint32_t input, regex::RegexToken* token, regex::RegexToken* lookAhead, Trace* trace, EdgeArray& edgeArray);
+				WalkingTrace						WalkAlongSingleEdge(vint32_t currentTokenIndex, vint32_t input, WalkingTrace trace, vint32_t byEdge, EdgeDesc& edgeDesc);
+				void								WalkAlongLeftrecEdges(vint32_t currentTokenIndex, regex::RegexToken* lookAhead, WalkingTrace trace, EdgeArray& edgeArray);
+				void								WalkAlongEpsilonEdges(vint32_t currentTokenIndex, regex::RegexToken* lookAhead, WalkingTrace trace);
+				void								WalkAlongTokenEdges(vint32_t currentTokenIndex, vint32_t input, regex::RegexToken* token, regex::RegexToken* lookAhead, WalkingTrace trace, EdgeArray& edgeArray);
 
 				// EndOfInput
 				void								FillSuccessorsAfterEndOfInput();

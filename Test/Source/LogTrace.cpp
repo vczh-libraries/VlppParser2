@@ -215,6 +215,7 @@ void RenderTrace(
 	StringReader reader(GenerateToStream([&](StreamWriter& writer)
 	{
 		writer.WriteString(L"[" + itow(trace->allocatedIndex) + L"]: ");
+		CHECK_ERROR(trace->state != -1, L"");
 		switch (trace->byInput)
 		{
 		case -1:

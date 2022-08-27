@@ -8,7 +8,23 @@ namespace vl
 		{
 
 /***********************************************************************
-AreTwoTraceEqual
+EnsureTraceWithValidStates
+***********************************************************************/
+
+			Trace* TraceManager::EnsureTraceWithValidStates(Trace* trace)
+			{
+				if (trace->state == -1)
+				{
+					return GetTrace(trace->predecessors.first);
+				}
+				else
+				{
+					return trace;
+				}
+			}
+
+/***********************************************************************
+AreTwoEndingInputTraceEqual
 ***********************************************************************/
 
 			bool TraceManager::AreTwoEndingInputTraceEqual(Trace* newTrace, Trace* candidate)
@@ -20,10 +36,7 @@ AreTwoTraceEqual
 				//   4) they have the same switchValues
 				//   5) the candidate has an ending input
 
-				if (candidate->state == -1)
-				{
-					candidate = GetTrace(candidate->predecessors.first);
-				}
+				candidate = EnsureTraceWithValidStates(candidate);
 
 				if (candidate->byInput != Executable::EndingInput) return false;
 				if (newTrace->state != candidate->state) return false;
