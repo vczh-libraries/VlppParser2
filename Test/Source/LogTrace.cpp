@@ -492,8 +492,7 @@ struct TraceTree
 		TraceManager& tm,
 		bool firstLevel,
 		Dictionary<Trace*, Ptr<TraceTree>>& nonEndTraces,
-		List<Trace*>& endTraces,
-		List<TraceTree*>& sendTraces
+		List<Trace*>& endTraces
 	)
 	{
 		bool endTrace = !firstLevel && trace->byInput >= Executable::TokenBegin;
@@ -502,7 +501,8 @@ struct TraceTree
 			vint index = nonEndTraces.Keys().IndexOf(trace);
 			if (index != -1)
 			{
-				children.Add(nonEndTraces.Values()[index]);
+				auto startNode = nonEndTraces.Values()[index];
+				children.Add(startNode);
 				return;
 			}
 		}
@@ -530,17 +530,8 @@ struct TraceTree
 		while (successorId != -1)
 		{
 			auto successor = tm.GetTrace(successorId);
-			tree->AddChildTrace(successor, tm, false, nonEndTraces, endTraces, sendTraces);
+			tree->AddChildTrace(successor, tm, false, nonEndTraces, endTraces);
 			successorId = successor->successors.siblingNext;
-		}
-
-		for (auto child : tree->children)
-		{
-			if (child->endTrace)
-			{
-				sendTraces.Add(tree.Obj());
-				break;
-			}
 		}
 	}
 
@@ -707,6 +698,7 @@ void RenderTraceTreeConnection(
 	vint connectionOffset,
 	Array<vint>& rowStarts,
 	Array<vint>& columnStarts,
+	Group<Trace*, vint>& endTraceConnectionPositions,
 	StreamWriter& writer
 )
 {
@@ -734,7 +726,7 @@ void RenderTraceTreeConnection(
 			for (vint i = startRow + 1; i < endRow; i++)
 			{
 				if (i >= buffer.lines.Count()) break;
-				buffer.Draw(i, startColumn, L'|');
+				buffer.Draw(i, endColumn, L'|');
 			}
 
 			if (endRow - 1 < buffer.lines.Count())
@@ -751,11 +743,23 @@ void RenderTraceTreeConnection(
 				{
 					buffer.Draw(endRow - 1, i, L'-');
 				}
-			}
 
-			if (endRow < buffer.lines.Count())
+				if (endRow < buffer.lines.Count())
+				{
+					buffer.Draw(endRow, endColumn, L'|');
+				}
+
+				if (child->endTrace)
+				{
+					endTraceConnectionPositions.Add(child->trace, startColumn);
+				}
+			}
+			else
 			{
-				buffer.Draw(endRow, endColumn, L'|');
+				if (child->endTrace)
+				{
+					endTraceConnectionPositions.Add(child->trace, endColumn);
+				}
 			}
 		}
 
@@ -781,6 +785,7 @@ void RenderTraceTreeConnection(
 			connectionOffset,
 			rowStarts,
 			columnStarts,
+			endTraceConnectionPositions,
 			writer);
 	}
 }
@@ -792,7 +797,7 @@ void RenderTraceTree(
 	StreamWriter& writer
 )
 {
-	Array<vint> sendPositions;
+	SortedList<vint> sendPositions;
 	Array<vint> receivePositions;
 	Group<vint, vint> sendTos;
 	List<Trace*> startTraces;
@@ -821,13 +826,12 @@ void RenderTraceTree(
 		}
 
 		List<Trace*> endTraces;
-		List<TraceTree*> sendTraces;
 		auto root = MakePtr<TraceTree>();
 		{
 			Dictionary<Trace*, Ptr<TraceTree>> nonEndTraces;
 			for (auto trace : startTraces)
 			{
-				root->AddChildTrace(trace, tm, true, nonEndTraces, endTraces, sendTraces);
+				root->AddChildTrace(trace, tm, true, nonEndTraces, endTraces);
 			}
 		}
 		vint width = root->SetColumns(0);
@@ -918,6 +922,7 @@ void RenderTraceTree(
 			}
 		}
 
+		Group<Trace*, vint> endTraceConnectionPositions;
 		RenderTraceTreeConnection(
 			root.Obj(),
 			traceLogs,
@@ -928,6 +933,7 @@ void RenderTraceTree(
 			connectionOffset,
 			rowStarts,
 			columnStarts,
+			endTraceConnectionPositions,
 			writer);
 
 		receivePositions.Resize(startTraces.Count());
@@ -977,17 +983,28 @@ void RenderTraceTree(
 			}
 		}
 
-		sendPositions.Resize(sendTraces.Count());
+		sendPositions.Clear();
 		sendTos.Clear();
-		for (auto [tree, index] : indexed(sendTraces))
+		for (auto endTrace : endTraces)
 		{
-			sendPositions[index] = columnStarts[tree->column];
-			for (auto child : tree->children)
+			for (vint position : endTraceConnectionPositions[endTrace])
 			{
-				if (child->endTrace)
+				if (!sendPositions.Contains(position))
 				{
-					sendTos.Add(index, endTraces.IndexOf(child->trace));
+					sendPositions.Add(position);
 				}
+			}
+		}
+
+		for (auto [endTrace, index] : indexed(endTraces))
+		{
+			for (vint position : endTraceConnectionPositions[endTrace])
+			{
+				if (!sendPositions.Contains(position))
+				{
+					sendPositions.Add(position);
+				}
+				sendTos.Add(sendPositions.IndexOf(position), index);
 			}
 		}
 
