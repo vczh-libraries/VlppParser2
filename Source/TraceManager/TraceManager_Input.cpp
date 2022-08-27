@@ -102,7 +102,7 @@ EndOfInput
 				for (vint32_t traceIndex = 0; traceIndex < traceCount; traceIndex++)
 				{
 					auto trace = concurrentTraces->Get(traceIndex);
-					auto actualTrace = trace->state == -1 ? GetTrace(trace->predecessors.first) : trace;
+					auto actualTrace = EnsureTraceWithValidStates(trace);
 					auto& stateDesc = executable.states[actualTrace->state];
 					if (actualTrace->returnStack == -1 && stateDesc.endingState)
 					{

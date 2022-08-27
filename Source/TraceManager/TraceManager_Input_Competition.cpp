@@ -191,7 +191,7 @@ CheckBackupTracesBeforeSwapping
 				// add itself to the appriopriate counter for all attending competitions
 				for (vint i = 0; i < concurrentCount; i++)
 				{
-					auto trace = backupTraces->Get(i);
+					auto trace = EnsureTraceWithValidStates(backupTraces->Get(i));
 					auto acId = trace->competitionRouting.attendingCompetitions;
 					while (acId != -1)
 					{
@@ -242,7 +242,7 @@ CheckBackupTracesBeforeSwapping
 				// this trace will be removed
 				for (vint i = concurrentCount - 1; i >= 0; i--)
 				{
-					auto trace = backupTraces->Get(i);
+					auto trace =EnsureTraceWithValidStates(backupTraces->Get(i));
 					auto acId = trace->competitionRouting.attendingCompetitions;
 					while (acId != -1)
 					{
@@ -283,7 +283,7 @@ CheckBackupTracesBeforeSwapping
 				// remove all settled AttendingCompetitions object from linked lists of any surviving trace
 				for (vint i = 0; i < concurrentCount; i++)
 				{
-					auto trace = backupTraces->Get(i);
+					auto trace = EnsureTraceWithValidStates(backupTraces->Get(i));
 					vint32_t* pnext = &trace->competitionRouting.attendingCompetitions;
 					while (*pnext != -1)
 					{
