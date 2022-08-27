@@ -215,7 +215,12 @@ void RenderTrace(
 	StringReader reader(GenerateToStream([&](StreamWriter& writer)
 	{
 		writer.WriteString(L"[" + itow(trace->allocatedIndex) + L"]: ");
-		CHECK_ERROR(trace->state != -1, L"");
+		if (trace->state == -1)
+		{
+			writer.WriteLine(L"<Merging>");
+			return;
+		}
+
 		switch (trace->byInput)
 		{
 		case -1:
