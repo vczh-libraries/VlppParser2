@@ -758,7 +758,7 @@ void RenderTraceTreeConnection(
 			{
 				if (child->endTrace)
 				{
-					endTraceConnectionPositions.Add(child->trace, endColumn);
+					endTraceConnectionPositions.Add(child->trace, (startRow + 1 < buffer.lines.Count() ? endColumn : startColumn));
 				}
 			}
 		}
