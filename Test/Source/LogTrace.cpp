@@ -726,7 +726,7 @@ void RenderTraceTreeConnection(
 			for (vint i = startRow + 1; i < endRow; i++)
 			{
 				if (i >= buffer.lines.Count()) break;
-				buffer.Draw(i, endColumn, L'|');
+				buffer.Draw(i, (startColumn > endColumn ? startColumn : endColumn), L'|');
 			}
 
 			if (endRow - 1 < buffer.lines.Count())
