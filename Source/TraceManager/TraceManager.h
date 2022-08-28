@@ -228,7 +228,6 @@ TraceManager (Data Structures -- Execution)
 			struct InsExec_Object
 			{
 				vint32_t							allocatedIndex = -1;
-				vint32_t							stackBase = -1;
 				vint32_t							bo_bolr_Trace = -1;
 				vint32_t							bo_bolr_Ins = -1;
 			};
@@ -245,6 +244,7 @@ TraceManager (Data Structures -- Execution)
 			{
 				vint32_t							allocatedIndex = -1;
 				vint32_t							previous = -1;
+				vint32_t							stackBase = -1;
 				vint32_t							dfa_bo_bolr_Trace = -1;
 				vint32_t							dfa_bo_bolr_Ins = -1;
 			};
@@ -360,6 +360,9 @@ TraceManager
 				// PrepareTraceRoute
 				AllocateOnly<TraceExec>				traceExecs;
 				collections::Array<InsExec>			insExecs;
+				AllocateOnly<InsExec_Object>		insExec_Objects;
+				AllocateOnly<InsExec_ObjectStack>	insExec_ObjectStacks;
+				AllocateOnly<InsExec_CreateStack>	insExec_CreateStacks;
 
 				void								ReadInstructionList(Trace* trace, TraceInsLists& insLists);
 				AstIns&								ReadInstruction(vint32_t instruction, TraceInsLists& insLists);

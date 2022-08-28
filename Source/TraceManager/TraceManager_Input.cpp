@@ -55,6 +55,9 @@ Initialize
 
 				traceExecs.Clear();
 				insExecs.Resize(0);
+				insExec_Objects.Clear();
+				insExec_ObjectStacks.Clear();
+				insExec_CreateStacks.Clear();
 
 				initialTrace = AllocateTrace();
 				initialTrace->state = startState;
