@@ -203,7 +203,6 @@ void RenderTrace(
 	bool bold,
 	Executable& executable,
 	TraceManager& tm,
-	bool beforePreparing,
 	List<RegexToken>& tokens,
 	const Func<WString(vint32_t)>& typeName,
 	const Func<WString(vint32_t)>& fieldName,
@@ -240,7 +239,7 @@ void RenderTrace(
 			}
 		}
 
-		if (!beforePreparing)
+		if (trace->traceExecRef != -1)
 		{
 			auto traceExec = tm.GetTraceExec(trace->traceExecRef);
 			if (traceExec->insExecRefs.start == -1)
@@ -356,17 +355,20 @@ void RenderTrace(
 
 			LogInstruction(ins, typeName, fieldName, writer);
 
-			if (!beforePreparing)
+			if (trace->traceExecRef != -1)
 			{
 				auto traceExec = tm.GetTraceExec(trace->traceExecRef);
 				auto insExec = tm.GetInsExec(traceExec->insExecRefs.start + i);
-				if (insExec->objectId != -1 || insExec->associatedTrace != -1 || insExec->associatedIns != -1)
+				if (insExec->objectId != -1)
 				{
+					auto ieObject = tm.GetInsExec_Object(insExec->objectId);
 					writer.WriteLine(
 						L"      obj:" + itow(insExec->objectId) +
-						L" trace:" + itow(insExec->associatedTrace) +
-						L" ins:" + itow(insExec->associatedIns)
-						);
+						L", lr:" + itow(ieObject->lrObjectId) +
+						L", dfa:" + itow(ieObject->dfaObjectId) +
+						L", created in:[" + itow(ieObject->dfa_bo_bolr_ra_Trace) +
+						L"," + itow(ieObject->dfa_bo_bolr_ra_Ins) +
+						L"]");
 				}
 			}
 		}
@@ -1101,7 +1103,6 @@ FilePath LogTraceManager(
 					trace->byInput >= Executable::TokenBegin,
 					executable,
 					tm,
-					beforePreparing,
 					tokens,
 					typeName,
 					fieldName,

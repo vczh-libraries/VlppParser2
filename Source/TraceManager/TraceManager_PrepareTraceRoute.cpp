@@ -223,11 +223,10 @@ PartialExecuteTraces
 									CHECK_ERROR(GetStackTop(context) - GetStackBase(context) >= 1, ERROR_MESSAGE_PREFIX L"Pushed values not enough.");
 
 									auto ieOSTop = GetInsExec_ObjectStack(context.objectStack);
-									CHECK_ERROR(ieOSTop->objectId >= 0 || ieOSTop->objectId <= -3, ERROR_MESSAGE_PREFIX L"The poped value is not an object.");
-									auto ieObjTop = GetInsExec_Object(ieOSTop->objectId >= 0 ? ieOSTop->objectId : -(ieOSTop->objectId + 3));
 
 									auto ieObject = GetInsExec_Object(insExec_Objects.Allocate());
 									ieObject->pushedObjectId = ieObject->allocatedIndex;
+									ieObject->lrObjectId = ieOSTop->objectId;
 									ieObject->dfa_bo_bolr_ra_Trace = trace->allocatedIndex;
 									ieObject->dfa_bo_bolr_ra_Ins = insRef;
 
@@ -238,8 +237,6 @@ PartialExecuteTraces
 									ieCSTop->dfa_bo_bolr_Ins = insRef;
 
 									insExec->objectId = ieObject->pushedObjectId;
-									insExec->associatedTrace = ieObjTop->dfa_bo_bolr_ra_Trace;
-									insExec->associatedIns = ieObjTop->dfa_bo_bolr_ra_Ins;
 								}
 								break;
 							case AstInsType::DelayFieldAssignment:
@@ -266,12 +263,13 @@ PartialExecuteTraces
 									auto ieCSTop = GetInsExec_CreateStack(context.createStack);
 									CHECK_ERROR(ieCSTop->objectId <= -3, ERROR_MESSAGE_PREFIX L"DelayFieldAssignment is not submitted before ReopenObject.");
 
-									auto ieObjTop = GetInsExec_ObjectStack(context.objectStack);
-									context.objectStack = ieObjTop->previous;
+									auto ieOSTop = GetInsExec_ObjectStack(context.objectStack);
+									context.objectStack = ieOSTop->previous;
+
+									auto ieObjTop = GetInsExec_Object(ieOSTop->objectId);
+									ieObjTop->dfaObjectId = ieCSTop->objectId;
 
 									insExec->objectId = ieCSTop->objectId;
-									insExec->associatedTrace = ieCSTop->dfa_bo_bolr_Trace;
-									insExec->associatedIns = ieCSTop->dfa_bo_bolr_Ins;
 								}
 								break;
 							case AstInsType::EndObject:
@@ -283,8 +281,6 @@ PartialExecuteTraces
 									PushObjectStack(context, ieCSTop->objectId);
 
 									insExec->objectId = ieCSTop->objectId;
-									insExec->associatedTrace = ieCSTop->dfa_bo_bolr_Trace;
-									insExec->associatedIns = ieCSTop->dfa_bo_bolr_Ins;
 								}
 								break;
 							case AstInsType::DiscardValue:

@@ -180,7 +180,18 @@ TraceManager
 			
 			InsExec_Object* TraceManager::GetInsExec_Object(vint32_t index)
 			{
-				return insExec_Objects.Get(index);
+				if (index >= 0)
+				{
+					return insExec_Objects.Get(index);
+				}
+				else if (index <= -3)
+				{
+					return insExec_Objects.Get(-(index + 3));
+				}
+				else
+				{
+					CHECK_FAIL(L"vl::glr::automaton::TraceManager::GetInsExec_Object(vint32_t)#Index out of range.");
+				}
 			}
 
 			InsExec_ObjectStack* TraceManager::GetInsExec_ObjectStack(vint32_t index)

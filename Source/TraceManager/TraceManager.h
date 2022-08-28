@@ -214,25 +214,23 @@ TraceManager (Data Structures -- Execution)
 				//   EndObject						: the id of the operating object
 				//   ResolveAmbiguity				: the id of the created object
 				vint32_t							objectId = -1;
-
-				// the associated instruction of the following instructions:
-				//   BeginObject					:
-				//   BeginObjectLeftRecursive		: the DFA/BO/BOLR/RA for the first field of the created object
-				//   DelayFieldAssignment			:
-				//   ReopenObject					: the DFA storing fields to reopen
-				//   EndObject						: the DFA/BO/BOLR that creates the operating object
-				//   ResolveAmbiguity				:
-				vint32_t							associatedTrace = -1;
-				vint32_t							associatedIns = -1;
 			};
 
 			struct InsExec_Object
 			{
+				vint32_t							allocatedIndex = -1;
+
 				// pushedObjectId could be:
 				//   >= 0 : known object
 				//   <=-3 : DFA created object, the value is (-allocatedIndex - 3)
-				vint32_t							allocatedIndex = -1;
 				vint32_t							pushedObjectId = -1;
+
+				// lrObjectId is the object it takes while being created by BOLR
+				// dfaObjectId is the DFA created object that this object is associated to the last time
+				vint32_t							lrObjectId = -1;
+				vint32_t							dfaObjectId = -1;
+
+				// instruction that creates this object
 				vint32_t							dfa_bo_bolr_ra_Trace = -1;
 				vint32_t							dfa_bo_bolr_ra_Ins = -1;
 			};
