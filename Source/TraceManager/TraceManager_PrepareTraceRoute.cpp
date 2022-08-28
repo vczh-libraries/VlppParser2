@@ -223,7 +223,7 @@ PartialExecuteTraces
 									CHECK_ERROR(GetStackTop(context) - GetStackBase(context) >= 1, ERROR_MESSAGE_PREFIX L"Pushed values not enough.");
 
 									auto ieOSTop = GetInsExec_ObjectStack(context.objectStack);
-									CHECK_ERROR(ieOSTop->objectId, ERROR_MESSAGE_PREFIX L"The poped value is not an object.");
+									CHECK_ERROR(ieOSTop->objectId >= 0, ERROR_MESSAGE_PREFIX L"The poped value is not an object.");
 									auto ieObjTop = GetInsExec_Object(ieOSTop->objectId);
 
 									auto ieObject = GetInsExec_Object(insExec_Objects.Allocate());
@@ -263,7 +263,7 @@ PartialExecuteTraces
 									auto ieObjTop = GetInsExec_ObjectStack(context.objectStack);
 									context.objectStack = ieObjTop->previous;
 
-									CHECK_ERROR(ieObjTop->objectId, ERROR_MESSAGE_PREFIX L"The poped value is not an object.");
+									CHECK_ERROR(ieObjTop->objectId >= 0, ERROR_MESSAGE_PREFIX L"The poped value is not an object.");
 									auto ieObject = GetInsExec_Object(ieObjTop->objectId);
 									ieCSTop->objectId = ieObject->allocatedIndex;
 
