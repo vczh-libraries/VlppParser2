@@ -168,52 +168,14 @@ TraceManager
 				return switches.Get(index);
 			}
 
-			void TraceManager::Initialize(vint32_t startState)
+			TraceExec* TraceManager::GetTraceExec(vint32_t index)
 			{
-				state = TraceManagerState::WaitingForInput;
+				return traceExecs.Get(index);
+			}
 
-				returnStacks.Clear();
-				traces.Clear();
-				competitions.Clear();
-				attendingCompetitions.Clear();
-				switches.Clear();
-
-				traces1.Clear();
-				traces2.Clear();
-				concurrentTraces = &traces1;
-				backupTraces = &traces2;
-
-				activeCompetitions = -1;
-				initialReturnStackCache = {};
-
-				if (executable.switchDefaultValues.Count() == 0)
-				{
-					rootSwitchValues = -1;
-				}
-				else
-				{
-					rootSwitchValues = switches.Allocate();
-					auto sv = switches.Get(rootSwitchValues);
-					for (vint32_t i = 0; i < executable.switchDefaultValues.Count(); i++)
-					{
-						if (executable.switchDefaultValues[i])
-						{
-							vint32_t row = i / 8 * sizeof(vuint32_t);
-							vint32_t column = i % 8 * sizeof(vuint32_t);
-							vuint32_t& value = sv->values[row];
-							value |= (vuint32_t)1 << column;
-						}
-					}
-				}
-
-				temporaryConditionStack.Clear();
-				temporaryConditionStackSize = 0;
-
-				initialTrace = AllocateTrace();
-				initialTrace->state = startState;
-				initialTrace->switchValues = rootSwitchValues;
-				concurrentCount = 1;
-				concurrentTraces->Add(initialTrace);
+			InsExec* TraceManager::GetInsExec(vint32_t index)
+			{
+				return &insExecs[index];
 			}
 
 /***********************************************************************

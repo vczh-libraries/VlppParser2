@@ -145,16 +145,6 @@ TraceManager (Data Structures)
 																	// this flag is not always updated for discarded AttendingCompetitions objects
 			};
 
-			struct AmbiguityRouting
-			{
-				vint32_t				predecessorCount = -1;		// the number of predecessors
-																	// (filled by ExecuteTrace)
-
-				vint32_t				branchVisited = 0;			// the number of visited branches in the current loop.
-																	// if these branches are contained in a larger ambiguity resolving loop, all branches could be visited multiple times
-																	// (filled by ExecuteTrace)
-			};
-
 			struct Switches
 			{
 				vint32_t				allocatedIndex = -1;
@@ -206,6 +196,35 @@ TraceManager (Data Structures -- Trace)
 				vint32_t				byInput = -1;				// the last input that make this trace
 				vint32_t				currentTokenIndex = -1;		// the index of the token that is byInput
 				CompetitionRouting		competitionRouting;			// a data structure carrying priority and competition information
+
+				vint32_t				traceExecRef = -1;			// the allocated TraceExec (filled by PrepareTraceRoute)
+			};
+
+/***********************************************************************
+TraceManager (Data Structures -- Execution)
+***********************************************************************/
+
+			struct InsExec
+			{
+				vint32_t							objectId = -1;
+			};
+
+			struct TraceInsLists
+			{
+				InstructionArray					edgeInsBeforeInput;
+				InstructionArray					edgeInsAfterInput;
+				InstructionArray					returnInsAfterInput;
+				vint32_t							c1;
+				vint32_t							c2;
+				vint32_t							c3;
+			};
+
+			struct TraceExec
+			{
+				vint32_t							allocatedIndex = -1;
+				vint32_t							traceId = -1;
+				TraceInsLists						insLists;			// instruction list of this trace
+				InstructionArray					insExecRefs;		// allocated InsExec for instructions
 			};
 
 /***********************************************************************
@@ -218,16 +237,6 @@ TraceManager
 				WaitingForInput,
 				Finished,
 				PreparedTraceRoute,
-			};
-
-			struct TraceInsLists
-			{
-				InstructionArray					edgeInsBeforeInput;
-				InstructionArray					edgeInsAfterInput;
-				InstructionArray					returnInsAfterInput;
-				vint32_t							c1;
-				vint32_t							c2;
-				vint32_t							c3;
 			};
 
 			struct WalkingTrace
@@ -299,9 +308,15 @@ TraceManager
 				// EndOfInput
 				void								FillSuccessorsAfterEndOfInput();
 
+			protected:
 				// PrepareTraceRoute
+				AllocateOnly<TraceExec>				traceExecs;
+				collections::Array<InsExec>			insExecs;
+
 				void								ReadInstructionList(Trace* trace, TraceInsLists& insLists);
 				AstIns&								ReadInstruction(vint32_t instruction, TraceInsLists& insLists);
+				void								AllocateExecutionData();
+
 			public:
 				TraceManager(Executable& _executable, const ITypeCallback* _typeCallback);
 
@@ -318,6 +333,8 @@ TraceManager
 				AttendingCompetitions*				GetAttendingCompetitions(vint32_t index);
 				AttendingCompetitions*				AllocateAttendingCompetitions();
 				Switches*							GetSwitches(vint32_t index);
+				TraceExec*							GetTraceExec(vint32_t index);
+				InsExec*							GetInsExec(vint32_t index);
 
 				void								Initialize(vint32_t startState) override;
 				bool								Input(vint32_t currentTokenIndex, regex::RegexToken* token, regex::RegexToken* lookAhead) override;

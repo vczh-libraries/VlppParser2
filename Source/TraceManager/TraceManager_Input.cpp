@@ -9,6 +9,61 @@ namespace vl
 			using namespace collections;
 
 /***********************************************************************
+Initialize
+***********************************************************************/
+
+			void TraceManager::Initialize(vint32_t startState)
+			{
+				state = TraceManagerState::WaitingForInput;
+
+				returnStacks.Clear();
+				traces.Clear();
+				competitions.Clear();
+				attendingCompetitions.Clear();
+				switches.Clear();
+
+				traces1.Clear();
+				traces2.Clear();
+				concurrentTraces = &traces1;
+				backupTraces = &traces2;
+
+				activeCompetitions = -1;
+				initialReturnStackCache = {};
+
+				if (executable.switchDefaultValues.Count() == 0)
+				{
+					rootSwitchValues = -1;
+				}
+				else
+				{
+					rootSwitchValues = switches.Allocate();
+					auto sv = switches.Get(rootSwitchValues);
+					for (vint32_t i = 0; i < executable.switchDefaultValues.Count(); i++)
+					{
+						if (executable.switchDefaultValues[i])
+						{
+							vint32_t row = i / 8 * sizeof(vuint32_t);
+							vint32_t column = i % 8 * sizeof(vuint32_t);
+							vuint32_t& value = sv->values[row];
+							value |= (vuint32_t)1 << column;
+						}
+					}
+				}
+
+				temporaryConditionStack.Clear();
+				temporaryConditionStackSize = 0;
+
+				traceExecs.Clear();
+				insExecs.Resize(0);
+
+				initialTrace = AllocateTrace();
+				initialTrace->state = startState;
+				initialTrace->switchValues = rootSwitchValues;
+				concurrentCount = 1;
+				concurrentTraces->Add(initialTrace);
+			}
+
+/***********************************************************************
 Input
 ***********************************************************************/
 
@@ -66,11 +121,11 @@ FillSuccessorsAfterEndOfInput
 					auto current = traces[traces.Count() - 1];
 					traces.RemoveAt(traces.Count() - 1);
 
-					vint32_t predecessorId = current->predecessors.first;
+					vint32_t predecessorId = current->predecessors.last;
 					while (predecessorId != -1)
 					{
 						auto predecessor = GetTrace(predecessorId);
-						predecessorId = predecessor->predecessors.siblingNext;
+						predecessorId = predecessor->predecessors.siblingPrev;
 
 						if (predecessor->successors.first == current->allocatedIndex) continue;
 						if (predecessor->successors.last == current->allocatedIndex) continue;

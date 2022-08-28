@@ -55,7 +55,7 @@ ReadInstruction
 				// the index is the instruction in a virtual instruction array
 				// defined by all InstructionArray in TraceInsLists combined together
 #define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::ReadInstruction(vint, TraceInsLists&)#"
-				CHECK_ERROR(0 <= instruction && instruction <= insLists.c3, ERROR_MESSAGE_PREFIX L"Instruction index out of range.");
+				CHECK_ERROR(0 <= instruction && instruction < insLists.c3, ERROR_MESSAGE_PREFIX L"Instruction index out of range.");
 
 				vint insRef = -1;
 				if (instruction < insLists.c1)
@@ -80,6 +80,45 @@ ReadInstruction
 			}
 
 /***********************************************************************
+AllocateExecutiIterateSurvivedTracesonData
+***********************************************************************/
+
+			void TraceManager::AllocateExecutionData()
+			{
+				vint32_t insExecCount = 0;
+				List<Trace*> traces;
+				traces.Add(initialTrace);
+
+				while (traces.Count() > 0)
+				{
+					auto current = traces[traces.Count() - 1];
+					traces.RemoveAt(traces.Count() - 1);
+
+					if (current->traceExecRef != -1) continue;
+					current->traceExecRef = traceExecs.Allocate();
+
+					auto traceExec = GetTraceExec(current->traceExecRef);
+					traceExec->traceId = current->allocatedIndex;
+					ReadInstructionList(current, traceExec->insLists);
+					if (traceExec->insLists.c3 > 0)
+					{
+						traceExec->insExecRefs.start = insExecCount;
+						traceExec->insExecRefs.count = traceExec->insLists.c3;
+						insExecCount += traceExec->insLists.c3;
+					}
+
+					vint32_t successorId = current->successors.last;
+					while (successorId != -1)
+					{
+						auto successor = GetTrace(successorId);
+						successorId = successor->successors.siblingPrev;
+						traces.Add(successor);
+					}
+				}
+				insExecs.Resize(insExecCount);
+			}
+
+/***********************************************************************
 PrepareTraceRoute
 ***********************************************************************/
 
@@ -88,6 +127,8 @@ PrepareTraceRoute
 				if (state == TraceManagerState::PreparedTraceRoute) return;
 				CHECK_ERROR(state == TraceManagerState::Finished, L"vl::glr::automaton::TraceManager::PrepareTraceRoute()#Wrong timing to call this function.");
 				state = TraceManagerState::PreparedTraceRoute;
+
+				AllocateExecutionData();
 			}
 		}
 	}

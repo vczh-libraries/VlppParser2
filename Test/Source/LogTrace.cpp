@@ -203,6 +203,7 @@ void RenderTrace(
 	bool bold,
 	Executable& executable,
 	TraceManager& tm,
+	bool beforePreparing,
 	List<RegexToken>& tokens,
 	const Func<WString(vint32_t)>& typeName,
 	const Func<WString(vint32_t)>& fieldName,
@@ -214,7 +215,24 @@ void RenderTrace(
 {
 	StringReader reader(GenerateToStream([&](StreamWriter& writer)
 	{
-		writer.WriteString(L"[" + itow(trace->allocatedIndex) + L"]: ");
+		writer.WriteString(L"[" + itow(trace->allocatedIndex) + L"]");
+		if (!beforePreparing)
+		{
+			auto traceExec = tm.GetTraceExec(trace->traceExecRef);
+			if (traceExec->insExecRefs.start == -1)
+			{
+				writer.WriteString(L"[" + itow(traceExec->allocatedIndex) + L"]");
+			}
+			else
+			{
+				writer.WriteString(
+					L"[" + itow(traceExec->allocatedIndex) +
+					L", " + itow(traceExec->insExecRefs.start) +
+					L":" + itow(traceExec->insExecRefs.count) +
+					L"]");
+			}
+		}
+		writer.WriteString(L": ");
 		if (trace->state == -1)
 		{
 			writer.WriteLine(L"<Merging>");
@@ -1056,6 +1074,7 @@ FilePath LogTraceManager(
 					trace->byInput >= Executable::TokenBegin,
 					executable,
 					tm,
+					beforePreparing,
 					tokens,
 					typeName,
 					fieldName,
