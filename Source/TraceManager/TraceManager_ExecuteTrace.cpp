@@ -131,7 +131,7 @@ TraceManager::ExecuteTrace
 				}
 			};
 
-			Ptr<ParsingAstBase> TraceManager::ExecuteTrace(Trace* trace, IAstInsReceiver& receiver, collections::List<regex::RegexToken>& tokens)
+			Ptr<ParsingAstBase> TraceManager::ExecuteTrace(IAstInsReceiver& receiver, collections::List<regex::RegexToken>& tokens)
 			{
 #define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::ExecuteTrace(Trace*, IAstInsReceiver&, List<RegexToken>&)#"
 				CHECK_ERROR(state == TraceManagerState::PreparedTraceRoute, ERROR_MESSAGE_PREFIX L"Wrong timing to call this function.");
@@ -141,6 +141,7 @@ TraceManager::ExecuteTrace
 
 				// execute from the root trace
 				vint32_t startIns = 0;
+				auto trace = initialTrace;
 				while (trace)
 				{
 					TraceInsLists insLists;

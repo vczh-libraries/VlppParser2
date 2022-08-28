@@ -24,12 +24,27 @@ ParserBase<TTokens, TStates, TReceiver, TStateTypes>
 			UnexpectedAstType,		// (tokens, executable, traceManager, ast)		unexpected type of the created AST
 		};
 
-		struct EndOfInputArgs
+		enum class TraceProcessingPhase
+		{
+			EndOfInput,
+			PrepareTraceRoute,
+		};
+
+		struct TraceProcessingArgs
 		{
 			collections::List<regex::RegexToken>&			tokens;
 			automaton::Executable&							executable;
 			automaton::IExecutor*							executor;
-			automaton::Trace*								rootTrace;
+			bool											ambiguityInvolved;
+			TraceProcessingPhase							phase;
+		};
+
+		struct ReadyToExecuteArgs
+		{
+			collections::List<regex::RegexToken>& tokens;
+			automaton::Executable& executable;
+			automaton::IExecutor* executor;
+			bool											ambiguityInvolved;
 		};
 
 		struct ErrorArgs
@@ -74,7 +89,8 @@ ParserBase<TTokens, TStates, TReceiver, TStateTypes>
 
 			using Deleter = bool(*)(vint);
 			using TokenList = collections::List<regex::RegexToken>;
-			using EndOfInputCallback = void(EndOfInputArgs&);
+			using TraceProcessingCallback = void(TraceProcessingArgs&);
+			using ReadyToExecuteCallback = void(ReadyToExecuteArgs&);
 			using ErrorCallback = void(ErrorArgs&);
 		protected:
 			Deleter									deleter;
@@ -82,8 +98,8 @@ ParserBase<TTokens, TStates, TReceiver, TStateTypes>
 			Ptr<automaton::Executable>				executable;
 
 		public:
-			Event<EndOfInputCallback>				OnEndOfInput;
-			Event<EndOfInputCallback>				OnReadyToExecute;
+			Event<TraceProcessingCallback>			OnTraceProcessing;
+			Event<ReadyToExecuteCallback>			OnReadyToExecute;
 			Event<ErrorCallback>					OnError;
 
 			ParserBase(
@@ -165,8 +181,8 @@ ParserBase<TTokens, TStates, TReceiver, TStateTypes>
 					}
 				}
 
-				auto rootTrace = executor->EndOfInput();
-				if (!rootTrace)
+				bool ambiguityInvolved = false;
+				if (!executor->EndOfInput(ambiguityInvolved))
 				{
 					auto args = ErrorArgs::InputIncomplete(codeIndex, tokens, *executable.Obj(), executor);
 					OnError(args);
@@ -174,13 +190,25 @@ ParserBase<TTokens, TStates, TReceiver, TStateTypes>
 					return nullptr;
 				}
 
-				EndOfInputArgs args = { tokens, *executable.Obj(), executor, rootTrace };
-				OnEndOfInput(args);
-				executor->PrepareTraceRoute();
-				OnReadyToExecute(args);
+				{
+					TraceProcessingArgs args = { tokens, *executable.Obj(), executor, ambiguityInvolved, TraceProcessingPhase::EndOfInput };
+					OnTraceProcessing(args);
+				}
+				if (ambiguityInvolved)
+				{
+					{
+						executor->PrepareTraceRoute();
+						TraceProcessingArgs args = { tokens, *executable.Obj(), executor, ambiguityInvolved, TraceProcessingPhase::PrepareTraceRoute };
+						OnTraceProcessing(args);
+					}
+				}
+				{
+					ReadyToExecuteArgs args = { tokens, *executable.Obj(), executor, ambiguityInvolved };
+					OnReadyToExecute(args);
+				}
 
 				TReceiver receiver;
-				return executor->ExecuteTrace(rootTrace, receiver, tokens);
+				return executor->ExecuteTrace(receiver, tokens);
 
 #undef ERROR_MESSAGE_PREFIX
 			}

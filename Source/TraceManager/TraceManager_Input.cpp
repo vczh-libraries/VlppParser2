@@ -67,6 +67,15 @@ Initialize
 			}
 
 /***********************************************************************
+GetInitialTrace
+***********************************************************************/
+
+			Trace* TraceManager::GetInitialTrace()
+			{
+				return initialTrace;
+			}
+
+/***********************************************************************
 Input
 ***********************************************************************/
 
@@ -111,9 +120,11 @@ Input
 FillSuccessorsAfterEndOfInput
 ***********************************************************************/
 
-			void TraceManager::FillSuccessorsAfterEndOfInput()
+			void TraceManager::FillSuccessorsAfterEndOfInput(bool& ambiguityInvolved)
 			{
+				ambiguityInvolved = false;
 				List<Trace*> visiting;
+
 				if (concurrentCount > 1)
 				{
 					auto newTrace = GetTrace(traces.Allocate());
@@ -132,6 +143,11 @@ FillSuccessorsAfterEndOfInput
 				{
 					auto current = visiting[visiting.Count() - 1];
 					visiting.RemoveAt(visiting.Count() - 1);
+
+					if (current->predecessors.first != current->predecessors.last)
+					{
+						ambiguityInvolved = true;
+					}
 
 					vint32_t predecessorId = current->predecessors.last;
 					while (predecessorId != -1)
@@ -154,7 +170,7 @@ FillSuccessorsAfterEndOfInput
 EndOfInput
 ***********************************************************************/
 
-			Trace* TraceManager::EndOfInput()
+			bool TraceManager::EndOfInput(bool& ambiguityInvolved)
 			{
 				CHECK_ERROR(state == TraceManagerState::WaitingForInput, L"vl::glr::automaton::TraceManager::EndOfInput()#Wrong timing to call this function.");
 				state = TraceManagerState::Finished;
@@ -178,9 +194,13 @@ EndOfInput
 				}
 
 				EndSwap();
-				if (concurrentCount == 0) return nullptr;
+				if (concurrentCount == 0) return false;
 
-				FillSuccessorsAfterEndOfInput();
+				FillSuccessorsAfterEndOfInput(ambiguityInvolved);
+				if (!ambiguityInvolved)
+				{
+					state = TraceManagerState::PreparedTraceRoute;
+				}
 				return initialTrace;
 			}
 		}

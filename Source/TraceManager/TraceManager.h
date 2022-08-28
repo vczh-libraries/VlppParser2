@@ -361,7 +361,7 @@ TraceManager
 				void								WalkAlongTokenEdges(vint32_t currentTokenIndex, vint32_t input, regex::RegexToken* token, regex::RegexToken* lookAhead, WalkingTrace trace, EdgeArray& edgeArray);
 
 				// EndOfInput
-				void								FillSuccessorsAfterEndOfInput();
+				void								FillSuccessorsAfterEndOfInput(bool& ambiguityInvolved);
 
 			protected:
 				// PrepareTraceRoute
@@ -405,10 +405,13 @@ TraceManager
 				InsExec_CreateStack*				GetInsExec_CreateStack(vint32_t index);
 
 				void								Initialize(vint32_t startState) override;
+				Trace*								GetInitialTrace();
+
 				bool								Input(vint32_t currentTokenIndex, regex::RegexToken* token, regex::RegexToken* lookAhead) override;
-				Trace*								EndOfInput() override;
+				bool								EndOfInput(bool& ambiguityInvolved) override;
+
 				void								PrepareTraceRoute() override;
-				Ptr<ParsingAstBase>					ExecuteTrace(Trace* trace, IAstInsReceiver& receiver, collections::List<regex::RegexToken>& tokens) override;
+				Ptr<ParsingAstBase>					ExecuteTrace(IAstInsReceiver& receiver, collections::List<regex::RegexToken>& tokens) override;
 			};
 		}
 	}

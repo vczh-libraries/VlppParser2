@@ -173,9 +173,9 @@ IExecutor
 
 				virtual void						Initialize(vint32_t startState) = 0;
 				virtual bool						Input(vint32_t currentTokenIndex, regex::RegexToken* token, regex::RegexToken* lookAhead) = 0;
-				virtual Trace*						EndOfInput() = 0;
+				virtual bool						EndOfInput(bool& ambiguityInvolved) = 0;
 				virtual void						PrepareTraceRoute() = 0;
-				virtual Ptr<ParsingAstBase>			ExecuteTrace(Trace* trace, IAstInsReceiver& receiver, collections::List<regex::RegexToken>& tokens) = 0;
+				virtual Ptr<ParsingAstBase>			ExecuteTrace(IAstInsReceiver& receiver, collections::List<regex::RegexToken>& tokens) = 0;
 			};
 
 			extern Ptr<IExecutor>					CreateExecutor(Executable& executable, const IExecutor::ITypeCallback* typeCallback = nullptr);

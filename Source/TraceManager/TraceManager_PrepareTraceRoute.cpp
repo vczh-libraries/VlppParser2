@@ -376,7 +376,6 @@ PrepareTraceRoute
 
 			void TraceManager::PrepareTraceRoute()
 			{
-				if (state == TraceManagerState::PreparedTraceRoute) return;
 				CHECK_ERROR(state == TraceManagerState::Finished, L"vl::glr::automaton::TraceManager::PrepareTraceRoute()#Wrong timing to call this function.");
 				state = TraceManagerState::PreparedTraceRoute;
 

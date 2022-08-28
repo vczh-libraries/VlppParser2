@@ -180,7 +180,6 @@ FilePath LogTraceExecution(
 	const WString& parserName,
 	const WString& caseName,
 	TraceManager& tm,
-	Trace* rootTrace,
 	List<RegexToken>& tokens,
 	const Func<WString(vint32_t)>& typeName,
 	const Func<WString(vint32_t)>& fieldName,
@@ -189,7 +188,7 @@ FilePath LogTraceExecution(
 {
 	return LogTraceExecution(parserName, caseName, typeName, fieldName, tokenName, [&](IAstInsReceiver& receiver)
 	{
-		tm.ExecuteTrace(rootTrace, receiver, tokens);
+		tm.ExecuteTrace(receiver, tokens);
 	});
 }
 
@@ -1073,8 +1072,7 @@ FilePath LogTraceManager(
 	const WString& caseName,
 	Executable& executable,
 	TraceManager& tm,
-	Trace* rootTrace,
-	bool beforePreparing,
+	TraceProcessingPhase traceProcessingPhase,
 	List<RegexToken>& tokens,
 	const Func<WString(vint32_t)>& typeName,
 	const Func<WString(vint32_t)>& fieldName,
@@ -1089,7 +1087,7 @@ FilePath LogTraceManager(
 	{
 		SortedList<Trace*> logged;
 		List<Trace*> visited;
-		visited.Add(rootTrace);
+		visited.Add(tm.GetInitialTrace());
 
 		for (vint i = 0; i < visited.Count(); i++)
 		{
@@ -1124,10 +1122,10 @@ FilePath LogTraceManager(
 	}
 
 	auto outputDir = GetOutputDir(parserName);
-	auto outputFile = outputDir / (L"Trace[" + caseName + (beforePreparing ? L"][1].txt" : L"][2].txt"));
+	auto outputFile = outputDir / (L"Trace[" + caseName + L"][" + itow((vint)traceProcessingPhase + 1) + L"].txt");
 	auto content = GenerateToStream([&](StreamWriter& writer)
 	{
-		RenderTraceTree(rootTrace, tm, traceLogs, writer);
+		RenderTraceTree(tm.GetInitialTrace(), tm, traceLogs, writer);
 	});
 	File(outputFile).WriteAllText(content, true, BomEncoder::Utf8);
 	return outputFile;
