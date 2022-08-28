@@ -7,6 +7,10 @@
 - TODO in `RewriteRules_GenerateAffectedLRIClausesSubgroup`.
 - Make a test case to test `prefix_merge` generates `left_recursion_inject_multiple`.
 
+- IfElseAmbiguity/IfElseAmbiguity1: simple ambiguity.
+- GenericAmbiguity/CallWithDecrement: branching at EndObject, merging before EndObject.
+- FeatureTest/Pba_1: DFA delayed after merging therefore it executes for multiple candidates of a `ToReolsve` class.
+
 ## Features to Add
 
 - Extensible tokens, for example, recognize `R"[^\s(]\(` and invoke a callback function to determine the end of the string.
