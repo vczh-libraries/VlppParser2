@@ -215,28 +215,38 @@ void RenderTrace(
 {
 	StringReader reader(GenerateToStream([&](StreamWriter& writer)
 	{
-		writer.WriteString(L"[" + itow(trace->allocatedIndex) + L"]");
-		if (!beforePreparing)
-		{
-			auto traceExec = tm.GetTraceExec(trace->traceExecRef);
-			if (traceExec->insExecRefs.start == -1)
-			{
-				writer.WriteString(L"[" + itow(traceExec->allocatedIndex) + L"]");
-			}
-			else
-			{
-				writer.WriteString(
-					L"[" + itow(traceExec->allocatedIndex) +
-					L", " + itow(traceExec->insExecRefs.start) +
-					L":" + itow(traceExec->insExecRefs.count) +
-					L"]");
-			}
-		}
+		writer.WriteString(L"[" + itow(trace->allocatedIndex) + L"]: ");
 		writer.WriteString(L": ");
 		if (trace->state == -1)
 		{
 			writer.WriteLine(L"<Merging>");
 			return;
+		}
+
+		if (!beforePreparing)
+		{
+			auto traceExec = tm.GetTraceExec(trace->traceExecRef);
+			if (traceExec->insExecRefs.start == -1)
+			{
+				writer.WriteLine(L"  TraceExec: [" + itow(traceExec->allocatedIndex) + L"]");
+			}
+			else
+			{
+				writer.WriteLine(
+					L"  TraceExec: [" + itow(traceExec->allocatedIndex) +
+					L", " + itow(traceExec->insExecRefs.start) +
+					L":" + itow(traceExec->insExecRefs.count) +
+					L"]");
+			}
+
+			if (traceExec->context.createStack == -1)
+			{
+				writer.WriteLine(L"  CreatingObject: nullptr");
+			}
+			else
+			{
+				writer.WriteLine(L"  CreatingObject: " + itow(tm.GetInsExec_CreateStack(traceExec->context.createStack)->objectId));
+			}
 		}
 
 		switch (trace->byInput)

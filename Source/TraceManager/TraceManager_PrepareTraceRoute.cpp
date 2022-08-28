@@ -197,7 +197,7 @@ PartialExecuteTraces
 						auto traceExec = GetTraceExec(trace->traceExecRef);
 						for (vint32_t insRef = 0; insRef < traceExec->insLists.c3; insRef++)
 						{
-							auto&& insExec = insExecs[traceExec->insExecRefs.start + insRef];
+							auto insExec = GetInsExec(traceExec->insExecRefs.start + insRef);
 							AstIns ins = ReadInstruction(insRef, traceExec->insLists);
 
 							switch (ins.type)
@@ -214,13 +214,13 @@ PartialExecuteTraces
 									ieCSTop->dfa_bo_bolr_Trace = trace->allocatedIndex;
 									ieCSTop->dfa_bo_bolr_Ins = insRef;
 
-									insExec.objectId = ieObject->allocatedIndex;
+									insExec->objectId = ieObject->allocatedIndex;
 									// insExec.associated* will be filled in ReopenObject
 								}
 								break;
 							case AstInsType::BeginObjectLeftRecursive:
 								{
-									CHECK_ERROR(GetStackTop(context) - GetStackBase(context) >= 1, L"Pushed object not enough.");
+									CHECK_ERROR(GetStackTop(context) - GetStackBase(context) >= 1, ERROR_MESSAGE_PREFIX L"Pushed object not enough.");
 
 									auto ieOSTop = GetInsExec_ObjectStack(context.objectStack);
 									auto ieObjTop = GetInsExec_Object(ieOSTop->objectId);
@@ -235,9 +235,9 @@ PartialExecuteTraces
 									ieCSTop->dfa_bo_bolr_Trace = trace->allocatedIndex;
 									ieCSTop->dfa_bo_bolr_Ins = insRef;
 
-									insExec.objectId = ieObject->allocatedIndex;
-									insExec.associatedTrace = ieObjTop->bo_bolr_ra_Trace;
-									insExec.associatedIns = ieObjTop->bo_bolr_ra_Ins;
+									insExec->objectId = ieObject->allocatedIndex;
+									insExec->associatedTrace = ieObjTop->bo_bolr_ra_Trace;
+									insExec->associatedIns = ieObjTop->bo_bolr_ra_Ins;
 								}
 								break;
 							case AstInsType::DelayFieldAssignment:
@@ -253,29 +253,79 @@ PartialExecuteTraces
 								break;
 							case AstInsType::ReopenObject:
 								{
+									CHECK_ERROR(GetStackTop(context) - GetStackBase(context) >= 1, ERROR_MESSAGE_PREFIX L"Pushed object not enough.");
+									CHECK_ERROR(context.createStack != -1, ERROR_MESSAGE_PREFIX L"There is no created object.");
+
+									auto ieCSTop = GetInsExec_CreateStack(context.createStack);
+									CHECK_ERROR(ieCSTop->objectId == -1, ERROR_MESSAGE_PREFIX L"DelayFieldAssignment is not submitted before ReopenObject.");
+
+									auto ieObjTop = GetInsExec_ObjectStack(context.objectStack);
+									context.objectStack = ieObjTop->previous;
+
+									auto ieObject = GetInsExec_Object(ieObjTop->objectId);
+									ieCSTop->objectId = ieObject->allocatedIndex;
+
+									// fill DFA: insExec.objectId and insExec.associated*
+									auto dfaTrace = GetTrace(ieCSTop->dfa_bo_bolr_Trace);
+									auto dfaTraceExec = GetTraceExec(dfaTrace->traceExecRef);
+									auto dfaInsExec = GetInsExec(dfaTraceExec->insExecRefs.start + ieCSTop->dfa_bo_bolr_Ins);
+									if (dfaInsExec->objectId == -1)
+									{
+										dfaInsExec->objectId = ieObject->allocatedIndex;
+										dfaInsExec->associatedTrace = ieObject->bo_bolr_ra_Trace;
+										dfaInsExec->associatedIns = ieObject->bo_bolr_ra_Ins;
+									}
+									else
+									{
+										CHECK_ERROR(dfaInsExec->objectId == ieObject->allocatedIndex, ERROR_MESSAGE_PREFIX L"InsExec data for DelayFieldAssignment is corrupted.");
+										CHECK_ERROR(dfaInsExec->associatedTrace == ieObject->bo_bolr_ra_Trace, ERROR_MESSAGE_PREFIX L"InsExec data for DelayFieldAssignment is corrupted.");
+										CHECK_ERROR(dfaInsExec->associatedIns == ieObject->bo_bolr_ra_Ins, ERROR_MESSAGE_PREFIX L"InsExec data for DelayFieldAssignment is corrupted.");
+									}
+
+									// fill BO/RA: insExec.associated*
+									auto boPrev = GetTraceExec(GetTrace(dfaInsExec->associatedTrace)->traceExecRef);
+									auto boIns = ReadInstruction(dfaInsExec->associatedIns, boPrev->insLists);
+									auto boInsExec = GetInsExec(boPrev->insExecRefs.start + dfaInsExec->associatedIns);
+									while (boIns.type == AstInsType::BeginObjectLeftRecursive)
+									{
+										boPrev = GetTraceExec(GetTrace(boInsExec->associatedTrace)->traceExecRef);
+										boIns = ReadInstruction(boInsExec->associatedIns, boPrev->insLists);
+										boInsExec = GetInsExec(boPrev->insExecRefs.start + boInsExec->associatedIns);
+									}
+									if (boInsExec->associatedTrace != -1)
+									{
+										CHECK_ERROR(ieCSTop->dfa_bo_bolr_Trace <= boInsExec->associatedTrace, ERROR_MESSAGE_PREFIX L"InsExec data for BeginObject/ResolveAmbiguity is corrupted.");
+									}
+									boInsExec->associatedTrace = ieCSTop->dfa_bo_bolr_Trace;
+									boInsExec->associatedIns = ieCSTop->dfa_bo_bolr_Ins;
+
+									// fill RO: insExec.objectId and insExec.associated*
+									insExec->objectId = ieObject->allocatedIndex;
+									insExec->associatedTrace = ieCSTop->dfa_bo_bolr_Trace;
+									insExec->associatedIns = ieCSTop->dfa_bo_bolr_Ins;
 								}
 								break;
 							case AstInsType::EndObject:
 								{
-									CHECK_ERROR(context.createStack != -1, L"There is no created object.");
+									CHECK_ERROR(context.createStack != -1, ERROR_MESSAGE_PREFIX L"There is no created object.");
 
 									auto ieCSTop = GetInsExec_CreateStack(context.createStack);
-									CHECK_ERROR(ieCSTop->objectId != -1, L"There is no created object after DelayFieldAssignment.");
+									CHECK_ERROR(ieCSTop->objectId != -1, ERROR_MESSAGE_PREFIX L"There is no created object after DelayFieldAssignment.");
 
 									context.createStack = ieCSTop->previous;
 									PushObjectStack(context, ieCSTop->objectId);
 
 									auto ieObject = GetInsExec_Object(ieCSTop->objectId);
-									insExec.objectId = ieObject->allocatedIndex;
-									insExec.associatedTrace = ieObject->bo_bolr_ra_Trace;
-									insExec.associatedIns = ieObject->bo_bolr_ra_Ins;
+									insExec->objectId = ieObject->allocatedIndex;
+									insExec->associatedTrace = ieObject->bo_bolr_ra_Trace;
+									insExec->associatedIns = ieObject->bo_bolr_ra_Ins;
 								}
 								break;
 							case AstInsType::DiscardValue:
 							case AstInsType::Field:
 							case AstInsType::FieldIfUnassigned:
 								{
-									CHECK_ERROR(GetStackTop(context) - GetStackBase(context) >= 1, L"Pushed object not enough.");
+									CHECK_ERROR(GetStackTop(context) - GetStackBase(context) >= 1, ERROR_MESSAGE_PREFIX L"Pushed object not enough.");
 
 									auto ieObjTop = GetInsExec_ObjectStack(context.objectStack);
 									context.objectStack = ieObjTop->previous;
@@ -283,8 +333,8 @@ PartialExecuteTraces
 								break;
 							case AstInsType::LriStore:
 								{
-									CHECK_ERROR(GetStackTop(context) - GetStackBase(context) >= 1, L"Pushed object not enough.");
-									CHECK_ERROR(context.lriStored == -1, L"LriFetch is not executed before the next LriStore.");
+									CHECK_ERROR(GetStackTop(context) - GetStackBase(context) >= 1, ERROR_MESSAGE_PREFIX L"Pushed object not enough.");
+									CHECK_ERROR(context.lriStored == -1, ERROR_MESSAGE_PREFIX L"LriFetch is not executed before the next LriStore.");
 
 									auto ieObjTop = GetInsExec_ObjectStack(context.objectStack);
 									context.objectStack = ieObjTop->previous;
@@ -293,14 +343,14 @@ PartialExecuteTraces
 								break;
 							case AstInsType::LriFetch:
 								{
-									CHECK_ERROR(context.lriStored != -1, L"LriStore is not executed before the next LriFetch.");
+									CHECK_ERROR(context.lriStored != -1, ERROR_MESSAGE_PREFIX L"LriStore is not executed before the next LriFetch.");
 									PushObjectStack(context, context.lriStored);
 									context.lriStored = -1;
 								}
 								break;
 							case AstInsType::ResolveAmbiguity:
 								{
-									CHECK_ERROR(GetStackTop(context) - GetStackBase(context) >= ins.count, L"Pushed object not enough create an ambiguity node.");
+									CHECK_ERROR(GetStackTop(context) - GetStackBase(context) >= ins.count, ERROR_MESSAGE_PREFIX L"Pushed object not enough create an ambiguity node.");
 									for (vint i = 0; i < ins.count; i++)
 									{
 										auto ieObjTop = GetInsExec_ObjectStack(context.objectStack);
@@ -312,8 +362,8 @@ PartialExecuteTraces
 									ieObject->bo_bolr_ra_Ins = insRef;
 									PushObjectStack(context, ieObject->allocatedIndex);
 
-									insExec.objectId = ieObject->allocatedIndex;
-									// insExec.associated* is not needed
+									insExec->objectId = ieObject->allocatedIndex;
+									// insExec.associated* will be filled in ReopenObject
 								}
 								break;
 							case AstInsType::Token:

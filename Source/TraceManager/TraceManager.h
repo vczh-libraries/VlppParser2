@@ -216,11 +216,12 @@ TraceManager (Data Structures -- Execution)
 				vint32_t							objectId = -1;
 
 				// the associated instruction of the following instructions:
-				//   BeginObject					: the first DFA of the created object
+				//   BeginObject					: the first DFA of the created object (optional)
 				//   BeginObjectLeftRecursive		: the BO/BOLR/RA for the first field of the created object
 				//   DelayFieldAssignment			: the BO/BOLR/RA that creates the operating object
 				//   ReopenObject					: the DFA storing fields to reopen
 				//   EndObject						: the BO/BOLR/RA that creates the operating object
+				//   ResolveAmbiguity				: the first DFA of the created object (optional)
 				vint32_t							associatedTrace = -1;
 				vint32_t							associatedIns = -1;
 			};
