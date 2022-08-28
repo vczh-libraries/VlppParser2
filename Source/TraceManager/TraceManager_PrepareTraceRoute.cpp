@@ -198,8 +198,7 @@ PartialExecuteTraces
 						for (vint32_t insRef = 0; insRef < traceExec->insLists.c3; insRef++)
 						{
 							auto&& insExec = insExecs[traceExec->insExecRefs.start + insRef];
-							AstIns ins;
-							ReadInstruction(insRef, traceExec->insLists);
+							AstIns ins = ReadInstruction(insRef, traceExec->insLists);
 
 							switch (ins.type)
 							{
@@ -219,10 +218,10 @@ PartialExecuteTraces
 								break;
 							case AstInsType::BeginObjectLeftRecursive:
 								{
-									auto sb = GetStackBase(context);
+									CHECK_ERROR(GetStackTop(context) - GetStackBase(context) >= 1, L"Pushed object not enough.");
+
 									auto ieOSTop = GetInsExec_ObjectStack(context.objectStack);
 									auto ieObjTop = GetInsExec_Object(ieOSTop->objectId);
-									CHECK_ERROR(ieOSTop->pushedCount - sb >= 1, L"Pushed object not enough.");
 
 									auto ieObject = GetInsExec_Object(insExec_Objects.Allocate());
 									ieObject->bo_bolr_ra_Trace = trace->allocatedIndex;
@@ -314,6 +313,7 @@ PrepareTraceRoute
 				state = TraceManagerState::PreparedTraceRoute;
 
 				AllocateExecutionData();
+				PartialExecuteTraces();
 			}
 		}
 	}
