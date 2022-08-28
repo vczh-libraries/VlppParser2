@@ -216,11 +216,28 @@ void RenderTrace(
 	StringReader reader(GenerateToStream([&](StreamWriter& writer)
 	{
 		writer.WriteString(L"[" + itow(trace->allocatedIndex) + L"]: ");
-		writer.WriteString(L": ");
 		if (trace->state == -1)
 		{
 			writer.WriteLine(L"<Merging>");
-			return;
+		}
+
+		switch (trace->byInput)
+		{
+		case -1:
+			writer.WriteLine(L"<Start>");
+			break;
+		case Executable::EndingInput:
+			writer.WriteLine(L"<Ending>");
+			break;
+		case Executable::LeftrecInput:
+			writer.WriteLine(L"<Leftrec>");
+			break;
+		default:
+			{
+				auto&& token = tokens[trace->currentTokenIndex];
+				writer.WriteString(L"{" + tokenName((vint32_t)(trace->byInput - Executable::TokenBegin)) + L"} ");
+				writer.WriteLine(token.reading, token.length);
+			}
 		}
 
 		if (!beforePreparing)
@@ -249,23 +266,9 @@ void RenderTrace(
 			}
 		}
 
-		switch (trace->byInput)
+		if (trace->state == -1)
 		{
-		case -1:
-			writer.WriteLine(L"<Start>");
-			break;
-		case Executable::EndingInput:
-			writer.WriteLine(L"<Ending>");
-			break;
-		case Executable::LeftrecInput:
-			writer.WriteLine(L"<Leftrec>");
-			break;
-		default:
-			{
-				auto&& token = tokens[trace->currentTokenIndex];
-				writer.WriteString(L"{" + tokenName((vint32_t)(trace->byInput - Executable::TokenBegin)) + L"} ");
-				writer.WriteLine(token.reading, token.length);
-			}
+			return;
 		}
 
 		writer.WriteLine(stateLabel((vint32_t)trace->state));
