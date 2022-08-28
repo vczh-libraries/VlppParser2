@@ -370,6 +370,7 @@ TraceManager
 				void								AllocateExecutionData();
 
 				vint32_t							GetStackBase(InsExec_Context& context);
+				vint32_t							GetStackTop(InsExec_Context& context);
 				InsExec_ObjectStack*				PushObjectStack(InsExec_Context& context, vint32_t objectId);
 				InsExec_CreateStack*				PushCreateStack(InsExec_Context& context);
 				void								PartialExecuteTraces();

@@ -342,6 +342,20 @@ void RenderTrace(
 			}
 
 			LogInstruction(ins, typeName, fieldName, writer);
+
+			if (!beforePreparing)
+			{
+				auto traceExec = tm.GetTraceExec(trace->traceExecRef);
+				auto insExec = tm.GetInsExec(traceExec->insExecRefs.start + i);
+				if (insExec->objectId != -1)
+				{
+					writer.WriteLine(
+						L"      obj:" + itow(insExec->objectId) +
+						L" trace:" + itow(insExec->associatedTrace) +
+						L" ins:" + itow(insExec->associatedIns)
+						);
+				}
+			}
 		}
 
 		if (trace->returnStack != -1)

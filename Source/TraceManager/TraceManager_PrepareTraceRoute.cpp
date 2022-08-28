@@ -138,6 +138,18 @@ PartialExecuteTraces
 
 			vint32_t TraceManager::GetStackBase(InsExec_Context& context)
 			{
+				if (context.createStack == -1)
+				{
+					return 0;
+				}
+				else
+				{
+					return GetInsExec_CreateStack(context.createStack)->stackBase;
+				}
+			}
+
+			vint32_t TraceManager::GetStackTop(InsExec_Context& context)
+			{
 				if (context.objectStack == -1)
 				{
 					return 0;
@@ -153,7 +165,7 @@ PartialExecuteTraces
 				auto ie = GetInsExec_ObjectStack(insExec_ObjectStacks.Allocate());
 				ie->previous = context.objectStack;
 				ie->objectId = objectId;
-				ie->pushedCount = GetStackBase(context) + 1;
+				ie->pushedCount = GetStackTop(context) + 1;
 				context.objectStack = ie->allocatedIndex;
 				return ie;
 			}
@@ -194,8 +206,11 @@ PartialExecuteTraces
 							case AstInsType::BeginObject:
 								{
 									auto ieObject = GetInsExec_Object(insExec_Objects.Allocate());
+									ieObject->bo_bolr_ra_Trace = trace->allocatedIndex;
+									ieObject->bo_bolr_ra_Ins = insRef;
+
 									auto ieCS = PushCreateStack(context);
-									ieCS->stackBase = GetStackBase(context);
+									ieCS->stackBase = GetStackTop(context);
 									ieCS->dfa_bo_bolr_Trace = trace->allocatedIndex;
 									ieCS->dfa_bo_bolr_Ins = insRef;
 
@@ -204,6 +219,23 @@ PartialExecuteTraces
 								break;
 							case AstInsType::BeginObjectLeftRecursive:
 								{
+									auto sb = GetStackBase(context);
+									auto ieOSTop = GetInsExec_ObjectStack(context.objectStack);
+									auto ieObjTop = GetInsExec_Object(ieOSTop->objectId);
+									CHECK_ERROR(ieOSTop->pushedCount - sb >= 1, L"Pushed object not enough.");
+
+									auto ieObject = GetInsExec_Object(insExec_Objects.Allocate());
+									ieObject->bo_bolr_ra_Trace = trace->allocatedIndex;
+									ieObject->bo_bolr_ra_Ins = insRef;
+
+									auto ieCS = PushCreateStack(context);
+									ieCS->stackBase = ieOSTop->pushedCount - 1;
+									ieCS->dfa_bo_bolr_Trace = trace->allocatedIndex;
+									ieCS->dfa_bo_bolr_Ins = insRef;
+
+									insExec.objectId = ieObject->allocatedIndex;
+									insExec.associatedTrace = ieObjTop->bo_bolr_ra_Trace;
+									insExec.associatedIns = ieObjTop->bo_bolr_ra_Ins;
 								}
 								break;
 							case AstInsType::DelayFieldAssignment:
