@@ -209,14 +209,16 @@ TraceManager (Data Structures -- Execution)
 				// the allocated object id for following instructions:
 				//   BeginObject					: the id of the created object
 				//   BeginObjectLeftRecursive		: the id of the created object
-				//   ReopenObject					:
-				//   EndObject						:
+				//   DelayFieldAssignment			: the id of the created object
+				//   ReopenObject					: the id of the operating object
+				//   EndObject						: the id of the operating object
 				//   ResolveAmbiguity				: the id of the created object
 				vint32_t							objectId = -1;
 
 				// the associated instruction of the following instructions:
 				//   BeginObject					:
 				//   BeginObjectLeftRecursive		: the BO/BOLR/RA for the first field of the created object
+				//   DelayFieldAssignment			:
 				//   ReopenObject					: the DFA storing fields to reopen
 				//   EndObject						: the DFA/BO/BOLR that creates the operating object
 				//   ResolveAmbiguity				:
@@ -226,9 +228,13 @@ TraceManager (Data Structures -- Execution)
 
 			struct InsExec_Object
 			{
+				// pushedObjectId could be:
+				//   >= 0 : known object
+				//   <=-3 : DFA created object, the value is (-allocatedIndex - 3)
 				vint32_t							allocatedIndex = -1;
-				vint32_t							bo_bolr_ra_Trace = -1;
-				vint32_t							bo_bolr_ra_Ins = -1;
+				vint32_t							pushedObjectId = -1;
+				vint32_t							dfa_bo_bolr_ra_Trace = -1;
+				vint32_t							dfa_bo_bolr_ra_Ins = -1;
 			};
 
 			struct InsExec_ObjectStack
@@ -241,6 +247,9 @@ TraceManager (Data Structures -- Execution)
 
 			struct InsExec_CreateStack
 			{
+				// objectId could be:
+				//   >= 0 : known object
+				//   <=-3 : DFA created object, could be associated to multiple known objects
 				vint32_t							allocatedIndex = -1;
 				vint32_t							previous = -1;
 				vint32_t							objectId = -1;

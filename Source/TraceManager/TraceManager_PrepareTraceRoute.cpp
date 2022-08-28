@@ -205,17 +205,17 @@ PartialExecuteTraces
 							case AstInsType::BeginObject:
 								{
 									auto ieObject = GetInsExec_Object(insExec_Objects.Allocate());
-									ieObject->bo_bolr_ra_Trace = trace->allocatedIndex;
-									ieObject->bo_bolr_ra_Ins = insRef;
+									ieObject->pushedObjectId = ieObject->allocatedIndex;
+									ieObject->dfa_bo_bolr_ra_Trace = trace->allocatedIndex;
+									ieObject->dfa_bo_bolr_ra_Ins = insRef;
 
 									auto ieCSTop = PushCreateStack(context);
-									ieCSTop->objectId = ieObject->allocatedIndex;
+									ieCSTop->objectId = ieObject->pushedObjectId;
 									ieCSTop->stackBase = GetStackTop(context);
 									ieCSTop->dfa_bo_bolr_Trace = trace->allocatedIndex;
 									ieCSTop->dfa_bo_bolr_Ins = insRef;
 
-									insExec->objectId = ieObject->allocatedIndex;
-									// insExec.associated* will be filled in ReopenObject
+									insExec->objectId = ieObject->pushedObjectId;
 								}
 								break;
 							case AstInsType::BeginObjectLeftRecursive:
@@ -223,30 +223,39 @@ PartialExecuteTraces
 									CHECK_ERROR(GetStackTop(context) - GetStackBase(context) >= 1, ERROR_MESSAGE_PREFIX L"Pushed values not enough.");
 
 									auto ieOSTop = GetInsExec_ObjectStack(context.objectStack);
-									CHECK_ERROR(ieOSTop->objectId >= 0, ERROR_MESSAGE_PREFIX L"The poped value is not an object.");
-									auto ieObjTop = GetInsExec_Object(ieOSTop->objectId);
+									CHECK_ERROR(ieOSTop->objectId >= 0 || ieOSTop->objectId <= -3, ERROR_MESSAGE_PREFIX L"The poped value is not an object.");
+									auto ieObjTop = GetInsExec_Object(ieOSTop->objectId >= 0 ? ieOSTop->objectId : -(ieOSTop->objectId + 3));
 
 									auto ieObject = GetInsExec_Object(insExec_Objects.Allocate());
-									ieObject->bo_bolr_ra_Trace = trace->allocatedIndex;
-									ieObject->bo_bolr_ra_Ins = insRef;
+									ieObject->pushedObjectId = ieObject->allocatedIndex;
+									ieObject->dfa_bo_bolr_ra_Trace = trace->allocatedIndex;
+									ieObject->dfa_bo_bolr_ra_Ins = insRef;
 
 									auto ieCSTop = PushCreateStack(context);
-									ieCSTop->objectId = ieObject->allocatedIndex;
+									ieCSTop->objectId = ieObject->pushedObjectId;
 									ieCSTop->stackBase = ieOSTop->pushedCount - 1;
 									ieCSTop->dfa_bo_bolr_Trace = trace->allocatedIndex;
 									ieCSTop->dfa_bo_bolr_Ins = insRef;
 
-									insExec->objectId = ieObject->allocatedIndex;
-									insExec->associatedTrace = ieObjTop->bo_bolr_ra_Trace;
-									insExec->associatedIns = ieObjTop->bo_bolr_ra_Ins;
+									insExec->objectId = ieObject->pushedObjectId;
+									insExec->associatedTrace = ieObjTop->dfa_bo_bolr_ra_Trace;
+									insExec->associatedIns = ieObjTop->dfa_bo_bolr_ra_Ins;
 								}
 								break;
 							case AstInsType::DelayFieldAssignment:
 								{
+									auto ieObject = GetInsExec_Object(insExec_Objects.Allocate());
+									ieObject->pushedObjectId = -ieObject->allocatedIndex - 3;
+									ieObject->dfa_bo_bolr_ra_Trace = trace->allocatedIndex;
+									ieObject->dfa_bo_bolr_ra_Ins = insRef;
+
 									auto ieCS = PushCreateStack(context);
+									ieCS->objectId = ieObject->pushedObjectId;
 									ieCS->stackBase = GetStackTop(context);
 									ieCS->dfa_bo_bolr_Trace = trace->allocatedIndex;
 									ieCS->dfa_bo_bolr_Ins = insRef;
+
+									insExec->objectId = ieObject->pushedObjectId;
 								}
 								break;
 							case AstInsType::ReopenObject:
@@ -255,15 +264,12 @@ PartialExecuteTraces
 									CHECK_ERROR(context.createStack != -1, ERROR_MESSAGE_PREFIX L"There is no created object.");
 
 									auto ieCSTop = GetInsExec_CreateStack(context.createStack);
-									CHECK_ERROR(ieCSTop->objectId == -1, ERROR_MESSAGE_PREFIX L"DelayFieldAssignment is not submitted before ReopenObject.");
+									CHECK_ERROR(ieCSTop->objectId <= -3, ERROR_MESSAGE_PREFIX L"DelayFieldAssignment is not submitted before ReopenObject.");
 
 									auto ieObjTop = GetInsExec_ObjectStack(context.objectStack);
 									context.objectStack = ieObjTop->previous;
 
-									CHECK_ERROR(ieObjTop->objectId >= 0, ERROR_MESSAGE_PREFIX L"The poped value is not an object.");
-									auto ieObject = GetInsExec_Object(ieObjTop->objectId);
-
-									// fill RO: insExec.associated*
+									insExec->objectId = ieCSTop->objectId;
 									insExec->associatedTrace = ieCSTop->dfa_bo_bolr_Trace;
 									insExec->associatedIns = ieCSTop->dfa_bo_bolr_Ins;
 								}
@@ -273,8 +279,10 @@ PartialExecuteTraces
 									CHECK_ERROR(context.createStack != -1, ERROR_MESSAGE_PREFIX L"There is no created object.");
 
 									auto ieCSTop = GetInsExec_CreateStack(context.createStack);
+									context.createStack = ieCSTop->previous;
 									PushObjectStack(context, ieCSTop->objectId);
 
+									insExec->objectId = ieCSTop->objectId;
 									insExec->associatedTrace = ieCSTop->dfa_bo_bolr_Ins;
 									insExec->associatedIns = ieCSTop->dfa_bo_bolr_Trace;
 								}
@@ -316,18 +324,18 @@ PartialExecuteTraces
 									}
 
 									auto ieObject = GetInsExec_Object(insExec_Objects.Allocate());
-									ieObject->bo_bolr_ra_Trace = trace->allocatedIndex;
-									ieObject->bo_bolr_ra_Ins = insRef;
-									PushObjectStack(context, ieObject->allocatedIndex);
+									ieObject->pushedObjectId = ieObject->allocatedIndex;
+									ieObject->dfa_bo_bolr_ra_Trace = trace->allocatedIndex;
+									ieObject->dfa_bo_bolr_ra_Ins = insRef;
+									PushObjectStack(context, ieObject->pushedObjectId);
 
-									insExec->objectId = ieObject->allocatedIndex;
-									// insExec.associated* will be filled in ReopenObject
+									insExec->objectId = ieObject->pushedObjectId;
 								}
 								break;
 							case AstInsType::Token:
 							case AstInsType::EnumItem:
 								{
-									PushObjectStack(context, -2);
+									PushObjectStack(context, -3);
 								}
 								break;
 							default:;
