@@ -6,6 +6,8 @@
 #include "../../Source/IfElseAmbiguity2/Generated/IfElseAmbiguity2ModuleParser.h"
 #include "../../Source/IfElseAmbiguityOnStat/Generated/IfElseAmbiguityOnStatStatAst_Json.h"
 #include "../../Source/IfElseAmbiguityOnStat/Generated/IfElseAmbiguityOnStatModuleParser.h"
+#include "../../Source/IfElseAmbiguityOnStat2/Generated/IfElseAmbiguityOnStat2StatAst_Json.h"
+#include "../../Source/IfElseAmbiguityOnStat2/Generated/IfElseAmbiguityOnStat2ModuleParser.h"
 #include "../../Source/IfElsePriority/Generated/IfElsePriorityStatAst_Json.h"
 #include "../../Source/IfElsePriority/Generated/IfElsePriorityModuleParser.h"
 #include "../../Source/IfElseManual/Generated/IfElseManualStatAst_Json.h"
@@ -231,6 +233,16 @@ TEST_FILE
 		&ifelseambiguityonstat::ModuleParserRuleName,
 		&ifelseambiguityonstat::ModuleParserStateLabel,
 		&ifelseambiguityonstat::ModuleParserSwitchName,
+		L"TestCase_IfElseAmbiguityOnStat"
+		);
+	TestParser<ifelseambiguityonstat2::ModuleParser, ifelseambiguityonstat2::json_visitor::StatAstVisitor>(
+		L"IfElseAmbiguityOnStat2",
+		&ifelseambiguityonstat2::IfElseAmbiguityOnStat2TypeName,
+		&ifelseambiguityonstat2::IfElseAmbiguityOnStat2FieldName,
+		&ifelseambiguityonstat2::IfElseAmbiguityOnStat2TokenId,
+		&ifelseambiguityonstat2::ModuleParserRuleName,
+		&ifelseambiguityonstat2::ModuleParserStateLabel,
+		&ifelseambiguityonstat2::ModuleParserSwitchName,
 		L"TestCase_IfElseAmbiguityOnStat"
 		);
 	TestParser<ifelsepriority::ModuleParser, ifelsepriority::json_visitor::StatAstVisitor>(
