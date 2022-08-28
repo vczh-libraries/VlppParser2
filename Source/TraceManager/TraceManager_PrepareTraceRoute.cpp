@@ -80,7 +80,7 @@ ReadInstruction
 			}
 
 /***********************************************************************
-AllocateExecutiIterateSurvivedTracesonData
+AllocateExecutionData
 ***********************************************************************/
 
 			void TraceManager::AllocateExecutionData()

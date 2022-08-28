@@ -110,16 +110,25 @@ FillSuccessorsAfterEndOfInput
 
 			void TraceManager::FillSuccessorsAfterEndOfInput()
 			{
-				List<Trace*> traces;
-				for (vint32_t traceIndex = 0; traceIndex < concurrentCount; traceIndex++)
+				List<Trace*> visiting;
+				if (concurrentCount > 1)
 				{
-					traces.Add(concurrentTraces->Get(traceIndex));
+					auto newTrace = GetTrace(traces.Allocate());
+					for (vint32_t traceIndex = 0; traceIndex < concurrentCount; traceIndex++)
+					{
+						AddTraceToCollection(newTrace, concurrentTraces->Get(traceIndex), &Trace::predecessors);
+					}
+					visiting.Add(newTrace);
+				}
+				else
+				{
+					visiting.Add(concurrentTraces->Get(0));
 				}
 
-				while (traces.Count() > 0)
+				while (visiting.Count() > 0)
 				{
-					auto current = traces[traces.Count() - 1];
-					traces.RemoveAt(traces.Count() - 1);
+					auto current = visiting[visiting.Count() - 1];
+					visiting.RemoveAt(visiting.Count() - 1);
 
 					vint32_t predecessorId = current->predecessors.last;
 					while (predecessorId != -1)
@@ -133,7 +142,7 @@ FillSuccessorsAfterEndOfInput
 						if (current->successors.siblingNext != -1) continue;
 
 						AddTraceToCollection(predecessor, current, &Trace::successors);
-						traces.Add(predecessor);
+						visiting.Add(predecessor);
 					}
 				}
 			}
