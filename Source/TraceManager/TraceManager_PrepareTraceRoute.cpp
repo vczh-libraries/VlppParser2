@@ -9,6 +9,67 @@ namespace vl
 			using namespace collections;
 
 /***********************************************************************
+IterateSurvivedTraces
+***********************************************************************/
+
+			template<typename TCallback>
+			void TraceManager::IterateSurvivedTraces(TCallback&& callback)
+			{
+				List<Trace*> traces;
+				traces.Add(initialTrace);
+
+				while (traces.Count() > 0)
+				{
+					auto current = traces[traces.Count() - 1];
+					traces.RemoveAt(traces.Count() - 1);
+
+					if (!callback(current)) continue;
+
+					vint32_t successorId = current->successors.last;
+					while (successorId != -1)
+					{
+						auto successor = GetTrace(successorId);
+						successorId = successor->successors.siblingPrev;
+						traces.Add(successor);
+					}
+				}
+			}
+
+/***********************************************************************
+IterateSurvivedTraces
+***********************************************************************/
+
+			template<typename TSingle, typename TMergeFirst, typename TMergeContinue>
+			void TraceManager::IterateSurvivedCategorizedTraces(TSingle&& single, TMergeFirst&& mergeFirst, TMergeContinue&& mergeContinue)
+			{
+				Trace* lastTrace = nullptr;
+				IterateSurvivedTraces([&](Trace* trace)
+				{
+					if (trace->predecessors.first == trace->predecessors.last)
+					{
+						single(trace);
+						lastTrace = trace;
+						return true;
+					}
+					else
+					{
+						if (trace->predecessors.first == lastTrace->allocatedIndex)
+						{
+							mergeFirst(trace);
+							lastTrace = trace;
+							return true;
+						}
+						else
+						{
+							mergeContinue(trace);
+							lastTrace = nullptr;
+							return false;
+						}
+					}
+				});
+			}
+
+/***********************************************************************
 ReadInstructionList
 ***********************************************************************/
 
@@ -77,33 +138,6 @@ ReadInstruction
 
 				return executable.astInstructions[insRef];
 #undef ERROR_MESSAGE_PREFIX
-			}
-
-/***********************************************************************
-IterateSurvivedTraces
-***********************************************************************/
-
-			template<typename TCallback>
-			void TraceManager::IterateSurvivedTraces(TCallback&& callback)
-			{
-				List<Trace*> traces;
-				traces.Add(initialTrace);
-
-				while (traces.Count() > 0)
-				{
-					auto current = traces[traces.Count() - 1];
-					traces.RemoveAt(traces.Count() - 1);
-
-					if (!callback(current)) continue;
-
-					vint32_t successorId = current->successors.last;
-					while (successorId != -1)
-					{
-						auto successor = GetTrace(successorId);
-						successorId = successor->successors.siblingPrev;
-						traces.Add(successor);
-					}
-				}
 			}
 
 /***********************************************************************
@@ -181,10 +215,8 @@ PartialExecuteTraces
 			void TraceManager::PartialExecuteTraces()
 			{
 #define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::PartialExecuteTraces()#"
-				Trace* lastTrace = nullptr;
-				IterateSurvivedTraces([&](Trace* trace)
-				{
-					if (trace->predecessors.first == trace->predecessors.last)
+				IterateSurvivedCategorizedTraces(
+					[this](Trace* trace) // ordinary trace
 					{
 						InsExec_Context context;
 						if (trace->predecessors.first != -1)
@@ -351,34 +383,25 @@ PartialExecuteTraces
 							}
 						}
 						traceExec->context = context;
-
-						lastTrace = trace;
-						return true;
-					}
-					else
+					},
+					[this](Trace* trace) // merge trace first visit
 					{
 						auto firstPredecessor = GetTrace(trace->predecessors.first);
-						if (trace->predecessors.first == lastTrace->allocatedIndex)
-						{
-							GetTraceExec(trace->traceExecRef)->context = GetTraceExec(firstPredecessor->traceExecRef)->context;
-							lastTrace = trace;
-							return true;
-						}
-						else
-						{
-							auto contextBaseline = GetTraceExec(trace->traceExecRef)->context;
-							auto contextComming = GetTraceExec(firstPredecessor->traceExecRef)->context;
-							CHECK_ERROR(
-								contextBaseline.objectStack == contextComming.objectStack &&
-								contextBaseline.createStack == contextComming.createStack &&
-								contextBaseline.lriStored == contextComming.lriStored,
-								ERROR_MESSAGE_PREFIX L"Execution results of traces to merge are different."
-								);
-							lastTrace = nullptr;
-							return false;
-						}
+						GetTraceExec(trace->traceExecRef)->context = GetTraceExec(firstPredecessor->traceExecRef)->context;
+					},
+					[this](Trace* trace) // merge trace continue visit
+					{
+						auto firstPredecessor = GetTrace(trace->predecessors.first);
+						auto contextBaseline = GetTraceExec(trace->traceExecRef)->context;
+						auto contextComming = GetTraceExec(firstPredecessor->traceExecRef)->context;
+						CHECK_ERROR(
+							contextBaseline.objectStack == contextComming.objectStack &&
+							contextBaseline.createStack == contextComming.createStack &&
+							contextBaseline.lriStored == contextComming.lriStored,
+							ERROR_MESSAGE_PREFIX L"Execution results of traces to merge are different."
+							);
 					}
-				});
+				);
 #undef ERROR_MESSAGE_PREFIX
 			}
 

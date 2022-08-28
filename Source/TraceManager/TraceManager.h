@@ -375,6 +375,13 @@ TraceManager
 				void								FillSuccessorsAfterEndOfInput(bool& ambiguityInvolved);
 
 			protected:
+				// Common
+				template<typename TCallback>
+				void								IterateSurvivedTraces(TCallback&& callback);
+
+				template<typename TSingle, typename TMergeFirst, typename TMergeContinue>
+				void								IterateSurvivedCategorizedTraces(TSingle&& single, TMergeFirst&& mergeFirst, TMergeContinue&& mergeContinue);
+
 				// PrepareTraceRoute
 				AllocateOnly<TraceExec>				traceExecs;
 				collections::Array<InsExec>			insExecs;
@@ -384,7 +391,6 @@ TraceManager
 
 				void								ReadInstructionList(Trace* trace, TraceInsLists& insLists);
 				AstIns&								ReadInstruction(vint32_t instruction, TraceInsLists& insLists);
-				template<typename TCallback> void	IterateSurvivedTraces(TCallback&& callback);
 				void								AllocateExecutionData();
 
 				vint32_t							GetStackBase(InsExec_Context& context);
@@ -392,6 +398,8 @@ TraceManager
 				InsExec_ObjectStack*				PushObjectStack(InsExec_Context& context, vint32_t objectId);
 				InsExec_CreateStack*				PushCreateStack(InsExec_Context& context);
 				void								PartialExecuteTraces();
+
+				// ResolveAmbiguity
 
 			public:
 				TraceManager(Executable& _executable, const ITypeCallback* _typeCallback);
