@@ -6,6 +6,7 @@
 - Add test cases for PrefixExtractionAffectedRuleReferencedAnother error.
 - TODO in `RewriteRules_GenerateAffectedLRIClausesSubgroup`.
 - Make a test case to test `prefix_merge` generates `left_recursion_inject_multiple`.
+- Create ambiguity test case caused by only one clause with branches.
 
 - IfElseAmbiguity/IfElseAmbiguity1: simple ambiguity.
 - GenericAmbiguity/CallWithDecrement: branching at EndObject, merging before EndObject.
