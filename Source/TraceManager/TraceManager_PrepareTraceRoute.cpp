@@ -280,6 +280,18 @@ PartialExecuteTraces
 									context.createStack = ieCSTop->previous;
 									PushObjectStack(context, ieCSTop->objectId);
 
+									auto ieObject = GetInsExec_Object(ieCSTop->objectId);
+									if (++ieObject->eo_Counter == 1)
+									{
+										ieObject->eo_Trace = trace->allocatedIndex;
+										ieObject->eo_Ins = insRef;
+									}
+									else
+									{
+										ieObject->eo_Trace = -1;
+										ieObject->eo_Ins = -1;
+									}
+
 									insExec->objectId = ieCSTop->objectId;
 								}
 								break;

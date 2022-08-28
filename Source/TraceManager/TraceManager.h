@@ -233,6 +233,12 @@ TraceManager (Data Structures -- PrepareTraceRoute)
 				// instruction that creates this object
 				vint32_t							dfa_bo_bolr_ra_Trace = -1;
 				vint32_t							dfa_bo_bolr_ra_Ins = -1;
+
+				// eo_Counter counts how many EndObject closes this object
+				// eo_Trace and eo_Ins is the unique EndObject
+				vint32_t							eo_Counter = 0;
+				vint32_t							eo_Trace = -1;
+				vint32_t							eo_Ins = -1;
 			};
 
 			struct InsExec_ObjectStack

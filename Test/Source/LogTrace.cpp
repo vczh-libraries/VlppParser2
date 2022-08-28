@@ -361,13 +361,24 @@ void RenderTrace(
 				if (insExec->objectId != -1)
 				{
 					auto ieObject = tm.GetInsExec_Object(insExec->objectId);
-					writer.WriteLine(
+					writer.WriteString(
 						L"      obj:" + itow(insExec->objectId) +
 						L", lr:" + itow(ieObject->lrObjectId) +
 						L", dfa:" + itow(ieObject->dfaObjectId) +
 						L", created in:[" + itow(ieObject->dfa_bo_bolr_ra_Trace) +
 						L"," + itow(ieObject->dfa_bo_bolr_ra_Ins) +
 						L"]");
+					if (ieObject->eo_Counter == 1)
+					{
+						writer.WriteString(L" closed in:[" + itow(ieObject->eo_Trace) +
+							L"," + itow(ieObject->eo_Ins) +
+							L"]");
+					}
+					else if (ieObject->eo_Counter > 1)
+					{
+						writer.WriteString(L" closed multiple");
+					}
+					writer.WriteLine(L"");
 				}
 			}
 		}

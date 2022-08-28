@@ -49,6 +49,7 @@ namespace TestParser_Generated_TestObjects
 			FilePath dirOutput
 		)
 	{
+		//if (parserName != L"IfElseAmbiguity") return;
 		auto inputPath = GetTestParserInputPath(testFolder);
 		Folder dirInput = FilePath(inputPath) / L"Input";
 		FilePath dirBaseline = FilePath(inputPath) / L"Output";
@@ -60,6 +61,7 @@ namespace TestParser_Generated_TestObjects
 			caseName = inputFile.GetFilePath().GetName();
 			if (caseName.Length() < 4 || caseName.Right(4) != L".txt") continue;
 			caseName = caseName.Left(caseName.Length() - 4);
+			//if (caseName != L"IfElseAmbiguity1") continue;
 
 			TEST_CASE(caseName)
 			{

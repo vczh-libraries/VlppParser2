@@ -8,6 +8,7 @@
 - Make a test case to test `prefix_merge` generates `left_recursion_inject_multiple`.
 
 - IfElseAmbiguity/IfElseAmbiguity1: simple ambiguity.
+  - Add IfElseAmbiguity without `IfContent`
 - GenericAmbiguity/CallWithDecrement: branching at EndObject, merging before EndObject.
 - FeatureTest/Pba_1: DFA delayed after merging therefore it executes for multiple candidates of a `ToReolsve` class.
 
