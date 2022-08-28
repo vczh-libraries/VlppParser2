@@ -220,7 +220,7 @@ TraceManager (Data Structures -- Execution)
 				//   BeginObjectLeftRecursive		: the BO/BOLR/RA for the first field of the created object
 				//   DelayFieldAssignment			: the BO/BOLR/RA that creates the operating object
 				//   ReopenObject					: the DFA storing fields to reopen
-				//   EndObject						: the BO/BOLR that creates the operating object
+				//   EndObject						: the BO/BOLR/RA that creates the operating object
 				vint32_t							associatedTrace = -1;
 				vint32_t							associatedIns = -1;
 			};
@@ -244,6 +244,7 @@ TraceManager (Data Structures -- Execution)
 			{
 				vint32_t							allocatedIndex = -1;
 				vint32_t							previous = -1;
+				vint32_t							objectId = -1;
 				vint32_t							stackBase = -1;
 				vint32_t							dfa_bo_bolr_Trace = -1;
 				vint32_t							dfa_bo_bolr_Ins = -1;

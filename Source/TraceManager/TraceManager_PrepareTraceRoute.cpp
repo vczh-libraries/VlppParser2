@@ -208,12 +208,14 @@ PartialExecuteTraces
 									ieObject->bo_bolr_ra_Trace = trace->allocatedIndex;
 									ieObject->bo_bolr_ra_Ins = insRef;
 
-									auto ieCS = PushCreateStack(context);
-									ieCS->stackBase = GetStackTop(context);
-									ieCS->dfa_bo_bolr_Trace = trace->allocatedIndex;
-									ieCS->dfa_bo_bolr_Ins = insRef;
+									auto ieCSTop = PushCreateStack(context);
+									ieCSTop->objectId = ieObject->allocatedIndex;
+									ieCSTop->stackBase = GetStackTop(context);
+									ieCSTop->dfa_bo_bolr_Trace = trace->allocatedIndex;
+									ieCSTop->dfa_bo_bolr_Ins = insRef;
 
 									insExec.objectId = ieObject->allocatedIndex;
+									// insExec.associated* will be filled in ReopenObject
 								}
 								break;
 							case AstInsType::BeginObjectLeftRecursive:
@@ -227,10 +229,11 @@ PartialExecuteTraces
 									ieObject->bo_bolr_ra_Trace = trace->allocatedIndex;
 									ieObject->bo_bolr_ra_Ins = insRef;
 
-									auto ieCS = PushCreateStack(context);
-									ieCS->stackBase = ieOSTop->pushedCount - 1;
-									ieCS->dfa_bo_bolr_Trace = trace->allocatedIndex;
-									ieCS->dfa_bo_bolr_Ins = insRef;
+									auto ieCSTop = PushCreateStack(context);
+									ieCSTop->objectId = ieObject->allocatedIndex;
+									ieCSTop->stackBase = ieOSTop->pushedCount - 1;
+									ieCSTop->dfa_bo_bolr_Trace = trace->allocatedIndex;
+									ieCSTop->dfa_bo_bolr_Ins = insRef;
 
 									insExec.objectId = ieObject->allocatedIndex;
 									insExec.associatedTrace = ieObjTop->bo_bolr_ra_Trace;
@@ -239,6 +242,13 @@ PartialExecuteTraces
 								break;
 							case AstInsType::DelayFieldAssignment:
 								{
+									auto ieCS = PushCreateStack(context);
+									ieCS->stackBase = GetStackTop(context);
+									ieCS->dfa_bo_bolr_Trace = trace->allocatedIndex;
+									ieCS->dfa_bo_bolr_Ins = insRef;
+
+									// insExec.objectId will be filled in ReopenObject
+									// insExec.associated* will be filled in ReopenObject
 								}
 								break;
 							case AstInsType::ReopenObject:
@@ -247,27 +257,70 @@ PartialExecuteTraces
 								break;
 							case AstInsType::EndObject:
 								{
+									CHECK_ERROR(context.createStack != -1, L"There is no created object.");
+
+									auto ieCSTop = GetInsExec_CreateStack(context.createStack);
+									CHECK_ERROR(ieCSTop->objectId != -1, L"There is no created object after DelayFieldAssignment.");
+
+									context.createStack = ieCSTop->previous;
+									PushObjectStack(context, ieCSTop->objectId);
+
+									auto ieObject = GetInsExec_Object(ieCSTop->objectId);
+									insExec.objectId = ieObject->allocatedIndex;
+									insExec.associatedTrace = ieObject->bo_bolr_ra_Trace;
+									insExec.associatedIns = ieObject->bo_bolr_ra_Ins;
 								}
 								break;
 							case AstInsType::DiscardValue:
 							case AstInsType::Field:
 							case AstInsType::FieldIfUnassigned:
 								{
+									CHECK_ERROR(GetStackTop(context) - GetStackBase(context) >= 1, L"Pushed object not enough.");
+
+									auto ieObjTop = GetInsExec_ObjectStack(context.objectStack);
+									context.objectStack = ieObjTop->previous;
 								}
 								break;
 							case AstInsType::LriStore:
 								{
+									CHECK_ERROR(GetStackTop(context) - GetStackBase(context) >= 1, L"Pushed object not enough.");
+									CHECK_ERROR(context.lriStored == -1, L"LriFetch is not executed before the next LriStore.");
+
+									auto ieObjTop = GetInsExec_ObjectStack(context.objectStack);
+									context.objectStack = ieObjTop->previous;
+									context.lriStored = ieObjTop->objectId;
 								}
 								break;
 							case AstInsType::LriFetch:
 								{
+									CHECK_ERROR(context.lriStored != -1, L"LriStore is not executed before the next LriFetch.");
+									PushObjectStack(context, context.lriStored);
+									context.lriStored = -1;
 								}
 								break;
 							case AstInsType::ResolveAmbiguity:
 								{
+									CHECK_ERROR(GetStackTop(context) - GetStackBase(context) >= ins.count, L"Pushed object not enough create an ambiguity node.");
+									for (vint i = 0; i < ins.count; i++)
+									{
+										auto ieObjTop = GetInsExec_ObjectStack(context.objectStack);
+										context.objectStack = ieObjTop->previous;
+									}
+
+									auto ieObject = GetInsExec_Object(insExec_Objects.Allocate());
+									ieObject->bo_bolr_ra_Trace = trace->allocatedIndex;
+									ieObject->bo_bolr_ra_Ins = insRef;
+									PushObjectStack(context, ieObject->allocatedIndex);
+
+									insExec.objectId = ieObject->allocatedIndex;
+									// insExec.associated* is not needed
 								}
 								break;
+							case AstInsType::Token:
+							case AstInsType::EnumItem:
+								break;
 							default:;
+								CHECK_FAIL(ERROR_MESSAGE_PREFIX L"Unrecognizabled instruction.");
 							}
 						}
 						traceExec->context = context;

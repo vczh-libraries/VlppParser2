@@ -370,7 +370,7 @@ AstInsReceiverBase
 						break;
 					default:
 						throw AstInsException(
-							L"There is no created objects.",
+							L"There is no created object.",
 							AstInsErrorType::NoRootObject
 							);
 					}
