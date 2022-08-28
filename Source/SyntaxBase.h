@@ -28,6 +28,7 @@ ParserBase<TTokens, TStates, TReceiver, TStateTypes>
 		{
 			EndOfInput,
 			PrepareTraceRoute,
+			ResolveAmbiguity,
 		};
 
 		struct TraceProcessingArgs
@@ -199,6 +200,11 @@ ParserBase<TTokens, TStates, TReceiver, TStateTypes>
 					{
 						executor->PrepareTraceRoute();
 						TraceProcessingArgs args = { tokens, *executable.Obj(), executor, ambiguityInvolved, TraceProcessingPhase::PrepareTraceRoute };
+						OnTraceProcessing(args);
+					}
+					{
+						executor->ResolveAmbiguity();
+						TraceProcessingArgs args = { tokens, *executable.Obj(), executor, ambiguityInvolved, TraceProcessingPhase::ResolveAmbiguity };
 						OnTraceProcessing(args);
 					}
 				}

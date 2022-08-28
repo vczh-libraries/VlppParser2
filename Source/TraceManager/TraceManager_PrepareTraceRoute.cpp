@@ -382,6 +382,16 @@ PrepareTraceRoute
 				AllocateExecutionData();
 				PartialExecuteTraces();
 			}
+
+/***********************************************************************
+ResolveAmbiguity
+***********************************************************************/
+
+			void TraceManager::ResolveAmbiguity()
+			{
+				CHECK_ERROR(state == TraceManagerState::PreparedTraceRoute, L"vl::glr::automaton::TraceManager::ResolveAmbiguity()#Wrong timing to call this function.");
+				state = TraceManagerState::ResolvedAmbiguity;
+			}
 		}
 	}
 }

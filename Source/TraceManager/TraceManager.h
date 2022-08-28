@@ -155,7 +155,7 @@ TraceManager (Data Structures)
 			};
 
 /***********************************************************************
-TraceManager (Data Structures -- Trace)
+TraceManager (Data Structures -- Input/EndOfInput)
 ***********************************************************************/
 
 			struct TraceCollection
@@ -201,7 +201,7 @@ TraceManager (Data Structures -- Trace)
 			};
 
 /***********************************************************************
-TraceManager (Data Structures -- Execution)
+TraceManager (Data Structures -- PrepareTraceRoute)
 ***********************************************************************/
 
 			struct InsExec
@@ -283,6 +283,10 @@ TraceManager (Data Structures -- Execution)
 			};
 
 /***********************************************************************
+TraceManager (Data Structures -- ResolveAmbiguity)
+***********************************************************************/
+
+/***********************************************************************
 TraceManager
 ***********************************************************************/
 
@@ -292,6 +296,7 @@ TraceManager
 				WaitingForInput,
 				Finished,
 				PreparedTraceRoute,
+				ResolvedAmbiguity,
 			};
 
 			struct WalkingTrace
@@ -411,6 +416,7 @@ TraceManager
 				bool								EndOfInput(bool& ambiguityInvolved) override;
 
 				void								PrepareTraceRoute() override;
+				void								ResolveAmbiguity() override;
 				Ptr<ParsingAstBase>					ExecuteTrace(IAstInsReceiver& receiver, collections::List<regex::RegexToken>& tokens) override;
 			};
 		}

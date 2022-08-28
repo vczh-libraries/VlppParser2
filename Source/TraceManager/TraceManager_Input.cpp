@@ -199,7 +199,7 @@ EndOfInput
 				FillSuccessorsAfterEndOfInput(ambiguityInvolved);
 				if (!ambiguityInvolved)
 				{
-					state = TraceManagerState::PreparedTraceRoute;
+					state = TraceManagerState::ResolvedAmbiguity;
 				}
 				return initialTrace;
 			}
