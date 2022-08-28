@@ -751,7 +751,7 @@ IAstInsReceiver (Code Generation Error Templates)
 				throw AstInsException(
 					WString::Unmanaged(L"Field \"") +
 					WString::Unmanaged(cppFieldName) +
-					WString::Unmanaged(L"\" is not an object."),
+					WString::Unmanaged(L"\" cannot be assigned with an object."),
 					AstInsErrorType::ObjectTypeMismatchedToField, field);
 			}
 			else
@@ -767,7 +767,7 @@ IAstInsReceiver (Code Generation Error Templates)
 				throw AstInsException(
 					WString::Unmanaged(L"Field \"") +
 					WString::Unmanaged(cppFieldName) +
-					WString::Unmanaged(L"\" is not a token."),
+					WString::Unmanaged(L"\" cannot be assigned with a token."),
 					AstInsErrorType::ObjectTypeMismatchedToField, field);
 			}
 			else
@@ -783,7 +783,7 @@ IAstInsReceiver (Code Generation Error Templates)
 				throw AstInsException(
 					WString::Unmanaged(L"Field \"") +
 					WString::Unmanaged(cppFieldName) +
-					WString::Unmanaged(L"\" is not an enum item."),
+					WString::Unmanaged(L"\" cannot be assigned with an enum item."),
 					AstInsErrorType::ObjectTypeMismatchedToField, field);
 			}
 			else

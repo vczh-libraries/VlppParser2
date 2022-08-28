@@ -217,7 +217,7 @@ TraceManager (Data Structures -- Execution)
 
 				// the associated instruction of the following instructions:
 				//   BeginObject					:
-				//   BeginObjectLeftRecursive		: the BO/BOLR/RA for the first field of the created object
+				//   BeginObjectLeftRecursive		: the DFA/BO/BOLR/RA for the first field of the created object
 				//   DelayFieldAssignment			:
 				//   ReopenObject					: the DFA storing fields to reopen
 				//   EndObject						: the DFA/BO/BOLR that creates the operating object
