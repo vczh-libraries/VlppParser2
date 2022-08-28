@@ -206,7 +206,44 @@ TraceManager (Data Structures -- Execution)
 
 			struct InsExec
 			{
+				// the allocated object id for following instructions:
+				//   BeginObject					: the id of the created object
+				//   BeginObjectLeftRecursive		: the id of the created object
+				//   DelayFieldAssignment			: the id of the operating object
+				//   ReopenObject					: the id of the operating object
+				//   EndObject						: the id of the operating object
 				vint32_t							objectId = -1;
+
+				// the associated instruction of the following instructions:
+				//   BeginObject					: the first DelayFieldAssignment of the created object
+				//   BeginObjectLeftRecursive		: the BeginObject or BeginObjectLeftRecursive for the first field of the created object
+				//   DelayFieldAssignment			: the BeginObject or BeginObjectLeftRecursive that creates the operating object
+				//   ReopenObject					: the DelayFieldAssignment storing fields to reopen
+				//   EndObject						: the BeginObject or BeginObjectLeftRecursive that creates the operating object
+				vint32_t							associatedTrace = -1;
+				vint32_t							associatedIns = -1;
+			};
+
+			struct InsExec_Object
+			{
+				vint32_t							allocatedIndex = -1;
+				vint32_t							bo_bolr_Trace = -1;
+				vint32_t							bo_bolr_Ins = -1;
+			};
+
+			struct InsExec_ObjectStack
+			{
+				vint32_t							allocatedIndex = -1;
+				vint32_t							previous = -1;
+				vint32_t							objectId = -1;
+			};
+
+			struct InsExec_CreateStack
+			{
+				vint32_t							allocatedIndex = -1;
+				vint32_t							previous = -1;
+				vint32_t							dfa_bo_bolr_Trace = -1;
+				vint32_t							dfa_bo_bolr_Ins = -1;
 			};
 
 			struct TraceInsLists
