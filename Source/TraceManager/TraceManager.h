@@ -201,7 +201,7 @@ TraceManager (Data Structures -- Input/EndOfInput)
 			};
 
 /***********************************************************************
-TraceManager (Data Structures -- PrepareTraceRoute)
+TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 ***********************************************************************/
 
 			struct InsExec
@@ -264,8 +264,8 @@ TraceManager (Data Structures -- PrepareTraceRoute)
 
 			struct InsExec_Context
 			{
-				vint32_t							objectStack = -1;	// InsExec_ObjectStack after executing instructions
-				vint32_t							createStack = -1;	// InsExec_CreatedStack after executing instructions
+				vint32_t							objectStack = -1;		// InsExec_ObjectStack after executing instructions
+				vint32_t							createStack = -1;		// InsExec_CreatedStack after executing instructions
 				vint32_t							lriStored = -1;
 			};
 
@@ -283,14 +283,12 @@ TraceManager (Data Structures -- PrepareTraceRoute)
 			{
 				vint32_t							allocatedIndex = -1;
 				vint32_t							traceId = -1;
-				TraceInsLists						insLists;			// instruction list of this trace
-				InstructionArray					insExecRefs;		// allocated InsExec for instructions
+				TraceInsLists						insLists;				// instruction list of this trace
+				InstructionArray					insExecRefs;			// allocated InsExec for instructions
 				InsExec_Context						context;
-			};
 
-/***********************************************************************
-TraceManager (Data Structures -- ResolveAmbiguity)
-***********************************************************************/
+				vint32_t							traceOfBranchHead = -1;
+			};
 
 /***********************************************************************
 TraceManager
@@ -400,6 +398,7 @@ TraceManager
 				void								PartialExecuteTraces();
 
 				// ResolveAmbiguity
+				void								BuildAmbiguityStructures();
 
 			public:
 				TraceManager(Executable& _executable, const ITypeCallback* _typeCallback);

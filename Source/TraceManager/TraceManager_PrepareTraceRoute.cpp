@@ -55,13 +55,13 @@ IterateSurvivedTraces
 					{
 						if (trace->predecessors.first == lastTrace->allocatedIndex)
 						{
-							mergeFirst(trace);
+							mergeFirst(trace, lastTrace);
 							lastTrace = trace;
 							return true;
 						}
 						else
 						{
-							mergeContinue(trace);
+							mergeContinue(trace, lastTrace);
 							lastTrace = nullptr;
 							return false;
 						}
@@ -384,12 +384,11 @@ PartialExecuteTraces
 						}
 						traceExec->context = context;
 					},
-					[this](Trace* trace) // merge trace first visit
+					[this](Trace* trace, Trace* firstPredecessor) // merge trace first visit
 					{
-						auto firstPredecessor = GetTrace(trace->predecessors.first);
 						GetTraceExec(trace->traceExecRef)->context = GetTraceExec(firstPredecessor->traceExecRef)->context;
 					},
-					[this](Trace* trace) // merge trace continue visit
+					[this](Trace* trace, Trace* nextPredecessor) // merge trace continue visit
 					{
 						auto firstPredecessor = GetTrace(trace->predecessors.first);
 						auto contextBaseline = GetTraceExec(trace->traceExecRef)->context;
@@ -419,6 +418,48 @@ PrepareTraceRoute
 			}
 
 /***********************************************************************
+BuildAmbiguityStructures
+***********************************************************************/
+
+			void TraceManager::BuildAmbiguityStructures()
+			{
+#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::BuildAmbiguityStructures()#"
+				IterateSurvivedCategorizedTraces(
+					[this](Trace* trace) // ordinary trace
+					{
+						auto traceExec = GetTraceExec(trace->traceExecRef);
+						if (trace->predecessors.first == -1 || trace->successors.siblingPrev != trace->successors.siblingNext)
+						{
+							traceExec->traceOfBranchHead = trace->allocatedIndex;
+						}
+						else
+						{
+							traceExec->traceOfBranchHead = GetTraceExec(GetTrace(trace->predecessors.first)->traceExecRef)->traceOfBranchHead;
+						}
+					},
+					[this](Trace* trace, Trace* firstPredecessor) // merge trace first visit
+					{
+						auto subBranchHead = GetTrace(GetTraceExec(firstPredecessor->traceExecRef)->traceOfBranchHead);
+						auto subBranchPredecessor = GetTrace(subBranchHead->predecessors.first)->traceExecRef;
+						auto branchHead = GetTraceExec(subBranchPredecessor)->traceOfBranchHead;
+
+						auto traceExec = GetTraceExec(trace->traceExecRef);
+						traceExec->traceOfBranchHead = branchHead;
+					},
+					[this](Trace* trace, Trace* nextPredecessor) // merge trace continue visit
+					{
+						auto subBranchHead = GetTrace(GetTraceExec(nextPredecessor->traceExecRef)->traceOfBranchHead);
+						auto subBranchPredecessor = GetTrace(subBranchHead->predecessors.first)->traceExecRef;
+						auto branchHead = GetTraceExec(subBranchPredecessor)->traceOfBranchHead;
+
+						auto traceExec = GetTraceExec(trace->traceExecRef);
+						CHECK_ERROR(traceExec->traceOfBranchHead == branchHead, ERROR_MESSAGE_PREFIX L"Merging structure not well-formed.");
+					}
+#undef ERROR_MESSAGE_PREFIX
+				);
+			}
+
+/***********************************************************************
 ResolveAmbiguity
 ***********************************************************************/
 
@@ -426,6 +467,8 @@ ResolveAmbiguity
 			{
 				CHECK_ERROR(state == TraceManagerState::PreparedTraceRoute, L"vl::glr::automaton::TraceManager::ResolveAmbiguity()#Wrong timing to call this function.");
 				state = TraceManagerState::ResolvedAmbiguity;
+
+				BuildAmbiguityStructures();
 			}
 		}
 	}
