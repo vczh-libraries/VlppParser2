@@ -398,6 +398,7 @@ TraceManager
 				void								PartialExecuteTraces();
 
 				// ResolveAmbiguity
+				vint32_t							GetUpperLevelBranchHead(Trace* subBranchTrace);
 				void								BuildAmbiguityStructures();
 
 			public:

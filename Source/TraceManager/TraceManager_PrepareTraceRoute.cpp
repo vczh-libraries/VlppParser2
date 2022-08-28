@@ -418,6 +418,21 @@ PrepareTraceRoute
 			}
 
 /***********************************************************************
+GetUpperLevelBranchHead
+***********************************************************************/
+
+			vint32_t TraceManager::GetUpperLevelBranchHead(Trace* subBranchTrace)
+			{
+				auto subBranchHead = GetTrace(GetTraceExec(subBranchTrace->traceExecRef)->traceOfBranchHead);
+				auto subBranchPredecessor = subBranchHead;
+				if (subBranchPredecessor->predecessors.first != -1)
+				{
+					subBranchPredecessor = GetTrace(subBranchPredecessor->predecessors.first);
+				}
+				return GetTraceExec(subBranchPredecessor->traceExecRef)->traceOfBranchHead;
+			}
+
+/***********************************************************************
 BuildAmbiguityStructures
 ***********************************************************************/
 
@@ -439,19 +454,13 @@ BuildAmbiguityStructures
 					},
 					[this](Trace* trace, Trace* firstPredecessor) // merge trace first visit
 					{
-						auto subBranchHead = GetTrace(GetTraceExec(firstPredecessor->traceExecRef)->traceOfBranchHead);
-						auto subBranchPredecessor = GetTrace(subBranchHead->predecessors.first)->traceExecRef;
-						auto branchHead = GetTraceExec(subBranchPredecessor)->traceOfBranchHead;
-
+						auto branchHead = GetUpperLevelBranchHead(firstPredecessor);
 						auto traceExec = GetTraceExec(trace->traceExecRef);
 						traceExec->traceOfBranchHead = branchHead;
 					},
 					[this](Trace* trace, Trace* nextPredecessor) // merge trace continue visit
 					{
-						auto subBranchHead = GetTrace(GetTraceExec(nextPredecessor->traceExecRef)->traceOfBranchHead);
-						auto subBranchPredecessor = GetTrace(subBranchHead->predecessors.first)->traceExecRef;
-						auto branchHead = GetTraceExec(subBranchPredecessor)->traceOfBranchHead;
-
+						auto branchHead = GetUpperLevelBranchHead(nextPredecessor);
 						auto traceExec = GetTraceExec(trace->traceExecRef);
 						CHECK_ERROR(traceExec->traceOfBranchHead == branchHead, ERROR_MESSAGE_PREFIX L"Merging structure not well-formed.");
 					}

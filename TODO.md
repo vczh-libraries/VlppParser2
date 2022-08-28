@@ -9,7 +9,10 @@
 - Create ambiguity test case caused by only one clause with branches.
 
 - IfElseAmbiguity/IfElseAmbiguity1: simple ambiguity.
+- IfElseAmbiguityOnStat2/IfElseAmbiguity1: EndObject in branch ends close different objects (at 53).
 - GenericAmbiguity/CallWithDecrement: branching at EndObject, merging before EndObject.
+- FeatureTest/BO_2: Merging structure not well-formed (at the end).
+- FeatureTest/ERO_2: Merging structure not well-formed (at 27).
 - FeatureTest/Pba_1: DFA delayed after merging therefore it executes for multiple candidates of a `ToReolsve` class.
 
 ## Features to Add
