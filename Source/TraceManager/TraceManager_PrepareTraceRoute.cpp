@@ -80,12 +80,12 @@ ReadInstruction
 			}
 
 /***********************************************************************
-AllocateExecutionData
+IterateSurvivedTraces
 ***********************************************************************/
 
-			void TraceManager::AllocateExecutionData()
+			template<typename TCallback>
+			void TraceManager::IterateSurvivedTraces(TCallback&& callback)
 			{
-				vint32_t insExecCount = 0;
 				List<Trace*> traces;
 				traces.Add(initialTrace);
 
@@ -94,18 +94,7 @@ AllocateExecutionData
 					auto current = traces[traces.Count() - 1];
 					traces.RemoveAt(traces.Count() - 1);
 
-					if (current->traceExecRef != -1) continue;
-					current->traceExecRef = traceExecs.Allocate();
-
-					auto traceExec = GetTraceExec(current->traceExecRef);
-					traceExec->traceId = current->allocatedIndex;
-					ReadInstructionList(current, traceExec->insLists);
-					if (traceExec->insLists.c3 > 0)
-					{
-						traceExec->insExecRefs.start = insExecCount;
-						traceExec->insExecRefs.count = traceExec->insLists.c3;
-						insExecCount += traceExec->insLists.c3;
-					}
+					if (!callback(current)) continue;
 
 					vint32_t successorId = current->successors.last;
 					while (successorId != -1)
@@ -115,6 +104,31 @@ AllocateExecutionData
 						traces.Add(successor);
 					}
 				}
+			}
+
+/***********************************************************************
+AllocateExecutionData
+***********************************************************************/
+
+			void TraceManager::AllocateExecutionData()
+			{
+				vint32_t insExecCount = 0;
+				IterateSurvivedTraces([&](Trace* trace)
+				{
+					if (trace->traceExecRef != -1) return false;
+					trace->traceExecRef = traceExecs.Allocate();
+
+					auto traceExec = GetTraceExec(trace->traceExecRef);
+					traceExec->traceId = trace->allocatedIndex;
+					ReadInstructionList(trace, traceExec->insLists);
+					if (traceExec->insLists.c3 > 0)
+					{
+						traceExec->insExecRefs.start = insExecCount;
+						traceExec->insExecRefs.count = traceExec->insLists.c3;
+						insExecCount += traceExec->insLists.c3;
+					}
+					return true;
+				});
 				insExecs.Resize(insExecCount);
 			}
 
