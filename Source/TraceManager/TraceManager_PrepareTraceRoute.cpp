@@ -258,13 +258,16 @@ PartialExecuteTraces
 									CHECK_ERROR(context.createStack != -1, ERROR_MESSAGE_PREFIX L"There is no created object.");
 
 									auto ieCSTop = GetInsExec_CreateStack(context.createStack);
-									CHECK_ERROR(ieCSTop->objectId == -1, ERROR_MESSAGE_PREFIX L"DelayFieldAssignment is not submitted before ReopenObject.");
-
 									auto ieObjTop = GetInsExec_ObjectStack(context.objectStack);
 									context.objectStack = ieObjTop->previous;
 
 									CHECK_ERROR(ieObjTop->objectId >= 0, ERROR_MESSAGE_PREFIX L"The poped value is not an object.");
 									auto ieObject = GetInsExec_Object(ieObjTop->objectId);
+
+									if (ieCSTop->objectId != -1)
+									{
+										CHECK_ERROR(ieCSTop->objectId == ieObject->allocatedIndex, ERROR_MESSAGE_PREFIX L"InsExec_CreatedObject for ReopenObject is corrupted.");
+									}
 									ieCSTop->objectId = ieObject->allocatedIndex;
 
 									// fill DFA: insExec.objectId and insExec.associated*
