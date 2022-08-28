@@ -42,57 +42,46 @@ void ParseTypeExpr(cpp_parser::Parser& parser, const WString& code)
 	AssertPtrStruct<TArgs...>::AssertPtr(ast.Obj());
 }
 
-void LogTracedTest(const WString& indexName, const WString& caseName, bool beforePreparing, EndOfInputArgs& args)
-{
-	auto& traceManager = *dynamic_cast<TraceManager*>(args.executor);
-	LogTraceManager(
-		L"BuiltIn-Cpp",
-		indexName + L"_" + caseName,
-		args.executable,
-		traceManager,
-		args.rootTrace,
-		beforePreparing,
-		args.tokens,
-		[=](vint32_t type) { return WString::Unmanaged(CppTypeName((CppClasses)type)); },
-		[=](vint32_t field) { return WString::Unmanaged(CppFieldName((CppFields)field)); },
-		[=](vint32_t token) { return WString::Unmanaged(CppTokenId((CppTokens)token)); },
-		[=](vint32_t rule) { return WString::Unmanaged(ParserRuleName(rule)); },
-		[=](vint32_t state) { return WString::Unmanaged(ParserStateLabel(state)); },
-		[=](vint32_t switchId) { return WString::Unmanaged(ParserSwitchName(switchId)); }
-	);
-
-	if (!beforePreparing && traceManager.concurrentCount == 1)
-	{
-		LogTraceExecution(
-			L"BuiltIn-Cpp",
-			indexName + L"_" + caseName,
-			[=](vint32_t type) { return WString::Unmanaged(CppTypeName((CppClasses)type)); },
-			[=](vint32_t field) { return WString::Unmanaged(CppFieldName((CppFields)field)); },
-			[=](vint32_t token) { return WString::Unmanaged(CppTokenId((CppTokens)token)); },
-			[&](IAstInsReceiver& receiver)
-			{
-				traceManager.ExecuteTrace(args.rootTrace, receiver, args.tokens);
-			});
-	}
-}
-
 void TracedTests()
 {
 	cpp_parser::Parser parser;
 	WString indexName;
 	WString caseName;
 	FilePath dirOutput = GetOutputDir(L"BuiltIn-Cpp");
-	
-	parser.OnEndOfInput.Add(
-		[&](EndOfInputArgs& args)
+
+	parser.OnTraceProcessing.Add(
+		[&](TraceProcessingArgs& args)
 		{
-			LogTracedTest(indexName, caseName, true, args);
+			auto& traceManager = *dynamic_cast<TraceManager*>(args.executor);
+			LogTraceManager(
+				L"BuiltIn-Cpp",
+				indexName + L"_" + caseName,
+				args.executable,
+				traceManager,
+				args.phase,
+				args.tokens,
+				[=](vint32_t type) { return WString::Unmanaged(CppTypeName((CppClasses)type)); },
+				[=](vint32_t field) { return WString::Unmanaged(CppFieldName((CppFields)field)); },
+				[=](vint32_t token) { return WString::Unmanaged(CppTokenId((CppTokens)token)); },
+				[=](vint32_t rule) { return WString::Unmanaged(ParserRuleName(rule)); },
+				[=](vint32_t state) { return WString::Unmanaged(ParserStateLabel(state)); },
+				[=](vint32_t switchId) { return WString::Unmanaged(ParserSwitchName(switchId)); }
+			);
 		});
-	
 	parser.OnReadyToExecute.Add(
-		[&](EndOfInputArgs& args)
+		[&](ReadyToExecuteArgs& args)
 		{
-			LogTracedTest(indexName, caseName, false, args);
+			auto& traceManager = *dynamic_cast<TraceManager*>(args.executor);
+			LogTraceExecution(
+				L"BuiltIn-Cpp",
+				indexName + L"_" + caseName,
+				[=](vint32_t type) { return WString::Unmanaged(CppTypeName((CppClasses)type)); },
+				[=](vint32_t field) { return WString::Unmanaged(CppFieldName((CppFields)field)); },
+				[=](vint32_t token) { return WString::Unmanaged(CppTokenId((CppTokens)token)); },
+				[&](IAstInsReceiver& receiver)
+				{
+					traceManager.ExecuteTrace(receiver, args.tokens);
+				});
 		});
 
 	auto runParser = [&](const wchar_t* _indexName, const wchar_t* _caseName, auto parse)

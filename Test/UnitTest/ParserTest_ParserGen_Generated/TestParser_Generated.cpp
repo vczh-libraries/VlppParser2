@@ -131,27 +131,36 @@ namespace TestParser_Generated_TestObjects
 		TParser parser;
 		WString caseName;
 
-		auto logTrace = [&](bool beforePreparing, EndOfInputArgs& args)
-		{
-			auto& traceManager = *dynamic_cast<TraceManager*>(args.executor);
-			LogTraceManager(
-				L"Generated-" + parserName,
-				caseName,
-				args.executable,
-				traceManager,
-				args.rootTrace,
-				beforePreparing,
-				args.tokens,
-				[=](vint32_t type) { return WString::Unmanaged(typeName((TClasses)type)); },
-				[=](vint32_t field) { return WString::Unmanaged(fieldName((TFields)field)); },
-				[=](vint32_t token) { return WString::Unmanaged(tokenId((TTokens)token)); },
-				[=](vint32_t rule) { return WString::Unmanaged(ruleName(rule)); },
-				[=](vint32_t state) { return WString::Unmanaged(stateLabel(state)); },
-				[=](vint32_t switchId) { return WString::Unmanaged(switchName(switchId)); }
-			);
-
-			if (!beforePreparing && traceManager.concurrentCount == 1)
+		parser.OnError.Add(
+			[&](ErrorArgs& args)
 			{
+				args.throwError = true;
+			});
+
+		parser.OnTraceProcessing.Add(
+			[&](TraceProcessingArgs& args)
+			{
+				auto& traceManager = *dynamic_cast<TraceManager*>(args.executor);
+				LogTraceManager(
+					L"Generated-" + parserName,
+					caseName,
+					args.executable,
+					traceManager,
+					args.phase,
+					args.tokens,
+					[=](vint32_t type) { return WString::Unmanaged(typeName((TClasses)type)); },
+					[=](vint32_t field) { return WString::Unmanaged(fieldName((TFields)field)); },
+					[=](vint32_t token) { return WString::Unmanaged(tokenId((TTokens)token)); },
+					[=](vint32_t rule) { return WString::Unmanaged(ruleName(rule)); },
+					[=](vint32_t state) { return WString::Unmanaged(stateLabel(state)); },
+					[=](vint32_t switchId) { return WString::Unmanaged(switchName(switchId)); }
+				);
+			});
+
+		parser.OnReadyToExecute.Add(
+			[&](ReadyToExecuteArgs& args)
+			{
+				auto& traceManager = *dynamic_cast<TraceManager*>(args.executor);
 				LogTraceExecution(
 					L"Generated-" + parserName,
 					caseName,
@@ -160,27 +169,8 @@ namespace TestParser_Generated_TestObjects
 					[=](vint32_t token) { return WString::Unmanaged(tokenId((TTokens)token)); },
 					[&](IAstInsReceiver& receiver)
 					{
-						traceManager.ExecuteTrace(args.rootTrace, receiver, args.tokens);
+						traceManager.ExecuteTrace(receiver, args.tokens);
 					});
-			}
-		};
-
-		parser.OnError.Add(
-			[&](ErrorArgs& args)
-			{
-				args.throwError = true;
-			});
-
-		parser.OnEndOfInput.Add(
-			[&](EndOfInputArgs& args)
-			{
-				logTrace(true, args);
-			});
-
-		parser.OnReadyToExecute.Add(
-			[&](EndOfInputArgs& args)
-			{
-				logTrace(false, args);
 			});
 
 		Array<WString> testFolderArray;

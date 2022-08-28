@@ -66,31 +66,16 @@ namespace TestSyntax_TestObjects
 			TEST_ASSERT(tm.concurrentCount > 0);
 		}
 
-		auto rootTrace = tm.EndOfInput();
-		LogTraceManager(
-			L"Calculator",
-			caseName,
-			executable,
-			tm,
-			rootTrace,
-			true,
-			tokens,
-			[](vint32_t type) { return WString::Unmanaged(CalculatorTypeName((CalculatorClasses)type)); },
-			[](vint32_t field) { return WString::Unmanaged(CalculatorFieldName((CalculatorFields)field)); },
-			[](vint32_t token) { return WString::Unmanaged(CalculatorTokenId((CalculatorTokens)token)); },
-			[&](vint32_t rule) { return metadata.ruleNames[rule]; },
-			[&](vint32_t state) { return metadata.stateLabels[state]; },
-			[&](vint32_t switchId) { return metadata.switchNames[switchId]; }
-			);
+		bool ambiguityInvolved = false;
+		auto rootTrace = tm.EndOfInput(ambiguityInvolved);
+		TEST_ASSERT(!ambiguityInvolved);
 
-		tm.PrepareTraceRoute();
 		LogTraceManager(
 			L"Calculator",
 			caseName,
 			executable,
 			tm,
-			rootTrace,
-			false,
+			TraceProcessingPhase::EndOfInput,
 			tokens,
 			[](vint32_t type) { return WString::Unmanaged(CalculatorTypeName((CalculatorClasses)type)); },
 			[](vint32_t field) { return WString::Unmanaged(CalculatorFieldName((CalculatorFields)field)); },
@@ -107,14 +92,13 @@ namespace TestSyntax_TestObjects
 			L"Calculator",
 			caseName,
 			tm,
-			rootTrace,
 			tokens,
 			[](vint32_t type) { return WString::Unmanaged(CalculatorTypeName((CalculatorClasses)type)); },
 			[](vint32_t field) { return WString::Unmanaged(CalculatorFieldName((CalculatorFields)field)); },
 			[](vint32_t token) { return WString::Unmanaged(CalculatorTokenId((CalculatorTokens)token)); }
 			);
 		CalculatorAstInsReceiver receiver;
-		auto ast = tm.ExecuteTrace(rootTrace, receiver, tokens);
+		auto ast = tm.ExecuteTrace(receiver, tokens);
 		auto astModule = ast.Cast<Module>();
 		TEST_ASSERT(astModule);
 
