@@ -208,7 +208,8 @@ TEST_FILE
 		&ifelseambiguity::IfElseAmbiguityTokenId,
 		&ifelseambiguity::ModuleParserRuleName,
 		&ifelseambiguity::ModuleParserStateLabel,
-		&ifelseambiguity::ModuleParserSwitchName
+		&ifelseambiguity::ModuleParserSwitchName,
+		L"TestCase_IfElseAmbiguity"
 		);
 	TestParser<ifelseambiguity2::ModuleParser, ifelseambiguity2::json_visitor::StatAstVisitor>(
 		L"IfElseAmbiguity2",
@@ -217,7 +218,8 @@ TEST_FILE
 		&ifelseambiguity2::IfElseAmbiguity2TokenId,
 		&ifelseambiguity2::ModuleParserRuleName,
 		&ifelseambiguity2::ModuleParserStateLabel,
-		&ifelseambiguity2::ModuleParserSwitchName
+		&ifelseambiguity2::ModuleParserSwitchName,
+		L"TestCase_IfElseAmbiguity"
 		);
 	TestParser<ifelsepriority::ModuleParser, ifelsepriority::json_visitor::StatAstVisitor>(
 		L"IfElsePriority",
@@ -226,7 +228,8 @@ TEST_FILE
 		&ifelsepriority::IfElsePriorityTokenId,
 		&ifelsepriority::ModuleParserRuleName,
 		&ifelsepriority::ModuleParserStateLabel,
-		&ifelsepriority::ModuleParserSwitchName
+		&ifelsepriority::ModuleParserSwitchName,
+		L"TestCase_IfElse"
 		);
 	TestParser<ifelsemanual::ModuleParser, ifelsemanual::json_visitor::StatAstVisitor>(
 		L"IfElseManual",
@@ -235,7 +238,8 @@ TEST_FILE
 		&ifelsemanual::IfElseManualTokenId,
 		&ifelsemanual::ModuleParserRuleName,
 		&ifelsemanual::ModuleParserStateLabel,
-		&ifelsemanual::ModuleParserSwitchName
+		&ifelsemanual::ModuleParserSwitchName,
+		L"TestCase_IfElse"
 		);
 	TestParser<ifelseswitch::ModuleParser, ifelseswitch::json_visitor::StatAstVisitor>(
 		L"IfElseSwitch",
@@ -244,7 +248,8 @@ TEST_FILE
 		&ifelseswitch::IfElseSwitchTokenId,
 		&ifelseswitch::ModuleParserRuleName,
 		&ifelseswitch::ModuleParserStateLabel,
-		&ifelseswitch::ModuleParserSwitchName
+		&ifelseswitch::ModuleParserSwitchName,
+		L"TestCase_IfElse"
 		);
 	TestParser<genericambiguity::ModuleParser, genericambiguity::json_visitor::ExprAstVisitor>(
 		L"GenericAmbiguity",
