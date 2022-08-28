@@ -228,8 +228,8 @@ TraceManager (Data Structures -- Execution)
 			struct InsExec_Object
 			{
 				vint32_t							allocatedIndex = -1;
-				vint32_t							bo_bolr_Trace = -1;
-				vint32_t							bo_bolr_Ins = -1;
+				vint32_t							bo_bolr_ra_Trace = -1;
+				vint32_t							bo_bolr_ra_Ins = -1;
 			};
 
 			struct InsExec_ObjectStack
@@ -368,6 +368,10 @@ TraceManager
 				AstIns&								ReadInstruction(vint32_t instruction, TraceInsLists& insLists);
 				template<typename TCallback> void	IterateSurvivedTraces(TCallback&& callback);
 				void								AllocateExecutionData();
+
+				vint32_t							GetStackBase(InsExec_Context& context);
+				InsExec_ObjectStack*				PushObjectStack(InsExec_Context& context, vint32_t objectId);
+				InsExec_CreateStack*				PushCreateStack(InsExec_Context& context);
 				void								PartialExecuteTraces();
 
 			public:

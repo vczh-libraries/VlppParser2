@@ -136,6 +136,36 @@ AllocateExecutionData
 PartialExecuteTraces
 ***********************************************************************/
 
+			vint32_t TraceManager::GetStackBase(InsExec_Context& context)
+			{
+				if (context.objectStack == -1)
+				{
+					return 0;
+				}
+				else
+				{
+					return GetInsExec_ObjectStack(context.objectStack)->pushedCount;
+				}
+			}
+
+			InsExec_ObjectStack* TraceManager::PushObjectStack(InsExec_Context& context, vint32_t objectId)
+			{
+				auto ie = GetInsExec_ObjectStack(insExec_ObjectStacks.Allocate());
+				ie->previous = context.objectStack;
+				ie->objectId = objectId;
+				ie->pushedCount = GetStackBase(context) + 1;
+				context.objectStack = ie->allocatedIndex;
+				return ie;
+			}
+
+			InsExec_CreateStack* TraceManager::PushCreateStack(InsExec_Context& context)
+			{
+				auto ie = GetInsExec_CreateStack(insExec_CreateStacks.Allocate());
+				ie->previous = context.createStack;
+				context.createStack = ie->allocatedIndex;
+				return ie;
+			}
+
 			void TraceManager::PartialExecuteTraces()
 			{
 #define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::PartialExecuteTraces()#"
@@ -155,6 +185,7 @@ PartialExecuteTraces
 						auto traceExec = GetTraceExec(trace->traceExecRef);
 						for (vint32_t insRef = 0; insRef < traceExec->insLists.c3; insRef++)
 						{
+							auto&& insExec = insExecs[traceExec->insExecRefs.start + insRef];
 							AstIns ins;
 							ReadInstruction(insRef, traceExec->insLists);
 
@@ -162,6 +193,13 @@ PartialExecuteTraces
 							{
 							case AstInsType::BeginObject:
 								{
+									auto ieObject = GetInsExec_Object(insExec_Objects.Allocate());
+									auto ieCS = PushCreateStack(context);
+									ieCS->stackBase = GetStackBase(context);
+									ieCS->dfa_bo_bolr_Trace = trace->allocatedIndex;
+									ieCS->dfa_bo_bolr_Ins = insRef;
+
+									insExec.objectId = ieObject->allocatedIndex;
 								}
 								break;
 							case AstInsType::BeginObjectLeftRecursive:
