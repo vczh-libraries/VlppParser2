@@ -360,7 +360,7 @@ void RenderTrace(
 			{
 				auto traceExec = tm.GetTraceExec(trace->traceExecRef);
 				auto insExec = tm.GetInsExec(traceExec->insExecRefs.start + i);
-				if (insExec->objectId != -1)
+				if (insExec->objectId != -1 || insExec->associatedTrace != -1 || insExec->associatedIns != -1)
 				{
 					writer.WriteLine(
 						L"      obj:" + itow(insExec->objectId) +

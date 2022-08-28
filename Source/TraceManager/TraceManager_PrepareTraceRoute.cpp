@@ -263,40 +263,6 @@ PartialExecuteTraces
 									CHECK_ERROR(ieObjTop->objectId >= 0, ERROR_MESSAGE_PREFIX L"The poped value is not an object.");
 									auto ieObject = GetInsExec_Object(ieObjTop->objectId);
 
-									// fill DFA: insExec.objectId and insExec.associated*
-									auto dfaTrace = GetTrace(ieCSTop->dfa_bo_bolr_Trace);
-									auto dfaTraceExec = GetTraceExec(dfaTrace->traceExecRef);
-									auto dfaInsExec = GetInsExec(dfaTraceExec->insExecRefs.start + ieCSTop->dfa_bo_bolr_Ins);
-									if (dfaInsExec->objectId == -1)
-									{
-										dfaInsExec->objectId = ieObject->allocatedIndex;
-										dfaInsExec->associatedTrace = ieObject->bo_bolr_ra_Trace;
-										dfaInsExec->associatedIns = ieObject->bo_bolr_ra_Ins;
-									}
-									else
-									{
-										CHECK_ERROR(dfaInsExec->objectId == ieObject->allocatedIndex, ERROR_MESSAGE_PREFIX L"InsExec data for DelayFieldAssignment is corrupted.");
-										CHECK_ERROR(dfaInsExec->associatedTrace == ieObject->bo_bolr_ra_Trace, ERROR_MESSAGE_PREFIX L"InsExec data for DelayFieldAssignment is corrupted.");
-										CHECK_ERROR(dfaInsExec->associatedIns == ieObject->bo_bolr_ra_Ins, ERROR_MESSAGE_PREFIX L"InsExec data for DelayFieldAssignment is corrupted.");
-									}
-
-									// fill BO/RA: insExec.associated*
-									auto boPrev = GetTraceExec(GetTrace(dfaInsExec->associatedTrace)->traceExecRef);
-									auto boIns = ReadInstruction(dfaInsExec->associatedIns, boPrev->insLists);
-									auto boInsExec = GetInsExec(boPrev->insExecRefs.start + dfaInsExec->associatedIns);
-									while (boIns.type == AstInsType::BeginObjectLeftRecursive)
-									{
-										boPrev = GetTraceExec(GetTrace(boInsExec->associatedTrace)->traceExecRef);
-										boIns = ReadInstruction(boInsExec->associatedIns, boPrev->insLists);
-										boInsExec = GetInsExec(boPrev->insExecRefs.start + boInsExec->associatedIns);
-									}
-									if (boInsExec->associatedTrace != -1)
-									{
-										CHECK_ERROR(ieCSTop->dfa_bo_bolr_Trace <= boInsExec->associatedTrace, ERROR_MESSAGE_PREFIX L"InsExec data for BeginObject/ResolveAmbiguity is corrupted.");
-									}
-									boInsExec->associatedTrace = ieCSTop->dfa_bo_bolr_Trace;
-									boInsExec->associatedIns = ieCSTop->dfa_bo_bolr_Ins;
-
 									// fill RO: insExec.associated*
 									insExec->associatedTrace = ieCSTop->dfa_bo_bolr_Trace;
 									insExec->associatedIns = ieCSTop->dfa_bo_bolr_Ins;
@@ -307,6 +273,8 @@ PartialExecuteTraces
 									CHECK_ERROR(context.createStack != -1, ERROR_MESSAGE_PREFIX L"There is no created object.");
 
 									auto ieCSTop = GetInsExec_CreateStack(context.createStack);
+									PushObjectStack(context, ieCSTop->objectId);
+
 									insExec->associatedTrace = ieCSTop->dfa_bo_bolr_Ins;
 									insExec->associatedIns = ieCSTop->dfa_bo_bolr_Trace;
 								}
