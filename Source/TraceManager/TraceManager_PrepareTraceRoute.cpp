@@ -283,8 +283,8 @@ PartialExecuteTraces
 									PushObjectStack(context, ieCSTop->objectId);
 
 									insExec->objectId = ieCSTop->objectId;
-									insExec->associatedTrace = ieCSTop->dfa_bo_bolr_Ins;
-									insExec->associatedIns = ieCSTop->dfa_bo_bolr_Trace;
+									insExec->associatedTrace = ieCSTop->dfa_bo_bolr_Trace;
+									insExec->associatedIns = ieCSTop->dfa_bo_bolr_Ins;
 								}
 								break;
 							case AstInsType::DiscardValue:
