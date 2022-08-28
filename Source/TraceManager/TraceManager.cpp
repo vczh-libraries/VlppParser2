@@ -177,6 +177,21 @@ TraceManager
 			{
 				return &insExecs[index];
 			}
+			
+			InsExec_Object* TraceManager::GetInsExec_Object(vint32_t index)
+			{
+				return insExec_Objects.Get(index);
+			}
+
+			InsExec_ObjectStack* TraceManager::GetInsExec_ObjectStack(vint32_t index)
+			{
+				return insExec_ObjectStacks.Get(index);
+			}
+
+			InsExec_CreateStack* TraceManager::GetInsExec_CreateStack(vint32_t index)
+			{
+				return insExec_CreateStacks.Get(index);
+			}
 
 /***********************************************************************
 CreateExecutor

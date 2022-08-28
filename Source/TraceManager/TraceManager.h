@@ -388,6 +388,9 @@ TraceManager
 				Switches*							GetSwitches(vint32_t index);
 				TraceExec*							GetTraceExec(vint32_t index);
 				InsExec*							GetInsExec(vint32_t index);
+				InsExec_Object*						GetInsExec_Object(vint32_t index);
+				InsExec_ObjectStack*				GetInsExec_ObjectStack(vint32_t index);
+				InsExec_CreateStack*				GetInsExec_CreateStack(vint32_t index);
 
 				void								Initialize(vint32_t startState) override;
 				bool								Input(vint32_t currentTokenIndex, regex::RegexToken* token, regex::RegexToken* lookAhead) override;

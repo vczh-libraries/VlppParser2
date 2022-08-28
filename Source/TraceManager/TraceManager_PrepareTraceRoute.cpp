@@ -161,26 +161,42 @@ PartialExecuteTraces
 							switch (ins.type)
 							{
 							case AstInsType::BeginObject:
+								{
+								}
 								break;
 							case AstInsType::BeginObjectLeftRecursive:
+								{
+								}
 								break;
 							case AstInsType::DelayFieldAssignment:
+								{
+								}
 								break;
 							case AstInsType::ReopenObject:
+								{
+								}
 								break;
 							case AstInsType::EndObject:
+								{
+								}
 								break;
 							case AstInsType::DiscardValue:
+							case AstInsType::Field:
+							case AstInsType::FieldIfUnassigned:
+								{
+								}
 								break;
 							case AstInsType::LriStore:
+								{
+								}
 								break;
 							case AstInsType::LriFetch:
-								break;
-							case AstInsType::Field:
-								break;
-							case AstInsType::FieldIfUnassigned:
+								{
+								}
 								break;
 							case AstInsType::ResolveAmbiguity:
+								{
+								}
 								break;
 							default:;
 							}
