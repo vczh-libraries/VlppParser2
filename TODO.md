@@ -17,6 +17,9 @@
 
 ## Issues
 
+- `PrepareTraceRoute` returns `true` if ambiguity is involved.
+  - `OnReadyToExecute` will be called with a new argument to indicate if ambiguity is involved.
+  - analysing will be skipped if ambiguity is not involved, no extra data will be appended to traces, so no need to print a second log.
 - TODO in `CalculateRuleAndClauseTypes`.
 - TODO in `ValidateStructurePrefixMergeRuleVisitor`.
 - Test `X ::= X LRI ...`.

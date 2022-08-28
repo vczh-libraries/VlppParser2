@@ -24,38 +24,48 @@ TEST_FILE
 	WString caseName;
 
 #if !defined _DEBUG || defined NDEBUG
-	parser.OnEndOfInput.Add(
-		[&](EndOfInputArgs& args)
+	auto logTrace = [&](bool beforePreparing, EndOfInputArgs& args)
+	{
+		auto& traceManager = *dynamic_cast<TraceManager*>(args.executor);
+		LogTraceManager(
+			L"BuiltIn-Workflow",
+			indexName + L"_" + caseName,
+			args.executable,
+			traceManager,
+			args.rootTrace,
+			beforePreparing,
+			args.tokens,
+			[=](vint32_t type) { return WString::Unmanaged(WorkflowTypeName((WorkflowClasses)type)); },
+			[=](vint32_t field) { return WString::Unmanaged(WorkflowFieldName((WorkflowFields)field)); },
+			[=](vint32_t token) { return WString::Unmanaged(WorkflowTokenId((WorkflowTokens)token)); },
+			[=](vint32_t rule) { return WString::Unmanaged(ParserRuleName(rule)); },
+			[=](vint32_t state) { return WString::Unmanaged(ParserStateLabel(state)); },
+			[=](vint32_t switchId) { return WString::Unmanaged(ParserSwitchName(switchId)); }
+		);
+
+		if (!beforePreparing && traceManager.concurrentCount == 1)
 		{
-			auto& traceManager = *dynamic_cast<TraceManager*>(args.executor);
-			LogTraceManager(
+			LogTraceExecution(
 				L"BuiltIn-Workflow",
 				indexName + L"_" + caseName,
-				args.executable,
-				traceManager,
-				args.rootTrace,
-				args.tokens,
 				[=](vint32_t type) { return WString::Unmanaged(WorkflowTypeName((WorkflowClasses)type)); },
 				[=](vint32_t field) { return WString::Unmanaged(WorkflowFieldName((WorkflowFields)field)); },
 				[=](vint32_t token) { return WString::Unmanaged(WorkflowTokenId((WorkflowTokens)token)); },
-				[=](vint32_t rule) { return WString::Unmanaged(ParserRuleName(rule)); },
-				[=](vint32_t state) { return WString::Unmanaged(ParserStateLabel(state)); },
-				[=](vint32_t switchId) { return WString::Unmanaged(ParserSwitchName(switchId)); }
-			);
-
-			if (traceManager.concurrentCount == 1)
-			{
-				LogTraceExecution(
-					L"BuiltIn-Workflow",
-					indexName + L"_" + caseName,
-					[=](vint32_t type) { return WString::Unmanaged(WorkflowTypeName((WorkflowClasses)type)); },
-					[=](vint32_t field) { return WString::Unmanaged(WorkflowFieldName((WorkflowFields)field)); },
-					[=](vint32_t token) { return WString::Unmanaged(WorkflowTokenId((WorkflowTokens)token)); },
-					[&](IAstInsReceiver& receiver)
-					{
-						traceManager.ExecuteTrace(args.rootTrace, receiver, args.tokens);
-					});
-			}
+				[&](IAstInsReceiver& receiver)
+				{
+					traceManager.ExecuteTrace(args.rootTrace, receiver, args.tokens);
+				});
+		}
+	};
+	parser.OnEndOfInput.Add(
+		[&](EndOfInputArgs& args)
+		{
+			logTrace(true, args);
+		});
+	parser.OnReadyToExecute.Add(
+		[&](EndOfInputArgs& args)
+		{
+			logTrace(false, args);
 		});
 #endif
 
