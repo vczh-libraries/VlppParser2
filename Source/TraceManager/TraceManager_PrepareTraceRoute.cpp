@@ -220,9 +220,10 @@ PartialExecuteTraces
 								break;
 							case AstInsType::BeginObjectLeftRecursive:
 								{
-									CHECK_ERROR(GetStackTop(context) - GetStackBase(context) >= 1, ERROR_MESSAGE_PREFIX L"Pushed object not enough.");
+									CHECK_ERROR(GetStackTop(context) - GetStackBase(context) >= 1, ERROR_MESSAGE_PREFIX L"Pushed values not enough.");
 
 									auto ieOSTop = GetInsExec_ObjectStack(context.objectStack);
+									CHECK_ERROR(ieOSTop->objectId, ERROR_MESSAGE_PREFIX L"The poped value is not an object.");
 									auto ieObjTop = GetInsExec_Object(ieOSTop->objectId);
 
 									auto ieObject = GetInsExec_Object(insExec_Objects.Allocate());
@@ -253,7 +254,7 @@ PartialExecuteTraces
 								break;
 							case AstInsType::ReopenObject:
 								{
-									CHECK_ERROR(GetStackTop(context) - GetStackBase(context) >= 1, ERROR_MESSAGE_PREFIX L"Pushed object not enough.");
+									CHECK_ERROR(GetStackTop(context) - GetStackBase(context) >= 1, ERROR_MESSAGE_PREFIX L"Pushed values not enough.");
 									CHECK_ERROR(context.createStack != -1, ERROR_MESSAGE_PREFIX L"There is no created object.");
 
 									auto ieCSTop = GetInsExec_CreateStack(context.createStack);
@@ -262,6 +263,7 @@ PartialExecuteTraces
 									auto ieObjTop = GetInsExec_ObjectStack(context.objectStack);
 									context.objectStack = ieObjTop->previous;
 
+									CHECK_ERROR(ieObjTop->objectId, ERROR_MESSAGE_PREFIX L"The poped value is not an object.");
 									auto ieObject = GetInsExec_Object(ieObjTop->objectId);
 									ieCSTop->objectId = ieObject->allocatedIndex;
 
@@ -325,7 +327,7 @@ PartialExecuteTraces
 							case AstInsType::Field:
 							case AstInsType::FieldIfUnassigned:
 								{
-									CHECK_ERROR(GetStackTop(context) - GetStackBase(context) >= 1, ERROR_MESSAGE_PREFIX L"Pushed object not enough.");
+									CHECK_ERROR(GetStackTop(context) - GetStackBase(context) >= 1, ERROR_MESSAGE_PREFIX L"Pushed values not enough.");
 
 									auto ieObjTop = GetInsExec_ObjectStack(context.objectStack);
 									context.objectStack = ieObjTop->previous;
@@ -333,7 +335,7 @@ PartialExecuteTraces
 								break;
 							case AstInsType::LriStore:
 								{
-									CHECK_ERROR(GetStackTop(context) - GetStackBase(context) >= 1, ERROR_MESSAGE_PREFIX L"Pushed object not enough.");
+									CHECK_ERROR(GetStackTop(context) - GetStackBase(context) >= 1, ERROR_MESSAGE_PREFIX L"Pushed values not enough.");
 									CHECK_ERROR(context.lriStored == -1, ERROR_MESSAGE_PREFIX L"LriFetch is not executed before the next LriStore.");
 
 									auto ieObjTop = GetInsExec_ObjectStack(context.objectStack);
@@ -350,7 +352,7 @@ PartialExecuteTraces
 								break;
 							case AstInsType::ResolveAmbiguity:
 								{
-									CHECK_ERROR(GetStackTop(context) - GetStackBase(context) >= ins.count, ERROR_MESSAGE_PREFIX L"Pushed object not enough create an ambiguity node.");
+									CHECK_ERROR(GetStackTop(context) - GetStackBase(context) >= (vint32_t)ins.count, ERROR_MESSAGE_PREFIX L"Pushed values not enough create an ambiguity node.");
 									for (vint i = 0; i < ins.count; i++)
 									{
 										auto ieObjTop = GetInsExec_ObjectStack(context.objectStack);
@@ -368,6 +370,9 @@ PartialExecuteTraces
 								break;
 							case AstInsType::Token:
 							case AstInsType::EnumItem:
+								{
+									PushObjectStack(context, -2);
+								}
 								break;
 							default:;
 								CHECK_FAIL(ERROR_MESSAGE_PREFIX L"Unrecognizabled instruction.");
