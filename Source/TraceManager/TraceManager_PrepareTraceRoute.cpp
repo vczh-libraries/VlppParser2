@@ -247,9 +247,6 @@ PartialExecuteTraces
 									ieCS->stackBase = GetStackTop(context);
 									ieCS->dfa_bo_bolr_Trace = trace->allocatedIndex;
 									ieCS->dfa_bo_bolr_Ins = insRef;
-
-									// insExec.objectId will be filled in ReopenObject
-									// insExec.associated* will be filled in ReopenObject
 								}
 								break;
 							case AstInsType::ReopenObject:
@@ -258,17 +255,13 @@ PartialExecuteTraces
 									CHECK_ERROR(context.createStack != -1, ERROR_MESSAGE_PREFIX L"There is no created object.");
 
 									auto ieCSTop = GetInsExec_CreateStack(context.createStack);
+									CHECK_ERROR(ieCSTop->objectId == -1, ERROR_MESSAGE_PREFIX L"DelayFieldAssignment is not submitted before ReopenObject.");
+
 									auto ieObjTop = GetInsExec_ObjectStack(context.objectStack);
 									context.objectStack = ieObjTop->previous;
 
 									CHECK_ERROR(ieObjTop->objectId >= 0, ERROR_MESSAGE_PREFIX L"The poped value is not an object.");
 									auto ieObject = GetInsExec_Object(ieObjTop->objectId);
-
-									if (ieCSTop->objectId != -1)
-									{
-										CHECK_ERROR(ieCSTop->objectId == ieObject->allocatedIndex, ERROR_MESSAGE_PREFIX L"InsExec_CreatedObject for ReopenObject is corrupted.");
-									}
-									ieCSTop->objectId = ieObject->allocatedIndex;
 
 									// fill DFA: insExec.objectId and insExec.associated*
 									auto dfaTrace = GetTrace(ieCSTop->dfa_bo_bolr_Trace);
@@ -304,8 +297,7 @@ PartialExecuteTraces
 									boInsExec->associatedTrace = ieCSTop->dfa_bo_bolr_Trace;
 									boInsExec->associatedIns = ieCSTop->dfa_bo_bolr_Ins;
 
-									// fill RO: insExec.objectId and insExec.associated*
-									insExec->objectId = ieObject->allocatedIndex;
+									// fill RO: insExec.associated*
 									insExec->associatedTrace = ieCSTop->dfa_bo_bolr_Trace;
 									insExec->associatedIns = ieCSTop->dfa_bo_bolr_Ins;
 								}
@@ -315,15 +307,8 @@ PartialExecuteTraces
 									CHECK_ERROR(context.createStack != -1, ERROR_MESSAGE_PREFIX L"There is no created object.");
 
 									auto ieCSTop = GetInsExec_CreateStack(context.createStack);
-									CHECK_ERROR(ieCSTop->objectId != -1, ERROR_MESSAGE_PREFIX L"There is no created object after DelayFieldAssignment.");
-
-									context.createStack = ieCSTop->previous;
-									PushObjectStack(context, ieCSTop->objectId);
-
-									auto ieObject = GetInsExec_Object(ieCSTop->objectId);
-									insExec->objectId = ieObject->allocatedIndex;
-									insExec->associatedTrace = ieObject->bo_bolr_ra_Trace;
-									insExec->associatedIns = ieObject->bo_bolr_ra_Ins;
+									insExec->associatedTrace = ieCSTop->dfa_bo_bolr_Ins;
+									insExec->associatedIns = ieCSTop->dfa_bo_bolr_Trace;
 								}
 								break;
 							case AstInsType::DiscardValue:
