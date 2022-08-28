@@ -133,6 +133,91 @@ AllocateExecutionData
 			}
 
 /***********************************************************************
+PartialExecuteTraces
+***********************************************************************/
+
+			void TraceManager::PartialExecuteTraces()
+			{
+#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::PartialExecuteTraces()#"
+				Trace* lastTrace = nullptr;
+				IterateSurvivedTraces([&](Trace* trace)
+				{
+					if (trace->predecessors.first == trace->predecessors.last)
+					{
+						InsExec_Context context;
+						if (trace->predecessors.first != -1)
+						{
+							auto predecessor = GetTrace(trace->predecessors.first);
+							auto traceExec = GetTraceExec(predecessor->traceExecRef);
+							context = traceExec->context;
+						}
+
+						auto traceExec = GetTraceExec(trace->traceExecRef);
+						for (vint32_t insRef = 0; insRef < traceExec->insLists.c3; insRef++)
+						{
+							AstIns ins;
+							ReadInstruction(insRef, traceExec->insLists);
+
+							switch (ins.type)
+							{
+							case AstInsType::BeginObject:
+								break;
+							case AstInsType::BeginObjectLeftRecursive:
+								break;
+							case AstInsType::DelayFieldAssignment:
+								break;
+							case AstInsType::ReopenObject:
+								break;
+							case AstInsType::EndObject:
+								break;
+							case AstInsType::DiscardValue:
+								break;
+							case AstInsType::LriStore:
+								break;
+							case AstInsType::LriFetch:
+								break;
+							case AstInsType::Field:
+								break;
+							case AstInsType::FieldIfUnassigned:
+								break;
+							case AstInsType::ResolveAmbiguity:
+								break;
+							default:;
+							}
+						}
+						traceExec->context = context;
+
+						lastTrace = trace;
+						return true;
+					}
+					else
+					{
+						auto firstPredecessor = GetTrace(trace->predecessors.first);
+						if (trace->predecessors.first == lastTrace->allocatedIndex)
+						{
+							GetTraceExec(trace->traceExecRef)->context = GetTraceExec(firstPredecessor->traceExecRef)->context;
+							lastTrace = trace;
+							return true;
+						}
+						else
+						{
+							auto contextBaseline = GetTraceExec(trace->traceExecRef)->context;
+							auto contextComming = GetTraceExec(firstPredecessor->traceExecRef)->context;
+							CHECK_ERROR(
+								contextBaseline.objectStack == contextComming.objectStack &&
+								contextBaseline.createStack == contextComming.createStack &&
+								contextBaseline.lriStored == contextComming.lriStored,
+								ERROR_MESSAGE_PREFIX L"Execution results of traces to merge are different."
+								);
+							lastTrace = nullptr;
+							return false;
+						}
+					}
+				});
+#undef ERROR_MESSAGE_PREFIX
+			}
+
+/***********************************************************************
 PrepareTraceRoute
 ***********************************************************************/
 

@@ -246,6 +246,13 @@ TraceManager (Data Structures -- Execution)
 				vint32_t							dfa_bo_bolr_Ins = -1;
 			};
 
+			struct InsExec_Context
+			{
+				vint32_t							objectStack = -1;	// InsExec_ObjectStack after executing instructions
+				vint32_t							createStack = -1;	// InsExec_CreatedStack after executing instructions
+				vint32_t							lriStored = -1;
+			};
+
 			struct TraceInsLists
 			{
 				InstructionArray					edgeInsBeforeInput;
@@ -262,6 +269,7 @@ TraceManager (Data Structures -- Execution)
 				vint32_t							traceId = -1;
 				TraceInsLists						insLists;			// instruction list of this trace
 				InstructionArray					insExecRefs;		// allocated InsExec for instructions
+				InsExec_Context						context;
 			};
 
 /***********************************************************************
@@ -354,6 +362,7 @@ TraceManager
 				AstIns&								ReadInstruction(vint32_t instruction, TraceInsLists& insLists);
 				template<typename TCallback> void	IterateSurvivedTraces(TCallback&& callback);
 				void								AllocateExecutionData();
+				void								PartialExecuteTraces();
 
 			public:
 				TraceManager(Executable& _executable, const ITypeCallback* _typeCallback);
