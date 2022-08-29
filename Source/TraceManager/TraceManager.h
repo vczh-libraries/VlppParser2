@@ -400,7 +400,6 @@ TraceManager
 
 				template<typename T, T* (TraceManager::*GetData)(vint32_t index), typename TCallback, typename TError>
 				void								CompareObjectOrCreateStack(vint32_t stack1, vint32_t stack2, TCallback&& callback, TError&& error);
-				bool								AreObjectsEquivalent(vint32_t obj1, vint32_t obj2);
 				void								PartialExecuteTraces();
 
 				// ResolveAmbiguity
