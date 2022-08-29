@@ -139,14 +139,20 @@ FillSuccessorsAfterEndOfInput
 					visiting.Add(concurrentTraces->Get(0));
 				}
 
+				bool initialTraceVisited = false;
 				while (visiting.Count() > 0)
 				{
 					auto current = visiting[visiting.Count() - 1];
 					visiting.RemoveAt(visiting.Count() - 1);
 
-					if (current->predecessors.first != current->predecessors.last)
+					if (current == initialTrace)
 					{
-						ambiguityInvolved = true;
+						if (initialTraceVisited) continue;
+						initialTraceVisited = true;
+					}
+					else if (current->predecessorCount != 0)
+					{
+						continue;
 					}
 
 					vint32_t predecessorId = current->predecessors.last;
@@ -154,14 +160,15 @@ FillSuccessorsAfterEndOfInput
 					{
 						auto predecessor = GetTrace(predecessorId);
 						predecessorId = predecessor->predecessors.siblingPrev;
-
-						if (predecessor->successors.first == current->allocatedIndex) continue;
-						if (predecessor->successors.last == current->allocatedIndex) continue;
-						if (current->successors.siblingPrev != -1) continue;
-						if (current->successors.siblingNext != -1) continue;
-
+						current->predecessorCount++;
+						predecessor->successorCount++;
 						AddTraceToCollection(predecessor, current, &Trace::successors);
 						visiting.Add(predecessor);
+					}
+
+					if (current->predecessorCount > 0)
+					{
+						ambiguityInvolved = true;
 					}
 				}
 			}

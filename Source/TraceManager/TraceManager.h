@@ -181,8 +181,12 @@ TraceManager (Data Structures -- Input/EndOfInput)
 			struct Trace
 			{
 				vint32_t				allocatedIndex = -1;		// id of this Trace
-				TraceCollection			predecessors;				// id of the predecessor Trace
-				TraceCollection			successors;					// successors (filled by EndOfInput)
+				TraceCollection			predecessors;				// ids of predecessor Trace
+
+				// (filled by EndOfInput)
+				TraceCollection			successors;					// ids of successor Trace
+				vint32_t				predecessorCount = 0;
+				vint32_t				successorCount = 0;
 
 				// if state == -1
 				// it means this is an ambiguity resolving trace
@@ -197,7 +201,8 @@ TraceManager (Data Structures -- Input/EndOfInput)
 				vint32_t				currentTokenIndex = -1;		// the index of the token that is byInput
 				CompetitionRouting		competitionRouting;			// a data structure carrying priority and competition information
 
-				vint32_t				traceExecRef = -1;			// the allocated TraceExec (filled by PrepareTraceRoute)
+				// (filled by PrepareTraceRoute)
+				vint32_t				traceExecRef = -1;			// the allocated TraceExec
 			};
 
 /***********************************************************************
