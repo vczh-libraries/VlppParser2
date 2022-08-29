@@ -459,8 +459,18 @@ BuildAmbiguityStructures
 				IterateSurvivedTraces(
 					[this](Trace* trace, Trace* predecessor, vint32_t visitCount, vint32_t predecessorCount)
 					{
-						if (predecessorCount <= 1)
+						auto traceExec = GetTraceExec(trace->traceExecRef);
+						if (predecessorCount == 0)
 						{
+							traceExec->forwardTrace = trace->allocatedIndex;
+						}
+						else if (predecessorCount == 1)
+						{
+							while (predecessor->state == -1)
+							{
+								predecessor = GetTrace(GetTraceExec(predecessor->traceExecRef)->forwardTrace);
+							}
+							traceExec->forwardTrace = GetTraceExec(predecessor->traceExecRef)->forwardTrace;
 						}
 						else if (visitCount == predecessorCount)
 						{

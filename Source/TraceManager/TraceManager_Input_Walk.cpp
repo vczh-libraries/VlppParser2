@@ -269,11 +269,14 @@ TraceManager::WalkAlongSingleEdge
 					for (vint i = 0; i < concurrentCount; i++)
 					{
 						auto& candidate = backupTraces->operator[](i);
-						if (AreTwoEndingInputTraceEqual(newTrace, candidate))
+						if (candidate->byInput == Executable::EndingInput || candidate->state == -1)
 						{
-							// create a merging 
-							MergeTwoEndingInputTrace(newTrace, candidate);
-							return { nullptr,nullptr };
+							if (AreTwoEndingInputTraceEqual(newTrace, candidate))
+							{
+								// create a merging 
+								MergeTwoEndingInputTrace(newTrace, candidate);
+								return { nullptr,nullptr };
+							}
 						}
 					}
 				}
