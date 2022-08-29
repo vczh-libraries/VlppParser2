@@ -361,12 +361,37 @@ PartialExecuteTraces
 #undef ERROR_MESSAGE_PREFIX
 			}
 
+			template<typename T, T* (TraceManager::* GetData)(vint32_t index), typename TCallback, typename TError>
+			void TraceManager::CompareObjectOrCreateStack(vint32_t stack1, vint32_t stack2, TCallback&& callback, TError&& error)
+			{
+				while (stack1 != stack2)
+				{
+					if (stack1 == -1 || stack2 == -1) error();
+
+					auto stackObj1 = (this->*GetData)(stack1);
+					auto stackObj2 = (this->*GetData)(stack2);
+					callback(stackObj1, stackObj2, error);
+
+					stack1 = stackObj1->previous;
+					stack2 = stackObj2->previous;
+				}
+			}
+
+			bool TraceManager::AreObjectsEquivalent(vint32_t obj1, vint32_t obj2)
+			{
+				return obj1 == obj2;
+			}
+
 			void TraceManager::PartialExecuteTraces()
 			{
 #define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::PartialExecuteTraces()#"
 				IterateSurvivedTraces(
 					[this](Trace* trace, Trace* predecessor, vint32_t visitCount, vint32_t predecessorCount)
 					{
+						if (trace->allocatedIndex == 24)
+						{
+							int a = 0;
+						}
 						if (predecessorCount <= 1)
 						{
 							PartialExecuteOrdinaryTrace(trace);
@@ -381,41 +406,30 @@ PartialExecuteTraces
 							}
 							else
 							{
-								if (contextBaseline.lriStored != contextComming.lriStored) goto FOUND_ERROR;
+								auto error = []()
 								{
-									auto baseline = contextBaseline.objectStack;
-									auto comming = contextComming.objectStack;
-									while (baseline != comming)
+									CHECK_FAIL(ERROR_MESSAGE_PREFIX L"Execution results of traces to merge are different.");
+								};
+								if (contextBaseline.lriStored != contextComming.lriStored) error();
+								CompareObjectOrCreateStack<InsExec_ObjectStack, &TraceManager::GetInsExec_ObjectStack>(
+									contextBaseline.objectStack,
+									contextComming.objectStack,
+									[this](InsExec_ObjectStack* baselineStack, InsExec_ObjectStack* commingStack, auto&& error)
 									{
-										if (baseline == -1 || comming == -1) goto FOUND_ERROR;
-
-										auto baselineStack = GetInsExec_ObjectStack(baseline);
-										auto commingStack = GetInsExec_ObjectStack(comming);
-										if (baselineStack->objectId != commingStack->objectId) goto FOUND_ERROR;
-
-										baseline = baselineStack->previous;
-										comming = commingStack->previous;
-									}
-								}
-								{
-									auto baseline = contextBaseline.createStack;
-									auto comming = contextComming.createStack;
-									while (baseline != comming)
+										if (!AreObjectsEquivalent(baselineStack->objectId, commingStack->objectId)) error();
+									},
+									error
+									);
+								CompareObjectOrCreateStack<InsExec_CreateStack, &TraceManager::GetInsExec_CreateStack>(
+									contextBaseline.createStack,
+									contextComming.createStack,
+									[this](InsExec_CreateStack* baselineStack, InsExec_CreateStack* commingStack, auto&& error)
 									{
-										if (baseline == -1 || comming == -1) goto FOUND_ERROR;
-
-										auto baselineStack = GetInsExec_CreateStack(baseline);
-										auto commingStack = GetInsExec_CreateStack(comming);
-										if (baselineStack->objectId != commingStack->objectId) goto FOUND_ERROR;
-										if (baselineStack->stackBase != commingStack->stackBase) goto FOUND_ERROR;
-
-										baseline = baselineStack->previous;
-										comming = commingStack->previous;
-									}
-								}
-								return;
-							FOUND_ERROR:
-								CHECK_FAIL(ERROR_MESSAGE_PREFIX L"Execution results of traces to merge are different.");
+										if (!AreObjectsEquivalent(baselineStack->objectId, commingStack->objectId)) error();
+										if (baselineStack->stackBase != commingStack->stackBase) error();
+									},
+									error
+									);
 							}
 						}
 					}
