@@ -267,7 +267,9 @@ void RenderTrace(
 			{
 				writer.WriteLine(
 					(trace->state == -1 ? L"  SharedTrace: " : L"  BranchHead: ") +
-					itow(traceExec->forwardTrace));
+					itow(traceExec->forwardTrace) +
+					L" BranchDepth: " +
+					itow(traceExec->branchDepth));
 			}
 		}
 

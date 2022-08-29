@@ -291,6 +291,10 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 				// for ordinary trace, it stores the first trace of the most inner branch that this trace is in
 				// for merge trace, it stores the latest trace that all comming branches share
 				vint32_t							forwardTrace = -1;
+
+				// the depth of nested branches
+				// it is 0 for initialTrace
+				vint32_t							branchDepth = -1;
 			};
 
 /***********************************************************************

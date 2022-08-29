@@ -462,18 +462,47 @@ BuildAmbiguityStructures
 						auto traceExec = GetTraceExec(trace->traceExecRef);
 						if (predecessorCount == 0)
 						{
+							// initialize branch information for initialTrace
 							traceExec->forwardTrace = trace->allocatedIndex;
+							traceExec->branchDepth = 0;
 						}
 						else if (predecessorCount == 1)
 						{
+							// if a predecessor is a merge trace
+							// jump to its forwardTrace
+							// until an ordinary trace is found
 							while (predecessor->state == -1)
 							{
 								predecessor = GetTrace(GetTraceExec(predecessor->traceExecRef)->forwardTrace);
 							}
-							traceExec->forwardTrace = GetTraceExec(predecessor->traceExecRef)->forwardTrace;
+
+							// copy its data
+							auto predecessorTraceExec = GetTraceExec(predecessor->traceExecRef);
+							traceExec->forwardTrace = predecessorTraceExec->forwardTrace;
+							traceExec->branchDepth = predecessorTraceExec->branchDepth;
 						}
-						else if (visitCount == predecessorCount)
+						else
 						{
+							auto expected = GetTraceExec(predecessor->traceExecRef);
+							if (predecessor->state != -1)
+							{
+								// if a merge state's predecessor is also a merge state
+								// use its data
+								// because they are equivalent
+								// otherwise, use the data from its forwardTrace
+								expected = GetTraceExec(GetTrace(expected->forwardTrace)->traceExecRef);
+							}
+
+							if (visitCount == 1)
+							{
+								// for the first time visiting a merge trace, copy the data
+								traceExec->forwardTrace = expected->forwardTrace;
+								traceExec->branchDepth = expected->branchDepth;
+							}
+							else if (traceExec->forwardTrace != expected->forwardTrace)
+							{
+								// otherwise, use the data from the latest common shared node
+							}
 						}
 					}
 				);
