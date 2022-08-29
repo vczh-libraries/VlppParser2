@@ -379,7 +379,45 @@ PartialExecuteTraces
 
 			bool TraceManager::AreObjectsEquivalent(vint32_t obj1, vint32_t obj2)
 			{
-				return obj1 == obj2;
+				if (obj1 == obj2) return true;
+
+				auto ieObj1 = GetInsExec_Object(obj1);
+				auto ieObj2 = GetInsExec_Object(obj2);
+				if (ieObj1->dfa_bo_bolr_ra_Ins != ieObj2->dfa_bo_bolr_ra_Ins) return false;
+
+				auto trace1 = GetTrace(ieObj1->dfa_bo_bolr_ra_Trace);
+				auto trace2 = GetTrace(ieObj2->dfa_bo_bolr_ra_Trace);
+				if (trace1->predecessors.first != trace1->predecessors.last) return false;
+				if (trace2->predecessors.first != trace2->predecessors.last) return false;
+				if (trace1->predecessors.first != trace2->predecessors.first) return false;
+
+				bool metBranchBO = false;
+				auto traceExec1 = GetTraceExec(trace1->traceExecRef);
+				auto traceExec2 = GetTraceExec(trace2->traceExecRef);
+				for (vint32_t insRef = 0; insRef <= ieObj1->dfa_bo_bolr_ra_Ins; insRef++)
+				{
+					auto ins1 = ReadInstruction(insRef, traceExec1->insLists);
+					auto ins2 = ReadInstruction(insRef, traceExec2->insLists);
+
+					if (ins1.type == ins2.type)
+					{
+						switch (ins1.type)
+						{
+						case AstInsType::BeginObject:
+						case AstInsType::BeginObjectLeftRecursive:
+						case AstInsType::DelayFieldAssignment:
+						case AstInsType::ResolveAmbiguity:
+							metBranchBO = true;
+							break;
+						}
+					}
+
+					if (ins1 != ins2)
+					{
+						break;
+					}
+				}
+				return metBranchBO;
 			}
 
 			void TraceManager::PartialExecuteTraces()
