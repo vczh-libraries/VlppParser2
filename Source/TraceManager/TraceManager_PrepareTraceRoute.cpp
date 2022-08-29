@@ -453,17 +453,6 @@ PrepareTraceRoute
 BuildAmbiguityStructures
 ***********************************************************************/
 
-			vint32_t TraceManager::GetUpperLevelBranchHead(Trace* subBranchTrace)
-			{
-				auto subBranchHead = GetTrace(GetTraceExec(subBranchTrace->traceExecRef)->traceOfBranchHead);
-				auto subBranchPredecessor = subBranchHead;
-				if (subBranchPredecessor->predecessors.first != -1)
-				{
-					subBranchPredecessor = GetTrace(subBranchPredecessor->predecessors.first);
-				}
-				return GetTraceExec(subBranchPredecessor->traceExecRef)->traceOfBranchHead;
-			}
-
 			void TraceManager::BuildAmbiguityStructures()
 			{
 #define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::BuildAmbiguityStructures()#"
@@ -472,28 +461,9 @@ BuildAmbiguityStructures
 					{
 						if (predecessorCount <= 1)
 						{
-							auto traceExec = GetTraceExec(trace->traceExecRef);
-							if (trace->predecessors.first == -1 || trace->successors.siblingPrev != trace->successors.siblingNext)
-							{
-								traceExec->traceOfBranchHead = trace->allocatedIndex;
-							}
-							else
-							{
-								traceExec->traceOfBranchHead = GetTraceExec(GetTrace(trace->predecessors.first)->traceExecRef)->traceOfBranchHead;
-							}
 						}
-						else
+						else if (visitCount == predecessorCount)
 						{
-							auto branchHead = GetUpperLevelBranchHead(predecessor);
-							auto traceExec = GetTraceExec(trace->traceExecRef);
-							if (visitCount == 1)
-							{
-								traceExec->traceOfBranchHead = branchHead;
-							}
-							else
-							{
-								CHECK_ERROR(traceExec->traceOfBranchHead == branchHead, ERROR_MESSAGE_PREFIX L"Merging structure not well-formed.");
-							}
 						}
 					}
 				);

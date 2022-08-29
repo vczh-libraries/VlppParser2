@@ -140,18 +140,13 @@ TraceManager::ExecuteTrace
 				submitter.receiver = &receiver;
 
 				// execute from the root trace
-				vint32_t startIns = 0;
 				auto trace = initialTrace;
 				while (trace)
 				{
 					TraceInsLists insLists;
 					ReadInstructionList(trace, insLists);
 
-					vint32_t minIns = 0;
-					vint32_t maxIns = insLists.c3 - 1;
-					CHECK_ERROR(minIns <= startIns, ERROR_MESSAGE_PREFIX L"startIns corrupted.");
-
-					for (vint32_t i = startIns; i <= maxIns; i++)
+					for (vint32_t i = 0; i < insLists.c3; i++)
 					{
 						auto& ins = ReadInstruction(i, insLists);
 						auto& token = tokens[trace->currentTokenIndex];
@@ -161,12 +156,10 @@ TraceManager::ExecuteTrace
 					if (trace->successors.first == -1)
 					{
 						trace = nullptr;
-						startIns = 0;
 					}
 					else if (trace->successors.first == trace->successors.last)
 					{
 						trace = GetTrace(trace->successors.first);
-						startIns = 0;
 					}
 					else
 					{
