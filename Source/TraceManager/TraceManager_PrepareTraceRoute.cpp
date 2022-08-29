@@ -502,6 +502,27 @@ BuildAmbiguityStructures
 							else if (traceExec->forwardTrace != expected->forwardTrace)
 							{
 								// otherwise, use the data from the latest common shared node
+								auto stepForward = [this](TraceExec* traceExec)
+								{
+									return traceExec;
+								};
+
+								auto closer = traceExec->branchDepth <= expected->branchDepth ? traceExec : expected;
+								auto further= traceExec->branchDepth > expected->branchDepth ? traceExec : expected;
+
+								while (closer->branchDepth < further->branchDepth)
+								{
+									closer = stepForward(closer);
+								}
+								CHECK_ERROR(closer->branchDepth == further->branchDepth, ERROR_MESSAGE_PREFIX L"Internal error: branchDepth corrupted.");
+
+								while (closer->forwardTrace != expected->forwardTrace)
+								{
+									closer = stepForward(closer);
+									expected = stepForward(expected);
+								}
+								traceExec->forwardTrace = expected->forwardTrace;
+								traceExec->branchDepth = expected->branchDepth;
 							}
 						}
 					}
