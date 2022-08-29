@@ -405,24 +405,26 @@ PartialExecuteTraces
 								{
 									CHECK_FAIL(ERROR_MESSAGE_PREFIX L"Execution results of traces to merge are different.");
 								};
-								if (contextBaseline.lriStored != contextComming.lriStored) error();
-								CompareObjectOrCreateStack<InsExec_ObjectStack, &TraceManager::GetInsExec_ObjectStack>(
-									contextBaseline.objectStack,
-									contextComming.objectStack,
-									[this](InsExec_ObjectStack* baselineStack, InsExec_ObjectStack* commingStack, auto&& error)
-									{
-										// it is fine so far when two stack have the same depth
-										// no need to look into objects
-									},
-									error
-									);
+
+								// check if the two lriStored be both empty or non-empty
+								if ((contextBaseline.lriStored != -1) != (contextComming.lriStored != -1)) error();
+
+								// check if the two objectStack have the same depth
+								if ((contextBaseline.objectStack == -1) != (contextComming.objectStack == -1)) error();
+								if (contextBaseline.objectStack != -1)
+								{
+									auto stackBaseline = GetInsExec_ObjectStack(contextBaseline.objectStack);
+									auto stackComming = GetInsExec_ObjectStack(contextComming.objectStack);
+									if (stackBaseline->pushedCount != stackComming->pushedCount) error();
+								}
+
+								// check if the two createStack have the same depth
+								// check each corresponding createStack have the same stackBase
 								CompareObjectOrCreateStack<InsExec_CreateStack, &TraceManager::GetInsExec_CreateStack>(
 									contextBaseline.createStack,
 									contextComming.createStack,
 									[this](InsExec_CreateStack* baselineStack, InsExec_CreateStack* commingStack, auto&& error)
 									{
-										// it is fine so far when two stack have the same depth
-										// no need to look into objects
 										if (baselineStack->stackBase != commingStack->stackBase) error();
 									},
 									error

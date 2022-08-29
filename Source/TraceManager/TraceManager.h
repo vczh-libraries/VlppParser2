@@ -251,18 +251,15 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 			{
 				vint32_t							allocatedIndex = -1;
 				vint32_t							previous = -1;
-				vint32_t							objectId = -1;
+				vint32_t							objectId = -1;			// InsExec_Object::pushedObjectId
 				vint32_t							pushedCount = -1;
 			};
 
 			struct InsExec_CreateStack
 			{
-				// objectId could be:
-				//   >= 0 : known object
-				//   <=-3 : DFA created object, could be associated to multiple known objects
 				vint32_t							allocatedIndex = -1;
 				vint32_t							previous = -1;
-				vint32_t							objectId = -1;
+				vint32_t							objectId = -1;			// InsExec_Object::pushedObjectId
 				vint32_t							stackBase = -1;
 			};
 
@@ -270,7 +267,7 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 			{
 				vint32_t							objectStack = -1;		// InsExec_ObjectStack after executing instructions
 				vint32_t							createStack = -1;		// InsExec_CreatedStack after executing instructions
-				vint32_t							lriStored = -1;
+				vint32_t							lriStored = -1;			// LriStore stored object after executing instructions
 			};
 
 			struct TraceInsLists
