@@ -263,9 +263,11 @@ void RenderTrace(
 				writer.WriteLine(L"  CreatingObject: " + itow(tm.GetInsExec_CreateStack(traceExec->context.createStack)->objectId));
 			}
 
-			if (traceExec->traceOfBranchHead != -1)
+			if (traceExec->forwardTrace != -1)
 			{
-				writer.WriteLine(L"  BranchHead: " + itow(traceExec->traceOfBranchHead));
+				writer.WriteLine(
+					(trace->state == -1 ? L"  SharedTrace: " : L"  BranchHead: ") +
+					itow(traceExec->forwardTrace));
 			}
 		}
 

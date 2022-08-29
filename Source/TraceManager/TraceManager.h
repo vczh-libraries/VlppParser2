@@ -288,7 +288,9 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 				InstructionArray					insExecRefs;			// allocated InsExec for instructions
 				InsExec_Context						context;
 
-				vint32_t							traceOfBranchHead = -1;
+				// for ordinary trace, it stores the first trace of the most inner branch that this trace is in
+				// for merge trace, it stores the latest trace that all comming branches share
+				vint32_t							forwardTrace = -1;
 			};
 
 /***********************************************************************
