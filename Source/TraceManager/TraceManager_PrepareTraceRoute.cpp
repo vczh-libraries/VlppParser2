@@ -454,7 +454,8 @@ PartialExecuteTraces
 									contextComming.objectStack,
 									[this](InsExec_ObjectStack* baselineStack, InsExec_ObjectStack* commingStack, auto&& error)
 									{
-										if (!AreObjectsEquivalent(baselineStack->objectId, commingStack->objectId)) error();
+										// it is fine so far when two stack have the same depth
+										// no need to look into objects
 									},
 									error
 									);
@@ -463,7 +464,8 @@ PartialExecuteTraces
 									contextComming.createStack,
 									[this](InsExec_CreateStack* baselineStack, InsExec_CreateStack* commingStack, auto&& error)
 									{
-										if (!AreObjectsEquivalent(baselineStack->objectId, commingStack->objectId)) error();
+										// it is fine so far when two stack have the same depth
+										// no need to look into objects
 										if (baselineStack->stackBase != commingStack->stackBase) error();
 									},
 									error
