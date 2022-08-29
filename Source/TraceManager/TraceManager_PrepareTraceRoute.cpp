@@ -40,7 +40,7 @@ IterateSurvivedTraces
 						current->iterateCounter,
 						current->predecessorCount
 						);
-					lastTrace = current->predecessors.first != current->predecessors.last ? nullptr : current;
+					lastTrace = current;
 					if (current->iterateCounter < current->predecessorCount) continue;
 
 					vint32_t successorId = current->successors.last;
