@@ -15,6 +15,7 @@ IterateSurvivedTraces
 			template<typename TCallback>
 			void TraceManager::IterateSurvivedTraces(TCallback&& callback)
 			{
+				Trace* lastTrace = nullptr;
 				List<Trace*> traces;
 				traces.Add(initialTrace);
 
@@ -23,7 +24,24 @@ IterateSurvivedTraces
 					auto current = traces[traces.Count() - 1];
 					traces.RemoveAt(traces.Count() - 1);
 
-					if (!callback(current)) continue;
+					if (current->iterateCounter == current->predecessorCount)
+					{
+						current->iterateCounter = 0;
+					}
+
+					current->iterateCounter++;
+					callback(
+						current,
+						(
+							current->predecessorCount == 0 ? nullptr :
+							current->predecessorCount == 1 ? GetTrace(current->predecessors.first) :
+							lastTrace
+						),
+						current->iterateCounter,
+						current->predecessorCount
+						);
+					lastTrace = current->predecessors.first != current->predecessors.last ? nullptr : current;
+					if (current->iterateCounter < current->predecessorCount) continue;
 
 					vint32_t successorId = current->successors.last;
 					while (successorId != -1)
@@ -33,40 +51,6 @@ IterateSurvivedTraces
 						traces.Add(successor);
 					}
 				}
-			}
-
-/***********************************************************************
-IterateSurvivedTraces
-***********************************************************************/
-
-			template<typename TSingle, typename TMergeFirst, typename TMergeContinue>
-			void TraceManager::IterateSurvivedCategorizedTraces(TSingle&& single, TMergeFirst&& mergeFirst, TMergeContinue&& mergeContinue)
-			{
-				Trace* lastTrace = nullptr;
-				IterateSurvivedTraces([&](Trace* trace)
-				{
-					if (trace->predecessors.first == trace->predecessors.last)
-					{
-						single(trace);
-						lastTrace = trace;
-						return true;
-					}
-					else
-					{
-						if (trace->predecessors.first == lastTrace->allocatedIndex)
-						{
-							mergeFirst(trace, lastTrace);
-							lastTrace = trace;
-							return true;
-						}
-						else
-						{
-							mergeContinue(trace, lastTrace);
-							lastTrace = nullptr;
-							return false;
-						}
-					}
-				});
 			}
 
 /***********************************************************************
@@ -147,7 +131,7 @@ AllocateExecutionData
 			void TraceManager::AllocateExecutionData()
 			{
 				vint32_t insExecCount = 0;
-				IterateSurvivedTraces([&](Trace* trace)
+				IterateSurvivedTraces([&](Trace* trace, ...)
 				{
 					if (trace->traceExecRef != -1) return false;
 					trace->traceExecRef = traceExecs.Allocate();
@@ -212,193 +196,228 @@ PartialExecuteTraces
 				return ie;
 			}
 
+			void TraceManager::PartialExecuteOrdinaryTrace(Trace* trace)
+			{
+#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::PartialExecuteOrdinaryTrace(Trace*)#"
+				InsExec_Context context;
+				if (trace->predecessors.first != -1)
+				{
+					auto predecessor = GetTrace(trace->predecessors.first);
+					auto traceExec = GetTraceExec(predecessor->traceExecRef);
+					context = traceExec->context;
+				}
+
+				auto traceExec = GetTraceExec(trace->traceExecRef);
+				for (vint32_t insRef = 0; insRef < traceExec->insLists.c3; insRef++)
+				{
+					auto insExec = GetInsExec(traceExec->insExecRefs.start + insRef);
+					AstIns ins = ReadInstruction(insRef, traceExec->insLists);
+
+					switch (ins.type)
+					{
+					case AstInsType::BeginObject:
+						{
+							auto ieObject = GetInsExec_Object(insExec_Objects.Allocate());
+							ieObject->pushedObjectId = ieObject->allocatedIndex;
+							ieObject->dfa_bo_bolr_ra_Trace = trace->allocatedIndex;
+							ieObject->dfa_bo_bolr_ra_Ins = insRef;
+
+							auto ieCSTop = PushCreateStack(context);
+							ieCSTop->objectId = ieObject->pushedObjectId;
+							ieCSTop->stackBase = GetStackTop(context);
+
+							insExec->objectId = ieObject->pushedObjectId;
+						}
+						break;
+					case AstInsType::BeginObjectLeftRecursive:
+						{
+							CHECK_ERROR(GetStackTop(context) - GetStackBase(context) >= 1, ERROR_MESSAGE_PREFIX L"Pushed values not enough.");
+
+							auto ieOSTop = GetInsExec_ObjectStack(context.objectStack);
+
+							auto ieObject = GetInsExec_Object(insExec_Objects.Allocate());
+							ieObject->pushedObjectId = ieObject->allocatedIndex;
+							ieObject->lrObjectId = ieOSTop->objectId;
+							ieObject->dfa_bo_bolr_ra_Trace = trace->allocatedIndex;
+							ieObject->dfa_bo_bolr_ra_Ins = insRef;
+
+							auto ieCSTop = PushCreateStack(context);
+							ieCSTop->objectId = ieObject->pushedObjectId;
+							ieCSTop->stackBase = ieOSTop->pushedCount - 1;
+
+							insExec->objectId = ieObject->pushedObjectId;
+						}
+						break;
+					case AstInsType::DelayFieldAssignment:
+						{
+							auto ieObject = GetInsExec_Object(insExec_Objects.Allocate());
+							ieObject->pushedObjectId = -ieObject->allocatedIndex - 3;
+							ieObject->dfa_bo_bolr_ra_Trace = trace->allocatedIndex;
+							ieObject->dfa_bo_bolr_ra_Ins = insRef;
+
+							auto ieCS = PushCreateStack(context);
+							ieCS->objectId = ieObject->pushedObjectId;
+							ieCS->stackBase = GetStackTop(context);
+
+							insExec->objectId = ieObject->pushedObjectId;
+						}
+						break;
+					case AstInsType::ReopenObject:
+						{
+							CHECK_ERROR(GetStackTop(context) - GetStackBase(context) >= 1, ERROR_MESSAGE_PREFIX L"Pushed values not enough.");
+							CHECK_ERROR(context.createStack != -1, ERROR_MESSAGE_PREFIX L"There is no created object.");
+
+							auto ieCSTop = GetInsExec_CreateStack(context.createStack);
+							CHECK_ERROR(ieCSTop->objectId <= -3, ERROR_MESSAGE_PREFIX L"DelayFieldAssignment is not submitted before ReopenObject.");
+
+							auto ieOSTop = GetInsExec_ObjectStack(context.objectStack);
+							context.objectStack = ieOSTop->previous;
+
+							auto ieObjTop = GetInsExec_Object(ieOSTop->objectId);
+							ieObjTop->dfaObjectId = ieCSTop->objectId;
+
+							insExec->objectId = ieCSTop->objectId;
+						}
+						break;
+					case AstInsType::EndObject:
+						{
+							CHECK_ERROR(context.createStack != -1, ERROR_MESSAGE_PREFIX L"There is no created object.");
+
+							auto ieCSTop = GetInsExec_CreateStack(context.createStack);
+							context.createStack = ieCSTop->previous;
+							PushObjectStack(context, ieCSTop->objectId);
+
+							auto ieObject = GetInsExec_Object(ieCSTop->objectId);
+							if (++ieObject->eo_Counter == 1)
+							{
+								ieObject->eo_Trace = trace->allocatedIndex;
+								ieObject->eo_Ins = insRef;
+							}
+							else
+							{
+								ieObject->eo_Trace = -1;
+								ieObject->eo_Ins = -1;
+							}
+
+							insExec->objectId = ieCSTop->objectId;
+						}
+						break;
+					case AstInsType::DiscardValue:
+					case AstInsType::Field:
+					case AstInsType::FieldIfUnassigned:
+						{
+							CHECK_ERROR(GetStackTop(context) - GetStackBase(context) >= 1, ERROR_MESSAGE_PREFIX L"Pushed values not enough.");
+
+							auto ieObjTop = GetInsExec_ObjectStack(context.objectStack);
+							context.objectStack = ieObjTop->previous;
+						}
+						break;
+					case AstInsType::LriStore:
+						{
+							CHECK_ERROR(GetStackTop(context) - GetStackBase(context) >= 1, ERROR_MESSAGE_PREFIX L"Pushed values not enough.");
+							CHECK_ERROR(context.lriStored == -1, ERROR_MESSAGE_PREFIX L"LriFetch is not executed before the next LriStore.");
+
+							auto ieObjTop = GetInsExec_ObjectStack(context.objectStack);
+							context.objectStack = ieObjTop->previous;
+							context.lriStored = ieObjTop->objectId;
+						}
+						break;
+					case AstInsType::LriFetch:
+						{
+							CHECK_ERROR(context.lriStored != -1, ERROR_MESSAGE_PREFIX L"LriStore is not executed before the next LriFetch.");
+							PushObjectStack(context, context.lriStored);
+							context.lriStored = -1;
+						}
+						break;
+					case AstInsType::ResolveAmbiguity:
+						{
+							CHECK_ERROR(GetStackTop(context) - GetStackBase(context) >= (vint32_t)ins.count, ERROR_MESSAGE_PREFIX L"Pushed values not enough create an ambiguity node.");
+							for (vint i = 0; i < ins.count; i++)
+							{
+								auto ieObjTop = GetInsExec_ObjectStack(context.objectStack);
+								context.objectStack = ieObjTop->previous;
+							}
+
+							auto ieObject = GetInsExec_Object(insExec_Objects.Allocate());
+							ieObject->pushedObjectId = ieObject->allocatedIndex;
+							ieObject->dfa_bo_bolr_ra_Trace = trace->allocatedIndex;
+							ieObject->dfa_bo_bolr_ra_Ins = insRef;
+							PushObjectStack(context, ieObject->pushedObjectId);
+
+							insExec->objectId = ieObject->pushedObjectId;
+						}
+						break;
+					case AstInsType::Token:
+					case AstInsType::EnumItem:
+						{
+							PushObjectStack(context, -3);
+						}
+						break;
+					default:;
+						CHECK_FAIL(ERROR_MESSAGE_PREFIX L"Unrecognizabled instruction.");
+					}
+				}
+				traceExec->context = context;
+#undef ERROR_MESSAGE_PREFIX
+			}
+
 			void TraceManager::PartialExecuteTraces()
 			{
 #define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::PartialExecuteTraces()#"
-				IterateSurvivedCategorizedTraces(
-					[this](Trace* trace) // ordinary trace
+				IterateSurvivedTraces(
+					[this](Trace* trace, Trace* predecessor, vint32_t visitCount, vint32_t predecessorCount)
 					{
-						InsExec_Context context;
-						if (trace->predecessors.first != -1)
+						if (predecessorCount <= 1)
 						{
-							auto predecessor = GetTrace(trace->predecessors.first);
-							auto traceExec = GetTraceExec(predecessor->traceExecRef);
-							context = traceExec->context;
+							PartialExecuteOrdinaryTrace(trace);
 						}
-
-						auto traceExec = GetTraceExec(trace->traceExecRef);
-						for (vint32_t insRef = 0; insRef < traceExec->insLists.c3; insRef++)
+						else
 						{
-							auto insExec = GetInsExec(traceExec->insExecRefs.start + insRef);
-							AstIns ins = ReadInstruction(insRef, traceExec->insLists);
-
-							switch (ins.type)
+							auto&& contextComming = GetTraceExec(predecessor->traceExecRef)->context;
+							auto&& contextBaseline = GetTraceExec(trace->traceExecRef)->context;
+							if (visitCount == 1)
 							{
-							case AstInsType::BeginObject:
+								contextBaseline = contextComming;
+							}
+							else
+							{
+								if (contextBaseline.lriStored != contextComming.lriStored) goto FOUND_ERROR;
 								{
-									auto ieObject = GetInsExec_Object(insExec_Objects.Allocate());
-									ieObject->pushedObjectId = ieObject->allocatedIndex;
-									ieObject->dfa_bo_bolr_ra_Trace = trace->allocatedIndex;
-									ieObject->dfa_bo_bolr_ra_Ins = insRef;
-
-									auto ieCSTop = PushCreateStack(context);
-									ieCSTop->objectId = ieObject->pushedObjectId;
-									ieCSTop->stackBase = GetStackTop(context);
-									ieCSTop->dfa_bo_bolr_Trace = trace->allocatedIndex;
-									ieCSTop->dfa_bo_bolr_Ins = insRef;
-
-									insExec->objectId = ieObject->pushedObjectId;
-								}
-								break;
-							case AstInsType::BeginObjectLeftRecursive:
-								{
-									CHECK_ERROR(GetStackTop(context) - GetStackBase(context) >= 1, ERROR_MESSAGE_PREFIX L"Pushed values not enough.");
-
-									auto ieOSTop = GetInsExec_ObjectStack(context.objectStack);
-
-									auto ieObject = GetInsExec_Object(insExec_Objects.Allocate());
-									ieObject->pushedObjectId = ieObject->allocatedIndex;
-									ieObject->lrObjectId = ieOSTop->objectId;
-									ieObject->dfa_bo_bolr_ra_Trace = trace->allocatedIndex;
-									ieObject->dfa_bo_bolr_ra_Ins = insRef;
-
-									auto ieCSTop = PushCreateStack(context);
-									ieCSTop->objectId = ieObject->pushedObjectId;
-									ieCSTop->stackBase = ieOSTop->pushedCount - 1;
-									ieCSTop->dfa_bo_bolr_Trace = trace->allocatedIndex;
-									ieCSTop->dfa_bo_bolr_Ins = insRef;
-
-									insExec->objectId = ieObject->pushedObjectId;
-								}
-								break;
-							case AstInsType::DelayFieldAssignment:
-								{
-									auto ieObject = GetInsExec_Object(insExec_Objects.Allocate());
-									ieObject->pushedObjectId = -ieObject->allocatedIndex - 3;
-									ieObject->dfa_bo_bolr_ra_Trace = trace->allocatedIndex;
-									ieObject->dfa_bo_bolr_ra_Ins = insRef;
-
-									auto ieCS = PushCreateStack(context);
-									ieCS->objectId = ieObject->pushedObjectId;
-									ieCS->stackBase = GetStackTop(context);
-									ieCS->dfa_bo_bolr_Trace = trace->allocatedIndex;
-									ieCS->dfa_bo_bolr_Ins = insRef;
-
-									insExec->objectId = ieObject->pushedObjectId;
-								}
-								break;
-							case AstInsType::ReopenObject:
-								{
-									CHECK_ERROR(GetStackTop(context) - GetStackBase(context) >= 1, ERROR_MESSAGE_PREFIX L"Pushed values not enough.");
-									CHECK_ERROR(context.createStack != -1, ERROR_MESSAGE_PREFIX L"There is no created object.");
-
-									auto ieCSTop = GetInsExec_CreateStack(context.createStack);
-									CHECK_ERROR(ieCSTop->objectId <= -3, ERROR_MESSAGE_PREFIX L"DelayFieldAssignment is not submitted before ReopenObject.");
-
-									auto ieOSTop = GetInsExec_ObjectStack(context.objectStack);
-									context.objectStack = ieOSTop->previous;
-
-									auto ieObjTop = GetInsExec_Object(ieOSTop->objectId);
-									ieObjTop->dfaObjectId = ieCSTop->objectId;
-
-									insExec->objectId = ieCSTop->objectId;
-								}
-								break;
-							case AstInsType::EndObject:
-								{
-									CHECK_ERROR(context.createStack != -1, ERROR_MESSAGE_PREFIX L"There is no created object.");
-
-									auto ieCSTop = GetInsExec_CreateStack(context.createStack);
-									context.createStack = ieCSTop->previous;
-									PushObjectStack(context, ieCSTop->objectId);
-
-									auto ieObject = GetInsExec_Object(ieCSTop->objectId);
-									if (++ieObject->eo_Counter == 1)
+									auto baseline = contextBaseline.objectStack;
+									auto comming = contextComming.objectStack;
+									while (baseline != comming)
 									{
-										ieObject->eo_Trace = trace->allocatedIndex;
-										ieObject->eo_Ins = insRef;
+										if (baseline == -1 || comming == -1) goto FOUND_ERROR;
+
+										auto baselineStack = GetInsExec_ObjectStack(baseline);
+										auto commingStack = GetInsExec_ObjectStack(comming);
+										if (baselineStack->objectId != commingStack->objectId) goto FOUND_ERROR;
+
+										baseline = baselineStack->previous;
+										comming = commingStack->previous;
 									}
-									else
+								}
+								{
+									auto baseline = contextBaseline.createStack;
+									auto comming = contextComming.createStack;
+									while (baseline != comming)
 									{
-										ieObject->eo_Trace = -1;
-										ieObject->eo_Ins = -1;
+										if (baseline == -1 || comming == -1) goto FOUND_ERROR;
+
+										auto baselineStack = GetInsExec_CreateStack(baseline);
+										auto commingStack = GetInsExec_CreateStack(comming);
+										if (baselineStack->objectId != commingStack->objectId) goto FOUND_ERROR;
+										if (baselineStack->stackBase != commingStack->stackBase) goto FOUND_ERROR;
+
+										baseline = baselineStack->previous;
+										comming = commingStack->previous;
 									}
-
-									insExec->objectId = ieCSTop->objectId;
 								}
-								break;
-							case AstInsType::DiscardValue:
-							case AstInsType::Field:
-							case AstInsType::FieldIfUnassigned:
-								{
-									CHECK_ERROR(GetStackTop(context) - GetStackBase(context) >= 1, ERROR_MESSAGE_PREFIX L"Pushed values not enough.");
-
-									auto ieObjTop = GetInsExec_ObjectStack(context.objectStack);
-									context.objectStack = ieObjTop->previous;
-								}
-								break;
-							case AstInsType::LriStore:
-								{
-									CHECK_ERROR(GetStackTop(context) - GetStackBase(context) >= 1, ERROR_MESSAGE_PREFIX L"Pushed values not enough.");
-									CHECK_ERROR(context.lriStored == -1, ERROR_MESSAGE_PREFIX L"LriFetch is not executed before the next LriStore.");
-
-									auto ieObjTop = GetInsExec_ObjectStack(context.objectStack);
-									context.objectStack = ieObjTop->previous;
-									context.lriStored = ieObjTop->objectId;
-								}
-								break;
-							case AstInsType::LriFetch:
-								{
-									CHECK_ERROR(context.lriStored != -1, ERROR_MESSAGE_PREFIX L"LriStore is not executed before the next LriFetch.");
-									PushObjectStack(context, context.lriStored);
-									context.lriStored = -1;
-								}
-								break;
-							case AstInsType::ResolveAmbiguity:
-								{
-									CHECK_ERROR(GetStackTop(context) - GetStackBase(context) >= (vint32_t)ins.count, ERROR_MESSAGE_PREFIX L"Pushed values not enough create an ambiguity node.");
-									for (vint i = 0; i < ins.count; i++)
-									{
-										auto ieObjTop = GetInsExec_ObjectStack(context.objectStack);
-										context.objectStack = ieObjTop->previous;
-									}
-
-									auto ieObject = GetInsExec_Object(insExec_Objects.Allocate());
-									ieObject->pushedObjectId = ieObject->allocatedIndex;
-									ieObject->dfa_bo_bolr_ra_Trace = trace->allocatedIndex;
-									ieObject->dfa_bo_bolr_ra_Ins = insRef;
-									PushObjectStack(context, ieObject->pushedObjectId);
-
-									insExec->objectId = ieObject->pushedObjectId;
-								}
-								break;
-							case AstInsType::Token:
-							case AstInsType::EnumItem:
-								{
-									PushObjectStack(context, -3);
-								}
-								break;
-							default:;
-								CHECK_FAIL(ERROR_MESSAGE_PREFIX L"Unrecognizabled instruction.");
+								return;
+							FOUND_ERROR:
+								CHECK_FAIL(ERROR_MESSAGE_PREFIX L"Execution results of traces to merge are different.");
 							}
 						}
-						traceExec->context = context;
-					},
-					[this](Trace* trace, Trace* firstPredecessor) // merge trace first visit
-					{
-						GetTraceExec(trace->traceExecRef)->context = GetTraceExec(firstPredecessor->traceExecRef)->context;
-					},
-					[this](Trace* trace, Trace* nextPredecessor) // merge trace continue visit
-					{
-						auto firstPredecessor = GetTrace(trace->predecessors.first);
-						auto contextBaseline = GetTraceExec(trace->traceExecRef)->context;
-						auto contextComming = GetTraceExec(firstPredecessor->traceExecRef)->context;
-						CHECK_ERROR(
-							contextBaseline.objectStack == contextComming.objectStack &&
-							contextBaseline.createStack == contextComming.createStack &&
-							contextBaseline.lriStored == contextComming.lriStored,
-							ERROR_MESSAGE_PREFIX L"Execution results of traces to merge are different."
-							);
 					}
 				);
 #undef ERROR_MESSAGE_PREFIX
@@ -418,7 +437,7 @@ PrepareTraceRoute
 			}
 
 /***********************************************************************
-GetUpperLevelBranchHead
+BuildAmbiguityStructures
 ***********************************************************************/
 
 			vint32_t TraceManager::GetUpperLevelBranchHead(Trace* subBranchTrace)
@@ -432,40 +451,40 @@ GetUpperLevelBranchHead
 				return GetTraceExec(subBranchPredecessor->traceExecRef)->traceOfBranchHead;
 			}
 
-/***********************************************************************
-BuildAmbiguityStructures
-***********************************************************************/
-
 			void TraceManager::BuildAmbiguityStructures()
 			{
 #define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::BuildAmbiguityStructures()#"
-				IterateSurvivedCategorizedTraces(
-					[this](Trace* trace) // ordinary trace
+				IterateSurvivedTraces(
+					[this](Trace* trace, Trace* predecessor, vint32_t visitCount, vint32_t predecessorCount)
 					{
-						auto traceExec = GetTraceExec(trace->traceExecRef);
-						if (trace->predecessors.first == -1 || trace->successors.siblingPrev != trace->successors.siblingNext)
+						if (predecessorCount <= 1)
 						{
-							traceExec->traceOfBranchHead = trace->allocatedIndex;
+							auto traceExec = GetTraceExec(trace->traceExecRef);
+							if (trace->predecessors.first == -1 || trace->successors.siblingPrev != trace->successors.siblingNext)
+							{
+								traceExec->traceOfBranchHead = trace->allocatedIndex;
+							}
+							else
+							{
+								traceExec->traceOfBranchHead = GetTraceExec(GetTrace(trace->predecessors.first)->traceExecRef)->traceOfBranchHead;
+							}
 						}
 						else
 						{
-							traceExec->traceOfBranchHead = GetTraceExec(GetTrace(trace->predecessors.first)->traceExecRef)->traceOfBranchHead;
+							auto branchHead = GetUpperLevelBranchHead(predecessor);
+							auto traceExec = GetTraceExec(trace->traceExecRef);
+							if (visitCount == 1)
+							{
+								traceExec->traceOfBranchHead = branchHead;
+							}
+							else
+							{
+								CHECK_ERROR(traceExec->traceOfBranchHead == branchHead, ERROR_MESSAGE_PREFIX L"Merging structure not well-formed.");
+							}
 						}
-					},
-					[this](Trace* trace, Trace* firstPredecessor) // merge trace first visit
-					{
-						auto branchHead = GetUpperLevelBranchHead(firstPredecessor);
-						auto traceExec = GetTraceExec(trace->traceExecRef);
-						traceExec->traceOfBranchHead = branchHead;
-					},
-					[this](Trace* trace, Trace* nextPredecessor) // merge trace continue visit
-					{
-						auto branchHead = GetUpperLevelBranchHead(nextPredecessor);
-						auto traceExec = GetTraceExec(trace->traceExecRef);
-						CHECK_ERROR(traceExec->traceOfBranchHead == branchHead, ERROR_MESSAGE_PREFIX L"Merging structure not well-formed.");
 					}
-#undef ERROR_MESSAGE_PREFIX
 				);
+#undef ERROR_MESSAGE_PREFIX
 			}
 
 /***********************************************************************

@@ -155,15 +155,25 @@ FillSuccessorsAfterEndOfInput
 						continue;
 					}
 
-					vint32_t predecessorId = current->predecessors.last;
-					while (predecessorId != -1)
 					{
-						auto predecessor = GetTrace(predecessorId);
-						predecessorId = predecessor->predecessors.siblingPrev;
-						current->predecessorCount++;
-						predecessor->successorCount++;
-						AddTraceToCollection(predecessor, current, &Trace::successors);
-						visiting.Add(predecessor);
+						vint32_t predecessorId = current->predecessors.first;
+						while (predecessorId != -1)
+						{
+							auto predecessor = GetTrace(predecessorId);
+							predecessorId = predecessor->predecessors.siblingNext;
+							current->predecessorCount++;
+							predecessor->successorCount++;
+							AddTraceToCollection(predecessor, current, &Trace::successors);
+						}
+					}
+					{
+						vint32_t predecessorId = current->predecessors.last;
+						while (predecessorId != -1)
+						{
+							auto predecessor = GetTrace(predecessorId);
+							predecessorId = predecessor->predecessors.siblingPrev;
+							visiting.Add(predecessor);
+						}
 					}
 
 					if (current->predecessorCount > 0)

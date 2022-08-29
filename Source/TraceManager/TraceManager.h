@@ -203,6 +203,7 @@ TraceManager (Data Structures -- Input/EndOfInput)
 
 				// (filled by PrepareTraceRoute)
 				vint32_t				traceExecRef = -1;			// the allocated TraceExec
+				vint32_t				iterateCounter = 0;			// a termporary counter for IterateSurvivedTraces internal use
 			};
 
 /***********************************************************************
@@ -263,8 +264,6 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 				vint32_t							previous = -1;
 				vint32_t							objectId = -1;
 				vint32_t							stackBase = -1;
-				vint32_t							dfa_bo_bolr_Trace = -1;
-				vint32_t							dfa_bo_bolr_Ins = -1;
 			};
 
 			struct InsExec_Context
@@ -381,9 +380,8 @@ TraceManager
 				// Common
 				template<typename TCallback>
 				void								IterateSurvivedTraces(TCallback&& callback);
-
-				template<typename TSingle, typename TMergeFirst, typename TMergeContinue>
-				void								IterateSurvivedCategorizedTraces(TSingle&& single, TMergeFirst&& mergeFirst, TMergeContinue&& mergeContinue);
+				void								ReadInstructionList(Trace* trace, TraceInsLists& insLists);
+				AstIns& ReadInstruction(vint32_t instruction, TraceInsLists& insLists);
 
 				// PrepareTraceRoute
 				AllocateOnly<TraceExec>				traceExecs;
@@ -392,14 +390,13 @@ TraceManager
 				AllocateOnly<InsExec_ObjectStack>	insExec_ObjectStacks;
 				AllocateOnly<InsExec_CreateStack>	insExec_CreateStacks;
 
-				void								ReadInstructionList(Trace* trace, TraceInsLists& insLists);
-				AstIns&								ReadInstruction(vint32_t instruction, TraceInsLists& insLists);
 				void								AllocateExecutionData();
 
 				vint32_t							GetStackBase(InsExec_Context& context);
 				vint32_t							GetStackTop(InsExec_Context& context);
 				InsExec_ObjectStack*				PushObjectStack(InsExec_Context& context, vint32_t objectId);
 				InsExec_CreateStack*				PushCreateStack(InsExec_Context& context);
+				void								PartialExecuteOrdinaryTrace(Trace* trace);
 				void								PartialExecuteTraces();
 
 				// ResolveAmbiguity
