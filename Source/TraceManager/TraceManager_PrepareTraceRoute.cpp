@@ -490,35 +490,38 @@ BuildAmbiguityStructures
 						}
 						else
 						{
-							auto expected = GetTraceExec(predecessor->traceExecRef);
+							auto stepForward = [this](TraceBranchData branchData) -> TraceBranchData
+							{
+								auto branchTrace = GetTrace(branchData.forwardTrace);
+								auto branchHeadTrace = GetTrace(GetTraceExec(branchTrace->traceExecRef)->branchData.forwardTrace);
+								return { branchHeadTrace->predecessors.first,branchData.branchDepth - 1 };
+							};
+
+							auto commingTraceExec = GetTraceExec(predecessor->traceExecRef);
+							auto comming = commingTraceExec->branchData;
 							if (predecessor->state != -1)
 							{
 								// if a merge state's predecessor is also a merge state
 								// use its data
 								// because they are equivalent
 								// otherwise, use the data from its forwardTrace
-								expected = GetTraceExec(GetTrace(expected->branchData.forwardTrace)->traceExecRef);
+								auto branchHeadTrace = GetTrace(comming.forwardTrace);
+								comming = { branchHeadTrace->predecessors.first,comming.branchDepth - 1 };
 							}
 
 							if (visitCount == 1)
 							{
 								// for the first time visiting a merge trace, copy the data
-								traceExec->branchData = expected->branchData;
+								traceExec->branchData = comming;
 							}
-							else if (traceExec->branchData.forwardTrace != expected->branchData.forwardTrace)
+							else if (traceExec->branchData.forwardTrace != comming.forwardTrace)
 							{
 								// otherwise, use the data from the latest common shared node
-								auto stepForward = [this](TraceBranchData branchData) -> TraceBranchData
-								{
-									auto branchTrace = GetTrace(branchData.branchDepth);
-									auto branchHeadTrace = GetTrace(GetTraceExec(branchTrace->traceExecRef)->branchData.forwardTrace);
-									return { branchHeadTrace->predecessors.first,branchData.branchDepth - 1 };
-								};
 
 								// closer and further are two TraceBranchData of this merge state
 								auto closer = traceExec->branchData;
-								auto further = expected->branchData;
-								if (closer.branchDepth > further.branchDepth)
+								auto further = comming;
+								if (closer.branchDepth < further.branchDepth)
 								{
 									auto t = closer;
 									closer = further;
@@ -526,11 +529,10 @@ BuildAmbiguityStructures
 								}
 
 								// step closer forward until it has the same depth as further
-								while (closer.branchDepth < further.branchDepth)
+								while (closer.branchDepth != further.branchDepth)
 								{
 									closer = stepForward(closer);
 								}
-								CHECK_ERROR(closer.branchDepth == further.branchDepth, ERROR_MESSAGE_PREFIX L"Internal error: branchDepth corrupted.");
 
 								// step closer and further forward until they become the same
 								while (closer.forwardTrace != further.forwardTrace)
