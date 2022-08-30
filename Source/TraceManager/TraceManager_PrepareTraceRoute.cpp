@@ -151,7 +151,7 @@ AllocateExecutionData
 			}
 
 /***********************************************************************
-PartialExecuteTraces
+PartialExecuteOrdinaryTrace
 ***********************************************************************/
 
 			vint32_t TraceManager::GetStackBase(InsExec_Context& context)
@@ -360,6 +360,10 @@ PartialExecuteTraces
 				traceExec->context = context;
 #undef ERROR_MESSAGE_PREFIX
 			}
+
+/***********************************************************************
+PartialExecuteTraces
+***********************************************************************/
 
 			template<typename T, T* (TraceManager::* GetData)(vint32_t index), typename TCallback, typename TError>
 			void TraceManager::CompareObjectOrCreateStack(vint32_t stack1, vint32_t stack2, TCallback&& callback, TError&& error)

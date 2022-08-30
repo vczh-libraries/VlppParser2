@@ -410,8 +410,9 @@ TraceManager
 				void								CompareObjectOrCreateStack(vint32_t stack1, vint32_t stack2, TCallback&& callback, TError&& error);
 				void								PartialExecuteTraces();
 
-				// ResolveAmbiguity
 				void								BuildAmbiguityStructures();
+
+				// ResolveAmbiguity
 
 			public:
 				TraceManager(Executable& _executable, const ITypeCallback* _typeCallback);
