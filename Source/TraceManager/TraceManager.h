@@ -280,6 +280,17 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 				vint32_t							c3;
 			};
 
+			struct TraceBranchData
+			{
+				// for ordinary trace, it stores the first trace of the most inner branch that this trace is in
+				// for merge trace, it stores the latest trace that all comming branches share
+				vint32_t							forwardTrace = -1;
+
+				// the depth of nested branches
+				// it is 0 for initialTrace
+				vint32_t							branchDepth = -1;
+			};
+
 			struct TraceExec
 			{
 				vint32_t							allocatedIndex = -1;
@@ -288,13 +299,7 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 				InstructionArray					insExecRefs;			// allocated InsExec for instructions
 				InsExec_Context						context;
 
-				// for ordinary trace, it stores the first trace of the most inner branch that this trace is in
-				// for merge trace, it stores the latest trace that all comming branches share
-				vint32_t							forwardTrace = -1;
-
-				// the depth of nested branches
-				// it is 0 for initialTrace
-				vint32_t							branchDepth = -1;
+				TraceBranchData						branchData;
 			};
 
 /***********************************************************************

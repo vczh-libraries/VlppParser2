@@ -463,23 +463,30 @@ BuildAmbiguityStructures
 						if (predecessorCount == 0)
 						{
 							// initialize branch information for initialTrace
-							traceExec->forwardTrace = trace->allocatedIndex;
-							traceExec->branchDepth = 0;
+							traceExec->branchData = { trace->allocatedIndex,0 };
 						}
 						else if (predecessorCount == 1)
 						{
-							// if a predecessor is a merge trace
-							// jump to its forwardTrace
-							// until an ordinary trace is found
-							while (predecessor->state == -1)
+							if (predecessor->successors.first!=predecessor->successors.last)
 							{
-								predecessor = GetTrace(GetTraceExec(predecessor->traceExecRef)->forwardTrace);
+								// if the current trace is a branch head
+								traceExec->branchData.forwardTrace = trace->allocatedIndex;
+								traceExec->branchData.branchDepth = GetTraceExec(predecessor->traceExecRef)->branchData.branchDepth + 1;
 							}
+							else
+							{
+								// if a predecessor is a merge trace
+								// jump to its forwardTrace
+								// until an ordinary trace is found
+								while (predecessor->state == -1)
+								{
+									predecessor = GetTrace(GetTraceExec(predecessor->traceExecRef)->branchData.forwardTrace);
+								}
 
-							// copy its data
-							auto predecessorTraceExec = GetTraceExec(predecessor->traceExecRef);
-							traceExec->forwardTrace = predecessorTraceExec->forwardTrace;
-							traceExec->branchDepth = predecessorTraceExec->branchDepth;
+								// copy its data
+								auto predecessorTraceExec = GetTraceExec(predecessor->traceExecRef);
+								traceExec->branchData = predecessorTraceExec->branchData;
+							}
 						}
 						else
 						{
@@ -490,39 +497,50 @@ BuildAmbiguityStructures
 								// use its data
 								// because they are equivalent
 								// otherwise, use the data from its forwardTrace
-								expected = GetTraceExec(GetTrace(expected->forwardTrace)->traceExecRef);
+								expected = GetTraceExec(GetTrace(expected->branchData.forwardTrace)->traceExecRef);
 							}
 
 							if (visitCount == 1)
 							{
 								// for the first time visiting a merge trace, copy the data
-								traceExec->forwardTrace = expected->forwardTrace;
-								traceExec->branchDepth = expected->branchDepth;
+								traceExec->branchData = expected->branchData;
 							}
-							else if (traceExec->forwardTrace != expected->forwardTrace)
+							else if (traceExec->branchData.forwardTrace != expected->branchData.forwardTrace)
 							{
 								// otherwise, use the data from the latest common shared node
-								auto stepForward = [this](TraceExec* traceExec)
+								auto stepForward = [this](TraceBranchData branchData) -> TraceBranchData
 								{
-									return traceExec;
+									auto branchTrace = GetTrace(branchData.branchDepth);
+									auto branchHeadTrace = GetTrace(GetTraceExec(branchTrace->traceExecRef)->branchData.forwardTrace);
+									return { branchHeadTrace->predecessors.first,branchData.branchDepth - 1 };
 								};
 
-								auto closer = traceExec->branchDepth <= expected->branchDepth ? traceExec : expected;
-								auto further= traceExec->branchDepth > expected->branchDepth ? traceExec : expected;
+								// closer and further are two TraceBranchData of this merge state
+								auto closer = traceExec->branchData;
+								auto further = expected->branchData;
+								if (closer.branchDepth > further.branchDepth)
+								{
+									auto t = closer;
+									closer = further;
+									further = t;
+								}
 
-								while (closer->branchDepth < further->branchDepth)
+								// step closer forward until it has the same depth as further
+								while (closer.branchDepth < further.branchDepth)
 								{
 									closer = stepForward(closer);
 								}
-								CHECK_ERROR(closer->branchDepth == further->branchDepth, ERROR_MESSAGE_PREFIX L"Internal error: branchDepth corrupted.");
+								CHECK_ERROR(closer.branchDepth == further.branchDepth, ERROR_MESSAGE_PREFIX L"Internal error: branchDepth corrupted.");
 
-								while (closer->forwardTrace != expected->forwardTrace)
+								// step closer and further forward until they become the same
+								while (closer.forwardTrace != further.forwardTrace)
 								{
 									closer = stepForward(closer);
-									expected = stepForward(expected);
+									further = stepForward(further);
 								}
-								traceExec->forwardTrace = expected->forwardTrace;
-								traceExec->branchDepth = expected->branchDepth;
+
+								// the latest common shared node is found
+								traceExec->branchData = further;
 							}
 						}
 					}
