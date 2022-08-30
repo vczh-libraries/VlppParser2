@@ -437,19 +437,6 @@ PartialExecuteTraces
 			}
 
 /***********************************************************************
-PrepareTraceRoute
-***********************************************************************/
-
-			void TraceManager::PrepareTraceRoute()
-			{
-				CHECK_ERROR(state == TraceManagerState::Finished, L"vl::glr::automaton::TraceManager::PrepareTraceRoute()#Wrong timing to call this function.");
-				state = TraceManagerState::PreparedTraceRoute;
-
-				AllocateExecutionData();
-				PartialExecuteTraces();
-			}
-
-/***********************************************************************
 BuildAmbiguityStructures
 ***********************************************************************/
 
@@ -551,6 +538,20 @@ BuildAmbiguityStructures
 			}
 
 /***********************************************************************
+PrepareTraceRoute
+***********************************************************************/
+
+			void TraceManager::PrepareTraceRoute()
+			{
+				CHECK_ERROR(state == TraceManagerState::Finished, L"vl::glr::automaton::TraceManager::PrepareTraceRoute()#Wrong timing to call this function.");
+				state = TraceManagerState::PreparedTraceRoute;
+
+				AllocateExecutionData();
+				PartialExecuteTraces();
+				BuildAmbiguityStructures();
+			}
+
+/***********************************************************************
 ResolveAmbiguity
 ***********************************************************************/
 
@@ -558,8 +559,6 @@ ResolveAmbiguity
 			{
 				CHECK_ERROR(state == TraceManagerState::PreparedTraceRoute, L"vl::glr::automaton::TraceManager::ResolveAmbiguity()#Wrong timing to call this function.");
 				state = TraceManagerState::ResolvedAmbiguity;
-
-				BuildAmbiguityStructures();
 			}
 		}
 	}
