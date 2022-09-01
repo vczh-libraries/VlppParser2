@@ -174,6 +174,14 @@ AllocateExecutionData
 PartialExecuteOrdinaryTrace
 ***********************************************************************/
 
+			InsExec_Object* TraceManager::NewObject()
+			{
+				auto ieObject = GetInsExec_Object(insExec_Objects.Allocate());
+				ieObject->previous = topObject;
+				topObject = ieObject->allocatedIndex;
+				return ieObject;
+			}
+
 			vint32_t TraceManager::GetStackBase(InsExec_Context& context)
 			{
 				if (context.createStack == -1)
@@ -238,7 +246,7 @@ PartialExecuteOrdinaryTrace
 					{
 					case AstInsType::BeginObject:
 						{
-							auto ieObject = GetInsExec_Object(insExec_Objects.Allocate());
+							auto ieObject = NewObject();
 							ieObject->pushedObjectId = ieObject->allocatedIndex;
 							ieObject->dfa_bo_bolr_ra_Trace = trace->allocatedIndex;
 							ieObject->dfa_bo_bolr_ra_Ins = insRef;
@@ -256,7 +264,7 @@ PartialExecuteOrdinaryTrace
 
 							auto ieOSTop = GetInsExec_ObjectStack(context.objectStack);
 
-							auto ieObject = GetInsExec_Object(insExec_Objects.Allocate());
+							auto ieObject = NewObject();
 							ieObject->pushedObjectId = ieObject->allocatedIndex;
 							ieObject->lrObjectId = ieOSTop->objectId;
 							ieObject->dfa_bo_bolr_ra_Trace = trace->allocatedIndex;
@@ -271,7 +279,7 @@ PartialExecuteOrdinaryTrace
 						break;
 					case AstInsType::DelayFieldAssignment:
 						{
-							auto ieObject = GetInsExec_Object(insExec_Objects.Allocate());
+							auto ieObject = NewObject();
 							ieObject->pushedObjectId = -ieObject->allocatedIndex - 3;
 							ieObject->dfa_bo_bolr_ra_Trace = trace->allocatedIndex;
 							ieObject->dfa_bo_bolr_ra_Ins = insRef;
@@ -359,7 +367,7 @@ PartialExecuteOrdinaryTrace
 								context.objectStack = ieObjTop->previous;
 							}
 
-							auto ieObject = GetInsExec_Object(insExec_Objects.Allocate());
+							auto ieObject = NewObject();
 							ieObject->pushedObjectId = ieObject->allocatedIndex;
 							ieObject->dfa_bo_bolr_ra_Trace = trace->allocatedIndex;
 							ieObject->dfa_bo_bolr_ra_Ins = insRef;
@@ -563,6 +571,14 @@ BuildAmbiguityStructures
 			}
 
 /***********************************************************************
+BuildObjectHierarchy
+***********************************************************************/
+
+			void TraceManager::BuildObjectHierarchy()
+			{
+			}
+
+/***********************************************************************
 PrepareTraceRoute
 ***********************************************************************/
 
@@ -574,6 +590,7 @@ PrepareTraceRoute
 				AllocateExecutionData();
 				PartialExecuteTraces();
 				BuildAmbiguityStructures();
+				BuildObjectHierarchy();
 			}
 
 /***********************************************************************

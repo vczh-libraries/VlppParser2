@@ -228,6 +228,7 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 			struct InsExec_Object
 			{
 				vint32_t							allocatedIndex = -1;
+				vint32_t							previous = -1;			// a linked list to connect all InsExec_Object
 
 				// pushedObjectId could be:
 				//   >= 0 : known object
@@ -248,6 +249,8 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 				vint32_t							eo_Counter = 0;
 				vint32_t							eo_Trace = -1;
 				vint32_t							eo_Ins = -1;
+
+				// topDfaObjectId is the first DFA created object that this object is associated to
 			};
 
 			struct InsExec_ObjectStack
@@ -412,6 +415,7 @@ TraceManager
 
 			protected:
 				// PrepareTraceRoute
+				vint32_t							topObject = -1;
 				AllocateOnly<TraceExec>				traceExecs;
 				collections::Array<InsExec>			insExecs;
 				AllocateOnly<InsExec_Object>		insExec_Objects;
@@ -420,6 +424,7 @@ TraceManager
 
 				void								AllocateExecutionData();
 
+				InsExec_Object*						NewObject();
 				vint32_t							GetStackBase(InsExec_Context& context);
 				vint32_t							GetStackTop(InsExec_Context& context);
 				InsExec_ObjectStack*				PushObjectStack(InsExec_Context& context, vint32_t objectId);
@@ -431,6 +436,7 @@ TraceManager
 				void								PartialExecuteTraces();
 
 				void								BuildAmbiguityStructures();
+				void								BuildObjectHierarchy();
 
 			protected:
 				// ResolveAmbiguity
