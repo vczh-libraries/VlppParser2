@@ -14,6 +14,8 @@
 - FeatureTest/BO_2: Merging structure not well-formed (at the end).
 - FeatureTest/ERO_2: Merging structure not well-formed (at 27).
 - FeatureTest/Pba_1: DFA delayed after merging therefore it executes for multiple candidates of a `ToReolsve` class.
+- PrefixMerge1/Ambiguous1: bottomLrObjectCounter > 1
+- PrefixMerge7/Ambiguous1: left recursive with ambiguity
 
 ## Features to Add
 

@@ -619,7 +619,31 @@ BuildObjectHierarchy
 						auto top = GetInsExec_Object(ieObject->topDfaObjectId);
 						auto lr = GetInsExec_Object(ieObject->lrObjectId);
 						auto toplr = GetInsExec_Object(lr->topDfaObjectId);
-						top->topLrObjectId = toplr->pushedObjectId;
+						top->dfaLrObjectId = toplr->pushedObjectId;
+						toplr->dfaLrObjectReferenced = true;
+					}
+				});
+
+				// fill topLrObjectId and bottomLrObjectId
+				IterateObjects<&InsExec_Object::next>(bottomObject, [this](InsExec_Object* ieObject)
+				{
+					if (ieObject->dfaLrObjectId != -1 && !ieObject->dfaLrObjectReferenced)
+					{
+						auto topLrObject = ieObject;
+						while (topLrObject->dfaLrObjectId != -1)
+						{
+							topLrObject = GetInsExec_Object(topLrObject->dfaLrObjectId);
+						}
+						ieObject->topLrObjectId = topLrObject->pushedObjectId;
+
+						if (++topLrObject->bottomLrObjectCounter == 1)
+						{
+							topLrObject->bottomLrObjectId = ieObject->pushedObjectId;
+						}
+						else
+						{
+							topLrObject->bottomLrObjectId = -1;
+						}
 					}
 				});
 			}

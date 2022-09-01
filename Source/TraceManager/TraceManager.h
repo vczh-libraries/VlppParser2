@@ -253,17 +253,21 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 				vint32_t							eo_Trace = -1;
 				vint32_t							eo_Ins = -1;
 
-				// topDfaObjectId is the first-created DFA created object that this object is associated to
+				// topDfaObjectId is the end of object->dfaObjectId
 				// if none, then it is the object itself
 				vint32_t							topDfaObjectId = -1;
 
-				// topLrObjectId is the first object it takes while being created by BOLR recursively
+				// if a->lrObjectId == b, a->topDfaObjectId->dfaLrObjectId == b->topDfaObjectId
+				// -1 otherwise
+				vint32_t							dfaLrObjectId = -1;
+				bool								dfaLrObjectReferenced = false;
+
+				// topDfaObjectId is the end of object->dfaLrObjectId
 				// -1 if none
-				// topDfaObjectId of both topLrObjectId and the current object must be itself
 				vint32_t							topLrObjectId = -1;
 
-				// bottomLrObjectId is the unique last created object whose topDfaObjectId is the current object
-				// -1 if multiple
+				// if a->topLrObjectId == b, a == b->bottomLrObjectId
+				// if there is multiple a, it becomes -1
 				vint32_t							bottomLrObjectCounter = 0;
 				vint32_t							bottomLrObjectId = -1;
 			};

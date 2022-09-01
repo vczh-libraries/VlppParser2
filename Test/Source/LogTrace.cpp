@@ -392,13 +392,22 @@ void RenderTrace(
 					}
 					else if (ieObject->eo_Counter > 1)
 					{
-						writer.WriteString(L" DM");
+						writer.WriteString(L" D:M");
 					}
 
 					writer.WriteString(
 						L", tdfa:" + itow(ieObject->topDfaObjectId) +
+						L", dlr:" + itow(ieObject->dfaLrObjectId) +
 						L", tlr:" + itow(ieObject->topLrObjectId)
 						);
+					if (ieObject->bottomLrObjectCounter == 1)
+					{
+						writer.WriteString(L", blr:" + itow(ieObject->bottomLrObjectId));
+					}
+					else if (ieObject->bottomLrObjectCounter > 1)
+					{
+						writer.WriteString(L", blr:M");
+					}
 					writer.WriteLine(L"");
 				}
 			}
