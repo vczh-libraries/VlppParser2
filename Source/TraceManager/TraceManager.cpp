@@ -115,9 +115,18 @@ TraceManager
 				}
 			}
 
-			TraceManager::TraceManager(Executable& _executable, const ITypeCallback* _typeCallback)
+			TraceManager::TraceManager(Executable& _executable, const ITypeCallback* _typeCallback, vint blockSize)
 				: executable(_executable)
 				, typeCallback(_typeCallback)
+				, returnStacks(blockSize)
+				, traces(blockSize)
+				, competitions(blockSize)
+				, attendingCompetitions(blockSize)
+				, switches(blockSize)
+				, traceExecs(blockSize)
+				, insExec_Objects(blockSize)
+				, insExec_ObjectStacks(blockSize)
+				, insExec_CreateStacks(blockSize)
 			{
 				maxSwitchValues = 8 * sizeof(static_cast<Switches*>(nullptr)->values);
 				CHECK_ERROR(executable.switchDefaultValues.Count() <= maxSwitchValues, L"vl::glr::automaton::TraceManager::TraceManager(Executable&, const ITypeCallback*)#Too many switch defined in the parser.");
@@ -208,9 +217,9 @@ TraceManager
 CreateExecutor
 ***********************************************************************/
 
-			Ptr<IExecutor> CreateExecutor(Executable& executable, const IExecutor::ITypeCallback* typeCallback)
+			Ptr<IExecutor> CreateExecutor(Executable& executable, const IExecutor::ITypeCallback* typeCallback, vint blockSize)
 			{
-				return new TraceManager(executable, typeCallback);
+				return new TraceManager(executable, typeCallback, blockSize);
 			}
 		}
 	}

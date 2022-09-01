@@ -179,7 +179,7 @@ IExecutor
 				virtual Ptr<ParsingAstBase>			ExecuteTrace(IAstInsReceiver& receiver, collections::List<regex::RegexToken>& tokens) = 0;
 			};
 
-			extern Ptr<IExecutor>					CreateExecutor(Executable& executable, const IExecutor::ITypeCallback* typeCallback = nullptr);
+			extern Ptr<IExecutor>					CreateExecutor(Executable& executable, const IExecutor::ITypeCallback* typeCallback, vint _blockSize);
 		}
 	}
 }

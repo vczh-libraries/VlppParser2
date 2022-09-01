@@ -220,10 +220,10 @@ ParserBase<TTokens, TStates, TReceiver, TStateTypes>
 			}
 
 			template<typename TAst, TStates State>
-			Ptr<TAst> ParseWithTokens(TokenList& tokens, const automaton::IExecutor::ITypeCallback* typeCallback, vint codeIndex) const
+			Ptr<TAst> ParseWithTokens(TokenList& tokens, const automaton::IExecutor::ITypeCallback* typeCallback, vint codeIndex, vint blockSize = 1024) const
 			{
 #define ERROR_MESSAGE_PREFIX L"vl::glr::ParserBase<...>::Parse<TAst, TStates>(List<RegexToken>& TraceManager::ITypeCallback*)#"
-				auto executor = automaton::CreateExecutor(*executable.Obj(), typeCallback);
+				auto executor = automaton::CreateExecutor(*executable.Obj(), typeCallback, blockSize);
 				auto ast = ParseInternal(tokens, (vint32_t)State, executor.Obj(), typeCallback, codeIndex);
 				auto typedAst = ast.template Cast<TAst>();
 
@@ -238,11 +238,11 @@ ParserBase<TTokens, TStates, TReceiver, TStateTypes>
 			}
 
 			template<typename TAst, TStates State>
-			Ptr<TAst> ParseWithString(const WString& input, const automaton::IExecutor::ITypeCallback* typeCallback, vint codeIndex) const
+			Ptr<TAst> ParseWithString(const WString& input, const automaton::IExecutor::ITypeCallback* typeCallback, vint codeIndex, vint blockSize = 1024) const
 			{
 				TokenList tokens;
 				Tokenize(input, tokens, codeIndex);
-				return ParseWithTokens<TAst, State>(tokens, typeCallback, codeIndex);
+				return ParseWithTokens<TAst, State>(tokens, typeCallback, codeIndex, blockSize);
 			}
 		};
 	}

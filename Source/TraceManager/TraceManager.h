@@ -27,7 +27,7 @@ AllocateOnly<T>
 				collections::List<Ptr<collections::Array<T>>>	buffers;
 
 			public:
-				AllocateOnly(vint _blockSize = 65536)
+				AllocateOnly(vint _blockSize)
 					: blockSize(_blockSize)
 					, remains(0)
 				{
@@ -297,8 +297,8 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 				vint32_t							traceId = -1;
 				TraceInsLists						insLists;				// instruction list of this trace
 				InstructionArray					insExecRefs;			// allocated InsExec for instructions
-				InsExec_Context						context;
 
+				InsExec_Context						context;
 				TraceBranchData						branchData;
 			};
 
@@ -415,7 +415,7 @@ TraceManager
 				// ResolveAmbiguity
 
 			public:
-				TraceManager(Executable& _executable, const ITypeCallback* _typeCallback);
+				TraceManager(Executable& _executable, const ITypeCallback* _typeCallback, vint blockSize);
 
 				vint32_t							concurrentCount = 0;
 				collections::List<Trace*>*			concurrentTraces = nullptr;
