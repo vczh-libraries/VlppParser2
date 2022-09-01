@@ -381,19 +381,23 @@ void RenderTrace(
 						L"      obj:" + itow(insExec->objectId) +
 						L", lr:" + itow(ieObject->lrObjectId) +
 						L", dfa:" + itow(ieObject->dfaObjectId) +
-						L", created in:[" + itow(ieObject->dfa_bo_bolr_ra_Trace) +
+						L", N:[" + itow(ieObject->dfa_bo_bolr_ra_Trace) +
 						L"," + itow(ieObject->dfa_bo_bolr_ra_Ins) +
 						L"]");
 					if (ieObject->eo_Counter == 1)
 					{
-						writer.WriteString(L" closed in:[" + itow(ieObject->eo_Trace) +
+						writer.WriteString(L" D:[" + itow(ieObject->eo_Trace) +
 							L"," + itow(ieObject->eo_Ins) +
 							L"]");
 					}
 					else if (ieObject->eo_Counter > 1)
 					{
-						writer.WriteString(L" closed multiple");
+						writer.WriteString(L" DM");
 					}
+
+					writer.WriteString(
+						L", tdfa:" + itow(ieObject->topDfaObjectId)
+						);
 					writer.WriteLine(L"");
 				}
 			}

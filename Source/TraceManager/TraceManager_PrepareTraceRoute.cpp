@@ -582,7 +582,40 @@ BuildObjectHierarchy
 				{
 					auto ieObject = GetInsExec_Object(id);
 					id = ieObject->previous;
+
+					// fill topDfaObjectId
+					auto topDfaObject = ieObject;
+					while (topDfaObject->dfaObjectId != -1)
+					{
+						if (topDfaObject->topDfaObjectId != -1)
+						{
+							topDfaObject = GetInsExec_Object(topDfaObject->topDfaObjectId);
+							break;
+						}
+						else
+						{
+							topDfaObject = GetInsExec_Object(topDfaObject->dfaObjectId);
+						}
+					}
+
+					auto current = ieObject;
+					while (current->topDfaObjectId == -1)
+					{
+						current->topDfaObjectId = topDfaObject->pushedObjectId;
+						if (current->dfaObjectId == -1) break;
+						current = GetInsExec_Object(current->dfaObjectId);
+					}
 				}
+
+				//id = topObject;
+				//while (id != -1)
+				//{
+				//	auto ieObject = GetInsExec_Object(id);
+				//	id = ieObject->previous;
+				//
+				//	// fill topLrObjectId
+				//	auto topDfaObject = GetInsExec_Object(ieObject->topDfaObjectId);
+				//}
 			}
 
 /***********************************************************************

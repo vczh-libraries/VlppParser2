@@ -261,7 +261,7 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 
 				// bottomLrObjectId is the unique last created object whose topDfaObjectId is the current object
 				// if none, then it is the object itself
-				vint32_t							bottomLrObjectCount = 0;
+				vint32_t							bottomLrObjectCounter = 0;
 				vint32_t							bottomLrObjectId = -1;
 			};
 
