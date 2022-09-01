@@ -303,6 +303,7 @@ PartialExecuteOrdinaryTrace
 							context.objectStack = ieOSTop->previous;
 
 							auto ieObjTop = GetInsExec_Object(ieOSTop->objectId);
+							CHECK_ERROR(ieObjTop->dfaObjectId == -1 || ieObjTop->dfaObjectId == ieCSTop->objectId, ERROR_MESSAGE_PREFIX L"Internal error: InsExec_Object::dfaObjectId has been assigned.");
 							ieObjTop->dfaObjectId = ieCSTop->objectId;
 
 							insExec->objectId = ieCSTop->objectId;
@@ -576,6 +577,12 @@ BuildObjectHierarchy
 
 			void TraceManager::BuildObjectHierarchy()
 			{
+				vint32_t id = topObject;
+				while (id != -1)
+				{
+					auto ieObject = GetInsExec_Object(id);
+					id = ieObject->previous;
+				}
 			}
 
 /***********************************************************************
