@@ -361,6 +361,13 @@ void RenderTrace(
 				writer.WriteString(L"  > ");
 			}
 
+			if (trace->traceExecRef != -1)
+			{
+				auto traceExec = tm.GetTraceExec(trace->traceExecRef);
+				auto insExec = tm.GetInsExec(traceExec->insExecRefs.start + i);
+				writer.WriteString(L"[" + itow(insExec->topCreatedObjectBefore) + L"] ");
+			}
+
 			LogInstruction(ins, typeName, fieldName, writer);
 
 			if (trace->traceExecRef != -1)

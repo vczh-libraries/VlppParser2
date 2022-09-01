@@ -220,6 +220,9 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 				//   EndObject						: the id of the operating object
 				//   ResolveAmbiguity				: the id of the created object
 				vint32_t							objectId = -1;
+
+				// the associated object in the top create stack before executing this instruction
+				vint32_t							topCreatedObjectBefore = -1;
 			};
 
 			struct InsExec_Object
@@ -435,6 +438,8 @@ TraceManager
 				vint32_t							topMergeExec = -1;
 				AllocateOnly<TraceBranchExec>		branchExecs;
 				AllocateOnly<TraceMergeExec>		mergeExecs;
+
+				void								DetermineAmbiguityRanges();
 
 			public:
 				TraceManager(Executable& _executable, const ITypeCallback* _typeCallback, vint blockSize);

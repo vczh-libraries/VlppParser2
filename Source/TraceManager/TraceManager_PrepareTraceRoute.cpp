@@ -230,8 +230,9 @@ PartialExecuteOrdinaryTrace
 				auto traceExec = GetTraceExec(trace->traceExecRef);
 				for (vint32_t insRef = 0; insRef < traceExec->insLists.c3; insRef++)
 				{
+					auto ins = ReadInstruction(insRef, traceExec->insLists);
 					auto insExec = GetInsExec(traceExec->insExecRefs.start + insRef);
-					AstIns ins = ReadInstruction(insRef, traceExec->insLists);
+					insExec->topCreatedObjectBefore = context.createStack == -1 ? -1 : GetInsExec_CreateStack(context.createStack)->objectId;
 
 					switch (ins.type)
 					{
@@ -576,6 +577,21 @@ PrepareTraceRoute
 			}
 
 /***********************************************************************
+DetermineAmbiguityRanges
+***********************************************************************/
+
+			void TraceManager::DetermineAmbiguityRanges()
+			{
+				// reverse iterating TraceBranchExec
+				vint32_t id = topBranchExec;
+				while (id != -1)
+				{
+					auto branchExec = GetTraceBranchExec(id);
+					id = branchExec->previous;
+				}
+			}
+
+/***********************************************************************
 ResolveAmbiguity
 ***********************************************************************/
 
@@ -583,6 +599,8 @@ ResolveAmbiguity
 			{
 				CHECK_ERROR(state == TraceManagerState::PreparedTraceRoute, L"vl::glr::automaton::TraceManager::ResolveAmbiguity()#Wrong timing to call this function.");
 				state = TraceManagerState::ResolvedAmbiguity;
+
+				DetermineAmbiguityRanges();
 			}
 		}
 	}
