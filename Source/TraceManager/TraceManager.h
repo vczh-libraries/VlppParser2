@@ -228,7 +228,10 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 			struct InsExec_Object
 			{
 				vint32_t							allocatedIndex = -1;
-				vint32_t							previous = -1;			// a linked list to connect all InsExec_Object
+
+				// a double linked list to connect all InsExec_Object
+				vint32_t							previous = -1;
+				vint32_t							next = -1;
 
 				// pushedObjectId could be:
 				//   >= 0 : known object
@@ -255,12 +258,12 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 				vint32_t							topDfaObjectId = -1;
 
 				// topLrObjectId is the first object it takes while being created by BOLR recursively
-				// for non BOLR created object, it is the object itself
-				// topLrObjectId's topDfaObjectId must be itself
+				// -1 if none
+				// topDfaObjectId of both topLrObjectId and the current object must be itself
 				vint32_t							topLrObjectId = -1;
 
 				// bottomLrObjectId is the unique last created object whose topDfaObjectId is the current object
-				// if none, then it is the object itself
+				// -1 if multiple
 				vint32_t							bottomLrObjectCounter = 0;
 				vint32_t							bottomLrObjectId = -1;
 			};
@@ -427,6 +430,7 @@ TraceManager
 
 			protected:
 				// PrepareTraceRoute
+				vint32_t							bottomObject = -1;
 				vint32_t							topObject = -1;
 				AllocateOnly<TraceExec>				traceExecs;
 				collections::Array<InsExec>			insExecs;

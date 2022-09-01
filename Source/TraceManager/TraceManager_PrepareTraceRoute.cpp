@@ -178,7 +178,15 @@ PartialExecuteOrdinaryTrace
 			{
 				auto ieObject = GetInsExec_Object(insExec_Objects.Allocate());
 				ieObject->previous = topObject;
+				if (topObject != -1)
+				{
+					GetInsExec_Object(topObject)->next = ieObject->allocatedIndex;
+				}
 				topObject = ieObject->allocatedIndex;
+				if (bottomObject == -1)
+				{
+					bottomObject = ieObject->allocatedIndex;
+				}
 				return ieObject;
 			}
 
@@ -607,15 +615,21 @@ BuildObjectHierarchy
 					}
 				}
 
-				//id = topObject;
-				//while (id != -1)
-				//{
-				//	auto ieObject = GetInsExec_Object(id);
-				//	id = ieObject->previous;
-				//
-				//	// fill topLrObjectId
-				//	auto topDfaObject = GetInsExec_Object(ieObject->topDfaObjectId);
-				//}
+				id = bottomObject;
+				while (id != -1)
+				{
+					auto ieObject = GetInsExec_Object(id);
+					id = ieObject->next;
+
+					if (ieObject->lrObjectId != -1)
+					{
+						// fill topLrObjectId
+						auto top = GetInsExec_Object(ieObject->topDfaObjectId);
+						auto lr = GetInsExec_Object(ieObject->lrObjectId);
+						auto toplr = GetInsExec_Object(lr->topDfaObjectId);
+						top->topLrObjectId = toplr->pushedObjectId;
+					}
+				}
 			}
 
 /***********************************************************************

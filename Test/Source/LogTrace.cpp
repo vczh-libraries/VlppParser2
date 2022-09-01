@@ -396,7 +396,8 @@ void RenderTrace(
 					}
 
 					writer.WriteString(
-						L", tdfa:" + itow(ieObject->topDfaObjectId)
+						L", tdfa:" + itow(ieObject->topDfaObjectId) +
+						L", tlr:" + itow(ieObject->topLrObjectId)
 						);
 					writer.WriteLine(L"");
 				}
