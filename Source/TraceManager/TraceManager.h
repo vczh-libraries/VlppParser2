@@ -299,7 +299,23 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 				InstructionArray					insExecRefs;			// allocated InsExec for instructions
 
 				InsExec_Context						context;
+				vint32_t							branchExec = -1;
+				vint32_t							mergeExec = -1;
 				TraceBranchData						branchData;
+			};
+
+			struct TraceBranchExec
+			{
+				vint32_t							allocatedIndex = -1;
+				vint32_t							traceId = -1;
+				vint32_t							previous = -1;			// a linked list to connect all TraceBranchExec
+			};
+
+			struct TraceMergeExec
+			{
+				vint32_t							allocatedIndex = -1;
+				vint32_t							traceId = -1;
+				vint32_t							previous = -1;			// a linked list to connect all TraceMergeExec
 			};
 
 /***********************************************************************
@@ -391,6 +407,7 @@ TraceManager
 				void								ReadInstructionList(Trace* trace, TraceInsLists& insLists);
 				AstIns& ReadInstruction(vint32_t instruction, TraceInsLists& insLists);
 
+			protected:
 				// PrepareTraceRoute
 				AllocateOnly<TraceExec>				traceExecs;
 				collections::Array<InsExec>			insExecs;
@@ -412,7 +429,12 @@ TraceManager
 
 				void								BuildAmbiguityStructures();
 
+			protected:
 				// ResolveAmbiguity
+				vint32_t							topBranchExec = -1;
+				vint32_t							topMergeExec = -1;
+				AllocateOnly<TraceBranchExec>		branchExecs;
+				AllocateOnly<TraceMergeExec>		mergeExecs;
 
 			public:
 				TraceManager(Executable& _executable, const ITypeCallback* _typeCallback, vint blockSize);
@@ -430,11 +452,13 @@ TraceManager
 				AttendingCompetitions*				GetAttendingCompetitions(vint32_t index);
 				AttendingCompetitions*				AllocateAttendingCompetitions();
 				Switches*							GetSwitches(vint32_t index);
-				TraceExec*							GetTraceExec(vint32_t index);
 				InsExec*							GetInsExec(vint32_t index);
 				InsExec_Object*						GetInsExec_Object(vint32_t index);
 				InsExec_ObjectStack*				GetInsExec_ObjectStack(vint32_t index);
 				InsExec_CreateStack*				GetInsExec_CreateStack(vint32_t index);
+				TraceExec*							GetTraceExec(vint32_t index);
+				TraceBranchExec*					GetTraceBranchExec(vint32_t index);
+				TraceMergeExec*						GetTraceMergeExec(vint32_t index);
 
 				void								Initialize(vint32_t startState) override;
 				Trace*								GetInitialTrace();

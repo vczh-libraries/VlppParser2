@@ -59,6 +59,11 @@ Initialize
 				insExec_ObjectStacks.Clear();
 				insExec_CreateStacks.Clear();
 
+				topBranchExec = -1;
+				topMergeExec = -1;
+				branchExecs.Clear();
+				mergeExecs.Clear();
+
 				initialTrace = AllocateTrace();
 				initialTrace->state = startState;
 				initialTrace->switchValues = rootSwitchValues;
@@ -176,7 +181,7 @@ FillSuccessorsAfterEndOfInput
 						}
 					}
 
-					if (current->predecessorCount > 0)
+					if (current->predecessorCount > 1)
 					{
 						ambiguityInvolved = true;
 					}

@@ -130,10 +130,12 @@ AllocateExecutionData
 
 			void TraceManager::AllocateExecutionData()
 			{
+#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::AllocateExecutionData()#"
 				vint32_t insExecCount = 0;
-				IterateSurvivedTraces([&](Trace* trace, ...)
+				IterateSurvivedTraces([&](Trace* trace, Trace* predecessor, vint32_t visitCount, vint32_t predecessorCount)
 				{
-					if (trace->traceExecRef != -1) return false;
+					if (visitCount != 1) return;
+					CHECK_ERROR(trace->traceExecRef == -1, ERROR_MESSAGE_PREFIX L"Internal error: IterateSurvivedTraces unexpectedly revisit a trace.");
 					trace->traceExecRef = traceExecs.Allocate();
 
 					auto traceExec = GetTraceExec(trace->traceExecRef);
@@ -145,9 +147,27 @@ AllocateExecutionData
 						traceExec->insExecRefs.count = traceExec->insLists.c3;
 						insExecCount += traceExec->insLists.c3;
 					}
-					return true;
+
+					if (trace->successors.first != trace->successors.last)
+					{
+						auto branchExec = GetTraceBranchExec(branchExecs.Allocate());
+						traceExec->branchExec = branchExec->allocatedIndex;
+
+						branchExec->previous = topBranchExec;
+						topBranchExec = branchExec->allocatedIndex;
+					}
+
+					if (trace->predecessors.first != trace->predecessors.last)
+					{
+						auto mergeExec = GetTraceMergeExec(mergeExecs.Allocate());
+						traceExec->mergeExec = mergeExec->allocatedIndex;
+
+						mergeExec->previous = topMergeExec;
+						topMergeExec = mergeExec->allocatedIndex;
+					}
 				});
 				insExecs.Resize(insExecCount);
+#undef ERROR_MESSAGE_PREFIX
 			}
 
 /***********************************************************************

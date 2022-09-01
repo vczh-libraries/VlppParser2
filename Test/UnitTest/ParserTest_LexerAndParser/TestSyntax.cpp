@@ -56,7 +56,7 @@ namespace TestSyntax_TestObjects
 		List<RegexToken> tokens;
 		lexer.Parse(input).ReadToEnd(tokens, CalculatorTokenDeleter);
 
-		TraceManager tm(executable, nullptr);
+		TraceManager tm(executable, nullptr, 16);
 		tm.Initialize(executable.ruleStartStates[metadata.ruleNames.IndexOf(L"Module")]);
 		for (vint32_t i = 0; i < tokens.Count(); i++)
 		{
@@ -68,7 +68,6 @@ namespace TestSyntax_TestObjects
 
 		bool ambiguityInvolved = false;
 		auto rootTrace = tm.EndOfInput(ambiguityInvolved);
-		TEST_ASSERT(!ambiguityInvolved);
 
 		LogTraceManager(
 			L"Calculator",
@@ -85,6 +84,7 @@ namespace TestSyntax_TestObjects
 			[&](vint32_t switchId) { return metadata.switchNames[switchId]; }
 			);
 
+		TEST_ASSERT(!ambiguityInvolved);
 		TEST_ASSERT(tm.concurrentCount == 1);
 		TEST_ASSERT(executable.states[tm.concurrentTraces->Get(0)->state].endingState);
 
