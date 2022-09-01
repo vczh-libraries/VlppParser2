@@ -403,22 +403,6 @@ PartialExecuteOrdinaryTrace
 PartialExecuteTraces
 ***********************************************************************/
 
-			template<typename T, T* (TraceManager::* GetData)(vint32_t index), typename TCallback, typename TError>
-			void TraceManager::CompareObjectOrCreateStack(vint32_t stack1, vint32_t stack2, TCallback&& callback, TError&& error)
-			{
-				while (stack1 != stack2)
-				{
-					if (stack1 == -1 || stack2 == -1) error();
-
-					auto stackObj1 = (this->*GetData)(stack1);
-					auto stackObj2 = (this->*GetData)(stack2);
-					callback(stackObj1, stackObj2, error);
-
-					stack1 = stackObj1->previous;
-					stack2 = stackObj2->previous;
-				}
-			}
-
 			void TraceManager::PartialExecuteTraces()
 			{
 #define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::PartialExecuteTraces()#"
@@ -462,15 +446,20 @@ PartialExecuteTraces
 
 								// check if the two createStack have the same depth
 								// check each corresponding createStack have the same stackBase
-								CompareObjectOrCreateStack<InsExec_CreateStack, &TraceManager::GetInsExec_CreateStack>(
-									contextBaseline.createStack,
-									contextComming.createStack,
-									[this](InsExec_CreateStack* baselineStack, InsExec_CreateStack* commingStack, auto&& error)
-									{
-										if (baselineStack->stackBase != commingStack->stackBase) error();
-									},
-									error
-									);
+								vint32_t stack1 = contextBaseline.createStack;
+								vint32_t stack2 = contextComming.createStack;
+								while (stack1 != stack2)
+								{
+									if (stack1 == -1 || stack2 == -1) error();
+
+									auto stackObj1 = GetInsExec_CreateStack(stack1);
+									auto stackObj2 = GetInsExec_CreateStack(stack2);
+
+									if (stackObj1->stackBase != stackObj2->stackBase) error();
+
+									stack1 = stackObj1->previous;
+									stack2 = stackObj2->previous;
+								}
 							}
 						}
 					}
@@ -583,15 +572,22 @@ BuildAmbiguityStructures
 BuildObjectHierarchy
 ***********************************************************************/
 
+			template<vint32_t(InsExec_Object::* forward), typename T>
+			void TraceManager::IterateObjects(vint32_t first, T&& callback)
+			{
+				while (first != -1)
+				{
+					auto ieObject = GetInsExec_Object(first);
+					first = ieObject->*forward;
+					callback(ieObject);
+				}
+			}
+
 			void TraceManager::BuildObjectHierarchy()
 			{
-				vint32_t id = topObject;
-				while (id != -1)
+				// fill topDfaObjectId
+				IterateObjects<&InsExec_Object::previous>(topObject, [this](InsExec_Object* ieObject)
 				{
-					auto ieObject = GetInsExec_Object(id);
-					id = ieObject->previous;
-
-					// fill topDfaObjectId
 					auto topDfaObject = ieObject;
 					while (topDfaObject->dfaObjectId != -1)
 					{
@@ -613,23 +609,19 @@ BuildObjectHierarchy
 						if (current->dfaObjectId == -1) break;
 						current = GetInsExec_Object(current->dfaObjectId);
 					}
-				}
-
-				id = bottomObject;
-				while (id != -1)
+				});
+				
+				// fill topLrObjectId
+				IterateObjects<&InsExec_Object::next>(bottomObject, [this](InsExec_Object* ieObject)
 				{
-					auto ieObject = GetInsExec_Object(id);
-					id = ieObject->next;
-
 					if (ieObject->lrObjectId != -1)
 					{
-						// fill topLrObjectId
 						auto top = GetInsExec_Object(ieObject->topDfaObjectId);
 						auto lr = GetInsExec_Object(ieObject->lrObjectId);
 						auto toplr = GetInsExec_Object(lr->topDfaObjectId);
 						top->topLrObjectId = toplr->pushedObjectId;
 					}
-				}
+				});
 			}
 
 /***********************************************************************

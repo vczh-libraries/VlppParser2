@@ -446,12 +446,12 @@ TraceManager
 				InsExec_ObjectStack*				PushObjectStack(InsExec_Context& context, vint32_t objectId);
 				InsExec_CreateStack*				PushCreateStack(InsExec_Context& context);
 				void								PartialExecuteOrdinaryTrace(Trace* trace);
-
-				template<typename T, T* (TraceManager::*GetData)(vint32_t index), typename TCallback, typename TError>
-				void								CompareObjectOrCreateStack(vint32_t stack1, vint32_t stack2, TCallback&& callback, TError&& error);
 				void								PartialExecuteTraces();
 
 				void								BuildAmbiguityStructures();
+
+				template<vint32_t (InsExec_Object::*forward), typename T>
+				void								IterateObjects(vint32_t first, T&& callback);
 				void								BuildObjectHierarchy();
 
 			protected:
