@@ -233,11 +233,11 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 
 				// DFA:
 				//   all associated objects
-				vint32_t							objRefs;
+				vint32_t							objRefs = -1;
 
 				// BO/BOLR/DFA:
 				//   EndingObject instructions that close objects or create stack created by the current instruction
-				vint32_t							eoInsRefs;
+				vint32_t							eoInsRefs = -1;
 
 				// InsExec_CreateStack before executing the current instruction
 				vint32_t							topCSBefore = -1;
@@ -259,10 +259,10 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 				vint32_t							bo_bolr_Ins = -1;
 
 				// DelayFieldAssignment instructions that associates to the current object
-				vint32_t							dfaInsRefs;
+				vint32_t							dfaInsRefs = -1;
 
 				// EndObject instructions that close this object
-				vint32_t							eoInsRefs;
+				vint32_t							eoInsRefs = -1;
 
 				// lrObjectReferenced is true when there exists anotherObject->lrObjectId is the current object
 				// topDfaObjectId is the end of object->lrObjectId

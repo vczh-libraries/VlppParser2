@@ -609,7 +609,7 @@ BuildObjectHierarchy
 						auto lrObject = GetInsExec_Object(ieObject->lrObjectId);
 						lrObject->lrObjectReferenced = true;
 
-						if (lrObject->topLrObjectId)
+						if (lrObject->topLrObjectId != -1)
 						{
 							ieObject->topLrObjectId = lrObject->topLrObjectId;
 						}

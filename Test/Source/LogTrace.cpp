@@ -365,7 +365,14 @@ void RenderTrace(
 			{
 				auto traceExec = tm.GetTraceExec(trace->traceExecRef);
 				auto insExec = tm.GetInsExec(traceExec->insExecRefs.start + i);
-				writer.WriteString(L"[" + itow(tm.GetInsExec_CreateStack(insExec->topCSBefore)->associatedObjectId) + L"] ");
+				if (insExec->topCSBefore == -1)
+				{
+					writer.WriteString(L"[*]");
+				}
+				else
+				{
+					writer.WriteString(L"[" + itow(tm.GetInsExec_CreateStack(insExec->topCSBefore)->associatedObjectId) + L"] ");
+				}
 			}
 
 			LogInstruction(ins, typeName, fieldName, writer);
