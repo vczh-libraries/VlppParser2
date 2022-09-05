@@ -459,8 +459,8 @@ TraceManager
 				InsExec_ObjectStack*						PushObjectStackMultiple(InsExec_Context& context, vint32_t linkId);
 				InsExec_CreateStack*						PushCreateStack(InsExec_Context& context);
 				void										PartialExecuteOrdinaryTrace(Trace* trace);
-				template<typename T, vint32_t (T::*next), vint32_t (T::*link)>
-				void										MergeStack(vint32_t stack1, vint32_t stack2);
+				template<typename T, vint32_t (T::*next), vint32_t (T::*link), vint32_t (InsExec_Context::*stack)>
+				void										MergeStack(Trace* mergeTrace);
 				void										PartialExecuteTraces();
 
 				void										BuildAmbiguityStructures();

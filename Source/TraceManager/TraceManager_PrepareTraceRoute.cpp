@@ -452,10 +452,10 @@ PartialExecuteOrdinaryTrace
 PartialExecuteTraces
 ***********************************************************************/
 
-			template<typename T, vint32_t(T::* next), vint32_t(T::* link)>
-			void TraceManager::MergeStack(vint32_t stack1, vint32_t stack2)
+			template<typename T, vint32_t(T::* next), vint32_t(T::* link), vint32_t(InsExec_Context::* stack)>
+			void TraceManager::MergeStack(Trace* mergeTrace)
 			{
-				CHECK_FAIL(L"Not Implemented!");
+				// put an auto-increase id as "visited" in objects and stacks to prevent from using SortedList
 			}
 
 			void TraceManager::PartialExecuteTraces()
@@ -512,17 +512,23 @@ PartialExecuteTraces
 									stack2 = stackObj2->previous;
 								}
 
+							}
+
+							if (visitCount == predecessorCount)
+							{
 								// merge stacks so that objects created in all branches are accessible
 								MergeStack<
 									InsExec_ObjectStack,
 									&InsExec_ObjectStack::previous,
-									&InsExec_ObjectStack::objectIds
-									>(contextBaseline.objectStack, contextComming.objectStack);
+									&InsExec_ObjectStack::objectIds,
+									&InsExec_Context::objectStack
+								>(trace);
 								MergeStack<
 									InsExec_CreateStack,
 									&InsExec_CreateStack::previous,
-									&InsExec_CreateStack::objectIds
-									>(contextBaseline.createStack, contextComming.createStack);
+									&InsExec_CreateStack::objectIds,
+									&InsExec_Context::createStack
+								>(trace);
 							}
 						}
 					}
@@ -649,6 +655,44 @@ DebugCheckTraceExecData
 #if defined VCZH_MSVC && defined _DEBUG
 			void TraceManager::DebugCheckTraceExecData()
 			{
+#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::DebugCheckTraceExecData()#"
+				IterateObjects<&InsExec_Object::previous>(topObject, [this](InsExec_Object* ieObject)
+				{
+					CHECK_ERROR(ieObject->eoInsRefs != -1, ERROR_MESSAGE_PREFIX L"Internal error: InsExec_Object not closed.");
+				});
+
+				
+				IterateSurvivedTraces(
+					[this](Trace* trace, Trace* predecessor, vint32_t visitCount, vint32_t predecessorCount)
+					{
+						if (predecessorCount <= 1)
+						{
+							auto traceExec = GetTraceExec(trace->traceExecRef);
+							for (vint32_t insRef = 0; insRef < traceExec->insExecRefs.count; insRef++)
+							{
+								auto ins = ReadInstruction(insRef, traceExec->insLists);
+								auto insExec = GetInsExec(traceExec->insExecRefs.start + insRef);
+
+								switch (ins.type)
+								{
+								case AstInsType::BeginObject:
+								case AstInsType::BeginObjectLeftRecursive:
+								case AstInsType::DelayFieldAssignment:
+									CHECK_ERROR(insExec->eoInsRefs != -1, ERROR_MESSAGE_PREFIX L"Internal error: BO/BOLA/DFA not closed.");
+									break;
+								}
+
+								switch (ins.type)
+								{
+								case AstInsType::DelayFieldAssignment:
+									CHECK_ERROR(insExec->objRefs != -1, ERROR_MESSAGE_PREFIX L"Internal error: DFA not associated.");
+									break;
+								}
+							}
+						}
+					}
+				);
+#undef ERROR_MESSAGE_PREFIX
 			}
 #endif
 
