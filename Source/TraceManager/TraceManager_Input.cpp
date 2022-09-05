@@ -57,6 +57,8 @@ Initialize
 				traceExecs.Clear();
 				insExecs.Resize(0);
 				insExec_Objects.Clear();
+				insExec_InsRefLinks.Clear();
+				insExec_ObjRefLinks.Clear();
 				insExec_ObjectStacks.Clear();
 				insExec_CreateStacks.Clear();
 

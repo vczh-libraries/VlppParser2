@@ -326,16 +326,15 @@ PartialExecuteOrdinaryTrace
 							PushObjectStack(context, ieCSTop->objectId);
 
 							auto ieObject = GetInsExec_Object(ieCSTop->objectId);
-							if (++ieObject->eo_Counter == 1)
+							if (ieObject->eoIns.trace != -1)
 							{
-								ieObject->eo_Trace = trace->allocatedIndex;
-								ieObject->eo_Ins = insRef;
+								auto ref = insExec_InsRefLinks.Allocate();
+								auto next = GetInsExec_InsRefLink(ref);
+								*next = ieObject->eoIns;
+								ieObject->eoIns.previous = ref;
 							}
-							else
-							{
-								ieObject->eo_Trace = -1;
-								ieObject->eo_Ins = -1;
-							}
+							ieObject->eoIns.trace = trace->allocatedIndex;
+							ieObject->eoIns.ins = insRef;
 
 							insExec->objectId = ieCSTop->objectId;
 						}
@@ -636,14 +635,14 @@ BuildObjectHierarchy
 						}
 						ieObject->topLrObjectId = topLrObject->pushedObjectId;
 
-						if (++topLrObject->bottomLrObjectCounter == 1)
+						if (topLrObject->bottomLrObjects.id != -1)
 						{
-							topLrObject->bottomLrObjectId = ieObject->pushedObjectId;
+							auto ref = insExec_ObjRefLinks.Allocate();
+							auto next = GetInsExec_ObjRefLink(ref);
+							*next = topLrObject->bottomLrObjects;
+							topLrObject->bottomLrObjects.previous = ref;
 						}
-						else
-						{
-							topLrObject->bottomLrObjectId = -1;
-						}
+						topLrObject->bottomLrObjects.id = ieObject->pushedObjectId;
 					}
 				});
 			}

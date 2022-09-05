@@ -381,18 +381,23 @@ void RenderTrace(
 						L"      obj:" + itow(insExec->objectId) +
 						L", lr:" + itow(ieObject->lrObjectId) +
 						L", dfa:" + itow(ieObject->dfaObjectId) +
-						L", N:[" + itow(ieObject->dfa_bo_bolr_ra_Trace) +
-						L"," + itow(ieObject->dfa_bo_bolr_ra_Ins) +
-						L"]");
-					if (ieObject->eo_Counter == 1)
+						L", new:" + itow(ieObject->dfa_bo_bolr_ra_Trace) +
+						L"@" + itow(ieObject->dfa_bo_bolr_ra_Ins)
+						);
+					if (ieObject->eoIns.trace != -1)
 					{
-						writer.WriteString(L" D:[" + itow(ieObject->eo_Trace) +
-							L"," + itow(ieObject->eo_Ins) +
-							L"]");
-					}
-					else if (ieObject->eo_Counter > 1)
-					{
-						writer.WriteString(L" D:M");
+						writer.WriteString(ieObject->eoIns.previous == -1 ? L" cls:[" : L" clsM:[");
+						auto current = &ieObject->eoIns;
+						while (current)
+						{
+							if (current != &ieObject->eoIns)
+							{
+								writer.WriteString(L", ");
+							}
+							writer.WriteString(itow(current->trace) + L"@" + itow(current->ins));
+							current = current->previous == -1 ? nullptr : tm.GetInsExec_InsRefLink(current->previous);
+						}
+						writer.WriteString(L"]");
 					}
 
 					writer.WriteString(
@@ -400,13 +405,20 @@ void RenderTrace(
 						L", dlr:" + itow(ieObject->dfaLrObjectId) +
 						L", tlr:" + itow(ieObject->topLrObjectId)
 						);
-					if (ieObject->bottomLrObjectCounter == 1)
+					if (ieObject->bottomLrObjects.id != -1)
 					{
-						writer.WriteString(L", blr:" + itow(ieObject->bottomLrObjectId));
-					}
-					else if (ieObject->bottomLrObjectCounter > 1)
-					{
-						writer.WriteString(L", blr:M");
+						writer.WriteString(ieObject->bottomLrObjects.previous == -1 ? L" blr:[" : L" blrM:[");
+						auto current = &ieObject->bottomLrObjects;
+						while (current)
+						{
+							if (current != &ieObject->bottomLrObjects)
+							{
+								writer.WriteString(L", ");
+							}
+							writer.WriteString(itow(current->id));
+							current = current->previous == -1 ? nullptr : tm.GetInsExec_ObjRefLink(current->previous);
+						}
+						writer.WriteString(L"]");
 					}
 					writer.WriteLine(L"");
 				}

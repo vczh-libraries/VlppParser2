@@ -125,6 +125,8 @@ TraceManager
 				, switches(blockSize)
 				, traceExecs(blockSize)
 				, insExec_Objects(blockSize)
+				, insExec_InsRefLinks(blockSize)
+				, insExec_ObjRefLinks(blockSize)
 				, insExec_ObjectStacks(blockSize)
 				, insExec_CreateStacks(blockSize)
 				, branchExecs(blockSize)
@@ -198,6 +200,16 @@ TraceManager
 				{
 					CHECK_FAIL(L"vl::glr::automaton::TraceManager::GetInsExec_Object(vint32_t)#Index out of range.");
 				}
+			}
+
+			InsExec_InsRefLink* TraceManager::GetInsExec_InsRefLink(vint32_t index)
+			{
+				return insExec_InsRefLinks.Get(index);
+			}
+
+			InsExec_ObjRefLink* TraceManager::GetInsExec_ObjRefLink(vint32_t index)
+			{
+				return insExec_ObjRefLinks.Get(index);
 			}
 
 			InsExec_ObjectStack* TraceManager::GetInsExec_ObjectStack(vint32_t index)

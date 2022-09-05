@@ -225,6 +225,19 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 				vint32_t							topCreatedObjectBefore = -1;
 			};
 
+			struct InsExec_InsRefLink
+			{
+				vint32_t							previous = -1;
+				vint32_t							trace = -1;
+				vint32_t							ins = -1;
+			};
+
+			struct InsExec_ObjRefLink
+			{
+				vint32_t							previous = -1;
+				vint32_t							id = -1;
+			};
+
 			struct InsExec_Object
 			{
 				vint32_t							allocatedIndex = -1;
@@ -247,11 +260,8 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 				vint32_t							dfa_bo_bolr_ra_Trace = -1;
 				vint32_t							dfa_bo_bolr_ra_Ins = -1;
 
-				// eo_Counter counts how many EndObject closes this object
-				// eo_Trace and eo_Ins is the unique EndObject
-				vint32_t							eo_Counter = 0;
-				vint32_t							eo_Trace = -1;
-				vint32_t							eo_Ins = -1;
+				// EndObject instructions that close this object
+				InsExec_InsRefLink					eoIns;
 
 				// topDfaObjectId is the end of object->dfaObjectId
 				// if none, then it is the object itself
@@ -266,10 +276,8 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 				// -1 if none
 				vint32_t							topLrObjectId = -1;
 
-				// if a->topLrObjectId == b, a == b->bottomLrObjectId
-				// if there is multiple a, it becomes -1
-				vint32_t							bottomLrObjectCounter = 0;
-				vint32_t							bottomLrObjectId = -1;
+				// all objects whose topLrObjectId is the current object
+				InsExec_ObjRefLink					bottomLrObjects;
 			};
 
 			struct InsExec_ObjectStack
@@ -370,136 +378,146 @@ TraceManager
 			class TraceManager : public Object, public virtual IExecutor
 			{
 			protected:
-				Executable&							executable;
-				const ITypeCallback*				typeCallback = nullptr;
-				vint32_t							maxSwitchValues = 0;
+				template<typename T>
+				struct Link : T
+				{
+					vint32_t								allocatedIndex = -1;
+				};
 
-				TraceManagerState					state = TraceManagerState::Uninitialized;
-				AllocateOnly<ReturnStack>			returnStacks;
-				AllocateOnly<Trace>					traces;
-				AllocateOnly<Competition>			competitions;
-				AllocateOnly<AttendingCompetitions>	attendingCompetitions;
-				AllocateOnly<Switches>				switches;
+				Executable&									executable;
+				const ITypeCallback*						typeCallback = nullptr;
+				vint32_t									maxSwitchValues = 0;
 
-				collections::List<Trace*>			traces1;
-				collections::List<Trace*>			traces2;
+				TraceManagerState							state = TraceManagerState::Uninitialized;
+				AllocateOnly<ReturnStack>					returnStacks;
+				AllocateOnly<Trace>							traces;
+				AllocateOnly<Competition>					competitions;
+				AllocateOnly<AttendingCompetitions>			attendingCompetitions;
+				AllocateOnly<Switches>						switches;
 
-				Trace*								initialTrace = nullptr;
-				vint32_t							activeCompetitions = -1;
-				vint32_t							rootSwitchValues = -1;
-				ReturnStackCache					initialReturnStackCache;
+				collections::List<Trace*>					traces1;
+				collections::List<Trace*>					traces2;
 
-				collections::List<bool>				temporaryConditionStack;
-				vint32_t							temporaryConditionStackSize = 0;
+				Trace*										initialTrace = nullptr;
+				vint32_t									activeCompetitions = -1;
+				vint32_t									rootSwitchValues = -1;
+				ReturnStackCache							initialReturnStackCache;
 
-				void								BeginSwap();
-				void								AddTrace(Trace* trace);
-				void								EndSwap();
-				void								AddTraceToCollection(Trace* owner, Trace* element, TraceCollection(Trace::* collection));
+				collections::List<bool>						temporaryConditionStack;
+				vint32_t									temporaryConditionStackSize = 0;
+
+				void										BeginSwap();
+				void										AddTrace(Trace* trace);
+				void										EndSwap();
+				void										AddTraceToCollection(Trace* owner, Trace* element, TraceCollection(Trace::* collection));
 
 				// Ambiguity
-				Trace*								EnsureTraceWithValidStates(Trace* trace);
-				bool								AreTwoEndingInputTraceEqual(Trace* newTrace, Trace* candidate);
-				void								MergeTwoEndingInputTrace(Trace* newTrace, Trace* candidate);
+				Trace*										EnsureTraceWithValidStates(Trace* trace);
+				bool										AreTwoEndingInputTraceEqual(Trace* newTrace, Trace* candidate);
+				void										MergeTwoEndingInputTrace(Trace* newTrace, Trace* candidate);
 
 				// Competition
-				void								AttendCompetition(Trace* trace, vint32_t& newAttendingCompetitions, vint32_t& newCarriedCompetitions, vint32_t returnStack, vint32_t ruleId, vint32_t clauseId, bool forHighPriority);
-				void								AttendCompetitionIfNecessary(Trace* trace, vint32_t currentTokenIndex, EdgeDesc& edgeDesc, vint32_t& newAttendingCompetitions, vint32_t& newCarriedCompetitions, vint32_t& newReturnStack);
-				void								CheckAttendingCompetitionsOnEndingEdge(Trace* trace, EdgeDesc& edgeDesc, vint32_t acId, vint32_t returnStack);
-				void								CheckBackupTracesBeforeSwapping(vint32_t currentTokenIndex);
+				void										AttendCompetition(Trace* trace, vint32_t& newAttendingCompetitions, vint32_t& newCarriedCompetitions, vint32_t returnStack, vint32_t ruleId, vint32_t clauseId, bool forHighPriority);
+				void										AttendCompetitionIfNecessary(Trace* trace, vint32_t currentTokenIndex, EdgeDesc& edgeDesc, vint32_t& newAttendingCompetitions, vint32_t& newCarriedCompetitions, vint32_t& newReturnStack);
+				void										CheckAttendingCompetitionsOnEndingEdge(Trace* trace, EdgeDesc& edgeDesc, vint32_t acId, vint32_t returnStack);
+				void										CheckBackupTracesBeforeSwapping(vint32_t currentTokenIndex);
 
 				// ReturnStack
-				ReturnStackSuccessors*				GetCurrentSuccessorInReturnStack(vint32_t base, vint32_t currentTokenIndex);
-				ReturnStack*						PushReturnStack(vint32_t base, vint32_t returnIndex, vint32_t fromTrace, vint32_t currentTokenIndex, bool allowReuse);
+				ReturnStackSuccessors*						GetCurrentSuccessorInReturnStack(vint32_t base, vint32_t currentTokenIndex);
+				ReturnStack*								PushReturnStack(vint32_t base, vint32_t returnIndex, vint32_t fromTrace, vint32_t currentTokenIndex, bool allowReuse);
 
 				// Walk
-				bool								IsQualifiedTokenForCondition(regex::RegexToken* token, StringLiteral condition);
-				bool								IsQualifiedTokenForEdgeArray(regex::RegexToken* token, EdgeArray& edgeArray);
-				vint32_t							PushSwitchFrame(Switches* currentSV, vuint32_t* values);
-				vint32_t							RunEdgeConditionChecking(vint32_t currentSwitchValues, EdgeDesc& edgeDesc);
-				WalkingTrace						WalkAlongSingleEdge(vint32_t currentTokenIndex, vint32_t input, WalkingTrace trace, vint32_t byEdge, EdgeDesc& edgeDesc);
-				void								WalkAlongLeftrecEdges(vint32_t currentTokenIndex, regex::RegexToken* lookAhead, WalkingTrace trace, EdgeArray& edgeArray);
-				void								WalkAlongEpsilonEdges(vint32_t currentTokenIndex, regex::RegexToken* lookAhead, WalkingTrace trace);
-				void								WalkAlongTokenEdges(vint32_t currentTokenIndex, vint32_t input, regex::RegexToken* token, regex::RegexToken* lookAhead, WalkingTrace trace, EdgeArray& edgeArray);
+				bool										IsQualifiedTokenForCondition(regex::RegexToken* token, StringLiteral condition);
+				bool										IsQualifiedTokenForEdgeArray(regex::RegexToken* token, EdgeArray& edgeArray);
+				vint32_t									PushSwitchFrame(Switches* currentSV, vuint32_t* values);
+				vint32_t									RunEdgeConditionChecking(vint32_t currentSwitchValues, EdgeDesc& edgeDesc);
+				WalkingTrace								WalkAlongSingleEdge(vint32_t currentTokenIndex, vint32_t input, WalkingTrace trace, vint32_t byEdge, EdgeDesc& edgeDesc);
+				void										WalkAlongLeftrecEdges(vint32_t currentTokenIndex, regex::RegexToken* lookAhead, WalkingTrace trace, EdgeArray& edgeArray);
+				void										WalkAlongEpsilonEdges(vint32_t currentTokenIndex, regex::RegexToken* lookAhead, WalkingTrace trace);
+				void										WalkAlongTokenEdges(vint32_t currentTokenIndex, vint32_t input, regex::RegexToken* token, regex::RegexToken* lookAhead, WalkingTrace trace, EdgeArray& edgeArray);
 
 				// EndOfInput
-				void								FillSuccessorsAfterEndOfInput(bool& ambiguityInvolved);
+				void										FillSuccessorsAfterEndOfInput(bool& ambiguityInvolved);
 
 			protected:
 				// Common
 				template<typename TCallback>
-				void								IterateSurvivedTraces(TCallback&& callback);
-				void								ReadInstructionList(Trace* trace, TraceInsLists& insLists);
+				void										IterateSurvivedTraces(TCallback&& callback);
+				void										ReadInstructionList(Trace* trace, TraceInsLists& insLists);
 				AstIns& ReadInstruction(vint32_t instruction, TraceInsLists& insLists);
 
 			protected:
 				// PrepareTraceRoute
-				vint32_t							bottomObject = -1;
-				vint32_t							topObject = -1;
-				AllocateOnly<TraceExec>				traceExecs;
-				collections::Array<InsExec>			insExecs;
-				AllocateOnly<InsExec_Object>		insExec_Objects;
-				AllocateOnly<InsExec_ObjectStack>	insExec_ObjectStacks;
-				AllocateOnly<InsExec_CreateStack>	insExec_CreateStacks;
+				vint32_t									bottomObject = -1;
+				vint32_t									topObject = -1;
+				AllocateOnly<TraceExec>						traceExecs;
+				collections::Array<InsExec>					insExecs;
+				AllocateOnly<InsExec_Object>				insExec_Objects;
+				AllocateOnly<Link<InsExec_InsRefLink>>		insExec_InsRefLinks;
+				AllocateOnly<Link<InsExec_ObjRefLink>>		insExec_ObjRefLinks;
+				AllocateOnly<InsExec_ObjectStack>			insExec_ObjectStacks;
+				AllocateOnly<InsExec_CreateStack>			insExec_CreateStacks;
 
-				void								AllocateExecutionData();
+				void										AllocateExecutionData();
 
-				InsExec_Object*						NewObject();
-				vint32_t							GetStackBase(InsExec_Context& context);
-				vint32_t							GetStackTop(InsExec_Context& context);
-				InsExec_ObjectStack*				PushObjectStack(InsExec_Context& context, vint32_t objectId);
-				InsExec_CreateStack*				PushCreateStack(InsExec_Context& context);
-				void								PartialExecuteOrdinaryTrace(Trace* trace);
-				void								PartialExecuteTraces();
+				InsExec_Object*								NewObject();
+				vint32_t									GetStackBase(InsExec_Context& context);
+				vint32_t									GetStackTop(InsExec_Context& context);
+				InsExec_ObjectStack*						PushObjectStack(InsExec_Context& context, vint32_t objectId);
+				InsExec_CreateStack*						PushCreateStack(InsExec_Context& context);
+				void										PartialExecuteOrdinaryTrace(Trace* trace);
+				void										PartialExecuteTraces();
 
-				void								BuildAmbiguityStructures();
+				void										BuildAmbiguityStructures();
 
 				template<vint32_t (InsExec_Object::*forward), typename T>
-				void								IterateObjects(vint32_t first, T&& callback);
-				void								BuildObjectHierarchy();
+				void										IterateObjects(vint32_t first, T&& callback);
+				void										BuildObjectHierarchy();
 
 			protected:
 				// ResolveAmbiguity
-				vint32_t							topBranchExec = -1;
-				vint32_t							topMergeExec = -1;
-				AllocateOnly<TraceBranchExec>		branchExecs;
-				AllocateOnly<TraceMergeExec>		mergeExecs;
+				vint32_t									topBranchExec = -1;
+				vint32_t									topMergeExec = -1;
+				AllocateOnly<TraceBranchExec>				branchExecs;
+				AllocateOnly<TraceMergeExec>				mergeExecs;
 
-				void								DetermineAmbiguityRanges();
+				void										DetermineAmbiguityRanges();
 
 			public:
 				TraceManager(Executable& _executable, const ITypeCallback* _typeCallback, vint blockSize);
 
-				vint32_t							concurrentCount = 0;
-				collections::List<Trace*>*			concurrentTraces = nullptr;
-				collections::List<Trace*>*			backupTraces = nullptr;
+				vint32_t						concurrentCount = 0;
+				collections::List<Trace*>*		concurrentTraces = nullptr;
+				collections::List<Trace*>*		backupTraces = nullptr;
 
-				ReturnStack*						GetReturnStack(vint32_t index);
-				ReturnStack*						AllocateReturnStack();
-				Trace*								GetTrace(vint32_t index);
-				Trace*								AllocateTrace();
-				Competition*						GetCompetition(vint32_t index);
-				Competition*						AllocateCompetition();
-				AttendingCompetitions*				GetAttendingCompetitions(vint32_t index);
-				AttendingCompetitions*				AllocateAttendingCompetitions();
-				Switches*							GetSwitches(vint32_t index);
-				InsExec*							GetInsExec(vint32_t index);
-				InsExec_Object*						GetInsExec_Object(vint32_t index);
-				InsExec_ObjectStack*				GetInsExec_ObjectStack(vint32_t index);
-				InsExec_CreateStack*				GetInsExec_CreateStack(vint32_t index);
-				TraceExec*							GetTraceExec(vint32_t index);
-				TraceBranchExec*					GetTraceBranchExec(vint32_t index);
-				TraceMergeExec*						GetTraceMergeExec(vint32_t index);
+				ReturnStack*					GetReturnStack(vint32_t index);
+				ReturnStack*					AllocateReturnStack();
+				Trace*							GetTrace(vint32_t index);
+				Trace*							AllocateTrace();
+				Competition*					GetCompetition(vint32_t index);
+				Competition*					AllocateCompetition();
+				AttendingCompetitions*			GetAttendingCompetitions(vint32_t index);
+				AttendingCompetitions*			AllocateAttendingCompetitions();
+				Switches*						GetSwitches(vint32_t index);
+				InsExec*						GetInsExec(vint32_t index);
+				InsExec_Object*					GetInsExec_Object(vint32_t index);
+				InsExec_InsRefLink*				GetInsExec_InsRefLink(vint32_t index);
+				InsExec_ObjRefLink*				GetInsExec_ObjRefLink(vint32_t index);
+				InsExec_ObjectStack*			GetInsExec_ObjectStack(vint32_t index);
+				InsExec_CreateStack*			GetInsExec_CreateStack(vint32_t index);
+				TraceExec*						GetTraceExec(vint32_t index);
+				TraceBranchExec*				GetTraceBranchExec(vint32_t index);
+				TraceMergeExec*					GetTraceMergeExec(vint32_t index);
 
-				void								Initialize(vint32_t startState) override;
-				Trace*								GetInitialTrace();
+				void							Initialize(vint32_t startState) override;
+				Trace*							GetInitialTrace();
 
-				bool								Input(vint32_t currentTokenIndex, regex::RegexToken* token, regex::RegexToken* lookAhead) override;
-				bool								EndOfInput(bool& ambiguityInvolved) override;
+				bool							Input(vint32_t currentTokenIndex, regex::RegexToken* token, regex::RegexToken* lookAhead) override;
+				bool							EndOfInput(bool& ambiguityInvolved) override;
 
-				void								PrepareTraceRoute() override;
-				void								ResolveAmbiguity() override;
-				Ptr<ParsingAstBase>					ExecuteTrace(IAstInsReceiver& receiver, collections::List<regex::RegexToken>& tokens) override;
+				void							PrepareTraceRoute() override;
+				void							ResolveAmbiguity() override;
+				Ptr<ParsingAstBase>				ExecuteTrace(IAstInsReceiver& receiver, collections::List<regex::RegexToken>& tokens) override;
 			};
 		}
 	}
