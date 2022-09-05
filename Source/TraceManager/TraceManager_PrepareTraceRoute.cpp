@@ -452,6 +452,12 @@ PartialExecuteOrdinaryTrace
 PartialExecuteTraces
 ***********************************************************************/
 
+			template<typename T, vint32_t(T::* next), vint32_t(T::* link)>
+			void TraceManager::MergeStack(vint32_t stack1, vint32_t stack2)
+			{
+				CHECK_FAIL(L"Not Implemented!");
+			}
+
 			void TraceManager::PartialExecuteTraces()
 			{
 #define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::PartialExecuteTraces()#"
@@ -505,6 +511,18 @@ PartialExecuteTraces
 									stack1 = stackObj1->previous;
 									stack2 = stackObj2->previous;
 								}
+
+								// merge stacks so that objects created in all branches are accessible
+								MergeStack<
+									InsExec_ObjectStack,
+									&InsExec_ObjectStack::previous,
+									&InsExec_ObjectStack::objectIds
+									>(contextBaseline.objectStack, contextComming.objectStack);
+								MergeStack<
+									InsExec_CreateStack,
+									&InsExec_CreateStack::previous,
+									&InsExec_CreateStack::objectIds
+									>(contextBaseline.createStack, contextComming.createStack);
 							}
 						}
 					}
@@ -614,6 +632,27 @@ BuildAmbiguityStructures
 			}
 
 /***********************************************************************
+DebugCheckTraceExecData
+***********************************************************************/
+
+			template<vint32_t(InsExec_Object::* forward), typename T>
+			void TraceManager::IterateObjects(vint32_t first, T&& callback)
+			{
+				while (first != -1)
+				{
+					auto ieObject = GetInsExec_Object(first);
+					first = ieObject->*forward;
+					callback(ieObject);
+				}
+			}
+
+#if defined VCZH_MSVC && defined _DEBUG
+			void TraceManager::DebugCheckTraceExecData()
+			{
+			}
+#endif
+
+/***********************************************************************
 PrepareTraceRoute
 ***********************************************************************/
 
@@ -625,6 +664,9 @@ PrepareTraceRoute
 				AllocateExecutionData();
 				PartialExecuteTraces();
 				BuildAmbiguityStructures();
+#if defined VCZH_MSVC && defined _DEBUG
+				DebugCheckTraceExecData();
+#endif
 			}
 
 /***********************************************************************
@@ -652,17 +694,6 @@ ResolveAmbiguity
 				state = TraceManagerState::ResolvedAmbiguity;
 
 				DetermineAmbiguityRanges();
-			}
-
-			template<vint32_t(InsExec_Object::* forward), typename T>
-			void TraceManager::IterateObjects(vint32_t first, T&& callback)
-			{
-				while (first != -1)
-				{
-					auto ieObject = GetInsExec_Object(first);
-					first = ieObject->*forward;
-					callback(ieObject);
-				}
 			}
 		}
 	}

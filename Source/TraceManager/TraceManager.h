@@ -459,9 +459,17 @@ TraceManager
 				InsExec_ObjectStack*						PushObjectStackMultiple(InsExec_Context& context, vint32_t linkId);
 				InsExec_CreateStack*						PushCreateStack(InsExec_Context& context);
 				void										PartialExecuteOrdinaryTrace(Trace* trace);
+				template<typename T, vint32_t (T::*next), vint32_t (T::*link)>
+				void										MergeStack(vint32_t stack1, vint32_t stack2);
 				void										PartialExecuteTraces();
 
 				void										BuildAmbiguityStructures();
+
+				template<vint32_t(InsExec_Object::* forward), typename T>
+				void										IterateObjects(vint32_t first, T&& callback);
+#if defined VCZH_MSVC && defined _DEBUG
+				void										DebugCheckTraceExecData();
+#endif
 
 			protected:
 				// ResolveAmbiguity
@@ -471,10 +479,6 @@ TraceManager
 				AllocateOnly<TraceMergeExec>				mergeExecs;
 
 				void										DetermineAmbiguityRanges();
-
-				template<vint32_t (InsExec_Object::*forward), typename T>
-				void										IterateObjects(vint32_t first, T&& callback);
-
 			public:
 				TraceManager(Executable& _executable, const ITypeCallback* _typeCallback, vint blockSize);
 
