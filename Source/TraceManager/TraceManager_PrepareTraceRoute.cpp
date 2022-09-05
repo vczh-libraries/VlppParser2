@@ -341,9 +341,17 @@ PartialExecuteOrdinaryTrace
 							auto ieOSTop = GetInsExec_ObjectStack(context.objectStack);
 							context.objectStack = ieOSTop->previous;
 
+							// reopen an object
 							auto ieCSTop = GetInsExec_CreateStack(context.createStack);
-							CHECK_ERROR(ieCSTop->objectIds == -1, ERROR_MESSAGE_PREFIX L"An object has been associated to the create stack.");
-							ieCSTop->objectIds = ieOSTop->objectIds;
+							{
+								auto ref = ieOSTop->objectIds;
+								while (ref != -1)
+								{
+									auto link = GetInsExec_ObjRefLink(ref);
+									PushObjRefLink(ieCSTop->objectIds, link->id);
+									ref = link->previous;
+								}
+							}
 
 							// check if the top create stack is from DFA
 							auto traceCSTop = GetTrace(ieCSTop->trace);
