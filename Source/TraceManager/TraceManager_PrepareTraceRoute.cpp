@@ -458,10 +458,6 @@ PartialExecuteTraces
 				IterateSurvivedTraces(
 					[this](Trace* trace, Trace* predecessor, vint32_t visitCount, vint32_t predecessorCount)
 					{
-						if (trace->allocatedIndex == 24)
-						{
-							int a = 0;
-						}
 						if (predecessorCount <= 1)
 						{
 							PartialExecuteOrdinaryTrace(trace);
