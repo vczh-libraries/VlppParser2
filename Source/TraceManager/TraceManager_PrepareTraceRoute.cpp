@@ -134,7 +134,9 @@ AllocateExecutionData
 				vint32_t insExecCount = 0;
 				IterateSurvivedTraces([&](Trace* trace, Trace* predecessor, vint32_t visitCount, vint32_t predecessorCount)
 				{
-					if (visitCount != 1) return;
+					// ensure traceExecRef reflects the partial order of the execution order of traces
+					if (predecessorCount > 1 && visitCount != predecessorCount) return;
+
 					CHECK_ERROR(trace->traceExecRef == -1, ERROR_MESSAGE_PREFIX L"Internal error: IterateSurvivedTraces unexpectedly revisit a trace.");
 					trace->traceExecRef = traceExecs.Allocate();
 
@@ -232,6 +234,23 @@ PartialExecuteOrdinaryTrace
 				return ie;
 			}
 
+			void TraceManager::PushInsRefLink(vint32_t& link, vint32_t trace, vint32_t ins)
+			{
+				auto newLink = GetInsExec_InsRefLink(insExec_InsRefLinks.Allocate());
+				newLink->previous = link;
+				newLink->trace = trace;
+				newLink->ins = ins;
+				link = newLink->allocatedIndex;
+			}
+
+			void TraceManager::PushObjRefLink(vint32_t& link, vint32_t id)
+			{
+				auto newLink = GetInsExec_ObjRefLink(insExec_ObjRefLinks.Allocate());
+				newLink->previous = link;
+				newLink->id = id;
+				link = newLink->allocatedIndex;
+			}
+
 			void TraceManager::PartialExecuteOrdinaryTrace(Trace* trace)
 			{
 #define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::PartialExecuteOrdinaryTrace(Trace*)#"
@@ -248,55 +267,59 @@ PartialExecuteOrdinaryTrace
 				{
 					auto ins = ReadInstruction(insRef, traceExec->insLists);
 					auto insExec = GetInsExec(traceExec->insExecRefs.start + insRef);
-					insExec->topCreatedObjectBefore = context.createStack == -1 ? -1 : GetInsExec_CreateStack(context.createStack)->objectId;
+					insExec->topCSBefore = context.createStack;
 
 					switch (ins.type)
 					{
 					case AstInsType::BeginObject:
 						{
+							// new object
 							auto ieObject = NewObject();
-							ieObject->pushedObjectId = ieObject->allocatedIndex;
-							ieObject->dfa_bo_bolr_ra_Trace = trace->allocatedIndex;
-							ieObject->dfa_bo_bolr_ra_Ins = insRef;
+							ieObject->bo_bolr_Trace = trace->allocatedIndex;
+							ieObject->bo_bolr_Ins = insRef;
 
+							// new create stack
 							auto ieCSTop = PushCreateStack(context);
-							ieCSTop->objectId = ieObject->pushedObjectId;
+							ieCSTop->trace = trace->allocatedIndex;
+							ieCSTop->ins = insRef;
 							ieCSTop->stackBase = GetStackTop(context);
+							ieCSTop->associatedObjectId = ieObject->allocatedIndex;
 
-							insExec->objectId = ieObject->pushedObjectId;
+							// InsExec::createdObjectId
+							insExec->createdObjectId = ieObject->allocatedIndex;
 						}
 						break;
 					case AstInsType::BeginObjectLeftRecursive:
 						{
 							CHECK_ERROR(GetStackTop(context) - GetStackBase(context) >= 1, ERROR_MESSAGE_PREFIX L"Pushed values not enough.");
 
+							// observe the object stack top
 							auto ieOSTop = GetInsExec_ObjectStack(context.objectStack);
 
+							// new object
 							auto ieObject = NewObject();
-							ieObject->pushedObjectId = ieObject->allocatedIndex;
 							ieObject->lrObjectId = ieOSTop->objectId;
-							ieObject->dfa_bo_bolr_ra_Trace = trace->allocatedIndex;
-							ieObject->dfa_bo_bolr_ra_Ins = insRef;
+							ieObject->bo_bolr_Trace = trace->allocatedIndex;
+							ieObject->bo_bolr_Ins = insRef;
 
+							// new create stack, the top object is not frozen
 							auto ieCSTop = PushCreateStack(context);
-							ieCSTop->objectId = ieObject->pushedObjectId;
+							ieCSTop->trace = trace->allocatedIndex;
+							ieCSTop->ins = insRef;
 							ieCSTop->stackBase = ieOSTop->pushedCount - 1;
+							ieCSTop->associatedObjectId = ieObject->allocatedIndex;
 
-							insExec->objectId = ieObject->pushedObjectId;
+							// InsExec::createdObjectId
+							insExec->createdObjectId = ieObject->allocatedIndex;
 						}
 						break;
 					case AstInsType::DelayFieldAssignment:
 						{
-							auto ieObject = NewObject();
-							ieObject->pushedObjectId = -ieObject->allocatedIndex - 3;
-							ieObject->dfa_bo_bolr_ra_Trace = trace->allocatedIndex;
-							ieObject->dfa_bo_bolr_ra_Ins = insRef;
-
-							auto ieCS = PushCreateStack(context);
-							ieCS->objectId = ieObject->pushedObjectId;
-							ieCS->stackBase = GetStackTop(context);
-
-							insExec->objectId = ieObject->pushedObjectId;
+							// new create stack
+							auto ieCSTop = PushCreateStack(context);
+							ieCSTop->trace = trace->allocatedIndex;
+							ieCSTop->ins = insRef;
+							ieCSTop->stackBase = GetStackTop(context);
 						}
 						break;
 					case AstInsType::ReopenObject:
@@ -304,39 +327,49 @@ PartialExecuteOrdinaryTrace
 							CHECK_ERROR(GetStackTop(context) - GetStackBase(context) >= 1, ERROR_MESSAGE_PREFIX L"Pushed values not enough.");
 							CHECK_ERROR(context.createStack != -1, ERROR_MESSAGE_PREFIX L"There is no created object.");
 
-							auto ieCSTop = GetInsExec_CreateStack(context.createStack);
-							CHECK_ERROR(ieCSTop->objectId <= -3, ERROR_MESSAGE_PREFIX L"DelayFieldAssignment is not submitted before ReopenObject.");
-
+							// pop an object
 							auto ieOSTop = GetInsExec_ObjectStack(context.objectStack);
 							context.objectStack = ieOSTop->previous;
 
-							auto ieObjTop = GetInsExec_Object(ieOSTop->objectId);
-							CHECK_ERROR(ieObjTop->dfaObjectId == -1 || ieObjTop->dfaObjectId == ieCSTop->objectId, ERROR_MESSAGE_PREFIX L"Internal error: InsExec_Object::dfaObjectId has been assigned.");
-							ieObjTop->dfaObjectId = ieCSTop->objectId;
+							auto ieCSTop = GetInsExec_CreateStack(context.createStack);
+							CHECK_ERROR(ieCSTop->associatedObjectId == -1, ERROR_MESSAGE_PREFIX L"An object has been associated to the create stack.");
+							ieCSTop->associatedObjectId = ieOSTop->objectId;
 
-							insExec->objectId = ieCSTop->objectId;
+							// check if the top create stack is from DFA
+							auto traceCSTop = GetTrace(ieCSTop->trace);
+							auto traceExecCSTop = GetTraceExec(traceCSTop->traceExecRef);
+							CHECK_ERROR(ReadInstruction(ieCSTop->ins, traceExecCSTop->insLists).type == AstInsType::DelayFieldAssignment, L"DelayFieldAssignment is not submitted before ReopenObject.");
+
+							// InsExec_Object::dfaInsRefs
+							auto ieObjTop = GetInsExec_Object(ieOSTop->objectId);
+							PushInsRefLink(ieObjTop->dfaInsRefs, ieCSTop->trace, ieCSTop->ins);
+
+							// InsExec::objRefs
+							auto insExecDfa = GetInsExec(traceExecCSTop->insExecRefs.start + ieCSTop->ins);
+							PushObjRefLink(insExecDfa->objRefs, ieOSTop->objectId);
 						}
 						break;
 					case AstInsType::EndObject:
 						{
 							CHECK_ERROR(context.createStack != -1, ERROR_MESSAGE_PREFIX L"There is no created object.");
 
+							// pop a create stack
 							auto ieCSTop = GetInsExec_CreateStack(context.createStack);
 							context.createStack = ieCSTop->previous;
-							PushObjectStack(context, ieCSTop->objectId);
 
-							auto ieObject = GetInsExec_Object(ieCSTop->objectId);
-							if (ieObject->eoIns.trace != -1)
-							{
-								auto ref = insExec_InsRefLinks.Allocate();
-								auto next = GetInsExec_InsRefLink(ref);
-								*next = ieObject->eoIns;
-								ieObject->eoIns.previous = ref;
-							}
-							ieObject->eoIns.trace = trace->allocatedIndex;
-							ieObject->eoIns.ins = insRef;
+							// push an object
+							CHECK_ERROR(ieCSTop->associatedObjectId != -1, ERROR_MESSAGE_PREFIX L"An object has not been associated to the create stack yet.");
+							PushObjectStack(context, ieCSTop->associatedObjectId);
 
-							insExec->objectId = ieCSTop->objectId;
+							// InsExec::eoInsRefs
+							auto traceCSTop = GetTrace(ieCSTop->trace);
+							auto traceExecCSTop = GetTraceExec(traceCSTop->traceExecRef);
+							auto insExecCreate = GetInsExec(traceExecCSTop->insExecRefs.start + ieCSTop->ins);
+							PushInsRefLink(insExecCreate->eoInsRefs, trace->allocatedIndex, insRef);
+
+							// InsExec_Object::eoInsRefs
+							auto ieObject = GetInsExec_Object(ieCSTop->associatedObjectId);
+							PushInsRefLink(ieObject->eoInsRefs, trace->allocatedIndex, insRef);
 						}
 						break;
 					case AstInsType::DiscardValue:
@@ -366,30 +399,14 @@ PartialExecuteOrdinaryTrace
 							context.lriStored = -1;
 						}
 						break;
-					case AstInsType::ResolveAmbiguity:
-						{
-							CHECK_ERROR(GetStackTop(context) - GetStackBase(context) >= (vint32_t)ins.count, ERROR_MESSAGE_PREFIX L"Pushed values not enough create an ambiguity node.");
-							for (vint i = 0; i < ins.count; i++)
-							{
-								auto ieObjTop = GetInsExec_ObjectStack(context.objectStack);
-								context.objectStack = ieObjTop->previous;
-							}
-
-							auto ieObject = NewObject();
-							ieObject->pushedObjectId = ieObject->allocatedIndex;
-							ieObject->dfa_bo_bolr_ra_Trace = trace->allocatedIndex;
-							ieObject->dfa_bo_bolr_ra_Ins = insRef;
-							PushObjectStack(context, ieObject->pushedObjectId);
-
-							insExec->objectId = ieObject->pushedObjectId;
-						}
-						break;
 					case AstInsType::Token:
 					case AstInsType::EnumItem:
 						{
 							PushObjectStack(context, -3);
 						}
 						break;
+					case AstInsType::ResolveAmbiguity:
+						CHECK_FAIL(ERROR_MESSAGE_PREFIX L"ResolveAmbiguity should not appear in traces.");
 					default:;
 						CHECK_FAIL(ERROR_MESSAGE_PREFIX L"Unrecognizabled instruction.");
 					}
@@ -584,65 +601,32 @@ BuildObjectHierarchy
 
 			void TraceManager::BuildObjectHierarchy()
 			{
-				// fill topDfaObjectId
-				IterateObjects<&InsExec_Object::previous>(topObject, [this](InsExec_Object* ieObject)
-				{
-					auto topDfaObject = ieObject;
-					while (topDfaObject->dfaObjectId != -1)
-					{
-						if (topDfaObject->topDfaObjectId != -1)
-						{
-							topDfaObject = GetInsExec_Object(topDfaObject->topDfaObjectId);
-							break;
-						}
-						else
-						{
-							topDfaObject = GetInsExec_Object(topDfaObject->dfaObjectId);
-						}
-					}
-
-					auto current = ieObject;
-					while (current->topDfaObjectId == -1)
-					{
-						current->topDfaObjectId = topDfaObject->pushedObjectId;
-						if (current->dfaObjectId == -1) break;
-						current = GetInsExec_Object(current->dfaObjectId);
-					}
-				});
-				
-				// fill topLrObjectId
+				// InsExec_Object::topLrObjectId
 				IterateObjects<&InsExec_Object::next>(bottomObject, [this](InsExec_Object* ieObject)
 				{
 					if (ieObject->lrObjectId != -1)
 					{
-						auto top = GetInsExec_Object(ieObject->topDfaObjectId);
-						auto lr = GetInsExec_Object(ieObject->lrObjectId);
-						auto toplr = GetInsExec_Object(lr->topDfaObjectId);
-						top->dfaLrObjectId = toplr->pushedObjectId;
-						toplr->dfaLrObjectReferenced = true;
+						auto lrObject = GetInsExec_Object(ieObject->lrObjectId);
+						lrObject->lrObjectReferenced = true;
+
+						if (lrObject->topLrObjectId)
+						{
+							ieObject->topLrObjectId = lrObject->topLrObjectId;
+						}
+						else
+						{
+							ieObject->topLrObjectId = lrObject->allocatedIndex;
+						}
 					}
 				});
-
-				// fill topLrObjectId and bottomLrObjectId
+				
+				// InsExec_Object::bottomLrObjects
 				IterateObjects<&InsExec_Object::next>(bottomObject, [this](InsExec_Object* ieObject)
 				{
-					if (ieObject->dfaLrObjectId != -1 && !ieObject->dfaLrObjectReferenced)
+					if (ieObject->lrObjectId != -1 && !ieObject->lrObjectReferenced)
 					{
-						auto topLrObject = ieObject;
-						while (topLrObject->dfaLrObjectId != -1)
-						{
-							topLrObject = GetInsExec_Object(topLrObject->dfaLrObjectId);
-						}
-						ieObject->topLrObjectId = topLrObject->pushedObjectId;
-
-						if (topLrObject->bottomLrObjects.id != -1)
-						{
-							auto ref = insExec_ObjRefLinks.Allocate();
-							auto next = GetInsExec_ObjRefLink(ref);
-							*next = topLrObject->bottomLrObjects;
-							topLrObject->bottomLrObjects.previous = ref;
-						}
-						topLrObject->bottomLrObjects.id = ieObject->pushedObjectId;
+						auto topLrObject = GetInsExec_Object(ieObject->topLrObjectId);
+						PushObjRefLink(topLrObject->bottomLrObjects, ieObject->allocatedIndex);
 					}
 				});
 			}

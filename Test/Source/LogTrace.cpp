@@ -260,7 +260,7 @@ void RenderTrace(
 			}
 			else
 			{
-				writer.WriteLine(L"  CreatingObject: " + itow(tm.GetInsExec_CreateStack(traceExec->context.createStack)->objectId));
+				writer.WriteLine(L"  CreatingObject: " + itow(tm.GetInsExec_CreateStack(traceExec->context.createStack)->associatedObjectId));
 			}
 
 			if (traceExec->branchData.forwardTrace != -1)
@@ -365,61 +365,81 @@ void RenderTrace(
 			{
 				auto traceExec = tm.GetTraceExec(trace->traceExecRef);
 				auto insExec = tm.GetInsExec(traceExec->insExecRefs.start + i);
-				writer.WriteString(L"[" + itow(insExec->topCreatedObjectBefore) + L"] ");
+				writer.WriteString(L"[" + itow(tm.GetInsExec_CreateStack(insExec->topCSBefore)->associatedObjectId) + L"] ");
 			}
 
 			LogInstruction(ins, typeName, fieldName, writer);
 
 			if (trace->traceExecRef != -1)
 			{
+				auto logInsRefLink = [&tm, &writer](vint32_t first)
+				{
+					auto ref = first;
+					while (ref != -1)
+					{
+						if (ref != first) writer.WriteString(L", ");
+						auto link = tm.GetInsExec_InsRefLink(ref);
+						writer.WriteString(itow(link->trace) + L"@" + itow(link->ins));
+						ref = link->previous;
+					}
+				};
+
+				auto logObjRefLink = [&tm, &writer](vint32_t first)
+				{
+					auto ref = first;
+					while (ref != -1)
+					{
+						if (ref != first) writer.WriteString(L", ");
+						auto link = tm.GetInsExec_ObjRefLink(ref);
+						writer.WriteString(itow(link->id));
+						ref = link->previous;
+					}
+				};
+
 				auto traceExec = tm.GetTraceExec(trace->traceExecRef);
 				auto insExec = tm.GetInsExec(traceExec->insExecRefs.start + i);
-				if (insExec->objectId != -1)
+				if (insExec->createdObjectId != -1)
 				{
-					auto ieObject = tm.GetInsExec_Object(insExec->objectId);
+					auto ieObject = tm.GetInsExec_Object(insExec->createdObjectId);
 					writer.WriteString(
-						L"      obj:" + itow(insExec->objectId) +
+						L"      obj:" + itow(ieObject->allocatedIndex) +
 						L", lr:" + itow(ieObject->lrObjectId) +
-						L", dfa:" + itow(ieObject->dfaObjectId) +
-						L", new:" + itow(ieObject->dfa_bo_bolr_ra_Trace) +
-						L"@" + itow(ieObject->dfa_bo_bolr_ra_Ins)
-						);
-					if (ieObject->eoIns.trace != -1)
+						L", new:" + itow(ieObject->bo_bolr_Trace) +
+						L"@" + itow(ieObject->bo_bolr_Ins)
+					);
+
+					if (ieObject->dfaInsRefs!= -1)
 					{
-						writer.WriteString(ieObject->eoIns.previous == -1 ? L" cls:[" : L" clsM:[");
-						auto current = &ieObject->eoIns;
-						while (current)
-						{
-							if (current != &ieObject->eoIns)
-							{
-								writer.WriteString(L", ");
-							}
-							writer.WriteString(itow(current->trace) + L"@" + itow(current->ins));
-							current = current->previous == -1 ? nullptr : tm.GetInsExec_InsRefLink(current->previous);
-						}
+						writer.WriteString(L" dfas:[");
+						logInsRefLink(ieObject->dfaInsRefs);
 						writer.WriteString(L"]");
 					}
 
-					writer.WriteString(
-						L", tdfa:" + itow(ieObject->topDfaObjectId) +
-						L", dlr:" + itow(ieObject->dfaLrObjectId) +
-						L", tlr:" + itow(ieObject->topLrObjectId)
-						);
-					if (ieObject->bottomLrObjects.id != -1)
+					if (ieObject->eoInsRefs != -1)
 					{
-						writer.WriteString(ieObject->bottomLrObjects.previous == -1 ? L" blr:[" : L" blrM:[");
-						auto current = &ieObject->bottomLrObjects;
-						while (current)
-						{
-							if (current != &ieObject->bottomLrObjects)
-							{
-								writer.WriteString(L", ");
-							}
-							writer.WriteString(itow(current->id));
-							current = current->previous == -1 ? nullptr : tm.GetInsExec_ObjRefLink(current->previous);
-						}
+						writer.WriteString(L" eos:[");
+						logInsRefLink(ieObject->eoInsRefs);
 						writer.WriteString(L"]");
 					}
+
+					if (ieObject->bottomLrObjects != -1)
+					{
+						writer.WriteString(L" blrs:[");
+						logObjRefLink(ieObject->bottomLrObjects);
+						writer.WriteString(L"]");
+					}
+					writer.WriteLine(L"");
+				}
+				if (insExec->objRefs != -1)
+				{
+					writer.WriteString(L"      objRefs: ");
+					logObjRefLink(insExec->objRefs);
+					writer.WriteLine(L"");
+				}
+				if (insExec->eoInsRefs != -1)
+				{
+					writer.WriteString(L"      eoInsRefs: ");
+					logInsRefLink(insExec->eoInsRefs);
 					writer.WriteLine(L"");
 				}
 			}

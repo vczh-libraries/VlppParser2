@@ -210,23 +210,9 @@ TraceManager (Data Structures -- Input/EndOfInput)
 TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 ***********************************************************************/
 
-			struct InsExec
-			{
-				// the allocated object id for following instructions:
-				//   BeginObject					: the id of the created object
-				//   BeginObjectLeftRecursive		: the id of the created object
-				//   DelayFieldAssignment			: the id of the created object
-				//   ReopenObject					: the id of the operating object
-				//   EndObject						: the id of the operating object
-				//   ResolveAmbiguity				: the id of the created object
-				vint32_t							objectId = -1;
-
-				// the associated object in the top create stack before executing this instruction
-				vint32_t							topCreatedObjectBefore = -1;
-			};
-
 			struct InsExec_InsRefLink
 			{
+				vint32_t							allocatedIndex = -1;
 				vint32_t							previous = -1;
 				vint32_t							trace = -1;
 				vint32_t							ins = -1;
@@ -234,8 +220,27 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 
 			struct InsExec_ObjRefLink
 			{
+				vint32_t							allocatedIndex = -1;
 				vint32_t							previous = -1;
 				vint32_t							id = -1;
+			};
+
+			struct InsExec
+			{
+				// BO/BOLR:
+				//   the created object
+				vint32_t							createdObjectId = -1;
+
+				// DFA:
+				//   all associated objects
+				vint32_t							objRefs;
+
+				// BO/BOLR/DFA:
+				//   EndingObject instructions that close objects or create stack created by the current instruction
+				vint32_t							eoInsRefs;
+
+				// InsExec_CreateStack before executing the current instruction
+				vint32_t							topCSBefore = -1;
 			};
 
 			struct InsExec_Object
@@ -246,38 +251,25 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 				vint32_t							previous = -1;
 				vint32_t							next = -1;
 
-				// pushedObjectId could be:
-				//   >= 0 : known object
-				//   <=-3 : DFA created object, the value is (-allocatedIndex - 3)
-				vint32_t							pushedObjectId = -1;
-
 				// lrObjectId is the object it takes while being created by BOLR
-				// dfaObjectId is the DFA created object that this object is associated to the last time
 				vint32_t							lrObjectId = -1;
-				vint32_t							dfaObjectId = -1;
 
 				// instruction that creates this object
-				vint32_t							dfa_bo_bolr_ra_Trace = -1;
-				vint32_t							dfa_bo_bolr_ra_Ins = -1;
+				vint32_t							bo_bolr_Trace = -1;
+				vint32_t							bo_bolr_Ins = -1;
+
+				// DelayFieldAssignment instructions that associates to the current object
+				vint32_t							dfaInsRefs;
 
 				// EndObject instructions that close this object
-				InsExec_InsRefLink					eoIns;
+				vint32_t							eoInsRefs;
 
-				// topDfaObjectId is the end of object->dfaObjectId
-				// if none, then it is the object itself
-				vint32_t							topDfaObjectId = -1;
-
-				// if a->lrObjectId == b, a->topDfaObjectId->dfaLrObjectId == b->topDfaObjectId
-				// -1 otherwise
-				vint32_t							dfaLrObjectId = -1;
-				bool								dfaLrObjectReferenced = false;
-
-				// topDfaObjectId is the end of object->dfaLrObjectId
-				// -1 if none
+				// lrObjectReferenced is true when there exists anotherObject->lrObjectId is the current object
+				// topDfaObjectId is the end of object->lrObjectId
+				// bottomLrObjects are all objects that lrObjectId is the current object and lrObjectReferenced is false
+				bool								lrObjectReferenced = false;
 				vint32_t							topLrObjectId = -1;
-
-				// all objects whose topLrObjectId is the current object
-				InsExec_ObjRefLink					bottomLrObjects;
+				vint32_t							bottomLrObjects = -1;
 			};
 
 			struct InsExec_ObjectStack
@@ -292,8 +284,14 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 			{
 				vint32_t							allocatedIndex = -1;
 				vint32_t							previous = -1;
-				vint32_t							objectId = -1;			// InsExec_Object::pushedObjectId
-				vint32_t							stackBase = -1;
+				vint32_t							stackBase = -1;			// the number of objects in the object stack that is frozen
+
+				// the instruction that creates the current InsExec_CreateStack
+				vint32_t							trace = -1;
+				vint32_t							ins = -1;
+
+				// the object id that is associated to the current InsExec_CreateStack
+				vint32_t							associatedObjectId = -1;
 			};
 
 			struct InsExec_Context
@@ -378,12 +376,6 @@ TraceManager
 			class TraceManager : public Object, public virtual IExecutor
 			{
 			protected:
-				template<typename T>
-				struct Link : T
-				{
-					vint32_t								allocatedIndex = -1;
-				};
-
 				Executable&									executable;
 				const ITypeCallback*						typeCallback = nullptr;
 				vint32_t									maxSwitchValues = 0;
@@ -453,8 +445,8 @@ TraceManager
 				AllocateOnly<TraceExec>						traceExecs;
 				collections::Array<InsExec>					insExecs;
 				AllocateOnly<InsExec_Object>				insExec_Objects;
-				AllocateOnly<Link<InsExec_InsRefLink>>		insExec_InsRefLinks;
-				AllocateOnly<Link<InsExec_ObjRefLink>>		insExec_ObjRefLinks;
+				AllocateOnly<InsExec_InsRefLink>			insExec_InsRefLinks;
+				AllocateOnly<InsExec_ObjRefLink>			insExec_ObjRefLinks;
 				AllocateOnly<InsExec_ObjectStack>			insExec_ObjectStacks;
 				AllocateOnly<InsExec_CreateStack>			insExec_CreateStacks;
 
@@ -465,6 +457,8 @@ TraceManager
 				vint32_t									GetStackTop(InsExec_Context& context);
 				InsExec_ObjectStack*						PushObjectStack(InsExec_Context& context, vint32_t objectId);
 				InsExec_CreateStack*						PushCreateStack(InsExec_Context& context);
+				void										PushInsRefLink(vint32_t& link, vint32_t trace, vint32_t ins);
+				void										PushObjRefLink(vint32_t& link, vint32_t id);
 				void										PartialExecuteOrdinaryTrace(Trace* trace);
 				void										PartialExecuteTraces();
 
