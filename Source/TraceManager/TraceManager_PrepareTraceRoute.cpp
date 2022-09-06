@@ -160,18 +160,7 @@ PartialExecuteOrdinaryTrace
 
 			InsExec_Object* TraceManager::NewObject()
 			{
-				auto ieObject = GetInsExec_Object(insExec_Objects.Allocate());
-				ieObject->previous = topObject;
-				if (topObject != -1)
-				{
-					GetInsExec_Object(topObject)->next = ieObject->allocatedIndex;
-				}
-				topObject = ieObject->allocatedIndex;
-				if (bottomObject == -1)
-				{
-					bottomObject = ieObject->allocatedIndex;
-				}
-				return ieObject;
+				return GetInsExec_Object(insExec_Objects.Allocate());
 			}
 
 			vint32_t TraceManager::GetStackBase(InsExec_Context& context)
@@ -812,17 +801,6 @@ BuildAmbiguityStructures
 /***********************************************************************
 DebugCheckTraceExecData
 ***********************************************************************/
-
-			template<vint32_t(InsExec_Object::* forward), typename T>
-			void TraceManager::IterateObjects(vint32_t first, T&& callback)
-			{
-				while (first != -1)
-				{
-					auto ieObject = GetInsExec_Object(first);
-					first = ieObject->*forward;
-					callback(ieObject);
-				}
-			}
 
 #if defined VCZH_MSVC && defined _DEBUG
 			void TraceManager::DebugCheckTraceExecData()

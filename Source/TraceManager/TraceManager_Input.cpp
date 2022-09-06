@@ -53,7 +53,6 @@ Initialize
 				temporaryConditionStack.Clear();
 				temporaryConditionStackSize = 0;
 
-				topObject = -1;
 				traceExecs.Clear();
 				insExecs.Resize(0);
 				insExec_Objects.Clear();

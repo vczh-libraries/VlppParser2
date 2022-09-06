@@ -258,10 +258,6 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 			{
 				vint32_t							allocatedIndex = -1;
 
-				// a double linked list to connect all InsExec_Object
-				vint32_t							previous = -1;
-				vint32_t							next = -1;
-
 				// InsExec_ObjRefLink
 				// lrObjectIds are objects it takes while being created by BOLR
 				vint32_t							lrObjectIds = -1;
@@ -427,8 +423,6 @@ TraceManager
 
 			protected:
 				// PrepareTraceRoute
-				vint32_t									bottomObject = -1;
-				vint32_t									topObject = -1;
 				AllocateOnly<TraceExec>						traceExecs;
 				collections::Array<InsExec>					insExecs;
 				AllocateOnly<InsExec_Object>				insExec_Objects;
@@ -469,9 +463,8 @@ TraceManager
 				// phase: BuildAmbiguityStructures
 				void										BuildAmbiguityStructures();
 
-				template<vint32_t(InsExec_Object::* forward), typename T>
-				void										IterateObjects(vint32_t first, T&& callback);
 #if defined VCZH_MSVC && defined _DEBUG
+				// phase: DebugCheckTraceExecData
 				void										DebugCheckTraceExecData();
 #endif
 
