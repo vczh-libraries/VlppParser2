@@ -233,6 +233,16 @@ PartialExecuteOrdinaryTrace
 				link = newLink->allocatedIndex;
 			}
 
+			vint32_t TraceManager::JoinInsRefLink(vint32_t first, vint32_t second)
+			{
+				// TODO:
+			}
+
+			vint32_t TraceManager::JoinObjRefLink(vint32_t first, vint32_t second)
+			{
+				// TODO:
+			}
+
 			InsExec_ObjectStack* TraceManager::PushObjectStackSingle(InsExec_Context& context, vint32_t objectId)
 			{
 				auto ie = GetInsExec_ObjectStack(insExec_ObjectStacks.Allocate());
@@ -247,7 +257,7 @@ PartialExecuteOrdinaryTrace
 			{
 				auto ie = GetInsExec_ObjectStack(insExec_ObjectStacks.Allocate());
 				ie->previous = context.objectStack;
-				ie->objectIds = linkId;
+				ie->objectIds = JoinObjRefLink(ie->objectIds, linkId);
 				ie->pushedCount = GetStackTop(context) + 1;
 				context.objectStack = ie->allocatedIndex;
 				return ie;
@@ -418,18 +428,18 @@ PartialExecuteOrdinaryTrace
 					case AstInsType::LriStore:
 						{
 							CHECK_ERROR(GetStackTop(context) - GetStackBase(context) >= 1, ERROR_MESSAGE_PREFIX L"Pushed values not enough.");
-							CHECK_ERROR(context.lriStored == -1, ERROR_MESSAGE_PREFIX L"LriFetch is not executed before the next LriStore.");
+							CHECK_ERROR(context.lriStoredObjects == -1, ERROR_MESSAGE_PREFIX L"LriFetch is not executed before the next LriStore.");
 
 							auto ieObjTop = GetInsExec_ObjectStack(context.objectStack);
 							context.objectStack = ieObjTop->previous;
-							context.lriStored = ieObjTop->objectIds;
+							context.lriStoredObjects = ieObjTop->objectIds;
 						}
 						break;
 					case AstInsType::LriFetch:
 						{
-							CHECK_ERROR(context.lriStored != -1, ERROR_MESSAGE_PREFIX L"LriStore is not executed before the next LriFetch.");
-							PushObjectStackMultiple(context, context.lriStored);
-							context.lriStored = -1;
+							CHECK_ERROR(context.lriStoredObjects != -1, ERROR_MESSAGE_PREFIX L"LriStore is not executed before the next LriFetch.");
+							PushObjectStackMultiple(context, context.lriStoredObjects);
+							context.lriStoredObjects = -1;
 						}
 						break;
 					case AstInsType::Token:
@@ -452,10 +462,73 @@ PartialExecuteOrdinaryTrace
 PartialExecuteTraces
 ***********************************************************************/
 
-			template<typename T, vint32_t(T::* next), vint32_t(T::* link), vint32_t(InsExec_Context::* stack)>
-			void TraceManager::MergeStack(Trace* mergeTrace)
+			vuint64_t MergeStack_MagicCounter = 0;
+
+#define NEW_MERGE_STACK_MAGIC_COUNTER (void)(MergeStack_MagicCounter++)
+
+			template<typename T, T* (TraceManager::* get)(vint32_t), vint32_t(InsExec_Context::* stack), typename TMerge>
+			vint32_t TraceManager::MergeStack(Trace* mergeTrace, AllocateOnly<T>& allocator, TMerge&& merge)
 			{
-				// put an auto-increase id as "visited" in objects and stacks to prevent from using SortedList
+				Array<T*> stacks(mergeTrace->predecessorCount);
+
+				// fill the first level of stacks objects
+				{
+					vint index = 0;
+					vint32_t predecessorId = mergeTrace->predecessors.first;
+					while (predecessorId != -1)
+					{
+						auto predecessor = GetTrace(predecessorId);
+						auto traceExec = GetTraceExec(predecessor->traceExecRef);
+						stacks[index++] = (this->*get)(traceExec->context.*stack);
+						predecessorId = predecessor->predecessors.siblingNext;
+					}
+				}
+
+				vint32_t stackTop = -1;
+				vint32_t* pStackPrevious = &stackTop;
+				while (stacks[0] != 0)
+				{
+					// check if all stack objects are the same
+					bool sameStackObject = true;
+					for (vint index = 1; index < stacks.Count(); index++)
+					{
+						if (stacks[0] != stacks[index])
+						{
+							sameStackObject = false;
+							break;
+						}
+					}
+
+					if (sameStackObject)
+					{
+						// if yes, reuse this stack object
+						*pStackPrevious = stacks[0]->allocatedIndex;
+						break;
+					}
+
+					// otherwise, create a new stack object to merge all
+					auto newStack = (this->*get)(allocator.Allocate());
+					*pStackPrevious = newStack->allocatedIndex;
+					pStackPrevious = &(newStack->previous);
+
+					NEW_MERGE_STACK_MAGIC_COUNTER;
+					for (vint index = 0; index < stacks.Count(); index++)
+					{
+						if (stacks[index]->mergeCounter != MergeStack_MagicCounter)
+						{
+							stacks[index]->mergeCounter = MergeStack_MagicCounter;
+							merge(newStack, stacks[index]);
+							newStack->objectIds = JoinObjRefLink(newStack->objectIds, stacks[index]->objectIds);
+						}
+					}
+
+					// move to next level of stack objects
+					for (vint index = 0; index < stacks.Count(); index++)
+					{
+						stacks[index] = (this->*get)(stacks[index]->previous);
+					}
+				}
+				return stackTop;
 			}
 
 			void TraceManager::PartialExecuteTraces()
@@ -470,21 +543,17 @@ PartialExecuteTraces
 						}
 						else
 						{
-							auto&& contextComming = GetTraceExec(predecessor->traceExecRef)->context;
-							auto&& contextBaseline = GetTraceExec(trace->traceExecRef)->context;
-							if (visitCount == 1)
+							if (visitCount > 1)
 							{
-								contextBaseline = contextComming;
-							}
-							else
-							{
+								auto&& contextComming = GetTraceExec(predecessor->traceExecRef)->context;
+								auto&& contextBaseline = GetTraceExec(trace->predecessors.first)->context;
 								auto error = []()
 								{
 									CHECK_FAIL(ERROR_MESSAGE_PREFIX L"Execution results of traces to merge are different.");
 								};
 
 								// check if the two lriStored be both empty or non-empty
-								if ((contextBaseline.lriStored != -1) != (contextComming.lriStored != -1)) error();
+								if ((contextBaseline.lriStoredObjects != -1) != (contextComming.lriStoredObjects != -1)) error();
 
 								// check if the two objectStack have the same depth
 								if ((contextBaseline.objectStack == -1) != (contextComming.objectStack == -1)) error();
@@ -511,30 +580,46 @@ PartialExecuteTraces
 									stack1 = stackObj1->previous;
 									stack2 = stackObj2->previous;
 								}
-
 							}
 
 							if (visitCount == predecessorCount)
 							{
 								// merge stacks so that objects created in all branches are accessible
-								MergeStack<
+								auto traceExec = GetTraceExec(trace->traceExecRef);
+
+								traceExec->context.objectStack = MergeStack<
 									InsExec_ObjectStack,
-									&InsExec_ObjectStack::previous,
-									&InsExec_ObjectStack::objectIds,
+									&TraceManager::GetInsExec_ObjectStack,
 									&InsExec_Context::objectStack
-								>(trace);
-								MergeStack<
+								>(
+									trace,
+									insExec_ObjectStacks,
+									[this](InsExec_ObjectStack* newStack, InsExec_ObjectStack* commingStack)
+									{
+										// TODO:
+									});
+
+								traceExec->context.createStack = MergeStack<
 									InsExec_CreateStack,
-									&InsExec_CreateStack::previous,
-									&InsExec_CreateStack::objectIds,
+									&TraceManager::GetInsExec_CreateStack,
 									&InsExec_Context::createStack
-								>(trace);
+								>(
+									trace,
+									insExec_CreateStacks,
+									[this](InsExec_CreateStack* newStack, InsExec_CreateStack* commingStack)
+									{
+										// TODO:
+									});
+
+								// TODO: join lriStoredObjects
 							}
 						}
 					}
 				);
 #undef ERROR_MESSAGE_PREFIX
 			}
+
+#undef NEW_MERGE_STACK_MAGIC_COUNTER
 
 /***********************************************************************
 BuildAmbiguityStructures

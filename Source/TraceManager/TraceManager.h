@@ -203,7 +203,7 @@ TraceManager (Data Structures -- Input/EndOfInput)
 
 				// (filled by PrepareTraceRoute)
 				vint32_t				traceExecRef = -1;			// the allocated TraceExec
-				vint32_t				iterateCounter = 0;			// a termporary counter for IterateSurvivedTraces internal use
+				vint32_t				iterateCounter = 0;			// a temporary counter for IterateSurvivedTraces internal use
 			};
 
 /***********************************************************************
@@ -268,6 +268,8 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 				// InsExec_InsRefLink
 				// EndObject instructions that close this object
 				vint32_t							eoInsRefs = -1;
+
+				vuint64_t							mergeCounter = -1;			// a temporary counter for MergeStack internal use
 			};
 
 			struct InsExec_ObjectStack
@@ -276,6 +278,9 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 				vint32_t							previous = -1;
 				vint32_t							objectIds = -1;			// InsExec_ObjRefLink
 				vint32_t							pushedCount = -1;		// number for InsExec_CreateStack::stackBase
+				vint32_t							visited = -1;
+
+				vuint64_t							mergeCounter = -1;			// a temporary counter for MergeStack internal use
 			};
 
 			struct InsExec_CreateStack
@@ -290,13 +295,15 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 
 				// InsExec_ObjRefLink assigned by BO/BOLA/RO
 				vint32_t							objectIds = -1;
+
+				vuint64_t							mergeCounter = -1;		// a temporary counter for MergeStack internal use
 			};
 
 			struct InsExec_Context
 			{
 				vint32_t							objectStack = -1;		// InsExec_ObjectStack after executing instructions
 				vint32_t							createStack = -1;		// InsExec_CreatedStack after executing instructions
-				vint32_t							lriStored = -1;			// LriStore stored InsExec_ObjRefLink after executing instructions
+				vint32_t							lriStoredObjects = -1;	// LriStore stored InsExec_ObjRefLink after executing instructions
 			};
 
 			struct TraceInsLists
@@ -455,12 +462,14 @@ TraceManager
 				vint32_t									GetStackTop(InsExec_Context& context);
 				void										PushInsRefLink(vint32_t& link, vint32_t trace, vint32_t ins);
 				void										PushObjRefLink(vint32_t& link, vint32_t id);
+				vint32_t									JoinInsRefLink(vint32_t first, vint32_t second);
+				vint32_t									JoinObjRefLink(vint32_t first, vint32_t second);
 				InsExec_ObjectStack*						PushObjectStackSingle(InsExec_Context& context, vint32_t objectId);
 				InsExec_ObjectStack*						PushObjectStackMultiple(InsExec_Context& context, vint32_t linkId);
 				InsExec_CreateStack*						PushCreateStack(InsExec_Context& context);
 				void										PartialExecuteOrdinaryTrace(Trace* trace);
-				template<typename T, vint32_t (T::*next), vint32_t (T::*link), vint32_t (InsExec_Context::*stack)>
-				void										MergeStack(Trace* mergeTrace);
+				template<typename T, T* (TraceManager::*get)(vint32_t), vint32_t (InsExec_Context::*stack), typename TMerge>
+				vint32_t									MergeStack(Trace* mergeTrace, AllocateOnly<T>& allocator, TMerge&& merge);
 				void										PartialExecuteTraces();
 
 				void										BuildAmbiguityStructures();
