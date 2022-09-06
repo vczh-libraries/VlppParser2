@@ -455,8 +455,10 @@ TraceManager
 				AllocateOnly<InsExec_ObjectStack>			insExec_ObjectStacks;
 				AllocateOnly<InsExec_CreateStack>			insExec_CreateStacks;
 
+				// phase: AllocateExecutionData
 				void										AllocateExecutionData();
 
+				// phase: PartialExecuteTraces - PartialExecuteOrdinaryTrace
 				InsExec_Object*								NewObject();
 				vint32_t									GetStackBase(InsExec_Context& context);
 				vint32_t									GetStackTop(InsExec_Context& context);
@@ -468,12 +470,21 @@ TraceManager
 				InsExec_ObjectStack*						PushObjectStackMultiple(InsExec_Context& context, vint32_t linkId);
 				InsExec_CreateStack*						PushCreateStack(InsExec_Context& context);
 				void										PartialExecuteOrdinaryTrace(Trace* trace);
+
+				// phase: PartialExecuteTraces - EnsureInsExecContextCompatible
+				void										EnsureInsExecContextCompatible(Trace* baselineTrace, Trace* commingTrace);
+
+				// phase: PartialExecuteTraces - MergeInsExecContext
 				void										PushInsRefLinkWithCounter(vint32_t& link, vint32_t& comming);
 				void										PushObjRefLinkWithCounter(vint32_t& link, vint32_t& comming);
 				template<typename T, T* (TraceManager::*get)(vint32_t), vint32_t (InsExec_Context::*stack), typename TMerge>
 				vint32_t									MergeStack(Trace* mergeTrace, AllocateOnly<T>& allocator, TMerge&& merge);
+				void										MergeInsExecContext(Trace* mergeTrace);
+
+				// phase: PartialExecuteTraces
 				void										PartialExecuteTraces();
 
+				// phase: BuildAmbiguityStructures
 				void										BuildAmbiguityStructures();
 
 				template<vint32_t(InsExec_Object::* forward), typename T>

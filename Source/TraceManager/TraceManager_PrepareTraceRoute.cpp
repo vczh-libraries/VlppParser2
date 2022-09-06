@@ -506,7 +506,52 @@ PartialExecuteOrdinaryTrace
 			}
 
 /***********************************************************************
-PartialExecuteTraces
+EnsureInsExecContextCompatible
+***********************************************************************/
+
+			void TraceManager::EnsureInsExecContextCompatible(Trace* baselineTrace, Trace* commingTrace)
+			{
+#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::EnsureInsExecContextCompatible(Trace*, Trace*)#"
+				auto&& contextComming = GetTraceExec(baselineTrace->traceExecRef)->context;
+				auto&& contextBaseline = GetTraceExec(commingTrace->traceExecRef)->context;
+				auto error = []()
+				{
+					CHECK_FAIL(ERROR_MESSAGE_PREFIX L"Execution results of traces to merge are different.");
+				};
+
+				// check if the two lriStored be both empty or non-empty
+				if ((contextBaseline.lriStoredObjects != -1) != (contextComming.lriStoredObjects != -1)) error();
+
+				// check if the two objectStack have the same depth
+				if ((contextBaseline.objectStack == -1) != (contextComming.objectStack == -1)) error();
+				if (contextBaseline.objectStack != -1)
+				{
+					auto stackBaseline = GetInsExec_ObjectStack(contextBaseline.objectStack);
+					auto stackComming = GetInsExec_ObjectStack(contextComming.objectStack);
+					if (stackBaseline->pushedCount != stackComming->pushedCount) error();
+				}
+
+				// check if the two createStack have the same depth
+				// check each corresponding createStack have the same stackBase
+				vint32_t stack1 = contextBaseline.createStack;
+				vint32_t stack2 = contextComming.createStack;
+				while (stack1 != stack2)
+				{
+					if (stack1 == -1 || stack2 == -1) error();
+
+					auto stackObj1 = GetInsExec_CreateStack(stack1);
+					auto stackObj2 = GetInsExec_CreateStack(stack2);
+
+					if (stackObj1->stackBase != stackObj2->stackBase) error();
+
+					stack1 = stackObj1->previous;
+					stack2 = stackObj2->previous;
+				}
+#undef ERROR_MESSAGE_PREFIX
+			}
+
+/***********************************************************************
+MergeInsExecContext
 ***********************************************************************/
 
 			vuint64_t MergeStack_MagicStackCounter = 0;
@@ -588,6 +633,52 @@ PartialExecuteTraces
 				return stackTop;
 			}
 
+			void TraceManager::MergeInsExecContext(Trace* mergeTrace)
+			{
+				// merge stacks so that objects created in all branches are accessible
+				auto traceExec = GetTraceExec(mergeTrace->traceExecRef);
+
+				traceExec->context.objectStack = MergeStack<
+					InsExec_ObjectStack,
+					&TraceManager::GetInsExec_ObjectStack,
+					&InsExec_Context::objectStack
+				>(
+					mergeTrace,
+					insExec_ObjectStacks,
+					[this](InsExec_ObjectStack* newStack, InsExec_ObjectStack* commingStack)
+					{
+						// all commingStack->pushedCount are ensured to be the same
+						newStack->pushedCount = commingStack->pushedCount;
+					});
+
+				traceExec->context.createStack = MergeStack<
+					InsExec_CreateStack,
+					&TraceManager::GetInsExec_CreateStack,
+					&InsExec_Context::createStack
+				>(
+					mergeTrace,
+					insExec_CreateStacks,
+					[this](InsExec_CreateStack* newStack, InsExec_CreateStack* commingStack)
+					{
+						// all commingStack->stackBase are ensured to be the same
+						newStack->stackBase = commingStack->stackBase;
+						PushInsRefLinkWithCounter(newStack->createInsRefs, commingStack->createInsRefs);
+					});
+
+				vint32_t predecessorId = mergeTrace->predecessors.first;
+				while (predecessorId != -1)
+				{
+					auto predecessor = GetTrace(predecessorId);
+					predecessorId = predecessor->predecessors.siblingNext;
+					auto predecessorTraceExec = GetTraceExec(predecessor->traceExecRef);
+					PushObjRefLinkWithCounter(traceExec->context.lriStoredObjects, predecessorTraceExec->context.lriStoredObjects);
+				}
+			}
+
+/***********************************************************************
+PartialExecuteTraces
+***********************************************************************/
+
 			void TraceManager::PartialExecuteTraces()
 			{
 #define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::PartialExecuteTraces()#"
@@ -602,83 +693,12 @@ PartialExecuteTraces
 						{
 							if (visitCount > 1)
 							{
-								auto&& contextComming = GetTraceExec(predecessor->traceExecRef)->context;
-								auto&& contextBaseline = GetTraceExec(trace->predecessors.first)->context;
-								auto error = []()
-								{
-									CHECK_FAIL(ERROR_MESSAGE_PREFIX L"Execution results of traces to merge are different.");
-								};
-
-								// check if the two lriStored be both empty or non-empty
-								if ((contextBaseline.lriStoredObjects != -1) != (contextComming.lriStoredObjects != -1)) error();
-
-								// check if the two objectStack have the same depth
-								if ((contextBaseline.objectStack == -1) != (contextComming.objectStack == -1)) error();
-								if (contextBaseline.objectStack != -1)
-								{
-									auto stackBaseline = GetInsExec_ObjectStack(contextBaseline.objectStack);
-									auto stackComming = GetInsExec_ObjectStack(contextComming.objectStack);
-									if (stackBaseline->pushedCount != stackComming->pushedCount) error();
-								}
-
-								// check if the two createStack have the same depth
-								// check each corresponding createStack have the same stackBase
-								vint32_t stack1 = contextBaseline.createStack;
-								vint32_t stack2 = contextComming.createStack;
-								while (stack1 != stack2)
-								{
-									if (stack1 == -1 || stack2 == -1) error();
-
-									auto stackObj1 = GetInsExec_CreateStack(stack1);
-									auto stackObj2 = GetInsExec_CreateStack(stack2);
-
-									if (stackObj1->stackBase != stackObj2->stackBase) error();
-
-									stack1 = stackObj1->previous;
-									stack2 = stackObj2->previous;
-								}
+								EnsureInsExecContextCompatible(predecessor, GetTrace(trace->predecessors.first));
 							}
 
 							if (visitCount == predecessorCount)
 							{
-								// merge stacks so that objects created in all branches are accessible
-								auto traceExec = GetTraceExec(trace->traceExecRef);
-
-								traceExec->context.objectStack = MergeStack<
-									InsExec_ObjectStack,
-									&TraceManager::GetInsExec_ObjectStack,
-									&InsExec_Context::objectStack
-								>(
-									trace,
-									insExec_ObjectStacks,
-									[this](InsExec_ObjectStack* newStack, InsExec_ObjectStack* commingStack)
-									{
-										// all commingStack->pushedCount are ensured to be the same
-										newStack->pushedCount = commingStack->pushedCount;
-									});
-
-								traceExec->context.createStack = MergeStack<
-									InsExec_CreateStack,
-									&TraceManager::GetInsExec_CreateStack,
-									&InsExec_Context::createStack
-								>(
-									trace,
-									insExec_CreateStacks,
-									[this](InsExec_CreateStack* newStack, InsExec_CreateStack* commingStack)
-									{
-										// all commingStack->stackBase are ensured to be the same
-										newStack->stackBase = commingStack->stackBase;
-										PushInsRefLinkWithCounter(newStack->createInsRefs, commingStack->createInsRefs);
-									});
-
-								vint32_t predecessorId = trace->predecessors.first;
-								while (predecessorId != -1)
-								{
-									auto predecessor = GetTrace(predecessorId);
-									predecessorId = predecessor->predecessors.siblingNext;
-									auto predecessorTraceExec = GetTraceExec(predecessor->traceExecRef);
-									PushObjRefLinkWithCounter(traceExec->context.lriStoredObjects, predecessorTraceExec->context.lriStoredObjects);
-								}
+								MergeInsExecContext(trace);
 							}
 						}
 					}
