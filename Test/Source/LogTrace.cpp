@@ -280,13 +280,36 @@ void RenderTrace(
 
 			if (traceExec->context.createStack == -1)
 			{
-				writer.WriteLine(L"  CreatingObject: nullptr");
+				writer.WriteLine(L"  CSTop: nullptr");
 			}
 			else
 			{
-				writer.WriteString(L"  CreatingObject: ");
-				logObjRefLink(tm.GetInsExec_CreateStack(traceExec->context.createStack)->objectIds);
-				writer.WriteLine(L"");
+				auto ieCSTop = tm.GetInsExec_CreateStack(traceExec->context.createStack);
+				writer.WriteString(L"  CSTop: [");
+				logObjRefLink(ieCSTop->objectIds);
+				writer.WriteLine(
+					L"] [" +
+					itow(ieCSTop->allocatedIndex) +
+					L" -> " +
+					itow(ieCSTop->previous) +
+					L"]");
+			}
+
+			if (traceExec->context.objectStack == -1)
+			{
+				writer.WriteLine(L"  OSTop: nullptr");
+			}
+			else
+			{
+				auto ieOSTop = tm.GetInsExec_ObjectStack(traceExec->context.objectStack);
+				writer.WriteString(L"  OSTop: [");
+				logObjRefLink(ieOSTop->objectIds);
+				writer.WriteLine(
+					L"] [" +
+					itow(ieOSTop->allocatedIndex) +
+					L" -> " +
+					itow(ieOSTop->previous) +
+					L"]");
 			}
 
 			if (traceExec->branchData.forwardTrace != -1)

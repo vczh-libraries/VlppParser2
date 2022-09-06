@@ -554,15 +554,12 @@ EnsureInsExecContextCompatible
 MergeInsExecContext
 ***********************************************************************/
 
-			vuint64_t MergeStack_MagicStackCounter = 0;
-			vuint64_t MergeStack_MagicRefLinkCounter = 0;
+			vuint64_t MergeStack_MagicCounter = 0;
 
-#define NEW_MERGE_STACK_MAGIC_STACK_COUNTER (void)(MergeStack_MagicStackCounter++)
-#define NEW_MERGE_STACK_MAGIC_REF_LINK_COUNTER (void)(MergeStack_MagicRefLinkCounter++)
+#define NEW_MERGE_STACK_MAGIC_COUNTER (void)(MergeStack_MagicCounter++)
 
 			void TraceManager::PushInsRefLinkWithCounter(vint32_t& link, vint32_t comming)
 			{
-				NEW_MERGE_STACK_MAGIC_REF_LINK_COUNTER;
 				while (comming != -1)
 				{
 					auto commingStack = GetInsExec_InsRefLink(comming);
@@ -571,25 +568,24 @@ MergeInsExecContext
 					auto insTrace = GetTrace(commingStack->trace);
 					auto insTraceExec = GetTraceExec(insTrace->traceExecRef);
 					auto insExec = GetInsExec(insTraceExec->insExecRefs.start + commingStack->ins);
-					if (insExec->mergeCounter == MergeStack_MagicRefLinkCounter) continue;
+					if (insExec->mergeCounter == MergeStack_MagicCounter) continue;
 
-					insExec->mergeCounter = MergeStack_MagicRefLinkCounter;
+					insExec->mergeCounter = MergeStack_MagicCounter;
 					PushInsRefLink(link, commingStack->trace, commingStack->ins);
 				}
 			}
 
 			void TraceManager::PushObjRefLinkWithCounter(vint32_t& link, vint32_t comming)
 			{
-				NEW_MERGE_STACK_MAGIC_REF_LINK_COUNTER;
 				while (comming != -1)
 				{
 					auto commingStack = GetInsExec_ObjRefLink(comming);
 					comming = commingStack->previous;
 
 					auto ieObject = GetInsExec_Object(commingStack->id);
-					if (ieObject->mergeCounter == MergeStack_MagicRefLinkCounter) continue;
+					if (ieObject->mergeCounter == MergeStack_MagicCounter) continue;
 
-					ieObject->mergeCounter = MergeStack_MagicRefLinkCounter;
+					ieObject->mergeCounter = MergeStack_MagicCounter;
 					PushObjRefLink(link, ieObject->allocatedIndex);
 				}
 			}
@@ -614,7 +610,7 @@ MergeInsExecContext
 
 				vint32_t stackTop = -1;
 				vint32_t* pStackPrevious = &stackTop;
-				while (stacks[0] != 0)
+				while (stacks[0])
 				{
 					// check if all stack objects are the same
 					bool sameStackObject = true;
@@ -639,21 +635,23 @@ MergeInsExecContext
 					*pStackPrevious = newStack->allocatedIndex;
 					pStackPrevious = &(newStack->previous);
 
-					NEW_MERGE_STACK_MAGIC_STACK_COUNTER;
+					// call this macro to create a one-time set for InsExec*
+					NEW_MERGE_STACK_MAGIC_COUNTER;
 					for (vint index = 0; index < stacks.Count(); index++)
 					{
-						if (stacks[index]->mergeCounter != MergeStack_MagicStackCounter)
-						{
-							stacks[index]->mergeCounter = MergeStack_MagicStackCounter;
-							merge(newStack, stacks[index]);
-							PushObjRefLinkWithCounter(newStack->objectIds, stacks[index]->objectIds);
-						}
+						// do not visit the same stack object repeatly
+						if (stacks[index]->mergeCounter == MergeStack_MagicCounter) continue;
+						stacks[index]->mergeCounter = MergeStack_MagicCounter;
+						merge(newStack, stacks[index]);
+
+						// do not visit the same object repeatly
+						PushObjRefLinkWithCounter(newStack->objectIds, stacks[index]->objectIds);
 					}
 
 					// move to next level of stack objects
 					for (vint index = 0; index < stacks.Count(); index++)
 					{
-						stacks[index] = (this->*get)(stacks[index]->previous);
+						stacks[index] = stacks[index]->previous == -1 ? nullptr : (this->*get)(stacks[index]->previous);
 					}
 				}
 				return stackTop;
@@ -691,15 +689,20 @@ MergeInsExecContext
 						PushInsRefLinkWithCounter(newStack->createInsRefs, commingStack->createInsRefs);
 					});
 
+				NEW_MERGE_STACK_MAGIC_COUNTER;
 				vint32_t predecessorId = mergeTrace->predecessors.first;
 				while (predecessorId != -1)
 				{
 					auto predecessor = GetTrace(predecessorId);
 					predecessorId = predecessor->predecessors.siblingNext;
 					auto predecessorTraceExec = GetTraceExec(predecessor->traceExecRef);
+
+					// do not visit the same object repeatly
 					PushObjRefLinkWithCounter(traceExec->context.lriStoredObjects, predecessorTraceExec->context.lriStoredObjects);
 				}
 			}
+
+#undef NEW_MERGE_STACK_MAGIC_COUNTER
 
 /***********************************************************************
 PartialExecuteTraces
@@ -731,9 +734,6 @@ PartialExecuteTraces
 				);
 #undef ERROR_MESSAGE_PREFIX
 			}
-
-#undef NEW_MERGE_STACK_MAGIC_STACK_COUNTER
-#undef NEW_MERGE_STACK_MAGIC_REF_LINK_COUNTER
 
 /***********************************************************************
 BuildAmbiguityStructures
