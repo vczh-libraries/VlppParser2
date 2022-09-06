@@ -307,7 +307,7 @@ PartialExecuteOrdinaryTrace
 				{
 					auto ins = ReadInstruction(insRef, traceExec->insLists);
 					auto insExec = GetInsExec(traceExec->insExecRefs.start + insRef);
-					insExec->topCSBefore = context.createStack;
+					insExec->contextBeforeExecution = context;
 
 					switch (ins.type)
 					{
@@ -429,18 +429,6 @@ PartialExecuteOrdinaryTrace
 								auto traceExecCSTop = GetTraceExec(traceCSTop->traceExecRef);
 								auto insExecCreate = GetInsExec(traceExecCSTop->insExecRefs.start + insRefLink->ins);
 								PushInsRefLink(insExecCreate->eoInsRefs, trace->allocatedIndex, insRef);
-							}
-
-							// InsExec_Object::eoInsRefs
-							{
-								auto ref = ieCSTop->objectIds;
-								while (ref != -1)
-								{
-									auto link = GetInsExec_ObjRefLink(ref);
-									auto ieObject = GetInsExec_Object(link->id);
-									PushInsRefLink(ieObject->eoInsRefs, trace->allocatedIndex, insRef);
-									ref = link->previous;
-								}
 							}
 						}
 						break;
@@ -840,12 +828,6 @@ DebugCheckTraceExecData
 			void TraceManager::DebugCheckTraceExecData()
 			{
 #define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::DebugCheckTraceExecData()#"
-				IterateObjects<&InsExec_Object::previous>(topObject, [this](InsExec_Object* ieObject)
-				{
-					CHECK_ERROR(ieObject->eoInsRefs != -1, ERROR_MESSAGE_PREFIX L"Internal error: InsExec_Object not closed.");
-				});
-
-				
 				IterateSurvivedTraces(
 					[this](Trace* trace, Trace* predecessor, vint32_t visitCount, vint32_t predecessorCount)
 					{

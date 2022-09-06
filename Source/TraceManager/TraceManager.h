@@ -225,6 +225,13 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 				vint32_t							id = -1;
 			};
 
+			struct InsExec_Context
+			{
+				vint32_t							objectStack = -1;		// InsExec_ObjectStack after executing instructions
+				vint32_t							createStack = -1;		// InsExec_CreatedStack after executing instructions
+				vint32_t							lriStoredObjects = -1;	// LriStore stored InsExec_ObjRefLink after executing instructions
+			};
+
 			struct InsExec
 			{
 				// BO/BOLR:
@@ -241,8 +248,8 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 				//   EndingObject instructions that close objects or create stack created by the current instruction
 				vint32_t							eoInsRefs = -1;
 
-				// InsExec_CreateStack before executing the current instruction
-				vint32_t							topCSBefore = -1;
+				// context before executing the current instruction
+				InsExec_Context						contextBeforeExecution;
 
 				vuint64_t							mergeCounter = 0;		// a temporary counter for MergeStack internal use
 			};
@@ -266,10 +273,6 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 				// InsExec_InsRefLink
 				// DelayFieldAssignment instructions that associates to the current object
 				vint32_t							dfaInsRefs = -1;
-
-				// InsExec_InsRefLink
-				// EndObject instructions that close this object
-				vint32_t							eoInsRefs = -1;
 
 				vuint64_t							mergeCounter = 0;		// a temporary counter for MergeStack internal use
 			};
@@ -297,13 +300,6 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 				vint32_t							objectIds = -1;
 
 				vuint64_t							mergeCounter = 0;		// a temporary counter for MergeStack internal use
-			};
-
-			struct InsExec_Context
-			{
-				vint32_t							objectStack = -1;		// InsExec_ObjectStack after executing instructions
-				vint32_t							createStack = -1;		// InsExec_CreatedStack after executing instructions
-				vint32_t							lriStoredObjects = -1;	// LriStore stored InsExec_ObjRefLink after executing instructions
 			};
 
 			struct TraceInsLists
