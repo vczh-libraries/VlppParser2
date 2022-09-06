@@ -475,8 +475,8 @@ TraceManager
 				void										EnsureInsExecContextCompatible(Trace* baselineTrace, Trace* commingTrace);
 
 				// phase: PartialExecuteTraces - MergeInsExecContext
-				void										PushInsRefLinkWithCounter(vint32_t& link, vint32_t& comming);
-				void										PushObjRefLinkWithCounter(vint32_t& link, vint32_t& comming);
+				void										PushInsRefLinkWithCounter(vint32_t& link, vint32_t comming);
+				void										PushObjRefLinkWithCounter(vint32_t& link, vint32_t comming);
 				template<typename T, T* (TraceManager::*get)(vint32_t), vint32_t (InsExec_Context::*stack), typename TMerge>
 				vint32_t									MergeStack(Trace* mergeTrace, AllocateOnly<T>& allocator, TMerge&& merge);
 				void										MergeInsExecContext(Trace* mergeTrace);

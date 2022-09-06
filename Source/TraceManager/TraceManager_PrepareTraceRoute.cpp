@@ -560,12 +560,38 @@ MergeInsExecContext
 #define NEW_MERGE_STACK_MAGIC_STACK_COUNTER (void)(MergeStack_MagicStackCounter++)
 #define NEW_MERGE_STACK_MAGIC_REF_LINK_COUNTER (void)(MergeStack_MagicRefLinkCounter++)
 
-			void TraceManager::PushInsRefLinkWithCounter(vint32_t& link, vint32_t& comming)
+			void TraceManager::PushInsRefLinkWithCounter(vint32_t& link, vint32_t comming)
 			{
+				NEW_MERGE_STACK_MAGIC_REF_LINK_COUNTER;
+				while (comming != -1)
+				{
+					auto commingStack = GetInsExec_InsRefLink(comming);
+					comming = commingStack->previous;
+
+					auto insTrace = GetTrace(commingStack->trace);
+					auto insTraceExec = GetTraceExec(insTrace->traceExecRef);
+					auto insExec = GetInsExec(insTraceExec->insExecRefs.start + commingStack->ins);
+					if (insExec->mergeCounter == MergeStack_MagicRefLinkCounter) continue;
+
+					insExec->mergeCounter = MergeStack_MagicRefLinkCounter;
+					PushInsRefLink(link, commingStack->trace, commingStack->ins);
+				}
 			}
 
-			void TraceManager::PushObjRefLinkWithCounter(vint32_t& link, vint32_t& comming)
+			void TraceManager::PushObjRefLinkWithCounter(vint32_t& link, vint32_t comming)
 			{
+				NEW_MERGE_STACK_MAGIC_REF_LINK_COUNTER;
+				while (comming != -1)
+				{
+					auto commingStack = GetInsExec_ObjRefLink(comming);
+					comming = commingStack->previous;
+
+					auto ieObject = GetInsExec_Object(commingStack->id);
+					if (ieObject->mergeCounter == MergeStack_MagicRefLinkCounter) continue;
+
+					ieObject->mergeCounter = MergeStack_MagicRefLinkCounter;
+					PushObjRefLink(link, ieObject->allocatedIndex);
+				}
 			}
 
 			template<typename T, T* (TraceManager::* get)(vint32_t), vint32_t(InsExec_Context::* stack), typename TMerge>
