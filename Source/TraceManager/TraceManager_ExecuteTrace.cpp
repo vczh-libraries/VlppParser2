@@ -163,7 +163,7 @@ TraceManager::ExecuteTrace
 					}
 					else
 					{
-						CHECK_FAIL(ERROR_MESSAGE_PREFIX L"Ambmgituiy not implemented yet!");
+						CHECK_FAIL(L"Ambmgituiy not implemented yet!");
 					}
 				}
 

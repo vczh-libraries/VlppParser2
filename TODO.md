@@ -8,14 +8,8 @@
 - Make a test case to test `prefix_merge` generates `left_recursion_inject_multiple`.
 - Create ambiguity test case caused by only one clause with branches.
 
-- IfElseAmbiguity/IfElseAmbiguity1: simple ambiguity.
-- IfElseAmbiguityOnStat2/IfElseAmbiguity1: EndObject in branch ends close different objects (at 53).
-- GenericAmbiguity/CallWithDecrement: branching at EndObject, merging before EndObject.
-- FeatureTest/BO_2: Merging structure not well-formed (at the end).
-- FeatureTest/ERO_2: Merging structure not well-formed (at 27).
-- FeatureTest/Pba_1: DFA delayed after merging therefore it executes for multiple candidates of a `ToReolsve` class.
-- PrefixMerge1/Ambiguous1: bottomLrObjectCounter > 1
-- PrefixMerge7/Ambiguous1: left recursive with ambiguity
+- IfElseAmbiguity2/IfElseAmbiguity1: both create and object stack tops in merge trace have multiple objects (at 52).
+- FeatureTest/Pwa_1: Predecessor traces of merge trace end with Field instead of EO/RO (at 16).
 
 ## Features to Add
 

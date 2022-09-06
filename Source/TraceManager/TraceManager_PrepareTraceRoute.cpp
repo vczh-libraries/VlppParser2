@@ -418,7 +418,7 @@ PartialExecuteOrdinaryTrace
 								// check if the top create stack is from DFA
 								auto traceCSTop = GetTrace(insRefLink->trace);
 								auto traceExecCSTop = GetTraceExec(traceCSTop->traceExecRef);
-								CHECK_ERROR(ReadInstruction(insRefLink->ins, traceExecCSTop->insLists).type == AstInsType::DelayFieldAssignment, L"DelayFieldAssignment is not submitted before ReopenObject.");
+								CHECK_ERROR(ReadInstruction(insRefLink->ins, traceExecCSTop->insLists).type == AstInsType::DelayFieldAssignment, ERROR_MESSAGE_PREFIX L"DelayFieldAssignment is not submitted before ReopenObject.");
 
 								auto insExecDfa = GetInsExec(traceExecCSTop->insExecRefs.start + insRefLink->ins);
 								auto ref = ieOSTop->objectIds;
@@ -905,7 +905,7 @@ CheckMergeTraces
 
 			void TraceManager::CheckMergeTraces()
 			{
-#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::DebugCheckTraceExecData()#"
+#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::CheckMergeTraces()#"
 				// iterating TraceMergeExec
 				vint32_t tmeId = bottomMergeExec;
 				while (tmeId != -1)
