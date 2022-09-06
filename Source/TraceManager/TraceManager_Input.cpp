@@ -62,7 +62,11 @@ Initialize
 				insExec_CreateStacks.Clear();
 
 				topBranchExec = -1;
+				bottomBranchExec = -1;
 				topMergeExec = -1;
+				bottomMergeExec = -1;
+				branchExecs.Clear();
+				mergeExecs.Clear();
 
 				initialTrace = AllocateTrace();
 				initialTrace->state = startState;

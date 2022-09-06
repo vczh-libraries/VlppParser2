@@ -319,6 +319,33 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 				vint32_t							branchDepth = -1;
 			};
 
+			struct TraceBranchExec
+			{
+				vint32_t							allocatedIndex = -1;
+				vint32_t							traceId = -1;
+
+				// a linked list to connect all TraceBranchExec
+				vint32_t							previous = -1;
+				vint32_t							next = -1;
+			};
+
+			struct TraceMergeExec
+			{
+				vint32_t							allocatedIndex = -1;
+				vint32_t							traceId = -1;
+
+				// a linked list to connect all TraceMergeExec
+				vint32_t							previous = -1;
+				vint32_t							next = -1;
+
+				// statictics data of predecessors
+				bool								hasEO = false;
+				bool								hasRO = false;
+
+				bool								referencedByMergeTrace = false;
+				vint32_t							objectIdsToMerge = -1;
+			};
+
 			struct TraceExec
 			{
 				vint32_t							allocatedIndex = -1;
@@ -327,9 +354,9 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 				InstructionArray					insExecRefs;			// allocated InsExec for instructions
 
 				InsExec_Context						context;
+				TraceBranchData						branchData;
 				vint32_t							branchExec = -1;
 				vint32_t							mergeExec = -1;
-				TraceBranchData						branchData;
 			};
 
 /***********************************************************************
@@ -432,6 +459,8 @@ TraceManager
 				AllocateOnly<InsExec_CreateStack>			insExec_CreateStacks;
 
 				// phase: AllocateExecutionData
+				template<typename T, T* (TraceManager::*get)(vint32_t)>
+				void										BuildDoubleLink(T* node, vint32_t& top, vint32_t& bottom);
 				void										AllocateExecutionData();
 
 				// phase: PartialExecuteTraces - PartialExecuteOrdinaryTrace
@@ -471,9 +500,14 @@ TraceManager
 			protected:
 				// ResolveAmbiguity
 				vint32_t									topBranchExec = -1;
+				vint32_t									bottomBranchExec = -1;
 				vint32_t									topMergeExec = -1;
+				vint32_t									bottomMergeExec = -1;
+				AllocateOnly<TraceBranchExec>				branchExecs;
+				AllocateOnly<TraceMergeExec>				mergeExecs;
 
-				void										DetermineAmbiguityRanges();
+				// phase: CheckMergeTraces
+				void										CheckMergeTraces();
 			public:
 				TraceManager(Executable& _executable, const ITypeCallback* _typeCallback, vint blockSize);
 
@@ -497,6 +531,8 @@ TraceManager
 				InsExec_ObjectStack*			GetInsExec_ObjectStack(vint32_t index);
 				InsExec_CreateStack*			GetInsExec_CreateStack(vint32_t index);
 				TraceExec*						GetTraceExec(vint32_t index);
+				TraceBranchExec*				GetTraceBranchExec(vint32_t index);
+				TraceMergeExec*					GetTraceMergeExec(vint32_t index);
 
 				void							Initialize(vint32_t startState) override;
 				Trace*							GetInitialTrace();

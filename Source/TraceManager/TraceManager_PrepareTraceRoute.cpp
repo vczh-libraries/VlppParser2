@@ -128,6 +128,22 @@ ReadInstruction
 AllocateExecutionData
 ***********************************************************************/
 
+			template<typename T, T* (TraceManager::* get)(vint32_t)>
+			void TraceManager::BuildDoubleLink(T* node, vint32_t& top, vint32_t& bottom)
+			{
+				if (top == -1)
+				{
+					top = node->allocatedIndex;
+					bottom = node->allocatedIndex;
+				}
+				else
+				{
+					(this->*get)(top)->next = node->allocatedIndex;
+					node->previous = top;
+					top = node->allocatedIndex;
+				}
+			}
+
 			void TraceManager::AllocateExecutionData()
 			{
 #define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::AllocateExecutionData()#"
@@ -148,6 +164,30 @@ AllocateExecutionData
 						traceExec->insExecRefs.start = insExecCount;
 						traceExec->insExecRefs.count = traceExec->insLists.c3;
 						insExecCount += traceExec->insLists.c3;
+					}
+
+					if (trace->successors.first != trace->successors.last)
+					{
+						auto branchExec = GetTraceBranchExec(branchExecs.Allocate());
+						branchExec->traceId = trace->allocatedIndex;
+						traceExec->branchExec = branchExec->allocatedIndex;
+
+						BuildDoubleLink<TraceBranchExec, &TraceManager::GetTraceBranchExec>(
+							branchExec,
+							topBranchExec,
+							bottomBranchExec);
+					}
+
+					if (trace->predecessors.first != trace->predecessors.last)
+					{
+						auto mergeExec = GetTraceMergeExec(mergeExecs.Allocate());
+						mergeExec->traceId = trace->allocatedIndex;
+						traceExec->mergeExec = mergeExec->allocatedIndex;
+
+						BuildDoubleLink<TraceMergeExec, &TraceManager::GetTraceMergeExec>(
+							mergeExec,
+							topMergeExec,
+							bottomMergeExec);
 					}
 				});
 				insExecs.Resize(insExecCount);
@@ -294,7 +334,7 @@ PartialExecuteOrdinaryTrace
 				auto traceExec = GetTraceExec(trace->traceExecRef);
 				for (vint32_t insRef = 0; insRef < traceExec->insLists.c3; insRef++)
 				{
-					auto ins = ReadInstruction(insRef, traceExec->insLists);
+					auto&& ins = ReadInstruction(insRef, traceExec->insLists);
 					auto insExec = GetInsExec(traceExec->insExecRefs.start + insRef);
 					insExec->contextBeforeExecution = context;
 
@@ -814,9 +854,10 @@ DebugCheckTraceExecData
 							auto traceExec = GetTraceExec(trace->traceExecRef);
 							for (vint32_t insRef = 0; insRef < traceExec->insExecRefs.count; insRef++)
 							{
-								auto ins = ReadInstruction(insRef, traceExec->insLists);
+								auto&& ins = ReadInstruction(insRef, traceExec->insLists);
 								auto insExec = GetInsExec(traceExec->insExecRefs.start + insRef);
 
+								// ensure BO/BOLR/DFA are closed
 								switch (ins.type)
 								{
 								case AstInsType::BeginObject:
@@ -826,6 +867,7 @@ DebugCheckTraceExecData
 									break;
 								}
 
+								// ensure DFA are associated with objects closed
 								switch (ins.type)
 								{
 								case AstInsType::DelayFieldAssignment:
@@ -858,11 +900,105 @@ PrepareTraceRoute
 			}
 
 /***********************************************************************
-DetermineAmbiguityRanges
+CheckMergeTraces
 ***********************************************************************/
 
-			void TraceManager::DetermineAmbiguityRanges()
+			void TraceManager::CheckMergeTraces()
 			{
+#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::DebugCheckTraceExecData()#"
+				// iterating TraceMergeExec
+				vint32_t tmeId = bottomMergeExec;
+				while (tmeId != -1)
+				{
+					auto tme = GetTraceMergeExec(tmeId);
+					tmeId = tme->next;
+
+					auto trace = GetTrace(tme->traceId);
+
+					auto countObjects = [this](vint32_t linkId)
+					{
+						vint counter = 0;
+						while (linkId != -1)
+						{
+							auto link = GetInsExec_ObjRefLink(linkId);
+							linkId = link->previous;
+							counter++;
+						}
+						return counter;
+					};
+
+					// ensure lriStoredObjects is empty
+					auto traceExec = GetTraceExec(trace->traceExecRef);
+					CHECK_ERROR(traceExec->context.lriStoredObjects == -1, ERROR_MESSAGE_PREFIX L"InsExec_Context::lriStoredObjects in merge trace should be empty.");
+
+					// count objects in context
+					vint32_t objectIdsOS = traceExec->context.objectStack == -1 ? -1 : GetInsExec_ObjectStack(traceExec->context.objectStack)->objectIds;
+					vint32_t objectIdsCS = traceExec->context.createStack == -1 ? -1 : GetInsExec_CreateStack(traceExec->context.createStack)->objectIds;
+					vint counterOS = countObjects(objectIdsOS);
+					vint counterCS = countObjects(objectIdsCS);
+
+					// count last instructions in predecessors
+					bool hasEO = false;
+					bool hasRO = false;
+					{
+						vint32_t predecessorId = trace->predecessors.first;
+						while (predecessorId != -1)
+						{
+							auto predecessor = GetTrace(predecessorId);
+							auto predecessorTraceExec = GetTraceExec(predecessor->traceExecRef);
+							predecessorId = predecessor->predecessors.siblingNext;
+
+							if (predecessor->state == -1)
+							{
+								auto predecessorMergeExec = GetTraceMergeExec(predecessorTraceExec->mergeExec);
+								predecessorMergeExec->referencedByMergeTrace = true;
+								hasEO |= predecessorMergeExec->hasEO;
+								hasRO |= predecessorMergeExec->hasRO;
+							}
+							else
+							{
+								CHECK_ERROR(predecessorTraceExec->insLists.c3 > 0, ERROR_MESSAGE_PREFIX L"Predecessor traces of a merge trace should have instructions.");
+								auto&& ins = ReadInstruction(predecessorTraceExec->insLists.c3 - 1, predecessorTraceExec->insLists);
+								switch (ins.type)
+								{
+								case AstInsType::EndObject:
+									hasEO = true;
+									break;
+								case AstInsType::ReopenObject:
+									hasRO = true;
+									break;
+								default:
+									CHECK_FAIL(ERROR_MESSAGE_PREFIX L"Predecessor traces of a merge trace should end with EndObject or ReopenObject.");
+								}
+							}
+						}
+					}
+
+					// ensure statictics data compatible
+					CHECK_ERROR(hasEO ^ hasRO, ERROR_MESSAGE_PREFIX L"Predecessor traces of a merge trace should all end with either EndObject or ReopenObject.");
+					if (hasEO)
+					{
+						CHECK_ERROR(counterOS > 0, ERROR_MESSAGE_PREFIX L"Not enough objects in top object stack.");
+						CHECK_ERROR(counterCS <= 1, ERROR_MESSAGE_PREFIX L"Too many objects in top create stack.");
+					}
+					if (hasRO)
+					{
+						CHECK_ERROR(counterCS > 0, ERROR_MESSAGE_PREFIX L"Not enough objects in top create stack.");
+						CHECK_ERROR(counterOS <= 1, ERROR_MESSAGE_PREFIX L"Too many objects in top object stack.");
+					}
+
+					// store statictics data
+					auto mergeExec = GetTraceMergeExec(traceExec->mergeExec);
+					if ((mergeExec->hasEO = hasEO))
+					{
+						mergeExec->objectIdsToMerge = objectIdsOS;
+					}
+					if ((mergeExec->hasRO = hasRO))
+					{
+						mergeExec->objectIdsToMerge = objectIdsCS;
+					}
+				}
+#undef ERROR_MESSAGE_PREFIX
 			}
 
 /***********************************************************************
@@ -874,7 +1010,7 @@ ResolveAmbiguity
 				CHECK_ERROR(state == TraceManagerState::PreparedTraceRoute, L"vl::glr::automaton::TraceManager::ResolveAmbiguity()#Wrong timing to call this function.");
 				state = TraceManagerState::ResolvedAmbiguity;
 
-				DetermineAmbiguityRanges();
+				CheckMergeTraces();
 			}
 		}
 	}
