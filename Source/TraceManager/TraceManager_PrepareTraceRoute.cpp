@@ -149,24 +149,6 @@ AllocateExecutionData
 						traceExec->insExecRefs.count = traceExec->insLists.c3;
 						insExecCount += traceExec->insLists.c3;
 					}
-
-					if (trace->successors.first != trace->successors.last)
-					{
-						auto branchExec = GetTraceBranchExec(branchExecs.Allocate());
-						traceExec->branchExec = branchExec->allocatedIndex;
-
-						branchExec->previous = topBranchExec;
-						topBranchExec = branchExec->allocatedIndex;
-					}
-
-					if (trace->predecessors.first != trace->predecessors.last)
-					{
-						auto mergeExec = GetTraceMergeExec(mergeExecs.Allocate());
-						traceExec->mergeExec = mergeExec->allocatedIndex;
-
-						mergeExec->previous = topMergeExec;
-						topMergeExec = mergeExec->allocatedIndex;
-					}
 				});
 				insExecs.Resize(insExecCount);
 #undef ERROR_MESSAGE_PREFIX
@@ -921,13 +903,6 @@ DetermineAmbiguityRanges
 
 			void TraceManager::DetermineAmbiguityRanges()
 			{
-				// reverse iterating TraceBranchExec
-				vint32_t id = topBranchExec;
-				while (id != -1)
-				{
-					auto branchExec = GetTraceBranchExec(id);
-					id = branchExec->previous;
-				}
 			}
 
 /***********************************************************************

@@ -340,20 +340,6 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 				TraceBranchData						branchData;
 			};
 
-			struct TraceBranchExec
-			{
-				vint32_t							allocatedIndex = -1;
-				vint32_t							traceId = -1;
-				vint32_t							previous = -1;			// a linked list to connect all TraceBranchExec
-			};
-
-			struct TraceMergeExec
-			{
-				vint32_t							allocatedIndex = -1;
-				vint32_t							traceId = -1;
-				vint32_t							previous = -1;			// a linked list to connect all TraceMergeExec
-			};
-
 /***********************************************************************
 TraceManager
 ***********************************************************************/
@@ -497,8 +483,6 @@ TraceManager
 				// ResolveAmbiguity
 				vint32_t									topBranchExec = -1;
 				vint32_t									topMergeExec = -1;
-				AllocateOnly<TraceBranchExec>				branchExecs;
-				AllocateOnly<TraceMergeExec>				mergeExecs;
 
 				void										DetermineAmbiguityRanges();
 			public:
@@ -524,8 +508,6 @@ TraceManager
 				InsExec_ObjectStack*			GetInsExec_ObjectStack(vint32_t index);
 				InsExec_CreateStack*			GetInsExec_CreateStack(vint32_t index);
 				TraceExec*						GetTraceExec(vint32_t index);
-				TraceBranchExec*				GetTraceBranchExec(vint32_t index);
-				TraceMergeExec*					GetTraceMergeExec(vint32_t index);
 
 				void							Initialize(vint32_t startState) override;
 				Trace*							GetInitialTrace();

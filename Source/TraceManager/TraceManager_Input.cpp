@@ -64,8 +64,6 @@ Initialize
 
 				topBranchExec = -1;
 				topMergeExec = -1;
-				branchExecs.Clear();
-				mergeExecs.Clear();
 
 				initialTrace = AllocateTrace();
 				initialTrace->state = startState;
