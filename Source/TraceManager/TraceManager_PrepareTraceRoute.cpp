@@ -235,12 +235,50 @@ PartialExecuteOrdinaryTrace
 
 			vint32_t TraceManager::JoinInsRefLink(vint32_t first, vint32_t second)
 			{
-				// TODO:
+				if (first == -1) return second;
+				if (second == -1) return first;
+
+				vint32_t newStack = -1;
+
+				while (first != -1)
+				{
+					auto stack = GetInsExec_InsRefLink(first);
+					first = stack->previous;
+					PushInsRefLink(newStack, stack->trace, stack->ins);
+				}
+
+				while (second != -1)
+				{
+					auto stack = GetInsExec_InsRefLink(second);
+					second = stack->previous;
+					PushInsRefLink(newStack, stack->trace, stack->ins);
+				}
+
+				return newStack;
 			}
 
 			vint32_t TraceManager::JoinObjRefLink(vint32_t first, vint32_t second)
 			{
-				// TODO:
+				if (first == -1) return second;
+				if (second == -1) return first;
+
+				vint32_t newStack = -1;
+
+				while (first != -1)
+				{
+					auto stack = GetInsExec_ObjRefLink(first);
+					first = stack->previous;
+					PushObjRefLink(newStack, stack->id);
+				}
+
+				while (second != -1)
+				{
+					auto stack = GetInsExec_ObjRefLink(second);
+					second = stack->previous;
+					PushObjRefLink(newStack, stack->id);
+				}
+
+				return newStack;
 			}
 
 			InsExec_ObjectStack* TraceManager::PushObjectStackSingle(InsExec_Context& context, vint32_t objectId)
@@ -300,8 +338,7 @@ PartialExecuteOrdinaryTrace
 
 							// new create stack
 							auto ieCSTop = PushCreateStack(context);
-							ieCSTop->trace = trace->allocatedIndex;
-							ieCSTop->ins = insRef;
+							PushInsRefLink(ieCSTop->createInsRefs, trace->allocatedIndex, insRef);
 							ieCSTop->stackBase = GetStackTop(context);
 							PushObjRefLink(ieCSTop->objectIds, ieObject->allocatedIndex);
 
@@ -324,8 +361,7 @@ PartialExecuteOrdinaryTrace
 
 							// new create stack, the top object is not frozen
 							auto ieCSTop = PushCreateStack(context);
-							ieCSTop->trace = trace->allocatedIndex;
-							ieCSTop->ins = insRef;
+							PushInsRefLink(ieCSTop->createInsRefs, trace->allocatedIndex, insRef);
 							ieCSTop->stackBase = ieOSTop->pushedCount - 1;
 							PushObjRefLink(ieCSTop->objectIds, ieObject->allocatedIndex);
 
@@ -337,8 +373,7 @@ PartialExecuteOrdinaryTrace
 						{
 							// new create stack
 							auto ieCSTop = PushCreateStack(context);
-							ieCSTop->trace = trace->allocatedIndex;
-							ieCSTop->ins = insRef;
+							PushInsRefLink(ieCSTop->createInsRefs, trace->allocatedIndex, insRef);
 							ieCSTop->stackBase = GetStackTop(context);
 						}
 						break;
@@ -363,20 +398,25 @@ PartialExecuteOrdinaryTrace
 								}
 							}
 
-							// check if the top create stack is from DFA
-							auto traceCSTop = GetTrace(ieCSTop->trace);
-							auto traceExecCSTop = GetTraceExec(traceCSTop->traceExecRef);
-							CHECK_ERROR(ReadInstruction(ieCSTop->ins, traceExecCSTop->insLists).type == AstInsType::DelayFieldAssignment, L"DelayFieldAssignment is not submitted before ReopenObject.");
-
+							vint32_t insRefLinkId = ieCSTop->createInsRefs;
+							while(insRefLinkId!=-1)
 							{
-								auto insExecDfa = GetInsExec(traceExecCSTop->insExecRefs.start + ieCSTop->ins);
+								auto insRefLink = GetInsExec_InsRefLink(insRefLinkId);
+								insRefLinkId = insRefLink->previous;
+
+								// check if the top create stack is from DFA
+								auto traceCSTop = GetTrace(insRefLink->trace);
+								auto traceExecCSTop = GetTraceExec(traceCSTop->traceExecRef);
+								CHECK_ERROR(ReadInstruction(insRefLink->ins, traceExecCSTop->insLists).type == AstInsType::DelayFieldAssignment, L"DelayFieldAssignment is not submitted before ReopenObject.");
+
+								auto insExecDfa = GetInsExec(traceExecCSTop->insExecRefs.start + insRefLink->ins);
 								auto ref = ieOSTop->objectIds;
 								while (ref != -1)
 								{
 									auto link = GetInsExec_ObjRefLink(ref);
 									auto ieObject = GetInsExec_Object(link->id);
 									// InsExec_Object::dfaInsRefs
-									PushInsRefLink(ieObject->dfaInsRefs, ieCSTop->trace, ieCSTop->ins);
+									PushInsRefLink(ieObject->dfaInsRefs, insRefLink->trace, insRefLink->ins);
 									// InsExec::objRefs
 									PushObjRefLink(insExecDfa->objRefs, ieObject->allocatedIndex);
 									ref = link->previous;
@@ -397,10 +437,17 @@ PartialExecuteOrdinaryTrace
 							PushObjectStackMultiple(context, ieCSTop->objectIds);
 
 							// InsExec::eoInsRefs
-							auto traceCSTop = GetTrace(ieCSTop->trace);
-							auto traceExecCSTop = GetTraceExec(traceCSTop->traceExecRef);
-							auto insExecCreate = GetInsExec(traceExecCSTop->insExecRefs.start + ieCSTop->ins);
-							PushInsRefLink(insExecCreate->eoInsRefs, trace->allocatedIndex, insRef);
+							vint32_t insRefLinkId = ieCSTop->createInsRefs;
+							while (insRefLinkId != -1)
+							{
+								auto insRefLink = GetInsExec_InsRefLink(insRefLinkId);
+								insRefLinkId = insRefLink->previous;
+
+								auto traceCSTop = GetTrace(insRefLink->trace);
+								auto traceExecCSTop = GetTraceExec(traceCSTop->traceExecRef);
+								auto insExecCreate = GetInsExec(traceExecCSTop->insExecRefs.start + insRefLink->ins);
+								PushInsRefLink(insExecCreate->eoInsRefs, trace->allocatedIndex, insRef);
+							}
 
 							// InsExec_Object::eoInsRefs
 							{
@@ -462,9 +509,19 @@ PartialExecuteOrdinaryTrace
 PartialExecuteTraces
 ***********************************************************************/
 
-			vuint64_t MergeStack_MagicCounter = 0;
+			vuint64_t MergeStack_MagicStackCounter = 0;
+			vuint64_t MergeStack_MagicRefLinkCounter = 0;
 
-#define NEW_MERGE_STACK_MAGIC_COUNTER (void)(MergeStack_MagicCounter++)
+#define NEW_MERGE_STACK_MAGIC_STACK_COUNTER (void)(MergeStack_MagicStackCounter++)
+#define NEW_MERGE_STACK_MAGIC_REF_LINK_COUNTER (void)(MergeStack_MagicRefLinkCounter++)
+
+			void TraceManager::PushInsRefLinkWithCounter(vint32_t& link, vint32_t& comming)
+			{
+			}
+
+			void TraceManager::PushObjRefLinkWithCounter(vint32_t& link, vint32_t& comming)
+			{
+			}
 
 			template<typename T, T* (TraceManager::* get)(vint32_t), vint32_t(InsExec_Context::* stack), typename TMerge>
 			vint32_t TraceManager::MergeStack(Trace* mergeTrace, AllocateOnly<T>& allocator, TMerge&& merge)
@@ -511,14 +568,14 @@ PartialExecuteTraces
 					*pStackPrevious = newStack->allocatedIndex;
 					pStackPrevious = &(newStack->previous);
 
-					NEW_MERGE_STACK_MAGIC_COUNTER;
+					NEW_MERGE_STACK_MAGIC_STACK_COUNTER;
 					for (vint index = 0; index < stacks.Count(); index++)
 					{
-						if (stacks[index]->mergeCounter != MergeStack_MagicCounter)
+						if (stacks[index]->mergeCounter != MergeStack_MagicStackCounter)
 						{
-							stacks[index]->mergeCounter = MergeStack_MagicCounter;
+							stacks[index]->mergeCounter = MergeStack_MagicStackCounter;
 							merge(newStack, stacks[index]);
-							newStack->objectIds = JoinObjRefLink(newStack->objectIds, stacks[index]->objectIds);
+							PushObjRefLinkWithCounter(newStack->objectIds, stacks[index]->objectIds);
 						}
 					}
 
@@ -596,7 +653,8 @@ PartialExecuteTraces
 									insExec_ObjectStacks,
 									[this](InsExec_ObjectStack* newStack, InsExec_ObjectStack* commingStack)
 									{
-										// TODO:
+										// all commingStack->pushedCount are ensured to be the same
+										newStack->pushedCount = commingStack->pushedCount;
 									});
 
 								traceExec->context.createStack = MergeStack<
@@ -608,10 +666,19 @@ PartialExecuteTraces
 									insExec_CreateStacks,
 									[this](InsExec_CreateStack* newStack, InsExec_CreateStack* commingStack)
 									{
-										// TODO:
+										// all commingStack->stackBase are ensured to be the same
+										newStack->stackBase = commingStack->stackBase;
+										PushInsRefLinkWithCounter(newStack->createInsRefs, commingStack->createInsRefs);
 									});
 
-								// TODO: join lriStoredObjects
+								vint32_t predecessorId = trace->predecessors.first;
+								while (predecessorId != -1)
+								{
+									auto predecessor = GetTrace(predecessorId);
+									predecessorId = predecessor->predecessors.siblingNext;
+									auto predecessorTraceExec = GetTraceExec(predecessor->traceExecRef);
+									PushObjRefLinkWithCounter(traceExec->context.lriStoredObjects, predecessorTraceExec->context.lriStoredObjects);
+								}
 							}
 						}
 					}
@@ -619,7 +686,8 @@ PartialExecuteTraces
 #undef ERROR_MESSAGE_PREFIX
 			}
 
-#undef NEW_MERGE_STACK_MAGIC_COUNTER
+#undef NEW_MERGE_STACK_MAGIC_STACK_COUNTER
+#undef NEW_MERGE_STACK_MAGIC_REF_LINK_COUNTER
 
 /***********************************************************************
 BuildAmbiguityStructures
