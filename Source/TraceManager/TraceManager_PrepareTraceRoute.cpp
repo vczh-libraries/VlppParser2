@@ -603,7 +603,9 @@ MergeInsExecContext
 					{
 						auto predecessor = GetTrace(predecessorId);
 						auto traceExec = GetTraceExec(predecessor->traceExecRef);
-						stacks[index++] = (this->*get)(traceExec->context.*stack);
+
+						vint32_t stackId = traceExec->context.*stack;
+						stacks[index++] = stackId == -1 ? nullptr : (this->*get)(stackId);
 						predecessorId = predecessor->predecessors.siblingNext;
 					}
 				}
@@ -651,7 +653,8 @@ MergeInsExecContext
 					// move to next level of stack objects
 					for (vint index = 0; index < stacks.Count(); index++)
 					{
-						stacks[index] = stacks[index]->previous == -1 ? nullptr : (this->*get)(stacks[index]->previous);
+						vint32_t stackId = stacks[index]->previous;
+						stacks[index] = stackId == -1 ? nullptr : (this->*get)(stackId);
 					}
 				}
 				return stackTop;
