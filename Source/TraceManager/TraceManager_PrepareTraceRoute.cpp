@@ -785,17 +785,9 @@ BuildAmbiguityStructures
 								return { branchHeadTrace->predecessors.first,branchData.branchDepth - 1 };
 							};
 
+							CHECK_ERROR(predecessor->state != -1, ERROR_MESSAGE_PREFIX L"Predecessor trace of a merge trace cannot be a merge trace.");
 							auto commingTraceExec = GetTraceExec(predecessor->traceExecRef);
 							auto comming = commingTraceExec->branchData;
-							if (predecessor->state != -1)
-							{
-								// if a merge state's predecessor is also a merge state
-								// use its data
-								// because they are equivalent
-								// otherwise, use the data from its forwardTrace
-								auto branchHeadTrace = GetTrace(comming.forwardTrace);
-								comming = { branchHeadTrace->predecessors.first,comming.branchDepth - 1 };
-							}
 
 							if (visitCount == 1)
 							{
@@ -948,28 +940,18 @@ CheckMergeTraces
 							auto predecessorTraceExec = GetTraceExec(predecessor->traceExecRef);
 							predecessorId = predecessor->predecessors.siblingNext;
 
-							if (predecessor->state == -1)
+							CHECK_ERROR(predecessorTraceExec->insLists.c3 > 0, ERROR_MESSAGE_PREFIX L"Predecessor traces of a merge trace should have instructions.");
+							auto&& ins = ReadInstruction(predecessorTraceExec->insLists.c3 - 1, predecessorTraceExec->insLists);
+							switch (ins.type)
 							{
-								auto predecessorMergeExec = GetTraceMergeExec(predecessorTraceExec->mergeExec);
-								predecessorMergeExec->referencedByMergeTrace = true;
-								hasEO |= predecessorMergeExec->hasEO;
-								hasRO |= predecessorMergeExec->hasRO;
-							}
-							else
-							{
-								CHECK_ERROR(predecessorTraceExec->insLists.c3 > 0, ERROR_MESSAGE_PREFIX L"Predecessor traces of a merge trace should have instructions.");
-								auto&& ins = ReadInstruction(predecessorTraceExec->insLists.c3 - 1, predecessorTraceExec->insLists);
-								switch (ins.type)
-								{
-								case AstInsType::EndObject:
-									hasEO = true;
-									break;
-								case AstInsType::ReopenObject:
-									hasRO = true;
-									break;
-								default:
-									CHECK_FAIL(ERROR_MESSAGE_PREFIX L"Predecessor traces of a merge trace should end with EndObject or ReopenObject.");
-								}
+							case AstInsType::EndObject:
+								hasEO = true;
+								break;
+							case AstInsType::ReopenObject:
+								hasRO = true;
+								break;
+							default:
+								CHECK_FAIL(ERROR_MESSAGE_PREFIX L"Predecessor traces of a merge trace should end with EndObject or ReopenObject.");
 							}
 						}
 					}

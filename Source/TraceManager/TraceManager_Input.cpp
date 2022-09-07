@@ -134,12 +134,35 @@ FillSuccessorsAfterEndOfInput
 				ambiguityInvolved = false;
 				List<Trace*> visiting;
 
+				// create a merge trace for multiple surviving traces
 				if (concurrentCount > 1)
 				{
 					auto newTrace = GetTrace(traces.Allocate());
 					for (vint32_t traceIndex = 0; traceIndex < concurrentCount; traceIndex++)
 					{
-						AddTraceToCollection(newTrace, concurrentTraces->Get(traceIndex), &Trace::predecessors);
+						auto trace = concurrentTraces->Get(traceIndex);
+						auto first = trace;
+						auto last = trace;
+
+						if (trace->state == -1)
+						{
+							// a surviving trace could also be a merge trace
+							// in this case we move predecessors to the new trace
+							first = GetTrace(trace->predecessors.first);
+							last = GetTrace(trace->predecessors.last);
+						}
+
+						if (newTrace->predecessors.first == -1)
+						{
+							newTrace->predecessors.first = first->allocatedIndex;
+							newTrace->predecessors.last = last->allocatedIndex;
+						}
+						else
+						{
+							GetTrace(newTrace->predecessors.last)->predecessors.siblingNext = first->allocatedIndex;
+							first->predecessors.siblingPrev = newTrace->predecessors.last;
+							newTrace->predecessors.last = last->allocatedIndex;
+						}
 					}
 					visiting.Add(newTrace);
 				}
@@ -148,12 +171,17 @@ FillSuccessorsAfterEndOfInput
 					visiting.Add(concurrentTraces->Get(0));
 				}
 
+				// fill successors based on predecessors
 				bool initialTraceVisited = false;
 				while (visiting.Count() > 0)
 				{
 					auto current = visiting[visiting.Count() - 1];
 					visiting.RemoveAt(visiting.Count() - 1);
 
+					// if (current->predecessorCount != 0)
+					// it means this trace has been processed when comming from another sibling
+					// but initialTrace->predecessorCount is always 0
+					// so initialTraceVisited is introduced
 					if (current == initialTrace)
 					{
 						if (initialTraceVisited) continue;
@@ -164,6 +192,7 @@ FillSuccessorsAfterEndOfInput
 						continue;
 					}
 
+					// fill successors
 					{
 						vint32_t predecessorId = current->predecessors.first;
 						while (predecessorId != -1)
@@ -175,6 +204,8 @@ FillSuccessorsAfterEndOfInput
 							AddTraceToCollection(predecessor, current, &Trace::successors);
 						}
 					}
+
+					// add predecessors to the list to continue
 					{
 						vint32_t predecessorId = current->predecessors.last;
 						while (predecessorId != -1)
@@ -185,6 +216,7 @@ FillSuccessorsAfterEndOfInput
 						}
 					}
 
+					// set ambiguityInvolved when a trace has multiple predecessors
 					if (current->predecessorCount > 1)
 					{
 						ambiguityInvolved = true;
