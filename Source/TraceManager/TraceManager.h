@@ -241,6 +241,8 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 				// InsExec_ObjRefLink
 				// DFA:
 				//   all associated objects
+				// EO:
+				//   all ended objects
 				vint32_t							objRefs = -1;
 
 				// InsExec_InsRefLink
@@ -503,7 +505,9 @@ TraceManager
 				AllocateOnly<TraceMergeExec>				mergeExecs;
 
 				// phase: CheckMergeTraces
-				void										CheckMergeTrace(Trace* trace, TraceExec* traceExec, TraceMergeExec* tme);
+				template<typename TCallback>
+				void										SearchForTopObjectsWithCounter(vint32_t objRefLinkStartSet, collections::List<vint32_t>& visitingIds, TCallback&& callback);
+				void										CheckMergeTrace(Trace* trace, TraceExec* traceExec, TraceMergeExec* tme, collections::List<vint32_t>& visitingIds);
 				void										CheckMergeTraces();
 			public:
 				TraceManager(Executable& _executable, const ITypeCallback* _typeCallback, vint blockSize);

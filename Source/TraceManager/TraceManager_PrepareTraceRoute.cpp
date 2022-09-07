@@ -8,6 +8,9 @@ namespace vl
 		{
 			using namespace collections;
 
+			vuint64_t MergeStack_MagicCounter = 0;
+#define NEW_MERGE_STACK_MAGIC_COUNTER (void)(MergeStack_MagicCounter++)
+
 /***********************************************************************
 IterateSurvivedTraces
 ***********************************************************************/
@@ -447,6 +450,9 @@ PartialExecuteOrdinaryTrace
 							CHECK_ERROR(ieCSTop->objectIds != -1, ERROR_MESSAGE_PREFIX L"An object has not been associated to the create stack yet.");
 							PushObjectStackMultiple(context, ieCSTop->objectIds);
 
+							// InsExec::objRefs
+							insExec->objRefs = ieCSTop->objectIds;
+
 							// InsExec::eoInsRefs
 							vint32_t insRefLinkId = ieCSTop->createInsRefs;
 							while (insRefLinkId != -1)
@@ -552,10 +558,6 @@ EnsureInsExecContextCompatible
 /***********************************************************************
 MergeInsExecContext
 ***********************************************************************/
-
-			vuint64_t MergeStack_MagicCounter = 0;
-
-#define NEW_MERGE_STACK_MAGIC_COUNTER (void)(MergeStack_MagicCounter++)
 
 			void TraceManager::PushInsRefLinkWithCounter(vint32_t& link, vint32_t comming)
 			{
@@ -703,8 +705,6 @@ MergeInsExecContext
 					PushObjRefLinkWithCounter(traceExec->context.lriStoredObjects, predecessorTraceExec->context.lriStoredObjects);
 				}
 			}
-
-#undef NEW_MERGE_STACK_MAGIC_COUNTER
 
 /***********************************************************************
 PartialExecuteTraces
@@ -895,7 +895,70 @@ PrepareTraceRoute
 CheckMergeTraces
 ***********************************************************************/
 
-			void TraceManager::CheckMergeTrace(Trace* trace, TraceExec* traceExec, TraceMergeExec* tme)
+			template<typename TCallback>
+			void TraceManager::SearchForTopObjectsWithCounter(vint32_t objRefLinkStartSet, collections::List<vint32_t>& visitingIds, TCallback&& callback)
+			{
+#define PUSH_ID(ID)													\
+					do{												\
+						if (availableIds == visitingIds.Count())	\
+							visitingIds.Add(ID);					\
+						else										\
+							visitingIds[availableIds] = ID;			\
+						availableIds++;								\
+					} while (false)
+
+				// start with objRefLinkStartSet
+				vint availableIds = 0;
+				PUSH_ID(objRefLinkStartSet);
+				for (vint linkIdIndex = 0; linkIdIndex < availableIds; linkIdIndex++)
+				{
+					// for any new object link, check every object in it
+					vint32_t linkId = visitingIds[linkIdIndex];
+					while (linkId != -1)
+					{
+						auto objRefLink = GetInsExec_ObjRefLink(linkId);
+						linkId = objRefLink->previous;
+						auto ieObject = GetInsExec_Object(objRefLink->id);
+
+						// keep searching until ieObject->lrObjectIds is empty
+						while (ieObject->lrObjectIds != -1)
+						{
+							// skip if it has been searched
+							if (ieObject->mergeCounter == MergeStack_MagicCounter) goto CHECK_NEXT_OBJECT;
+							ieObject->mergeCounter = MergeStack_MagicCounter;
+
+							auto lrObjRefLink = GetInsExec_ObjRefLink(ieObject->lrObjectIds);
+							if (lrObjRefLink->previous == -1)
+							{
+								// if ieObject->lrObjectIds has only one object
+								// continue in place
+								ieObject = GetInsExec_Object(lrObjRefLink->id);
+							}
+							else
+							{
+								// otherwise
+								// the link is pushed and search it later
+								PUSH_ID(ieObject->lrObjectIds);
+								break;
+							}
+						}
+
+						// a top object has been found
+						if (ieObject->lrObjectIds == -1)
+						{
+							// skip if it has been searched
+							if (ieObject->mergeCounter == MergeStack_MagicCounter) goto CHECK_NEXT_OBJECT;
+							ieObject->mergeCounter = MergeStack_MagicCounter;
+
+							callback(ieObject);
+						}
+					CHECK_NEXT_OBJECT:;
+					}
+				}
+#undef PUSH_ID
+			}
+
+			void TraceManager::CheckMergeTrace(Trace* trace, TraceExec* traceExec, TraceMergeExec* tme, collections::List<vint32_t>& visitingIds)
 			{
 				// when a merge trace is the surviving trace
 				// objects in the top object stack are the result of ambiguity
@@ -953,8 +1016,8 @@ CheckMergeTraces
 				{
 					auto predecessor = GetTrace(predecessorId);
 					predecessorId = predecessor->predecessors.siblingPrev;
-					auto predecessorTraceExec = GetTraceExec(predecessor->traceExecRef);
 
+					auto predecessorTraceExec = GetTraceExec(predecessor->traceExecRef);
 					if (predecessorTraceExec->insLists.c3 <= postfix) return;
 					auto&& insEO = ReadInstruction(predecessorTraceExec->insLists.c3 - postfix - 1, predecessorTraceExec->insLists);
 					if (insEO.type != AstInsType::EndObject) return;
@@ -974,12 +1037,39 @@ CheckMergeTraces
 				//   in different trace
 				//     these traces share the same predecessor
 				//     prefix (instructions before the create instruction) in these traces are the same
+
+				Trace* firstCreateTrace = nullptr;
+				TraceExec* firstCreateTraceExec = nullptr;
+				vint32_t prefix = -1;
+				bool foundSame = false;
+				bool foundPrefix = false;
+				NEW_MERGE_STACK_MAGIC_COUNTER;
+
+				predecessorId = trace->predecessors.first;
+				while (predecessorId != -1)
+				{
+					auto predecessor = GetTrace(predecessorId);
+					predecessorId = predecessor->predecessors.siblingNext;
+
+					// search for the object it ends
+					auto predecessorTraceExec = GetTraceExec(predecessor->traceExecRef);
+					auto indexEO = predecessorTraceExec->insLists.c3 - postfix - 1;
+					auto insExecEO = GetInsExec(predecessorTraceExec->insExecRefs.start + indexEO);
+					SearchForTopObjectsWithCounter(insExecEO->objRefs, visitingIds, [&](InsExec_Object* ieObject)
+					{
+						// check if it satisfies the condition
+						// IterateCreateInstructions(InsExecObject*, TCallback&&)
+						// InsExec_Object::dfaInsRefs need to be partially sorted touch all top ones
+						CHECK_FAIL(L"CheckMergeTrace(Trace*) Not Implemented!");
+					});
+				}
 			}
 
 			void TraceManager::CheckMergeTraces()
 			{
 #define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::CheckMergeTraces()#"
 				// iterating TraceMergeExec
+				List<vint32_t> visitingIds;
 				vint32_t tmeId = bottomMergeExec;
 				while (tmeId != -1)
 				{
@@ -987,8 +1077,24 @@ CheckMergeTraces
 					auto trace = GetTrace(tme->traceId);
 					auto traceExec = GetTraceExec(trace->traceExecRef);
 					tmeId = tme->next;
-					CheckMergeTrace(trace, traceExec, tme);
+					CheckMergeTrace(trace, traceExec, tme, visitingIds);
 					CHECK_ERROR(tme->objectIdsToMerge != -1, ERROR_MESSAGE_PREFIX L"Failed to find ambiguous objects in a merge trace.");
+
+					// if objects in the top create stacks are selected
+					// check if they satisfy the following condition:
+					// [CONDITION]
+					// the first create instructions of the objects must be
+					//   the same instruction in the same trace
+					//   in different trace
+					//     these traces share the same predecessor
+					//     prefix (instructions before the create instruction) in these traces are the same
+					// [CONDITION]
+					// EndObject instructions of these first create instructions must be
+					//   the same instruction in the same trace
+					//   in different trace
+					//     these traces share the same successor
+					//     postfix (instructions after EndObject) in these traces are the same
+					CHECK_FAIL(L"CheckMergeTraces() Not Implemented!");
 				}
 #undef ERROR_MESSAGE_PREFIX
 			}
@@ -1004,6 +1110,8 @@ ResolveAmbiguity
 
 				CheckMergeTraces();
 			}
+
+#undef NEW_MERGE_STACK_MAGIC_COUNTER
 		}
 	}
 }
