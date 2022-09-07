@@ -350,6 +350,15 @@ void RenderTrace(
 				writer.WriteLine(L"");
 				auto traceExec = tm.GetTraceExec(trace->traceExecRef);
 				logContext(traceExec->context, L"  ");
+
+				auto tme = tm.GetTraceMergeExec(traceExec->mergeExec);
+				if (tme->objectIdsToMerge != -1)
+				{
+					writer.WriteLine(L"");
+					writer.WriteString(L"resolved: [");
+					logObjRefLink(tme->objectIdsToMerge);
+					writer.WriteLine(L"]");
+				}
 			}
 			return;
 		}

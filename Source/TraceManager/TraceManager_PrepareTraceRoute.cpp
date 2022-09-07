@@ -895,6 +895,87 @@ PrepareTraceRoute
 CheckMergeTraces
 ***********************************************************************/
 
+			void TraceManager::CheckMergeTrace(Trace* trace, TraceExec* traceExec, TraceMergeExec* tme)
+			{
+				// when a merge trace is the surviving trace
+				// objects in the top object stack are the result of ambiguity
+				if (trace->successorCount == 0)
+				{
+					tme->objectIdsToMerge = GetInsExec_ObjectStack(traceExec->context.objectStack)->objectIds;
+					return;
+				}
+
+				// otherwise
+				// objects in the top create stack are the result of ambiguity
+				// even when there is only one object in the stack
+				tme->objectIdsToMerge = GetInsExec_CreateStack(traceExec->context.createStack)->objectIds;
+
+				// but in some cases
+				// objects in the top object stack are the result of ambiguity
+				// when these objects are the only difference in branches
+				// here we need to test if the condition satisfied
+
+				// [CONDITION]
+				// the top create stack should be either empty or only contains one object
+				if (traceExec->context.createStack != -1)
+				{
+					auto ieCSTop = GetInsExec_CreateStack(traceExec->context.createStack);
+					auto objRefLink = GetInsExec_ObjRefLink(ieCSTop->objectIds);
+					if (objRefLink->previous != -1)
+					{
+						return;
+					}
+				}
+
+				// [CONDITION]
+				// the first predecessor must has a EndObject instruction
+				// count the number of instructions after EndObject
+				// these instructions are the postfix
+				vint32_t postfix = -1;
+				auto firstTrace = GetTrace(trace->predecessors.first);
+				auto firstTraceExec = GetTraceExec(firstTrace->traceExecRef);
+				for (vint32_t i = firstTraceExec->insLists.c3 - 1; i >= 0; i--)
+				{
+					auto&& ins = ReadInstruction(i, firstTraceExec->insLists);
+					if (ins.type == AstInsType::EndObject)
+					{
+						postfix = firstTraceExec->insLists.c3 - i - 1;
+						break;
+					}
+				}
+				if (postfix == -1) return;
+
+				// [CONDITION]
+				// all predecessor must have a EndObject instruction
+				// posftix of all predecessors must be the same
+				vint32_t predecessorId = trace->predecessors.last;
+				while (predecessorId != firstTrace->allocatedIndex)
+				{
+					auto predecessor = GetTrace(predecessorId);
+					predecessorId = predecessor->predecessors.siblingPrev;
+					auto predecessorTraceExec = GetTraceExec(predecessor->traceExecRef);
+
+					if (predecessorTraceExec->insLists.c3 <= postfix) return;
+					auto&& insEO = ReadInstruction(predecessorTraceExec->insLists.c3 - postfix - 1, predecessorTraceExec->insLists);
+					if (insEO.type != AstInsType::EndObject) return;
+
+					for (vint32_t i = 0; i < postfix; i++)
+					{
+						auto&& insFirst = ReadInstruction(firstTraceExec->insLists.c3 - i - 1, firstTraceExec->insLists);
+						auto&& insPredecessor = ReadInstruction(predecessorTraceExec->insLists.c3 - i - 1, predecessorTraceExec->insLists);
+						if (insFirst != insPredecessor) return;
+					}
+				}
+
+				// [CONDITION]
+				// all EndObject must be the last EndObject of the objects it ends
+				// the first create instructions of the objects must be
+				//   the same instruction in the same trace
+				//   in different trace
+				//     these traces share the same predecessor
+				//     prefix (instructions before the create instruction) in these traces are the same
+			}
+
 			void TraceManager::CheckMergeTraces()
 			{
 #define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::CheckMergeTraces()#"
@@ -903,82 +984,11 @@ CheckMergeTraces
 				while (tmeId != -1)
 				{
 					auto tme = GetTraceMergeExec(tmeId);
-					tmeId = tme->next;
-
 					auto trace = GetTrace(tme->traceId);
-
-					auto countObjects = [this](vint32_t linkId)
-					{
-						vint counter = 0;
-						while (linkId != -1)
-						{
-							auto link = GetInsExec_ObjRefLink(linkId);
-							linkId = link->previous;
-							counter++;
-						}
-						return counter;
-					};
-
-					// ensure lriStoredObjects is empty
 					auto traceExec = GetTraceExec(trace->traceExecRef);
-					CHECK_ERROR(traceExec->context.lriStoredObjects == -1, ERROR_MESSAGE_PREFIX L"InsExec_Context::lriStoredObjects in merge trace should be empty.");
-
-					// count objects in context
-					vint32_t objectIdsOS = traceExec->context.objectStack == -1 ? -1 : GetInsExec_ObjectStack(traceExec->context.objectStack)->objectIds;
-					vint32_t objectIdsCS = traceExec->context.createStack == -1 ? -1 : GetInsExec_CreateStack(traceExec->context.createStack)->objectIds;
-					vint counterOS = countObjects(objectIdsOS);
-					vint counterCS = countObjects(objectIdsCS);
-
-					// count last instructions in predecessors
-					bool hasEO = false;
-					bool hasRO = false;
-					{
-						vint32_t predecessorId = trace->predecessors.first;
-						while (predecessorId != -1)
-						{
-							auto predecessor = GetTrace(predecessorId);
-							auto predecessorTraceExec = GetTraceExec(predecessor->traceExecRef);
-							predecessorId = predecessor->predecessors.siblingNext;
-
-							CHECK_ERROR(predecessorTraceExec->insLists.c3 > 0, ERROR_MESSAGE_PREFIX L"Predecessor traces of a merge trace should have instructions.");
-							auto&& ins = ReadInstruction(predecessorTraceExec->insLists.c3 - 1, predecessorTraceExec->insLists);
-							switch (ins.type)
-							{
-							case AstInsType::EndObject:
-								hasEO = true;
-								break;
-							case AstInsType::ReopenObject:
-								hasRO = true;
-								break;
-							default:
-								CHECK_FAIL(ERROR_MESSAGE_PREFIX L"Predecessor traces of a merge trace should end with EndObject or ReopenObject.");
-							}
-						}
-					}
-
-					// ensure statictics data compatible
-					CHECK_ERROR(hasEO ^ hasRO, ERROR_MESSAGE_PREFIX L"Predecessor traces of a merge trace should all end with either EndObject or ReopenObject.");
-					if (hasEO)
-					{
-						CHECK_ERROR(counterOS > 0, ERROR_MESSAGE_PREFIX L"Not enough objects in top object stack.");
-						CHECK_ERROR(counterCS <= 1, ERROR_MESSAGE_PREFIX L"Too many objects in top create stack.");
-					}
-					if (hasRO)
-					{
-						CHECK_ERROR(counterCS > 0, ERROR_MESSAGE_PREFIX L"Not enough objects in top create stack.");
-						CHECK_ERROR(counterOS <= 1, ERROR_MESSAGE_PREFIX L"Too many objects in top object stack.");
-					}
-
-					// store statictics data
-					auto mergeExec = GetTraceMergeExec(traceExec->mergeExec);
-					if ((mergeExec->hasEO = hasEO))
-					{
-						mergeExec->objectIdsToMerge = objectIdsOS;
-					}
-					if ((mergeExec->hasRO = hasRO))
-					{
-						mergeExec->objectIdsToMerge = objectIdsCS;
-					}
+					tmeId = tme->next;
+					CheckMergeTrace(trace, traceExec, tme);
+					CHECK_ERROR(tme->objectIdsToMerge != -1, ERROR_MESSAGE_PREFIX L"Failed to find ambiguous objects in a merge trace.");
 				}
 #undef ERROR_MESSAGE_PREFIX
 			}

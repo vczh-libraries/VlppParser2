@@ -339,10 +339,6 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 				vint32_t							next = -1;
 
 				// statictics data of predecessors
-				bool								hasEO = false;
-				bool								hasRO = false;
-
-				bool								referencedByMergeTrace = false;
 				vint32_t							objectIdsToMerge = -1;
 			};
 
@@ -507,6 +503,7 @@ TraceManager
 				AllocateOnly<TraceMergeExec>				mergeExecs;
 
 				// phase: CheckMergeTraces
+				void										CheckMergeTrace(Trace* trace, TraceExec* traceExec, TraceMergeExec* tme);
 				void										CheckMergeTraces();
 			public:
 				TraceManager(Executable& _executable, const ITypeCallback* _typeCallback, vint blockSize);
