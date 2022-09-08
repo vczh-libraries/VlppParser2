@@ -341,24 +341,27 @@ void RenderTrace(
 					L" BranchDepth: " +
 					itow(traceExec->branchData.branchDepth));
 			}
+
+			if (traceExec->ambiguity != -1)
+			{
+				auto ta = tm.GetTraceAmbiguity(traceExec->ambiguity);
+				writer.WriteLine(L"[AMBIGUITY-RESOLVING]");
+				writer.WriteString(L"  objs: [");
+				logObjRefLink(ta->objectIdsToMerge);
+				writer.WriteLine(L"]");
+
+				writer.WriteLine(L"  first: " + itow(ta->firstTrace) + L" prefix: " + itow(ta->prefix));
+				writer.WriteLine(L"  last: " + itow(ta->lastTrace) + L" postfix: " + itow(ta->postfix));
+			}
 		}
 
 		if (trace->state == -1)
 		{
 			if (trace->traceExecRef != -1)
 			{
-				writer.WriteLine(L"");
+				writer.WriteLine(L"[CONTEXT]");
 				auto traceExec = tm.GetTraceExec(trace->traceExecRef);
 				logContext(traceExec->context, L"  ");
-
-				auto tme = tm.GetTraceMergeExec(traceExec->mergeExec);
-				if (tme->objectIdsToMerge != -1)
-				{
-					writer.WriteLine(L"");
-					writer.WriteString(L"resolved: [");
-					logObjRefLink(tme->objectIdsToMerge);
-					writer.WriteLine(L"]");
-				}
 			}
 			return;
 		}
