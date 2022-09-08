@@ -1108,101 +1108,100 @@ CheckMergeTraces
 #undef ERROR_MESSAGE_PREFIX
 			}
 
-			void TraceManager::CheckMergeTrace(TraceAmbiguity* ta, Trace* trace, TraceExec* traceExec, collections::List<vint32_t>& visitingIds)
+			bool TraceManager::CheckMergeTrace(TraceAmbiguity* ta, Trace* trace, TraceExec* traceExec, collections::List<vint32_t>& visitingIds)
 			{
 				// when a merge trace is the surviving trace
 				// objects in the top object stack are the result of ambiguity
 				if (trace->successorCount == 0)
 				{
-					tme->objectIdsToMerge = GetInsExec_ObjectStack(traceExec->context.objectStack)->objectIds;
-					return;
+					auto objRefLink = GetInsExec_ObjectStack(traceExec->context.objectStack)->objectIds;
+					return CheckAmbiguityResolution(ta, visitingIds, [=](auto&& callback)
+					{
+						callback(objRefLink);
+					});
 				}
 
 				// otherwise
 				// objects in the top create stack are the result of ambiguity
 				// even when there is only one object in the stack
-				tme->objectIdsToMerge = GetInsExec_CreateStack(traceExec->context.createStack)->objectIds;
 
 				// but in some cases
 				// objects in the top object stack are the result of ambiguity
 				// when these objects are the only difference in branches
 				// here we need to test if the condition satisfied
 
-				// [CONDITION]
-				// the top create stack should be either empty or only contains one object
-				if (traceExec->context.createStack != -1)
 				{
-					auto ieCSTop = GetInsExec_CreateStack(traceExec->context.createStack);
-					auto objRefLink = GetInsExec_ObjRefLink(ieCSTop->objectIds);
-					if (objRefLink->previous != -1)
+					// [CONDITION]
+					// the top create stack should be either empty or only contains one object
+					if (traceExec->context.createStack != -1)
 					{
-						return;
-					}
-				}
-
-				// [CONDITION]
-				// the first predecessor must has a EndObject instruction
-				// count the number of instructions after EndObject
-				// these instructions are the postfix
-				vint32_t postfix = -1;
-				auto firstTrace = GetTrace(trace->predecessors.first);
-				auto firstTraceExec = GetTraceExec(firstTrace->traceExecRef);
-				for (vint32_t i = firstTraceExec->insLists.c3 - 1; i >= 0; i--)
-				{
-					auto&& ins = ReadInstruction(i, firstTraceExec->insLists);
-					if (ins.type == AstInsType::EndObject)
-					{
-						postfix = firstTraceExec->insLists.c3 - i - 1;
-						break;
-					}
-				}
-				if (postfix == -1) return;
-
-				// [CONDITION]
-				// all predecessor must have a EndObject instruction
-				// posftix of all predecessors must be the same
-				vint32_t predecessorId = trace->predecessors.last;
-				while (predecessorId != firstTrace->allocatedIndex)
-				{
-					auto predecessor = GetTrace(predecessorId);
-					predecessorId = predecessor->predecessors.siblingPrev;
-					if (!ComparePostfix(firstTrace, predecessor, postfix + 1)) return;
-				}
-
-				// [CONDITION]
-				// all EndObject must be the last EndObject of the objects it ends
-				// the first create instructions of the objects must be
-				//   the same instruction in the same trace
-				//   in different trace
-				//     these traces share the same predecessor
-				//     prefix (instructions before the create instruction) in these traces are the same
-
-				Trace* firstCreateTrace = nullptr;
-				TraceExec* firstCreateTraceExec = nullptr;
-				vint32_t prefix = -1;
-				bool foundSame = false;
-				bool foundPrefix = false;
-				NEW_MERGE_STACK_MAGIC_COUNTER;
-
-				predecessorId = trace->predecessors.first;
-				while (predecessorId != -1)
-				{
-					auto predecessor = GetTrace(predecessorId);
-					predecessorId = predecessor->predecessors.siblingNext;
-
-					// search for the object it ends
-					auto predecessorTraceExec = GetTraceExec(predecessor->traceExecRef);
-					auto indexEO = predecessorTraceExec->insLists.c3 - postfix - 1;
-					auto insExecEO = GetInsExec(predecessorTraceExec->insExecRefs.start + indexEO);
-					SearchForTopObjectsWithCounter(insExecEO->objRefs, visitingIds, [&](InsExec_Object* ieObject)
-					{
-						// check if the create instructions satisfies the condition
-						SearchForTopCreateInstructions(ieObject, [&](Trace* insTrace, vint32_t insIndex)
+						auto ieCSTop = GetInsExec_CreateStack(traceExec->context.createStack);
+						auto objRefLink = GetInsExec_ObjRefLink(ieCSTop->objectIds);
+						if (objRefLink->previous != -1)
 						{
-							CHECK_FAIL(L"CheckMergeTraces() Not Implemented!");
-						});
+							goto CHECK_OBJECTS_IN_TOP_CREATE_STACK;
+						}
+					}
+
+					// [CONDITION]
+					// the first predecessor must has a EndObject instruction
+					// count the number of instructions after EndObject
+					// these instructions are the postfix
+					vint32_t postfix = -1;
+					auto firstTrace = GetTrace(trace->predecessors.first);
+					auto firstTraceExec = GetTraceExec(firstTrace->traceExecRef);
+					for (vint32_t i = firstTraceExec->insLists.c3 - 1; i >= 0; i--)
+					{
+						auto&& ins = ReadInstruction(i, firstTraceExec->insLists);
+						if (ins.type == AstInsType::EndObject)
+						{
+							postfix = firstTraceExec->insLists.c3 - i - 1;
+							break;
+						}
+					}
+					if (postfix == -1) goto CHECK_OBJECTS_IN_TOP_CREATE_STACK;
+
+					// [CONDITION]
+					// all predecessor must have a EndObject instruction
+					// posftix of all predecessors must be the same
+					{
+						vint32_t predecessorId = trace->predecessors.last;
+						while (predecessorId != firstTrace->allocatedIndex)
+						{
+							auto predecessor = GetTrace(predecessorId);
+							predecessorId = predecessor->predecessors.siblingPrev;
+							if (!ComparePostfix(firstTraceExec, GetTraceExec(predecessor->traceExecRef), postfix + 1)) goto CHECK_OBJECTS_IN_TOP_CREATE_STACK;
+						}
+					}
+
+					// check if all EndObject ended objects are the result of ambiguity
+
+					auto succeeded = CheckAmbiguityResolution(ta, visitingIds, [=, &visitingIds](auto&& callback)
+					{
+						vint32_t predecessorId = trace->predecessors.first;
+						while (predecessorId != -1)
+						{
+							auto predecessor = GetTrace(predecessorId);
+							predecessorId = predecessor->predecessors.siblingNext;
+
+							// search for the object it ends
+							auto predecessorTraceExec = GetTraceExec(predecessor->traceExecRef);
+							auto indexEO = predecessorTraceExec->insLists.c3 - postfix - 1;
+							auto insExecEO = GetInsExec(predecessorTraceExec->insExecRefs.start + indexEO);
+							if (!callback(insExecEO->objRefs)) return false;
+						}
+						return true;
 					});
+
+					if (succeeded) return true;
 				}
+			CHECK_OBJECTS_IN_TOP_CREATE_STACK:
+				auto ieCSTop = GetInsExec_CreateStack(traceExec->context.createStack);
+				auto objRefLink = GetInsExec_ObjRefLink(ieCSTop->objectIds);
+				return CheckAmbiguityResolution(ta, visitingIds, [=](auto&& callback)
+				{
+					callback(objRefLink);
+				});
 			}
 
 			void TraceManager::CheckMergeTraces()
