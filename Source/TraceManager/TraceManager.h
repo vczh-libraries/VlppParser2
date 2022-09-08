@@ -354,6 +354,7 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 				TraceBranchData						branchData;
 
 				// linked list of merge traces
+				vint32_t							previousMergeTrace = -1;
 				vint32_t							nextMergeTrace = -1;
 
 				// TraceAmbiguity associated to the trace
@@ -464,8 +465,6 @@ TraceManager
 				AllocateOnly<InsExec_CreateStack>			insExec_CreateStacks;
 
 				// phase: AllocateExecutionData
-				template<typename T, T* (TraceManager::*get)(vint32_t)>
-				void										BuildDoubleLink(T* node, vint32_t& top, vint32_t& bottom);
 				void										AllocateExecutionData();
 
 				// phase: PartialExecuteTraces - PartialExecuteOrdinaryTrace
@@ -504,8 +503,8 @@ TraceManager
 
 			protected:
 				// ResolveAmbiguity
-				vint32_t									topMergeTrace = -1;
-				vint32_t									bottomMergeTrace = -1;
+				vint32_t									firstMergeTrace = -1;
+				vint32_t									lastMergeTrace = -1;
 				AllocateOnly<TraceAmbiguity>				traceAmbiguities;
 
 				// phase: CheckMergeTraces

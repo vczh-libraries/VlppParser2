@@ -131,22 +131,6 @@ ReadInstruction
 AllocateExecutionData
 ***********************************************************************/
 
-			template<typename T, T* (TraceManager::* get)(vint32_t)>
-			void TraceManager::BuildDoubleLink(T* node, vint32_t& top, vint32_t& bottom)
-			{
-				if (top == -1)
-				{
-					top = node->allocatedIndex;
-					bottom = node->allocatedIndex;
-				}
-				else
-				{
-					(this->*get)(top)->next = node->allocatedIndex;
-					node->previous = top;
-					top = node->allocatedIndex;
-				}
-			}
-
 			void TraceManager::AllocateExecutionData()
 			{
 #define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::AllocateExecutionData()#"
@@ -169,28 +153,20 @@ AllocateExecutionData
 						insExecCount += traceExec->insLists.c3;
 					}
 
-					if (trace->successors.first != trace->successors.last)
-					{
-						auto branchExec = GetTraceBranchExec(branchExecs.Allocate());
-						branchExec->traceId = trace->allocatedIndex;
-						traceExec->branchExec = branchExec->allocatedIndex;
-
-						BuildDoubleLink<TraceBranchExec, &TraceManager::GetTraceBranchExec>(
-							branchExec,
-							topBranchExec,
-							bottomBranchExec);
-					}
-
 					if (trace->predecessors.first != trace->predecessors.last)
 					{
-						auto mergeExec = GetTraceMergeExec(mergeExecs.Allocate());
-						mergeExec->traceId = trace->allocatedIndex;
-						traceExec->mergeExec = mergeExec->allocatedIndex;
-
-						BuildDoubleLink<TraceMergeExec, &TraceManager::GetTraceMergeExec>(
-							mergeExec,
-							topMergeExec,
-							bottomMergeExec);
+						if (firstMergeTrace == -1)
+						{
+							firstMergeTrace = trace->allocatedIndex;
+							lastMergeTrace = trace->allocatedIndex;
+						}
+						else
+						{
+							auto lastTraceExec = GetTraceExec(GetTrace(lastMergeTrace)->traceExecRef);
+							lastTraceExec->nextMergeTrace = trace->allocatedIndex;
+							traceExec->previousMergeTrace = lastMergeTrace;
+							lastMergeTrace = trace->allocatedIndex;
+						}
 					}
 				});
 				insExecs.Resize(insExecCount);

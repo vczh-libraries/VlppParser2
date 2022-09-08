@@ -61,8 +61,8 @@ Initialize
 				insExec_ObjectStacks.Clear();
 				insExec_CreateStacks.Clear();
 
-				topMergeTrace = -1;
-				bottomMergeTrace = -1;
+				firstMergeTrace = -1;
+				lastMergeTrace = -1;
 				traceAmbiguities.Clear();
 
 				initialTrace = AllocateTrace();
