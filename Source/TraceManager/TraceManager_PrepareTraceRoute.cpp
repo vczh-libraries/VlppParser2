@@ -1114,10 +1114,10 @@ CheckMergeTraces
 				// objects in the top object stack are the result of ambiguity
 				if (trace->successorCount == 0)
 				{
-					auto objRefLink = GetInsExec_ObjectStack(traceExec->context.objectStack)->objectIds;
+					auto ieOSTop = GetInsExec_ObjectStack(traceExec->context.objectStack);
 					return CheckAmbiguityResolution(ta, visitingIds, [=](auto&& callback)
 					{
-						callback(objRefLink);
+						return callback(ieOSTop->objectIds);
 					});
 				}
 
@@ -1197,10 +1197,9 @@ CheckMergeTraces
 				}
 			CHECK_OBJECTS_IN_TOP_CREATE_STACK:
 				auto ieCSTop = GetInsExec_CreateStack(traceExec->context.createStack);
-				auto objRefLink = GetInsExec_ObjRefLink(ieCSTop->objectIds);
 				return CheckAmbiguityResolution(ta, visitingIds, [=](auto&& callback)
 				{
-					callback(objRefLink);
+					return callback(ieCSTop->objectIds);
 				});
 			}
 
@@ -1209,31 +1208,27 @@ CheckMergeTraces
 #define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::CheckMergeTraces()#"
 				// iterating TraceMergeExec
 				List<vint32_t> visitingIds;
-				vint32_t tmeId = bottomMergeExec;
-				while (tmeId != -1)
+				vint32_t traceId = firstMergeTrace;
+				while (traceId != -1)
 				{
-					auto tme = GetTraceMergeExec(tmeId);
-					auto trace = GetTrace(tme->traceId);
+					auto trace = GetTrace(traceId);
 					auto traceExec = GetTraceExec(trace->traceExecRef);
-					tmeId = tme->next;
-					CheckMergeTrace(trace, traceExec, tme, visitingIds);
-					CHECK_ERROR(tme->objectIdsToMerge != -1, ERROR_MESSAGE_PREFIX L"Failed to find ambiguous objects in a merge trace.");
+					traceId = traceExec->nextMergeTrace;
 
-					// if objects in the top create stacks are selected
-					// check if they satisfy the following condition:
-					// [CONDITION]
-					// the first create instructions of the objects must be
-					//   the same instruction in the same trace
-					//   in different trace
-					//     these traces share the same predecessor
-					//     prefix (instructions before the create instruction) in these traces are the same
-					// [CONDITION]
-					// EndObject instructions of these first create instructions must be
-					//   the same instruction in the same trace
-					//   in different trace
-					//     these traces share the same successor
-					//     postfix (instructions after EndObject) in these traces are the same
-					CHECK_FAIL(L"CheckMergeTraces() Not Implemented!");
+					auto ta = GetTraceAmbiguity(traceAmbiguities.Allocate());
+					bool succeeded = CheckMergeTrace(ta, trace, traceExec, visitingIds);
+					CHECK_ERROR(!succeeded, ERROR_MESSAGE_PREFIX L"Failed to find ambiguous objects in a merge trace.");
+
+					auto firstTraceExec = GetTraceExec(GetTrace(ta->firstTrace)->traceExecRef);
+					auto lastTraceExec = GetTraceExec(GetTrace(ta->lastTrace)->traceExecRef);
+
+					CHECK_ERROR(traceExec->ambiguity == -1 || traceExec->ambiguity == ta->allocatedIndex, ERROR_MESSAGE_PREFIX L"TraceAmbiguity has been created for this trace.");
+					CHECK_ERROR(firstTraceExec->ambiguity == -1 || firstTraceExec->ambiguity == ta->allocatedIndex, ERROR_MESSAGE_PREFIX L"TraceAmbiguity has been created for this trace.");
+					CHECK_ERROR(lastTraceExec->ambiguity == -1 || lastTraceExec->ambiguity == ta->allocatedIndex, ERROR_MESSAGE_PREFIX L"TraceAmbiguity has been created for this trace.");
+
+					traceExec->ambiguity = ta->allocatedIndex;
+					firstTraceExec->ambiguity = ta->allocatedIndex;
+					lastTraceExec->ambiguity = ta->allocatedIndex;
 				}
 #undef ERROR_MESSAGE_PREFIX
 			}
