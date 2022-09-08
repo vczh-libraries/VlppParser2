@@ -509,15 +509,15 @@ TraceManager
 
 				// phase: CheckMergeTraces
 				template<typename TCallback>
-				void										SearchForTopObjectsWithCounter(vint32_t objRefLinkStartSet, collections::List<vint32_t>& visitingIds, TCallback&& callback);
+				bool										SearchForTopObjectsWithCounter(vint32_t objRefLinkStartSet, collections::List<vint32_t>& visitingIds, TCallback&& callback);
 				template<typename TCallback>
-				void										SearchForTopCreateInstructions(InsExec_Object* ieObject, TCallback&& callback);
+				bool										SearchForTopCreateInstructions(InsExec_Object* ieObject, TCallback&& callback);
 				template<typename TCallback>
-				void										SearchForEndObjectInstructions(Trace* createTrace, vint32_t createIns, TCallback&& callback);
-				bool										ComparePrefix(Trace* baselineTrace, Trace* commingTrace, vint32_t prefix);
-				bool										ComparePostfix(Trace* baselineTrace, Trace* commingTrace, vint32_t postfix);
+				bool										SearchForEndObjectInstructions(Trace* createTrace, vint32_t createIns, TCallback&& callback);
+				bool										ComparePrefix(TraceExec* baselineTraceExec, TraceExec* commingTraceExec, vint32_t prefix);
+				bool										ComparePostfix(TraceExec* baselineTraceExec, TraceExec* commingTraceExec, vint32_t postfix);
 				template<typename TCallback>
-				bool										CheckAmbiguityResolution(TraceAmbiguity* ta, TCallback&& callback);
+				bool										CheckAmbiguityResolution(TraceAmbiguity* ta, collections::List<vint32_t>& visitingIds, TCallback&& callback);
 				void										CheckMergeTrace(TraceAmbiguity* ta, Trace* trace, TraceExec* traceExec, collections::List<vint32_t>& visitingIds);
 				void										CheckMergeTraces();
 			public:

@@ -872,7 +872,7 @@ CheckMergeTraces
 ***********************************************************************/
 
 			template<typename TCallback>
-			void TraceManager::SearchForTopObjectsWithCounter(vint32_t objRefLinkStartSet, collections::List<vint32_t>& visitingIds, TCallback&& callback)
+			bool TraceManager::SearchForTopObjectsWithCounter(vint32_t objRefLinkStartSet, collections::List<vint32_t>& visitingIds, TCallback&& callback)
 			{
 #define PUSH_ID(ID)													\
 					do{												\
@@ -926,32 +926,30 @@ CheckMergeTraces
 							if (ieObject->mergeCounter == MergeStack_MagicCounter) goto CHECK_NEXT_OBJECT;
 							ieObject->mergeCounter = MergeStack_MagicCounter;
 
-							callback(ieObject);
+							if (!callback(ieObject)) return false;
 						}
 					CHECK_NEXT_OBJECT:;
 					}
 				}
+				return true;
 #undef PUSH_ID
 			}
 
 			template<typename TCallback>
-			void TraceManager::SearchForTopCreateInstructions(InsExec_Object* ieObject, TCallback&& callback)
+			bool TraceManager::SearchForTopCreateInstructions(InsExec_Object* ieObject, TCallback&& callback)
 			{
 				CHECK_FAIL(L"SearchForTopCreateInstructions(InsExec_Object*) Not Implemented!");
 			}
 
 			template<typename TCallback>
-			void TraceManager::SearchForEndObjectInstructions(Trace* createTrace, vint32_t createIns, TCallback&& callback)
+			bool TraceManager::SearchForEndObjectInstructions(Trace* createTrace, vint32_t createIns, TCallback&& callback)
 			{
 				CHECK_FAIL(L"SearchForEndObjectInstructions(Trace*, vint32_t) Not Implemented!");
 			}
 
-			bool TraceManager::ComparePrefix(Trace* baselineTrace, Trace* commingTrace, vint32_t prefix)
+			bool TraceManager::ComparePrefix(TraceExec* baselineTraceExec, TraceExec* commingTraceExec, vint32_t prefix)
 			{
-				auto commingTraceExec = GetTraceExec(commingTrace->traceExecRef);
 				if (commingTraceExec->insLists.c3 < prefix) return false;
-
-				auto baselineTraceExec = GetTraceExec(baselineTrace->traceExecRef);
 				for (vint32_t i = 0; i < prefix; i++)
 				{
 					auto&& insBaseline = ReadInstruction(i, baselineTraceExec->insLists);
@@ -962,12 +960,9 @@ CheckMergeTraces
 				return true;
 			}
 
-			bool TraceManager::ComparePostfix(Trace* baselineTrace, Trace* commingTrace, vint32_t postfix)
+			bool TraceManager::ComparePostfix(TraceExec* baselineTraceExec, TraceExec* commingTraceExec, vint32_t postfix)
 			{
-				auto commingTraceExec = GetTraceExec(commingTrace->traceExecRef);
 				if (commingTraceExec->insLists.c3 < postfix) return false;
-
-				auto baselineTraceExec = GetTraceExec(baselineTrace->traceExecRef);
 				for (vint32_t i = 0; i < postfix; i++)
 				{
 					auto&& insBaseline = ReadInstruction(baselineTraceExec->insLists.c3 - i - 1, baselineTraceExec->insLists);
@@ -979,8 +974,9 @@ CheckMergeTraces
 			}
 
 			template<typename TCallback>
-			bool TraceManager::CheckAmbiguityResolution(TraceAmbiguity* ta, TCallback&& callback)
+			bool TraceManager::CheckAmbiguityResolution(TraceAmbiguity* ta, collections::List<vint32_t>& visitingIds, TCallback&& callback)
 			{
+#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::CheckAmbiguityResolution(TraceAmbiguity&, List<vint32_t>&, TCallback&&)#"
 				// following conditions need to be satisfies if multiple objects could be the result of ambiguity
 				//
 				// BO/DFA that create objects must be
@@ -1002,6 +998,10 @@ CheckMergeTraces
 				ta->prefix = -1;
 				ta->postfix = -1;
 
+				Trace* first = nullptr;
+				Trace* last = nullptr;
+				TraceExec* firstTraceExec = nullptr;
+				TraceExec* lastTraceExec = nullptr;
 				bool foundBeginSame = false;
 				bool foundBeginPrefix = false;
 				bool foundEndSame = false;
@@ -1009,11 +1009,80 @@ CheckMergeTraces
 
 				// iterate all objects
 				NEW_MERGE_STACK_MAGIC_COUNTER;
-				callback([&](vint32_t objRefLink)
+				bool succeeded = callback([&](vint32_t objRefLink)
 				{
+					return SearchForTopObjectsWithCounter(objRefLink, visitingIds, [&](InsExec_Object* ieObject)
+					{
+						// check if BO/DFA satisfies the condition
+						return SearchForTopCreateInstructions(ieObject, [&](Trace* createTrace, vint32_t createIns)
+						{
+							{
+								auto traceExec = GetTraceExec(createTrace->traceExecRef);
+								auto&& ins = ReadInstruction(createIns, traceExec->insLists);
+								CHECK_ERROR(ins.type == AstInsType::BeginObject || ins.type == AstInsType::DelayFieldAssignment, ERROR_MESSAGE_PREFIX L"The found instruction is not a BeginObject or DelayFieldAssignment instruction.");
+							}
+
+							if (!first)
+							{
+								first = createTrace;
+								firstTraceExec = GetTraceExec(first->traceExecRef);
+								ta->firstTrace = createTrace->allocatedIndex;
+								ta->prefix = createIns - 1;
+							}
+							else if (first == createTrace)
+							{
+								// check if two instruction is the same
+								if (ta->prefix != createIns - 1) return false;
+								foundBeginSame = true;
+							}
+							else
+							{
+								// check if two instruction shares the same prefix
+								auto createTraceExec = GetTraceExec(createTrace->traceExecRef);
+								if (!ComparePrefix(firstTraceExec, createTraceExec, ta->prefix)) return false;
+								foundBeginPrefix = true;
+							}
+
+							// check if EO satisfies the condition
+							return SearchForEndObjectInstructions(createTrace, createIns, [&](Trace* eoTrace, vint32_t eoIns)
+							{
+								{
+									auto traceExec = GetTraceExec(eoTrace->traceExecRef);
+									auto&& ins = ReadInstruction(eoIns, traceExec->insLists);
+									CHECK_ERROR(ins.type == AstInsType::EndObject, ERROR_MESSAGE_PREFIX L"The found instruction is not a EndObject instruction.");
+								}
+
+								if (!last)
+								{
+									last = eoTrace;
+									lastTraceExec = GetTraceExec(last->traceExecRef);
+									ta->lastTrace = eoTrace->allocatedIndex;
+									ta->postfix = lastTraceExec->insLists.c3 - eoIns - 1;
+								}
+								else if (last == eoTrace)
+								{
+									// check if two instruction is the same
+									auto eoTraceExec = GetTraceExec(eoTrace->traceExecRef);
+									if (ta->postfix != eoTraceExec->insLists.c3 - eoIns - 1) return false;
+									foundEndSame = true;
+								}
+								else
+								{
+									// check if two instruction shares the same postfix
+									auto eoTraceExec = GetTraceExec(eoTrace->traceExecRef);
+									if (!ComparePostfix(lastTraceExec, eoTraceExec, ta->postfix + 1)) return false;
+									foundEndPostfix = true;
+								}
+								return true;
+							});
+						});
+					});
 				});
+				if (!succeeded) return false;
 
 				// ensure the statistics result is compatible
+				if (first && !foundBeginSame && !foundBeginPrefix) foundBeginSame = true;
+				if (last && !foundEndSame && !foundEndPostfix) foundEndSame = true;
 				if (foundBeginSame == foundBeginPrefix) return false;
 				if (foundEndSame == foundEndPostfix) return false;
 
@@ -1036,6 +1105,7 @@ CheckMergeTraces
 				}
 
 				return true;
+#undef ERROR_MESSAGE_PREFIX
 			}
 
 			void TraceManager::CheckMergeTrace(TraceAmbiguity* ta, Trace* trace, TraceExec* traceExec, collections::List<vint32_t>& visitingIds)
