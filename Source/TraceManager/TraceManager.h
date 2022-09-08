@@ -507,6 +507,12 @@ TraceManager
 				// phase: CheckMergeTraces
 				template<typename TCallback>
 				void										SearchForTopObjectsWithCounter(vint32_t objRefLinkStartSet, collections::List<vint32_t>& visitingIds, TCallback&& callback);
+				template<typename TCallback>
+				void										SearchForTopCreateInstructions(InsExec_Object* ieObject, TCallback&& callback);
+				template<typename TCallback>
+				void										SearchForEndObjectInstructions(Trace* createTrace, vint32_t createIns, TCallback&& callback);
+				bool										ComparePrefix(Trace* baselineTrace, Trace* commingTrace, vint32_t prefix);
+				bool										ComparePostfix(Trace* baselineTrace, Trace* commingTrace, vint32_t postfix);
 				void										CheckMergeTrace(Trace* trace, TraceExec* traceExec, TraceMergeExec* tme, collections::List<vint32_t>& visitingIds);
 				void										CheckMergeTraces();
 			public:

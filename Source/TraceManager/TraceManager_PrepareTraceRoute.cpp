@@ -958,6 +958,50 @@ CheckMergeTraces
 #undef PUSH_ID
 			}
 
+			template<typename TCallback>
+			void TraceManager::SearchForTopCreateInstructions(InsExec_Object* ieObject, TCallback&& callback)
+			{
+				CHECK_FAIL(L"SearchForTopCreateInstructions(InsExec_Object*) Not Implemented!");
+			}
+
+			template<typename TCallback>
+			void TraceManager::SearchForEndObjectInstructions(Trace* createTrace, vint32_t createIns, TCallback&& callback)
+			{
+				CHECK_FAIL(L"SearchForEndObjectInstructions(Trace*, vint32_t) Not Implemented!");
+			}
+
+			bool TraceManager::ComparePrefix(Trace* baselineTrace, Trace* commingTrace, vint32_t prefix)
+			{
+				auto commingTraceExec = GetTraceExec(commingTrace->traceExecRef);
+				if (commingTraceExec->insLists.c3 < prefix) return false;
+
+				auto baselineTraceExec = GetTraceExec(baselineTrace->traceExecRef);
+				for (vint32_t i = 0; i < prefix; i++)
+				{
+					auto&& insBaseline = ReadInstruction(i, baselineTraceExec->insLists);
+					auto&& insComming = ReadInstruction(i, baselineTraceExec->insLists);
+					if (insBaseline != insComming) return false;
+				}
+
+				return true;
+			}
+
+			bool TraceManager::ComparePostfix(Trace* baselineTrace, Trace* commingTrace, vint32_t postfix)
+			{
+				auto commingTraceExec = GetTraceExec(commingTrace->traceExecRef);
+				if (commingTraceExec->insLists.c3 < postfix) return false;
+
+				auto baselineTraceExec = GetTraceExec(baselineTrace->traceExecRef);
+				for (vint32_t i = 0; i < postfix; i++)
+				{
+					auto&& insBaseline = ReadInstruction(baselineTraceExec->insLists.c3 - i - 1, baselineTraceExec->insLists);
+					auto&& insComming = ReadInstruction(baselineTraceExec->insLists.c3 - i - 1, baselineTraceExec->insLists);
+					if (insBaseline != insComming) return false;
+				}
+
+				return true;
+			}
+
 			void TraceManager::CheckMergeTrace(Trace* trace, TraceExec* traceExec, TraceMergeExec* tme, collections::List<vint32_t>& visitingIds)
 			{
 				// when a merge trace is the surviving trace
@@ -1016,18 +1060,7 @@ CheckMergeTraces
 				{
 					auto predecessor = GetTrace(predecessorId);
 					predecessorId = predecessor->predecessors.siblingPrev;
-
-					auto predecessorTraceExec = GetTraceExec(predecessor->traceExecRef);
-					if (predecessorTraceExec->insLists.c3 <= postfix) return;
-					auto&& insEO = ReadInstruction(predecessorTraceExec->insLists.c3 - postfix - 1, predecessorTraceExec->insLists);
-					if (insEO.type != AstInsType::EndObject) return;
-
-					for (vint32_t i = 0; i < postfix; i++)
-					{
-						auto&& insFirst = ReadInstruction(firstTraceExec->insLists.c3 - i - 1, firstTraceExec->insLists);
-						auto&& insPredecessor = ReadInstruction(predecessorTraceExec->insLists.c3 - i - 1, predecessorTraceExec->insLists);
-						if (insFirst != insPredecessor) return;
-					}
+					if (!ComparePostfix(firstTrace, predecessor, postfix + 1)) return;
 				}
 
 				// [CONDITION]
@@ -1057,10 +1090,11 @@ CheckMergeTraces
 					auto insExecEO = GetInsExec(predecessorTraceExec->insExecRefs.start + indexEO);
 					SearchForTopObjectsWithCounter(insExecEO->objRefs, visitingIds, [&](InsExec_Object* ieObject)
 					{
-						// check if it satisfies the condition
-						// IterateCreateInstructions(InsExecObject*, TCallback&&)
-						// InsExec_Object::dfaInsRefs need to be partially sorted touch all top ones
-						CHECK_FAIL(L"CheckMergeTrace(Trace*) Not Implemented!");
+						// check if the create instructions satisfies the condition
+						SearchForTopCreateInstructions(ieObject, [&](Trace* insTrace, vint32_t insIndex)
+						{
+							CHECK_FAIL(L"CheckMergeTraces() Not Implemented!");
+						});
 					});
 				}
 			}
