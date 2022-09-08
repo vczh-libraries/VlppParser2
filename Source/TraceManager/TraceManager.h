@@ -321,27 +321,26 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 				vint32_t							branchDepth = -1;
 			};
 
-			struct TraceBranchExec
+			struct TraceAmbiguity
 			{
 				vint32_t							allocatedIndex = -1;
-				vint32_t							traceId = -1;
 
-				// a linked list to connect all TraceBranchExec
-				vint32_t							previous = -1;
-				vint32_t							next = -1;
-			};
-
-			struct TraceMergeExec
-			{
-				vint32_t							allocatedIndex = -1;
-				vint32_t							traceId = -1;
-
-				// a linked list to connect all TraceMergeExec
-				vint32_t							previous = -1;
-				vint32_t							next = -1;
-
-				// statictics data of predecessors
+				// InsExec_ObjRefLink containing all objects to resolve
 				vint32_t							objectIdsToMerge = -1;
+
+				// the trace where ambiguity resolution begins
+				// prefix is the number of instructions before BO/DFA
+				// if prefix + 1 is larger than instructions in firstTrace
+				// then BO/DFA is in all successors
+				vint32_t							firstTrace = -1;
+				vint32_t							prefix = -1;
+
+				// the trace when ambiguity resolution ends
+				// postfix is the number of instructions after EO
+				// if postfix + 1 is larger than instructions in lastTrace
+				// then EO is in all predecessors
+				vint32_t							lastTrace = -1;
+				vint32_t							postfix = -1;
 			};
 
 			struct TraceExec
@@ -353,8 +352,16 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 
 				InsExec_Context						context;
 				TraceBranchData						branchData;
-				vint32_t							branchExec = -1;
-				vint32_t							mergeExec = -1;
+
+				// linked list of merge traces
+				vint32_t							nextMergeTrace = -1;
+
+				// TraceAmbiguity associated to the trace
+				// it could be associated to
+				//   firstTrace
+				//   lastTrace
+				//   the merge trace that create this TraceAmbiguity
+				vint32_t							ambiguity = -1;
 			};
 
 /***********************************************************************
@@ -497,12 +504,9 @@ TraceManager
 
 			protected:
 				// ResolveAmbiguity
-				vint32_t									topBranchExec = -1;
-				vint32_t									bottomBranchExec = -1;
-				vint32_t									topMergeExec = -1;
-				vint32_t									bottomMergeExec = -1;
-				AllocateOnly<TraceBranchExec>				branchExecs;
-				AllocateOnly<TraceMergeExec>				mergeExecs;
+				vint32_t									topMergeTrace = -1;
+				vint32_t									bottomMergeTrace = -1;
+				AllocateOnly<TraceAmbiguity>				traceAmbiguities;
 
 				// phase: CheckMergeTraces
 				template<typename TCallback>
@@ -513,7 +517,9 @@ TraceManager
 				void										SearchForEndObjectInstructions(Trace* createTrace, vint32_t createIns, TCallback&& callback);
 				bool										ComparePrefix(Trace* baselineTrace, Trace* commingTrace, vint32_t prefix);
 				bool										ComparePostfix(Trace* baselineTrace, Trace* commingTrace, vint32_t postfix);
-				void										CheckMergeTrace(Trace* trace, TraceExec* traceExec, TraceMergeExec* tme, collections::List<vint32_t>& visitingIds);
+				template<typename TCallback>
+				bool										CheckAmbiguityResolution(TraceAmbiguity* ta, TCallback&& callback);
+				void										CheckMergeTrace(TraceAmbiguity* ta, Trace* trace, TraceExec* traceExec, collections::List<vint32_t>& visitingIds);
 				void										CheckMergeTraces();
 			public:
 				TraceManager(Executable& _executable, const ITypeCallback* _typeCallback, vint blockSize);
@@ -538,8 +544,7 @@ TraceManager
 				InsExec_ObjectStack*			GetInsExec_ObjectStack(vint32_t index);
 				InsExec_CreateStack*			GetInsExec_CreateStack(vint32_t index);
 				TraceExec*						GetTraceExec(vint32_t index);
-				TraceBranchExec*				GetTraceBranchExec(vint32_t index);
-				TraceMergeExec*					GetTraceMergeExec(vint32_t index);
+				TraceAmbiguity*					GetTraceAmbiguity(vint32_t index);
 
 				void							Initialize(vint32_t startState) override;
 				Trace*							GetInitialTrace();

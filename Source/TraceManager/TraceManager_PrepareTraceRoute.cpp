@@ -1002,7 +1002,67 @@ CheckMergeTraces
 				return true;
 			}
 
-			void TraceManager::CheckMergeTrace(Trace* trace, TraceExec* traceExec, TraceMergeExec* tme, collections::List<vint32_t>& visitingIds)
+			template<typename TCallback>
+			bool TraceManager::CheckAmbiguityResolution(TraceAmbiguity* ta, TCallback&& callback)
+			{
+				// following conditions need to be satisfies if multiple objects could be the result of ambiguity
+				//
+				// BO/DFA that create objects must be
+				//   the same instruction in the same trace
+				//   in different trace
+				//     these traces share the same predecessor
+				//     prefix in these traces are the same
+				//
+				// EO that ed objects must be
+				//   the same instruction in the same trace
+				//   in different trace
+				//     these traces share the same successor
+				//     postfix in these traces are the same
+
+				// initialize TraceAmbiguity
+				ta->objectIdsToMerge = -1;
+				ta->firstTrace = -1;
+				ta->lastTrace = -1;
+				ta->prefix = -1;
+				ta->postfix = -1;
+
+				bool foundBeginSame = false;
+				bool foundBeginPrefix = false;
+				bool foundEndSame = false;
+				bool foundEndPostfix = false;
+
+				// iterate all objects
+				NEW_MERGE_STACK_MAGIC_COUNTER;
+				callback([&](vint32_t objRefLink)
+				{
+				});
+
+				// ensure the statistics result is compatible
+				if (foundBeginSame == foundBeginPrefix) return false;
+				if (foundEndSame == foundEndPostfix) return false;
+
+				// fix prefix if necessary
+				if (foundBeginPrefix)
+				{
+					auto first = GetTrace(GetTrace(ta->firstTrace)->predecessors.first);
+					auto traceExec = GetTraceExec(first->traceExecRef);
+					ta->firstTrace = first->allocatedIndex;
+					ta->prefix += traceExec->insLists.c3;
+				}
+
+				// fix postfix if necessary
+				if (foundEndPostfix)
+				{
+					auto last = GetTrace(GetTrace(ta->firstTrace)->successors.first);
+					auto traceExec = GetTraceExec(first->traceExecRef);
+					ta->lastTrace = last->allocatedIndex;
+					ta->postfix += traceExec->insLists.c3;
+				}
+
+				return true;
+			}
+
+			void TraceManager::CheckMergeTrace(TraceAmbiguity* ta, Trace* trace, TraceExec* traceExec, collections::List<vint32_t>& visitingIds)
 			{
 				// when a merge trace is the surviving trace
 				// objects in the top object stack are the result of ambiguity
