@@ -1003,7 +1003,16 @@ CheckMergeTraces
 			template<typename TCallback>
 			bool TraceManager::SearchForEndObjectInstructions(Trace* createTrace, vint32_t createIns, TCallback&& callback)
 			{
-				CHECK_FAIL(L"SearchForEndObjectInstructions(Trace*, vint32_t) Not Implemented!");
+				auto traceExec = GetTraceExec(createTrace->traceExecRef);
+				auto insExec = GetInsExec(traceExec->insExecRefs.start + createIns);
+				vint32_t insRefLinkId = insExec->eoInsRefs;
+				while (insRefLinkId != -1)
+				{
+					auto insRefLink = GetInsExec_InsRefLink(insRefLinkId);
+					insRefLinkId = insRefLink->previous;
+					if (!callback(GetTrace(insRefLink->trace), insRefLink->ins)) return false;
+				}
+				return true;
 			}
 
 			bool TraceManager::ComparePrefix(TraceExec* baselineTraceExec, TraceExec* commingTraceExec, vint32_t prefix)
