@@ -1097,17 +1097,18 @@ CheckMergeTraces
 								first = createTrace;
 								firstTraceExec = GetTraceExec(first->traceExecRef);
 								ta->firstTrace = createTrace->allocatedIndex;
-								ta->prefix = createIns - 1;
+								ta->prefix = createIns;
 							}
 							else if (first == createTrace)
 							{
 								// check if two instruction is the same
-								if (ta->prefix != createIns - 1) return false;
+								if (ta->prefix != createIns) return false;
 								foundBeginSame = true;
 							}
 							else
 							{
 								// check if two instruction shares the same prefix
+								if (first->predecessors.first != createTrace->predecessors.first) return false;
 								auto createTraceExec = GetTraceExec(createTrace->traceExecRef);
 								if (!ComparePrefix(firstTraceExec, createTraceExec, ta->prefix)) return false;
 								foundBeginPrefix = true;
@@ -1141,6 +1142,7 @@ CheckMergeTraces
 								else
 								{
 									// check if two instruction shares the same postfix
+									if (last->successors.first != eoTrace->successors.first) return false;
 									auto eoTraceExec = GetTraceExec(eoTrace->traceExecRef);
 									if (!ComparePostfix(lastTraceExec, eoTraceExec, ta->postfix + 1)) return false;
 									foundEndPostfix = true;
@@ -1170,10 +1172,11 @@ CheckMergeTraces
 				// fix postfix if necessary
 				if (foundEndPostfix)
 				{
-					auto last = GetTrace(GetTrace(ta->firstTrace)->successors.first);
-					auto traceExec = GetTraceExec(first->traceExecRef);
+					// last will be a merge trace
+					// so ta->postfix doesn't need to change
+					auto last = GetTrace(GetTrace(ta->lastTrace)->successors.first);
+					auto traceExec = GetTraceExec(last->traceExecRef);
 					ta->lastTrace = last->allocatedIndex;
-					ta->postfix += traceExec->insLists.c3;
 				}
 
 				return true;
@@ -1289,7 +1292,7 @@ CheckMergeTraces
 
 					auto ta = GetTraceAmbiguity(traceAmbiguities.Allocate());
 					bool succeeded = CheckMergeTrace(ta, trace, traceExec, visitingIds);
-					CHECK_ERROR(!succeeded, ERROR_MESSAGE_PREFIX L"Failed to find ambiguous objects in a merge trace.");
+					CHECK_ERROR(succeeded, ERROR_MESSAGE_PREFIX L"Failed to find ambiguous objects in a merge trace.");
 
 					auto firstTraceExec = GetTraceExec(GetTrace(ta->firstTrace)->traceExecRef);
 					auto lastTraceExec = GetTraceExec(GetTrace(ta->lastTrace)->traceExecRef);

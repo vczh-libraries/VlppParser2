@@ -337,7 +337,7 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 
 				// the trace when ambiguity resolution ends
 				// postfix is the number of instructions after EO
-				// if postfix + 1 is larger than instructions in lastTrace
+				// if lastTrace is a merge trace
 				// then EO is in all predecessors
 				vint32_t							lastTrace = -1;
 				vint32_t							postfix = -1;
