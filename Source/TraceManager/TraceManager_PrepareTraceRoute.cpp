@@ -1075,11 +1075,13 @@ CheckMergeTraces
 						// check if BO/DFA satisfies the condition
 						return SearchForTopCreateInstructions(ieObject, [&](Trace* createTrace, vint32_t createIns)
 						{
+#if defined VCZH_MSVC && defined _DEBUG
 							{
 								auto traceExec = GetTraceExec(createTrace->traceExecRef);
 								auto&& ins = ReadInstruction(createIns, traceExec->insLists);
 								CHECK_ERROR(ins.type == AstInsType::BeginObject || ins.type == AstInsType::DelayFieldAssignment, ERROR_MESSAGE_PREFIX L"The found instruction is not a BeginObject or DelayFieldAssignment instruction.");
 							}
+#endif
 
 							if (!first)
 							{
@@ -1105,11 +1107,13 @@ CheckMergeTraces
 							// check if EO satisfies the condition
 							return SearchForEndObjectInstructions(createTrace, createIns, [&](Trace* eoTrace, vint32_t eoIns)
 							{
+#if defined VCZH_MSVC && defined _DEBUG
 								{
 									auto traceExec = GetTraceExec(eoTrace->traceExecRef);
 									auto&& ins = ReadInstruction(eoIns, traceExec->insLists);
 									CHECK_ERROR(ins.type == AstInsType::EndObject, ERROR_MESSAGE_PREFIX L"The found instruction is not a EndObject instruction.");
 								}
+#endif
 
 								if (!last)
 								{
