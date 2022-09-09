@@ -938,7 +938,66 @@ CheckMergeTraces
 			template<typename TCallback>
 			bool TraceManager::SearchForTopCreateInstructions(InsExec_Object* ieObject, TCallback&& callback)
 			{
-				CHECK_FAIL(L"SearchForTopCreateInstructions(InsExec_Object*) Not Implemented!");
+#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::SearchForTopCreateInstructions(InsExec_Object*, TCallback&&)#"
+				// find the first instruction in all create instructions
+				// its trace should be a common ancestor of all traces of all create instructions
+				vint32_t trace = ieObject->bo_bolr_Trace;
+				vint32_t ins = ieObject->bo_bolr_Ins;
+
+				auto insRefLinkId = ieObject->dfaInsRefs;
+				while (insRefLinkId != -1)
+				{
+					auto insRefLink = GetInsExec_InsRefLink(insRefLinkId);
+					insRefLinkId = insRefLink->previous;
+					if (insRefLink->trace < trace || (insRefLink->trace == trace && insRefLink->ins < ins))
+					{
+						trace = insRefLink->trace;
+						ins = insRefLink->ins;
+					}
+				}
+
+#if defined VCZH_MSVC && defined _DEBUG
+				// ensure they actually have the same ancestor trace
+				vint32_t forwardTraceId = GetTraceExec(GetTrace(trace)->traceExecRef)->branchData.forwardTrace;
+				auto boTrace = GetTrace(ieObject->bo_bolr_Trace);
+				insRefLinkId = ieObject->dfaInsRefs;
+				while (true)
+				{
+					auto currentTrace = boTrace;
+					if (insRefLinkId != -1)
+					{
+						currentTrace = GetTrace(GetInsExec_InsRefLink(insRefLinkId)->trace);
+					}
+
+					auto currentTraceExec = GetTraceExec(currentTrace->traceExecRef);
+					while (currentTraceExec->branchData.forwardTrace > forwardTraceId)
+					{
+						if (currentTrace->allocatedIndex == currentTraceExec->branchData.forwardTrace)
+						{
+							currentTrace = GetTrace(currentTrace->predecessors.first);
+						}
+						else
+						{
+							currentTrace = GetTrace(currentTraceExec->branchData.forwardTrace);
+						}
+						currentTraceExec = GetTraceExec(currentTrace->traceExecRef);
+					}
+					CHECK_ERROR(currentTraceExec->branchData.forwardTrace == forwardTraceId, ERROR_MESSAGE_PREFIX L"Internal error: assumption is broken.");
+
+					if (insRefLinkId == -1)
+					{
+						break;
+					}
+					else
+					{
+						auto insRefLink = GetInsExec_InsRefLink(insRefLinkId);
+						insRefLinkId = insRefLink->previous;
+					}
+				}
+#endif
+
+				return callback(GetTrace(trace), ins);
+#undef ERROR_MESSAGE_PREFIX
 			}
 
 			template<typename TCallback>
