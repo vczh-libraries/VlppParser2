@@ -1138,14 +1138,12 @@ CheckMergeTraces
 				bool succeeded = false;
 
 				// iterate all top objects
-				NEW_MERGE_STACK_MAGIC_COUNTER;
 				succeeded = callback([&](vint32_t objRefLink)
 				{
 					return SearchForObjects(objRefLink, false, [&](InsExec_Object* ieObject)
 					{
-						//PushObjRefLink(ta->topObjectIds, ieObject->allocatedIndex);
-
 						// check if BO/DFA satisfies the condition
+						NEW_MERGE_STACK_MAGIC_COUNTER;
 						return SearchForTopCreateInstructionsInAllLevelsWithCounter(ieObject, visitingIds, [&](vint32_t createTraceId, vint32_t createIns)
 						{
 							auto createTrace = GetTrace(createTraceId);
