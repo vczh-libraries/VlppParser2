@@ -8,8 +8,7 @@
 - Make a test case to test `prefix_merge` generates `left_recursion_inject_multiple`.
 - Create ambiguity test case caused by only one clause with branches.
 
-- IfElseAmbiguity2/IfElseAmbiguity1: both create and object stack tops in merge trace have multiple objects (at 52).
-- FeatureTest/Pwa_1: Predecessor traces of merge trace end with Field instead of EO/RO (at 16).
+- FeatureTest/Pwa_2: BOLR's DFA instruction is eariler than the object it takes to execute BOLR.
 
 ## Features to Add
 
