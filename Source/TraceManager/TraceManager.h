@@ -325,13 +325,15 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 			{
 				vint32_t							allocatedIndex = -1;
 
-				// InsExec_ObjRefLink containing all objects to resolve
-				vint32_t							objectIdsToMerge = -1;
+				// InsExec_ObjRefLink containing all top objects and bottom objects
+				vint32_t							topObjectIds = -1;
+				vint32_t							bottomObjectIds = -1;
 
 				// the trace where ambiguity resolution begins
 				// prefix is the number of instructions before BO/DFA
 				// if prefix + 1 is larger than instructions in firstTrace
 				// then BO/DFA is in all successors
+				// these instructions create topObjectIds
 				vint32_t							firstTrace = -1;
 				vint32_t							prefix = -1;
 
@@ -339,6 +341,7 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 				// postfix is the number of instructions after EO
 				// if lastTrace is a merge trace
 				// then EO is in all predecessors
+				// these instructions end bottomObjectIds
 				vint32_t							lastTrace = -1;
 				vint32_t							postfix = -1;
 			};
@@ -508,6 +511,8 @@ TraceManager
 				AllocateOnly<TraceAmbiguity>				traceAmbiguities;
 
 				// phase: CheckMergeTraces
+				template<typename TCallback>
+				bool										SearchForObjectsWithCounter(vint32_t objRefLinkStartSet, TCallback&& callback);
 				template<typename TCallback>
 				bool										SearchForTopObjectsWithCounter(vint32_t objRefLinkStartSet, collections::List<vint32_t>& visitingIds, TCallback&& callback);
 				template<typename TCallback>

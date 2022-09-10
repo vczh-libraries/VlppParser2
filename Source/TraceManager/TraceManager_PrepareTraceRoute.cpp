@@ -872,6 +872,27 @@ CheckMergeTraces
 ***********************************************************************/
 
 			template<typename TCallback>
+			bool TraceManager::SearchForObjectsWithCounter(vint32_t objRefLinkStartSet, TCallback&& callback)
+			{
+				// check every object in the link
+				vint32_t linkId = objRefLinkStartSet;
+				while (linkId != -1)
+				{
+					auto objRefLink = GetInsExec_ObjRefLink(linkId);
+					linkId = objRefLink->previous;
+					auto ieObject = GetInsExec_Object(objRefLink->id);
+
+					// skip if it has been searched
+					if (ieObject->mergeCounter == MergeStack_MagicCounter) goto CHECK_NEXT_OBJECT;
+					ieObject->mergeCounter = MergeStack_MagicCounter;
+
+					if (!callback(ieObject)) return false;
+				CHECK_NEXT_OBJECT:;
+				}
+				return true;
+			}
+
+			template<typename TCallback>
 			bool TraceManager::SearchForTopObjectsWithCounter(vint32_t objRefLinkStartSet, collections::List<vint32_t>& visitingIds, TCallback&& callback)
 			{
 #define PUSH_ID(ID)													\
@@ -1060,12 +1081,6 @@ CheckMergeTraces
 				//     postfix in these traces are the same
 
 				// initialize TraceAmbiguity
-				ta->objectIdsToMerge = -1;
-				ta->firstTrace = -1;
-				ta->lastTrace = -1;
-				ta->prefix = -1;
-				ta->postfix = -1;
-
 				Trace* first = nullptr;
 				Trace* last = nullptr;
 				TraceExec* firstTraceExec = nullptr;
@@ -1074,14 +1089,15 @@ CheckMergeTraces
 				bool foundBeginPrefix = false;
 				bool foundEndSame = false;
 				bool foundEndPostfix = false;
+				bool succeeded = false;
 
-				// iterate all objects
+				// iterate all top objects
 				NEW_MERGE_STACK_MAGIC_COUNTER;
-				bool succeeded = callback([&](vint32_t objRefLink)
+				succeeded = callback([&](vint32_t objRefLink)
 				{
 					return SearchForTopObjectsWithCounter(objRefLink, visitingIds, [&](InsExec_Object* ieObject)
 					{
-						PushObjRefLink(ta->objectIdsToMerge, ieObject->allocatedIndex);
+						PushObjRefLink(ta->topObjectIds, ieObject->allocatedIndex);
 
 						// check if BO/DFA satisfies the condition
 						return SearchForTopCreateInstructions(ieObject, [&](Trace* createTrace, vint32_t createIns)
@@ -1115,6 +1131,31 @@ CheckMergeTraces
 								if (!ComparePrefix(firstTraceExec, createTraceExec, ta->prefix)) return false;
 								foundBeginPrefix = true;
 							}
+
+							return true;
+						});
+					});
+				});
+				if (!succeeded) return false;
+
+				// iterate all bottom objects
+				NEW_MERGE_STACK_MAGIC_COUNTER;
+				succeeded = callback([&](vint32_t objRefLink)
+				{
+					return SearchForObjectsWithCounter(objRefLink, [&](InsExec_Object* ieObject)
+					{
+						PushObjRefLink(ta->bottomObjectIds, ieObject->allocatedIndex);
+
+						// check if BO/DFA satisfies the condition
+						return SearchForTopCreateInstructions(ieObject, [&](Trace* createTrace, vint32_t createIns)
+						{
+#if defined VCZH_MSVC && defined _DEBUG
+							{
+								auto traceExec = GetTraceExec(createTrace->traceExecRef);
+								auto&& ins = ReadInstruction(createIns, traceExec->insLists);
+								CHECK_ERROR(ins.type == AstInsType::BeginObject || ins.type == AstInsType::DelayFieldAssignment, ERROR_MESSAGE_PREFIX L"The found instruction is not a BeginObject or DelayFieldAssignment instruction.");
+							}
+#endif
 
 							// check if EO satisfies the condition
 							return SearchForEndObjectInstructions(createTrace, createIns, [&](Trace* eoTrace, vint32_t eoIns)

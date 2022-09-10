@@ -347,7 +347,9 @@ void RenderTrace(
 				auto ta = tm.GetTraceAmbiguity(traceExec->ambiguity);
 				writer.WriteLine(L"[AMBIGUITY-RESOLVING]");
 				writer.WriteString(L"  objs: [");
-				logObjRefLink(ta->objectIdsToMerge);
+				logObjRefLink(ta->topObjectIds);
+				writer.WriteString(L"] [");
+				logObjRefLink(ta->bottomObjectIds);
 				writer.WriteLine(L"]");
 
 				writer.WriteLine(L"  first: " + itow(ta->firstTrace) + L" prefix: " + itow(ta->prefix));
