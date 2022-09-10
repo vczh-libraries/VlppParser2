@@ -382,12 +382,28 @@ PartialExecuteOrdinaryTrace
 
 							// reopen an object
 							auto ieCSTop = GetInsExec_CreateStack(context.createStack);
+							NEW_MERGE_STACK_MAGIC_COUNTER;
+							{
+								auto ref = ieCSTop->objectIds;
+								while (ref != -1)
+								{
+									auto link = GetInsExec_ObjRefLink(ref);
+									auto ieObject = GetInsExec_Object(link->id);
+									ieObject->mergeCounter = MergeStack_MagicCounter;
+									ref = link->previous;
+								}
+							}
 							{
 								auto ref = ieOSTop->objectIds;
 								while (ref != -1)
 								{
 									auto link = GetInsExec_ObjRefLink(ref);
-									PushObjRefLink(ieCSTop->objectIds, link->id);
+									auto ieObject = GetInsExec_Object(link->id);
+									if (ieObject->mergeCounter != MergeStack_MagicCounter)
+									{
+										ieObject->mergeCounter = MergeStack_MagicCounter;
+										PushObjRefLink(ieCSTop->objectIds, link->id);
+									}
 									ref = link->previous;
 								}
 							}

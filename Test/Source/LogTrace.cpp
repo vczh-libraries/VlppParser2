@@ -326,20 +326,25 @@ void RenderTrace(
 			}
 			else
 			{
+				writer.WriteLine(L"  TraceExec: [" + itow(traceExec->allocatedIndex) + L"]");
 				writer.WriteLine(
-					L"  TraceExec: [" + itow(traceExec->allocatedIndex) +
-					L", " + itow(traceExec->insExecRefs.start) +
+					L"  InsExec: [" + itow(traceExec->insExecRefs.start) +
 					L":" + itow(traceExec->insExecRefs.count) +
 					L"]");
 			}
 
 			if (traceExec->branchData.forwardTrace != -1)
 			{
-				writer.WriteLine(
-					(trace->state == -1 ? L"  SharedTrace: " : L"  BranchHead: ") +
-					itow(traceExec->branchData.forwardTrace) +
-					L" BranchDepth: " +
-					itow(traceExec->branchData.branchDepth));
+				if (trace->state == -1)
+				{
+					writer.WriteString(L"  SharedTrace: ");
+				}
+				else
+				{
+					writer.WriteString(L"  BranchHead: ");
+				}
+				writer.WriteLine(itow(traceExec->branchData.forwardTrace));
+				writer.WriteLine(L"  BranchDepth: " + itow(traceExec->branchData.branchDepth));
 			}
 
 			if (traceExec->ambiguity != -1)
