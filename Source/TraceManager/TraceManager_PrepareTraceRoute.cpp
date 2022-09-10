@@ -886,9 +886,12 @@ CheckMergeTraces
 					linkId = objRefLink->previous;
 					auto ieObject = GetInsExec_Object(objRefLink->id);
 
-					// skip if it has been searched
-					if (ieObject->mergeCounter == MergeStack_MagicCounter) goto CHECK_NEXT_OBJECT;
-					ieObject->mergeCounter = MergeStack_MagicCounter;
+					if (withCounter)
+					{
+						// skip if it has been searched
+						if (ieObject->mergeCounter == MergeStack_MagicCounter) goto CHECK_NEXT_OBJECT;
+						ieObject->mergeCounter = MergeStack_MagicCounter;
+					}
 
 					if (!callback(ieObject)) return false;
 				CHECK_NEXT_OBJECT:;
