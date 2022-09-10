@@ -922,17 +922,17 @@ CheckMergeTraces
 					// keep searching until ieObject->lrObjectIds is empty
 					while (ieObject->lrObjectIds != -1)
 					{
-						// skip if it has been searched
-						if (ieObject->mergeCounter == MergeStack_MagicCounter) return true;
-						ieObject->mergeCounter = MergeStack_MagicCounter;
-						if (!callback(ieObject)) return false;
-
 						auto lrObjRefLink = GetInsExec_ObjRefLink(ieObject->lrObjectIds);
 						if (lrObjRefLink->previous == -1)
 						{
 							// if ieObject->lrObjectIds has only one object
 							// continue in place
 							ieObject = GetInsExec_Object(lrObjRefLink->id);
+
+							// skip if it has been searched
+							if (ieObject->mergeCounter == MergeStack_MagicCounter) return true;
+							ieObject->mergeCounter = MergeStack_MagicCounter;
+							if (!callback(ieObject)) return false;
 						}
 						else
 						{
@@ -1050,7 +1050,7 @@ CheckMergeTraces
 						return true;
 					});
 				});
-				if (trace == -1) return false;
+				if (trace == -1) return true;
 				if (!succeeded) return false;
 #ifdef VCZH_DO_DEBUG_CHECK
 				// ensure they actually have the same ancestor trace
@@ -1059,7 +1059,7 @@ CheckMergeTraces
 				while (insRefLinkId != -1)
 				{
 					auto insRefLink = GetInsExec_InsRefLink(insRefLinkId);
-					EnsureSameForwardTrace(GetInsExec_InsRefLink(insRefLinkId)->trace, forwardTraceId);
+					EnsureSameForwardTrace(insRefLink->trace, forwardTraceId);
 					insRefLinkId = insRefLink->previous;
 				}
 #endif

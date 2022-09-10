@@ -347,8 +347,6 @@ void RenderTrace(
 				auto ta = tm.GetTraceAmbiguity(traceExec->ambiguity);
 				writer.WriteLine(L"[AMBIGUITY-RESOLVING]");
 				writer.WriteString(L"  objs: [");
-				logObjRefLink(ta->topObjectIds);
-				writer.WriteString(L"] [");
 				logObjRefLink(ta->bottomObjectIds);
 				writer.WriteLine(L"]");
 

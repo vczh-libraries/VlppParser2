@@ -325,8 +325,7 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 			{
 				vint32_t							allocatedIndex = -1;
 
-				// InsExec_ObjRefLink containing all top objects and bottom objects
-				vint32_t							topObjectIds = -1;
+				// InsExec_ObjRefLink containing all objects to merge
 				vint32_t							bottomObjectIds = -1;
 
 				// the trace where ambiguity resolution begins

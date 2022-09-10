@@ -9,6 +9,7 @@
 - Create ambiguity test case caused by only one clause with branches.
 
 - FeatureTest/Pwa_2: BOLR's DFA instruction is eariler than the object it takes to execute BOLR.
+- GenericAmbiguity/Ambiguity_CallWithComparison: Some CSTop is `[2, 2]`.
 
 ## Features to Add
 
