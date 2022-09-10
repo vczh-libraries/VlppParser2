@@ -979,17 +979,9 @@ CheckMergeTraces
 
 #if defined VCZH_MSVC && defined _DEBUG
 				// ensure they actually have the same ancestor trace
-				vint32_t forwardTraceId = GetTraceExec(GetTrace(trace)->traceExecRef)->branchData.forwardTrace;
-				auto boTrace = GetTrace(ieObject->bo_bolr_Trace);
-				insRefLinkId = ieObject->dfaInsRefs;
-				while (true)
+				auto ensureSameForwardTrace = [this](vint32_t currentTraceId, vint32_t forwardTraceId)
 				{
-					auto currentTrace = boTrace;
-					if (insRefLinkId != -1)
-					{
-						currentTrace = GetTrace(GetInsExec_InsRefLink(insRefLinkId)->trace);
-					}
-
+					auto currentTrace = GetTrace(currentTraceId);
 					auto currentTraceExec = GetTraceExec(currentTrace->traceExecRef);
 					while (currentTraceExec->branchData.forwardTrace > forwardTraceId)
 					{
@@ -1004,16 +996,16 @@ CheckMergeTraces
 						currentTraceExec = GetTraceExec(currentTrace->traceExecRef);
 					}
 					CHECK_ERROR(currentTraceExec->branchData.forwardTrace == forwardTraceId, ERROR_MESSAGE_PREFIX L"Internal error: assumption is broken.");
+				};
 
-					if (insRefLinkId == -1)
-					{
-						break;
-					}
-					else
-					{
-						auto insRefLink = GetInsExec_InsRefLink(insRefLinkId);
-						insRefLinkId = insRefLink->previous;
-					}
+				vint32_t forwardTraceId = GetTraceExec(GetTrace(trace)->traceExecRef)->branchData.forwardTrace;
+				ensureSameForwardTrace(ieObject->bo_bolr_Trace, forwardTraceId);
+				insRefLinkId = ieObject->dfaInsRefs;
+				while (insRefLinkId != -1)
+				{
+					auto insRefLink = GetInsExec_InsRefLink(insRefLinkId);
+					ensureSameForwardTrace(GetInsExec_InsRefLink(insRefLinkId)->trace, forwardTraceId);
+					insRefLinkId = insRefLink->previous;
 				}
 #endif
 
