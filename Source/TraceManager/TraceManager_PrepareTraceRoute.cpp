@@ -876,7 +876,7 @@ CheckMergeTraces
 ***********************************************************************/
 
 			template<typename TCallback>
-			bool TraceManager::SearchForObjectsWithCounter(vint32_t objRefLinkStartSet, TCallback&& callback)
+			bool TraceManager::SearchForObjects(vint32_t objRefLinkStartSet, bool withCounter, TCallback&& callback)
 			{
 				// check every object in the link
 				vint32_t linkId = objRefLinkStartSet;
@@ -1047,6 +1047,7 @@ CheckMergeTraces
 						return true;
 					});
 				});
+				if (trace == -1) return false;
 				if (!succeeded) return false;
 #ifdef VCZH_DO_DEBUG_CHECK
 				// ensure they actually have the same ancestor trace
@@ -1137,7 +1138,7 @@ CheckMergeTraces
 				NEW_MERGE_STACK_MAGIC_COUNTER;
 				succeeded = callback([&](vint32_t objRefLink)
 				{
-					return SearchForObjectsWithCounter(objRefLink, [&](InsExec_Object* ieObject)
+					return SearchForObjects(objRefLink, false, [&](InsExec_Object* ieObject)
 					{
 						//PushObjRefLink(ta->topObjectIds, ieObject->allocatedIndex);
 
@@ -1185,7 +1186,7 @@ CheckMergeTraces
 				NEW_MERGE_STACK_MAGIC_COUNTER;
 				succeeded = callback([&](vint32_t objRefLink)
 				{
-					return SearchForObjectsWithCounter(objRefLink, [&](InsExec_Object* ieObject)
+					return SearchForObjects(objRefLink, true, [&](InsExec_Object* ieObject)
 					{
 						PushObjRefLink(ta->bottomObjectIds, ieObject->allocatedIndex);
 

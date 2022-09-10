@@ -512,7 +512,7 @@ TraceManager
 
 				// phase: CheckMergeTraces
 				template<typename TCallback>
-				bool										SearchForObjectsWithCounter(vint32_t objRefLinkStartSet, TCallback&& callback);
+				bool										SearchForObjects(vint32_t objRefLinkStartSet, bool withCounter, TCallback&& callback);
 				template<typename TCallback>
 				bool										SearchForAllLevelObjectsWithCounter(InsExec_Object* startObject, collections::List<vint32_t>& visitingIds, TCallback&& callback);
 #if defined VCZH_MSVC && defined _DEBUG
