@@ -1,5 +1,9 @@
 #include "TraceManager.h"
 
+#if defined VCZH_MSVC && defined _DEBUG
+#define VCZH_DO_DEBUG_CHECK
+#endif
+
 namespace vl
 {
 	namespace glr
@@ -810,7 +814,7 @@ BuildAmbiguityStructures
 DebugCheckTraceExecData
 ***********************************************************************/
 
-#if defined VCZH_MSVC && defined _DEBUG
+#ifdef VCZH_DO_DEBUG_CHECK
 			void TraceManager::DebugCheckTraceExecData()
 			{
 #define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::DebugCheckTraceExecData()#"
@@ -862,7 +866,7 @@ PrepareTraceRoute
 				AllocateExecutionData();
 				PartialExecuteTraces();
 				BuildAmbiguityStructures();
-#if defined VCZH_MSVC && defined _DEBUG
+#ifdef VCZH_DO_DEBUG_CHECK
 				DebugCheckTraceExecData();
 #endif
 			}
@@ -893,7 +897,7 @@ CheckMergeTraces
 			}
 
 			template<typename TCallback>
-			bool TraceManager::SearchForTopObjectsWithCounter(vint32_t objRefLinkStartSet, collections::List<vint32_t>& visitingIds, TCallback&& callback)
+			bool TraceManager::SearchForAllLevelObjectsWithCounter(InsExec_Object* startObject, collections::List<vint32_t>& visitingIds, TCallback&& callback)
 			{
 #define PUSH_ID(ID)													\
 					do{												\
@@ -904,9 +908,43 @@ CheckMergeTraces
 						availableIds++;								\
 					} while (false)
 
-				// start with objRefLinkStartSet
 				vint availableIds = 0;
-				PUSH_ID(objRefLinkStartSet);
+				auto processObject = [&](InsExec_Object* ieObject)
+				{
+					// skip if it has been searched
+					if (ieObject->mergeCounter == MergeStack_MagicCounter) return true;
+					ieObject->mergeCounter = MergeStack_MagicCounter;
+					if (!callback(ieObject)) return false;
+
+					// keep searching until ieObject->lrObjectIds is empty
+					while (ieObject->lrObjectIds != -1)
+					{
+						// skip if it has been searched
+						if (ieObject->mergeCounter == MergeStack_MagicCounter) return true;
+						ieObject->mergeCounter = MergeStack_MagicCounter;
+						if (!callback(ieObject)) return false;
+
+						auto lrObjRefLink = GetInsExec_ObjRefLink(ieObject->lrObjectIds);
+						if (lrObjRefLink->previous == -1)
+						{
+							// if ieObject->lrObjectIds has only one object
+							// continue in place
+							ieObject = GetInsExec_Object(lrObjRefLink->id);
+						}
+						else
+						{
+							// otherwise
+							// the link is pushed and search it later
+							PUSH_ID(ieObject->lrObjectIds);
+							break;
+						}
+					}
+
+					return true;
+				};
+
+				// start with startObject
+				if (!processObject(startObject)) return false;
 				for (vint linkIdIndex = 0; linkIdIndex < availableIds; linkIdIndex++)
 				{
 					// for any new object link, check every object in it
@@ -916,45 +954,35 @@ CheckMergeTraces
 						auto objRefLink = GetInsExec_ObjRefLink(linkId);
 						linkId = objRefLink->previous;
 						auto ieObject = GetInsExec_Object(objRefLink->id);
-
-						// keep searching until ieObject->lrObjectIds is empty
-						while (ieObject->lrObjectIds != -1)
-						{
-							// skip if it has been searched
-							if (ieObject->mergeCounter == MergeStack_MagicCounter) goto CHECK_NEXT_OBJECT;
-							ieObject->mergeCounter = MergeStack_MagicCounter;
-
-							auto lrObjRefLink = GetInsExec_ObjRefLink(ieObject->lrObjectIds);
-							if (lrObjRefLink->previous == -1)
-							{
-								// if ieObject->lrObjectIds has only one object
-								// continue in place
-								ieObject = GetInsExec_Object(lrObjRefLink->id);
-							}
-							else
-							{
-								// otherwise
-								// the link is pushed and search it later
-								PUSH_ID(ieObject->lrObjectIds);
-								break;
-							}
-						}
-
-						// a top object has been found
-						if (ieObject->lrObjectIds == -1)
-						{
-							// skip if it has been searched
-							if (ieObject->mergeCounter == MergeStack_MagicCounter) goto CHECK_NEXT_OBJECT;
-							ieObject->mergeCounter = MergeStack_MagicCounter;
-
-							if (!callback(ieObject)) return false;
-						}
-					CHECK_NEXT_OBJECT:;
+						if (!processObject(ieObject)) return false;
 					}
 				}
 				return true;
 #undef PUSH_ID
 			}
+
+#ifdef VCZH_DO_DEBUG_CHECK
+			void TraceManager::EnsureSameForwardTrace(vint32_t currentTraceId, vint32_t forwardTraceId)
+			{
+#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::EnsureSameForwardTrace(vint32_t, vint32_t)#"
+				auto currentTrace = GetTrace(currentTraceId);
+				auto currentTraceExec = GetTraceExec(currentTrace->traceExecRef);
+				while (currentTraceExec->branchData.forwardTrace > forwardTraceId)
+				{
+					if (currentTrace->allocatedIndex == currentTraceExec->branchData.forwardTrace)
+					{
+						currentTrace = GetTrace(currentTrace->predecessors.first);
+					}
+					else
+					{
+						currentTrace = GetTrace(currentTraceExec->branchData.forwardTrace);
+					}
+					currentTraceExec = GetTraceExec(currentTrace->traceExecRef);
+				}
+				CHECK_ERROR(currentTraceExec->branchData.forwardTrace == forwardTraceId, ERROR_MESSAGE_PREFIX L"Internal error: assumption is broken.");
+#undef ERROR_MESSAGE_PREFIX
+			}
+#endif
 
 			template<typename TCallback>
 			bool TraceManager::SearchForTopCreateInstructions(InsExec_Object* ieObject, TCallback&& callback)
@@ -977,39 +1005,61 @@ CheckMergeTraces
 					}
 				}
 
-#if defined VCZH_MSVC && defined _DEBUG
+#ifdef VCZH_DO_DEBUG_CHECK
 				// ensure they actually have the same ancestor trace
-				auto ensureSameForwardTrace = [this](vint32_t currentTraceId, vint32_t forwardTraceId)
-				{
-					auto currentTrace = GetTrace(currentTraceId);
-					auto currentTraceExec = GetTraceExec(currentTrace->traceExecRef);
-					while (currentTraceExec->branchData.forwardTrace > forwardTraceId)
-					{
-						if (currentTrace->allocatedIndex == currentTraceExec->branchData.forwardTrace)
-						{
-							currentTrace = GetTrace(currentTrace->predecessors.first);
-						}
-						else
-						{
-							currentTrace = GetTrace(currentTraceExec->branchData.forwardTrace);
-						}
-						currentTraceExec = GetTraceExec(currentTrace->traceExecRef);
-					}
-					CHECK_ERROR(currentTraceExec->branchData.forwardTrace == forwardTraceId, ERROR_MESSAGE_PREFIX L"Internal error: assumption is broken.");
-				};
-
 				vint32_t forwardTraceId = GetTraceExec(GetTrace(trace)->traceExecRef)->branchData.forwardTrace;
-				ensureSameForwardTrace(ieObject->bo_bolr_Trace, forwardTraceId);
+				EnsureSameForwardTrace(ieObject->bo_bolr_Trace, forwardTraceId);
 				insRefLinkId = ieObject->dfaInsRefs;
 				while (insRefLinkId != -1)
 				{
 					auto insRefLink = GetInsExec_InsRefLink(insRefLinkId);
-					ensureSameForwardTrace(GetInsExec_InsRefLink(insRefLinkId)->trace, forwardTraceId);
+					EnsureSameForwardTrace(GetInsExec_InsRefLink(insRefLinkId)->trace, forwardTraceId);
 					insRefLinkId = insRefLink->previous;
 				}
 #endif
 
-				return callback(GetTrace(trace), ins);
+				return callback(trace, ins);
+#undef ERROR_MESSAGE_PREFIX
+			}
+
+			template<typename TCallback>
+			bool TraceManager::SearchForTopCreateInstructionsInAllLevelsWithCounter(InsExec_Object* startObject, collections::List<vint32_t>& visitingIds, TCallback&& callback)
+			{
+#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::SearchForTopCreateInstructionsInAllLevelsWithCounter(InsExec_Object*, List<vint32_t>&, TCallback&&)#"
+#ifdef VCZH_DO_DEBUG_CHECK
+				vint32_t insForEachObject = -1;
+#endif
+				vint32_t trace = -1;
+				vint32_t ins = -1;
+
+				bool succeeded = SearchForAllLevelObjectsWithCounter(startObject, visitingIds, [&](InsExec_Object* ieObject)
+				{
+					return SearchForTopCreateInstructions(ieObject, [&](vint32_t createTraceId, vint32_t createIns)
+					{
+#ifdef VCZH_DO_DEBUG_CHECK
+						PushInsRefLink(insForEachObject, createTraceId, createIns);
+#endif
+						if (trace == -1 || createTraceId < trace || (createTraceId == trace && createIns < ins))
+						{
+							trace = createTraceId;
+							ins = createIns;
+						}
+						return true;
+					});
+				});
+				if (!succeeded) return false;
+#ifdef VCZH_DO_DEBUG_CHECK
+				// ensure they actually have the same ancestor trace
+				vint32_t forwardTraceId = GetTraceExec(GetTrace(trace)->traceExecRef)->branchData.forwardTrace;
+				vint32_t insRefLinkId = insForEachObject;
+				while (insRefLinkId != -1)
+				{
+					auto insRefLink = GetInsExec_InsRefLink(insRefLinkId);
+					EnsureSameForwardTrace(GetInsExec_InsRefLink(insRefLinkId)->trace, forwardTraceId);
+					insRefLinkId = insRefLink->previous;
+				}
+#endif
+				return callback(trace, ins);
 #undef ERROR_MESSAGE_PREFIX
 			}
 
@@ -1087,14 +1137,15 @@ CheckMergeTraces
 				NEW_MERGE_STACK_MAGIC_COUNTER;
 				succeeded = callback([&](vint32_t objRefLink)
 				{
-					return SearchForTopObjectsWithCounter(objRefLink, visitingIds, [&](InsExec_Object* ieObject)
+					return SearchForObjectsWithCounter(objRefLink, [&](InsExec_Object* ieObject)
 					{
-						PushObjRefLink(ta->topObjectIds, ieObject->allocatedIndex);
+						//PushObjRefLink(ta->topObjectIds, ieObject->allocatedIndex);
 
 						// check if BO/DFA satisfies the condition
-						return SearchForTopCreateInstructions(ieObject, [&](Trace* createTrace, vint32_t createIns)
+						return SearchForTopCreateInstructionsInAllLevelsWithCounter(ieObject, visitingIds, [&](vint32_t createTraceId, vint32_t createIns)
 						{
-#if defined VCZH_MSVC && defined _DEBUG
+							auto createTrace = GetTrace(createTraceId);
+#ifdef VCZH_DO_DEBUG_CHECK
 							{
 								auto traceExec = GetTraceExec(createTrace->traceExecRef);
 								auto&& ins = ReadInstruction(createIns, traceExec->insLists);
@@ -1139,9 +1190,10 @@ CheckMergeTraces
 						PushObjRefLink(ta->bottomObjectIds, ieObject->allocatedIndex);
 
 						// check if BO/DFA satisfies the condition
-						return SearchForTopCreateInstructions(ieObject, [&](Trace* createTrace, vint32_t createIns)
+						return SearchForTopCreateInstructions(ieObject, [&](vint32_t createTraceId, vint32_t createIns)
 						{
-#if defined VCZH_MSVC && defined _DEBUG
+							auto createTrace = GetTrace(createTraceId);
+#ifdef VCZH_DO_DEBUG_CHECK
 							{
 								auto traceExec = GetTraceExec(createTrace->traceExecRef);
 								auto&& ins = ReadInstruction(createIns, traceExec->insLists);
@@ -1152,7 +1204,7 @@ CheckMergeTraces
 							// check if EO satisfies the condition
 							return SearchForEndObjectInstructions(createTrace, createIns, [&](Trace* eoTrace, vint32_t eoIns)
 							{
-#if defined VCZH_MSVC && defined _DEBUG
+#ifdef VCZH_DO_DEBUG_CHECK
 								{
 									auto traceExec = GetTraceExec(eoTrace->traceExecRef);
 									auto&& ins = ReadInstruction(eoIns, traceExec->insLists);
@@ -1363,3 +1415,7 @@ ResolveAmbiguity
 		}
 	}
 }
+
+#if defined VCZH_MSVC && defined _DEBUG
+#undef VCZH_DO_DEBUG_CHECK
+#endif

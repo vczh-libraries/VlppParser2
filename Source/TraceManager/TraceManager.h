@@ -514,9 +514,14 @@ TraceManager
 				template<typename TCallback>
 				bool										SearchForObjectsWithCounter(vint32_t objRefLinkStartSet, TCallback&& callback);
 				template<typename TCallback>
-				bool										SearchForTopObjectsWithCounter(vint32_t objRefLinkStartSet, collections::List<vint32_t>& visitingIds, TCallback&& callback);
+				bool										SearchForAllLevelObjectsWithCounter(InsExec_Object* startObject, collections::List<vint32_t>& visitingIds, TCallback&& callback);
+#if defined VCZH_MSVC && defined _DEBUG
+				void										EnsureSameForwardTrace(vint32_t currentTraceId, vint32_t forwardTraceId);
+#endif
 				template<typename TCallback>
 				bool										SearchForTopCreateInstructions(InsExec_Object* ieObject, TCallback&& callback);
+				template<typename TCallback>
+				bool										SearchForTopCreateInstructionsInAllLevelsWithCounter(InsExec_Object* startObject, collections::List<vint32_t>& visitingIds, TCallback&& callback);
 				template<typename TCallback>
 				bool										SearchForEndObjectInstructions(Trace* createTrace, vint32_t createIns, TCallback&& callback);
 				bool										ComparePrefix(TraceExec* baselineTraceExec, TraceExec* commingTraceExec, vint32_t prefix);
