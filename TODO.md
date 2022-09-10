@@ -6,7 +6,8 @@
 - Add test cases for PrefixExtractionAffectedRuleReferencedAnother error.
 - TODO in `RewriteRules_GenerateAffectedLRIClausesSubgroup`.
 - Make a test case to test `prefix_merge` generates `left_recursion_inject_multiple`.
-- Create ambiguity test case caused by only one clause with branches.
+- Create ambiguity test case caused by only one clause with alternative syntax.
+- Test when an object get LriFetch to multiple branches following a ReopenObject.
 
 ## Features to Add
 
@@ -18,9 +19,6 @@
 
 ## Issues
 
-- `PrepareTraceRoute` returns `true` if ambiguity is involved.
-  - `OnReadyToExecute` will be called with a new argument to indicate if ambiguity is involved.
-  - analysing will be skipped if ambiguity is not involved, no extra data will be appended to traces, so no need to print a second log.
 - TODO in `CalculateRuleAndClauseTypes`.
 - TODO in `ValidateStructurePrefixMergeRuleVisitor`.
 - Test `X ::= X LRI ...`.
@@ -37,6 +35,10 @@
 - Optimize `CrossReferencedNFA` to merge prefix (two states can be merged if their `InEdges` are identical, `FromState` in `InEdges` are replaced by merged states).
 - `JsonEscapeString` `JsonUnescapeString` handle surrogate pairs correctly.
 - Review all comments.
+
+## BuiltIn-Cpp
+
+- Progress: Only prepared test cases from `Input_Sample/(Exprs|Types).txt`, ignoring lambda expressions.
 
 ## Experiments
 
