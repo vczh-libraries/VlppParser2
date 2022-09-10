@@ -381,6 +381,14 @@ PartialExecuteOrdinaryTrace
 							context.objectStack = ieOSTop->previous;
 
 							// reopen an object
+							// ReopenObject in different branches could write to the same InsExec_CreateStack
+							// this happens when ambiguity happens in the !Rule syntax
+							// but the same InsExec_CreateStack means the clause of !Rule does not have ambiguity
+							// so ambiguity should also be resolved here
+							// and such ReopenObject will be the last instruction in a trace
+							// this means it is impossible to continue with InsExec_CreateStack polluted by sibling traces
+							// therefore adding multiple objects to the same InsExec_CreateStack in multiple branches is fine
+							// the successor trace will be a merge trace taking all of the information
 							auto ieCSTop = GetInsExec_CreateStack(context.createStack);
 							NEW_MERGE_STACK_MAGIC_COUNTER;
 							{
@@ -1036,7 +1044,7 @@ CheckMergeTraces
 					insRefLinkId = insRefLink->previous;
 				}
 #endif
-
+				// there will be only one top create instruction per object
 				return callback(trace, ins);
 #undef ERROR_MESSAGE_PREFIX
 			}
@@ -1079,6 +1087,8 @@ CheckMergeTraces
 					insRefLinkId = insRefLink->previous;
 				}
 #endif
+				// there will be only one top create instruction per object
+				// even when InsExec_Object::lrObjectIds are considered
 				return callback(trace, ins);
 #undef ERROR_MESSAGE_PREFIX
 			}
@@ -1086,6 +1096,9 @@ CheckMergeTraces
 			template<typename TCallback>
 			bool TraceManager::SearchForEndObjectInstructions(Trace* createTrace, vint32_t createIns, TCallback&& callback)
 			{
+				// all EndObject ending a BO/BOLR/DFA are considered
+				// there is no "bottom EndObject"
+				// each EndObject should be in different branches
 				auto traceExec = GetTraceExec(createTrace->traceExecRef);
 				auto insExec = GetInsExec(traceExec->insExecRefs.start + createIns);
 				vint32_t insRefLinkId = insExec->eoInsRefs;
