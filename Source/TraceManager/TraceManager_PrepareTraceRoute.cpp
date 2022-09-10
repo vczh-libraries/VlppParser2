@@ -1081,6 +1081,8 @@ CheckMergeTraces
 				{
 					return SearchForTopObjectsWithCounter(objRefLink, visitingIds, [&](InsExec_Object* ieObject)
 					{
+						PushObjRefLink(ta->objectIdsToMerge, ieObject->allocatedIndex);
+
 						// check if BO/DFA satisfies the condition
 						return SearchForTopCreateInstructions(ieObject, [&](Trace* createTrace, vint32_t createIns)
 						{
