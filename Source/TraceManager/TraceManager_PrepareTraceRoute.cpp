@@ -1250,25 +1250,39 @@ CheckMergeTraces
 					}
 
 					// check if all EndObject ended objects are the result of ambiguity
-
-					auto succeeded = CheckAmbiguityResolution(ta, visitingIds, [=, &visitingIds](auto&& callback)
+					if (postfix == 0)
 					{
-						vint32_t predecessorId = trace->predecessors.first;
-						while (predecessorId != -1)
+						// if EndObject is the last instruction of predecessors
+						// then their objRefs has been written to the top object stack
+						auto ieOSTop = GetInsExec_ObjectStack(traceExec->context.objectStack);
+						auto succeeded = CheckAmbiguityResolution(ta, visitingIds, [=](auto&& callback)
 						{
-							auto predecessor = GetTrace(predecessorId);
-							predecessorId = predecessor->predecessors.siblingNext;
+							return callback(ieOSTop->objectIds);
+						});
+						if (succeeded) return true;
+					}
+					else
+					{
+						// otherwise find all objRefs of EndObject
+						auto succeeded = CheckAmbiguityResolution(ta, visitingIds, [=, &visitingIds](auto&& callback)
+						{
+							vint32_t predecessorId = trace->predecessors.first;
+							while (predecessorId != -1)
+							{
+								auto predecessor = GetTrace(predecessorId);
+								predecessorId = predecessor->predecessors.siblingNext;
 
-							// search for the object it ends
-							auto predecessorTraceExec = GetTraceExec(predecessor->traceExecRef);
-							auto indexEO = predecessorTraceExec->insLists.c3 - postfix - 1;
-							auto insExecEO = GetInsExec(predecessorTraceExec->insExecRefs.start + indexEO);
-							if (!callback(insExecEO->objRefs)) return false;
-						}
-						return true;
-					});
+								// search for the object it ends
+								auto predecessorTraceExec = GetTraceExec(predecessor->traceExecRef);
+								auto indexEO = predecessorTraceExec->insLists.c3 - postfix - 1;
+								auto insExecEO = GetInsExec(predecessorTraceExec->insExecRefs.start + indexEO);
+								if (!callback(insExecEO->objRefs)) return false;
+							}
+							return true;
+						});
+						if (succeeded) return true;
+					}
 
-					if (succeeded) return true;
 				}
 			CHECK_OBJECTS_IN_TOP_CREATE_STACK:
 				auto ieCSTop = GetInsExec_CreateStack(traceExec->context.createStack);
@@ -1293,17 +1307,7 @@ CheckMergeTraces
 					auto ta = GetTraceAmbiguity(traceAmbiguities.Allocate());
 					bool succeeded = CheckMergeTrace(ta, trace, traceExec, visitingIds);
 					CHECK_ERROR(succeeded, ERROR_MESSAGE_PREFIX L"Failed to find ambiguous objects in a merge trace.");
-
-					auto firstTraceExec = GetTraceExec(GetTrace(ta->firstTrace)->traceExecRef);
-					auto lastTraceExec = GetTraceExec(GetTrace(ta->lastTrace)->traceExecRef);
-
-					CHECK_ERROR(traceExec->ambiguity == -1 || traceExec->ambiguity == ta->allocatedIndex, ERROR_MESSAGE_PREFIX L"TraceAmbiguity has been created for this trace.");
-					CHECK_ERROR(firstTraceExec->ambiguity == -1 || firstTraceExec->ambiguity == ta->allocatedIndex, ERROR_MESSAGE_PREFIX L"TraceAmbiguity has been created for this trace.");
-					CHECK_ERROR(lastTraceExec->ambiguity == -1 || lastTraceExec->ambiguity == ta->allocatedIndex, ERROR_MESSAGE_PREFIX L"TraceAmbiguity has been created for this trace.");
-
 					traceExec->ambiguity = ta->allocatedIndex;
-					firstTraceExec->ambiguity = ta->allocatedIndex;
-					lastTraceExec->ambiguity = ta->allocatedIndex;
 				}
 #undef ERROR_MESSAGE_PREFIX
 			}
