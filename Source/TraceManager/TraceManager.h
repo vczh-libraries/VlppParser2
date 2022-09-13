@@ -328,6 +328,10 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 				// InsExec_ObjRefLink containing all objects to merge
 				vint32_t							bottomObjectIds = -1;
 
+				// if multiple TraceAmbiguity are assigned to the same place
+				// it records the one it overrides
+				vint32_t							overridedAmbiguity = -1;
+
 				// the trace where ambiguity resolution begins
 				// prefix is the number of instructions before BO/DFA
 				// if prefix + 1 is larger than instructions in firstTrace
@@ -364,7 +368,9 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 				//   firstTrace
 				//   lastTrace
 				//   the merge trace that create this TraceAmbiguity
-				vint32_t							ambiguity = -1;
+				vint32_t							ambiguityDetected = -1;
+				vint32_t							ambiguityBegin = -1;
+				vint32_t							ambiguityEnd = -1;
 			};
 
 /***********************************************************************

@@ -1425,7 +1425,23 @@ CheckMergeTraces
 					auto ta = GetTraceAmbiguity(traceAmbiguities.Allocate());
 					bool succeeded = CheckMergeTrace(ta, trace, traceExec, visitingIds);
 					CHECK_ERROR(succeeded, ERROR_MESSAGE_PREFIX L"Failed to find ambiguous objects in a merge trace.");
-					traceExec->ambiguity = ta->allocatedIndex;
+
+					// if a TraceAmbiguity is created at the same place
+					// check if they are compatible
+					auto beginTraceExec = GetTraceExec(GetTrace(ta->firstTrace)->traceExecRef);
+					auto endTraceExec = GetTraceExec(GetTrace(ta->lastTrace)->traceExecRef);
+					if (beginTraceExec->ambiguityBegin != -1)
+					{
+						CHECK_ERROR(beginTraceExec->ambiguityBegin == endTraceExec->ambiguityEnd, ERROR_MESSAGE_PREFIX L"Incompatible TraceAmbiguity has been created at the same place.");
+						auto ta2 = GetTraceAmbiguity(beginTraceExec->ambiguityBegin);
+						CHECK_ERROR(ta2->prefix == ta->prefix, ERROR_MESSAGE_PREFIX L"Incompatible TraceAmbiguity has been assigned at the same place.");
+						CHECK_ERROR(ta2->postfix == ta->postfix, ERROR_MESSAGE_PREFIX L"Incompatible TraceAmbiguity has been assigned at the same place.");
+						ta->overridedAmbiguity = ta2->allocatedIndex;
+					}
+
+					traceExec->ambiguityDetected = ta->allocatedIndex;
+					beginTraceExec->ambiguityBegin = ta->allocatedIndex;
+					endTraceExec->ambiguityEnd = ta->allocatedIndex;
 				}
 #undef ERROR_MESSAGE_PREFIX
 			}

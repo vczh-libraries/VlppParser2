@@ -347,10 +347,25 @@ void RenderTrace(
 				writer.WriteLine(L"  BranchDepth: " + itow(traceExec->branchData.branchDepth));
 			}
 
-			if (traceExec->ambiguity != -1)
+			if (traceExec->ambiguityBegin != -1)
 			{
-				auto ta = tm.GetTraceAmbiguity(traceExec->ambiguity);
-				writer.WriteLine(L"[AMBIGUITY-RESOLVING]");
+				writer.WriteLine(L"  AmbiguityBegin: " + itow(traceExec->ambiguityBegin));
+			}
+
+			if (traceExec->ambiguityEnd != -1)
+			{
+				writer.WriteLine(L"  AmbiguityEnd: " + itow(traceExec->ambiguityEnd));
+			}
+
+			if (traceExec->ambiguityDetected != -1)
+			{
+				auto ta = tm.GetTraceAmbiguity(traceExec->ambiguityDetected);
+				writer.WriteString(L"[AMBIGUITY-RESOLVING]: [" + itow(ta->allocatedIndex));
+				if (ta->overridedAmbiguity != -1)
+				{
+					writer.WriteString(L"] -> [" + itow(ta->overridedAmbiguity));
+				}
+				writer.WriteLine(L"]");
 				writer.WriteString(L"  objs: [");
 				logObjRefLink(ta->bottomObjectIds);
 				writer.WriteLine(L"]");
