@@ -1432,7 +1432,7 @@ CheckMergeTraces
 					auto endTraceExec = GetTraceExec(GetTrace(ta->lastTrace)->traceExecRef);
 					if (beginTraceExec->ambiguityBegin != -1)
 					{
-						CHECK_ERROR(beginTraceExec->ambiguityBegin == endTraceExec->ambiguityEnd, ERROR_MESSAGE_PREFIX L"Incompatible TraceAmbiguity has been created at the same place.");
+						CHECK_ERROR(beginTraceExec->ambiguityBegin == endTraceExec->ambiguityEnd, ERROR_MESSAGE_PREFIX L"Incompatible TraceAmbiguity has been assigned at the same place.");
 						auto ta2 = GetTraceAmbiguity(beginTraceExec->ambiguityBegin);
 						CHECK_ERROR(ta2->prefix == ta->prefix, ERROR_MESSAGE_PREFIX L"Incompatible TraceAmbiguity has been assigned at the same place.");
 						CHECK_ERROR(ta2->postfix == ta->postfix, ERROR_MESSAGE_PREFIX L"Incompatible TraceAmbiguity has been assigned at the same place.");
