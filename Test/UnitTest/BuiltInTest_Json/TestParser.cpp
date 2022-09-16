@@ -63,7 +63,7 @@ TEST_FILE
 		TEST_CATEGORY(L"Test JSON on Outputs: " + parserName)
 		{
 			Folder dirInput = FilePath(GetTestParserInputPath(parserName)) / L"Input";
-			FilePath dirBaseline = FilePath(GetTestParserInputPath(parserName)) / L"Output";
+			FilePath dirBaseline = FilePath(GetTestParserInputPath(parserName)) / L"ParserLog";
 			FilePath dirOutput = GetOutputDir(L"BuiltIn-Json");
 
 			List<File> inputFiles;

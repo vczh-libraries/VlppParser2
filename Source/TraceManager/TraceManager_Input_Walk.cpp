@@ -435,7 +435,7 @@ TraceManager::WalkAlongEpsilonEdges
 							// at most one EndingInput transition could exist from any state
 							CHECK_ERROR(edgeArray.count < 2, L"vl::glr::automaton::TraceManager::WalkAlongEpsilonEdges(vint32_t, vint32_t, Trace*)#Too many EndingInput transitions.");
 
-							if (edgeArray.count == 0 || currentReturnStack == -1)
+							if (edgeArray.count == 0 || !currentReturnStack)
 							{
 								// currentReturnStack == -1 means this is the last possible EndingInput
 								// no need to test forward

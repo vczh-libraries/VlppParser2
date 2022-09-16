@@ -153,7 +153,7 @@ TraceManager::ExecuteTrace
 						submitter.Submit(ins, token, trace->currentTokenIndex);
 					}
 
-					if (trace->successors.first == -1)
+					if (!trace->successors.first)
 					{
 						trace = nullptr;
 					}

@@ -56,7 +56,7 @@ namespace TestParser_Generated_TestObjects
 		//if (parserName != L"IfElseAmbiguity") return;
 		auto inputPath = GetTestParserInputPath(testFolder);
 		Folder dirInput = FilePath(inputPath) / L"Input";
-		FilePath dirBaseline = FilePath(inputPath) / L"Output";
+		FilePath dirBaseline = FilePath(inputPath) / L"ParserLog";
 
 		List<File> inputFiles;
 		dirInput.GetFiles(inputFiles);

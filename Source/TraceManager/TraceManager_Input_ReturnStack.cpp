@@ -13,7 +13,7 @@ GetCurrentSuccessorInReturnStack
 
 			ReturnStackSuccessors* TraceManager::GetCurrentSuccessorInReturnStack(Ref<ReturnStack> base, vint32_t currentTokenIndex)
 			{
-				auto& cache = base == -1 ? initialReturnStackCache : GetReturnStack(base)->cache;
+				auto& cache = !base ? initialReturnStackCache : GetReturnStack(base)->cache;
 				if (cache.successors.tokenIndex == currentTokenIndex)
 				{
 					return &cache.successors;

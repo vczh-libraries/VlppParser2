@@ -242,7 +242,7 @@ EndOfInput
 					auto trace = concurrentTraces->Get(traceIndex);
 					auto actualTrace = EnsureTraceWithValidStates(trace);
 					auto& stateDesc = executable.states[actualTrace->state];
-					if (actualTrace->returnStack == -1 && stateDesc.endingState)
+					if (!actualTrace->returnStack && stateDesc.endingState)
 					{
 						AddTrace(trace);
 					}

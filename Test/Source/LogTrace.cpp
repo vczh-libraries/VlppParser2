@@ -213,10 +213,10 @@ void RenderTrace(
 {
 	StringReader reader(GenerateToStream([&](StreamWriter& writer)
 	{
-		auto logInsRefLink = [&tm, &writer](vint32_t first)
+		auto logInsRefLink = [&tm, &writer](Ref<InsExec_InsRefLink> first)
 		{
 			auto ref = first;
-			while (ref != -1)
+			while (ref)
 			{
 				if (ref != first) writer.WriteString(L", ");
 				auto link = tm.GetInsExec_InsRefLink(ref);
@@ -225,10 +225,10 @@ void RenderTrace(
 			}
 		};
 
-		auto logObjRefLink = [&tm, &writer](vint32_t first)
+		auto logObjRefLink = [&tm, &writer](Ref<InsExec_ObjRefLink> first)
 		{
 			auto ref = first;
-			while (ref != -1)
+			while (ref)
 			{
 				if (ref != first) writer.WriteString(L", ");
 				auto link = tm.GetInsExec_ObjRefLink(ref);
@@ -240,7 +240,7 @@ void RenderTrace(
 		auto logContext = [&tm, &writer, &logObjRefLink](InsExec_Context& context, const wchar_t* indentation)
 		{
 			writer.WriteString(indentation);
-			if (context.createStack == -1)
+			if (!context.createStack)
 			{
 				writer.WriteLine(L"CSTop: []");
 			}
@@ -258,7 +258,7 @@ void RenderTrace(
 			}
 
 			writer.WriteString(indentation);
-			if (context.objectStack == -1)
+			if (!context.objectStack)
 			{
 				writer.WriteLine(L"OSTop: []");
 			}
@@ -276,7 +276,7 @@ void RenderTrace(
 			}
 
 			writer.WriteString(indentation);
-			if (context.lriStoredObjects == -1)
+			if (!context.lriStoredObjects)
 			{
 				writer.WriteLine(L"LriStored: []");
 			}
@@ -317,7 +317,7 @@ void RenderTrace(
 			}
 		}
 
-		if (trace->traceExecRef != -1)
+		if (trace->traceExecRef)
 		{
 			auto traceExec = tm.GetTraceExec(trace->traceExecRef);
 			if (traceExec->insExecRefs.start == -1)
@@ -333,7 +333,7 @@ void RenderTrace(
 					L"]");
 			}
 
-			if (traceExec->branchData.forwardTrace != -1)
+			if (traceExec->branchData.forwardTrace)
 			{
 				if (trace->state == -1)
 				{
@@ -347,21 +347,21 @@ void RenderTrace(
 				writer.WriteLine(L"  BranchDepth: " + itow(traceExec->branchData.branchDepth));
 			}
 
-			if (traceExec->ambiguityBegin != -1)
+			if (traceExec->ambiguityBegin)
 			{
 				writer.WriteLine(L"  AmbiguityBegin: " + itow(traceExec->ambiguityBegin));
 			}
 
-			if (traceExec->ambiguityEnd != -1)
+			if (traceExec->ambiguityEnd)
 			{
 				writer.WriteLine(L"  AmbiguityEnd: " + itow(traceExec->ambiguityEnd));
 			}
 
-			if (traceExec->ambiguityDetected != -1)
+			if (traceExec->ambiguityDetected)
 			{
 				auto ta = tm.GetTraceAmbiguity(traceExec->ambiguityDetected);
 				writer.WriteString(L"[AMBIGUITY-RESOLVING]: [" + itow(ta->allocatedIndex));
-				if (ta->overridedAmbiguity != -1)
+				if (ta->overridedAmbiguity)
 				{
 					writer.WriteString(L"] -> [" + itow(ta->overridedAmbiguity));
 				}
@@ -377,7 +377,7 @@ void RenderTrace(
 
 		if (trace->state == -1)
 		{
-			if (trace->traceExecRef != -1)
+			if (trace->traceExecRef)
 			{
 				writer.WriteLine(L"[CONTEXT]");
 				auto traceExec = tm.GetTraceExec(trace->traceExecRef);
@@ -392,11 +392,11 @@ void RenderTrace(
 		Holding Competition
 		***********************************************************************/
 
-		if (trace->competitionRouting.holdingCompetitions != -1)
+		if (trace->competitionRouting.holdingCompetitions)
 		{
 			writer.WriteLine(L"[HOLDING COMPETITION]:");
-			vint32_t cid = trace->competitionRouting.holdingCompetitions;
-			while (cid != -1)
+			auto cid = trace->competitionRouting.holdingCompetitions;
+			while (cid)
 			{
 				auto competition = tm.GetCompetition(cid);
 				writer.WriteString(L"  [" + itow(competition->allocatedIndex) + L"]");
@@ -451,7 +451,7 @@ void RenderTrace(
 			c2 = c1 + edgeDesc.insAfterInput.count;
 			c3 = c2;
 		}
-		if (trace->executedReturnStack != -1)
+		if (trace->executedReturnStack)
 		{
 			auto returnStack = tm.GetReturnStack(trace->executedReturnStack);
 			auto& returnDesc = executable.returns[returnStack->returnIndex];
@@ -460,7 +460,7 @@ void RenderTrace(
 
 		for (vint32_t i = 0; i < c3; i++)
 		{
-			if (trace->traceExecRef != -1)
+			if (trace->traceExecRef)
 			{
 				auto traceExec = tm.GetTraceExec(trace->traceExecRef);
 				auto insExec = tm.GetInsExec(traceExec->insExecRefs.start + i);
@@ -490,12 +490,12 @@ void RenderTrace(
 
 			LogInstruction(ins, typeName, fieldName, writer);
 
-			if (trace->traceExecRef != -1)
+			if (trace->traceExecRef)
 			{
 				auto traceExec = tm.GetTraceExec(trace->traceExecRef);
 				auto insExec = tm.GetInsExec(traceExec->insExecRefs.start + i);
 
-				if (insExec->createdObjectId != -1)
+				if (insExec->createdObjectId)
 				{
 					auto ieObject = tm.GetInsExec_Object(insExec->createdObjectId);
 					writer.WriteString(
@@ -504,14 +504,14 @@ void RenderTrace(
 						L"@" + itow(ieObject->bo_bolr_Ins)
 					);
 
-					if (ieObject->lrObjectIds != -1)
+					if (ieObject->lrObjectIds)
 					{
 						writer.WriteString(L" lrs:[");
 						logObjRefLink(ieObject->lrObjectIds);
 						writer.WriteString(L"]");
 					}
 
-					if (ieObject->dfaInsRefs!= -1)
+					if (ieObject->dfaInsRefs)
 					{
 						writer.WriteString(L" dfas:[");
 						logInsRefLink(ieObject->dfaInsRefs);
@@ -520,14 +520,14 @@ void RenderTrace(
 					writer.WriteLine(L"");
 				}
 
-				if (insExec->objRefs != -1)
+				if (insExec->objRefs)
 				{
 					writer.WriteString(L"      objRefs: ");
 					logObjRefLink(insExec->objRefs);
 					writer.WriteLine(L"");
 				}
 
-				if (insExec->eoInsRefs != -1)
+				if (insExec->eoInsRefs)
 				{
 					writer.WriteString(L"      eoInsRefs: ");
 					logInsRefLink(insExec->eoInsRefs);
@@ -538,7 +538,7 @@ void RenderTrace(
 			}
 		}
 
-		if (trace->traceExecRef != -1)
+		if (trace->traceExecRef)
 		{
 			auto traceExec = tm.GetTraceExec(trace->traceExecRef);
 			logContext(traceExec->context, L"    ");
@@ -548,7 +548,7 @@ void RenderTrace(
 		Rule Stack
 		***********************************************************************/
 
-		if (trace->returnStack != -1)
+		if (trace->returnStack)
 		{
 			writer.WriteLine(L"[RETURN STACK]:");
 			auto returnStack = tm.GetReturnStack(trace->returnStack);
@@ -556,7 +556,7 @@ void RenderTrace(
 			{
 				auto&& returnDesc = executable.returns[returnStack->returnIndex];
 				writer.WriteLine(L"  [" + itow(returnStack->allocatedIndex) + L"][" + itow(returnStack->fromTrace) + L"]: " + ruleName((vint32_t)returnDesc.consumedRule) + L" -> " + stateLabel((vint32_t)returnDesc.returnState));
-				if (returnStack->previous == -1) break;
+				if (!returnStack->previous) break;
 				returnStack = tm.GetReturnStack(returnStack->previous);
 			}
 		}
@@ -565,11 +565,11 @@ void RenderTrace(
 		Carried Competition
 		***********************************************************************/
 
-		if (trace->competitionRouting.carriedCompetitions != -1)
+		if (trace->competitionRouting.carriedCompetitions)
 		{
 			writer.WriteLine(L"[CARRIED COMPETITION]:");
 			auto acId = trace->competitionRouting.carriedCompetitions;
-			while (acId != -1)
+			while (acId)
 			{
 				auto ac = tm.GetAttendingCompetitions(acId);
 				auto cpt = tm.GetCompetition(ac->competition);
@@ -586,7 +586,7 @@ void RenderTrace(
 		Switches
 		***********************************************************************/
 
-		if (trace->switchValues != -1)
+		if (trace->switchValues)
 		{
 			writer.WriteLine(L"[SWITCHES]:");
 			auto sv = tm.GetSwitches(trace->switchValues);
@@ -605,11 +605,11 @@ void RenderTrace(
 		Predecessors and Successors
 		***********************************************************************/
 
-		if (trace->predecessors.first != -1)
+		if (trace->predecessors.first)
 		{
 			writer.WriteString(L"[PREDECESSORS " + itow(trace->predecessors.first) + L"-" + itow(trace->predecessors.last) + L"]: ");
 			auto tid = trace->predecessors.first;
-			while (tid != -1)
+			while (tid)
 			{
 				auto t = tm.GetTrace(tid);
 				writer.WriteString(L"[" + itow(t->allocatedIndex) + L"]");
@@ -618,11 +618,11 @@ void RenderTrace(
 			writer.WriteLine(L"");
 		}
 
-		if (trace->successors.first != -1)
+		if (trace->successors.first)
 		{
 			writer.WriteString(L"[SUCCESORS " + itow(trace->successors.first) + L"-" + itow(trace->successors.last) + L"]: ");
 			auto tid = trace->successors.first;
-			while (tid != -1)
+			while (tid)
 			{
 				auto t = tm.GetTrace(tid);
 				writer.WriteString(L"[" + itow(t->allocatedIndex) + L"]");
@@ -761,7 +761,7 @@ struct TraceTree
 		}
 
 		auto successorId = trace->successors.first;
-		while (successorId != -1)
+		while (successorId)
 		{
 			auto successor = tm.GetTrace(successorId);
 			tree->AddChildTrace(successor, tm, false, nonEndTraces, endTraces);
@@ -1299,7 +1299,7 @@ FilePath LogTraceManager(
 					);
 
 				auto successorId = trace->successors.first;
-				while (successorId != -1)
+				while (successorId)
 				{
 					auto successor = tm.GetTrace(successorId);
 					visited.Add(successor);

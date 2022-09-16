@@ -158,7 +158,7 @@ CheckAttendingCompetitionsOnEndingEdge
 				Ref<ReturnStack> returnStack
 			)
 			{
-				while (acId != -1)
+				while (acId)
 				{
 					// when executing an EndingInput transition, we announce high priority win a competition if
 					//   1) such EndingInput transitions ends the clause, and the state of the trace holding competition belongs to the same clause
@@ -198,7 +198,7 @@ CheckBackupTracesBeforeSwapping
 				{
 					// reset highCounter and lowCounter for any active competitions
 					auto cId = activeCompetitions;
-					while (cId != -1)
+					while (cId)
 					{
 						auto cpt = GetCompetition(cId);
 						cpt->highCounter = 0;
@@ -213,7 +213,7 @@ CheckBackupTracesBeforeSwapping
 				{
 					auto trace = EnsureTraceWithValidStates(backupTraces->Get(i));
 					auto acId = trace->competitionRouting.attendingCompetitions;
-					while (acId != -1)
+					while (acId)
 					{
 						auto ac = GetAttendingCompetitions(acId);
 						auto cpt = GetCompetition(ac->competition);
@@ -227,7 +227,7 @@ CheckBackupTracesBeforeSwapping
 				// but settled competitions will only be removed before consuming the next token
 				{
 					auto cId = activeCompetitions;
-					while (cId != -1)
+					while (cId)
 					{
 						auto cpt = GetCompetition(cId);
 						if (cpt->status == CompetitionStatus::Holding)
@@ -264,7 +264,7 @@ CheckBackupTracesBeforeSwapping
 				{
 					auto trace =EnsureTraceWithValidStates(backupTraces->Get(i));
 					auto acId = trace->competitionRouting.attendingCompetitions;
-					while (acId != -1)
+					while (acId)
 					{
 						auto ac = GetAttendingCompetitions(acId);
 						auto cpt = GetCompetition(ac->competition);
@@ -305,7 +305,7 @@ CheckBackupTracesBeforeSwapping
 				{
 					auto trace = EnsureTraceWithValidStates(backupTraces->Get(i));
 					auto* pnext = &trace->competitionRouting.attendingCompetitions;
-					while (*pnext != -1)
+					while (*pnext)
 					{
 						auto ac = GetAttendingCompetitions(*pnext);
 						if (ac->closed)
