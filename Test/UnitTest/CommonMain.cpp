@@ -53,11 +53,11 @@ WString GetTestParserInputPath(const WString& parserName)
 WString GetTestOutputPath()
 {
 #if defined VCZH_GCC
-	return L"../../Output/";
+	return L"../../ParserLog/";
 #elif defined _WIN64
-	return GetExePath() + L"../../../Output/";
+	return GetExePath() + L"../../../ParserLog/";
 #else
-	return GetExePath() + L"../../Output/";
+	return GetExePath() + L"../../ParserLog/";
 #endif
 }
 
