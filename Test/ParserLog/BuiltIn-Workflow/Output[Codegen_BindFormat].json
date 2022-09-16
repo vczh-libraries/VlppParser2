@@ -1,0 +1,240 @@
+﻿{
+    "$ast": "Module",
+    "declarations": [{
+        "$ast": "VariableDeclaration",
+        "attributes": [],
+        "name": "s",
+        "expression": {
+            "$ast": "StringExpression",
+            "value": "\"\""
+        },
+        "type": null
+    }, {
+        "$ast": "FunctionDeclaration",
+        "attributes": [],
+        "name": "Callback",
+        "anonymity": "Named",
+        "arguments": [{
+            "$ast": "FunctionArgument",
+            "attributes": [],
+            "name": "value",
+            "type": {
+                "$ast": "PredefinedType",
+                "name": "Object"
+            }
+        }],
+        "functionKind": "Normal",
+        "returnType": {
+            "$ast": "PredefinedType",
+            "name": "Void"
+        },
+        "statement": {
+            "$ast": "BlockStatement",
+            "endLabel": "",
+            "statements": [{
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "BinaryExpression",
+                    "first": {
+                        "$ast": "ReferenceExpression",
+                        "name": "s"
+                    },
+                    "op": "Assign",
+                    "second": {
+                        "$ast": "FormatExpression",
+                        "expandedExpression": null,
+                        "value": "$\"$(s)[$(cast string value)]\""
+                    }
+                }
+            }]
+        }
+    }, {
+        "$ast": "FunctionDeclaration",
+        "attributes": [],
+        "name": "main",
+        "anonymity": "Named",
+        "arguments": [],
+        "functionKind": "Normal",
+        "returnType": {
+            "$ast": "PredefinedType",
+            "name": "String"
+        },
+        "statement": {
+            "$ast": "BlockStatement",
+            "endLabel": "",
+            "statements": [{
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "x",
+                    "expression": {
+                        "$ast": "NewClassExpression",
+                        "arguments": [],
+                        "type": {
+                            "$ast": "SharedPointerType",
+                            "element": {
+                                "$ast": "ReferenceType",
+                                "name": "ObservableValue"
+                            }
+                        }
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "subscription",
+                    "expression": {
+                        "$ast": "BindExpression",
+                        "expandedExpression": null,
+                        "expression": {
+                            "$ast": "FormatExpression",
+                            "expandedExpression": null,
+                            "value": "$\"The value has changed to $(x.Value)\""
+                        }
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [],
+                    "function": {
+                        "$ast": "MemberExpression",
+                        "name": "Open",
+                        "parent": {
+                            "$ast": "ReferenceExpression",
+                            "name": "subscription"
+                        }
+                    }
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "AttachEventExpression",
+                    "event": {
+                        "$ast": "MemberExpression",
+                        "name": "ValueChanged",
+                        "parent": {
+                            "$ast": "ReferenceExpression",
+                            "name": "subscription"
+                        }
+                    },
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Callback"
+                    }
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "BinaryExpression",
+                    "first": {
+                        "$ast": "MemberExpression",
+                        "name": "Value",
+                        "parent": {
+                            "$ast": "ReferenceExpression",
+                            "name": "x"
+                        }
+                    },
+                    "op": "Assign",
+                    "second": {
+                        "$ast": "IntegerExpression",
+                        "value": "10"
+                    }
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "BinaryExpression",
+                    "first": {
+                        "$ast": "MemberExpression",
+                        "name": "Value",
+                        "parent": {
+                            "$ast": "ReferenceExpression",
+                            "name": "x"
+                        }
+                    },
+                    "op": "Assign",
+                    "second": {
+                        "$ast": "IntegerExpression",
+                        "value": "20"
+                    }
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "BinaryExpression",
+                    "first": {
+                        "$ast": "MemberExpression",
+                        "name": "Value",
+                        "parent": {
+                            "$ast": "ReferenceExpression",
+                            "name": "x"
+                        }
+                    },
+                    "op": "Assign",
+                    "second": {
+                        "$ast": "IntegerExpression",
+                        "value": "30"
+                    }
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [],
+                    "function": {
+                        "$ast": "MemberExpression",
+                        "name": "Close",
+                        "parent": {
+                            "$ast": "ReferenceExpression",
+                            "name": "subscription"
+                        }
+                    }
+                }
+            }, {
+                "$ast": "ReturnStatement",
+                "expression": {
+                    "$ast": "ReferenceExpression",
+                    "name": "s"
+                }
+            }]
+        }
+    }],
+    "moduleType": "Module",
+    "name": "test",
+    "paths": [{
+        "$ast": "ModuleUsingPath",
+        "items": [{
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingNameFragment",
+                "name": "test"
+            }]
+        }, {
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingWildCardFragment"
+            }]
+        }]
+    }, {
+        "$ast": "ModuleUsingPath",
+        "items": [{
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingNameFragment",
+                "name": "system"
+            }]
+        }, {
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingWildCardFragment"
+            }]
+        }]
+    }]
+}

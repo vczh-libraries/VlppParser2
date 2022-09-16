@@ -1,0 +1,140 @@
+﻿{
+    "$ast": "Module",
+    "declarations": [{
+        "$ast": "VariableDeclaration",
+        "attributes": [],
+        "name": "s",
+        "expression": {
+            "$ast": "StringExpression",
+            "value": "\"\""
+        },
+        "type": null
+    }, {
+        "$ast": "FunctionDeclaration",
+        "attributes": [],
+        "name": "GetNumbers",
+        "anonymity": "Named",
+        "arguments": [],
+        "functionKind": "Normal",
+        "returnType": {
+            "$ast": "EnumerableType",
+            "element": {
+                "$ast": "PredefinedType",
+                "name": "Int"
+            }
+        },
+        "statement": {
+            "$ast": "CoProviderStatement",
+            "expandedStatement": null,
+            "name": "",
+            "statement": {
+                "$ast": "BlockStatement",
+                "endLabel": "",
+                "statements": [{
+                    "$ast": "ForEachStatement",
+                    "expandedStatement": null,
+                    "collection": {
+                        "$ast": "RangeExpression",
+                        "begin": {
+                            "$ast": "IntegerExpression",
+                            "value": "0"
+                        },
+                        "beginBoundary": "Inclusive",
+                        "end": {
+                            "$ast": "IntegerExpression",
+                            "value": "4"
+                        },
+                        "endBoundary": "Inclusive"
+                    },
+                    "direction": "Normal",
+                    "name": "i",
+                    "statement": {
+                        "$ast": "BlockStatement",
+                        "endLabel": "",
+                        "statements": [{
+                            "$ast": "CoOperatorStatement",
+                            "arguments": [{
+                                "$ast": "ReferenceExpression",
+                                "name": "i"
+                            }],
+                            "opName": "$Yield",
+                            "varName": ""
+                        }]
+                    }
+                }]
+            }
+        }
+    }, {
+        "$ast": "FunctionDeclaration",
+        "attributes": [],
+        "name": "main",
+        "anonymity": "Named",
+        "arguments": [],
+        "functionKind": "Normal",
+        "returnType": {
+            "$ast": "PredefinedType",
+            "name": "String"
+        },
+        "statement": {
+            "$ast": "BlockStatement",
+            "endLabel": "",
+            "statements": [{
+                "$ast": "ForEachStatement",
+                "expandedStatement": null,
+                "collection": {
+                    "$ast": "CallExpression",
+                    "arguments": [],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "GetNumbers"
+                    }
+                },
+                "direction": "Normal",
+                "name": "i",
+                "statement": {
+                    "$ast": "BlockStatement",
+                    "endLabel": "",
+                    "statements": [{
+                        "$ast": "ExpressionStatement",
+                        "expression": {
+                            "$ast": "BinaryExpression",
+                            "first": {
+                                "$ast": "ReferenceExpression",
+                                "name": "s"
+                            },
+                            "op": "Assign",
+                            "second": {
+                                "$ast": "FormatExpression",
+                                "expandedExpression": null,
+                                "value": "$\"$(s)[$(i)]\""
+                            }
+                        }
+                    }]
+                }
+            }, {
+                "$ast": "ReturnStatement",
+                "expression": {
+                    "$ast": "ReferenceExpression",
+                    "name": "s"
+                }
+            }]
+        }
+    }],
+    "moduleType": "Module",
+    "name": "test",
+    "paths": [{
+        "$ast": "ModuleUsingPath",
+        "items": [{
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingNameFragment",
+                "name": "system"
+            }]
+        }, {
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingWildCardFragment"
+            }]
+        }]
+    }]
+}

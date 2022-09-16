@@ -1,0 +1,454 @@
+﻿{
+    "$ast": "Module",
+    "declarations": [{
+        "$ast": "VariableDeclaration",
+        "attributes": [],
+        "name": "olds",
+        "expression": {
+            "$ast": "ConstructorExpression",
+            "arguments": []
+        },
+        "type": {
+            "$ast": "MapType",
+            "key": null,
+            "value": {
+                "$ast": "PredefinedType",
+                "name": "Int"
+            },
+            "writability": "Writable"
+        }
+    }, {
+        "$ast": "VariableDeclaration",
+        "attributes": [],
+        "name": "news",
+        "expression": {
+            "$ast": "ConstructorExpression",
+            "arguments": []
+        },
+        "type": {
+            "$ast": "MapType",
+            "key": null,
+            "value": {
+                "$ast": "PredefinedType",
+                "name": "Int"
+            },
+            "writability": "Writable"
+        }
+    }, {
+        "$ast": "FunctionDeclaration",
+        "attributes": [],
+        "name": "EventHandler",
+        "anonymity": "Named",
+        "arguments": [{
+            "$ast": "FunctionArgument",
+            "attributes": [],
+            "name": "oldValue",
+            "type": {
+                "$ast": "PredefinedType",
+                "name": "Int"
+            }
+        }, {
+            "$ast": "FunctionArgument",
+            "attributes": [],
+            "name": "newValue",
+            "type": {
+                "$ast": "PredefinedType",
+                "name": "Int"
+            }
+        }],
+        "functionKind": "Normal",
+        "returnType": {
+            "$ast": "PredefinedType",
+            "name": "Void"
+        },
+        "statement": {
+            "$ast": "BlockStatement",
+            "endLabel": "",
+            "statements": [{
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "ReferenceExpression",
+                        "name": "oldValue"
+                    }],
+                    "function": {
+                        "$ast": "MemberExpression",
+                        "name": "Add",
+                        "parent": {
+                            "$ast": "ReferenceExpression",
+                            "name": "olds"
+                        }
+                    }
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "ReferenceExpression",
+                        "name": "newValue"
+                    }],
+                    "function": {
+                        "$ast": "MemberExpression",
+                        "name": "Add",
+                        "parent": {
+                            "$ast": "ReferenceExpression",
+                            "name": "news"
+                        }
+                    }
+                }
+            }]
+        }
+    }, {
+        "$ast": "FunctionDeclaration",
+        "attributes": [],
+        "name": "main",
+        "anonymity": "Named",
+        "arguments": [],
+        "functionKind": "Normal",
+        "returnType": {
+            "$ast": "PredefinedType",
+            "name": "String"
+        },
+        "statement": {
+            "$ast": "BlockStatement",
+            "endLabel": "",
+            "statements": [{
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "o",
+                    "expression": {
+                        "$ast": "NewClassExpression",
+                        "arguments": [{
+                            "$ast": "IntegerExpression",
+                            "value": "10"
+                        }],
+                        "type": {
+                            "$ast": "SharedPointerType",
+                            "element": {
+                                "$ast": "ReferenceType",
+                                "name": "ObservableValue"
+                            }
+                        }
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "handler",
+                    "expression": {
+                        "$ast": "AttachEventExpression",
+                        "event": {
+                            "$ast": "MemberExpression",
+                            "name": "ValueChanged",
+                            "parent": {
+                                "$ast": "ReferenceExpression",
+                                "name": "o"
+                            }
+                        },
+                        "function": {
+                            "$ast": "ReferenceExpression",
+                            "name": "EventHandler"
+                        }
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "BinaryExpression",
+                    "first": {
+                        "$ast": "MemberExpression",
+                        "name": "Value",
+                        "parent": {
+                            "$ast": "ReferenceExpression",
+                            "name": "o"
+                        }
+                    },
+                    "op": "Assign",
+                    "second": {
+                        "$ast": "IntegerExpression",
+                        "value": "20"
+                    }
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "BinaryExpression",
+                    "first": {
+                        "$ast": "MemberExpression",
+                        "name": "Value",
+                        "parent": {
+                            "$ast": "ReferenceExpression",
+                            "name": "o"
+                        }
+                    },
+                    "op": "Assign",
+                    "second": {
+                        "$ast": "IntegerExpression",
+                        "value": "30"
+                    }
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "b1",
+                    "expression": {
+                        "$ast": "DetachEventExpression",
+                        "event": {
+                            "$ast": "MemberExpression",
+                            "name": "ValueChanged",
+                            "parent": {
+                                "$ast": "ReferenceExpression",
+                                "name": "o"
+                            }
+                        },
+                        "handler": {
+                            "$ast": "ReferenceExpression",
+                            "name": "handler"
+                        }
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "BinaryExpression",
+                    "first": {
+                        "$ast": "MemberExpression",
+                        "name": "Value",
+                        "parent": {
+                            "$ast": "ReferenceExpression",
+                            "name": "o"
+                        }
+                    },
+                    "op": "Assign",
+                    "second": {
+                        "$ast": "IntegerExpression",
+                        "value": "40"
+                    }
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "b2",
+                    "expression": {
+                        "$ast": "DetachEventExpression",
+                        "event": {
+                            "$ast": "MemberExpression",
+                            "name": "ValueChanged",
+                            "parent": {
+                                "$ast": "ReferenceExpression",
+                                "name": "o"
+                            }
+                        },
+                        "handler": {
+                            "$ast": "ReferenceExpression",
+                            "name": "handler"
+                        }
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "ReturnStatement",
+                "expression": {
+                    "$ast": "BinaryExpression",
+                    "first": {
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "BinaryExpression",
+                            "first": {
+                                "$ast": "BinaryExpression",
+                                "first": {
+                                    "$ast": "BinaryExpression",
+                                    "first": {
+                                        "$ast": "BinaryExpression",
+                                        "first": {
+                                            "$ast": "BinaryExpression",
+                                            "first": {
+                                                "$ast": "BinaryExpression",
+                                                "first": {
+                                                    "$ast": "BinaryExpression",
+                                                    "first": {
+                                                        "$ast": "BinaryExpression",
+                                                        "first": {
+                                                            "$ast": "BinaryExpression",
+                                                            "first": {
+                                                                "$ast": "BinaryExpression",
+                                                                "first": {
+                                                                    "$ast": "BinaryExpression",
+                                                                    "first": {
+                                                                        "$ast": "BinaryExpression",
+                                                                        "first": {
+                                                                            "$ast": "MemberExpression",
+                                                                            "name": "Count",
+                                                                            "parent": {
+                                                                                "$ast": "ReferenceExpression",
+                                                                                "name": "olds"
+                                                                            }
+                                                                        },
+                                                                        "op": "FlagAnd",
+                                                                        "second": {
+                                                                            "$ast": "StringExpression",
+                                                                            "value": "\", \""
+                                                                        }
+                                                                    },
+                                                                    "op": "FlagAnd",
+                                                                    "second": {
+                                                                        "$ast": "BinaryExpression",
+                                                                        "first": {
+                                                                            "$ast": "ReferenceExpression",
+                                                                            "name": "olds"
+                                                                        },
+                                                                        "op": "Index",
+                                                                        "second": {
+                                                                            "$ast": "IntegerExpression",
+                                                                            "value": "0"
+                                                                        }
+                                                                    }
+                                                                },
+                                                                "op": "FlagAnd",
+                                                                "second": {
+                                                                    "$ast": "StringExpression",
+                                                                    "value": "\", \""
+                                                                }
+                                                            },
+                                                            "op": "FlagAnd",
+                                                            "second": {
+                                                                "$ast": "BinaryExpression",
+                                                                "first": {
+                                                                    "$ast": "ReferenceExpression",
+                                                                    "name": "olds"
+                                                                },
+                                                                "op": "Index",
+                                                                "second": {
+                                                                    "$ast": "IntegerExpression",
+                                                                    "value": "1"
+                                                                }
+                                                            }
+                                                        },
+                                                        "op": "FlagAnd",
+                                                        "second": {
+                                                            "$ast": "StringExpression",
+                                                            "value": "\", \""
+                                                        }
+                                                    },
+                                                    "op": "FlagAnd",
+                                                    "second": {
+                                                        "$ast": "MemberExpression",
+                                                        "name": "Count",
+                                                        "parent": {
+                                                            "$ast": "ReferenceExpression",
+                                                            "name": "news"
+                                                        }
+                                                    }
+                                                },
+                                                "op": "FlagAnd",
+                                                "second": {
+                                                    "$ast": "StringExpression",
+                                                    "value": "\", \""
+                                                }
+                                            },
+                                            "op": "FlagAnd",
+                                            "second": {
+                                                "$ast": "BinaryExpression",
+                                                "first": {
+                                                    "$ast": "ReferenceExpression",
+                                                    "name": "news"
+                                                },
+                                                "op": "Index",
+                                                "second": {
+                                                    "$ast": "IntegerExpression",
+                                                    "value": "0"
+                                                }
+                                            }
+                                        },
+                                        "op": "FlagAnd",
+                                        "second": {
+                                            "$ast": "StringExpression",
+                                            "value": "\", \""
+                                        }
+                                    },
+                                    "op": "FlagAnd",
+                                    "second": {
+                                        "$ast": "BinaryExpression",
+                                        "first": {
+                                            "$ast": "ReferenceExpression",
+                                            "name": "news"
+                                        },
+                                        "op": "Index",
+                                        "second": {
+                                            "$ast": "IntegerExpression",
+                                            "value": "1"
+                                        }
+                                    }
+                                },
+                                "op": "FlagAnd",
+                                "second": {
+                                    "$ast": "StringExpression",
+                                    "value": "\", \""
+                                }
+                            },
+                            "op": "FlagAnd",
+                            "second": {
+                                "$ast": "ReferenceExpression",
+                                "name": "b1"
+                            }
+                        },
+                        "op": "FlagAnd",
+                        "second": {
+                            "$ast": "StringExpression",
+                            "value": "\", \""
+                        }
+                    },
+                    "op": "FlagAnd",
+                    "second": {
+                        "$ast": "ReferenceExpression",
+                        "name": "b2"
+                    }
+                }
+            }]
+        }
+    }],
+    "moduleType": "Module",
+    "name": "test",
+    "paths": [{
+        "$ast": "ModuleUsingPath",
+        "items": [{
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingNameFragment",
+                "name": "system"
+            }]
+        }, {
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingWildCardFragment"
+            }]
+        }]
+    }, {
+        "$ast": "ModuleUsingPath",
+        "items": [{
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingNameFragment",
+                "name": "test"
+            }]
+        }, {
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingWildCardFragment"
+            }]
+        }]
+    }]
+}

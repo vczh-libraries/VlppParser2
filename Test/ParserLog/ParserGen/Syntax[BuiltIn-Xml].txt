@@ -1,0 +1,324 @@
+﻿{
+    "$ast": "SyntaxFile",
+    "rules": [{
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "RefSyntax",
+                        "field": "name",
+                        "literal": "NAME",
+                        "refType": "Id"
+                    },
+                    "second": {
+                        "$ast": "RefSyntax",
+                        "field": "",
+                        "literal": "\"=\"",
+                        "refType": "Literal"
+                    }
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "value",
+                    "literal": "ATTVALUE",
+                    "refType": "Id"
+                }
+            },
+            "type": "Attribute"
+        }],
+        "name": "XAttribute",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "RefSyntax",
+                "field": "content",
+                "literal": "NAME",
+                "refType": "Id"
+            },
+            "type": "Text"
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "RefSyntax",
+                "field": "content",
+                "literal": "EQUAL",
+                "refType": "Id"
+            },
+            "type": "Text"
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "RefSyntax",
+                "field": "content",
+                "literal": "ATTVALUE",
+                "refType": "Id"
+            },
+            "type": "Text"
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "RefSyntax",
+                "field": "content",
+                "literal": "TEXT",
+                "refType": "Id"
+            },
+            "type": "Text"
+        }],
+        "name": "XText",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "RefSyntax",
+                "field": "content",
+                "literal": "CDATA",
+                "refType": "Id"
+            },
+            "type": "CData"
+        }],
+        "name": "XCData",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "RefSyntax",
+                "field": "content",
+                "literal": "COMMENT",
+                "refType": "Id"
+            },
+            "type": "Comment"
+        }],
+        "name": "XComment",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "SequenceSyntax",
+                        "first": {
+                            "$ast": "RefSyntax",
+                            "field": "",
+                            "literal": "\"<\"",
+                            "refType": "Literal"
+                        },
+                        "second": {
+                            "$ast": "RefSyntax",
+                            "field": "name",
+                            "literal": "NAME",
+                            "refType": "Id"
+                        }
+                    },
+                    "second": {
+                        "$ast": "LoopSyntax",
+                        "delimiter": null,
+                        "syntax": {
+                            "$ast": "RefSyntax",
+                            "field": "attributes",
+                            "literal": "XAttribute",
+                            "refType": "Id"
+                        }
+                    }
+                },
+                "second": {
+                    "$ast": "AlternativeSyntax",
+                    "first": {
+                        "$ast": "RefSyntax",
+                        "field": "",
+                        "literal": "\"\/>\"",
+                        "refType": "Literal"
+                    },
+                    "second": {
+                        "$ast": "SequenceSyntax",
+                        "first": {
+                            "$ast": "SequenceSyntax",
+                            "first": {
+                                "$ast": "SequenceSyntax",
+                                "first": {
+                                    "$ast": "SequenceSyntax",
+                                    "first": {
+                                        "$ast": "RefSyntax",
+                                        "field": "",
+                                        "literal": "\">\"",
+                                        "refType": "Literal"
+                                    },
+                                    "second": {
+                                        "$ast": "LoopSyntax",
+                                        "delimiter": null,
+                                        "syntax": {
+                                            "$ast": "RefSyntax",
+                                            "field": "subNodes",
+                                            "literal": "XSubNode",
+                                            "refType": "Id"
+                                        }
+                                    }
+                                },
+                                "second": {
+                                    "$ast": "RefSyntax",
+                                    "field": "",
+                                    "literal": "\"<\/\"",
+                                    "refType": "Literal"
+                                }
+                            },
+                            "second": {
+                                "$ast": "RefSyntax",
+                                "field": "closingName",
+                                "literal": "NAME",
+                                "refType": "Id"
+                            }
+                        },
+                        "second": {
+                            "$ast": "RefSyntax",
+                            "field": "",
+                            "literal": "\">\"",
+                            "refType": "Literal"
+                        }
+                    }
+                }
+            },
+            "type": "Element"
+        }],
+        "name": "XElement",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "AlternativeSyntax",
+                "first": {
+                    "$ast": "AlternativeSyntax",
+                    "first": {
+                        "$ast": "AlternativeSyntax",
+                        "first": {
+                            "$ast": "UseSyntax",
+                            "name": "XText"
+                        },
+                        "second": {
+                            "$ast": "UseSyntax",
+                            "name": "XCData"
+                        }
+                    },
+                    "second": {
+                        "$ast": "UseSyntax",
+                        "name": "XComment"
+                    }
+                },
+                "second": {
+                    "$ast": "UseSyntax",
+                    "name": "XElement"
+                }
+            }
+        }],
+        "name": "XSubNode",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "SequenceSyntax",
+                        "first": {
+                            "$ast": "RefSyntax",
+                            "field": "",
+                            "literal": "\"<?\"",
+                            "refType": "Literal"
+                        },
+                        "second": {
+                            "$ast": "RefSyntax",
+                            "field": "name",
+                            "literal": "NAME",
+                            "refType": "Id"
+                        }
+                    },
+                    "second": {
+                        "$ast": "LoopSyntax",
+                        "delimiter": null,
+                        "syntax": {
+                            "$ast": "RefSyntax",
+                            "field": "attributes",
+                            "literal": "XAttribute",
+                            "refType": "Id"
+                        }
+                    }
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "\"?>\"",
+                    "refType": "Literal"
+                }
+            },
+            "type": "Instruction"
+        }],
+        "name": "XInstruction",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "LoopSyntax",
+                    "delimiter": null,
+                    "syntax": {
+                        "$ast": "AlternativeSyntax",
+                        "first": {
+                            "$ast": "RefSyntax",
+                            "field": "prologs",
+                            "literal": "XInstruction",
+                            "refType": "Id"
+                        },
+                        "second": {
+                            "$ast": "RefSyntax",
+                            "field": "prologs",
+                            "literal": "XComment",
+                            "refType": "Id"
+                        }
+                    }
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "rootElement",
+                    "literal": "XElement",
+                    "refType": "Id"
+                }
+            },
+            "type": "Document"
+        }],
+        "name": "XDocument",
+        "type": ""
+    }],
+    "switches": []
+}

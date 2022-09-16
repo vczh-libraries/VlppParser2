@@ -493,7 +493,7 @@ PartialExecuteOrdinaryTrace
 						break;
 					case AstInsType::LriFetch:
 						{
-							CHECK_ERROR(context.lriStoredObjects == nullref, ERROR_MESSAGE_PREFIX L"LriStore is not executed before the next LriFetch.");
+							CHECK_ERROR(context.lriStoredObjects != nullref, ERROR_MESSAGE_PREFIX L"LriStore is not executed before the next LriFetch.");
 							PushObjectStackMultiple(context, context.lriStoredObjects);
 							context.lriStoredObjects = nullref;
 						}

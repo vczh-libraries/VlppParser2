@@ -1,0 +1,235 @@
+﻿{
+    "$ast": "Module",
+    "declarations": [{
+        "$ast": "FunctionDeclaration",
+        "attributes": [],
+        "name": "main",
+        "anonymity": "Named",
+        "arguments": [],
+        "functionKind": "Normal",
+        "returnType": {
+            "$ast": "PredefinedType",
+            "name": "String"
+        },
+        "statement": {
+            "$ast": "BlockStatement",
+            "endLabel": "",
+            "statements": [{
+                "$ast": "ReturnStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "IntegerExpression",
+                        "value": "1"
+                    }, {
+                        "$ast": "IntegerExpression",
+                        "value": "10"
+                    }],
+                    "function": {
+                        "$ast": "ChildExpression",
+                        "name": "Sum",
+                        "parent": {
+                            "$ast": "ChildExpression",
+                            "name": "Internal",
+                            "parent": {
+                                "$ast": "ReferenceExpression",
+                                "name": "Calculator"
+                            }
+                        }
+                    }
+                }
+            }]
+        }
+    }, {
+        "$ast": "ClassDeclaration",
+        "attributes": [],
+        "name": "Calculator",
+        "baseTypes": [],
+        "constructorType": "Undefined",
+        "declarations": [{
+            "$ast": "ClassDeclaration",
+            "attributes": [],
+            "name": "Internal",
+            "baseTypes": [],
+            "constructorType": "SharedPtr",
+            "declarations": [{
+                "$ast": "FunctionDeclaration",
+                "attributes": [],
+                "name": "Sum",
+                "anonymity": "Named",
+                "arguments": [{
+                    "$ast": "FunctionArgument",
+                    "attributes": [],
+                    "name": "begin",
+                    "type": {
+                        "$ast": "PredefinedType",
+                        "name": "Int"
+                    }
+                }, {
+                    "$ast": "FunctionArgument",
+                    "attributes": [],
+                    "name": "end",
+                    "type": {
+                        "$ast": "PredefinedType",
+                        "name": "Int"
+                    }
+                }],
+                "functionKind": "Static",
+                "returnType": {
+                    "$ast": "PredefinedType",
+                    "name": "Int"
+                },
+                "statement": {
+                    "$ast": "BlockStatement",
+                    "endLabel": "",
+                    "statements": [{
+                        "$ast": "ReturnStatement",
+                        "expression": {
+                            "$ast": "CallExpression",
+                            "arguments": [{
+                                "$ast": "ReferenceExpression",
+                                "name": "begin"
+                            }, {
+                                "$ast": "ReferenceExpression",
+                                "name": "end"
+                            }, {
+                                "$ast": "IntegerExpression",
+                                "value": "0"
+                            }],
+                            "function": {
+                                "$ast": "ReferenceExpression",
+                                "name": "Sum2"
+                            }
+                        }
+                    }]
+                }
+            }],
+            "kind": "Interface"
+        }, {
+            "$ast": "FunctionDeclaration",
+            "attributes": [],
+            "name": "Sum2",
+            "anonymity": "Named",
+            "arguments": [{
+                "$ast": "FunctionArgument",
+                "attributes": [],
+                "name": "begin",
+                "type": {
+                    "$ast": "PredefinedType",
+                    "name": "Int"
+                }
+            }, {
+                "$ast": "FunctionArgument",
+                "attributes": [],
+                "name": "end",
+                "type": {
+                    "$ast": "PredefinedType",
+                    "name": "Int"
+                }
+            }, {
+                "$ast": "FunctionArgument",
+                "attributes": [],
+                "name": "sum",
+                "type": {
+                    "$ast": "PredefinedType",
+                    "name": "Int"
+                }
+            }],
+            "functionKind": "Static",
+            "returnType": {
+                "$ast": "PredefinedType",
+                "name": "Int"
+            },
+            "statement": {
+                "$ast": "BlockStatement",
+                "endLabel": "",
+                "statements": [{
+                    "$ast": "IfStatement",
+                    "expression": {
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "ReferenceExpression",
+                            "name": "begin"
+                        },
+                        "op": "GT",
+                        "second": {
+                            "$ast": "ReferenceExpression",
+                            "name": "end"
+                        }
+                    },
+                    "falseBranch": {
+                        "$ast": "BlockStatement",
+                        "endLabel": "",
+                        "statements": [{
+                            "$ast": "ReturnStatement",
+                            "expression": {
+                                "$ast": "CallExpression",
+                                "arguments": [{
+                                    "$ast": "BinaryExpression",
+                                    "first": {
+                                        "$ast": "ReferenceExpression",
+                                        "name": "begin"
+                                    },
+                                    "op": "Add",
+                                    "second": {
+                                        "$ast": "IntegerExpression",
+                                        "value": "1"
+                                    }
+                                }, {
+                                    "$ast": "ReferenceExpression",
+                                    "name": "end"
+                                }, {
+                                    "$ast": "BinaryExpression",
+                                    "first": {
+                                        "$ast": "ReferenceExpression",
+                                        "name": "sum"
+                                    },
+                                    "op": "Add",
+                                    "second": {
+                                        "$ast": "ReferenceExpression",
+                                        "name": "begin"
+                                    }
+                                }],
+                                "function": {
+                                    "$ast": "ReferenceExpression",
+                                    "name": "Sum2"
+                                }
+                            }
+                        }]
+                    },
+                    "name": "",
+                    "trueBranch": {
+                        "$ast": "BlockStatement",
+                        "endLabel": "",
+                        "statements": [{
+                            "$ast": "ReturnStatement",
+                            "expression": {
+                                "$ast": "ReferenceExpression",
+                                "name": "sum"
+                            }
+                        }]
+                    },
+                    "type": null
+                }]
+            }
+        }],
+        "kind": "Class"
+    }],
+    "moduleType": "Module",
+    "name": "test",
+    "paths": [{
+        "$ast": "ModuleUsingPath",
+        "items": [{
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingNameFragment",
+                "name": "system"
+            }]
+        }, {
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingWildCardFragment"
+            }]
+        }]
+    }]
+}
