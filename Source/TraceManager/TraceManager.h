@@ -578,6 +578,10 @@ TraceManager
 				template<vint32_t (TraceAmbiguity::*key)>
 				TraceAmbiguityLink*							FindOrCreateTraceAmbiguityLink(Ref<TraceAmbiguityLink>& link, TraceAmbiguity* taToInsert);
 				void										CheckMergeTraces();
+
+				// phase: BuildExecutionOrder
+				void										BuildExecutionOrder();
+
 			public:
 				TraceManager(Executable& _executable, const ITypeCallback* _typeCallback, vint blockSize);
 

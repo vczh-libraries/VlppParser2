@@ -1490,6 +1490,7 @@ CheckMergeTraces
 					auto talFirst = FindOrCreateTraceAmbiguityLink<&TraceAmbiguity::prefix>(teFirst->ambiguityBegins, ta);
 					auto talLast = FindOrCreateTraceAmbiguityLink<&TraceAmbiguity::postfix>(teLast->ambiguityEnds, ta);
 
+#ifdef VCZH_DO_DEBUG_CHECK
 					if (talFirst->ambiguity != nullref)
 					{
 						auto ta2 = GetTraceAmbiguity(talFirst->ambiguity);
@@ -1505,6 +1506,7 @@ CheckMergeTraces
 						CHECK_ERROR(ta2->prefix == ta->prefix, ERROR_MESSAGE_PREFIX L"Incompatible TraceAmbiguity has been assigned at the same place.");
 						CHECK_ERROR(ta2->postfix == ta->postfix, ERROR_MESSAGE_PREFIX L"Incompatible TraceAmbiguity has been assigned at the same place.");
 					}
+#endif
 
 					CHECK_ERROR(talFirst->ambiguity == talLast->ambiguity, ERROR_MESSAGE_PREFIX L"Incompatible TraceAmbiguity has been assigned at the same place.");
 
@@ -1522,6 +1524,14 @@ CheckMergeTraces
 			}
 
 /***********************************************************************
+BuildExecutionOrder
+***********************************************************************/
+
+			void TraceManager::BuildExecutionOrder()
+			{
+			}
+
+/***********************************************************************
 ResolveAmbiguity
 ***********************************************************************/
 
@@ -1531,6 +1541,7 @@ ResolveAmbiguity
 				state = TraceManagerState::ResolvedAmbiguity;
 
 				CheckMergeTraces();
+				BuildExecutionOrder();
 			}
 
 #undef NEW_MERGE_STACK_MAGIC_COUNTER

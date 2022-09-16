@@ -2,10 +2,6 @@
 
 ## Refactoring PrepareTraceRoute
 
-- Convert `TraceExec::ambiguity(Begin|End)` to a link and keep ordering.
-- When a `TraceAmbiguity` is assigned to its `firstTrace`, maintain a link in `TraceExec::branchData::forwardTrace`.
-  - Such link will also include all branching traces even if they are not assigned with `TraceAmbiguity`.
-  - Therefore `IterateSurvivedTraces` is not needed in `ResolveAmbiguity`.
 - Refactor to split `TraceManager` phases into different structs.
 
 ## Test Cases
