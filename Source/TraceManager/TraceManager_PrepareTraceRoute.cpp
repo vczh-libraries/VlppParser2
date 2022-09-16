@@ -1410,6 +1410,39 @@ CheckMergeTraces
 				});
 			}
 
+			template<vint32_t(TraceAmbiguity::* key)>
+			TraceAmbiguityLink* TraceManager::FindOrCreateTraceAmbiguityLink(Ref<TraceAmbiguityLink>& link, TraceAmbiguity* taToInsert)
+			{
+				auto current = &link;
+				while (*current != nullref)
+				{
+					auto tal = GetTraceAmbiguityLink(*current);
+					auto ta = GetTraceAmbiguity(tal->ambiguity);
+					if (ta->*key < taToInsert->*key)
+					{
+						current = &tal->next;
+					}
+					else if (ta->*key > taToInsert->*key)
+					{
+						break;
+					}
+					else
+					{
+						return tal;
+					}
+				}
+
+				Ref<TraceAmbiguityLink> next;
+				if (*current != nullref)
+				{
+					next = GetTraceAmbiguityLink(*current)->next;
+				}
+				auto tal = GetTraceAmbiguityLink(traceAmbiguityLinks.Allocate());
+				tal->next = next;
+				*current = tal;
+				return tal;
+			}
+
 			void TraceManager::CheckMergeTraces()
 			{
 #define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::CheckMergeTraces()#"
@@ -1426,22 +1459,37 @@ CheckMergeTraces
 					bool succeeded = CheckMergeTrace(ta, trace, traceExec, visitingIds);
 					CHECK_ERROR(succeeded, ERROR_MESSAGE_PREFIX L"Failed to find ambiguous objects in a merge trace.");
 
-					// if a TraceAmbiguity is created at the same place
-					// check if they are compatible
-					auto beginTraceExec = GetTraceExec(GetTrace(ta->firstTrace)->traceExecRef);
-					auto endTraceExec = GetTraceExec(GetTrace(ta->lastTrace)->traceExecRef);
-					if (beginTraceExec->ambiguityBegin != nullref)
+					// check if a compatible TraceAmbiguity has been created in the same {trace, ins}
+					auto talBegin = FindOrCreateTraceAmbiguityLink<&TraceAmbiguity::prefix>(GetTraceExec(GetTrace(ta->firstTrace)->traceExecRef)->ambiguityBegins, ta);
+					auto talEnd = FindOrCreateTraceAmbiguityLink<&TraceAmbiguity::postfix>(GetTraceExec(GetTrace(ta->lastTrace)->traceExecRef)->ambiguityEnds, ta);
+
+					if (talBegin->ambiguity != nullref)
 					{
-						CHECK_ERROR(beginTraceExec->ambiguityBegin == endTraceExec->ambiguityEnd, ERROR_MESSAGE_PREFIX L"Incompatible TraceAmbiguity has been assigned at the same place.");
-						auto ta2 = GetTraceAmbiguity(beginTraceExec->ambiguityBegin);
+						auto ta2 = GetTraceAmbiguity(talBegin->ambiguity);
+						CHECK_ERROR(ta2->lastTrace == ta->lastTrace, ERROR_MESSAGE_PREFIX L"Incompatible TraceAmbiguity has been assigned at the same place.");
 						CHECK_ERROR(ta2->prefix == ta->prefix, ERROR_MESSAGE_PREFIX L"Incompatible TraceAmbiguity has been assigned at the same place.");
 						CHECK_ERROR(ta2->postfix == ta->postfix, ERROR_MESSAGE_PREFIX L"Incompatible TraceAmbiguity has been assigned at the same place.");
+					}
+
+					if (talEnd->ambiguity != nullref)
+					{
+						auto ta2 = GetTraceAmbiguity(talEnd->ambiguity);
+						CHECK_ERROR(ta2->firstTrace == ta->firstTrace, ERROR_MESSAGE_PREFIX L"Incompatible TraceAmbiguity has been assigned at the same place.");
+						CHECK_ERROR(ta2->prefix == ta->prefix, ERROR_MESSAGE_PREFIX L"Incompatible TraceAmbiguity has been assigned at the same place.");
+						CHECK_ERROR(ta2->postfix == ta->postfix, ERROR_MESSAGE_PREFIX L"Incompatible TraceAmbiguity has been assigned at the same place.");
+					}
+
+					CHECK_ERROR(talBegin->ambiguity == talEnd->ambiguity, ERROR_MESSAGE_PREFIX L"Incompatible TraceAmbiguity has been assigned at the same place.");
+
+					if (talBegin->ambiguity != nullref)
+					{
+						auto ta2 = GetTraceAmbiguity(talBegin->ambiguity);
 						ta->overridedAmbiguity = ta2;
 					}
 
 					traceExec->ambiguityDetected = ta;
-					beginTraceExec->ambiguityBegin = ta;
-					endTraceExec->ambiguityEnd = ta;
+					talBegin->ambiguity = ta;
+					talEnd->ambiguity = ta;
 				}
 #undef ERROR_MESSAGE_PREFIX
 			}

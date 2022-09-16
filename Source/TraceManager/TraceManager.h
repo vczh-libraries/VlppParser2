@@ -357,6 +357,12 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 				vint32_t							postfix = -1;
 			};
 
+			struct TraceAmbiguityLink : Allocatable<TraceAmbiguityLink>
+			{
+				Ref<TraceAmbiguityLink>				next;
+				Ref<TraceAmbiguity>					ambiguity;
+			};
+
 			struct TraceInsLists
 			{
 				InstructionArray					edgeInsBeforeInput;
@@ -393,12 +399,12 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 
 				// TraceAmbiguity associated to the trace
 				// it could be associated to
-				//   firstTrace
-				//   lastTrace
+				//   firstTrace (order by prefix ascending)
+				//   lastTrace  (order by postfix ascending)
 				//   the merge trace that create this TraceAmbiguity
 				Ref<TraceAmbiguity>					ambiguityDetected;
-				Ref<TraceAmbiguity>					ambiguityBegin;
-				Ref<TraceAmbiguity>					ambiguityEnd;
+				Ref<TraceAmbiguityLink>				ambiguityBegins;
+				Ref<TraceAmbiguityLink>				ambiguityEnds;
 			};
 
 /***********************************************************************
@@ -542,6 +548,7 @@ TraceManager
 				Ref<Trace>									firstMergeTrace;
 				Ref<Trace>									lastMergeTrace;
 				AllocateOnly<TraceAmbiguity>				traceAmbiguities;
+				AllocateOnly<TraceAmbiguityLink>			traceAmbiguityLinks;
 
 				// phase: CheckMergeTraces
 				template<typename TCallback>
@@ -562,6 +569,8 @@ TraceManager
 				template<typename TCallback>
 				bool										CheckAmbiguityResolution(TraceAmbiguity* ta, collections::List<Ref<InsExec_ObjRefLink>>& visitingIds, TCallback&& callback);
 				bool										CheckMergeTrace(TraceAmbiguity* ta, Trace* trace, TraceExec* traceExec, collections::List<Ref<InsExec_ObjRefLink>>& visitingIds);
+				template<vint32_t (TraceAmbiguity::*key)>
+				TraceAmbiguityLink*							FindOrCreateTraceAmbiguityLink(Ref<TraceAmbiguityLink>& link, TraceAmbiguity* taToInsert);
 				void										CheckMergeTraces();
 			public:
 				TraceManager(Executable& _executable, const ITypeCallback* _typeCallback, vint blockSize);
@@ -588,6 +597,7 @@ TraceManager
 				InsExec_CreateStack*			GetInsExec_CreateStack(Ref<InsExec_CreateStack> index);
 				TraceExec*						GetTraceExec(Ref<TraceExec> index);
 				TraceAmbiguity*					GetTraceAmbiguity(Ref<TraceAmbiguity> index);
+				TraceAmbiguityLink*				GetTraceAmbiguityLink(Ref<TraceAmbiguityLink> index);
 
 				void							Initialize(vint32_t startState) override;
 				Trace*							GetInitialTrace();

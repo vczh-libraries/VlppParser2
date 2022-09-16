@@ -130,6 +130,7 @@ TraceManager
 				, insExec_ObjectStacks(blockSize)
 				, insExec_CreateStacks(blockSize)
 				, traceAmbiguities(blockSize)
+				, traceAmbiguityLinks(blockSize)
 			{
 				maxSwitchValues = 8 * sizeof(static_cast<Switches*>(nullptr)->values);
 				CHECK_ERROR(executable.switchDefaultValues.Count() <= maxSwitchValues, L"vl::glr::automaton::TraceManager::TraceManager(Executable&, const ITypeCallback*)#Too many switch defined in the parser.");
@@ -218,6 +219,11 @@ TraceManager
 			TraceAmbiguity* TraceManager::GetTraceAmbiguity(Ref<TraceAmbiguity> index)
 			{
 				return traceAmbiguities.Get(index);
+			}
+
+			TraceAmbiguityLink* TraceManager::GetTraceAmbiguityLink(Ref<TraceAmbiguityLink> index)
+			{
+				return traceAmbiguityLinks.Get(index);
 			}
 
 /***********************************************************************
