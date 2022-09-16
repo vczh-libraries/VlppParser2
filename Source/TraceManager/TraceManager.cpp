@@ -45,8 +45,8 @@ TraceManager
 					auto&& ownerCollection = owner->*collection;
 					if (ownerCollection.first == -1)
 					{
-						ownerCollection.first = element->allocatedIndex;
-						ownerCollection.last = element->allocatedIndex;
+						ownerCollection.first = element;
+						ownerCollection.last = element;
 					}
 					else
 					{
@@ -54,9 +54,9 @@ TraceManager
 						auto&& siblingCollection = sibling->*collection;
 						CHECK_ERROR(siblingCollection.siblingNext == -1, errorMessage);
 
-						siblingCollection.siblingNext = element->allocatedIndex;
-						elementCollection.siblingPrev = sibling->allocatedIndex;
-						ownerCollection.last = element->allocatedIndex;
+						siblingCollection.siblingNext = element;
+						elementCollection.siblingPrev = sibling;
+						ownerCollection.last = element;
 					}
 				}
 				else if (collection == &Trace::predecessors)
@@ -94,8 +94,8 @@ TraceManager
 
 					// clear sibilingPrev and sibilingNext because it belongs to no collection at this moment
 					// keep first and last so that it still knows its predecessors
-					copiedElement->predecessors.siblingPrev = -1;
-					copiedElement->predecessors.siblingNext = -1;
+					copiedElement->predecessors.siblingPrev = nullref;
+					copiedElement->predecessors.siblingNext = nullref;
 
 					// now it becomes
 					//                B(ending) -+
@@ -135,7 +135,7 @@ TraceManager
 				CHECK_ERROR(executable.switchDefaultValues.Count() <= maxSwitchValues, L"vl::glr::automaton::TraceManager::TraceManager(Executable&, const ITypeCallback*)#Too many switch defined in the parser.");
 			}
 
-			ReturnStack* TraceManager::GetReturnStack(vint32_t index)
+			ReturnStack* TraceManager::GetReturnStack(Ref<ReturnStack> index)
 			{
 				return returnStacks.Get(index);
 			}
@@ -145,7 +145,7 @@ TraceManager
 				return returnStacks.Get(returnStacks.Allocate());
 			}
 
-			Trace* TraceManager::GetTrace(vint32_t index)
+			Trace* TraceManager::GetTrace(Ref<Trace> index)
 			{
 				return traces.Get(index);
 			}
@@ -155,7 +155,7 @@ TraceManager
 				return traces.Get(traces.Allocate());
 			}
 
-			Competition* TraceManager::GetCompetition(vint32_t index)
+			Competition* TraceManager::GetCompetition(Ref<Competition> index)
 			{
 				return competitions.Get(index);
 			}
@@ -165,7 +165,7 @@ TraceManager
 				return competitions.Get(competitions.Allocate());
 			}
 
-			AttendingCompetitions* TraceManager::GetAttendingCompetitions(vint32_t index)
+			AttendingCompetitions* TraceManager::GetAttendingCompetitions(Ref<AttendingCompetitions> index)
 			{
 				return attendingCompetitions.Get(index);
 			}
@@ -175,7 +175,7 @@ TraceManager
 				return attendingCompetitions.Get(attendingCompetitions.Allocate());
 			}
 
-			Switches* TraceManager::GetSwitches(vint32_t index)
+			Switches* TraceManager::GetSwitches(Ref<Switches> index)
 			{
 				return switches.Get(index);
 			}
@@ -185,37 +185,37 @@ TraceManager
 				return &insExecs[index];
 			}
 			
-			InsExec_Object* TraceManager::GetInsExec_Object(vint32_t index)
+			InsExec_Object* TraceManager::GetInsExec_Object(Ref<InsExec_Object> index)
 			{
 				return insExec_Objects.Get(index);
 			}
 
-			InsExec_InsRefLink* TraceManager::GetInsExec_InsRefLink(vint32_t index)
+			InsExec_InsRefLink* TraceManager::GetInsExec_InsRefLink(Ref<InsExec_InsRefLink> index)
 			{
 				return insExec_InsRefLinks.Get(index);
 			}
 
-			InsExec_ObjRefLink* TraceManager::GetInsExec_ObjRefLink(vint32_t index)
+			InsExec_ObjRefLink* TraceManager::GetInsExec_ObjRefLink(Ref<InsExec_ObjRefLink> index)
 			{
 				return insExec_ObjRefLinks.Get(index);
 			}
 
-			InsExec_ObjectStack* TraceManager::GetInsExec_ObjectStack(vint32_t index)
+			InsExec_ObjectStack* TraceManager::GetInsExec_ObjectStack(Ref<InsExec_ObjectStack> index)
 			{
 				return insExec_ObjectStacks.Get(index);
 			}
 
-			InsExec_CreateStack* TraceManager::GetInsExec_CreateStack(vint32_t index)
+			InsExec_CreateStack* TraceManager::GetInsExec_CreateStack(Ref<InsExec_CreateStack> index)
 			{
 				return insExec_CreateStacks.Get(index);
 			}
 
-			TraceExec* TraceManager::GetTraceExec(vint32_t index)
+			TraceExec* TraceManager::GetTraceExec(Ref<TraceExec> index)
 			{
 				return traceExecs.Get(index);
 			}
 
-			TraceAmbiguity* TraceManager::GetTraceAmbiguity(vint32_t index)
+			TraceAmbiguity* TraceManager::GetTraceAmbiguity(Ref<TraceAmbiguity> index)
 			{
 				return traceAmbiguities.Get(index);
 			}

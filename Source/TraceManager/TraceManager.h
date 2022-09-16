@@ -24,6 +24,7 @@ AllocateOnly<T>
 			};
 
 			struct NullRef {};
+			constexpr auto nullref = NullRef{};
 
 			template<typename T>
 			struct Ref
@@ -90,7 +91,7 @@ AllocateOnly<T>
 					vint index = blockSize * (buffers.Count() - 1) + (blockSize - remains);
 					buffers[buffers.Count() - 1]->operator[](blockSize - remains).allocatedIndex = (vint32_t)index;
 					remains--;
-					return { index };
+					return Ref<T>((vint32_t)index);
 				}
 
 				void Clear()
@@ -553,23 +554,24 @@ TraceManager
 				collections::List<Trace*>*		concurrentTraces = nullptr;
 				collections::List<Trace*>*		backupTraces = nullptr;
 
-				ReturnStack*					GetReturnStack(vint32_t index);
+				ReturnStack*					GetReturnStack(Ref<ReturnStack> index);
 				ReturnStack*					AllocateReturnStack();
-				Trace*							GetTrace(vint32_t index);
+				Trace*							GetTrace(Ref<Trace> index);
 				Trace*							AllocateTrace();
-				Competition*					GetCompetition(vint32_t index);
+				Competition*					GetCompetition(Ref<Competition> index);
 				Competition*					AllocateCompetition();
-				AttendingCompetitions*			GetAttendingCompetitions(vint32_t index);
+				AttendingCompetitions*			GetAttendingCompetitions(Ref<AttendingCompetitions> index);
 				AttendingCompetitions*			AllocateAttendingCompetitions();
-				Switches*						GetSwitches(vint32_t index);
+				Switches*						GetSwitches(Ref<Switches> index);
+
 				InsExec*						GetInsExec(vint32_t index);
-				InsExec_Object*					GetInsExec_Object(vint32_t index);
-				InsExec_InsRefLink*				GetInsExec_InsRefLink(vint32_t index);
-				InsExec_ObjRefLink*				GetInsExec_ObjRefLink(vint32_t index);
-				InsExec_ObjectStack*			GetInsExec_ObjectStack(vint32_t index);
-				InsExec_CreateStack*			GetInsExec_CreateStack(vint32_t index);
-				TraceExec*						GetTraceExec(vint32_t index);
-				TraceAmbiguity*					GetTraceAmbiguity(vint32_t index);
+				InsExec_Object*					GetInsExec_Object(Ref<InsExec_Object> index);
+				InsExec_InsRefLink*				GetInsExec_InsRefLink(Ref<InsExec_InsRefLink> index);
+				InsExec_ObjRefLink*				GetInsExec_ObjRefLink(Ref<InsExec_ObjRefLink> index);
+				InsExec_ObjectStack*			GetInsExec_ObjectStack(Ref<InsExec_ObjectStack> index);
+				InsExec_CreateStack*			GetInsExec_CreateStack(Ref<InsExec_CreateStack> index);
+				TraceExec*						GetTraceExec(Ref<TraceExec> index);
+				TraceAmbiguity*					GetTraceAmbiguity(Ref<TraceAmbiguity> index);
 
 				void							Initialize(vint32_t startState) override;
 				Trace*							GetInitialTrace();
