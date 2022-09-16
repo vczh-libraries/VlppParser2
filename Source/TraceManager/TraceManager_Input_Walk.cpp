@@ -43,7 +43,7 @@ TraceManager::RunEdgeConditionChecking
 			{
 				Ref<Switches> previous = currentSV;
 				auto& checking = currentSV->firstChild;
-				while (checking)
+				while (checking != nullref)
 				{
 					currentSV = switches.Get(checking);
 					checking = currentSV->nextSibling;
@@ -219,12 +219,12 @@ TraceManager::WalkAlongSingleEdge
 				Ref<Switches> switchValues;
 				Trace* ambiguityTraceToMerge = nullptr;
 
-				if (rootSwitchValues)
+				if (rootSwitchValues != nullref)
 				{
 					switchValues = RunEdgeConditionChecking(trace.stateTrace->switchValues, edgeDesc);
 				}
 
-				if (rootSwitchValues && !switchValues)
+				if (rootSwitchValues != nullref && switchValues == nullref)
 				{
 					// stop if condition checking failed
 					return { nullptr,nullptr };
@@ -238,7 +238,7 @@ TraceManager::WalkAlongSingleEdge
 					// an EndingInput transition consume return record in the return stack
 					// such return will be popped from the return stack and stored in Trace::executedReturnStack
 					CHECK_ERROR(edgeDesc.returnIndices.count == 0, ERROR_MESSAGE_PREFIX L"Ending input edge is not allowed to push something into the return stack.");
-					if (returnStack)
+					if (returnStack != nullref)
 					{
 						executedReturnStack = returnStack;
 						auto rs = GetReturnStack(returnStack);
@@ -369,7 +369,7 @@ TraceManager::WalkAlongEpsilonEdges
 								return;
 							}
 						}
-						else if (!currentReturnStack)
+						else if (currentReturnStack == nullref)
 						{
 							vint32_t byEdge = edgeArray.start;
 							auto& edgeDesc = executable.edges[byEdge];
@@ -435,7 +435,7 @@ TraceManager::WalkAlongEpsilonEdges
 							// at most one EndingInput transition could exist from any state
 							CHECK_ERROR(edgeArray.count < 2, L"vl::glr::automaton::TraceManager::WalkAlongEpsilonEdges(vint32_t, vint32_t, Trace*)#Too many EndingInput transitions.");
 
-							if (edgeArray.count == 0 || !currentReturnStack)
+							if (edgeArray.count == 0 || currentReturnStack == nullref)
 							{
 								// currentReturnStack == -1 means this is the last possible EndingInput
 								// no need to test forward

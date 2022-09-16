@@ -149,7 +149,7 @@ FillSuccessorsAfterEndOfInput
 							last = GetTrace(trace->predecessors.last);
 						}
 
-						if (!newTrace->predecessors.first)
+						if (newTrace->predecessors.first == nullref)
 						{
 							newTrace->predecessors.first = first;
 							newTrace->predecessors.last = last;
@@ -192,7 +192,7 @@ FillSuccessorsAfterEndOfInput
 					// fill successors
 					{
 						auto predecessorId = current->predecessors.first;
-						while (predecessorId)
+						while (predecessorId != nullref)
 						{
 							auto predecessor = GetTrace(predecessorId);
 							predecessorId = predecessor->predecessors.siblingNext;
@@ -205,7 +205,7 @@ FillSuccessorsAfterEndOfInput
 					// add predecessors to the list to continue
 					{
 						auto predecessorId = current->predecessors.last;
-						while (predecessorId)
+						while (predecessorId != nullref)
 						{
 							auto predecessor = GetTrace(predecessorId);
 							predecessorId = predecessor->predecessors.siblingPrev;
@@ -242,7 +242,7 @@ EndOfInput
 					auto trace = concurrentTraces->Get(traceIndex);
 					auto actualTrace = EnsureTraceWithValidStates(trace);
 					auto& stateDesc = executable.states[actualTrace->state];
-					if (!actualTrace->returnStack && stateDesc.endingState)
+					if (actualTrace->returnStack == nullref && stateDesc.endingState)
 					{
 						AddTrace(trace);
 					}
