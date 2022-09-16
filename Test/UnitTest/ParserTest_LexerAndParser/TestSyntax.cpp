@@ -313,7 +313,7 @@ export abs((sin(x) + cos(y)))
 	TEST_CATEGORY(L"Test Calculator Syntax")
 	{
 		Folder dirInput = FilePath(GetTestParserInputPath(L"Calculator")) / L"Input";
-		FilePath dirBaseline = FilePath(GetTestParserInputPath(L"Calculator")) / L"ParserLog";
+		FilePath dirBaseline = FilePath(GetTestParserInputPath(L"Calculator")) / L"Output";
 		FilePath dirOutput = GetOutputDir(L"Calculator");
 
 		List<File> inputFiles;
