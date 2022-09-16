@@ -51,7 +51,7 @@ IterateSurvivedTraces
 					if (current->iterateCounter < current->predecessorCount) continue;
 
 					auto successorId = current->successors.last;
-					while (successorId)
+					while (successorId != nullref)
 					{
 						auto successor = GetTrace(successorId);
 						successorId = successor->successors.siblingPrev;
@@ -81,7 +81,7 @@ ReadInstructionList
 					insLists.edgeInsBeforeInput = {};
 					insLists.edgeInsAfterInput = {};
 				}
-				if (trace->executedReturnStack)
+				if (trace->executedReturnStack != nullref)
 				{
 					auto returnStack = GetReturnStack(trace->executedReturnStack);
 					auto& returnDesc = executable.returns[returnStack->returnIndex];
@@ -144,7 +144,7 @@ AllocateExecutionData
 					// ensure traceExecRef reflects the partial order of the execution order of traces
 					if (predecessorCount > 1 && visitCount != predecessorCount) return;
 
-					CHECK_ERROR(!trace->traceExecRef, ERROR_MESSAGE_PREFIX L"Internal error: IterateSurvivedTraces unexpectedly revisit a trace.");
+					CHECK_ERROR(trace->traceExecRef == nullref, ERROR_MESSAGE_PREFIX L"Internal error: IterateSurvivedTraces unexpectedly revisit a trace.");
 					trace->traceExecRef = traceExecs.Allocate();
 
 					auto traceExec = GetTraceExec(trace->traceExecRef);
@@ -159,7 +159,7 @@ AllocateExecutionData
 
 					if (trace->predecessors.first != trace->predecessors.last)
 					{
-						if (!firstMergeTrace)
+						if (firstMergeTrace == nullref)
 						{
 							firstMergeTrace = trace;
 							lastMergeTrace = trace;
@@ -188,7 +188,7 @@ PartialExecuteOrdinaryTrace
 
 			vint32_t TraceManager::GetStackBase(InsExec_Context& context)
 			{
-				if (!context.createStack)
+				if (context.createStack == nullref)
 				{
 					return 0;
 				}
@@ -200,7 +200,7 @@ PartialExecuteOrdinaryTrace
 
 			vint32_t TraceManager::GetStackTop(InsExec_Context& context)
 			{
-				if (!context.objectStack)
+				if (context.objectStack == nullref)
 				{
 					return 0;
 				}
@@ -229,19 +229,19 @@ PartialExecuteOrdinaryTrace
 
 			Ref<InsExec_InsRefLink> TraceManager::JoinInsRefLink(Ref<InsExec_InsRefLink> first, Ref<InsExec_InsRefLink> second)
 			{
-				if (!first) return second;
-				if (!second) return first;
+				if (first == nullref) return second;
+				if (second == nullref) return first;
 
 				Ref<InsExec_InsRefLink> newStack;
 
-				while (first)
+				while (first != nullref)
 				{
 					auto stack = GetInsExec_InsRefLink(first);
 					first = stack->previous;
 					PushInsRefLink(newStack, stack->trace, stack->ins);
 				}
 
-				while (second)
+				while (second != nullref)
 				{
 					auto stack = GetInsExec_InsRefLink(second);
 					second = stack->previous;
@@ -253,19 +253,19 @@ PartialExecuteOrdinaryTrace
 
 			Ref<InsExec_ObjRefLink> TraceManager::JoinObjRefLink(Ref<InsExec_ObjRefLink> first, Ref<InsExec_ObjRefLink> second)
 			{
-				if (!first) return second;
-				if (!second) return first;
+				if (first == nullref) return second;
+				if (second == nullref) return first;
 
 				Ref<InsExec_ObjRefLink> newStack;
 
-				while (first)
+				while (first != nullref)
 				{
 					auto stack = GetInsExec_ObjRefLink(first);
 					first = stack->previous;
 					PushObjRefLink(newStack, stack->id);
 				}
 
-				while (second)
+				while (second != nullref)
 				{
 					auto stack = GetInsExec_ObjRefLink(second);
 					second = stack->previous;
@@ -307,7 +307,7 @@ PartialExecuteOrdinaryTrace
 			{
 #define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::PartialExecuteOrdinaryTrace(Trace*)#"
 				InsExec_Context context;
-				if (trace->predecessors.first)
+				if (trace->predecessors.first != nullref)
 				{
 					auto predecessor = GetTrace(trace->predecessors.first);
 					auto traceExec = GetTraceExec(predecessor->traceExecRef);
@@ -374,7 +374,7 @@ PartialExecuteOrdinaryTrace
 					case AstInsType::ReopenObject:
 						{
 							CHECK_ERROR(GetStackTop(context) - GetStackBase(context) >= 1, ERROR_MESSAGE_PREFIX L"Pushed values not enough.");
-							CHECK_ERROR(context.createStack, ERROR_MESSAGE_PREFIX L"There is no created object.");
+							CHECK_ERROR(context.createStack != nullref, ERROR_MESSAGE_PREFIX L"There is no created object.");
 
 							// pop an object
 							auto ieOSTop = GetInsExec_ObjectStack(context.objectStack);
@@ -393,7 +393,7 @@ PartialExecuteOrdinaryTrace
 							NEW_MERGE_STACK_MAGIC_COUNTER;
 							{
 								auto ref = ieCSTop->objectIds;
-								while (ref)
+								while (ref != nullref)
 								{
 									auto link = GetInsExec_ObjRefLink(ref);
 									auto ieObject = GetInsExec_Object(link->id);
@@ -403,7 +403,7 @@ PartialExecuteOrdinaryTrace
 							}
 							{
 								auto ref = ieOSTop->objectIds;
-								while (ref)
+								while (ref != nullref)
 								{
 									auto link = GetInsExec_ObjRefLink(ref);
 									auto ieObject = GetInsExec_Object(link->id);
@@ -417,7 +417,7 @@ PartialExecuteOrdinaryTrace
 							}
 
 							auto insRefLinkId = ieCSTop->createInsRefs;
-							while(insRefLinkId)
+							while(insRefLinkId != nullref)
 							{
 								auto insRefLink = GetInsExec_InsRefLink(insRefLinkId);
 								insRefLinkId = insRefLink->previous;
@@ -429,7 +429,7 @@ PartialExecuteOrdinaryTrace
 
 								auto insExecDfa = GetInsExec(traceExecCSTop->insExecRefs.start + insRefLink->ins);
 								auto ref = ieOSTop->objectIds;
-								while (ref)
+								while (ref != nullref)
 								{
 									auto link = GetInsExec_ObjRefLink(ref);
 									auto ieObject = GetInsExec_Object(link->id);
@@ -444,14 +444,14 @@ PartialExecuteOrdinaryTrace
 						break;
 					case AstInsType::EndObject:
 						{
-							CHECK_ERROR(context.createStack, ERROR_MESSAGE_PREFIX L"There is no created object.");
+							CHECK_ERROR(context.createStack != nullref, ERROR_MESSAGE_PREFIX L"There is no created object.");
 
 							// pop a create stack
 							auto ieCSTop = GetInsExec_CreateStack(context.createStack);
 							context.createStack = ieCSTop->previous;
 
 							// push an object
-							CHECK_ERROR(ieCSTop->objectIds, ERROR_MESSAGE_PREFIX L"An object has not been associated to the create stack yet.");
+							CHECK_ERROR(ieCSTop->objectIds != nullref, ERROR_MESSAGE_PREFIX L"An object has not been associated to the create stack yet.");
 							PushObjectStackMultiple(context, ieCSTop->objectIds);
 
 							// InsExec::objRefs
@@ -459,7 +459,7 @@ PartialExecuteOrdinaryTrace
 
 							// InsExec::eoInsRefs
 							auto insRefLinkId = ieCSTop->createInsRefs;
-							while (insRefLinkId)
+							while (insRefLinkId != nullref)
 							{
 								auto insRefLink = GetInsExec_InsRefLink(insRefLinkId);
 								insRefLinkId = insRefLink->previous;
@@ -484,7 +484,7 @@ PartialExecuteOrdinaryTrace
 					case AstInsType::LriStore:
 						{
 							CHECK_ERROR(GetStackTop(context) - GetStackBase(context) >= 1, ERROR_MESSAGE_PREFIX L"Pushed values not enough.");
-							CHECK_ERROR(!context.lriStoredObjects, ERROR_MESSAGE_PREFIX L"LriFetch is not executed before the next LriStore.");
+							CHECK_ERROR(context.lriStoredObjects == nullref, ERROR_MESSAGE_PREFIX L"LriFetch is not executed before the next LriStore.");
 
 							auto ieObjTop = GetInsExec_ObjectStack(context.objectStack);
 							context.objectStack = ieObjTop->previous;
@@ -493,7 +493,7 @@ PartialExecuteOrdinaryTrace
 						break;
 					case AstInsType::LriFetch:
 						{
-							CHECK_ERROR(!context.lriStoredObjects, ERROR_MESSAGE_PREFIX L"LriStore is not executed before the next LriFetch.");
+							CHECK_ERROR(context.lriStoredObjects == nullref, ERROR_MESSAGE_PREFIX L"LriStore is not executed before the next LriFetch.");
 							PushObjectStackMultiple(context, context.lriStoredObjects);
 							context.lriStoredObjects = nullref;
 						}
@@ -529,11 +529,11 @@ EnsureInsExecContextCompatible
 				};
 
 				// check if the two lriStored be both empty or non-empty
-				if ((bool)contextBaseline.lriStoredObjects != (bool)contextComming.lriStoredObjects) error();
+				if ((contextBaseline.lriStoredObjects == nullref) != (contextComming.lriStoredObjects == nullref)) error();
 
 				// check if the two objectStack have the same depth
-				if ((bool)contextBaseline.objectStack != (bool)contextComming.objectStack) error();
-				if (contextBaseline.objectStack)
+				if ((contextBaseline.objectStack == nullref) != (contextComming.objectStack == nullref)) error();
+				if (contextBaseline.objectStack != nullref)
 				{
 					auto stackBaseline = GetInsExec_ObjectStack(contextBaseline.objectStack);
 					auto stackComming = GetInsExec_ObjectStack(contextComming.objectStack);
@@ -546,7 +546,7 @@ EnsureInsExecContextCompatible
 				auto stack2 = contextComming.createStack;
 				while (stack1 != stack2)
 				{
-					if (!stack1 || !stack2) error();
+					if (stack1 == nullref || stack2 == nullref) error();
 
 					auto stackObj1 = GetInsExec_CreateStack(stack1);
 					auto stackObj2 = GetInsExec_CreateStack(stack2);
@@ -565,7 +565,7 @@ MergeInsExecContext
 
 			void TraceManager::PushInsRefLinkWithCounter(Ref<InsExec_InsRefLink>& link, Ref<InsExec_InsRefLink> comming)
 			{
-				while (comming)
+				while (comming != nullref)
 				{
 					auto commingStack = GetInsExec_InsRefLink(comming);
 					comming = commingStack->previous;
@@ -582,7 +582,7 @@ MergeInsExecContext
 
 			void TraceManager::PushObjRefLinkWithCounter(Ref<InsExec_ObjRefLink>& link, Ref<InsExec_ObjRefLink> comming)
 			{
-				while (comming)
+				while (comming != nullref)
 				{
 					auto commingStack = GetInsExec_ObjRefLink(comming);
 					comming = commingStack->previous;
@@ -604,13 +604,13 @@ MergeInsExecContext
 				{
 					vint index = 0;
 					auto predecessorId = mergeTrace->predecessors.first;
-					while (predecessorId)
+					while (predecessorId != nullref)
 					{
 						auto predecessor = GetTrace(predecessorId);
 						auto traceExec = GetTraceExec(predecessor->traceExecRef);
 
 						auto stackId = traceExec->context.*stack;
-						stacks[index++] = !stackId ? nullptr : (this->*get)(stackId);
+						stacks[index++] = stackId == nullref ? nullptr : (this->*get)(stackId);
 						predecessorId = predecessor->predecessors.siblingNext;
 					}
 				}
@@ -659,7 +659,7 @@ MergeInsExecContext
 					for (vint index = 0; index < stacks.Count(); index++)
 					{
 						auto stackId = stacks[index]->previous;
-						stacks[index] = !stackId ? nullptr : (this->*get)(stackId);
+						stacks[index] = stackId == nullref ? nullptr : (this->*get)(stackId);
 					}
 				}
 				return stackTop;
@@ -699,7 +699,7 @@ MergeInsExecContext
 
 				NEW_MERGE_STACK_MAGIC_COUNTER;
 				auto predecessorId = mergeTrace->predecessors.first;
-				while (predecessorId)
+				while (predecessorId != nullref)
 				{
 					auto predecessor = GetTrace(predecessorId);
 					predecessorId = predecessor->predecessors.siblingNext;
@@ -859,7 +859,7 @@ DebugCheckTraceExecData
 								case AstInsType::BeginObject:
 								case AstInsType::BeginObjectLeftRecursive:
 								case AstInsType::DelayFieldAssignment:
-									CHECK_ERROR(insExec->eoInsRefs, ERROR_MESSAGE_PREFIX L"Internal error: BO/BOLA/DFA not closed.");
+									CHECK_ERROR(insExec->eoInsRefs != nullref, ERROR_MESSAGE_PREFIX L"Internal error: BO/BOLA/DFA not closed.");
 									break;
 								}
 
@@ -867,7 +867,7 @@ DebugCheckTraceExecData
 								switch (ins.type)
 								{
 								case AstInsType::DelayFieldAssignment:
-									CHECK_ERROR(insExec->objRefs, ERROR_MESSAGE_PREFIX L"Internal error: DFA not associated.");
+									CHECK_ERROR(insExec->objRefs != nullref, ERROR_MESSAGE_PREFIX L"Internal error: DFA not associated.");
 									break;
 								}
 							}
@@ -904,7 +904,7 @@ CheckMergeTraces
 			{
 				// check every object in the link
 				auto linkId = objRefLinkStartSet;
-				while (linkId != -1)
+				while (linkId != nullref)
 				{
 					auto objRefLink = GetInsExec_ObjRefLink(linkId);
 					linkId = objRefLink->previous;
@@ -944,10 +944,10 @@ CheckMergeTraces
 					if (!callback(ieObject)) return false;
 
 					// keep searching until ieObject->lrObjectIds is empty
-					while (ieObject->lrObjectIds != -1)
+					while (ieObject->lrObjectIds != nullref)
 					{
 						auto lrObjRefLink = GetInsExec_ObjRefLink(ieObject->lrObjectIds);
-						if (lrObjRefLink->previous == -1)
+						if (lrObjRefLink->previous == nullref)
 						{
 							// if ieObject->lrObjectIds has only one object
 							// continue in place
@@ -976,7 +976,7 @@ CheckMergeTraces
 				{
 					// for any new object link, check every object in it
 					auto linkId = visitingIds[linkIdIndex];
-					while (linkId)
+					while (linkId != nullref)
 					{
 						auto objRefLink = GetInsExec_ObjRefLink(linkId);
 						linkId = objRefLink->previous;
@@ -1021,7 +1021,7 @@ CheckMergeTraces
 				vint32_t ins = ieObject->bo_bolr_Ins;
 
 				auto insRefLinkId = ieObject->dfaInsRefs;
-				while (insRefLinkId != -1)
+				while (insRefLinkId != nullref)
 				{
 					auto insRefLink = GetInsExec_InsRefLink(insRefLinkId);
 					insRefLinkId = insRefLink->previous;
@@ -1037,7 +1037,7 @@ CheckMergeTraces
 				auto forwardTraceId = GetTraceExec(GetTrace(trace)->traceExecRef)->branchData.forwardTrace;
 				EnsureSameForwardTrace(ieObject->bo_bolr_Trace, forwardTraceId);
 				insRefLinkId = ieObject->dfaInsRefs;
-				while (insRefLinkId)
+				while (insRefLinkId != nullref)
 				{
 					auto insRefLink = GetInsExec_InsRefLink(insRefLinkId);
 					EnsureSameForwardTrace(GetInsExec_InsRefLink(insRefLinkId)->trace, forwardTraceId);
@@ -1066,7 +1066,7 @@ CheckMergeTraces
 #ifdef VCZH_DO_DEBUG_CHECK
 						PushInsRefLink(insForEachObject, createTraceId, createIns);
 #endif
-						if (trace == -1 || createTraceId < trace || (createTraceId == trace && createIns < ins))
+						if (trace == nullref || createTraceId < trace || (createTraceId == trace && createIns < ins))
 						{
 							trace = createTraceId;
 							ins = createIns;
@@ -1074,13 +1074,13 @@ CheckMergeTraces
 						return true;
 					});
 				});
-				if (trace == -1) return true;
+				if (trace == nullref) return true;
 				if (!succeeded) return false;
 #ifdef VCZH_DO_DEBUG_CHECK
 				// ensure they actually have the same ancestor trace
 				auto forwardTraceId = GetTraceExec(GetTrace(trace)->traceExecRef)->branchData.forwardTrace;
 				auto insRefLinkId = insForEachObject;
-				while (insRefLinkId != -1)
+				while (insRefLinkId != nullref)
 				{
 					auto insRefLink = GetInsExec_InsRefLink(insRefLinkId);
 					EnsureSameForwardTrace(insRefLink->trace, forwardTraceId);
@@ -1102,7 +1102,7 @@ CheckMergeTraces
 				auto traceExec = GetTraceExec(createTrace->traceExecRef);
 				auto insExec = GetInsExec(traceExec->insExecRefs.start + createIns);
 				auto insRefLinkId = insExec->eoInsRefs;
-				while (insRefLinkId)
+				while (insRefLinkId != nullref)
 				{
 					auto insRefLink = GetInsExec_InsRefLink(insRefLinkId);
 					insRefLinkId = insRefLink->previous;
@@ -1326,11 +1326,11 @@ CheckMergeTraces
 				{
 					// [CONDITION]
 					// the top create stack should be either empty or only contains one object
-					if (traceExec->context.createStack)
+					if (traceExec->context.createStack != nullref)
 					{
 						auto ieCSTop = GetInsExec_CreateStack(traceExec->context.createStack);
 						auto objRefLink = GetInsExec_ObjRefLink(ieCSTop->objectIds);
-						if (objRefLink->previous)
+						if (objRefLink->previous != nullref)
 						{
 							goto CHECK_OBJECTS_IN_TOP_CREATE_STACK;
 						}
@@ -1385,7 +1385,7 @@ CheckMergeTraces
 						auto succeeded = CheckAmbiguityResolution(ta, visitingIds, [=, &visitingIds](auto&& callback)
 						{
 							auto predecessorId = trace->predecessors.first;
-							while (predecessorId)
+							while (predecessorId != nullref)
 							{
 								auto predecessor = GetTrace(predecessorId);
 								predecessorId = predecessor->predecessors.siblingNext;
@@ -1416,7 +1416,7 @@ CheckMergeTraces
 				// iterating TraceMergeExec
 				List<Ref<InsExec_ObjRefLink>> visitingIds;
 				auto traceId = firstMergeTrace;
-				while (traceId)
+				while (traceId != nullref)
 				{
 					auto trace = GetTrace(traceId);
 					auto traceExec = GetTraceExec(trace->traceExecRef);
@@ -1430,7 +1430,7 @@ CheckMergeTraces
 					// check if they are compatible
 					auto beginTraceExec = GetTraceExec(GetTrace(ta->firstTrace)->traceExecRef);
 					auto endTraceExec = GetTraceExec(GetTrace(ta->lastTrace)->traceExecRef);
-					if (beginTraceExec->ambiguityBegin)
+					if (beginTraceExec->ambiguityBegin != nullref)
 					{
 						CHECK_ERROR(beginTraceExec->ambiguityBegin == endTraceExec->ambiguityEnd, ERROR_MESSAGE_PREFIX L"Incompatible TraceAmbiguity has been assigned at the same place.");
 						auto ta2 = GetTraceAmbiguity(beginTraceExec->ambiguityBegin);
