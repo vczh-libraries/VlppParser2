@@ -39,17 +39,17 @@ TraceManager::IsQualifiedTokenForEdgeArray
 TraceManager::RunEdgeConditionChecking
 ***********************************************************************/
 
-			vint32_t TraceManager::PushSwitchFrame(Switches* currentSV, vuint32_t* values)
+			Ref<Switches> TraceManager::PushSwitchFrame(Switches* currentSV, vuint32_t* values)
 			{
-				auto previous = currentSV->allocatedIndex;
-				vint32_t& checking = currentSV->firstChild;
+				Ref<Switches> previous = currentSV;
+				auto& checking = currentSV->firstChild;
 				while (checking != -1)
 				{
 					currentSV = switches.Get(checking);
 					checking = currentSV->nextSibling;
 					if (memcmp(values, currentSV->values, sizeof(currentSV->values)) == 0)
 					{
-						return currentSV->allocatedIndex;
+						return currentSV;
 					}
 				}
 
@@ -64,7 +64,7 @@ TraceManager::RunEdgeConditionChecking
 TraceManager::RunEdgeConditionChecking
 ***********************************************************************/
 
-			vint32_t TraceManager::RunEdgeConditionChecking(vint32_t currentSwitchValues, EdgeDesc& edgeDesc)
+			Ref<Switches> TraceManager::RunEdgeConditionChecking(Ref<Switches> currentSwitchValues, EdgeDesc& edgeDesc)
 			{
 				if (edgeDesc.insSwitch.count == 0) return currentSwitchValues;
 
@@ -181,7 +181,7 @@ TraceManager::RunEdgeConditionChecking
 							temporaryConditionStackSize--;
 							if (!operand)
 							{
-								return -1;
+								return nullref;
 							}
 						}
 						break;
@@ -190,7 +190,7 @@ TraceManager::RunEdgeConditionChecking
 				ENSURE_FRAME_PUSHED;
 
 				CHECK_ERROR(temporaryConditionStackSize == 0, ERROR_MESSAGE_PREFIX L"Switch stack corrupted.");
-				return currentSV->allocatedIndex;
+				return currentSV;
 
 #undef ERROR_MESSAGE_PREFIX
 #undef ENSURE_NEW_FRAME
@@ -212,12 +212,17 @@ TraceManager::WalkAlongSingleEdge
 			{
 #define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::WalkAlongSingleEdge(vint, vint, vint, Trace*, vint, EdgeDesc&)#"
 				vint32_t state = edgeDesc.toState;
-				vint32_t returnStack = -1;
-				vint32_t attendingCompetitions = -1;
-				vint32_t carriedCompetitions = -1;
-				vint32_t executedReturnStack = -1;
-				vint32_t switchValues = rootSwitchValues == -1 ? -1 : RunEdgeConditionChecking(trace.stateTrace->switchValues, edgeDesc);
+				Ref<ReturnStack> returnStack;
+				Ref<AttendingCompetitions> attendingCompetitions;
+				Ref<AttendingCompetitions> carriedCompetitions;
+				Ref<ReturnStack> executedReturnStack;
+				Ref<Switches> switchValues;
 				Trace* ambiguityTraceToMerge = nullptr;
+
+				if (rootSwitchValues)
+				{
+					switchValues = RunEdgeConditionChecking(trace.stateTrace->switchValues, edgeDesc);
+				}
 
 				if (rootSwitchValues != -1 && switchValues == -1)
 				{
@@ -338,7 +343,7 @@ TraceManager::WalkAlongEpsilonEdges
 					// if there is no more tokens
 					// then we have to go all the way to the end anyway
 					vint32_t currentState = trace.stateTrace->state;
-					vint32_t currentReturnStack = trace.stateTrace->returnStack;
+					auto currentReturnStack = trace.stateTrace->returnStack;
 
 					while (currentState != -1)
 					{
@@ -383,7 +388,7 @@ TraceManager::WalkAlongEpsilonEdges
 					// otherwise we see how many EndingInput transition we need to walk along
 					vint32_t currentCount = 0;
 					vint32_t currentState = trace.stateTrace->state;
-					vint32_t currentReturnStack = trace.stateTrace->returnStack;
+					auto currentReturnStack = trace.stateTrace->returnStack;
 
 					while (currentState != -1)
 					{

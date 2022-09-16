@@ -32,6 +32,7 @@ AllocateOnly<T>
 				vint32_t		handle = -1;
 
 				Ref() = default;
+				Ref(NullRef) :handle(-1) {}
 				Ref(T* obj) :handle(obj->allocatedIndex) {}
 				explicit Ref(vint32_t _handle) :handle(_handle) {}
 
@@ -227,8 +228,8 @@ TraceManager (Data Structures -- Input/EndOfInput)
 
 				vint32_t				state = -1;					// id of the current StateDesc
 				Ref<ReturnStack>		returnStack;				// id of the current ReturnStack
-				Ref< ReturnStack>		executedReturnStack;		// id of the executed ReturnStack that contains the ReturnDesc being executed
-				vint32_t				switchValues = -1;			// the id of switch values, it will be -1 if no switch is defined for this parser
+				Ref<ReturnStack>		executedReturnStack;		// id of the executed ReturnStack that contains the ReturnDesc being executed
+				Ref<Switches>			switchValues;				// the id of switch values, it will be -1 if no switch is defined for this parser
 				vint32_t				byEdge = -1;				// id of the last EdgeDesc that make this trace
 				vint32_t				byInput = -1;				// the last input that make this trace
 				vint32_t				currentTokenIndex = -1;		// the index of the token that is byInput
@@ -458,8 +459,8 @@ TraceManager
 				// Walk
 				bool										IsQualifiedTokenForCondition(regex::RegexToken* token, StringLiteral condition);
 				bool										IsQualifiedTokenForEdgeArray(regex::RegexToken* token, EdgeArray& edgeArray);
-				vint32_t									PushSwitchFrame(Switches* currentSV, vuint32_t* values);
-				vint32_t									RunEdgeConditionChecking(vint32_t currentSwitchValues, EdgeDesc& edgeDesc);
+				Ref<Switches>								PushSwitchFrame(Switches* currentSV, vuint32_t* values);
+				Ref<Switches>								RunEdgeConditionChecking(Ref<Switches> currentSwitchValues, EdgeDesc& edgeDesc);
 				WalkingTrace								WalkAlongSingleEdge(vint32_t currentTokenIndex, vint32_t input, WalkingTrace trace, vint32_t byEdge, EdgeDesc& edgeDesc);
 				void										WalkAlongLeftrecEdges(vint32_t currentTokenIndex, regex::RegexToken* lookAhead, WalkingTrace trace, EdgeArray& edgeArray);
 				void										WalkAlongEpsilonEdges(vint32_t currentTokenIndex, regex::RegexToken* lookAhead, WalkingTrace trace);
