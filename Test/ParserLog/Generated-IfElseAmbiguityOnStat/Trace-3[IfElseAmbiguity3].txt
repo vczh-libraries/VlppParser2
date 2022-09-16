@@ -3,6 +3,7 @@
 |   TraceExec: [0]     |
 |   BranchHead: 0      |
 |   BranchDepth: 0     |
+|   NextACT: 6         |
 | [22][Module] BEGIN   |
 | [AST-INSTRUCTIONS]:  |
 |     CSTop: []        |
@@ -188,6 +189,7 @@
 ||   InsExec: [9:2]                                      ||
 ||   BranchHead: 0                                       ||
 ||   BranchDepth: 0                                      ||
+||   NextACT: 13                                         ||
 ||   AmbiguityBegins: [3]                                ||
 || [16][If]< "if" @ "cond" "then" Stat [ "else" Stat ] > ||
 || [AST-INSTRUCTIONS]:                                   ||
@@ -405,6 +407,7 @@
 ||   InsExec: [15:2]                                                        ||
 ||   BranchHead: 0                                                          ||
 ||   BranchDepth: 0                                                         ||
+||   NextACT: 22                                                            ||
 ||   AmbiguityBegins: [0]                                                   ||
 || [16][If]< "if" @ "cond" "then" Stat [ "else" Stat ] >                    ||
 || [AST-INSTRUCTIONS]:                                                      ||
@@ -732,6 +735,7 @@
 |   InsExec: [22:3]                                                         |
 |   BranchHead: 0                                                           |
 |   BranchDepth: 0                                                          |
+|   NextACT: 44                                                             |
 | [12][If]< "if" "cond" "then" Stat @ [ "else" Stat ] >                     |
 | [AST-INSTRUCTIONS]:                                                       |
 |     CSTop: [8] [15 -> 14]                                                 |
@@ -1323,6 +1327,7 @@
 |                                                                                 |   InsExec: [100:1]                                                      |
 |                                                                                 |   BranchHead: 45                                                        |
 |                                                                                 |   BranchDepth: 1                                                        |
+|                                                                                 |   NextACT: 53                                                           |
 |                                                                                 | [21][Stat]<< !If @ >>                                                   |
 |                                                                                 | [AST-INSTRUCTIONS]:                                                     |
 |                                                                                 |     CSTop: [4] [8 -> 7]                                                 |
@@ -1391,19 +1396,20 @@
 ||   TraceExec: [44]                                                       ||    ||   TraceExec: [82]                                     ||
 ||   BranchHead: 48                                                        ||    ||   BranchHead: 45                                      ||
 ||   BranchDepth: 1                                                        ||    ||   BranchDepth: 1                                      ||
-|| [13][If]< "if" "cond" "then" Stat [ "else" @ Stat ] >                   ||    || [13][If]< "if" "cond" "then" Stat [ "else" @ Stat ] > ||
-|| [AST-INSTRUCTIONS]:                                                     ||    || [AST-INSTRUCTIONS]:                                   ||
-||     CSTop: [4] [8 -> 7]                                                 ||    ||     CSTop: [3] [6 -> 5]                               ||
-||     OSTop: []                                                           ||    ||     OSTop: []                                         ||
-||     LriStored: []                                                       ||    ||     LriStored: []                                     ||
-|| [RETURN STACK]:                                                         ||    || [RETURN STACK]:                                       ||
-||   [7][8]: If -> [21][Stat]<< !If @ >>                                   ||    ||   [5][5]: If -> [21][Stat]<< !If @ >>                 ||
-||   [6][8]: Stat -> [12][If]< "if" "cond" "then" Stat @ [ "else" Stat ] > ||    ||   [4][5]: Stat -> [7][Block]< "{" { Stat @ } "}" >    ||
-||   [5][5]: If -> [21][Stat]<< !If @ >>                                   ||    ||   [1][0]: Block -> [19][Stat]<< !Block @ >>           ||
-||   [4][5]: Stat -> [7][Block]< "{" { Stat @ } "}" >                      ||    ||   [0][0]: Stat -> [24][Module]< Stat @ >              ||
-||   [1][0]: Block -> [19][Stat]<< !Block @ >>                             ||    || [PREDECESSORS 46-46]: [46]                            ||
-||   [0][0]: Stat -> [24][Module]< Stat @ >                                ||    || [SUCCESORS 51-51]: [51]                               ||
-|| [PREDECESSORS 44-44]: [44]                                              ||    ++=======================================================++
+||   NextACT: 52                                                           ||    || [13][If]< "if" "cond" "then" Stat [ "else" @ Stat ] > ||
+|| [13][If]< "if" "cond" "then" Stat [ "else" @ Stat ] >                   ||    || [AST-INSTRUCTIONS]:                                   ||
+|| [AST-INSTRUCTIONS]:                                                     ||    ||     CSTop: [3] [6 -> 5]                               ||
+||     CSTop: [4] [8 -> 7]                                                 ||    ||     OSTop: []                                         ||
+||     OSTop: []                                                           ||    ||     LriStored: []                                     ||
+||     LriStored: []                                                       ||    || [RETURN STACK]:                                       ||
+|| [RETURN STACK]:                                                         ||    ||   [5][5]: If -> [21][Stat]<< !If @ >>                 ||
+||   [7][8]: If -> [21][Stat]<< !If @ >>                                   ||    ||   [4][5]: Stat -> [7][Block]< "{" { Stat @ } "}" >    ||
+||   [6][8]: Stat -> [12][If]< "if" "cond" "then" Stat @ [ "else" Stat ] > ||    ||   [1][0]: Block -> [19][Stat]<< !Block @ >>           ||
+||   [5][5]: If -> [21][Stat]<< !If @ >>                                   ||    ||   [0][0]: Stat -> [24][Module]< Stat @ >              ||
+||   [4][5]: Stat -> [7][Block]< "{" { Stat @ } "}" >                      ||    || [PREDECESSORS 46-46]: [46]                            ||
+||   [1][0]: Block -> [19][Stat]<< !Block @ >>                             ||    || [SUCCESORS 51-51]: [51]                               ||
+||   [0][0]: Stat -> [24][Module]< Stat @ >                                ||    ++=======================================================++
+|| [PREDECESSORS 44-44]: [44]                                              ||    |
 || [SUCCESORS 50-50]: [50]                                                 ||    |
 ++=========================================================================++    |
 [0]                                                                              [1]
@@ -1459,6 +1465,7 @@
 ||   InsExec: [56:2]                                                         ||    ||   InsExec: [106:2]                                                        ||
 ||   BranchHead: 48                                                          ||    ||   BranchHead: 45                                                          ||
 ||   BranchDepth: 1                                                          ||    ||   BranchDepth: 1                                                          ||
+||   NextACT: 68                                                             ||    ||   NextACT: 74                                                             ||
 ||   AmbiguityBegins: [1]                                                    ||    ||   AmbiguityBegins: [2]                                                    ||
 || [16][If]< "if" @ "cond" "then" Stat [ "else" Stat ] >                     ||    || [16][If]< "if" @ "cond" "then" Stat [ "else" Stat ] >                     ||
 || [AST-INSTRUCTIONS]:                                                       ||    || [AST-INSTRUCTIONS]:                                                       ||

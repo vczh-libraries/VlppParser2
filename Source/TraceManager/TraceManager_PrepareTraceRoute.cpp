@@ -1411,7 +1411,6 @@ CheckMergeTraces
 
 			void TraceManager::LinkAmbiguityCriticalTrace(Ref<Trace> traceId)
 			{
-				return;
 				auto trace = GetTrace(traceId);
 				auto forward = trace;
 				while (true)
@@ -1424,7 +1423,8 @@ CheckMergeTraces
 				auto nextAct = &GetTraceExec(forward->traceExecRef)->nextAmbiguityCriticalTrace;
 				while (*nextAct != nullref)
 				{
-					if (*nextAct >= traceId) break;
+					if (*nextAct == traceId) return;
+					if (*nextAct > traceId) break;
 					nextAct = &GetTraceExec(GetTrace(*nextAct)->traceExecRef)->nextAmbiguityCriticalTrace;
 				}
 
