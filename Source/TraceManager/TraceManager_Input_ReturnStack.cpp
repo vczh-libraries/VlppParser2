@@ -11,7 +11,7 @@ namespace vl
 GetCurrentSuccessorInReturnStack
 ***********************************************************************/
 
-			ReturnStackSuccessors* TraceManager::GetCurrentSuccessorInReturnStack(vint32_t base, vint32_t currentTokenIndex)
+			ReturnStackSuccessors* TraceManager::GetCurrentSuccessorInReturnStack(Ref<ReturnStack> base, vint32_t currentTokenIndex)
 			{
 				auto& cache = base == -1 ? initialReturnStackCache : GetReturnStack(base)->cache;
 				if (cache.successors.tokenIndex == currentTokenIndex)
@@ -34,13 +34,13 @@ GetCurrentSuccessorInReturnStack
 PushReturnStack
 ***********************************************************************/
 
-			ReturnStack* TraceManager::PushReturnStack(vint32_t base, vint32_t returnIndex, vint32_t fromTrace, vint32_t currentTokenIndex, bool allowReuse)
+			ReturnStack* TraceManager::PushReturnStack(Ref<ReturnStack> base, vint32_t returnIndex, Ref<Trace> fromTrace, vint32_t currentTokenIndex, bool allowReuse)
 			{
 				auto siblings = allowReuse ? GetCurrentSuccessorInReturnStack(base, currentTokenIndex) : nullptr;
 
 				if (siblings)
 				{
-					vint32_t successorId = siblings->first;
+					auto successorId = siblings->first;
 					while (successorId != -1)
 					{
 						auto successor = GetReturnStack(successorId);
@@ -63,14 +63,14 @@ PushReturnStack
 				{
 					if (siblings->first == -1)
 					{
-						siblings->first = returnStack->allocatedIndex;
-						siblings->last = returnStack->allocatedIndex;
+						siblings->first = returnStack;
+						siblings->last = returnStack;
 					}
 					else
 					{
-						GetReturnStack(siblings->last)->cache.next = returnStack->allocatedIndex;
+						GetReturnStack(siblings->last)->cache.next = returnStack;
 						returnStack->cache.prev = siblings->last;
-						siblings->last = returnStack->allocatedIndex;
+						siblings->last = returnStack;
 					}
 				}
 				return returnStack;

@@ -11,7 +11,15 @@ namespace vl
 AttendCompetition
 ***********************************************************************/
 
-			void TraceManager::AttendCompetition(Trace* trace, vint32_t& newAttendingCompetitions, vint32_t& newCarriedCompetitions, vint32_t returnStack, vint32_t ruleId, vint32_t clauseId, bool forHighPriority)
+			void TraceManager::AttendCompetition(
+				Trace* trace,
+				Ref<AttendingCompetitions>& newAttendingCompetitions,
+				Ref<AttendingCompetitions>& newCarriedCompetitions,
+				Ref<ReturnStack> returnStack,
+				vint32_t ruleId,
+				vint32_t clauseId,
+				bool forHighPriority
+			)
 			{
 				// a competition is defined by its rule, clause and the owner trace
 				// but we don't need to compare the trace
@@ -19,8 +27,8 @@ AttendCompetition
 				// we only create a new Competition object if it has not been created for the trace yet
 				Competition* competition = nullptr;
 				{
-					vint32_t cid = trace->competitionRouting.holdingCompetitions;
-					while (cid != -1)
+					auto cid = trace->competitionRouting.holdingCompetitions;
+					while (cid)
 					{
 						auto cpt = GetCompetition(cid);
 						if (cpt->ruleId == ruleId && cpt->clauseId == clauseId)
@@ -37,14 +45,14 @@ AttendCompetition
 					// create a Competition object
 					competition = AllocateCompetition();
 					competition->nextHoldCompetition = trace->competitionRouting.holdingCompetitions;
-					trace->competitionRouting.holdingCompetitions = competition->allocatedIndex;
+					trace->competitionRouting.holdingCompetitions = competition;
 
 					competition->currentTokenIndex = trace->currentTokenIndex;
 					competition->ruleId = ruleId;
 					competition->clauseId = clauseId;
 
 					competition->nextActiveCompetition = activeCompetitions;
-					activeCompetitions = competition->allocatedIndex;
+					activeCompetitions = competition;
 				}
 
 				// target traces from the current trace could attend different competitions
@@ -55,22 +63,29 @@ AttendCompetition
 				// sharing a linked list doesn't change the result
 
 				auto ac = AllocateAttendingCompetitions();
-				ac->competition = competition->allocatedIndex;
+				ac->competition = competition;
 				ac->forHighPriority = forHighPriority;
 				ac->returnStack = returnStack;
 
 				ac->nextActiveAC = newAttendingCompetitions;
-				newAttendingCompetitions = ac->allocatedIndex;
+				newAttendingCompetitions = ac;
 
 				ac->nextCarriedAC = newCarriedCompetitions;
-				newCarriedCompetitions = ac->allocatedIndex;
+				newCarriedCompetitions = ac;
 			}
 
 /***********************************************************************
 AttendCompetitionIfNecessary
 ***********************************************************************/
 
-			void TraceManager::AttendCompetitionIfNecessary(Trace* trace, vint32_t currentTokenIndex, EdgeDesc& edgeDesc, vint32_t& newAttendingCompetitions, vint32_t& newCarriedCompetitions, vint32_t& newReturnStack)
+			void TraceManager::AttendCompetitionIfNecessary(
+				Trace* trace,
+				vint32_t currentTokenIndex,
+				EdgeDesc& edgeDesc,
+				Ref<AttendingCompetitions>& newAttendingCompetitions,
+				Ref<AttendingCompetitions>& newCarriedCompetitions,
+				Ref<ReturnStack>& newReturnStack
+			)
 			{
 #define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::AttendCompetitionIfNecessary(Trace*, EdgeDesc&, vint32_t&, vint32_t&)#"
 				newAttendingCompetitions = trace->competitionRouting.attendingCompetitions;
@@ -106,10 +121,10 @@ AttendCompetitionIfNecessary
 					// push this ReturnDesc to the ReturnStack
 					newReturnStack = PushReturnStack(
 						newReturnStack, returnIndex,
-						trace->allocatedIndex,
+						trace,
 						currentTokenIndex,
 						(returnDesc.ruleType != ReturnRuleType::Reuse)
-					)->allocatedIndex;
+					);
 					edgeFromState = executable.ruleStartStates[returnDesc.consumedRule];
 				}
 
@@ -136,7 +151,12 @@ AttendCompetitionIfNecessary
 CheckAttendingCompetitionsOnEndingEdge
 ***********************************************************************/
 
-			void TraceManager::CheckAttendingCompetitionsOnEndingEdge(Trace* trace, EdgeDesc& edgeDesc, vint32_t acId, vint32_t returnStack)
+			void TraceManager::CheckAttendingCompetitionsOnEndingEdge(
+				Trace* trace,
+				EdgeDesc& edgeDesc,
+				Ref<AttendingCompetitions> acId,
+				Ref<ReturnStack> returnStack
+			)
 			{
 				while (acId != -1)
 				{
@@ -265,8 +285,8 @@ CheckBackupTracesBeforeSwapping
 
 				// remove all settled competition from the active competitions linked list
 				{
-					vint32_t* pnext = &activeCompetitions;
-					while (*pnext != -1)
+					auto pnext = &activeCompetitions;
+					while (*pnext)
 					{
 						auto cpt = GetCompetition(*pnext);
 						if (cpt->status != CompetitionStatus::Holding || (cpt->highCounter == 0 && cpt->lowCounter == 0))
@@ -284,7 +304,7 @@ CheckBackupTracesBeforeSwapping
 				for (vint i = 0; i < concurrentCount; i++)
 				{
 					auto trace = EnsureTraceWithValidStates(backupTraces->Get(i));
-					vint32_t* pnext = &trace->competitionRouting.attendingCompetitions;
+					auto* pnext = &trace->competitionRouting.attendingCompetitions;
 					while (*pnext != -1)
 					{
 						auto ac = GetAttendingCompetitions(*pnext);

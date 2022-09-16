@@ -32,6 +32,7 @@ AllocateOnly<T>
 				vint32_t		handle = -1;
 
 				Ref() = default;
+				Ref(T* obj) :handle(obj->allocatedIndex) {}
 				explicit Ref(vint32_t _handle) :handle(_handle) {}
 
 				__forceinline operator bool() const { return handle >= 0; }
@@ -193,22 +194,22 @@ TraceManager (Data Structures -- Input/EndOfInput)
 
 			struct TraceCollection
 			{
-				Ref<Trace>				first;						// first trace in the collection
-				Ref<Trace>				last;						// last trace in the collection
-				Ref<Trace>				siblingPrev;				// previous trace in the collection of the owned trace
-				Ref<Trace>				siblingNext;				// next trace in the collection of the owned trace
+				Ref<Trace>					first;						// first trace in the collection
+				Ref<Trace>					last;						// last trace in the collection
+				Ref<Trace>					siblingPrev;				// previous trace in the collection of the owned trace
+				Ref<Trace>					siblingNext;				// next trace in the collection of the owned trace
 			};
 
 			struct CompetitionRouting
 			{
-				vint32_t				holdingCompetitions = -1;	// the id of the active Competition
+				Ref<Competition>			holdingCompetitions;		// the id of the active Competition
 
-				vint32_t				attendingCompetitions = -1;	// a linked list containing all AttendingCompetitions that this trace is attending
-																	// predecessors could share and modify the same linked list
-																	// if a competition is over, node could be removed from the linked list
-																	// one competition only creates two AttendingCompetitions, traces with the same bet share the object
+				Ref<AttendingCompetitions>	attendingCompetitions;		// a linked list containing all AttendingCompetitions that this trace is attending
+																		// predecessors could share and modify the same linked list
+																		// if a competition is over, node could be removed from the linked list
+																		// one competition only creates two AttendingCompetitions, traces with the same bet share the object
 
-				vint32_t				carriedCompetitions = -1;	// all attended competitions regardless of the status of the competition
+				Ref<AttendingCompetitions>	carriedCompetitions;		// all attended competitions regardless of the status of the competition
 			};
 
 			struct Trace : Allocatable<Trace>
@@ -445,14 +446,14 @@ TraceManager
 				void										MergeTwoEndingInputTrace(Trace* newTrace, Trace* candidate);
 
 				// Competition
-				void										AttendCompetition(Trace* trace, vint32_t& newAttendingCompetitions, vint32_t& newCarriedCompetitions, vint32_t returnStack, vint32_t ruleId, vint32_t clauseId, bool forHighPriority);
-				void										AttendCompetitionIfNecessary(Trace* trace, vint32_t currentTokenIndex, EdgeDesc& edgeDesc, vint32_t& newAttendingCompetitions, vint32_t& newCarriedCompetitions, vint32_t& newReturnStack);
-				void										CheckAttendingCompetitionsOnEndingEdge(Trace* trace, EdgeDesc& edgeDesc, vint32_t acId, vint32_t returnStack);
+				void										AttendCompetition(Trace* trace, Ref<AttendingCompetitions>& newAttendingCompetitions, Ref<AttendingCompetitions>& newCarriedCompetitions, Ref<ReturnStack> returnStack, vint32_t ruleId, vint32_t clauseId, bool forHighPriority);
+				void										AttendCompetitionIfNecessary(Trace* trace, vint32_t currentTokenIndex, EdgeDesc& edgeDesc, Ref<AttendingCompetitions>& newAttendingCompetitions, Ref<AttendingCompetitions>& newCarriedCompetitions, Ref<ReturnStack>& newReturnStack);
+				void										CheckAttendingCompetitionsOnEndingEdge(Trace* trace, EdgeDesc& edgeDesc, Ref<AttendingCompetitions> acId, Ref<ReturnStack> returnStack);
 				void										CheckBackupTracesBeforeSwapping(vint32_t currentTokenIndex);
 
 				// ReturnStack
-				ReturnStackSuccessors*						GetCurrentSuccessorInReturnStack(vint32_t base, vint32_t currentTokenIndex);
-				ReturnStack*								PushReturnStack(vint32_t base, vint32_t returnIndex, vint32_t fromTrace, vint32_t currentTokenIndex, bool allowReuse);
+				ReturnStackSuccessors*						GetCurrentSuccessorInReturnStack(Ref<ReturnStack> base, vint32_t currentTokenIndex);
+				ReturnStack*								PushReturnStack(Ref<ReturnStack> base, vint32_t returnIndex, Ref<Trace> fromTrace, vint32_t currentTokenIndex, bool allowReuse);
 
 				// Walk
 				bool										IsQualifiedTokenForCondition(regex::RegexToken* token, StringLiteral condition);
