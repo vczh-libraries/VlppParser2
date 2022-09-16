@@ -27,12 +27,12 @@ Initialize
 				concurrentTraces = &traces1;
 				backupTraces = &traces2;
 
-				activeCompetitions = -1;
+				activeCompetitions = nullref;
 				initialReturnStackCache = {};
 
 				if (executable.switchDefaultValues.Count() == 0)
 				{
-					rootSwitchValues = -1;
+					rootSwitchValues = nullref;
 				}
 				else
 				{
@@ -61,8 +61,8 @@ Initialize
 				insExec_ObjectStacks.Clear();
 				insExec_CreateStacks.Clear();
 
-				firstMergeTrace = -1;
-				lastMergeTrace = -1;
+				firstMergeTrace = nullref;
+				lastMergeTrace = nullref;
 				traceAmbiguities.Clear();
 
 				initialTrace = AllocateTrace();
@@ -151,14 +151,14 @@ FillSuccessorsAfterEndOfInput
 
 						if (newTrace->predecessors.first == -1)
 						{
-							newTrace->predecessors.first = first->allocatedIndex;
-							newTrace->predecessors.last = last->allocatedIndex;
+							newTrace->predecessors.first = first;
+							newTrace->predecessors.last = last;
 						}
 						else
 						{
-							GetTrace(newTrace->predecessors.last)->predecessors.siblingNext = first->allocatedIndex;
+							GetTrace(newTrace->predecessors.last)->predecessors.siblingNext = first;
 							first->predecessors.siblingPrev = newTrace->predecessors.last;
-							newTrace->predecessors.last = last->allocatedIndex;
+							newTrace->predecessors.last = last;
 						}
 					}
 					visiting.Add(newTrace);
@@ -191,7 +191,7 @@ FillSuccessorsAfterEndOfInput
 
 					// fill successors
 					{
-						vint32_t predecessorId = current->predecessors.first;
+						auto predecessorId = current->predecessors.first;
 						while (predecessorId != -1)
 						{
 							auto predecessor = GetTrace(predecessorId);
@@ -204,7 +204,7 @@ FillSuccessorsAfterEndOfInput
 
 					// add predecessors to the list to continue
 					{
-						vint32_t predecessorId = current->predecessors.last;
+						auto predecessorId = current->predecessors.last;
 						while (predecessorId != -1)
 						{
 							auto predecessor = GetTrace(predecessorId);
