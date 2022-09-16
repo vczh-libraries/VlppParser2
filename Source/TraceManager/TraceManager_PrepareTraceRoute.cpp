@@ -139,6 +139,7 @@ AllocateExecutionData
 			{
 #define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::AllocateExecutionData()#"
 				vint32_t insExecCount = 0;
+				auto nextMergeTrace = &firstMergeTrace;
 				IterateSurvivedTraces([&](Trace* trace, Trace* predecessor, vint32_t visitCount, vint32_t predecessorCount)
 				{
 					// ensure traceExecRef reflects the partial order of the execution order of traces
@@ -159,18 +160,12 @@ AllocateExecutionData
 
 					if (trace->predecessors.first != trace->predecessors.last)
 					{
-						if (firstMergeTrace == nullref)
+						if (*nextMergeTrace != nullref)
 						{
-							firstMergeTrace = trace;
-							lastMergeTrace = trace;
+							GetTraceExec(GetTrace(*nextMergeTrace)->traceExecRef)->nextMergeTrace = trace;
 						}
-						else
-						{
-							auto lastTraceExec = GetTraceExec(GetTrace(lastMergeTrace)->traceExecRef);
-							lastTraceExec->nextMergeTrace = trace;
-							traceExec->previousMergeTrace = lastMergeTrace;
-							lastMergeTrace = trace;
-						}
+						*nextMergeTrace = trace;
+						nextMergeTrace = &traceExec->nextMergeTrace;
 					}
 				});
 				insExecs.Resize(insExecCount);
@@ -896,7 +891,7 @@ PrepareTraceRoute
 			}
 
 /***********************************************************************
-CheckMergeTraces
+CheckMergeTrace
 ***********************************************************************/
 
 			template<typename TCallback>
@@ -1410,6 +1405,34 @@ CheckMergeTraces
 				});
 			}
 
+/***********************************************************************
+CheckMergeTraces
+***********************************************************************/
+
+			void TraceManager::LinkAmbiguityCriticalTrace(Ref<Trace> traceId)
+			{
+				return;
+				auto trace = GetTrace(traceId);
+				auto forward = trace;
+				while (true)
+				{
+					bool jumpFromMergeTrace = forward->state == -1;
+					forward = GetTrace(GetTraceExec(forward->traceExecRef)->branchData.forwardTrace);
+					if (!jumpFromMergeTrace) break;
+				}
+
+				auto nextAct = &GetTraceExec(forward->traceExecRef)->nextAmbiguityCriticalTrace;
+				while (*nextAct != nullref)
+				{
+					if (*nextAct >= traceId) break;
+					nextAct = &GetTraceExec(GetTrace(*nextAct)->traceExecRef)->nextAmbiguityCriticalTrace;
+				}
+
+				auto traceExec = GetTraceExec(trace->traceExecRef);
+				traceExec->nextAmbiguityCriticalTrace = *nextAct;
+				*nextAct = traceId;
+			}
+
 			template<vint32_t(TraceAmbiguity::* key)>
 			TraceAmbiguityLink* TraceManager::FindOrCreateTraceAmbiguityLink(Ref<TraceAmbiguityLink>& link, TraceAmbiguity* taToInsert)
 			{
@@ -1432,13 +1455,8 @@ CheckMergeTraces
 					}
 				}
 
-				Ref<TraceAmbiguityLink> next;
-				if (*current != nullref)
-				{
-					next = GetTraceAmbiguityLink(*current)->next;
-				}
 				auto tal = GetTraceAmbiguityLink(traceAmbiguityLinks.Allocate());
-				tal->next = next;
+				tal->next = *current;
 				*current = tal;
 				return tal;
 			}
@@ -1454,42 +1472,51 @@ CheckMergeTraces
 					auto trace = GetTrace(traceId);
 					auto traceExec = GetTraceExec(trace->traceExecRef);
 					traceId = traceExec->nextMergeTrace;
+					LinkAmbiguityCriticalTrace(traceExec->branchData.forwardTrace);
 
 					auto ta = GetTraceAmbiguity(traceAmbiguities.Allocate());
 					bool succeeded = CheckMergeTrace(ta, trace, traceExec, visitingIds);
 					CHECK_ERROR(succeeded, ERROR_MESSAGE_PREFIX L"Failed to find ambiguous objects in a merge trace.");
 
 					// check if a compatible TraceAmbiguity has been created in the same {trace, ins}
-					auto talBegin = FindOrCreateTraceAmbiguityLink<&TraceAmbiguity::prefix>(GetTraceExec(GetTrace(ta->firstTrace)->traceExecRef)->ambiguityBegins, ta);
-					auto talEnd = FindOrCreateTraceAmbiguityLink<&TraceAmbiguity::postfix>(GetTraceExec(GetTrace(ta->lastTrace)->traceExecRef)->ambiguityEnds, ta);
+					auto teFirst = GetTraceExec(GetTrace(ta->firstTrace)->traceExecRef);
+					auto teLast = GetTraceExec(GetTrace(ta->lastTrace)->traceExecRef);
 
-					if (talBegin->ambiguity != nullref)
+					if (teFirst->ambiguityBegins == nullref)
 					{
-						auto ta2 = GetTraceAmbiguity(talBegin->ambiguity);
+						LinkAmbiguityCriticalTrace(ta->firstTrace);
+					}
+
+					auto talFirst = FindOrCreateTraceAmbiguityLink<&TraceAmbiguity::prefix>(teFirst->ambiguityBegins, ta);
+					auto talLast = FindOrCreateTraceAmbiguityLink<&TraceAmbiguity::postfix>(teLast->ambiguityEnds, ta);
+
+					if (talFirst->ambiguity != nullref)
+					{
+						auto ta2 = GetTraceAmbiguity(talFirst->ambiguity);
 						CHECK_ERROR(ta2->lastTrace == ta->lastTrace, ERROR_MESSAGE_PREFIX L"Incompatible TraceAmbiguity has been assigned at the same place.");
 						CHECK_ERROR(ta2->prefix == ta->prefix, ERROR_MESSAGE_PREFIX L"Incompatible TraceAmbiguity has been assigned at the same place.");
 						CHECK_ERROR(ta2->postfix == ta->postfix, ERROR_MESSAGE_PREFIX L"Incompatible TraceAmbiguity has been assigned at the same place.");
 					}
 
-					if (talEnd->ambiguity != nullref)
+					if (talLast->ambiguity != nullref)
 					{
-						auto ta2 = GetTraceAmbiguity(talEnd->ambiguity);
+						auto ta2 = GetTraceAmbiguity(talLast->ambiguity);
 						CHECK_ERROR(ta2->firstTrace == ta->firstTrace, ERROR_MESSAGE_PREFIX L"Incompatible TraceAmbiguity has been assigned at the same place.");
 						CHECK_ERROR(ta2->prefix == ta->prefix, ERROR_MESSAGE_PREFIX L"Incompatible TraceAmbiguity has been assigned at the same place.");
 						CHECK_ERROR(ta2->postfix == ta->postfix, ERROR_MESSAGE_PREFIX L"Incompatible TraceAmbiguity has been assigned at the same place.");
 					}
 
-					CHECK_ERROR(talBegin->ambiguity == talEnd->ambiguity, ERROR_MESSAGE_PREFIX L"Incompatible TraceAmbiguity has been assigned at the same place.");
+					CHECK_ERROR(talFirst->ambiguity == talLast->ambiguity, ERROR_MESSAGE_PREFIX L"Incompatible TraceAmbiguity has been assigned at the same place.");
 
-					if (talBegin->ambiguity != nullref)
+					if (talFirst->ambiguity != nullref)
 					{
-						auto ta2 = GetTraceAmbiguity(talBegin->ambiguity);
+						auto ta2 = GetTraceAmbiguity(talFirst->ambiguity);
 						ta->overridedAmbiguity = ta2;
 					}
 
 					traceExec->ambiguityDetected = ta;
-					talBegin->ambiguity = ta;
-					talEnd->ambiguity = ta;
+					talFirst->ambiguity = ta;
+					talLast->ambiguity = ta;
 				}
 #undef ERROR_MESSAGE_PREFIX
 			}

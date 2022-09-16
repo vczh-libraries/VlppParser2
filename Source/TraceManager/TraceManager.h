@@ -394,8 +394,14 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 				TraceBranchData						branchData;
 
 				// linked list of merge traces
-				Ref<Trace>							previousMergeTrace;
 				Ref<Trace>							nextMergeTrace;
+
+				// linked list of ambiguity critical trace
+				// the linked list begins from a first trace of any branch
+				// record all traces that is
+				//   either the predecessor of branches
+				//   or a trace pointed by TraceAmbiguity::firstTrace
+				Ref<Trace>							nextAmbiguityCriticalTrace;
 
 				// TraceAmbiguity associated to the trace
 				// it could be associated to
@@ -546,7 +552,6 @@ TraceManager
 			protected:
 				// ResolveAmbiguity
 				Ref<Trace>									firstMergeTrace;
-				Ref<Trace>									lastMergeTrace;
 				AllocateOnly<TraceAmbiguity>				traceAmbiguities;
 				AllocateOnly<TraceAmbiguityLink>			traceAmbiguityLinks;
 
@@ -569,6 +574,7 @@ TraceManager
 				template<typename TCallback>
 				bool										CheckAmbiguityResolution(TraceAmbiguity* ta, collections::List<Ref<InsExec_ObjRefLink>>& visitingIds, TCallback&& callback);
 				bool										CheckMergeTrace(TraceAmbiguity* ta, Trace* trace, TraceExec* traceExec, collections::List<Ref<InsExec_ObjRefLink>>& visitingIds);
+				void										LinkAmbiguityCriticalTrace(Ref<Trace> traceId);
 				template<vint32_t (TraceAmbiguity::*key)>
 				TraceAmbiguityLink*							FindOrCreateTraceAmbiguityLink(Ref<TraceAmbiguityLink>& link, TraceAmbiguity* taToInsert);
 				void										CheckMergeTraces();

@@ -359,6 +359,11 @@ void RenderTrace(
 				writer.WriteLine(L"  BranchDepth: " + itow(traceExec->branchData.branchDepth));
 			}
 
+			if (traceExec->nextAmbiguityCriticalTrace != nullref)
+			{
+				writer.WriteLine(L"  NextACT: " + itow(traceExec->nextAmbiguityCriticalTrace.handle));
+			}
+
 			if (traceExec->ambiguityBegins != nullref)
 			{
 				writer.WriteString(L"  AmbiguityBegins: [");

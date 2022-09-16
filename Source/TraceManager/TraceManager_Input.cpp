@@ -62,7 +62,6 @@ Initialize
 				insExec_CreateStacks.Clear();
 
 				firstMergeTrace = nullref;
-				lastMergeTrace = nullref;
 				traceAmbiguities.Clear();
 
 				initialTrace = AllocateTrace();
