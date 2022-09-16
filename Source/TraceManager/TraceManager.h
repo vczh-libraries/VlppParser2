@@ -18,9 +18,40 @@ namespace vl
 AllocateOnly<T>
 ***********************************************************************/
 
+			struct WithMagicCounter
+			{
+				vuint64_t							mergeCounter = 0;		// a temporary counter for internal use
+			};
+
+			struct NullRef {};
+
+			template<typename T>
+			struct Ref
+			{
+				vint32_t		handle = -1;
+
+				Ref() = default;
+				explicit Ref(vint32_t _handle) :handle(_handle) {}
+
+				__forceinline operator bool() const { return handle >= 0; }
+				__forceinline bool operator==(Ref<T> ref) const { return handle == ref.handle; }
+				__forceinline bool operator!=(Ref<T> ref) const { return handle != ref.handle; }
+
+				__forceinline Ref& operator=(const Ref<T>& ref) { handle = ref.handle; return *this; }
+				__forceinline Ref& operator=(T* obj) { handle = obj->allocatedIndex; return *this; }
+				__forceinline Ref& operator=(NullRef) { handle = -1; return *this; }
+			};
+
+			template<typename T>
+			struct Allocatable
+			{
+				vint32_t		allocatedIndex = -1;
+			};
+
 			template<typename T>
 			class AllocateOnly : public Object
 			{
+				static_assert(std::is_base_of_v<Allocatable<T>, T>, "T in AllocateOnly<T> does not inherit from Allocatable<T>.");
 			protected:
 				vint											blockSize;
 				vint											remains;
@@ -33,10 +64,10 @@ AllocateOnly<T>
 				{
 				}
 
-				T* Get(vint32_t index)
+				T* Get(Ref<T> index)
 				{
-					vint row = index / blockSize;
-					vint column = index % blockSize;
+					vint row = index.handle / blockSize;
+					vint column = index.handle % blockSize;
 					CHECK_ERROR(0 <= row && row < buffers.Count(), L"vl::glr::automaton::AllocateOnly<T>::Get(vint)#Index out of range.");
 					if (row == buffers.Count() - 1)
 					{
@@ -49,7 +80,7 @@ AllocateOnly<T>
 					return &buffers[row]->operator[](column);
 				}
 
-				vint32_t Allocate()
+				Ref<T> Allocate()
 				{
 					if (remains == 0)
 					{
@@ -59,7 +90,7 @@ AllocateOnly<T>
 					vint index = blockSize * (buffers.Count() - 1) + (blockSize - remains);
 					buffers[buffers.Count() - 1]->operator[](blockSize - remains).allocatedIndex = (vint32_t)index;
 					remains--;
-					return (vint32_t)index;
+					return { index };
 				}
 
 				void Clear()
@@ -68,6 +99,11 @@ AllocateOnly<T>
 					buffers.Clear();
 				}
 			};
+
+			struct ReturnStack;
+			struct Trace;
+			struct TraceExec;
+			struct InsExec_Object;
 
 /***********************************************************************
 TraceManager (Data Structures)
@@ -79,8 +115,8 @@ TraceManager (Data Structures)
 																	// the following members records all successors
 																	// that is created at the token index
 
-				vint32_t				first = -1;					// first successor
-				vint32_t				last = -1;					// last successor
+				Ref<ReturnStack>		first;						// first successor
+				Ref<ReturnStack>		last;						// last successor
 			};
 
 			struct ReturnStackCache
@@ -88,16 +124,15 @@ TraceManager (Data Structures)
 				ReturnStackSuccessors	lastSuccessors;				// the value of successors before the current one is changed
 				ReturnStackSuccessors	successors;					// successors of ReturnStack for a token
 				vint32_t				tokenIndex = -1;			// index of the token when this ReturnStack is created.
-				vint32_t				prev = -1;					// previous successor of ReturnStack::previous
-				vint32_t				next = -1;					// next successor of ReturnStack::previous
+				Ref<ReturnStack>		prev;						// previous successor of ReturnStack::previous
+				Ref<ReturnStack>		next;						// next successor of ReturnStack::previous
 			};
 
-			struct ReturnStack
+			struct ReturnStack : Allocatable<ReturnStack>
 			{
-				vint32_t				allocatedIndex = -1;		// id of this ReturnStack
-				vint32_t				previous = -1;				// id of the previous ReturnStack
+				Ref<ReturnStack>		previous;					// id of the previous ReturnStack
 				vint32_t				returnIndex = -1;			// index of the ReturnDesc
-				vint32_t				fromTrace = -1;				// id of the Trace which has a transition containing this ReturnStack
+				Ref<Trace>				fromTrace;					// id of the Trace which has a transition containing this ReturnStack
 				ReturnStackCache		cache;
 			};
 
@@ -108,49 +143,46 @@ TraceManager (Data Structures)
 				LowPriorityWin,
 			};
 
-			struct Competition
+			struct Competition : Allocatable<Competition>
 			{
-				vint32_t				allocatedIndex = -1;
-				vint32_t				nextActiveCompetition = -1;				// next active Competition
-				vint32_t				nextHoldCompetition = -1;				// next Competition hold by this trace
+				Ref<Competition>		nextActiveCompetition;					// next active Competition
+				Ref<Competition>		nextHoldCompetition;					// next Competition hold by this trace
 
 				CompetitionStatus		status = CompetitionStatus::Holding;	// if predecessors from this trace have different priority, the competition begins
 																				// when the competition is over, it will be changed to HighPriorityWin or LowPriorityWin
 																				// if all candidates fail, it could be Holding forever
 
-				vint32_t				currentTokenIndex = -1;		// currentTokenIndex from the trace that creates this competition
-				vint32_t				ruleId = -1;				// the rule id of state, when an edge starts this competition
-				vint32_t				clauseId = -1;				// the clause id of the state, when an edge starts this competition
-																	// an state must be picked up and ensure that, the syntax creating the priority and the state belong to the same clause
+				vint32_t				currentTokenIndex = -1;					// currentTokenIndex from the trace that creates this competition
+				vint32_t				ruleId = -1;							// the rule id of state, when an edge starts this competition
+				vint32_t				clauseId = -1;							// the clause id of the state, when an edge starts this competition
+																				// an state must be picked up and ensure that, the syntax creating the priority and the state belong to the same clause
 
-				vint32_t				highCounter = 0;			// temporary counter for all existing high bets
-																	// in the current step of input
-				vint32_t				lowCounter = 0;				// temporary counter for all existing low bets
-																	// in the current step of input
+				vint32_t				highCounter = 0;						// temporary counter for all existing high bets
+																				// in the current step of input
+				vint32_t				lowCounter = 0;							// temporary counter for all existing low bets
+																				// in the current step of input
 			};
 
-			struct AttendingCompetitions
+			struct AttendingCompetitions : Allocatable<AttendingCompetitions>
 			{
-				vint32_t				allocatedIndex = -1;		// id of this AttendingCompetitions
-				vint32_t				nextActiveAC = -1;			// the next AttendingCompetitions for RuntimeRouting::attendingCompetitions
-				vint32_t				nextCarriedAC = -1;			// the next AttendingCompetitions for RuntimeRouting::carriedCompetitions
-				vint32_t				competition = -1;			// the id of the Competition
-				bool					forHighPriority = false;	// bet of this competition
+				Ref<AttendingCompetitions>	nextActiveAC;				// the next AttendingCompetitions for RuntimeRouting::attendingCompetitions
+				Ref<AttendingCompetitions>	nextCarriedAC;				// the next AttendingCompetitions for RuntimeRouting::carriedCompetitions
+				Ref<Competition>			competition;				// the id of the Competition
+				bool						forHighPriority = false;	// bet of this competition
 
-				vint32_t				returnStack = -1;			// the ReturnStack object for the competition
-																	// if the competition is attended by a ReturnDesc
-																	// then the ReturnStack object is the one before a ReturnDesc transition happens
+				Ref<ReturnStack>			returnStack;				// the ReturnStack object for the competition
+																		// if the competition is attended by a ReturnDesc
+																		// then the ReturnStack object is the one before a ReturnDesc transition happens
 
-				bool					closed = false;				// true if the competition has been closed
-																	// this flag is not always updated for discarded AttendingCompetitions objects
+				bool						closed = false;				// true if the competition has been closed
+																		// this flag is not always updated for discarded AttendingCompetitions objects
 			};
 
-			struct Switches
+			struct Switches : Allocatable<Switches>
 			{
-				vint32_t				allocatedIndex = -1;
-				vint32_t				previous = -1;				// id of the previous Switches in the stack
-				vint32_t				firstChild = -1;			// id of the first Swtiches that was ever pushed after the current one
-				vint32_t				nextSibling = -1;			// id of the next Switches in all Switches that were ever pushed after the previous one
+				Ref<Switches>			previous;					// id of the previous Switches in the stack
+				Ref<Switches>			firstChild;					// id of the first Swtiches that was ever pushed after the current one
+				Ref<Switches>			nextSibling;				// id of the next Switches in all Switches that were ever pushed after the previous one
 				vuint32_t				values[2] = { 0 };			// switch values, temporary set to 64 slots
 			};
 
@@ -160,10 +192,10 @@ TraceManager (Data Structures -- Input/EndOfInput)
 
 			struct TraceCollection
 			{
-				vint32_t				first = -1;					// first trace in the collection
-				vint32_t				last = -1;					// last trace in the collection
-				vint32_t				siblingPrev = -1;			// previous trace in the collection of the owned trace
-				vint32_t				siblingNext = -1;			// next trace in the collection of the owned trace
+				Ref<Trace>				first;						// first trace in the collection
+				Ref<Trace>				last;						// last trace in the collection
+				Ref<Trace>				siblingPrev;				// previous trace in the collection of the owned trace
+				Ref<Trace>				siblingNext;				// next trace in the collection of the owned trace
 			};
 
 			struct CompetitionRouting
@@ -178,9 +210,8 @@ TraceManager (Data Structures -- Input/EndOfInput)
 				vint32_t				carriedCompetitions = -1;	// all attended competitions regardless of the status of the competition
 			};
 
-			struct Trace
+			struct Trace : Allocatable<Trace>
 			{
-				vint32_t				allocatedIndex = -1;		// id of this Trace
 				TraceCollection			predecessors;				// ids of predecessor Trace
 
 				// (filled by EndOfInput)
@@ -193,8 +224,8 @@ TraceManager (Data Structures -- Input/EndOfInput)
 				// all merged traces are in predecessors
 
 				vint32_t				state = -1;					// id of the current StateDesc
-				vint32_t				returnStack = -1;			// id of the current ReturnStack
-				vint32_t				executedReturnStack = -1;	// id of the executed ReturnStack that contains the ReturnDesc being executed
+				Ref<ReturnStack>		returnStack;				// id of the current ReturnStack
+				Ref< ReturnStack>		executedReturnStack;		// id of the executed ReturnStack that contains the ReturnDesc being executed
 				vint32_t				switchValues = -1;			// the id of switch values, it will be -1 if no switch is defined for this parser
 				vint32_t				byEdge = -1;				// id of the last EdgeDesc that make this trace
 				vint32_t				byInput = -1;				// the last input that make this trace
@@ -202,7 +233,7 @@ TraceManager (Data Structures -- Input/EndOfInput)
 				CompetitionRouting		competitionRouting;			// a data structure carrying priority and competition information
 
 				// (filled by PrepareTraceRoute)
-				vint32_t				traceExecRef = -1;			// the allocated TraceExec
+				Ref<TraceExec>			traceExecRef;				// the allocated TraceExec
 				vint32_t				iterateCounter = 0;			// a temporary counter for IterateSurvivedTraces internal use
 			};
 
@@ -210,94 +241,103 @@ TraceManager (Data Structures -- Input/EndOfInput)
 TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 ***********************************************************************/
 
-			struct InsExec_InsRefLink
+			struct InsExec_InsRefLink : Allocatable<InsExec_InsRefLink>
 			{
-				vint32_t							allocatedIndex = -1;
-				vint32_t							previous = -1;
-				vint32_t							trace = -1;
+				Ref<InsExec_InsRefLink>				previous;
+				Ref<Trace>							trace;
 				vint32_t							ins = -1;
 			};
 
-			struct InsExec_ObjRefLink
+			struct InsExec_ObjRefLink : Allocatable<InsExec_ObjRefLink>
 			{
-				vint32_t							allocatedIndex = -1;
-				vint32_t							previous = -1;
-				vint32_t							id = -1;
+				Ref<InsExec_ObjRefLink>				previous;
+				Ref<InsExec_Object>					id;
 			};
 
-			struct InsExec_Context
+			struct InsExec_Object : Allocatable<InsExec_Object>, WithMagicCounter
 			{
-				vint32_t							objectStack = -1;		// InsExec_ObjectStack after executing instructions
-				vint32_t							createStack = -1;		// InsExec_CreatedStack after executing instructions
-				vint32_t							lriStoredObjects = -1;	// LriStore stored InsExec_ObjRefLink after executing instructions
-			};
-
-			struct InsExec
-			{
-				// BO/BOLR:
-				//   the created object
-				vint32_t							createdObjectId = -1;
-
-				// InsExec_ObjRefLink
-				// DFA:
-				//   all associated objects
-				// EO:
-				//   all ended objects
-				vint32_t							objRefs = -1;
-
-				// InsExec_InsRefLink
-				// BO/BOLR/DFA:
-				//   EndingObject instructions that close objects or create stack created by the current instruction
-				vint32_t							eoInsRefs = -1;
-
-				// context before executing the current instruction
-				InsExec_Context						contextBeforeExecution;
-
-				vuint64_t							mergeCounter = 0;		// a temporary counter for MergeStack internal use
-			};
-
-			struct InsExec_Object
-			{
-				vint32_t							allocatedIndex = -1;
-
-				// InsExec_ObjRefLink
 				// lrObjectIds are objects it takes while being created by BOLR
-				vint32_t							lrObjectIds = -1;
+				Ref<InsExec_ObjRefLink>				lrObjectIds;
 
 				// instruction that creates this object
 				vint32_t							bo_bolr_Trace = -1;
 				vint32_t							bo_bolr_Ins = -1;
 
-				// InsExec_InsRefLink
 				// DelayFieldAssignment instructions that associates to the current object
-				vint32_t							dfaInsRefs = -1;
-
-				vuint64_t							mergeCounter = 0;		// a temporary counter for MergeStack internal use
+				Ref<InsExec_InsRefLink>				dfaInsRefs;
 			};
 
-			struct InsExec_ObjectStack
+			struct InsExec_ObjectStack : Allocatable<InsExec_ObjectStack>, WithMagicCounter
 			{
-				vint32_t							allocatedIndex = -1;
-				vint32_t							previous = -1;
-				vint32_t							objectIds = -1;			// InsExec_ObjRefLink
+				Ref<InsExec_ObjectStack>			previous;
+				Ref<InsExec_ObjRefLink>				objectIds;
 				vint32_t							pushedCount = -1;		// number for InsExec_CreateStack::stackBase
-
-				vuint64_t							mergeCounter = 0;		// a temporary counter for MergeStack internal use
 			};
 
-			struct InsExec_CreateStack
+			struct InsExec_CreateStack : Allocatable<InsExec_CreateStack>, WithMagicCounter
 			{
-				vint32_t							allocatedIndex = -1;
-				vint32_t							previous = -1;
+				Ref<InsExec_CreateStack>			previous;
 				vint32_t							stackBase = -1;			// the number of objects in the object stack that is frozen
 
 				// All InsExec_InsRefLink that create the current InsExec_CreateStack
-				vint32_t							createInsRefs = -1;
+				Ref<InsExec_InsRefLink>				createInsRefs;
 
 				// InsExec_ObjRefLink assigned by BO/BOLA/RO
-				vint32_t							objectIds = -1;
+				Ref<InsExec_ObjRefLink>				objectIds;
+			};
 
-				vuint64_t							mergeCounter = 0;		// a temporary counter for MergeStack internal use
+			struct InsExec_Context
+			{
+				Ref<InsExec_ObjectStack>			objectStack;			// InsExec_ObjectStack after executing instructions
+				Ref<InsExec_CreateStack>			createStack;			// InsExec_CreateStack after executing instructions
+				Ref<InsExec_ObjRefLink>				lriStoredObjects;		// LriStore stored InsExec_ObjRefLink after executing instructions
+			};
+
+			struct InsExec : WithMagicCounter
+			{
+				// BO/BOLR:
+				//   the created object
+				Ref<InsExec_Object>					createdObjectId;
+
+				// DFA:
+				//   all associated objects
+				// EO:
+				//   all ended objects
+				Ref<InsExec_ObjRefLink>				objRefs;
+
+				// InsExec_InsRefLink
+				// BO/BOLR/DFA:
+				//   EndingObject instructions that close objects or create stack created by the current instruction
+				Ref<InsExec_InsRefLink>				eoInsRefs;
+
+				// context before executing the current instruction
+				InsExec_Context						contextBeforeExecution;
+			};
+
+			struct TraceAmbiguity : Allocatable<TraceAmbiguity>
+			{
+				// all objects to merge
+				Ref<InsExec_ObjRefLink>				bottomObjectIds;
+
+				// if multiple TraceAmbiguity are assigned to the same place
+				// it records the one it overrides
+				Ref<TraceAmbiguity>					overridedAmbiguity;
+
+				// the trace where ambiguity resolution begins
+				// prefix is the number of instructions before BO/DFA
+				// if prefix + 1 is larger than instructions in firstTrace
+				// then BO/DFA is in all successors
+				// these instructions create topObjectIds
+				Ref<Trace>							firstTrace;
+				vint32_t							prefix = -1;
+
+				// the trace when ambiguity resolution ends
+				// postfix is the number of instructions after EO
+				// if lastTrace is a merge trace
+				// then EO is in all predecessors
+				// these instructions end bottomObjectIds
+				Ref<Trace>							lastTrace;
+				vint32_t							postfix = -1;
 			};
 
 			struct TraceInsLists
@@ -314,45 +354,16 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 			{
 				// for ordinary trace, it stores the first trace of the most inner branch that this trace is in
 				// for merge trace, it stores the latest trace that all comming branches share
-				vint32_t							forwardTrace = -1;
+				Ref<Trace>							forwardTrace;
 
 				// the depth of nested branches
 				// it is 0 for initialTrace
 				vint32_t							branchDepth = -1;
 			};
 
-			struct TraceAmbiguity
+			struct TraceExec : Allocatable<TraceExec>
 			{
-				vint32_t							allocatedIndex = -1;
-
-				// InsExec_ObjRefLink containing all objects to merge
-				vint32_t							bottomObjectIds = -1;
-
-				// if multiple TraceAmbiguity are assigned to the same place
-				// it records the one it overrides
-				vint32_t							overridedAmbiguity = -1;
-
-				// the trace where ambiguity resolution begins
-				// prefix is the number of instructions before BO/DFA
-				// if prefix + 1 is larger than instructions in firstTrace
-				// then BO/DFA is in all successors
-				// these instructions create topObjectIds
-				vint32_t							firstTrace = -1;
-				vint32_t							prefix = -1;
-
-				// the trace when ambiguity resolution ends
-				// postfix is the number of instructions after EO
-				// if lastTrace is a merge trace
-				// then EO is in all predecessors
-				// these instructions end bottomObjectIds
-				vint32_t							lastTrace = -1;
-				vint32_t							postfix = -1;
-			};
-
-			struct TraceExec
-			{
-				vint32_t							allocatedIndex = -1;
-				vint32_t							traceId = -1;
+				Ref<Trace>							traceId;
 				TraceInsLists						insLists;				// instruction list of this trace
 				InstructionArray					insExecRefs;			// allocated InsExec for instructions
 
@@ -360,17 +371,17 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 				TraceBranchData						branchData;
 
 				// linked list of merge traces
-				vint32_t							previousMergeTrace = -1;
-				vint32_t							nextMergeTrace = -1;
+				Ref<TraceExec>						previousMergeTrace;
+				Ref<TraceExec>						nextMergeTrace;
 
 				// TraceAmbiguity associated to the trace
 				// it could be associated to
 				//   firstTrace
 				//   lastTrace
 				//   the merge trace that create this TraceAmbiguity
-				vint32_t							ambiguityDetected = -1;
-				vint32_t							ambiguityBegin = -1;
-				vint32_t							ambiguityEnd = -1;
+				Ref<TraceAmbiguity>					ambiguityDetected;
+				Ref<TraceAmbiguity>					ambiguityBegin;
+				Ref<TraceAmbiguity>					ambiguityEnd;
 			};
 
 /***********************************************************************
@@ -415,8 +426,8 @@ TraceManager
 				collections::List<Trace*>					traces2;
 
 				Trace*										initialTrace = nullptr;
-				vint32_t									activeCompetitions = -1;
-				vint32_t									rootSwitchValues = -1;
+				Ref<Competition>							activeCompetitions;
+				Ref<Switches>								rootSwitchValues;
 				ReturnStackCache							initialReturnStackCache;
 
 				collections::List<bool>						temporaryConditionStack;
@@ -511,8 +522,8 @@ TraceManager
 
 			protected:
 				// ResolveAmbiguity
-				vint32_t									firstMergeTrace = -1;
-				vint32_t									lastMergeTrace = -1;
+				Ref<Trace>									firstMergeTrace;
+				Ref<Trace>									lastMergeTrace;
 				AllocateOnly<TraceAmbiguity>				traceAmbiguities;
 
 				// phase: CheckMergeTraces
