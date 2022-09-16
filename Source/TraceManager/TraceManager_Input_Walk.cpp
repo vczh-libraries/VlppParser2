@@ -43,7 +43,7 @@ TraceManager::RunEdgeConditionChecking
 			{
 				Ref<Switches> previous = currentSV;
 				auto& checking = currentSV->firstChild;
-				while (checking != -1)
+				while (checking)
 				{
 					currentSV = switches.Get(checking);
 					checking = currentSV->nextSibling;
@@ -224,7 +224,7 @@ TraceManager::WalkAlongSingleEdge
 					switchValues = RunEdgeConditionChecking(trace.stateTrace->switchValues, edgeDesc);
 				}
 
-				if (rootSwitchValues != -1 && switchValues == -1)
+				if (rootSwitchValues && !switchValues)
 				{
 					// stop if condition checking failed
 					return { nullptr,nullptr };
@@ -238,7 +238,7 @@ TraceManager::WalkAlongSingleEdge
 					// an EndingInput transition consume return record in the return stack
 					// such return will be popped from the return stack and stored in Trace::executedReturnStack
 					CHECK_ERROR(edgeDesc.returnIndices.count == 0, ERROR_MESSAGE_PREFIX L"Ending input edge is not allowed to push something into the return stack.");
-					if (returnStack != -1)
+					if (returnStack)
 					{
 						executedReturnStack = returnStack;
 						auto rs = GetReturnStack(returnStack);
@@ -369,7 +369,7 @@ TraceManager::WalkAlongEpsilonEdges
 								return;
 							}
 						}
-						else if (currentReturnStack == -1)
+						else if (!currentReturnStack)
 						{
 							vint32_t byEdge = edgeArray.start;
 							auto& edgeDesc = executable.edges[byEdge];

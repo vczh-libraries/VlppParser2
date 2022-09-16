@@ -149,7 +149,7 @@ FillSuccessorsAfterEndOfInput
 							last = GetTrace(trace->predecessors.last);
 						}
 
-						if (newTrace->predecessors.first == -1)
+						if (!newTrace->predecessors.first)
 						{
 							newTrace->predecessors.first = first;
 							newTrace->predecessors.last = last;
@@ -192,7 +192,7 @@ FillSuccessorsAfterEndOfInput
 					// fill successors
 					{
 						auto predecessorId = current->predecessors.first;
-						while (predecessorId != -1)
+						while (predecessorId)
 						{
 							auto predecessor = GetTrace(predecessorId);
 							predecessorId = predecessor->predecessors.siblingNext;
@@ -205,7 +205,7 @@ FillSuccessorsAfterEndOfInput
 					// add predecessors to the list to continue
 					{
 						auto predecessorId = current->predecessors.last;
-						while (predecessorId != -1)
+						while (predecessorId)
 						{
 							auto predecessor = GetTrace(predecessorId);
 							predecessorId = predecessor->predecessors.siblingPrev;

@@ -36,13 +36,17 @@ AllocateOnly<T>
 				Ref(T* obj) :handle(obj->allocatedIndex) {}
 				explicit Ref(vint32_t _handle) :handle(_handle) {}
 
-				__forceinline operator bool() const { return handle >= 0; }
-				__forceinline bool operator==(Ref<T> ref) const { return handle == ref.handle; }
-				__forceinline bool operator!=(Ref<T> ref) const { return handle != ref.handle; }
+				__forceinline operator bool() const { return handle != -1; }
+				__forceinline bool operator==(const Ref<T>& ref) const { return handle == ref.handle; }
+				__forceinline bool operator!=(const Ref<T>& ref) const { return handle != ref.handle; }
 
 				__forceinline Ref& operator=(const Ref<T>& ref) { handle = ref.handle; return *this; }
 				__forceinline Ref& operator=(T* obj) { handle = obj->allocatedIndex; return *this; }
 				__forceinline Ref& operator=(NullRef) { handle = -1; return *this; }
+
+				bool operator==(vint32_t) = delete;
+				bool operator!=(vint32_t) = delete;
+				Ref& operator=(vint32_t) = delete;
 			};
 
 			template<typename T>
@@ -374,8 +378,8 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 				TraceBranchData						branchData;
 
 				// linked list of merge traces
-				Ref<TraceExec>						previousMergeTrace;
-				Ref<TraceExec>						nextMergeTrace;
+				Ref<Trace>							previousMergeTrace;
+				Ref<Trace>							nextMergeTrace;
 
 				// TraceAmbiguity associated to the trace
 				// it could be associated to
@@ -493,12 +497,12 @@ TraceManager
 				InsExec_Object*								NewObject();
 				vint32_t									GetStackBase(InsExec_Context& context);
 				vint32_t									GetStackTop(InsExec_Context& context);
-				void										PushInsRefLink(vint32_t& link, vint32_t trace, vint32_t ins);
-				void										PushObjRefLink(vint32_t& link, vint32_t id);
-				vint32_t									JoinInsRefLink(vint32_t first, vint32_t second);
-				vint32_t									JoinObjRefLink(vint32_t first, vint32_t second);
-				InsExec_ObjectStack*						PushObjectStackSingle(InsExec_Context& context, vint32_t objectId);
-				InsExec_ObjectStack*						PushObjectStackMultiple(InsExec_Context& context, vint32_t linkId);
+				void										PushInsRefLink(Ref<InsExec_InsRefLink>& link, Ref<Trace> trace, vint32_t ins);
+				void										PushObjRefLink(Ref<InsExec_ObjRefLink>& link, Ref<InsExec_Object> id);
+				Ref<InsExec_InsRefLink>						JoinInsRefLink(Ref<InsExec_InsRefLink> first, Ref<InsExec_InsRefLink> second);
+				Ref<InsExec_ObjRefLink>						JoinObjRefLink(Ref<InsExec_ObjRefLink> first, Ref<InsExec_ObjRefLink> second);
+				InsExec_ObjectStack*						PushObjectStackSingle(InsExec_Context& context, Ref<InsExec_Object> objectId);
+				InsExec_ObjectStack*						PushObjectStackMultiple(InsExec_Context& context, Ref<InsExec_ObjRefLink> linkId);
 				InsExec_CreateStack*						PushCreateStack(InsExec_Context& context);
 				void										PartialExecuteOrdinaryTrace(Trace* trace);
 
@@ -506,10 +510,10 @@ TraceManager
 				void										EnsureInsExecContextCompatible(Trace* baselineTrace, Trace* commingTrace);
 
 				// phase: PartialExecuteTraces - MergeInsExecContext
-				void										PushInsRefLinkWithCounter(vint32_t& link, vint32_t comming);
-				void										PushObjRefLinkWithCounter(vint32_t& link, vint32_t comming);
-				template<typename T, T* (TraceManager::*get)(vint32_t), vint32_t (InsExec_Context::*stack), typename TMerge>
-				vint32_t									MergeStack(Trace* mergeTrace, AllocateOnly<T>& allocator, TMerge&& merge);
+				void										PushInsRefLinkWithCounter(Ref<InsExec_InsRefLink>& link, Ref<InsExec_InsRefLink> comming);
+				void										PushObjRefLinkWithCounter(Ref<InsExec_ObjRefLink>& link, Ref<InsExec_ObjRefLink> comming);
+				template<typename T, T* (TraceManager::*get)(Ref<T>), Ref<T> (InsExec_Context::*stack), typename TMerge>
+				Ref<T>										MergeStack(Trace* mergeTrace, AllocateOnly<T>& allocator, TMerge&& merge);
 				void										MergeInsExecContext(Trace* mergeTrace);
 
 				// phase: PartialExecuteTraces
@@ -531,23 +535,23 @@ TraceManager
 
 				// phase: CheckMergeTraces
 				template<typename TCallback>
-				bool										SearchForObjects(vint32_t objRefLinkStartSet, bool withCounter, TCallback&& callback);
+				bool										SearchForObjects(Ref<InsExec_ObjRefLink> objRefLinkStartSet, bool withCounter, TCallback&& callback);
 				template<typename TCallback>
-				bool										SearchForAllLevelObjectsWithCounter(InsExec_Object* startObject, collections::List<vint32_t>& visitingIds, TCallback&& callback);
+				bool										SearchForAllLevelObjectsWithCounter(InsExec_Object* startObject, collections::List<Ref<InsExec_ObjRefLink>>& visitingIds, TCallback&& callback);
 #if defined VCZH_MSVC && defined _DEBUG
-				void										EnsureSameForwardTrace(vint32_t currentTraceId, vint32_t forwardTraceId);
+				void										EnsureSameForwardTrace(Ref<Trace> currentTraceId, Ref<Trace> forwardTraceId);
 #endif
 				template<typename TCallback>
 				bool										SearchForTopCreateInstructions(InsExec_Object* ieObject, TCallback&& callback);
 				template<typename TCallback>
-				bool										SearchForTopCreateInstructionsInAllLevelsWithCounter(InsExec_Object* startObject, collections::List<vint32_t>& visitingIds, TCallback&& callback);
+				bool										SearchForTopCreateInstructionsInAllLevelsWithCounter(InsExec_Object* startObject, collections::List<Ref<InsExec_ObjRefLink>>& visitingIds, TCallback&& callback);
 				template<typename TCallback>
 				bool										SearchForEndObjectInstructions(Trace* createTrace, vint32_t createIns, TCallback&& callback);
 				bool										ComparePrefix(TraceExec* baselineTraceExec, TraceExec* commingTraceExec, vint32_t prefix);
 				bool										ComparePostfix(TraceExec* baselineTraceExec, TraceExec* commingTraceExec, vint32_t postfix);
 				template<typename TCallback>
-				bool										CheckAmbiguityResolution(TraceAmbiguity* ta, collections::List<vint32_t>& visitingIds, TCallback&& callback);
-				bool										CheckMergeTrace(TraceAmbiguity* ta, Trace* trace, TraceExec* traceExec, collections::List<vint32_t>& visitingIds);
+				bool										CheckAmbiguityResolution(TraceAmbiguity* ta, collections::List<Ref<InsExec_ObjRefLink>>& visitingIds, TCallback&& callback);
+				bool										CheckMergeTrace(TraceAmbiguity* ta, Trace* trace, TraceExec* traceExec, collections::List<Ref<InsExec_ObjRefLink>>& visitingIds);
 				void										CheckMergeTraces();
 			public:
 				TraceManager(Executable& _executable, const ITypeCallback* _typeCallback, vint blockSize);
