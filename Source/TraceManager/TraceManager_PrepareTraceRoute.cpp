@@ -50,8 +50,8 @@ IterateSurvivedTraces
 					lastTrace = current;
 					if (current->iterateCounter < current->predecessorCount) continue;
 
-					vint32_t successorId = current->successors.last;
-					while (successorId != -1)
+					auto successorId = current->successors.last;
+					while (successorId)
 					{
 						auto successor = GetTrace(successorId);
 						successorId = successor->successors.siblingPrev;
@@ -327,7 +327,7 @@ PartialExecuteOrdinaryTrace
 						{
 							// new object
 							auto ieObject = NewObject();
-							ieObject->bo_bolr_Trace = trace->allocatedIndex;
+							ieObject->bo_bolr_Trace = trace;
 							ieObject->bo_bolr_Ins = insRef;
 
 							// new create stack
@@ -350,7 +350,7 @@ PartialExecuteOrdinaryTrace
 							// new object
 							auto ieObject = NewObject();
 							ieObject->lrObjectIds = ieOSTop->objectIds;
-							ieObject->bo_bolr_Trace = trace->allocatedIndex;
+							ieObject->bo_bolr_Trace = trace;
 							ieObject->bo_bolr_Ins = insRef;
 
 							// new create stack, the top object is not frozen
@@ -603,20 +603,20 @@ MergeInsExecContext
 				// fill the first level of stacks objects
 				{
 					vint index = 0;
-					vint32_t predecessorId = mergeTrace->predecessors.first;
-					while (predecessorId != -1)
+					auto predecessorId = mergeTrace->predecessors.first;
+					while (predecessorId)
 					{
 						auto predecessor = GetTrace(predecessorId);
 						auto traceExec = GetTraceExec(predecessor->traceExecRef);
 
-						vint32_t stackId = traceExec->context.*stack;
-						stacks[index++] = stackId == -1 ? nullptr : (this->*get)(stackId);
+						auto stackId = traceExec->context.*stack;
+						stacks[index++] = !stackId ? nullptr : (this->*get)(stackId);
 						predecessorId = predecessor->predecessors.siblingNext;
 					}
 				}
 
-				vint32_t stackTop = -1;
-				vint32_t* pStackPrevious = &stackTop;
+				Ref<T> stackTop;
+				Ref<T>* pStackPrevious = &stackTop;
 				while (stacks[0])
 				{
 					// check if all stack objects are the same
@@ -633,13 +633,13 @@ MergeInsExecContext
 					if (sameStackObject)
 					{
 						// if yes, reuse this stack object
-						*pStackPrevious = stacks[0]->allocatedIndex;
+						*pStackPrevious = stacks[0];
 						break;
 					}
 
 					// otherwise, create a new stack object to merge all
 					auto newStack = (this->*get)(allocator.Allocate());
-					*pStackPrevious = newStack->allocatedIndex;
+					*pStackPrevious = newStack;
 					pStackPrevious = &(newStack->previous);
 
 					// call this macro to create a one-time set for InsExec*
@@ -658,8 +658,8 @@ MergeInsExecContext
 					// move to next level of stack objects
 					for (vint index = 0; index < stacks.Count(); index++)
 					{
-						vint32_t stackId = stacks[index]->previous;
-						stacks[index] = stackId == -1 ? nullptr : (this->*get)(stackId);
+						auto stackId = stacks[index]->previous;
+						stacks[index] = !stackId ? nullptr : (this->*get)(stackId);
 					}
 				}
 				return stackTop;
@@ -975,8 +975,8 @@ CheckMergeTraces
 				for (vint linkIdIndex = 0; linkIdIndex < availableIds; linkIdIndex++)
 				{
 					// for any new object link, check every object in it
-					vint32_t linkId = visitingIds[linkIdIndex];
-					while (linkId != -1)
+					auto linkId = visitingIds[linkIdIndex];
+					while (linkId)
 					{
 						auto objRefLink = GetInsExec_ObjRefLink(linkId);
 						linkId = objRefLink->previous;
@@ -1017,7 +1017,7 @@ CheckMergeTraces
 #define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::SearchForTopCreateInstructions(InsExec_Object*, TCallback&&)#"
 				// find the first instruction in all create instructions
 				// its trace should be a common ancestor of all traces of all create instructions
-				vint32_t trace = ieObject->bo_bolr_Trace;
+				auto trace = ieObject->bo_bolr_Trace;
 				vint32_t ins = ieObject->bo_bolr_Ins;
 
 				auto insRefLinkId = ieObject->dfaInsRefs;
@@ -1034,10 +1034,10 @@ CheckMergeTraces
 
 #ifdef VCZH_DO_DEBUG_CHECK
 				// ensure they actually have the same ancestor trace
-				vint32_t forwardTraceId = GetTraceExec(GetTrace(trace)->traceExecRef)->branchData.forwardTrace;
+				auto forwardTraceId = GetTraceExec(GetTrace(trace)->traceExecRef)->branchData.forwardTrace;
 				EnsureSameForwardTrace(ieObject->bo_bolr_Trace, forwardTraceId);
 				insRefLinkId = ieObject->dfaInsRefs;
-				while (insRefLinkId != -1)
+				while (insRefLinkId)
 				{
 					auto insRefLink = GetInsExec_InsRefLink(insRefLinkId);
 					EnsureSameForwardTrace(GetInsExec_InsRefLink(insRefLinkId)->trace, forwardTraceId);
@@ -1054,14 +1054,14 @@ CheckMergeTraces
 			{
 #define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::SearchForTopCreateInstructionsInAllLevelsWithCounter(InsExec_Object*, List<vint32_t>&, TCallback&&)#"
 #ifdef VCZH_DO_DEBUG_CHECK
-				vint32_t insForEachObject = -1;
+				Ref<InsExec_InsRefLink> insForEachObject;
 #endif
-				vint32_t trace = -1;
+				Ref<Trace> trace;
 				vint32_t ins = -1;
 
 				bool succeeded = SearchForAllLevelObjectsWithCounter(startObject, visitingIds, [&](InsExec_Object* ieObject)
 				{
-					return SearchForTopCreateInstructions(ieObject, [&](vint32_t createTraceId, vint32_t createIns)
+					return SearchForTopCreateInstructions(ieObject, [&](Ref<Trace> createTraceId, vint32_t createIns)
 					{
 #ifdef VCZH_DO_DEBUG_CHECK
 						PushInsRefLink(insForEachObject, createTraceId, createIns);
@@ -1078,8 +1078,8 @@ CheckMergeTraces
 				if (!succeeded) return false;
 #ifdef VCZH_DO_DEBUG_CHECK
 				// ensure they actually have the same ancestor trace
-				vint32_t forwardTraceId = GetTraceExec(GetTrace(trace)->traceExecRef)->branchData.forwardTrace;
-				vint32_t insRefLinkId = insForEachObject;
+				auto forwardTraceId = GetTraceExec(GetTrace(trace)->traceExecRef)->branchData.forwardTrace;
+				auto insRefLinkId = insForEachObject;
 				while (insRefLinkId != -1)
 				{
 					auto insRefLink = GetInsExec_InsRefLink(insRefLinkId);
@@ -1101,8 +1101,8 @@ CheckMergeTraces
 				// each EndObject should be in different branches
 				auto traceExec = GetTraceExec(createTrace->traceExecRef);
 				auto insExec = GetInsExec(traceExec->insExecRefs.start + createIns);
-				vint32_t insRefLinkId = insExec->eoInsRefs;
-				while (insRefLinkId != -1)
+				auto insRefLinkId = insExec->eoInsRefs;
+				while (insRefLinkId)
 				{
 					auto insRefLink = GetInsExec_InsRefLink(insRefLinkId);
 					insRefLinkId = insRefLink->previous;
@@ -1167,13 +1167,13 @@ CheckMergeTraces
 				bool succeeded = false;
 
 				// iterate all top objects
-				succeeded = callback([&](vint32_t objRefLink)
+				succeeded = callback([&](Ref<InsExec_ObjRefLink> objRefLink)
 				{
 					return SearchForObjects(objRefLink, false, [&](InsExec_Object* ieObject)
 					{
 						// check if BO/DFA satisfies the condition
 						NEW_MERGE_STACK_MAGIC_COUNTER;
-						return SearchForTopCreateInstructionsInAllLevelsWithCounter(ieObject, visitingIds, [&](vint32_t createTraceId, vint32_t createIns)
+						return SearchForTopCreateInstructionsInAllLevelsWithCounter(ieObject, visitingIds, [&](Ref<Trace> createTraceId, vint32_t createIns)
 						{
 							auto createTrace = GetTrace(createTraceId);
 #ifdef VCZH_DO_DEBUG_CHECK
@@ -1188,7 +1188,7 @@ CheckMergeTraces
 							{
 								first = createTrace;
 								firstTraceExec = GetTraceExec(first->traceExecRef);
-								ta->firstTrace = createTrace->allocatedIndex;
+								ta->firstTrace = createTrace;
 								ta->prefix = createIns;
 							}
 							else if (first == createTrace)
@@ -1214,14 +1214,14 @@ CheckMergeTraces
 
 				// iterate all bottom objects
 				NEW_MERGE_STACK_MAGIC_COUNTER;
-				succeeded = callback([&](vint32_t objRefLink)
+				succeeded = callback([&](Ref<InsExec_ObjRefLink> objRefLink)
 				{
 					return SearchForObjects(objRefLink, true, [&](InsExec_Object* ieObject)
 					{
-						PushObjRefLink(ta->bottomObjectIds, ieObject->allocatedIndex);
+						PushObjRefLink(ta->bottomObjectIds, ieObject);
 
 						// check if BO/DFA satisfies the condition
-						return SearchForTopCreateInstructions(ieObject, [&](vint32_t createTraceId, vint32_t createIns)
+						return SearchForTopCreateInstructions(ieObject, [&](Ref<Trace> createTraceId, vint32_t createIns)
 						{
 							auto createTrace = GetTrace(createTraceId);
 #ifdef VCZH_DO_DEBUG_CHECK
@@ -1247,7 +1247,7 @@ CheckMergeTraces
 								{
 									last = eoTrace;
 									lastTraceExec = GetTraceExec(last->traceExecRef);
-									ta->lastTrace = eoTrace->allocatedIndex;
+									ta->lastTrace = eoTrace;
 									ta->postfix = lastTraceExec->insLists.c3 - eoIns - 1;
 								}
 								else if (last == eoTrace)
@@ -1283,7 +1283,7 @@ CheckMergeTraces
 				{
 					auto first = GetTrace(GetTrace(ta->firstTrace)->predecessors.first);
 					auto traceExec = GetTraceExec(first->traceExecRef);
-					ta->firstTrace = first->allocatedIndex;
+					ta->firstTrace = first;
 					ta->prefix += traceExec->insLists.c3;
 				}
 
@@ -1294,7 +1294,7 @@ CheckMergeTraces
 					// so ta->postfix doesn't need to change
 					auto last = GetTrace(GetTrace(ta->lastTrace)->successors.first);
 					auto traceExec = GetTraceExec(last->traceExecRef);
-					ta->lastTrace = last->allocatedIndex;
+					ta->lastTrace = last;
 				}
 
 				return true;
@@ -1384,8 +1384,8 @@ CheckMergeTraces
 						// otherwise find all objRefs of EndObject
 						auto succeeded = CheckAmbiguityResolution(ta, visitingIds, [=, &visitingIds](auto&& callback)
 						{
-							vint32_t predecessorId = trace->predecessors.first;
-							while (predecessorId != -1)
+							auto predecessorId = trace->predecessors.first;
+							while (predecessorId)
 							{
 								auto predecessor = GetTrace(predecessorId);
 								predecessorId = predecessor->predecessors.siblingNext;

@@ -34,19 +34,20 @@ AllocateOnly<T>
 				Ref() = default;
 				Ref(NullRef) :handle(-1) {}
 				Ref(T* obj) :handle(obj->allocatedIndex) {}
+				Ref(const Ref<T>& ref) :handle(ref.handle) {}
 				explicit Ref(vint32_t _handle) :handle(_handle) {}
 
 				__forceinline operator bool() const { return handle != -1; }
 				__forceinline bool operator==(const Ref<T>& ref) const { return handle == ref.handle; }
 				__forceinline bool operator!=(const Ref<T>& ref) const { return handle != ref.handle; }
+				__forceinline bool operator> (const Ref<T>& ref) const { return handle >  ref.handle; }
+				__forceinline bool operator>=(const Ref<T>& ref) const { return handle >= ref.handle; }
+				__forceinline bool operator< (const Ref<T>& ref) const { return handle <  ref.handle; }
+				__forceinline bool operator<=(const Ref<T>& ref) const { return handle <= ref.handle; }
 
 				__forceinline Ref& operator=(const Ref<T>& ref) { handle = ref.handle; return *this; }
 				__forceinline Ref& operator=(T* obj) { handle = obj->allocatedIndex; return *this; }
 				__forceinline Ref& operator=(NullRef) { handle = -1; return *this; }
-
-				bool operator==(vint32_t) = delete;
-				bool operator!=(vint32_t) = delete;
-				Ref& operator=(vint32_t) = delete;
 			};
 
 			template<typename T>
@@ -267,7 +268,7 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 				Ref<InsExec_ObjRefLink>				lrObjectIds;
 
 				// instruction that creates this object
-				vint32_t							bo_bolr_Trace = -1;
+				Ref<Trace>							bo_bolr_Trace;
 				vint32_t							bo_bolr_Ins = -1;
 
 				// DelayFieldAssignment instructions that associates to the current object
