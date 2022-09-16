@@ -1,0 +1,469 @@
+﻿+--------------------------+
+| [0]: <Start>             |
+| [480][_Statement] BEGIN  |
+| [AST-INSTRUCTIONS]:      |
+| [SUCCESORS 2-2]: [2]     |
++--------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++====================================================================++
+|| [2]: {KEYWORD_VAR} var                                             ||
+|| [604][_Variable]< "var" @ NAME [ ":" _Type ] "=" _Expression ";" > ||
+|| [AST-INSTRUCTIONS]:                                                ||
+||   - BeginObject(VariableStatement)                                 ||
+||   - BeginObject(VariableDeclaration)                               ||
+|| [RETURN STACK]:                                                    ||
+||   [1][0]: _Variable -> [514][_Statement]< _Variable @ >            ||
+|| [PREDECESSORS 0-0]: [0]                                            ||
+|| [SUCCESORS 4-4]: [4]                                               ||
+++====================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++====================================================================++
+|| [4]: {NAME} a                                                      ||
+|| [605][_Variable]< "var" NAME @ [ ":" _Type ] "=" _Expression ";" > ||
+|| [AST-INSTRUCTIONS]:                                                ||
+||   + Token()                                                        ||
+||   + Field(Declaration::name)                                       ||
+|| [RETURN STACK]:                                                    ||
+||   [1][0]: _Variable -> [514][_Statement]< _Variable @ >            ||
+|| [PREDECESSORS 2-2]: [2]                                            ||
+|| [SUCCESORS 5-5]: [5]                                               ||
+++====================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++====================================================================++
+|| [5]: {COLON} :                                                     ||
+|| [606][_Variable]< "var" NAME [ ":" @ _Type ] "=" _Expression ";" > ||
+|| [AST-INSTRUCTIONS]:                                                ||
+|| [RETURN STACK]:                                                    ||
+||   [1][0]: _Variable -> [514][_Statement]< _Variable @ >            ||
+|| [PREDECESSORS 4-4]: [4]                                            ||
+|| [SUCCESORS 6-6]: [6]                                               ||
+++====================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++=======================================================================================++
+|| [6]: {TYPE_INT} int                                                                   ||
+|| [20][_Type]< "int" @ >                                                                ||
+|| [AST-INSTRUCTIONS]:                                                                   ||
+||   - BeginObject(PredefinedType)                                                       ||
+|| [RETURN STACK]:                                                                       ||
+||   [2][5]: _Type -> [607][_Variable]< "var" NAME [ ":" _Type @ ] "=" _Expression ";" > ||
+||   [1][0]: _Variable -> [514][_Statement]< _Variable @ >                               ||
+|| [PREDECESSORS 5-5]: [5]                                                               ||
+|| [SUCCESORS 7-7]: [7]                                                                  ||
+++=======================================================================================++
+|
++
+|
++--------------------------------------------------------------------+
+| [7]: <Ending>                                                      |
+| [607][_Variable]< "var" NAME [ ":" _Type @ ] "=" _Expression ";" > |
+| [AST-INSTRUCTIONS]:                                                |
+|   - EnumItem(3)                                                    |
+|   - Field(PredefinedType::name)                                    |
+|   - EndObject()                                                    |
+|   > Field(VariableDeclaration::type)                               |
+| [RETURN STACK]:                                                    |
+|   [1][0]: _Variable -> [514][_Statement]< _Variable @ >            |
+| [PREDECESSORS 6-6]: [6]                                            |
+| [SUCCESORS 8-8]: [8]                                               |
++--------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++====================================================================++
+|| [8]: {ASSIGN} =                                                    ||
+|| [608][_Variable]< "var" NAME [ ":" _Type ] "=" @ _Expression ";" > ||
+|| [AST-INSTRUCTIONS]:                                                ||
+|| [RETURN STACK]:                                                    ||
+||   [1][0]: _Variable -> [514][_Statement]< _Variable @ >            ||
+|| [PREDECESSORS 7-7]: [7]                                            ||
+|| [SUCCESORS 9-9]: [9]                                               ||
+++====================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++=============================================================================================++
+|| [9]: {INTEGER} 100                                                                          ||
+|| [158][_ExpPrimitive]< INTEGER @ >                                                           ||
+|| [AST-INSTRUCTIONS]:                                                                         ||
+||   - DelayFieldAssignment()                                                                  ||
+||   - DelayFieldAssignment()                                                                  ||
+||   - DelayFieldAssignment()                                                                  ||
+||   - DelayFieldAssignment()                                                                  ||
+||   - DelayFieldAssignment()                                                                  ||
+||   - DelayFieldAssignment()                                                                  ||
+||   - DelayFieldAssignment()                                                                  ||
+||   - DelayFieldAssignment()                                                                  ||
+||   - DelayFieldAssignment()                                                                  ||
+||   - DelayFieldAssignment()                                                                  ||
+||   - DelayFieldAssignment()                                                                  ||
+||   - BeginObject(IntegerExpression)                                                          ||
+||   + Token()                                                                                 ||
+||   + Field(IntegerExpression::value)                                                         ||
+|| [RETURN STACK]:                                                                             ||
+||   [16][8]: _ExpPrimitive -> [245][_Exp0]<< !_ExpPrimitive @ >>                              ||
+||   [15][8]: _Exp0 -> [251][_Exp1]<< !_Exp0 @ >>                                              ||
+||   [14][8]: _Exp1 -> [263][_Exp2]<< !_Exp1 @ >>                                              ||
+||   [13][8]: _Exp2 -> [278][_Exp3]<< !_Exp2 @ >>                                              ||
+||   [12][8]: _Exp3 -> [287][_Exp4]<< !_Exp3 @ >>                                              ||
+||   [11][8]: _Exp4 -> [308][_Exp5]<< !_Exp4 @ >>                                              ||
+||   [10][8]: _Exp5 -> [314][_Exp6]<< !_Exp5 @ >>                                              ||
+||   [9][8]: _Exp6 -> [320][_Exp7]<< !_Exp6 @ >>                                               ||
+||   [8][8]: _Exp7 -> [326][_Exp8]<< !_Exp7 @ >>                                               ||
+||   [7][8]: _Exp8 -> [332][_Exp9]<< !_Exp8 @ >>                                               ||
+||   [6][8]: _Exp9 -> [340][_Exp10]<< !_Exp9 @ >>                                              ||
+||   [5][8]: _Exp10 -> [346][_Exp11]<< !_Exp10 @ >>                                            ||
+||   [4][8]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                       ||
+||   [3][8]: _Expression -> [610][_Variable]< "var" NAME [ ":" _Type ] "=" _Expression @ ";" > ||
+||   [1][0]: _Variable -> [514][_Statement]< _Variable @ >                                     ||
+|| [PREDECESSORS 8-8]: [8]                                                                     ||
+|| [SUCCESORS 10-10]: [10]                                                                     ||
+++=============================================================================================++
+|
++
+|
++---------------------------------------------------------------------------------------------+
+| [10]: <Ending>                                                                              |
+| [245][_Exp0]<< !_ExpPrimitive @ >>                                                          |
+| [AST-INSTRUCTIONS]:                                                                         |
+|   - EndObject()                                                                             |
+| [RETURN STACK]:                                                                             |
+|   [15][8]: _Exp0 -> [251][_Exp1]<< !_Exp0 @ >>                                              |
+|   [14][8]: _Exp1 -> [263][_Exp2]<< !_Exp1 @ >>                                              |
+|   [13][8]: _Exp2 -> [278][_Exp3]<< !_Exp2 @ >>                                              |
+|   [12][8]: _Exp3 -> [287][_Exp4]<< !_Exp3 @ >>                                              |
+|   [11][8]: _Exp4 -> [308][_Exp5]<< !_Exp4 @ >>                                              |
+|   [10][8]: _Exp5 -> [314][_Exp6]<< !_Exp5 @ >>                                              |
+|   [9][8]: _Exp6 -> [320][_Exp7]<< !_Exp6 @ >>                                               |
+|   [8][8]: _Exp7 -> [326][_Exp8]<< !_Exp7 @ >>                                               |
+|   [7][8]: _Exp8 -> [332][_Exp9]<< !_Exp8 @ >>                                               |
+|   [6][8]: _Exp9 -> [340][_Exp10]<< !_Exp9 @ >>                                              |
+|   [5][8]: _Exp10 -> [346][_Exp11]<< !_Exp10 @ >>                                            |
+|   [4][8]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                       |
+|   [3][8]: _Expression -> [610][_Variable]< "var" NAME [ ":" _Type ] "=" _Expression @ ";" > |
+|   [1][0]: _Variable -> [514][_Statement]< _Variable @ >                                     |
+| [PREDECESSORS 9-9]: [9]                                                                     |
+| [SUCCESORS 11-11]: [11]                                                                     |
++---------------------------------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------------------------------------------+
+| [11]: <Ending>                                                                              |
+| [251][_Exp1]<< !_Exp0 @ >>                                                                  |
+| [AST-INSTRUCTIONS]:                                                                         |
+|   - ReopenObject()                                                                          |
+|   - EndObject()                                                                             |
+|   > ReopenObject()                                                                          |
+| [RETURN STACK]:                                                                             |
+|   [14][8]: _Exp1 -> [263][_Exp2]<< !_Exp1 @ >>                                              |
+|   [13][8]: _Exp2 -> [278][_Exp3]<< !_Exp2 @ >>                                              |
+|   [12][8]: _Exp3 -> [287][_Exp4]<< !_Exp3 @ >>                                              |
+|   [11][8]: _Exp4 -> [308][_Exp5]<< !_Exp4 @ >>                                              |
+|   [10][8]: _Exp5 -> [314][_Exp6]<< !_Exp5 @ >>                                              |
+|   [9][8]: _Exp6 -> [320][_Exp7]<< !_Exp6 @ >>                                               |
+|   [8][8]: _Exp7 -> [326][_Exp8]<< !_Exp7 @ >>                                               |
+|   [7][8]: _Exp8 -> [332][_Exp9]<< !_Exp8 @ >>                                               |
+|   [6][8]: _Exp9 -> [340][_Exp10]<< !_Exp9 @ >>                                              |
+|   [5][8]: _Exp10 -> [346][_Exp11]<< !_Exp10 @ >>                                            |
+|   [4][8]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                       |
+|   [3][8]: _Expression -> [610][_Variable]< "var" NAME [ ":" _Type ] "=" _Expression @ ";" > |
+|   [1][0]: _Variable -> [514][_Statement]< _Variable @ >                                     |
+| [PREDECESSORS 10-10]: [10]                                                                  |
+| [SUCCESORS 12-12]: [12]                                                                     |
++---------------------------------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------------------------------------------+
+| [12]: <Ending>                                                                              |
+| [263][_Exp2]<< !_Exp1 @ >>                                                                  |
+| [AST-INSTRUCTIONS]:                                                                         |
+|   - EndObject()                                                                             |
+|   > ReopenObject()                                                                          |
+| [RETURN STACK]:                                                                             |
+|   [13][8]: _Exp2 -> [278][_Exp3]<< !_Exp2 @ >>                                              |
+|   [12][8]: _Exp3 -> [287][_Exp4]<< !_Exp3 @ >>                                              |
+|   [11][8]: _Exp4 -> [308][_Exp5]<< !_Exp4 @ >>                                              |
+|   [10][8]: _Exp5 -> [314][_Exp6]<< !_Exp5 @ >>                                              |
+|   [9][8]: _Exp6 -> [320][_Exp7]<< !_Exp6 @ >>                                               |
+|   [8][8]: _Exp7 -> [326][_Exp8]<< !_Exp7 @ >>                                               |
+|   [7][8]: _Exp8 -> [332][_Exp9]<< !_Exp8 @ >>                                               |
+|   [6][8]: _Exp9 -> [340][_Exp10]<< !_Exp9 @ >>                                              |
+|   [5][8]: _Exp10 -> [346][_Exp11]<< !_Exp10 @ >>                                            |
+|   [4][8]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                       |
+|   [3][8]: _Expression -> [610][_Variable]< "var" NAME [ ":" _Type ] "=" _Expression @ ";" > |
+|   [1][0]: _Variable -> [514][_Statement]< _Variable @ >                                     |
+| [PREDECESSORS 11-11]: [11]                                                                  |
+| [SUCCESORS 13-13]: [13]                                                                     |
++---------------------------------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------------------------------------------+
+| [13]: <Ending>                                                                              |
+| [278][_Exp3]<< !_Exp2 @ >>                                                                  |
+| [AST-INSTRUCTIONS]:                                                                         |
+|   - EndObject()                                                                             |
+|   > ReopenObject()                                                                          |
+| [RETURN STACK]:                                                                             |
+|   [12][8]: _Exp3 -> [287][_Exp4]<< !_Exp3 @ >>                                              |
+|   [11][8]: _Exp4 -> [308][_Exp5]<< !_Exp4 @ >>                                              |
+|   [10][8]: _Exp5 -> [314][_Exp6]<< !_Exp5 @ >>                                              |
+|   [9][8]: _Exp6 -> [320][_Exp7]<< !_Exp6 @ >>                                               |
+|   [8][8]: _Exp7 -> [326][_Exp8]<< !_Exp7 @ >>                                               |
+|   [7][8]: _Exp8 -> [332][_Exp9]<< !_Exp8 @ >>                                               |
+|   [6][8]: _Exp9 -> [340][_Exp10]<< !_Exp9 @ >>                                              |
+|   [5][8]: _Exp10 -> [346][_Exp11]<< !_Exp10 @ >>                                            |
+|   [4][8]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                       |
+|   [3][8]: _Expression -> [610][_Variable]< "var" NAME [ ":" _Type ] "=" _Expression @ ";" > |
+|   [1][0]: _Variable -> [514][_Statement]< _Variable @ >                                     |
+| [PREDECESSORS 12-12]: [12]                                                                  |
+| [SUCCESORS 14-14]: [14]                                                                     |
++---------------------------------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------------------------------------------+
+| [14]: <Ending>                                                                              |
+| [287][_Exp4]<< !_Exp3 @ >>                                                                  |
+| [AST-INSTRUCTIONS]:                                                                         |
+|   - EndObject()                                                                             |
+|   > ReopenObject()                                                                          |
+| [RETURN STACK]:                                                                             |
+|   [11][8]: _Exp4 -> [308][_Exp5]<< !_Exp4 @ >>                                              |
+|   [10][8]: _Exp5 -> [314][_Exp6]<< !_Exp5 @ >>                                              |
+|   [9][8]: _Exp6 -> [320][_Exp7]<< !_Exp6 @ >>                                               |
+|   [8][8]: _Exp7 -> [326][_Exp8]<< !_Exp7 @ >>                                               |
+|   [7][8]: _Exp8 -> [332][_Exp9]<< !_Exp8 @ >>                                               |
+|   [6][8]: _Exp9 -> [340][_Exp10]<< !_Exp9 @ >>                                              |
+|   [5][8]: _Exp10 -> [346][_Exp11]<< !_Exp10 @ >>                                            |
+|   [4][8]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                       |
+|   [3][8]: _Expression -> [610][_Variable]< "var" NAME [ ":" _Type ] "=" _Expression @ ";" > |
+|   [1][0]: _Variable -> [514][_Statement]< _Variable @ >                                     |
+| [PREDECESSORS 13-13]: [13]                                                                  |
+| [SUCCESORS 15-15]: [15]                                                                     |
++---------------------------------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------------------------------------------+
+| [15]: <Ending>                                                                              |
+| [308][_Exp5]<< !_Exp4 @ >>                                                                  |
+| [AST-INSTRUCTIONS]:                                                                         |
+|   - EndObject()                                                                             |
+|   > ReopenObject()                                                                          |
+| [RETURN STACK]:                                                                             |
+|   [10][8]: _Exp5 -> [314][_Exp6]<< !_Exp5 @ >>                                              |
+|   [9][8]: _Exp6 -> [320][_Exp7]<< !_Exp6 @ >>                                               |
+|   [8][8]: _Exp7 -> [326][_Exp8]<< !_Exp7 @ >>                                               |
+|   [7][8]: _Exp8 -> [332][_Exp9]<< !_Exp8 @ >>                                               |
+|   [6][8]: _Exp9 -> [340][_Exp10]<< !_Exp9 @ >>                                              |
+|   [5][8]: _Exp10 -> [346][_Exp11]<< !_Exp10 @ >>                                            |
+|   [4][8]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                       |
+|   [3][8]: _Expression -> [610][_Variable]< "var" NAME [ ":" _Type ] "=" _Expression @ ";" > |
+|   [1][0]: _Variable -> [514][_Statement]< _Variable @ >                                     |
+| [PREDECESSORS 14-14]: [14]                                                                  |
+| [SUCCESORS 16-16]: [16]                                                                     |
++---------------------------------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------------------------------------------+
+| [16]: <Ending>                                                                              |
+| [314][_Exp6]<< !_Exp5 @ >>                                                                  |
+| [AST-INSTRUCTIONS]:                                                                         |
+|   - EndObject()                                                                             |
+|   > ReopenObject()                                                                          |
+| [RETURN STACK]:                                                                             |
+|   [9][8]: _Exp6 -> [320][_Exp7]<< !_Exp6 @ >>                                               |
+|   [8][8]: _Exp7 -> [326][_Exp8]<< !_Exp7 @ >>                                               |
+|   [7][8]: _Exp8 -> [332][_Exp9]<< !_Exp8 @ >>                                               |
+|   [6][8]: _Exp9 -> [340][_Exp10]<< !_Exp9 @ >>                                              |
+|   [5][8]: _Exp10 -> [346][_Exp11]<< !_Exp10 @ >>                                            |
+|   [4][8]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                       |
+|   [3][8]: _Expression -> [610][_Variable]< "var" NAME [ ":" _Type ] "=" _Expression @ ";" > |
+|   [1][0]: _Variable -> [514][_Statement]< _Variable @ >                                     |
+| [PREDECESSORS 15-15]: [15]                                                                  |
+| [SUCCESORS 17-17]: [17]                                                                     |
++---------------------------------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------------------------------------------+
+| [17]: <Ending>                                                                              |
+| [320][_Exp7]<< !_Exp6 @ >>                                                                  |
+| [AST-INSTRUCTIONS]:                                                                         |
+|   - EndObject()                                                                             |
+|   > ReopenObject()                                                                          |
+| [RETURN STACK]:                                                                             |
+|   [8][8]: _Exp7 -> [326][_Exp8]<< !_Exp7 @ >>                                               |
+|   [7][8]: _Exp8 -> [332][_Exp9]<< !_Exp8 @ >>                                               |
+|   [6][8]: _Exp9 -> [340][_Exp10]<< !_Exp9 @ >>                                              |
+|   [5][8]: _Exp10 -> [346][_Exp11]<< !_Exp10 @ >>                                            |
+|   [4][8]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                       |
+|   [3][8]: _Expression -> [610][_Variable]< "var" NAME [ ":" _Type ] "=" _Expression @ ";" > |
+|   [1][0]: _Variable -> [514][_Statement]< _Variable @ >                                     |
+| [PREDECESSORS 16-16]: [16]                                                                  |
+| [SUCCESORS 18-18]: [18]                                                                     |
++---------------------------------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------------------------------------------+
+| [18]: <Ending>                                                                              |
+| [326][_Exp8]<< !_Exp7 @ >>                                                                  |
+| [AST-INSTRUCTIONS]:                                                                         |
+|   - EndObject()                                                                             |
+|   > ReopenObject()                                                                          |
+| [RETURN STACK]:                                                                             |
+|   [7][8]: _Exp8 -> [332][_Exp9]<< !_Exp8 @ >>                                               |
+|   [6][8]: _Exp9 -> [340][_Exp10]<< !_Exp9 @ >>                                              |
+|   [5][8]: _Exp10 -> [346][_Exp11]<< !_Exp10 @ >>                                            |
+|   [4][8]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                       |
+|   [3][8]: _Expression -> [610][_Variable]< "var" NAME [ ":" _Type ] "=" _Expression @ ";" > |
+|   [1][0]: _Variable -> [514][_Statement]< _Variable @ >                                     |
+| [PREDECESSORS 17-17]: [17]                                                                  |
+| [SUCCESORS 19-19]: [19]                                                                     |
++---------------------------------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------------------------------------------+
+| [19]: <Ending>                                                                              |
+| [332][_Exp9]<< !_Exp8 @ >>                                                                  |
+| [AST-INSTRUCTIONS]:                                                                         |
+|   - EndObject()                                                                             |
+|   > ReopenObject()                                                                          |
+| [RETURN STACK]:                                                                             |
+|   [6][8]: _Exp9 -> [340][_Exp10]<< !_Exp9 @ >>                                              |
+|   [5][8]: _Exp10 -> [346][_Exp11]<< !_Exp10 @ >>                                            |
+|   [4][8]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                       |
+|   [3][8]: _Expression -> [610][_Variable]< "var" NAME [ ":" _Type ] "=" _Expression @ ";" > |
+|   [1][0]: _Variable -> [514][_Statement]< _Variable @ >                                     |
+| [PREDECESSORS 18-18]: [18]                                                                  |
+| [SUCCESORS 20-20]: [20]                                                                     |
++---------------------------------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------------------------------------------+
+| [20]: <Ending>                                                                              |
+| [340][_Exp10]<< !_Exp9 @ >>                                                                 |
+| [AST-INSTRUCTIONS]:                                                                         |
+|   - EndObject()                                                                             |
+| [RETURN STACK]:                                                                             |
+|   [5][8]: _Exp10 -> [346][_Exp11]<< !_Exp10 @ >>                                            |
+|   [4][8]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                       |
+|   [3][8]: _Expression -> [610][_Variable]< "var" NAME [ ":" _Type ] "=" _Expression @ ";" > |
+|   [1][0]: _Variable -> [514][_Statement]< _Variable @ >                                     |
+| [PREDECESSORS 19-19]: [19]                                                                  |
+| [SUCCESORS 21-21]: [21]                                                                     |
++---------------------------------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------------------------------------------+
+| [21]: <Ending>                                                                              |
+| [346][_Exp11]<< !_Exp10 @ >>                                                                |
+| [AST-INSTRUCTIONS]:                                                                         |
+|   - LriStore()                                                                              |
+|   - DelayFieldAssignment()                                                                  |
+|   - LriFetch()                                                                              |
+|   - ReopenObject()                                                                          |
+|   - EndObject()                                                                             |
+| [RETURN STACK]:                                                                             |
+|   [4][8]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                       |
+|   [3][8]: _Expression -> [610][_Variable]< "var" NAME [ ":" _Type ] "=" _Expression @ ";" > |
+|   [1][0]: _Variable -> [514][_Statement]< _Variable @ >                                     |
+| [PREDECESSORS 20-20]: [20]                                                                  |
+| [SUCCESORS 22-22]: [22]                                                                     |
++---------------------------------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------------------------------------------+
+| [22]: <Ending>                                                                              |
+| [349][_Expression]<< !_Exp11 @ >>                                                           |
+| [AST-INSTRUCTIONS]:                                                                         |
+|   - LriStore()                                                                              |
+|   - DelayFieldAssignment()                                                                  |
+|   - LriFetch()                                                                              |
+|   - ReopenObject()                                                                          |
+|   - EndObject()                                                                             |
+| [RETURN STACK]:                                                                             |
+|   [3][8]: _Expression -> [610][_Variable]< "var" NAME [ ":" _Type ] "=" _Expression @ ";" > |
+|   [1][0]: _Variable -> [514][_Statement]< _Variable @ >                                     |
+| [PREDECESSORS 21-21]: [21]                                                                  |
+| [SUCCESORS 23-23]: [23]                                                                     |
++---------------------------------------------------------------------------------------------+
+|
++
+|
++--------------------------------------------------------------------+
+| [23]: <Ending>                                                     |
+| [610][_Variable]< "var" NAME [ ":" _Type ] "=" _Expression @ ";" > |
+| [AST-INSTRUCTIONS]:                                                |
+|   - ReopenObject()                                                 |
+|   - EndObject()                                                    |
+|   > Field(VariableDeclaration::expression)                         |
+| [RETURN STACK]:                                                    |
+|   [1][0]: _Variable -> [514][_Statement]< _Variable @ >            |
+| [PREDECESSORS 22-22]: [22]                                         |
+| [SUCCESORS 24-24]: [24]                                            |
++--------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++====================================================================++
+|| [24]: {SEMICOLON} ;                                                ||
+|| [609][_Variable]< "var" NAME [ ":" _Type ] "=" _Expression ";" @ > ||
+|| [AST-INSTRUCTIONS]:                                                ||
+|| [RETURN STACK]:                                                    ||
+||   [1][0]: _Variable -> [514][_Statement]< _Variable @ >            ||
+|| [PREDECESSORS 23-23]: [23]                                         ||
+|| [SUCCESORS 25-25]: [25]                                            ||
+++====================================================================++
+|
++
+|
++----------------------------------+
+| [25]: <Ending>                   |
+| [514][_Statement]< _Variable @ > |
+| [AST-INSTRUCTIONS]:              |
+|   - EndObject()                  |
+| [PREDECESSORS 24-24]: [24]       |
+| [SUCCESORS 26-26]: [26]          |
++----------------------------------+
+|
++
+|
++----------------------------------------+
+| [26]: <Ending>                         |
+| [481][_Statement] END [ENDING]         |
+| [AST-INSTRUCTIONS]:                    |
+|   - Field(VariableStatement::variable) |
+|   - EndObject()                        |
+| [PREDECESSORS 25-25]: [25]             |
++----------------------------------------+
