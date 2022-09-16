@@ -1,0 +1,157 @@
+﻿+----------------------+
+| [0]: <Start>         |
+| [22][Module] BEGIN   |
+| [AST-INSTRUCTIONS]:  |
+| [SUCCESORS 1-1]: [1] |
++----------------------+
+[0]
+ |
+ +
+ |
+[0]
+++=======================================================++
+|| [1]: {IF} if                                          ||
+|| [16][If]< "if" @ "cond" "then" Stat [ "else" Stat ] > ||
+|| [AST-INSTRUCTIONS]:                                   ||
+||   - BeginObject(Module)                               ||
+||   - DelayFieldAssignment()                            ||
+||   - BeginObject(IfStat)                               ||
+|| [RETURN STACK]:                                       ||
+||   [1][0]: If -> [21][Stat]<< !If @ >>                 ||
+||   [0][0]: Stat -> [24][Module]< Stat @ >              ||
+|| [PREDECESSORS 0-0]: [0]                               ||
+|| [SUCCESORS 2-2]: [2]                                  ||
+++=======================================================++
+[0]
+ |
+ +
+ |
+[0]
+++=======================================================++
+|| [2]: {CONDITION} cond                                 ||
+|| [15][If]< "if" "cond" @ "then" Stat [ "else" Stat ] > ||
+|| [AST-INSTRUCTIONS]:                                   ||
+|| [RETURN STACK]:                                       ||
+||   [1][0]: If -> [21][Stat]<< !If @ >>                 ||
+||   [0][0]: Stat -> [24][Module]< Stat @ >              ||
+|| [PREDECESSORS 1-1]: [1]                               ||
+|| [SUCCESORS 3-3]: [3]                                  ||
+++=======================================================++
+[0]
+ |
+ +
+ |
+[0]
+++=======================================================++
+|| [3]: {THEN} then                                      ||
+|| [11][If]< "if" "cond" "then" @ Stat [ "else" Stat ] > ||
+|| [AST-INSTRUCTIONS]:                                   ||
+|| [RETURN STACK]:                                       ||
+||   [1][0]: If -> [21][Stat]<< !If @ >>                 ||
+||   [0][0]: Stat -> [24][Module]< Stat @ >              ||
+|| [PREDECESSORS 2-2]: [2]                               ||
+|| [SUCCESORS 4-4]: [4]                                  ||
+++=======================================================++
+[0]
+ |
+ +
+ |
+[0]
+++=========================================================================++
+|| [4]: {DO} do                                                            ||
+|| [3][Do]< "do" @ ";" >                                                   ||
+|| [AST-INSTRUCTIONS]:                                                     ||
+||   - DelayFieldAssignment()                                              ||
+||   - BeginObject(DoStat)                                                 ||
+|| [RETURN STACK]:                                                         ||
+||   [3][3]: Do -> [20][Stat]<< !Do @ >>                                   ||
+||   [2][3]: Stat -> [12][If]< "if" "cond" "then" Stat @ [ "else" Stat ] > ||
+||   [1][0]: If -> [21][Stat]<< !If @ >>                                   ||
+||   [0][0]: Stat -> [24][Module]< Stat @ >                                ||
+|| [PREDECESSORS 3-3]: [3]                                                 ||
+|| [SUCCESORS 5-5]: [5]                                                    ||
+++=========================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++=========================================================================++
+|| [5]: {SEMICOLON} ;                                                      ||
+|| [2][Do]< "do" ";" @ >                                                   ||
+|| [AST-INSTRUCTIONS]:                                                     ||
+|| [RETURN STACK]:                                                         ||
+||   [3][3]: Do -> [20][Stat]<< !Do @ >>                                   ||
+||   [2][3]: Stat -> [12][If]< "if" "cond" "then" Stat @ [ "else" Stat ] > ||
+||   [1][0]: If -> [21][Stat]<< !If @ >>                                   ||
+||   [0][0]: Stat -> [24][Module]< Stat @ >                                ||
+|| [PREDECESSORS 4-4]: [4]                                                 ||
+|| [SUCCESORS 6-6]: [6]                                                    ||
+++=========================================================================++
+|
++
+|
++-------------------------------------------------------------------------+
+| [6]: <Ending>                                                           |
+| [20][Stat]<< !Do @ >>                                                   |
+| [AST-INSTRUCTIONS]:                                                     |
+|   - EndObject()                                                         |
+| [RETURN STACK]:                                                         |
+|   [2][3]: Stat -> [12][If]< "if" "cond" "then" Stat @ [ "else" Stat ] > |
+|   [1][0]: If -> [21][Stat]<< !If @ >>                                   |
+|   [0][0]: Stat -> [24][Module]< Stat @ >                                |
+| [PREDECESSORS 5-5]: [5]                                                 |
+| [SUCCESORS 7-7]: [7]                                                    |
++-------------------------------------------------------------------------+
+|
++
+|
++-------------------------------------------------------+
+| [7]: <Ending>                                         |
+| [12][If]< "if" "cond" "then" Stat @ [ "else" Stat ] > |
+| [AST-INSTRUCTIONS]:                                   |
+|   - ReopenObject()                                    |
+|   - EndObject()                                       |
+|   > Field(IfStat::thenBranch)                         |
+| [RETURN STACK]:                                       |
+|   [1][0]: If -> [21][Stat]<< !If @ >>                 |
+|   [0][0]: Stat -> [24][Module]< Stat @ >              |
+| [PREDECESSORS 6-6]: [6]                               |
+| [SUCCESORS 8-8]: [8]                                  |
++-------------------------------------------------------+
+|
++
+|
++------------------------------------------+
+| [8]: <Ending>                            |
+| [21][Stat]<< !If @ >>                    |
+| [AST-INSTRUCTIONS]:                      |
+|   - EndObject()                          |
+| [RETURN STACK]:                          |
+|   [0][0]: Stat -> [24][Module]< Stat @ > |
+| [PREDECESSORS 7-7]: [7]                  |
+| [SUCCESORS 9-9]: [9]                     |
++------------------------------------------+
+|
++
+|
++-------------------------+
+| [9]: <Ending>           |
+| [24][Module]< Stat @ >  |
+| [AST-INSTRUCTIONS]:     |
+|   - ReopenObject()      |
+|   - EndObject()         |
+| [PREDECESSORS 8-8]: [8] |
+| [SUCCESORS 10-10]: [10] |
++-------------------------+
+|
++
+|
++---------------------------+
+| [10]: <Ending>            |
+| [23][Module] END [ENDING] |
+| [AST-INSTRUCTIONS]:       |
+|   - Field(Module::stat)   |
+|   - EndObject()           |
+| [PREDECESSORS 9-9]: [9]   |
++---------------------------+

@@ -1,0 +1,2072 @@
+﻿+------------------------+
+| [0]: <Start>           |
+| [32][Module] BEGIN     |
+| [AST-INSTRUCTIONS]:    |
+| [SWITCHES]:            |
+|   allow_half_if : true |
+| [SUCCESORS 1-1]: [1]   |
++------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++=====================================================++
+|| [1]: {OPEN_BRACE} {                                 ||
+|| [6][Block]< "{" @ { Stat } "}" >                    ||
+|| [AST-INSTRUCTIONS]:                                 ||
+||   - BeginObject(Module)                             ||
+||   - DelayFieldAssignment()                          ||
+||   - DelayFieldAssignment()                          ||
+||   - BeginObject(BlockStat)                          ||
+|| [RETURN STACK]:                                     ||
+||   [2][0]: Block -> [26][OtherStat]<< !Block @ >>    ||
+||   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >> ||
+||   [0][0]: Stat -> [34][Module]< Stat @ >            ||
+|| [SWITCHES]:                                         ||
+||   allow_half_if : true                              ||
+|| [PREDECESSORS 0-0]: [0]                             ||
+|| [SUCCESORS 2-2]: [2]                                ||
+++=====================================================++
+[0]
+ |
+ +
+ |
+[0]
+++=====================================================++
+|| [2]: {DO} do                                        ||
+|| [3][Do]< "do" @ ";" >                               ||
+|| [AST-INSTRUCTIONS]:                                 ||
+||   - DelayFieldAssignment()                          ||
+||   - DelayFieldAssignment()                          ||
+||   - BeginObject(DoStat)                             ||
+|| [RETURN STACK]:                                     ||
+||   [5][1]: Do -> [27][OtherStat]<< !Do @ >>          ||
+||   [4][1]: OtherStat -> [31][Stat]<< !OtherStat @ >> ||
+||   [3][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >  ||
+||   [2][0]: Block -> [26][OtherStat]<< !Block @ >>    ||
+||   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >> ||
+||   [0][0]: Stat -> [34][Module]< Stat @ >            ||
+|| [SWITCHES]:                                         ||
+||   allow_half_if : true                              ||
+|| [PREDECESSORS 1-1]: [1]                             ||
+|| [SUCCESORS 3-3]: [3]                                ||
+++=====================================================++
+[0]
+ |
+ +
+ |
+[0]
+++=====================================================++
+|| [3]: {SEMICOLON} ;                                  ||
+|| [2][Do]< "do" ";" @ >                               ||
+|| [AST-INSTRUCTIONS]:                                 ||
+|| [RETURN STACK]:                                     ||
+||   [5][1]: Do -> [27][OtherStat]<< !Do @ >>          ||
+||   [4][1]: OtherStat -> [31][Stat]<< !OtherStat @ >> ||
+||   [3][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >  ||
+||   [2][0]: Block -> [26][OtherStat]<< !Block @ >>    ||
+||   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >> ||
+||   [0][0]: Stat -> [34][Module]< Stat @ >            ||
+|| [SWITCHES]:                                         ||
+||   allow_half_if : true                              ||
+|| [PREDECESSORS 2-2]: [2]                             ||
+|| [SUCCESORS 4-4]: [4]                                ||
+++=====================================================++
+|
++
+|
++-----------------------------------------------------+
+| [4]: <Ending>                                       |
+| [27][OtherStat]<< !Do @ >>                          |
+| [AST-INSTRUCTIONS]:                                 |
+|   - EndObject()                                     |
+| [RETURN STACK]:                                     |
+|   [4][1]: OtherStat -> [31][Stat]<< !OtherStat @ >> |
+|   [3][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >  |
+|   [2][0]: Block -> [26][OtherStat]<< !Block @ >>    |
+|   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >> |
+|   [0][0]: Stat -> [34][Module]< Stat @ >            |
+| [SWITCHES]:                                         |
+|   allow_half_if : true                              |
+| [PREDECESSORS 3-3]: [3]                             |
+| [SUCCESORS 5-5]: [5]                                |
++-----------------------------------------------------+
+|
++
+|
++-----------------------------------------------------+
+| [5]: <Ending>                                       |
+| [31][Stat]<< !OtherStat @ >>                        |
+| [AST-INSTRUCTIONS]:                                 |
+|   - ReopenObject()                                  |
+|   - EndObject()                                     |
+| [RETURN STACK]:                                     |
+|   [3][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >  |
+|   [2][0]: Block -> [26][OtherStat]<< !Block @ >>    |
+|   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >> |
+|   [0][0]: Stat -> [34][Module]< Stat @ >            |
+| [SWITCHES]:                                         |
+|   allow_half_if : true                              |
+| [PREDECESSORS 4-4]: [4]                             |
+| [SUCCESORS 6-6]: [6]                                |
++-----------------------------------------------------+
+|
++
+|
++-----------------------------------------------------+
+| [6]: <Ending>                                       |
+| [7][Block]< "{" { Stat @ } "}" >                    |
+| [AST-INSTRUCTIONS]:                                 |
+|   - ReopenObject()                                  |
+|   - EndObject()                                     |
+|   > Field(BlockStat::stats)                         |
+| [RETURN STACK]:                                     |
+|   [2][0]: Block -> [26][OtherStat]<< !Block @ >>    |
+|   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >> |
+|   [0][0]: Stat -> [34][Module]< Stat @ >            |
+| [SWITCHES]:                                         |
+|   allow_half_if : true                              |
+| [PREDECESSORS 5-5]: [5]                             |
+| [SUCCESORS 7-7]: [7]                                |
++-----------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++=====================================================++
+|| [7]: {IF} if                                        ||
+|| [23][If]< "if" @ "cond" "then" IfTail >             ||
+|| [SWITCH-INSTRUCTIONS]:                              ||
+||     +switches                                       ||
+||     allow_half_if <- TRUE                           ||
+|| [AST-INSTRUCTIONS]:                                 ||
+||   - DelayFieldAssignment()                          ||
+||   - BeginObject(IfStat)                             ||
+|| [RETURN STACK]:                                     ||
+||   [7][6]: If -> [30][Stat]<< !(0;!If @) >>          ||
+||   [6][6]: Stat -> [7][Block]< "{" { Stat @ } "}" >  ||
+||   [2][0]: Block -> [26][OtherStat]<< !Block @ >>    ||
+||   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >> ||
+||   [0][0]: Stat -> [34][Module]< Stat @ >            ||
+|| [SWITCHES]:                                         ||
+||   allow_half_if : true                              ||
+|| [PREDECESSORS 6-6]: [6]                             ||
+|| [SUCCESORS 8-8]: [8]                                ||
+++=====================================================++
+[0]
+ |
+ +
+ |
+[0]
+++=====================================================++
+|| [8]: {CONDITION} cond                               ||
+|| [22][If]< "if" "cond" @ "then" IfTail >             ||
+|| [AST-INSTRUCTIONS]:                                 ||
+|| [RETURN STACK]:                                     ||
+||   [7][6]: If -> [30][Stat]<< !(0;!If @) >>          ||
+||   [6][6]: Stat -> [7][Block]< "{" { Stat @ } "}" >  ||
+||   [2][0]: Block -> [26][OtherStat]<< !Block @ >>    ||
+||   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >> ||
+||   [0][0]: Stat -> [34][Module]< Stat @ >            ||
+|| [SWITCHES]:                                         ||
+||   allow_half_if : true                              ||
+|| [PREDECESSORS 7-7]: [7]                             ||
+|| [SUCCESORS 9-9]: [9]                                ||
+++=====================================================++
+[0]
+ |
+ +
+ |
+[0]
+++=====================================================++
+|| [9]: {THEN} then                                    ||
+|| [20][If]< "if" "cond" "then" @ IfTail >             ||
+|| [AST-INSTRUCTIONS]:                                 ||
+|| [RETURN STACK]:                                     ||
+||   [7][6]: If -> [30][Stat]<< !(0;!If @) >>          ||
+||   [6][6]: Stat -> [7][Block]< "{" { Stat @ } "}" >  ||
+||   [2][0]: Block -> [26][OtherStat]<< !Block @ >>    ||
+||   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >> ||
+||   [0][0]: Stat -> [34][Module]< Stat @ >            ||
+|| [SWITCHES]:                                         ||
+||   allow_half_if : true                              ||
+|| [PREDECESSORS 8-8]: [8]                             ||
+|| [SUCCESORS 11-11]: [11]                             ||
+++=====================================================++
+[0]
+ |
+ +
+ |
+[0]
+++=============================================================++
+|| [11]: {IF} if                                               ||
+|| [23][If]< "if" @ "cond" "then" IfTail >                     ||
+|| [SWITCH-INSTRUCTIONS]:                                      ||
+||     <- allow_half_if                                        ||
+||     ?                                                       ||
+|| [AST-INSTRUCTIONS]:                                         ||
+||   - BeginObject(IfStat)                                     ||
+|| [RETURN STACK]:                                             ||
+||   [10][9]: If -> [14][IfTail]( ([0]? If @) )                ||
+||   [8][9]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ > ||
+||   [7][6]: If -> [30][Stat]<< !(0;!If @) >>                  ||
+||   [6][6]: Stat -> [7][Block]< "{" { Stat @ } "}" >          ||
+||   [2][0]: Block -> [26][OtherStat]<< !Block @ >>            ||
+||   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >>         ||
+||   [0][0]: Stat -> [34][Module]< Stat @ >                    ||
+|| [SWITCHES]:                                                 ||
+||   allow_half_if : true                                      ||
+|| [PREDECESSORS 9-9]: [9]                                     ||
+|| [SUCCESORS 13-13]: [13]                                     ||
+++=============================================================++
+[0]
+ |
+ +
+ |
+[0]
+++=============================================================++
+|| [13]: {CONDITION} cond                                      ||
+|| [22][If]< "if" "cond" @ "then" IfTail >                     ||
+|| [AST-INSTRUCTIONS]:                                         ||
+|| [RETURN STACK]:                                             ||
+||   [10][9]: If -> [14][IfTail]( ([0]? If @) )                ||
+||   [8][9]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ > ||
+||   [7][6]: If -> [30][Stat]<< !(0;!If @) >>                  ||
+||   [6][6]: Stat -> [7][Block]< "{" { Stat @ } "}" >          ||
+||   [2][0]: Block -> [26][OtherStat]<< !Block @ >>            ||
+||   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >>         ||
+||   [0][0]: Stat -> [34][Module]< Stat @ >                    ||
+|| [SWITCHES]:                                                 ||
+||   allow_half_if : true                                      ||
+|| [PREDECESSORS 11-11]: [11]                                  ||
+|| [SUCCESORS 15-15]: [15]                                     ||
+++=============================================================++
+[0]
+ |
+ +
+ |
+[0]
+++=============================================================++
+|| [15]: {THEN} then                                           ||
+|| [20][If]< "if" "cond" "then" @ IfTail >                     ||
+|| [AST-INSTRUCTIONS]:                                         ||
+|| [RETURN STACK]:                                             ||
+||   [10][9]: If -> [14][IfTail]( ([0]? If @) )                ||
+||   [8][9]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ > ||
+||   [7][6]: If -> [30][Stat]<< !(0;!If @) >>                  ||
+||   [6][6]: Stat -> [7][Block]< "{" { Stat @ } "}" >          ||
+||   [2][0]: Block -> [26][OtherStat]<< !Block @ >>            ||
+||   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >>         ||
+||   [0][0]: Stat -> [34][Module]< Stat @ >                    ||
+|| [SWITCHES]:                                                 ||
+||   allow_half_if : true                                      ||
+|| [PREDECESSORS 13-13]: [13]                                  ||
+|| [SUCCESORS 17-17]: [17]                                     ||
+++=============================================================++
+[0]
+ |
+ +
+ |
+[0]
+++================================================================================++
+|| [17]: {OPEN_BRACE} {                                                           ||
+|| [6][Block]< "{" @ { Stat } "}" >                                               ||
+|| [AST-INSTRUCTIONS]:                                                            ||
+||   - DelayFieldAssignment()                                                     ||
+||   - BeginObject(BlockStat)                                                     ||
+|| [RETURN STACK]:                                                                ||
+||   [16][15]: Block -> [26][OtherStat]<< !Block @ >>                             ||
+||   [15][15]: OtherStat -> [17][IfTail]OtherStat @ ( "else" Stat | ( ([0]? ) ) ) ||
+||   [14][15]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                  ||
+||   [10][9]: If -> [14][IfTail]( ([0]? If @) )                                   ||
+||   [8][9]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                    ||
+||   [7][6]: If -> [30][Stat]<< !(0;!If @) >>                                     ||
+||   [6][6]: Stat -> [7][Block]< "{" { Stat @ } "}" >                             ||
+||   [2][0]: Block -> [26][OtherStat]<< !Block @ >>                               ||
+||   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >>                            ||
+||   [0][0]: Stat -> [34][Module]< Stat @ >                                       ||
+|| [SWITCHES]:                                                                    ||
+||   allow_half_if : true                                                         ||
+|| [PREDECESSORS 15-15]: [15]                                                     ||
+|| [SUCCESORS 19-19]: [19]                                                        ||
+++================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++================================================================================++
+|| [19]: {IF} if                                                                  ||
+|| [23][If]< "if" @ "cond" "then" IfTail >                                        ||
+|| [SWITCH-INSTRUCTIONS]:                                                         ||
+||     +switches                                                                  ||
+||     allow_half_if <- TRUE                                                      ||
+|| [AST-INSTRUCTIONS]:                                                            ||
+||   - DelayFieldAssignment()                                                     ||
+||   - BeginObject(IfStat)                                                        ||
+|| [RETURN STACK]:                                                                ||
+||   [20][17]: If -> [30][Stat]<< !(0;!If @) >>                                   ||
+||   [19][17]: Stat -> [7][Block]< "{" { Stat @ } "}" >                           ||
+||   [16][15]: Block -> [26][OtherStat]<< !Block @ >>                             ||
+||   [15][15]: OtherStat -> [17][IfTail]OtherStat @ ( "else" Stat | ( ([0]? ) ) ) ||
+||   [14][15]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                  ||
+||   [10][9]: If -> [14][IfTail]( ([0]? If @) )                                   ||
+||   [8][9]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                    ||
+||   [7][6]: If -> [30][Stat]<< !(0;!If @) >>                                     ||
+||   [6][6]: Stat -> [7][Block]< "{" { Stat @ } "}" >                             ||
+||   [2][0]: Block -> [26][OtherStat]<< !Block @ >>                               ||
+||   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >>                            ||
+||   [0][0]: Stat -> [34][Module]< Stat @ >                                       ||
+|| [SWITCHES]:                                                                    ||
+||   allow_half_if : true                                                         ||
+|| [PREDECESSORS 17-17]: [17]                                                     ||
+|| [SUCCESORS 21-21]: [21]                                                        ||
+++================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++================================================================================++
+|| [21]: {CONDITION} cond                                                         ||
+|| [22][If]< "if" "cond" @ "then" IfTail >                                        ||
+|| [AST-INSTRUCTIONS]:                                                            ||
+|| [RETURN STACK]:                                                                ||
+||   [20][17]: If -> [30][Stat]<< !(0;!If @) >>                                   ||
+||   [19][17]: Stat -> [7][Block]< "{" { Stat @ } "}" >                           ||
+||   [16][15]: Block -> [26][OtherStat]<< !Block @ >>                             ||
+||   [15][15]: OtherStat -> [17][IfTail]OtherStat @ ( "else" Stat | ( ([0]? ) ) ) ||
+||   [14][15]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                  ||
+||   [10][9]: If -> [14][IfTail]( ([0]? If @) )                                   ||
+||   [8][9]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                    ||
+||   [7][6]: If -> [30][Stat]<< !(0;!If @) >>                                     ||
+||   [6][6]: Stat -> [7][Block]< "{" { Stat @ } "}" >                             ||
+||   [2][0]: Block -> [26][OtherStat]<< !Block @ >>                               ||
+||   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >>                            ||
+||   [0][0]: Stat -> [34][Module]< Stat @ >                                       ||
+|| [SWITCHES]:                                                                    ||
+||   allow_half_if : true                                                         ||
+|| [PREDECESSORS 19-19]: [19]                                                     ||
+|| [SUCCESORS 23-23]: [23]                                                        ||
+++================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++================================================================================++
+|| [23]: {THEN} then                                                              ||
+|| [20][If]< "if" "cond" "then" @ IfTail >                                        ||
+|| [AST-INSTRUCTIONS]:                                                            ||
+|| [RETURN STACK]:                                                                ||
+||   [20][17]: If -> [30][Stat]<< !(0;!If @) >>                                   ||
+||   [19][17]: Stat -> [7][Block]< "{" { Stat @ } "}" >                           ||
+||   [16][15]: Block -> [26][OtherStat]<< !Block @ >>                             ||
+||   [15][15]: OtherStat -> [17][IfTail]OtherStat @ ( "else" Stat | ( ([0]? ) ) ) ||
+||   [14][15]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                  ||
+||   [10][9]: If -> [14][IfTail]( ([0]? If @) )                                   ||
+||   [8][9]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                    ||
+||   [7][6]: If -> [30][Stat]<< !(0;!If @) >>                                     ||
+||   [6][6]: Stat -> [7][Block]< "{" { Stat @ } "}" >                             ||
+||   [2][0]: Block -> [26][OtherStat]<< !Block @ >>                               ||
+||   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >>                            ||
+||   [0][0]: Stat -> [34][Module]< Stat @ >                                       ||
+|| [SWITCHES]:                                                                    ||
+||   allow_half_if : true                                                         ||
+|| [PREDECESSORS 21-21]: [21]                                                     ||
+|| [SUCCESORS 27-27]: [27]                                                        ||
+++================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++================================================================================++
+|| [27]: {IF} if                                                                  ||
+|| [23][If]< "if" @ "cond" "then" IfTail >                                        ||
+|| [SWITCH-INSTRUCTIONS]:                                                         ||
+||     <- allow_half_if                                                           ||
+||     ?                                                                          ||
+|| [AST-INSTRUCTIONS]:                                                            ||
+||   - BeginObject(IfStat)                                                        ||
+|| [RETURN STACK]:                                                                ||
+||   [26][23]: If -> [14][IfTail]( ([0]? If @) )                                  ||
+||   [24][23]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                  ||
+||   [20][17]: If -> [30][Stat]<< !(0;!If @) >>                                   ||
+||   [19][17]: Stat -> [7][Block]< "{" { Stat @ } "}" >                           ||
+||   [16][15]: Block -> [26][OtherStat]<< !Block @ >>                             ||
+||   [15][15]: OtherStat -> [17][IfTail]OtherStat @ ( "else" Stat | ( ([0]? ) ) ) ||
+||   [14][15]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                  ||
+||   [10][9]: If -> [14][IfTail]( ([0]? If @) )                                   ||
+||   [8][9]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                    ||
+||   [7][6]: If -> [30][Stat]<< !(0;!If @) >>                                     ||
+||   [6][6]: Stat -> [7][Block]< "{" { Stat @ } "}" >                             ||
+||   [2][0]: Block -> [26][OtherStat]<< !Block @ >>                               ||
+||   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >>                            ||
+||   [0][0]: Stat -> [34][Module]< Stat @ >                                       ||
+|| [SWITCHES]:                                                                    ||
+||   allow_half_if : true                                                         ||
+|| [PREDECESSORS 23-23]: [23]                                                     ||
+|| [SUCCESORS 31-31]: [31]                                                        ||
+++================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++================================================================================++
+|| [31]: {CONDITION} cond                                                         ||
+|| [22][If]< "if" "cond" @ "then" IfTail >                                        ||
+|| [AST-INSTRUCTIONS]:                                                            ||
+|| [RETURN STACK]:                                                                ||
+||   [26][23]: If -> [14][IfTail]( ([0]? If @) )                                  ||
+||   [24][23]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                  ||
+||   [20][17]: If -> [30][Stat]<< !(0;!If @) >>                                   ||
+||   [19][17]: Stat -> [7][Block]< "{" { Stat @ } "}" >                           ||
+||   [16][15]: Block -> [26][OtherStat]<< !Block @ >>                             ||
+||   [15][15]: OtherStat -> [17][IfTail]OtherStat @ ( "else" Stat | ( ([0]? ) ) ) ||
+||   [14][15]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                  ||
+||   [10][9]: If -> [14][IfTail]( ([0]? If @) )                                   ||
+||   [8][9]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                    ||
+||   [7][6]: If -> [30][Stat]<< !(0;!If @) >>                                     ||
+||   [6][6]: Stat -> [7][Block]< "{" { Stat @ } "}" >                             ||
+||   [2][0]: Block -> [26][OtherStat]<< !Block @ >>                               ||
+||   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >>                            ||
+||   [0][0]: Stat -> [34][Module]< Stat @ >                                       ||
+|| [SWITCHES]:                                                                    ||
+||   allow_half_if : true                                                         ||
+|| [PREDECESSORS 27-27]: [27]                                                     ||
+|| [SUCCESORS 35-35]: [35]                                                        ||
+++================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++================================================================================++
+|| [35]: {THEN} then                                                              ||
+|| [20][If]< "if" "cond" "then" @ IfTail >                                        ||
+|| [AST-INSTRUCTIONS]:                                                            ||
+|| [RETURN STACK]:                                                                ||
+||   [26][23]: If -> [14][IfTail]( ([0]? If @) )                                  ||
+||   [24][23]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                  ||
+||   [20][17]: If -> [30][Stat]<< !(0;!If @) >>                                   ||
+||   [19][17]: Stat -> [7][Block]< "{" { Stat @ } "}" >                           ||
+||   [16][15]: Block -> [26][OtherStat]<< !Block @ >>                             ||
+||   [15][15]: OtherStat -> [17][IfTail]OtherStat @ ( "else" Stat | ( ([0]? ) ) ) ||
+||   [14][15]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                  ||
+||   [10][9]: If -> [14][IfTail]( ([0]? If @) )                                   ||
+||   [8][9]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                    ||
+||   [7][6]: If -> [30][Stat]<< !(0;!If @) >>                                     ||
+||   [6][6]: Stat -> [7][Block]< "{" { Stat @ } "}" >                             ||
+||   [2][0]: Block -> [26][OtherStat]<< !Block @ >>                               ||
+||   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >>                            ||
+||   [0][0]: Stat -> [34][Module]< Stat @ >                                       ||
+|| [SWITCHES]:                                                                    ||
+||   allow_half_if : true                                                         ||
+|| [PREDECESSORS 31-31]: [31]                                                     ||
+|| [SUCCESORS 39-39]: [39]                                                        ||
+++================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++================================================================================++
+|| [39]: {DO} do                                                                  ||
+|| [3][Do]< "do" @ ";" >                                                          ||
+|| [AST-INSTRUCTIONS]:                                                            ||
+||   - DelayFieldAssignment()                                                     ||
+||   - BeginObject(DoStat)                                                        ||
+|| [RETURN STACK]:                                                                ||
+||   [38][35]: Do -> [27][OtherStat]<< !Do @ >>                                   ||
+||   [37][35]: OtherStat -> [17][IfTail]OtherStat @ ( "else" Stat | ( ([0]? ) ) ) ||
+||   [36][35]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                  ||
+||   [26][23]: If -> [14][IfTail]( ([0]? If @) )                                  ||
+||   [24][23]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                  ||
+||   [20][17]: If -> [30][Stat]<< !(0;!If @) >>                                   ||
+||   [19][17]: Stat -> [7][Block]< "{" { Stat @ } "}" >                           ||
+||   [16][15]: Block -> [26][OtherStat]<< !Block @ >>                             ||
+||   [15][15]: OtherStat -> [17][IfTail]OtherStat @ ( "else" Stat | ( ([0]? ) ) ) ||
+||   [14][15]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                  ||
+||   [10][9]: If -> [14][IfTail]( ([0]? If @) )                                   ||
+||   [8][9]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                    ||
+||   [7][6]: If -> [30][Stat]<< !(0;!If @) >>                                     ||
+||   [6][6]: Stat -> [7][Block]< "{" { Stat @ } "}" >                             ||
+||   [2][0]: Block -> [26][OtherStat]<< !Block @ >>                               ||
+||   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >>                            ||
+||   [0][0]: Stat -> [34][Module]< Stat @ >                                       ||
+|| [SWITCHES]:                                                                    ||
+||   allow_half_if : true                                                         ||
+|| [PREDECESSORS 35-35]: [35]                                                     ||
+|| [SUCCESORS 50-50]: [50]                                                        ||
+++================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++================================================================================++
+|| [50]: {SEMICOLON} ;                                                            ||
+|| [2][Do]< "do" ";" @ >                                                          ||
+|| [AST-INSTRUCTIONS]:                                                            ||
+|| [RETURN STACK]:                                                                ||
+||   [38][35]: Do -> [27][OtherStat]<< !Do @ >>                                   ||
+||   [37][35]: OtherStat -> [17][IfTail]OtherStat @ ( "else" Stat | ( ([0]? ) ) ) ||
+||   [36][35]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                  ||
+||   [26][23]: If -> [14][IfTail]( ([0]? If @) )                                  ||
+||   [24][23]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                  ||
+||   [20][17]: If -> [30][Stat]<< !(0;!If @) >>                                   ||
+||   [19][17]: Stat -> [7][Block]< "{" { Stat @ } "}" >                           ||
+||   [16][15]: Block -> [26][OtherStat]<< !Block @ >>                             ||
+||   [15][15]: OtherStat -> [17][IfTail]OtherStat @ ( "else" Stat | ( ([0]? ) ) ) ||
+||   [14][15]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                  ||
+||   [10][9]: If -> [14][IfTail]( ([0]? If @) )                                   ||
+||   [8][9]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                    ||
+||   [7][6]: If -> [30][Stat]<< !(0;!If @) >>                                     ||
+||   [6][6]: Stat -> [7][Block]< "{" { Stat @ } "}" >                             ||
+||   [2][0]: Block -> [26][OtherStat]<< !Block @ >>                               ||
+||   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >>                            ||
+||   [0][0]: Stat -> [34][Module]< Stat @ >                                       ||
+|| [SWITCHES]:                                                                    ||
+||   allow_half_if : true                                                         ||
+|| [PREDECESSORS 39-39]: [39]                                                     ||
+|| [SUCCESORS 51-51]: [51]                                                        ||
+++================================================================================++
+|
++
+|
++--------------------------------------------------------------------------------+
+| [51]: <Ending>                                                                 |
+| [27][OtherStat]<< !Do @ >>                                                     |
+| [AST-INSTRUCTIONS]:                                                            |
+|   - EndObject()                                                                |
+| [RETURN STACK]:                                                                |
+|   [37][35]: OtherStat -> [17][IfTail]OtherStat @ ( "else" Stat | ( ([0]? ) ) ) |
+|   [36][35]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                  |
+|   [26][23]: If -> [14][IfTail]( ([0]? If @) )                                  |
+|   [24][23]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                  |
+|   [20][17]: If -> [30][Stat]<< !(0;!If @) >>                                   |
+|   [19][17]: Stat -> [7][Block]< "{" { Stat @ } "}" >                           |
+|   [16][15]: Block -> [26][OtherStat]<< !Block @ >>                             |
+|   [15][15]: OtherStat -> [17][IfTail]OtherStat @ ( "else" Stat | ( ([0]? ) ) ) |
+|   [14][15]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                  |
+|   [10][9]: If -> [14][IfTail]( ([0]? If @) )                                   |
+|   [8][9]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                    |
+|   [7][6]: If -> [30][Stat]<< !(0;!If @) >>                                     |
+|   [6][6]: Stat -> [7][Block]< "{" { Stat @ } "}" >                             |
+|   [2][0]: Block -> [26][OtherStat]<< !Block @ >>                               |
+|   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >>                            |
+|   [0][0]: Stat -> [34][Module]< Stat @ >                                       |
+| [SWITCHES]:                                                                    |
+|   allow_half_if : true                                                         |
+| [PREDECESSORS 50-50]: [50]                                                     |
+| [SUCCESORS 52-52]: [52]                                                        |
++--------------------------------------------------------------------------------+
+|
++
+|
++--------------------------------------------------------------------------------+
+| [52]: <Ending>                                                                 |
+| [17][IfTail]OtherStat @ ( "else" Stat | ( ([0]? ) ) )                          |
+| [AST-INSTRUCTIONS]:                                                            |
+|   - ReopenObject()                                                             |
+|   - EndObject()                                                                |
+|   > Field(IfStat::thenBranch)                                                  |
+| [RETURN STACK]:                                                                |
+|   [36][35]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                  |
+|   [26][23]: If -> [14][IfTail]( ([0]? If @) )                                  |
+|   [24][23]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                  |
+|   [20][17]: If -> [30][Stat]<< !(0;!If @) >>                                   |
+|   [19][17]: Stat -> [7][Block]< "{" { Stat @ } "}" >                           |
+|   [16][15]: Block -> [26][OtherStat]<< !Block @ >>                             |
+|   [15][15]: OtherStat -> [17][IfTail]OtherStat @ ( "else" Stat | ( ([0]? ) ) ) |
+|   [14][15]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                  |
+|   [10][9]: If -> [14][IfTail]( ([0]? If @) )                                   |
+|   [8][9]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                    |
+|   [7][6]: If -> [30][Stat]<< !(0;!If @) >>                                     |
+|   [6][6]: Stat -> [7][Block]< "{" { Stat @ } "}" >                             |
+|   [2][0]: Block -> [26][OtherStat]<< !Block @ >>                               |
+|   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >>                            |
+|   [0][0]: Stat -> [34][Module]< Stat @ >                                       |
+| [SWITCHES]:                                                                    |
+|   allow_half_if : true                                                         |
+| [PREDECESSORS 51-51]: [51]                                                     |
+| [SUCCESORS 57-57]: [57]                                                        |
++--------------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++================================================================================++
+|| [57]: {ELSE} else                                                              ||
+|| [15][IfTail]OtherStat ( "else" @ Stat | ( ([0]? ) ) )                          ||
+|| [AST-INSTRUCTIONS]:                                                            ||
+|| [RETURN STACK]:                                                                ||
+||   [36][35]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                  ||
+||   [26][23]: If -> [14][IfTail]( ([0]? If @) )                                  ||
+||   [24][23]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                  ||
+||   [20][17]: If -> [30][Stat]<< !(0;!If @) >>                                   ||
+||   [19][17]: Stat -> [7][Block]< "{" { Stat @ } "}" >                           ||
+||   [16][15]: Block -> [26][OtherStat]<< !Block @ >>                             ||
+||   [15][15]: OtherStat -> [17][IfTail]OtherStat @ ( "else" Stat | ( ([0]? ) ) ) ||
+||   [14][15]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                  ||
+||   [10][9]: If -> [14][IfTail]( ([0]? If @) )                                   ||
+||   [8][9]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                    ||
+||   [7][6]: If -> [30][Stat]<< !(0;!If @) >>                                     ||
+||   [6][6]: Stat -> [7][Block]< "{" { Stat @ } "}" >                             ||
+||   [2][0]: Block -> [26][OtherStat]<< !Block @ >>                               ||
+||   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >>                            ||
+||   [0][0]: Stat -> [34][Module]< Stat @ >                                       ||
+|| [SWITCHES]:                                                                    ||
+||   allow_half_if : true                                                         ||
+|| [PREDECESSORS 52-52]: [52]                                                     ||
+|| [SUCCESORS 61-61]: [61]                                                        ||
+++================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++================================================================================++
+|| [61]: {DO} do                                                                  ||
+|| [3][Do]< "do" @ ";" >                                                          ||
+|| [AST-INSTRUCTIONS]:                                                            ||
+||   - DelayFieldAssignment()                                                     ||
+||   - DelayFieldAssignment()                                                     ||
+||   - BeginObject(DoStat)                                                        ||
+|| [RETURN STACK]:                                                                ||
+||   [50][57]: Do -> [27][OtherStat]<< !Do @ >>                                   ||
+||   [49][57]: OtherStat -> [31][Stat]<< !OtherStat @ >>                          ||
+||   [48][57]: Stat -> [16][IfTail]OtherStat ( "else" Stat @ | ( ([0]? ) ) )      ||
+||   [36][35]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                  ||
+||   [26][23]: If -> [14][IfTail]( ([0]? If @) )                                  ||
+||   [24][23]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                  ||
+||   [20][17]: If -> [30][Stat]<< !(0;!If @) >>                                   ||
+||   [19][17]: Stat -> [7][Block]< "{" { Stat @ } "}" >                           ||
+||   [16][15]: Block -> [26][OtherStat]<< !Block @ >>                             ||
+||   [15][15]: OtherStat -> [17][IfTail]OtherStat @ ( "else" Stat | ( ([0]? ) ) ) ||
+||   [14][15]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                  ||
+||   [10][9]: If -> [14][IfTail]( ([0]? If @) )                                   ||
+||   [8][9]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                    ||
+||   [7][6]: If -> [30][Stat]<< !(0;!If @) >>                                     ||
+||   [6][6]: Stat -> [7][Block]< "{" { Stat @ } "}" >                             ||
+||   [2][0]: Block -> [26][OtherStat]<< !Block @ >>                               ||
+||   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >>                            ||
+||   [0][0]: Stat -> [34][Module]< Stat @ >                                       ||
+|| [SWITCHES]:                                                                    ||
+||   allow_half_if : true                                                         ||
+|| [PREDECESSORS 57-57]: [57]                                                     ||
+|| [SUCCESORS 83-83]: [83]                                                        ||
+++================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++================================================================================++
+|| [83]: {SEMICOLON} ;                                                            ||
+|| [2][Do]< "do" ";" @ >                                                          ||
+|| [AST-INSTRUCTIONS]:                                                            ||
+|| [RETURN STACK]:                                                                ||
+||   [50][57]: Do -> [27][OtherStat]<< !Do @ >>                                   ||
+||   [49][57]: OtherStat -> [31][Stat]<< !OtherStat @ >>                          ||
+||   [48][57]: Stat -> [16][IfTail]OtherStat ( "else" Stat @ | ( ([0]? ) ) )      ||
+||   [36][35]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                  ||
+||   [26][23]: If -> [14][IfTail]( ([0]? If @) )                                  ||
+||   [24][23]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                  ||
+||   [20][17]: If -> [30][Stat]<< !(0;!If @) >>                                   ||
+||   [19][17]: Stat -> [7][Block]< "{" { Stat @ } "}" >                           ||
+||   [16][15]: Block -> [26][OtherStat]<< !Block @ >>                             ||
+||   [15][15]: OtherStat -> [17][IfTail]OtherStat @ ( "else" Stat | ( ([0]? ) ) ) ||
+||   [14][15]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                  ||
+||   [10][9]: If -> [14][IfTail]( ([0]? If @) )                                   ||
+||   [8][9]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                    ||
+||   [7][6]: If -> [30][Stat]<< !(0;!If @) >>                                     ||
+||   [6][6]: Stat -> [7][Block]< "{" { Stat @ } "}" >                             ||
+||   [2][0]: Block -> [26][OtherStat]<< !Block @ >>                               ||
+||   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >>                            ||
+||   [0][0]: Stat -> [34][Module]< Stat @ >                                       ||
+|| [SWITCHES]:                                                                    ||
+||   allow_half_if : true                                                         ||
+|| [PREDECESSORS 61-61]: [61]                                                     ||
+|| [SUCCESORS 84-84]: [84]                                                        ||
+++================================================================================++
+|
++
+|
++--------------------------------------------------------------------------------+
+| [84]: <Ending>                                                                 |
+| [27][OtherStat]<< !Do @ >>                                                     |
+| [AST-INSTRUCTIONS]:                                                            |
+|   - EndObject()                                                                |
+| [RETURN STACK]:                                                                |
+|   [49][57]: OtherStat -> [31][Stat]<< !OtherStat @ >>                          |
+|   [48][57]: Stat -> [16][IfTail]OtherStat ( "else" Stat @ | ( ([0]? ) ) )      |
+|   [36][35]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                  |
+|   [26][23]: If -> [14][IfTail]( ([0]? If @) )                                  |
+|   [24][23]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                  |
+|   [20][17]: If -> [30][Stat]<< !(0;!If @) >>                                   |
+|   [19][17]: Stat -> [7][Block]< "{" { Stat @ } "}" >                           |
+|   [16][15]: Block -> [26][OtherStat]<< !Block @ >>                             |
+|   [15][15]: OtherStat -> [17][IfTail]OtherStat @ ( "else" Stat | ( ([0]? ) ) ) |
+|   [14][15]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                  |
+|   [10][9]: If -> [14][IfTail]( ([0]? If @) )                                   |
+|   [8][9]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                    |
+|   [7][6]: If -> [30][Stat]<< !(0;!If @) >>                                     |
+|   [6][6]: Stat -> [7][Block]< "{" { Stat @ } "}" >                             |
+|   [2][0]: Block -> [26][OtherStat]<< !Block @ >>                               |
+|   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >>                            |
+|   [0][0]: Stat -> [34][Module]< Stat @ >                                       |
+| [SWITCHES]:                                                                    |
+|   allow_half_if : true                                                         |
+| [PREDECESSORS 83-83]: [83]                                                     |
+| [SUCCESORS 85-85]: [85]                                                        |
++--------------------------------------------------------------------------------+
+|
++
+|
++--------------------------------------------------------------------------------+
+| [85]: <Ending>                                                                 |
+| [31][Stat]<< !OtherStat @ >>                                                   |
+| [AST-INSTRUCTIONS]:                                                            |
+|   - ReopenObject()                                                             |
+|   - EndObject()                                                                |
+| [RETURN STACK]:                                                                |
+|   [48][57]: Stat -> [16][IfTail]OtherStat ( "else" Stat @ | ( ([0]? ) ) )      |
+|   [36][35]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                  |
+|   [26][23]: If -> [14][IfTail]( ([0]? If @) )                                  |
+|   [24][23]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                  |
+|   [20][17]: If -> [30][Stat]<< !(0;!If @) >>                                   |
+|   [19][17]: Stat -> [7][Block]< "{" { Stat @ } "}" >                           |
+|   [16][15]: Block -> [26][OtherStat]<< !Block @ >>                             |
+|   [15][15]: OtherStat -> [17][IfTail]OtherStat @ ( "else" Stat | ( ([0]? ) ) ) |
+|   [14][15]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                  |
+|   [10][9]: If -> [14][IfTail]( ([0]? If @) )                                   |
+|   [8][9]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                    |
+|   [7][6]: If -> [30][Stat]<< !(0;!If @) >>                                     |
+|   [6][6]: Stat -> [7][Block]< "{" { Stat @ } "}" >                             |
+|   [2][0]: Block -> [26][OtherStat]<< !Block @ >>                               |
+|   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >>                            |
+|   [0][0]: Stat -> [34][Module]< Stat @ >                                       |
+| [SWITCHES]:                                                                    |
+|   allow_half_if : true                                                         |
+| [PREDECESSORS 84-84]: [84]                                                     |
+| [SUCCESORS 86-86]: [86]                                                        |
++--------------------------------------------------------------------------------+
+|
++
+|
++--------------------------------------------------------------------------------+
+| [86]: <Ending>                                                                 |
+| [16][IfTail]OtherStat ( "else" Stat @ | ( ([0]? ) ) )                          |
+| [AST-INSTRUCTIONS]:                                                            |
+|   - ReopenObject()                                                             |
+|   - EndObject()                                                                |
+|   > Field(IfStat::elseBranch)                                                  |
+| [RETURN STACK]:                                                                |
+|   [36][35]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                  |
+|   [26][23]: If -> [14][IfTail]( ([0]? If @) )                                  |
+|   [24][23]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                  |
+|   [20][17]: If -> [30][Stat]<< !(0;!If @) >>                                   |
+|   [19][17]: Stat -> [7][Block]< "{" { Stat @ } "}" >                           |
+|   [16][15]: Block -> [26][OtherStat]<< !Block @ >>                             |
+|   [15][15]: OtherStat -> [17][IfTail]OtherStat @ ( "else" Stat | ( ([0]? ) ) ) |
+|   [14][15]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                  |
+|   [10][9]: If -> [14][IfTail]( ([0]? If @) )                                   |
+|   [8][9]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                    |
+|   [7][6]: If -> [30][Stat]<< !(0;!If @) >>                                     |
+|   [6][6]: Stat -> [7][Block]< "{" { Stat @ } "}" >                             |
+|   [2][0]: Block -> [26][OtherStat]<< !Block @ >>                               |
+|   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >>                            |
+|   [0][0]: Stat -> [34][Module]< Stat @ >                                       |
+| [SWITCHES]:                                                                    |
+|   allow_half_if : true                                                         |
+| [PREDECESSORS 85-85]: [85]                                                     |
+| [SUCCESORS 87-87]: [87]                                                        |
++--------------------------------------------------------------------------------+
+|
++
+|
++--------------------------------------------------------------------------------+
+| [87]: <Ending>                                                                 |
+| [21][If]< "if" "cond" "then" IfTail @ >                                        |
+| [AST-INSTRUCTIONS]:                                                            |
+| [RETURN STACK]:                                                                |
+|   [26][23]: If -> [14][IfTail]( ([0]? If @) )                                  |
+|   [24][23]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                  |
+|   [20][17]: If -> [30][Stat]<< !(0;!If @) >>                                   |
+|   [19][17]: Stat -> [7][Block]< "{" { Stat @ } "}" >                           |
+|   [16][15]: Block -> [26][OtherStat]<< !Block @ >>                             |
+|   [15][15]: OtherStat -> [17][IfTail]OtherStat @ ( "else" Stat | ( ([0]? ) ) ) |
+|   [14][15]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                  |
+|   [10][9]: If -> [14][IfTail]( ([0]? If @) )                                   |
+|   [8][9]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                    |
+|   [7][6]: If -> [30][Stat]<< !(0;!If @) >>                                     |
+|   [6][6]: Stat -> [7][Block]< "{" { Stat @ } "}" >                             |
+|   [2][0]: Block -> [26][OtherStat]<< !Block @ >>                               |
+|   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >>                            |
+|   [0][0]: Stat -> [34][Module]< Stat @ >                                       |
+| [SWITCHES]:                                                                    |
+|   allow_half_if : true                                                         |
+| [PREDECESSORS 86-86]: [86]                                                     |
+| [SUCCESORS 88-88]: [88]                                                        |
++--------------------------------------------------------------------------------+
+|
++
+|
++--------------------------------------------------------------------------------+
+| [88]: <Ending>                                                                 |
+| [14][IfTail]( ([0]? If @) )                                                    |
+| [AST-INSTRUCTIONS]:                                                            |
+|   - EndObject()                                                                |
+| [RETURN STACK]:                                                                |
+|   [24][23]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                  |
+|   [20][17]: If -> [30][Stat]<< !(0;!If @) >>                                   |
+|   [19][17]: Stat -> [7][Block]< "{" { Stat @ } "}" >                           |
+|   [16][15]: Block -> [26][OtherStat]<< !Block @ >>                             |
+|   [15][15]: OtherStat -> [17][IfTail]OtherStat @ ( "else" Stat | ( ([0]? ) ) ) |
+|   [14][15]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                  |
+|   [10][9]: If -> [14][IfTail]( ([0]? If @) )                                   |
+|   [8][9]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                    |
+|   [7][6]: If -> [30][Stat]<< !(0;!If @) >>                                     |
+|   [6][6]: Stat -> [7][Block]< "{" { Stat @ } "}" >                             |
+|   [2][0]: Block -> [26][OtherStat]<< !Block @ >>                               |
+|   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >>                            |
+|   [0][0]: Stat -> [34][Module]< Stat @ >                                       |
+| [SWITCHES]:                                                                    |
+|   allow_half_if : true                                                         |
+| [PREDECESSORS 87-87]: [87]                                                     |
+| [SUCCESORS 89-89]: [89]                                                        |
++--------------------------------------------------------------------------------+
+|
++
+|
++--------------------------------------------------------------------------------+
+| [89]: <Ending>                                                                 |
+| [21][If]< "if" "cond" "then" IfTail @ >                                        |
+| [AST-INSTRUCTIONS]:                                                            |
+|   - Field(IfStat::thenBranch)                                                  |
+| [RETURN STACK]:                                                                |
+|   [20][17]: If -> [30][Stat]<< !(0;!If @) >>                                   |
+|   [19][17]: Stat -> [7][Block]< "{" { Stat @ } "}" >                           |
+|   [16][15]: Block -> [26][OtherStat]<< !Block @ >>                             |
+|   [15][15]: OtherStat -> [17][IfTail]OtherStat @ ( "else" Stat | ( ([0]? ) ) ) |
+|   [14][15]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                  |
+|   [10][9]: If -> [14][IfTail]( ([0]? If @) )                                   |
+|   [8][9]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                    |
+|   [7][6]: If -> [30][Stat]<< !(0;!If @) >>                                     |
+|   [6][6]: Stat -> [7][Block]< "{" { Stat @ } "}" >                             |
+|   [2][0]: Block -> [26][OtherStat]<< !Block @ >>                               |
+|   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >>                            |
+|   [0][0]: Stat -> [34][Module]< Stat @ >                                       |
+| [SWITCHES]:                                                                    |
+|   allow_half_if : true                                                         |
+| [PREDECESSORS 88-88]: [88]                                                     |
+| [SUCCESORS 90-90]: [90]                                                        |
++--------------------------------------------------------------------------------+
+|
++
+|
++--------------------------------------------------------------------------------+
+| [90]: <Ending>                                                                 |
+| [30][Stat]<< !(0;!If @) >>                                                     |
+| [AST-INSTRUCTIONS]:                                                            |
+|   - EndObject()                                                                |
+| [RETURN STACK]:                                                                |
+|   [19][17]: Stat -> [7][Block]< "{" { Stat @ } "}" >                           |
+|   [16][15]: Block -> [26][OtherStat]<< !Block @ >>                             |
+|   [15][15]: OtherStat -> [17][IfTail]OtherStat @ ( "else" Stat | ( ([0]? ) ) ) |
+|   [14][15]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                  |
+|   [10][9]: If -> [14][IfTail]( ([0]? If @) )                                   |
+|   [8][9]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                    |
+|   [7][6]: If -> [30][Stat]<< !(0;!If @) >>                                     |
+|   [6][6]: Stat -> [7][Block]< "{" { Stat @ } "}" >                             |
+|   [2][0]: Block -> [26][OtherStat]<< !Block @ >>                               |
+|   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >>                            |
+|   [0][0]: Stat -> [34][Module]< Stat @ >                                       |
+| [SWITCHES]:                                                                    |
+|   allow_half_if : true                                                         |
+| [PREDECESSORS 89-89]: [89]                                                     |
+| [SUCCESORS 91-91]: [91]                                                        |
++--------------------------------------------------------------------------------+
+|
++
+|
++--------------------------------------------------------------------------------+
+| [91]: <Ending>                                                                 |
+| [7][Block]< "{" { Stat @ } "}" >                                               |
+| [SWITCH-INSTRUCTIONS]:                                                         |
+|     -switches                                                                  |
+| [AST-INSTRUCTIONS]:                                                            |
+|   - ReopenObject()                                                             |
+|   - EndObject()                                                                |
+|   > Field(BlockStat::stats)                                                    |
+| [RETURN STACK]:                                                                |
+|   [16][15]: Block -> [26][OtherStat]<< !Block @ >>                             |
+|   [15][15]: OtherStat -> [17][IfTail]OtherStat @ ( "else" Stat | ( ([0]? ) ) ) |
+|   [14][15]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                  |
+|   [10][9]: If -> [14][IfTail]( ([0]? If @) )                                   |
+|   [8][9]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                    |
+|   [7][6]: If -> [30][Stat]<< !(0;!If @) >>                                     |
+|   [6][6]: Stat -> [7][Block]< "{" { Stat @ } "}" >                             |
+|   [2][0]: Block -> [26][OtherStat]<< !Block @ >>                               |
+|   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >>                            |
+|   [0][0]: Stat -> [34][Module]< Stat @ >                                       |
+| [SWITCHES]:                                                                    |
+|   allow_half_if : true                                                         |
+| [PREDECESSORS 90-90]: [90]                                                     |
+| [SUCCESORS 95-95]: [95]                                                        |
++--------------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++================================================================================++
+|| [95]: {CLOSE_BRACE} }                                                          ||
+|| [8][Block]< "{" { Stat } "}" @ >                                               ||
+|| [AST-INSTRUCTIONS]:                                                            ||
+|| [RETURN STACK]:                                                                ||
+||   [16][15]: Block -> [26][OtherStat]<< !Block @ >>                             ||
+||   [15][15]: OtherStat -> [17][IfTail]OtherStat @ ( "else" Stat | ( ([0]? ) ) ) ||
+||   [14][15]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                  ||
+||   [10][9]: If -> [14][IfTail]( ([0]? If @) )                                   ||
+||   [8][9]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                    ||
+||   [7][6]: If -> [30][Stat]<< !(0;!If @) >>                                     ||
+||   [6][6]: Stat -> [7][Block]< "{" { Stat @ } "}" >                             ||
+||   [2][0]: Block -> [26][OtherStat]<< !Block @ >>                               ||
+||   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >>                            ||
+||   [0][0]: Stat -> [34][Module]< Stat @ >                                       ||
+|| [SWITCHES]:                                                                    ||
+||   allow_half_if : true                                                         ||
+|| [PREDECESSORS 91-91]: [91]                                                     ||
+|| [SUCCESORS 96-96]: [96]                                                        ||
+++================================================================================++
+|
++
+|
++--------------------------------------------------------------------------------+
+| [96]: <Ending>                                                                 |
+| [26][OtherStat]<< !Block @ >>                                                  |
+| [AST-INSTRUCTIONS]:                                                            |
+|   - EndObject()                                                                |
+| [RETURN STACK]:                                                                |
+|   [15][15]: OtherStat -> [17][IfTail]OtherStat @ ( "else" Stat | ( ([0]? ) ) ) |
+|   [14][15]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                  |
+|   [10][9]: If -> [14][IfTail]( ([0]? If @) )                                   |
+|   [8][9]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                    |
+|   [7][6]: If -> [30][Stat]<< !(0;!If @) >>                                     |
+|   [6][6]: Stat -> [7][Block]< "{" { Stat @ } "}" >                             |
+|   [2][0]: Block -> [26][OtherStat]<< !Block @ >>                               |
+|   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >>                            |
+|   [0][0]: Stat -> [34][Module]< Stat @ >                                       |
+| [SWITCHES]:                                                                    |
+|   allow_half_if : true                                                         |
+| [PREDECESSORS 95-95]: [95]                                                     |
+| [SUCCESORS 97-97]: [97]                                                        |
++--------------------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------------+
+| [97]: <Ending>                                                |
+| [17][IfTail]OtherStat @ ( "else" Stat | ( ([0]? ) ) )         |
+| [AST-INSTRUCTIONS]:                                           |
+|   - ReopenObject()                                            |
+|   - EndObject()                                               |
+|   > Field(IfStat::thenBranch)                                 |
+| [RETURN STACK]:                                               |
+|   [14][15]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ > |
+|   [10][9]: If -> [14][IfTail]( ([0]? If @) )                  |
+|   [8][9]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >   |
+|   [7][6]: If -> [30][Stat]<< !(0;!If @) >>                    |
+|   [6][6]: Stat -> [7][Block]< "{" { Stat @ } "}" >            |
+|   [2][0]: Block -> [26][OtherStat]<< !Block @ >>              |
+|   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >>           |
+|   [0][0]: Stat -> [34][Module]< Stat @ >                      |
+| [SWITCHES]:                                                   |
+|   allow_half_if : true                                        |
+| [PREDECESSORS 96-96]: [96]                                    |
+| [SUCCESORS 100-100]: [100]                                    |
++---------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++===============================================================++
+|| [100]: {ELSE} else                                            ||
+|| [15][IfTail]OtherStat ( "else" @ Stat | ( ([0]? ) ) )         ||
+|| [AST-INSTRUCTIONS]:                                           ||
+|| [RETURN STACK]:                                               ||
+||   [14][15]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ > ||
+||   [10][9]: If -> [14][IfTail]( ([0]? If @) )                  ||
+||   [8][9]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >   ||
+||   [7][6]: If -> [30][Stat]<< !(0;!If @) >>                    ||
+||   [6][6]: Stat -> [7][Block]< "{" { Stat @ } "}" >            ||
+||   [2][0]: Block -> [26][OtherStat]<< !Block @ >>              ||
+||   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >>           ||
+||   [0][0]: Stat -> [34][Module]< Stat @ >                      ||
+|| [SWITCHES]:                                                   ||
+||   allow_half_if : true                                        ||
+|| [PREDECESSORS 97-97]: [97]                                    ||
+|| [SUCCESORS 102-102]: [102]                                    ||
+++===============================================================++
+[0]
+ |
+ +
+ |
+[0]
+++============================================================================++
+|| [102]: {OPEN_BRACE} {                                                      ||
+|| [6][Block]< "{" @ { Stat } "}" >                                           ||
+|| [AST-INSTRUCTIONS]:                                                        ||
+||   - DelayFieldAssignment()                                                 ||
+||   - DelayFieldAssignment()                                                 ||
+||   - BeginObject(BlockStat)                                                 ||
+|| [RETURN STACK]:                                                            ||
+||   [56][100]: Block -> [26][OtherStat]<< !Block @ >>                        ||
+||   [55][100]: OtherStat -> [31][Stat]<< !OtherStat @ >>                     ||
+||   [54][100]: Stat -> [16][IfTail]OtherStat ( "else" Stat @ | ( ([0]? ) ) ) ||
+||   [14][15]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >              ||
+||   [10][9]: If -> [14][IfTail]( ([0]? If @) )                               ||
+||   [8][9]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                ||
+||   [7][6]: If -> [30][Stat]<< !(0;!If @) >>                                 ||
+||   [6][6]: Stat -> [7][Block]< "{" { Stat @ } "}" >                         ||
+||   [2][0]: Block -> [26][OtherStat]<< !Block @ >>                           ||
+||   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >>                        ||
+||   [0][0]: Stat -> [34][Module]< Stat @ >                                   ||
+|| [SWITCHES]:                                                                ||
+||   allow_half_if : true                                                     ||
+|| [PREDECESSORS 100-100]: [100]                                              ||
+|| [SUCCESORS 104-104]: [104]                                                 ||
+++============================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++============================================================================++
+|| [104]: {IF} if                                                             ||
+|| [23][If]< "if" @ "cond" "then" IfTail >                                    ||
+|| [SWITCH-INSTRUCTIONS]:                                                     ||
+||     +switches                                                              ||
+||     allow_half_if <- TRUE                                                  ||
+|| [AST-INSTRUCTIONS]:                                                        ||
+||   - DelayFieldAssignment()                                                 ||
+||   - BeginObject(IfStat)                                                    ||
+|| [RETURN STACK]:                                                            ||
+||   [60][102]: If -> [30][Stat]<< !(0;!If @) >>                              ||
+||   [59][102]: Stat -> [7][Block]< "{" { Stat @ } "}" >                      ||
+||   [56][100]: Block -> [26][OtherStat]<< !Block @ >>                        ||
+||   [55][100]: OtherStat -> [31][Stat]<< !OtherStat @ >>                     ||
+||   [54][100]: Stat -> [16][IfTail]OtherStat ( "else" Stat @ | ( ([0]? ) ) ) ||
+||   [14][15]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >              ||
+||   [10][9]: If -> [14][IfTail]( ([0]? If @) )                               ||
+||   [8][9]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                ||
+||   [7][6]: If -> [30][Stat]<< !(0;!If @) >>                                 ||
+||   [6][6]: Stat -> [7][Block]< "{" { Stat @ } "}" >                         ||
+||   [2][0]: Block -> [26][OtherStat]<< !Block @ >>                           ||
+||   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >>                        ||
+||   [0][0]: Stat -> [34][Module]< Stat @ >                                   ||
+|| [SWITCHES]:                                                                ||
+||   allow_half_if : true                                                     ||
+|| [PREDECESSORS 102-102]: [102]                                              ||
+|| [SUCCESORS 106-106]: [106]                                                 ||
+++============================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++============================================================================++
+|| [106]: {CONDITION} cond                                                    ||
+|| [22][If]< "if" "cond" @ "then" IfTail >                                    ||
+|| [AST-INSTRUCTIONS]:                                                        ||
+|| [RETURN STACK]:                                                            ||
+||   [60][102]: If -> [30][Stat]<< !(0;!If @) >>                              ||
+||   [59][102]: Stat -> [7][Block]< "{" { Stat @ } "}" >                      ||
+||   [56][100]: Block -> [26][OtherStat]<< !Block @ >>                        ||
+||   [55][100]: OtherStat -> [31][Stat]<< !OtherStat @ >>                     ||
+||   [54][100]: Stat -> [16][IfTail]OtherStat ( "else" Stat @ | ( ([0]? ) ) ) ||
+||   [14][15]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >              ||
+||   [10][9]: If -> [14][IfTail]( ([0]? If @) )                               ||
+||   [8][9]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                ||
+||   [7][6]: If -> [30][Stat]<< !(0;!If @) >>                                 ||
+||   [6][6]: Stat -> [7][Block]< "{" { Stat @ } "}" >                         ||
+||   [2][0]: Block -> [26][OtherStat]<< !Block @ >>                           ||
+||   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >>                        ||
+||   [0][0]: Stat -> [34][Module]< Stat @ >                                   ||
+|| [SWITCHES]:                                                                ||
+||   allow_half_if : true                                                     ||
+|| [PREDECESSORS 104-104]: [104]                                              ||
+|| [SUCCESORS 108-108]: [108]                                                 ||
+++============================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++============================================================================++
+|| [108]: {THEN} then                                                         ||
+|| [20][If]< "if" "cond" "then" @ IfTail >                                    ||
+|| [AST-INSTRUCTIONS]:                                                        ||
+|| [RETURN STACK]:                                                            ||
+||   [60][102]: If -> [30][Stat]<< !(0;!If @) >>                              ||
+||   [59][102]: Stat -> [7][Block]< "{" { Stat @ } "}" >                      ||
+||   [56][100]: Block -> [26][OtherStat]<< !Block @ >>                        ||
+||   [55][100]: OtherStat -> [31][Stat]<< !OtherStat @ >>                     ||
+||   [54][100]: Stat -> [16][IfTail]OtherStat ( "else" Stat @ | ( ([0]? ) ) ) ||
+||   [14][15]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >              ||
+||   [10][9]: If -> [14][IfTail]( ([0]? If @) )                               ||
+||   [8][9]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                ||
+||   [7][6]: If -> [30][Stat]<< !(0;!If @) >>                                 ||
+||   [6][6]: Stat -> [7][Block]< "{" { Stat @ } "}" >                         ||
+||   [2][0]: Block -> [26][OtherStat]<< !Block @ >>                           ||
+||   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >>                        ||
+||   [0][0]: Stat -> [34][Module]< Stat @ >                                   ||
+|| [SWITCHES]:                                                                ||
+||   allow_half_if : true                                                     ||
+|| [PREDECESSORS 106-106]: [106]                                              ||
+|| [SUCCESORS 112-112]: [112]                                                 ||
+++============================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++============================================================================++
+|| [112]: {IF} if                                                             ||
+|| [23][If]< "if" @ "cond" "then" IfTail >                                    ||
+|| [SWITCH-INSTRUCTIONS]:                                                     ||
+||     <- allow_half_if                                                       ||
+||     ?                                                                      ||
+|| [AST-INSTRUCTIONS]:                                                        ||
+||   - BeginObject(IfStat)                                                    ||
+|| [RETURN STACK]:                                                            ||
+||   [66][108]: If -> [14][IfTail]( ([0]? If @) )                             ||
+||   [64][108]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >             ||
+||   [60][102]: If -> [30][Stat]<< !(0;!If @) >>                              ||
+||   [59][102]: Stat -> [7][Block]< "{" { Stat @ } "}" >                      ||
+||   [56][100]: Block -> [26][OtherStat]<< !Block @ >>                        ||
+||   [55][100]: OtherStat -> [31][Stat]<< !OtherStat @ >>                     ||
+||   [54][100]: Stat -> [16][IfTail]OtherStat ( "else" Stat @ | ( ([0]? ) ) ) ||
+||   [14][15]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >              ||
+||   [10][9]: If -> [14][IfTail]( ([0]? If @) )                               ||
+||   [8][9]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                ||
+||   [7][6]: If -> [30][Stat]<< !(0;!If @) >>                                 ||
+||   [6][6]: Stat -> [7][Block]< "{" { Stat @ } "}" >                         ||
+||   [2][0]: Block -> [26][OtherStat]<< !Block @ >>                           ||
+||   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >>                        ||
+||   [0][0]: Stat -> [34][Module]< Stat @ >                                   ||
+|| [SWITCHES]:                                                                ||
+||   allow_half_if : true                                                     ||
+|| [PREDECESSORS 108-108]: [108]                                              ||
+|| [SUCCESORS 116-116]: [116]                                                 ||
+++============================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++============================================================================++
+|| [116]: {CONDITION} cond                                                    ||
+|| [22][If]< "if" "cond" @ "then" IfTail >                                    ||
+|| [AST-INSTRUCTIONS]:                                                        ||
+|| [RETURN STACK]:                                                            ||
+||   [66][108]: If -> [14][IfTail]( ([0]? If @) )                             ||
+||   [64][108]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >             ||
+||   [60][102]: If -> [30][Stat]<< !(0;!If @) >>                              ||
+||   [59][102]: Stat -> [7][Block]< "{" { Stat @ } "}" >                      ||
+||   [56][100]: Block -> [26][OtherStat]<< !Block @ >>                        ||
+||   [55][100]: OtherStat -> [31][Stat]<< !OtherStat @ >>                     ||
+||   [54][100]: Stat -> [16][IfTail]OtherStat ( "else" Stat @ | ( ([0]? ) ) ) ||
+||   [14][15]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >              ||
+||   [10][9]: If -> [14][IfTail]( ([0]? If @) )                               ||
+||   [8][9]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                ||
+||   [7][6]: If -> [30][Stat]<< !(0;!If @) >>                                 ||
+||   [6][6]: Stat -> [7][Block]< "{" { Stat @ } "}" >                         ||
+||   [2][0]: Block -> [26][OtherStat]<< !Block @ >>                           ||
+||   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >>                        ||
+||   [0][0]: Stat -> [34][Module]< Stat @ >                                   ||
+|| [SWITCHES]:                                                                ||
+||   allow_half_if : true                                                     ||
+|| [PREDECESSORS 112-112]: [112]                                              ||
+|| [SUCCESORS 120-120]: [120]                                                 ||
+++============================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++============================================================================++
+|| [120]: {THEN} then                                                         ||
+|| [20][If]< "if" "cond" "then" @ IfTail >                                    ||
+|| [AST-INSTRUCTIONS]:                                                        ||
+|| [RETURN STACK]:                                                            ||
+||   [66][108]: If -> [14][IfTail]( ([0]? If @) )                             ||
+||   [64][108]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >             ||
+||   [60][102]: If -> [30][Stat]<< !(0;!If @) >>                              ||
+||   [59][102]: Stat -> [7][Block]< "{" { Stat @ } "}" >                      ||
+||   [56][100]: Block -> [26][OtherStat]<< !Block @ >>                        ||
+||   [55][100]: OtherStat -> [31][Stat]<< !OtherStat @ >>                     ||
+||   [54][100]: Stat -> [16][IfTail]OtherStat ( "else" Stat @ | ( ([0]? ) ) ) ||
+||   [14][15]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >              ||
+||   [10][9]: If -> [14][IfTail]( ([0]? If @) )                               ||
+||   [8][9]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                ||
+||   [7][6]: If -> [30][Stat]<< !(0;!If @) >>                                 ||
+||   [6][6]: Stat -> [7][Block]< "{" { Stat @ } "}" >                         ||
+||   [2][0]: Block -> [26][OtherStat]<< !Block @ >>                           ||
+||   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >>                        ||
+||   [0][0]: Stat -> [34][Module]< Stat @ >                                   ||
+|| [SWITCHES]:                                                                ||
+||   allow_half_if : true                                                     ||
+|| [PREDECESSORS 116-116]: [116]                                              ||
+|| [SUCCESORS 124-124]: [124]                                                 ||
+++============================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++=================================================================================++
+|| [124]: {DO} do                                                                  ||
+|| [3][Do]< "do" @ ";" >                                                           ||
+|| [AST-INSTRUCTIONS]:                                                             ||
+||   - DelayFieldAssignment()                                                      ||
+||   - BeginObject(DoStat)                                                         ||
+|| [RETURN STACK]:                                                                 ||
+||   [78][120]: Do -> [27][OtherStat]<< !Do @ >>                                   ||
+||   [77][120]: OtherStat -> [17][IfTail]OtherStat @ ( "else" Stat | ( ([0]? ) ) ) ||
+||   [76][120]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                  ||
+||   [66][108]: If -> [14][IfTail]( ([0]? If @) )                                  ||
+||   [64][108]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                  ||
+||   [60][102]: If -> [30][Stat]<< !(0;!If @) >>                                   ||
+||   [59][102]: Stat -> [7][Block]< "{" { Stat @ } "}" >                           ||
+||   [56][100]: Block -> [26][OtherStat]<< !Block @ >>                             ||
+||   [55][100]: OtherStat -> [31][Stat]<< !OtherStat @ >>                          ||
+||   [54][100]: Stat -> [16][IfTail]OtherStat ( "else" Stat @ | ( ([0]? ) ) )      ||
+||   [14][15]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                   ||
+||   [10][9]: If -> [14][IfTail]( ([0]? If @) )                                    ||
+||   [8][9]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                     ||
+||   [7][6]: If -> [30][Stat]<< !(0;!If @) >>                                      ||
+||   [6][6]: Stat -> [7][Block]< "{" { Stat @ } "}" >                              ||
+||   [2][0]: Block -> [26][OtherStat]<< !Block @ >>                                ||
+||   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >>                             ||
+||   [0][0]: Stat -> [34][Module]< Stat @ >                                        ||
+|| [SWITCHES]:                                                                     ||
+||   allow_half_if : true                                                          ||
+|| [PREDECESSORS 120-120]: [120]                                                   ||
+|| [SUCCESORS 135-135]: [135]                                                      ||
+++=================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++=================================================================================++
+|| [135]: {SEMICOLON} ;                                                            ||
+|| [2][Do]< "do" ";" @ >                                                           ||
+|| [AST-INSTRUCTIONS]:                                                             ||
+|| [RETURN STACK]:                                                                 ||
+||   [78][120]: Do -> [27][OtherStat]<< !Do @ >>                                   ||
+||   [77][120]: OtherStat -> [17][IfTail]OtherStat @ ( "else" Stat | ( ([0]? ) ) ) ||
+||   [76][120]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                  ||
+||   [66][108]: If -> [14][IfTail]( ([0]? If @) )                                  ||
+||   [64][108]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                  ||
+||   [60][102]: If -> [30][Stat]<< !(0;!If @) >>                                   ||
+||   [59][102]: Stat -> [7][Block]< "{" { Stat @ } "}" >                           ||
+||   [56][100]: Block -> [26][OtherStat]<< !Block @ >>                             ||
+||   [55][100]: OtherStat -> [31][Stat]<< !OtherStat @ >>                          ||
+||   [54][100]: Stat -> [16][IfTail]OtherStat ( "else" Stat @ | ( ([0]? ) ) )      ||
+||   [14][15]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                   ||
+||   [10][9]: If -> [14][IfTail]( ([0]? If @) )                                    ||
+||   [8][9]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                     ||
+||   [7][6]: If -> [30][Stat]<< !(0;!If @) >>                                      ||
+||   [6][6]: Stat -> [7][Block]< "{" { Stat @ } "}" >                              ||
+||   [2][0]: Block -> [26][OtherStat]<< !Block @ >>                                ||
+||   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >>                             ||
+||   [0][0]: Stat -> [34][Module]< Stat @ >                                        ||
+|| [SWITCHES]:                                                                     ||
+||   allow_half_if : true                                                          ||
+|| [PREDECESSORS 124-124]: [124]                                                   ||
+|| [SUCCESORS 136-136]: [136]                                                      ||
+++=================================================================================++
+|
++
+|
++---------------------------------------------------------------------------------+
+| [136]: <Ending>                                                                 |
+| [27][OtherStat]<< !Do @ >>                                                      |
+| [AST-INSTRUCTIONS]:                                                             |
+|   - EndObject()                                                                 |
+| [RETURN STACK]:                                                                 |
+|   [77][120]: OtherStat -> [17][IfTail]OtherStat @ ( "else" Stat | ( ([0]? ) ) ) |
+|   [76][120]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                  |
+|   [66][108]: If -> [14][IfTail]( ([0]? If @) )                                  |
+|   [64][108]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                  |
+|   [60][102]: If -> [30][Stat]<< !(0;!If @) >>                                   |
+|   [59][102]: Stat -> [7][Block]< "{" { Stat @ } "}" >                           |
+|   [56][100]: Block -> [26][OtherStat]<< !Block @ >>                             |
+|   [55][100]: OtherStat -> [31][Stat]<< !OtherStat @ >>                          |
+|   [54][100]: Stat -> [16][IfTail]OtherStat ( "else" Stat @ | ( ([0]? ) ) )      |
+|   [14][15]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                   |
+|   [10][9]: If -> [14][IfTail]( ([0]? If @) )                                    |
+|   [8][9]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                     |
+|   [7][6]: If -> [30][Stat]<< !(0;!If @) >>                                      |
+|   [6][6]: Stat -> [7][Block]< "{" { Stat @ } "}" >                              |
+|   [2][0]: Block -> [26][OtherStat]<< !Block @ >>                                |
+|   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >>                             |
+|   [0][0]: Stat -> [34][Module]< Stat @ >                                        |
+| [SWITCHES]:                                                                     |
+|   allow_half_if : true                                                          |
+| [PREDECESSORS 135-135]: [135]                                                   |
+| [SUCCESORS 137-137]: [137]                                                      |
++---------------------------------------------------------------------------------+
+|
++
+|
++----------------------------------------------------------------------------+
+| [137]: <Ending>                                                            |
+| [17][IfTail]OtherStat @ ( "else" Stat | ( ([0]? ) ) )                      |
+| [AST-INSTRUCTIONS]:                                                        |
+|   - ReopenObject()                                                         |
+|   - EndObject()                                                            |
+|   > Field(IfStat::thenBranch)                                              |
+| [RETURN STACK]:                                                            |
+|   [76][120]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >             |
+|   [66][108]: If -> [14][IfTail]( ([0]? If @) )                             |
+|   [64][108]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >             |
+|   [60][102]: If -> [30][Stat]<< !(0;!If @) >>                              |
+|   [59][102]: Stat -> [7][Block]< "{" { Stat @ } "}" >                      |
+|   [56][100]: Block -> [26][OtherStat]<< !Block @ >>                        |
+|   [55][100]: OtherStat -> [31][Stat]<< !OtherStat @ >>                     |
+|   [54][100]: Stat -> [16][IfTail]OtherStat ( "else" Stat @ | ( ([0]? ) ) ) |
+|   [14][15]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >              |
+|   [10][9]: If -> [14][IfTail]( ([0]? If @) )                               |
+|   [8][9]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                |
+|   [7][6]: If -> [30][Stat]<< !(0;!If @) >>                                 |
+|   [6][6]: Stat -> [7][Block]< "{" { Stat @ } "}" >                         |
+|   [2][0]: Block -> [26][OtherStat]<< !Block @ >>                           |
+|   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >>                        |
+|   [0][0]: Stat -> [34][Module]< Stat @ >                                   |
+| [SWITCHES]:                                                                |
+|   allow_half_if : true                                                     |
+| [PREDECESSORS 136-136]: [136]                                              |
+| [SUCCESORS 142-142]: [142]                                                 |
++----------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++============================================================================++
+|| [142]: {ELSE} else                                                         ||
+|| [15][IfTail]OtherStat ( "else" @ Stat | ( ([0]? ) ) )                      ||
+|| [AST-INSTRUCTIONS]:                                                        ||
+|| [RETURN STACK]:                                                            ||
+||   [76][120]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >             ||
+||   [66][108]: If -> [14][IfTail]( ([0]? If @) )                             ||
+||   [64][108]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >             ||
+||   [60][102]: If -> [30][Stat]<< !(0;!If @) >>                              ||
+||   [59][102]: Stat -> [7][Block]< "{" { Stat @ } "}" >                      ||
+||   [56][100]: Block -> [26][OtherStat]<< !Block @ >>                        ||
+||   [55][100]: OtherStat -> [31][Stat]<< !OtherStat @ >>                     ||
+||   [54][100]: Stat -> [16][IfTail]OtherStat ( "else" Stat @ | ( ([0]? ) ) ) ||
+||   [14][15]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >              ||
+||   [10][9]: If -> [14][IfTail]( ([0]? If @) )                               ||
+||   [8][9]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                ||
+||   [7][6]: If -> [30][Stat]<< !(0;!If @) >>                                 ||
+||   [6][6]: Stat -> [7][Block]< "{" { Stat @ } "}" >                         ||
+||   [2][0]: Block -> [26][OtherStat]<< !Block @ >>                           ||
+||   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >>                        ||
+||   [0][0]: Stat -> [34][Module]< Stat @ >                                   ||
+|| [SWITCHES]:                                                                ||
+||   allow_half_if : true                                                     ||
+|| [PREDECESSORS 137-137]: [137]                                              ||
+|| [SUCCESORS 146-146]: [146]                                                 ||
+++============================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++============================================================================++
+|| [146]: {DO} do                                                             ||
+|| [3][Do]< "do" @ ";" >                                                      ||
+|| [AST-INSTRUCTIONS]:                                                        ||
+||   - DelayFieldAssignment()                                                 ||
+||   - DelayFieldAssignment()                                                 ||
+||   - BeginObject(DoStat)                                                    ||
+|| [RETURN STACK]:                                                            ||
+||   [90][142]: Do -> [27][OtherStat]<< !Do @ >>                              ||
+||   [89][142]: OtherStat -> [31][Stat]<< !OtherStat @ >>                     ||
+||   [88][142]: Stat -> [16][IfTail]OtherStat ( "else" Stat @ | ( ([0]? ) ) ) ||
+||   [76][120]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >             ||
+||   [66][108]: If -> [14][IfTail]( ([0]? If @) )                             ||
+||   [64][108]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >             ||
+||   [60][102]: If -> [30][Stat]<< !(0;!If @) >>                              ||
+||   [59][102]: Stat -> [7][Block]< "{" { Stat @ } "}" >                      ||
+||   [56][100]: Block -> [26][OtherStat]<< !Block @ >>                        ||
+||   [55][100]: OtherStat -> [31][Stat]<< !OtherStat @ >>                     ||
+||   [54][100]: Stat -> [16][IfTail]OtherStat ( "else" Stat @ | ( ([0]? ) ) ) ||
+||   [14][15]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >              ||
+||   [10][9]: If -> [14][IfTail]( ([0]? If @) )                               ||
+||   [8][9]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                ||
+||   [7][6]: If -> [30][Stat]<< !(0;!If @) >>                                 ||
+||   [6][6]: Stat -> [7][Block]< "{" { Stat @ } "}" >                         ||
+||   [2][0]: Block -> [26][OtherStat]<< !Block @ >>                           ||
+||   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >>                        ||
+||   [0][0]: Stat -> [34][Module]< Stat @ >                                   ||
+|| [SWITCHES]:                                                                ||
+||   allow_half_if : true                                                     ||
+|| [PREDECESSORS 142-142]: [142]                                              ||
+|| [SUCCESORS 168-168]: [168]                                                 ||
+++============================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++============================================================================++
+|| [168]: {SEMICOLON} ;                                                       ||
+|| [2][Do]< "do" ";" @ >                                                      ||
+|| [AST-INSTRUCTIONS]:                                                        ||
+|| [RETURN STACK]:                                                            ||
+||   [90][142]: Do -> [27][OtherStat]<< !Do @ >>                              ||
+||   [89][142]: OtherStat -> [31][Stat]<< !OtherStat @ >>                     ||
+||   [88][142]: Stat -> [16][IfTail]OtherStat ( "else" Stat @ | ( ([0]? ) ) ) ||
+||   [76][120]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >             ||
+||   [66][108]: If -> [14][IfTail]( ([0]? If @) )                             ||
+||   [64][108]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >             ||
+||   [60][102]: If -> [30][Stat]<< !(0;!If @) >>                              ||
+||   [59][102]: Stat -> [7][Block]< "{" { Stat @ } "}" >                      ||
+||   [56][100]: Block -> [26][OtherStat]<< !Block @ >>                        ||
+||   [55][100]: OtherStat -> [31][Stat]<< !OtherStat @ >>                     ||
+||   [54][100]: Stat -> [16][IfTail]OtherStat ( "else" Stat @ | ( ([0]? ) ) ) ||
+||   [14][15]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >              ||
+||   [10][9]: If -> [14][IfTail]( ([0]? If @) )                               ||
+||   [8][9]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                ||
+||   [7][6]: If -> [30][Stat]<< !(0;!If @) >>                                 ||
+||   [6][6]: Stat -> [7][Block]< "{" { Stat @ } "}" >                         ||
+||   [2][0]: Block -> [26][OtherStat]<< !Block @ >>                           ||
+||   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >>                        ||
+||   [0][0]: Stat -> [34][Module]< Stat @ >                                   ||
+|| [SWITCHES]:                                                                ||
+||   allow_half_if : true                                                     ||
+|| [PREDECESSORS 146-146]: [146]                                              ||
+|| [SUCCESORS 169-169]: [169]                                                 ||
+++============================================================================++
+|
++
+|
++----------------------------------------------------------------------------+
+| [169]: <Ending>                                                            |
+| [27][OtherStat]<< !Do @ >>                                                 |
+| [AST-INSTRUCTIONS]:                                                        |
+|   - EndObject()                                                            |
+| [RETURN STACK]:                                                            |
+|   [89][142]: OtherStat -> [31][Stat]<< !OtherStat @ >>                     |
+|   [88][142]: Stat -> [16][IfTail]OtherStat ( "else" Stat @ | ( ([0]? ) ) ) |
+|   [76][120]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >             |
+|   [66][108]: If -> [14][IfTail]( ([0]? If @) )                             |
+|   [64][108]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >             |
+|   [60][102]: If -> [30][Stat]<< !(0;!If @) >>                              |
+|   [59][102]: Stat -> [7][Block]< "{" { Stat @ } "}" >                      |
+|   [56][100]: Block -> [26][OtherStat]<< !Block @ >>                        |
+|   [55][100]: OtherStat -> [31][Stat]<< !OtherStat @ >>                     |
+|   [54][100]: Stat -> [16][IfTail]OtherStat ( "else" Stat @ | ( ([0]? ) ) ) |
+|   [14][15]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >              |
+|   [10][9]: If -> [14][IfTail]( ([0]? If @) )                               |
+|   [8][9]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                |
+|   [7][6]: If -> [30][Stat]<< !(0;!If @) >>                                 |
+|   [6][6]: Stat -> [7][Block]< "{" { Stat @ } "}" >                         |
+|   [2][0]: Block -> [26][OtherStat]<< !Block @ >>                           |
+|   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >>                        |
+|   [0][0]: Stat -> [34][Module]< Stat @ >                                   |
+| [SWITCHES]:                                                                |
+|   allow_half_if : true                                                     |
+| [PREDECESSORS 168-168]: [168]                                              |
+| [SUCCESORS 170-170]: [170]                                                 |
++----------------------------------------------------------------------------+
+|
++
+|
++----------------------------------------------------------------------------+
+| [170]: <Ending>                                                            |
+| [31][Stat]<< !OtherStat @ >>                                               |
+| [AST-INSTRUCTIONS]:                                                        |
+|   - ReopenObject()                                                         |
+|   - EndObject()                                                            |
+| [RETURN STACK]:                                                            |
+|   [88][142]: Stat -> [16][IfTail]OtherStat ( "else" Stat @ | ( ([0]? ) ) ) |
+|   [76][120]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >             |
+|   [66][108]: If -> [14][IfTail]( ([0]? If @) )                             |
+|   [64][108]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >             |
+|   [60][102]: If -> [30][Stat]<< !(0;!If @) >>                              |
+|   [59][102]: Stat -> [7][Block]< "{" { Stat @ } "}" >                      |
+|   [56][100]: Block -> [26][OtherStat]<< !Block @ >>                        |
+|   [55][100]: OtherStat -> [31][Stat]<< !OtherStat @ >>                     |
+|   [54][100]: Stat -> [16][IfTail]OtherStat ( "else" Stat @ | ( ([0]? ) ) ) |
+|   [14][15]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >              |
+|   [10][9]: If -> [14][IfTail]( ([0]? If @) )                               |
+|   [8][9]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                |
+|   [7][6]: If -> [30][Stat]<< !(0;!If @) >>                                 |
+|   [6][6]: Stat -> [7][Block]< "{" { Stat @ } "}" >                         |
+|   [2][0]: Block -> [26][OtherStat]<< !Block @ >>                           |
+|   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >>                        |
+|   [0][0]: Stat -> [34][Module]< Stat @ >                                   |
+| [SWITCHES]:                                                                |
+|   allow_half_if : true                                                     |
+| [PREDECESSORS 169-169]: [169]                                              |
+| [SUCCESORS 171-171]: [171]                                                 |
++----------------------------------------------------------------------------+
+|
++
+|
++----------------------------------------------------------------------------+
+| [171]: <Ending>                                                            |
+| [16][IfTail]OtherStat ( "else" Stat @ | ( ([0]? ) ) )                      |
+| [AST-INSTRUCTIONS]:                                                        |
+|   - ReopenObject()                                                         |
+|   - EndObject()                                                            |
+|   > Field(IfStat::elseBranch)                                              |
+| [RETURN STACK]:                                                            |
+|   [76][120]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >             |
+|   [66][108]: If -> [14][IfTail]( ([0]? If @) )                             |
+|   [64][108]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >             |
+|   [60][102]: If -> [30][Stat]<< !(0;!If @) >>                              |
+|   [59][102]: Stat -> [7][Block]< "{" { Stat @ } "}" >                      |
+|   [56][100]: Block -> [26][OtherStat]<< !Block @ >>                        |
+|   [55][100]: OtherStat -> [31][Stat]<< !OtherStat @ >>                     |
+|   [54][100]: Stat -> [16][IfTail]OtherStat ( "else" Stat @ | ( ([0]? ) ) ) |
+|   [14][15]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >              |
+|   [10][9]: If -> [14][IfTail]( ([0]? If @) )                               |
+|   [8][9]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                |
+|   [7][6]: If -> [30][Stat]<< !(0;!If @) >>                                 |
+|   [6][6]: Stat -> [7][Block]< "{" { Stat @ } "}" >                         |
+|   [2][0]: Block -> [26][OtherStat]<< !Block @ >>                           |
+|   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >>                        |
+|   [0][0]: Stat -> [34][Module]< Stat @ >                                   |
+| [SWITCHES]:                                                                |
+|   allow_half_if : true                                                     |
+| [PREDECESSORS 170-170]: [170]                                              |
+| [SUCCESORS 172-172]: [172]                                                 |
++----------------------------------------------------------------------------+
+|
++
+|
++----------------------------------------------------------------------------+
+| [172]: <Ending>                                                            |
+| [21][If]< "if" "cond" "then" IfTail @ >                                    |
+| [AST-INSTRUCTIONS]:                                                        |
+| [RETURN STACK]:                                                            |
+|   [66][108]: If -> [14][IfTail]( ([0]? If @) )                             |
+|   [64][108]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >             |
+|   [60][102]: If -> [30][Stat]<< !(0;!If @) >>                              |
+|   [59][102]: Stat -> [7][Block]< "{" { Stat @ } "}" >                      |
+|   [56][100]: Block -> [26][OtherStat]<< !Block @ >>                        |
+|   [55][100]: OtherStat -> [31][Stat]<< !OtherStat @ >>                     |
+|   [54][100]: Stat -> [16][IfTail]OtherStat ( "else" Stat @ | ( ([0]? ) ) ) |
+|   [14][15]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >              |
+|   [10][9]: If -> [14][IfTail]( ([0]? If @) )                               |
+|   [8][9]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                |
+|   [7][6]: If -> [30][Stat]<< !(0;!If @) >>                                 |
+|   [6][6]: Stat -> [7][Block]< "{" { Stat @ } "}" >                         |
+|   [2][0]: Block -> [26][OtherStat]<< !Block @ >>                           |
+|   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >>                        |
+|   [0][0]: Stat -> [34][Module]< Stat @ >                                   |
+| [SWITCHES]:                                                                |
+|   allow_half_if : true                                                     |
+| [PREDECESSORS 171-171]: [171]                                              |
+| [SUCCESORS 173-173]: [173]                                                 |
++----------------------------------------------------------------------------+
+|
++
+|
++----------------------------------------------------------------------------+
+| [173]: <Ending>                                                            |
+| [14][IfTail]( ([0]? If @) )                                                |
+| [AST-INSTRUCTIONS]:                                                        |
+|   - EndObject()                                                            |
+| [RETURN STACK]:                                                            |
+|   [64][108]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >             |
+|   [60][102]: If -> [30][Stat]<< !(0;!If @) >>                              |
+|   [59][102]: Stat -> [7][Block]< "{" { Stat @ } "}" >                      |
+|   [56][100]: Block -> [26][OtherStat]<< !Block @ >>                        |
+|   [55][100]: OtherStat -> [31][Stat]<< !OtherStat @ >>                     |
+|   [54][100]: Stat -> [16][IfTail]OtherStat ( "else" Stat @ | ( ([0]? ) ) ) |
+|   [14][15]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >              |
+|   [10][9]: If -> [14][IfTail]( ([0]? If @) )                               |
+|   [8][9]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                |
+|   [7][6]: If -> [30][Stat]<< !(0;!If @) >>                                 |
+|   [6][6]: Stat -> [7][Block]< "{" { Stat @ } "}" >                         |
+|   [2][0]: Block -> [26][OtherStat]<< !Block @ >>                           |
+|   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >>                        |
+|   [0][0]: Stat -> [34][Module]< Stat @ >                                   |
+| [SWITCHES]:                                                                |
+|   allow_half_if : true                                                     |
+| [PREDECESSORS 172-172]: [172]                                              |
+| [SUCCESORS 174-174]: [174]                                                 |
++----------------------------------------------------------------------------+
+|
++
+|
++----------------------------------------------------------------------------+
+| [174]: <Ending>                                                            |
+| [21][If]< "if" "cond" "then" IfTail @ >                                    |
+| [AST-INSTRUCTIONS]:                                                        |
+|   - Field(IfStat::thenBranch)                                              |
+| [RETURN STACK]:                                                            |
+|   [60][102]: If -> [30][Stat]<< !(0;!If @) >>                              |
+|   [59][102]: Stat -> [7][Block]< "{" { Stat @ } "}" >                      |
+|   [56][100]: Block -> [26][OtherStat]<< !Block @ >>                        |
+|   [55][100]: OtherStat -> [31][Stat]<< !OtherStat @ >>                     |
+|   [54][100]: Stat -> [16][IfTail]OtherStat ( "else" Stat @ | ( ([0]? ) ) ) |
+|   [14][15]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >              |
+|   [10][9]: If -> [14][IfTail]( ([0]? If @) )                               |
+|   [8][9]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                |
+|   [7][6]: If -> [30][Stat]<< !(0;!If @) >>                                 |
+|   [6][6]: Stat -> [7][Block]< "{" { Stat @ } "}" >                         |
+|   [2][0]: Block -> [26][OtherStat]<< !Block @ >>                           |
+|   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >>                        |
+|   [0][0]: Stat -> [34][Module]< Stat @ >                                   |
+| [SWITCHES]:                                                                |
+|   allow_half_if : true                                                     |
+| [PREDECESSORS 173-173]: [173]                                              |
+| [SUCCESORS 175-175]: [175]                                                 |
++----------------------------------------------------------------------------+
+|
++
+|
++----------------------------------------------------------------------------+
+| [175]: <Ending>                                                            |
+| [30][Stat]<< !(0;!If @) >>                                                 |
+| [AST-INSTRUCTIONS]:                                                        |
+|   - EndObject()                                                            |
+| [RETURN STACK]:                                                            |
+|   [59][102]: Stat -> [7][Block]< "{" { Stat @ } "}" >                      |
+|   [56][100]: Block -> [26][OtherStat]<< !Block @ >>                        |
+|   [55][100]: OtherStat -> [31][Stat]<< !OtherStat @ >>                     |
+|   [54][100]: Stat -> [16][IfTail]OtherStat ( "else" Stat @ | ( ([0]? ) ) ) |
+|   [14][15]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >              |
+|   [10][9]: If -> [14][IfTail]( ([0]? If @) )                               |
+|   [8][9]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                |
+|   [7][6]: If -> [30][Stat]<< !(0;!If @) >>                                 |
+|   [6][6]: Stat -> [7][Block]< "{" { Stat @ } "}" >                         |
+|   [2][0]: Block -> [26][OtherStat]<< !Block @ >>                           |
+|   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >>                        |
+|   [0][0]: Stat -> [34][Module]< Stat @ >                                   |
+| [SWITCHES]:                                                                |
+|   allow_half_if : true                                                     |
+| [PREDECESSORS 174-174]: [174]                                              |
+| [SUCCESORS 176-176]: [176]                                                 |
++----------------------------------------------------------------------------+
+|
++
+|
++----------------------------------------------------------------------------+
+| [176]: <Ending>                                                            |
+| [7][Block]< "{" { Stat @ } "}" >                                           |
+| [SWITCH-INSTRUCTIONS]:                                                     |
+|     -switches                                                              |
+| [AST-INSTRUCTIONS]:                                                        |
+|   - ReopenObject()                                                         |
+|   - EndObject()                                                            |
+|   > Field(BlockStat::stats)                                                |
+| [RETURN STACK]:                                                            |
+|   [56][100]: Block -> [26][OtherStat]<< !Block @ >>                        |
+|   [55][100]: OtherStat -> [31][Stat]<< !OtherStat @ >>                     |
+|   [54][100]: Stat -> [16][IfTail]OtherStat ( "else" Stat @ | ( ([0]? ) ) ) |
+|   [14][15]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >              |
+|   [10][9]: If -> [14][IfTail]( ([0]? If @) )                               |
+|   [8][9]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                |
+|   [7][6]: If -> [30][Stat]<< !(0;!If @) >>                                 |
+|   [6][6]: Stat -> [7][Block]< "{" { Stat @ } "}" >                         |
+|   [2][0]: Block -> [26][OtherStat]<< !Block @ >>                           |
+|   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >>                        |
+|   [0][0]: Stat -> [34][Module]< Stat @ >                                   |
+| [SWITCHES]:                                                                |
+|   allow_half_if : true                                                     |
+| [PREDECESSORS 175-175]: [175]                                              |
+| [SUCCESORS 183-183]: [183]                                                 |
++----------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++============================================================================++
+|| [183]: {CLOSE_BRACE} }                                                     ||
+|| [8][Block]< "{" { Stat } "}" @ >                                           ||
+|| [AST-INSTRUCTIONS]:                                                        ||
+|| [RETURN STACK]:                                                            ||
+||   [56][100]: Block -> [26][OtherStat]<< !Block @ >>                        ||
+||   [55][100]: OtherStat -> [31][Stat]<< !OtherStat @ >>                     ||
+||   [54][100]: Stat -> [16][IfTail]OtherStat ( "else" Stat @ | ( ([0]? ) ) ) ||
+||   [14][15]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >              ||
+||   [10][9]: If -> [14][IfTail]( ([0]? If @) )                               ||
+||   [8][9]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                ||
+||   [7][6]: If -> [30][Stat]<< !(0;!If @) >>                                 ||
+||   [6][6]: Stat -> [7][Block]< "{" { Stat @ } "}" >                         ||
+||   [2][0]: Block -> [26][OtherStat]<< !Block @ >>                           ||
+||   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >>                        ||
+||   [0][0]: Stat -> [34][Module]< Stat @ >                                   ||
+|| [SWITCHES]:                                                                ||
+||   allow_half_if : true                                                     ||
+|| [PREDECESSORS 176-176]: [176]                                              ||
+|| [SUCCESORS 184-184]: [184]                                                 ||
+++============================================================================++
+|
++
+|
++----------------------------------------------------------------------------+
+| [184]: <Ending>                                                            |
+| [26][OtherStat]<< !Block @ >>                                              |
+| [AST-INSTRUCTIONS]:                                                        |
+|   - EndObject()                                                            |
+| [RETURN STACK]:                                                            |
+|   [55][100]: OtherStat -> [31][Stat]<< !OtherStat @ >>                     |
+|   [54][100]: Stat -> [16][IfTail]OtherStat ( "else" Stat @ | ( ([0]? ) ) ) |
+|   [14][15]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >              |
+|   [10][9]: If -> [14][IfTail]( ([0]? If @) )                               |
+|   [8][9]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                |
+|   [7][6]: If -> [30][Stat]<< !(0;!If @) >>                                 |
+|   [6][6]: Stat -> [7][Block]< "{" { Stat @ } "}" >                         |
+|   [2][0]: Block -> [26][OtherStat]<< !Block @ >>                           |
+|   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >>                        |
+|   [0][0]: Stat -> [34][Module]< Stat @ >                                   |
+| [SWITCHES]:                                                                |
+|   allow_half_if : true                                                     |
+| [PREDECESSORS 183-183]: [183]                                              |
+| [SUCCESORS 185-185]: [185]                                                 |
++----------------------------------------------------------------------------+
+|
++
+|
++----------------------------------------------------------------------------+
+| [185]: <Ending>                                                            |
+| [31][Stat]<< !OtherStat @ >>                                               |
+| [AST-INSTRUCTIONS]:                                                        |
+|   - ReopenObject()                                                         |
+|   - EndObject()                                                            |
+| [RETURN STACK]:                                                            |
+|   [54][100]: Stat -> [16][IfTail]OtherStat ( "else" Stat @ | ( ([0]? ) ) ) |
+|   [14][15]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >              |
+|   [10][9]: If -> [14][IfTail]( ([0]? If @) )                               |
+|   [8][9]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >                |
+|   [7][6]: If -> [30][Stat]<< !(0;!If @) >>                                 |
+|   [6][6]: Stat -> [7][Block]< "{" { Stat @ } "}" >                         |
+|   [2][0]: Block -> [26][OtherStat]<< !Block @ >>                           |
+|   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >>                        |
+|   [0][0]: Stat -> [34][Module]< Stat @ >                                   |
+| [SWITCHES]:                                                                |
+|   allow_half_if : true                                                     |
+| [PREDECESSORS 184-184]: [184]                                              |
+| [SUCCESORS 186-186]: [186]                                                 |
++----------------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------------+
+| [186]: <Ending>                                               |
+| [16][IfTail]OtherStat ( "else" Stat @ | ( ([0]? ) ) )         |
+| [AST-INSTRUCTIONS]:                                           |
+|   - ReopenObject()                                            |
+|   - EndObject()                                               |
+|   > Field(IfStat::elseBranch)                                 |
+| [RETURN STACK]:                                               |
+|   [14][15]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ > |
+|   [10][9]: If -> [14][IfTail]( ([0]? If @) )                  |
+|   [8][9]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >   |
+|   [7][6]: If -> [30][Stat]<< !(0;!If @) >>                    |
+|   [6][6]: Stat -> [7][Block]< "{" { Stat @ } "}" >            |
+|   [2][0]: Block -> [26][OtherStat]<< !Block @ >>              |
+|   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >>           |
+|   [0][0]: Stat -> [34][Module]< Stat @ >                      |
+| [SWITCHES]:                                                   |
+|   allow_half_if : true                                        |
+| [PREDECESSORS 185-185]: [185]                                 |
+| [SUCCESORS 187-187]: [187]                                    |
++---------------------------------------------------------------+
+|
++
+|
++-------------------------------------------------------------+
+| [187]: <Ending>                                             |
+| [21][If]< "if" "cond" "then" IfTail @ >                     |
+| [AST-INSTRUCTIONS]:                                         |
+| [RETURN STACK]:                                             |
+|   [10][9]: If -> [14][IfTail]( ([0]? If @) )                |
+|   [8][9]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ > |
+|   [7][6]: If -> [30][Stat]<< !(0;!If @) >>                  |
+|   [6][6]: Stat -> [7][Block]< "{" { Stat @ } "}" >          |
+|   [2][0]: Block -> [26][OtherStat]<< !Block @ >>            |
+|   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >>         |
+|   [0][0]: Stat -> [34][Module]< Stat @ >                    |
+| [SWITCHES]:                                                 |
+|   allow_half_if : true                                      |
+| [PREDECESSORS 186-186]: [186]                               |
+| [SUCCESORS 188-188]: [188]                                  |
++-------------------------------------------------------------+
+|
++
+|
++-------------------------------------------------------------+
+| [188]: <Ending>                                             |
+| [14][IfTail]( ([0]? If @) )                                 |
+| [AST-INSTRUCTIONS]:                                         |
+|   - EndObject()                                             |
+| [RETURN STACK]:                                             |
+|   [8][9]: IfTail -> [21][If]< "if" "cond" "then" IfTail @ > |
+|   [7][6]: If -> [30][Stat]<< !(0;!If @) >>                  |
+|   [6][6]: Stat -> [7][Block]< "{" { Stat @ } "}" >          |
+|   [2][0]: Block -> [26][OtherStat]<< !Block @ >>            |
+|   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >>         |
+|   [0][0]: Stat -> [34][Module]< Stat @ >                    |
+| [SWITCHES]:                                                 |
+|   allow_half_if : true                                      |
+| [PREDECESSORS 187-187]: [187]                               |
+| [SUCCESORS 189-189]: [189]                                  |
++-------------------------------------------------------------+
+|
++
+|
++-----------------------------------------------------+
+| [189]: <Ending>                                     |
+| [21][If]< "if" "cond" "then" IfTail @ >             |
+| [AST-INSTRUCTIONS]:                                 |
+|   - Field(IfStat::thenBranch)                       |
+| [RETURN STACK]:                                     |
+|   [7][6]: If -> [30][Stat]<< !(0;!If @) >>          |
+|   [6][6]: Stat -> [7][Block]< "{" { Stat @ } "}" >  |
+|   [2][0]: Block -> [26][OtherStat]<< !Block @ >>    |
+|   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >> |
+|   [0][0]: Stat -> [34][Module]< Stat @ >            |
+| [SWITCHES]:                                         |
+|   allow_half_if : true                              |
+| [PREDECESSORS 188-188]: [188]                       |
+| [SUCCESORS 190-190]: [190]                          |
++-----------------------------------------------------+
+|
++
+|
++-----------------------------------------------------+
+| [190]: <Ending>                                     |
+| [30][Stat]<< !(0;!If @) >>                          |
+| [AST-INSTRUCTIONS]:                                 |
+|   - EndObject()                                     |
+| [RETURN STACK]:                                     |
+|   [6][6]: Stat -> [7][Block]< "{" { Stat @ } "}" >  |
+|   [2][0]: Block -> [26][OtherStat]<< !Block @ >>    |
+|   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >> |
+|   [0][0]: Stat -> [34][Module]< Stat @ >            |
+| [SWITCHES]:                                         |
+|   allow_half_if : true                              |
+| [PREDECESSORS 189-189]: [189]                       |
+| [SUCCESORS 191-191]: [191]                          |
++-----------------------------------------------------+
+|
++
+|
++-----------------------------------------------------+
+| [191]: <Ending>                                     |
+| [7][Block]< "{" { Stat @ } "}" >                    |
+| [SWITCH-INSTRUCTIONS]:                              |
+|     -switches                                       |
+| [AST-INSTRUCTIONS]:                                 |
+|   - ReopenObject()                                  |
+|   - EndObject()                                     |
+|   > Field(BlockStat::stats)                         |
+| [RETURN STACK]:                                     |
+|   [2][0]: Block -> [26][OtherStat]<< !Block @ >>    |
+|   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >> |
+|   [0][0]: Stat -> [34][Module]< Stat @ >            |
+| [SWITCHES]:                                         |
+|   allow_half_if : true                              |
+| [PREDECESSORS 190-190]: [190]                       |
+| [SUCCESORS 192-192]: [192]                          |
++-----------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++========================================================++
+|| [192]: {DO} do                                         ||
+|| [3][Do]< "do" @ ";" >                                  ||
+|| [AST-INSTRUCTIONS]:                                    ||
+||   - DelayFieldAssignment()                             ||
+||   - DelayFieldAssignment()                             ||
+||   - BeginObject(DoStat)                                ||
+|| [RETURN STACK]:                                        ||
+||   [93][191]: Do -> [27][OtherStat]<< !Do @ >>          ||
+||   [92][191]: OtherStat -> [31][Stat]<< !OtherStat @ >> ||
+||   [91][191]: Stat -> [7][Block]< "{" { Stat @ } "}" >  ||
+||   [2][0]: Block -> [26][OtherStat]<< !Block @ >>       ||
+||   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >>    ||
+||   [0][0]: Stat -> [34][Module]< Stat @ >               ||
+|| [SWITCHES]:                                            ||
+||   allow_half_if : true                                 ||
+|| [PREDECESSORS 191-191]: [191]                          ||
+|| [SUCCESORS 193-193]: [193]                             ||
+++========================================================++
+[0]
+ |
+ +
+ |
+[0]
+++========================================================++
+|| [193]: {SEMICOLON} ;                                   ||
+|| [2][Do]< "do" ";" @ >                                  ||
+|| [AST-INSTRUCTIONS]:                                    ||
+|| [RETURN STACK]:                                        ||
+||   [93][191]: Do -> [27][OtherStat]<< !Do @ >>          ||
+||   [92][191]: OtherStat -> [31][Stat]<< !OtherStat @ >> ||
+||   [91][191]: Stat -> [7][Block]< "{" { Stat @ } "}" >  ||
+||   [2][0]: Block -> [26][OtherStat]<< !Block @ >>       ||
+||   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >>    ||
+||   [0][0]: Stat -> [34][Module]< Stat @ >               ||
+|| [SWITCHES]:                                            ||
+||   allow_half_if : true                                 ||
+|| [PREDECESSORS 192-192]: [192]                          ||
+|| [SUCCESORS 194-194]: [194]                             ||
+++========================================================++
+|
++
+|
++--------------------------------------------------------+
+| [194]: <Ending>                                        |
+| [27][OtherStat]<< !Do @ >>                             |
+| [AST-INSTRUCTIONS]:                                    |
+|   - EndObject()                                        |
+| [RETURN STACK]:                                        |
+|   [92][191]: OtherStat -> [31][Stat]<< !OtherStat @ >> |
+|   [91][191]: Stat -> [7][Block]< "{" { Stat @ } "}" >  |
+|   [2][0]: Block -> [26][OtherStat]<< !Block @ >>       |
+|   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >>    |
+|   [0][0]: Stat -> [34][Module]< Stat @ >               |
+| [SWITCHES]:                                            |
+|   allow_half_if : true                                 |
+| [PREDECESSORS 193-193]: [193]                          |
+| [SUCCESORS 195-195]: [195]                             |
++--------------------------------------------------------+
+|
++
+|
++-------------------------------------------------------+
+| [195]: <Ending>                                       |
+| [31][Stat]<< !OtherStat @ >>                          |
+| [AST-INSTRUCTIONS]:                                   |
+|   - ReopenObject()                                    |
+|   - EndObject()                                       |
+| [RETURN STACK]:                                       |
+|   [91][191]: Stat -> [7][Block]< "{" { Stat @ } "}" > |
+|   [2][0]: Block -> [26][OtherStat]<< !Block @ >>      |
+|   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >>   |
+|   [0][0]: Stat -> [34][Module]< Stat @ >              |
+| [SWITCHES]:                                           |
+|   allow_half_if : true                                |
+| [PREDECESSORS 194-194]: [194]                         |
+| [SUCCESORS 196-196]: [196]                            |
++-------------------------------------------------------+
+|
++
+|
++-----------------------------------------------------+
+| [196]: <Ending>                                     |
+| [7][Block]< "{" { Stat @ } "}" >                    |
+| [AST-INSTRUCTIONS]:                                 |
+|   - ReopenObject()                                  |
+|   - EndObject()                                     |
+|   > Field(BlockStat::stats)                         |
+| [RETURN STACK]:                                     |
+|   [2][0]: Block -> [26][OtherStat]<< !Block @ >>    |
+|   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >> |
+|   [0][0]: Stat -> [34][Module]< Stat @ >            |
+| [SWITCHES]:                                         |
+|   allow_half_if : true                              |
+| [PREDECESSORS 195-195]: [195]                       |
+| [SUCCESORS 197-197]: [197]                          |
++-----------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++=====================================================++
+|| [197]: {CLOSE_BRACE} }                              ||
+|| [8][Block]< "{" { Stat } "}" @ >                    ||
+|| [AST-INSTRUCTIONS]:                                 ||
+|| [RETURN STACK]:                                     ||
+||   [2][0]: Block -> [26][OtherStat]<< !Block @ >>    ||
+||   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >> ||
+||   [0][0]: Stat -> [34][Module]< Stat @ >            ||
+|| [SWITCHES]:                                         ||
+||   allow_half_if : true                              ||
+|| [PREDECESSORS 196-196]: [196]                       ||
+|| [SUCCESORS 198-198]: [198]                          ||
+++=====================================================++
+|
++
+|
++-----------------------------------------------------+
+| [198]: <Ending>                                     |
+| [26][OtherStat]<< !Block @ >>                       |
+| [AST-INSTRUCTIONS]:                                 |
+|   - EndObject()                                     |
+| [RETURN STACK]:                                     |
+|   [1][0]: OtherStat -> [31][Stat]<< !OtherStat @ >> |
+|   [0][0]: Stat -> [34][Module]< Stat @ >            |
+| [SWITCHES]:                                         |
+|   allow_half_if : true                              |
+| [PREDECESSORS 197-197]: [197]                       |
+| [SUCCESORS 199-199]: [199]                          |
++-----------------------------------------------------+
+|
++
+|
++------------------------------------------+
+| [199]: <Ending>                          |
+| [31][Stat]<< !OtherStat @ >>             |
+| [AST-INSTRUCTIONS]:                      |
+|   - ReopenObject()                       |
+|   - EndObject()                          |
+| [RETURN STACK]:                          |
+|   [0][0]: Stat -> [34][Module]< Stat @ > |
+| [SWITCHES]:                              |
+|   allow_half_if : true                   |
+| [PREDECESSORS 198-198]: [198]            |
+| [SUCCESORS 200-200]: [200]               |
++------------------------------------------+
+|
++
+|
++-------------------------------+
+| [200]: <Ending>               |
+| [34][Module]< Stat @ >        |
+| [AST-INSTRUCTIONS]:           |
+|   - ReopenObject()            |
+|   - EndObject()               |
+| [SWITCHES]:                   |
+|   allow_half_if : true        |
+| [PREDECESSORS 199-199]: [199] |
+| [SUCCESORS 201-201]: [201]    |
++-------------------------------+
+|
++
+|
++-------------------------------+
+| [201]: <Ending>               |
+| [33][Module] END [ENDING]     |
+| [AST-INSTRUCTIONS]:           |
+|   - Field(Module::stat)       |
+|   - EndObject()               |
+| [SWITCHES]:                   |
+|   allow_half_if : true        |
+| [PREDECESSORS 200-200]: [200] |
++-------------------------------+

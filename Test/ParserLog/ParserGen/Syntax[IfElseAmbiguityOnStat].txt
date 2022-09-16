@@ -1,0 +1,171 @@
+﻿{
+    "$ast": "SyntaxFile",
+    "rules": [{
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "\"do\"",
+                    "refType": "Literal"
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "\";\"",
+                    "refType": "Literal"
+                }
+            },
+            "type": "DoStat"
+        }],
+        "name": "Do",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "RefSyntax",
+                        "field": "",
+                        "literal": "\"{\"",
+                        "refType": "Literal"
+                    },
+                    "second": {
+                        "$ast": "LoopSyntax",
+                        "delimiter": null,
+                        "syntax": {
+                            "$ast": "RefSyntax",
+                            "field": "stats",
+                            "literal": "Stat",
+                            "refType": "Id"
+                        }
+                    }
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "\"}\"",
+                    "refType": "Literal"
+                }
+            },
+            "type": "BlockStat"
+        }],
+        "name": "Block",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "SequenceSyntax",
+                        "first": {
+                            "$ast": "SequenceSyntax",
+                            "first": {
+                                "$ast": "RefSyntax",
+                                "field": "",
+                                "literal": "\"if\"",
+                                "refType": "Literal"
+                            },
+                            "second": {
+                                "$ast": "RefSyntax",
+                                "field": "",
+                                "literal": "\"cond\"",
+                                "refType": "Literal"
+                            }
+                        },
+                        "second": {
+                            "$ast": "RefSyntax",
+                            "field": "",
+                            "literal": "\"then\"",
+                            "refType": "Literal"
+                        }
+                    },
+                    "second": {
+                        "$ast": "RefSyntax",
+                        "field": "thenBranch",
+                        "literal": "Stat",
+                        "refType": "Id"
+                    }
+                },
+                "second": {
+                    "$ast": "OptionalSyntax",
+                    "priority": "Equal",
+                    "syntax": {
+                        "$ast": "SequenceSyntax",
+                        "first": {
+                            "$ast": "RefSyntax",
+                            "field": "",
+                            "literal": "\"else\"",
+                            "refType": "Literal"
+                        },
+                        "second": {
+                            "$ast": "RefSyntax",
+                            "field": "elseBranch",
+                            "literal": "Stat",
+                            "refType": "Id"
+                        }
+                    }
+                }
+            },
+            "type": "IfStat"
+        }],
+        "name": "If",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "Do"
+            }
+        }, {
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "Block"
+            }
+        }, {
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "If"
+            }
+        }],
+        "name": "Stat",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "RefSyntax",
+                "field": "stat",
+                "literal": "Stat",
+                "refType": "Id"
+            },
+            "type": "Module"
+        }],
+        "name": "Module",
+        "type": ""
+    }],
+    "switches": []
+}

@@ -1,0 +1,466 @@
+﻿{
+    "$ast": "SyntaxFile",
+    "rules": [{
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "RefSyntax",
+                "field": "name",
+                "literal": "ID",
+                "refType": "Id"
+            },
+            "type": "Name"
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "RefSyntax",
+                        "field": "parent",
+                        "literal": "_Name",
+                        "refType": "Id"
+                    },
+                    "second": {
+                        "$ast": "RefSyntax",
+                        "field": "",
+                        "literal": "\".\"",
+                        "refType": "Literal"
+                    }
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "member",
+                    "literal": "ID",
+                    "refType": "Id"
+                }
+            },
+            "type": "MemberName"
+        }],
+        "name": "_Name",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "_Name"
+            }
+        }],
+        "name": "_PrimitiveShared",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "\"const\"",
+                    "refType": "Literal"
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "type",
+                    "literal": "_PrimitiveShared",
+                    "refType": "Id"
+                }
+            },
+            "type": "ConstType"
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "\"const\"",
+                    "refType": "Literal"
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "type",
+                    "literal": "_PrimitiveTypeOnly",
+                    "refType": "Id"
+                }
+            },
+            "type": "ConstType"
+        }],
+        "name": "_PrimitiveTypeOnly",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "RefSyntax",
+                        "field": "",
+                        "literal": "\"(\"",
+                        "refType": "Literal"
+                    },
+                    "second": {
+                        "$ast": "UseSyntax",
+                        "name": "_Expr"
+                    }
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "\")\"",
+                    "refType": "Literal"
+                }
+            }
+        }],
+        "name": "_PrimitiveExprOnly",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "LeftRecursionPlaceholderClause",
+            "flags": [{
+                "$ast": "LeftRecursionPlaceholder",
+                "flag": "Shared"
+            }, {
+                "$ast": "LeftRecursionPlaceholder",
+                "flag": "Type"
+            }]
+        }, {
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "_PrimitiveShared"
+            }
+        }, {
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "_PrimitiveTypeOnly"
+            }
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "RefSyntax",
+                    "field": "type",
+                    "literal": "_LongType",
+                    "refType": "Id"
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "\"const\"",
+                    "refType": "Literal"
+                }
+            },
+            "type": "ConstType"
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "RefSyntax",
+                    "field": "type",
+                    "literal": "_LongType",
+                    "refType": "Id"
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "\"*\"",
+                    "refType": "Literal"
+                }
+            },
+            "type": "PointerType"
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "SequenceSyntax",
+                        "first": {
+                            "$ast": "RefSyntax",
+                            "field": "returnType",
+                            "literal": "_LongType",
+                            "refType": "Id"
+                        },
+                        "second": {
+                            "$ast": "RefSyntax",
+                            "field": "",
+                            "literal": "\"(\"",
+                            "refType": "Literal"
+                        }
+                    },
+                    "second": {
+                        "$ast": "LoopSyntax",
+                        "delimiter": {
+                            "$ast": "RefSyntax",
+                            "field": "",
+                            "literal": "\",\"",
+                            "refType": "Literal"
+                        },
+                        "syntax": {
+                            "$ast": "RefSyntax",
+                            "field": "args",
+                            "literal": "_LongType",
+                            "refType": "Id"
+                        }
+                    }
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "\")\"",
+                    "refType": "Literal"
+                }
+            },
+            "type": "FunctionType"
+        }],
+        "name": "_LongType",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "_PrimitiveShared"
+            }
+        }, {
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "_PrimitiveExprOnly"
+            }
+        }, {
+            "$ast": "LeftRecursionPlaceholderClause",
+            "flags": [{
+                "$ast": "LeftRecursionPlaceholder",
+                "flag": "Shared"
+            }, {
+                "$ast": "LeftRecursionPlaceholder",
+                "flag": "Expr"
+            }]
+        }],
+        "name": "_Expr0",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "_Expr0"
+            }
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "SequenceSyntax",
+                        "first": {
+                            "$ast": "RefSyntax",
+                            "field": "func",
+                            "literal": "_Expr1",
+                            "refType": "Id"
+                        },
+                        "second": {
+                            "$ast": "RefSyntax",
+                            "field": "",
+                            "literal": "\"(\"",
+                            "refType": "Literal"
+                        }
+                    },
+                    "second": {
+                        "$ast": "LoopSyntax",
+                        "delimiter": {
+                            "$ast": "RefSyntax",
+                            "field": "",
+                            "literal": "\",\"",
+                            "refType": "Literal"
+                        },
+                        "syntax": {
+                            "$ast": "RefSyntax",
+                            "field": "args",
+                            "literal": "_Expr",
+                            "refType": "Id"
+                        }
+                    }
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "\")\"",
+                    "refType": "Literal"
+                }
+            },
+            "type": "CallExpr"
+        }],
+        "name": "_Expr1",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "_Expr1"
+            }
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "RefSyntax",
+                        "field": "first",
+                        "literal": "_Expr",
+                        "refType": "Id"
+                    },
+                    "second": {
+                        "$ast": "RefSyntax",
+                        "field": "",
+                        "literal": "\"*\"",
+                        "refType": "Literal"
+                    }
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "second",
+                    "literal": "_Expr1",
+                    "refType": "Id"
+                }
+            },
+            "type": "MulExpr"
+        }],
+        "name": "_Expr",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "LeftRecursionInjectClause",
+            "continuation": {
+                "$ast": "LeftRecursionInjectContinuation",
+                "configuration": "Single",
+                "flag": {
+                    "$ast": "LeftRecursionPlaceholder",
+                    "flag": "Shared"
+                },
+                "injectionTargets": [{
+                    "$ast": "LeftRecursionInjectClause",
+                    "continuation": null,
+                    "rule": {
+                        "$ast": "RefSyntax",
+                        "field": "",
+                        "literal": "_LongType",
+                        "refType": "Id"
+                    }
+                }, {
+                    "$ast": "LeftRecursionInjectClause",
+                    "continuation": null,
+                    "rule": {
+                        "$ast": "RefSyntax",
+                        "field": "",
+                        "literal": "_Expr",
+                        "refType": "Id"
+                    }
+                }],
+                "type": "Optional"
+            },
+            "rule": {
+                "$ast": "RefSyntax",
+                "field": "",
+                "literal": "_PrimitiveShared",
+                "refType": "Id"
+            }
+        }, {
+            "$ast": "LeftRecursionInjectClause",
+            "continuation": {
+                "$ast": "LeftRecursionInjectContinuation",
+                "configuration": "Single",
+                "flag": {
+                    "$ast": "LeftRecursionPlaceholder",
+                    "flag": "Type"
+                },
+                "injectionTargets": [{
+                    "$ast": "LeftRecursionInjectClause",
+                    "continuation": null,
+                    "rule": {
+                        "$ast": "RefSyntax",
+                        "field": "",
+                        "literal": "_LongType",
+                        "refType": "Id"
+                    }
+                }],
+                "type": "Optional"
+            },
+            "rule": {
+                "$ast": "RefSyntax",
+                "field": "",
+                "literal": "_PrimitiveTypeOnly",
+                "refType": "Id"
+            }
+        }, {
+            "$ast": "LeftRecursionInjectClause",
+            "continuation": {
+                "$ast": "LeftRecursionInjectContinuation",
+                "configuration": "Single",
+                "flag": {
+                    "$ast": "LeftRecursionPlaceholder",
+                    "flag": "Expr"
+                },
+                "injectionTargets": [{
+                    "$ast": "LeftRecursionInjectClause",
+                    "continuation": null,
+                    "rule": {
+                        "$ast": "RefSyntax",
+                        "field": "",
+                        "literal": "_Expr",
+                        "refType": "Id"
+                    }
+                }],
+                "type": "Optional"
+            },
+            "rule": {
+                "$ast": "RefSyntax",
+                "field": "",
+                "literal": "_PrimitiveExprOnly",
+                "refType": "Id"
+            }
+        }],
+        "name": "Module",
+        "type": ""
+    }],
+    "switches": []
+}

@@ -1,0 +1,209 @@
+﻿+----------------------+
+| [0]: <Start>         |
+| [22][Module] BEGIN   |
+| [AST-INSTRUCTIONS]:  |
+| [SUCCESORS 1-1]: [1] |
++----------------------+
+[0]
+ |
+ +
+ |
+[0]
+++=============================================++
+|| [1]: {OPEN_BRACE} {                         ||
+|| [6][Block]< "{" @ { Stat } "}" >            ||
+|| [AST-INSTRUCTIONS]:                         ||
+||   - BeginObject(Module)                     ||
+||   - DelayFieldAssignment()                  ||
+||   - BeginObject(BlockStat)                  ||
+|| [RETURN STACK]:                             ||
+||   [1][0]: Block -> [20][Stat]<< !Block @ >> ||
+||   [0][0]: Stat -> [24][Module]< Stat @ >    ||
+|| [PREDECESSORS 0-0]: [0]                     ||
+|| [SUCCESORS 2-2]: [2]                        ||
+++=============================================++
+[0]
+ |
+ +
+ |
+[0]
+++====================================================++
+|| [2]: {DO} do                                       ||
+|| [3][Do]< "do" @ ";" >                              ||
+|| [AST-INSTRUCTIONS]:                                ||
+||   - DelayFieldAssignment()                         ||
+||   - BeginObject(DoStat)                            ||
+|| [RETURN STACK]:                                    ||
+||   [3][1]: Do -> [21][Stat]<< !Do @ >>              ||
+||   [2][1]: Stat -> [7][Block]< "{" { Stat @ } "}" > ||
+||   [1][0]: Block -> [20][Stat]<< !Block @ >>        ||
+||   [0][0]: Stat -> [24][Module]< Stat @ >           ||
+|| [PREDECESSORS 1-1]: [1]                            ||
+|| [SUCCESORS 3-3]: [3]                               ||
+++====================================================++
+[0]
+ |
+ +
+ |
+[0]
+++====================================================++
+|| [3]: {SEMICOLON} ;                                 ||
+|| [2][Do]< "do" ";" @ >                              ||
+|| [AST-INSTRUCTIONS]:                                ||
+|| [RETURN STACK]:                                    ||
+||   [3][1]: Do -> [21][Stat]<< !Do @ >>              ||
+||   [2][1]: Stat -> [7][Block]< "{" { Stat @ } "}" > ||
+||   [1][0]: Block -> [20][Stat]<< !Block @ >>        ||
+||   [0][0]: Stat -> [24][Module]< Stat @ >           ||
+|| [PREDECESSORS 2-2]: [2]                            ||
+|| [SUCCESORS 4-4]: [4]                               ||
+++====================================================++
+|
++
+|
++----------------------------------------------------+
+| [4]: <Ending>                                      |
+| [21][Stat]<< !Do @ >>                              |
+| [AST-INSTRUCTIONS]:                                |
+|   - EndObject()                                    |
+| [RETURN STACK]:                                    |
+|   [2][1]: Stat -> [7][Block]< "{" { Stat @ } "}" > |
+|   [1][0]: Block -> [20][Stat]<< !Block @ >>        |
+|   [0][0]: Stat -> [24][Module]< Stat @ >           |
+| [PREDECESSORS 3-3]: [3]                            |
+| [SUCCESORS 5-5]: [5]                               |
++----------------------------------------------------+
+|
++
+|
++---------------------------------------------+
+| [5]: <Ending>                               |
+| [7][Block]< "{" { Stat @ } "}" >            |
+| [AST-INSTRUCTIONS]:                         |
+|   - ReopenObject()                          |
+|   - EndObject()                             |
+|   > Field(BlockStat::stats)                 |
+| [RETURN STACK]:                             |
+|   [1][0]: Block -> [20][Stat]<< !Block @ >> |
+|   [0][0]: Stat -> [24][Module]< Stat @ >    |
+| [PREDECESSORS 4-4]: [4]                     |
+| [SUCCESORS 6-6]: [6]                        |
++---------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++====================================================++
+|| [6]: {DO} do                                       ||
+|| [3][Do]< "do" @ ";" >                              ||
+|| [AST-INSTRUCTIONS]:                                ||
+||   - DelayFieldAssignment()                         ||
+||   - BeginObject(DoStat)                            ||
+|| [RETURN STACK]:                                    ||
+||   [5][5]: Do -> [21][Stat]<< !Do @ >>              ||
+||   [4][5]: Stat -> [7][Block]< "{" { Stat @ } "}" > ||
+||   [1][0]: Block -> [20][Stat]<< !Block @ >>        ||
+||   [0][0]: Stat -> [24][Module]< Stat @ >           ||
+|| [PREDECESSORS 5-5]: [5]                            ||
+|| [SUCCESORS 7-7]: [7]                               ||
+++====================================================++
+[0]
+ |
+ +
+ |
+[0]
+++====================================================++
+|| [7]: {SEMICOLON} ;                                 ||
+|| [2][Do]< "do" ";" @ >                              ||
+|| [AST-INSTRUCTIONS]:                                ||
+|| [RETURN STACK]:                                    ||
+||   [5][5]: Do -> [21][Stat]<< !Do @ >>              ||
+||   [4][5]: Stat -> [7][Block]< "{" { Stat @ } "}" > ||
+||   [1][0]: Block -> [20][Stat]<< !Block @ >>        ||
+||   [0][0]: Stat -> [24][Module]< Stat @ >           ||
+|| [PREDECESSORS 6-6]: [6]                            ||
+|| [SUCCESORS 8-8]: [8]                               ||
+++====================================================++
+|
++
+|
++----------------------------------------------------+
+| [8]: <Ending>                                      |
+| [21][Stat]<< !Do @ >>                              |
+| [AST-INSTRUCTIONS]:                                |
+|   - EndObject()                                    |
+| [RETURN STACK]:                                    |
+|   [4][5]: Stat -> [7][Block]< "{" { Stat @ } "}" > |
+|   [1][0]: Block -> [20][Stat]<< !Block @ >>        |
+|   [0][0]: Stat -> [24][Module]< Stat @ >           |
+| [PREDECESSORS 7-7]: [7]                            |
+| [SUCCESORS 9-9]: [9]                               |
++----------------------------------------------------+
+|
++
+|
++---------------------------------------------+
+| [9]: <Ending>                               |
+| [7][Block]< "{" { Stat @ } "}" >            |
+| [AST-INSTRUCTIONS]:                         |
+|   - ReopenObject()                          |
+|   - EndObject()                             |
+|   > Field(BlockStat::stats)                 |
+| [RETURN STACK]:                             |
+|   [1][0]: Block -> [20][Stat]<< !Block @ >> |
+|   [0][0]: Stat -> [24][Module]< Stat @ >    |
+| [PREDECESSORS 8-8]: [8]                     |
+| [SUCCESORS 10-10]: [10]                     |
++---------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++=============================================++
+|| [10]: {CLOSE_BRACE} }                       ||
+|| [8][Block]< "{" { Stat } "}" @ >            ||
+|| [AST-INSTRUCTIONS]:                         ||
+|| [RETURN STACK]:                             ||
+||   [1][0]: Block -> [20][Stat]<< !Block @ >> ||
+||   [0][0]: Stat -> [24][Module]< Stat @ >    ||
+|| [PREDECESSORS 9-9]: [9]                     ||
+|| [SUCCESORS 11-11]: [11]                     ||
+++=============================================++
+|
++
+|
++------------------------------------------+
+| [11]: <Ending>                           |
+| [20][Stat]<< !Block @ >>                 |
+| [AST-INSTRUCTIONS]:                      |
+|   - EndObject()                          |
+| [RETURN STACK]:                          |
+|   [0][0]: Stat -> [24][Module]< Stat @ > |
+| [PREDECESSORS 10-10]: [10]               |
+| [SUCCESORS 12-12]: [12]                  |
++------------------------------------------+
+|
++
+|
++----------------------------+
+| [12]: <Ending>             |
+| [24][Module]< Stat @ >     |
+| [AST-INSTRUCTIONS]:        |
+|   - ReopenObject()         |
+|   - EndObject()            |
+| [PREDECESSORS 11-11]: [11] |
+| [SUCCESORS 13-13]: [13]    |
++----------------------------+
+|
++
+|
++----------------------------+
+| [13]: <Ending>             |
+| [23][Module] END [ENDING]  |
+| [AST-INSTRUCTIONS]:        |
+|   - Field(Module::stat)    |
+|   - EndObject()            |
+| [PREDECESSORS 12-12]: [12] |
++----------------------------+

@@ -1,0 +1,298 @@
+﻿+----------------------+
+| [0]: <Start>         |
+|   TraceExec: [0]     |
+|   BranchHead: 0      |
+|   BranchDepth: 0     |
+| [151][Module] BEGIN  |
+| [AST-INSTRUCTIONS]:  |
+|     CSTop: []        |
+|     OSTop: []        |
+|     LriStored: []    |
+| [SUCCESORS 1-1]: [1] |
++----------------------+
+[0]
+ |
+ +
+ |
+[0]
+++================================================================++
+|| [1]: {OPTIONAL} optional                                       ||
+||   TraceExec: [1]                                               ||
+||   InsExec: [0:2]                                               ||
+||   BranchHead: 0                                                ||
+||   BranchDepth: 0                                               ||
+|| [11][EqualOptional]< "optional" @ [ Plus ] "+" { Plus } >      ||
+|| [AST-INSTRUCTIONS]:                                            ||
+||     CSTop: []                                                  ||
+||     OSTop: []                                                  ||
+||     LriStored: []                                              ||
+||   - DelayFieldAssignment()                                     ||
+||       objRefs: 0                                               ||
+||       eoInsRefs: 15@1                                          ||
+||                                                                ||
+||     CSTop: [0] [0 -> -1]                                       ||
+||     OSTop: []                                                  ||
+||     LriStored: []                                              ||
+||   - BeginObject(OptionalFeature)                               ||
+||       obj:0, new:1@1 dfas:[1@0]                                ||
+||       eoInsRefs: 18@2, 19@2                                    ||
+||                                                                ||
+||     CSTop: [0] [1 -> 0]                                        ||
+||     OSTop: []                                                  ||
+||     LriStored: []                                              ||
+|| [RETURN STACK]:                                                ||
+||   [0][0]: EqualOptional -> [170][Module]<< !EqualOptional @ >> ||
+|| [PREDECESSORS 0-0]: [0]                                        ||
+|| [SUCCESORS 2-4]: [2][4]                                        ||
+++================================================================++
+[0/1]
+ |
+ +------------------------------------------------------------------------------------+
+ |                                                                                    |
+[0]                                                                                  [1]
+++=============================================================================++    ++================================================================++
+|| [2]: {PLUS} +                                                               ||    || [4]: {PLUS} +                                                  ||
+||   TraceExec: [2]                                                            ||    ||   TraceExec: [8]                                               ||
+||   InsExec: [2:1]                                                            ||    ||   BranchHead: 4                                                ||
+||   BranchHead: 2                                                             ||    ||   BranchDepth: 1                                               ||
+||   BranchDepth: 1                                                            ||    || [13][EqualOptional]< "optional" [ Plus ] "+" @ { Plus } >      ||
+|| [2][Plus]< "+" @ >                                                          ||    || [AST-INSTRUCTIONS]:                                            ||
+|| [AST-INSTRUCTIONS]:                                                         ||    ||     CSTop: [0] [1 -> 0]                                        ||
+||     CSTop: [0] [1 -> 0]                                                     ||    ||     OSTop: []                                                  ||
+||     OSTop: []                                                               ||    ||     LriStored: []                                              ||
+||     LriStored: []                                                           ||    || [RETURN STACK]:                                                ||
+||   - BeginObject(Plus)                                                       ||    ||   [0][0]: EqualOptional -> [170][Module]<< !EqualOptional @ >> ||
+||       obj:1, new:2@0                                                        ||    || [PREDECESSORS 1-1]: [1]                                        ||
+||       eoInsRefs: 3@0                                                        ||    || [SUCCESORS 8-8]: [8]                                           ||
+||                                                                             ||    ++================================================================++
+||     CSTop: [1] [2 -> 1]                                                     ||    |
+||     OSTop: []                                                               ||    |
+||     LriStored: []                                                           ||    |
+|| [RETURN STACK]:                                                             ||    |
+||   [1][1]: Plus -> [12][EqualOptional]< "optional" [ Plus @ ] "+" { Plus } > ||    |
+||   [0][0]: EqualOptional -> [170][Module]<< !EqualOptional @ >>              ||    |
+|| [PREDECESSORS 1-1]: [1]                                                     ||    |
+|| [SUCCESORS 3-3]: [3]                                                        ||    |
+++=============================================================================++    |
+|                                                                                    |
++                                                                                    +
+|                                                                                    |
++----------------------------------------------------------------+                   |
+| [3]: <Ending>                                                  |                   |
+|   TraceExec: [3]                                               |                   |
+|   InsExec: [3:2]                                               |                   |
+|   BranchHead: 2                                                |                   |
+|   BranchDepth: 1                                               |                   |
+| [12][EqualOptional]< "optional" [ Plus @ ] "+" { Plus } >      |                   |
+| [AST-INSTRUCTIONS]:                                            |                   |
+|     CSTop: [1] [2 -> 1]                                        |                   |
+|     OSTop: []                                                  |                   |
+|     LriStored: []                                              |                   |
+|   - EndObject()                                                |                   |
+|       objRefs: 1                                               |                   |
+|                                                                |                   |
+|     CSTop: [0] [1 -> 0]                                        |                   |
+|     OSTop: [1] [0 -> -1]                                       |                   |
+|     LriStored: []                                              |                   |
+|   > Field(OptionalFeature::optional)                           |                   |
+|                                                                |                   |
+|     CSTop: [0] [1 -> 0]                                        |                   |
+|     OSTop: []                                                  |                   |
+|     LriStored: []                                              |                   |
+| [RETURN STACK]:                                                |                   |
+|   [0][0]: EqualOptional -> [170][Module]<< !EqualOptional @ >> |                   |
+| [PREDECESSORS 2-2]: [2]                                        |                   |
+| [SUCCESORS 6-6]: [6]                                           |                   |
++----------------------------------------------------------------+                   |
+[0]                                                                                  [1]
+ |                                                                                    |
+ +                                                                       +------------+
+ |                                                                       |
+[0]                                                                     [1]
+++================================================================++    ++=============================================================================++
+|| [6]: {PLUS} +                                                  ||    || [8]: {PLUS} +                                                               ||
+||   TraceExec: [4]                                               ||    ||   TraceExec: [9]                                                            ||
+||   BranchHead: 2                                                ||    ||   InsExec: [11:1]                                                           ||
+||   BranchDepth: 1                                               ||    ||   BranchHead: 4                                                             ||
+|| [13][EqualOptional]< "optional" [ Plus ] "+" @ { Plus } >      ||    ||   BranchDepth: 1                                                            ||
+|| [AST-INSTRUCTIONS]:                                            ||    || [2][Plus]< "+" @ >                                                          ||
+||     CSTop: [0] [1 -> 0]                                        ||    || [AST-INSTRUCTIONS]:                                                         ||
+||     OSTop: []                                                  ||    ||     CSTop: [0] [1 -> 0]                                                     ||
+||     LriStored: []                                              ||    ||     OSTop: []                                                               ||
+|| [RETURN STACK]:                                                ||    ||     LriStored: []                                                           ||
+||   [0][0]: EqualOptional -> [170][Module]<< !EqualOptional @ >> ||    ||   - BeginObject(Plus)                                                       ||
+|| [PREDECESSORS 3-3]: [3]                                        ||    ||       obj:3, new:8@0                                                        ||
+|| [SUCCESORS 12-12]: [12]                                        ||    ||       eoInsRefs: 9@0                                                        ||
+++================================================================++    ||                                                                             ||
+|                                                                       ||     CSTop: [3] [4 -> 1]                                                     ||
+|                                                                       ||     OSTop: []                                                               ||
+|                                                                       ||     LriStored: []                                                           ||
+|                                                                       || [RETURN STACK]:                                                             ||
+|                                                                       ||   [2][4]: Plus -> [14][EqualOptional]< "optional" [ Plus ] "+" { Plus @ } > ||
+|                                                                       ||   [0][0]: EqualOptional -> [170][Module]<< !EqualOptional @ >>              ||
+|                                                                       || [PREDECESSORS 4-4]: [4]                                                     ||
+|                                                                       || [SUCCESORS 9-9]: [9]                                                        ||
+|                                                                       ++=============================================================================++
+|                                                                       |
++                                                                       +
+|                                                                       |
+|                                                                       +----------------------------------------------------------------+
+|                                                                       | [9]: <Ending>                                                  |
+|                                                                       |   TraceExec: [10]                                              |
+|                                                                       |   InsExec: [12:2]                                              |
+|                                                                       |   BranchHead: 4                                                |
+|                                                                       |   BranchDepth: 1                                               |
+|                                                                       | [14][EqualOptional]< "optional" [ Plus ] "+" { Plus @ } >      |
+|                                                                       | [AST-INSTRUCTIONS]:                                            |
+|                                                                       |     CSTop: [3] [4 -> 1]                                        |
+|                                                                       |     OSTop: []                                                  |
+|                                                                       |     LriStored: []                                              |
+|                                                                       |   - EndObject()                                                |
+|                                                                       |       objRefs: 3                                               |
+|                                                                       |                                                                |
+|                                                                       |     CSTop: [0] [1 -> 0]                                        |
+|                                                                       |     OSTop: [3] [4 -> -1]                                       |
+|                                                                       |     LriStored: []                                              |
+|                                                                       |   > Field(OptionalFeature::loop)                               |
+|                                                                       |                                                                |
+|                                                                       |     CSTop: [0] [1 -> 0]                                        |
+|                                                                       |     OSTop: []                                                  |
+|                                                                       |     LriStored: []                                              |
+|                                                                       | [RETURN STACK]:                                                |
+|                                                                       |   [0][0]: EqualOptional -> [170][Module]<< !EqualOptional @ >> |
+|                                                                       | [PREDECESSORS 8-8]: [8]                                        |
+|                                                                       | [SUCCESORS 16-16]: [16]                                        |
+|                                                                       +----------------------------------------------------------------+
+[0]                                                                     [1]
+ |                                                                       |
+ +                                                                       +------------+
+ |                                                                                    |
+[0]                                                                                  [1]
+++=============================================================================++    ++=============================================================================++
+|| [12]: {PLUS} +                                                              ||    || [16]: {PLUS} +                                                              ||
+||   TraceExec: [5]                                                            ||    ||   TraceExec: [11]                                                           ||
+||   InsExec: [5:1]                                                            ||    ||   InsExec: [14:1]                                                           ||
+||   BranchHead: 2                                                             ||    ||   BranchHead: 4                                                             ||
+||   BranchDepth: 1                                                            ||    ||   BranchDepth: 1                                                            ||
+|| [2][Plus]< "+" @ >                                                          ||    || [2][Plus]< "+" @ >                                                          ||
+|| [AST-INSTRUCTIONS]:                                                         ||    || [AST-INSTRUCTIONS]:                                                         ||
+||     CSTop: [0] [1 -> 0]                                                     ||    ||     CSTop: [0] [1 -> 0]                                                     ||
+||     OSTop: []                                                               ||    ||     OSTop: []                                                               ||
+||     LriStored: []                                                           ||    ||     LriStored: []                                                           ||
+||   - BeginObject(Plus)                                                       ||    ||   - BeginObject(Plus)                                                       ||
+||       obj:2, new:12@0                                                       ||    ||       obj:4, new:16@0                                                       ||
+||       eoInsRefs: 13@0                                                       ||    ||       eoInsRefs: 17@0                                                       ||
+||                                                                             ||    ||                                                                             ||
+||     CSTop: [2] [3 -> 1]                                                     ||    ||     CSTop: [4] [5 -> 1]                                                     ||
+||     OSTop: []                                                               ||    ||     OSTop: []                                                               ||
+||     LriStored: []                                                           ||    ||     LriStored: []                                                           ||
+|| [RETURN STACK]:                                                             ||    || [RETURN STACK]:                                                             ||
+||   [3][6]: Plus -> [14][EqualOptional]< "optional" [ Plus ] "+" { Plus @ } > ||    ||   [4][9]: Plus -> [14][EqualOptional]< "optional" [ Plus ] "+" { Plus @ } > ||
+||   [0][0]: EqualOptional -> [170][Module]<< !EqualOptional @ >>              ||    ||   [0][0]: EqualOptional -> [170][Module]<< !EqualOptional @ >>              ||
+|| [PREDECESSORS 6-6]: [6]                                                     ||    || [PREDECESSORS 9-9]: [9]                                                     ||
+|| [SUCCESORS 13-13]: [13]                                                     ||    || [SUCCESORS 17-17]: [17]                                                     ||
+++=============================================================================++    ++=============================================================================++
+|                                                                                    |
++                                                                                    +
+|                                                                                    |
++----------------------------------------------------------------+                   +----------------------------------------------------------------+
+| [13]: <Ending>                                                 |                   | [17]: <Ending>                                                 |
+|   TraceExec: [6]                                               |                   |   TraceExec: [12]                                              |
+|   InsExec: [6:2]                                               |                   |   InsExec: [15:2]                                              |
+|   BranchHead: 2                                                |                   |   BranchHead: 4                                                |
+|   BranchDepth: 1                                               |                   |   BranchDepth: 1                                               |
+| [14][EqualOptional]< "optional" [ Plus ] "+" { Plus @ } >      |                   | [14][EqualOptional]< "optional" [ Plus ] "+" { Plus @ } >      |
+| [AST-INSTRUCTIONS]:                                            |                   | [AST-INSTRUCTIONS]:                                            |
+|     CSTop: [2] [3 -> 1]                                        |                   |     CSTop: [4] [5 -> 1]                                        |
+|     OSTop: []                                                  |                   |     OSTop: []                                                  |
+|     LriStored: []                                              |                   |     LriStored: []                                              |
+|   - EndObject()                                                |                   |   - EndObject()                                                |
+|       objRefs: 2                                               |                   |       objRefs: 4                                               |
+|                                                                |                   |                                                                |
+|     CSTop: [0] [1 -> 0]                                        |                   |     CSTop: [0] [1 -> 0]                                        |
+|     OSTop: [2] [1 -> -1]                                       |                   |     OSTop: [4] [5 -> -1]                                       |
+|     LriStored: []                                              |                   |     LriStored: []                                              |
+|   > Field(OptionalFeature::loop)                               |                   |   > Field(OptionalFeature::loop)                               |
+|                                                                |                   |                                                                |
+|     CSTop: [0] [1 -> 0]                                        |                   |     CSTop: [0] [1 -> 0]                                        |
+|     OSTop: []                                                  |                   |     OSTop: []                                                  |
+|     LriStored: []                                              |                   |     LriStored: []                                              |
+| [RETURN STACK]:                                                |                   | [RETURN STACK]:                                                |
+|   [0][0]: EqualOptional -> [170][Module]<< !EqualOptional @ >> |                   |   [0][0]: EqualOptional -> [170][Module]<< !EqualOptional @ >> |
+| [PREDECESSORS 12-12]: [12]                                     |                   | [PREDECESSORS 16-16]: [16]                                     |
+| [SUCCESORS 19-19]: [19]                                        |                   | [SUCCESORS 18-18]: [18]                                        |
++----------------------------------------------------------------+                   +----------------------------------------------------------------+
+|                                                                                    |
++                                                                                    +
+|                                                                                    |
++--------------------------------------+                                             +--------------------------------------+
+| [19]: <Ending>                       |                                             | [18]: <Ending>                       |
+|   TraceExec: [7]                     |                                             |   TraceExec: [13]                    |
+|   InsExec: [8:3]                     |                                             |   InsExec: [17:3]                    |
+|   BranchHead: 2                      |                                             |   BranchHead: 4                      |
+|   BranchDepth: 1                     |                                             |   BranchDepth: 1                     |
+| [170][Module]<< !EqualOptional @ >>  |                                             | [170][Module]<< !EqualOptional @ >>  |
+| [AST-INSTRUCTIONS]:                  |                                             | [AST-INSTRUCTIONS]:                  |
+|     CSTop: [0] [1 -> 0]              |                                             |     CSTop: [0] [1 -> 0]              |
+|     OSTop: []                        |                                             |     OSTop: []                        |
+|     LriStored: []                    |                                             |     LriStored: []                    |
+|   - EnumItem(0)                      |                                             |   - EnumItem(0)                      |
+|                                      |                                             |                                      |
+|     CSTop: [0] [1 -> 0]              |                                             |     CSTop: [0] [1 -> 0]              |
+|     OSTop: [-2] [2 -> -1]            |                                             |     OSTop: [-2] [6 -> -1]            |
+|     LriStored: []                    |                                             |     LriStored: []                    |
+|   - Field(OptionalFeature::priority) |                                             |   - Field(OptionalFeature::priority) |
+|                                      |                                             |                                      |
+|     CSTop: [0] [1 -> 0]              |                                             |     CSTop: [0] [1 -> 0]              |
+|     OSTop: []                        |                                             |     OSTop: []                        |
+|     LriStored: []                    |                                             |     LriStored: []                    |
+|   - EndObject()                      |                                             |   - EndObject()                      |
+|       objRefs: 0                     |                                             |       objRefs: 0                     |
+|                                      |                                             |                                      |
+|     CSTop: [0] [0 -> -1]             |                                             |     CSTop: [0] [0 -> -1]             |
+|     OSTop: [0] [3 -> -1]             |                                             |     OSTop: [0] [7 -> -1]             |
+|     LriStored: []                    |                                             |     LriStored: []                    |
+| [PREDECESSORS 13-13]: [13]           |                                             | [PREDECESSORS 17-17]: [17]           |
+| [SUCCESORS 14-14]: [14]              |                                             | [SUCCESORS 14-14]: [14]              |
++--------------------------------------+                                             +--------------------------------------+
+|                                                                                    |
++------------------------------------------------------------------------------------+
+|
++------------------------+
+| [14]: <Merging>        |
+| <Start>                |
+|   TraceExec: [14]      |
+|   SharedTrace: 1       |
+|   BranchDepth: 0       |
+| [CONTEXT]              |
+|   CSTop: [0] [0 -> -1] |
+|   OSTop: [0] [8 -> -1] |
+|   LriStored: []        |
++------------------------+
+|
++
+|
++----------------------------+
+| [15]: <Ending>             |
+|   TraceExec: [15]          |
+|   InsExec: [20:2]          |
+|   BranchHead: 0            |
+|   BranchDepth: 0           |
+| [152][Module] END [ENDING] |
+| [AST-INSTRUCTIONS]:        |
+|     CSTop: [0] [0 -> -1]   |
+|     OSTop: [0] [8 -> -1]   |
+|     LriStored: []          |
+|   - ReopenObject()         |
+|                            |
+|     CSTop: [0] [0 -> -1]   |
+|     OSTop: []              |
+|     LriStored: []          |
+|   - EndObject()            |
+|       objRefs: 0           |
+|                            |
+|     CSTop: []              |
+|     OSTop: [0] [9 -> -1]   |
+|     LriStored: []          |
+| [PREDECESSORS 14-14]: [14] |
++----------------------------+

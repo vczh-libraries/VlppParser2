@@ -1,0 +1,363 @@
+﻿{
+    "$ast": "SyntaxFile",
+    "rules": [{
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "RefSyntax",
+                "field": "name",
+                "literal": "ID",
+                "refType": "Id"
+            },
+            "type": "RefExpr"
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "SequenceSyntax",
+                        "first": {
+                            "$ast": "RefSyntax",
+                            "field": "name",
+                            "literal": "ID",
+                            "refType": "Id"
+                        },
+                        "second": {
+                            "$ast": "RefSyntax",
+                            "field": "",
+                            "literal": "\"<\"",
+                            "refType": "Literal"
+                        }
+                    },
+                    "second": {
+                        "$ast": "LoopSyntax",
+                        "delimiter": {
+                            "$ast": "RefSyntax",
+                            "field": "",
+                            "literal": "\",\"",
+                            "refType": "Literal"
+                        },
+                        "syntax": {
+                            "$ast": "RefSyntax",
+                            "field": "args",
+                            "literal": "Exp",
+                            "refType": "Id"
+                        }
+                    }
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "\">\"",
+                    "refType": "Literal"
+                }
+            },
+            "type": "GenericExpr"
+        }, {
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "RefSyntax",
+                        "field": "",
+                        "literal": "\"(\"",
+                        "refType": "Literal"
+                    },
+                    "second": {
+                        "$ast": "UseSyntax",
+                        "name": "Exp"
+                    }
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "\")\"",
+                    "refType": "Literal"
+                }
+            }
+        }],
+        "name": "Exp0",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "Exp0"
+            }
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "SequenceSyntax",
+                        "first": {
+                            "$ast": "RefSyntax",
+                            "field": "func",
+                            "literal": "Exp1",
+                            "refType": "Id"
+                        },
+                        "second": {
+                            "$ast": "RefSyntax",
+                            "field": "",
+                            "literal": "\"(\"",
+                            "refType": "Literal"
+                        }
+                    },
+                    "second": {
+                        "$ast": "LoopSyntax",
+                        "delimiter": {
+                            "$ast": "RefSyntax",
+                            "field": "",
+                            "literal": "\",\"",
+                            "refType": "Literal"
+                        },
+                        "syntax": {
+                            "$ast": "RefSyntax",
+                            "field": "args",
+                            "literal": "Exp",
+                            "refType": "Id"
+                        }
+                    }
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "\")\"",
+                    "refType": "Literal"
+                }
+            },
+            "type": "CallExpr"
+        }],
+        "name": "Exp1",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "Exp1"
+            }
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [{
+                "$ast": "Assignment",
+                "field": "op",
+                "type": "Strong",
+                "value": "Add"
+            }],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "RefSyntax",
+                    "field": "expr",
+                    "literal": "Exp2",
+                    "refType": "Id"
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "\"+\"",
+                    "refType": "Literal"
+                }
+            },
+            "type": "PostfixExpr"
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [{
+                "$ast": "Assignment",
+                "field": "op",
+                "type": "Strong",
+                "value": "Increment"
+            }],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "RefSyntax",
+                        "field": "expr",
+                        "literal": "Exp2",
+                        "refType": "Id"
+                    },
+                    "second": {
+                        "$ast": "RefSyntax",
+                        "field": "",
+                        "literal": "\"+\"",
+                        "refType": "Literal"
+                    }
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "\"+\"",
+                    "refType": "Literal"
+                }
+            },
+            "type": "PostfixExpr"
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [{
+                "$ast": "Assignment",
+                "field": "op",
+                "type": "Strong",
+                "value": "Sub"
+            }],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "RefSyntax",
+                    "field": "expr",
+                    "literal": "Exp2",
+                    "refType": "Id"
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "\"-\"",
+                    "refType": "Literal"
+                }
+            },
+            "type": "PostfixExpr"
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "RefSyntax",
+                        "field": "expr",
+                        "literal": "Exp2",
+                        "refType": "Id"
+                    },
+                    "second": {
+                        "$ast": "RefSyntax",
+                        "field": "",
+                        "literal": "\"-\"",
+                        "refType": "Literal"
+                    }
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "\"-\"",
+                    "refType": "Literal"
+                }
+            },
+            "type": "DecrementExpr"
+        }],
+        "name": "Exp2",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "Exp2"
+            }
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [{
+                "$ast": "Assignment",
+                "field": "op",
+                "type": "Strong",
+                "value": "LT"
+            }],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "RefSyntax",
+                        "field": "left",
+                        "literal": "Exp",
+                        "refType": "Id"
+                    },
+                    "second": {
+                        "$ast": "RefSyntax",
+                        "field": "",
+                        "literal": "\"<\"",
+                        "refType": "Literal"
+                    }
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "right",
+                    "literal": "Exp2",
+                    "refType": "Id"
+                }
+            },
+            "type": "BinaryExpr"
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [{
+                "$ast": "Assignment",
+                "field": "op",
+                "type": "Strong",
+                "value": "GT"
+            }],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "RefSyntax",
+                        "field": "left",
+                        "literal": "Exp",
+                        "refType": "Id"
+                    },
+                    "second": {
+                        "$ast": "RefSyntax",
+                        "field": "",
+                        "literal": "\">\"",
+                        "refType": "Literal"
+                    }
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "right",
+                    "literal": "Exp2",
+                    "refType": "Id"
+                }
+            },
+            "type": "BinaryExpr"
+        }],
+        "name": "Exp",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "RefSyntax",
+                "field": "expr",
+                "literal": "Exp",
+                "refType": "Id"
+            },
+            "type": "Module"
+        }],
+        "name": "Module",
+        "type": ""
+    }],
+    "switches": []
+}
