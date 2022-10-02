@@ -347,16 +347,11 @@ void RenderTrace(
 
 			if (traceExec->branchData.forwardTrace != nullref)
 			{
-				if (trace->state == -1)
+				writer.WriteLine(L"  BranchHead: " + itow(traceExec->branchData.forwardTrace.handle));
+				if (traceExec->branchData.commonForwardBranch != nullref)
 				{
-					writer.WriteString(L"  SharedTrace: ");
+					writer.WriteLine(L"  SharedTrace: " + itow(traceExec->branchData.commonForwardBranch.handle));
 				}
-				else
-				{
-					writer.WriteString(L"  BranchHead: ");
-				}
-				writer.WriteLine(itow(traceExec->branchData.forwardTrace.handle));
-				writer.WriteLine(L"  BranchDepth: " + itow(traceExec->branchData.branchDepth));
 			}
 
 			if (traceExec->nextAmbiguityCriticalTrace != nullref)

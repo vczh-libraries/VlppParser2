@@ -2,7 +2,6 @@
 | [0]: <Start>         |
 |   TraceExec: [0]     |
 |   BranchHead: 0      |
-|   BranchDepth: 0     |
 |   NextACT: 1         |
 | [151][Module] BEGIN  |
 | [AST-INSTRUCTIONS]:  |
@@ -21,7 +20,6 @@
 ||   TraceExec: [1]                                                  ||
 ||   InsExec: [0:2]                                                  ||
 ||   BranchHead: 0                                                   ||
-||   BranchDepth: 0                                                  ||
 ||   AmbiguityBegins: [0]                                            ||
 || [53][NestedOptional]< "nested_optional" @ [ NO2 ] Plus { Plus } > ||
 || [AST-INSTRUCTIONS]:                                               ||
@@ -57,7 +55,7 @@
 ||   TraceExec: [2]                                                                    ||    ||   TraceExec: [7]                                                                   ||
 ||   InsExec: [2:1]                                                                    ||    ||   InsExec: [9:1]                                                                   ||
 ||   BranchHead: 2                                                                     ||    ||   BranchHead: 5                                                                    ||
-||   BranchDepth: 1                                                                    ||    ||   BranchDepth: 1                                                                   ||
+||   NextACT: 20                                                                       ||    ||   NextACT: 19                                                                      ||
 || [2][Plus]< "+" @ >                                                                  ||    || [2][Plus]< "+" @ >                                                                 ||
 || [AST-INSTRUCTIONS]:                                                                 ||    || [AST-INSTRUCTIONS]:                                                                ||
 ||     CSTop: [0] [1 -> 0]                                                             ||    ||     CSTop: [0] [1 -> 0]                                                            ||
@@ -85,7 +83,6 @@
 |   TraceExec: [3]                                                  |                        |   TraceExec: [8]                                                                   |
 |   InsExec: [3:2]                                                  |                        |   InsExec: [10:2]                                                                  |
 |   BranchHead: 2                                                   |                        |   BranchHead: 5                                                                    |
-|   BranchDepth: 1                                                  |                        |   BranchDepth: 1                                                                   |
 | [55][NestedOptional]< "nested_optional" [ NO2 ] Plus @ { Plus } > |                        | [42][NO2][ NO1 ] Plus @                                                            |
 | [AST-INSTRUCTIONS]:                                               |                        | [AST-INSTRUCTIONS]:                                                                |
 |     CSTop: [1] [2 -> 1]                                           |                        |     CSTop: [3] [4 -> 1]                                                            |
@@ -115,7 +112,6 @@
 |                                                                                            | [7]: <Ending>                                                     |
 |                                                                                            |   TraceExec: [9]                                                  |
 |                                                                                            |   BranchHead: 5                                                   |
-|                                                                                            |   BranchDepth: 1                                                  |
 |                                                                                            | [54][NestedOptional]< "nested_optional" [ NO2 @ ] Plus { Plus } > |
 |                                                                                            | [AST-INSTRUCTIONS]:                                               |
 |                                                                                            |     CSTop: [0] [1 -> 0]                                           |
@@ -136,7 +132,6 @@
 ||   TraceExec: [4]                                                                    ||    ||   TraceExec: [10]                                                                   ||
 ||   InsExec: [5:1]                                                                    ||    ||   InsExec: [12:1]                                                                   ||
 ||   BranchHead: 2                                                                     ||    ||   BranchHead: 5                                                                     ||
-||   BranchDepth: 1                                                                    ||    ||   BranchDepth: 1                                                                    ||
 || [2][Plus]< "+" @ >                                                                  ||    || [2][Plus]< "+" @ >                                                                  ||
 || [AST-INSTRUCTIONS]:                                                                 ||    || [AST-INSTRUCTIONS]:                                                                 ||
 ||     CSTop: [0] [1 -> 0]                                                             ||    ||     CSTop: [0] [1 -> 0]                                                             ||
@@ -163,7 +158,6 @@
 |   TraceExec: [5]                                                  |                        |   TraceExec: [11]                                                 |
 |   InsExec: [6:2]                                                  |                        |   InsExec: [13:2]                                                 |
 |   BranchHead: 2                                                   |                        |   BranchHead: 5                                                   |
-|   BranchDepth: 1                                                  |                        |   BranchDepth: 1                                                  |
 | [56][NestedOptional]< "nested_optional" [ NO2 ] Plus { Plus @ } > |                        | [55][NestedOptional]< "nested_optional" [ NO2 ] Plus @ { Plus } > |
 | [AST-INSTRUCTIONS]:                                               |                        | [AST-INSTRUCTIONS]:                                               |
 |     CSTop: [2] [3 -> 1]                                           |                        |     CSTop: [4] [5 -> 1]                                           |
@@ -193,7 +187,6 @@
 |   TraceExec: [6]                     |                                                     |   TraceExec: [12]                    |
 |   InsExec: [8:1]                     |                                                     |   InsExec: [15:1]                    |
 |   BranchHead: 2                      |                                                     |   BranchHead: 5                      |
-|   BranchDepth: 1                     |                                                     |   BranchDepth: 1                     |
 | [173][Module]<< !NestedOptional @ >> |                                                     | [173][Module]<< !NestedOptional @ >> |
 | [AST-INSTRUCTIONS]:                  |                                                     | [AST-INSTRUCTIONS]:                  |
 |     CSTop: [0] [1 -> 0]              |                                                     |     CSTop: [0] [1 -> 0]              |
@@ -215,8 +208,8 @@
 | [15]: <Merging>            |
 | <Start>                    |
 |   TraceExec: [13]          |
-|   SharedTrace: 1           |
-|   BranchDepth: 0           |
+|   BranchHead: 15           |
+|   SharedTrace: 0           |
 | [AMBIGUITY-RESOLVING]: [0] |
 |   objs: [0]                |
 |   first: 1 prefix: 0       |
@@ -233,8 +226,7 @@
 | [16]: <Ending>             |
 |   TraceExec: [14]          |
 |   InsExec: [16:2]          |
-|   BranchHead: 0            |
-|   BranchDepth: 0           |
+|   BranchHead: 15           |
 |   AmbiguityEnds: [0]       |
 | [152][Module] END [ENDING] |
 | [AST-INSTRUCTIONS]:        |

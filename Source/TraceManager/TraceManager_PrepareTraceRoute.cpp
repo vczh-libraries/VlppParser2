@@ -139,6 +139,7 @@ AllocateExecutionData
 			{
 #define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::AllocateExecutionData()#"
 				vint32_t insExecCount = 0;
+				auto nextBranchTrace = &firstBranchTrace;
 				auto nextMergeTrace = &firstMergeTrace;
 				IterateSurvivedTraces([&](Trace* trace, Trace* predecessor, vint32_t visitCount, vint32_t predecessorCount)
 				{
@@ -158,12 +159,16 @@ AllocateExecutionData
 						insExecCount += traceExec->insLists.c3;
 					}
 
+					// fill branch trace linked list
+					if (trace->successors.first != trace->successors.last)
+					{
+						*nextBranchTrace = trace;
+						nextBranchTrace = &traceExec->nextBranchTrace;
+					}
+
+					// fill merge branch linked list
 					if (trace->predecessors.first != trace->predecessors.last)
 					{
-						if (*nextMergeTrace != nullref)
-						{
-							GetTraceExec(GetTrace(*nextMergeTrace)->traceExecRef)->nextMergeTrace = trace;
-						}
 						*nextMergeTrace = trace;
 						nextMergeTrace = &traceExec->nextMergeTrace;
 					}
@@ -740,6 +745,33 @@ PartialExecuteTraces
 BuildAmbiguityStructures
 ***********************************************************************/
 
+			Trace* TraceManager::StepForward(Trace* trace)
+			{
+				auto traceExec = GetTraceExec(trace->traceExecRef);
+
+				// for ordinary trace, go to its forwardTrace
+				if (traceExec->branchData.forwardTrace != trace)
+				{
+					return GetTrace(traceExec->branchData.forwardTrace);
+				}
+
+				// for initialTrace, stop
+				if (trace->predecessors.first == nullref)
+				{
+					return nullptr;
+				}
+
+				// for merge trace, go to the forwardTrace of its commonForwardTrace
+				if (trace->predecessors.first != trace->predecessors.last)
+				{
+					return GetTrace(GetTraceExec(GetTrace(traceExec->branchData.commonForwardBranch)->traceExecRef)->branchData.forwardTrace);
+				}
+
+				// otherwise, it is a successor of a branch trace
+				// go to its predecessor's forwardTrace
+				return GetTrace(GetTraceExec(GetTrace(trace->predecessors.first)->traceExecRef)->branchData.forwardTrace);
+			}
+
 			void TraceManager::BuildAmbiguityStructures()
 			{
 #define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::BuildAmbiguityStructures()#"
@@ -749,79 +781,57 @@ BuildAmbiguityStructures
 						auto traceExec = GetTraceExec(trace->traceExecRef);
 						if (predecessorCount == 0)
 						{
-							// initialize branch information for initialTrace
-							traceExec->branchData = { trace,0 };
+							// for initialTrace, forwardTrace is itself
+							traceExec->branchData.forwardTrace = trace;
 						}
 						else if (predecessorCount == 1)
 						{
 							if (predecessor->successors.first != predecessor->successors.last)
 							{
-								// if the current trace is a branch head
+								// for any successors of a branch trace, forwardTrace is itself
 								traceExec->branchData.forwardTrace = trace;
-								traceExec->branchData.branchDepth = GetTraceExec(predecessor->traceExecRef)->branchData.branchDepth + 1;
 							}
 							else
 							{
-								// if a predecessor is a merge trace
-								// jump to its forwardTrace
-								// until an ordinary trace is found
-								while (predecessor->state == -1)
-								{
-									predecessor = GetTrace(GetTraceExec(predecessor->traceExecRef)->branchData.forwardTrace);
-								}
-
-								// copy its data
-								auto predecessorTraceExec = GetTraceExec(predecessor->traceExecRef);
-								traceExec->branchData = predecessorTraceExec->branchData;
+								// if any ordinary trace, use the data from its predecessor
+								traceExec->branchData.forwardTrace = GetTraceExec(predecessor->traceExecRef)->branchData.forwardTrace ;
 							}
 						}
 						else
 						{
-							auto stepForward = [this](TraceBranchData branchData) -> TraceBranchData
-							{
-								auto branchTrace = GetTrace(branchData.forwardTrace);
-								auto branchHeadTrace = GetTrace(GetTraceExec(branchTrace->traceExecRef)->branchData.forwardTrace);
-								return { branchHeadTrace->predecessors.first,branchData.branchDepth - 1 };
-							};
-
 							CHECK_ERROR(predecessor->state != -1, ERROR_MESSAGE_PREFIX L"Predecessor trace of a merge trace cannot be a merge trace.");
-							auto commingTraceExec = GetTraceExec(predecessor->traceExecRef);
-							auto comming = commingTraceExec->branchData;
 
 							if (visitCount == 1)
 							{
-								// for the first time visiting a merge trace, copy the data
-								traceExec->branchData = comming;
+								// for any merge trace, forwardTrace is itself
+								traceExec->branchData.forwardTrace = trace;
+
+								// for the first visiting, set commonForwardBranch to the forwardTrace of its first predecessor
+								traceExec->branchData.commonForwardBranch = GetTrace(GetTraceExec(predecessor->traceExecRef)->branchData.forwardTrace);
 							}
-							else if (traceExec->branchData.forwardTrace != comming.forwardTrace)
+							else
 							{
-								// otherwise, use the data from the latest common shared node
+								// find the latest forwardTrace of its commonForwardBranch and the forwardTrace of the predecessor
+								NEW_MERGE_STACK_MAGIC_COUNTER;
 
-								// closer and further are two TraceBranchData of this merge state
-								auto closer = traceExec->branchData;
-								auto further = comming;
-								if (closer.branchDepth < further.branchDepth)
+								auto currentTrace = GetTrace(traceExec->branchData.commonForwardBranch);
+								while (currentTrace)
 								{
-									auto t = closer;
-									closer = further;
-									further = t;
+									GetTraceExec(currentTrace->traceExecRef)->branchData.mergeCounter = MergeStack_MagicCounter;
+									currentTrace = StepForward(currentTrace);
 								}
 
-								// step closer forward until it has the same depth as further
-								while (closer.branchDepth != further.branchDepth)
+								currentTrace = GetTrace(GetTraceExec(predecessor->traceExecRef)->branchData.forwardTrace);
+								while (currentTrace)
 								{
-									closer = stepForward(closer);
+									if (GetTraceExec(currentTrace->traceExecRef)->branchData.mergeCounter == MergeStack_MagicCounter)
+									{
+										break;
+									}
+									currentTrace = StepForward(currentTrace);
 								}
-
-								// step closer and further forward until they become the same
-								while (closer.forwardTrace != further.forwardTrace)
-								{
-									closer = stepForward(closer);
-									further = stepForward(further);
-								}
-
-								// the latest common shared node is found
-								traceExec->branchData = further;
+								CHECK_ERROR(currentTrace != nullptr, ERROR_MESSAGE_PREFIX L"Cannot determine commonForwardBranch of a merge trace.");
+								traceExec->branchData.commonForwardBranch = currentTrace;
 							}
 						}
 					}
@@ -991,14 +1001,7 @@ CheckMergeTrace
 				auto currentTraceExec = GetTraceExec(currentTrace->traceExecRef);
 				while (currentTraceExec->branchData.forwardTrace > forwardTraceId)
 				{
-					if (currentTrace == currentTraceExec->branchData.forwardTrace)
-					{
-						currentTrace = GetTrace(currentTrace->predecessors.first);
-					}
-					else
-					{
-						currentTrace = GetTrace(currentTraceExec->branchData.forwardTrace);
-					}
+					currentTrace = StepForward(currentTrace);
 					currentTraceExec = GetTraceExec(currentTrace->traceExecRef);
 				}
 				CHECK_ERROR(currentTraceExec->branchData.forwardTrace == forwardTraceId, ERROR_MESSAGE_PREFIX L"Internal error: assumption is broken.");
@@ -1412,13 +1415,8 @@ CheckMergeTraces
 			void TraceManager::LinkAmbiguityCriticalTrace(Ref<Trace> traceId)
 			{
 				auto trace = GetTrace(traceId);
-				auto forward = trace;
-				while (true)
-				{
-					bool jumpFromMergeTrace = forward->state == -1;
-					forward = GetTrace(GetTraceExec(forward->traceExecRef)->branchData.forwardTrace);
-					if (!jumpFromMergeTrace) break;
-				}
+				auto forward = GetTrace(GetTraceExec(trace->traceExecRef)->branchData.forwardTrace);
+				if (trace == forward) return;
 
 				auto nextAct = &GetTraceExec(forward->traceExecRef)->nextAmbiguityCriticalTrace;
 				while (*nextAct != nullref)
@@ -1464,6 +1462,32 @@ CheckMergeTraces
 			void TraceManager::CheckMergeTraces()
 			{
 #define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::CheckMergeTraces()#"
+				// mark all branch trace critical
+				{
+					auto traceId = firstBranchTrace;
+					while (traceId != nullref)
+					{
+						LinkAmbiguityCriticalTrace(traceId);
+						traceId = GetTraceExec(GetTrace(traceId)->traceExecRef)->nextBranchTrace;
+					}
+				}
+
+				// mark all predecessor of merge trace critical
+				{
+					auto traceId = firstMergeTrace;
+					while (traceId != nullref)
+					{
+						auto trace = GetTrace(traceId);
+						auto predecessorId = trace->predecessors.first;
+						while (predecessorId != nullref)
+						{
+							LinkAmbiguityCriticalTrace(predecessorId);
+							predecessorId = GetTrace(predecessorId)->predecessors.siblingNext;
+						}
+						traceId = GetTraceExec(trace->traceExecRef)->nextMergeTrace;
+					}
+				}
+
 				// iterating TraceMergeExec
 				List<Ref<InsExec_ObjRefLink>> visitingIds;
 				auto traceId = firstMergeTrace;
@@ -1472,7 +1496,6 @@ CheckMergeTraces
 					auto trace = GetTrace(traceId);
 					auto traceExec = GetTraceExec(trace->traceExecRef);
 					traceId = traceExec->nextMergeTrace;
-					LinkAmbiguityCriticalTrace(traceExec->branchData.forwardTrace);
 
 					auto ta = GetTraceAmbiguity(traceAmbiguities.Allocate());
 					bool succeeded = CheckMergeTrace(ta, trace, traceExec, visitingIds);

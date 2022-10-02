@@ -61,6 +61,7 @@ Initialize
 				insExec_ObjectStacks.Clear();
 				insExec_CreateStacks.Clear();
 
+				firstBranchTrace = nullref;
 				firstMergeTrace = nullref;
 				traceAmbiguities.Clear();
 

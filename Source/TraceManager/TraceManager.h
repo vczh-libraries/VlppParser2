@@ -373,15 +373,17 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 				vint32_t							c3;
 			};
 
-			struct TraceBranchData
+			struct TraceBranchData : WithMagicCounter
 			{
-				// for ordinary trace, it stores the first trace of the most inner branch that this trace is in
-				// for merge trace, it stores the latest trace that all comming branches share
+				// it stores the first trace of non branching path that this trace is in
+				// such trace could be:
+				//   the initial trace
+				//   successors of a branch trace
+				//   a merge trace
 				Ref<Trace>							forwardTrace;
 
-				// the depth of nested branches
-				// it is 0 for initialTrace
-				vint32_t							branchDepth = -1;
+				// for merge trace, it stores the latest forwardTrace that all comming branches share
+				Ref<Trace>							commonForwardBranch;
 			};
 
 			struct TraceExec : Allocatable<TraceExec>
@@ -393,14 +395,18 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 				InsExec_Context						context;
 				TraceBranchData						branchData;
 
+				// linked list of branch traces
+				Ref<Trace>							nextBranchTrace;
+
 				// linked list of merge traces
 				Ref<Trace>							nextMergeTrace;
 
-				// linked list of ambiguity critical trace
-				// the linked list begins from a first trace of any branch
+				// linked list of ambiguity critical trace (order by trace id ascending)
+				// the linked list begins from a trace whose forwardTrace is itself
 				// record all traces that is
-				//   either the predecessor of branches
-				//   or a trace pointed by TraceAmbiguity::firstTrace
+				//   a branch trace
+				//   a predecessor of a merge trace
+				//   a trace pointed by TraceAmbiguity::firstTrace
 				Ref<Trace>							nextAmbiguityCriticalTrace;
 
 				// TraceAmbiguity associated to the trace
@@ -542,6 +548,7 @@ TraceManager
 				void										PartialExecuteTraces();
 
 				// phase: BuildAmbiguityStructures
+				Trace*										StepForward(Trace* trace);
 				void										BuildAmbiguityStructures();
 
 #if defined VCZH_MSVC && defined _DEBUG
@@ -551,6 +558,7 @@ TraceManager
 
 			protected:
 				// ResolveAmbiguity
+				Ref<Trace>									firstBranchTrace;
 				Ref<Trace>									firstMergeTrace;
 				AllocateOnly<TraceAmbiguity>				traceAmbiguities;
 				AllocateOnly<TraceAmbiguityLink>			traceAmbiguityLinks;
