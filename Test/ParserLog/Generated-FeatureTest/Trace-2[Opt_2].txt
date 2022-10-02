@@ -1,7 +1,7 @@
 ﻿+----------------------+
 | [0]: <Start>         |
 |   TraceExec: [0]     |
-|   BranchHead: 0      |
+|   ForwardTrace: 0    |
 | [151][Module] BEGIN  |
 | [AST-INSTRUCTIONS]:  |
 |     CSTop: []        |
@@ -18,7 +18,7 @@
 || [1]: {OPTIONAL} optional                                       ||
 ||   TraceExec: [1]                                               ||
 ||   InsExec: [0:2]                                               ||
-||   BranchHead: 0                                                ||
+||   ForwardTrace: 0                                              ||
 || [11][EqualOptional]< "optional" @ [ Plus ] "+" { Plus } >      ||
 || [AST-INSTRUCTIONS]:                                            ||
 ||     CSTop: []                                                  ||
@@ -51,8 +51,8 @@
 ++=============================================================================++    ++================================================================++
 || [2]: {PLUS} +                                                               ||    || [4]: {PLUS} +                                                  ||
 ||   TraceExec: [2]                                                            ||    ||   TraceExec: [6]                                               ||
-||   InsExec: [2:1]                                                            ||    ||   BranchHead: 4                                                ||
-||   BranchHead: 2                                                             ||    || [13][EqualOptional]< "optional" [ Plus ] "+" @ { Plus } >      ||
+||   InsExec: [2:1]                                                            ||    ||   ForwardTrace: 4                                              ||
+||   ForwardTrace: 2                                                           ||    || [13][EqualOptional]< "optional" [ Plus ] "+" @ { Plus } >      ||
 || [2][Plus]< "+" @ >                                                          ||    || [AST-INSTRUCTIONS]:                                            ||
 || [AST-INSTRUCTIONS]:                                                         ||    ||     CSTop: [0] [1 -> 0]                                        ||
 ||     CSTop: [0] [1 -> 0]                                                     ||    ||     OSTop: []                                                  ||
@@ -78,7 +78,7 @@
 | [3]: <Ending>                                                  |                   |
 |   TraceExec: [3]                                               |                   |
 |   InsExec: [3:2]                                               |                   |
-|   BranchHead: 2                                                |                   |
+|   ForwardTrace: 2                                              |                   |
 | [12][EqualOptional]< "optional" [ Plus @ ] "+" { Plus } >      |                   |
 | [AST-INSTRUCTIONS]:                                            |                   |
 |     CSTop: [1] [2 -> 1]                                        |                   |
@@ -108,8 +108,8 @@
 ++================================================================++    ++=============================================================================++
 || [6]: {PLUS} +                                                  ||    || [9]: {PLUS} +                                                               ||
 ||   TraceExec: [4]                                               ||    ||   TraceExec: [7]                                                            ||
-||   BranchHead: 2                                                ||    ||   InsExec: [8:1]                                                            ||
-|| [13][EqualOptional]< "optional" [ Plus ] "+" @ { Plus } >      ||    ||   BranchHead: 4                                                             ||
+||   ForwardTrace: 2                                              ||    ||   InsExec: [8:1]                                                            ||
+|| [13][EqualOptional]< "optional" [ Plus ] "+" @ { Plus } >      ||    ||   ForwardTrace: 4                                                           ||
 || [AST-INSTRUCTIONS]:                                            ||    || [2][Plus]< "+" @ >                                                          ||
 ||     CSTop: [0] [1 -> 0]                                        ||    || [AST-INSTRUCTIONS]:                                                         ||
 ||     OSTop: []                                                  ||    ||     CSTop: [0] [1 -> 0]                                                     ||
@@ -135,7 +135,7 @@
 | [12]: <Ending>                       |                                | [10]: <Ending>                                                 |
 |   TraceExec: [5]                     |                                |   TraceExec: [8]                                               |
 |   InsExec: [5:3]                     |                                |   InsExec: [9:2]                                               |
-|   BranchHead: 2                      |                                |   BranchHead: 4                                                |
+|   ForwardTrace: 2                    |                                |   ForwardTrace: 4                                              |
 | [170][Module]<< !EqualOptional @ >>  |                                | [14][EqualOptional]< "optional" [ Plus ] "+" { Plus @ } >      |
 | [AST-INSTRUCTIONS]:                  |                                | [AST-INSTRUCTIONS]:                                            |
 |     CSTop: [0] [1 -> 0]              |                                |     CSTop: [2] [3 -> 1]                                        |
@@ -167,7 +167,7 @@
 |                                                                       | [11]: <Ending>                       |
 |                                                                       |   TraceExec: [9]                     |
 |                                                                       |   InsExec: [11:3]                    |
-|                                                                       |   BranchHead: 4                      |
+|                                                                       |   ForwardTrace: 4                    |
 |                                                                       | [170][Module]<< !EqualOptional @ >>  |
 |                                                                       | [AST-INSTRUCTIONS]:                  |
 |                                                                       |     CSTop: [0] [1 -> 0]              |
@@ -195,17 +195,17 @@
 |                                                                       |
 +-----------------------------------------------------------------------+
 |
-+------------------------+
-| [7]: <Merging>         |
-| <Start>                |
-|   TraceExec: [10]      |
-|   BranchHead: 7        |
-|   SharedTrace: 0       |
-| [CONTEXT]              |
-|   CSTop: [0] [0 -> -1] |
-|   OSTop: [0] [6 -> -1] |
-|   LriStored: []        |
-+------------------------+
++-------------------------+
+| [7]: <Merging>          |
+| <Start>                 |
+|   TraceExec: [10]       |
+|   ForwardTrace: 7       |
+|   CommonForwardTrace: 0 |
+| [CONTEXT]               |
+|   CSTop: [0] [0 -> -1]  |
+|   OSTop: [0] [6 -> -1]  |
+|   LriStored: []         |
++-------------------------+
 |
 +
 |
@@ -213,7 +213,7 @@
 | [8]: <Ending>              |
 |   TraceExec: [11]          |
 |   InsExec: [14:2]          |
-|   BranchHead: 7            |
+|   ForwardTrace: 7          |
 | [152][Module] END [ENDING] |
 | [AST-INSTRUCTIONS]:        |
 |     CSTop: [0] [0 -> -1]   |

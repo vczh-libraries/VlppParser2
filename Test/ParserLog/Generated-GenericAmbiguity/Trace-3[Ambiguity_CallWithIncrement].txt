@@ -1,7 +1,7 @@
 ﻿+----------------------+
 | [0]: <Start>         |
 |   TraceExec: [0]     |
-|   BranchHead: 0      |
+|   ForwardTrace: 0    |
 |   NextACT: 8         |
 | [41][Module] BEGIN   |
 | [AST-INSTRUCTIONS]:  |
@@ -19,7 +19,7 @@
 || [2]: {ID} Func                            ||
 ||   TraceExec: [1]                          ||
 ||   InsExec: [0:7]                          ||
-||   BranchHead: 0                           ||
+||   ForwardTrace: 0                         ||
 || [7][Exp0]< ID @ >                         ||
 || [AST-INSTRUCTIONS]:                       ||
 ||     CSTop: []                             ||
@@ -85,7 +85,7 @@
 | [3]: <Ending>                             |
 |   TraceExec: [2]                          |
 |   InsExec: [7:2]                          |
-|   BranchHead: 0                           |
+|   ForwardTrace: 0                         |
 | [18][Exp1]<< !Exp0 @ >>                   |
 | [AST-INSTRUCTIONS]:                       |
 |     CSTop: [1] [4 -> 3]                   |
@@ -116,7 +116,7 @@
 | [4]: <Leftrec>                               |
 |   TraceExec: [3]                             |
 |   InsExec: [9:3]                             |
-|   BranchHead: 0                              |
+|   ForwardTrace: 0                            |
 | [17][Exp1]< Exp1 @ "(" { Exp ; "," } ")" >   |
 | [AST-INSTRUCTIONS]:                          |
 |     CSTop: [1] [3 -> 2]                      |
@@ -155,7 +155,7 @@
 ++============================================++
 || [6]: {OPEN_ROUND} (                        ||
 ||   TraceExec: [4]                           ||
-||   BranchHead: 0                            ||
+||   ForwardTrace: 0                          ||
 || [13][Exp1]< Exp1 "(" @ { Exp ; "," } ")" > ||
 || [AST-INSTRUCTIONS]:                        ||
 ||     CSTop: [2] [5 -> 2]                    ||
@@ -177,7 +177,7 @@
 || [8]: {ID} a                                                 ||
 ||   TraceExec: [5]                                            ||
 ||   InsExec: [12:6]                                           ||
-||   BranchHead: 0                                             ||
+||   ForwardTrace: 0                                           ||
 ||   NextACT: 10                                               ||
 ||   AmbiguityBegins: [0]                                      ||
 || [7][Exp0]< ID @ >                                           ||
@@ -241,7 +241,7 @@
 | [9]: <Ending>                                               |
 |   TraceExec: [6]                                            |
 |   InsExec: [18:2]                                           |
-|   BranchHead: 0                                             |
+|   ForwardTrace: 0                                           |
 | [18][Exp1]<< !Exp0 @ >>                                     |
 | [AST-INSTRUCTIONS]:                                         |
 |     CSTop: [3] [9 -> 8]                                     |
@@ -275,7 +275,7 @@
 | [10]: <Ending>                                              |
 |   TraceExec: [7]                                            |
 |   InsExec: [20:2]                                           |
-|   BranchHead: 0                                             |
+|   ForwardTrace: 0                                           |
 | [31][Exp2]<< !Exp1 @ >>                                     |
 | [AST-INSTRUCTIONS]:                                         |
 |     CSTop: [3] [8 -> 7]                                     |
@@ -308,7 +308,7 @@
 | [11]: <Leftrec>                                             |      | [12]: <Leftrec>                                             |
 |   TraceExec: [8]                                            |      |   TraceExec: [12]                                           |
 |   InsExec: [22:3]                                           |      |   InsExec: [29:3]                                           |
-|   BranchHead: 11                                            |      |   BranchHead: 12                                            |
+|   ForwardTrace: 11                                          |      |   ForwardTrace: 12                                          |
 |   NextACT: 25                                               |      |   NextACT: 24                                               |
 | [27][Exp2]< Exp2 @ "+" "+" >                                |      | [28][Exp2]< Exp2 @ "+" >                                    |
 | [AST-INSTRUCTIONS]:                                         |      | [AST-INSTRUCTIONS]:                                         |
@@ -350,7 +350,7 @@
 ++=============================================================++    ++=============================================================++
 || [14]: {ADD} +                                               ||    || [15]: {ADD} +                                               ||
 ||   TraceExec: [9]                                            ||    ||   TraceExec: [13]                                           ||
-||   BranchHead: 11                                            ||    ||   BranchHead: 12                                            ||
+||   ForwardTrace: 11                                          ||    ||   ForwardTrace: 12                                          ||
 || [22][Exp2]< Exp2 "+" @ "+" >                                ||    || [23][Exp2]< Exp2 "+" @ >                                    ||
 || [AST-INSTRUCTIONS]:                                         ||    || [AST-INSTRUCTIONS]:                                         ||
 ||     CSTop: [4] [10 -> 6]                                    ||    ||     CSTop: [5] [11 -> 6]                                    ||
@@ -372,7 +372,7 @@
 |                                                                    | [17]: <Leftrec>                                             |
 |                                                                    |   TraceExec: [14]                                           |
 |                                                                    |   InsExec: [32:5]                                           |
-|                                                                    |   BranchHead: 12                                            |
+|                                                                    |   ForwardTrace: 12                                          |
 |                                                                    | [28][Exp2]< Exp2 @ "+" >                                    |
 |                                                                    | [AST-INSTRUCTIONS]:                                         |
 |                                                                    |     CSTop: [5] [11 -> 6]                                    |
@@ -423,7 +423,7 @@
 ++=============================================================++    ++=============================================================++
 || [19]: {ADD} +                                               ||    || [23]: {ADD} +                                               ||
 ||   TraceExec: [10]                                           ||    ||   TraceExec: [15]                                           ||
-||   BranchHead: 11                                            ||    ||   BranchHead: 12                                            ||
+||   ForwardTrace: 11                                          ||    ||   ForwardTrace: 12                                          ||
 || [21][Exp2]< Exp2 "+" "+" @ >                                ||    || [23][Exp2]< Exp2 "+" @ >                                    ||
 || [AST-INSTRUCTIONS]:                                         ||    || [AST-INSTRUCTIONS]:                                         ||
 ||     CSTop: [4] [10 -> 6]                                    ||    ||     CSTop: [6] [12 -> 6]                                    ||
@@ -445,7 +445,7 @@
 | [25]: <Ending>                                              |      | [24]: <Ending>                                              |
 |   TraceExec: [11]                                           |      |   TraceExec: [16]                                           |
 |   InsExec: [25:4]                                           |      |   InsExec: [37:4]                                           |
-|   BranchHead: 11                                            |      |   BranchHead: 12                                            |
+|   ForwardTrace: 11                                          |      |   ForwardTrace: 12                                          |
 | [40][Exp]<< !Exp2 @ >>                                      |      | [40][Exp]<< !Exp2 @ >>                                      |
 | [AST-INSTRUCTIONS]:                                         |      | [AST-INSTRUCTIONS]:                                         |
 |     CSTop: [4] [10 -> 6]                                    |      |     CSTop: [6] [12 -> 6]                                    |
@@ -487,8 +487,8 @@
 | [20]: <Merging>            |
 | <Start>                    |
 |   TraceExec: [17]          |
-|   BranchHead: 20           |
-|   SharedTrace: 0           |
+|   ForwardTrace: 20         |
+|   CommonForwardTrace: 0    |
 |   NextACT: 28              |
 | [AMBIGUITY-RESOLVING]: [0] |
 |   objs: [4, 6]             |
@@ -506,7 +506,7 @@
 | [21]: <Ending>                             |
 |   TraceExec: [18]                          |
 |   InsExec: [41:2]                          |
-|   BranchHead: 20                           |
+|   ForwardTrace: 20                         |
 |   AmbiguityEnds: [0]                       |
 | [16][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |
 | [AST-INSTRUCTIONS]:                        |
@@ -539,7 +539,7 @@
 ++============================================++
 || [26]: {COMMA} ,                            ||
 ||   TraceExec: [19]                          ||
-||   BranchHead: 20                           ||
+||   ForwardTrace: 20                         ||
 || [14][Exp1]< Exp1 "(" { Exp ; "," @ } ")" > ||
 || [AST-INSTRUCTIONS]:                        ||
 ||     CSTop: [2] [5 -> 2]                    ||
@@ -561,7 +561,7 @@
 || [28]: {ID} b                                                  ||
 ||   TraceExec: [20]                                             ||
 ||   InsExec: [43:6]                                             ||
-||   BranchHead: 20                                              ||
+||   ForwardTrace: 20                                            ||
 ||   NextACT: 30                                                 ||
 ||   AmbiguityBegins: [1]                                        ||
 || [7][Exp0]< ID @ >                                             ||
@@ -625,7 +625,7 @@
 | [29]: <Ending>                                                |
 |   TraceExec: [21]                                             |
 |   InsExec: [49:2]                                             |
-|   BranchHead: 20                                              |
+|   ForwardTrace: 20                                            |
 | [18][Exp1]<< !Exp0 @ >>                                       |
 | [AST-INSTRUCTIONS]:                                           |
 |     CSTop: [7] [16 -> 15]                                     |
@@ -659,7 +659,7 @@
 | [30]: <Ending>                                                |
 |   TraceExec: [22]                                             |
 |   InsExec: [51:2]                                             |
-|   BranchHead: 20                                              |
+|   ForwardTrace: 20                                            |
 | [31][Exp2]<< !Exp1 @ >>                                       |
 | [AST-INSTRUCTIONS]:                                           |
 |     CSTop: [7] [15 -> 14]                                     |
@@ -692,7 +692,7 @@
 | [31]: <Leftrec>                                               |      | [32]: <Leftrec>                                               |
 |   TraceExec: [23]                                             |      |   TraceExec: [27]                                             |
 |   InsExec: [53:3]                                             |      |   InsExec: [60:3]                                             |
-|   BranchHead: 31                                              |      |   BranchHead: 32                                              |
+|   ForwardTrace: 31                                            |      |   ForwardTrace: 32                                            |
 |   NextACT: 45                                                 |      |   NextACT: 44                                                 |
 | [27][Exp2]< Exp2 @ "+" "+" >                                  |      | [28][Exp2]< Exp2 @ "+" >                                      |
 | [AST-INSTRUCTIONS]:                                           |      | [AST-INSTRUCTIONS]:                                           |
@@ -734,7 +734,7 @@
 ++===============================================================++    ++===============================================================++
 || [34]: {ADD} +                                                 ||    || [35]: {ADD} +                                                 ||
 ||   TraceExec: [24]                                             ||    ||   TraceExec: [28]                                             ||
-||   BranchHead: 31                                              ||    ||   BranchHead: 32                                              ||
+||   ForwardTrace: 31                                            ||    ||   ForwardTrace: 32                                            ||
 || [22][Exp2]< Exp2 "+" @ "+" >                                  ||    || [23][Exp2]< Exp2 "+" @ >                                      ||
 || [AST-INSTRUCTIONS]:                                           ||    || [AST-INSTRUCTIONS]:                                           ||
 ||     CSTop: [8] [17 -> 13]                                     ||    ||     CSTop: [9] [18 -> 13]                                     ||
@@ -756,7 +756,7 @@
 |                                                                      | [37]: <Leftrec>                                               |
 |                                                                      |   TraceExec: [29]                                             |
 |                                                                      |   InsExec: [63:5]                                             |
-|                                                                      |   BranchHead: 32                                              |
+|                                                                      |   ForwardTrace: 32                                            |
 |                                                                      | [28][Exp2]< Exp2 @ "+" >                                      |
 |                                                                      | [AST-INSTRUCTIONS]:                                           |
 |                                                                      |     CSTop: [9] [18 -> 13]                                     |
@@ -807,7 +807,7 @@
 ++===============================================================++    ++===============================================================++
 || [39]: {ADD} +                                                 ||    || [43]: {ADD} +                                                 ||
 ||   TraceExec: [25]                                             ||    ||   TraceExec: [30]                                             ||
-||   BranchHead: 31                                              ||    ||   BranchHead: 32                                              ||
+||   ForwardTrace: 31                                            ||    ||   ForwardTrace: 32                                            ||
 || [21][Exp2]< Exp2 "+" "+" @ >                                  ||    || [23][Exp2]< Exp2 "+" @ >                                      ||
 || [AST-INSTRUCTIONS]:                                           ||    || [AST-INSTRUCTIONS]:                                           ||
 ||     CSTop: [8] [17 -> 13]                                     ||    ||     CSTop: [10] [19 -> 13]                                    ||
@@ -829,7 +829,7 @@
 | [45]: <Ending>                                                |      | [44]: <Ending>                                                |
 |   TraceExec: [26]                                             |      |   TraceExec: [31]                                             |
 |   InsExec: [56:4]                                             |      |   InsExec: [68:4]                                             |
-|   BranchHead: 31                                              |      |   BranchHead: 32                                              |
+|   ForwardTrace: 31                                            |      |   ForwardTrace: 32                                            |
 | [40][Exp]<< !Exp2 @ >>                                        |      | [40][Exp]<< !Exp2 @ >>                                        |
 | [AST-INSTRUCTIONS]:                                           |      | [AST-INSTRUCTIONS]:                                           |
 |     CSTop: [8] [17 -> 13]                                     |      |     CSTop: [10] [19 -> 13]                                    |
@@ -871,8 +871,8 @@
 | [40]: <Merging>            |
 | <Start>                    |
 |   TraceExec: [32]          |
-|   BranchHead: 40           |
-|   SharedTrace: 20          |
+|   ForwardTrace: 40         |
+|   CommonForwardTrace: 20   |
 | [AMBIGUITY-RESOLVING]: [1] |
 |   objs: [8, 10]            |
 |   first: 28 prefix: 0      |
@@ -889,7 +889,7 @@
 | [41]: <Ending>                             |
 |   TraceExec: [33]                          |
 |   InsExec: [72:2]                          |
-|   BranchHead: 40                           |
+|   ForwardTrace: 40                         |
 |   AmbiguityEnds: [1]                       |
 | [16][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |
 | [AST-INSTRUCTIONS]:                        |
@@ -922,7 +922,7 @@
 ++============================================++
 || [46]: {CLOSE_ROUND} )                      ||
 ||   TraceExec: [34]                          ||
-||   BranchHead: 40                           ||
+||   ForwardTrace: 40                         ||
 || [15][Exp1]< Exp1 "(" { Exp ; "," } ")" @ > ||
 || [AST-INSTRUCTIONS]:                        ||
 ||     CSTop: [2] [5 -> 2]                    ||
@@ -942,7 +942,7 @@
 | [47]: <Ending>                           |
 |   TraceExec: [35]                        |
 |   InsExec: [74:2]                        |
-|   BranchHead: 40                         |
+|   ForwardTrace: 40                       |
 | [31][Exp2]<< !Exp1 @ >>                  |
 | [AST-INSTRUCTIONS]:                      |
 |     CSTop: [2] [5 -> 2]                  |
@@ -972,7 +972,7 @@
 | [48]: <Ending>                         |
 |   TraceExec: [36]                      |
 |   InsExec: [76:2]                      |
-|   BranchHead: 40                       |
+|   ForwardTrace: 40                     |
 | [40][Exp]<< !Exp2 @ >>                 |
 | [AST-INSTRUCTIONS]:                    |
 |     CSTop: [2] [2 -> 1]                |
@@ -1001,7 +1001,7 @@
 | [49]: <Ending>             |
 |   TraceExec: [37]          |
 |   InsExec: [78:1]          |
-|   BranchHead: 40           |
+|   ForwardTrace: 40         |
 | [43][Module]< Exp @ >      |
 | [AST-INSTRUCTIONS]:        |
 |     CSTop: [2] [1 -> 0]    |
@@ -1023,7 +1023,7 @@
 | [50]: <Ending>             |
 |   TraceExec: [38]          |
 |   InsExec: [79:2]          |
-|   BranchHead: 40           |
+|   ForwardTrace: 40         |
 | [42][Module] END [ENDING]  |
 | [AST-INSTRUCTIONS]:        |
 |     CSTop: [0] [0 -> -1]   |

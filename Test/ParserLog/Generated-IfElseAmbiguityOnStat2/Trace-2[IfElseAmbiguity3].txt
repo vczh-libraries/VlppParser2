@@ -1,7 +1,7 @@
 ﻿+----------------------+
 | [0]: <Start>         |
 |   TraceExec: [0]     |
-|   BranchHead: 0      |
+|   ForwardTrace: 0    |
 | [26][Module] BEGIN   |
 | [AST-INSTRUCTIONS]:  |
 |     CSTop: []        |
@@ -18,7 +18,7 @@
 || [1]: {OPEN_BRACE} {                         ||
 ||   TraceExec: [1]                            ||
 ||   InsExec: [0:3]                            ||
-||   BranchHead: 0                             ||
+||   ForwardTrace: 0                           ||
 || [6][Block]< "{" @ { Stat } "}" >            ||
 || [AST-INSTRUCTIONS]:                         ||
 ||     CSTop: []                               ||
@@ -60,7 +60,7 @@
 || [2]: {DO} do                                       ||
 ||   TraceExec: [2]                                   ||
 ||   InsExec: [3:2]                                   ||
-||   BranchHead: 0                                    ||
+||   ForwardTrace: 0                                  ||
 || [3][Do]< "do" @ ";" >                              ||
 || [AST-INSTRUCTIONS]:                                ||
 ||     CSTop: [1] [2 -> 1]                            ||
@@ -96,7 +96,7 @@
 ++====================================================++
 || [3]: {SEMICOLON} ;                                 ||
 ||   TraceExec: [3]                                   ||
-||   BranchHead: 0                                    ||
+||   ForwardTrace: 0                                  ||
 || [2][Do]< "do" ";" @ >                              ||
 || [AST-INSTRUCTIONS]:                                ||
 ||     CSTop: [2] [4 -> 3]                            ||
@@ -117,7 +117,7 @@
 | [4]: <Ending>                                      |
 |   TraceExec: [4]                                   |
 |   InsExec: [5:1]                                   |
-|   BranchHead: 0                                    |
+|   ForwardTrace: 0                                  |
 | [24][Stat]<< !Do @ >>                              |
 | [AST-INSTRUCTIONS]:                                |
 |     CSTop: [2] [4 -> 3]                            |
@@ -143,7 +143,7 @@
 | [5]: <Ending>                               |
 |   TraceExec: [5]                            |
 |   InsExec: [6:3]                            |
-|   BranchHead: 0                             |
+|   ForwardTrace: 0                           |
 | [7][Block]< "{" { Stat @ } "}" >            |
 | [AST-INSTRUCTIONS]:                         |
 |     CSTop: [2] [3 -> 2]                     |
@@ -180,7 +180,7 @@
 || [6]: {IF} if                                       ||    || [7]: {IF} if                                       ||
 ||   TraceExec: [6]                                   ||    ||   TraceExec: [103]                                 ||
 ||   InsExec: [9:2]                                   ||    ||   InsExec: [129:2]                                 ||
-||   BranchHead: 6                                    ||    ||   BranchHead: 7                                    ||
+||   ForwardTrace: 6                                  ||    ||   ForwardTrace: 7                                  ||
 || [19][If]< "if" @ "cond" "then" Stat "else" Stat >  ||    || [20][If]< "if" @ "cond" "then" Stat >              ||
 || [AST-INSTRUCTIONS]:                                ||    || [AST-INSTRUCTIONS]:                                ||
 ||     CSTop: [1] [2 -> 1]                            ||    ||     CSTop: [1] [2 -> 1]                            ||
@@ -216,7 +216,7 @@
 ++====================================================++    ++====================================================++
 || [8]: {CONDITION} cond                              ||    || [9]: {CONDITION} cond                              ||
 ||   TraceExec: [7]                                   ||    ||   TraceExec: [104]                                 ||
-||   BranchHead: 6                                    ||    ||   BranchHead: 7                                    ||
+||   ForwardTrace: 6                                  ||    ||   ForwardTrace: 7                                  ||
 || [17][If]< "if" "cond" @ "then" Stat "else" Stat >  ||    || [18][If]< "if" "cond" @ "then" Stat >              ||
 || [AST-INSTRUCTIONS]:                                ||    || [AST-INSTRUCTIONS]:                                ||
 ||     CSTop: [3] [6 -> 5]                            ||    ||     CSTop: [23] [46 -> 45]                         ||
@@ -238,7 +238,7 @@
 ++====================================================++    ++====================================================++
 || [10]: {THEN} then                                  ||    || [11]: {THEN} then                                  ||
 ||   TraceExec: [8]                                   ||    ||   TraceExec: [105]                                 ||
-||   BranchHead: 6                                    ||    ||   BranchHead: 7                                    ||
+||   ForwardTrace: 6                                  ||    ||   ForwardTrace: 7                                  ||
 || [11][If]< "if" "cond" "then" @ Stat "else" Stat >  ||    || [12][If]< "if" "cond" "then" @ Stat >              ||
 || [AST-INSTRUCTIONS]:                                ||    || [AST-INSTRUCTIONS]:                                ||
 ||     CSTop: [3] [6 -> 5]                            ||    ||     CSTop: [23] [46 -> 45]                         ||
@@ -261,7 +261,7 @@
 || [13]: {IF} if                                                        ||    || [14]: {IF} if                                             ||
 ||   TraceExec: [9]                                                     ||    ||   TraceExec: [106]                                        ||
 ||   InsExec: [11:2]                                                    ||    ||   InsExec: [131:2]                                        ||
-||   BranchHead: 6                                                      ||    ||   BranchHead: 7                                           ||
+||   ForwardTrace: 6                                                    ||    ||   ForwardTrace: 7                                         ||
 || [20][If]< "if" @ "cond" "then" Stat >                                ||    || [19][If]< "if" @ "cond" "then" Stat "else" Stat >         ||
 || [AST-INSTRUCTIONS]:                                                  ||    || [AST-INSTRUCTIONS]:                                       ||
 ||     CSTop: [3] [6 -> 5]                                              ||    ||     CSTop: [23] [46 -> 45]                                ||
@@ -299,7 +299,7 @@
 ++======================================================================++    ++===========================================================++
 || [17]: {CONDITION} cond                                               ||    || [18]: {CONDITION} cond                                    ||
 ||   TraceExec: [10]                                                    ||    ||   TraceExec: [107]                                        ||
-||   BranchHead: 6                                                      ||    ||   BranchHead: 7                                           ||
+||   ForwardTrace: 6                                                    ||    ||   ForwardTrace: 7                                         ||
 || [18][If]< "if" "cond" @ "then" Stat >                                ||    || [17][If]< "if" "cond" @ "then" Stat "else" Stat >         ||
 || [AST-INSTRUCTIONS]:                                                  ||    || [AST-INSTRUCTIONS]:                                       ||
 ||     CSTop: [4] [8 -> 7]                                              ||    ||     CSTop: [24] [48 -> 47]                                ||
@@ -323,7 +323,7 @@
 ++======================================================================++    ++===========================================================++
 || [21]: {THEN} then                                                    ||    || [22]: {THEN} then                                         ||
 ||   TraceExec: [11]                                                    ||    ||   TraceExec: [108]                                        ||
-||   BranchHead: 6                                                      ||    ||   BranchHead: 7                                           ||
+||   ForwardTrace: 6                                                    ||    ||   ForwardTrace: 7                                         ||
 || [12][If]< "if" "cond" "then" @ Stat >                                ||    || [11][If]< "if" "cond" "then" @ Stat "else" Stat >         ||
 || [AST-INSTRUCTIONS]:                                                  ||    || [AST-INSTRUCTIONS]:                                       ||
 ||     CSTop: [4] [8 -> 7]                                              ||    ||     CSTop: [24] [48 -> 47]                                ||
@@ -348,7 +348,7 @@
 || [25]: {OPEN_BRACE} {                                                 ||         || [26]: {OPEN_BRACE} {                                                  ||
 ||   TraceExec: [12]                                                    ||         ||   TraceExec: [109]                                                    ||
 ||   InsExec: [13:2]                                                    ||         ||   InsExec: [133:2]                                                    ||
-||   BranchHead: 6                                                      ||         ||   BranchHead: 7                                                       ||
+||   ForwardTrace: 6                                                    ||         ||   ForwardTrace: 7                                                     ||
 || [6][Block]< "{" @ { Stat } "}" >                                     ||         || [6][Block]< "{" @ { Stat } "}" >                                      ||
 || [AST-INSTRUCTIONS]:                                                  ||         || [AST-INSTRUCTIONS]:                                                   ||
 ||     CSTop: [4] [8 -> 7]                                              ||         ||     CSTop: [24] [48 -> 47]                                            ||
@@ -389,7 +389,7 @@
 || [30]: {IF} if                                                        ||    || [31]: {IF} if                                                        ||    || [32]: {IF} if                                                         ||    || [33]: {IF} if                                                         ||
 ||   TraceExec: [13]                                                    ||    ||   TraceExec: [32]                                                    ||    ||   TraceExec: [110]                                                    ||    ||   TraceExec: [129]                                                    ||
 ||   InsExec: [15:2]                                                    ||    ||   InsExec: [39:2]                                                    ||    ||   InsExec: [135:2]                                                    ||    ||   InsExec: [159:2]                                                    ||
-||   BranchHead: 30                                                     ||    ||   BranchHead: 31                                                     ||    ||   BranchHead: 32                                                      ||    ||   BranchHead: 33                                                      ||
+||   ForwardTrace: 30                                                   ||    ||   ForwardTrace: 31                                                   ||    ||   ForwardTrace: 32                                                    ||    ||   ForwardTrace: 33                                                    ||
 || [19][If]< "if" @ "cond" "then" Stat "else" Stat >                    ||    || [20][If]< "if" @ "cond" "then" Stat >                                ||    || [19][If]< "if" @ "cond" "then" Stat "else" Stat >                     ||    || [20][If]< "if" @ "cond" "then" Stat >                                 ||
 || [AST-INSTRUCTIONS]:                                                  ||    || [AST-INSTRUCTIONS]:                                                  ||    || [AST-INSTRUCTIONS]:                                                   ||    || [AST-INSTRUCTIONS]:                                                   ||
 ||     CSTop: [5] [10 -> 9]                                             ||    ||     CSTop: [5] [10 -> 9]                                             ||    ||     CSTop: [25] [50 -> 49]                                            ||    ||     CSTop: [25] [50 -> 49]                                            ||
@@ -431,7 +431,7 @@
 ++======================================================================++    ++======================================================================++    ++=======================================================================++    ++=======================================================================++
 || [38]: {CONDITION} cond                                               ||    || [39]: {CONDITION} cond                                               ||    || [40]: {CONDITION} cond                                                ||    || [41]: {CONDITION} cond                                                ||
 ||   TraceExec: [14]                                                    ||    ||   TraceExec: [33]                                                    ||    ||   TraceExec: [111]                                                    ||    ||   TraceExec: [130]                                                    ||
-||   BranchHead: 30                                                     ||    ||   BranchHead: 31                                                     ||    ||   BranchHead: 32                                                      ||    ||   BranchHead: 33                                                      ||
+||   ForwardTrace: 30                                                   ||    ||   ForwardTrace: 31                                                   ||    ||   ForwardTrace: 32                                                    ||    ||   ForwardTrace: 33                                                    ||
 || [17][If]< "if" "cond" @ "then" Stat "else" Stat >                    ||    || [18][If]< "if" "cond" @ "then" Stat >                                ||    || [17][If]< "if" "cond" @ "then" Stat "else" Stat >                     ||    || [18][If]< "if" "cond" @ "then" Stat >                                 ||
 || [AST-INSTRUCTIONS]:                                                  ||    || [AST-INSTRUCTIONS]:                                                  ||    || [AST-INSTRUCTIONS]:                                                   ||    || [AST-INSTRUCTIONS]:                                                   ||
 ||     CSTop: [6] [12 -> 11]                                            ||    ||     CSTop: [10] [20 -> 19]                                           ||    ||     CSTop: [26] [52 -> 51]                                            ||    ||     CSTop: [30] [60 -> 59]                                            ||
@@ -459,7 +459,7 @@
 ++======================================================================++    ++======================================================================++    ++=======================================================================++    ++=======================================================================++
 || [46]: {THEN} then                                                    ||    || [47]: {THEN} then                                                    ||    || [48]: {THEN} then                                                     ||    || [49]: {THEN} then                                                     ||
 ||   TraceExec: [15]                                                    ||    ||   TraceExec: [34]                                                    ||    ||   TraceExec: [112]                                                    ||    ||   TraceExec: [131]                                                    ||
-||   BranchHead: 30                                                     ||    ||   BranchHead: 31                                                     ||    ||   BranchHead: 32                                                      ||    ||   BranchHead: 33                                                      ||
+||   ForwardTrace: 30                                                   ||    ||   ForwardTrace: 31                                                   ||    ||   ForwardTrace: 32                                                    ||    ||   ForwardTrace: 33                                                    ||
 || [11][If]< "if" "cond" "then" @ Stat "else" Stat >                    ||    || [12][If]< "if" "cond" "then" @ Stat >                                ||    || [11][If]< "if" "cond" "then" @ Stat "else" Stat >                     ||    || [12][If]< "if" "cond" "then" @ Stat >                                 ||
 || [AST-INSTRUCTIONS]:                                                  ||    || [AST-INSTRUCTIONS]:                                                  ||    || [AST-INSTRUCTIONS]:                                                   ||    || [AST-INSTRUCTIONS]:                                                   ||
 ||     CSTop: [6] [12 -> 11]                                            ||    ||     CSTop: [10] [20 -> 19]                                           ||    ||     CSTop: [26] [52 -> 51]                                            ||    ||     CSTop: [30] [60 -> 59]                                            ||
@@ -488,7 +488,7 @@
 || [57]: {IF} if                                                         ||    || [58]: {IF} if                                                        ||    || [61]: {IF} if                                                         ||    || [62]: {IF} if                                                         ||
 ||   TraceExec: [16]                                                     ||    ||   TraceExec: [35]                                                    ||    ||   TraceExec: [113]                                                    ||    ||   TraceExec: [132]                                                    ||
 ||   InsExec: [17:2]                                                     ||    ||   InsExec: [41:2]                                                    ||    ||   InsExec: [137:2]                                                    ||    ||   InsExec: [161:2]                                                    ||
-||   BranchHead: 30                                                      ||    ||   BranchHead: 31                                                     ||    ||   BranchHead: 32                                                      ||    ||   BranchHead: 33                                                      ||
+||   ForwardTrace: 30                                                    ||    ||   ForwardTrace: 31                                                   ||    ||   ForwardTrace: 32                                                    ||    ||   ForwardTrace: 33                                                    ||
 || [20][If]< "if" @ "cond" "then" Stat >                                 ||    || [19][If]< "if" @ "cond" "then" Stat "else" Stat >                    ||    || [20][If]< "if" @ "cond" "then" Stat >                                 ||    || [19][If]< "if" @ "cond" "then" Stat "else" Stat >                     ||
 || [AST-INSTRUCTIONS]:                                                   ||    || [AST-INSTRUCTIONS]:                                                  ||    || [AST-INSTRUCTIONS]:                                                   ||    || [AST-INSTRUCTIONS]:                                                   ||
 ||     CSTop: [6] [12 -> 11]                                             ||    ||     CSTop: [10] [20 -> 19]                                           ||    ||     CSTop: [26] [52 -> 51]                                            ||    ||     CSTop: [30] [60 -> 59]                                            ||
@@ -532,7 +532,7 @@
 ++=======================================================================++    ++======================================================================++    ++=======================================================================++    ++=======================================================================++
 || [73]: {CONDITION} cond                                                ||    || [74]: {CONDITION} cond                                               ||    || [77]: {CONDITION} cond                                                ||    || [78]: {CONDITION} cond                                                ||
 ||   TraceExec: [17]                                                     ||    ||   TraceExec: [36]                                                    ||    ||   TraceExec: [114]                                                    ||    ||   TraceExec: [133]                                                    ||
-||   BranchHead: 30                                                      ||    ||   BranchHead: 31                                                     ||    ||   BranchHead: 32                                                      ||    ||   BranchHead: 33                                                      ||
+||   ForwardTrace: 30                                                    ||    ||   ForwardTrace: 31                                                   ||    ||   ForwardTrace: 32                                                    ||    ||   ForwardTrace: 33                                                    ||
 || [18][If]< "if" "cond" @ "then" Stat >                                 ||    || [17][If]< "if" "cond" @ "then" Stat "else" Stat >                    ||    || [18][If]< "if" "cond" @ "then" Stat >                                 ||    || [17][If]< "if" "cond" @ "then" Stat "else" Stat >                     ||
 || [AST-INSTRUCTIONS]:                                                   ||    || [AST-INSTRUCTIONS]:                                                  ||    || [AST-INSTRUCTIONS]:                                                   ||    || [AST-INSTRUCTIONS]:                                                   ||
 ||     CSTop: [7] [14 -> 13]                                             ||    ||     CSTop: [11] [22 -> 21]                                           ||    ||     CSTop: [27] [54 -> 53]                                            ||    ||     CSTop: [31] [62 -> 61]                                            ||
@@ -562,7 +562,7 @@
 ++=======================================================================++    ++======================================================================++    ++=======================================================================++    ++=======================================================================++
 || [89]: {THEN} then                                                     ||    || [90]: {THEN} then                                                    ||    || [93]: {THEN} then                                                     ||    || [94]: {THEN} then                                                     ||
 ||   TraceExec: [18]                                                     ||    ||   TraceExec: [37]                                                    ||    ||   TraceExec: [115]                                                    ||    ||   TraceExec: [134]                                                    ||
-||   BranchHead: 30                                                      ||    ||   BranchHead: 31                                                     ||    ||   BranchHead: 32                                                      ||    ||   BranchHead: 33                                                      ||
+||   ForwardTrace: 30                                                    ||    ||   ForwardTrace: 31                                                   ||    ||   ForwardTrace: 32                                                    ||    ||   ForwardTrace: 33                                                    ||
 || [12][If]< "if" "cond" "then" @ Stat >                                 ||    || [11][If]< "if" "cond" "then" @ Stat "else" Stat >                    ||    || [12][If]< "if" "cond" "then" @ Stat >                                 ||    || [11][If]< "if" "cond" "then" @ Stat "else" Stat >                     ||
 || [AST-INSTRUCTIONS]:                                                   ||    || [AST-INSTRUCTIONS]:                                                  ||    || [AST-INSTRUCTIONS]:                                                   ||    || [AST-INSTRUCTIONS]:                                                   ||
 ||     CSTop: [7] [14 -> 13]                                             ||    ||     CSTop: [11] [22 -> 21]                                           ||    ||     CSTop: [27] [54 -> 53]                                            ||    ||     CSTop: [31] [62 -> 61]                                            ||
@@ -593,7 +593,7 @@
 || [105]: {DO} do                                                        ||    || [106]: {DO} do                                                        ||    || [109]: {DO} do                                                        ||    || [110]: {DO} do                                                        ||
 ||   TraceExec: [19]                                                     ||    ||   TraceExec: [38]                                                     ||    ||   TraceExec: [116]                                                    ||    ||   TraceExec: [135]                                                    ||
 ||   InsExec: [19:2]                                                     ||    ||   InsExec: [43:2]                                                     ||    ||   InsExec: [139:2]                                                    ||    ||   InsExec: [163:2]                                                    ||
-||   BranchHead: 30                                                      ||    ||   BranchHead: 31                                                      ||    ||   BranchHead: 32                                                      ||    ||   BranchHead: 33                                                      ||
+||   ForwardTrace: 30                                                    ||    ||   ForwardTrace: 31                                                    ||    ||   ForwardTrace: 32                                                    ||    ||   ForwardTrace: 33                                                    ||
 || [3][Do]< "do" @ ";" >                                                 ||    || [3][Do]< "do" @ ";" >                                                 ||    || [3][Do]< "do" @ ";" >                                                 ||    || [3][Do]< "do" @ ";" >                                                 ||
 || [AST-INSTRUCTIONS]:                                                   ||    || [AST-INSTRUCTIONS]:                                                   ||    || [AST-INSTRUCTIONS]:                                                   ||    || [AST-INSTRUCTIONS]:                                                   ||
 ||     CSTop: [7] [14 -> 13]                                             ||    ||     CSTop: [11] [22 -> 21]                                            ||    ||     CSTop: [27] [54 -> 53]                                            ||    ||     CSTop: [31] [62 -> 61]                                            ||
@@ -639,7 +639,7 @@
 ++=======================================================================++    ++=======================================================================++    ++=======================================================================++    ++=======================================================================++
 || [137]: {SEMICOLON} ;                                                  ||    || [142]: {SEMICOLON} ;                                                  ||    || [155]: {SEMICOLON} ;                                                  ||    || [160]: {SEMICOLON} ;                                                  ||
 ||   TraceExec: [20]                                                     ||    ||   TraceExec: [39]                                                     ||    ||   TraceExec: [117]                                                    ||    ||   TraceExec: [136]                                                    ||
-||   BranchHead: 30                                                      ||    ||   BranchHead: 31                                                      ||    ||   BranchHead: 32                                                      ||    ||   BranchHead: 33                                                      ||
+||   ForwardTrace: 30                                                    ||    ||   ForwardTrace: 31                                                    ||    ||   ForwardTrace: 32                                                    ||    ||   ForwardTrace: 33                                                    ||
 || [2][Do]< "do" ";" @ >                                                 ||    || [2][Do]< "do" ";" @ >                                                 ||    || [2][Do]< "do" ";" @ >                                                 ||    || [2][Do]< "do" ";" @ >                                                 ||
 || [AST-INSTRUCTIONS]:                                                   ||    || [AST-INSTRUCTIONS]:                                                   ||    || [AST-INSTRUCTIONS]:                                                   ||    || [AST-INSTRUCTIONS]:                                                   ||
 ||     CSTop: [8] [16 -> 15]                                             ||    ||     CSTop: [12] [24 -> 23]                                            ||    ||     CSTop: [28] [56 -> 55]                                            ||    ||     CSTop: [32] [64 -> 63]                                            ||
@@ -670,7 +670,7 @@
 | [138]: <Ending>                                                       |      | [143]: <Ending>                                                       |      | [156]: <Ending>                                                       |      | [161]: <Ending>                                                       |
 |   TraceExec: [21]                                                     |      |   TraceExec: [40]                                                     |      |   TraceExec: [118]                                                    |      |   TraceExec: [137]                                                    |
 |   InsExec: [21:1]                                                     |      |   InsExec: [45:1]                                                     |      |   InsExec: [141:1]                                                    |      |   InsExec: [165:1]                                                    |
-|   BranchHead: 30                                                      |      |   BranchHead: 31                                                      |      |   BranchHead: 32                                                      |      |   BranchHead: 33                                                      |
+|   ForwardTrace: 30                                                    |      |   ForwardTrace: 31                                                    |      |   ForwardTrace: 32                                                    |      |   ForwardTrace: 33                                                    |
 | [24][Stat]<< !Do @ >>                                                 |      | [24][Stat]<< !Do @ >>                                                 |      | [24][Stat]<< !Do @ >>                                                 |      | [24][Stat]<< !Do @ >>                                                 |
 | [AST-INSTRUCTIONS]:                                                   |      | [AST-INSTRUCTIONS]:                                                   |      | [AST-INSTRUCTIONS]:                                                   |      | [AST-INSTRUCTIONS]:                                                   |
 |     CSTop: [8] [16 -> 15]                                             |      |     CSTop: [12] [24 -> 23]                                            |      |     CSTop: [28] [56 -> 55]                                            |      |     CSTop: [32] [64 -> 63]                                            |
@@ -706,7 +706,7 @@
 | [139]: <Ending>                                                       |      | [144]: <Ending>                                                      |       | [157]: <Ending>                                                       |      | [162]: <Ending>                                                       |
 |   TraceExec: [22]                                                     |      |   TraceExec: [41]                                                    |       |   TraceExec: [119]                                                    |      |   TraceExec: [138]                                                    |
 |   InsExec: [22:3]                                                     |      |   InsExec: [46:3]                                                    |       |   InsExec: [142:3]                                                    |      |   InsExec: [166:3]                                                    |
-|   BranchHead: 30                                                      |      |   BranchHead: 31                                                     |       |   BranchHead: 32                                                      |      |   BranchHead: 33                                                      |
+|   ForwardTrace: 30                                                    |      |   ForwardTrace: 31                                                   |       |   ForwardTrace: 32                                                    |      |   ForwardTrace: 33                                                    |
 | [16][If]< "if" "cond" "then" Stat @ >                                 |      | [15][If]< "if" "cond" "then" Stat @ "else" Stat >                    |       | [16][If]< "if" "cond" "then" Stat @ >                                 |      | [15][If]< "if" "cond" "then" Stat @ "else" Stat >                     |
 | [AST-INSTRUCTIONS]:                                                   |      | [AST-INSTRUCTIONS]:                                                  |       | [AST-INSTRUCTIONS]:                                                   |      | [AST-INSTRUCTIONS]:                                                   |
 |     CSTop: [8] [15 -> 14]                                             |      |     CSTop: [12] [23 -> 22]                                           |       |     CSTop: [28] [55 -> 54]                                            |      |     CSTop: [32] [63 -> 62]                                            |
@@ -751,7 +751,7 @@
 | [140]: <Ending>                                                       |      |                                                                              | [158]: <Ending>                                                       |      |
 |   TraceExec: [23]                                                     |      |                                                                              |   TraceExec: [120]                                                    |      |
 |   InsExec: [25:1]                                                     |      |                                                                              |   InsExec: [145:1]                                                    |      |
-|   BranchHead: 30                                                      |      |                                                                              |   BranchHead: 32                                                      |      |
+|   ForwardTrace: 30                                                    |      |                                                                              |   ForwardTrace: 32                                                    |      |
 | [25][Stat]<< !If @ >>                                                 |      |                                                                              | [25][Stat]<< !If @ >>                                                 |      |
 | [AST-INSTRUCTIONS]:                                                   |      |                                                                              | [AST-INSTRUCTIONS]:                                                   |      |
 |     CSTop: [7] [14 -> 13]                                             |      |                                                                              |     CSTop: [27] [54 -> 53]                                            |      |
@@ -785,7 +785,7 @@
 | [141]: <Ending>                                                      |       |                                                                              | [159]: <Ending>                                                       |      |
 |   TraceExec: [24]                                                    |       |                                                                              |   TraceExec: [121]                                                    |      |
 |   InsExec: [26:3]                                                    |       |                                                                              |   InsExec: [146:3]                                                    |      |
-|   BranchHead: 30                                                     |       |                                                                              |   BranchHead: 32                                                      |      |
+|   ForwardTrace: 30                                                   |       |                                                                              |   ForwardTrace: 32                                                    |      |
 | [15][If]< "if" "cond" "then" Stat @ "else" Stat >                    |       |                                                                              | [15][If]< "if" "cond" "then" Stat @ "else" Stat >                     |      |
 | [AST-INSTRUCTIONS]:                                                  |       |                                                                              | [AST-INSTRUCTIONS]:                                                   |      |
 |     CSTop: [7] [13 -> 12]                                            |       |                                                                              |     CSTop: [27] [53 -> 52]                                            |      |
@@ -829,7 +829,7 @@
 ++======================================================================++    ++======================================================================++    ++=======================================================================++    ++=======================================================================++
 || [192]: {ELSE} else                                                   ||    || [193]: {ELSE} else                                                   ||    || [195]: {ELSE} else                                                    ||    || [196]: {ELSE} else                                                    ||
 ||   TraceExec: [25]                                                    ||    ||   TraceExec: [42]                                                    ||    ||   TraceExec: [122]                                                    ||    ||   TraceExec: [139]                                                    ||
-||   BranchHead: 30                                                     ||    ||   BranchHead: 31                                                     ||    ||   BranchHead: 32                                                      ||    ||   BranchHead: 33                                                      ||
+||   ForwardTrace: 30                                                   ||    ||   ForwardTrace: 31                                                   ||    ||   ForwardTrace: 32                                                    ||    ||   ForwardTrace: 33                                                    ||
 || [13][If]< "if" "cond" "then" Stat "else" @ Stat >                    ||    || [13][If]< "if" "cond" "then" Stat "else" @ Stat >                    ||    || [13][If]< "if" "cond" "then" Stat "else" @ Stat >                     ||    || [13][If]< "if" "cond" "then" Stat "else" @ Stat >                     ||
 || [AST-INSTRUCTIONS]:                                                  ||    || [AST-INSTRUCTIONS]:                                                  ||    || [AST-INSTRUCTIONS]:                                                   ||    || [AST-INSTRUCTIONS]:                                                   ||
 ||     CSTop: [6] [12 -> 11]                                            ||    ||     CSTop: [11] [22 -> 21]                                           ||    ||     CSTop: [26] [52 -> 51]                                            ||    ||     CSTop: [31] [62 -> 61]                                            ||
@@ -860,7 +860,7 @@
 || [204]: {DO} do                                                         ||    || [205]: {DO} do                                                         ||    || [207]: {DO} do                                                          ||    || [208]: {DO} do                                                          ||
 ||   TraceExec: [26]                                                      ||    ||   TraceExec: [43]                                                      ||    ||   TraceExec: [123]                                                      ||    ||   TraceExec: [140]                                                      ||
 ||   InsExec: [29:2]                                                      ||    ||   InsExec: [49:2]                                                      ||    ||   InsExec: [149:2]                                                      ||    ||   InsExec: [169:2]                                                      ||
-||   BranchHead: 30                                                       ||    ||   BranchHead: 31                                                       ||    ||   BranchHead: 32                                                        ||    ||   BranchHead: 33                                                        ||
+||   ForwardTrace: 30                                                     ||    ||   ForwardTrace: 31                                                     ||    ||   ForwardTrace: 32                                                      ||    ||   ForwardTrace: 33                                                      ||
 || [3][Do]< "do" @ ";" >                                                  ||    || [3][Do]< "do" @ ";" >                                                  ||    || [3][Do]< "do" @ ";" >                                                   ||    || [3][Do]< "do" @ ";" >                                                   ||
 || [AST-INSTRUCTIONS]:                                                    ||    || [AST-INSTRUCTIONS]:                                                    ||    || [AST-INSTRUCTIONS]:                                                     ||    || [AST-INSTRUCTIONS]:                                                     ||
 ||     CSTop: [6] [12 -> 11]                                              ||    ||     CSTop: [11] [22 -> 21]                                             ||    ||     CSTop: [26] [52 -> 51]                                              ||    ||     CSTop: [31] [62 -> 61]                                              ||
@@ -906,7 +906,7 @@
 ++========================================================================++    ++========================================================================++    ++=========================================================================++    ++=========================================================================++
 || [235]: {SEMICOLON} ;                                                   ||    || [240]: {SEMICOLON} ;                                                   ||    || [253]: {SEMICOLON} ;                                                    ||    || [258]: {SEMICOLON} ;                                                    ||
 ||   TraceExec: [27]                                                      ||    ||   TraceExec: [44]                                                      ||    ||   TraceExec: [124]                                                      ||    ||   TraceExec: [141]                                                      ||
-||   BranchHead: 30                                                       ||    ||   BranchHead: 31                                                       ||    ||   BranchHead: 32                                                        ||    ||   BranchHead: 33                                                        ||
+||   ForwardTrace: 30                                                     ||    ||   ForwardTrace: 31                                                     ||    ||   ForwardTrace: 32                                                      ||    ||   ForwardTrace: 33                                                      ||
 || [2][Do]< "do" ";" @ >                                                  ||    || [2][Do]< "do" ";" @ >                                                  ||    || [2][Do]< "do" ";" @ >                                                   ||    || [2][Do]< "do" ";" @ >                                                   ||
 || [AST-INSTRUCTIONS]:                                                    ||    || [AST-INSTRUCTIONS]:                                                    ||    || [AST-INSTRUCTIONS]:                                                     ||    || [AST-INSTRUCTIONS]:                                                     ||
 ||     CSTop: [9] [18 -> 17]                                              ||    ||     CSTop: [13] [26 -> 25]                                             ||    ||     CSTop: [29] [58 -> 57]                                              ||    ||     CSTop: [33] [66 -> 65]                                              ||
@@ -937,7 +937,7 @@
 | [236]: <Ending>                                                        |      | [241]: <Ending>                                                        |      | [254]: <Ending>                                                         |      | [259]: <Ending>                                                         |
 |   TraceExec: [28]                                                      |      |   TraceExec: [45]                                                      |      |   TraceExec: [125]                                                      |      |   TraceExec: [142]                                                      |
 |   InsExec: [31:1]                                                      |      |   InsExec: [51:1]                                                      |      |   InsExec: [151:1]                                                      |      |   InsExec: [171:1]                                                      |
-|   BranchHead: 30                                                       |      |   BranchHead: 31                                                       |      |   BranchHead: 32                                                        |      |   BranchHead: 33                                                        |
+|   ForwardTrace: 30                                                     |      |   ForwardTrace: 31                                                     |      |   ForwardTrace: 32                                                      |      |   ForwardTrace: 33                                                      |
 | [24][Stat]<< !Do @ >>                                                  |      | [24][Stat]<< !Do @ >>                                                  |      | [24][Stat]<< !Do @ >>                                                   |      | [24][Stat]<< !Do @ >>                                                   |
 | [AST-INSTRUCTIONS]:                                                    |      | [AST-INSTRUCTIONS]:                                                    |      | [AST-INSTRUCTIONS]:                                                     |      | [AST-INSTRUCTIONS]:                                                     |
 |     CSTop: [9] [18 -> 17]                                              |      |     CSTop: [13] [26 -> 25]                                             |      |     CSTop: [29] [58 -> 57]                                              |      |     CSTop: [33] [66 -> 65]                                              |
@@ -973,7 +973,7 @@
 | [237]: <Ending>                                                      |        | [242]: <Ending>                                                      |        | [255]: <Ending>                                                       |        | [260]: <Ending>                                                       |
 |   TraceExec: [29]                                                    |        |   TraceExec: [46]                                                    |        |   TraceExec: [126]                                                    |        |   TraceExec: [143]                                                    |
 |   InsExec: [32:3]                                                    |        |   InsExec: [52:3]                                                    |        |   InsExec: [152:3]                                                    |        |   InsExec: [172:3]                                                    |
-|   BranchHead: 30                                                     |        |   BranchHead: 31                                                     |        |   BranchHead: 32                                                      |        |   BranchHead: 33                                                      |
+|   ForwardTrace: 30                                                   |        |   ForwardTrace: 31                                                   |        |   ForwardTrace: 32                                                    |        |   ForwardTrace: 33                                                    |
 | [14][If]< "if" "cond" "then" Stat "else" Stat @ >                    |        | [14][If]< "if" "cond" "then" Stat "else" Stat @ >                    |        | [14][If]< "if" "cond" "then" Stat "else" Stat @ >                     |        | [14][If]< "if" "cond" "then" Stat "else" Stat @ >                     |
 | [AST-INSTRUCTIONS]:                                                  |        | [AST-INSTRUCTIONS]:                                                  |        | [AST-INSTRUCTIONS]:                                                   |        | [AST-INSTRUCTIONS]:                                                   |
 |     CSTop: [9] [17 -> 12]                                            |        |     CSTop: [13] [25 -> 22]                                           |        |     CSTop: [29] [57 -> 52]                                            |        |     CSTop: [33] [65 -> 62]                                            |
@@ -1018,7 +1018,7 @@
 | [238]: <Ending>                                                      |        | [243]: <Ending>                                                      |        | [256]: <Ending>                                                       |        | [261]: <Ending>                                                       |
 |   TraceExec: [30]                                                    |        |   TraceExec: [47]                                                    |        |   TraceExec: [127]                                                    |        |   TraceExec: [144]                                                    |
 |   InsExec: [35:1]                                                    |        |   InsExec: [55:1]                                                    |        |   InsExec: [155:1]                                                    |        |   InsExec: [175:1]                                                    |
-|   BranchHead: 30                                                     |        |   BranchHead: 31                                                     |        |   BranchHead: 32                                                      |        |   BranchHead: 33                                                      |
+|   ForwardTrace: 30                                                   |        |   ForwardTrace: 31                                                   |        |   ForwardTrace: 32                                                    |        |   ForwardTrace: 33                                                    |
 | [25][Stat]<< !If @ >>                                                |        | [25][Stat]<< !If @ >>                                                |        | [25][Stat]<< !If @ >>                                                 |        | [25][Stat]<< !If @ >>                                                 |
 | [AST-INSTRUCTIONS]:                                                  |        | [AST-INSTRUCTIONS]:                                                  |        | [AST-INSTRUCTIONS]:                                                   |        | [AST-INSTRUCTIONS]:                                                   |
 |     CSTop: [6] [12 -> 11]                                            |        |     CSTop: [11] [22 -> 21]                                           |        |     CSTop: [26] [52 -> 51]                                            |        |     CSTop: [31] [62 -> 61]                                            |
@@ -1052,7 +1052,7 @@
 | [247]: <Ending>                                                      |        | [244]: <Ending>                                                      |        | [265]: <Ending>                                                       |        | [262]: <Ending>                                                       |
 |   TraceExec: [31]                                                    |        |   TraceExec: [48]                                                    |        |   TraceExec: [128]                                                    |        |   TraceExec: [145]                                                    |
 |   InsExec: [36:3]                                                    |        |   InsExec: [56:3]                                                    |        |   InsExec: [156:3]                                                    |        |   InsExec: [176:3]                                                    |
-|   BranchHead: 30                                                     |        |   BranchHead: 31                                                     |        |   BranchHead: 32                                                      |        |   BranchHead: 33                                                      |
+|   ForwardTrace: 30                                                   |        |   ForwardTrace: 31                                                   |        |   ForwardTrace: 32                                                    |        |   ForwardTrace: 33                                                    |
 | [7][Block]< "{" { Stat @ } "}" >                                     |        | [16][If]< "if" "cond" "then" Stat @ >                                |        | [7][Block]< "{" { Stat @ } "}" >                                      |        | [16][If]< "if" "cond" "then" Stat @ >                                 |
 | [AST-INSTRUCTIONS]:                                                  |        | [AST-INSTRUCTIONS]:                                                  |        | [AST-INSTRUCTIONS]:                                                   |        | [AST-INSTRUCTIONS]:                                                   |
 |     CSTop: [6] [11 -> 10]                                            |        |     CSTop: [11] [21 -> 20]                                           |        |     CSTop: [26] [51 -> 50]                                            |        |     CSTop: [31] [61 -> 60]                                            |
@@ -1095,7 +1095,7 @@
 |                                                                               | [245]: <Ending>                                                      |        |                                                                                | [263]: <Ending>                                                       |
 |                                                                               |   TraceExec: [49]                                                    |        |                                                                                |   TraceExec: [146]                                                    |
 |                                                                               |   InsExec: [59:1]                                                    |        |                                                                                |   InsExec: [179:1]                                                    |
-|                                                                               |   BranchHead: 31                                                     |        |                                                                                |   BranchHead: 33                                                      |
+|                                                                               |   ForwardTrace: 31                                                   |        |                                                                                |   ForwardTrace: 33                                                    |
 |                                                                               | [25][Stat]<< !If @ >>                                                |        |                                                                                | [25][Stat]<< !If @ >>                                                 |
 |                                                                               | [AST-INSTRUCTIONS]:                                                  |        |                                                                                | [AST-INSTRUCTIONS]:                                                   |
 |                                                                               |     CSTop: [10] [20 -> 19]                                           |        |                                                                                |     CSTop: [30] [60 -> 59]                                            |
@@ -1127,7 +1127,7 @@
 |                                                                               | [246]: <Ending>                                                      |        |                                                                                | [264]: <Ending>                                                       |
 |                                                                               |   TraceExec: [50]                                                    |        |                                                                                |   TraceExec: [147]                                                    |
 |                                                                               |   InsExec: [60:3]                                                    |        |                                                                                |   InsExec: [180:3]                                                    |
-|                                                                               |   BranchHead: 31                                                     |        |                                                                                |   BranchHead: 33                                                      |
+|                                                                               |   ForwardTrace: 31                                                   |        |                                                                                |   ForwardTrace: 33                                                    |
 |                                                                               | [7][Block]< "{" { Stat @ } "}" >                                     |        |                                                                                | [7][Block]< "{" { Stat @ } "}" >                                      |
 |                                                                               | [AST-INSTRUCTIONS]:                                                  |        |                                                                                | [AST-INSTRUCTIONS]:                                                   |
 |                                                                               |     CSTop: [10] [19 -> 10]                                           |        |                                                                                |     CSTop: [30] [59 -> 50]                                            |
@@ -1164,17 +1164,17 @@
 |                                                                               |                                                                               |                                                                                |
 +-------------------------------------------------------------------------------+                                                                               +--------------------------------------------------------------------------------+
 |                                                                                                                                                               |
-+------------------------+                                                                                                                                      +--------------------------+
-| [239]: <Merging>       |                                                                                                                                      | [257]: <Merging>         |
-| <Start>                |                                                                                                                                      | <Start>                  |
-|   TraceExec: [51]      |                                                                                                                                      |   TraceExec: [148]       |
-|   BranchHead: 239      |                                                                                                                                      |   BranchHead: 257        |
-|   SharedTrace: 6       |                                                                                                                                      |   SharedTrace: 7         |
-| [CONTEXT]              |                                                                                                                                      | [CONTEXT]                |
-|   CSTop: [5] [10 -> 9] |                                                                                                                                      |   CSTop: [25] [50 -> 49] |
-|   OSTop: []            |                                                                                                                                      |   OSTop: []              |
-|   LriStored: []        |                                                                                                                                      |   LriStored: []          |
-+------------------------+                                                                                                                                      +--------------------------+
++-------------------------+                                                                                                                                     +--------------------------+
+| [239]: <Merging>        |                                                                                                                                     | [257]: <Merging>         |
+| <Start>                 |                                                                                                                                     | <Start>                  |
+|   TraceExec: [51]       |                                                                                                                                     |   TraceExec: [148]       |
+|   ForwardTrace: 239     |                                                                                                                                     |   ForwardTrace: 257      |
+|   CommonForwardTrace: 6 |                                                                                                                                     |   CommonForwardTrace: 7  |
+| [CONTEXT]               |                                                                                                                                     | [CONTEXT]                |
+|   CSTop: [5] [10 -> 9]  |                                                                                                                                     |   CSTop: [25] [50 -> 49] |
+|   OSTop: []             |                                                                                                                                     |   OSTop: []              |
+|   LriStored: []         |                                                                                                                                     |   LriStored: []          |
++-------------------------+                                                                                                                                     +--------------------------+
 [0/0]                                                                                                                                                           [1/1]
  |                                                                                                                                                               |
  +                                                                             +---------------------------------------------------------------------------------+
@@ -1183,7 +1183,7 @@
 ++======================================================================++    ++=======================================================================++
 || [287]: {CLOSE_BRACE} }                                               ||    || [292]: {CLOSE_BRACE} }                                                ||
 ||   TraceExec: [52]                                                    ||    ||   TraceExec: [149]                                                    ||
-||   BranchHead: 239                                                    ||    ||   BranchHead: 257                                                     ||
+||   ForwardTrace: 239                                                  ||    ||   ForwardTrace: 257                                                   ||
 || [8][Block]< "{" { Stat } "}" @ >                                     ||    || [8][Block]< "{" { Stat } "}" @ >                                      ||
 || [AST-INSTRUCTIONS]:                                                  ||    || [AST-INSTRUCTIONS]:                                                   ||
 ||     CSTop: [5] [10 -> 9]                                             ||    ||     CSTop: [25] [50 -> 49]                                            ||
@@ -1208,7 +1208,7 @@
 | [288]: <Ending>                                                      |      | [293]: <Ending>                                                       |
 |   TraceExec: [53]                                                    |      |   TraceExec: [150]                                                    |
 |   InsExec: [63:1]                                                    |      |   InsExec: [183:1]                                                    |
-|   BranchHead: 239                                                    |      |   BranchHead: 257                                                     |
+|   ForwardTrace: 239                                                  |      |   ForwardTrace: 257                                                   |
 | [23][Stat]<< !Block @ >>                                             |      | [23][Stat]<< !Block @ >>                                              |
 | [AST-INSTRUCTIONS]:                                                  |      | [AST-INSTRUCTIONS]:                                                   |
 |     CSTop: [5] [10 -> 9]                                             |      |     CSTop: [25] [50 -> 49]                                            |
@@ -1238,7 +1238,7 @@
 | [289]: <Ending>                                                      |      | [294]: <Ending>                                           |
 |   TraceExec: [54]                                                    |      |   TraceExec: [151]                                        |
 |   InsExec: [64:3]                                                    |      |   InsExec: [184:3]                                        |
-|   BranchHead: 239                                                    |      |   BranchHead: 257                                         |
+|   ForwardTrace: 239                                                  |      |   ForwardTrace: 257                                       |
 | [16][If]< "if" "cond" "then" Stat @ >                                |      | [15][If]< "if" "cond" "then" Stat @ "else" Stat >         |
 | [AST-INSTRUCTIONS]:                                                  |      | [AST-INSTRUCTIONS]:                                       |
 |     CSTop: [5] [9 -> 8]                                              |      |     CSTop: [25] [49 -> 48]                                |
@@ -1277,7 +1277,7 @@
 | [290]: <Ending>                                                      |      |
 |   TraceExec: [55]                                                    |      |
 |   InsExec: [67:1]                                                    |      |
-|   BranchHead: 239                                                    |      |
+|   ForwardTrace: 239                                                  |      |
 | [25][Stat]<< !If @ >>                                                |      |
 | [AST-INSTRUCTIONS]:                                                  |      |
 |     CSTop: [4] [8 -> 7]                                              |      |
@@ -1305,7 +1305,7 @@
 | [291]: <Ending>                                    |                        |
 |   TraceExec: [56]                                  |                        |
 |   InsExec: [68:3]                                  |                        |
-|   BranchHead: 239                                  |                        |
+|   ForwardTrace: 239                                |                        |
 | [15][If]< "if" "cond" "then" Stat @ "else" Stat >  |                        |
 | [AST-INSTRUCTIONS]:                                |                        |
 |     CSTop: [4] [7 -> 6]                            |                        |
@@ -1343,7 +1343,7 @@
 ++====================================================++    ++===========================================================++
 || [303]: {ELSE} else                                 ||    || [304]: {ELSE} else                                        ||
 ||   TraceExec: [57]                                  ||    ||   TraceExec: [152]                                        ||
-||   BranchHead: 239                                  ||    ||   BranchHead: 257                                         ||
+||   ForwardTrace: 239                                ||    ||   ForwardTrace: 257                                       ||
 || [13][If]< "if" "cond" "then" Stat "else" @ Stat >  ||    || [13][If]< "if" "cond" "then" Stat "else" @ Stat >         ||
 || [AST-INSTRUCTIONS]:                                ||    || [AST-INSTRUCTIONS]:                                       ||
 ||     CSTop: [3] [6 -> 5]                            ||    ||     CSTop: [24] [48 -> 47]                                ||
@@ -1368,7 +1368,7 @@
 || [306]: {OPEN_BRACE} {                                                   ||         || [307]: {OPEN_BRACE} {                                                   ||
 ||   TraceExec: [58]                                                       ||         ||   TraceExec: [153]                                                      ||
 ||   InsExec: [71:2]                                                       ||         ||   InsExec: [187:2]                                                      ||
-||   BranchHead: 239                                                       ||         ||   BranchHead: 257                                                       ||
+||   ForwardTrace: 239                                                     ||         ||   ForwardTrace: 257                                                     ||
 || [6][Block]< "{" @ { Stat } "}" >                                        ||         || [6][Block]< "{" @ { Stat } "}" >                                        ||
 || [AST-INSTRUCTIONS]:                                                     ||         || [AST-INSTRUCTIONS]:                                                     ||
 ||     CSTop: [3] [6 -> 5]                                                 ||         ||     CSTop: [24] [48 -> 47]                                              ||
@@ -1409,7 +1409,7 @@
 || [310]: {IF} if                                                          ||    || [311]: {IF} if                                                          ||    || [312]: {IF} if                                                          ||    || [313]: {IF} if                                                          ||
 ||   TraceExec: [59]                                                       ||    ||   TraceExec: [78]                                                       ||    ||   TraceExec: [154]                                                      ||    ||   TraceExec: [173]                                                      ||
 ||   InsExec: [73:2]                                                       ||    ||   InsExec: [97:2]                                                       ||    ||   InsExec: [189:2]                                                      ||    ||   InsExec: [213:2]                                                      ||
-||   BranchHead: 310                                                       ||    ||   BranchHead: 311                                                       ||    ||   BranchHead: 312                                                       ||    ||   BranchHead: 313                                                       ||
+||   ForwardTrace: 310                                                     ||    ||   ForwardTrace: 311                                                     ||    ||   ForwardTrace: 312                                                     ||    ||   ForwardTrace: 313                                                     ||
 || [19][If]< "if" @ "cond" "then" Stat "else" Stat >                       ||    || [20][If]< "if" @ "cond" "then" Stat >                                   ||    || [19][If]< "if" @ "cond" "then" Stat "else" Stat >                       ||    || [20][If]< "if" @ "cond" "then" Stat >                                   ||
 || [AST-INSTRUCTIONS]:                                                     ||    || [AST-INSTRUCTIONS]:                                                     ||    || [AST-INSTRUCTIONS]:                                                     ||    || [AST-INSTRUCTIONS]:                                                     ||
 ||     CSTop: [14] [28 -> 27]                                              ||    ||     CSTop: [14] [28 -> 27]                                              ||    ||     CSTop: [34] [68 -> 67]                                              ||    ||     CSTop: [34] [68 -> 67]                                              ||
@@ -1451,7 +1451,7 @@
 ++=========================================================================++    ++=========================================================================++    ++=========================================================================++    ++=========================================================================++
 || [316]: {CONDITION} cond                                                 ||    || [317]: {CONDITION} cond                                                 ||    || [318]: {CONDITION} cond                                                 ||    || [319]: {CONDITION} cond                                                 ||
 ||   TraceExec: [60]                                                       ||    ||   TraceExec: [79]                                                       ||    ||   TraceExec: [155]                                                      ||    ||   TraceExec: [174]                                                      ||
-||   BranchHead: 310                                                       ||    ||   BranchHead: 311                                                       ||    ||   BranchHead: 312                                                       ||    ||   BranchHead: 313                                                       ||
+||   ForwardTrace: 310                                                     ||    ||   ForwardTrace: 311                                                     ||    ||   ForwardTrace: 312                                                     ||    ||   ForwardTrace: 313                                                     ||
 || [17][If]< "if" "cond" @ "then" Stat "else" Stat >                       ||    || [18][If]< "if" "cond" @ "then" Stat >                                   ||    || [17][If]< "if" "cond" @ "then" Stat "else" Stat >                       ||    || [18][If]< "if" "cond" @ "then" Stat >                                   ||
 || [AST-INSTRUCTIONS]:                                                     ||    || [AST-INSTRUCTIONS]:                                                     ||    || [AST-INSTRUCTIONS]:                                                     ||    || [AST-INSTRUCTIONS]:                                                     ||
 ||     CSTop: [15] [30 -> 29]                                              ||    ||     CSTop: [19] [38 -> 37]                                              ||    ||     CSTop: [35] [70 -> 69]                                              ||    ||     CSTop: [39] [78 -> 77]                                              ||
@@ -1479,7 +1479,7 @@
 ++=========================================================================++    ++=========================================================================++    ++=========================================================================++    ++=========================================================================++
 || [322]: {THEN} then                                                      ||    || [323]: {THEN} then                                                      ||    || [324]: {THEN} then                                                      ||    || [325]: {THEN} then                                                      ||
 ||   TraceExec: [61]                                                       ||    ||   TraceExec: [80]                                                       ||    ||   TraceExec: [156]                                                      ||    ||   TraceExec: [175]                                                      ||
-||   BranchHead: 310                                                       ||    ||   BranchHead: 311                                                       ||    ||   BranchHead: 312                                                       ||    ||   BranchHead: 313                                                       ||
+||   ForwardTrace: 310                                                     ||    ||   ForwardTrace: 311                                                     ||    ||   ForwardTrace: 312                                                     ||    ||   ForwardTrace: 313                                                     ||
 || [11][If]< "if" "cond" "then" @ Stat "else" Stat >                       ||    || [12][If]< "if" "cond" "then" @ Stat >                                   ||    || [11][If]< "if" "cond" "then" @ Stat "else" Stat >                       ||    || [12][If]< "if" "cond" "then" @ Stat >                                   ||
 || [AST-INSTRUCTIONS]:                                                     ||    || [AST-INSTRUCTIONS]:                                                     ||    || [AST-INSTRUCTIONS]:                                                     ||    || [AST-INSTRUCTIONS]:                                                     ||
 ||     CSTop: [15] [30 -> 29]                                              ||    ||     CSTop: [19] [38 -> 37]                                              ||    ||     CSTop: [35] [70 -> 69]                                              ||    ||     CSTop: [39] [78 -> 77]                                              ||
@@ -1508,7 +1508,7 @@
 || [331]: {IF} if                                                          ||    || [332]: {IF} if                                                          ||    || [335]: {IF} if                                                          ||    || [336]: {IF} if                                                          ||
 ||   TraceExec: [62]                                                       ||    ||   TraceExec: [81]                                                       ||    ||   TraceExec: [157]                                                      ||    ||   TraceExec: [176]                                                      ||
 ||   InsExec: [75:2]                                                       ||    ||   InsExec: [99:2]                                                       ||    ||   InsExec: [191:2]                                                      ||    ||   InsExec: [215:2]                                                      ||
-||   BranchHead: 310                                                       ||    ||   BranchHead: 311                                                       ||    ||   BranchHead: 312                                                       ||    ||   BranchHead: 313                                                       ||
+||   ForwardTrace: 310                                                     ||    ||   ForwardTrace: 311                                                     ||    ||   ForwardTrace: 312                                                     ||    ||   ForwardTrace: 313                                                     ||
 || [20][If]< "if" @ "cond" "then" Stat >                                   ||    || [19][If]< "if" @ "cond" "then" Stat "else" Stat >                       ||    || [20][If]< "if" @ "cond" "then" Stat >                                   ||    || [19][If]< "if" @ "cond" "then" Stat "else" Stat >                       ||
 || [AST-INSTRUCTIONS]:                                                     ||    || [AST-INSTRUCTIONS]:                                                     ||    || [AST-INSTRUCTIONS]:                                                     ||    || [AST-INSTRUCTIONS]:                                                     ||
 ||     CSTop: [15] [30 -> 29]                                              ||    ||     CSTop: [19] [38 -> 37]                                              ||    ||     CSTop: [35] [70 -> 69]                                              ||    ||     CSTop: [39] [78 -> 77]                                              ||
@@ -1552,7 +1552,7 @@
 ++=========================================================================++    ++=========================================================================++    ++=========================================================================++    ++=========================================================================++
 || [343]: {CONDITION} cond                                                 ||    || [344]: {CONDITION} cond                                                 ||    || [347]: {CONDITION} cond                                                 ||    || [348]: {CONDITION} cond                                                 ||
 ||   TraceExec: [63]                                                       ||    ||   TraceExec: [82]                                                       ||    ||   TraceExec: [158]                                                      ||    ||   TraceExec: [177]                                                      ||
-||   BranchHead: 310                                                       ||    ||   BranchHead: 311                                                       ||    ||   BranchHead: 312                                                       ||    ||   BranchHead: 313                                                       ||
+||   ForwardTrace: 310                                                     ||    ||   ForwardTrace: 311                                                     ||    ||   ForwardTrace: 312                                                     ||    ||   ForwardTrace: 313                                                     ||
 || [18][If]< "if" "cond" @ "then" Stat >                                   ||    || [17][If]< "if" "cond" @ "then" Stat "else" Stat >                       ||    || [18][If]< "if" "cond" @ "then" Stat >                                   ||    || [17][If]< "if" "cond" @ "then" Stat "else" Stat >                       ||
 || [AST-INSTRUCTIONS]:                                                     ||    || [AST-INSTRUCTIONS]:                                                     ||    || [AST-INSTRUCTIONS]:                                                     ||    || [AST-INSTRUCTIONS]:                                                     ||
 ||     CSTop: [16] [32 -> 31]                                              ||    ||     CSTop: [20] [40 -> 39]                                              ||    ||     CSTop: [36] [72 -> 71]                                              ||    ||     CSTop: [40] [80 -> 79]                                              ||
@@ -1582,7 +1582,7 @@
 ++=========================================================================++    ++=========================================================================++    ++=========================================================================++    ++=========================================================================++
 || [355]: {THEN} then                                                      ||    || [356]: {THEN} then                                                      ||    || [359]: {THEN} then                                                      ||    || [360]: {THEN} then                                                      ||
 ||   TraceExec: [64]                                                       ||    ||   TraceExec: [83]                                                       ||    ||   TraceExec: [159]                                                      ||    ||   TraceExec: [178]                                                      ||
-||   BranchHead: 310                                                       ||    ||   BranchHead: 311                                                       ||    ||   BranchHead: 312                                                       ||    ||   BranchHead: 313                                                       ||
+||   ForwardTrace: 310                                                     ||    ||   ForwardTrace: 311                                                     ||    ||   ForwardTrace: 312                                                     ||    ||   ForwardTrace: 313                                                     ||
 || [12][If]< "if" "cond" "then" @ Stat >                                   ||    || [11][If]< "if" "cond" "then" @ Stat "else" Stat >                       ||    || [12][If]< "if" "cond" "then" @ Stat >                                   ||    || [11][If]< "if" "cond" "then" @ Stat "else" Stat >                       ||
 || [AST-INSTRUCTIONS]:                                                     ||    || [AST-INSTRUCTIONS]:                                                     ||    || [AST-INSTRUCTIONS]:                                                     ||    || [AST-INSTRUCTIONS]:                                                     ||
 ||     CSTop: [16] [32 -> 31]                                              ||    ||     CSTop: [20] [40 -> 39]                                              ||    ||     CSTop: [36] [72 -> 71]                                              ||    ||     CSTop: [40] [80 -> 79]                                              ||
@@ -1613,7 +1613,7 @@
 || [367]: {DO} do                                                          ||    || [368]: {DO} do                                                          ||    || [371]: {DO} do                                                          ||    || [372]: {DO} do                                                          ||
 ||   TraceExec: [65]                                                       ||    ||   TraceExec: [84]                                                       ||    ||   TraceExec: [160]                                                      ||    ||   TraceExec: [179]                                                      ||
 ||   InsExec: [77:2]                                                       ||    ||   InsExec: [101:2]                                                      ||    ||   InsExec: [193:2]                                                      ||    ||   InsExec: [217:2]                                                      ||
-||   BranchHead: 310                                                       ||    ||   BranchHead: 311                                                       ||    ||   BranchHead: 312                                                       ||    ||   BranchHead: 313                                                       ||
+||   ForwardTrace: 310                                                     ||    ||   ForwardTrace: 311                                                     ||    ||   ForwardTrace: 312                                                     ||    ||   ForwardTrace: 313                                                     ||
 || [3][Do]< "do" @ ";" >                                                   ||    || [3][Do]< "do" @ ";" >                                                   ||    || [3][Do]< "do" @ ";" >                                                   ||    || [3][Do]< "do" @ ";" >                                                   ||
 || [AST-INSTRUCTIONS]:                                                     ||    || [AST-INSTRUCTIONS]:                                                     ||    || [AST-INSTRUCTIONS]:                                                     ||    || [AST-INSTRUCTIONS]:                                                     ||
 ||     CSTop: [16] [32 -> 31]                                              ||    ||     CSTop: [20] [40 -> 39]                                              ||    ||     CSTop: [36] [72 -> 71]                                              ||    ||     CSTop: [40] [80 -> 79]                                              ||
@@ -1659,7 +1659,7 @@
 ++=========================================================================++    ++=========================================================================++    ++=========================================================================++    ++=========================================================================++
 || [395]: {SEMICOLON} ;                                                    ||    || [400]: {SEMICOLON} ;                                                    ||    || [413]: {SEMICOLON} ;                                                    ||    || [418]: {SEMICOLON} ;                                                    ||
 ||   TraceExec: [66]                                                       ||    ||   TraceExec: [85]                                                       ||    ||   TraceExec: [161]                                                      ||    ||   TraceExec: [180]                                                      ||
-||   BranchHead: 310                                                       ||    ||   BranchHead: 311                                                       ||    ||   BranchHead: 312                                                       ||    ||   BranchHead: 313                                                       ||
+||   ForwardTrace: 310                                                     ||    ||   ForwardTrace: 311                                                     ||    ||   ForwardTrace: 312                                                     ||    ||   ForwardTrace: 313                                                     ||
 || [2][Do]< "do" ";" @ >                                                   ||    || [2][Do]< "do" ";" @ >                                                   ||    || [2][Do]< "do" ";" @ >                                                   ||    || [2][Do]< "do" ";" @ >                                                   ||
 || [AST-INSTRUCTIONS]:                                                     ||    || [AST-INSTRUCTIONS]:                                                     ||    || [AST-INSTRUCTIONS]:                                                     ||    || [AST-INSTRUCTIONS]:                                                     ||
 ||     CSTop: [17] [34 -> 33]                                              ||    ||     CSTop: [21] [42 -> 41]                                              ||    ||     CSTop: [37] [74 -> 73]                                              ||    ||     CSTop: [41] [82 -> 81]                                              ||
@@ -1690,7 +1690,7 @@
 | [396]: <Ending>                                                         |      | [401]: <Ending>                                                         |      | [414]: <Ending>                                                         |      | [419]: <Ending>                                                         |
 |   TraceExec: [67]                                                       |      |   TraceExec: [86]                                                       |      |   TraceExec: [162]                                                      |      |   TraceExec: [181]                                                      |
 |   InsExec: [79:1]                                                       |      |   InsExec: [103:1]                                                      |      |   InsExec: [195:1]                                                      |      |   InsExec: [219:1]                                                      |
-|   BranchHead: 310                                                       |      |   BranchHead: 311                                                       |      |   BranchHead: 312                                                       |      |   BranchHead: 313                                                       |
+|   ForwardTrace: 310                                                     |      |   ForwardTrace: 311                                                     |      |   ForwardTrace: 312                                                     |      |   ForwardTrace: 313                                                     |
 | [24][Stat]<< !Do @ >>                                                   |      | [24][Stat]<< !Do @ >>                                                   |      | [24][Stat]<< !Do @ >>                                                   |      | [24][Stat]<< !Do @ >>                                                   |
 | [AST-INSTRUCTIONS]:                                                     |      | [AST-INSTRUCTIONS]:                                                     |      | [AST-INSTRUCTIONS]:                                                     |      | [AST-INSTRUCTIONS]:                                                     |
 |     CSTop: [17] [34 -> 33]                                              |      |     CSTop: [21] [42 -> 41]                                              |      |     CSTop: [37] [74 -> 73]                                              |      |     CSTop: [41] [82 -> 81]                                              |
@@ -1726,7 +1726,7 @@
 | [397]: <Ending>                                                         |      | [402]: <Ending>                                                         |      | [415]: <Ending>                                                         |      | [420]: <Ending>                                                         |
 |   TraceExec: [68]                                                       |      |   TraceExec: [87]                                                       |      |   TraceExec: [163]                                                      |      |   TraceExec: [182]                                                      |
 |   InsExec: [80:3]                                                       |      |   InsExec: [104:3]                                                      |      |   InsExec: [196:3]                                                      |      |   InsExec: [220:3]                                                      |
-|   BranchHead: 310                                                       |      |   BranchHead: 311                                                       |      |   BranchHead: 312                                                       |      |   BranchHead: 313                                                       |
+|   ForwardTrace: 310                                                     |      |   ForwardTrace: 311                                                     |      |   ForwardTrace: 312                                                     |      |   ForwardTrace: 313                                                     |
 | [16][If]< "if" "cond" "then" Stat @ >                                   |      | [15][If]< "if" "cond" "then" Stat @ "else" Stat >                       |      | [16][If]< "if" "cond" "then" Stat @ >                                   |      | [15][If]< "if" "cond" "then" Stat @ "else" Stat >                       |
 | [AST-INSTRUCTIONS]:                                                     |      | [AST-INSTRUCTIONS]:                                                     |      | [AST-INSTRUCTIONS]:                                                     |      | [AST-INSTRUCTIONS]:                                                     |
 |     CSTop: [17] [33 -> 32]                                              |      |     CSTop: [21] [41 -> 40]                                              |      |     CSTop: [37] [73 -> 72]                                              |      |     CSTop: [41] [81 -> 80]                                              |
@@ -1771,7 +1771,7 @@
 | [398]: <Ending>                                                         |      |                                                                                | [416]: <Ending>                                                         |      |
 |   TraceExec: [69]                                                       |      |                                                                                |   TraceExec: [164]                                                      |      |
 |   InsExec: [83:1]                                                       |      |                                                                                |   InsExec: [199:1]                                                      |      |
-|   BranchHead: 310                                                       |      |                                                                                |   BranchHead: 312                                                       |      |
+|   ForwardTrace: 310                                                     |      |                                                                                |   ForwardTrace: 312                                                     |      |
 | [25][Stat]<< !If @ >>                                                   |      |                                                                                | [25][Stat]<< !If @ >>                                                   |      |
 | [AST-INSTRUCTIONS]:                                                     |      |                                                                                | [AST-INSTRUCTIONS]:                                                     |      |
 |     CSTop: [16] [32 -> 31]                                              |      |                                                                                |     CSTop: [36] [72 -> 71]                                              |      |
@@ -1805,7 +1805,7 @@
 | [399]: <Ending>                                                         |      |                                                                                | [417]: <Ending>                                                         |      |
 |   TraceExec: [70]                                                       |      |                                                                                |   TraceExec: [165]                                                      |      |
 |   InsExec: [84:3]                                                       |      |                                                                                |   InsExec: [200:3]                                                      |      |
-|   BranchHead: 310                                                       |      |                                                                                |   BranchHead: 312                                                       |      |
+|   ForwardTrace: 310                                                     |      |                                                                                |   ForwardTrace: 312                                                     |      |
 | [15][If]< "if" "cond" "then" Stat @ "else" Stat >                       |      |                                                                                | [15][If]< "if" "cond" "then" Stat @ "else" Stat >                       |      |
 | [AST-INSTRUCTIONS]:                                                     |      |                                                                                | [AST-INSTRUCTIONS]:                                                     |      |
 |     CSTop: [16] [31 -> 30]                                              |      |                                                                                |     CSTop: [36] [71 -> 70]                                              |      |
@@ -1849,7 +1849,7 @@
 ++=========================================================================++    ++=========================================================================++    ++=========================================================================++    ++=========================================================================++
 || [432]: {ELSE} else                                                      ||    || [433]: {ELSE} else                                                      ||    || [435]: {ELSE} else                                                      ||    || [436]: {ELSE} else                                                      ||
 ||   TraceExec: [71]                                                       ||    ||   TraceExec: [88]                                                       ||    ||   TraceExec: [166]                                                      ||    ||   TraceExec: [183]                                                      ||
-||   BranchHead: 310                                                       ||    ||   BranchHead: 311                                                       ||    ||   BranchHead: 312                                                       ||    ||   BranchHead: 313                                                       ||
+||   ForwardTrace: 310                                                     ||    ||   ForwardTrace: 311                                                     ||    ||   ForwardTrace: 312                                                     ||    ||   ForwardTrace: 313                                                     ||
 || [13][If]< "if" "cond" "then" Stat "else" @ Stat >                       ||    || [13][If]< "if" "cond" "then" Stat "else" @ Stat >                       ||    || [13][If]< "if" "cond" "then" Stat "else" @ Stat >                       ||    || [13][If]< "if" "cond" "then" Stat "else" @ Stat >                       ||
 || [AST-INSTRUCTIONS]:                                                     ||    || [AST-INSTRUCTIONS]:                                                     ||    || [AST-INSTRUCTIONS]:                                                     ||    || [AST-INSTRUCTIONS]:                                                     ||
 ||     CSTop: [15] [30 -> 29]                                              ||    ||     CSTop: [20] [40 -> 39]                                              ||    ||     CSTop: [35] [70 -> 69]                                              ||    ||     CSTop: [40] [80 -> 79]                                              ||
@@ -1880,7 +1880,7 @@
 || [441]: {DO} do                                                          ||    || [442]: {DO} do                                                          ||    || [444]: {DO} do                                                          ||    || [445]: {DO} do                                                          ||
 ||   TraceExec: [72]                                                       ||    ||   TraceExec: [89]                                                       ||    ||   TraceExec: [167]                                                      ||    ||   TraceExec: [184]                                                      ||
 ||   InsExec: [87:2]                                                       ||    ||   InsExec: [107:2]                                                      ||    ||   InsExec: [203:2]                                                      ||    ||   InsExec: [223:2]                                                      ||
-||   BranchHead: 310                                                       ||    ||   BranchHead: 311                                                       ||    ||   BranchHead: 312                                                       ||    ||   BranchHead: 313                                                       ||
+||   ForwardTrace: 310                                                     ||    ||   ForwardTrace: 311                                                     ||    ||   ForwardTrace: 312                                                     ||    ||   ForwardTrace: 313                                                     ||
 || [3][Do]< "do" @ ";" >                                                   ||    || [3][Do]< "do" @ ";" >                                                   ||    || [3][Do]< "do" @ ";" >                                                   ||    || [3][Do]< "do" @ ";" >                                                   ||
 || [AST-INSTRUCTIONS]:                                                     ||    || [AST-INSTRUCTIONS]:                                                     ||    || [AST-INSTRUCTIONS]:                                                     ||    || [AST-INSTRUCTIONS]:                                                     ||
 ||     CSTop: [15] [30 -> 29]                                              ||    ||     CSTop: [20] [40 -> 39]                                              ||    ||     CSTop: [35] [70 -> 69]                                              ||    ||     CSTop: [40] [80 -> 79]                                              ||
@@ -1926,7 +1926,7 @@
 ++=========================================================================++    ++=========================================================================++    ++=========================================================================++    ++=========================================================================++
 || [469]: {SEMICOLON} ;                                                    ||    || [474]: {SEMICOLON} ;                                                    ||    || [487]: {SEMICOLON} ;                                                    ||    || [492]: {SEMICOLON} ;                                                    ||
 ||   TraceExec: [73]                                                       ||    ||   TraceExec: [90]                                                       ||    ||   TraceExec: [168]                                                      ||    ||   TraceExec: [185]                                                      ||
-||   BranchHead: 310                                                       ||    ||   BranchHead: 311                                                       ||    ||   BranchHead: 312                                                       ||    ||   BranchHead: 313                                                       ||
+||   ForwardTrace: 310                                                     ||    ||   ForwardTrace: 311                                                     ||    ||   ForwardTrace: 312                                                     ||    ||   ForwardTrace: 313                                                     ||
 || [2][Do]< "do" ";" @ >                                                   ||    || [2][Do]< "do" ";" @ >                                                   ||    || [2][Do]< "do" ";" @ >                                                   ||    || [2][Do]< "do" ";" @ >                                                   ||
 || [AST-INSTRUCTIONS]:                                                     ||    || [AST-INSTRUCTIONS]:                                                     ||    || [AST-INSTRUCTIONS]:                                                     ||    || [AST-INSTRUCTIONS]:                                                     ||
 ||     CSTop: [18] [36 -> 35]                                              ||    ||     CSTop: [22] [44 -> 43]                                              ||    ||     CSTop: [38] [76 -> 75]                                              ||    ||     CSTop: [42] [84 -> 83]                                              ||
@@ -1957,7 +1957,7 @@
 | [470]: <Ending>                                                         |      | [475]: <Ending>                                                         |      | [488]: <Ending>                                                         |      | [493]: <Ending>                                                         |
 |   TraceExec: [74]                                                       |      |   TraceExec: [91]                                                       |      |   TraceExec: [169]                                                      |      |   TraceExec: [186]                                                      |
 |   InsExec: [89:1]                                                       |      |   InsExec: [109:1]                                                      |      |   InsExec: [205:1]                                                      |      |   InsExec: [225:1]                                                      |
-|   BranchHead: 310                                                       |      |   BranchHead: 311                                                       |      |   BranchHead: 312                                                       |      |   BranchHead: 313                                                       |
+|   ForwardTrace: 310                                                     |      |   ForwardTrace: 311                                                     |      |   ForwardTrace: 312                                                     |      |   ForwardTrace: 313                                                     |
 | [24][Stat]<< !Do @ >>                                                   |      | [24][Stat]<< !Do @ >>                                                   |      | [24][Stat]<< !Do @ >>                                                   |      | [24][Stat]<< !Do @ >>                                                   |
 | [AST-INSTRUCTIONS]:                                                     |      | [AST-INSTRUCTIONS]:                                                     |      | [AST-INSTRUCTIONS]:                                                     |      | [AST-INSTRUCTIONS]:                                                     |
 |     CSTop: [18] [36 -> 35]                                              |      |     CSTop: [22] [44 -> 43]                                              |      |     CSTop: [38] [76 -> 75]                                              |      |     CSTop: [42] [84 -> 83]                                              |
@@ -1993,7 +1993,7 @@
 | [471]: <Ending>                                                         |      | [476]: <Ending>                                                         |      | [489]: <Ending>                                                         |      | [494]: <Ending>                                                         |
 |   TraceExec: [75]                                                       |      |   TraceExec: [92]                                                       |      |   TraceExec: [170]                                                      |      |   TraceExec: [187]                                                      |
 |   InsExec: [90:3]                                                       |      |   InsExec: [110:3]                                                      |      |   InsExec: [206:3]                                                      |      |   InsExec: [226:3]                                                      |
-|   BranchHead: 310                                                       |      |   BranchHead: 311                                                       |      |   BranchHead: 312                                                       |      |   BranchHead: 313                                                       |
+|   ForwardTrace: 310                                                     |      |   ForwardTrace: 311                                                     |      |   ForwardTrace: 312                                                     |      |   ForwardTrace: 313                                                     |
 | [14][If]< "if" "cond" "then" Stat "else" Stat @ >                       |      | [14][If]< "if" "cond" "then" Stat "else" Stat @ >                       |      | [14][If]< "if" "cond" "then" Stat "else" Stat @ >                       |      | [14][If]< "if" "cond" "then" Stat "else" Stat @ >                       |
 | [AST-INSTRUCTIONS]:                                                     |      | [AST-INSTRUCTIONS]:                                                     |      | [AST-INSTRUCTIONS]:                                                     |      | [AST-INSTRUCTIONS]:                                                     |
 |     CSTop: [18] [35 -> 30]                                              |      |     CSTop: [22] [43 -> 40]                                              |      |     CSTop: [38] [75 -> 70]                                              |      |     CSTop: [42] [83 -> 80]                                              |
@@ -2038,7 +2038,7 @@
 | [472]: <Ending>                                                         |      | [477]: <Ending>                                                         |      | [490]: <Ending>                                                         |      | [495]: <Ending>                                                         |
 |   TraceExec: [76]                                                       |      |   TraceExec: [93]                                                       |      |   TraceExec: [171]                                                      |      |   TraceExec: [188]                                                      |
 |   InsExec: [93:1]                                                       |      |   InsExec: [113:1]                                                      |      |   InsExec: [209:1]                                                      |      |   InsExec: [229:1]                                                      |
-|   BranchHead: 310                                                       |      |   BranchHead: 311                                                       |      |   BranchHead: 312                                                       |      |   BranchHead: 313                                                       |
+|   ForwardTrace: 310                                                     |      |   ForwardTrace: 311                                                     |      |   ForwardTrace: 312                                                     |      |   ForwardTrace: 313                                                     |
 | [25][Stat]<< !If @ >>                                                   |      | [25][Stat]<< !If @ >>                                                   |      | [25][Stat]<< !If @ >>                                                   |      | [25][Stat]<< !If @ >>                                                   |
 | [AST-INSTRUCTIONS]:                                                     |      | [AST-INSTRUCTIONS]:                                                     |      | [AST-INSTRUCTIONS]:                                                     |      | [AST-INSTRUCTIONS]:                                                     |
 |     CSTop: [15] [30 -> 29]                                              |      |     CSTop: [20] [40 -> 39]                                              |      |     CSTop: [35] [70 -> 69]                                              |      |     CSTop: [40] [80 -> 79]                                              |
@@ -2072,7 +2072,7 @@
 | [481]: <Ending>                                                         |      | [478]: <Ending>                                                         |      | [499]: <Ending>                                                         |      | [496]: <Ending>                                                         |
 |   TraceExec: [77]                                                       |      |   TraceExec: [94]                                                       |      |   TraceExec: [172]                                                      |      |   TraceExec: [189]                                                      |
 |   InsExec: [94:3]                                                       |      |   InsExec: [114:3]                                                      |      |   InsExec: [210:3]                                                      |      |   InsExec: [230:3]                                                      |
-|   BranchHead: 310                                                       |      |   BranchHead: 311                                                       |      |   BranchHead: 312                                                       |      |   BranchHead: 313                                                       |
+|   ForwardTrace: 310                                                     |      |   ForwardTrace: 311                                                     |      |   ForwardTrace: 312                                                     |      |   ForwardTrace: 313                                                     |
 | [7][Block]< "{" { Stat @ } "}" >                                        |      | [16][If]< "if" "cond" "then" Stat @ >                                   |      | [7][Block]< "{" { Stat @ } "}" >                                        |      | [16][If]< "if" "cond" "then" Stat @ >                                   |
 | [AST-INSTRUCTIONS]:                                                     |      | [AST-INSTRUCTIONS]:                                                     |      | [AST-INSTRUCTIONS]:                                                     |      | [AST-INSTRUCTIONS]:                                                     |
 |     CSTop: [15] [29 -> 28]                                              |      |     CSTop: [20] [39 -> 38]                                              |      |     CSTop: [35] [69 -> 68]                                              |      |     CSTop: [40] [79 -> 78]                                              |
@@ -2115,7 +2115,7 @@
 |                                                                                | [479]: <Ending>                                                         |      |                                                                                | [497]: <Ending>                                                         |
 |                                                                                |   TraceExec: [95]                                                       |      |                                                                                |   TraceExec: [190]                                                      |
 |                                                                                |   InsExec: [117:1]                                                      |      |                                                                                |   InsExec: [233:1]                                                      |
-|                                                                                |   BranchHead: 311                                                       |      |                                                                                |   BranchHead: 313                                                       |
+|                                                                                |   ForwardTrace: 311                                                     |      |                                                                                |   ForwardTrace: 313                                                     |
 |                                                                                | [25][Stat]<< !If @ >>                                                   |      |                                                                                | [25][Stat]<< !If @ >>                                                   |
 |                                                                                | [AST-INSTRUCTIONS]:                                                     |      |                                                                                | [AST-INSTRUCTIONS]:                                                     |
 |                                                                                |     CSTop: [19] [38 -> 37]                                              |      |                                                                                |     CSTop: [39] [78 -> 77]                                              |
@@ -2147,7 +2147,7 @@
 |                                                                                | [480]: <Ending>                                                         |      |                                                                                | [498]: <Ending>                                                         |
 |                                                                                |   TraceExec: [96]                                                       |      |                                                                                |   TraceExec: [191]                                                      |
 |                                                                                |   InsExec: [118:3]                                                      |      |                                                                                |   InsExec: [234:3]                                                      |
-|                                                                                |   BranchHead: 311                                                       |      |                                                                                |   BranchHead: 313                                                       |
+|                                                                                |   ForwardTrace: 311                                                     |      |                                                                                |   ForwardTrace: 313                                                     |
 |                                                                                | [7][Block]< "{" { Stat @ } "}" >                                        |      |                                                                                | [7][Block]< "{" { Stat @ } "}" >                                        |
 |                                                                                | [AST-INSTRUCTIONS]:                                                     |      |                                                                                | [AST-INSTRUCTIONS]:                                                     |
 |                                                                                |     CSTop: [19] [37 -> 28]                                              |      |                                                                                |     CSTop: [39] [77 -> 68]                                              |
@@ -2184,17 +2184,17 @@
 |                                                                                |                                                                                |                                                                                |
 +--------------------------------------------------------------------------------+                                                                                +--------------------------------------------------------------------------------+
 |                                                                                                                                                                 |
-+--------------------------+                                                                                                                                      +--------------------------+
-| [473]: <Merging>         |                                                                                                                                      | [491]: <Merging>         |
-| <Start>                  |                                                                                                                                      | <Start>                  |
-|   TraceExec: [97]        |                                                                                                                                      |   TraceExec: [192]       |
-|   BranchHead: 473        |                                                                                                                                      |   BranchHead: 491        |
-|   SharedTrace: 239       |                                                                                                                                      |   SharedTrace: 257       |
-| [CONTEXT]                |                                                                                                                                      | [CONTEXT]                |
-|   CSTop: [14] [28 -> 27] |                                                                                                                                      |   CSTop: [34] [68 -> 67] |
-|   OSTop: []              |                                                                                                                                      |   OSTop: []              |
-|   LriStored: []          |                                                                                                                                      |   LriStored: []          |
-+--------------------------+                                                                                                                                      +--------------------------+
++---------------------------+                                                                                                                                     +---------------------------+
+| [473]: <Merging>          |                                                                                                                                     | [491]: <Merging>          |
+| <Start>                   |                                                                                                                                     | <Start>                   |
+|   TraceExec: [97]         |                                                                                                                                     |   TraceExec: [192]        |
+|   ForwardTrace: 473       |                                                                                                                                     |   ForwardTrace: 491       |
+|   CommonForwardTrace: 239 |                                                                                                                                     |   CommonForwardTrace: 257 |
+| [CONTEXT]                 |                                                                                                                                     | [CONTEXT]                 |
+|   CSTop: [14] [28 -> 27]  |                                                                                                                                     |   CSTop: [34] [68 -> 67]  |
+|   OSTop: []               |                                                                                                                                     |   OSTop: []               |
+|   LriStored: []           |                                                                                                                                     |   LriStored: []           |
++---------------------------+                                                                                                                                     +---------------------------+
 [0/0]                                                                                                                                                             [1/1]
  |                                                                                                                                                                 |
  +                                                                                +--------------------------------------------------------------------------------+
@@ -2203,7 +2203,7 @@
 ++=========================================================================++    ++=========================================================================++
 || [505]: {CLOSE_BRACE} }                                                  ||    || [510]: {CLOSE_BRACE} }                                                  ||
 ||   TraceExec: [98]                                                       ||    ||   TraceExec: [193]                                                      ||
-||   BranchHead: 473                                                       ||    ||   BranchHead: 491                                                       ||
+||   ForwardTrace: 473                                                     ||    ||   ForwardTrace: 491                                                     ||
 || [8][Block]< "{" { Stat } "}" @ >                                        ||    || [8][Block]< "{" { Stat } "}" @ >                                        ||
 || [AST-INSTRUCTIONS]:                                                     ||    || [AST-INSTRUCTIONS]:                                                     ||
 ||     CSTop: [14] [28 -> 27]                                              ||    ||     CSTop: [34] [68 -> 67]                                              ||
@@ -2228,7 +2228,7 @@
 | [506]: <Ending>                                                         |      | [511]: <Ending>                                                         |
 |   TraceExec: [99]                                                       |      |   TraceExec: [194]                                                      |
 |   InsExec: [121:1]                                                      |      |   InsExec: [237:1]                                                      |
-|   BranchHead: 473                                                       |      |   BranchHead: 491                                                       |
+|   ForwardTrace: 473                                                     |      |   ForwardTrace: 491                                                     |
 | [23][Stat]<< !Block @ >>                                                |      | [23][Stat]<< !Block @ >>                                                |
 | [AST-INSTRUCTIONS]:                                                     |      | [AST-INSTRUCTIONS]:                                                     |
 |     CSTop: [14] [28 -> 27]                                              |      |     CSTop: [34] [68 -> 67]                                              |
@@ -2258,7 +2258,7 @@
 | [507]: <Ending>                                    |                           | [512]: <Ending>                                           |
 |   TraceExec: [100]                                 |                           |   TraceExec: [195]                                        |
 |   InsExec: [122:3]                                 |                           |   InsExec: [238:3]                                        |
-|   BranchHead: 473                                  |                           |   BranchHead: 491                                         |
+|   ForwardTrace: 473                                |                           |   ForwardTrace: 491                                       |
 | [14][If]< "if" "cond" "then" Stat "else" Stat @ >  |                           | [14][If]< "if" "cond" "then" Stat "else" Stat @ >         |
 | [AST-INSTRUCTIONS]:                                |                           | [AST-INSTRUCTIONS]:                                       |
 |     CSTop: [14] [27 -> 6]                          |                           |     CSTop: [34] [67 -> 48]                                |
@@ -2297,7 +2297,7 @@
 | [508]: <Ending>                                    |                           | [513]: <Ending>                                           |
 |   TraceExec: [101]                                 |                           |   TraceExec: [196]                                        |
 |   InsExec: [125:1]                                 |                           |   InsExec: [241:1]                                        |
-|   BranchHead: 473                                  |                           |   BranchHead: 491                                         |
+|   ForwardTrace: 473                                |                           |   ForwardTrace: 491                                       |
 | [25][Stat]<< !If @ >>                              |                           | [25][Stat]<< !If @ >>                                     |
 | [AST-INSTRUCTIONS]:                                |                           | [AST-INSTRUCTIONS]:                                       |
 |     CSTop: [3] [6 -> 5]                            |                           |     CSTop: [24] [48 -> 47]                                |
@@ -2325,7 +2325,7 @@
 | [517]: <Ending>                             |                                  | [514]: <Ending>                                    |
 |   TraceExec: [102]                          |                                  |   TraceExec: [197]                                 |
 |   InsExec: [126:3]                          |                                  |   InsExec: [242:3]                                 |
-|   BranchHead: 473                           |                                  |   BranchHead: 491                                  |
+|   ForwardTrace: 473                         |                                  |   ForwardTrace: 491                                |
 | [7][Block]< "{" { Stat @ } "}" >            |                                  | [16][If]< "if" "cond" "then" Stat @ >              |
 | [AST-INSTRUCTIONS]:                         |                                  | [AST-INSTRUCTIONS]:                                |
 |     CSTop: [3] [5 -> 2]                     |                                  |     CSTop: [24] [47 -> 46]                         |
@@ -2362,7 +2362,7 @@
 |                                                                                | [515]: <Ending>                                    |
 |                                                                                |   TraceExec: [198]                                 |
 |                                                                                |   InsExec: [245:1]                                 |
-|                                                                                |   BranchHead: 491                                  |
+|                                                                                |   ForwardTrace: 491                                |
 |                                                                                | [25][Stat]<< !If @ >>                              |
 |                                                                                | [AST-INSTRUCTIONS]:                                |
 |                                                                                |     CSTop: [23] [46 -> 45]                         |
@@ -2388,7 +2388,7 @@
 |                                                                                | [516]: <Ending>                             |
 |                                                                                |   TraceExec: [199]                          |
 |                                                                                |   InsExec: [246:3]                          |
-|                                                                                |   BranchHead: 491                           |
+|                                                                                |   ForwardTrace: 491                         |
 |                                                                                | [7][Block]< "{" { Stat @ } "}" >            |
 |                                                                                | [AST-INSTRUCTIONS]:                         |
 |                                                                                |     CSTop: [23] [45 -> 2]                   |
@@ -2419,17 +2419,17 @@
 |                                                                                |
 +--------------------------------------------------------------------------------+
 |
-+-----------------------+
-| [509]: <Merging>      |
-| <Start>               |
-|   TraceExec: [200]    |
-|   BranchHead: 509     |
-|   SharedTrace: 0      |
-| [CONTEXT]             |
-|   CSTop: [1] [2 -> 1] |
-|   OSTop: []           |
-|   LriStored: []       |
-+-----------------------+
++-------------------------+
+| [509]: <Merging>        |
+| <Start>                 |
+|   TraceExec: [200]      |
+|   ForwardTrace: 509     |
+|   CommonForwardTrace: 0 |
+| [CONTEXT]               |
+|   CSTop: [1] [2 -> 1]   |
+|   OSTop: []             |
+|   LriStored: []         |
++-------------------------+
 [0/0]
  |
  +
@@ -2439,7 +2439,7 @@
 || [518]: {DO} do                                         ||
 ||   TraceExec: [201]                                     ||
 ||   InsExec: [249:2]                                     ||
-||   BranchHead: 509                                      ||
+||   ForwardTrace: 509                                    ||
 || [3][Do]< "do" @ ";" >                                  ||
 || [AST-INSTRUCTIONS]:                                    ||
 ||     CSTop: [1] [2 -> 1]                                ||
@@ -2475,7 +2475,7 @@
 ++========================================================++
 || [519]: {SEMICOLON} ;                                   ||
 ||   TraceExec: [202]                                     ||
-||   BranchHead: 509                                      ||
+||   ForwardTrace: 509                                    ||
 || [2][Do]< "do" ";" @ >                                  ||
 || [AST-INSTRUCTIONS]:                                    ||
 ||     CSTop: [43] [86 -> 85]                             ||
@@ -2496,7 +2496,7 @@
 | [520]: <Ending>                                        |
 |   TraceExec: [203]                                     |
 |   InsExec: [251:1]                                     |
-|   BranchHead: 509                                      |
+|   ForwardTrace: 509                                    |
 | [24][Stat]<< !Do @ >>                                  |
 | [AST-INSTRUCTIONS]:                                    |
 |     CSTop: [43] [86 -> 85]                             |
@@ -2522,7 +2522,7 @@
 | [521]: <Ending>                             |
 |   TraceExec: [204]                          |
 |   InsExec: [252:3]                          |
-|   BranchHead: 509                           |
+|   ForwardTrace: 509                         |
 | [7][Block]< "{" { Stat @ } "}" >            |
 | [AST-INSTRUCTIONS]:                         |
 |     CSTop: [43] [85 -> 2]                   |
@@ -2558,7 +2558,7 @@
 ++=============================================++
 || [522]: {CLOSE_BRACE} }                      ||
 ||   TraceExec: [205]                          ||
-||   BranchHead: 509                           ||
+||   ForwardTrace: 509                         ||
 || [8][Block]< "{" { Stat } "}" @ >            ||
 || [AST-INSTRUCTIONS]:                         ||
 ||     CSTop: [1] [2 -> 1]                     ||
@@ -2577,7 +2577,7 @@
 | [523]: <Ending>                          |
 |   TraceExec: [206]                       |
 |   InsExec: [255:1]                       |
-|   BranchHead: 509                        |
+|   ForwardTrace: 509                      |
 | [23][Stat]<< !Block @ >>                 |
 | [AST-INSTRUCTIONS]:                      |
 |     CSTop: [1] [2 -> 1]                  |
@@ -2601,7 +2601,7 @@
 | [524]: <Ending>               |
 |   TraceExec: [207]            |
 |   InsExec: [256:2]            |
-|   BranchHead: 509             |
+|   ForwardTrace: 509           |
 | [28][Module]< Stat @ >        |
 | [AST-INSTRUCTIONS]:           |
 |     CSTop: [1] [1 -> 0]       |
@@ -2628,7 +2628,7 @@
 | [525]: <Ending>               |
 |   TraceExec: [208]            |
 |   InsExec: [258:2]            |
-|   BranchHead: 509             |
+|   ForwardTrace: 509           |
 | [27][Module] END [ENDING]     |
 | [AST-INSTRUCTIONS]:           |
 |     CSTop: [0] [0 -> -1]      |

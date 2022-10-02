@@ -1,7 +1,7 @@
 ﻿+----------------------------+
 | [0]: <Start>               |
 |   TraceExec: [0]           |
-|   BranchHead: 0            |
+|   ForwardTrace: 0          |
 |   AmbiguityBegins: [0]     |
 | [151][Module] BEGIN        |
 | [AST-INSTRUCTIONS]:        |
@@ -19,7 +19,7 @@
 || [1]: {ENTRY_RULE_PRIORITY} entry_rule_priority                   ||    || [2]: {ENTRY_RULE_PRIORITY} entry_rule_priority                   ||    || [3]: {ENTRY_RULE_PRIORITY} entry_rule_priority                  ||
 ||   TraceExec: [1]                                                 ||    ||   TraceExec: [5]                                                 ||    ||   TraceExec: [9]                                                ||
 ||   InsExec: [0:1]                                                 ||    ||   InsExec: [7:1]                                                 ||    ||   InsExec: [14:1]                                               ||
-||   BranchHead: 1                                                  ||    ||   BranchHead: 2                                                  ||    ||   BranchHead: 3                                                 ||
+||   ForwardTrace: 1                                                ||    ||   ForwardTrace: 2                                                ||    ||   ForwardTrace: 3                                               ||
 ||   NextACT: 7                                                     ||    ||   NextACT: 11                                                    ||    ||   NextACT: 15                                                   ||
 || [163][Module]< "entry_rule_priority" @ +[ Plus ] Plus { Plus } > ||    || [164][Module]< "entry_rule_priority" @ -[ Plus ] Plus { Plus } > ||    || [165][Module]< "entry_rule_priority" @ [ Plus ] Plus { Plus } > ||
 || [HOLDING COMPETITION]:                                           ||    || [HOLDING COMPETITION]:                                           ||    || [AST-INSTRUCTIONS]:                                             ||
@@ -47,7 +47,7 @@
 || [5]: {PLUS} +                                                                      ||    || [9]: {PLUS} +                                                                      ||    || [13]: {PLUS} +                                                                    ||
 ||   TraceExec: [2]                                                                   ||    ||   TraceExec: [6]                                                                   ||    ||   TraceExec: [10]                                                                 ||
 ||   InsExec: [1:1]                                                                   ||    ||   InsExec: [8:1]                                                                   ||    ||   InsExec: [15:1]                                                                 ||
-||   BranchHead: 1                                                                    ||    ||   BranchHead: 2                                                                    ||    ||   BranchHead: 3                                                                   ||
+||   ForwardTrace: 1                                                                  ||    ||   ForwardTrace: 2                                                                  ||    ||   ForwardTrace: 3                                                                 ||
 || [2][Plus]< "+" @ >                                                                 ||    || [2][Plus]< "+" @ >                                                                 ||    || [2][Plus]< "+" @ >                                                                ||
 || [AST-INSTRUCTIONS]:                                                                ||    || [AST-INSTRUCTIONS]:                                                                ||    || [AST-INSTRUCTIONS]:                                                               ||
 ||     CSTop: [0] [0 -> -1]                                                           ||    ||     CSTop: [2] [2 -> -1]                                                           ||    ||     CSTop: [4] [4 -> -1]                                                          ||
@@ -74,7 +74,7 @@
 | [6]: <Ending>                                                    |                        | [10]: <Ending>                                                   |                        | [14]: <Ending>                                                  |
 |   TraceExec: [3]                                                 |                        |   TraceExec: [7]                                                 |                        |   TraceExec: [11]                                               |
 |   InsExec: [2:2]                                                 |                        |   InsExec: [9:2]                                                 |                        |   InsExec: [16:2]                                               |
-|   BranchHead: 1                                                  |                        |   BranchHead: 2                                                  |                        |   BranchHead: 3                                                 |
+|   ForwardTrace: 1                                                |                        |   ForwardTrace: 2                                                |                        |   ForwardTrace: 3                                               |
 | [158][Module]< "entry_rule_priority" +[ Plus ] Plus @ { Plus } > |                        | [161][Module]< "entry_rule_priority" -[ Plus ] Plus @ { Plus } > |                        | [167][Module]< "entry_rule_priority" [ Plus ] Plus @ { Plus } > |
 | [AST-INSTRUCTIONS]:                                              |                        | [AST-INSTRUCTIONS]:                                              |                        | [AST-INSTRUCTIONS]:                                             |
 |     CSTop: [1] [1 -> 0]                                          |                        |     CSTop: [3] [3 -> 2]                                          |                        |     CSTop: [5] [5 -> 4]                                         |
@@ -103,7 +103,7 @@
 | [7]: <Ending>                            |                                                | [11]: <Ending>                           |                                                | [15]: <Ending>                           |
 |   TraceExec: [4]                         |                                                |   TraceExec: [8]                         |                                                |   TraceExec: [12]                        |
 |   InsExec: [4:3]                         |                                                |   InsExec: [11:3]                        |                                                |   InsExec: [18:3]                        |
-|   BranchHead: 1                          |                                                |   BranchHead: 2                          |                                                |   BranchHead: 3                          |
+|   ForwardTrace: 1                        |                                                |   ForwardTrace: 2                        |                                                |   ForwardTrace: 3                        |
 | [152][Module] END [ENDING]               |                                                | [152][Module] END [ENDING]               |                                                | [152][Module] END [ENDING]               |
 | [AST-INSTRUCTIONS]:                      |                                                | [AST-INSTRUCTIONS]:                      |                                                | [AST-INSTRUCTIONS]:                      |
 |     CSTop: [0] [0 -> -1]                 |                                                |     CSTop: [2] [2 -> -1]                 |                                                |     CSTop: [4] [4 -> -1]                 |
@@ -137,8 +137,8 @@
 | [16]: <Merging>              |
 | <Start>                      |
 |   TraceExec: [13]            |
-|   BranchHead: 16             |
-|   SharedTrace: 0             |
+|   ForwardTrace: 16           |
+|   CommonForwardTrace: 0      |
 |   AmbiguityEnds: [0]         |
 | [AMBIGUITY-RESOLVING]: [0]   |
 |   objs: [0, 2, 4]            |

@@ -1,7 +1,7 @@
 ﻿+-------------------------+
 | [0]: <Start>            |
 |   TraceExec: [0]        |
-|   BranchHead: 0         |
+|   ForwardTrace: 0       |
 | [76][Module] BEGIN      |
 | [AST-INSTRUCTIONS]:     |
 |     CSTop: []           |
@@ -18,7 +18,7 @@
 || [4]: {ID} A                                                                                                 ||    || [8]: {ID} A                                                                                                                                ||
 ||   TraceExec: [1]                                                                                            ||    ||   TraceExec: [17]                                                                                                                          ||
 ||   InsExec: [0:5]                                                                                            ||    ||   InsExec: [47:5]                                                                                                                          ||
-||   BranchHead: 4                                                                                             ||    ||   BranchHead: 8                                                                                                                            ||
+||   ForwardTrace: 4                                                                                           ||    ||   ForwardTrace: 8                                                                                                                          ||
 || [2][_Name]< ID @ >                                                                                          ||    || [2][_Name]< ID @ >                                                                                                                         ||
 || [AST-INSTRUCTIONS]:                                                                                         ||    || [AST-INSTRUCTIONS]:                                                                                                                        ||
 ||     CSTop: []                                                                                               ||    ||     CSTop: []                                                                                                                              ||
@@ -68,7 +68,7 @@
 | [5]: <Ending>                                                                                               |      | [9]: <Ending>                                                                                                                              |
 |   TraceExec: [2]                                                                                            |      |   TraceExec: [18]                                                                                                                          |
 |   InsExec: [5:1]                                                                                            |      |   InsExec: [52:1]                                                                                                                          |
-|   BranchHead: 4                                                                                             |      |   BranchHead: 8                                                                                                                            |
+|   ForwardTrace: 4                                                                                           |      |   ForwardTrace: 8                                                                                                                          |
 | [8][_PrimitiveShared]<< !_Name @ >>                                                                         |      | [8][_PrimitiveShared]<< !_Name @ >>                                                                                                        |
 | [AST-INSTRUCTIONS]:                                                                                         |      | [AST-INSTRUCTIONS]:                                                                                                                        |
 |     CSTop: [0] [2 -> 1]                                                                                     |      |     CSTop: [3] [16 -> 15]                                                                                                                  |
@@ -92,7 +92,7 @@
 | [6]: <Ending>                                                                 |                                    | [10]: <Ending>                                                                                               |
 |   TraceExec: [3]                                                              |                                    |   TraceExec: [19]                                                                                            |
 |   InsExec: [6:3]                                                              |                                    |   InsExec: [53:3]                                                                                            |
-|   BranchHead: 4                                                               |                                    |   BranchHead: 8                                                                                              |
+|   ForwardTrace: 4                                                             |                                    |   ForwardTrace: 8                                                                                            |
 | [87][Module]<< !_PrimitiveShared @ ( lri:_Expr_LRI_Original | lri:<skip> ) >> |                                    | [88][Module]<< !_PrimitiveShared @ ( lri:_LongType_LRI_Original ( lri:_Expr_LRI_Original | lri:<skip> ) ) >> |
 | [AST-INSTRUCTIONS]:                                                           |                                    | [AST-INSTRUCTIONS]:                                                                                          |
 |     CSTop: [0] [1 -> 0]                                                       |                                    |     CSTop: [3] [15 -> 14]                                                                                    |
@@ -126,7 +126,7 @@
 || [11]: {ASTERISK} *                                                                                            ||    || [12]: {ASTERISK} *                                                                                                                                ||
 ||   TraceExec: [4]                                                                                              ||    ||   TraceExec: [20]                                                                                                                                 ||
 ||   InsExec: [9:14]                                                                                             ||    ||   InsExec: [56:6]                                                                                                                                 ||
-||   BranchHead: 4                                                                                               ||    ||   BranchHead: 8                                                                                                                                   ||
+||   ForwardTrace: 4                                                                                             ||    ||   ForwardTrace: 8                                                                                                                                 ||
 || [132][_Expr2_LRI_Original]< _Expr2_LRI_Original "*" @ _Expr1 >                                                ||    || [105][_LongType_LRI_Original]< _LongType_LRI_Original "*" @ >                                                                                     ||
 || [AST-INSTRUCTIONS]:                                                                                           ||    || [AST-INSTRUCTIONS]:                                                                                                                               ||
 ||     CSTop: [0] [0 -> -1]                                                                                      ||    ||     CSTop: [3] [14 -> -1]                                                                                                                         ||
@@ -231,7 +231,7 @@
 |                                                                                                                      | [13]: <Leftrec>                                                                                                                                   |
 |                                                                                                                      |   TraceExec: [21]                                                                                                                                 |
 |                                                                                                                      |   InsExec: [62:3]                                                                                                                                 |
-|                                                                                                                      |   BranchHead: 8                                                                                                                                   |
+|                                                                                                                      |   ForwardTrace: 8                                                                                                                                 |
 |                                                                                                                      | [107][_LongType_LRI_Original]< _LongType_LRI_Original @ "(" { _LongType ; "," } ")" >                                                             |
 |                                                                                                                      | [AST-INSTRUCTIONS]:                                                                                                                               |
 |                                                                                                                      |     CSTop: [4] [18 -> 17]                                                                                                                         |
@@ -268,8 +268,8 @@
 ++====================================================================================================================++    ++===================================================================================================================================================++
 || [15]: {OPEN_ROUND} (                                                                                               ||    || [16]: {OPEN_ROUND} (                                                                                                                              ||
 ||   TraceExec: [5]                                                                                                   ||    ||   TraceExec: [22]                                                                                                                                 ||
-||   InsExec: [23:2]                                                                                                  ||    ||   BranchHead: 8                                                                                                                                   ||
-||   BranchHead: 4                                                                                                    ||    || [101][_LongType_LRI_Original]< _LongType_LRI_Original "(" @ { _LongType ; "," } ")" >                                                             ||
+||   InsExec: [23:2]                                                                                                  ||    ||   ForwardTrace: 8                                                                                                                                 ||
+||   ForwardTrace: 4                                                                                                  ||    || [101][_LongType_LRI_Original]< _LongType_LRI_Original "(" @ { _LongType ; "," } ")" >                                                             ||
 || [19][_PrimitiveExprOnly]<< "(" @ !_Expr ")" >>                                                                     ||    || [AST-INSTRUCTIONS]:                                                                                                                               ||
 || [AST-INSTRUCTIONS]:                                                                                                ||    ||     CSTop: [5] [19 -> 17]                                                                                                                         ||
 ||     CSTop: [1] [8 -> 5]                                                                                            ||    ||     OSTop: []                                                                                                                                     ||
@@ -307,7 +307,7 @@
 || [20]: {ID} B                                                                                                       ||    || [24]: {ID} B                                                                                                                                      ||
 ||   TraceExec: [6]                                                                                                   ||    ||   TraceExec: [23]                                                                                                                                 ||
 ||   InsExec: [25:5]                                                                                                  ||    ||   InsExec: [65:5]                                                                                                                                 ||
-||   BranchHead: 4                                                                                                    ||    ||   BranchHead: 8                                                                                                                                   ||
+||   ForwardTrace: 4                                                                                                  ||    ||   ForwardTrace: 8                                                                                                                                 ||
 || [2][_Name]< ID @ >                                                                                                 ||    || [2][_Name]< ID @ >                                                                                                                                ||
 || [AST-INSTRUCTIONS]:                                                                                                ||    || [AST-INSTRUCTIONS]:                                                                                                                               ||
 ||     CSTop: [2] [10 -> 9]                                                                                           ||    ||     CSTop: [5] [19 -> 17]                                                                                                                         ||
@@ -363,7 +363,7 @@
 | [21]: <Ending>                                                                                                     |      | [25]: <Ending>                                                                                                                                    |
 |   TraceExec: [7]                                                                                                   |      |   TraceExec: [24]                                                                                                                                 |
 |   InsExec: [30:1]                                                                                                  |      |   InsExec: [70:1]                                                                                                                                 |
-|   BranchHead: 4                                                                                                    |      |   BranchHead: 8                                                                                                                                   |
+|   ForwardTrace: 4                                                                                                  |      |   ForwardTrace: 8                                                                                                                                 |
 | [8][_PrimitiveShared]<< !_Name @ >>                                                                                |      | [8][_PrimitiveShared]<< !_Name @ >>                                                                                                               |
 | [AST-INSTRUCTIONS]:                                                                                                |      | [AST-INSTRUCTIONS]:                                                                                                                               |
 |     CSTop: [2] [13 -> 12]                                                                                          |      |     CSTop: [6] [22 -> 21]                                                                                                                         |
@@ -393,7 +393,7 @@
 | [22]: <Ending>                                                                                                     |      | [26]: <Ending>                                                                                                                                    |
 |   TraceExec: [8]                                                                                                   |      |   TraceExec: [25]                                                                                                                                 |
 |   InsExec: [31:3]                                                                                                  |      |   InsExec: [71:3]                                                                                                                                 |
-|   BranchHead: 4                                                                                                    |      |   BranchHead: 8                                                                                                                                   |
+|   ForwardTrace: 4                                                                                                  |      |   ForwardTrace: 8                                                                                                                                 |
 | [73][_Expr]<< !_PrimitiveShared @ ( lri:_Expr_LRI_Original | lri:<skip> ) >>                                       |      | [23][_LongType]<< !_PrimitiveShared @ ( lri:_LongType_LRI_Original | lri:<skip> ) >>                                                              |
 | [AST-INSTRUCTIONS]:                                                                                                |      | [AST-INSTRUCTIONS]:                                                                                                                               |
 |     CSTop: [2] [12 -> 11]                                                                                          |      |     CSTop: [6] [21 -> 20]                                                                                                                         |
@@ -432,7 +432,7 @@
 | [23]: <Ending>                                                                                                     |      | [27]: <Ending>                                                                                                                                    |
 |   TraceExec: [9]                                                                                                   |      |   TraceExec: [26]                                                                                                                                 |
 |   InsExec: [34:2]                                                                                                  |      |   InsExec: [74:2]                                                                                                                                 |
-|   BranchHead: 4                                                                                                    |      |   BranchHead: 8                                                                                                                                   |
+|   ForwardTrace: 4                                                                                                  |      |   ForwardTrace: 8                                                                                                                                 |
 | [18][_PrimitiveExprOnly]<< "(" !_Expr @ ")" >>                                                                     |      | [104][_LongType_LRI_Original]< _LongType_LRI_Original "(" { _LongType @ ; "," } ")" >                                                             |
 | [AST-INSTRUCTIONS]:                                                                                                |      | [AST-INSTRUCTIONS]:                                                                                                                               |
 |     CSTop: [2] [11 -> 10]                                                                                          |      |     CSTop: [6] [20 -> 19]                                                                                                                         |
@@ -466,7 +466,7 @@
 ++====================================================================================================================++    ++===================================================================================================================================================++
 || [28]: {CLOSE_ROUND} )                                                                                              ||    || [35]: {CLOSE_ROUND} )                                                                                                                             ||
 ||   TraceExec: [10]                                                                                                  ||    ||   TraceExec: [27]                                                                                                                                 ||
-||   BranchHead: 4                                                                                                    ||    ||   BranchHead: 8                                                                                                                                   ||
+||   ForwardTrace: 4                                                                                                  ||    ||   ForwardTrace: 8                                                                                                                                 ||
 || [17][_PrimitiveExprOnly]<< "(" !_Expr ")" @ >>                                                                     ||    || [103][_LongType_LRI_Original]< _LongType_LRI_Original "(" { _LongType ; "," } ")" @ >                                                             ||
 || [AST-INSTRUCTIONS]:                                                                                                ||    || [AST-INSTRUCTIONS]:                                                                                                                               ||
 ||     CSTop: [2] [10 -> 9]                                                                                           ||    ||     CSTop: [5] [19 -> 17]                                                                                                                         ||
@@ -488,7 +488,7 @@
 | [29]: <Ending>                                                                                                |           | [36]: <Ending>                                                                                               |
 |   TraceExec: [11]                                                                                             |           |   TraceExec: [28]                                                                                            |
 |   InsExec: [36:2]                                                                                             |           |   InsExec: [76:2]                                                                                            |
-|   BranchHead: 4                                                                                               |           |   BranchHead: 8                                                                                              |
+|   ForwardTrace: 4                                                                                             |           |   ForwardTrace: 8                                                                                            |
 | [36][_Expr1]<< !_PrimitiveExprOnly @ ( lri:_Expr1_LRI_Original | lri:<skip> ) >>                              |           | [85][Module]<< !_PrimitiveShared ( lri:_LongType_LRI_Original @ ( lri:_Expr_LRI_Original | lri:<skip> ) ) >> |
 | [AST-INSTRUCTIONS]:                                                                                           |           | [AST-INSTRUCTIONS]:                                                                                          |
 |     CSTop: [2] [10 -> 9]                                                                                      |           |     CSTop: [5] [19 -> 17]                                                                                    |
@@ -520,7 +520,7 @@
 | [30]: <Ending>                                                                                                |           | [37]: <Ending>             |
 |   TraceExec: [12]                                                                                             |           |   TraceExec: [29]          |
 |   InsExec: [38:2]                                                                                             |           |   InsExec: [78:1]          |
-|   BranchHead: 4                                                                                               |           |   BranchHead: 8            |
+|   ForwardTrace: 4                                                                                             |           |   ForwardTrace: 8          |
 | [133][_Expr2_LRI_Original]< _Expr2_LRI_Original "*" _Expr1 @ >                                                |           | [77][Module] END [ENDING]  |
 | [AST-INSTRUCTIONS]:                                                                                           |           | [AST-INSTRUCTIONS]:        |
 |     CSTop: [2] [9 -> 8]                                                                                       |           |     CSTop: [5] [17 -> -1]  |
@@ -551,7 +551,7 @@
 | [31]: <Ending>                                                                                                |           |
 |   TraceExec: [13]                                                                                             |           |
 |   InsExec: [40:1]                                                                                             |           |
-|   BranchHead: 4                                                                                               |           |
+|   ForwardTrace: 4                                                                                             |           |
 | [139][_ExprNoComma_LRI_Original]<< !_Expr2_LRI_Original @ >>                                                  |           |
 | [AST-INSTRUCTIONS]:                                                                                           |           |
 |     CSTop: [1] [8 -> 5]                                                                                       |           |
@@ -576,7 +576,7 @@
 | [32]: <Ending>                                                                                                |           |
 |   TraceExec: [14]                                                                                             |           |
 |   InsExec: [41:3]                                                                                             |           |
-|   BranchHead: 4                                                                                               |           |
+|   ForwardTrace: 4                                                                                             |           |
 | [146][_Expr_LRI_Original]<< !_ExprNoComma_LRI_Original @ >>                                                   |           |
 | [AST-INSTRUCTIONS]:                                                                                           |           |
 |     CSTop: [1] [5 -> 4]                                                                                       |           |
@@ -610,7 +610,7 @@
 | [33]: <Ending>                                                                |                                           |
 |   TraceExec: [15]                                                             |                                           |
 |   InsExec: [44:2]                                                             |                                           |
-|   BranchHead: 4                                                               |                                           |
+|   ForwardTrace: 4                                                             |                                           |
 | [83][Module]<< !_PrimitiveShared ( lri:_Expr_LRI_Original @ | lri:<skip> ) >> |                                           |
 | [AST-INSTRUCTIONS]:                                                           |                                           |
 |     CSTop: [1] [4 -> 3]                                                       |                                           |
@@ -637,7 +637,7 @@
 | [38]: <Ending>             |                                                                                              |
 |   TraceExec: [16]          |                                                                                              |
 |   InsExec: [46:1]          |                                                                                              |
-|   BranchHead: 4            |                                                                                              |
+|   ForwardTrace: 4          |                                                                                              |
 | [77][Module] END [ENDING]  |                                                                                              |
 | [AST-INSTRUCTIONS]:        |                                                                                              |
 |     CSTop: [1] [3 -> -1]   |                                                                                              |
@@ -659,8 +659,8 @@
 | [34]: <Merging>            |
 | <Start>                    |
 |   TraceExec: [30]          |
-|   BranchHead: 34           |
-|   SharedTrace: 0           |
+|   ForwardTrace: 34         |
+|   CommonForwardTrace: 0    |
 | [CONTEXT]                  |
 |   CSTop: []                |
 |   OSTop: [5, 1] [29 -> -1] |
