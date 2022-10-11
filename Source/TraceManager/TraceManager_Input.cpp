@@ -272,7 +272,7 @@ EndOfInput
 					TraceInsLists insList;
 					ReadInstructionList(lastTrace, insList);
 
-					step->et_i.startIns = initialTrace->allocatedIndex;
+					step->et_i.startTrace = initialTrace->allocatedIndex;
 					step->et_i.startIns = 0;
 					step->et_i.endTrace = lastTrace->allocatedIndex;
 					step->et_i.endIns = insList.c3 - 1;

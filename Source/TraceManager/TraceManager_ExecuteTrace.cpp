@@ -131,6 +131,8 @@ TraceManager::ExecuteTrace
 				}
 			};
 
+#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::ExecuteTrace(Trace*, IAstInsReceiver&, List<RegexToken>&)#"
+
 			void TraceManager::ExecuteSingleTrace(TraceManagerSubmitter& submitter, Trace* trace, vint32_t firstIns, vint32_t lastIns, TraceInsLists& insLists, collections::List<regex::RegexToken>& tokens)
 			{
 				for (vint32_t i = firstIns; i <= lastIns; i++)
@@ -157,7 +159,11 @@ TraceManager::ExecuteTrace
 							vint32_t firstIns = -1;
 							vint32_t lastIns = -1;
 							auto insLists = &temp;
-							if (trace->traceExecRef != nullref)
+							if (trace->traceExecRef == nullref)
+							{
+								ReadInstructionList(trace, temp);
+							}
+							else
 							{
 								insLists = &GetTraceExec(trace->traceExecRef)->insLists;
 							}
@@ -183,19 +189,24 @@ TraceManager::ExecuteTrace
 
 							// execute instructions
 							ExecuteSingleTrace(submitter, trace, firstIns, lastIns, *insLists, tokens);
-						}
 
-						if (trace->successors.first == nullref)
-						{
-							CHECK_FAIL(L"vl::glr::automaton::TraceManager::ExecuteTrace(...)#Successor trace missing!");
-						}
-						else if (trace->successors.first == trace->successors.last)
-						{
-							trace = GetTrace(trace->successors.first);
-						}
-						else
-						{
-							CHECK_FAIL(L"vl::glr::automaton::TraceManager::ExecuteTrace(...)#Ambiguity should not happen inside one execution step!");
+							// find the next trace
+							if (step->et_i.endTrace == trace->allocatedIndex)
+							{
+								break;
+							}
+							else if (trace->successors.first == nullref)
+							{
+								CHECK_FAIL(ERROR_MESSAGE_PREFIX L"Successor trace missing!");
+							}
+							else if (trace->successors.first == trace->successors.last)
+							{
+								trace = GetTrace(trace->successors.first);
+							}
+							else
+							{
+								CHECK_FAIL(ERROR_MESSAGE_PREFIX L"Ambiguity should not happen inside one execution step!");
+							}
 						}
 					}
 					break;
@@ -210,7 +221,6 @@ TraceManager::ExecuteTrace
 
 			Ptr<ParsingAstBase> TraceManager::ExecuteTrace(IAstInsReceiver& receiver, collections::List<regex::RegexToken>& tokens)
 			{
-#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::ExecuteTrace(Trace*, IAstInsReceiver&, List<RegexToken>&)#"
 				CHECK_ERROR(state == TraceManagerState::ResolvedAmbiguity, ERROR_MESSAGE_PREFIX L"Wrong timing to call this function.");
 
 				TraceManagerSubmitter submitter;
@@ -218,8 +228,10 @@ TraceManager::ExecuteTrace
 
 				// execute from the first step
 				auto step = GetInitialExecutionStep();
+				CHECK_ERROR(step != nullptr, L"Ambiguity not implemented!");
 				while (step)
 				{
+					// execute step
 					ExecuteSingleStep(submitter, step, tokens);
 
 					// find the next step
@@ -228,8 +240,8 @@ TraceManager::ExecuteTrace
 
 				submitter.ExecuteSubmitted();
 				return receiver.Finished();
-#undef ERROR_MESSAGE_PREFIX
 			}
+#undef ERROR_MESSAGE_PREFIX
 		}
 	}
 }
