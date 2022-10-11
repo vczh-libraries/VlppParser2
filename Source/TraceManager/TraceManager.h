@@ -453,6 +453,7 @@ TraceManager (Data Structures -- BuildExecutionOrder)
 				{
 					vint32_t						count;
 					vint32_t						type;
+					vint32_t						token;
 				};
 
 				ExecutionType						type = ExecutionType::Instruction;
@@ -491,6 +492,8 @@ TraceManager
 					return currentTrace && stateTrace;
 				}
 			};
+
+			struct TraceManagerSubmitter;
 
 			class TraceManager : public Object, public virtual IExecutor
 			{
@@ -678,6 +681,11 @@ TraceManager
 
 				void							PrepareTraceRoute() override;
 				void							ResolveAmbiguity() override;
+
+			protected:
+				void							ExecuteSingleTrace(TraceManagerSubmitter& submitter, Trace* trace, vint32_t firstIns, vint32_t lastIns, TraceInsLists& insLists, collections::List<regex::RegexToken>& tokens);
+				void							ExecuteSingleStep(TraceManagerSubmitter& submitter, ExecutionStep* step, collections::List<regex::RegexToken>& tokens);
+			public:
 				Ptr<ParsingAstBase>				ExecuteTrace(IAstInsReceiver& receiver, collections::List<regex::RegexToken>& tokens) override;
 			};
 		}

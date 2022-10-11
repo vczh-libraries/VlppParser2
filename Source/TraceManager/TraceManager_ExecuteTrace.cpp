@@ -131,6 +131,83 @@ TraceManager::ExecuteTrace
 				}
 			};
 
+			void TraceManager::ExecuteSingleTrace(TraceManagerSubmitter& submitter, Trace* trace, vint32_t firstIns, vint32_t lastIns, TraceInsLists& insLists, collections::List<regex::RegexToken>& tokens)
+			{
+				for (vint32_t i = firstIns; i <= lastIns; i++)
+				{
+					auto& ins = ReadInstruction(i, insLists);
+					auto& token = tokens[trace->currentTokenIndex];
+					submitter.Submit(ins, token, trace->currentTokenIndex);
+				}
+			}
+
+			void TraceManager::ExecuteSingleStep(TraceManagerSubmitter& submitter, ExecutionStep* step, collections::List<regex::RegexToken>& tokens)
+			{
+				TraceInsLists temp;
+
+				switch (step->type)
+				{
+				case ExecutionType::Instruction:
+					{
+						// execute from the start trace
+						auto trace = GetTrace(Ref<Trace>(step->et_i.startTrace));
+
+						while (trace)
+						{
+							vint32_t firstIns = -1;
+							vint32_t lastIns = -1;
+							auto insLists = &temp;
+							if (trace->traceExecRef != nullref)
+							{
+								insLists = &GetTraceExec(trace->traceExecRef)->insLists;
+							}
+
+							// find instruction range to execute
+							if (trace->allocatedIndex == step->et_i.startTrace)
+							{
+								firstIns = step->et_i.startIns;
+							}
+							else
+							{
+								firstIns = 0;
+							}
+
+							if (trace->allocatedIndex == step->et_i.endTrace)
+							{
+								lastIns = step->et_i.endIns;
+							}
+							else
+							{
+								lastIns = insLists->c3 - 1;
+							}
+
+							// execute instructions
+							ExecuteSingleTrace(submitter, trace, firstIns, lastIns, *insLists, tokens);
+						}
+
+						if (trace->successors.first == nullref)
+						{
+							CHECK_FAIL(L"vl::glr::automaton::TraceManager::ExecuteTrace(...)#Successor trace missing!");
+						}
+						else if (trace->successors.first == trace->successors.last)
+						{
+							trace = GetTrace(trace->successors.first);
+						}
+						else
+						{
+							CHECK_FAIL(L"vl::glr::automaton::TraceManager::ExecuteTrace(...)#Ambiguity should not happen inside one execution step!");
+						}
+					}
+					break;
+				case ExecutionType::ResolveAmbiguity:
+					{
+						AstIns ins = { AstInsType::ResolveAmbiguity,step->ei_ra.type,step->ei_ra.count };
+						submitter.Submit(ins, tokens[step->ei_ra.token], step->ei_ra.token);
+					}
+					break;
+				}
+			}
+
 			Ptr<ParsingAstBase> TraceManager::ExecuteTrace(IAstInsReceiver& receiver, collections::List<regex::RegexToken>& tokens)
 			{
 #define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::ExecuteTrace(Trace*, IAstInsReceiver&, List<RegexToken>&)#"
@@ -139,32 +216,14 @@ TraceManager::ExecuteTrace
 				TraceManagerSubmitter submitter;
 				submitter.receiver = &receiver;
 
-				// execute from the root trace
-				auto trace = initialTrace;
-				while (trace)
+				// execute from the first step
+				auto step = GetInitialExecutionStep();
+				while (step)
 				{
-					TraceInsLists insLists;
-					ReadInstructionList(trace, insLists);
+					ExecuteSingleStep(submitter, step, tokens);
 
-					for (vint32_t i = 0; i < insLists.c3; i++)
-					{
-						auto& ins = ReadInstruction(i, insLists);
-						auto& token = tokens[trace->currentTokenIndex];
-						submitter.Submit(ins, token, trace->currentTokenIndex);
-					}
-
-					if (trace->successors.first == nullref)
-					{
-						trace = nullptr;
-					}
-					else if (trace->successors.first == trace->successors.last)
-					{
-						trace = GetTrace(trace->successors.first);
-					}
-					else
-					{
-						CHECK_FAIL(L"Ambmgituiy not implemented yet!");
-					}
+					// find the next step
+					step = step->next == nullref ? nullptr : GetExecutionStep(step->next);
 				}
 
 				submitter.ExecuteSubmitted();
