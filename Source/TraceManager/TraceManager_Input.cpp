@@ -52,6 +52,7 @@ Initialize
 
 				temporaryConditionStack.Clear();
 				temporaryConditionStackSize = 0;
+				MergeStack_MagicCounter = 0;
 
 				traceExecs.Clear();
 				insExecs.Resize(0);

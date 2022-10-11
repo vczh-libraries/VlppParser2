@@ -549,6 +549,8 @@ TraceManager
 
 			protected:
 				// Common
+				vuint64_t									MergeStack_MagicCounter = 0;
+
 				template<typename TCallback>
 				void										IterateSurvivedTraces(TCallback&& callback);
 				void										ReadInstructionList(Trace* trace, TraceInsLists& insLists);

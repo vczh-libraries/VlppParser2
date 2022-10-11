@@ -12,7 +12,6 @@ namespace vl
 		{
 			using namespace collections;
 
-			vuint64_t MergeStack_MagicCounter = 0;
 #define NEW_MERGE_STACK_MAGIC_COUNTER (void)(MergeStack_MagicCounter++)
 
 /***********************************************************************
