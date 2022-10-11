@@ -357,12 +357,6 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 				vint32_t							postfix = -1;
 			};
 
-			struct TraceAmbiguityLink : Allocatable<TraceAmbiguityLink>
-			{
-				Ref<TraceAmbiguityLink>				next;
-				Ref<TraceAmbiguity>					ambiguity;
-			};
-
 			struct TraceInsLists
 			{
 				InstructionArray					edgeInsBeforeInput;
@@ -614,7 +608,6 @@ TraceManager
 				Ref<Trace>									firstMergeTrace;
 				Ref<ExecutionStep>							firstStep;
 				AllocateOnly<TraceAmbiguity>				traceAmbiguities;
-				AllocateOnly<TraceAmbiguityLink>			traceAmbiguityLinks;
 				AllocateOnly<ExecutionStep>					executionSteps;
 
 				// phase: CheckMergeTraces
@@ -667,7 +660,6 @@ TraceManager
 				InsExec_CreateStack*			GetInsExec_CreateStack(Ref<InsExec_CreateStack> index);
 				TraceExec*						GetTraceExec(Ref<TraceExec> index);
 				TraceAmbiguity*					GetTraceAmbiguity(Ref<TraceAmbiguity> index);
-				TraceAmbiguityLink*				GetTraceAmbiguityLink(Ref<TraceAmbiguityLink> index);
 				ExecutionStep*					GetExecutionStep(Ref<ExecutionStep> index);
 
 				void							Initialize(vint32_t startState) override;
