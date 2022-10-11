@@ -84,6 +84,15 @@ GetInitialTrace
 			}
 
 /***********************************************************************
+GetInitialTrace
+***********************************************************************/
+
+			ExecutionStep* TraceManager::GetInitialExecutionStep()
+			{
+				return firstStep == nullref ? nullptr : GetExecutionStep(firstStep);
+			}
+
+/***********************************************************************
 Input
 ***********************************************************************/
 
@@ -163,12 +172,11 @@ FillSuccessorsAfterEndOfInput
 							newTrace->predecessors.last = last;
 						}
 					}
-					visiting.Add(newTrace);
+					BeginSwap();
+					AddTrace(newTrace);
+					EndSwap();
 				}
-				else
-				{
-					visiting.Add(concurrentTraces->Get(0));
-				}
+				visiting.Add(concurrentTraces->Get(0));
 
 				// fill successors based on predecessors
 				bool initialTraceVisited = false;
@@ -257,6 +265,17 @@ EndOfInput
 				if (!ambiguityInvolved)
 				{
 					state = TraceManagerState::ResolvedAmbiguity;
+					auto step = GetExecutionStep(executionSteps.Allocate());
+					firstStep = step;
+
+					auto lastTrace = concurrentTraces->Get(0);
+					TraceInsLists insList;
+					ReadInstructionList(lastTrace, insList);
+
+					step->et_i.startIns = initialTrace->allocatedIndex;
+					step->et_i.startIns = 0;
+					step->et_i.endTrace = lastTrace->allocatedIndex;
+					step->et_i.endIns = insList.c3 - 1;
 				}
 				return initialTrace;
 			}

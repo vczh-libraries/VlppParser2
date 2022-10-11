@@ -464,6 +464,8 @@ TraceManager (Data Structures -- BuildExecutionOrder)
 					ETI								et_i;
 					ETRA							ei_ra;
 				};
+
+				ExecutionStep() {}
 			};
 
 /***********************************************************************
@@ -665,9 +667,11 @@ TraceManager
 				TraceExec*						GetTraceExec(Ref<TraceExec> index);
 				TraceAmbiguity*					GetTraceAmbiguity(Ref<TraceAmbiguity> index);
 				TraceAmbiguityLink*				GetTraceAmbiguityLink(Ref<TraceAmbiguityLink> index);
+				ExecutionStep*					GetExecutionStep(Ref<ExecutionStep> index);
 
 				void							Initialize(vint32_t startState) override;
 				Trace*							GetInitialTrace();
+				ExecutionStep*					GetInitialExecutionStep();
 
 				bool							Input(vint32_t currentTokenIndex, regex::RegexToken* token, regex::RegexToken* lookAhead) override;
 				bool							EndOfInput(bool& ambiguityInvolved) override;

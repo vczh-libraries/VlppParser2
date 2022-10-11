@@ -227,6 +227,11 @@ TraceManager
 				return traceAmbiguityLinks.Get(index);
 			}
 
+			ExecutionStep* TraceManager::GetExecutionStep(Ref<ExecutionStep> index)
+			{
+				return executionSteps.Get(index);
+			}
+
 /***********************************************************************
 CreateExecutor
 ***********************************************************************/
