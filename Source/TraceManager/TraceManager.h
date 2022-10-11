@@ -554,7 +554,7 @@ TraceManager
 				template<typename TCallback>
 				void										IterateSurvivedTraces(TCallback&& callback);
 				void										ReadInstructionList(Trace* trace, TraceInsLists& insLists);
-				AstIns& ReadInstruction(vint32_t instruction, TraceInsLists& insLists);
+				AstIns&										ReadInstruction(vint32_t instruction, TraceInsLists& insLists);
 
 			protected:
 				// PrepareTraceRoute

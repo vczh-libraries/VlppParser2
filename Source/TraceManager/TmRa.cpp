@@ -6,8 +6,6 @@ namespace vl
 	{
 		namespace automaton
 		{
-			using namespace collections;
-
 /***********************************************************************
 ResolveAmbiguity
 ***********************************************************************/
