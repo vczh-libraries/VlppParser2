@@ -63,7 +63,9 @@ Initialize
 
 				firstBranchTrace = nullref;
 				firstMergeTrace = nullref;
+				firstStep = nullref;
 				traceAmbiguities.Clear();
+				executionSteps.Clear();
 
 				initialTrace = AllocateTrace();
 				initialTrace->state = startState;

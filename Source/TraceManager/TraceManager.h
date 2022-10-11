@@ -420,6 +420,53 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 			};
 
 /***********************************************************************
+TraceManager (Data Structures -- BuildExecutionOrder)
+***********************************************************************/
+
+			struct ExecutionStep;
+
+			enum class ExecutionType
+			{
+				Instruction,
+				ResolveAmbiguity,
+			};
+
+			struct ExecutionStepCollection
+			{
+				Ref<ExecutionStep>					first;				// first step in the collection
+				Ref<ExecutionStep>					last;				// last step in the collection
+				Ref<ExecutionStep>					siblingPrev;		// previous step in the collection of the owned step
+				Ref<ExecutionStep>					siblingNext;		// next step in the collection of the owned step
+			};
+
+			struct ExecutionStep : Allocatable<ExecutionStep>
+			{
+				struct ETI
+				{
+					vint32_t						startTrace = -1;
+					vint32_t						startIns = -1;
+					vint32_t						endTrace = -1;
+					vint32_t						endIns = -1;
+				};
+
+				struct ETRA
+				{
+					vint32_t						count;
+					vint32_t						type;
+				};
+
+				ExecutionType						type = ExecutionType::Instruction;
+				Ref<ExecutionStep>					next;
+				ExecutionStepCollection				children;
+
+				union
+				{
+					ETI								et_i;
+					ETRA							ei_ra;
+				};
+			};
+
+/***********************************************************************
 TraceManager
 ***********************************************************************/
 
@@ -560,8 +607,10 @@ TraceManager
 				// ResolveAmbiguity
 				Ref<Trace>									firstBranchTrace;
 				Ref<Trace>									firstMergeTrace;
+				Ref<ExecutionStep>							firstStep;
 				AllocateOnly<TraceAmbiguity>				traceAmbiguities;
 				AllocateOnly<TraceAmbiguityLink>			traceAmbiguityLinks;
+				AllocateOnly<ExecutionStep>					executionSteps;
 
 				// phase: CheckMergeTraces
 				template<typename TCallback>
