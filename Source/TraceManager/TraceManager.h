@@ -415,8 +415,8 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 				//   lastTrace  (order by postfix ascending)
 				//   the merge trace that create this TraceAmbiguity
 				Ref<TraceAmbiguity>					ambiguityDetected;
-				Ref<TraceAmbiguityLink>				ambiguityBegins;
-				Ref<TraceAmbiguityLink>				ambiguityEnds;
+				Ref<TraceAmbiguity>					ambiguityBegin;
+				Ref<TraceAmbiguity>					ambiguityEnd;
 			};
 
 /***********************************************************************
@@ -637,8 +637,6 @@ TraceManager
 				bool										CheckAmbiguityResolution(TraceAmbiguity* ta, collections::List<Ref<InsExec_ObjRefLink>>& visitingIds, TCallback&& callback);
 				bool										CheckMergeTrace(TraceAmbiguity* ta, Trace* trace, TraceExec* traceExec, collections::List<Ref<InsExec_ObjRefLink>>& visitingIds);
 				void										LinkAmbiguityCriticalTrace(Ref<Trace> traceId);
-				template<vint32_t (TraceAmbiguity::*key)>
-				TraceAmbiguityLink*							FindOrCreateTraceAmbiguityLink(Ref<TraceAmbiguityLink>& link, TraceAmbiguity* taToInsert);
 				void										CheckMergeTraces();
 
 				// phase: BuildExecutionOrder
