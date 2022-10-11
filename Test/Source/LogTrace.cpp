@@ -349,12 +349,12 @@ void RenderTrace(
 
 			if (traceExec->ambiguityBegin != nullref)
 			{
-				writer.WriteLine(L"  AmbiguityBegins: [" + itow(traceExec->ambiguityBegin.handle) + L"]");
+				writer.WriteLine(L"  AmbiguityBegin: [" + itow(traceExec->ambiguityBegin.handle) + L"]");
 			}
 
 			if (traceExec->ambiguityEnd != nullref)
 			{
-				writer.WriteLine(L"  AmbiguityEnds: [" + itow(traceExec->ambiguityEnd.handle) + L"]");
+				writer.WriteLine(L"  AmbiguityEnd: [" + itow(traceExec->ambiguityEnd.handle) + L"]");
 			}
 
 			if (traceExec->ambiguityDetected != nullref)
