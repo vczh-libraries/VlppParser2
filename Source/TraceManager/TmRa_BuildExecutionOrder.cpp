@@ -38,21 +38,45 @@ BuildStepTree
 			void TraceManager::BuildStepTree(Trace* startTrace, vint32_t startIns, Trace* endTrace, vint32_t endIns, ExecutionStep*& root, ExecutionStep*& firstLeaf, ExecutionStep* currentStep, ExecutionStep* currentLeaf)
 			{
 				// find the next critical trace record which is or after startTrace
-				auto forwardTrace = GetTrace(GetTraceExec(startTrace->traceExecRef)->branchData.forwardTrace);
-				auto critical = GetTrace(GetTraceExec(forwardTrace->traceExecRef)->nextAmbiguityCriticalTrace);
+				auto critical = GetTrace(GetTraceExec(startTrace->traceExecRef)->branchData.forwardTrace);
 				while (critical)
 				{
 					if (critical->traceExecRef >= startTrace->traceExecRef)
 					{
 						break;
 					}
+					auto criticalRef = GetTraceExec(critical->traceExecRef)->nextAmbiguityCriticalTrace;
+					critical = criticalRef == nullref ? nullptr : GetTrace(criticalRef);
 				}
 
 				// traverse critical until we hit endTrace
 				while (true)
 				{
-					// if critical is empty, it means nothing is between start and end
-					if (!critical)
+					// if critical is empty
+					// or critical is after endTrace
+					// or critical is endTrace and its ambiguous prefix is after endIns
+
+					if (critical)
+					{
+						if (critical->traceExecRef < endTrace->traceExecRef)
+						{
+							goto CONTINUE_SEARCHING;
+						}
+						if (critical == endTrace)
+						{
+							auto criticalExec = GetTraceExec(critical->traceExecRef);
+							if (criticalExec->ambiguityBegin != nullref)
+							{
+								auto ta = GetTraceAmbiguity(criticalExec->ambiguityBegin);
+								if (ta->prefix > endIns)
+								{
+									goto CONTINUE_SEARCHING;
+								}
+							}
+						}
+					}
+
+					// it means we have reached the end
 					{
 						auto step = GetExecutionStep(executionSteps.Allocate());
 						step->et_i.startTrace = startTrace->allocatedIndex;
@@ -62,6 +86,8 @@ BuildStepTree
 						AppendStepNode(step, true, root, firstLeaf, currentStep, currentLeaf);
 						return;
 					}
+
+				CONTINUE_SEARCHING:
 
 					// there is three kinds of critical node:
 					//   ambiguous trace (could also be a branch tree)
@@ -79,11 +105,18 @@ BuildStepTree
 						// if critical is a branch tree
 						CHECK_FAIL(L"BuildStepTree not implemented!");
 					}
-					else
+					else if (critical->predecessors.siblingPrev != critical->predecessors.siblingNext)
 					{
 						// if critical is a predecessor of a merge tree
 						CHECK_FAIL(L"BuildStepTree not implemented!");
 					}
+					else
+					{
+						// this happens when the forward trace is not critical
+					}
+
+					auto criticalRef = GetTraceExec(critical->traceExecRef)->nextAmbiguityCriticalTrace;
+					critical = criticalRef == nullref ? nullptr : GetTrace(criticalRef);
 				}
 			}
 
@@ -97,24 +130,42 @@ ConvertStepTreeToLink
 			}
 
 /***********************************************************************
+BuildAmbiguousStepLink
+***********************************************************************/
+
+			void TraceManager::BuildAmbiguousStepLink(TraceAmbiguity* ta, ExecutionStep*& first, ExecutionStep*& last)
+			{
+				CHECK_FAIL(L"BuildAmbiguousStepLink not implemented!");
+			}
+
+/***********************************************************************
 BuildExecutionOrder
 ***********************************************************************/
 
 			void TraceManager::BuildExecutionOrder()
 			{
+#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::CheckMergeTraces()#"
+				// get the instruction range
 				auto startTrace = initialTrace;
 				vint32_t startIns = 0;
 				auto endTrace = concurrentTraces->Get(0);
 				vint32_t endIns = GetTraceExec(endTrace->traceExecRef)->insLists.c3 - 1;
 
+				// build step tree
 				ExecutionStep* root = nullptr;
 				ExecutionStep* firstLeaf = nullptr;
 				BuildStepTree(startTrace, startIns, endTrace, endIns, root, firstLeaf, nullptr, nullptr);
 
+				// BuildAmbiguousStepLink should have merged a tree to a link
+				CHECK_ERROR(firstLeaf != nullptr, ERROR_MESSAGE_PREFIX L"Ambiguity is not fully identified.");
+				CHECK_ERROR(firstLeaf->next == nullref, ERROR_MESSAGE_PREFIX L"Ambiguity is not fully identified.");
+
+				// fill firstStep
 				ExecutionStep* first = nullptr;
 				ExecutionStep* last = nullptr;
 				ConvertStepTreeToLink(root, firstLeaf, first, last);
 				firstStep = first;
+#undef ERROR_MESSAGE_PREFIX
 			}
 		}
 	}

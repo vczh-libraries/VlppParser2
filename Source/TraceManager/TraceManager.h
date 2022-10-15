@@ -33,7 +33,7 @@ AllocateOnly<T>
 
 				Ref() = default;
 				Ref(NullRef) :handle(-1) {}
-				Ref(T* obj) :handle(obj->allocatedIndex) {}
+				Ref(T* obj) :handle(obj == nullptr ? -1 : obj->allocatedIndex) {}
 				Ref(const Ref<T>& ref) :handle(ref.handle) {}
 				explicit Ref(vint32_t _handle) :handle(_handle) {}
 
@@ -47,7 +47,7 @@ AllocateOnly<T>
 				__forceinline bool operator<=(const Ref<T>& ref) const { return handle <= ref.handle; }
 
 				__forceinline Ref& operator=(const Ref<T>& ref) { handle = ref.handle; return *this; }
-				__forceinline Ref& operator=(T* obj) { handle = obj->allocatedIndex; return *this; }
+				__forceinline Ref& operator=(T* obj) { handle = obj == nullptr ? -1 : obj->allocatedIndex; return *this; }
 				__forceinline Ref& operator=(NullRef) { handle = -1; return *this; }
 
 				__forceinline bool operator==(vint32_t) = delete;
@@ -641,6 +641,7 @@ TraceManager
 				void										AppendStepNode(ExecutionStep* step, bool leafNode, ExecutionStep*& root, ExecutionStep*& firstLeaf, ExecutionStep*& currentStep, ExecutionStep*& currentLeaf);
 				void										BuildStepTree(Trace* startTrace, vint32_t startIns, Trace* endTrace, vint32_t endIns, ExecutionStep*& root, ExecutionStep*& firstLeaf, ExecutionStep* currentStep, ExecutionStep* currentLeaf);
 				void										ConvertStepTreeToLink(ExecutionStep* root, ExecutionStep* firstLeaf, ExecutionStep*& first, ExecutionStep*& last);
+				void										BuildAmbiguousStepLink(TraceAmbiguity* ta, ExecutionStep*& first, ExecutionStep*& last);
 				void										BuildExecutionOrder();
 
 			public:
