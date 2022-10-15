@@ -425,14 +425,6 @@ TraceManager (Data Structures -- BuildExecutionOrder)
 				ResolveAmbiguity,
 			};
 
-			struct ExecutionStepCollection
-			{
-				Ref<ExecutionStep>					first;				// first step in the collection
-				Ref<ExecutionStep>					last;				// last step in the collection
-				Ref<ExecutionStep>					siblingPrev;		// previous step in the collection of the owned step
-				Ref<ExecutionStep>					siblingNext;		// next step in the collection of the owned step
-			};
-
 			struct ExecutionStep : Allocatable<ExecutionStep>
 			{
 				struct ETI
@@ -451,8 +443,19 @@ TraceManager (Data Structures -- BuildExecutionOrder)
 				};
 
 				ExecutionType						type = ExecutionType::Instruction;
+
+				// for steps that ready to execute
+				// "next" means the next step to execute
+				// for steps that returns from BuildStepTree
+				// "next" in a leaf step points to the next leaf step
 				Ref<ExecutionStep>					next;
-				ExecutionStepCollection				children;
+
+				// for steps that returns from BuildStepTree
+				// "next" is the parent step in the tree
+				Ref<ExecutionStep>					parent;
+
+				vint32_t							copyCount = 0;
+				vint32_t							visitCount = 0;
 
 				union
 				{
@@ -635,6 +638,8 @@ TraceManager
 				void										CheckMergeTraces();
 
 				// phase: BuildExecutionOrder
+				void										BuildStepTree(Trace* startTrace, vint32_t startIns, Trace* endTrace, vint32_t endIns, ExecutionStep*& root, ExecutionStep*& firstLeaf);
+				void										ConvertStepTreeToLink(ExecutionStep* root, ExecutionStep* firstLeaf, ExecutionStep*& first, ExecutionStep*& last);
 				void										BuildExecutionOrder();
 
 			public:
