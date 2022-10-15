@@ -39,19 +39,16 @@ BuildStepTree
 			{
 				// find the next critical trace record which is or after startTrace
 				auto critical = GetTrace(GetTraceExec(startTrace->traceExecRef)->branchData.forwardTrace);
-				while (critical)
-				{
-					if (critical->traceExecRef >= startTrace->traceExecRef)
-					{
-						break;
-					}
-					auto criticalRef = GetTraceExec(critical->traceExecRef)->nextAmbiguityCriticalTrace;
-					critical = criticalRef == nullref ? nullptr : GetTrace(criticalRef);
-				}
 
 				// traverse critical until we hit endTrace
 				while (true)
 				{
+					// skip if critical is before startTrace
+					if (critical && critical->traceExecRef < startTrace->traceExecRef)
+					{
+						goto NEXT_CRITICAL;
+					}
+
 					// if critical is empty
 					// or critical is after endTrace
 					// or critical is endTrace and its ambiguous prefix is after endIns
@@ -94,27 +91,30 @@ BuildStepTree
 					//   branch trace
 					//   predecessor of merge trace
 
-					auto criticalExec = GetTraceExec(critical->traceExecRef);
-					if (criticalExec->ambiguityBegin != nullref)
 					{
-						// if critical is an ambiguous trace
-						CHECK_FAIL(L"BuildStepTree not implemented!");
-					}
-					else if (critical->successors.first != critical->successors.last)
-					{
-						// if critical is a branch tree
-						CHECK_FAIL(L"BuildStepTree not implemented!");
-					}
-					else if (critical->predecessors.siblingPrev != critical->predecessors.siblingNext)
-					{
-						// if critical is a predecessor of a merge tree
-						CHECK_FAIL(L"BuildStepTree not implemented!");
-					}
-					else
-					{
-						// this happens when the forward trace is not critical
+						auto criticalExec = GetTraceExec(critical->traceExecRef);
+						if (criticalExec->ambiguityBegin != nullref)
+						{
+							// if critical is an ambiguous trace
+							CHECK_FAIL(L"BuildStepTree not implemented!");
+						}
+						else if (critical->successors.first != critical->successors.last)
+						{
+							// if critical is a branch tree
+							CHECK_FAIL(L"BuildStepTree not implemented!");
+						}
+						else if (critical->predecessors.siblingPrev != critical->predecessors.siblingNext)
+						{
+							// if critical is a predecessor of a merge tree
+							CHECK_FAIL(L"BuildStepTree not implemented!");
+						}
+						else
+						{
+							// this happens when the forward trace is not critical
+						}
 					}
 
+				NEXT_CRITICAL:
 					auto criticalRef = GetTraceExec(critical->traceExecRef)->nextAmbiguityCriticalTrace;
 					critical = criticalRef == nullref ? nullptr : GetTrace(criticalRef);
 				}
