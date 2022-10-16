@@ -174,6 +174,7 @@ BuildStepTree
 
 							// fix critical
 							critical = GetTrace(GetTraceExec(startTrace->traceExecRef)->branchData.forwardTrace);
+							break;
 						}
 						else if (critical->successors.first != critical->successors.last)
 						{
@@ -205,7 +206,10 @@ BuildStepTree
 						else if (critical->predecessors.siblingPrev != critical->predecessors.siblingNext)
 						{
 							// if critical is a predecessor of a merge tree
-							CHECK_FAIL(L"BuildStepTree not implemented!");
+
+							// fix critical
+							critical = GetTrace(GetTraceExec(GetTrace(critical->successors.first)->traceExecRef)->branchData.forwardTrace);
+							break;
 						}
 						else
 						{
