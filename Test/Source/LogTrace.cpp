@@ -1313,6 +1313,36 @@ FilePath LogTraceManager(
 	auto outputFile = outputDir / (L"Trace-" + itow((vint)traceProcessingPhase + 1) + L"[" + caseName + L"].txt");
 	auto content = GenerateToStream([&](StreamWriter& writer)
 	{
+		if (auto step = tm.GetInitialExecutionStep())
+		{
+			writer.WriteLine(L"================ EXECUTION STEPS ================");
+			while (step)
+			{
+				switch (step->type)
+				{
+				case ExecutionType::Instruction:
+					writer.WriteString(itow(step->et_i.startTrace));
+					writer.WriteChar(L'@');
+					writer.WriteString(itow(step->et_i.startIns));
+					writer.WriteString(L" - ");
+					writer.WriteString(itow(step->et_i.endTrace));
+					writer.WriteChar(L'@');
+					writer.WriteLine(itow(step->et_i.endIns));
+					break;
+				case ExecutionType::ResolveAmbiguity:
+					writer.WriteString(L"RA(");
+					writer.WriteString(itow(step->et_ra.count));
+					writer.WriteString(L", ");
+					writer.WriteString(typeName(step->et_ra.type));
+					writer.WriteLine(L")");
+					break;
+				}
+				step = step->next == nullref ? nullptr : tm.GetExecutionStep(step->next);
+			}
+			writer.WriteLine(L"");
+			writer.WriteLine(L"==================== TRACES =====================");
+			writer.WriteLine(L"");
+		}
 		RenderTraceTree(tm.GetInitialTrace(), tm, traceLogs, writer);
 	});
 	File(outputFile).WriteAllText(content, true, BomEncoder::Utf8);

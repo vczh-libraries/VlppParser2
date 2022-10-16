@@ -212,8 +212,8 @@ TraceManager::ExecuteTrace
 					break;
 				case ExecutionType::ResolveAmbiguity:
 					{
-						AstIns ins = { AstInsType::ResolveAmbiguity,step->ei_ra.type,step->ei_ra.count };
-						submitter.Submit(ins, tokens[step->ei_ra.token], step->ei_ra.token);
+						AstIns ins = { AstInsType::ResolveAmbiguity,step->et_ra.type,step->et_ra.count };
+						submitter.Submit(ins, tokens[step->et_ra.token], step->et_ra.token);
 					}
 					break;
 				}

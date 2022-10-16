@@ -460,7 +460,7 @@ TraceManager (Data Structures -- BuildExecutionOrder)
 				union
 				{
 					ETI								et_i;
-					ETRA							ei_ra;
+					ETRA							et_ra;
 				};
 
 				ExecutionStep() {}
