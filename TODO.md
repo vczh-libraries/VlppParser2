@@ -1,24 +1,5 @@
 # TODO
 
-## Create execution path
-- Path is a linked list of nodes
-  - Trace1 Ins1 to Trace2 to Ins2, not branch in this range, throw if yes
-  - ResolveAmbiguity count type
-- From the first node, iterating through critical record, when
-  - See a first record, set the end to the last record, and create several sub paths recursively
-    - When a path tree is created, copy all sub paths to leaf node and connect them to be a single linked list
-      - Experiment: record how many time a node in a path tree will be visited (aka count of reachable leaf nodes)
-      - All mode have "parent" and "children", for each leaf node set all "next" from root to leaf
-      - When copying a node for the last time, reuse current node to leaf directly without copying
-    - Append a RA node
-  - See a branch record, create sub path tree
-- For traces with no ambiguity involved, create only one node for the path
-- Finally get a long linked list, ExecuteTrace will follow the path to execute traces.
-
-## Refactoring PrepareTraceRoute
-
-- Refactor to split `TraceManager` phases into different structs.
-
 ## Test Cases
 
 - `PrefixMerge` 1-7 add test cases to parse expr and type separately.
