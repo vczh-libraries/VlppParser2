@@ -244,7 +244,100 @@ ConvertStepTreeToLink
 
 			void TraceManager::ConvertStepTreeToLink(ExecutionStep* root, ExecutionStep* firstLeaf, ExecutionStep*& first, ExecutionStep*& last)
 			{
-				CHECK_FAIL(L"ConvertStepTreeToLink not implemented!");
+				// calculate copyCount
+				Ref<ExecutionStep> currentLeafRef = firstLeaf;
+				while (currentLeafRef != nullref)
+				{
+					auto currentRef = currentLeafRef;
+					while (currentRef != nullref)
+					{
+						auto current = GetExecutionStep(currentRef);
+						current->copyCount++;
+						currentRef = current->parent;
+					}
+
+					currentLeafRef = GetExecutionStep(currentLeafRef)->next;
+				}
+
+				// for each leaf, build a step link from root to the leaf
+				// concat all link, fill first and last
+				currentLeafRef = firstLeaf;
+				while (currentLeafRef != nullref)
+				{
+					// disconnect currentLeaf to the next leaf
+					auto currentLeaf = GetExecutionStep(currentLeafRef);
+					auto nextLeafRef = currentLeaf->next;
+					currentLeaf->next = nullref;
+
+					// fix next from root to currentLeaf
+					auto current = currentLeaf;
+					while (current->parent != nullref)
+					{
+						auto parent = GetExecutionStep(current->parent);
+						parent->next = current;
+						current = parent;
+					}
+
+					// make a step link from root to currentLeaf
+					ExecutionStep* linkFirst = nullptr;
+					ExecutionStep* linkLast = nullptr;
+
+					Ref<ExecutionStep> currentRef = root;
+					while (currentRef != nullref)
+					{
+						// increase visitCount
+						auto current = GetExecutionStep(currentRef);
+						current->visitCount++;
+
+						if (current->visitCount == current->copyCount)
+						{
+							// if visitCount == copyCount
+							// it means current will not be copied in the next round
+							// sublink from current to currentLeaf copy be used directly
+							if (!linkFirst)
+							{
+								linkFirst = current;
+							}
+							if (linkLast)
+							{
+								linkLast->next = current;
+							}
+							linkLast = currentLeaf;
+							break;
+						}
+						else
+						{
+							// otherwise, copy current
+							static_assert(sizeof(ExecutionStep::ETI) >= sizeof(ExecutionStep::ETRA));
+							auto step = GetExecutionStep(executionSteps.Allocate());
+							step->type = current->type;
+							step->et_i = current->et_i;
+
+							if (!linkFirst)
+							{
+								linkFirst = step;
+							}
+							if (linkLast)
+							{
+								linkLast->next = step;
+							}
+							linkLast = step;
+							currentRef = current->next;
+						}
+					}
+
+					if (!first)
+					{
+						first = linkFirst;
+					}
+					if (last)
+					{
+						last->next = linkFirst;
+					}
+					last = linkLast;
+
+					currentLeafRef = nextLeafRef;
+				}
 			}
 
 /***********************************************************************
