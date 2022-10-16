@@ -10,6 +10,20 @@ namespace vl
 BuildStepTree
 ***********************************************************************/
 
+			void TraceManager::MarkNewLeafStep(ExecutionStep* step, ExecutionStep*& firstLeaf, ExecutionStep*& currentLeaf)
+			{
+				if (!firstLeaf)
+				{
+					firstLeaf = step;
+				}
+
+				if (currentLeaf)
+				{
+					currentLeaf->next = step;
+				}
+				currentLeaf = step;
+			}
+
 			void TraceManager::AppendStepLink(ExecutionStep* first, ExecutionStep* last, bool leafNode, ExecutionStep*& root, ExecutionStep*& firstLeaf, ExecutionStep*& currentStep, ExecutionStep*& currentLeaf)
 			{
 				if (!root)
@@ -22,16 +36,7 @@ BuildStepTree
 
 				if (leafNode)
 				{
-					if (!firstLeaf)
-					{
-						firstLeaf = last;
-					}
-
-					if (currentLeaf)
-					{
-						currentLeaf->next = last;
-					}
-					currentLeaf = last;
+					MarkNewLeafStep(last, firstLeaf, currentLeaf);
 				}
 			}
 
@@ -74,15 +79,7 @@ BuildStepTree
 					}
 
 					// it means we have reached the end
-					{
-						auto step = GetExecutionStep(executionSteps.Allocate());
-						step->et_i.startTrace = startTrace->allocatedIndex;
-						step->et_i.startIns = startIns;
-						step->et_i.endTrace = endTrace->allocatedIndex;
-						step->et_i.endIns = endIns;
-						AppendStepLink(step, step, true, root, firstLeaf, currentStep, currentLeaf);
-						return;
-					}
+					break;
 
 				CONTINUE_SEARCHING:
 
@@ -154,12 +151,30 @@ BuildStepTree
 							// append a step from the end of TraceAmbiguity to ambiguityEnd
 							if (ta->postfix > taLastExec->insLists.c3)
 							{
-								// first startTrace, startIns, critical
+								auto postfixTrace = GetTrace(taLast->predecessors.first);
+								auto postfixTraceExec = GetTraceExec(postfixTrace->traceExecRef);
+								{
+									auto step = GetExecutionStep(executionSteps.Allocate());
+									step->et_i.startTrace = startTrace->allocatedIndex;
+									step->et_i.startIns = startIns;
+									step->et_i.endTrace = taFirst->allocatedIndex;
+									step->et_i.endIns = ta->prefix - 1;
+									AppendStepLink(step, step, false, root, firstLeaf, currentStep, currentLeaf);
+								}
+
+								// fix startTrace, startIns
+								startTrace = taLast;
+								startIns = 0;
 							}
 							else
 							{
-								// first startTrace, startIns, critical
+								// fix startTrace, startIns
+								startTrace = taLast;
+								startIns = GetTraceExec(startTrace->traceExecRef)->insLists.c3 - ta->postfix;
 							}
+
+							// fix critical
+							critical = GetTrace(GetTraceExec(startTrace->traceExecRef)->branchData.forwardTrace);
 						}
 						else if (critical->successors.first != critical->successors.last)
 						{
@@ -180,6 +195,20 @@ BuildStepTree
 				NEXT_CRITICAL:
 					auto criticalRef = GetTraceExec(critical->traceExecRef)->nextAmbiguityCriticalTrace;
 					critical = criticalRef == nullref ? nullptr : GetTrace(criticalRef);
+				}
+
+				if (startTrace != endTrace || startIns > endIns)
+				{
+					auto step = GetExecutionStep(executionSteps.Allocate());
+					step->et_i.startTrace = startTrace->allocatedIndex;
+					step->et_i.startIns = startIns;
+					step->et_i.endTrace = endTrace->allocatedIndex;
+					step->et_i.endIns = endIns;
+					AppendStepLink(step, step, true, root, firstLeaf, currentStep, currentLeaf);
+				}
+				else
+				{
+					MarkNewLeafStep(currentStep, firstLeaf, currentLeaf);
 				}
 			}
 
