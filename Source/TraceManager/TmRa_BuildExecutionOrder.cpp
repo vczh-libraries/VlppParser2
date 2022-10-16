@@ -192,12 +192,12 @@ BuildStepTree
 								AppendStepLink(step, step, false, root, firstLeaf, currentStep, currentLeaf);
 							}
 
-							// recursively process all successors
-							auto successorId = critical->successors.first;
+							// recursively process all successors reversely
+							auto successorId = critical->successors.last;
 							while (successorId != nullref)
 							{
 								auto successor = GetTrace(successorId);
-								successorId = successor->successors.siblingNext;
+								successorId = successor->successors.siblingPrev;
 								BuildStepTree(successor, 0, endTrace, endIns, root, firstLeaf, currentStep, currentLeaf);
 							}
 							return;
@@ -372,12 +372,12 @@ BuildAmbiguousStepLink
 					// append an empty step
 					root->type = ExecutionType::Empty;
 
-					// traverse all successors
-					auto successorId = taFirst->successors.first;
+					// traverse all successors reversely
+					auto successorId = taFirst->successors.last;
 					while (successorId != nullref)
 					{
 						auto successor = GetTrace(successorId);
-						successorId = successor->successors.siblingNext;
+						successorId = successor->successors.siblingPrev;
 
 						// append a step to execute from the first ambiguous instruction
 						auto first = GetExecutionStep(executionSteps.Allocate());
@@ -413,12 +413,12 @@ BuildAmbiguousStepLink
 						root->type = ExecutionType::Empty;
 					}
 
-					// traverse all successors
-					auto successorId = taFirst->successors.first;
+					// traverse all successors reversely
+					auto successorId = taFirst->successors.last;
 					while (successorId != nullref)
 					{
 						auto successor = GetTrace(successorId);
-						successorId = successor->successors.siblingNext;
+						successorId = successor->successors.siblingPrev;
 
 						// run from the first ambiguous instruction to the last
 						BuildStepTree(
