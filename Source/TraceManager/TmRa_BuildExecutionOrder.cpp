@@ -51,7 +51,7 @@ BuildStepTree
 
 					// if critical is empty
 					// or critical is after endTrace
-					// or critical is endTrace and its ambiguous prefix is after endIns
+					// or critical is endTrace and the first ambiguous instruction is not before endIns
 
 					if (critical)
 					{
@@ -65,7 +65,7 @@ BuildStepTree
 							if (criticalExec->ambiguityBegin != nullref)
 							{
 								auto ta = GetTraceAmbiguity(criticalExec->ambiguityBegin);
-								if (ta->prefix > endIns)
+								if (ta->prefix >= endIns)
 								{
 									goto CONTINUE_SEARCHING;
 								}
@@ -104,8 +104,8 @@ BuildStepTree
 
 							// append a step from current position to the beginning of TraceAmbiguity
 							if (
-								taFirstExec->allocatedIndex > criticalExec->allocatedIndex ||
-								(taFirstExec->allocatedIndex == criticalExec->allocatedIndex && ta->prefix > startIns))
+								taFirstExec->allocatedIndex > startTrace->allocatedIndex ||
+								(taFirstExec->allocatedIndex == startTrace->allocatedIndex && ta->prefix > startIns))
 							{
 								if (ta->prefix > taFirstExec->insLists.c3)
 								{
@@ -152,6 +152,14 @@ BuildStepTree
 							}
 
 							// append a step from the end of TraceAmbiguity to ambiguityEnd
+							if (ta->postfix > taLastExec->insLists.c3)
+							{
+								// first startTrace, startIns, critical
+							}
+							else
+							{
+								// first startTrace, startIns, critical
+							}
 						}
 						else if (critical->successors.first != critical->successors.last)
 						{
