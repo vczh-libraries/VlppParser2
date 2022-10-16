@@ -1336,6 +1336,7 @@ FilePath LogTraceManager(
 					writer.WriteString(typeName(step->et_ra.type));
 					writer.WriteLine(L")");
 					break;
+				default:;
 				}
 				step = step->next == nullref ? nullptr : tm.GetExecutionStep(step->next);
 			}

@@ -216,6 +216,7 @@ TraceManager::ExecuteTrace
 						submitter.Submit(ins, tokens[step->et_ra.token], step->et_ra.token);
 					}
 					break;
+				default:;
 				}
 			}
 

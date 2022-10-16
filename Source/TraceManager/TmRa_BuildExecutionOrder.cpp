@@ -40,7 +40,7 @@ BuildStepTree
 				}
 			}
 
-			void TraceManager::BuildStepTree(Trace* startTrace, vint32_t startIns, Trace* endTrace, vint32_t endIns, ExecutionStep*& root, ExecutionStep*& firstLeaf, ExecutionStep* currentStep, ExecutionStep* currentLeaf)
+			void TraceManager::BuildStepTree(Trace* startTrace, vint32_t startIns, Trace* endTrace, vint32_t endIns, ExecutionStep*& root, ExecutionStep*& firstLeaf, ExecutionStep* currentStep, ExecutionStep*& currentLeaf)
 			{
 				// find the next critical trace record which is or after startTrace
 				auto critical = GetTrace(GetTraceExec(startTrace->traceExecRef)->branchData.forwardTrace);
@@ -356,14 +356,85 @@ BuildAmbiguousStepLink
 
 			void TraceManager::BuildAmbiguousStepLink(TraceAmbiguity* ta, ExecutionStep*& first, ExecutionStep*& last)
 			{
-				CHECK_FAIL(L"BuildAmbiguousStepLink not implemented!");
 				auto taFirst = GetTrace(ta->firstTrace);
 				auto taFirstExec = GetTraceExec(taFirst->traceExecRef);
 				auto taLast = GetTrace(ta->lastTrace);
 				auto taLastExec = GetTraceExec(taLast->traceExecRef);
 
-				ExecutionStep* root = nullptr;
+				ExecutionStep* root = GetExecutionStep(executionSteps.Allocate());
 				ExecutionStep* firstLeaf = nullptr;
+				ExecutionStep* currentLeaf = nullptr;
+
+				if (ta->prefix < taFirstExec->insLists.c3)
+				{
+					// if the first ambiguous instruction is in taFirst
+					// append an empty step
+					root->type = ExecutionType::Empty;
+
+					// traverse all successors
+					auto successorId = taFirst->successors.first;
+					while (successorId != nullref)
+					{
+						auto successor = GetTrace(successorId);
+						successorId = successor->successors.siblingNext;
+
+						// append a step to execute from the first ambiguous instruction
+						auto first = GetExecutionStep(executionSteps.Allocate());
+						first->parent = root;
+						first->et_i.startTrace = taFirst->allocatedIndex;
+						first->et_i.startIns = ta->prefix;
+						first->et_i.endTrace = taFirst->allocatedIndex;
+						first->et_i.endIns = taFirstExec->insLists.c3 - 1;
+
+						// run from successor to the end
+						BuildStepTree(
+							successor, 0,
+							taLast, taLastExec->insLists.c3 - ta->postfix,
+							root, firstLeaf, first, currentLeaf
+							);
+					}
+
+
+					root->et_i.startTrace = taFirst->allocatedIndex;
+					root->et_i.startIns = ta->prefix;
+					root->et_i.endTrace = taFirst->allocatedIndex;
+					root->et_i.endIns = taFirstExec->insLists.c3 - 1;
+				}
+				else
+				{
+					// if the first ambiguous instruction is in successor traces
+					if (ta->prefix > taFirstExec->insLists.c3)
+					{
+						// if there are instructions before the first ambiguous instruction in the first successor
+						// append a step to execute these instructions
+						root->et_i.startTrace = taFirst->successors.first.handle;
+						root->et_i.startIns = 0;
+						root->et_i.endTrace = taFirst->successors.first.handle;
+						root->et_i.endIns = ta->prefix - taFirstExec->insLists.c3 - 1;
+					}
+					else
+					{
+						// otherwise, append an empty step
+						root->type = ExecutionType::Empty;
+					}
+
+					// traverse all successors
+					auto successorId = taFirst->successors.first;
+					while (successorId != nullref)
+					{
+						auto successor = GetTrace(successorId);
+						successorId = successor->successors.siblingNext;
+
+						// run from the first ambiguous instruction to the last
+						BuildStepTree(
+							successor, ta->prefix - taFirstExec->insLists.c3,
+							taLast, taLastExec->insLists.c3 - ta->postfix,
+							root, firstLeaf, nullptr, currentLeaf
+							);
+					}
+				}
+
+				CHECK_FAIL(L"BuildAmbiguousStepLink not implemented!");
 			}
 
 /***********************************************************************
@@ -382,7 +453,8 @@ BuildExecutionOrder
 				// build step tree
 				ExecutionStep* root = nullptr;
 				ExecutionStep* firstLeaf = nullptr;
-				BuildStepTree(startTrace, startIns, endTrace, endIns, root, firstLeaf, nullptr, nullptr);
+				ExecutionStep* currentLeaf = nullptr;
+				BuildStepTree(startTrace, startIns, endTrace, endIns, root, firstLeaf, nullptr, currentLeaf);
 
 				// BuildAmbiguousStepLink should have merged a tree to a link
 				CHECK_ERROR(firstLeaf != nullptr, ERROR_MESSAGE_PREFIX L"Ambiguity is not fully identified.");
