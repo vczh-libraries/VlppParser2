@@ -182,7 +182,7 @@ BuildStepTree
 
 							// append a step current position to the end of critical
 							if (startTrace->traceExecRef < critical->traceExecRef ||
-								(startTrace->traceExecRef < critical->traceExecRef && startIns < criticalExec->insLists.c3))
+								(startTrace->traceExecRef == critical->traceExecRef && startIns < criticalExec->insLists.c3))
 							{
 								auto step = GetExecutionStep(executionSteps.Allocate());
 								step->et_i.startTrace = startTrace->allocatedIndex;
@@ -233,7 +233,7 @@ BuildStepTree
 				}
 
 				if ( startTrace->traceExecRef < endTrace->traceExecRef ||
-					(startTrace->traceExecRef < endTrace->traceExecRef && startIns <= endIns))
+					(startTrace->traceExecRef == endTrace->traceExecRef && startIns <= endIns))
 				{
 					auto step = GetExecutionStep(executionSteps.Allocate());
 					step->et_i.startTrace = startTrace->allocatedIndex;
@@ -390,16 +390,10 @@ BuildAmbiguousStepLink
 						// run from successor to the end
 						BuildStepTree(
 							successor, 0,
-							taLast, taLastExec->insLists.c3 - ta->postfix,
+							taLast, taLastExec->insLists.c3 - ta->postfix - 1,
 							root, firstLeaf, first, currentLeaf
 							);
 					}
-
-
-					root->et_i.startTrace = taFirst->allocatedIndex;
-					root->et_i.startIns = ta->prefix;
-					root->et_i.endTrace = taFirst->allocatedIndex;
-					root->et_i.endIns = taFirstExec->insLists.c3 - 1;
 				}
 				else
 				{
@@ -438,9 +432,10 @@ BuildAmbiguousStepLink
 				// create the ResolveAmbiguity step
 				auto stepRA = GetExecutionStep(executionSteps.Allocate());
 				stepRA->type = ExecutionType::ResolveAmbiguity;
+				stepRA->et_ra.count = 0;
+				stepRA->et_ra.type = -1;
 				stepRA->et_ra.trace = taLast->allocatedIndex;
 				{
-					stepRA->et_ra.count = 0;
 					Ref<ExecutionStep> currentLeafRef = firstLeaf;
 					while (currentLeafRef != nullref)
 					{
@@ -460,8 +455,7 @@ BuildAmbiguousStepLink
 						auto ieTrace = GetTrace(ieObject->bo_bolr_Trace);
 						auto ieTraceExec = GetTraceExec(ieTrace->traceExecRef);
 
-						AstIns ins;
-						ReadInstruction(ieObject->bo_bolr_Ins, ieTraceExec->insLists);
+						auto&& ins = ReadInstruction(ieObject->bo_bolr_Ins, ieTraceExec->insLists);
 						if (stepRA->et_ra.type == -1)
 						{
 							stepRA->et_ra.type = ins.param;

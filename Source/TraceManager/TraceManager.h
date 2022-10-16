@@ -430,10 +430,10 @@ TraceManager (Data Structures -- BuildExecutionOrder)
 			{
 				struct ETI
 				{
-					vint32_t						startTrace = -1;
-					vint32_t						startIns = -1;
-					vint32_t						endTrace = -1;
-					vint32_t						endIns = -1;
+					vint32_t						startTrace;
+					vint32_t						startIns;
+					vint32_t						endTrace;
+					vint32_t						endIns;
 				};
 
 				struct ETRA
@@ -463,8 +463,6 @@ TraceManager (Data Structures -- BuildExecutionOrder)
 					ETI								et_i;
 					ETRA							et_ra;
 				};
-
-				ExecutionStep() {}
 			};
 
 /***********************************************************************
