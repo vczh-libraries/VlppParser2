@@ -116,7 +116,7 @@ BuildStepTree
 										step->et_i.startIns = startIns;
 										step->et_i.endTrace = taFirst->allocatedIndex;
 										step->et_i.endIns = taFirstExec->insLists.c3 - 1;
-										AppendStepLink(step, step, true, root, firstLeaf, currentStep, currentLeaf);
+										AppendStepLink(step, step, false, root, firstLeaf, currentStep, currentLeaf);
 									}
 									if (ta->prefix > taFirstExec->insLists.c3)
 									{
@@ -126,7 +126,7 @@ BuildStepTree
 										step->et_i.startIns = 0;
 										step->et_i.endTrace = prefixTrace->allocatedIndex;
 										step->et_i.endIns = ta->prefix - taFirstExec->insLists.c3 - 1;
-										AppendStepLink(step, step, true, root, firstLeaf, currentStep, currentLeaf);
+										AppendStepLink(step, step, false, root, firstLeaf, currentStep, currentLeaf);
 									}
 								}
 								else
@@ -138,12 +138,18 @@ BuildStepTree
 										step->et_i.startIns = startIns;
 										step->et_i.endTrace = taFirst->allocatedIndex;
 										step->et_i.endIns = ta->prefix - 1;
-										AppendStepLink(step, step, true, root, firstLeaf, currentStep, currentLeaf);
+										AppendStepLink(step, step, false, root, firstLeaf, currentStep, currentLeaf);
 									}
 								}
 							}
 
 							// append the step link from TraceAmbiguity
+							{
+								ExecutionStep* taStepFirst = nullptr;
+								ExecutionStep* taStepLast = nullptr;
+								BuildAmbiguousStepLink(ta, taStepFirst, taStepLast);
+								AppendStepLink(taStepFirst, taStepLast, false, root, firstLeaf, currentStep, currentLeaf);
+							}
 
 							// append a step from the end of TraceAmbiguity to ambiguityEnd
 						}
