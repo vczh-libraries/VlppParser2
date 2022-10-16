@@ -363,14 +363,14 @@ BuildAmbiguousStepLink
 				auto taLastExec = GetTraceExec(taLast->traceExecRef);
 
 				ExecutionStep* root = GetExecutionStep(executionSteps.Allocate());
+				root->type = ExecutionType::Empty;
+
 				ExecutionStep* firstLeaf = nullptr;
 				ExecutionStep* currentLeaf = nullptr;
 
 				if (ta->prefix < taFirstExec->insLists.c3)
 				{
 					// if the first ambiguous instruction is in taFirst
-					// append an empty step
-					root->type = ExecutionType::Empty;
 
 					// traverse all successors reversely
 					auto successorId = taFirst->successors.last;
@@ -398,20 +398,6 @@ BuildAmbiguousStepLink
 				else
 				{
 					// if the first ambiguous instruction is in successor traces
-					if (ta->prefix > taFirstExec->insLists.c3)
-					{
-						// if there are instructions before the first ambiguous instruction in the first successor
-						// append a step to execute these instructions
-						root->et_i.startTrace = taFirst->successors.first.handle;
-						root->et_i.startIns = 0;
-						root->et_i.endTrace = taFirst->successors.first.handle;
-						root->et_i.endIns = ta->prefix - taFirstExec->insLists.c3 - 1;
-					}
-					else
-					{
-						// otherwise, append an empty step
-						root->type = ExecutionType::Empty;
-					}
 
 					// traverse all successors reversely
 					auto successorId = taFirst->successors.last;
@@ -423,8 +409,8 @@ BuildAmbiguousStepLink
 						// run from the first ambiguous instruction to the last
 						BuildStepTree(
 							successor, ta->prefix - taFirstExec->insLists.c3,
-							taLast, taLastExec->insLists.c3 - ta->postfix,
-							root, firstLeaf, nullptr, currentLeaf
+							taLast, taLastExec->insLists.c3 - ta->postfix - 1,
+							root, firstLeaf, root, currentLeaf
 							);
 					}
 				}
