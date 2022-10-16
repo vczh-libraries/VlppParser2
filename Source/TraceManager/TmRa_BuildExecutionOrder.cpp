@@ -100,9 +100,8 @@ BuildStepTree
 							auto taLastExec = GetTraceExec(taLast->traceExecRef);
 
 							// append a step from current position to the beginning of TraceAmbiguity
-							if (
-								taFirstExec->allocatedIndex > startTrace->allocatedIndex ||
-								(taFirstExec->allocatedIndex == startTrace->allocatedIndex && ta->prefix > startIns))
+							if ( taFirst->traceExecRef > startTrace->traceExecRef ||
+								(taFirst->traceExecRef == startTrace->traceExecRef && ta->prefix > startIns))
 							{
 								if (ta->prefix > taFirstExec->insLists.c3)
 								{
@@ -179,7 +178,29 @@ BuildStepTree
 						else if (critical->successors.first != critical->successors.last)
 						{
 							// if critical is a branch tree
-							CHECK_FAIL(L"BuildStepTree not implemented!");
+
+							// append a step current position to the end of critical
+							if (startTrace->traceExecRef < critical->traceExecRef ||
+								(startTrace->traceExecRef < critical->traceExecRef && startIns < criticalExec->insLists.c3))
+							{
+								auto step = GetExecutionStep(executionSteps.Allocate());
+								step->et_i.startTrace = startTrace->allocatedIndex;
+								step->et_i.startIns = startIns;
+								step->et_i.endTrace = critical->allocatedIndex;
+								step->et_i.endIns = criticalExec->insLists.c3 - 1;
+								AppendStepLink(step, step, false, root, firstLeaf, currentStep, currentLeaf);
+							}
+
+							// recursively process all successors
+							auto successorId = critical->successors.first;
+							while (successorId != nullref)
+							{
+								auto successor = GetTrace(successorId);
+								successorId = successor->successors.siblingNext;
+								BuildStepTree(successor, 0, endTrace, endIns, root, firstLeaf, currentStep, currentLeaf);
+							}
+							return;
+
 						}
 						else if (critical->predecessors.siblingPrev != critical->predecessors.siblingNext)
 						{
@@ -197,7 +218,8 @@ BuildStepTree
 					critical = criticalRef == nullref ? nullptr : GetTrace(criticalRef);
 				}
 
-				if (startTrace != endTrace || startIns > endIns)
+				if ( startTrace->traceExecRef < endTrace->traceExecRef ||
+					(startTrace->traceExecRef < endTrace->traceExecRef && startIns <= endIns))
 				{
 					auto step = GetExecutionStep(executionSteps.Allocate());
 					step->et_i.startTrace = startTrace->allocatedIndex;
