@@ -356,6 +356,7 @@ BuildAmbiguousStepLink
 
 			void TraceManager::BuildAmbiguousStepLink(TraceAmbiguity* ta, ExecutionStep*& first, ExecutionStep*& last)
 			{
+#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::CheckMergeTraces()#"
 				auto taFirst = GetTrace(ta->firstTrace);
 				auto taFirstExec = GetTraceExec(taFirst->traceExecRef);
 				auto taLast = GetTrace(ta->lastTrace);
@@ -434,7 +435,60 @@ BuildAmbiguousStepLink
 					}
 				}
 
-				CHECK_FAIL(L"BuildAmbiguousStepLink not implemented!");
+				// create the ResolveAmbiguity step
+				auto stepRA = GetExecutionStep(executionSteps.Allocate());
+				stepRA->type = ExecutionType::ResolveAmbiguity;
+				stepRA->et_ra.trace = taLast->allocatedIndex;
+				{
+					stepRA->et_ra.count = 0;
+					Ref<ExecutionStep> currentLeafRef = firstLeaf;
+					while (currentLeafRef != nullref)
+					{
+						stepRA->et_ra.count++;
+						currentLeafRef = GetExecutionStep(currentLeafRef)->next;
+					}
+				}
+				{
+					CHECK_ERROR(typeCallback != nullptr, ERROR_MESSAGE_PREFIX L"Missing ITypeCallback to resolve the type from multiple objects.");
+					auto linkRef = ta->bottomObjectIds;
+					while (linkRef != nullref)
+					{
+						auto link = GetInsExec_ObjRefLink(linkRef);
+						linkRef = link->previous;
+
+						auto ieObject = GetInsExec_Object(link->id);
+						auto ieTrace = GetTrace(ieObject->bo_bolr_Trace);
+						auto ieTraceExec = GetTraceExec(ieTrace->traceExecRef);
+
+						AstIns ins;
+						ReadInstruction(ieObject->bo_bolr_Ins, ieTraceExec->insLists);
+						if (stepRA->et_ra.type == -1)
+						{
+							stepRA->et_ra.type = ins.param;
+						}
+						else
+						{
+							stepRA->et_ra.type = typeCallback->FindCommonBaseClass(stepRA->et_ra.type, ins.param);
+							CHECK_ERROR(stepRA->et_ra.type == -1, ERROR_MESSAGE_PREFIX L"Unable to resolve the type from multiple objects.");
+						}
+					}
+				}
+
+				// append the ResolveAmbiguity step to the step tree
+				ConvertStepTreeToLink(root, firstLeaf, first, last);
+
+				auto current = first;
+				while (current != last)
+				{
+					auto next = GetExecutionStep(current->next);
+					current->next = nullref;
+					next->parent = current;
+					current = next;
+				}
+
+				stepRA->parent = last;
+				last = stepRA;
+#undef ERROR_MESSAGE_PREFIX
 			}
 
 /***********************************************************************

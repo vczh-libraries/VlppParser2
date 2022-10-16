@@ -213,7 +213,10 @@ TraceManager::ExecuteTrace
 				case ExecutionType::ResolveAmbiguity:
 					{
 						AstIns ins = { AstInsType::ResolveAmbiguity,step->et_ra.type,step->et_ra.count };
-						submitter.Submit(ins, tokens[step->et_ra.token], step->et_ra.token);
+						auto raTrace = GetTrace(Ref<Trace>(step->et_ra.trace));
+						raTrace = EnsureTraceWithValidStates(raTrace);
+						auto raToken = raTrace->currentTokenIndex;
+						submitter.Submit(ins, tokens[raToken], raToken);
 					}
 					break;
 				default:;

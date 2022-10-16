@@ -440,7 +440,7 @@ TraceManager (Data Structures -- BuildExecutionOrder)
 				{
 					vint32_t						count;
 					vint32_t						type;
-					vint32_t						token;
+					vint32_t						trace;
 				};
 
 				ExecutionType						type = ExecutionType::Instruction;
