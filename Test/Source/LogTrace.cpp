@@ -1321,6 +1321,7 @@ FilePath LogTraceManager(
 				switch (step->type)
 				{
 				case ExecutionType::Instruction:
+					writer.WriteString(L"[" + itow(step->allocatedIndex) + L"]: ");
 					writer.WriteString(itow(step->et_i.startTrace));
 					writer.WriteChar(L'@');
 					writer.WriteString(itow(step->et_i.startIns));
@@ -1330,6 +1331,7 @@ FilePath LogTraceManager(
 					writer.WriteLine(itow(step->et_i.endIns));
 					break;
 				case ExecutionType::ResolveAmbiguity:
+					writer.WriteString(L"[" + itow(step->allocatedIndex) + L"]: ");
 					writer.WriteString(L"RA(");
 					writer.WriteString(itow(step->et_ra.count));
 					writer.WriteString(L", ");
