@@ -174,7 +174,7 @@ BuildStepTree
 
 							// fix critical
 							critical = GetTrace(GetTraceExec(startTrace->traceExecRef)->branchData.forwardTrace);
-							break;
+							continue;
 						}
 						else if (critical->successors.first != critical->successors.last)
 						{
@@ -206,10 +206,20 @@ BuildStepTree
 						else if (critical->predecessors.siblingPrev != critical->predecessors.siblingNext)
 						{
 							// if critical is a predecessor of a merge tree
-
-							// fix critical
-							critical = GetTrace(GetTraceExec(GetTrace(critical->successors.first)->traceExecRef)->branchData.forwardTrace);
-							break;
+							// see if it could be an end
+							if (critical->successors.first == endTrace && endIns < 0)
+							{
+								// fix endTrace and endIns
+								endTrace = critical;
+								endIns = criticalExec->insLists.c3 + endIns;
+								break;
+							}
+							else
+							{
+								// otherwise, fix critical
+								critical = GetTrace(GetTraceExec(GetTrace(critical->successors.first)->traceExecRef)->branchData.forwardTrace);
+								continue;
+							}
 						}
 						else
 						{
@@ -347,6 +357,13 @@ BuildAmbiguousStepLink
 			void TraceManager::BuildAmbiguousStepLink(TraceAmbiguity* ta, ExecutionStep*& first, ExecutionStep*& last)
 			{
 				CHECK_FAIL(L"BuildAmbiguousStepLink not implemented!");
+				auto taFirst = GetTrace(ta->firstTrace);
+				auto taFirstExec = GetTraceExec(taFirst->traceExecRef);
+				auto taLast = GetTrace(ta->lastTrace);
+				auto taLastExec = GetTraceExec(taLast->traceExecRef);
+
+				ExecutionStep* root = nullptr;
+				ExecutionStep* firstLeaf = nullptr;
 			}
 
 /***********************************************************************
