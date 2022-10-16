@@ -10,28 +10,28 @@ namespace vl
 BuildStepTree
 ***********************************************************************/
 
-			void TraceManager::AppendStepNode(ExecutionStep* step, bool leafNode, ExecutionStep*& root, ExecutionStep*& firstLeaf, ExecutionStep*& currentStep, ExecutionStep*& currentLeaf)
+			void TraceManager::AppendStepLink(ExecutionStep* first, ExecutionStep* last, bool leafNode, ExecutionStep*& root, ExecutionStep*& firstLeaf, ExecutionStep*& currentStep, ExecutionStep*& currentLeaf)
 			{
 				if (!root)
 				{
-					root = step;
+					root = first;
 				}
 
-				step->parent = currentStep;
-				currentStep = step;
+				first->parent = currentStep;
+				currentStep = last;
 
 				if (leafNode)
 				{
 					if (!firstLeaf)
 					{
-						firstLeaf = step;
+						firstLeaf = last;
 					}
 
 					if (currentLeaf)
 					{
-						currentLeaf->next = step;
+						currentLeaf->next = last;
 					}
-					currentLeaf = step;
+					currentLeaf = last;
 				}
 			}
 
@@ -80,7 +80,7 @@ BuildStepTree
 						step->et_i.startIns = startIns;
 						step->et_i.endTrace = endTrace->allocatedIndex;
 						step->et_i.endIns = endIns;
-						AppendStepNode(step, true, root, firstLeaf, currentStep, currentLeaf);
+						AppendStepLink(step, step, true, root, firstLeaf, currentStep, currentLeaf);
 						return;
 					}
 
@@ -96,7 +96,56 @@ BuildStepTree
 						if (criticalExec->ambiguityBegin != nullref)
 						{
 							// if critical is an ambiguous trace
-							CHECK_FAIL(L"BuildStepTree not implemented!");
+							auto ta = GetTraceAmbiguity(criticalExec->ambiguityBegin);
+							auto taFirst = GetTrace(ta->firstTrace);
+							auto taFirstExec = GetTraceExec(taFirst->traceExecRef);
+							auto taLast = GetTrace(ta->lastTrace);
+							auto taLastExec = GetTraceExec(taLast->traceExecRef);
+
+							// append a step from current position to the beginning of TraceAmbiguity
+							if (
+								taFirstExec->allocatedIndex > criticalExec->allocatedIndex ||
+								(taFirstExec->allocatedIndex == criticalExec->allocatedIndex && ta->prefix > startIns))
+							{
+								if (ta->prefix > taFirstExec->insLists.c3)
+								{
+									if (startTrace != taFirst || startIns < taFirstExec->insLists.c3)
+									{
+										auto step = GetExecutionStep(executionSteps.Allocate());
+										step->et_i.startTrace = startTrace->allocatedIndex;
+										step->et_i.startIns = startIns;
+										step->et_i.endTrace = taFirst->allocatedIndex;
+										step->et_i.endIns = taFirstExec->insLists.c3 - 1;
+										AppendStepLink(step, step, true, root, firstLeaf, currentStep, currentLeaf);
+									}
+									if (ta->prefix > taFirstExec->insLists.c3)
+									{
+										auto prefixTrace = GetTrace(taFirst->successors.first);
+										auto step = GetExecutionStep(executionSteps.Allocate());
+										step->et_i.startTrace = prefixTrace->allocatedIndex;
+										step->et_i.startIns = 0;
+										step->et_i.endTrace = prefixTrace->allocatedIndex;
+										step->et_i.endIns = ta->prefix - taFirstExec->insLists.c3 - 1;
+										AppendStepLink(step, step, true, root, firstLeaf, currentStep, currentLeaf);
+									}
+								}
+								else
+								{
+									if (startTrace != taFirst || startIns < ta->prefix)
+									{
+										auto step = GetExecutionStep(executionSteps.Allocate());
+										step->et_i.startTrace = startTrace->allocatedIndex;
+										step->et_i.startIns = startIns;
+										step->et_i.endTrace = taFirst->allocatedIndex;
+										step->et_i.endIns = ta->prefix - 1;
+										AppendStepLink(step, step, true, root, firstLeaf, currentStep, currentLeaf);
+									}
+								}
+							}
+
+							// append the step link from TraceAmbiguity
+
+							// append a step from the end of TraceAmbiguity to ambiguityEnd
 						}
 						else if (critical->successors.first != critical->successors.last)
 						{

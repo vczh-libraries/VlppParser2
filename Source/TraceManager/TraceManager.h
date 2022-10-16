@@ -638,7 +638,7 @@ TraceManager
 				void										CheckMergeTraces();
 
 				// phase: BuildExecutionOrder
-				void										AppendStepNode(ExecutionStep* step, bool leafNode, ExecutionStep*& root, ExecutionStep*& firstLeaf, ExecutionStep*& currentStep, ExecutionStep*& currentLeaf);
+				void										AppendStepLink(ExecutionStep* first, ExecutionStep* last, bool leapNode, ExecutionStep*& root, ExecutionStep*& firstLeaf, ExecutionStep*& currentStep, ExecutionStep*& currentLeaf);
 				void										BuildStepTree(Trace* startTrace, vint32_t startIns, Trace* endTrace, vint32_t endIns, ExecutionStep*& root, ExecutionStep*& firstLeaf, ExecutionStep* currentStep, ExecutionStep* currentLeaf);
 				void										ConvertStepTreeToLink(ExecutionStep* root, ExecutionStep* firstLeaf, ExecutionStep*& first, ExecutionStep*& last);
 				void										BuildAmbiguousStepLink(TraceAmbiguity* ta, ExecutionStep*& first, ExecutionStep*& last);
