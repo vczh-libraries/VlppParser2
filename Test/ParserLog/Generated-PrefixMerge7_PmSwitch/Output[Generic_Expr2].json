@@ -1,47 +1,6 @@
 ﻿{
     "$ast": "TypeOrExprToResolve",
     "candidates": [{
-        "$ast": "FunctionType",
-        "args": [{
-            "$ast": "FunctionType",
-            "args": [{
-                "$ast": "FunctionType",
-                "args": [{
-                    "$ast": "Name",
-                    "name": "F"
-                }, {
-                    "$ast": "Name",
-                    "name": "G"
-                }],
-                "returnType": {
-                    "$ast": "GenericName",
-                    "args": [{
-                        "$ast": "Name",
-                        "name": "D"
-                    }, {
-                        "$ast": "Name",
-                        "name": "E"
-                    }],
-                    "name": "C"
-                }
-            }],
-            "returnType": {
-                "$ast": "GenericName",
-                "args": [{
-                    "$ast": "Name",
-                    "name": "B"
-                }],
-                "name": "A"
-            }
-        }],
-        "returnType": {
-            "$ast": "PointerType",
-            "type": {
-                "$ast": "Name",
-                "name": "X"
-            }
-        }
-    }, {
         "$ast": "MulExpr",
         "first": {
             "$ast": "Name",
@@ -50,72 +9,35 @@
         "second": {
             "$ast": "TypeOrExprToResolve",
             "candidates": [{
-                "$ast": "GtExpr",
-                "first": {
-                    "$ast": "LtExpr",
-                    "first": {
+                "$ast": "CallExpr",
+                "args": [{
+                    "$ast": "CallExpr",
+                    "args": [{
                         "$ast": "Name",
-                        "name": "A"
-                    },
-                    "second": {
-                        "$ast": "Name",
-                        "name": "B"
-                    }
-                },
-                "second": {
-                    "$ast": "TypeOrExprToResolve",
-                    "candidates": [{
-                        "$ast": "CommaExpr",
-                        "first": {
-                            "$ast": "LtExpr",
-                            "first": {
-                                "$ast": "Name",
-                                "name": "C"
-                            },
-                            "second": {
-                                "$ast": "Name",
-                                "name": "D"
-                            }
-                        },
-                        "second": {
-                            "$ast": "GtExpr",
-                            "first": {
-                                "$ast": "Name",
-                                "name": "E"
-                            },
-                            "second": {
-                                "$ast": "CommaExpr",
-                                "first": {
-                                    "$ast": "Name",
-                                    "name": "F"
-                                },
-                                "second": {
-                                    "$ast": "Name",
-                                    "name": "G"
-                                }
-                            }
-                        }
+                        "name": "F"
                     }, {
-                        "$ast": "CallExpr",
+                        "$ast": "Name",
+                        "name": "G"
+                    }],
+                    "func": {
+                        "$ast": "GenericName",
                         "args": [{
                             "$ast": "Name",
-                            "name": "F"
+                            "name": "D"
                         }, {
                             "$ast": "Name",
-                            "name": "G"
+                            "name": "E"
                         }],
-                        "func": {
-                            "$ast": "GenericName",
-                            "args": [{
-                                "$ast": "Name",
-                                "name": "D"
-                            }, {
-                                "$ast": "Name",
-                                "name": "E"
-                            }],
-                            "name": "C"
-                        }
-                    }]
+                        "name": "C"
+                    }
+                }],
+                "func": {
+                    "$ast": "GenericName",
+                    "args": [{
+                        "$ast": "Name",
+                        "name": "B"
+                    }],
+                    "name": "A"
                 }
             }, {
                 "$ast": "CallExpr",
@@ -156,37 +78,115 @@
                     "name": "A"
                 }
             }, {
-                "$ast": "CallExpr",
-                "args": [{
-                    "$ast": "CallExpr",
-                    "args": [{
+                "$ast": "GtExpr",
+                "first": {
+                    "$ast": "LtExpr",
+                    "first": {
                         "$ast": "Name",
-                        "name": "F"
-                    }, {
+                        "name": "A"
+                    },
+                    "second": {
                         "$ast": "Name",
-                        "name": "G"
-                    }],
-                    "func": {
-                        "$ast": "GenericName",
+                        "name": "B"
+                    }
+                },
+                "second": {
+                    "$ast": "TypeOrExprToResolve",
+                    "candidates": [{
+                        "$ast": "CallExpr",
                         "args": [{
                             "$ast": "Name",
-                            "name": "D"
+                            "name": "F"
                         }, {
                             "$ast": "Name",
-                            "name": "E"
+                            "name": "G"
                         }],
-                        "name": "C"
-                    }
+                        "func": {
+                            "$ast": "GenericName",
+                            "args": [{
+                                "$ast": "Name",
+                                "name": "D"
+                            }, {
+                                "$ast": "Name",
+                                "name": "E"
+                            }],
+                            "name": "C"
+                        }
+                    }, {
+                        "$ast": "CommaExpr",
+                        "first": {
+                            "$ast": "LtExpr",
+                            "first": {
+                                "$ast": "Name",
+                                "name": "C"
+                            },
+                            "second": {
+                                "$ast": "Name",
+                                "name": "D"
+                            }
+                        },
+                        "second": {
+                            "$ast": "GtExpr",
+                            "first": {
+                                "$ast": "Name",
+                                "name": "E"
+                            },
+                            "second": {
+                                "$ast": "CommaExpr",
+                                "first": {
+                                    "$ast": "Name",
+                                    "name": "F"
+                                },
+                                "second": {
+                                    "$ast": "Name",
+                                    "name": "G"
+                                }
+                            }
+                        }
+                    }]
+                }
+            }]
+        }
+    }, {
+        "$ast": "FunctionType",
+        "args": [{
+            "$ast": "FunctionType",
+            "args": [{
+                "$ast": "FunctionType",
+                "args": [{
+                    "$ast": "Name",
+                    "name": "F"
+                }, {
+                    "$ast": "Name",
+                    "name": "G"
                 }],
-                "func": {
+                "returnType": {
                     "$ast": "GenericName",
                     "args": [{
                         "$ast": "Name",
-                        "name": "B"
+                        "name": "D"
+                    }, {
+                        "$ast": "Name",
+                        "name": "E"
                     }],
-                    "name": "A"
+                    "name": "C"
                 }
-            }]
+            }],
+            "returnType": {
+                "$ast": "GenericName",
+                "args": [{
+                    "$ast": "Name",
+                    "name": "B"
+                }],
+                "name": "A"
+            }
+        }],
+        "returnType": {
+            "$ast": "PointerType",
+            "type": {
+                "$ast": "Name",
+                "name": "X"
+            }
         }
     }]
 }

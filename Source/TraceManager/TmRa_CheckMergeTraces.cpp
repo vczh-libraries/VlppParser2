@@ -438,15 +438,15 @@ CheckMergeTrace
 				{
 					// [CONDITION]
 					// the top create stack should be either empty or only contains one object
-					if (traceExec->context.createStack != nullref)
-					{
-						auto ieCSTop = GetInsExec_CreateStack(traceExec->context.createStack);
-						auto objRefLink = GetInsExec_ObjRefLink(ieCSTop->objectIds);
-						if (objRefLink->previous != nullref)
-						{
-							goto CHECK_OBJECTS_IN_TOP_CREATE_STACK;
-						}
-					}
+					//if (traceExec->context.createStack != nullref)
+					//{
+					//	auto ieCSTop = GetInsExec_CreateStack(traceExec->context.createStack);
+					//	auto objRefLink = GetInsExec_ObjRefLink(ieCSTop->objectIds);
+					//	if (objRefLink->previous != nullref)
+					//	{
+					//		goto CHECK_OBJECTS_IN_TOP_CREATE_STACK;
+					//	}
+					//}
 
 					// [CONDITION]
 					// the first predecessor must has a EndObject instruction
@@ -464,7 +464,10 @@ CheckMergeTrace
 							break;
 						}
 					}
-					if (postfix == -1) goto CHECK_OBJECTS_IN_TOP_CREATE_STACK;
+					if (postfix == -1)
+					{
+						goto CHECK_OBJECTS_IN_TOP_CREATE_STACK;
+					}
 
 					// [CONDITION]
 					// all predecessor must have a EndObject instruction
@@ -475,7 +478,10 @@ CheckMergeTrace
 						{
 							auto predecessor = GetTrace(predecessorId);
 							predecessorId = predecessor->predecessors.siblingPrev;
-							if (!ComparePostfix(firstTraceExec, GetTraceExec(predecessor->traceExecRef), postfix + 1)) goto CHECK_OBJECTS_IN_TOP_CREATE_STACK;
+							if (!ComparePostfix(firstTraceExec, GetTraceExec(predecessor->traceExecRef), postfix + 1))
+							{
+								goto CHECK_OBJECTS_IN_TOP_CREATE_STACK;
+							}
 						}
 					}
 
