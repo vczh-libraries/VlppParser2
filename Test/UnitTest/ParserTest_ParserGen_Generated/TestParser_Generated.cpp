@@ -41,6 +41,10 @@ extern FilePath GetOutputDir(const WString& parserName);
 
 namespace TestParser_Generated_TestObjects
 {
+	vint inputDiscovered = 0;
+	vint parsedSuccessfully = 0;
+	vint comparedWithBaseline = 0;
+
 	template<
 		typename TParser,
 		typename TJsonVisitor
@@ -69,13 +73,17 @@ namespace TestParser_Generated_TestObjects
 
 			TEST_CASE(caseName)
 			{
+				inputDiscovered++;
 				auto input = inputFile.ReadAllTextByBom();
 				auto ast = parser.ParseModule(input);
 				auto actualJson = PrintAstJson<TJsonVisitor>(ast);
 				File(dirOutput / (L"Output[" + caseName + L"].json")).WriteAllText(actualJson, true, BomEncoder::Utf8);
 
 				auto expectedJsonFile = File(dirBaseline / (caseName + L".json"));
+				parsedSuccessfully++;
 				if (!expectedJsonFile.Exists()) return;
+				comparedWithBaseline++;
+
 				TEST_PRINT(L"Compared with expectedJson");
 				auto expectedJson = expectedJsonFile.ReadAllTextByBom();
 				AssertLines(expectedJson, actualJson);
@@ -387,4 +395,9 @@ TEST_FILE
 		L"TestCase_PrefixMerge_ThrowComma",
 		L"TestCase_PrefixMerge_Generic"
 		);
+
+	using namespace TestParser_Generated_TestObjects;
+	unittest::UnitTest::PrintMessage(L"Input discovered: " + itow(inputDiscovered), unittest::UnitTest::MessageKind::Info);
+	unittest::UnitTest::PrintMessage(L"Parsed successfully: " + itow(parsedSuccessfully), unittest::UnitTest::MessageKind::Info);
+	unittest::UnitTest::PrintMessage(L"Compared with baseline: " + itow(comparedWithBaseline), unittest::UnitTest::MessageKind::Info);
 }
