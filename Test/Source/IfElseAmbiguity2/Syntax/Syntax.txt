@@ -6,9 +6,13 @@ Block
   ::= "{" { Stat:stats } "}" as BlockStat
   ;
 
-IfContent
-  ::= "if" "cond" "then" Stat:thenBranch "else" Stat:elseBranch as IfContentCandidate
+IfThenStat
   ::= "if" "cond" "then" Stat:thenBranch as IfContentCandidate
+  ;
+
+IfContent
+  ::= !IfThenStat
+  ::= !IfThenStat "else" Stat:elseBranch
   ;
 
 Stat

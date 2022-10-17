@@ -1,5 +1,5 @@
 ﻿================ EXECUTION STEPS ================
-[0]: 0@0 - 37@1
+[0]: 0@0 - 26@1
 
 ==================== TRACES =====================
 
@@ -14,381 +14,421 @@
  +
  |
 [0]
-++==========================================================++
-|| [1]: {IF} if                                             ||
-|| [19][IfContent]< "if" @ "cond" "then" Stat "else" Stat > ||
-|| [AST-INSTRUCTIONS]:                                      ||
-||   - BeginObject(Module)                                  ||
-||   - BeginObject(IfStat)                                  ||
-||   - BeginObject(IfContentCandidate)                      ||
-|| [RETURN STACK]:                                          ||
-||   [1][0]: IfContent -> [23][Stat]< IfContent @ >         ||
-||   [0][0]: Stat -> [28][Module]< Stat @ >                 ||
-|| [PREDECESSORS 0-0]: [0]                                  ||
-|| [SUCCESORS 3-3]: [3]                                     ||
-++==========================================================++
+++============================================================++
+|| [1]: {IF} if                                               ||
+|| [14][IfThenStat]< "if" @ "cond" "then" Stat >              ||
+|| [AST-INSTRUCTIONS]:                                        ||
+||   - BeginObject(Module)                                    ||
+||   - BeginObject(IfStat)                                    ||
+||   - DelayFieldAssignment()                                 ||
+||   - BeginObject(IfContentCandidate)                        ||
+|| [RETURN STACK]:                                            ||
+||   [2][0]: IfThenStat -> [20][IfContent]<< !IfThenStat @ >> ||
+||   [1][0]: IfContent -> [23][Stat]< IfContent @ >           ||
+||   [0][0]: Stat -> [28][Module]< Stat @ >                   ||
+|| [PREDECESSORS 0-0]: [0]                                    ||
+|| [SUCCESORS 2-2]: [2]                                       ||
+++============================================================++
 [0]
  |
  +
  |
 [0]
-++==========================================================++
-|| [3]: {CONDITION} cond                                    ||
-|| [17][IfContent]< "if" "cond" @ "then" Stat "else" Stat > ||
-|| [AST-INSTRUCTIONS]:                                      ||
-|| [RETURN STACK]:                                          ||
-||   [1][0]: IfContent -> [23][Stat]< IfContent @ >         ||
-||   [0][0]: Stat -> [28][Module]< Stat @ >                 ||
-|| [PREDECESSORS 1-1]: [1]                                  ||
-|| [SUCCESORS 5-5]: [5]                                     ||
-++==========================================================++
+++============================================================++
+|| [2]: {CONDITION} cond                                      ||
+|| [13][IfThenStat]< "if" "cond" @ "then" Stat >              ||
+|| [AST-INSTRUCTIONS]:                                        ||
+|| [RETURN STACK]:                                            ||
+||   [2][0]: IfThenStat -> [20][IfContent]<< !IfThenStat @ >> ||
+||   [1][0]: IfContent -> [23][Stat]< IfContent @ >           ||
+||   [0][0]: Stat -> [28][Module]< Stat @ >                   ||
+|| [PREDECESSORS 1-1]: [1]                                    ||
+|| [SUCCESORS 3-3]: [3]                                       ||
+++============================================================++
 [0]
  |
  +
  |
 [0]
-++==========================================================++
-|| [5]: {THEN} then                                         ||
-|| [11][IfContent]< "if" "cond" "then" @ Stat "else" Stat > ||
-|| [AST-INSTRUCTIONS]:                                      ||
-|| [RETURN STACK]:                                          ||
-||   [1][0]: IfContent -> [23][Stat]< IfContent @ >         ||
-||   [0][0]: Stat -> [28][Module]< Stat @ >                 ||
-|| [PREDECESSORS 3-3]: [3]                                  ||
-|| [SUCCESORS 7-7]: [7]                                     ||
-++==========================================================++
+++============================================================++
+|| [3]: {THEN} then                                           ||
+|| [11][IfThenStat]< "if" "cond" "then" @ Stat >              ||
+|| [AST-INSTRUCTIONS]:                                        ||
+|| [RETURN STACK]:                                            ||
+||   [2][0]: IfThenStat -> [20][IfContent]<< !IfThenStat @ >> ||
+||   [1][0]: IfContent -> [23][Stat]< IfContent @ >           ||
+||   [0][0]: Stat -> [28][Module]< Stat @ >                   ||
+|| [PREDECESSORS 2-2]: [2]                                    ||
+|| [SUCCESORS 4-4]: [4]                                       ||
+++============================================================++
 [0]
  |
  +
  |
 [0]
-++============================================================================++
-|| [7]: {OPEN_BRACE} {                                                        ||
-|| [6][Block]< "{" @ { Stat } "}" >                                           ||
-|| [AST-INSTRUCTIONS]:                                                        ||
-||   - DelayFieldAssignment()                                                 ||
-||   - BeginObject(BlockStat)                                                 ||
-|| [RETURN STACK]:                                                            ||
-||   [3][5]: Block -> [24][Stat]<< !Block @ >>                                ||
-||   [2][5]: Stat -> [15][IfContent]< "if" "cond" "then" Stat @ "else" Stat > ||
-||   [1][0]: IfContent -> [23][Stat]< IfContent @ >                           ||
-||   [0][0]: Stat -> [28][Module]< Stat @ >                                   ||
-|| [PREDECESSORS 5-5]: [5]                                                    ||
-|| [SUCCESORS 9-9]: [9]                                                       ||
-++============================================================================++
+++=================================================================++
+|| [4]: {OPEN_BRACE} {                                             ||
+|| [6][Block]< "{" @ { Stat } "}" >                                ||
+|| [AST-INSTRUCTIONS]:                                             ||
+||   - DelayFieldAssignment()                                      ||
+||   - BeginObject(BlockStat)                                      ||
+|| [RETURN STACK]:                                                 ||
+||   [4][3]: Block -> [24][Stat]<< !Block @ >>                     ||
+||   [3][3]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ > ||
+||   [2][0]: IfThenStat -> [20][IfContent]<< !IfThenStat @ >>      ||
+||   [1][0]: IfContent -> [23][Stat]< IfContent @ >                ||
+||   [0][0]: Stat -> [28][Module]< Stat @ >                        ||
+|| [PREDECESSORS 3-3]: [3]                                         ||
+|| [SUCCESORS 5-5]: [5]                                            ||
+++=================================================================++
 [0]
  |
  +
  |
 [0]
-++============================================================================++
-|| [9]: {DO} do                                                               ||
-|| [3][Do]< "do" @ ";" >                                                      ||
-|| [AST-INSTRUCTIONS]:                                                        ||
-||   - DelayFieldAssignment()                                                 ||
-||   - BeginObject(DoStat)                                                    ||
-|| [RETURN STACK]:                                                            ||
-||   [7][7]: Do -> [25][Stat]<< !Do @ >>                                      ||
-||   [6][7]: Stat -> [7][Block]< "{" { Stat @ } "}" >                         ||
-||   [3][5]: Block -> [24][Stat]<< !Block @ >>                                ||
-||   [2][5]: Stat -> [15][IfContent]< "if" "cond" "then" Stat @ "else" Stat > ||
-||   [1][0]: IfContent -> [23][Stat]< IfContent @ >                           ||
-||   [0][0]: Stat -> [28][Module]< Stat @ >                                   ||
-|| [PREDECESSORS 7-7]: [7]                                                    ||
-|| [SUCCESORS 11-11]: [11]                                                    ||
-++============================================================================++
+++=================================================================++
+|| [5]: {DO} do                                                    ||
+|| [3][Do]< "do" @ ";" >                                           ||
+|| [AST-INSTRUCTIONS]:                                             ||
+||   - DelayFieldAssignment()                                      ||
+||   - BeginObject(DoStat)                                         ||
+|| [RETURN STACK]:                                                 ||
+||   [6][4]: Do -> [25][Stat]<< !Do @ >>                           ||
+||   [5][4]: Stat -> [7][Block]< "{" { Stat @ } "}" >              ||
+||   [4][3]: Block -> [24][Stat]<< !Block @ >>                     ||
+||   [3][3]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ > ||
+||   [2][0]: IfThenStat -> [20][IfContent]<< !IfThenStat @ >>      ||
+||   [1][0]: IfContent -> [23][Stat]< IfContent @ >                ||
+||   [0][0]: Stat -> [28][Module]< Stat @ >                        ||
+|| [PREDECESSORS 4-4]: [4]                                         ||
+|| [SUCCESORS 6-6]: [6]                                            ||
+++=================================================================++
 [0]
  |
  +
  |
 [0]
-++============================================================================++
-|| [11]: {SEMICOLON} ;                                                        ||
-|| [2][Do]< "do" ";" @ >                                                      ||
-|| [AST-INSTRUCTIONS]:                                                        ||
-|| [RETURN STACK]:                                                            ||
-||   [7][7]: Do -> [25][Stat]<< !Do @ >>                                      ||
-||   [6][7]: Stat -> [7][Block]< "{" { Stat @ } "}" >                         ||
-||   [3][5]: Block -> [24][Stat]<< !Block @ >>                                ||
-||   [2][5]: Stat -> [15][IfContent]< "if" "cond" "then" Stat @ "else" Stat > ||
-||   [1][0]: IfContent -> [23][Stat]< IfContent @ >                           ||
-||   [0][0]: Stat -> [28][Module]< Stat @ >                                   ||
-|| [PREDECESSORS 9-9]: [9]                                                    ||
-|| [SUCCESORS 12-12]: [12]                                                    ||
-++============================================================================++
+++=================================================================++
+|| [6]: {SEMICOLON} ;                                              ||
+|| [2][Do]< "do" ";" @ >                                           ||
+|| [AST-INSTRUCTIONS]:                                             ||
+|| [RETURN STACK]:                                                 ||
+||   [6][4]: Do -> [25][Stat]<< !Do @ >>                           ||
+||   [5][4]: Stat -> [7][Block]< "{" { Stat @ } "}" >              ||
+||   [4][3]: Block -> [24][Stat]<< !Block @ >>                     ||
+||   [3][3]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ > ||
+||   [2][0]: IfThenStat -> [20][IfContent]<< !IfThenStat @ >>      ||
+||   [1][0]: IfContent -> [23][Stat]< IfContent @ >                ||
+||   [0][0]: Stat -> [28][Module]< Stat @ >                        ||
+|| [PREDECESSORS 5-5]: [5]                                         ||
+|| [SUCCESORS 7-7]: [7]                                            ||
+++=================================================================++
 |
 +
 |
-+----------------------------------------------------------------------------+
-| [12]: <Ending>                                                             |
-| [25][Stat]<< !Do @ >>                                                      |
-| [AST-INSTRUCTIONS]:                                                        |
-|   - EndObject()                                                            |
-| [RETURN STACK]:                                                            |
-|   [6][7]: Stat -> [7][Block]< "{" { Stat @ } "}" >                         |
-|   [3][5]: Block -> [24][Stat]<< !Block @ >>                                |
-|   [2][5]: Stat -> [15][IfContent]< "if" "cond" "then" Stat @ "else" Stat > |
-|   [1][0]: IfContent -> [23][Stat]< IfContent @ >                           |
-|   [0][0]: Stat -> [28][Module]< Stat @ >                                   |
-| [PREDECESSORS 11-11]: [11]                                                 |
-| [SUCCESORS 13-13]: [13]                                                    |
-+----------------------------------------------------------------------------+
++-----------------------------------------------------------------+
+| [7]: <Ending>                                                   |
+| [25][Stat]<< !Do @ >>                                           |
+| [AST-INSTRUCTIONS]:                                             |
+|   - EndObject()                                                 |
+| [RETURN STACK]:                                                 |
+|   [5][4]: Stat -> [7][Block]< "{" { Stat @ } "}" >              |
+|   [4][3]: Block -> [24][Stat]<< !Block @ >>                     |
+|   [3][3]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ > |
+|   [2][0]: IfThenStat -> [20][IfContent]<< !IfThenStat @ >>      |
+|   [1][0]: IfContent -> [23][Stat]< IfContent @ >                |
+|   [0][0]: Stat -> [28][Module]< Stat @ >                        |
+| [PREDECESSORS 6-6]: [6]                                         |
+| [SUCCESORS 8-8]: [8]                                            |
++-----------------------------------------------------------------+
 |
 +
 |
-+----------------------------------------------------------------------------+
-| [13]: <Ending>                                                             |
-| [7][Block]< "{" { Stat @ } "}" >                                           |
-| [AST-INSTRUCTIONS]:                                                        |
-|   - ReopenObject()                                                         |
-|   - EndObject()                                                            |
-|   > Field(BlockStat::stats)                                                |
-| [RETURN STACK]:                                                            |
-|   [3][5]: Block -> [24][Stat]<< !Block @ >>                                |
-|   [2][5]: Stat -> [15][IfContent]< "if" "cond" "then" Stat @ "else" Stat > |
-|   [1][0]: IfContent -> [23][Stat]< IfContent @ >                           |
-|   [0][0]: Stat -> [28][Module]< Stat @ >                                   |
-| [PREDECESSORS 12-12]: [12]                                                 |
-| [SUCCESORS 17-17]: [17]                                                    |
-+----------------------------------------------------------------------------+
++-----------------------------------------------------------------+
+| [8]: <Ending>                                                   |
+| [7][Block]< "{" { Stat @ } "}" >                                |
+| [AST-INSTRUCTIONS]:                                             |
+|   - ReopenObject()                                              |
+|   - EndObject()                                                 |
+|   > Field(BlockStat::stats)                                     |
+| [RETURN STACK]:                                                 |
+|   [4][3]: Block -> [24][Stat]<< !Block @ >>                     |
+|   [3][3]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ > |
+|   [2][0]: IfThenStat -> [20][IfContent]<< !IfThenStat @ >>      |
+|   [1][0]: IfContent -> [23][Stat]< IfContent @ >                |
+|   [0][0]: Stat -> [28][Module]< Stat @ >                        |
+| [PREDECESSORS 7-7]: [7]                                         |
+| [SUCCESORS 9-9]: [9]                                            |
++-----------------------------------------------------------------+
 [0]
  |
  +
  |
 [0]
-++============================================================================++
-|| [17]: {CLOSE_BRACE} }                                                      ||
-|| [8][Block]< "{" { Stat } "}" @ >                                           ||
-|| [AST-INSTRUCTIONS]:                                                        ||
-|| [RETURN STACK]:                                                            ||
-||   [3][5]: Block -> [24][Stat]<< !Block @ >>                                ||
-||   [2][5]: Stat -> [15][IfContent]< "if" "cond" "then" Stat @ "else" Stat > ||
-||   [1][0]: IfContent -> [23][Stat]< IfContent @ >                           ||
-||   [0][0]: Stat -> [28][Module]< Stat @ >                                   ||
-|| [PREDECESSORS 13-13]: [13]                                                 ||
-|| [SUCCESORS 18-18]: [18]                                                    ||
-++============================================================================++
+++=================================================================++
+|| [9]: {CLOSE_BRACE} }                                            ||
+|| [8][Block]< "{" { Stat } "}" @ >                                ||
+|| [AST-INSTRUCTIONS]:                                             ||
+|| [RETURN STACK]:                                                 ||
+||   [4][3]: Block -> [24][Stat]<< !Block @ >>                     ||
+||   [3][3]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ > ||
+||   [2][0]: IfThenStat -> [20][IfContent]<< !IfThenStat @ >>      ||
+||   [1][0]: IfContent -> [23][Stat]< IfContent @ >                ||
+||   [0][0]: Stat -> [28][Module]< Stat @ >                        ||
+|| [PREDECESSORS 8-8]: [8]                                         ||
+|| [SUCCESORS 10-10]: [10]                                         ||
+++=================================================================++
 |
 +
 |
-+----------------------------------------------------------------------------+
-| [18]: <Ending>                                                             |
-| [24][Stat]<< !Block @ >>                                                   |
-| [AST-INSTRUCTIONS]:                                                        |
-|   - EndObject()                                                            |
-| [RETURN STACK]:                                                            |
-|   [2][5]: Stat -> [15][IfContent]< "if" "cond" "then" Stat @ "else" Stat > |
-|   [1][0]: IfContent -> [23][Stat]< IfContent @ >                           |
-|   [0][0]: Stat -> [28][Module]< Stat @ >                                   |
-| [PREDECESSORS 17-17]: [17]                                                 |
-| [SUCCESORS 19-19]: [19]                                                    |
-+----------------------------------------------------------------------------+
++-----------------------------------------------------------------+
+| [10]: <Ending>                                                  |
+| [24][Stat]<< !Block @ >>                                        |
+| [AST-INSTRUCTIONS]:                                             |
+|   - EndObject()                                                 |
+| [RETURN STACK]:                                                 |
+|   [3][3]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ > |
+|   [2][0]: IfThenStat -> [20][IfContent]<< !IfThenStat @ >>      |
+|   [1][0]: IfContent -> [23][Stat]< IfContent @ >                |
+|   [0][0]: Stat -> [28][Module]< Stat @ >                        |
+| [PREDECESSORS 9-9]: [9]                                         |
+| [SUCCESORS 11-11]: [11]                                         |
++-----------------------------------------------------------------+
 |
 +
 |
-+----------------------------------------------------------+
-| [19]: <Ending>                                           |
-| [15][IfContent]< "if" "cond" "then" Stat @ "else" Stat > |
-| [AST-INSTRUCTIONS]:                                      |
-|   - ReopenObject()                                       |
-|   - EndObject()                                          |
-|   > Field(IfContentCandidate::thenBranch)                |
-| [RETURN STACK]:                                          |
-|   [1][0]: IfContent -> [23][Stat]< IfContent @ >         |
-|   [0][0]: Stat -> [28][Module]< Stat @ >                 |
-| [PREDECESSORS 18-18]: [18]                               |
-| [SUCCESORS 26-26]: [26]                                  |
-+----------------------------------------------------------+
++------------------------------------------------------------+
+| [11]: <Ending>                                             |
+| [12][IfThenStat]< "if" "cond" "then" Stat @ >              |
+| [AST-INSTRUCTIONS]:                                        |
+|   - ReopenObject()                                         |
+|   - EndObject()                                            |
+|   > Field(IfContentCandidate::thenBranch)                  |
+| [RETURN STACK]:                                            |
+|   [2][0]: IfThenStat -> [20][IfContent]<< !IfThenStat @ >> |
+|   [1][0]: IfContent -> [23][Stat]< IfContent @ >           |
+|   [0][0]: Stat -> [28][Module]< Stat @ >                   |
+| [PREDECESSORS 10-10]: [10]                                 |
+| [SUCCESORS 12-12]: [12]                                    |
++------------------------------------------------------------+
+|
++
+|
++--------------------------------------------------+
+| [12]: <Ending>                                   |
+| [20][IfContent]<< !IfThenStat @ >>               |
+| [AST-INSTRUCTIONS]:                              |
+|   - EndObject()                                  |
+| [RETURN STACK]:                                  |
+|   [1][0]: IfContent -> [23][Stat]< IfContent @ > |
+|   [0][0]: Stat -> [28][Module]< Stat @ >         |
+| [PREDECESSORS 11-11]: [11]                       |
+| [SUCCESORS 13-13]: [13]                          |
++--------------------------------------------------+
+|
++
+|
++--------------------------------------------------+
+| [13]: <Leftrec>                                  |
+| [19][IfContent]<< !IfThenStat @ "else" Stat >>   |
+| [AST-INSTRUCTIONS]:                              |
+|   + ReopenObject()                               |
+| [RETURN STACK]:                                  |
+|   [1][0]: IfContent -> [23][Stat]< IfContent @ > |
+|   [0][0]: Stat -> [28][Module]< Stat @ >         |
+| [PREDECESSORS 12-12]: [12]                       |
+| [SUCCESORS 15-15]: [15]                          |
++--------------------------------------------------+
 [0]
  |
  +
  |
 [0]
-++==========================================================++
-|| [26]: {ELSE} else                                        ||
-|| [13][IfContent]< "if" "cond" "then" Stat "else" @ Stat > ||
-|| [AST-INSTRUCTIONS]:                                      ||
-|| [RETURN STACK]:                                          ||
-||   [1][0]: IfContent -> [23][Stat]< IfContent @ >         ||
-||   [0][0]: Stat -> [28][Module]< Stat @ >                 ||
-|| [PREDECESSORS 19-19]: [19]                               ||
-|| [SUCCESORS 27-27]: [27]                                  ||
-++==========================================================++
+++==================================================++
+|| [15]: {ELSE} else                                ||
+|| [17][IfContent]<< !IfThenStat "else" @ Stat >>   ||
+|| [AST-INSTRUCTIONS]:                              ||
+|| [RETURN STACK]:                                  ||
+||   [1][0]: IfContent -> [23][Stat]< IfContent @ > ||
+||   [0][0]: Stat -> [28][Module]< Stat @ >         ||
+|| [PREDECESSORS 13-13]: [13]                       ||
+|| [SUCCESORS 16-16]: [16]                          ||
+++==================================================++
 [0]
  |
  +
  |
 [0]
-++==============================================================================++
-|| [27]: {OPEN_BRACE} {                                                         ||
-|| [6][Block]< "{" @ { Stat } "}" >                                             ||
-|| [AST-INSTRUCTIONS]:                                                          ||
-||   - DelayFieldAssignment()                                                   ||
-||   - BeginObject(BlockStat)                                                   ||
-|| [RETURN STACK]:                                                              ||
-||   [11][26]: Block -> [24][Stat]<< !Block @ >>                                ||
-||   [10][26]: Stat -> [14][IfContent]< "if" "cond" "then" Stat "else" Stat @ > ||
-||   [1][0]: IfContent -> [23][Stat]< IfContent @ >                             ||
-||   [0][0]: Stat -> [28][Module]< Stat @ >                                     ||
-|| [PREDECESSORS 26-26]: [26]                                                   ||
-|| [SUCCESORS 28-28]: [28]                                                      ||
-++==============================================================================++
+++===================================================================++
+|| [16]: {OPEN_BRACE} {                                              ||
+|| [6][Block]< "{" @ { Stat } "}" >                                  ||
+|| [AST-INSTRUCTIONS]:                                               ||
+||   - DelayFieldAssignment()                                        ||
+||   - BeginObject(BlockStat)                                        ||
+|| [RETURN STACK]:                                                   ||
+||   [8][15]: Block -> [24][Stat]<< !Block @ >>                      ||
+||   [7][15]: Stat -> [18][IfContent]<< !IfThenStat "else" Stat @ >> ||
+||   [1][0]: IfContent -> [23][Stat]< IfContent @ >                  ||
+||   [0][0]: Stat -> [28][Module]< Stat @ >                          ||
+|| [PREDECESSORS 15-15]: [15]                                        ||
+|| [SUCCESORS 17-17]: [17]                                           ||
+++===================================================================++
 [0]
  |
  +
  |
 [0]
-++==============================================================================++
-|| [28]: {DO} do                                                                ||
-|| [3][Do]< "do" @ ";" >                                                        ||
-|| [AST-INSTRUCTIONS]:                                                          ||
-||   - DelayFieldAssignment()                                                   ||
-||   - BeginObject(DoStat)                                                      ||
-|| [RETURN STACK]:                                                              ||
-||   [13][27]: Do -> [25][Stat]<< !Do @ >>                                      ||
-||   [12][27]: Stat -> [7][Block]< "{" { Stat @ } "}" >                         ||
-||   [11][26]: Block -> [24][Stat]<< !Block @ >>                                ||
-||   [10][26]: Stat -> [14][IfContent]< "if" "cond" "then" Stat "else" Stat @ > ||
-||   [1][0]: IfContent -> [23][Stat]< IfContent @ >                             ||
-||   [0][0]: Stat -> [28][Module]< Stat @ >                                     ||
-|| [PREDECESSORS 27-27]: [27]                                                   ||
-|| [SUCCESORS 29-29]: [29]                                                      ||
-++==============================================================================++
+++===================================================================++
+|| [17]: {DO} do                                                     ||
+|| [3][Do]< "do" @ ";" >                                             ||
+|| [AST-INSTRUCTIONS]:                                               ||
+||   - DelayFieldAssignment()                                        ||
+||   - BeginObject(DoStat)                                           ||
+|| [RETURN STACK]:                                                   ||
+||   [10][16]: Do -> [25][Stat]<< !Do @ >>                           ||
+||   [9][16]: Stat -> [7][Block]< "{" { Stat @ } "}" >               ||
+||   [8][15]: Block -> [24][Stat]<< !Block @ >>                      ||
+||   [7][15]: Stat -> [18][IfContent]<< !IfThenStat "else" Stat @ >> ||
+||   [1][0]: IfContent -> [23][Stat]< IfContent @ >                  ||
+||   [0][0]: Stat -> [28][Module]< Stat @ >                          ||
+|| [PREDECESSORS 16-16]: [16]                                        ||
+|| [SUCCESORS 18-18]: [18]                                           ||
+++===================================================================++
 [0]
  |
  +
  |
 [0]
-++==============================================================================++
-|| [29]: {SEMICOLON} ;                                                          ||
-|| [2][Do]< "do" ";" @ >                                                        ||
-|| [AST-INSTRUCTIONS]:                                                          ||
-|| [RETURN STACK]:                                                              ||
-||   [13][27]: Do -> [25][Stat]<< !Do @ >>                                      ||
-||   [12][27]: Stat -> [7][Block]< "{" { Stat @ } "}" >                         ||
-||   [11][26]: Block -> [24][Stat]<< !Block @ >>                                ||
-||   [10][26]: Stat -> [14][IfContent]< "if" "cond" "then" Stat "else" Stat @ > ||
-||   [1][0]: IfContent -> [23][Stat]< IfContent @ >                             ||
-||   [0][0]: Stat -> [28][Module]< Stat @ >                                     ||
-|| [PREDECESSORS 28-28]: [28]                                                   ||
-|| [SUCCESORS 30-30]: [30]                                                      ||
-++==============================================================================++
+++===================================================================++
+|| [18]: {SEMICOLON} ;                                               ||
+|| [2][Do]< "do" ";" @ >                                             ||
+|| [AST-INSTRUCTIONS]:                                               ||
+|| [RETURN STACK]:                                                   ||
+||   [10][16]: Do -> [25][Stat]<< !Do @ >>                           ||
+||   [9][16]: Stat -> [7][Block]< "{" { Stat @ } "}" >               ||
+||   [8][15]: Block -> [24][Stat]<< !Block @ >>                      ||
+||   [7][15]: Stat -> [18][IfContent]<< !IfThenStat "else" Stat @ >> ||
+||   [1][0]: IfContent -> [23][Stat]< IfContent @ >                  ||
+||   [0][0]: Stat -> [28][Module]< Stat @ >                          ||
+|| [PREDECESSORS 17-17]: [17]                                        ||
+|| [SUCCESORS 19-19]: [19]                                           ||
+++===================================================================++
 |
 +
 |
-+------------------------------------------------------------------------------+
-| [30]: <Ending>                                                               |
-| [25][Stat]<< !Do @ >>                                                        |
-| [AST-INSTRUCTIONS]:                                                          |
-|   - EndObject()                                                              |
-| [RETURN STACK]:                                                              |
-|   [12][27]: Stat -> [7][Block]< "{" { Stat @ } "}" >                         |
-|   [11][26]: Block -> [24][Stat]<< !Block @ >>                                |
-|   [10][26]: Stat -> [14][IfContent]< "if" "cond" "then" Stat "else" Stat @ > |
-|   [1][0]: IfContent -> [23][Stat]< IfContent @ >                             |
-|   [0][0]: Stat -> [28][Module]< Stat @ >                                     |
-| [PREDECESSORS 29-29]: [29]                                                   |
-| [SUCCESORS 31-31]: [31]                                                      |
-+------------------------------------------------------------------------------+
++-------------------------------------------------------------------+
+| [19]: <Ending>                                                    |
+| [25][Stat]<< !Do @ >>                                             |
+| [AST-INSTRUCTIONS]:                                               |
+|   - EndObject()                                                   |
+| [RETURN STACK]:                                                   |
+|   [9][16]: Stat -> [7][Block]< "{" { Stat @ } "}" >               |
+|   [8][15]: Block -> [24][Stat]<< !Block @ >>                      |
+|   [7][15]: Stat -> [18][IfContent]<< !IfThenStat "else" Stat @ >> |
+|   [1][0]: IfContent -> [23][Stat]< IfContent @ >                  |
+|   [0][0]: Stat -> [28][Module]< Stat @ >                          |
+| [PREDECESSORS 18-18]: [18]                                        |
+| [SUCCESORS 20-20]: [20]                                           |
++-------------------------------------------------------------------+
 |
 +
 |
-+------------------------------------------------------------------------------+
-| [31]: <Ending>                                                               |
-| [7][Block]< "{" { Stat @ } "}" >                                             |
-| [AST-INSTRUCTIONS]:                                                          |
-|   - ReopenObject()                                                           |
-|   - EndObject()                                                              |
-|   > Field(BlockStat::stats)                                                  |
-| [RETURN STACK]:                                                              |
-|   [11][26]: Block -> [24][Stat]<< !Block @ >>                                |
-|   [10][26]: Stat -> [14][IfContent]< "if" "cond" "then" Stat "else" Stat @ > |
-|   [1][0]: IfContent -> [23][Stat]< IfContent @ >                             |
-|   [0][0]: Stat -> [28][Module]< Stat @ >                                     |
-| [PREDECESSORS 30-30]: [30]                                                   |
-| [SUCCESORS 32-32]: [32]                                                      |
-+------------------------------------------------------------------------------+
++-------------------------------------------------------------------+
+| [20]: <Ending>                                                    |
+| [7][Block]< "{" { Stat @ } "}" >                                  |
+| [AST-INSTRUCTIONS]:                                               |
+|   - ReopenObject()                                                |
+|   - EndObject()                                                   |
+|   > Field(BlockStat::stats)                                       |
+| [RETURN STACK]:                                                   |
+|   [8][15]: Block -> [24][Stat]<< !Block @ >>                      |
+|   [7][15]: Stat -> [18][IfContent]<< !IfThenStat "else" Stat @ >> |
+|   [1][0]: IfContent -> [23][Stat]< IfContent @ >                  |
+|   [0][0]: Stat -> [28][Module]< Stat @ >                          |
+| [PREDECESSORS 19-19]: [19]                                        |
+| [SUCCESORS 21-21]: [21]                                           |
++-------------------------------------------------------------------+
 [0]
  |
  +
  |
 [0]
-++==============================================================================++
-|| [32]: {CLOSE_BRACE} }                                                        ||
-|| [8][Block]< "{" { Stat } "}" @ >                                             ||
-|| [AST-INSTRUCTIONS]:                                                          ||
-|| [RETURN STACK]:                                                              ||
-||   [11][26]: Block -> [24][Stat]<< !Block @ >>                                ||
-||   [10][26]: Stat -> [14][IfContent]< "if" "cond" "then" Stat "else" Stat @ > ||
-||   [1][0]: IfContent -> [23][Stat]< IfContent @ >                             ||
-||   [0][0]: Stat -> [28][Module]< Stat @ >                                     ||
-|| [PREDECESSORS 31-31]: [31]                                                   ||
-|| [SUCCESORS 33-33]: [33]                                                      ||
-++==============================================================================++
+++===================================================================++
+|| [21]: {CLOSE_BRACE} }                                             ||
+|| [8][Block]< "{" { Stat } "}" @ >                                  ||
+|| [AST-INSTRUCTIONS]:                                               ||
+|| [RETURN STACK]:                                                   ||
+||   [8][15]: Block -> [24][Stat]<< !Block @ >>                      ||
+||   [7][15]: Stat -> [18][IfContent]<< !IfThenStat "else" Stat @ >> ||
+||   [1][0]: IfContent -> [23][Stat]< IfContent @ >                  ||
+||   [0][0]: Stat -> [28][Module]< Stat @ >                          ||
+|| [PREDECESSORS 20-20]: [20]                                        ||
+|| [SUCCESORS 22-22]: [22]                                           ||
+++===================================================================++
 |
 +
 |
-+------------------------------------------------------------------------------+
-| [33]: <Ending>                                                               |
-| [24][Stat]<< !Block @ >>                                                     |
-| [AST-INSTRUCTIONS]:                                                          |
-|   - EndObject()                                                              |
-| [RETURN STACK]:                                                              |
-|   [10][26]: Stat -> [14][IfContent]< "if" "cond" "then" Stat "else" Stat @ > |
-|   [1][0]: IfContent -> [23][Stat]< IfContent @ >                             |
-|   [0][0]: Stat -> [28][Module]< Stat @ >                                     |
-| [PREDECESSORS 32-32]: [32]                                                   |
-| [SUCCESORS 34-34]: [34]                                                      |
-+------------------------------------------------------------------------------+
++-------------------------------------------------------------------+
+| [22]: <Ending>                                                    |
+| [24][Stat]<< !Block @ >>                                          |
+| [AST-INSTRUCTIONS]:                                               |
+|   - EndObject()                                                   |
+| [RETURN STACK]:                                                   |
+|   [7][15]: Stat -> [18][IfContent]<< !IfThenStat "else" Stat @ >> |
+|   [1][0]: IfContent -> [23][Stat]< IfContent @ >                  |
+|   [0][0]: Stat -> [28][Module]< Stat @ >                          |
+| [PREDECESSORS 21-21]: [21]                                        |
+| [SUCCESORS 23-23]: [23]                                           |
++-------------------------------------------------------------------+
 |
 +
 |
-+----------------------------------------------------------+
-| [34]: <Ending>                                           |
-| [14][IfContent]< "if" "cond" "then" Stat "else" Stat @ > |
-| [AST-INSTRUCTIONS]:                                      |
-|   - ReopenObject()                                       |
-|   - EndObject()                                          |
-|   > Field(IfContentCandidate::elseBranch)                |
-| [RETURN STACK]:                                          |
-|   [1][0]: IfContent -> [23][Stat]< IfContent @ >         |
-|   [0][0]: Stat -> [28][Module]< Stat @ >                 |
-| [PREDECESSORS 33-33]: [33]                               |
-| [SUCCESORS 35-35]: [35]                                  |
-+----------------------------------------------------------+
++--------------------------------------------------+
+| [23]: <Ending>                                   |
+| [18][IfContent]<< !IfThenStat "else" Stat @ >>   |
+| [AST-INSTRUCTIONS]:                              |
+|   - ReopenObject()                               |
+|   - EndObject()                                  |
+|   > Field(IfContentCandidate::elseBranch)        |
+| [RETURN STACK]:                                  |
+|   [1][0]: IfContent -> [23][Stat]< IfContent @ > |
+|   [0][0]: Stat -> [28][Module]< Stat @ >         |
+| [PREDECESSORS 22-22]: [22]                       |
+| [SUCCESORS 24-24]: [24]                          |
++--------------------------------------------------+
 |
 +
 |
 +------------------------------------------+
-| [35]: <Ending>                           |
+| [24]: <Ending>                           |
 | [23][Stat]< IfContent @ >                |
 | [AST-INSTRUCTIONS]:                      |
 |   - EndObject()                          |
 | [RETURN STACK]:                          |
 |   [0][0]: Stat -> [28][Module]< Stat @ > |
-| [PREDECESSORS 34-34]: [34]               |
-| [SUCCESORS 36-36]: [36]                  |
+| [PREDECESSORS 23-23]: [23]               |
+| [SUCCESORS 25-25]: [25]                  |
 +------------------------------------------+
 |
 +
 |
 +----------------------------+
-| [36]: <Ending>             |
+| [25]: <Ending>             |
 | [28][Module]< Stat @ >     |
 | [AST-INSTRUCTIONS]:        |
 |   - Field(IfStat::content) |
 |   - EndObject()            |
-| [PREDECESSORS 35-35]: [35] |
-| [SUCCESORS 37-37]: [37]    |
+| [PREDECESSORS 24-24]: [24] |
+| [SUCCESORS 26-26]: [26]    |
 +----------------------------+
 |
 +
 |
 +----------------------------+
-| [37]: <Ending>             |
+| [26]: <Ending>             |
 | [27][Module] END [ENDING]  |
 | [AST-INSTRUCTIONS]:        |
 |   - Field(Module::stat)    |
 |   - EndObject()            |
-| [PREDECESSORS 36-36]: [36] |
+| [PREDECESSORS 25-25]: [25] |
 +----------------------------+
