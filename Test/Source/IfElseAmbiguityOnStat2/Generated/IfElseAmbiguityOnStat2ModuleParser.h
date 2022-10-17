@@ -16,7 +16,8 @@ namespace ifelseambiguityonstat2
 	{
 		Do = 0,
 		Block = 4,
-		If = 9,
+		IfThenStat = 9,
+		If = 15,
 		Stat = 21,
 		Module = 26,
 	};

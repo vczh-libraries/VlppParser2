@@ -73,61 +73,6 @@
                     "first": {
                         "$ast": "SequenceSyntax",
                         "first": {
-                            "$ast": "SequenceSyntax",
-                            "first": {
-                                "$ast": "SequenceSyntax",
-                                "first": {
-                                    "$ast": "RefSyntax",
-                                    "field": "",
-                                    "literal": "\"if\"",
-                                    "refType": "Literal"
-                                },
-                                "second": {
-                                    "$ast": "RefSyntax",
-                                    "field": "",
-                                    "literal": "\"cond\"",
-                                    "refType": "Literal"
-                                }
-                            },
-                            "second": {
-                                "$ast": "RefSyntax",
-                                "field": "",
-                                "literal": "\"then\"",
-                                "refType": "Literal"
-                            }
-                        },
-                        "second": {
-                            "$ast": "RefSyntax",
-                            "field": "thenBranch",
-                            "literal": "Stat",
-                            "refType": "Id"
-                        }
-                    },
-                    "second": {
-                        "$ast": "RefSyntax",
-                        "field": "",
-                        "literal": "\"else\"",
-                        "refType": "Literal"
-                    }
-                },
-                "second": {
-                    "$ast": "RefSyntax",
-                    "field": "elseBranch",
-                    "literal": "Stat",
-                    "refType": "Id"
-                }
-            },
-            "type": "IfStat"
-        }, {
-            "$ast": "CreateClause",
-            "assignments": [],
-            "syntax": {
-                "$ast": "SequenceSyntax",
-                "first": {
-                    "$ast": "SequenceSyntax",
-                    "first": {
-                        "$ast": "SequenceSyntax",
-                        "first": {
                             "$ast": "RefSyntax",
                             "field": "",
                             "literal": "\"if\"",
@@ -155,6 +100,43 @@
                 }
             },
             "type": "IfStat"
+        }],
+        "name": "IfThenStat",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "UseSyntax",
+                        "name": "IfThenStat"
+                    },
+                    "second": {
+                        "$ast": "RefSyntax",
+                        "field": "",
+                        "literal": "\"else\"",
+                        "refType": "Literal"
+                    }
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "elseBranch",
+                    "literal": "Stat",
+                    "refType": "Id"
+                }
+            }
+        }, {
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "IfThenStat"
+            }
         }],
         "name": "If",
         "type": ""
