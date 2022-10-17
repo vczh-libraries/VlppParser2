@@ -105,6 +105,8 @@ BuildStepTree
 							{
 								if (ta->prefix > taFirstExec->insLists.c3)
 								{
+									// if the first ambiguous instruction is in successors of the branch trace
+									// execution from the current position to the end of the prefix
 									if (startTrace != taFirst || startIns < taFirstExec->insLists.c3)
 									{
 										auto step = GetExecutionStep(executionSteps.Allocate());
@@ -127,6 +129,7 @@ BuildStepTree
 								}
 								else
 								{
+									// execute instructions before the first ambiguous instruction
 									if (startTrace != taFirst || startIns < ta->prefix)
 									{
 										auto step = GetExecutionStep(executionSteps.Allocate());
@@ -150,14 +153,16 @@ BuildStepTree
 							// append a step from the end of TraceAmbiguity to ambiguityEnd
 							if (ta->postfix > taLastExec->insLists.c3)
 							{
+								// if the last ambiguous instruction is in predecessors of the merge trace
+								// execute the postfix
 								auto postfixTrace = GetTrace(taLast->predecessors.first);
 								auto postfixTraceExec = GetTraceExec(postfixTrace->traceExecRef);
 								{
 									auto step = GetExecutionStep(executionSteps.Allocate());
-									step->et_i.startTrace = startTrace->allocatedIndex;
-									step->et_i.startIns = startIns;
-									step->et_i.endTrace = taFirst->allocatedIndex;
-									step->et_i.endIns = ta->prefix - 1;
+									step->et_i.startTrace = postfixTrace->allocatedIndex;
+									step->et_i.startIns = postfixTraceExec->insLists.c3 - (ta->postfix - taLastExec->insLists.c3);
+									step->et_i.endTrace = postfixTrace->allocatedIndex;
+									step->et_i.endIns = postfixTraceExec->insLists.c3 - 1;
 									AppendStepLink(step, step, false, root, firstLeaf, currentStep, currentLeaf);
 								}
 
