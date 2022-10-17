@@ -310,7 +310,8 @@ TEST_FILE
 		&prefixmerge1_lri::ModuleParserRuleName,
 		&prefixmerge1_lri::ModuleParserStateLabel,
 		&prefixmerge1_lri::ModuleParserSwitchName,
-		L"TestCase_PrefixMerge"
+		L"TestCase_PrefixMerge",
+		L"TestCase_PrefixMerge_Ambiguous1"
 		);
 	TestParser<prefixmerge2_lrirequired::ModuleParser, prefixmerge2_lrirequired::json_visitor::TypeOrExprVisitor>(
 		L"PrefixMerge2_LriRequired",
@@ -320,7 +321,8 @@ TEST_FILE
 		&prefixmerge2_lrirequired::ModuleParserRuleName,
 		&prefixmerge2_lrirequired::ModuleParserStateLabel,
 		&prefixmerge2_lrirequired::ModuleParserSwitchName,
-		L"TestCase_PrefixMerge"
+		L"TestCase_PrefixMerge",
+		L"TestCase_PrefixMerge_Ambiguous1"
 		);
 	TestParser<prefixmerge3_lrinested::ModuleParser, prefixmerge3_lrinested::json_visitor::TypeOrExprVisitor>(
 		L"PrefixMerge3_LriNested",
@@ -331,6 +333,7 @@ TEST_FILE
 		&prefixmerge3_lrinested::ModuleParserStateLabel,
 		&prefixmerge3_lrinested::ModuleParserSwitchName,
 		L"TestCase_PrefixMerge",
+		L"TestCase_PrefixMerge_Ambiguous1",
 		L"TestCase_PrefixMerge_CtorExpr"
 		);
 	TestParser<prefixmerge4_lrimultiple::ModuleParser, prefixmerge4_lrimultiple::json_visitor::TypeOrExprVisitor>(
@@ -342,6 +345,7 @@ TEST_FILE
 		&prefixmerge4_lrimultiple::ModuleParserStateLabel,
 		&prefixmerge4_lrimultiple::ModuleParserSwitchName,
 		L"TestCase_PrefixMerge",
+		L"TestCase_PrefixMerge_Ambiguous1",
 		L"TestCase_PrefixMerge_CtorExpr"
 		);
 	TestParser<prefixmerge5_pm::ModuleParser, prefixmerge5_pm::json_visitor::TypeOrExprVisitor>(
@@ -353,6 +357,7 @@ TEST_FILE
 		&prefixmerge5_pm::ModuleParserStateLabel,
 		&prefixmerge5_pm::ModuleParserSwitchName,
 		L"TestCase_PrefixMerge",
+		L"TestCase_PrefixMerge_Ambiguous2",
 		L"TestCase_PrefixMerge_CtorExpr"
 		);
 	TestParser<prefixmerge6_pm2::ModuleParser, prefixmerge6_pm2::json_visitor::TypeOrExprVisitor>(
@@ -364,6 +369,7 @@ TEST_FILE
 		&prefixmerge6_pm2::ModuleParserStateLabel,
 		&prefixmerge6_pm2::ModuleParserSwitchName,
 		L"TestCase_PrefixMerge",
+		L"TestCase_PrefixMerge_Ambiguous2",
 		L"TestCase_PrefixMerge_CtorExpr",
 		L"TestCase_PrefixMerge_ThrowComma"
 		);
@@ -376,6 +382,7 @@ TEST_FILE
 		&prefixmerge7_pmswitch::ModuleParserStateLabel,
 		&prefixmerge7_pmswitch::ModuleParserSwitchName,
 		L"TestCase_PrefixMerge",
+		L"TestCase_PrefixMerge_Ambiguous1",
 		L"TestCase_PrefixMerge_CtorExpr",
 		L"TestCase_PrefixMerge_ThrowComma",
 		L"TestCase_PrefixMerge_Generic"
