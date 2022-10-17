@@ -437,18 +437,6 @@ CheckMergeTrace
 
 				{
 					// [CONDITION]
-					// the top create stack should be either empty or only contains one object
-					//if (traceExec->context.createStack != nullref)
-					//{
-					//	auto ieCSTop = GetInsExec_CreateStack(traceExec->context.createStack);
-					//	auto objRefLink = GetInsExec_ObjRefLink(ieCSTop->objectIds);
-					//	if (objRefLink->previous != nullref)
-					//	{
-					//		goto CHECK_OBJECTS_IN_TOP_CREATE_STACK;
-					//	}
-					//}
-
-					// [CONDITION]
 					// the first predecessor must has a EndObject instruction
 					// count the number of instructions after EndObject
 					// these instructions are the postfix
