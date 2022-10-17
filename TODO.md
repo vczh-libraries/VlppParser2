@@ -19,6 +19,7 @@
 
 ## Issues
 
+- When `XToResolve` is in another `XToResolve`, flatten them.
 - TODO in `CalculateRuleAndClauseTypes`.
 - TODO in `ValidateStructurePrefixMergeRuleVisitor`.
 - Test `X ::= X LRI ...`.
