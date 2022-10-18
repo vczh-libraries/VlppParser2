@@ -69,12 +69,17 @@ BuildStepTree
 							auto criticalExec = GetTraceExec(critical->traceExecRef);
 							if (criticalExec->ambiguityBegins != nullref)
 							{
-								auto taLink = GetTraceAmbiguityLink(criticalExec->ambiguityBegins);
-								CHECK_ERROR(taLink->previous == nullref, L"Not Implemented!");
-								auto ta = GetTraceAmbiguity(taLink->ambiguity);
-								if (ta->prefix < endIns)
+								auto taLinkRef = criticalExec->ambiguityBegins;
+								while (taLinkRef != nullref)
 								{
-									goto CONTINUE_SEARCHING;
+									auto taLink = GetTraceAmbiguityLink(taLinkRef);
+									taLinkRef = taLink->previous;
+
+									auto ta = GetTraceAmbiguity(taLink->ambiguity);
+									if (ta->prefix < endIns)
+									{
+										goto CONTINUE_SEARCHING;
+									}
 								}
 							}
 						}
