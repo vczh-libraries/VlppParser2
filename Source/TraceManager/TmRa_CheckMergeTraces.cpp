@@ -641,16 +641,25 @@ CategorizeTraceAmbiguities
 				{
 					auto forward = GetTrace(GetTraceExec(currentTrace->traceExecRef)->branchData.forwardTrace);
 					CHECK_ERROR(forward->traceExecRef > firstTraceExec, ERROR_MESSAGE_PREFIX L"Unexpected ambiguity resolving structure found.");
+
+					auto forwardExec = GetTraceExec(forward->traceExecRef);
 					if (forward->predecessors.first != forward->predecessors.last)
 					{
-						auto predecessorId = forward->predecessors.first;
-						while (predecessorId != nullref)
+						if (forwardExec->ambiguityDetected != nullref && forwardExec->ambiguityDetected != ta)
 						{
-							auto predecessor = GetTrace(predecessorId);
-							predecessorId = predecessor->predecessors.siblingNext;
-							MarkAmbiguityCoveredForward(predecessor, ta, firstTrace, firstTraceExec);
+							currentTrace = GetTrace(GetTraceAmbiguity(forwardExec->ambiguityDetected)->firstTrace);
 						}
-						return;
+						else
+						{
+							auto predecessorId = forward->predecessors.first;
+							while (predecessorId != nullref)
+							{
+								auto predecessor = GetTrace(predecessorId);
+								predecessorId = predecessor->predecessors.siblingNext;
+								MarkAmbiguityCoveredForward(predecessor, ta, firstTrace, firstTraceExec);
+							}
+							return;
+						}
 					}
 					else if (forward->predecessors.first == firstTrace)
 					{
