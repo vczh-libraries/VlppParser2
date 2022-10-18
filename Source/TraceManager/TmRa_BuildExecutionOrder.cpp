@@ -95,6 +95,41 @@ AppendStepsBeforeAmbiguity
 			}
 
 /***********************************************************************
+AppendStepsAfterAmbiguity
+***********************************************************************/
+
+			void TraceManager::AppendStepsAfterAmbiguity(Trace*& startTrace, vint32_t& startIns, TraceAmbiguity* ta, ExecutionStep*& root, ExecutionStep*& firstLeaf, ExecutionStep*& currentStep, ExecutionStep*& currentLeaf)
+			{
+				auto taLast = GetTrace(ta->lastTrace);
+				auto taLastExec = GetTraceExec(taLast->traceExecRef);
+				if (ta->postfix > taLastExec->insLists.c3)
+				{
+					// if the last ambiguous instruction is in predecessors of the merge trace
+					// execute the postfix
+					auto postfixTrace = GetTrace(taLast->predecessors.first);
+					auto postfixTraceExec = GetTraceExec(postfixTrace->traceExecRef);
+					{
+						auto step = GetExecutionStep(executionSteps.Allocate());
+						step->et_i.startTrace = postfixTrace->allocatedIndex;
+						step->et_i.startIns = postfixTraceExec->insLists.c3 - (ta->postfix - taLastExec->insLists.c3);
+						step->et_i.endTrace = postfixTrace->allocatedIndex;
+						step->et_i.endIns = postfixTraceExec->insLists.c3 - 1;
+						AppendStepLink(step, step, false, root, firstLeaf, currentStep, currentLeaf);
+					}
+
+					// fix startTrace, startIns
+					startTrace = taLast;
+					startIns = 0;
+				}
+				else
+				{
+					// fix startTrace, startIns
+					startTrace = taLast;
+					startIns = GetTraceExec(startTrace->traceExecRef)->insLists.c3 - ta->postfix;
+				}
+			}
+
+/***********************************************************************
 BuildStepTree
 ***********************************************************************/
 
@@ -178,31 +213,7 @@ BuildStepTree
 							}
 
 							// append a step from the end of TraceAmbiguity to ambiguityEnd
-							if (ta->postfix > taLastExec->insLists.c3)
-							{
-								// if the last ambiguous instruction is in predecessors of the merge trace
-								// execute the postfix
-								auto postfixTrace = GetTrace(taLast->predecessors.first);
-								auto postfixTraceExec = GetTraceExec(postfixTrace->traceExecRef);
-								{
-									auto step = GetExecutionStep(executionSteps.Allocate());
-									step->et_i.startTrace = postfixTrace->allocatedIndex;
-									step->et_i.startIns = postfixTraceExec->insLists.c3 - (ta->postfix - taLastExec->insLists.c3);
-									step->et_i.endTrace = postfixTrace->allocatedIndex;
-									step->et_i.endIns = postfixTraceExec->insLists.c3 - 1;
-									AppendStepLink(step, step, false, root, firstLeaf, currentStep, currentLeaf);
-								}
-
-								// fix startTrace, startIns
-								startTrace = taLast;
-								startIns = 0;
-							}
-							else
-							{
-								// fix startTrace, startIns
-								startTrace = taLast;
-								startIns = GetTraceExec(startTrace->traceExecRef)->insLists.c3 - ta->postfix;
-							}
+							AppendStepsAfterAmbiguity(startTrace, startIns, ta, root, firstLeaf, currentStep, currentLeaf);
 
 							// fix critical
 							critical = GetTrace(GetTraceExec(startTrace->traceExecRef)->branchData.forwardTrace);
