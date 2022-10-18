@@ -277,10 +277,10 @@ BuildStepTree
 									auto branchStep = currentStep;
 
 #define PASS_BRANCH_STEP_CONTEXT	root, firstLeaf, branchStep, currentLeaf
-									AppendStepsAfterAmbiguity(branchStartTrace, branchStartIns, ta, PASS_BRANCH_STEP_CONTEXT);
+									AppendStepsBeforeAmbiguity(branchStartTrace, branchStartIns, ta, PASS_BRANCH_STEP_CONTEXT);
 									AppendStepsForAmbiguity(ta, true, PASS_BRANCH_STEP_CONTEXT);
-									AppendStepsAfterAmbiguity(startTrace, startIns, ta, PASS_BRANCH_STEP_CONTEXT);
-									BuildStepTree(branchStartTrace, branchStartIns, endTrace, endIns, PASS_EXECUTION_STEP_CONTEXT);
+									AppendStepsAfterAmbiguity(branchStartTrace, branchStartIns, ta, PASS_BRANCH_STEP_CONTEXT);
+									BuildStepTree(branchStartTrace, branchStartIns, endTrace, endIns, PASS_BRANCH_STEP_CONTEXT);
 #undef PASS_BRANCH_STEP_CONTEXT
 								}
 
