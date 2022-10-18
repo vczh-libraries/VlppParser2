@@ -588,7 +588,6 @@ CheckMergeTraces
 
 					// check if a compatible TraceAmbiguity has been created in the same {trace, ins}
 					auto teFirst = GetTraceExec(GetTrace(ta->firstTrace)->traceExecRef);
-					auto teLast = GetTraceExec(GetTrace(ta->lastTrace)->traceExecRef);
 
 					if (teFirst->ambiguityBegins == nullref)
 					{
@@ -624,38 +623,16 @@ CheckMergeTraces
 						// override ambiguityBegins
 						taLinkToOverride->ambiguity = ta;
 
-						// override ambiguityEnds
-						taLinkRef = GetTraceExec(GetTrace(ta2->lastTrace)->traceExecRef)->ambiguityEnds;
-						while (taLinkRef != nullref)
-						{
-							auto taLink = GetTraceAmbiguityLink(taLinkRef);
-							taLinkRef = taLink->previous;
-
-							if (taLink->ambiguity == ta2)
-							{
-								taLink->ambiguity = ta;
-								break;
-							}
-						}
-
 						// override TraceAmbiguity
 						ta->overridedAmbiguity = ta2;
 					}
 					else
 					{
 						// otherwise, append itself to the list
-						{
-							auto taLink = GetTraceAmbiguityLink(traceAmbiguityLinks.Allocate());
-							taLink->ambiguity = ta;
-							taLink->previous = teFirst->ambiguityBegins;
-							teFirst->ambiguityBegins = taLink;
-						}
-						{
-							auto taLink = GetTraceAmbiguityLink(traceAmbiguityLinks.Allocate());
-							taLink->ambiguity = ta;
-							taLink->previous = teLast->ambiguityEnds;
-							teLast->ambiguityEnds = taLink;
-						}
+						auto taLink = GetTraceAmbiguityLink(traceAmbiguityLinks.Allocate());
+						taLink->ambiguity = ta;
+						taLink->previous = teFirst->ambiguityBegins;
+						teFirst->ambiguityBegins = taLink;
 					}
 				}
 #undef ERROR_MESSAGE_PREFIX

@@ -361,15 +361,8 @@ void RenderTrace(
 
 			if (traceExec->ambiguityBegins != nullref)
 			{
-				writer.WriteString(L"  AmbiguityBegin: [");
+				writer.WriteString(L"  AmbiguityBegins: [");
 				logTraceAmbiguityLink(traceExec->ambiguityBegins);
-				writer.WriteLine(L"]");
-			}
-
-			if (traceExec->ambiguityEnds != nullref)
-			{
-				writer.WriteString(L"  AmbiguityEnd: [");
-				logTraceAmbiguityLink(traceExec->ambiguityEnds);
 				writer.WriteLine(L"]");
 			}
 

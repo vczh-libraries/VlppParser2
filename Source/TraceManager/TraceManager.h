@@ -419,7 +419,6 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 				//   there is also a possibility when all ambiguities don't cover all successors
 				Ref<TraceAmbiguity>					ambiguityDetected;
 				Ref<TraceAmbiguityLink>				ambiguityBegins;
-				Ref<TraceAmbiguityLink>				ambiguityEnds;
 
 				// when this trace is a successor of a branch trace
 				// and such branch trace has non-empty ambiguityBegins
