@@ -664,7 +664,7 @@ CategorizeTraceAmbiguities
 					else if (forward->predecessors.first == firstTrace)
 					{
 						auto forwardExec = GetTraceExec(forward->traceExecRef);
-						CHECK_ERROR(forwardExec->ambiguityCoveredInForward == nullref, L"Unexpected ambiguity resolving structure found.");
+						CHECK_ERROR(forwardExec->ambiguityCoveredInForward == nullref || forwardExec->ambiguityCoveredInForward == ta, L"Unexpected ambiguity resolving structure found.");
 						forwardExec->ambiguityCoveredInForward = ta;
 						return;
 					}
