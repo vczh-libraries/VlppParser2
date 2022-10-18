@@ -652,6 +652,7 @@ TraceManager
 #if defined VCZH_MSVC && defined _DEBUG
 				void										DebugCheckTraceAmbiguitiesInSameTrace(Trace* trace, TraceExec* traceExec);
 #endif
+				void										MarkAmbiguityCoveredForward(Trace* currentTrace, TraceAmbiguity* ta, Trace* firstTrace, TraceExec* firstTraceExec);
 				void										CategorizeTraceAmbiguities(Trace* trace, TraceExec* traceExec);
 				void										CheckMergeTraces();
 

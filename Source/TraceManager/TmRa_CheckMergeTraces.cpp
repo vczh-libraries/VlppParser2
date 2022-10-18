@@ -634,10 +634,41 @@ DebugCheckTraceAmbiguityInSameTrace
 CategorizeTraceAmbiguities
 ***********************************************************************/
 
+			void TraceManager::MarkAmbiguityCoveredForward(Trace* currentTrace, TraceAmbiguity* ta, Trace* firstTrace, TraceExec* firstTraceExec)
+			{
+#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::MarkAmbiguityCoveredForward(Trace*, TraceAmbiguity*, Trace*, TraceExec*)#"
+				while (true)
+				{
+					auto forward = GetTrace(GetTraceExec(currentTrace->traceExecRef)->branchData.forwardTrace);
+					CHECK_ERROR(forward->traceExecRef > firstTraceExec, ERROR_MESSAGE_PREFIX L"Unexpected ambiguity resolving structure found.");
+					if (forward->predecessors.first != forward->predecessors.last)
+					{
+						auto predecessorId = forward->predecessors.first;
+						while (predecessorId != nullref)
+						{
+							auto predecessor = GetTrace(predecessorId);
+							predecessorId = predecessor->predecessors.siblingNext;
+							MarkAmbiguityCoveredForward(predecessor, ta, firstTrace, firstTraceExec);
+						}
+						return;
+					}
+					else if (forward->predecessors.first == firstTrace)
+					{
+						auto forwardExec = GetTraceExec(forward->traceExecRef);
+						CHECK_ERROR(forwardExec->ambiguityCoveredInForward == nullref, L"Unexpected ambiguity resolving structure found.");
+						forwardExec->ambiguityCoveredInForward = ta;
+						return;
+					}
+					else
+					{
+						currentTrace = GetTrace(forward->predecessors.first);
+					}
+				}
+#undef ERROR_MESSAGE_PREFIX
+			}
+
 			void TraceManager::CategorizeTraceAmbiguities(Trace* trace, TraceExec* traceExec)
 			{
-#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::CategorizeTraceAmbiguities(Trace*, TraceExec*)#"
-
 				// find all ambiguityBegins whose first ambiguity instruction is in successors
 				auto taLinkRef = traceExec->ambiguityBegins;
 				while (taLinkRef != nullref)
@@ -649,9 +680,9 @@ CategorizeTraceAmbiguities
 					if (ta->prefix >= traceExec->insLists.c3)
 					{
 						// mark ambiguityCoveredInForward
+						MarkAmbiguityCoveredForward(GetTrace(ta->lastTrace), ta, trace, traceExec);
 					}
 				}
-#undef ERROR_MESSAGE_PREFIX
 			}
 
 /***********************************************************************
