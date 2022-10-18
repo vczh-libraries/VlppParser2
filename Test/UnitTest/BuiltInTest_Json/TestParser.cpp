@@ -50,34 +50,29 @@ TEST_FILE
 		});
 #endif
 
-	List<WString> parserNames;
-	parserNames.Add(L"Calculator");
-	parserNames.Add(L"IfElseAmbiguity");
-	parserNames.Add(L"IfElsePriority");
-	parserNames.Add(L"GenericAmbiguity");
-	parserNames.Add(L"FeatureTest");
+	List<Folder> parserFolders;
+	Folder(GetTestParserInputPath(parserName)).GetFolders(parserFolders);
 
-	for (vint i = 0; i < parserNames.Count(); i++)
+	for (auto parserFolder : parserFolders)
 	{
-		parserName = parserNames[i];
+		Folder dirBaseline = parserFolder.GetFilePath() / L"Output";
+		if (!dirBaseline.Exists()) continue;
+
 		TEST_CATEGORY(L"Test JSON on Outputs: " + parserName)
 		{
-			Folder dirInput = FilePath(GetTestParserInputPath(parserName)) / L"Input";
-			FilePath dirBaseline = FilePath(GetTestParserInputPath(parserName)) / L"Output";
 			FilePath dirOutput = GetOutputDir(L"BuiltIn-Json");
 
-			List<File> inputFiles;
-			dirInput.GetFiles(inputFiles);
-			for (auto&& inputFile : inputFiles)
+			List<File> jsonFiles;
+			dirBaseline.GetFiles(jsonFiles);
+			for (auto&& jsonFile : jsonFiles)
 			{
-				caseName = inputFile.GetFilePath().GetName();
-				if (caseName.Length() < 4 || caseName.Right(4) != L".txt") continue;
-				caseName = caseName.Left(caseName.Length() - 4);
+				caseName = jsonFile.GetFilePath().GetName();
+				if (caseName.Length() < 5 || caseName.Right(5) != L".json") continue;
+				caseName = caseName.Left(caseName.Length() - 5);
 
 				TEST_CASE(caseName)
 				{
-					auto baselineJsonFile = File(dirBaseline / (caseName + L".json"));
-					auto baselineJson = baselineJsonFile.ReadAllTextByBom();
+					auto baselineJson = jsonFile.ReadAllTextByBom();
 					auto ast = parser.ParseJRoot(baselineJson);
 					auto astJson = PrintAstJson<json_visitor::AstVisitor>(ast);
 					File(dirOutput / (L"Output[" + parserName + L"_" + caseName + L"].json")).WriteAllText(astJson, true, BomEncoder::Utf8);
