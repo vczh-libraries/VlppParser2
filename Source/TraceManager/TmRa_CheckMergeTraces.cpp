@@ -540,6 +540,121 @@ LinkAmbiguityCriticalTrace
 			}
 
 /***********************************************************************
+CheckTraceAmbiguity
+***********************************************************************/
+
+			void TraceManager::CheckTraceAmbiguity(TraceAmbiguity* ta)
+			{
+#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::CheckTraceAmbiguity(TraceAmbiguity*)#"
+				auto teFirst = GetTraceExec(GetTrace(ta->firstTrace)->traceExecRef);
+
+				if (teFirst->ambiguityBegins == nullref)
+				{
+					LinkAmbiguityCriticalTrace(ta->firstTrace);
+				}
+
+				// search in all ambiguityBegins and try to find one has the same lastTrace
+				TraceAmbiguityLink* taLinkToOverride = nullptr;
+				auto taLinkRef = teFirst->ambiguityBegins;
+				while (taLinkRef != nullref)
+				{
+					auto taLink = GetTraceAmbiguityLink(taLinkRef);
+					taLinkRef = taLink->previous;
+
+					auto ta2 = GetTraceAmbiguity(taLink->ambiguity);
+					if (ta->lastTrace == ta2->lastTrace)
+					{
+						// if there is any, try to override this TraceAmbiguity
+						taLinkToOverride = taLink;
+						break;
+					}
+				}
+
+				if (taLinkToOverride)
+				{
+					// if there is a TraceAmbiguity to override
+					// ensure they are equivalent
+					auto ta2 = GetTraceAmbiguity(taLinkToOverride->ambiguity);
+#ifdef VCZH_DO_DEBUG_CHECK
+					CHECK_ERROR(ta2->prefix == ta->prefix, ERROR_MESSAGE_PREFIX L"Incompatible TraceAmbiguity has been assigned at the same place.");
+					CHECK_ERROR(ta2->postfix == ta->postfix, ERROR_MESSAGE_PREFIX L"Incompatible TraceAmbiguity has been assigned at the same place.");
+#endif
+					// override ambiguityBegins
+					taLinkToOverride->ambiguity = ta;
+
+					// override TraceAmbiguity
+					ta->overridedAmbiguity = ta2;
+				}
+				else
+				{
+					// otherwise, append itself to the list
+					auto taLink = GetTraceAmbiguityLink(traceAmbiguityLinks.Allocate());
+					taLink->ambiguity = ta;
+					taLink->previous = teFirst->ambiguityBegins;
+					teFirst->ambiguityBegins = taLink;
+				}
+#undef ERROR_MESSAGE_PREFIX
+			}
+
+/***********************************************************************
+DebugCheckTraceAmbiguityInSameTrace
+***********************************************************************/
+
+#ifdef VCZH_DO_DEBUG_CHECK
+			void TraceManager::DebugCheckTraceAmbiguitiesInSameTrace(Trace* trace, TraceExec* traceExec)
+			{
+#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::DebugCheckTraceAmbiguityInSameTrace(Trace*, TraceExec*)#"
+
+				// if there are multiple ambiguityBegins
+				// first ambiguity instructions must all be in successors
+				vint faiInBranch = 0;
+				vint faiInSuccessor = 0;
+				auto taLinkRef = traceExec->ambiguityBegins;
+				while (taLinkRef != nullref)
+				{
+					auto taLink = GetTraceAmbiguityLink(taLinkRef);
+					taLinkRef = taLink->previous;
+
+					auto ta = GetTraceAmbiguity(taLink->ambiguity);
+					if (ta->prefix >= traceExec->insLists.c3)
+					{
+						faiInSuccessor++;
+					}
+					else
+					{
+						faiInBranch++;
+					}
+				}
+				CHECK_ERROR((faiInBranch == 1 && faiInSuccessor == 0) || faiInBranch == 0, ERROR_MESSAGE_PREFIX L"Incompatible TraceAmbiguity has been assigned at the same place.");
+#undef ERROR_MESSAGE_PREFIX
+			}
+#endif
+
+/***********************************************************************
+CategorizeTraceAmbiguities
+***********************************************************************/
+
+			void TraceManager::CategorizeTraceAmbiguities(Trace* trace, TraceExec* traceExec)
+			{
+#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::CategorizeTraceAmbiguities(Trace*, TraceExec*)#"
+
+				// find all ambiguityBegins whose first ambiguity instruction is in successors
+				auto taLinkRef = traceExec->ambiguityBegins;
+				while (taLinkRef != nullref)
+				{
+					auto taLink = GetTraceAmbiguityLink(taLinkRef);
+					taLinkRef = taLink->previous;
+
+					auto ta = GetTraceAmbiguity(taLink->ambiguity);
+					if (ta->prefix >= traceExec->insLists.c3)
+					{
+						// mark ambiguityCoveredInForward
+					}
+				}
+#undef ERROR_MESSAGE_PREFIX
+			}
+
+/***********************************************************************
 CheckMergeTraces
 ***********************************************************************/
 
@@ -586,54 +701,8 @@ CheckMergeTraces
 					CHECK_ERROR(succeeded, ERROR_MESSAGE_PREFIX L"Failed to find ambiguous objects in a merge trace.");
 					traceExec->ambiguityDetected = ta;
 
-					// check if a compatible TraceAmbiguity has been created in the same {trace, ins}
-					auto teFirst = GetTraceExec(GetTrace(ta->firstTrace)->traceExecRef);
-
-					if (teFirst->ambiguityBegins == nullref)
-					{
-						LinkAmbiguityCriticalTrace(ta->firstTrace);
-					}
-
-					// search in all ambiguityBegins and try to find one has the same lastTrace
-					TraceAmbiguityLink* taLinkToOverride = nullptr;
-					auto taLinkRef = teFirst->ambiguityBegins;
-					while (taLinkRef != nullref)
-					{
-						auto taLink = GetTraceAmbiguityLink(taLinkRef);
-						taLinkRef = taLink->previous;
-
-						auto ta2 = GetTraceAmbiguity(taLink->ambiguity);
-						if (ta->lastTrace == ta2->lastTrace)
-						{
-							// if there is any, try to override this TraceAmbiguity
-							taLinkToOverride = taLink;
-							break;
-						}
-					}
-
-					if (taLinkToOverride)
-					{
-						// if there is a TraceAmbiguity to override
-						// ensure they are equivalent
-						auto ta2 = GetTraceAmbiguity(taLinkToOverride->ambiguity);
-#ifdef VCZH_DO_DEBUG_CHECK
-						CHECK_ERROR(ta2->prefix == ta->prefix, ERROR_MESSAGE_PREFIX L"Incompatible TraceAmbiguity has been assigned at the same place.");
-						CHECK_ERROR(ta2->postfix == ta->postfix, ERROR_MESSAGE_PREFIX L"Incompatible TraceAmbiguity has been assigned at the same place.");
-#endif
-						// override ambiguityBegins
-						taLinkToOverride->ambiguity = ta;
-
-						// override TraceAmbiguity
-						ta->overridedAmbiguity = ta2;
-					}
-					else
-					{
-						// otherwise, append itself to the list
-						auto taLink = GetTraceAmbiguityLink(traceAmbiguityLinks.Allocate());
-						taLink->ambiguity = ta;
-						taLink->previous = teFirst->ambiguityBegins;
-						teFirst->ambiguityBegins = taLink;
-					}
+					// check if existing TraceAmbiguity in firstTrace are compatible
+					CheckTraceAmbiguity(ta);
 				}
 
 				// find all branch trace with ambiguityBegins
@@ -648,45 +717,9 @@ CheckMergeTraces
 						if (traceExec->ambiguityBegins != nullref)
 						{
 #ifdef VCZH_DO_DEBUG_CHECK
-							{
-								// if there are multiple ambiguityBegins
-								// first ambiguity instructions must all be in successors
-								vint faiInBranch = 0;
-								vint faiInSuccessor = 0;
-								auto taLinkRef = traceExec->ambiguityBegins;
-								while (taLinkRef != nullref)
-								{
-									auto taLink = GetTraceAmbiguityLink(taLinkRef);
-									taLinkRef = taLink->previous;
-
-									auto ta = GetTraceAmbiguity(taLink->ambiguity);
-									if (ta->prefix >= traceExec->insLists.c3)
-									{
-										faiInSuccessor++;
-									}
-									else
-									{
-										faiInBranch++;
-									}
-								}
-								CHECK_ERROR((faiInBranch == 1 && faiInSuccessor == 0) || faiInBranch == 0, ERROR_MESSAGE_PREFIX L"Incompatible TraceAmbiguity has been assigned at the same place.");
-							}
+							DebugCheckTraceAmbiguitiesInSameTrace(trace, traceExec);
 #endif
-							{
-								// find all ambiguityBegins whose first ambiguity instruction is in successors
-								auto taLinkRef = traceExec->ambiguityBegins;
-								while (taLinkRef != nullref)
-								{
-									auto taLink = GetTraceAmbiguityLink(taLinkRef);
-									taLinkRef = taLink->previous;
-
-									auto ta = GetTraceAmbiguity(taLink->ambiguity);
-									if (ta->prefix >= traceExec->insLists.c3)
-									{
-										// mark ambiguityCoveredInForward
-									}
-								}
-							}
+							CategorizeTraceAmbiguities(trace, traceExec);
 						}
 					}
 				}

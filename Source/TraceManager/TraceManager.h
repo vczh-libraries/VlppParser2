@@ -648,6 +648,11 @@ TraceManager
 				bool										CheckAmbiguityResolution(TraceAmbiguity* ta, collections::List<Ref<InsExec_ObjRefLink>>& visitingIds, TCallback&& callback);
 				bool										CheckMergeTrace(TraceAmbiguity* ta, Trace* trace, TraceExec* traceExec, collections::List<Ref<InsExec_ObjRefLink>>& visitingIds);
 				void										LinkAmbiguityCriticalTrace(Ref<Trace> traceId);
+				void										CheckTraceAmbiguity(TraceAmbiguity* ta);
+#if defined VCZH_MSVC && defined _DEBUG
+				void										DebugCheckTraceAmbiguitiesInSameTrace(Trace* trace, TraceExec* traceExec);
+#endif
+				void										CategorizeTraceAmbiguities(Trace* trace, TraceExec* traceExec);
 				void										CheckMergeTraces();
 
 				// phase: BuildExecutionOrder
