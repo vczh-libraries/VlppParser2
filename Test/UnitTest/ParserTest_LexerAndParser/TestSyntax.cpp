@@ -56,7 +56,7 @@ namespace TestSyntax_TestObjects
 		List<RegexToken> tokens;
 		lexer.Parse(input).ReadToEnd(tokens, CalculatorTokenDeleter);
 
-		TraceManager tm(executable, nullptr);
+		TraceManager tm(executable, nullptr, 16);
 		tm.Initialize(executable.ruleStartStates[metadata.ruleNames.IndexOf(L"Module")]);
 		for (vint32_t i = 0; i < tokens.Count(); i++)
 		{
@@ -66,15 +66,15 @@ namespace TestSyntax_TestObjects
 			TEST_ASSERT(tm.concurrentCount > 0);
 		}
 
-		tm.EndOfInput();
-		auto rootTrace = tm.PrepareTraceRoute();
+		bool ambiguityInvolved = false;
+		auto rootTrace = tm.EndOfInput(ambiguityInvolved);
 
 		LogTraceManager(
 			L"Calculator",
 			caseName,
 			executable,
 			tm,
-			rootTrace,
+			TraceProcessingPhase::EndOfInput,
 			tokens,
 			[](vint32_t type) { return WString::Unmanaged(CalculatorTypeName((CalculatorClasses)type)); },
 			[](vint32_t field) { return WString::Unmanaged(CalculatorFieldName((CalculatorFields)field)); },
@@ -84,6 +84,7 @@ namespace TestSyntax_TestObjects
 			[&](vint32_t switchId) { return metadata.switchNames[switchId]; }
 			);
 
+		TEST_ASSERT(!ambiguityInvolved);
 		TEST_ASSERT(tm.concurrentCount == 1);
 		TEST_ASSERT(executable.states[tm.concurrentTraces->Get(0)->state].endingState);
 
@@ -91,14 +92,13 @@ namespace TestSyntax_TestObjects
 			L"Calculator",
 			caseName,
 			tm,
-			rootTrace,
 			tokens,
 			[](vint32_t type) { return WString::Unmanaged(CalculatorTypeName((CalculatorClasses)type)); },
 			[](vint32_t field) { return WString::Unmanaged(CalculatorFieldName((CalculatorFields)field)); },
 			[](vint32_t token) { return WString::Unmanaged(CalculatorTokenId((CalculatorTokens)token)); }
 			);
 		CalculatorAstInsReceiver receiver;
-		auto ast = tm.ExecuteTrace(rootTrace, receiver, tokens);
+		auto ast = tm.ExecuteTrace(receiver, tokens);
 		auto astModule = ast.Cast<Module>();
 		TEST_ASSERT(astModule);
 

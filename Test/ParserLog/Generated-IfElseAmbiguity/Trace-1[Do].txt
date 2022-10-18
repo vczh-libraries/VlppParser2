@@ -1,0 +1,80 @@
+﻿================ EXECUTION STEPS ================
+[0]: 0@0 - 5@1
+
+==================== TRACES =====================
+
++----------------------+
+| [0]: <Start>         |
+| [22][Module] BEGIN   |
+| [AST-INSTRUCTIONS]:  |
+| [SUCCESORS 1-1]: [1] |
++----------------------+
+[0]
+ |
+ +
+ |
+[0]
+++==========================================++
+|| [1]: {DO} do                             ||
+|| [3][Do]< "do" @ ";" >                    ||
+|| [AST-INSTRUCTIONS]:                      ||
+||   - BeginObject(Module)                  ||
+||   - DelayFieldAssignment()               ||
+||   - BeginObject(DoStat)                  ||
+|| [RETURN STACK]:                          ||
+||   [1][0]: Do -> [21][Stat]<< !Do @ >>    ||
+||   [0][0]: Stat -> [24][Module]< Stat @ > ||
+|| [PREDECESSORS 0-0]: [0]                  ||
+|| [SUCCESORS 2-2]: [2]                     ||
+++==========================================++
+[0]
+ |
+ +
+ |
+[0]
+++==========================================++
+|| [2]: {SEMICOLON} ;                       ||
+|| [2][Do]< "do" ";" @ >                    ||
+|| [AST-INSTRUCTIONS]:                      ||
+|| [RETURN STACK]:                          ||
+||   [1][0]: Do -> [21][Stat]<< !Do @ >>    ||
+||   [0][0]: Stat -> [24][Module]< Stat @ > ||
+|| [PREDECESSORS 1-1]: [1]                  ||
+|| [SUCCESORS 3-3]: [3]                     ||
+++==========================================++
+|
++
+|
++------------------------------------------+
+| [3]: <Ending>                            |
+| [21][Stat]<< !Do @ >>                    |
+| [AST-INSTRUCTIONS]:                      |
+|   - EndObject()                          |
+| [RETURN STACK]:                          |
+|   [0][0]: Stat -> [24][Module]< Stat @ > |
+| [PREDECESSORS 2-2]: [2]                  |
+| [SUCCESORS 4-4]: [4]                     |
++------------------------------------------+
+|
++
+|
++-------------------------+
+| [4]: <Ending>           |
+| [24][Module]< Stat @ >  |
+| [AST-INSTRUCTIONS]:     |
+|   - ReopenObject()      |
+|   - EndObject()         |
+| [PREDECESSORS 3-3]: [3] |
+| [SUCCESORS 5-5]: [5]    |
++-------------------------+
+|
++
+|
++---------------------------+
+| [5]: <Ending>             |
+| [23][Module] END [ENDING] |
+| [AST-INSTRUCTIONS]:       |
+|   - Field(Module::stat)   |
+|   - EndObject()           |
+| [PREDECESSORS 4-4]: [4]   |
++---------------------------+

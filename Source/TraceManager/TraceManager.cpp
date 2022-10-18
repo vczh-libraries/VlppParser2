@@ -40,23 +40,23 @@ TraceManager
 			{
 				auto errorMessage = L"vl::glr::automaton::TraceManager::AddTraceToCollection(Trace*, Trace*, TraceCollection(Trace::*))#Multiple to multiple predecessor-successor relationship is not supported.";
 				auto&& elementCollection = element->*collection;
-				if (elementCollection.siblingNext == -1 && elementCollection.siblingPrev == -1)
+				if (elementCollection.siblingNext == nullref && elementCollection.siblingPrev == nullref)
 				{
 					auto&& ownerCollection = owner->*collection;
-					if (ownerCollection.first == -1)
+					if (ownerCollection.first == nullref)
 					{
-						ownerCollection.first = element->allocatedIndex;
-						ownerCollection.last = element->allocatedIndex;
+						ownerCollection.first = element;
+						ownerCollection.last = element;
 					}
 					else
 					{
 						auto sibling = GetTrace(ownerCollection.last);
 						auto&& siblingCollection = sibling->*collection;
-						CHECK_ERROR(siblingCollection.siblingNext == -1, errorMessage);
+						CHECK_ERROR(siblingCollection.siblingNext == nullref, errorMessage);
 
-						siblingCollection.siblingNext = element->allocatedIndex;
-						elementCollection.siblingPrev = sibling->allocatedIndex;
-						ownerCollection.last = element->allocatedIndex;
+						siblingCollection.siblingNext = element;
+						elementCollection.siblingPrev = sibling;
+						ownerCollection.last = element;
 					}
 				}
 				else if (collection == &Trace::predecessors)
@@ -94,8 +94,8 @@ TraceManager
 
 					// clear sibilingPrev and sibilingNext because it belongs to no collection at this moment
 					// keep first and last so that it still knows its predecessors
-					copiedElement->predecessors.siblingPrev = -1;
-					copiedElement->predecessors.siblingNext = -1;
+					copiedElement->predecessors.siblingPrev = nullref;
+					copiedElement->predecessors.siblingNext = nullref;
 
 					// now it becomes
 					//                B(ending) -+
@@ -108,22 +108,36 @@ TraceManager
 				else
 				{
 					// Trace::predecessors is filled by Input
-					// Trace::successors is filled by PrepareTraceRoute
+					// Trace::successors is filled by EndOfInput
 					// if Input and EndOfInput succeeded
 					// there should not be any multiple to multiple relationship
 					CHECK_FAIL(errorMessage);
 				}
 			}
 
-			TraceManager::TraceManager(Executable& _executable, const ITypeCallback* _typeCallback)
+			TraceManager::TraceManager(Executable& _executable, const ITypeCallback* _typeCallback, vint blockSize)
 				: executable(_executable)
 				, typeCallback(_typeCallback)
+				, returnStacks(blockSize)
+				, traces(blockSize)
+				, competitions(blockSize)
+				, attendingCompetitions(blockSize)
+				, switches(blockSize)
+				, traceExecs(blockSize)
+				, insExec_Objects(blockSize)
+				, insExec_InsRefLinks(blockSize)
+				, insExec_ObjRefLinks(blockSize)
+				, insExec_ObjectStacks(blockSize)
+				, insExec_CreateStacks(blockSize)
+				, traceAmbiguities(blockSize)
+				, traceAmbiguityLinks(blockSize)
+				, executionSteps(blockSize)
 			{
 				maxSwitchValues = 8 * sizeof(static_cast<Switches*>(nullptr)->values);
 				CHECK_ERROR(executable.switchDefaultValues.Count() <= maxSwitchValues, L"vl::glr::automaton::TraceManager::TraceManager(Executable&, const ITypeCallback*)#Too many switch defined in the parser.");
 			}
 
-			ReturnStack* TraceManager::GetReturnStack(vint32_t index)
+			ReturnStack* TraceManager::GetReturnStack(Ref<ReturnStack> index)
 			{
 				return returnStacks.Get(index);
 			}
@@ -133,7 +147,7 @@ TraceManager
 				return returnStacks.Get(returnStacks.Allocate());
 			}
 
-			Trace* TraceManager::GetTrace(vint32_t index)
+			Trace* TraceManager::GetTrace(Ref<Trace> index)
 			{
 				return traces.Get(index);
 			}
@@ -143,7 +157,7 @@ TraceManager
 				return traces.Get(traces.Allocate());
 			}
 
-			Competition* TraceManager::GetCompetition(vint32_t index)
+			Competition* TraceManager::GetCompetition(Ref<Competition> index)
 			{
 				return competitions.Get(index);
 			}
@@ -153,7 +167,7 @@ TraceManager
 				return competitions.Get(competitions.Allocate());
 			}
 
-			AttendingCompetitions* TraceManager::GetAttendingCompetitions(vint32_t index)
+			AttendingCompetitions* TraceManager::GetAttendingCompetitions(Ref<AttendingCompetitions> index)
 			{
 				return attendingCompetitions.Get(index);
 			}
@@ -163,66 +177,68 @@ TraceManager
 				return attendingCompetitions.Get(attendingCompetitions.Allocate());
 			}
 
-			Switches* TraceManager::GetSwitches(vint32_t index)
+			Switches* TraceManager::GetSwitches(Ref<Switches> index)
 			{
 				return switches.Get(index);
 			}
 
-			void TraceManager::Initialize(vint32_t startState)
+			InsExec* TraceManager::GetInsExec(vint32_t index)
 			{
-				state = TraceManagerState::WaitingForInput;
+				return &insExecs[index];
+			}
+			
+			InsExec_Object* TraceManager::GetInsExec_Object(Ref<InsExec_Object> index)
+			{
+				return insExec_Objects.Get(index);
+			}
 
-				returnStacks.Clear();
-				traces.Clear();
-				competitions.Clear();
-				attendingCompetitions.Clear();
-				switches.Clear();
+			InsExec_InsRefLink* TraceManager::GetInsExec_InsRefLink(Ref<InsExec_InsRefLink> index)
+			{
+				return insExec_InsRefLinks.Get(index);
+			}
 
-				traces1.Clear();
-				traces2.Clear();
-				concurrentTraces = &traces1;
-				backupTraces = &traces2;
+			InsExec_ObjRefLink* TraceManager::GetInsExec_ObjRefLink(Ref<InsExec_ObjRefLink> index)
+			{
+				return insExec_ObjRefLinks.Get(index);
+			}
 
-				activeCompetitions = -1;
-				initialReturnStackCache = {};
+			InsExec_ObjectStack* TraceManager::GetInsExec_ObjectStack(Ref<InsExec_ObjectStack> index)
+			{
+				return insExec_ObjectStacks.Get(index);
+			}
 
-				if (executable.switchDefaultValues.Count() == 0)
-				{
-					rootSwitchValues = -1;
-				}
-				else
-				{
-					rootSwitchValues = switches.Allocate();
-					auto sv = switches.Get(rootSwitchValues);
-					for (vint32_t i = 0; i < executable.switchDefaultValues.Count(); i++)
-					{
-						if (executable.switchDefaultValues[i])
-						{
-							vint32_t row = i / 8 * sizeof(vuint32_t);
-							vint32_t column = i % 8 * sizeof(vuint32_t);
-							vuint32_t& value = sv->values[row];
-							value |= (vuint32_t)1 << column;
-						}
-					}
-				}
+			InsExec_CreateStack* TraceManager::GetInsExec_CreateStack(Ref<InsExec_CreateStack> index)
+			{
+				return insExec_CreateStacks.Get(index);
+			}
 
-				temporaryConditionStack.Clear();
-				temporaryConditionStackSize = 0;
+			TraceExec* TraceManager::GetTraceExec(Ref<TraceExec> index)
+			{
+				return traceExecs.Get(index);
+			}
 
-				initialTrace = AllocateTrace();
-				initialTrace->state = startState;
-				initialTrace->switchValues = rootSwitchValues;
-				concurrentCount = 1;
-				concurrentTraces->Add(initialTrace);
+			TraceAmbiguity* TraceManager::GetTraceAmbiguity(Ref<TraceAmbiguity> index)
+			{
+				return traceAmbiguities.Get(index);
+			}
+
+			TraceAmbiguityLink* TraceManager::GetTraceAmbiguityLink(Ref<TraceAmbiguityLink> index)
+			{
+				return traceAmbiguityLinks.Get(index);
+			}
+
+			ExecutionStep* TraceManager::GetExecutionStep(Ref<ExecutionStep> index)
+			{
+				return executionSteps.Get(index);
 			}
 
 /***********************************************************************
 CreateExecutor
 ***********************************************************************/
 
-			Ptr<IExecutor> CreateExecutor(Executable& executable, const IExecutor::ITypeCallback* typeCallback)
+			Ptr<IExecutor> CreateExecutor(Executable& executable, const IExecutor::ITypeCallback* typeCallback, vint blockSize)
 			{
-				return new TraceManager(executable, typeCallback);
+				return new TraceManager(executable, typeCallback, blockSize);
 			}
 		}
 	}

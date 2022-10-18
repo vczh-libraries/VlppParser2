@@ -1,0 +1,91 @@
+﻿================ EXECUTION STEPS ================
+[0]: 0@0 - 5@1
+
+==================== TRACES =====================
+
++----------------------+
+| [0]: <Start>         |
+| [151][Module] BEGIN  |
+| [AST-INSTRUCTIONS]:  |
+| [SUCCESORS 1-1]: [1] |
++----------------------+
+[0]
+ |
+ +
+ |
+[0]
+++=============================================================================================++
+|| [1]: {NESTED_POSITIVE_OPTIONAL} nested_positive_optional                                    ||
+|| [62][NestedPositiveOptional]< "nested_positive_optional" @ +[ PositiveNO2 ] Plus { Plus } > ||
+|| [HOLDING COMPETITION]:                                                                      ||
+||   [2][HOLDING][RULE: 7][CLAUSE: 0]                                                          ||
+||   [1][HOLDING][RULE: 10][CLAUSE: 0]                                                         ||
+||   [0][HOLDING][RULE: 13][CLAUSE: 0]                                                         ||
+|| [AST-INSTRUCTIONS]:                                                                         ||
+||   - DelayFieldAssignment()                                                                  ||
+||   - BeginObject(NestedOptionalFeature)                                                      ||
+|| [RETURN STACK]:                                                                             ||
+||   [0][0]: NestedPositiveOptional -> [174][Module]<< !NestedPositiveOptional @ >>            ||
+|| [PREDECESSORS 0-0]: [0]                                                                     ||
+|| [SUCCESORS 2-2]: [2]                                                                        ||
+++=============================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++===============================================================================================================++
+|| [2]: {PLUS} +                                                                                                 ||
+|| [2][Plus]< "+" @ >                                                                                            ||
+|| [AST-INSTRUCTIONS]:                                                                                           ||
+||   - BeginObject(Plus)                                                                                         ||
+|| [RETURN STACK]:                                                                                               ||
+||   [1][1]: Plus -> [60][NestedPositiveOptional]< "nested_positive_optional" +[ PositiveNO2 ] Plus @ { Plus } > ||
+||   [0][0]: NestedPositiveOptional -> [174][Module]<< !NestedPositiveOptional @ >>                              ||
+|| [CARRIED COMPETITION]:                                                                                        ||
+||   [0]: competition[0][RS: 0] low                                                                              ||
+|| [PREDECESSORS 1-1]: [1]                                                                                       ||
+|| [SUCCESORS 3-3]: [3]                                                                                          ||
+++===============================================================================================================++
+|
++
+|
++---------------------------------------------------------------------------------------------+
+| [3]: <Ending>                                                                               |
+| [60][NestedPositiveOptional]< "nested_positive_optional" +[ PositiveNO2 ] Plus @ { Plus } > |
+| [AST-INSTRUCTIONS]:                                                                         |
+|   - EndObject()                                                                             |
+|   > Field(NestedOptionalFeature::tail3)                                                     |
+| [RETURN STACK]:                                                                             |
+|   [0][0]: NestedPositiveOptional -> [174][Module]<< !NestedPositiveOptional @ >>            |
+| [CARRIED COMPETITION]:                                                                      |
+|   [0]: competition[0][RS: 0] low                                                            |
+| [PREDECESSORS 2-2]: [2]                                                                     |
+| [SUCCESORS 4-4]: [4]                                                                        |
++---------------------------------------------------------------------------------------------+
+|
++
+|
++----------------------------------------------+
+| [4]: <Ending>                                |
+| [174][Module]<< !NestedPositiveOptional @ >> |
+| [AST-INSTRUCTIONS]:                          |
+|   - EndObject()                              |
+| [CARRIED COMPETITION]:                       |
+|   [0]: competition[0][RS: 0] low             |
+| [PREDECESSORS 3-3]: [3]                      |
+| [SUCCESORS 5-5]: [5]                         |
++----------------------------------------------+
+|
++
+|
++----------------------------------+
+| [5]: <Ending>                    |
+| [152][Module] END [ENDING]       |
+| [AST-INSTRUCTIONS]:              |
+|   - ReopenObject()               |
+|   - EndObject()                  |
+| [CARRIED COMPETITION]:           |
+|   [0]: competition[0][RS: 0] low |
+| [PREDECESSORS 4-4]: [4]          |
++----------------------------------+

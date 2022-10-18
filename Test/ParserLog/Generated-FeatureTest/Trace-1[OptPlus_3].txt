@@ -1,0 +1,141 @@
+﻿================ EXECUTION STEPS ================
+[0]: 0@0 - 14@1
+
+==================== TRACES =====================
+
++----------------------+
+| [0]: <Start>         |
+| [151][Module] BEGIN  |
+| [AST-INSTRUCTIONS]:  |
+| [SUCCESORS 1-1]: [1] |
++----------------------+
+[0]
+ |
+ +
+ |
+[0]
+++========================================================================++
+|| [1]: {POSITIVE_OPTIONAL} positive_optional                             ||
+|| [20][PositiveOptional]< "positive_optional" @ +[ Plus ] "+" { Plus } > ||
+|| [HOLDING COMPETITION]:                                                 ||
+||   [0][HIGH PRIORITY WIN][RULE: 4][CLAUSE: 0]                           ||
+|| [AST-INSTRUCTIONS]:                                                    ||
+||   - DelayFieldAssignment()                                             ||
+||   - BeginObject(OptionalFeature)                                       ||
+|| [RETURN STACK]:                                                        ||
+||   [0][0]: PositiveOptional -> [176][Module]<< !PositiveOptional @ >>   ||
+|| [PREDECESSORS 0-0]: [0]                                                ||
+|| [SUCCESORS 2-2]: [2]                                                   ||
+++========================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++==========================================================================================++
+|| [2]: {PLUS} +                                                                            ||
+|| [2][Plus]< "+" @ >                                                                       ||
+|| [AST-INSTRUCTIONS]:                                                                      ||
+||   - BeginObject(Plus)                                                                    ||
+|| [RETURN STACK]:                                                                          ||
+||   [1][1]: Plus -> [17][PositiveOptional]< "positive_optional" +[ Plus @ ] "+" { Plus } > ||
+||   [0][0]: PositiveOptional -> [176][Module]<< !PositiveOptional @ >>                     ||
+|| [CARRIED COMPETITION]:                                                                   ||
+||   [0]: competition[0][RS: 0] high                                                        ||
+|| [PREDECESSORS 1-1]: [1]                                                                  ||
+|| [SUCCESORS 3-3]: [3]                                                                     ||
+++==========================================================================================++
+|
++
+|
++------------------------------------------------------------------------+
+| [3]: <Ending>                                                          |
+| [17][PositiveOptional]< "positive_optional" +[ Plus @ ] "+" { Plus } > |
+| [AST-INSTRUCTIONS]:                                                    |
+|   - EndObject()                                                        |
+|   > Field(OptionalFeature::optional)                                   |
+| [RETURN STACK]:                                                        |
+|   [0][0]: PositiveOptional -> [176][Module]<< !PositiveOptional @ >>   |
+| [CARRIED COMPETITION]:                                                 |
+|   [0]: competition[0][RS: 0] high                                      |
+| [PREDECESSORS 2-2]: [2]                                                |
+| [SUCCESORS 6-6]: [6]                                                   |
++------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++========================================================================++
+|| [6]: {PLUS} +                                                          ||
+|| [18][PositiveOptional]< "positive_optional" +[ Plus ] "+" @ { Plus } > ||
+|| [AST-INSTRUCTIONS]:                                                    ||
+|| [RETURN STACK]:                                                        ||
+||   [0][0]: PositiveOptional -> [176][Module]<< !PositiveOptional @ >>   ||
+|| [CARRIED COMPETITION]:                                                 ||
+||   [0]: competition[0][RS: 0] high                                      ||
+|| [PREDECESSORS 3-3]: [3]                                                ||
+|| [SUCCESORS 11-11]: [11]                                                ||
+++========================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++==========================================================================================++
+|| [11]: {PLUS} +                                                                           ||
+|| [2][Plus]< "+" @ >                                                                       ||
+|| [AST-INSTRUCTIONS]:                                                                      ||
+||   - BeginObject(Plus)                                                                    ||
+|| [RETURN STACK]:                                                                          ||
+||   [3][6]: Plus -> [19][PositiveOptional]< "positive_optional" +[ Plus ] "+" { Plus @ } > ||
+||   [0][0]: PositiveOptional -> [176][Module]<< !PositiveOptional @ >>                     ||
+|| [CARRIED COMPETITION]:                                                                   ||
+||   [0]: competition[0][RS: 0] high                                                        ||
+|| [PREDECESSORS 6-6]: [6]                                                                  ||
+|| [SUCCESORS 12-12]: [12]                                                                  ||
+++==========================================================================================++
+|
++
+|
++------------------------------------------------------------------------+
+| [12]: <Ending>                                                         |
+| [19][PositiveOptional]< "positive_optional" +[ Plus ] "+" { Plus @ } > |
+| [AST-INSTRUCTIONS]:                                                    |
+|   - EndObject()                                                        |
+|   > Field(OptionalFeature::loop)                                       |
+| [RETURN STACK]:                                                        |
+|   [0][0]: PositiveOptional -> [176][Module]<< !PositiveOptional @ >>   |
+| [CARRIED COMPETITION]:                                                 |
+|   [0]: competition[0][RS: 0] high                                      |
+| [PREDECESSORS 11-11]: [11]                                             |
+| [SUCCESORS 13-13]: [13]                                                |
++------------------------------------------------------------------------+
+|
++
+|
++----------------------------------------+
+| [13]: <Ending>                         |
+| [176][Module]<< !PositiveOptional @ >> |
+| [AST-INSTRUCTIONS]:                    |
+|   - EnumItem(1)                        |
+|   - Field(OptionalFeature::priority)   |
+|   - EndObject()                        |
+| [CARRIED COMPETITION]:                 |
+|   [0]: competition[0][RS: 0] high      |
+| [PREDECESSORS 12-12]: [12]             |
+| [SUCCESORS 14-14]: [14]                |
++----------------------------------------+
+|
++
+|
++-----------------------------------+
+| [14]: <Ending>                    |
+| [152][Module] END [ENDING]        |
+| [AST-INSTRUCTIONS]:               |
+|   - ReopenObject()                |
+|   - EndObject()                   |
+| [CARRIED COMPETITION]:            |
+|   [0]: competition[0][RS: 0] high |
+| [PREDECESSORS 13-13]: [13]        |
++-----------------------------------+

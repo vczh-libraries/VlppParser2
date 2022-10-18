@@ -13,8 +13,8 @@ TEST_FILE
 	WString caseName;
 
 #if !defined _DEBUG || defined NDEBUG
-	parser.OnEndOfInput.Add(
-		[&](EndOfInputArgs& args)
+	parser.OnTraceProcessing.Add(
+		[&](TraceProcessingArgs& args)
 		{
 			auto& traceManager = *dynamic_cast<TraceManager*>(args.executor);
 			LogTraceManager(
@@ -22,7 +22,7 @@ TEST_FILE
 				L"DarkSkin_" + caseName,
 				args.executable,
 				traceManager,
-				args.rootTrace,
+				args.phase,
 				args.tokens,
 				[=](vint32_t type) { return WString::Unmanaged(XmlTypeName((XmlClasses)type)); },
 				[=](vint32_t field) { return WString::Unmanaged(XmlFieldName((XmlFields)field)); },
@@ -31,20 +31,21 @@ TEST_FILE
 				[=](vint32_t state) { return WString::Unmanaged(ParserStateLabel(state)); },
 				[=](vint32_t switchId) { return WString::Unmanaged(ParserSwitchName(switchId)); }
 			);
-
-			if (traceManager.concurrentCount == 1)
-			{
-				LogTraceExecution(
-					L"BuiltIn-Xml",
-					L"DarkSkin_" + caseName,
-					[=](vint32_t type) { return WString::Unmanaged(XmlTypeName((XmlClasses)type)); },
-					[=](vint32_t field) { return WString::Unmanaged(XmlFieldName((XmlFields)field)); },
-					[=](vint32_t token) { return WString::Unmanaged(XmlTokenId((XmlTokens)token)); },
-					[&](IAstInsReceiver& receiver)
-					{
-						traceManager.ExecuteTrace(args.rootTrace, receiver, args.tokens);
-					});
-			}
+		});
+	parser.OnReadyToExecute.Add(
+		[&](ReadyToExecuteArgs& args)
+		{
+			auto& traceManager = *dynamic_cast<TraceManager*>(args.executor);
+			LogTraceExecution(
+				L"BuiltIn-Xml",
+				L"DarkSkin_" + caseName,
+				[=](vint32_t type) { return WString::Unmanaged(XmlTypeName((XmlClasses)type)); },
+				[=](vint32_t field) { return WString::Unmanaged(XmlFieldName((XmlFields)field)); },
+				[=](vint32_t token) { return WString::Unmanaged(XmlTokenId((XmlTokens)token)); },
+				[&](IAstInsReceiver& receiver)
+				{
+					traceManager.ExecuteTrace(receiver, args.tokens);
+				});
 		});
 #endif
 

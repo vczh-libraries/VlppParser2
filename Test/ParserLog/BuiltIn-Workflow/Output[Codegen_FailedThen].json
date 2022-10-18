@@ -1,0 +1,127 @@
+﻿{
+    "$ast": "Module",
+    "declarations": [{
+        "$ast": "FunctionDeclaration",
+        "attributes": [],
+        "name": "GetValue",
+        "anonymity": "Named",
+        "arguments": [{
+            "$ast": "FunctionArgument",
+            "attributes": [],
+            "name": "value",
+            "type": {
+                "$ast": "SharedPointerType",
+                "element": {
+                    "$ast": "ReferenceType",
+                    "name": "ObservableValue"
+                }
+            }
+        }, {
+            "$ast": "FunctionArgument",
+            "attributes": [],
+            "name": "increase",
+            "type": {
+                "$ast": "PredefinedType",
+                "name": "Int"
+            }
+        }, {
+            "$ast": "FunctionArgument",
+            "attributes": [],
+            "name": "defaultValue",
+            "type": {
+                "$ast": "PredefinedType",
+                "name": "Int"
+            }
+        }],
+        "functionKind": "Normal",
+        "returnType": {
+            "$ast": "PredefinedType",
+            "name": "Int"
+        },
+        "statement": {
+            "$ast": "BlockStatement",
+            "endLabel": "",
+            "statements": [{
+                "$ast": "ReturnStatement",
+                "expression": {
+                    "$ast": "BinaryExpression",
+                    "first": {
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "MemberExpression",
+                            "name": "Value",
+                            "parent": {
+                                "$ast": "ReferenceExpression",
+                                "name": "value"
+                            }
+                        },
+                        "op": "Add",
+                        "second": {
+                            "$ast": "ReferenceExpression",
+                            "name": "increase"
+                        }
+                    },
+                    "op": "FailedThen",
+                    "second": {
+                        "$ast": "ReferenceExpression",
+                        "name": "defaultValue"
+                    }
+                }
+            }]
+        }
+    }, {
+        "$ast": "FunctionDeclaration",
+        "attributes": [],
+        "name": "main",
+        "anonymity": "Named",
+        "arguments": [],
+        "functionKind": "Normal",
+        "returnType": {
+            "$ast": "PredefinedType",
+            "name": "String"
+        },
+        "statement": {
+            "$ast": "BlockStatement",
+            "endLabel": "",
+            "statements": [{
+                "$ast": "ReturnStatement",
+                "expression": {
+                    "$ast": "FormatExpression",
+                    "expandedExpression": null,
+                    "value": "$\"$(GetValue(null, 10, -1)), $(GetValue(new ObservableValue^(100), 10, -1))\""
+                }
+            }]
+        }
+    }],
+    "moduleType": "Module",
+    "name": "test",
+    "paths": [{
+        "$ast": "ModuleUsingPath",
+        "items": [{
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingNameFragment",
+                "name": "test"
+            }]
+        }, {
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingWildCardFragment"
+            }]
+        }]
+    }, {
+        "$ast": "ModuleUsingPath",
+        "items": [{
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingNameFragment",
+                "name": "system"
+            }]
+        }, {
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingWildCardFragment"
+            }]
+        }]
+    }]
+}

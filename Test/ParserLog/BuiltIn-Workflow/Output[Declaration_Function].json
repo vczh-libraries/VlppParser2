@@ -1,0 +1,99 @@
+﻿{
+    "$ast": "FunctionDeclaration",
+    "attributes": [],
+    "name": "Sum",
+    "anonymity": "Named",
+    "arguments": [{
+        "$ast": "FunctionArgument",
+        "attributes": [],
+        "name": "begin",
+        "type": {
+            "$ast": "PredefinedType",
+            "name": "Int"
+        }
+    }, {
+        "$ast": "FunctionArgument",
+        "attributes": [],
+        "name": "end",
+        "type": {
+            "$ast": "PredefinedType",
+            "name": "Int"
+        }
+    }],
+    "functionKind": "Normal",
+    "returnType": {
+        "$ast": "PredefinedType",
+        "name": "Int"
+    },
+    "statement": {
+        "$ast": "BlockStatement",
+        "endLabel": "",
+        "statements": [{
+            "$ast": "VariableStatement",
+            "variable": {
+                "$ast": "VariableDeclaration",
+                "attributes": [],
+                "name": "sum",
+                "expression": {
+                    "$ast": "IntegerExpression",
+                    "value": "0"
+                },
+                "type": {
+                    "$ast": "PredefinedType",
+                    "name": "Int"
+                }
+            }
+        }, {
+            "$ast": "ForEachStatement",
+            "expandedStatement": null,
+            "collection": {
+                "$ast": "RangeExpression",
+                "begin": {
+                    "$ast": "ReferenceExpression",
+                    "name": "begin"
+                },
+                "beginBoundary": "Inclusive",
+                "end": {
+                    "$ast": "ReferenceExpression",
+                    "name": "end"
+                },
+                "endBoundary": "Inclusive"
+            },
+            "direction": "Normal",
+            "name": "x",
+            "statement": {
+                "$ast": "BlockStatement",
+                "endLabel": "",
+                "statements": [{
+                    "$ast": "ExpressionStatement",
+                    "expression": {
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "ReferenceExpression",
+                            "name": "sum"
+                        },
+                        "op": "Assign",
+                        "second": {
+                            "$ast": "BinaryExpression",
+                            "first": {
+                                "$ast": "ReferenceExpression",
+                                "name": "sum"
+                            },
+                            "op": "Add",
+                            "second": {
+                                "$ast": "ReferenceExpression",
+                                "name": "x"
+                            }
+                        }
+                    }
+                }]
+            }
+        }, {
+            "$ast": "ReturnStatement",
+            "expression": {
+                "$ast": "ReferenceExpression",
+                "name": "sum"
+            }
+        }]
+    }
+}

@@ -1,0 +1,65 @@
+﻿================ EXECUTION STEPS ================
+[0]: 0@0 - 5@1
+
+==================== TRACES =====================
+
++----------------------+
+| [0]: <Start>         |
+| [151][Module] BEGIN  |
+| [AST-INSTRUCTIONS]:  |
+| [SUCCESORS 1-1]: [1] |
++----------------------+
+[0]
+ |
+ +
+ |
+[0]
+++================================================================++
+|| [1]: {OPTIONAL} optional                                       ||
+|| [11][EqualOptional]< "optional" @ [ Plus ] "+" { Plus } >      ||
+|| [AST-INSTRUCTIONS]:                                            ||
+||   - DelayFieldAssignment()                                     ||
+||   - BeginObject(OptionalFeature)                               ||
+|| [RETURN STACK]:                                                ||
+||   [0][0]: EqualOptional -> [170][Module]<< !EqualOptional @ >> ||
+|| [PREDECESSORS 0-0]: [0]                                        ||
+|| [SUCCESORS 3-3]: [3]                                           ||
+++================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++================================================================++
+|| [3]: {PLUS} +                                                  ||
+|| [13][EqualOptional]< "optional" [ Plus ] "+" @ { Plus } >      ||
+|| [AST-INSTRUCTIONS]:                                            ||
+|| [RETURN STACK]:                                                ||
+||   [0][0]: EqualOptional -> [170][Module]<< !EqualOptional @ >> ||
+|| [PREDECESSORS 1-1]: [1]                                        ||
+|| [SUCCESORS 4-4]: [4]                                           ||
+++================================================================++
+|
++
+|
++--------------------------------------+
+| [4]: <Ending>                        |
+| [170][Module]<< !EqualOptional @ >>  |
+| [AST-INSTRUCTIONS]:                  |
+|   - EnumItem(0)                      |
+|   - Field(OptionalFeature::priority) |
+|   - EndObject()                      |
+| [PREDECESSORS 3-3]: [3]              |
+| [SUCCESORS 5-5]: [5]                 |
++--------------------------------------+
+|
++
+|
++----------------------------+
+| [5]: <Ending>              |
+| [152][Module] END [ENDING] |
+| [AST-INSTRUCTIONS]:        |
+|   - ReopenObject()         |
+|   - EndObject()            |
+| [PREDECESSORS 4-4]: [4]    |
++----------------------------+

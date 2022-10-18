@@ -1,0 +1,251 @@
+﻿================ EXECUTION STEPS ================
+[0]: 0@0 - 14@1
+
+==================== TRACES =====================
+
++----------------------+
+| [0]: <Start>         |
+| [42][Module] BEGIN   |
+| [AST-INSTRUCTIONS]:  |
+| [SUCCESORS 1-1]: [1] |
++----------------------+
+[0]
+ |
+ +
+ |
+[0]
+++=============================================++
+|| [1]: {ID} a                                 ||
+|| [2][Exp0]< ID @ >                           ||
+|| [AST-INSTRUCTIONS]:                         ||
+||   - DelayFieldAssignment()                  ||
+||   - DelayFieldAssignment()                  ||
+||   - DelayFieldAssignment()                  ||
+||   - DelayFieldAssignment()                  ||
+||   - BeginObject(RefExpr)                    ||
+||   + Token()                                 ||
+||   + Field(RefExpr::name)                    ||
+|| [RETURN STACK]:                             ||
+||   [6][0]: Exp0 -> [11][Exp1]<< !Exp0 @ >>   ||
+||   [5][0]: Exp1 -> [17][Exp2]<< !Exp1 @ >>   ||
+||   [4][0]: Exp2 -> [23][Exp3]<< !Exp2 @ >>   ||
+||   [3][0]: Exp3 -> [29][Exp4]<< !Exp3 @ >>   ||
+||   [2][0]: Exp4 -> [35][Exp5]<< !Exp4 @ >>   ||
+||   [1][0]: Exp5 -> [41][Exp6]<< !Exp5 @ >>   ||
+||   [0][0]: Exp6 -> [44][Module]<< !Exp6 @ >> ||
+|| [PREDECESSORS 0-0]: [0]                     ||
+|| [SUCCESORS 2-2]: [2]                        ||
+++=============================================++
+|
++
+|
++---------------------------------------------+
+| [2]: <Ending>                               |
+| [11][Exp1]<< !Exp0 @ >>                     |
+| [AST-INSTRUCTIONS]:                         |
+|   - EndObject()                             |
+|   > ReopenObject()                          |
+| [RETURN STACK]:                             |
+|   [5][0]: Exp1 -> [17][Exp2]<< !Exp1 @ >>   |
+|   [4][0]: Exp2 -> [23][Exp3]<< !Exp2 @ >>   |
+|   [3][0]: Exp3 -> [29][Exp4]<< !Exp3 @ >>   |
+|   [2][0]: Exp4 -> [35][Exp5]<< !Exp4 @ >>   |
+|   [1][0]: Exp5 -> [41][Exp6]<< !Exp5 @ >>   |
+|   [0][0]: Exp6 -> [44][Module]<< !Exp6 @ >> |
+| [PREDECESSORS 1-1]: [1]                     |
+| [SUCCESORS 3-3]: [3]                        |
++---------------------------------------------+
+|
++
+|
++---------------------------------------------+
+| [3]: <Leftrec>                              |
+| [10][Exp1]< Exp1 @ "^" Exp0 >               |
+| [AST-INSTRUCTIONS]:                         |
+|   - EndObject()                             |
+|   - BeginObjectLeftRecursive(BinaryExpr)    |
+|   + Field(BinaryExpr::left)                 |
+| [RETURN STACK]:                             |
+|   [5][0]: Exp1 -> [17][Exp2]<< !Exp1 @ >>   |
+|   [4][0]: Exp2 -> [23][Exp3]<< !Exp2 @ >>   |
+|   [3][0]: Exp3 -> [29][Exp4]<< !Exp3 @ >>   |
+|   [2][0]: Exp4 -> [35][Exp5]<< !Exp4 @ >>   |
+|   [1][0]: Exp5 -> [41][Exp6]<< !Exp5 @ >>   |
+|   [0][0]: Exp6 -> [44][Module]<< !Exp6 @ >> |
+| [PREDECESSORS 2-2]: [2]                     |
+| [SUCCESORS 5-5]: [5]                        |
++---------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++=============================================++
+|| [5]: {EXP} ^                                ||
+|| [8][Exp1]< Exp1 "^" @ Exp0 >                ||
+|| [AST-INSTRUCTIONS]:                         ||
+|| [RETURN STACK]:                             ||
+||   [5][0]: Exp1 -> [17][Exp2]<< !Exp1 @ >>   ||
+||   [4][0]: Exp2 -> [23][Exp3]<< !Exp2 @ >>   ||
+||   [3][0]: Exp3 -> [29][Exp4]<< !Exp3 @ >>   ||
+||   [2][0]: Exp4 -> [35][Exp5]<< !Exp4 @ >>   ||
+||   [1][0]: Exp5 -> [41][Exp6]<< !Exp5 @ >>   ||
+||   [0][0]: Exp6 -> [44][Module]<< !Exp6 @ >> ||
+|| [PREDECESSORS 3-3]: [3]                     ||
+|| [SUCCESORS 6-6]: [6]                        ||
+++=============================================++
+[0]
+ |
+ +
+ |
+[0]
+++================================================++
+|| [6]: {ID} b                                    ||
+|| [2][Exp0]< ID @ >                              ||
+|| [AST-INSTRUCTIONS]:                            ||
+||   - BeginObject(RefExpr)                       ||
+||   + Token()                                    ||
+||   + Field(RefExpr::name)                       ||
+|| [RETURN STACK]:                                ||
+||   [7][5]: Exp0 -> [9][Exp1]< Exp1 "^" Exp0 @ > ||
+||   [5][0]: Exp1 -> [17][Exp2]<< !Exp1 @ >>      ||
+||   [4][0]: Exp2 -> [23][Exp3]<< !Exp2 @ >>      ||
+||   [3][0]: Exp3 -> [29][Exp4]<< !Exp3 @ >>      ||
+||   [2][0]: Exp4 -> [35][Exp5]<< !Exp4 @ >>      ||
+||   [1][0]: Exp5 -> [41][Exp6]<< !Exp5 @ >>      ||
+||   [0][0]: Exp6 -> [44][Module]<< !Exp6 @ >>    ||
+|| [PREDECESSORS 5-5]: [5]                        ||
+|| [SUCCESORS 7-7]: [7]                           ||
+++================================================++
+|
++
+|
++---------------------------------------------+
+| [7]: <Ending>                               |
+| [9][Exp1]< Exp1 "^" Exp0 @ >                |
+| [AST-INSTRUCTIONS]:                         |
+|   - EndObject()                             |
+|   > Field(BinaryExpr::right)                |
+| [RETURN STACK]:                             |
+|   [5][0]: Exp1 -> [17][Exp2]<< !Exp1 @ >>   |
+|   [4][0]: Exp2 -> [23][Exp3]<< !Exp2 @ >>   |
+|   [3][0]: Exp3 -> [29][Exp4]<< !Exp3 @ >>   |
+|   [2][0]: Exp4 -> [35][Exp5]<< !Exp4 @ >>   |
+|   [1][0]: Exp5 -> [41][Exp6]<< !Exp5 @ >>   |
+|   [0][0]: Exp6 -> [44][Module]<< !Exp6 @ >> |
+| [PREDECESSORS 6-6]: [6]                     |
+| [SUCCESORS 8-8]: [8]                        |
++---------------------------------------------+
+|
++
+|
++---------------------------------------------+
+| [8]: <Ending>                               |
+| [17][Exp2]<< !Exp1 @ >>                     |
+| [AST-INSTRUCTIONS]:                         |
+|   - EnumItem(2)                             |
+|   - Field(BinaryExpr::op)                   |
+|   - EndObject()                             |
+|   > ReopenObject()                          |
+| [RETURN STACK]:                             |
+|   [4][0]: Exp2 -> [23][Exp3]<< !Exp2 @ >>   |
+|   [3][0]: Exp3 -> [29][Exp4]<< !Exp3 @ >>   |
+|   [2][0]: Exp4 -> [35][Exp5]<< !Exp4 @ >>   |
+|   [1][0]: Exp5 -> [41][Exp6]<< !Exp5 @ >>   |
+|   [0][0]: Exp6 -> [44][Module]<< !Exp6 @ >> |
+| [PREDECESSORS 7-7]: [7]                     |
+| [SUCCESORS 9-9]: [9]                        |
++---------------------------------------------+
+|
++
+|
++---------------------------------------------+
+| [9]: <Ending>                               |
+| [23][Exp3]<< !Exp2 @ >>                     |
+| [AST-INSTRUCTIONS]:                         |
+|   - EndObject()                             |
+|   > ReopenObject()                          |
+| [RETURN STACK]:                             |
+|   [3][0]: Exp3 -> [29][Exp4]<< !Exp3 @ >>   |
+|   [2][0]: Exp4 -> [35][Exp5]<< !Exp4 @ >>   |
+|   [1][0]: Exp5 -> [41][Exp6]<< !Exp5 @ >>   |
+|   [0][0]: Exp6 -> [44][Module]<< !Exp6 @ >> |
+| [PREDECESSORS 8-8]: [8]                     |
+| [SUCCESORS 10-10]: [10]                     |
++---------------------------------------------+
+|
++
+|
++---------------------------------------------+
+| [10]: <Ending>                              |
+| [29][Exp4]<< !Exp3 @ >>                     |
+| [AST-INSTRUCTIONS]:                         |
+|   - EndObject()                             |
+| [RETURN STACK]:                             |
+|   [2][0]: Exp4 -> [35][Exp5]<< !Exp4 @ >>   |
+|   [1][0]: Exp5 -> [41][Exp6]<< !Exp5 @ >>   |
+|   [0][0]: Exp6 -> [44][Module]<< !Exp6 @ >> |
+| [PREDECESSORS 9-9]: [9]                     |
+| [SUCCESORS 11-11]: [11]                     |
++---------------------------------------------+
+|
++
+|
++---------------------------------------------+
+| [11]: <Ending>                              |
+| [35][Exp5]<< !Exp4 @ >>                     |
+| [AST-INSTRUCTIONS]:                         |
+|   - LriStore()                              |
+|   - DelayFieldAssignment()                  |
+|   - LriFetch()                              |
+|   - ReopenObject()                          |
+|   - EndObject()                             |
+| [RETURN STACK]:                             |
+|   [1][0]: Exp5 -> [41][Exp6]<< !Exp5 @ >>   |
+|   [0][0]: Exp6 -> [44][Module]<< !Exp6 @ >> |
+| [PREDECESSORS 10-10]: [10]                  |
+| [SUCCESORS 12-12]: [12]                     |
++---------------------------------------------+
+|
++
+|
++---------------------------------------------+
+| [12]: <Ending>                              |
+| [41][Exp6]<< !Exp5 @ >>                     |
+| [AST-INSTRUCTIONS]:                         |
+|   - LriStore()                              |
+|   - DelayFieldAssignment()                  |
+|   - LriFetch()                              |
+|   - ReopenObject()                          |
+|   - EndObject()                             |
+| [RETURN STACK]:                             |
+|   [0][0]: Exp6 -> [44][Module]<< !Exp6 @ >> |
+| [PREDECESSORS 11-11]: [11]                  |
+| [SUCCESORS 13-13]: [13]                     |
++---------------------------------------------+
+|
++
+|
++----------------------------+
+| [13]: <Ending>             |
+| [44][Module]<< !Exp6 @ >>  |
+| [AST-INSTRUCTIONS]:        |
+|   - LriStore()             |
+|   - DelayFieldAssignment() |
+|   - LriFetch()             |
+|   - ReopenObject()         |
+|   - EndObject()            |
+| [PREDECESSORS 12-12]: [12] |
+| [SUCCESORS 14-14]: [14]    |
++----------------------------+
+|
++
+|
++----------------------------+
+| [14]: <Ending>             |
+| [43][Module] END [ENDING]  |
+| [AST-INSTRUCTIONS]:        |
+|   - ReopenObject()         |
+|   - EndObject()            |
+| [PREDECESSORS 13-13]: [13] |
++----------------------------+

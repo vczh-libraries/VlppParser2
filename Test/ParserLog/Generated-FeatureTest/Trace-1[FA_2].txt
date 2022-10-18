@@ -1,0 +1,92 @@
+﻿================ EXECUTION STEPS ================
+[0]: 0@0 - 6@0
+
+==================== TRACES =====================
+
++----------------------+
+| [0]: <Start>         |
+| [151][Module] BEGIN  |
+| [AST-INSTRUCTIONS]:  |
+| [SUCCESORS 1-1]: [1] |
++----------------------+
+[0]
+ |
+ +
+ |
+[0]
+++=============================================++
+|| [1]: {FIELD_ASSIGNMENT} field_assignment    ||
+|| [180][Module]<< "field_assignment" @ !Fa >> ||
+|| [AST-INSTRUCTIONS]:                         ||
+||   - DelayFieldAssignment()                  ||
+|| [PREDECESSORS 0-0]: [0]                     ||
+|| [SUCCESORS 2-2]: [2]                        ||
+++=============================================++
+[0]
+ |
+ +
+ |
+[0]
+++=============================================================++
+|| [2]: {ID} b                                                 ||
+|| [146][FaPrefix]ID @                                         ||
+|| [AST-INSTRUCTIONS]:                                         ||
+||   - BeginObject(FaFeature)                                  ||
+|| [RETURN STACK]:                                             ||
+||   [1][1]: FaPrefix -> [149][Fa]< [ FaPrefix @ ] ID >        ||
+||   [0][1]: Fa -> [179][Module]<< "field_assignment" !Fa @ >> ||
+|| [PREDECESSORS 1-1]: [1]                                     ||
+|| [SUCCESORS 3-3]: [3]                                        ||
+++=============================================================++
+|
++
+|
++-------------------------------------------------------------+
+| [3]: <Ending>                                               |
+| [149][Fa]< [ FaPrefix @ ] ID >                              |
+| [AST-INSTRUCTIONS]:                                         |
+|   - EnumItem(1)                                             |
+|   - Field(FaFeature::fa)                                    |
+| [RETURN STACK]:                                             |
+|   [0][1]: Fa -> [179][Module]<< "field_assignment" !Fa @ >> |
+| [PREDECESSORS 2-2]: [2]                                     |
+| [SUCCESORS 4-4]: [4]                                        |
++-------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++=============================================================++
+|| [4]: {ID} a                                                 ||
+|| [150][Fa]< [ FaPrefix ] ID @ >                              ||
+|| [AST-INSTRUCTIONS]:                                         ||
+|| [RETURN STACK]:                                             ||
+||   [0][1]: Fa -> [179][Module]<< "field_assignment" !Fa @ >> ||
+|| [PREDECESSORS 3-3]: [3]                                     ||
+|| [SUCCESORS 5-5]: [5]                                        ||
+++=============================================================++
+|
++
+|
++---------------------------------------------+
+| [5]: <Ending>                               |
+| [179][Module]<< "field_assignment" !Fa @ >> |
+| [AST-INSTRUCTIONS]:                         |
+|   - EnumItem(0)                             |
+|   - FieldIfUnassigned(FaFeature::fa)        |
+|   - EndObject()                             |
+|   > ReopenObject()                          |
+| [PREDECESSORS 4-4]: [4]                     |
+| [SUCCESORS 6-6]: [6]                        |
++---------------------------------------------+
+|
++
+|
++----------------------------+
+| [6]: <Ending>              |
+| [152][Module] END [ENDING] |
+| [AST-INSTRUCTIONS]:        |
+|   - EndObject()            |
+| [PREDECESSORS 5-5]: [5]    |
++----------------------------+

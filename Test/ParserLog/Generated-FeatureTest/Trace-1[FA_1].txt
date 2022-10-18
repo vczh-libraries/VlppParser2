@@ -1,0 +1,63 @@
+﻿================ EXECUTION STEPS ================
+[0]: 0@0 - 4@0
+
+==================== TRACES =====================
+
++----------------------+
+| [0]: <Start>         |
+| [151][Module] BEGIN  |
+| [AST-INSTRUCTIONS]:  |
+| [SUCCESORS 1-1]: [1] |
++----------------------+
+[0]
+ |
+ +
+ |
+[0]
+++=============================================++
+|| [1]: {FIELD_ASSIGNMENT} field_assignment    ||
+|| [180][Module]<< "field_assignment" @ !Fa >> ||
+|| [AST-INSTRUCTIONS]:                         ||
+||   - DelayFieldAssignment()                  ||
+|| [PREDECESSORS 0-0]: [0]                     ||
+|| [SUCCESORS 2-2]: [2]                        ||
+++=============================================++
+[0]
+ |
+ +
+ |
+[0]
+++=============================================================++
+|| [2]: {ID} a                                                 ||
+|| [150][Fa]< [ FaPrefix ] ID @ >                              ||
+|| [AST-INSTRUCTIONS]:                                         ||
+||   - BeginObject(FaFeature)                                  ||
+|| [RETURN STACK]:                                             ||
+||   [0][1]: Fa -> [179][Module]<< "field_assignment" !Fa @ >> ||
+|| [PREDECESSORS 1-1]: [1]                                     ||
+|| [SUCCESORS 3-3]: [3]                                        ||
+++=============================================================++
+|
++
+|
++---------------------------------------------+
+| [3]: <Ending>                               |
+| [179][Module]<< "field_assignment" !Fa @ >> |
+| [AST-INSTRUCTIONS]:                         |
+|   - EnumItem(0)                             |
+|   - FieldIfUnassigned(FaFeature::fa)        |
+|   - EndObject()                             |
+|   > ReopenObject()                          |
+| [PREDECESSORS 2-2]: [2]                     |
+| [SUCCESORS 4-4]: [4]                        |
++---------------------------------------------+
+|
++
+|
++----------------------------+
+| [4]: <Ending>              |
+| [152][Module] END [ENDING] |
+| [AST-INSTRUCTIONS]:        |
+|   - EndObject()            |
+| [PREDECESSORS 3-3]: [3]    |
++----------------------------+

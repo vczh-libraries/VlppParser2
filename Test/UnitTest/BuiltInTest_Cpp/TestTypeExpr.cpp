@@ -48,9 +48,9 @@ void TracedTests()
 	WString indexName;
 	WString caseName;
 	FilePath dirOutput = GetOutputDir(L"BuiltIn-Cpp");
-	
-	parser.OnEndOfInput.Add(
-		[&](EndOfInputArgs& args)
+
+	parser.OnTraceProcessing.Add(
+		[&](TraceProcessingArgs& args)
 		{
 			auto& traceManager = *dynamic_cast<TraceManager*>(args.executor);
 			LogTraceManager(
@@ -58,7 +58,7 @@ void TracedTests()
 				indexName + L"_" + caseName,
 				args.executable,
 				traceManager,
-				args.rootTrace,
+				args.phase,
 				args.tokens,
 				[=](vint32_t type) { return WString::Unmanaged(CppTypeName((CppClasses)type)); },
 				[=](vint32_t field) { return WString::Unmanaged(CppFieldName((CppFields)field)); },
@@ -67,20 +67,21 @@ void TracedTests()
 				[=](vint32_t state) { return WString::Unmanaged(ParserStateLabel(state)); },
 				[=](vint32_t switchId) { return WString::Unmanaged(ParserSwitchName(switchId)); }
 			);
-
-			if (traceManager.concurrentCount == 1)
-			{
-				LogTraceExecution(
-					L"BuiltIn-Cpp",
-					indexName + L"_" + caseName,
-					[=](vint32_t type) { return WString::Unmanaged(CppTypeName((CppClasses)type)); },
-					[=](vint32_t field) { return WString::Unmanaged(CppFieldName((CppFields)field)); },
-					[=](vint32_t token) { return WString::Unmanaged(CppTokenId((CppTokens)token)); },
-					[&](IAstInsReceiver& receiver)
-					{
-						traceManager.ExecuteTrace(args.rootTrace, receiver, args.tokens);
-					});
-			}
+		});
+	parser.OnReadyToExecute.Add(
+		[&](ReadyToExecuteArgs& args)
+		{
+			auto& traceManager = *dynamic_cast<TraceManager*>(args.executor);
+			LogTraceExecution(
+				L"BuiltIn-Cpp",
+				indexName + L"_" + caseName,
+				[=](vint32_t type) { return WString::Unmanaged(CppTypeName((CppClasses)type)); },
+				[=](vint32_t field) { return WString::Unmanaged(CppFieldName((CppFields)field)); },
+				[=](vint32_t token) { return WString::Unmanaged(CppTokenId((CppTokens)token)); },
+				[&](IAstInsReceiver& receiver)
+				{
+					traceManager.ExecuteTrace(receiver, args.tokens);
+				});
 		});
 
 	auto runParser = [&](const wchar_t* _indexName, const wchar_t* _caseName, auto parse)

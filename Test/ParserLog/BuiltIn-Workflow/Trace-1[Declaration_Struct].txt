@@ -1,0 +1,502 @@
+﻿+----------------------------+
+| [0]: <Start>               |
+| [787][_Declaration] BEGIN  |
+| [AST-INSTRUCTIONS]:        |
+| [SUCCESORS 1-1]: [1]       |
++----------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++=======================================================================================================++
+|| [1]: {KEYWORD_STRUCT} struct                                                                          ||
+|| [725][_Struct]< "struct" @ NAME "{" { _StructMember } "}" >                                           ||
+|| [AST-INSTRUCTIONS]:                                                                                   ||
+||   - DelayFieldAssignment()                                                                            ||
+||   - DelayFieldAssignment()                                                                            ||
+||   - BeginObject(StructDeclaration)                                                                    ||
+|| [RETURN STACK]:                                                                                       ||
+||   [1][0]: _Struct -> [785][_DeclarationCandidates]<< !_Struct @ >>                                    ||
+||   [0][0]: _DeclarationCandidates -> [790][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> ||
+|| [PREDECESSORS 0-0]: [0]                                                                               ||
+|| [SUCCESORS 2-2]: [2]                                                                                  ||
+++=======================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++=======================================================================================================++
+|| [2]: {NAME} Point                                                                                     ||
+|| [729][_Struct]< "struct" NAME @ "{" { _StructMember } "}" >                                           ||
+|| [AST-INSTRUCTIONS]:                                                                                   ||
+||   + Token()                                                                                           ||
+||   + Field(Declaration::name)                                                                          ||
+|| [RETURN STACK]:                                                                                       ||
+||   [1][0]: _Struct -> [785][_DeclarationCandidates]<< !_Struct @ >>                                    ||
+||   [0][0]: _DeclarationCandidates -> [790][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> ||
+|| [PREDECESSORS 1-1]: [1]                                                                               ||
+|| [SUCCESORS 3-3]: [3]                                                                                  ||
+++=======================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++=======================================================================================================++
+|| [3]: {OPEN_BRACE} {                                                                                   ||
+|| [726][_Struct]< "struct" NAME "{" @ { _StructMember } "}" >                                           ||
+|| [AST-INSTRUCTIONS]:                                                                                   ||
+|| [RETURN STACK]:                                                                                       ||
+||   [1][0]: _Struct -> [785][_DeclarationCandidates]<< !_Struct @ >>                                    ||
+||   [0][0]: _DeclarationCandidates -> [790][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> ||
+|| [PREDECESSORS 2-2]: [2]                                                                               ||
+|| [SUCCESORS 4-4]: [4]                                                                                  ||
+++=======================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++=======================================================================================================++
+|| [4]: {NAME} x                                                                                         ||
+|| [722][_StructMember]< { _Attribute } NAME @ ":" _Type ";" >                                           ||
+|| [AST-INSTRUCTIONS]:                                                                                   ||
+||   - BeginObject(StructMember)                                                                         ||
+||   + Token()                                                                                           ||
+||   + Field(StructMember::name)                                                                         ||
+|| [RETURN STACK]:                                                                                       ||
+||   [2][3]: _StructMember -> [727][_Struct]< "struct" NAME "{" { _StructMember @ } "}" >                ||
+||   [1][0]: _Struct -> [785][_DeclarationCandidates]<< !_Struct @ >>                                    ||
+||   [0][0]: _DeclarationCandidates -> [790][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> ||
+|| [PREDECESSORS 3-3]: [3]                                                                               ||
+|| [SUCCESORS 5-5]: [5]                                                                                  ||
+++=======================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++=======================================================================================================++
+|| [5]: {COLON} :                                                                                        ||
+|| [719][_StructMember]< { _Attribute } NAME ":" @ _Type ";" >                                           ||
+|| [AST-INSTRUCTIONS]:                                                                                   ||
+|| [RETURN STACK]:                                                                                       ||
+||   [2][3]: _StructMember -> [727][_Struct]< "struct" NAME "{" { _StructMember @ } "}" >                ||
+||   [1][0]: _Struct -> [785][_DeclarationCandidates]<< !_Struct @ >>                                    ||
+||   [0][0]: _DeclarationCandidates -> [790][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> ||
+|| [PREDECESSORS 4-4]: [4]                                                                               ||
+|| [SUCCESORS 6-6]: [6]                                                                                  ||
+++=======================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++=======================================================================================================++
+|| [6]: {TYPE_INT} int                                                                                   ||
+|| [20][_Type]< "int" @ >                                                                                ||
+|| [AST-INSTRUCTIONS]:                                                                                   ||
+||   - BeginObject(PredefinedType)                                                                       ||
+|| [RETURN STACK]:                                                                                       ||
+||   [3][5]: _Type -> [721][_StructMember]< { _Attribute } NAME ":" _Type @ ";" >                        ||
+||   [2][3]: _StructMember -> [727][_Struct]< "struct" NAME "{" { _StructMember @ } "}" >                ||
+||   [1][0]: _Struct -> [785][_DeclarationCandidates]<< !_Struct @ >>                                    ||
+||   [0][0]: _DeclarationCandidates -> [790][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> ||
+|| [PREDECESSORS 5-5]: [5]                                                                               ||
+|| [SUCCESORS 7-7]: [7]                                                                                  ||
+++=======================================================================================================++
+|
++
+|
++-------------------------------------------------------------------------------------------------------+
+| [7]: <Ending>                                                                                         |
+| [721][_StructMember]< { _Attribute } NAME ":" _Type @ ";" >                                           |
+| [AST-INSTRUCTIONS]:                                                                                   |
+|   - EnumItem(3)                                                                                       |
+|   - Field(PredefinedType::name)                                                                       |
+|   - EndObject()                                                                                       |
+|   > Field(StructMember::type)                                                                         |
+| [RETURN STACK]:                                                                                       |
+|   [2][3]: _StructMember -> [727][_Struct]< "struct" NAME "{" { _StructMember @ } "}" >                |
+|   [1][0]: _Struct -> [785][_DeclarationCandidates]<< !_Struct @ >>                                    |
+|   [0][0]: _DeclarationCandidates -> [790][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> |
+| [PREDECESSORS 6-6]: [6]                                                                               |
+| [SUCCESORS 8-8]: [8]                                                                                  |
++-------------------------------------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++=======================================================================================================++
+|| [8]: {SEMICOLON} ;                                                                                    ||
+|| [720][_StructMember]< { _Attribute } NAME ":" _Type ";" @ >                                           ||
+|| [AST-INSTRUCTIONS]:                                                                                   ||
+|| [RETURN STACK]:                                                                                       ||
+||   [2][3]: _StructMember -> [727][_Struct]< "struct" NAME "{" { _StructMember @ } "}" >                ||
+||   [1][0]: _Struct -> [785][_DeclarationCandidates]<< !_Struct @ >>                                    ||
+||   [0][0]: _DeclarationCandidates -> [790][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> ||
+|| [PREDECESSORS 7-7]: [7]                                                                               ||
+|| [SUCCESORS 9-9]: [9]                                                                                  ||
+++=======================================================================================================++
+|
++
+|
++-------------------------------------------------------------------------------------------------------+
+| [9]: <Ending>                                                                                         |
+| [727][_Struct]< "struct" NAME "{" { _StructMember @ } "}" >                                           |
+| [AST-INSTRUCTIONS]:                                                                                   |
+|   - EndObject()                                                                                       |
+|   > Field(StructDeclaration::members)                                                                 |
+| [RETURN STACK]:                                                                                       |
+|   [1][0]: _Struct -> [785][_DeclarationCandidates]<< !_Struct @ >>                                    |
+|   [0][0]: _DeclarationCandidates -> [790][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> |
+| [PREDECESSORS 8-8]: [8]                                                                               |
+| [SUCCESORS 10-10]: [10]                                                                               |
++-------------------------------------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++=======================================================================================================++
+|| [10]: {NAME} y                                                                                        ||
+|| [722][_StructMember]< { _Attribute } NAME @ ":" _Type ";" >                                           ||
+|| [AST-INSTRUCTIONS]:                                                                                   ||
+||   - BeginObject(StructMember)                                                                         ||
+||   + Token()                                                                                           ||
+||   + Field(StructMember::name)                                                                         ||
+|| [RETURN STACK]:                                                                                       ||
+||   [4][9]: _StructMember -> [727][_Struct]< "struct" NAME "{" { _StructMember @ } "}" >                ||
+||   [1][0]: _Struct -> [785][_DeclarationCandidates]<< !_Struct @ >>                                    ||
+||   [0][0]: _DeclarationCandidates -> [790][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> ||
+|| [PREDECESSORS 9-9]: [9]                                                                               ||
+|| [SUCCESORS 11-11]: [11]                                                                               ||
+++=======================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++=======================================================================================================++
+|| [11]: {COLON} :                                                                                       ||
+|| [719][_StructMember]< { _Attribute } NAME ":" @ _Type ";" >                                           ||
+|| [AST-INSTRUCTIONS]:                                                                                   ||
+|| [RETURN STACK]:                                                                                       ||
+||   [4][9]: _StructMember -> [727][_Struct]< "struct" NAME "{" { _StructMember @ } "}" >                ||
+||   [1][0]: _Struct -> [785][_DeclarationCandidates]<< !_Struct @ >>                                    ||
+||   [0][0]: _DeclarationCandidates -> [790][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> ||
+|| [PREDECESSORS 10-10]: [10]                                                                            ||
+|| [SUCCESORS 12-12]: [12]                                                                               ||
+++=======================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++=======================================================================================================++
+|| [12]: {TYPE_INT} int                                                                                  ||
+|| [20][_Type]< "int" @ >                                                                                ||
+|| [AST-INSTRUCTIONS]:                                                                                   ||
+||   - BeginObject(PredefinedType)                                                                       ||
+|| [RETURN STACK]:                                                                                       ||
+||   [5][11]: _Type -> [721][_StructMember]< { _Attribute } NAME ":" _Type @ ";" >                       ||
+||   [4][9]: _StructMember -> [727][_Struct]< "struct" NAME "{" { _StructMember @ } "}" >                ||
+||   [1][0]: _Struct -> [785][_DeclarationCandidates]<< !_Struct @ >>                                    ||
+||   [0][0]: _DeclarationCandidates -> [790][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> ||
+|| [PREDECESSORS 11-11]: [11]                                                                            ||
+|| [SUCCESORS 13-13]: [13]                                                                               ||
+++=======================================================================================================++
+|
++
+|
++-------------------------------------------------------------------------------------------------------+
+| [13]: <Ending>                                                                                        |
+| [721][_StructMember]< { _Attribute } NAME ":" _Type @ ";" >                                           |
+| [AST-INSTRUCTIONS]:                                                                                   |
+|   - EnumItem(3)                                                                                       |
+|   - Field(PredefinedType::name)                                                                       |
+|   - EndObject()                                                                                       |
+|   > Field(StructMember::type)                                                                         |
+| [RETURN STACK]:                                                                                       |
+|   [4][9]: _StructMember -> [727][_Struct]< "struct" NAME "{" { _StructMember @ } "}" >                |
+|   [1][0]: _Struct -> [785][_DeclarationCandidates]<< !_Struct @ >>                                    |
+|   [0][0]: _DeclarationCandidates -> [790][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> |
+| [PREDECESSORS 12-12]: [12]                                                                            |
+| [SUCCESORS 14-14]: [14]                                                                               |
++-------------------------------------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++=======================================================================================================++
+|| [14]: {SEMICOLON} ;                                                                                   ||
+|| [720][_StructMember]< { _Attribute } NAME ":" _Type ";" @ >                                           ||
+|| [AST-INSTRUCTIONS]:                                                                                   ||
+|| [RETURN STACK]:                                                                                       ||
+||   [4][9]: _StructMember -> [727][_Struct]< "struct" NAME "{" { _StructMember @ } "}" >                ||
+||   [1][0]: _Struct -> [785][_DeclarationCandidates]<< !_Struct @ >>                                    ||
+||   [0][0]: _DeclarationCandidates -> [790][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> ||
+|| [PREDECESSORS 13-13]: [13]                                                                            ||
+|| [SUCCESORS 15-15]: [15]                                                                               ||
+++=======================================================================================================++
+|
++
+|
++-------------------------------------------------------------------------------------------------------+
+| [15]: <Ending>                                                                                        |
+| [727][_Struct]< "struct" NAME "{" { _StructMember @ } "}" >                                           |
+| [AST-INSTRUCTIONS]:                                                                                   |
+|   - EndObject()                                                                                       |
+|   > Field(StructDeclaration::members)                                                                 |
+| [RETURN STACK]:                                                                                       |
+|   [1][0]: _Struct -> [785][_DeclarationCandidates]<< !_Struct @ >>                                    |
+|   [0][0]: _DeclarationCandidates -> [790][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> |
+| [PREDECESSORS 14-14]: [14]                                                                            |
+| [SUCCESORS 16-16]: [16]                                                                               |
++-------------------------------------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++=======================================================================================================++
+|| [16]: {AT} @                                                                                          ||
+|| [548][_Attribute]< "@" @ NAME ":" NAME [ "(" _Expression ")" ] >                                      ||
+|| [AST-INSTRUCTIONS]:                                                                                   ||
+||   - BeginObject(StructMember)                                                                         ||
+||   - BeginObject(Attribute)                                                                            ||
+|| [RETURN STACK]:                                                                                       ||
+||   [7][15]: _Attribute -> [718][_StructMember]< { _Attribute @ } NAME ":" _Type ";" >                  ||
+||   [6][15]: _StructMember -> [727][_Struct]< "struct" NAME "{" { _StructMember @ } "}" >               ||
+||   [1][0]: _Struct -> [785][_DeclarationCandidates]<< !_Struct @ >>                                    ||
+||   [0][0]: _DeclarationCandidates -> [790][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> ||
+|| [PREDECESSORS 15-15]: [15]                                                                            ||
+|| [SUCCESORS 17-17]: [17]                                                                               ||
+++=======================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++=======================================================================================================++
+|| [17]: {NAME} cpp                                                                                      ||
+|| [554][_Attribute]< "@" NAME @ ":" NAME [ "(" _Expression ")" ] >                                      ||
+|| [AST-INSTRUCTIONS]:                                                                                   ||
+||   + Token()                                                                                           ||
+||   + Field(Attribute::category)                                                                        ||
+|| [RETURN STACK]:                                                                                       ||
+||   [7][15]: _Attribute -> [718][_StructMember]< { _Attribute @ } NAME ":" _Type ";" >                  ||
+||   [6][15]: _StructMember -> [727][_Struct]< "struct" NAME "{" { _StructMember @ } "}" >               ||
+||   [1][0]: _Struct -> [785][_DeclarationCandidates]<< !_Struct @ >>                                    ||
+||   [0][0]: _DeclarationCandidates -> [790][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> ||
+|| [PREDECESSORS 16-16]: [16]                                                                            ||
+|| [SUCCESORS 18-18]: [18]                                                                               ||
+++=======================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++=======================================================================================================++
+|| [18]: {COLON} :                                                                                       ||
+|| [549][_Attribute]< "@" NAME ":" @ NAME [ "(" _Expression ")" ] >                                      ||
+|| [AST-INSTRUCTIONS]:                                                                                   ||
+|| [RETURN STACK]:                                                                                       ||
+||   [7][15]: _Attribute -> [718][_StructMember]< { _Attribute @ } NAME ":" _Type ";" >                  ||
+||   [6][15]: _StructMember -> [727][_Struct]< "struct" NAME "{" { _StructMember @ } "}" >               ||
+||   [1][0]: _Struct -> [785][_DeclarationCandidates]<< !_Struct @ >>                                    ||
+||   [0][0]: _DeclarationCandidates -> [790][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> ||
+|| [PREDECESSORS 17-17]: [17]                                                                            ||
+|| [SUCCESORS 19-19]: [19]                                                                               ||
+++=======================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++=======================================================================================================++
+|| [19]: {NAME} Useless                                                                                  ||
+|| [550][_Attribute]< "@" NAME ":" NAME @ [ "(" _Expression ")" ] >                                      ||
+|| [AST-INSTRUCTIONS]:                                                                                   ||
+||   + Token()                                                                                           ||
+||   + Field(Attribute::name)                                                                            ||
+|| [RETURN STACK]:                                                                                       ||
+||   [7][15]: _Attribute -> [718][_StructMember]< { _Attribute @ } NAME ":" _Type ";" >                  ||
+||   [6][15]: _StructMember -> [727][_Struct]< "struct" NAME "{" { _StructMember @ } "}" >               ||
+||   [1][0]: _Struct -> [785][_DeclarationCandidates]<< !_Struct @ >>                                    ||
+||   [0][0]: _DeclarationCandidates -> [790][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> ||
+|| [PREDECESSORS 18-18]: [18]                                                                            ||
+|| [SUCCESORS 20-20]: [20]                                                                               ||
+++=======================================================================================================++
+|
++
+|
++-------------------------------------------------------------------------------------------------------+
+| [20]: <Ending>                                                                                        |
+| [718][_StructMember]< { _Attribute @ } NAME ":" _Type ";" >                                           |
+| [AST-INSTRUCTIONS]:                                                                                   |
+|   - EndObject()                                                                                       |
+|   > Field(StructMember::attributes)                                                                   |
+| [RETURN STACK]:                                                                                       |
+|   [6][15]: _StructMember -> [727][_Struct]< "struct" NAME "{" { _StructMember @ } "}" >               |
+|   [1][0]: _Struct -> [785][_DeclarationCandidates]<< !_Struct @ >>                                    |
+|   [0][0]: _DeclarationCandidates -> [790][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> |
+| [PREDECESSORS 19-19]: [19]                                                                            |
+| [SUCCESORS 21-21]: [21]                                                                               |
++-------------------------------------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++=======================================================================================================++
+|| [21]: {NAME} z                                                                                        ||
+|| [722][_StructMember]< { _Attribute } NAME @ ":" _Type ";" >                                           ||
+|| [AST-INSTRUCTIONS]:                                                                                   ||
+||   + Token()                                                                                           ||
+||   + Field(StructMember::name)                                                                         ||
+|| [RETURN STACK]:                                                                                       ||
+||   [6][15]: _StructMember -> [727][_Struct]< "struct" NAME "{" { _StructMember @ } "}" >               ||
+||   [1][0]: _Struct -> [785][_DeclarationCandidates]<< !_Struct @ >>                                    ||
+||   [0][0]: _DeclarationCandidates -> [790][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> ||
+|| [PREDECESSORS 20-20]: [20]                                                                            ||
+|| [SUCCESORS 22-22]: [22]                                                                               ||
+++=======================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++=======================================================================================================++
+|| [22]: {COLON} :                                                                                       ||
+|| [719][_StructMember]< { _Attribute } NAME ":" @ _Type ";" >                                           ||
+|| [AST-INSTRUCTIONS]:                                                                                   ||
+|| [RETURN STACK]:                                                                                       ||
+||   [6][15]: _StructMember -> [727][_Struct]< "struct" NAME "{" { _StructMember @ } "}" >               ||
+||   [1][0]: _Struct -> [785][_DeclarationCandidates]<< !_Struct @ >>                                    ||
+||   [0][0]: _DeclarationCandidates -> [790][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> ||
+|| [PREDECESSORS 21-21]: [21]                                                                            ||
+|| [SUCCESORS 23-23]: [23]                                                                               ||
+++=======================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++=======================================================================================================++
+|| [23]: {TYPE_INT} int                                                                                  ||
+|| [20][_Type]< "int" @ >                                                                                ||
+|| [AST-INSTRUCTIONS]:                                                                                   ||
+||   - BeginObject(PredefinedType)                                                                       ||
+|| [RETURN STACK]:                                                                                       ||
+||   [8][22]: _Type -> [721][_StructMember]< { _Attribute } NAME ":" _Type @ ";" >                       ||
+||   [6][15]: _StructMember -> [727][_Struct]< "struct" NAME "{" { _StructMember @ } "}" >               ||
+||   [1][0]: _Struct -> [785][_DeclarationCandidates]<< !_Struct @ >>                                    ||
+||   [0][0]: _DeclarationCandidates -> [790][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> ||
+|| [PREDECESSORS 22-22]: [22]                                                                            ||
+|| [SUCCESORS 24-24]: [24]                                                                               ||
+++=======================================================================================================++
+|
++
+|
++-------------------------------------------------------------------------------------------------------+
+| [24]: <Ending>                                                                                        |
+| [721][_StructMember]< { _Attribute } NAME ":" _Type @ ";" >                                           |
+| [AST-INSTRUCTIONS]:                                                                                   |
+|   - EnumItem(3)                                                                                       |
+|   - Field(PredefinedType::name)                                                                       |
+|   - EndObject()                                                                                       |
+|   > Field(StructMember::type)                                                                         |
+| [RETURN STACK]:                                                                                       |
+|   [6][15]: _StructMember -> [727][_Struct]< "struct" NAME "{" { _StructMember @ } "}" >               |
+|   [1][0]: _Struct -> [785][_DeclarationCandidates]<< !_Struct @ >>                                    |
+|   [0][0]: _DeclarationCandidates -> [790][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> |
+| [PREDECESSORS 23-23]: [23]                                                                            |
+| [SUCCESORS 25-25]: [25]                                                                               |
++-------------------------------------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++=======================================================================================================++
+|| [25]: {SEMICOLON} ;                                                                                   ||
+|| [720][_StructMember]< { _Attribute } NAME ":" _Type ";" @ >                                           ||
+|| [AST-INSTRUCTIONS]:                                                                                   ||
+|| [RETURN STACK]:                                                                                       ||
+||   [6][15]: _StructMember -> [727][_Struct]< "struct" NAME "{" { _StructMember @ } "}" >               ||
+||   [1][0]: _Struct -> [785][_DeclarationCandidates]<< !_Struct @ >>                                    ||
+||   [0][0]: _DeclarationCandidates -> [790][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> ||
+|| [PREDECESSORS 24-24]: [24]                                                                            ||
+|| [SUCCESORS 26-26]: [26]                                                                               ||
+++=======================================================================================================++
+|
++
+|
++-------------------------------------------------------------------------------------------------------+
+| [26]: <Ending>                                                                                        |
+| [727][_Struct]< "struct" NAME "{" { _StructMember @ } "}" >                                           |
+| [AST-INSTRUCTIONS]:                                                                                   |
+|   - EndObject()                                                                                       |
+|   > Field(StructDeclaration::members)                                                                 |
+| [RETURN STACK]:                                                                                       |
+|   [1][0]: _Struct -> [785][_DeclarationCandidates]<< !_Struct @ >>                                    |
+|   [0][0]: _DeclarationCandidates -> [790][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> |
+| [PREDECESSORS 25-25]: [25]                                                                            |
+| [SUCCESORS 27-27]: [27]                                                                               |
++-------------------------------------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++=======================================================================================================++
+|| [27]: {CLOSE_BRACE} }                                                                                 ||
+|| [728][_Struct]< "struct" NAME "{" { _StructMember } "}" @ >                                           ||
+|| [AST-INSTRUCTIONS]:                                                                                   ||
+|| [RETURN STACK]:                                                                                       ||
+||   [1][0]: _Struct -> [785][_DeclarationCandidates]<< !_Struct @ >>                                    ||
+||   [0][0]: _DeclarationCandidates -> [790][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> ||
+|| [PREDECESSORS 26-26]: [26]                                                                            ||
+|| [SUCCESORS 28-28]: [28]                                                                               ||
+++=======================================================================================================++
+|
++
+|
++-------------------------------------------------------------------------------------------------------+
+| [28]: <Ending>                                                                                        |
+| [785][_DeclarationCandidates]<< !_Struct @ >>                                                         |
+| [AST-INSTRUCTIONS]:                                                                                   |
+|   - EndObject()                                                                                       |
+| [RETURN STACK]:                                                                                       |
+|   [0][0]: _DeclarationCandidates -> [790][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> |
+| [PREDECESSORS 27-27]: [27]                                                                            |
+| [SUCCESORS 29-29]: [29]                                                                               |
++-------------------------------------------------------------------------------------------------------+
+|
++
+|
++-------------------------------------------------------------------+
+| [29]: <Ending>                                                    |
+| [790][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> |
+| [AST-INSTRUCTIONS]:                                               |
+|   - ReopenObject()                                                |
+|   - EndObject()                                                   |
+|   > ReopenObject()                                                |
+| [PREDECESSORS 28-28]: [28]                                        |
+| [SUCCESORS 30-30]: [30]                                           |
++-------------------------------------------------------------------+
+|
++
+|
++----------------------------------+
+| [30]: <Ending>                   |
+| [788][_Declaration] END [ENDING] |
+| [AST-INSTRUCTIONS]:              |
+|   - EndObject()                  |
+| [PREDECESSORS 29-29]: [29]       |
++----------------------------------+

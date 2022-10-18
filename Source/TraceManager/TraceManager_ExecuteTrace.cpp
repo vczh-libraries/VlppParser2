@@ -131,184 +131,121 @@ TraceManager::ExecuteTrace
 				}
 			};
 
-			Ptr<ParsingAstBase> TraceManager::ExecuteTrace(Trace* trace, IAstInsReceiver& receiver, collections::List<regex::RegexToken>& tokens)
-			{
 #define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::ExecuteTrace(Trace*, IAstInsReceiver&, List<RegexToken>&)#"
-				CHECK_ERROR(state == TraceManagerState::PreparedTraceRoute, ERROR_MESSAGE_PREFIX L"Wrong timing to call this function.");
+
+			void TraceManager::ExecuteSingleTrace(TraceManagerSubmitter& submitter, Trace* trace, vint32_t firstIns, vint32_t lastIns, TraceInsLists& insLists, collections::List<regex::RegexToken>& tokens)
+			{
+				for (vint32_t i = firstIns; i <= lastIns; i++)
+				{
+					auto& ins = ReadInstruction(i, insLists);
+					auto& token = tokens[trace->currentTokenIndex];
+					submitter.Submit(ins, token, trace->currentTokenIndex);
+				}
+			}
+
+			void TraceManager::ExecuteSingleStep(TraceManagerSubmitter& submitter, ExecutionStep* step, collections::List<regex::RegexToken>& tokens)
+			{
+				TraceInsLists temp;
+
+				switch (step->type)
+				{
+				case ExecutionType::Instruction:
+					{
+						// execute from the start trace
+						auto trace = GetTrace(Ref<Trace>(step->et_i.startTrace));
+
+						while (trace)
+						{
+							vint32_t firstIns = -1;
+							vint32_t lastIns = -1;
+							auto insLists = &temp;
+							if (trace->traceExecRef == nullref)
+							{
+								ReadInstructionList(trace, temp);
+							}
+							else
+							{
+								insLists = &GetTraceExec(trace->traceExecRef)->insLists;
+							}
+
+							// find instruction range to execute
+							if (trace->allocatedIndex == step->et_i.startTrace)
+							{
+								firstIns = step->et_i.startIns;
+							}
+							else
+							{
+								firstIns = 0;
+							}
+
+							if (trace->allocatedIndex == step->et_i.endTrace)
+							{
+								lastIns = step->et_i.endIns;
+							}
+							else
+							{
+								lastIns = insLists->c3 - 1;
+							}
+
+							// execute instructions
+							ExecuteSingleTrace(submitter, trace, firstIns, lastIns, *insLists, tokens);
+
+							// find the next trace
+							if (step->et_i.endTrace == trace->allocatedIndex)
+							{
+								break;
+							}
+							else if (trace->successors.first == nullref)
+							{
+								CHECK_FAIL(ERROR_MESSAGE_PREFIX L"Successor trace missing!");
+							}
+							else if (trace->successors.first == trace->successors.last)
+							{
+								trace = GetTrace(trace->successors.first);
+							}
+							else
+							{
+								CHECK_FAIL(ERROR_MESSAGE_PREFIX L"Ambiguity should not happen inside one execution step!");
+							}
+						}
+					}
+					break;
+				case ExecutionType::ResolveAmbiguity:
+					{
+						AstIns ins = { AstInsType::ResolveAmbiguity,step->et_ra.type,step->et_ra.count };
+						auto raTrace = GetTrace(Ref<Trace>(step->et_ra.trace));
+						raTrace = EnsureTraceWithValidStates(raTrace);
+						auto raToken = raTrace->currentTokenIndex;
+						submitter.Submit(ins, tokens[raToken], raToken);
+					}
+					break;
+				default:;
+				}
+			}
+
+			Ptr<ParsingAstBase> TraceManager::ExecuteTrace(IAstInsReceiver& receiver, collections::List<regex::RegexToken>& tokens)
+			{
+				CHECK_ERROR(state == TraceManagerState::ResolvedAmbiguity, ERROR_MESSAGE_PREFIX L"Wrong timing to call this function.");
 
 				TraceManagerSubmitter submitter;
 				submitter.receiver = &receiver;
 
-				// execute from the root trace
-
-				vint32_t startIns = 0;
-				while (trace)
+				// execute from the first step
+				auto step = GetInitialExecutionStep();
+				CHECK_ERROR(step != nullptr, L"Ambiguity not implemented!");
+				while (step)
 				{
-					TraceInsLists insLists;
-					ReadInstructionList(trace, insLists);
+					// execute step
+					ExecuteSingleStep(submitter, step, tokens);
 
-					vint32_t minIns = 0;
-					vint32_t maxIns = insLists.c3 - 1;
-					if (trace->ambiguityMergeInsPostfix != -1)
-					{
-						minIns = insLists.c3 - trace->ambiguityMergeInsPostfix;
-					}
-					if (trace->ambiguityBranchInsPostfix != -1)
-					{
-						maxIns = insLists.c3 - trace->ambiguityBranchInsPostfix - 1;
-					}
-
-					// if the current trace is an ambiguity resolving trace
-					// we check if all predecessors has been visited
-					// if yes, we continue
-					// if no, we jump to the BeginObject and repeat it again
-
-					if (trace->ambiguity.traceBeginObject != -1 && trace->ambiguityRouting.predecessorCount == -1)
-					{
-						// we need to know how many predecessors there
-						// the number is calculated and cached when an ambiguity resolving trace is visited for the first time
-						trace->ambiguityRouting.predecessorCount = 0;
-						auto predecessorId = trace->predecessors.first;
-						while (predecessorId != -1)
-						{
-							trace->ambiguityRouting.predecessorCount++;
-							predecessorId = GetTrace(predecessorId)->predecessors.siblingNext;
-						}
-					}
-
-					if (trace->ambiguity.traceBeginObject != -1)
-					{
-						if (0 <= trace->ambiguity.insEndObject && trace->ambiguity.insEndObject < insLists.c3)
-						{
-							// execute from the beginning to EndObject instruction if it exists
-							// if ambiguityMergeInsPostfix exists
-							// then insEndObject will be the last instruction in the prefix
-							// so it is skipped and this loop does nothing
-							// the EndObject instruction has already been executed by its predecessors
-							for (vint32_t i = minIns; i <= trace->ambiguity.insEndObject; i++)
-							{
-								auto& ins = ReadInstruction(i, insLists);
-								auto& token = tokens[trace->currentTokenIndex];
-								submitter.Submit(ins, token, trace->currentTokenIndex);
-							}
-						}
-						else
-						{
-							// otherwise this must be the trace created by CreateLastMergingTrace
-							CHECK_ERROR(insLists.c3 == 0 && trace->successors.first == -1 && trace->successors.last == -1, ERROR_MESSAGE_PREFIX L"Instruction index out of range.");
-						}
-
-						// for any ambiguity resolving trace
-						// we check all predecessors has been visited
-						trace->ambiguityRouting.branchVisited++;
-						auto traceBeginObject = GetTrace(trace->ambiguity.traceBeginObject);
-
-						if (trace->ambiguityRouting.branchVisited == trace->ambiguityRouting.predecessorCount)
-						{
-							// if all predecessors has been visited
-							// we reset the number to 0
-							// because TraceManager::ExecuteTrace could be called multiple time
-							trace->ambiguityRouting.branchVisited = 0;
-							{
-								// submit a ResolveAmbiguity instruction
-								auto& token = tokens[trace->currentTokenIndex];
-								AstIns insResolve = { AstInsType::ResolveAmbiguity,trace->ambiguity.ambiguityType,trace->ambiguityRouting.predecessorCount };
-								submitter.Submit(insResolve, token, trace->currentTokenIndex);
-							}
-
-							// execute all instructions after EndObject
-							// these part should not be repeated
-							for (vint32_t i = trace->ambiguity.insEndObject + 1; i <= maxIns; i++)
-							{
-								auto& ins = ReadInstruction(i, insLists);
-								auto& token = tokens[trace->currentTokenIndex];
-								submitter.Submit(ins, token, trace->currentTokenIndex);
-							}
-						}
-						else
-						{
-							// if there are unvisited predecessors
-							// we jump to the BeginObject instruction and repeat it again
-							startIns = trace->ambiguity.insBeginObject;
-							trace = traceBeginObject;
-							goto FOUND_NEXT_TRACE;
-						}
-					}
-					else
-					{
-						// otherwise, just submit instructions
-						CHECK_ERROR(minIns <= startIns, ERROR_MESSAGE_PREFIX L"startIns corrupted.");
-						for (vint32_t i = startIns; i <= maxIns; i++)
-						{
-							auto& ins = ReadInstruction(i, insLists);
-							auto& token = tokens[trace->currentTokenIndex];
-							submitter.Submit(ins, token, trace->currentTokenIndex);
-						}
-					}
-
-					if (trace->successors.first == -1)
-					{
-						trace = nullptr;
-						startIns = 0;
-					}
-					else if (trace->successors.first == trace->successors.last)
-					{
-						trace = GetTrace(trace->successors.first);
-						startIns = 0;
-					}
-					else
-					{
-						// if there are multiple successors
-						// whenever this trace is visited
-						// we pick a different successor to continue
-						auto nextSuccessorId = trace->successors.first;
-						Trace* successor = nullptr;
-						for (vint i = 0; i <= trace->ambiguityRouting.branchVisited; i++)
-						{
-							CHECK_ERROR(nextSuccessorId != -1, ERROR_MESSAGE_PREFIX L"branchVisited corrupted.");
-							successor = GetTrace(nextSuccessorId);
-							nextSuccessorId = successor->successors.siblingNext;
-						}
-
-						if (nextSuccessorId == -1)
-						{
-							trace->ambiguityRouting.branchVisited = 0;
-						}
-						else
-						{
-							trace->ambiguityRouting.branchVisited++;
-						}
-
-						// this could happen when all BeginObject are in successors
-						// if the current successor is the first successor
-						// then we need to execute the prefix
-						if (startIns >= insLists.c3)
-						{
-							startIns -= insLists.c3;
-							if (trace->successors.first == successor->allocatedIndex)
-							{
-								ReadInstructionList(successor, insLists);
-								for (vint32_t i = 0; i < startIns; i++)
-								{
-									auto& ins = ReadInstruction(i, insLists);
-									auto& token = tokens[successor->currentTokenIndex];
-									submitter.Submit(ins, token, trace->currentTokenIndex);
-								}
-							}
-						}
-						else
-						{
-							startIns = 0;
-						}
-						trace = successor;
-					}
-				FOUND_NEXT_TRACE:;
+					// find the next step
+					step = step->next == nullref ? nullptr : GetExecutionStep(step->next);
 				}
 
 				submitter.ExecuteSubmitted();
 				return receiver.Finished();
-#undef ERROR_MESSAGE_PREFIX
 			}
+#undef ERROR_MESSAGE_PREFIX
 		}
 	}
 }

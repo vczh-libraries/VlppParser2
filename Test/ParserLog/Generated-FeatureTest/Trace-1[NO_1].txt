@@ -1,0 +1,79 @@
+﻿================ EXECUTION STEPS ================
+[0]: 0@0 - 5@1
+
+==================== TRACES =====================
+
++----------------------+
+| [0]: <Start>         |
+| [151][Module] BEGIN  |
+| [AST-INSTRUCTIONS]:  |
+| [SUCCESORS 1-1]: [1] |
++----------------------+
+[0]
+ |
+ +
+ |
+[0]
+++===================================================================++
+|| [1]: {NESTED_OPTIONAL} nested_optional                            ||
+|| [53][NestedOptional]< "nested_optional" @ [ NO2 ] Plus { Plus } > ||
+|| [AST-INSTRUCTIONS]:                                               ||
+||   - DelayFieldAssignment()                                        ||
+||   - BeginObject(NestedOptionalFeature)                            ||
+|| [RETURN STACK]:                                                   ||
+||   [0][0]: NestedOptional -> [173][Module]<< !NestedOptional @ >>  ||
+|| [PREDECESSORS 0-0]: [0]                                           ||
+|| [SUCCESORS 2-2]: [2]                                              ||
+++===================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++=====================================================================================++
+|| [2]: {PLUS} +                                                                       ||
+|| [2][Plus]< "+" @ >                                                                  ||
+|| [AST-INSTRUCTIONS]:                                                                 ||
+||   - BeginObject(Plus)                                                               ||
+|| [RETURN STACK]:                                                                     ||
+||   [1][1]: Plus -> [55][NestedOptional]< "nested_optional" [ NO2 ] Plus @ { Plus } > ||
+||   [0][0]: NestedOptional -> [173][Module]<< !NestedOptional @ >>                    ||
+|| [PREDECESSORS 1-1]: [1]                                                             ||
+|| [SUCCESORS 3-3]: [3]                                                                ||
+++=====================================================================================++
+|
++
+|
++-------------------------------------------------------------------+
+| [3]: <Ending>                                                     |
+| [55][NestedOptional]< "nested_optional" [ NO2 ] Plus @ { Plus } > |
+| [AST-INSTRUCTIONS]:                                               |
+|   - EndObject()                                                   |
+|   > Field(NestedOptionalFeature::tail3)                           |
+| [RETURN STACK]:                                                   |
+|   [0][0]: NestedOptional -> [173][Module]<< !NestedOptional @ >>  |
+| [PREDECESSORS 2-2]: [2]                                           |
+| [SUCCESORS 4-4]: [4]                                              |
++-------------------------------------------------------------------+
+|
++
+|
++--------------------------------------+
+| [4]: <Ending>                        |
+| [173][Module]<< !NestedOptional @ >> |
+| [AST-INSTRUCTIONS]:                  |
+|   - EndObject()                      |
+| [PREDECESSORS 3-3]: [3]              |
+| [SUCCESORS 5-5]: [5]                 |
++--------------------------------------+
+|
++
+|
++----------------------------+
+| [5]: <Ending>              |
+| [152][Module] END [ENDING] |
+| [AST-INSTRUCTIONS]:        |
+|   - ReopenObject()         |
+|   - EndObject()            |
+| [PREDECESSORS 4-4]: [4]    |
++----------------------------+

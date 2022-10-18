@@ -31,6 +31,8 @@ TEST_FILE
 	parsersToLoad.Add(ParserDef{ L"Calculator",					L"ExprAst",		L"Module" });
 	parsersToLoad.Add(ParserDef{ L"IfElseAmbiguity",			L"StatAst",		L"Module" });
 	parsersToLoad.Add(ParserDef{ L"IfElseAmbiguity2",			L"StatAst",		L"Module" });
+	parsersToLoad.Add(ParserDef{ L"IfElseAmbiguityOnStat",		L"StatAst",		L"Module" });
+	parsersToLoad.Add(ParserDef{ L"IfElseAmbiguityOnStat2",		L"StatAst",		L"Module" });
 	parsersToLoad.Add(ParserDef{ L"IfElsePriority",				L"StatAst",		L"Module" });
 	parsersToLoad.Add(ParserDef{ L"IfElseSwitch",				L"StatAst",		L"Module" });
 	parsersToLoad.Add(ParserDef{ L"IfElseManual",				L"StatAst",		L"Module" });

@@ -4,6 +4,10 @@
 #include "../../Source/IfElseAmbiguity/Generated/IfElseAmbiguityModuleParser.h"
 #include "../../Source/IfElseAmbiguity2/Generated/IfElseAmbiguity2StatAst_Json.h"
 #include "../../Source/IfElseAmbiguity2/Generated/IfElseAmbiguity2ModuleParser.h"
+#include "../../Source/IfElseAmbiguityOnStat/Generated/IfElseAmbiguityOnStatStatAst_Json.h"
+#include "../../Source/IfElseAmbiguityOnStat/Generated/IfElseAmbiguityOnStatModuleParser.h"
+#include "../../Source/IfElseAmbiguityOnStat2/Generated/IfElseAmbiguityOnStat2StatAst_Json.h"
+#include "../../Source/IfElseAmbiguityOnStat2/Generated/IfElseAmbiguityOnStat2ModuleParser.h"
 #include "../../Source/IfElsePriority/Generated/IfElsePriorityStatAst_Json.h"
 #include "../../Source/IfElsePriority/Generated/IfElsePriorityModuleParser.h"
 #include "../../Source/IfElseManual/Generated/IfElseManualStatAst_Json.h"
@@ -37,6 +41,10 @@ extern FilePath GetOutputDir(const WString& parserName);
 
 namespace TestParser_Generated_TestObjects
 {
+	vint inputDiscovered = 0;
+	vint parsedSuccessfully = 0;
+	vint comparedWithBaseline = 0;
+
 	template<
 		typename TParser,
 		typename TJsonVisitor
@@ -49,6 +57,7 @@ namespace TestParser_Generated_TestObjects
 			FilePath dirOutput
 		)
 	{
+		//if (parserName != L"PrefixMerge7_PmSwitch") return;
 		auto inputPath = GetTestParserInputPath(testFolder);
 		Folder dirInput = FilePath(inputPath) / L"Input";
 		FilePath dirBaseline = FilePath(inputPath) / L"Output";
@@ -60,16 +69,21 @@ namespace TestParser_Generated_TestObjects
 			caseName = inputFile.GetFilePath().GetName();
 			if (caseName.Length() < 4 || caseName.Right(4) != L".txt") continue;
 			caseName = caseName.Left(caseName.Length() - 4);
+			//if (caseName != L"Generic_Name3") continue;
 
 			TEST_CASE(caseName)
 			{
+				inputDiscovered++;
 				auto input = inputFile.ReadAllTextByBom();
 				auto ast = parser.ParseModule(input);
 				auto actualJson = PrintAstJson<TJsonVisitor>(ast);
 				File(dirOutput / (L"Output[" + caseName + L"].json")).WriteAllText(actualJson, true, BomEncoder::Utf8);
 
 				auto expectedJsonFile = File(dirBaseline / (caseName + L".json"));
+				parsedSuccessfully++;
 				if (!expectedJsonFile.Exists()) return;
+				comparedWithBaseline++;
+
 				TEST_PRINT(L"Compared with expectedJson");
 				auto expectedJson = expectedJsonFile.ReadAllTextByBom();
 				AssertLines(expectedJson, actualJson);
@@ -137,8 +151,8 @@ namespace TestParser_Generated_TestObjects
 				args.throwError = true;
 			});
 
-		parser.OnEndOfInput.Add(
-			[&](EndOfInputArgs& args)
+		parser.OnTraceProcessing.Add(
+			[&](TraceProcessingArgs& args)
 			{
 				auto& traceManager = *dynamic_cast<TraceManager*>(args.executor);
 				LogTraceManager(
@@ -146,7 +160,7 @@ namespace TestParser_Generated_TestObjects
 					caseName,
 					args.executable,
 					traceManager,
-					args.rootTrace,
+					args.phase,
 					args.tokens,
 					[=](vint32_t type) { return WString::Unmanaged(typeName((TClasses)type)); },
 					[=](vint32_t field) { return WString::Unmanaged(fieldName((TFields)field)); },
@@ -155,20 +169,22 @@ namespace TestParser_Generated_TestObjects
 					[=](vint32_t state) { return WString::Unmanaged(stateLabel(state)); },
 					[=](vint32_t switchId) { return WString::Unmanaged(switchName(switchId)); }
 				);
+			});
 
-				if (traceManager.concurrentCount == 1)
-				{
-					LogTraceExecution(
-						L"Generated-" + parserName,
-						caseName,
-						[=](vint32_t type) { return WString::Unmanaged(typeName((TClasses)type)); },
-						[=](vint32_t field) { return WString::Unmanaged(fieldName((TFields)field)); },
-						[=](vint32_t token) { return WString::Unmanaged(tokenId((TTokens)token)); },
-						[&](IAstInsReceiver& receiver)
-						{
-							traceManager.ExecuteTrace(args.rootTrace, receiver, args.tokens);
-						});
-				}
+		parser.OnReadyToExecute.Add(
+			[&](ReadyToExecuteArgs& args)
+			{
+				auto& traceManager = *dynamic_cast<TraceManager*>(args.executor);
+				LogTraceExecution(
+					L"Generated-" + parserName,
+					caseName,
+					[=](vint32_t type) { return WString::Unmanaged(typeName((TClasses)type)); },
+					[=](vint32_t field) { return WString::Unmanaged(fieldName((TFields)field)); },
+					[=](vint32_t token) { return WString::Unmanaged(tokenId((TTokens)token)); },
+					[&](IAstInsReceiver& receiver)
+					{
+						traceManager.ExecuteTrace(receiver, args.tokens);
+					});
 			});
 
 		Array<WString> testFolderArray;
@@ -204,7 +220,8 @@ TEST_FILE
 		&ifelseambiguity::IfElseAmbiguityTokenId,
 		&ifelseambiguity::ModuleParserRuleName,
 		&ifelseambiguity::ModuleParserStateLabel,
-		&ifelseambiguity::ModuleParserSwitchName
+		&ifelseambiguity::ModuleParserSwitchName,
+		L"TestCase_IfElseAmbiguity"
 		);
 	TestParser<ifelseambiguity2::ModuleParser, ifelseambiguity2::json_visitor::StatAstVisitor>(
 		L"IfElseAmbiguity2",
@@ -213,7 +230,28 @@ TEST_FILE
 		&ifelseambiguity2::IfElseAmbiguity2TokenId,
 		&ifelseambiguity2::ModuleParserRuleName,
 		&ifelseambiguity2::ModuleParserStateLabel,
-		&ifelseambiguity2::ModuleParserSwitchName
+		&ifelseambiguity2::ModuleParserSwitchName,
+		L"TestCase_IfElseAmbiguity"
+		);
+	TestParser<ifelseambiguityonstat::ModuleParser, ifelseambiguityonstat::json_visitor::StatAstVisitor>(
+		L"IfElseAmbiguityOnStat",
+		&ifelseambiguityonstat::IfElseAmbiguityOnStatTypeName,
+		&ifelseambiguityonstat::IfElseAmbiguityOnStatFieldName,
+		&ifelseambiguityonstat::IfElseAmbiguityOnStatTokenId,
+		&ifelseambiguityonstat::ModuleParserRuleName,
+		&ifelseambiguityonstat::ModuleParserStateLabel,
+		&ifelseambiguityonstat::ModuleParserSwitchName,
+		L"TestCase_IfElseAmbiguityOnStat"
+		);
+	TestParser<ifelseambiguityonstat2::ModuleParser, ifelseambiguityonstat2::json_visitor::StatAstVisitor>(
+		L"IfElseAmbiguityOnStat2",
+		&ifelseambiguityonstat2::IfElseAmbiguityOnStat2TypeName,
+		&ifelseambiguityonstat2::IfElseAmbiguityOnStat2FieldName,
+		&ifelseambiguityonstat2::IfElseAmbiguityOnStat2TokenId,
+		&ifelseambiguityonstat2::ModuleParserRuleName,
+		&ifelseambiguityonstat2::ModuleParserStateLabel,
+		&ifelseambiguityonstat2::ModuleParserSwitchName,
+		L"TestCase_IfElseAmbiguityOnStat"
 		);
 	TestParser<ifelsepriority::ModuleParser, ifelsepriority::json_visitor::StatAstVisitor>(
 		L"IfElsePriority",
@@ -222,7 +260,8 @@ TEST_FILE
 		&ifelsepriority::IfElsePriorityTokenId,
 		&ifelsepriority::ModuleParserRuleName,
 		&ifelsepriority::ModuleParserStateLabel,
-		&ifelsepriority::ModuleParserSwitchName
+		&ifelsepriority::ModuleParserSwitchName,
+		L"TestCase_IfElse"
 		);
 	TestParser<ifelsemanual::ModuleParser, ifelsemanual::json_visitor::StatAstVisitor>(
 		L"IfElseManual",
@@ -231,7 +270,8 @@ TEST_FILE
 		&ifelsemanual::IfElseManualTokenId,
 		&ifelsemanual::ModuleParserRuleName,
 		&ifelsemanual::ModuleParserStateLabel,
-		&ifelsemanual::ModuleParserSwitchName
+		&ifelsemanual::ModuleParserSwitchName,
+		L"TestCase_IfElse"
 		);
 	TestParser<ifelseswitch::ModuleParser, ifelseswitch::json_visitor::StatAstVisitor>(
 		L"IfElseSwitch",
@@ -240,7 +280,8 @@ TEST_FILE
 		&ifelseswitch::IfElseSwitchTokenId,
 		&ifelseswitch::ModuleParserRuleName,
 		&ifelseswitch::ModuleParserStateLabel,
-		&ifelseswitch::ModuleParserSwitchName
+		&ifelseswitch::ModuleParserSwitchName,
+		L"TestCase_IfElse"
 		);
 	TestParser<genericambiguity::ModuleParser, genericambiguity::json_visitor::ExprAstVisitor>(
 		L"GenericAmbiguity",
@@ -277,7 +318,8 @@ TEST_FILE
 		&prefixmerge1_lri::ModuleParserRuleName,
 		&prefixmerge1_lri::ModuleParserStateLabel,
 		&prefixmerge1_lri::ModuleParserSwitchName,
-		L"TestCase_PrefixMerge"
+		L"TestCase_PrefixMerge",
+		L"TestCase_PrefixMerge_Ambiguous1"
 		);
 	TestParser<prefixmerge2_lrirequired::ModuleParser, prefixmerge2_lrirequired::json_visitor::TypeOrExprVisitor>(
 		L"PrefixMerge2_LriRequired",
@@ -287,7 +329,8 @@ TEST_FILE
 		&prefixmerge2_lrirequired::ModuleParserRuleName,
 		&prefixmerge2_lrirequired::ModuleParserStateLabel,
 		&prefixmerge2_lrirequired::ModuleParserSwitchName,
-		L"TestCase_PrefixMerge"
+		L"TestCase_PrefixMerge",
+		L"TestCase_PrefixMerge_Ambiguous1"
 		);
 	TestParser<prefixmerge3_lrinested::ModuleParser, prefixmerge3_lrinested::json_visitor::TypeOrExprVisitor>(
 		L"PrefixMerge3_LriNested",
@@ -298,6 +341,7 @@ TEST_FILE
 		&prefixmerge3_lrinested::ModuleParserStateLabel,
 		&prefixmerge3_lrinested::ModuleParserSwitchName,
 		L"TestCase_PrefixMerge",
+		L"TestCase_PrefixMerge_Ambiguous1",
 		L"TestCase_PrefixMerge_CtorExpr"
 		);
 	TestParser<prefixmerge4_lrimultiple::ModuleParser, prefixmerge4_lrimultiple::json_visitor::TypeOrExprVisitor>(
@@ -309,6 +353,7 @@ TEST_FILE
 		&prefixmerge4_lrimultiple::ModuleParserStateLabel,
 		&prefixmerge4_lrimultiple::ModuleParserSwitchName,
 		L"TestCase_PrefixMerge",
+		L"TestCase_PrefixMerge_Ambiguous1",
 		L"TestCase_PrefixMerge_CtorExpr"
 		);
 	TestParser<prefixmerge5_pm::ModuleParser, prefixmerge5_pm::json_visitor::TypeOrExprVisitor>(
@@ -320,6 +365,7 @@ TEST_FILE
 		&prefixmerge5_pm::ModuleParserStateLabel,
 		&prefixmerge5_pm::ModuleParserSwitchName,
 		L"TestCase_PrefixMerge",
+		L"TestCase_PrefixMerge_Ambiguous2",
 		L"TestCase_PrefixMerge_CtorExpr"
 		);
 	TestParser<prefixmerge6_pm2::ModuleParser, prefixmerge6_pm2::json_visitor::TypeOrExprVisitor>(
@@ -331,6 +377,7 @@ TEST_FILE
 		&prefixmerge6_pm2::ModuleParserStateLabel,
 		&prefixmerge6_pm2::ModuleParserSwitchName,
 		L"TestCase_PrefixMerge",
+		L"TestCase_PrefixMerge_Ambiguous2",
 		L"TestCase_PrefixMerge_CtorExpr",
 		L"TestCase_PrefixMerge_ThrowComma"
 		);
@@ -343,8 +390,19 @@ TEST_FILE
 		&prefixmerge7_pmswitch::ModuleParserStateLabel,
 		&prefixmerge7_pmswitch::ModuleParserSwitchName,
 		L"TestCase_PrefixMerge",
+		L"TestCase_PrefixMerge_Ambiguous1",
 		L"TestCase_PrefixMerge_CtorExpr",
 		L"TestCase_PrefixMerge_ThrowComma",
 		L"TestCase_PrefixMerge_Generic"
 		);
+
+	using namespace TestParser_Generated_TestObjects;
+
+	TEST_CASE(L"Ensure all cases have baseline")
+	{
+		unittest::UnitTest::PrintMessage(L"Input discovered: " + itow(inputDiscovered), unittest::UnitTest::MessageKind::Info);
+		unittest::UnitTest::PrintMessage(L"Parsed successfully: " + itow(parsedSuccessfully), unittest::UnitTest::MessageKind::Info);
+		unittest::UnitTest::PrintMessage(L"Compared with baseline: " + itow(comparedWithBaseline), unittest::UnitTest::MessageKind::Info);
+		TEST_ASSERT(parsedSuccessfully == comparedWithBaseline);
+	});
 }

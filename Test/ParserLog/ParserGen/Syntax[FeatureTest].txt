@@ -1,0 +1,1494 @@
+﻿{
+    "$ast": "SyntaxFile",
+    "rules": [{
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "RefSyntax",
+                "field": "",
+                "literal": "\"+\"",
+                "refType": "Literal"
+            },
+            "type": "Plus"
+        }],
+        "name": "Plus",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "RefSyntax",
+                "field": "",
+                "literal": "\"<\"",
+                "refType": "Literal"
+            },
+            "type": "Lt"
+        }],
+        "name": "Lt",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "RefSyntax",
+                "field": "",
+                "literal": "\">\"",
+                "refType": "Literal"
+            },
+            "type": "Gt"
+        }],
+        "name": "Gt",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [{
+                "$ast": "Assignment",
+                "field": "priority",
+                "type": "Strong",
+                "value": "Equal"
+            }],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "SequenceSyntax",
+                        "first": {
+                            "$ast": "RefSyntax",
+                            "field": "",
+                            "literal": "\"optional\"",
+                            "refType": "Literal"
+                        },
+                        "second": {
+                            "$ast": "OptionalSyntax",
+                            "priority": "Equal",
+                            "syntax": {
+                                "$ast": "RefSyntax",
+                                "field": "optional",
+                                "literal": "Plus",
+                                "refType": "Id"
+                            }
+                        }
+                    },
+                    "second": {
+                        "$ast": "RefSyntax",
+                        "field": "",
+                        "literal": "\"+\"",
+                        "refType": "Literal"
+                    }
+                },
+                "second": {
+                    "$ast": "LoopSyntax",
+                    "delimiter": null,
+                    "syntax": {
+                        "$ast": "RefSyntax",
+                        "field": "loop",
+                        "literal": "Plus",
+                        "refType": "Id"
+                    }
+                }
+            },
+            "type": "OptionalFeature"
+        }],
+        "name": "EqualOptional",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [{
+                "$ast": "Assignment",
+                "field": "priority",
+                "type": "Strong",
+                "value": "PreferTake"
+            }],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "SequenceSyntax",
+                        "first": {
+                            "$ast": "RefSyntax",
+                            "field": "",
+                            "literal": "\"positive_optional\"",
+                            "refType": "Literal"
+                        },
+                        "second": {
+                            "$ast": "OptionalSyntax",
+                            "priority": "PreferTake",
+                            "syntax": {
+                                "$ast": "RefSyntax",
+                                "field": "optional",
+                                "literal": "Plus",
+                                "refType": "Id"
+                            }
+                        }
+                    },
+                    "second": {
+                        "$ast": "RefSyntax",
+                        "field": "",
+                        "literal": "\"+\"",
+                        "refType": "Literal"
+                    }
+                },
+                "second": {
+                    "$ast": "LoopSyntax",
+                    "delimiter": null,
+                    "syntax": {
+                        "$ast": "RefSyntax",
+                        "field": "loop",
+                        "literal": "Plus",
+                        "refType": "Id"
+                    }
+                }
+            },
+            "type": "OptionalFeature"
+        }],
+        "name": "PositiveOptional",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [{
+                "$ast": "Assignment",
+                "field": "priority",
+                "type": "Strong",
+                "value": "PreferSkip"
+            }],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "SequenceSyntax",
+                        "first": {
+                            "$ast": "RefSyntax",
+                            "field": "",
+                            "literal": "\"negative_optional\"",
+                            "refType": "Literal"
+                        },
+                        "second": {
+                            "$ast": "OptionalSyntax",
+                            "priority": "PreferSkip",
+                            "syntax": {
+                                "$ast": "RefSyntax",
+                                "field": "optional",
+                                "literal": "Plus",
+                                "refType": "Id"
+                            }
+                        }
+                    },
+                    "second": {
+                        "$ast": "RefSyntax",
+                        "field": "",
+                        "literal": "\"+\"",
+                        "refType": "Literal"
+                    }
+                },
+                "second": {
+                    "$ast": "LoopSyntax",
+                    "delimiter": null,
+                    "syntax": {
+                        "$ast": "RefSyntax",
+                        "field": "loop",
+                        "literal": "Plus",
+                        "refType": "Id"
+                    }
+                }
+            },
+            "type": "OptionalFeature"
+        }],
+        "name": "NegativeOptional",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "PartialClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "OptionalSyntax",
+                    "priority": "Equal",
+                    "syntax": {
+                        "$ast": "RefSyntax",
+                        "field": "optional",
+                        "literal": "Plus",
+                        "refType": "Id"
+                    }
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "tail1",
+                    "literal": "Plus",
+                    "refType": "Id"
+                }
+            },
+            "type": "NestedOptionalFeature"
+        }],
+        "name": "NO1",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "PartialClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "OptionalSyntax",
+                    "priority": "PreferTake",
+                    "syntax": {
+                        "$ast": "RefSyntax",
+                        "field": "optional",
+                        "literal": "Plus",
+                        "refType": "Id"
+                    }
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "tail1",
+                    "literal": "Plus",
+                    "refType": "Id"
+                }
+            },
+            "type": "NestedOptionalFeature"
+        }],
+        "name": "PositiveNO1",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "PartialClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "OptionalSyntax",
+                    "priority": "PreferSkip",
+                    "syntax": {
+                        "$ast": "RefSyntax",
+                        "field": "optional",
+                        "literal": "Plus",
+                        "refType": "Id"
+                    }
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "tail1",
+                    "literal": "Plus",
+                    "refType": "Id"
+                }
+            },
+            "type": "NestedOptionalFeature"
+        }],
+        "name": "NegativeNO1",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "PartialClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "OptionalSyntax",
+                    "priority": "Equal",
+                    "syntax": {
+                        "$ast": "RefSyntax",
+                        "field": "",
+                        "literal": "NO1",
+                        "refType": "Id"
+                    }
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "tail2",
+                    "literal": "Plus",
+                    "refType": "Id"
+                }
+            },
+            "type": "NestedOptionalFeature"
+        }],
+        "name": "NO2",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "PartialClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "OptionalSyntax",
+                    "priority": "PreferTake",
+                    "syntax": {
+                        "$ast": "RefSyntax",
+                        "field": "",
+                        "literal": "PositiveNO1",
+                        "refType": "Id"
+                    }
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "tail2",
+                    "literal": "Plus",
+                    "refType": "Id"
+                }
+            },
+            "type": "NestedOptionalFeature"
+        }],
+        "name": "PositiveNO2",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "PartialClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "OptionalSyntax",
+                    "priority": "PreferSkip",
+                    "syntax": {
+                        "$ast": "RefSyntax",
+                        "field": "",
+                        "literal": "NegativeNO1",
+                        "refType": "Id"
+                    }
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "tail2",
+                    "literal": "Plus",
+                    "refType": "Id"
+                }
+            },
+            "type": "NestedOptionalFeature"
+        }],
+        "name": "NegativeNO2",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "SequenceSyntax",
+                        "first": {
+                            "$ast": "RefSyntax",
+                            "field": "",
+                            "literal": "\"nested_optional\"",
+                            "refType": "Literal"
+                        },
+                        "second": {
+                            "$ast": "OptionalSyntax",
+                            "priority": "Equal",
+                            "syntax": {
+                                "$ast": "RefSyntax",
+                                "field": "",
+                                "literal": "NO2",
+                                "refType": "Id"
+                            }
+                        }
+                    },
+                    "second": {
+                        "$ast": "RefSyntax",
+                        "field": "tail3",
+                        "literal": "Plus",
+                        "refType": "Id"
+                    }
+                },
+                "second": {
+                    "$ast": "LoopSyntax",
+                    "delimiter": null,
+                    "syntax": {
+                        "$ast": "RefSyntax",
+                        "field": "tails",
+                        "literal": "Plus",
+                        "refType": "Id"
+                    }
+                }
+            },
+            "type": "NestedOptionalFeature"
+        }],
+        "name": "NestedOptional",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "SequenceSyntax",
+                        "first": {
+                            "$ast": "RefSyntax",
+                            "field": "",
+                            "literal": "\"nested_positive_optional\"",
+                            "refType": "Literal"
+                        },
+                        "second": {
+                            "$ast": "OptionalSyntax",
+                            "priority": "PreferTake",
+                            "syntax": {
+                                "$ast": "RefSyntax",
+                                "field": "",
+                                "literal": "PositiveNO2",
+                                "refType": "Id"
+                            }
+                        }
+                    },
+                    "second": {
+                        "$ast": "RefSyntax",
+                        "field": "tail3",
+                        "literal": "Plus",
+                        "refType": "Id"
+                    }
+                },
+                "second": {
+                    "$ast": "LoopSyntax",
+                    "delimiter": null,
+                    "syntax": {
+                        "$ast": "RefSyntax",
+                        "field": "tails",
+                        "literal": "Plus",
+                        "refType": "Id"
+                    }
+                }
+            },
+            "type": "NestedOptionalFeature"
+        }],
+        "name": "NestedPositiveOptional",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "SequenceSyntax",
+                        "first": {
+                            "$ast": "RefSyntax",
+                            "field": "",
+                            "literal": "\"nested_negative_optional\"",
+                            "refType": "Literal"
+                        },
+                        "second": {
+                            "$ast": "OptionalSyntax",
+                            "priority": "PreferSkip",
+                            "syntax": {
+                                "$ast": "RefSyntax",
+                                "field": "",
+                                "literal": "NegativeNO2",
+                                "refType": "Id"
+                            }
+                        }
+                    },
+                    "second": {
+                        "$ast": "RefSyntax",
+                        "field": "tail3",
+                        "literal": "Plus",
+                        "refType": "Id"
+                    }
+                },
+                "second": {
+                    "$ast": "LoopSyntax",
+                    "delimiter": null,
+                    "syntax": {
+                        "$ast": "RefSyntax",
+                        "field": "tails",
+                        "literal": "Plus",
+                        "refType": "Id"
+                    }
+                }
+            },
+            "type": "NestedOptionalFeature"
+        }],
+        "name": "NestedNegativeOptional",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [{
+                "$ast": "Assignment",
+                "field": "type",
+                "type": "Strong",
+                "value": "Plus"
+            }],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "SequenceSyntax",
+                        "first": {
+                            "$ast": "RefSyntax",
+                            "field": "",
+                            "literal": "\"branched_optional\"",
+                            "refType": "Literal"
+                        },
+                        "second": {
+                            "$ast": "OptionalSyntax",
+                            "priority": "PreferTake",
+                            "syntax": {
+                                "$ast": "RefSyntax",
+                                "field": "optional",
+                                "literal": "Plus",
+                                "refType": "Id"
+                            }
+                        }
+                    },
+                    "second": {
+                        "$ast": "RefSyntax",
+                        "field": "",
+                        "literal": "Plus",
+                        "refType": "Id"
+                    }
+                },
+                "second": {
+                    "$ast": "LoopSyntax",
+                    "delimiter": null,
+                    "syntax": {
+                        "$ast": "RefSyntax",
+                        "field": "tails",
+                        "literal": "Plus",
+                        "refType": "Id"
+                    }
+                }
+            },
+            "type": "BranchedOptionalFeature"
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [{
+                "$ast": "Assignment",
+                "field": "type",
+                "type": "Strong",
+                "value": "Minus"
+            }],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "SequenceSyntax",
+                        "first": {
+                            "$ast": "RefSyntax",
+                            "field": "",
+                            "literal": "\"branched_optional\"",
+                            "refType": "Literal"
+                        },
+                        "second": {
+                            "$ast": "OptionalSyntax",
+                            "priority": "PreferSkip",
+                            "syntax": {
+                                "$ast": "RefSyntax",
+                                "field": "optional",
+                                "literal": "Plus",
+                                "refType": "Id"
+                            }
+                        }
+                    },
+                    "second": {
+                        "$ast": "RefSyntax",
+                        "field": "",
+                        "literal": "Plus",
+                        "refType": "Id"
+                    }
+                },
+                "second": {
+                    "$ast": "LoopSyntax",
+                    "delimiter": null,
+                    "syntax": {
+                        "$ast": "RefSyntax",
+                        "field": "tails",
+                        "literal": "Plus",
+                        "refType": "Id"
+                    }
+                }
+            },
+            "type": "BranchedOptionalFeature"
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [{
+                "$ast": "Assignment",
+                "field": "type",
+                "type": "Strong",
+                "value": "NoCompetition"
+            }],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "SequenceSyntax",
+                        "first": {
+                            "$ast": "RefSyntax",
+                            "field": "",
+                            "literal": "\"branched_optional\"",
+                            "refType": "Literal"
+                        },
+                        "second": {
+                            "$ast": "OptionalSyntax",
+                            "priority": "Equal",
+                            "syntax": {
+                                "$ast": "RefSyntax",
+                                "field": "optional",
+                                "literal": "Plus",
+                                "refType": "Id"
+                            }
+                        }
+                    },
+                    "second": {
+                        "$ast": "RefSyntax",
+                        "field": "",
+                        "literal": "Plus",
+                        "refType": "Id"
+                    }
+                },
+                "second": {
+                    "$ast": "LoopSyntax",
+                    "delimiter": null,
+                    "syntax": {
+                        "$ast": "RefSyntax",
+                        "field": "tails",
+                        "literal": "Plus",
+                        "refType": "Id"
+                    }
+                }
+            },
+            "type": "BranchedOptionalFeature"
+        }],
+        "name": "BranchedOptional",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "PartialClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "RefSyntax",
+                    "field": "gts",
+                    "literal": "Gt",
+                    "refType": "Id"
+                },
+                "second": {
+                    "$ast": "LoopSyntax",
+                    "delimiter": null,
+                    "syntax": {
+                        "$ast": "RefSyntax",
+                        "field": "gts",
+                        "literal": "Gt",
+                        "refType": "Id"
+                    }
+                }
+            },
+            "type": "PbaFeature"
+        }],
+        "name": "PbaGts",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "OptionalSyntax",
+                        "priority": "Equal",
+                        "syntax": {
+                            "$ast": "RefSyntax",
+                            "field": "optional",
+                            "literal": "Plus",
+                            "refType": "Id"
+                        }
+                    },
+                    "second": {
+                        "$ast": "RefSyntax",
+                        "field": "",
+                        "literal": "Plus",
+                        "refType": "Id"
+                    }
+                },
+                "second": {
+                    "$ast": "LoopSyntax",
+                    "delimiter": null,
+                    "syntax": {
+                        "$ast": "RefSyntax",
+                        "field": "tails",
+                        "literal": "Plus",
+                        "refType": "Id"
+                    }
+                }
+            },
+            "type": "PbaFeature"
+        }],
+        "name": "PbaBody",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "SequenceSyntax",
+                        "first": {
+                            "$ast": "RefSyntax",
+                            "field": "",
+                            "literal": "\"prefix_before_ambiguity\"",
+                            "refType": "Literal"
+                        },
+                        "second": {
+                            "$ast": "LoopSyntax",
+                            "delimiter": null,
+                            "syntax": {
+                                "$ast": "RefSyntax",
+                                "field": "lts",
+                                "literal": "Lt",
+                                "refType": "Id"
+                            }
+                        }
+                    },
+                    "second": {
+                        "$ast": "RefSyntax",
+                        "field": "",
+                        "literal": "PbaGts",
+                        "refType": "Id"
+                    }
+                },
+                "second": {
+                    "$ast": "UseSyntax",
+                    "name": "PbaBody"
+                }
+            }
+        }],
+        "name": "Pba",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "OptionalSyntax",
+                        "priority": "Equal",
+                        "syntax": {
+                            "$ast": "RefSyntax",
+                            "field": "optional",
+                            "literal": "Plus",
+                            "refType": "Id"
+                        }
+                    },
+                    "second": {
+                        "$ast": "RefSyntax",
+                        "field": "",
+                        "literal": "Plus",
+                        "refType": "Id"
+                    }
+                },
+                "second": {
+                    "$ast": "LoopSyntax",
+                    "delimiter": null,
+                    "syntax": {
+                        "$ast": "RefSyntax",
+                        "field": "tails",
+                        "literal": "Plus",
+                        "refType": "Id"
+                    }
+                }
+            },
+            "type": "PbaFeature"
+        }],
+        "name": "Pwa1Prefix",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "RefSyntax",
+                        "field": "lts",
+                        "literal": "Lt",
+                        "refType": "Id"
+                    },
+                    "second": {
+                        "$ast": "LoopSyntax",
+                        "delimiter": null,
+                        "syntax": {
+                            "$ast": "RefSyntax",
+                            "field": "lts",
+                            "literal": "Lt",
+                            "refType": "Id"
+                        }
+                    }
+                },
+                "second": {
+                    "$ast": "LoopSyntax",
+                    "delimiter": null,
+                    "syntax": {
+                        "$ast": "RefSyntax",
+                        "field": "gts",
+                        "literal": "Gt",
+                        "refType": "Id"
+                    }
+                }
+            },
+            "type": "Pwa1Feature"
+        }],
+        "name": "Pwa1Body",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "RefSyntax",
+                        "field": "",
+                        "literal": "\"prefix_with_ambiguity_1\"",
+                        "refType": "Literal"
+                    },
+                    "second": {
+                        "$ast": "RefSyntax",
+                        "field": "pba",
+                        "literal": "Pwa1Prefix",
+                        "refType": "Id"
+                    }
+                },
+                "second": {
+                    "$ast": "UseSyntax",
+                    "name": "Pwa1Body"
+                }
+            }
+        }],
+        "name": "Pwa1",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "RefSyntax",
+                        "field": "lts",
+                        "literal": "Lt",
+                        "refType": "Id"
+                    },
+                    "second": {
+                        "$ast": "LoopSyntax",
+                        "delimiter": null,
+                        "syntax": {
+                            "$ast": "RefSyntax",
+                            "field": "lts",
+                            "literal": "Lt",
+                            "refType": "Id"
+                        }
+                    }
+                },
+                "second": {
+                    "$ast": "LoopSyntax",
+                    "delimiter": null,
+                    "syntax": {
+                        "$ast": "RefSyntax",
+                        "field": "gts",
+                        "literal": "Gt",
+                        "refType": "Id"
+                    }
+                }
+            },
+            "type": "PbaFeature"
+        }],
+        "name": "Pwa2Body",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "SequenceSyntax",
+                        "first": {
+                            "$ast": "SequenceSyntax",
+                            "first": {
+                                "$ast": "RefSyntax",
+                                "field": "",
+                                "literal": "\"prefix_with_ambiguity_2\"",
+                                "refType": "Literal"
+                            },
+                            "second": {
+                                "$ast": "OptionalSyntax",
+                                "priority": "Equal",
+                                "syntax": {
+                                    "$ast": "RefSyntax",
+                                    "field": "optional",
+                                    "literal": "Plus",
+                                    "refType": "Id"
+                                }
+                            }
+                        },
+                        "second": {
+                            "$ast": "RefSyntax",
+                            "field": "",
+                            "literal": "Plus",
+                            "refType": "Id"
+                        }
+                    },
+                    "second": {
+                        "$ast": "LoopSyntax",
+                        "delimiter": null,
+                        "syntax": {
+                            "$ast": "RefSyntax",
+                            "field": "tails",
+                            "literal": "Plus",
+                            "refType": "Id"
+                        }
+                    }
+                },
+                "second": {
+                    "$ast": "UseSyntax",
+                    "name": "Pwa2Body"
+                }
+            }
+        }],
+        "name": "Pwa2",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "RefSyntax",
+                "field": "one",
+                "literal": "Lt",
+                "refType": "Id"
+            },
+            "type": "PwlFeature"
+        }, {
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "RefSyntax",
+                    "field": "prefix",
+                    "literal": "Plus",
+                    "refType": "Id"
+                },
+                "second": {
+                    "$ast": "UseSyntax",
+                    "name": "Pwl1_P"
+                }
+            }
+        }],
+        "name": "Pwl1_P",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "Pwl1_P"
+            }
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "RefSyntax",
+                    "field": "prev",
+                    "literal": "Pwl1",
+                    "refType": "Id"
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "one",
+                    "literal": "Lt",
+                    "refType": "Id"
+                }
+            },
+            "type": "PwlFeature"
+        }],
+        "name": "Pwl1",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "RefSyntax",
+                "field": "two",
+                "literal": "Lt",
+                "refType": "Id"
+            },
+            "type": "PwlFeature"
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "RefSyntax",
+                    "field": "prev",
+                    "literal": "Pwl2_P",
+                    "refType": "Id"
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "two",
+                    "literal": "Lt",
+                    "refType": "Id"
+                }
+            },
+            "type": "PwlFeature"
+        }],
+        "name": "Pwl2_P",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "LoopSyntax",
+                    "delimiter": null,
+                    "syntax": {
+                        "$ast": "RefSyntax",
+                        "field": "prefix",
+                        "literal": "Plus",
+                        "refType": "Id"
+                    }
+                },
+                "second": {
+                    "$ast": "UseSyntax",
+                    "name": "Pwl2_P"
+                }
+            }
+        }],
+        "name": "Pwl2",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "PartialClause",
+            "assignments": [{
+                "$ast": "Assignment",
+                "field": "fa",
+                "type": "Strong",
+                "value": "B"
+            }],
+            "syntax": {
+                "$ast": "RefSyntax",
+                "field": "",
+                "literal": "'b'",
+                "refType": "ConditionalLiteral"
+            },
+            "type": "FaFeature"
+        }],
+        "name": "FaPrefix",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [{
+                "$ast": "Assignment",
+                "field": "fa",
+                "type": "Weak",
+                "value": "A"
+            }],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "OptionalSyntax",
+                    "priority": "Equal",
+                    "syntax": {
+                        "$ast": "RefSyntax",
+                        "field": "",
+                        "literal": "FaPrefix",
+                        "refType": "Id"
+                    }
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "'a'",
+                    "refType": "ConditionalLiteral"
+                }
+            },
+            "type": "FaFeature"
+        }],
+        "name": "Fa",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "EqualOptional"
+            }
+        }, {
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "PositiveOptional"
+            }
+        }, {
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "NegativeOptional"
+            }
+        }, {
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "NestedOptional"
+            }
+        }, {
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "NestedPositiveOptional"
+            }
+        }, {
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "NestedNegativeOptional"
+            }
+        }, {
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "BranchedOptional"
+            }
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [{
+                "$ast": "Assignment",
+                "field": "type",
+                "type": "Strong",
+                "value": "Plus"
+            }],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "SequenceSyntax",
+                        "first": {
+                            "$ast": "RefSyntax",
+                            "field": "",
+                            "literal": "\"entry_rule_priority\"",
+                            "refType": "Literal"
+                        },
+                        "second": {
+                            "$ast": "OptionalSyntax",
+                            "priority": "PreferTake",
+                            "syntax": {
+                                "$ast": "RefSyntax",
+                                "field": "optional",
+                                "literal": "Plus",
+                                "refType": "Id"
+                            }
+                        }
+                    },
+                    "second": {
+                        "$ast": "RefSyntax",
+                        "field": "",
+                        "literal": "Plus",
+                        "refType": "Id"
+                    }
+                },
+                "second": {
+                    "$ast": "LoopSyntax",
+                    "delimiter": null,
+                    "syntax": {
+                        "$ast": "RefSyntax",
+                        "field": "tails",
+                        "literal": "Plus",
+                        "refType": "Id"
+                    }
+                }
+            },
+            "type": "BranchedOptionalFeature"
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [{
+                "$ast": "Assignment",
+                "field": "type",
+                "type": "Strong",
+                "value": "Minus"
+            }],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "SequenceSyntax",
+                        "first": {
+                            "$ast": "RefSyntax",
+                            "field": "",
+                            "literal": "\"entry_rule_priority\"",
+                            "refType": "Literal"
+                        },
+                        "second": {
+                            "$ast": "OptionalSyntax",
+                            "priority": "PreferSkip",
+                            "syntax": {
+                                "$ast": "RefSyntax",
+                                "field": "optional",
+                                "literal": "Plus",
+                                "refType": "Id"
+                            }
+                        }
+                    },
+                    "second": {
+                        "$ast": "RefSyntax",
+                        "field": "",
+                        "literal": "Plus",
+                        "refType": "Id"
+                    }
+                },
+                "second": {
+                    "$ast": "LoopSyntax",
+                    "delimiter": null,
+                    "syntax": {
+                        "$ast": "RefSyntax",
+                        "field": "tails",
+                        "literal": "Plus",
+                        "refType": "Id"
+                    }
+                }
+            },
+            "type": "BranchedOptionalFeature"
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [{
+                "$ast": "Assignment",
+                "field": "type",
+                "type": "Strong",
+                "value": "NoCompetition"
+            }],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "SequenceSyntax",
+                        "first": {
+                            "$ast": "RefSyntax",
+                            "field": "",
+                            "literal": "\"entry_rule_priority\"",
+                            "refType": "Literal"
+                        },
+                        "second": {
+                            "$ast": "OptionalSyntax",
+                            "priority": "Equal",
+                            "syntax": {
+                                "$ast": "RefSyntax",
+                                "field": "optional",
+                                "literal": "Plus",
+                                "refType": "Id"
+                            }
+                        }
+                    },
+                    "second": {
+                        "$ast": "RefSyntax",
+                        "field": "",
+                        "literal": "Plus",
+                        "refType": "Id"
+                    }
+                },
+                "second": {
+                    "$ast": "LoopSyntax",
+                    "delimiter": null,
+                    "syntax": {
+                        "$ast": "RefSyntax",
+                        "field": "tails",
+                        "literal": "Plus",
+                        "refType": "Id"
+                    }
+                }
+            },
+            "type": "BranchedOptionalFeature"
+        }, {
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "Pba"
+            }
+        }, {
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "Pwa1"
+            }
+        }, {
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "Pwa2"
+            }
+        }, {
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "\"prefix_with_leftrec\"",
+                    "refType": "Literal"
+                },
+                "second": {
+                    "$ast": "UseSyntax",
+                    "name": "Pwl1"
+                }
+            }
+        }, {
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "\"prefix_with_leftrec\"",
+                    "refType": "Literal"
+                },
+                "second": {
+                    "$ast": "UseSyntax",
+                    "name": "Pwl2"
+                }
+            }
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "\"conditional_literal\"",
+                    "refType": "Literal"
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "id",
+                    "literal": "'a'",
+                    "refType": "ConditionalLiteral"
+                }
+            },
+            "type": "ClFeature"
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "\"conditional_literal\"",
+                    "refType": "Literal"
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "id",
+                    "literal": "'b'",
+                    "refType": "ConditionalLiteral"
+                }
+            },
+            "type": "ClFeature"
+        }, {
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "\"field_assignment\"",
+                    "refType": "Literal"
+                },
+                "second": {
+                    "$ast": "UseSyntax",
+                    "name": "Fa"
+                }
+            }
+        }],
+        "name": "Module",
+        "type": ""
+    }],
+    "switches": []
+}

@@ -24,12 +24,28 @@ ParserBase<TTokens, TStates, TReceiver, TStateTypes>
 			UnexpectedAstType,		// (tokens, executable, traceManager, ast)		unexpected type of the created AST
 		};
 
-		struct EndOfInputArgs
+		enum class TraceProcessingPhase
+		{
+			EndOfInput,
+			PrepareTraceRoute,
+			ResolveAmbiguity,
+		};
+
+		struct TraceProcessingArgs
 		{
 			collections::List<regex::RegexToken>&			tokens;
 			automaton::Executable&							executable;
 			automaton::IExecutor*							executor;
-			automaton::Trace*								rootTrace;
+			bool											ambiguityInvolved;
+			TraceProcessingPhase							phase;
+		};
+
+		struct ReadyToExecuteArgs
+		{
+			collections::List<regex::RegexToken>& tokens;
+			automaton::Executable& executable;
+			automaton::IExecutor* executor;
+			bool											ambiguityInvolved;
 		};
 
 		struct ErrorArgs
@@ -74,7 +90,8 @@ ParserBase<TTokens, TStates, TReceiver, TStateTypes>
 
 			using Deleter = bool(*)(vint);
 			using TokenList = collections::List<regex::RegexToken>;
-			using EndOfInputCallback = void(EndOfInputArgs&);
+			using TraceProcessingCallback = void(TraceProcessingArgs&);
+			using ReadyToExecuteCallback = void(ReadyToExecuteArgs&);
 			using ErrorCallback = void(ErrorArgs&);
 		protected:
 			Deleter									deleter;
@@ -82,7 +99,8 @@ ParserBase<TTokens, TStates, TReceiver, TStateTypes>
 			Ptr<automaton::Executable>				executable;
 
 		public:
-			Event<EndOfInputCallback>				OnEndOfInput;
+			Event<TraceProcessingCallback>			OnTraceProcessing;
+			Event<ReadyToExecuteCallback>			OnReadyToExecute;
 			Event<ErrorCallback>					OnError;
 
 			ParserBase(
@@ -164,7 +182,8 @@ ParserBase<TTokens, TStates, TReceiver, TStateTypes>
 					}
 				}
 
-				if (!executor->EndOfInput())
+				bool ambiguityInvolved = false;
+				if (!executor->EndOfInput(ambiguityInvolved))
 				{
 					auto args = ErrorArgs::InputIncomplete(codeIndex, tokens, *executable.Obj(), executor);
 					OnError(args);
@@ -172,23 +191,39 @@ ParserBase<TTokens, TStates, TReceiver, TStateTypes>
 					return nullptr;
 				}
 
-				auto rootTrace = executor->PrepareTraceRoute();
 				{
-					EndOfInputArgs args = { tokens, *executable.Obj(), executor, rootTrace };
-					OnEndOfInput(args);
+					TraceProcessingArgs args = { tokens, *executable.Obj(), executor, ambiguityInvolved, TraceProcessingPhase::EndOfInput };
+					OnTraceProcessing(args);
+				}
+				if (ambiguityInvolved)
+				{
+					{
+						executor->PrepareTraceRoute();
+						TraceProcessingArgs args = { tokens, *executable.Obj(), executor, ambiguityInvolved, TraceProcessingPhase::PrepareTraceRoute };
+						OnTraceProcessing(args);
+					}
+					{
+						executor->ResolveAmbiguity();
+						TraceProcessingArgs args = { tokens, *executable.Obj(), executor, ambiguityInvolved, TraceProcessingPhase::ResolveAmbiguity };
+						OnTraceProcessing(args);
+					}
+				}
+				{
+					ReadyToExecuteArgs args = { tokens, *executable.Obj(), executor, ambiguityInvolved };
+					OnReadyToExecute(args);
 				}
 
 				TReceiver receiver;
-				return executor->ExecuteTrace(rootTrace, receiver, tokens);
+				return executor->ExecuteTrace(receiver, tokens);
 
 #undef ERROR_MESSAGE_PREFIX
 			}
 
 			template<typename TAst, TStates State>
-			Ptr<TAst> ParseWithTokens(TokenList& tokens, const automaton::IExecutor::ITypeCallback* typeCallback, vint codeIndex) const
+			Ptr<TAst> ParseWithTokens(TokenList& tokens, const automaton::IExecutor::ITypeCallback* typeCallback, vint codeIndex, vint blockSize = 1024) const
 			{
 #define ERROR_MESSAGE_PREFIX L"vl::glr::ParserBase<...>::Parse<TAst, TStates>(List<RegexToken>& TraceManager::ITypeCallback*)#"
-				auto executor = automaton::CreateExecutor(*executable.Obj(), typeCallback);
+				auto executor = automaton::CreateExecutor(*executable.Obj(), typeCallback, blockSize);
 				auto ast = ParseInternal(tokens, (vint32_t)State, executor.Obj(), typeCallback, codeIndex);
 				auto typedAst = ast.template Cast<TAst>();
 
@@ -203,11 +238,11 @@ ParserBase<TTokens, TStates, TReceiver, TStateTypes>
 			}
 
 			template<typename TAst, TStates State>
-			Ptr<TAst> ParseWithString(const WString& input, const automaton::IExecutor::ITypeCallback* typeCallback, vint codeIndex) const
+			Ptr<TAst> ParseWithString(const WString& input, const automaton::IExecutor::ITypeCallback* typeCallback, vint codeIndex, vint blockSize = 1024) const
 			{
 				TokenList tokens;
 				Tokenize(input, tokens, codeIndex);
-				return ParseWithTokens<TAst, State>(tokens, typeCallback, codeIndex);
+				return ParseWithTokens<TAst, State>(tokens, typeCallback, codeIndex, blockSize);
 			}
 		};
 	}
