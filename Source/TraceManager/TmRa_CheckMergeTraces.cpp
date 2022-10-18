@@ -635,6 +635,61 @@ CheckMergeTraces
 						teFirst->ambiguityBegins = taLink;
 					}
 				}
+
+				// find all branch trace with ambiguityBegins
+				{
+					auto traceId = firstBranchTrace;
+					while (traceId != nullref)
+					{
+						auto trace = GetTrace(traceId);
+						auto traceExec = GetTraceExec(trace->traceExecRef);
+						traceId = traceExec->nextBranchTrace;
+
+						if (traceExec->ambiguityBegins != nullref)
+						{
+#ifdef VCZH_DO_DEBUG_CHECK
+							{
+								// if there are multiple ambiguityBegins
+								// first ambiguity instructions must all be in successors
+								vint faiInBranch = 0;
+								vint faiInSuccessor = 0;
+								auto taLinkRef = traceExec->ambiguityBegins;
+								while (taLinkRef != nullref)
+								{
+									auto taLink = GetTraceAmbiguityLink(taLinkRef);
+									taLinkRef = taLink->previous;
+
+									auto ta = GetTraceAmbiguity(taLink->ambiguity);
+									if (ta->prefix >= traceExec->insLists.c3)
+									{
+										faiInSuccessor++;
+									}
+									else
+									{
+										faiInBranch++;
+									}
+								}
+								CHECK_ERROR((faiInBranch == 1 && faiInSuccessor == 0) || faiInBranch == 0, ERROR_MESSAGE_PREFIX L"Incompatible TraceAmbiguity has been assigned at the same place.");
+							}
+#endif
+							{
+								// find all ambiguityBegins whose first ambiguity instruction is in successors
+								auto taLinkRef = traceExec->ambiguityBegins;
+								while (taLinkRef != nullref)
+								{
+									auto taLink = GetTraceAmbiguityLink(taLinkRef);
+									taLinkRef = taLink->previous;
+
+									auto ta = GetTraceAmbiguity(taLink->ambiguity);
+									if (ta->prefix >= traceExec->insLists.c3)
+									{
+										// mark ambiguityCoveredInForward
+									}
+								}
+							}
+						}
+					}
+				}
 #undef ERROR_MESSAGE_PREFIX
 			}
 
