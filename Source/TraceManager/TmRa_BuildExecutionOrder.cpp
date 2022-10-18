@@ -67,10 +67,12 @@ BuildStepTree
 						if (critical == endTrace)
 						{
 							auto criticalExec = GetTraceExec(critical->traceExecRef);
-							if (criticalExec->ambiguityBegin != nullref)
+							if (criticalExec->ambiguityBegins != nullref)
 							{
-								auto ta = GetTraceAmbiguity(criticalExec->ambiguityBegin);
-								if (ta->prefix >= endIns)
+								auto taLink = GetTraceAmbiguityLink(criticalExec->ambiguityBegins);
+								CHECK_ERROR(taLink->previous == nullref, L"Not Implemented!");
+								auto ta = GetTraceAmbiguity(taLink->ambiguity);
+								if (ta->prefix < endIns)
 								{
 									goto CONTINUE_SEARCHING;
 								}
@@ -90,10 +92,12 @@ BuildStepTree
 
 					{
 						auto criticalExec = GetTraceExec(critical->traceExecRef);
-						if (criticalExec->ambiguityBegin != nullref)
+						if (criticalExec->ambiguityBegins != nullref)
 						{
 							// if critical is an ambiguous trace
-							auto ta = GetTraceAmbiguity(criticalExec->ambiguityBegin);
+							auto taLink = GetTraceAmbiguityLink(criticalExec->ambiguityBegins);
+							CHECK_ERROR(taLink->previous == nullref, L"Not Implemented!");
+							auto ta = GetTraceAmbiguity(taLink->ambiguity);
 							auto taFirst = GetTrace(ta->firstTrace);
 							auto taFirstExec = GetTraceExec(taFirst->traceExecRef);
 							auto taLast = GetTrace(ta->lastTrace);

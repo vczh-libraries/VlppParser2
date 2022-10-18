@@ -66,6 +66,7 @@ Initialize
 				firstMergeTrace = nullref;
 				firstStep = nullref;
 				traceAmbiguities.Clear();
+				traceAmbiguityLinks.Clear();
 				executionSteps.Clear();
 
 				initialTrace = AllocateTrace();

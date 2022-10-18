@@ -237,6 +237,18 @@ void RenderTrace(
 			}
 		};
 
+		auto logTraceAmbiguityLink = [&tm, &writer](Ref<TraceAmbiguityLink> first)
+		{
+			auto ref = first;
+			while (ref != nullref)
+			{
+				if (ref != first) writer.WriteString(L", ");
+				auto link = tm.GetTraceAmbiguityLink(ref);
+				writer.WriteString(itow(link->ambiguity.handle));
+				ref = link->previous;
+			}
+		};
+
 		auto logContext = [&tm, &writer, &logObjRefLink](InsExec_Context& context, const wchar_t* indentation)
 		{
 			writer.WriteString(indentation);
@@ -347,14 +359,25 @@ void RenderTrace(
 				writer.WriteLine(L"  NextACT: " + itow(traceExec->nextAmbiguityCriticalTrace.handle));
 			}
 
-			if (traceExec->ambiguityBegin != nullref)
+			if (traceExec->ambiguityBegins != nullref)
 			{
-				writer.WriteLine(L"  AmbiguityBegin: [" + itow(traceExec->ambiguityBegin.handle) + L"]");
+				writer.WriteString(L"  AmbiguityBegin: [");
+				logTraceAmbiguityLink(traceExec->ambiguityBegins);
+				writer.WriteLine(L"]");
 			}
 
-			if (traceExec->ambiguityEnd != nullref)
+			if (traceExec->ambiguityEnds != nullref)
 			{
-				writer.WriteLine(L"  AmbiguityEnd: [" + itow(traceExec->ambiguityEnd.handle) + L"]");
+				writer.WriteString(L"  AmbiguityEnd: [");
+				logTraceAmbiguityLink(traceExec->ambiguityEnds);
+				writer.WriteLine(L"]");
+			}
+
+			if (traceExec->ambiguityCoveredInForward != nullref)
+			{
+				writer.WriteString(L"  AmbiguityCoveredInForward: [");
+				writer.WriteString(itow(traceExec->ambiguityCoveredInForward.handle));
+				writer.WriteLine(L"]");
 			}
 
 			if (traceExec->ambiguityDetected != nullref)

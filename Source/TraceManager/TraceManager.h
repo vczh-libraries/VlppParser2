@@ -357,6 +357,12 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 				vint32_t							postfix = -1;
 			};
 
+			struct TraceAmbiguityLink : Allocatable<TraceAmbiguityLink>
+			{
+				Ref<TraceAmbiguityLink>				previous;
+				Ref<TraceAmbiguity>					ambiguity;
+			};
+
 			struct TraceInsLists
 			{
 				InstructionArray					edgeInsBeforeInput;
@@ -408,9 +414,17 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 				//   firstTrace (order by prefix ascending)
 				//   lastTrace  (order by postfix ascending)
 				//   the merge trace that create this TraceAmbiguity
+				// ambiguityBegins will contain multiple TraceAmbiguity when
+				//   multiple ambiguity begins in different group of successors
+				//   there is also a possibility when all ambiguities don't cover all successors
 				Ref<TraceAmbiguity>					ambiguityDetected;
-				Ref<TraceAmbiguity>					ambiguityBegin;
-				Ref<TraceAmbiguity>					ambiguityEnd;
+				Ref<TraceAmbiguityLink>				ambiguityBegins;
+				Ref<TraceAmbiguityLink>				ambiguityEnds;
+
+				// when this trace is a successor of a branch trace
+				// and such branch trace has non-empty ambiguityBegins
+				// ambiguityCoveredInForward points to the ambiguity which begins in the current trace
+				Ref<TraceAmbiguity>					ambiguityCoveredInForward;
 			};
 
 /***********************************************************************
@@ -612,6 +626,7 @@ TraceManager
 				Ref<Trace>									firstMergeTrace;
 				Ref<ExecutionStep>							firstStep;
 				AllocateOnly<TraceAmbiguity>				traceAmbiguities;
+				AllocateOnly<TraceAmbiguityLink>			traceAmbiguityLinks;
 				AllocateOnly<ExecutionStep>					executionSteps;
 
 				// phase: CheckMergeTraces
@@ -669,6 +684,7 @@ TraceManager
 				InsExec_CreateStack*			GetInsExec_CreateStack(Ref<InsExec_CreateStack> index);
 				TraceExec*						GetTraceExec(Ref<TraceExec> index);
 				TraceAmbiguity*					GetTraceAmbiguity(Ref<TraceAmbiguity> index);
+				TraceAmbiguityLink*				GetTraceAmbiguityLink(Ref<TraceAmbiguityLink> index);
 				ExecutionStep*					GetExecutionStep(Ref<ExecutionStep> index);
 
 				void							Initialize(vint32_t startState) override;

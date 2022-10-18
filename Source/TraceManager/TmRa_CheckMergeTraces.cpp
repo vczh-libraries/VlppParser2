@@ -584,38 +584,79 @@ CheckMergeTraces
 					auto ta = GetTraceAmbiguity(traceAmbiguities.Allocate());
 					bool succeeded = CheckMergeTrace(ta, trace, traceExec, visitingIds);
 					CHECK_ERROR(succeeded, ERROR_MESSAGE_PREFIX L"Failed to find ambiguous objects in a merge trace.");
+					traceExec->ambiguityDetected = ta;
 
 					// check if a compatible TraceAmbiguity has been created in the same {trace, ins}
 					auto teFirst = GetTraceExec(GetTrace(ta->firstTrace)->traceExecRef);
 					auto teLast = GetTraceExec(GetTrace(ta->lastTrace)->traceExecRef);
 
-					if (teFirst->ambiguityBegin == nullref)
+					if (teFirst->ambiguityBegins == nullref)
 					{
 						LinkAmbiguityCriticalTrace(ta->firstTrace);
 					}
 
-#ifdef VCZH_DO_DEBUG_CHECK
-					if (teFirst->ambiguityBegin != nullref)
+					// search in all ambiguityBegins and try to find one has the same lastTrace
+					TraceAmbiguityLink* taLinkToOverride = nullptr;
+					auto taLinkRef = teFirst->ambiguityBegins;
+					while (taLinkRef != nullref)
 					{
-						auto taFirst = GetTraceAmbiguity(teFirst->ambiguityBegin);
-						CHECK_ERROR(taFirst->lastTrace == ta->lastTrace, ERROR_MESSAGE_PREFIX L"Incompatible TraceAmbiguity has been assigned at the same place.");
-						CHECK_ERROR(taFirst->prefix == ta->prefix, ERROR_MESSAGE_PREFIX L"Incompatible TraceAmbiguity has been assigned at the same place.");
-						CHECK_ERROR(taFirst->postfix == ta->postfix, ERROR_MESSAGE_PREFIX L"Incompatible TraceAmbiguity has been assigned at the same place.");
+						auto taLink = GetTraceAmbiguityLink(taLinkRef);
+						taLinkRef = taLink->previous;
+
+						auto ta2 = GetTraceAmbiguity(taLink->ambiguity);
+						if (ta->lastTrace == ta2->lastTrace)
+						{
+							// if there is any, try to override this TraceAmbiguity
+							taLinkToOverride = taLink;
+							break;
+						}
 					}
 
-					if (teLast->ambiguityEnd != nullref)
+					if (taLinkToOverride)
 					{
-						auto taLast = GetTraceAmbiguity(teLast->ambiguityEnd);
-						CHECK_ERROR(taLast->firstTrace == ta->firstTrace, ERROR_MESSAGE_PREFIX L"Incompatible TraceAmbiguity has been assigned at the same place.");
-						CHECK_ERROR(taLast->prefix == ta->prefix, ERROR_MESSAGE_PREFIX L"Incompatible TraceAmbiguity has been assigned at the same place.");
-						CHECK_ERROR(taLast->postfix == ta->postfix, ERROR_MESSAGE_PREFIX L"Incompatible TraceAmbiguity has been assigned at the same place.");
-					}
+						// if there is a TraceAmbiguity to override
+						// ensure they are equivalent
+						auto ta2 = GetTraceAmbiguity(taLinkToOverride->ambiguity);
+#ifdef VCZH_DO_DEBUG_CHECK
+						CHECK_ERROR(ta2->prefix == ta->prefix, ERROR_MESSAGE_PREFIX L"Incompatible TraceAmbiguity has been assigned at the same place.");
+						CHECK_ERROR(ta2->postfix == ta->postfix, ERROR_MESSAGE_PREFIX L"Incompatible TraceAmbiguity has been assigned at the same place.");
 #endif
-					CHECK_ERROR(teFirst->ambiguityBegin == teLast->ambiguityEnd, ERROR_MESSAGE_PREFIX L"Incompatible TraceAmbiguity has been assigned at the same place.");
-					ta->overridedAmbiguity = teFirst->ambiguityBegin;
-					traceExec->ambiguityDetected = ta;
-					teFirst->ambiguityBegin = ta;
-					teLast->ambiguityEnd = ta;
+						// override ambiguityBegins
+						taLinkToOverride->ambiguity = ta;
+
+						// override ambiguityEnds
+						taLinkRef = GetTraceExec(GetTrace(ta2->lastTrace)->traceExecRef)->ambiguityEnds;
+						while (taLinkRef != nullref)
+						{
+							auto taLink = GetTraceAmbiguityLink(taLinkRef);
+							taLinkRef = taLink->previous;
+
+							if (taLink->ambiguity == ta2)
+							{
+								taLink->ambiguity = ta;
+								break;
+							}
+						}
+
+						// override TraceAmbiguity
+						ta->overridedAmbiguity = ta2;
+					}
+					else
+					{
+						// otherwise, append itself to the list
+						{
+							auto taLink = GetTraceAmbiguityLink(traceAmbiguityLinks.Allocate());
+							taLink->ambiguity = ta;
+							taLink->previous = teFirst->ambiguityBegins;
+							teFirst->ambiguityBegins = taLink;
+						}
+						{
+							auto taLink = GetTraceAmbiguityLink(traceAmbiguityLinks.Allocate());
+							taLink->ambiguity = ta;
+							taLink->previous = teLast->ambiguityEnds;
+							teLast->ambiguityEnds = taLink;
+						}
+					}
 				}
 #undef ERROR_MESSAGE_PREFIX
 			}
