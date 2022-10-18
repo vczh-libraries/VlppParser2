@@ -7,7 +7,7 @@ namespace vl
 		namespace automaton
 		{
 /***********************************************************************
-BuildStepTree
+MarkNewLeafStep
 ***********************************************************************/
 
 			void TraceManager::MarkNewLeafStep(ExecutionStep* step, ExecutionStep*& firstLeaf, ExecutionStep*& currentLeaf)
@@ -23,6 +23,9 @@ BuildStepTree
 				}
 				currentLeaf = step;
 			}
+/***********************************************************************
+AppendStepLink
+***********************************************************************/
 
 			void TraceManager::AppendStepLink(ExecutionStep* first, ExecutionStep* last, bool leafNode, ExecutionStep*& root, ExecutionStep*& firstLeaf, ExecutionStep*& currentStep, ExecutionStep*& currentLeaf)
 			{
@@ -39,6 +42,61 @@ BuildStepTree
 					MarkNewLeafStep(last, firstLeaf, currentLeaf);
 				}
 			}
+
+/***********************************************************************
+AppendStepsBeforeAmbiguity
+***********************************************************************/
+
+			void TraceManager::AppendStepsBeforeAmbiguity(Trace* startTrace, vint32_t startIns, TraceAmbiguity* ta, ExecutionStep*& root, ExecutionStep*& firstLeaf, ExecutionStep*& currentStep, ExecutionStep*& currentLeaf)
+			{
+				auto taFirst = GetTrace(ta->firstTrace);
+				auto taFirstExec = GetTraceExec(taFirst->traceExecRef);
+				if ( taFirst->traceExecRef > startTrace->traceExecRef ||
+					(taFirst->traceExecRef == startTrace->traceExecRef && ta->prefix > startIns))
+				{
+					if (ta->prefix > taFirstExec->insLists.c3)
+					{
+						// if the first ambiguous instruction is in successors of the branch trace
+						// execution from the current position to the end of the prefix
+						if (startTrace != taFirst || startIns < taFirstExec->insLists.c3)
+						{
+							auto step = GetExecutionStep(executionSteps.Allocate());
+							step->et_i.startTrace = startTrace->allocatedIndex;
+							step->et_i.startIns = startIns;
+							step->et_i.endTrace = taFirst->allocatedIndex;
+							step->et_i.endIns = taFirstExec->insLists.c3 - 1;
+							AppendStepLink(step, step, false, root, firstLeaf, currentStep, currentLeaf);
+						}
+						if (ta->prefix > taFirstExec->insLists.c3)
+						{
+							auto prefixTrace = GetTrace(taFirst->successors.first);
+							auto step = GetExecutionStep(executionSteps.Allocate());
+							step->et_i.startTrace = prefixTrace->allocatedIndex;
+							step->et_i.startIns = 0;
+							step->et_i.endTrace = prefixTrace->allocatedIndex;
+							step->et_i.endIns = ta->prefix - taFirstExec->insLists.c3 - 1;
+							AppendStepLink(step, step, false, root, firstLeaf, currentStep, currentLeaf);
+						}
+					}
+					else
+					{
+						// execute instructions before the first ambiguous instruction
+						if (startTrace != taFirst || startIns < ta->prefix)
+						{
+							auto step = GetExecutionStep(executionSteps.Allocate());
+							step->et_i.startTrace = startTrace->allocatedIndex;
+							step->et_i.startIns = startIns;
+							step->et_i.endTrace = taFirst->allocatedIndex;
+							step->et_i.endIns = ta->prefix - 1;
+							AppendStepLink(step, step, false, root, firstLeaf, currentStep, currentLeaf);
+						}
+					}
+				}
+			}
+
+/***********************************************************************
+BuildStepTree
+***********************************************************************/
 
 			void TraceManager::BuildStepTree(Trace* startTrace, vint32_t startIns, Trace* endTrace, vint32_t endIns, ExecutionStep*& root, ExecutionStep*& firstLeaf, ExecutionStep* currentStep, ExecutionStep*& currentLeaf)
 			{
@@ -109,47 +167,7 @@ BuildStepTree
 							auto taLastExec = GetTraceExec(taLast->traceExecRef);
 
 							// append a step from current position to the beginning of TraceAmbiguity
-							if ( taFirst->traceExecRef > startTrace->traceExecRef ||
-								(taFirst->traceExecRef == startTrace->traceExecRef && ta->prefix > startIns))
-							{
-								if (ta->prefix > taFirstExec->insLists.c3)
-								{
-									// if the first ambiguous instruction is in successors of the branch trace
-									// execution from the current position to the end of the prefix
-									if (startTrace != taFirst || startIns < taFirstExec->insLists.c3)
-									{
-										auto step = GetExecutionStep(executionSteps.Allocate());
-										step->et_i.startTrace = startTrace->allocatedIndex;
-										step->et_i.startIns = startIns;
-										step->et_i.endTrace = taFirst->allocatedIndex;
-										step->et_i.endIns = taFirstExec->insLists.c3 - 1;
-										AppendStepLink(step, step, false, root, firstLeaf, currentStep, currentLeaf);
-									}
-									if (ta->prefix > taFirstExec->insLists.c3)
-									{
-										auto prefixTrace = GetTrace(taFirst->successors.first);
-										auto step = GetExecutionStep(executionSteps.Allocate());
-										step->et_i.startTrace = prefixTrace->allocatedIndex;
-										step->et_i.startIns = 0;
-										step->et_i.endTrace = prefixTrace->allocatedIndex;
-										step->et_i.endIns = ta->prefix - taFirstExec->insLists.c3 - 1;
-										AppendStepLink(step, step, false, root, firstLeaf, currentStep, currentLeaf);
-									}
-								}
-								else
-								{
-									// execute instructions before the first ambiguous instruction
-									if (startTrace != taFirst || startIns < ta->prefix)
-									{
-										auto step = GetExecutionStep(executionSteps.Allocate());
-										step->et_i.startTrace = startTrace->allocatedIndex;
-										step->et_i.startIns = startIns;
-										step->et_i.endTrace = taFirst->allocatedIndex;
-										step->et_i.endIns = ta->prefix - 1;
-										AppendStepLink(step, step, false, root, firstLeaf, currentStep, currentLeaf);
-									}
-								}
-							}
+							AppendStepsBeforeAmbiguity(startTrace, startIns, ta, root, firstLeaf, currentStep, currentLeaf);
 
 							// append the step link from TraceAmbiguity
 							{
