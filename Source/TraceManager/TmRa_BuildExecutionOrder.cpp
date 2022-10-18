@@ -263,7 +263,6 @@ BuildStepTree
 							}
 							else
 							{
-								CHECK_FAIL(L"Not Implemented!");
 								// there could be one or more TraceAmbiguity
 								// there could also be successors that are not covered by any TraceAmbiguity
 								auto taLinkRef = criticalExec->ambiguityBegins;
@@ -284,6 +283,20 @@ BuildStepTree
 									BuildStepTree(branchStartTrace, branchStartIns, endTrace, endIns, PASS_EXECUTION_STEP_CONTEXT);
 #undef PASS_BRANCH_STEP_CONTEXT
 								}
+
+								// treat the remaining successors as from a branch trace
+								AppendStepsBeforeBranch(startTrace, startIns, critical, criticalExec, PASS_EXECUTION_STEP_CONTEXT);
+
+								auto successorId = critical->successors.first;
+								while (successorId != nullref)
+								{
+									auto successor = GetTrace(successorId);
+									successorId = successor->successors.siblingNext;
+									if (GetTraceExec(successor->traceExecRef)->ambiguityCoveredInForward == nullref)
+									{
+										BuildStepTree(successor, 0, endTrace, endIns, PASS_EXECUTION_STEP_CONTEXT);
+									}
+								}
 								return;
 							}
 						}
@@ -303,7 +316,6 @@ BuildStepTree
 								BuildStepTree(successor, 0, endTrace, endIns, PASS_EXECUTION_STEP_CONTEXT);
 							}
 							return;
-
 						}
 						else if (critical->predecessors.siblingPrev != critical->predecessors.siblingNext)
 						{
