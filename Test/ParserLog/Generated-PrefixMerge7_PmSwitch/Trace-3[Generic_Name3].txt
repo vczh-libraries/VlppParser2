@@ -17,7 +17,7 @@
 | [0]: <Start>              |
 |   TraceExec: [0]          |
 |   ForwardTrace: 0         |
-|   AmbiguityBegin: [2]     |
+|   AmbiguityBegins: [2]    |
 | [109][Module] BEGIN       |
 | [AST-INSTRUCTIONS]:       |
 |     CSTop: []             |
@@ -36,7 +36,7 @@
 ||   InsExec: [0:5]                                                                                             ||    ||   InsExec: [120:5]                                                                                           ||
 ||   ForwardTrace: 7                                                                                            ||    ||   ForwardTrace: 11                                                                                           ||
 ||   NextACT: 1032                                                                                              ||    ||   NextACT: 71                                                                                                ||
-|| [8][_Name]< ID @ >                                                                                           ||    ||   AmbiguityBegin: [1]                                                                                        ||
+|| [8][_Name]< ID @ >                                                                                           ||    ||   AmbiguityBegins: [1]                                                                                       ||
 || [AST-INSTRUCTIONS]:                                                                                          ||    || [9][_Name]< ID @ _GenericArguments >                                                                         ||
 ||     CSTop: []                                                                                                ||    || [AST-INSTRUCTIONS]:                                                                                          ||
 ||     OSTop: []                                                                                                ||    ||     CSTop: []                                                                                                ||
@@ -516,7 +516,7 @@
 || [70]: {COMMA} ,                                                                                                 ||    || [71]: {COMMA} ,                                                                                              ||
 ||   TraceExec: [12]                                                                                               ||    ||   TraceExec: [49]                                                                                            ||
 ||   ForwardTrace: 7                                                                                               ||    ||   ForwardTrace: 11                                                                                           ||
-|| [205][_Expr_LRI_Original]< _Expr_LRI_Original "," @ _Expr_NoComma >                                             ||    ||   AmbiguityBegin: [0]                                                                                        ||
+|| [205][_Expr_LRI_Original]< _Expr_LRI_Original "," @ _Expr_NoComma >                                             ||    ||   AmbiguityBegins: [0]                                                                                       ||
 || [AST-INSTRUCTIONS]:                                                                                             ||    || [3][_GenericArguments]"<" { Module_NoGT_NoComma ; "," @ } ">"                                                ||
 ||     CSTop: [3] [13 -> 3]                                                                                        ||    || [AST-INSTRUCTIONS]:                                                                                          ||
 ||     OSTop: []                                                                                                   ||    ||     CSTop: [9] [37 -> 36]                                                                                    ||
@@ -2034,7 +2034,6 @@
 |                                                                                                                                                                  |                                                                                                                                                                  |   ForwardTrace: 902        |
 |                                                                                                                                                                  |                                                                                                                                                                  |   CommonForwardTrace: 11   |
 |                                                                                                                                                                  |                                                                                                                                                                  |   NextACT: 1038            |
-|                                                                                                                                                                  |                                                                                                                                                                  |   AmbiguityEnd: [0]        |
 |                                                                                                                                                                  |                                                                                                                                                                  | [AMBIGUITY-RESOLVING]: [0] |
 |                                                                                                                                                                  |                                                                                                                                                                  |   objs: [25, 20]           |
 |                                                                                                                                                                  |                                                                                                                                                                  |   first: 71 prefix: 0      |
@@ -2188,21 +2187,21 @@
 |   TraceExec: [41]                                                              |                                                    |   TraceExec: [137]               |
 |   InsExec: [117:2]                                                             |                                                    |   InsExec: [355:1]               |
 |   ForwardTrace: 7                                                              |                                                    |   ForwardTrace: 1028             |
-| [116][Module]<< !_PrimitiveShared ( lri:_Expr_LRI_Original @ | lri:<skip> ) >> |                                                    |   AmbiguityEnd: [1]              |
-| [AST-INSTRUCTIONS]:                                                            |                                                    | [110][Module] END [ENDING]       |
-|     CSTop: [3] [13 -> 3]                                                       |                                                    | [AST-INSTRUCTIONS]:              |
-|     OSTop: []                                                                  |                                                    |     CSTop: [9] [35 -> -1]        |
-|     LriStored: []                                                              |                                                    |     OSTop: []                    |
-|   - EndObject()                                                                |                                                    |     LriStored: []                |
-|       objRefs: 3                                                               |                                                    |   - EndObject()                  |
-|                                                                                |                                                    |       objRefs: 9                 |
-|     CSTop: [3] [3 -> -1]                                                       |                                                    |                                  |
-|     OSTop: [3] [41 -> -1]                                                      |                                                    |     CSTop: []                    |
-|     LriStored: []                                                              |                                                    |     OSTop: [9] [127 -> -1]       |
-|   > ReopenObject()                                                             |                                                    |     LriStored: []                |
-|                                                                                |                                                    | [PREDECESSORS 1030-1030]: [1030] |
-|     CSTop: [3] [3 -> -1]                                                       |                                                    | [SUCCESORS 1024-1024]: [1024]    |
-|     OSTop: []                                                                  |                                                    +----------------------------------+
+| [116][Module]<< !_PrimitiveShared ( lri:_Expr_LRI_Original @ | lri:<skip> ) >> |                                                    | [110][Module] END [ENDING]       |
+| [AST-INSTRUCTIONS]:                                                            |                                                    | [AST-INSTRUCTIONS]:              |
+|     CSTop: [3] [13 -> 3]                                                       |                                                    |     CSTop: [9] [35 -> -1]        |
+|     OSTop: []                                                                  |                                                    |     OSTop: []                    |
+|     LriStored: []                                                              |                                                    |     LriStored: []                |
+|   - EndObject()                                                                |                                                    |   - EndObject()                  |
+|       objRefs: 3                                                               |                                                    |       objRefs: 9                 |
+|                                                                                |                                                    |                                  |
+|     CSTop: [3] [3 -> -1]                                                       |                                                    |     CSTop: []                    |
+|     OSTop: [3] [41 -> -1]                                                      |                                                    |     OSTop: [9] [127 -> -1]       |
+|     LriStored: []                                                              |                                                    |     LriStored: []                |
+|   > ReopenObject()                                                             |                                                    | [PREDECESSORS 1030-1030]: [1030] |
+|                                                                                |                                                    | [SUCCESORS 1024-1024]: [1024]    |
+|     CSTop: [3] [3 -> -1]                                                       |                                                    +----------------------------------+
+|     OSTop: []                                                                  |                                                    |
 |     LriStored: []                                                              |                                                    |
 | [PREDECESSORS 1022-1022]: [1022]                                               |                                                    |
 | [SUCCESORS 1032-1032]: [1032]                                                  |                                                    |
@@ -2238,7 +2237,6 @@
 |   TraceExec: [138]          |
 |   ForwardTrace: 1024        |
 |   CommonForwardTrace: 0     |
-|   AmbiguityEnd: [2]         |
 | [AMBIGUITY-RESOLVING]: [2]  |
 |   objs: [3, 9]              |
 |   first: 0 prefix: 0        |
