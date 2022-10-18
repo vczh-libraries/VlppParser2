@@ -57,7 +57,7 @@ namespace TestParser_Generated_TestObjects
 			FilePath dirOutput
 		)
 	{
-		//if (parserName != L"IfElseAmbiguity") return;
+		//if (parserName != L"PrefixMerge7_PmSwitch") return;
 		auto inputPath = GetTestParserInputPath(testFolder);
 		Folder dirInput = FilePath(inputPath) / L"Input";
 		FilePath dirBaseline = FilePath(inputPath) / L"Output";
@@ -69,7 +69,7 @@ namespace TestParser_Generated_TestObjects
 			caseName = inputFile.GetFilePath().GetName();
 			if (caseName.Length() < 4 || caseName.Right(4) != L".txt") continue;
 			caseName = caseName.Left(caseName.Length() - 4);
-			//if (caseName != L"IfElseAmbiguity1") continue;
+			//if (caseName != L"Generic_Name3") continue;
 
 			TEST_CASE(caseName)
 			{
@@ -397,7 +397,12 @@ TEST_FILE
 		);
 
 	using namespace TestParser_Generated_TestObjects;
-	unittest::UnitTest::PrintMessage(L"Input discovered: " + itow(inputDiscovered), unittest::UnitTest::MessageKind::Info);
-	unittest::UnitTest::PrintMessage(L"Parsed successfully: " + itow(parsedSuccessfully), unittest::UnitTest::MessageKind::Info);
-	unittest::UnitTest::PrintMessage(L"Compared with baseline: " + itow(comparedWithBaseline), unittest::UnitTest::MessageKind::Info);
+
+	TEST_CASE(L"Ensure all cases have baseline")
+	{
+		unittest::UnitTest::PrintMessage(L"Input discovered: " + itow(inputDiscovered), unittest::UnitTest::MessageKind::Info);
+		unittest::UnitTest::PrintMessage(L"Parsed successfully: " + itow(parsedSuccessfully), unittest::UnitTest::MessageKind::Info);
+		unittest::UnitTest::PrintMessage(L"Compared with baseline: " + itow(comparedWithBaseline), unittest::UnitTest::MessageKind::Info);
+		TEST_ASSERT(parsedSuccessfully == comparedWithBaseline);
+	});
 }
