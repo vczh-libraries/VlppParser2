@@ -1,5 +1,8 @@
 #include "TraceManager.h"
 
+#define DEFINE_EXECUTION_STEP_CONTEXT ExecutionStep*& root, ExecutionStep*& firstLeaf, ExecutionStep*& currentStep, ExecutionStep*& currentLeaf
+#define PASS_EXECUTION_STEP_CONTEXT root, firstLeaf, currentStep, currentLeaf
+
 namespace vl
 {
 	namespace glr
@@ -27,7 +30,7 @@ MarkNewLeafStep
 AppendStepLink
 ***********************************************************************/
 
-			void TraceManager::AppendStepLink(ExecutionStep* first, ExecutionStep* last, bool leafNode, ExecutionStep*& root, ExecutionStep*& firstLeaf, ExecutionStep*& currentStep, ExecutionStep*& currentLeaf)
+			void TraceManager::AppendStepLink(ExecutionStep* first, ExecutionStep* last, bool leafNode, DEFINE_EXECUTION_STEP_CONTEXT)
 			{
 				if (!root)
 				{
@@ -47,8 +50,9 @@ AppendStepLink
 AppendStepsBeforeAmbiguity
 ***********************************************************************/
 
-			void TraceManager::AppendStepsBeforeAmbiguity(Trace* startTrace, vint32_t startIns, TraceAmbiguity* ta, ExecutionStep*& root, ExecutionStep*& firstLeaf, ExecutionStep*& currentStep, ExecutionStep*& currentLeaf)
+			void TraceManager::AppendStepsBeforeAmbiguity(Trace* startTrace, vint32_t startIns, TraceAmbiguity* ta, DEFINE_EXECUTION_STEP_CONTEXT)
 			{
+				// append a step from current position to the beginning of TraceAmbiguity
 				auto taFirst = GetTrace(ta->firstTrace);
 				auto taFirstExec = GetTraceExec(taFirst->traceExecRef);
 				if ( taFirst->traceExecRef > startTrace->traceExecRef ||
@@ -65,7 +69,7 @@ AppendStepsBeforeAmbiguity
 							step->et_i.startIns = startIns;
 							step->et_i.endTrace = taFirst->allocatedIndex;
 							step->et_i.endIns = taFirstExec->insLists.c3 - 1;
-							AppendStepLink(step, step, false, root, firstLeaf, currentStep, currentLeaf);
+							AppendStepLink(step, step, false, PASS_EXECUTION_STEP_CONTEXT);
 						}
 						if (ta->prefix > taFirstExec->insLists.c3)
 						{
@@ -75,7 +79,7 @@ AppendStepsBeforeAmbiguity
 							step->et_i.startIns = 0;
 							step->et_i.endTrace = prefixTrace->allocatedIndex;
 							step->et_i.endIns = ta->prefix - taFirstExec->insLists.c3 - 1;
-							AppendStepLink(step, step, false, root, firstLeaf, currentStep, currentLeaf);
+							AppendStepLink(step, step, false, PASS_EXECUTION_STEP_CONTEXT);
 						}
 					}
 					else
@@ -88,7 +92,7 @@ AppendStepsBeforeAmbiguity
 							step->et_i.startIns = startIns;
 							step->et_i.endTrace = taFirst->allocatedIndex;
 							step->et_i.endIns = ta->prefix - 1;
-							AppendStepLink(step, step, false, root, firstLeaf, currentStep, currentLeaf);
+							AppendStepLink(step, step, false, PASS_EXECUTION_STEP_CONTEXT);
 						}
 					}
 				}
@@ -98,7 +102,7 @@ AppendStepsBeforeAmbiguity
 AppendStepsAfterAmbiguity
 ***********************************************************************/
 
-			void TraceManager::AppendStepsAfterAmbiguity(Trace*& startTrace, vint32_t& startIns, TraceAmbiguity* ta, ExecutionStep*& root, ExecutionStep*& firstLeaf, ExecutionStep*& currentStep, ExecutionStep*& currentLeaf)
+			void TraceManager::AppendStepsAfterAmbiguity(Trace*& startTrace, vint32_t& startIns, TraceAmbiguity* ta, DEFINE_EXECUTION_STEP_CONTEXT)
 			{
 				auto taLast = GetTrace(ta->lastTrace);
 				auto taLastExec = GetTraceExec(taLast->traceExecRef);
@@ -114,19 +118,31 @@ AppendStepsAfterAmbiguity
 						step->et_i.startIns = postfixTraceExec->insLists.c3 - (ta->postfix - taLastExec->insLists.c3);
 						step->et_i.endTrace = postfixTrace->allocatedIndex;
 						step->et_i.endIns = postfixTraceExec->insLists.c3 - 1;
-						AppendStepLink(step, step, false, root, firstLeaf, currentStep, currentLeaf);
+						AppendStepLink(step, step, false, PASS_EXECUTION_STEP_CONTEXT);
 					}
 
-					// fix startTrace, startIns
+					// set the corrent position to the beginning of taList
 					startTrace = taLast;
 					startIns = 0;
 				}
 				else
 				{
-					// fix startTrace, startIns
+					// otherwise set the current position to the instruction after the last ambiguous instruction
 					startTrace = taLast;
 					startIns = GetTraceExec(startTrace->traceExecRef)->insLists.c3 - ta->postfix;
 				}
+			}
+
+/***********************************************************************
+BuildStepTree
+***********************************************************************/
+
+			void TraceManager::AppendStepsForAmbiguity(TraceAmbiguity* ta, DEFINE_EXECUTION_STEP_CONTEXT)
+			{
+				ExecutionStep* taStepFirst = nullptr;
+				ExecutionStep* taStepLast = nullptr;
+				BuildAmbiguousStepLink(ta, taStepFirst, taStepLast);
+				AppendStepLink(taStepFirst, taStepLast, false, PASS_EXECUTION_STEP_CONTEXT);
 			}
 
 /***********************************************************************
@@ -196,24 +212,11 @@ BuildStepTree
 							auto taLink = GetTraceAmbiguityLink(criticalExec->ambiguityBegins);
 							CHECK_ERROR(taLink->previous == nullref, L"Not Implemented!");
 							auto ta = GetTraceAmbiguity(taLink->ambiguity);
-							auto taFirst = GetTrace(ta->firstTrace);
-							auto taFirstExec = GetTraceExec(taFirst->traceExecRef);
-							auto taLast = GetTrace(ta->lastTrace);
-							auto taLastExec = GetTraceExec(taLast->traceExecRef);
 
-							// append a step from current position to the beginning of TraceAmbiguity
-							AppendStepsBeforeAmbiguity(startTrace, startIns, ta, root, firstLeaf, currentStep, currentLeaf);
-
-							// append the step link from TraceAmbiguity
-							{
-								ExecutionStep* taStepFirst = nullptr;
-								ExecutionStep* taStepLast = nullptr;
-								BuildAmbiguousStepLink(ta, taStepFirst, taStepLast);
-								AppendStepLink(taStepFirst, taStepLast, false, root, firstLeaf, currentStep, currentLeaf);
-							}
-
-							// append a step from the end of TraceAmbiguity to ambiguityEnd
-							AppendStepsAfterAmbiguity(startTrace, startIns, ta, root, firstLeaf, currentStep, currentLeaf);
+							// append steps for ambiguity and fix the current position
+							AppendStepsBeforeAmbiguity(startTrace, startIns, ta, PASS_EXECUTION_STEP_CONTEXT);
+							AppendStepsForAmbiguity(ta, PASS_EXECUTION_STEP_CONTEXT);
+							AppendStepsAfterAmbiguity(startTrace, startIns, ta, PASS_EXECUTION_STEP_CONTEXT);
 
 							// fix critical
 							critical = GetTrace(GetTraceExec(startTrace->traceExecRef)->branchData.forwardTrace);
@@ -232,7 +235,7 @@ BuildStepTree
 								step->et_i.startIns = startIns;
 								step->et_i.endTrace = critical->allocatedIndex;
 								step->et_i.endIns = criticalExec->insLists.c3 - 1;
-								AppendStepLink(step, step, false, root, firstLeaf, currentStep, currentLeaf);
+								AppendStepLink(step, step, false, PASS_EXECUTION_STEP_CONTEXT);
 							}
 
 							// recursively process all successors
@@ -241,7 +244,7 @@ BuildStepTree
 							{
 								auto successor = GetTrace(successorId);
 								successorId = successor->successors.siblingNext;
-								BuildStepTree(successor, 0, endTrace, endIns, root, firstLeaf, currentStep, currentLeaf);
+								BuildStepTree(successor, 0, endTrace, endIns, PASS_EXECUTION_STEP_CONTEXT);
 							}
 							return;
 
@@ -283,7 +286,7 @@ BuildStepTree
 					step->et_i.startIns = startIns;
 					step->et_i.endTrace = endTrace->allocatedIndex;
 					step->et_i.endIns = endIns;
-					AppendStepLink(step, step, true, root, firstLeaf, currentStep, currentLeaf);
+					AppendStepLink(step, step, true, PASS_EXECUTION_STEP_CONTEXT);
 				}
 				else
 				{
@@ -547,3 +550,6 @@ BuildExecutionOrder
 		}
 	}
 }
+
+#undef PASS_EXECUTION_STEP_CONTEXT
+#undef DEFINE_EXECUTION_STEP_CONTEXT
