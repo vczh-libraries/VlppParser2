@@ -134,15 +134,33 @@ AppendStepsAfterAmbiguity
 			}
 
 /***********************************************************************
-BuildStepTree
+AppendStepsForAmbiguity
 ***********************************************************************/
 
-			void TraceManager::AppendStepsForAmbiguity(TraceAmbiguity* ta, DEFINE_EXECUTION_STEP_CONTEXT)
+			void TraceManager::AppendStepsForAmbiguity(TraceAmbiguity* ta, bool checkCoveredMark, DEFINE_EXECUTION_STEP_CONTEXT)
 			{
 				ExecutionStep* taStepFirst = nullptr;
 				ExecutionStep* taStepLast = nullptr;
-				BuildAmbiguousStepLink(ta, taStepFirst, taStepLast);
+				BuildAmbiguousStepLink(ta, checkCoveredMark, taStepFirst, taStepLast);
 				AppendStepLink(taStepFirst, taStepLast, false, PASS_EXECUTION_STEP_CONTEXT);
+			}
+
+/***********************************************************************
+AppendStepsBeforeBranch
+***********************************************************************/
+
+			void TraceManager::AppendStepsBeforeBranch(Trace* startTrace, vint32_t startIns, Trace* branchTrace, TraceExec* branchTraceExec, DEFINE_EXECUTION_STEP_CONTEXT)
+			{
+				if (startTrace->traceExecRef < branchTrace->traceExecRef ||
+					(startTrace->traceExecRef == branchTrace->traceExecRef && startIns < branchTraceExec->insLists.c3))
+				{
+					auto step = GetExecutionStep(executionSteps.Allocate());
+					step->et_i.startTrace = startTrace->allocatedIndex;
+					step->et_i.startIns = startIns;
+					step->et_i.endTrace = branchTrace->allocatedIndex;
+					step->et_i.endIns = branchTraceExec->insLists.c3 - 1;
+					AppendStepLink(step, step, false, PASS_EXECUTION_STEP_CONTEXT);
+				}
 			}
 
 /***********************************************************************
@@ -236,7 +254,7 @@ BuildStepTree
 
 								// append steps for ambiguity and fix the current position
 								AppendStepsBeforeAmbiguity(startTrace, startIns, ta, PASS_EXECUTION_STEP_CONTEXT);
-								AppendStepsForAmbiguity(ta, PASS_EXECUTION_STEP_CONTEXT);
+								AppendStepsForAmbiguity(ta, false, PASS_EXECUTION_STEP_CONTEXT);
 								AppendStepsAfterAmbiguity(startTrace, startIns, ta, PASS_EXECUTION_STEP_CONTEXT);
 
 								// fix critical
@@ -245,9 +263,28 @@ BuildStepTree
 							}
 							else
 							{
+								CHECK_FAIL(L"Not Implemented!");
 								// there could be one or more TraceAmbiguity
 								// there could also be successors that are not covered by any TraceAmbiguity
-								CHECK_FAIL(L"Not Implemented!");
+								auto taLinkRef = criticalExec->ambiguityBegins;
+								while (taLinkRef != nullref)
+								{
+									auto taLink = GetTraceAmbiguityLink(taLinkRef);
+									taLinkRef = taLink->previous;
+									auto ta = GetTraceAmbiguity(taLink->ambiguity);
+
+									auto branchStartTrace = startTrace;
+									auto branchStartIns = startIns;
+									auto branchStep = currentStep;
+
+#define PASS_BRANCH_STEP_CONTEXT	root, firstLeaf, branchStep, currentLeaf
+									AppendStepsAfterAmbiguity(branchStartTrace, branchStartIns, ta, PASS_BRANCH_STEP_CONTEXT);
+									AppendStepsForAmbiguity(ta, true, PASS_BRANCH_STEP_CONTEXT);
+									AppendStepsAfterAmbiguity(startTrace, startIns, ta, PASS_BRANCH_STEP_CONTEXT);
+									BuildStepTree(branchStartTrace, branchStartIns, endTrace, endIns, PASS_EXECUTION_STEP_CONTEXT);
+#undef PASS_BRANCH_STEP_CONTEXT
+								}
+								return;
 							}
 						}
 						else if (critical->successors.first != critical->successors.last)
@@ -255,16 +292,7 @@ BuildStepTree
 							// if critical is a branch tree
 
 							// append a step current position to the end of critical
-							if (startTrace->traceExecRef < critical->traceExecRef ||
-								(startTrace->traceExecRef == critical->traceExecRef && startIns < criticalExec->insLists.c3))
-							{
-								auto step = GetExecutionStep(executionSteps.Allocate());
-								step->et_i.startTrace = startTrace->allocatedIndex;
-								step->et_i.startIns = startIns;
-								step->et_i.endTrace = critical->allocatedIndex;
-								step->et_i.endIns = criticalExec->insLists.c3 - 1;
-								AppendStepLink(step, step, false, PASS_EXECUTION_STEP_CONTEXT);
-							}
+							AppendStepsBeforeBranch(startTrace, startIns, critical, criticalExec, PASS_EXECUTION_STEP_CONTEXT);
 
 							// recursively process all successors
 							auto successorId = critical->successors.first;
@@ -428,7 +456,7 @@ ConvertStepTreeToLink
 BuildAmbiguousStepLink
 ***********************************************************************/
 
-			void TraceManager::BuildAmbiguousStepLink(TraceAmbiguity* ta, ExecutionStep*& first, ExecutionStep*& last)
+			void TraceManager::BuildAmbiguousStepLink(TraceAmbiguity* ta, bool checkCoveredMark, ExecutionStep*& first, ExecutionStep*& last)
 			{
 #define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::CheckMergeTraces()#"
 				auto taFirst = GetTrace(ta->firstTrace);
@@ -452,6 +480,10 @@ BuildAmbiguousStepLink
 					{
 						auto successor = GetTrace(successorId);
 						successorId = successor->successors.siblingNext;
+						if (checkCoveredMark && GetTraceExec(successor->traceExecRef)->ambiguityCoveredInForward != ta)
+						{
+							continue;
+						}
 
 						// append a step to execute from the first ambiguous instruction
 						auto first = GetExecutionStep(executionSteps.Allocate());
@@ -479,6 +511,10 @@ BuildAmbiguousStepLink
 					{
 						auto successor = GetTrace(successorId);
 						successorId = successor->successors.siblingNext;
+						if (checkCoveredMark && GetTraceExec(successor->traceExecRef)->ambiguityCoveredInForward != ta)
+						{
+							continue;
+						}
 
 						// run from the first ambiguous instruction to the last
 						BuildStepTree(
