@@ -208,19 +208,47 @@ BuildStepTree
 						auto criticalExec = GetTraceExec(critical->traceExecRef);
 						if (criticalExec->ambiguityBegins != nullref)
 						{
-							// if critical is an ambiguous trace
-							auto taLink = GetTraceAmbiguityLink(criticalExec->ambiguityBegins);
-							CHECK_ERROR(taLink->previous == nullref, L"Not Implemented!");
-							auto ta = GetTraceAmbiguity(taLink->ambiguity);
+							// check if the only one TraceAmbiguity covers all successors
+							bool singleCompleteAmbiguity = true;
+							{
+								auto firstSuccessor = GetTrace(critical->successors.first);
+								auto successorId = firstSuccessor->successors.siblingNext;
+								auto covered = GetTraceExec(firstSuccessor->traceExecRef)->ambiguityCoveredInForward;
+								while (successorId != nullref)
+								{
+									auto successor = GetTrace(successorId);
+									successorId = successor->successors.siblingNext;
 
-							// append steps for ambiguity and fix the current position
-							AppendStepsBeforeAmbiguity(startTrace, startIns, ta, PASS_EXECUTION_STEP_CONTEXT);
-							AppendStepsForAmbiguity(ta, PASS_EXECUTION_STEP_CONTEXT);
-							AppendStepsAfterAmbiguity(startTrace, startIns, ta, PASS_EXECUTION_STEP_CONTEXT);
+									if (covered != GetTraceExec(successor->traceExecRef)->ambiguityCoveredInForward)
+									{
+										singleCompleteAmbiguity = false;
+										break;
+									}
+								}
+							}
 
-							// fix critical
-							critical = GetTrace(GetTraceExec(startTrace->traceExecRef)->branchData.forwardTrace);
-							continue;
+							if (singleCompleteAmbiguity)
+							{
+								// if yes, it means the TraceAmbiguity will cover all successors
+								// run the ambiguity in place, no need for recursion
+								auto taLink = GetTraceAmbiguityLink(criticalExec->ambiguityBegins);
+								auto ta = GetTraceAmbiguity(taLink->ambiguity);
+
+								// append steps for ambiguity and fix the current position
+								AppendStepsBeforeAmbiguity(startTrace, startIns, ta, PASS_EXECUTION_STEP_CONTEXT);
+								AppendStepsForAmbiguity(ta, PASS_EXECUTION_STEP_CONTEXT);
+								AppendStepsAfterAmbiguity(startTrace, startIns, ta, PASS_EXECUTION_STEP_CONTEXT);
+
+								// fix critical
+								critical = GetTrace(GetTraceExec(startTrace->traceExecRef)->branchData.forwardTrace);
+								continue;
+							}
+							else
+							{
+								// there could be one or more TraceAmbiguity
+								// there could also be successors that are not covered by any TraceAmbiguity
+								CHECK_FAIL(L"Not Implemented!");
+							}
 						}
 						else if (critical->successors.first != critical->successors.last)
 						{
