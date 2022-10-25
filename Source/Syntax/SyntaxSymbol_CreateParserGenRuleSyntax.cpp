@@ -233,10 +233,11 @@ CreateParserGenRuleSyntax
 				// RuleName:rule as LeftRecursionInjectClause
 				Clause{ _lriTarget } = create(rule(_ruleName, F::LeftRecursionInjectClause_rule), C::LeftRecursionInjectClause);
 
-				// "(" RuleName:rule LriContinuation:continuation")" as LeftRecursionInjectClause
+				// "(" RuleName:rule LriContinuation:continuation ")" as LeftRecursionInjectClause
 				Clause{ _lriTarget } = create(tok(T::OPEN_ROUND) + rule(_ruleName, F::LeftRecursionInjectClause_rule) + rule(_lriContinuation, F::LeftRecursionInjectClause_continuation) + tok(T::CLOSE_ROUND), C::LeftRecursionInjectClause);
 
-				// "!( 
+				//  "!(" SwitchItem:switches ";" RuleName:rule [LriContinuation:continuation] ")" as LeftRecursionInjectClause
+				Clause{ _lriTarget } = create(tok(T::OPEN_PUSH) + rule(_switchItem, F::LeftRecursionInjectClause_switches) + tok(T::SEMICOLON) + rule(_ruleName, F::LeftRecursionInjectClause_rule) + opt(rule(_lriContinuation, F::LeftRecursionInjectClause_continuation)) + tok(T::CLOSE_ROUND), C::LeftRecursionInjectClause);
 
 				// "!" RuleName:rule LriContinuation:continuation as LeftRecursionInjectClause
 				Clause{ _clause } = create(tok(T::USE) + rule(_ruleName, F::LeftRecursionInjectClause_rule) + rule(_lriContinuation, F::LeftRecursionInjectClause_continuation), C::LeftRecursionInjectClause);

@@ -40,8 +40,8 @@ namespace vl
 				LriContinuationBody = 150,
 				LriContinuation = 159,
 				LriTarget = 165,
-				Rule = 172,
-				File = 180,
+				Rule = 178,
+				File = 186,
 			};
 
 			const wchar_t* RuleParserRuleName(vl::vint index);
