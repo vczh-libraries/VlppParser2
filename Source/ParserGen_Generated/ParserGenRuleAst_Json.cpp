@@ -81,14 +81,21 @@ namespace vl
 				}
 				void RuleAstVisitor::PrintFields(GlrLeftRecursionInjectClause* node)
 				{
-					BeginField(L"condition");
-					Print(node->condition.Obj());
-					EndField();
 					BeginField(L"continuation");
 					Print(node->continuation.Obj());
 					EndField();
 					BeginField(L"rule");
 					Print(node->rule.Obj());
+					EndField();
+					BeginField(L"switches");
+					BeginArray();
+					for (auto&& listItem : node->switches)
+					{
+						BeginArrayItem();
+						Print(listItem.Obj());
+						EndArrayItem();
+					}
+					EndArray();
 					EndField();
 				}
 				void RuleAstVisitor::PrintFields(GlrLeftRecursionInjectContinuation* node)

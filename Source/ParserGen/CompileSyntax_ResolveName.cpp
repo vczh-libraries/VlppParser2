@@ -238,9 +238,9 @@ ResolveNameVisitor
 					node->second->Accept(this);
 				}
 
-				void Visit(GlrPushConditionSyntax* node) override
+				void VisitSwitchItems(List<Ptr<GlrSwitchItem>>& switches)
 				{
-					for (auto&& switchItem : node->switches)
+					for (auto&& switchItem : switches)
 					{
 						if (!context.syntaxManager.switches.Keys().Contains(switchItem->name.value))
 						{
@@ -249,13 +249,18 @@ ResolveNameVisitor
 								switchItem->name.codeRange,
 								ruleSymbol->Name(),
 								switchItem->name.value
-								);
+							);
 						}
 						else if (!accessedSwitches.Contains(switchItem->name.value))
 						{
 							accessedSwitches.Add(switchItem->name.value);
 						}
 					}
+				}
+
+				void Visit(GlrPushConditionSyntax* node) override
+				{
+					VisitSwitchItems(node->switches);
 					node->syntax->Accept(this);
 				}
 
@@ -355,10 +360,7 @@ ResolveNameVisitor
 				void VisitLriClause(GlrLeftRecursionInjectClause* node)
 				{
 					VisitReuseSyntax(node->rule->literal, true);
-					if (node->condition)
-					{
-						node->condition->Accept(this);
-					}
+					VisitSwitchItems(node->switches);
 					if (node->continuation)
 					{
 						for (auto lriTarget : node->continuation->injectionTargets)

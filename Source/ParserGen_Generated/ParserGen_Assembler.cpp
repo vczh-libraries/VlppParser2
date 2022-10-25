@@ -110,12 +110,12 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					return vl::glr::AssemblerSetObjectField(&vl::glr::parsergen::GlrCreateClause::syntax, object, field, value, cppFieldName);
 				case ParserGenFields::Enum_items:
 					return vl::glr::AssemblerSetObjectField(&vl::glr::parsergen::GlrEnum::items, object, field, value, cppFieldName);
-				case ParserGenFields::LeftRecursionInjectClause_condition:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::parsergen::GlrLeftRecursionInjectClause::condition, object, field, value, cppFieldName);
 				case ParserGenFields::LeftRecursionInjectClause_continuation:
 					return vl::glr::AssemblerSetObjectField(&vl::glr::parsergen::GlrLeftRecursionInjectClause::continuation, object, field, value, cppFieldName);
 				case ParserGenFields::LeftRecursionInjectClause_rule:
 					return vl::glr::AssemblerSetObjectField(&vl::glr::parsergen::GlrLeftRecursionInjectClause::rule, object, field, value, cppFieldName);
+				case ParserGenFields::LeftRecursionInjectClause_switches:
+					return vl::glr::AssemblerSetObjectField(&vl::glr::parsergen::GlrLeftRecursionInjectClause::switches, object, field, value, cppFieldName);
 				case ParserGenFields::LeftRecursionInjectContinuation_flag:
 					return vl::glr::AssemblerSetObjectField(&vl::glr::parsergen::GlrLeftRecursionInjectContinuation::flag, object, field, value, cppFieldName);
 				case ParserGenFields::LeftRecursionInjectContinuation_injectionTargets:
@@ -345,9 +345,9 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					L"CreateClause::type",
 					L"Enum::items",
 					L"EnumItem::name",
-					L"LeftRecursionInjectClause::condition",
 					L"LeftRecursionInjectClause::continuation",
 					L"LeftRecursionInjectClause::rule",
+					L"LeftRecursionInjectClause::switches",
 					L"LeftRecursionInjectContinuation::configuration",
 					L"LeftRecursionInjectContinuation::flag",
 					L"LeftRecursionInjectContinuation::injectionTargets",
@@ -414,9 +414,9 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					L"vl::glr::parsergen::GlrCreateClause::type",
 					L"vl::glr::parsergen::GlrEnum::items",
 					L"vl::glr::parsergen::GlrEnumItem::name",
-					L"vl::glr::parsergen::GlrLeftRecursionInjectClause::condition",
 					L"vl::glr::parsergen::GlrLeftRecursionInjectClause::continuation",
 					L"vl::glr::parsergen::GlrLeftRecursionInjectClause::rule",
+					L"vl::glr::parsergen::GlrLeftRecursionInjectClause::switches",
 					L"vl::glr::parsergen::GlrLeftRecursionInjectContinuation::configuration",
 					L"vl::glr::parsergen::GlrLeftRecursionInjectContinuation::flag",
 					L"vl::glr::parsergen::GlrLeftRecursionInjectContinuation::injectionTargets",

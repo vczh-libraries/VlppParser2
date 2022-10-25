@@ -95,12 +95,6 @@ MakeCreateClause
 MakeLeftRecursionInjectClause
 ***********************************************************************/
 
-				MakeLeftRecursionInjectClause& MakeLeftRecursionInjectClause::condition(const vl::Ptr<GlrCondition>& value)
-				{
-					node->condition = value;
-					return *this;
-				}
-
 				MakeLeftRecursionInjectClause& MakeLeftRecursionInjectClause::continuation(const vl::Ptr<GlrLeftRecursionInjectContinuation>& value)
 				{
 					node->continuation = value;
@@ -110,6 +104,12 @@ MakeLeftRecursionInjectClause
 				MakeLeftRecursionInjectClause& MakeLeftRecursionInjectClause::rule(const vl::Ptr<GlrRefSyntax>& value)
 				{
 					node->rule = value;
+					return *this;
+				}
+
+				MakeLeftRecursionInjectClause& MakeLeftRecursionInjectClause::switches(const vl::Ptr<GlrSwitchItem>& value)
+				{
+					node->switches.Add(value);
 					return *this;
 				}
 

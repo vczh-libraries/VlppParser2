@@ -52,6 +52,16 @@ protected:
 		priority = oldPriority;
 	}
 
+	void VisitSwitchItems(List<Ptr<GlrSwitchItem>>& switches)
+	{
+		for (auto [switchItem, index] : indexed(switches))
+		{
+			if (index != 0) writer.WriteString(L", ");
+			if (switchItem->value == GlrSwitchValue::False) writer.WriteChar(L'!');
+			writer.WriteString(switchItem->name.value);
+		}
+	}
+
 	////////////////////////////////////////////////////////////////////////
 	// GlrCondition::IVisitor
 	////////////////////////////////////////////////////////////////////////
@@ -167,12 +177,7 @@ protected:
 	void Visit(GlrPushConditionSyntax* node) override
 	{
 		writer.WriteString(L"!(");
-		for (auto [switchItem, index] : indexed(node->switches))
-		{
-			if (index != 0) writer.WriteString(L", ");
-			if (switchItem->value == GlrSwitchValue::False) writer.WriteChar(L'!');
-			writer.WriteString(switchItem->name.value);
-		}
+		VisitSwitchItems(node->switches);
 		writer.WriteString(L"; ");
 		VisitSyntax(node->syntax.Obj());
 		writer.WriteChar(L')');
@@ -289,20 +294,20 @@ protected:
 
 	void VisitLriTarget(GlrLeftRecursionInjectClause* node)
 	{
-		if (node->condition && node->continuation)
+		if (node->switches.Count() > 0 && node->continuation)
 		{
 			writer.WriteString(L"!(");
-			VisitCondition(node->condition.Obj());
+			VisitSwitchItems(node->switches);
 			writer.WriteString(L"; ");
 			writer.WriteString(node->rule->literal.value);
 			writer.WriteChar(L' ');
 			VisitLriCont(node->continuation.Obj());
 			writer.WriteString(L")");
 		}
-		else if (node->condition)
+		else if (node->switches.Count() > 0)
 		{
 			writer.WriteString(L"!(");
-			VisitCondition(node->condition.Obj());
+			VisitSwitchItems(node->switches);
 			writer.WriteString(L"; ");
 			writer.WriteString(node->rule->literal.value);
 			writer.WriteString(L")");

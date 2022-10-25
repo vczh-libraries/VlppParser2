@@ -325,7 +325,7 @@ namespace vl
 			class GlrLeftRecursionInjectClause : public GlrClause, vl::reflection::Description<GlrLeftRecursionInjectClause>
 			{
 			public:
-				vl::Ptr<GlrCondition> condition;
+				vl::collections::List<vl::Ptr<GlrSwitchItem>> switches;
 				vl::Ptr<GlrRefSyntax> rule;
 				vl::Ptr<GlrLeftRecursionInjectContinuation> continuation;
 
