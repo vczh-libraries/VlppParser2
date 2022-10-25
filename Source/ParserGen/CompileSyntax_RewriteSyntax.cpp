@@ -988,6 +988,7 @@ RenamePrefix
 
 				void Visit(GlrPushConditionSyntax* node) override
 				{
+					node->syntax->Accept(this);
 				}
 
 				void Visit(GlrTestConditionSyntax* node) override

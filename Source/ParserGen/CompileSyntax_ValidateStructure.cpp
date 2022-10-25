@@ -934,7 +934,14 @@ ValidateStructureIndirectPrefixMergeRuleVisitor
 
 				void Visit(GlrReuseClause* node) override
 				{
-					if (!dynamic_cast<GlrUseSyntax*>(node->syntax.Obj()))
+					if (auto pushSyntax = dynamic_cast<GlrPushConditionSyntax*>(node->syntax.Obj()))
+					{
+						if (!dynamic_cast<GlrUseSyntax*>(pushSyntax->syntax.Obj()))
+						{
+							NotSimpleUsingRule(node);
+						}
+					}
+					else if (!dynamic_cast<GlrUseSyntax*>(node->syntax.Obj()))
 					{
 						NotSimpleUsingRule(node);
 					}
