@@ -403,7 +403,7 @@ CompileSyntaxVisitor
 
 				void Visit(GlrPrefixMergeClause* node) override
 				{
-					CHECK_FAIL(L"Not Implemented!");
+					CHECK_FAIL(L"GlrPrefixMergeClause should have been removed after RewriteSyntax()!");
 				}
 			};
 
