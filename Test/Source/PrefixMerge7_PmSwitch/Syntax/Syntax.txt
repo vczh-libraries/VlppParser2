@@ -1,4 +1,4 @@
-// switch allow_gt;
+switch allow_gt;
 
 ////////////////////////////////////////
 // Left Recursive (Primitives)
@@ -63,7 +63,7 @@ _Expr2
 _Expr3
   ::= !_Expr2
   ::= _Expr3:first "<" _Expr2:second as LtExpr
-  ::= _Expr3:first ">" _Expr2:second as GtExpr
+  ::= ?(allow_gt: _Expr3:first ">" _Expr2:second) as GtExpr
   ;
 
 _Expr4
@@ -72,11 +72,11 @@ _Expr4
   ;
 
 _Expr_NoComma
-  ::= !_Expr4
+  ::= !(allow_gt; !_Expr4)
   ;
 
 _Expr_NoGT_NoComma
-  ::= !_Expr4
+  ::= !(!allow_gt; !_Expr4)
   ;
 
 _Expr

@@ -537,28 +537,38 @@
             "$ast": "CreateClause",
             "assignments": [],
             "syntax": {
-                "$ast": "SequenceSyntax",
-                "first": {
-                    "$ast": "SequenceSyntax",
-                    "first": {
-                        "$ast": "RefSyntax",
-                        "field": "first",
-                        "literal": "_Expr3",
-                        "refType": "Id"
+                "$ast": "TestConditionSyntax",
+                "branches": [{
+                    "$ast": "TestConditionBranch",
+                    "condition": {
+                        "$ast": "RefCondition",
+                        "name": "allow_gt"
                     },
-                    "second": {
-                        "$ast": "RefSyntax",
-                        "field": "",
-                        "literal": "\">\"",
-                        "refType": "Literal"
+                    "syntax": {
+                        "$ast": "SequenceSyntax",
+                        "first": {
+                            "$ast": "SequenceSyntax",
+                            "first": {
+                                "$ast": "RefSyntax",
+                                "field": "first",
+                                "literal": "_Expr3",
+                                "refType": "Id"
+                            },
+                            "second": {
+                                "$ast": "RefSyntax",
+                                "field": "",
+                                "literal": "\">\"",
+                                "refType": "Literal"
+                            }
+                        },
+                        "second": {
+                            "$ast": "RefSyntax",
+                            "field": "second",
+                            "literal": "_Expr2",
+                            "refType": "Id"
+                        }
                     }
-                },
-                "second": {
-                    "$ast": "RefSyntax",
-                    "field": "second",
-                    "literal": "_Expr2",
-                    "refType": "Id"
-                }
+                }]
             },
             "type": "GtExpr"
         }],
@@ -605,8 +615,16 @@
             "$ast": "ReuseClause",
             "assignments": [],
             "syntax": {
-                "$ast": "UseSyntax",
-                "name": "_Expr4"
+                "$ast": "PushConditionSyntax",
+                "switches": [{
+                    "$ast": "SwitchItem",
+                    "name": "allow_gt",
+                    "value": "True"
+                }],
+                "syntax": {
+                    "$ast": "UseSyntax",
+                    "name": "_Expr4"
+                }
             }
         }],
         "name": "_Expr_NoComma",
@@ -617,8 +635,16 @@
             "$ast": "ReuseClause",
             "assignments": [],
             "syntax": {
-                "$ast": "UseSyntax",
-                "name": "_Expr4"
+                "$ast": "PushConditionSyntax",
+                "switches": [{
+                    "$ast": "SwitchItem",
+                    "name": "allow_gt",
+                    "value": "False"
+                }],
+                "syntax": {
+                    "$ast": "UseSyntax",
+                    "name": "_Expr4"
+                }
             }
         }],
         "name": "_Expr_NoGT_NoComma",
@@ -702,5 +728,9 @@
         "name": "Module_NoGT_NoComma",
         "type": ""
     }],
-    "switches": []
+    "switches": [{
+        "$ast": "SwitchItem",
+        "name": "allow_gt",
+        "value": "True"
+    }]
 }
