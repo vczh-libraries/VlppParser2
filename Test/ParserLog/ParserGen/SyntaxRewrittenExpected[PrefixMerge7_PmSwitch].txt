@@ -58,7 +58,7 @@ _Expr2_LRI_Original : TypeOrExpr
 _Expr3_LRI_Original : TypeOrExpr
   ::= !_Expr2_LRI_Original
   ::= _Expr3_LRI_Original:first "<" _Expr2:second as LtExpr
-  ::= _Expr3_LRI_Original:first ?(allow_gt">" _Expr2:second) as GtExpr
+  ::= _Expr3_LRI_Original:first ?(allow_gt: ">" _Expr2:second) as GtExpr
   ;
 
 _Expr4_LRI_Isolated_1 : ThrowExpr
@@ -76,7 +76,7 @@ _Expr_NoComma_LRI_Original : TypeOrExpr
   ;
 
 _Expr_NoGT_NoComma_LRI_Original : TypeOrExpr
-  ::= !(allow_gt; !_Expr4_LRI_Original)
+  ::= !(!allow_gt; !_Expr4_LRI_Original)
   ;
 
 _Expr_LRI_Original : TypeOrExpr

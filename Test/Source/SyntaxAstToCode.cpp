@@ -185,6 +185,7 @@ protected:
 		{
 			if (index != 0) writer.WriteString(L" | ");
 			VisitCondition(branch->condition.Obj());
+			writer.WriteString(L": ");
 			if (branch->syntax)
 			{
 				VisitSyntax(branch->syntax.Obj());
