@@ -356,7 +356,7 @@ CompileSyntaxVisitor
 
 				StateBuilder CompileLriTarget(vint32_t parentFlag, GlrLeftRecursionInjectClause* lriTarget)
 				{
-					CHECK_ERROR(lriTarget->switches.Count() > 0, L"Not Implemented!");
+					CHECK_ERROR(lriTarget->switches.Count() == 0, L"Not Implemented!");
 					StateBuilder useOrLriSyntax;
 					auto rule = context.syntaxManager.Rules()[lriTarget->rule->literal.value];
 					if (parentFlag == -1)
