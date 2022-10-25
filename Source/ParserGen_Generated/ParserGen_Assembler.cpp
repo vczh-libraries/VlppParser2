@@ -110,6 +110,8 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					return vl::glr::AssemblerSetObjectField(&vl::glr::parsergen::GlrCreateClause::syntax, object, field, value, cppFieldName);
 				case ParserGenFields::Enum_items:
 					return vl::glr::AssemblerSetObjectField(&vl::glr::parsergen::GlrEnum::items, object, field, value, cppFieldName);
+				case ParserGenFields::LeftRecursionInjectClause_condition:
+					return vl::glr::AssemblerSetObjectField(&vl::glr::parsergen::GlrLeftRecursionInjectClause::condition, object, field, value, cppFieldName);
 				case ParserGenFields::LeftRecursionInjectClause_continuation:
 					return vl::glr::AssemblerSetObjectField(&vl::glr::parsergen::GlrLeftRecursionInjectClause::continuation, object, field, value, cppFieldName);
 				case ParserGenFields::LeftRecursionInjectClause_rule:
@@ -343,6 +345,7 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					L"CreateClause::type",
 					L"Enum::items",
 					L"EnumItem::name",
+					L"LeftRecursionInjectClause::condition",
 					L"LeftRecursionInjectClause::continuation",
 					L"LeftRecursionInjectClause::rule",
 					L"LeftRecursionInjectContinuation::configuration",
@@ -386,7 +389,7 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					L"UseSyntax::name",
 				};
 				vl::vint index = (vl::vint)field;
-				return 0 <= index && index < 60 ? results[index] : nullptr;
+				return 0 <= index && index < 61 ? results[index] : nullptr;
 			}
 
 			const wchar_t* ParserGenCppFieldName(ParserGenFields field)
@@ -411,6 +414,7 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					L"vl::glr::parsergen::GlrCreateClause::type",
 					L"vl::glr::parsergen::GlrEnum::items",
 					L"vl::glr::parsergen::GlrEnumItem::name",
+					L"vl::glr::parsergen::GlrLeftRecursionInjectClause::condition",
 					L"vl::glr::parsergen::GlrLeftRecursionInjectClause::continuation",
 					L"vl::glr::parsergen::GlrLeftRecursionInjectClause::rule",
 					L"vl::glr::parsergen::GlrLeftRecursionInjectContinuation::configuration",
@@ -454,7 +458,7 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					L"vl::glr::parsergen::GlrUseSyntax::name",
 				};
 				vl::vint index = (vl::vint)field;
-				return 0 <= index && index < 60 ? results[index] : nullptr;
+				return 0 <= index && index < 61 ? results[index] : nullptr;
 			}
 
 			vl::Ptr<vl::glr::ParsingAstBase> ParserGenAstInsReceiver::ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates)

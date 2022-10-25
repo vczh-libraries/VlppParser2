@@ -303,6 +303,7 @@ namespace vl
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
 					Traverse(static_cast<GlrClause*>(node));
 					Traverse(static_cast<GlrLeftRecursionInjectClause*>(node));
+					InspectInto(node->condition.Obj());
 					InspectInto(node->continuation.Obj());
 					InspectInto(node->rule.Obj());
 					Finishing(static_cast<GlrLeftRecursionInjectClause*>(node));

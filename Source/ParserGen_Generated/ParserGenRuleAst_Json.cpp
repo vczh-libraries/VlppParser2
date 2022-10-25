@@ -81,6 +81,9 @@ namespace vl
 				}
 				void RuleAstVisitor::PrintFields(GlrLeftRecursionInjectClause* node)
 				{
+					BeginField(L"condition");
+					Print(node->condition.Obj());
+					EndField();
 					BeginField(L"continuation");
 					Print(node->continuation.Obj());
 					EndField();

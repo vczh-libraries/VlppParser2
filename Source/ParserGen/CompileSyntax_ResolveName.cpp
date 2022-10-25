@@ -355,6 +355,10 @@ ResolveNameVisitor
 				void VisitLriClause(GlrLeftRecursionInjectClause* node)
 				{
 					VisitReuseSyntax(node->rule->literal, true);
+					if (node->condition)
+					{
+						node->condition->Accept(this);
+					}
 					if (node->continuation)
 					{
 						for (auto lriTarget : node->continuation->injectionTargets)

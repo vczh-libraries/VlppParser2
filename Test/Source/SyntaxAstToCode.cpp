@@ -289,7 +289,25 @@ protected:
 
 	void VisitLriTarget(GlrLeftRecursionInjectClause* node)
 	{
-		if (node->continuation)
+		if (node->condition && node->continuation)
+		{
+			writer.WriteString(L"!(");
+			VisitCondition(node->condition.Obj());
+			writer.WriteString(L"; ");
+			writer.WriteString(node->rule->literal.value);
+			writer.WriteChar(L' ');
+			VisitLriCont(node->continuation.Obj());
+			writer.WriteString(L")");
+		}
+		else if (node->condition)
+		{
+			writer.WriteString(L"!(");
+			VisitCondition(node->condition.Obj());
+			writer.WriteString(L"; ");
+			writer.WriteString(node->rule->literal.value);
+			writer.WriteString(L")");
+		}
+		else if (node->continuation)
 		{
 			writer.WriteChar(L'(');
 			writer.WriteString(node->rule->literal.value);

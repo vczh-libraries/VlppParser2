@@ -57,6 +57,7 @@ namespace vl
 				void RuleAstVisitor::CopyFields(GlrLeftRecursionInjectClause* from, GlrLeftRecursionInjectClause* to)
 				{
 					CopyFields(static_cast<GlrClause*>(from), static_cast<GlrClause*>(to));
+					to->condition = CopyNode(from->condition.Obj());
 					to->continuation = CopyNode(from->continuation.Obj());
 					to->rule = CopyNode(from->rule.Obj());
 				}
