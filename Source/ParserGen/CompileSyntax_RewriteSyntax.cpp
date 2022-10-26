@@ -1034,6 +1034,14 @@ RenamePrefix
 					RenamePrefixVisitor visitor(rContext, ruleSymbol, syntaxManager);
 					for (auto clause : originRule->clauses)
 					{
+						// !(a; b) should be moved from rule X_LRI_Original to left_recursion_inject clauses in rule X
+						if (auto reuseClause = clause.Cast<GlrReuseClause>())
+						{
+							if (auto pushSyntax = reuseClause->syntax.Cast<GlrPushConditionSyntax>())
+							{
+								reuseClause->syntax = pushSyntax->syntax;
+							}
+						}
 						visitor.FixClause(clause);
 					}
 				}
