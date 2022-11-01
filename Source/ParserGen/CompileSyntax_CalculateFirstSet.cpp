@@ -328,9 +328,9 @@ CalculateFirstSet
 
 					for (auto startRule : startRules)
 					{
-						CalculateFirstSet_MoveFromDirectClauses(lriClauses, context.indirectLriClauses, context.directLriClauses, rule, startRule.key);
-						CalculateFirstSet_MoveFromDirectClauses(lrpClauses, context.indirectLrpClauses, context.directLrpClauses, rule, startRule.key);
-						CalculateFirstSet_MoveFromDirectClauses(pmClauses, context.indirectPmClauses, context.directPmClauses, rule, startRule.key);
+						CalculateFirstSet_MoveFromDirectClauses(lriClauses, context.indirectLriClauses, context.directLriClauses, rule, startRule.ruleSymbol);
+						CalculateFirstSet_MoveFromDirectClauses(lrpClauses, context.indirectLrpClauses, context.directLrpClauses, rule, startRule.ruleSymbol);
+						CalculateFirstSet_MoveFromDirectClauses(pmClauses, context.indirectPmClauses, context.directPmClauses, rule, startRule.ruleSymbol);
 					}
 				}
 			}
