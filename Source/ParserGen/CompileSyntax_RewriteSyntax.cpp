@@ -77,7 +77,7 @@ FillMissingPrefixMergeClauses
 				if (index != -1)
 				{
 					auto&& values = const_cast<List<RuleClausePath>&>(references.GetByIndex(index));
-					for (vint i = values.Count(); i >= 0; i--)
+					for (vint i = values.Count() - 1; i >= 0; i--)
 					{
 						if (values[i].clause == clause)
 						{
@@ -203,7 +203,7 @@ CollectRewritingTargets
 									// ignore if Y ::= X directly or indirectly
 									for (auto [extractRule, extractClause, extractSwitches] : vContext.indirectStartPathToLastRules.GetByIndex(indexExtract))
 									{
-										if (extractSwitches) continue;
+										Fix // ignore if extractSwitches does not affect simpleUseRule
 										if (vContext.directSimpleUseRules.Contains(extractRule, { simpleUseRule,extractClause,nullptr })) continue;
 
 										// prefix extraction needed
