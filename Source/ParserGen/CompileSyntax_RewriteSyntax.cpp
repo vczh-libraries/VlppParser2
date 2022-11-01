@@ -24,7 +24,7 @@ namespace vl
 				Dictionary<RuleSymbol*, GlrRule*>						lriRules;				// rewritten RuleSymbol -> GlrRule containing left_recursion_inject clauses
 				Dictionary<RuleSymbol*, GlrRule*>						fixedAstRules;			// RuleSymbol -> GlrRule relationship after rewritten
 
-				Group<RuleSymbol*, RuleClausePair>						extractPrefixClauses;	// RuleSymbol -> {rule to be extracted, clause begins with rule}
+				Group<RuleSymbol*, RuleClausePath>						extractPrefixClauses;	// RuleSymbol -> {rule to be extracted, clause begins with rule}
 				Dictionary<Pair<RuleSymbol*, RuleSymbol*>, GlrRule*>	extractedPrefixRules;	// {rewritten RuleSymbol, prefix RuleSymbol} -> GlrRule ends with _LRI_Prefix
 				Dictionary<RuleSymbol*, Ptr<RewritingPrefixConflict>>	extractedConflicts;		// rewritten RuleSymbol -> all needed information if prefix extraction affects how it generates left_recursion_inject clauses
 			};
@@ -60,6 +60,27 @@ FillMissingPrefixMergeClauses
 			extern void CalculateFirstSet_IndirectStartRules(VisitorContext& context);
 			extern void CalculateFirstSet_IndirectSimpleUseRules(VisitorContext& context);
 
+			void RemoveDirectReferences(RulePathDependencies& references, RuleSymbol* ruleSymbol, GlrClause* clause)
+			{
+				vint index = references.Keys().IndexOf(ruleSymbol);
+				if (index != -1)
+				{
+					auto&& values = const_cast<List<RuleClausePath>&>(references.GetByIndex(index));
+					for (vint i = values.Count(); i >= 0; i--)
+					{
+						if (values[i].clause == clause)
+						{
+							values.RemoveAt(i);
+						}
+					}
+
+					if (values.Count() == 0)
+					{
+						references.Remove(ruleSymbol);
+					}
+				}
+			}
+
 			void FillMissingPrefixMergeClauses(VisitorContext& vContext, SyntaxSymbolManager& syntaxManager, Ptr<GlrSyntaxFile> rewritten)
 			{
 				// find position of thses clauses in rules
@@ -88,24 +109,8 @@ FillMissingPrefixMergeClauses
 					}
 
 					// remove direct references
-					{
-						vint index = vContext.clauseToStartRules.Keys().IndexOf(clause.Obj());
-						if (index != -1)
-						{
-							for (auto value : vContext.clauseToStartRules.GetByIndex(index))
-							{
-								vContext.directStartRules.Remove(ruleSymbol, { value,clause.Obj() });
-							}
-						}
-					}
-					{
-						vint index = vContext.simpleUseClauseToReferencedRules.Keys().IndexOf(clause.Obj());
-						if (index != -1)
-						{
-							auto value = vContext.simpleUseClauseToReferencedRules.Values()[index];
-							vContext.directSimpleUseRules.Remove(ruleSymbol, { value,clause.Obj() });
-						}
-					}
+					RemoveDirectReferences(vContext.directStartRules, ruleSymbol, clause.Obj());
+					RemoveDirectReferences(vContext.directSimpleUseRules, ruleSymbol, clause.Obj());
 
 					// fix rule and clause symbols
 					auto newRuleSymbol = syntaxManager.CreateRule(newRule->name.value, ruleRaw->name.codeRange);
@@ -121,7 +126,7 @@ FillMissingPrefixMergeClauses
 					//		directStartRules
 					vContext.directPmClauses.Add(ruleSymbol, newPM.Obj());
 					vContext.indirectPmClauses.Add(ruleSymbol, newPM.Obj());
-					vContext.directStartRules.Add(ruleSymbol, { newRuleSymbol, newPM.Obj() });
+					vContext.directStartRules.Add(ruleSymbol, { newRuleSymbol,newPM.Obj(),nullptr });
 					for (auto key : syntaxManager.Rules().Values())
 					{
 						if (vContext.indirectStartPathToLastRules.Contains({ key,ruleSymbol }))
