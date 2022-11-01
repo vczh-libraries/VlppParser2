@@ -25,6 +25,7 @@ DirectFirstSetVisitor
 				VisitorContext&				context;
 				RuleSymbol*					ruleSymbol;
 				GlrClause*					currentClause = nullptr;
+				Ptr<PushedSwitchList>		pushedSwitches;
 
 				RuleSymbol* TryGetRuleSymbol(const WString& name)
 				{
@@ -37,7 +38,7 @@ DirectFirstSetVisitor
 				{
 					if (auto startRule = TryGetRuleSymbol(name))
 					{
-						context.directStartRules.Add(ruleSymbol, { startRule,currentClause });
+						context.directStartRules.Add(ruleSymbol, { startRule,currentClause,pushedSwitches });
 						context.clauseToStartRules.Add(currentClause, ruleSymbol);
 						if (ruleSymbol == startRule && !context.leftRecursiveClauses.Contains(ruleSymbol, currentClause))
 						{
@@ -111,7 +112,22 @@ DirectFirstSetVisitor
 
 				void Visit(GlrPushConditionSyntax* node) override
 				{
+					if (!pushedSwitches)
+					{
+						pushedSwitches = MakePtr<PushedSwitchList>();
+					}
+					pushedSwitches->Add(node);
+
 					node->syntax->Accept(this);
+
+					if (pushedSwitches->Count() == 1)
+					{
+						pushedSwitches = nullptr;
+					}
+					else
+					{
+						pushedSwitches->RemoveAt(pushedSwitches->Count() - 1);
+					}
 				}
 
 				void Visit(GlrTestConditionSyntax* node) override
@@ -150,11 +166,21 @@ DirectFirstSetVisitor
 					node->syntax->Accept(this);
 					if (node->assignments.Count() == 0)
 					{
-						if (auto useSyntax = dynamic_cast<GlrUseSyntax*>(node->syntax.Obj()))
+						auto nodeSyntax = node->syntax.Obj();
+						auto pushSyntax = dynamic_cast<GlrPushConditionSyntax*>(nodeSyntax);
+						if (pushSyntax) nodeSyntax = pushSyntax->syntax.Obj();
+
+						if (auto useSyntax = dynamic_cast<GlrUseSyntax*>(nodeSyntax))
 						{
 							if (auto startRule = TryGetRuleSymbol(useSyntax->name.value))
 							{
-								context.directSimpleUseRules.Add(ruleSymbol, { startRule,currentClause });
+								Ptr<PushedSwitchList> pushedSwitches;
+								if (pushSyntax)
+								{
+									pushedSwitches = MakePtr<PushedSwitchList>();
+									pushedSwitches->Add(pushSyntax);
+								}
+								context.directSimpleUseRules.Add(ruleSymbol, { startRule,currentClause,pushedSwitches });
 								context.simpleUseClauseToReferencedRules.Add(currentClause, startRule);
 							}
 						}

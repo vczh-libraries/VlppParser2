@@ -21,11 +21,16 @@ namespace vl
 		{
 			namespace compile_syntax
 			{
+				using PushedSwitchList = collections::List<GlrPushConditionSyntax*>;
 				struct RuleClausePath
 				{
-					RuleSymbol*												ruleSymbol = nullptr;
-					GlrClause*												clause = nullptr;
-					Ptr<collections::List<Ptr<GlrPushConditionSyntax>>>		pushedSwitches;
+					RuleSymbol*							ruleSymbol = nullptr;
+					GlrClause*							clause = nullptr;
+					Ptr<PushedSwitchList>				pushedSwitches;
+
+					RuleClausePath() = default;
+					RuleClausePath(RuleSymbol* _ruleSymbol, GlrClause* _clause, Ptr<PushedSwitchList> _pushedSwitches)
+						: ruleSymbol(_ruleSymbol), clause(_clause), pushedSwitches(_pushedSwitches) {}
 				};
 
 				using RuleSymbolPair = collections::Pair<RuleSymbol*, RuleSymbol*>;
