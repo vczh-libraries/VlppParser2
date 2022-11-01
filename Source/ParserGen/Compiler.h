@@ -30,23 +30,25 @@ namespace vl
 					return true;
 				}
 
-				struct RuleClausePath
+				template<typename TClause>
+				struct GenericRuleClausePath
 				{
 					RuleSymbol*							ruleSymbol = nullptr;
-					GlrClause*							clause = nullptr;
+					TClause*							clause = nullptr;
 					Ptr<PushedSwitchList>				pushedSwitches;
 
-					RuleClausePath() = default;
-					RuleClausePath(RuleSymbol* _ruleSymbol, GlrClause* _clause, Ptr<PushedSwitchList> _pushedSwitches)
+					GenericRuleClausePath() = default;
+					GenericRuleClausePath(RuleSymbol* _ruleSymbol, TClause* _clause, Ptr<PushedSwitchList> _pushedSwitches)
 						: ruleSymbol(_ruleSymbol), clause(_clause), pushedSwitches(_pushedSwitches) {}
 
-					bool operator==(const RuleClausePath& p) const
+					bool operator==(const GenericRuleClausePath& p) const
 					{
 						if (ruleSymbol != p.ruleSymbol) return false;
 						if (clause != p.clause) return false;
 						return ArePushedSwitchesIdentical(pushedSwitches, p.pushedSwitches);
 					}
 				};
+				using RuleClausePath = GenericRuleClausePath<GlrClause>;
 
 				using RuleSymbolPair = collections::Pair<RuleSymbol*, RuleSymbol*>;
 

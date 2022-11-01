@@ -4,8 +4,11 @@
 
 - `PrefixMerge` 1-7 add test cases to parse expr and type separately.
 - Add test cases for PrefixExtractionAffectedRuleReferencedAnother error.
-- Add test cases to ensure `ThisRule` should not test any switch when `prefix_merge(ThisRule)`.
-- Add test cases to ensure `ThisRule` test `c` directly/indirectly when `!(c; ThisRule)`.
+- Add test cases to ensure `ThisRule` when `prefix_merge(ThisRule)`:
+  - Should not test any switch.
+  - Otherwise, in all path from `ThisRule` to `?()` used switches must all be set
+  - So that pushing switches outside of `ThisRule` does not affect `ThisRule`.
+- Add test cases to ensure `syntax` test `c` directly/indirectly when `!(c; syntax)`.
 - TODO in `RewriteRules_GenerateAffectedLRIClausesSubgroup`.
 - Make a test case to test `prefix_merge` generates `left_recursion_inject_multiple`.
 - Create ambiguity test case caused by only one clause with alternative syntax.

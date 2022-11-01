@@ -350,13 +350,16 @@ RewriteExtractedPrefixRules
 RewriteRules (Common)
 ***********************************************************************/
 
+			using PMClauseRecord = GenericRuleClausePath<GlrPrefixMergeClause>;
+
 			Ptr<RewritingPrefixConflict> RewriteRules_CollectUnaffectedIndirectPmClauses(
 				const VisitorContext& vContext,
 				const RewritingContext& rContext,
 				RuleSymbol* initiatedRuleSymbol,
 				RuleSymbol* ruleSymbol,
+				Ptr<PushedSwitchList> pushedSwitches,
 				SortedList<RuleSymbol*>& visited,
-				Group<WString, Pair<RuleSymbol*, GlrPrefixMergeClause*>>& pmClauses
+				Group<WString, PMClauseRecord>& pmClauses
 			)
 			{
 				auto conflict = initiatedRuleSymbol == ruleSymbol ? GetConflict(rContext, ruleSymbol) : nullptr;
@@ -366,15 +369,22 @@ RewriteRules (Common)
 
 					if (conflict)
 					{
-						for (auto pair : vContext.directSimpleUseRules[ruleSymbol])
+						for (auto [simpleUseRule, simpleUseClause, simpleUseSwitches] : vContext.directSimpleUseRules[ruleSymbol])
 						{
-							if (conflict->unaffectedClauses.Contains(pair.value))
+							if (conflict->unaffectedClauses.Contains(simpleUseClause))
 							{
-								RewriteRules_CollectUnaffectedIndirectPmClauses(vContext, rContext, initiatedRuleSymbol, pair.key, visited, pmClauses);
+								Ptr<PushedSwitchList> newPushedSwitches;
+								if (simpleUseSwitches && pushedSwitches)
+								{
+									newPushedSwitches = MakePtr<PushedSwitchList>();
+									CopyFrom(*pushedSwitches.Obj(), *simpleUseSwitches.Obj(), true);
+									CopyFrom(*pushedSwitches.Obj(), *pushedSwitches.Obj(), true);
+								}
+								RewriteRules_CollectUnaffectedIndirectPmClauses(vContext, rContext, initiatedRuleSymbol, simpleUseRule, newPushedSwitches, visited, pmClauses);
 							}
 							else
 							{
-								vint indexConflicted = conflict->conflictedClauses.Keys().IndexOf(pair.value);
+								vint indexConflicted = conflict->conflictedClauses.Keys().IndexOf(simpleUseClause);
 								if (indexConflicted == -1) continue;
 
 								auto&& prefixClauses = conflict->conflictedClauses.GetByIndex(indexConflicted);
@@ -387,9 +397,9 @@ RewriteRules (Common)
 										})
 									))
 								{
-									if (!pmClauses.Contains(pmClause->rule->literal.value, { pair.key, pmClause }))
+									if (!pmClauses.Contains(pmClause->rule->literal.value, { simpleUseRule,pmClause,pushedSwitches }))
 									{
-										pmClauses.Add(pmClause->rule->literal.value, { pair.key,pmClause });
+										pmClauses.Add(pmClause->rule->literal.value, { simpleUseRule,pmClause,pushedSwitches });
 									}
 								}
 							}
@@ -399,9 +409,9 @@ RewriteRules (Common)
 					{
 						for (auto pmClause : vContext.indirectPmClauses[ruleSymbol])
 						{
-							if (!pmClauses.Contains(pmClause->rule->literal.value, { ruleSymbol, pmClause }))
+							if (!pmClauses.Contains(pmClause->rule->literal.value, { ruleSymbol,pmClause,pushedSwitches }))
 							{
-								pmClauses.Add(pmClause->rule->literal.value, { ruleSymbol,pmClause });
+								pmClauses.Add(pmClause->rule->literal.value, { ruleSymbol,pmClause,pushedSwitches });
 							}
 						}
 					}
