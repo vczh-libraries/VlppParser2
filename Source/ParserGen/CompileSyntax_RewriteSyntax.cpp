@@ -17,6 +17,12 @@ namespace vl
 				Group<GlrClause*, GlrClause*>							conflictedClauses;		// c1 -> c2 if c1's prefix is prefix clause c2
 			};
 
+			struct PrefixRuleWithClause
+			{
+				RuleSymbol*												ruleSymbol = nullptr;
+				GlrClause*												clause = nullptr;
+			};
+
 			struct RewritingContext
 			{
 				List<RuleSymbol*>										pmRules;				// all rules that need to be rewritten
@@ -24,7 +30,7 @@ namespace vl
 				Dictionary<RuleSymbol*, GlrRule*>						lriRules;				// rewritten RuleSymbol -> GlrRule containing left_recursion_inject clauses
 				Dictionary<RuleSymbol*, GlrRule*>						fixedAstRules;			// RuleSymbol -> GlrRule relationship after rewritten
 
-				Group<RuleSymbol*, RuleClausePath>						extractPrefixClauses;	// RuleSymbol -> {rule to be extracted, clause begins with rule}
+				Group<RuleSymbol*, PrefixRuleWithClause>				extractPrefixClauses;	// RuleSymbol -> {rule to be extracted, clause begins with rule}
 				Dictionary<Pair<RuleSymbol*, RuleSymbol*>, GlrRule*>	extractedPrefixRules;	// {rewritten RuleSymbol, prefix RuleSymbol} -> GlrRule ends with _LRI_Prefix
 				Dictionary<RuleSymbol*, Ptr<RewritingPrefixConflict>>	extractedConflicts;		// rewritten RuleSymbol -> all needed information if prefix extraction affects how it generates left_recursion_inject clauses
 			};
@@ -170,23 +176,30 @@ CollectRewritingTargets
 							if (vContext.directSimpleUseRules.GetByIndex(indexSimpleUse).Count() != rule->clauses.Count()) continue;
 							Ptr<RewritingPrefixConflict> conflict;
 
-							for (auto [startRule, startClause] : vContext.directStartRules.GetByIndex(indexStart))
+							for (auto [startRule, startClause, startSwitches] : vContext.directStartRules.GetByIndex(indexStart))
 							{
 								// prefix_merge clauses and left recursive clauses are not involved in prefix detection/extraction
 								if (dynamic_cast<GlrPrefixMergeClause*>(startClause)) continue;
 								if (vContext.leftRecursiveClauses.Contains(ruleSymbol, startClause)) continue;
 
 								// find all clause pair "!X" and "Y ...", see if X is a prefix of Y
-								for (auto [simpleUseRule, simpleUseClause] : vContext.directSimpleUseRules.GetByIndex(indexSimpleUse))
+								for (auto [simpleUseRule, simpleUseClause, simpleUseSwitches] : vContext.directSimpleUseRules.GetByIndex(indexSimpleUse))
 								{
+									// ignore if startSwitches != simpleUseSwitches
+									if (!ArePushedSwitchesIdentical(startSwitches, simpleUseSwitches)) continue;
+
 									// ignore if X is Y
-									// ignore if Y ::= X directly or indirectly
 									if (startRule == simpleUseRule) continue;
+
+									// ignore if X is not a prefix of Y
 									vint indexExtract = vContext.indirectStartPathToLastRules.Keys().IndexOf({ startRule,simpleUseRule });
 									if (indexExtract == -1) continue;
-									for (auto [extractRule, extractClause] : vContext.indirectStartPathToLastRules.GetByIndex(indexExtract))
+
+									// ignore if Y ::= X directly or indirectly
+									for (auto [extractRule, extractClause, extractSwitches] : vContext.indirectStartPathToLastRules.GetByIndex(indexExtract))
 									{
-										if (vContext.directSimpleUseRules.Contains(extractRule, { simpleUseRule,extractClause })) continue;
+										if (extractSwitches) continue;
+										if (vContext.directSimpleUseRules.Contains(extractRule, { simpleUseRule,extractClause,nullptr })) continue;
 
 										// prefix extraction needed
 										if (!rContext.extractPrefixClauses.Contains(extractRule, { simpleUseRule,extractClause }))

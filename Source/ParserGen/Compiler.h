@@ -22,6 +22,14 @@ namespace vl
 			namespace compile_syntax
 			{
 				using PushedSwitchList = collections::List<GlrPushConditionSyntax*>;
+
+				inline bool ArePushedSwitchesIdentical(Ptr<PushedSwitchList> p1, Ptr<PushedSwitchList> p2)
+				{
+					if ((p1 == nullptr) != (p2 == nullptr)) return false;
+					if (p1 && collections::CompareEnumerable(*p1.Obj(), *p2.Obj()) != 0) return false;
+					return true;
+				}
+
 				struct RuleClausePath
 				{
 					RuleSymbol*							ruleSymbol = nullptr;
@@ -36,9 +44,7 @@ namespace vl
 					{
 						if (ruleSymbol != p.ruleSymbol) return false;
 						if (clause != p.clause) return false;
-						if ((pushedSwitches == nullptr) != (p.pushedSwitches == nullptr)) return false;
-						if (pushedSwitches && collections::CompareEnumerable(*pushedSwitches.Obj(), *p.pushedSwitches.Obj()) != 0) return false;
-						return true;
+						return ArePushedSwitchesIdentical(pushedSwitches, p.pushedSwitches);
 					}
 				};
 

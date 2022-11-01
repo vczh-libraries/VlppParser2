@@ -4,12 +4,14 @@
 
 - `PrefixMerge` 1-7 add test cases to parse expr and type separately.
 - Add test cases for PrefixExtractionAffectedRuleReferencedAnother error.
-- Add test cases to ensure `prefix_merge(ThisRule)` should not push/test any switches directly/indirectly.
-- Add test cases to ensure `!(c; ThisRule)` tested c directly/indirectly
+- Add test cases to ensure `ThisRule` should not test any switch when `prefix_merge(ThisRule)`.
+- Add test cases to ensure `ThisRule` test `c` directly/indirectly when `!(c; ThisRule)`.
 - TODO in `RewriteRules_GenerateAffectedLRIClausesSubgroup`.
 - Make a test case to test `prefix_merge` generates `left_recursion_inject_multiple`.
 - Create ambiguity test case caused by only one clause with alternative syntax.
 - Test when an object get LriFetch to multiple branches following a ReopenObject.
+- Test `A LRI(X) (B LRI(Y) C)` when B involved `PushSwitchSyntax`.
+- Deny `X ::= Y LRI ...` when `X` is or a prefix of `Y`.
 
 ## Features to Add
 
@@ -24,7 +26,6 @@
 - When `XToResolve` is in another `XToResolve`, flatten them.
 - TODO in `CalculateRuleAndClauseTypes`.
 - TODO in `ValidateStructurePrefixMergeRuleVisitor`.
-- Test `X ::= X LRI ...`.
 - Optimize `CalculateFirstSet_IndirectStartRules` using partial ordering.
 - TODO in `SyntaxSymbolManager::EliminateSingleRulePrefix`.
   - Deny `A ::= !B ::= B as Something ::= ...;`.
