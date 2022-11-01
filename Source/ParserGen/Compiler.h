@@ -21,8 +21,14 @@ namespace vl
 		{
 			namespace compile_syntax
 			{
+				struct RuleClausePath
+				{
+					RuleSymbol*												ruleSymbol = nullptr;
+					GlrClause*												clause = nullptr;
+					Ptr<collections::List<Ptr<GlrPushConditionSyntax>>>		pushedSwitches;
+				};
+
 				using RuleSymbolPair = collections::Pair<RuleSymbol*, RuleSymbol*>;
-				using RuleClausePair = collections::Pair<RuleSymbol*, GlrClause*>;
 
 				using GlrRuleMap = collections::Dictionary<RuleSymbol*, GlrRule*>;
 				using LiteralTokenMap = collections::Dictionary<GlrRefSyntax*, vint32_t>;
@@ -39,8 +45,8 @@ namespace vl
 				using ClauseToRuleGroup = collections::Group<GlrClause*, RuleSymbol*>;
 				using ClauseList = collections::List<GlrClause*>;
 
-				using RulePathDependencies = collections::Group<RuleSymbol*, RuleClausePair>;
-				using PathToLastRuleMap = collections::Group<RuleSymbolPair, RuleClausePair>;
+				using RulePathDependencies = collections::Group<RuleSymbol*, RuleClausePath>;
+				using PathToLastRuleMap = collections::Group<RuleSymbolPair, RuleClausePath>;
 
 				struct VisitorContext
 				{
