@@ -31,6 +31,15 @@ namespace vl
 					RuleClausePath() = default;
 					RuleClausePath(RuleSymbol* _ruleSymbol, GlrClause* _clause, Ptr<PushedSwitchList> _pushedSwitches)
 						: ruleSymbol(_ruleSymbol), clause(_clause), pushedSwitches(_pushedSwitches) {}
+
+					bool operator==(const RuleClausePath& p) const
+					{
+						if (ruleSymbol != p.ruleSymbol) return false;
+						if (clause != p.clause) return false;
+						if ((pushedSwitches == nullptr) != (p.pushedSwitches == nullptr)) return false;
+						if (pushedSwitches && collections::CompareEnumerable(*pushedSwitches.Obj(), *p.pushedSwitches.Obj()) != 0) return false;
+						return true;
+					}
 				};
 
 				using RuleSymbolPair = collections::Pair<RuleSymbol*, RuleSymbol*>;
@@ -80,6 +89,7 @@ namespace vl
 					ClauseToRuleGroup					clauseToStartRules;									// GlrClause -> RuleSymbol when this clause begins with RuleSymbol
 					ClauseList							clauseToConvertedToPrefixMerge;						// GlrClause when it should be converted to a prefix_merge clause
 
+					// PushedSwitchList in following members are organized in the order of execution
 					RulePathDependencies				directStartRules, indirectStartRules;				// RuleSymbol -> {rule, clause begins with the rule}
 																											// RuleSymbol -> {rule, reachable clause begins with the rule}
 					RulePathDependencies				directSimpleUseRules, indirectSimpleUseRules;		// RuleSymbol -> {rule, clause that is !rule}

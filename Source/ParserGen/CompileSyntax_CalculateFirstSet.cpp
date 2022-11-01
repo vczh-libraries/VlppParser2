@@ -227,10 +227,10 @@ CalculateFirstSet
 				for (auto [rule, index] : indexed(direct.Keys()))
 				{
 					auto&& startRules = direct.GetByIndex(index);
-					for (auto [startRule, clause] : startRules)
+					for (auto [startRule, clause, pushedSwitches] : startRules)
 					{
-						indirect.Add(rule, { startRule,clause });
-						pathToLastRules.Add({ rule,startRule }, { rule,clause });
+						indirect.Add(rule, { startRule,clause,pushedSwitches });
+						pathToLastRules.Add({ rule,startRule }, { rule,clause,pushedSwitches });
 					}
 				}
 
@@ -240,24 +240,30 @@ CalculateFirstSet
 					for (auto [rule, index] : indexed(indirect.Keys()))
 					{
 						auto&& startRules1 = indirect.GetByIndex(index);
-						for (auto [startRule1, clause1] : startRules1)
+						for (auto [startRule1, clause1, pushedSwitches1] : startRules1)
 						{
 							if (rule == startRule1) continue;
 							vint index2 = direct.Keys().IndexOf(startRule1);
 							if (index2 != -1)
 							{
 								auto&& startRules2 = direct.GetByIndex(index2);
-								for (auto [startRule2, clause2] : startRules2)
+								for (auto [startRule2, clause2, pushedSwitches2] : startRules2)
 								{
 									if (rule == startRule2 || startRule1 == startRule2) continue;
-									if (!pathToLastRules.Contains({ rule,startRule2 }, { startRule1,clause2 }))
+
+									Ptr<PushedSwitchList> pushedSwitches;
+									if (pushedSwitches1 || pushedSwitches2) pushedSwitches = MakePtr<PushedSwitchList>();
+									if (pushedSwitches1) CopyFrom(*pushedSwitches.Obj(), *pushedSwitches1.Obj(), true);
+									if (pushedSwitches2) CopyFrom(*pushedSwitches.Obj(), *pushedSwitches2.Obj(), true);
+
+									if (!pathToLastRules.Contains({ rule,startRule2 }, { startRule1,clause2,pushedSwitches }))
 									{
 										offset++;
-										if (!indirect.Contains(rule, { startRule2,clause2 }))
+										if (!indirect.Contains(rule, { startRule2,clause2,pushedSwitches }))
 										{
-											indirect.Add(rule, { startRule2,clause2 });
+											indirect.Add(rule, { startRule2,clause2,pushedSwitches });
 										}
-										pathToLastRules.Add({ rule,startRule2 }, { startRule1,clause2 });
+										pathToLastRules.Add({ rule,startRule2 }, { startRule1,clause2,pushedSwitches });
 									}
 								}
 							}
