@@ -126,9 +126,11 @@ ParserSymbolManager
 			ERROR_ITEM(MultiplePrioritySyntaxInAClause,										ruleName)													/* Too many syntax with priority in the a clause */\
 			ERROR_ITEM(PushConditionBodyCouldExpandToEmptySequence,							ruleName)\
 			ERROR_ITEM(TestConditionBodyCouldExpandToEmptySequence,							ruleName)\
-			ERROR_ITEM(PushedSwitchIsNotTested,												ruleName, switchName)\
 			ERROR_ITEM(MultipleEmptySyntaxInTestCondition,									ruleName)\
 			ERROR_ITEM(TooManyLeftRecursionPlaceholderClauses,								ruleName)\
+			/* SyntaxAst(ValidateStructure, condition) */\
+			ERROR_ITEM(PushedSwitchIsNotTested,												ruleName, switchName)\
+			ERROR_ITEM(PrefixMergeAffectedBySwitches,										ruleName, prefixMergeRule, switchName)\
 			/* SyntaxAst(ValidateStructure, relationship) */\
 			ERROR_ITEM(FieldAssignedMoreThanOnce,											ruleName, clauseType, fieldName)\
 			/* SyntaxAst(ValidateStructure, prefix_merge) */\

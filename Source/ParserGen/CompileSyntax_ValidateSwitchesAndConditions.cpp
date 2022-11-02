@@ -41,31 +41,6 @@ CollectRuleAffectedSwitchesVisitorBase
 
 			protected:
 
-				virtual void VisitRuleSymbol(RuleSymbol* refRuleSymbol) = 0;
-
-				////////////////////////////////////////////////////////////////////////
-				// GlrSyntax::IVisitor
-				////////////////////////////////////////////////////////////////////////
-
-				void VisitRule(const WString& name)
-				{
-					vint index = context.syntaxManager.Rules().Keys().IndexOf(name);
-					if (index != -1)
-					{
-						VisitRuleSymbol(context.syntaxManager.Rules().Values()[index]);
-					}
-				}
-
-				void Traverse(GlrRefSyntax* node) override
-				{
-					VisitRule(node->literal.value);
-				}
-
-				void Traverse(GlrUseSyntax* node) override
-				{
-					VisitRule(node->name.value);
-				}
-
 				void Traverse(GlrPushConditionSyntax* node) override
 				{
 					for (auto switchItem : node->switches)
@@ -100,10 +75,6 @@ CollectRuleAffectedSwitchesFirstPassVisitor
 
 			protected:
 
-				void VisitRuleSymbol(RuleSymbol* refRuleSymbol) override
-				{
-				}
-
 				////////////////////////////////////////////////////////////////////////
 				// GlrCondition::IVisitor
 				////////////////////////////////////////////////////////////////////////
@@ -136,26 +107,45 @@ CollectRuleAffectedSwitchesSecondPassVisitor
 
 			protected:
 
-				void VisitRuleSymbol(RuleSymbol* refRuleSymbol) override
+				////////////////////////////////////////////////////////////////////////
+				// GlrSyntax::IVisitor
+				////////////////////////////////////////////////////////////////////////
+
+				void VisitRule(const WString& name)
 				{
-					if (ruleSymbol == refRuleSymbol) return;
-					vint indexSwitch = context.ruleAffectedSwitches.Keys().IndexOf(refRuleSymbol);
-					if(indexSwitch!=-1)
+					vint index = context.syntaxManager.Rules().Keys().IndexOf(name);
+					if (index != -1)
 					{
-						for (auto&& name : context.ruleAffectedSwitches.GetByIndex(indexSwitch))
+						auto refRuleSymbol = context.syntaxManager.Rules().Values()[index];
+						if (ruleSymbol == refRuleSymbol) return;
+						vint indexSwitch = context.ruleAffectedSwitches.Keys().IndexOf(refRuleSymbol);
+						if (indexSwitch != -1)
 						{
-							if (!context.ruleAffectedSwitches.Contains(ruleSymbol, name))
+							for (auto&& name : context.ruleAffectedSwitches.GetByIndex(indexSwitch))
 							{
-								updated = true;
-								context.ruleAffectedSwitches.Add(ruleSymbol, name);
+								if (!context.ruleAffectedSwitches.Contains(ruleSymbol, name))
+								{
+									updated = true;
+									context.ruleAffectedSwitches.Add(ruleSymbol, name);
+								}
 							}
 						}
 					}
 				}
+
+				void Traverse(GlrRefSyntax* node) override
+				{
+					VisitRule(node->literal.value);
+				}
+
+				void Traverse(GlrUseSyntax* node) override
+				{
+					VisitRule(node->name.value);
+				}
 			};
 
 /***********************************************************************
-ValidateStructure
+ValidateSwitchesAndConditions
 ***********************************************************************/
 
 			void ValidateSwitchesAndConditions(VisitorContext& context, List<Ptr<GlrSyntaxFile>>& files)
