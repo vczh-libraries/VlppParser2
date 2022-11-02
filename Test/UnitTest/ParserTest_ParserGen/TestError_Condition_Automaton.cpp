@@ -21,7 +21,7 @@ A:a
 LR"SYNTAX(
 switch first;
 X
-  ::= A as Ast
+  ::= ?(first: A) as Ast
   ;
 Y
   ::= !X
@@ -44,7 +44,7 @@ Y
 LR"SYNTAX(
 switch first;
 X
-  ::= A as Ast
+  ::= ?(first: A) as Ast
   ;
 Y
   ::= !X
