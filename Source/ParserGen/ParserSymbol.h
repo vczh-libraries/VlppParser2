@@ -97,6 +97,9 @@ ParserSymbolManager
 			ERROR_ITEM(CyclicDependedRuleTypeIncompatible,									ruleName, ruleTypes)										/* Types of rules are not compatible to each other when they build cyclic dependency by reuse clauses */\
 			ERROR_ITEM(ReuseClauseCannotResolveToDeterministicType,							ruleName, ruleTypes)										/* A reuse clause contains multiple use rule but their types are not compatible to each other */\
 			ERROR_ITEM(ReuseClauseContainsNoUseRule,										ruleName)													/* A reuse clause contains no use rule therefore the type cannot be determined */\
+			/* SyntaxAst(ValidateSwitchesAndConditions, condition) */\
+			ERROR_ITEM(PushedSwitchIsNotTested,												ruleName, switchName)\
+			ERROR_ITEM(PrefixMergeAffectedBySwitches,										ruleName, prefixMergeRule, switchName)\
 			/* SyntaxAst(ValidateTypes) */\
 			ERROR_ITEM(FieldNotExistsInClause,												ruleName, clauseType, fieldName)							/* The field does not exist in the type of the clause */\
 			ERROR_ITEM(RuleTypeMismatchedToField,											ruleName, clauseType, fieldName, fieldRuleType)				/* The rule type is not compatible to the assigning field */\
@@ -128,9 +131,6 @@ ParserSymbolManager
 			ERROR_ITEM(TestConditionBodyCouldExpandToEmptySequence,							ruleName)\
 			ERROR_ITEM(MultipleEmptySyntaxInTestCondition,									ruleName)\
 			ERROR_ITEM(TooManyLeftRecursionPlaceholderClauses,								ruleName)\
-			/* SyntaxAst(ValidateStructure, condition) */\
-			ERROR_ITEM(PushedSwitchIsNotTested,												ruleName, switchName)\
-			ERROR_ITEM(PrefixMergeAffectedBySwitches,										ruleName, prefixMergeRule, switchName)\
 			/* SyntaxAst(ValidateStructure, relationship) */\
 			ERROR_ITEM(FieldAssignedMoreThanOnce,											ruleName, clauseType, fieldName)\
 			/* SyntaxAst(ValidateStructure, prefix_merge) */\
