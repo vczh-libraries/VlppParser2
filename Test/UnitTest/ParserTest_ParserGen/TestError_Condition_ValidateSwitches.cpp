@@ -53,7 +53,7 @@ Exp1 ::= !(!first; !Exp0);
 LR"SYNTAX(
 switch first, second;
 Exp0 ::= NUM:value as NumExpr;
-Exp1 ::= !(!first; ?(first && !second: !Exp0));
+Exp1 ::= !(first, !second; ?(first: !Exp0));
 )SYNTAX";
 		ExpectError(
 			typeParser,

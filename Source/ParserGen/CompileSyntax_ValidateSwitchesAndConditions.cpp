@@ -148,13 +148,65 @@ CollectRuleAffectedSwitchesSecondPassVisitor
 VerifySwitchesAndConditionsVisitor
 ***********************************************************************/
 
+			class CollectTestedSwitchesVisitor
+				: public traverse_visitor::RuleAstVisitor
+			{
+			protected:
+				VisitorContext&							context;
+
+			public:
+				SortedList<WString>						testedSwitches;
+
+				CollectTestedSwitchesVisitor(
+					VisitorContext& _context
+				)
+					: context(_context)
+				{
+				}
+
+			protected:
+
+				////////////////////////////////////////////////////////////////////////
+				// GlrSyntax::IVisitor
+				////////////////////////////////////////////////////////////////////////
+
+				void VisitRule(const WString& name)
+				{
+					vint index = context.syntaxManager.Rules().Keys().IndexOf(name);
+					if (index != -1)
+					{
+						auto refRuleSymbol = context.syntaxManager.Rules().Values()[index];
+						vint index = context.ruleAffectedSwitches.Keys().IndexOf(refRuleSymbol);
+						if (index != -1)
+						{
+							for (auto switchName : context.ruleAffectedSwitches.GetByIndex(index))
+							{
+								if (!testedSwitches.Contains(switchName))
+								{
+									testedSwitches.Add(switchName);
+								}
+							}
+						}
+					}
+				}
+
+				void Traverse(GlrRefSyntax* node) override
+				{
+					VisitRule(node->literal.value);
+				}
+
+				void Traverse(GlrUseSyntax* node) override
+				{
+					VisitRule(node->name.value);
+				}
+			};
+
 			class VerifySwitchesAndConditionsVisitor
 				: public traverse_visitor::RuleAstVisitor
 			{
 			protected:
 				VisitorContext&							context;
 				RuleSymbol*								ruleSymbol = nullptr;
-				List<WString>							pushedSwitches;
 
 			public:
 				VerifySwitchesAndConditionsVisitor(
@@ -174,6 +226,28 @@ VerifySwitchesAndConditionsVisitor
 				}
 
 			protected:
+
+				////////////////////////////////////////////////////////////////////////
+				// GlrSyntax::IVisitor
+				////////////////////////////////////////////////////////////////////////
+
+				void Traverse(GlrPushConditionSyntax* node) override
+				{
+					CollectTestedSwitchesVisitor visitor(context);
+					node->syntax->Accept(&visitor);
+					for (auto switchItem : node->switches)
+					{
+						if (!visitor.testedSwitches.Contains(switchItem->name.value))
+						{
+							context.syntaxManager.AddError(
+								ParserErrorType::PushedSwitchIsNotTested,
+								node->codeRange,
+								ruleSymbol->Name(),
+								switchItem->name.value
+								);
+						}
+					}
+				}
 
 				////////////////////////////////////////////////////////////////////////
 				// GlrClause::IVisitor
