@@ -229,4 +229,45 @@ Exp2
 			{ ParserErrorType::RuleIndirectlyBeginsWithPrefixMergeMixedNonSimpleUseClause,L"Exp2",L"PM"}
 			);
 	});
+
+	//////////////////////////////////////////////////////
+	// PrefixMergeAffectedBySwitches
+	//////////////////////////////////////////////////////
+
+	TEST_CASE(L"PrefixMergeAffectedBySwitches 1")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+switch first;
+Exp0 ::= ?(first: value) as NumExpr;
+PM ::= !prefix_merge(Exp0);
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::PrefixMergeAffectedBySwitches,L"PM",L"Exp0",L"first"}
+		);
+	});
+
+	TEST_CASE(L"PrefixMergeAffectedBySwitches 2")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+switch first, second;
+Exp0 ::= ?(first && !second: value) as NumExpr;
+Exp1 ::= !(first; !Exp0);
+PM ::= !prefix_merge(Exp1);
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::PrefixMergeAffectedBySwitches,L"PM",L"Exp1",L"second"}
+		);
+	});
 }
