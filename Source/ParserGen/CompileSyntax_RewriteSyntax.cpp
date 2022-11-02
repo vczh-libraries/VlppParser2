@@ -203,7 +203,31 @@ CollectRewritingTargets
 									// ignore if Y ::= X directly or indirectly
 									for (auto [extractRule, extractClause, extractSwitches] : vContext.indirectStartPathToLastRules.GetByIndex(indexExtract))
 									{
-										Fix // ignore if extractSwitches does not affect simpleUseRule
+										// ignore if extractSwitches affect simpleUseRule
+										if (extractSwitches)
+										{
+											bool affected = false;
+											vint indexSwitch = vContext.ruleAffectedSwitches.Keys().IndexOf(simpleUseRule);
+											if (indexSwitch != -1)
+											{
+												auto&& affectedSwitches = vContext.ruleAffectedSwitches.GetByIndex(indexSwitch);
+												for (auto pushSyntax : *extractSwitches.Obj())
+												{
+													for (auto switchItem : pushSyntax->switches)
+													{
+														if (affectedSwitches.Contains(switchItem->name.value))
+														{
+															affected = true;
+															goto SIMPLE_USE_RULE_AFFECTED;
+														}
+													}
+												}
+											}
+										SIMPLE_USE_RULE_AFFECTED:;
+											if (affected) continue;
+										}
+
+										// ignore if Y ::= X directly or indirectly
 										if (vContext.directSimpleUseRules.Contains(extractRule, { simpleUseRule,extractClause,nullptr })) continue;
 
 										// prefix extraction needed
