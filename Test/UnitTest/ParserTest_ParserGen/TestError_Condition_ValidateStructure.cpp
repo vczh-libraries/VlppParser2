@@ -18,7 +18,7 @@ TEST_FILE
 LR"SYNTAX(
 switch first;
 Exp0
-  ::= NUM:value as NumExpr
+  ::= ?(first: NUM:value) as NumExpr
   ;
 Exp1
   ::= Exp0:func !(first; [Exp0:args] [Exp1:args]) as CallExpr
