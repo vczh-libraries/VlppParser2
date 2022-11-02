@@ -81,7 +81,7 @@ CollectRuleAffectedSwitchesFirstPassVisitor
 
 				void Traverse(GlrRefCondition* node) override
 				{
-					if (!context.ruleAffectedSwitches.Contains(ruleSymbol, node->name.value))
+					if (!pushedSwitches.Contains(node->name.value) && !context.ruleAffectedSwitches.Contains(ruleSymbol, node->name.value))
 					{
 						context.ruleAffectedSwitches.Add(ruleSymbol, node->name.value);
 					}
@@ -123,7 +123,7 @@ CollectRuleAffectedSwitchesSecondPassVisitor
 						{
 							for (auto&& name : context.ruleAffectedSwitches.GetByIndex(indexSwitch))
 							{
-								if (!context.ruleAffectedSwitches.Contains(ruleSymbol, name))
+								if (!pushedSwitches.Contains(name) && !context.ruleAffectedSwitches.Contains(ruleSymbol, name))
 								{
 									updated = true;
 									context.ruleAffectedSwitches.Add(ruleSymbol, name);
@@ -141,6 +141,58 @@ CollectRuleAffectedSwitchesSecondPassVisitor
 				void Traverse(GlrUseSyntax* node) override
 				{
 					VisitRule(node->name.value);
+				}
+			};
+
+/***********************************************************************
+VerifySwitchesAndConditionsVisitor
+***********************************************************************/
+
+			class VerifySwitchesAndConditionsVisitor
+				: public traverse_visitor::RuleAstVisitor
+			{
+			protected:
+				VisitorContext&							context;
+				RuleSymbol*								ruleSymbol = nullptr;
+				List<WString>							pushedSwitches;
+
+			public:
+				VerifySwitchesAndConditionsVisitor(
+					VisitorContext& _context
+				)
+					: context(_context)
+				{
+				}
+
+				void ValidateRule(Ptr<GlrRule> rule)
+				{
+					ruleSymbol = context.syntaxManager.Rules()[rule->name.value];
+					for (auto clause : rule->clauses)
+					{
+						clause->Accept(this);
+					}
+				}
+
+			protected:
+
+				////////////////////////////////////////////////////////////////////////
+				// GlrClause::IVisitor
+				////////////////////////////////////////////////////////////////////////
+
+				void Traverse(GlrPrefixMergeClause* node) override
+				{
+					auto pmRuleSymbol = context.syntaxManager.Rules()[node->rule->literal.value];
+					vint index = context.ruleAffectedSwitches.Keys().IndexOf(pmRuleSymbol);
+					if(index != -1)
+					{
+						context.syntaxManager.AddError(
+							ParserErrorType::PrefixMergeAffectedBySwitches,
+							node->codeRange,
+							ruleSymbol->Name(),
+							pmRuleSymbol->Name(),
+							context.ruleAffectedSwitches.GetByIndex(index)[0]
+							);
+					}
 				}
 			};
 
@@ -172,6 +224,15 @@ ValidateSwitchesAndConditions
 
 					if (!visitor.updated) break;
 				};
+
+				for (auto file : files)
+				{
+					for (auto rule : file->rules)
+					{
+						VerifySwitchesAndConditionsVisitor visitor(context);
+						visitor.ValidateRule(rule);
+					}
+				}
 			}
 		}
 	}

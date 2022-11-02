@@ -52,8 +52,8 @@ Exp1 ::= !(!first; !Exp0);
 		const wchar_t* syntaxCode =
 LR"SYNTAX(
 switch first, second;
-Exp0 ::= ?(first: value) as NumExpr;
-Exp1 ::= !(first, !second; !Exp0);
+Exp0 ::= NUM:value as NumExpr;
+Exp1 ::= !(!first; ?(first && !second: !Exp0));
 )SYNTAX";
 		ExpectError(
 			typeParser,
@@ -70,7 +70,25 @@ Exp1 ::= !(first, !second; !Exp0);
 		const wchar_t* syntaxCode =
 LR"SYNTAX(
 switch first, second;
-Exp0 ::= ?(first && second: value) as NumExpr;
+Exp0 ::= ?(first: NUM:value) as NumExpr;
+Exp1 ::= !(first, !second; !Exp0);
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::PushedSwitchIsNotTested,L"Exp1",L"second"}
+		);
+	});
+
+	TEST_CASE(L"PushedSwitchIsNotTested 5")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+switch first, second;
+Exp0 ::= ?(first && second: NUM:value) as NumExpr;
 Exp1 ::= !(!second; !Exp0);
 Exp2 ::= !(first, second; !Exp1);
 )SYNTAX";

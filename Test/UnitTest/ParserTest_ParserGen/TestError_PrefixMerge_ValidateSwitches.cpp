@@ -21,7 +21,7 @@ TEST_FILE
 		const wchar_t* syntaxCode =
 LR"SYNTAX(
 switch first;
-Exp0 ::= ?(first: value) as NumExpr;
+Exp0 ::= ?(first: NUM:value) as NumExpr;
 PM ::= !prefix_merge(Exp0);
 )SYNTAX";
 		ExpectError(
@@ -39,7 +39,25 @@ PM ::= !prefix_merge(Exp0);
 		const wchar_t* syntaxCode =
 LR"SYNTAX(
 switch first, second;
-Exp0 ::= ?(first && !second: value) as NumExpr;
+Exp0 ::= !(first; ?(first && !second: NUM:value)) as NumExpr;
+PM ::= !prefix_merge(Exp0);
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::PrefixMergeAffectedBySwitches,L"PM",L"Exp0",L"second"}
+		);
+	});
+
+	TEST_CASE(L"PrefixMergeAffectedBySwitches 3")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+switch first, second;
+Exp0 ::= ?(first && !second: NUM:value) as NumExpr;
 Exp1 ::= !(first; !Exp0);
 PM ::= !prefix_merge(Exp1);
 )SYNTAX";
