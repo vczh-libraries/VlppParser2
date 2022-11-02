@@ -20,6 +20,7 @@ CollectRuleAffectedSwitchesVisitorBase
 			{
 			protected:
 				VisitorContext&							context;
+				RuleSymbol*								ruleSymbol = nullptr;
 				List<WString>							pushedSwitches;
 
 			public:
@@ -32,6 +33,7 @@ CollectRuleAffectedSwitchesVisitorBase
 
 				void ValidateRule(Ptr<GlrRule> rule)
 				{
+					ruleSymbol = context.syntaxManager.Rules()[rule->name.value];
 					for (auto clause : rule->clauses)
 					{
 						clause->Accept(this);
@@ -40,11 +42,11 @@ CollectRuleAffectedSwitchesVisitorBase
 
 			protected:
 
+				virtual void VisitRuleSymbol(RuleSymbol* refRuleSymbol) = 0;
+
 				////////////////////////////////////////////////////////////////////////
 				// GlrSyntax::IVisitor
 				////////////////////////////////////////////////////////////////////////
-
-				virtual void VisitRuleSymbol(RuleSymbol* refRuleSymbol) = 0;
 
 				void VisitRule(const WString& name)
 				{
@@ -164,9 +166,6 @@ CollectRuleAffectedSwitchesFirstPassVisitor
 				: public CollectRuleAffectedSwitchesVisitorBase
 				, protected virtual GlrCondition::IVisitor
 			{
-			protected:
-				RuleSymbol*								ruleSymbol = nullptr;
-
 			public:
 				CollectRuleAffectedSwitchesFirstPassVisitor(
 					VisitorContext& _context
@@ -176,6 +175,10 @@ CollectRuleAffectedSwitchesFirstPassVisitor
 				}
 
 			protected:
+
+				void VisitRuleSymbol(RuleSymbol* refRuleSymbol) override
+				{
+				}
 
 				////////////////////////////////////////////////////////////////////////
 				// GlrCondition::IVisitor
@@ -224,6 +227,43 @@ CollectRuleAffectedSwitchesFirstPassVisitor
 			};
 
 /***********************************************************************
+CollectRuleAffectedSwitchesSecondPassVisitor
+***********************************************************************/
+
+			class CollectRuleAffectedSwitchesSecondPassVisitor
+				: public CollectRuleAffectedSwitchesVisitorBase
+			{
+			public:
+				bool									updated = false;
+
+				CollectRuleAffectedSwitchesSecondPassVisitor(
+					VisitorContext& _context
+				)
+					: CollectRuleAffectedSwitchesVisitorBase(_context)
+				{
+				}
+
+			protected:
+
+				void VisitRuleSymbol(RuleSymbol* refRuleSymbol) override
+				{
+					if (ruleSymbol == refRuleSymbol) return;
+					vint indexSwitch = context.ruleAffectedSwitches.Keys().IndexOf(refRuleSymbol);
+					if(indexSwitch!=-1)
+					{
+						for (auto&& name : context.ruleAffectedSwitches.GetByIndex(indexSwitch))
+						{
+							if (!context.ruleAffectedSwitches.Contains(ruleSymbol, name))
+							{
+								updated = true;
+								context.ruleAffectedSwitches.Add(ruleSymbol, name);
+							}
+						}
+					}
+				}
+			};
+
+/***********************************************************************
 ValidateStructure
 ***********************************************************************/
 
@@ -240,7 +280,7 @@ ValidateStructure
 
 				while (true)
 				{
-					CollectRuleAffectedSwitchesVisitor visitor(context, ruleTestedSwitches);
+					CollectRuleAffectedSwitchesSecondPassVisitor visitor(context);
 					for (auto file : files)
 					{
 						for (auto rule : file->rules)
