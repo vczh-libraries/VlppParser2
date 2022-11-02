@@ -42,6 +42,9 @@ namespace vl
 				using RulePathDependencies = collections::Group<RuleSymbol*, RuleClausePair>;
 				using PathToLastRuleMap = collections::Group<RuleSymbolPair, RuleClausePair>;
 
+				using ClauseSwitchMap = collections::Group<GlrClause*, WString>;
+				using RuleSwitchMap = collections::Group<RuleSymbol*, WString>;
+
 				struct VisitorContext
 				{
 					const ParserSymbolManager&			global;
@@ -75,6 +78,10 @@ namespace vl
 																											// RuleSymbol -> {rule, reachable clause that is !rule}
 					PathToLastRuleMap					indirectStartPathToLastRules;						// {r1, r3} -> {r2, clause}, where r1 --(indirect)--> r2 --(direct)--> {r3, clause begins with r3 contained in r2}
 					PathToLastRuleMap					indirectSimpleUsePathToLastRules;					// {r1, r3} -> {r2, clause}, where r1 (indirect)::= !r2 (direct)::= {r3, clause that is !r3 contained in r2}
+
+					ClauseSwitchMap						clauseDirectTestedSwitches;							// GlrClause -> all switches that it directly tested
+					RuleSwitchMap						ruleIndirectTestedSwitches;							// RuleSymbol -> all switches that it indirectly tested
+					RuleSwitchMap						ruleAffectedSwitches;								// RuleSymbol -> all switches that affect how it is parsed
 
 					VisitorContext(
 						const AstSymbolManager& _astManager,

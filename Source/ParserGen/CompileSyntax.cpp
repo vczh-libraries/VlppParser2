@@ -13,6 +13,7 @@ namespace vl
 			extern void					ValidatePartialRules(VisitorContext& context, List<Ptr<GlrSyntaxFile>>& files);
 			extern void					CalculateRuleAndClauseTypes(VisitorContext& context);
 			extern void					CalculateFirstSet(VisitorContext& context, List<Ptr<GlrSyntaxFile>>& files);
+			extern void					ValidateSwitchesAndConditions(VisitorContext& context, List<Ptr<GlrSyntaxFile>>& files);
 			extern void					ValidateTypes(VisitorContext& context, List<Ptr<GlrSyntaxFile>>& files);
 			extern void					ValidateStructure(VisitorContext& context, List<Ptr<GlrSyntaxFile>>& files);
 			extern Ptr<GlrSyntaxFile>	RewriteSyntax(VisitorContext& context, SyntaxSymbolManager& syntaxManager, collections::List<Ptr<GlrSyntaxFile>>& files);
@@ -91,6 +92,9 @@ CompileSyntax
 				if (context.syntaxManager.Global().Errors().Count() > 0) return false;
 
 				CalculateFirstSet(context, files);
+				if (context.syntaxManager.Global().Errors().Count() > 0) return false;
+
+				ValidateSwitchesAndConditions(context, files);
 				if (context.syntaxManager.Global().Errors().Count() > 0) return false;
 
 				ValidateTypes(context, files);
