@@ -21,8 +21,36 @@ namespace vl
 		{
 			namespace compile_syntax
 			{
+				using PushedSwitchList = collections::List<GlrPushConditionSyntax*>;
+
+				inline bool ArePushedSwitchesIdentical(Ptr<PushedSwitchList> p1, Ptr<PushedSwitchList> p2)
+				{
+					if ((p1 == nullptr) != (p2 == nullptr)) return false;
+					if (p1 && collections::CompareEnumerable(*p1.Obj(), *p2.Obj()) != 0) return false;
+					return true;
+				}
+
+				template<typename TClause>
+				struct GenericRuleClausePath
+				{
+					RuleSymbol*							ruleSymbol = nullptr;
+					TClause*							clause = nullptr;
+					Ptr<PushedSwitchList>				pushedSwitches;
+
+					GenericRuleClausePath() = default;
+					GenericRuleClausePath(RuleSymbol* _ruleSymbol, TClause* _clause, Ptr<PushedSwitchList> _pushedSwitches)
+						: ruleSymbol(_ruleSymbol), clause(_clause), pushedSwitches(_pushedSwitches) {}
+
+					bool operator==(const GenericRuleClausePath& p) const
+					{
+						if (ruleSymbol != p.ruleSymbol) return false;
+						if (clause != p.clause) return false;
+						return ArePushedSwitchesIdentical(pushedSwitches, p.pushedSwitches);
+					}
+				};
+				using RuleClausePath = GenericRuleClausePath<GlrClause>;
+
 				using RuleSymbolPair = collections::Pair<RuleSymbol*, RuleSymbol*>;
-				using RuleClausePair = collections::Pair<RuleSymbol*, GlrClause*>;
 
 				using GlrRuleMap = collections::Dictionary<RuleSymbol*, GlrRule*>;
 				using LiteralTokenMap = collections::Dictionary<GlrRefSyntax*, vint32_t>;
@@ -39,8 +67,8 @@ namespace vl
 				using ClauseToRuleGroup = collections::Group<GlrClause*, RuleSymbol*>;
 				using ClauseList = collections::List<GlrClause*>;
 
-				using RulePathDependencies = collections::Group<RuleSymbol*, RuleClausePair>;
-				using PathToLastRuleMap = collections::Group<RuleSymbolPair, RuleClausePair>;
+				using RulePathDependencies = collections::Group<RuleSymbol*, RuleClausePath>;
+				using PathToLastRuleMap = collections::Group<RuleSymbolPair, RuleClausePath>;
 
 				using RuleSwitchMap = collections::Group<RuleSymbol*, WString>;
 
@@ -71,6 +99,7 @@ namespace vl
 					ClauseToRuleGroup					clauseToStartRules;									// GlrClause -> RuleSymbol when this clause begins with RuleSymbol
 					ClauseList							clauseToConvertedToPrefixMerge;						// GlrClause when it should be converted to a prefix_merge clause
 
+					// PushedSwitchList in following members are organized in the order of execution
 					RulePathDependencies				directStartRules, indirectStartRules;				// RuleSymbol -> {rule, clause begins with the rule}
 																											// RuleSymbol -> {rule, reachable clause begins with the rule}
 					RulePathDependencies				directSimpleUseRules, indirectSimpleUseRules;		// RuleSymbol -> {rule, clause that is !rule}

@@ -232,7 +232,7 @@ TraceManager::ExecuteTrace
 
 				// execute from the first step
 				auto step = GetInitialExecutionStep();
-				CHECK_ERROR(step != nullptr, L"Ambiguity not implemented!");
+				CHECK_ERROR(step != nullptr, L"Internal error: execution steps not built!");
 				while (step)
 				{
 					// execute step

@@ -7,6 +7,8 @@
 | [0]: <Start>         |
 | [120][Module] BEGIN  |
 | [AST-INSTRUCTIONS]:  |
+| [SWITCHES]:          |
+|   allow_gt : true    |
 | [SUCCESORS 3-3]: [3] |
 +----------------------+
 [0]
@@ -14,47 +16,53 @@
  +
  |
 [0]
-++==============================================================================================================++
-|| [3]: {ID} Name                                                                                               ||
-|| [8][_Name]< ID @ >                                                                                           ||
-|| [AST-INSTRUCTIONS]:                                                                                          ||
-||   - DelayFieldAssignment()                                                                                   ||
-||   - DelayFieldAssignment()                                                                                   ||
-||   - BeginObject(Name)                                                                                        ||
-||   + Token()                                                                                                  ||
-||   + Field(Name::name)                                                                                        ||
-|| [RETURN STACK]:                                                                                              ||
-||   [5][0]: _Name -> [20][_PrimitiveShared]<< !_Name @ >>                                                      ||
-||   [4][0]: _PrimitiveShared -> [131][Module]<< !_PrimitiveShared @ ( lri:_Expr_LRI_Original | lri:<skip> ) >> ||
-|| [PREDECESSORS 0-0]: [0]                                                                                      ||
-|| [SUCCESORS 4-4]: [4]                                                                                         ||
-++==============================================================================================================++
+++===================================================================================================================++
+|| [3]: {ID} Name                                                                                                    ||
+|| [8][_Name]< ID @ >                                                                                                ||
+|| [AST-INSTRUCTIONS]:                                                                                               ||
+||   - DelayFieldAssignment()                                                                                        ||
+||   - DelayFieldAssignment()                                                                                        ||
+||   - BeginObject(Name)                                                                                             ||
+||   + Token()                                                                                                       ||
+||   + Field(Name::name)                                                                                             ||
+|| [RETURN STACK]:                                                                                                   ||
+||   [5][0]: _Name -> [20][_PrimitiveShared]<< !_Name @ >>                                                           ||
+||   [4][0]: _PrimitiveShared -> [131][Module]<< !_PrimitiveShared @ ( !(0;lri:_Expr_LRI_Original) | lri:<skip> ) >> ||
+|| [SWITCHES]:                                                                                                       ||
+||   allow_gt : true                                                                                                 ||
+|| [PREDECESSORS 0-0]: [0]                                                                                           ||
+|| [SUCCESORS 4-4]: [4]                                                                                              ||
+++===================================================================================================================++
 |
 +
 |
-+--------------------------------------------------------------------------------------------------------------+
-| [4]: <Ending>                                                                                                |
-| [20][_PrimitiveShared]<< !_Name @ >>                                                                         |
-| [AST-INSTRUCTIONS]:                                                                                          |
-|   - EndObject()                                                                                              |
-| [RETURN STACK]:                                                                                              |
-|   [4][0]: _PrimitiveShared -> [131][Module]<< !_PrimitiveShared @ ( lri:_Expr_LRI_Original | lri:<skip> ) >> |
-| [PREDECESSORS 3-3]: [3]                                                                                      |
-| [SUCCESORS 5-5]: [5]                                                                                         |
-+--------------------------------------------------------------------------------------------------------------+
++-------------------------------------------------------------------------------------------------------------------+
+| [4]: <Ending>                                                                                                     |
+| [20][_PrimitiveShared]<< !_Name @ >>                                                                              |
+| [AST-INSTRUCTIONS]:                                                                                               |
+|   - EndObject()                                                                                                   |
+| [RETURN STACK]:                                                                                                   |
+|   [4][0]: _PrimitiveShared -> [131][Module]<< !_PrimitiveShared @ ( !(0;lri:_Expr_LRI_Original) | lri:<skip> ) >> |
+| [SWITCHES]:                                                                                                       |
+|   allow_gt : true                                                                                                 |
+| [PREDECESSORS 3-3]: [3]                                                                                           |
+| [SUCCESORS 5-5]: [5]                                                                                              |
++-------------------------------------------------------------------------------------------------------------------+
 |
 +
 |
-+--------------------------------------------------------------------------------+
-| [5]: <Ending>                                                                  |
-| [131][Module]<< !_PrimitiveShared @ ( lri:_Expr_LRI_Original | lri:<skip> ) >> |
-| [AST-INSTRUCTIONS]:                                                            |
-|   - ReopenObject()                                                             |
-|   - EndObject()                                                                |
-|   > ReopenObject()                                                             |
-| [PREDECESSORS 4-4]: [4]                                                        |
-| [SUCCESORS 6-6]: [6]                                                           |
-+--------------------------------------------------------------------------------+
++-------------------------------------------------------------------------------------+
+| [5]: <Ending>                                                                       |
+| [131][Module]<< !_PrimitiveShared @ ( !(0;lri:_Expr_LRI_Original) | lri:<skip> ) >> |
+| [AST-INSTRUCTIONS]:                                                                 |
+|   - ReopenObject()                                                                  |
+|   - EndObject()                                                                     |
+|   > ReopenObject()                                                                  |
+| [SWITCHES]:                                                                         |
+|   allow_gt : true                                                                   |
+| [PREDECESSORS 4-4]: [4]                                                             |
+| [SUCCESORS 6-6]: [6]                                                                |
++-------------------------------------------------------------------------------------+
 |
 +
 |
@@ -63,5 +71,7 @@
 | [121][Module] END [ENDING] |
 | [AST-INSTRUCTIONS]:        |
 |   - EndObject()            |
+| [SWITCHES]:                |
+|   allow_gt : true          |
 | [PREDECESSORS 5-5]: [5]    |
 +----------------------------+

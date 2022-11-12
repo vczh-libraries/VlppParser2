@@ -25,6 +25,7 @@ DirectFirstSetVisitor
 				VisitorContext&				context;
 				RuleSymbol*					ruleSymbol;
 				GlrClause*					currentClause = nullptr;
+				Ptr<PushedSwitchList>		pushedSwitches;
 
 				RuleSymbol* TryGetRuleSymbol(const WString& name)
 				{
@@ -37,7 +38,7 @@ DirectFirstSetVisitor
 				{
 					if (auto startRule = TryGetRuleSymbol(name))
 					{
-						context.directStartRules.Add(ruleSymbol, { startRule,currentClause });
+						context.directStartRules.Add(ruleSymbol, { startRule,currentClause,pushedSwitches });
 						context.clauseToStartRules.Add(currentClause, ruleSymbol);
 						if (ruleSymbol == startRule && !context.leftRecursiveClauses.Contains(ruleSymbol, currentClause))
 						{
@@ -111,7 +112,22 @@ DirectFirstSetVisitor
 
 				void Visit(GlrPushConditionSyntax* node) override
 				{
+					if (!pushedSwitches)
+					{
+						pushedSwitches = MakePtr<PushedSwitchList>();
+					}
+					pushedSwitches->Add(node);
+
 					node->syntax->Accept(this);
+
+					if (pushedSwitches->Count() == 1)
+					{
+						pushedSwitches = nullptr;
+					}
+					else
+					{
+						pushedSwitches->RemoveAt(pushedSwitches->Count() - 1);
+					}
 				}
 
 				void Visit(GlrTestConditionSyntax* node) override
@@ -150,11 +166,21 @@ DirectFirstSetVisitor
 					node->syntax->Accept(this);
 					if (node->assignments.Count() == 0)
 					{
-						if (auto useSyntax = dynamic_cast<GlrUseSyntax*>(node->syntax.Obj()))
+						auto nodeSyntax = node->syntax.Obj();
+						auto pushSyntax = dynamic_cast<GlrPushConditionSyntax*>(nodeSyntax);
+						if (pushSyntax) nodeSyntax = pushSyntax->syntax.Obj();
+
+						if (auto useSyntax = dynamic_cast<GlrUseSyntax*>(nodeSyntax))
 						{
 							if (auto startRule = TryGetRuleSymbol(useSyntax->name.value))
 							{
-								context.directSimpleUseRules.Add(ruleSymbol, { startRule,currentClause });
+								Ptr<PushedSwitchList> pushedSwitches;
+								if (pushSyntax)
+								{
+									pushedSwitches = MakePtr<PushedSwitchList>();
+									pushedSwitches->Add(pushSyntax);
+								}
+								context.directSimpleUseRules.Add(ruleSymbol, { startRule,currentClause,pushedSwitches });
 								context.simpleUseClauseToReferencedRules.Add(currentClause, startRule);
 							}
 						}
@@ -201,10 +227,10 @@ CalculateFirstSet
 				for (auto [rule, index] : indexed(direct.Keys()))
 				{
 					auto&& startRules = direct.GetByIndex(index);
-					for (auto [startRule, clause] : startRules)
+					for (auto [startRule, clause, pushedSwitches] : startRules)
 					{
-						indirect.Add(rule, { startRule,clause });
-						pathToLastRules.Add({ rule,startRule }, { rule,clause });
+						indirect.Add(rule, { startRule,clause,pushedSwitches });
+						pathToLastRules.Add({ rule,startRule }, { rule,clause,pushedSwitches });
 					}
 				}
 
@@ -214,24 +240,30 @@ CalculateFirstSet
 					for (auto [rule, index] : indexed(indirect.Keys()))
 					{
 						auto&& startRules1 = indirect.GetByIndex(index);
-						for (auto [startRule1, clause1] : startRules1)
+						for (auto [startRule1, clause1, pushedSwitches1] : startRules1)
 						{
 							if (rule == startRule1) continue;
 							vint index2 = direct.Keys().IndexOf(startRule1);
 							if (index2 != -1)
 							{
 								auto&& startRules2 = direct.GetByIndex(index2);
-								for (auto [startRule2, clause2] : startRules2)
+								for (auto [startRule2, clause2, pushedSwitches2] : startRules2)
 								{
 									if (rule == startRule2 || startRule1 == startRule2) continue;
-									if (!pathToLastRules.Contains({ rule,startRule2 }, { startRule1,clause2 }))
+
+									Ptr<PushedSwitchList> pushedSwitches;
+									if (pushedSwitches1 || pushedSwitches2) pushedSwitches = MakePtr<PushedSwitchList>();
+									if (pushedSwitches1) CopyFrom(*pushedSwitches.Obj(), *pushedSwitches1.Obj(), true);
+									if (pushedSwitches2) CopyFrom(*pushedSwitches.Obj(), *pushedSwitches2.Obj(), true);
+
+									if (!pathToLastRules.Contains({ rule,startRule2 }, { startRule1,clause2,pushedSwitches }))
 									{
 										offset++;
-										if (!indirect.Contains(rule, { startRule2,clause2 }))
+										if (!indirect.Contains(rule, { startRule2,clause2,pushedSwitches }))
 										{
-											indirect.Add(rule, { startRule2,clause2 });
+											indirect.Add(rule, { startRule2,clause2,pushedSwitches });
 										}
-										pathToLastRules.Add({ rule,startRule2 }, { startRule1,clause2 });
+										pathToLastRules.Add({ rule,startRule2 }, { startRule1,clause2,pushedSwitches });
 									}
 								}
 							}
@@ -302,9 +334,9 @@ CalculateFirstSet
 
 					for (auto startRule : startRules)
 					{
-						CalculateFirstSet_MoveFromDirectClauses(lriClauses, context.indirectLriClauses, context.directLriClauses, rule, startRule.key);
-						CalculateFirstSet_MoveFromDirectClauses(lrpClauses, context.indirectLrpClauses, context.directLrpClauses, rule, startRule.key);
-						CalculateFirstSet_MoveFromDirectClauses(pmClauses, context.indirectPmClauses, context.directPmClauses, rule, startRule.key);
+						CalculateFirstSet_MoveFromDirectClauses(lriClauses, context.indirectLriClauses, context.directLriClauses, rule, startRule.ruleSymbol);
+						CalculateFirstSet_MoveFromDirectClauses(lrpClauses, context.indirectLrpClauses, context.directLrpClauses, rule, startRule.ruleSymbol);
+						CalculateFirstSet_MoveFromDirectClauses(pmClauses, context.indirectPmClauses, context.directPmClauses, rule, startRule.ruleSymbol);
 					}
 				}
 			}

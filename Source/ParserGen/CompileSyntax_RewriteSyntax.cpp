@@ -17,6 +17,17 @@ namespace vl
 				Group<GlrClause*, GlrClause*>							conflictedClauses;		// c1 -> c2 if c1's prefix is prefix clause c2
 			};
 
+			struct PrefixRuleWithClause
+			{
+				RuleSymbol*												ruleSymbol = nullptr;
+				GlrClause*												clause = nullptr;
+
+				bool operator==(PrefixRuleWithClause& p) const
+				{
+					return ruleSymbol == p.ruleSymbol && clause == p.clause;
+				}
+			};
+
 			struct RewritingContext
 			{
 				List<RuleSymbol*>										pmRules;				// all rules that need to be rewritten
@@ -24,7 +35,7 @@ namespace vl
 				Dictionary<RuleSymbol*, GlrRule*>						lriRules;				// rewritten RuleSymbol -> GlrRule containing left_recursion_inject clauses
 				Dictionary<RuleSymbol*, GlrRule*>						fixedAstRules;			// RuleSymbol -> GlrRule relationship after rewritten
 
-				Group<RuleSymbol*, RuleClausePair>						extractPrefixClauses;	// RuleSymbol -> {rule to be extracted, clause begins with rule}
+				Group<RuleSymbol*, PrefixRuleWithClause>				extractPrefixClauses;	// RuleSymbol -> {rule to be extracted, clause begins with rule}
 				Dictionary<Pair<RuleSymbol*, RuleSymbol*>, GlrRule*>	extractedPrefixRules;	// {rewritten RuleSymbol, prefix RuleSymbol} -> GlrRule ends with _LRI_Prefix
 				Dictionary<RuleSymbol*, Ptr<RewritingPrefixConflict>>	extractedConflicts;		// rewritten RuleSymbol -> all needed information if prefix extraction affects how it generates left_recursion_inject clauses
 			};
@@ -60,6 +71,27 @@ FillMissingPrefixMergeClauses
 			extern void CalculateFirstSet_IndirectStartRules(VisitorContext& context);
 			extern void CalculateFirstSet_IndirectSimpleUseRules(VisitorContext& context);
 
+			void RemoveDirectReferences(RulePathDependencies& references, RuleSymbol* ruleSymbol, GlrClause* clause)
+			{
+				vint index = references.Keys().IndexOf(ruleSymbol);
+				if (index != -1)
+				{
+					auto&& values = const_cast<List<RuleClausePath>&>(references.GetByIndex(index));
+					for (vint i = values.Count() - 1; i >= 0; i--)
+					{
+						if (values[i].clause == clause)
+						{
+							values.RemoveAt(i);
+						}
+					}
+
+					if (values.Count() == 0)
+					{
+						references.Remove(ruleSymbol);
+					}
+				}
+			}
+
 			void FillMissingPrefixMergeClauses(VisitorContext& vContext, SyntaxSymbolManager& syntaxManager, Ptr<GlrSyntaxFile> rewritten)
 			{
 				// find position of thses clauses in rules
@@ -88,24 +120,8 @@ FillMissingPrefixMergeClauses
 					}
 
 					// remove direct references
-					{
-						vint index = vContext.clauseToStartRules.Keys().IndexOf(clause.Obj());
-						if (index != -1)
-						{
-							for (auto value : vContext.clauseToStartRules.GetByIndex(index))
-							{
-								vContext.directStartRules.Remove(ruleSymbol, { value,clause.Obj() });
-							}
-						}
-					}
-					{
-						vint index = vContext.simpleUseClauseToReferencedRules.Keys().IndexOf(clause.Obj());
-						if (index != -1)
-						{
-							auto value = vContext.simpleUseClauseToReferencedRules.Values()[index];
-							vContext.directSimpleUseRules.Remove(ruleSymbol, { value,clause.Obj() });
-						}
-					}
+					RemoveDirectReferences(vContext.directStartRules, ruleSymbol, clause.Obj());
+					RemoveDirectReferences(vContext.directSimpleUseRules, ruleSymbol, clause.Obj());
 
 					// fix rule and clause symbols
 					auto newRuleSymbol = syntaxManager.CreateRule(newRule->name.value, ruleRaw->name.codeRange);
@@ -121,7 +137,7 @@ FillMissingPrefixMergeClauses
 					//		directStartRules
 					vContext.directPmClauses.Add(ruleSymbol, newPM.Obj());
 					vContext.indirectPmClauses.Add(ruleSymbol, newPM.Obj());
-					vContext.directStartRules.Add(ruleSymbol, { newRuleSymbol, newPM.Obj() });
+					vContext.directStartRules.Add(ruleSymbol, { newRuleSymbol,newPM.Obj(),nullptr });
 					for (auto key : syntaxManager.Rules().Values())
 					{
 						if (vContext.indirectStartPathToLastRules.Contains({ key,ruleSymbol }))
@@ -165,23 +181,54 @@ CollectRewritingTargets
 							if (vContext.directSimpleUseRules.GetByIndex(indexSimpleUse).Count() != rule->clauses.Count()) continue;
 							Ptr<RewritingPrefixConflict> conflict;
 
-							for (auto [startRule, startClause] : vContext.directStartRules.GetByIndex(indexStart))
+							for (auto [startRule, startClause, startSwitches] : vContext.directStartRules.GetByIndex(indexStart))
 							{
 								// prefix_merge clauses and left recursive clauses are not involved in prefix detection/extraction
 								if (dynamic_cast<GlrPrefixMergeClause*>(startClause)) continue;
 								if (vContext.leftRecursiveClauses.Contains(ruleSymbol, startClause)) continue;
 
 								// find all clause pair "!X" and "Y ...", see if X is a prefix of Y
-								for (auto [simpleUseRule, simpleUseClause] : vContext.directSimpleUseRules.GetByIndex(indexSimpleUse))
+								for (auto [simpleUseRule, simpleUseClause, simpleUseSwitches] : vContext.directSimpleUseRules.GetByIndex(indexSimpleUse))
 								{
+									// ignore if startSwitches != simpleUseSwitches
+									if (!ArePushedSwitchesIdentical(startSwitches, simpleUseSwitches)) continue;
+
 									// ignore if X is Y
-									// ignore if Y ::= X directly or indirectly
 									if (startRule == simpleUseRule) continue;
+
+									// ignore if X is not a prefix of Y
 									vint indexExtract = vContext.indirectStartPathToLastRules.Keys().IndexOf({ startRule,simpleUseRule });
 									if (indexExtract == -1) continue;
-									for (auto [extractRule, extractClause] : vContext.indirectStartPathToLastRules.GetByIndex(indexExtract))
+
+									// ignore if Y ::= X directly or indirectly
+									for (auto [extractRule, extractClause, extractSwitches] : vContext.indirectStartPathToLastRules.GetByIndex(indexExtract))
 									{
-										if (vContext.directSimpleUseRules.Contains(extractRule, { simpleUseRule,extractClause })) continue;
+										// ignore if extractSwitches affect simpleUseRule
+										if (extractSwitches)
+										{
+											bool affected = false;
+											vint indexSwitch = vContext.ruleAffectedSwitches.Keys().IndexOf(simpleUseRule);
+											if (indexSwitch != -1)
+											{
+												auto&& affectedSwitches = vContext.ruleAffectedSwitches.GetByIndex(indexSwitch);
+												for (auto pushSyntax : *extractSwitches.Obj())
+												{
+													for (auto switchItem : pushSyntax->switches)
+													{
+														if (affectedSwitches.Contains(switchItem->name.value))
+														{
+															affected = true;
+															goto SIMPLE_USE_RULE_AFFECTED;
+														}
+													}
+												}
+											}
+										SIMPLE_USE_RULE_AFFECTED:;
+											if (affected) continue;
+										}
+
+										// ignore if Y ::= X directly or indirectly
+										if (vContext.directSimpleUseRules.Contains(extractRule, { simpleUseRule,extractClause,nullptr })) continue;
 
 										// prefix extraction needed
 										if (!rContext.extractPrefixClauses.Contains(extractRule, { simpleUseRule,extractClause }))
@@ -246,7 +293,7 @@ CreateRewrittenRules
 					auto originRule = vContext.astRules[ruleSymbol];
 					auto&& prefixClauses = rContext.extractPrefixClauses.GetByIndex(index);
 					for (auto [prefixRuleSymbol, prefixClause] : From(prefixClauses)
-						.OrderBy([](auto p1, auto p2) {return WString::Compare(p1.key->Name(), p2.key->Name()); }))
+						.OrderBy([](auto p1, auto p2) {return WString::Compare(p1.ruleSymbol->Name(), p2.ruleSymbol->Name()); }))
 					{
 						auto ep = MakePtr<GlrRule>();
 						rewritten->rules.Insert(rewritten->rules.IndexOf(originRule), ep);
@@ -332,13 +379,70 @@ RewriteExtractedPrefixRules
 RewriteRules (Common)
 ***********************************************************************/
 
+			using PMClauseRecord = GenericRuleClausePath<GlrPrefixMergeClause>;
+
+			struct PMInjectRecord
+			{
+				RuleSymbol*					pmRule = nullptr;
+				RuleSymbol*					injectIntoRule = nullptr;
+				Ptr<PushedSwitchList>		pushedSwitches;
+			};
+
+			Ptr<PushedSwitchList> RewriteRules_ConcatSwitches(
+				Ptr<PushedSwitchList> p1,
+				Ptr<PushedSwitchList> p2
+			)
+			{
+				if (p1 && p2)
+				{
+					auto p = MakePtr<PushedSwitchList>();
+					CopyFrom(*p.Obj(), *p1.Obj(), true);
+					CopyFrom(*p.Obj(), *p2.Obj(), true);
+					return p;
+				}
+				else if (p1) return p1;
+				else if (p2) return p2;
+				else return nullptr;
+			}
+
+			void RewriteRules_AddPmClause(
+				const VisitorContext& vContext,
+				RuleSymbol* ruleSymbol,
+				GlrPrefixMergeClause* pmClause,
+				Ptr<PushedSwitchList> pushedSwitches,
+				Group<WString, PMClauseRecord>& pmClauses
+			)
+			{
+				auto pmRule = vContext.clauseToRules[pmClause];
+				if (ruleSymbol == pmRule)
+				{
+					if (!pmClauses.Contains(pmClause->rule->literal.value, { ruleSymbol,pmClause,pushedSwitches }))
+					{
+						pmClauses.Add(pmClause->rule->literal.value, { ruleSymbol,pmClause,pushedSwitches });
+					}
+				}
+				else
+				{
+					for (auto [indirectStartRule, indirectClause, indirectSwitches] : vContext.indirectStartPathToLastRules[{ ruleSymbol, pmRule }])
+					{
+						auto newPushedSwitches = RewriteRules_ConcatSwitches(pushedSwitches, indirectSwitches);
+
+						if (!pmClauses.Contains(pmClause->rule->literal.value, { ruleSymbol,pmClause,newPushedSwitches }))
+						{
+							pmClauses.Add(pmClause->rule->literal.value, { ruleSymbol,pmClause,newPushedSwitches });
+						}
+					}
+				}
+			}
+
 			Ptr<RewritingPrefixConflict> RewriteRules_CollectUnaffectedIndirectPmClauses(
 				const VisitorContext& vContext,
 				const RewritingContext& rContext,
 				RuleSymbol* initiatedRuleSymbol,
 				RuleSymbol* ruleSymbol,
+				Ptr<PushedSwitchList> pushedSwitches,
 				SortedList<RuleSymbol*>& visited,
-				Group<WString, Pair<RuleSymbol*, GlrPrefixMergeClause*>>& pmClauses
+				Group<WString, PMClauseRecord>& pmClauses
 			)
 			{
 				auto conflict = initiatedRuleSymbol == ruleSymbol ? GetConflict(rContext, ruleSymbol) : nullptr;
@@ -348,15 +452,16 @@ RewriteRules (Common)
 
 					if (conflict)
 					{
-						for (auto pair : vContext.directSimpleUseRules[ruleSymbol])
+						for (auto [simpleUseRule, simpleUseClause, simpleUseSwitches] : vContext.directSimpleUseRules[ruleSymbol])
 						{
-							if (conflict->unaffectedClauses.Contains(pair.value))
+							auto newPushedSwitches = RewriteRules_ConcatSwitches(pushedSwitches, simpleUseSwitches);
+							if (conflict->unaffectedClauses.Contains(simpleUseClause))
 							{
-								RewriteRules_CollectUnaffectedIndirectPmClauses(vContext, rContext, initiatedRuleSymbol, pair.key, visited, pmClauses);
+								RewriteRules_CollectUnaffectedIndirectPmClauses(vContext, rContext, initiatedRuleSymbol, simpleUseRule, newPushedSwitches, visited, pmClauses);
 							}
 							else
 							{
-								vint indexConflicted = conflict->conflictedClauses.Keys().IndexOf(pair.value);
+								vint indexConflicted = conflict->conflictedClauses.Keys().IndexOf(simpleUseClause);
 								if (indexConflicted == -1) continue;
 
 								auto&& prefixClauses = conflict->conflictedClauses.GetByIndex(indexConflicted);
@@ -369,10 +474,7 @@ RewriteRules (Common)
 										})
 									))
 								{
-									if (!pmClauses.Contains(pmClause->rule->literal.value, { pair.key, pmClause }))
-									{
-										pmClauses.Add(pmClause->rule->literal.value, { pair.key,pmClause });
-									}
+									RewriteRules_AddPmClause(vContext, simpleUseRule, pmClause, newPushedSwitches, pmClauses);
 								}
 							}
 						}
@@ -381,10 +483,7 @@ RewriteRules (Common)
 					{
 						for (auto pmClause : vContext.indirectPmClauses[ruleSymbol])
 						{
-							if (!pmClauses.Contains(pmClause->rule->literal.value, { ruleSymbol, pmClause }))
-							{
-								pmClauses.Add(pmClause->rule->literal.value, { ruleSymbol,pmClause });
-							}
+							RewriteRules_AddPmClause(vContext, ruleSymbol, pmClause, pushedSwitches, pmClauses);
 						}
 					}
 				}
@@ -426,7 +525,7 @@ RewriteRules (Common)
 					vint index = vContext.indirectStartPathToLastRules.Keys().IndexOf({ startSymbol,endSymbol });
 					if (index != -1)
 					{
-						for (auto [lastRuleSymbol, clause] : vContext.indirectStartPathToLastRules.GetByIndex(index))
+						for (auto [lastRuleSymbol, clause, _] : vContext.indirectStartPathToLastRules.GetByIndex(index))
 						{
 							if (vContext.simpleUseClauseToReferencedRules.Keys().Contains(clause))
 							{
@@ -448,12 +547,12 @@ RewriteRules (Common)
 			void RewriteRules_CollectFlags(
 				const VisitorContext& vContext,
 				RuleSymbol* ruleSymbol,
-				const List<Pair<RuleSymbol*, GlrPrefixMergeClause*>>& pmClauses,
-				Dictionary<WString, Pair<RuleSymbol*, RuleSymbol*>>& flags,
+				const List<PMClauseRecord>& pmClauses,
+				Dictionary<WString, PMInjectRecord>& flags,
 				bool& generateOptionalLri
 			)
 			{
-				for (auto [injectIntoRule, pmClause] : pmClauses)
+				for (auto [injectIntoRule, pmClause, pushedSwitches] : pmClauses)
 				{
 					auto pmRule = vContext.clauseToRules[pmClause];
 					bool hasSimpleUseTransition = false;
@@ -467,7 +566,7 @@ RewriteRules (Common)
 
 					if (hasNonSimpleUseTransition)
 					{
-						flags.Add(L"LRI_" + pmRule->Name(), { pmRule,injectIntoRule });
+						flags.Add(L"LRI_" + pmRule->Name(), { pmRule,injectIntoRule,pushedSwitches });
 					}
 				}
 			}
@@ -496,7 +595,7 @@ RewriteRules (Common)
 						hasMultiplePaths = true;
 						goto FINISHED;
 					}
-					currentRule = lastRules[0].key;
+					currentRule = lastRules[0].ruleSymbol;
 				}
 
 			FINISHED:
@@ -526,8 +625,7 @@ RewriteRules (AST Creation)
 				const VisitorContext& vContext,
 				const RewritingContext& rContext,
 				RuleSymbol* ruleSymbol,
-				RuleSymbol* pmRule,
-				RuleSymbol* injectIntoRule,
+				const PMInjectRecord& pmInjectRecord,
 				const WString& flag,
 				Dictionary<Pair<RuleSymbol*, RuleSymbol*>, vint>& pathCounter,
 				bool generateOptionalLri
@@ -535,7 +633,7 @@ RewriteRules (AST Creation)
 			{
 				auto lriCont = MakePtr<GlrLeftRecursionInjectContinuation>();
 
-				if (RewriteRules_HasMultiplePaths(vContext, ruleSymbol, pmRule, pathCounter))
+				if (RewriteRules_HasMultiplePaths(vContext, ruleSymbol, pmInjectRecord.pmRule, pathCounter))
 				{
 					lriCont->configuration = GlrLeftRecursionConfiguration::Multiple;
 				}
@@ -557,7 +655,14 @@ RewriteRules (AST Creation)
 				lriCont->flag = lriContFlag;
 				lriContFlag->flag.value = flag;
 
-				auto lriContTarget = CreateLriClause(rContext.originRules[injectIntoRule]->name.value);
+				auto lriContTarget = CreateLriClause(rContext.originRules[pmInjectRecord.injectIntoRule]->name.value);
+				if (pmInjectRecord.pushedSwitches)
+				{
+					for (auto pushSyntax : *pmInjectRecord.pushedSwitches.Obj())
+					{
+						CopyFrom(lriContTarget->switches, pushSyntax->switches, true);
+					}
+				}
 				lriCont->injectionTargets.Add(lriContTarget);
 
 				return lriCont;
@@ -573,7 +678,7 @@ RewriteRules (Unaffected)
 				RuleSymbol* ruleSymbol,
 				GlrRule* lriRule,
 				Dictionary<Pair<RuleSymbol*, RuleSymbol*>, vint>& pathCounter,
-				Group<WString, Pair<RuleSymbol*, GlrPrefixMergeClause*>>& pmClauses,
+				Group<WString, PMClauseRecord>& pmClauses,
 				SortedList<WString>& knownOptionalStartRules
 			)
 			{
@@ -587,7 +692,7 @@ RewriteRules (Unaffected)
 					//       it becomse GLRICT::Required
 					//       generate useSyntax instead of lriClause
 
-					Dictionary<WString, Pair<RuleSymbol*, RuleSymbol*>> flags;
+					Dictionary<WString, PMInjectRecord> flags;
 					bool generateOptionalLri = false;
 					RewriteRules_CollectFlags(
 						vContext,
@@ -607,9 +712,8 @@ RewriteRules (Unaffected)
 						useSyntax->name.value = pmName;
 					}
 
-					for (auto [flag, pmRulePair] : flags)
+					for (auto [flag, pmInjectRecord] : flags)
 					{
-						auto [pmRule, injectIntoRule] = pmRulePair;
 						auto lriClause = CreateLriClause(pmName);
 						lriRule->clauses.Add(lriClause);
 
@@ -617,8 +721,7 @@ RewriteRules (Unaffected)
 							vContext,
 							rContext,
 							ruleSymbol,
-							pmRule,
-							injectIntoRule,
+							pmInjectRecord,
 							flag,
 							pathCounter,
 							generateOptionalLri
@@ -643,13 +746,13 @@ RewriteRules (Affected)
 				const RewritingContext& rContext,
 				RuleSymbol* conflictedRuleSymbol,
 				RuleSymbol* prefixRuleSymbol,
-				SortedList<WString>& lripFlags,
+				Dictionary<WString, Ptr<PushedSwitchList>>& lripFlags,
 				GlrRule* lriRule,
 				Dictionary<Pair<RuleSymbol*, RuleSymbol*>, vint>& pathCounter,
 				SortedList<WString>& knownOptionalStartRules
 			)
 			{
-				Group<WString, Pair<RuleSymbol*, GlrPrefixMergeClause*>> pmClauses;
+				Group<WString, PMClauseRecord> pmClauses;
 				{
 					SortedList<RuleSymbol*> visited;
 					auto conflict = RewriteRules_CollectUnaffectedIndirectPmClauses(
@@ -657,6 +760,7 @@ RewriteRules (Affected)
 						rContext,
 						prefixRuleSymbol,
 						prefixRuleSymbol,
+						nullptr,
 						visited,
 						pmClauses
 						);
@@ -683,14 +787,20 @@ RewriteRules (Affected)
 					//     otherwise
 					//       it becomse GLRICT::Required
 					//       generate useSyntax instead of lriClause
+
+					auto&& pmClauseRecords = pmClauses.GetByIndex(pmIndex);
+					for (auto&& record : pmClauseRecords)
+					{
+						CHECK_ERROR(!record.pushedSwitches, L"RewriteRules_GenerateAffectedLRIClausesSubgroup(...)#Internal error: It should have been prevented by PrefixExtractionAffectedBySwitches.");
+					}
 				
-					Dictionary<WString, Pair<RuleSymbol*, RuleSymbol*>> flags;
+					Dictionary<WString, PMInjectRecord> flags;
 					bool omittedSelf = false;
 					bool generateOptionalLri = false;
 					RewriteRules_CollectFlags(
 						vContext,
 						prefixRuleSymbol,
-						pmClauses.GetByIndex(pmIndex),
+						pmClauseRecords,
 						flags,
 						generateOptionalLri
 						);
@@ -707,9 +817,8 @@ RewriteRules (Affected)
 								vContext,
 								rContext,
 								conflictedRuleSymbol,
-								prefixRuleSymbol,
-								conflictedRuleSymbol,
-								lripFlag,
+								{ prefixRuleSymbol,conflictedRuleSymbol,lripFlag.value },
+								lripFlag.key,
 								pathCounter,
 								false
 								);
@@ -722,10 +831,12 @@ RewriteRules (Affected)
 						generateOptionalLri = false;
 					}
 
-					for (auto [flag, pmRulePair] : flags)
+					for (auto [flag, pmInjectRecord] : flags)
 					{
-						auto [pmRule, injectIntoRule] = pmRulePair;
 						{
+							// Since there is no switches in pmClauses
+							// So there is no switches in pmInjectRecord as well
+							// because flags comes from pmClauses, collected by RewriteRules_CollectFlags above
 							auto lriClause = CreateLriClause(pmName);
 							lriRule->clauses.Add(lriClause);
 					
@@ -733,8 +844,7 @@ RewriteRules (Affected)
 								vContext,
 								rContext,
 								prefixRuleSymbol,
-								pmRule,
-								prefixRuleSymbol,
+								{ pmInjectRecord.pmRule,prefixRuleSymbol,nullptr },
 								flag,
 								pathCounter,
 								generateOptionalLri
@@ -747,9 +857,8 @@ RewriteRules (Affected)
 									vContext,
 									rContext,
 									conflictedRuleSymbol,
-									prefixRuleSymbol,
-									conflictedRuleSymbol,
-									lripFlag,
+									{ prefixRuleSymbol,conflictedRuleSymbol,lripFlag.value },
+									lripFlag.key,
 									pathCounter,
 									true
 									);
@@ -794,10 +903,24 @@ RewriteRules (Affected)
 					for (auto prefixClause : prefixClauses)
 					{
 						auto prefixRuleSymbol = vContext.simpleUseClauseToReferencedRules[prefixClause];
-						SortedList<WString> lripFlags;
+						if (vContext.ruleAffectedSwitches.Keys().Contains(prefixRuleSymbol))
+						{
+							vContext.syntaxManager.AddError(
+								ParserErrorType::PrefixExtractionAffectedBySwitches,
+								rContext.originRules[vContext.syntaxManager.Rules()[lriRule->name.value]]->codeRange,
+								lriRule->name.value,
+								conflictedRuleSymbol->Name(),
+								prefixRuleSymbol->Name()
+								);
+						}
+
+						Dictionary<WString, Ptr<PushedSwitchList>> lripFlags;
 						for (auto extracted : vContext.indirectStartPathToLastRules[{conflictedRuleSymbol, prefixRuleSymbol}])
 						{
-							lripFlags.Add(L"LRIP_" + extracted.key->Name() + L"_" + prefixRuleSymbol->Name());
+							lripFlags.Add(
+								L"LRIP_" + extracted.ruleSymbol->Name() + L"_" + prefixRuleSymbol->Name(),
+								extracted.pushedSwitches
+								);
 						}
 						RewriteRules_GenerateAffectedLRIClausesSubgroup(
 							vContext,
@@ -824,7 +947,7 @@ RewriteRules
 				{
 					auto lriRule = rContext.lriRules[ruleSymbol];
 					Ptr<RewritingPrefixConflict> conflict;
-					Group<WString, Pair<RuleSymbol*, GlrPrefixMergeClause*>> pmClauses;
+					Group<WString, PMClauseRecord> pmClauses;
 					{
 						SortedList<RuleSymbol*> visited;
 						conflict = RewriteRules_CollectUnaffectedIndirectPmClauses(
@@ -832,6 +955,7 @@ RewriteRules
 							rContext,
 							ruleSymbol,
 							ruleSymbol,
+							nullptr,
 							visited,
 							pmClauses
 							);

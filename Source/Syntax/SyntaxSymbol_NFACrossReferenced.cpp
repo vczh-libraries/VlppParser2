@@ -203,6 +203,7 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 											CopyFrom(newEdge->returnEdges, From(returnEdges).Take(i + 1), true);
 											CopyFrom(newEdge->returnEdges, tokenEdge->returnEdges, true);
 
+											CopyFrom(newEdge->insSwitch, injectEdge->insSwitch, true);
 											CopyFrom(newEdge->insSwitch, lrEdge->insSwitch, true);
 											CopyFrom(newEdge->insSwitch, tokenEdge->insSwitch, true);
 
@@ -232,6 +233,7 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 									CopyFrom(newEdge->returnEdges, From(returnEdges).Take(i + 1), true);
 									CopyFrom(newEdge->returnEdges, tokenEdge->returnEdges, true);
 
+									CopyFrom(newEdge->insSwitch, injectEdge->insSwitch, true);
 									CopyFrom(newEdge->insSwitch, tokenEdge->insSwitch, true);
 
 									// newEdge consumes a token
