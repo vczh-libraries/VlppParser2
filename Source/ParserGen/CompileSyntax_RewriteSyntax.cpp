@@ -746,7 +746,7 @@ RewriteRules (Affected)
 				const RewritingContext& rContext,
 				RuleSymbol* conflictedRuleSymbol,
 				RuleSymbol* prefixRuleSymbol,
-				SortedList<WString>& lripFlags,
+				Dictionary<WString, Ptr<PushedSwitchList>>& lripFlags,
 				GlrRule* lriRule,
 				Dictionary<Pair<RuleSymbol*, RuleSymbol*>, vint>& pathCounter,
 				SortedList<WString>& knownOptionalStartRules
@@ -787,6 +787,12 @@ RewriteRules (Affected)
 					//     otherwise
 					//       it becomse GLRICT::Required
 					//       generate useSyntax instead of lriClause
+
+					auto&& pmClauseRecords = pmClauses.GetByIndex(pmIndex);
+					for (auto&& record : pmClauseRecords)
+					{
+						CHECK_ERROR(!record.pushedSwitches, L"RewriteRules_GenerateAffectedLRIClausesSubgroup(...)#Internal error: It should have been prevented by PrefixExtractionAffectedBySwitches.");
+					}
 				
 					Dictionary<WString, PMInjectRecord> flags;
 					bool omittedSelf = false;
@@ -794,7 +800,7 @@ RewriteRules (Affected)
 					RewriteRules_CollectFlags(
 						vContext,
 						prefixRuleSymbol,
-						pmClauses.GetByIndex(pmIndex),
+						pmClauseRecords,
 						flags,
 						generateOptionalLri
 						);
@@ -802,7 +808,7 @@ RewriteRules (Affected)
 					if (generateOptionalLri)
 					{
 						// TODO: add test case for omittedSelf == true
-						for (auto lripFlag : lripFlags)
+						for (auto lripFlag : lripFlags.Keys())
 						{
 							auto lriClause = CreateLriClause(pmName);
 							lriRule->clauses.Add(lriClause);
@@ -828,6 +834,9 @@ RewriteRules (Affected)
 					for (auto [flag, pmInjectRecord] : flags)
 					{
 						{
+							// Since there is no switches in pmClauses
+							// So there is no switches in pmInjectRecord as well
+							// because flags comes from pmClauses, collected by RewriteRules_CollectFlags above
 							auto lriClause = CreateLriClause(pmName);
 							lriRule->clauses.Add(lriClause);
 					
@@ -848,8 +857,8 @@ RewriteRules (Affected)
 									vContext,
 									rContext,
 									conflictedRuleSymbol,
-									{ prefixRuleSymbol,conflictedRuleSymbol,nullptr },
-									lripFlag,
+									{ prefixRuleSymbol,conflictedRuleSymbol,lripFlag.value },
+									lripFlag.key,
 									pathCounter,
 									true
 									);
@@ -894,10 +903,24 @@ RewriteRules (Affected)
 					for (auto prefixClause : prefixClauses)
 					{
 						auto prefixRuleSymbol = vContext.simpleUseClauseToReferencedRules[prefixClause];
-						SortedList<WString> lripFlags;
+						if (vContext.ruleAffectedSwitches.Keys().Contains(prefixRuleSymbol))
+						{
+							vContext.syntaxManager.AddError(
+								ParserErrorType::PrefixExtractionAffectedBySwitches,
+								rContext.originRules[vContext.syntaxManager.Rules()[lriRule->name.value]]->codeRange,
+								lriRule->name.value,
+								conflictedRuleSymbol->Name(),
+								prefixRuleSymbol->Name()
+								);
+						}
+
+						Dictionary<WString, Ptr<PushedSwitchList>> lripFlags;
 						for (auto extracted : vContext.indirectStartPathToLastRules[{conflictedRuleSymbol, prefixRuleSymbol}])
 						{
-							lripFlags.Add(L"LRIP_" + extracted.ruleSymbol->Name() + L"_" + prefixRuleSymbol->Name());
+							lripFlags.Add(
+								L"LRIP_" + extracted.ruleSymbol->Name() + L"_" + prefixRuleSymbol->Name(),
+								extracted.pushedSwitches
+								);
 						}
 						RewriteRules_GenerateAffectedLRIClausesSubgroup(
 							vContext,
