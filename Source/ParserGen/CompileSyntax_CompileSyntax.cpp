@@ -226,16 +226,21 @@ CompileSyntaxVisitor
 					result = automatonBuilder.BuildAlternativeSyntax(elements);
 				}
 
-				void Visit(GlrPushConditionSyntax* node) override
+				void SetSwitchValues(List<Ptr<GlrSwitchItem>>& switchesItems, Dictionary<vint32_t, bool>& switchValues)
 				{
-					Dictionary<vint32_t, bool> switches;
-					for (auto&& switchItem : node->switches)
+					for (auto&& switchItem : switchesItems)
 					{
-						switches.Add(
+						switchValues.Add(
 							(vint32_t)context.syntaxManager.switches.Keys().IndexOf(switchItem->name.value),
 							(switchItem->value == GlrSwitchValue::True)
 							);
 					}
+				}
+
+				void Visit(GlrPushConditionSyntax* node) override
+				{
+					Dictionary<vint32_t, bool> switches;
+					SetSwitchValues(node->switches, switches);
 					result = automatonBuilder.BuildPushConditionSyntax(
 						switches,
 						[this, node]() { return Build(node->syntax); }
@@ -354,9 +359,8 @@ CompileSyntaxVisitor
 
 				using StateBuilder = Func<AutomatonBuilder::StatePair()>;
 
-				StateBuilder CompileLriTarget(vint32_t parentFlag, GlrLeftRecursionInjectClause* lriTarget)
+				StateBuilder CompileLriTargetWithoutSwitches(vint32_t parentFlag, GlrLeftRecursionInjectClause* lriTarget)
 				{
-					CHECK_ERROR(lriTarget->switches.Count() == 0, L"Not Implemented!");
 					StateBuilder useOrLriSyntax;
 					auto rule = context.syntaxManager.Rules()[lriTarget->rule->literal.value];
 					if (parentFlag == -1)
@@ -389,6 +393,26 @@ CompileSyntaxVisitor
 								useOrLriSyntax,
 								optional,
 								std::move(targetRules));
+						};
+					}
+				}
+
+				StateBuilder CompileLriTarget(vint32_t parentFlag, GlrLeftRecursionInjectClause* lriTarget)
+				{
+					if (lriTarget->switches.Count() == 0)
+					{
+						return CompileLriTargetWithoutSwitches(parentFlag, lriTarget);
+					}
+					else
+					{
+						return [this, parentFlag, lriTarget]()
+						{
+							Dictionary<vint32_t, bool> switches;
+							SetSwitchValues(lriTarget->switches, switches);
+							return automatonBuilder.BuildPushConditionSyntax(
+								switches,
+								CompileLriTargetWithoutSwitches(parentFlag, lriTarget)
+								);
 						};
 					}
 				}
