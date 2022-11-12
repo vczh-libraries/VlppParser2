@@ -405,6 +405,36 @@ RewriteRules (Common)
 				else return nullptr;
 			}
 
+			void RewriteRules_AddPmClause(
+				const VisitorContext& vContext,
+				RuleSymbol* ruleSymbol,
+				GlrPrefixMergeClause* pmClause,
+				Ptr<PushedSwitchList> pushedSwitches,
+				Group<WString, PMClauseRecord>& pmClauses
+			)
+			{
+				auto pmRule = vContext.clauseToRules[pmClause];
+				if (ruleSymbol == pmRule)
+				{
+					if (!pmClauses.Contains(pmClause->rule->literal.value, { ruleSymbol,pmClause,pushedSwitches }))
+					{
+						pmClauses.Add(pmClause->rule->literal.value, { ruleSymbol,pmClause,pushedSwitches });
+					}
+				}
+				else
+				{
+					for (auto [indirectStartRule, indirectClause, indirectSwitches] : vContext.indirectStartPathToLastRules[{ ruleSymbol, pmRule }])
+					{
+						auto newPushedSwitches = RewriteRules_ConcatSwitches(pushedSwitches, indirectSwitches);
+
+						if (!pmClauses.Contains(pmClause->rule->literal.value, { ruleSymbol,pmClause,newPushedSwitches }))
+						{
+							pmClauses.Add(pmClause->rule->literal.value, { ruleSymbol,pmClause,newPushedSwitches });
+						}
+					}
+				}
+			}
+
 			Ptr<RewritingPrefixConflict> RewriteRules_CollectUnaffectedIndirectPmClauses(
 				const VisitorContext& vContext,
 				const RewritingContext& rContext,
@@ -444,10 +474,7 @@ RewriteRules (Common)
 										})
 									))
 								{
-									if (!pmClauses.Contains(pmClause->rule->literal.value, { simpleUseRule,pmClause,newPushedSwitches }))
-									{
-										pmClauses.Add(pmClause->rule->literal.value, { simpleUseRule,pmClause,newPushedSwitches });
-									}
+									RewriteRules_AddPmClause(vContext, simpleUseRule, pmClause, newPushedSwitches, pmClauses);
 								}
 							}
 						}
@@ -456,26 +483,7 @@ RewriteRules (Common)
 					{
 						for (auto pmClause : vContext.indirectPmClauses[ruleSymbol])
 						{
-							auto pmRule = vContext.clauseToRules[pmClause];
-							if (ruleSymbol == pmRule)
-							{
-								if (!pmClauses.Contains(pmClause->rule->literal.value, { ruleSymbol,pmClause,pushedSwitches }))
-								{
-									pmClauses.Add(pmClause->rule->literal.value, { ruleSymbol,pmClause,pushedSwitches });
-								}
-							}
-							else
-							{
-								for (auto [indirectStartRule, indirectClause, indirectSwitches] : vContext.indirectStartPathToLastRules[{ ruleSymbol, pmRule }])
-								{
-									auto newPushedSwitches = RewriteRules_ConcatSwitches(pushedSwitches, indirectSwitches);
-
-									if (!pmClauses.Contains(pmClause->rule->literal.value, { ruleSymbol,pmClause,newPushedSwitches }))
-									{
-										pmClauses.Add(pmClause->rule->literal.value, { ruleSymbol,pmClause,newPushedSwitches });
-									}
-								}
-							}
+							RewriteRules_AddPmClause(vContext, ruleSymbol, pmClause, pushedSwitches, pmClauses);
 						}
 					}
 				}
