@@ -1,5 +1,10 @@
 # TODO
 
+## Next task
+
+- Rewrire and remove switch before removing PrefixMerge.
+  - Expand one rules to multiple by postfix "_SWITCHED_0Abc_1Def...".
+
 ## Test Cases
 
 - `PrefixMerge` 1-7 add test cases to parse expr and type separately.
