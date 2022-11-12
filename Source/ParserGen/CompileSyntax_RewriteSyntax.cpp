@@ -792,7 +792,6 @@ RewriteRules (Affected)
 
 					for (auto [flag, pmInjectRecord] : flags)
 					{
-						auto [pmRule, injectIntoRule] = pmRulePair;
 						{
 							auto lriClause = CreateLriClause(pmName);
 							lriRule->clauses.Add(lriClause);
@@ -801,8 +800,7 @@ RewriteRules (Affected)
 								vContext,
 								rContext,
 								prefixRuleSymbol,
-								pmRule,
-								prefixRuleSymbol,
+								{ pmInjectRecord.pmRule,prefixRuleSymbol,nullptr },
 								flag,
 								pathCounter,
 								generateOptionalLri
@@ -815,8 +813,7 @@ RewriteRules (Affected)
 									vContext,
 									rContext,
 									conflictedRuleSymbol,
-									prefixRuleSymbol,
-									conflictedRuleSymbol,
+									{ prefixRuleSymbol,conflictedRuleSymbol,nullptr },
 									lripFlag,
 									pathCounter,
 									true
