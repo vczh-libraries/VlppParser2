@@ -808,7 +808,7 @@ RewriteRules (Affected)
 					if (generateOptionalLri)
 					{
 						// TODO: add test case for omittedSelf == true
-						for (auto lripFlag : lripFlags.Keys())
+						for (auto lripFlag : lripFlags)
 						{
 							auto lriClause = CreateLriClause(pmName);
 							lriRule->clauses.Add(lriClause);
@@ -817,8 +817,8 @@ RewriteRules (Affected)
 								vContext,
 								rContext,
 								conflictedRuleSymbol,
-								{ prefixRuleSymbol,conflictedRuleSymbol,nullptr },
-								lripFlag,
+								{ prefixRuleSymbol,conflictedRuleSymbol,lripFlag.value },
+								lripFlag.key,
 								pathCounter,
 								false
 								);
