@@ -381,6 +381,13 @@ RewriteRules (Common)
 
 			using PMClauseRecord = GenericRuleClausePath<GlrPrefixMergeClause>;
 
+			struct PMInjectRecord
+			{
+				RuleSymbol*					pmRule = nullptr;
+				RuleSymbol*					injectIntoRule = nullptr;
+				Ptr<PushedSwitchList>		pushedSwitches;
+			};
+
 			Ptr<RewritingPrefixConflict> RewriteRules_CollectUnaffectedIndirectPmClauses(
 				const VisitorContext& vContext,
 				const RewritingContext& rContext,
@@ -506,11 +513,11 @@ RewriteRules (Common)
 				const VisitorContext& vContext,
 				RuleSymbol* ruleSymbol,
 				const List<PMClauseRecord>& pmClauses,
-				Dictionary<WString, Pair<RuleSymbol*, RuleSymbol*>>& flags,
+				Dictionary<WString, PMInjectRecord>& flags,
 				bool& generateOptionalLri
 			)
 			{
-				for (auto [injectIntoRule, pmClause, _] : pmClauses)
+				for (auto [injectIntoRule, pmClause, pushedSwitches] : pmClauses)
 				{
 					auto pmRule = vContext.clauseToRules[pmClause];
 					bool hasSimpleUseTransition = false;
@@ -524,7 +531,7 @@ RewriteRules (Common)
 
 					if (hasNonSimpleUseTransition)
 					{
-						flags.Add(L"LRI_" + pmRule->Name(), { pmRule,injectIntoRule });
+						flags.Add(L"LRI_" + pmRule->Name(), { pmRule,injectIntoRule,pushedSwitches });
 					}
 				}
 			}
@@ -583,8 +590,7 @@ RewriteRules (AST Creation)
 				const VisitorContext& vContext,
 				const RewritingContext& rContext,
 				RuleSymbol* ruleSymbol,
-				RuleSymbol* pmRule,
-				RuleSymbol* injectIntoRule,
+				const PMInjectRecord& pmInjectRecord,
 				const WString& flag,
 				Dictionary<Pair<RuleSymbol*, RuleSymbol*>, vint>& pathCounter,
 				bool generateOptionalLri
@@ -592,7 +598,7 @@ RewriteRules (AST Creation)
 			{
 				auto lriCont = MakePtr<GlrLeftRecursionInjectContinuation>();
 
-				if (RewriteRules_HasMultiplePaths(vContext, ruleSymbol, pmRule, pathCounter))
+				if (RewriteRules_HasMultiplePaths(vContext, ruleSymbol, pmInjectRecord.pmRule, pathCounter))
 				{
 					lriCont->configuration = GlrLeftRecursionConfiguration::Multiple;
 				}
@@ -614,7 +620,14 @@ RewriteRules (AST Creation)
 				lriCont->flag = lriContFlag;
 				lriContFlag->flag.value = flag;
 
-				auto lriContTarget = CreateLriClause(rContext.originRules[injectIntoRule]->name.value);
+				auto lriContTarget = CreateLriClause(rContext.originRules[pmInjectRecord.injectIntoRule]->name.value);
+				if (pmInjectRecord.pushedSwitches)
+				{
+					for (auto pushSyntax : *pmInjectRecord.pushedSwitches.Obj())
+					{
+						CopyFrom(lriContTarget->switches, pushSyntax->switches, true);
+					}
+				}
 				lriCont->injectionTargets.Add(lriContTarget);
 
 				return lriCont;
@@ -644,7 +657,7 @@ RewriteRules (Unaffected)
 					//       it becomse GLRICT::Required
 					//       generate useSyntax instead of lriClause
 
-					Dictionary<WString, Pair<RuleSymbol*, RuleSymbol*>> flags;
+					Dictionary<WString, PMInjectRecord> flags;
 					bool generateOptionalLri = false;
 					RewriteRules_CollectFlags(
 						vContext,
@@ -664,9 +677,8 @@ RewriteRules (Unaffected)
 						useSyntax->name.value = pmName;
 					}
 
-					for (auto [flag, pmRulePair] : flags)
+					for (auto [flag, pmInjectRecord] : flags)
 					{
-						auto [pmRule, injectIntoRule] = pmRulePair;
 						auto lriClause = CreateLriClause(pmName);
 						lriRule->clauses.Add(lriClause);
 
@@ -674,8 +686,7 @@ RewriteRules (Unaffected)
 							vContext,
 							rContext,
 							ruleSymbol,
-							pmRule,
-							injectIntoRule,
+							pmInjectRecord,
 							flag,
 							pathCounter,
 							generateOptionalLri
@@ -742,7 +753,7 @@ RewriteRules (Affected)
 					//       it becomse GLRICT::Required
 					//       generate useSyntax instead of lriClause
 				
-					Dictionary<WString, Pair<RuleSymbol*, RuleSymbol*>> flags;
+					Dictionary<WString, PMInjectRecord> flags;
 					bool omittedSelf = false;
 					bool generateOptionalLri = false;
 					RewriteRules_CollectFlags(
@@ -765,8 +776,7 @@ RewriteRules (Affected)
 								vContext,
 								rContext,
 								conflictedRuleSymbol,
-								prefixRuleSymbol,
-								conflictedRuleSymbol,
+								{ prefixRuleSymbol,conflictedRuleSymbol,nullptr },
 								lripFlag,
 								pathCounter,
 								false
@@ -780,7 +790,7 @@ RewriteRules (Affected)
 						generateOptionalLri = false;
 					}
 
-					for (auto [flag, pmRulePair] : flags)
+					for (auto [flag, pmInjectRecord] : flags)
 					{
 						auto [pmRule, injectIntoRule] = pmRulePair;
 						{
