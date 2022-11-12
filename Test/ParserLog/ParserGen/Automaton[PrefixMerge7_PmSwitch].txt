@@ -2295,6 +2295,8 @@
 	ending -> [87][_Expr_NoComma] END [ENDING]
 		- EndObject()
 	token: "(" -> [185][_Expr1_LRI_Original]< _Expr1_LRI_Original "(" @ { _Expr_NoComma ; "," } ")" >
+		? +switches
+		? allow_gt <- TRUE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
@@ -2317,6 +2319,8 @@
 		> rule: _Expr1_LRI_Original -> [196][_Expr2_LRI_Original]<< !_Expr1_LRI_Original @ >>
 			+ ReopenObject()
 	token: "<" -> [199][_Expr3_LRI_Original]< _Expr3_LRI_Original "<" @ _Expr2 >
+		? +switches
+		? allow_gt <- TRUE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
@@ -2339,6 +2343,8 @@
 		> rule: _Expr4_LRI_Original -> [213][_Expr_NoComma_LRI_Original]<< !_Expr4_LRI_Original @ >>
 		> rule: _Expr3_LRI_Original -> [209][_Expr4_LRI_Original]<< !_Expr3_LRI_Original @ >>
 	token: ">" -> [201][_Expr3_LRI_Original]< _Expr3_LRI_Original ( ([0]? ">" @ _Expr2) ) >
+		? +switches
+		? allow_gt <- TRUE
 		? <- allow_gt
 		? ?
 		- EndObject()
@@ -2363,6 +2369,8 @@
 		> rule: _Expr4_LRI_Original -> [213][_Expr_NoComma_LRI_Original]<< !_Expr4_LRI_Original @ >>
 		> rule: _Expr3_LRI_Original -> [209][_Expr4_LRI_Original]<< !_Expr3_LRI_Original @ >>
 	token: "*" -> [193][_Expr2_LRI_Original]< _Expr2_LRI_Original "*" @ _Expr1 >
+		? +switches
+		? allow_gt <- TRUE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
@@ -2400,6 +2408,8 @@
 [93][_Expr_NoComma]<< !_PrimitiveShared @ ( !(0;lri:_Expr_NoComma_LRI_Original) ) >>
 [RULE: 11][CLAUSE: 3]
 	token: "(" -> [162][_LongType_LRI_Original]< _LongType_LRI_Original "(" @ { _LongType ; "," } ")" >
+		? +switches
+		? allow_gt <- TRUE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
@@ -2427,6 +2437,8 @@
 			+ Field(CtorExpr::type)
 		> rule: _LongType_LRI_Original -> [234][_Expr0__LongType_LRI_Prefix]<< !_LongType_LRI_Original @ >>
 	token: "{" -> [176][_Expr0_LRI_Original]< _Expr0__LongType_LRI_Prefix "{" @ { _Expr_NoComma ; "," } "}" >
+		? +switches
+		? allow_gt <- TRUE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
@@ -2452,6 +2464,8 @@
 		> rule: _Expr0_LRI_Original -> [190][_Expr1_LRI_Original]<< !_Expr0_LRI_Original @ >>
 			+ ReopenObject()
 	token: "const" -> [167][_LongType_LRI_Original]< _LongType_LRI_Original "const" @ >
+		? +switches
+		? allow_gt <- TRUE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
@@ -2479,6 +2493,8 @@
 			+ Field(CtorExpr::type)
 		> rule: _LongType_LRI_Original -> [234][_Expr0__LongType_LRI_Prefix]<< !_LongType_LRI_Original @ >>
 	token: "*" -> [166][_LongType_LRI_Original]< _LongType_LRI_Original "*" @ >
+		? +switches
+		? allow_gt <- TRUE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
@@ -2511,6 +2527,8 @@
 	ending -> [87][_Expr_NoComma] END [ENDING]
 		- EndObject()
 	token: "(" -> [185][_Expr1_LRI_Original]< _Expr1_LRI_Original "(" @ { _Expr_NoComma ; "," } ")" >
+		? +switches
+		? allow_gt <- TRUE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
@@ -2533,6 +2551,8 @@
 		> rule: _Expr1_LRI_Original -> [196][_Expr2_LRI_Original]<< !_Expr1_LRI_Original @ >>
 			+ ReopenObject()
 	token: "<" -> [199][_Expr3_LRI_Original]< _Expr3_LRI_Original "<" @ _Expr2 >
+		? +switches
+		? allow_gt <- TRUE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
@@ -2555,6 +2575,8 @@
 		> rule: _Expr4_LRI_Original -> [213][_Expr_NoComma_LRI_Original]<< !_Expr4_LRI_Original @ >>
 		> rule: _Expr3_LRI_Original -> [209][_Expr4_LRI_Original]<< !_Expr3_LRI_Original @ >>
 	token: ">" -> [201][_Expr3_LRI_Original]< _Expr3_LRI_Original ( ([0]? ">" @ _Expr2) ) >
+		? +switches
+		? allow_gt <- TRUE
 		? <- allow_gt
 		? ?
 		- EndObject()
@@ -2579,6 +2601,8 @@
 		> rule: _Expr4_LRI_Original -> [213][_Expr_NoComma_LRI_Original]<< !_Expr4_LRI_Original @ >>
 		> rule: _Expr3_LRI_Original -> [209][_Expr4_LRI_Original]<< !_Expr3_LRI_Original @ >>
 	token: "*" -> [193][_Expr2_LRI_Original]< _Expr2_LRI_Original "*" @ _Expr1 >
+		? +switches
+		? allow_gt <- TRUE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
@@ -2610,6 +2634,8 @@
 [96][_Expr_NoComma]<< !_PrimitiveTypeOnly @ ( !(0;lri:_Expr_NoComma_LRI_Original) ) >>
 [RULE: 11][CLAUSE: 4]
 	token: "(" -> [162][_LongType_LRI_Original]< _LongType_LRI_Original "(" @ { _LongType ; "," } ")" >
+		? +switches
+		? allow_gt <- TRUE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
@@ -2637,6 +2663,8 @@
 			+ Field(CtorExpr::type)
 		> rule: _LongType_LRI_Original -> [234][_Expr0__LongType_LRI_Prefix]<< !_LongType_LRI_Original @ >>
 	token: "{" -> [176][_Expr0_LRI_Original]< _Expr0__LongType_LRI_Prefix "{" @ { _Expr_NoComma ; "," } "}" >
+		? +switches
+		? allow_gt <- TRUE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
@@ -2662,6 +2690,8 @@
 		> rule: _Expr0_LRI_Original -> [190][_Expr1_LRI_Original]<< !_Expr0_LRI_Original @ >>
 			+ ReopenObject()
 	token: "const" -> [167][_LongType_LRI_Original]< _LongType_LRI_Original "const" @ >
+		? +switches
+		? allow_gt <- TRUE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
@@ -2689,6 +2719,8 @@
 			+ Field(CtorExpr::type)
 		> rule: _LongType_LRI_Original -> [234][_Expr0__LongType_LRI_Prefix]<< !_LongType_LRI_Original @ >>
 	token: "*" -> [166][_LongType_LRI_Original]< _LongType_LRI_Original "*" @ >
+		? +switches
+		? allow_gt <- TRUE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
@@ -2794,6 +2826,8 @@
 	ending -> [98][_Expr_NoGT_NoComma] END [ENDING]
 		- EndObject()
 	token: "(" -> [185][_Expr1_LRI_Original]< _Expr1_LRI_Original "(" @ { _Expr_NoComma ; "," } ")" >
+		? +switches
+		? allow_gt <- FALSE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
@@ -2816,6 +2850,8 @@
 		> rule: _Expr1_LRI_Original -> [196][_Expr2_LRI_Original]<< !_Expr1_LRI_Original @ >>
 			+ ReopenObject()
 	token: "<" -> [199][_Expr3_LRI_Original]< _Expr3_LRI_Original "<" @ _Expr2 >
+		? +switches
+		? allow_gt <- FALSE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
@@ -2838,6 +2874,8 @@
 		> rule: _Expr4_LRI_Original -> [216][_Expr_NoGT_NoComma_LRI_Original]<< !_Expr4_LRI_Original @ >>
 		> rule: _Expr3_LRI_Original -> [209][_Expr4_LRI_Original]<< !_Expr3_LRI_Original @ >>
 	token: ">" -> [201][_Expr3_LRI_Original]< _Expr3_LRI_Original ( ([0]? ">" @ _Expr2) ) >
+		? +switches
+		? allow_gt <- FALSE
 		? <- allow_gt
 		? ?
 		- EndObject()
@@ -2862,6 +2900,8 @@
 		> rule: _Expr4_LRI_Original -> [216][_Expr_NoGT_NoComma_LRI_Original]<< !_Expr4_LRI_Original @ >>
 		> rule: _Expr3_LRI_Original -> [209][_Expr4_LRI_Original]<< !_Expr3_LRI_Original @ >>
 	token: "*" -> [193][_Expr2_LRI_Original]< _Expr2_LRI_Original "*" @ _Expr1 >
+		? +switches
+		? allow_gt <- FALSE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
@@ -2899,6 +2939,8 @@
 [104][_Expr_NoGT_NoComma]<< !_PrimitiveShared @ ( !(!0;lri:_Expr_NoGT_NoComma_LRI_Original) ) >>
 [RULE: 12][CLAUSE: 3]
 	token: "(" -> [162][_LongType_LRI_Original]< _LongType_LRI_Original "(" @ { _LongType ; "," } ")" >
+		? +switches
+		? allow_gt <- FALSE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
@@ -2926,6 +2968,8 @@
 			+ Field(CtorExpr::type)
 		> rule: _LongType_LRI_Original -> [234][_Expr0__LongType_LRI_Prefix]<< !_LongType_LRI_Original @ >>
 	token: "{" -> [176][_Expr0_LRI_Original]< _Expr0__LongType_LRI_Prefix "{" @ { _Expr_NoComma ; "," } "}" >
+		? +switches
+		? allow_gt <- FALSE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
@@ -2951,6 +2995,8 @@
 		> rule: _Expr0_LRI_Original -> [190][_Expr1_LRI_Original]<< !_Expr0_LRI_Original @ >>
 			+ ReopenObject()
 	token: "const" -> [167][_LongType_LRI_Original]< _LongType_LRI_Original "const" @ >
+		? +switches
+		? allow_gt <- FALSE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
@@ -2978,6 +3024,8 @@
 			+ Field(CtorExpr::type)
 		> rule: _LongType_LRI_Original -> [234][_Expr0__LongType_LRI_Prefix]<< !_LongType_LRI_Original @ >>
 	token: "*" -> [166][_LongType_LRI_Original]< _LongType_LRI_Original "*" @ >
+		? +switches
+		? allow_gt <- FALSE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
@@ -3010,6 +3058,8 @@
 	ending -> [98][_Expr_NoGT_NoComma] END [ENDING]
 		- EndObject()
 	token: "(" -> [185][_Expr1_LRI_Original]< _Expr1_LRI_Original "(" @ { _Expr_NoComma ; "," } ")" >
+		? +switches
+		? allow_gt <- FALSE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
@@ -3032,6 +3082,8 @@
 		> rule: _Expr1_LRI_Original -> [196][_Expr2_LRI_Original]<< !_Expr1_LRI_Original @ >>
 			+ ReopenObject()
 	token: "<" -> [199][_Expr3_LRI_Original]< _Expr3_LRI_Original "<" @ _Expr2 >
+		? +switches
+		? allow_gt <- FALSE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
@@ -3054,6 +3106,8 @@
 		> rule: _Expr4_LRI_Original -> [216][_Expr_NoGT_NoComma_LRI_Original]<< !_Expr4_LRI_Original @ >>
 		> rule: _Expr3_LRI_Original -> [209][_Expr4_LRI_Original]<< !_Expr3_LRI_Original @ >>
 	token: ">" -> [201][_Expr3_LRI_Original]< _Expr3_LRI_Original ( ([0]? ">" @ _Expr2) ) >
+		? +switches
+		? allow_gt <- FALSE
 		? <- allow_gt
 		? ?
 		- EndObject()
@@ -3078,6 +3132,8 @@
 		> rule: _Expr4_LRI_Original -> [216][_Expr_NoGT_NoComma_LRI_Original]<< !_Expr4_LRI_Original @ >>
 		> rule: _Expr3_LRI_Original -> [209][_Expr4_LRI_Original]<< !_Expr3_LRI_Original @ >>
 	token: "*" -> [193][_Expr2_LRI_Original]< _Expr2_LRI_Original "*" @ _Expr1 >
+		? +switches
+		? allow_gt <- FALSE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
@@ -3109,6 +3165,8 @@
 [107][_Expr_NoGT_NoComma]<< !_PrimitiveTypeOnly @ ( !(!0;lri:_Expr_NoGT_NoComma_LRI_Original) ) >>
 [RULE: 12][CLAUSE: 4]
 	token: "(" -> [162][_LongType_LRI_Original]< _LongType_LRI_Original "(" @ { _LongType ; "," } ")" >
+		? +switches
+		? allow_gt <- FALSE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
@@ -3136,6 +3194,8 @@
 			+ Field(CtorExpr::type)
 		> rule: _LongType_LRI_Original -> [234][_Expr0__LongType_LRI_Prefix]<< !_LongType_LRI_Original @ >>
 	token: "{" -> [176][_Expr0_LRI_Original]< _Expr0__LongType_LRI_Prefix "{" @ { _Expr_NoComma ; "," } "}" >
+		? +switches
+		? allow_gt <- FALSE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
@@ -3161,6 +3221,8 @@
 		> rule: _Expr0_LRI_Original -> [190][_Expr1_LRI_Original]<< !_Expr0_LRI_Original @ >>
 			+ ReopenObject()
 	token: "const" -> [167][_LongType_LRI_Original]< _LongType_LRI_Original "const" @ >
+		? +switches
+		? allow_gt <- FALSE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
@@ -3188,6 +3250,8 @@
 			+ Field(CtorExpr::type)
 		> rule: _LongType_LRI_Original -> [234][_Expr0__LongType_LRI_Prefix]<< !_LongType_LRI_Original @ >>
 	token: "*" -> [166][_LongType_LRI_Original]< _LongType_LRI_Original "*" @ >
+		? +switches
+		? allow_gt <- FALSE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
@@ -3288,6 +3352,8 @@
 	ending -> [109][_Expr] END [ENDING]
 		- EndObject()
 	token: "," -> [219][_Expr_LRI_Original]< _Expr_LRI_Original "," @ _Expr_NoComma >
+		? +switches
+		? allow_gt <- TRUE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
@@ -3314,6 +3380,8 @@
 	ending -> [109][_Expr] END [ENDING]
 		- EndObject()
 	token: "(" -> [185][_Expr1_LRI_Original]< _Expr1_LRI_Original "(" @ { _Expr_NoComma ; "," } ")" >
+		? +switches
+		? allow_gt <- TRUE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
@@ -3339,6 +3407,8 @@
 		> rule: _Expr1_LRI_Original -> [196][_Expr2_LRI_Original]<< !_Expr1_LRI_Original @ >>
 			+ ReopenObject()
 	token: "<" -> [199][_Expr3_LRI_Original]< _Expr3_LRI_Original "<" @ _Expr2 >
+		? +switches
+		? allow_gt <- TRUE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
@@ -3364,6 +3434,8 @@
 		> rule: _Expr4_LRI_Original -> [213][_Expr_NoComma_LRI_Original]<< !_Expr4_LRI_Original @ >>
 		> rule: _Expr3_LRI_Original -> [209][_Expr4_LRI_Original]<< !_Expr3_LRI_Original @ >>
 	token: ">" -> [201][_Expr3_LRI_Original]< _Expr3_LRI_Original ( ([0]? ">" @ _Expr2) ) >
+		? +switches
+		? allow_gt <- TRUE
 		? <- allow_gt
 		? ?
 		- EndObject()
@@ -3391,6 +3463,8 @@
 		> rule: _Expr4_LRI_Original -> [213][_Expr_NoComma_LRI_Original]<< !_Expr4_LRI_Original @ >>
 		> rule: _Expr3_LRI_Original -> [209][_Expr4_LRI_Original]<< !_Expr3_LRI_Original @ >>
 	token: "," -> [219][_Expr_LRI_Original]< _Expr_LRI_Original "," @ _Expr_NoComma >
+		? +switches
+		? allow_gt <- TRUE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
@@ -3418,6 +3492,8 @@
 		> rule: _Expr_LRI_Original -> [112][_Expr]<< !_PrimitiveExprOnly ( !(0;lri:_Expr_LRI_Original @) | lri:<skip> ) >>
 			+ ReopenObject()
 	token: "*" -> [193][_Expr2_LRI_Original]< _Expr2_LRI_Original "*" @ _Expr1 >
+		? +switches
+		? allow_gt <- TRUE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
@@ -3458,6 +3534,8 @@
 [116][_Expr]<< !_PrimitiveShared @ ( !(0;lri:_Expr_LRI_Original) ) >>
 [RULE: 13][CLAUSE: 3]
 	token: "(" -> [162][_LongType_LRI_Original]< _LongType_LRI_Original "(" @ { _LongType ; "," } ")" >
+		? +switches
+		? allow_gt <- TRUE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
@@ -3488,6 +3566,8 @@
 			+ Field(CtorExpr::type)
 		> rule: _LongType_LRI_Original -> [234][_Expr0__LongType_LRI_Prefix]<< !_LongType_LRI_Original @ >>
 	token: "{" -> [176][_Expr0_LRI_Original]< _Expr0__LongType_LRI_Prefix "{" @ { _Expr_NoComma ; "," } "}" >
+		? +switches
+		? allow_gt <- TRUE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
@@ -3516,6 +3596,8 @@
 		> rule: _Expr0_LRI_Original -> [190][_Expr1_LRI_Original]<< !_Expr0_LRI_Original @ >>
 			+ ReopenObject()
 	token: "const" -> [167][_LongType_LRI_Original]< _LongType_LRI_Original "const" @ >
+		? +switches
+		? allow_gt <- TRUE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
@@ -3546,6 +3628,8 @@
 			+ Field(CtorExpr::type)
 		> rule: _LongType_LRI_Original -> [234][_Expr0__LongType_LRI_Prefix]<< !_LongType_LRI_Original @ >>
 	token: "*" -> [166][_LongType_LRI_Original]< _LongType_LRI_Original "*" @ >
+		? +switches
+		? allow_gt <- TRUE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
@@ -3581,6 +3665,8 @@
 	ending -> [109][_Expr] END [ENDING]
 		- EndObject()
 	token: "(" -> [185][_Expr1_LRI_Original]< _Expr1_LRI_Original "(" @ { _Expr_NoComma ; "," } ")" >
+		? +switches
+		? allow_gt <- TRUE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
@@ -3606,6 +3692,8 @@
 		> rule: _Expr1_LRI_Original -> [196][_Expr2_LRI_Original]<< !_Expr1_LRI_Original @ >>
 			+ ReopenObject()
 	token: "<" -> [199][_Expr3_LRI_Original]< _Expr3_LRI_Original "<" @ _Expr2 >
+		? +switches
+		? allow_gt <- TRUE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
@@ -3631,6 +3719,8 @@
 		> rule: _Expr4_LRI_Original -> [213][_Expr_NoComma_LRI_Original]<< !_Expr4_LRI_Original @ >>
 		> rule: _Expr3_LRI_Original -> [209][_Expr4_LRI_Original]<< !_Expr3_LRI_Original @ >>
 	token: ">" -> [201][_Expr3_LRI_Original]< _Expr3_LRI_Original ( ([0]? ">" @ _Expr2) ) >
+		? +switches
+		? allow_gt <- TRUE
 		? <- allow_gt
 		? ?
 		- EndObject()
@@ -3658,6 +3748,8 @@
 		> rule: _Expr4_LRI_Original -> [213][_Expr_NoComma_LRI_Original]<< !_Expr4_LRI_Original @ >>
 		> rule: _Expr3_LRI_Original -> [209][_Expr4_LRI_Original]<< !_Expr3_LRI_Original @ >>
 	token: "," -> [219][_Expr_LRI_Original]< _Expr_LRI_Original "," @ _Expr_NoComma >
+		? +switches
+		? allow_gt <- TRUE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
@@ -3685,6 +3777,8 @@
 		> rule: _Expr_LRI_Original -> [115][_Expr]<< !_PrimitiveShared ( !(0;lri:_Expr_LRI_Original @) | lri:<skip> ) >>
 			+ ReopenObject()
 	token: "*" -> [193][_Expr2_LRI_Original]< _Expr2_LRI_Original "*" @ _Expr1 >
+		? +switches
+		? allow_gt <- TRUE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
@@ -3719,6 +3813,8 @@
 [119][_Expr]<< !_PrimitiveTypeOnly @ ( !(0;lri:_Expr_LRI_Original) ) >>
 [RULE: 13][CLAUSE: 4]
 	token: "(" -> [162][_LongType_LRI_Original]< _LongType_LRI_Original "(" @ { _LongType ; "," } ")" >
+		? +switches
+		? allow_gt <- TRUE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
@@ -3749,6 +3845,8 @@
 			+ Field(CtorExpr::type)
 		> rule: _LongType_LRI_Original -> [234][_Expr0__LongType_LRI_Prefix]<< !_LongType_LRI_Original @ >>
 	token: "{" -> [176][_Expr0_LRI_Original]< _Expr0__LongType_LRI_Prefix "{" @ { _Expr_NoComma ; "," } "}" >
+		? +switches
+		? allow_gt <- TRUE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
@@ -3777,6 +3875,8 @@
 		> rule: _Expr0_LRI_Original -> [190][_Expr1_LRI_Original]<< !_Expr0_LRI_Original @ >>
 			+ ReopenObject()
 	token: "const" -> [167][_LongType_LRI_Original]< _LongType_LRI_Original "const" @ >
+		? +switches
+		? allow_gt <- TRUE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
@@ -3807,6 +3907,8 @@
 			+ Field(CtorExpr::type)
 		> rule: _LongType_LRI_Original -> [234][_Expr0__LongType_LRI_Prefix]<< !_LongType_LRI_Original @ >>
 	token: "*" -> [166][_LongType_LRI_Original]< _LongType_LRI_Original "*" @ >
+		? +switches
+		? allow_gt <- TRUE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
@@ -3938,6 +4040,8 @@
 	ending -> [121][Module] END [ENDING]
 		- EndObject()
 	token: "," -> [219][_Expr_LRI_Original]< _Expr_LRI_Original "," @ _Expr_NoComma >
+		? +switches
+		? allow_gt <- TRUE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
@@ -3964,6 +4068,8 @@
 	ending -> [121][Module] END [ENDING]
 		- EndObject()
 	token: "(" -> [185][_Expr1_LRI_Original]< _Expr1_LRI_Original "(" @ { _Expr_NoComma ; "," } ")" >
+		? +switches
+		? allow_gt <- TRUE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
@@ -3989,6 +4095,8 @@
 		> rule: _Expr1_LRI_Original -> [196][_Expr2_LRI_Original]<< !_Expr1_LRI_Original @ >>
 			+ ReopenObject()
 	token: "<" -> [199][_Expr3_LRI_Original]< _Expr3_LRI_Original "<" @ _Expr2 >
+		? +switches
+		? allow_gt <- TRUE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
@@ -4014,6 +4122,8 @@
 		> rule: _Expr4_LRI_Original -> [213][_Expr_NoComma_LRI_Original]<< !_Expr4_LRI_Original @ >>
 		> rule: _Expr3_LRI_Original -> [209][_Expr4_LRI_Original]<< !_Expr3_LRI_Original @ >>
 	token: ">" -> [201][_Expr3_LRI_Original]< _Expr3_LRI_Original ( ([0]? ">" @ _Expr2) ) >
+		? +switches
+		? allow_gt <- TRUE
 		? <- allow_gt
 		? ?
 		- EndObject()
@@ -4041,6 +4151,8 @@
 		> rule: _Expr4_LRI_Original -> [213][_Expr_NoComma_LRI_Original]<< !_Expr4_LRI_Original @ >>
 		> rule: _Expr3_LRI_Original -> [209][_Expr4_LRI_Original]<< !_Expr3_LRI_Original @ >>
 	token: "," -> [219][_Expr_LRI_Original]< _Expr_LRI_Original "," @ _Expr_NoComma >
+		? +switches
+		? allow_gt <- TRUE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
@@ -4068,6 +4180,8 @@
 		> rule: _Expr_LRI_Original -> [124][Module]<< !_PrimitiveExprOnly ( !(0;lri:_Expr_LRI_Original @) | lri:<skip> ) >>
 			+ ReopenObject()
 	token: "*" -> [193][_Expr2_LRI_Original]< _Expr2_LRI_Original "*" @ _Expr1 >
+		? +switches
+		? allow_gt <- TRUE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
@@ -4116,6 +4230,8 @@
 	ending -> [121][Module] END [ENDING]
 		- EndObject()
 	token: "{" -> [176][_Expr0_LRI_Original]< _Expr0__LongType_LRI_Prefix "{" @ { _Expr_NoComma ; "," } "}" >
+		? +switches
+		? allow_gt <- TRUE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
@@ -4144,6 +4260,8 @@
 [130][Module]<< !_PrimitiveShared @ ( !(0;lri:_Expr_LRI_Original) ) >>
 [RULE: 14][CLAUSE: 3]
 	token: "{" -> [176][_Expr0_LRI_Original]< _Expr0__LongType_LRI_Prefix "{" @ { _Expr_NoComma ; "," } "}" >
+		? +switches
+		? allow_gt <- TRUE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
@@ -4174,6 +4292,8 @@
 	ending -> [121][Module] END [ENDING]
 		- EndObject()
 	token: "(" -> [185][_Expr1_LRI_Original]< _Expr1_LRI_Original "(" @ { _Expr_NoComma ; "," } ")" >
+		? +switches
+		? allow_gt <- TRUE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
@@ -4199,6 +4319,8 @@
 		> rule: _Expr1_LRI_Original -> [196][_Expr2_LRI_Original]<< !_Expr1_LRI_Original @ >>
 			+ ReopenObject()
 	token: "<" -> [199][_Expr3_LRI_Original]< _Expr3_LRI_Original "<" @ _Expr2 >
+		? +switches
+		? allow_gt <- TRUE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
@@ -4224,6 +4346,8 @@
 		> rule: _Expr4_LRI_Original -> [213][_Expr_NoComma_LRI_Original]<< !_Expr4_LRI_Original @ >>
 		> rule: _Expr3_LRI_Original -> [209][_Expr4_LRI_Original]<< !_Expr3_LRI_Original @ >>
 	token: ">" -> [201][_Expr3_LRI_Original]< _Expr3_LRI_Original ( ([0]? ">" @ _Expr2) ) >
+		? +switches
+		? allow_gt <- TRUE
 		? <- allow_gt
 		? ?
 		- EndObject()
@@ -4251,6 +4375,8 @@
 		> rule: _Expr4_LRI_Original -> [213][_Expr_NoComma_LRI_Original]<< !_Expr4_LRI_Original @ >>
 		> rule: _Expr3_LRI_Original -> [209][_Expr4_LRI_Original]<< !_Expr3_LRI_Original @ >>
 	token: "," -> [219][_Expr_LRI_Original]< _Expr_LRI_Original "," @ _Expr_NoComma >
+		? +switches
+		? allow_gt <- TRUE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
@@ -4278,6 +4404,8 @@
 		> rule: _Expr_LRI_Original -> [127][Module]<< !_PrimitiveShared ( !(0;lri:_Expr_LRI_Original @) | lri:<skip> ) >>
 			+ ReopenObject()
 	token: "*" -> [193][_Expr2_LRI_Original]< _Expr2_LRI_Original "*" @ _Expr1 >
+		? +switches
+		? allow_gt <- TRUE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
@@ -4350,6 +4478,8 @@
 	ending -> [121][Module] END [ENDING]
 		- EndObject()
 	token: "{" -> [176][_Expr0_LRI_Original]< _Expr0__LongType_LRI_Prefix "{" @ { _Expr_NoComma ; "," } "}" >
+		? +switches
+		? allow_gt <- TRUE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
@@ -4378,6 +4508,8 @@
 [136][Module]<< !_PrimitiveTypeOnly @ ( !(0;lri:_Expr_LRI_Original) ) >>
 [RULE: 14][CLAUSE: 5]
 	token: "{" -> [176][_Expr0_LRI_Original]< _Expr0__LongType_LRI_Prefix "{" @ { _Expr_NoComma ; "," } "}" >
+		? +switches
+		? allow_gt <- TRUE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
@@ -4541,6 +4673,8 @@
 	ending -> [139][Module_NoGT_NoComma] END [ENDING]
 		- EndObject()
 	token: "(" -> [185][_Expr1_LRI_Original]< _Expr1_LRI_Original "(" @ { _Expr_NoComma ; "," } ")" >
+		? +switches
+		? allow_gt <- FALSE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
@@ -4563,6 +4697,8 @@
 		> rule: _Expr1_LRI_Original -> [196][_Expr2_LRI_Original]<< !_Expr1_LRI_Original @ >>
 			+ ReopenObject()
 	token: "<" -> [199][_Expr3_LRI_Original]< _Expr3_LRI_Original "<" @ _Expr2 >
+		? +switches
+		? allow_gt <- FALSE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
@@ -4585,6 +4721,8 @@
 		> rule: _Expr4_LRI_Original -> [216][_Expr_NoGT_NoComma_LRI_Original]<< !_Expr4_LRI_Original @ >>
 		> rule: _Expr3_LRI_Original -> [209][_Expr4_LRI_Original]<< !_Expr3_LRI_Original @ >>
 	token: ">" -> [201][_Expr3_LRI_Original]< _Expr3_LRI_Original ( ([0]? ">" @ _Expr2) ) >
+		? +switches
+		? allow_gt <- FALSE
 		? <- allow_gt
 		? ?
 		- EndObject()
@@ -4609,6 +4747,8 @@
 		> rule: _Expr4_LRI_Original -> [216][_Expr_NoGT_NoComma_LRI_Original]<< !_Expr4_LRI_Original @ >>
 		> rule: _Expr3_LRI_Original -> [209][_Expr4_LRI_Original]<< !_Expr3_LRI_Original @ >>
 	token: "*" -> [193][_Expr2_LRI_Original]< _Expr2_LRI_Original "*" @ _Expr1 >
+		? +switches
+		? allow_gt <- FALSE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
@@ -4654,6 +4794,8 @@
 	ending -> [139][Module_NoGT_NoComma] END [ENDING]
 		- EndObject()
 	token: "{" -> [176][_Expr0_LRI_Original]< _Expr0__LongType_LRI_Prefix "{" @ { _Expr_NoComma ; "," } "}" >
+		? +switches
+		? allow_gt <- FALSE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
@@ -4679,6 +4821,8 @@
 [147][Module_NoGT_NoComma]<< !_PrimitiveShared @ ( !(!0;lri:_Expr_NoGT_NoComma_LRI_Original) ) >>
 [RULE: 15][CLAUSE: 3]
 	token: "{" -> [176][_Expr0_LRI_Original]< _Expr0__LongType_LRI_Prefix "{" @ { _Expr_NoComma ; "," } "}" >
+		? +switches
+		? allow_gt <- FALSE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
@@ -4706,6 +4850,8 @@
 	ending -> [139][Module_NoGT_NoComma] END [ENDING]
 		- EndObject()
 	token: "(" -> [185][_Expr1_LRI_Original]< _Expr1_LRI_Original "(" @ { _Expr_NoComma ; "," } ")" >
+		? +switches
+		? allow_gt <- FALSE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
@@ -4728,6 +4874,8 @@
 		> rule: _Expr1_LRI_Original -> [196][_Expr2_LRI_Original]<< !_Expr1_LRI_Original @ >>
 			+ ReopenObject()
 	token: "<" -> [199][_Expr3_LRI_Original]< _Expr3_LRI_Original "<" @ _Expr2 >
+		? +switches
+		? allow_gt <- FALSE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
@@ -4750,6 +4898,8 @@
 		> rule: _Expr4_LRI_Original -> [216][_Expr_NoGT_NoComma_LRI_Original]<< !_Expr4_LRI_Original @ >>
 		> rule: _Expr3_LRI_Original -> [209][_Expr4_LRI_Original]<< !_Expr3_LRI_Original @ >>
 	token: ">" -> [201][_Expr3_LRI_Original]< _Expr3_LRI_Original ( ([0]? ">" @ _Expr2) ) >
+		? +switches
+		? allow_gt <- FALSE
 		? <- allow_gt
 		? ?
 		- EndObject()
@@ -4774,6 +4924,8 @@
 		> rule: _Expr4_LRI_Original -> [216][_Expr_NoGT_NoComma_LRI_Original]<< !_Expr4_LRI_Original @ >>
 		> rule: _Expr3_LRI_Original -> [209][_Expr4_LRI_Original]<< !_Expr3_LRI_Original @ >>
 	token: "*" -> [193][_Expr2_LRI_Original]< _Expr2_LRI_Original "*" @ _Expr1 >
+		? +switches
+		? allow_gt <- FALSE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
@@ -4843,6 +4995,8 @@
 	ending -> [139][Module_NoGT_NoComma] END [ENDING]
 		- EndObject()
 	token: "{" -> [176][_Expr0_LRI_Original]< _Expr0__LongType_LRI_Prefix "{" @ { _Expr_NoComma ; "," } "}" >
+		? +switches
+		? allow_gt <- FALSE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
@@ -4868,6 +5022,8 @@
 [153][Module_NoGT_NoComma]<< !_PrimitiveTypeOnly @ ( !(!0;lri:_Expr_NoGT_NoComma_LRI_Original) ) >>
 [RULE: 15][CLAUSE: 5]
 	token: "{" -> [176][_Expr0_LRI_Original]< _Expr0__LongType_LRI_Prefix "{" @ { _Expr_NoComma ; "," } "}" >
+		? +switches
+		? allow_gt <- FALSE
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
