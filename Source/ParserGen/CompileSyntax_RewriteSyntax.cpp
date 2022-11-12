@@ -410,11 +410,11 @@ RewriteRules (Common)
 							if (conflict->unaffectedClauses.Contains(simpleUseClause))
 							{
 								Ptr<PushedSwitchList> newPushedSwitches;
-								if (simpleUseSwitches && pushedSwitches)
+								if (simpleUseSwitches || pushedSwitches)
 								{
 									newPushedSwitches = MakePtr<PushedSwitchList>();
-									CopyFrom(*pushedSwitches.Obj(), *simpleUseSwitches.Obj(), true);
-									CopyFrom(*pushedSwitches.Obj(), *pushedSwitches.Obj(), true);
+									if (simpleUseSwitches) CopyFrom(*newPushedSwitches.Obj(), *simpleUseSwitches.Obj(), true);
+									if (pushedSwitches) CopyFrom(*newPushedSwitches.Obj(), *pushedSwitches.Obj(), true);
 								}
 								RewriteRules_CollectUnaffectedIndirectPmClauses(vContext, rContext, initiatedRuleSymbol, simpleUseRule, newPushedSwitches, visited, pmClauses);
 							}
