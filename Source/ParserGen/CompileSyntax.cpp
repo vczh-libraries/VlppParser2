@@ -87,6 +87,9 @@ CompileSyntax
 				ResolveName(context, files);
 				if (context.syntaxManager.Global().Errors().Count() > 0) return false;
 
+				ValidateSwitchesAndConditions(context, files);
+				if (context.syntaxManager.Global().Errors().Count() > 0) return false;
+
 				ValidatePartialRules(context, files);
 				if (context.syntaxManager.Global().Errors().Count() > 0) return false;
 
@@ -94,9 +97,6 @@ CompileSyntax
 				if (context.syntaxManager.Global().Errors().Count() > 0) return false;
 
 				CalculateFirstSet(context, files);
-				if (context.syntaxManager.Global().Errors().Count() > 0) return false;
-
-				ValidateSwitchesAndConditions(context, files);
 				if (context.syntaxManager.Global().Errors().Count() > 0) return false;
 
 				ValidateTypes(context, files);
