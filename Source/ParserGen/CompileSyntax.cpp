@@ -16,7 +16,9 @@ namespace vl
 			extern void					ValidateSwitchesAndConditions(VisitorContext& context, List<Ptr<GlrSyntaxFile>>& files);
 			extern void					ValidateTypes(VisitorContext& context, List<Ptr<GlrSyntaxFile>>& files);
 			extern void					ValidateStructure(VisitorContext& context, List<Ptr<GlrSyntaxFile>>& files);
-			extern Ptr<GlrSyntaxFile>	RewriteSyntax(VisitorContext& context, SyntaxSymbolManager& syntaxManager, collections::List<Ptr<GlrSyntaxFile>>& files);
+
+			extern Ptr<GlrSyntaxFile>	RewriteSyntax_Switch(VisitorContext& context, SyntaxSymbolManager& syntaxManager, collections::List<Ptr<GlrSyntaxFile>>& files);
+			extern Ptr<GlrSyntaxFile>	RewriteSyntax_PrefixMerge(VisitorContext& context, SyntaxSymbolManager& syntaxManager, collections::List<Ptr<GlrSyntaxFile>>& files);
 			extern void					CompileSyntax(VisitorContext& context, Ptr<CppParserGenOutput> output, List<Ptr<GlrSyntaxFile>>& files);
 
 /***********************************************************************
@@ -126,7 +128,7 @@ CompileSyntax
 					{
 						VisitorContext context(astManager, lexerManager, syntaxManager);
 						if (!VerifySyntax(context, files)) return nullptr;
-						rewritten = RewriteSyntax(context, syntaxManager, files);
+						rewritten = RewriteSyntax_PrefixMerge(context, syntaxManager, files);
 					}
 
 					List<Ptr<GlrSyntaxFile>> rewrittenFiles;
