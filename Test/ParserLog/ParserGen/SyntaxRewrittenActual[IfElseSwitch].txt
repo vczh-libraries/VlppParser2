@@ -1,0 +1,34 @@
+﻿switch allow_half_if;
+
+Do
+  ::= "do" ";" as DoStat
+  ;
+
+Block
+  ::= "{" {Stat:stats} "}" as BlockStat
+  ;
+
+IfTail
+  ::= OtherStat:thenBranch ("else" Stat:elseBranch | ?(allow_half_if: ;)) as partial IfStat
+  ::= !(!allow_half_if; If:thenBranch) "else" Stat:elseBranch as partial IfStat
+  ::= ?(allow_half_if: If:thenBranch) as partial IfStat
+  ;
+
+If
+  ::= "if" "cond" "then" IfTail as IfStat
+  ;
+
+OtherStat
+  ::= !Do
+  ::= !Block
+  ;
+
+Stat
+  ::= !OtherStat
+  ::= !(allow_half_if; !If)
+  ;
+
+Module
+  ::= Stat:stat as Module
+  ;
+

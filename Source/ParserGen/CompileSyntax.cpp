@@ -25,7 +25,14 @@ namespace vl
 CompileSyntax
 ***********************************************************************/
 
-			bool NeedRewritten(collections::List<Ptr<GlrSyntaxFile>>& files)
+			bool NeedRewritten_Switch(collections::List<Ptr<GlrSyntaxFile>>& files)
+			{
+				return !From(files)
+					.Where([](auto file) { return file->switches.Count() > 0; })
+					.IsEmpty();
+			}
+
+			bool NeedRewritten_PrefixMerge(collections::List<Ptr<GlrSyntaxFile>>& files)
 			{
 				return !From(files)
 					.SelectMany([](auto file) { return From(file->rules); })
@@ -82,13 +89,19 @@ CompileSyntax
 				}
 			}
 
-			bool VerifySyntax(VisitorContext& context, collections::List<Ptr<GlrSyntaxFile>>& files)
+			bool VerifySyntax_UntilSwitch(VisitorContext& context, collections::List<Ptr<GlrSyntaxFile>>& files)
 			{
 				ResolveName(context, files);
 				if (context.syntaxManager.Global().Errors().Count() > 0) return false;
 
 				ValidateSwitchesAndConditions(context, files);
 				if (context.syntaxManager.Global().Errors().Count() > 0) return false;
+
+				return true;
+			}
+
+			bool VerifySyntax_UntilPrefixMerge(VisitorContext& context, collections::List<Ptr<GlrSyntaxFile>>& files)
+			{
 
 				ValidatePartialRules(context, files);
 				if (context.syntaxManager.Global().Errors().Count() > 0) return false;
@@ -108,39 +121,38 @@ CompileSyntax
 				return true;
 			}
 
-			void CompileWithoutRewriting(AstSymbolManager& astManager, LexerSymbolManager& lexerManager, SyntaxSymbolManager& syntaxManager, Ptr<CppParserGenOutput> output, collections::List<Ptr<GlrSyntaxFile>>& files)
-			{
-				VisitorContext context(astManager, lexerManager, syntaxManager);
-				if (VerifySyntax(context, files))
-				{
-					CompileSyntax(context, output, files);
-				}
-			}
-
 			Ptr<GlrSyntaxFile> CompileSyntax(AstSymbolManager& astManager, LexerSymbolManager& lexerManager, SyntaxSymbolManager& syntaxManager, Ptr<CppParserGenOutput> output, collections::List<Ptr<GlrSyntaxFile>>& files)
 			{
 				CreateSyntaxSymbols(lexerManager, syntaxManager, files);
 				if (syntaxManager.Global().Errors().Count() > 0) return nullptr;
+				Ptr<GlrSyntaxFile> rewritten;
 
-				if (NeedRewritten(files))
+				if (NeedRewritten_Switch(files))
 				{
-					Ptr<GlrSyntaxFile> rewritten;
-					{
-						VisitorContext context(astManager, lexerManager, syntaxManager);
-						if (!VerifySyntax(context, files)) return nullptr;
-						rewritten = RewriteSyntax_PrefixMerge(context, syntaxManager, files);
-					}
+					VisitorContext context(astManager, lexerManager, syntaxManager);
+					if (!VerifySyntax_UntilSwitch(context, files)) return nullptr;
+					rewritten = RewriteSyntax_Switch(context, syntaxManager, files);
+					files.Clear();
+					files.Add(rewritten);
+				}
 
-					List<Ptr<GlrSyntaxFile>> rewrittenFiles;
-					rewrittenFiles.Add(rewritten);
-					CompileWithoutRewriting(astManager, lexerManager, syntaxManager, output, rewrittenFiles);
-					return rewritten;
-				}
-				else
+				if (NeedRewritten_PrefixMerge(files))
 				{
-					CompileWithoutRewriting(astManager, lexerManager, syntaxManager, output, files);
-					return nullptr;
+					VisitorContext context(astManager, lexerManager, syntaxManager);
+					if (!VerifySyntax_UntilSwitch(context, files)) return nullptr;
+					if (!VerifySyntax_UntilPrefixMerge(context, files)) return nullptr;
+					rewritten = RewriteSyntax_PrefixMerge(context, syntaxManager, files);
+					files.Clear();
+					files.Add(rewritten);
 				}
+
+				{
+					VisitorContext context(astManager, lexerManager, syntaxManager);
+					if (!VerifySyntax_UntilSwitch(context, files)) return nullptr;
+					if (!VerifySyntax_UntilPrefixMerge(context, files)) return nullptr;
+					CompileSyntax(context, output, files);
+				}
+				return rewritten;
 			}
 		}
 	}
