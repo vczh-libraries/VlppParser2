@@ -212,6 +212,9 @@ SyntaxSymbolManager
 				EdgeSymbol*					CreateEdge(StateSymbol* from, StateSymbol* to);
 				bool						CreateSwitch(const WString& name, bool defaultValue, ParsingTextRange codeRange = {});
 
+				void						RemoveRule(const WString& name);
+				void						ClearSwitches();
+
 				void						BuildCompactNFA();
 				void						BuildCrossReferencedNFA();
 				void						BuildAutomaton(vint tokenCount, automaton::Executable& executable, automaton::Metadata& metadata);

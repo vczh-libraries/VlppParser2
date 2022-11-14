@@ -4,6 +4,11 @@
 
 - Rewrire and remove switch before removing PrefixMerge.
   - Expand one rules to multiple by postfix "_SWITCHED_0Abc_1Def...".
+  - Remove unused switch errors
+  - Remove unused switch symbols
+    - switch in compiled symbols (EdgeSymbol ...)
+    - switch in automaton
+    - switch in runtime
 
 ## Test Cases
 

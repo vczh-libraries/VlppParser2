@@ -29,6 +29,7 @@ RewriteSyntax
 					CopyFrom(rewritten->rules, file->rules, true);
 				}
 
+				syntaxManager.ClearSwitches();
 				return rewritten;
 			}
 		}

@@ -17,7 +17,10 @@ namespace vl
 			template<typename T>
 			struct MappedOwning
 			{
+			private:
 				collections::List<Ptr<T>>				items;
+
+			public:
 				collections::List<WString>				order;
 				collections::Dictionary<WString, T*>	map;
 
@@ -28,6 +31,22 @@ namespace vl
 					order.Add(name);
 					map.Add(name, item);
 					return true;
+				}
+
+				Ptr<T> Remove(const WString& name)
+				{
+					vint indexKey = map.Keys().IndexOf(name);
+					if (indexKey == -1) return nullptr;
+
+					auto raw = map.Values()[indexKey];
+					vint indexItem = items.IndexOf(raw);
+					auto shared = items[indexItem];
+
+					items.RemoveAt(indexItem);
+					order.Remove(name);
+					map.Remove(name);
+
+					return shared;
 				}
 			};
 

@@ -40,7 +40,7 @@ AstEnumSymbol
 			AstEnumItemSymbol* AstEnumSymbol::CreateItem(const WString& itemName, ParsingTextRange codeRange)
 			{
 				auto symbol = new AstEnumItemSymbol(this, itemName);
-				symbol->value = items.items.Count();
+				symbol->value = items.map.Count();
 				if (!items.Add(itemName, symbol))
 				{
 					ownerFile->AddError(
