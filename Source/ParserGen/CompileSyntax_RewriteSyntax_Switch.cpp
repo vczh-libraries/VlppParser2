@@ -287,7 +287,7 @@ ExpandClauseVisitor
 						}
 					}
 
-					void BuildAlt(List<Ptr<GlrSyntax>>& items)
+					void BuildAlt(bool optional, List<Ptr<GlrSyntax>>& items)
 					{
 						if (items.Count() == 0)
 						{
@@ -312,6 +312,13 @@ ExpandClauseVisitor
 							}
 							result = alt;
 						}
+
+						if (optional)
+						{
+							auto opt = MakePtr<GlrOptionalSyntax>();
+							opt->syntax = result.Cast<GlrSyntax>();
+							result = opt;
+						}
 					}
 
 					void Visit(GlrAlternativeSyntax* node) override
@@ -319,21 +326,29 @@ ExpandClauseVisitor
 						List<Ptr<GlrSyntax>> items;
 						ExpandSyntaxToList(node->first, items);
 						ExpandSyntaxToList(node->second, items);
-						BuildAlt(items);
+						BuildAlt(false, items);
 					}
 
 					void Visit(GlrTestConditionSyntax* node) override
 					{
+						bool optional = false;
 						List<Ptr<GlrSyntax>> items;
 						EvaluateConditionVisitor visitor(*workingSwitchValues.Obj());
 						for (auto branch : node->branches)
 						{
 							if (!branch || visitor.Evaluate(branch->condition.Obj()))
 							{
-								ExpandSyntaxToList(branch->syntax, items);
+								if (branch->syntax)
+								{
+									ExpandSyntaxToList(branch->syntax, items);
+								}
+								else
+								{
+									optional = true;
+								}
 							}
 						}
-						BuildAlt(items);
+						BuildAlt(optional, items);
 					}
 
 					void Visit(GlrPushConditionSyntax* node) override
@@ -342,7 +357,7 @@ ExpandClauseVisitor
 						auto newValues = ApplySwitches(oldValues, node);
 
 						workingSwitchValues = newValues;
-						copy_visitor::RuleAstVisitor::Visit(node);
+						node->syntax->Accept(this);
 						workingSwitchValues = oldValues;
 					}
 

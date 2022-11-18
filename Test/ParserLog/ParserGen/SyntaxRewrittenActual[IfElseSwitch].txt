@@ -7,15 +7,14 @@ Block
   ;
 
 IfTail_SWITCH_0allow_half_if
-  ::= OtherStat:thenBranch ("else" Stat:elseBranch | ?(allow_half_if: ;)) as partial IfStat
-  ::= !(!allow_half_if; If:thenBranch) "else" Stat:elseBranch as partial IfStat
-  ::= ?(allow_half_if: If:thenBranch) as partial IfStat
+  ::= OtherStat:thenBranch "else" Stat:elseBranch as partial IfStat
+  ::= If:thenBranch "else" Stat:elseBranch as partial IfStat
   ;
 
 IfTail_SWITCH_1allow_half_if
-  ::= OtherStat:thenBranch ("else" Stat:elseBranch | ?(allow_half_if: ;)) as partial IfStat
-  ::= !(!allow_half_if; If:thenBranch) "else" Stat:elseBranch as partial IfStat
-  ::= ?(allow_half_if: If:thenBranch) as partial IfStat
+  ::= OtherStat:thenBranch "else" Stat:elseBranch as partial IfStat
+  ::= If:thenBranch "else" Stat:elseBranch as partial IfStat
+  ::= If:thenBranch as partial IfStat
   ;
 
 If_SWITCH_0allow_half_if
@@ -33,7 +32,7 @@ OtherStat
 
 Stat
   ::= !OtherStat
-  ::= !(allow_half_if; !If)
+  ::= !If
   ;
 
 Module
