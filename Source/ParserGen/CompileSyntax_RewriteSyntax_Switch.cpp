@@ -14,8 +14,8 @@ namespace vl
 			{
 				struct GeneratedRule
 				{
-					Ptr<GlrRule>				ruleToExpand = nullptr;
-					Dictionary<WString, bool>	switchValues;
+					GlrRule*									ruleToExpand = nullptr;
+					Ptr<Dictionary<WString, bool>>				switchValues;
 				};
 
 				struct RewritingContext
@@ -195,6 +195,49 @@ ExpandSwitchSyntaxVisitor
 						Ptr<Dictionary<WString, bool>> currentSwitchValues
 					)
 					{
+						auto workingSwitchValues = MakePtr<Dictionary<WString, bool>>();
+						for (auto&& name : affectedSwitches)
+						{
+							vint index = -1;
+							if (currentSwitchValues)
+							{
+								index = currentSwitchValues->Keys().IndexOf(name);
+							}
+
+							if (index == -1)
+							{
+								workingSwitchValues->Set(name, vContext.syntaxManager.switches[name].defaultValue);
+							}
+							else
+							{
+								workingSwitchValues->Set(name, currentSwitchValues->Values()[index]);
+							}
+						}
+
+						auto workingRule = vContext.syntaxManager.Rules()[rule->name.value];
+						vint index = rContext.generatedRules.Keys().IndexOf(workingRule);
+						if (index != -1)
+						{
+							for (auto generatedRule : rContext.generatedRules.GetByIndex(index))
+							{
+								if (CompareEnumerable(*generatedRule->switchValues.Obj(), *workingSwitchValues.Obj()) == 0)
+								{
+									return;
+								}
+							}
+						}
+
+						auto generatedRule = MakePtr<GeneratedRule>();
+						generatedRule->ruleToExpand = rule;
+						generatedRule->switchValues = workingSwitchValues;
+						rContext.generatedRules.Add(workingRule, generatedRule);
+
+						auto oldId = identification;
+						identification.workingRule = workingRule;
+						identification.workingSwitchValues = workingSwitchValues;
+						identification.generatedRule = generatedRule;
+						InspectInto(rule);
+						identification = oldId;
 					}
 
 					void InspectIntoUnaffectedRule(GlrRule* rule)
