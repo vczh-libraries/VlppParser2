@@ -25,6 +25,15 @@ namespace vl
 					Group<RuleSymbol*, Ptr<GeneratedRule>>		generatedRules;
 				};
 
+				class EmptySyntax : public GlrSyntax
+				{
+				public:
+					void Accept(GlrSyntax::IVisitor* visitor) override
+					{
+						CHECK_FAIL(L"vl::glr::parsergen::rewritesyntax_switch::EmptySyntax::Accept(GlrSyntax::IVisitor*)#EmptySyntax should not be used!");
+					}
+				};
+
 				Ptr<Dictionary<WString, bool>> ApplySwitches(Ptr<Dictionary<WString, bool>> currentValues, GlrPushConditionSyntax* node)
 				{
 					auto newValues = MakePtr<Dictionary<WString, bool>>();
@@ -311,8 +320,16 @@ ExpandClauseVisitor
 					{
 						if (items.Count() == 0)
 						{
-							result = nullptr;
-							throw CancelBranch();
+							if (optional)
+							{
+								result = MakePtr<EmptySyntax>();
+								return;
+							}
+							else
+							{
+								result = nullptr;
+								throw CancelBranch();
+							}
 						}
 						else if (items.Count() == 1)
 						{
@@ -417,6 +434,113 @@ ExpandClauseVisitor
 						catch (CancelBranch)
 						{
 							return nullptr;
+						}
+					}
+				};
+
+/***********************************************************************
+DeductEmptySyntaxVisitor
+***********************************************************************/
+
+				class DeductEmptySyntaxVisitor : public copy_visitor::RuleAstVisitor
+				{
+				protected:
+					void Visit(GlrLoopSyntax* node) override
+					{
+						if (node->syntax.Cast<EmptySyntax>())
+						{
+							result = node->syntax;
+						}
+						else
+						{
+							if (node->delimiter.Cast<EmptySyntax>())
+							{
+								node->delimiter = nullptr;
+							}
+							result = node;
+						}
+					}
+
+					void Visit(GlrOptionalSyntax* node) override
+					{
+						if (node->syntax.Cast<EmptySyntax>())
+						{
+							result = node->syntax;
+						}
+						else
+						{
+							result = node;
+						}
+					}
+
+					void Visit(GlrSequenceSyntax* node) override
+					{
+						bool first = !node->first.Cast<EmptySyntax>();
+						bool second = !node->second.Cast<EmptySyntax>();
+						if (first && second)
+						{
+							result = node;
+						}
+						else if (first)
+						{
+							auto opt = MakePtr<GlrOptionalSyntax>();
+							opt->syntax = node->first;
+							result = opt;
+						}
+						else if (second)
+						{
+							auto opt = MakePtr<GlrOptionalSyntax>();
+							opt->syntax = node->second;
+							result = opt;
+						}
+						else
+						{
+							result = node->first;
+						}
+					}
+
+					void Visit(GlrAlternativeSyntax* node) override
+					{
+						bool first = !node->first.Cast<EmptySyntax>();
+						bool second = !node->second.Cast<EmptySyntax>();
+						if (first && second)
+						{
+							result = node;
+						}
+						else if (first)
+						{
+							result = node->first;
+						}
+						else if (second)
+						{
+							result = node->second;
+						}
+						else
+						{
+							result = node->first;
+						}
+					}
+
+					void Visit(GlrPushConditionSyntax* node) override
+					{
+						CHECK_FAIL(L"vl::glr::parsergen::rewritesyntax_switch::DeductEmptySyntaxVisitor::Visit(GlrPushConditionSyntax*)#This should have been removed.");
+					}
+
+					void Visit(GlrTestConditionSyntax* node) override
+					{
+						CHECK_FAIL(L"vl::glr::parsergen::rewritesyntax_switch::DeductEmptySyntaxVisitor::Visit(GlrTestConditionSyntax*)#This should have been removed.");
+					}
+
+				public:
+					Ptr<GlrSyntax> DeductEmptySyntax(GlrSyntax* node)
+					{
+						if (dynamic_cast<EmptySyntax*>(node))
+						{
+							return nullptr;
+						}
+						else
+						{
+							return CopyNode(node);
 						}
 					}
 				};
