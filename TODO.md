@@ -17,6 +17,7 @@
 
 - `PrefixMerge` 1-7 add test cases to parse expr and type separately.
 - Add test cases for:
+  - SyntaxInvolvesSwitchWithIllegalRuleName
   - SwitchUnaffectedRuleExpandedToNoClause
   - SwitchAffectedRuleExpandedToNoClause
   - PrefixExtractionAffectedRuleReferencedAnother

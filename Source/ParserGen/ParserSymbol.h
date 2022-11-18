@@ -106,6 +106,7 @@ ParserSymbolManager
 			ERROR_ITEM(DuplicatedSwitch,													switchName)\
 			ERROR_ITEM(UnusedSwitch,														switchName)\
 			ERROR_ITEM(SwitchNotExists,														ruleName, switchName)\
+			ERROR_ITEM(SyntaxInvolvesSwitchWithIllegalRuleName,								ruleName)													/* A syntax uses switch should not use rule name that has _SWITCH/SWITCH_ */\
 			ERROR_ITEM(SyntaxInvolvesPrefixMergeWithIllegalRuleName,						ruleName)													/* A syntax uses prefix_merge should not use rule name that has _LRI/_LRIP/LRI_/LRIP_ */\
 			ERROR_ITEM(SyntaxInvolvesPrefixMergeWithIllegalPlaceholderName,					ruleName, placeholderName)									/* A syntax uses prefix_merge should not use placeholder name that has _LRI/_LRIP/LRI_/LRIP_ */\
 			/* SyntaxAst(CalculateTypes) */\

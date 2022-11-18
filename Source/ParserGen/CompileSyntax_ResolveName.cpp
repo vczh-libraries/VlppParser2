@@ -387,7 +387,14 @@ ResolveNameVisitor
 ResolveName
 ***********************************************************************/
 
-			bool IsLegalNameBeforeRewriting(const WString& name)
+			bool IsLegalNameBeforeWithSwitch(const WString& name)
+			{
+				if (wcsstr(name.Buffer(), L"_SWITCH")) return false;
+				if (wcsstr(name.Buffer(), L"SWITCH_")) return false;
+				return true;
+			}
+
+			bool IsLegalNameBeforeWithPrefixMerge(const WString& name)
 			{
 				if (wcsstr(name.Buffer(), L"_LRI")) return false;
 				if (wcsstr(name.Buffer(), L"_LRIP")) return false;
@@ -443,13 +450,31 @@ ResolveName
 					}
 				}
 
+				if (context.syntaxManager.switches.Count() > 0)
+				{
+					for (auto file : files)
+					{
+						for (auto rule : file->rules)
+						{
+							if (!IsLegalNameBeforeWithSwitch(rule->name.value))
+							{
+								context.syntaxManager.AddError(
+									ParserErrorType::SyntaxInvolvesSwitchWithIllegalRuleName,
+									rule->name.codeRange,
+									rule->name.value
+									);
+							}
+						}
+					}
+				}
+
 				if (context.directPmClauses.Count() > 0)
 				{
 					for (auto file : files)
 					{
 						for (auto rule : file->rules)
 						{
-							if (!IsLegalNameBeforeRewriting(rule->name.value))
+							if (!IsLegalNameBeforeWithPrefixMerge(rule->name.value))
 							{
 								context.syntaxManager.AddError(
 									ParserErrorType::SyntaxInvolvesPrefixMergeWithIllegalRuleName,
@@ -462,7 +487,7 @@ ResolveName
 							{
 								for (auto p : lrp->flags)
 								{
-									if (!IsLegalNameBeforeRewriting(p->flag.value))
+									if (!IsLegalNameBeforeWithPrefixMerge(p->flag.value))
 									{
 										context.syntaxManager.AddError(
 											ParserErrorType::SyntaxInvolvesPrefixMergeWithIllegalPlaceholderName,

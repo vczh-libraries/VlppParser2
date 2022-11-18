@@ -329,6 +329,7 @@ RewriteSyntax
 						{
 							auto newRule = MakePtr<GlrRule>();
 							newRule->codeRange = rule->codeRange;
+							newRule->name = rule->name;
 							newRule->type = rule->type;
 							if (!newRule->type)
 							{
@@ -359,6 +360,52 @@ RewriteSyntax
 						}
 						else
 						{
+							for(auto generatedRule : From(rewritingContext.generatedRules.GetByIndex(index))
+								.OrderBy([](Ptr<GeneratedRule> a, Ptr<GeneratedRule> b)
+								{
+									return CompareEnumerable(a->switchValues->Values(), b->switchValues->Values());
+								}))
+							{
+								auto newRule = MakePtr<GlrRule>();
+								newRule->codeRange = rule->codeRange;
+								newRule->name = rule->name ;
+								newRule->type = rule->type;
+								if (!newRule->type)
+								{
+									newRule->type.value = ruleSymbol->ruleType->Name();
+								}
+
+								newRule->name.value += L"_SWITCH";
+								for (auto [name, value] : *generatedRule->switchValues.Obj())
+								{
+									newRule->name.value += (value ? L"_1" : L"_0") + name;
+								}
+
+								generatedRule->expandedRule = newRule.Obj();
+
+								ExpandClauseVisitor visitor(context, generatedRule->switchValues);
+								for (auto clause : rule->clauses)
+								{
+									if (auto newClause = visitor.ExpandClause(clause.Obj()))
+									{
+										newRule->clauses.Add(newClause);
+									}
+								}
+
+								if (newRule->clauses.Count() == 0)
+								{
+									syntaxManager.AddError(
+										ParserErrorType::SwitchAffectedRuleExpandedToNoClause,
+										rule->codeRange,
+										rule->name.value,
+										newRule->name.value
+										);
+								}
+								else
+								{
+									rewritten->rules.Add(newRule);
+								}
+							}
 						}
 					}
 				}
