@@ -295,7 +295,8 @@ ExpandClauseVisitor
 					// the expanded syntax does not include GlrPushConditionSyntax
 					// GlrTestConditionSyntax will be possibly converts to GlrAlternativeSyntax
 					//   only with branches whose condition is evaluated to true under given switch values
-					// EmptySyntax will be generated for ?(false: ;)
+					// EmptySyntax will be generated for ?(true: ; | false: allOtherBranches)
+					// CancelBranch will be thrown for ?(false: allBranches)
 				protected:
 					struct CancelBranch {};
 
