@@ -25,6 +25,20 @@ namespace vl
 					Group<RuleSymbol*, Ptr<GeneratedRule>>		generatedRules;
 				};
 
+				Ptr<Dictionary<WString, bool>> ApplySwitches(Ptr<Dictionary<WString, bool>> currentValues, GlrPushConditionSyntax* node)
+				{
+					auto newValues = MakePtr<Dictionary<WString, bool>>();
+					if (currentValues)
+					{
+						CopyFrom(*newValues.Obj(), *currentValues.Obj());
+					}
+					for (auto switchItem : node->switches)
+					{
+						newValues->Set(switchItem->name.value, switchItem->value == GlrSwitchValue::True);
+					}
+					return newValues;
+				}
+
 /***********************************************************************
 EvaluateConditionVisitor
 **********************************************************************/
@@ -165,17 +179,9 @@ ExpandSwitchSyntaxVisitor
 
 					void Visit(GlrPushConditionSyntax* node) override
 					{
-						auto newValues = MakePtr<Dictionary<WString, bool>>();
-						if (identification.workingSwitchValues)
-						{
-							CopyFrom(*newValues.Obj(), *identification.workingSwitchValues.Obj());
-						}
-						for (auto switchItem : node->switches)
-						{
-							newValues->Set(switchItem->name.value, switchItem->value == GlrSwitchValue::True);
-						}
-
 						auto oldValues = identification.workingSwitchValues;
+						auto newValues = ApplySwitches(oldValues, node);
+
 						identification.workingSwitchValues = newValues;
 						traverse_visitor::RuleAstVisitor::Visit(node);
 						identification.workingSwitchValues = oldValues;
