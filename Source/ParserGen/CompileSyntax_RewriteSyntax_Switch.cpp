@@ -447,39 +447,63 @@ DeductEmptySyntaxVisitor
 				protected:
 					void Visit(GlrLoopSyntax* node) override
 					{
+						copy_visitor::RuleAstVisitor::Visit(node);
+						node = result.Cast<GlrLoopSyntax>().Obj();
+
 						if (node->syntax.Cast<EmptySyntax>())
 						{
 							result = node->syntax;
 						}
-						else
+						else if (node->delimiter.Cast<EmptySyntax>())
 						{
-							if (node->delimiter.Cast<EmptySyntax>())
-							{
-								node->delimiter = nullptr;
-							}
-							result = node;
+							node->delimiter = nullptr;
 						}
 					}
 
 					void Visit(GlrOptionalSyntax* node) override
 					{
+						copy_visitor::RuleAstVisitor::Visit(node);
+						node = result.Cast<GlrOptionalSyntax>().Obj();
+
 						if (node->syntax.Cast<EmptySyntax>())
 						{
 							result = node->syntax;
-						}
-						else
-						{
-							result = node;
 						}
 					}
 
 					void Visit(GlrSequenceSyntax* node) override
 					{
+						copy_visitor::RuleAstVisitor::Visit(node);
+						node = result.Cast<GlrSequenceSyntax>().Obj();
+
 						bool first = !node->first.Cast<EmptySyntax>();
 						bool second = !node->second.Cast<EmptySyntax>();
 						if (first && second)
 						{
-							result = node;
+						}
+						else if (first)
+						{
+							result = node->first;
+						}
+						else if (second)
+						{
+							result = node->second;
+						}
+						else
+						{
+							result = node->first;
+						}
+					}
+
+					void Visit(GlrAlternativeSyntax* node) override
+					{
+						copy_visitor::RuleAstVisitor::Visit(node);
+						node = result.Cast<GlrAlternativeSyntax>().Obj();
+
+						bool first = !node->first.Cast<EmptySyntax>();
+						bool second = !node->second.Cast<EmptySyntax>();
+						if (first && second)
+						{
 						}
 						else if (first)
 						{
@@ -499,28 +523,6 @@ DeductEmptySyntaxVisitor
 						}
 					}
 
-					void Visit(GlrAlternativeSyntax* node) override
-					{
-						bool first = !node->first.Cast<EmptySyntax>();
-						bool second = !node->second.Cast<EmptySyntax>();
-						if (first && second)
-						{
-							result = node;
-						}
-						else if (first)
-						{
-							result = node->first;
-						}
-						else if (second)
-						{
-							result = node->second;
-						}
-						else
-						{
-							result = node->first;
-						}
-					}
-
 					void Visit(GlrPushConditionSyntax* node) override
 					{
 						CHECK_FAIL(L"vl::glr::parsergen::rewritesyntax_switch::DeductEmptySyntaxVisitor::Visit(GlrPushConditionSyntax*)#This should have been removed.");
@@ -529,19 +531,6 @@ DeductEmptySyntaxVisitor
 					void Visit(GlrTestConditionSyntax* node) override
 					{
 						CHECK_FAIL(L"vl::glr::parsergen::rewritesyntax_switch::DeductEmptySyntaxVisitor::Visit(GlrTestConditionSyntax*)#This should have been removed.");
-					}
-
-				public:
-					Ptr<GlrSyntax> DeductEmptySyntax(GlrSyntax* node)
-					{
-						if (dynamic_cast<EmptySyntax*>(node))
-						{
-							return nullptr;
-						}
-						else
-						{
-							return CopyNode(node);
-						}
 					}
 				};
 
@@ -556,15 +545,15 @@ DeductAndVerifyClauseVisitor
 				protected:
 					void Verify(Ptr<GlrSyntax>& syntax)
 					{
-						auto deducted = DeductEmptySyntaxVisitor().DeductEmptySyntax(syntax.Obj());
-						if (deducted)
+						auto deducted = DeductEmptySyntaxVisitor().CopyNode(syntax.Obj());
+						if (deducted.Cast<EmptySyntax>())
 						{
-							syntax = deducted;
-							result = true;
+							result = false;
 						}
 						else
 						{
-							result = false;
+							syntax = deducted;
+							result = true;
 						}
 					}
 
@@ -697,7 +686,14 @@ RewriteSyntax
 								{
 									if (auto newClause = visitor.ExpandClause(clause.Obj()))
 									{
-										newRule->clauses.Add(newClause);
+										if (newRule->name.value == L"IfTail_SWITCH_1allow_half_if")
+										{
+											int a = 0;
+										}
+										if (DeductAndVerifyClauseVisitor().Evaluate(newClause.Obj()))
+										{
+											newRule->clauses.Add(newClause);
+										}
 									}
 								}
 

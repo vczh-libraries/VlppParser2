@@ -22,6 +22,7 @@
   - SwitchAffectedRuleExpandedToNoClause
   - PrefixExtractionAffectedRuleReferencedAnother
   - ~~PrefixExtractionAffectedBySwitches~~
+- `DeductEmptySyntaxVisitor`
 - TODO(s) in `RewriteRules_GenerateAffectedLRIClausesSubgroup`.
 - Make a test case to test `prefix_merge` generates `left_recursion_inject_multiple`.
 - Create ambiguity test case caused by only one clause with alternative syntax.
