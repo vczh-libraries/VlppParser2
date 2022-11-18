@@ -324,6 +324,16 @@ ExpandClauseVisitor
 
 					void Visit(GlrTestConditionSyntax* node) override
 					{
+						List<Ptr<GlrSyntax>> items;
+						EvaluateConditionVisitor visitor(*workingSwitchValues.Obj());
+						for (auto branch : node->branches)
+						{
+							if (!branch || visitor.Evaluate(branch->condition.Obj()))
+							{
+								ExpandSyntaxToList(branch->syntax, items);
+							}
+						}
+						BuildAlt(items);
 					}
 
 					void Visit(GlrPushConditionSyntax* node) override
