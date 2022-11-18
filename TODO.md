@@ -17,6 +17,8 @@
 
 - `PrefixMerge` 1-7 add test cases to parse expr and type separately.
 - Add test cases for:
+  - SwitchUnaffectedRuleExpandedToNoClause
+  - SwitchAffectedRuleExpandedToNoClause
   - PrefixExtractionAffectedRuleReferencedAnother
   - ~~PrefixExtractionAffectedBySwitches~~
 - TODO(s) in `RewriteRules_GenerateAffectedLRIClausesSubgroup`.

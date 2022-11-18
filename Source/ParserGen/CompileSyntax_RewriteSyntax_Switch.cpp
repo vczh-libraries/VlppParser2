@@ -16,6 +16,7 @@ namespace vl
 				struct GeneratedRule
 				{
 					GlrRule*									ruleToExpand = nullptr;
+					GlrRule*									expandedRule = nullptr;
 					Ptr<Dictionary<WString, bool>>				switchValues;
 				};
 
@@ -315,9 +316,53 @@ RewriteSyntax
 					}
 				}
 
-				CHECK_FAIL(L"RewriteSyntax_Switch Not Implemented!");
 				syntaxManager.ClearSwitches();
+
 				auto rewritten = MakePtr<GlrSyntaxFile>();
+				for (auto file : files)
+				{
+					for (auto rule : file->rules)
+					{
+						auto ruleSymbol = syntaxManager.Rules()[rule->name.value];
+						vint index = rewritingContext.generatedRules.Keys().IndexOf(ruleSymbol);
+						if (index == -1)
+						{
+							auto newRule = MakePtr<GlrRule>();
+							newRule->codeRange = rule->codeRange;
+							newRule->type = rule->type;
+							if (!newRule->type)
+							{
+								newRule->type.value = ruleSymbol->ruleType->Name();
+							}
+
+							ExpandClauseVisitor visitor(context, nullptr);
+							for (auto clause : rule->clauses)
+							{
+								if (auto newClause = visitor.ExpandClause(clause.Obj()))
+								{
+									newRule->clauses.Add(newClause);
+								}
+							}
+
+							if (newRule->clauses.Count() == 0)
+							{
+								syntaxManager.AddError(
+									ParserErrorType::SwitchUnaffectedRuleExpandedToNoClause,
+									rule->codeRange,
+									rule->name.value
+									);
+							}
+							else
+							{
+								rewritten->rules.Add(newRule);
+							}
+						}
+						else
+						{
+						}
+					}
+				}
+
 				return rewritten;
 			}
 		}
