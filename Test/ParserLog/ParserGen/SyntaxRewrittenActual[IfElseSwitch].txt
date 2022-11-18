@@ -6,13 +6,23 @@ Block
   ::= "{" {Stat:stats} "}" as BlockStat
   ;
 
-IfTail
+IfTail_SWITCH_0allow_half_if
   ::= OtherStat:thenBranch ("else" Stat:elseBranch | ?(allow_half_if: ;)) as partial IfStat
   ::= !(!allow_half_if; If:thenBranch) "else" Stat:elseBranch as partial IfStat
   ::= ?(allow_half_if: If:thenBranch) as partial IfStat
   ;
 
-If
+IfTail_SWITCH_1allow_half_if
+  ::= OtherStat:thenBranch ("else" Stat:elseBranch | ?(allow_half_if: ;)) as partial IfStat
+  ::= !(!allow_half_if; If:thenBranch) "else" Stat:elseBranch as partial IfStat
+  ::= ?(allow_half_if: If:thenBranch) as partial IfStat
+  ;
+
+If_SWITCH_0allow_half_if
+  ::= "if" "cond" "then" IfTail as IfStat
+  ;
+
+If_SWITCH_1allow_half_if
   ::= "if" "cond" "then" IfTail as IfStat
   ;
 

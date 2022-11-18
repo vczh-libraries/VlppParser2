@@ -331,10 +331,6 @@ RewriteSyntax
 							newRule->codeRange = rule->codeRange;
 							newRule->name = rule->name;
 							newRule->type = rule->type;
-							if (!newRule->type)
-							{
-								newRule->type.value = ruleSymbol->ruleType->Name();
-							}
 
 							ExpandClauseVisitor visitor(context, nullptr);
 							for (auto clause : rule->clauses)
@@ -368,12 +364,8 @@ RewriteSyntax
 							{
 								auto newRule = MakePtr<GlrRule>();
 								newRule->codeRange = rule->codeRange;
-								newRule->name = rule->name ;
+								newRule->name = rule->name;
 								newRule->type = rule->type;
-								if (!newRule->type)
-								{
-									newRule->type.value = ruleSymbol->ruleType->Name();
-								}
 
 								newRule->name.value += L"_SWITCH";
 								for (auto [name, value] : *generatedRule->switchValues.Obj())
