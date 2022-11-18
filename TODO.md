@@ -22,7 +22,9 @@
   - SwitchAffectedRuleExpandedToNoClause
   - PrefixExtractionAffectedRuleReferencedAnother
   - ~~PrefixExtractionAffectedBySwitches~~
-- `DeductEmptySyntaxVisitor`
+- Create test cases that only rewrite syntax without generating C++ code for:
+  - `DeductEmptySyntaxVisitor`
+  - everything else that is needed
 - TODO(s) in `RewriteRules_GenerateAffectedLRIClausesSubgroup`.
 - Make a test case to test `prefix_merge` generates `left_recursion_inject_multiple`.
 - Create ambiguity test case caused by only one clause with alternative syntax.
