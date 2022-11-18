@@ -274,6 +274,68 @@ ExpandClauseVisitor
 					VisitorContext&						vContext;
 					Ptr<Dictionary<WString, bool>>		workingSwitchValues;
 
+				protected:
+
+					void ExpandSyntaxToList(Ptr<GlrSyntax> syntax, List<Ptr<GlrSyntax>>& items)
+					{
+						try
+						{
+							items.Add(CopyNode(syntax.Obj()));
+						}
+						catch (CancelBranch)
+						{
+						}
+					}
+
+					void BuildAlt(List<Ptr<GlrSyntax>>& items)
+					{
+						if (items.Count() == 0)
+						{
+							result = nullptr;
+							throw CancelBranch();
+						}
+						else if (items.Count() == 1)
+						{
+							result = items[0];
+						}
+						else
+						{
+							auto alt = MakePtr<GlrAlternativeSyntax>();
+							alt->first = items[0];
+							alt->second = items[1];
+							for (vint i = 2; i < items.Count(); i++)
+							{
+								auto newAlt = MakePtr<GlrAlternativeSyntax>();
+								newAlt->first = alt;
+								newAlt->second = items[i];
+								alt = newAlt;
+							}
+							result = alt;
+						}
+					}
+
+					void Visit(GlrAlternativeSyntax* node) override
+					{
+						List<Ptr<GlrSyntax>> items;
+						ExpandSyntaxToList(node->first, items);
+						ExpandSyntaxToList(node->second, items);
+						BuildAlt(items);
+					}
+
+					void Visit(GlrTestConditionSyntax* node) override
+					{
+					}
+
+					void Visit(GlrPushConditionSyntax* node) override
+					{
+						auto oldValues = workingSwitchValues;
+						auto newValues = ApplySwitches(oldValues, node);
+
+						workingSwitchValues = newValues;
+						copy_visitor::RuleAstVisitor::Visit(node);
+						workingSwitchValues = oldValues;
+					}
+
 				public:
 					ExpandClauseVisitor(
 						VisitorContext& _vContext,
