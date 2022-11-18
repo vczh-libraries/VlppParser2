@@ -544,6 +544,69 @@ DeductEmptySyntaxVisitor
 						}
 					}
 				};
+
+/***********************************************************************
+DeductAndVerifyClauseVisitor
+**********************************************************************/
+
+				class DeductAndVerifyClauseVisitor
+					: public Object
+					, protected GlrClause::IVisitor
+				{
+				protected:
+					void Verify(Ptr<GlrSyntax>& syntax)
+					{
+						auto deducted = DeductEmptySyntaxVisitor().DeductEmptySyntax(syntax.Obj());
+						if (deducted)
+						{
+							syntax = deducted;
+							result = true;
+						}
+						else
+						{
+							result = false;
+						}
+					}
+
+					void Visit(GlrCreateClause* node) override
+					{
+						Verify(node->syntax);
+					}
+
+					void Visit(GlrPartialClause* node) override
+					{
+						Verify(node->syntax);
+					}
+
+					void Visit(GlrReuseClause* node) override
+					{
+						Verify(node->syntax);
+					}
+
+					void Visit(GlrLeftRecursionPlaceholderClause* node) override
+					{
+						result = true;
+					}
+
+					void Visit(GlrLeftRecursionInjectClause* node) override
+					{
+						result = true;
+					}
+
+					void Visit(GlrPrefixMergeClause* node) override
+					{
+						result = true;
+					}
+
+				public:
+					bool								result = false;
+
+					bool Evaluate(GlrClause* node)
+					{
+						node->Accept(this);
+						return result;
+					}
+				};
 			}
 
 /***********************************************************************
