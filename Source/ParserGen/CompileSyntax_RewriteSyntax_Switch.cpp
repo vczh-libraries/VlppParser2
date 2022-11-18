@@ -445,10 +445,34 @@ DeductEmptySyntaxVisitor
 				class DeductEmptySyntaxVisitor : public copy_visitor::RuleAstVisitor
 				{
 				protected:
+
+					Ptr<GlrSyntax> CopyNodeSafe(Ptr<GlrSyntax> node)
+					{
+						if (node.Cast<EmptySyntax>())
+						{
+							return node;
+						}
+						else
+						{
+							return CopyNode(node.Obj());
+						}
+					}
+				protected:
+					void Visit(GlrRefSyntax* node) override
+					{
+						result = node;
+					}
+
+					void Visit(GlrUseSyntax* node) override
+					{
+						result = node;
+					}
+
 					void Visit(GlrLoopSyntax* node) override
 					{
-						copy_visitor::RuleAstVisitor::Visit(node);
-						node = result.Cast<GlrLoopSyntax>().Obj();
+						node->syntax = CopyNodeSafe(node->syntax);
+						node->delimiter = CopyNodeSafe(node->delimiter);
+						result = node;
 
 						if (node->syntax.Cast<EmptySyntax>())
 						{
@@ -462,8 +486,8 @@ DeductEmptySyntaxVisitor
 
 					void Visit(GlrOptionalSyntax* node) override
 					{
-						copy_visitor::RuleAstVisitor::Visit(node);
-						node = result.Cast<GlrOptionalSyntax>().Obj();
+						node->syntax = CopyNodeSafe(node->syntax);
+						result = node;
 
 						if (node->syntax.Cast<EmptySyntax>())
 						{
@@ -473,8 +497,9 @@ DeductEmptySyntaxVisitor
 
 					void Visit(GlrSequenceSyntax* node) override
 					{
-						copy_visitor::RuleAstVisitor::Visit(node);
-						node = result.Cast<GlrSequenceSyntax>().Obj();
+						node->first = CopyNodeSafe(node->first);
+						node->second = CopyNodeSafe(node->second);
+						result = node;
 
 						bool first = !node->first.Cast<EmptySyntax>();
 						bool second = !node->second.Cast<EmptySyntax>();
@@ -497,8 +522,9 @@ DeductEmptySyntaxVisitor
 
 					void Visit(GlrAlternativeSyntax* node) override
 					{
-						copy_visitor::RuleAstVisitor::Visit(node);
-						node = result.Cast<GlrAlternativeSyntax>().Obj();
+						node->first = CopyNodeSafe(node->first);
+						node->second = CopyNodeSafe(node->second);
+						result = node;
 
 						bool first = !node->first.Cast<EmptySyntax>();
 						bool second = !node->second.Cast<EmptySyntax>();
