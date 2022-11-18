@@ -122,14 +122,14 @@ CompileSyntax
 
 			Ptr<GlrSyntaxFile> CompileSyntax(AstSymbolManager& astManager, LexerSymbolManager& lexerManager, SyntaxSymbolManager& syntaxManager, Ptr<CppParserGenOutput> output, collections::List<Ptr<GlrSyntaxFile>>& files)
 			{
-				CreateSyntaxSymbols(lexerManager, syntaxManager, files);
-				if (syntaxManager.Global().Errors().Count() > 0) return nullptr;
 				Ptr<GlrSyntaxFile> rewritten;
+				CreateSyntaxSymbols(lexerManager, syntaxManager, files);
+				if (syntaxManager.Global().Errors().Count() > 0) goto FINISHED_COMPILING;
 
 				if (NeedRewritten_Switch(files))
 				{
 					VisitorContext context(astManager, lexerManager, syntaxManager);
-					if (!VerifySyntax_UntilSwitch(context, files)) return nullptr;
+					if (!VerifySyntax_UntilSwitch(context, files)) goto FINISHED_COMPILING;
 					rewritten = RewriteSyntax_Switch(context, syntaxManager, files);
 					files.Clear();
 					files.Add(rewritten);
@@ -138,8 +138,8 @@ CompileSyntax
 				if (NeedRewritten_PrefixMerge(files))
 				{
 					VisitorContext context(astManager, lexerManager, syntaxManager);
-					if (!VerifySyntax_UntilSwitch(context, files)) return nullptr;
-					if (!VerifySyntax_UntilPrefixMerge(context, files)) return nullptr;
+					if (!VerifySyntax_UntilSwitch(context, files)) goto FINISHED_COMPILING;
+					if (!VerifySyntax_UntilPrefixMerge(context, files)) goto FINISHED_COMPILING;
 					rewritten = RewriteSyntax_PrefixMerge(context, syntaxManager, files);
 					files.Clear();
 					files.Add(rewritten);
@@ -147,10 +147,11 @@ CompileSyntax
 
 				{
 					VisitorContext context(astManager, lexerManager, syntaxManager);
-					if (!VerifySyntax_UntilSwitch(context, files)) return nullptr;
-					if (!VerifySyntax_UntilPrefixMerge(context, files)) return nullptr;
+					if (!VerifySyntax_UntilSwitch(context, files)) goto FINISHED_COMPILING;
+					if (!VerifySyntax_UntilPrefixMerge(context, files)) goto FINISHED_COMPILING;
 					CompileSyntax(context, output, files);
 				}
+			FINISHED_COMPILING:
 				return rewritten;
 			}
 		}
