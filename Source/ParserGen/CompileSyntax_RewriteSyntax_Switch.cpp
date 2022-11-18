@@ -410,6 +410,23 @@ RewriteSyntax
 					}
 				}
 
+				for (auto [ruleSymbol, index] : indexed(rewritingContext.generatedRules.Keys()))
+				{
+					for (auto generatedRule : rewritingContext.generatedRules.GetByIndex(index))
+					{
+						auto newRuleSymbol = syntaxManager.CreateRule(
+							generatedRule->expandedRule->name.value,
+							generatedRule->expandedRule->name.codeRange
+							);
+						newRuleSymbol->ruleType = ruleSymbol->ruleType;
+					}
+				}
+
+				for (auto ruleSymbol : rewritingContext.generatedRules.Keys())
+				{
+					syntaxManager.RemoveRule(ruleSymbol->Name());
+				}
+
 				return rewritten;
 			}
 		}
