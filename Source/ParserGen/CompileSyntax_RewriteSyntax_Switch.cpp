@@ -56,6 +56,7 @@ EvaluateConditionVisitor
 					: public Object
 					, protected GlrCondition::IVisitor
 				{
+					// this visitor evaluates a condition with given switch values
 				protected:
 					Dictionary<WString, bool>&			workingSwitchValues;
 
@@ -117,6 +118,8 @@ ExpandSwitchSyntaxVisitor
 
 				class ExpandSwitchSyntaxVisitor : public traverse_visitor::RuleAstVisitor
 				{
+					// this visitor look into all rules which is affected by switch values
+					// and find all possible switch combination for these rules
 				protected:
 					struct Identification
 					{
@@ -134,12 +137,14 @@ ExpandSwitchSyntaxVisitor
 				protected:
 					void TraverseRule(const ParsingToken& ruleName)
 					{
+						// check if it is a rule
 						vint index = vContext.syntaxManager.Rules().Keys().IndexOf(ruleName.value);
 						if (index == -1) return;
 
 						auto ruleSymbol = vContext.syntaxManager.Rules().Values()[index];
 						auto rule = vContext.astRules[ruleSymbol];
 
+						// check if it is affected
 						index = vContext.ruleAffectedSwitches.Keys().IndexOf(ruleSymbol);
 						if (index == -1)
 						{
@@ -179,6 +184,7 @@ ExpandSwitchSyntaxVisitor
 
 						for (auto branch : node->branches)
 						{
+							// inspect into the branch only when it satisfies the condition
 							if (!branch || visitor.Evaluate(branch->condition.Obj()))
 							{
 								InspectInto(branch->syntax.Obj());
@@ -188,6 +194,7 @@ ExpandSwitchSyntaxVisitor
 
 					void Visit(GlrPushConditionSyntax* node) override
 					{
+						// inspect into the syntax with updated values
 						auto oldValues = identification.workingSwitchValues;
 						auto newValues = ApplySwitches(oldValues, node);
 
@@ -212,6 +219,8 @@ ExpandSwitchSyntaxVisitor
 						Ptr<Dictionary<WString, bool>> currentSwitchValues
 					)
 					{
+						// an affected rule respond to switch values
+						// collect switch values that the rule cares
 						auto workingSwitchValues = MakePtr<Dictionary<WString, bool>>();
 						for (auto&& name : affectedSwitches)
 						{
@@ -231,6 +240,7 @@ ExpandSwitchSyntaxVisitor
 							}
 						}
 
+						// skip if the rule with collected switch values has been inspected
 						auto workingRule = vContext.syntaxManager.Rules()[rule->name.value];
 						vint index = rContext.generatedRules.Keys().IndexOf(workingRule);
 						if (index != -1)
@@ -244,11 +254,13 @@ ExpandSwitchSyntaxVisitor
 							}
 						}
 
+						// make a record of the collected switch values
 						auto generatedRule = MakePtr<GeneratedRule>();
 						generatedRule->ruleToExpand = rule;
 						generatedRule->switchValues = workingSwitchValues;
 						rContext.generatedRules.Add(workingRule, generatedRule);
 
+						// inspect into the rule with collected switch values
 						auto oldId = identification;
 						identification.workingRule = workingRule;
 						identification.workingSwitchValues = workingSwitchValues;
@@ -259,6 +271,8 @@ ExpandSwitchSyntaxVisitor
 
 					void InspectIntoUnaffectedRule(GlrRule* rule)
 					{
+						// an unaffected rule does not respond to switch values
+						// skip if it has been inspected
 						auto workingRule = vContext.syntaxManager.Rules()[rule->name.value];
 						if (scannedUnaffectedRules.Contains(workingRule)) return;
 						scannedUnaffectedRules.Add(workingRule);
@@ -277,6 +291,11 @@ ExpandClauseVisitor
 
 				class ExpandClauseVisitor : public copy_visitor::RuleAstVisitor
 				{
+					// this visitor expand syntax with given switch values
+					// the expanded syntax does not include GlrPushConditionSyntax
+					// GlrTestConditionSyntax will be possibly converts to GlrAlternativeSyntax
+					//   only with branches whose condition is evaluated to true under given switch values
+					// EmptySyntax will be generated for ?(false: ;)
 				protected:
 					struct CancelBranch {};
 
@@ -287,6 +306,7 @@ ExpandClauseVisitor
 
 					void FixRuleName(ParsingToken& name)
 					{
+						// check if it is an affected rule
 						vint index = vContext.syntaxManager.Rules().Keys().IndexOf(name.value);
 						if (index == -1) return;
 
@@ -294,6 +314,9 @@ ExpandClauseVisitor
 						index = vContext.ruleAffectedSwitches.Keys().IndexOf(ruleSymbol);
 						if (index == -1) return;
 
+						// for an affected rule
+						// the name referencing the rule need to be changed
+						// by appending switch values after it
 						SortedList<WString> switchNames;
 						CopyFrom(switchNames, vContext.ruleAffectedSwitches.GetByIndex(index));
 
@@ -318,25 +341,31 @@ ExpandClauseVisitor
 
 					void BuildAlt(bool optional, List<Ptr<GlrSyntax>>& items)
 					{
+						// build syntax [items...]
 						if (items.Count() == 0)
 						{
+							// if there is no branch
 							if (optional)
 							{
+								// optional of nothing is EmptySyntax
 								result = MakePtr<EmptySyntax>();
 								return;
 							}
 							else
 							{
+								// non-optional of nothing results in an exception
 								result = nullptr;
 								throw CancelBranch();
 							}
 						}
 						else if (items.Count() == 1)
 						{
+							// if there is only on branch, just use it
 							result = items[0];
 						}
 						else
 						{
+							// otherwise create alternative syntax for them
 							auto alt = MakePtr<GlrAlternativeSyntax>();
 							alt->first = items[0];
 							alt->second = items[1];
@@ -352,6 +381,7 @@ ExpandClauseVisitor
 
 						if (optional)
 						{
+							// make it optional if necessary
 							auto opt = MakePtr<GlrOptionalSyntax>();
 							opt->syntax = result.Cast<GlrSyntax>();
 							result = opt;
@@ -362,6 +392,7 @@ ExpandClauseVisitor
 
 					void Visit(GlrRefSyntax* node) override
 					{
+						// only need to fix rule name for GlrRefSyntax
 						copy_visitor::RuleAstVisitor::Visit(node);
 						if (node->refType == GlrRefType::Id)
 						{
@@ -371,12 +402,14 @@ ExpandClauseVisitor
 
 					void Visit(GlrUseSyntax* node) override
 					{
+						// only need to fix rule name for GlrUseSyntax
 						copy_visitor::RuleAstVisitor::Visit(node);
 						FixRuleName(result.Cast<GlrUseSyntax>()->name);
 					}
 
 					void Visit(GlrAlternativeSyntax* node) override
 					{
+						// alternative syntax converts to alternative syntax
 						List<Ptr<GlrSyntax>> items;
 						ExpandSyntaxToList(node->first, items);
 						ExpandSyntaxToList(node->second, items);
@@ -385,6 +418,7 @@ ExpandClauseVisitor
 
 					void Visit(GlrTestConditionSyntax* node) override
 					{
+						// test condition syntax converts alternative syntax with optional if necessary
 						bool optional = false;
 						List<Ptr<GlrSyntax>> items;
 						EvaluateConditionVisitor visitor(*workingSwitchValues.Obj());
@@ -407,6 +441,7 @@ ExpandClauseVisitor
 
 					void Visit(GlrPushConditionSyntax* node) override
 					{
+						// push condition syntax will be replaced by the syntax inside it
 						auto oldValues = workingSwitchValues;
 						auto newValues = ApplySwitches(oldValues, node);
 
@@ -444,6 +479,9 @@ DeductEmptySyntaxVisitor
 
 				class DeductEmptySyntaxVisitor : public copy_visitor::RuleAstVisitor
 				{
+					// this visitor rewrite a syntax by removing EmptySyntax
+					// but it is possible that the whole syntax is evaluated to EmptySyntax
+					// in this case it is rewritten to EmptySyntax
 				protected:
 
 					Ptr<GlrSyntax> CopyNodeSafe(Ptr<GlrSyntax> node)
@@ -476,6 +514,7 @@ DeductEmptySyntaxVisitor
 
 						if (node->syntax.Cast<EmptySyntax>())
 						{
+							// if the loop body is empty, it is empty
 							result = node->syntax;
 						}
 						else if (node->delimiter.Cast<EmptySyntax>())
@@ -491,6 +530,7 @@ DeductEmptySyntaxVisitor
 
 						if (node->syntax.Cast<EmptySyntax>())
 						{
+							// if the optional body is empty, it is empty
 							result = node->syntax;
 						}
 					}
@@ -505,17 +545,21 @@ DeductEmptySyntaxVisitor
 						bool second = !node->second.Cast<EmptySyntax>();
 						if (first && second)
 						{
+							// if both are not empty, nothing need to worry
 						}
 						else if (first)
 						{
+							// if only first is not empty, it is second
 							result = node->first;
 						}
 						else if (second)
 						{
+							// if only second is empty, it is second
 							result = node->second;
 						}
 						else
 						{
+							// if both are empty, it is empty
 							result = node->first;
 						}
 					}
@@ -530,21 +574,25 @@ DeductEmptySyntaxVisitor
 						bool second = !node->second.Cast<EmptySyntax>();
 						if (first && second)
 						{
+							// if both are not empty, nothing need to worry
 						}
 						else if (first)
 						{
+							// if only first is not empty, it is [first]
 							auto opt = MakePtr<GlrOptionalSyntax>();
 							opt->syntax = node->first;
 							result = opt;
 						}
 						else if (second)
 						{
+							// if only second is not empty, it is [second]
 							auto opt = MakePtr<GlrOptionalSyntax>();
 							opt->syntax = node->second;
 							result = opt;
 						}
 						else
 						{
+							// if both are empty, it is empty
 							result = node->first;
 						}
 					}
@@ -568,6 +616,8 @@ DeductAndVerifyClauseVisitor
 					: public Object
 					, protected GlrClause::IVisitor
 				{
+					// this visitor remove EmptySyntax in clauses
+					// if it is not possible, it returns false
 				protected:
 					void Verify(Ptr<GlrSyntax>& syntax)
 					{
@@ -634,6 +684,7 @@ RewriteSyntax
 
 				RewritingContext rewritingContext;
 				{
+					// find out all expansion of rules affected by switch values
 					ExpandSwitchSyntaxVisitor visitor(context, rewritingContext);
 					for (auto file : files)
 					{
@@ -659,6 +710,9 @@ RewriteSyntax
 						vint index = rewritingContext.generatedRules.Keys().IndexOf(ruleSymbol);
 						if (index == -1)
 						{
+							// if a rule is unaffected
+							// just remove GlrPushConditionSyntax in clauses
+							// rules it references could be renamed
 							auto newRule = MakePtr<GlrRule>();
 							newRule->codeRange = rule->codeRange;
 							newRule->name = rule->name;
@@ -675,6 +729,7 @@ RewriteSyntax
 
 							if (newRule->clauses.Count() == 0)
 							{
+								// a rewritten rule must have at least on clause
 								syntaxManager.AddError(
 									ParserErrorType::SwitchUnaffectedRuleExpandedToNoClause,
 									rule->codeRange,
@@ -688,6 +743,9 @@ RewriteSyntax
 						}
 						else
 						{
+							// if a rule is affected
+							// all instances of possible switch values will be converted to a new rule
+							// such rule has switch values encoded in its name
 							for(auto generatedRule : From(rewritingContext.generatedRules.GetByIndex(index))
 								.OrderBy([](Ptr<GeneratedRule> a, Ptr<GeneratedRule> b)
 								{
@@ -707,17 +765,16 @@ RewriteSyntax
 
 								generatedRule->expandedRule = newRule.Obj();
 
+								// rewrite all clauses with given switch values
 								ExpandClauseVisitor visitor(context, generatedRule->switchValues);
 								for (auto clause : rule->clauses)
 								{
 									if (auto newClause = visitor.ExpandClause(clause.Obj()))
 									{
-										if (newRule->name.value == L"IfTail_SWITCH_1allow_half_if")
-										{
-											int a = 0;
-										}
 										if (DeductAndVerifyClauseVisitor().Evaluate(newClause.Obj()))
 										{
+											// only add the rewritten clause to the generated rule if it is valid
+											// a clause could be invalid if all branches evaluated to nothing due to GlrTestConditionSyntax
 											newRule->clauses.Add(newClause);
 										}
 									}
@@ -725,6 +782,7 @@ RewriteSyntax
 
 								if (newRule->clauses.Count() == 0)
 								{
+									// a rewritten rule must have at least on clause
 									syntaxManager.AddError(
 										ParserErrorType::SwitchAffectedRuleExpandedToNoClause,
 										rule->codeRange,
@@ -741,6 +799,7 @@ RewriteSyntax
 					}
 				}
 
+				// add symbols for generated rules
 				for (auto [ruleSymbol, index] : indexed(rewritingContext.generatedRules.Keys()))
 				{
 					for (auto generatedRule : rewritingContext.generatedRules.GetByIndex(index))
@@ -753,6 +812,8 @@ RewriteSyntax
 					}
 				}
 
+				// remove symbols for rule affected by switch values
+				// because they are expanded to other rules
 				for (auto ruleSymbol : rewritingContext.generatedRules.Keys())
 				{
 					syntaxManager.RemoveRule(ruleSymbol->Name());
