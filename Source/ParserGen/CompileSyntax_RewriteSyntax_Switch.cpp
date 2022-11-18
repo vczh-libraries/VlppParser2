@@ -24,6 +24,69 @@ namespace vl
 				};
 
 /***********************************************************************
+EvaluateConditionVisitor
+**********************************************************************/
+
+				class EvaluateConditionVisitor
+					: public Object
+					, protected GlrCondition::IVisitor
+				{
+				protected:
+					Dictionary<WString, bool>&			workingSwitchValues;
+
+					void Visit(GlrRefCondition* node) override
+					{
+						vint index = workingSwitchValues.Keys().IndexOf(node->name.value);
+						CHECK_ERROR(
+							index != -1,
+							L"vl::glr::parsergen::rewritesyntax_switch::EvaluateConditionVisitor::Visit(GlrRefCondition*)#"
+							L"Internal error: specified switch value is unevaluated"
+						);
+						result = workingSwitchValues.Values()[index];
+					}
+
+					void Visit(GlrNotCondition* node) override
+					{
+						node->condition->Accept(this);
+						result = !result;
+					}
+
+					void Visit(GlrAndCondition* node) override
+					{
+						node->first->Accept(this);
+						bool first = result;
+						node->second->Accept(this);
+						bool second = result;
+						result = first && second;
+					}
+
+					void Visit(GlrOrCondition* node) override
+					{
+						node->first->Accept(this);
+						bool first = result;
+						node->second->Accept(this);
+						bool second = result;
+						result = first || second;
+					}
+
+				public:
+					bool								result = false;
+
+					EvaluateConditionVisitor(
+						Dictionary<WString, bool>& _workingSwitchValues
+					)
+						: workingSwitchValues(_workingSwitchValues)
+					{
+					}
+
+					bool Evaluate(GlrCondition* condition)
+					{
+						condition->Accept(this);
+						return result;
+					}
+				};
+
+/***********************************************************************
 ExpandSwitchSyntaxVisitor
 ***********************************************************************/
 
@@ -59,7 +122,11 @@ ExpandSwitchSyntaxVisitor
 						}
 						else
 						{
-							InspectIntoAffectedRule(rule, identification.workingSwitchValues);
+							InspectIntoAffectedRule(
+								rule,
+								vContext.ruleAffectedSwitches.GetByIndex(index),
+								identification.workingSwitchValues
+							);
 						}
 					}
 
@@ -78,10 +145,38 @@ ExpandSwitchSyntaxVisitor
 
 					void Visit(GlrTestConditionSyntax* node) override
 					{
+						CHECK_ERROR(
+							identification.workingSwitchValues,
+							L"vl::glr::parsergen::rewritesyntax_switch::ExpandSwitchSyntaxVisitor::Visit(GlrTestConditionSyntax*)#"
+							L"Internal error: switch values are unevaluated"
+						);
+						EvaluateConditionVisitor visitor(*identification.workingSwitchValues.Obj());
+
+						for (auto branch : node->branches)
+						{
+							if (!branch || visitor.Evaluate(branch->condition.Obj()))
+							{
+								InspectInto(branch->syntax.Obj());
+							}
+						}
 					}
 
 					void Visit(GlrPushConditionSyntax* node) override
 					{
+						auto newValues = MakePtr<Dictionary<WString, bool>>();
+						if (identification.workingSwitchValues)
+						{
+							CopyFrom(*newValues.Obj(), *identification.workingSwitchValues.Obj());
+						}
+						for (auto switchItem : node->switches)
+						{
+							newValues->Set(switchItem->name.value, switchItem->value == GlrSwitchValue::True);
+						}
+
+						auto oldValues = identification.workingSwitchValues;
+						identification.workingSwitchValues = newValues;
+						traverse_visitor::RuleAstVisitor::Visit(node);
+						identification.workingSwitchValues = oldValues;
 					}
 
 				public:
@@ -94,7 +189,11 @@ ExpandSwitchSyntaxVisitor
 					{
 					}
 
-					void InspectIntoAffectedRule(GlrRule* rule, Ptr<Dictionary<WString, bool>> currentSwitchValues)
+					void InspectIntoAffectedRule(
+						GlrRule* rule,
+						const List<WString>& affectedSwitches,
+						Ptr<Dictionary<WString, bool>> currentSwitchValues
+					)
 					{
 					}
 
@@ -129,13 +228,6 @@ RewriteSyntax
 			{
 				using namespace rewritesyntax_switch;
 
-				// merge files to single syntax file
-				auto rewritten = MakePtr<GlrSyntaxFile>();
-				for (auto file : files)
-				{
-					CopyFrom(rewritten->rules, file->rules, true);
-				}
-
 				RewritingContext rewritingContext;
 				{
 					ExpandSwitchSyntaxVisitor visitor(context, rewritingContext);
@@ -152,7 +244,9 @@ RewriteSyntax
 					}
 				}
 
+				CHECK_FAIL(L"RewriteSyntax_Switch Not Implemented!");
 				syntaxManager.ClearSwitches();
+				auto rewritten = MakePtr<GlrSyntaxFile>();
 				return rewritten;
 			}
 		}
