@@ -276,6 +276,26 @@ ExpandClauseVisitor
 
 				protected:
 
+					void FixRuleName(ParsingToken& name)
+					{
+						vint index = vContext.syntaxManager.Rules().Keys().IndexOf(name.value);
+						if (index == -1) return;
+
+						auto ruleSymbol = vContext.syntaxManager.Rules().Values()[index];
+						index = vContext.ruleAffectedSwitches.Keys().IndexOf(ruleSymbol);
+						if (index == -1) return;
+
+						SortedList<WString> switchNames;
+						CopyFrom(switchNames, vContext.ruleAffectedSwitches.GetByIndex(index));
+
+						name.value += L"_SWITCH";
+						for (auto&& switchName : switchNames)
+						{
+							auto value = workingSwitchValues->Get(switchName);
+							name.value += (value ? L"_1" : L"_0") + switchName;
+						}
+					}
+
 					void ExpandSyntaxToList(Ptr<GlrSyntax> syntax, List<Ptr<GlrSyntax>>& items)
 					{
 						try
@@ -319,6 +339,23 @@ ExpandClauseVisitor
 							opt->syntax = result.Cast<GlrSyntax>();
 							result = opt;
 						}
+					}
+
+				protected:
+
+					void Visit(GlrRefSyntax* node) override
+					{
+						copy_visitor::RuleAstVisitor::Visit(node);
+						if (node->refType == GlrRefType::Id)
+						{
+							FixRuleName(result.Cast<GlrRefSyntax>()->literal);
+						}
+					}
+
+					void Visit(GlrUseSyntax* node) override
+					{
+						copy_visitor::RuleAstVisitor::Visit(node);
+						FixRuleName(result.Cast<GlrUseSyntax>()->name);
 					}
 
 					void Visit(GlrAlternativeSyntax* node) override
