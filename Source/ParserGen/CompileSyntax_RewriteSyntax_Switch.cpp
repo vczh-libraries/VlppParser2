@@ -1,5 +1,6 @@
 #include "Compiler.h"
 #include "../ParserGen_Generated/ParserGenRuleAst_Traverse.h"
+#include "../ParserGen_Generated/ParserGenRuleAst_Copy.h"
 
 namespace vl
 {
@@ -253,15 +254,42 @@ ExpandSwitchSyntaxVisitor
 						identification = oldId;
 					}
 				};
+
+/***********************************************************************
+ExpandClauseVisitor
+***********************************************************************/
+
+				class ExpandClauseVisitor : public copy_visitor::RuleAstVisitor
+				{
+				protected:
+					struct CancelBranch {};
+
+					VisitorContext&						vContext;
+					Ptr<Dictionary<WString, bool>>		workingSwitchValues;
+
+				public:
+					ExpandClauseVisitor(
+						VisitorContext& _vContext,
+						Ptr<Dictionary<WString, bool>> _workingSwitchValues
+					)
+						: vContext(_vContext)
+						, workingSwitchValues(_workingSwitchValues)
+					{
+					}
+
+					Ptr<GlrClause> ExpandClause(GlrClause* node)
+					{
+						try
+						{
+							return CopyNode(node);
+						}
+						catch (CancelBranch)
+						{
+							return nullptr;
+						}
+					}
+				};
 			}
-
-/***********************************************************************
-CopyAffectedRuleVisitor
-***********************************************************************/
-
-/***********************************************************************
-CopyUnaffectedRuleVisitor
-***********************************************************************/
 
 /***********************************************************************
 RewriteSyntax
