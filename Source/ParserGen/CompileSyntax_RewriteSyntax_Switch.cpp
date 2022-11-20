@@ -24,7 +24,9 @@ namespace vl
 					Group<RuleSymbol*, Ptr<GeneratedRule>>		generatedRules;
 					Group<RuleSymbol*, Ptr<GlrRule>>			expandedCombinedRules;
 					Group<RuleSymbol*, Ptr<GlrRule>>			expandedFirstLevelRules;
-					SortedList<WString>							combinedRuleNames;
+
+					Dictionary<WString, Ptr<GlrRule>>			combinedRulesByName;
+					Group<WString, GlrClause*>					expandedCombinedClauses;
 				};
 
 				class EmptySyntax : public GlrSyntax
@@ -680,21 +682,30 @@ DeductAndVerifyClauseVisitor
 RewriteSyntax
 ***********************************************************************/
 
-				Ptr<GlrRule> CreateRule(Ptr<GlrRule> rule, const wchar_t* tag, Dictionary<WString, bool>& switchValues)
+				WString CreateRuleName(Ptr<GlrRule> rule, const wchar_t* tag, Dictionary<WString, bool>& switchValues)
 				{
-					auto newRule = MakePtr<GlrRule>();
-
-					newRule->codeRange = rule->codeRange;
-					newRule->name = rule->name;
-					newRule->type = rule->type;
-
-					newRule->name.value += tag;
+					auto ruleName = rule->name.value + tag;
 					for (auto [name, value] : switchValues)
 					{
-						newRule->name.value += (value ? L"_1" : L"_0") + name;
+						ruleName += (value ? L"_1" : L"_0") + name;
 					}
 
+					return ruleName;
+				}
+
+				Ptr<GlrRule> CreateRule(Ptr<GlrRule> rule, const WString& name)
+				{
+					auto newRule = MakePtr<GlrRule>();
+					newRule->codeRange = rule->codeRange;
+					newRule->name = rule->name;
+					newRule->name.value = name;
+					newRule->type = rule->type;
 					return newRule;
+				}
+
+				Ptr<GlrRule> CreateRule(Ptr<GlrRule> rule, const wchar_t* tag, Dictionary<WString, bool>& switchValues)
+				{
+					return CreateRule(rule, CreateRuleName(rule, tag, switchValues));
 				}
 
 				void AddRules(RuleSymbol* ruleSymbol, Ptr<GlrSyntaxFile> rewritten, Group<RuleSymbol*, Ptr<GlrRule>>& expandedRules)
@@ -804,21 +815,102 @@ RewriteSyntax
 							// such rule has switch values encoded in its name
 							for(auto generatedRule : rewritingContext.generatedRules.GetByIndex(index))
 							{
+								SortedList<WString> referencedCombinedRules;
 								auto newRule = CreateRule(rule, L"_SWITCH", *generatedRule->switchValues.Obj());
 
 								// rewrite all clauses with given switch values
-								ExpandClauseVisitor visitor(context, generatedRule->switchValues);
 								for (auto clause : rule->clauses)
 								{
-									if (auto newClause = visitor.ExpandClause(clause.Obj()))
+									auto switchValues = generatedRule->switchValues;
+
+									// if this clause is affected by some switches
+									// prepare switch values for combined rules
+									vint clauseIndex = context.clauseAffectedSwitches.Keys().IndexOf(clause.Obj());
+									if (clauseIndex == -1)
 									{
-										if (DeductAndVerifyClauseVisitor().Evaluate(newClause.Obj()))
+										switchValues = MakePtr<Dictionary<WString, bool>>();
+									}
+									else
+									{
+										auto&& switches = context.clauseAffectedSwitches.GetByIndex(clauseIndex);
+										if (switches.Count() != generatedRule->switchValues->Count())
 										{
-											// only add the rewritten clause to the generated rule if it is valid
-											// a clause could be invalid if all branches evaluated to nothing due to GlrTestConditionSyntax
-											newRule->clauses.Add(newClause);
+											switchValues = MakePtr<Dictionary<WString, bool>>();
+											for (auto&& switchName : switches)
+											{
+												switchValues->Add(switchName, generatedRule->switchValues->Get(switchName));
+											}
 										}
 									}
+
+									if (switchValues == generatedRule->switchValues)
+									{
+										// if this clause is affected by all switches
+										// expand this clause into the new rule
+										ExpandClauseVisitor visitor(context, switchValues);
+										if (auto newClause = visitor.ExpandClause(clause.Obj()))
+										{
+											if (DeductAndVerifyClauseVisitor().Evaluate(newClause.Obj()))
+											{
+												// only add the rewritten clause to the generated rule if it is valid
+												// a clause could be invalid if all branches evaluated to nothing due to GlrTestConditionSyntax
+												newRule->clauses.Add(newClause);
+											}
+										}
+									}
+									else
+									{
+										// if this clause is affected by some switches
+										// expand this clause into a combined rule
+										bool skippedClause = false;
+										auto combinedRuleName = CreateRuleName(rule, L"_SWITCH_COMBINED", *switchValues.Obj());
+										if (!rewritingContext.expandedCombinedClauses.Contains(combinedRuleName, clause.Obj()))
+										{
+											ExpandClauseVisitor visitor(context, switchValues);
+											if (auto newClause = visitor.ExpandClause(clause.Obj()))
+											{
+												if (DeductAndVerifyClauseVisitor().Evaluate(newClause.Obj()))
+												{
+													// only add the rewritten clause to the generated rule if it is valid
+													// a clause could be invalid if all branches evaluated to nothing due to GlrTestConditionSyntax
+													Ptr<GlrRule> combinedRule;
+													vint ruleIndex = rewritingContext.combinedRulesByName.Keys().IndexOf(combinedRuleName);
+													if (ruleIndex == -1)
+													{
+														combinedRule = CreateRule(rule, combinedRuleName);
+														rewritingContext.combinedRulesByName.Add(combinedRuleName, combinedRule);
+													}
+													else
+													{
+														combinedRule = rewritingContext.combinedRulesByName.Values()[ruleIndex];
+													}
+													combinedRule->clauses.Add(newClause);
+												}
+											}
+										}
+
+										// this clause might be invalid in the current context
+										if (!skippedClause)
+										{
+											if (!referencedCombinedRules.Contains(combinedRuleName))
+											{
+												referencedCombinedRules.Add(combinedRuleName);
+											}
+										}
+									}
+								}
+
+								for (auto ruleName : referencedCombinedRules)
+								{
+									// add all used combined rules in order of name
+									auto useSyntax = MakePtr<GlrUseSyntax>();
+									useSyntax->name = rule->name;
+									useSyntax->name.value = ruleName;
+
+									auto reuseClause = MakePtr<GlrReuseClause>();
+									reuseClause->syntax = useSyntax;
+
+									newRule->clauses.Add(reuseClause);
 								}
 
 								if (newRule->clauses.Count() == 0)
