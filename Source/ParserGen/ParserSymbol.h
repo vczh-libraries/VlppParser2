@@ -89,8 +89,6 @@ ParserSymbolManager
 			/* SyntaxSymbolManager */\
 			ERROR_ITEM(DuplicatedRule,														ruleName)\
 			ERROR_ITEM(RuleIsIndirectlyLeftRecursive,										ruleName)													/* Indirect left recursion must be resolved before */\
-			ERROR_ITEM(LeftRecursiveClauseInsidePushCondition,								ruleName)													/* The left recursive clause is not allowed to begin with a push condition syntax */\
-			ERROR_ITEM(LeftRecursiveClauseInsideTestCondition,								ruleName)													/* The left recursive clause is not allowed to begin with a test condition syntax */\
 			ERROR_ITEM(LeftRecursionPlaceholderMixedWithSwitches,							ruleName, placeholder, targetRuleName)\
 			ERROR_ITEM(LeftRecursionInjectHasNoContinuation,								ruleName, placeholder, targetRuleName)\
 			/* SyntaxAst(ResolveName) */\

@@ -20,7 +20,6 @@ Initialize
 				traces.Clear();
 				competitions.Clear();
 				attendingCompetitions.Clear();
-				switches.Clear();
 
 				traces1.Clear();
 				traces2.Clear();
@@ -29,26 +28,6 @@ Initialize
 
 				activeCompetitions = nullref;
 				initialReturnStackCache = {};
-
-				if (executable.switchDefaultValues.Count() == 0)
-				{
-					rootSwitchValues = nullref;
-				}
-				else
-				{
-					rootSwitchValues = switches.Allocate();
-					auto sv = switches.Get(rootSwitchValues);
-					for (vint32_t i = 0; i < executable.switchDefaultValues.Count(); i++)
-					{
-						if (executable.switchDefaultValues[i])
-						{
-							vint32_t row = i / 8 * sizeof(vuint32_t);
-							vint32_t column = i % 8 * sizeof(vuint32_t);
-							vuint32_t& value = sv->values[row];
-							value |= (vuint32_t)1 << column;
-						}
-					}
-				}
 
 				temporaryConditionStack.Clear();
 				temporaryConditionStackSize = 0;
@@ -71,7 +50,6 @@ Initialize
 
 				initialTrace = AllocateTrace();
 				initialTrace->state = startState;
-				initialTrace->switchValues = rootSwitchValues;
 				concurrentCount = 1;
 				concurrentTraces->Add(initialTrace);
 			}

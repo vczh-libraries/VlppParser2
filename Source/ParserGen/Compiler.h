@@ -59,6 +59,7 @@ namespace vl
 				using ClauseReuseDependencies = collections::Group<GlrReuseClause*, RuleSymbol*>;
 				using ClauseTypeMap = collections::Dictionary<GlrClause*, AstClassSymbol*>;
 
+				using SwitchMap = collections::Dictionary<WString, collections::Pair<bool, GlrSwitchItem*>>;
 				using RuleSwitchMap = collections::Group<RuleSymbol*, WString>;
 				using ClauseSwitchMap = collections::Group<GlrClause*, WString>;
 
@@ -91,6 +92,7 @@ namespace vl
 					Ptr<regex::RegexLexer>				cachedLexer;
 
 					// ValidateSwitchesAndConditions (not used after RewriteSyntax_Switch)
+					SwitchMap							switches;
 					ClauseSwitchMap						clauseAffectedSwitches;								// GlrClause -> all switches that affect how it parses
 					RuleSwitchMap						ruleAffectedSwitches;								// RuleSymbol -> all switches that affect how it parses
 

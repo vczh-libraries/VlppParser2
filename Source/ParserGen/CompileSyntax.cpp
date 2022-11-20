@@ -75,18 +75,6 @@ CompileSyntax
 						}
 					}
 				}
-
-				for (auto file : files)
-				{
-					for (auto switchItem : file->switches)
-					{
-						syntaxManager.CreateSwitch(
-							switchItem->name.value,
-							(switchItem->value == GlrSwitchValue::True),
-							switchItem->name.codeRange
-							);
-					}
-				}
 			}
 
 			bool VerifySyntax_UntilSwitch(VisitorContext& context, collections::List<Ptr<GlrSyntaxFile>>& files)

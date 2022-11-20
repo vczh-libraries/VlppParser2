@@ -19,12 +19,6 @@ extern void LogInstruction(
 	StreamWriter& writer
 	);
 
-extern void LogInstruction(
-	SwitchIns ins,
-	const Func<WString(vint32_t)>& switchName,
-	StreamWriter& writer
-	);
-
 FilePath LogTraceExecution(
 	const WString& parserName,
 	const WString& caseName,

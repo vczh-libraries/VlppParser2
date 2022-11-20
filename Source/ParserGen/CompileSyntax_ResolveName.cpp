@@ -242,7 +242,7 @@ ResolveNameVisitor
 				{
 					for (auto&& switchItem : switches)
 					{
-						if (!context.syntaxManager.switches.Keys().Contains(switchItem->name.value))
+						if (!context.switches.Keys().Contains(switchItem->name.value))
 						{
 							context.syntaxManager.AddError(
 								ParserErrorType::SwitchNotExists,
@@ -282,7 +282,7 @@ ResolveNameVisitor
 
 				void Visit(GlrRefCondition* node) override
 				{
-					if (!context.syntaxManager.switches.Keys().Contains(node->name.value))
+					if (!context.switches.Keys().Contains(node->name.value))
 					{
 						context.syntaxManager.AddError(
 							ParserErrorType::SwitchNotExists,
@@ -407,6 +407,15 @@ ResolveName
 			{
 				for (auto file : files)
 				{
+					for (auto switchItem : file->switches)
+					{
+						context.switches.Add(
+							switchItem->name.value, {
+								(switchItem->value == GlrSwitchValue::True),
+								switchItem.Obj()
+							});
+					}
+
 					for (auto rule : file->rules)
 					{
 						context.astRules.Add(context.syntaxManager.Rules()[rule->name.value], rule.Obj());
@@ -433,13 +442,13 @@ ResolveName
 
 				{
 					vint index = 0;
-					for (auto&& switchName : context.syntaxManager.switches.Keys())
+					for (auto&& switchName : context.switches.Keys())
 					{
 						if (index == accessedSwitches.Count() || switchName != accessedSwitches[index])
 						{
 							context.syntaxManager.AddError(
 								ParserErrorType::UnusedSwitch,
-								context.syntaxManager.switches[switchName].codeRange,
+								context.switches[switchName].value->codeRange,
 								switchName
 								);
 						}
@@ -450,7 +459,7 @@ ResolveName
 					}
 				}
 
-				if (context.syntaxManager.switches.Count() > 0)
+				if (context.switches.Count() > 0)
 				{
 					for (auto file : files)
 					{

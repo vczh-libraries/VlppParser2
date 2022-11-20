@@ -237,7 +237,7 @@ ExpandSwitchSyntaxVisitor
 
 							if (index == -1)
 							{
-								workingSwitchValues->Set(name, vContext.syntaxManager.switches[name].defaultValue);
+								workingSwitchValues->Set(name, vContext.switches[name].key);
 							}
 							else
 							{
@@ -769,8 +769,6 @@ RewriteSyntax
 						}
 					}
 				}
-
-				syntaxManager.ClearSwitches();
 
 				auto rewritten = MakePtr<GlrSyntaxFile>();
 				for (auto file : files)

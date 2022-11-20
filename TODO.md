@@ -3,13 +3,8 @@
 ## Next task
 
 - Rewrire and remove switch before removing PrefixMerge.
-  - Expand one rules to multiple by postfix "_SWITCHED_0Abc_1Def...".
-  - Remove unused switch errors
-  - Remove unused switch symbols
-    - switch in compiled symbols (EdgeSymbol ...)
-    - switch in automaton
-    - switch in runtime
   - Merge multiple files into one before compiling
+  - Rename `LeftRecursionPlaceholderMixedWithSwitches`
 - Multiple LRI following one Target
 - Generate multiple level of LRI from prefix_merge
   - Currently it generates an error if 3 levels are required
@@ -31,16 +26,12 @@
 - Make a test case to test `prefix_merge` generates `left_recursion_inject_multiple`.
 - Create ambiguity test case caused by only one clause with alternative syntax.
 - Test when an object get LriFetch to multiple branches following a ReopenObject.
-- ~~Test `A LRI(X) (B LRI(Y) C)` when B involved `PushSwitchSyntax`.~~
 - Deny `X ::= Y LRI ...` when `X` is or a prefix of `Y`.
 
 ## Features to Add
 
 - Extensible tokens, for example, recognize `R"[^\s(]\(` and invoke a callback function to determine the end of the string.
   - Offer two options: using (rich regex | C++) to search for complete token.
-- ~~Check `prefix_merge` errors~~
-  - ~~Any rule should not go through switch instructions and reach PM/LRP in one token input.~~
-  - ~~LRI should not inject through switch instructions.~~
 
 ## Issues
 
@@ -82,7 +73,6 @@
 
 ## Work Items (enhancement)
 
-- ~~Eliminate `Switches::values` size limit.~~
 - Switching lexical analyzer during parsing.
   - Refactor some properties in `LexerSymbolManager` into `LexerFile` with a name.
 - AST uses classes from another AST file in dependency as fields.

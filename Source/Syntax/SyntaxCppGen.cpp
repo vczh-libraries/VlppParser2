@@ -61,7 +61,6 @@ WriteSyntaxHeaderFile
 					writer.WriteLine(L"");
 					writer.WriteLine(prefix + L"const wchar_t* " + manager.name + L"RuleName(vl::vint index);");
 					writer.WriteLine(prefix + L"const wchar_t* " + manager.name + L"StateLabel(vl::vint index);");
-					writer.WriteLine(prefix + L"const wchar_t* " + manager.name + L"SwitchName(vl::vint index);");
 					WriteLoadDataFunctionHeader(prefix, manager.Global().name + manager.name + L"Data", writer);
 				}
 				{
@@ -142,28 +141,6 @@ WriteSyntaxCppFile
 					}
 					writer.WriteLine(prefix + L"\t};");
 					writer.WriteLine(prefix + L"\treturn results[index];");
-					writer.WriteLine(prefix + L"}");
-				}
-				{
-					writer.WriteLine(L"");
-					writer.WriteLine(prefix + L"const wchar_t* " + manager.name + L"SwitchName(vl::vint index)");
-					writer.WriteLine(prefix + L"{");
-					if (metadata.switchNames.Count() > 0)
-					{
-						writer.WriteLine(prefix + L"\tstatic const wchar_t* results[] = {");
-						for (auto&& switchName : metadata.switchNames)
-						{
-							writer.WriteString(prefix + L"\t\tL\"");
-							WriteCppStringBody(switchName, writer);
-							writer.WriteLine(L"\",");
-						}
-						writer.WriteLine(prefix + L"\t};");
-						writer.WriteLine(prefix + L"\treturn results[index];");
-					}
-					else
-					{
-						writer.WriteLine(prefix + L"\treturn nullptr;");
-					}
 					writer.WriteLine(prefix + L"}");
 				}
 				{

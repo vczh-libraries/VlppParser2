@@ -17,8 +17,7 @@ extern FilePath LogAutomatonWithPath(
 	Metadata& metadata,
 	const Func<WString(vint32_t)>& typeName,
 	const Func<WString(vint32_t)>& fieldName,
-	const Func<WString(vint32_t)>& tokenName,
-	const Func<WString(vint32_t)>& switchName
+	const Func<WString(vint32_t)>& tokenName
 	);
 
 extern FilePath LogAutomaton(
@@ -27,8 +26,7 @@ extern FilePath LogAutomaton(
 	Metadata& metadata,
 	const Func<WString(vint32_t)>& typeName,
 	const Func<WString(vint32_t)>& fieldName,
-	const Func<WString(vint32_t)>& tokenName,
-	const Func<WString(vint32_t)>& switchName
+	const Func<WString(vint32_t)>& tokenName
 	);
 
 #endif

@@ -36,11 +36,9 @@ SyntaxSymbolManager::FixCrossReferencedRuleEdge
 							newEdge->importancy = edge->importancy;
 							for (auto acc : accumulatedEdges)
 							{
-								CopyFrom(newEdge->insSwitch, acc->insSwitch, true);
 								CopyFrom(newEdge->insBeforeInput, acc->insBeforeInput, true);
 								newEdge->returnEdges.Add(acc);
 							}
-							CopyFrom(newEdge->insSwitch, edge->insSwitch, true);
 							CopyFrom(newEdge->insBeforeInput, edge->insBeforeInput, true);
 							CopyFrom(newEdge->insAfterInput, edge->insAfterInput, true);
 						}
@@ -99,10 +97,6 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 					{
 						// check if placeholderEdge does nothing more than using rules
 
-						if (placeholderEdge->insSwitch.Count() > 0)
-						{
-							goto FAILED_INSTRUCTION_CHECKING;
-						}
 						if (placeholderEdge->insAfterInput.Count() > 0)
 						{
 							goto FAILED_INSTRUCTION_CHECKING;
@@ -123,10 +117,6 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 
 							for (auto outEdge : endingState->OutEdges())
 							{
-								if (outEdge->insSwitch.Count() > 0)
-								{
-									goto FAILED_INSTRUCTION_CHECKING;
-								}
 								if (outEdge->input.type == EdgeInputType::Ending && outEdge->insAfterInput.Count() > 0)
 								{
 									goto FAILED_INSTRUCTION_CHECKING;
@@ -203,10 +193,6 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 											CopyFrom(newEdge->returnEdges, From(returnEdges).Take(i + 1), true);
 											CopyFrom(newEdge->returnEdges, tokenEdge->returnEdges, true);
 
-											CopyFrom(newEdge->insSwitch, injectEdge->insSwitch, true);
-											CopyFrom(newEdge->insSwitch, lrEdge->insSwitch, true);
-											CopyFrom(newEdge->insSwitch, tokenEdge->insSwitch, true);
-
 											// newEdge consumes a token
 											// lrEdge->insAfterInput happens before consuming this token
 											// so it should be copied to newEdge->insBeforeInput
@@ -232,9 +218,6 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 									newEdge->importancy = tokenEdge->importancy;
 									CopyFrom(newEdge->returnEdges, From(returnEdges).Take(i + 1), true);
 									CopyFrom(newEdge->returnEdges, tokenEdge->returnEdges, true);
-
-									CopyFrom(newEdge->insSwitch, injectEdge->insSwitch, true);
-									CopyFrom(newEdge->insSwitch, tokenEdge->insSwitch, true);
 
 									// newEdge consumes a token
 									// lrEdge->insAfterInput happens before consuming this token
@@ -294,7 +277,6 @@ SyntaxSymbolManager::BuildCrossReferencedNFAInternal
 
 				// compact multiple shift (Rule) edges and an input (Token or LrPlaceholder) edge to one edge
 				// when a cross-referenced edge is executed, for each Rule edge:
-				//   insSwitch instructions are executed
 				//   insBeforeInput instructions are executed
 				//   insAfterInput instructions are executed in its returnEdges
 				for (auto state : states)

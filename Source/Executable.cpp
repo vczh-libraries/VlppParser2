@@ -10,7 +10,6 @@ namespace vl
 			using namespace glr::automaton;
 
 			SERIALIZE_ENUM(AstInsType)
-			SERIALIZE_ENUM(SwitchInsType)
 			SERIALIZE_ENUM(EdgePriority)
 			SERIALIZE_ENUM(ReturnRuleType)
 
@@ -18,11 +17,6 @@ namespace vl
 				SERIALIZE(type)
 				SERIALIZE(param)
 				SERIALIZE(count)
-			END_SERIALIZATION
-
-			BEGIN_SERIALIZATION(SwitchIns)
-				SERIALIZE(type)
-				SERIALIZE(param)
 			END_SERIALIZATION
 
 			BEGIN_SERIALIZATION(InstructionArray)
@@ -58,7 +52,6 @@ namespace vl
 				SERIALIZE(toState)
 				SERIALIZE(condition)
 				SERIALIZE(priority)
-				SERIALIZE(insSwitch)
 				SERIALIZE(insBeforeInput)
 				SERIALIZE(insAfterInput)
 				SERIALIZE(returnIndices)
@@ -76,13 +69,11 @@ namespace vl
 				SERIALIZE(ruleStartStates)
 				SERIALIZE(transitions)
 				SERIALIZE(astInstructions)
-				SERIALIZE(switchInstructions)
 				SERIALIZE(returnIndices)
 				SERIALIZE(returns)
 				SERIALIZE(edges)
 				SERIALIZE(states)
 				SERIALIZE(stringLiteralBuffer)
-				SERIALIZE(switchDefaultValues)
 			END_SERIALIZATION
 		}
 	}

@@ -122,7 +122,6 @@ TraceManager
 				, traces(blockSize)
 				, competitions(blockSize)
 				, attendingCompetitions(blockSize)
-				, switches(blockSize)
 				, traceExecs(blockSize)
 				, insExec_Objects(blockSize)
 				, insExec_InsRefLinks(blockSize)
@@ -133,8 +132,6 @@ TraceManager
 				, traceAmbiguityLinks(blockSize)
 				, executionSteps(blockSize)
 			{
-				maxSwitchValues = 8 * sizeof(static_cast<Switches*>(nullptr)->values);
-				CHECK_ERROR(executable.switchDefaultValues.Count() <= maxSwitchValues, L"vl::glr::automaton::TraceManager::TraceManager(Executable&, const ITypeCallback*)#Too many switch defined in the parser.");
 			}
 
 			ReturnStack* TraceManager::GetReturnStack(Ref<ReturnStack> index)
@@ -175,11 +172,6 @@ TraceManager
 			AttendingCompetitions* TraceManager::AllocateAttendingCompetitions()
 			{
 				return attendingCompetitions.Get(attendingCompetitions.Allocate());
-			}
-
-			Switches* TraceManager::GetSwitches(Ref<Switches> index)
-			{
-				return switches.Get(index);
 			}
 
 			InsExec* TraceManager::GetInsExec(vint32_t index)
