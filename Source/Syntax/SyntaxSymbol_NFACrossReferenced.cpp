@@ -227,6 +227,7 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 									CopyFrom(newEdge->insAfterInput, tokenEdge->insAfterInput, true);
 								}
 								break;
+							default:;
 							}
 						}
 

@@ -195,7 +195,7 @@ VerifySwitchesAndConditionsVisitor
 				// GlrCondition::IVisitor
 				////////////////////////////////////////////////////////////////////////
 
-				void Traverse(GlrRefCondition* node)
+				void Traverse(GlrRefCondition* node) override
 				{
 					if (!testedSwitches.Contains(node->name.value))
 					{
