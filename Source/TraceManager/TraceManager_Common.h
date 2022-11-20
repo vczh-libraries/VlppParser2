@@ -1,3 +1,11 @@
+/***********************************************************************
+Author: Zihan Chen (vczh)
+Licensed under https://github.com/vczh-libraries/License
+***********************************************************************/
+
+#ifndef VCZH_PARSER2_TRACEMANAGER_TRACEMANAGER_COMMON
+#define VCZH_PARSER2_TRACEMANAGER_TRACEMANAGER_COMMON
+
 #include "TraceManager.h"
 
 namespace vl
@@ -53,3 +61,5 @@ IterateSurvivedTraces
 		}
 	}
 }
+
+#endif
