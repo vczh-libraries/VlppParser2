@@ -27,7 +27,6 @@ namespace prefixmerge2_lrirequired
 
 	const wchar_t* ModuleParserRuleName(vl::vint index);
 	const wchar_t* ModuleParserStateLabel(vl::vint index);
-	const wchar_t* ModuleParserSwitchName(vl::vint index);
 	extern void PrefixMerge2_LriRequiredModuleParserData(vl::stream::IStream& outputStream);
 
 	class ModuleParser

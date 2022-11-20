@@ -137,7 +137,6 @@ namespace TestParser_Generated_TestObjects
 		const wchar_t* (*tokenId)(TTokens),
 		const wchar_t* (*ruleName)(vint),
 		const wchar_t* (*stateLabel)(vint),
-		const wchar_t* (*switchName)(vint),
 		TTestFolders&& ...testFolders
 		)
 	{
@@ -166,8 +165,7 @@ namespace TestParser_Generated_TestObjects
 					[=](vint32_t field) { return WString::Unmanaged(fieldName((TFields)field)); },
 					[=](vint32_t token) { return WString::Unmanaged(tokenId((TTokens)token)); },
 					[=](vint32_t rule) { return WString::Unmanaged(ruleName(rule)); },
-					[=](vint32_t state) { return WString::Unmanaged(stateLabel(state)); },
-					[=](vint32_t switchId) { return WString::Unmanaged(switchName(switchId)); }
+					[=](vint32_t state) { return WString::Unmanaged(stateLabel(state)); }
 				);
 			});
 
@@ -210,8 +208,7 @@ TEST_FILE
 		&calculator::CalculatorFieldName,
 		&calculator::CalculatorTokenId,
 		&calculator::ModuleParserRuleName,
-		&calculator::ModuleParserStateLabel,
-		&calculator::ModuleParserSwitchName
+		&calculator::ModuleParserStateLabel
 		);
 	TestParser<ifelseambiguity::ModuleParser, ifelseambiguity::json_visitor::StatAstVisitor>(
 		L"IfElseAmbiguity",
@@ -220,7 +217,6 @@ TEST_FILE
 		&ifelseambiguity::IfElseAmbiguityTokenId,
 		&ifelseambiguity::ModuleParserRuleName,
 		&ifelseambiguity::ModuleParserStateLabel,
-		&ifelseambiguity::ModuleParserSwitchName,
 		L"TestCase_IfElseAmbiguity"
 		);
 	TestParser<ifelseambiguity2::ModuleParser, ifelseambiguity2::json_visitor::StatAstVisitor>(
@@ -230,7 +226,6 @@ TEST_FILE
 		&ifelseambiguity2::IfElseAmbiguity2TokenId,
 		&ifelseambiguity2::ModuleParserRuleName,
 		&ifelseambiguity2::ModuleParserStateLabel,
-		&ifelseambiguity2::ModuleParserSwitchName,
 		L"TestCase_IfElseAmbiguity"
 		);
 	TestParser<ifelseambiguityonstat::ModuleParser, ifelseambiguityonstat::json_visitor::StatAstVisitor>(
@@ -240,7 +235,6 @@ TEST_FILE
 		&ifelseambiguityonstat::IfElseAmbiguityOnStatTokenId,
 		&ifelseambiguityonstat::ModuleParserRuleName,
 		&ifelseambiguityonstat::ModuleParserStateLabel,
-		&ifelseambiguityonstat::ModuleParserSwitchName,
 		L"TestCase_IfElseAmbiguityOnStat"
 		);
 	TestParser<ifelseambiguityonstat2::ModuleParser, ifelseambiguityonstat2::json_visitor::StatAstVisitor>(
@@ -250,7 +244,6 @@ TEST_FILE
 		&ifelseambiguityonstat2::IfElseAmbiguityOnStat2TokenId,
 		&ifelseambiguityonstat2::ModuleParserRuleName,
 		&ifelseambiguityonstat2::ModuleParserStateLabel,
-		&ifelseambiguityonstat2::ModuleParserSwitchName,
 		L"TestCase_IfElseAmbiguityOnStat"
 		);
 	TestParser<ifelsepriority::ModuleParser, ifelsepriority::json_visitor::StatAstVisitor>(
@@ -260,7 +253,6 @@ TEST_FILE
 		&ifelsepriority::IfElsePriorityTokenId,
 		&ifelsepriority::ModuleParserRuleName,
 		&ifelsepriority::ModuleParserStateLabel,
-		&ifelsepriority::ModuleParserSwitchName,
 		L"TestCase_IfElse"
 		);
 	TestParser<ifelsemanual::ModuleParser, ifelsemanual::json_visitor::StatAstVisitor>(
@@ -270,7 +262,6 @@ TEST_FILE
 		&ifelsemanual::IfElseManualTokenId,
 		&ifelsemanual::ModuleParserRuleName,
 		&ifelsemanual::ModuleParserStateLabel,
-		&ifelsemanual::ModuleParserSwitchName,
 		L"TestCase_IfElse"
 		);
 	TestParser<ifelseswitch::ModuleParser, ifelseswitch::json_visitor::StatAstVisitor>(
@@ -280,7 +271,6 @@ TEST_FILE
 		&ifelseswitch::IfElseSwitchTokenId,
 		&ifelseswitch::ModuleParserRuleName,
 		&ifelseswitch::ModuleParserStateLabel,
-		&ifelseswitch::ModuleParserSwitchName,
 		L"TestCase_IfElse"
 		);
 	TestParser<genericambiguity::ModuleParser, genericambiguity::json_visitor::ExprAstVisitor>(
@@ -289,8 +279,7 @@ TEST_FILE
 		&genericambiguity::GenericAmbiguityFieldName,
 		&genericambiguity::GenericAmbiguityTokenId,
 		&genericambiguity::ModuleParserRuleName,
-		&genericambiguity::ModuleParserStateLabel,
-		&genericambiguity::ModuleParserSwitchName
+		&genericambiguity::ModuleParserStateLabel
 		);
 	TestParser<featuretest::ModuleParser, featuretest::json_visitor::FeatureAstVisitor>(
 		L"FeatureTest",
@@ -298,8 +287,7 @@ TEST_FILE
 		&featuretest::FeatureTestFieldName,
 		&featuretest::FeatureTestTokenId,
 		&featuretest::ModuleParserRuleName,
-		&featuretest::ModuleParserStateLabel,
-		&featuretest::ModuleParserSwitchName
+		&featuretest::ModuleParserStateLabel
 		);
 	TestParser<binaryop::ModuleParser, binaryop::json_visitor::ExprAstVisitor>(
 		L"BinaryOp",
@@ -307,8 +295,7 @@ TEST_FILE
 		&binaryop::BinaryOpFieldName,
 		&binaryop::BinaryOpTokenId,
 		&binaryop::ModuleParserRuleName,
-		&binaryop::ModuleParserStateLabel,
-		&binaryop::ModuleParserSwitchName
+		&binaryop::ModuleParserStateLabel
 		);
 	TestParser<prefixmerge1_lri::ModuleParser, prefixmerge1_lri::json_visitor::TypeOrExprVisitor>(
 		L"PrefixMerge1_Lri",
@@ -317,7 +304,6 @@ TEST_FILE
 		&prefixmerge1_lri::PrefixMerge1_LriTokenId,
 		&prefixmerge1_lri::ModuleParserRuleName,
 		&prefixmerge1_lri::ModuleParserStateLabel,
-		&prefixmerge1_lri::ModuleParserSwitchName,
 		L"TestCase_PrefixMerge",
 		L"TestCase_PrefixMerge_Ambiguous1"
 		);
@@ -328,7 +314,6 @@ TEST_FILE
 		&prefixmerge2_lrirequired::PrefixMerge2_LriRequiredTokenId,
 		&prefixmerge2_lrirequired::ModuleParserRuleName,
 		&prefixmerge2_lrirequired::ModuleParserStateLabel,
-		&prefixmerge2_lrirequired::ModuleParserSwitchName,
 		L"TestCase_PrefixMerge",
 		L"TestCase_PrefixMerge_Ambiguous1"
 		);
@@ -339,7 +324,6 @@ TEST_FILE
 		&prefixmerge3_lrinested::PrefixMerge3_LriNestedTokenId,
 		&prefixmerge3_lrinested::ModuleParserRuleName,
 		&prefixmerge3_lrinested::ModuleParserStateLabel,
-		&prefixmerge3_lrinested::ModuleParserSwitchName,
 		L"TestCase_PrefixMerge",
 		L"TestCase_PrefixMerge_Ambiguous1",
 		L"TestCase_PrefixMerge_CtorExpr"
@@ -351,7 +335,6 @@ TEST_FILE
 		&prefixmerge4_lrimultiple::PrefixMerge4_LriMultipleTokenId,
 		&prefixmerge4_lrimultiple::ModuleParserRuleName,
 		&prefixmerge4_lrimultiple::ModuleParserStateLabel,
-		&prefixmerge4_lrimultiple::ModuleParserSwitchName,
 		L"TestCase_PrefixMerge",
 		L"TestCase_PrefixMerge_Ambiguous1",
 		L"TestCase_PrefixMerge_CtorExpr"
@@ -363,7 +346,6 @@ TEST_FILE
 		&prefixmerge5_pm::PrefixMerge5_PmTokenId,
 		&prefixmerge5_pm::ModuleParserRuleName,
 		&prefixmerge5_pm::ModuleParserStateLabel,
-		&prefixmerge5_pm::ModuleParserSwitchName,
 		L"TestCase_PrefixMerge",
 		L"TestCase_PrefixMerge_Ambiguous2",
 		L"TestCase_PrefixMerge_CtorExpr"
@@ -375,7 +357,6 @@ TEST_FILE
 		&prefixmerge6_pm2::PrefixMerge6_Pm2TokenId,
 		&prefixmerge6_pm2::ModuleParserRuleName,
 		&prefixmerge6_pm2::ModuleParserStateLabel,
-		&prefixmerge6_pm2::ModuleParserSwitchName,
 		L"TestCase_PrefixMerge",
 		L"TestCase_PrefixMerge_Ambiguous2",
 		L"TestCase_PrefixMerge_CtorExpr",
@@ -388,7 +369,6 @@ TEST_FILE
 		&prefixmerge7_pmswitch::PrefixMerge7_PmSwitchTokenId,
 		&prefixmerge7_pmswitch::ModuleParserRuleName,
 		&prefixmerge7_pmswitch::ModuleParserStateLabel,
-		&prefixmerge7_pmswitch::ModuleParserSwitchName,
 		L"TestCase_PrefixMerge",
 		L"TestCase_PrefixMerge_Ambiguous1",
 		L"TestCase_PrefixMerge_CtorExpr",
