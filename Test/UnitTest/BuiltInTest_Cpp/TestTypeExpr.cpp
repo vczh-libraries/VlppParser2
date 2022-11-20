@@ -64,8 +64,7 @@ void TracedTests()
 				[=](vint32_t field) { return WString::Unmanaged(CppFieldName((CppFields)field)); },
 				[=](vint32_t token) { return WString::Unmanaged(CppTokenId((CppTokens)token)); },
 				[=](vint32_t rule) { return WString::Unmanaged(ParserRuleName(rule)); },
-				[=](vint32_t state) { return WString::Unmanaged(ParserStateLabel(state)); },
-				[=](vint32_t switchId) { return WString::Unmanaged(ParserSwitchName(switchId)); }
+				[=](vint32_t state) { return WString::Unmanaged(ParserStateLabel(state)); }
 			);
 		});
 	parser.OnReadyToExecute.Add(
