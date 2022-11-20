@@ -886,67 +886,64 @@ ValidateStructureIndirectPrefixMergeRuleVisitor
 ValidateStructure
 ***********************************************************************/
 
-			void ValidateStructure(VisitorContext& context, List<Ptr<GlrSyntaxFile>>& files)
+			void ValidateStructure(VisitorContext& context, Ptr<GlrSyntaxFile> syntaxFile)
 			{
-				for (auto file : files)
+				for (auto rule : syntaxFile->rules)
 				{
-					for (auto rule : file->rules)
+					auto ruleSymbol = context.syntaxManager.Rules()[rule->name.value];
+					ValidateStructureCountingVisitor visitor1(context, ruleSymbol);
+					for (auto clause : rule->clauses)
 					{
-						auto ruleSymbol = context.syntaxManager.Rules()[rule->name.value];
-						ValidateStructureCountingVisitor visitor1(context, ruleSymbol);
+						ValidateStructureRelationshipVisitor visitor2(context, ruleSymbol);
+						visitor1.ValidateClause(clause);
+						visitor2.ValidateClause(clause);
+					}
+
+					if (context.directPmClauses.Keys().Contains(ruleSymbol))
+					{
+						ValidateStructurePrefixMergeRuleVisitor visitor3(context, ruleSymbol);
 						for (auto clause : rule->clauses)
 						{
-							ValidateStructureRelationshipVisitor visitor2(context, ruleSymbol);
-							visitor1.ValidateClause(clause);
-							visitor2.ValidateClause(clause);
+							visitor3.ValidateClause(clause);
+						}
+					}
+
+					vint indexPm = context.indirectPmClauses.Keys().IndexOf(ruleSymbol);
+					vint indexLrp = context.indirectLrpClauses.Keys().IndexOf(ruleSymbol);
+					vint indexLri = context.indirectLriClauses.Keys().IndexOf(ruleSymbol);
+
+					if (indexPm != -1)
+					{
+						auto rulePm = context.clauseToRules[context.indirectPmClauses.GetByIndex(indexPm)[0]];
+						if (indexLrp != -1)
+						{
+							auto ruleLrp = context.clauseToRules[context.indirectLrpClauses.GetByIndex(indexLrp)[0]];
+							context.syntaxManager.AddError(
+								ParserErrorType::RuleIndirectlyBeginsWithPrefixMergeMixedLeftRecursionMarkers,
+								rule->name.codeRange,
+								ruleSymbol->Name(),
+								rulePm->Name(),
+								ruleLrp->Name()
+								);
+						}
+						if (indexLri != -1)
+						{
+							auto ruleLri = context.clauseToRules[context.indirectLriClauses.GetByIndex(indexLri)[0]];
+							context.syntaxManager.AddError(
+								ParserErrorType::RuleIndirectlyBeginsWithPrefixMergeMixedLeftRecursionMarkers,
+								rule->name.codeRange,
+								ruleSymbol->Name(),
+								rulePm->Name(),
+								ruleLri->Name()
+								);
 						}
 
-						if (context.directPmClauses.Keys().Contains(ruleSymbol))
+						if (!context.directPmClauses.Keys().Contains(ruleSymbol))
 						{
-							ValidateStructurePrefixMergeRuleVisitor visitor3(context, ruleSymbol);
+							ValidateStructureIndirectPrefixMergeRuleVisitor visitor3(context, ruleSymbol, rulePm);
 							for (auto clause : rule->clauses)
 							{
 								visitor3.ValidateClause(clause);
-							}
-						}
-
-						vint indexPm = context.indirectPmClauses.Keys().IndexOf(ruleSymbol);
-						vint indexLrp = context.indirectLrpClauses.Keys().IndexOf(ruleSymbol);
-						vint indexLri = context.indirectLriClauses.Keys().IndexOf(ruleSymbol);
-
-						if (indexPm != -1)
-						{
-							auto rulePm = context.clauseToRules[context.indirectPmClauses.GetByIndex(indexPm)[0]];
-							if (indexLrp != -1)
-							{
-								auto ruleLrp = context.clauseToRules[context.indirectLrpClauses.GetByIndex(indexLrp)[0]];
-								context.syntaxManager.AddError(
-									ParserErrorType::RuleIndirectlyBeginsWithPrefixMergeMixedLeftRecursionMarkers,
-									rule->name.codeRange,
-									ruleSymbol->Name(),
-									rulePm->Name(),
-									ruleLrp->Name()
-									);
-							}
-							if (indexLri != -1)
-							{
-								auto ruleLri = context.clauseToRules[context.indirectLriClauses.GetByIndex(indexLri)[0]];
-								context.syntaxManager.AddError(
-									ParserErrorType::RuleIndirectlyBeginsWithPrefixMergeMixedLeftRecursionMarkers,
-									rule->name.codeRange,
-									ruleSymbol->Name(),
-									rulePm->Name(),
-									ruleLri->Name()
-									);
-							}
-
-							if (!context.directPmClauses.Keys().Contains(ruleSymbol))
-							{
-								ValidateStructureIndirectPrefixMergeRuleVisitor visitor3(context, ruleSymbol, rulePm);
-								for (auto clause : rule->clauses)
-								{
-									visitor3.ValidateClause(clause);
-								}
 							}
 						}
 					}

@@ -303,38 +303,29 @@ VerifySwitchesAndConditionsVisitor
 ValidateSwitchesAndConditions
 ***********************************************************************/
 
-			void ValidateSwitchesAndConditions(VisitorContext& context, List<Ptr<GlrSyntaxFile>>& files)
+			void ValidateSwitchesAndConditions(VisitorContext& context, Ptr<GlrSyntaxFile> syntaxFile)
 			{
-				for (auto file : files)
+				for (auto rule : syntaxFile->rules)
 				{
-					for (auto rule : file->rules)
-					{
-						CollectRuleAffectedSwitchesFirstPassVisitor visitor(context);
-						visitor.ValidateRule(rule);
-					}
+					CollectRuleAffectedSwitchesFirstPassVisitor visitor(context);
+					visitor.ValidateRule(rule);
 				}
 
 				while (true)
 				{
 					CollectRuleAffectedSwitchesSecondPassVisitor visitor(context);
-					for (auto file : files)
+					for (auto rule : syntaxFile->rules)
 					{
-						for (auto rule : file->rules)
-						{
-							visitor.ValidateRule(rule);
-						}
+						visitor.ValidateRule(rule);
 					}
 
 					if (!visitor.updated) break;
 				};
 
-				for (auto file : files)
+				for (auto rule : syntaxFile->rules)
 				{
-					for (auto rule : file->rules)
-					{
-						VerifySwitchesAndConditionsVisitor visitor(context);
-						visitor.ValidateRule(rule);
-					}
+					VerifySwitchesAndConditionsVisitor visitor(context);
+					visitor.ValidateRule(rule);
 				}
 			}
 		}

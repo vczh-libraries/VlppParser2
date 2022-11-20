@@ -13,50 +13,47 @@ namespace vl
 ValidatePartialRules
 ***********************************************************************/
 
-			void ValidatePartialRules(VisitorContext& context, List<Ptr<GlrSyntaxFile>>& files)
+			void ValidatePartialRules(VisitorContext& context, Ptr<GlrSyntaxFile> syntaxFile)
 			{
-				for (auto file : files)
+				for (auto rule : syntaxFile->rules)
 				{
-					for (auto rule : file->rules)
+					List<Ptr<GlrPartialClause>> partialClauses;
+					CopyFrom(partialClauses, From(rule->clauses).FindType<GlrPartialClause>());
+					if (partialClauses.Count() == 0) continue;
+
+					auto ruleSymbol = context.syntaxManager.Rules()[rule->name.value];
+					ruleSymbol->isPartial = partialClauses.Count() > 0;
+
+					if (partialClauses.Count() != rule->clauses.Count())
 					{
-						List<Ptr<GlrPartialClause>> partialClauses;
-						CopyFrom(partialClauses, From(rule->clauses).FindType<GlrPartialClause>());
-						if (partialClauses.Count() == 0) continue;
+						context.syntaxManager.AddError(
+							ParserErrorType::RuleMixedPartialClauseWithOtherClause,
+							rule->codeRange,
+							ruleSymbol->Name()
+							);
+					}
 
-						auto ruleSymbol = context.syntaxManager.Rules()[rule->name.value];
-						ruleSymbol->isPartial = partialClauses.Count() > 0;
-
-						if (partialClauses.Count() != rule->clauses.Count())
+					AstClassSymbol* partialType = nullptr;
+					for (auto clause : partialClauses)
+					{
+						vint index = context.clauseTypes.Keys().IndexOf(clause.Obj());
+						if (index != -1)
 						{
-							context.syntaxManager.AddError(
-								ParserErrorType::RuleMixedPartialClauseWithOtherClause,
-								rule->codeRange,
-								ruleSymbol->Name()
-								);
-						}
-
-						AstClassSymbol* partialType = nullptr;
-						for (auto clause : partialClauses)
-						{
-							vint index = context.clauseTypes.Keys().IndexOf(clause.Obj());
-							if (index != -1)
+							auto type = context.clauseTypes.Values()[index];
+							if (!partialType)
 							{
-								auto type = context.clauseTypes.Values()[index];
-								if (!partialType)
-								{
-									partialType = type;
-								}
-								else if (type && partialType != type)
-								{
-									context.syntaxManager.AddError(
-										ParserErrorType::RuleWithDifferentPartialTypes,
-										rule->codeRange,
-										ruleSymbol->Name(),
-										partialType->Name(),
-										type->Name()
-										);
-									break;
-								}
+								partialType = type;
+							}
+							else if (type && partialType != type)
+							{
+								context.syntaxManager.AddError(
+									ParserErrorType::RuleWithDifferentPartialTypes,
+									rule->codeRange,
+									ruleSymbol->Name(),
+									partialType->Name(),
+									type->Name()
+									);
+								break;
 							}
 						}
 					}

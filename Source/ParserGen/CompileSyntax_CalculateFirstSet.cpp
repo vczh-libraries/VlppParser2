@@ -172,18 +172,15 @@ DirectFirstSetVisitor
 CalculateFirstSet
 ***********************************************************************/
 
-			void CalculateFirstSet_DirectStartRules(VisitorContext& context, List<Ptr<GlrSyntaxFile>>& files)
+			void CalculateFirstSet_DirectStartRules(VisitorContext& context, Ptr<GlrSyntaxFile> syntaxFile)
 			{
-				for (auto file : files)
+				for (auto rule : syntaxFile->rules)
 				{
-					for (auto rule : file->rules)
+					auto ruleSymbol = context.syntaxManager.Rules()[rule->name.value];
+					DirectFirstSetVisitor visitor(context, ruleSymbol);
+					for (auto clause : rule->clauses)
 					{
-						auto ruleSymbol = context.syntaxManager.Rules()[rule->name.value];
-						DirectFirstSetVisitor visitor(context, ruleSymbol);
-						for (auto clause : rule->clauses)
-						{
-							visitor.VisitClause(clause);
-						}
+						visitor.VisitClause(clause);
 					}
 				}
 			}
@@ -301,9 +298,9 @@ CalculateFirstSet
 				}
 			}
 
-			void CalculateFirstSet(VisitorContext& context, List<Ptr<GlrSyntaxFile>>& files)
+			void CalculateFirstSet(VisitorContext& context, Ptr<GlrSyntaxFile> syntaxFile)
 			{
-				CalculateFirstSet_DirectStartRules(context, files);
+				CalculateFirstSet_DirectStartRules(context, syntaxFile);
 				CalculateFirstSet_IndirectStartRules(context);
 				CalculateFirstSet_IndirectSimpleUseRules(context);
 				CalculateFirstSet_IndirectLrpPmClauses(context);

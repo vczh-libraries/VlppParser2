@@ -402,51 +402,45 @@ ResolveName
 				return true;
 			}
 
-			void ResolveName(VisitorContext& context, List<Ptr<GlrSyntaxFile>>& files)
+			void ResolveName(VisitorContext& context, Ptr<GlrSyntaxFile> syntaxFile)
 			{
-				for (auto file : files)
+				for (auto switchItem : syntaxFile->switches)
 				{
-					for (auto switchItem : file->switches)
+					if (context.switches.Keys().Contains(switchItem->name.value))
 					{
-						if (context.switches.Keys().Contains(switchItem->name.value))
-						{
-							context.syntaxManager.AddError(
-								ParserErrorType::DuplicatedSwitch,
-								switchItem->name.codeRange,
-								switchItem->name.value
-								);
-						}
-						else
-						{
-							context.switches.Add(
-								switchItem->name.value, {
-									(switchItem->value == GlrSwitchValue::True),
-									switchItem.Obj()
-								});
-						}
+						context.syntaxManager.AddError(
+							ParserErrorType::DuplicatedSwitch,
+							switchItem->name.codeRange,
+							switchItem->name.value
+							);
 					}
-
-					for (auto rule : file->rules)
+					else
 					{
-						context.astRules.Add(context.syntaxManager.Rules()[rule->name.value], rule.Obj());
+						context.switches.Add(
+							switchItem->name.value, {
+								(switchItem->value == GlrSwitchValue::True),
+								switchItem.Obj()
+							});
 					}
 				}
 
-				SortedList<WString> accessedSwitches;
-				for (auto file : files)
+				for (auto rule : syntaxFile->rules)
 				{
-					for (auto rule : file->rules)
+					context.astRules.Add(context.syntaxManager.Rules()[rule->name.value], rule.Obj());
+				}
+
+				SortedList<WString> accessedSwitches;
+				for (auto rule : syntaxFile->rules)
+				{
+					auto ruleSymbol = context.syntaxManager.Rules()[rule->name.value];
+					ResolveNameVisitor visitor(context, accessedSwitches, ruleSymbol);
+					if (rule->type)
 					{
-						auto ruleSymbol = context.syntaxManager.Rules()[rule->name.value];
-						ResolveNameVisitor visitor(context, accessedSwitches, ruleSymbol);
-						if (rule->type)
-						{
-							ruleSymbol->ruleType = visitor.GetRuleClass(rule->type);
-						}
-						for (auto clause : rule->clauses)
-						{
-							visitor.ResolveClause(clause);
-						}
+						ruleSymbol->ruleType = visitor.GetRuleClass(rule->type);
+					}
+					for (auto clause : rule->clauses)
+					{
+						visitor.ResolveClause(clause);
 					}
 				}
 
@@ -471,50 +465,44 @@ ResolveName
 
 				if (context.switches.Count() > 0)
 				{
-					for (auto file : files)
+					for (auto rule : syntaxFile->rules)
 					{
-						for (auto rule : file->rules)
+						if (!IsLegalNameBeforeWithSwitch(rule->name.value))
 						{
-							if (!IsLegalNameBeforeWithSwitch(rule->name.value))
-							{
-								context.syntaxManager.AddError(
-									ParserErrorType::SyntaxInvolvesSwitchWithIllegalRuleName,
-									rule->name.codeRange,
-									rule->name.value
-									);
-							}
+							context.syntaxManager.AddError(
+								ParserErrorType::SyntaxInvolvesSwitchWithIllegalRuleName,
+								rule->name.codeRange,
+								rule->name.value
+								);
 						}
 					}
 				}
 
 				if (context.directPmClauses.Count() > 0)
 				{
-					for (auto file : files)
+					for (auto rule : syntaxFile->rules)
 					{
-						for (auto rule : file->rules)
+						if (!IsLegalNameBeforeWithPrefixMerge(rule->name.value))
 						{
-							if (!IsLegalNameBeforeWithPrefixMerge(rule->name.value))
-							{
-								context.syntaxManager.AddError(
-									ParserErrorType::SyntaxInvolvesPrefixMergeWithIllegalRuleName,
-									rule->name.codeRange,
-									rule->name.value
-									);
-							}
+							context.syntaxManager.AddError(
+								ParserErrorType::SyntaxInvolvesPrefixMergeWithIllegalRuleName,
+								rule->name.codeRange,
+								rule->name.value
+								);
+						}
 
-							for (auto lrp : From(rule->clauses).FindType<GlrLeftRecursionPlaceholderClause>())
+						for (auto lrp : From(rule->clauses).FindType<GlrLeftRecursionPlaceholderClause>())
+						{
+							for (auto p : lrp->flags)
 							{
-								for (auto p : lrp->flags)
+								if (!IsLegalNameBeforeWithPrefixMerge(p->flag.value))
 								{
-									if (!IsLegalNameBeforeWithPrefixMerge(p->flag.value))
-									{
-										context.syntaxManager.AddError(
-											ParserErrorType::SyntaxInvolvesPrefixMergeWithIllegalPlaceholderName,
-											p->flag.codeRange,
-											rule->name.value,
-											p->flag.value
-											);
-									}
+									context.syntaxManager.AddError(
+										ParserErrorType::SyntaxInvolvesPrefixMergeWithIllegalPlaceholderName,
+										p->flag.codeRange,
+										rule->name.value,
+										p->flag.value
+										);
 								}
 							}
 						}

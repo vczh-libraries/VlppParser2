@@ -1112,17 +1112,13 @@ RenamePrefix
 RewriteSyntax
 ***********************************************************************/
 
-			Ptr<GlrSyntaxFile> RewriteSyntax_PrefixMerge(VisitorContext& context, SyntaxSymbolManager& syntaxManager, collections::List<Ptr<GlrSyntaxFile>>& files)
+			Ptr<GlrSyntaxFile> RewriteSyntax_PrefixMerge(VisitorContext& context, SyntaxSymbolManager& syntaxManager, Ptr<GlrSyntaxFile> syntaxFile)
 			{
 				using namespace rewritesyntax_prefixmerge;
 
 				// merge files to single syntax file
 				auto rewritten = MakePtr<GlrSyntaxFile>();
-				for (auto file : files)
-				{
-					CopyFrom(rewritten->switches, file->switches, true);
-					CopyFrom(rewritten->rules, file->rules, true);
-				}
+				CopyFrom(rewritten->rules, syntaxFile->rules);
 
 				// find clauses that need to be converted to prefix_merge and fix VisitorContext
 				FillMissingPrefixMergeClauses(context, syntaxManager, rewritten);

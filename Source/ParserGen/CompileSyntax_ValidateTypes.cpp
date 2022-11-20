@@ -515,25 +515,22 @@ LriPrefixTestingVisitor
 ValidateTypes
 ***********************************************************************/
 
-			void ValidateTypes(VisitorContext& context, List<Ptr<GlrSyntaxFile>>& files)
+			void ValidateTypes(VisitorContext& context, Ptr<GlrSyntaxFile> syntaxFile)
 			{
-				for (auto file : files)
+				for (auto rule : syntaxFile->rules)
 				{
-					for (auto rule : file->rules)
+					auto ruleSymbol = context.syntaxManager.Rules()[rule->name.value];
+					ValidateTypesVisitor vtVisitor(context, ruleSymbol);
+					for (auto clause : rule->clauses)
 					{
-						auto ruleSymbol = context.syntaxManager.Rules()[rule->name.value];
-						ValidateTypesVisitor vtVisitor(context, ruleSymbol);
-						for (auto clause : rule->clauses)
+						vtVisitor.ValidateClause(clause);
 						{
-							vtVisitor.ValidateClause(clause);
-							{
-								LriVerifyTypesVisitor lvtVisitor(context, ruleSymbol);
-								lvtVisitor.ValidateClause(clause);
-							}
-							{
-								LriPrefixTestingVisitor lptVisitor(context, ruleSymbol);
-								lptVisitor.ValidateClause(clause);
-							}
+							LriVerifyTypesVisitor lvtVisitor(context, ruleSymbol);
+							lvtVisitor.ValidateClause(clause);
+						}
+						{
+							LriPrefixTestingVisitor lptVisitor(context, ruleSymbol);
+							lptVisitor.ValidateClause(clause);
 						}
 					}
 				}

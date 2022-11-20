@@ -315,18 +315,15 @@ CompileSyntaxVisitor
 CompileSyntax
 ***********************************************************************/
 
-			void CompileSyntax(VisitorContext& context, Ptr<CppParserGenOutput> output, List<Ptr<GlrSyntaxFile>>& files)
+			void CompileSyntax(VisitorContext& context, Ptr<CppParserGenOutput> output, Ptr<GlrSyntaxFile> syntaxFile)
 			{
-				for (auto file : files)
+				for (auto rule : syntaxFile->rules)
 				{
-					for (auto rule : file->rules)
+					auto ruleSymbol = context.syntaxManager.Rules()[rule->name.value];
+					CompileSyntaxVisitor visitor(context, output, ruleSymbol);
+					for (auto clause : rule->clauses)
 					{
-						auto ruleSymbol = context.syntaxManager.Rules()[rule->name.value];
-						CompileSyntaxVisitor visitor(context, output, ruleSymbol);
-						for (auto clause : rule->clauses)
-						{
-							visitor.AssignClause(clause);
-						}
+						visitor.AssignClause(clause);
 					}
 				}
 			}
