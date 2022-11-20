@@ -34,7 +34,7 @@ TEST_FILE
 	//parsersToLoad.Add(ParserDef{ L"IfElseAmbiguityOnStat",		L"StatAst",		L"Module" });
 	//parsersToLoad.Add(ParserDef{ L"IfElseAmbiguityOnStat2",		L"StatAst",		L"Module" });
 	//parsersToLoad.Add(ParserDef{ L"IfElsePriority",				L"StatAst",		L"Module" });
-	parsersToLoad.Add(ParserDef{ L"IfElseSwitch",				L"StatAst",		L"Module" });
+	//parsersToLoad.Add(ParserDef{ L"IfElseSwitch",				L"StatAst",		L"Module" });
 	//parsersToLoad.Add(ParserDef{ L"IfElseManual",				L"StatAst",		L"Module" });
 	//parsersToLoad.Add(ParserDef{ L"GenericAmbiguity",			L"ExprAst",		L"Module" });
 	//parsersToLoad.Add(ParserDef{ L"FeatureTest",				L"FeatureAst",	L"Module" });
@@ -45,7 +45,7 @@ TEST_FILE
 	//parsersToLoad.Add(ParserDef{ L"PrefixMerge4_LriMultiple",	L"TypeOrExpr",	L"Module" });
 	//parsersToLoad.Add(ParserDef{ L"PrefixMerge5_Pm",			L"TypeOrExpr",	L"Module" });
 	//parsersToLoad.Add(ParserDef{ L"PrefixMerge6_Pm2",			L"TypeOrExpr",	L"Module" });
-	//parsersToLoad.Add(ParserDef{ L"PrefixMerge7_PmSwitch",		L"TypeOrExpr",	L"Module" });
+	parsersToLoad.Add(ParserDef{ L"PrefixMerge7_PmSwitch",		L"TypeOrExpr",	L"Module" });
 
 	for (auto&& [_parserName, _astName, _ruleName] : parsersToLoad)
 	{
