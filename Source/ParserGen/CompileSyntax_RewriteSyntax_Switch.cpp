@@ -726,9 +726,11 @@ RewriteSyntax
 
 				void CreateRuleSymbols(SyntaxSymbolManager& syntaxManager, Group<RuleSymbol*, Ptr<GlrRule>>& expandedRules)
 				{
-					for (auto [ruleSymbol, index] : indexed(expandedRules.Keys()))
+					for (auto ruleSymbol : From(expandedRules.Keys())
+						.OrderBy([](auto a, auto b) { return WString::Compare(a->Name(), b->Name()); })
+						)
 					{
-						for (auto rule : expandedRules.GetByIndex(index))
+						for (auto rule : expandedRules[ruleSymbol])
 						{
 							auto newRuleSymbol = syntaxManager.CreateRule(
 								rule->name.value,
