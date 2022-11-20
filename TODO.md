@@ -25,6 +25,7 @@
   - ~~PrefixExtractionAffectedBySwitches~~
 - Create test cases that only rewrite syntax without generating C++ code for:
   - `DeductEmptySyntaxVisitor`
+  - Invalid combined clauses during expanding switches
   - everything else that is needed
 - TODO(s) in `RewriteRules_GenerateAffectedLRIClausesSubgroup`.
 - Make a test case to test `prefix_merge` generates `left_recursion_inject_multiple`.

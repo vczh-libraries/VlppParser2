@@ -26,7 +26,8 @@ namespace vl
 					Group<RuleSymbol*, Ptr<GlrRule>>			expandedFirstLevelRules;
 
 					Dictionary<WString, Ptr<GlrRule>>			combinedRulesByName;
-					Group<WString, GlrClause*>					expandedCombinedClauses;
+					Group<WString, GlrClause*>					validCombinedClauses;
+					Group<WString, GlrClause*>					invalidCombinedClauses;
 				};
 
 				class EmptySyntax : public GlrSyntax
@@ -862,9 +863,13 @@ RewriteSyntax
 									{
 										// if this clause is affected by some switches
 										// expand this clause into a combined rule
-										bool skippedClause = false;
+										bool validClause = false;
 										auto combinedRuleName = CreateRuleName(rule, L"_SWITCH_COMBINED", *switchValues.Obj());
-										if (!rewritingContext.expandedCombinedClauses.Contains(combinedRuleName, clause.Obj()))
+										if (rewritingContext.validCombinedClauses.Contains(combinedRuleName, clause.Obj()))
+										{
+											validClause = true;
+										}
+										else if (!rewritingContext.invalidCombinedClauses.Contains(combinedRuleName, clause.Obj()))
 										{
 											ExpandClauseVisitor visitor(context, switchValues);
 											if (auto newClause = visitor.ExpandClause(clause.Obj()))
@@ -878,6 +883,7 @@ RewriteSyntax
 													if (ruleIndex == -1)
 													{
 														combinedRule = CreateRule(rule, combinedRuleName);
+														rewritingContext.expandedCombinedRules.Add(ruleSymbol, combinedRule);
 														rewritingContext.combinedRulesByName.Add(combinedRuleName, combinedRule);
 													}
 													else
@@ -885,12 +891,22 @@ RewriteSyntax
 														combinedRule = rewritingContext.combinedRulesByName.Values()[ruleIndex];
 													}
 													combinedRule->clauses.Add(newClause);
+													validClause = true;
 												}
+											}
+
+											if (validClause)
+											{
+												rewritingContext.validCombinedClauses.Add(combinedRuleName, clause.Obj());
+											}
+											else
+											{
+												rewritingContext.invalidCombinedClauses.Add(combinedRuleName, clause.Obj());
 											}
 										}
 
 										// this clause might be invalid in the current context
-										if (!skippedClause)
+										if (validClause)
 										{
 											if (!referencedCombinedRules.Contains(combinedRuleName))
 											{
