@@ -16,13 +16,14 @@ namespace vl
 				struct GeneratedRule
 				{
 					GlrRule*									ruleToExpand = nullptr;
-					GlrRule*									expandedRule = nullptr;
 					Ptr<Dictionary<WString, bool>>				switchValues;
 				};
 
 				struct RewritingContext
 				{
 					Group<RuleSymbol*, Ptr<GeneratedRule>>		generatedRules;
+					Group<RuleSymbol*, Ptr<GlrRule>>			expandedCombinedRules;
+					Group<RuleSymbol*, Ptr<GlrRule>>			expandedFirstLevelRules;
 				};
 
 				class EmptySyntax : public GlrSyntax
@@ -755,13 +756,10 @@ RewriteSyntax
 							// if a rule is affected
 							// all instances of possible switch values will be converted to a new rule
 							// such rule has switch values encoded in its name
-							for(auto generatedRule : From(rewritingContext.generatedRules.GetByIndex(index))
-								.OrderBy([](Ptr<GeneratedRule> a, Ptr<GeneratedRule> b)
-								{
-									return CompareEnumerable(a->switchValues->Values(), b->switchValues->Values());
-								}))
+							for(auto generatedRule : rewritingContext.generatedRules.GetByIndex(index))
 							{
 								auto newRule = MakePtr<GlrRule>();
+
 								newRule->codeRange = rule->codeRange;
 								newRule->name = rule->name;
 								newRule->type = rule->type;
@@ -771,8 +769,6 @@ RewriteSyntax
 								{
 									newRule->name.value += (value ? L"_1" : L"_0") + name;
 								}
-
-								generatedRule->expandedRule = newRule.Obj();
 
 								// rewrite all clauses with given switch values
 								ExpandClauseVisitor visitor(context, generatedRule->switchValues);
@@ -801,7 +797,29 @@ RewriteSyntax
 								}
 								else
 								{
-									rewritten->rules.Add(newRule);
+									rewritingContext.expandedFirstLevelRules.Add(ruleSymbol, newRule);
+								}
+							}
+
+							index = rewritingContext.expandedCombinedRules.Keys().IndexOf(ruleSymbol);
+							if (index != -1)
+							{
+								for (auto expandedRule : From(rewritingContext.expandedCombinedRules.GetByIndex(index))
+									.OrderBy([](auto a, auto b) { return WString::Compare(a->name.value, b->name.value); })
+									)
+								{
+									rewritten->rules.Add(expandedRule);
+								}
+							}
+
+							index = rewritingContext.expandedFirstLevelRules.Keys().IndexOf(ruleSymbol);
+							if (index != -1)
+							{
+								for (auto expandedRule : From(rewritingContext.expandedFirstLevelRules.GetByIndex(index))
+									.OrderBy([](auto a, auto b) { return WString::Compare(a->name.value, b->name.value); })
+									)
+								{
+									rewritten->rules.Add(expandedRule);
 								}
 							}
 						}
@@ -809,15 +827,24 @@ RewriteSyntax
 				}
 
 				// add symbols for generated rules
-				for (auto [ruleSymbol, index] : indexed(rewritingContext.generatedRules.Keys()))
+				for (auto [ruleSymbol, index] : indexed(rewritingContext.expandedCombinedRules.Keys()))
 				{
-					for (auto generatedRule : rewritingContext.generatedRules.GetByIndex(index))
+					for (auto rule : rewritingContext.expandedCombinedRules.GetByIndex(index))
 					{
 						auto newRuleSymbol = syntaxManager.CreateRule(
-							generatedRule->expandedRule->name.value,
-							generatedRule->expandedRule->name.codeRange
-							);
-						newRuleSymbol->ruleType = ruleSymbol->ruleType;
+							rule->name.value,
+							rule->name.codeRange
+						);
+					}
+				}
+				for (auto [ruleSymbol, index] : indexed(rewritingContext.expandedFirstLevelRules.Keys()))
+				{
+					for (auto rule : rewritingContext.expandedFirstLevelRules.GetByIndex(index))
+					{
+						auto newRuleSymbol = syntaxManager.CreateRule(
+							rule->name.value,
+							rule->name.codeRange
+						);
 					}
 				}
 
