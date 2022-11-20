@@ -205,18 +205,12 @@ ValidateTypesVisitor
 
 				void Visit(GlrPushConditionSyntax* node) override
 				{
-					node->syntax->Accept(this);
+					CHECK_FAIL(L"GlrPushConditionSyntax should have been removed after RewriteSyntax_Switch()!");
 				}
 
 				void Visit(GlrTestConditionSyntax* node) override
 				{
-					for (auto&& branch : node->branches)
-					{
-						if (branch->syntax)
-						{
-							branch->syntax->Accept(this);
-						}
-					}
+					CHECK_FAIL(L"GlrTestConditionSyntax should have been removed after RewriteSyntax_Switch()!");
 				}
 
 				////////////////////////////////////////////////////////////////////////

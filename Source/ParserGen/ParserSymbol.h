@@ -148,10 +148,7 @@ ParserSymbolManager
 			ERROR_ITEM(LoopBodyCouldExpandToEmptySequence,									ruleName)\
 			ERROR_ITEM(OptionalBodyCouldExpandToEmptySequence,								ruleName)\
 			ERROR_ITEM(NegativeOptionalEndsAClause,											ruleName)													/* Negative optional syntax cannot ends a clause */\
-			ERROR_ITEM(MultiplePrioritySyntaxInAClause,										ruleName)													/* Too many syntax with priority in the a clause */\
-			ERROR_ITEM(PushConditionBodyCouldExpandToEmptySequence,							ruleName)\
-			ERROR_ITEM(TestConditionBodyCouldExpandToEmptySequence,							ruleName)\
-			ERROR_ITEM(MultipleEmptySyntaxInTestCondition,									ruleName)\
+			ERROR_ITEM(MultiplePrioritySyntaxInAClause,										ruleName)\
 			ERROR_ITEM(TooManyLeftRecursionPlaceholderClauses,								ruleName)\
 			/* SyntaxAst(ValidateStructure, relationship) */\
 			ERROR_ITEM(FieldAssignedMoreThanOnce,											ruleName, clauseType, fieldName)\

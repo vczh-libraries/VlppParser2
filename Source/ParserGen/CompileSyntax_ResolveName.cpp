@@ -408,11 +408,22 @@ ResolveName
 				{
 					for (auto switchItem : file->switches)
 					{
-						context.switches.Add(
-							switchItem->name.value, {
-								(switchItem->value == GlrSwitchValue::True),
-								switchItem.Obj()
-							});
+						if (context.switches.Keys().Contains(switchItem->name.value))
+						{
+							context.syntaxManager.AddError(
+								ParserErrorType::DuplicatedSwitch,
+								switchItem->name.codeRange,
+								switchItem->name.value
+								);
+						}
+						else
+						{
+							context.switches.Add(
+								switchItem->name.value, {
+									(switchItem->value == GlrSwitchValue::True),
+									switchItem.Obj()
+								});
+						}
 					}
 
 					for (auto rule : file->rules)

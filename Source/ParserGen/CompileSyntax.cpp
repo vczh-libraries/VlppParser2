@@ -118,7 +118,10 @@ CompileSyntax
 				{
 					VisitorContext context(astManager, lexerManager, syntaxManager);
 					if (!VerifySyntax_UntilSwitch(context, files)) goto FINISHED_COMPILING;
+
 					rewritten = RewriteSyntax_Switch(context, syntaxManager, files);
+					if (context.syntaxManager.Global().Errors().Count() > 0) goto FINISHED_COMPILING;
+
 					files.Clear();
 					files.Add(rewritten);
 				}
@@ -128,7 +131,10 @@ CompileSyntax
 					VisitorContext context(astManager, lexerManager, syntaxManager);
 					if (!VerifySyntax_UntilSwitch(context, files)) goto FINISHED_COMPILING;
 					if (!VerifySyntax_UntilPrefixMerge(context, files)) goto FINISHED_COMPILING;
+
 					rewritten = RewriteSyntax_PrefixMerge(context, syntaxManager, files);
+					if (context.syntaxManager.Global().Errors().Count() > 0) goto FINISHED_COMPILING;
+
 					files.Clear();
 					files.Add(rewritten);
 				}

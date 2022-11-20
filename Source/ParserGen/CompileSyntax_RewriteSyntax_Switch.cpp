@@ -751,6 +751,7 @@ RewriteSyntax
 						ParserErrorType::NoSwitchUnaffectedRule,
 						{}
 						);
+					return nullptr;
 				}
 
 				RewritingContext rewritingContext;

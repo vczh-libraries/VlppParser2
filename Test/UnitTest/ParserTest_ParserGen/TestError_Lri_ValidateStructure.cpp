@@ -16,11 +16,10 @@ TEST_FILE
 	{
 		const wchar_t* syntaxCode =
 LR"SYNTAX(
-switch first;
 Exp0
   ::= left_recursion_placeholder(A, B)
   ::= left_recursion_placeholder(C, D)
-  ::= NUM:value ?(first:; | first:;) as NumExpr
+  ::= NUM:value as NumExpr
   ;
 )SYNTAX";
 		ExpectError(
