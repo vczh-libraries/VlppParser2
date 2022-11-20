@@ -49,10 +49,6 @@ namespace vl
 				using ClauseReuseDependencies = collections::Group<GlrReuseClause*, RuleSymbol*>;
 				using ClauseTypeMap = collections::Dictionary<GlrClause*, AstClassSymbol*>;
 
-				using SwitchMap = collections::Dictionary<WString, collections::Pair<bool, GlrSwitchItem*>>;
-				using RuleSwitchMap = collections::Group<RuleSymbol*, WString>;
-				using ClauseSwitchMap = collections::Group<GlrClause*, WString>;
-
 				using LeftRecursiveClauseMap = collections::Group<RuleSymbol*, GlrClause*>;
 				using LeftRecursionInjectClauseMap = collections::Group<RuleSymbol*, GlrLeftRecursionInjectClause*>;
 				using LeftRecursionPlaceholderClauseMap = collections::Group<RuleSymbol*, GlrLeftRecursionPlaceholderClause*>;
@@ -81,11 +77,6 @@ namespace vl
 					ClauseToRuleMap						clauseToRules;										// GlrClause -> RuleSymbol that contain this clause
 					Ptr<regex::RegexLexer>				cachedLexer;
 
-					// ValidateSwitchesAndConditions (not used after RewriteSyntax_Switch)
-					SwitchMap							switches;
-					ClauseSwitchMap						clauseAffectedSwitches;								// GlrClause -> all switches that affect how it parses
-					RuleSwitchMap						ruleAffectedSwitches;								// RuleSymbol -> all switches that affect how it parses
-
 					LeftRecursiveClauseMap				leftRecursiveClauses;								// RuleSymbol -> all clauses begins with that rule
 					LeftRecursionInjectClauseMap		directLriClauses, indirectLriClauses;				// RuleSymbol -> contained left_recursion_injection clauses
 																											// RuleSymbol -> reachable left_recursion_injection clauses
@@ -97,7 +88,6 @@ namespace vl
 					ClauseToRuleMap						simpleUseClauseToReferencedRules;					// GlrClause -> RuleSymbol when this clause is !RuleSymbol
 					ClauseToRuleGroup					clauseToStartRules;									// GlrClause -> RuleSymbol when this clause begins with RuleSymbol
 
-					// PushedSwitchList in following members are organized in the order of execution
 					RulePathDependencies				directStartRules, indirectStartRules;				// RuleSymbol -> {rule, clause begins with the rule}
 																											// RuleSymbol -> {rule, reachable clause begins with the rule}
 					RulePathDependencies				directSimpleUseRules, indirectSimpleUseRules;		// RuleSymbol -> {rule, clause that is !rule}
@@ -130,6 +120,17 @@ namespace vl
 						}
 						return *cachedLexer.Obj();
 					}
+				};
+
+				using SwitchMap = collections::Dictionary<WString, collections::Pair<bool, GlrSwitchItem*>>;
+				using RuleSwitchMap = collections::Group<RuleSymbol*, WString>;
+				using ClauseSwitchMap = collections::Group<GlrClause*, WString>;
+
+				struct VisitorSwitchContext
+				{
+					SwitchMap							switches;
+					ClauseSwitchMap						clauseAffectedSwitches;								// GlrClause -> all switches that affect how it parses
+					RuleSwitchMap						ruleAffectedSwitches;								// RuleSymbol -> all switches that affect how it parses
 				};
 			}
 

@@ -3,7 +3,6 @@
 ## Next task
 
 - Rewrire and remove switch before removing PrefixMerge.
-  - Move switch information from `context` to `switchContext`
   - Rename `LeftRecursionPlaceholderMixedWithSwitches`
 - Multiple LRI following one Target
 - Generate multiple level of LRI from prefix_merge
@@ -17,7 +16,6 @@
   - SwitchUnaffectedRuleExpandedToNoClause
   - SwitchAffectedRuleExpandedToNoClause
   - PrefixExtractionAffectedRuleReferencedAnother
-  - ~~PrefixExtractionAffectedBySwitches~~
 - Create test cases that only rewrite syntax without generating C++ code for:
   - `DeductEmptySyntaxVisitor`
   - Invalid combined clauses during expanding switches

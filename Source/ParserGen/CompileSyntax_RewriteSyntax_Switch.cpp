@@ -134,6 +134,7 @@ ExpandSwitchSyntaxVisitor
 					};
 
 					VisitorContext&						vContext;
+					VisitorSwitchContext&				sContext;
 					RewritingContext&					rContext;
 					SortedList<RuleSymbol*>				scannedUnaffectedRules;
 					
@@ -150,7 +151,7 @@ ExpandSwitchSyntaxVisitor
 						auto rule = vContext.astRules[ruleSymbol];
 
 						// check if it is affected
-						index = vContext.ruleAffectedSwitches.Keys().IndexOf(ruleSymbol);
+						index = sContext.ruleAffectedSwitches.Keys().IndexOf(ruleSymbol);
 						if (index == -1)
 						{
 							InspectIntoUnaffectedRule(rule);
@@ -159,7 +160,7 @@ ExpandSwitchSyntaxVisitor
 						{
 							InspectIntoAffectedRule(
 								rule,
-								vContext.ruleAffectedSwitches.GetByIndex(index),
+								sContext.ruleAffectedSwitches.GetByIndex(index),
 								identification.workingSwitchValues
 							);
 						}
@@ -211,9 +212,11 @@ ExpandSwitchSyntaxVisitor
 				public:
 					ExpandSwitchSyntaxVisitor(
 						VisitorContext& _vContext,
+						VisitorSwitchContext& _sContext,
 						RewritingContext& _rContext
 					)
 						: vContext(_vContext)
+						, sContext(_sContext)
 						, rContext(_rContext)
 					{
 					}
@@ -237,7 +240,7 @@ ExpandSwitchSyntaxVisitor
 
 							if (index == -1)
 							{
-								workingSwitchValues->Set(name, vContext.switches[name].key);
+								workingSwitchValues->Set(name, sContext.switches[name].key);
 							}
 							else
 							{
@@ -306,6 +309,7 @@ ExpandClauseVisitor
 					struct CancelBranch {};
 
 					VisitorContext&						vContext;
+					VisitorSwitchContext&				sContext;
 					Ptr<Dictionary<WString, bool>>		workingSwitchValues;
 
 				protected:
@@ -317,14 +321,14 @@ ExpandClauseVisitor
 						if (index == -1) return;
 
 						auto ruleSymbol = vContext.syntaxManager.Rules().Values()[index];
-						index = vContext.ruleAffectedSwitches.Keys().IndexOf(ruleSymbol);
+						index = sContext.ruleAffectedSwitches.Keys().IndexOf(ruleSymbol);
 						if (index == -1) return;
 
 						// for an affected rule
 						// the name referencing the rule need to be changed
 						// by appending switch values after it
 						SortedList<WString> switchNames;
-						CopyFrom(switchNames, vContext.ruleAffectedSwitches.GetByIndex(index));
+						CopyFrom(switchNames, sContext.ruleAffectedSwitches.GetByIndex(index));
 
 						name.value += L"_SWITCH";
 						for (auto&& switchName : switchNames)
@@ -459,9 +463,11 @@ ExpandClauseVisitor
 				public:
 					ExpandClauseVisitor(
 						VisitorContext& _vContext,
+						VisitorSwitchContext& _sContext,
 						Ptr<Dictionary<WString, bool>> _workingSwitchValues
 					)
 						: vContext(_vContext)
+						, sContext(_sContext)
 						, workingSwitchValues(_workingSwitchValues)
 					{
 					}
@@ -741,11 +747,11 @@ RewriteSyntax
 				}
 			}
 
-			Ptr<GlrSyntaxFile> RewriteSyntax_Switch(VisitorContext& context, SyntaxSymbolManager& syntaxManager, Ptr<GlrSyntaxFile> syntaxFile)
+			Ptr<GlrSyntaxFile> RewriteSyntax_Switch(VisitorContext& context, VisitorSwitchContext& sContext, SyntaxSymbolManager& syntaxManager, Ptr<GlrSyntaxFile> syntaxFile)
 			{
 				using namespace rewritesyntax_switch;
 
-				if (context.ruleAffectedSwitches.Count() == syntaxManager.Rules().Count())
+				if (sContext.ruleAffectedSwitches.Count() == syntaxManager.Rules().Count())
 				{
 					syntaxManager.AddError(
 						ParserErrorType::NoSwitchUnaffectedRule,
@@ -757,11 +763,11 @@ RewriteSyntax
 				RewritingContext rewritingContext;
 				{
 					// find out all expansion of rules affected by switch values
-					ExpandSwitchSyntaxVisitor visitor(context, rewritingContext);
+					ExpandSwitchSyntaxVisitor visitor(context, sContext, rewritingContext);
 					for (auto rule : syntaxFile->rules)
 					{
 						auto ruleSymbol = syntaxManager.Rules()[rule->name.value];
-						if (!context.ruleAffectedSwitches.Keys().Contains(ruleSymbol))
+						if (!sContext.ruleAffectedSwitches.Keys().Contains(ruleSymbol))
 						{
 							visitor.InspectIntoUnaffectedRule(rule.Obj());
 						}
@@ -783,7 +789,7 @@ RewriteSyntax
 						newRule->name = rule->name;
 						newRule->type = rule->type;
 
-						ExpandClauseVisitor visitor(context, nullptr);
+						ExpandClauseVisitor visitor(context, sContext, nullptr);
 						for (auto clause : rule->clauses)
 						{
 							if (auto newClause = visitor.ExpandClause(clause.Obj()))
@@ -823,14 +829,14 @@ RewriteSyntax
 
 								// if this clause is affected by some switches
 								// prepare switch values for combined rules
-								vint clauseIndex = context.clauseAffectedSwitches.Keys().IndexOf(clause.Obj());
+								vint clauseIndex = sContext.clauseAffectedSwitches.Keys().IndexOf(clause.Obj());
 								if (clauseIndex == -1)
 								{
 									switchValues = MakePtr<Dictionary<WString, bool>>();
 								}
 								else
 								{
-									auto&& switches = context.clauseAffectedSwitches.GetByIndex(clauseIndex);
+									auto&& switches = sContext.clauseAffectedSwitches.GetByIndex(clauseIndex);
 									if (switches.Count() != generatedRule->switchValues->Count())
 									{
 										switchValues = MakePtr<Dictionary<WString, bool>>();
@@ -845,7 +851,7 @@ RewriteSyntax
 								{
 									// if this clause is affected by all switches
 									// expand this clause into the new rule
-									ExpandClauseVisitor visitor(context, switchValues);
+									ExpandClauseVisitor visitor(context, sContext, switchValues);
 									if (auto newClause = visitor.ExpandClause(clause.Obj()))
 									{
 										if (DeductAndVerifyClauseVisitor().Evaluate(newClause.Obj()))
@@ -868,7 +874,7 @@ RewriteSyntax
 									}
 									else if (!rewritingContext.invalidCombinedClauses.Contains(combinedRuleName, clause.Obj()))
 									{
-										ExpandClauseVisitor visitor(context, switchValues);
+										ExpandClauseVisitor visitor(context, sContext, switchValues);
 										if (auto newClause = visitor.ExpandClause(clause.Obj()))
 										{
 											if (DeductAndVerifyClauseVisitor().Evaluate(newClause.Obj()))

@@ -843,17 +843,6 @@ RewriteRules (Affected)
 						for (auto prefixClause : prefixClauses)
 						{
 							auto prefixRuleSymbol = vContext.simpleUseClauseToReferencedRules[prefixClause];
-							if (vContext.ruleAffectedSwitches.Keys().Contains(prefixRuleSymbol))
-							{
-								vContext.syntaxManager.AddError(
-									ParserErrorType::PrefixExtractionAffectedBySwitches,
-									rContext.originRules[vContext.syntaxManager.Rules()[lriRule->name.value]]->codeRange,
-									lriRule->name.value,
-									conflictedRuleSymbol->Name(),
-									prefixRuleSymbol->Name()
-									);
-							}
-
 							SortedList<WString> lripFlags;
 							for (auto extracted : vContext.indirectStartPathToLastRules[{conflictedRuleSymbol, prefixRuleSymbol}])
 							{

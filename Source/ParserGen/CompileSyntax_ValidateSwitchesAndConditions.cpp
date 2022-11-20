@@ -19,15 +19,18 @@ CollectRuleAffectedSwitchesVisitorBase
 			{
 			protected:
 				VisitorContext&							context;
+				VisitorSwitchContext&					sContext;
 				RuleSymbol*								ruleSymbol = nullptr;
 				GlrClause*								currentClause = nullptr;
 				List<WString>							pushedSwitches;
 
 			public:
 				CollectRuleAffectedSwitchesVisitorBase(
-					VisitorContext& _context
+					VisitorContext& _context,
+					VisitorSwitchContext& _sContext
 				)
 					: context(_context)
+					, sContext(_sContext)
 				{
 				}
 
@@ -70,9 +73,10 @@ CollectRuleAffectedSwitchesFirstPassVisitor
 			{
 			public:
 				CollectRuleAffectedSwitchesFirstPassVisitor(
-					VisitorContext& _context
+					VisitorContext& _context,
+					VisitorSwitchContext& _sContext
 				)
-					: CollectRuleAffectedSwitchesVisitorBase(_context)
+					: CollectRuleAffectedSwitchesVisitorBase(_context, _sContext)
 				{
 				}
 
@@ -86,13 +90,13 @@ CollectRuleAffectedSwitchesFirstPassVisitor
 				{
 					if (!pushedSwitches.Contains(node->name.value))
 					{
-						if (!context.clauseAffectedSwitches.Contains(currentClause, node->name.value))
+						if (!sContext.clauseAffectedSwitches.Contains(currentClause, node->name.value))
 						{
-							context.clauseAffectedSwitches.Add(currentClause, node->name.value);
+							sContext.clauseAffectedSwitches.Add(currentClause, node->name.value);
 						}
-						if (!context.ruleAffectedSwitches.Contains(ruleSymbol, node->name.value))
+						if (!sContext.ruleAffectedSwitches.Contains(ruleSymbol, node->name.value))
 						{
-							context.ruleAffectedSwitches.Add(ruleSymbol, node->name.value);
+							sContext.ruleAffectedSwitches.Add(ruleSymbol, node->name.value);
 						}
 					}
 				}
@@ -109,9 +113,10 @@ CollectRuleAffectedSwitchesSecondPassVisitor
 				bool									updated = false;
 
 				CollectRuleAffectedSwitchesSecondPassVisitor(
-					VisitorContext& _context
+					VisitorContext& _context,
+					VisitorSwitchContext& _sContext
 				)
-					: CollectRuleAffectedSwitchesVisitorBase(_context)
+					: CollectRuleAffectedSwitchesVisitorBase(_context, _sContext)
 				{
 				}
 
@@ -127,22 +132,22 @@ CollectRuleAffectedSwitchesSecondPassVisitor
 					if (index != -1)
 					{
 						auto refRuleSymbol = context.syntaxManager.Rules().Values()[index];
-						vint indexSwitch = context.ruleAffectedSwitches.Keys().IndexOf(refRuleSymbol);
+						vint indexSwitch = sContext.ruleAffectedSwitches.Keys().IndexOf(refRuleSymbol);
 						if (indexSwitch != -1)
 						{
-							for (auto&& name : context.ruleAffectedSwitches.GetByIndex(indexSwitch))
+							for (auto&& name : sContext.ruleAffectedSwitches.GetByIndex(indexSwitch))
 							{
 								if (!pushedSwitches.Contains(name))
 								{
-									if (!context.clauseAffectedSwitches.Contains(currentClause, name))
+									if (!sContext.clauseAffectedSwitches.Contains(currentClause, name))
 									{
 										updated = true;
-										context.clauseAffectedSwitches.Add(currentClause, name);
+										sContext.clauseAffectedSwitches.Add(currentClause, name);
 									}
-									if (ruleSymbol != refRuleSymbol && !context.ruleAffectedSwitches.Contains(ruleSymbol, name))
+									if (ruleSymbol != refRuleSymbol && !sContext.ruleAffectedSwitches.Contains(ruleSymbol, name))
 									{
 										updated = true;
-										context.ruleAffectedSwitches.Add(ruleSymbol, name);
+										sContext.ruleAffectedSwitches.Add(ruleSymbol, name);
 									}
 								}
 							}
@@ -170,14 +175,17 @@ VerifySwitchesAndConditionsVisitor
 			{
 			protected:
 				VisitorContext&							context;
+				VisitorSwitchContext&					sContext;
 
 			public:
 				SortedList<WString>						testedSwitches;
 
 				CollectTestedSwitchesVisitor(
-					VisitorContext& _context
+					VisitorContext& _context,
+					VisitorSwitchContext& _sContext
 				)
 					: context(_context)
+					, sContext(_sContext)
 				{
 				}
 
@@ -205,10 +213,10 @@ VerifySwitchesAndConditionsVisitor
 					if (index != -1)
 					{
 						auto refRuleSymbol = context.syntaxManager.Rules().Values()[index];
-						vint index = context.ruleAffectedSwitches.Keys().IndexOf(refRuleSymbol);
+						vint index = sContext.ruleAffectedSwitches.Keys().IndexOf(refRuleSymbol);
 						if (index != -1)
 						{
-							for (auto switchName : context.ruleAffectedSwitches.GetByIndex(index))
+							for (auto switchName : sContext.ruleAffectedSwitches.GetByIndex(index))
 							{
 								if (!testedSwitches.Contains(switchName))
 								{
@@ -235,13 +243,16 @@ VerifySwitchesAndConditionsVisitor
 			{
 			protected:
 				VisitorContext&							context;
+				VisitorSwitchContext&					sContext;
 				RuleSymbol*								ruleSymbol = nullptr;
 
 			public:
 				VerifySwitchesAndConditionsVisitor(
-					VisitorContext& _context
+					VisitorContext& _context,
+					VisitorSwitchContext& _sContext
 				)
 					: context(_context)
+					, sContext(_sContext)
 				{
 				}
 
@@ -262,7 +273,7 @@ VerifySwitchesAndConditionsVisitor
 
 				void Traverse(GlrPushConditionSyntax* node) override
 				{
-					CollectTestedSwitchesVisitor visitor(context);
+					CollectTestedSwitchesVisitor visitor(context, sContext);
 					node->syntax->Accept(&visitor);
 					for (auto switchItem : node->switches)
 					{
@@ -285,7 +296,7 @@ VerifySwitchesAndConditionsVisitor
 				void Traverse(GlrPrefixMergeClause* node) override
 				{
 					auto pmRuleSymbol = context.syntaxManager.Rules()[node->rule->literal.value];
-					vint index = context.ruleAffectedSwitches.Keys().IndexOf(pmRuleSymbol);
+					vint index = sContext.ruleAffectedSwitches.Keys().IndexOf(pmRuleSymbol);
 					if(index != -1)
 					{
 						context.syntaxManager.AddError(
@@ -293,7 +304,7 @@ VerifySwitchesAndConditionsVisitor
 							node->codeRange,
 							ruleSymbol->Name(),
 							pmRuleSymbol->Name(),
-							context.ruleAffectedSwitches.GetByIndex(index)[0]
+							sContext.ruleAffectedSwitches.GetByIndex(index)[0]
 							);
 					}
 				}
@@ -303,17 +314,17 @@ VerifySwitchesAndConditionsVisitor
 ValidateSwitchesAndConditions
 ***********************************************************************/
 
-			void ValidateSwitchesAndConditions(VisitorContext& context, Ptr<GlrSyntaxFile> syntaxFile)
+			void ValidateSwitchesAndConditions(VisitorContext& context, VisitorSwitchContext& sContext, Ptr<GlrSyntaxFile> syntaxFile)
 			{
 				for (auto rule : syntaxFile->rules)
 				{
-					CollectRuleAffectedSwitchesFirstPassVisitor visitor(context);
+					CollectRuleAffectedSwitchesFirstPassVisitor visitor(context, sContext);
 					visitor.ValidateRule(rule);
 				}
 
 				while (true)
 				{
-					CollectRuleAffectedSwitchesSecondPassVisitor visitor(context);
+					CollectRuleAffectedSwitchesSecondPassVisitor visitor(context, sContext);
 					for (auto rule : syntaxFile->rules)
 					{
 						visitor.ValidateRule(rule);
@@ -324,7 +335,7 @@ ValidateSwitchesAndConditions
 
 				for (auto rule : syntaxFile->rules)
 				{
-					VerifySwitchesAndConditionsVisitor visitor(context);
+					VerifySwitchesAndConditionsVisitor visitor(context, sContext);
 					visitor.ValidateRule(rule);
 				}
 			}

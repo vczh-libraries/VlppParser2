@@ -21,6 +21,7 @@ ResolveNameVisitor
 			{
 			protected:
 				VisitorContext&				context;
+				VisitorSwitchContext&		sContext;
 				SortedList<WString>&		accessedSwitches;
 				RuleSymbol*					ruleSymbol;
 				GlrReuseClause*				reuseClause = nullptr;
@@ -28,10 +29,12 @@ ResolveNameVisitor
 			public:
 				ResolveNameVisitor(
 					VisitorContext& _context,
+					VisitorSwitchContext& _sContext,
 					SortedList<WString>& _accessedSwitches,
 					RuleSymbol* _ruleSymbol
 				)
 					: context(_context)
+					, sContext(_sContext)
 					, accessedSwitches(_accessedSwitches)
 					, ruleSymbol(_ruleSymbol)
 				{
@@ -242,7 +245,7 @@ ResolveNameVisitor
 				{
 					for (auto&& switchItem : switches)
 					{
-						if (!context.switches.Keys().Contains(switchItem->name.value))
+						if (!sContext.switches.Keys().Contains(switchItem->name.value))
 						{
 							context.syntaxManager.AddError(
 								ParserErrorType::SwitchNotExists,
@@ -282,7 +285,7 @@ ResolveNameVisitor
 
 				void Visit(GlrRefCondition* node) override
 				{
-					if (!context.switches.Keys().Contains(node->name.value))
+					if (!sContext.switches.Keys().Contains(node->name.value))
 					{
 						context.syntaxManager.AddError(
 							ParserErrorType::SwitchNotExists,
@@ -402,11 +405,11 @@ ResolveName
 				return true;
 			}
 
-			void ResolveName(VisitorContext& context, Ptr<GlrSyntaxFile> syntaxFile)
+			void ResolveName(VisitorContext& context, VisitorSwitchContext& sContext, Ptr<GlrSyntaxFile> syntaxFile)
 			{
 				for (auto switchItem : syntaxFile->switches)
 				{
-					if (context.switches.Keys().Contains(switchItem->name.value))
+					if (sContext.switches.Keys().Contains(switchItem->name.value))
 					{
 						context.syntaxManager.AddError(
 							ParserErrorType::DuplicatedSwitch,
@@ -416,7 +419,7 @@ ResolveName
 					}
 					else
 					{
-						context.switches.Add(
+						sContext.switches.Add(
 							switchItem->name.value, {
 								(switchItem->value == GlrSwitchValue::True),
 								switchItem.Obj()
@@ -433,7 +436,7 @@ ResolveName
 				for (auto rule : syntaxFile->rules)
 				{
 					auto ruleSymbol = context.syntaxManager.Rules()[rule->name.value];
-					ResolveNameVisitor visitor(context, accessedSwitches, ruleSymbol);
+					ResolveNameVisitor visitor(context, sContext, accessedSwitches, ruleSymbol);
 					if (rule->type)
 					{
 						ruleSymbol->ruleType = visitor.GetRuleClass(rule->type);
@@ -446,13 +449,13 @@ ResolveName
 
 				{
 					vint index = 0;
-					for (auto&& switchName : context.switches.Keys())
+					for (auto&& switchName : sContext.switches.Keys())
 					{
 						if (index == accessedSwitches.Count() || switchName != accessedSwitches[index])
 						{
 							context.syntaxManager.AddError(
 								ParserErrorType::UnusedSwitch,
-								context.switches[switchName].value->codeRange,
+								sContext.switches[switchName].value->codeRange,
 								switchName
 								);
 						}
@@ -463,7 +466,7 @@ ResolveName
 					}
 				}
 
-				if (context.switches.Count() > 0)
+				if (sContext.switches.Count() > 0)
 				{
 					for (auto rule : syntaxFile->rules)
 					{

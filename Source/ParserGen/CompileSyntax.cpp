@@ -9,15 +9,16 @@ namespace vl
 			using namespace collections;
 			using namespace compile_syntax;
 
-			extern void					ResolveName(VisitorContext& context, Ptr<GlrSyntaxFile> syntaxFile);
+			extern void					ResolveName(VisitorContext& context, VisitorSwitchContext& sContext, Ptr<GlrSyntaxFile> syntaxFile);
+			extern void					ValidateSwitchesAndConditions(VisitorContext& context, VisitorSwitchContext& sContext, Ptr<GlrSyntaxFile> syntaxFile);
 			extern void					ValidatePartialRules(VisitorContext& context, Ptr<GlrSyntaxFile> syntaxFile);
 			extern void					CalculateRuleAndClauseTypes(VisitorContext& context);
+
 			extern void					CalculateFirstSet(VisitorContext& context, Ptr<GlrSyntaxFile> syntaxFile);
-			extern void					ValidateSwitchesAndConditions(VisitorContext& context, Ptr<GlrSyntaxFile> syntaxFile);
 			extern void					ValidateTypes(VisitorContext& context, Ptr<GlrSyntaxFile> syntaxFile);
 			extern void					ValidateStructure(VisitorContext& context, Ptr<GlrSyntaxFile> syntaxFile);
 
-			extern Ptr<GlrSyntaxFile>	RewriteSyntax_Switch(VisitorContext& context, SyntaxSymbolManager& syntaxManager, Ptr<GlrSyntaxFile> syntaxFile);
+			extern Ptr<GlrSyntaxFile>	RewriteSyntax_Switch(VisitorContext& context, VisitorSwitchContext& sContext, SyntaxSymbolManager& syntaxManager, Ptr<GlrSyntaxFile> syntaxFile);
 			extern Ptr<GlrSyntaxFile>	RewriteSyntax_PrefixMerge(VisitorContext& context, SyntaxSymbolManager& syntaxManager, Ptr<GlrSyntaxFile> syntaxFile);
 			extern void					CompileSyntax(VisitorContext& context, Ptr<CppParserGenOutput> output, Ptr<GlrSyntaxFile> syntaxFile);
 
@@ -71,12 +72,12 @@ CompileSyntax
 				}
 			}
 
-			bool VerifySyntax_UntilSwitch(VisitorContext& context, Ptr<GlrSyntaxFile> syntaxFile)
+			bool VerifySyntax_UntilSwitch(VisitorContext& context, VisitorSwitchContext& sContext, Ptr<GlrSyntaxFile> syntaxFile)
 			{
-				ResolveName(context, syntaxFile);
+				ResolveName(context, sContext, syntaxFile);
 				if (context.syntaxManager.Global().Errors().Count() > 0) return false;
 
-				ValidateSwitchesAndConditions(context, syntaxFile);
+				ValidateSwitchesAndConditions(context, sContext, syntaxFile);
 				if (context.syntaxManager.Global().Errors().Count() > 0) return false;
 
 				ValidatePartialRules(context, syntaxFile);
@@ -120,16 +121,18 @@ CompileSyntax
 				if (NeedRewritten_Switch(syntaxFile))
 				{
 					VisitorContext context(astManager, lexerManager, syntaxManager);
-					if (!VerifySyntax_UntilSwitch(context, syntaxFile)) goto FINISHED_COMPILING;
+					VisitorSwitchContext sContext;
+					if (!VerifySyntax_UntilSwitch(context, sContext, syntaxFile)) goto FINISHED_COMPILING;
 
-					syntaxFile = RewriteSyntax_Switch(context, syntaxManager, syntaxFile);
+					syntaxFile = RewriteSyntax_Switch(context, sContext, syntaxManager, syntaxFile);
 					if (context.syntaxManager.Global().Errors().Count() > 0) goto FINISHED_COMPILING;
 				}
 
 				if (NeedRewritten_PrefixMerge(syntaxFile))
 				{
 					VisitorContext context(astManager, lexerManager, syntaxManager);
-					if (!VerifySyntax_UntilSwitch(context, syntaxFile)) goto FINISHED_COMPILING;
+					VisitorSwitchContext sContext;
+					if (!VerifySyntax_UntilSwitch(context, sContext, syntaxFile)) goto FINISHED_COMPILING;
 					if (!VerifySyntax_UntilPrefixMerge(context, syntaxFile)) goto FINISHED_COMPILING;
 
 					syntaxFile = RewriteSyntax_PrefixMerge(context, syntaxManager, syntaxFile);
@@ -138,7 +141,8 @@ CompileSyntax
 
 				{
 					VisitorContext context(astManager, lexerManager, syntaxManager);
-					if (!VerifySyntax_UntilSwitch(context, syntaxFile)) goto FINISHED_COMPILING;
+					VisitorSwitchContext sContext;
+					if (!VerifySyntax_UntilSwitch(context, sContext, syntaxFile)) goto FINISHED_COMPILING;
 					if (!VerifySyntax_UntilPrefixMerge(context, syntaxFile)) goto FINISHED_COMPILING;
 					CompileSyntax(context, output, syntaxFile);
 				}
