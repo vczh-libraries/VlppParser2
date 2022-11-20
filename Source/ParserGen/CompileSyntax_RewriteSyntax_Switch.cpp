@@ -24,6 +24,7 @@ namespace vl
 					Group<RuleSymbol*, Ptr<GeneratedRule>>		generatedRules;
 					Group<RuleSymbol*, Ptr<GlrRule>>			expandedCombinedRules;
 					Group<RuleSymbol*, Ptr<GlrRule>>			expandedFirstLevelRules;
+					SortedList<WString>							combinedRuleNames;
 				};
 
 				class EmptySyntax : public GlrSyntax
@@ -674,36 +675,53 @@ DeductAndVerifyClauseVisitor
 						return result;
 					}
 				};
-			}
 
 /***********************************************************************
 RewriteSyntax
 ***********************************************************************/
 
-			void RewriteSyntax_Switch_AddRules(RuleSymbol* ruleSymbol, Ptr<GlrSyntaxFile> rewritten, Group<RuleSymbol*, Ptr<GlrRule>>& expandedRules)
-			{
-				vint index = expandedRules.Keys().IndexOf(ruleSymbol);
-				if (index != -1)
+				Ptr<GlrRule> CreateRule(Ptr<GlrRule> rule, const wchar_t* tag, Dictionary<WString, bool>& switchValues)
 				{
-					for (auto expandedRule : From(expandedRules.GetByIndex(index))
-						.OrderBy([](auto a, auto b) { return WString::Compare(a->name.value, b->name.value); })
-						)
+					auto newRule = MakePtr<GlrRule>();
+
+					newRule->codeRange = rule->codeRange;
+					newRule->name = rule->name;
+					newRule->type = rule->type;
+
+					newRule->name.value += tag;
+					for (auto [name, value] : switchValues)
 					{
-						rewritten->rules.Add(expandedRule);
+						newRule->name.value += (value ? L"_1" : L"_0") + name;
+					}
+
+					return newRule;
+				}
+
+				void AddRules(RuleSymbol* ruleSymbol, Ptr<GlrSyntaxFile> rewritten, Group<RuleSymbol*, Ptr<GlrRule>>& expandedRules)
+				{
+					vint index = expandedRules.Keys().IndexOf(ruleSymbol);
+					if (index != -1)
+					{
+						for (auto expandedRule : From(expandedRules.GetByIndex(index))
+							.OrderBy([](auto a, auto b) { return WString::Compare(a->name.value, b->name.value); })
+							)
+						{
+							rewritten->rules.Add(expandedRule);
+						}
 					}
 				}
-			}
 
-			void RewriteSyntax_Switch_CreateRuleSymbols(SyntaxSymbolManager& syntaxManager, Group<RuleSymbol*, Ptr<GlrRule>>& expandedRules)
-			{
-				for (auto [ruleSymbol, index] : indexed(expandedRules.Keys()))
+				void CreateRuleSymbols(SyntaxSymbolManager& syntaxManager, Group<RuleSymbol*, Ptr<GlrRule>>& expandedRules)
 				{
-					for (auto rule : expandedRules.GetByIndex(index))
+					for (auto [ruleSymbol, index] : indexed(expandedRules.Keys()))
 					{
-						auto newRuleSymbol = syntaxManager.CreateRule(
-							rule->name.value,
-							rule->name.codeRange
-						);
+						for (auto rule : expandedRules.GetByIndex(index))
+						{
+							auto newRuleSymbol = syntaxManager.CreateRule(
+								rule->name.value,
+								rule->name.codeRange
+							);
+						}
 					}
 				}
 			}
@@ -786,17 +804,7 @@ RewriteSyntax
 							// such rule has switch values encoded in its name
 							for(auto generatedRule : rewritingContext.generatedRules.GetByIndex(index))
 							{
-								auto newRule = MakePtr<GlrRule>();
-
-								newRule->codeRange = rule->codeRange;
-								newRule->name = rule->name;
-								newRule->type = rule->type;
-
-								newRule->name.value += L"_SWITCH";
-								for (auto [name, value] : *generatedRule->switchValues.Obj())
-								{
-									newRule->name.value += (value ? L"_1" : L"_0") + name;
-								}
+								auto newRule = CreateRule(rule, L"_SWITCH", *generatedRule->switchValues.Obj());
 
 								// rewrite all clauses with given switch values
 								ExpandClauseVisitor visitor(context, generatedRule->switchValues);
@@ -830,15 +838,15 @@ RewriteSyntax
 							}
 
 							// add rules
-							RewriteSyntax_Switch_AddRules(ruleSymbol, rewritten, rewritingContext.expandedCombinedRules);
-							RewriteSyntax_Switch_AddRules(ruleSymbol, rewritten, rewritingContext.expandedFirstLevelRules);
+							AddRules(ruleSymbol, rewritten, rewritingContext.expandedCombinedRules);
+							AddRules(ruleSymbol, rewritten, rewritingContext.expandedFirstLevelRules);
 						}
 					}
 				}
 
 				// add symbols for generated rules
-				RewriteSyntax_Switch_CreateRuleSymbols(syntaxManager, rewritingContext.expandedCombinedRules);
-				RewriteSyntax_Switch_CreateRuleSymbols(syntaxManager, rewritingContext.expandedFirstLevelRules);
+				CreateRuleSymbols(syntaxManager, rewritingContext.expandedCombinedRules);
+				CreateRuleSymbols(syntaxManager, rewritingContext.expandedFirstLevelRules);
 
 				// remove symbols for rule affected by switch values
 				// because they are expanded to other rules
