@@ -58,7 +58,9 @@ namespace vl
 				using RuleKnownTypes = collections::Group<RuleSymbol*, AstClassSymbol*>;
 				using ClauseReuseDependencies = collections::Group<GlrReuseClause*, RuleSymbol*>;
 				using ClauseTypeMap = collections::Dictionary<GlrClause*, AstClassSymbol*>;
+
 				using RuleSwitchMap = collections::Group<RuleSymbol*, WString>;
+				using ClauseSwitchMap = collections::Group<GlrClause*, WString>;
 
 				using LeftRecursiveClauseMap = collections::Group<RuleSymbol*, GlrClause*>;
 				using LeftRecursionInjectClauseMap = collections::Group<RuleSymbol*, GlrLeftRecursionInjectClause*>;
@@ -89,7 +91,8 @@ namespace vl
 					Ptr<regex::RegexLexer>				cachedLexer;
 
 					// ValidateSwitchesAndConditions (not used after RewriteSyntax_Switch)
-					RuleSwitchMap						ruleAffectedSwitches;								// RuleSymbol -> all switches that affect how it is parsed
+					ClauseSwitchMap						clauseAffectedSwitches;								// GlrClause -> all switches that affect how it parses
+					RuleSwitchMap						ruleAffectedSwitches;								// RuleSymbol -> all switches that affect how it parses
 
 					LeftRecursiveClauseMap				leftRecursiveClauses;								// RuleSymbol -> all clauses begins with that rule
 					LeftRecursionInjectClauseMap		directLriClauses, indirectLriClauses;				// RuleSymbol -> contained left_recursion_injection clauses
