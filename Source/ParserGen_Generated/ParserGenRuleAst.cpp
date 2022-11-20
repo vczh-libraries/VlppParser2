@@ -403,7 +403,6 @@ namespace vl
 
 				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrLeftRecursionInjectClause>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(switches)
 				CLASS_MEMBER_FIELD(rule)
 				CLASS_MEMBER_FIELD(continuation)
 			END_CLASS_MEMBER(vl::glr::parsergen::GlrLeftRecursionInjectClause)

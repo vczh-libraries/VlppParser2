@@ -12,8 +12,7 @@ FilePath LogSyntaxWithPath(
 	const FilePath& outputFile,
 	const Func<WString(vint32_t)>& typeName,
 	const Func<WString(vint32_t)>& fieldName,
-	const Func<WString(vint32_t)>& tokenName,
-	const Func<WString(vint32_t)>& switchName
+	const Func<WString(vint32_t)>& tokenName
 )
 {
 	FileStream fileStream(outputFile.GetFullPath(), FileStream::WriteOnly);
@@ -71,12 +70,6 @@ FilePath LogSyntaxWithPath(
 			}
 			writer.WriteLine(L" -> " + labels[edge->To()]);
 
-			for (auto&& ins : edge->insSwitch)
-			{
-				writer.WriteString(L"\t\t? ");
-				LogInstruction(ins, switchName, writer);
-			}
-
 			for (auto&& ins : edge->insBeforeInput)
 			{
 				writer.WriteString(L"\t\t- ");
@@ -111,11 +104,10 @@ FilePath LogSyntax(
 	const WString& phase,
 	const Func<WString(vint32_t)>& typeName,
 	const Func<WString(vint32_t)>& fieldName,
-	const Func<WString(vint32_t)>& tokenName,
-	const Func<WString(vint32_t)>& switchName
+	const Func<WString(vint32_t)>& tokenName
 )
 {
 	auto outputDir = GetOutputDir(parserName);
 	auto outputFile = outputDir / (phase + L".txt");
-	return LogSyntaxWithPath(manager, outputFile, typeName, fieldName, tokenName, switchName);
+	return LogSyntaxWithPath(manager, outputFile, typeName, fieldName, tokenName);
 }

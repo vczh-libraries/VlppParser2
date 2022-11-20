@@ -178,7 +178,6 @@ CreateParserGenRuleAst
 				_LriContinuation->CreateProp(L"injectionTargets")->SetPropType(AstPropType::Array, L"LeftRecursionInjectClause");
 
 				_LriClause->SetBaseClass(L"Clause");
-				_LriClause->CreateProp(L"switches")->SetPropType(AstPropType::Array, L"SwitchItem");
 				_LriClause->CreateProp(L"rule")->SetPropType(AstPropType::Type, L"RefSyntax");
 				_LriClause->CreateProp(L"continuation")->SetPropType(AstPropType::Type, L"LeftRecursionInjectContinuation");
 

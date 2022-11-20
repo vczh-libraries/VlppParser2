@@ -49,8 +49,7 @@ FilePath LogTraceManager(
 	const Func<WString(vint32_t)>& fieldName,
 	const Func<WString(vint32_t)>& tokenName,
 	const Func<WString(vint32_t)>& ruleName,
-	const Func<WString(vint32_t)>& stateLabel,
-	const Func<WString(vint32_t)>& switchName
+	const Func<WString(vint32_t)>& stateLabel
 	);
 
 template<typename TVisitor, typename T>

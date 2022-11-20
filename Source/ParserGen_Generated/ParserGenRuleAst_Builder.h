@@ -52,7 +52,6 @@ namespace vl
 				public:
 					MakeLeftRecursionInjectClause& continuation(const vl::Ptr<GlrLeftRecursionInjectContinuation>& value);
 					MakeLeftRecursionInjectClause& rule(const vl::Ptr<GlrRefSyntax>& value);
-					MakeLeftRecursionInjectClause& switches(const vl::Ptr<GlrSwitchItem>& value);
 				};
 
 				class MakeLeftRecursionInjectContinuation : public vl::glr::ParsingAstBuilder<GlrLeftRecursionInjectContinuation>

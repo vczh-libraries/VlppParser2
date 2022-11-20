@@ -163,8 +163,7 @@ void RenderTrace(
 	const Func<WString(vint32_t)>& fieldName,
 	const Func<WString(vint32_t)>& tokenName,
 	const Func<WString(vint32_t)>& ruleName,
-	const Func<WString(vint32_t)>& stateLabel,
-	const Func<WString(vint32_t)>& switchName
+	const Func<WString(vint32_t)>& stateLabel
 )
 {
 	StringReader reader(GenerateToStream([&](StreamWriter& writer)
@@ -1200,8 +1199,7 @@ FilePath LogTraceManager(
 	const Func<WString(vint32_t)>& fieldName,
 	const Func<WString(vint32_t)>& tokenName,
 	const Func<WString(vint32_t)>& ruleName,
-	const Func<WString(vint32_t)>& stateLabel,
-	const Func<WString(vint32_t)>& switchName
+	const Func<WString(vint32_t)>& stateLabel
 )
 {
 	CHECK_ERROR(tm.concurrentCount > 0, L"Cannot log failed traces!");
@@ -1228,8 +1226,7 @@ FilePath LogTraceManager(
 					fieldName,
 					tokenName,
 					ruleName,
-					stateLabel,
-					switchName
+					stateLabel
 					);
 
 				auto successorId = trace->successors.first;

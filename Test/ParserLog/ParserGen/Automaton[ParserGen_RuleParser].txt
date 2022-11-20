@@ -2862,11 +2862,7 @@
 
 [153][LriContinuationBody]LriConfig "(" Placeholder ")" @ LriTarget { "|" LriTarget }
 [RULE: 19][CLAUSE: 0]
-	token: "(" -> [174][LriTarget]< "(" @ RuleName LriContinuation ")" >
-		- BeginObject(LeftRecursionInjectClause)
-		> rule: LriTarget -> [154][LriContinuationBody]LriConfig "(" Placeholder ")" LriTarget @ { "|" LriTarget }
-			+ Field(LeftRecursionInjectContinuation::injectionTargets)
-	token: "!(" -> [167][LriTarget]< "!(" @ { SwitchItem ; "," } ";" RuleName [ LriContinuation ] ")" >
+	token: "(" -> [167][LriTarget]< "(" @ RuleName LriContinuation ")" >
 		- BeginObject(LeftRecursionInjectClause)
 		> rule: LriTarget -> [154][LriContinuationBody]LriConfig "(" Placeholder ")" LriTarget @ { "|" LriTarget }
 			+ Field(LeftRecursionInjectContinuation::injectionTargets)
@@ -2877,7 +2873,7 @@
 		+ Field(RefSyntax::literal)
 		> rule: LriTarget -> [154][LriContinuationBody]LriConfig "(" Placeholder ")" LriTarget @ { "|" LriTarget }
 			+ Field(LeftRecursionInjectContinuation::injectionTargets)
-		> rule: RuleName -> [178][LriTarget]< RuleName @ >
+		> rule: RuleName -> [171][LriTarget]< RuleName @ >
 
 [154][LriContinuationBody]LriConfig "(" Placeholder ")" LriTarget @ { "|" LriTarget }
 [RULE: 19][CLAUSE: 0]
@@ -2886,11 +2882,7 @@
 
 [155][LriContinuationBody]LriConfig "(" Placeholder ")" LriTarget { "|" @ LriTarget }
 [RULE: 19][CLAUSE: 0]
-	token: "(" -> [174][LriTarget]< "(" @ RuleName LriContinuation ")" >
-		- BeginObject(LeftRecursionInjectClause)
-		> rule: LriTarget -> [156][LriContinuationBody]LriConfig "(" Placeholder ")" LriTarget { "|" LriTarget @ }
-			+ Field(LeftRecursionInjectContinuation::injectionTargets)
-	token: "!(" -> [167][LriTarget]< "!(" @ { SwitchItem ; "," } ";" RuleName [ LriContinuation ] ")" >
+	token: "(" -> [167][LriTarget]< "(" @ RuleName LriContinuation ")" >
 		- BeginObject(LeftRecursionInjectClause)
 		> rule: LriTarget -> [156][LriContinuationBody]LriConfig "(" Placeholder ")" LriTarget { "|" LriTarget @ }
 			+ Field(LeftRecursionInjectContinuation::injectionTargets)
@@ -2901,7 +2893,7 @@
 		+ Field(RefSyntax::literal)
 		> rule: LriTarget -> [156][LriContinuationBody]LriConfig "(" Placeholder ")" LriTarget { "|" LriTarget @ }
 			+ Field(LeftRecursionInjectContinuation::injectionTargets)
-		> rule: RuleName -> [178][LriTarget]< RuleName @ >
+		> rule: RuleName -> [171][LriTarget]< RuleName @ >
 
 [156][LriContinuationBody]LriConfig "(" Placeholder ")" LriTarget { "|" LriTarget @ }
 [RULE: 19][CLAUSE: 0]
@@ -2961,161 +2953,89 @@
 
 [165][LriTarget] BEGIN 
 [RULE: 21][CLAUSE: -1]
-	token: "(" -> [174][LriTarget]< "(" @ RuleName LriContinuation ")" >
-		- BeginObject(LeftRecursionInjectClause)
-	token: "!(" -> [167][LriTarget]< "!(" @ { SwitchItem ; "," } ";" RuleName [ LriContinuation ] ")" >
+	token: "(" -> [167][LriTarget]< "(" @ RuleName LriContinuation ")" >
 		- BeginObject(LeftRecursionInjectClause)
 	token: ID -> [145][RuleName]< ID @ >
 		- BeginObject(LeftRecursionInjectClause)
 		- BeginObject(RefSyntax)
 		+ Token()
 		+ Field(RefSyntax::literal)
-		> rule: RuleName -> [178][LriTarget]< RuleName @ >
+		> rule: RuleName -> [171][LriTarget]< RuleName @ >
 
 [166][LriTarget] END [ENDING]
 [RULE: 21][CLAUSE: -1]
 
-[167][LriTarget]< "!(" @ { SwitchItem ; "," } ";" RuleName [ LriContinuation ] ")" >
-[RULE: 21][CLAUSE: 2]
-	token: ";" -> [169][LriTarget]< "!(" { SwitchItem ; "," } ";" @ RuleName [ LriContinuation ] ")" >
-	token: "!" -> [25][SwitchItem]< "!" @ ID >
-		- BeginObject(SwitchItem)
-		> rule: SwitchItem -> [173][LriTarget]< "!(" { SwitchItem @ ; "," } ";" RuleName [ LriContinuation ] ")" >
-			+ Field(LeftRecursionInjectClause::switches)
-	token: ID -> [27][SwitchItem]< ID @ >
-		- BeginObject(SwitchItem)
-		+ Token()
-		+ Field(SwitchItem::name)
-		> rule: SwitchItem -> [173][LriTarget]< "!(" { SwitchItem @ ; "," } ";" RuleName [ LriContinuation ] ")" >
-			+ Field(LeftRecursionInjectClause::switches)
-
-[168][LriTarget]< "!(" { SwitchItem ; "," @ } ";" RuleName [ LriContinuation ] ")" >
-[RULE: 21][CLAUSE: 2]
-	token: "!" -> [25][SwitchItem]< "!" @ ID >
-		- BeginObject(SwitchItem)
-		> rule: SwitchItem -> [173][LriTarget]< "!(" { SwitchItem @ ; "," } ";" RuleName [ LriContinuation ] ")" >
-			+ Field(LeftRecursionInjectClause::switches)
-	token: ID -> [27][SwitchItem]< ID @ >
-		- BeginObject(SwitchItem)
-		+ Token()
-		+ Field(SwitchItem::name)
-		> rule: SwitchItem -> [173][LriTarget]< "!(" { SwitchItem @ ; "," } ";" RuleName [ LriContinuation ] ")" >
-			+ Field(LeftRecursionInjectClause::switches)
-
-[169][LriTarget]< "!(" { SwitchItem ; "," } ";" @ RuleName [ LriContinuation ] ")" >
-[RULE: 21][CLAUSE: 2]
-	token: ID -> [145][RuleName]< ID @ >
-		- BeginObject(RefSyntax)
-		+ Token()
-		+ Field(RefSyntax::literal)
-		> rule: RuleName -> [170][LriTarget]< "!(" { SwitchItem ; "," } ";" RuleName @ [ LriContinuation ] ")" >
-			+ Field(LeftRecursionInjectClause::rule)
-
-[170][LriTarget]< "!(" { SwitchItem ; "," } ";" RuleName @ [ LriContinuation ] ")" >
-[RULE: 21][CLAUSE: 2]
-	token: ")" -> [172][LriTarget]< "!(" { SwitchItem ; "," } ";" RuleName [ LriContinuation ] ")" @ >
-	token: "[" -> [161][LriContinuation]< "[" @ LriContinuationBody "]" >
-		- BeginObject(LeftRecursionInjectContinuation)
-		> rule: LriContinuation -> [171][LriTarget]< "!(" { SwitchItem ; "," } ";" RuleName [ LriContinuation @ ] ")" >
-			+ Field(LeftRecursionInjectClause::continuation)
-	token: "left_recursion_inject" -> [148][LriConfig]"left_recursion_inject" @
-		- BeginObject(LeftRecursionInjectContinuation)
-		> rule: LriContinuation -> [171][LriTarget]< "!(" { SwitchItem ; "," } ";" RuleName [ LriContinuation @ ] ")" >
-			+ Field(LeftRecursionInjectClause::continuation)
-		> rule: LriContinuationBody -> [164][LriContinuation]< LriContinuationBody @ >
-		> rule: LriConfig -> [158][LriContinuationBody]LriConfig @ "(" Placeholder ")" LriTarget { "|" LriTarget }
-	token: "left_recursion_inject_multiple" -> [149][LriConfig]"left_recursion_inject_multiple" @
-		- BeginObject(LeftRecursionInjectContinuation)
-		> rule: LriContinuation -> [171][LriTarget]< "!(" { SwitchItem ; "," } ";" RuleName [ LriContinuation @ ] ")" >
-			+ Field(LeftRecursionInjectClause::continuation)
-		> rule: LriContinuationBody -> [164][LriContinuation]< LriContinuationBody @ >
-		> rule: LriConfig -> [158][LriContinuationBody]LriConfig @ "(" Placeholder ")" LriTarget { "|" LriTarget }
-
-[171][LriTarget]< "!(" { SwitchItem ; "," } ";" RuleName [ LriContinuation @ ] ")" >
-[RULE: 21][CLAUSE: 2]
-	token: ")" -> [172][LriTarget]< "!(" { SwitchItem ; "," } ";" RuleName [ LriContinuation ] ")" @ >
-
-[172][LriTarget]< "!(" { SwitchItem ; "," } ";" RuleName [ LriContinuation ] ")" @ >
-[RULE: 21][CLAUSE: 2]
-	ending -> [166][LriTarget] END [ENDING]
-		- EndObject()
-
-[173][LriTarget]< "!(" { SwitchItem @ ; "," } ";" RuleName [ LriContinuation ] ")" >
-[RULE: 21][CLAUSE: 2]
-	token: "," -> [168][LriTarget]< "!(" { SwitchItem ; "," @ } ";" RuleName [ LriContinuation ] ")" >
-	token: ";" -> [169][LriTarget]< "!(" { SwitchItem ; "," } ";" @ RuleName [ LriContinuation ] ")" >
-
-[174][LriTarget]< "(" @ RuleName LriContinuation ")" >
+[167][LriTarget]< "(" @ RuleName LriContinuation ")" >
 [RULE: 21][CLAUSE: 1]
 	token: ID -> [145][RuleName]< ID @ >
 		- BeginObject(RefSyntax)
 		+ Token()
 		+ Field(RefSyntax::literal)
-		> rule: RuleName -> [175][LriTarget]< "(" RuleName @ LriContinuation ")" >
+		> rule: RuleName -> [168][LriTarget]< "(" RuleName @ LriContinuation ")" >
 			+ Field(LeftRecursionInjectClause::rule)
 
-[175][LriTarget]< "(" RuleName @ LriContinuation ")" >
+[168][LriTarget]< "(" RuleName @ LriContinuation ")" >
 [RULE: 21][CLAUSE: 1]
 	token: "[" -> [161][LriContinuation]< "[" @ LriContinuationBody "]" >
 		- BeginObject(LeftRecursionInjectContinuation)
-		> rule: LriContinuation -> [177][LriTarget]< "(" RuleName LriContinuation @ ")" >
+		> rule: LriContinuation -> [170][LriTarget]< "(" RuleName LriContinuation @ ")" >
 			+ Field(LeftRecursionInjectClause::continuation)
 	token: "left_recursion_inject" -> [148][LriConfig]"left_recursion_inject" @
 		- BeginObject(LeftRecursionInjectContinuation)
-		> rule: LriContinuation -> [177][LriTarget]< "(" RuleName LriContinuation @ ")" >
+		> rule: LriContinuation -> [170][LriTarget]< "(" RuleName LriContinuation @ ")" >
 			+ Field(LeftRecursionInjectClause::continuation)
 		> rule: LriContinuationBody -> [164][LriContinuation]< LriContinuationBody @ >
 		> rule: LriConfig -> [158][LriContinuationBody]LriConfig @ "(" Placeholder ")" LriTarget { "|" LriTarget }
 	token: "left_recursion_inject_multiple" -> [149][LriConfig]"left_recursion_inject_multiple" @
 		- BeginObject(LeftRecursionInjectContinuation)
-		> rule: LriContinuation -> [177][LriTarget]< "(" RuleName LriContinuation @ ")" >
+		> rule: LriContinuation -> [170][LriTarget]< "(" RuleName LriContinuation @ ")" >
 			+ Field(LeftRecursionInjectClause::continuation)
 		> rule: LriContinuationBody -> [164][LriContinuation]< LriContinuationBody @ >
 		> rule: LriConfig -> [158][LriContinuationBody]LriConfig @ "(" Placeholder ")" LriTarget { "|" LriTarget }
 
-[176][LriTarget]< "(" RuleName LriContinuation ")" @ >
+[169][LriTarget]< "(" RuleName LriContinuation ")" @ >
 [RULE: 21][CLAUSE: 1]
 	ending -> [166][LriTarget] END [ENDING]
 		- EndObject()
 
-[177][LriTarget]< "(" RuleName LriContinuation @ ")" >
+[170][LriTarget]< "(" RuleName LriContinuation @ ")" >
 [RULE: 21][CLAUSE: 1]
-	token: ")" -> [176][LriTarget]< "(" RuleName LriContinuation ")" @ >
+	token: ")" -> [169][LriTarget]< "(" RuleName LriContinuation ")" @ >
 
-[178][LriTarget]< RuleName @ >
+[171][LriTarget]< RuleName @ >
 [RULE: 21][CLAUSE: 0]
 	ending -> [166][LriTarget] END [ENDING]
 		- Field(LeftRecursionInjectClause::rule)
 		- EndObject()
 
-[179][Rule] BEGIN 
+[172][Rule] BEGIN 
 [RULE: 22][CLAUSE: -1]
-	token: ID -> [181][Rule]< ID @ [ ":" ID ] { "::=" Clause } ";" >
+	token: ID -> [174][Rule]< ID @ [ ":" ID ] { "::=" Clause } ";" >
 		- BeginObject(Rule)
 		+ Token()
 		+ Field(Rule::name)
 
-[180][Rule] END [ENDING]
+[173][Rule] END [ENDING]
 [RULE: 22][CLAUSE: -1]
 
-[181][Rule]< ID @ [ ":" ID ] { "::=" Clause } ";" >
+[174][Rule]< ID @ [ ":" ID ] { "::=" Clause } ";" >
 [RULE: 22][CLAUSE: 0]
-	token: ":" -> [182][Rule]< ID [ ":" @ ID ] { "::=" Clause } ";" >
-	token: ";" -> [186][Rule]< ID [ ":" ID ] { "::=" Clause } ";" @ >
-	token: "::=" -> [184][Rule]< ID [ ":" ID ] { "::=" @ Clause } ";" >
+	token: ":" -> [175][Rule]< ID [ ":" @ ID ] { "::=" Clause } ";" >
+	token: ";" -> [179][Rule]< ID [ ":" ID ] { "::=" Clause } ";" @ >
+	token: "::=" -> [177][Rule]< ID [ ":" ID ] { "::=" @ Clause } ";" >
 
-[182][Rule]< ID [ ":" @ ID ] { "::=" Clause } ";" >
+[175][Rule]< ID [ ":" @ ID ] { "::=" Clause } ";" >
 [RULE: 22][CLAUSE: 0]
-	token: ID -> [183][Rule]< ID [ ":" ID @ ] { "::=" Clause } ";" >
+	token: ID -> [176][Rule]< ID [ ":" ID @ ] { "::=" Clause } ";" >
 		+ Token()
 		+ Field(Rule::type)
 
-[183][Rule]< ID [ ":" ID @ ] { "::=" Clause } ";" >
+[176][Rule]< ID [ ":" ID @ ] { "::=" Clause } ";" >
 [RULE: 22][CLAUSE: 0]
-	token: ";" -> [186][Rule]< ID [ ":" ID ] { "::=" Clause } ";" @ >
-	token: "::=" -> [184][Rule]< ID [ ":" ID ] { "::=" @ Clause } ";" >
+	token: ";" -> [179][Rule]< ID [ ":" ID ] { "::=" Clause } ";" @ >
+	token: "::=" -> [177][Rule]< ID [ ":" ID ] { "::=" @ Clause } ";" >
 
-[184][Rule]< ID [ ":" ID ] { "::=" @ Clause } ";" >
+[177][Rule]< ID [ ":" ID ] { "::=" @ Clause } ";" >
 [RULE: 22][CLAUSE: 0]
 	token: "(" -> [80][Syntax0]<< "(" @ !Syntax ")" >>
 		- BeginObject(PartialClause)
@@ -3123,7 +3043,7 @@
 		- DelayFieldAssignment()
 		- DelayFieldAssignment()
 		- DelayFieldAssignment()
-		> rule: Clause -> [185][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
+		> rule: Clause -> [178][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
 			+ Field(Rule::clauses)
 		> rule: Syntax -> [133][Clause]< Syntax @ "as" "partial" ID [ "{" { Assignment ; "," } "}" ] >
 			+ Field(PartialClause::syntax)
@@ -3138,7 +3058,7 @@
 		- DelayFieldAssignment()
 		- DelayFieldAssignment()
 		- DelayFieldAssignment()
-		> rule: Clause -> [185][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
+		> rule: Clause -> [178][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
 			+ Field(Rule::clauses)
 		> rule: Syntax -> [134][Clause]< Syntax @ "as" ID [ "{" { Assignment ; "," } "}" ] >
 			+ Field(CreateClause::syntax)
@@ -3153,7 +3073,7 @@
 		- DelayFieldAssignment()
 		- DelayFieldAssignment()
 		- DelayFieldAssignment()
-		> rule: Clause -> [185][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
+		> rule: Clause -> [178][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
 			+ Field(Rule::clauses)
 		> rule: Syntax -> [135][Clause]< Syntax @ [ "{" { Assignment ; "," } "}" ] >
 			+ Field(ReuseClause::syntax)
@@ -3168,7 +3088,7 @@
 		- DelayFieldAssignment()
 		- DelayFieldAssignment()
 		- BeginObject(OptionalSyntax)
-		> rule: Clause -> [185][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
+		> rule: Clause -> [178][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
 			+ Field(Rule::clauses)
 		> rule: Syntax -> [133][Clause]< Syntax @ "as" "partial" ID [ "{" { Assignment ; "," } "}" ] >
 			+ Field(PartialClause::syntax)
@@ -3184,7 +3104,7 @@
 		- DelayFieldAssignment()
 		- DelayFieldAssignment()
 		- BeginObject(OptionalSyntax)
-		> rule: Clause -> [185][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
+		> rule: Clause -> [178][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
 			+ Field(Rule::clauses)
 		> rule: Syntax -> [134][Clause]< Syntax @ "as" ID [ "{" { Assignment ; "," } "}" ] >
 			+ Field(CreateClause::syntax)
@@ -3200,7 +3120,7 @@
 		- DelayFieldAssignment()
 		- DelayFieldAssignment()
 		- BeginObject(OptionalSyntax)
-		> rule: Clause -> [185][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
+		> rule: Clause -> [178][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
 			+ Field(Rule::clauses)
 		> rule: Syntax -> [135][Clause]< Syntax @ [ "{" { Assignment ; "," } "}" ] >
 			+ Field(ReuseClause::syntax)
@@ -3216,7 +3136,7 @@
 		- DelayFieldAssignment()
 		- DelayFieldAssignment()
 		- BeginObject(LoopSyntax)
-		> rule: Clause -> [185][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
+		> rule: Clause -> [178][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
 			+ Field(Rule::clauses)
 		> rule: Syntax -> [133][Clause]< Syntax @ "as" "partial" ID [ "{" { Assignment ; "," } "}" ] >
 			+ Field(PartialClause::syntax)
@@ -3231,7 +3151,7 @@
 		- DelayFieldAssignment()
 		- DelayFieldAssignment()
 		- BeginObject(LoopSyntax)
-		> rule: Clause -> [185][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
+		> rule: Clause -> [178][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
 			+ Field(Rule::clauses)
 		> rule: Syntax -> [134][Clause]< Syntax @ "as" ID [ "{" { Assignment ; "," } "}" ] >
 			+ Field(CreateClause::syntax)
@@ -3246,7 +3166,7 @@
 		- DelayFieldAssignment()
 		- DelayFieldAssignment()
 		- BeginObject(LoopSyntax)
-		> rule: Clause -> [185][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
+		> rule: Clause -> [178][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
 			+ Field(Rule::clauses)
 		> rule: Syntax -> [135][Clause]< Syntax @ [ "{" { Assignment ; "," } "}" ] >
 			+ Field(ReuseClause::syntax)
@@ -3261,7 +3181,7 @@
 		- DelayFieldAssignment()
 		- DelayFieldAssignment()
 		- BeginObject(PushConditionSyntax)
-		> rule: Clause -> [185][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
+		> rule: Clause -> [178][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
 			+ Field(Rule::clauses)
 		> rule: Syntax -> [133][Clause]< Syntax @ "as" "partial" ID [ "{" { Assignment ; "," } "}" ] >
 			+ Field(PartialClause::syntax)
@@ -3276,7 +3196,7 @@
 		- DelayFieldAssignment()
 		- DelayFieldAssignment()
 		- BeginObject(PushConditionSyntax)
-		> rule: Clause -> [185][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
+		> rule: Clause -> [178][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
 			+ Field(Rule::clauses)
 		> rule: Syntax -> [134][Clause]< Syntax @ "as" ID [ "{" { Assignment ; "," } "}" ] >
 			+ Field(CreateClause::syntax)
@@ -3291,7 +3211,7 @@
 		- DelayFieldAssignment()
 		- DelayFieldAssignment()
 		- BeginObject(PushConditionSyntax)
-		> rule: Clause -> [185][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
+		> rule: Clause -> [178][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
 			+ Field(Rule::clauses)
 		> rule: Syntax -> [135][Clause]< Syntax @ [ "{" { Assignment ; "," } "}" ] >
 			+ Field(ReuseClause::syntax)
@@ -3306,7 +3226,7 @@
 		- DelayFieldAssignment()
 		- DelayFieldAssignment()
 		- BeginObject(TestConditionSyntax)
-		> rule: Clause -> [185][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
+		> rule: Clause -> [178][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
 			+ Field(Rule::clauses)
 		> rule: Syntax -> [133][Clause]< Syntax @ "as" "partial" ID [ "{" { Assignment ; "," } "}" ] >
 			+ Field(PartialClause::syntax)
@@ -3321,7 +3241,7 @@
 		- DelayFieldAssignment()
 		- DelayFieldAssignment()
 		- BeginObject(TestConditionSyntax)
-		> rule: Clause -> [185][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
+		> rule: Clause -> [178][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
 			+ Field(Rule::clauses)
 		> rule: Syntax -> [134][Clause]< Syntax @ "as" ID [ "{" { Assignment ; "," } "}" ] >
 			+ Field(CreateClause::syntax)
@@ -3336,7 +3256,7 @@
 		- DelayFieldAssignment()
 		- DelayFieldAssignment()
 		- BeginObject(TestConditionSyntax)
-		> rule: Clause -> [185][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
+		> rule: Clause -> [178][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
 			+ Field(Rule::clauses)
 		> rule: Syntax -> [135][Clause]< Syntax @ [ "{" { Assignment ; "," } "}" ] >
 			+ Field(ReuseClause::syntax)
@@ -3351,7 +3271,7 @@
 		- DelayFieldAssignment()
 		- DelayFieldAssignment()
 		- BeginObject(UseSyntax)
-		> rule: Clause -> [185][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
+		> rule: Clause -> [178][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
 			+ Field(Rule::clauses)
 		> rule: Syntax -> [135][Clause]< Syntax @ [ "{" { Assignment ; "," } "}" ] >
 			+ Field(ReuseClause::syntax)
@@ -3366,7 +3286,7 @@
 		- DelayFieldAssignment()
 		- DelayFieldAssignment()
 		- BeginObject(UseSyntax)
-		> rule: Clause -> [185][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
+		> rule: Clause -> [178][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
 			+ Field(Rule::clauses)
 		> rule: Syntax -> [134][Clause]< Syntax @ "as" ID [ "{" { Assignment ; "," } "}" ] >
 			+ Field(CreateClause::syntax)
@@ -3381,7 +3301,7 @@
 		- DelayFieldAssignment()
 		- DelayFieldAssignment()
 		- BeginObject(UseSyntax)
-		> rule: Clause -> [185][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
+		> rule: Clause -> [178][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
 			+ Field(Rule::clauses)
 		> rule: Syntax -> [133][Clause]< Syntax @ "as" "partial" ID [ "{" { Assignment ; "," } "}" ] >
 			+ Field(PartialClause::syntax)
@@ -3392,11 +3312,11 @@
 			+ ReopenObject()
 	token: "!" -> [110][Clause]< "!" @ "prefix_merge" "(" RuleName ")" >
 		- BeginObject(PrefixMergeClause)
-		> rule: Clause -> [185][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
+		> rule: Clause -> [178][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
 			+ Field(Rule::clauses)
 	token: "!" -> [111][Clause]< "!" @ RuleName LriContinuation >
 		- BeginObject(LeftRecursionInjectClause)
-		> rule: Clause -> [185][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
+		> rule: Clause -> [178][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
 			+ Field(Rule::clauses)
 	token: "+" -> [60][Syntax0]< "+" @ OptionalBody >
 		- BeginObject(PartialClause)
@@ -3404,7 +3324,7 @@
 		- DelayFieldAssignment()
 		- DelayFieldAssignment()
 		- BeginObject(OptionalSyntax)
-		> rule: Clause -> [185][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
+		> rule: Clause -> [178][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
 			+ Field(Rule::clauses)
 		> rule: Syntax -> [133][Clause]< Syntax @ "as" "partial" ID [ "{" { Assignment ; "," } "}" ] >
 			+ Field(PartialClause::syntax)
@@ -3419,7 +3339,7 @@
 		- DelayFieldAssignment()
 		- DelayFieldAssignment()
 		- BeginObject(OptionalSyntax)
-		> rule: Clause -> [185][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
+		> rule: Clause -> [178][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
 			+ Field(Rule::clauses)
 		> rule: Syntax -> [134][Clause]< Syntax @ "as" ID [ "{" { Assignment ; "," } "}" ] >
 			+ Field(CreateClause::syntax)
@@ -3434,7 +3354,7 @@
 		- DelayFieldAssignment()
 		- DelayFieldAssignment()
 		- BeginObject(OptionalSyntax)
-		> rule: Clause -> [185][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
+		> rule: Clause -> [178][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
 			+ Field(Rule::clauses)
 		> rule: Syntax -> [135][Clause]< Syntax @ [ "{" { Assignment ; "," } "}" ] >
 			+ Field(ReuseClause::syntax)
@@ -3449,7 +3369,7 @@
 		- DelayFieldAssignment()
 		- DelayFieldAssignment()
 		- BeginObject(OptionalSyntax)
-		> rule: Clause -> [185][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
+		> rule: Clause -> [178][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
 			+ Field(Rule::clauses)
 		> rule: Syntax -> [133][Clause]< Syntax @ "as" "partial" ID [ "{" { Assignment ; "," } "}" ] >
 			+ Field(PartialClause::syntax)
@@ -3464,7 +3384,7 @@
 		- DelayFieldAssignment()
 		- DelayFieldAssignment()
 		- BeginObject(OptionalSyntax)
-		> rule: Clause -> [185][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
+		> rule: Clause -> [178][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
 			+ Field(Rule::clauses)
 		> rule: Syntax -> [134][Clause]< Syntax @ "as" ID [ "{" { Assignment ; "," } "}" ] >
 			+ Field(CreateClause::syntax)
@@ -3479,7 +3399,7 @@
 		- DelayFieldAssignment()
 		- DelayFieldAssignment()
 		- BeginObject(OptionalSyntax)
-		> rule: Clause -> [185][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
+		> rule: Clause -> [178][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
 			+ Field(Rule::clauses)
 		> rule: Syntax -> [135][Clause]< Syntax @ [ "{" { Assignment ; "," } "}" ] >
 			+ Field(ReuseClause::syntax)
@@ -3490,7 +3410,7 @@
 			+ ReopenObject()
 	token: "left_recursion_placeholder" -> [119][Clause]< "left_recursion_placeholder" @ "(" Placeholder { "," Placeholder } ")" >
 		- BeginObject(LeftRecursionPlaceholderClause)
-		> rule: Clause -> [185][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
+		> rule: Clause -> [178][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
 			+ Field(Rule::clauses)
 	token: ID -> [48][Token]ID @
 		- BeginObject(PartialClause)
@@ -3500,7 +3420,7 @@
 		- BeginObject(RefSyntax)
 		+ Token()
 		+ Field(RefSyntax::literal)
-		> rule: Clause -> [185][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
+		> rule: Clause -> [178][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
 			+ Field(Rule::clauses)
 		> rule: Syntax -> [133][Clause]< Syntax @ "as" "partial" ID [ "{" { Assignment ; "," } "}" ] >
 			+ Field(PartialClause::syntax)
@@ -3518,7 +3438,7 @@
 		- BeginObject(RefSyntax)
 		+ Token()
 		+ Field(RefSyntax::literal)
-		> rule: Clause -> [185][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
+		> rule: Clause -> [178][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
 			+ Field(Rule::clauses)
 		> rule: Syntax -> [134][Clause]< Syntax @ "as" ID [ "{" { Assignment ; "," } "}" ] >
 			+ Field(CreateClause::syntax)
@@ -3536,7 +3456,7 @@
 		- BeginObject(RefSyntax)
 		+ Token()
 		+ Field(RefSyntax::literal)
-		> rule: Clause -> [185][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
+		> rule: Clause -> [178][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
 			+ Field(Rule::clauses)
 		> rule: Syntax -> [135][Clause]< Syntax @ [ "{" { Assignment ; "," } "}" ] >
 			+ Field(ReuseClause::syntax)
@@ -3554,7 +3474,7 @@
 		- BeginObject(RefSyntax)
 		+ Token()
 		+ Field(RefSyntax::literal)
-		> rule: Clause -> [185][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
+		> rule: Clause -> [178][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
 			+ Field(Rule::clauses)
 		> rule: Syntax -> [133][Clause]< Syntax @ "as" "partial" ID [ "{" { Assignment ; "," } "}" ] >
 			+ Field(PartialClause::syntax)
@@ -3572,7 +3492,7 @@
 		- BeginObject(RefSyntax)
 		+ Token()
 		+ Field(RefSyntax::literal)
-		> rule: Clause -> [185][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
+		> rule: Clause -> [178][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
 			+ Field(Rule::clauses)
 		> rule: Syntax -> [134][Clause]< Syntax @ "as" ID [ "{" { Assignment ; "," } "}" ] >
 			+ Field(CreateClause::syntax)
@@ -3590,7 +3510,7 @@
 		- BeginObject(RefSyntax)
 		+ Token()
 		+ Field(RefSyntax::literal)
-		> rule: Clause -> [185][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
+		> rule: Clause -> [178][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
 			+ Field(Rule::clauses)
 		> rule: Syntax -> [135][Clause]< Syntax @ [ "{" { Assignment ; "," } "}" ] >
 			+ Field(ReuseClause::syntax)
@@ -3608,7 +3528,7 @@
 		- BeginObject(RefSyntax)
 		+ Token()
 		+ Field(RefSyntax::literal)
-		> rule: Clause -> [185][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
+		> rule: Clause -> [178][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
 			+ Field(Rule::clauses)
 		> rule: Syntax -> [133][Clause]< Syntax @ "as" "partial" ID [ "{" { Assignment ; "," } "}" ] >
 			+ Field(PartialClause::syntax)
@@ -3626,7 +3546,7 @@
 		- BeginObject(RefSyntax)
 		+ Token()
 		+ Field(RefSyntax::literal)
-		> rule: Clause -> [185][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
+		> rule: Clause -> [178][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
 			+ Field(Rule::clauses)
 		> rule: Syntax -> [134][Clause]< Syntax @ "as" ID [ "{" { Assignment ; "," } "}" ] >
 			+ Field(CreateClause::syntax)
@@ -3644,7 +3564,7 @@
 		- BeginObject(RefSyntax)
 		+ Token()
 		+ Field(RefSyntax::literal)
-		> rule: Clause -> [185][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
+		> rule: Clause -> [178][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
 			+ Field(Rule::clauses)
 		> rule: Syntax -> [135][Clause]< Syntax @ [ "{" { Assignment ; "," } "}" ] >
 			+ Field(ReuseClause::syntax)
@@ -3655,60 +3575,60 @@
 			+ ReopenObject()
 		> rule: Token -> [75][Syntax0]< Token @ [ ":" ID ] >
 
-[185][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
+[178][Rule]< ID [ ":" ID ] { "::=" Clause @ } ";" >
 [RULE: 22][CLAUSE: 0]
-	token: ";" -> [186][Rule]< ID [ ":" ID ] { "::=" Clause } ";" @ >
-	token: "::=" -> [184][Rule]< ID [ ":" ID ] { "::=" @ Clause } ";" >
+	token: ";" -> [179][Rule]< ID [ ":" ID ] { "::=" Clause } ";" @ >
+	token: "::=" -> [177][Rule]< ID [ ":" ID ] { "::=" @ Clause } ";" >
 
-[186][Rule]< ID [ ":" ID ] { "::=" Clause } ";" @ >
+[179][Rule]< ID [ ":" ID ] { "::=" Clause } ";" @ >
 [RULE: 22][CLAUSE: 0]
-	ending -> [180][Rule] END [ENDING]
+	ending -> [173][Rule] END [ENDING]
 		- EndObject()
 
-[187][File] BEGIN 
+[180][File] BEGIN 
 [RULE: 23][CLAUSE: -1]
 	token: "switch" -> [30][Switches]"switch" @ { SwitchItem ; "," } ";"
 		- BeginObject(SyntaxFile)
-		> rule: Switches -> [189][File]< [ Switches @ ] Rule { Rule } >
-	token: ID -> [181][Rule]< ID @ [ ":" ID ] { "::=" Clause } ";" >
+		> rule: Switches -> [182][File]< [ Switches @ ] Rule { Rule } >
+	token: ID -> [174][Rule]< ID @ [ ":" ID ] { "::=" Clause } ";" >
 		- BeginObject(SyntaxFile)
 		- BeginObject(Rule)
 		+ Token()
 		+ Field(Rule::name)
-		> rule: Rule -> [190][File]< [ Switches ] Rule @ { Rule } >
+		> rule: Rule -> [183][File]< [ Switches ] Rule @ { Rule } >
 			+ Field(SyntaxFile::rules)
 
-[188][File] END [ENDING]
+[181][File] END [ENDING]
 [RULE: 23][CLAUSE: -1]
 
-[189][File]< [ Switches @ ] Rule { Rule } >
+[182][File]< [ Switches @ ] Rule { Rule } >
 [RULE: 23][CLAUSE: 0]
-	token: ID -> [181][Rule]< ID @ [ ":" ID ] { "::=" Clause } ";" >
+	token: ID -> [174][Rule]< ID @ [ ":" ID ] { "::=" Clause } ";" >
 		- BeginObject(Rule)
 		+ Token()
 		+ Field(Rule::name)
-		> rule: Rule -> [190][File]< [ Switches ] Rule @ { Rule } >
+		> rule: Rule -> [183][File]< [ Switches ] Rule @ { Rule } >
 			+ Field(SyntaxFile::rules)
 
-[190][File]< [ Switches ] Rule @ { Rule } >
+[183][File]< [ Switches ] Rule @ { Rule } >
 [RULE: 23][CLAUSE: 0]
-	ending -> [188][File] END [ENDING]
+	ending -> [181][File] END [ENDING]
 		- EndObject()
-	token: ID -> [181][Rule]< ID @ [ ":" ID ] { "::=" Clause } ";" >
+	token: ID -> [174][Rule]< ID @ [ ":" ID ] { "::=" Clause } ";" >
 		- BeginObject(Rule)
 		+ Token()
 		+ Field(Rule::name)
-		> rule: Rule -> [191][File]< [ Switches ] Rule { Rule @ } >
+		> rule: Rule -> [184][File]< [ Switches ] Rule { Rule @ } >
 			+ Field(SyntaxFile::rules)
 
-[191][File]< [ Switches ] Rule { Rule @ } >
+[184][File]< [ Switches ] Rule { Rule @ } >
 [RULE: 23][CLAUSE: 0]
-	ending -> [188][File] END [ENDING]
+	ending -> [181][File] END [ENDING]
 		- EndObject()
-	token: ID -> [181][Rule]< ID @ [ ":" ID ] { "::=" Clause } ";" >
+	token: ID -> [174][Rule]< ID @ [ ":" ID ] { "::=" Clause } ";" >
 		- BeginObject(Rule)
 		+ Token()
 		+ Field(Rule::name)
-		> rule: Rule -> [191][File]< [ Switches ] Rule { Rule @ } >
+		> rule: Rule -> [184][File]< [ Switches ] Rule { Rule @ } >
 			+ Field(SyntaxFile::rules)
 

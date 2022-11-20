@@ -28,8 +28,7 @@ namespace TestSyntax_TestObjects
 				auto n = CalculatorTokenId((CalculatorTokens)token);
 				auto d = CalculatorTokenDisplayText((CalculatorTokens)token);
 				return d ? L"\"" + WString::Unmanaged(d) + L"\"" : WString::Unmanaged(n);
-			},
-			[&](vint32_t switchId) { return syntaxManager.switches.Keys()[switchId]; }
+			}
 			);
 	}
 
@@ -46,8 +45,7 @@ namespace TestSyntax_TestObjects
 				auto n = CalculatorTokenId((CalculatorTokens)token);
 				auto d = CalculatorTokenDisplayText((CalculatorTokens)token);
 				return d ? L"\"" + WString::Unmanaged(d) + L"\"" : WString::Unmanaged(n);
-			},
-			[&](vint32_t switchId) { return metadata.switchNames[switchId]; }
+			}
 			);
 	}
 
@@ -80,8 +78,7 @@ namespace TestSyntax_TestObjects
 			[](vint32_t field) { return WString::Unmanaged(CalculatorFieldName((CalculatorFields)field)); },
 			[](vint32_t token) { return WString::Unmanaged(CalculatorTokenId((CalculatorTokens)token)); },
 			[&](vint32_t rule) { return metadata.ruleNames[rule]; },
-			[&](vint32_t state) { return metadata.stateLabels[state]; },
-			[&](vint32_t switchId) { return metadata.switchNames[switchId]; }
+			[&](vint32_t state) { return metadata.stateLabels[state]; }
 			);
 
 		TEST_ASSERT(!ambiguityInvolved);

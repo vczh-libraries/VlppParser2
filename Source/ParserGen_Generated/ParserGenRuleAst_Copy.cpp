@@ -59,10 +59,6 @@ namespace vl
 					CopyFields(static_cast<GlrClause*>(from), static_cast<GlrClause*>(to));
 					to->continuation = CopyNode(from->continuation.Obj());
 					to->rule = CopyNode(from->rule.Obj());
-					for (auto&& listItem : from->switches)
-					{
-						to->switches.Add(CopyNode(listItem.Obj()));
-					}
 				}
 
 				void RuleAstVisitor::CopyFields(GlrLeftRecursionInjectContinuation* from, GlrLeftRecursionInjectContinuation* to)
