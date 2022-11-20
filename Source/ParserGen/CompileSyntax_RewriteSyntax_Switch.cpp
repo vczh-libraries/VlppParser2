@@ -694,19 +694,20 @@ RewriteSyntax
 					return ruleName;
 				}
 
-				Ptr<GlrRule> CreateRule(Ptr<GlrRule> rule, const WString& name)
+				Ptr<GlrRule> CreateRule(RuleSymbol* ruleSymbol, Ptr<GlrRule> rule, const WString& name)
 				{
 					auto newRule = MakePtr<GlrRule>();
 					newRule->codeRange = rule->codeRange;
 					newRule->name = rule->name;
 					newRule->name.value = name;
 					newRule->type = rule->type;
+					newRule->type.value = ruleSymbol->ruleType->Name();
 					return newRule;
 				}
 
-				Ptr<GlrRule> CreateRule(Ptr<GlrRule> rule, const wchar_t* tag, Dictionary<WString, bool>& switchValues)
+				Ptr<GlrRule> CreateRule(RuleSymbol* ruleSymbol, Ptr<GlrRule> rule, const wchar_t* tag, Dictionary<WString, bool>& switchValues)
 				{
-					return CreateRule(rule, CreateRuleName(rule, tag, switchValues));
+					return CreateRule(ruleSymbol, rule, CreateRuleName(rule, tag, switchValues));
 				}
 
 				void AddRules(RuleSymbol* ruleSymbol, Ptr<GlrSyntaxFile> rewritten, Group<RuleSymbol*, Ptr<GlrRule>>& expandedRules)
@@ -817,7 +818,7 @@ RewriteSyntax
 							for(auto generatedRule : rewritingContext.generatedRules.GetByIndex(index))
 							{
 								SortedList<WString> referencedCombinedRules;
-								auto newRule = CreateRule(rule, L"_SWITCH", *generatedRule->switchValues.Obj());
+								auto newRule = CreateRule(ruleSymbol, rule, L"_SWITCH", *generatedRule->switchValues.Obj());
 
 								// rewrite all clauses with given switch values
 								for (auto clause : rule->clauses)
@@ -882,7 +883,7 @@ RewriteSyntax
 													vint ruleIndex = rewritingContext.combinedRulesByName.Keys().IndexOf(combinedRuleName);
 													if (ruleIndex == -1)
 													{
-														combinedRule = CreateRule(rule, combinedRuleName);
+														combinedRule = CreateRule(ruleSymbol, rule, combinedRuleName);
 														rewritingContext.expandedCombinedRules.Add(ruleSymbol, combinedRule);
 														rewritingContext.combinedRulesByName.Add(combinedRuleName, combinedRule);
 													}
@@ -919,14 +920,31 @@ RewriteSyntax
 								for (auto ruleName : referencedCombinedRules)
 								{
 									// add all used combined rules in order of name
-									auto useSyntax = MakePtr<GlrUseSyntax>();
-									useSyntax->name = rule->name;
-									useSyntax->name.value = ruleName;
+									if (ruleSymbol->isPartial)
+									{
+										auto refSyntax = MakePtr<GlrRefSyntax>();
+										refSyntax->literal = rule->name;
+										refSyntax->literal.value = ruleName;
+										refSyntax->refType = GlrRefType::Id;
 
-									auto reuseClause = MakePtr<GlrReuseClause>();
-									reuseClause->syntax = useSyntax;
+										auto partialClause = MakePtr<GlrPartialClause>();
+										partialClause->type = rule->name;
+										partialClause->type.value = ruleSymbol->ruleType->Name();
+										partialClause->syntax = refSyntax;
 
-									newRule->clauses.Add(reuseClause);
+										newRule->clauses.Add(partialClause);
+									}
+									else
+									{
+										auto useSyntax = MakePtr<GlrUseSyntax>();
+										useSyntax->name = rule->name;
+										useSyntax->name.value = ruleName;
+
+										auto reuseClause = MakePtr<GlrReuseClause>();
+										reuseClause->syntax = useSyntax;
+
+										newRule->clauses.Add(reuseClause);
+									}
 								}
 
 								if (newRule->clauses.Count() == 0)

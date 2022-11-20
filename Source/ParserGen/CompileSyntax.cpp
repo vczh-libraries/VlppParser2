@@ -97,17 +97,17 @@ CompileSyntax
 				ValidateSwitchesAndConditions(context, files);
 				if (context.syntaxManager.Global().Errors().Count() > 0) return false;
 
-				return true;
-			}
-
-			bool VerifySyntax_UntilPrefixMerge(VisitorContext& context, collections::List<Ptr<GlrSyntaxFile>>& files)
-			{
 				ValidatePartialRules(context, files);
 				if (context.syntaxManager.Global().Errors().Count() > 0) return false;
 
 				CalculateRuleAndClauseTypes(context);
 				if (context.syntaxManager.Global().Errors().Count() > 0) return false;
 
+				return true;
+			}
+
+			bool VerifySyntax_UntilPrefixMerge(VisitorContext& context, collections::List<Ptr<GlrSyntaxFile>>& files)
+			{
 				CalculateFirstSet(context, files);
 				if (context.syntaxManager.Global().Errors().Count() > 0) return false;
 

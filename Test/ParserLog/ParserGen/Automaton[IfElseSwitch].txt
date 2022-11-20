@@ -31,25 +31,23 @@
 		- BeginObject(BlockStat)
 		> rule: Stat -> [7][Block]< "{" { Stat @ } "}" >
 			+ Field(BlockStat::stats)
-		> rule: OtherStat -> [31][Stat]<< !OtherStat @ >>
-		> rule: Block -> [26][OtherStat]<< !Block @ >>
+		> rule: OtherStat -> [16][Stat]<< !OtherStat @ >>
+		> rule: Block -> [11][OtherStat]<< !Block @ >>
 	token: "}" -> [8][Block]< "{" { Stat } "}" @ >
-	token: "if" -> [23][If]< "if" @ "cond" "then" IfTail >
-		? +switches
-		? allow_half_if <- TRUE
+	token: "if" -> [30][If_SWITCH_1allow_half_if]< "if" @ "cond" "then" IfTail_SWITCH_1allow_half_if >
 		- DelayFieldAssignment()
 		- BeginObject(IfStat)
 		> rule: Stat -> [7][Block]< "{" { Stat @ } "}" >
 			+ Field(BlockStat::stats)
-		> rule: If -> [30][Stat]<< !(0;!If @) >>
+		> rule: If_SWITCH_1allow_half_if -> [15][Stat]<< !If_SWITCH_1allow_half_if @ >>
 	token: "do" -> [3][Do]< "do" @ ";" >
 		- DelayFieldAssignment()
 		- DelayFieldAssignment()
 		- BeginObject(DoStat)
 		> rule: Stat -> [7][Block]< "{" { Stat @ } "}" >
 			+ Field(BlockStat::stats)
-		> rule: OtherStat -> [31][Stat]<< !OtherStat @ >>
-		> rule: Do -> [27][OtherStat]<< !Do @ >>
+		> rule: OtherStat -> [16][Stat]<< !OtherStat @ >>
+		> rule: Do -> [12][OtherStat]<< !Do @ >>
 
 [7][Block]< "{" { Stat @ } "}" >
 [RULE: 1][CLAUSE: 0]
@@ -59,286 +57,384 @@
 		- BeginObject(BlockStat)
 		> rule: Stat -> [7][Block]< "{" { Stat @ } "}" >
 			+ Field(BlockStat::stats)
-		> rule: OtherStat -> [31][Stat]<< !OtherStat @ >>
-		> rule: Block -> [26][OtherStat]<< !Block @ >>
+		> rule: OtherStat -> [16][Stat]<< !OtherStat @ >>
+		> rule: Block -> [11][OtherStat]<< !Block @ >>
 	token: "}" -> [8][Block]< "{" { Stat } "}" @ >
-	token: "if" -> [23][If]< "if" @ "cond" "then" IfTail >
-		? +switches
-		? allow_half_if <- TRUE
+	token: "if" -> [30][If_SWITCH_1allow_half_if]< "if" @ "cond" "then" IfTail_SWITCH_1allow_half_if >
 		- DelayFieldAssignment()
 		- BeginObject(IfStat)
 		> rule: Stat -> [7][Block]< "{" { Stat @ } "}" >
 			+ Field(BlockStat::stats)
-		> rule: If -> [30][Stat]<< !(0;!If @) >>
+		> rule: If_SWITCH_1allow_half_if -> [15][Stat]<< !If_SWITCH_1allow_half_if @ >>
 	token: "do" -> [3][Do]< "do" @ ";" >
 		- DelayFieldAssignment()
 		- DelayFieldAssignment()
 		- BeginObject(DoStat)
 		> rule: Stat -> [7][Block]< "{" { Stat @ } "}" >
 			+ Field(BlockStat::stats)
-		> rule: OtherStat -> [31][Stat]<< !OtherStat @ >>
-		> rule: Do -> [27][OtherStat]<< !Do @ >>
+		> rule: OtherStat -> [16][Stat]<< !OtherStat @ >>
+		> rule: Do -> [12][OtherStat]<< !Do @ >>
 
 [8][Block]< "{" { Stat } "}" @ >
 [RULE: 1][CLAUSE: 0]
 	ending -> [5][Block] END [ENDING]
 		- EndObject()
 
-[9][IfTail] BEGIN 
+[9][OtherStat] BEGIN 
 [RULE: 2][CLAUSE: -1]
 	token: "{" -> [6][Block]< "{" @ { Stat } "}" >
 		- DelayFieldAssignment()
 		- BeginObject(BlockStat)
-		> rule: OtherStat -> [17][IfTail]OtherStat @ ( "else" Stat | ( ([0]? ) ) )
-			+ Field(IfStat::thenBranch)
-		> rule: Block -> [26][OtherStat]<< !Block @ >>
-	token: "if" -> [23][If]< "if" @ "cond" "then" IfTail >
-		? +switches
-		? allow_half_if <- FALSE
-		- BeginObject(IfStat)
-		> rule: If -> [11][IfTail]!(!0;If @) "else" Stat
-			+ Field(IfStat::thenBranch)
-	token: "if" -> [23][If]< "if" @ "cond" "then" IfTail >
-		? <- allow_half_if
-		? ?
-		- BeginObject(IfStat)
-		> rule: If -> [14][IfTail]( ([0]? If @) )
+		> rule: Block -> [11][OtherStat]<< !Block @ >>
 	token: "do" -> [3][Do]< "do" @ ";" >
 		- DelayFieldAssignment()
 		- BeginObject(DoStat)
-		> rule: OtherStat -> [17][IfTail]OtherStat @ ( "else" Stat | ( ([0]? ) ) )
-			+ Field(IfStat::thenBranch)
-		> rule: Do -> [27][OtherStat]<< !Do @ >>
+		> rule: Do -> [12][OtherStat]<< !Do @ >>
 
-[10][IfTail] END [ENDING]
+[10][OtherStat] END [ENDING]
 [RULE: 2][CLAUSE: -1]
 
-[11][IfTail]!(!0;If @) "else" Stat
+[11][OtherStat]<< !Block @ >>
 [RULE: 2][CLAUSE: 1]
-	token: "else" -> [12][IfTail]!(!0;If) "else" @ Stat
-		? -switches
-
-[12][IfTail]!(!0;If) "else" @ Stat
-[RULE: 2][CLAUSE: 1]
-	token: "{" -> [6][Block]< "{" @ { Stat } "}" >
-		- DelayFieldAssignment()
-		- DelayFieldAssignment()
-		- BeginObject(BlockStat)
-		> rule: Stat -> [13][IfTail]!(!0;If) "else" Stat @
-			+ Field(IfStat::elseBranch)
-		> rule: OtherStat -> [31][Stat]<< !OtherStat @ >>
-		> rule: Block -> [26][OtherStat]<< !Block @ >>
-	token: "if" -> [23][If]< "if" @ "cond" "then" IfTail >
-		? +switches
-		? allow_half_if <- TRUE
-		- DelayFieldAssignment()
-		- BeginObject(IfStat)
-		> rule: Stat -> [13][IfTail]!(!0;If) "else" Stat @
-			+ Field(IfStat::elseBranch)
-		> rule: If -> [30][Stat]<< !(0;!If @) >>
-	token: "do" -> [3][Do]< "do" @ ";" >
-		- DelayFieldAssignment()
-		- DelayFieldAssignment()
-		- BeginObject(DoStat)
-		> rule: Stat -> [13][IfTail]!(!0;If) "else" Stat @
-			+ Field(IfStat::elseBranch)
-		> rule: OtherStat -> [31][Stat]<< !OtherStat @ >>
-		> rule: Do -> [27][OtherStat]<< !Do @ >>
-
-[13][IfTail]!(!0;If) "else" Stat @
-[RULE: 2][CLAUSE: 1]
-	ending -> [10][IfTail] END [ENDING]
-
-[14][IfTail]( ([0]? If @) )
-[RULE: 2][CLAUSE: 2]
-	ending -> [10][IfTail] END [ENDING]
-		- Field(IfStat::thenBranch)
-
-[15][IfTail]OtherStat ( "else" @ Stat | ( ([0]? ) ) )
-[RULE: 2][CLAUSE: 0]
-	token: "{" -> [6][Block]< "{" @ { Stat } "}" >
-		- DelayFieldAssignment()
-		- DelayFieldAssignment()
-		- BeginObject(BlockStat)
-		> rule: Stat -> [16][IfTail]OtherStat ( "else" Stat @ | ( ([0]? ) ) )
-			+ Field(IfStat::elseBranch)
-		> rule: OtherStat -> [31][Stat]<< !OtherStat @ >>
-		> rule: Block -> [26][OtherStat]<< !Block @ >>
-	token: "if" -> [23][If]< "if" @ "cond" "then" IfTail >
-		? +switches
-		? allow_half_if <- TRUE
-		- DelayFieldAssignment()
-		- BeginObject(IfStat)
-		> rule: Stat -> [16][IfTail]OtherStat ( "else" Stat @ | ( ([0]? ) ) )
-			+ Field(IfStat::elseBranch)
-		> rule: If -> [30][Stat]<< !(0;!If @) >>
-	token: "do" -> [3][Do]< "do" @ ";" >
-		- DelayFieldAssignment()
-		- DelayFieldAssignment()
-		- BeginObject(DoStat)
-		> rule: Stat -> [16][IfTail]OtherStat ( "else" Stat @ | ( ([0]? ) ) )
-			+ Field(IfStat::elseBranch)
-		> rule: OtherStat -> [31][Stat]<< !OtherStat @ >>
-		> rule: Do -> [27][OtherStat]<< !Do @ >>
-
-[16][IfTail]OtherStat ( "else" Stat @ | ( ([0]? ) ) )
-[RULE: 2][CLAUSE: 0]
-	ending -> [10][IfTail] END [ENDING]
-
-[17][IfTail]OtherStat @ ( "else" Stat | ( ([0]? ) ) )
-[RULE: 2][CLAUSE: 0]
-	ending -> [10][IfTail] END [ENDING]
-		? <- allow_half_if
-		? ?
-	token: "else" -> [15][IfTail]OtherStat ( "else" @ Stat | ( ([0]? ) ) )
-
-[18][If] BEGIN 
-[RULE: 3][CLAUSE: -1]
-	token: "if" -> [23][If]< "if" @ "cond" "then" IfTail >
-		- BeginObject(IfStat)
-
-[19][If] END [ENDING]
-[RULE: 3][CLAUSE: -1]
-
-[20][If]< "if" "cond" "then" @ IfTail >
-[RULE: 3][CLAUSE: 0]
-	token: "{" -> [6][Block]< "{" @ { Stat } "}" >
-		- DelayFieldAssignment()
-		- BeginObject(BlockStat)
-		> rule: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >
-		> rule: OtherStat -> [17][IfTail]OtherStat @ ( "else" Stat | ( ([0]? ) ) )
-			+ Field(IfStat::thenBranch)
-		> rule: Block -> [26][OtherStat]<< !Block @ >>
-	token: "if" -> [23][If]< "if" @ "cond" "then" IfTail >
-		? +switches
-		? allow_half_if <- FALSE
-		- BeginObject(IfStat)
-		> rule: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >
-		> rule: If -> [11][IfTail]!(!0;If @) "else" Stat
-			+ Field(IfStat::thenBranch)
-	token: "if" -> [23][If]< "if" @ "cond" "then" IfTail >
-		? <- allow_half_if
-		? ?
-		- BeginObject(IfStat)
-		> rule: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >
-		> rule: If -> [14][IfTail]( ([0]? If @) )
-	token: "do" -> [3][Do]< "do" @ ";" >
-		- DelayFieldAssignment()
-		- BeginObject(DoStat)
-		> rule: IfTail -> [21][If]< "if" "cond" "then" IfTail @ >
-		> rule: OtherStat -> [17][IfTail]OtherStat @ ( "else" Stat | ( ([0]? ) ) )
-			+ Field(IfStat::thenBranch)
-		> rule: Do -> [27][OtherStat]<< !Do @ >>
-
-[21][If]< "if" "cond" "then" IfTail @ >
-[RULE: 3][CLAUSE: 0]
-	ending -> [19][If] END [ENDING]
-		- EndObject()
-
-[22][If]< "if" "cond" @ "then" IfTail >
-[RULE: 3][CLAUSE: 0]
-	token: "then" -> [20][If]< "if" "cond" "then" @ IfTail >
-
-[23][If]< "if" @ "cond" "then" IfTail >
-[RULE: 3][CLAUSE: 0]
-	token: "cond" -> [22][If]< "if" "cond" @ "then" IfTail >
-
-[24][OtherStat] BEGIN 
-[RULE: 4][CLAUSE: -1]
-	token: "{" -> [6][Block]< "{" @ { Stat } "}" >
-		- DelayFieldAssignment()
-		- BeginObject(BlockStat)
-		> rule: Block -> [26][OtherStat]<< !Block @ >>
-	token: "do" -> [3][Do]< "do" @ ";" >
-		- DelayFieldAssignment()
-		- BeginObject(DoStat)
-		> rule: Do -> [27][OtherStat]<< !Do @ >>
-
-[25][OtherStat] END [ENDING]
-[RULE: 4][CLAUSE: -1]
-
-[26][OtherStat]<< !Block @ >>
-[RULE: 4][CLAUSE: 1]
-	ending -> [25][OtherStat] END [ENDING]
+	ending -> [10][OtherStat] END [ENDING]
 		- ReopenObject()
 		- EndObject()
 
-[27][OtherStat]<< !Do @ >>
+[12][OtherStat]<< !Do @ >>
+[RULE: 2][CLAUSE: 0]
+	ending -> [10][OtherStat] END [ENDING]
+		- ReopenObject()
+		- EndObject()
+
+[13][Stat] BEGIN 
+[RULE: 3][CLAUSE: -1]
+	token: "{" -> [6][Block]< "{" @ { Stat } "}" >
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- BeginObject(BlockStat)
+		> rule: OtherStat -> [16][Stat]<< !OtherStat @ >>
+		> rule: Block -> [11][OtherStat]<< !Block @ >>
+	token: "if" -> [30][If_SWITCH_1allow_half_if]< "if" @ "cond" "then" IfTail_SWITCH_1allow_half_if >
+		- DelayFieldAssignment()
+		- BeginObject(IfStat)
+		> rule: If_SWITCH_1allow_half_if -> [15][Stat]<< !If_SWITCH_1allow_half_if @ >>
+	token: "do" -> [3][Do]< "do" @ ";" >
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- BeginObject(DoStat)
+		> rule: OtherStat -> [16][Stat]<< !OtherStat @ >>
+		> rule: Do -> [12][OtherStat]<< !Do @ >>
+
+[14][Stat] END [ENDING]
+[RULE: 3][CLAUSE: -1]
+
+[15][Stat]<< !If_SWITCH_1allow_half_if @ >>
+[RULE: 3][CLAUSE: 1]
+	ending -> [14][Stat] END [ENDING]
+		- ReopenObject()
+		- EndObject()
+
+[16][Stat]<< !OtherStat @ >>
+[RULE: 3][CLAUSE: 0]
+	ending -> [14][Stat] END [ENDING]
+		- ReopenObject()
+		- EndObject()
+
+[17][Module] BEGIN 
+[RULE: 4][CLAUSE: -1]
+	token: "{" -> [6][Block]< "{" @ { Stat } "}" >
+		- BeginObject(Module)
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- BeginObject(BlockStat)
+		> rule: Stat -> [19][Module]< Stat @ >
+		> rule: OtherStat -> [16][Stat]<< !OtherStat @ >>
+		> rule: Block -> [11][OtherStat]<< !Block @ >>
+	token: "if" -> [30][If_SWITCH_1allow_half_if]< "if" @ "cond" "then" IfTail_SWITCH_1allow_half_if >
+		- BeginObject(Module)
+		- DelayFieldAssignment()
+		- BeginObject(IfStat)
+		> rule: Stat -> [19][Module]< Stat @ >
+		> rule: If_SWITCH_1allow_half_if -> [15][Stat]<< !If_SWITCH_1allow_half_if @ >>
+	token: "do" -> [3][Do]< "do" @ ";" >
+		- BeginObject(Module)
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- BeginObject(DoStat)
+		> rule: Stat -> [19][Module]< Stat @ >
+		> rule: OtherStat -> [16][Stat]<< !OtherStat @ >>
+		> rule: Do -> [12][OtherStat]<< !Do @ >>
+
+[18][Module] END [ENDING]
+[RULE: 4][CLAUSE: -1]
+
+[19][Module]< Stat @ >
 [RULE: 4][CLAUSE: 0]
-	ending -> [25][OtherStat] END [ENDING]
-		- ReopenObject()
-		- EndObject()
-
-[28][Stat] BEGIN 
-[RULE: 5][CLAUSE: -1]
-	token: "{" -> [6][Block]< "{" @ { Stat } "}" >
-		- DelayFieldAssignment()
-		- DelayFieldAssignment()
-		- BeginObject(BlockStat)
-		> rule: OtherStat -> [31][Stat]<< !OtherStat @ >>
-		> rule: Block -> [26][OtherStat]<< !Block @ >>
-	token: "if" -> [23][If]< "if" @ "cond" "then" IfTail >
-		? +switches
-		? allow_half_if <- TRUE
-		- DelayFieldAssignment()
-		- BeginObject(IfStat)
-		> rule: If -> [30][Stat]<< !(0;!If @) >>
-	token: "do" -> [3][Do]< "do" @ ";" >
-		- DelayFieldAssignment()
-		- DelayFieldAssignment()
-		- BeginObject(DoStat)
-		> rule: OtherStat -> [31][Stat]<< !OtherStat @ >>
-		> rule: Do -> [27][OtherStat]<< !Do @ >>
-
-[29][Stat] END [ENDING]
-[RULE: 5][CLAUSE: -1]
-
-[30][Stat]<< !(0;!If @) >>
-[RULE: 5][CLAUSE: 1]
-	ending -> [29][Stat] END [ENDING]
-		? -switches
-		- ReopenObject()
-		- EndObject()
-
-[31][Stat]<< !OtherStat @ >>
-[RULE: 5][CLAUSE: 0]
-	ending -> [29][Stat] END [ENDING]
-		- ReopenObject()
-		- EndObject()
-
-[32][Module] BEGIN 
-[RULE: 6][CLAUSE: -1]
-	token: "{" -> [6][Block]< "{" @ { Stat } "}" >
-		- BeginObject(Module)
-		- DelayFieldAssignment()
-		- DelayFieldAssignment()
-		- BeginObject(BlockStat)
-		> rule: Stat -> [34][Module]< Stat @ >
-		> rule: OtherStat -> [31][Stat]<< !OtherStat @ >>
-		> rule: Block -> [26][OtherStat]<< !Block @ >>
-	token: "if" -> [23][If]< "if" @ "cond" "then" IfTail >
-		? +switches
-		? allow_half_if <- TRUE
-		- BeginObject(Module)
-		- DelayFieldAssignment()
-		- BeginObject(IfStat)
-		> rule: Stat -> [34][Module]< Stat @ >
-		> rule: If -> [30][Stat]<< !(0;!If @) >>
-	token: "do" -> [3][Do]< "do" @ ";" >
-		- BeginObject(Module)
-		- DelayFieldAssignment()
-		- DelayFieldAssignment()
-		- BeginObject(DoStat)
-		> rule: Stat -> [34][Module]< Stat @ >
-		> rule: OtherStat -> [31][Stat]<< !OtherStat @ >>
-		> rule: Do -> [27][OtherStat]<< !Do @ >>
-
-[33][Module] END [ENDING]
-[RULE: 6][CLAUSE: -1]
-
-[34][Module]< Stat @ >
-[RULE: 6][CLAUSE: 0]
-	ending -> [33][Module] END [ENDING]
+	ending -> [18][Module] END [ENDING]
 		- Field(Module::stat)
 		- EndObject()
+
+[20][IfTail_SWITCH_COMBINED] BEGIN 
+[RULE: 5][CLAUSE: -1]
+	token: "if" -> [36][If_SWITCH_0allow_half_if]< "if" @ "cond" "then" IfTail_SWITCH_0allow_half_if >
+		- BeginObject(IfStat)
+		> rule: If_SWITCH_0allow_half_if -> [24][IfTail_SWITCH_COMBINED]If_SWITCH_0allow_half_if @ "else" Stat
+			+ Field(IfStat::thenBranch)
+
+[21][IfTail_SWITCH_COMBINED] END [ENDING]
+[RULE: 5][CLAUSE: -1]
+
+[22][IfTail_SWITCH_COMBINED]If_SWITCH_0allow_half_if "else" @ Stat
+[RULE: 5][CLAUSE: 0]
+	token: "{" -> [6][Block]< "{" @ { Stat } "}" >
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- BeginObject(BlockStat)
+		> rule: Stat -> [23][IfTail_SWITCH_COMBINED]If_SWITCH_0allow_half_if "else" Stat @
+			+ Field(IfStat::elseBranch)
+		> rule: OtherStat -> [16][Stat]<< !OtherStat @ >>
+		> rule: Block -> [11][OtherStat]<< !Block @ >>
+	token: "if" -> [30][If_SWITCH_1allow_half_if]< "if" @ "cond" "then" IfTail_SWITCH_1allow_half_if >
+		- DelayFieldAssignment()
+		- BeginObject(IfStat)
+		> rule: Stat -> [23][IfTail_SWITCH_COMBINED]If_SWITCH_0allow_half_if "else" Stat @
+			+ Field(IfStat::elseBranch)
+		> rule: If_SWITCH_1allow_half_if -> [15][Stat]<< !If_SWITCH_1allow_half_if @ >>
+	token: "do" -> [3][Do]< "do" @ ";" >
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- BeginObject(DoStat)
+		> rule: Stat -> [23][IfTail_SWITCH_COMBINED]If_SWITCH_0allow_half_if "else" Stat @
+			+ Field(IfStat::elseBranch)
+		> rule: OtherStat -> [16][Stat]<< !OtherStat @ >>
+		> rule: Do -> [12][OtherStat]<< !Do @ >>
+
+[23][IfTail_SWITCH_COMBINED]If_SWITCH_0allow_half_if "else" Stat @
+[RULE: 5][CLAUSE: 0]
+	ending -> [21][IfTail_SWITCH_COMBINED] END [ENDING]
+
+[24][IfTail_SWITCH_COMBINED]If_SWITCH_0allow_half_if @ "else" Stat
+[RULE: 5][CLAUSE: 0]
+	token: "else" -> [22][IfTail_SWITCH_COMBINED]If_SWITCH_0allow_half_if "else" @ Stat
+
+[25][If_SWITCH_1allow_half_if] BEGIN 
+[RULE: 6][CLAUSE: -1]
+	token: "if" -> [30][If_SWITCH_1allow_half_if]< "if" @ "cond" "then" IfTail_SWITCH_1allow_half_if >
+		- BeginObject(IfStat)
+
+[26][If_SWITCH_1allow_half_if] END [ENDING]
+[RULE: 6][CLAUSE: -1]
+
+[27][If_SWITCH_1allow_half_if]< "if" "cond" "then" @ IfTail_SWITCH_1allow_half_if >
+[RULE: 6][CLAUSE: 0]
+	token: "{" -> [6][Block]< "{" @ { Stat } "}" >
+		- DelayFieldAssignment()
+		- BeginObject(BlockStat)
+		> rule: IfTail_SWITCH_1allow_half_if -> [28][If_SWITCH_1allow_half_if]< "if" "cond" "then" IfTail_SWITCH_1allow_half_if @ >
+		> rule: OtherStat -> [41][IfTail_SWITCH_1allow_half_if]OtherStat @ [ "else" Stat ]
+			+ Field(IfStat::thenBranch)
+		> rule: Block -> [11][OtherStat]<< !Block @ >>
+	token: "if" -> [30][If_SWITCH_1allow_half_if]< "if" @ "cond" "then" IfTail_SWITCH_1allow_half_if >
+		- BeginObject(IfStat)
+		> rule: IfTail_SWITCH_1allow_half_if -> [28][If_SWITCH_1allow_half_if]< "if" "cond" "then" IfTail_SWITCH_1allow_half_if @ >
+		> rule: If_SWITCH_1allow_half_if -> [40][IfTail_SWITCH_1allow_half_if]If_SWITCH_1allow_half_if @
+	token: "if" -> [36][If_SWITCH_0allow_half_if]< "if" @ "cond" "then" IfTail_SWITCH_0allow_half_if >
+		- BeginObject(IfStat)
+		> rule: IfTail_SWITCH_1allow_half_if -> [28][If_SWITCH_1allow_half_if]< "if" "cond" "then" IfTail_SWITCH_1allow_half_if @ >
+		> rule: IfTail_SWITCH_COMBINED -> [39][IfTail_SWITCH_1allow_half_if]IfTail_SWITCH_COMBINED @
+		> rule: If_SWITCH_0allow_half_if -> [24][IfTail_SWITCH_COMBINED]If_SWITCH_0allow_half_if @ "else" Stat
+			+ Field(IfStat::thenBranch)
+	token: "do" -> [3][Do]< "do" @ ";" >
+		- DelayFieldAssignment()
+		- BeginObject(DoStat)
+		> rule: IfTail_SWITCH_1allow_half_if -> [28][If_SWITCH_1allow_half_if]< "if" "cond" "then" IfTail_SWITCH_1allow_half_if @ >
+		> rule: OtherStat -> [41][IfTail_SWITCH_1allow_half_if]OtherStat @ [ "else" Stat ]
+			+ Field(IfStat::thenBranch)
+		> rule: Do -> [12][OtherStat]<< !Do @ >>
+
+[28][If_SWITCH_1allow_half_if]< "if" "cond" "then" IfTail_SWITCH_1allow_half_if @ >
+[RULE: 6][CLAUSE: 0]
+	ending -> [26][If_SWITCH_1allow_half_if] END [ENDING]
+		- EndObject()
+
+[29][If_SWITCH_1allow_half_if]< "if" "cond" @ "then" IfTail_SWITCH_1allow_half_if >
+[RULE: 6][CLAUSE: 0]
+	token: "then" -> [27][If_SWITCH_1allow_half_if]< "if" "cond" "then" @ IfTail_SWITCH_1allow_half_if >
+
+[30][If_SWITCH_1allow_half_if]< "if" @ "cond" "then" IfTail_SWITCH_1allow_half_if >
+[RULE: 6][CLAUSE: 0]
+	token: "cond" -> [29][If_SWITCH_1allow_half_if]< "if" "cond" @ "then" IfTail_SWITCH_1allow_half_if >
+
+[31][If_SWITCH_0allow_half_if] BEGIN 
+[RULE: 7][CLAUSE: -1]
+	token: "if" -> [36][If_SWITCH_0allow_half_if]< "if" @ "cond" "then" IfTail_SWITCH_0allow_half_if >
+		- BeginObject(IfStat)
+
+[32][If_SWITCH_0allow_half_if] END [ENDING]
+[RULE: 7][CLAUSE: -1]
+
+[33][If_SWITCH_0allow_half_if]< "if" "cond" "then" @ IfTail_SWITCH_0allow_half_if >
+[RULE: 7][CLAUSE: 0]
+	token: "{" -> [6][Block]< "{" @ { Stat } "}" >
+		- DelayFieldAssignment()
+		- BeginObject(BlockStat)
+		> rule: IfTail_SWITCH_0allow_half_if -> [34][If_SWITCH_0allow_half_if]< "if" "cond" "then" IfTail_SWITCH_0allow_half_if @ >
+		> rule: OtherStat -> [49][IfTail_SWITCH_0allow_half_if]OtherStat @ "else" Stat
+			+ Field(IfStat::thenBranch)
+		> rule: Block -> [11][OtherStat]<< !Block @ >>
+	token: "if" -> [36][If_SWITCH_0allow_half_if]< "if" @ "cond" "then" IfTail_SWITCH_0allow_half_if >
+		- BeginObject(IfStat)
+		> rule: IfTail_SWITCH_0allow_half_if -> [34][If_SWITCH_0allow_half_if]< "if" "cond" "then" IfTail_SWITCH_0allow_half_if @ >
+		> rule: IfTail_SWITCH_COMBINED -> [46][IfTail_SWITCH_0allow_half_if]IfTail_SWITCH_COMBINED @
+		> rule: If_SWITCH_0allow_half_if -> [24][IfTail_SWITCH_COMBINED]If_SWITCH_0allow_half_if @ "else" Stat
+			+ Field(IfStat::thenBranch)
+	token: "do" -> [3][Do]< "do" @ ";" >
+		- DelayFieldAssignment()
+		- BeginObject(DoStat)
+		> rule: IfTail_SWITCH_0allow_half_if -> [34][If_SWITCH_0allow_half_if]< "if" "cond" "then" IfTail_SWITCH_0allow_half_if @ >
+		> rule: OtherStat -> [49][IfTail_SWITCH_0allow_half_if]OtherStat @ "else" Stat
+			+ Field(IfStat::thenBranch)
+		> rule: Do -> [12][OtherStat]<< !Do @ >>
+
+[34][If_SWITCH_0allow_half_if]< "if" "cond" "then" IfTail_SWITCH_0allow_half_if @ >
+[RULE: 7][CLAUSE: 0]
+	ending -> [32][If_SWITCH_0allow_half_if] END [ENDING]
+		- EndObject()
+
+[35][If_SWITCH_0allow_half_if]< "if" "cond" @ "then" IfTail_SWITCH_0allow_half_if >
+[RULE: 7][CLAUSE: 0]
+	token: "then" -> [33][If_SWITCH_0allow_half_if]< "if" "cond" "then" @ IfTail_SWITCH_0allow_half_if >
+
+[36][If_SWITCH_0allow_half_if]< "if" @ "cond" "then" IfTail_SWITCH_0allow_half_if >
+[RULE: 7][CLAUSE: 0]
+	token: "cond" -> [35][If_SWITCH_0allow_half_if]< "if" "cond" @ "then" IfTail_SWITCH_0allow_half_if >
+
+[37][IfTail_SWITCH_1allow_half_if] BEGIN 
+[RULE: 8][CLAUSE: -1]
+	token: "{" -> [6][Block]< "{" @ { Stat } "}" >
+		- DelayFieldAssignment()
+		- BeginObject(BlockStat)
+		> rule: OtherStat -> [41][IfTail_SWITCH_1allow_half_if]OtherStat @ [ "else" Stat ]
+			+ Field(IfStat::thenBranch)
+		> rule: Block -> [11][OtherStat]<< !Block @ >>
+	token: "if" -> [30][If_SWITCH_1allow_half_if]< "if" @ "cond" "then" IfTail_SWITCH_1allow_half_if >
+		- BeginObject(IfStat)
+		> rule: If_SWITCH_1allow_half_if -> [40][IfTail_SWITCH_1allow_half_if]If_SWITCH_1allow_half_if @
+	token: "if" -> [36][If_SWITCH_0allow_half_if]< "if" @ "cond" "then" IfTail_SWITCH_0allow_half_if >
+		- BeginObject(IfStat)
+		> rule: IfTail_SWITCH_COMBINED -> [39][IfTail_SWITCH_1allow_half_if]IfTail_SWITCH_COMBINED @
+		> rule: If_SWITCH_0allow_half_if -> [24][IfTail_SWITCH_COMBINED]If_SWITCH_0allow_half_if @ "else" Stat
+			+ Field(IfStat::thenBranch)
+	token: "do" -> [3][Do]< "do" @ ";" >
+		- DelayFieldAssignment()
+		- BeginObject(DoStat)
+		> rule: OtherStat -> [41][IfTail_SWITCH_1allow_half_if]OtherStat @ [ "else" Stat ]
+			+ Field(IfStat::thenBranch)
+		> rule: Do -> [12][OtherStat]<< !Do @ >>
+
+[38][IfTail_SWITCH_1allow_half_if] END [ENDING]
+[RULE: 8][CLAUSE: -1]
+
+[39][IfTail_SWITCH_1allow_half_if]IfTail_SWITCH_COMBINED @
+[RULE: 8][CLAUSE: 2]
+	ending -> [38][IfTail_SWITCH_1allow_half_if] END [ENDING]
+
+[40][IfTail_SWITCH_1allow_half_if]If_SWITCH_1allow_half_if @
+[RULE: 8][CLAUSE: 1]
+	ending -> [38][IfTail_SWITCH_1allow_half_if] END [ENDING]
+		- Field(IfStat::thenBranch)
+
+[41][IfTail_SWITCH_1allow_half_if]OtherStat @ [ "else" Stat ]
+[RULE: 8][CLAUSE: 0]
+	ending -> [38][IfTail_SWITCH_1allow_half_if] END [ENDING]
+	token: "else" -> [42][IfTail_SWITCH_1allow_half_if]OtherStat [ "else" @ Stat ]
+
+[42][IfTail_SWITCH_1allow_half_if]OtherStat [ "else" @ Stat ]
+[RULE: 8][CLAUSE: 0]
+	token: "{" -> [6][Block]< "{" @ { Stat } "}" >
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- BeginObject(BlockStat)
+		> rule: Stat -> [43][IfTail_SWITCH_1allow_half_if]OtherStat [ "else" Stat @ ]
+			+ Field(IfStat::elseBranch)
+		> rule: OtherStat -> [16][Stat]<< !OtherStat @ >>
+		> rule: Block -> [11][OtherStat]<< !Block @ >>
+	token: "if" -> [30][If_SWITCH_1allow_half_if]< "if" @ "cond" "then" IfTail_SWITCH_1allow_half_if >
+		- DelayFieldAssignment()
+		- BeginObject(IfStat)
+		> rule: Stat -> [43][IfTail_SWITCH_1allow_half_if]OtherStat [ "else" Stat @ ]
+			+ Field(IfStat::elseBranch)
+		> rule: If_SWITCH_1allow_half_if -> [15][Stat]<< !If_SWITCH_1allow_half_if @ >>
+	token: "do" -> [3][Do]< "do" @ ";" >
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- BeginObject(DoStat)
+		> rule: Stat -> [43][IfTail_SWITCH_1allow_half_if]OtherStat [ "else" Stat @ ]
+			+ Field(IfStat::elseBranch)
+		> rule: OtherStat -> [16][Stat]<< !OtherStat @ >>
+		> rule: Do -> [12][OtherStat]<< !Do @ >>
+
+[43][IfTail_SWITCH_1allow_half_if]OtherStat [ "else" Stat @ ]
+[RULE: 8][CLAUSE: 0]
+	ending -> [38][IfTail_SWITCH_1allow_half_if] END [ENDING]
+
+[44][IfTail_SWITCH_0allow_half_if] BEGIN 
+[RULE: 9][CLAUSE: -1]
+	token: "{" -> [6][Block]< "{" @ { Stat } "}" >
+		- DelayFieldAssignment()
+		- BeginObject(BlockStat)
+		> rule: OtherStat -> [49][IfTail_SWITCH_0allow_half_if]OtherStat @ "else" Stat
+			+ Field(IfStat::thenBranch)
+		> rule: Block -> [11][OtherStat]<< !Block @ >>
+	token: "if" -> [36][If_SWITCH_0allow_half_if]< "if" @ "cond" "then" IfTail_SWITCH_0allow_half_if >
+		- BeginObject(IfStat)
+		> rule: IfTail_SWITCH_COMBINED -> [46][IfTail_SWITCH_0allow_half_if]IfTail_SWITCH_COMBINED @
+		> rule: If_SWITCH_0allow_half_if -> [24][IfTail_SWITCH_COMBINED]If_SWITCH_0allow_half_if @ "else" Stat
+			+ Field(IfStat::thenBranch)
+	token: "do" -> [3][Do]< "do" @ ";" >
+		- DelayFieldAssignment()
+		- BeginObject(DoStat)
+		> rule: OtherStat -> [49][IfTail_SWITCH_0allow_half_if]OtherStat @ "else" Stat
+			+ Field(IfStat::thenBranch)
+		> rule: Do -> [12][OtherStat]<< !Do @ >>
+
+[45][IfTail_SWITCH_0allow_half_if] END [ENDING]
+[RULE: 9][CLAUSE: -1]
+
+[46][IfTail_SWITCH_0allow_half_if]IfTail_SWITCH_COMBINED @
+[RULE: 9][CLAUSE: 1]
+	ending -> [45][IfTail_SWITCH_0allow_half_if] END [ENDING]
+
+[47][IfTail_SWITCH_0allow_half_if]OtherStat "else" @ Stat
+[RULE: 9][CLAUSE: 0]
+	token: "{" -> [6][Block]< "{" @ { Stat } "}" >
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- BeginObject(BlockStat)
+		> rule: Stat -> [48][IfTail_SWITCH_0allow_half_if]OtherStat "else" Stat @
+			+ Field(IfStat::elseBranch)
+		> rule: OtherStat -> [16][Stat]<< !OtherStat @ >>
+		> rule: Block -> [11][OtherStat]<< !Block @ >>
+	token: "if" -> [30][If_SWITCH_1allow_half_if]< "if" @ "cond" "then" IfTail_SWITCH_1allow_half_if >
+		- DelayFieldAssignment()
+		- BeginObject(IfStat)
+		> rule: Stat -> [48][IfTail_SWITCH_0allow_half_if]OtherStat "else" Stat @
+			+ Field(IfStat::elseBranch)
+		> rule: If_SWITCH_1allow_half_if -> [15][Stat]<< !If_SWITCH_1allow_half_if @ >>
+	token: "do" -> [3][Do]< "do" @ ";" >
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- BeginObject(DoStat)
+		> rule: Stat -> [48][IfTail_SWITCH_0allow_half_if]OtherStat "else" Stat @
+			+ Field(IfStat::elseBranch)
+		> rule: OtherStat -> [16][Stat]<< !OtherStat @ >>
+		> rule: Do -> [12][OtherStat]<< !Do @ >>
+
+[48][IfTail_SWITCH_0allow_half_if]OtherStat "else" Stat @
+[RULE: 9][CLAUSE: 0]
+	ending -> [45][IfTail_SWITCH_0allow_half_if] END [ENDING]
+
+[49][IfTail_SWITCH_0allow_half_if]OtherStat @ "else" Stat
+[RULE: 9][CLAUSE: 0]
+	token: "else" -> [47][IfTail_SWITCH_0allow_half_if]OtherStat "else" @ Stat
 

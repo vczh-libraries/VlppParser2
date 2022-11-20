@@ -6,26 +6,26 @@ Block
   ::= "{" {Stat:stats} "}" as BlockStat
   ;
 
-IfTail_SWITCH_COMBINED
+IfTail_SWITCH_COMBINED : IfStat
   ::= If_SWITCH_0allow_half_if:thenBranch "else" Stat:elseBranch as partial IfStat
   ;
 
-IfTail_SWITCH_0allow_half_if
+IfTail_SWITCH_0allow_half_if : IfStat
   ::= OtherStat:thenBranch "else" Stat:elseBranch as partial IfStat
-  ::= !IfTail_SWITCH_COMBINED
+  ::= IfTail_SWITCH_COMBINED as partial IfStat
   ;
 
-IfTail_SWITCH_1allow_half_if
+IfTail_SWITCH_1allow_half_if : IfStat
   ::= OtherStat:thenBranch ["else" Stat:elseBranch] as partial IfStat
   ::= If_SWITCH_1allow_half_if:thenBranch as partial IfStat
-  ::= !IfTail_SWITCH_COMBINED
+  ::= IfTail_SWITCH_COMBINED as partial IfStat
   ;
 
-If_SWITCH_0allow_half_if
+If_SWITCH_0allow_half_if : IfStat
   ::= "if" "cond" "then" IfTail_SWITCH_0allow_half_if as IfStat
   ;
 
-If_SWITCH_1allow_half_if
+If_SWITCH_1allow_half_if : IfStat
   ::= "if" "cond" "then" IfTail_SWITCH_1allow_half_if as IfStat
   ;
 
