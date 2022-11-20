@@ -112,6 +112,7 @@ protected:
 		case GlrRefType::ConditionalLiteral:
 			VisitConditionalLiteral(node->literal.value);
 			break;
+		default:;
 		}
 		if (node->field)
 		{
@@ -150,6 +151,7 @@ protected:
 			break;
 		case GlrOptionalPriority::Equal:
 			break;
+		default:;
 		}
 		writer.WriteChar(L'[');
 		VisitSyntax(node->syntax.Obj());
