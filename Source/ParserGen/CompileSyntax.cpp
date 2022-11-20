@@ -105,7 +105,7 @@ CompileSyntax
 			Ptr<GlrSyntaxFile> CompileSyntax(AstSymbolManager& astManager, LexerSymbolManager& lexerManager, SyntaxSymbolManager& syntaxManager, Ptr<CppParserGenOutput> output, collections::List<Ptr<GlrSyntaxFile>>& files)
 			{
 				// merge files to single syntax file
-				Ptr<GlrSyntaxFile> syntaxFile;
+				auto syntaxFile = MakePtr<GlrSyntaxFile>();
 				for (auto file : files)
 				{
 					CopyFrom(syntaxFile->switches, file->switches, true);
