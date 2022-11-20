@@ -683,6 +683,14 @@ RewriteSyntax
 			{
 				using namespace rewritesyntax_switch;
 
+				if (context.ruleAffectedSwitches.Count() == syntaxManager.Rules().Count())
+				{
+					syntaxManager.AddError(
+						ParserErrorType::NoSwitchUnaffectedRule,
+						{}
+						);
+				}
+
 				RewritingContext rewritingContext;
 				{
 					// find out all expansion of rules affected by switch values

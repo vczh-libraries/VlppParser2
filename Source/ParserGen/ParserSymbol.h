@@ -121,6 +121,7 @@ ParserSymbolManager
 			ERROR_ITEM(PushedSwitchIsNotTested,												ruleName, switchName)\
 			ERROR_ITEM(PrefixMergeAffectedBySwitches,										ruleName, prefixMergeRule, switchName)\
 			/* SyntaxAst(RewriteSyntax_Switch, condition) */\
+			ERROR_ITEM(NoSwitchUnaffectedRule)\
 			ERROR_ITEM(SwitchUnaffectedRuleExpandedToNoClause,								ruleName)\
 			ERROR_ITEM(SwitchAffectedRuleExpandedToNoClause,								ruleName, expandedRuleName)\
 			/* SyntaxAst(ValidateTypes) */\
@@ -217,17 +218,18 @@ ParserSymbolManager
 					ParserError error;
 					error.type = type;
 					error.location = location;
-
-					WString sargs[] = { WString(args)... };
-					WString* dargs[] = { &error.arg1,&error.arg2,&error.arg3,&error.arg4 };
-					constexpr vint sl = sizeof(sargs) / sizeof(*sargs);
-					constexpr vint dl = sizeof(dargs) / sizeof(*dargs);
-					constexpr vint ml = sl < dl ? sl : dl;
-					for (vint i = 0; i < ml; i++)
+					if constexpr (sizeof...(args) > 0)
 					{
-						*dargs[i] = sargs[i];
+						WString sargs[] = { WString(args)... };
+						WString* dargs[] = { &error.arg1,&error.arg2,&error.arg3,&error.arg4 };
+						constexpr vint sl = sizeof(sargs) / sizeof(*sargs);
+						constexpr vint dl = sizeof(dargs) / sizeof(*dargs);
+						constexpr vint ml = sl < dl ? sl : dl;
+						for (vint i = 0; i < ml; i++)
+						{
+							*dargs[i] = sargs[i];
+						}
 					}
-
 					errors.Add(std::move(error));
 				}
 			};
