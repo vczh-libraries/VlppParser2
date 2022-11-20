@@ -12,9 +12,6 @@
 ## Test Cases
 
 - `PrefixMerge` 1-7 add test cases to parse expr and type separately.
-- Add test cases for:
-  - SwitchUnaffectedRuleExpandedToNoClause
-  - SwitchAffectedRuleExpandedToNoClause
 - Create test cases that only rewrite syntax without generating C++ code for:
   - `DeductEmptySyntaxVisitor`
   - Invalid combined clauses during expanding switches
