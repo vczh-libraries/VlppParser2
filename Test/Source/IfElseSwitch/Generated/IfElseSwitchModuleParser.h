@@ -20,10 +20,10 @@ namespace ifelseswitch
 		Stat = 13,
 		Module = 17,
 		IfTail_SWITCH_COMBINED = 20,
-		If_SWITCH_1allow_half_if = 25,
-		If_SWITCH_0allow_half_if = 31,
-		IfTail_SWITCH_1allow_half_if = 37,
-		IfTail_SWITCH_0allow_half_if = 44,
+		IfTail_SWITCH_1allow_half_if = 25,
+		IfTail_SWITCH_0allow_half_if = 32,
+		If_SWITCH_1allow_half_if = 38,
+		If_SWITCH_0allow_half_if = 44,
 	};
 
 	const wchar_t* ModuleParserRuleName(vl::vint index);
