@@ -9,6 +9,7 @@
     - switch in compiled symbols (EdgeSymbol ...)
     - switch in automaton
     - switch in runtime
+  - Merge multiple files into one before compiling
 - Multiple LRI following one Target
 - Generate multiple level of LRI from prefix_merge
   - Currently it generates an error if 3 levels are required
