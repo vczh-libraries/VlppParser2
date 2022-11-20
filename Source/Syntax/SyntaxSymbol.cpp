@@ -110,6 +110,11 @@ SyntaxSymbolManager
 				return rule;
 			}
 
+			void SyntaxSymbolManager::RemoveRule(const WString& name)
+			{
+				rules.Remove(name);
+			}
+
 			StateSymbol* SyntaxSymbolManager::CreateState(RuleSymbol* rule, vint32_t clauseId)
 			{
 				CHECK_ERROR(phase == SyntaxPhase::EpsilonNFA, L"vl::gre::parsergen::SyntaxSymbolManager::CreateState(RuleSymbol*)#Cannot change the automaton after calling BuildCompactSyntax().");
@@ -124,24 +129,6 @@ SyntaxSymbolManager
 				auto symbol = new EdgeSymbol(from, to);
 				edges.Add(symbol);
 				return symbol;
-			}
-
-			bool SyntaxSymbolManager::CreateSwitch(const WString& name, bool defaultValue, ParsingTextRange codeRange)
-			{
-				if (switches.Keys().Contains(name))
-				{
-					AddError(
-						ParserErrorType::DuplicatedSwitch,
-						codeRange,
-						name
-						);
-					return false;
-				}
-				else
-				{
-					switches.Add(name, { defaultValue, codeRange });
-					return true;
-				}
 			}
 
 			void SyntaxSymbolManager::BuildCompactNFA()

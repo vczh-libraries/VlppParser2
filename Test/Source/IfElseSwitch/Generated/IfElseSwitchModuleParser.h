@@ -16,16 +16,18 @@ namespace ifelseswitch
 	{
 		Do = 0,
 		Block = 4,
-		IfTail = 9,
-		If = 18,
-		OtherStat = 24,
-		Stat = 28,
-		Module = 32,
+		OtherStat = 9,
+		Stat = 13,
+		Module = 17,
+		IfTail_SWITCH_COMBINED = 20,
+		If_SWITCH_1allow_half_if = 25,
+		If_SWITCH_0allow_half_if = 31,
+		IfTail_SWITCH_1allow_half_if = 37,
+		IfTail_SWITCH_0allow_half_if = 44,
 	};
 
 	const wchar_t* ModuleParserRuleName(vl::vint index);
 	const wchar_t* ModuleParserStateLabel(vl::vint index);
-	const wchar_t* ModuleParserSwitchName(vl::vint index);
 	extern void IfElseSwitchModuleParserData(vl::stream::IStream& outputStream);
 
 	class ModuleParser

@@ -49,8 +49,7 @@ TEST_FILE
 				typeMetadata,
 				typeName,
 				fieldName,
-				tokenName,
-				[&](vint32_t switchId) { return typeSyntaxManager.switches.Keys()[switchId]; }
+				tokenName
 				);
 		}
 		{
@@ -66,8 +65,7 @@ TEST_FILE
 				ruleMetadata,
 				typeName,
 				fieldName,
-				tokenName,
-				[&](vint32_t switchId) { return ruleSyntaxManager.switches.Keys()[switchId]; }
+				tokenName
 				);
 		}
 		auto output = GenerateParserFileNames(global);

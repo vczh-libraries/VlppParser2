@@ -107,12 +107,6 @@ MakeLeftRecursionInjectClause
 					return *this;
 				}
 
-				MakeLeftRecursionInjectClause& MakeLeftRecursionInjectClause::switches(const vl::Ptr<GlrSwitchItem>& value)
-				{
-					node->switches.Add(value);
-					return *this;
-				}
-
 /***********************************************************************
 MakeLeftRecursionInjectContinuation
 ***********************************************************************/

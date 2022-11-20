@@ -20,6 +20,7 @@ CollectRuleAffectedSwitchesVisitorBase
 			protected:
 				VisitorContext&							context;
 				RuleSymbol*								ruleSymbol = nullptr;
+				GlrClause*								currentClause = nullptr;
 				List<WString>							pushedSwitches;
 
 			public:
@@ -35,7 +36,9 @@ CollectRuleAffectedSwitchesVisitorBase
 					ruleSymbol = context.syntaxManager.Rules()[rule->name.value];
 					for (auto clause : rule->clauses)
 					{
+						currentClause = clause.Obj();
 						clause->Accept(this);
+						currentClause = nullptr;
 					}
 				}
 
@@ -81,9 +84,16 @@ CollectRuleAffectedSwitchesFirstPassVisitor
 
 				void Traverse(GlrRefCondition* node) override
 				{
-					if (!pushedSwitches.Contains(node->name.value) && !context.ruleAffectedSwitches.Contains(ruleSymbol, node->name.value))
+					if (!pushedSwitches.Contains(node->name.value))
 					{
-						context.ruleAffectedSwitches.Add(ruleSymbol, node->name.value);
+						if (!context.clauseAffectedSwitches.Contains(currentClause, node->name.value))
+						{
+							context.clauseAffectedSwitches.Add(currentClause, node->name.value);
+						}
+						if (!context.ruleAffectedSwitches.Contains(ruleSymbol, node->name.value))
+						{
+							context.ruleAffectedSwitches.Add(ruleSymbol, node->name.value);
+						}
 					}
 				}
 			};
@@ -117,16 +127,23 @@ CollectRuleAffectedSwitchesSecondPassVisitor
 					if (index != -1)
 					{
 						auto refRuleSymbol = context.syntaxManager.Rules().Values()[index];
-						if (ruleSymbol == refRuleSymbol) return;
 						vint indexSwitch = context.ruleAffectedSwitches.Keys().IndexOf(refRuleSymbol);
 						if (indexSwitch != -1)
 						{
 							for (auto&& name : context.ruleAffectedSwitches.GetByIndex(indexSwitch))
 							{
-								if (!pushedSwitches.Contains(name) && !context.ruleAffectedSwitches.Contains(ruleSymbol, name))
+								if (!pushedSwitches.Contains(name))
 								{
-									updated = true;
-									context.ruleAffectedSwitches.Add(ruleSymbol, name);
+									if (!context.clauseAffectedSwitches.Contains(currentClause, name))
+									{
+										updated = true;
+										context.clauseAffectedSwitches.Add(currentClause, name);
+									}
+									if (ruleSymbol != refRuleSymbol && !context.ruleAffectedSwitches.Contains(ruleSymbol, name))
+									{
+										updated = true;
+										context.ruleAffectedSwitches.Add(ruleSymbol, name);
+									}
 								}
 							}
 						}

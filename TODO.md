@@ -3,28 +3,36 @@
 ## Next task
 
 - Rewrire and remove switch before removing PrefixMerge.
-  - Expand one rules to multiple by postfix "_SWITCHED_0Abc_1Def...".
+  - Merge multiple files into one before compiling
+  - Move switch information from `context` to `switchContext`
+  - Rename `LeftRecursionPlaceholderMixedWithSwitches`
+- Multiple LRI following one Target
+- Generate multiple level of LRI from prefix_merge
+  - Currently it generates an error if 3 levels are required
 
 ## Test Cases
 
 - `PrefixMerge` 1-7 add test cases to parse expr and type separately.
 - Add test cases for:
+  - SyntaxInvolvesSwitchWithIllegalRuleName
+  - SwitchUnaffectedRuleExpandedToNoClause
+  - SwitchAffectedRuleExpandedToNoClause
   - PrefixExtractionAffectedRuleReferencedAnother
   - ~~PrefixExtractionAffectedBySwitches~~
+- Create test cases that only rewrite syntax without generating C++ code for:
+  - `DeductEmptySyntaxVisitor`
+  - Invalid combined clauses during expanding switches
+  - everything else that is needed
 - TODO(s) in `RewriteRules_GenerateAffectedLRIClausesSubgroup`.
 - Make a test case to test `prefix_merge` generates `left_recursion_inject_multiple`.
 - Create ambiguity test case caused by only one clause with alternative syntax.
 - Test when an object get LriFetch to multiple branches following a ReopenObject.
-- ~~Test `A LRI(X) (B LRI(Y) C)` when B involved `PushSwitchSyntax`.~~
 - Deny `X ::= Y LRI ...` when `X` is or a prefix of `Y`.
 
 ## Features to Add
 
 - Extensible tokens, for example, recognize `R"[^\s(]\(` and invoke a callback function to determine the end of the string.
   - Offer two options: using (rich regex | C++) to search for complete token.
-- ~~Check `prefix_merge` errors~~
-  - ~~Any rule should not go through switch instructions and reach PM/LRP in one token input.~~
-  - ~~LRI should not inject through switch instructions.~~
 
 ## Issues
 
@@ -66,7 +74,6 @@
 
 ## Work Items (enhancement)
 
-- ~~Eliminate `Switches::values` size limit.~~
 - Switching lexical analyzer during parsing.
   - Refactor some properties in `LexerSymbolManager` into `LexerFile` with a name.
 - AST uses classes from another AST file in dependency as fields.

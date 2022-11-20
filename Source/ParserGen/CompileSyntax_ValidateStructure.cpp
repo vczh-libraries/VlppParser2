@@ -246,65 +246,12 @@ ValidateStructureCountingVisitor
 
 				void Visit(GlrPushConditionSyntax* node) override
 				{
-					node->syntax->Accept(this);
-					if (syntaxMinLength == 0)
-					{
-						context.syntaxManager.AddError(
-							ParserErrorType::PushConditionBodyCouldExpandToEmptySequence,
-							node->codeRange,
-							ruleSymbol->Name()
-							);
-					}
+					CHECK_FAIL(L"GlrPushConditionSyntax should have been removed after RewriteSyntax_Switch()!");
 				}
 
 				void Visit(GlrTestConditionSyntax* node) override
 				{
-					vint minLength = -1;
-					vint minUseRuleCount = -1;
-					vint maxUseRuleCount = -1;
-					bool hasEmptySyntax = false;
-
-					for (auto&& branch : node->branches)
-					{
-						if (branch->syntax)
-						{
-							branch->syntax->Accept(this);
-							if (syntaxMinLength == 0)
-							{
-								context.syntaxManager.AddError(
-									ParserErrorType::TestConditionBodyCouldExpandToEmptySequence,
-									branch->codeRange,
-									ruleSymbol->Name()
-									);
-							}
-
-							vint branchMinLength = syntaxMinLength;
-							vint branchMinUseRuleCount = syntaxMinUseRuleCount;
-							vint branchMaxUseRuleCount = syntaxMaxUseRuleCount;
-
-							if (minLength == -1 || minLength > branchMinLength) minLength = branchMinLength;
-							if (minUseRuleCount == -1 || minUseRuleCount > branchMinUseRuleCount) minUseRuleCount = branchMinUseRuleCount;
-							if (maxUseRuleCount == -1 || maxUseRuleCount < branchMaxUseRuleCount) maxUseRuleCount = branchMaxUseRuleCount;
-						}
-						else
-						{
-							hasEmptySyntax = true;
-						}
-					}
-
-					if (minLength == -1) minLength = 0;
-					if (minUseRuleCount == -1) minUseRuleCount = 0;
-					if (maxUseRuleCount == -1) maxUseRuleCount = 0;
-
-					if (hasEmptySyntax)
-					{
-						minLength = 0;
-						minUseRuleCount = 0;
-					}
-
-					syntaxMinLength = minLength;
-					syntaxMinUseRuleCount = minUseRuleCount;
-					syntaxMaxUseRuleCount = maxUseRuleCount;
+					CHECK_FAIL(L"GlrTestConditionSyntax should have been removed after RewriteSyntax_Switch()!");
 				}
 
 				////////////////////////////////////////////////////////////////////////
@@ -605,34 +552,12 @@ ValidateStructureRelationshipVisitor
 
 				void Visit(GlrPushConditionSyntax* node) override
 				{
-					node->syntax->Accept(this);
+					CHECK_FAIL(L"GlrPushConditionSyntax should have been removed after RewriteSyntax_Switch()!");
 				}
 
 				void Visit(GlrTestConditionSyntax* node) override
 				{
-					bool firstEmptyBranch = false;
-					for (auto&& branch : node->branches)
-					{
-						if (branch->syntax)
-						{
-							branch->syntax->Accept(this);
-						}
-						else
-						{
-							if (!firstEmptyBranch)
-							{
-								firstEmptyBranch = true;
-							}
-							else
-							{
-								context.syntaxManager.AddError(
-									ParserErrorType::MultipleEmptySyntaxInTestCondition,
-									branch->codeRange,
-									ruleSymbol->Name()
-									);
-							}
-						}
-					}
+					CHECK_FAIL(L"GlrTestConditionSyntax should have been removed after RewriteSyntax_Switch()!");
 				}
 
 				////////////////////////////////////////////////////////////////////////
@@ -815,12 +740,12 @@ ValidateStructurePrefixMergeRuleVisitor
 
 				void Visit(GlrPushConditionSyntax* node) override
 				{
-					NotBeginWithARule(node);
+					CHECK_FAIL(L"GlrPushConditionSyntax should have been removed after RewriteSyntax_Switch()!");
 				}
 
 				void Visit(GlrTestConditionSyntax* node) override
 				{
-					NotBeginWithARule(node);
+					CHECK_FAIL(L"GlrTestConditionSyntax should have been removed after RewriteSyntax_Switch()!");
 				}
 
 				////////////////////////////////////////////////////////////////////////
@@ -934,14 +859,7 @@ ValidateStructureIndirectPrefixMergeRuleVisitor
 
 				void Visit(GlrReuseClause* node) override
 				{
-					if (auto pushSyntax = dynamic_cast<GlrPushConditionSyntax*>(node->syntax.Obj()))
-					{
-						if (!dynamic_cast<GlrUseSyntax*>(pushSyntax->syntax.Obj()))
-						{
-							NotSimpleUsingRule(node);
-						}
-					}
-					else if (!dynamic_cast<GlrUseSyntax*>(node->syntax.Obj()))
+					if (!dynamic_cast<GlrUseSyntax*>(node->syntax.Obj()))
 					{
 						NotSimpleUsingRule(node);
 					}

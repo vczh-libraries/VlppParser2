@@ -40,13 +40,12 @@ namespace vl
 				LriContinuationBody = 150,
 				LriContinuation = 159,
 				LriTarget = 165,
-				Rule = 179,
-				File = 187,
+				Rule = 172,
+				File = 180,
 			};
 
 			const wchar_t* RuleParserRuleName(vl::vint index);
 			const wchar_t* RuleParserStateLabel(vl::vint index);
-			const wchar_t* RuleParserSwitchName(vl::vint index);
 			extern void ParserGenRuleParserData(vl::stream::IStream& outputStream);
 
 			class RuleParser

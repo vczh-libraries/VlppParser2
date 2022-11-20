@@ -17,7 +17,10 @@ namespace vl
 			template<typename T>
 			struct MappedOwning
 			{
+			private:
 				collections::List<Ptr<T>>				items;
+
+			public:
 				collections::List<WString>				order;
 				collections::Dictionary<WString, T*>	map;
 
@@ -28,6 +31,22 @@ namespace vl
 					order.Add(name);
 					map.Add(name, item);
 					return true;
+				}
+
+				Ptr<T> Remove(const WString& name)
+				{
+					vint indexKey = map.Keys().IndexOf(name);
+					if (indexKey == -1) return nullptr;
+
+					auto raw = map.Values()[indexKey];
+					vint indexItem = items.IndexOf(raw);
+					auto shared = items[indexItem];
+
+					items.RemoveAt(indexItem);
+					order.Remove(name);
+					map.Remove(name);
+
+					return shared;
 				}
 			};
 
@@ -70,8 +89,6 @@ ParserSymbolManager
 			/* SyntaxSymbolManager */\
 			ERROR_ITEM(DuplicatedRule,														ruleName)\
 			ERROR_ITEM(RuleIsIndirectlyLeftRecursive,										ruleName)													/* Indirect left recursion must be resolved before */\
-			ERROR_ITEM(LeftRecursiveClauseInsidePushCondition,								ruleName)													/* The left recursive clause is not allowed to begin with a push condition syntax */\
-			ERROR_ITEM(LeftRecursiveClauseInsideTestCondition,								ruleName)													/* The left recursive clause is not allowed to begin with a test condition syntax */\
 			ERROR_ITEM(LeftRecursionPlaceholderMixedWithSwitches,							ruleName, placeholder, targetRuleName)\
 			ERROR_ITEM(LeftRecursionInjectHasNoContinuation,								ruleName, placeholder, targetRuleName)\
 			/* SyntaxAst(ResolveName) */\
@@ -87,6 +104,7 @@ ParserSymbolManager
 			ERROR_ITEM(DuplicatedSwitch,													switchName)\
 			ERROR_ITEM(UnusedSwitch,														switchName)\
 			ERROR_ITEM(SwitchNotExists,														ruleName, switchName)\
+			ERROR_ITEM(SyntaxInvolvesSwitchWithIllegalRuleName,								ruleName)													/* A syntax uses switch should not use rule name that has _SWITCH/SWITCH_ */\
 			ERROR_ITEM(SyntaxInvolvesPrefixMergeWithIllegalRuleName,						ruleName)													/* A syntax uses prefix_merge should not use rule name that has _LRI/_LRIP/LRI_/LRIP_ */\
 			ERROR_ITEM(SyntaxInvolvesPrefixMergeWithIllegalPlaceholderName,					ruleName, placeholderName)									/* A syntax uses prefix_merge should not use placeholder name that has _LRI/_LRIP/LRI_/LRIP_ */\
 			/* SyntaxAst(CalculateTypes) */\
@@ -100,6 +118,10 @@ ParserSymbolManager
 			/* SyntaxAst(ValidateSwitchesAndConditions, condition) */\
 			ERROR_ITEM(PushedSwitchIsNotTested,												ruleName, switchName)\
 			ERROR_ITEM(PrefixMergeAffectedBySwitches,										ruleName, prefixMergeRule, switchName)\
+			/* SyntaxAst(RewriteSyntax_Switch, condition) */\
+			ERROR_ITEM(NoSwitchUnaffectedRule)\
+			ERROR_ITEM(SwitchUnaffectedRuleExpandedToNoClause,								ruleName)\
+			ERROR_ITEM(SwitchAffectedRuleExpandedToNoClause,								ruleName, expandedRuleName)\
 			/* SyntaxAst(ValidateTypes) */\
 			ERROR_ITEM(FieldNotExistsInClause,												ruleName, clauseType, fieldName)							/* The field does not exist in the type of the clause */\
 			ERROR_ITEM(RuleTypeMismatchedToField,											ruleName, clauseType, fieldName, fieldRuleType)				/* The rule type is not compatible to the assigning field */\
@@ -126,10 +148,7 @@ ParserSymbolManager
 			ERROR_ITEM(LoopBodyCouldExpandToEmptySequence,									ruleName)\
 			ERROR_ITEM(OptionalBodyCouldExpandToEmptySequence,								ruleName)\
 			ERROR_ITEM(NegativeOptionalEndsAClause,											ruleName)													/* Negative optional syntax cannot ends a clause */\
-			ERROR_ITEM(MultiplePrioritySyntaxInAClause,										ruleName)													/* Too many syntax with priority in the a clause */\
-			ERROR_ITEM(PushConditionBodyCouldExpandToEmptySequence,							ruleName)\
-			ERROR_ITEM(TestConditionBodyCouldExpandToEmptySequence,							ruleName)\
-			ERROR_ITEM(MultipleEmptySyntaxInTestCondition,									ruleName)\
+			ERROR_ITEM(MultiplePrioritySyntaxInAClause,										ruleName)\
 			ERROR_ITEM(TooManyLeftRecursionPlaceholderClauses,								ruleName)\
 			/* SyntaxAst(ValidateStructure, relationship) */\
 			ERROR_ITEM(FieldAssignedMoreThanOnce,											ruleName, clauseType, fieldName)\
@@ -138,7 +157,7 @@ ParserSymbolManager
 			ERROR_ITEM(RuleMixedPrefixMergeWithClauseNotBeginWithIndirectPrefixMerge,		ruleName, startRule)										/* If a rule has prefix_merge clause, than all other clause must directly or indirectly starts with prefix_merge */\
 			ERROR_ITEM(RuleIndirectlyBeginsWithPrefixMergeMixedLeftRecursionMarkers,		ruleName, prefixMergeRule, leftRecursionMarkerRule)\
 			ERROR_ITEM(RuleIndirectlyBeginsWithPrefixMergeMixedNonSimpleUseClause,			ruleName, prefixMergeRule)									/* If a rule indirectly begins with prefix_merge, then all clause must be, either a simple use clause begins with prefix_merge, or a clause not begins with prefix_merge */\
-			/* SyntaxAst(RewriteSyntax, prefix_merge) */\
+			/* SyntaxAst(RewriteSyntax_PrefixMerge, prefix_merge) */\
 			ERROR_ITEM(PrefixExtractionAffectedRuleReferencedAnother,						ruleName, conflictedRule, prefixRule)						/* During left_recursion_inject clause generation, if prefix extracted affected the process, all !prefixRule clauses where prefixRule is the prefix of conflictedRule in any !conflictedRule clauses, prefixRule should not be affected */\
 			ERROR_ITEM(PrefixExtractionAffectedBySwitches,									ruleName, conflictedRule, switchName)						/* During left_recursion_inject clause generation, if prefix extracted affected the process, !prefixRule should not be affected by any switch */
 
@@ -194,17 +213,18 @@ ParserSymbolManager
 					ParserError error;
 					error.type = type;
 					error.location = location;
-
-					WString sargs[] = { WString(args)... };
-					WString* dargs[] = { &error.arg1,&error.arg2,&error.arg3,&error.arg4 };
-					constexpr vint sl = sizeof(sargs) / sizeof(*sargs);
-					constexpr vint dl = sizeof(dargs) / sizeof(*dargs);
-					constexpr vint ml = sl < dl ? sl : dl;
-					for (vint i = 0; i < ml; i++)
+					if constexpr (sizeof...(args) > 0)
 					{
-						*dargs[i] = sargs[i];
+						WString sargs[] = { WString(args)... };
+						WString* dargs[] = { &error.arg1,&error.arg2,&error.arg3,&error.arg4 };
+						constexpr vint sl = sizeof(sargs) / sizeof(*sargs);
+						constexpr vint dl = sizeof(dargs) / sizeof(*dargs);
+						constexpr vint ml = sl < dl ? sl : dl;
+						for (vint i = 0; i < ml; i++)
+						{
+							*dargs[i] = sargs[i];
+						}
 					}
-
 					errors.Add(std::move(error));
 				}
 			};

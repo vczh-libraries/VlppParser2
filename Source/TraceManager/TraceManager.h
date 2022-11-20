@@ -195,14 +195,6 @@ TraceManager (Data Structures)
 																		// this flag is not always updated for discarded AttendingCompetitions objects
 			};
 
-			struct Switches : Allocatable<Switches>
-			{
-				Ref<Switches>			previous;					// id of the previous Switches in the stack
-				Ref<Switches>			firstChild;					// id of the first Swtiches that was ever pushed after the current one
-				Ref<Switches>			nextSibling;				// id of the next Switches in all Switches that were ever pushed after the previous one
-				vuint32_t				values[2] = { 0 };			// switch values, temporary set to 64 slots
-			};
-
 /***********************************************************************
 TraceManager (Data Structures -- Input/EndOfInput)
 ***********************************************************************/
@@ -243,7 +235,6 @@ TraceManager (Data Structures -- Input/EndOfInput)
 				vint32_t				state = -1;					// id of the current StateDesc
 				Ref<ReturnStack>		returnStack;				// id of the current ReturnStack
 				Ref<ReturnStack>		executedReturnStack;		// id of the executed ReturnStack that contains the ReturnDesc being executed
-				Ref<Switches>			switchValues;				// the id of switch values, it will be -1 if no switch is defined for this parser
 				vint32_t				byEdge = -1;				// id of the last EdgeDesc that make this trace
 				vint32_t				byInput = -1;				// the last input that make this trace
 				vint32_t				currentTokenIndex = -1;		// the index of the token that is byInput
@@ -509,21 +500,18 @@ TraceManager
 			protected:
 				Executable&									executable;
 				const ITypeCallback*						typeCallback = nullptr;
-				vint32_t									maxSwitchValues = 0;
 
 				TraceManagerState							state = TraceManagerState::Uninitialized;
 				AllocateOnly<ReturnStack>					returnStacks;
 				AllocateOnly<Trace>							traces;
 				AllocateOnly<Competition>					competitions;
 				AllocateOnly<AttendingCompetitions>			attendingCompetitions;
-				AllocateOnly<Switches>						switches;
 
 				collections::List<Trace*>					traces1;
 				collections::List<Trace*>					traces2;
 
 				Trace*										initialTrace = nullptr;
 				Ref<Competition>							activeCompetitions;
-				Ref<Switches>								rootSwitchValues;
 				ReturnStackCache							initialReturnStackCache;
 
 				collections::List<bool>						temporaryConditionStack;
@@ -552,8 +540,6 @@ TraceManager
 				// Walk
 				bool										IsQualifiedTokenForCondition(regex::RegexToken* token, StringLiteral condition);
 				bool										IsQualifiedTokenForEdgeArray(regex::RegexToken* token, EdgeArray& edgeArray);
-				Ref<Switches>								PushSwitchFrame(Switches* currentSV, vuint32_t* values);
-				Ref<Switches>								RunEdgeConditionChecking(Ref<Switches> currentSwitchValues, EdgeDesc& edgeDesc);
 				WalkingTrace								WalkAlongSingleEdge(vint32_t currentTokenIndex, vint32_t input, WalkingTrace trace, vint32_t byEdge, EdgeDesc& edgeDesc);
 				void										WalkAlongLeftrecEdges(vint32_t currentTokenIndex, regex::RegexToken* lookAhead, WalkingTrace trace, EdgeArray& edgeArray);
 				void										WalkAlongEpsilonEdges(vint32_t currentTokenIndex, regex::RegexToken* lookAhead, WalkingTrace trace);
@@ -685,7 +671,6 @@ TraceManager
 				Competition*					AllocateCompetition();
 				AttendingCompetitions*			GetAttendingCompetitions(Ref<AttendingCompetitions> index);
 				AttendingCompetitions*			AllocateAttendingCompetitions();
-				Switches*						GetSwitches(Ref<Switches> index);
 
 				InsExec*						GetInsExec(vint32_t index);
 				InsExec_Object*					GetInsExec_Object(Ref<InsExec_Object> index);

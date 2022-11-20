@@ -11,8 +11,7 @@ extern FilePath LogSyntaxWithPath(
 	const FilePath& outputFile,
 	const Func<WString(vint32_t)>& typeName,
 	const Func<WString(vint32_t)>& fieldName,
-	const Func<WString(vint32_t)>& tokenName,
-	const Func<WString(vint32_t)>& switchName
+	const Func<WString(vint32_t)>& tokenName
 	);
 
 extern FilePath LogSyntax(
@@ -21,8 +20,7 @@ extern FilePath LogSyntax(
 	const WString& phase,
 	const Func<WString(vint32_t)>& typeName,
 	const Func<WString(vint32_t)>& fieldName,
-	const Func<WString(vint32_t)>& tokenName,
-	const Func<WString(vint32_t)>& switchName
+	const Func<WString(vint32_t)>& tokenName
 	);
 
 #endif

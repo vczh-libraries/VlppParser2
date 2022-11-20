@@ -33,7 +33,6 @@ namespace prefixmerge5_pm
 
 	const wchar_t* ModuleParserRuleName(vl::vint index);
 	const wchar_t* ModuleParserStateLabel(vl::vint index);
-	const wchar_t* ModuleParserSwitchName(vl::vint index);
 	extern void PrefixMerge5_PmModuleParserData(vl::stream::IStream& outputStream);
 
 	class ModuleParser

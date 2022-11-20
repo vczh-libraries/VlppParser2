@@ -13,8 +13,7 @@ FilePath LogAutomatonWithPath(
 	Metadata& metadata,
 	const Func<WString(vint32_t)>& typeName,
 	const Func<WString(vint32_t)>& fieldName,
-	const Func<WString(vint32_t)>& tokenName,
-	const Func<WString(vint32_t)>& switchName
+	const Func<WString(vint32_t)>& tokenName
 )
 {
 	FileStream fileStream(outputFile.GetFullPath(), FileStream::WriteOnly);
@@ -59,12 +58,6 @@ FilePath LogAutomatonWithPath(
 				default:;
 				}
 				writer.WriteLine(L" -> " + metadata.stateLabels[edge.toState]);
-
-				for (vint insRef = 0; insRef < edge.insSwitch.count; insRef++)
-				{
-					writer.WriteString(L"\t\t? ");
-					LogInstruction(executable.switchInstructions[edge.insSwitch.start + insRef], switchName, writer);
-				}
 
 				for (vint insRef = 0; insRef < edge.insBeforeInput.count; insRef++)
 				{
@@ -112,9 +105,8 @@ FilePath LogAutomaton(
 	Metadata& metadata,
 	const Func<WString(vint32_t)>& typeName,
 	const Func<WString(vint32_t)>& fieldName,
-	const Func<WString(vint32_t)>& tokenName,
-	const Func<WString(vint32_t)>& switchName
+	const Func<WString(vint32_t)>& tokenName
 )
 {
-	return LogAutomatonWithPath(GetOutputDir(parserName) / L"Automaton.txt", executable, metadata, typeName, fieldName, tokenName, switchName);
+	return LogAutomatonWithPath(GetOutputDir(parserName) / L"Automaton.txt", executable, metadata, typeName, fieldName, tokenName);
 }

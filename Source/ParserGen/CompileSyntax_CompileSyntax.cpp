@@ -11,60 +11,6 @@ namespace vl
 			using namespace compile_syntax;
 
 /***********************************************************************
-CompileConditionVisitor
-***********************************************************************/
-
-			class CompileConditionVisitor
-				: public Object
-				, protected virtual GlrCondition::IVisitor
-			{
-			protected:
-				VisitorContext& context;
-			public:
-				List<automaton::SwitchIns>				insSwitch;
-
-				CompileConditionVisitor(VisitorContext& _context)
-					: context(_context)
-				{
-				}
-
-				void Compile(const Ptr<GlrCondition>& node)
-				{
-					node->Accept(this);
-					insSwitch.Add({ automaton::SwitchInsType::ConditionTest });
-				}
-			protected:
-
-				void Visit(GlrRefCondition* node) override
-				{
-					insSwitch.Add({
-						automaton::SwitchInsType::ConditionRead,
-						(vint32_t)context.syntaxManager.switches.Keys().IndexOf(node->name.value)
-						});
-				}
-
-				void Visit(GlrNotCondition* node) override
-				{
-					node->condition->Accept(this);
-					insSwitch.Add({ automaton::SwitchInsType::ConditionNot });
-				}
-
-				void Visit(GlrAndCondition* node) override
-				{
-					node->first->Accept(this);
-					node->second->Accept(this);
-					insSwitch.Add({ automaton::SwitchInsType::ConditionAnd });
-				}
-
-				void Visit(GlrOrCondition* node) override
-				{
-					node->first->Accept(this);
-					node->second->Accept(this);
-					insSwitch.Add({ automaton::SwitchInsType::ConditionOr });
-				}
-			};
-
-/***********************************************************************
 CompileSyntaxVisitor
 ***********************************************************************/
 
@@ -226,65 +172,14 @@ CompileSyntaxVisitor
 					result = automatonBuilder.BuildAlternativeSyntax(elements);
 				}
 
-				void SetSwitchValues(List<Ptr<GlrSwitchItem>>& switchesItems, Dictionary<vint32_t, bool>& switchValues)
-				{
-					for (auto&& switchItem : switchesItems)
-					{
-						switchValues.Add(
-							(vint32_t)context.syntaxManager.switches.Keys().IndexOf(switchItem->name.value),
-							(switchItem->value == GlrSwitchValue::True)
-							);
-					}
-				}
-
 				void Visit(GlrPushConditionSyntax* node) override
 				{
-					Dictionary<vint32_t, bool> switches;
-					SetSwitchValues(node->switches, switches);
-					result = automatonBuilder.BuildPushConditionSyntax(
-						switches,
-						[this, node]() { return Build(node->syntax); }
-						);
+					CHECK_FAIL(L"GlrPushConditionSyntax should have been removed after RewriteSyntax_Switch()!");
 				}
 
 				void Visit(GlrTestConditionSyntax* node) override
 				{
-					List<Func<StatePair()>> elements;
-					Ptr<GlrTestConditionBranch> emptyBranch;
-
-					for (auto&& branch : node->branches)
-					{
-						if (branch->syntax)
-						{
-							elements.Add([this, branch]()
-							{
-								CompileConditionVisitor visitor(context);
-								visitor.Compile(branch->condition);
-								return automatonBuilder.BuildTestConditionBranch(
-									visitor.insSwitch,
-									[this, branch]() { return Build(branch->syntax); }
-									);
-							});
-						}
-						else
-						{
-							emptyBranch = branch;
-						}
-					}
-
-					if (emptyBranch)
-					{
-						elements.Add([this, emptyBranch]()
-						{
-							CompileConditionVisitor visitor(context);
-							visitor.Compile(emptyBranch->condition);
-							return automatonBuilder.BuildTestConditionBranch(
-								visitor.insSwitch
-								);
-						});
-					}
-
-					result = automatonBuilder.BuildAlternativeSyntax(elements);
+					CHECK_FAIL(L"GlrTestConditionSyntax should have been removed after RewriteSyntax_Switch()!");
 				}
 
 				////////////////////////////////////////////////////////////////////////
@@ -399,22 +294,7 @@ CompileSyntaxVisitor
 
 				StateBuilder CompileLriTarget(vint32_t parentFlag, GlrLeftRecursionInjectClause* lriTarget)
 				{
-					if (lriTarget->switches.Count() == 0)
-					{
-						return CompileLriTargetWithoutSwitches(parentFlag, lriTarget);
-					}
-					else
-					{
-						return [this, parentFlag, lriTarget]()
-						{
-							Dictionary<vint32_t, bool> switches;
-							SetSwitchValues(lriTarget->switches, switches);
-							return automatonBuilder.BuildPushConditionSyntax(
-								switches,
-								CompileLriTargetWithoutSwitches(parentFlag, lriTarget)
-								);
-						};
-					}
+					return CompileLriTargetWithoutSwitches(parentFlag, lriTarget);
 				}
 
 				void Visit(GlrLeftRecursionInjectClause* node) override
@@ -427,7 +307,7 @@ CompileSyntaxVisitor
 
 				void Visit(GlrPrefixMergeClause* node) override
 				{
-					CHECK_FAIL(L"GlrPrefixMergeClause should have been removed after RewriteSyntax()!");
+					CHECK_FAIL(L"GlrPrefixMergeClause should have been removed after RewriteSyntax_PrefixMerge()!");
 				}
 			};
 

@@ -137,7 +137,6 @@ CompactSyntaxBuilder
 								newEdge->important |= edge->important;
 								for (auto accumulatedEdge : accumulatedEdges)
 								{
-									CopyFrom(newEdge->insSwitch, accumulatedEdge->insSwitch, true);
 									CopyFrom(newEdge->insBeforeInput, accumulatedEdge->insBeforeInput, true);
 									CopyFrom(newEdge->insAfterInput, accumulatedEdge->insAfterInput, true);
 									newEdge->important |= accumulatedEdge->important;
@@ -167,7 +166,6 @@ CompactSyntaxBuilder
 						newEdge->input.type = EdgeInputType::Ending;
 						for (auto accumulatedEdge : accumulatedEdges)
 						{
-							CopyFrom(newEdge->insSwitch, accumulatedEdge->insSwitch, true);
 							CopyFrom(newEdge->insBeforeInput, accumulatedEdge->insBeforeInput, true);
 							CopyFrom(newEdge->insAfterInput, accumulatedEdge->insAfterInput, true);
 							newEdge->important |= accumulatedEdge->important;
@@ -178,7 +176,6 @@ CompactSyntaxBuilder
 							if (endingEdge != newEdge && endingEdge->input.type == EdgeInputType::Ending)
 							{
 								if (
-									CompareEnumerable(endingEdge->insSwitch, newEdge->insSwitch) == 0 &&
 									CompareEnumerable(endingEdge->insBeforeInput, newEdge->insBeforeInput) == 0 &&
 									CompareEnumerable(endingEdge->insAfterInput, newEdge->insAfterInput) == 0)
 								{
@@ -241,10 +238,8 @@ SyntaxSymbolManager::BuildLeftRecEdge
 				newEdge->important |= lrecPrefixEdge->important;
 
 				newEdge->input.type = EdgeInputType::LeftRec;
-				CopyFrom(newEdge->insSwitch, endingEdge->insSwitch, true);
 				CopyFrom(newEdge->insBeforeInput, endingEdge->insBeforeInput, true);
 				CopyFrom(newEdge->insAfterInput, endingEdge->insAfterInput, true);
-				CopyFrom(newEdge->insSwitch, lrecPrefixEdge->insSwitch, true);
 				CopyFrom(newEdge->insBeforeInput, lrecPrefixEdge->insBeforeInput, true);
 				CopyFrom(newEdge->insAfterInput, lrecPrefixEdge->insAfterInput, true);
 
@@ -301,37 +296,6 @@ SyntaxSymbolManager::EliminateLeftRecursion
 					if (edge->input.type != EdgeInputType::Rule) continue;
 					if (edge->input.rule != rule) continue;
 					lrecEdges.Add(edge);
-
-					bool hasPushIns = false;
-					bool hasTestIns = false;
-					for (auto ins : edge->insSwitch)
-					{
-						if (ins.type < automaton::SwitchInsType::ConditionRead)
-						{
-							hasPushIns = true;
-						}
-						else
-						{
-							hasTestIns = true;
-						}
-					}
-
-					if (hasPushIns)
-					{
-						AddError(
-							ParserErrorType::LeftRecursiveClauseInsidePushCondition,
-							{},
-							rule->Name()
-							);
-					}
-					if (hasTestIns)
-					{
-						AddError(
-							ParserErrorType::LeftRecursiveClauseInsideTestCondition,
-							{},
-							rule->Name()
-							);
-					}
 				}
 
 				for (auto lrecEdge : lrecEdges)
@@ -484,7 +448,6 @@ SyntaxSymbolManager::EliminateSingleRulePrefix
 					{
 						// important and insSwitch happen before shifting into the rule
 						if (continuationEdge->important != prefixEdge->important) continue;
-						if (CompareEnumerable(continuationEdge->insSwitch, prefixEdge->insSwitch) != 0) continue;
 
 						eliminated = true;
 						auto state = prefixEdge->To();
@@ -493,7 +456,6 @@ SyntaxSymbolManager::EliminateSingleRulePrefix
 
 						newEdge->input.type = EdgeInputType::LeftRec;
 						newEdge->important = continuationEdge->important;
-						CopyFrom(newEdge->insSwitch, continuationEdge->insSwitch, true);
 						if (compatible)
 						{
 							CopyFrom(newEdge->insAfterInput, continuationEdge->insAfterInput);

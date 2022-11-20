@@ -50,7 +50,6 @@ AutomatonBuilder
 					return ruleSymbol->Owner()->CreateEdge(from, to);
 				}
 
-				void						PrintCondition(collections::List<automaton::SwitchIns>& insSwitch);
 				StatePair					BuildRuleSyntaxInternal(RuleSymbol* rule, vint32_t field, automaton::ReturnRuleType ruleType);
 			public:
 				AutomatonBuilder(RuleSymbol* _ruleSymbol);
@@ -64,9 +63,6 @@ AutomatonBuilder
 				StatePair					BuildOptionalSyntax(bool preferTake, bool preferSkip, const StateBuilder& optionalBody);
 				StatePair					BuildSequenceSyntax(collections::List<StateBuilder>& elements);
 				StatePair					BuildAlternativeSyntax(collections::List<StateBuilder>& elements);
-				StatePair					BuildPushConditionSyntax(collections::Dictionary<vint32_t, bool>& switches, const StateBuilder& pushBody);
-				StatePair					BuildTestConditionBranch(collections::List<automaton::SwitchIns>& insSwitch);
-				StatePair					BuildTestConditionBranch(collections::List<automaton::SwitchIns>& insSwitch, const StateBuilder& branchBody);
 
 				StatePair					BuildClause(const StateBuilder& compileSyntax);
 				StatePair					BuildAssignment(StatePair pair, vint32_t enumItem, vint32_t field, bool weakAssignment);

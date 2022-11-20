@@ -67,50 +67,6 @@ void LogInstruction(
 }
 
 /***********************************************************************
-LogInstruction (SwitchIns)
-***********************************************************************/
-
-void LogInstruction(
-	SwitchIns ins,
-	const Func<WString(vint32_t)>& switchName,
-	StreamWriter& writer
-)
-{
-	switch (ins.type)
-	{
-	case SwitchInsType::SwitchPushFrame:
-		writer.WriteLine(L"+switches");
-		break;
-	case SwitchInsType::SwitchWriteTrue:
-		writer.WriteLine(switchName(ins.param) + L" <- TRUE");
-		break;
-	case SwitchInsType::SwitchWriteFalse:
-		writer.WriteLine(switchName(ins.param) + L" <- FALSE");
-		break;
-	case SwitchInsType::SwitchPopFrame:
-		writer.WriteLine(L"-switches");
-		break;
-	case SwitchInsType::ConditionRead:
-		writer.WriteLine(L"<- " + switchName(ins.param));
-		break;
-	case SwitchInsType::ConditionNot:
-		writer.WriteLine(L"!");
-		break;
-	case SwitchInsType::ConditionAnd:
-		writer.WriteLine(L"&&");
-		break;
-	case SwitchInsType::ConditionOr:
-		writer.WriteLine(L"||");
-		break;
-	case SwitchInsType::ConditionTest:
-		writer.WriteLine(L"?");
-		break;
-	default:
-		writer.WriteLine(L"<UNKNOWN-INSTRUCTION>");
-	}
-}
-
-/***********************************************************************
 LogTraceInsReceiver
 ***********************************************************************/
 
@@ -207,8 +163,7 @@ void RenderTrace(
 	const Func<WString(vint32_t)>& fieldName,
 	const Func<WString(vint32_t)>& tokenName,
 	const Func<WString(vint32_t)>& ruleName,
-	const Func<WString(vint32_t)>& stateLabel,
-	const Func<WString(vint32_t)>& switchName
+	const Func<WString(vint32_t)>& stateLabel
 )
 {
 	StringReader reader(GenerateToStream([&](StreamWriter& writer)
@@ -436,25 +391,6 @@ void RenderTrace(
 		}
 
 		/***********************************************************************
-		Switch Instructions
-		***********************************************************************/
-
-		if (trace->byEdge != -1)
-		{
-			auto& edgeDesc = executable.edges[trace->byEdge];
-			if (edgeDesc.insSwitch.start != -1)
-			{
-				writer.WriteLine(L"[SWITCH-INSTRUCTIONS]:");
-				for (vint32_t i = 0; i < edgeDesc.insSwitch.count; i++)
-				{
-					auto ins = executable.switchInstructions[edgeDesc.insSwitch.start + i];
-					writer.WriteString(L"    ");
-					LogInstruction(ins, switchName, writer);
-				}
-			}
-		}
-
-		/***********************************************************************
 		AST Instructions
 		***********************************************************************/
 
@@ -595,25 +531,6 @@ void RenderTrace(
 					L"][RS: " + itow(ac->returnStack.handle) +
 					L"] " + (ac->forHighPriority ? L"high" : L"low"));
 				acId = ac->nextCarriedAC;
-			}
-		}
-
-		/***********************************************************************
-		Switches
-		***********************************************************************/
-
-		if (trace->switchValues != nullref)
-		{
-			writer.WriteLine(L"[SWITCHES]:");
-			auto sv = tm.GetSwitches(trace->switchValues);
-			for (vint32_t i = 0; i < executable.switchDefaultValues.Count(); i++)
-			{
-				writer.WriteString(L"  " + switchName(i) + L" : ");
-				vint32_t row = i / 8 * sizeof(vuint32_t);
-				vint32_t column = i % 8 * sizeof(vuint32_t);
-				vuint32_t& value = sv->values[row];
-				bool read = (value >> column) % 2 == 1;
-				writer.WriteLine(read ? L"true" : L"false");
 			}
 		}
 
@@ -1282,8 +1199,7 @@ FilePath LogTraceManager(
 	const Func<WString(vint32_t)>& fieldName,
 	const Func<WString(vint32_t)>& tokenName,
 	const Func<WString(vint32_t)>& ruleName,
-	const Func<WString(vint32_t)>& stateLabel,
-	const Func<WString(vint32_t)>& switchName
+	const Func<WString(vint32_t)>& stateLabel
 )
 {
 	CHECK_ERROR(tm.concurrentCount > 0, L"Cannot log failed traces!");
@@ -1310,8 +1226,7 @@ FilePath LogTraceManager(
 					fieldName,
 					tokenName,
 					ruleName,
-					stateLabel,
-					switchName
+					stateLabel
 					);
 
 				auto successorId = trace->successors.first;

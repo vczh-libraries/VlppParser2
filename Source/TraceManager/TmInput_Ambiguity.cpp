@@ -43,7 +43,6 @@ AreTwoEndingInputTraceEqual
 				if (newTrace->executedReturnStack != candidate->executedReturnStack) return false;
 				if (newTrace->returnStack != candidate->returnStack) return false;
 				if (newTrace->competitionRouting.attendingCompetitions != candidate->competitionRouting.attendingCompetitions) return false;
-				if (newTrace->switchValues != candidate->switchValues) return false;
 				return true;
 			}
 

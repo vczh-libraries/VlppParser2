@@ -242,7 +242,7 @@ ResolveNameVisitor
 				{
 					for (auto&& switchItem : switches)
 					{
-						if (!context.syntaxManager.switches.Keys().Contains(switchItem->name.value))
+						if (!context.switches.Keys().Contains(switchItem->name.value))
 						{
 							context.syntaxManager.AddError(
 								ParserErrorType::SwitchNotExists,
@@ -282,7 +282,7 @@ ResolveNameVisitor
 
 				void Visit(GlrRefCondition* node) override
 				{
-					if (!context.syntaxManager.switches.Keys().Contains(node->name.value))
+					if (!context.switches.Keys().Contains(node->name.value))
 					{
 						context.syntaxManager.AddError(
 							ParserErrorType::SwitchNotExists,
@@ -360,7 +360,6 @@ ResolveNameVisitor
 				void VisitLriClause(GlrLeftRecursionInjectClause* node)
 				{
 					VisitReuseSyntax(node->rule->literal, true);
-					VisitSwitchItems(node->switches);
 					if (node->continuation)
 					{
 						for (auto lriTarget : node->continuation->injectionTargets)
@@ -387,7 +386,14 @@ ResolveNameVisitor
 ResolveName
 ***********************************************************************/
 
-			bool IsLegalNameBeforeRewriting(const WString& name)
+			bool IsLegalNameBeforeWithSwitch(const WString& name)
+			{
+				if (wcsstr(name.Buffer(), L"_SWITCH")) return false;
+				if (wcsstr(name.Buffer(), L"SWITCH_")) return false;
+				return true;
+			}
+
+			bool IsLegalNameBeforeWithPrefixMerge(const WString& name)
 			{
 				if (wcsstr(name.Buffer(), L"_LRI")) return false;
 				if (wcsstr(name.Buffer(), L"_LRIP")) return false;
@@ -400,6 +406,26 @@ ResolveName
 			{
 				for (auto file : files)
 				{
+					for (auto switchItem : file->switches)
+					{
+						if (context.switches.Keys().Contains(switchItem->name.value))
+						{
+							context.syntaxManager.AddError(
+								ParserErrorType::DuplicatedSwitch,
+								switchItem->name.codeRange,
+								switchItem->name.value
+								);
+						}
+						else
+						{
+							context.switches.Add(
+								switchItem->name.value, {
+									(switchItem->value == GlrSwitchValue::True),
+									switchItem.Obj()
+								});
+						}
+					}
+
 					for (auto rule : file->rules)
 					{
 						context.astRules.Add(context.syntaxManager.Rules()[rule->name.value], rule.Obj());
@@ -426,13 +452,13 @@ ResolveName
 
 				{
 					vint index = 0;
-					for (auto&& switchName : context.syntaxManager.switches.Keys())
+					for (auto&& switchName : context.switches.Keys())
 					{
 						if (index == accessedSwitches.Count() || switchName != accessedSwitches[index])
 						{
 							context.syntaxManager.AddError(
 								ParserErrorType::UnusedSwitch,
-								context.syntaxManager.switches[switchName].codeRange,
+								context.switches[switchName].value->codeRange,
 								switchName
 								);
 						}
@@ -443,13 +469,31 @@ ResolveName
 					}
 				}
 
+				if (context.switches.Count() > 0)
+				{
+					for (auto file : files)
+					{
+						for (auto rule : file->rules)
+						{
+							if (!IsLegalNameBeforeWithSwitch(rule->name.value))
+							{
+								context.syntaxManager.AddError(
+									ParserErrorType::SyntaxInvolvesSwitchWithIllegalRuleName,
+									rule->name.codeRange,
+									rule->name.value
+									);
+							}
+						}
+					}
+				}
+
 				if (context.directPmClauses.Count() > 0)
 				{
 					for (auto file : files)
 					{
 						for (auto rule : file->rules)
 						{
-							if (!IsLegalNameBeforeRewriting(rule->name.value))
+							if (!IsLegalNameBeforeWithPrefixMerge(rule->name.value))
 							{
 								context.syntaxManager.AddError(
 									ParserErrorType::SyntaxInvolvesPrefixMergeWithIllegalRuleName,
@@ -462,7 +506,7 @@ ResolveName
 							{
 								for (auto p : lrp->flags)
 								{
-									if (!IsLegalNameBeforeRewriting(p->flag.value))
+									if (!IsLegalNameBeforeWithPrefixMerge(p->flag.value))
 									{
 										context.syntaxManager.AddError(
 											ParserErrorType::SyntaxInvolvesPrefixMergeWithIllegalPlaceholderName,

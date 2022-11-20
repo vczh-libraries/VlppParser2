@@ -91,7 +91,6 @@ EdgeSymbol
 				friend class SyntaxSymbolManager;
 				friend class CompactSyntaxBuilder;
 
-				using SwitchInsList = collections::List<automaton::SwitchIns>;
 				using InsList = collections::List<AstIns>;
 				using EdgeList = collections::List<EdgeSymbol*>;
 			protected:
@@ -106,7 +105,6 @@ EdgeSymbol
 				EdgeImportancy				importancy = EdgeImportancy::NoCompetition;		// important -> HighPriority, !important with important sibling -> LowPriority.
 																							// (filled by BuildCompactNFA)
 																							// If any important edge forms a cross referenced NFA edge, it becomes important too.
-				SwitchInsList				insSwitch;										// Switch instructions to test if this transition is valid under configuration.
 				InsList						insBeforeInput;									// Instructions to execute before pushing the value from a token or a reduced rule.
 				InsList						insAfterInput;									// Instructions to execute after pushing the value from a token or a reduced rule.
 				EdgeList					returnEdges;									// Edges of rule reduction.
@@ -168,19 +166,12 @@ SyntaxSymbolManager
 											// automaton::Executable is exactly the same to CrossReferencedNFA, stored a more cache friendly way.
 			};
 
-			struct SyntaxSwitch
-			{
-				bool						defaultValue;
-				ParsingTextRange			codeRange;
-			};
-
 			class SyntaxSymbolManager : public Object
 			{
 				using StateList = collections::List<Ptr<StateSymbol>>;
 				using EdgeList = collections::List<Ptr<EdgeSymbol>>;
 				using RuleTypeMap = collections::Dictionary<RuleSymbol*, WString>;
 				using RuleList = collections::List<RuleSymbol*>;
-				using SwitchMap = collections::Dictionary<WString, SyntaxSwitch>;
 				using LrpFlagList = collections::SortedList<WString>;
 			protected:
 				MappedOwning<RuleSymbol>	rules;
@@ -202,15 +193,15 @@ SyntaxSymbolManager
 				SyntaxSymbolManager(ParserSymbolManager& _global);
 
 				WString						name;
-				SwitchMap					switches;
 				RuleTypeMap					ruleTypes;
 				RuleList					parsableRules;
 				LrpFlagList					lrpFlags;
 
 				RuleSymbol*					CreateRule(const WString& name, ParsingTextRange codeRange = {});
+				void						RemoveRule(const WString& name);
+
 				StateSymbol*				CreateState(RuleSymbol* rule, vint32_t clauseId);
 				EdgeSymbol*					CreateEdge(StateSymbol* from, StateSymbol* to);
-				bool						CreateSwitch(const WString& name, bool defaultValue, ParsingTextRange codeRange = {});
 
 				void						BuildCompactNFA();
 				void						BuildCrossReferencedNFA();

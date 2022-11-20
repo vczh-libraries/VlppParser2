@@ -36,18 +36,6 @@ SyntaxSymbolManager::BuildAutomaton
 					metadata.stateLabels[index] = GetStateGlobalLabel(state, index);
 				}
 
-				// metadata.switchNames and executable.switchDefaultValues
-				if (switches.Count() > 0)
-				{
-					metadata.switchNames.Resize(switches.Count());
-					executable.switchDefaultValues.Resize(switches.Count());
-					for (auto [pair, index] : indexed(switches))
-					{
-						metadata.switchNames[index] = pair.key;
-						executable.switchDefaultValues[index] = pair.value.defaultValue;
-					}
-				}
-
 				executable.tokenCount = (vint32_t)tokenCount;
 				executable.ruleCount = (vint32_t)rulesInOrder.Count();
 
@@ -71,7 +59,6 @@ SyntaxSymbolManager::BuildAutomaton
 				List<EdgeSymbol*> edgesInOrder;
 				List<EdgeSymbol*> returnEdgesInOrder;
 				List<vint32_t> returnIndicesInOrder;
-				List<automaton::SwitchIns> switchInsInOrder;
 				List<AstIns> astInsInOrder;
 
 				// executable.transitions
@@ -157,10 +144,6 @@ SyntaxSymbolManager::BuildAutomaton
 					default:;
 					}
 
-					edgeDesc.insSwitch.start = (vint32_t)switchInsInOrder.Count();
-					CopyFrom(switchInsInOrder, edge->insSwitch, true);
-					edgeDesc.insSwitch.count = (vint32_t)switchInsInOrder.Count() - edgeDesc.insSwitch.start;
-
 					edgeDesc.insBeforeInput.start = (vint32_t)astInsInOrder.Count();
 					CopyFrom(astInsInOrder, edge->insBeforeInput, true);
 					edgeDesc.insBeforeInput.count = (vint32_t)astInsInOrder.Count() - edgeDesc.insBeforeInput.start;
@@ -181,7 +164,6 @@ SyntaxSymbolManager::BuildAutomaton
 					}
 					edgeDesc.returnIndices.count = (vint32_t)returnIndicesInOrder.Count() - edgeDesc.returnIndices.start;
 
-					if (edgeDesc.insSwitch.count == 0) edgeDesc.insSwitch.start = -1;
 					if (edgeDesc.insBeforeInput.count == 0) edgeDesc.insBeforeInput.start = -1;
 					if (edgeDesc.insAfterInput.count == 0) edgeDesc.insAfterInput.start = -1;
 					if (edgeDesc.returnIndices.count == 0) edgeDesc.returnIndices.start = -1;
@@ -214,9 +196,6 @@ SyntaxSymbolManager::BuildAutomaton
 
 				// executable.returnIndices
 				CopyFrom(executable.returnIndices, returnIndicesInOrder);
-
-				// executable.switchInstructions
-				CopyFrom(executable.switchInstructions, switchInsInOrder);
 
 				// executable.astInstructions
 				CopyFrom(executable.astInstructions, astInsInOrder);

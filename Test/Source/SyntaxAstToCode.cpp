@@ -294,25 +294,7 @@ protected:
 
 	void VisitLriTarget(GlrLeftRecursionInjectClause* node)
 	{
-		if (node->switches.Count() > 0 && node->continuation)
-		{
-			writer.WriteString(L"!(");
-			VisitSwitchItems(node->switches);
-			writer.WriteString(L"; ");
-			writer.WriteString(node->rule->literal.value);
-			writer.WriteChar(L' ');
-			VisitLriCont(node->continuation.Obj());
-			writer.WriteString(L")");
-		}
-		else if (node->switches.Count() > 0)
-		{
-			writer.WriteString(L"!(");
-			VisitSwitchItems(node->switches);
-			writer.WriteString(L"; ");
-			writer.WriteString(node->rule->literal.value);
-			writer.WriteString(L")");
-		}
-		else if (node->continuation)
+		if (node->continuation)
 		{
 			writer.WriteChar(L'(');
 			writer.WriteString(node->rule->literal.value);

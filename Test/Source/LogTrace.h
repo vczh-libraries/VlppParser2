@@ -19,12 +19,6 @@ extern void LogInstruction(
 	StreamWriter& writer
 	);
 
-extern void LogInstruction(
-	SwitchIns ins,
-	const Func<WString(vint32_t)>& switchName,
-	StreamWriter& writer
-	);
-
 FilePath LogTraceExecution(
 	const WString& parserName,
 	const WString& caseName,
@@ -55,8 +49,7 @@ FilePath LogTraceManager(
 	const Func<WString(vint32_t)>& fieldName,
 	const Func<WString(vint32_t)>& tokenName,
 	const Func<WString(vint32_t)>& ruleName,
-	const Func<WString(vint32_t)>& stateLabel,
-	const Func<WString(vint32_t)>& switchName
+	const Func<WString(vint32_t)>& stateLabel
 	);
 
 template<typename TVisitor, typename T>
