@@ -41,6 +41,32 @@ discard SPACE:/s+
 discard MINUS_MINUS:--
 )LEXER";
 
+	//////////////////////////////////////////////////////
+	// SyntaxInvolvesSwitchWithIllegalRuleName
+	//////////////////////////////////////////////////////
+
+	TEST_CASE(L"SyntaxInvolvesSwitchWithIllegalRuleName")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+switch first;
+Exp0
+  ::= ?(first: NUM) as Expr
+  ;
+SWITCH_Something
+  ::= NUM as Expr
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::SyntaxInvolvesSwitchWithIllegalRuleName,L"SWITCH_Something" }
+			);
+	});
+
 	TEST_CASE(L"DuplicatedSwitch")
 	{
 		const wchar_t* syntaxCode =

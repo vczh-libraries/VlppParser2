@@ -6,16 +6,15 @@
   - Rename `LeftRecursionPlaceholderMixedWithSwitches`
 - Multiple LRI following one Target
 - Generate multiple level of LRI from prefix_merge
+  - Remove `PrefixExtractionAffectedRuleReferencedAnother`
   - Currently it generates an error if 3 levels are required
 
 ## Test Cases
 
 - `PrefixMerge` 1-7 add test cases to parse expr and type separately.
 - Add test cases for:
-  - SyntaxInvolvesSwitchWithIllegalRuleName
   - SwitchUnaffectedRuleExpandedToNoClause
   - SwitchAffectedRuleExpandedToNoClause
-  - PrefixExtractionAffectedRuleReferencedAnother
 - Create test cases that only rewrite syntax without generating C++ code for:
   - `DeductEmptySyntaxVisitor`
   - Invalid combined clauses during expanding switches
