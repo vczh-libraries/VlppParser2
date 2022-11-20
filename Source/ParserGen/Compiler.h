@@ -21,31 +21,21 @@ namespace vl
 		{
 			namespace compile_syntax
 			{
-				using PushedSwitchList = collections::List<GlrPushConditionSyntax*>;
-
-				inline bool ArePushedSwitchesIdentical(Ptr<PushedSwitchList> p1, Ptr<PushedSwitchList> p2)
-				{
-					if ((p1 == nullptr) != (p2 == nullptr)) return false;
-					if (p1 && collections::CompareEnumerable(*p1.Obj(), *p2.Obj()) != 0) return false;
-					return true;
-				}
-
 				template<typename TClause>
 				struct GenericRuleClausePath
 				{
 					RuleSymbol*							ruleSymbol = nullptr;
 					TClause*							clause = nullptr;
-					Ptr<PushedSwitchList>				pushedSwitches;
 
 					GenericRuleClausePath() = default;
-					GenericRuleClausePath(RuleSymbol* _ruleSymbol, TClause* _clause, Ptr<PushedSwitchList> _pushedSwitches)
-						: ruleSymbol(_ruleSymbol), clause(_clause), pushedSwitches(_pushedSwitches) {}
+					GenericRuleClausePath(RuleSymbol* _ruleSymbol, TClause* _clause)
+						: ruleSymbol(_ruleSymbol), clause(_clause) {}
 
 					bool operator==(const GenericRuleClausePath& p) const
 					{
 						if (ruleSymbol != p.ruleSymbol) return false;
 						if (clause != p.clause) return false;
-						return ArePushedSwitchesIdentical(pushedSwitches, p.pushedSwitches);
+						return true;
 					}
 				};
 				using RuleClausePath = GenericRuleClausePath<GlrClause>;

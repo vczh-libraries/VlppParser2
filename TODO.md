@@ -4,6 +4,7 @@
 
 - Rewrire and remove switch before removing PrefixMerge.
   - Merge multiple files into one before compiling
+  - Move switch information from `context` to `switchContext`
   - Rename `LeftRecursionPlaceholderMixedWithSwitches`
 - Multiple LRI following one Target
 - Generate multiple level of LRI from prefix_merge

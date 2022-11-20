@@ -360,7 +360,6 @@ ResolveNameVisitor
 				void VisitLriClause(GlrLeftRecursionInjectClause* node)
 				{
 					VisitReuseSyntax(node->rule->literal, true);
-					VisitSwitchItems(node->switches);
 					if (node->continuation)
 					{
 						for (auto lriTarget : node->continuation->injectionTargets)
