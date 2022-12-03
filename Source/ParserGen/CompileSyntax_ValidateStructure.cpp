@@ -816,39 +816,27 @@ ValidateStructureIndirectPrefixMergeRuleVisitor
 
 				void NotSimpleUsingRule(GlrClause* node)
 				{
-					if (context.leftRecursiveClauses.Contains(ruleSymbol, node)) return;
-
+					if (context.leftRecursiveClauses.Contains(ruleSymbol, node))
 					{
-						vint index = context.clauseToStartRules.Keys().IndexOf(node);
-						if (index == -1) goto SUCCEEDED_CONDITION;
-						for (auto ruleSymbol : context.clauseToStartRules.GetByIndex(index))
-						{
-							if (context.indirectPmClauses.Keys().IndexOf(ruleSymbol) != -1)
-							{
-								goto FAILED_CONDITION;
-							}
-						}
-
-					SUCCEEDED_CONDITION:
-						context.clauseToConvertedToPrefixMerge.Add(node);
-						if (ruleSymbol->isPartial)
-						{
-							context.syntaxManager.AddError(
-								ParserErrorType::PartialRuleIndirectlyBeginsWithPrefixMergeMixedWithClauseNotSyntacticallyBeginWithARule,
-								node->codeRange,
-								ruleSymbol->Name()
-								);
-						}
-						return;
-					FAILED_CONDITION:;
+						goto SKIP_ADDING;
 					}
 
-					context.syntaxManager.AddError(
-						ParserErrorType::RuleIndirectlyBeginsWithPrefixMergeMixedNonSimpleUseClause,
-						node->codeRange,
-						ruleSymbol->Name(),
-						pmRuleSymbol->Name()
-						);
+					// safe to add the clause since errors have been detected in ClausePartiallyIndirectlyBeginsWithPrefixMerge
+					{
+						vint index = context.clauseToStartRules.Keys().IndexOf(node);
+						if (index != -1)
+						{
+							for (auto ruleSymbol : context.clauseToStartRules.GetByIndex(index))
+							{
+								if (context.indirectPmClauses.Keys().IndexOf(ruleSymbol) != -1)
+								{
+									goto SKIP_ADDING;
+								}
+							}
+						}
+						context.clauseToConvertedToPrefixMerge.Add(node);
+					}
+				SKIP_ADDING:;
 				}
 
 				////////////////////////////////////////////////////////////////////////
@@ -960,7 +948,55 @@ ValidateStructure
 							ValidateStructureIndirectPrefixMergeRuleVisitor visitor3(context, ruleSymbol, rulePm);
 							for (auto clause : rule->clauses)
 							{
-								visitor3.ValidateClause(clause);
+								bool beginsWithNonPM = context.clauseBeginsWithLiteral.Contains(clause.Obj());
+								GlrPrefixMergeClause* firstIndirectlyPmClause = nullptr;
+
+								vint index = context.clauseToStartRules.Keys().IndexOf(clause.Obj());
+								if (index != -1)
+								{
+									List<RuleSymbol*> visiting;
+									SortedList<RuleSymbol*> visited;
+									CopyFrom(visiting, context.clauseToStartRules.GetByIndex(index));
+
+									for (vint i = 0; i < visiting.Count(); i++)
+									{
+										auto visitingRule = visiting[i];
+										if (visited.Contains(visitingRule)) continue;
+										visited.Add(visitingRule);
+
+										index = context.indirectPmClauses.Keys().IndexOf(visitingRule);
+										if (index != -1)
+										{
+											firstIndirectlyPmClause = context.indirectPmClauses.GetByIndex(index)[0];
+										}
+										else
+										{
+											beginsWithNonPM = true;
+										}
+										if (beginsWithNonPM && firstIndirectlyPmClause) break;
+
+										index = context.directStartRules.Keys().IndexOf(visitingRule);
+										CopyFrom(
+											visiting,
+											From(context.directStartRules.GetByIndex(index))
+												.Select([](const RuleClausePath& path) {return path.ruleSymbol; }),
+											true);
+									}
+								}
+
+								if (beginsWithNonPM && firstIndirectlyPmClause)
+								{
+									context.syntaxManager.AddError(
+										ParserErrorType::ClausePartiallyIndirectlyBeginsWithPrefixMerge,
+										clause->codeRange,
+										ruleSymbol->Name(),
+										firstIndirectlyPmClause->rule->literal.value
+										);
+								}
+								else
+								{
+									visitor3.ValidateClause(clause);
+								}
 							}
 						}
 					}
