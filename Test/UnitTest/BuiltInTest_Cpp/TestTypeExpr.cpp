@@ -96,6 +96,11 @@ void TracedTests()
 	{
 		runParser(L"TypeOrExpr", L"PointerOfInt", [&]() { return parser.Parse_TypeOrExpr(L"int*"); });
 	});
+
+	TEST_CASE(L"Name<int>")
+	{
+		runParser(L"TypeOrExpr", L"NameOfInt", [&]() { return parser.Parse_TypeOrExpr(L"Name<int>"); });
+	});
 }
 
 TEST_FILE
