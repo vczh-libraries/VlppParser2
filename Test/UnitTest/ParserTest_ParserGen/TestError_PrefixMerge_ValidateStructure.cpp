@@ -199,10 +199,10 @@ Exp1
 	});
 
 	//////////////////////////////////////////////////////
-	// ClausePartiallyIndirectlyBeginsWithPrefixMerge
+	// ClausePartiallyIndirectlyBeginsWithPrefixMerge (literal)
 	//////////////////////////////////////////////////////
 
-	TEST_CASE(L"ClausePartiallyIndirectlyBeginsWithPrefixMerge 1")
+	TEST_CASE(L"ClausePartiallyIndirectlyBeginsWithPrefixMerge (literal) 1")
 	{
 		const wchar_t* syntaxCode =
 LR"SYNTAX(
@@ -226,7 +226,7 @@ Exp1
 			);
 	});
 
-	TEST_CASE(L"ClausePartiallyIndirectlyBeginsWithPrefixMerge 2")
+	TEST_CASE(L"ClausePartiallyIndirectlyBeginsWithPrefixMerge (literal) 2")
 	{
 		const wchar_t* syntaxCode =
 LR"SYNTAX(
@@ -250,7 +250,7 @@ Exp1
 			);
 	});
 
-	TEST_CASE(L"ClausePartiallyIndirectlyBeginsWithPrefixMerge 3")
+	TEST_CASE(L"ClausePartiallyIndirectlyBeginsWithPrefixMerge (literal) 3")
 	{
 		const wchar_t* syntaxCode =
 LR"SYNTAX(
@@ -274,7 +274,7 @@ Exp1
 			);
 	});
 
-	TEST_CASE(L"ClausePartiallyIndirectlyBeginsWithPrefixMerge 4")
+	TEST_CASE(L"ClausePartiallyIndirectlyBeginsWithPrefixMerge (literal) 4")
 	{
 		const wchar_t* syntaxCode =
 LR"SYNTAX(
@@ -286,6 +286,118 @@ PM
   ;
 Exp1
   ::= (PM:left | "+" PM:right) as BinaryExpr
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::ClausePartiallyIndirectlyBeginsWithPrefixMerge,L"Exp1",L"PM"}
+			);
+	});
+
+	//////////////////////////////////////////////////////
+	// ClausePartiallyIndirectlyBeginsWithPrefixMerge (rule)
+	//////////////////////////////////////////////////////
+
+	TEST_CASE(L"ClausePartiallyIndirectlyBeginsWithPrefixMerge (rule) 1")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= NUM:value as NumExpr
+  ;
+PM
+  ::= !prefix_merge(Exp0)
+  ;
+Plus
+  ::= "+" as NumExpr
+  ;
+Exp1
+  ::= {Plus} !PM
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::ClausePartiallyIndirectlyBeginsWithPrefixMerge,L"Exp1",L"PM"}
+			);
+	});
+
+	TEST_CASE(L"ClausePartiallyIndirectlyBeginsWithPrefixMerge (rule) 2")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= NUM:value as NumExpr
+  ;
+PM
+  ::= !prefix_merge(Exp0)
+  ;
+Plus
+  ::= "+" as NumExpr
+  ;
+Exp1
+  ::= [Plus] !PM
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::ClausePartiallyIndirectlyBeginsWithPrefixMerge,L"Exp1",L"PM"}
+			);
+	});
+
+	TEST_CASE(L"ClausePartiallyIndirectlyBeginsWithPrefixMerge (rule) 3")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= NUM:value as NumExpr
+  ;
+PM
+  ::= !prefix_merge(Exp0)
+  ;
+Plus
+  ::= "+" as NumExpr
+  ;
+Exp1
+  ::= (!PM | Plus !PM)
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::ClausePartiallyIndirectlyBeginsWithPrefixMerge,L"Exp1",L"PM"}
+			);
+	});
+
+	TEST_CASE(L"ClausePartiallyIndirectlyBeginsWithPrefixMerge (rule) 4")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= NUM:value as NumExpr
+  ;
+PM
+  ::= !prefix_merge(Exp0)
+  ;
+Plus
+  ::= "+" as NumExpr
+  ;
+Exp1
+  ::= (PM:left | Plus PM:right) as BinaryExpr
   ;
 )SYNTAX";
 		ExpectError(
