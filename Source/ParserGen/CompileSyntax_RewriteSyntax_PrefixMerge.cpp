@@ -127,6 +127,7 @@ FillMissingPrefixMergeClauses
 
 						// fix rule and clause symbols
 						auto newRuleSymbol = syntaxManager.CreateRule(newRule->name.value, ruleRaw->name.codeRange);
+						newRuleSymbol->isPartial = ruleSymbol->isPartial;
 						newRuleSymbol->ruleType = vContext.clauseTypes[clause.Obj()];
 						vContext.astRules.Add(newRuleSymbol, newRule.Obj());
 						vContext.clauseTypes.Add(newPM.Obj(), newRuleSymbol->ruleType);
@@ -292,6 +293,7 @@ FixRuleTypes
 						auto lriRule = rContext.lriRules[ruleSymbol];
 						auto originSymbol = syntaxManager.CreateRule(originRule->name.value, originRule->codeRange);
 
+						originSymbol->isPartial = ruleSymbol->isPartial;
 						originSymbol->ruleType = ruleSymbol->ruleType;
 						rContext.fixedAstRules.Set(originSymbol, originRule);
 						rContext.fixedAstRules.Set(ruleSymbol, lriRule);
@@ -315,9 +317,7 @@ FixRuleTypes
 
 					for (auto ruleSymbol : syntaxManager.Rules().Values())
 					{
-						ruleSymbol->isPartial = false;
 						ruleSymbol->assignedNonArrayField = false;
-						ruleSymbol->ruleType = nullptr;
 						ruleSymbol->lrFlags.Clear();
 					}
 				}
@@ -934,12 +934,27 @@ FixPrefixMergeClauses
 						{
 							if (auto pmClause = originRule->clauses[i].Cast<GlrPrefixMergeClause>())
 							{
-								auto reuseClause = Ptr(new GlrReuseClause);
-								originRule->clauses[i] = reuseClause;
+								if (ruleSymbol->isPartial)
+								{
+									auto partialClause = Ptr(new GlrPartialClause);
+									originRule->clauses[i] = partialClause;
 
-								auto useSyntax = Ptr(new GlrUseSyntax);
-								useSyntax->name.value = pmClause->rule->literal.value;
-								reuseClause->syntax = useSyntax;
+									partialClause->type.value = ruleSymbol->ruleType->Name();
+
+									auto refSyntax = Ptr(new GlrRefSyntax);
+									refSyntax->refType = GlrRefType::Id;
+									refSyntax->literal.value = pmClause->rule->literal.value;
+									partialClause->syntax = refSyntax;
+								}
+								else
+								{
+									auto reuseClause = Ptr(new GlrReuseClause);
+									originRule->clauses[i] = reuseClause;
+
+									auto useSyntax = Ptr(new GlrUseSyntax);
+									useSyntax->name.value = pmClause->rule->literal.value;
+									reuseClause->syntax = useSyntax;
+								}
 							}
 						}
 					}

@@ -19,75 +19,75 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 		switch((CppClasses)type)
 		{
 		case CppClasses::AdvancedType:
-			return new cpp_parser::CppAdvancedType();
+			return vl::Ptr(new cpp_parser::CppAdvancedType);
 		case CppClasses::BinaryExpr:
-			return new cpp_parser::CppBinaryExpr();
+			return vl::Ptr(new cpp_parser::CppBinaryExpr);
 		case CppClasses::BraceExpr:
-			return new cpp_parser::CppBraceExpr();
+			return vl::Ptr(new cpp_parser::CppBraceExpr);
 		case CppClasses::CallExpr:
-			return new cpp_parser::CppCallExpr();
+			return vl::Ptr(new cpp_parser::CppCallExpr);
 		case CppClasses::CastExpr:
-			return new cpp_parser::CppCastExpr();
+			return vl::Ptr(new cpp_parser::CppCastExpr);
 		case CppClasses::ConstType:
-			return new cpp_parser::CppConstType();
+			return vl::Ptr(new cpp_parser::CppConstType);
 		case CppClasses::Declarator:
-			return new cpp_parser::CppDeclarator();
+			return vl::Ptr(new cpp_parser::CppDeclarator);
 		case CppClasses::DeclaratorArrayPart:
-			return new cpp_parser::CppDeclaratorArrayPart();
+			return vl::Ptr(new cpp_parser::CppDeclaratorArrayPart);
 		case CppClasses::DeclaratorFunctionPart:
-			return new cpp_parser::CppDeclaratorFunctionPart();
+			return vl::Ptr(new cpp_parser::CppDeclaratorFunctionPart);
 		case CppClasses::DeclaratorKeyword:
-			return new cpp_parser::CppDeclaratorKeyword();
+			return vl::Ptr(new cpp_parser::CppDeclaratorKeyword);
 		case CppClasses::DeclaratorType:
-			return new cpp_parser::CppDeclaratorType();
+			return vl::Ptr(new cpp_parser::CppDeclaratorType);
 		case CppClasses::DeleteExpr:
-			return new cpp_parser::CppDeleteExpr();
+			return vl::Ptr(new cpp_parser::CppDeleteExpr);
 		case CppClasses::File:
-			return new cpp_parser::CppFile();
+			return vl::Ptr(new cpp_parser::CppFile);
 		case CppClasses::FunctionKeyword:
-			return new cpp_parser::CppFunctionKeyword();
+			return vl::Ptr(new cpp_parser::CppFunctionKeyword);
 		case CppClasses::FunctionParameter:
-			return new cpp_parser::CppFunctionParameter();
+			return vl::Ptr(new cpp_parser::CppFunctionParameter);
 		case CppClasses::GenericArgument:
-			return new cpp_parser::CppGenericArgument();
+			return vl::Ptr(new cpp_parser::CppGenericArgument);
 		case CppClasses::GenericArguments:
-			return new cpp_parser::CppGenericArguments();
+			return vl::Ptr(new cpp_parser::CppGenericArguments);
 		case CppClasses::IfExpr:
-			return new cpp_parser::CppIfExpr();
+			return vl::Ptr(new cpp_parser::CppIfExpr);
 		case CppClasses::IndexExpr:
-			return new cpp_parser::CppIndexExpr();
+			return vl::Ptr(new cpp_parser::CppIndexExpr);
 		case CppClasses::NameIdentifier:
-			return new cpp_parser::CppNameIdentifier();
+			return vl::Ptr(new cpp_parser::CppNameIdentifier);
 		case CppClasses::NewExpr:
-			return new cpp_parser::CppNewExpr();
+			return vl::Ptr(new cpp_parser::CppNewExpr);
 		case CppClasses::NumericExprLiteral:
-			return new cpp_parser::CppNumericExprLiteral();
+			return vl::Ptr(new cpp_parser::CppNumericExprLiteral);
 		case CppClasses::OperatorIdentifier:
-			return new cpp_parser::CppOperatorIdentifier();
+			return vl::Ptr(new cpp_parser::CppOperatorIdentifier);
 		case CppClasses::ParenthesisExpr:
-			return new cpp_parser::CppParenthesisExpr();
+			return vl::Ptr(new cpp_parser::CppParenthesisExpr);
 		case CppClasses::PostfixUnaryExpr:
-			return new cpp_parser::CppPostfixUnaryExpr();
+			return vl::Ptr(new cpp_parser::CppPostfixUnaryExpr);
 		case CppClasses::PrefixUnaryExpr:
-			return new cpp_parser::CppPrefixUnaryExpr();
+			return vl::Ptr(new cpp_parser::CppPrefixUnaryExpr);
 		case CppClasses::PrimitiveExprLiteral:
-			return new cpp_parser::CppPrimitiveExprLiteral();
+			return vl::Ptr(new cpp_parser::CppPrimitiveExprLiteral);
 		case CppClasses::PrimitiveType:
-			return new cpp_parser::CppPrimitiveType();
+			return vl::Ptr(new cpp_parser::CppPrimitiveType);
 		case CppClasses::QualifiedName:
-			return new cpp_parser::CppQualifiedName();
+			return vl::Ptr(new cpp_parser::CppQualifiedName);
 		case CppClasses::SizeofExpr:
-			return new cpp_parser::CppSizeofExpr();
+			return vl::Ptr(new cpp_parser::CppSizeofExpr);
 		case CppClasses::StringLiteral:
-			return new cpp_parser::CppStringLiteral();
+			return vl::Ptr(new cpp_parser::CppStringLiteral);
 		case CppClasses::StringLiteralFragment:
-			return new cpp_parser::CppStringLiteralFragment();
+			return vl::Ptr(new cpp_parser::CppStringLiteralFragment);
 		case CppClasses::SysFuncExpr:
-			return new cpp_parser::CppSysFuncExpr();
+			return vl::Ptr(new cpp_parser::CppSysFuncExpr);
 		case CppClasses::ThrowExpr:
-			return new cpp_parser::CppThrowExpr();
+			return vl::Ptr(new cpp_parser::CppThrowExpr);
 		case CppClasses::VolatileType:
-			return new cpp_parser::CppVolatileType();
+			return vl::Ptr(new cpp_parser::CppVolatileType);
 		default:
 			return vl::glr::AssemblyThrowCannotCreateAbstractType(type, cppTypeName);
 		}

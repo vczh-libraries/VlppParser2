@@ -160,7 +160,7 @@ _DeleteFragment_LRI_Isolated_1 : DeleteExpr
 _DeleteFragment_LRI_Original : DeleteExpr
   ::= left_recursion_placeholder(LRI__DeleteFragment)
   ::= _PrefixUnaryExpr_LRI_Original:argument as partial DeleteExpr {array = NotArray}
-  ::= !_DeleteFragment_LRI_Isolated_1
+  ::= _DeleteFragment_LRI_Isolated_1 as partial DeleteExpr
   ;
 
 _SizeofFragment_LRI_Isolated_2 : SizeofExpr
@@ -171,7 +171,7 @@ _SizeofFragment_LRI_Original : SizeofExpr
   ::= left_recursion_placeholder(LRI__SizeofFragment)
   ::= _PostfixUnaryExpr_LRI_Original:argument as partial SizeofExpr
   ::= _AllPrefixUnaryExpr_NoCStyleCast:argument as partial SizeofExpr
-  ::= !_SizeofFragment_LRI_Isolated_2
+  ::= _SizeofFragment_LRI_Isolated_2 as partial SizeofExpr
   ;
 
 _AllPrefixUnaryExpr_NoCStyleCast : ExprOnly
@@ -491,7 +491,7 @@ _DeclaratorFunctionParameters_LRI_Isolated_0 : DeclaratorFunctionPart
 
 _DeclaratorFunctionParameters_LRI_Original : DeclaratorFunctionPart
   ::= left_recursion_placeholder(LRI__DeclaratorFunctionParameters)
-  ::= !_DeclaratorFunctionParameters_LRI_Isolated_0
+  ::= _DeclaratorFunctionParameters_LRI_Isolated_0 as partial DeclaratorFunctionPart
   ::= _DeclaratorFunctionParameter_LRI_Original:parameters {"," _DeclaratorFunctionParameter:parameters} ["," "...":variadic] as partial DeclaratorFunctionPart
   ;
 

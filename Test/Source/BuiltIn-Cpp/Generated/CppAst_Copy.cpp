@@ -319,77 +319,77 @@ namespace cpp_parser
 
 		void AstVisitor::Visit(CppGenericArgument* node)
 		{
-			auto newNode = vl::MakePtr<CppGenericArgument>();
+			auto newNode = vl::Ptr(new CppGenericArgument);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void AstVisitor::Visit(CppGenericArguments* node)
 		{
-			auto newNode = vl::MakePtr<CppGenericArguments>();
+			auto newNode = vl::Ptr(new CppGenericArguments);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void AstVisitor::Visit(CppStringLiteralFragment* node)
 		{
-			auto newNode = vl::MakePtr<CppStringLiteralFragment>();
+			auto newNode = vl::Ptr(new CppStringLiteralFragment);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void AstVisitor::Visit(CppAdvancedType* node)
 		{
-			auto newNode = vl::MakePtr<CppAdvancedType>();
+			auto newNode = vl::Ptr(new CppAdvancedType);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void AstVisitor::Visit(CppDeclaratorKeyword* node)
 		{
-			auto newNode = vl::MakePtr<CppDeclaratorKeyword>();
+			auto newNode = vl::Ptr(new CppDeclaratorKeyword);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void AstVisitor::Visit(CppFunctionKeyword* node)
 		{
-			auto newNode = vl::MakePtr<CppFunctionKeyword>();
+			auto newNode = vl::Ptr(new CppFunctionKeyword);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void AstVisitor::Visit(CppFunctionParameter* node)
 		{
-			auto newNode = vl::MakePtr<CppFunctionParameter>();
+			auto newNode = vl::Ptr(new CppFunctionParameter);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void AstVisitor::Visit(CppDeclaratorFunctionPart* node)
 		{
-			auto newNode = vl::MakePtr<CppDeclaratorFunctionPart>();
+			auto newNode = vl::Ptr(new CppDeclaratorFunctionPart);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void AstVisitor::Visit(CppDeclaratorArrayPart* node)
 		{
-			auto newNode = vl::MakePtr<CppDeclaratorArrayPart>();
+			auto newNode = vl::Ptr(new CppDeclaratorArrayPart);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void AstVisitor::Visit(CppDeclarator* node)
 		{
-			auto newNode = vl::MakePtr<CppDeclarator>();
+			auto newNode = vl::Ptr(new CppDeclarator);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void AstVisitor::Visit(CppFile* node)
 		{
-			auto newNode = vl::MakePtr<CppFile>();
+			auto newNode = vl::Ptr(new CppFile);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
@@ -406,168 +406,168 @@ namespace cpp_parser
 
 		void AstVisitor::Visit(CppQualifiedName* node)
 		{
-			auto newNode = vl::MakePtr<CppQualifiedName>();
+			auto newNode = vl::Ptr(new CppQualifiedName);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void AstVisitor::Visit(CppDeclaratorType* node)
 		{
-			auto newNode = vl::MakePtr<CppDeclaratorType>();
+			auto newNode = vl::Ptr(new CppDeclaratorType);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void AstVisitor::Visit(CppPrimitiveExprLiteral* node)
 		{
-			auto newNode = vl::MakePtr<CppPrimitiveExprLiteral>();
+			auto newNode = vl::Ptr(new CppPrimitiveExprLiteral);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void AstVisitor::Visit(CppNumericExprLiteral* node)
 		{
-			auto newNode = vl::MakePtr<CppNumericExprLiteral>();
+			auto newNode = vl::Ptr(new CppNumericExprLiteral);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void AstVisitor::Visit(CppStringLiteral* node)
 		{
-			auto newNode = vl::MakePtr<CppStringLiteral>();
+			auto newNode = vl::Ptr(new CppStringLiteral);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void AstVisitor::Visit(CppParenthesisExpr* node)
 		{
-			auto newNode = vl::MakePtr<CppParenthesisExpr>();
+			auto newNode = vl::Ptr(new CppParenthesisExpr);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void AstVisitor::Visit(CppBraceExpr* node)
 		{
-			auto newNode = vl::MakePtr<CppBraceExpr>();
+			auto newNode = vl::Ptr(new CppBraceExpr);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void AstVisitor::Visit(CppCastExpr* node)
 		{
-			auto newNode = vl::MakePtr<CppCastExpr>();
+			auto newNode = vl::Ptr(new CppCastExpr);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void AstVisitor::Visit(CppSysFuncExpr* node)
 		{
-			auto newNode = vl::MakePtr<CppSysFuncExpr>();
+			auto newNode = vl::Ptr(new CppSysFuncExpr);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void AstVisitor::Visit(CppSizeofExpr* node)
 		{
-			auto newNode = vl::MakePtr<CppSizeofExpr>();
+			auto newNode = vl::Ptr(new CppSizeofExpr);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void AstVisitor::Visit(CppDeleteExpr* node)
 		{
-			auto newNode = vl::MakePtr<CppDeleteExpr>();
+			auto newNode = vl::Ptr(new CppDeleteExpr);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void AstVisitor::Visit(CppNewExpr* node)
 		{
-			auto newNode = vl::MakePtr<CppNewExpr>();
+			auto newNode = vl::Ptr(new CppNewExpr);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void AstVisitor::Visit(CppPrefixUnaryExpr* node)
 		{
-			auto newNode = vl::MakePtr<CppPrefixUnaryExpr>();
+			auto newNode = vl::Ptr(new CppPrefixUnaryExpr);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void AstVisitor::Visit(CppPostfixUnaryExpr* node)
 		{
-			auto newNode = vl::MakePtr<CppPostfixUnaryExpr>();
+			auto newNode = vl::Ptr(new CppPostfixUnaryExpr);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void AstVisitor::Visit(CppIndexExpr* node)
 		{
-			auto newNode = vl::MakePtr<CppIndexExpr>();
+			auto newNode = vl::Ptr(new CppIndexExpr);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void AstVisitor::Visit(CppCallExpr* node)
 		{
-			auto newNode = vl::MakePtr<CppCallExpr>();
+			auto newNode = vl::Ptr(new CppCallExpr);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void AstVisitor::Visit(CppBinaryExpr* node)
 		{
-			auto newNode = vl::MakePtr<CppBinaryExpr>();
+			auto newNode = vl::Ptr(new CppBinaryExpr);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void AstVisitor::Visit(CppIfExpr* node)
 		{
-			auto newNode = vl::MakePtr<CppIfExpr>();
+			auto newNode = vl::Ptr(new CppIfExpr);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void AstVisitor::Visit(CppThrowExpr* node)
 		{
-			auto newNode = vl::MakePtr<CppThrowExpr>();
+			auto newNode = vl::Ptr(new CppThrowExpr);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void AstVisitor::Visit(CppPrimitiveType* node)
 		{
-			auto newNode = vl::MakePtr<CppPrimitiveType>();
+			auto newNode = vl::Ptr(new CppPrimitiveType);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void AstVisitor::Visit(CppConstType* node)
 		{
-			auto newNode = vl::MakePtr<CppConstType>();
+			auto newNode = vl::Ptr(new CppConstType);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void AstVisitor::Visit(CppVolatileType* node)
 		{
-			auto newNode = vl::MakePtr<CppVolatileType>();
+			auto newNode = vl::Ptr(new CppVolatileType);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void AstVisitor::Visit(CppNameIdentifier* node)
 		{
-			auto newNode = vl::MakePtr<CppNameIdentifier>();
+			auto newNode = vl::Ptr(new CppNameIdentifier);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void AstVisitor::Visit(CppOperatorIdentifier* node)
 		{
-			auto newNode = vl::MakePtr<CppOperatorIdentifier>();
+			auto newNode = vl::Ptr(new CppOperatorIdentifier);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
