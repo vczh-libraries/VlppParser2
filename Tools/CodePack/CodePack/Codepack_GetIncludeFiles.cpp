@@ -114,7 +114,7 @@ LazyList<FilePath> GetIncludedFiles(
 		}
 	}
 
-	auto result = MakePtr<List<FilePath>>();
+	auto result = Ptr(new List<FilePath>);
 	CopyFrom(
 		*result.Obj(),
 		From(includes)

@@ -246,7 +246,7 @@ int main(int argc, char* argv[])
 		auto outputPath = outputFolder / (categorizedOutput[categoryName].f0 + L".h");
 		auto outputIncludeOnlyPath = outputIncludeOnlyFolder / (categorizedOutput[categoryName].f0 + L".h");
 
-		auto systemIncludes = MakePtr<SortedList<WString>>();
+		auto systemIncludes = Ptr(new SortedList<WString>);
 		categorizedSystemIncludes.Add(categoryName, systemIncludes);
 
 		if (categorizedOutput[categoryName].f1)

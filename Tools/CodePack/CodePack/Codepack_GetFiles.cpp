@@ -6,8 +6,8 @@ LazyList<FilePath> SearchFiles(
 	List<WString>& exceptions
 )
 {
-	auto files = MakePtr<List<File>>();
-	auto folders = MakePtr<List<Folder>>();
+	auto files = Ptr(new List<File>);
+	auto folders = Ptr(new List<Folder>);
 	folder.GetFiles(*files.Obj());
 	folder.GetFolders(*folders.Obj());
 
