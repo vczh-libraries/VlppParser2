@@ -981,7 +981,8 @@ ValidateStructure
 											CopyFrom(
 												visiting,
 												From(context.directStartRules.GetByIndex(index))
-													.Select([](const RuleClausePath& path) {return path.ruleSymbol; }),
+													.Where([](const RuleClausePath& path) { return !dynamic_cast<GlrPrefixMergeClause*>(path.clause); })
+													.Select([](const RuleClausePath& path) { return path.ruleSymbol; }),
 												true);
 										}
 									}
@@ -993,7 +994,7 @@ ValidateStructure
 										ParserErrorType::ClausePartiallyIndirectlyBeginsWithPrefixMerge,
 										clause->codeRange,
 										ruleSymbol->Name(),
-										firstIndirectlyPmClause->rule->literal.value
+										context.clauseToRules[firstIndirectlyPmClause]->Name()
 										);
 								}
 								else

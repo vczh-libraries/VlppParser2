@@ -185,7 +185,7 @@ PM
   ::= !prefix_merge(Exp0)
   ;
 Exp1
-  ::= !PM as partial NumExpr
+  ::= PM as partial NumExpr
   ;
 )SYNTAX";
 		ExpectError(
@@ -194,7 +194,7 @@ Exp1
 			astCode,
 			lexerCode,
 			syntaxCode,
-			{ ParserErrorType::PartialRuleIndirectlyBeginsWithPrefixMerge,L"Exp1",L"prefixMergeRule"}
+			{ ParserErrorType::PartialRuleIndirectlyBeginsWithPrefixMerge,L"Exp1",L"PM"}
 			);
 	});
 
@@ -285,7 +285,7 @@ PM
   ::= !prefix_merge(Exp0)
   ;
 Exp1
-  ::= (PM:func | "+" PM:func) as CallExpr
+  ::= (PM:left | "+" PM:right) as BinaryExpr
   ;
 )SYNTAX";
 		ExpectError(
