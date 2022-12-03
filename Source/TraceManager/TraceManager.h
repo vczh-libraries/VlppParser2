@@ -101,7 +101,7 @@ AllocateOnly<T>
 				{
 					if (remains == 0)
 					{
-						buffers.Add(new collections::Array<T>(blockSize));
+						buffers.Add(Ptr(new collections::Array<T>(blockSize)));
 						remains = blockSize;
 					}
 					vint index = blockSize * (buffers.Count() - 1) + (blockSize - remains);

@@ -118,17 +118,17 @@ SyntaxSymbolManager
 			StateSymbol* SyntaxSymbolManager::CreateState(RuleSymbol* rule, vint32_t clauseId)
 			{
 				CHECK_ERROR(phase == SyntaxPhase::EpsilonNFA, L"vl::gre::parsergen::SyntaxSymbolManager::CreateState(RuleSymbol*)#Cannot change the automaton after calling BuildCompactSyntax().");
-				auto symbol = new StateSymbol(rule, clauseId);
+				auto symbol = Ptr(new StateSymbol(rule, clauseId));
 				states.Add(symbol);
-				return symbol;
+				return symbol.Obj();
 			}
 
 			EdgeSymbol* SyntaxSymbolManager::CreateEdge(StateSymbol* from, StateSymbol* to)
 			{
 				CHECK_ERROR(phase == SyntaxPhase::EpsilonNFA, L"vl::gre::parsergen::SyntaxSymbolManager::CreateEdge(StateSymbol*, StateSymbol*)#Cannot change the automaton after calling BuildCompactSyntax().");
-				auto symbol = new EdgeSymbol(from, to);
+				auto symbol = Ptr(new EdgeSymbol(from, to));
 				edges.Add(symbol);
-				return symbol;
+				return symbol.Obj();
 			}
 
 			void SyntaxSymbolManager::BuildCompactNFA()

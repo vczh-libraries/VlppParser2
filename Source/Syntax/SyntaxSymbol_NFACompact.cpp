@@ -54,7 +54,7 @@ StateSymbolSet
 					}
 					else
 					{
-						states = new SortedList<StateSymbol*>();
+						states = Ptr(new SortedList<StateSymbol*>);
 						states->Add(state);
 						return true;
 					}
@@ -131,7 +131,7 @@ CompactSyntaxBuilder
 								{
 									visited.Add(targetNewState);
 								}
-								auto newEdge = new EdgeSymbol(newState, targetNewState);
+								auto newEdge = Ptr(new EdgeSymbol(newState, targetNewState));
 								newEdges.Add(newEdge);
 								newEdge->input = edge->input;
 								newEdge->important |= edge->important;
@@ -162,7 +162,7 @@ CompactSyntaxBuilder
 						// when a non-epsilon edge connects to the ending state directly
 						// this is triggered by examing the epsilon-NFA ending state directly
 						// at this moment accumulatedEdges is an empty collection
-						auto newEdge = new EdgeSymbol(newState, endState);
+						auto newEdge = Ptr(new EdgeSymbol(newState, endState));
 						newEdge->input.type = EdgeInputType::Ending;
 						for (auto accumulatedEdge : accumulatedEdges)
 						{
@@ -180,9 +180,8 @@ CompactSyntaxBuilder
 									CompareEnumerable(endingEdge->insAfterInput, newEdge->insAfterInput) == 0)
 								{
 									CHECK_ERROR(newEdge->important == endingEdge->important, L"It is not possible to have two equal ending edges with different priority.");
-									newState->outEdges.Remove(newEdge);
-									endState->inEdges.Remove(newEdge);
-									delete newEdge;
+									newState->outEdges.Remove(newEdge.Obj());
+									endState->inEdges.Remove(newEdge.Obj());
 									goto DISCARD_ENDING_EDGE;
 								}
 							}
@@ -209,12 +208,12 @@ CompactSyntaxBuilder
 					}
 					else
 					{
-						auto newState = new StateSymbol(rule, state->ClauseId());
+						auto newState = Ptr(new StateSymbol(rule, state->ClauseId()));
 						newState->label = state->label;
 						newStates.Add(newState);
-						oldToNew.Add(state, newState);
-						newToOld.Add(newState, state);
-						return newState;
+						oldToNew.Add(state, newState.Obj());
+						newToOld.Add(newState.Obj(), state);
+						return newState.Obj();
 					}
 				}
 
@@ -303,9 +302,9 @@ SyntaxSymbolManager::EliminateLeftRecursion
 					for (auto endingEdge : endState->InEdges())
 					{
 						auto state = endingEdge->From();
-						auto newEdge = new EdgeSymbol(state, lrecEdge->To());
+						auto newEdge = Ptr(new EdgeSymbol(state, lrecEdge->To()));
 						newEdges.Add(newEdge);
-						BuildLeftRecEdge(newEdge, endingEdge, lrecEdge);
+						BuildLeftRecEdge(newEdge.Obj(), endingEdge, lrecEdge);
 					}
 				}
 
@@ -451,7 +450,7 @@ SyntaxSymbolManager::EliminateSingleRulePrefix
 
 						eliminated = true;
 						auto state = prefixEdge->To();
-						auto newEdge = new EdgeSymbol(state, continuationEdge->To());
+						auto newEdge = Ptr(new EdgeSymbol(state, continuationEdge->To()));
 						newEdges.Add(newEdge);
 
 						newEdge->input.type = EdgeInputType::LeftRec;
@@ -526,7 +525,7 @@ SyntaxSymbolManager::EliminateEpsilonEdges
 				auto compactStartState = builder.CreateCompactState(psuedoState);
 				compactStartState->label = L" BEGIN ";
 
-				auto compactEndState = new StateSymbol(rule, -1);
+				auto compactEndState = Ptr(new StateSymbol(rule, -1));
 				compactEndState->label = L" END ";
 				compactEndState->endingState = true;
 				newStates.Add(compactEndState);
@@ -539,12 +538,12 @@ SyntaxSymbolManager::EliminateEpsilonEdges
 				for (vint i = 0; i < visited.Count(); i++)
 				{
 					auto current = visited[i];
-					builder.BuildEpsilonEliminatedEdges(current, compactEndState, visited);
+					builder.BuildEpsilonEliminatedEdges(current, compactEndState.Obj(), visited);
 				}
 
 				// optimize
-				EliminateLeftRecursion(rule, compactStartState, compactEndState, newStates, newEdges);
-				EliminateSingleRulePrefix(rule, compactStartState, compactEndState, newStates, newEdges);
+				EliminateLeftRecursion(rule, compactStartState, compactEndState.Obj(), newStates, newEdges);
+				EliminateSingleRulePrefix(rule, compactStartState, compactEndState.Obj(), newStates, newEdges);
 
 				return compactStartState;
 			}

@@ -17,7 +17,7 @@ GenerateSyntaxFileNames
 
 			Ptr<CppSyntaxGenOutput> GenerateSyntaxFileNames(SyntaxSymbolManager& manager, Ptr<CppParserGenOutput> output)
 			{
-				auto syntaxOutput = MakePtr<CppSyntaxGenOutput>();
+				auto syntaxOutput = Ptr(new CppSyntaxGenOutput);
 				syntaxOutput->syntaxH = manager.Global().name + manager.name + L".h";
 				syntaxOutput->syntaxCpp = manager.Global().name + manager.name + L".cpp";
 				output->syntaxOutputs.Add(&manager, syntaxOutput);

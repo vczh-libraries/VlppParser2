@@ -29,7 +29,7 @@ SyntaxSymbolManager::FixCrossReferencedRuleEdge
 						// multiple Rule edges followed by one Token or LrPlaceholder edge create a cross-referenced edge
 						if (edge->returnEdges.Count() == 0)
 						{
-							auto newEdge = new EdgeSymbol(startState, edge->To());
+							auto newEdge = Ptr(new EdgeSymbol(startState, edge->To()));
 							edges.Add(newEdge);
 
 							newEdge->input = edge->input;
@@ -185,7 +185,7 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 										if (tokenEdge->input.type == EdgeInputType::Token)
 										{
 											created++;
-											auto newEdge = new EdgeSymbol(injectEdge->From(), tokenEdge->To());
+											auto newEdge = Ptr(new EdgeSymbol(injectEdge->From(), tokenEdge->To()));
 											edges.Add(newEdge);
 
 											newEdge->input = tokenEdge->input;
@@ -211,7 +211,7 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 								{
 									created++;
 									auto tokenEdge = outEdge;
-									auto newEdge = new EdgeSymbol(injectEdge->From(), tokenEdge->To());
+									auto newEdge = Ptr(new EdgeSymbol(injectEdge->From(), tokenEdge->To()));
 									edges.Add(newEdge);
 
 									newEdge->input = tokenEdge->input;

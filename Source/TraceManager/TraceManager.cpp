@@ -230,7 +230,7 @@ CreateExecutor
 
 			Ptr<IExecutor> CreateExecutor(Executable& executable, const IExecutor::ITypeCallback* typeCallback, vint blockSize)
 			{
-				return new TraceManager(executable, typeCallback, blockSize);
+				return Ptr(new TraceManager(executable, typeCallback, blockSize));
 			}
 		}
 	}

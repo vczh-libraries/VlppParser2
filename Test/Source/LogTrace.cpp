@@ -674,7 +674,7 @@ struct TraceTree
 			}
 		}
 
-		auto tree = MakePtr<TraceTree>();
+		auto tree = Ptr(new TraceTree);
 		tree->endTrace = endTrace;
 		tree->trace = trace;
 		children.Add(tree);
@@ -993,7 +993,7 @@ void RenderTraceTree(
 		}
 
 		List<Trace*> endTraces;
-		auto root = MakePtr<TraceTree>();
+		auto root = Ptr(new TraceTree);
 		{
 			Dictionary<Trace*, Ptr<TraceTree>> nonEndTraces;
 			for (auto trace : startTraces)

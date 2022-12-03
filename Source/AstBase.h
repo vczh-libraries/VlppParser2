@@ -200,7 +200,7 @@ AST (Builder)
 		class ParsingAstBuilder
 		{
 		protected:
-			Ptr<TAst> node = MakePtr<TAst>();
+			Ptr<TAst> node{ new TAst };
 			ParsingAstBuilder() {}
 		public:
 
