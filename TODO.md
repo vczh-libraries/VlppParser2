@@ -6,8 +6,6 @@
   - Reported in `BuiltIn-Cpp` there is `_GenericArgument ::= _TypeOrExpr_NoComma_NoGT...`
   - This is incorrect since `_TypeOrExpr_NoComma_NoGT` begins with `prefix_merge` clause
   - If `_TypeOrExpr_NoComma_NoGT` violates the rule, the error should be raised inside it
-- Reject if clause starts with prefix_merge and non-prefix_merge
-  - clause not starts with prefix_merge could be extracted, doesn't matter if starts with rule or not
 
 ## Next task
 
@@ -21,9 +19,6 @@
 ## Test Cases
 
 - `PrefixMerge` 1-7 add test cases to parse expr and type separately.
-- `PrefixMergeInPartialRule`
-- `PartialRuleIndirectlyBeginsWithPrefixMerge`
-- `ClausePartiallyIndirectlyBeginsWithPrefixMerge`
 - Create test cases that only rewrite syntax without generating C++ code for:
   - `DeductEmptySyntaxVisitor`
   - Invalid combined clauses during expanding switches

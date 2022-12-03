@@ -171,10 +171,10 @@ Exp3
 	});
 
 	//////////////////////////////////////////////////////
-	// RuleIndirectlyBeginsWithPrefixMergeMixedNonSimpleUseClause
+	// PartialRuleIndirectlyBeginsWithPrefixMerge
 	//////////////////////////////////////////////////////
 
-	TEST_CASE(L"RuleIndirectlyBeginsWithPrefixMergeMixedNonSimpleUseClause 1")
+	TEST_CASE(L"PartialRuleIndirectlyBeginsWithPrefixMerge")
 	{
 		const wchar_t* syntaxCode =
 LR"SYNTAX(
@@ -185,11 +185,7 @@ PM
   ::= !prefix_merge(Exp0)
   ;
 Exp1
-  ::= !PM
-  ;
-Exp2
-  ::= !Exp1
-  ::= !Exp0 ADD
+  ::= !PM as partial NumExpr
   ;
 )SYNTAX";
 		ExpectError(
@@ -198,11 +194,15 @@ Exp2
 			astCode,
 			lexerCode,
 			syntaxCode,
-			{ ParserErrorType::RuleIndirectlyBeginsWithPrefixMergeMixedNonSimpleUseClause,L"Exp2",L"PM"}
+			{ ParserErrorType::PartialRuleIndirectlyBeginsWithPrefixMerge,L"Exp1",L"prefixMergeRule"}
 			);
 	});
 
-	TEST_CASE(L"RuleIndirectlyBeginsWithPrefixMergeMixedNonSimpleUseClause 2")
+	//////////////////////////////////////////////////////
+	// ClausePartiallyIndirectlyBeginsWithPrefixMerge
+	//////////////////////////////////////////////////////
+
+	TEST_CASE(L"ClausePartiallyIndirectlyBeginsWithPrefixMerge 1")
 	{
 		const wchar_t* syntaxCode =
 LR"SYNTAX(
@@ -213,11 +213,7 @@ PM
   ::= !prefix_merge(Exp0)
   ;
 Exp1
-  ::= !PM
-  ;
-Exp2
-  ::= !Exp1
-  ::= (!Exp0 | !Exp0)
+  ::= {"+"} !PM
   ;
 )SYNTAX";
 		ExpectError(
@@ -226,7 +222,79 @@ Exp2
 			astCode,
 			lexerCode,
 			syntaxCode,
-			{ ParserErrorType::RuleIndirectlyBeginsWithPrefixMergeMixedNonSimpleUseClause,L"Exp2",L"PM"}
+			{ ParserErrorType::ClausePartiallyIndirectlyBeginsWithPrefixMerge,L"Exp1",L"PM"}
+			);
+	});
+
+	TEST_CASE(L"ClausePartiallyIndirectlyBeginsWithPrefixMerge 2")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= NUM:value as NumExpr
+  ;
+PM
+  ::= !prefix_merge(Exp0)
+  ;
+Exp1
+  ::= ["+"] !PM
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::ClausePartiallyIndirectlyBeginsWithPrefixMerge,L"Exp1",L"PM"}
+			);
+	});
+
+	TEST_CASE(L"ClausePartiallyIndirectlyBeginsWithPrefixMerge 3")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= NUM:value as NumExpr
+  ;
+PM
+  ::= !prefix_merge(Exp0)
+  ;
+Exp1
+  ::= (!PM | "+" !PM)
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::ClausePartiallyIndirectlyBeginsWithPrefixMerge,L"Exp1",L"PM"}
+			);
+	});
+
+	TEST_CASE(L"ClausePartiallyIndirectlyBeginsWithPrefixMerge 4")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= NUM:value as NumExpr
+  ;
+PM
+  ::= !prefix_merge(Exp0)
+  ;
+Exp1
+  ::= (PM:func | "+" PM:func) as CallExpr
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::ClausePartiallyIndirectlyBeginsWithPrefixMerge,L"Exp1",L"PM"}
 			);
 	});
 }
