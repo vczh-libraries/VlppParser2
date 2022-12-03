@@ -4,9 +4,10 @@
 
 - `[_GenericArgument]<< !_PrimitiveType @ ( lri:_GenericArgument_LRI_Original ) >>` should accept `ending`
   - because `_TypeOrExpr_NoComma_NoGT:argument ["...":variadic] as GenericArgument` could jumps to `@:argument` by `int`
+  - could be related to `_QualifiedName` does not have an optional LrInject clause
 - `throw` is missing in `BuiltIn-Cpp` in `_TypeOrExpr`
 - `_GenericArguments` generates `token: "operator" -> [71][_OperatorIdentifier]< "operator" @ "!" >` twice
-  - could be related to generated `left_recursion_inject_multiple`
+  - could be related to `_QualifiedName` does not have an optional LrInject clause
 
 ## Next task
 
