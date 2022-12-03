@@ -7,6 +7,7 @@
 #include "../../../Source/Lexer/LexerCppGen.h"
 #include "../../../Source/Syntax/SyntaxCppGen.h"
 #include "../../Source/LogAutomaton.h"
+#include "../../Source/SyntaxAstToCode.h"
 
 using namespace vl::glr::parsergen;
 
@@ -87,7 +88,12 @@ TEST_FILE
 	{
 		List<Ptr<GlrSyntaxFile>> syntaxFiles;
 		syntaxFiles.Add(syntaxFile);
-		CompileSyntax(astManager, lexerManager, syntaxManager, output, syntaxFiles);
+		auto rewritten = CompileSyntax(astManager, lexerManager, syntaxManager, output, syntaxFiles);
+		TEST_ASSERT(rewritten);
+		{
+			auto formattedActual = GenerateToStream([&](TextWriter& writer) { SyntaxAstToCode(rewritten, writer); });
+			File(dirOutput / (L"SyntaxRewrittenActual[BuiltIn-Cpp].txt")).WriteAllText(formattedActual, true, BomEncoder::Utf8);
+		}
 		TEST_ASSERT(global.Errors().Count() == 0);
 	
 		syntaxManager.BuildCompactNFA();

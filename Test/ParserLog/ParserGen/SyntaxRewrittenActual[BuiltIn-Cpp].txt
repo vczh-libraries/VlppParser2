@@ -1,70 +1,64 @@
-switch allow_GT;
-
-//////////////////////////////////////////////////////////////////
-// QualifiedName
-//////////////////////////////////////////////////////////////////
-
-_NameIdentifier
-  ::= ID:name                       as NameIdentifier {kind = Normal}
+﻿_NameIdentifier
+  ::= ID:name as NameIdentifier {kind = Normal}
   ;
 
 _DtorIdentifier
-  ::= "~" ID:name                   as NameIdentifier {kind = Dtor}
+  ::= "~" ID:name as NameIdentifier {kind = Dtor}
   ;
 
 _TypeIdentifier
-  ::= "enum" ID:name                as NameIdentifier {kind = Enum}
-  ::= "enum" "class" ID:name        as NameIdentifier {kind = EnumClass}
-  ::= "class" ID:name               as NameIdentifier {kind = Class}
-  ::= "struct" ID:name              as NameIdentifier {kind = Struct}
-  ::= "union" ID:name               as NameIdentifier {kind = Union}
+  ::= "enum" ID:name as NameIdentifier {kind = Enum}
+  ::= "enum" "class" ID:name as NameIdentifier {kind = EnumClass}
+  ::= "class" ID:name as NameIdentifier {kind = Class}
+  ::= "struct" ID:name as NameIdentifier {kind = Struct}
+  ::= "union" ID:name as NameIdentifier {kind = Union}
   ;
 
 _OperatorIdentifier
-  ::= "operator" '""' ID:name       as NameIdentifier {kind = UserDefinedLiteral}
-  ::= "operator" "new"              as OperatorIdentifier {op = New}
-  ::= "operator" "new" "[" "]"      as OperatorIdentifier {op = NewArray}
-  ::= "operator" "delete"           as OperatorIdentifier {op = Delete}
-  ::= "operator" "delete" "[" "]"   as OperatorIdentifier {op = DeleteArray}
-  ::= "operator" ","                as OperatorIdentifier {op = Comma}
-  ::= "operator" "(" ")"            as OperatorIdentifier {op = Parantheses}
-  ::= "operator" "[" "]"            as OperatorIdentifier {op = Bracket}
-  ::= "operator" "->*"              as OperatorIdentifier {op = PointerDeref}
-  ::= "operator" "->"               as OperatorIdentifier {op = Pointer}
-  ::= "operator" "!="               as OperatorIdentifier {op = NE}
-  ::= "operator" "!"                as OperatorIdentifier {op = Not}
-  ::= "operator" "=="               as OperatorIdentifier {op = EQ}
-  ::= "operator" "="                as OperatorIdentifier {op = Assign}
-  ::= "operator" "~="               as OperatorIdentifier {op = RevertAssign}
-  ::= "operator" "~"                as OperatorIdentifier {op = Revert}
-  ::= "operator" "^="               as OperatorIdentifier {op = XorAssign}
-  ::= "operator" "^"                as OperatorIdentifier {op = Xor}
-  ::= "operator" "&&"               as OperatorIdentifier {op = And}
-  ::= "operator" "&="               as OperatorIdentifier {op = AndAssign}
-  ::= "operator" "&"                as OperatorIdentifier {op = BitwiseAnd}
-  ::= "operator" "||"               as OperatorIdentifier {op = Or}
-  ::= "operator" "|="               as OperatorIdentifier {op = OrAssign}
-  ::= "operator" "|"                as OperatorIdentifier {op = BitwiseOr}
-  ::= "operator" "*="               as OperatorIdentifier {op = MulAssign}
-  ::= "operator" "*"                as OperatorIdentifier {op = Mul}
-  ::= "operator" "/="               as OperatorIdentifier {op = DivAssign}
-  ::= "operator" "/"                as OperatorIdentifier {op = Div}
-  ::= "operator" "%="               as OperatorIdentifier {op = ModAssign}
-  ::= "operator" "%"                as OperatorIdentifier {op = Mod}
-  ::= "operator" "+="               as OperatorIdentifier {op = PlusAssign}
-  ::= "operator" "++"               as OperatorIdentifier {op = Increase}
-  ::= "operator" "+"                as OperatorIdentifier {op = Plus}
-  ::= "operator" "-="               as OperatorIdentifier {op = MinusAssign}
-  ::= "operator" "--"               as OperatorIdentifier {op = Decrease}
-  ::= "operator" "-"                as OperatorIdentifier {op = Minus}
-  ::= "operator" "<<="              as OperatorIdentifier {op = LeftShiftAssign}
-  ::= "operator" "<<"               as OperatorIdentifier {op = LeftShift}
-  ::= "operator" "<="               as OperatorIdentifier {op = LE}
-  ::= "operator" "<"                as OperatorIdentifier {op = LT}
-  ::= "operator" ">>="              as OperatorIdentifier {op = RightShiftAssign}
-  ::= "operator" ">>"               as OperatorIdentifier {op = RightShift}
-  ::= "operator" ">="               as OperatorIdentifier {op = GE}
-  ::= "operator" ">"                as OperatorIdentifier {op = GT}
+  ::= "operator" '""' ID:name as NameIdentifier {kind = UserDefinedLiteral}
+  ::= "operator" "new" as OperatorIdentifier {op = New}
+  ::= "operator" "new" "[" "]" as OperatorIdentifier {op = NewArray}
+  ::= "operator" "delete" as OperatorIdentifier {op = Delete}
+  ::= "operator" "delete" "[" "]" as OperatorIdentifier {op = DeleteArray}
+  ::= "operator" "," as OperatorIdentifier {op = Comma}
+  ::= "operator" "(" ")" as OperatorIdentifier {op = Parantheses}
+  ::= "operator" "[" "]" as OperatorIdentifier {op = Bracket}
+  ::= "operator" "->*" as OperatorIdentifier {op = PointerDeref}
+  ::= "operator" "->" as OperatorIdentifier {op = Pointer}
+  ::= "operator" "!=" as OperatorIdentifier {op = NE}
+  ::= "operator" "!" as OperatorIdentifier {op = Not}
+  ::= "operator" "==" as OperatorIdentifier {op = EQ}
+  ::= "operator" "=" as OperatorIdentifier {op = Assign}
+  ::= "operator" "~=" as OperatorIdentifier {op = RevertAssign}
+  ::= "operator" "~" as OperatorIdentifier {op = Revert}
+  ::= "operator" "^=" as OperatorIdentifier {op = XorAssign}
+  ::= "operator" "^" as OperatorIdentifier {op = Xor}
+  ::= "operator" "&&" as OperatorIdentifier {op = And}
+  ::= "operator" "&=" as OperatorIdentifier {op = AndAssign}
+  ::= "operator" "&" as OperatorIdentifier {op = BitwiseAnd}
+  ::= "operator" "||" as OperatorIdentifier {op = Or}
+  ::= "operator" "|=" as OperatorIdentifier {op = OrAssign}
+  ::= "operator" "|" as OperatorIdentifier {op = BitwiseOr}
+  ::= "operator" "*=" as OperatorIdentifier {op = MulAssign}
+  ::= "operator" "*" as OperatorIdentifier {op = Mul}
+  ::= "operator" "/=" as OperatorIdentifier {op = DivAssign}
+  ::= "operator" "/" as OperatorIdentifier {op = Div}
+  ::= "operator" "%=" as OperatorIdentifier {op = ModAssign}
+  ::= "operator" "%" as OperatorIdentifier {op = Mod}
+  ::= "operator" "+=" as OperatorIdentifier {op = PlusAssign}
+  ::= "operator" "++" as OperatorIdentifier {op = Increase}
+  ::= "operator" "+" as OperatorIdentifier {op = Plus}
+  ::= "operator" "-=" as OperatorIdentifier {op = MinusAssign}
+  ::= "operator" "--" as OperatorIdentifier {op = Decrease}
+  ::= "operator" "-" as OperatorIdentifier {op = Minus}
+  ::= "operator" "<<=" as OperatorIdentifier {op = LeftShiftAssign}
+  ::= "operator" "<<" as OperatorIdentifier {op = LeftShift}
+  ::= "operator" "<=" as OperatorIdentifier {op = LE}
+  ::= "operator" "<" as OperatorIdentifier {op = LT}
+  ::= "operator" ">>=" as OperatorIdentifier {op = RightShiftAssign}
+  ::= "operator" ">>" as OperatorIdentifier {op = RightShift}
+  ::= "operator" ">=" as OperatorIdentifier {op = GE}
+  ::= "operator" ">" as OperatorIdentifier {op = GT}
   ;
 
 _Identifier
@@ -98,10 +92,6 @@ _QualifiedName
   ::= _QualifiedName:parent "::" _QualifiedNameFragment as QualifiedName {kind = Member}
   ::= _QualifiedName:parent "::" _MemberQualifiedNameFragment as QualifiedName {kind = Member}
   ;
-
-//////////////////////////////////////////////////////////////////
-// PrimitiveExpr
-//////////////////////////////////////////////////////////////////
 
 _StringLiteralFragment
   ::= MACRO_LPREFIX as StringLiteralFragment {kind = Macro_LPREFIX}
@@ -140,10 +130,6 @@ _PrimitiveExpr_QualifiedName
   ::= !prefix_merge(_QualifiedName)
   ;
 
-//////////////////////////////////////////////////////////////////
-// PostfixUnaryExpr
-//////////////////////////////////////////////////////////////////
-
 _PostfixUnaryCtor
   ::= _Type:operand "(" {_Expr_NoComma:arguments ; ","} ")" as CallExpr {kind = Parenthesis}
   ::= _Type:operand "{" {_Expr_NoComma:arguments ; ","} "}" as CallExpr {kind = Brace}
@@ -159,10 +145,6 @@ _PostfixUnaryExpr
   ::= _PostfixUnaryExpr:operand "[" _Expr:index "]" as IndexExpr
   ::= _PostfixUnaryExpr:operand "(" {_Expr_NoComma:arguments ; ","} ")" as CallExpr {kind = Parenthesis}
   ;
-
-//////////////////////////////////////////////////////////////////
-// PrefixUnaryExpr
-//////////////////////////////////////////////////////////////////
 
 _NewInit
   ::= "[" _Expr:initArguments "]" {"[" _Expr:initArguments "]"} as partial NewExpr {init = Array}
@@ -211,10 +193,6 @@ _PrefixUnaryExpr
   ::= !prefix_merge(_AllPrefixUnaryExpr)
   ;
 
-//////////////////////////////////////////////////////////////////
-// BinaryExpr
-//////////////////////////////////////////////////////////////////
-
 _MemberOperatorIdentifier
   ::= !_NameIdentifier
   ::= !_DtorIdentifier
@@ -250,101 +228,160 @@ _BExpr3
   ::= _BExpr3:left ">>" _BExpr2:right as BinaryExpr {op = RightShift}
   ;
 
-_BExpr4
+_BExpr4_SWITCH_COMBINED : TypeOrExpr
   ::= !_BExpr3
-  ::= _BExpr4:left "<" _BExpr3:right as BinaryExpr {op = LT}
-  ::= _BExpr4:left ?(allow_GT: ">" _BExpr3:right) as BinaryExpr {op = GT}
-  ::= _BExpr4:left "<=" _BExpr3:right as BinaryExpr {op = LE}
-  ::= _BExpr4:left ">=" _BExpr3:right as BinaryExpr {op = GE}
   ;
 
-_BExpr5
-  ::= !_BExpr4
-  ::= _BExpr5:left "==" _BExpr4:right as BinaryExpr {op = EQ}
-  ::= _BExpr5:left "!=" _BExpr4:right as BinaryExpr {op = NE}
+_BExpr4_SWITCH_0allow_GT : TypeOrExpr
+  ::= _BExpr4_SWITCH_0allow_GT:left "<" _BExpr3:right as BinaryExpr {op = LT}
+  ::= _BExpr4_SWITCH_0allow_GT:left "<=" _BExpr3:right as BinaryExpr {op = LE}
+  ::= _BExpr4_SWITCH_0allow_GT:left ">=" _BExpr3:right as BinaryExpr {op = GE}
+  ::= !_BExpr4_SWITCH_COMBINED
   ;
 
-_BExpr6
-  ::= !_BExpr5
-  ::= _BExpr6:left "&" _BExpr5:right as BinaryExpr {op = BitwiseAnd}
+_BExpr4_SWITCH_1allow_GT : TypeOrExpr
+  ::= _BExpr4_SWITCH_1allow_GT:left "<" _BExpr3:right as BinaryExpr {op = LT}
+  ::= _BExpr4_SWITCH_1allow_GT:left ">" _BExpr3:right as BinaryExpr {op = GT}
+  ::= _BExpr4_SWITCH_1allow_GT:left "<=" _BExpr3:right as BinaryExpr {op = LE}
+  ::= _BExpr4_SWITCH_1allow_GT:left ">=" _BExpr3:right as BinaryExpr {op = GE}
+  ::= !_BExpr4_SWITCH_COMBINED
   ;
 
-_BExpr7
-  ::= !_BExpr6
-  ::= _BExpr7:left "^" _BExpr6:right as BinaryExpr {op = Xor}
+_BExpr5_SWITCH_0allow_GT : TypeOrExpr
+  ::= !_BExpr4_SWITCH_0allow_GT
+  ::= _BExpr5_SWITCH_0allow_GT:left "==" _BExpr4_SWITCH_0allow_GT:right as BinaryExpr {op = EQ}
+  ::= _BExpr5_SWITCH_0allow_GT:left "!=" _BExpr4_SWITCH_0allow_GT:right as BinaryExpr {op = NE}
   ;
 
-_BExpr8
-  ::= !_BExpr7
-  ::= _BExpr8:left "|" _BExpr7:right as BinaryExpr {op = BitwiseOr}
+_BExpr5_SWITCH_1allow_GT : TypeOrExpr
+  ::= !_BExpr4_SWITCH_1allow_GT
+  ::= _BExpr5_SWITCH_1allow_GT:left "==" _BExpr4_SWITCH_1allow_GT:right as BinaryExpr {op = EQ}
+  ::= _BExpr5_SWITCH_1allow_GT:left "!=" _BExpr4_SWITCH_1allow_GT:right as BinaryExpr {op = NE}
   ;
 
-_BExpr9
-  ::= !_BExpr8
-  ::= _BExpr9:left "&&" _BExpr8:right as BinaryExpr {op = And}
+_BExpr6_SWITCH_0allow_GT : TypeOrExpr
+  ::= !_BExpr5_SWITCH_0allow_GT
+  ::= _BExpr6_SWITCH_0allow_GT:left "&" _BExpr5_SWITCH_0allow_GT:right as BinaryExpr {op = BitwiseAnd}
   ;
 
-_BExpr10
-  ::= !_BExpr9
-  ::= _BExpr10:left "||" _BExpr9:right as BinaryExpr {op = Or}
+_BExpr6_SWITCH_1allow_GT : TypeOrExpr
+  ::= !_BExpr5_SWITCH_1allow_GT
+  ::= _BExpr6_SWITCH_1allow_GT:left "&" _BExpr5_SWITCH_1allow_GT:right as BinaryExpr {op = BitwiseAnd}
   ;
 
-_ThrowExpr
-  ::= "throw" [_BExpr10:argument] as ThrowExpr
+_BExpr7_SWITCH_0allow_GT : TypeOrExpr
+  ::= !_BExpr6_SWITCH_0allow_GT
+  ::= _BExpr7_SWITCH_0allow_GT:left "^" _BExpr6_SWITCH_0allow_GT:right as BinaryExpr {op = Xor}
   ;
 
-_BExpr_NoComma
-  ::= !_BExpr10
-  ::= !_ThrowExpr
-  ::= _BExpr10:condition "?" _Expr:trueBranch ":" _BExpr_NoComma:falseBranch as IfExpr
-  ::= _BExpr10:left "=" _BExpr_NoComma:right as BinaryExpr {op = Assign}
-  ::= _BExpr10:left "*=" _BExpr_NoComma:right as BinaryExpr {op = MulAssign}
-  ::= _BExpr10:left "/=" _BExpr_NoComma:right as BinaryExpr {op = DivAssign}
-  ::= _BExpr10:left "%=" _BExpr_NoComma:right as BinaryExpr {op = ModAssign}
-  ::= _BExpr10:left "+=" _BExpr_NoComma:right as BinaryExpr {op = PlusAssign}
-  ::= _BExpr10:left "-=" _BExpr_NoComma:right as BinaryExpr {op = MinusAssign}
-  ::= _BExpr10:left "<<=" _BExpr_NoComma:right as BinaryExpr {op = LeftShiftAssign}
-  ::= _BExpr10:left ">>=" _BExpr_NoComma:right as BinaryExpr {op = RightShiftAssign}
-  ::= _BExpr10:left "&=" _BExpr_NoComma:right as BinaryExpr {op = AndAssign}
-  ::= _BExpr10:left "|=" _BExpr_NoComma:right as BinaryExpr {op = OrAssign}
-  ::= _BExpr10:left "^=" _BExpr_NoComma:right as BinaryExpr {op = XorAssign}
+_BExpr7_SWITCH_1allow_GT : TypeOrExpr
+  ::= !_BExpr6_SWITCH_1allow_GT
+  ::= _BExpr7_SWITCH_1allow_GT:left "^" _BExpr6_SWITCH_1allow_GT:right as BinaryExpr {op = Xor}
   ;
 
-_BExpr
-  ::= !_BExpr_NoComma
-  ::= _BExpr:left "," _BExpr_NoComma:right as BinaryExpr {op = Comma}
+_BExpr8_SWITCH_0allow_GT : TypeOrExpr
+  ::= !_BExpr7_SWITCH_0allow_GT
+  ::= _BExpr8_SWITCH_0allow_GT:left "|" _BExpr7_SWITCH_0allow_GT:right as BinaryExpr {op = BitwiseOr}
   ;
 
-//////////////////////////////////////////////////////////////////
-// PrimitiveType
-//////////////////////////////////////////////////////////////////
+_BExpr8_SWITCH_1allow_GT : TypeOrExpr
+  ::= !_BExpr7_SWITCH_1allow_GT
+  ::= _BExpr8_SWITCH_1allow_GT:left "|" _BExpr7_SWITCH_1allow_GT:right as BinaryExpr {op = BitwiseOr}
+  ;
+
+_BExpr9_SWITCH_0allow_GT : TypeOrExpr
+  ::= !_BExpr8_SWITCH_0allow_GT
+  ::= _BExpr9_SWITCH_0allow_GT:left "&&" _BExpr8_SWITCH_0allow_GT:right as BinaryExpr {op = And}
+  ;
+
+_BExpr9_SWITCH_1allow_GT : TypeOrExpr
+  ::= !_BExpr8_SWITCH_1allow_GT
+  ::= _BExpr9_SWITCH_1allow_GT:left "&&" _BExpr8_SWITCH_1allow_GT:right as BinaryExpr {op = And}
+  ;
+
+_BExpr10_SWITCH_0allow_GT : TypeOrExpr
+  ::= !_BExpr9_SWITCH_0allow_GT
+  ::= _BExpr10_SWITCH_0allow_GT:left "||" _BExpr9_SWITCH_0allow_GT:right as BinaryExpr {op = Or}
+  ;
+
+_BExpr10_SWITCH_1allow_GT : TypeOrExpr
+  ::= !_BExpr9_SWITCH_1allow_GT
+  ::= _BExpr10_SWITCH_1allow_GT:left "||" _BExpr9_SWITCH_1allow_GT:right as BinaryExpr {op = Or}
+  ;
+
+_ThrowExpr_SWITCH_0allow_GT : ThrowExpr
+  ::= "throw" [_BExpr10_SWITCH_0allow_GT:argument] as ThrowExpr
+  ;
+
+_ThrowExpr_SWITCH_1allow_GT : ThrowExpr
+  ::= "throw" [_BExpr10_SWITCH_1allow_GT:argument] as ThrowExpr
+  ;
+
+_BExpr_NoComma_SWITCH_0allow_GT : TypeOrExpr
+  ::= !_BExpr10_SWITCH_0allow_GT
+  ::= !_ThrowExpr_SWITCH_0allow_GT
+  ::= _BExpr10_SWITCH_0allow_GT:condition "?" _Expr:trueBranch ":" _BExpr_NoComma_SWITCH_0allow_GT:falseBranch as IfExpr
+  ::= _BExpr10_SWITCH_0allow_GT:left "=" _BExpr_NoComma_SWITCH_0allow_GT:right as BinaryExpr {op = Assign}
+  ::= _BExpr10_SWITCH_0allow_GT:left "*=" _BExpr_NoComma_SWITCH_0allow_GT:right as BinaryExpr {op = MulAssign}
+  ::= _BExpr10_SWITCH_0allow_GT:left "/=" _BExpr_NoComma_SWITCH_0allow_GT:right as BinaryExpr {op = DivAssign}
+  ::= _BExpr10_SWITCH_0allow_GT:left "%=" _BExpr_NoComma_SWITCH_0allow_GT:right as BinaryExpr {op = ModAssign}
+  ::= _BExpr10_SWITCH_0allow_GT:left "+=" _BExpr_NoComma_SWITCH_0allow_GT:right as BinaryExpr {op = PlusAssign}
+  ::= _BExpr10_SWITCH_0allow_GT:left "-=" _BExpr_NoComma_SWITCH_0allow_GT:right as BinaryExpr {op = MinusAssign}
+  ::= _BExpr10_SWITCH_0allow_GT:left "<<=" _BExpr_NoComma_SWITCH_0allow_GT:right as BinaryExpr {op = LeftShiftAssign}
+  ::= _BExpr10_SWITCH_0allow_GT:left ">>=" _BExpr_NoComma_SWITCH_0allow_GT:right as BinaryExpr {op = RightShiftAssign}
+  ::= _BExpr10_SWITCH_0allow_GT:left "&=" _BExpr_NoComma_SWITCH_0allow_GT:right as BinaryExpr {op = AndAssign}
+  ::= _BExpr10_SWITCH_0allow_GT:left "|=" _BExpr_NoComma_SWITCH_0allow_GT:right as BinaryExpr {op = OrAssign}
+  ::= _BExpr10_SWITCH_0allow_GT:left "^=" _BExpr_NoComma_SWITCH_0allow_GT:right as BinaryExpr {op = XorAssign}
+  ;
+
+_BExpr_NoComma_SWITCH_1allow_GT : TypeOrExpr
+  ::= !_BExpr10_SWITCH_1allow_GT
+  ::= !_ThrowExpr_SWITCH_1allow_GT
+  ::= _BExpr10_SWITCH_1allow_GT:condition "?" _Expr:trueBranch ":" _BExpr_NoComma_SWITCH_1allow_GT:falseBranch as IfExpr
+  ::= _BExpr10_SWITCH_1allow_GT:left "=" _BExpr_NoComma_SWITCH_1allow_GT:right as BinaryExpr {op = Assign}
+  ::= _BExpr10_SWITCH_1allow_GT:left "*=" _BExpr_NoComma_SWITCH_1allow_GT:right as BinaryExpr {op = MulAssign}
+  ::= _BExpr10_SWITCH_1allow_GT:left "/=" _BExpr_NoComma_SWITCH_1allow_GT:right as BinaryExpr {op = DivAssign}
+  ::= _BExpr10_SWITCH_1allow_GT:left "%=" _BExpr_NoComma_SWITCH_1allow_GT:right as BinaryExpr {op = ModAssign}
+  ::= _BExpr10_SWITCH_1allow_GT:left "+=" _BExpr_NoComma_SWITCH_1allow_GT:right as BinaryExpr {op = PlusAssign}
+  ::= _BExpr10_SWITCH_1allow_GT:left "-=" _BExpr_NoComma_SWITCH_1allow_GT:right as BinaryExpr {op = MinusAssign}
+  ::= _BExpr10_SWITCH_1allow_GT:left "<<=" _BExpr_NoComma_SWITCH_1allow_GT:right as BinaryExpr {op = LeftShiftAssign}
+  ::= _BExpr10_SWITCH_1allow_GT:left ">>=" _BExpr_NoComma_SWITCH_1allow_GT:right as BinaryExpr {op = RightShiftAssign}
+  ::= _BExpr10_SWITCH_1allow_GT:left "&=" _BExpr_NoComma_SWITCH_1allow_GT:right as BinaryExpr {op = AndAssign}
+  ::= _BExpr10_SWITCH_1allow_GT:left "|=" _BExpr_NoComma_SWITCH_1allow_GT:right as BinaryExpr {op = OrAssign}
+  ::= _BExpr10_SWITCH_1allow_GT:left "^=" _BExpr_NoComma_SWITCH_1allow_GT:right as BinaryExpr {op = XorAssign}
+  ;
+
+_BExpr_SWITCH_1allow_GT : TypeOrExpr
+  ::= !_BExpr_NoComma_SWITCH_1allow_GT
+  ::= _BExpr_SWITCH_1allow_GT:left "," _BExpr_NoComma_SWITCH_1allow_GT:right as BinaryExpr {op = Comma}
+  ;
 
 _PrimitiveTypeLiteral
-  ::= "wchar_t":literal1                 as partial PrimitiveType
-  ::= "char8_t":literal1                 as partial PrimitiveType
-  ::= "char16_t":literal1                as partial PrimitiveType
-  ::= "char32_t":literal1                as partial PrimitiveType
-  ::= "char":literal1                    as partial PrimitiveType
-  ::= "short":literal1                   as partial PrimitiveType
-  ::= "int":literal1                     as partial PrimitiveType
-  ::= "__int8":literal1                  as partial PrimitiveType
-  ::= "__int16":literal1                 as partial PrimitiveType
-  ::= "__int32":literal1                 as partial PrimitiveType
-  ::= "__int64":literal1                 as partial PrimitiveType
-  ::= "long":literal1                    as partial PrimitiveType
-  ::= "long":literal1 "int":literal2     as partial PrimitiveType
-  ::= "long":literal1 "long":literal2    as partial PrimitiveType
+  ::= "wchar_t":literal1 as partial PrimitiveType
+  ::= "char8_t":literal1 as partial PrimitiveType
+  ::= "char16_t":literal1 as partial PrimitiveType
+  ::= "char32_t":literal1 as partial PrimitiveType
+  ::= "char":literal1 as partial PrimitiveType
+  ::= "short":literal1 as partial PrimitiveType
+  ::= "int":literal1 as partial PrimitiveType
+  ::= "__int8":literal1 as partial PrimitiveType
+  ::= "__int16":literal1 as partial PrimitiveType
+  ::= "__int32":literal1 as partial PrimitiveType
+  ::= "__int64":literal1 as partial PrimitiveType
+  ::= "long":literal1 as partial PrimitiveType
+  ::= "long":literal1 "int":literal2 as partial PrimitiveType
+  ::= "long":literal1 "long":literal2 as partial PrimitiveType
   ;
 
 _PrimitiveType
-  ::= "signed" [_PrimitiveTypeLiteral]   as PrimitiveType {kind = Signed}
+  ::= "signed" [_PrimitiveTypeLiteral] as PrimitiveType {kind = Signed}
   ::= "unsigned" [_PrimitiveTypeLiteral] as PrimitiveType {kind = Unsigned}
-  ::= "void":literal1                    as PrimitiveType {kind = Neutral}
-  ::= "bool":literal1                    as PrimitiveType {kind = Neutral}
-  ::= "float":literal1                   as PrimitiveType {kind = Neutral}
-  ::= "double":literal1                  as PrimitiveType {kind = Neutral}
-  ::= "long":literal1 "double":literal2  as PrimitiveType {kind = Neutral}
-  ::= _PrimitiveTypeLiteral              as PrimitiveType {kind = Neutral}
+  ::= "void":literal1 as PrimitiveType {kind = Neutral}
+  ::= "bool":literal1 as PrimitiveType {kind = Neutral}
+  ::= "float":literal1 as PrimitiveType {kind = Neutral}
+  ::= "double":literal1 as PrimitiveType {kind = Neutral}
+  ::= "long":literal1 "double":literal2 as PrimitiveType {kind = Neutral}
+  ::= _PrimitiveTypeLiteral as PrimitiveType {kind = Neutral}
   ::= "typename" !_QualifiedName
   ;
 
@@ -364,10 +401,6 @@ _LongType
   ::= _LongType:type "const" as ConstType
   ::= _LongType:type "volatile" as VolatileType
   ;
-
-//////////////////////////////////////////////////////////////////
-// Declarator Components
-//////////////////////////////////////////////////////////////////
 
 _AdvancedTypeNoCVNoMember
   ::= "&" as AdvancedType {kind = LRef}
@@ -413,8 +446,6 @@ _DeclaratorKeyword
   ::= "__vectorcall":keyword as DeclaratorKeyword
   ;
 
-//================================================================
-
 _DeclaratorAKFirst
   ::= _AdvancedTypeNoCVNoMember:advancedTypes as partial Declarator
   ::= _DeclaratorKeyword:keywords as partial Declarator
@@ -432,8 +463,6 @@ _DeclaratorAKCV
 _DeclaratorAKMember
   ::= _AdvancedTypeMember:advancedTypes as partial Declarator
   ;
-
-//================================================================
 
 _DeclaratorFunctionParameter
   ::= {_DeclaratorKeyword:keywords} _LongType:type [_DeclaratorOptionalName:declarator] ["=" _Expr_NoComma:defaultValue] as FunctionParameter
@@ -473,10 +502,6 @@ _DeclaratorId
   ::= !_OperatorIdentifier
   ;
 
-//////////////////////////////////////////////////////////////////
-// Declarator
-//////////////////////////////////////////////////////////////////
-
 _DeclaratorBeforeInner
   ::= (_DeclaratorAKFirst [_DeclaratorAKMember] | _DeclaratorAKMember) {_DeclaratorAKFollow [_DeclaratorAKMember]} as partial Declarator
   ;
@@ -484,8 +509,6 @@ _DeclaratorBeforeInner
 _DeclaratorAfterInner
   ::= _DeclaratorFunctionPart:funcPart | _DeclaratorArrayPart:arrayParts {_DeclaratorArrayPart:arrayParts} as partial Declarator
   ;
-
-//================================================================
 
 _InnerDeclaratorWithoutName
   ::= {_DeclaratorAKCV} !_DeclaratorWithoutName
@@ -499,8 +522,6 @@ _InnerDeclaratorInnerWithName
   ::= {_DeclaratorAKCV} !_DeclaratorWithName
   ;
 
-//================================================================
-
 _DeclaratorInnerWithoutName
   ::= "(" _InnerDeclaratorWithoutName:innerDeclarator ")" as partial Declarator
   ::= "...":variadic as partial Declarator
@@ -508,16 +529,14 @@ _DeclaratorInnerWithoutName
 
 _DeclaratorInnerOptionalName
   ::= "(" _InnerDeclaratorInnerOptionalName:innerDeclarator ")" as partial Declarator
-  ::=  _DeclaratorId:id as partial Declarator
-  ::=  "...":variadic [_DeclaratorId:id] as partial Declarator
+  ::= _DeclaratorId:id as partial Declarator
+  ::= "...":variadic [_DeclaratorId:id] as partial Declarator
   ;
 
 _DeclaratorInnerWithName
   ::= "(" _InnerDeclaratorInnerWithName:innerDeclarator ")" as partial Declarator
   ::= ["...":variadic] _DeclaratorId:id as partial Declarator
   ;
-
-//================================================================
 
 _DeclaratorWithoutName
   ::= _DeclaratorBeforeInner [_DeclaratorInnerWithoutName] [_DeclaratorAfterInner] as Declarator
@@ -535,55 +554,54 @@ _DeclaratorWithName
   ::= [_DeclaratorBeforeInner] _DeclaratorInnerWithName [_DeclaratorAfterInner] as Declarator
   ;
 
-//////////////////////////////////////////////////////////////////
-// Type
-//////////////////////////////////////////////////////////////////
-
 _Type
   ::= !_LongType
   ::= _LongType:type _DeclaratorWithoutName:declarator as DeclaratorType
   ;
 
-//////////////////////////////////////////////////////////////////
-// _Expr
-//////////////////////////////////////////////////////////////////
-
-_Expr_NoComma_Raw
-  ::= !_BExpr_NoComma
+_Expr_NoComma_Raw_SWITCH_1allow_GT : TypeOrExpr
+  ::= !_BExpr_NoComma_SWITCH_1allow_GT
   ;
 
-_Expr_Raw
-  ::= !_BExpr
+_Expr_Raw_SWITCH_1allow_GT : TypeOrExpr
+  ::= !_BExpr_SWITCH_1allow_GT
   ;
 
-//////////////////////////////////////////////////////////////////
-// _TypeOrExpr
-//////////////////////////////////////////////////////////////////
-
-_TypeOrExpr_NoComma_Raw
-  ::= !_BExpr_NoComma
+_TypeOrExpr_NoComma_Raw_SWITCH_COMBINED : TypeOrExpr
   ::= !_Type
   ;
 
-_TypeOrExpr_Raw
-  ::= !_BExpr
+_TypeOrExpr_NoComma_Raw_SWITCH_0allow_GT : TypeOrExpr
+  ::= !_BExpr_NoComma_SWITCH_0allow_GT
+  ::= !_TypeOrExpr_NoComma_Raw_SWITCH_COMBINED
+  ;
+
+_TypeOrExpr_Raw_SWITCH_COMBINED : TypeOrExpr
   ::= !_Type
   ;
 
-//////////////////////////////////////////////////////////////////
-// API
-//////////////////////////////////////////////////////////////////
+_TypeOrExpr_Raw_SWITCH_1allow_GT : TypeOrExpr
+  ::= !_BExpr_SWITCH_1allow_GT
+  ::= !_TypeOrExpr_Raw_SWITCH_COMBINED
+  ;
 
-_Expr_NoComma            ::= !( allow_GT; !_Expr_NoComma_Raw);
-_Expr                    ::= !( allow_GT; !_Expr_Raw);
+_Expr_NoComma
+  ::= !_Expr_NoComma_Raw_SWITCH_1allow_GT
+  ;
 
-_TypeOrExpr_NoComma_NoGT ::= !(!allow_GT; !_TypeOrExpr_NoComma_Raw);
-_TypeOrExpr              ::= !( allow_GT; !_TypeOrExpr_Raw);
+_Expr
+  ::= !_Expr_Raw_SWITCH_1allow_GT
+  ;
 
-//////////////////////////////////////////////////////////////////
-// SYNTAX
-//////////////////////////////////////////////////////////////////
+_TypeOrExpr_NoComma_NoGT
+  ::= !_TypeOrExpr_NoComma_Raw_SWITCH_0allow_GT
+  ;
+
+_TypeOrExpr
+  ::= !_TypeOrExpr_Raw_SWITCH_1allow_GT
+  ;
 
 _File
   ::= ";" as File
   ;
+
