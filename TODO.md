@@ -6,8 +6,8 @@
   - Reported in `BuiltIn-Cpp` there is `_GenericArgument ::= _TypeOrExpr_NoComma_NoGT...`
   - This is incorrect since `_TypeOrExpr_NoComma_NoGT` begins with `prefix_merge` clause
   - If `_TypeOrExpr_NoComma_NoGT` violates the rule, the error should be raised inside it
-- Reject if clause is `[NotStartWithRule] StartWithPrefixMerge`
-  - And other cases like loops and branches etc
+- Reject if clause starts with prefix_merge and non-prefix_merge
+  - clause not starts with prefix_merge could be extracted, doesn't matter if starts with rule or not
 
 ## Next task
 
