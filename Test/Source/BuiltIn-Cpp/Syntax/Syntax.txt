@@ -166,19 +166,33 @@ _NewInit
   ::= "{" {_Expr_NoComma:initArguments ; ","} "}" as partial NewExpr {init = Brace}
   ;
 
-_NewFragment
-  ::= ["(" {_Expr_NoComma:placementArguments ; ","} ")"] _QualifiedName:type [_NewInit] as partial NewExpr {init ?= None}
+_NewPrefix
+  ::= "new" as partial NewExpr {scope = Context}
+  ::= "::" "new" as partial NewExpr {scope = Root}
   ;
 
-_DeleteFragment
-  ::= _PrefixUnaryExpr:argument as partial DeleteExpr {array = NotArray}
-  ::= "[" "]" _PrefixUnaryExpr:argument as partial DeleteExpr {array = Array}
+_NewExpr
+  ::= _NewPrefix ["(" {_Expr_NoComma:placementArguments ; ","} ")"] _QualifiedName:type [_NewInit] as NewExpr {init ?= None}
   ;
 
-_SizeofFragment
-  ::= _PostfixUnaryExpr:argument as partial SizeofExpr
-  ::= _AllPrefixUnaryExpr_NoCStyleCast:argument as partial SizeofExpr
-  ::= "(" _Type:argument ")" as partial SizeofExpr
+_DeletePrefix
+  ::= "delete" as partial DeleteExpr {scope = Context}
+  ::= "::" "delete" as partial DeleteExpr {scope = Root}
+  ;
+
+_DeleteExpr
+  ::= _DeletePrefix _PrefixUnaryExpr:argument as DeleteExpr
+  ::= _DeletePrefix "[" "]" _PrefixUnaryExpr:argument as DeleteExpr
+  ;
+
+_SizeOfPrefix
+  ::= "sizeof" ["...":variadic] as partial SizeofExpr
+  ;
+
+_SizeofExpr
+  ::= _SizeOfPrefix _PostfixUnaryExpr:argument as SizeofExpr
+  ::= _SizeOfPrefix _AllPrefixUnaryExpr_NoCStyleCast:argument as SizeofExpr
+  ::= _SizeOfPrefix "(" _Type:argument ")" as SizeofExpr
   ;
 
 _AllPrefixUnaryExpr_NoCStyleCast
@@ -190,11 +204,9 @@ _AllPrefixUnaryExpr_NoCStyleCast
   ::= "+" _PrefixUnaryExpr:operand as PrefixUnaryExpr {op = Plus}
   ::= "&" _PrefixUnaryExpr:operand as PrefixUnaryExpr {op = BitwiseAnd}
   ::= "*" _PrefixUnaryExpr:operand as PrefixUnaryExpr {op = Mul}
-  ::= "new" _NewFragment as NewExpr {scope = Context}
-  ::= "::" "new" _NewFragment as NewExpr {scope = Root}
-  ::= "delete" _DeleteFragment as DeleteExpr {scope = Context}
-  ::= "::" "delete" _DeleteFragment as DeleteExpr {scope = Root}
-  ::= "sizeof" ["...":variadic] _SizeofFragment as SizeofExpr
+  ::= !_NewExpr
+  ::= !_DeleteExpr
+  ::= !_SizeofExpr
   ;
 
 _AllPrefixUnaryExpr

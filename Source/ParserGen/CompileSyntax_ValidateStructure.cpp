@@ -831,6 +831,14 @@ ValidateStructureIndirectPrefixMergeRuleVisitor
 
 					SUCCEEDED_CONDITION:
 						context.clauseToConvertedToPrefixMerge.Add(node);
+						if (ruleSymbol->isPartial)
+						{
+							context.syntaxManager.AddError(
+								ParserErrorType::PartialRuleIndirectlyBeginsWithPrefixMergeMixedWithClauseNotSyntacticallyBeginWithARule,
+								node->codeRange,
+								ruleSymbol->Name()
+								);
+						}
 						return;
 					FAILED_CONDITION:;
 					}

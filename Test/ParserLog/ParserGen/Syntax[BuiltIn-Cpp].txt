@@ -2935,6 +2935,50 @@
             "$ast": "PartialClause",
             "assignments": [{
                 "$ast": "Assignment",
+                "field": "scope",
+                "type": "Strong",
+                "value": "Context"
+            }],
+            "syntax": {
+                "$ast": "RefSyntax",
+                "field": "",
+                "literal": "\"new\"",
+                "refType": "Literal"
+            },
+            "type": "NewExpr"
+        }, {
+            "$ast": "PartialClause",
+            "assignments": [{
+                "$ast": "Assignment",
+                "field": "scope",
+                "type": "Strong",
+                "value": "Root"
+            }],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "\"::\"",
+                    "refType": "Literal"
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "\"new\"",
+                    "refType": "Literal"
+                }
+            },
+            "type": "NewExpr"
+        }],
+        "name": "_NewPrefix",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [{
+                "$ast": "Assignment",
                 "field": "init",
                 "type": "Weak",
                 "value": "None"
@@ -2944,39 +2988,48 @@
                 "first": {
                     "$ast": "SequenceSyntax",
                     "first": {
-                        "$ast": "OptionalSyntax",
-                        "priority": "Equal",
-                        "syntax": {
-                            "$ast": "SequenceSyntax",
-                            "first": {
+                        "$ast": "SequenceSyntax",
+                        "first": {
+                            "$ast": "RefSyntax",
+                            "field": "",
+                            "literal": "_NewPrefix",
+                            "refType": "Id"
+                        },
+                        "second": {
+                            "$ast": "OptionalSyntax",
+                            "priority": "Equal",
+                            "syntax": {
                                 "$ast": "SequenceSyntax",
                                 "first": {
-                                    "$ast": "RefSyntax",
-                                    "field": "",
-                                    "literal": "\"(\"",
-                                    "refType": "Literal"
-                                },
-                                "second": {
-                                    "$ast": "LoopSyntax",
-                                    "delimiter": {
+                                    "$ast": "SequenceSyntax",
+                                    "first": {
                                         "$ast": "RefSyntax",
                                         "field": "",
-                                        "literal": "\",\"",
+                                        "literal": "\"(\"",
                                         "refType": "Literal"
                                     },
-                                    "syntax": {
-                                        "$ast": "RefSyntax",
-                                        "field": "placementArguments",
-                                        "literal": "_Expr_NoComma",
-                                        "refType": "Id"
+                                    "second": {
+                                        "$ast": "LoopSyntax",
+                                        "delimiter": {
+                                            "$ast": "RefSyntax",
+                                            "field": "",
+                                            "literal": "\",\"",
+                                            "refType": "Literal"
+                                        },
+                                        "syntax": {
+                                            "$ast": "RefSyntax",
+                                            "field": "placementArguments",
+                                            "literal": "_Expr_NoComma",
+                                            "refType": "Id"
+                                        }
                                     }
+                                },
+                                "second": {
+                                    "$ast": "RefSyntax",
+                                    "field": "",
+                                    "literal": "\")\"",
+                                    "refType": "Literal"
                                 }
-                            },
-                            "second": {
-                                "$ast": "RefSyntax",
-                                "field": "",
-                                "literal": "\")\"",
-                                "refType": "Literal"
                             }
                         }
                     },
@@ -3000,7 +3053,7 @@
             },
             "type": "NewExpr"
         }],
-        "name": "_NewFragment",
+        "name": "_NewExpr",
         "type": ""
     }, {
         "$ast": "Rule",
@@ -3008,34 +3061,86 @@
             "$ast": "PartialClause",
             "assignments": [{
                 "$ast": "Assignment",
-                "field": "array",
+                "field": "scope",
                 "type": "Strong",
-                "value": "NotArray"
+                "value": "Context"
             }],
             "syntax": {
                 "$ast": "RefSyntax",
-                "field": "argument",
-                "literal": "_PrefixUnaryExpr",
-                "refType": "Id"
+                "field": "",
+                "literal": "\"delete\"",
+                "refType": "Literal"
             },
             "type": "DeleteExpr"
         }, {
             "$ast": "PartialClause",
             "assignments": [{
                 "$ast": "Assignment",
-                "field": "array",
+                "field": "scope",
                 "type": "Strong",
-                "value": "Array"
+                "value": "Root"
             }],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "\"::\"",
+                    "refType": "Literal"
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "\"delete\"",
+                    "refType": "Literal"
+                }
+            },
+            "type": "DeleteExpr"
+        }],
+        "name": "_DeletePrefix",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "_DeletePrefix",
+                    "refType": "Id"
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "argument",
+                    "literal": "_PrefixUnaryExpr",
+                    "refType": "Id"
+                }
+            },
+            "type": "DeleteExpr"
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [],
             "syntax": {
                 "$ast": "SequenceSyntax",
                 "first": {
                     "$ast": "SequenceSyntax",
                     "first": {
-                        "$ast": "RefSyntax",
-                        "field": "",
-                        "literal": "\"[\"",
-                        "refType": "Literal"
+                        "$ast": "SequenceSyntax",
+                        "first": {
+                            "$ast": "RefSyntax",
+                            "field": "",
+                            "literal": "_DeletePrefix",
+                            "refType": "Id"
+                        },
+                        "second": {
+                            "$ast": "RefSyntax",
+                            "field": "",
+                            "literal": "\"[\"",
+                            "refType": "Literal"
+                        }
                     },
                     "second": {
                         "$ast": "RefSyntax",
@@ -3053,7 +3158,7 @@
             },
             "type": "DeleteExpr"
         }],
-        "name": "_DeleteFragment",
+        "name": "_DeleteExpr",
         "type": ""
     }, {
         "$ast": "Rule",
@@ -3061,34 +3166,89 @@
             "$ast": "PartialClause",
             "assignments": [],
             "syntax": {
-                "$ast": "RefSyntax",
-                "field": "argument",
-                "literal": "_PostfixUnaryExpr",
-                "refType": "Id"
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "\"sizeof\"",
+                    "refType": "Literal"
+                },
+                "second": {
+                    "$ast": "OptionalSyntax",
+                    "priority": "Equal",
+                    "syntax": {
+                        "$ast": "RefSyntax",
+                        "field": "variadic",
+                        "literal": "\"...\"",
+                        "refType": "Literal"
+                    }
+                }
             },
             "type": "SizeofExpr"
-        }, {
-            "$ast": "PartialClause",
+        }],
+        "name": "_SizeOfPrefix",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "CreateClause",
             "assignments": [],
             "syntax": {
-                "$ast": "RefSyntax",
-                "field": "argument",
-                "literal": "_AllPrefixUnaryExpr_NoCStyleCast",
-                "refType": "Id"
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "_SizeOfPrefix",
+                    "refType": "Id"
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "argument",
+                    "literal": "_PostfixUnaryExpr",
+                    "refType": "Id"
+                }
             },
             "type": "SizeofExpr"
         }, {
-            "$ast": "PartialClause",
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "_SizeOfPrefix",
+                    "refType": "Id"
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "argument",
+                    "literal": "_AllPrefixUnaryExpr_NoCStyleCast",
+                    "refType": "Id"
+                }
+            },
+            "type": "SizeofExpr"
+        }, {
+            "$ast": "CreateClause",
             "assignments": [],
             "syntax": {
                 "$ast": "SequenceSyntax",
                 "first": {
                     "$ast": "SequenceSyntax",
                     "first": {
-                        "$ast": "RefSyntax",
-                        "field": "",
-                        "literal": "\"(\"",
-                        "refType": "Literal"
+                        "$ast": "SequenceSyntax",
+                        "first": {
+                            "$ast": "RefSyntax",
+                            "field": "",
+                            "literal": "_SizeOfPrefix",
+                            "refType": "Id"
+                        },
+                        "second": {
+                            "$ast": "RefSyntax",
+                            "field": "",
+                            "literal": "\"(\"",
+                            "refType": "Literal"
+                        }
                     },
                     "second": {
                         "$ast": "RefSyntax",
@@ -3106,7 +3266,7 @@
             },
             "type": "SizeofExpr"
         }],
-        "name": "_SizeofFragment",
+        "name": "_SizeofExpr",
         "type": ""
     }, {
         "$ast": "Rule",
@@ -3303,151 +3463,26 @@
             },
             "type": "PrefixUnaryExpr"
         }, {
-            "$ast": "CreateClause",
-            "assignments": [{
-                "$ast": "Assignment",
-                "field": "scope",
-                "type": "Strong",
-                "value": "Context"
-            }],
-            "syntax": {
-                "$ast": "SequenceSyntax",
-                "first": {
-                    "$ast": "RefSyntax",
-                    "field": "",
-                    "literal": "\"new\"",
-                    "refType": "Literal"
-                },
-                "second": {
-                    "$ast": "RefSyntax",
-                    "field": "",
-                    "literal": "_NewFragment",
-                    "refType": "Id"
-                }
-            },
-            "type": "NewExpr"
-        }, {
-            "$ast": "CreateClause",
-            "assignments": [{
-                "$ast": "Assignment",
-                "field": "scope",
-                "type": "Strong",
-                "value": "Root"
-            }],
-            "syntax": {
-                "$ast": "SequenceSyntax",
-                "first": {
-                    "$ast": "SequenceSyntax",
-                    "first": {
-                        "$ast": "RefSyntax",
-                        "field": "",
-                        "literal": "\"::\"",
-                        "refType": "Literal"
-                    },
-                    "second": {
-                        "$ast": "RefSyntax",
-                        "field": "",
-                        "literal": "\"new\"",
-                        "refType": "Literal"
-                    }
-                },
-                "second": {
-                    "$ast": "RefSyntax",
-                    "field": "",
-                    "literal": "_NewFragment",
-                    "refType": "Id"
-                }
-            },
-            "type": "NewExpr"
-        }, {
-            "$ast": "CreateClause",
-            "assignments": [{
-                "$ast": "Assignment",
-                "field": "scope",
-                "type": "Strong",
-                "value": "Context"
-            }],
-            "syntax": {
-                "$ast": "SequenceSyntax",
-                "first": {
-                    "$ast": "RefSyntax",
-                    "field": "",
-                    "literal": "\"delete\"",
-                    "refType": "Literal"
-                },
-                "second": {
-                    "$ast": "RefSyntax",
-                    "field": "",
-                    "literal": "_DeleteFragment",
-                    "refType": "Id"
-                }
-            },
-            "type": "DeleteExpr"
-        }, {
-            "$ast": "CreateClause",
-            "assignments": [{
-                "$ast": "Assignment",
-                "field": "scope",
-                "type": "Strong",
-                "value": "Root"
-            }],
-            "syntax": {
-                "$ast": "SequenceSyntax",
-                "first": {
-                    "$ast": "SequenceSyntax",
-                    "first": {
-                        "$ast": "RefSyntax",
-                        "field": "",
-                        "literal": "\"::\"",
-                        "refType": "Literal"
-                    },
-                    "second": {
-                        "$ast": "RefSyntax",
-                        "field": "",
-                        "literal": "\"delete\"",
-                        "refType": "Literal"
-                    }
-                },
-                "second": {
-                    "$ast": "RefSyntax",
-                    "field": "",
-                    "literal": "_DeleteFragment",
-                    "refType": "Id"
-                }
-            },
-            "type": "DeleteExpr"
-        }, {
-            "$ast": "CreateClause",
+            "$ast": "ReuseClause",
             "assignments": [],
             "syntax": {
-                "$ast": "SequenceSyntax",
-                "first": {
-                    "$ast": "SequenceSyntax",
-                    "first": {
-                        "$ast": "RefSyntax",
-                        "field": "",
-                        "literal": "\"sizeof\"",
-                        "refType": "Literal"
-                    },
-                    "second": {
-                        "$ast": "OptionalSyntax",
-                        "priority": "Equal",
-                        "syntax": {
-                            "$ast": "RefSyntax",
-                            "field": "variadic",
-                            "literal": "\"...\"",
-                            "refType": "Literal"
-                        }
-                    }
-                },
-                "second": {
-                    "$ast": "RefSyntax",
-                    "field": "",
-                    "literal": "_SizeofFragment",
-                    "refType": "Id"
-                }
-            },
-            "type": "SizeofExpr"
+                "$ast": "UseSyntax",
+                "name": "_NewExpr"
+            }
+        }, {
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "_DeleteExpr"
+            }
+        }, {
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "_SizeofExpr"
+            }
         }],
         "name": "_AllPrefixUnaryExpr_NoCStyleCast",
         "type": ""
