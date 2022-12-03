@@ -26,7 +26,7 @@ namespace vl
 
 				bool Add(const WString& name, T* item)
 				{
-					items.Add(item);
+					items.Add(Ptr(item));
 					if (map.Keys().Contains(name)) return false;
 					order.Add(name);
 					map.Add(name, item);

@@ -17,7 +17,7 @@ GenerateAstFileNames
 			{
 				for (auto file : manager.Files().Values())
 				{
-					auto astOutput = MakePtr<CppAstGenOutput>();
+					auto astOutput = Ptr(new CppAstGenOutput);
 					astOutput->astH			= file->Owner()->Global().name + file->Name() + L".h";
 					astOutput->astCpp		= file->Owner()->Global().name + file->Name() + L".cpp";
 					astOutput->builderH		= file->Owner()->Global().name + file->Name() + L"_Builder.h";
