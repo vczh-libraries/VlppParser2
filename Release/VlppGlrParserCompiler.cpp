@@ -25,7 +25,7 @@ GenerateAstFileNames
 			{
 				for (auto file : manager.Files().Values())
 				{
-					auto astOutput = MakePtr<CppAstGenOutput>();
+					auto astOutput = Ptr(new CppAstGenOutput);
 					astOutput->astH			= file->Owner()->Global().name + file->Name() + L".h";
 					astOutput->astCpp		= file->Owner()->Global().name + file->Name() + L".cpp";
 					astOutput->builderH		= file->Owner()->Global().name + file->Name() + L"_Builder.h";
@@ -518,9 +518,9 @@ WriteAstAssemblerCppFile
 								if (classSymbol->derivedClasses.Count() == 0)
 								{
 									writer.WriteLine(prefix + L"\tcase " + manager.Global().name + L"Classes::" + classSymbol->Name() + L":");
-									writer.WriteString(prefix + L"\t\treturn new ");
+									writer.WriteString(prefix + L"\t\treturn vl::Ptr(new ");
 									PrintCppType(nullptr, classSymbol, writer);
-									writer.WriteLine(L"();");
+									writer.WriteLine(L");");
 								}
 							}
 						}
@@ -1589,10 +1589,10 @@ WriteTypeReflectionImplementation
 				writer.WriteString(prefix);
 				writer.WriteLine(L"\t{");
 				writer.WriteString(prefix);
-				writer.WriteString(L"\t\tPtr<ITypeLoader> loader = new ");
+				writer.WriteString(L"\t\tauto loader = Ptr(new ");
 				writer.WriteString(file->Owner()->Global().name);
 				writer.WriteString(file->Name());
-				writer.WriteLine(L"TypeLoader;");
+				writer.WriteLine(L"TypeLoader);");
 				writer.WriteString(prefix);
 				writer.WriteLine(L"\t\treturn manager->AddTypeLoader(loader);");
 				writer.WriteString(prefix);
@@ -1785,9 +1785,9 @@ WriteCopyVisitorCppFile
 						PrintCppType(file, classSymbol, writer);
 						writer.WriteLine(L"* node)");
 						writer.WriteLine(prefix + L"{");
-						writer.WriteString(prefix + L"\tauto newNode = vl::MakePtr<");
+						writer.WriteString(prefix + L"\tauto newNode = vl::Ptr(new ");
 						PrintCppType(file, classSymbol, writer);
-						writer.WriteLine(L">();");
+						writer.WriteLine(L");");
 						writer.WriteLine(prefix + L"\tCopyFields(node, newNode.Obj());");
 						writer.WriteLine(prefix + L"\tthis->result = newNode;");
 						writer.WriteLine(prefix + L"}");
@@ -1804,9 +1804,9 @@ WriteCopyVisitorCppFile
 							writer.WriteLine(prefix + L"{");
 							if (classSymbol->derivedClasses.Count() == 0)
 							{
-								writer.WriteString(prefix + L"\tauto newNode = vl::MakePtr<");
+								writer.WriteString(prefix + L"\tauto newNode = vl::Ptr(new ");
 								PrintCppType(file, classSymbol, writer);
-								writer.WriteLine(L">();");
+								writer.WriteLine(L");");
 								writer.WriteLine(prefix + L"\tCopyFields(node, newNode.Obj());");
 								writer.WriteLine(prefix + L"\tthis->result = newNode;");
 							}
@@ -3933,7 +3933,7 @@ CompileSyntax
 			Ptr<GlrSyntaxFile> CompileSyntax(AstSymbolManager& astManager, LexerSymbolManager& lexerManager, SyntaxSymbolManager& syntaxManager, Ptr<CppParserGenOutput> output, collections::List<Ptr<GlrSyntaxFile>>& files)
 			{
 				// merge files to single syntax file
-				auto syntaxFile = MakePtr<GlrSyntaxFile>();
+				auto syntaxFile = Ptr(new GlrSyntaxFile);
 				for (auto file : files)
 				{
 					CopyFrom(syntaxFile->switches, file->switches, true);
@@ -4625,6 +4625,12 @@ CompileSyntaxVisitor
 				Ptr<CppParserGenOutput>					output;
 				AstClassSymbol*							clauseType;
 				StatePair								result;
+
+				StatePair Build(GlrSyntax* node)
+				{
+					node->Accept(this);
+					return result;
+				}
 
 				StatePair Build(const Ptr<GlrSyntax>& node)
 				{
@@ -5517,7 +5523,7 @@ namespace vl
 					auto conflict = GetConflict(rContext, ruleSymbol);
 					if (!conflict)
 					{
-						conflict = MakePtr<RewritingPrefixConflict>();
+						conflict = Ptr(new RewritingPrefixConflict);
 						rContext.extractedConflicts.Add(ruleSymbol, conflict);
 					}
 					return conflict;
@@ -5560,15 +5566,15 @@ FillMissingPrefixMergeClauses
 						auto clause = ruleRaw->clauses[clauseIndex];
 
 						// create new rule and replace the clause with prefix_merge
-						auto newRule = MakePtr<GlrRule>();
+						auto newRule = Ptr(new GlrRule);
 						rewritten->rules.Insert(ruleIndex, newRule);
 						newRule->name.value = ruleRaw->name.value + L"_LRI_Isolated_" + itow(clauseIndex);
 						newRule->clauses.Add(clause);
 
-						auto newPM = MakePtr<GlrPrefixMergeClause>();
+						auto newPM = Ptr(new GlrPrefixMergeClause);
 						ruleRaw->clauses[clauseIndex] = newPM;
 						{
-							auto startRule = MakePtr<GlrRefSyntax>();
+							auto startRule = Ptr(new GlrRefSyntax);
 							newPM->rule = startRule;
 
 							startRule->refType = GlrRefType::Id;
@@ -5709,7 +5715,7 @@ CreateRewrittenRules
 						auto originRule = vContext.astRules[ruleSymbol];
 						rContext.originRules.Add(ruleSymbol, originRule);
 
-						auto lri = MakePtr<GlrRule>();
+						auto lri = Ptr(new GlrRule);
 						rewritten->rules.Add(lri);
 						rContext.lriRules.Add(ruleSymbol, lri.Obj());
 
@@ -5724,7 +5730,7 @@ CreateRewrittenRules
 						for (auto [prefixRuleSymbol, prefixClause] : From(prefixClauses)
 							.OrderBy([](auto p1, auto p2) {return WString::Compare(p1.ruleSymbol->Name(), p2.ruleSymbol->Name()); }))
 						{
-							auto ep = MakePtr<GlrRule>();
+							auto ep = Ptr(new GlrRule);
 							rewritten->rules.Insert(rewritten->rules.IndexOf(originRule), ep);
 							rContext.extractedPrefixRules.Add({ ruleSymbol,prefixRuleSymbol }, ep.Obj());
 
@@ -5785,19 +5791,19 @@ RewriteExtractedPrefixRules
 					for (auto [pair, epRule] : rContext.extractedPrefixRules)
 					{
 						{
-							auto lrpClause = MakePtr<GlrLeftRecursionPlaceholderClause>();
+							auto lrpClause = Ptr(new GlrLeftRecursionPlaceholderClause);
 							epRule->clauses.Add(lrpClause);
 
-							auto lrp = MakePtr<GlrLeftRecursionPlaceholder>();
+							auto lrp = Ptr(new GlrLeftRecursionPlaceholder);
 							lrpClause->flags.Add(lrp);
 							lrp->flag.value = L"LRIP_" + pair.key->Name() + L"_" + pair.value->Name();
 							syntaxManager.lrpFlags.Add(lrp->flag.value);
 						}
 						{
-							auto reuseClause = MakePtr<GlrReuseClause>();
+							auto reuseClause = Ptr(new GlrReuseClause);
 							epRule->clauses.Add(reuseClause);
 
-							auto useSyntax = MakePtr<GlrUseSyntax>();
+							auto useSyntax = Ptr(new GlrUseSyntax);
 							reuseClause->syntax = useSyntax;
 							useSyntax->name.value = rContext.originRules[pair.value]->name.value;
 						}
@@ -6017,9 +6023,9 @@ RewriteRules (AST Creation)
 					const WString& ruleName
 				)
 				{
-					auto lriClause = MakePtr<GlrLeftRecursionInjectClause>();
+					auto lriClause = Ptr(new GlrLeftRecursionInjectClause);
 
-					auto lriStartRule = MakePtr<GlrRefSyntax>();
+					auto lriStartRule = Ptr(new GlrRefSyntax);
 					lriClause->rule = lriStartRule;
 					lriStartRule->refType = GlrRefType::Id;
 					lriStartRule->literal.value = ruleName;
@@ -6037,7 +6043,7 @@ RewriteRules (AST Creation)
 					bool generateOptionalLri
 				)
 				{
-					auto lriCont = MakePtr<GlrLeftRecursionInjectContinuation>();
+					auto lriCont = Ptr(new GlrLeftRecursionInjectContinuation);
 
 					if (RewriteRules_HasMultiplePaths(vContext, ruleSymbol, pmInjectRecord.pmRule, pathCounter))
 					{
@@ -6057,7 +6063,7 @@ RewriteRules (AST Creation)
 						lriCont->type = GlrLeftRecursionInjectContinuationType::Required;
 					}
 
-					auto lriContFlag = MakePtr<GlrLeftRecursionPlaceholder>();
+					auto lriContFlag = Ptr(new GlrLeftRecursionPlaceholder);
 					lriCont->flag = lriContFlag;
 					lriContFlag->flag.value = flag;
 
@@ -6103,10 +6109,10 @@ RewriteRules (Unaffected)
 
 						if (generateOptionalLri && flags.Count() == 0)
 						{
-							auto reuseClause = MakePtr<GlrReuseClause>();
+							auto reuseClause = Ptr(new GlrReuseClause);
 							lriRule->clauses.Add(reuseClause);
 
-							auto useSyntax = MakePtr<GlrUseSyntax>();
+							auto useSyntax = Ptr(new GlrUseSyntax);
 							reuseClause->syntax = useSyntax;
 							useSyntax->name.value = pmName;
 						}
@@ -6376,10 +6382,10 @@ FixPrefixMergeClauses
 					{
 						auto originRule = rContext.originRules[ruleSymbol];
 
-						auto lrpClause = MakePtr<GlrLeftRecursionPlaceholderClause>();
+						auto lrpClause = Ptr(new GlrLeftRecursionPlaceholderClause);
 						originRule->clauses.Insert(0, lrpClause);
 
-						auto lrp = MakePtr<GlrLeftRecursionPlaceholder>();
+						auto lrp = Ptr(new GlrLeftRecursionPlaceholder);
 						lrp->flag.value = L"LRI_" + ruleSymbol->Name();
 						lrpClause->flags.Add(lrp);
 						syntaxManager.lrpFlags.Add(lrp->flag.value);
@@ -6388,10 +6394,10 @@ FixPrefixMergeClauses
 						{
 							if (auto pmClause = originRule->clauses[i].Cast<GlrPrefixMergeClause>())
 							{
-								auto reuseClause = MakePtr<GlrReuseClause>();
+								auto reuseClause = Ptr(new GlrReuseClause);
 								originRule->clauses[i] = reuseClause;
 
-								auto useSyntax = MakePtr<GlrUseSyntax>();
+								auto useSyntax = Ptr(new GlrUseSyntax);
 								useSyntax->name.value = pmClause->rule->literal.value;
 								reuseClause->syntax = useSyntax;
 							}
@@ -6560,7 +6566,7 @@ RewriteSyntax
 				using namespace rewritesyntax_prefixmerge;
 
 				// merge files to single syntax file
-				auto rewritten = MakePtr<GlrSyntaxFile>();
+				auto rewritten = Ptr(new GlrSyntaxFile);
 				CopyFrom(rewritten->rules, syntaxFile->rules);
 
 				// find clauses that need to be converted to prefix_merge and fix VisitorContext
@@ -6637,7 +6643,7 @@ namespace vl
 
 				Ptr<Dictionary<WString, bool>> ApplySwitches(Ptr<Dictionary<WString, bool>> currentValues, GlrPushConditionSyntax* node)
 				{
-					auto newValues = MakePtr<Dictionary<WString, bool>>();
+					auto newValues = Ptr(new Dictionary<WString, bool>);
 					if (currentValues)
 					{
 						CopyFrom(*newValues.Obj(), *currentValues.Obj());
@@ -6825,7 +6831,7 @@ ExpandSwitchSyntaxVisitor
 					{
 						// an affected rule respond to switch values
 						// collect switch values that the rule cares
-						auto workingSwitchValues = MakePtr<Dictionary<WString, bool>>();
+						auto workingSwitchValues = Ptr(new Dictionary<WString, bool>);
 						for (auto&& name : affectedSwitches)
 						{
 							vint index = -1;
@@ -6859,7 +6865,7 @@ ExpandSwitchSyntaxVisitor
 						}
 
 						// make a record of the collected switch values
-						auto generatedRule = MakePtr<GeneratedRule>();
+						auto generatedRule = Ptr(new GeneratedRule);
 						generatedRule->ruleToExpand = rule;
 						generatedRule->switchValues = workingSwitchValues;
 						rContext.generatedRules.Add(workingRule, generatedRule);
@@ -6954,7 +6960,7 @@ ExpandClauseVisitor
 							if (optional)
 							{
 								// optional of nothing is EmptySyntax
-								result = MakePtr<EmptySyntax>();
+								result = Ptr(new EmptySyntax);
 								return;
 							}
 							else
@@ -6972,12 +6978,12 @@ ExpandClauseVisitor
 						else
 						{
 							// otherwise create alternative syntax for them
-							auto alt = MakePtr<GlrAlternativeSyntax>();
+							auto alt = Ptr(new GlrAlternativeSyntax);
 							alt->first = items[0];
 							alt->second = items[1];
 							for (vint i = 2; i < items.Count(); i++)
 							{
-								auto newAlt = MakePtr<GlrAlternativeSyntax>();
+								auto newAlt = Ptr(new GlrAlternativeSyntax);
 								newAlt->first = alt;
 								newAlt->second = items[i];
 								alt = newAlt;
@@ -6988,7 +6994,7 @@ ExpandClauseVisitor
 						if (optional)
 						{
 							// make it optional if necessary
-							auto opt = MakePtr<GlrOptionalSyntax>();
+							auto opt = Ptr(new GlrOptionalSyntax);
 							opt->syntax = result.Cast<GlrSyntax>();
 							result = opt;
 						}
@@ -7106,19 +7112,19 @@ DeductEmptySyntaxVisitor
 				protected:
 					void Visit(GlrRefSyntax* node) override
 					{
-						result = node;
+						result = Ptr(node);
 					}
 
 					void Visit(GlrUseSyntax* node) override
 					{
-						result = node;
+						result = Ptr(node);
 					}
 
 					void Visit(GlrLoopSyntax* node) override
 					{
 						node->syntax = CopyNodeSafe(node->syntax);
 						node->delimiter = CopyNodeSafe(node->delimiter);
-						result = node;
+						result = Ptr(node);
 
 						if (node->syntax.Cast<EmptySyntax>())
 						{
@@ -7134,7 +7140,7 @@ DeductEmptySyntaxVisitor
 					void Visit(GlrOptionalSyntax* node) override
 					{
 						node->syntax = CopyNodeSafe(node->syntax);
-						result = node;
+						result = Ptr(node);
 
 						if (node->syntax.Cast<EmptySyntax>())
 						{
@@ -7147,7 +7153,7 @@ DeductEmptySyntaxVisitor
 					{
 						node->first = CopyNodeSafe(node->first);
 						node->second = CopyNodeSafe(node->second);
-						result = node;
+						result = Ptr(node);
 
 						bool first = !node->first.Cast<EmptySyntax>();
 						bool second = !node->second.Cast<EmptySyntax>();
@@ -7176,7 +7182,7 @@ DeductEmptySyntaxVisitor
 					{
 						node->first = CopyNodeSafe(node->first);
 						node->second = CopyNodeSafe(node->second);
-						result = node;
+						result = Ptr(node);
 
 						bool first = !node->first.Cast<EmptySyntax>();
 						bool second = !node->second.Cast<EmptySyntax>();
@@ -7187,14 +7193,14 @@ DeductEmptySyntaxVisitor
 						else if (first)
 						{
 							// if only first is not empty, it is [first]
-							auto opt = MakePtr<GlrOptionalSyntax>();
+							auto opt = Ptr(new GlrOptionalSyntax);
 							opt->syntax = node->first;
 							result = opt;
 						}
 						else if (second)
 						{
 							// if only second is not empty, it is [second]
-							auto opt = MakePtr<GlrOptionalSyntax>();
+							auto opt = Ptr(new GlrOptionalSyntax);
 							opt->syntax = node->second;
 							result = opt;
 						}
@@ -7298,7 +7304,7 @@ RewriteSyntax
 
 				Ptr<GlrRule> CreateRule(RuleSymbol* ruleSymbol, Ptr<GlrRule> rule, const WString& name)
 				{
-					auto newRule = MakePtr<GlrRule>();
+					auto newRule = Ptr(new GlrRule);
 					newRule->codeRange = rule->codeRange;
 					newRule->name = rule->name;
 					newRule->name.value = name;
@@ -7370,7 +7376,7 @@ RewriteSyntax
 					}
 				}
 
-				auto rewritten = MakePtr<GlrSyntaxFile>();
+				auto rewritten = Ptr(new GlrSyntaxFile);
 				for (auto rule : syntaxFile->rules)
 				{
 					auto ruleSymbol = syntaxManager.Rules()[rule->name.value];
@@ -7380,7 +7386,7 @@ RewriteSyntax
 						// if a rule is unaffected
 						// just remove GlrPushConditionSyntax in clauses
 						// rules it references could be renamed
-						auto newRule = MakePtr<GlrRule>();
+						auto newRule = Ptr(new GlrRule);
 						newRule->codeRange = rule->codeRange;
 						newRule->name = rule->name;
 						newRule->type = rule->type;
@@ -7428,14 +7434,14 @@ RewriteSyntax
 								vint clauseIndex = sContext.clauseAffectedSwitches.Keys().IndexOf(clause.Obj());
 								if (clauseIndex == -1)
 								{
-									switchValues = MakePtr<Dictionary<WString, bool>>();
+									switchValues = Ptr(new Dictionary<WString, bool>);
 								}
 								else
 								{
 									auto&& switches = sContext.clauseAffectedSwitches.GetByIndex(clauseIndex);
 									if (switches.Count() != generatedRule->switchValues->Count())
 									{
-										switchValues = MakePtr<Dictionary<WString, bool>>();
+										switchValues = Ptr(new Dictionary<WString, bool>);
 										for (auto&& switchName : switches)
 										{
 											switchValues->Add(switchName, generatedRule->switchValues->Get(switchName));
@@ -7520,12 +7526,12 @@ RewriteSyntax
 								// add all used combined rules in order of name
 								if (ruleSymbol->isPartial)
 								{
-									auto refSyntax = MakePtr<GlrRefSyntax>();
+									auto refSyntax = Ptr(new GlrRefSyntax);
 									refSyntax->literal = rule->name;
 									refSyntax->literal.value = ruleName;
 									refSyntax->refType = GlrRefType::Id;
 
-									auto partialClause = MakePtr<GlrPartialClause>();
+									auto partialClause = Ptr(new GlrPartialClause);
 									partialClause->type = rule->name;
 									partialClause->type.value = ruleSymbol->ruleType->Name();
 									partialClause->syntax = refSyntax;
@@ -7534,11 +7540,11 @@ RewriteSyntax
 								}
 								else
 								{
-									auto useSyntax = MakePtr<GlrUseSyntax>();
+									auto useSyntax = Ptr(new GlrUseSyntax);
 									useSyntax->name = rule->name;
 									useSyntax->name.value = ruleName;
 
-									auto reuseClause = MakePtr<GlrReuseClause>();
+									auto reuseClause = Ptr(new GlrReuseClause);
 									reuseClause->syntax = useSyntax;
 
 									newRule->clauses.Add(reuseClause);
@@ -9448,7 +9454,7 @@ GenerateParserFileNames
 
 			Ptr<CppParserGenOutput> GenerateParserFileNames(ParserSymbolManager& manager)
 			{
-				auto parserOutput = MakePtr<CppParserGenOutput>();
+				auto parserOutput = Ptr(new CppParserGenOutput);
 				parserOutput->assemblyH = manager.name + L"_Assembler.h";
 				parserOutput->assemblyCpp = manager.name + L"_Assembler.cpp";
 				parserOutput->lexerH = manager.name + L"_Lexer.h";
@@ -10138,7 +10144,7 @@ namespace vl
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 				if (auto manager = GetGlobalTypeManager())
 				{
-					Ptr<ITypeLoader> loader = new ParserGenRuleAstTypeLoader;
+					auto loader = Ptr(new ParserGenRuleAstTypeLoader);
 					return manager->AddTypeLoader(loader);
 				}
 #endif
@@ -10803,175 +10809,175 @@ namespace vl
 
 				void RuleAstVisitor::Visit(GlrSwitchItem* node)
 				{
-					auto newNode = vl::MakePtr<GlrSwitchItem>();
+					auto newNode = vl::Ptr(new GlrSwitchItem);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void RuleAstVisitor::Visit(GlrTestConditionBranch* node)
 				{
-					auto newNode = vl::MakePtr<GlrTestConditionBranch>();
+					auto newNode = vl::Ptr(new GlrTestConditionBranch);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void RuleAstVisitor::Visit(GlrAssignment* node)
 				{
-					auto newNode = vl::MakePtr<GlrAssignment>();
+					auto newNode = vl::Ptr(new GlrAssignment);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void RuleAstVisitor::Visit(GlrLeftRecursionPlaceholder* node)
 				{
-					auto newNode = vl::MakePtr<GlrLeftRecursionPlaceholder>();
+					auto newNode = vl::Ptr(new GlrLeftRecursionPlaceholder);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void RuleAstVisitor::Visit(GlrLeftRecursionInjectContinuation* node)
 				{
-					auto newNode = vl::MakePtr<GlrLeftRecursionInjectContinuation>();
+					auto newNode = vl::Ptr(new GlrLeftRecursionInjectContinuation);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void RuleAstVisitor::Visit(GlrRule* node)
 				{
-					auto newNode = vl::MakePtr<GlrRule>();
+					auto newNode = vl::Ptr(new GlrRule);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void RuleAstVisitor::Visit(GlrSyntaxFile* node)
 				{
-					auto newNode = vl::MakePtr<GlrSyntaxFile>();
+					auto newNode = vl::Ptr(new GlrSyntaxFile);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void RuleAstVisitor::Visit(GlrRefCondition* node)
 				{
-					auto newNode = vl::MakePtr<GlrRefCondition>();
+					auto newNode = vl::Ptr(new GlrRefCondition);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void RuleAstVisitor::Visit(GlrNotCondition* node)
 				{
-					auto newNode = vl::MakePtr<GlrNotCondition>();
+					auto newNode = vl::Ptr(new GlrNotCondition);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void RuleAstVisitor::Visit(GlrAndCondition* node)
 				{
-					auto newNode = vl::MakePtr<GlrAndCondition>();
+					auto newNode = vl::Ptr(new GlrAndCondition);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void RuleAstVisitor::Visit(GlrOrCondition* node)
 				{
-					auto newNode = vl::MakePtr<GlrOrCondition>();
+					auto newNode = vl::Ptr(new GlrOrCondition);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void RuleAstVisitor::Visit(GlrRefSyntax* node)
 				{
-					auto newNode = vl::MakePtr<GlrRefSyntax>();
+					auto newNode = vl::Ptr(new GlrRefSyntax);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void RuleAstVisitor::Visit(GlrUseSyntax* node)
 				{
-					auto newNode = vl::MakePtr<GlrUseSyntax>();
+					auto newNode = vl::Ptr(new GlrUseSyntax);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void RuleAstVisitor::Visit(GlrLoopSyntax* node)
 				{
-					auto newNode = vl::MakePtr<GlrLoopSyntax>();
+					auto newNode = vl::Ptr(new GlrLoopSyntax);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void RuleAstVisitor::Visit(GlrOptionalSyntax* node)
 				{
-					auto newNode = vl::MakePtr<GlrOptionalSyntax>();
+					auto newNode = vl::Ptr(new GlrOptionalSyntax);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void RuleAstVisitor::Visit(GlrSequenceSyntax* node)
 				{
-					auto newNode = vl::MakePtr<GlrSequenceSyntax>();
+					auto newNode = vl::Ptr(new GlrSequenceSyntax);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void RuleAstVisitor::Visit(GlrAlternativeSyntax* node)
 				{
-					auto newNode = vl::MakePtr<GlrAlternativeSyntax>();
+					auto newNode = vl::Ptr(new GlrAlternativeSyntax);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void RuleAstVisitor::Visit(GlrPushConditionSyntax* node)
 				{
-					auto newNode = vl::MakePtr<GlrPushConditionSyntax>();
+					auto newNode = vl::Ptr(new GlrPushConditionSyntax);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void RuleAstVisitor::Visit(GlrTestConditionSyntax* node)
 				{
-					auto newNode = vl::MakePtr<GlrTestConditionSyntax>();
+					auto newNode = vl::Ptr(new GlrTestConditionSyntax);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void RuleAstVisitor::Visit(GlrCreateClause* node)
 				{
-					auto newNode = vl::MakePtr<GlrCreateClause>();
+					auto newNode = vl::Ptr(new GlrCreateClause);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void RuleAstVisitor::Visit(GlrPartialClause* node)
 				{
-					auto newNode = vl::MakePtr<GlrPartialClause>();
+					auto newNode = vl::Ptr(new GlrPartialClause);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void RuleAstVisitor::Visit(GlrReuseClause* node)
 				{
-					auto newNode = vl::MakePtr<GlrReuseClause>();
+					auto newNode = vl::Ptr(new GlrReuseClause);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void RuleAstVisitor::Visit(GlrLeftRecursionPlaceholderClause* node)
 				{
-					auto newNode = vl::MakePtr<GlrLeftRecursionPlaceholderClause>();
+					auto newNode = vl::Ptr(new GlrLeftRecursionPlaceholderClause);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void RuleAstVisitor::Visit(GlrLeftRecursionInjectClause* node)
 				{
-					auto newNode = vl::MakePtr<GlrLeftRecursionInjectClause>();
+					auto newNode = vl::Ptr(new GlrLeftRecursionInjectClause);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void RuleAstVisitor::Visit(GlrPrefixMergeClause* node)
 				{
-					auto newNode = vl::MakePtr<GlrPrefixMergeClause>();
+					auto newNode = vl::Ptr(new GlrPrefixMergeClause);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
@@ -12967,7 +12973,7 @@ namespace vl
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 				if (auto manager = GetGlobalTypeManager())
 				{
-					Ptr<ITypeLoader> loader = new ParserGenTypeAstTypeLoader;
+					auto loader = Ptr(new ParserGenTypeAstTypeLoader);
 					return manager->AddTypeLoader(loader);
 				}
 #endif
@@ -13163,35 +13169,35 @@ namespace vl
 
 				void TypeAstVisitor::Visit(GlrEnumItem* node)
 				{
-					auto newNode = vl::MakePtr<GlrEnumItem>();
+					auto newNode = vl::Ptr(new GlrEnumItem);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void TypeAstVisitor::Visit(GlrClassProp* node)
 				{
-					auto newNode = vl::MakePtr<GlrClassProp>();
+					auto newNode = vl::Ptr(new GlrClassProp);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void TypeAstVisitor::Visit(GlrAstFile* node)
 				{
-					auto newNode = vl::MakePtr<GlrAstFile>();
+					auto newNode = vl::Ptr(new GlrAstFile);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void TypeAstVisitor::Visit(GlrEnum* node)
 				{
-					auto newNode = vl::MakePtr<GlrEnum>();
+					auto newNode = vl::Ptr(new GlrEnum);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void TypeAstVisitor::Visit(GlrClass* node)
 				{
-					auto newNode = vl::MakePtr<GlrClass>();
+					auto newNode = vl::Ptr(new GlrClass);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
@@ -13752,65 +13758,65 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 				switch((ParserGenClasses)type)
 				{
 				case ParserGenClasses::AlternativeSyntax:
-					return new vl::glr::parsergen::GlrAlternativeSyntax();
+					return vl::Ptr(new vl::glr::parsergen::GlrAlternativeSyntax);
 				case ParserGenClasses::AndCondition:
-					return new vl::glr::parsergen::GlrAndCondition();
+					return vl::Ptr(new vl::glr::parsergen::GlrAndCondition);
 				case ParserGenClasses::Assignment:
-					return new vl::glr::parsergen::GlrAssignment();
+					return vl::Ptr(new vl::glr::parsergen::GlrAssignment);
 				case ParserGenClasses::AstFile:
-					return new vl::glr::parsergen::GlrAstFile();
+					return vl::Ptr(new vl::glr::parsergen::GlrAstFile);
 				case ParserGenClasses::Class:
-					return new vl::glr::parsergen::GlrClass();
+					return vl::Ptr(new vl::glr::parsergen::GlrClass);
 				case ParserGenClasses::ClassProp:
-					return new vl::glr::parsergen::GlrClassProp();
+					return vl::Ptr(new vl::glr::parsergen::GlrClassProp);
 				case ParserGenClasses::CreateClause:
-					return new vl::glr::parsergen::GlrCreateClause();
+					return vl::Ptr(new vl::glr::parsergen::GlrCreateClause);
 				case ParserGenClasses::Enum:
-					return new vl::glr::parsergen::GlrEnum();
+					return vl::Ptr(new vl::glr::parsergen::GlrEnum);
 				case ParserGenClasses::EnumItem:
-					return new vl::glr::parsergen::GlrEnumItem();
+					return vl::Ptr(new vl::glr::parsergen::GlrEnumItem);
 				case ParserGenClasses::LeftRecursionInjectClause:
-					return new vl::glr::parsergen::GlrLeftRecursionInjectClause();
+					return vl::Ptr(new vl::glr::parsergen::GlrLeftRecursionInjectClause);
 				case ParserGenClasses::LeftRecursionInjectContinuation:
-					return new vl::glr::parsergen::GlrLeftRecursionInjectContinuation();
+					return vl::Ptr(new vl::glr::parsergen::GlrLeftRecursionInjectContinuation);
 				case ParserGenClasses::LeftRecursionPlaceholder:
-					return new vl::glr::parsergen::GlrLeftRecursionPlaceholder();
+					return vl::Ptr(new vl::glr::parsergen::GlrLeftRecursionPlaceholder);
 				case ParserGenClasses::LeftRecursionPlaceholderClause:
-					return new vl::glr::parsergen::GlrLeftRecursionPlaceholderClause();
+					return vl::Ptr(new vl::glr::parsergen::GlrLeftRecursionPlaceholderClause);
 				case ParserGenClasses::LoopSyntax:
-					return new vl::glr::parsergen::GlrLoopSyntax();
+					return vl::Ptr(new vl::glr::parsergen::GlrLoopSyntax);
 				case ParserGenClasses::NotCondition:
-					return new vl::glr::parsergen::GlrNotCondition();
+					return vl::Ptr(new vl::glr::parsergen::GlrNotCondition);
 				case ParserGenClasses::OptionalSyntax:
-					return new vl::glr::parsergen::GlrOptionalSyntax();
+					return vl::Ptr(new vl::glr::parsergen::GlrOptionalSyntax);
 				case ParserGenClasses::OrCondition:
-					return new vl::glr::parsergen::GlrOrCondition();
+					return vl::Ptr(new vl::glr::parsergen::GlrOrCondition);
 				case ParserGenClasses::PartialClause:
-					return new vl::glr::parsergen::GlrPartialClause();
+					return vl::Ptr(new vl::glr::parsergen::GlrPartialClause);
 				case ParserGenClasses::PrefixMergeClause:
-					return new vl::glr::parsergen::GlrPrefixMergeClause();
+					return vl::Ptr(new vl::glr::parsergen::GlrPrefixMergeClause);
 				case ParserGenClasses::PushConditionSyntax:
-					return new vl::glr::parsergen::GlrPushConditionSyntax();
+					return vl::Ptr(new vl::glr::parsergen::GlrPushConditionSyntax);
 				case ParserGenClasses::RefCondition:
-					return new vl::glr::parsergen::GlrRefCondition();
+					return vl::Ptr(new vl::glr::parsergen::GlrRefCondition);
 				case ParserGenClasses::RefSyntax:
-					return new vl::glr::parsergen::GlrRefSyntax();
+					return vl::Ptr(new vl::glr::parsergen::GlrRefSyntax);
 				case ParserGenClasses::ReuseClause:
-					return new vl::glr::parsergen::GlrReuseClause();
+					return vl::Ptr(new vl::glr::parsergen::GlrReuseClause);
 				case ParserGenClasses::Rule:
-					return new vl::glr::parsergen::GlrRule();
+					return vl::Ptr(new vl::glr::parsergen::GlrRule);
 				case ParserGenClasses::SequenceSyntax:
-					return new vl::glr::parsergen::GlrSequenceSyntax();
+					return vl::Ptr(new vl::glr::parsergen::GlrSequenceSyntax);
 				case ParserGenClasses::SwitchItem:
-					return new vl::glr::parsergen::GlrSwitchItem();
+					return vl::Ptr(new vl::glr::parsergen::GlrSwitchItem);
 				case ParserGenClasses::SyntaxFile:
-					return new vl::glr::parsergen::GlrSyntaxFile();
+					return vl::Ptr(new vl::glr::parsergen::GlrSyntaxFile);
 				case ParserGenClasses::TestConditionBranch:
-					return new vl::glr::parsergen::GlrTestConditionBranch();
+					return vl::Ptr(new vl::glr::parsergen::GlrTestConditionBranch);
 				case ParserGenClasses::TestConditionSyntax:
-					return new vl::glr::parsergen::GlrTestConditionSyntax();
+					return vl::Ptr(new vl::glr::parsergen::GlrTestConditionSyntax);
 				case ParserGenClasses::UseSyntax:
-					return new vl::glr::parsergen::GlrUseSyntax();
+					return vl::Ptr(new vl::glr::parsergen::GlrUseSyntax);
 				default:
 					return vl::glr::AssemblyThrowCannotCreateAbstractType(type, cppTypeName);
 				}
@@ -14404,7 +14410,7 @@ GenerateSyntaxFileNames
 
 			Ptr<CppSyntaxGenOutput> GenerateSyntaxFileNames(SyntaxSymbolManager& manager, Ptr<CppParserGenOutput> output)
 			{
-				auto syntaxOutput = MakePtr<CppSyntaxGenOutput>();
+				auto syntaxOutput = Ptr(new CppSyntaxGenOutput);
 				syntaxOutput->syntaxH = manager.Global().name + manager.name + L".h";
 				syntaxOutput->syntaxCpp = manager.Global().name + manager.name + L".cpp";
 				output->syntaxOutputs.Add(&manager, syntaxOutput);
@@ -14754,17 +14760,17 @@ SyntaxSymbolManager
 			StateSymbol* SyntaxSymbolManager::CreateState(RuleSymbol* rule, vint32_t clauseId)
 			{
 				CHECK_ERROR(phase == SyntaxPhase::EpsilonNFA, L"vl::gre::parsergen::SyntaxSymbolManager::CreateState(RuleSymbol*)#Cannot change the automaton after calling BuildCompactSyntax().");
-				auto symbol = new StateSymbol(rule, clauseId);
+				auto symbol = Ptr(new StateSymbol(rule, clauseId));
 				states.Add(symbol);
-				return symbol;
+				return symbol.Obj();
 			}
 
 			EdgeSymbol* SyntaxSymbolManager::CreateEdge(StateSymbol* from, StateSymbol* to)
 			{
 				CHECK_ERROR(phase == SyntaxPhase::EpsilonNFA, L"vl::gre::parsergen::SyntaxSymbolManager::CreateEdge(StateSymbol*, StateSymbol*)#Cannot change the automaton after calling BuildCompactSyntax().");
-				auto symbol = new EdgeSymbol(from, to);
+				auto symbol = Ptr(new EdgeSymbol(from, to));
 				edges.Add(symbol);
-				return symbol;
+				return symbol.Obj();
 			}
 
 			void SyntaxSymbolManager::BuildCompactNFA()
@@ -15919,7 +15925,7 @@ StateSymbolSet
 					}
 					else
 					{
-						states = new SortedList<StateSymbol*>();
+						states = Ptr(new SortedList<StateSymbol*>);
 						states->Add(state);
 						return true;
 					}
@@ -15996,7 +16002,7 @@ CompactSyntaxBuilder
 								{
 									visited.Add(targetNewState);
 								}
-								auto newEdge = new EdgeSymbol(newState, targetNewState);
+								auto newEdge = Ptr(new EdgeSymbol(newState, targetNewState));
 								newEdges.Add(newEdge);
 								newEdge->input = edge->input;
 								newEdge->important |= edge->important;
@@ -16027,7 +16033,7 @@ CompactSyntaxBuilder
 						// when a non-epsilon edge connects to the ending state directly
 						// this is triggered by examing the epsilon-NFA ending state directly
 						// at this moment accumulatedEdges is an empty collection
-						auto newEdge = new EdgeSymbol(newState, endState);
+						auto newEdge = Ptr(new EdgeSymbol(newState, endState));
 						newEdge->input.type = EdgeInputType::Ending;
 						for (auto accumulatedEdge : accumulatedEdges)
 						{
@@ -16045,9 +16051,8 @@ CompactSyntaxBuilder
 									CompareEnumerable(endingEdge->insAfterInput, newEdge->insAfterInput) == 0)
 								{
 									CHECK_ERROR(newEdge->important == endingEdge->important, L"It is not possible to have two equal ending edges with different priority.");
-									newState->outEdges.Remove(newEdge);
-									endState->inEdges.Remove(newEdge);
-									delete newEdge;
+									newState->outEdges.Remove(newEdge.Obj());
+									endState->inEdges.Remove(newEdge.Obj());
 									goto DISCARD_ENDING_EDGE;
 								}
 							}
@@ -16074,12 +16079,12 @@ CompactSyntaxBuilder
 					}
 					else
 					{
-						auto newState = new StateSymbol(rule, state->ClauseId());
+						auto newState = Ptr(new StateSymbol(rule, state->ClauseId()));
 						newState->label = state->label;
 						newStates.Add(newState);
-						oldToNew.Add(state, newState);
-						newToOld.Add(newState, state);
-						return newState;
+						oldToNew.Add(state, newState.Obj());
+						newToOld.Add(newState.Obj(), state);
+						return newState.Obj();
 					}
 				}
 
@@ -16168,9 +16173,9 @@ SyntaxSymbolManager::EliminateLeftRecursion
 					for (auto endingEdge : endState->InEdges())
 					{
 						auto state = endingEdge->From();
-						auto newEdge = new EdgeSymbol(state, lrecEdge->To());
+						auto newEdge = Ptr(new EdgeSymbol(state, lrecEdge->To()));
 						newEdges.Add(newEdge);
-						BuildLeftRecEdge(newEdge, endingEdge, lrecEdge);
+						BuildLeftRecEdge(newEdge.Obj(), endingEdge, lrecEdge);
 					}
 				}
 
@@ -16316,7 +16321,7 @@ SyntaxSymbolManager::EliminateSingleRulePrefix
 
 						eliminated = true;
 						auto state = prefixEdge->To();
-						auto newEdge = new EdgeSymbol(state, continuationEdge->To());
+						auto newEdge = Ptr(new EdgeSymbol(state, continuationEdge->To()));
 						newEdges.Add(newEdge);
 
 						newEdge->input.type = EdgeInputType::LeftRec;
@@ -16391,7 +16396,7 @@ SyntaxSymbolManager::EliminateEpsilonEdges
 				auto compactStartState = builder.CreateCompactState(psuedoState);
 				compactStartState->label = L" BEGIN ";
 
-				auto compactEndState = new StateSymbol(rule, -1);
+				auto compactEndState = Ptr(new StateSymbol(rule, -1));
 				compactEndState->label = L" END ";
 				compactEndState->endingState = true;
 				newStates.Add(compactEndState);
@@ -16404,12 +16409,12 @@ SyntaxSymbolManager::EliminateEpsilonEdges
 				for (vint i = 0; i < visited.Count(); i++)
 				{
 					auto current = visited[i];
-					builder.BuildEpsilonEliminatedEdges(current, compactEndState, visited);
+					builder.BuildEpsilonEliminatedEdges(current, compactEndState.Obj(), visited);
 				}
 
 				// optimize
-				EliminateLeftRecursion(rule, compactStartState, compactEndState, newStates, newEdges);
-				EliminateSingleRulePrefix(rule, compactStartState, compactEndState, newStates, newEdges);
+				EliminateLeftRecursion(rule, compactStartState, compactEndState.Obj(), newStates, newEdges);
+				EliminateSingleRulePrefix(rule, compactStartState, compactEndState.Obj(), newStates, newEdges);
 
 				return compactStartState;
 			}
@@ -16491,7 +16496,7 @@ SyntaxSymbolManager::FixCrossReferencedRuleEdge
 						// multiple Rule edges followed by one Token or LrPlaceholder edge create a cross-referenced edge
 						if (edge->returnEdges.Count() == 0)
 						{
-							auto newEdge = new EdgeSymbol(startState, edge->To());
+							auto newEdge = Ptr(new EdgeSymbol(startState, edge->To()));
 							edges.Add(newEdge);
 
 							newEdge->input = edge->input;
@@ -16647,7 +16652,7 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 										if (tokenEdge->input.type == EdgeInputType::Token)
 										{
 											created++;
-											auto newEdge = new EdgeSymbol(injectEdge->From(), tokenEdge->To());
+											auto newEdge = Ptr(new EdgeSymbol(injectEdge->From(), tokenEdge->To()));
 											edges.Add(newEdge);
 
 											newEdge->input = tokenEdge->input;
@@ -16673,7 +16678,7 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 								{
 									created++;
 									auto tokenEdge = outEdge;
-									auto newEdge = new EdgeSymbol(injectEdge->From(), tokenEdge->To());
+									auto newEdge = Ptr(new EdgeSymbol(injectEdge->From(), tokenEdge->To()));
 									edges.Add(newEdge);
 
 									newEdge->input = tokenEdge->input;

@@ -901,7 +901,7 @@ Reflection
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 				if (auto manager = GetGlobalTypeManager())
 				{
-					Ptr<ITypeLoader> loader = new Parsing2TypeLoader;
+					auto loader = Ptr(new Parsing2TypeLoader);
 					return manager->AddTypeLoader(loader);
 				}
 #endif
@@ -1611,7 +1611,7 @@ namespace vl
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 				if (auto manager = GetGlobalTypeManager())
 				{
-					Ptr<ITypeLoader> loader = new JsonAstTypeLoader;
+					auto loader = Ptr(new JsonAstTypeLoader);
 					return manager->AddTypeLoader(loader);
 				}
 #endif
@@ -1778,42 +1778,42 @@ namespace vl
 
 				void AstVisitor::Visit(JsonObjectField* node)
 				{
-					auto newNode = vl::MakePtr<JsonObjectField>();
+					auto newNode = vl::Ptr(new JsonObjectField);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void AstVisitor::Visit(JsonLiteral* node)
 				{
-					auto newNode = vl::MakePtr<JsonLiteral>();
+					auto newNode = vl::Ptr(new JsonLiteral);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void AstVisitor::Visit(JsonString* node)
 				{
-					auto newNode = vl::MakePtr<JsonString>();
+					auto newNode = vl::Ptr(new JsonString);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void AstVisitor::Visit(JsonNumber* node)
 				{
-					auto newNode = vl::MakePtr<JsonNumber>();
+					auto newNode = vl::Ptr(new JsonNumber);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void AstVisitor::Visit(JsonArray* node)
 				{
-					auto newNode = vl::MakePtr<JsonArray>();
+					auto newNode = vl::Ptr(new JsonArray);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void AstVisitor::Visit(JsonObject* node)
 				{
-					auto newNode = vl::MakePtr<JsonObject>();
+					auto newNode = vl::Ptr(new JsonObject);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
@@ -2375,17 +2375,17 @@ JsonAstInsReceiver : public vl::glr::AstInsReceiverBase
 				switch((JsonClasses)type)
 				{
 				case JsonClasses::Array:
-					return new vl::glr::json::JsonArray();
+					return vl::Ptr(new vl::glr::json::JsonArray);
 				case JsonClasses::Literal:
-					return new vl::glr::json::JsonLiteral();
+					return vl::Ptr(new vl::glr::json::JsonLiteral);
 				case JsonClasses::Number:
-					return new vl::glr::json::JsonNumber();
+					return vl::Ptr(new vl::glr::json::JsonNumber);
 				case JsonClasses::Object:
-					return new vl::glr::json::JsonObject();
+					return vl::Ptr(new vl::glr::json::JsonObject);
 				case JsonClasses::ObjectField:
-					return new vl::glr::json::JsonObjectField();
+					return vl::Ptr(new vl::glr::json::JsonObjectField);
 				case JsonClasses::String:
-					return new vl::glr::json::JsonString();
+					return vl::Ptr(new vl::glr::json::JsonString);
 				default:
 					return vl::glr::AssemblyThrowCannotCreateAbstractType(type, cppTypeName);
 				}
@@ -6279,7 +6279,7 @@ CreateExecutor
 
 			Ptr<IExecutor> CreateExecutor(Executable& executable, const IExecutor::ITypeCallback* typeCallback, vint blockSize)
 			{
-				return new TraceManager(executable, typeCallback, blockSize);
+				return Ptr(new TraceManager(executable, typeCallback, blockSize));
 			}
 		}
 	}
@@ -6712,7 +6712,7 @@ XmlUnescapeVisitor
 							WString text = WString::CopyFrom(textBegin, vint(textEnd - textBegin));
 							ParsingTextRange range(&beginToken, &endToken);
 
-							Ptr<XmlText> xmlText = new XmlText;
+							auto xmlText = Ptr(new XmlText);
 							xmlText->codeRange = range;
 							xmlText->content.codeRange = range;
 							xmlText->content.value = XmlUnescapeValue(text);
@@ -7048,7 +7048,7 @@ XmlElementWriter
 
 			const XmlElementWriter& XmlElementWriter::Attribute(const WString& name, const WString& value)const
 			{
-				Ptr<XmlAttribute> node = new XmlAttribute;
+				auto node = Ptr(new XmlAttribute);
 				node->name.value = name;
 				node->value.value = value;
 				element->attributes.Add(node);
@@ -7057,7 +7057,7 @@ XmlElementWriter
 
 			XmlElementWriter XmlElementWriter::Element(const WString& name)const
 			{
-				Ptr<XmlElement> node = new XmlElement;
+				auto node = Ptr(new XmlElement);
 				node->name.value = name;
 				element->subNodes.Add(node);
 				return XmlElementWriter(node, this);
@@ -7070,7 +7070,7 @@ XmlElementWriter
 
 			const XmlElementWriter& XmlElementWriter::Text(const WString& value)const
 			{
-				Ptr<XmlText> node = new XmlText;
+				auto node = Ptr(new XmlText);
 				node->content.value = value;
 				element->subNodes.Add(node);
 				return *this;
@@ -7078,7 +7078,7 @@ XmlElementWriter
 
 			const XmlElementWriter& XmlElementWriter::CData(const WString& value)const
 			{
-				Ptr<XmlCData> node = new XmlCData;
+				auto node = Ptr(new XmlCData);
 				node->content.value = value;
 				element->subNodes.Add(node);
 				return *this;
@@ -7086,7 +7086,7 @@ XmlElementWriter
 
 			const XmlElementWriter& XmlElementWriter::Comment(const WString& value)const
 			{
-				Ptr<XmlComment> node = new XmlComment;
+				auto node = Ptr(new XmlComment);
 				node->content.value = value;
 				element->subNodes.Add(node);
 				return *this;
@@ -7275,7 +7275,7 @@ namespace vl
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 				if (auto manager = GetGlobalTypeManager())
 				{
-					Ptr<ITypeLoader> loader = new XmlAstTypeLoader;
+					auto loader = Ptr(new XmlAstTypeLoader);
 					return manager->AddTypeLoader(loader);
 				}
 #endif
@@ -7499,49 +7499,49 @@ namespace vl
 
 				void AstVisitor::Visit(XmlAttribute* node)
 				{
-					auto newNode = vl::MakePtr<XmlAttribute>();
+					auto newNode = vl::Ptr(new XmlAttribute);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void AstVisitor::Visit(XmlText* node)
 				{
-					auto newNode = vl::MakePtr<XmlText>();
+					auto newNode = vl::Ptr(new XmlText);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void AstVisitor::Visit(XmlCData* node)
 				{
-					auto newNode = vl::MakePtr<XmlCData>();
+					auto newNode = vl::Ptr(new XmlCData);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void AstVisitor::Visit(XmlComment* node)
 				{
-					auto newNode = vl::MakePtr<XmlComment>();
+					auto newNode = vl::Ptr(new XmlComment);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void AstVisitor::Visit(XmlElement* node)
 				{
-					auto newNode = vl::MakePtr<XmlElement>();
+					auto newNode = vl::Ptr(new XmlElement);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void AstVisitor::Visit(XmlInstruction* node)
 				{
-					auto newNode = vl::MakePtr<XmlInstruction>();
+					auto newNode = vl::Ptr(new XmlInstruction);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void AstVisitor::Visit(XmlDocument* node)
 				{
-					auto newNode = vl::MakePtr<XmlDocument>();
+					auto newNode = vl::Ptr(new XmlDocument);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
@@ -8201,19 +8201,19 @@ XmlAstInsReceiver : public vl::glr::AstInsReceiverBase
 				switch((XmlClasses)type)
 				{
 				case XmlClasses::Attribute:
-					return new vl::glr::xml::XmlAttribute();
+					return vl::Ptr(new vl::glr::xml::XmlAttribute);
 				case XmlClasses::CData:
-					return new vl::glr::xml::XmlCData();
+					return vl::Ptr(new vl::glr::xml::XmlCData);
 				case XmlClasses::Comment:
-					return new vl::glr::xml::XmlComment();
+					return vl::Ptr(new vl::glr::xml::XmlComment);
 				case XmlClasses::Document:
-					return new vl::glr::xml::XmlDocument();
+					return vl::Ptr(new vl::glr::xml::XmlDocument);
 				case XmlClasses::Element:
-					return new vl::glr::xml::XmlElement();
+					return vl::Ptr(new vl::glr::xml::XmlElement);
 				case XmlClasses::Instruction:
-					return new vl::glr::xml::XmlInstruction();
+					return vl::Ptr(new vl::glr::xml::XmlInstruction);
 				case XmlClasses::Text:
-					return new vl::glr::xml::XmlText();
+					return vl::Ptr(new vl::glr::xml::XmlText);
 				default:
 					return vl::glr::AssemblyThrowCannotCreateAbstractType(type, cppTypeName);
 				}

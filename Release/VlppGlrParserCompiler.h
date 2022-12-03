@@ -38,7 +38,7 @@ namespace vl
 
 				bool Add(const WString& name, T* item)
 				{
-					items.Add(item);
+					items.Add(Ptr(item));
 					if (map.Keys().Contains(name)) return false;
 					order.Add(name);
 					map.Add(name, item);
@@ -2917,7 +2917,7 @@ namespace vl
 						{
 							auto tokens = From(lexerManager.TokenOrder())
 								.Select([&](const WString& name) { return lexerManager.Tokens()[name]->regex; });
-							cachedLexer = new regex::RegexLexer(tokens);
+							cachedLexer = Ptr(new regex::RegexLexer(tokens));
 						}
 						return *cachedLexer.Obj();
 					}
