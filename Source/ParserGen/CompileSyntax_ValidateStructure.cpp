@@ -945,6 +945,15 @@ ValidateStructure
 								ruleLri->Name()
 								);
 						}
+						if (ruleSymbol->isPartial)
+						{
+							context.syntaxManager.AddError(
+								ParserErrorType::RuleIndirectlyBeginsWithPrefixMergeMixedLeftRecursionMarkers,
+								rule->name.codeRange,
+								ruleSymbol->Name(),
+								rulePm->Name()
+								);
+						}
 
 						if (!context.directPmClauses.Keys().Contains(ruleSymbol))
 						{
