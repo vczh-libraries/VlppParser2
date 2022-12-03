@@ -2,14 +2,15 @@
 
 ## Progressing
 
-- Revisit `RuleIndirectlyBeginsWithPrefixMergeMixedNonSimpleUseClause`
-  - Reported in `BuiltIn-Cpp` there is `_GenericArgument ::= _TypeOrExpr_NoComma_NoGT...`
-  - This is incorrect since `_TypeOrExpr_NoComma_NoGT` begins with `prefix_merge` clause
-  - If `_TypeOrExpr_NoComma_NoGT` violates the rule, the error should be raised inside it
+- `[_GenericArgument]<< !_PrimitiveType @ ( lri:_GenericArgument_LRI_Original ) >>` should accept `ending`
+  - because `_TypeOrExpr_NoComma_NoGT:argument ["...":variadic] as GenericArgument` could jumps to `@:argument` by `int`
+- `throw` is missing in `BuiltIn-Cpp` in `_TypeOrExpr`
+- `_GenericArguments` generates `token: "operator" -> [71][_OperatorIdentifier]< "operator" @ "!" >` twice
+  - could be related to generated `left_recursion_inject_multiple`
 
 ## Next task
 
-- Rewrire and remove switch before removing PrefixMerge.
+- Rewrite and remove switch before removing PrefixMerge.
   - Rename `LeftRecursionPlaceholderMixedWithSwitches`
 - Multiple LRI following one Target
 - Generate multiple level of LRI from prefix_merge
