@@ -27,6 +27,12 @@ CompileSyntaxVisitor
 				AstClassSymbol*							clauseType;
 				StatePair								result;
 
+				StatePair Build(GlrSyntax* node)
+				{
+					node->Accept(this);
+					return result;
+				}
+
 				StatePair Build(const Ptr<GlrSyntax>& node)
 				{
 					node->Accept(this);

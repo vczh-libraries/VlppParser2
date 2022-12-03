@@ -63,7 +63,7 @@ namespace vl
 					auto conflict = GetConflict(rContext, ruleSymbol);
 					if (!conflict)
 					{
-						conflict = MakePtr<RewritingPrefixConflict>();
+						conflict = Ptr(new RewritingPrefixConflict);
 						rContext.extractedConflicts.Add(ruleSymbol, conflict);
 					}
 					return conflict;
@@ -106,15 +106,15 @@ FillMissingPrefixMergeClauses
 						auto clause = ruleRaw->clauses[clauseIndex];
 
 						// create new rule and replace the clause with prefix_merge
-						auto newRule = MakePtr<GlrRule>();
+						auto newRule = Ptr(new GlrRule);
 						rewritten->rules.Insert(ruleIndex, newRule);
 						newRule->name.value = ruleRaw->name.value + L"_LRI_Isolated_" + itow(clauseIndex);
 						newRule->clauses.Add(clause);
 
-						auto newPM = MakePtr<GlrPrefixMergeClause>();
+						auto newPM = Ptr(new GlrPrefixMergeClause);
 						ruleRaw->clauses[clauseIndex] = newPM;
 						{
-							auto startRule = MakePtr<GlrRefSyntax>();
+							auto startRule = Ptr(new GlrRefSyntax);
 							newPM->rule = startRule;
 
 							startRule->refType = GlrRefType::Id;
@@ -255,7 +255,7 @@ CreateRewrittenRules
 						auto originRule = vContext.astRules[ruleSymbol];
 						rContext.originRules.Add(ruleSymbol, originRule);
 
-						auto lri = MakePtr<GlrRule>();
+						auto lri = Ptr(new GlrRule);
 						rewritten->rules.Add(lri);
 						rContext.lriRules.Add(ruleSymbol, lri.Obj());
 
@@ -270,7 +270,7 @@ CreateRewrittenRules
 						for (auto [prefixRuleSymbol, prefixClause] : From(prefixClauses)
 							.OrderBy([](auto p1, auto p2) {return WString::Compare(p1.ruleSymbol->Name(), p2.ruleSymbol->Name()); }))
 						{
-							auto ep = MakePtr<GlrRule>();
+							auto ep = Ptr(new GlrRule);
 							rewritten->rules.Insert(rewritten->rules.IndexOf(originRule), ep);
 							rContext.extractedPrefixRules.Add({ ruleSymbol,prefixRuleSymbol }, ep.Obj());
 
@@ -331,19 +331,19 @@ RewriteExtractedPrefixRules
 					for (auto [pair, epRule] : rContext.extractedPrefixRules)
 					{
 						{
-							auto lrpClause = MakePtr<GlrLeftRecursionPlaceholderClause>();
+							auto lrpClause = Ptr(new GlrLeftRecursionPlaceholderClause);
 							epRule->clauses.Add(lrpClause);
 
-							auto lrp = MakePtr<GlrLeftRecursionPlaceholder>();
+							auto lrp = Ptr(new GlrLeftRecursionPlaceholder);
 							lrpClause->flags.Add(lrp);
 							lrp->flag.value = L"LRIP_" + pair.key->Name() + L"_" + pair.value->Name();
 							syntaxManager.lrpFlags.Add(lrp->flag.value);
 						}
 						{
-							auto reuseClause = MakePtr<GlrReuseClause>();
+							auto reuseClause = Ptr(new GlrReuseClause);
 							epRule->clauses.Add(reuseClause);
 
-							auto useSyntax = MakePtr<GlrUseSyntax>();
+							auto useSyntax = Ptr(new GlrUseSyntax);
 							reuseClause->syntax = useSyntax;
 							useSyntax->name.value = rContext.originRules[pair.value]->name.value;
 						}
@@ -563,9 +563,9 @@ RewriteRules (AST Creation)
 					const WString& ruleName
 				)
 				{
-					auto lriClause = MakePtr<GlrLeftRecursionInjectClause>();
+					auto lriClause = Ptr(new GlrLeftRecursionInjectClause);
 
-					auto lriStartRule = MakePtr<GlrRefSyntax>();
+					auto lriStartRule = Ptr(new GlrRefSyntax);
 					lriClause->rule = lriStartRule;
 					lriStartRule->refType = GlrRefType::Id;
 					lriStartRule->literal.value = ruleName;
@@ -583,7 +583,7 @@ RewriteRules (AST Creation)
 					bool generateOptionalLri
 				)
 				{
-					auto lriCont = MakePtr<GlrLeftRecursionInjectContinuation>();
+					auto lriCont = Ptr(new GlrLeftRecursionInjectContinuation);
 
 					if (RewriteRules_HasMultiplePaths(vContext, ruleSymbol, pmInjectRecord.pmRule, pathCounter))
 					{
@@ -603,7 +603,7 @@ RewriteRules (AST Creation)
 						lriCont->type = GlrLeftRecursionInjectContinuationType::Required;
 					}
 
-					auto lriContFlag = MakePtr<GlrLeftRecursionPlaceholder>();
+					auto lriContFlag = Ptr(new GlrLeftRecursionPlaceholder);
 					lriCont->flag = lriContFlag;
 					lriContFlag->flag.value = flag;
 
@@ -649,10 +649,10 @@ RewriteRules (Unaffected)
 
 						if (generateOptionalLri && flags.Count() == 0)
 						{
-							auto reuseClause = MakePtr<GlrReuseClause>();
+							auto reuseClause = Ptr(new GlrReuseClause);
 							lriRule->clauses.Add(reuseClause);
 
-							auto useSyntax = MakePtr<GlrUseSyntax>();
+							auto useSyntax = Ptr(new GlrUseSyntax);
 							reuseClause->syntax = useSyntax;
 							useSyntax->name.value = pmName;
 						}
@@ -922,10 +922,10 @@ FixPrefixMergeClauses
 					{
 						auto originRule = rContext.originRules[ruleSymbol];
 
-						auto lrpClause = MakePtr<GlrLeftRecursionPlaceholderClause>();
+						auto lrpClause = Ptr(new GlrLeftRecursionPlaceholderClause);
 						originRule->clauses.Insert(0, lrpClause);
 
-						auto lrp = MakePtr<GlrLeftRecursionPlaceholder>();
+						auto lrp = Ptr(new GlrLeftRecursionPlaceholder);
 						lrp->flag.value = L"LRI_" + ruleSymbol->Name();
 						lrpClause->flags.Add(lrp);
 						syntaxManager.lrpFlags.Add(lrp->flag.value);
@@ -934,10 +934,10 @@ FixPrefixMergeClauses
 						{
 							if (auto pmClause = originRule->clauses[i].Cast<GlrPrefixMergeClause>())
 							{
-								auto reuseClause = MakePtr<GlrReuseClause>();
+								auto reuseClause = Ptr(new GlrReuseClause);
 								originRule->clauses[i] = reuseClause;
 
-								auto useSyntax = MakePtr<GlrUseSyntax>();
+								auto useSyntax = Ptr(new GlrUseSyntax);
 								useSyntax->name.value = pmClause->rule->literal.value;
 								reuseClause->syntax = useSyntax;
 							}
@@ -1106,7 +1106,7 @@ RewriteSyntax
 				using namespace rewritesyntax_prefixmerge;
 
 				// merge files to single syntax file
-				auto rewritten = MakePtr<GlrSyntaxFile>();
+				auto rewritten = Ptr(new GlrSyntaxFile);
 				CopyFrom(rewritten->rules, syntaxFile->rules);
 
 				// find clauses that need to be converted to prefix_merge and fix VisitorContext

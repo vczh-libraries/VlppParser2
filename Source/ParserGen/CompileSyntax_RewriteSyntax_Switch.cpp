@@ -41,7 +41,7 @@ namespace vl
 
 				Ptr<Dictionary<WString, bool>> ApplySwitches(Ptr<Dictionary<WString, bool>> currentValues, GlrPushConditionSyntax* node)
 				{
-					auto newValues = MakePtr<Dictionary<WString, bool>>();
+					auto newValues = Ptr(new Dictionary<WString, bool>);
 					if (currentValues)
 					{
 						CopyFrom(*newValues.Obj(), *currentValues.Obj());
@@ -229,7 +229,7 @@ ExpandSwitchSyntaxVisitor
 					{
 						// an affected rule respond to switch values
 						// collect switch values that the rule cares
-						auto workingSwitchValues = MakePtr<Dictionary<WString, bool>>();
+						auto workingSwitchValues = Ptr(new Dictionary<WString, bool>);
 						for (auto&& name : affectedSwitches)
 						{
 							vint index = -1;
@@ -263,7 +263,7 @@ ExpandSwitchSyntaxVisitor
 						}
 
 						// make a record of the collected switch values
-						auto generatedRule = MakePtr<GeneratedRule>();
+						auto generatedRule = Ptr(new GeneratedRule);
 						generatedRule->ruleToExpand = rule;
 						generatedRule->switchValues = workingSwitchValues;
 						rContext.generatedRules.Add(workingRule, generatedRule);
@@ -358,7 +358,7 @@ ExpandClauseVisitor
 							if (optional)
 							{
 								// optional of nothing is EmptySyntax
-								result = MakePtr<EmptySyntax>();
+								result = Ptr(new EmptySyntax);
 								return;
 							}
 							else
@@ -376,12 +376,12 @@ ExpandClauseVisitor
 						else
 						{
 							// otherwise create alternative syntax for them
-							auto alt = MakePtr<GlrAlternativeSyntax>();
+							auto alt = Ptr(new GlrAlternativeSyntax);
 							alt->first = items[0];
 							alt->second = items[1];
 							for (vint i = 2; i < items.Count(); i++)
 							{
-								auto newAlt = MakePtr<GlrAlternativeSyntax>();
+								auto newAlt = Ptr(new GlrAlternativeSyntax);
 								newAlt->first = alt;
 								newAlt->second = items[i];
 								alt = newAlt;
@@ -392,7 +392,7 @@ ExpandClauseVisitor
 						if (optional)
 						{
 							// make it optional if necessary
-							auto opt = MakePtr<GlrOptionalSyntax>();
+							auto opt = Ptr(new GlrOptionalSyntax);
 							opt->syntax = result.Cast<GlrSyntax>();
 							result = opt;
 						}
@@ -510,19 +510,19 @@ DeductEmptySyntaxVisitor
 				protected:
 					void Visit(GlrRefSyntax* node) override
 					{
-						result = node;
+						result = Ptr(node);
 					}
 
 					void Visit(GlrUseSyntax* node) override
 					{
-						result = node;
+						result = Ptr(node);
 					}
 
 					void Visit(GlrLoopSyntax* node) override
 					{
 						node->syntax = CopyNodeSafe(node->syntax);
 						node->delimiter = CopyNodeSafe(node->delimiter);
-						result = node;
+						result = Ptr(node);
 
 						if (node->syntax.Cast<EmptySyntax>())
 						{
@@ -538,7 +538,7 @@ DeductEmptySyntaxVisitor
 					void Visit(GlrOptionalSyntax* node) override
 					{
 						node->syntax = CopyNodeSafe(node->syntax);
-						result = node;
+						result = Ptr(node);
 
 						if (node->syntax.Cast<EmptySyntax>())
 						{
@@ -551,7 +551,7 @@ DeductEmptySyntaxVisitor
 					{
 						node->first = CopyNodeSafe(node->first);
 						node->second = CopyNodeSafe(node->second);
-						result = node;
+						result = Ptr(node);
 
 						bool first = !node->first.Cast<EmptySyntax>();
 						bool second = !node->second.Cast<EmptySyntax>();
@@ -580,7 +580,7 @@ DeductEmptySyntaxVisitor
 					{
 						node->first = CopyNodeSafe(node->first);
 						node->second = CopyNodeSafe(node->second);
-						result = node;
+						result = Ptr(node);
 
 						bool first = !node->first.Cast<EmptySyntax>();
 						bool second = !node->second.Cast<EmptySyntax>();
@@ -591,14 +591,14 @@ DeductEmptySyntaxVisitor
 						else if (first)
 						{
 							// if only first is not empty, it is [first]
-							auto opt = MakePtr<GlrOptionalSyntax>();
+							auto opt = Ptr(new GlrOptionalSyntax);
 							opt->syntax = node->first;
 							result = opt;
 						}
 						else if (second)
 						{
 							// if only second is not empty, it is [second]
-							auto opt = MakePtr<GlrOptionalSyntax>();
+							auto opt = Ptr(new GlrOptionalSyntax);
 							opt->syntax = node->second;
 							result = opt;
 						}
@@ -702,7 +702,7 @@ RewriteSyntax
 
 				Ptr<GlrRule> CreateRule(RuleSymbol* ruleSymbol, Ptr<GlrRule> rule, const WString& name)
 				{
-					auto newRule = MakePtr<GlrRule>();
+					auto newRule = Ptr(new GlrRule);
 					newRule->codeRange = rule->codeRange;
 					newRule->name = rule->name;
 					newRule->name.value = name;
@@ -774,7 +774,7 @@ RewriteSyntax
 					}
 				}
 
-				auto rewritten = MakePtr<GlrSyntaxFile>();
+				auto rewritten = Ptr(new GlrSyntaxFile);
 				for (auto rule : syntaxFile->rules)
 				{
 					auto ruleSymbol = syntaxManager.Rules()[rule->name.value];
@@ -784,7 +784,7 @@ RewriteSyntax
 						// if a rule is unaffected
 						// just remove GlrPushConditionSyntax in clauses
 						// rules it references could be renamed
-						auto newRule = MakePtr<GlrRule>();
+						auto newRule = Ptr(new GlrRule);
 						newRule->codeRange = rule->codeRange;
 						newRule->name = rule->name;
 						newRule->type = rule->type;
@@ -832,14 +832,14 @@ RewriteSyntax
 								vint clauseIndex = sContext.clauseAffectedSwitches.Keys().IndexOf(clause.Obj());
 								if (clauseIndex == -1)
 								{
-									switchValues = MakePtr<Dictionary<WString, bool>>();
+									switchValues = Ptr(new Dictionary<WString, bool>);
 								}
 								else
 								{
 									auto&& switches = sContext.clauseAffectedSwitches.GetByIndex(clauseIndex);
 									if (switches.Count() != generatedRule->switchValues->Count())
 									{
-										switchValues = MakePtr<Dictionary<WString, bool>>();
+										switchValues = Ptr(new Dictionary<WString, bool>);
 										for (auto&& switchName : switches)
 										{
 											switchValues->Add(switchName, generatedRule->switchValues->Get(switchName));
@@ -924,12 +924,12 @@ RewriteSyntax
 								// add all used combined rules in order of name
 								if (ruleSymbol->isPartial)
 								{
-									auto refSyntax = MakePtr<GlrRefSyntax>();
+									auto refSyntax = Ptr(new GlrRefSyntax);
 									refSyntax->literal = rule->name;
 									refSyntax->literal.value = ruleName;
 									refSyntax->refType = GlrRefType::Id;
 
-									auto partialClause = MakePtr<GlrPartialClause>();
+									auto partialClause = Ptr(new GlrPartialClause);
 									partialClause->type = rule->name;
 									partialClause->type.value = ruleSymbol->ruleType->Name();
 									partialClause->syntax = refSyntax;
@@ -938,11 +938,11 @@ RewriteSyntax
 								}
 								else
 								{
-									auto useSyntax = MakePtr<GlrUseSyntax>();
+									auto useSyntax = Ptr(new GlrUseSyntax);
 									useSyntax->name = rule->name;
 									useSyntax->name.value = ruleName;
 
-									auto reuseClause = MakePtr<GlrReuseClause>();
+									auto reuseClause = Ptr(new GlrReuseClause);
 									reuseClause->syntax = useSyntax;
 
 									newRule->clauses.Add(reuseClause);

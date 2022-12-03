@@ -113,13 +113,13 @@ ParserBase<TTokens, TStates, TReceiver, TStateTypes>
 					stream::MemoryStream data;
 					_lexerData(data);
 					data.SeekFromBegin(0);
-					lexer = new regex::RegexLexer(data);
+					lexer = Ptr(new regex::RegexLexer(data));
 				}
 				{
 					stream::MemoryStream data;
 					_parserData(data);
 					data.SeekFromBegin(0);
-					executable = new automaton::Executable(data);
+					executable = Ptr(new automaton::Executable(data));
 				}
 			}
 
@@ -137,7 +137,7 @@ ParserBase<TTokens, TStates, TReceiver, TStateTypes>
 			{
 				input.Buffer();
 				auto enumerable = lexer->Parse(input, {}, codeIndex);
-				Ptr<collections::IEnumerator<regex::RegexToken>> enumerator = enumerable.CreateEnumerator();
+				auto enumerator = Ptr(enumerable.CreateEnumerator());
 				while (enumerator->Next())
 				{
 					auto&& token = enumerator->Current();

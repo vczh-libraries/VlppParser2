@@ -116,7 +116,7 @@ namespace vl
 						{
 							auto tokens = From(lexerManager.TokenOrder())
 								.Select([&](const WString& name) { return lexerManager.Tokens()[name]->regex; });
-							cachedLexer = new regex::RegexLexer(tokens);
+							cachedLexer = Ptr(new regex::RegexLexer(tokens));
 						}
 						return *cachedLexer.Obj();
 					}
