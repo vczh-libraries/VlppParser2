@@ -72,6 +72,7 @@ namespace ifelseswitch
 		{
 			if (!node) return nullptr;
 			node->Accept(static_cast<Stat::IVisitor*>(this));
+			this->result->codeRange = node->codeRange;
 			return this->result.Cast<Stat>();
 		}
 
@@ -79,6 +80,7 @@ namespace ifelseswitch
 		{
 			if (!node) return nullptr;
 			Visit(node);
+			this->result->codeRange = node->codeRange;
 			return this->result.Cast<Module>();
 		}
 

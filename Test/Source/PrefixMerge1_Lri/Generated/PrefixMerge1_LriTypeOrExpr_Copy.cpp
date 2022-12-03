@@ -145,6 +145,7 @@ namespace prefixmerge1_lri
 		{
 			if (!node) return nullptr;
 			node->Accept(static_cast<TypeOrExpr::IVisitor*>(this));
+			this->result->codeRange = node->codeRange;
 			return this->result.Cast<TypeOrExpr>();
 		}
 

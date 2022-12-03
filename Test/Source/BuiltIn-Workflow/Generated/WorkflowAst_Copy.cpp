@@ -1567,6 +1567,7 @@ namespace vl
 				{
 					if (!node) return nullptr;
 					node->Accept(static_cast<WfType::IVisitor*>(this));
+					this->result->codeRange = node->codeRange;
 					return this->result.Cast<WfType>();
 				}
 
@@ -1574,6 +1575,7 @@ namespace vl
 				{
 					if (!node) return nullptr;
 					node->Accept(static_cast<WfExpression::IVisitor*>(this));
+					this->result->codeRange = node->codeRange;
 					return this->result.Cast<WfExpression>();
 				}
 
@@ -1581,6 +1583,7 @@ namespace vl
 				{
 					if (!node) return nullptr;
 					node->Accept(static_cast<WfStatement::IVisitor*>(this));
+					this->result->codeRange = node->codeRange;
 					return this->result.Cast<WfStatement>();
 				}
 
@@ -1588,6 +1591,7 @@ namespace vl
 				{
 					if (!node) return nullptr;
 					node->Accept(static_cast<WfDeclaration::IVisitor*>(this));
+					this->result->codeRange = node->codeRange;
 					return this->result.Cast<WfDeclaration>();
 				}
 
@@ -1595,6 +1599,7 @@ namespace vl
 				{
 					if (!node) return nullptr;
 					node->Accept(static_cast<WfModuleUsingFragment::IVisitor*>(this));
+					this->result->codeRange = node->codeRange;
 					return this->result.Cast<WfModuleUsingFragment>();
 				}
 
@@ -1602,6 +1607,7 @@ namespace vl
 				{
 					if (!node) return nullptr;
 					Visit(node);
+					this->result->codeRange = node->codeRange;
 					return this->result.Cast<WfAttribute>();
 				}
 
@@ -1609,6 +1615,7 @@ namespace vl
 				{
 					if (!node) return nullptr;
 					Visit(node);
+					this->result->codeRange = node->codeRange;
 					return this->result.Cast<WfFunctionArgument>();
 				}
 
@@ -1616,6 +1623,7 @@ namespace vl
 				{
 					if (!node) return nullptr;
 					Visit(node);
+					this->result->codeRange = node->codeRange;
 					return this->result.Cast<WfBaseConstructorCall>();
 				}
 
@@ -1623,6 +1631,7 @@ namespace vl
 				{
 					if (!node) return nullptr;
 					Visit(node);
+					this->result->codeRange = node->codeRange;
 					return this->result.Cast<WfEnumItemIntersection>();
 				}
 
@@ -1630,6 +1639,7 @@ namespace vl
 				{
 					if (!node) return nullptr;
 					Visit(node);
+					this->result->codeRange = node->codeRange;
 					return this->result.Cast<WfEnumItem>();
 				}
 
@@ -1637,6 +1647,7 @@ namespace vl
 				{
 					if (!node) return nullptr;
 					Visit(node);
+					this->result->codeRange = node->codeRange;
 					return this->result.Cast<WfStructMember>();
 				}
 
@@ -1644,6 +1655,7 @@ namespace vl
 				{
 					if (!node) return nullptr;
 					Visit(node);
+					this->result->codeRange = node->codeRange;
 					return this->result.Cast<WfStateInput>();
 				}
 
@@ -1651,6 +1663,7 @@ namespace vl
 				{
 					if (!node) return nullptr;
 					Visit(node);
+					this->result->codeRange = node->codeRange;
 					return this->result.Cast<WfStateDeclaration>();
 				}
 
@@ -1658,6 +1671,7 @@ namespace vl
 				{
 					if (!node) return nullptr;
 					Visit(node);
+					this->result->codeRange = node->codeRange;
 					return this->result.Cast<WfSwitchCase>();
 				}
 
@@ -1665,6 +1679,7 @@ namespace vl
 				{
 					if (!node) return nullptr;
 					Visit(node);
+					this->result->codeRange = node->codeRange;
 					return this->result.Cast<WfStateSwitchArgument>();
 				}
 
@@ -1672,6 +1687,7 @@ namespace vl
 				{
 					if (!node) return nullptr;
 					Visit(node);
+					this->result->codeRange = node->codeRange;
 					return this->result.Cast<WfStateSwitchCase>();
 				}
 
@@ -1679,6 +1695,7 @@ namespace vl
 				{
 					if (!node) return nullptr;
 					Visit(node);
+					this->result->codeRange = node->codeRange;
 					return this->result.Cast<WfLetVariable>();
 				}
 
@@ -1686,6 +1703,7 @@ namespace vl
 				{
 					if (!node) return nullptr;
 					Visit(node);
+					this->result->codeRange = node->codeRange;
 					return this->result.Cast<WfConstructorArgument>();
 				}
 
@@ -1693,6 +1711,7 @@ namespace vl
 				{
 					if (!node) return nullptr;
 					Visit(node);
+					this->result->codeRange = node->codeRange;
 					return this->result.Cast<WfModuleUsingItem>();
 				}
 
@@ -1700,6 +1719,7 @@ namespace vl
 				{
 					if (!node) return nullptr;
 					Visit(node);
+					this->result->codeRange = node->codeRange;
 					return this->result.Cast<WfModuleUsingPath>();
 				}
 
@@ -1707,6 +1727,7 @@ namespace vl
 				{
 					if (!node) return nullptr;
 					Visit(node);
+					this->result->codeRange = node->codeRange;
 					return this->result.Cast<WfModule>();
 				}
 

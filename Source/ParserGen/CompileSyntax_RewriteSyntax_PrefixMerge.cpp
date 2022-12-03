@@ -112,6 +112,7 @@ FillMissingPrefixMergeClauses
 						newRule->clauses.Add(clause);
 
 						auto newPM = Ptr(new GlrPrefixMergeClause);
+						newPM->codeRange = clauseRaw->codeRange;
 						ruleRaw->clauses[clauseIndex] = newPM;
 						{
 							auto startRule = Ptr(new GlrRefSyntax);

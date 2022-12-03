@@ -197,6 +197,7 @@ namespace calculator
 		{
 			if (!node) return nullptr;
 			node->Accept(static_cast<Expr::IVisitor*>(this));
+			this->result->codeRange = node->codeRange;
 			return this->result.Cast<Expr>();
 		}
 
@@ -204,6 +205,7 @@ namespace calculator
 		{
 			if (!node) return nullptr;
 			Visit(node);
+			this->result->codeRange = node->codeRange;
 			return this->result.Cast<Arg>();
 		}
 
@@ -211,6 +213,7 @@ namespace calculator
 		{
 			if (!node) return nullptr;
 			Visit(node);
+			this->result->codeRange = node->codeRange;
 			return this->result.Cast<Import>();
 		}
 
@@ -218,6 +221,7 @@ namespace calculator
 		{
 			if (!node) return nullptr;
 			Visit(node);
+			this->result->codeRange = node->codeRange;
 			return this->result.Cast<Module>();
 		}
 

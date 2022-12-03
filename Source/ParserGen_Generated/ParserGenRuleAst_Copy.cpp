@@ -403,6 +403,7 @@ namespace vl
 				{
 					if (!node) return nullptr;
 					node->Accept(static_cast<GlrCondition::IVisitor*>(this));
+					this->result->codeRange = node->codeRange;
 					return this->result.Cast<GlrCondition>();
 				}
 
@@ -410,6 +411,7 @@ namespace vl
 				{
 					if (!node) return nullptr;
 					node->Accept(static_cast<GlrSyntax::IVisitor*>(this));
+					this->result->codeRange = node->codeRange;
 					return this->result.Cast<GlrSyntax>();
 				}
 
@@ -417,6 +419,7 @@ namespace vl
 				{
 					if (!node) return nullptr;
 					node->Accept(static_cast<GlrClause::IVisitor*>(this));
+					this->result->codeRange = node->codeRange;
 					return this->result.Cast<GlrClause>();
 				}
 
@@ -424,6 +427,7 @@ namespace vl
 				{
 					if (!node) return nullptr;
 					Visit(node);
+					this->result->codeRange = node->codeRange;
 					return this->result.Cast<GlrSwitchItem>();
 				}
 
@@ -431,6 +435,7 @@ namespace vl
 				{
 					if (!node) return nullptr;
 					Visit(node);
+					this->result->codeRange = node->codeRange;
 					return this->result.Cast<GlrTestConditionBranch>();
 				}
 
@@ -438,6 +443,7 @@ namespace vl
 				{
 					if (!node) return nullptr;
 					Visit(node);
+					this->result->codeRange = node->codeRange;
 					return this->result.Cast<GlrAssignment>();
 				}
 
@@ -445,6 +451,7 @@ namespace vl
 				{
 					if (!node) return nullptr;
 					Visit(node);
+					this->result->codeRange = node->codeRange;
 					return this->result.Cast<GlrLeftRecursionPlaceholder>();
 				}
 
@@ -452,6 +459,7 @@ namespace vl
 				{
 					if (!node) return nullptr;
 					Visit(node);
+					this->result->codeRange = node->codeRange;
 					return this->result.Cast<GlrLeftRecursionInjectContinuation>();
 				}
 
@@ -459,6 +467,7 @@ namespace vl
 				{
 					if (!node) return nullptr;
 					Visit(node);
+					this->result->codeRange = node->codeRange;
 					return this->result.Cast<GlrRule>();
 				}
 
@@ -466,6 +475,7 @@ namespace vl
 				{
 					if (!node) return nullptr;
 					Visit(node);
+					this->result->codeRange = node->codeRange;
 					return this->result.Cast<GlrSyntaxFile>();
 				}
 
