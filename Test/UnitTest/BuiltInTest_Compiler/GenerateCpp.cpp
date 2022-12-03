@@ -148,14 +148,14 @@ TEST_FILE
 		List<Ptr<GlrSyntaxFile>> syntaxFiles;
 		syntaxFiles.Add(syntaxFile);
 		auto rewritten = CompileSyntax(astManager, lexerManager, syntaxManager, output, syntaxFiles);
+		for (auto error : global.Errors())
+		{
+			PrintError(error);
+		}
 		TEST_ASSERT(rewritten);
 		{
 			auto formattedActual = GenerateToStream([&](TextWriter& writer) { SyntaxAstToCode(rewritten, writer); });
 			File(dirOutput / (L"SyntaxRewrittenActual[BuiltIn-Cpp].txt")).WriteAllText(formattedActual, true, BomEncoder::Utf8);
-		}
-		for (auto error : global.Errors())
-		{
-			PrintError(error);
 		}
 		TEST_ASSERT(global.Errors().Count() == 0);
 	

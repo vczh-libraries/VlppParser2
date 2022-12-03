@@ -135,23 +135,19 @@ _PrimitiveExpr : TypeOrExpr
   ::= "noexcept":keyword "(" _TypeOrExpr:argument ")" as SysFuncExpr
   ;
 
-_PrimitiveExpr_QualifiedName
-  ::= !prefix_merge(_PrimitiveExpr)
-  ::= !prefix_merge(_QualifiedName)
-  ;
-
 //////////////////////////////////////////////////////////////////
 // PostfixUnaryExpr
 //////////////////////////////////////////////////////////////////
 
-_PostfixUnaryCtor
-  ::= _LongType:operand "(" {_Expr_NoComma:arguments ; ","} ")" as CallExpr {kind = Parenthesis}
-  ::= _LongType:operand "{" {_Expr_NoComma:arguments ; ","} "}" as CallExpr {kind = Brace}
+_QualifiedName_PrimitiveExpr
+  ::= !prefix_merge(_PrimitiveExpr)
+  ::= !prefix_merge(_QualifiedName)
   ;
 
 _PostfixUnaryExpr
-  ::= !_PrimitiveExpr_QualifiedName
-  ::= !_PostfixUnaryCtor
+  ::= !_QualifiedName_PrimitiveExpr
+  ::= _LongType:operand "(" {_Expr_NoComma:arguments ; ","} ")" as CallExpr {kind = Parenthesis}
+  ::= _LongType:operand "{" {_Expr_NoComma:arguments ; ","} "}" as CallExpr {kind = Brace}
   ::= _PostfixUnaryExpr:left "." _MemberOperatorQualifiedName:right as BinaryExpr {op = Member}
   ::= _PostfixUnaryExpr:left "->" _MemberOperatorQualifiedName:right as BinaryExpr {op = Pointer}
   ::= _PostfixUnaryExpr:operand "++" as PostfixUnaryExpr {op = Increase}
@@ -348,19 +344,19 @@ _PrimitiveType
   ::= "typename" !_QualifiedName
   ;
 
-_ShortType : TypeOrExpr
-  ::= "const" _ShortType_QualifiedName:type as ConstType
-  ::= "volatile" _ShortType_QualifiedName:type as VolatileType
-  ::= !_PrimitiveType
+_QualifiedName_PrimitiveType
+  ::= !prefix_merge(_QualifiedName)
+  ::= !prefix_merge(_PrimitiveType)
   ;
 
-_ShortType_QualifiedName
-  ::= !prefix_merge(_QualifiedName)
-  ::= !prefix_merge(_ShortType)
+_ShortType : TypeOrExpr
+  ::= !_QualifiedName_PrimitiveType
+  ::= "const" _ShortType:type as ConstType
+  ::= "volatile" _ShortType:type as VolatileType
   ;
 
 _LongType
-  ::= !_ShortType_QualifiedName
+  ::= !_ShortType
   ::= _LongType:type "const" as ConstType
   ::= _LongType:type "volatile" as VolatileType
   ;

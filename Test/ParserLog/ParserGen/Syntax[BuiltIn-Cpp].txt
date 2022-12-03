@@ -2458,11 +2458,18 @@
                 "refType": "Id"
             }
         }],
-        "name": "_PrimitiveExpr_QualifiedName",
+        "name": "_QualifiedName_PrimitiveExpr",
         "type": ""
     }, {
         "$ast": "Rule",
         "clauses": [{
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "_QualifiedName_PrimitiveExpr"
+            }
+        }, {
             "$ast": "CreateClause",
             "assignments": [{
                 "$ast": "Assignment",
@@ -2564,25 +2571,6 @@
                 }
             },
             "type": "CallExpr"
-        }],
-        "name": "_PostfixUnaryCtor",
-        "type": ""
-    }, {
-        "$ast": "Rule",
-        "clauses": [{
-            "$ast": "ReuseClause",
-            "assignments": [],
-            "syntax": {
-                "$ast": "UseSyntax",
-                "name": "_PrimitiveExpr_QualifiedName"
-            }
-        }, {
-            "$ast": "ReuseClause",
-            "assignments": [],
-            "syntax": {
-                "$ast": "UseSyntax",
-                "name": "_PostfixUnaryCtor"
-            }
         }, {
             "$ast": "CreateClause",
             "assignments": [{
@@ -5235,6 +5223,34 @@
     }, {
         "$ast": "Rule",
         "clauses": [{
+            "$ast": "PrefixMergeClause",
+            "rule": {
+                "$ast": "RefSyntax",
+                "field": "",
+                "literal": "_QualifiedName",
+                "refType": "Id"
+            }
+        }, {
+            "$ast": "PrefixMergeClause",
+            "rule": {
+                "$ast": "RefSyntax",
+                "field": "",
+                "literal": "_PrimitiveType",
+                "refType": "Id"
+            }
+        }],
+        "name": "_QualifiedName_PrimitiveType",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "_QualifiedName_PrimitiveType"
+            }
+        }, {
             "$ast": "CreateClause",
             "assignments": [],
             "syntax": {
@@ -5248,7 +5264,7 @@
                 "second": {
                     "$ast": "RefSyntax",
                     "field": "type",
-                    "literal": "_ShortType_QualifiedName",
+                    "literal": "_ShortType",
                     "refType": "Id"
                 }
             },
@@ -5267,50 +5283,22 @@
                 "second": {
                     "$ast": "RefSyntax",
                     "field": "type",
-                    "literal": "_ShortType_QualifiedName",
+                    "literal": "_ShortType",
                     "refType": "Id"
                 }
             },
             "type": "VolatileType"
-        }, {
-            "$ast": "ReuseClause",
-            "assignments": [],
-            "syntax": {
-                "$ast": "UseSyntax",
-                "name": "_PrimitiveType"
-            }
         }],
         "name": "_ShortType",
         "type": "TypeOrExpr"
     }, {
         "$ast": "Rule",
         "clauses": [{
-            "$ast": "PrefixMergeClause",
-            "rule": {
-                "$ast": "RefSyntax",
-                "field": "",
-                "literal": "_QualifiedName",
-                "refType": "Id"
-            }
-        }, {
-            "$ast": "PrefixMergeClause",
-            "rule": {
-                "$ast": "RefSyntax",
-                "field": "",
-                "literal": "_ShortType",
-                "refType": "Id"
-            }
-        }],
-        "name": "_ShortType_QualifiedName",
-        "type": ""
-    }, {
-        "$ast": "Rule",
-        "clauses": [{
             "$ast": "ReuseClause",
             "assignments": [],
             "syntax": {
                 "$ast": "UseSyntax",
-                "name": "_ShortType_QualifiedName"
+                "name": "_ShortType"
             }
         }, {
             "$ast": "CreateClause",
