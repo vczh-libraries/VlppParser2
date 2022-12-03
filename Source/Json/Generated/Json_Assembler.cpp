@@ -23,17 +23,17 @@ JsonAstInsReceiver : public vl::glr::AstInsReceiverBase
 				switch((JsonClasses)type)
 				{
 				case JsonClasses::Array:
-					return new vl::glr::json::JsonArray();
+					return vl::Ptr(new vl::glr::json::JsonArray);
 				case JsonClasses::Literal:
-					return new vl::glr::json::JsonLiteral();
+					return vl::Ptr(new vl::glr::json::JsonLiteral);
 				case JsonClasses::Number:
-					return new vl::glr::json::JsonNumber();
+					return vl::Ptr(new vl::glr::json::JsonNumber);
 				case JsonClasses::Object:
-					return new vl::glr::json::JsonObject();
+					return vl::Ptr(new vl::glr::json::JsonObject);
 				case JsonClasses::ObjectField:
-					return new vl::glr::json::JsonObjectField();
+					return vl::Ptr(new vl::glr::json::JsonObjectField);
 				case JsonClasses::String:
-					return new vl::glr::json::JsonString();
+					return vl::Ptr(new vl::glr::json::JsonString);
 				default:
 					return vl::glr::AssemblyThrowCannotCreateAbstractType(type, cppTypeName);
 				}

@@ -23,19 +23,19 @@ XmlAstInsReceiver : public vl::glr::AstInsReceiverBase
 				switch((XmlClasses)type)
 				{
 				case XmlClasses::Attribute:
-					return new vl::glr::xml::XmlAttribute();
+					return vl::Ptr(new vl::glr::xml::XmlAttribute);
 				case XmlClasses::CData:
-					return new vl::glr::xml::XmlCData();
+					return vl::Ptr(new vl::glr::xml::XmlCData);
 				case XmlClasses::Comment:
-					return new vl::glr::xml::XmlComment();
+					return vl::Ptr(new vl::glr::xml::XmlComment);
 				case XmlClasses::Document:
-					return new vl::glr::xml::XmlDocument();
+					return vl::Ptr(new vl::glr::xml::XmlDocument);
 				case XmlClasses::Element:
-					return new vl::glr::xml::XmlElement();
+					return vl::Ptr(new vl::glr::xml::XmlElement);
 				case XmlClasses::Instruction:
-					return new vl::glr::xml::XmlInstruction();
+					return vl::Ptr(new vl::glr::xml::XmlInstruction);
 				case XmlClasses::Text:
-					return new vl::glr::xml::XmlText();
+					return vl::Ptr(new vl::glr::xml::XmlText);
 				default:
 					return vl::glr::AssemblyThrowCannotCreateAbstractType(type, cppTypeName);
 				}

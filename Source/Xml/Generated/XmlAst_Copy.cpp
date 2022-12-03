@@ -79,49 +79,49 @@ namespace vl
 
 				void AstVisitor::Visit(XmlAttribute* node)
 				{
-					auto newNode = vl::MakePtr<XmlAttribute>();
+					auto newNode = vl::Ptr(new XmlAttribute);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void AstVisitor::Visit(XmlText* node)
 				{
-					auto newNode = vl::MakePtr<XmlText>();
+					auto newNode = vl::Ptr(new XmlText);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void AstVisitor::Visit(XmlCData* node)
 				{
-					auto newNode = vl::MakePtr<XmlCData>();
+					auto newNode = vl::Ptr(new XmlCData);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void AstVisitor::Visit(XmlComment* node)
 				{
-					auto newNode = vl::MakePtr<XmlComment>();
+					auto newNode = vl::Ptr(new XmlComment);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void AstVisitor::Visit(XmlElement* node)
 				{
-					auto newNode = vl::MakePtr<XmlElement>();
+					auto newNode = vl::Ptr(new XmlElement);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void AstVisitor::Visit(XmlInstruction* node)
 				{
-					auto newNode = vl::MakePtr<XmlInstruction>();
+					auto newNode = vl::Ptr(new XmlInstruction);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void AstVisitor::Visit(XmlDocument* node)
 				{
-					auto newNode = vl::MakePtr<XmlDocument>();
+					auto newNode = vl::Ptr(new XmlDocument);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}

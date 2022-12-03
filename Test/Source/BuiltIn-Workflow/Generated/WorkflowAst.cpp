@@ -2006,7 +2006,7 @@ namespace vl
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 				if (auto manager = GetGlobalTypeManager())
 				{
-					Ptr<ITypeLoader> loader = new WorkflowAstTypeLoader;
+					auto loader = Ptr(new WorkflowAstTypeLoader);
 					return manager->AddTypeLoader(loader);
 				}
 #endif

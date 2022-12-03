@@ -86,7 +86,7 @@ XmlUnescapeVisitor
 							WString text = WString::CopyFrom(textBegin, vint(textEnd - textBegin));
 							ParsingTextRange range(&beginToken, &endToken);
 
-							Ptr<XmlText> xmlText = new XmlText;
+							auto xmlText = Ptr(new XmlText);
 							xmlText->codeRange = range;
 							xmlText->content.codeRange = range;
 							xmlText->content.value = XmlUnescapeValue(text);
@@ -422,7 +422,7 @@ XmlElementWriter
 
 			const XmlElementWriter& XmlElementWriter::Attribute(const WString& name, const WString& value)const
 			{
-				Ptr<XmlAttribute> node = new XmlAttribute;
+				auto node = Ptr(new XmlAttribute);
 				node->name.value = name;
 				node->value.value = value;
 				element->attributes.Add(node);
@@ -431,7 +431,7 @@ XmlElementWriter
 
 			XmlElementWriter XmlElementWriter::Element(const WString& name)const
 			{
-				Ptr<XmlElement> node = new XmlElement;
+				auto node = Ptr(new XmlElement);
 				node->name.value = name;
 				element->subNodes.Add(node);
 				return XmlElementWriter(node, this);
@@ -444,7 +444,7 @@ XmlElementWriter
 
 			const XmlElementWriter& XmlElementWriter::Text(const WString& value)const
 			{
-				Ptr<XmlText> node = new XmlText;
+				auto node = Ptr(new XmlText);
 				node->content.value = value;
 				element->subNodes.Add(node);
 				return *this;
@@ -452,7 +452,7 @@ XmlElementWriter
 
 			const XmlElementWriter& XmlElementWriter::CData(const WString& value)const
 			{
-				Ptr<XmlCData> node = new XmlCData;
+				auto node = Ptr(new XmlCData);
 				node->content.value = value;
 				element->subNodes.Add(node);
 				return *this;
@@ -460,7 +460,7 @@ XmlElementWriter
 
 			const XmlElementWriter& XmlElementWriter::Comment(const WString& value)const
 			{
-				Ptr<XmlComment> node = new XmlComment;
+				auto node = Ptr(new XmlComment);
 				node->content.value = value;
 				element->subNodes.Add(node);
 				return *this;

@@ -62,42 +62,42 @@ namespace vl
 
 				void AstVisitor::Visit(JsonObjectField* node)
 				{
-					auto newNode = vl::MakePtr<JsonObjectField>();
+					auto newNode = vl::Ptr(new JsonObjectField);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void AstVisitor::Visit(JsonLiteral* node)
 				{
-					auto newNode = vl::MakePtr<JsonLiteral>();
+					auto newNode = vl::Ptr(new JsonLiteral);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void AstVisitor::Visit(JsonString* node)
 				{
-					auto newNode = vl::MakePtr<JsonString>();
+					auto newNode = vl::Ptr(new JsonString);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void AstVisitor::Visit(JsonNumber* node)
 				{
-					auto newNode = vl::MakePtr<JsonNumber>();
+					auto newNode = vl::Ptr(new JsonNumber);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void AstVisitor::Visit(JsonArray* node)
 				{
-					auto newNode = vl::MakePtr<JsonArray>();
+					auto newNode = vl::Ptr(new JsonArray);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void AstVisitor::Visit(JsonObject* node)
 				{
-					auto newNode = vl::MakePtr<JsonObject>();
+					auto newNode = vl::Ptr(new JsonObject);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
