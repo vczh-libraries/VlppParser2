@@ -19,21 +19,21 @@ PrefixMerge1_LriAstInsReceiver : public vl::glr::AstInsReceiverBase
 		switch((PrefixMerge1_LriClasses)type)
 		{
 		case PrefixMerge1_LriClasses::CallExpr:
-			return new prefixmerge1_lri::CallExpr();
+			return vl::Ptr(new prefixmerge1_lri::CallExpr);
 		case PrefixMerge1_LriClasses::ConstType:
-			return new prefixmerge1_lri::ConstType();
+			return vl::Ptr(new prefixmerge1_lri::ConstType);
 		case PrefixMerge1_LriClasses::FunctionType:
-			return new prefixmerge1_lri::FunctionType();
+			return vl::Ptr(new prefixmerge1_lri::FunctionType);
 		case PrefixMerge1_LriClasses::MemberName:
-			return new prefixmerge1_lri::MemberName();
+			return vl::Ptr(new prefixmerge1_lri::MemberName);
 		case PrefixMerge1_LriClasses::MulExpr:
-			return new prefixmerge1_lri::MulExpr();
+			return vl::Ptr(new prefixmerge1_lri::MulExpr);
 		case PrefixMerge1_LriClasses::Name:
-			return new prefixmerge1_lri::Name();
+			return vl::Ptr(new prefixmerge1_lri::Name);
 		case PrefixMerge1_LriClasses::PointerType:
-			return new prefixmerge1_lri::PointerType();
+			return vl::Ptr(new prefixmerge1_lri::PointerType);
 		case PrefixMerge1_LriClasses::TypeOrExprToResolve:
-			return new prefixmerge1_lri::TypeOrExprToResolve();
+			return vl::Ptr(new prefixmerge1_lri::TypeOrExprToResolve);
 		default:
 			return vl::glr::AssemblyThrowCannotCreateAbstractType(type, cppTypeName);
 		}

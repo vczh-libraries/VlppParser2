@@ -19,15 +19,15 @@ IfElseAmbiguityOnStatAstInsReceiver : public vl::glr::AstInsReceiverBase
 		switch((IfElseAmbiguityOnStatClasses)type)
 		{
 		case IfElseAmbiguityOnStatClasses::BlockStat:
-			return new ifelseambiguityonstat::BlockStat();
+			return vl::Ptr(new ifelseambiguityonstat::BlockStat);
 		case IfElseAmbiguityOnStatClasses::DoStat:
-			return new ifelseambiguityonstat::DoStat();
+			return vl::Ptr(new ifelseambiguityonstat::DoStat);
 		case IfElseAmbiguityOnStatClasses::IfStat:
-			return new ifelseambiguityonstat::IfStat();
+			return vl::Ptr(new ifelseambiguityonstat::IfStat);
 		case IfElseAmbiguityOnStatClasses::Module:
-			return new ifelseambiguityonstat::Module();
+			return vl::Ptr(new ifelseambiguityonstat::Module);
 		case IfElseAmbiguityOnStatClasses::StatToResolve:
-			return new ifelseambiguityonstat::StatToResolve();
+			return vl::Ptr(new ifelseambiguityonstat::StatToResolve);
 		default:
 			return vl::glr::AssemblyThrowCannotCreateAbstractType(type, cppTypeName);
 		}

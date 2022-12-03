@@ -42,28 +42,28 @@ namespace ifelsepriority
 
 		void StatAstVisitor::Visit(Module* node)
 		{
-			auto newNode = vl::MakePtr<Module>();
+			auto newNode = vl::Ptr(new Module);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void StatAstVisitor::Visit(DoStat* node)
 		{
-			auto newNode = vl::MakePtr<DoStat>();
+			auto newNode = vl::Ptr(new DoStat);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void StatAstVisitor::Visit(IfStat* node)
 		{
-			auto newNode = vl::MakePtr<IfStat>();
+			auto newNode = vl::Ptr(new IfStat);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void StatAstVisitor::Visit(BlockStat* node)
 		{
-			auto newNode = vl::MakePtr<BlockStat>();
+			auto newNode = vl::Ptr(new BlockStat);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}

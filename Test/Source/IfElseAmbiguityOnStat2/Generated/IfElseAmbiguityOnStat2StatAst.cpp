@@ -131,7 +131,7 @@ namespace vl
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 				if (auto manager = GetGlobalTypeManager())
 				{
-					Ptr<ITypeLoader> loader = new IfElseAmbiguityOnStat2StatAstTypeLoader;
+					auto loader = Ptr(new IfElseAmbiguityOnStat2StatAstTypeLoader);
 					return manager->AddTypeLoader(loader);
 				}
 #endif

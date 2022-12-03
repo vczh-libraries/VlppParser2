@@ -108,7 +108,7 @@ namespace prefixmerge6_pm2
 
 		void TypeOrExprVisitor::Visit(TypeOrExprToResolve* node)
 		{
-			auto newNode = vl::MakePtr<TypeOrExprToResolve>();
+			auto newNode = vl::Ptr(new TypeOrExprToResolve);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
@@ -120,70 +120,70 @@ namespace prefixmerge6_pm2
 
 		void TypeOrExprVisitor::Visit(CallExpr* node)
 		{
-			auto newNode = vl::MakePtr<CallExpr>();
+			auto newNode = vl::Ptr(new CallExpr);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void TypeOrExprVisitor::Visit(CtorExpr* node)
 		{
-			auto newNode = vl::MakePtr<CtorExpr>();
+			auto newNode = vl::Ptr(new CtorExpr);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void TypeOrExprVisitor::Visit(MulExpr* node)
 		{
-			auto newNode = vl::MakePtr<MulExpr>();
+			auto newNode = vl::Ptr(new MulExpr);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void TypeOrExprVisitor::Visit(ThrowExpr* node)
 		{
-			auto newNode = vl::MakePtr<ThrowExpr>();
+			auto newNode = vl::Ptr(new ThrowExpr);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void TypeOrExprVisitor::Visit(CommaExpr* node)
 		{
-			auto newNode = vl::MakePtr<CommaExpr>();
+			auto newNode = vl::Ptr(new CommaExpr);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void TypeOrExprVisitor::Visit(ConstType* node)
 		{
-			auto newNode = vl::MakePtr<ConstType>();
+			auto newNode = vl::Ptr(new ConstType);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void TypeOrExprVisitor::Visit(PointerType* node)
 		{
-			auto newNode = vl::MakePtr<PointerType>();
+			auto newNode = vl::Ptr(new PointerType);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void TypeOrExprVisitor::Visit(FunctionType* node)
 		{
-			auto newNode = vl::MakePtr<FunctionType>();
+			auto newNode = vl::Ptr(new FunctionType);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void TypeOrExprVisitor::Visit(Name* node)
 		{
-			auto newNode = vl::MakePtr<Name>();
+			auto newNode = vl::Ptr(new Name);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void TypeOrExprVisitor::Visit(MemberName* node)
 		{
-			auto newNode = vl::MakePtr<MemberName>();
+			auto newNode = vl::Ptr(new MemberName);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}

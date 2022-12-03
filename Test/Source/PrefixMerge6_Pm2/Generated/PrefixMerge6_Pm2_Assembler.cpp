@@ -19,27 +19,27 @@ PrefixMerge6_Pm2AstInsReceiver : public vl::glr::AstInsReceiverBase
 		switch((PrefixMerge6_Pm2Classes)type)
 		{
 		case PrefixMerge6_Pm2Classes::CallExpr:
-			return new prefixmerge6_pm2::CallExpr();
+			return vl::Ptr(new prefixmerge6_pm2::CallExpr);
 		case PrefixMerge6_Pm2Classes::CommaExpr:
-			return new prefixmerge6_pm2::CommaExpr();
+			return vl::Ptr(new prefixmerge6_pm2::CommaExpr);
 		case PrefixMerge6_Pm2Classes::ConstType:
-			return new prefixmerge6_pm2::ConstType();
+			return vl::Ptr(new prefixmerge6_pm2::ConstType);
 		case PrefixMerge6_Pm2Classes::CtorExpr:
-			return new prefixmerge6_pm2::CtorExpr();
+			return vl::Ptr(new prefixmerge6_pm2::CtorExpr);
 		case PrefixMerge6_Pm2Classes::FunctionType:
-			return new prefixmerge6_pm2::FunctionType();
+			return vl::Ptr(new prefixmerge6_pm2::FunctionType);
 		case PrefixMerge6_Pm2Classes::MemberName:
-			return new prefixmerge6_pm2::MemberName();
+			return vl::Ptr(new prefixmerge6_pm2::MemberName);
 		case PrefixMerge6_Pm2Classes::MulExpr:
-			return new prefixmerge6_pm2::MulExpr();
+			return vl::Ptr(new prefixmerge6_pm2::MulExpr);
 		case PrefixMerge6_Pm2Classes::Name:
-			return new prefixmerge6_pm2::Name();
+			return vl::Ptr(new prefixmerge6_pm2::Name);
 		case PrefixMerge6_Pm2Classes::PointerType:
-			return new prefixmerge6_pm2::PointerType();
+			return vl::Ptr(new prefixmerge6_pm2::PointerType);
 		case PrefixMerge6_Pm2Classes::ThrowExpr:
-			return new prefixmerge6_pm2::ThrowExpr();
+			return vl::Ptr(new prefixmerge6_pm2::ThrowExpr);
 		case PrefixMerge6_Pm2Classes::TypeOrExprToResolve:
-			return new prefixmerge6_pm2::TypeOrExprToResolve();
+			return vl::Ptr(new prefixmerge6_pm2::TypeOrExprToResolve);
 		default:
 			return vl::glr::AssemblyThrowCannotCreateAbstractType(type, cppTypeName);
 		}

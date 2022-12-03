@@ -77,56 +77,56 @@ namespace genericambiguity
 
 		void ExprAstVisitor::Visit(Module* node)
 		{
-			auto newNode = vl::MakePtr<Module>();
+			auto newNode = vl::Ptr(new Module);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void ExprAstVisitor::Visit(ExprToResolve* node)
 		{
-			auto newNode = vl::MakePtr<ExprToResolve>();
+			auto newNode = vl::Ptr(new ExprToResolve);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void ExprAstVisitor::Visit(RefExpr* node)
 		{
-			auto newNode = vl::MakePtr<RefExpr>();
+			auto newNode = vl::Ptr(new RefExpr);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void ExprAstVisitor::Visit(GenericExpr* node)
 		{
-			auto newNode = vl::MakePtr<GenericExpr>();
+			auto newNode = vl::Ptr(new GenericExpr);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void ExprAstVisitor::Visit(CallExpr* node)
 		{
-			auto newNode = vl::MakePtr<CallExpr>();
+			auto newNode = vl::Ptr(new CallExpr);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void ExprAstVisitor::Visit(PostfixExpr* node)
 		{
-			auto newNode = vl::MakePtr<PostfixExpr>();
+			auto newNode = vl::Ptr(new PostfixExpr);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void ExprAstVisitor::Visit(DecrementExpr* node)
 		{
-			auto newNode = vl::MakePtr<DecrementExpr>();
+			auto newNode = vl::Ptr(new DecrementExpr);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void ExprAstVisitor::Visit(BinaryExpr* node)
 		{
-			auto newNode = vl::MakePtr<BinaryExpr>();
+			auto newNode = vl::Ptr(new BinaryExpr);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}

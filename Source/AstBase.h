@@ -551,7 +551,7 @@ IAstInsReceiver (Code Generation Templates)
 		template<typename TElement, typename TAmbiguity>
 		Ptr<ParsingAstBase> AssemblerResolveAmbiguity(vint32_t type, collections::Array<Ptr<ParsingAstBase>>& candidates, const wchar_t* cppTypeName)
 		{
-			Ptr<TAmbiguity> ast = new TAmbiguity();
+			auto ast = Ptr(new TAmbiguity());
 			for (auto candidate : candidates)
 			{
 				if (auto typedAst = candidate.Cast<TElement>())

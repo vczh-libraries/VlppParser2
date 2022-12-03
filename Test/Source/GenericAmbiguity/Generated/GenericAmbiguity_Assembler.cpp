@@ -19,21 +19,21 @@ GenericAmbiguityAstInsReceiver : public vl::glr::AstInsReceiverBase
 		switch((GenericAmbiguityClasses)type)
 		{
 		case GenericAmbiguityClasses::BinaryExpr:
-			return new genericambiguity::BinaryExpr();
+			return vl::Ptr(new genericambiguity::BinaryExpr);
 		case GenericAmbiguityClasses::CallExpr:
-			return new genericambiguity::CallExpr();
+			return vl::Ptr(new genericambiguity::CallExpr);
 		case GenericAmbiguityClasses::DecrementExpr:
-			return new genericambiguity::DecrementExpr();
+			return vl::Ptr(new genericambiguity::DecrementExpr);
 		case GenericAmbiguityClasses::ExprToResolve:
-			return new genericambiguity::ExprToResolve();
+			return vl::Ptr(new genericambiguity::ExprToResolve);
 		case GenericAmbiguityClasses::GenericExpr:
-			return new genericambiguity::GenericExpr();
+			return vl::Ptr(new genericambiguity::GenericExpr);
 		case GenericAmbiguityClasses::Module:
-			return new genericambiguity::Module();
+			return vl::Ptr(new genericambiguity::Module);
 		case GenericAmbiguityClasses::PostfixExpr:
-			return new genericambiguity::PostfixExpr();
+			return vl::Ptr(new genericambiguity::PostfixExpr);
 		case GenericAmbiguityClasses::RefExpr:
-			return new genericambiguity::RefExpr();
+			return vl::Ptr(new genericambiguity::RefExpr);
 		default:
 			return vl::glr::AssemblyThrowCannotCreateAbstractType(type, cppTypeName);
 		}

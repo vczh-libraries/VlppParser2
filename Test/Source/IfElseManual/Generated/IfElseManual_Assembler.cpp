@@ -19,13 +19,13 @@ IfElseManualAstInsReceiver : public vl::glr::AstInsReceiverBase
 		switch((IfElseManualClasses)type)
 		{
 		case IfElseManualClasses::BlockStat:
-			return new ifelsemanual::BlockStat();
+			return vl::Ptr(new ifelsemanual::BlockStat);
 		case IfElseManualClasses::DoStat:
-			return new ifelsemanual::DoStat();
+			return vl::Ptr(new ifelsemanual::DoStat);
 		case IfElseManualClasses::IfStat:
-			return new ifelsemanual::IfStat();
+			return vl::Ptr(new ifelsemanual::IfStat);
 		case IfElseManualClasses::Module:
-			return new ifelsemanual::Module();
+			return vl::Ptr(new ifelsemanual::Module);
 		default:
 			return vl::glr::AssemblyThrowCannotCreateAbstractType(type, cppTypeName);
 		}

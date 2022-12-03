@@ -19,23 +19,23 @@ PrefixMerge3_LriNestedAstInsReceiver : public vl::glr::AstInsReceiverBase
 		switch((PrefixMerge3_LriNestedClasses)type)
 		{
 		case PrefixMerge3_LriNestedClasses::CallExpr:
-			return new prefixmerge3_lrinested::CallExpr();
+			return vl::Ptr(new prefixmerge3_lrinested::CallExpr);
 		case PrefixMerge3_LriNestedClasses::ConstType:
-			return new prefixmerge3_lrinested::ConstType();
+			return vl::Ptr(new prefixmerge3_lrinested::ConstType);
 		case PrefixMerge3_LriNestedClasses::CtorExpr:
-			return new prefixmerge3_lrinested::CtorExpr();
+			return vl::Ptr(new prefixmerge3_lrinested::CtorExpr);
 		case PrefixMerge3_LriNestedClasses::FunctionType:
-			return new prefixmerge3_lrinested::FunctionType();
+			return vl::Ptr(new prefixmerge3_lrinested::FunctionType);
 		case PrefixMerge3_LriNestedClasses::MemberName:
-			return new prefixmerge3_lrinested::MemberName();
+			return vl::Ptr(new prefixmerge3_lrinested::MemberName);
 		case PrefixMerge3_LriNestedClasses::MulExpr:
-			return new prefixmerge3_lrinested::MulExpr();
+			return vl::Ptr(new prefixmerge3_lrinested::MulExpr);
 		case PrefixMerge3_LriNestedClasses::Name:
-			return new prefixmerge3_lrinested::Name();
+			return vl::Ptr(new prefixmerge3_lrinested::Name);
 		case PrefixMerge3_LriNestedClasses::PointerType:
-			return new prefixmerge3_lrinested::PointerType();
+			return vl::Ptr(new prefixmerge3_lrinested::PointerType);
 		case PrefixMerge3_LriNestedClasses::TypeOrExprToResolve:
-			return new prefixmerge3_lrinested::TypeOrExprToResolve();
+			return vl::Ptr(new prefixmerge3_lrinested::TypeOrExprToResolve);
 		default:
 			return vl::glr::AssemblyThrowCannotCreateAbstractType(type, cppTypeName);
 		}

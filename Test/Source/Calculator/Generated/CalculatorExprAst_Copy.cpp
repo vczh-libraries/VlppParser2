@@ -106,63 +106,63 @@ namespace calculator
 
 		void ExprAstVisitor::Visit(Arg* node)
 		{
-			auto newNode = vl::MakePtr<Arg>();
+			auto newNode = vl::Ptr(new Arg);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void ExprAstVisitor::Visit(Import* node)
 		{
-			auto newNode = vl::MakePtr<Import>();
+			auto newNode = vl::Ptr(new Import);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void ExprAstVisitor::Visit(Module* node)
 		{
-			auto newNode = vl::MakePtr<Module>();
+			auto newNode = vl::Ptr(new Module);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void ExprAstVisitor::Visit(NumExpr* node)
 		{
-			auto newNode = vl::MakePtr<NumExpr>();
+			auto newNode = vl::Ptr(new NumExpr);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void ExprAstVisitor::Visit(Ref* node)
 		{
-			auto newNode = vl::MakePtr<Ref>();
+			auto newNode = vl::Ptr(new Ref);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void ExprAstVisitor::Visit(True* node)
 		{
-			auto newNode = vl::MakePtr<True>();
+			auto newNode = vl::Ptr(new True);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void ExprAstVisitor::Visit(False* node)
 		{
-			auto newNode = vl::MakePtr<False>();
+			auto newNode = vl::Ptr(new False);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void ExprAstVisitor::Visit(Func* node)
 		{
-			auto newNode = vl::MakePtr<Func>();
+			auto newNode = vl::Ptr(new Func);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void ExprAstVisitor::Visit(Call* node)
 		{
-			auto newNode = vl::MakePtr<Call>();
+			auto newNode = vl::Ptr(new Call);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
@@ -174,21 +174,21 @@ namespace calculator
 
 		void ExprAstVisitor::Visit(LetExpr* node)
 		{
-			auto newNode = vl::MakePtr<LetExpr>();
+			auto newNode = vl::Ptr(new LetExpr);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void ExprAstVisitor::Visit(Unary* node)
 		{
-			auto newNode = vl::MakePtr<Unary>();
+			auto newNode = vl::Ptr(new Unary);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void ExprAstVisitor::Visit(Binary* node)
 		{
-			auto newNode = vl::MakePtr<Binary>();
+			auto newNode = vl::Ptr(new Binary);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}

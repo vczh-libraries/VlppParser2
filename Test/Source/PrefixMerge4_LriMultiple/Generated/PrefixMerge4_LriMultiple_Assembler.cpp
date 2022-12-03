@@ -19,23 +19,23 @@ PrefixMerge4_LriMultipleAstInsReceiver : public vl::glr::AstInsReceiverBase
 		switch((PrefixMerge4_LriMultipleClasses)type)
 		{
 		case PrefixMerge4_LriMultipleClasses::CallExpr:
-			return new prefixmerge4_lrimultiple::CallExpr();
+			return vl::Ptr(new prefixmerge4_lrimultiple::CallExpr);
 		case PrefixMerge4_LriMultipleClasses::ConstType:
-			return new prefixmerge4_lrimultiple::ConstType();
+			return vl::Ptr(new prefixmerge4_lrimultiple::ConstType);
 		case PrefixMerge4_LriMultipleClasses::CtorExpr:
-			return new prefixmerge4_lrimultiple::CtorExpr();
+			return vl::Ptr(new prefixmerge4_lrimultiple::CtorExpr);
 		case PrefixMerge4_LriMultipleClasses::FunctionType:
-			return new prefixmerge4_lrimultiple::FunctionType();
+			return vl::Ptr(new prefixmerge4_lrimultiple::FunctionType);
 		case PrefixMerge4_LriMultipleClasses::MemberName:
-			return new prefixmerge4_lrimultiple::MemberName();
+			return vl::Ptr(new prefixmerge4_lrimultiple::MemberName);
 		case PrefixMerge4_LriMultipleClasses::MulExpr:
-			return new prefixmerge4_lrimultiple::MulExpr();
+			return vl::Ptr(new prefixmerge4_lrimultiple::MulExpr);
 		case PrefixMerge4_LriMultipleClasses::Name:
-			return new prefixmerge4_lrimultiple::Name();
+			return vl::Ptr(new prefixmerge4_lrimultiple::Name);
 		case PrefixMerge4_LriMultipleClasses::PointerType:
-			return new prefixmerge4_lrimultiple::PointerType();
+			return vl::Ptr(new prefixmerge4_lrimultiple::PointerType);
 		case PrefixMerge4_LriMultipleClasses::TypeOrExprToResolve:
-			return new prefixmerge4_lrimultiple::TypeOrExprToResolve();
+			return vl::Ptr(new prefixmerge4_lrimultiple::TypeOrExprToResolve);
 		default:
 			return vl::glr::AssemblyThrowCannotCreateAbstractType(type, cppTypeName);
 		}

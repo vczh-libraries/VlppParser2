@@ -19,9 +19,9 @@ BinaryOpAstInsReceiver : public vl::glr::AstInsReceiverBase
 		switch((BinaryOpClasses)type)
 		{
 		case BinaryOpClasses::BinaryExpr:
-			return new binaryop::BinaryExpr();
+			return vl::Ptr(new binaryop::BinaryExpr);
 		case BinaryOpClasses::RefExpr:
-			return new binaryop::RefExpr();
+			return vl::Ptr(new binaryop::RefExpr);
 		default:
 			return vl::glr::AssemblyThrowCannotCreateAbstractType(type, cppTypeName);
 		}

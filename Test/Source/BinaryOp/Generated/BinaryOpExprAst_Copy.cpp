@@ -30,14 +30,14 @@ namespace binaryop
 
 		void ExprAstVisitor::Visit(RefExpr* node)
 		{
-			auto newNode = vl::MakePtr<RefExpr>();
+			auto newNode = vl::Ptr(new RefExpr);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void ExprAstVisitor::Visit(BinaryExpr* node)
 		{
-			auto newNode = vl::MakePtr<BinaryExpr>();
+			auto newNode = vl::Ptr(new BinaryExpr);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}

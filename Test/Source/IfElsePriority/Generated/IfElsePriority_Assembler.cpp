@@ -19,13 +19,13 @@ IfElsePriorityAstInsReceiver : public vl::glr::AstInsReceiverBase
 		switch((IfElsePriorityClasses)type)
 		{
 		case IfElsePriorityClasses::BlockStat:
-			return new ifelsepriority::BlockStat();
+			return vl::Ptr(new ifelsepriority::BlockStat);
 		case IfElsePriorityClasses::DoStat:
-			return new ifelsepriority::DoStat();
+			return vl::Ptr(new ifelsepriority::DoStat);
 		case IfElsePriorityClasses::IfStat:
-			return new ifelsepriority::IfStat();
+			return vl::Ptr(new ifelsepriority::IfStat);
 		case IfElsePriorityClasses::Module:
-			return new ifelsepriority::Module();
+			return vl::Ptr(new ifelsepriority::Module);
 		default:
 			return vl::glr::AssemblyThrowCannotCreateAbstractType(type, cppTypeName);
 		}

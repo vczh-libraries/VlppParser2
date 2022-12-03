@@ -19,13 +19,13 @@ IfElseSwitchAstInsReceiver : public vl::glr::AstInsReceiverBase
 		switch((IfElseSwitchClasses)type)
 		{
 		case IfElseSwitchClasses::BlockStat:
-			return new ifelseswitch::BlockStat();
+			return vl::Ptr(new ifelseswitch::BlockStat);
 		case IfElseSwitchClasses::DoStat:
-			return new ifelseswitch::DoStat();
+			return vl::Ptr(new ifelseswitch::DoStat);
 		case IfElseSwitchClasses::IfStat:
-			return new ifelseswitch::IfStat();
+			return vl::Ptr(new ifelseswitch::IfStat);
 		case IfElseSwitchClasses::Module:
-			return new ifelseswitch::Module();
+			return vl::Ptr(new ifelseswitch::Module);
 		default:
 			return vl::glr::AssemblyThrowCannotCreateAbstractType(type, cppTypeName);
 		}

@@ -19,29 +19,29 @@ CalculatorAstInsReceiver : public vl::glr::AstInsReceiverBase
 		switch((CalculatorClasses)type)
 		{
 		case CalculatorClasses::Arg:
-			return new calculator::Arg();
+			return vl::Ptr(new calculator::Arg);
 		case CalculatorClasses::Binary:
-			return new calculator::Binary();
+			return vl::Ptr(new calculator::Binary);
 		case CalculatorClasses::Call:
-			return new calculator::Call();
+			return vl::Ptr(new calculator::Call);
 		case CalculatorClasses::False:
-			return new calculator::False();
+			return vl::Ptr(new calculator::False);
 		case CalculatorClasses::Func:
-			return new calculator::Func();
+			return vl::Ptr(new calculator::Func);
 		case CalculatorClasses::Import:
-			return new calculator::Import();
+			return vl::Ptr(new calculator::Import);
 		case CalculatorClasses::LetExpr:
-			return new calculator::LetExpr();
+			return vl::Ptr(new calculator::LetExpr);
 		case CalculatorClasses::Module:
-			return new calculator::Module();
+			return vl::Ptr(new calculator::Module);
 		case CalculatorClasses::NumExpr:
-			return new calculator::NumExpr();
+			return vl::Ptr(new calculator::NumExpr);
 		case CalculatorClasses::Ref:
-			return new calculator::Ref();
+			return vl::Ptr(new calculator::Ref);
 		case CalculatorClasses::True:
-			return new calculator::True();
+			return vl::Ptr(new calculator::True);
 		case CalculatorClasses::Unary:
-			return new calculator::Unary();
+			return vl::Ptr(new calculator::Unary);
 		default:
 			return vl::glr::AssemblyThrowCannotCreateAbstractType(type, cppTypeName);
 		}

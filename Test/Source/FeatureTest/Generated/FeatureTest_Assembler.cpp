@@ -19,29 +19,29 @@ FeatureTestAstInsReceiver : public vl::glr::AstInsReceiverBase
 		switch((FeatureTestClasses)type)
 		{
 		case FeatureTestClasses::BranchedOptionalFeature:
-			return new featuretest::BranchedOptionalFeature();
+			return vl::Ptr(new featuretest::BranchedOptionalFeature);
 		case FeatureTestClasses::ClFeature:
-			return new featuretest::ClFeature();
+			return vl::Ptr(new featuretest::ClFeature);
 		case FeatureTestClasses::FaFeature:
-			return new featuretest::FaFeature();
+			return vl::Ptr(new featuretest::FaFeature);
 		case FeatureTestClasses::FeatureToResolve:
-			return new featuretest::FeatureToResolve();
+			return vl::Ptr(new featuretest::FeatureToResolve);
 		case FeatureTestClasses::Gt:
-			return new featuretest::Gt();
+			return vl::Ptr(new featuretest::Gt);
 		case FeatureTestClasses::Lt:
-			return new featuretest::Lt();
+			return vl::Ptr(new featuretest::Lt);
 		case FeatureTestClasses::NestedOptionalFeature:
-			return new featuretest::NestedOptionalFeature();
+			return vl::Ptr(new featuretest::NestedOptionalFeature);
 		case FeatureTestClasses::OptionalFeature:
-			return new featuretest::OptionalFeature();
+			return vl::Ptr(new featuretest::OptionalFeature);
 		case FeatureTestClasses::PbaFeature:
-			return new featuretest::PbaFeature();
+			return vl::Ptr(new featuretest::PbaFeature);
 		case FeatureTestClasses::Plus:
-			return new featuretest::Plus();
+			return vl::Ptr(new featuretest::Plus);
 		case FeatureTestClasses::Pwa1Feature:
-			return new featuretest::Pwa1Feature();
+			return vl::Ptr(new featuretest::Pwa1Feature);
 		case FeatureTestClasses::PwlFeature:
-			return new featuretest::PwlFeature();
+			return vl::Ptr(new featuretest::PwlFeature);
 		default:
 			return vl::glr::AssemblyThrowCannotCreateAbstractType(type, cppTypeName);
 		}

@@ -343,7 +343,7 @@ namespace vl
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 				if (auto manager = GetGlobalTypeManager())
 				{
-					Ptr<ITypeLoader> loader = new PrefixMerge7_PmSwitchTypeOrExprTypeLoader;
+					auto loader = Ptr(new PrefixMerge7_PmSwitchTypeOrExprTypeLoader);
 					return manager->AddTypeLoader(loader);
 				}
 #endif

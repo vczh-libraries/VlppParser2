@@ -135,84 +135,84 @@ namespace featuretest
 
 		void FeatureAstVisitor::Visit(Plus* node)
 		{
-			auto newNode = vl::MakePtr<Plus>();
+			auto newNode = vl::Ptr(new Plus);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void FeatureAstVisitor::Visit(Lt* node)
 		{
-			auto newNode = vl::MakePtr<Lt>();
+			auto newNode = vl::Ptr(new Lt);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void FeatureAstVisitor::Visit(Gt* node)
 		{
-			auto newNode = vl::MakePtr<Gt>();
+			auto newNode = vl::Ptr(new Gt);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void FeatureAstVisitor::Visit(FeatureToResolve* node)
 		{
-			auto newNode = vl::MakePtr<FeatureToResolve>();
+			auto newNode = vl::Ptr(new FeatureToResolve);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void FeatureAstVisitor::Visit(OptionalFeature* node)
 		{
-			auto newNode = vl::MakePtr<OptionalFeature>();
+			auto newNode = vl::Ptr(new OptionalFeature);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void FeatureAstVisitor::Visit(NestedOptionalFeature* node)
 		{
-			auto newNode = vl::MakePtr<NestedOptionalFeature>();
+			auto newNode = vl::Ptr(new NestedOptionalFeature);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void FeatureAstVisitor::Visit(BranchedOptionalFeature* node)
 		{
-			auto newNode = vl::MakePtr<BranchedOptionalFeature>();
+			auto newNode = vl::Ptr(new BranchedOptionalFeature);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void FeatureAstVisitor::Visit(PbaFeature* node)
 		{
-			auto newNode = vl::MakePtr<PbaFeature>();
+			auto newNode = vl::Ptr(new PbaFeature);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void FeatureAstVisitor::Visit(Pwa1Feature* node)
 		{
-			auto newNode = vl::MakePtr<Pwa1Feature>();
+			auto newNode = vl::Ptr(new Pwa1Feature);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void FeatureAstVisitor::Visit(PwlFeature* node)
 		{
-			auto newNode = vl::MakePtr<PwlFeature>();
+			auto newNode = vl::Ptr(new PwlFeature);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void FeatureAstVisitor::Visit(ClFeature* node)
 		{
-			auto newNode = vl::MakePtr<ClFeature>();
+			auto newNode = vl::Ptr(new ClFeature);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
 
 		void FeatureAstVisitor::Visit(FaFeature* node)
 		{
-			auto newNode = vl::MakePtr<FaFeature>();
+			auto newNode = vl::Ptr(new FaFeature);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}

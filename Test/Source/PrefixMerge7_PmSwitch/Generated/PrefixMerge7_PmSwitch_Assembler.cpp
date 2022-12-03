@@ -19,35 +19,35 @@ PrefixMerge7_PmSwitchAstInsReceiver : public vl::glr::AstInsReceiverBase
 		switch((PrefixMerge7_PmSwitchClasses)type)
 		{
 		case PrefixMerge7_PmSwitchClasses::CallExpr:
-			return new prefixmerge7_pmswitch::CallExpr();
+			return vl::Ptr(new prefixmerge7_pmswitch::CallExpr);
 		case PrefixMerge7_PmSwitchClasses::CommaExpr:
-			return new prefixmerge7_pmswitch::CommaExpr();
+			return vl::Ptr(new prefixmerge7_pmswitch::CommaExpr);
 		case PrefixMerge7_PmSwitchClasses::ConstType:
-			return new prefixmerge7_pmswitch::ConstType();
+			return vl::Ptr(new prefixmerge7_pmswitch::ConstType);
 		case PrefixMerge7_PmSwitchClasses::CtorExpr:
-			return new prefixmerge7_pmswitch::CtorExpr();
+			return vl::Ptr(new prefixmerge7_pmswitch::CtorExpr);
 		case PrefixMerge7_PmSwitchClasses::FunctionType:
-			return new prefixmerge7_pmswitch::FunctionType();
+			return vl::Ptr(new prefixmerge7_pmswitch::FunctionType);
 		case PrefixMerge7_PmSwitchClasses::GenericMemberName:
-			return new prefixmerge7_pmswitch::GenericMemberName();
+			return vl::Ptr(new prefixmerge7_pmswitch::GenericMemberName);
 		case PrefixMerge7_PmSwitchClasses::GenericName:
-			return new prefixmerge7_pmswitch::GenericName();
+			return vl::Ptr(new prefixmerge7_pmswitch::GenericName);
 		case PrefixMerge7_PmSwitchClasses::GtExpr:
-			return new prefixmerge7_pmswitch::GtExpr();
+			return vl::Ptr(new prefixmerge7_pmswitch::GtExpr);
 		case PrefixMerge7_PmSwitchClasses::LtExpr:
-			return new prefixmerge7_pmswitch::LtExpr();
+			return vl::Ptr(new prefixmerge7_pmswitch::LtExpr);
 		case PrefixMerge7_PmSwitchClasses::MemberName:
-			return new prefixmerge7_pmswitch::MemberName();
+			return vl::Ptr(new prefixmerge7_pmswitch::MemberName);
 		case PrefixMerge7_PmSwitchClasses::MulExpr:
-			return new prefixmerge7_pmswitch::MulExpr();
+			return vl::Ptr(new prefixmerge7_pmswitch::MulExpr);
 		case PrefixMerge7_PmSwitchClasses::Name:
-			return new prefixmerge7_pmswitch::Name();
+			return vl::Ptr(new prefixmerge7_pmswitch::Name);
 		case PrefixMerge7_PmSwitchClasses::PointerType:
-			return new prefixmerge7_pmswitch::PointerType();
+			return vl::Ptr(new prefixmerge7_pmswitch::PointerType);
 		case PrefixMerge7_PmSwitchClasses::ThrowExpr:
-			return new prefixmerge7_pmswitch::ThrowExpr();
+			return vl::Ptr(new prefixmerge7_pmswitch::ThrowExpr);
 		case PrefixMerge7_PmSwitchClasses::TypeOrExprToResolve:
-			return new prefixmerge7_pmswitch::TypeOrExprToResolve();
+			return vl::Ptr(new prefixmerge7_pmswitch::TypeOrExprToResolve);
 		default:
 			return vl::glr::AssemblyThrowCannotCreateAbstractType(type, cppTypeName);
 		}
