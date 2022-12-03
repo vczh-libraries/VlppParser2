@@ -976,11 +976,14 @@ ValidateStructure
 										if (beginsWithNonPM && firstIndirectlyPmClause) break;
 
 										index = context.directStartRules.Keys().IndexOf(visitingRule);
-										CopyFrom(
-											visiting,
-											From(context.directStartRules.GetByIndex(index))
-												.Select([](const RuleClausePath& path) {return path.ruleSymbol; }),
-											true);
+										if (index != -1)
+										{
+											CopyFrom(
+												visiting,
+												From(context.directStartRules.GetByIndex(index))
+													.Select([](const RuleClausePath& path) {return path.ruleSymbol; }),
+												true);
+										}
 									}
 								}
 

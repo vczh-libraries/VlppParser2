@@ -50,7 +50,7 @@ DirectFirstSetVisitor
 					if (auto startRule = TryGetRuleSymbol(name))
 					{
 						context.directStartRules.Add(ruleSymbol, { startRule,currentClause });
-						context.clauseToStartRules.Add(currentClause, ruleSymbol);
+						context.clauseToStartRules.Add(currentClause, startRule);
 						if (ruleSymbol == startRule && !context.leftRecursiveClauses.Contains(ruleSymbol, currentClause))
 						{
 							context.leftRecursiveClauses.Add(ruleSymbol, currentClause);
