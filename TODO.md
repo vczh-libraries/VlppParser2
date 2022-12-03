@@ -1,5 +1,14 @@
 # TODO
 
+## Progressing
+
+- Revisit `RuleIndirectlyBeginsWithPrefixMergeMixedNonSimpleUseClause`
+  - Reported in `BuiltIn-Cpp` there is `_GenericArgument ::= _TypeOrExpr_NoComma_NoGT...`
+  - This is incorrect since `_TypeOrExpr_NoComma_NoGT` begins with `prefix_merge` clause
+  - If `_TypeOrExpr_NoComma_NoGT` violates the rule, the error should be raised inside it
+- Reject if clause is `[NotStartWithRule] StartWithPrefixMerge`
+  - And other cases like loops and branches etc
+
 ## Next task
 
 - Rewrire and remove switch before removing PrefixMerge.
@@ -8,12 +17,7 @@
 - Generate multiple level of LRI from prefix_merge
   - Remove `PrefixExtractionAffectedRuleReferencedAnother`
   - Currently it generates an error if 3 levels are required
-- Revisit `RuleIndirectlyBeginsWithPrefixMergeMixedNonSimpleUseClause`
-  - Reported in `BuiltIn-Cpp` there is `_GenericArgument ::= _TypeOrExpr_NoComma_NoGT...`
-  - This is incorrect since `_TypeOrExpr_NoComma_NoGT` begins with `prefix_merge` clause
-  - If `_TypeOrExpr_NoComma_NoGT` violates the rule, the error should be raised inside it
-- Reject if clause is `[NotStartWithRule] StartWithPrefixMerge`
-  - And other cases like loops and branches etc
+
 ## Test Cases
 
 - `PrefixMerge` 1-7 add test cases to parse expr and type separately.
