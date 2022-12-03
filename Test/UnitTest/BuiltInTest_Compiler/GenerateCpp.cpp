@@ -15,6 +15,65 @@ extern WString GetTestParserInputPath(const WString& parserName);
 extern FilePath GetOutputDir(const WString& parserName);
 extern void WriteFilesIfChanged(FilePath outputDir, Dictionary<WString, WString>& files);
 
+void PrintError(const ParserError& error)
+{
+	constexpr auto MKError = unittest::UnitTest::MessageKind::Error;
+	constexpr auto MKInfo = unittest::UnitTest::MessageKind::Info;
+#define PRINT unittest::UnitTest::PrintMessage
+
+#define CASE_HEADER(LABEL)\
+		PRINT(L ## #LABEL L"[" + itow(error.location.codeRange.start.row) + L":" + itow(error.location.codeRange.start.column) + L"]", MKError);\
+
+#define CASE_1(LABEL, P1, ...)\
+		CASE_HEADER(LABEL)\
+		PRINT(L"    " L ## #P1 L": " + error.arg1, MKInfo);\
+
+#define CASE_2(LABEL, P1, P2, ...)\
+		CASE_HEADER(LABEL)\
+		PRINT(L"    " L ## #P1 L": " + error.arg1, MKInfo);\
+		PRINT(L"    " L ## #P2 L": " + error.arg2, MKInfo);\
+
+#define CASE_3(LABEL, P1, P2, P3, ...)\
+		CASE_HEADER(LABEL)\
+		PRINT(L"   " L ## #P1 L": " + error.arg1, MKInfo);\
+		PRINT(L"   " L ## #P2 L": " + error.arg2, MKInfo);\
+		PRINT(L"   " L ## #P3 L": " + error.arg3, MKInfo);\
+
+#define CASE_4(LABEL, P1, P2, P3, P4, ...)\
+		CASE_HEADER(LABEL)\
+		PRINT(L"   " L ## #P1 L": " + error.arg1, MKInfo);\
+		PRINT(L"   " L ## #P2 L": " + error.arg2, MKInfo);\
+		PRINT(L"   " L ## #P3 L": " + error.arg3, MKInfo);\
+		PRINT(L"   " L ## #P4 L": " + error.arg4, MKInfo);\
+
+#define CASE_CALL2(ARG1, ARG2, ARG3, ARG4, ARG5, FUNC, ...)\
+		FUNC(ARG1, ARG2, ARG3, ARG4, ARG5)
+
+#define CASE_CALL(ARGS)\
+		CASE_CALL2 ARGS
+
+#define CASE(LABEL, ...)\
+		case ParserErrorType::LABEL:\
+			CASE_CALL((LABEL, __VA_ARGS__, CASE_4, CASE_3, CASE_2, CASE_1))\
+			break;\
+
+	switch (error.type)
+	{
+	GLR_PARSER_ERROR_LIST(CASE)
+	default:
+		unittest::UnitTest::PrintMessage(L"<UNKNOWN-ERROR>", unittest::UnitTest::MessageKind::Error);
+	}
+#undef CASE
+#undef CASE_CALL
+#undef CASE_CALL2
+#undef CASE_4
+#undef CASE_3
+#undef CASE_2
+#undef CASE_1
+#undef CASE_HEADER
+#undef PRINT
+}
+
 TEST_FILE
 {
 	FilePath dirParser = GetTestParserInputPath(L"BuiltIn-Cpp");
@@ -93,6 +152,10 @@ TEST_FILE
 		{
 			auto formattedActual = GenerateToStream([&](TextWriter& writer) { SyntaxAstToCode(rewritten, writer); });
 			File(dirOutput / (L"SyntaxRewrittenActual[BuiltIn-Cpp].txt")).WriteAllText(formattedActual, true, BomEncoder::Utf8);
+		}
+		for (auto error : global.Errors())
+		{
+			PrintError(error);
 		}
 		TEST_ASSERT(global.Errors().Count() == 0);
 	

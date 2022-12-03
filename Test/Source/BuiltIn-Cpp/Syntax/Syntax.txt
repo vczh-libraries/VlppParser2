@@ -145,12 +145,12 @@ _PrimitiveExpr_QualifiedName
 //////////////////////////////////////////////////////////////////
 
 _PostfixUnaryCtor
-  ::= _Type:operand "(" {_Expr_NoComma:arguments ; ","} ")" as CallExpr {kind = Parenthesis}
-  ::= _Type:operand "{" {_Expr_NoComma:arguments ; ","} "}" as CallExpr {kind = Brace}
+  ::= _LongType:operand "(" {_Expr_NoComma:arguments ; ","} ")" as CallExpr {kind = Parenthesis}
+  ::= _LongType:operand "{" {_Expr_NoComma:arguments ; ","} "}" as CallExpr {kind = Brace}
   ;
 
 _PostfixUnaryExpr
-  ::= !prefix_merge(_PrimitiveExpr_QualifiedName)
+  ::= !_PrimitiveExpr_QualifiedName
   ::= !_PostfixUnaryCtor
   ::= _PostfixUnaryExpr:left "." _MemberOperatorQualifiedName:right as BinaryExpr {op = Member}
   ::= _PostfixUnaryExpr:left "->" _MemberOperatorQualifiedName:right as BinaryExpr {op = Pointer}
@@ -208,7 +208,7 @@ _AllPrefixUnaryExpr
 
 _PrefixUnaryExpr
   ::= !_PostfixUnaryExpr
-  ::= !prefix_merge(_AllPrefixUnaryExpr)
+  ::= !_AllPrefixUnaryExpr
   ;
 
 //////////////////////////////////////////////////////////////////
@@ -356,7 +356,7 @@ _ShortType : TypeOrExpr
 
 _ShortType_QualifiedName
   ::= !prefix_merge(_QualifiedName)
-  ::= !_ShortType
+  ::= !prefix_merge(_ShortType)
   ;
 
 _LongType

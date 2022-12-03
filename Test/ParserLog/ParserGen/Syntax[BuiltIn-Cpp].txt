@@ -2479,7 +2479,7 @@
                         "first": {
                             "$ast": "RefSyntax",
                             "field": "operand",
-                            "literal": "_Type",
+                            "literal": "_LongType",
                             "refType": "Id"
                         },
                         "second": {
@@ -2530,7 +2530,7 @@
                         "first": {
                             "$ast": "RefSyntax",
                             "field": "operand",
-                            "literal": "_Type",
+                            "literal": "_LongType",
                             "refType": "Id"
                         },
                         "second": {
@@ -2570,12 +2570,11 @@
     }, {
         "$ast": "Rule",
         "clauses": [{
-            "$ast": "PrefixMergeClause",
-            "rule": {
-                "$ast": "RefSyntax",
-                "field": "",
-                "literal": "_PrimitiveExpr_QualifiedName",
-                "refType": "Id"
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "_PrimitiveExpr_QualifiedName"
             }
         }, {
             "$ast": "ReuseClause",
@@ -3523,12 +3522,11 @@
                 "name": "_PostfixUnaryExpr"
             }
         }, {
-            "$ast": "PrefixMergeClause",
-            "rule": {
-                "$ast": "RefSyntax",
-                "field": "",
-                "literal": "_AllPrefixUnaryExpr",
-                "refType": "Id"
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "_AllPrefixUnaryExpr"
             }
         }],
         "name": "_PrefixUnaryExpr",
@@ -5295,11 +5293,12 @@
                 "refType": "Id"
             }
         }, {
-            "$ast": "ReuseClause",
-            "assignments": [],
-            "syntax": {
-                "$ast": "UseSyntax",
-                "name": "_ShortType"
+            "$ast": "PrefixMergeClause",
+            "rule": {
+                "$ast": "RefSyntax",
+                "field": "",
+                "literal": "_ShortType",
+                "refType": "Id"
             }
         }],
         "name": "_ShortType_QualifiedName",
