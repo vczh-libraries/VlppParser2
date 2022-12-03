@@ -23,65 +23,65 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 				switch((ParserGenClasses)type)
 				{
 				case ParserGenClasses::AlternativeSyntax:
-					return new vl::glr::parsergen::GlrAlternativeSyntax();
+					return vl::Ptr(new vl::glr::parsergen::GlrAlternativeSyntax);
 				case ParserGenClasses::AndCondition:
-					return new vl::glr::parsergen::GlrAndCondition();
+					return vl::Ptr(new vl::glr::parsergen::GlrAndCondition);
 				case ParserGenClasses::Assignment:
-					return new vl::glr::parsergen::GlrAssignment();
+					return vl::Ptr(new vl::glr::parsergen::GlrAssignment);
 				case ParserGenClasses::AstFile:
-					return new vl::glr::parsergen::GlrAstFile();
+					return vl::Ptr(new vl::glr::parsergen::GlrAstFile);
 				case ParserGenClasses::Class:
-					return new vl::glr::parsergen::GlrClass();
+					return vl::Ptr(new vl::glr::parsergen::GlrClass);
 				case ParserGenClasses::ClassProp:
-					return new vl::glr::parsergen::GlrClassProp();
+					return vl::Ptr(new vl::glr::parsergen::GlrClassProp);
 				case ParserGenClasses::CreateClause:
-					return new vl::glr::parsergen::GlrCreateClause();
+					return vl::Ptr(new vl::glr::parsergen::GlrCreateClause);
 				case ParserGenClasses::Enum:
-					return new vl::glr::parsergen::GlrEnum();
+					return vl::Ptr(new vl::glr::parsergen::GlrEnum);
 				case ParserGenClasses::EnumItem:
-					return new vl::glr::parsergen::GlrEnumItem();
+					return vl::Ptr(new vl::glr::parsergen::GlrEnumItem);
 				case ParserGenClasses::LeftRecursionInjectClause:
-					return new vl::glr::parsergen::GlrLeftRecursionInjectClause();
+					return vl::Ptr(new vl::glr::parsergen::GlrLeftRecursionInjectClause);
 				case ParserGenClasses::LeftRecursionInjectContinuation:
-					return new vl::glr::parsergen::GlrLeftRecursionInjectContinuation();
+					return vl::Ptr(new vl::glr::parsergen::GlrLeftRecursionInjectContinuation);
 				case ParserGenClasses::LeftRecursionPlaceholder:
-					return new vl::glr::parsergen::GlrLeftRecursionPlaceholder();
+					return vl::Ptr(new vl::glr::parsergen::GlrLeftRecursionPlaceholder);
 				case ParserGenClasses::LeftRecursionPlaceholderClause:
-					return new vl::glr::parsergen::GlrLeftRecursionPlaceholderClause();
+					return vl::Ptr(new vl::glr::parsergen::GlrLeftRecursionPlaceholderClause);
 				case ParserGenClasses::LoopSyntax:
-					return new vl::glr::parsergen::GlrLoopSyntax();
+					return vl::Ptr(new vl::glr::parsergen::GlrLoopSyntax);
 				case ParserGenClasses::NotCondition:
-					return new vl::glr::parsergen::GlrNotCondition();
+					return vl::Ptr(new vl::glr::parsergen::GlrNotCondition);
 				case ParserGenClasses::OptionalSyntax:
-					return new vl::glr::parsergen::GlrOptionalSyntax();
+					return vl::Ptr(new vl::glr::parsergen::GlrOptionalSyntax);
 				case ParserGenClasses::OrCondition:
-					return new vl::glr::parsergen::GlrOrCondition();
+					return vl::Ptr(new vl::glr::parsergen::GlrOrCondition);
 				case ParserGenClasses::PartialClause:
-					return new vl::glr::parsergen::GlrPartialClause();
+					return vl::Ptr(new vl::glr::parsergen::GlrPartialClause);
 				case ParserGenClasses::PrefixMergeClause:
-					return new vl::glr::parsergen::GlrPrefixMergeClause();
+					return vl::Ptr(new vl::glr::parsergen::GlrPrefixMergeClause);
 				case ParserGenClasses::PushConditionSyntax:
-					return new vl::glr::parsergen::GlrPushConditionSyntax();
+					return vl::Ptr(new vl::glr::parsergen::GlrPushConditionSyntax);
 				case ParserGenClasses::RefCondition:
-					return new vl::glr::parsergen::GlrRefCondition();
+					return vl::Ptr(new vl::glr::parsergen::GlrRefCondition);
 				case ParserGenClasses::RefSyntax:
-					return new vl::glr::parsergen::GlrRefSyntax();
+					return vl::Ptr(new vl::glr::parsergen::GlrRefSyntax);
 				case ParserGenClasses::ReuseClause:
-					return new vl::glr::parsergen::GlrReuseClause();
+					return vl::Ptr(new vl::glr::parsergen::GlrReuseClause);
 				case ParserGenClasses::Rule:
-					return new vl::glr::parsergen::GlrRule();
+					return vl::Ptr(new vl::glr::parsergen::GlrRule);
 				case ParserGenClasses::SequenceSyntax:
-					return new vl::glr::parsergen::GlrSequenceSyntax();
+					return vl::Ptr(new vl::glr::parsergen::GlrSequenceSyntax);
 				case ParserGenClasses::SwitchItem:
-					return new vl::glr::parsergen::GlrSwitchItem();
+					return vl::Ptr(new vl::glr::parsergen::GlrSwitchItem);
 				case ParserGenClasses::SyntaxFile:
-					return new vl::glr::parsergen::GlrSyntaxFile();
+					return vl::Ptr(new vl::glr::parsergen::GlrSyntaxFile);
 				case ParserGenClasses::TestConditionBranch:
-					return new vl::glr::parsergen::GlrTestConditionBranch();
+					return vl::Ptr(new vl::glr::parsergen::GlrTestConditionBranch);
 				case ParserGenClasses::TestConditionSyntax:
-					return new vl::glr::parsergen::GlrTestConditionSyntax();
+					return vl::Ptr(new vl::glr::parsergen::GlrTestConditionSyntax);
 				case ParserGenClasses::UseSyntax:
-					return new vl::glr::parsergen::GlrUseSyntax();
+					return vl::Ptr(new vl::glr::parsergen::GlrUseSyntax);
 				default:
 					return vl::glr::AssemblyThrowCannotCreateAbstractType(type, cppTypeName);
 				}

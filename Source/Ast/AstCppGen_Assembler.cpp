@@ -106,9 +106,9 @@ WriteAstAssemblerCppFile
 								if (classSymbol->derivedClasses.Count() == 0)
 								{
 									writer.WriteLine(prefix + L"\tcase " + manager.Global().name + L"Classes::" + classSymbol->Name() + L":");
-									writer.WriteString(prefix + L"\t\treturn new ");
+									writer.WriteString(prefix + L"\t\treturn vl::Ptr(new ");
 									PrintCppType(nullptr, classSymbol, writer);
-									writer.WriteLine(L"();");
+									writer.WriteLine(L");");
 								}
 							}
 						}

@@ -559,10 +559,10 @@ WriteTypeReflectionImplementation
 				writer.WriteString(prefix);
 				writer.WriteLine(L"\t{");
 				writer.WriteString(prefix);
-				writer.WriteString(L"\t\tPtr<ITypeLoader> loader = new ");
+				writer.WriteString(L"\t\tauto loader = Ptr(new ");
 				writer.WriteString(file->Owner()->Global().name);
 				writer.WriteString(file->Name());
-				writer.WriteLine(L"TypeLoader;");
+				writer.WriteLine(L"TypeLoader);");
 				writer.WriteString(prefix);
 				writer.WriteLine(L"\t\treturn manager->AddTypeLoader(loader);");
 				writer.WriteString(prefix);

@@ -893,7 +893,7 @@ Reflection
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 				if (auto manager = GetGlobalTypeManager())
 				{
-					Ptr<ITypeLoader> loader = new Parsing2TypeLoader;
+					auto loader = Ptr(new Parsing2TypeLoader);
 					return manager->AddTypeLoader(loader);
 				}
 #endif

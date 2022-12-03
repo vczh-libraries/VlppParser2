@@ -173,9 +173,9 @@ WriteCopyVisitorCppFile
 						PrintCppType(file, classSymbol, writer);
 						writer.WriteLine(L"* node)");
 						writer.WriteLine(prefix + L"{");
-						writer.WriteString(prefix + L"\tauto newNode = vl::MakePtr<");
+						writer.WriteString(prefix + L"\tauto newNode = vl::Ptr(new ");
 						PrintCppType(file, classSymbol, writer);
-						writer.WriteLine(L">();");
+						writer.WriteLine(L");");
 						writer.WriteLine(prefix + L"\tCopyFields(node, newNode.Obj());");
 						writer.WriteLine(prefix + L"\tthis->result = newNode;");
 						writer.WriteLine(prefix + L"}");
@@ -192,9 +192,9 @@ WriteCopyVisitorCppFile
 							writer.WriteLine(prefix + L"{");
 							if (classSymbol->derivedClasses.Count() == 0)
 							{
-								writer.WriteString(prefix + L"\tauto newNode = vl::MakePtr<");
+								writer.WriteString(prefix + L"\tauto newNode = vl::Ptr(new ");
 								PrintCppType(file, classSymbol, writer);
-								writer.WriteLine(L">();");
+								writer.WriteLine(L");");
 								writer.WriteLine(prefix + L"\tCopyFields(node, newNode.Obj());");
 								writer.WriteLine(prefix + L"\tthis->result = newNode;");
 							}

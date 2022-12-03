@@ -61,35 +61,35 @@ namespace vl
 
 				void TypeAstVisitor::Visit(GlrEnumItem* node)
 				{
-					auto newNode = vl::MakePtr<GlrEnumItem>();
+					auto newNode = vl::Ptr(new GlrEnumItem);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void TypeAstVisitor::Visit(GlrClassProp* node)
 				{
-					auto newNode = vl::MakePtr<GlrClassProp>();
+					auto newNode = vl::Ptr(new GlrClassProp);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void TypeAstVisitor::Visit(GlrAstFile* node)
 				{
-					auto newNode = vl::MakePtr<GlrAstFile>();
+					auto newNode = vl::Ptr(new GlrAstFile);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void TypeAstVisitor::Visit(GlrEnum* node)
 				{
-					auto newNode = vl::MakePtr<GlrEnum>();
+					auto newNode = vl::Ptr(new GlrEnum);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void TypeAstVisitor::Visit(GlrClass* node)
 				{
-					auto newNode = vl::MakePtr<GlrClass>();
+					auto newNode = vl::Ptr(new GlrClass);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}

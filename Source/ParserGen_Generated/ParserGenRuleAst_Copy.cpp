@@ -226,175 +226,175 @@ namespace vl
 
 				void RuleAstVisitor::Visit(GlrSwitchItem* node)
 				{
-					auto newNode = vl::MakePtr<GlrSwitchItem>();
+					auto newNode = vl::Ptr(new GlrSwitchItem);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void RuleAstVisitor::Visit(GlrTestConditionBranch* node)
 				{
-					auto newNode = vl::MakePtr<GlrTestConditionBranch>();
+					auto newNode = vl::Ptr(new GlrTestConditionBranch);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void RuleAstVisitor::Visit(GlrAssignment* node)
 				{
-					auto newNode = vl::MakePtr<GlrAssignment>();
+					auto newNode = vl::Ptr(new GlrAssignment);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void RuleAstVisitor::Visit(GlrLeftRecursionPlaceholder* node)
 				{
-					auto newNode = vl::MakePtr<GlrLeftRecursionPlaceholder>();
+					auto newNode = vl::Ptr(new GlrLeftRecursionPlaceholder);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void RuleAstVisitor::Visit(GlrLeftRecursionInjectContinuation* node)
 				{
-					auto newNode = vl::MakePtr<GlrLeftRecursionInjectContinuation>();
+					auto newNode = vl::Ptr(new GlrLeftRecursionInjectContinuation);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void RuleAstVisitor::Visit(GlrRule* node)
 				{
-					auto newNode = vl::MakePtr<GlrRule>();
+					auto newNode = vl::Ptr(new GlrRule);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void RuleAstVisitor::Visit(GlrSyntaxFile* node)
 				{
-					auto newNode = vl::MakePtr<GlrSyntaxFile>();
+					auto newNode = vl::Ptr(new GlrSyntaxFile);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void RuleAstVisitor::Visit(GlrRefCondition* node)
 				{
-					auto newNode = vl::MakePtr<GlrRefCondition>();
+					auto newNode = vl::Ptr(new GlrRefCondition);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void RuleAstVisitor::Visit(GlrNotCondition* node)
 				{
-					auto newNode = vl::MakePtr<GlrNotCondition>();
+					auto newNode = vl::Ptr(new GlrNotCondition);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void RuleAstVisitor::Visit(GlrAndCondition* node)
 				{
-					auto newNode = vl::MakePtr<GlrAndCondition>();
+					auto newNode = vl::Ptr(new GlrAndCondition);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void RuleAstVisitor::Visit(GlrOrCondition* node)
 				{
-					auto newNode = vl::MakePtr<GlrOrCondition>();
+					auto newNode = vl::Ptr(new GlrOrCondition);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void RuleAstVisitor::Visit(GlrRefSyntax* node)
 				{
-					auto newNode = vl::MakePtr<GlrRefSyntax>();
+					auto newNode = vl::Ptr(new GlrRefSyntax);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void RuleAstVisitor::Visit(GlrUseSyntax* node)
 				{
-					auto newNode = vl::MakePtr<GlrUseSyntax>();
+					auto newNode = vl::Ptr(new GlrUseSyntax);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void RuleAstVisitor::Visit(GlrLoopSyntax* node)
 				{
-					auto newNode = vl::MakePtr<GlrLoopSyntax>();
+					auto newNode = vl::Ptr(new GlrLoopSyntax);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void RuleAstVisitor::Visit(GlrOptionalSyntax* node)
 				{
-					auto newNode = vl::MakePtr<GlrOptionalSyntax>();
+					auto newNode = vl::Ptr(new GlrOptionalSyntax);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void RuleAstVisitor::Visit(GlrSequenceSyntax* node)
 				{
-					auto newNode = vl::MakePtr<GlrSequenceSyntax>();
+					auto newNode = vl::Ptr(new GlrSequenceSyntax);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void RuleAstVisitor::Visit(GlrAlternativeSyntax* node)
 				{
-					auto newNode = vl::MakePtr<GlrAlternativeSyntax>();
+					auto newNode = vl::Ptr(new GlrAlternativeSyntax);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void RuleAstVisitor::Visit(GlrPushConditionSyntax* node)
 				{
-					auto newNode = vl::MakePtr<GlrPushConditionSyntax>();
+					auto newNode = vl::Ptr(new GlrPushConditionSyntax);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void RuleAstVisitor::Visit(GlrTestConditionSyntax* node)
 				{
-					auto newNode = vl::MakePtr<GlrTestConditionSyntax>();
+					auto newNode = vl::Ptr(new GlrTestConditionSyntax);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void RuleAstVisitor::Visit(GlrCreateClause* node)
 				{
-					auto newNode = vl::MakePtr<GlrCreateClause>();
+					auto newNode = vl::Ptr(new GlrCreateClause);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void RuleAstVisitor::Visit(GlrPartialClause* node)
 				{
-					auto newNode = vl::MakePtr<GlrPartialClause>();
+					auto newNode = vl::Ptr(new GlrPartialClause);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void RuleAstVisitor::Visit(GlrReuseClause* node)
 				{
-					auto newNode = vl::MakePtr<GlrReuseClause>();
+					auto newNode = vl::Ptr(new GlrReuseClause);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void RuleAstVisitor::Visit(GlrLeftRecursionPlaceholderClause* node)
 				{
-					auto newNode = vl::MakePtr<GlrLeftRecursionPlaceholderClause>();
+					auto newNode = vl::Ptr(new GlrLeftRecursionPlaceholderClause);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void RuleAstVisitor::Visit(GlrLeftRecursionInjectClause* node)
 				{
-					auto newNode = vl::MakePtr<GlrLeftRecursionInjectClause>();
+					auto newNode = vl::Ptr(new GlrLeftRecursionInjectClause);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
 
 				void RuleAstVisitor::Visit(GlrPrefixMergeClause* node)
 				{
-					auto newNode = vl::MakePtr<GlrPrefixMergeClause>();
+					auto newNode = vl::Ptr(new GlrPrefixMergeClause);
 					CopyFields(node, newNode.Obj());
 					this->result = newNode;
 				}
