@@ -948,7 +948,7 @@ ValidateStructure
 						if (ruleSymbol->isPartial)
 						{
 							context.syntaxManager.AddError(
-								ParserErrorType::RuleIndirectlyBeginsWithPrefixMergeMixedLeftRecursionMarkers,
+								ParserErrorType::PartialRuleIndirectlyBeginsWithPrefixMerge,
 								rule->name.codeRange,
 								ruleSymbol->Name(),
 								rulePm->Name()
