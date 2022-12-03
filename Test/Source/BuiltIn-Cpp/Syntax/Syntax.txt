@@ -448,8 +448,9 @@ _DeclaratorFunctionParameter
   ;
 
 _DeclaratorFunctionParameters
-  ::= "...":variadic as partial DeclaratorFunctionPart
-  ::= _DeclaratorFunctionParameter:parameters {"," _DeclaratorFunctionParameter:parameters} ["," "...":variadic] as partial DeclaratorFunctionPart
+  ::= "(" ")" as partial DeclaratorFunctionPart
+  ::= "(" "...":variadic ")" as partial DeclaratorFunctionPart
+  ::= "(" _DeclaratorFunctionParameter:parameters {"," _DeclaratorFunctionParameter:parameters} ["," "...":variadic] ")" as partial DeclaratorFunctionPart
   ;
 
 _FunctionKeyword
@@ -469,7 +470,7 @@ _FunctionKeyword
   ;
 
 _DeclaratorFunctionPart
-  ::= "(" [_DeclaratorFunctionParameters] ")" {_FunctionKeyword:keywords} ["->" _Type:deferredType] as DeclaratorFunctionPart
+  ::= _DeclaratorFunctionParameters {_FunctionKeyword:keywords} ["->" _Type:deferredType] as DeclaratorFunctionPart
   ;
 
 _DeclaratorArrayPart

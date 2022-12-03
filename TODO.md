@@ -9,6 +9,9 @@
   - Remove `PrefixExtractionAffectedRuleReferencedAnother`
   - Currently it generates an error if 3 levels are required
 - Revisit `RuleIndirectlyBeginsWithPrefixMergeMixedNonSimpleUseClause`
+  - Reported in `BuiltIn-Cpp` there is `_GenericArgument ::= _TypeOrExpr_NoComma_NoGT...`
+  - This is incorrect since `_TypeOrExpr_NoComma_NoGT` begins with `prefix_merge` clause
+  - If `_TypeOrExpr_NoComma_NoGT` violates the rule, the error should be raised inside it
 
 ## Test Cases
 

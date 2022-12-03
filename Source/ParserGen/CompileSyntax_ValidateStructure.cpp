@@ -843,12 +843,12 @@ ValidateStructureIndirectPrefixMergeRuleVisitor
 					FAILED_CONDITION:;
 					}
 
-					//context.syntaxManager.AddError(
-					//	ParserErrorType::RuleIndirectlyBeginsWithPrefixMergeMixedNonSimpleUseClause,
-					//	node->codeRange,
-					//	ruleSymbol->Name(),
-					//	pmRuleSymbol->Name()
-					//	);
+					context.syntaxManager.AddError(
+						ParserErrorType::RuleIndirectlyBeginsWithPrefixMergeMixedNonSimpleUseClause,
+						node->codeRange,
+						ruleSymbol->Name(),
+						pmRuleSymbol->Name()
+						);
 				}
 
 				////////////////////////////////////////////////////////////////////////
