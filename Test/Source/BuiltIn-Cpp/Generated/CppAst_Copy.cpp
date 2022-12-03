@@ -576,6 +576,7 @@ namespace cpp_parser
 		{
 			if (!node) return nullptr;
 			node->Accept(static_cast<CppTypeOrExpr::IVisitor*>(this));
+			this->result->codeRange = node->codeRange;
 			return this->result.Cast<CppTypeOrExpr>();
 		}
 
@@ -583,6 +584,7 @@ namespace cpp_parser
 		{
 			if (!node) return nullptr;
 			node->Accept(static_cast<CppIdentifier::IVisitor*>(this));
+			this->result->codeRange = node->codeRange;
 			return this->result.Cast<CppIdentifier>();
 		}
 
@@ -590,6 +592,7 @@ namespace cpp_parser
 		{
 			if (!node) return nullptr;
 			Visit(node);
+			this->result->codeRange = node->codeRange;
 			return this->result.Cast<CppGenericArgument>();
 		}
 
@@ -597,6 +600,7 @@ namespace cpp_parser
 		{
 			if (!node) return nullptr;
 			Visit(node);
+			this->result->codeRange = node->codeRange;
 			return this->result.Cast<CppGenericArguments>();
 		}
 
@@ -604,6 +608,7 @@ namespace cpp_parser
 		{
 			if (!node) return nullptr;
 			Visit(node);
+			this->result->codeRange = node->codeRange;
 			return this->result.Cast<CppStringLiteralFragment>();
 		}
 
@@ -611,6 +616,7 @@ namespace cpp_parser
 		{
 			if (!node) return nullptr;
 			Visit(node);
+			this->result->codeRange = node->codeRange;
 			return this->result.Cast<CppAdvancedType>();
 		}
 
@@ -618,6 +624,7 @@ namespace cpp_parser
 		{
 			if (!node) return nullptr;
 			Visit(node);
+			this->result->codeRange = node->codeRange;
 			return this->result.Cast<CppDeclaratorKeyword>();
 		}
 
@@ -625,6 +632,7 @@ namespace cpp_parser
 		{
 			if (!node) return nullptr;
 			Visit(node);
+			this->result->codeRange = node->codeRange;
 			return this->result.Cast<CppFunctionKeyword>();
 		}
 
@@ -632,6 +640,7 @@ namespace cpp_parser
 		{
 			if (!node) return nullptr;
 			Visit(node);
+			this->result->codeRange = node->codeRange;
 			return this->result.Cast<CppFunctionParameter>();
 		}
 
@@ -639,6 +648,7 @@ namespace cpp_parser
 		{
 			if (!node) return nullptr;
 			Visit(node);
+			this->result->codeRange = node->codeRange;
 			return this->result.Cast<CppDeclaratorFunctionPart>();
 		}
 
@@ -646,6 +656,7 @@ namespace cpp_parser
 		{
 			if (!node) return nullptr;
 			Visit(node);
+			this->result->codeRange = node->codeRange;
 			return this->result.Cast<CppDeclaratorArrayPart>();
 		}
 
@@ -653,6 +664,7 @@ namespace cpp_parser
 		{
 			if (!node) return nullptr;
 			Visit(node);
+			this->result->codeRange = node->codeRange;
 			return this->result.Cast<CppDeclarator>();
 		}
 
@@ -660,6 +672,7 @@ namespace cpp_parser
 		{
 			if (!node) return nullptr;
 			Visit(node);
+			this->result->codeRange = node->codeRange;
 			return this->result.Cast<CppFile>();
 		}
 
