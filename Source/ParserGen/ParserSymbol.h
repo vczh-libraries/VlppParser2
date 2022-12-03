@@ -157,7 +157,8 @@ ParserSymbolManager
 			ERROR_ITEM(RuleMixedPrefixMergeWithClauseNotBeginWithIndirectPrefixMerge,								ruleName, startRule)										/* If a rule has prefix_merge clause, than all other clause must directly or indirectly starts with prefix_merge */\
 			ERROR_ITEM(RuleIndirectlyBeginsWithPrefixMergeMixedLeftRecursionMarkers,								ruleName, prefixMergeRule, leftRecursionMarkerRule)\
 			ERROR_ITEM(PartialRuleIndirectlyBeginsWithPrefixMerge,													ruleName, prefixMergeRule)\
-			ERROR_ITEM(ClausePartiallyIndirectlyBeginsWithPrefixMerge,												ruleName, prefixMergeRule)\
+			ERROR_ITEM(ClausePartiallyIndirectlyBeginsWithPrefixMergeAndLiteral,									ruleName, prefixMergeRule, literal)\
+			ERROR_ITEM(ClausePartiallyIndirectlyBeginsWithPrefixMergeAndRule,										ruleName, prefixMergeRule, literal)\
 			/* SyntaxAst(RewriteSyntax_PrefixMerge, prefix_merge) */\
 			ERROR_ITEM(PrefixExtractionAffectedRuleReferencedAnother,												ruleName, conflictedRule, prefixRule)						/* During left_recursion_inject clause generation, if prefix extracted affected the process, all !prefixRule clauses where prefixRule is the prefix of conflictedRule in any !conflictedRule clauses, prefixRule should not be affected */\
 

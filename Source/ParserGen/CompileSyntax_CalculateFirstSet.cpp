@@ -33,21 +33,15 @@ DirectFirstSetVisitor
 					return context.syntaxManager.Rules().Values()[index];
 				}
 
-				void AddStartLiteral()
+				void AddStartLiteral(const ParsingToken& literal)
 				{
-					if (!context.ruleBeginsWithLiteral.Contains(ruleSymbol))
-					{
-						context.ruleBeginsWithLiteral.Add(ruleSymbol);
-					}
-					if (!context.clauseBeginsWithLiteral.Contains(currentClause))
-					{
-						context.clauseBeginsWithLiteral.Add(currentClause);
-					}
+					context.ruleBeginsWithLiteral.Add(ruleSymbol, literal);
+					context.clauseBeginsWithLiteral.Add(currentClause, literal);
 				}
 
-				void AddStartTokenOrRule(const WString& name)
+				void AddStartTokenOrRule(const ParsingToken& literal)
 				{
-					if (auto startRule = TryGetRuleSymbol(name))
+					if (auto startRule = TryGetRuleSymbol(literal.value))
 					{
 						context.directStartRules.Add(ruleSymbol, { startRule,currentClause });
 						context.clauseToStartRules.Add(currentClause, startRule);
@@ -58,7 +52,7 @@ DirectFirstSetVisitor
 					}
 					else
 					{
-						AddStartLiteral();
+						AddStartLiteral(literal);
 					}
 				}
 
@@ -87,18 +81,18 @@ DirectFirstSetVisitor
 				{
 					if (node->refType == GlrRefType::Id)
 					{
-						AddStartTokenOrRule(node->literal.value);
+						AddStartTokenOrRule(node->literal);
 					}
 					else
 					{
-						AddStartLiteral();
+						AddStartLiteral(node->literal);
 					}
 					couldBeEmpty = false;
 				}
 
 				void Visit(GlrUseSyntax* node) override
 				{
-					AddStartTokenOrRule(node->name.value);
+					AddStartTokenOrRule(node->name);
 					couldBeEmpty = false;
 				}
 

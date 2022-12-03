@@ -55,8 +55,8 @@ namespace vl
 				using PrefixMergeClauseMap = collections::Group<RuleSymbol*, GlrPrefixMergeClause*>;
 				using ClauseToRuleMap = collections::Dictionary<GlrClause*, RuleSymbol*>;
 				using ClauseToRuleGroup = collections::Group<GlrClause*, RuleSymbol*>;
-				using RuleSymbolSet = collections::SortedList<RuleSymbol*>;
-				using ClauseSet = collections::SortedList<GlrClause*>;
+				using RuleToLiteralMap = collections::Group<RuleSymbol*, ParsingToken>;
+				using ClauseToLiteralMap = collections::Group<GlrClause*, ParsingToken>;
 				using RulePathDependencies = collections::Group<RuleSymbol*, RuleClausePath>;
 				using PathToLastRuleMap = collections::Group<RuleSymbolPair, RuleClausePath>;
 
@@ -89,8 +89,8 @@ namespace vl
 
 					ClauseToRuleMap						simpleUseClauseToReferencedRules;					// GlrClause -> RuleSymbol when this clause is !RuleSymbol
 					ClauseToRuleGroup					clauseToStartRules;									// GlrClause -> RuleSymbol when this clause begins with RuleSymbol
-					RuleSymbolSet						ruleBeginsWithLiteral;								// RuleSymbol that begins with any literal
-					ClauseSet							clauseBeginsWithLiteral;							// GlrClause that begins with any literal
+					RuleToLiteralMap					ruleBeginsWithLiteral;								// RuleSymbol that begins with any literal
+					ClauseToLiteralMap					clauseBeginsWithLiteral;							// GlrClause that begins with any literal
 
 					RulePathDependencies				directStartRules, indirectStartRules;				// RuleSymbol -> {rule, clause begins with the rule}
 																											// RuleSymbol -> {rule, reachable clause begins with the rule}

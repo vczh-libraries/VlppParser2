@@ -202,7 +202,7 @@ Exp1
 	// ClausePartiallyIndirectlyBeginsWithPrefixMerge (literal)
 	//////////////////////////////////////////////////////
 
-	TEST_CASE(L"ClausePartiallyIndirectlyBeginsWithPrefixMerge (literal) 1")
+	TEST_CASE(L"ClausePartiallyIndirectlyBeginsWithPrefixMergeAndLiteral 1")
 	{
 		const wchar_t* syntaxCode =
 LR"SYNTAX(
@@ -222,11 +222,11 @@ Exp1
 			astCode,
 			lexerCode,
 			syntaxCode,
-			{ ParserErrorType::ClausePartiallyIndirectlyBeginsWithPrefixMerge,L"Exp1",L"PM"}
+			{ ParserErrorType::ClausePartiallyIndirectlyBeginsWithPrefixMergeAndLiteral,L"Exp1",L"PM",L"\"+\"" }
 			);
 	});
 
-	TEST_CASE(L"ClausePartiallyIndirectlyBeginsWithPrefixMerge (literal) 2")
+	TEST_CASE(L"ClausePartiallyIndirectlyBeginsWithPrefixMergeAndLiteral 2")
 	{
 		const wchar_t* syntaxCode =
 LR"SYNTAX(
@@ -246,11 +246,11 @@ Exp1
 			astCode,
 			lexerCode,
 			syntaxCode,
-			{ ParserErrorType::ClausePartiallyIndirectlyBeginsWithPrefixMerge,L"Exp1",L"PM"}
+			{ ParserErrorType::ClausePartiallyIndirectlyBeginsWithPrefixMergeAndLiteral,L"Exp1",L"PM",L"\"+\"" }
 			);
 	});
 
-	TEST_CASE(L"ClausePartiallyIndirectlyBeginsWithPrefixMerge (literal) 3")
+	TEST_CASE(L"ClausePartiallyIndirectlyBeginsWithPrefixMergeAndLiteral 3")
 	{
 		const wchar_t* syntaxCode =
 LR"SYNTAX(
@@ -270,11 +270,11 @@ Exp1
 			astCode,
 			lexerCode,
 			syntaxCode,
-			{ ParserErrorType::ClausePartiallyIndirectlyBeginsWithPrefixMerge,L"Exp1",L"PM"}
+			{ ParserErrorType::ClausePartiallyIndirectlyBeginsWithPrefixMergeAndLiteral,L"Exp1",L"PM",L"\"+\"" }
 			);
 	});
 
-	TEST_CASE(L"ClausePartiallyIndirectlyBeginsWithPrefixMerge (literal) 4")
+	TEST_CASE(L"ClausePartiallyIndirectlyBeginsWithPrefixMergeAndLiteral 4")
 	{
 		const wchar_t* syntaxCode =
 LR"SYNTAX(
@@ -294,7 +294,7 @@ Exp1
 			astCode,
 			lexerCode,
 			syntaxCode,
-			{ ParserErrorType::ClausePartiallyIndirectlyBeginsWithPrefixMerge,L"Exp1",L"PM"}
+			{ ParserErrorType::ClausePartiallyIndirectlyBeginsWithPrefixMergeAndLiteral,L"Exp1",L"PM",L"\"+\"" }
 			);
 	});
 
@@ -302,7 +302,7 @@ Exp1
 	// ClausePartiallyIndirectlyBeginsWithPrefixMerge (rule)
 	//////////////////////////////////////////////////////
 
-	TEST_CASE(L"ClausePartiallyIndirectlyBeginsWithPrefixMerge (rule) 1")
+	TEST_CASE(L"ClausePartiallyIndirectlyBeginsWithPrefixMergeAndRule 1")
 	{
 		const wchar_t* syntaxCode =
 LR"SYNTAX(
@@ -325,11 +325,11 @@ Exp1
 			astCode,
 			lexerCode,
 			syntaxCode,
-			{ ParserErrorType::ClausePartiallyIndirectlyBeginsWithPrefixMerge,L"Exp1",L"PM"}
+			{ ParserErrorType::ClausePartiallyIndirectlyBeginsWithPrefixMergeAndRule,L"Exp1",L"PM",L"Plus" }
 			);
 	});
 
-	TEST_CASE(L"ClausePartiallyIndirectlyBeginsWithPrefixMerge (rule) 2")
+	TEST_CASE(L"ClausePartiallyIndirectlyBeginsWithPrefixMergeAndRule 2")
 	{
 		const wchar_t* syntaxCode =
 LR"SYNTAX(
@@ -352,11 +352,11 @@ Exp1
 			astCode,
 			lexerCode,
 			syntaxCode,
-			{ ParserErrorType::ClausePartiallyIndirectlyBeginsWithPrefixMerge,L"Exp1",L"PM"}
+			{ ParserErrorType::ClausePartiallyIndirectlyBeginsWithPrefixMergeAndRule,L"Exp1",L"PM",L"Plus" }
 			);
 	});
 
-	TEST_CASE(L"ClausePartiallyIndirectlyBeginsWithPrefixMerge (rule) 3")
+	TEST_CASE(L"ClausePartiallyIndirectlyBeginsWithPrefixMergeAndRule 3")
 	{
 		const wchar_t* syntaxCode =
 LR"SYNTAX(
@@ -379,11 +379,11 @@ Exp1
 			astCode,
 			lexerCode,
 			syntaxCode,
-			{ ParserErrorType::ClausePartiallyIndirectlyBeginsWithPrefixMerge,L"Exp1",L"PM"}
+			{ ParserErrorType::ClausePartiallyIndirectlyBeginsWithPrefixMergeAndRule,L"Exp1",L"PM",L"Plus" }
 			);
 	});
 
-	TEST_CASE(L"ClausePartiallyIndirectlyBeginsWithPrefixMerge (rule) 4")
+	TEST_CASE(L"ClausePartiallyIndirectlyBeginsWithPrefixMergeAndRule 4")
 	{
 		const wchar_t* syntaxCode =
 LR"SYNTAX(
@@ -406,7 +406,7 @@ Exp1
 			astCode,
 			lexerCode,
 			syntaxCode,
-			{ ParserErrorType::ClausePartiallyIndirectlyBeginsWithPrefixMerge,L"Exp1",L"PM"}
+			{ ParserErrorType::ClausePartiallyIndirectlyBeginsWithPrefixMergeAndRule,L"Exp1",L"PM",L"Plus" }
 			);
 	});
 }

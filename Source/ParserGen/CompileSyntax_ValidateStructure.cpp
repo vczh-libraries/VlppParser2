@@ -948,10 +948,19 @@ ValidateStructure
 							ValidateStructureIndirectPrefixMergeRuleVisitor visitor3(context, ruleSymbol, rulePm);
 							for (auto clause : rule->clauses)
 							{
-								bool beginsWithNonPM = context.clauseBeginsWithLiteral.Contains(clause.Obj());
+								ParsingToken firstDirectLiteral;
+								RuleSymbol* firstIndirectNonPmRule = nullptr;
 								GlrPrefixMergeClause* firstIndirectlyPmClause = nullptr;
 
-								vint index = context.clauseToStartRules.Keys().IndexOf(clause.Obj());
+								// test if this clause directly begins with and literal
+								vint index = context.clauseBeginsWithLiteral.Keys().IndexOf(clause.Obj());
+								if (index != -1)
+								{
+									firstDirectLiteral = context.clauseBeginsWithLiteral.GetByIndex(index)[0];
+								}
+
+								// find all direct start rules from this clause
+								index = context.clauseToStartRules.Keys().IndexOf(clause.Obj());
 								if (index != -1)
 								{
 									List<RuleSymbol*> visiting;
@@ -964,37 +973,61 @@ ValidateStructure
 										if (visited.Contains(visitingRule)) continue;
 										visited.Add(visitingRule);
 
+										// test if the visiting rule begins with prefix_merge
 										index = context.indirectPmClauses.Keys().IndexOf(visitingRule);
 										if (index != -1)
 										{
-											firstIndirectlyPmClause = context.indirectPmClauses.GetByIndex(index)[0];
+											if (!firstIndirectlyPmClause)
+											{
+												firstIndirectlyPmClause = context.indirectPmClauses.GetByIndex(index)[0];
+											}
 										}
 										else
 										{
-											beginsWithNonPM = true;
+											// if the visiting rule itself partial begins with prefix_merge
+											// then an errors should be generated for this rule
+											// here we assume it never happens in order to reduce the number of errors
+											if (!firstIndirectNonPmRule)
+											{
+												firstIndirectNonPmRule = visitingRule;
+											}
 										}
-										if (beginsWithNonPM && firstIndirectlyPmClause) break;
+										if ((firstDirectLiteral || firstIndirectNonPmRule) && firstIndirectlyPmClause) break;
 
-										index = context.directStartRules.Keys().IndexOf(visitingRule);
-										if (index != -1)
-										{
-											CopyFrom(
-												visiting,
-												From(context.directStartRules.GetByIndex(index))
-													.Where([](const RuleClausePath& path) { return !dynamic_cast<GlrPrefixMergeClause*>(path.clause); })
-													.Select([](const RuleClausePath& path) { return path.ruleSymbol; }),
-												true);
-										}
+										//if (index == -1)
+										//{
+										//	index = context.directStartRules.Keys().IndexOf(visitingRule);
+										//	if (index != -1)
+										//	{
+										//		CopyFrom(
+										//			visiting,
+										//			From(context.directStartRules.GetByIndex(index))
+										//				.Where([](const RuleClausePath& path) { return !dynamic_cast<GlrPrefixMergeClause*>(path.clause); })
+										//				.Select([](const RuleClausePath& path) { return path.ruleSymbol; }),
+										//			true);
+										//	}
+										//}
 									}
 								}
 
-								if (beginsWithNonPM && firstIndirectlyPmClause)
+								if (firstDirectLiteral && firstIndirectlyPmClause)
 								{
 									context.syntaxManager.AddError(
-										ParserErrorType::ClausePartiallyIndirectlyBeginsWithPrefixMerge,
+										ParserErrorType::ClausePartiallyIndirectlyBeginsWithPrefixMergeAndLiteral,
 										clause->codeRange,
 										ruleSymbol->Name(),
-										context.clauseToRules[firstIndirectlyPmClause]->Name()
+										context.clauseToRules[firstIndirectlyPmClause]->Name(),
+										firstDirectLiteral.value
+										);
+								}
+								else if (firstIndirectNonPmRule && firstIndirectlyPmClause)
+								{
+									context.syntaxManager.AddError(
+										ParserErrorType::ClausePartiallyIndirectlyBeginsWithPrefixMergeAndRule,
+										clause->codeRange,
+										ruleSymbol->Name(),
+										context.clauseToRules[firstIndirectlyPmClause]->Name(),
+										firstIndirectNonPmRule->Name()
 										);
 								}
 								else
