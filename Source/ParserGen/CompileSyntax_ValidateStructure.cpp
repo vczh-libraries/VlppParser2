@@ -993,20 +993,6 @@ ValidateStructure
 											}
 										}
 										if ((firstDirectLiteral || firstIndirectNonPmRule) && firstIndirectlyPmClause) break;
-
-										//if (index == -1)
-										//{
-										//	index = context.directStartRules.Keys().IndexOf(visitingRule);
-										//	if (index != -1)
-										//	{
-										//		CopyFrom(
-										//			visiting,
-										//			From(context.directStartRules.GetByIndex(index))
-										//				.Where([](const RuleClausePath& path) { return !dynamic_cast<GlrPrefixMergeClause*>(path.clause); })
-										//				.Select([](const RuleClausePath& path) { return path.ruleSymbol; }),
-										//			true);
-										//	}
-										//}
 									}
 								}
 

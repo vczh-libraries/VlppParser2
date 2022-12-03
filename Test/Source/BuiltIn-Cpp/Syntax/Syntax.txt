@@ -443,8 +443,13 @@ _DeclaratorAKMember
 
 //================================================================
 
+_DeclaratorFunctionParameterWithoutKeyword
+  ::= _LongType:type [_DeclaratorOptionalName:declarator] ["=" _Expr_NoComma:defaultValue] as FunctionParameter
+  ;
+
 _DeclaratorFunctionParameter
-  ::= {_DeclaratorKeyword:keywords} _LongType:type [_DeclaratorOptionalName:declarator] ["=" _Expr_NoComma:defaultValue] as FunctionParameter
+  ::= !_DeclaratorFunctionParameterWithoutKeyword
+  ::= _DeclaratorKeyword:keywords {_DeclaratorKeyword:keywords} !_DeclaratorFunctionParameterWithoutKeyword
   ;
 
 _DeclaratorFunctionParameters
