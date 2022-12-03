@@ -108,7 +108,9 @@ FillMissingPrefixMergeClauses
 						// create new rule and replace the clause with prefix_merge
 						auto newRule = Ptr(new GlrRule);
 						rewritten->rules.Insert(ruleIndex, newRule);
-						newRule->name.value = ruleRaw->name.value + L"_LRI_Isolated_" + itow(clauseIndex);
+						newRule->codeRange = clauseRaw->codeRange;
+						newRule->name = ruleRaw->name;
+						newRule->name.value += L"_LRI_Isolated_" + itow(clauseIndex);
 						newRule->clauses.Add(clause);
 
 						auto newPM = Ptr(new GlrPrefixMergeClause);
@@ -261,7 +263,8 @@ CreateRewrittenRules
 						rewritten->rules.Add(lri);
 						rContext.lriRules.Add(ruleSymbol, lri.Obj());
 
-						lri->name.value = originRule->name.value;
+						lri->codeRange = originRule->name.codeRange;
+						lri->name = originRule->name;
 						originRule->name.value += L"_LRI_Original";
 					}
 
@@ -276,6 +279,8 @@ CreateRewrittenRules
 							rewritten->rules.Insert(rewritten->rules.IndexOf(originRule), ep);
 							rContext.extractedPrefixRules.Add({ ruleSymbol,prefixRuleSymbol }, ep.Obj());
 
+							ep->codeRange = originRule->codeRange;
+							ep->name.codeRange = originRule->name.codeRange;
 							ep->name.value = ruleSymbol->Name() + L"_" + prefixRuleSymbol->Name() + L"_LRI_Prefix";
 						}
 					}
@@ -333,6 +338,7 @@ RewriteExtractedPrefixRules
 					{
 						{
 							auto lrpClause = Ptr(new GlrLeftRecursionPlaceholderClause);
+							lrpClause->codeRange = epRule->codeRange;
 							epRule->clauses.Add(lrpClause);
 
 							auto lrp = Ptr(new GlrLeftRecursionPlaceholder);
@@ -342,6 +348,7 @@ RewriteExtractedPrefixRules
 						}
 						{
 							auto reuseClause = Ptr(new GlrReuseClause);
+							reuseClause->codeRange = epRule->codeRange;
 							epRule->clauses.Add(reuseClause);
 
 							auto useSyntax = Ptr(new GlrUseSyntax);
@@ -651,6 +658,7 @@ RewriteRules (Unaffected)
 						if (generateOptionalLri && flags.Count() == 0)
 						{
 							auto reuseClause = Ptr(new GlrReuseClause);
+							reuseClause->codeRange = lriRule->codeRange;
 							lriRule->clauses.Add(reuseClause);
 
 							auto useSyntax = Ptr(new GlrUseSyntax);
@@ -924,6 +932,7 @@ FixPrefixMergeClauses
 						auto originRule = rContext.originRules[ruleSymbol];
 
 						auto lrpClause = Ptr(new GlrLeftRecursionPlaceholderClause);
+						lrpClause->codeRange = originRule->codeRange;
 						originRule->clauses.Insert(0, lrpClause);
 
 						auto lrp = Ptr(new GlrLeftRecursionPlaceholder);
@@ -938,6 +947,7 @@ FixPrefixMergeClauses
 								if (ruleSymbol->isPartial)
 								{
 									auto partialClause = Ptr(new GlrPartialClause);
+									originRule->codeRange = originRule->codeRange;
 									originRule->clauses[i] = partialClause;
 
 									partialClause->type.value = ruleSymbol->ruleType->Name();
@@ -950,6 +960,7 @@ FixPrefixMergeClauses
 								else
 								{
 									auto reuseClause = Ptr(new GlrReuseClause);
+									originRule->codeRange = originRule->codeRange;
 									originRule->clauses[i] = reuseClause;
 
 									auto useSyntax = Ptr(new GlrUseSyntax);
