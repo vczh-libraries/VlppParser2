@@ -155,9 +155,9 @@ ParserSymbolManager
 			/* SyntaxAst(ValidateStructure, prefix_merge) */\
 			ERROR_ITEM(RuleMixedPrefixMergeWithClauseNotSyntacticallyBeginWithARule,								ruleName)													/* If a rule has prefix_merge clause, than all other clause must syntactically begins with a rule */\
 			ERROR_ITEM(RuleMixedPrefixMergeWithClauseNotBeginWithIndirectPrefixMerge,								ruleName, startRule)										/* If a rule has prefix_merge clause, than all other clause must directly or indirectly starts with prefix_merge */\
-			ERROR_ITEM(RuleIndirectlyBeginsWithPrefixMergeMixedLeftRecursionMarkers,								ruleName, prefixMergeRule, leftRecursionMarkerRule)\
-			ERROR_ITEM(PartialRuleIndirectlyBeginsWithPrefixMergeMixedWithClauseNotSyntacticallyBeginWithARule,		ruleName)													/* If a rule indirectly begins with prefix_merge, and some clauses do not syntactically begin with a rule, it should not be a partial rule */\
-			ERROR_ITEM(RuleIndirectlyBeginsWithPrefixMergeMixedNonSimpleUseClause,									ruleName, prefixMergeRule)									/* If a rule indirectly begins with prefix_merge, then all clause must be, either a simple use clause begins with prefix_merge, or a clause not begins with prefix_merge */\
+			ERROR_ITEM(PrefixMergeInPartialRule,																	ruleName)\
+			ERROR_ITEM(PartialRuleIndirectlyBeginsWithPrefixMerge,													ruleName)\
+			ERROR_ITEM(ClausePartiallyIndirectlyBeginsWithPrefixMerge,												ruleName)\
 			/* SyntaxAst(RewriteSyntax_PrefixMerge, prefix_merge) */\
 			ERROR_ITEM(PrefixExtractionAffectedRuleReferencedAnother,												ruleName, conflictedRule, prefixRule)						/* During left_recursion_inject clause generation, if prefix extracted affected the process, all !prefixRule clauses where prefixRule is the prefix of conflictedRule in any !conflictedRule clauses, prefixRule should not be affected */\
 

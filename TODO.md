@@ -21,7 +21,9 @@
 ## Test Cases
 
 - `PrefixMerge` 1-7 add test cases to parse expr and type separately.
-- `PartialRuleIndirectlyBeginsWithPrefixMergeMixedWithClauseNotSyntacticallyBeginWithARule`
+- `PrefixMergeInPartialRule`
+- `PartialRuleIndirectlyBeginsWithPrefixMerge`
+- `ClausePartiallyIndirectlyBeginsWithPrefixMerge`
 - Create test cases that only rewrite syntax without generating C++ code for:
   - `DeductEmptySyntaxVisitor`
   - Invalid combined clauses during expanding switches
