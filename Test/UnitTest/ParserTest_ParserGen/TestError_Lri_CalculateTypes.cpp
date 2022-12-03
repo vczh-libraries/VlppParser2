@@ -18,7 +18,7 @@ TEST_FILE
 LR"SYNTAX(
 Exp0 ::= NUM:value as NumExpr;
 Exp1 ::= "+" as Module ;
-Exp2 ::= !Exp0 left_recursion_inject(Something) Exp1;
+Exp2 ::= !Exp0 [left_recursion_inject(Something) Exp1];
 )SYNTAX";
 		ExpectError(
 			typeParser,
@@ -36,7 +36,7 @@ Exp2 ::= !Exp0 left_recursion_inject(Something) Exp1;
 LR"SYNTAX(
 Exp0 ::= NUM:value as NumExpr;
 Exp1 ::= "+" as Module ;
-Exp2 ::= !Exp0 [left_recursion_inject(Something) Exp1];
+Exp2 ::= !Exp0 left_recursion_inject(Something) (Exp0 [left_recursion_inject(Something) Exp1]);
 )SYNTAX";
 		ExpectError(
 			typeParser,
@@ -49,24 +49,6 @@ Exp2 ::= !Exp0 [left_recursion_inject(Something) Exp1];
 	});
 
 	TEST_CASE(L"RuleCannotResolveToDeterministicType 3")
-	{
-		const wchar_t* syntaxCode =
-LR"SYNTAX(
-Exp0 ::= NUM:value as NumExpr;
-Exp1 ::= "+" as Module ;
-Exp2 ::= !Exp0 left_recursion_inject(Something) (Exp0 left_recursion_inject(Something) Exp1);
-)SYNTAX";
-		ExpectError(
-			typeParser,
-			ruleParser,
-			astCode,
-			lexerCode,
-			syntaxCode,
-			{ ParserErrorType::RuleCannotResolveToDeterministicType,L"Exp2" }
-			);
-	});
-
-	TEST_CASE(L"RuleCannotResolveToDeterministicType 4")
 	{
 		const wchar_t* syntaxCode =
 LR"SYNTAX(
