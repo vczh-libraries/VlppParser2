@@ -136,27 +136,21 @@ _PrimitiveExpr : TypeOrExpr
   ;
 
 _PrimitiveExpr_QualifiedName
-  ::= !_PrimitiveExpr
-  ::= !_QualifiedName
+  ::= !prefix_merge(_PrimitiveExpr)
+  ::= !prefix_merge(_QualifiedName)
   ;
 
 //////////////////////////////////////////////////////////////////
 // PostfixUnaryExpr
 //////////////////////////////////////////////////////////////////
 
-_PostfixUnaryCtorType
-  ::= left_recursion_placeholder(Type)
-  ::= !_Type
-  ;
-
 _PostfixUnaryCtor
-  ::= _PostfixUnaryCtorType:operand "(" {_Expr_NoComma:arguments ; ","} ")" as CallExpr {kind = Parenthesis}
-  ::= _PostfixUnaryCtorType:operand "{" {_Expr_NoComma:arguments ; ","} "}" as CallExpr {kind = Brace}
+  ::= _Type:operand "(" {_Expr_NoComma:arguments ; ","} ")" as CallExpr {kind = Parenthesis}
+  ::= _Type:operand "{" {_Expr_NoComma:arguments ; ","} "}" as CallExpr {kind = Brace}
   ;
 
 _PostfixUnaryExpr
-  ::= left_recursion_placeholder(Shared,Expr)
-  ::= !_PrimitiveExpr_QualifiedName
+  ::= !prefix_merge(_PrimitiveExpr_QualifiedName)
   ::= !_PostfixUnaryCtor
   ::= _PostfixUnaryExpr:left "." _MemberOperatorQualifiedName:right as BinaryExpr {op = Member}
   ::= _PostfixUnaryExpr:left "->" _MemberOperatorQualifiedName:right as BinaryExpr {op = Pointer}
@@ -215,7 +209,7 @@ _AllPrefixUnaryExpr
 _PrefixUnaryExpr
   ::= left_recursion_placeholder(PrefixUnaryExpr)
   ::= !_PostfixUnaryExpr
-  ::= !_AllPrefixUnaryExpr
+  ::= !prefix_merge(_AllPrefixUnaryExpr)
   ;
 
 //////////////////////////////////////////////////////////////////
@@ -363,7 +357,7 @@ _ShortType : TypeOrExpr
   ;
 
 _ShortType_QualifiedName
-  ::= !_QualifiedName
+  ::= !prefix_merge(_QualifiedName)
   ::= !_ShortType
   ;
 
@@ -553,13 +547,8 @@ _TypeOrDeclarator
   ::= _LongType:type _DeclaratorWithoutName:declarator as DeclaratorType
   ;
 
-_TypeOnly
-  ::= !_ShortType [left_recursion_inject(Type) _TypeOrDeclarator]
-  ::= _DeclaratorKeyword:keywords {_DeclaratorKeyword:keywords} _LongType:type _DeclaratorWithoutName:declarator as DeclaratorType
-  ;
-
 _Type
-  ::= !_QualifiedName [left_recursion_inject(Shared) _TypeOrDeclarator]
+  ::= !_TypeOrDeclarator
   ::= !_TypeOnly
   ;
 
@@ -567,28 +556,12 @@ _Type
 // _Expr
 //////////////////////////////////////////////////////////////////
 
-_ExprOnly_NoComma
-  ::= !_PrimitiveExpr [left_recursion_inject(Expr) _BExpr_NoComma]
-  ::= !_AllPrefixUnaryExpr [left_recursion_inject(PrefixUnaryExpr) _BExpr_NoComma]
-  ::= !_ThrowExpr
-  ;
-
 _Expr_NoComma_Raw
-  ::= !_QualifiedName [left_recursion_inject(Shared) (_TypeOrDeclarator left_recursion_inject(type) _BExpr_NoComma) | _BExpr_NoComma]
-  ::= !_ExprOnly_NoComma
-  ::= !_TypeOnly left_recursion_inject(Type) _BExpr_NoComma
-  ;
-
-_ExprOnly
-  ::= !_PrimitiveExpr [left_recursion_inject(Expr) _BExpr]
-  ::= !_AllPrefixUnaryExpr left_recursion_inject(PrefixUnaryExpr) _BExpr
-  ::= !_ThrowExpr [left_recursion_inject(ThrowExpr) _BExpr]
+  ::= !_BExpr_NoComma
   ;
 
 _Expr_Raw
-  ::= !_QualifiedName [left_recursion_inject(Shared) (_TypeOrDeclarator left_recursion_inject(type) _BExpr) | _BExpr]
-  ::= !_ExprOnly
-  ::= !_TypeOnly left_recursion_inject(Type) _BExpr
+  ::= _BExpr
   ;
 
 //////////////////////////////////////////////////////////////////
@@ -596,15 +569,13 @@ _Expr_Raw
 //////////////////////////////////////////////////////////////////
 
 _TypeOrExpr_NoComma_Raw
-  ::= !_QualifiedName [left_recursion_inject(Shared) (_TypeOrDeclarator [left_recursion_inject(type) _BExpr_NoComma]) | _BExpr_NoComma]
-  ::= !_ExprOnly_NoComma
-  ::= !_TypeOnly [left_recursion_inject(Type) _BExpr_NoComma]
+  ::= !_BExpr_NoComma
+  ::= !_Type
   ;
 
 _TypeOrExpr_Raw
-  ::= !_QualifiedName [left_recursion_inject(Shared) (_TypeOrDeclarator [left_recursion_inject(type) _BExpr]) | _BExpr]
-  ::= !_ExprOnly
-  ::= !_TypeOnly [left_recursion_inject(Type) _BExpr]
+  ::= !_BExpr
+  ::= !_Type
   ;
 
 //////////////////////////////////////////////////////////////////
