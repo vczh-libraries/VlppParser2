@@ -299,7 +299,7 @@ Exp1
 	});
 
 	//////////////////////////////////////////////////////
-	// ClausePartiallyIndirectlyBeginsWithPrefixMerge (rule)
+	// ClausePartiallyIndirectlyBeginsWithPrefixMergeAndRule
 	//////////////////////////////////////////////////////
 
 	TEST_CASE(L"ClausePartiallyIndirectlyBeginsWithPrefixMergeAndRule 1")
@@ -407,6 +407,168 @@ Exp1
 			lexerCode,
 			syntaxCode,
 			{ ParserErrorType::ClausePartiallyIndirectlyBeginsWithPrefixMergeAndRule,L"Exp1",L"PM",L"Plus" }
+			);
+	});
+
+	//////////////////////////////////////////////////////
+	// RuleDeductToPrefixMergeByNonSimpleUseRule
+	//////////////////////////////////////////////////////
+
+	TEST_CASE(L"RuleDeductToPrefixMergeByNonSimpleUseRule 1")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= NUM:value as NumExpr
+  ;
+PM
+  ::= !prefix_merge(Exp0)
+  ;
+Exp1
+  ::= PM:func as CallExpr
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::RuleDeductToPrefixMergeByNonSimpleUseRule,L"Exp1",L"PM",L"PM" }
+			);
+	});
+
+	TEST_CASE(L"RuleDeductToPrefixMergeByNonSimpleUseRule 2")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= NUM:value as NumExpr
+  ;
+PM
+  ::= !prefix_merge(Exp0)
+  ;
+Exp1
+  ::= ["+"] PM:func as CallExpr
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::RuleDeductToPrefixMergeByNonSimpleUseRule,L"Exp1",L"PM",L"PM" }
+			);
+	});
+
+	TEST_CASE(L"RuleDeductToPrefixMergeByNonSimpleUseRule 3")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= NUM:value as NumExpr
+  ;
+PM
+  ::= !prefix_merge(Exp0)
+  ;
+Exp1
+  ::= {"+"} !PM
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::RuleDeductToPrefixMergeByNonSimpleUseRule,L"Exp1",L"PM",L"PM" }
+			);
+	});
+
+	TEST_CASE(L"RuleDeductToPrefixMergeByNonSimpleUseRule 4")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= NUM:value as NumExpr
+  ;
+PM
+  ::= !prefix_merge(Exp0)
+  ;
+Exp1
+  ::= !PM
+  ;
+Exp2
+  ::= Exp1:func ["+"] as CallExpr
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::RuleDeductToPrefixMergeByNonSimpleUseRule,L"Exp2",L"PM",L"Exp1" }
+			);
+	});
+
+	TEST_CASE(L"RuleDeductToPrefixMergeByNonSimpleUseRule 5")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= NUM:value as NumExpr
+  ;
+PM
+  ::= !prefix_merge(Exp0)
+  ;
+Exp1
+  ::= !PM
+  ;
+Exp2
+  ::= !Exp1 {"+"}
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::RuleDeductToPrefixMergeByNonSimpleUseRule,L"Exp2",L"PM",L"Exp1" }
+			);
+	});
+
+	TEST_CASE(L"RuleDeductToPrefixMergeByNonSimpleUseRule 6")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= NUM:value as NumExpr
+  ;
+PM
+  ::= !prefix_merge(Exp0)
+  ;
+Exp1
+  ::= !PM
+  ;
+Exp2
+  ::= left_recursion_placeholder(Expr)
+  ::= !Exp1
+  ::= !Exp2 "+"
+  ;
+Exp3
+  ::= !Exp1 [left_recursion_inject(Expr) Exp2]
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::RuleDeductToPrefixMergeByNonSimpleUseRule,L"Exp3",L"PM",L"Exp1" }
 			);
 	});
 }
