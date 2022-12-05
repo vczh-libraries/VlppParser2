@@ -152,7 +152,7 @@ ParserSymbolManager
 			ERROR_ITEM(TooManyLeftRecursionPlaceholderClauses,														ruleName)\
 			/* SyntaxAst(ValidateStructure, relationship) */\
 			ERROR_ITEM(FieldAssignedMoreThanOnce,																	ruleName, clauseType, fieldName)\
-			/* SyntaxAst(ValidateStructure, prefix_merge) */\
+			/* SyntaxAst(ValidatePrefixMerge, prefix_merge) */\
 			ERROR_ITEM(RuleMixedPrefixMergeWithClauseNotSyntacticallyBeginWithARule,								ruleName)													/* If a rule has prefix_merge clause, than all other clause must syntactically begins with a rule */\
 			ERROR_ITEM(RuleMixedPrefixMergeWithClauseNotBeginWithIndirectPrefixMerge,								ruleName, startRule)										/* If a rule has prefix_merge clause, than all other clause must directly or indirectly starts with prefix_merge */\
 			ERROR_ITEM(RuleIndirectlyBeginsWithPrefixMergeMixedLeftRecursionMarkers,								ruleName, prefixMergeRule, leftRecursionMarkerRule)\

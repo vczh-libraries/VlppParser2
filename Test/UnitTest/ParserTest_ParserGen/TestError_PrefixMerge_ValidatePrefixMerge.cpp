@@ -199,7 +199,7 @@ Exp1
 	});
 
 	//////////////////////////////////////////////////////
-	// ClausePartiallyIndirectlyBeginsWithPrefixMerge (literal)
+	// ClausePartiallyIndirectlyBeginsWithPrefixMergeAndLiteral
 	//////////////////////////////////////////////////////
 
 	TEST_CASE(L"ClausePartiallyIndirectlyBeginsWithPrefixMergeAndLiteral 1")
