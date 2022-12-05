@@ -571,4 +571,36 @@ Exp3
 			{ ParserErrorType::RuleDeductToPrefixMergeByNonSimpleUseRule,L"Exp3",L"PM",L"Exp1" }
 			);
 	});
+
+	TEST_CASE(L"RuleDeductToPrefixMergeByNonSimpleUseRule 7")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= NUM:value as NumExpr
+  ;
+PM
+  ::= !prefix_merge(Exp0)
+  ;
+Exp1
+  ::= !PM
+  ;
+Exp2
+  ::= left_recursion_placeholder(Expr)
+  ::= !Exp1
+  ::= !Exp2 "+"
+  ;
+Exp3
+  ::= (!Exp1 | !NumExpr)
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::RuleDeductToPrefixMergeByNonSimpleUseRule,L"Exp3",L"PM",L"Exp1" }
+			);
+	});
 }
