@@ -34,6 +34,8 @@
 #include "../../Source/PrefixMerge6_Pm2/Generated/PrefixMerge6_Pm2ModuleParser.h"
 #include "../../Source/PrefixMerge7_PmSwitch/Generated/PrefixMerge7_PmSwitchTypeOrExpr_Json.h"
 #include "../../Source/PrefixMerge7_PmSwitch/Generated/PrefixMerge7_PmSwitchModuleParser.h"
+#include "../../Source/PrefixMerge8_PmVariadic/Generated/PrefixMerge8_PmVariadicTypeOrExpr_Json.h"
+#include "../../Source/PrefixMerge8_PmVariadic/Generated/PrefixMerge8_PmVariadicModuleParser.h"
 #include "../../Source/LogTrace.h"
 
 extern WString GetTestParserInputPath(const WString& parserName);
@@ -374,6 +376,17 @@ TEST_FILE
 		L"TestCase_PrefixMerge_CtorExpr",
 		L"TestCase_PrefixMerge_ThrowComma",
 		L"TestCase_PrefixMerge_Generic"
+		);
+	TestParser<prefixmerge8_pmvariadic::ModuleParser, prefixmerge8_pmvariadic::json_visitor::TypeOrExprVisitor>(
+		L"PrefixMerge8_PmVariadic",
+		&prefixmerge8_pmvariadic::PrefixMerge8_PmVariadicTypeName,
+		&prefixmerge8_pmvariadic::PrefixMerge8_PmVariadicFieldName,
+		&prefixmerge8_pmvariadic::PrefixMerge8_PmVariadicTokenId,
+		&prefixmerge8_pmvariadic::ModuleParserRuleName,
+		&prefixmerge8_pmvariadic::ModuleParserStateLabel,
+		L"TestCase_PrefixMerge",
+		L"TestCase_PrefixMerge_Ambiguous2",
+		L"TestCase_PrefixMerge_CtorExpr"
 		);
 
 	using namespace TestParser_Generated_TestObjects;
