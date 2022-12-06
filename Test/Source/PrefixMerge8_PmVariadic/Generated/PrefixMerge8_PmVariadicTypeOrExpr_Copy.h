@@ -19,12 +19,16 @@ namespace prefixmerge8_pmvariadic
 			, protected virtual TypeOrExprOrOthers::IVisitor
 			, protected virtual TypeOrExpr::IVisitor
 			, protected virtual QualifiedName::IVisitor
+			, protected virtual GenericQualifiedName::IVisitor
 		{
 		protected:
 			void CopyFields(CallExpr* from, CallExpr* to);
 			void CopyFields(ConstType* from, ConstType* to);
 			void CopyFields(CtorExpr* from, CtorExpr* to);
 			void CopyFields(FunctionType* from, FunctionType* to);
+			void CopyFields(GenericMemberName* from, GenericMemberName* to);
+			void CopyFields(GenericName* from, GenericName* to);
+			void CopyFields(GenericQualifiedName* from, GenericQualifiedName* to);
 			void CopyFields(MemberName* from, MemberName* to);
 			void CopyFields(MulExpr* from, MulExpr* to);
 			void CopyFields(Name* from, Name* to);
@@ -33,12 +37,12 @@ namespace prefixmerge8_pmvariadic
 			void CopyFields(TypeOrExpr* from, TypeOrExpr* to);
 			void CopyFields(TypeOrExprOrOthers* from, TypeOrExprOrOthers* to);
 			void CopyFields(TypeOrExprToResolve* from, TypeOrExprToResolve* to);
-			void CopyFields(VariadicExpr* from, VariadicExpr* to);
+			void CopyFields(VariadicArgument* from, VariadicArgument* to);
 
 		protected:
 
+			void Visit(VariadicArgument* node) override;
 			void Visit(TypeOrExpr* node) override;
-			void Visit(VariadicExpr* node) override;
 
 			void Visit(TypeOrExprToResolve* node) override;
 			void Visit(QualifiedName* node) override;
@@ -51,6 +55,10 @@ namespace prefixmerge8_pmvariadic
 
 			void Visit(Name* node) override;
 			void Visit(MemberName* node) override;
+			void Visit(GenericQualifiedName* node) override;
+
+			void Visit(GenericName* node) override;
+			void Visit(GenericMemberName* node) override;
 
 		public:
 			virtual vl::Ptr<TypeOrExprOrOthers> CopyNode(TypeOrExprOrOthers* node);
@@ -59,6 +67,9 @@ namespace prefixmerge8_pmvariadic
 			vl::Ptr<ConstType> CopyNode(ConstType* node);
 			vl::Ptr<CtorExpr> CopyNode(CtorExpr* node);
 			vl::Ptr<FunctionType> CopyNode(FunctionType* node);
+			vl::Ptr<GenericMemberName> CopyNode(GenericMemberName* node);
+			vl::Ptr<GenericName> CopyNode(GenericName* node);
+			vl::Ptr<GenericQualifiedName> CopyNode(GenericQualifiedName* node);
 			vl::Ptr<MemberName> CopyNode(MemberName* node);
 			vl::Ptr<MulExpr> CopyNode(MulExpr* node);
 			vl::Ptr<Name> CopyNode(Name* node);
@@ -66,7 +77,7 @@ namespace prefixmerge8_pmvariadic
 			vl::Ptr<QualifiedName> CopyNode(QualifiedName* node);
 			vl::Ptr<TypeOrExpr> CopyNode(TypeOrExpr* node);
 			vl::Ptr<TypeOrExprToResolve> CopyNode(TypeOrExprToResolve* node);
-			vl::Ptr<VariadicExpr> CopyNode(VariadicExpr* node);
+			vl::Ptr<VariadicArgument> CopyNode(VariadicArgument* node);
 		};
 	}
 }

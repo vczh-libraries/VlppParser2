@@ -2,9 +2,15 @@
 // Left Recursive (Primitives)
 ////////////////////////////////////////
 
+_GenericArguments : GenericQualifiedName
+  ::= "<" {Module:args ; ","} ">" as partial GenericQualifiedName
+  ;
+
 _Name : QualifiedName
   ::= ID:name as Name
+  ::= ID:name _GenericArguments as GenericName
   ::= _Name:parent "." ID:member as MemberName
+  ::= _Name:parent "." ID:member _GenericArguments as GenericMemberName
   ;
 
 _PrimitiveShared : QualifiedName
@@ -39,8 +45,9 @@ _LongType_LRI_Original : TypeOrExpr
 
 _ExprArg_LRI_Original : TypeOrExprOrOthers
   ::= !_Expr_LRI_Original
-  ::= _Expr_LRI_Original:operand "..." as VariadicExpr
+  ::= _Expr_LRI_Original:operand "..." as VariadicArgument
   ;
+  
 _Expr0__LongType_LRI_Prefix : TypeOrExpr
   ::= left_recursion_placeholder(LRIP__Expr0__LongType)
   ::= !_LongType_LRI_Original

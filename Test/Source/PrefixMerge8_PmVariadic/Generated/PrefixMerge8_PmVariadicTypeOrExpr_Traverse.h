@@ -19,6 +19,7 @@ namespace prefixmerge8_pmvariadic
 			, protected virtual TypeOrExprOrOthers::IVisitor
 			, protected virtual TypeOrExpr::IVisitor
 			, protected virtual QualifiedName::IVisitor
+			, protected virtual GenericQualifiedName::IVisitor
 		{
 		protected:
 			virtual void Traverse(vl::glr::ParsingToken& token);
@@ -27,6 +28,9 @@ namespace prefixmerge8_pmvariadic
 			virtual void Traverse(ConstType* node);
 			virtual void Traverse(CtorExpr* node);
 			virtual void Traverse(FunctionType* node);
+			virtual void Traverse(GenericMemberName* node);
+			virtual void Traverse(GenericName* node);
+			virtual void Traverse(GenericQualifiedName* node);
 			virtual void Traverse(MemberName* node);
 			virtual void Traverse(MulExpr* node);
 			virtual void Traverse(Name* node);
@@ -35,7 +39,7 @@ namespace prefixmerge8_pmvariadic
 			virtual void Traverse(TypeOrExpr* node);
 			virtual void Traverse(TypeOrExprOrOthers* node);
 			virtual void Traverse(TypeOrExprToResolve* node);
-			virtual void Traverse(VariadicExpr* node);
+			virtual void Traverse(VariadicArgument* node);
 
 		protected:
 			virtual void Finishing(vl::glr::ParsingAstBase* node);
@@ -43,6 +47,9 @@ namespace prefixmerge8_pmvariadic
 			virtual void Finishing(ConstType* node);
 			virtual void Finishing(CtorExpr* node);
 			virtual void Finishing(FunctionType* node);
+			virtual void Finishing(GenericMemberName* node);
+			virtual void Finishing(GenericName* node);
+			virtual void Finishing(GenericQualifiedName* node);
 			virtual void Finishing(MemberName* node);
 			virtual void Finishing(MulExpr* node);
 			virtual void Finishing(Name* node);
@@ -51,11 +58,11 @@ namespace prefixmerge8_pmvariadic
 			virtual void Finishing(TypeOrExpr* node);
 			virtual void Finishing(TypeOrExprOrOthers* node);
 			virtual void Finishing(TypeOrExprToResolve* node);
-			virtual void Finishing(VariadicExpr* node);
+			virtual void Finishing(VariadicArgument* node);
 
 		protected:
+			void Visit(VariadicArgument* node) override;
 			void Visit(TypeOrExpr* node) override;
-			void Visit(VariadicExpr* node) override;
 
 			void Visit(TypeOrExprToResolve* node) override;
 			void Visit(QualifiedName* node) override;
@@ -68,6 +75,10 @@ namespace prefixmerge8_pmvariadic
 
 			void Visit(Name* node) override;
 			void Visit(MemberName* node) override;
+			void Visit(GenericQualifiedName* node) override;
+
+			void Visit(GenericName* node) override;
+			void Visit(GenericMemberName* node) override;
 
 		public:
 			void InspectInto(TypeOrExprOrOthers* node);

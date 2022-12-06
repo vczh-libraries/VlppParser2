@@ -16,6 +16,9 @@ namespace prefixmerge8_pmvariadic
 		void TypeOrExprVisitor::Traverse(ConstType* node) {}
 		void TypeOrExprVisitor::Traverse(CtorExpr* node) {}
 		void TypeOrExprVisitor::Traverse(FunctionType* node) {}
+		void TypeOrExprVisitor::Traverse(GenericMemberName* node) {}
+		void TypeOrExprVisitor::Traverse(GenericName* node) {}
+		void TypeOrExprVisitor::Traverse(GenericQualifiedName* node) {}
 		void TypeOrExprVisitor::Traverse(MemberName* node) {}
 		void TypeOrExprVisitor::Traverse(MulExpr* node) {}
 		void TypeOrExprVisitor::Traverse(Name* node) {}
@@ -24,13 +27,16 @@ namespace prefixmerge8_pmvariadic
 		void TypeOrExprVisitor::Traverse(TypeOrExpr* node) {}
 		void TypeOrExprVisitor::Traverse(TypeOrExprOrOthers* node) {}
 		void TypeOrExprVisitor::Traverse(TypeOrExprToResolve* node) {}
-		void TypeOrExprVisitor::Traverse(VariadicExpr* node) {}
+		void TypeOrExprVisitor::Traverse(VariadicArgument* node) {}
 
 		void TypeOrExprVisitor::Finishing(vl::glr::ParsingAstBase* node) {}
 		void TypeOrExprVisitor::Finishing(CallExpr* node) {}
 		void TypeOrExprVisitor::Finishing(ConstType* node) {}
 		void TypeOrExprVisitor::Finishing(CtorExpr* node) {}
 		void TypeOrExprVisitor::Finishing(FunctionType* node) {}
+		void TypeOrExprVisitor::Finishing(GenericMemberName* node) {}
+		void TypeOrExprVisitor::Finishing(GenericName* node) {}
+		void TypeOrExprVisitor::Finishing(GenericQualifiedName* node) {}
 		void TypeOrExprVisitor::Finishing(MemberName* node) {}
 		void TypeOrExprVisitor::Finishing(MulExpr* node) {}
 		void TypeOrExprVisitor::Finishing(Name* node) {}
@@ -39,23 +45,23 @@ namespace prefixmerge8_pmvariadic
 		void TypeOrExprVisitor::Finishing(TypeOrExpr* node) {}
 		void TypeOrExprVisitor::Finishing(TypeOrExprOrOthers* node) {}
 		void TypeOrExprVisitor::Finishing(TypeOrExprToResolve* node) {}
-		void TypeOrExprVisitor::Finishing(VariadicExpr* node) {}
+		void TypeOrExprVisitor::Finishing(VariadicArgument* node) {}
 
-		void TypeOrExprVisitor::Visit(TypeOrExpr* node)
-		{
-			node->Accept(static_cast<TypeOrExpr::IVisitor*>(this));
-		}
-
-		void TypeOrExprVisitor::Visit(VariadicExpr* node)
+		void TypeOrExprVisitor::Visit(VariadicArgument* node)
 		{
 			if (!node) return;
 			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
 			Traverse(static_cast<TypeOrExprOrOthers*>(node));
-			Traverse(static_cast<VariadicExpr*>(node));
+			Traverse(static_cast<VariadicArgument*>(node));
 			InspectInto(node->operand.Obj());
-			Finishing(static_cast<VariadicExpr*>(node));
+			Finishing(static_cast<VariadicArgument*>(node));
 			Finishing(static_cast<TypeOrExprOrOthers*>(node));
 			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+		}
+
+		void TypeOrExprVisitor::Visit(TypeOrExpr* node)
+		{
+			node->Accept(static_cast<TypeOrExpr::IVisitor*>(this));
 		}
 
 		void TypeOrExprVisitor::Visit(TypeOrExprToResolve* node)
@@ -204,6 +210,56 @@ namespace prefixmerge8_pmvariadic
 			Traverse(node->member);
 			InspectInto(node->parent.Obj());
 			Finishing(static_cast<MemberName*>(node));
+			Finishing(static_cast<QualifiedName*>(node));
+			Finishing(static_cast<TypeOrExpr*>(node));
+			Finishing(static_cast<TypeOrExprOrOthers*>(node));
+			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+		}
+
+		void TypeOrExprVisitor::Visit(GenericQualifiedName* node)
+		{
+			node->Accept(static_cast<GenericQualifiedName::IVisitor*>(this));
+		}
+
+		void TypeOrExprVisitor::Visit(GenericName* node)
+		{
+			if (!node) return;
+			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+			Traverse(static_cast<TypeOrExprOrOthers*>(node));
+			Traverse(static_cast<TypeOrExpr*>(node));
+			Traverse(static_cast<QualifiedName*>(node));
+			Traverse(static_cast<GenericQualifiedName*>(node));
+			Traverse(static_cast<GenericName*>(node));
+			Traverse(node->name);
+			for (auto&& listItem : node->args)
+			{
+				InspectInto(listItem.Obj());
+			}
+			Finishing(static_cast<GenericName*>(node));
+			Finishing(static_cast<GenericQualifiedName*>(node));
+			Finishing(static_cast<QualifiedName*>(node));
+			Finishing(static_cast<TypeOrExpr*>(node));
+			Finishing(static_cast<TypeOrExprOrOthers*>(node));
+			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+		}
+
+		void TypeOrExprVisitor::Visit(GenericMemberName* node)
+		{
+			if (!node) return;
+			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+			Traverse(static_cast<TypeOrExprOrOthers*>(node));
+			Traverse(static_cast<TypeOrExpr*>(node));
+			Traverse(static_cast<QualifiedName*>(node));
+			Traverse(static_cast<GenericQualifiedName*>(node));
+			Traverse(static_cast<GenericMemberName*>(node));
+			Traverse(node->member);
+			InspectInto(node->parent.Obj());
+			for (auto&& listItem : node->args)
+			{
+				InspectInto(listItem.Obj());
+			}
+			Finishing(static_cast<GenericMemberName*>(node));
+			Finishing(static_cast<GenericQualifiedName*>(node));
 			Finishing(static_cast<QualifiedName*>(node));
 			Finishing(static_cast<TypeOrExpr*>(node));
 			Finishing(static_cast<TypeOrExprOrOthers*>(node));

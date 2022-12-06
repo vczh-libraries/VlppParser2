@@ -2,9 +2,15 @@
 // Left Recursive (Primitives)
 ////////////////////////////////////////
 
+_GenericArguments
+  ::= "<" {Module:args ; ","} ">" as partial GenericQualifiedName
+  ;
+
 _Name
   ::= ID:name as Name
+  ::= ID:name _GenericArguments as GenericName
   ::= _Name:parent "." ID:member as MemberName
+  ::= _Name:parent "." ID:member _GenericArguments as GenericMemberName
   ;
 
 _PrimitiveShared
@@ -38,7 +44,7 @@ _LongType
 
 _ExprArg
   ::= !_Expr
-  ::= _Expr:operand "..." as VariadicExpr
+  ::= _Expr:operand "..." as VariadicArgument
   ;
 
 _Expr0

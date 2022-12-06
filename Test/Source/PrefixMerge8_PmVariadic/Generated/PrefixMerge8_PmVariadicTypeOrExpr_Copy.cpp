@@ -46,6 +46,28 @@ namespace prefixmerge8_pmvariadic
 			to->returnType = CopyNode(from->returnType.Obj());
 		}
 
+		void TypeOrExprVisitor::CopyFields(GenericMemberName* from, GenericMemberName* to)
+		{
+			CopyFields(static_cast<GenericQualifiedName*>(from), static_cast<GenericQualifiedName*>(to));
+			to->member = from->member;
+			to->parent = CopyNode(from->parent.Obj());
+		}
+
+		void TypeOrExprVisitor::CopyFields(GenericName* from, GenericName* to)
+		{
+			CopyFields(static_cast<GenericQualifiedName*>(from), static_cast<GenericQualifiedName*>(to));
+			to->name = from->name;
+		}
+
+		void TypeOrExprVisitor::CopyFields(GenericQualifiedName* from, GenericQualifiedName* to)
+		{
+			CopyFields(static_cast<QualifiedName*>(from), static_cast<QualifiedName*>(to));
+			for (auto&& listItem : from->args)
+			{
+				to->args.Add(CopyNode(listItem.Obj()));
+			}
+		}
+
 		void TypeOrExprVisitor::CopyFields(MemberName* from, MemberName* to)
 		{
 			CopyFields(static_cast<QualifiedName*>(from), static_cast<QualifiedName*>(to));
@@ -95,22 +117,22 @@ namespace prefixmerge8_pmvariadic
 			}
 		}
 
-		void TypeOrExprVisitor::CopyFields(VariadicExpr* from, VariadicExpr* to)
+		void TypeOrExprVisitor::CopyFields(VariadicArgument* from, VariadicArgument* to)
 		{
 			CopyFields(static_cast<TypeOrExprOrOthers*>(from), static_cast<TypeOrExprOrOthers*>(to));
 			to->operand = CopyNode(from->operand.Obj());
 		}
 
+		void TypeOrExprVisitor::Visit(VariadicArgument* node)
+		{
+			auto newNode = vl::Ptr(new VariadicArgument);
+			CopyFields(node, newNode.Obj());
+			this->result = newNode;
+		}
+
 		void TypeOrExprVisitor::Visit(TypeOrExpr* node)
 		{
 			node->Accept(static_cast<TypeOrExpr::IVisitor*>(this));
-		}
-
-		void TypeOrExprVisitor::Visit(VariadicExpr* node)
-		{
-			auto newNode = vl::Ptr(new VariadicExpr);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
 		}
 
 		void TypeOrExprVisitor::Visit(TypeOrExprToResolve* node)
@@ -181,6 +203,25 @@ namespace prefixmerge8_pmvariadic
 			this->result = newNode;
 		}
 
+		void TypeOrExprVisitor::Visit(GenericQualifiedName* node)
+		{
+			node->Accept(static_cast<GenericQualifiedName::IVisitor*>(this));
+		}
+
+		void TypeOrExprVisitor::Visit(GenericName* node)
+		{
+			auto newNode = vl::Ptr(new GenericName);
+			CopyFields(node, newNode.Obj());
+			this->result = newNode;
+		}
+
+		void TypeOrExprVisitor::Visit(GenericMemberName* node)
+		{
+			auto newNode = vl::Ptr(new GenericMemberName);
+			CopyFields(node, newNode.Obj());
+			this->result = newNode;
+		}
+
 		vl::Ptr<TypeOrExprOrOthers> TypeOrExprVisitor::CopyNode(TypeOrExprOrOthers* node)
 		{
 			if (!node) return nullptr;
@@ -211,6 +252,24 @@ namespace prefixmerge8_pmvariadic
 		{
 			if (!node) return nullptr;
 			return CopyNode(static_cast<TypeOrExprOrOthers*>(node)).Cast<FunctionType>();
+		}
+
+		vl::Ptr<GenericMemberName> TypeOrExprVisitor::CopyNode(GenericMemberName* node)
+		{
+			if (!node) return nullptr;
+			return CopyNode(static_cast<TypeOrExprOrOthers*>(node)).Cast<GenericMemberName>();
+		}
+
+		vl::Ptr<GenericName> TypeOrExprVisitor::CopyNode(GenericName* node)
+		{
+			if (!node) return nullptr;
+			return CopyNode(static_cast<TypeOrExprOrOthers*>(node)).Cast<GenericName>();
+		}
+
+		vl::Ptr<GenericQualifiedName> TypeOrExprVisitor::CopyNode(GenericQualifiedName* node)
+		{
+			if (!node) return nullptr;
+			return CopyNode(static_cast<TypeOrExprOrOthers*>(node)).Cast<GenericQualifiedName>();
 		}
 
 		vl::Ptr<MemberName> TypeOrExprVisitor::CopyNode(MemberName* node)
@@ -255,10 +314,10 @@ namespace prefixmerge8_pmvariadic
 			return CopyNode(static_cast<TypeOrExprOrOthers*>(node)).Cast<TypeOrExprToResolve>();
 		}
 
-		vl::Ptr<VariadicExpr> TypeOrExprVisitor::CopyNode(VariadicExpr* node)
+		vl::Ptr<VariadicArgument> TypeOrExprVisitor::CopyNode(VariadicArgument* node)
 		{
 			if (!node) return nullptr;
-			return CopyNode(static_cast<TypeOrExprOrOthers*>(node)).Cast<VariadicExpr>();
+			return CopyNode(static_cast<TypeOrExprOrOthers*>(node)).Cast<VariadicArgument>();
 		}
 
 	}

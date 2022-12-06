@@ -2,6 +2,11 @@ class TypeOrExprOrOthers
 {
 }
 
+class VariadicArgument : TypeOrExprOrOthers
+{
+    var operand : TypeOrExpr;
+}
+
 ambiguous class TypeOrExpr : TypeOrExprOrOthers
 {
 }
@@ -16,6 +21,22 @@ class Name : QualifiedName
 }
 
 class MemberName : QualifiedName
+{
+    var parent : QualifiedName;
+    var member : token;
+}
+
+class GenericQualifiedName : QualifiedName
+{
+    var args : TypeOrExpr[];
+}
+
+class GenericName : GenericQualifiedName
+{
+    var name : token;
+}
+
+class GenericMemberName : GenericQualifiedName
 {
     var parent : QualifiedName;
     var member : token;
@@ -37,11 +58,6 @@ class MulExpr : TypeOrExpr
 {
     var first : TypeOrExpr;
     var second : TypeOrExpr;
-}
-
-class VariadicExpr : TypeOrExprOrOthers
-{
-    var operand : TypeOrExpr;
 }
 
 class ConstType : TypeOrExpr

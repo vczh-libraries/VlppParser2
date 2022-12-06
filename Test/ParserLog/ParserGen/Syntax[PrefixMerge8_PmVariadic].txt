@@ -3,6 +3,48 @@
     "rules": [{
         "$ast": "Rule",
         "clauses": [{
+            "$ast": "PartialClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "RefSyntax",
+                        "field": "",
+                        "literal": "\"<\"",
+                        "refType": "Literal"
+                    },
+                    "second": {
+                        "$ast": "LoopSyntax",
+                        "delimiter": {
+                            "$ast": "RefSyntax",
+                            "field": "",
+                            "literal": "\",\"",
+                            "refType": "Literal"
+                        },
+                        "syntax": {
+                            "$ast": "RefSyntax",
+                            "field": "args",
+                            "literal": "Module",
+                            "refType": "Id"
+                        }
+                    }
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "\">\"",
+                    "refType": "Literal"
+                }
+            },
+            "type": "GenericQualifiedName"
+        }],
+        "name": "_GenericArguments",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
             "$ast": "CreateClause",
             "assignments": [],
             "syntax": {
@@ -12,6 +54,25 @@
                 "refType": "Id"
             },
             "type": "Name"
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "RefSyntax",
+                    "field": "name",
+                    "literal": "ID",
+                    "refType": "Id"
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "_GenericArguments",
+                    "refType": "Id"
+                }
+            },
+            "type": "GenericName"
         }, {
             "$ast": "CreateClause",
             "assignments": [],
@@ -40,6 +101,43 @@
                 }
             },
             "type": "MemberName"
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "SequenceSyntax",
+                        "first": {
+                            "$ast": "RefSyntax",
+                            "field": "parent",
+                            "literal": "_Name",
+                            "refType": "Id"
+                        },
+                        "second": {
+                            "$ast": "RefSyntax",
+                            "field": "",
+                            "literal": "\".\"",
+                            "refType": "Literal"
+                        }
+                    },
+                    "second": {
+                        "$ast": "RefSyntax",
+                        "field": "member",
+                        "literal": "ID",
+                        "refType": "Id"
+                    }
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "_GenericArguments",
+                    "refType": "Id"
+                }
+            },
+            "type": "GenericMemberName"
         }],
         "name": "_Name",
         "type": ""
@@ -260,7 +358,7 @@
                     "refType": "Literal"
                 }
             },
-            "type": "VariadicExpr"
+            "type": "VariadicArgument"
         }],
         "name": "_ExprArg",
         "type": ""

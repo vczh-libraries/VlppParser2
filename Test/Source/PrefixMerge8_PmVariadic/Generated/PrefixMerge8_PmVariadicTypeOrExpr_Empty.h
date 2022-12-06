@@ -22,8 +22,8 @@ namespace prefixmerge8_pmvariadic
 
 		public:
 			// Visitor Members -----------------------------------
+			void Visit(VariadicArgument* node) override;
 			void Visit(TypeOrExpr* node) override;
-			void Visit(VariadicExpr* node) override;
 		};
 
 		/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
@@ -50,11 +50,25 @@ namespace prefixmerge8_pmvariadic
 		{
 		protected:
 			// Dispatch (virtual) --------------------------------
+			virtual void Dispatch(GenericQualifiedName* node) = 0;
 
 		public:
 			// Visitor Members -----------------------------------
 			void Visit(Name* node) override;
 			void Visit(MemberName* node) override;
+			void Visit(GenericQualifiedName* node) override;
+		};
+
+		/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
+		class GenericQualifiedNameVisitor : public vl::Object, public GenericQualifiedName::IVisitor
+		{
+		protected:
+			// Dispatch (virtual) --------------------------------
+
+		public:
+			// Visitor Members -----------------------------------
+			void Visit(GenericName* node) override;
+			void Visit(GenericMemberName* node) override;
 		};
 
 	}

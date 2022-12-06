@@ -16,6 +16,9 @@ namespace prefixmerge8_pmvariadic
 	class ConstType;
 	class CtorExpr;
 	class FunctionType;
+	class GenericMemberName;
+	class GenericName;
+	class GenericQualifiedName;
 	class MemberName;
 	class MulExpr;
 	class Name;
@@ -24,7 +27,7 @@ namespace prefixmerge8_pmvariadic
 	class TypeOrExpr;
 	class TypeOrExprOrOthers;
 	class TypeOrExprToResolve;
-	class VariadicExpr;
+	class VariadicArgument;
 
 	class TypeOrExprOrOthers abstract : public vl::glr::ParsingAstBase, vl::reflection::Description<TypeOrExprOrOthers>
 	{
@@ -32,12 +35,20 @@ namespace prefixmerge8_pmvariadic
 		class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
 		{
 		public:
+			virtual void Visit(VariadicArgument* node) = 0;
 			virtual void Visit(TypeOrExpr* node) = 0;
-			virtual void Visit(VariadicExpr* node) = 0;
 		};
 
 		virtual void Accept(TypeOrExprOrOthers::IVisitor* visitor) = 0;
 
+	};
+
+	class VariadicArgument : public TypeOrExprOrOthers, vl::reflection::Description<VariadicArgument>
+	{
+	public:
+		vl::Ptr<TypeOrExpr> operand;
+
+		void Accept(TypeOrExprOrOthers::IVisitor* visitor) override;
 	};
 
 	class TypeOrExpr abstract : public TypeOrExprOrOthers, vl::reflection::Description<TypeOrExpr>
@@ -70,6 +81,7 @@ namespace prefixmerge8_pmvariadic
 		public:
 			virtual void Visit(Name* node) = 0;
 			virtual void Visit(MemberName* node) = 0;
+			virtual void Visit(GenericQualifiedName* node) = 0;
 		};
 
 		virtual void Accept(QualifiedName::IVisitor* visitor) = 0;
@@ -93,6 +105,40 @@ namespace prefixmerge8_pmvariadic
 		vl::glr::ParsingToken member;
 
 		void Accept(QualifiedName::IVisitor* visitor) override;
+	};
+
+	class GenericQualifiedName abstract : public QualifiedName, vl::reflection::Description<GenericQualifiedName>
+	{
+	public:
+		class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
+		{
+		public:
+			virtual void Visit(GenericName* node) = 0;
+			virtual void Visit(GenericMemberName* node) = 0;
+		};
+
+		virtual void Accept(GenericQualifiedName::IVisitor* visitor) = 0;
+
+		vl::collections::List<vl::Ptr<TypeOrExpr>> args;
+
+		void Accept(QualifiedName::IVisitor* visitor) override;
+	};
+
+	class GenericName : public GenericQualifiedName, vl::reflection::Description<GenericName>
+	{
+	public:
+		vl::glr::ParsingToken name;
+
+		void Accept(GenericQualifiedName::IVisitor* visitor) override;
+	};
+
+	class GenericMemberName : public GenericQualifiedName, vl::reflection::Description<GenericMemberName>
+	{
+	public:
+		vl::Ptr<QualifiedName> parent;
+		vl::glr::ParsingToken member;
+
+		void Accept(GenericQualifiedName::IVisitor* visitor) override;
 	};
 
 	class CallExpr : public TypeOrExpr, vl::reflection::Description<CallExpr>
@@ -120,14 +166,6 @@ namespace prefixmerge8_pmvariadic
 		vl::Ptr<TypeOrExpr> second;
 
 		void Accept(TypeOrExpr::IVisitor* visitor) override;
-	};
-
-	class VariadicExpr : public TypeOrExprOrOthers, vl::reflection::Description<VariadicExpr>
-	{
-	public:
-		vl::Ptr<TypeOrExpr> operand;
-
-		void Accept(TypeOrExprOrOthers::IVisitor* visitor) override;
 	};
 
 	class ConstType : public TypeOrExpr, vl::reflection::Description<ConstType>
@@ -172,16 +210,20 @@ namespace vl
 #ifndef VCZH_DEBUG_NO_REFLECTION
 			DECL_TYPE_INFO(prefixmerge8_pmvariadic::TypeOrExprOrOthers)
 			DECL_TYPE_INFO(prefixmerge8_pmvariadic::TypeOrExprOrOthers::IVisitor)
+			DECL_TYPE_INFO(prefixmerge8_pmvariadic::VariadicArgument)
 			DECL_TYPE_INFO(prefixmerge8_pmvariadic::TypeOrExpr)
 			DECL_TYPE_INFO(prefixmerge8_pmvariadic::TypeOrExpr::IVisitor)
 			DECL_TYPE_INFO(prefixmerge8_pmvariadic::QualifiedName)
 			DECL_TYPE_INFO(prefixmerge8_pmvariadic::QualifiedName::IVisitor)
 			DECL_TYPE_INFO(prefixmerge8_pmvariadic::Name)
 			DECL_TYPE_INFO(prefixmerge8_pmvariadic::MemberName)
+			DECL_TYPE_INFO(prefixmerge8_pmvariadic::GenericQualifiedName)
+			DECL_TYPE_INFO(prefixmerge8_pmvariadic::GenericQualifiedName::IVisitor)
+			DECL_TYPE_INFO(prefixmerge8_pmvariadic::GenericName)
+			DECL_TYPE_INFO(prefixmerge8_pmvariadic::GenericMemberName)
 			DECL_TYPE_INFO(prefixmerge8_pmvariadic::CallExpr)
 			DECL_TYPE_INFO(prefixmerge8_pmvariadic::CtorExpr)
 			DECL_TYPE_INFO(prefixmerge8_pmvariadic::MulExpr)
-			DECL_TYPE_INFO(prefixmerge8_pmvariadic::VariadicExpr)
 			DECL_TYPE_INFO(prefixmerge8_pmvariadic::ConstType)
 			DECL_TYPE_INFO(prefixmerge8_pmvariadic::PointerType)
 			DECL_TYPE_INFO(prefixmerge8_pmvariadic::FunctionType)
@@ -190,12 +232,12 @@ namespace vl
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 
 			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(prefixmerge8_pmvariadic::TypeOrExprOrOthers::IVisitor)
-				void Visit(prefixmerge8_pmvariadic::TypeOrExpr* node) override
+				void Visit(prefixmerge8_pmvariadic::VariadicArgument* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(prefixmerge8_pmvariadic::VariadicExpr* node) override
+				void Visit(prefixmerge8_pmvariadic::TypeOrExpr* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
@@ -256,7 +298,25 @@ namespace vl
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
+				void Visit(prefixmerge8_pmvariadic::GenericQualifiedName* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
 			END_INTERFACE_PROXY(prefixmerge8_pmvariadic::QualifiedName::IVisitor)
+
+			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(prefixmerge8_pmvariadic::GenericQualifiedName::IVisitor)
+				void Visit(prefixmerge8_pmvariadic::GenericName* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+				void Visit(prefixmerge8_pmvariadic::GenericMemberName* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+			END_INTERFACE_PROXY(prefixmerge8_pmvariadic::GenericQualifiedName::IVisitor)
 
 #endif
 #endif

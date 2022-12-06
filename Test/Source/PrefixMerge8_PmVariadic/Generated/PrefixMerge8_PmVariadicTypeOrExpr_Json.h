@@ -19,12 +19,16 @@ namespace prefixmerge8_pmvariadic
 			, protected virtual TypeOrExprOrOthers::IVisitor
 			, protected virtual TypeOrExpr::IVisitor
 			, protected virtual QualifiedName::IVisitor
+			, protected virtual GenericQualifiedName::IVisitor
 		{
 		protected:
 			virtual void PrintFields(CallExpr* node);
 			virtual void PrintFields(ConstType* node);
 			virtual void PrintFields(CtorExpr* node);
 			virtual void PrintFields(FunctionType* node);
+			virtual void PrintFields(GenericMemberName* node);
+			virtual void PrintFields(GenericName* node);
+			virtual void PrintFields(GenericQualifiedName* node);
 			virtual void PrintFields(MemberName* node);
 			virtual void PrintFields(MulExpr* node);
 			virtual void PrintFields(Name* node);
@@ -33,11 +37,11 @@ namespace prefixmerge8_pmvariadic
 			virtual void PrintFields(TypeOrExpr* node);
 			virtual void PrintFields(TypeOrExprOrOthers* node);
 			virtual void PrintFields(TypeOrExprToResolve* node);
-			virtual void PrintFields(VariadicExpr* node);
+			virtual void PrintFields(VariadicArgument* node);
 
 		protected:
+			void Visit(VariadicArgument* node) override;
 			void Visit(TypeOrExpr* node) override;
-			void Visit(VariadicExpr* node) override;
 
 			void Visit(TypeOrExprToResolve* node) override;
 			void Visit(QualifiedName* node) override;
@@ -50,6 +54,10 @@ namespace prefixmerge8_pmvariadic
 
 			void Visit(Name* node) override;
 			void Visit(MemberName* node) override;
+			void Visit(GenericQualifiedName* node) override;
+
+			void Visit(GenericName* node) override;
+			void Visit(GenericMemberName* node) override;
 
 		public:
 			TypeOrExprVisitor(vl::stream::StreamWriter& _writer);

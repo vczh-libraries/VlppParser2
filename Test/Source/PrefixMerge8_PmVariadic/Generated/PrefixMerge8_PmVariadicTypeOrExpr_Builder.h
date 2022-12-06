@@ -40,6 +40,27 @@ namespace prefixmerge8_pmvariadic
 			MakeFunctionType& returnType(const vl::Ptr<TypeOrExpr>& value);
 		};
 
+		class MakeGenericMemberName : public vl::glr::ParsingAstBuilder<GenericMemberName>
+		{
+		public:
+			MakeGenericMemberName& member(const vl::WString& value);
+			MakeGenericMemberName& parent(const vl::Ptr<QualifiedName>& value);
+			MakeGenericMemberName& args(const vl::Ptr<TypeOrExpr>& value);
+		};
+
+		class MakeGenericName : public vl::glr::ParsingAstBuilder<GenericName>
+		{
+		public:
+			MakeGenericName& name(const vl::WString& value);
+			MakeGenericName& args(const vl::Ptr<TypeOrExpr>& value);
+		};
+
+		class MakeGenericQualifiedName : public vl::glr::ParsingAstBuilder<GenericQualifiedName>
+		{
+		public:
+			MakeGenericQualifiedName& args(const vl::Ptr<TypeOrExpr>& value);
+		};
+
 		class MakeMemberName : public vl::glr::ParsingAstBuilder<MemberName>
 		{
 		public:
@@ -72,10 +93,10 @@ namespace prefixmerge8_pmvariadic
 			MakeTypeOrExprToResolve& candidates(const vl::Ptr<TypeOrExpr>& value);
 		};
 
-		class MakeVariadicExpr : public vl::glr::ParsingAstBuilder<VariadicExpr>
+		class MakeVariadicArgument : public vl::glr::ParsingAstBuilder<VariadicArgument>
 		{
 		public:
-			MakeVariadicExpr& operand(const vl::Ptr<TypeOrExpr>& value);
+			MakeVariadicArgument& operand(const vl::Ptr<TypeOrExpr>& value);
 		};
 
 	}

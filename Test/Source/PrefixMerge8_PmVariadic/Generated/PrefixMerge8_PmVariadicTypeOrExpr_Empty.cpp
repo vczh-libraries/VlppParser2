@@ -17,13 +17,13 @@ TypeOrExprOrOthersVisitor
 
 		// Visitor Members -----------------------------------
 
+		void TypeOrExprOrOthersVisitor::Visit(VariadicArgument* node)
+		{
+		}
+
 		void TypeOrExprOrOthersVisitor::Visit(TypeOrExpr* node)
 		{
 			Dispatch(node);
-		}
-
-		void TypeOrExprOrOthersVisitor::Visit(VariadicExpr* node)
-		{
 		}
 
 /***********************************************************************
@@ -76,6 +76,25 @@ QualifiedNameVisitor
 		}
 
 		void QualifiedNameVisitor::Visit(MemberName* node)
+		{
+		}
+
+		void QualifiedNameVisitor::Visit(GenericQualifiedName* node)
+		{
+			Dispatch(node);
+		}
+
+/***********************************************************************
+GenericQualifiedNameVisitor
+***********************************************************************/
+
+		// Visitor Members -----------------------------------
+
+		void GenericQualifiedNameVisitor::Visit(GenericName* node)
+		{
+		}
+
+		void GenericQualifiedNameVisitor::Visit(GenericMemberName* node)
 		{
 		}
 	}

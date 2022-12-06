@@ -8,6 +8,17 @@
         "props": []
     }, {
         "$ast": "Class",
+        "name": "VariadicArgument",
+        "ambiguity": "No",
+        "baseClass": "TypeOrExprOrOthers",
+        "props": [{
+            "$ast": "ClassProp",
+            "name": "operand",
+            "propType": "Type",
+            "propTypeName": "TypeOrExpr"
+        }]
+    }, {
+        "$ast": "Class",
         "name": "TypeOrExpr",
         "ambiguity": "Yes",
         "baseClass": "TypeOrExprOrOthers",
@@ -34,6 +45,44 @@
         "name": "MemberName",
         "ambiguity": "No",
         "baseClass": "QualifiedName",
+        "props": [{
+            "$ast": "ClassProp",
+            "name": "parent",
+            "propType": "Type",
+            "propTypeName": "QualifiedName"
+        }, {
+            "$ast": "ClassProp",
+            "name": "member",
+            "propType": "Token",
+            "propTypeName": ""
+        }]
+    }, {
+        "$ast": "Class",
+        "name": "GenericQualifiedName",
+        "ambiguity": "No",
+        "baseClass": "QualifiedName",
+        "props": [{
+            "$ast": "ClassProp",
+            "name": "args",
+            "propType": "Array",
+            "propTypeName": "TypeOrExpr"
+        }]
+    }, {
+        "$ast": "Class",
+        "name": "GenericName",
+        "ambiguity": "No",
+        "baseClass": "GenericQualifiedName",
+        "props": [{
+            "$ast": "ClassProp",
+            "name": "name",
+            "propType": "Token",
+            "propTypeName": ""
+        }]
+    }, {
+        "$ast": "Class",
+        "name": "GenericMemberName",
+        "ambiguity": "No",
+        "baseClass": "GenericQualifiedName",
         "props": [{
             "$ast": "ClassProp",
             "name": "parent",
@@ -90,17 +139,6 @@
         }, {
             "$ast": "ClassProp",
             "name": "second",
-            "propType": "Type",
-            "propTypeName": "TypeOrExpr"
-        }]
-    }, {
-        "$ast": "Class",
-        "name": "VariadicExpr",
-        "ambiguity": "No",
-        "baseClass": "TypeOrExprOrOthers",
-        "props": [{
-            "$ast": "ClassProp",
-            "name": "operand",
             "propType": "Type",
             "propTypeName": "TypeOrExpr"
         }]

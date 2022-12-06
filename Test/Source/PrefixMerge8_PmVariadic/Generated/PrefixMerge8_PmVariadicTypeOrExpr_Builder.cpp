@@ -70,6 +70,54 @@ MakeFunctionType
 		}
 
 /***********************************************************************
+MakeGenericMemberName
+***********************************************************************/
+
+		MakeGenericMemberName& MakeGenericMemberName::member(const vl::WString& value)
+		{
+			node->member.value = value;
+			return *this;
+		}
+
+		MakeGenericMemberName& MakeGenericMemberName::parent(const vl::Ptr<QualifiedName>& value)
+		{
+			node->parent = value;
+			return *this;
+		}
+
+		MakeGenericMemberName& MakeGenericMemberName::args(const vl::Ptr<TypeOrExpr>& value)
+		{
+			node->args.Add(value);
+			return *this;
+		}
+
+/***********************************************************************
+MakeGenericName
+***********************************************************************/
+
+		MakeGenericName& MakeGenericName::name(const vl::WString& value)
+		{
+			node->name.value = value;
+			return *this;
+		}
+
+		MakeGenericName& MakeGenericName::args(const vl::Ptr<TypeOrExpr>& value)
+		{
+			node->args.Add(value);
+			return *this;
+		}
+
+/***********************************************************************
+MakeGenericQualifiedName
+***********************************************************************/
+
+		MakeGenericQualifiedName& MakeGenericQualifiedName::args(const vl::Ptr<TypeOrExpr>& value)
+		{
+			node->args.Add(value);
+			return *this;
+		}
+
+/***********************************************************************
 MakeMemberName
 ***********************************************************************/
 
@@ -132,10 +180,10 @@ MakeTypeOrExprToResolve
 		}
 
 /***********************************************************************
-MakeVariadicExpr
+MakeVariadicArgument
 ***********************************************************************/
 
-		MakeVariadicExpr& MakeVariadicExpr::operand(const vl::Ptr<TypeOrExpr>& value)
+		MakeVariadicArgument& MakeVariadicArgument::operand(const vl::Ptr<TypeOrExpr>& value)
 		{
 			node->operand = value;
 			return *this;

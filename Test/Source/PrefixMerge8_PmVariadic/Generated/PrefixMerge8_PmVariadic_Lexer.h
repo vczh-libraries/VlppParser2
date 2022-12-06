@@ -18,16 +18,18 @@ namespace prefixmerge8_pmvariadic
 		CLOSE_ROUND = 1,
 		OPEN_BRACE = 2,
 		CLOSE_BRACE = 3,
-		COMMA = 4,
-		VARIADIC = 5,
-		DOT = 6,
-		CONST = 7,
-		ASTERISK = 8,
-		ID = 9,
-		SPACE = 10,
+		LT = 4,
+		GT = 5,
+		COMMA = 6,
+		VARIADIC = 7,
+		DOT = 8,
+		CONST = 9,
+		ASTERISK = 10,
+		ID = 11,
+		SPACE = 12,
 	};
 
-	constexpr vl::vint PrefixMerge8_PmVariadicTokenCount = 11;
+	constexpr vl::vint PrefixMerge8_PmVariadicTokenCount = 13;
 	extern bool PrefixMerge8_PmVariadicTokenDeleter(vl::vint token);
 	extern const wchar_t* PrefixMerge8_PmVariadicTokenId(PrefixMerge8_PmVariadicTokens token);
 	extern const wchar_t* PrefixMerge8_PmVariadicTokenDisplayText(PrefixMerge8_PmVariadicTokens token);
