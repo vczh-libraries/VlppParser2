@@ -117,9 +117,9 @@ MakeLeftRecursionInjectContinuation
 					return *this;
 				}
 
-				MakeLeftRecursionInjectContinuation& MakeLeftRecursionInjectContinuation::flag(const vl::Ptr<GlrLeftRecursionPlaceholder>& value)
+				MakeLeftRecursionInjectContinuation& MakeLeftRecursionInjectContinuation::flags(const vl::Ptr<GlrLeftRecursionPlaceholder>& value)
 				{
-					node->flag = value;
+					node->flags.Add(value);
 					return *this;
 				}
 

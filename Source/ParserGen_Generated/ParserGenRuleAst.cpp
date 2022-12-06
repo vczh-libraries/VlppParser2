@@ -392,7 +392,7 @@ namespace vl
 
 				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrLeftRecursionInjectContinuation>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(flag)
+				CLASS_MEMBER_FIELD(flags)
 				CLASS_MEMBER_FIELD(configuration)
 				CLASS_MEMBER_FIELD(type)
 				CLASS_MEMBER_FIELD(injectionTargets)

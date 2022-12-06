@@ -103,8 +103,15 @@ namespace vl
 						WriteNull();
 					}
 					EndField();
-					BeginField(L"flag");
-					Print(node->flag.Obj());
+					BeginField(L"flags");
+					BeginArray();
+					for (auto&& listItem : node->flags)
+					{
+						BeginArrayItem();
+						Print(listItem.Obj());
+						EndArrayItem();
+					}
+					EndArray();
 					EndField();
 					BeginField(L"injectionTargets");
 					BeginArray();

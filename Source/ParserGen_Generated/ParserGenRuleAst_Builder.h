@@ -58,7 +58,7 @@ namespace vl
 				{
 				public:
 					MakeLeftRecursionInjectContinuation& configuration(GlrLeftRecursionConfiguration value);
-					MakeLeftRecursionInjectContinuation& flag(const vl::Ptr<GlrLeftRecursionPlaceholder>& value);
+					MakeLeftRecursionInjectContinuation& flags(const vl::Ptr<GlrLeftRecursionPlaceholder>& value);
 					MakeLeftRecursionInjectContinuation& injectionTargets(const vl::Ptr<GlrLeftRecursionInjectClause>& value);
 					MakeLeftRecursionInjectContinuation& type(GlrLeftRecursionInjectContinuationType value);
 				};

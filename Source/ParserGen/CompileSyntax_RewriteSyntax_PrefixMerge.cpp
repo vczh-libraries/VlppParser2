@@ -875,6 +875,13 @@ RewriteRules (Affected)
 RewriteRules
 ***********************************************************************/
 
+				bool CompareLri(Ptr<GlrLeftRecursionInjectClause> c1, Ptr<GlrLeftRecursionInjectClause> c2)
+				{
+					if (c1->rule->literal.value != c2->rule->literal.value) return false;
+					if ((c1->continuation == nullptr) != (c2->continuation == nullptr)) return false;
+					if (!c1->continuation) return true;
+				}
+
 				void OptimizeLri(List<Ptr<GlrLeftRecursionInjectClause>>& lriClauses)
 				{
 					for (auto lriClause : lriClauses)

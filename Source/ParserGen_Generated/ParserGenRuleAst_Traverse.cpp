@@ -387,7 +387,10 @@ namespace vl
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
 					Traverse(static_cast<GlrLeftRecursionInjectContinuation*>(node));
-					InspectInto(node->flag.Obj());
+					for (auto&& listItem : node->flags)
+					{
+						InspectInto(listItem.Obj());
+					}
 					for (auto&& listItem : node->injectionTargets)
 					{
 						InspectInto(listItem.Obj());

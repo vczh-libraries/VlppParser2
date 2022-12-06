@@ -114,8 +114,8 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					return vl::glr::AssemblerSetObjectField(&vl::glr::parsergen::GlrLeftRecursionInjectClause::continuation, object, field, value, cppFieldName);
 				case ParserGenFields::LeftRecursionInjectClause_rule:
 					return vl::glr::AssemblerSetObjectField(&vl::glr::parsergen::GlrLeftRecursionInjectClause::rule, object, field, value, cppFieldName);
-				case ParserGenFields::LeftRecursionInjectContinuation_flag:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::parsergen::GlrLeftRecursionInjectContinuation::flag, object, field, value, cppFieldName);
+				case ParserGenFields::LeftRecursionInjectContinuation_flags:
+					return vl::glr::AssemblerSetObjectField(&vl::glr::parsergen::GlrLeftRecursionInjectContinuation::flags, object, field, value, cppFieldName);
 				case ParserGenFields::LeftRecursionInjectContinuation_injectionTargets:
 					return vl::glr::AssemblerSetObjectField(&vl::glr::parsergen::GlrLeftRecursionInjectContinuation::injectionTargets, object, field, value, cppFieldName);
 				case ParserGenFields::LeftRecursionPlaceholderClause_flags:
@@ -346,7 +346,7 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					L"LeftRecursionInjectClause::continuation",
 					L"LeftRecursionInjectClause::rule",
 					L"LeftRecursionInjectContinuation::configuration",
-					L"LeftRecursionInjectContinuation::flag",
+					L"LeftRecursionInjectContinuation::flags",
 					L"LeftRecursionInjectContinuation::injectionTargets",
 					L"LeftRecursionInjectContinuation::type",
 					L"LeftRecursionPlaceholder::flag",
@@ -414,7 +414,7 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					L"vl::glr::parsergen::GlrLeftRecursionInjectClause::continuation",
 					L"vl::glr::parsergen::GlrLeftRecursionInjectClause::rule",
 					L"vl::glr::parsergen::GlrLeftRecursionInjectContinuation::configuration",
-					L"vl::glr::parsergen::GlrLeftRecursionInjectContinuation::flag",
+					L"vl::glr::parsergen::GlrLeftRecursionInjectContinuation::flags",
 					L"vl::glr::parsergen::GlrLeftRecursionInjectContinuation::injectionTargets",
 					L"vl::glr::parsergen::GlrLeftRecursionInjectContinuation::type",
 					L"vl::glr::parsergen::GlrLeftRecursionPlaceholder::flag",
