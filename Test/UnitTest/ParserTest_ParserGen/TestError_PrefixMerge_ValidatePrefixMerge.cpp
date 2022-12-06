@@ -261,7 +261,7 @@ PM
   ::= !prefix_merge(Exp0)
   ;
 Exp1
-  ::= (!PM | "+" !PM)
+  ::= (!PM "+" | "+" !PM)
   ;
 )SYNTAX";
 		ExpectError(
@@ -285,7 +285,7 @@ PM
   ::= !prefix_merge(Exp0)
   ;
 Exp1
-  ::= (PM:left | "+" PM:right) as BinaryExpr
+  ::= (PM:left "+" | "+" PM:right) as BinaryExpr
   ;
 )SYNTAX";
 		ExpectError(
@@ -370,7 +370,7 @@ Plus
   ::= "+" as NumExpr
   ;
 Exp1
-  ::= (!PM | Plus !PM)
+  ::= (!PM Plus | Plus !PM)
   ;
 )SYNTAX";
 		ExpectError(
@@ -397,7 +397,7 @@ Plus
   ::= "+" as NumExpr
   ;
 Exp1
-  ::= (PM:left | Plus PM:right) as BinaryExpr
+  ::= (PM:left Plus | Plus PM:right) as BinaryExpr
   ;
 )SYNTAX";
 		ExpectError(
