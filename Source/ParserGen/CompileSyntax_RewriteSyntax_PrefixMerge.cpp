@@ -875,11 +875,33 @@ RewriteRules (Affected)
 RewriteRules
 ***********************************************************************/
 
+				bool CompareLri(Ptr<GlrLeftRecursionInjectClause> c1, Ptr<GlrLeftRecursionInjectClause> c2);
+
+				bool CompareLriTargest(List<Ptr<GlrLeftRecursionInjectClause>>& targets1, List<Ptr<GlrLeftRecursionInjectClause>>& targets2)
+				{
+					if (targets1.Count() != targets2.Count()) return false;
+					for (auto [target, i] : indexed(targets1))
+					{
+						if (!CompareLri(targets1[i], targets2[i])) return false;
+					}
+					return true;
+				}
+
 				bool CompareLri(Ptr<GlrLeftRecursionInjectClause> c1, Ptr<GlrLeftRecursionInjectClause> c2)
 				{
 					if (c1->rule->literal.value != c2->rule->literal.value) return false;
 					if ((c1->continuation == nullptr) != (c2->continuation == nullptr)) return false;
 					if (!c1->continuation) return true;
+
+					auto cont1 = c1->continuation;
+					auto cont2 = c2->continuation;
+					if (cont1->flags.Count() != cont2->flags.Count()) return false;
+					for (auto [flag, i] : indexed(cont1->flags))
+					{
+						if (cont1->flags[i]->flag.value != cont2->flags[i]->flag.value) return false;
+					}
+
+					return CompareLriTargest(cont1->injectionTargets, cont2->injectionTargets);
 				}
 
 				void OptimizeLri(List<Ptr<GlrLeftRecursionInjectClause>>& lriClauses)
@@ -904,6 +926,18 @@ RewriteRules
 							candidates.RemoveAt(candidates.Count() - 1);
 							for (vint i = candidates.Count() - 1; i >= 0; i--)
 							{
+								auto compare = candidates[i];
+								if (CompareLriTargest(candidate->continuation->injectionTargets, compare->continuation->injectionTargets))
+								{
+									CopyFrom(
+										candidate->continuation->flags,
+										From(candidate->continuation->flags)
+											.Concat(compare->continuation->flags)
+											.GroupBy([](auto flag) { return flag->flag.value; })
+											.Select([](auto pair) { return pair.value.First(); })
+									);
+									candidates.RemoveAt(i);
+								}
 							}
 							results.Add(candidate);
 						}
