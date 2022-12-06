@@ -875,6 +875,36 @@ RewriteRules (Affected)
 RewriteRules
 ***********************************************************************/
 
+				void OptimizeLri(List<Ptr<GlrLeftRecursionInjectClause>>& lriClauses)
+				{
+					for (auto lriClause : lriClauses)
+					{
+						if (lriClause->continuation)
+						{
+							OptimizeLri(lriClause->continuation->injectionTargets);
+						}
+					}
+
+					List<Ptr<GlrLeftRecursionInjectClause>> results, candidates;
+					for (auto [prefixRuleName, subLriClauses] : From(lriClauses)
+						.GroupBy([](auto lriClause) {return lriClause->rule->literal.value; })
+						)
+					{
+						CopyFrom(candidates, From(subLriClauses).Reverse());
+						while (candidates.Count() > 0)
+						{
+							auto candidate = candidates[candidates.Count() - 1];
+							candidates.RemoveAt(candidates.Count() - 1);
+							for (vint i = candidates.Count() - 1; i >= 0; i--)
+							{
+							}
+							results.Add(candidate);
+						}
+					}
+
+					CopyFrom(lriClauses, results);
+				}
+
 				void RewriteRules(const VisitorContext& vContext, const RewritingContext& rContext, SyntaxSymbolManager& syntaxManager)
 				{
 					Dictionary<Pair<RuleSymbol*, RuleSymbol*>, vint> pathCounter;
@@ -916,6 +946,32 @@ RewriteRules
 								conflict,
 								pathCounter,
 								knownOptionalStartRules
+								);
+						}
+
+						List<Ptr<GlrClause>> otherClauses;
+						List<Ptr<GlrLeftRecursionInjectClause>> lriClauses;
+						for (auto clause : lriRule->clauses)
+						{
+							if (auto lriClause = clause.Cast<GlrLeftRecursionInjectClause>())
+							{
+								lriClauses.Add(lriClause);
+							}
+							else
+							{
+								otherClauses.Add(clause);
+							}
+						}
+
+						if (lriClauses.Count() > 0)
+						{
+							OptimizeLri(lriClauses);
+							CopyFrom(
+								lriRule->clauses,
+								From(otherClauses)
+									.Concat(
+										From(lriClauses).Select([](auto clause)->Ptr<GlrClause> {return clause; })
+									)
 								);
 						}
 					}
