@@ -370,6 +370,12 @@ SyntaxSymbolManager::EliminateSingleRulePrefix
 					CHECK_ERROR(prefixEdgesOfRule.Count() == 1, L"<EliminateSingleRulePrefix>Multiple prefix edges under the same rule is not supported yet.");
 
 					// TODO:
+					// prefixEdge means the clause could consume only one rule
+					// multiple prefixEdge could be
+					//   the rule has multiple such clauses
+					//   there is one clause but it looks like "([a] | [b]) c"
+					//     where both [a] and [b] create an epsilon edge to c
+					//     and after removing epsilon edges they become both edge consuming c
 					// in this case we need to create a prefix edges to replace all others
 					// it also means unresolvable ambiguity
 					// maybe a better solution is to define it as a kind of invalid syntax

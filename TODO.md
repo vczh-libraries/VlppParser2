@@ -2,12 +2,13 @@
 
 ## Progressing
 
-- `[_GenericArgument]<< !_PrimitiveType @ ( lri:_GenericArgument_LRI_Original ) >>` should accept `ending`
-  - because `_TypeOrExpr_NoComma_NoGT:argument ["...":variadic] as GenericArgument` could jumps to `@:argument` by `int`
-  - could be related to `_QualifiedName` does not have an optional LrInject clause
+- `Name<A...>` unexpectedly produces ambiguity
+  - From `_GenericArgument` it goes to
+    - `!_QualifiedName [left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveExpr) _GenericArgument_LRI_Original]`
+    - `!_QualifiedName left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveType) _GenericArgument_LRI_Original`
+  - And then consume "...", creating ambiguity by injecting into two different labels but ends up in the same place.
+  - `_GenericArgument ::= _TypeOrExpr_NoComma_NoGT:argument @ "...":variadic as GenericArgument`
 - `throw` is missing in `BuiltIn-Cpp` in `_TypeOrExpr`
-- `_GenericArguments` generates `token: "operator" -> [71][_OperatorIdentifier]< "operator" @ "!" >` twice
-  - could be related to `_QualifiedName` does not have an optional LrInject clause
 
 ## Next task
 
@@ -17,6 +18,8 @@
 - Generate multiple level of LRI from prefix_merge
   - Remove `PrefixExtractionAffectedRuleReferencedAnother`
   - Currently it generates an error if 3 levels are required
+  - Allow one prefix followed by multiple continuations
+    - Optional applies to all continuations as a whole
 
 ## Test Cases
 
