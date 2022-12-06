@@ -57,7 +57,7 @@ MakeCtorExpr
 MakeFunctionType
 ***********************************************************************/
 
-		MakeFunctionType& MakeFunctionType::args(const vl::Ptr<TypeOrExpr>& value)
+		MakeFunctionType& MakeFunctionType::args(const vl::Ptr<TypeOrExprOrOthers>& value)
 		{
 			node->args.Add(value);
 			return *this;

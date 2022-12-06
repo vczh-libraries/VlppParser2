@@ -188,7 +188,7 @@ namespace prefixmerge8_pmvariadic
 	{
 	public:
 		vl::Ptr<TypeOrExpr> returnType;
-		vl::collections::List<vl::Ptr<TypeOrExpr>> args;
+		vl::collections::List<vl::Ptr<TypeOrExprOrOthers>> args;
 
 		void Accept(TypeOrExpr::IVisitor* visitor) override;
 	};

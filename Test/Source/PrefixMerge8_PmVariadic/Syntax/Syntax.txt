@@ -35,12 +35,17 @@ _PrimitiveExprOnly
 // Left Recursive (Types)
 ////////////////////////////////////////
 
+_LongTypeArg
+  ::= !_LongType
+  ::= _LongType:operand "..." as VariadicArgument
+  ;
+
 _LongType
   ::= !prefix_merge(_PrimitiveShared)
   ::= !prefix_merge(_PrimitiveTypeOnly)
   ::= _LongType:type "const" as ConstType
   ::= _LongType:type "*" as PointerType
-  ::= _LongType:returnType "(" {_LongType:args ; ","} ")" as FunctionType
+  ::= _LongType:returnType "(" {_LongTypeArg:args ; ","} ")" as FunctionType
   ;
 
 ////////////////////////////////////////

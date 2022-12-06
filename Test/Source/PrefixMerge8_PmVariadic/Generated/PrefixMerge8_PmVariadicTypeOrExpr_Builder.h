@@ -36,7 +36,7 @@ namespace prefixmerge8_pmvariadic
 		class MakeFunctionType : public vl::glr::ParsingAstBuilder<FunctionType>
 		{
 		public:
-			MakeFunctionType& args(const vl::Ptr<TypeOrExpr>& value);
+			MakeFunctionType& args(const vl::Ptr<TypeOrExprOrOthers>& value);
 			MakeFunctionType& returnType(const vl::Ptr<TypeOrExpr>& value);
 		};
 
