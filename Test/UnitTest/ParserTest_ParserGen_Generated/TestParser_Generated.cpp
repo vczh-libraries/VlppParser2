@@ -386,7 +386,8 @@ TEST_FILE
 		&prefixmerge8_pmvariadic::ModuleParserStateLabel,
 		L"TestCase_PrefixMerge",
 		L"TestCase_PrefixMerge_Ambiguous2",
-		L"TestCase_PrefixMerge_CtorExpr"
+		L"TestCase_PrefixMerge_CtorExpr",
+		L"TestCase_PrefixMerge_Variadic"
 		);
 
 	using namespace TestParser_Generated_TestObjects;
