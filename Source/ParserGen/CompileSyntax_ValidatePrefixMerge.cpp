@@ -301,22 +301,29 @@ ValidateDeducingPrefixMergeRuleVisitor
 
 			protected:
 
+				void TryAppendResult(const ParsingToken& name, RuleSymbol* refRuleSymbol)
+				{
+					if (context.directPmClauses.Keys().Contains(refRuleSymbol))
+					{
+						if (!result) result = Ptr(new List<NonSimpleUseDeduction>);
+						result->Add({ &name,refRuleSymbol });
+					}
+				}
+
 				void VisitRuleRef(const ParsingToken& name)
 				{
 					vint index = context.syntaxManager.Rules().Keys().IndexOf(name.value);
 					if (index == -1) return;
 
 					auto refRuleSymbol = context.syntaxManager.Rules().Values()[index];
+					TryAppendResult(name, refRuleSymbol);
+
 					index = context.indirectSimpleUseRules.Keys().IndexOf(refRuleSymbol);
 					if (index == -1) return;
 
 					for (auto [simpleUseSymbol, _] : context.indirectSimpleUseRules.GetByIndex(index))
 					{
-						if (context.directPmClauses.Keys().Contains(simpleUseSymbol))
-						{
-							if (!result) result = Ptr(new List<NonSimpleUseDeduction>);
-							result->Add({ &name,simpleUseSymbol });
-						}
+						TryAppendResult(name, simpleUseSymbol);
 					}
 				}
 
