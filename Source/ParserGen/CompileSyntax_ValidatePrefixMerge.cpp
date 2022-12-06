@@ -263,8 +263,13 @@ ValidateDeducingPrefixMergeRuleVisitor
 				, protected virtual GlrClause::IVisitor
 			{
 			protected:
-				VisitorContext&				context;
-				RuleSymbol*					ruleSymbol;
+				using NonSimpleUseDeduction = Pair<const ParsingToken*, RuleSymbol*>;
+
+				VisitorContext&						context;
+				RuleSymbol*							ruleSymbol;
+
+				Ptr<List<NonSimpleUseDeduction>>	result;
+				bool								couldBeEmpty = false;
 
 			public:
 				ValidateDeducingPrefixMergeRuleVisitor(
@@ -279,9 +284,51 @@ ValidateDeducingPrefixMergeRuleVisitor
 				void ValidateClause(Ptr<GlrClause> clause)
 				{
 					clause->Accept(this);
+					if (result)
+					{
+						for (auto [refName, refRuleSymbol] : *result.Obj())
+						{
+							context.syntaxManager.AddError(
+								ParserErrorType::RuleDeductToPrefixMergeInNonSimpleUseClause,
+								clause->codeRange,
+								ruleSymbol->Name(),
+								refRuleSymbol->Name(),
+								refName->value
+								);
+						}
+					}
 				}
 
 			protected:
+
+				void VisitRuleRef(const ParsingToken& name)
+				{
+					vint index = context.syntaxManager.Rules().Keys().IndexOf(name.value);
+					if (index == -1) return;
+
+					auto refRuleSymbol = context.syntaxManager.Rules().Values()[index];
+					index = context.indirectSimpleUseRules.Keys().IndexOf(refRuleSymbol);
+					if (index == -1) return;
+
+					for (auto [simpleUseSymbol, _] : context.indirectSimpleUseRules.GetByIndex(index))
+					{
+						if (context.directPmClauses.Keys().Contains(simpleUseSymbol))
+						{
+							if (!result) result = Ptr(new List<NonSimpleUseDeduction>);
+							result->Add({ &name,simpleUseSymbol });
+						}
+					}
+				}
+
+				void VisitPotentialEmptySyntax()
+				{
+					// a clause is not allowed to produce an empty sequence
+					// since this syntax could produce an empty sequence
+					// therefore there should be other non-parallel part of syntax in this clause that produces a non-empty sequence
+					// it doesn't need to check the error here
+					result = nullptr;
+					couldBeEmpty = true;
+				}
 
 				////////////////////////////////////////////////////////////////////////
 				// GlrSyntax::IVisitor
@@ -289,26 +336,90 @@ ValidateDeducingPrefixMergeRuleVisitor
 
 				void Visit(GlrRefSyntax* node) override
 				{
+					result = nullptr;
+					couldBeEmpty = false;
+
+					if (node->refType != GlrRefType::Id) return;
+					VisitRuleRef(node->literal);
 				}
 
 				void Visit(GlrUseSyntax* node) override
 				{
+					result = nullptr;
+					couldBeEmpty = false;
+
+					VisitRuleRef(node->name);
 				}
 
 				void Visit(GlrLoopSyntax* node) override
 				{
+					VisitPotentialEmptySyntax();
 				}
 
 				void Visit(GlrOptionalSyntax* node) override
 				{
+					VisitPotentialEmptySyntax();
 				}
 
 				void Visit(GlrSequenceSyntax* node) override
 				{
+					node->first->Accept(this);
+					auto firstResult = result;
+					bool firstEmpty = couldBeEmpty;
+
+					node->second->Accept(this);
+					auto secondResult = result;
+					auto secondEmpty = couldBeEmpty;
+
+					couldBeEmpty = firstEmpty && secondEmpty;
+
+					if (!firstEmpty && !secondEmpty)
+					{
+						result = nullptr;
+					}
+					else if (!firstEmpty)
+					{
+						result = firstResult;
+					}
+					else if (!secondEmpty)
+					{
+						result = secondResult;
+					}
+					else
+					{
+						result = nullptr;
+					}
 				}
 
 				void Visit(GlrAlternativeSyntax* node) override
 				{
+					node->first->Accept(this);
+					auto firstResult = result;
+					bool firstEmpty = couldBeEmpty;
+
+					node->second->Accept(this);
+					auto secondResult = result;
+					auto secondEmpty = couldBeEmpty;
+
+					result = nullptr;
+					couldBeEmpty = firstEmpty || secondEmpty;
+
+					if (couldBeEmpty)
+					{
+						if (firstResult && secondResult)
+						{
+							CopyFrom(*firstResult.Obj(), *secondResult.Obj(), true);
+							result = firstResult;
+						}
+						else if (firstResult)
+						{
+							result = firstResult;
+						}
+						else if (secondResult)
+						{
+							result = secondResult;
+						}
+					}
 				}
 
 				void Visit(GlrPushConditionSyntax* node) override
@@ -327,14 +438,20 @@ ValidateDeducingPrefixMergeRuleVisitor
 
 				void Visit(GlrCreateClause* node) override
 				{
+					node->syntax->Accept(this);
 				}
 
 				void Visit(GlrPartialClause* node) override
 				{
+					node->syntax->Accept(this);
 				}
 
 				void Visit(GlrReuseClause* node) override
 				{
+					if (!dynamic_cast<GlrUseSyntax*>(node->syntax.Obj()))
+					{
+						node->syntax->Accept(this);
+					}
 				}
 
 				void Visit(GlrLeftRecursionPlaceholderClause* node) override
@@ -343,6 +460,10 @@ ValidateDeducingPrefixMergeRuleVisitor
 
 				void Visit(GlrLeftRecursionInjectClause* node) override
 				{
+					if (!node->continuation || node->continuation->type == GlrLeftRecursionInjectContinuationType::Optional)
+					{
+						VisitRuleRef(node->rule->literal);
+					}
 				}
 
 				void Visit(GlrPrefixMergeClause* node) override

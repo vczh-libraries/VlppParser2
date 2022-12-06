@@ -411,10 +411,10 @@ Exp1
 	});
 
 	//////////////////////////////////////////////////////
-	// RuleDeductToPrefixMergeByNonSimpleUseRule
+	// RuleDeductToPrefixMergeInNonSimpleUseClause
 	//////////////////////////////////////////////////////
 
-	TEST_CASE(L"RuleDeductToPrefixMergeByNonSimpleUseRule 1")
+	TEST_CASE(L"RuleDeductToPrefixMergeInNonSimpleUseClause 1")
 	{
 		const wchar_t* syntaxCode =
 LR"SYNTAX(
@@ -434,11 +434,11 @@ Exp1
 			astCode,
 			lexerCode,
 			syntaxCode,
-			{ ParserErrorType::RuleDeductToPrefixMergeByNonSimpleUseRule,L"Exp1",L"PM",L"PM" }
+			{ ParserErrorType::RuleDeductToPrefixMergeInNonSimpleUseClause,L"Exp1",L"PM",L"PM" }
 			);
 	});
 
-	TEST_CASE(L"RuleDeductToPrefixMergeByNonSimpleUseRule 2")
+	TEST_CASE(L"RuleDeductToPrefixMergeInNonSimpleUseClause 2")
 	{
 		const wchar_t* syntaxCode =
 LR"SYNTAX(
@@ -458,11 +458,11 @@ Exp1
 			astCode,
 			lexerCode,
 			syntaxCode,
-			{ ParserErrorType::RuleDeductToPrefixMergeByNonSimpleUseRule,L"Exp1",L"PM",L"PM" }
+			{ ParserErrorType::RuleDeductToPrefixMergeInNonSimpleUseClause,L"Exp1",L"PM",L"PM" }
 			);
 	});
 
-	TEST_CASE(L"RuleDeductToPrefixMergeByNonSimpleUseRule 3")
+	TEST_CASE(L"RuleDeductToPrefixMergeInNonSimpleUseClause 3")
 	{
 		const wchar_t* syntaxCode =
 LR"SYNTAX(
@@ -482,11 +482,11 @@ Exp1
 			astCode,
 			lexerCode,
 			syntaxCode,
-			{ ParserErrorType::RuleDeductToPrefixMergeByNonSimpleUseRule,L"Exp1",L"PM",L"PM" }
+			{ ParserErrorType::RuleDeductToPrefixMergeInNonSimpleUseClause,L"Exp1",L"PM",L"PM" }
 			);
 	});
 
-	TEST_CASE(L"RuleDeductToPrefixMergeByNonSimpleUseRule 4")
+	TEST_CASE(L"RuleDeductToPrefixMergeInNonSimpleUseClause 4")
 	{
 		const wchar_t* syntaxCode =
 LR"SYNTAX(
@@ -509,11 +509,11 @@ Exp2
 			astCode,
 			lexerCode,
 			syntaxCode,
-			{ ParserErrorType::RuleDeductToPrefixMergeByNonSimpleUseRule,L"Exp2",L"PM",L"Exp1" }
+			{ ParserErrorType::RuleDeductToPrefixMergeInNonSimpleUseClause,L"Exp2",L"PM",L"Exp1" }
 			);
 	});
 
-	TEST_CASE(L"RuleDeductToPrefixMergeByNonSimpleUseRule 5")
+	TEST_CASE(L"RuleDeductToPrefixMergeInNonSimpleUseClause 5")
 	{
 		const wchar_t* syntaxCode =
 LR"SYNTAX(
@@ -536,11 +536,11 @@ Exp2
 			astCode,
 			lexerCode,
 			syntaxCode,
-			{ ParserErrorType::RuleDeductToPrefixMergeByNonSimpleUseRule,L"Exp2",L"PM",L"Exp1" }
+			{ ParserErrorType::RuleDeductToPrefixMergeInNonSimpleUseClause,L"Exp2",L"PM",L"Exp1" }
 			);
 	});
 
-	TEST_CASE(L"RuleDeductToPrefixMergeByNonSimpleUseRule 6")
+	TEST_CASE(L"RuleDeductToPrefixMergeInNonSimpleUseClause 6")
 	{
 		const wchar_t* syntaxCode =
 LR"SYNTAX(
@@ -568,11 +568,11 @@ Exp3
 			astCode,
 			lexerCode,
 			syntaxCode,
-			{ ParserErrorType::RuleDeductToPrefixMergeByNonSimpleUseRule,L"Exp3",L"PM",L"Exp1" }
+			{ ParserErrorType::RuleDeductToPrefixMergeInNonSimpleUseClause,L"Exp3",L"PM",L"Exp1" }
 			);
 	});
 
-	TEST_CASE(L"RuleDeductToPrefixMergeByNonSimpleUseRule 7")
+	TEST_CASE(L"RuleDeductToPrefixMergeInNonSimpleUseClause 7")
 	{
 		const wchar_t* syntaxCode =
 LR"SYNTAX(
@@ -600,7 +600,7 @@ Exp3
 			astCode,
 			lexerCode,
 			syntaxCode,
-			{ ParserErrorType::RuleDeductToPrefixMergeByNonSimpleUseRule,L"Exp3",L"PM",L"Exp1" }
+			{ ParserErrorType::RuleDeductToPrefixMergeInNonSimpleUseClause,L"Exp3",L"PM",L"Exp1" }
 			);
 	});
 }
