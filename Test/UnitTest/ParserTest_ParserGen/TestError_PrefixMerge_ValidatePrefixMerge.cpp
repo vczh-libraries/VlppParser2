@@ -333,7 +333,31 @@ PM
   ::= !prefix_merge(Exp0)
   ;
 Exp1
-  ::= ["+"] PM:func "+" as CallExpr
+  ::= {"+"} PM:func "+" as CallExpr
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::ClausePartiallyIndirectlyBeginsWithPrefixMergeAndLiteral,L"Exp1",L"PM",L"\"+\"" }
+			);
+	});
+
+	TEST_CASE(L"ClausePartiallyIndirectlyBeginsWithPrefixMergeAndLiteral 7")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= NUM:value as NumExpr
+  ;
+PM
+  ::= !prefix_merge(Exp0)
+  ;
+Exp1
+  ::= ({"+"} | ["+"]) PM:func "+" as CallExpr
   ;
 )SYNTAX";
 		ExpectError(
@@ -499,7 +523,34 @@ Plus
   ::= "+" as NumExpr
   ;
 Exp1
-  ::= [Plus] PM:func Plus as CallExpr
+  ::= {Plus} PM:func Plus as CallExpr
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::ClausePartiallyIndirectlyBeginsWithPrefixMergeAndRule,L"Exp1",L"PM",L"Plus" }
+			);
+	});
+
+	TEST_CASE(L"ClausePartiallyIndirectlyBeginsWithPrefixMergeAndRule 7")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= NUM:value as NumExpr
+  ;
+PM
+  ::= !prefix_merge(Exp0)
+  ;
+Plus
+  ::= "+" as NumExpr
+  ;
+Exp1
+  ::= ({Plus} PM:left | [Plus] PM:right) Plus as BinaryExpr
   ;
 )SYNTAX";
 		ExpectError(
