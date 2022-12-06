@@ -2,6 +2,9 @@
 
 ## Progressing
 
+- In `CheckMergeTraces`
+  - If an early object got BOLR into a late object, the real first ambiguity instruction is correctly calculated
+  - But if an early object got LriStore/LriFecth into a late object as a field, it does not
 - `Name<A...>` unexpectedly produces ambiguity
   - From `_GenericArgument` it goes to
     - `!_QualifiedName [left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveExpr) _GenericArgument_LRI_Original]`
