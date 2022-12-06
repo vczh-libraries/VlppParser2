@@ -372,7 +372,7 @@ TEST_FILE
 		&prefixmerge7_pmswitch::ModuleParserRuleName,
 		&prefixmerge7_pmswitch::ModuleParserStateLabel,
 		L"TestCase_PrefixMerge",
-		L"TestCase_PrefixMerge_Ambiguous1",
+		L"TestCase_PrefixMerge_Ambiguous2",
 		L"TestCase_PrefixMerge_CtorExpr",
 		L"TestCase_PrefixMerge_ThrowComma",
 		L"TestCase_PrefixMerge_Generic"
