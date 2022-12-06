@@ -524,7 +524,10 @@ PM
   ::= !prefix_merge(Exp0)
   ;
 Exp1
-  ::= (PM:func | PM:args "+") as CallExpr
+  ::= !PM
+  ;
+Exp2
+  ::= !Exp1 {"+"}
   ;
 )SYNTAX";
 		ExpectError(
@@ -533,7 +536,7 @@ Exp1
 			astCode,
 			lexerCode,
 			syntaxCode,
-			{ ParserErrorType::RuleDeductToPrefixMergeInNonSimpleUseClause,L"Exp1",L"PM",L"PM" }
+			{ ParserErrorType::RuleDeductToPrefixMergeInNonSimpleUseClause,L"Exp2",L"PM",L"Exp1" }
 			);
 	});
 
@@ -548,7 +551,7 @@ PM
   ::= !prefix_merge(Exp0)
   ;
 Exp1
-  ::= (["+"] PM:func | PM:args) as CallExpr
+  ::= (PM:func | PM:args "+") as CallExpr
   ;
 )SYNTAX";
 		ExpectError(
@@ -572,7 +575,7 @@ PM
   ::= !prefix_merge(Exp0)
   ;
 Exp1
-  ::= ({"+"} !PM | !PM)
+  ::= (["+"] PM:func | PM:args) as CallExpr
   ;
 )SYNTAX";
 		ExpectError(
@@ -585,7 +588,31 @@ Exp1
 			);
 	});
 
-	TEST_CASE(L"RuleDeductToPrefixMergeInNonSimpleUseClause 4")
+	TEST_CASE(L"RuleDeductToPrefixMergeInNonSimpleUseClause 8")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= NUM:value as NumExpr
+  ;
+PM
+  ::= !prefix_merge(Exp0)
+  ;
+Exp1
+  ::= {"+"} !PM | !PM
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::RuleDeductToPrefixMergeInNonSimpleUseClause,L"Exp1",L"PM",L"PM" }
+			);
+	});
+
+	TEST_CASE(L"RuleDeductToPrefixMergeInNonSimpleUseClause 9")
 	{
 		const wchar_t* syntaxCode =
 LR"SYNTAX(
@@ -612,7 +639,7 @@ Exp2
 			);
 	});
 
-	TEST_CASE(L"RuleDeductToPrefixMergeInNonSimpleUseClause 9")
+	TEST_CASE(L"RuleDeductToPrefixMergeInNonSimpleUseClause 10")
 	{
 		const wchar_t* syntaxCode =
 LR"SYNTAX(
@@ -626,7 +653,7 @@ Exp1
   ::= !PM
   ;
 Exp2
-  ::= !Exp1 {"+"}
+  ::= !Exp1 {"+"} | !Exp1
   ;
 )SYNTAX";
 		ExpectError(
@@ -639,7 +666,7 @@ Exp2
 			);
 	});
 
-	TEST_CASE(L"RuleDeductToPrefixMergeInNonSimpleUseClause 10")
+	TEST_CASE(L"RuleDeductToPrefixMergeInNonSimpleUseClause 11")
 	{
 		const wchar_t* syntaxCode =
 LR"SYNTAX(
@@ -671,7 +698,7 @@ Exp3
 			);
 	});
 
-	TEST_CASE(L"RuleDeductToPrefixMergeInNonSimpleUseClause 11")
+	TEST_CASE(L"RuleDeductToPrefixMergeInNonSimpleUseClause 12")
 	{
 		const wchar_t* syntaxCode =
 LR"SYNTAX(
@@ -703,7 +730,7 @@ Exp3
 			);
 	});
 
-	TEST_CASE(L"RuleDeductToPrefixMergeInNonSimpleUseClause 12")
+	TEST_CASE(L"RuleDeductToPrefixMergeInNonSimpleUseClause 13")
 	{
 		const wchar_t* syntaxCode =
 LR"SYNTAX(
