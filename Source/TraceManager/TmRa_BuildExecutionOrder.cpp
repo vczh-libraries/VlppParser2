@@ -568,7 +568,7 @@ BuildAmbiguousStepLink
 						{
 							stepRA->et_ra.type = ins.param;
 						}
-						else
+						else if (stepRA->et_ra.type != ins.param)
 						{
 							stepRA->et_ra.type = typeCallback->FindCommonBaseClass(stepRA->et_ra.type, ins.param);
 							CHECK_ERROR(stepRA->et_ra.type != -1, ERROR_MESSAGE_PREFIX L"Unable to resolve the type from multiple objects.");
