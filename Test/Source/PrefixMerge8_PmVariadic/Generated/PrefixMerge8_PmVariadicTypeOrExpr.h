@@ -119,7 +119,7 @@ namespace prefixmerge8_pmvariadic
 
 		virtual void Accept(GenericQualifiedName::IVisitor* visitor) = 0;
 
-		vl::collections::List<vl::Ptr<TypeOrExpr>> args;
+		vl::collections::List<vl::Ptr<TypeOrExprOrOthers>> args;
 
 		void Accept(QualifiedName::IVisitor* visitor) override;
 	};

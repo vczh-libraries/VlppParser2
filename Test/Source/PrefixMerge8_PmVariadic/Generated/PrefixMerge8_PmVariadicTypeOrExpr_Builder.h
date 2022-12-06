@@ -45,20 +45,20 @@ namespace prefixmerge8_pmvariadic
 		public:
 			MakeGenericMemberName& member(const vl::WString& value);
 			MakeGenericMemberName& parent(const vl::Ptr<QualifiedName>& value);
-			MakeGenericMemberName& args(const vl::Ptr<TypeOrExpr>& value);
+			MakeGenericMemberName& args(const vl::Ptr<TypeOrExprOrOthers>& value);
 		};
 
 		class MakeGenericName : public vl::glr::ParsingAstBuilder<GenericName>
 		{
 		public:
 			MakeGenericName& name(const vl::WString& value);
-			MakeGenericName& args(const vl::Ptr<TypeOrExpr>& value);
+			MakeGenericName& args(const vl::Ptr<TypeOrExprOrOthers>& value);
 		};
 
 		class MakeGenericQualifiedName : public vl::glr::ParsingAstBuilder<GenericQualifiedName>
 		{
 		public:
-			MakeGenericQualifiedName& args(const vl::Ptr<TypeOrExpr>& value);
+			MakeGenericQualifiedName& args(const vl::Ptr<TypeOrExprOrOthers>& value);
 		};
 
 		class MakeMemberName : public vl::glr::ParsingAstBuilder<MemberName>

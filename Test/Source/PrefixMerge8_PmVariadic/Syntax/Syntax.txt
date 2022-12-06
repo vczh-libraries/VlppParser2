@@ -2,8 +2,13 @@
 // Left Recursive (Primitives)
 ////////////////////////////////////////
 
+_GenericArgument
+  ::= !Module
+  ::= Module:operand "..." as VariadicArgument
+  ;
+
 _GenericArguments
-  ::= "<" {Module:args ; ","} ">" as partial GenericQualifiedName
+  ::= "<" {_GenericArgument:args ; ","} ">" as partial GenericQualifiedName
   ;
 
 _Name

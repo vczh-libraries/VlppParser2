@@ -3,6 +3,37 @@
     "rules": [{
         "$ast": "Rule",
         "clauses": [{
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "Module"
+            }
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "RefSyntax",
+                    "field": "operand",
+                    "literal": "Module",
+                    "refType": "Id"
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "\"...\"",
+                    "refType": "Literal"
+                }
+            },
+            "type": "VariadicArgument"
+        }],
+        "name": "_GenericArgument",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
             "$ast": "PartialClause",
             "assignments": [],
             "syntax": {
@@ -26,7 +57,7 @@
                         "syntax": {
                             "$ast": "RefSyntax",
                             "field": "args",
-                            "literal": "Module",
+                            "literal": "_GenericArgument",
                             "refType": "Id"
                         }
                     }

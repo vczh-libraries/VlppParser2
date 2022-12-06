@@ -85,7 +85,7 @@ MakeGenericMemberName
 			return *this;
 		}
 
-		MakeGenericMemberName& MakeGenericMemberName::args(const vl::Ptr<TypeOrExpr>& value)
+		MakeGenericMemberName& MakeGenericMemberName::args(const vl::Ptr<TypeOrExprOrOthers>& value)
 		{
 			node->args.Add(value);
 			return *this;
@@ -101,7 +101,7 @@ MakeGenericName
 			return *this;
 		}
 
-		MakeGenericName& MakeGenericName::args(const vl::Ptr<TypeOrExpr>& value)
+		MakeGenericName& MakeGenericName::args(const vl::Ptr<TypeOrExprOrOthers>& value)
 		{
 			node->args.Add(value);
 			return *this;
@@ -111,7 +111,7 @@ MakeGenericName
 MakeGenericQualifiedName
 ***********************************************************************/
 
-		MakeGenericQualifiedName& MakeGenericQualifiedName::args(const vl::Ptr<TypeOrExpr>& value)
+		MakeGenericQualifiedName& MakeGenericQualifiedName::args(const vl::Ptr<TypeOrExprOrOthers>& value)
 		{
 			node->args.Add(value);
 			return *this;
