@@ -215,6 +215,7 @@ namespace cpp_parser
 		public:
 			virtual void Visit(CppExprOnly* node) = 0;
 			virtual void Visit(CppTypeOnly* node) = 0;
+			virtual void Visit(CppGenericArgument* node) = 0;
 			virtual void Visit(CppQualifiedName* node) = 0;
 			virtual void Visit(CppDeclaratorType* node) = 0;
 		};
@@ -302,11 +303,13 @@ namespace cpp_parser
 		void Accept(CppIdentifier::IVisitor* visitor) override;
 	};
 
-	class CppGenericArgument : public vl::glr::ParsingAstBase, vl::reflection::Description<CppGenericArgument>
+	class CppGenericArgument : public CppTypeOrExpr, vl::reflection::Description<CppGenericArgument>
 	{
 	public:
 		vl::Ptr<CppTypeOrExpr> argument;
 		vl::glr::ParsingToken variadic;
+
+		void Accept(CppTypeOrExpr::IVisitor* visitor) override;
 	};
 
 	class CppGenericArguments : public vl::glr::ParsingAstBase, vl::reflection::Description<CppGenericArguments>
@@ -660,6 +663,11 @@ namespace vl
 				}
 
 				void Visit(cpp_parser::CppTypeOnly* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+				void Visit(cpp_parser::CppGenericArgument* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}

@@ -65,6 +65,7 @@ namespace cpp_parser
 		protected:
 			void Visit(CppExprOnly* node) override;
 			void Visit(CppTypeOnly* node) override;
+			void Visit(CppGenericArgument* node) override;
 			void Visit(CppQualifiedName* node) override;
 			void Visit(CppDeclaratorType* node) override;
 
@@ -98,7 +99,6 @@ namespace cpp_parser
 
 			void Print(CppTypeOrExpr* node);
 			void Print(CppIdentifier* node);
-			void Print(CppGenericArgument* node);
 			void Print(CppGenericArguments* node);
 			void Print(CppStringLiteralFragment* node);
 			void Print(CppAdvancedType* node);

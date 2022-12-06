@@ -1252,6 +1252,20 @@ namespace cpp_parser
 			node->Accept(static_cast<CppTypeOnly::IVisitor*>(this));
 		}
 
+		void AstVisitor::Visit(CppGenericArgument* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"GenericArgument", node);
+			PrintFields(static_cast<CppTypeOrExpr*>(node));
+			PrintFields(static_cast<CppGenericArgument*>(node));
+			EndObject();
+		}
+
 		void AstVisitor::Visit(CppQualifiedName* node)
 		{
 			if (!node)
@@ -1631,19 +1645,6 @@ namespace cpp_parser
 				return;
 			}
 			node->Accept(static_cast<CppIdentifier::IVisitor*>(this));
-		}
-
-		void AstVisitor::Print(CppGenericArgument* node)
-		{
-			if (!node)
-			{
-				WriteNull();
-				return;
-			}
-			BeginObject();
-			WriteType(L"GenericArgument", node);
-			PrintFields(static_cast<CppGenericArgument*>(node));
-			EndObject();
 		}
 
 		void AstVisitor::Print(CppGenericArguments* node)

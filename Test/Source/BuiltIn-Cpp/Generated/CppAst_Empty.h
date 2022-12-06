@@ -25,6 +25,7 @@ namespace cpp_parser
 			// Visitor Members -----------------------------------
 			void Visit(CppExprOnly* node) override;
 			void Visit(CppTypeOnly* node) override;
+			void Visit(CppGenericArgument* node) override;
 			void Visit(CppQualifiedName* node) override;
 			void Visit(CppDeclaratorType* node) override;
 		};

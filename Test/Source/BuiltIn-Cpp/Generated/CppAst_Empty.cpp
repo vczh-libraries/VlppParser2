@@ -27,6 +27,10 @@ TypeOrExprVisitor
 			Dispatch(node);
 		}
 
+		void TypeOrExprVisitor::Visit(CppGenericArgument* node)
+		{
+		}
+
 		void TypeOrExprVisitor::Visit(CppQualifiedName* node)
 		{
 		}

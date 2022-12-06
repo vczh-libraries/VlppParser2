@@ -109,6 +109,7 @@ namespace cpp_parser
 		protected:
 			void Visit(CppExprOnly* node) override;
 			void Visit(CppTypeOnly* node) override;
+			void Visit(CppGenericArgument* node) override;
 			void Visit(CppQualifiedName* node) override;
 			void Visit(CppDeclaratorType* node) override;
 
@@ -140,7 +141,6 @@ namespace cpp_parser
 		public:
 			void InspectInto(CppTypeOrExpr* node);
 			void InspectInto(CppIdentifier* node);
-			void InspectInto(CppGenericArgument* node);
 			void InspectInto(CppGenericArguments* node);
 			void InspectInto(CppStringLiteralFragment* node);
 			void InspectInto(CppAdvancedType* node);

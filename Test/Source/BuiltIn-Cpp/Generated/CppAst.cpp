@@ -32,6 +32,11 @@ Visitor Pattern Implementation
 		visitor->Visit(this);
 	}
 
+	void CppGenericArgument::Accept(CppTypeOrExpr::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
 	void CppQualifiedName::Accept(CppTypeOrExpr::IVisitor* visitor)
 	{
 		visitor->Visit(this);
@@ -308,7 +313,7 @@ namespace vl
 			END_CLASS_MEMBER(cpp_parser::CppOperatorIdentifier)
 
 			BEGIN_CLASS_MEMBER(cpp_parser::CppGenericArgument)
-				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+				CLASS_MEMBER_BASE(cpp_parser::CppTypeOrExpr)
 
 				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppGenericArgument>(), NO_PARAMETER)
 
@@ -699,6 +704,7 @@ namespace vl
 			BEGIN_INTERFACE_MEMBER(cpp_parser::CppTypeOrExpr::IVisitor)
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppTypeOrExpr::IVisitor::*)(cpp_parser::CppExprOnly* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppTypeOrExpr::IVisitor::*)(cpp_parser::CppTypeOnly* node))
+				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppTypeOrExpr::IVisitor::*)(cpp_parser::CppGenericArgument* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppTypeOrExpr::IVisitor::*)(cpp_parser::CppQualifiedName* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppTypeOrExpr::IVisitor::*)(cpp_parser::CppDeclaratorType* node))
 			END_INTERFACE_MEMBER(cpp_parser::CppTypeOrExpr)
