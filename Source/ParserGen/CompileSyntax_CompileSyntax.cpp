@@ -283,13 +283,17 @@ CompileSyntaxVisitor
 						return [this, useOrLriSyntax, cont]()
 						{
 							bool optional = cont->type == GlrLeftRecursionInjectContinuationType::Optional;
-							auto flag = (vint32_t)context.syntaxManager.lrpFlags.IndexOf(cont->flag->flag.value);
-
 							List<StateBuilder> targetRules;
-							for (auto lriTarget : cont->injectionTargets)
+
+							for (auto lriFlag : cont->flags)
 							{
-								targetRules.Add(CompileLriTarget(flag, lriTarget.Obj()));
+								auto flag = (vint32_t)context.syntaxManager.lrpFlags.IndexOf(lriFlag->flag.value);
+								for (auto lriTarget : cont->injectionTargets)
+								{
+									targetRules.Add(CompileLriTarget(flag, lriTarget.Obj()));
+								}
 							}
+
 							return automatonBuilder.BuildLriClauseSyntax(
 								useOrLriSyntax,
 								optional,

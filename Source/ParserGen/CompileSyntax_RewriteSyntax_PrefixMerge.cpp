@@ -612,7 +612,7 @@ RewriteRules (AST Creation)
 					}
 
 					auto lriContFlag = Ptr(new GlrLeftRecursionPlaceholder);
-					lriCont->flag = lriContFlag;
+					lriCont->flags.Add(lriContFlag);
 					lriContFlag->flag.value = flag;
 
 					auto lriContTarget = CreateLriClause(rContext.originRules[pmInjectRecord.injectIntoRule]->name.value);
