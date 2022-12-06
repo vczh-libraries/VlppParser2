@@ -21,14 +21,14 @@ namespace prefixmerge5_pm
 		_LongType = 20,
 		_Expr0 = 26,
 		_Expr1 = 33,
-		_Expr = 43,
-		Module = 53,
-		_LongType_LRI_Original = 69,
-		_Expr0_LRI_Original = 83,
-		_Expr1_LRI_Original = 93,
-		_Expr_LRI_Original = 101,
-		Module_LRI_Original = 107,
-		_Expr0__LongType_LRI_Prefix = 111,
+		_Expr = 42,
+		Module = 51,
+		_LongType_LRI_Original = 66,
+		_Expr0_LRI_Original = 80,
+		_Expr1_LRI_Original = 90,
+		_Expr_LRI_Original = 98,
+		Module_LRI_Original = 104,
+		_Expr0__LongType_LRI_Prefix = 108,
 	};
 
 	const wchar_t* ModuleParserRuleName(vl::vint index);
