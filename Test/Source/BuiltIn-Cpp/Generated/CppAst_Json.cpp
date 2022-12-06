@@ -1238,6 +1238,15 @@ namespace cpp_parser
 		void AstVisitor::PrintFields(CppTypeOrExprOrOthers* node)
 		{
 		}
+		void AstVisitor::PrintFields(CppVariadicExpr* node)
+		{
+			BeginField(L"operand");
+			Print(node->operand.Obj());
+			EndField();
+			BeginField(L"variadic");
+			WriteToken(node->variadic);
+			EndField();
+		}
 		void AstVisitor::PrintFields(CppVolatileType* node)
 		{
 			BeginField(L"type");
@@ -1587,6 +1596,22 @@ namespace cpp_parser
 			PrintFields(static_cast<CppTypeOrExpr*>(node));
 			PrintFields(static_cast<CppExprOnly*>(node));
 			PrintFields(static_cast<CppThrowExpr*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppVariadicExpr* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"VariadicExpr", node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
+			PrintFields(static_cast<CppTypeOrExpr*>(node));
+			PrintFields(static_cast<CppExprOnly*>(node));
+			PrintFields(static_cast<CppVariadicExpr*>(node));
 			EndObject();
 		}
 

@@ -86,6 +86,8 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::Ptr(new cpp_parser::CppSysFuncExpr);
 		case CppClasses::ThrowExpr:
 			return vl::Ptr(new cpp_parser::CppThrowExpr);
+		case CppClasses::VariadicExpr:
+			return vl::Ptr(new cpp_parser::CppVariadicExpr);
 		case CppClasses::VolatileType:
 			return vl::Ptr(new cpp_parser::CppVolatileType);
 		default:
@@ -196,6 +198,8 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppSysFuncExpr::argument, object, field, value, cppFieldName);
 		case CppFields::ThrowExpr_argument:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppThrowExpr::argument, object, field, value, cppFieldName);
+		case CppFields::VariadicExpr_operand:
+			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppVariadicExpr::operand, object, field, value, cppFieldName);
 		case CppFields::VolatileType_type:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppVolatileType::type, object, field, value, cppFieldName);
 		default:
@@ -236,6 +240,8 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::glr::AssemblerSetTokenField(&cpp_parser::CppSysFuncExpr::keyword, object, field, token, tokenIndex, cppFieldName);
 		case CppFields::SysFuncExpr_variadic:
 			return vl::glr::AssemblerSetTokenField(&cpp_parser::CppSysFuncExpr::variadic, object, field, token, tokenIndex, cppFieldName);
+		case CppFields::VariadicExpr_variadic:
+			return vl::glr::AssemblerSetTokenField(&cpp_parser::CppVariadicExpr::variadic, object, field, token, tokenIndex, cppFieldName);
 		default:
 			return vl::glr::AssemblyThrowFieldNotToken(field, cppFieldName);
 		}
@@ -325,10 +331,11 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"TypeOnly",
 			L"TypeOrExpr",
 			L"TypeOrExprOrOthers",
+			L"VariadicExpr",
 			L"VolatileType",
 		};
 		vl::vint index = (vl::vint)type;
-		return 0 <= index && index < 40 ? results[index] : nullptr;
+		return 0 <= index && index < 41 ? results[index] : nullptr;
 	}
 
 	const wchar_t* CppCppTypeName(CppClasses type)
@@ -373,10 +380,11 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::CppTypeOnly",
 			L"cpp_parser::CppTypeOrExpr",
 			L"cpp_parser::CppTypeOrExprOrOthers",
+			L"cpp_parser::CppVariadicExpr",
 			L"cpp_parser::CppVolatileType",
 		};
 		vl::vint index = (vl::vint)type;
-		return 0 <= index && index < 40 ? results[index] : nullptr;
+		return 0 <= index && index < 41 ? results[index] : nullptr;
 	}
 
 	const wchar_t* CppFieldName(CppFields field)
@@ -461,10 +469,12 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"SysFuncExpr::keyword",
 			L"SysFuncExpr::variadic",
 			L"ThrowExpr::argument",
+			L"VariadicExpr::operand",
+			L"VariadicExpr::variadic",
 			L"VolatileType::type",
 		};
 		vl::vint index = (vl::vint)field;
-		return 0 <= index && index < 80 ? results[index] : nullptr;
+		return 0 <= index && index < 82 ? results[index] : nullptr;
 	}
 
 	const wchar_t* CppCppFieldName(CppFields field)
@@ -549,10 +559,12 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::CppSysFuncExpr::keyword",
 			L"cpp_parser::CppSysFuncExpr::variadic",
 			L"cpp_parser::CppThrowExpr::argument",
+			L"cpp_parser::CppVariadicExpr::operand",
+			L"cpp_parser::CppVariadicExpr::variadic",
 			L"cpp_parser::CppVolatileType::type",
 		};
 		vl::vint index = (vl::vint)field;
-		return 0 <= index && index < 80 ? results[index] : nullptr;
+		return 0 <= index && index < 82 ? results[index] : nullptr;
 	}
 
 	vl::Ptr<vl::glr::ParsingAstBase> CppAstInsReceiver::ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates)

@@ -113,7 +113,7 @@ _PrimitiveExpr : TypeOrExpr
   ::= CHAR:literal as NumericExprLiteral {kind = Char}
   ::= _StringLiteralFragment:fragments {_StringLiteralFragment:fragments} as StringLiteral
   ::= "(" _Expr:expr ")" as ParenthesisExpr
-  ::= "{" {_Expr_NoComma:arguments ; ","} "}" as BraceExpr
+  ::= "{" {_Expr_Argument:arguments ; ","} "}" as BraceExpr
   ::= "dynamic_cast":keyword "<" _Type:type ">" "(" _Expr:expr ")" as CastExpr
   ::= "static_cast":keyword "<" _Type:type ">" "(" _Expr:expr ")" as CastExpr
   ::= "const_cast":keyword "<" _Type:type ">" "(" _Expr:expr ")" as CastExpr
@@ -134,20 +134,20 @@ _QualifiedName_PrimitiveExpr_LRI_Original : TypeOrExpr
 
 _PostfixUnaryExpr_LRI_Original : TypeOrExpr
   ::= !_QualifiedName_PrimitiveExpr_LRI_Original
-  ::= _LongType_LRI_Original:operand "(" {_Expr_NoComma:arguments ; ","} ")" as CallExpr {kind = Parenthesis}
-  ::= _LongType_LRI_Original:operand "{" {_Expr_NoComma:arguments ; ","} "}" as CallExpr {kind = Brace}
+  ::= _LongType_LRI_Original:operand "(" {_Expr_Argument:arguments ; ","} ")" as CallExpr {kind = Parenthesis}
+  ::= _LongType_LRI_Original:operand "{" {_Expr_Argument:arguments ; ","} "}" as CallExpr {kind = Brace}
   ::= _PostfixUnaryExpr_LRI_Original:left "." _MemberOperatorQualifiedName:right as BinaryExpr {op = Member}
   ::= _PostfixUnaryExpr_LRI_Original:left "->" _MemberOperatorQualifiedName:right as BinaryExpr {op = Pointer}
   ::= _PostfixUnaryExpr_LRI_Original:operand "++" as PostfixUnaryExpr {op = Increase}
   ::= _PostfixUnaryExpr_LRI_Original:operand "--" as PostfixUnaryExpr {op = Decrease}
   ::= _PostfixUnaryExpr_LRI_Original:operand "[" _Expr:index "]" as IndexExpr
-  ::= _PostfixUnaryExpr_LRI_Original:operand "(" {_Expr_NoComma:arguments ; ","} ")" as CallExpr {kind = Parenthesis}
+  ::= _PostfixUnaryExpr_LRI_Original:operand "(" {_Expr_Argument:arguments ; ","} ")" as CallExpr {kind = Parenthesis}
   ;
 
 _NewInit : NewExpr
   ::= "[" _Expr:initArguments "]" {"[" _Expr:initArguments "]"} as partial NewExpr {init = Array}
-  ::= "(" {_Expr_NoComma:initArguments ; ","} ")" as partial NewExpr {init = Parenthesis}
-  ::= "{" {_Expr_NoComma:initArguments ; ","} "}" as partial NewExpr {init = Brace}
+  ::= "(" {_Expr_Argument:initArguments ; ","} ")" as partial NewExpr {init = Parenthesis}
+  ::= "{" {_Expr_Argument:initArguments ; ","} "}" as partial NewExpr {init = Brace}
   ;
 
 _NewPrefix : NewExpr
@@ -156,7 +156,7 @@ _NewPrefix : NewExpr
   ;
 
 _NewExpr : NewExpr
-  ::= _NewPrefix ["(" {_Expr_NoComma:placementArguments ; ","} ")"] _QualifiedName:type [_NewInit] as NewExpr {init ?= None}
+  ::= _NewPrefix ["(" {_Expr_Argument:placementArguments ; ","} ")"] _QualifiedName:type [_NewInit] as NewExpr {init ?= None}
   ;
 
 _DeletePrefix : DeleteExpr
@@ -497,8 +497,7 @@ _DeclaratorFunctionParameter_LRI_Original : TypeOrExprOrOthers
   ;
 
 _DeclaratorFunctionParameters : DeclaratorFunctionPart
-  ::= "(" ")" as partial DeclaratorFunctionPart
-  ::= "(" "...":variadic ")" as partial DeclaratorFunctionPart
+  ::= "(" ["...":variadic] ")" as partial DeclaratorFunctionPart
   ::= "(" _DeclaratorFunctionParameter:parameters {"," _DeclaratorFunctionParameter:parameters} ["," "...":variadic] ")" as partial DeclaratorFunctionPart
   ;
 
@@ -511,7 +510,7 @@ _FunctionKeyword : FunctionKeyword
   ::= "override":keyword as FunctionKeyword
   ::= "final":keyword as FunctionKeyword
   ::= "mutable":keyword as FunctionKeyword
-  ::= "noexcept":keyword ["(" {_Expr_NoComma:arguments ; ","} ")"] as FunctionKeyword
+  ::= "noexcept":keyword ["(" {_Expr_Argument:arguments ; ","} ")"] as FunctionKeyword
   ::= "throw":keyword ["(" {_Type:arguments ; ","} ")"] as FunctionKeyword
   ::= "=" '0':keyword as FunctionKeyword
   ::= "=" "delete":keyword as FunctionKeyword
@@ -606,6 +605,11 @@ _Expr_NoComma_LRI_Original : TypeOrExpr
 
 _Expr_LRI_Original : TypeOrExpr
   ::= !_Expr_Raw_SWITCH_1allow_GT_LRI_Original
+  ;
+
+_Expr_Argument_LRI_Original : TypeOrExpr
+  ::= !_Expr_NoComma_LRI_Original
+  ::= _Expr_NoComma_LRI_Original:operand "...":variadic as VariadicExpr
   ;
 
 _TypeOrExpr_NoComma_NoGT_LRI_Original : TypeOrExpr
@@ -950,6 +954,15 @@ _Expr : TypeOrExpr
   ::= !_QualifiedName left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveType) _Expr_LRI_Original
   ::= !_ShortType_LRI_Isolated_1 left_recursion_inject_multiple(LRI__ShortType) _Expr_LRI_Original
   ::= !_ShortType_LRI_Isolated_2 left_recursion_inject_multiple(LRI__ShortType) _Expr_LRI_Original
+  ;
+
+_Expr_Argument : TypeOrExpr
+  ::= !_PrimitiveExpr [left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveExpr) _Expr_Argument_LRI_Original]
+  ::= !_PrimitiveType left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveType) _Expr_Argument_LRI_Original
+  ::= !_QualifiedName [left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveExpr) _Expr_Argument_LRI_Original]
+  ::= !_QualifiedName left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveType) _Expr_Argument_LRI_Original
+  ::= !_ShortType_LRI_Isolated_1 left_recursion_inject_multiple(LRI__ShortType) _Expr_Argument_LRI_Original
+  ::= !_ShortType_LRI_Isolated_2 left_recursion_inject_multiple(LRI__ShortType) _Expr_Argument_LRI_Original
   ;
 
 _TypeOrExpr_NoComma_NoGT : TypeOrExpr

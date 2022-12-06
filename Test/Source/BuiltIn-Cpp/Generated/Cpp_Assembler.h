@@ -52,7 +52,8 @@ namespace cpp_parser
 		TypeOnly = 36,
 		TypeOrExpr = 37,
 		TypeOrExprOrOthers = 38,
-		VolatileType = 39,
+		VariadicExpr = 39,
+		VolatileType = 40,
 	};
 
 	enum class CppFields : vl::vint32_t
@@ -136,7 +137,9 @@ namespace cpp_parser
 		SysFuncExpr_keyword = 76,
 		SysFuncExpr_variadic = 77,
 		ThrowExpr_argument = 78,
-		VolatileType_type = 79,
+		VariadicExpr_operand = 79,
+		VariadicExpr_variadic = 80,
+		VolatileType_type = 81,
 	};
 
 	extern const wchar_t* CppTypeName(CppClasses type);

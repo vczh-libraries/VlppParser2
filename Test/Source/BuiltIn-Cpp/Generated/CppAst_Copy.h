@@ -62,6 +62,7 @@ namespace cpp_parser
 			void CopyFields(CppTypeOnly* from, CppTypeOnly* to);
 			void CopyFields(CppTypeOrExpr* from, CppTypeOrExpr* to);
 			void CopyFields(CppTypeOrExprOrOthers* from, CppTypeOrExprOrOthers* to);
+			void CopyFields(CppVariadicExpr* from, CppVariadicExpr* to);
 			void CopyFields(CppVolatileType* from, CppVolatileType* to);
 
 		protected:
@@ -101,6 +102,7 @@ namespace cpp_parser
 			void Visit(CppBinaryExpr* node) override;
 			void Visit(CppIfExpr* node) override;
 			void Visit(CppThrowExpr* node) override;
+			void Visit(CppVariadicExpr* node) override;
 
 			void Visit(CppPrimitiveType* node) override;
 			void Visit(CppConstType* node) override;
@@ -150,6 +152,7 @@ namespace cpp_parser
 			vl::Ptr<CppThrowExpr> CopyNode(CppThrowExpr* node);
 			vl::Ptr<CppTypeOnly> CopyNode(CppTypeOnly* node);
 			vl::Ptr<CppTypeOrExpr> CopyNode(CppTypeOrExpr* node);
+			vl::Ptr<CppVariadicExpr> CopyNode(CppVariadicExpr* node);
 			vl::Ptr<CppVolatileType> CopyNode(CppVolatileType* node);
 		};
 	}

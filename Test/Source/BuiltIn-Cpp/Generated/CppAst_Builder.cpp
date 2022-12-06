@@ -618,6 +618,22 @@ MakeThrowExpr
 		}
 
 /***********************************************************************
+MakeVariadicExpr
+***********************************************************************/
+
+		MakeVariadicExpr& MakeVariadicExpr::operand(const vl::Ptr<CppTypeOrExpr>& value)
+		{
+			node->operand = value;
+			return *this;
+		}
+
+		MakeVariadicExpr& MakeVariadicExpr::variadic(const vl::WString& value)
+		{
+			node->variadic.value = value;
+			return *this;
+		}
+
+/***********************************************************************
 MakeVolatileType
 ***********************************************************************/
 

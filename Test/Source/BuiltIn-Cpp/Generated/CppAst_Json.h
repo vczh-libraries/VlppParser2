@@ -62,6 +62,7 @@ namespace cpp_parser
 			virtual void PrintFields(CppTypeOnly* node);
 			virtual void PrintFields(CppTypeOrExpr* node);
 			virtual void PrintFields(CppTypeOrExprOrOthers* node);
+			virtual void PrintFields(CppVariadicExpr* node);
 			virtual void PrintFields(CppVolatileType* node);
 
 		protected:
@@ -91,6 +92,7 @@ namespace cpp_parser
 			void Visit(CppBinaryExpr* node) override;
 			void Visit(CppIfExpr* node) override;
 			void Visit(CppThrowExpr* node) override;
+			void Visit(CppVariadicExpr* node) override;
 
 			void Visit(CppPrimitiveType* node) override;
 			void Visit(CppConstType* node) override;

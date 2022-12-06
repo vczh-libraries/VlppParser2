@@ -1921,7 +1921,7 @@
                         "syntax": {
                             "$ast": "RefSyntax",
                             "field": "arguments",
-                            "literal": "_Expr_NoComma",
+                            "literal": "_Expr_Argument",
                             "refType": "Id"
                         }
                     }
@@ -2510,7 +2510,7 @@
                         "syntax": {
                             "$ast": "RefSyntax",
                             "field": "arguments",
-                            "literal": "_Expr_NoComma",
+                            "literal": "_Expr_Argument",
                             "refType": "Id"
                         }
                     }
@@ -2561,7 +2561,7 @@
                         "syntax": {
                             "$ast": "RefSyntax",
                             "field": "arguments",
-                            "literal": "_Expr_NoComma",
+                            "literal": "_Expr_Argument",
                             "refType": "Id"
                         }
                     }
@@ -2763,7 +2763,7 @@
                         "syntax": {
                             "$ast": "RefSyntax",
                             "field": "arguments",
-                            "literal": "_Expr_NoComma",
+                            "literal": "_Expr_Argument",
                             "refType": "Id"
                         }
                     }
@@ -2874,7 +2874,7 @@
                         "syntax": {
                             "$ast": "RefSyntax",
                             "field": "initArguments",
-                            "literal": "_Expr_NoComma",
+                            "literal": "_Expr_Argument",
                             "refType": "Id"
                         }
                     }
@@ -2916,7 +2916,7 @@
                         "syntax": {
                             "$ast": "RefSyntax",
                             "field": "initArguments",
-                            "literal": "_Expr_NoComma",
+                            "literal": "_Expr_Argument",
                             "refType": "Id"
                         }
                     }
@@ -3022,7 +3022,7 @@
                                         "syntax": {
                                             "$ast": "RefSyntax",
                                             "field": "placementArguments",
-                                            "literal": "_Expr_NoComma",
+                                            "literal": "_Expr_Argument",
                                             "refType": "Id"
                                         }
                                     }
@@ -6023,25 +6023,6 @@
             "syntax": {
                 "$ast": "SequenceSyntax",
                 "first": {
-                    "$ast": "RefSyntax",
-                    "field": "",
-                    "literal": "\"(\"",
-                    "refType": "Literal"
-                },
-                "second": {
-                    "$ast": "RefSyntax",
-                    "field": "",
-                    "literal": "\")\"",
-                    "refType": "Literal"
-                }
-            },
-            "type": "DeclaratorFunctionPart"
-        }, {
-            "$ast": "PartialClause",
-            "assignments": [],
-            "syntax": {
-                "$ast": "SequenceSyntax",
-                "first": {
                     "$ast": "SequenceSyntax",
                     "first": {
                         "$ast": "RefSyntax",
@@ -6050,10 +6031,14 @@
                         "refType": "Literal"
                     },
                     "second": {
-                        "$ast": "RefSyntax",
-                        "field": "variadic",
-                        "literal": "\"...\"",
-                        "refType": "Literal"
+                        "$ast": "OptionalSyntax",
+                        "priority": "Equal",
+                        "syntax": {
+                            "$ast": "RefSyntax",
+                            "field": "variadic",
+                            "literal": "\"...\"",
+                            "refType": "Literal"
+                        }
                     }
                 },
                 "second": {
@@ -6256,7 +6241,7 @@
                                 "syntax": {
                                     "$ast": "RefSyntax",
                                     "field": "arguments",
-                                    "literal": "_Expr_NoComma",
+                                    "literal": "_Expr_Argument",
                                     "refType": "Id"
                                 }
                             }
@@ -7012,6 +6997,37 @@
             }
         }],
         "name": "_Expr",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "_Expr_NoComma"
+            }
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "RefSyntax",
+                    "field": "operand",
+                    "literal": "_Expr_NoComma",
+                    "refType": "Id"
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "variadic",
+                    "literal": "\"...\"",
+                    "refType": "Literal"
+                }
+            },
+            "type": "VariadicExpr"
+        }],
+        "name": "_Expr_Argument",
         "type": ""
     }, {
         "$ast": "Rule",

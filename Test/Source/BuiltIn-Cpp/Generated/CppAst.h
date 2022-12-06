@@ -51,6 +51,7 @@ namespace cpp_parser
 	class CppTypeOnly;
 	class CppTypeOrExpr;
 	class CppTypeOrExprOrOthers;
+	class CppVariadicExpr;
 	class CppVolatileType;
 
 	enum class CppNameKinds
@@ -264,6 +265,7 @@ namespace cpp_parser
 			virtual void Visit(CppBinaryExpr* node) = 0;
 			virtual void Visit(CppIfExpr* node) = 0;
 			virtual void Visit(CppThrowExpr* node) = 0;
+			virtual void Visit(CppVariadicExpr* node) = 0;
 		};
 
 		virtual void Accept(CppExprOnly::IVisitor* visitor) = 0;
@@ -511,6 +513,15 @@ namespace cpp_parser
 		void Accept(CppExprOnly::IVisitor* visitor) override;
 	};
 
+	class CppVariadicExpr : public CppExprOnly, vl::reflection::Description<CppVariadicExpr>
+	{
+	public:
+		vl::Ptr<CppTypeOrExpr> operand;
+		vl::glr::ParsingToken variadic;
+
+		void Accept(CppExprOnly::IVisitor* visitor) override;
+	};
+
 	class CppPrimitiveType : public CppTypeOnly, vl::reflection::Description<CppPrimitiveType>
 	{
 	public:
@@ -660,6 +671,7 @@ namespace vl
 			DECL_TYPE_INFO(cpp_parser::CppBinaryExpr)
 			DECL_TYPE_INFO(cpp_parser::CppIfExpr)
 			DECL_TYPE_INFO(cpp_parser::CppThrowExpr)
+			DECL_TYPE_INFO(cpp_parser::CppVariadicExpr)
 			DECL_TYPE_INFO(cpp_parser::CppPrimitiveTypeKinds)
 			DECL_TYPE_INFO(cpp_parser::CppPrimitiveType)
 			DECL_TYPE_INFO(cpp_parser::CppConstType)
@@ -800,6 +812,11 @@ namespace vl
 				}
 
 				void Visit(cpp_parser::CppThrowExpr* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+				void Visit(cpp_parser::CppVariadicExpr* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}

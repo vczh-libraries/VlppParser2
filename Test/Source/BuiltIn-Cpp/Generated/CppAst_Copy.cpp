@@ -318,6 +318,13 @@ namespace cpp_parser
 		{
 		}
 
+		void AstVisitor::CopyFields(CppVariadicExpr* from, CppVariadicExpr* to)
+		{
+			CopyFields(static_cast<CppExprOnly*>(from), static_cast<CppExprOnly*>(to));
+			to->operand = CopyNode(from->operand.Obj());
+			to->variadic = from->variadic;
+		}
+
 		void AstVisitor::CopyFields(CppVolatileType* from, CppVolatileType* to)
 		{
 			CopyFields(static_cast<CppTypeOnly*>(from), static_cast<CppTypeOnly*>(to));
@@ -545,6 +552,13 @@ namespace cpp_parser
 		void AstVisitor::Visit(CppThrowExpr* node)
 		{
 			auto newNode = vl::Ptr(new CppThrowExpr);
+			CopyFields(node, newNode.Obj());
+			this->result = newNode;
+		}
+
+		void AstVisitor::Visit(CppVariadicExpr* node)
+		{
+			auto newNode = vl::Ptr(new CppVariadicExpr);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
@@ -838,6 +852,12 @@ namespace cpp_parser
 		{
 			if (!node) return nullptr;
 			return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppTypeOrExpr>();
+		}
+
+		vl::Ptr<CppVariadicExpr> AstVisitor::CopyNode(CppVariadicExpr* node)
+		{
+			if (!node) return nullptr;
+			return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppVariadicExpr>();
 		}
 
 		vl::Ptr<CppVolatileType> AstVisitor::CopyNode(CppVolatileType* node)

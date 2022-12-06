@@ -68,6 +68,7 @@ namespace cpp_parser
 			void Visit(CppBinaryExpr* node) override;
 			void Visit(CppIfExpr* node) override;
 			void Visit(CppThrowExpr* node) override;
+			void Visit(CppVariadicExpr* node) override;
 		};
 
 		/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>

@@ -257,6 +257,13 @@ namespace cpp_parser
 			MakeThrowExpr& argument(const vl::Ptr<CppTypeOrExpr>& value);
 		};
 
+		class MakeVariadicExpr : public vl::glr::ParsingAstBuilder<CppVariadicExpr>
+		{
+		public:
+			MakeVariadicExpr& operand(const vl::Ptr<CppTypeOrExpr>& value);
+			MakeVariadicExpr& variadic(const vl::WString& value);
+		};
+
 		class MakeVolatileType : public vl::glr::ParsingAstBuilder<CppVolatileType>
 		{
 		public:

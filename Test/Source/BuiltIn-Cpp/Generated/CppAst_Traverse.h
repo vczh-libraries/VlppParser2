@@ -64,6 +64,7 @@ namespace cpp_parser
 			virtual void Traverse(CppTypeOnly* node);
 			virtual void Traverse(CppTypeOrExpr* node);
 			virtual void Traverse(CppTypeOrExprOrOthers* node);
+			virtual void Traverse(CppVariadicExpr* node);
 			virtual void Traverse(CppVolatileType* node);
 
 		protected:
@@ -107,6 +108,7 @@ namespace cpp_parser
 			virtual void Finishing(CppTypeOnly* node);
 			virtual void Finishing(CppTypeOrExpr* node);
 			virtual void Finishing(CppTypeOrExprOrOthers* node);
+			virtual void Finishing(CppVariadicExpr* node);
 			virtual void Finishing(CppVolatileType* node);
 
 		protected:
@@ -136,6 +138,7 @@ namespace cpp_parser
 			void Visit(CppBinaryExpr* node) override;
 			void Visit(CppIfExpr* node) override;
 			void Visit(CppThrowExpr* node) override;
+			void Visit(CppVariadicExpr* node) override;
 
 			void Visit(CppPrimitiveType* node) override;
 			void Visit(CppConstType* node) override;

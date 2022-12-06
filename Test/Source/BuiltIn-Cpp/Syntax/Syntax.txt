@@ -123,7 +123,7 @@ _PrimitiveExpr : TypeOrExpr
   ::= CHAR:literal as NumericExprLiteral {kind = Char}
   ::= _StringLiteralFragment:fragments {_StringLiteralFragment:fragments} as StringLiteral
   ::= "(" _Expr:expr ")" as ParenthesisExpr
-  ::= "{" {_Expr_NoComma:arguments ; ","} "}" as BraceExpr
+  ::= "{" {_Expr_Argument:arguments ; ","} "}" as BraceExpr
   ::= "dynamic_cast":keyword "<" _Type:type ">" "(" _Expr:expr ")" as CastExpr
   ::= "static_cast":keyword "<" _Type:type ">" "(" _Expr:expr ")" as CastExpr
   ::= "const_cast":keyword "<" _Type:type ">" "(" _Expr:expr ")" as CastExpr
@@ -147,14 +147,14 @@ _QualifiedName_PrimitiveExpr
 
 _PostfixUnaryExpr
   ::= !_QualifiedName_PrimitiveExpr
-  ::= _LongType:operand "(" {_Expr_NoComma:arguments ; ","} ")" as CallExpr {kind = Parenthesis}
-  ::= _LongType:operand "{" {_Expr_NoComma:arguments ; ","} "}" as CallExpr {kind = Brace}
+  ::= _LongType:operand "(" {_Expr_Argument:arguments ; ","} ")" as CallExpr {kind = Parenthesis}
+  ::= _LongType:operand "{" {_Expr_Argument:arguments ; ","} "}" as CallExpr {kind = Brace}
   ::= _PostfixUnaryExpr:left "." _MemberOperatorQualifiedName:right as BinaryExpr {op = Member}
   ::= _PostfixUnaryExpr:left "->" _MemberOperatorQualifiedName:right as BinaryExpr {op = Pointer}
   ::= _PostfixUnaryExpr:operand "++" as PostfixUnaryExpr {op = Increase}
   ::= _PostfixUnaryExpr:operand "--" as PostfixUnaryExpr {op = Decrease}
   ::= _PostfixUnaryExpr:operand "[" _Expr:index "]" as IndexExpr
-  ::= _PostfixUnaryExpr:operand "(" {_Expr_NoComma:arguments ; ","} ")" as CallExpr {kind = Parenthesis}
+  ::= _PostfixUnaryExpr:operand "(" {_Expr_Argument:arguments ; ","} ")" as CallExpr {kind = Parenthesis}
   ;
 
 //////////////////////////////////////////////////////////////////
@@ -163,8 +163,8 @@ _PostfixUnaryExpr
 
 _NewInit
   ::= "[" _Expr:initArguments "]" {"[" _Expr:initArguments "]"} as partial NewExpr {init = Array}
-  ::= "(" {_Expr_NoComma:initArguments ; ","} ")" as partial NewExpr {init = Parenthesis}
-  ::= "{" {_Expr_NoComma:initArguments ; ","} "}" as partial NewExpr {init = Brace}
+  ::= "(" {_Expr_Argument:initArguments ; ","} ")" as partial NewExpr {init = Parenthesis}
+  ::= "{" {_Expr_Argument:initArguments ; ","} "}" as partial NewExpr {init = Brace}
   ;
 
 _NewPrefix
@@ -173,7 +173,7 @@ _NewPrefix
   ;
 
 _NewExpr
-  ::= _NewPrefix ["(" {_Expr_NoComma:placementArguments ; ","} ")"] _QualifiedName:type [_NewInit] as NewExpr {init ?= None}
+  ::= _NewPrefix ["(" {_Expr_Argument:placementArguments ; ","} ")"] _QualifiedName:type [_NewInit] as NewExpr {init ?= None}
   ;
 
 _DeletePrefix
@@ -453,8 +453,7 @@ _DeclaratorFunctionParameter
   ;
 
 _DeclaratorFunctionParameters
-  ::= "(" ")" as partial DeclaratorFunctionPart
-  ::= "(" "...":variadic ")" as partial DeclaratorFunctionPart
+  ::= "(" ["...":variadic] ")" as partial DeclaratorFunctionPart
   ::= "(" _DeclaratorFunctionParameter:parameters {"," _DeclaratorFunctionParameter:parameters} ["," "...":variadic] ")" as partial DeclaratorFunctionPart
   ;
 
@@ -467,7 +466,7 @@ _FunctionKeyword
   ::= "override":keyword as FunctionKeyword
   ::= "final":keyword as FunctionKeyword
   ::= "mutable":keyword as FunctionKeyword
-  ::= "noexcept":keyword ["(" {_Expr_NoComma:arguments ; ","} ")"] as FunctionKeyword
+  ::= "noexcept":keyword ["(" {_Expr_Argument:arguments ; ","} ")"] as FunctionKeyword
   ::= "throw":keyword ["(" {_Type:arguments ; ","} ")"] as FunctionKeyword
   ::= "=" '0':keyword as FunctionKeyword
   ::= "=" "delete":keyword as FunctionKeyword
@@ -576,6 +575,11 @@ _TypeOrExpr_Raw
 
 _Expr_NoComma            ::= !( allow_GT; !_Expr_NoComma_Raw);
 _Expr                    ::= !( allow_GT; !_Expr_Raw);
+
+_Expr_Argument
+  ::= !_Expr_NoComma
+  ::= _Expr_NoComma:operand "...":variadic as VariadicExpr
+  ;
 
 _TypeOrExpr_NoComma_NoGT ::= !(!allow_GT; !_TypeOrExpr_NoComma_Raw);
 _TypeOrExpr              ::= !( allow_GT; !_TypeOrExpr_Raw);
