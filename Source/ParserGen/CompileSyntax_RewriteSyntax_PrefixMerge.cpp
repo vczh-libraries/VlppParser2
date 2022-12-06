@@ -929,13 +929,29 @@ RewriteRules
 								auto compare = candidates[i];
 								if (CompareLriTargest(candidate->continuation->injectionTargets, compare->continuation->injectionTargets))
 								{
+									List<Ptr<GlrLeftRecursionPlaceholder>> flags;
 									CopyFrom(
-										candidate->continuation->flags,
+										flags,
 										From(candidate->continuation->flags)
 											.Concat(compare->continuation->flags)
+									);
+									CopyFrom(
+										candidate->continuation->flags,
+										From(flags)
 											.GroupBy([](auto flag) { return flag->flag.value; })
 											.Select([](auto pair) { return pair.value.First(); })
 									);
+
+									if (compare->continuation->configuration == GlrLeftRecursionConfiguration::Multiple)
+									{
+										candidate->continuation->configuration = GlrLeftRecursionConfiguration::Multiple;
+									}
+
+									if(compare->continuation->type==GlrLeftRecursionInjectContinuationType::Optional)
+									{
+										candidate->continuation->type = GlrLeftRecursionInjectContinuationType::Optional;
+									}
+
 									candidates.RemoveAt(i);
 								}
 							}
