@@ -324,10 +324,11 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"ThrowExpr",
 			L"TypeOnly",
 			L"TypeOrExpr",
+			L"TypeOrExprOrOthers",
 			L"VolatileType",
 		};
 		vl::vint index = (vl::vint)type;
-		return 0 <= index && index < 39 ? results[index] : nullptr;
+		return 0 <= index && index < 40 ? results[index] : nullptr;
 	}
 
 	const wchar_t* CppCppTypeName(CppClasses type)
@@ -371,10 +372,11 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::CppThrowExpr",
 			L"cpp_parser::CppTypeOnly",
 			L"cpp_parser::CppTypeOrExpr",
+			L"cpp_parser::CppTypeOrExprOrOthers",
 			L"cpp_parser::CppVolatileType",
 		};
 		vl::vint index = (vl::vint)type;
-		return 0 <= index && index < 39 ? results[index] : nullptr;
+		return 0 <= index && index < 40 ? results[index] : nullptr;
 	}
 
 	const wchar_t* CppFieldName(CppFields field)

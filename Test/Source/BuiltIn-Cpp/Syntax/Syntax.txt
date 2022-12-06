@@ -444,13 +444,12 @@ _DeclaratorAKMember
 
 //================================================================
 
-_DeclaratorFunctionParameterWithoutKeyword
-  ::= _LongType:type [_DeclaratorOptionalName:declarator] ["=" _Expr_NoComma:defaultValue] as FunctionParameter
-  ;
-
 _DeclaratorFunctionParameter
-  ::= !_DeclaratorFunctionParameterWithoutKeyword
-  ::= _DeclaratorKeyword:keywords {_DeclaratorKeyword:keywords} !_DeclaratorFunctionParameterWithoutKeyword
+  ::= !_LongType
+  ::= _LongType:type "=" _Expr_NoComma:defaultValue as FunctionParameter
+  ::= _LongType:type _DeclaratorOptionalName:declarator ["=" _Expr_NoComma:defaultValue] as FunctionParameter
+  ::= _DeclaratorKeyword:keywords {_DeclaratorKeyword:keywords}
+      _LongType:type [_DeclaratorOptionalName:declarator] ["=" _Expr_NoComma:defaultValue] as FunctionParameter
   ;
 
 _DeclaratorFunctionParameters

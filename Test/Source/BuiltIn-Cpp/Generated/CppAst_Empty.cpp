@@ -12,6 +12,25 @@ namespace cpp_parser
 	{
 
 /***********************************************************************
+TypeOrExprOrOthersVisitor
+***********************************************************************/
+
+		// Visitor Members -----------------------------------
+
+		void TypeOrExprOrOthersVisitor::Visit(CppTypeOrExpr* node)
+		{
+			Dispatch(node);
+		}
+
+		void TypeOrExprOrOthersVisitor::Visit(CppGenericArgument* node)
+		{
+		}
+
+		void TypeOrExprOrOthersVisitor::Visit(CppFunctionParameter* node)
+		{
+		}
+
+/***********************************************************************
 TypeOrExprVisitor
 ***********************************************************************/
 
@@ -25,10 +44,6 @@ TypeOrExprVisitor
 		void TypeOrExprVisitor::Visit(CppTypeOnly* node)
 		{
 			Dispatch(node);
-		}
-
-		void TypeOrExprVisitor::Visit(CppGenericArgument* node)
-		{
 		}
 
 		void TypeOrExprVisitor::Visit(CppQualifiedName* node)

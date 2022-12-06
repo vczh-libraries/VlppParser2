@@ -79,7 +79,7 @@ namespace cpp_parser
 		public:
 			MakeDeclaratorFunctionPart& deferredType(const vl::Ptr<CppTypeOrExpr>& value);
 			MakeDeclaratorFunctionPart& keywords(const vl::Ptr<CppFunctionKeyword>& value);
-			MakeDeclaratorFunctionPart& parameters(const vl::Ptr<CppFunctionParameter>& value);
+			MakeDeclaratorFunctionPart& parameters(const vl::Ptr<CppTypeOrExprOrOthers>& value);
 			MakeDeclaratorFunctionPart& variadic(const vl::WString& value);
 		};
 
@@ -131,7 +131,7 @@ namespace cpp_parser
 		class MakeGenericArguments : public vl::glr::ParsingAstBuilder<CppGenericArguments>
 		{
 		public:
-			MakeGenericArguments& arguments(const vl::Ptr<CppGenericArgument>& value);
+			MakeGenericArguments& arguments(const vl::Ptr<CppTypeOrExprOrOthers>& value);
 		};
 
 		class MakeIfExpr : public vl::glr::ParsingAstBuilder<CppIfExpr>

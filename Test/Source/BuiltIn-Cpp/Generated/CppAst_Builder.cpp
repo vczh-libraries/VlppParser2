@@ -185,7 +185,7 @@ MakeDeclaratorFunctionPart
 			return *this;
 		}
 
-		MakeDeclaratorFunctionPart& MakeDeclaratorFunctionPart::parameters(const vl::Ptr<CppFunctionParameter>& value)
+		MakeDeclaratorFunctionPart& MakeDeclaratorFunctionPart::parameters(const vl::Ptr<CppTypeOrExprOrOthers>& value)
 		{
 			node->parameters.Add(value);
 			return *this;
@@ -315,7 +315,7 @@ MakeGenericArgument
 MakeGenericArguments
 ***********************************************************************/
 
-		MakeGenericArguments& MakeGenericArguments::arguments(const vl::Ptr<CppGenericArgument>& value)
+		MakeGenericArguments& MakeGenericArguments::arguments(const vl::Ptr<CppTypeOrExprOrOthers>& value)
 		{
 			node->arguments.Add(value);
 			return *this;

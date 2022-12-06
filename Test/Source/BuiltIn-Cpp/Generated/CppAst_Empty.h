@@ -14,6 +14,20 @@ namespace cpp_parser
 	namespace empty_visitor
 	{
 		/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
+		class TypeOrExprOrOthersVisitor : public vl::Object, public CppTypeOrExprOrOthers::IVisitor
+		{
+		protected:
+			// Dispatch (virtual) --------------------------------
+			virtual void Dispatch(CppTypeOrExpr* node) = 0;
+
+		public:
+			// Visitor Members -----------------------------------
+			void Visit(CppTypeOrExpr* node) override;
+			void Visit(CppGenericArgument* node) override;
+			void Visit(CppFunctionParameter* node) override;
+		};
+
+		/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
 		class TypeOrExprVisitor : public vl::Object, public CppTypeOrExpr::IVisitor
 		{
 		protected:
@@ -25,7 +39,6 @@ namespace cpp_parser
 			// Visitor Members -----------------------------------
 			void Visit(CppExprOnly* node) override;
 			void Visit(CppTypeOnly* node) override;
-			void Visit(CppGenericArgument* node) override;
 			void Visit(CppQualifiedName* node) override;
 			void Visit(CppDeclaratorType* node) override;
 		};

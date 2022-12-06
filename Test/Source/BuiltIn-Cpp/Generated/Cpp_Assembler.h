@@ -51,7 +51,8 @@ namespace cpp_parser
 		ThrowExpr = 35,
 		TypeOnly = 36,
 		TypeOrExpr = 37,
-		VolatileType = 38,
+		TypeOrExprOrOthers = 38,
+		VolatileType = 39,
 	};
 
 	enum class CppFields : vl::vint32_t
