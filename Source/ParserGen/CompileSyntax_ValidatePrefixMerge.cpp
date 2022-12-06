@@ -10,10 +10,10 @@ namespace vl
 			using namespace compile_syntax;
 
 /***********************************************************************
-ValidateStructurePrefixMergeRuleVisitor
+ValidateDirectPrefixMergeRuleVisitor
 ***********************************************************************/
 
-			class ValidateStructurePrefixMergeRuleVisitor
+			class ValidateDirectPrefixMergeRuleVisitor
 				: public Object
 				, protected virtual GlrSyntax::IVisitor
 				, protected virtual GlrClause::IVisitor
@@ -23,7 +23,7 @@ ValidateStructurePrefixMergeRuleVisitor
 				RuleSymbol*					ruleSymbol;
 
 			public:
-				ValidateStructurePrefixMergeRuleVisitor(
+				ValidateDirectPrefixMergeRuleVisitor(
 					VisitorContext& _context,
 					RuleSymbol* _ruleSymbol
 				)
@@ -158,10 +158,10 @@ ValidateStructurePrefixMergeRuleVisitor
 			};
 
 /***********************************************************************
-ValidateStructureIndirectPrefixMergeRuleVisitor
+ValidateIndirectPrefixMergeRuleVisitor
 ***********************************************************************/
 
-			class ValidateStructureIndirectPrefixMergeRuleVisitor
+			class ValidateIndirectPrefixMergeRuleVisitor
 				: public Object
 				, protected virtual GlrClause::IVisitor
 			{
@@ -171,7 +171,7 @@ ValidateStructureIndirectPrefixMergeRuleVisitor
 				RuleSymbol*					pmRuleSymbol;
 
 			public:
-				ValidateStructureIndirectPrefixMergeRuleVisitor(
+				ValidateIndirectPrefixMergeRuleVisitor(
 					VisitorContext& _context,
 					RuleSymbol* _ruleSymbol,
 					RuleSymbol* _pmRuleSymbol
@@ -254,6 +254,103 @@ ValidateStructureIndirectPrefixMergeRuleVisitor
 			};
 
 /***********************************************************************
+ValidateDeducingPrefixMergeRuleVisitor
+***********************************************************************/
+
+			class ValidateDeducingPrefixMergeRuleVisitor
+				: public Object
+				, protected virtual GlrSyntax::IVisitor
+				, protected virtual GlrClause::IVisitor
+			{
+			protected:
+				VisitorContext&				context;
+				RuleSymbol*					ruleSymbol;
+
+			public:
+				ValidateDeducingPrefixMergeRuleVisitor(
+					VisitorContext& _context,
+					RuleSymbol* _ruleSymbol
+				)
+					: context(_context)
+					, ruleSymbol(_ruleSymbol)
+				{
+				}
+
+				void ValidateClause(Ptr<GlrClause> clause)
+				{
+					clause->Accept(this);
+				}
+
+			protected:
+
+				////////////////////////////////////////////////////////////////////////
+				// GlrSyntax::IVisitor
+				////////////////////////////////////////////////////////////////////////
+
+				void Visit(GlrRefSyntax* node) override
+				{
+				}
+
+				void Visit(GlrUseSyntax* node) override
+				{
+				}
+
+				void Visit(GlrLoopSyntax* node) override
+				{
+				}
+
+				void Visit(GlrOptionalSyntax* node) override
+				{
+				}
+
+				void Visit(GlrSequenceSyntax* node) override
+				{
+				}
+
+				void Visit(GlrAlternativeSyntax* node) override
+				{
+				}
+
+				void Visit(GlrPushConditionSyntax* node) override
+				{
+					CHECK_FAIL(L"GlrPushConditionSyntax should have been removed after RewriteSyntax_Switch()!");
+				}
+
+				void Visit(GlrTestConditionSyntax* node) override
+				{
+					CHECK_FAIL(L"GlrTestConditionSyntax should have been removed after RewriteSyntax_Switch()!");
+				}
+
+				////////////////////////////////////////////////////////////////////////
+				// GlrClause::IVisitor
+				////////////////////////////////////////////////////////////////////////
+
+				void Visit(GlrCreateClause* node) override
+				{
+				}
+
+				void Visit(GlrPartialClause* node) override
+				{
+				}
+
+				void Visit(GlrReuseClause* node) override
+				{
+				}
+
+				void Visit(GlrLeftRecursionPlaceholderClause* node) override
+				{
+				}
+
+				void Visit(GlrLeftRecursionInjectClause* node) override
+				{
+				}
+
+				void Visit(GlrPrefixMergeClause* node) override
+				{
+				}
+			};
+
+/***********************************************************************
 ValidatePrefixMerge
 ***********************************************************************/
 
@@ -265,10 +362,18 @@ ValidatePrefixMerge
 
 					if (context.directPmClauses.Keys().Contains(ruleSymbol))
 					{
-						ValidateStructurePrefixMergeRuleVisitor visitor3(context, ruleSymbol);
+						ValidateDirectPrefixMergeRuleVisitor visitor(context, ruleSymbol);
 						for (auto clause : rule->clauses)
 						{
-							visitor3.ValidateClause(clause);
+							visitor.ValidateClause(clause);
+						}
+					}
+
+					{
+						ValidateDeducingPrefixMergeRuleVisitor visitor(context, ruleSymbol);
+						for (auto clause : rule->clauses)
+						{
+							visitor.ValidateClause(clause);
 						}
 					}
 
@@ -313,7 +418,7 @@ ValidatePrefixMerge
 
 						if (!context.directPmClauses.Keys().Contains(ruleSymbol))
 						{
-							ValidateStructureIndirectPrefixMergeRuleVisitor visitor3(context, ruleSymbol, rulePm);
+							ValidateIndirectPrefixMergeRuleVisitor visitor3(context, ruleSymbol, rulePm);
 							for (auto clause : rule->clauses)
 							{
 								ParsingToken firstDirectLiteral;

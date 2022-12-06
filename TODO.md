@@ -40,7 +40,7 @@
 
 - When `XToResolve` is in another `XToResolve`, flatten them.
 - TODO in `CalculateRuleAndClauseTypes`.
-- TODO in `ValidateStructurePrefixMergeRuleVisitor`.
+- TODO in `ValidateDirectPrefixMergeRuleVisitor`.
 - Optimize `CalculateFirstSet_IndirectStartRules` using partial ordering.
 - TODO in `SyntaxSymbolManager::EliminateSingleRulePrefix`.
   - Deny `A ::= !B ::= B as Something ::= ...;`.
