@@ -637,15 +637,11 @@ TraceManager
 				// phase: CheckMergeTraces
 				template<typename TCallback>
 				bool										SearchForObjects(Ref<InsExec_ObjRefLink> objRefLinkStartSet, bool withCounter, TCallback&& callback);
-				template<typename TCallback>
-				bool										SearchForAllLevelObjectsWithCounter(InsExec_Object* startObject, collections::List<Ref<InsExec_ObjRefLink>>& visitingIds, TCallback&& callback);
 #if defined VCZH_MSVC && defined _DEBUG
 				void										EnsureSameForwardTrace(Ref<Trace> currentTraceId, Ref<Trace> forwardTraceId);
 #endif
 				template<typename TCallback>
 				bool										SearchForTopCreateInstructions(InsExec_Object* ieObject, TCallback&& callback);
-				template<typename TCallback>
-				bool										SearchForTopCreateInstructionsInAllLevelsWithCounter(InsExec_Object* startObject, collections::List<Ref<InsExec_ObjRefLink>>& visitingIds, TCallback&& callback);
 				template<typename TCallback>
 				bool										SearchForEndObjectInstructions(Trace* createTrace, vint32_t createIns, TCallback&& callback);
 				bool										ComparePrefix(TraceExec* baselineTraceExec, TraceExec* commingTraceExec, vint32_t prefix);

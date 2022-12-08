@@ -42,71 +42,6 @@ CheckMergeTrace
 				return true;
 			}
 
-			template<typename TCallback>
-			bool TraceManager::SearchForAllLevelObjectsWithCounter(InsExec_Object* startObject, collections::List<Ref<InsExec_ObjRefLink>>& visitingIds, TCallback&& callback)
-			{
-#define PUSH_ID(ID)													\
-					do{												\
-						if (availableIds == visitingIds.Count())	\
-							visitingIds.Add(ID);					\
-						else										\
-							visitingIds[availableIds] = ID;			\
-						availableIds++;								\
-					} while (false)
-
-				vint availableIds = 0;
-				auto processObject = [&](InsExec_Object* ieObject)
-				{
-					// skip if it has been searched
-					if (ieObject->mergeCounter == MergeStack_MagicCounter) return true;
-					ieObject->mergeCounter = MergeStack_MagicCounter;
-					if (!callback(ieObject)) return false;
-
-					// keep searching until ieObject->lrObjectIds is empty
-					while (ieObject->lrObjectIds != nullref)
-					{
-						auto lrObjRefLink = GetInsExec_ObjRefLink(ieObject->lrObjectIds);
-						if (lrObjRefLink->previous == nullref)
-						{
-							// if ieObject->lrObjectIds has only one object
-							// continue in place
-							ieObject = GetInsExec_Object(lrObjRefLink->id);
-
-							// skip if it has been searched
-							if (ieObject->mergeCounter == MergeStack_MagicCounter) return true;
-							ieObject->mergeCounter = MergeStack_MagicCounter;
-							if (!callback(ieObject)) return false;
-						}
-						else
-						{
-							// otherwise
-							// the link is pushed and search it later
-							PUSH_ID(ieObject->lrObjectIds);
-							break;
-						}
-					}
-
-					return true;
-				};
-
-				// start with startObject
-				if (!processObject(startObject)) return false;
-				for (vint linkIdIndex = 0; linkIdIndex < availableIds; linkIdIndex++)
-				{
-					// for any new object link, check every object in it
-					auto linkId = visitingIds[linkIdIndex];
-					while (linkId != nullref)
-					{
-						auto objRefLink = GetInsExec_ObjRefLink(linkId);
-						linkId = objRefLink->previous;
-						auto ieObject = GetInsExec_Object(objRefLink->id);
-						if (!processObject(ieObject)) return false;
-					}
-				}
-				return true;
-#undef PUSH_ID
-			}
-
 #ifdef VCZH_DO_DEBUG_CHECK
 			void TraceManager::EnsureSameForwardTrace(Ref<Trace> currentTraceId, Ref<Trace> forwardTraceId)
 			{
@@ -158,52 +93,6 @@ CheckMergeTrace
 #endif
 				// there will be only one top create instruction per object
 				return callback(trace, ins);
-#undef ERROR_MESSAGE_PREFIX
-			}
-
-			template<typename TCallback>
-			bool TraceManager::SearchForTopCreateInstructionsInAllLevelsWithCounter(InsExec_Object* startObject, collections::List<Ref<InsExec_ObjRefLink>>& visitingIds, TCallback&& callback)
-			{
-#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::SearchForTopCreateInstructionsInAllLevelsWithCounter(InsExec_Object*, List<vint32_t>&, TCallback&&)#"
-#ifdef VCZH_DO_DEBUG_CHECK
-				Ref<InsExec_InsRefLink> insForEachObject;
-#endif
-				Ref<Trace> trace;
-				vint32_t ins = -1;
-
-				bool succeeded = SearchForAllLevelObjectsWithCounter(startObject, visitingIds, [&](InsExec_Object* ieObject)
-				{
-					return SearchForTopCreateInstructions(ieObject, [&](Ref<Trace> createTraceId, vint32_t createIns)
-					{
-#ifdef VCZH_DO_DEBUG_CHECK
-						PushInsRefLink(insForEachObject, createTraceId, createIns);
-#endif
-						if (trace == nullref || createTraceId < trace || (createTraceId == trace && createIns < ins))
-						{
-							trace = createTraceId;
-							ins = createIns;
-						}
-						return true;
-					});
-				});
-				if (trace == nullref) return true;
-				if (!succeeded) return false;
-#ifdef VCZH_DO_DEBUG_CHECK
-				// ensure they actually have the same ancestor trace
-				auto forwardTraceId = GetTraceExec(GetTrace(trace)->traceExecRef)->branchData.forwardTrace;
-				auto insRefLinkId = insForEachObject;
-				while (insRefLinkId != nullref)
-				{
-					auto insRefLink = GetInsExec_InsRefLink(insRefLinkId);
-					EnsureSameForwardTrace(insRefLink->trace, forwardTraceId);
-					insRefLinkId = insRefLink->previous;
-				}
-#endif
-				// there will be only one top create instruction per object
-				// even when InsExec_Object::lrObjectIds are considered
-				return callback(startObject->topTrace, startObject->topIns);
-				// CHECK_ERROR(trace == startObject->topTrace && ins == startObject->topIns, ERROR_MESSAGE_PREFIX L"Internal error: the top create instruction doesn't match with one calculated from PartialExecuteTraces().");
-				// return callback(trace, ins);
 #undef ERROR_MESSAGE_PREFIX
 			}
 
@@ -285,43 +174,38 @@ CheckMergeTrace
 				{
 					return SearchForObjects(objRefLink, false, [&](InsExec_Object* ieObject)
 					{
-						// check if BO/DFA satisfies the condition
-						NEW_MERGE_STACK_MAGIC_COUNTER;
-						return SearchForTopCreateInstructionsInAllLevelsWithCounter(ieObject, visitingIds, [&](Ref<Trace> createTraceId, vint32_t createIns)
-						{
-							auto createTrace = GetTrace(createTraceId);
+						auto createTrace = GetTrace(ieObject->topTrace);
 #ifdef VCZH_DO_DEBUG_CHECK
-							{
-								auto traceExec = GetTraceExec(createTrace->traceExecRef);
-								auto&& ins = ReadInstruction(createIns, traceExec->insLists);
-								CHECK_ERROR(ins.type == AstInsType::BeginObject || ins.type == AstInsType::DelayFieldAssignment, ERROR_MESSAGE_PREFIX L"The found instruction is not a BeginObject or DelayFieldAssignment instruction.");
-							}
+						{
+							auto traceExec = GetTraceExec(createTrace->traceExecRef);
+							auto&& ins = ReadInstruction(ieObject->topIns, traceExec->insLists);
+							CHECK_ERROR(ins.type == AstInsType::BeginObject || ins.type == AstInsType::DelayFieldAssignment, ERROR_MESSAGE_PREFIX L"The found instruction is not a BeginObject or DelayFieldAssignment instruction.");
+						}
 #endif
 
-							if (!first)
-							{
-								first = createTrace;
-								firstTraceExec = GetTraceExec(first->traceExecRef);
-								ta->firstTrace = createTrace;
-								ta->prefix = createIns;
-							}
-							else if (first == createTrace)
-							{
-								// check if two instruction is the same
-								if (ta->prefix != createIns) return false;
-								foundBeginSame = true;
-							}
-							else
-							{
-								// check if two instruction shares the same prefix
-								if (first->predecessors.first != createTrace->predecessors.first) return false;
-								auto createTraceExec = GetTraceExec(createTrace->traceExecRef);
-								if (!ComparePrefix(firstTraceExec, createTraceExec, ta->prefix)) return false;
-								foundBeginPrefix = true;
-							}
+						if (!first)
+						{
+							first = createTrace;
+							firstTraceExec = GetTraceExec(first->traceExecRef);
+							ta->firstTrace = createTrace;
+							ta->prefix = ieObject->topIns;
+						}
+						else if (first == createTrace)
+						{
+							// check if two instruction is the same
+							if (ta->prefix != ieObject->topIns) return false;
+							foundBeginSame = true;
+						}
+						else
+						{
+							// check if two instruction shares the same prefix
+							if (first->predecessors.first != createTrace->predecessors.first) return false;
+							auto createTraceExec = GetTraceExec(createTrace->traceExecRef);
+							if (!ComparePrefix(firstTraceExec, createTraceExec, ta->prefix)) return false;
+							foundBeginPrefix = true;
+						}
 
-							return true;
-						});
+						return true;
 					});
 				});
 				if (!succeeded) return false;

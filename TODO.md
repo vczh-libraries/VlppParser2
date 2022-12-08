@@ -33,6 +33,7 @@
   - Invalid combined clauses during expanding switches
   - everything else that is needed
 - TODO(s) in `RewriteRules_GenerateAffectedLRIClausesSubgroup`.
+- TODO(s) in `InjectFirstInstruction`.
 - Make a test case to test `prefix_merge` generates `left_recursion_inject_multiple`.
 - Create ambiguity test case caused by only one clause with alternative syntax.
 - Test when an object get LriFetch to multiple branches following a ReopenObject.

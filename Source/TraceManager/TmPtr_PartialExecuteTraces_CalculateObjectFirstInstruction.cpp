@@ -31,6 +31,9 @@ CalculateObjectFirstInstruction
 						(trace == ieObject->topTrace && ins < ieObject->topIns)
 						)
 					{
+						// there will be only one top create instruction per object
+						// even when object relationship is partial ordered
+						// TODO: prove it
 						ieObject->topTrace = trace;
 						ieObject->topIns = ins;
 						InjectFirstInstruction(trace, ins, ieObject->injectObjectIds, magicInjection);
@@ -63,6 +66,9 @@ CalculateObjectFirstInstruction
 								(insRefLink->trace == ieObject->topTrace && insRefLink->ins < ieObject->topIns)
 								)
 							{
+								// there will be only one top create instruction per object
+								// even when object relationship is partial ordered
+								// TODO: prove it
 								ieObject->topTrace = insRefLink->trace;
 								ieObject->topIns = insRefLink->ins;
 							}
