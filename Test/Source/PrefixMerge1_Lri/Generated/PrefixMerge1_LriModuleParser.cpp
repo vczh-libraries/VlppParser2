@@ -108,13 +108,13 @@ namespace prefixmerge1_lri
 			L"[52][_Expr]<< !_Expr1 @ >>",
 			L"[53][Module] BEGIN ",
 			L"[54][Module] END [ENDING]",
-			L"[55][Module]<< !_PrimitiveExprOnly ( lri:(Expr):_Expr @ | lri:<skip> ) >>",
-			L"[56][Module]<< !_PrimitiveExprOnly @ ( lri:(Expr):_Expr | lri:<skip> ) >>",
-			L"[57][Module]<< !_PrimitiveShared ( lri:(Shared):_LongType @ | lri:(Shared):_Expr | lri:<skip> ) >>",
-			L"[58][Module]<< !_PrimitiveShared ( lri:(Shared):_LongType | lri:(Shared):_Expr @ | lri:<skip> ) >>",
-			L"[59][Module]<< !_PrimitiveShared @ ( lri:(Shared):_LongType | lri:(Shared):_Expr | lri:<skip> ) >>",
-			L"[60][Module]<< !_PrimitiveTypeOnly ( lri:(Type):_LongType @ | lri:<skip> ) >>",
-			L"[61][Module]<< !_PrimitiveTypeOnly @ ( lri:(Type):_LongType | lri:<skip> ) >>",
+			L"[55][Module]<< !_PrimitiveExprOnly ( lri:(Expr)->_Expr @ | lri:<skip> ) >>",
+			L"[56][Module]<< !_PrimitiveExprOnly @ ( lri:(Expr)->_Expr | lri:<skip> ) >>",
+			L"[57][Module]<< !_PrimitiveShared ( lri:(Shared)->_LongType @ | lri:(Shared)->_Expr | lri:<skip> ) >>",
+			L"[58][Module]<< !_PrimitiveShared ( lri:(Shared)->_LongType | lri:(Shared)->_Expr @ | lri:<skip> ) >>",
+			L"[59][Module]<< !_PrimitiveShared @ ( lri:(Shared)->_LongType | lri:(Shared)->_Expr | lri:<skip> ) >>",
+			L"[60][Module]<< !_PrimitiveTypeOnly ( lri:(Type)->_LongType @ | lri:<skip> ) >>",
+			L"[61][Module]<< !_PrimitiveTypeOnly @ ( lri:(Type)->_LongType | lri:<skip> ) >>",
 		};
 		return results[index];
 	}

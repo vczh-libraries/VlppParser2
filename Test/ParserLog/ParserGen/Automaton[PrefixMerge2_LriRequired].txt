@@ -640,12 +640,12 @@
 [54][Module] END [ENDING]
 [RULE: 8][CLAUSE: -1]
 
-[55][Module]<< !_PrimitiveExprOnly ( lri:(Expr):_Expr @ ) >>
+[55][Module]<< !_PrimitiveExprOnly ( lri:(Expr)->_Expr @ ) >>
 [RULE: 8][CLAUSE: 5]
 	ending -> [54][Module] END [ENDING]
 		- EndObject()
 
-[56][Module]<< !_PrimitiveExprOnly @ ( lri:(Expr):_Expr ) >>
+[56][Module]<< !_PrimitiveExprOnly @ ( lri:(Expr)->_Expr ) >>
 [RULE: 8][CLAUSE: 5]
 	token: "(" -> [41][_Expr1]< _Expr1 "(" @ { _Expr ; "," } ")" >
 		- EndObject()
@@ -660,7 +660,7 @@
 		- BeginObject(CallExpr)
 		- LriFetch()
 		- Field(CallExpr::func)
-		> rule: _Expr -> [55][Module]<< !_PrimitiveExprOnly ( lri:(Expr):_Expr @ ) >>
+		> rule: _Expr -> [55][Module]<< !_PrimitiveExprOnly ( lri:(Expr)->_Expr @ ) >>
 			+ ReopenObject()
 		> rule: _Expr1 -> [52][_Expr]<< !_Expr1 @ >>
 			+ ReopenObject()
@@ -679,7 +679,7 @@
 		- BeginObject(MulExpr)
 		- LriFetch()
 		- Field(MulExpr::first)
-		> rule: _Expr -> [55][Module]<< !_PrimitiveExprOnly ( lri:(Expr):_Expr @ ) >>
+		> rule: _Expr -> [55][Module]<< !_PrimitiveExprOnly ( lri:(Expr)->_Expr @ ) >>
 			+ ReopenObject()
 
 [57][Module]<< !_PrimitiveExprOnly @ >>
@@ -687,20 +687,20 @@
 	ending -> [54][Module] END [ENDING]
 		- ReopenObject()
 		- EndObject()
-	leftrec -> [56][Module]<< !_PrimitiveExprOnly @ ( lri:(Expr):_Expr ) >>
+	leftrec -> [56][Module]<< !_PrimitiveExprOnly @ ( lri:(Expr)->_Expr ) >>
 		+ ReopenObject()
 
-[58][Module]<< !_PrimitiveShared ( lri:(Shared):_LongType @ | lri:(Shared):_Expr ) >>
+[58][Module]<< !_PrimitiveShared ( lri:(Shared)->_LongType @ | lri:(Shared)->_Expr ) >>
 [RULE: 8][CLAUSE: 3]
 	ending -> [54][Module] END [ENDING]
 		- EndObject()
 
-[59][Module]<< !_PrimitiveShared ( lri:(Shared):_LongType | lri:(Shared):_Expr @ ) >>
+[59][Module]<< !_PrimitiveShared ( lri:(Shared)->_LongType | lri:(Shared)->_Expr @ ) >>
 [RULE: 8][CLAUSE: 3]
 	ending -> [54][Module] END [ENDING]
 		- EndObject()
 
-[60][Module]<< !_PrimitiveShared @ ( lri:(Shared):_LongType | lri:(Shared):_Expr ) >>
+[60][Module]<< !_PrimitiveShared @ ( lri:(Shared)->_LongType | lri:(Shared)->_Expr ) >>
 [RULE: 8][CLAUSE: 3]
 	token: "(" -> [22][_LongType]< _LongType "(" @ { _LongType ; "," } ")" >
 		- EndObject()
@@ -711,7 +711,7 @@
 		- BeginObject(FunctionType)
 		- LriFetch()
 		- Field(FunctionType::returnType)
-		> rule: _LongType -> [58][Module]<< !_PrimitiveShared ( lri:(Shared):_LongType @ | lri:(Shared):_Expr ) >>
+		> rule: _LongType -> [58][Module]<< !_PrimitiveShared ( lri:(Shared)->_LongType @ | lri:(Shared)->_Expr ) >>
 			+ ReopenObject()
 	token: "(" -> [41][_Expr1]< _Expr1 "(" @ { _Expr ; "," } ")" >
 		- EndObject()
@@ -726,7 +726,7 @@
 		- BeginObject(CallExpr)
 		- LriFetch()
 		- Field(CallExpr::func)
-		> rule: _Expr -> [59][Module]<< !_PrimitiveShared ( lri:(Shared):_LongType | lri:(Shared):_Expr @ ) >>
+		> rule: _Expr -> [59][Module]<< !_PrimitiveShared ( lri:(Shared)->_LongType | lri:(Shared)->_Expr @ ) >>
 			+ ReopenObject()
 		> rule: _Expr1 -> [52][_Expr]<< !_Expr1 @ >>
 			+ ReopenObject()
@@ -739,7 +739,7 @@
 		- BeginObject(ConstType)
 		- LriFetch()
 		- Field(ConstType::type)
-		> rule: _LongType -> [58][Module]<< !_PrimitiveShared ( lri:(Shared):_LongType @ | lri:(Shared):_Expr ) >>
+		> rule: _LongType -> [58][Module]<< !_PrimitiveShared ( lri:(Shared)->_LongType @ | lri:(Shared)->_Expr ) >>
 			+ ReopenObject()
 	token: "*" -> [26][_LongType]< _LongType "*" @ >
 		- EndObject()
@@ -750,7 +750,7 @@
 		- BeginObject(PointerType)
 		- LriFetch()
 		- Field(PointerType::type)
-		> rule: _LongType -> [58][Module]<< !_PrimitiveShared ( lri:(Shared):_LongType @ | lri:(Shared):_Expr ) >>
+		> rule: _LongType -> [58][Module]<< !_PrimitiveShared ( lri:(Shared)->_LongType @ | lri:(Shared)->_Expr ) >>
 			+ ReopenObject()
 	token: "*" -> [49][_Expr]< _Expr "*" @ _Expr1 >
 		- EndObject()
@@ -767,7 +767,7 @@
 		- BeginObject(MulExpr)
 		- LriFetch()
 		- Field(MulExpr::first)
-		> rule: _Expr -> [59][Module]<< !_PrimitiveShared ( lri:(Shared):_LongType | lri:(Shared):_Expr @ ) >>
+		> rule: _Expr -> [59][Module]<< !_PrimitiveShared ( lri:(Shared)->_LongType | lri:(Shared)->_Expr @ ) >>
 			+ ReopenObject()
 
 [61][Module]<< !_PrimitiveShared @ >>
@@ -775,15 +775,15 @@
 	ending -> [54][Module] END [ENDING]
 		- ReopenObject()
 		- EndObject()
-	leftrec -> [60][Module]<< !_PrimitiveShared @ ( lri:(Shared):_LongType | lri:(Shared):_Expr ) >>
+	leftrec -> [60][Module]<< !_PrimitiveShared @ ( lri:(Shared)->_LongType | lri:(Shared)->_Expr ) >>
 		+ ReopenObject()
 
-[62][Module]<< !_PrimitiveTypeOnly ( lri:(Type):_LongType @ ) >>
+[62][Module]<< !_PrimitiveTypeOnly ( lri:(Type)->_LongType @ ) >>
 [RULE: 8][CLAUSE: 4]
 	ending -> [54][Module] END [ENDING]
 		- EndObject()
 
-[63][Module]<< !_PrimitiveTypeOnly @ ( lri:(Type):_LongType ) >>
+[63][Module]<< !_PrimitiveTypeOnly @ ( lri:(Type)->_LongType ) >>
 [RULE: 8][CLAUSE: 4]
 	token: "(" -> [22][_LongType]< _LongType "(" @ { _LongType ; "," } ")" >
 		- EndObject()
@@ -794,7 +794,7 @@
 		- BeginObject(FunctionType)
 		- LriFetch()
 		- Field(FunctionType::returnType)
-		> rule: _LongType -> [62][Module]<< !_PrimitiveTypeOnly ( lri:(Type):_LongType @ ) >>
+		> rule: _LongType -> [62][Module]<< !_PrimitiveTypeOnly ( lri:(Type)->_LongType @ ) >>
 			+ ReopenObject()
 	token: "const" -> [27][_LongType]< _LongType "const" @ >
 		- EndObject()
@@ -805,7 +805,7 @@
 		- BeginObject(ConstType)
 		- LriFetch()
 		- Field(ConstType::type)
-		> rule: _LongType -> [62][Module]<< !_PrimitiveTypeOnly ( lri:(Type):_LongType @ ) >>
+		> rule: _LongType -> [62][Module]<< !_PrimitiveTypeOnly ( lri:(Type)->_LongType @ ) >>
 			+ ReopenObject()
 	token: "*" -> [26][_LongType]< _LongType "*" @ >
 		- EndObject()
@@ -816,7 +816,7 @@
 		- BeginObject(PointerType)
 		- LriFetch()
 		- Field(PointerType::type)
-		> rule: _LongType -> [62][Module]<< !_PrimitiveTypeOnly ( lri:(Type):_LongType @ ) >>
+		> rule: _LongType -> [62][Module]<< !_PrimitiveTypeOnly ( lri:(Type)->_LongType @ ) >>
 			+ ReopenObject()
 
 [64][Module]<< !_PrimitiveTypeOnly @ >>
@@ -824,6 +824,6 @@
 	ending -> [54][Module] END [ENDING]
 		- ReopenObject()
 		- EndObject()
-	leftrec -> [63][Module]<< !_PrimitiveTypeOnly @ ( lri:(Type):_LongType ) >>
+	leftrec -> [63][Module]<< !_PrimitiveTypeOnly @ ( lri:(Type)->_LongType ) >>
 		+ ReopenObject()
 

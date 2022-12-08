@@ -390,7 +390,7 @@ AutomatonBuilder (Clause)
 					if (i > 0) clauseDisplayText += L",";
 					clauseDisplayText += flagName(flags[i]);
 				}
-				clauseDisplayText += L"):" + rule->Name();
+				clauseDisplayText += L")->" + rule->Name();
 				endPoses.Add(pair.end, clauseDisplayText.Length());
 				return pair;
 			}
