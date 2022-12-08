@@ -373,6 +373,10 @@ PartialExecuteOrdinaryTrace
 						break;
 					case AstInsType::ResolveAmbiguity:
 						CHECK_FAIL(ERROR_MESSAGE_PREFIX L"ResolveAmbiguity should not appear in traces.");
+					case AstInsType::AccumulatedDfa:
+						CHECK_FAIL(ERROR_MESSAGE_PREFIX L"AccumulatedDfa should not appear in traces.");
+					case AstInsType::AccumulatedEoRo:
+						CHECK_FAIL(ERROR_MESSAGE_PREFIX L"AccumulatedEoRo should not appear in traces.");
 					default:;
 						CHECK_FAIL(ERROR_MESSAGE_PREFIX L"Unrecognizabled instruction.");
 					}
