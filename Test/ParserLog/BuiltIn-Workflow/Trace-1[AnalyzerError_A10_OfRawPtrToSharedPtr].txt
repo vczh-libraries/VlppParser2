@@ -491,7 +491,9 @@
 | [41][_Type]< _Type @ "*" >                                                                                               |
 | [AST-INSTRUCTIONS]:                                                                                                      |
 |   - EndObject()                                                                                                          |
-|   - BeginObjectLeftRecursive(RawPointerType)                                                                             |
+|   - LriStore()                                                                                                           |
+|   - BeginObject(RawPointerType)                                                                                          |
+|   - LriFetch()                                                                                                           |
 |   + Field(RawPointerType::element)                                                                                       |
 | [RETURN STACK]:                                                                                                          |
 |   [20][33]: _Type -> [607][_Variable]< "var" NAME [ ":" _Type @ ] "=" _Expression ";" >                                  |
@@ -1220,7 +1222,9 @@
 | [222][_ExpPrimitive]< _ExpPrimitive @ "of" _Type >                                                                       |
 | [AST-INSTRUCTIONS]:                                                                                                      |
 |   - EndObject()                                                                                                          |
-|   - BeginObjectLeftRecursive(InferExpression)                                                                            |
+|   - LriStore()                                                                                                           |
+|   - BeginObject(InferExpression)                                                                                         |
+|   - LriFetch()                                                                                                           |
 |   + Field(InferExpression::expression)                                                                                   |
 | [RETURN STACK]:                                                                                                          |
 |   [51][63]: _ExpPrimitive -> [245][_Exp0]<< !_ExpPrimitive @ >>                                                          |
@@ -1333,7 +1337,9 @@
 | [45][_Type]< _Type @ "^" >                                                                                               |
 | [AST-INSTRUCTIONS]:                                                                                                      |
 |   - EndObject()                                                                                                          |
-|   - BeginObjectLeftRecursive(SharedPointerType)                                                                          |
+|   - LriStore()                                                                                                           |
+|   - BeginObject(SharedPointerType)                                                                                       |
+|   - LriFetch()                                                                                                           |
 |   + Field(SharedPointerType::element)                                                                                    |
 | [RETURN STACK]:                                                                                                          |
 |   [52][67]: _Type -> [209][_ExpPrimitive]< _ExpPrimitive "of" _Type @ >                                                  |

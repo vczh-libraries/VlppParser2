@@ -383,7 +383,9 @@
 | [211][_ExpPrimitive]< _ExpPrimitive @ "." "observe" "(" _Expression [ "on" _Expression { "," _Expression } ] ")" >       |
 | [AST-INSTRUCTIONS]:                                                                                                      |
 |   - EndObject()                                                                                                          |
-|   - BeginObjectLeftRecursive(ObserveExpression)                                                                          |
+|   - LriStore()                                                                                                           |
+|   - BeginObject(ObserveExpression)                                                                                       |
+|   - LriFetch()                                                                                                           |
 |   + Field(ObserveExpression::parent)                                                                                     |
 | [RETURN STACK]:                                                                                                          |
 |   [41][19]: _ExpPrimitive -> [245][_Exp0]<< !_ExpPrimitive @ >>                                                          |
@@ -662,7 +664,9 @@
 | [213][_ExpPrimitive]< _ExpPrimitive @ "." NAME >                                                                                              |
 | [AST-INSTRUCTIONS]:                                                                                                                           |
 |   - EndObject()                                                                                                                               |
-|   - BeginObjectLeftRecursive(MemberExpression)                                                                                                |
+|   - LriStore()                                                                                                                                |
+|   - BeginObject(MemberExpression)                                                                                                             |
+|   - LriFetch()                                                                                                                                |
 |   + Field(MemberExpression::parent)                                                                                                           |
 | [RETURN STACK]:                                                                                                                               |
 |   [55][30]: _ExpPrimitive -> [245][_Exp0]<< !_ExpPrimitive @ >>                                                                               |
