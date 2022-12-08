@@ -51,9 +51,9 @@ CalculateObjectFirstInstruction
 						auto ieObject = GetInsExec_Object(objRef);
 						objRef = ieObject->previous;
 
-						// set the top trace to its create trace
-						ieObject->topTrace = ieObject->bo_bolr_Trace;
-						ieObject->topIns = ieObject->bo_bolr_Ins;
+						// set the top local trace to its create trace
+						ieObject->topLocalTrace = ieObject->bo_bolr_Trace;
+						ieObject->topLocalIns = ieObject->bo_bolr_Ins;
 
 						// check all DFA instructions
 						auto insRefLinkId = ieObject->dfaInsRefs;
@@ -62,17 +62,21 @@ CalculateObjectFirstInstruction
 							auto insRefLink = GetInsExec_InsRefLink(insRefLinkId);
 							insRefLinkId = insRefLink->previous;
 							if (
-								insRefLink->trace < ieObject->topTrace ||
-								(insRefLink->trace == ieObject->topTrace && insRefLink->ins < ieObject->topIns)
+								insRefLink->trace < ieObject->topLocalTrace ||
+								(insRefLink->trace == ieObject->topLocalTrace && insRefLink->ins < ieObject->topLocalIns)
 								)
 							{
-								// there will be only one top create instruction per object
+								// there will be only one top local create instruction per object
 								// even when object relationship is partial ordered
 								// TODO: prove it
-								ieObject->topTrace = insRefLink->trace;
-								ieObject->topIns = insRefLink->ins;
+								ieObject->topLocalTrace = insRefLink->trace;
+								ieObject->topLocalIns = insRefLink->ins;
 							}
 						}
+
+						// set the top trace to its top local trace
+						ieObject->topTrace = ieObject->topLocalTrace;
+						ieObject->topIns = ieObject->topLocalIns;
 					}
 				}
 

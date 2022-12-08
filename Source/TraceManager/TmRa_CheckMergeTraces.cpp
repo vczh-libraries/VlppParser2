@@ -42,60 +42,6 @@ CheckMergeTrace
 				return true;
 			}
 
-#ifdef VCZH_DO_DEBUG_CHECK
-			void TraceManager::EnsureSameForwardTrace(Ref<Trace> currentTraceId, Ref<Trace> forwardTraceId)
-			{
-#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::EnsureSameForwardTrace(vint32_t, vint32_t)#"
-				auto currentTrace = GetTrace(currentTraceId);
-				auto currentTraceExec = GetTraceExec(currentTrace->traceExecRef);
-				while (currentTraceExec->branchData.forwardTrace > forwardTraceId)
-				{
-					currentTrace = StepForward(currentTrace);
-					currentTraceExec = GetTraceExec(currentTrace->traceExecRef);
-				}
-				CHECK_ERROR(currentTraceExec->branchData.forwardTrace == forwardTraceId, ERROR_MESSAGE_PREFIX L"Internal error: assumption is broken.");
-#undef ERROR_MESSAGE_PREFIX
-			}
-#endif
-
-			template<typename TCallback>
-			bool TraceManager::SearchForTopCreateInstructions(InsExec_Object* ieObject, TCallback&& callback)
-			{
-#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::SearchForTopCreateInstructions(InsExec_Object*, TCallback&&)#"
-				// find the first instruction in all create instructions
-				// its trace should be a common ancestor of all traces of all create instructions
-				auto trace = ieObject->bo_bolr_Trace;
-				vint32_t ins = ieObject->bo_bolr_Ins;
-
-				auto insRefLinkId = ieObject->dfaInsRefs;
-				while (insRefLinkId != nullref)
-				{
-					auto insRefLink = GetInsExec_InsRefLink(insRefLinkId);
-					insRefLinkId = insRefLink->previous;
-					if (insRefLink->trace < trace || (insRefLink->trace == trace && insRefLink->ins < ins))
-					{
-						trace = insRefLink->trace;
-						ins = insRefLink->ins;
-					}
-				}
-
-#ifdef VCZH_DO_DEBUG_CHECK
-				// ensure they actually have the same ancestor trace
-				auto forwardTraceId = GetTraceExec(GetTrace(trace)->traceExecRef)->branchData.forwardTrace;
-				EnsureSameForwardTrace(ieObject->bo_bolr_Trace, forwardTraceId);
-				insRefLinkId = ieObject->dfaInsRefs;
-				while (insRefLinkId != nullref)
-				{
-					auto insRefLink = GetInsExec_InsRefLink(insRefLinkId);
-					EnsureSameForwardTrace(GetInsExec_InsRefLink(insRefLinkId)->trace, forwardTraceId);
-					insRefLinkId = insRefLink->previous;
-				}
-#endif
-				// there will be only one top create instruction per object
-				return callback(trace, ins);
-#undef ERROR_MESSAGE_PREFIX
-			}
-
 			template<typename TCallback>
 			bool TraceManager::SearchForEndObjectInstructions(Trace* createTrace, vint32_t createIns, TCallback&& callback)
 			{
@@ -218,53 +164,40 @@ CheckMergeTrace
 					{
 						PushObjRefLink(ta->bottomObjectIds, ieObject);
 
-						// check if BO/DFA satisfies the condition
-						return SearchForTopCreateInstructions(ieObject, [&](Ref<Trace> createTraceId, vint32_t createIns)
+						// check if EO satisfies the condition
+						return SearchForEndObjectInstructions(GetTrace(ieObject->topLocalTrace), ieObject->topLocalIns, [&](Trace* eoTrace, vint32_t eoIns)
 						{
-							auto createTrace = GetTrace(createTraceId);
 #ifdef VCZH_DO_DEBUG_CHECK
 							{
-								auto traceExec = GetTraceExec(createTrace->traceExecRef);
-								auto&& ins = ReadInstruction(createIns, traceExec->insLists);
-								CHECK_ERROR(ins.type == AstInsType::BeginObject || ins.type == AstInsType::DelayFieldAssignment, ERROR_MESSAGE_PREFIX L"The found instruction is not a BeginObject or DelayFieldAssignment instruction.");
+								auto traceExec = GetTraceExec(eoTrace->traceExecRef);
+								auto&& ins = ReadInstruction(eoIns, traceExec->insLists);
+								CHECK_ERROR(ins.type == AstInsType::EndObject, ERROR_MESSAGE_PREFIX L"The found instruction is not a EndObject instruction.");
 							}
 #endif
 
-							// check if EO satisfies the condition
-							return SearchForEndObjectInstructions(createTrace, createIns, [&](Trace* eoTrace, vint32_t eoIns)
+							if (!last)
 							{
-#ifdef VCZH_DO_DEBUG_CHECK
-								{
-									auto traceExec = GetTraceExec(eoTrace->traceExecRef);
-									auto&& ins = ReadInstruction(eoIns, traceExec->insLists);
-									CHECK_ERROR(ins.type == AstInsType::EndObject, ERROR_MESSAGE_PREFIX L"The found instruction is not a EndObject instruction.");
-								}
-#endif
-
-								if (!last)
-								{
-									last = eoTrace;
-									lastTraceExec = GetTraceExec(last->traceExecRef);
-									ta->lastTrace = eoTrace;
-									ta->postfix = lastTraceExec->insLists.c3 - eoIns - 1;
-								}
-								else if (last == eoTrace)
-								{
-									// check if two instruction is the same
-									auto eoTraceExec = GetTraceExec(eoTrace->traceExecRef);
-									if (ta->postfix != eoTraceExec->insLists.c3 - eoIns - 1) return false;
-									foundEndSame = true;
-								}
-								else
-								{
-									// check if two instruction shares the same postfix
-									if (last->successors.first != eoTrace->successors.first) return false;
-									auto eoTraceExec = GetTraceExec(eoTrace->traceExecRef);
-									if (!ComparePostfix(lastTraceExec, eoTraceExec, ta->postfix + 1)) return false;
-									foundEndPostfix = true;
-								}
-								return true;
-							});
+								last = eoTrace;
+								lastTraceExec = GetTraceExec(last->traceExecRef);
+								ta->lastTrace = eoTrace;
+								ta->postfix = lastTraceExec->insLists.c3 - eoIns - 1;
+							}
+							else if (last == eoTrace)
+							{
+								// check if two instruction is the same
+								auto eoTraceExec = GetTraceExec(eoTrace->traceExecRef);
+								if (ta->postfix != eoTraceExec->insLists.c3 - eoIns - 1) return false;
+								foundEndSame = true;
+							}
+							else
+							{
+								// check if two instruction shares the same postfix
+								if (last->successors.first != eoTrace->successors.first) return false;
+								auto eoTraceExec = GetTraceExec(eoTrace->traceExecRef);
+								if (!ComparePostfix(lastTraceExec, eoTraceExec, ta->postfix + 1)) return false;
+								foundEndPostfix = true;
+							}
+							return true;
 						});
 					});
 				});

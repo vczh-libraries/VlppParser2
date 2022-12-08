@@ -280,6 +280,10 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 				// DelayFieldAssignment instructions that associates to the current object
 				Ref<InsExec_InsRefLink>				dfaInsRefs;
 
+				// first instruction that creates this object
+				Ref<Trace>							topLocalTrace;
+				vint32_t							topLocalIns = -1;
+
 				// first instruction that creates this object or its fields
 				Ref<Trace>							topTrace;
 				vint32_t							topIns = -1;
@@ -637,11 +641,6 @@ TraceManager
 				// phase: CheckMergeTraces
 				template<typename TCallback>
 				bool										SearchForObjects(Ref<InsExec_ObjRefLink> objRefLinkStartSet, bool withCounter, TCallback&& callback);
-#if defined VCZH_MSVC && defined _DEBUG
-				void										EnsureSameForwardTrace(Ref<Trace> currentTraceId, Ref<Trace> forwardTraceId);
-#endif
-				template<typename TCallback>
-				bool										SearchForTopCreateInstructions(InsExec_Object* ieObject, TCallback&& callback);
 				template<typename TCallback>
 				bool										SearchForEndObjectInstructions(Trace* createTrace, vint32_t createIns, TCallback&& callback);
 				bool										ComparePrefix(TraceExec* baselineTraceExec, TraceExec* commingTraceExec, vint32_t prefix);
