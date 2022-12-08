@@ -267,6 +267,9 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 				// lrObjectIds are objects it takes while being created by BOLR
 				Ref<InsExec_ObjRefLink>				lrObjectIds;
 
+				// injectObjectIds are objects it injects into by BOLR or LriFetch in the context of these objects
+				Ref<InsExec_ObjRefLink>				injectObjectIds;
+
 				// instruction that creates this object
 				Ref<Trace>							bo_bolr_Trace;
 				vint32_t							bo_bolr_Ins = -1;
@@ -292,6 +295,9 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 
 				// InsExec_ObjRefLink assigned by BO/BOLA/RO
 				Ref<InsExec_ObjRefLink>				objectIds;
+
+				// objectIds will be added to reverseInjectObjectIds::injectObjectIds
+				Ref<InsExec_ObjRefLink>				reverseInjectObjectIds;
 			};
 
 			struct InsExec_Context
@@ -578,6 +584,8 @@ TraceManager
 				void										PushObjRefLink(Ref<InsExec_ObjRefLink>& link, Ref<InsExec_Object> id);
 				Ref<InsExec_InsRefLink>						JoinInsRefLink(Ref<InsExec_InsRefLink> first, Ref<InsExec_InsRefLink> second);
 				Ref<InsExec_ObjRefLink>						JoinObjRefLink(Ref<InsExec_ObjRefLink> first, Ref<InsExec_ObjRefLink> second);
+				void										PushInjectObjectIdsSingleWithMagic(Ref<InsExec_ObjRefLink> container, Ref<InsExec_Object> element, vuint64_t magicContainer, vuint64_t magicElement);
+				void										PushInjectObjectIdsMultipleWithMagic(Ref<InsExec_ObjRefLink> container, Ref<InsExec_ObjRefLink> elements, vuint64_t magicContainer, vuint64_t magicElement);
 				InsExec_ObjectStack*						PushObjectStackSingle(InsExec_Context& context, Ref<InsExec_Object> objectId);
 				InsExec_ObjectStack*						PushObjectStackMultiple(InsExec_Context& context, Ref<InsExec_ObjRefLink> linkId);
 				InsExec_CreateStack*						PushCreateStack(InsExec_Context& context);

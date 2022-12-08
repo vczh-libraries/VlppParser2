@@ -13,6 +13,7 @@
     - Calculate
   - Use the above information in `CheckMergeTrace`
     - Revisit `SearchForTopCreateInstructionsInAllLevelsWithCounter`, could be deleted
+  - Remove BOLR instruction, replace it by LriStore+BO+LriFetch
 - `Name<A...>` unexpectedly produces ambiguity
   - From `_GenericArgument` it goes to
     - `!_QualifiedName [left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveExpr) _GenericArgument_LRI_Original]`

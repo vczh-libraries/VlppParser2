@@ -216,6 +216,11 @@ void RenderTrace(
 				auto ieCSTop = tm.GetInsExec_CreateStack(context.createStack);
 				writer.WriteString(L"CSTop: [");
 				logObjRefLink(ieCSTop->objectIds);
+				if (ieCSTop->reverseInjectObjectIds != nullref)
+				{
+					writer.WriteString(L"] lri:[");
+					logObjRefLink(ieCSTop->reverseInjectObjectIds);
+				}
 				writer.WriteLine(
 					L"] [" +
 					itow(ieCSTop->allocatedIndex) +
@@ -460,6 +465,13 @@ void RenderTrace(
 					{
 						writer.WriteString(L" lrs:[");
 						logObjRefLink(ieObject->lrObjectIds);
+						writer.WriteString(L"]");
+					}
+
+					if (ieObject->injectObjectIds != nullref)
+					{
+						writer.WriteString(L" injectInto:[");
+						logObjRefLink(ieObject->injectObjectIds);
 						writer.WriteString(L"]");
 					}
 
