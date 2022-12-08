@@ -2,12 +2,6 @@
 
 ## Progressing
 
-- `Name<A...>` unexpectedly produces ambiguity
-  - From `_GenericArgument` it goes to
-    - `!_QualifiedName [left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveExpr) _GenericArgument_LRI_Original]`
-    - `!_QualifiedName left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveType) _GenericArgument_LRI_Original`
-  - And then consume "...", creating ambiguity by injecting into two different labels but ends up in the same place.
-  - `_GenericArgument ::= _TypeOrExpr_NoComma_NoGT:argument @ "...":variadic as GenericArgument`
 - `throw` is missing in `BuiltIn-Cpp` in `_TypeOrExpr`
 
 ## Next task
