@@ -239,38 +239,57 @@ CompileSyntaxVisitor
 					});
 				}
 
-				void Visit(GlrLeftRecursionPlaceholderClause* node) override
+				WString FlagIndexToName(vint32_t flag)
 				{
-					List<vint32_t> flags;
+					return context.syntaxManager.lrpFlags[flag];
+				}
+
+				void CollectFlagsInOrder(SortedList<vint32_t>& flags, List<Ptr<GlrLeftRecursionPlaceholder>>& placeholders)
+				{
 					CopyFrom(
 						flags,
-						From(node->flags)
+						From(placeholders)
 							.Select([this](Ptr<GlrLeftRecursionPlaceholder> flag)
 							{
 								return (vint32_t)context.syntaxManager.lrpFlags.IndexOf(flag->flag.value);
 							})
 							.Distinct()
 						);
+				}
+
+				void Visit(GlrLeftRecursionPlaceholderClause* node) override
+				{
+					SortedList<vint32_t> flags;
+					CollectFlagsInOrder(flags, node->flags);
 
 					result = automatonBuilder.BuildClause([this, &flags]()
 					{
-						return automatonBuilder.BuildLrpClause(flags, [&](vint32_t flag) { return context.syntaxManager.lrpFlags[flag]; });
+						return automatonBuilder.BuildLrpClause(
+							flags,
+							{ this,&CompileSyntaxVisitor::FlagIndexToName }
+							);
 					});
 				}
 
 				using StateBuilder = Func<AutomatonBuilder::StatePair()>;
 
-				StateBuilder CompileLriTarget(vint32_t parentFlag, GlrLeftRecursionInjectClause* lriTarget)
+				StateBuilder CompileLriTarget(SortedList<vint32_t>& flags, GlrLeftRecursionInjectClause* lriTarget)
 				{
 					StateBuilder useOrLriSyntax;
 					auto rule = context.syntaxManager.Rules()[lriTarget->rule->literal.value];
-					if (parentFlag == -1)
+					if (flags.Count() == 0)
 					{
 						useOrLriSyntax = [this, rule]() { return automatonBuilder.BuildUseSyntax(rule); };
 					}
 					else
 					{
-						useOrLriSyntax = [this, rule, parentFlag]() { return automatonBuilder.BuildLriSyntax(parentFlag, rule); };
+						useOrLriSyntax = [this, rule, &flags]() {
+							return automatonBuilder.BuildLriSyntax(
+								flags,
+								rule,
+								{ this,&CompileSyntaxVisitor::FlagIndexToName }
+								);
+							};
 					}
 
 					if (!lriTarget->continuation)
@@ -283,15 +302,14 @@ CompileSyntaxVisitor
 						return [this, useOrLriSyntax, cont]()
 						{
 							bool optional = cont->type == GlrLeftRecursionInjectContinuationType::Optional;
-							List<StateBuilder> targetRules;
 
-							for (auto lriFlag : cont->flags)
+							SortedList<vint32_t> flags;
+							CollectFlagsInOrder(flags, cont->flags);
+
+							List<StateBuilder> targetRules;
+							for (auto lriTarget : cont->injectionTargets)
 							{
-								auto flag = (vint32_t)context.syntaxManager.lrpFlags.IndexOf(lriFlag->flag.value);
-								for (auto lriTarget : cont->injectionTargets)
-								{
-									targetRules.Add(CompileLriTarget(flag, lriTarget.Obj()));
-								}
+								targetRules.Add(CompileLriTarget(flags, lriTarget.Obj()));
 							}
 
 							return automatonBuilder.BuildLriClauseSyntax(
@@ -306,7 +324,8 @@ CompileSyntaxVisitor
 				{
 					result = automatonBuilder.BuildClause([this, node]()
 					{
-						return automatonBuilder.BuildReuseClause(CompileLriTarget(-1, node));
+						SortedList<vint32_t> flags;
+						return automatonBuilder.BuildReuseClause(CompileLriTarget(flags, node));
 					});
 				}
 
