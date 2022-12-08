@@ -36,69 +36,69 @@
  +
  |
 [0]
-++===========================================++
-|| [2]: {ID} Func                            ||
-||   TraceExec: [1]                          ||
-||   InsExec: [0:7]                          ||
-||   ForwardTrace: 0                         ||
-|| [7][Exp0]< ID @ >                         ||
-|| [AST-INSTRUCTIONS]:                       ||
-||     CSTop: []                             ||
-||     OSTop: []                             ||
-||     LriStored: []                         ||
-||   - BeginObject(Module)                   ||
-||       obj:0, new:2@0                      ||
-||       eoInsRefs: 50@1                     ||
-||                                           ||
-||     CSTop: [0] [0 -> -1]                  ||
-||     OSTop: []                             ||
-||     LriStored: []                         ||
-||   - DelayFieldAssignment()                ||
-||       objRefs: 2                          ||
-||       eoInsRefs: 49@0                     ||
-||                                           ||
-||     CSTop: [2] [1 -> 0]                   ||
-||     OSTop: []                             ||
-||     LriStored: []                         ||
-||   - DelayFieldAssignment()                ||
-||       objRefs: 2                          ||
-||       eoInsRefs: 48@0                     ||
-||                                           ||
-||     CSTop: [2] [2 -> 1]                   ||
-||     OSTop: []                             ||
-||     LriStored: []                         ||
-||   - DelayFieldAssignment()                ||
-||       objRefs: 1                          ||
-||       eoInsRefs: 4@0                      ||
-||                                           ||
-||     CSTop: [1] [3 -> 2]                   ||
-||     OSTop: []                             ||
-||     LriStored: []                         ||
-||   - BeginObject(RefExpr)                  ||
-||       obj:1, new:2@4 dfas:[2@3]           ||
-||       eoInsRefs: 3@0                      ||
-||                                           ||
-||     CSTop: [1] [4 -> 3]                   ||
-||     OSTop: []                             ||
-||     LriStored: []                         ||
-||   + Token()                               ||
-||                                           ||
-||     CSTop: [1] [4 -> 3]                   ||
-||     OSTop: [-2] [0 -> -1]                 ||
-||     LriStored: []                         ||
-||   + Field(RefExpr::name)                  ||
-||                                           ||
-||     CSTop: [1] [4 -> 3]                   ||
-||     OSTop: []                             ||
-||     LriStored: []                         ||
-|| [RETURN STACK]:                           ||
-||   [6][0]: Exp0 -> [18][Exp1]<< !Exp0 @ >> ||
-||   [5][0]: Exp1 -> [31][Exp2]<< !Exp1 @ >> ||
-||   [4][0]: Exp2 -> [40][Exp]<< !Exp2 @ >>  ||
-||   [0][0]: Exp -> [43][Module]< Exp @ >    ||
-|| [PREDECESSORS 0-0]: [0]                   ||
-|| [SUCCESORS 3-3]: [3]                      ||
-++===========================================++
+++================================================++
+|| [2]: {ID} Func                                 ||
+||   TraceExec: [1]                               ||
+||   InsExec: [0:7]                               ||
+||   ForwardTrace: 0                              ||
+|| [7][Exp0]< ID @ >                              ||
+|| [AST-INSTRUCTIONS]:                            ||
+||     CSTop: []                                  ||
+||     OSTop: []                                  ||
+||     LriStored: []                              ||
+||   - BeginObject(Module)                        ||
+||       obj:0, new:2@0                           ||
+||       eoInsRefs: 50@1                          ||
+||                                                ||
+||     CSTop: [0] [0 -> -1]                       ||
+||     OSTop: []                                  ||
+||     LriStored: []                              ||
+||   - DelayFieldAssignment()                     ||
+||       objRefs: 2                               ||
+||       eoInsRefs: 49@0                          ||
+||                                                ||
+||     CSTop: [2] [1 -> 0]                        ||
+||     OSTop: []                                  ||
+||     LriStored: []                              ||
+||   - DelayFieldAssignment()                     ||
+||       objRefs: 2                               ||
+||       eoInsRefs: 48@0                          ||
+||                                                ||
+||     CSTop: [2] [2 -> 1]                        ||
+||     OSTop: []                                  ||
+||     LriStored: []                              ||
+||   - DelayFieldAssignment()                     ||
+||       objRefs: 1                               ||
+||       eoInsRefs: 4@0                           ||
+||                                                ||
+||     CSTop: [1] [3 -> 2]                        ||
+||     OSTop: []                                  ||
+||     LriStored: []                              ||
+||   - BeginObject(RefExpr)                       ||
+||       obj:1, new:2@4 injectInto:[2] dfas:[2@3] ||
+||       eoInsRefs: 3@0                           ||
+||                                                ||
+||     CSTop: [1] [4 -> 3]                        ||
+||     OSTop: []                                  ||
+||     LriStored: []                              ||
+||   + Token()                                    ||
+||                                                ||
+||     CSTop: [1] [4 -> 3]                        ||
+||     OSTop: [-2] [0 -> -1]                      ||
+||     LriStored: []                              ||
+||   + Field(RefExpr::name)                       ||
+||                                                ||
+||     CSTop: [1] [4 -> 3]                        ||
+||     OSTop: []                                  ||
+||     LriStored: []                              ||
+|| [RETURN STACK]:                                ||
+||   [6][0]: Exp0 -> [18][Exp1]<< !Exp0 @ >>      ||
+||   [5][0]: Exp1 -> [31][Exp2]<< !Exp1 @ >>      ||
+||   [4][0]: Exp2 -> [40][Exp]<< !Exp2 @ >>       ||
+||   [0][0]: Exp -> [43][Module]< Exp @ >         ||
+|| [PREDECESSORS 0-0]: [0]                        ||
+|| [SUCCESORS 3-3]: [3]                           ||
+++================================================++
 |
 +
 |
@@ -228,7 +228,7 @@
 ||     OSTop: []                                               ||
 ||     LriStored: []                                           ||
 ||   - BeginObject(RefExpr)                                    ||
-||       obj:3, new:8@3 dfas:[8@1, 8@2]                        ||
+||       obj:3, new:8@3 injectInto:[5, 4] dfas:[8@1, 8@2]      ||
 ||       eoInsRefs: 9@0                                        ||
 ||                                                             ||
 ||     CSTop: [3] [9 -> 8]                                     ||
@@ -343,7 +343,7 @@
 |     OSTop: [3] [6 -> -1]                                    |      |     OSTop: [3] [9 -> -1]                                    |
 |     LriStored: []                                           |      |     LriStored: []                                           |
 |   - BeginObjectLeftRecursive(PostfixExpr)                   |      |   - BeginObjectLeftRecursive(PostfixExpr)                   |
-|       obj:4, new:11@1 lrs:[3] dfas:[8@0]                    |      |       obj:5, new:12@1 lrs:[3]                               |
+|       obj:4, new:11@1 lrs:[3] dfas:[8@0]                    |      |       obj:5, new:12@1 lrs:[3] injectInto:[6]                |
 |       eoInsRefs: 25@2                                       |      |       eoInsRefs: 17@2                                       |
 |                                                             |      |                                                             |
 |     CSTop: [4] [10 -> 6]                                    |      |     CSTop: [5] [11 -> 6]                                    |
@@ -611,7 +611,7 @@
 ||     OSTop: []                                                 ||
 ||     LriStored: []                                             ||
 ||   - BeginObject(RefExpr)                                      ||
-||       obj:7, new:28@3 dfas:[28@1, 28@2]                       ||
+||       obj:7, new:28@3 injectInto:[9, 8] dfas:[28@1, 28@2]     ||
 ||       eoInsRefs: 29@0                                         ||
 ||                                                               ||
 ||     CSTop: [7] [16 -> 15]                                     ||
@@ -726,7 +726,7 @@
 |     OSTop: [7] [18 -> -1]                                     |      |     OSTop: [7] [21 -> -1]                                     |
 |     LriStored: []                                             |      |     LriStored: []                                             |
 |   - BeginObjectLeftRecursive(PostfixExpr)                     |      |   - BeginObjectLeftRecursive(PostfixExpr)                     |
-|       obj:8, new:31@1 lrs:[7] dfas:[28@0]                     |      |       obj:9, new:32@1 lrs:[7]                                 |
+|       obj:8, new:31@1 lrs:[7] dfas:[28@0]                     |      |       obj:9, new:32@1 lrs:[7] injectInto:[10]                 |
 |       eoInsRefs: 45@2                                         |      |       eoInsRefs: 37@2                                         |
 |                                                               |      |                                                               |
 |     CSTop: [8] [17 -> 13]                                     |      |     CSTop: [9] [18 -> 13]                                     |
