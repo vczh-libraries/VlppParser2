@@ -613,6 +613,7 @@ TraceManager
 				void										MergeInsExecContext(Trace* mergeTrace);
 
 				// phase: PartialExecuteTraces - CalculateObjectFirstInstruction
+				bool										UpdateTopTrace(Ref<Trace>& topTrace, vint32_t& topIns, Ref<Trace> newTrace, vint32_t newIns);
 				void										InjectFirstInstruction(Ref<Trace> trace, vint32_t ins, Ref<InsExec_ObjRefLink> injectTargets, vuint64_t magicInjection);
 				void										CalculateObjectFirstInstruction();
 
