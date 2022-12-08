@@ -12,6 +12,9 @@ TraceManager::ExecuteTrace
 
 			struct TraceManagerSubmitter
 			{
+				// LriFetch + LriStore
+				bool					lriFetch = false;
+
 				// AccumulatedDfa
 				vint32_t				adfaCount = 0;
 				vint32_t				adfaIndex = -1;
@@ -22,7 +25,7 @@ TraceManager::ExecuteTrace
 				vint32_t				aeoroIndex = -1;
 				regex::RegexToken*		aeoroToken = nullptr;
 
-				// Caching
+				// Caching EndObject / LriFetch
 				AstIns					cachedIns;
 				vint32_t				cachedIndex = -1;
 				regex::RegexToken*		cachedToken = nullptr;
@@ -31,12 +34,38 @@ TraceManager::ExecuteTrace
 
 				void Submit(AstIns& ins, regex::RegexToken& token, vint32_t tokenIndex)
 				{
+					// LriFetch + LriStore disappear
 					// multiple DelayFieldAssignment are compressed to single AccumulatedDfa
 					// multiple EndObject+ReopenObject are compressed to single AccumulatedEoRo
 
 					switch (ins.type)
 					{
+					case AstInsType::LriFetch:
+						{
+							ExecuteSubmitted();
+							lriFetch = true;
+							cachedIns = ins;
+							cachedIndex = tokenIndex;
+							cachedToken = &token;
+						}
+						break;
+					case AstInsType::LriStore:
+						if(lriFetch)
+						{
+							lriFetch = false;
+							cachedToken = nullptr;
+						}
+						else
+						{
+							ExecuteSubmitted();
+							receiver->Execute(ins, token, tokenIndex);
+						}
+						break;
 					case AstInsType::DelayFieldAssignment:
+						if (lriFetch)
+						{
+							ExecuteSubmitted();
+						}
 						if (aeoroToken == nullptr && cachedToken == nullptr && (adfaToken == nullptr || adfaToken == &token))
 						{
 							adfaCount++;
@@ -52,6 +81,10 @@ TraceManager::ExecuteTrace
 						}
 						break;
 					case AstInsType::EndObject:
+						if (lriFetch)
+						{
+							ExecuteSubmitted();
+						}
 						if (adfaToken == nullptr && cachedToken == nullptr)
 						{
 							cachedIns = ins;
@@ -67,6 +100,10 @@ TraceManager::ExecuteTrace
 						}
 						break;
 					case AstInsType::ReopenObject:
+						if (lriFetch)
+						{
+							ExecuteSubmitted();
+						}
 						if (adfaToken != nullptr || cachedToken == nullptr || cachedIns.type != AstInsType::EndObject)
 						{
 							ExecuteSubmitted();
@@ -125,8 +162,9 @@ TraceManager::ExecuteTrace
 					}
 					if (cachedToken)
 					{
-						receiver->Execute(cachedIns, *cachedToken, aeoroIndex);
+						receiver->Execute(cachedIns, *cachedToken, cachedIndex);
 						cachedToken = nullptr;
+						lriFetch = false;
 					}
 				}
 			};

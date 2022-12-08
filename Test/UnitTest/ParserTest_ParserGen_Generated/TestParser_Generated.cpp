@@ -41,8 +41,8 @@
 extern WString GetTestParserInputPath(const WString& parserName);
 extern FilePath GetOutputDir(const WString& parserName);
 
-#define PAUSE_CASE L"PrefixMerge8_PmVariadic"
-#define PAUSE_INPUT L"Variadic6"
+#define PAUSE_CASE L"BinaryOp"
+#define PAUSE_INPUT L"Descending"
 #undef PAUSE_CASE
 #undef PAUSE_INPUT
 

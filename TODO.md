@@ -2,7 +2,6 @@
 
 ## Progressing
 
-- During execution remove LriFetch followed by LriStore
 - `Name<A...>` unexpectedly produces ambiguity
   - From `_GenericArgument` it goes to
     - `!_QualifiedName [left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveExpr) _GenericArgument_LRI_Original]`
