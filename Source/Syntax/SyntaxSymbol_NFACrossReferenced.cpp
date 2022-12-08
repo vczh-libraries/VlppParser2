@@ -154,13 +154,14 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 				}
 
 				// calculate all acceptable input from inject edge
-				// key: token
+				// key:
+				//   token
+				//   the number of return edges carried into this edge, at least 1
 				// value:
 				//   index of placeholder edge
-				//   the number of return edges carried into this edge, at least 1
 				//   the LeftRec edge before the Token edge (optional)
 				//   the Token edge that consume this input
-				Group<vint32_t, Tuple<vint, vint, EdgeSymbol*, EdgeSymbol*>> acceptableInputs;
+				Group<Pair<vint32_t, vint>, Tuple<vint, EdgeSymbol*, EdgeSymbol*>> acceptableInputs;
 				for(auto [placeholderEdge, index] : indexed(placeholderEdges))
 				{
 					auto& endingStates = endingStatesArray[index];
@@ -187,14 +188,14 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 									{
 										if (tokenEdge->input.type == EdgeInputType::Token)
 										{
-											acceptableInputs.Add(tokenEdge->input.token, { index,i + 1,outEdge,tokenEdge });
+											acceptableInputs.Add({ tokenEdge->input.token,i + 1 }, { index,outEdge,tokenEdge });
 										}
 									}
 								}
 								break;
 							// find if there is any Token from this state
 							case EdgeInputType::Token:
-								acceptableInputs.Add(outEdge->input.token, { index,i + 1,nullptr,outEdge });
+								acceptableInputs.Add({ outEdge->input.token,i + 1 }, { index,nullptr,outEdge });
 								break;
 							default:;
 							}
@@ -208,10 +209,11 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 					}
 				}
 
-				for (auto [inputToken, inputIndex] : indexed(acceptableInputs.Keys()))
+				for (auto [input, inputIndex] : indexed(acceptableInputs.Keys()))
 				{
+					auto [inputToken, returnEdgeCount] = input;
 					auto&& placeholderRecords = acceptableInputs.GetByIndex(inputIndex);
-					for (auto [placeholderIndex, returnEdgeCount, lrEdge, tokenEdge] : placeholderRecords)
+					for (auto [placeholderIndex, lrEdge, tokenEdge] : placeholderRecords)
 					{
 						auto placeholderEdge = placeholderEdges[placeholderIndex];
 						auto& endingStates = endingStatesArray[placeholderIndex];

@@ -1412,6 +1412,17 @@
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
+		- LriFetch()
+		- LriStore()
+		- BeginObject(FunctionType)
+		- LriFetch()
+		- Field(FunctionType::returnType)
+		> rule: _LongType -> [79][Module]<< !_PrimitiveShared ( lri:(Shared)->_Expr | lri:(Shared)->_LongType @ | lri:<skip> ) >>
+			+ ReopenObject()
+	token: "(" -> [22][_LongType]< _LongType "(" @ { _LongType ; "," } ")" >
+		- EndObject()
+		- LriStore()
+		- DelayFieldAssignment()
 		- DelayFieldAssignment()
 		- DelayFieldAssignment()
 		- BeginObject(CtorExpr)
@@ -1428,17 +1439,6 @@
 			+ ReopenObject()
 		> rule: _LongType -> [40][_Expr0]< _LongType @ "{" { _Expr_Raw ; "," } "}" >
 			+ Field(CtorExpr::type)
-	token: "(" -> [22][_LongType]< _LongType "(" @ { _LongType ; "," } ")" >
-		- EndObject()
-		- LriStore()
-		- DelayFieldAssignment()
-		- LriFetch()
-		- LriStore()
-		- BeginObject(FunctionType)
-		- LriFetch()
-		- Field(FunctionType::returnType)
-		> rule: _LongType -> [79][Module]<< !_PrimitiveShared ( lri:(Shared)->_Expr | lri:(Shared)->_LongType @ | lri:<skip> ) >>
-			+ ReopenObject()
 	token: "(" -> [46][_Expr1]< _Expr1 "(" @ { _Expr_Raw ; "," } ")" >
 		- EndObject()
 		- LriStore()
@@ -1506,6 +1506,17 @@
 		- EndObject()
 		- LriStore()
 		- DelayFieldAssignment()
+		- LriFetch()
+		- LriStore()
+		- BeginObject(PointerType)
+		- LriFetch()
+		- Field(PointerType::type)
+		> rule: _LongType -> [79][Module]<< !_PrimitiveShared ( lri:(Shared)->_Expr | lri:(Shared)->_LongType @ | lri:<skip> ) >>
+			+ ReopenObject()
+	token: "*" -> [26][_LongType]< _LongType "*" @ >
+		- EndObject()
+		- LriStore()
+		- DelayFieldAssignment()
 		- DelayFieldAssignment()
 		- DelayFieldAssignment()
 		- BeginObject(CtorExpr)
@@ -1522,17 +1533,6 @@
 			+ ReopenObject()
 		> rule: _LongType -> [40][_Expr0]< _LongType @ "{" { _Expr_Raw ; "," } "}" >
 			+ Field(CtorExpr::type)
-	token: "*" -> [26][_LongType]< _LongType "*" @ >
-		- EndObject()
-		- LriStore()
-		- DelayFieldAssignment()
-		- LriFetch()
-		- LriStore()
-		- BeginObject(PointerType)
-		- LriFetch()
-		- Field(PointerType::type)
-		> rule: _LongType -> [79][Module]<< !_PrimitiveShared ( lri:(Shared)->_Expr | lri:(Shared)->_LongType @ | lri:<skip> ) >>
-			+ ReopenObject()
 	token: "*" -> [54][_Expr]< _Expr "*" @ _Expr1_Raw >
 		- EndObject()
 		- LriStore()
