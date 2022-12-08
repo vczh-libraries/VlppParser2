@@ -147,8 +147,8 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 					// here insBeforeInput has been ensured to be:
 					//   EndObject
 					//   LriStore
-					//   placeholderEdge->insBeforeInput
 					//   DelayFieldAssignment
+					//   placeholderEdge->insBeforeInput
 					//   LriFetch
 					//   loop {endingEdge->insBeforeInput returnEdge->insAfterInput}
 					//   --LeftRec--> ...
