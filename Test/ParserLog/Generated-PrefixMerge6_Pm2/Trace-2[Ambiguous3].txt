@@ -147,12 +147,12 @@
 ||       objRefs: 1                                                                                                                       ||    ||       objRefs: 5                                                                                                                                 ||
 ||       eoInsRefs: 32@0                                                                                                                  ||    ||       eoInsRefs: 31@0                                                                                                                            ||
 ||                                                                                                                                        ||    ||                                                                                                                                                  ||
-||     CSTop: [1] [3 -> -1]                                                                                                               ||    ||     CSTop: [5] [17 -> -1]                                                                                                                        ||
+||     CSTop: [1] [3 -> -1]                                                                                                               ||    ||     CSTop: [5] lri:[3] [17 -> -1]                                                                                                                ||
 ||     OSTop: []                                                                                                                          ||    ||     OSTop: []                                                                                                                                    ||
 ||     LriStored: [0]                                                                                                                     ||    ||     LriStored: [3]                                                                                                                               ||
 ||   - DelayFieldAssignment()                                                                                                             ||    ||   - LriFetch()                                                                                                                                   ||
 ||       objRefs: 1                                                                                                                       ||    ||                                                                                                                                                  ||
-||       eoInsRefs: 27@0                                                                                                                  ||    ||     CSTop: [5] [17 -> -1]                                                                                                                        ||
+||       eoInsRefs: 27@0                                                                                                                  ||    ||     CSTop: [5] lri:[3] [17 -> -1]                                                                                                                ||
 ||                                                                                                                                        ||    ||     OSTop: [3] [21 -> -1]                                                                                                                        ||
 ||     CSTop: [1] [4 -> 3]                                                                                                                ||    ||     LriStored: []                                                                                                                                ||
 ||     OSTop: []                                                                                                                          ||    ||   - BeginObjectLeftRecursive(PointerType)                                                                                                        ||
@@ -175,17 +175,17 @@
 ||       objRefs: 0                                                                                                                       ||    |
 ||       eoInsRefs: 8@9                                                                                                                   ||    |
 ||                                                                                                                                        ||    |
-||     CSTop: [0] [7 -> 6]                                                                                                                ||    |
+||     CSTop: [0] lri:[0] [7 -> 6]                                                                                                        ||    |
 ||     OSTop: []                                                                                                                          ||    |
 ||     LriStored: [0]                                                                                                                     ||    |
 ||   - LriFetch()                                                                                                                         ||    |
 ||                                                                                                                                        ||    |
-||     CSTop: [0] [7 -> 6]                                                                                                                ||    |
+||     CSTop: [0] lri:[0] [7 -> 6]                                                                                                        ||    |
 ||     OSTop: [0] [4 -> -1]                                                                                                               ||    |
 ||     LriStored: []                                                                                                                      ||    |
 ||   - ReopenObject()                                                                                                                     ||    |
 ||                                                                                                                                        ||    |
-||     CSTop: [0] [7 -> 6]                                                                                                                ||    |
+||     CSTop: [0] lri:[0] [7 -> 6]                                                                                                        ||    |
 ||     OSTop: []                                                                                                                          ||    |
 ||     LriStored: []                                                                                                                      ||    |
 ||   - EndObject()                                                                                                                        ||    |
@@ -240,7 +240,7 @@
 |                                                                                                                                               |   - EndObject()                                                                                                                                  |
 |                                                                                                                                               |       objRefs: 4                                                                                                                                 |
 |                                                                                                                                               |                                                                                                                                                  |
-|                                                                                                                                               |     CSTop: [5] [17 -> -1]                                                                                                                        |
+|                                                                                                                                               |     CSTop: [5] lri:[3] [17 -> -1]                                                                                                                |
 |                                                                                                                                               |     OSTop: [4] [22 -> -1]                                                                                                                        |
 |                                                                                                                                               |     LriStored: []                                                                                                                                |
 |                                                                                                                                               |   - BeginObjectLeftRecursive(FunctionType)                                                                                                       |
@@ -497,12 +497,12 @@
 |   - EndObject()                                                                                                                        |      |   - EndObject()                                                                                              |
 |       objRefs: 2                                                                                                                       |      |       objRefs: 5                                                                                             |
 |                                                                                                                                        |      |                                                                                                              |
-|     CSTop: [2] [9 -> 8]                                                                                                                |      |     CSTop: [5] [17 -> -1]                                                                                    |
+|     CSTop: [2] [9 -> 8]                                                                                                                |      |     CSTop: [5] lri:[3] [17 -> -1]                                                                            |
 |     OSTop: [2] [11 -> -1]                                                                                                              |      |     OSTop: [5] [27 -> -1]                                                                                    |
 |     LriStored: []                                                                                                                      |      |     LriStored: []                                                                                            |
 |   > ReopenObject()                                                                                                                     |      |   > ReopenObject()                                                                                           |
 |                                                                                                                                        |      |                                                                                                              |
-|     CSTop: [2] [9 -> 8]                                                                                                                |      |     CSTop: [5] [17 -> -1]                                                                                    |
+|     CSTop: [2] [9 -> 8]                                                                                                                |      |     CSTop: [5] lri:[3] [17 -> -1]                                                                            |
 |     OSTop: []                                                                                                                          |      |     OSTop: []                                                                                                |
 |     LriStored: []                                                                                                                      |      |     LriStored: []                                                                                            |
 | [RETURN STACK]:                                                                                                                        |      | [PREDECESSORS 29-29]: [29]                                                                                   |
@@ -516,25 +516,25 @@
 |                                                                                                                                               |
 +                                                                                                                                               +
 |                                                                                                                                               |
-+----------------------------------------------------------------------------------------------------------------------------------------+      +----------------------------+
-| [24]: <Ending>                                                                                                                         |      | [31]: <Ending>             |
-|   TraceExec: [12]                                                                                                                      |      |   TraceExec: [29]          |
-|   InsExec: [38:2]                                                                                                                      |      |   InsExec: [78:1]          |
-|   ForwardTrace: 1                                                                                                                      |      |   ForwardTrace: 5          |
-| [128][_Expr2_LRI_Original]< _Expr2_LRI_Original "*" _Expr1 @ >                                                                         |      | [73][Module] END [ENDING]  |
-| [AST-INSTRUCTIONS]:                                                                                                                    |      | [AST-INSTRUCTIONS]:        |
-|     CSTop: [2] [9 -> 8]                                                                                                                |      |     CSTop: [5] [17 -> -1]  |
-|     OSTop: []                                                                                                                          |      |     OSTop: []              |
-|     LriStored: []                                                                                                                      |      |     LriStored: []          |
-|   - EndObject()                                                                                                                        |      |   - EndObject()            |
-|       objRefs: 2                                                                                                                       |      |       objRefs: 5           |
-|                                                                                                                                        |      |                            |
-|     CSTop: [1] [8 -> 5]                                                                                                                |      |     CSTop: []              |
-|     OSTop: [2] [12 -> -1]                                                                                                              |      |     OSTop: [5] [28 -> -1]  |
-|     LriStored: []                                                                                                                      |      |     LriStored: []          |
-|   > Field(MulExpr::second)                                                                                                             |      | [PREDECESSORS 30-30]: [30] |
-|                                                                                                                                        |      | [SUCCESORS 28-28]: [28]    |
-|     CSTop: [1] [8 -> 5]                                                                                                                |      +----------------------------+
++----------------------------------------------------------------------------------------------------------------------------------------+      +-----------------------------------+
+| [24]: <Ending>                                                                                                                         |      | [31]: <Ending>                    |
+|   TraceExec: [12]                                                                                                                      |      |   TraceExec: [29]                 |
+|   InsExec: [38:2]                                                                                                                      |      |   InsExec: [78:1]                 |
+|   ForwardTrace: 1                                                                                                                      |      |   ForwardTrace: 5                 |
+| [128][_Expr2_LRI_Original]< _Expr2_LRI_Original "*" _Expr1 @ >                                                                         |      | [73][Module] END [ENDING]         |
+| [AST-INSTRUCTIONS]:                                                                                                                    |      | [AST-INSTRUCTIONS]:               |
+|     CSTop: [2] [9 -> 8]                                                                                                                |      |     CSTop: [5] lri:[3] [17 -> -1] |
+|     OSTop: []                                                                                                                          |      |     OSTop: []                     |
+|     LriStored: []                                                                                                                      |      |     LriStored: []                 |
+|   - EndObject()                                                                                                                        |      |   - EndObject()                   |
+|       objRefs: 2                                                                                                                       |      |       objRefs: 5                  |
+|                                                                                                                                        |      |                                   |
+|     CSTop: [1] [8 -> 5]                                                                                                                |      |     CSTop: []                     |
+|     OSTop: [2] [12 -> -1]                                                                                                              |      |     OSTop: [5] [28 -> -1]         |
+|     LriStored: []                                                                                                                      |      |     LriStored: []                 |
+|   > Field(MulExpr::second)                                                                                                             |      | [PREDECESSORS 30-30]: [30]        |
+|                                                                                                                                        |      | [SUCCESORS 28-28]: [28]           |
+|     CSTop: [1] [8 -> 5]                                                                                                                |      +-----------------------------------+
 |     OSTop: []                                                                                                                          |      |
 |     LriStored: []                                                                                                                      |      |
 | [RETURN STACK]:                                                                                                                        |      |
