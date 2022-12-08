@@ -38,6 +38,7 @@ namespace prefixmerge8_pmvariadic
 			virtual void Traverse(QualifiedName* node);
 			virtual void Traverse(TypeOrExpr* node);
 			virtual void Traverse(TypeOrExprOrOthers* node);
+			virtual void Traverse(TypeOrExprOrOthersToResolve* node);
 			virtual void Traverse(TypeOrExprToResolve* node);
 			virtual void Traverse(VariadicArgument* node);
 
@@ -57,10 +58,12 @@ namespace prefixmerge8_pmvariadic
 			virtual void Finishing(QualifiedName* node);
 			virtual void Finishing(TypeOrExpr* node);
 			virtual void Finishing(TypeOrExprOrOthers* node);
+			virtual void Finishing(TypeOrExprOrOthersToResolve* node);
 			virtual void Finishing(TypeOrExprToResolve* node);
 			virtual void Finishing(VariadicArgument* node);
 
 		protected:
+			void Visit(TypeOrExprOrOthersToResolve* node) override;
 			void Visit(VariadicArgument* node) override;
 			void Visit(TypeOrExpr* node) override;
 

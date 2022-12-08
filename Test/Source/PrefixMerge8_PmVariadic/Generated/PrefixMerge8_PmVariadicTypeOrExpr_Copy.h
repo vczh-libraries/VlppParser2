@@ -36,11 +36,13 @@ namespace prefixmerge8_pmvariadic
 			void CopyFields(QualifiedName* from, QualifiedName* to);
 			void CopyFields(TypeOrExpr* from, TypeOrExpr* to);
 			void CopyFields(TypeOrExprOrOthers* from, TypeOrExprOrOthers* to);
+			void CopyFields(TypeOrExprOrOthersToResolve* from, TypeOrExprOrOthersToResolve* to);
 			void CopyFields(TypeOrExprToResolve* from, TypeOrExprToResolve* to);
 			void CopyFields(VariadicArgument* from, VariadicArgument* to);
 
 		protected:
 
+			void Visit(TypeOrExprOrOthersToResolve* node) override;
 			void Visit(VariadicArgument* node) override;
 			void Visit(TypeOrExpr* node) override;
 
@@ -76,6 +78,7 @@ namespace prefixmerge8_pmvariadic
 			vl::Ptr<PointerType> CopyNode(PointerType* node);
 			vl::Ptr<QualifiedName> CopyNode(QualifiedName* node);
 			vl::Ptr<TypeOrExpr> CopyNode(TypeOrExpr* node);
+			vl::Ptr<TypeOrExprOrOthersToResolve> CopyNode(TypeOrExprOrOthersToResolve* node);
 			vl::Ptr<TypeOrExprToResolve> CopyNode(TypeOrExprToResolve* node);
 			vl::Ptr<VariadicArgument> CopyNode(VariadicArgument* node);
 		};

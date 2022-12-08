@@ -26,6 +26,7 @@ namespace prefixmerge8_pmvariadic
 		void TypeOrExprVisitor::Traverse(QualifiedName* node) {}
 		void TypeOrExprVisitor::Traverse(TypeOrExpr* node) {}
 		void TypeOrExprVisitor::Traverse(TypeOrExprOrOthers* node) {}
+		void TypeOrExprVisitor::Traverse(TypeOrExprOrOthersToResolve* node) {}
 		void TypeOrExprVisitor::Traverse(TypeOrExprToResolve* node) {}
 		void TypeOrExprVisitor::Traverse(VariadicArgument* node) {}
 
@@ -44,8 +45,24 @@ namespace prefixmerge8_pmvariadic
 		void TypeOrExprVisitor::Finishing(QualifiedName* node) {}
 		void TypeOrExprVisitor::Finishing(TypeOrExpr* node) {}
 		void TypeOrExprVisitor::Finishing(TypeOrExprOrOthers* node) {}
+		void TypeOrExprVisitor::Finishing(TypeOrExprOrOthersToResolve* node) {}
 		void TypeOrExprVisitor::Finishing(TypeOrExprToResolve* node) {}
 		void TypeOrExprVisitor::Finishing(VariadicArgument* node) {}
+
+		void TypeOrExprVisitor::Visit(TypeOrExprOrOthersToResolve* node)
+		{
+			if (!node) return;
+			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+			Traverse(static_cast<TypeOrExprOrOthers*>(node));
+			Traverse(static_cast<TypeOrExprOrOthersToResolve*>(node));
+			for (auto&& listItem : node->candidates)
+			{
+				InspectInto(listItem.Obj());
+			}
+			Finishing(static_cast<TypeOrExprOrOthersToResolve*>(node));
+			Finishing(static_cast<TypeOrExprOrOthers*>(node));
+			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+		}
 
 		void TypeOrExprVisitor::Visit(VariadicArgument* node)
 		{

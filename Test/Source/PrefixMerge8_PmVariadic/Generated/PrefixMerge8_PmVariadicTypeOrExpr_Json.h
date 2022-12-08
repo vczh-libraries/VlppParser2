@@ -36,10 +36,12 @@ namespace prefixmerge8_pmvariadic
 			virtual void PrintFields(QualifiedName* node);
 			virtual void PrintFields(TypeOrExpr* node);
 			virtual void PrintFields(TypeOrExprOrOthers* node);
+			virtual void PrintFields(TypeOrExprOrOthersToResolve* node);
 			virtual void PrintFields(TypeOrExprToResolve* node);
 			virtual void PrintFields(VariadicArgument* node);
 
 		protected:
+			void Visit(TypeOrExprOrOthersToResolve* node) override;
 			void Visit(VariadicArgument* node) override;
 			void Visit(TypeOrExpr* node) override;
 

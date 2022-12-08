@@ -170,6 +170,16 @@ MakePointerType
 		}
 
 /***********************************************************************
+MakeTypeOrExprOrOthersToResolve
+***********************************************************************/
+
+		MakeTypeOrExprOrOthersToResolve& MakeTypeOrExprOrOthersToResolve::candidates(const vl::Ptr<TypeOrExprOrOthers>& value)
+		{
+			node->candidates.Add(value);
+			return *this;
+		}
+
+/***********************************************************************
 MakeTypeOrExprToResolve
 ***********************************************************************/
 

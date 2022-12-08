@@ -87,6 +87,12 @@ namespace prefixmerge8_pmvariadic
 			MakePointerType& type(const vl::Ptr<TypeOrExpr>& value);
 		};
 
+		class MakeTypeOrExprOrOthersToResolve : public vl::glr::ParsingAstBuilder<TypeOrExprOrOthersToResolve>
+		{
+		public:
+			MakeTypeOrExprOrOthersToResolve& candidates(const vl::Ptr<TypeOrExprOrOthers>& value);
+		};
+
 		class MakeTypeOrExprToResolve : public vl::glr::ParsingAstBuilder<TypeOrExprToResolve>
 		{
 		public:

@@ -27,8 +27,9 @@ namespace prefixmerge8_pmvariadic
 		QualifiedName = 11,
 		TypeOrExpr = 12,
 		TypeOrExprOrOthers = 13,
-		TypeOrExprToResolve = 14,
-		VariadicArgument = 15,
+		TypeOrExprOrOthersToResolve = 14,
+		TypeOrExprToResolve = 15,
+		VariadicArgument = 16,
 	};
 
 	enum class PrefixMerge8_PmVariadicFields : vl::vint32_t
@@ -50,8 +51,9 @@ namespace prefixmerge8_pmvariadic
 		MulExpr_second = 14,
 		Name_name = 15,
 		PointerType_type = 16,
-		TypeOrExprToResolve_candidates = 17,
-		VariadicArgument_operand = 18,
+		TypeOrExprOrOthersToResolve_candidates = 17,
+		TypeOrExprToResolve_candidates = 18,
+		VariadicArgument_operand = 19,
 	};
 
 	extern const wchar_t* PrefixMerge8_PmVariadicTypeName(PrefixMerge8_PmVariadicClasses type);

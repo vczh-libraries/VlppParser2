@@ -131,6 +131,19 @@ namespace prefixmerge8_pmvariadic
 		void TypeOrExprVisitor::PrintFields(TypeOrExprOrOthers* node)
 		{
 		}
+		void TypeOrExprVisitor::PrintFields(TypeOrExprOrOthersToResolve* node)
+		{
+			BeginField(L"candidates");
+			BeginArray();
+			for (auto&& listItem : node->candidates)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+		}
 		void TypeOrExprVisitor::PrintFields(TypeOrExprToResolve* node)
 		{
 			BeginField(L"candidates");
@@ -149,6 +162,20 @@ namespace prefixmerge8_pmvariadic
 			BeginField(L"operand");
 			Print(node->operand.Obj());
 			EndField();
+		}
+
+		void TypeOrExprVisitor::Visit(TypeOrExprOrOthersToResolve* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"TypeOrExprOrOthersToResolve", node);
+			PrintFields(static_cast<TypeOrExprOrOthers*>(node));
+			PrintFields(static_cast<TypeOrExprOrOthersToResolve*>(node));
+			EndObject();
 		}
 
 		void TypeOrExprVisitor::Visit(VariadicArgument* node)

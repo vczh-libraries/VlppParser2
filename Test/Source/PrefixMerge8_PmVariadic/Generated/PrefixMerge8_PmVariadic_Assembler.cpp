@@ -38,6 +38,8 @@ PrefixMerge8_PmVariadicAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::Ptr(new prefixmerge8_pmvariadic::Name);
 		case PrefixMerge8_PmVariadicClasses::PointerType:
 			return vl::Ptr(new prefixmerge8_pmvariadic::PointerType);
+		case PrefixMerge8_PmVariadicClasses::TypeOrExprOrOthersToResolve:
+			return vl::Ptr(new prefixmerge8_pmvariadic::TypeOrExprOrOthersToResolve);
 		case PrefixMerge8_PmVariadicClasses::TypeOrExprToResolve:
 			return vl::Ptr(new prefixmerge8_pmvariadic::TypeOrExprToResolve);
 		case PrefixMerge8_PmVariadicClasses::VariadicArgument:
@@ -78,6 +80,8 @@ PrefixMerge8_PmVariadicAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::glr::AssemblerSetObjectField(&prefixmerge8_pmvariadic::MulExpr::second, object, field, value, cppFieldName);
 		case PrefixMerge8_PmVariadicFields::PointerType_type:
 			return vl::glr::AssemblerSetObjectField(&prefixmerge8_pmvariadic::PointerType::type, object, field, value, cppFieldName);
+		case PrefixMerge8_PmVariadicFields::TypeOrExprOrOthersToResolve_candidates:
+			return vl::glr::AssemblerSetObjectField(&prefixmerge8_pmvariadic::TypeOrExprOrOthersToResolve::candidates, object, field, value, cppFieldName);
 		case PrefixMerge8_PmVariadicFields::TypeOrExprToResolve_candidates:
 			return vl::glr::AssemblerSetObjectField(&prefixmerge8_pmvariadic::TypeOrExprToResolve::candidates, object, field, value, cppFieldName);
 		case PrefixMerge8_PmVariadicFields::VariadicArgument_operand:
@@ -128,11 +132,12 @@ PrefixMerge8_PmVariadicAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"QualifiedName",
 			L"TypeOrExpr",
 			L"TypeOrExprOrOthers",
+			L"TypeOrExprOrOthersToResolve",
 			L"TypeOrExprToResolve",
 			L"VariadicArgument",
 		};
 		vl::vint index = (vl::vint)type;
-		return 0 <= index && index < 16 ? results[index] : nullptr;
+		return 0 <= index && index < 17 ? results[index] : nullptr;
 	}
 
 	const wchar_t* PrefixMerge8_PmVariadicCppTypeName(PrefixMerge8_PmVariadicClasses type)
@@ -152,11 +157,12 @@ PrefixMerge8_PmVariadicAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"prefixmerge8_pmvariadic::QualifiedName",
 			L"prefixmerge8_pmvariadic::TypeOrExpr",
 			L"prefixmerge8_pmvariadic::TypeOrExprOrOthers",
+			L"prefixmerge8_pmvariadic::TypeOrExprOrOthersToResolve",
 			L"prefixmerge8_pmvariadic::TypeOrExprToResolve",
 			L"prefixmerge8_pmvariadic::VariadicArgument",
 		};
 		vl::vint index = (vl::vint)type;
-		return 0 <= index && index < 16 ? results[index] : nullptr;
+		return 0 <= index && index < 17 ? results[index] : nullptr;
 	}
 
 	const wchar_t* PrefixMerge8_PmVariadicFieldName(PrefixMerge8_PmVariadicFields field)
@@ -179,11 +185,12 @@ PrefixMerge8_PmVariadicAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"MulExpr::second",
 			L"Name::name",
 			L"PointerType::type",
+			L"TypeOrExprOrOthersToResolve::candidates",
 			L"TypeOrExprToResolve::candidates",
 			L"VariadicArgument::operand",
 		};
 		vl::vint index = (vl::vint)field;
-		return 0 <= index && index < 19 ? results[index] : nullptr;
+		return 0 <= index && index < 20 ? results[index] : nullptr;
 	}
 
 	const wchar_t* PrefixMerge8_PmVariadicCppFieldName(PrefixMerge8_PmVariadicFields field)
@@ -206,11 +213,12 @@ PrefixMerge8_PmVariadicAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"prefixmerge8_pmvariadic::MulExpr::second",
 			L"prefixmerge8_pmvariadic::Name::name",
 			L"prefixmerge8_pmvariadic::PointerType::type",
+			L"prefixmerge8_pmvariadic::TypeOrExprOrOthersToResolve::candidates",
 			L"prefixmerge8_pmvariadic::TypeOrExprToResolve::candidates",
 			L"prefixmerge8_pmvariadic::VariadicArgument::operand",
 		};
 		vl::vint index = (vl::vint)field;
-		return 0 <= index && index < 19 ? results[index] : nullptr;
+		return 0 <= index && index < 20 ? results[index] : nullptr;
 	}
 
 	vl::Ptr<vl::glr::ParsingAstBase> PrefixMerge8_PmVariadicAstInsReceiver::ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates)
@@ -244,8 +252,14 @@ PrefixMerge8_PmVariadicAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::glr::AssemblerResolveAmbiguity<prefixmerge8_pmvariadic::QualifiedName, prefixmerge8_pmvariadic::TypeOrExprToResolve>(type, candidates, cppTypeName);
 		case PrefixMerge8_PmVariadicClasses::TypeOrExpr:
 			return vl::glr::AssemblerResolveAmbiguity<prefixmerge8_pmvariadic::TypeOrExpr, prefixmerge8_pmvariadic::TypeOrExprToResolve>(type, candidates, cppTypeName);
+		case PrefixMerge8_PmVariadicClasses::TypeOrExprOrOthers:
+			return vl::glr::AssemblerResolveAmbiguity<prefixmerge8_pmvariadic::TypeOrExprOrOthers, prefixmerge8_pmvariadic::TypeOrExprOrOthersToResolve>(type, candidates, cppTypeName);
+		case PrefixMerge8_PmVariadicClasses::TypeOrExprOrOthersToResolve:
+			return vl::glr::AssemblerResolveAmbiguity<prefixmerge8_pmvariadic::TypeOrExprOrOthersToResolve, prefixmerge8_pmvariadic::TypeOrExprOrOthersToResolve>(type, candidates, cppTypeName);
 		case PrefixMerge8_PmVariadicClasses::TypeOrExprToResolve:
 			return vl::glr::AssemblerResolveAmbiguity<prefixmerge8_pmvariadic::TypeOrExprToResolve, prefixmerge8_pmvariadic::TypeOrExprToResolve>(type, candidates, cppTypeName);
+		case PrefixMerge8_PmVariadicClasses::VariadicArgument:
+			return vl::glr::AssemblerResolveAmbiguity<prefixmerge8_pmvariadic::VariadicArgument, prefixmerge8_pmvariadic::TypeOrExprOrOthersToResolve>(type, candidates, cppTypeName);
 		default:
 			return vl::glr::AssemblyThrowTypeNotAllowAmbiguity(type, cppTypeName);
 		}

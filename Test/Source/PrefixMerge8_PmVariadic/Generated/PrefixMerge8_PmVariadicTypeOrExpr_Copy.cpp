@@ -108,6 +108,15 @@ namespace prefixmerge8_pmvariadic
 		{
 		}
 
+		void TypeOrExprVisitor::CopyFields(TypeOrExprOrOthersToResolve* from, TypeOrExprOrOthersToResolve* to)
+		{
+			CopyFields(static_cast<TypeOrExprOrOthers*>(from), static_cast<TypeOrExprOrOthers*>(to));
+			for (auto&& listItem : from->candidates)
+			{
+				to->candidates.Add(CopyNode(listItem.Obj()));
+			}
+		}
+
 		void TypeOrExprVisitor::CopyFields(TypeOrExprToResolve* from, TypeOrExprToResolve* to)
 		{
 			CopyFields(static_cast<TypeOrExpr*>(from), static_cast<TypeOrExpr*>(to));
@@ -121,6 +130,13 @@ namespace prefixmerge8_pmvariadic
 		{
 			CopyFields(static_cast<TypeOrExprOrOthers*>(from), static_cast<TypeOrExprOrOthers*>(to));
 			to->operand = CopyNode(from->operand.Obj());
+		}
+
+		void TypeOrExprVisitor::Visit(TypeOrExprOrOthersToResolve* node)
+		{
+			auto newNode = vl::Ptr(new TypeOrExprOrOthersToResolve);
+			CopyFields(node, newNode.Obj());
+			this->result = newNode;
 		}
 
 		void TypeOrExprVisitor::Visit(VariadicArgument* node)
@@ -306,6 +322,12 @@ namespace prefixmerge8_pmvariadic
 		{
 			if (!node) return nullptr;
 			return CopyNode(static_cast<TypeOrExprOrOthers*>(node)).Cast<TypeOrExpr>();
+		}
+
+		vl::Ptr<TypeOrExprOrOthersToResolve> TypeOrExprVisitor::CopyNode(TypeOrExprOrOthersToResolve* node)
+		{
+			if (!node) return nullptr;
+			return CopyNode(static_cast<TypeOrExprOrOthers*>(node)).Cast<TypeOrExprOrOthersToResolve>();
 		}
 
 		vl::Ptr<TypeOrExprToResolve> TypeOrExprVisitor::CopyNode(TypeOrExprToResolve* node)

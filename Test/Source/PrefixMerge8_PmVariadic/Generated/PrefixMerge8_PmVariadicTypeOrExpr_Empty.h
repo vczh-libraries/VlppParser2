@@ -22,6 +22,7 @@ namespace prefixmerge8_pmvariadic
 
 		public:
 			// Visitor Members -----------------------------------
+			void Visit(TypeOrExprOrOthersToResolve* node) override;
 			void Visit(VariadicArgument* node) override;
 			void Visit(TypeOrExpr* node) override;
 		};

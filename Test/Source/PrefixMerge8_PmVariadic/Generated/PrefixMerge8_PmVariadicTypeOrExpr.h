@@ -26,6 +26,7 @@ namespace prefixmerge8_pmvariadic
 	class QualifiedName;
 	class TypeOrExpr;
 	class TypeOrExprOrOthers;
+	class TypeOrExprOrOthersToResolve;
 	class TypeOrExprToResolve;
 	class VariadicArgument;
 
@@ -35,6 +36,7 @@ namespace prefixmerge8_pmvariadic
 		class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
 		{
 		public:
+			virtual void Visit(TypeOrExprOrOthersToResolve* node) = 0;
 			virtual void Visit(VariadicArgument* node) = 0;
 			virtual void Visit(TypeOrExpr* node) = 0;
 		};
@@ -193,6 +195,14 @@ namespace prefixmerge8_pmvariadic
 		void Accept(TypeOrExpr::IVisitor* visitor) override;
 	};
 
+	class TypeOrExprOrOthersToResolve : public TypeOrExprOrOthers, vl::reflection::Description<TypeOrExprOrOthersToResolve>
+	{
+	public:
+		vl::collections::List<vl::Ptr<TypeOrExprOrOthers>> candidates;
+
+		void Accept(TypeOrExprOrOthers::IVisitor* visitor) override;
+	};
+
 	class TypeOrExprToResolve : public TypeOrExpr, vl::reflection::Description<TypeOrExprToResolve>
 	{
 	public:
@@ -227,11 +237,17 @@ namespace vl
 			DECL_TYPE_INFO(prefixmerge8_pmvariadic::ConstType)
 			DECL_TYPE_INFO(prefixmerge8_pmvariadic::PointerType)
 			DECL_TYPE_INFO(prefixmerge8_pmvariadic::FunctionType)
+			DECL_TYPE_INFO(prefixmerge8_pmvariadic::TypeOrExprOrOthersToResolve)
 			DECL_TYPE_INFO(prefixmerge8_pmvariadic::TypeOrExprToResolve)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 
 			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(prefixmerge8_pmvariadic::TypeOrExprOrOthers::IVisitor)
+				void Visit(prefixmerge8_pmvariadic::TypeOrExprOrOthersToResolve* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
 				void Visit(prefixmerge8_pmvariadic::VariadicArgument* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);

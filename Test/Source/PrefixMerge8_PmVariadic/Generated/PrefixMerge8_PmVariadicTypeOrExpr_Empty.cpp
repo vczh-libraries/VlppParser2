@@ -17,6 +17,10 @@ TypeOrExprOrOthersVisitor
 
 		// Visitor Members -----------------------------------
 
+		void TypeOrExprOrOthersVisitor::Visit(TypeOrExprOrOthersToResolve* node)
+		{
+		}
+
 		void TypeOrExprOrOthersVisitor::Visit(VariadicArgument* node)
 		{
 		}
