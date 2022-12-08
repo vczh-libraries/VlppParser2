@@ -41,6 +41,11 @@
 extern WString GetTestParserInputPath(const WString& parserName);
 extern FilePath GetOutputDir(const WString& parserName);
 
+#define PAUSE_CASE L"PrefixMerge8_PmVariadic"
+#define PAUSE_INPUT L"Variadic6"
+#undef PAUSE_CASE
+#undef PAUSE_INPUT
+
 namespace TestParser_Generated_TestObjects
 {
 	vint inputDiscovered = 0;
@@ -59,7 +64,9 @@ namespace TestParser_Generated_TestObjects
 			FilePath dirOutput
 		)
 	{
-		//if (parserName != L"PrefixMerge7_PmSwitch") return;
+#ifdef PAUSE_CASE
+		if (parserName != PAUSE_CASE) return;
+#endif
 		auto inputPath = GetTestParserInputPath(testFolder);
 		Folder dirInput = FilePath(inputPath) / L"Input";
 		FilePath dirBaseline = FilePath(inputPath) / L"Output";
@@ -71,7 +78,9 @@ namespace TestParser_Generated_TestObjects
 			caseName = inputFile.GetFilePath().GetName();
 			if (caseName.Length() < 4 || caseName.Right(4) != L".txt") continue;
 			caseName = caseName.Left(caseName.Length() - 4);
-			//if (caseName != L"Generic_Name3") continue;
+#ifdef PAUSE_INPUT
+			if (caseName != PAUSE_INPUT) continue;
+#endif
 
 			TEST_CASE(caseName)
 			{

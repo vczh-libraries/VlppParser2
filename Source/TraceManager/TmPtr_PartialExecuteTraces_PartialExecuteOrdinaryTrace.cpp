@@ -379,11 +379,11 @@ PartialExecuteOrdinaryTrace
 								auto ieCSTop = GetInsExec_CreateStack(context.createStack);
 								if (ieCSTop->objectIds == nullref)
 								{
-									PushInjectObjectIdsMultipleWithMagic(context.lriStoredObjects, ieCSTop->objectIds);
+									ieCSTop->reverseInjectObjectIds = JoinObjRefLink(ieCSTop->reverseInjectObjectIds, context.lriStoredObjects);
 								}
 								else
 								{
-									ieCSTop->reverseInjectObjectIds = JoinObjRefLink(ieCSTop->reverseInjectObjectIds, context.lriStoredObjects);
+									PushInjectObjectIdsMultipleWithMagic(context.lriStoredObjects, ieCSTop->objectIds);
 								}
 							}
 
