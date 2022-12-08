@@ -361,7 +361,7 @@ AutomatonBuilder (Clause)
 						{
 							auto edge = CreateEdge(pair.begin, pair.end);
 							edge->input.type = EdgeInputType::LrPlaceholder;
-							edge->input.token = flag;
+							edge->input.flag = flag;
 						}
 
 						clauseDisplayText += L"lrp:" + name;
@@ -382,7 +382,7 @@ AutomatonBuilder (Clause)
 				{
 					auto edge = CreateEdge(pair.begin, pair.end);
 					edge->input.type = EdgeInputType::LrInject;
-					edge->input.token = flag;
+					edge->input.flag = flag;
 					edge->input.rule = rule;
 					edge->input.ruleType = automaton::ReturnRuleType::Reuse;
 					edge->insAfterInput.Add({ AstInsType::ReopenObject });

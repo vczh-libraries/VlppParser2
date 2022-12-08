@@ -72,8 +72,10 @@ EdgeSymbol
 			struct EdgeInput
 			{
 				EdgeInputType				type = EdgeInputType::Epsilon;
-				vint32_t					token = -1;										// useful when type == Token or LrPlaceholder or LrInject
+				vint32_t					token = -1;										// useful when type == Token
 				Nullable<WString>			condition;
+
+				vint32_t					flag = -1;										// usefule when type == LrPlaceholder or LrInject
 
 				automaton::ReturnRuleType	ruleType = automaton::ReturnRuleType::Field;	// useful when type == Rule or LrInject
 				RuleSymbol*					rule = nullptr;									// useful when type == Rule or LrInject

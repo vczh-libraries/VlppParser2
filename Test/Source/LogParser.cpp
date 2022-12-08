@@ -62,10 +62,10 @@ FilePath LogSyntaxWithPath(
 				writer.WriteString(L"\trule: " + edge->input.rule->Name());
 				break;
 			case EdgeInputType::LrPlaceholder:
-				writer.WriteString(L"\tlr-placeholder: " + manager.lrpFlags[edge->input.token]);
+				writer.WriteString(L"\tlr-placeholder: " + manager.lrpFlags[edge->input.flag]);
 				break;
 			case EdgeInputType::LrInject:
-				writer.WriteString(L"\tlr-inject: " + edge->input.rule->Name());
+				writer.WriteString(L"\tlr-inject: " + manager.lrpFlags[edge->input.flag] + L" -> " + edge->input.rule->Name());
 				break;
 			}
 			writer.WriteLine(L" -> " + labels[edge->To()]);

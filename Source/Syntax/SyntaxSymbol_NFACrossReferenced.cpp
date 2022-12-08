@@ -83,7 +83,7 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 				List<EdgeSymbol*> placeholderEdges;
 				for (auto outEdge : startState->OutEdges())
 				{
-					if (outEdge->input.type == EdgeInputType::LrPlaceholder && outEdge->input.token == injectEdge->input.token)
+					if (outEdge->input.type == EdgeInputType::LrPlaceholder && outEdge->input.flag == injectEdge->input.flag)
 					{
 						placeholderEdges.Add(outEdge);
 					}
@@ -132,7 +132,7 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 							ParserErrorType::LeftRecursionPlaceholderMixedWithSwitches,
 							{},
 							injectEdge->fromState->Rule()->Name(),
-							lrpFlags[injectEdge->input.token],
+							lrpFlags[injectEdge->input.flag],
 							startState->Rule()->Name()
 							);
 						return;
@@ -250,7 +250,7 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 						ParserErrorType::LeftRecursionInjectHasNoContinuation,
 						{},
 						injectEdge->fromState->Rule()->Name(),
-						lrpFlags[injectEdge->input.token],
+						lrpFlags[injectEdge->input.flag],
 						startState->Rule()->Name()
 						);
 				}
