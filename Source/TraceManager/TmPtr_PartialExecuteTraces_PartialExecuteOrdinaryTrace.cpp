@@ -106,11 +106,10 @@ PartialExecuteOrdinaryTrace
 				return newStack;
 			}
 
-			void TraceManager::PushInjectObjectIdsSingleWithMagic(Ref<InsExec_ObjRefLink> container, Ref<InsExec_Object> element, vuint64_t magicContainer, vuint64_t magicElement)
+			void TraceManager::PushInjectObjectIdsSingleWithMagic(Ref<InsExec_ObjRefLink> container, Ref<InsExec_Object> element)
 			{
-				auto ieElementObject = GetInsExec_Object(element);
-				if (ieElementObject->mergeCounter == magicElement) return;
-				ieElementObject->mergeCounter = magicElement;
+				NEW_MERGE_STACK_MAGIC_COUNTER;
+				auto magicContainer = MergeStack_MagicCounter;
 
 				auto linkRef = container;
 				while (linkRef != nullref)
@@ -125,14 +124,22 @@ PartialExecuteOrdinaryTrace
 				}
 			}
 
-			void TraceManager::PushInjectObjectIdsMultipleWithMagic(Ref<InsExec_ObjRefLink> container, Ref<InsExec_ObjRefLink> elements, vuint64_t magicContainer, vuint64_t magicElement)
+			void TraceManager::PushInjectObjectIdsMultipleWithMagic(Ref<InsExec_ObjRefLink> container, Ref<InsExec_ObjRefLink> elements)
 			{
+				NEW_MERGE_STACK_MAGIC_COUNTER;
+				auto magicElement = MergeStack_MagicCounter;
+
 				auto linkRef = elements;
 				while (linkRef != nullref)
 				{
 					auto link = GetInsExec_ObjRefLink(linkRef);
 					linkRef = link->previous;
-					PushInjectObjectIdsSingleWithMagic(container, link->id, magicContainer, magicElement);
+
+					auto ieElementObject = GetInsExec_Object(link->id);
+					if (ieElementObject->mergeCounter == magicElement) return;
+					ieElementObject->mergeCounter = magicElement;
+
+					PushInjectObjectIdsSingleWithMagic(container, link->id);
 				}
 			}
 
@@ -215,13 +222,7 @@ PartialExecuteOrdinaryTrace
 							ieObject->bo_bolr_Ins = insRef;
 
 							// InsExec_Object::injectObjectIds
-							{
-								NEW_MERGE_STACK_MAGIC_COUNTER;
-								auto magicContainer = MergeStack_MagicCounter;
-								NEW_MERGE_STACK_MAGIC_COUNTER;
-								auto magicElement = MergeStack_MagicCounter;
-								PushInjectObjectIdsSingleWithMagic(ieOSTop->objectIds, ieObject, magicContainer, magicElement);
-							}
+							PushInjectObjectIdsSingleWithMagic(ieOSTop->objectIds, ieObject);
 
 							// new create stack, the top object is not frozen
 							auto ieCSTop = PushCreateStack(context);
@@ -253,13 +254,7 @@ PartialExecuteOrdinaryTrace
 							auto ieCSTop = GetInsExec_CreateStack(context.createStack);
 
 							// InsExec_Object::injectObjectIds
-							{
-								NEW_MERGE_STACK_MAGIC_COUNTER;
-								auto magicContainer = MergeStack_MagicCounter;
-								NEW_MERGE_STACK_MAGIC_COUNTER;
-								auto magicElement = MergeStack_MagicCounter;
-								PushInjectObjectIdsMultipleWithMagic(ieCSTop->reverseInjectObjectIds, ieCSTop->objectIds, magicContainer, magicElement);
-							}
+							PushInjectObjectIdsMultipleWithMagic(ieCSTop->reverseInjectObjectIds, ieCSTop->objectIds);
 
 							// reopen an object
 							// ReopenObject in different branches could write to the same InsExec_CreateStack
@@ -381,11 +376,7 @@ PartialExecuteOrdinaryTrace
 								auto ieCSTop = GetInsExec_CreateStack(context.createStack);
 								if (ieCSTop->objectIds == nullref)
 								{
-									NEW_MERGE_STACK_MAGIC_COUNTER;
-									auto magicContainer = MergeStack_MagicCounter;
-									NEW_MERGE_STACK_MAGIC_COUNTER;
-									auto magicElement = MergeStack_MagicCounter;
-									PushInjectObjectIdsMultipleWithMagic(context.lriStoredObjects, ieCSTop->objectIds, magicContainer, magicElement);
+									PushInjectObjectIdsMultipleWithMagic(context.lriStoredObjects, ieCSTop->objectIds);
 								}
 								else
 								{
