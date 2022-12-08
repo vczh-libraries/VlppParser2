@@ -607,6 +607,9 @@ TraceManager
 				template<typename T, T* (TraceManager::*get)(Ref<T>), Ref<T> (InsExec_Context::*stack), typename TMerge>
 				Ref<T>										MergeStack(Trace* mergeTrace, AllocateOnly<T>& allocator, TMerge&& merge);
 				void										MergeInsExecContext(Trace* mergeTrace);
+
+				// phase: PartialExecuteTraces - CalculateObjectFirstInstruction
+				void										InjectFirstInstruction(Ref<Trace> trace, vint32_t ins, Ref<InsExec_ObjRefLink> injectTargets, vuint64_t magicInjection);
 				void										CalculateObjectFirstInstruction();
 
 				// phase: PartialExecuteTraces
