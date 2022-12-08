@@ -80,6 +80,7 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 
 			void SyntaxSymbolManager::FixLeftRecursionInjectEdge(StateSymbol* startState, EdgeSymbol* injectEdge)
 			{
+				// search for all qualified placeholder edge starts from inject targets
 				List<EdgeSymbol*> placeholderEdges;
 				for (auto outEdge : startState->OutEdges())
 				{
@@ -92,55 +93,61 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 					}
 				}
 
-				vint created = 0;
-				for(auto placeholderEdge : From(placeholderEdges))
+				// calculate all return edges and ending states for each placeholder edge
+				Array<List<StateSymbol*>> endingStatesArray(placeholderEdges.Count());
+				Array<List<EdgeSymbol*>> returnEdgesArray(placeholderEdges.Count());
+				for(auto [placeholderEdge, index] : indexed(placeholderEdges))
 				{
-					List<StateSymbol*> endingStates;
-					List<EdgeSymbol*> returnEdges;
+					List<StateSymbol*>& endingStates = endingStatesArray[index];
+					List<EdgeSymbol*>& returnEdges = returnEdgesArray[index];
+
+					// check if placeholderEdge does nothing more than using rules
+					if (placeholderEdge->insAfterInput.Count() > 0)
 					{
-						// check if placeholderEdge does nothing more than using rules
-
-						if (placeholderEdge->insAfterInput.Count() > 0)
-						{
-							goto FAILED_INSTRUCTION_CHECKING;
-						}
-
-						for (vint i = 0; i <= placeholderEdge->returnEdges.Count(); i++)
-						{
-							auto returnEdge =
-								i == 0
-								? injectEdge
-								: placeholderEdge->returnEdges[i - 1]
-								;
-							auto endingState =
-								i == placeholderEdge->returnEdges.Count()
-								? placeholderEdge->To()
-								: placeholderEdge->returnEdges[i]->To()
-								;
-
-							for (auto outEdge : endingState->OutEdges())
-							{
-								if (outEdge->input.type == EdgeInputType::Ending && outEdge->insAfterInput.Count() > 0)
-								{
-									goto FAILED_INSTRUCTION_CHECKING;
-								}
-							}
-
-							returnEdges.Add(returnEdge);
-							endingStates.Add(endingState);
-						}
-						goto PASSED_INSTRUCTION_CHECKING;
-					FAILED_INSTRUCTION_CHECKING:
-						AddError(
-							ParserErrorType::LeftRecursionPlaceholderMixedWithSwitches,
-							{},
-							injectEdge->fromState->Rule()->Name(),
-							lrpFlags[injectEdge->input.flags[0]],
-							startState->Rule()->Name()
-							);
-						return;
+						goto FAILED_INSTRUCTION_CHECKING;
 					}
-				PASSED_INSTRUCTION_CHECKING:;
+
+					for (vint i = 0; i <= placeholderEdge->returnEdges.Count(); i++)
+					{
+						auto returnEdge =
+							i == 0
+							? injectEdge
+							: placeholderEdge->returnEdges[i - 1]
+							;
+						auto endingState =
+							i == placeholderEdge->returnEdges.Count()
+							? placeholderEdge->To()
+							: placeholderEdge->returnEdges[i]->To()
+							;
+
+						for (auto outEdge : endingState->OutEdges())
+						{
+							if (outEdge->input.type == EdgeInputType::Ending && outEdge->insAfterInput.Count() > 0)
+							{
+								goto FAILED_INSTRUCTION_CHECKING;
+							}
+						}
+
+						returnEdges.Add(returnEdge);
+						endingStates.Add(endingState);
+					}
+					continue;
+				FAILED_INSTRUCTION_CHECKING:
+					AddError(
+						ParserErrorType::LeftRecursionPlaceholderMixedWithSwitches,
+						{},
+						injectEdge->fromState->Rule()->Name(),
+						lrpFlags[injectEdge->input.flags[0]],
+						startState->Rule()->Name()
+						);
+					return;
+				}
+
+				vint created = 0;
+				for(auto [placeholderEdge, index] : indexed(placeholderEdges))
+				{
+					List<StateSymbol*>& endingStates = endingStatesArray[index];
+					List<EdgeSymbol*>& returnEdges = returnEdgesArray[index];
 
 					// search for all possible "LrPlaceholder {Ending} LeftRec Token" transitions
 					// for each transition, compact edges and put injectEdge properly in returnEdges
@@ -167,6 +174,13 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 
 					for (vint i = returnEdges.Count() - 1; i >= 0; i--)
 					{
+						//if (injectEdge->From()->Rule()->Name() == L"_GenericArgument" && injectEdge->From()->label == L"<< !_PrimitiveShared @ ( lri:(LRI__Expr0,LRI__LongType)->_GenericArgument_LRI_Original | lri:<skip> ) >>")
+						//{
+						//	if (i == 0)
+						//	{
+						//		int a = 0;
+						//	}
+						//}
 						auto endingState = endingStates[i];
 						auto returnEdge = returnEdges[i];
 						EdgeSymbol* endingEdge = nullptr;
