@@ -260,7 +260,7 @@ CompileSyntaxVisitor
 
 				using StateBuilder = Func<AutomatonBuilder::StatePair()>;
 
-				StateBuilder CompileLriTargetWithoutSwitches(vint32_t parentFlag, GlrLeftRecursionInjectClause* lriTarget)
+				StateBuilder CompileLriTarget(vint32_t parentFlag, GlrLeftRecursionInjectClause* lriTarget)
 				{
 					StateBuilder useOrLriSyntax;
 					auto rule = context.syntaxManager.Rules()[lriTarget->rule->literal.value];
@@ -300,11 +300,6 @@ CompileSyntaxVisitor
 								std::move(targetRules));
 						};
 					}
-				}
-
-				StateBuilder CompileLriTarget(vint32_t parentFlag, GlrLeftRecursionInjectClause* lriTarget)
-				{
-					return CompileLriTargetWithoutSwitches(parentFlag, lriTarget);
 				}
 
 				void Visit(GlrLeftRecursionInjectClause* node) override
