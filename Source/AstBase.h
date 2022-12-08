@@ -264,7 +264,6 @@ Instructions
 			Token,										// Token()							: Push the current token as a value.
 			EnumItem,									// EnumItem(Value)					: Push an enum item.
 			BeginObject,								// BeginObject(Type)				: Begin creating an AST node.
-			BeginObjectLeftRecursive,					// BeginObjectLeftRecursive(Type)	: Begin creating an AST node, taking the ownership of the last pushed object.
 			DelayFieldAssignment,						// DelayFieldAssignment()			: An object will be created later by ReopenObject, delay future field assignments to this object before ReopenObject.
 			ReopenObject,								// ReopenObject()					: Move the last pushed object back to creating status.
 			EndObject,									// EndObject()						: Finish creating an AST node, all objects pushed after BeginObject are supposed to be its fields.
@@ -316,8 +315,6 @@ Instructions
 
 			NoRootObject,								// NoRootObject()						: There is no created objects.
 			NoRootObjectAfterDfa,						// NoRootObjectAfterDfa()				: There is no created objects after DelayFieldAssignment.
-			MissingLeftRecursiveValue,					// MissingLeftRecursiveValue()			: There is no pushed value to create left recursive object.
-			LeftRecursiveValueIsNotObject,				// LeftRecursiveValueIsNotObject()		: The pushed value to create left recursive object is not an object.
 			TooManyUnassignedValues,					// LeavingUnassignedValues()			: The value to reopen is not the only unassigned value.
 			MissingDfaBeforeReopen,						// MissingDfaBeforeReopen()				: DelayFieldAssignment is not submitted before ReopenObject.
 			MissingValueToReopen,						// MissingValueToReopen()				: There is no pushed value to reopen.

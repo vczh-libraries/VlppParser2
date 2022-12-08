@@ -267,15 +267,12 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 				// previous allocated object
 				Ref<InsExec_Object>					previous;
 
-				// lrObjectIds are objects it takes while being created by BOLR
-				Ref<InsExec_ObjRefLink>				lrObjectIds;
-
-				// injectObjectIds are objects it injects into by BOLR or LriFetch in the context of these objects
+				// injectObjectIds are objects it injects into by LriFetch
 				Ref<InsExec_ObjRefLink>				injectObjectIds;
 
 				// instruction that creates this object
-				Ref<Trace>							bo_bolr_Trace;
-				vint32_t							bo_bolr_Ins = -1;
+				Ref<Trace>							createTrace;
+				vint32_t							createIns = -1;
 
 				// DelayFieldAssignment instructions that associates to the current object
 				Ref<InsExec_InsRefLink>				dfaInsRefs;
@@ -320,7 +317,7 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 
 			struct InsExec : WithMagicCounter
 			{
-				// BO/BOLR:
+				// BO:
 				//   the created object
 				Ref<InsExec_Object>					createdObjectId;
 
@@ -331,7 +328,7 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 				Ref<InsExec_ObjRefLink>				objRefs;
 
 				// InsExec_InsRefLink
-				// BO/BOLR/DFA:
+				// BO/DFA:
 				//   EndingObject instructions that close objects or create stack created by the current instruction
 				Ref<InsExec_InsRefLink>				eoInsRefs;
 

@@ -45,7 +45,7 @@ CheckMergeTrace
 			template<typename TCallback>
 			bool TraceManager::SearchForEndObjectInstructions(Trace* createTrace, vint32_t createIns, TCallback&& callback)
 			{
-				// all EndObject ending a BO/BOLR/DFA are considered
+				// all EndObject ending a BO/DFA are considered
 				// there is no "bottom EndObject"
 				// each EndObject should be in different branches
 				auto traceExec = GetTraceExec(createTrace->traceExecRef);

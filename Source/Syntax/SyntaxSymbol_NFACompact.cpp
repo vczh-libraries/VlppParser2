@@ -242,20 +242,20 @@ SyntaxSymbolManager::BuildLeftRecEdge
 				CopyFrom(newEdge->insBeforeInput, lrecPrefixEdge->insBeforeInput, true);
 				CopyFrom(newEdge->insAfterInput, lrecPrefixEdge->insAfterInput, true);
 
-				for (vint i = 0; i < newEdge->insBeforeInput.Count(); i++)
+				for (vint i = newEdge->insBeforeInput.Count() - 1; i >= 0; i--)
 				{
-					auto& ins = newEdge->insBeforeInput[i];
-					if (ins.type == AstInsType::BeginObject)
+					if (newEdge->insBeforeInput[i].type == AstInsType::BeginObject)
 					{
-						ins.type = AstInsType::BeginObjectLeftRecursive;
+						newEdge->insBeforeInput.Insert(i, { AstInsType::LriStore });
+						newEdge->insBeforeInput.Insert(i + 2, { AstInsType::LriFetch });
 					}
 				}
-				for (vint i = 0; i < newEdge->insAfterInput.Count(); i++)
+				for (vint i = newEdge->insAfterInput.Count() - 1; i >= 0; i--)
 				{
-					auto& ins = newEdge->insAfterInput[i];
-					if (ins.type == AstInsType::BeginObject)
+					if (newEdge->insAfterInput[i].type == AstInsType::BeginObject)
 					{
-						ins.type = AstInsType::BeginObjectLeftRecursive;
+						newEdge->insBeforeInput.Insert(i, { AstInsType::LriStore });
+						newEdge->insBeforeInput.Insert(i + 2, { AstInsType::LriFetch });
 					}
 				}
 			}

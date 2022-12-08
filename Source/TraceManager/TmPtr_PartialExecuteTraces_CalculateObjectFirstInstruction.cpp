@@ -65,7 +65,7 @@ CalculateObjectFirstInstruction
 						objRef = ieObject->previous;
 
 						// set the top local trace to its create trace
-						UpdateTopTrace(ieObject->topLocalTrace, ieObject->topLocalIns, ieObject->bo_bolr_Trace, ieObject->bo_bolr_Ins);
+						UpdateTopTrace(ieObject->topLocalTrace, ieObject->topLocalIns, ieObject->createTrace, ieObject->createIns);
 
 						// check all DFA instructions
 						auto insRefLinkId = ieObject->dfaInsRefs;

@@ -560,10 +560,10 @@ BuildAmbiguousStepLink
 						linkRef = link->previous;
 
 						auto ieObject = GetInsExec_Object(link->id);
-						auto ieTrace = GetTrace(ieObject->bo_bolr_Trace);
+						auto ieTrace = GetTrace(ieObject->createTrace);
 						auto ieTraceExec = GetTraceExec(ieTrace->traceExecRef);
 
-						auto&& ins = ReadInstruction(ieObject->bo_bolr_Ins, ieTraceExec->insLists);
+						auto&& ins = ReadInstruction(ieObject->createIns, ieTraceExec->insLists);
 						if (stepRA->et_ra.type == -1)
 						{
 							stepRA->et_ra.type = ins.param;

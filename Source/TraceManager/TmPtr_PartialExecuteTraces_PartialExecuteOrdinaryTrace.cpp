@@ -198,39 +198,13 @@ PartialExecuteOrdinaryTrace
 						{
 							// new object
 							auto ieObject = NewObject();
-							ieObject->bo_bolr_Trace = trace;
-							ieObject->bo_bolr_Ins = insRef;
+							ieObject->createTrace = trace;
+							ieObject->createIns = insRef;
 
 							// new create stack
 							auto ieCSTop = PushCreateStack(context);
 							PushInsRefLink(ieCSTop->createInsRefs, trace, insRef);
 							ieCSTop->stackBase = GetStackTop(context);
-							PushObjRefLink(ieCSTop->objectIds, ieObject);
-
-							// InsExec::createdObjectId
-							insExec->createdObjectId = ieObject;
-						}
-						break;
-					case AstInsType::BeginObjectLeftRecursive:
-						{
-							CHECK_ERROR(GetStackTop(context) - GetStackBase(context) >= 1, ERROR_MESSAGE_PREFIX L"Pushed values not enough.");
-
-							// observe the object stack top
-							auto ieOSTop = GetInsExec_ObjectStack(context.objectStack);
-
-							// new object
-							auto ieObject = NewObject();
-							ieObject->lrObjectIds = ieOSTop->objectIds;
-							ieObject->bo_bolr_Trace = trace;
-							ieObject->bo_bolr_Ins = insRef;
-
-							// InsExec_Object::injectObjectIds
-							PushInjectObjectIdsSingleWithMagic(ieOSTop->objectIds, ieObject);
-
-							// new create stack, the top object is not frozen
-							auto ieCSTop = PushCreateStack(context);
-							PushInsRefLink(ieCSTop->createInsRefs, trace, insRef);
-							ieCSTop->stackBase = ieOSTop->pushedCount - 1;
 							PushObjRefLink(ieCSTop->objectIds, ieObject);
 
 							// InsExec::createdObjectId

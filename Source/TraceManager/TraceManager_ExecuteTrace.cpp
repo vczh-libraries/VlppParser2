@@ -36,14 +36,6 @@ TraceManager::ExecuteTrace
 
 					switch (ins.type)
 					{
-					case AstInsType::BeginObjectLeftRecursive:
-						{
-							ExecuteSubmitted();
-							receiver->Execute({ AstInsType::LriStore }, token, tokenIndex);
-							receiver->Execute({ AstInsType::BeginObject,ins.param }, token, tokenIndex);
-							receiver->Execute({ AstInsType::LriFetch }, token, tokenIndex);
-						}
-						break;
 					case AstInsType::DelayFieldAssignment:
 						if (aeoroToken == nullptr && cachedToken == nullptr && (adfaToken == nullptr || adfaToken == &token))
 						{

@@ -95,7 +95,9 @@
 		- EnumItem(0)
 		- Field(Unary::op)
 		- EndObject()
-		- BeginObjectLeftRecursive(Call)
+		- LriStore()
+		- BeginObject(Call)
+		- LriFetch()
 		+ Field(Call::func)
 
 [16][Exp1]< "-" @ Exp1 >
@@ -113,7 +115,9 @@
 		- EnumItem(1)
 		- Field(Unary::op)
 		- EndObject()
-		- BeginObjectLeftRecursive(Call)
+		- LriStore()
+		- BeginObject(Call)
+		- LriFetch()
 		+ Field(Call::func)
 
 [18][Exp1]< Exp1 "(" @ { Exp ; "," } ")" >
@@ -133,7 +137,9 @@
 		- EndObject()
 	leftrec -> [22][Exp1]< Exp1 @ "(" { Exp ; "," } ")" >
 		- EndObject()
-		- BeginObjectLeftRecursive(Call)
+		- LriStore()
+		- BeginObject(Call)
+		- LriFetch()
 		+ Field(Call::func)
 
 [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" >
@@ -151,7 +157,9 @@
 		- EndObject()
 	leftrec -> [22][Exp1]< Exp1 @ "(" { Exp ; "," } ")" >
 		- EndObject()
-		- BeginObjectLeftRecursive(Call)
+		- LriStore()
+		- BeginObject(Call)
+		- LriFetch()
 		+ Field(Call::func)
 
 [24][Exp2] BEGIN 
@@ -178,13 +186,17 @@
 		- EnumItem(2)
 		- Field(Binary::op)
 		- EndObject()
-		- BeginObjectLeftRecursive(Binary)
+		- LriStore()
+		- BeginObject(Binary)
+		- LriFetch()
 		+ Field(Binary::left)
 	leftrec -> [31][Exp2]< Exp2 @ "/" Exp1 >
 		- EnumItem(2)
 		- Field(Binary::op)
 		- EndObject()
-		- BeginObjectLeftRecursive(Binary)
+		- LriStore()
+		- BeginObject(Binary)
+		- LriFetch()
 		+ Field(Binary::left)
 
 [28][Exp2]< Exp2 "/" @ Exp1 >
@@ -202,13 +214,17 @@
 		- EnumItem(3)
 		- Field(Binary::op)
 		- EndObject()
-		- BeginObjectLeftRecursive(Binary)
+		- LriStore()
+		- BeginObject(Binary)
+		- LriFetch()
 		+ Field(Binary::left)
 	leftrec -> [31][Exp2]< Exp2 @ "/" Exp1 >
 		- EnumItem(3)
 		- Field(Binary::op)
 		- EndObject()
-		- BeginObjectLeftRecursive(Binary)
+		- LriStore()
+		- BeginObject(Binary)
+		- LriFetch()
 		+ Field(Binary::left)
 
 [30][Exp2]< Exp2 @ "*" Exp1 >
@@ -225,11 +241,15 @@
 		- EndObject()
 	leftrec -> [30][Exp2]< Exp2 @ "*" Exp1 >
 		- EndObject()
-		- BeginObjectLeftRecursive(Binary)
+		- LriStore()
+		- BeginObject(Binary)
+		- LriFetch()
 		+ Field(Binary::left)
 	leftrec -> [31][Exp2]< Exp2 @ "/" Exp1 >
 		- EndObject()
-		- BeginObjectLeftRecursive(Binary)
+		- LriStore()
+		- BeginObject(Binary)
+		- LriFetch()
 		+ Field(Binary::left)
 
 [33][Exp3] BEGIN 
@@ -256,13 +276,17 @@
 		- EnumItem(0)
 		- Field(Binary::op)
 		- EndObject()
-		- BeginObjectLeftRecursive(Binary)
+		- LriStore()
+		- BeginObject(Binary)
+		- LriFetch()
 		+ Field(Binary::left)
 	leftrec -> [40][Exp3]< Exp3 @ "-" Exp2 >
 		- EnumItem(0)
 		- Field(Binary::op)
 		- EndObject()
-		- BeginObjectLeftRecursive(Binary)
+		- LriStore()
+		- BeginObject(Binary)
+		- LriFetch()
 		+ Field(Binary::left)
 
 [37][Exp3]< Exp3 "-" @ Exp2 >
@@ -280,13 +304,17 @@
 		- EnumItem(1)
 		- Field(Binary::op)
 		- EndObject()
-		- BeginObjectLeftRecursive(Binary)
+		- LriStore()
+		- BeginObject(Binary)
+		- LriFetch()
 		+ Field(Binary::left)
 	leftrec -> [40][Exp3]< Exp3 @ "-" Exp2 >
 		- EnumItem(1)
 		- Field(Binary::op)
 		- EndObject()
-		- BeginObjectLeftRecursive(Binary)
+		- LriStore()
+		- BeginObject(Binary)
+		- LriFetch()
 		+ Field(Binary::left)
 
 [39][Exp3]< Exp3 @ "+" Exp2 >
@@ -303,11 +331,15 @@
 		- EndObject()
 	leftrec -> [39][Exp3]< Exp3 @ "+" Exp2 >
 		- EndObject()
-		- BeginObjectLeftRecursive(Binary)
+		- LriStore()
+		- BeginObject(Binary)
+		- LriFetch()
 		+ Field(Binary::left)
 	leftrec -> [40][Exp3]< Exp3 @ "-" Exp2 >
 		- EndObject()
-		- BeginObjectLeftRecursive(Binary)
+		- LriStore()
+		- BeginObject(Binary)
+		- LriFetch()
 		+ Field(Binary::left)
 
 [42][Exp4] BEGIN 
@@ -334,25 +366,33 @@
 		- EnumItem(6)
 		- Field(Binary::op)
 		- EndObject()
-		- BeginObjectLeftRecursive(Binary)
+		- LriStore()
+		- BeginObject(Binary)
+		- LriFetch()
 		+ Field(Binary::left)
 	leftrec -> [53][Exp4]< Exp4 @ "<=" Exp3 >
 		- EnumItem(6)
 		- Field(Binary::op)
 		- EndObject()
-		- BeginObjectLeftRecursive(Binary)
+		- LriStore()
+		- BeginObject(Binary)
+		- LriFetch()
 		+ Field(Binary::left)
 	leftrec -> [54][Exp4]< Exp4 @ ">" Exp3 >
 		- EnumItem(6)
 		- Field(Binary::op)
 		- EndObject()
-		- BeginObjectLeftRecursive(Binary)
+		- LriStore()
+		- BeginObject(Binary)
+		- LriFetch()
 		+ Field(Binary::left)
 	leftrec -> [55][Exp4]< Exp4 @ ">=" Exp3 >
 		- EnumItem(6)
 		- Field(Binary::op)
 		- EndObject()
-		- BeginObjectLeftRecursive(Binary)
+		- LriStore()
+		- BeginObject(Binary)
+		- LriFetch()
 		+ Field(Binary::left)
 
 [46][Exp4]< Exp4 "<=" @ Exp3 >
@@ -370,25 +410,33 @@
 		- EnumItem(7)
 		- Field(Binary::op)
 		- EndObject()
-		- BeginObjectLeftRecursive(Binary)
+		- LriStore()
+		- BeginObject(Binary)
+		- LriFetch()
 		+ Field(Binary::left)
 	leftrec -> [53][Exp4]< Exp4 @ "<=" Exp3 >
 		- EnumItem(7)
 		- Field(Binary::op)
 		- EndObject()
-		- BeginObjectLeftRecursive(Binary)
+		- LriStore()
+		- BeginObject(Binary)
+		- LriFetch()
 		+ Field(Binary::left)
 	leftrec -> [54][Exp4]< Exp4 @ ">" Exp3 >
 		- EnumItem(7)
 		- Field(Binary::op)
 		- EndObject()
-		- BeginObjectLeftRecursive(Binary)
+		- LriStore()
+		- BeginObject(Binary)
+		- LriFetch()
 		+ Field(Binary::left)
 	leftrec -> [55][Exp4]< Exp4 @ ">=" Exp3 >
 		- EnumItem(7)
 		- Field(Binary::op)
 		- EndObject()
-		- BeginObjectLeftRecursive(Binary)
+		- LriStore()
+		- BeginObject(Binary)
+		- LriFetch()
 		+ Field(Binary::left)
 
 [48][Exp4]< Exp4 ">" @ Exp3 >
@@ -406,25 +454,33 @@
 		- EnumItem(4)
 		- Field(Binary::op)
 		- EndObject()
-		- BeginObjectLeftRecursive(Binary)
+		- LriStore()
+		- BeginObject(Binary)
+		- LriFetch()
 		+ Field(Binary::left)
 	leftrec -> [53][Exp4]< Exp4 @ "<=" Exp3 >
 		- EnumItem(4)
 		- Field(Binary::op)
 		- EndObject()
-		- BeginObjectLeftRecursive(Binary)
+		- LriStore()
+		- BeginObject(Binary)
+		- LriFetch()
 		+ Field(Binary::left)
 	leftrec -> [54][Exp4]< Exp4 @ ">" Exp3 >
 		- EnumItem(4)
 		- Field(Binary::op)
 		- EndObject()
-		- BeginObjectLeftRecursive(Binary)
+		- LriStore()
+		- BeginObject(Binary)
+		- LriFetch()
 		+ Field(Binary::left)
 	leftrec -> [55][Exp4]< Exp4 @ ">=" Exp3 >
 		- EnumItem(4)
 		- Field(Binary::op)
 		- EndObject()
-		- BeginObjectLeftRecursive(Binary)
+		- LriStore()
+		- BeginObject(Binary)
+		- LriFetch()
 		+ Field(Binary::left)
 
 [50][Exp4]< Exp4 ">=" @ Exp3 >
@@ -442,25 +498,33 @@
 		- EnumItem(5)
 		- Field(Binary::op)
 		- EndObject()
-		- BeginObjectLeftRecursive(Binary)
+		- LriStore()
+		- BeginObject(Binary)
+		- LriFetch()
 		+ Field(Binary::left)
 	leftrec -> [53][Exp4]< Exp4 @ "<=" Exp3 >
 		- EnumItem(5)
 		- Field(Binary::op)
 		- EndObject()
-		- BeginObjectLeftRecursive(Binary)
+		- LriStore()
+		- BeginObject(Binary)
+		- LriFetch()
 		+ Field(Binary::left)
 	leftrec -> [54][Exp4]< Exp4 @ ">" Exp3 >
 		- EnumItem(5)
 		- Field(Binary::op)
 		- EndObject()
-		- BeginObjectLeftRecursive(Binary)
+		- LriStore()
+		- BeginObject(Binary)
+		- LriFetch()
 		+ Field(Binary::left)
 	leftrec -> [55][Exp4]< Exp4 @ ">=" Exp3 >
 		- EnumItem(5)
 		- Field(Binary::op)
 		- EndObject()
-		- BeginObjectLeftRecursive(Binary)
+		- LriStore()
+		- BeginObject(Binary)
+		- LriFetch()
 		+ Field(Binary::left)
 
 [52][Exp4]< Exp4 @ "<" Exp3 >
@@ -485,19 +549,27 @@
 		- EndObject()
 	leftrec -> [52][Exp4]< Exp4 @ "<" Exp3 >
 		- EndObject()
-		- BeginObjectLeftRecursive(Binary)
+		- LriStore()
+		- BeginObject(Binary)
+		- LriFetch()
 		+ Field(Binary::left)
 	leftrec -> [53][Exp4]< Exp4 @ "<=" Exp3 >
 		- EndObject()
-		- BeginObjectLeftRecursive(Binary)
+		- LriStore()
+		- BeginObject(Binary)
+		- LriFetch()
 		+ Field(Binary::left)
 	leftrec -> [54][Exp4]< Exp4 @ ">" Exp3 >
 		- EndObject()
-		- BeginObjectLeftRecursive(Binary)
+		- LriStore()
+		- BeginObject(Binary)
+		- LriFetch()
 		+ Field(Binary::left)
 	leftrec -> [55][Exp4]< Exp4 @ ">=" Exp3 >
 		- EndObject()
-		- BeginObjectLeftRecursive(Binary)
+		- LriStore()
+		- BeginObject(Binary)
+		- LriFetch()
 		+ Field(Binary::left)
 
 [57][Exp5] BEGIN 
@@ -524,13 +596,17 @@
 		- EnumItem(9)
 		- Field(Binary::op)
 		- EndObject()
-		- BeginObjectLeftRecursive(Binary)
+		- LriStore()
+		- BeginObject(Binary)
+		- LriFetch()
 		+ Field(Binary::left)
 	leftrec -> [64][Exp5]< Exp5 @ "==" Exp4 >
 		- EnumItem(9)
 		- Field(Binary::op)
 		- EndObject()
-		- BeginObjectLeftRecursive(Binary)
+		- LriStore()
+		- BeginObject(Binary)
+		- LriFetch()
 		+ Field(Binary::left)
 
 [61][Exp5]< Exp5 "==" @ Exp4 >
@@ -548,13 +624,17 @@
 		- EnumItem(8)
 		- Field(Binary::op)
 		- EndObject()
-		- BeginObjectLeftRecursive(Binary)
+		- LriStore()
+		- BeginObject(Binary)
+		- LriFetch()
 		+ Field(Binary::left)
 	leftrec -> [64][Exp5]< Exp5 @ "==" Exp4 >
 		- EnumItem(8)
 		- Field(Binary::op)
 		- EndObject()
-		- BeginObjectLeftRecursive(Binary)
+		- LriStore()
+		- BeginObject(Binary)
+		- LriFetch()
 		+ Field(Binary::left)
 
 [63][Exp5]< Exp5 @ "!=" Exp4 >
@@ -571,11 +651,15 @@
 		- EndObject()
 	leftrec -> [63][Exp5]< Exp5 @ "!=" Exp4 >
 		- EndObject()
-		- BeginObjectLeftRecursive(Binary)
+		- LriStore()
+		- BeginObject(Binary)
+		- LriFetch()
 		+ Field(Binary::left)
 	leftrec -> [64][Exp5]< Exp5 @ "==" Exp4 >
 		- EndObject()
-		- BeginObjectLeftRecursive(Binary)
+		- LriStore()
+		- BeginObject(Binary)
+		- LriFetch()
 		+ Field(Binary::left)
 
 [66][Exp] BEGIN 
