@@ -14,53 +14,53 @@
  +
  |
 [0]
-++=====================================================================++
-|| [1]: {ID} A                                                         ||
-||   TraceExec: [1]                                                    ||
-||   InsExec: [0:5]                                                    ||
-||   ForwardTrace: 0                                                   ||
-|| [2][_Name]< ID @ >                                                  ||
-|| [AST-INSTRUCTIONS]:                                                 ||
-||     CSTop: []                                                       ||
-||     OSTop: []                                                       ||
-||     LriStored: []                                                   ||
-||   - DelayFieldAssignment()                                          ||
-||       objRefs: 0                                                    ||
-||       eoInsRefs: 7@0, 6@0                                           ||
-||                                                                     ||
-||     CSTop: [0] [0 -> -1]                                            ||
-||     OSTop: []                                                       ||
-||     LriStored: []                                                   ||
-||   - DelayFieldAssignment()                                          ||
-||       objRefs: 0                                                    ||
-||       eoInsRefs: 3@1                                                ||
-||                                                                     ||
-||     CSTop: [0] [1 -> 0]                                             ||
-||     OSTop: []                                                       ||
-||     LriStored: []                                                   ||
-||   - BeginObject(Name)                                               ||
-||       obj:0, new:1@2 injectInto:[2, 1] dfas:[7@4, 1@0, 1@1]         ||
-||       eoInsRefs: 2@0                                                ||
-||                                                                     ||
-||     CSTop: [0] [2 -> 1]                                             ||
-||     OSTop: []                                                       ||
-||     LriStored: []                                                   ||
-||   + Token()                                                         ||
-||                                                                     ||
-||     CSTop: [0] [2 -> 1]                                             ||
-||     OSTop: [-2] [0 -> -1]                                           ||
-||     LriStored: []                                                   ||
-||   + Field(Name::name)                                               ||
-||                                                                     ||
-||     CSTop: [0] [2 -> 1]                                             ||
-||     OSTop: []                                                       ||
-||     LriStored: []                                                   ||
-|| [RETURN STACK]:                                                     ||
-||   [1][0]: _Name -> [8][_PrimitiveShared]<< !_Name @ >>              ||
-||   [0][0]: _PrimitiveShared -> [63][Module]<< !_PrimitiveShared @ >> ||
-|| [PREDECESSORS 0-0]: [0]                                             ||
-|| [SUCCESORS 2-2]: [2]                                                ||
-++=====================================================================++
+++======================================================================++
+|| [1]: {ID} A                                                          ||
+||   TraceExec: [1]                                                     ||
+||   InsExec: [0:5]                                                     ||
+||   ForwardTrace: 0                                                    ||
+|| [2][_Name]< ID @ >                                                   ||
+|| [AST-INSTRUCTIONS]:                                                  ||
+||     CSTop: []                                                        ||
+||     OSTop: []                                                        ||
+||     LriStored: []                                                    ||
+||   - DelayFieldAssignment()                                           ||
+||       objRefs: 0                                                     ||
+||       eoInsRefs: 7@0, 6@0                                            ||
+||                                                                      ||
+||     CSTop: [0] [0 -> -1]                                             ||
+||     OSTop: []                                                        ||
+||     LriStored: []                                                    ||
+||   - DelayFieldAssignment()                                           ||
+||       objRefs: 0                                                     ||
+||       eoInsRefs: 3@1                                                 ||
+||                                                                      ||
+||     CSTop: [0] [1 -> 0]                                              ||
+||     OSTop: []                                                        ||
+||     LriStored: []                                                    ||
+||   - BeginObject(Name)                                                ||
+||       obj:0, new:1@2, top:1@0 injectInto:[2, 1] dfas:[7@4, 1@0, 1@1] ||
+||       eoInsRefs: 2@0                                                 ||
+||                                                                      ||
+||     CSTop: [0] [2 -> 1]                                              ||
+||     OSTop: []                                                        ||
+||     LriStored: []                                                    ||
+||   + Token()                                                          ||
+||                                                                      ||
+||     CSTop: [0] [2 -> 1]                                              ||
+||     OSTop: [-2] [0 -> -1]                                            ||
+||     LriStored: []                                                    ||
+||   + Field(Name::name)                                                ||
+||                                                                      ||
+||     CSTop: [0] [2 -> 1]                                              ||
+||     OSTop: []                                                        ||
+||     LriStored: []                                                    ||
+|| [RETURN STACK]:                                                      ||
+||   [1][0]: _Name -> [8][_PrimitiveShared]<< !_Name @ >>               ||
+||   [0][0]: _PrimitiveShared -> [63][Module]<< !_PrimitiveShared @ >>  ||
+|| [PREDECESSORS 0-0]: [0]                                              ||
+|| [SUCCESORS 2-2]: [2]                                                 ||
+++======================================================================++
 |
 +
 |
@@ -172,7 +172,7 @@
 ||     OSTop: [0] [4 -> -1]                                                                   ||    ||                                                                                        ||
 ||     LriStored: []                                                                          ||    ||     CSTop: [2] [6 -> 5]                                                                ||
 ||   - BeginObjectLeftRecursive(FunctionType)                                                 ||    ||     OSTop: []                                                                          ||
-||       obj:1, new:6@4 lrs:[0] dfas:[6@2]                                                    ||    ||     LriStored: [0]                                                                     ||
+||       obj:1, new:6@4, top:1@0 lrs:[0] dfas:[6@2]                                           ||    ||     LriStored: [0]                                                                     ||
 ||       eoInsRefs: 9@0                                                                       ||    ||   - DelayFieldAssignment()                                                             ||
 ||                                                                                            ||    ||       objRefs: 0                                                                       ||
 ||     CSTop: [1] [4 -> 3]                                                                    ||    ||       eoInsRefs: 7@7                                                                   ||
@@ -197,7 +197,7 @@
 |                                                                                                   ||     OSTop: [0] [9 -> -1]                                                               ||
 |                                                                                                   ||     LriStored: []                                                                      ||
 |                                                                                                   ||   - BeginObjectLeftRecursive(CallExpr)                                                 ||
-|                                                                                                   ||       obj:2, new:7@8 lrs:[0] dfas:[7@2, 7@3]                                           ||
+|                                                                                                   ||       obj:2, new:7@8, top:1@0 lrs:[0] dfas:[7@2, 7@3]                                  ||
 |                                                                                                   ||       eoInsRefs: 12@0                                                                  ||
 |                                                                                                   ||                                                                                        ||
 |                                                                                                   ||     CSTop: [2] [8 -> 6]                                                                ||
