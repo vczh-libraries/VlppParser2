@@ -2,23 +2,6 @@
 
 ## Progressing
 
-- In `CheckMergeTraces`
-  - If an early object got BOLR into a late object, the real first ambiguity instruction is correctly calculated
-  - But if an early object got LriStore/LriFecth into a late object as a field, it does not
-  - It could mean that we need to take care of Field instead of BOLR
-  - Create a test case like `_GenericArgument` to repro the above issue
-  - Calcualte objects' first instructions at the end of `PartialExecuteTraces`
-    - Assume Field relationship is partial order considering all branches together
-    - Field instruction in `PartialExecuteTraces` actually write something
-    - Calculate
-  - Use the above information in `CheckMergeTrace`
-    - Revisit `SearchForTopCreateInstructionsInAllLevelsWithCounter`, could be deleted
-- `Name<A...>` unexpectedly produces ambiguity
-  - From `_GenericArgument` it goes to
-    - `!_QualifiedName [left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveExpr) _GenericArgument_LRI_Original]`
-    - `!_QualifiedName left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveType) _GenericArgument_LRI_Original`
-  - And then consume "...", creating ambiguity by injecting into two different labels but ends up in the same place.
-  - `_GenericArgument ::= _TypeOrExpr_NoComma_NoGT:argument @ "...":variadic as GenericArgument`
 - `throw` is missing in `BuiltIn-Cpp` in `_TypeOrExpr`
 
 ## Next task
@@ -40,6 +23,7 @@
   - Invalid combined clauses during expanding switches
   - everything else that is needed
 - TODO(s) in `RewriteRules_GenerateAffectedLRIClausesSubgroup`.
+- TODO(s) in `CalculateObjectFirstInstruction` and `InjectFirstInstruction`.
 - Make a test case to test `prefix_merge` generates `left_recursion_inject_multiple`.
 - Create ambiguity test case caused by only one clause with alternative syntax.
 - Test when an object get LriFetch to multiple branches following a ReopenObject.

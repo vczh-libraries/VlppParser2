@@ -62,19 +62,21 @@
 |
 +--------------------------------------------------+
 |                                                  |
-+-------------------------------------------+      +-------------------------------------------+
-| [5]: <Leftrec>                            |      | [6]: <Leftrec>                            |
-| [27][Exp2]< Exp2 @ "+" "+" >              |      | [28][Exp2]< Exp2 @ "+" >                  |
-| [AST-INSTRUCTIONS]:                       |      | [AST-INSTRUCTIONS]:                       |
-|   - EndObject()                           |      |   - EndObject()                           |
-|   - BeginObjectLeftRecursive(PostfixExpr) |      |   - BeginObjectLeftRecursive(PostfixExpr) |
-|   + Field(PostfixExpr::expr)              |      |   + Field(PostfixExpr::expr)              |
-| [RETURN STACK]:                           |      | [RETURN STACK]:                           |
-|   [4][0]: Exp2 -> [40][Exp]<< !Exp2 @ >>  |      |   [4][0]: Exp2 -> [40][Exp]<< !Exp2 @ >>  |
-|   [0][0]: Exp -> [43][Module]< Exp @ >    |      |   [0][0]: Exp -> [43][Module]< Exp @ >    |
-| [PREDECESSORS 4-4]: [4]                   |      | [PREDECESSORS 4-4]: [4]                   |
-| [SUCCESORS 8-8]: [8]                      |      | [SUCCESORS 9-9]: [9]                      |
-+-------------------------------------------+      +-------------------------------------------+
++------------------------------------------+       +------------------------------------------+
+| [5]: <Leftrec>                           |       | [6]: <Leftrec>                           |
+| [27][Exp2]< Exp2 @ "+" "+" >             |       | [28][Exp2]< Exp2 @ "+" >                 |
+| [AST-INSTRUCTIONS]:                      |       | [AST-INSTRUCTIONS]:                      |
+|   - EndObject()                          |       |   - EndObject()                          |
+|   - LriStore()                           |       |   - LriStore()                           |
+|   - BeginObject(PostfixExpr)             |       |   - BeginObject(PostfixExpr)             |
+|   - LriFetch()                           |       |   - LriFetch()                           |
+|   + Field(PostfixExpr::expr)             |       |   + Field(PostfixExpr::expr)             |
+| [RETURN STACK]:                          |       | [RETURN STACK]:                          |
+|   [4][0]: Exp2 -> [40][Exp]<< !Exp2 @ >> |       |   [4][0]: Exp2 -> [40][Exp]<< !Exp2 @ >> |
+|   [0][0]: Exp -> [43][Module]< Exp @ >   |       |   [0][0]: Exp -> [43][Module]< Exp @ >   |
+| [PREDECESSORS 4-4]: [4]                  |       | [PREDECESSORS 4-4]: [4]                  |
+| [SUCCESORS 8-8]: [8]                     |       | [SUCCESORS 9-9]: [9]                     |
++------------------------------------------+       +------------------------------------------+
 [0]                                                [1]
  |                                                  |
  +                                                 ++
@@ -93,21 +95,23 @@
 |                                                 |
 +                                                 +
 |                                                 |
-|                                                 +-------------------------------------------+
-|                                                 | [11]: <Leftrec>                           |
-|                                                 | [28][Exp2]< Exp2 @ "+" >                  |
-|                                                 | [AST-INSTRUCTIONS]:                       |
-|                                                 |   - EnumItem(0)                           |
-|                                                 |   - Field(PostfixExpr::op)                |
-|                                                 |   - EndObject()                           |
-|                                                 |   - BeginObjectLeftRecursive(PostfixExpr) |
-|                                                 |   + Field(PostfixExpr::expr)              |
-|                                                 | [RETURN STACK]:                           |
-|                                                 |   [4][0]: Exp2 -> [40][Exp]<< !Exp2 @ >>  |
-|                                                 |   [0][0]: Exp -> [43][Module]< Exp @ >    |
-|                                                 | [PREDECESSORS 9-9]: [9]                   |
-|                                                 | [SUCCESORS 18-18]: [18]                   |
-|                                                 +-------------------------------------------+
+|                                                 +------------------------------------------+
+|                                                 | [11]: <Leftrec>                          |
+|                                                 | [28][Exp2]< Exp2 @ "+" >                 |
+|                                                 | [AST-INSTRUCTIONS]:                      |
+|                                                 |   - EnumItem(0)                          |
+|                                                 |   - Field(PostfixExpr::op)               |
+|                                                 |   - EndObject()                          |
+|                                                 |   - LriStore()                           |
+|                                                 |   - BeginObject(PostfixExpr)             |
+|                                                 |   - LriFetch()                           |
+|                                                 |   + Field(PostfixExpr::expr)             |
+|                                                 | [RETURN STACK]:                          |
+|                                                 |   [4][0]: Exp2 -> [40][Exp]<< !Exp2 @ >> |
+|                                                 |   [0][0]: Exp -> [43][Module]< Exp @ >   |
+|                                                 | [PREDECESSORS 9-9]: [9]                  |
+|                                                 | [SUCCESORS 18-18]: [18]                  |
+|                                                 +------------------------------------------+
 [0]                                               [1]
  |                                                 |
  +                                                 +

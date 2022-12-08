@@ -1600,7 +1600,9 @@
 | [214][_ExpPrimitive]< _ExpPrimitive @ "::" NAME >                                                                        |
 | [AST-INSTRUCTIONS]:                                                                                                      |
 |   - EndObject()                                                                                                          |
-|   - BeginObjectLeftRecursive(ChildExpression)                                                                            |
+|   - LriStore()                                                                                                           |
+|   - BeginObject(ChildExpression)                                                                                         |
+|   - LriFetch()                                                                                                           |
 |   + Field(ChildExpression::parent)                                                                                       |
 | [RETURN STACK]:                                                                                                          |
 |   [64][100]: _ExpPrimitive -> [245][_Exp0]<< !_ExpPrimitive @ >>                                                         |
@@ -1708,7 +1710,9 @@
 | [210][_ExpPrimitive]< _ExpPrimitive @ "(" [ _Expression { "," _Expression } ] ")" >                                      |
 | [AST-INSTRUCTIONS]:                                                                                                      |
 |   - EndObject()                                                                                                          |
-|   - BeginObjectLeftRecursive(CallExpression)                                                                             |
+|   - LriStore()                                                                                                           |
+|   - BeginObject(CallExpression)                                                                                          |
+|   - LriFetch()                                                                                                           |
 |   + Field(CallExpression::function)                                                                                      |
 | [RETURN STACK]:                                                                                                          |
 |   [64][100]: _ExpPrimitive -> [245][_Exp0]<< !_ExpPrimitive @ >>                                                         |

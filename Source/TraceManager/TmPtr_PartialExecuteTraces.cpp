@@ -35,6 +35,8 @@ PartialExecuteTraces
 						}
 					}
 				);
+
+				CalculateObjectFirstInstruction();
 #undef ERROR_MESSAGE_PREFIX
 			}
 		}

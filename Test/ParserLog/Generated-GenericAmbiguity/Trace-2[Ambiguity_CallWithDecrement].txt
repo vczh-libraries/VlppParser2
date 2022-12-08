@@ -14,69 +14,69 @@
  +
  |
 [0]
-++===========================================++
-|| [2]: {ID} Func                            ||
-||   TraceExec: [1]                          ||
-||   InsExec: [0:7]                          ||
-||   ForwardTrace: 0                         ||
-|| [7][Exp0]< ID @ >                         ||
-|| [AST-INSTRUCTIONS]:                       ||
-||     CSTop: []                             ||
-||     OSTop: []                             ||
-||     LriStored: []                         ||
-||   - BeginObject(Module)                   ||
-||       obj:0, new:2@0                      ||
-||       eoInsRefs: 50@1                     ||
-||                                           ||
-||     CSTop: [0] [0 -> -1]                  ||
-||     OSTop: []                             ||
-||     LriStored: []                         ||
-||   - DelayFieldAssignment()                ||
-||       objRefs: 2                          ||
-||       eoInsRefs: 49@0                     ||
-||                                           ||
-||     CSTop: [2] [1 -> 0]                   ||
-||     OSTop: []                             ||
-||     LriStored: []                         ||
-||   - DelayFieldAssignment()                ||
-||       objRefs: 2                          ||
-||       eoInsRefs: 48@0                     ||
-||                                           ||
-||     CSTop: [2] [2 -> 1]                   ||
-||     OSTop: []                             ||
-||     LriStored: []                         ||
-||   - DelayFieldAssignment()                ||
-||       objRefs: 1                          ||
-||       eoInsRefs: 4@0                      ||
-||                                           ||
-||     CSTop: [1] [3 -> 2]                   ||
-||     OSTop: []                             ||
-||     LriStored: []                         ||
-||   - BeginObject(RefExpr)                  ||
-||       obj:1, new:2@4 dfas:[2@3]           ||
-||       eoInsRefs: 3@0                      ||
-||                                           ||
-||     CSTop: [1] [4 -> 3]                   ||
-||     OSTop: []                             ||
-||     LriStored: []                         ||
-||   + Token()                               ||
-||                                           ||
-||     CSTop: [1] [4 -> 3]                   ||
-||     OSTop: [-2] [0 -> -1]                 ||
-||     LriStored: []                         ||
-||   + Field(RefExpr::name)                  ||
-||                                           ||
-||     CSTop: [1] [4 -> 3]                   ||
-||     OSTop: []                             ||
-||     LriStored: []                         ||
-|| [RETURN STACK]:                           ||
-||   [6][0]: Exp0 -> [18][Exp1]<< !Exp0 @ >> ||
-||   [5][0]: Exp1 -> [31][Exp2]<< !Exp1 @ >> ||
-||   [4][0]: Exp2 -> [40][Exp]<< !Exp2 @ >>  ||
-||   [0][0]: Exp -> [43][Module]< Exp @ >    ||
-|| [PREDECESSORS 0-0]: [0]                   ||
-|| [SUCCESORS 3-3]: [3]                      ||
-++===========================================++
+++=========================================================++
+|| [2]: {ID} Func                                          ||
+||   TraceExec: [1]                                        ||
+||   InsExec: [0:7]                                        ||
+||   ForwardTrace: 0                                       ||
+|| [7][Exp0]< ID @ >                                       ||
+|| [AST-INSTRUCTIONS]:                                     ||
+||     CSTop: []                                           ||
+||     OSTop: []                                           ||
+||     LriStored: []                                       ||
+||   - BeginObject(Module)                                 ||
+||       obj:0, new:2@0, top:2@0                           ||
+||       eoInsRefs: 50@1                                   ||
+||                                                         ||
+||     CSTop: [0] [0 -> -1]                                ||
+||     OSTop: []                                           ||
+||     LriStored: []                                       ||
+||   - DelayFieldAssignment()                              ||
+||       objRefs: 2                                        ||
+||       eoInsRefs: 49@0                                   ||
+||                                                         ||
+||     CSTop: [2] [1 -> 0]                                 ||
+||     OSTop: []                                           ||
+||     LriStored: []                                       ||
+||   - DelayFieldAssignment()                              ||
+||       objRefs: 2                                        ||
+||       eoInsRefs: 48@0                                   ||
+||                                                         ||
+||     CSTop: [2] [2 -> 1]                                 ||
+||     OSTop: []                                           ||
+||     LriStored: []                                       ||
+||   - DelayFieldAssignment()                              ||
+||       objRefs: 1                                        ||
+||       eoInsRefs: 4@0                                    ||
+||                                                         ||
+||     CSTop: [1] [3 -> 2]                                 ||
+||     OSTop: []                                           ||
+||     LriStored: []                                       ||
+||   - BeginObject(RefExpr)                                ||
+||       obj:1, new:2@4, top:2@3 injectInto:[2] dfas:[2@3] ||
+||       eoInsRefs: 3@0                                    ||
+||                                                         ||
+||     CSTop: [1] [4 -> 3]                                 ||
+||     OSTop: []                                           ||
+||     LriStored: []                                       ||
+||   + Token()                                             ||
+||                                                         ||
+||     CSTop: [1] [4 -> 3]                                 ||
+||     OSTop: [-2] [0 -> -1]                               ||
+||     LriStored: []                                       ||
+||   + Field(RefExpr::name)                                ||
+||                                                         ||
+||     CSTop: [1] [4 -> 3]                                 ||
+||     OSTop: []                                           ||
+||     LriStored: []                                       ||
+|| [RETURN STACK]:                                         ||
+||   [6][0]: Exp0 -> [18][Exp1]<< !Exp0 @ >>               ||
+||   [5][0]: Exp1 -> [31][Exp2]<< !Exp1 @ >>               ||
+||   [4][0]: Exp2 -> [40][Exp]<< !Exp2 @ >>                ||
+||   [0][0]: Exp -> [43][Module]< Exp @ >                  ||
+|| [PREDECESSORS 0-0]: [0]                                 ||
+|| [SUCCESORS 3-3]: [3]                                    ||
+++=========================================================++
 |
 +
 |
@@ -111,41 +111,51 @@
 |
 +
 |
-+----------------------------------------------+
-| [4]: <Leftrec>                               |
-|   TraceExec: [3]                             |
-|   InsExec: [9:3]                             |
-|   ForwardTrace: 0                            |
-| [17][Exp1]< Exp1 @ "(" { Exp ; "," } ")" >   |
-| [AST-INSTRUCTIONS]:                          |
-|     CSTop: [1] [3 -> 2]                      |
-|     OSTop: []                                |
-|     LriStored: []                            |
-|   - EndObject()                              |
-|       objRefs: 1                             |
-|                                              |
-|     CSTop: [2] [2 -> 1]                      |
-|     OSTop: [1] [2 -> -1]                     |
-|     LriStored: []                            |
-|   - BeginObjectLeftRecursive(CallExpr)       |
-|       obj:2, new:4@1 lrs:[1] dfas:[2@1, 2@2] |
-|       eoInsRefs: 47@0                        |
-|                                              |
-|     CSTop: [2] [5 -> 2]                      |
-|     OSTop: [1] [2 -> -1]                     |
-|     LriStored: []                            |
-|   + Field(CallExpr::func)                    |
-|                                              |
-|     CSTop: [2] [5 -> 2]                      |
-|     OSTop: []                                |
-|     LriStored: []                            |
-| [RETURN STACK]:                              |
-|   [5][0]: Exp1 -> [31][Exp2]<< !Exp1 @ >>    |
-|   [4][0]: Exp2 -> [40][Exp]<< !Exp2 @ >>     |
-|   [0][0]: Exp -> [43][Module]< Exp @ >       |
-| [PREDECESSORS 3-3]: [3]                      |
-| [SUCCESORS 6-6]: [6]                         |
-+----------------------------------------------+
++-----------------------------------------------+
+| [4]: <Leftrec>                                |
+|   TraceExec: [3]                              |
+|   InsExec: [9:5]                              |
+|   ForwardTrace: 0                             |
+| [17][Exp1]< Exp1 @ "(" { Exp ; "," } ")" >    |
+| [AST-INSTRUCTIONS]:                           |
+|     CSTop: [1] [3 -> 2]                       |
+|     OSTop: []                                 |
+|     LriStored: []                             |
+|   - EndObject()                               |
+|       objRefs: 1                              |
+|                                               |
+|     CSTop: [2] [2 -> 1]                       |
+|     OSTop: [1] [2 -> -1]                      |
+|     LriStored: []                             |
+|   - LriStore()                                |
+|                                               |
+|     CSTop: [2] [2 -> 1]                       |
+|     OSTop: []                                 |
+|     LriStored: [1]                            |
+|   - BeginObject(CallExpr)                     |
+|       obj:2, new:4@2, top:2@1 dfas:[2@1, 2@2] |
+|       eoInsRefs: 47@0                         |
+|                                               |
+|     CSTop: [2] [5 -> 2]                       |
+|     OSTop: []                                 |
+|     LriStored: [1]                            |
+|   - LriFetch()                                |
+|                                               |
+|     CSTop: [2] [5 -> 2]                       |
+|     OSTop: [1] [3 -> -1]                      |
+|     LriStored: []                             |
+|   + Field(CallExpr::func)                     |
+|                                               |
+|     CSTop: [2] [5 -> 2]                       |
+|     OSTop: []                                 |
+|     LriStored: []                             |
+| [RETURN STACK]:                               |
+|   [5][0]: Exp1 -> [31][Exp2]<< !Exp1 @ >>     |
+|   [4][0]: Exp2 -> [40][Exp]<< !Exp2 @ >>      |
+|   [0][0]: Exp -> [43][Module]< Exp @ >        |
+| [PREDECESSORS 3-3]: [3]                       |
+| [SUCCESORS 6-6]: [6]                          |
++-----------------------------------------------+
 [0]
  |
  +
@@ -172,72 +182,72 @@
  +
  |
 [0]
-++=============================================================++
-|| [8]: {ID} a                                                 ||
-||   TraceExec: [5]                                            ||
-||   InsExec: [12:6]                                           ||
-||   ForwardTrace: 0                                           ||
-|| [7][Exp0]< ID @ >                                           ||
-|| [AST-INSTRUCTIONS]:                                         ||
-||     CSTop: [2] [5 -> 2]                                     ||
-||     OSTop: []                                               ||
-||     LriStored: []                                           ||
-||   - DelayFieldAssignment()                                  ||
-||       objRefs: 6, 4                                         ||
-||       eoInsRefs: 21@0                                       ||
-||                                                             ||
-||     CSTop: [6, 4] [6 -> 5]                                  ||
-||     OSTop: []                                               ||
-||     LriStored: []                                           ||
-||   - DelayFieldAssignment()                                  ||
-||       objRefs: 3                                            ||
-||       eoInsRefs: 12@0, 11@0                                 ||
-||                                                             ||
-||     CSTop: [3] [7 -> 6]                                     ||
-||     OSTop: []                                               ||
-||     LriStored: []                                           ||
-||   - DelayFieldAssignment()                                  ||
-||       objRefs: 3                                            ||
-||       eoInsRefs: 10@0                                       ||
-||                                                             ||
-||     CSTop: [3] [8 -> 7]                                     ||
-||     OSTop: []                                               ||
-||     LriStored: []                                           ||
-||   - BeginObject(RefExpr)                                    ||
-||       obj:3, new:8@3 dfas:[8@1, 8@2]                        ||
-||       eoInsRefs: 9@0                                        ||
-||                                                             ||
-||     CSTop: [3] [9 -> 8]                                     ||
-||     OSTop: []                                               ||
-||     LriStored: []                                           ||
-||   + Token()                                                 ||
-||                                                             ||
-||     CSTop: [3] [9 -> 8]                                     ||
-||     OSTop: [-2] [3 -> -1]                                   ||
-||     LriStored: []                                           ||
-||   + Field(RefExpr::name)                                    ||
-||                                                             ||
-||     CSTop: [3] [9 -> 8]                                     ||
-||     OSTop: []                                               ||
-||     LriStored: []                                           ||
-|| [RETURN STACK]:                                             ||
-||   [13][6]: Exp0 -> [18][Exp1]<< !Exp0 @ >>                  ||
-||   [12][6]: Exp1 -> [31][Exp2]<< !Exp1 @ >>                  ||
-||   [11][6]: Exp2 -> [40][Exp]<< !Exp2 @ >>                   ||
-||   [7][6]: Exp -> [16][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > ||
-||   [5][0]: Exp1 -> [31][Exp2]<< !Exp1 @ >>                   ||
-||   [4][0]: Exp2 -> [40][Exp]<< !Exp2 @ >>                    ||
-||   [0][0]: Exp -> [43][Module]< Exp @ >                      ||
-|| [PREDECESSORS 6-6]: [6]                                     ||
-|| [SUCCESORS 9-9]: [9]                                        ||
-++=============================================================++
+++=================================================================++
+|| [8]: {ID} a                                                     ||
+||   TraceExec: [5]                                                ||
+||   InsExec: [14:6]                                               ||
+||   ForwardTrace: 0                                               ||
+|| [7][Exp0]< ID @ >                                               ||
+|| [AST-INSTRUCTIONS]:                                             ||
+||     CSTop: [2] [5 -> 2]                                         ||
+||     OSTop: []                                                   ||
+||     LriStored: []                                               ||
+||   - DelayFieldAssignment()                                      ||
+||       objRefs: 6, 4                                             ||
+||       eoInsRefs: 21@0                                           ||
+||                                                                 ||
+||     CSTop: [6, 4] [6 -> 5]                                      ||
+||     OSTop: []                                                   ||
+||     LriStored: []                                               ||
+||   - DelayFieldAssignment()                                      ||
+||       objRefs: 3                                                ||
+||       eoInsRefs: 12@0, 11@0                                     ||
+||                                                                 ||
+||     CSTop: [3] [7 -> 6]                                         ||
+||     OSTop: []                                                   ||
+||     LriStored: []                                               ||
+||   - DelayFieldAssignment()                                      ||
+||       objRefs: 3                                                ||
+||       eoInsRefs: 10@0                                           ||
+||                                                                 ||
+||     CSTop: [3] [8 -> 7]                                         ||
+||     OSTop: []                                                   ||
+||     LriStored: []                                               ||
+||   - BeginObject(RefExpr)                                        ||
+||       obj:3, new:8@3, top:8@1 injectInto:[5, 4] dfas:[8@1, 8@2] ||
+||       eoInsRefs: 9@0                                            ||
+||                                                                 ||
+||     CSTop: [3] [9 -> 8]                                         ||
+||     OSTop: []                                                   ||
+||     LriStored: []                                               ||
+||   + Token()                                                     ||
+||                                                                 ||
+||     CSTop: [3] [9 -> 8]                                         ||
+||     OSTop: [-2] [4 -> -1]                                       ||
+||     LriStored: []                                               ||
+||   + Field(RefExpr::name)                                        ||
+||                                                                 ||
+||     CSTop: [3] [9 -> 8]                                         ||
+||     OSTop: []                                                   ||
+||     LriStored: []                                               ||
+|| [RETURN STACK]:                                                 ||
+||   [13][6]: Exp0 -> [18][Exp1]<< !Exp0 @ >>                      ||
+||   [12][6]: Exp1 -> [31][Exp2]<< !Exp1 @ >>                      ||
+||   [11][6]: Exp2 -> [40][Exp]<< !Exp2 @ >>                       ||
+||   [7][6]: Exp -> [16][Exp1]< Exp1 "(" { Exp @ ; "," } ")" >     ||
+||   [5][0]: Exp1 -> [31][Exp2]<< !Exp1 @ >>                       ||
+||   [4][0]: Exp2 -> [40][Exp]<< !Exp2 @ >>                        ||
+||   [0][0]: Exp -> [43][Module]< Exp @ >                          ||
+|| [PREDECESSORS 6-6]: [6]                                         ||
+|| [SUCCESORS 9-9]: [9]                                            ||
+++=================================================================++
 |
 +
 |
 +-------------------------------------------------------------+
 | [9]: <Ending>                                               |
 |   TraceExec: [6]                                            |
-|   InsExec: [18:2]                                           |
+|   InsExec: [20:2]                                           |
 |   ForwardTrace: 0                                           |
 | [18][Exp1]<< !Exp0 @ >>                                     |
 | [AST-INSTRUCTIONS]:                                         |
@@ -248,7 +258,7 @@
 |       objRefs: 3                                            |
 |                                                             |
 |     CSTop: [3] [8 -> 7]                                     |
-|     OSTop: [3] [4 -> -1]                                    |
+|     OSTop: [3] [5 -> -1]                                    |
 |     LriStored: []                                           |
 |   > ReopenObject()                                          |
 |                                                             |
@@ -271,7 +281,7 @@
 +-------------------------------------------------------------+
 | [10]: <Ending>                                              |
 |   TraceExec: [7]                                            |
-|   InsExec: [20:2]                                           |
+|   InsExec: [22:2]                                           |
 |   ForwardTrace: 0                                           |
 | [31][Exp2]<< !Exp1 @ >>                                     |
 | [AST-INSTRUCTIONS]:                                         |
@@ -282,7 +292,7 @@
 |       objRefs: 3                                            |
 |                                                             |
 |     CSTop: [3] [7 -> 6]                                     |
-|     OSTop: [3] [5 -> -1]                                    |
+|     OSTop: [3] [6 -> -1]                                    |
 |     LriStored: []                                           |
 |   > ReopenObject()                                          |
 |                                                             |
@@ -299,48 +309,58 @@
 | [SUCCESORS 11-12]: [11][12]                                 |
 +-------------------------------------------------------------+
 |
-+--------------------------------------------------------------------+
-|                                                                    |
-+-------------------------------------------------------------+      +-------------------------------------------------------------+
-| [11]: <Leftrec>                                             |      | [12]: <Leftrec>                                             |
-|   TraceExec: [8]                                            |      |   TraceExec: [12]                                           |
-|   InsExec: [22:3]                                           |      |   InsExec: [27:3]                                           |
-|   ForwardTrace: 11                                          |      |   ForwardTrace: 12                                          |
-| [29][Exp2]< Exp2 @ "-" "-" >                                |      | [30][Exp2]< Exp2 @ "-" >                                    |
-| [AST-INSTRUCTIONS]:                                         |      | [AST-INSTRUCTIONS]:                                         |
-|     CSTop: [3] [7 -> 6]                                     |      |     CSTop: [3] [7 -> 6]                                     |
-|     OSTop: []                                               |      |     OSTop: []                                               |
-|     LriStored: []                                           |      |     LriStored: []                                           |
-|   - EndObject()                                             |      |   - EndObject()                                             |
-|       objRefs: 3                                            |      |       objRefs: 3                                            |
-|                                                             |      |                                                             |
-|     CSTop: [6, 4] [6 -> 5]                                  |      |     CSTop: [6, 4] [6 -> 5]                                  |
-|     OSTop: [3] [6 -> -1]                                    |      |     OSTop: [3] [8 -> -1]                                    |
-|     LriStored: []                                           |      |     LriStored: []                                           |
-|   - BeginObjectLeftRecursive(DecrementExpr)                 |      |   - BeginObjectLeftRecursive(PostfixExpr)                   |
-|       obj:4, new:11@1 lrs:[3] dfas:[8@0]                    |      |       obj:5, new:12@1 lrs:[3]                               |
-|       eoInsRefs: 25@0                                       |      |       eoInsRefs: 17@2                                       |
-|                                                             |      |                                                             |
-|     CSTop: [4] [10 -> 6]                                    |      |     CSTop: [5] [11 -> 6]                                    |
-|     OSTop: [3] [6 -> -1]                                    |      |     OSTop: [3] [8 -> -1]                                    |
-|     LriStored: []                                           |      |     LriStored: []                                           |
-|   + Field(DecrementExpr::expr)                              |      |   + Field(PostfixExpr::expr)                                |
-|                                                             |      |                                                             |
-|     CSTop: [4] [10 -> 6]                                    |      |     CSTop: [5] [11 -> 6]                                    |
-|     OSTop: []                                               |      |     OSTop: []                                               |
-|     LriStored: []                                           |      |     LriStored: []                                           |
-| [RETURN STACK]:                                             |      | [RETURN STACK]:                                             |
-|   [11][6]: Exp2 -> [40][Exp]<< !Exp2 @ >>                   |      |   [11][6]: Exp2 -> [40][Exp]<< !Exp2 @ >>                   |
-|   [7][6]: Exp -> [16][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |      |   [7][6]: Exp -> [16][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |
-|   [5][0]: Exp1 -> [31][Exp2]<< !Exp1 @ >>                   |      |   [5][0]: Exp1 -> [31][Exp2]<< !Exp1 @ >>                   |
-|   [4][0]: Exp2 -> [40][Exp]<< !Exp2 @ >>                    |      |   [4][0]: Exp2 -> [40][Exp]<< !Exp2 @ >>                    |
-|   [0][0]: Exp -> [43][Module]< Exp @ >                      |      |   [0][0]: Exp -> [43][Module]< Exp @ >                      |
-| [PREDECESSORS 10-10]: [10]                                  |      | [PREDECESSORS 10-10]: [10]                                  |
-| [SUCCESORS 14-14]: [14]                                     |      | [SUCCESORS 15-15]: [15]                                     |
-+-------------------------------------------------------------+      +-------------------------------------------------------------+
-[0]                                                                  [1]
- |                                                                    |
- +                                                                    +
++------------------------------------------------------------------------+
+|                                                                        |
++-------------------------------------------------------------+          +-------------------------------------------------------------+
+| [11]: <Leftrec>                                             |          | [12]: <Leftrec>                                             |
+|   TraceExec: [8]                                            |          |   TraceExec: [12]                                           |
+|   InsExec: [24:5]                                           |          |   InsExec: [31:5]                                           |
+|   ForwardTrace: 11                                          |          |   ForwardTrace: 12                                          |
+| [29][Exp2]< Exp2 @ "-" "-" >                                |          | [30][Exp2]< Exp2 @ "-" >                                    |
+| [AST-INSTRUCTIONS]:                                         |          | [AST-INSTRUCTIONS]:                                         |
+|     CSTop: [3] [7 -> 6]                                     |          |     CSTop: [3] [7 -> 6]                                     |
+|     OSTop: []                                               |          |     OSTop: []                                               |
+|     LriStored: []                                           |          |     LriStored: []                                           |
+|   - EndObject()                                             |          |   - EndObject()                                             |
+|       objRefs: 3                                            |          |       objRefs: 3                                            |
+|                                                             |          |                                                             |
+|     CSTop: [6, 4] [6 -> 5]                                  |          |     CSTop: [6, 4] [6 -> 5]                                  |
+|     OSTop: [3] [7 -> -1]                                    |          |     OSTop: [3] [10 -> -1]                                   |
+|     LriStored: []                                           |          |     LriStored: []                                           |
+|   - LriStore()                                              |          |   - LriStore()                                              |
+|                                                             |          |                                                             |
+|     CSTop: [6, 4] [6 -> 5]                                  |          |     CSTop: [6, 4] [6 -> 5]                                  |
+|     OSTop: []                                               |          |     OSTop: []                                               |
+|     LriStored: [3]                                          |          |     LriStored: [3]                                          |
+|   - BeginObject(DecrementExpr)                              |          |   - BeginObject(PostfixExpr)                                |
+|       obj:4, new:11@2, top:8@0 dfas:[8@0]                   |          |       obj:5, new:12@2, top:8@1 injectInto:[6]               |
+|       eoInsRefs: 25@0                                       |          |       eoInsRefs: 17@2                                       |
+|                                                             |          |                                                             |
+|     CSTop: [4] [10 -> 6]                                    |          |     CSTop: [5] [11 -> 6]                                    |
+|     OSTop: []                                               |          |     OSTop: []                                               |
+|     LriStored: [3]                                          |          |     LriStored: [3]                                          |
+|   - LriFetch()                                              |          |   - LriFetch()                                              |
+|                                                             |          |                                                             |
+|     CSTop: [4] [10 -> 6]                                    |          |     CSTop: [5] [11 -> 6]                                    |
+|     OSTop: [3] [8 -> -1]                                    |          |     OSTop: [3] [11 -> -1]                                   |
+|     LriStored: []                                           |          |     LriStored: []                                           |
+|   + Field(DecrementExpr::expr)                              |          |   + Field(PostfixExpr::expr)                                |
+|                                                             |          |                                                             |
+|     CSTop: [4] [10 -> 6]                                    |          |     CSTop: [5] [11 -> 6]                                    |
+|     OSTop: []                                               |          |     OSTop: []                                               |
+|     LriStored: []                                           |          |     LriStored: []                                           |
+| [RETURN STACK]:                                             |          | [RETURN STACK]:                                             |
+|   [11][6]: Exp2 -> [40][Exp]<< !Exp2 @ >>                   |          |   [11][6]: Exp2 -> [40][Exp]<< !Exp2 @ >>                   |
+|   [7][6]: Exp -> [16][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |          |   [7][6]: Exp -> [16][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |
+|   [5][0]: Exp1 -> [31][Exp2]<< !Exp1 @ >>                   |          |   [5][0]: Exp1 -> [31][Exp2]<< !Exp1 @ >>                   |
+|   [4][0]: Exp2 -> [40][Exp]<< !Exp2 @ >>                    |          |   [4][0]: Exp2 -> [40][Exp]<< !Exp2 @ >>                    |
+|   [0][0]: Exp -> [43][Module]< Exp @ >                      |          |   [0][0]: Exp -> [43][Module]< Exp @ >                      |
+| [PREDECESSORS 10-10]: [10]                                  |          | [PREDECESSORS 10-10]: [10]                                  |
+| [SUCCESORS 14-14]: [14]                                     |          | [SUCCESORS 15-15]: [15]                                     |
++-------------------------------------------------------------+          +-------------------------------------------------------------+
+[0]                                                                      [1]
+ |                                                                        |
+ +                                                                    +---+
  |                                                                    |
 [0]                                                                  [1]
 ++=============================================================++    ++=============================================================++
@@ -367,7 +387,7 @@
 |                                                                    +-------------------------------------------------------------+
 |                                                                    | [17]: <Leftrec>                                             |
 |                                                                    |   TraceExec: [14]                                           |
-|                                                                    |   InsExec: [30:5]                                           |
+|                                                                    |   InsExec: [36:7]                                           |
 |                                                                    |   ForwardTrace: 12                                          |
 |                                                                    | [30][Exp2]< Exp2 @ "-" >                                    |
 |                                                                    | [AST-INSTRUCTIONS]:                                         |
@@ -377,7 +397,7 @@
 |                                                                    |   - EnumItem(1)                                             |
 |                                                                    |                                                             |
 |                                                                    |     CSTop: [5] [11 -> 6]                                    |
-|                                                                    |     OSTop: [-2] [9 -> -1]                                   |
+|                                                                    |     OSTop: [-2] [12 -> -1]                                  |
 |                                                                    |     LriStored: []                                           |
 |                                                                    |   - Field(PostfixExpr::op)                                  |
 |                                                                    |                                                             |
@@ -388,14 +408,24 @@
 |                                                                    |       objRefs: 5                                            |
 |                                                                    |                                                             |
 |                                                                    |     CSTop: [6, 4] [6 -> 5]                                  |
-|                                                                    |     OSTop: [5] [10 -> -1]                                   |
+|                                                                    |     OSTop: [5] [13 -> -1]                                   |
 |                                                                    |     LriStored: []                                           |
-|                                                                    |   - BeginObjectLeftRecursive(PostfixExpr)                   |
-|                                                                    |       obj:6, new:17@3 lrs:[5] dfas:[8@0]                    |
+|                                                                    |   - LriStore()                                              |
+|                                                                    |                                                             |
+|                                                                    |     CSTop: [6, 4] [6 -> 5]                                  |
+|                                                                    |     OSTop: []                                               |
+|                                                                    |     LriStored: [5]                                          |
+|                                                                    |   - BeginObject(PostfixExpr)                                |
+|                                                                    |       obj:6, new:17@4, top:8@0 dfas:[8@0]                   |
 |                                                                    |       eoInsRefs: 24@2                                       |
 |                                                                    |                                                             |
 |                                                                    |     CSTop: [6] [12 -> 6]                                    |
-|                                                                    |     OSTop: [5] [10 -> -1]                                   |
+|                                                                    |     OSTop: []                                               |
+|                                                                    |     LriStored: [5]                                          |
+|                                                                    |   - LriFetch()                                              |
+|                                                                    |                                                             |
+|                                                                    |     CSTop: [6] [12 -> 6]                                    |
+|                                                                    |     OSTop: [5] [14 -> -1]                                   |
 |                                                                    |     LriStored: []                                           |
 |                                                                    |   + Field(PostfixExpr::expr)                                |
 |                                                                    |                                                             |
@@ -440,7 +470,7 @@
 +-------------------------------------------------------------+      +-------------------------------------------------------------+
 | [25]: <Ending>                                              |      | [24]: <Ending>                                              |
 |   TraceExec: [11]                                           |      |   TraceExec: [16]                                           |
-|   InsExec: [25:2]                                           |      |   InsExec: [35:4]                                           |
+|   InsExec: [29:2]                                           |      |   InsExec: [43:4]                                           |
 |   ForwardTrace: 11                                          |      |   ForwardTrace: 12                                          |
 | [40][Exp]<< !Exp2 @ >>                                      |      | [40][Exp]<< !Exp2 @ >>                                      |
 | [AST-INSTRUCTIONS]:                                         |      | [AST-INSTRUCTIONS]:                                         |
@@ -450,8 +480,8 @@
 |   - EndObject()                                             |      |   - EnumItem(1)                                             |
 |       objRefs: 4                                            |      |                                                             |
 |                                                             |      |     CSTop: [6] [12 -> 6]                                    |
-|     CSTop: [6, 4] [6 -> 5]                                  |      |     OSTop: [-2] [11 -> -1]                                  |
-|     OSTop: [4] [7 -> -1]                                    |      |     LriStored: []                                           |
+|     CSTop: [6, 4] [6 -> 5]                                  |      |     OSTop: [-2] [15 -> -1]                                  |
+|     OSTop: [4] [9 -> -1]                                    |      |     LriStored: []                                           |
 |     LriStored: []                                           |      |   - Field(PostfixExpr::op)                                  |
 |   > ReopenObject()                                          |      |                                                             |
 |                                                             |      |     CSTop: [6] [12 -> 6]                                    |
@@ -461,7 +491,7 @@
 | [RETURN STACK]:                                             |      |       objRefs: 6                                            |
 |   [7][6]: Exp -> [16][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |      |                                                             |
 |   [5][0]: Exp1 -> [31][Exp2]<< !Exp1 @ >>                   |      |     CSTop: [6, 4] [6 -> 5]                                  |
-|   [4][0]: Exp2 -> [40][Exp]<< !Exp2 @ >>                    |      |     OSTop: [6] [12 -> -1]                                   |
+|   [4][0]: Exp2 -> [40][Exp]<< !Exp2 @ >>                    |      |     OSTop: [6] [16 -> -1]                                   |
 |   [0][0]: Exp -> [43][Module]< Exp @ >                      |      |     LriStored: []                                           |
 | [PREDECESSORS 19-19]: [19]                                  |      |   > ReopenObject()                                          |
 | [SUCCESORS 20-20]: [20]                                     |      |                                                             |
@@ -496,7 +526,7 @@
 +--------------------------------------------+
 | [21]: <Ending>                             |
 |   TraceExec: [18]                          |
-|   InsExec: [39:2]                          |
+|   InsExec: [47:2]                          |
 |   ForwardTrace: 20                         |
 | [16][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |
 | [AST-INSTRUCTIONS]:                        |
@@ -507,7 +537,7 @@
 |       objRefs: 6, 4                        |
 |                                            |
 |     CSTop: [2] [5 -> 2]                    |
-|     OSTop: [6, 4] [13 -> -1]               |
+|     OSTop: [6, 4] [17 -> -1]               |
 |     LriStored: []                          |
 |   > Field(CallExpr::args)                  |
 |                                            |
@@ -547,72 +577,72 @@
  +
  |
 [0]
-++===============================================================++
-|| [28]: {ID} b                                                  ||
-||   TraceExec: [20]                                             ||
-||   InsExec: [41:6]                                             ||
-||   ForwardTrace: 20                                            ||
-|| [7][Exp0]< ID @ >                                             ||
-|| [AST-INSTRUCTIONS]:                                           ||
-||     CSTop: [2] [5 -> 2]                                       ||
-||     OSTop: []                                                 ||
-||     LriStored: []                                             ||
-||   - DelayFieldAssignment()                                    ||
-||       objRefs: 10, 8                                          ||
-||       eoInsRefs: 41@0                                         ||
-||                                                               ||
-||     CSTop: [10, 8] [13 -> 5]                                  ||
-||     OSTop: []                                                 ||
-||     LriStored: []                                             ||
-||   - DelayFieldAssignment()                                    ||
-||       objRefs: 7                                              ||
-||       eoInsRefs: 32@0, 31@0                                   ||
-||                                                               ||
-||     CSTop: [7] [14 -> 13]                                     ||
-||     OSTop: []                                                 ||
-||     LriStored: []                                             ||
-||   - DelayFieldAssignment()                                    ||
-||       objRefs: 7                                              ||
-||       eoInsRefs: 30@0                                         ||
-||                                                               ||
-||     CSTop: [7] [15 -> 14]                                     ||
-||     OSTop: []                                                 ||
-||     LriStored: []                                             ||
-||   - BeginObject(RefExpr)                                      ||
-||       obj:7, new:28@3 dfas:[28@1, 28@2]                       ||
-||       eoInsRefs: 29@0                                         ||
-||                                                               ||
-||     CSTop: [7] [16 -> 15]                                     ||
-||     OSTop: []                                                 ||
-||     LriStored: []                                             ||
-||   + Token()                                                   ||
-||                                                               ||
-||     CSTop: [7] [16 -> 15]                                     ||
-||     OSTop: [-2] [14 -> -1]                                    ||
-||     LriStored: []                                             ||
-||   + Field(RefExpr::name)                                      ||
-||                                                               ||
-||     CSTop: [7] [16 -> 15]                                     ||
-||     OSTop: []                                                 ||
-||     LriStored: []                                             ||
-|| [RETURN STACK]:                                               ||
-||   [20][26]: Exp0 -> [18][Exp1]<< !Exp0 @ >>                   ||
-||   [19][26]: Exp1 -> [31][Exp2]<< !Exp1 @ >>                   ||
-||   [18][26]: Exp2 -> [40][Exp]<< !Exp2 @ >>                    ||
-||   [14][26]: Exp -> [16][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > ||
-||   [5][0]: Exp1 -> [31][Exp2]<< !Exp1 @ >>                     ||
-||   [4][0]: Exp2 -> [40][Exp]<< !Exp2 @ >>                      ||
-||   [0][0]: Exp -> [43][Module]< Exp @ >                        ||
-|| [PREDECESSORS 26-26]: [26]                                    ||
-|| [SUCCESORS 29-29]: [29]                                       ||
-++===============================================================++
+++=====================================================================++
+|| [28]: {ID} b                                                        ||
+||   TraceExec: [20]                                                   ||
+||   InsExec: [49:6]                                                   ||
+||   ForwardTrace: 20                                                  ||
+|| [7][Exp0]< ID @ >                                                   ||
+|| [AST-INSTRUCTIONS]:                                                 ||
+||     CSTop: [2] [5 -> 2]                                             ||
+||     OSTop: []                                                       ||
+||     LriStored: []                                                   ||
+||   - DelayFieldAssignment()                                          ||
+||       objRefs: 10, 8                                                ||
+||       eoInsRefs: 41@0                                               ||
+||                                                                     ||
+||     CSTop: [10, 8] [13 -> 5]                                        ||
+||     OSTop: []                                                       ||
+||     LriStored: []                                                   ||
+||   - DelayFieldAssignment()                                          ||
+||       objRefs: 7                                                    ||
+||       eoInsRefs: 32@0, 31@0                                         ||
+||                                                                     ||
+||     CSTop: [7] [14 -> 13]                                           ||
+||     OSTop: []                                                       ||
+||     LriStored: []                                                   ||
+||   - DelayFieldAssignment()                                          ||
+||       objRefs: 7                                                    ||
+||       eoInsRefs: 30@0                                               ||
+||                                                                     ||
+||     CSTop: [7] [15 -> 14]                                           ||
+||     OSTop: []                                                       ||
+||     LriStored: []                                                   ||
+||   - BeginObject(RefExpr)                                            ||
+||       obj:7, new:28@3, top:28@1 injectInto:[9, 8] dfas:[28@1, 28@2] ||
+||       eoInsRefs: 29@0                                               ||
+||                                                                     ||
+||     CSTop: [7] [16 -> 15]                                           ||
+||     OSTop: []                                                       ||
+||     LriStored: []                                                   ||
+||   + Token()                                                         ||
+||                                                                     ||
+||     CSTop: [7] [16 -> 15]                                           ||
+||     OSTop: [-2] [18 -> -1]                                          ||
+||     LriStored: []                                                   ||
+||   + Field(RefExpr::name)                                            ||
+||                                                                     ||
+||     CSTop: [7] [16 -> 15]                                           ||
+||     OSTop: []                                                       ||
+||     LriStored: []                                                   ||
+|| [RETURN STACK]:                                                     ||
+||   [20][26]: Exp0 -> [18][Exp1]<< !Exp0 @ >>                         ||
+||   [19][26]: Exp1 -> [31][Exp2]<< !Exp1 @ >>                         ||
+||   [18][26]: Exp2 -> [40][Exp]<< !Exp2 @ >>                          ||
+||   [14][26]: Exp -> [16][Exp1]< Exp1 "(" { Exp @ ; "," } ")" >       ||
+||   [5][0]: Exp1 -> [31][Exp2]<< !Exp1 @ >>                           ||
+||   [4][0]: Exp2 -> [40][Exp]<< !Exp2 @ >>                            ||
+||   [0][0]: Exp -> [43][Module]< Exp @ >                              ||
+|| [PREDECESSORS 26-26]: [26]                                          ||
+|| [SUCCESORS 29-29]: [29]                                             ||
+++=====================================================================++
 |
 +
 |
 +---------------------------------------------------------------+
 | [29]: <Ending>                                                |
 |   TraceExec: [21]                                             |
-|   InsExec: [47:2]                                             |
+|   InsExec: [55:2]                                             |
 |   ForwardTrace: 20                                            |
 | [18][Exp1]<< !Exp0 @ >>                                       |
 | [AST-INSTRUCTIONS]:                                           |
@@ -623,7 +653,7 @@
 |       objRefs: 7                                              |
 |                                                               |
 |     CSTop: [7] [15 -> 14]                                     |
-|     OSTop: [7] [15 -> -1]                                     |
+|     OSTop: [7] [19 -> -1]                                     |
 |     LriStored: []                                             |
 |   > ReopenObject()                                            |
 |                                                               |
@@ -646,7 +676,7 @@
 +---------------------------------------------------------------+
 | [30]: <Ending>                                                |
 |   TraceExec: [22]                                             |
-|   InsExec: [49:2]                                             |
+|   InsExec: [57:2]                                             |
 |   ForwardTrace: 20                                            |
 | [31][Exp2]<< !Exp1 @ >>                                       |
 | [AST-INSTRUCTIONS]:                                           |
@@ -657,7 +687,7 @@
 |       objRefs: 7                                              |
 |                                                               |
 |     CSTop: [7] [14 -> 13]                                     |
-|     OSTop: [7] [16 -> -1]                                     |
+|     OSTop: [7] [20 -> -1]                                     |
 |     LriStored: []                                             |
 |   > ReopenObject()                                            |
 |                                                               |
@@ -674,48 +704,58 @@
 | [SUCCESORS 31-32]: [31][32]                                   |
 +---------------------------------------------------------------+
 |
-+----------------------------------------------------------------------+
-|                                                                      |
-+---------------------------------------------------------------+      +---------------------------------------------------------------+
-| [31]: <Leftrec>                                               |      | [32]: <Leftrec>                                               |
-|   TraceExec: [23]                                             |      |   TraceExec: [27]                                             |
-|   InsExec: [51:3]                                             |      |   InsExec: [56:3]                                             |
-|   ForwardTrace: 31                                            |      |   ForwardTrace: 32                                            |
-| [29][Exp2]< Exp2 @ "-" "-" >                                  |      | [30][Exp2]< Exp2 @ "-" >                                      |
-| [AST-INSTRUCTIONS]:                                           |      | [AST-INSTRUCTIONS]:                                           |
-|     CSTop: [7] [14 -> 13]                                     |      |     CSTop: [7] [14 -> 13]                                     |
-|     OSTop: []                                                 |      |     OSTop: []                                                 |
-|     LriStored: []                                             |      |     LriStored: []                                             |
-|   - EndObject()                                               |      |   - EndObject()                                               |
-|       objRefs: 7                                              |      |       objRefs: 7                                              |
-|                                                               |      |                                                               |
-|     CSTop: [10, 8] [13 -> 5]                                  |      |     CSTop: [10, 8] [13 -> 5]                                  |
-|     OSTop: [7] [17 -> -1]                                     |      |     OSTop: [7] [19 -> -1]                                     |
-|     LriStored: []                                             |      |     LriStored: []                                             |
-|   - BeginObjectLeftRecursive(DecrementExpr)                   |      |   - BeginObjectLeftRecursive(PostfixExpr)                     |
-|       obj:8, new:31@1 lrs:[7] dfas:[28@0]                     |      |       obj:9, new:32@1 lrs:[7]                                 |
-|       eoInsRefs: 45@0                                         |      |       eoInsRefs: 37@2                                         |
-|                                                               |      |                                                               |
-|     CSTop: [8] [17 -> 13]                                     |      |     CSTop: [9] [18 -> 13]                                     |
-|     OSTop: [7] [17 -> -1]                                     |      |     OSTop: [7] [19 -> -1]                                     |
-|     LriStored: []                                             |      |     LriStored: []                                             |
-|   + Field(DecrementExpr::expr)                                |      |   + Field(PostfixExpr::expr)                                  |
-|                                                               |      |                                                               |
-|     CSTop: [8] [17 -> 13]                                     |      |     CSTop: [9] [18 -> 13]                                     |
-|     OSTop: []                                                 |      |     OSTop: []                                                 |
-|     LriStored: []                                             |      |     LriStored: []                                             |
-| [RETURN STACK]:                                               |      | [RETURN STACK]:                                               |
-|   [18][26]: Exp2 -> [40][Exp]<< !Exp2 @ >>                    |      |   [18][26]: Exp2 -> [40][Exp]<< !Exp2 @ >>                    |
-|   [14][26]: Exp -> [16][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |      |   [14][26]: Exp -> [16][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |
-|   [5][0]: Exp1 -> [31][Exp2]<< !Exp1 @ >>                     |      |   [5][0]: Exp1 -> [31][Exp2]<< !Exp1 @ >>                     |
-|   [4][0]: Exp2 -> [40][Exp]<< !Exp2 @ >>                      |      |   [4][0]: Exp2 -> [40][Exp]<< !Exp2 @ >>                      |
-|   [0][0]: Exp -> [43][Module]< Exp @ >                        |      |   [0][0]: Exp -> [43][Module]< Exp @ >                        |
-| [PREDECESSORS 30-30]: [30]                                    |      | [PREDECESSORS 30-30]: [30]                                    |
-| [SUCCESORS 34-34]: [34]                                       |      | [SUCCESORS 35-35]: [35]                                       |
-+---------------------------------------------------------------+      +---------------------------------------------------------------+
-[0]                                                                    [1]
- |                                                                      |
- +                                                                      +
++----------------------------------------------------------------------------+
+|                                                                            |
++---------------------------------------------------------------+            +---------------------------------------------------------------+
+| [31]: <Leftrec>                                               |            | [32]: <Leftrec>                                               |
+|   TraceExec: [23]                                             |            |   TraceExec: [27]                                             |
+|   InsExec: [59:5]                                             |            |   InsExec: [66:5]                                             |
+|   ForwardTrace: 31                                            |            |   ForwardTrace: 32                                            |
+| [29][Exp2]< Exp2 @ "-" "-" >                                  |            | [30][Exp2]< Exp2 @ "-" >                                      |
+| [AST-INSTRUCTIONS]:                                           |            | [AST-INSTRUCTIONS]:                                           |
+|     CSTop: [7] [14 -> 13]                                     |            |     CSTop: [7] [14 -> 13]                                     |
+|     OSTop: []                                                 |            |     OSTop: []                                                 |
+|     LriStored: []                                             |            |     LriStored: []                                             |
+|   - EndObject()                                               |            |   - EndObject()                                               |
+|       objRefs: 7                                              |            |       objRefs: 7                                              |
+|                                                               |            |                                                               |
+|     CSTop: [10, 8] [13 -> 5]                                  |            |     CSTop: [10, 8] [13 -> 5]                                  |
+|     OSTop: [7] [21 -> -1]                                     |            |     OSTop: [7] [24 -> -1]                                     |
+|     LriStored: []                                             |            |     LriStored: []                                             |
+|   - LriStore()                                                |            |   - LriStore()                                                |
+|                                                               |            |                                                               |
+|     CSTop: [10, 8] [13 -> 5]                                  |            |     CSTop: [10, 8] [13 -> 5]                                  |
+|     OSTop: []                                                 |            |     OSTop: []                                                 |
+|     LriStored: [7]                                            |            |     LriStored: [7]                                            |
+|   - BeginObject(DecrementExpr)                                |            |   - BeginObject(PostfixExpr)                                  |
+|       obj:8, new:31@2, top:28@0 dfas:[28@0]                   |            |       obj:9, new:32@2, top:28@1 injectInto:[10]               |
+|       eoInsRefs: 45@0                                         |            |       eoInsRefs: 37@2                                         |
+|                                                               |            |                                                               |
+|     CSTop: [8] [17 -> 13]                                     |            |     CSTop: [9] [18 -> 13]                                     |
+|     OSTop: []                                                 |            |     OSTop: []                                                 |
+|     LriStored: [7]                                            |            |     LriStored: [7]                                            |
+|   - LriFetch()                                                |            |   - LriFetch()                                                |
+|                                                               |            |                                                               |
+|     CSTop: [8] [17 -> 13]                                     |            |     CSTop: [9] [18 -> 13]                                     |
+|     OSTop: [7] [22 -> -1]                                     |            |     OSTop: [7] [25 -> -1]                                     |
+|     LriStored: []                                             |            |     LriStored: []                                             |
+|   + Field(DecrementExpr::expr)                                |            |   + Field(PostfixExpr::expr)                                  |
+|                                                               |            |                                                               |
+|     CSTop: [8] [17 -> 13]                                     |            |     CSTop: [9] [18 -> 13]                                     |
+|     OSTop: []                                                 |            |     OSTop: []                                                 |
+|     LriStored: []                                             |            |     LriStored: []                                             |
+| [RETURN STACK]:                                               |            | [RETURN STACK]:                                               |
+|   [18][26]: Exp2 -> [40][Exp]<< !Exp2 @ >>                    |            |   [18][26]: Exp2 -> [40][Exp]<< !Exp2 @ >>                    |
+|   [14][26]: Exp -> [16][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |            |   [14][26]: Exp -> [16][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |
+|   [5][0]: Exp1 -> [31][Exp2]<< !Exp1 @ >>                     |            |   [5][0]: Exp1 -> [31][Exp2]<< !Exp1 @ >>                     |
+|   [4][0]: Exp2 -> [40][Exp]<< !Exp2 @ >>                      |            |   [4][0]: Exp2 -> [40][Exp]<< !Exp2 @ >>                      |
+|   [0][0]: Exp -> [43][Module]< Exp @ >                        |            |   [0][0]: Exp -> [43][Module]< Exp @ >                        |
+| [PREDECESSORS 30-30]: [30]                                    |            | [PREDECESSORS 30-30]: [30]                                    |
+| [SUCCESORS 34-34]: [34]                                       |            | [SUCCESORS 35-35]: [35]                                       |
++---------------------------------------------------------------+            +---------------------------------------------------------------+
+[0]                                                                          [1]
+ |                                                                            |
+ +                                                                      +-----+
  |                                                                      |
 [0]                                                                    [1]
 ++===============================================================++    ++===============================================================++
@@ -742,7 +782,7 @@
 |                                                                      +---------------------------------------------------------------+
 |                                                                      | [37]: <Leftrec>                                               |
 |                                                                      |   TraceExec: [29]                                             |
-|                                                                      |   InsExec: [59:5]                                             |
+|                                                                      |   InsExec: [71:7]                                             |
 |                                                                      |   ForwardTrace: 32                                            |
 |                                                                      | [30][Exp2]< Exp2 @ "-" >                                      |
 |                                                                      | [AST-INSTRUCTIONS]:                                           |
@@ -752,7 +792,7 @@
 |                                                                      |   - EnumItem(1)                                               |
 |                                                                      |                                                               |
 |                                                                      |     CSTop: [9] [18 -> 13]                                     |
-|                                                                      |     OSTop: [-2] [20 -> -1]                                    |
+|                                                                      |     OSTop: [-2] [26 -> -1]                                    |
 |                                                                      |     LriStored: []                                             |
 |                                                                      |   - Field(PostfixExpr::op)                                    |
 |                                                                      |                                                               |
@@ -763,14 +803,24 @@
 |                                                                      |       objRefs: 9                                              |
 |                                                                      |                                                               |
 |                                                                      |     CSTop: [10, 8] [13 -> 5]                                  |
-|                                                                      |     OSTop: [9] [21 -> -1]                                     |
+|                                                                      |     OSTop: [9] [27 -> -1]                                     |
 |                                                                      |     LriStored: []                                             |
-|                                                                      |   - BeginObjectLeftRecursive(PostfixExpr)                     |
-|                                                                      |       obj:10, new:37@3 lrs:[9] dfas:[28@0]                    |
+|                                                                      |   - LriStore()                                                |
+|                                                                      |                                                               |
+|                                                                      |     CSTop: [10, 8] [13 -> 5]                                  |
+|                                                                      |     OSTop: []                                                 |
+|                                                                      |     LriStored: [9]                                            |
+|                                                                      |   - BeginObject(PostfixExpr)                                  |
+|                                                                      |       obj:10, new:37@4, top:28@0 dfas:[28@0]                  |
 |                                                                      |       eoInsRefs: 44@2                                         |
 |                                                                      |                                                               |
 |                                                                      |     CSTop: [10] [19 -> 13]                                    |
-|                                                                      |     OSTop: [9] [21 -> -1]                                     |
+|                                                                      |     OSTop: []                                                 |
+|                                                                      |     LriStored: [9]                                            |
+|                                                                      |   - LriFetch()                                                |
+|                                                                      |                                                               |
+|                                                                      |     CSTop: [10] [19 -> 13]                                    |
+|                                                                      |     OSTop: [9] [28 -> -1]                                     |
 |                                                                      |     LriStored: []                                             |
 |                                                                      |   + Field(PostfixExpr::expr)                                  |
 |                                                                      |                                                               |
@@ -815,7 +865,7 @@
 +---------------------------------------------------------------+      +---------------------------------------------------------------+
 | [45]: <Ending>                                                |      | [44]: <Ending>                                                |
 |   TraceExec: [26]                                             |      |   TraceExec: [31]                                             |
-|   InsExec: [54:2]                                             |      |   InsExec: [64:4]                                             |
+|   InsExec: [64:2]                                             |      |   InsExec: [78:4]                                             |
 |   ForwardTrace: 31                                            |      |   ForwardTrace: 32                                            |
 | [40][Exp]<< !Exp2 @ >>                                        |      | [40][Exp]<< !Exp2 @ >>                                        |
 | [AST-INSTRUCTIONS]:                                           |      | [AST-INSTRUCTIONS]:                                           |
@@ -825,8 +875,8 @@
 |   - EndObject()                                               |      |   - EnumItem(1)                                               |
 |       objRefs: 8                                              |      |                                                               |
 |                                                               |      |     CSTop: [10] [19 -> 13]                                    |
-|     CSTop: [10, 8] [13 -> 5]                                  |      |     OSTop: [-2] [22 -> -1]                                    |
-|     OSTop: [8] [18 -> -1]                                     |      |     LriStored: []                                             |
+|     CSTop: [10, 8] [13 -> 5]                                  |      |     OSTop: [-2] [29 -> -1]                                    |
+|     OSTop: [8] [23 -> -1]                                     |      |     LriStored: []                                             |
 |     LriStored: []                                             |      |   - Field(PostfixExpr::op)                                    |
 |   > ReopenObject()                                            |      |                                                               |
 |                                                               |      |     CSTop: [10] [19 -> 13]                                    |
@@ -836,7 +886,7 @@
 | [RETURN STACK]:                                               |      |       objRefs: 10                                             |
 |   [14][26]: Exp -> [16][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |      |                                                               |
 |   [5][0]: Exp1 -> [31][Exp2]<< !Exp1 @ >>                     |      |     CSTop: [10, 8] [13 -> 5]                                  |
-|   [4][0]: Exp2 -> [40][Exp]<< !Exp2 @ >>                      |      |     OSTop: [10] [23 -> -1]                                    |
+|   [4][0]: Exp2 -> [40][Exp]<< !Exp2 @ >>                      |      |     OSTop: [10] [30 -> -1]                                    |
 |   [0][0]: Exp -> [43][Module]< Exp @ >                        |      |     LriStored: []                                             |
 | [PREDECESSORS 39-39]: [39]                                    |      |   > ReopenObject()                                            |
 | [SUCCESORS 40-40]: [40]                                       |      |                                                               |
@@ -871,7 +921,7 @@
 +--------------------------------------------+
 | [41]: <Ending>                             |
 |   TraceExec: [33]                          |
-|   InsExec: [68:2]                          |
+|   InsExec: [82:2]                          |
 |   ForwardTrace: 40                         |
 | [16][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |
 | [AST-INSTRUCTIONS]:                        |
@@ -882,7 +932,7 @@
 |       objRefs: 10, 8                       |
 |                                            |
 |     CSTop: [2] [5 -> 2]                    |
-|     OSTop: [10, 8] [24 -> -1]              |
+|     OSTop: [10, 8] [31 -> -1]              |
 |     LriStored: []                          |
 |   > Field(CallExpr::args)                  |
 |                                            |
@@ -923,7 +973,7 @@
 +------------------------------------------+
 | [47]: <Ending>                           |
 |   TraceExec: [35]                        |
-|   InsExec: [70:2]                        |
+|   InsExec: [84:2]                        |
 |   ForwardTrace: 40                       |
 | [31][Exp2]<< !Exp1 @ >>                  |
 | [AST-INSTRUCTIONS]:                      |
@@ -934,7 +984,7 @@
 |       objRefs: 2                         |
 |                                          |
 |     CSTop: [2] [2 -> 1]                  |
-|     OSTop: [2] [25 -> -1]                |
+|     OSTop: [2] [32 -> -1]                |
 |     LriStored: []                        |
 |   > ReopenObject()                       |
 |                                          |
@@ -953,7 +1003,7 @@
 +----------------------------------------+
 | [48]: <Ending>                         |
 |   TraceExec: [36]                      |
-|   InsExec: [72:2]                      |
+|   InsExec: [86:2]                      |
 |   ForwardTrace: 40                     |
 | [40][Exp]<< !Exp2 @ >>                 |
 | [AST-INSTRUCTIONS]:                    |
@@ -964,7 +1014,7 @@
 |       objRefs: 2                       |
 |                                        |
 |     CSTop: [2] [1 -> 0]                |
-|     OSTop: [2] [26 -> -1]              |
+|     OSTop: [2] [33 -> -1]              |
 |     LriStored: []                      |
 |   > ReopenObject()                     |
 |                                        |
@@ -982,7 +1032,7 @@
 +----------------------------+
 | [49]: <Ending>             |
 |   TraceExec: [37]          |
-|   InsExec: [74:1]          |
+|   InsExec: [88:1]          |
 |   ForwardTrace: 40         |
 | [43][Module]< Exp @ >      |
 | [AST-INSTRUCTIONS]:        |
@@ -993,7 +1043,7 @@
 |       objRefs: 2           |
 |                            |
 |     CSTop: [0] [0 -> -1]   |
-|     OSTop: [2] [27 -> -1]  |
+|     OSTop: [2] [34 -> -1]  |
 |     LriStored: []          |
 | [PREDECESSORS 48-48]: [48] |
 | [SUCCESORS 50-50]: [50]    |
@@ -1004,12 +1054,12 @@
 +----------------------------+
 | [50]: <Ending>             |
 |   TraceExec: [38]          |
-|   InsExec: [75:2]          |
+|   InsExec: [89:2]          |
 |   ForwardTrace: 40         |
 | [42][Module] END [ENDING]  |
 | [AST-INSTRUCTIONS]:        |
 |     CSTop: [0] [0 -> -1]   |
-|     OSTop: [2] [27 -> -1]  |
+|     OSTop: [2] [34 -> -1]  |
 |     LriStored: []          |
 |   - Field(Module::expr)    |
 |                            |
@@ -1020,7 +1070,7 @@
 |       objRefs: 0           |
 |                            |
 |     CSTop: []              |
-|     OSTop: [0] [28 -> -1]  |
+|     OSTop: [0] [35 -> -1]  |
 |     LriStored: []          |
 | [PREDECESSORS 49-49]: [49] |
 +----------------------------+

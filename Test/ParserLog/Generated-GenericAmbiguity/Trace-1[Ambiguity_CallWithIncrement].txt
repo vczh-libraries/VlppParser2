@@ -52,7 +52,9 @@
 | [17][Exp1]< Exp1 @ "(" { Exp ; "," } ")" > |
 | [AST-INSTRUCTIONS]:                        |
 |   - EndObject()                            |
-|   - BeginObjectLeftRecursive(CallExpr)     |
+|   - LriStore()                             |
+|   - BeginObject(CallExpr)                  |
+|   - LriFetch()                             |
 |   + Field(CallExpr::func)                  |
 | [RETURN STACK]:                            |
 |   [5][0]: Exp1 -> [31][Exp2]<< !Exp1 @ >>  |
@@ -148,7 +150,9 @@
 | [27][Exp2]< Exp2 @ "+" "+" >                                |      | [28][Exp2]< Exp2 @ "+" >                                    |
 | [AST-INSTRUCTIONS]:                                         |      | [AST-INSTRUCTIONS]:                                         |
 |   - EndObject()                                             |      |   - EndObject()                                             |
-|   - BeginObjectLeftRecursive(PostfixExpr)                   |      |   - BeginObjectLeftRecursive(PostfixExpr)                   |
+|   - LriStore()                                              |      |   - LriStore()                                              |
+|   - BeginObject(PostfixExpr)                                |      |   - BeginObject(PostfixExpr)                                |
+|   - LriFetch()                                              |      |   - LriFetch()                                              |
 |   + Field(PostfixExpr::expr)                                |      |   + Field(PostfixExpr::expr)                                |
 | [RETURN STACK]:                                             |      | [RETURN STACK]:                                             |
 |   [11][6]: Exp2 -> [40][Exp]<< !Exp2 @ >>                   |      |   [11][6]: Exp2 -> [40][Exp]<< !Exp2 @ >>                   |
@@ -187,7 +191,9 @@
 |                                                                    |   - EnumItem(0)                                             |
 |                                                                    |   - Field(PostfixExpr::op)                                  |
 |                                                                    |   - EndObject()                                             |
-|                                                                    |   - BeginObjectLeftRecursive(PostfixExpr)                   |
+|                                                                    |   - LriStore()                                              |
+|                                                                    |   - BeginObject(PostfixExpr)                                |
+|                                                                    |   - LriFetch()                                              |
 |                                                                    |   + Field(PostfixExpr::expr)                                |
 |                                                                    | [RETURN STACK]:                                             |
 |                                                                    |   [11][6]: Exp2 -> [40][Exp]<< !Exp2 @ >>                   |
@@ -345,7 +351,9 @@
 | [27][Exp2]< Exp2 @ "+" "+" >                                  |      | [28][Exp2]< Exp2 @ "+" >                                      |
 | [AST-INSTRUCTIONS]:                                           |      | [AST-INSTRUCTIONS]:                                           |
 |   - EndObject()                                               |      |   - EndObject()                                               |
-|   - BeginObjectLeftRecursive(PostfixExpr)                     |      |   - BeginObjectLeftRecursive(PostfixExpr)                     |
+|   - LriStore()                                                |      |   - LriStore()                                                |
+|   - BeginObject(PostfixExpr)                                  |      |   - BeginObject(PostfixExpr)                                  |
+|   - LriFetch()                                                |      |   - LriFetch()                                                |
 |   + Field(PostfixExpr::expr)                                  |      |   + Field(PostfixExpr::expr)                                  |
 | [RETURN STACK]:                                               |      | [RETURN STACK]:                                               |
 |   [18][26]: Exp2 -> [40][Exp]<< !Exp2 @ >>                    |      |   [18][26]: Exp2 -> [40][Exp]<< !Exp2 @ >>                    |
@@ -384,7 +392,9 @@
 |                                                                      |   - EnumItem(0)                                               |
 |                                                                      |   - Field(PostfixExpr::op)                                    |
 |                                                                      |   - EndObject()                                               |
-|                                                                      |   - BeginObjectLeftRecursive(PostfixExpr)                     |
+|                                                                      |   - LriStore()                                                |
+|                                                                      |   - BeginObject(PostfixExpr)                                  |
+|                                                                      |   - LriFetch()                                                |
 |                                                                      |   + Field(PostfixExpr::expr)                                  |
 |                                                                      | [RETURN STACK]:                                               |
 |                                                                      |   [18][26]: Exp2 -> [40][Exp]<< !Exp2 @ >>                    |

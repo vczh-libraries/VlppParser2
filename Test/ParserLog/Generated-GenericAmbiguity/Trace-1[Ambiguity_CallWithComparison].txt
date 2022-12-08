@@ -52,7 +52,9 @@
 | [17][Exp1]< Exp1 @ "(" { Exp ; "," } ")" > |
 | [AST-INSTRUCTIONS]:                        |
 |   - EndObject()                            |
-|   - BeginObjectLeftRecursive(CallExpr)     |
+|   - LriStore()                             |
+|   - BeginObject(CallExpr)                  |
+|   - LriFetch()                             |
 |   + Field(CallExpr::func)                  |
 | [RETURN STACK]:                            |
 |   [5][0]: Exp1 -> [31][Exp2]<< !Exp1 @ >>  |
@@ -165,7 +167,9 @@
 |                                                                    | [38][Exp]< Exp @ "<" Exp2 >                                 |
 |                                                                    | [AST-INSTRUCTIONS]:                                         |
 |                                                                    |   - EndObject()                                             |
-|                                                                    |   - BeginObjectLeftRecursive(BinaryExpr)                    |
+|                                                                    |   - LriStore()                                              |
+|                                                                    |   - BeginObject(BinaryExpr)                                 |
+|                                                                    |   - LriFetch()                                              |
 |                                                                    |   + Field(BinaryExpr::left)                                 |
 |                                                                    | [RETURN STACK]:                                             |
 |                                                                    |   [7][6]: Exp -> [16][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |
@@ -435,18 +439,18 @@
 | [5][Exp0]< ID "<" { Exp @ ; "," } ">" >                     |      | [39][Exp]< Exp @ ">" Exp2 >                                   |
 | [AST-INSTRUCTIONS]:                                         |      | [AST-INSTRUCTIONS]:                                           |
 |   - EndObject()                                             |      |   - EndObject()                                               |
-|   > Field(GenericExpr::args)                                |      |   - BeginObjectLeftRecursive(BinaryExpr)                      |
-| [RETURN STACK]:                                             |      |   + Field(BinaryExpr::left)                                   |
-|   [10][6]: Exp0 -> [18][Exp1]<< !Exp0 @ >>                  |      | [RETURN STACK]:                                               |
-|   [9][6]: Exp1 -> [31][Exp2]<< !Exp1 @ >>                   |      |   [33][29]: Exp -> [16][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |
-|   [8][6]: Exp2 -> [40][Exp]<< !Exp2 @ >>                    |      |   [5][0]: Exp1 -> [31][Exp2]<< !Exp1 @ >>                     |
-|   [7][6]: Exp -> [16][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |      |   [4][0]: Exp2 -> [40][Exp]<< !Exp2 @ >>                      |
-|   [5][0]: Exp1 -> [31][Exp2]<< !Exp1 @ >>                   |      |   [0][0]: Exp -> [43][Module]< Exp @ >                        |
-|   [4][0]: Exp2 -> [40][Exp]<< !Exp2 @ >>                    |      | [PREDECESSORS 41-41]: [41]                                    |
-|   [0][0]: Exp -> [43][Module]< Exp @ >                      |      | [SUCCESORS 49-49]: [49]                                       |
-| [PREDECESSORS 34-34]: [34]                                  |      +---------------------------------------------------------------+
-| [SUCCESORS 45-45]: [45]                                     |      |
-+-------------------------------------------------------------+      |
+|   > Field(GenericExpr::args)                                |      |   - LriStore()                                                |
+| [RETURN STACK]:                                             |      |   - BeginObject(BinaryExpr)                                   |
+|   [10][6]: Exp0 -> [18][Exp1]<< !Exp0 @ >>                  |      |   - LriFetch()                                                |
+|   [9][6]: Exp1 -> [31][Exp2]<< !Exp1 @ >>                   |      |   + Field(BinaryExpr::left)                                   |
+|   [8][6]: Exp2 -> [40][Exp]<< !Exp2 @ >>                    |      | [RETURN STACK]:                                               |
+|   [7][6]: Exp -> [16][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |      |   [33][29]: Exp -> [16][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |
+|   [5][0]: Exp1 -> [31][Exp2]<< !Exp1 @ >>                   |      |   [5][0]: Exp1 -> [31][Exp2]<< !Exp1 @ >>                     |
+|   [4][0]: Exp2 -> [40][Exp]<< !Exp2 @ >>                    |      |   [4][0]: Exp2 -> [40][Exp]<< !Exp2 @ >>                      |
+|   [0][0]: Exp -> [43][Module]< Exp @ >                      |      |   [0][0]: Exp -> [43][Module]< Exp @ >                        |
+| [PREDECESSORS 34-34]: [34]                                  |      | [PREDECESSORS 41-41]: [41]                                    |
+| [SUCCESORS 45-45]: [45]                                     |      | [SUCCESORS 49-49]: [49]                                       |
++-------------------------------------------------------------+      +---------------------------------------------------------------+
 [0]                                                                  [1]
  |                                                                    |
  +                                                                    +
@@ -494,7 +498,9 @@
 | [17][Exp1]< Exp1 @ "(" { Exp ; "," } ")" >                  |      |
 | [AST-INSTRUCTIONS]:                                         |      |
 |   - EndObject()                                             |      |
-|   - BeginObjectLeftRecursive(CallExpr)                      |      |
+|   - LriStore()                                              |      |
+|   - BeginObject(CallExpr)                                   |      |
+|   - LriFetch()                                              |      |
 |   + Field(CallExpr::func)                                   |      |
 | [RETURN STACK]:                                             |      |
 |   [9][6]: Exp1 -> [31][Exp2]<< !Exp1 @ >>                   |      |

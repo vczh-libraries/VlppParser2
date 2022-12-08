@@ -2658,7 +2658,9 @@
 | [213][_ExpPrimitive]< _ExpPrimitive @ "." NAME >                                                                                                  |
 | [AST-INSTRUCTIONS]:                                                                                                                               |
 |   - EndObject()                                                                                                                                   |
-|   - BeginObjectLeftRecursive(MemberExpression)                                                                                                    |
+|   - LriStore()                                                                                                                                    |
+|   - BeginObject(MemberExpression)                                                                                                                 |
+|   - LriFetch()                                                                                                                                    |
 |   + Field(MemberExpression::parent)                                                                                                               |
 | [RETURN STACK]:                                                                                                                                   |
 |   [94][113]: _ExpPrimitive -> [245][_Exp0]<< !_ExpPrimitive @ >>                                                                                  |
@@ -2982,7 +2984,9 @@
 | [302][_Exp5]< _Exp5 @ "!=" _Exp4 >                                                                                                                |
 | [AST-INSTRUCTIONS]:                                                                                                                               |
 |   - EndObject()                                                                                                                                   |
-|   - BeginObjectLeftRecursive(BinaryExpression)                                                                                                    |
+|   - LriStore()                                                                                                                                    |
+|   - BeginObject(BinaryExpression)                                                                                                                 |
+|   - LriFetch()                                                                                                                                    |
 |   + Field(BinaryExpression::first)                                                                                                                |
 | [RETURN STACK]:                                                                                                                                   |
 |   [88][113]: _Exp5 -> [314][_Exp6]<< !_Exp5 @ >>                                                                                                  |
@@ -4720,7 +4724,9 @@
 | [213][_ExpPrimitive]< _ExpPrimitive @ "." NAME >                                                                                |
 | [AST-INSTRUCTIONS]:                                                                                                             |
 |   - EndObject()                                                                                                                 |
-|   - BeginObjectLeftRecursive(MemberExpression)                                                                                  |
+|   - LriStore()                                                                                                                  |
+|   - BeginObject(MemberExpression)                                                                                               |
+|   - LriFetch()                                                                                                                  |
 |   + Field(MemberExpression::parent)                                                                                             |
 | [RETURN STACK]:                                                                                                                 |
 |   [143][190]: _ExpPrimitive -> [245][_Exp0]<< !_ExpPrimitive @ >>                                                               |
@@ -5080,7 +5086,9 @@
 | [302][_Exp5]< _Exp5 @ "!=" _Exp4 >                                                                                              |
 | [AST-INSTRUCTIONS]:                                                                                                             |
 |   - EndObject()                                                                                                                 |
-|   - BeginObjectLeftRecursive(BinaryExpression)                                                                                  |
+|   - LriStore()                                                                                                                  |
+|   - BeginObject(BinaryExpression)                                                                                               |
+|   - LriFetch()                                                                                                                  |
 |   + Field(BinaryExpression::first)                                                                                              |
 | [RETURN STACK]:                                                                                                                 |
 |   [137][190]: _Exp5 -> [314][_Exp6]<< !_Exp5 @ >>                                                                               |
@@ -8054,7 +8062,9 @@
 | [302][_Exp5]< _Exp5 @ "!=" _Exp4 >                                                                                              |
 | [AST-INSTRUCTIONS]:                                                                                                             |
 |   - EndObject()                                                                                                                 |
-|   - BeginObjectLeftRecursive(BinaryExpression)                                                                                  |
+|   - LriStore()                                                                                                                  |
+|   - BeginObject(BinaryExpression)                                                                                               |
+|   - LriFetch()                                                                                                                  |
 |   + Field(BinaryExpression::first)                                                                                              |
 | [RETURN STACK]:                                                                                                                 |
 |   [203][292]: _Exp5 -> [314][_Exp6]<< !_Exp5 @ >>                                                                               |
@@ -10095,7 +10105,9 @@
 | [210][_ExpPrimitive]< _ExpPrimitive @ "(" [ _Expression { "," _Expression } ] ")" >                                        |
 | [AST-INSTRUCTIONS]:                                                                                                        |
 |   - EndObject()                                                                                                            |
-|   - BeginObjectLeftRecursive(CallExpression)                                                                               |
+|   - LriStore()                                                                                                             |
+|   - BeginObject(CallExpression)                                                                                            |
+|   - LriFetch()                                                                                                             |
 |   + Field(CallExpression::function)                                                                                        |
 | [RETURN STACK]:                                                                                                            |
 |   [259][354]: _ExpPrimitive -> [245][_Exp0]<< !_ExpPrimitive @ >>                                                          |
@@ -18255,7 +18267,9 @@
 | [45][_Type]< _Type @ "^" >                                                                                                 |
 | [AST-INSTRUCTIONS]:                                                                                                        |
 |   - EndObject()                                                                                                            |
-|   - BeginObjectLeftRecursive(SharedPointerType)                                                                            |
+|   - LriStore()                                                                                                             |
+|   - BeginObject(SharedPointerType)                                                                                         |
+|   - LriFetch()                                                                                                             |
 |   + Field(SharedPointerType::element)                                                                                      |
 | [RETURN STACK]:                                                                                                            |
 |   [489][670]: _Type -> [131][_ExpPrimitive]< "new" _Type @ "(" { _Expression ; "," } ")" >                                 |
@@ -19783,7 +19797,9 @@
 | [274][_Exp3]< _Exp3 @ "&" _Exp2 >                                                                                          |
 | [AST-INSTRUCTIONS]:                                                                                                        |
 |   - EndObject()                                                                                                            |
-|   - BeginObjectLeftRecursive(BinaryExpression)                                                                             |
+|   - LriStore()                                                                                                             |
+|   - BeginObject(BinaryExpression)                                                                                          |
+|   - LriFetch()                                                                                                             |
 |   + Field(BinaryExpression::first)                                                                                         |
 | [RETURN STACK]:                                                                                                            |
 |   [514][723]: _Exp3 -> [287][_Exp4]<< !_Exp3 @ >>                                                                          |
@@ -20816,7 +20832,9 @@
 | [45][_Type]< _Type @ "^" >                                                                                                 |
 | [AST-INSTRUCTIONS]:                                                                                                        |
 |   - EndObject()                                                                                                            |
-|   - BeginObjectLeftRecursive(SharedPointerType)                                                                            |
+|   - LriStore()                                                                                                             |
+|   - BeginObject(SharedPointerType)                                                                                         |
+|   - LriFetch()                                                                                                             |
 |   + Field(SharedPointerType::element)                                                                                      |
 | [RETURN STACK]:                                                                                                            |
 |   [585][763]: _Type -> [131][_ExpPrimitive]< "new" _Type @ "(" { _Expression ; "," } ")" >                                 |
@@ -23896,7 +23914,9 @@
 | [274][_Exp3]< _Exp3 @ "&" _Exp2 >                                                                                          |
 | [AST-INSTRUCTIONS]:                                                                                                        |
 |   - EndObject()                                                                                                            |
-|   - BeginObjectLeftRecursive(BinaryExpression)                                                                             |
+|   - LriStore()                                                                                                             |
+|   - BeginObject(BinaryExpression)                                                                                          |
+|   - LriFetch()                                                                                                             |
 |   + Field(BinaryExpression::first)                                                                                         |
 | [RETURN STACK]:                                                                                                            |
 |   [638][847]: _Exp3 -> [287][_Exp4]<< !_Exp3 @ >>                                                                          |
@@ -24929,7 +24949,9 @@
 | [45][_Type]< _Type @ "^" >                                                                                                 |
 | [AST-INSTRUCTIONS]:                                                                                                        |
 |   - EndObject()                                                                                                            |
-|   - BeginObjectLeftRecursive(SharedPointerType)                                                                            |
+|   - LriStore()                                                                                                             |
+|   - BeginObject(SharedPointerType)                                                                                         |
+|   - LriFetch()                                                                                                             |
 |   + Field(SharedPointerType::element)                                                                                      |
 | [RETURN STACK]:                                                                                                            |
 |   [709][887]: _Type -> [131][_ExpPrimitive]< "new" _Type @ "(" { _Expression ; "," } ")" >                                 |
@@ -28009,7 +28031,9 @@
 | [274][_Exp3]< _Exp3 @ "&" _Exp2 >                                                                                          |
 | [AST-INSTRUCTIONS]:                                                                                                        |
 |   - EndObject()                                                                                                            |
-|   - BeginObjectLeftRecursive(BinaryExpression)                                                                             |
+|   - LriStore()                                                                                                             |
+|   - BeginObject(BinaryExpression)                                                                                          |
+|   - LriFetch()                                                                                                             |
 |   + Field(BinaryExpression::first)                                                                                         |
 | [RETURN STACK]:                                                                                                            |
 |   [762][971]: _Exp3 -> [287][_Exp4]<< !_Exp3 @ >>                                                                          |
@@ -29042,7 +29066,9 @@
 | [45][_Type]< _Type @ "^" >                                                                                                 |
 | [AST-INSTRUCTIONS]:                                                                                                        |
 |   - EndObject()                                                                                                            |
-|   - BeginObjectLeftRecursive(SharedPointerType)                                                                            |
+|   - LriStore()                                                                                                             |
+|   - BeginObject(SharedPointerType)                                                                                         |
+|   - LriFetch()                                                                                                             |
 |   + Field(SharedPointerType::element)                                                                                      |
 | [RETURN STACK]:                                                                                                            |
 |   [833][1011]: _Type -> [131][_ExpPrimitive]< "new" _Type @ "(" { _Expression ; "," } ")" >                                |
@@ -32122,7 +32148,9 @@
 | [274][_Exp3]< _Exp3 @ "&" _Exp2 >                                                                                          |
 | [AST-INSTRUCTIONS]:                                                                                                        |
 |   - EndObject()                                                                                                            |
-|   - BeginObjectLeftRecursive(BinaryExpression)                                                                             |
+|   - LriStore()                                                                                                             |
+|   - BeginObject(BinaryExpression)                                                                                          |
+|   - LriFetch()                                                                                                             |
 |   + Field(BinaryExpression::first)                                                                                         |
 | [RETURN STACK]:                                                                                                            |
 |   [886][1095]: _Exp3 -> [287][_Exp4]<< !_Exp3 @ >>                                                                         |

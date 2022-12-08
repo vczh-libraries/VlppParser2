@@ -361,7 +361,6 @@ AstInsReceiverBase
 					switch (instruction.type)
 					{
 					case AstInsType::BeginObject:
-					case AstInsType::BeginObjectLeftRecursive:
 					case AstInsType::DelayFieldAssignment:
 					case AstInsType::ResolveAmbiguity:
 					case AstInsType::AccumulatedDfa:
@@ -399,32 +398,6 @@ AstInsReceiverBase
 						auto value = CreateAstNode(instruction.param);
 						value->codeRange = { &token,&token };
 						PushCreated(CreatedObject{ value,pushed.Count() });
-					}
-					break;
-				case AstInsType::BeginObjectLeftRecursive:
-					{
-						if (pushed.Count() < expectedLeavings + 1)
-						{
-							throw AstInsException(
-								L"There is no pushed value to create left recursive object.",
-								AstInsErrorType::MissingLeftRecursiveValue
-								);
-						}
-
-						auto subValue = pushed[pushed.Count() - 1];
-						if (subValue.object)
-						{
-							auto value = CreateAstNode(instruction.param);
-							value->codeRange = subValue.object->codeRange;
-							PushCreated(CreatedObject{ value,pushed.Count() - 1 });
-						}
-						else
-						{
-							throw AstInsException(
-								L"The pushed value to create left recursive object is not an object.",
-								AstInsErrorType::LeftRecursiveValueIsNotObject
-								);
-						}
 					}
 					break;
 				case AstInsType::DelayFieldAssignment:

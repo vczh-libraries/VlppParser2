@@ -340,39 +340,35 @@ AutomatonBuilder (Clause)
 				return pair;
 			}
 
-			AutomatonBuilder::StatePair AutomatonBuilder::BuildLrpClause(collections::List<vint32_t>& flags, const Func<WString(vint32_t)>& flagName)
+			AutomatonBuilder::StatePair AutomatonBuilder::BuildLrpClause(collections::SortedList<vint32_t>& flags, const Func<WString(vint32_t)>& flagName)
 			{
 				/*
-				*     +--(lrp:a)--+
-				*     |           V
-				* S --+--(lrp:b)--+--> E
+				* S --+--(lrp:(a,b))--+--> E
 				*/
 
-				List<StateBuilder> elements;
-				for (vint32_t flag : flags)
+				StatePair pair;
+				pair.begin = CreateState();
+				pair.end = CreateState();
+				startPoses.Add(pair.begin, clauseDisplayText.Length());
+
 				{
-					elements.Add([this, flag, name = flagName(flag)]()
-					{
-						StatePair pair;
-						pair.begin = CreateState();
-						pair.end = CreateState();
-						startPoses.Add(pair.begin, clauseDisplayText.Length());
-
-						{
-							auto edge = CreateEdge(pair.begin, pair.end);
-							edge->input.type = EdgeInputType::LrPlaceholder;
-							edge->input.token = flag;
-						}
-
-						clauseDisplayText += L"lrp:" + name;
-						endPoses.Add(pair.end, clauseDisplayText.Length());
-						return pair;
-					});
+					auto edge = CreateEdge(pair.begin, pair.end);
+					edge->input.type = EdgeInputType::LrPlaceholder;
+					CopyFrom(edge->input.flags, flags);
 				}
-				return BuildAlternativeSyntax(elements);
+
+				clauseDisplayText += L"lrp:(";
+				for (vint i = 0; i < flags.Count(); i++)
+				{
+					if (i > 0) clauseDisplayText += L",";
+					clauseDisplayText += flagName(flags[i]);
+				}
+				clauseDisplayText += L")";
+				endPoses.Add(pair.end, clauseDisplayText.Length());
+				return pair;
 			}
 
-			AutomatonBuilder::StatePair AutomatonBuilder::BuildLriSyntax(vint32_t flag, RuleSymbol* rule)
+			AutomatonBuilder::StatePair AutomatonBuilder::BuildLriSyntax(collections::SortedList<vint32_t>& flags, RuleSymbol* rule, const Func<WString(vint32_t)>& flagName)
 			{
 				StatePair pair;
 				pair.begin = CreateState();
@@ -382,13 +378,19 @@ AutomatonBuilder (Clause)
 				{
 					auto edge = CreateEdge(pair.begin, pair.end);
 					edge->input.type = EdgeInputType::LrInject;
-					edge->input.token = flag;
+					CopyFrom(edge->input.flags, flags);
 					edge->input.rule = rule;
 					edge->input.ruleType = automaton::ReturnRuleType::Reuse;
 					edge->insAfterInput.Add({ AstInsType::ReopenObject });
 				}
 
-				clauseDisplayText += L"lri:" + rule->Name();
+				clauseDisplayText += L"lri:(";
+				for (vint i = 0; i < flags.Count(); i++)
+				{
+					if (i > 0) clauseDisplayText += L",";
+					clauseDisplayText += flagName(flags[i]);
+				}
+				clauseDisplayText += L")->" + rule->Name();
 				endPoses.Add(pair.end, clauseDisplayText.Length());
 				return pair;
 			}

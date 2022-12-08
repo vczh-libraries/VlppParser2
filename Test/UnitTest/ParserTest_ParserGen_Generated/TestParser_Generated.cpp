@@ -34,10 +34,17 @@
 #include "../../Source/PrefixMerge6_Pm2/Generated/PrefixMerge6_Pm2ModuleParser.h"
 #include "../../Source/PrefixMerge7_PmSwitch/Generated/PrefixMerge7_PmSwitchTypeOrExpr_Json.h"
 #include "../../Source/PrefixMerge7_PmSwitch/Generated/PrefixMerge7_PmSwitchModuleParser.h"
+#include "../../Source/PrefixMerge8_PmVariadic/Generated/PrefixMerge8_PmVariadicTypeOrExpr_Json.h"
+#include "../../Source/PrefixMerge8_PmVariadic/Generated/PrefixMerge8_PmVariadicModuleParser.h"
 #include "../../Source/LogTrace.h"
 
 extern WString GetTestParserInputPath(const WString& parserName);
 extern FilePath GetOutputDir(const WString& parserName);
+
+#define PAUSE_CASE L"PrefixMerge1_Lri"
+#define PAUSE_INPUT L"Type2"
+#undef PAUSE_CASE
+#undef PAUSE_INPUT
 
 namespace TestParser_Generated_TestObjects
 {
@@ -57,7 +64,9 @@ namespace TestParser_Generated_TestObjects
 			FilePath dirOutput
 		)
 	{
-		//if (parserName != L"PrefixMerge7_PmSwitch") return;
+#ifdef PAUSE_CASE
+		if (parserName != PAUSE_CASE) return;
+#endif
 		auto inputPath = GetTestParserInputPath(testFolder);
 		Folder dirInput = FilePath(inputPath) / L"Input";
 		FilePath dirBaseline = FilePath(inputPath) / L"Output";
@@ -69,7 +78,9 @@ namespace TestParser_Generated_TestObjects
 			caseName = inputFile.GetFilePath().GetName();
 			if (caseName.Length() < 4 || caseName.Right(4) != L".txt") continue;
 			caseName = caseName.Left(caseName.Length() - 4);
-			//if (caseName != L"Generic_Name3") continue;
+#ifdef PAUSE_INPUT
+			if (caseName != PAUSE_INPUT) continue;
+#endif
 
 			TEST_CASE(caseName)
 			{
@@ -370,10 +381,22 @@ TEST_FILE
 		&prefixmerge7_pmswitch::ModuleParserRuleName,
 		&prefixmerge7_pmswitch::ModuleParserStateLabel,
 		L"TestCase_PrefixMerge",
-		L"TestCase_PrefixMerge_Ambiguous1",
+		L"TestCase_PrefixMerge_Ambiguous2",
 		L"TestCase_PrefixMerge_CtorExpr",
 		L"TestCase_PrefixMerge_ThrowComma",
 		L"TestCase_PrefixMerge_Generic"
+		);
+	TestParser<prefixmerge8_pmvariadic::ModuleParser, prefixmerge8_pmvariadic::json_visitor::TypeOrExprVisitor>(
+		L"PrefixMerge8_PmVariadic",
+		&prefixmerge8_pmvariadic::PrefixMerge8_PmVariadicTypeName,
+		&prefixmerge8_pmvariadic::PrefixMerge8_PmVariadicFieldName,
+		&prefixmerge8_pmvariadic::PrefixMerge8_PmVariadicTokenId,
+		&prefixmerge8_pmvariadic::ModuleParserRuleName,
+		&prefixmerge8_pmvariadic::ModuleParserStateLabel,
+		L"TestCase_PrefixMerge",
+		L"TestCase_PrefixMerge_Ambiguous2",
+		L"TestCase_PrefixMerge_CtorExpr",
+		L"TestCase_PrefixMerge_Variadic"
 		);
 
 	using namespace TestParser_Generated_TestObjects;

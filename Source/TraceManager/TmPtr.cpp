@@ -30,11 +30,10 @@ DebugCheckTraceExecData
 								auto&& ins = ReadInstruction(insRef, traceExec->insLists);
 								auto insExec = GetInsExec(traceExec->insExecRefs.start + insRef);
 
-								// ensure BO/BOLR/DFA are closed
+								// ensure BO/DFA are closed
 								switch (ins.type)
 								{
 								case AstInsType::BeginObject:
-								case AstInsType::BeginObjectLeftRecursive:
 								case AstInsType::DelayFieldAssignment:
 									CHECK_ERROR(insExec->eoInsRefs != nullref, ERROR_MESSAGE_PREFIX L"Internal error: BO/BOLA/DFA not closed.");
 									break;
