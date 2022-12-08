@@ -41,8 +41,8 @@
 extern WString GetTestParserInputPath(const WString& parserName);
 extern FilePath GetOutputDir(const WString& parserName);
 
-#define PAUSE_CASE L"BinaryOp"
-#define PAUSE_INPUT L"Descending"
+#define PAUSE_CASE L"PrefixMerge1_Lri"
+#define PAUSE_INPUT L"Type2"
 #undef PAUSE_CASE
 #undef PAUSE_INPUT
 

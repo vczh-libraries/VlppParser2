@@ -34,106 +34,145 @@ TraceManager::ExecuteTrace
 
 				void Submit(AstIns& ins, regex::RegexToken& token, vint32_t tokenIndex)
 				{
-					// LriFetch + LriStore disappear
-					// multiple DelayFieldAssignment are compressed to single AccumulatedDfa
-					// multiple EndObject+ReopenObject are compressed to single AccumulatedEoRo
+#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManagerSubmitter::Submit(AstIns&, RegexToken&, vint32_t)#"
+					// LriFetch+LriStore disappear
+					// multiple DelayFieldAssignment of the same token are compressed to single AccumulatedDfa
+					// multiple EndObject+ReopenObject of the same token are compressed to single AccumulatedEoRo
 
-					switch (ins.type)
+					// cache availability conditions
+					//   lriFetch == true && cachedToken != nullptr
+					//     one LriFetch instruction is cached
+					//     cachedIns is the cached instruction
+					//     { cachedToken,cachedIndex } is the token with this instruction
+					//   lriFetch == false && cachedToken != nullptr
+					//     one EndObject instruction is cached
+					//     cachedIns is the cached instruction
+					//     { cachedToken,cachedIndex } is the token with this instruction
+					//   aeoroToken != nullptr
+					//     aeoroCount EndObject+ReopenObject instruction pairs is cached
+					//     { aeoroToken,aeoroIndex } is the token with this instruction
+					//   adfaToken != nullptr
+					//     aeoroCount DelayFieldAssignment instructions is cached
+					//     { adfaToken,adfaIndex } is the token with this instruction
+
+					bool cacheLf = lriFetch == true && cachedToken != nullptr;
+					bool cacheEo = lriFetch == false && cachedToken != nullptr;
+					bool cacheEoRo = aeoroToken != nullptr;
+					bool cacheDfa = adfaToken != nullptr;
+					bool cacheAvailable = cacheLf || cacheEo || cacheEoRo || cacheDfa;
+					CHECK_ERROR(
+						(!cacheLf && !cacheEo && !cacheEoRo && !cacheDfa) ||
+						( cacheLf && !cacheEo && !cacheEoRo && !cacheDfa) ||
+						(!cacheLf &&  cacheEo && !cacheEoRo && !cacheDfa) ||
+						(!cacheLf && !cacheEo &&  cacheEoRo && !cacheDfa) ||
+						(!cacheLf &&  cacheEo &&  cacheEoRo && !cacheDfa) ||
+						(!cacheLf && !cacheEo && !cacheEoRo &&  cacheDfa),
+						ERROR_MESSAGE_PREFIX L"Internal error: instruction cache corrupted."
+						);
+
+					// clear cache if it is unrelated to the current instruction
+					if (cacheAvailable)
 					{
-					case AstInsType::LriFetch:
+						bool cacheRelated = false;
+
+						switch (ins.type)
+						{
+						case AstInsType::LriStore:
+							if (cacheLf) cacheRelated = true;
+							break;
+						case AstInsType::DelayFieldAssignment:
+							if (cacheDfa && adfaToken == &token) cacheRelated = true;
+							break;
+						case AstInsType::EndObject:
+							if ((cacheEoRo && aeoroToken == &token) && !cacheEo) cacheRelated = true;
+							break;
+						case AstInsType::ReopenObject:
+							if ((cacheEo && cachedToken == &token) && (!cacheEoRo || aeoroToken == &token)) cacheRelated = true;
+							break;
+						default:;
+						}
+
+						if (!cacheRelated)
 						{
 							ExecuteSubmitted();
-							lriFetch = true;
-							cachedIns = ins;
-							cachedIndex = tokenIndex;
-							cachedToken = &token;
+							cacheAvailable = false;
 						}
-						break;
-					case AstInsType::LriStore:
-						if(lriFetch)
-						{
-							lriFetch = false;
-							cachedToken = nullptr;
-						}
-						else
-						{
-							ExecuteSubmitted();
-							receiver->Execute(ins, token, tokenIndex);
-						}
-						break;
-					case AstInsType::DelayFieldAssignment:
-						if (lriFetch)
-						{
-							ExecuteSubmitted();
-						}
-						if (aeoroToken == nullptr && cachedToken == nullptr && (adfaToken == nullptr || adfaToken == &token))
-						{
-							adfaCount++;
-							adfaIndex = tokenIndex;
-							adfaToken = &token;
-						}
-						else
-						{
-							ExecuteSubmitted();
-							adfaCount = 1;
-							adfaIndex = tokenIndex;
-							adfaToken = &token;
-						}
-						break;
-					case AstInsType::EndObject:
-						if (lriFetch)
-						{
-							ExecuteSubmitted();
-						}
-						if (adfaToken == nullptr && cachedToken == nullptr)
-						{
-							cachedIns = ins;
-							cachedIndex = tokenIndex;
-							cachedToken = &token;
-						}
-						else
-						{
-							ExecuteSubmitted();
-							cachedIns = ins;
-							cachedIndex = tokenIndex;
-							cachedToken = &token;
-						}
-						break;
-					case AstInsType::ReopenObject:
-						if (lriFetch)
-						{
-							ExecuteSubmitted();
-						}
-						if (adfaToken != nullptr || cachedToken == nullptr || cachedIns.type != AstInsType::EndObject)
-						{
-							ExecuteSubmitted();
-							receiver->Execute(ins, token, tokenIndex);
-						}
-						else if ((aeoroToken == nullptr || aeoroToken == &token) && cachedToken == &token)
-						{
-							aeoroCount++;
-							aeoroIndex = tokenIndex;
-							aeoroToken = &token;
-							cachedToken = nullptr;
-						}
-						else if (cachedToken == &token)
-						{
-							cachedToken = nullptr;
-							ExecuteSubmitted();
-							aeoroCount = 1;
-							aeoroIndex = tokenIndex;
-							aeoroToken = &token;
-						}
-						else
-						{
-							ExecuteSubmitted();
-							receiver->Execute(ins, token, tokenIndex);
-						}
-						break;
-					default:
-						ExecuteSubmitted();
-						receiver->Execute(ins, token, tokenIndex);
 					}
+
+					if (cacheAvailable)
+					{
+						// execute instructions with cache
+						switch (ins.type)
+						{
+						case AstInsType::LriStore:
+							{
+								lriFetch = false;
+								cachedToken = nullptr;
+							}
+							break;
+						case AstInsType::DelayFieldAssignment:
+							{
+								adfaCount++;
+							}
+							break;
+						case AstInsType::EndObject:
+							{
+								cachedIns = ins;
+								cachedIndex = tokenIndex;
+								cachedToken = &token;
+							}
+							break;
+						case AstInsType::ReopenObject:
+							{
+								if (cacheEoRo)
+								{
+									aeoroCount++;
+								}
+								else
+								{
+									aeoroCount = 1;
+									aeoroIndex = tokenIndex;
+									aeoroToken = &token;
+								}
+								cachedToken = nullptr;
+							}
+							break;
+						default:
+							CHECK_FAIL(ERROR_MESSAGE_PREFIX L"Internal error: unrelated cache should have been cleared.");
+						}
+					}
+					else
+					{
+						// execute instructions without cache
+						switch (ins.type)
+						{
+						case AstInsType::LriFetch:
+							{
+								lriFetch = true;
+								cachedIns = ins;
+								cachedIndex = tokenIndex;
+								cachedToken = &token;
+							}
+							break;
+						case AstInsType::DelayFieldAssignment:
+							{
+								adfaCount = 1;
+								adfaIndex = tokenIndex;
+								adfaToken = &token;
+							}
+							break;
+						case AstInsType::EndObject:
+							{
+								cachedIns = ins;
+								cachedIndex = tokenIndex;
+								cachedToken = &token;
+							}
+							break;
+						default:
+							receiver->Execute(ins, token, tokenIndex);
+						}
+					}
+#undef ERROR_MESSAGE_PREFIX
 				}
 
 				void ExecuteSubmitted()
