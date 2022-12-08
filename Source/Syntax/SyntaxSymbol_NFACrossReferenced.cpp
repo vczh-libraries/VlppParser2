@@ -74,6 +74,14 @@ SyntaxSymbolManager::FixCrossReferencedRuleEdge
 				}
 			}
 
+			struct Fuck
+			{
+				auto Shit() -> int&const
+				{
+					return 0;
+				}
+			};
+
 /***********************************************************************
 SyntaxSymbolManager::FixLeftRecursionInjectEdge
 ***********************************************************************/
