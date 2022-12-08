@@ -199,6 +199,7 @@ _AllPrefixUnaryExpr : ExprOnly
   ;
 
 _PrefixUnaryExpr_LRI_Original : TypeOrExpr
+  ::= left_recursion_placeholder(LRI__PrefixUnaryExpr)
   ::= !_PostfixUnaryExpr_LRI_Original
   ::= !_AllPrefixUnaryExpr
   ;
@@ -625,6 +626,7 @@ _File : File
   ;
 
 _GenericArgument : TypeOrExprOrOthers
+  ::= !_AllPrefixUnaryExpr [left_recursion_inject_multiple(LRI__PrefixUnaryExpr) _GenericArgument_LRI_Original]
   ::= !_PrimitiveExpr [left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveExpr) _GenericArgument_LRI_Original]
   ::= !_PrimitiveType [left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveType) _GenericArgument_LRI_Original]
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveExpr, LRI__QualifiedName_PrimitiveType) _GenericArgument_LRI_Original]
@@ -646,6 +648,7 @@ _PostfixUnaryExpr : TypeOrExpr
   ;
 
 _PrefixUnaryExpr : TypeOrExpr
+  ::= !_AllPrefixUnaryExpr
   ::= !_PrimitiveExpr [left_recursion_inject(LRI__QualifiedName_PrimitiveExpr) _PrefixUnaryExpr_LRI_Original]
   ::= !_PrimitiveType left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveType) _PrefixUnaryExpr_LRI_Original
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveExpr, LRI__QualifiedName_PrimitiveType) _PrefixUnaryExpr_LRI_Original]
@@ -654,6 +657,7 @@ _PrefixUnaryExpr : TypeOrExpr
   ;
 
 _BExpr0 : TypeOrExpr
+  ::= !_AllPrefixUnaryExpr [left_recursion_inject(LRI__PrefixUnaryExpr) _BExpr0_LRI_Original]
   ::= !_PrimitiveExpr [left_recursion_inject(LRI__QualifiedName_PrimitiveExpr) _BExpr0_LRI_Original]
   ::= !_PrimitiveType left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveType) _BExpr0_LRI_Original
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveExpr, LRI__QualifiedName_PrimitiveType) _BExpr0_LRI_Original]
@@ -662,6 +666,7 @@ _BExpr0 : TypeOrExpr
   ;
 
 _BExpr1 : TypeOrExpr
+  ::= !_AllPrefixUnaryExpr [left_recursion_inject(LRI__PrefixUnaryExpr) _BExpr1_LRI_Original]
   ::= !_PrimitiveExpr [left_recursion_inject(LRI__QualifiedName_PrimitiveExpr) _BExpr1_LRI_Original]
   ::= !_PrimitiveType left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveType) _BExpr1_LRI_Original
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveExpr, LRI__QualifiedName_PrimitiveType) _BExpr1_LRI_Original]
@@ -670,6 +675,7 @@ _BExpr1 : TypeOrExpr
   ;
 
 _BExpr2 : TypeOrExpr
+  ::= !_AllPrefixUnaryExpr [left_recursion_inject(LRI__PrefixUnaryExpr) _BExpr2_LRI_Original]
   ::= !_PrimitiveExpr [left_recursion_inject(LRI__QualifiedName_PrimitiveExpr) _BExpr2_LRI_Original]
   ::= !_PrimitiveType left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveType) _BExpr2_LRI_Original
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveExpr, LRI__QualifiedName_PrimitiveType) _BExpr2_LRI_Original]
@@ -678,6 +684,7 @@ _BExpr2 : TypeOrExpr
   ;
 
 _BExpr3 : TypeOrExpr
+  ::= !_AllPrefixUnaryExpr [left_recursion_inject(LRI__PrefixUnaryExpr) _BExpr3_LRI_Original]
   ::= !_PrimitiveExpr [left_recursion_inject(LRI__QualifiedName_PrimitiveExpr) _BExpr3_LRI_Original]
   ::= !_PrimitiveType left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveType) _BExpr3_LRI_Original
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveExpr, LRI__QualifiedName_PrimitiveType) _BExpr3_LRI_Original]
@@ -686,6 +693,7 @@ _BExpr3 : TypeOrExpr
   ;
 
 _BExpr4_SWITCH_COMBINED : TypeOrExpr
+  ::= !_AllPrefixUnaryExpr [left_recursion_inject(LRI__PrefixUnaryExpr) _BExpr4_SWITCH_COMBINED_LRI_Original]
   ::= !_PrimitiveExpr [left_recursion_inject(LRI__QualifiedName_PrimitiveExpr) _BExpr4_SWITCH_COMBINED_LRI_Original]
   ::= !_PrimitiveType left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveType) _BExpr4_SWITCH_COMBINED_LRI_Original
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveExpr, LRI__QualifiedName_PrimitiveType) _BExpr4_SWITCH_COMBINED_LRI_Original]
@@ -694,6 +702,7 @@ _BExpr4_SWITCH_COMBINED : TypeOrExpr
   ;
 
 _BExpr4_SWITCH_0allow_GT : TypeOrExpr
+  ::= !_AllPrefixUnaryExpr [left_recursion_inject(LRI__PrefixUnaryExpr) _BExpr4_SWITCH_0allow_GT_LRI_Original]
   ::= !_PrimitiveExpr [left_recursion_inject(LRI__QualifiedName_PrimitiveExpr) _BExpr4_SWITCH_0allow_GT_LRI_Original]
   ::= !_PrimitiveType left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveType) _BExpr4_SWITCH_0allow_GT_LRI_Original
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveExpr, LRI__QualifiedName_PrimitiveType) _BExpr4_SWITCH_0allow_GT_LRI_Original]
@@ -702,6 +711,7 @@ _BExpr4_SWITCH_0allow_GT : TypeOrExpr
   ;
 
 _BExpr4_SWITCH_1allow_GT : TypeOrExpr
+  ::= !_AllPrefixUnaryExpr [left_recursion_inject(LRI__PrefixUnaryExpr) _BExpr4_SWITCH_1allow_GT_LRI_Original]
   ::= !_PrimitiveExpr [left_recursion_inject(LRI__QualifiedName_PrimitiveExpr) _BExpr4_SWITCH_1allow_GT_LRI_Original]
   ::= !_PrimitiveType left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveType) _BExpr4_SWITCH_1allow_GT_LRI_Original
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveExpr, LRI__QualifiedName_PrimitiveType) _BExpr4_SWITCH_1allow_GT_LRI_Original]
@@ -710,6 +720,7 @@ _BExpr4_SWITCH_1allow_GT : TypeOrExpr
   ;
 
 _BExpr5_SWITCH_0allow_GT : TypeOrExpr
+  ::= !_AllPrefixUnaryExpr [left_recursion_inject(LRI__PrefixUnaryExpr) _BExpr5_SWITCH_0allow_GT_LRI_Original]
   ::= !_PrimitiveExpr [left_recursion_inject(LRI__QualifiedName_PrimitiveExpr) _BExpr5_SWITCH_0allow_GT_LRI_Original]
   ::= !_PrimitiveType left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveType) _BExpr5_SWITCH_0allow_GT_LRI_Original
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveExpr, LRI__QualifiedName_PrimitiveType) _BExpr5_SWITCH_0allow_GT_LRI_Original]
@@ -718,6 +729,7 @@ _BExpr5_SWITCH_0allow_GT : TypeOrExpr
   ;
 
 _BExpr5_SWITCH_1allow_GT : TypeOrExpr
+  ::= !_AllPrefixUnaryExpr [left_recursion_inject(LRI__PrefixUnaryExpr) _BExpr5_SWITCH_1allow_GT_LRI_Original]
   ::= !_PrimitiveExpr [left_recursion_inject(LRI__QualifiedName_PrimitiveExpr) _BExpr5_SWITCH_1allow_GT_LRI_Original]
   ::= !_PrimitiveType left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveType) _BExpr5_SWITCH_1allow_GT_LRI_Original
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveExpr, LRI__QualifiedName_PrimitiveType) _BExpr5_SWITCH_1allow_GT_LRI_Original]
@@ -726,6 +738,7 @@ _BExpr5_SWITCH_1allow_GT : TypeOrExpr
   ;
 
 _BExpr6_SWITCH_0allow_GT : TypeOrExpr
+  ::= !_AllPrefixUnaryExpr [left_recursion_inject(LRI__PrefixUnaryExpr) _BExpr6_SWITCH_0allow_GT_LRI_Original]
   ::= !_PrimitiveExpr [left_recursion_inject(LRI__QualifiedName_PrimitiveExpr) _BExpr6_SWITCH_0allow_GT_LRI_Original]
   ::= !_PrimitiveType left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveType) _BExpr6_SWITCH_0allow_GT_LRI_Original
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveExpr, LRI__QualifiedName_PrimitiveType) _BExpr6_SWITCH_0allow_GT_LRI_Original]
@@ -734,6 +747,7 @@ _BExpr6_SWITCH_0allow_GT : TypeOrExpr
   ;
 
 _BExpr6_SWITCH_1allow_GT : TypeOrExpr
+  ::= !_AllPrefixUnaryExpr [left_recursion_inject(LRI__PrefixUnaryExpr) _BExpr6_SWITCH_1allow_GT_LRI_Original]
   ::= !_PrimitiveExpr [left_recursion_inject(LRI__QualifiedName_PrimitiveExpr) _BExpr6_SWITCH_1allow_GT_LRI_Original]
   ::= !_PrimitiveType left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveType) _BExpr6_SWITCH_1allow_GT_LRI_Original
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveExpr, LRI__QualifiedName_PrimitiveType) _BExpr6_SWITCH_1allow_GT_LRI_Original]
@@ -742,6 +756,7 @@ _BExpr6_SWITCH_1allow_GT : TypeOrExpr
   ;
 
 _BExpr7_SWITCH_0allow_GT : TypeOrExpr
+  ::= !_AllPrefixUnaryExpr [left_recursion_inject(LRI__PrefixUnaryExpr) _BExpr7_SWITCH_0allow_GT_LRI_Original]
   ::= !_PrimitiveExpr [left_recursion_inject(LRI__QualifiedName_PrimitiveExpr) _BExpr7_SWITCH_0allow_GT_LRI_Original]
   ::= !_PrimitiveType left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveType) _BExpr7_SWITCH_0allow_GT_LRI_Original
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveExpr, LRI__QualifiedName_PrimitiveType) _BExpr7_SWITCH_0allow_GT_LRI_Original]
@@ -750,6 +765,7 @@ _BExpr7_SWITCH_0allow_GT : TypeOrExpr
   ;
 
 _BExpr7_SWITCH_1allow_GT : TypeOrExpr
+  ::= !_AllPrefixUnaryExpr [left_recursion_inject(LRI__PrefixUnaryExpr) _BExpr7_SWITCH_1allow_GT_LRI_Original]
   ::= !_PrimitiveExpr [left_recursion_inject(LRI__QualifiedName_PrimitiveExpr) _BExpr7_SWITCH_1allow_GT_LRI_Original]
   ::= !_PrimitiveType left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveType) _BExpr7_SWITCH_1allow_GT_LRI_Original
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveExpr, LRI__QualifiedName_PrimitiveType) _BExpr7_SWITCH_1allow_GT_LRI_Original]
@@ -758,6 +774,7 @@ _BExpr7_SWITCH_1allow_GT : TypeOrExpr
   ;
 
 _BExpr8_SWITCH_0allow_GT : TypeOrExpr
+  ::= !_AllPrefixUnaryExpr [left_recursion_inject(LRI__PrefixUnaryExpr) _BExpr8_SWITCH_0allow_GT_LRI_Original]
   ::= !_PrimitiveExpr [left_recursion_inject(LRI__QualifiedName_PrimitiveExpr) _BExpr8_SWITCH_0allow_GT_LRI_Original]
   ::= !_PrimitiveType left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveType) _BExpr8_SWITCH_0allow_GT_LRI_Original
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveExpr, LRI__QualifiedName_PrimitiveType) _BExpr8_SWITCH_0allow_GT_LRI_Original]
@@ -766,6 +783,7 @@ _BExpr8_SWITCH_0allow_GT : TypeOrExpr
   ;
 
 _BExpr8_SWITCH_1allow_GT : TypeOrExpr
+  ::= !_AllPrefixUnaryExpr [left_recursion_inject(LRI__PrefixUnaryExpr) _BExpr8_SWITCH_1allow_GT_LRI_Original]
   ::= !_PrimitiveExpr [left_recursion_inject(LRI__QualifiedName_PrimitiveExpr) _BExpr8_SWITCH_1allow_GT_LRI_Original]
   ::= !_PrimitiveType left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveType) _BExpr8_SWITCH_1allow_GT_LRI_Original
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveExpr, LRI__QualifiedName_PrimitiveType) _BExpr8_SWITCH_1allow_GT_LRI_Original]
@@ -774,6 +792,7 @@ _BExpr8_SWITCH_1allow_GT : TypeOrExpr
   ;
 
 _BExpr9_SWITCH_0allow_GT : TypeOrExpr
+  ::= !_AllPrefixUnaryExpr [left_recursion_inject(LRI__PrefixUnaryExpr) _BExpr9_SWITCH_0allow_GT_LRI_Original]
   ::= !_PrimitiveExpr [left_recursion_inject(LRI__QualifiedName_PrimitiveExpr) _BExpr9_SWITCH_0allow_GT_LRI_Original]
   ::= !_PrimitiveType left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveType) _BExpr9_SWITCH_0allow_GT_LRI_Original
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveExpr, LRI__QualifiedName_PrimitiveType) _BExpr9_SWITCH_0allow_GT_LRI_Original]
@@ -782,6 +801,7 @@ _BExpr9_SWITCH_0allow_GT : TypeOrExpr
   ;
 
 _BExpr9_SWITCH_1allow_GT : TypeOrExpr
+  ::= !_AllPrefixUnaryExpr [left_recursion_inject(LRI__PrefixUnaryExpr) _BExpr9_SWITCH_1allow_GT_LRI_Original]
   ::= !_PrimitiveExpr [left_recursion_inject(LRI__QualifiedName_PrimitiveExpr) _BExpr9_SWITCH_1allow_GT_LRI_Original]
   ::= !_PrimitiveType left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveType) _BExpr9_SWITCH_1allow_GT_LRI_Original
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveExpr, LRI__QualifiedName_PrimitiveType) _BExpr9_SWITCH_1allow_GT_LRI_Original]
@@ -790,6 +810,7 @@ _BExpr9_SWITCH_1allow_GT : TypeOrExpr
   ;
 
 _BExpr10_SWITCH_0allow_GT : TypeOrExpr
+  ::= !_AllPrefixUnaryExpr [left_recursion_inject(LRI__PrefixUnaryExpr) _BExpr10_SWITCH_0allow_GT_LRI_Original]
   ::= !_PrimitiveExpr [left_recursion_inject(LRI__QualifiedName_PrimitiveExpr) _BExpr10_SWITCH_0allow_GT_LRI_Original]
   ::= !_PrimitiveType left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveType) _BExpr10_SWITCH_0allow_GT_LRI_Original
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveExpr, LRI__QualifiedName_PrimitiveType) _BExpr10_SWITCH_0allow_GT_LRI_Original]
@@ -798,6 +819,7 @@ _BExpr10_SWITCH_0allow_GT : TypeOrExpr
   ;
 
 _BExpr10_SWITCH_1allow_GT : TypeOrExpr
+  ::= !_AllPrefixUnaryExpr [left_recursion_inject(LRI__PrefixUnaryExpr) _BExpr10_SWITCH_1allow_GT_LRI_Original]
   ::= !_PrimitiveExpr [left_recursion_inject(LRI__QualifiedName_PrimitiveExpr) _BExpr10_SWITCH_1allow_GT_LRI_Original]
   ::= !_PrimitiveType left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveType) _BExpr10_SWITCH_1allow_GT_LRI_Original
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveExpr, LRI__QualifiedName_PrimitiveType) _BExpr10_SWITCH_1allow_GT_LRI_Original]
@@ -806,6 +828,7 @@ _BExpr10_SWITCH_1allow_GT : TypeOrExpr
   ;
 
 _BExpr_NoComma_SWITCH_0allow_GT : TypeOrExpr
+  ::= !_AllPrefixUnaryExpr [left_recursion_inject_multiple(LRI__PrefixUnaryExpr) _BExpr_NoComma_SWITCH_0allow_GT_LRI_Original]
   ::= !_PrimitiveExpr [left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveExpr) _BExpr_NoComma_SWITCH_0allow_GT_LRI_Original]
   ::= !_PrimitiveType left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveType) _BExpr_NoComma_SWITCH_0allow_GT_LRI_Original
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveExpr, LRI__QualifiedName_PrimitiveType) _BExpr_NoComma_SWITCH_0allow_GT_LRI_Original]
@@ -814,6 +837,7 @@ _BExpr_NoComma_SWITCH_0allow_GT : TypeOrExpr
   ;
 
 _BExpr_NoComma_SWITCH_1allow_GT : TypeOrExpr
+  ::= !_AllPrefixUnaryExpr [left_recursion_inject_multiple(LRI__PrefixUnaryExpr) _BExpr_NoComma_SWITCH_1allow_GT_LRI_Original]
   ::= !_PrimitiveExpr [left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveExpr) _BExpr_NoComma_SWITCH_1allow_GT_LRI_Original]
   ::= !_PrimitiveType left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveType) _BExpr_NoComma_SWITCH_1allow_GT_LRI_Original
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveExpr, LRI__QualifiedName_PrimitiveType) _BExpr_NoComma_SWITCH_1allow_GT_LRI_Original]
@@ -822,6 +846,7 @@ _BExpr_NoComma_SWITCH_1allow_GT : TypeOrExpr
   ;
 
 _BExpr_SWITCH_1allow_GT : TypeOrExpr
+  ::= !_AllPrefixUnaryExpr [left_recursion_inject_multiple(LRI__PrefixUnaryExpr) _BExpr_SWITCH_1allow_GT_LRI_Original]
   ::= !_PrimitiveExpr [left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveExpr) _BExpr_SWITCH_1allow_GT_LRI_Original]
   ::= !_PrimitiveType left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveType) _BExpr_SWITCH_1allow_GT_LRI_Original
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveExpr, LRI__QualifiedName_PrimitiveType) _BExpr_SWITCH_1allow_GT_LRI_Original]
@@ -864,6 +889,7 @@ _Type : TypeOrExpr
   ;
 
 _Expr_NoComma_Raw_SWITCH_1allow_GT : TypeOrExpr
+  ::= !_AllPrefixUnaryExpr [left_recursion_inject_multiple(LRI__PrefixUnaryExpr) _Expr_NoComma_Raw_SWITCH_1allow_GT_LRI_Original]
   ::= !_PrimitiveExpr [left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveExpr) _Expr_NoComma_Raw_SWITCH_1allow_GT_LRI_Original]
   ::= !_PrimitiveType left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveType) _Expr_NoComma_Raw_SWITCH_1allow_GT_LRI_Original
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveExpr, LRI__QualifiedName_PrimitiveType) _Expr_NoComma_Raw_SWITCH_1allow_GT_LRI_Original]
@@ -872,6 +898,7 @@ _Expr_NoComma_Raw_SWITCH_1allow_GT : TypeOrExpr
   ;
 
 _Expr_Raw_SWITCH_1allow_GT : TypeOrExpr
+  ::= !_AllPrefixUnaryExpr [left_recursion_inject_multiple(LRI__PrefixUnaryExpr) _Expr_Raw_SWITCH_1allow_GT_LRI_Original]
   ::= !_PrimitiveExpr [left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveExpr) _Expr_Raw_SWITCH_1allow_GT_LRI_Original]
   ::= !_PrimitiveType left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveType) _Expr_Raw_SWITCH_1allow_GT_LRI_Original
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveExpr, LRI__QualifiedName_PrimitiveType) _Expr_Raw_SWITCH_1allow_GT_LRI_Original]
@@ -887,6 +914,7 @@ _TypeOrExpr_NoComma_Raw_SWITCH_COMBINED : TypeOrExpr
   ;
 
 _TypeOrExpr_NoComma_Raw_SWITCH_0allow_GT : TypeOrExpr
+  ::= !_AllPrefixUnaryExpr [left_recursion_inject_multiple(LRI__PrefixUnaryExpr) _TypeOrExpr_NoComma_Raw_SWITCH_0allow_GT_LRI_Original]
   ::= !_PrimitiveExpr [left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveExpr) _TypeOrExpr_NoComma_Raw_SWITCH_0allow_GT_LRI_Original]
   ::= !_PrimitiveType [left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveType) _TypeOrExpr_NoComma_Raw_SWITCH_0allow_GT_LRI_Original]
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveExpr, LRI__QualifiedName_PrimitiveType) _TypeOrExpr_NoComma_Raw_SWITCH_0allow_GT_LRI_Original]
@@ -902,6 +930,7 @@ _TypeOrExpr_Raw_SWITCH_COMBINED : TypeOrExpr
   ;
 
 _TypeOrExpr_Raw_SWITCH_1allow_GT : TypeOrExpr
+  ::= !_AllPrefixUnaryExpr [left_recursion_inject_multiple(LRI__PrefixUnaryExpr) _TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original]
   ::= !_PrimitiveExpr [left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveExpr) _TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original]
   ::= !_PrimitiveType [left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveType) _TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original]
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveExpr, LRI__QualifiedName_PrimitiveType) _TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original]
@@ -910,6 +939,7 @@ _TypeOrExpr_Raw_SWITCH_1allow_GT : TypeOrExpr
   ;
 
 _Expr_NoComma : TypeOrExpr
+  ::= !_AllPrefixUnaryExpr [left_recursion_inject_multiple(LRI__PrefixUnaryExpr) _Expr_NoComma_LRI_Original]
   ::= !_PrimitiveExpr [left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveExpr) _Expr_NoComma_LRI_Original]
   ::= !_PrimitiveType left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveType) _Expr_NoComma_LRI_Original
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveExpr, LRI__QualifiedName_PrimitiveType) _Expr_NoComma_LRI_Original]
@@ -918,6 +948,7 @@ _Expr_NoComma : TypeOrExpr
   ;
 
 _Expr : TypeOrExpr
+  ::= !_AllPrefixUnaryExpr [left_recursion_inject_multiple(LRI__PrefixUnaryExpr) _Expr_LRI_Original]
   ::= !_PrimitiveExpr [left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveExpr) _Expr_LRI_Original]
   ::= !_PrimitiveType left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveType) _Expr_LRI_Original
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveExpr, LRI__QualifiedName_PrimitiveType) _Expr_LRI_Original]
@@ -926,6 +957,7 @@ _Expr : TypeOrExpr
   ;
 
 _Expr_Argument : TypeOrExpr
+  ::= !_AllPrefixUnaryExpr [left_recursion_inject_multiple(LRI__PrefixUnaryExpr) _Expr_Argument_LRI_Original]
   ::= !_PrimitiveExpr [left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveExpr) _Expr_Argument_LRI_Original]
   ::= !_PrimitiveType left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveType) _Expr_Argument_LRI_Original
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveExpr, LRI__QualifiedName_PrimitiveType) _Expr_Argument_LRI_Original]
@@ -934,6 +966,7 @@ _Expr_Argument : TypeOrExpr
   ;
 
 _TypeOrExpr_NoComma_NoGT : TypeOrExpr
+  ::= !_AllPrefixUnaryExpr [left_recursion_inject_multiple(LRI__PrefixUnaryExpr) _TypeOrExpr_NoComma_NoGT_LRI_Original]
   ::= !_PrimitiveExpr [left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveExpr) _TypeOrExpr_NoComma_NoGT_LRI_Original]
   ::= !_PrimitiveType [left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveType) _TypeOrExpr_NoComma_NoGT_LRI_Original]
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveExpr, LRI__QualifiedName_PrimitiveType) _TypeOrExpr_NoComma_NoGT_LRI_Original]
@@ -942,6 +975,7 @@ _TypeOrExpr_NoComma_NoGT : TypeOrExpr
   ;
 
 _TypeOrExpr : TypeOrExpr
+  ::= !_AllPrefixUnaryExpr [left_recursion_inject_multiple(LRI__PrefixUnaryExpr) _TypeOrExpr_LRI_Original]
   ::= !_PrimitiveExpr [left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveExpr) _TypeOrExpr_LRI_Original]
   ::= !_PrimitiveType [left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveType) _TypeOrExpr_LRI_Original]
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveExpr, LRI__QualifiedName_PrimitiveType) _TypeOrExpr_LRI_Original]
