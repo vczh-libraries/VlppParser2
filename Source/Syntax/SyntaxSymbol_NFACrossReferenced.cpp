@@ -161,7 +161,10 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 				//   index of placeholder edge
 				//   the LeftRec edge before the Token edge (optional)
 				//   the Token edge that consume this input
-				Group<Pair<vint32_t, vint>, Tuple<vint, EdgeSymbol*, EdgeSymbol*>> acceptableInputs;
+				using InputKey = Pair<vint32_t, vint>;
+				using InputValue = Tuple<vint, EdgeSymbol*, EdgeSymbol*>;
+				Group<InputKey, InputValue> acceptableInputs;
+
 				for(auto [placeholderEdge, index] : indexed(placeholderEdges))
 				{
 					auto& endingStates = endingStatesArray[index];
@@ -211,13 +214,6 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 
 				for (auto [input, inputIndex] : indexed(acceptableInputs.Keys()))
 				{
-					//if (injectEdge->From()->Rule()->Name() == L"_GenericArgument" && injectEdge->From()->label == L"<< !_PrimitiveShared @ ( lri:(LRI__Expr0,LRI__LongType)->_GenericArgument_LRI_Original | lri:<skip> ) >>")
-					//{
-					//	if (input.value == 1)
-					//	{
-					//		int a = 0;
-					//	}
-					//}
 					auto [inputToken, returnEdgeCount] = input;
 					auto&& placeholderRecords = acceptableInputs.GetByIndex(inputIndex);
 
@@ -231,6 +227,65 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 					// if we could indentify some inputs here where excluded return edges are all reuse edges
 					// then we can only create edges for one of them
 
+					struct Entry
+					{
+						EdgeSymbol*				lrEdge;
+						EdgeSymbol*				tokenEdge;
+						List<EdgeSymbol*>*		returnEdges;
+						vint					returnEdgeCount;
+
+						vint Compare(const Entry& entry)const
+						{
+							if (lrEdge < entry.lrEdge) return -1;
+							if (lrEdge > entry.lrEdge) return 1;
+							if (tokenEdge < entry.tokenEdge) return -1;
+							if (tokenEdge > entry.tokenEdge) return 1;
+							return CompareEnumerable(
+								From(*returnEdges).Take(returnEdgeCount),
+								From(*entry.returnEdges).Take(returnEdgeCount)
+								);
+						}
+
+						bool operator< (const Entry& entry)const { return Compare(entry) < 0; }
+						bool operator> (const Entry& entry)const { return Compare(entry) > 0; }
+						bool operator==(const Entry& entry)const { return Compare(entry) == 0; }
+					};
+					Group<Entry, vint> simpleUseRecords;
+
+					// search for placeholder edges where their excluded return edges are all reuse edges
+					for (vint recordIndex = 0; recordIndex < placeholderRecords.Count(); recordIndex++)
+					{
+						auto [placeholderIndex, lrEdge, tokenEdge] = placeholderRecords[recordIndex];
+						Entry entry{ lrEdge,tokenEdge,&returnEdgesArray[placeholderIndex],returnEdgeCount };
+						if(From(*entry.returnEdges)
+							.Skip(returnEdgeCount)
+							.All([](EdgeSymbol* edge) {return edge->input.ruleType == automaton::ReturnRuleType::Reuse; })
+							)
+						{
+							simpleUseRecords.Add(entry, recordIndex);
+						}
+					}
+
+					// for each group, if there are more than one placeholder edges
+					// mark them as deleted except the first one
+					SortedList<vint> recordsToRemove;
+					for (vint recordGroup = 0; recordGroup < simpleUseRecords.Count(); recordGroup++)
+					{
+						auto&& records = simpleUseRecords.GetByIndex(recordGroup);
+						if (records.Count() > 1)
+						{
+							CopyFrom(recordsToRemove, From(records).Skip(1));
+						}
+					}
+
+					// delete them in Group
+					// this way is not recommended but the group is going to be discarded very soon
+					for (vint i = recordsToRemove.Count() - 1; i >= 0; i--)
+					{
+						const_cast<List<InputValue>&>(placeholderRecords).RemoveAt(recordsToRemove[i]);
+					}
+
+					// convert reminaings
 					for (auto [placeholderIndex, lrEdge, tokenEdge] : placeholderRecords)
 					{
 						auto placeholderEdge = placeholderEdges[placeholderIndex];
