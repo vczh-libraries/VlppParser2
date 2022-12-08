@@ -264,6 +264,9 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 
 			struct InsExec_Object : Allocatable<InsExec_Object>, WithMagicCounter
 			{
+				// previous allocated object
+				Ref<InsExec_Object>					previous;
+
 				// lrObjectIds are objects it takes while being created by BOLR
 				Ref<InsExec_ObjRefLink>				lrObjectIds;
 
@@ -276,6 +279,10 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 
 				// DelayFieldAssignment instructions that associates to the current object
 				Ref<InsExec_InsRefLink>				dfaInsRefs;
+
+				// first instruction that creates this object or its fields
+				Ref<Trace>							topTrace;
+				vint32_t							topIns = -1;
 			};
 
 			struct InsExec_ObjectStack : Allocatable<InsExec_ObjectStack>, WithMagicCounter
@@ -600,6 +607,7 @@ TraceManager
 				template<typename T, T* (TraceManager::*get)(Ref<T>), Ref<T> (InsExec_Context::*stack), typename TMerge>
 				Ref<T>										MergeStack(Trace* mergeTrace, AllocateOnly<T>& allocator, TMerge&& merge);
 				void										MergeInsExecContext(Trace* mergeTrace);
+				void										CalculateObjectFirstInstruction();
 
 				// phase: PartialExecuteTraces
 				void										PartialExecuteTraces();
@@ -617,6 +625,7 @@ TraceManager
 				// ResolveAmbiguity
 				Ref<Trace>									firstBranchTrace;
 				Ref<Trace>									firstMergeTrace;
+				Ref<InsExec_Object>							firstObject;
 				Ref<ExecutionStep>							firstStep;
 				AllocateOnly<TraceAmbiguity>				traceAmbiguities;
 				AllocateOnly<TraceAmbiguityLink>			traceAmbiguityLinks;

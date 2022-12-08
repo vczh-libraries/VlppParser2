@@ -14,7 +14,10 @@ PartialExecuteOrdinaryTrace
 
 			InsExec_Object* TraceManager::NewObject()
 			{
-				return GetInsExec_Object(insExec_Objects.Allocate());
+				auto ieObject = GetInsExec_Object(insExec_Objects.Allocate());
+				ieObject->previous = firstObject;
+				firstObject = ieObject;
+				return ieObject;
 			}
 
 			vint32_t TraceManager::GetStackBase(InsExec_Context& context)

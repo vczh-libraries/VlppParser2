@@ -461,6 +461,14 @@ void RenderTrace(
 						L"@" + itow(ieObject->bo_bolr_Ins)
 					);
 
+					if (ieObject->topTrace != nullref)
+					{
+						writer.WriteString(
+							L", top:" + itow(ieObject->topTrace.handle) +
+							L"@" + itow(ieObject->topIns)
+						);
+					}
+
 					if (ieObject->lrObjectIds != nullref)
 					{
 						writer.WriteString(L" lrs:[");
