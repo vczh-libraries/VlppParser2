@@ -201,6 +201,7 @@ CheckMergeTrace
 #endif
 				// there will be only one top create instruction per object
 				// even when InsExec_Object::lrObjectIds are considered
+				CHECK_ERROR(trace == startObject->topTrace && ins == startObject->topIns, ERROR_MESSAGE_PREFIX L"Internal error: the top create instruction doesn't match with one calculated from PartialExecuteTraces().");
 				return callback(trace, ins);
 #undef ERROR_MESSAGE_PREFIX
 			}
