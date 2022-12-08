@@ -68,7 +68,9 @@
 ||   - LriStore()                                                                                                                      ||
 ||   - DelayFieldAssignment()                                                                                                          ||
 ||   - LriFetch()                                                                                                                      ||
-||   - BeginObjectLeftRecursive(FunctionType)                                                                                          ||
+||   - LriStore()                                                                                                                      ||
+||   - BeginObject(FunctionType)                                                                                                       ||
+||   - LriFetch()                                                                                                                      ||
 ||   - Field(FunctionType::returnType)                                                                                                 ||
 || [RETURN STACK]:                                                                                                                     ||
 ||   [2][3]: _LongType -> [102][Module]<< !_PrimitiveShared ( lri:_Expr | lri:_LongType @ ( lri:_Expr | lri:<skip> ) | lri:<skip> ) >> ||
@@ -197,7 +199,9 @@
 | [70][_Expr]< _Expr @ "*" _Expr1_Raw >                                                                                           |
 | [AST-INSTRUCTIONS]:                                                                                                             |
 |   - EndObject()                                                                                                                 |
-|   - BeginObjectLeftRecursive(MulExpr)                                                                                           |
+|   - LriStore()                                                                                                                  |
+|   - BeginObject(MulExpr)                                                                                                        |
+|   - LriFetch()                                                                                                                  |
 |   + Field(MulExpr::first)                                                                                                       |
 | [RETURN STACK]:                                                                                                                 |
 |   [5][8]: _Expr -> [101][Module]<< !_PrimitiveShared ( lri:_Expr | lri:_LongType ( lri:_Expr @ | lri:<skip> ) | lri:<skip> ) >> |
@@ -358,7 +362,9 @@
 | [64][_Expr1]< _Expr1 @ "(" { _Expr_Raw ; "," } ")" >                                                                            |
 | [AST-INSTRUCTIONS]:                                                                                                             |
 |   - EndObject()                                                                                                                 |
-|   - BeginObjectLeftRecursive(CallExpr)                                                                                          |
+|   - LriStore()                                                                                                                  |
+|   - BeginObject(CallExpr)                                                                                                       |
+|   - LriFetch()                                                                                                                  |
 |   + Field(CallExpr::func)                                                                                                       |
 | [RETURN STACK]:                                                                                                                 |
 |   [12][25]: _Expr1 -> [76][_Expr1_Raw]<< !_PrimitiveShared ( lri:_Expr1 @ | lri:_LongType ( lri:_Expr1 ) | lri:<skip> ) >>      |

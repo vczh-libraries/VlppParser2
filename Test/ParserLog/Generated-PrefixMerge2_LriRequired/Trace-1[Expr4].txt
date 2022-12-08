@@ -82,7 +82,9 @@
 ||   - LriFetch()                                                                         ||
 ||   - ReopenObject()                                                                     ||
 ||   - EndObject()                                                                        ||
-||   - BeginObjectLeftRecursive(CallExpr)                                                 ||
+||   - LriStore()                                                                         ||
+||   - BeginObject(CallExpr)                                                              ||
+||   - LriFetch()                                                                         ||
 ||   - Field(CallExpr::func)                                                              ||
 || [RETURN STACK]:                                                                        ||
 ||   [4][4]: _Expr1 -> [54][_Expr]<< !_Expr1 @ >>                                         ||
@@ -195,7 +197,9 @@
 | [53][_Expr]< _Expr @ "*" _Expr1 >                                                      |
 | [AST-INSTRUCTIONS]:                                                                    |
 |   - EndObject()                                                                        |
-|   - BeginObjectLeftRecursive(MulExpr)                                                  |
+|   - LriStore()                                                                         |
+|   - BeginObject(MulExpr)                                                               |
+|   - LriFetch()                                                                         |
 |   + Field(MulExpr::first)                                                              |
 | [RETURN STACK]:                                                                        |
 |   [8][7]: _Expr -> [46][_Expr1]< _Expr1 "(" { _Expr @ ; "," } ")" >                    |
@@ -562,7 +566,9 @@
 | [47][_Expr1]< _Expr1 @ "(" { _Expr ; "," } ")" >                                       |
 | [AST-INSTRUCTIONS]:                                                                    |
 |   - EndObject()                                                                        |
-|   - BeginObjectLeftRecursive(CallExpr)                                                 |
+|   - LriStore()                                                                         |
+|   - BeginObject(CallExpr)                                                              |
+|   - LriFetch()                                                                         |
 |   + Field(CallExpr::func)                                                              |
 | [RETURN STACK]:                                                                        |
 |   [23][36]: _Expr1 -> [54][_Expr]<< !_Expr1 @ >>                                       |

@@ -211,11 +211,15 @@
 		- EndObject()
 	leftrec -> [16][_Name]< _Name @ "." ID >
 		- EndObject()
-		- BeginObjectLeftRecursive(MemberName)
+		- LriStore()
+		- BeginObject(MemberName)
+		- LriFetch()
 		+ Field(MemberName::parent)
 	leftrec -> [17][_Name]< _Name @ "." ID _GenericArguments >
 		- EndObject()
-		- BeginObjectLeftRecursive(GenericMemberName)
+		- LriStore()
+		- BeginObject(GenericMemberName)
+		- LriFetch()
 		+ Field(GenericMemberName::parent)
 
 [9][_Name]< ID @ _GenericArguments >
@@ -229,11 +233,15 @@
 		- EndObject()
 	leftrec -> [16][_Name]< _Name @ "." ID >
 		- EndObject()
-		- BeginObjectLeftRecursive(MemberName)
+		- LriStore()
+		- BeginObject(MemberName)
+		- LriFetch()
 		+ Field(MemberName::parent)
 	leftrec -> [17][_Name]< _Name @ "." ID _GenericArguments >
 		- EndObject()
-		- BeginObjectLeftRecursive(GenericMemberName)
+		- LriStore()
+		- BeginObject(GenericMemberName)
+		- LriFetch()
 		+ Field(GenericMemberName::parent)
 
 [11][_Name]< _Name "." @ ID >
@@ -254,11 +262,15 @@
 		- EndObject()
 	leftrec -> [16][_Name]< _Name @ "." ID >
 		- EndObject()
-		- BeginObjectLeftRecursive(MemberName)
+		- LriStore()
+		- BeginObject(MemberName)
+		- LriFetch()
 		+ Field(MemberName::parent)
 	leftrec -> [17][_Name]< _Name @ "." ID _GenericArguments >
 		- EndObject()
-		- BeginObjectLeftRecursive(GenericMemberName)
+		- LriStore()
+		- BeginObject(GenericMemberName)
+		- LriFetch()
 		+ Field(GenericMemberName::parent)
 
 [14][_Name]< _Name "." ID @ _GenericArguments >
@@ -272,11 +284,15 @@
 		- EndObject()
 	leftrec -> [16][_Name]< _Name @ "." ID >
 		- EndObject()
-		- BeginObjectLeftRecursive(MemberName)
+		- LriStore()
+		- BeginObject(MemberName)
+		- LriFetch()
 		+ Field(MemberName::parent)
 	leftrec -> [17][_Name]< _Name @ "." ID _GenericArguments >
 		- EndObject()
-		- BeginObjectLeftRecursive(GenericMemberName)
+		- LriStore()
+		- BeginObject(GenericMemberName)
+		- LriFetch()
 		+ Field(GenericMemberName::parent)
 
 [16][_Name]< _Name @ "." ID >
@@ -479,7 +495,9 @@
 		- LriStore()
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(FunctionType)
+		- LriStore()
+		- BeginObject(FunctionType)
+		- LriFetch()
 		- Field(FunctionType::returnType)
 		> rule: _LongType_LRI_Original -> [34][_LongType]<< !_PrimitiveShared ( lri:_LongType_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -488,7 +506,9 @@
 		- LriStore()
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(ConstType)
+		- LriStore()
+		- BeginObject(ConstType)
+		- LriFetch()
 		- Field(ConstType::type)
 		> rule: _LongType_LRI_Original -> [34][_LongType]<< !_PrimitiveShared ( lri:_LongType_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -497,7 +517,9 @@
 		- LriStore()
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(PointerType)
+		- LriStore()
+		- BeginObject(PointerType)
+		- LriFetch()
 		- Field(PointerType::type)
 		> rule: _LongType_LRI_Original -> [34][_LongType]<< !_PrimitiveShared ( lri:_LongType_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -516,7 +538,9 @@
 		- LriStore()
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(FunctionType)
+		- LriStore()
+		- BeginObject(FunctionType)
+		- LriFetch()
 		- Field(FunctionType::returnType)
 		> rule: _LongType_LRI_Original -> [36][_LongType]<< !_PrimitiveTypeOnly ( lri:_LongType_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -525,7 +549,9 @@
 		- LriStore()
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(ConstType)
+		- LriStore()
+		- BeginObject(ConstType)
+		- LriFetch()
 		- Field(ConstType::type)
 		> rule: _LongType_LRI_Original -> [36][_LongType]<< !_PrimitiveTypeOnly ( lri:_LongType_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -534,7 +560,9 @@
 		- LriStore()
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(PointerType)
+		- LriStore()
+		- BeginObject(PointerType)
+		- LriFetch()
 		- Field(PointerType::type)
 		> rule: _LongType_LRI_Original -> [36][_LongType]<< !_PrimitiveTypeOnly ( lri:_LongType_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -599,7 +627,9 @@
 		- BeginObject(CtorExpr)
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(FunctionType)
+		- LriStore()
+		- BeginObject(FunctionType)
+		- LriFetch()
 		- Field(FunctionType::returnType)
 		> rule: _Expr0_LRI_Original -> [41][_Expr0]<< !_PrimitiveShared ( lri:_Expr0_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -625,7 +655,9 @@
 		- BeginObject(CtorExpr)
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(ConstType)
+		- LriStore()
+		- BeginObject(ConstType)
+		- LriFetch()
 		- Field(ConstType::type)
 		> rule: _Expr0_LRI_Original -> [41][_Expr0]<< !_PrimitiveShared ( lri:_Expr0_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -639,7 +671,9 @@
 		- BeginObject(CtorExpr)
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(PointerType)
+		- LriStore()
+		- BeginObject(PointerType)
+		- LriFetch()
 		- Field(PointerType::type)
 		> rule: _Expr0_LRI_Original -> [41][_Expr0]<< !_PrimitiveShared ( lri:_Expr0_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -661,7 +695,9 @@
 		- BeginObject(CtorExpr)
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(FunctionType)
+		- LriStore()
+		- BeginObject(FunctionType)
+		- LriFetch()
 		- Field(FunctionType::returnType)
 		> rule: _Expr0_LRI_Original -> [43][_Expr0]<< !_PrimitiveTypeOnly ( lri:_Expr0_LRI_Original @ ) >>
 			+ ReopenObject()
@@ -687,7 +723,9 @@
 		- BeginObject(CtorExpr)
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(ConstType)
+		- LriStore()
+		- BeginObject(ConstType)
+		- LriFetch()
 		- Field(ConstType::type)
 		> rule: _Expr0_LRI_Original -> [43][_Expr0]<< !_PrimitiveTypeOnly ( lri:_Expr0_LRI_Original @ ) >>
 			+ ReopenObject()
@@ -701,7 +739,9 @@
 		- BeginObject(CtorExpr)
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(PointerType)
+		- LriStore()
+		- BeginObject(PointerType)
+		- LriFetch()
 		- Field(PointerType::type)
 		> rule: _Expr0_LRI_Original -> [43][_Expr0]<< !_PrimitiveTypeOnly ( lri:_Expr0_LRI_Original @ ) >>
 			+ ReopenObject()
@@ -765,7 +805,9 @@
 		- LriFetch()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(CallExpr)
+		- LriStore()
+		- BeginObject(CallExpr)
+		- LriFetch()
 		- Field(CallExpr::func)
 		> rule: _Expr1_LRI_Original -> [47][_Expr1]<< !_PrimitiveExprOnly ( lri:_Expr1_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -792,7 +834,9 @@
 		- BeginObject(CtorExpr)
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(FunctionType)
+		- LriStore()
+		- BeginObject(FunctionType)
+		- LriFetch()
 		- Field(FunctionType::returnType)
 		> rule: _Expr1_LRI_Original -> [50][_Expr1]<< !_PrimitiveShared ( lri:_Expr1_LRI_Original | lri:_Expr1_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -809,7 +853,9 @@
 		- LriFetch()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(CallExpr)
+		- LriStore()
+		- BeginObject(CallExpr)
+		- LriFetch()
 		- Field(CallExpr::func)
 		> rule: _Expr1_LRI_Original -> [49][_Expr1]<< !_PrimitiveShared ( lri:_Expr1_LRI_Original @ | lri:_Expr1_LRI_Original | lri:<skip> ) >>
 			+ ReopenObject()
@@ -836,7 +882,9 @@
 		- BeginObject(CtorExpr)
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(ConstType)
+		- LriStore()
+		- BeginObject(ConstType)
+		- LriFetch()
 		- Field(ConstType::type)
 		> rule: _Expr1_LRI_Original -> [50][_Expr1]<< !_PrimitiveShared ( lri:_Expr1_LRI_Original | lri:_Expr1_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -853,7 +901,9 @@
 		- BeginObject(CtorExpr)
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(PointerType)
+		- LriStore()
+		- BeginObject(PointerType)
+		- LriFetch()
 		- Field(PointerType::type)
 		> rule: _Expr1_LRI_Original -> [50][_Expr1]<< !_PrimitiveShared ( lri:_Expr1_LRI_Original | lri:_Expr1_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -878,7 +928,9 @@
 		- BeginObject(CtorExpr)
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(FunctionType)
+		- LriStore()
+		- BeginObject(FunctionType)
+		- LriFetch()
 		- Field(FunctionType::returnType)
 		> rule: _Expr1_LRI_Original -> [52][_Expr1]<< !_PrimitiveTypeOnly ( lri:_Expr1_LRI_Original @ ) >>
 			+ ReopenObject()
@@ -910,7 +962,9 @@
 		- BeginObject(CtorExpr)
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(ConstType)
+		- LriStore()
+		- BeginObject(ConstType)
+		- LriFetch()
 		- Field(ConstType::type)
 		> rule: _Expr1_LRI_Original -> [52][_Expr1]<< !_PrimitiveTypeOnly ( lri:_Expr1_LRI_Original @ ) >>
 			+ ReopenObject()
@@ -927,7 +981,9 @@
 		- BeginObject(CtorExpr)
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(PointerType)
+		- LriStore()
+		- BeginObject(PointerType)
+		- LriFetch()
 		- Field(PointerType::type)
 		> rule: _Expr1_LRI_Original -> [52][_Expr1]<< !_PrimitiveTypeOnly ( lri:_Expr1_LRI_Original @ ) >>
 			+ ReopenObject()
@@ -994,7 +1050,9 @@
 		- LriFetch()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(CallExpr)
+		- LriStore()
+		- BeginObject(CallExpr)
+		- LriFetch()
 		- Field(CallExpr::func)
 		> rule: _Expr2_LRI_Original -> [56][_Expr2]<< !_PrimitiveExprOnly ( lri:_Expr2_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -1011,7 +1069,9 @@
 		- EndObject()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(MulExpr)
+		- LriStore()
+		- BeginObject(MulExpr)
+		- LriFetch()
 		- Field(MulExpr::first)
 		> rule: _Expr2_LRI_Original -> [56][_Expr2]<< !_PrimitiveExprOnly ( lri:_Expr2_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -1039,7 +1099,9 @@
 		- BeginObject(CtorExpr)
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(FunctionType)
+		- LriStore()
+		- BeginObject(FunctionType)
+		- LriFetch()
 		- Field(FunctionType::returnType)
 		> rule: _Expr2_LRI_Original -> [59][_Expr2]<< !_PrimitiveShared ( lri:_Expr2_LRI_Original | lri:_Expr2_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -1059,7 +1121,9 @@
 		- LriFetch()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(CallExpr)
+		- LriStore()
+		- BeginObject(CallExpr)
+		- LriFetch()
 		- Field(CallExpr::func)
 		> rule: _Expr2_LRI_Original -> [58][_Expr2]<< !_PrimitiveShared ( lri:_Expr2_LRI_Original @ | lri:_Expr2_LRI_Original | lri:<skip> ) >>
 			+ ReopenObject()
@@ -1092,7 +1156,9 @@
 		- BeginObject(CtorExpr)
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(ConstType)
+		- LriStore()
+		- BeginObject(ConstType)
+		- LriFetch()
 		- Field(ConstType::type)
 		> rule: _Expr2_LRI_Original -> [59][_Expr2]<< !_PrimitiveShared ( lri:_Expr2_LRI_Original | lri:_Expr2_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -1112,7 +1178,9 @@
 		- BeginObject(CtorExpr)
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(PointerType)
+		- LriStore()
+		- BeginObject(PointerType)
+		- LriFetch()
 		- Field(PointerType::type)
 		> rule: _Expr2_LRI_Original -> [59][_Expr2]<< !_PrimitiveShared ( lri:_Expr2_LRI_Original | lri:_Expr2_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -1134,7 +1202,9 @@
 		- EndObject()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(MulExpr)
+		- LriStore()
+		- BeginObject(MulExpr)
+		- LriFetch()
 		- Field(MulExpr::first)
 		> rule: _Expr2_LRI_Original -> [58][_Expr2]<< !_PrimitiveShared ( lri:_Expr2_LRI_Original @ | lri:_Expr2_LRI_Original | lri:<skip> ) >>
 			+ ReopenObject()
@@ -1155,7 +1225,9 @@
 		- BeginObject(CtorExpr)
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(FunctionType)
+		- LriStore()
+		- BeginObject(FunctionType)
+		- LriFetch()
 		- Field(FunctionType::returnType)
 		> rule: _Expr2_LRI_Original -> [61][_Expr2]<< !_PrimitiveTypeOnly ( lri:_Expr2_LRI_Original @ ) >>
 			+ ReopenObject()
@@ -1193,7 +1265,9 @@
 		- BeginObject(CtorExpr)
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(ConstType)
+		- LriStore()
+		- BeginObject(ConstType)
+		- LriFetch()
 		- Field(ConstType::type)
 		> rule: _Expr2_LRI_Original -> [61][_Expr2]<< !_PrimitiveTypeOnly ( lri:_Expr2_LRI_Original @ ) >>
 			+ ReopenObject()
@@ -1213,7 +1287,9 @@
 		- BeginObject(CtorExpr)
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(PointerType)
+		- LriStore()
+		- BeginObject(PointerType)
+		- LriFetch()
 		- Field(PointerType::type)
 		> rule: _Expr2_LRI_Original -> [61][_Expr2]<< !_PrimitiveTypeOnly ( lri:_Expr2_LRI_Original @ ) >>
 			+ ReopenObject()
@@ -1296,7 +1372,9 @@
 		- LriFetch()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(CallExpr)
+		- LriStore()
+		- BeginObject(CallExpr)
+		- LriFetch()
 		- Field(CallExpr::func)
 		> rule: _Expr_NoComma_LRI_Original -> [66][_Expr_NoComma]<< !_PrimitiveExprOnly ( lri:_Expr_NoComma_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -1326,7 +1404,9 @@
 		- EndObject()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(LtExpr)
+		- LriStore()
+		- BeginObject(LtExpr)
+		- LriFetch()
 		- Field(LtExpr::first)
 		> rule: _Expr_NoComma_LRI_Original -> [66][_Expr_NoComma]<< !_PrimitiveExprOnly ( lri:_Expr_NoComma_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -1351,7 +1431,9 @@
 		- EndObject()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(GtExpr)
+		- LriStore()
+		- BeginObject(GtExpr)
+		- LriFetch()
 		- Field(GtExpr::first)
 		> rule: _Expr_NoComma_LRI_Original -> [66][_Expr_NoComma]<< !_PrimitiveExprOnly ( lri:_Expr_NoComma_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -1372,7 +1454,9 @@
 		- EndObject()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(MulExpr)
+		- LriStore()
+		- BeginObject(MulExpr)
+		- LriFetch()
 		- Field(MulExpr::first)
 		> rule: _Expr_NoComma_LRI_Original -> [66][_Expr_NoComma]<< !_PrimitiveExprOnly ( lri:_Expr_NoComma_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -1409,7 +1493,9 @@
 		- BeginObject(CtorExpr)
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(FunctionType)
+		- LriStore()
+		- BeginObject(FunctionType)
+		- LriFetch()
 		- Field(FunctionType::returnType)
 		> rule: _Expr_NoComma_LRI_Original -> [69][_Expr_NoComma]<< !_PrimitiveShared ( lri:_Expr_NoComma_LRI_Original | lri:_Expr_NoComma_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -1438,7 +1524,9 @@
 		- LriFetch()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(CallExpr)
+		- LriStore()
+		- BeginObject(CallExpr)
+		- LriFetch()
 		- Field(CallExpr::func)
 		> rule: _Expr_NoComma_LRI_Original -> [68][_Expr_NoComma]<< !_PrimitiveShared ( lri:_Expr_NoComma_LRI_Original @ | lri:_Expr_NoComma_LRI_Original | lri:<skip> ) >>
 			+ ReopenObject()
@@ -1495,7 +1583,9 @@
 		- EndObject()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(LtExpr)
+		- LriStore()
+		- BeginObject(LtExpr)
+		- LriFetch()
 		- Field(LtExpr::first)
 		> rule: _Expr_NoComma_LRI_Original -> [68][_Expr_NoComma]<< !_PrimitiveShared ( lri:_Expr_NoComma_LRI_Original @ | lri:_Expr_NoComma_LRI_Original | lri:<skip> ) >>
 			+ ReopenObject()
@@ -1520,7 +1610,9 @@
 		- EndObject()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(GtExpr)
+		- LriStore()
+		- BeginObject(GtExpr)
+		- LriFetch()
 		- Field(GtExpr::first)
 		> rule: _Expr_NoComma_LRI_Original -> [68][_Expr_NoComma]<< !_PrimitiveShared ( lri:_Expr_NoComma_LRI_Original @ | lri:_Expr_NoComma_LRI_Original | lri:<skip> ) >>
 			+ ReopenObject()
@@ -1539,7 +1631,9 @@
 		- BeginObject(CtorExpr)
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(ConstType)
+		- LriStore()
+		- BeginObject(ConstType)
+		- LriFetch()
 		- Field(ConstType::type)
 		> rule: _Expr_NoComma_LRI_Original -> [69][_Expr_NoComma]<< !_PrimitiveShared ( lri:_Expr_NoComma_LRI_Original | lri:_Expr_NoComma_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -1568,7 +1662,9 @@
 		- BeginObject(CtorExpr)
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(PointerType)
+		- LriStore()
+		- BeginObject(PointerType)
+		- LriFetch()
 		- Field(PointerType::type)
 		> rule: _Expr_NoComma_LRI_Original -> [69][_Expr_NoComma]<< !_PrimitiveShared ( lri:_Expr_NoComma_LRI_Original | lri:_Expr_NoComma_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -1599,7 +1695,9 @@
 		- EndObject()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(MulExpr)
+		- LriStore()
+		- BeginObject(MulExpr)
+		- LriFetch()
 		- Field(MulExpr::first)
 		> rule: _Expr_NoComma_LRI_Original -> [68][_Expr_NoComma]<< !_PrimitiveShared ( lri:_Expr_NoComma_LRI_Original @ | lri:_Expr_NoComma_LRI_Original | lri:<skip> ) >>
 			+ ReopenObject()
@@ -1629,7 +1727,9 @@
 		- BeginObject(CtorExpr)
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(FunctionType)
+		- LriStore()
+		- BeginObject(FunctionType)
+		- LriFetch()
 		- Field(FunctionType::returnType)
 		> rule: _Expr_NoComma_LRI_Original -> [71][_Expr_NoComma]<< !_PrimitiveTypeOnly ( lri:_Expr_NoComma_LRI_Original @ ) >>
 			+ ReopenObject()
@@ -1685,7 +1785,9 @@
 		- BeginObject(CtorExpr)
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(ConstType)
+		- LriStore()
+		- BeginObject(ConstType)
+		- LriFetch()
 		- Field(ConstType::type)
 		> rule: _Expr_NoComma_LRI_Original -> [71][_Expr_NoComma]<< !_PrimitiveTypeOnly ( lri:_Expr_NoComma_LRI_Original @ ) >>
 			+ ReopenObject()
@@ -1714,7 +1816,9 @@
 		- BeginObject(CtorExpr)
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(PointerType)
+		- LriStore()
+		- BeginObject(PointerType)
+		- LriFetch()
 		- Field(PointerType::type)
 		> rule: _Expr_NoComma_LRI_Original -> [71][_Expr_NoComma]<< !_PrimitiveTypeOnly ( lri:_Expr_NoComma_LRI_Original @ ) >>
 			+ ReopenObject()
@@ -1802,7 +1906,9 @@
 		- LriFetch()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(CallExpr)
+		- LriStore()
+		- BeginObject(CallExpr)
+		- LriFetch()
 		- Field(CallExpr::func)
 		> rule: _Expr_NoGT_NoComma_LRI_Original -> [76][_Expr_NoGT_NoComma]<< !_PrimitiveExprOnly ( lri:_Expr_NoGT_NoComma_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -1832,7 +1938,9 @@
 		- EndObject()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(LtExpr)
+		- LriStore()
+		- BeginObject(LtExpr)
+		- LriFetch()
 		- Field(LtExpr::first)
 		> rule: _Expr_NoGT_NoComma_LRI_Original -> [76][_Expr_NoGT_NoComma]<< !_PrimitiveExprOnly ( lri:_Expr_NoGT_NoComma_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -1853,7 +1961,9 @@
 		- EndObject()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(MulExpr)
+		- LriStore()
+		- BeginObject(MulExpr)
+		- LriFetch()
 		- Field(MulExpr::first)
 		> rule: _Expr_NoGT_NoComma_LRI_Original -> [76][_Expr_NoGT_NoComma]<< !_PrimitiveExprOnly ( lri:_Expr_NoGT_NoComma_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -1890,7 +2000,9 @@
 		- BeginObject(CtorExpr)
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(FunctionType)
+		- LriStore()
+		- BeginObject(FunctionType)
+		- LriFetch()
 		- Field(FunctionType::returnType)
 		> rule: _Expr_NoGT_NoComma_LRI_Original -> [79][_Expr_NoGT_NoComma]<< !_PrimitiveShared ( lri:_Expr_NoGT_NoComma_LRI_Original | lri:_Expr_NoGT_NoComma_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -1919,7 +2031,9 @@
 		- LriFetch()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(CallExpr)
+		- LriStore()
+		- BeginObject(CallExpr)
+		- LriFetch()
 		- Field(CallExpr::func)
 		> rule: _Expr_NoGT_NoComma_LRI_Original -> [78][_Expr_NoGT_NoComma]<< !_PrimitiveShared ( lri:_Expr_NoGT_NoComma_LRI_Original @ | lri:_Expr_NoGT_NoComma_LRI_Original | lri:<skip> ) >>
 			+ ReopenObject()
@@ -1976,7 +2090,9 @@
 		- EndObject()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(LtExpr)
+		- LriStore()
+		- BeginObject(LtExpr)
+		- LriFetch()
 		- Field(LtExpr::first)
 		> rule: _Expr_NoGT_NoComma_LRI_Original -> [78][_Expr_NoGT_NoComma]<< !_PrimitiveShared ( lri:_Expr_NoGT_NoComma_LRI_Original @ | lri:_Expr_NoGT_NoComma_LRI_Original | lri:<skip> ) >>
 			+ ReopenObject()
@@ -1995,7 +2111,9 @@
 		- BeginObject(CtorExpr)
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(ConstType)
+		- LriStore()
+		- BeginObject(ConstType)
+		- LriFetch()
 		- Field(ConstType::type)
 		> rule: _Expr_NoGT_NoComma_LRI_Original -> [79][_Expr_NoGT_NoComma]<< !_PrimitiveShared ( lri:_Expr_NoGT_NoComma_LRI_Original | lri:_Expr_NoGT_NoComma_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -2024,7 +2142,9 @@
 		- BeginObject(CtorExpr)
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(PointerType)
+		- LriStore()
+		- BeginObject(PointerType)
+		- LriFetch()
 		- Field(PointerType::type)
 		> rule: _Expr_NoGT_NoComma_LRI_Original -> [79][_Expr_NoGT_NoComma]<< !_PrimitiveShared ( lri:_Expr_NoGT_NoComma_LRI_Original | lri:_Expr_NoGT_NoComma_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -2055,7 +2175,9 @@
 		- EndObject()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(MulExpr)
+		- LriStore()
+		- BeginObject(MulExpr)
+		- LriFetch()
 		- Field(MulExpr::first)
 		> rule: _Expr_NoGT_NoComma_LRI_Original -> [78][_Expr_NoGT_NoComma]<< !_PrimitiveShared ( lri:_Expr_NoGT_NoComma_LRI_Original @ | lri:_Expr_NoGT_NoComma_LRI_Original | lri:<skip> ) >>
 			+ ReopenObject()
@@ -2085,7 +2207,9 @@
 		- BeginObject(CtorExpr)
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(FunctionType)
+		- LriStore()
+		- BeginObject(FunctionType)
+		- LriFetch()
 		- Field(FunctionType::returnType)
 		> rule: _Expr_NoGT_NoComma_LRI_Original -> [81][_Expr_NoGT_NoComma]<< !_PrimitiveTypeOnly ( lri:_Expr_NoGT_NoComma_LRI_Original @ ) >>
 			+ ReopenObject()
@@ -2141,7 +2265,9 @@
 		- BeginObject(CtorExpr)
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(ConstType)
+		- LriStore()
+		- BeginObject(ConstType)
+		- LriFetch()
 		- Field(ConstType::type)
 		> rule: _Expr_NoGT_NoComma_LRI_Original -> [81][_Expr_NoGT_NoComma]<< !_PrimitiveTypeOnly ( lri:_Expr_NoGT_NoComma_LRI_Original @ ) >>
 			+ ReopenObject()
@@ -2170,7 +2296,9 @@
 		- BeginObject(CtorExpr)
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(PointerType)
+		- LriStore()
+		- BeginObject(PointerType)
+		- LriFetch()
 		- Field(PointerType::type)
 		> rule: _Expr_NoGT_NoComma_LRI_Original -> [81][_Expr_NoGT_NoComma]<< !_PrimitiveTypeOnly ( lri:_Expr_NoGT_NoComma_LRI_Original @ ) >>
 			+ ReopenObject()
@@ -2251,7 +2379,9 @@
 		- EndObject()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(CommaExpr)
+		- LriStore()
+		- BeginObject(CommaExpr)
+		- LriFetch()
 		- Field(CommaExpr::first)
 		> rule: _Expr_LRI_Original -> [85][_Expr]<< !_Expr4_SWITCH_1allow_gt_LRI_Isolated_1 ( lri:_Expr_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -2279,7 +2409,9 @@
 		- LriFetch()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(CallExpr)
+		- LriStore()
+		- BeginObject(CallExpr)
+		- LriFetch()
 		- Field(CallExpr::func)
 		> rule: _Expr_LRI_Original -> [87][_Expr]<< !_PrimitiveExprOnly ( lri:_Expr_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -2312,7 +2444,9 @@
 		- EndObject()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(LtExpr)
+		- LriStore()
+		- BeginObject(LtExpr)
+		- LriFetch()
 		- Field(LtExpr::first)
 		> rule: _Expr_LRI_Original -> [87][_Expr]<< !_PrimitiveExprOnly ( lri:_Expr_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -2340,7 +2474,9 @@
 		- EndObject()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(GtExpr)
+		- LriStore()
+		- BeginObject(GtExpr)
+		- LriFetch()
 		- Field(GtExpr::first)
 		> rule: _Expr_LRI_Original -> [87][_Expr]<< !_PrimitiveExprOnly ( lri:_Expr_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -2374,7 +2510,9 @@
 		- EndObject()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(CommaExpr)
+		- LriStore()
+		- BeginObject(CommaExpr)
+		- LriFetch()
 		- Field(CommaExpr::first)
 		> rule: _Expr_LRI_Original -> [87][_Expr]<< !_PrimitiveExprOnly ( lri:_Expr_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -2394,7 +2532,9 @@
 		- EndObject()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(MulExpr)
+		- LriStore()
+		- BeginObject(MulExpr)
+		- LriFetch()
 		- Field(MulExpr::first)
 		> rule: _Expr_LRI_Original -> [87][_Expr]<< !_PrimitiveExprOnly ( lri:_Expr_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -2434,7 +2574,9 @@
 		- BeginObject(CtorExpr)
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(FunctionType)
+		- LriStore()
+		- BeginObject(FunctionType)
+		- LriFetch()
 		- Field(FunctionType::returnType)
 		> rule: _Expr_LRI_Original -> [90][_Expr]<< !_PrimitiveShared ( lri:_Expr_LRI_Original | lri:_Expr_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -2466,7 +2608,9 @@
 		- LriFetch()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(CallExpr)
+		- LriStore()
+		- BeginObject(CallExpr)
+		- LriFetch()
 		- Field(CallExpr::func)
 		> rule: _Expr_LRI_Original -> [89][_Expr]<< !_PrimitiveShared ( lri:_Expr_LRI_Original @ | lri:_Expr_LRI_Original | lri:<skip> ) >>
 			+ ReopenObject()
@@ -2529,7 +2673,9 @@
 		- EndObject()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(LtExpr)
+		- LriStore()
+		- BeginObject(LtExpr)
+		- LriFetch()
 		- Field(LtExpr::first)
 		> rule: _Expr_LRI_Original -> [89][_Expr]<< !_PrimitiveShared ( lri:_Expr_LRI_Original @ | lri:_Expr_LRI_Original | lri:<skip> ) >>
 			+ ReopenObject()
@@ -2557,7 +2703,9 @@
 		- EndObject()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(GtExpr)
+		- LriStore()
+		- BeginObject(GtExpr)
+		- LriFetch()
 		- Field(GtExpr::first)
 		> rule: _Expr_LRI_Original -> [89][_Expr]<< !_PrimitiveShared ( lri:_Expr_LRI_Original @ | lri:_Expr_LRI_Original | lri:<skip> ) >>
 			+ ReopenObject()
@@ -2591,7 +2739,9 @@
 		- EndObject()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(CommaExpr)
+		- LriStore()
+		- BeginObject(CommaExpr)
+		- LriFetch()
 		- Field(CommaExpr::first)
 		> rule: _Expr_LRI_Original -> [89][_Expr]<< !_PrimitiveShared ( lri:_Expr_LRI_Original @ | lri:_Expr_LRI_Original | lri:<skip> ) >>
 			+ ReopenObject()
@@ -2609,7 +2759,9 @@
 		- BeginObject(CtorExpr)
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(ConstType)
+		- LriStore()
+		- BeginObject(ConstType)
+		- LriFetch()
 		- Field(ConstType::type)
 		> rule: _Expr_LRI_Original -> [90][_Expr]<< !_PrimitiveShared ( lri:_Expr_LRI_Original | lri:_Expr_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -2641,7 +2793,9 @@
 		- BeginObject(CtorExpr)
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(PointerType)
+		- LriStore()
+		- BeginObject(PointerType)
+		- LriFetch()
 		- Field(PointerType::type)
 		> rule: _Expr_LRI_Original -> [90][_Expr]<< !_PrimitiveShared ( lri:_Expr_LRI_Original | lri:_Expr_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -2675,7 +2829,9 @@
 		- EndObject()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(MulExpr)
+		- LriStore()
+		- BeginObject(MulExpr)
+		- LriFetch()
 		- Field(MulExpr::first)
 		> rule: _Expr_LRI_Original -> [89][_Expr]<< !_PrimitiveShared ( lri:_Expr_LRI_Original @ | lri:_Expr_LRI_Original | lri:<skip> ) >>
 			+ ReopenObject()
@@ -2708,7 +2864,9 @@
 		- BeginObject(CtorExpr)
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(FunctionType)
+		- LriStore()
+		- BeginObject(FunctionType)
+		- LriFetch()
 		- Field(FunctionType::returnType)
 		> rule: _Expr_LRI_Original -> [92][_Expr]<< !_PrimitiveTypeOnly ( lri:_Expr_LRI_Original @ ) >>
 			+ ReopenObject()
@@ -2770,7 +2928,9 @@
 		- BeginObject(CtorExpr)
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(ConstType)
+		- LriStore()
+		- BeginObject(ConstType)
+		- LriFetch()
 		- Field(ConstType::type)
 		> rule: _Expr_LRI_Original -> [92][_Expr]<< !_PrimitiveTypeOnly ( lri:_Expr_LRI_Original @ ) >>
 			+ ReopenObject()
@@ -2802,7 +2962,9 @@
 		- BeginObject(CtorExpr)
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(PointerType)
+		- LriStore()
+		- BeginObject(PointerType)
+		- LriFetch()
 		- Field(PointerType::type)
 		> rule: _Expr_LRI_Original -> [92][_Expr]<< !_PrimitiveTypeOnly ( lri:_Expr_LRI_Original @ ) >>
 			+ ReopenObject()
@@ -2913,7 +3075,9 @@
 		- EndObject()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(CommaExpr)
+		- LriStore()
+		- BeginObject(CommaExpr)
+		- LriFetch()
 		- Field(CommaExpr::first)
 		> rule: _Expr_LRI_Original -> [96][Module]<< !_Expr4_SWITCH_1allow_gt_LRI_Isolated_1 ( lri:_Expr_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -2941,7 +3105,9 @@
 		- LriFetch()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(CallExpr)
+		- LriStore()
+		- BeginObject(CallExpr)
+		- LriFetch()
 		- Field(CallExpr::func)
 		> rule: _Expr_LRI_Original -> [98][Module]<< !_PrimitiveExprOnly ( lri:_Expr_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -2974,7 +3140,9 @@
 		- EndObject()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(LtExpr)
+		- LriStore()
+		- BeginObject(LtExpr)
+		- LriFetch()
 		- Field(LtExpr::first)
 		> rule: _Expr_LRI_Original -> [98][Module]<< !_PrimitiveExprOnly ( lri:_Expr_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -3002,7 +3170,9 @@
 		- EndObject()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(GtExpr)
+		- LriStore()
+		- BeginObject(GtExpr)
+		- LriFetch()
 		- Field(GtExpr::first)
 		> rule: _Expr_LRI_Original -> [98][Module]<< !_PrimitiveExprOnly ( lri:_Expr_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -3036,7 +3206,9 @@
 		- EndObject()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(CommaExpr)
+		- LriStore()
+		- BeginObject(CommaExpr)
+		- LriFetch()
 		- Field(CommaExpr::first)
 		> rule: _Expr_LRI_Original -> [98][Module]<< !_PrimitiveExprOnly ( lri:_Expr_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -3056,7 +3228,9 @@
 		- EndObject()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(MulExpr)
+		- LriStore()
+		- BeginObject(MulExpr)
+		- LriFetch()
 		- Field(MulExpr::first)
 		> rule: _Expr_LRI_Original -> [98][Module]<< !_PrimitiveExprOnly ( lri:_Expr_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -3133,7 +3307,9 @@
 		- LriFetch()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(CallExpr)
+		- LriStore()
+		- BeginObject(CallExpr)
+		- LriFetch()
 		- Field(CallExpr::func)
 		> rule: _Expr_LRI_Original -> [100][Module]<< !_PrimitiveShared ( lri:_Expr_LRI_Original @ | lri:_Expr_LRI_Original | lri:<skip> ) >>
 			+ ReopenObject()
@@ -3193,7 +3369,9 @@
 		- EndObject()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(LtExpr)
+		- LriStore()
+		- BeginObject(LtExpr)
+		- LriFetch()
 		- Field(LtExpr::first)
 		> rule: _Expr_LRI_Original -> [100][Module]<< !_PrimitiveShared ( lri:_Expr_LRI_Original @ | lri:_Expr_LRI_Original | lri:<skip> ) >>
 			+ ReopenObject()
@@ -3221,7 +3399,9 @@
 		- EndObject()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(GtExpr)
+		- LriStore()
+		- BeginObject(GtExpr)
+		- LriFetch()
 		- Field(GtExpr::first)
 		> rule: _Expr_LRI_Original -> [100][Module]<< !_PrimitiveShared ( lri:_Expr_LRI_Original @ | lri:_Expr_LRI_Original | lri:<skip> ) >>
 			+ ReopenObject()
@@ -3255,7 +3435,9 @@
 		- EndObject()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(CommaExpr)
+		- LriStore()
+		- BeginObject(CommaExpr)
+		- LriFetch()
 		- Field(CommaExpr::first)
 		> rule: _Expr_LRI_Original -> [100][Module]<< !_PrimitiveShared ( lri:_Expr_LRI_Original @ | lri:_Expr_LRI_Original | lri:<skip> ) >>
 			+ ReopenObject()
@@ -3275,7 +3457,9 @@
 		- EndObject()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(MulExpr)
+		- LriStore()
+		- BeginObject(MulExpr)
+		- LriFetch()
 		- Field(MulExpr::first)
 		> rule: _Expr_LRI_Original -> [100][Module]<< !_PrimitiveShared ( lri:_Expr_LRI_Original @ | lri:_Expr_LRI_Original | lri:<skip> ) >>
 			+ ReopenObject()
@@ -3294,7 +3478,9 @@
 		- LriStore()
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(FunctionType)
+		- LriStore()
+		- BeginObject(FunctionType)
+		- LriFetch()
 		- Field(FunctionType::returnType)
 		> rule: _LongType_LRI_Original -> [103][Module]<< !_PrimitiveShared ( lri:_LongType_LRI_Original @ ( lri:_Expr_LRI_Original | lri:<skip> ) ) >>
 			+ ReopenObject()
@@ -3303,7 +3489,9 @@
 		- LriStore()
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(ConstType)
+		- LriStore()
+		- BeginObject(ConstType)
+		- LriFetch()
 		- Field(ConstType::type)
 		> rule: _LongType_LRI_Original -> [103][Module]<< !_PrimitiveShared ( lri:_LongType_LRI_Original @ ( lri:_Expr_LRI_Original | lri:<skip> ) ) >>
 			+ ReopenObject()
@@ -3312,7 +3500,9 @@
 		- LriStore()
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(PointerType)
+		- LriStore()
+		- BeginObject(PointerType)
+		- LriFetch()
 		- Field(PointerType::type)
 		> rule: _LongType_LRI_Original -> [103][Module]<< !_PrimitiveShared ( lri:_LongType_LRI_Original @ ( lri:_Expr_LRI_Original | lri:<skip> ) ) >>
 			+ ReopenObject()
@@ -3398,7 +3588,9 @@
 		- LriStore()
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(FunctionType)
+		- LriStore()
+		- BeginObject(FunctionType)
+		- LriFetch()
 		- Field(FunctionType::returnType)
 		> rule: _LongType_LRI_Original -> [108][Module]<< !_PrimitiveTypeOnly ( lri:_LongType_LRI_Original @ ( lri:_Expr_LRI_Original | lri:<skip> ) | lri:<skip> ) >>
 			+ ReopenObject()
@@ -3407,7 +3599,9 @@
 		- LriStore()
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(ConstType)
+		- LriStore()
+		- BeginObject(ConstType)
+		- LriFetch()
 		- Field(ConstType::type)
 		> rule: _LongType_LRI_Original -> [108][Module]<< !_PrimitiveTypeOnly ( lri:_LongType_LRI_Original @ ( lri:_Expr_LRI_Original | lri:<skip> ) | lri:<skip> ) >>
 			+ ReopenObject()
@@ -3416,7 +3610,9 @@
 		- LriStore()
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(PointerType)
+		- LriStore()
+		- BeginObject(PointerType)
+		- LriFetch()
 		- Field(PointerType::type)
 		> rule: _LongType_LRI_Original -> [108][Module]<< !_PrimitiveTypeOnly ( lri:_LongType_LRI_Original @ ( lri:_Expr_LRI_Original | lri:<skip> ) | lri:<skip> ) >>
 			+ ReopenObject()
@@ -3520,7 +3716,9 @@
 		- LriFetch()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(CallExpr)
+		- LriStore()
+		- BeginObject(CallExpr)
+		- LriFetch()
 		- Field(CallExpr::func)
 		> rule: _Expr_NoGT_NoComma_LRI_Original -> [114][Module_NoGT_NoComma]<< !_PrimitiveExprOnly ( lri:_Expr_NoGT_NoComma_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -3550,7 +3748,9 @@
 		- EndObject()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(LtExpr)
+		- LriStore()
+		- BeginObject(LtExpr)
+		- LriFetch()
 		- Field(LtExpr::first)
 		> rule: _Expr_NoGT_NoComma_LRI_Original -> [114][Module_NoGT_NoComma]<< !_PrimitiveExprOnly ( lri:_Expr_NoGT_NoComma_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -3571,7 +3771,9 @@
 		- EndObject()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(MulExpr)
+		- LriStore()
+		- BeginObject(MulExpr)
+		- LriFetch()
 		- Field(MulExpr::first)
 		> rule: _Expr_NoGT_NoComma_LRI_Original -> [114][Module_NoGT_NoComma]<< !_PrimitiveExprOnly ( lri:_Expr_NoGT_NoComma_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -3642,7 +3844,9 @@
 		- LriFetch()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(CallExpr)
+		- LriStore()
+		- BeginObject(CallExpr)
+		- LriFetch()
 		- Field(CallExpr::func)
 		> rule: _Expr_NoGT_NoComma_LRI_Original -> [116][Module_NoGT_NoComma]<< !_PrimitiveShared ( lri:_Expr_NoGT_NoComma_LRI_Original @ | lri:_Expr_NoGT_NoComma_LRI_Original | lri:<skip> ) >>
 			+ ReopenObject()
@@ -3696,7 +3900,9 @@
 		- EndObject()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(LtExpr)
+		- LriStore()
+		- BeginObject(LtExpr)
+		- LriFetch()
 		- Field(LtExpr::first)
 		> rule: _Expr_NoGT_NoComma_LRI_Original -> [116][Module_NoGT_NoComma]<< !_PrimitiveShared ( lri:_Expr_NoGT_NoComma_LRI_Original @ | lri:_Expr_NoGT_NoComma_LRI_Original | lri:<skip> ) >>
 			+ ReopenObject()
@@ -3717,7 +3923,9 @@
 		- EndObject()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(MulExpr)
+		- LriStore()
+		- BeginObject(MulExpr)
+		- LriFetch()
 		- Field(MulExpr::first)
 		> rule: _Expr_NoGT_NoComma_LRI_Original -> [116][Module_NoGT_NoComma]<< !_PrimitiveShared ( lri:_Expr_NoGT_NoComma_LRI_Original @ | lri:_Expr_NoGT_NoComma_LRI_Original | lri:<skip> ) >>
 			+ ReopenObject()
@@ -3734,7 +3942,9 @@
 		- LriStore()
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(FunctionType)
+		- LriStore()
+		- BeginObject(FunctionType)
+		- LriFetch()
 		- Field(FunctionType::returnType)
 		> rule: _LongType_LRI_Original -> [119][Module_NoGT_NoComma]<< !_PrimitiveShared ( lri:_LongType_LRI_Original @ ( lri:_Expr_NoGT_NoComma_LRI_Original | lri:<skip> ) ) >>
 			+ ReopenObject()
@@ -3743,7 +3953,9 @@
 		- LriStore()
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(ConstType)
+		- LriStore()
+		- BeginObject(ConstType)
+		- LriFetch()
 		- Field(ConstType::type)
 		> rule: _LongType_LRI_Original -> [119][Module_NoGT_NoComma]<< !_PrimitiveShared ( lri:_LongType_LRI_Original @ ( lri:_Expr_NoGT_NoComma_LRI_Original | lri:<skip> ) ) >>
 			+ ReopenObject()
@@ -3752,7 +3964,9 @@
 		- LriStore()
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(PointerType)
+		- LriStore()
+		- BeginObject(PointerType)
+		- LriFetch()
 		- Field(PointerType::type)
 		> rule: _LongType_LRI_Original -> [119][Module_NoGT_NoComma]<< !_PrimitiveShared ( lri:_LongType_LRI_Original @ ( lri:_Expr_NoGT_NoComma_LRI_Original | lri:<skip> ) ) >>
 			+ ReopenObject()
@@ -3832,7 +4046,9 @@
 		- LriStore()
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(FunctionType)
+		- LriStore()
+		- BeginObject(FunctionType)
+		- LriFetch()
 		- Field(FunctionType::returnType)
 		> rule: _LongType_LRI_Original -> [124][Module_NoGT_NoComma]<< !_PrimitiveTypeOnly ( lri:_LongType_LRI_Original @ ( lri:_Expr_NoGT_NoComma_LRI_Original | lri:<skip> ) | lri:<skip> ) >>
 			+ ReopenObject()
@@ -3841,7 +4057,9 @@
 		- LriStore()
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(ConstType)
+		- LriStore()
+		- BeginObject(ConstType)
+		- LriFetch()
 		- Field(ConstType::type)
 		> rule: _LongType_LRI_Original -> [124][Module_NoGT_NoComma]<< !_PrimitiveTypeOnly ( lri:_LongType_LRI_Original @ ( lri:_Expr_NoGT_NoComma_LRI_Original | lri:<skip> ) | lri:<skip> ) >>
 			+ ReopenObject()
@@ -3850,7 +4068,9 @@
 		- LriStore()
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(PointerType)
+		- LriStore()
+		- BeginObject(PointerType)
+		- LriFetch()
 		- Field(PointerType::type)
 		> rule: _LongType_LRI_Original -> [124][Module_NoGT_NoComma]<< !_PrimitiveTypeOnly ( lri:_LongType_LRI_Original @ ( lri:_Expr_NoGT_NoComma_LRI_Original | lri:<skip> ) | lri:<skip> ) >>
 			+ ReopenObject()
@@ -3913,7 +4133,9 @@
 		- LriFetch()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(CallExpr)
+		- LriStore()
+		- BeginObject(CallExpr)
+		- LriFetch()
 		- Field(CallExpr::func)
 		> rule: _Expr3_SWITCH_COMBINED_LRI_Original -> [129][_Expr3_SWITCH_COMBINED]<< !_PrimitiveExprOnly ( lri:_Expr3_SWITCH_COMBINED_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -3932,7 +4154,9 @@
 		- EndObject()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(MulExpr)
+		- LriStore()
+		- BeginObject(MulExpr)
+		- LriFetch()
 		- Field(MulExpr::first)
 		> rule: _Expr3_SWITCH_COMBINED_LRI_Original -> [129][_Expr3_SWITCH_COMBINED]<< !_PrimitiveExprOnly ( lri:_Expr3_SWITCH_COMBINED_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -3962,7 +4186,9 @@
 		- BeginObject(CtorExpr)
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(FunctionType)
+		- LriStore()
+		- BeginObject(FunctionType)
+		- LriFetch()
 		- Field(FunctionType::returnType)
 		> rule: _Expr3_SWITCH_COMBINED_LRI_Original -> [132][_Expr3_SWITCH_COMBINED]<< !_PrimitiveShared ( lri:_Expr3_SWITCH_COMBINED_LRI_Original | lri:_Expr3_SWITCH_COMBINED_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -3984,7 +4210,9 @@
 		- LriFetch()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(CallExpr)
+		- LriStore()
+		- BeginObject(CallExpr)
+		- LriFetch()
 		- Field(CallExpr::func)
 		> rule: _Expr3_SWITCH_COMBINED_LRI_Original -> [131][_Expr3_SWITCH_COMBINED]<< !_PrimitiveShared ( lri:_Expr3_SWITCH_COMBINED_LRI_Original @ | lri:_Expr3_SWITCH_COMBINED_LRI_Original | lri:<skip> ) >>
 			+ ReopenObject()
@@ -4021,7 +4249,9 @@
 		- BeginObject(CtorExpr)
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(ConstType)
+		- LriStore()
+		- BeginObject(ConstType)
+		- LriFetch()
 		- Field(ConstType::type)
 		> rule: _Expr3_SWITCH_COMBINED_LRI_Original -> [132][_Expr3_SWITCH_COMBINED]<< !_PrimitiveShared ( lri:_Expr3_SWITCH_COMBINED_LRI_Original | lri:_Expr3_SWITCH_COMBINED_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -4043,7 +4273,9 @@
 		- BeginObject(CtorExpr)
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(PointerType)
+		- LriStore()
+		- BeginObject(PointerType)
+		- LriFetch()
 		- Field(PointerType::type)
 		> rule: _Expr3_SWITCH_COMBINED_LRI_Original -> [132][_Expr3_SWITCH_COMBINED]<< !_PrimitiveShared ( lri:_Expr3_SWITCH_COMBINED_LRI_Original | lri:_Expr3_SWITCH_COMBINED_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -4067,7 +4299,9 @@
 		- EndObject()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(MulExpr)
+		- LriStore()
+		- BeginObject(MulExpr)
+		- LriFetch()
 		- Field(MulExpr::first)
 		> rule: _Expr3_SWITCH_COMBINED_LRI_Original -> [131][_Expr3_SWITCH_COMBINED]<< !_PrimitiveShared ( lri:_Expr3_SWITCH_COMBINED_LRI_Original @ | lri:_Expr3_SWITCH_COMBINED_LRI_Original | lri:<skip> ) >>
 			+ ReopenObject()
@@ -4090,7 +4324,9 @@
 		- BeginObject(CtorExpr)
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(FunctionType)
+		- LriStore()
+		- BeginObject(FunctionType)
+		- LriFetch()
 		- Field(FunctionType::returnType)
 		> rule: _Expr3_SWITCH_COMBINED_LRI_Original -> [134][_Expr3_SWITCH_COMBINED]<< !_PrimitiveTypeOnly ( lri:_Expr3_SWITCH_COMBINED_LRI_Original @ ) >>
 			+ ReopenObject()
@@ -4132,7 +4368,9 @@
 		- BeginObject(CtorExpr)
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(ConstType)
+		- LriStore()
+		- BeginObject(ConstType)
+		- LriFetch()
 		- Field(ConstType::type)
 		> rule: _Expr3_SWITCH_COMBINED_LRI_Original -> [134][_Expr3_SWITCH_COMBINED]<< !_PrimitiveTypeOnly ( lri:_Expr3_SWITCH_COMBINED_LRI_Original @ ) >>
 			+ ReopenObject()
@@ -4154,7 +4392,9 @@
 		- BeginObject(CtorExpr)
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(PointerType)
+		- LriStore()
+		- BeginObject(PointerType)
+		- LriFetch()
 		- Field(PointerType::type)
 		> rule: _Expr3_SWITCH_COMBINED_LRI_Original -> [134][_Expr3_SWITCH_COMBINED]<< !_PrimitiveTypeOnly ( lri:_Expr3_SWITCH_COMBINED_LRI_Original @ ) >>
 			+ ReopenObject()
@@ -4226,7 +4466,9 @@
 		- LriFetch()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(CallExpr)
+		- LriStore()
+		- BeginObject(CallExpr)
+		- LriFetch()
 		- Field(CallExpr::func)
 		> rule: _Expr3_SWITCH_0allow_gt_LRI_Original -> [138][_Expr3_SWITCH_0allow_gt]<< !_PrimitiveExprOnly ( lri:_Expr3_SWITCH_0allow_gt_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -4252,7 +4494,9 @@
 		- EndObject()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(LtExpr)
+		- LriStore()
+		- BeginObject(LtExpr)
+		- LriFetch()
 		- Field(LtExpr::first)
 		> rule: _Expr3_SWITCH_0allow_gt_LRI_Original -> [138][_Expr3_SWITCH_0allow_gt]<< !_PrimitiveExprOnly ( lri:_Expr3_SWITCH_0allow_gt_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -4269,7 +4513,9 @@
 		- EndObject()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(MulExpr)
+		- LriStore()
+		- BeginObject(MulExpr)
+		- LriFetch()
 		- Field(MulExpr::first)
 		> rule: _Expr3_SWITCH_0allow_gt_LRI_Original -> [138][_Expr3_SWITCH_0allow_gt]<< !_PrimitiveExprOnly ( lri:_Expr3_SWITCH_0allow_gt_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -4302,7 +4548,9 @@
 		- BeginObject(CtorExpr)
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(FunctionType)
+		- LriStore()
+		- BeginObject(FunctionType)
+		- LriFetch()
 		- Field(FunctionType::returnType)
 		> rule: _Expr3_SWITCH_0allow_gt_LRI_Original -> [141][_Expr3_SWITCH_0allow_gt]<< !_PrimitiveShared ( lri:_Expr3_SWITCH_0allow_gt_LRI_Original | lri:_Expr3_SWITCH_0allow_gt_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -4327,7 +4575,9 @@
 		- LriFetch()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(CallExpr)
+		- LriStore()
+		- BeginObject(CallExpr)
+		- LriFetch()
 		- Field(CallExpr::func)
 		> rule: _Expr3_SWITCH_0allow_gt_LRI_Original -> [140][_Expr3_SWITCH_0allow_gt]<< !_PrimitiveShared ( lri:_Expr3_SWITCH_0allow_gt_LRI_Original @ | lri:_Expr3_SWITCH_0allow_gt_LRI_Original | lri:<skip> ) >>
 			+ ReopenObject()
@@ -4376,7 +4626,9 @@
 		- EndObject()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(LtExpr)
+		- LriStore()
+		- BeginObject(LtExpr)
+		- LriFetch()
 		- Field(LtExpr::first)
 		> rule: _Expr3_SWITCH_0allow_gt_LRI_Original -> [140][_Expr3_SWITCH_0allow_gt]<< !_PrimitiveShared ( lri:_Expr3_SWITCH_0allow_gt_LRI_Original @ | lri:_Expr3_SWITCH_0allow_gt_LRI_Original | lri:<skip> ) >>
 			+ ReopenObject()
@@ -4391,7 +4643,9 @@
 		- BeginObject(CtorExpr)
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(ConstType)
+		- LriStore()
+		- BeginObject(ConstType)
+		- LriFetch()
 		- Field(ConstType::type)
 		> rule: _Expr3_SWITCH_0allow_gt_LRI_Original -> [141][_Expr3_SWITCH_0allow_gt]<< !_PrimitiveShared ( lri:_Expr3_SWITCH_0allow_gt_LRI_Original | lri:_Expr3_SWITCH_0allow_gt_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -4416,7 +4670,9 @@
 		- BeginObject(CtorExpr)
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(PointerType)
+		- LriStore()
+		- BeginObject(PointerType)
+		- LriFetch()
 		- Field(PointerType::type)
 		> rule: _Expr3_SWITCH_0allow_gt_LRI_Original -> [141][_Expr3_SWITCH_0allow_gt]<< !_PrimitiveShared ( lri:_Expr3_SWITCH_0allow_gt_LRI_Original | lri:_Expr3_SWITCH_0allow_gt_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -4443,7 +4699,9 @@
 		- EndObject()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(MulExpr)
+		- LriStore()
+		- BeginObject(MulExpr)
+		- LriFetch()
 		- Field(MulExpr::first)
 		> rule: _Expr3_SWITCH_0allow_gt_LRI_Original -> [140][_Expr3_SWITCH_0allow_gt]<< !_PrimitiveShared ( lri:_Expr3_SWITCH_0allow_gt_LRI_Original @ | lri:_Expr3_SWITCH_0allow_gt_LRI_Original | lri:<skip> ) >>
 			+ ReopenObject()
@@ -4469,7 +4727,9 @@
 		- BeginObject(CtorExpr)
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(FunctionType)
+		- LriStore()
+		- BeginObject(FunctionType)
+		- LriFetch()
 		- Field(FunctionType::returnType)
 		> rule: _Expr3_SWITCH_0allow_gt_LRI_Original -> [143][_Expr3_SWITCH_0allow_gt]<< !_PrimitiveTypeOnly ( lri:_Expr3_SWITCH_0allow_gt_LRI_Original @ ) >>
 			+ ReopenObject()
@@ -4517,7 +4777,9 @@
 		- BeginObject(CtorExpr)
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(ConstType)
+		- LriStore()
+		- BeginObject(ConstType)
+		- LriFetch()
 		- Field(ConstType::type)
 		> rule: _Expr3_SWITCH_0allow_gt_LRI_Original -> [143][_Expr3_SWITCH_0allow_gt]<< !_PrimitiveTypeOnly ( lri:_Expr3_SWITCH_0allow_gt_LRI_Original @ ) >>
 			+ ReopenObject()
@@ -4542,7 +4804,9 @@
 		- BeginObject(CtorExpr)
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(PointerType)
+		- LriStore()
+		- BeginObject(PointerType)
+		- LriFetch()
 		- Field(PointerType::type)
 		> rule: _Expr3_SWITCH_0allow_gt_LRI_Original -> [143][_Expr3_SWITCH_0allow_gt]<< !_PrimitiveTypeOnly ( lri:_Expr3_SWITCH_0allow_gt_LRI_Original @ ) >>
 			+ ReopenObject()
@@ -4616,7 +4880,9 @@
 		- LriFetch()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(CallExpr)
+		- LriStore()
+		- BeginObject(CallExpr)
+		- LriFetch()
 		- Field(CallExpr::func)
 		> rule: _Expr3_SWITCH_1allow_gt_LRI_Original -> [147][_Expr3_SWITCH_1allow_gt]<< !_PrimitiveExprOnly ( lri:_Expr3_SWITCH_1allow_gt_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -4642,7 +4908,9 @@
 		- EndObject()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(LtExpr)
+		- LriStore()
+		- BeginObject(LtExpr)
+		- LriFetch()
 		- Field(LtExpr::first)
 		> rule: _Expr3_SWITCH_1allow_gt_LRI_Original -> [147][_Expr3_SWITCH_1allow_gt]<< !_PrimitiveExprOnly ( lri:_Expr3_SWITCH_1allow_gt_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -4663,7 +4931,9 @@
 		- EndObject()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(GtExpr)
+		- LriStore()
+		- BeginObject(GtExpr)
+		- LriFetch()
 		- Field(GtExpr::first)
 		> rule: _Expr3_SWITCH_1allow_gt_LRI_Original -> [147][_Expr3_SWITCH_1allow_gt]<< !_PrimitiveExprOnly ( lri:_Expr3_SWITCH_1allow_gt_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -4680,7 +4950,9 @@
 		- EndObject()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(MulExpr)
+		- LriStore()
+		- BeginObject(MulExpr)
+		- LriFetch()
 		- Field(MulExpr::first)
 		> rule: _Expr3_SWITCH_1allow_gt_LRI_Original -> [147][_Expr3_SWITCH_1allow_gt]<< !_PrimitiveExprOnly ( lri:_Expr3_SWITCH_1allow_gt_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -4713,7 +4985,9 @@
 		- BeginObject(CtorExpr)
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(FunctionType)
+		- LriStore()
+		- BeginObject(FunctionType)
+		- LriFetch()
 		- Field(FunctionType::returnType)
 		> rule: _Expr3_SWITCH_1allow_gt_LRI_Original -> [150][_Expr3_SWITCH_1allow_gt]<< !_PrimitiveShared ( lri:_Expr3_SWITCH_1allow_gt_LRI_Original | lri:_Expr3_SWITCH_1allow_gt_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -4738,7 +5012,9 @@
 		- LriFetch()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(CallExpr)
+		- LriStore()
+		- BeginObject(CallExpr)
+		- LriFetch()
 		- Field(CallExpr::func)
 		> rule: _Expr3_SWITCH_1allow_gt_LRI_Original -> [149][_Expr3_SWITCH_1allow_gt]<< !_PrimitiveShared ( lri:_Expr3_SWITCH_1allow_gt_LRI_Original @ | lri:_Expr3_SWITCH_1allow_gt_LRI_Original | lri:<skip> ) >>
 			+ ReopenObject()
@@ -4787,7 +5063,9 @@
 		- EndObject()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(LtExpr)
+		- LriStore()
+		- BeginObject(LtExpr)
+		- LriFetch()
 		- Field(LtExpr::first)
 		> rule: _Expr3_SWITCH_1allow_gt_LRI_Original -> [149][_Expr3_SWITCH_1allow_gt]<< !_PrimitiveShared ( lri:_Expr3_SWITCH_1allow_gt_LRI_Original @ | lri:_Expr3_SWITCH_1allow_gt_LRI_Original | lri:<skip> ) >>
 			+ ReopenObject()
@@ -4808,7 +5086,9 @@
 		- EndObject()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(GtExpr)
+		- LriStore()
+		- BeginObject(GtExpr)
+		- LriFetch()
 		- Field(GtExpr::first)
 		> rule: _Expr3_SWITCH_1allow_gt_LRI_Original -> [149][_Expr3_SWITCH_1allow_gt]<< !_PrimitiveShared ( lri:_Expr3_SWITCH_1allow_gt_LRI_Original @ | lri:_Expr3_SWITCH_1allow_gt_LRI_Original | lri:<skip> ) >>
 			+ ReopenObject()
@@ -4823,7 +5103,9 @@
 		- BeginObject(CtorExpr)
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(ConstType)
+		- LriStore()
+		- BeginObject(ConstType)
+		- LriFetch()
 		- Field(ConstType::type)
 		> rule: _Expr3_SWITCH_1allow_gt_LRI_Original -> [150][_Expr3_SWITCH_1allow_gt]<< !_PrimitiveShared ( lri:_Expr3_SWITCH_1allow_gt_LRI_Original | lri:_Expr3_SWITCH_1allow_gt_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -4848,7 +5130,9 @@
 		- BeginObject(CtorExpr)
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(PointerType)
+		- LriStore()
+		- BeginObject(PointerType)
+		- LriFetch()
 		- Field(PointerType::type)
 		> rule: _Expr3_SWITCH_1allow_gt_LRI_Original -> [150][_Expr3_SWITCH_1allow_gt]<< !_PrimitiveShared ( lri:_Expr3_SWITCH_1allow_gt_LRI_Original | lri:_Expr3_SWITCH_1allow_gt_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -4875,7 +5159,9 @@
 		- EndObject()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(MulExpr)
+		- LriStore()
+		- BeginObject(MulExpr)
+		- LriFetch()
 		- Field(MulExpr::first)
 		> rule: _Expr3_SWITCH_1allow_gt_LRI_Original -> [149][_Expr3_SWITCH_1allow_gt]<< !_PrimitiveShared ( lri:_Expr3_SWITCH_1allow_gt_LRI_Original @ | lri:_Expr3_SWITCH_1allow_gt_LRI_Original | lri:<skip> ) >>
 			+ ReopenObject()
@@ -4901,7 +5187,9 @@
 		- BeginObject(CtorExpr)
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(FunctionType)
+		- LriStore()
+		- BeginObject(FunctionType)
+		- LriFetch()
 		- Field(FunctionType::returnType)
 		> rule: _Expr3_SWITCH_1allow_gt_LRI_Original -> [152][_Expr3_SWITCH_1allow_gt]<< !_PrimitiveTypeOnly ( lri:_Expr3_SWITCH_1allow_gt_LRI_Original @ ) >>
 			+ ReopenObject()
@@ -4949,7 +5237,9 @@
 		- BeginObject(CtorExpr)
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(ConstType)
+		- LriStore()
+		- BeginObject(ConstType)
+		- LriFetch()
 		- Field(ConstType::type)
 		> rule: _Expr3_SWITCH_1allow_gt_LRI_Original -> [152][_Expr3_SWITCH_1allow_gt]<< !_PrimitiveTypeOnly ( lri:_Expr3_SWITCH_1allow_gt_LRI_Original @ ) >>
 			+ ReopenObject()
@@ -4974,7 +5264,9 @@
 		- BeginObject(CtorExpr)
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(PointerType)
+		- LriStore()
+		- BeginObject(PointerType)
+		- LriFetch()
 		- Field(PointerType::type)
 		> rule: _Expr3_SWITCH_1allow_gt_LRI_Original -> [152][_Expr3_SWITCH_1allow_gt]<< !_PrimitiveTypeOnly ( lri:_Expr3_SWITCH_1allow_gt_LRI_Original @ ) >>
 			+ ReopenObject()
@@ -5059,7 +5351,9 @@
 		- LriFetch()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(CallExpr)
+		- LriStore()
+		- BeginObject(CallExpr)
+		- LriFetch()
 		- Field(CallExpr::func)
 		> rule: _Expr4_SWITCH_0allow_gt_LRI_Original -> [157][_Expr4_SWITCH_0allow_gt]<< !_PrimitiveExprOnly ( lri:_Expr4_SWITCH_0allow_gt_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -5087,7 +5381,9 @@
 		- EndObject()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(LtExpr)
+		- LriStore()
+		- BeginObject(LtExpr)
+		- LriFetch()
 		- Field(LtExpr::first)
 		> rule: _Expr4_SWITCH_0allow_gt_LRI_Original -> [157][_Expr4_SWITCH_0allow_gt]<< !_PrimitiveExprOnly ( lri:_Expr4_SWITCH_0allow_gt_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -5106,7 +5402,9 @@
 		- EndObject()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(MulExpr)
+		- LriStore()
+		- BeginObject(MulExpr)
+		- LriFetch()
 		- Field(MulExpr::first)
 		> rule: _Expr4_SWITCH_0allow_gt_LRI_Original -> [157][_Expr4_SWITCH_0allow_gt]<< !_PrimitiveExprOnly ( lri:_Expr4_SWITCH_0allow_gt_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -5141,7 +5439,9 @@
 		- BeginObject(CtorExpr)
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(FunctionType)
+		- LriStore()
+		- BeginObject(FunctionType)
+		- LriFetch()
 		- Field(FunctionType::returnType)
 		> rule: _Expr4_SWITCH_0allow_gt_LRI_Original -> [160][_Expr4_SWITCH_0allow_gt]<< !_PrimitiveShared ( lri:_Expr4_SWITCH_0allow_gt_LRI_Original | lri:_Expr4_SWITCH_0allow_gt_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -5168,7 +5468,9 @@
 		- LriFetch()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(CallExpr)
+		- LriStore()
+		- BeginObject(CallExpr)
+		- LriFetch()
 		- Field(CallExpr::func)
 		> rule: _Expr4_SWITCH_0allow_gt_LRI_Original -> [159][_Expr4_SWITCH_0allow_gt]<< !_PrimitiveShared ( lri:_Expr4_SWITCH_0allow_gt_LRI_Original @ | lri:_Expr4_SWITCH_0allow_gt_LRI_Original | lri:<skip> ) >>
 			+ ReopenObject()
@@ -5221,7 +5523,9 @@
 		- EndObject()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(LtExpr)
+		- LriStore()
+		- BeginObject(LtExpr)
+		- LriFetch()
 		- Field(LtExpr::first)
 		> rule: _Expr4_SWITCH_0allow_gt_LRI_Original -> [159][_Expr4_SWITCH_0allow_gt]<< !_PrimitiveShared ( lri:_Expr4_SWITCH_0allow_gt_LRI_Original @ | lri:_Expr4_SWITCH_0allow_gt_LRI_Original | lri:<skip> ) >>
 			+ ReopenObject()
@@ -5238,7 +5542,9 @@
 		- BeginObject(CtorExpr)
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(ConstType)
+		- LriStore()
+		- BeginObject(ConstType)
+		- LriFetch()
 		- Field(ConstType::type)
 		> rule: _Expr4_SWITCH_0allow_gt_LRI_Original -> [160][_Expr4_SWITCH_0allow_gt]<< !_PrimitiveShared ( lri:_Expr4_SWITCH_0allow_gt_LRI_Original | lri:_Expr4_SWITCH_0allow_gt_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -5265,7 +5571,9 @@
 		- BeginObject(CtorExpr)
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(PointerType)
+		- LriStore()
+		- BeginObject(PointerType)
+		- LriFetch()
 		- Field(PointerType::type)
 		> rule: _Expr4_SWITCH_0allow_gt_LRI_Original -> [160][_Expr4_SWITCH_0allow_gt]<< !_PrimitiveShared ( lri:_Expr4_SWITCH_0allow_gt_LRI_Original | lri:_Expr4_SWITCH_0allow_gt_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -5294,7 +5602,9 @@
 		- EndObject()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(MulExpr)
+		- LriStore()
+		- BeginObject(MulExpr)
+		- LriFetch()
 		- Field(MulExpr::first)
 		> rule: _Expr4_SWITCH_0allow_gt_LRI_Original -> [159][_Expr4_SWITCH_0allow_gt]<< !_PrimitiveShared ( lri:_Expr4_SWITCH_0allow_gt_LRI_Original @ | lri:_Expr4_SWITCH_0allow_gt_LRI_Original | lri:<skip> ) >>
 			+ ReopenObject()
@@ -5322,7 +5632,9 @@
 		- BeginObject(CtorExpr)
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(FunctionType)
+		- LriStore()
+		- BeginObject(FunctionType)
+		- LriFetch()
 		- Field(FunctionType::returnType)
 		> rule: _Expr4_SWITCH_0allow_gt_LRI_Original -> [162][_Expr4_SWITCH_0allow_gt]<< !_PrimitiveTypeOnly ( lri:_Expr4_SWITCH_0allow_gt_LRI_Original @ ) >>
 			+ ReopenObject()
@@ -5374,7 +5686,9 @@
 		- BeginObject(CtorExpr)
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(ConstType)
+		- LriStore()
+		- BeginObject(ConstType)
+		- LriFetch()
 		- Field(ConstType::type)
 		> rule: _Expr4_SWITCH_0allow_gt_LRI_Original -> [162][_Expr4_SWITCH_0allow_gt]<< !_PrimitiveTypeOnly ( lri:_Expr4_SWITCH_0allow_gt_LRI_Original @ ) >>
 			+ ReopenObject()
@@ -5401,7 +5715,9 @@
 		- BeginObject(CtorExpr)
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(PointerType)
+		- LriStore()
+		- BeginObject(PointerType)
+		- LriFetch()
 		- Field(PointerType::type)
 		> rule: _Expr4_SWITCH_0allow_gt_LRI_Original -> [162][_Expr4_SWITCH_0allow_gt]<< !_PrimitiveTypeOnly ( lri:_Expr4_SWITCH_0allow_gt_LRI_Original @ ) >>
 			+ ReopenObject()
@@ -5487,7 +5803,9 @@
 		- LriFetch()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(CallExpr)
+		- LriStore()
+		- BeginObject(CallExpr)
+		- LriFetch()
 		- Field(CallExpr::func)
 		> rule: _Expr4_SWITCH_1allow_gt_LRI_Original -> [167][_Expr4_SWITCH_1allow_gt]<< !_PrimitiveExprOnly ( lri:_Expr4_SWITCH_1allow_gt_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -5515,7 +5833,9 @@
 		- EndObject()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(LtExpr)
+		- LriStore()
+		- BeginObject(LtExpr)
+		- LriFetch()
 		- Field(LtExpr::first)
 		> rule: _Expr4_SWITCH_1allow_gt_LRI_Original -> [167][_Expr4_SWITCH_1allow_gt]<< !_PrimitiveExprOnly ( lri:_Expr4_SWITCH_1allow_gt_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -5538,7 +5858,9 @@
 		- EndObject()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(GtExpr)
+		- LriStore()
+		- BeginObject(GtExpr)
+		- LriFetch()
 		- Field(GtExpr::first)
 		> rule: _Expr4_SWITCH_1allow_gt_LRI_Original -> [167][_Expr4_SWITCH_1allow_gt]<< !_PrimitiveExprOnly ( lri:_Expr4_SWITCH_1allow_gt_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -5557,7 +5879,9 @@
 		- EndObject()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(MulExpr)
+		- LriStore()
+		- BeginObject(MulExpr)
+		- LriFetch()
 		- Field(MulExpr::first)
 		> rule: _Expr4_SWITCH_1allow_gt_LRI_Original -> [167][_Expr4_SWITCH_1allow_gt]<< !_PrimitiveExprOnly ( lri:_Expr4_SWITCH_1allow_gt_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -5592,7 +5916,9 @@
 		- BeginObject(CtorExpr)
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(FunctionType)
+		- LriStore()
+		- BeginObject(FunctionType)
+		- LriFetch()
 		- Field(FunctionType::returnType)
 		> rule: _Expr4_SWITCH_1allow_gt_LRI_Original -> [170][_Expr4_SWITCH_1allow_gt]<< !_PrimitiveShared ( lri:_Expr4_SWITCH_1allow_gt_LRI_Original | lri:_Expr4_SWITCH_1allow_gt_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -5619,7 +5945,9 @@
 		- LriFetch()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(CallExpr)
+		- LriStore()
+		- BeginObject(CallExpr)
+		- LriFetch()
 		- Field(CallExpr::func)
 		> rule: _Expr4_SWITCH_1allow_gt_LRI_Original -> [169][_Expr4_SWITCH_1allow_gt]<< !_PrimitiveShared ( lri:_Expr4_SWITCH_1allow_gt_LRI_Original @ | lri:_Expr4_SWITCH_1allow_gt_LRI_Original | lri:<skip> ) >>
 			+ ReopenObject()
@@ -5672,7 +6000,9 @@
 		- EndObject()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(LtExpr)
+		- LriStore()
+		- BeginObject(LtExpr)
+		- LriFetch()
 		- Field(LtExpr::first)
 		> rule: _Expr4_SWITCH_1allow_gt_LRI_Original -> [169][_Expr4_SWITCH_1allow_gt]<< !_PrimitiveShared ( lri:_Expr4_SWITCH_1allow_gt_LRI_Original @ | lri:_Expr4_SWITCH_1allow_gt_LRI_Original | lri:<skip> ) >>
 			+ ReopenObject()
@@ -5695,7 +6025,9 @@
 		- EndObject()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(GtExpr)
+		- LriStore()
+		- BeginObject(GtExpr)
+		- LriFetch()
 		- Field(GtExpr::first)
 		> rule: _Expr4_SWITCH_1allow_gt_LRI_Original -> [169][_Expr4_SWITCH_1allow_gt]<< !_PrimitiveShared ( lri:_Expr4_SWITCH_1allow_gt_LRI_Original @ | lri:_Expr4_SWITCH_1allow_gt_LRI_Original | lri:<skip> ) >>
 			+ ReopenObject()
@@ -5712,7 +6044,9 @@
 		- BeginObject(CtorExpr)
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(ConstType)
+		- LriStore()
+		- BeginObject(ConstType)
+		- LriFetch()
 		- Field(ConstType::type)
 		> rule: _Expr4_SWITCH_1allow_gt_LRI_Original -> [170][_Expr4_SWITCH_1allow_gt]<< !_PrimitiveShared ( lri:_Expr4_SWITCH_1allow_gt_LRI_Original | lri:_Expr4_SWITCH_1allow_gt_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -5739,7 +6073,9 @@
 		- BeginObject(CtorExpr)
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(PointerType)
+		- LriStore()
+		- BeginObject(PointerType)
+		- LriFetch()
 		- Field(PointerType::type)
 		> rule: _Expr4_SWITCH_1allow_gt_LRI_Original -> [170][_Expr4_SWITCH_1allow_gt]<< !_PrimitiveShared ( lri:_Expr4_SWITCH_1allow_gt_LRI_Original | lri:_Expr4_SWITCH_1allow_gt_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -5768,7 +6104,9 @@
 		- EndObject()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(MulExpr)
+		- LriStore()
+		- BeginObject(MulExpr)
+		- LriFetch()
 		- Field(MulExpr::first)
 		> rule: _Expr4_SWITCH_1allow_gt_LRI_Original -> [169][_Expr4_SWITCH_1allow_gt]<< !_PrimitiveShared ( lri:_Expr4_SWITCH_1allow_gt_LRI_Original @ | lri:_Expr4_SWITCH_1allow_gt_LRI_Original | lri:<skip> ) >>
 			+ ReopenObject()
@@ -5796,7 +6134,9 @@
 		- BeginObject(CtorExpr)
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(FunctionType)
+		- LriStore()
+		- BeginObject(FunctionType)
+		- LriFetch()
 		- Field(FunctionType::returnType)
 		> rule: _Expr4_SWITCH_1allow_gt_LRI_Original -> [172][_Expr4_SWITCH_1allow_gt]<< !_PrimitiveTypeOnly ( lri:_Expr4_SWITCH_1allow_gt_LRI_Original @ ) >>
 			+ ReopenObject()
@@ -5848,7 +6188,9 @@
 		- BeginObject(CtorExpr)
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(ConstType)
+		- LriStore()
+		- BeginObject(ConstType)
+		- LriFetch()
 		- Field(ConstType::type)
 		> rule: _Expr4_SWITCH_1allow_gt_LRI_Original -> [172][_Expr4_SWITCH_1allow_gt]<< !_PrimitiveTypeOnly ( lri:_Expr4_SWITCH_1allow_gt_LRI_Original @ ) >>
 			+ ReopenObject()
@@ -5875,7 +6217,9 @@
 		- BeginObject(CtorExpr)
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(PointerType)
+		- LriStore()
+		- BeginObject(PointerType)
+		- LriFetch()
 		- Field(PointerType::type)
 		> rule: _Expr4_SWITCH_1allow_gt_LRI_Original -> [172][_Expr4_SWITCH_1allow_gt]<< !_PrimitiveTypeOnly ( lri:_Expr4_SWITCH_1allow_gt_LRI_Original @ ) >>
 			+ ReopenObject()
@@ -6051,13 +6395,19 @@
 [RULE: 21][CLAUSE: 0]
 	ending -> [183][_LongType_LRI_Original] END [ENDING]
 	leftrec -> [191][_LongType_LRI_Original]< _LongType_LRI_Original @ "(" { _LongType ; "," } ")" >
-		- BeginObjectLeftRecursive(FunctionType)
+		- LriStore()
+		- BeginObject(FunctionType)
+		- LriFetch()
 		+ Field(FunctionType::returnType)
 	leftrec -> [192][_LongType_LRI_Original]< _LongType_LRI_Original @ "*" >
-		- BeginObjectLeftRecursive(PointerType)
+		- LriStore()
+		- BeginObject(PointerType)
+		- LriFetch()
 		+ Field(PointerType::type)
 	leftrec -> [193][_LongType_LRI_Original]< _LongType_LRI_Original @ "const" >
-		- BeginObjectLeftRecursive(ConstType)
+		- LriStore()
+		- BeginObject(ConstType)
+		- LriFetch()
 		+ Field(ConstType::type)
 
 [185][_LongType_LRI_Original]< _LongType_LRI_Original "(" @ { _LongType ; "," } ")" >
@@ -6145,15 +6495,21 @@
 		- EndObject()
 	leftrec -> [191][_LongType_LRI_Original]< _LongType_LRI_Original @ "(" { _LongType ; "," } ")" >
 		- EndObject()
-		- BeginObjectLeftRecursive(FunctionType)
+		- LriStore()
+		- BeginObject(FunctionType)
+		- LriFetch()
 		+ Field(FunctionType::returnType)
 	leftrec -> [192][_LongType_LRI_Original]< _LongType_LRI_Original @ "*" >
 		- EndObject()
-		- BeginObjectLeftRecursive(PointerType)
+		- LriStore()
+		- BeginObject(PointerType)
+		- LriFetch()
 		+ Field(PointerType::type)
 	leftrec -> [193][_LongType_LRI_Original]< _LongType_LRI_Original @ "const" >
 		- EndObject()
-		- BeginObjectLeftRecursive(ConstType)
+		- LriStore()
+		- BeginObject(ConstType)
+		- LriFetch()
 		+ Field(ConstType::type)
 
 [188][_LongType_LRI_Original]< _LongType_LRI_Original "(" { _LongType @ ; "," } ")" >
@@ -6167,15 +6523,21 @@
 		- EndObject()
 	leftrec -> [191][_LongType_LRI_Original]< _LongType_LRI_Original @ "(" { _LongType ; "," } ")" >
 		- EndObject()
-		- BeginObjectLeftRecursive(FunctionType)
+		- LriStore()
+		- BeginObject(FunctionType)
+		- LriFetch()
 		+ Field(FunctionType::returnType)
 	leftrec -> [192][_LongType_LRI_Original]< _LongType_LRI_Original @ "*" >
 		- EndObject()
-		- BeginObjectLeftRecursive(PointerType)
+		- LriStore()
+		- BeginObject(PointerType)
+		- LriFetch()
 		+ Field(PointerType::type)
 	leftrec -> [193][_LongType_LRI_Original]< _LongType_LRI_Original @ "const" >
 		- EndObject()
-		- BeginObjectLeftRecursive(ConstType)
+		- LriStore()
+		- BeginObject(ConstType)
+		- LriFetch()
 		+ Field(ConstType::type)
 
 [190][_LongType_LRI_Original]< _LongType_LRI_Original "const" @ >
@@ -6184,15 +6546,21 @@
 		- EndObject()
 	leftrec -> [191][_LongType_LRI_Original]< _LongType_LRI_Original @ "(" { _LongType ; "," } ")" >
 		- EndObject()
-		- BeginObjectLeftRecursive(FunctionType)
+		- LriStore()
+		- BeginObject(FunctionType)
+		- LriFetch()
 		+ Field(FunctionType::returnType)
 	leftrec -> [192][_LongType_LRI_Original]< _LongType_LRI_Original @ "*" >
 		- EndObject()
-		- BeginObjectLeftRecursive(PointerType)
+		- LriStore()
+		- BeginObject(PointerType)
+		- LriFetch()
 		+ Field(PointerType::type)
 	leftrec -> [193][_LongType_LRI_Original]< _LongType_LRI_Original @ "const" >
 		- EndObject()
-		- BeginObjectLeftRecursive(ConstType)
+		- LriStore()
+		- BeginObject(ConstType)
+		- LriFetch()
 		+ Field(ConstType::type)
 
 [191][_LongType_LRI_Original]< _LongType_LRI_Original @ "(" { _LongType ; "," } ")" >
@@ -6213,15 +6581,21 @@
 		- EndObject()
 	leftrec -> [191][_LongType_LRI_Original]< _LongType_LRI_Original @ "(" { _LongType ; "," } ")" >
 		- EndObject()
-		- BeginObjectLeftRecursive(FunctionType)
+		- LriStore()
+		- BeginObject(FunctionType)
+		- LriFetch()
 		+ Field(FunctionType::returnType)
 	leftrec -> [192][_LongType_LRI_Original]< _LongType_LRI_Original @ "*" >
 		- EndObject()
-		- BeginObjectLeftRecursive(PointerType)
+		- LriStore()
+		- BeginObject(PointerType)
+		- LriFetch()
 		+ Field(PointerType::type)
 	leftrec -> [193][_LongType_LRI_Original]< _LongType_LRI_Original @ "const" >
 		- EndObject()
-		- BeginObjectLeftRecursive(ConstType)
+		- LriStore()
+		- BeginObject(ConstType)
+		- LriFetch()
 		+ Field(ConstType::type)
 
 [195][_LongType_LRI_Original]<< !_PrimitiveTypeOnly @ >>
@@ -6230,15 +6604,21 @@
 		- EndObject()
 	leftrec -> [191][_LongType_LRI_Original]< _LongType_LRI_Original @ "(" { _LongType ; "," } ")" >
 		- EndObject()
-		- BeginObjectLeftRecursive(FunctionType)
+		- LriStore()
+		- BeginObject(FunctionType)
+		- LriFetch()
 		+ Field(FunctionType::returnType)
 	leftrec -> [192][_LongType_LRI_Original]< _LongType_LRI_Original @ "*" >
 		- EndObject()
-		- BeginObjectLeftRecursive(PointerType)
+		- LriStore()
+		- BeginObject(PointerType)
+		- LriFetch()
 		+ Field(PointerType::type)
 	leftrec -> [193][_LongType_LRI_Original]< _LongType_LRI_Original @ "const" >
 		- EndObject()
-		- BeginObjectLeftRecursive(ConstType)
+		- LriStore()
+		- BeginObject(ConstType)
+		- LriFetch()
 		+ Field(ConstType::type)
 
 [196][_Expr0_LRI_Original] BEGIN 
@@ -6656,7 +7036,9 @@
 		- EndObject()
 	leftrec -> [212][_Expr1_LRI_Original]< _Expr1_LRI_Original @ "(" { _Expr_NoComma ; "," } ")" >
 		- EndObject()
-		- BeginObjectLeftRecursive(CallExpr)
+		- LriStore()
+		- BeginObject(CallExpr)
+		- LriFetch()
 		+ Field(CallExpr::func)
 
 [211][_Expr1_LRI_Original]< _Expr1_LRI_Original "(" { _Expr_NoComma @ ; "," } ")" >
@@ -6674,7 +7056,9 @@
 		- EndObject()
 	leftrec -> [212][_Expr1_LRI_Original]< _Expr1_LRI_Original @ "(" { _Expr_NoComma ; "," } ")" >
 		- EndObject()
-		- BeginObjectLeftRecursive(CallExpr)
+		- LriStore()
+		- BeginObject(CallExpr)
+		- LriFetch()
 		+ Field(CallExpr::func)
 
 [214][_Expr2_LRI_Original] BEGIN 
@@ -6845,7 +7229,9 @@
 		- EndObject()
 	leftrec -> [218][_Expr2_LRI_Original]< _Expr2_LRI_Original @ "*" _Expr1 >
 		- EndObject()
-		- BeginObjectLeftRecursive(MulExpr)
+		- LriStore()
+		- BeginObject(MulExpr)
+		- LriFetch()
 		+ Field(MulExpr::first)
 
 [218][_Expr2_LRI_Original]< _Expr2_LRI_Original @ "*" _Expr1 >
@@ -6858,7 +7244,9 @@
 		- EndObject()
 	leftrec -> [218][_Expr2_LRI_Original]< _Expr2_LRI_Original @ "*" _Expr1 >
 		- EndObject()
-		- BeginObjectLeftRecursive(MulExpr)
+		- LriStore()
+		- BeginObject(MulExpr)
+		- LriFetch()
 		+ Field(MulExpr::first)
 
 [220][_Expr3_SWITCH_COMBINED_LRI_Original] BEGIN 
@@ -7200,7 +7588,9 @@
 		- EndObject()
 	leftrec -> [227][_Expr3_SWITCH_0allow_gt_LRI_Original]< _Expr3_SWITCH_0allow_gt_LRI_Original @ "<" _Expr2 >
 		- EndObject()
-		- BeginObjectLeftRecursive(LtExpr)
+		- LriStore()
+		- BeginObject(LtExpr)
+		- LriFetch()
 		+ Field(LtExpr::first)
 
 [227][_Expr3_SWITCH_0allow_gt_LRI_Original]< _Expr3_SWITCH_0allow_gt_LRI_Original @ "<" _Expr2 >
@@ -7213,7 +7603,9 @@
 		- EndObject()
 	leftrec -> [227][_Expr3_SWITCH_0allow_gt_LRI_Original]< _Expr3_SWITCH_0allow_gt_LRI_Original @ "<" _Expr2 >
 		- EndObject()
-		- BeginObjectLeftRecursive(LtExpr)
+		- LriStore()
+		- BeginObject(LtExpr)
+		- LriFetch()
 		+ Field(LtExpr::first)
 
 [229][_Expr3_SWITCH_1allow_gt_LRI_Original] BEGIN 
@@ -7419,11 +7811,15 @@
 		- EndObject()
 	leftrec -> [235][_Expr3_SWITCH_1allow_gt_LRI_Original]< _Expr3_SWITCH_1allow_gt_LRI_Original @ "<" _Expr2 >
 		- EndObject()
-		- BeginObjectLeftRecursive(LtExpr)
+		- LriStore()
+		- BeginObject(LtExpr)
+		- LriFetch()
 		+ Field(LtExpr::first)
 	leftrec -> [236][_Expr3_SWITCH_1allow_gt_LRI_Original]< _Expr3_SWITCH_1allow_gt_LRI_Original @ ">" _Expr2 >
 		- EndObject()
-		- BeginObjectLeftRecursive(GtExpr)
+		- LriStore()
+		- BeginObject(GtExpr)
+		- LriFetch()
 		+ Field(GtExpr::first)
 
 [233][_Expr3_SWITCH_1allow_gt_LRI_Original]< _Expr3_SWITCH_1allow_gt_LRI_Original ">" @ _Expr2 >
@@ -7478,11 +7874,15 @@
 		- EndObject()
 	leftrec -> [235][_Expr3_SWITCH_1allow_gt_LRI_Original]< _Expr3_SWITCH_1allow_gt_LRI_Original @ "<" _Expr2 >
 		- EndObject()
-		- BeginObjectLeftRecursive(LtExpr)
+		- LriStore()
+		- BeginObject(LtExpr)
+		- LriFetch()
 		+ Field(LtExpr::first)
 	leftrec -> [236][_Expr3_SWITCH_1allow_gt_LRI_Original]< _Expr3_SWITCH_1allow_gt_LRI_Original @ ">" _Expr2 >
 		- EndObject()
-		- BeginObjectLeftRecursive(GtExpr)
+		- LriStore()
+		- BeginObject(GtExpr)
+		- LriFetch()
 		+ Field(GtExpr::first)
 
 [235][_Expr3_SWITCH_1allow_gt_LRI_Original]< _Expr3_SWITCH_1allow_gt_LRI_Original @ "<" _Expr2 >
@@ -7499,11 +7899,15 @@
 		- EndObject()
 	leftrec -> [235][_Expr3_SWITCH_1allow_gt_LRI_Original]< _Expr3_SWITCH_1allow_gt_LRI_Original @ "<" _Expr2 >
 		- EndObject()
-		- BeginObjectLeftRecursive(LtExpr)
+		- LriStore()
+		- BeginObject(LtExpr)
+		- LriFetch()
 		+ Field(LtExpr::first)
 	leftrec -> [236][_Expr3_SWITCH_1allow_gt_LRI_Original]< _Expr3_SWITCH_1allow_gt_LRI_Original @ ">" _Expr2 >
 		- EndObject()
-		- BeginObjectLeftRecursive(GtExpr)
+		- LriStore()
+		- BeginObject(GtExpr)
+		- LriFetch()
 		+ Field(GtExpr::first)
 
 [238][_Expr4_SWITCH_0allow_gt_LRI_Original] BEGIN 
@@ -8525,7 +8929,9 @@
 		- EndObject()
 	leftrec -> [258][_Expr_LRI_Original]< _Expr_LRI_Original @ "," _Expr_NoComma >
 		- EndObject()
-		- BeginObjectLeftRecursive(CommaExpr)
+		- LriStore()
+		- BeginObject(CommaExpr)
+		- LriFetch()
 		+ Field(CommaExpr::first)
 
 [258][_Expr_LRI_Original]< _Expr_LRI_Original @ "," _Expr_NoComma >
@@ -8538,7 +8944,9 @@
 		- EndObject()
 	leftrec -> [258][_Expr_LRI_Original]< _Expr_LRI_Original @ "," _Expr_NoComma >
 		- EndObject()
-		- BeginObjectLeftRecursive(CommaExpr)
+		- LriStore()
+		- BeginObject(CommaExpr)
+		- LriFetch()
 		+ Field(CommaExpr::first)
 
 [260][Module_LRI_Original] BEGIN 

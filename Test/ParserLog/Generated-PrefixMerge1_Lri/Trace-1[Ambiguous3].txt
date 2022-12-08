@@ -63,13 +63,15 @@
 ||   - LriStore()                                                                                          ||    ||   - LriStore()                                                                                      ||
 ||   - DelayFieldAssignment()                                                                              ||    ||   - DelayFieldAssignment()                                                                          ||
 ||   - LriFetch()                                                                                          ||    ||   - DelayFieldAssignment()                                                                          ||
-||   - BeginObjectLeftRecursive(PointerType)                                                               ||    ||   - DelayFieldAssignment()                                                                          ||
-||   - Field(PointerType::type)                                                                            ||    ||   - LriFetch()                                                                                      ||
+||   - LriStore()                                                                                          ||    ||   - DelayFieldAssignment()                                                                          ||
+||   - BeginObject(PointerType)                                                                            ||    ||   - LriFetch()                                                                                      ||
+||   - LriFetch()                                                                                          ||    ||   - ReopenObject()                                                                                  ||
+||   - Field(PointerType::type)                                                                            ||    ||   - EndObject()                                                                                     ||
 || [RETURN STACK]:                                                                                         ||    ||   - ReopenObject()                                                                                  ||
 ||   [2][3]: _LongType -> [59][Module]<< !_PrimitiveShared ( lri:_LongType @ | lri:_Expr | lri:<skip> ) >> ||    ||   - EndObject()                                                                                     ||
-|| [PREDECESSORS 3-3]: [3]                                                                                 ||    ||   - ReopenObject()                                                                                  ||
-|| [SUCCESORS 6-6]: [6]                                                                                    ||    ||   - EndObject()                                                                                     ||
-++=========================================================================================================++    ||   - BeginObjectLeftRecursive(MulExpr)                                                               ||
+|| [PREDECESSORS 3-3]: [3]                                                                                 ||    ||   - LriStore()                                                                                      ||
+|| [SUCCESORS 6-6]: [6]                                                                                    ||    ||   - BeginObject(MulExpr)                                                                            ||
+++=========================================================================================================++    ||   - LriFetch()                                                                                      ||
 |                                                                                                                ||   - Field(MulExpr::first)                                                                           ||
 |                                                                                                                || [RETURN STACK]:                                                                                     ||
 |                                                                                                                ||   [3][3]: _Expr -> [60][Module]<< !_PrimitiveShared ( lri:_LongType | lri:_Expr @ | lri:<skip> ) >> ||
@@ -84,7 +86,9 @@
 | [30][_LongType]< _LongType @ "(" { _LongType ; "," } ")" >                                              |      |
 | [AST-INSTRUCTIONS]:                                                                                     |      |
 |   - EndObject()                                                                                         |      |
-|   - BeginObjectLeftRecursive(FunctionType)                                                              |      |
+|   - LriStore()                                                                                          |      |
+|   - BeginObject(FunctionType)                                                                           |      |
+|   - LriFetch()                                                                                          |      |
 |   + Field(FunctionType::returnType)                                                                     |      |
 | [RETURN STACK]:                                                                                         |      |
 |   [2][3]: _LongType -> [59][Module]<< !_PrimitiveShared ( lri:_LongType @ | lri:_Expr | lri:<skip> ) >> |      |

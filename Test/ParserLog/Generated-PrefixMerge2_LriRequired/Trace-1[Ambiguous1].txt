@@ -73,11 +73,13 @@
 ||   - LriStore()                                                                             ||    ||   - LriStore()                                                                         ||
 ||   - DelayFieldAssignment()                                                                 ||    ||   - DelayFieldAssignment()                                                             ||
 ||   - LriFetch()                                                                             ||    ||   - DelayFieldAssignment()                                                             ||
-||   - BeginObjectLeftRecursive(FunctionType)                                                 ||    ||   - DelayFieldAssignment()                                                             ||
-||   - Field(FunctionType::returnType)                                                        ||    ||   - LriFetch()                                                                         ||
-|| [RETURN STACK]:                                                                            ||    ||   - ReopenObject()                                                                     ||
-||   [2][4]: _LongType -> [60][Module]<< !_PrimitiveShared ( lri:_LongType @ | lri:_Expr ) >> ||    ||   - EndObject()                                                                        ||
-|| [PREDECESSORS 4-4]: [4]                                                                    ||    ||   - BeginObjectLeftRecursive(CallExpr)                                                 ||
+||   - LriStore()                                                                             ||    ||   - DelayFieldAssignment()                                                             ||
+||   - BeginObject(FunctionType)                                                              ||    ||   - LriFetch()                                                                         ||
+||   - LriFetch()                                                                             ||    ||   - ReopenObject()                                                                     ||
+||   - Field(FunctionType::returnType)                                                        ||    ||   - EndObject()                                                                        ||
+|| [RETURN STACK]:                                                                            ||    ||   - LriStore()                                                                         ||
+||   [2][4]: _LongType -> [60][Module]<< !_PrimitiveShared ( lri:_LongType @ | lri:_Expr ) >> ||    ||   - BeginObject(CallExpr)                                                              ||
+|| [PREDECESSORS 4-4]: [4]                                                                    ||    ||   - LriFetch()                                                                         ||
 || [SUCCESORS 8-8]: [8]                                                                       ||    ||   - Field(CallExpr::func)                                                              ||
 ++============================================================================================++    || [RETURN STACK]:                                                                        ||
 |                                                                                                   ||   [4][4]: _Expr1 -> [54][_Expr]<< !_Expr1 @ >>                                         ||

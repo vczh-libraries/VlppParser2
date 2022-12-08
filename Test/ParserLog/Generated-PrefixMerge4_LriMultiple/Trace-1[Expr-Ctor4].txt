@@ -71,7 +71,9 @@
 ||   - DelayFieldAssignment()                                                                          ||
 ||   - BeginObject(CtorExpr)                                                                           ||
 ||   - LriFetch()                                                                                      ||
-||   - BeginObjectLeftRecursive(FunctionType)                                                          ||
+||   - LriStore()                                                                                      ||
+||   - BeginObject(FunctionType)                                                                       ||
+||   - LriFetch()                                                                                      ||
 ||   - Field(FunctionType::returnType)                                                                 ||
 || [RETURN STACK]:                                                                                     ||
 ||   [5][3]: _LongType -> [43][_Expr0]< _LongType @ "{" { _Expr_Raw ; "," } "}" >                      ||
@@ -183,7 +185,9 @@
 | [58][_Expr]< _Expr @ "*" _Expr1_Raw >                                                               |
 | [AST-INSTRUCTIONS]:                                                                                 |
 |   - EndObject()                                                                                     |
-|   - BeginObjectLeftRecursive(MulExpr)                                                               |
+|   - LriStore()                                                                                      |
+|   - BeginObject(MulExpr)                                                                            |
+|   - LriFetch()                                                                                      |
 |   + Field(MulExpr::first)                                                                           |
 | [RETURN STACK]:                                                                                     |
 |   [2][3]: _Expr -> [80][Module]<< !_PrimitiveShared ( lri:_Expr @ | lri:_LongType | lri:<skip> ) >> |
@@ -322,7 +326,9 @@
 | [52][_Expr1]< _Expr1 @ "(" { _Expr_Raw ; "," } ")" >                                                |
 | [AST-INSTRUCTIONS]:                                                                                 |
 |   - EndObject()                                                                                     |
-|   - BeginObjectLeftRecursive(CallExpr)                                                              |
+|   - LriStore()                                                                                      |
+|   - BeginObject(CallExpr)                                                                           |
+|   - LriFetch()                                                                                      |
 |   + Field(CallExpr::func)                                                                           |
 | [RETURN STACK]:                                                                                     |
 |   [12][27]: _Expr1 -> [64][_Expr1_Raw]<< !_PrimitiveShared ( lri:_Expr1 @ | lri:<skip> ) >>         |

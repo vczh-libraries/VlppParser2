@@ -14,7 +14,9 @@
 		- EndObject()
 	leftrec -> [5][_Name]< _Name @ "." ID >
 		- EndObject()
-		- BeginObjectLeftRecursive(MemberName)
+		- LriStore()
+		- BeginObject(MemberName)
+		- LriFetch()
 		+ Field(MemberName::parent)
 
 [3][_Name]< _Name "." @ ID >
@@ -29,7 +31,9 @@
 		- EndObject()
 	leftrec -> [5][_Name]< _Name @ "." ID >
 		- EndObject()
-		- BeginObjectLeftRecursive(MemberName)
+		- LriStore()
+		- BeginObject(MemberName)
+		- LriFetch()
 		+ Field(MemberName::parent)
 
 [5][_Name]< _Name @ "." ID >
@@ -173,26 +177,38 @@
 [RULE: 4][CLAUSE: 0]
 	ending -> [21][_LongType] END [ENDING]
 	leftrec -> [30][_LongType]< _LongType @ "(" { _LongType ; "," } ")" >
-		- BeginObjectLeftRecursive(FunctionType)
+		- LriStore()
+		- BeginObject(FunctionType)
+		- LriFetch()
 		+ Field(FunctionType::returnType)
 	leftrec -> [31][_LongType]< _LongType @ "*" >
-		- BeginObjectLeftRecursive(PointerType)
+		- LriStore()
+		- BeginObject(PointerType)
+		- LriFetch()
 		+ Field(PointerType::type)
 	leftrec -> [32][_LongType]< _LongType @ "const" >
-		- BeginObjectLeftRecursive(ConstType)
+		- LriStore()
+		- BeginObject(ConstType)
+		- LriFetch()
 		+ Field(ConstType::type)
 
 [23][_LongType]( lrp:Shared | lrp:Type @ )
 [RULE: 4][CLAUSE: 0]
 	ending -> [21][_LongType] END [ENDING]
 	leftrec -> [30][_LongType]< _LongType @ "(" { _LongType ; "," } ")" >
-		- BeginObjectLeftRecursive(FunctionType)
+		- LriStore()
+		- BeginObject(FunctionType)
+		- LriFetch()
 		+ Field(FunctionType::returnType)
 	leftrec -> [31][_LongType]< _LongType @ "*" >
-		- BeginObjectLeftRecursive(PointerType)
+		- LriStore()
+		- BeginObject(PointerType)
+		- LriFetch()
 		+ Field(PointerType::type)
 	leftrec -> [32][_LongType]< _LongType @ "const" >
-		- BeginObjectLeftRecursive(ConstType)
+		- LriStore()
+		- BeginObject(ConstType)
+		- LriFetch()
 		+ Field(ConstType::type)
 
 [24][_LongType]< _LongType "(" @ { _LongType ; "," } ")" >
@@ -258,15 +274,21 @@
 		- EndObject()
 	leftrec -> [30][_LongType]< _LongType @ "(" { _LongType ; "," } ")" >
 		- EndObject()
-		- BeginObjectLeftRecursive(FunctionType)
+		- LriStore()
+		- BeginObject(FunctionType)
+		- LriFetch()
 		+ Field(FunctionType::returnType)
 	leftrec -> [31][_LongType]< _LongType @ "*" >
 		- EndObject()
-		- BeginObjectLeftRecursive(PointerType)
+		- LriStore()
+		- BeginObject(PointerType)
+		- LriFetch()
 		+ Field(PointerType::type)
 	leftrec -> [32][_LongType]< _LongType @ "const" >
 		- EndObject()
-		- BeginObjectLeftRecursive(ConstType)
+		- LriStore()
+		- BeginObject(ConstType)
+		- LriFetch()
 		+ Field(ConstType::type)
 
 [27][_LongType]< _LongType "(" { _LongType @ ; "," } ")" >
@@ -280,15 +302,21 @@
 		- EndObject()
 	leftrec -> [30][_LongType]< _LongType @ "(" { _LongType ; "," } ")" >
 		- EndObject()
-		- BeginObjectLeftRecursive(FunctionType)
+		- LriStore()
+		- BeginObject(FunctionType)
+		- LriFetch()
 		+ Field(FunctionType::returnType)
 	leftrec -> [31][_LongType]< _LongType @ "*" >
 		- EndObject()
-		- BeginObjectLeftRecursive(PointerType)
+		- LriStore()
+		- BeginObject(PointerType)
+		- LriFetch()
 		+ Field(PointerType::type)
 	leftrec -> [32][_LongType]< _LongType @ "const" >
 		- EndObject()
-		- BeginObjectLeftRecursive(ConstType)
+		- LriStore()
+		- BeginObject(ConstType)
+		- LriFetch()
 		+ Field(ConstType::type)
 
 [29][_LongType]< _LongType "const" @ >
@@ -297,15 +325,21 @@
 		- EndObject()
 	leftrec -> [30][_LongType]< _LongType @ "(" { _LongType ; "," } ")" >
 		- EndObject()
-		- BeginObjectLeftRecursive(FunctionType)
+		- LriStore()
+		- BeginObject(FunctionType)
+		- LriFetch()
 		+ Field(FunctionType::returnType)
 	leftrec -> [31][_LongType]< _LongType @ "*" >
 		- EndObject()
-		- BeginObjectLeftRecursive(PointerType)
+		- LriStore()
+		- BeginObject(PointerType)
+		- LriFetch()
 		+ Field(PointerType::type)
 	leftrec -> [32][_LongType]< _LongType @ "const" >
 		- EndObject()
-		- BeginObjectLeftRecursive(ConstType)
+		- LriStore()
+		- BeginObject(ConstType)
+		- LriFetch()
 		+ Field(ConstType::type)
 
 [30][_LongType]< _LongType @ "(" { _LongType ; "," } ")" >
@@ -326,15 +360,21 @@
 		- EndObject()
 	leftrec -> [30][_LongType]< _LongType @ "(" { _LongType ; "," } ")" >
 		- EndObject()
-		- BeginObjectLeftRecursive(FunctionType)
+		- LriStore()
+		- BeginObject(FunctionType)
+		- LriFetch()
 		+ Field(FunctionType::returnType)
 	leftrec -> [31][_LongType]< _LongType @ "*" >
 		- EndObject()
-		- BeginObjectLeftRecursive(PointerType)
+		- LriStore()
+		- BeginObject(PointerType)
+		- LriFetch()
 		+ Field(PointerType::type)
 	leftrec -> [32][_LongType]< _LongType @ "const" >
 		- EndObject()
-		- BeginObjectLeftRecursive(ConstType)
+		- LriStore()
+		- BeginObject(ConstType)
+		- LriFetch()
 		+ Field(ConstType::type)
 
 [34][_LongType]<< !_PrimitiveTypeOnly @ >>
@@ -343,15 +383,21 @@
 		- EndObject()
 	leftrec -> [30][_LongType]< _LongType @ "(" { _LongType ; "," } ")" >
 		- EndObject()
-		- BeginObjectLeftRecursive(FunctionType)
+		- LriStore()
+		- BeginObject(FunctionType)
+		- LriFetch()
 		+ Field(FunctionType::returnType)
 	leftrec -> [31][_LongType]< _LongType @ "*" >
 		- EndObject()
-		- BeginObjectLeftRecursive(PointerType)
+		- LriStore()
+		- BeginObject(PointerType)
+		- LriFetch()
 		+ Field(PointerType::type)
 	leftrec -> [32][_LongType]< _LongType @ "const" >
 		- EndObject()
-		- BeginObjectLeftRecursive(ConstType)
+		- LriStore()
+		- BeginObject(ConstType)
+		- LriFetch()
 		+ Field(ConstType::type)
 
 [35][_Expr0] BEGIN 
@@ -485,7 +531,9 @@
 		- EndObject()
 	leftrec -> [47][_Expr1]< _Expr1 @ "(" { _Expr ; "," } ")" >
 		- EndObject()
-		- BeginObjectLeftRecursive(CallExpr)
+		- LriStore()
+		- BeginObject(CallExpr)
+		- LriFetch()
 		+ Field(CallExpr::func)
 
 [46][_Expr1]< _Expr1 "(" { _Expr @ ; "," } ")" >
@@ -503,7 +551,9 @@
 		- EndObject()
 	leftrec -> [47][_Expr1]< _Expr1 @ "(" { _Expr ; "," } ")" >
 		- EndObject()
-		- BeginObjectLeftRecursive(CallExpr)
+		- LriStore()
+		- BeginObject(CallExpr)
+		- LriFetch()
 		+ Field(CallExpr::func)
 
 [49][_Expr] BEGIN 
@@ -567,7 +617,9 @@
 		- EndObject()
 	leftrec -> [53][_Expr]< _Expr @ "*" _Expr1 >
 		- EndObject()
-		- BeginObjectLeftRecursive(MulExpr)
+		- LriStore()
+		- BeginObject(MulExpr)
+		- LriFetch()
 		+ Field(MulExpr::first)
 
 [53][_Expr]< _Expr @ "*" _Expr1 >
@@ -580,7 +632,9 @@
 		- EndObject()
 	leftrec -> [53][_Expr]< _Expr @ "*" _Expr1 >
 		- EndObject()
-		- BeginObjectLeftRecursive(MulExpr)
+		- LriStore()
+		- BeginObject(MulExpr)
+		- LriFetch()
 		+ Field(MulExpr::first)
 
 [55][Module] BEGIN 
@@ -631,7 +685,9 @@
 		- LriFetch()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(CallExpr)
+		- LriStore()
+		- BeginObject(CallExpr)
+		- LriFetch()
 		- Field(CallExpr::func)
 		> rule: _Expr -> [57][Module]<< !_PrimitiveExprOnly ( lri:_Expr @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -648,7 +704,9 @@
 		- EndObject()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(MulExpr)
+		- LriStore()
+		- BeginObject(MulExpr)
+		- LriFetch()
 		- Field(MulExpr::first)
 		> rule: _Expr -> [57][Module]<< !_PrimitiveExprOnly ( lri:_Expr @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -672,7 +730,9 @@
 		- LriStore()
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(FunctionType)
+		- LriStore()
+		- BeginObject(FunctionType)
+		- LriFetch()
 		- Field(FunctionType::returnType)
 		> rule: _LongType -> [59][Module]<< !_PrimitiveShared ( lri:_LongType @ | lri:_Expr | lri:<skip> ) >>
 			+ ReopenObject()
@@ -685,7 +745,9 @@
 		- LriFetch()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(CallExpr)
+		- LriStore()
+		- BeginObject(CallExpr)
+		- LriFetch()
 		- Field(CallExpr::func)
 		> rule: _Expr -> [60][Module]<< !_PrimitiveShared ( lri:_LongType | lri:_Expr @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -696,7 +758,9 @@
 		- LriStore()
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(ConstType)
+		- LriStore()
+		- BeginObject(ConstType)
+		- LriFetch()
 		- Field(ConstType::type)
 		> rule: _LongType -> [59][Module]<< !_PrimitiveShared ( lri:_LongType @ | lri:_Expr | lri:<skip> ) >>
 			+ ReopenObject()
@@ -705,7 +769,9 @@
 		- LriStore()
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(PointerType)
+		- LriStore()
+		- BeginObject(PointerType)
+		- LriFetch()
 		- Field(PointerType::type)
 		> rule: _LongType -> [59][Module]<< !_PrimitiveShared ( lri:_LongType @ | lri:_Expr | lri:<skip> ) >>
 			+ ReopenObject()
@@ -720,7 +786,9 @@
 		- EndObject()
 		- ReopenObject()
 		- EndObject()
-		- BeginObjectLeftRecursive(MulExpr)
+		- LriStore()
+		- BeginObject(MulExpr)
+		- LriFetch()
 		- Field(MulExpr::first)
 		> rule: _Expr -> [60][Module]<< !_PrimitiveShared ( lri:_LongType | lri:_Expr @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -739,7 +807,9 @@
 		- LriStore()
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(FunctionType)
+		- LriStore()
+		- BeginObject(FunctionType)
+		- LriFetch()
 		- Field(FunctionType::returnType)
 		> rule: _LongType -> [62][Module]<< !_PrimitiveTypeOnly ( lri:_LongType @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -748,7 +818,9 @@
 		- LriStore()
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(ConstType)
+		- LriStore()
+		- BeginObject(ConstType)
+		- LriFetch()
 		- Field(ConstType::type)
 		> rule: _LongType -> [62][Module]<< !_PrimitiveTypeOnly ( lri:_LongType @ | lri:<skip> ) >>
 			+ ReopenObject()
@@ -757,7 +829,9 @@
 		- LriStore()
 		- DelayFieldAssignment()
 		- LriFetch()
-		- BeginObjectLeftRecursive(PointerType)
+		- LriStore()
+		- BeginObject(PointerType)
+		- LriFetch()
 		- Field(PointerType::type)
 		> rule: _LongType -> [62][Module]<< !_PrimitiveTypeOnly ( lri:_LongType @ | lri:<skip> ) >>
 			+ ReopenObject()

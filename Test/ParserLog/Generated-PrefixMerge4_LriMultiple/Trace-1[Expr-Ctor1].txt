@@ -132,7 +132,9 @@
 | [58][_Expr]< _Expr @ "*" _Expr1_Raw >                                                               |
 | [AST-INSTRUCTIONS]:                                                                                 |
 |   - EndObject()                                                                                     |
-|   - BeginObjectLeftRecursive(MulExpr)                                                               |
+|   - LriStore()                                                                                      |
+|   - BeginObject(MulExpr)                                                                            |
+|   - LriFetch()                                                                                      |
 |   + Field(MulExpr::first)                                                                           |
 | [RETURN STACK]:                                                                                     |
 |   [2][3]: _Expr -> [80][Module]<< !_PrimitiveShared ( lri:_Expr @ | lri:_LongType | lri:<skip> ) >> |
@@ -222,7 +224,9 @@
 ||   - LriFetch()                                                                                      ||
 ||   - ReopenObject()                                                                                  ||
 ||   - EndObject()                                                                                     ||
-||   - BeginObjectLeftRecursive(CallExpr)                                                              ||
+||   - LriStore()                                                                                      ||
+||   - BeginObject(CallExpr)                                                                           ||
+||   - LriFetch()                                                                                      ||
 ||   - Field(CallExpr::func)                                                                           ||
 || [RETURN STACK]:                                                                                     ||
 ||   [11][14]: _Expr1 -> [64][_Expr1_Raw]<< !_PrimitiveShared ( lri:_Expr1 @ | lri:<skip> ) >>         ||
