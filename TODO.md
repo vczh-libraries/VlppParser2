@@ -2,9 +2,6 @@
 
 ## Progressing
 
-- In `CheckMergeTraces`
-  - Use the above information in `CheckMergeTrace`
-    - Revisit `SearchForTopCreateInstructionsInAllLevelsWithCounter`, could be deleted
 - Remove BOLR instruction, replace it by LriStore+BO+LriFetch
 - `Name<A...>` unexpectedly produces ambiguity
   - From `_GenericArgument` it goes to
@@ -33,7 +30,7 @@
   - Invalid combined clauses during expanding switches
   - everything else that is needed
 - TODO(s) in `RewriteRules_GenerateAffectedLRIClausesSubgroup`.
-- TODO(s) in `InjectFirstInstruction`.
+- TODO(s) in `CalculateObjectFirstInstruction` and `InjectFirstInstruction`.
 - Make a test case to test `prefix_merge` generates `left_recursion_inject_multiple`.
 - Create ambiguity test case caused by only one clause with alternative syntax.
 - Test when an object get LriFetch to multiple branches following a ReopenObject.
