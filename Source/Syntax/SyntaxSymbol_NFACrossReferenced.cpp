@@ -211,8 +211,26 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 
 				for (auto [input, inputIndex] : indexed(acceptableInputs.Keys()))
 				{
+					//if (injectEdge->From()->Rule()->Name() == L"_GenericArgument" && injectEdge->From()->label == L"<< !_PrimitiveShared @ ( lri:(LRI__Expr0,LRI__LongType)->_GenericArgument_LRI_Original | lri:<skip> ) >>")
+					//{
+					//	if (input.value == 1)
+					//	{
+					//		int a = 0;
+					//	}
+					//}
 					auto [inputToken, returnEdgeCount] = input;
 					auto&& placeholderRecords = acceptableInputs.GetByIndex(inputIndex);
+
+					// group inputs by lrEdge, tokenEdge, carried return edges
+					// if there are multiple inputs from the same key
+					// it means such input creates an ambiguity
+					// 
+					// it usually happens in clauses like Prefix lri(flags) Target
+					// where multiple valid flags found in Target at the same time
+					//
+					// if we could indentify some inputs here where excluded return edges are all reuse edges
+					// then we can only create edges for one of them
+
 					for (auto [placeholderIndex, lrEdge, tokenEdge] : placeholderRecords)
 					{
 						auto placeholderEdge = placeholderEdges[placeholderIndex];
