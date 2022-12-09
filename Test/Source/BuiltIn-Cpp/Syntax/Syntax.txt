@@ -147,7 +147,7 @@ _QualifiedName_PrimitiveExpr
 
 _PostfixUnaryExpr
   ::= !_QualifiedName_PrimitiveExpr
-  ::= _Type:operand "(" {_Expr_Argument:arguments ; ","} ")" as CallExpr {kind = Parenthesis}
+  ::= _TypeStartsWithKeyword:operand "(" {_Expr_Argument:arguments ; ","} ")" as CallExpr {kind = Parenthesis}
   ::= _Type:operand "{" {_Expr_Argument:arguments ; ","} "}" as CallExpr {kind = Brace}
   ::= _PostfixUnaryExpr:left "." _MemberOperatorQualifiedName:right as BinaryExpr {op = Member}
   ::= _PostfixUnaryExpr:left "->" _MemberOperatorQualifiedName:right as BinaryExpr {op = Pointer}
@@ -357,15 +357,23 @@ _PrimitiveType
   ::= "typename" !_QualifiedName
   ;
 
-_QualifiedName_PrimitiveType
-  ::= !prefix_merge(_QualifiedName)
+_PM_PrimitiveType
   ::= !prefix_merge(_PrimitiveType)
   ;
 
-_TypeBeforeDeclarator : TypeOrExpr
-  ::= !_QualifiedName_PrimitiveType
+_PM_QualifiedName
+  ::= !prefix_merge(_QualifiedName)
+  ;
+
+_TypeStartsWithKeywordBeforeDeclarator
+  ::= !_PM_PrimitiveType
   ::= "const" _TypeBeforeDeclarator:type as ConstType
   ::= "volatile" _TypeBeforeDeclarator:type as VolatileType
+  ;
+
+_TypeBeforeDeclarator : TypeOrExpr
+  ::= !_PM_QualifiedName
+  ::= !_TypeStartsWithKeywordBeforeDeclarator
   ;
 
 //////////////////////////////////////////////////////////////////
@@ -531,6 +539,11 @@ _DeclaratorOptionalName
 //////////////////////////////////////////////////////////////////
 // Type
 //////////////////////////////////////////////////////////////////
+
+_TypeStartsWithKeyword
+  ::= !_TypeStartsWithKeywordBeforeDeclarator
+  ::= _TypeStartsWithKeywordBeforeDeclarator:type _DeclaratorWithoutName:declarator as DeclaratorType
+  ;
 
 _Type
   ::= !_TypeBeforeDeclarator

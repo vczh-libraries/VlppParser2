@@ -2,9 +2,6 @@
 
 ## Progressing
 
-- ambiguity in `_PostfixUnaryExpr`
-  - `_Type:operand "(" {_Expr_Argument:arguments ; ","} ")" as CallExpr {kind = Parenthesis}`
-  - `_PostfixUnaryExpr:operand "(" {_Expr_Argument:arguments ; ","} ")" as CallExpr {kind = Parenthesis}`
 - `a() + 1` failed to generate instructions
 
 ## Next task

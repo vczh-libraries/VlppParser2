@@ -2489,7 +2489,7 @@
                         "first": {
                             "$ast": "RefSyntax",
                             "field": "operand",
-                            "literal": "_Type",
+                            "literal": "_TypeStartsWithKeyword",
                             "refType": "Id"
                         },
                         "second": {
@@ -5265,19 +5265,24 @@
             "rule": {
                 "$ast": "RefSyntax",
                 "field": "",
-                "literal": "_QualifiedName",
-                "refType": "Id"
-            }
-        }, {
-            "$ast": "PrefixMergeClause",
-            "rule": {
-                "$ast": "RefSyntax",
-                "field": "",
                 "literal": "_PrimitiveType",
                 "refType": "Id"
             }
         }],
-        "name": "_QualifiedName_PrimitiveType",
+        "name": "_PM_PrimitiveType",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "PrefixMergeClause",
+            "rule": {
+                "$ast": "RefSyntax",
+                "field": "",
+                "literal": "_QualifiedName",
+                "refType": "Id"
+            }
+        }],
+        "name": "_PM_QualifiedName",
         "type": ""
     }, {
         "$ast": "Rule",
@@ -5286,7 +5291,7 @@
             "assignments": [],
             "syntax": {
                 "$ast": "UseSyntax",
-                "name": "_QualifiedName_PrimitiveType"
+                "name": "_PM_PrimitiveType"
             }
         }, {
             "$ast": "CreateClause",
@@ -5326,6 +5331,25 @@
                 }
             },
             "type": "VolatileType"
+        }],
+        "name": "_TypeStartsWithKeywordBeforeDeclarator",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "_PM_QualifiedName"
+            }
+        }, {
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "_TypeStartsWithKeywordBeforeDeclarator"
+            }
         }],
         "name": "_TypeBeforeDeclarator",
         "type": "TypeOrExpr"
@@ -6814,6 +6838,37 @@
             "type": "Declarator"
         }],
         "name": "_DeclaratorOptionalName",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "_TypeStartsWithKeywordBeforeDeclarator"
+            }
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "RefSyntax",
+                    "field": "type",
+                    "literal": "_TypeStartsWithKeywordBeforeDeclarator",
+                    "refType": "Id"
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "declarator",
+                    "literal": "_DeclaratorWithoutName",
+                    "refType": "Id"
+                }
+            },
+            "type": "DeclaratorType"
+        }],
+        "name": "_TypeStartsWithKeyword",
         "type": ""
     }, {
         "$ast": "Rule",
