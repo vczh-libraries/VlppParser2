@@ -2,7 +2,7 @@
 
 ## Progressing
 
-- `::a::b::c::* const & && volatile (&[10])(int)`
+- `::a::b::c::*`
   - Ambiguity
   - It should be invalid, instead of being `::a(::b::c::*)` and `::a::b(::c::*)`
 
