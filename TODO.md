@@ -2,7 +2,12 @@
 
 ## Progressing
 
-- `a() + 1` failed to generate instructions
+- `decltype(auto) X::(int a, Y<Z> ...b, ...) -> ::X<int>::Y<0>::Z:: * const & && volatile (&[10])(int)`
+  - Ambiguity
+- `constexpr extern static mutable thread_local virtual explicit decltype(auto) friend abstract __fastcall inline __inline __forceinline X::(int a, Y<Z> ...b, ...)`
+  - Failed to parse
+- `constexpr extern static mutable thread_local virtual explicit decltype(auto) friend abstract __fastcall inline __inline __forceinline X::(int a, Y<Z> ...b, ...) constexpr const volatile && & override final mutable noexcept noexcept(10) throw () throw(bool) throw(int, float, bool) = 0 = default = delete -> ::X<int>::Y<0>::Z`
+  - Failed to parse
 
 ## Next task
 

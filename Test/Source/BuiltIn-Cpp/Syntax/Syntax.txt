@@ -365,15 +365,27 @@ _PM_QualifiedName
   ::= !prefix_merge(_QualifiedName)
   ;
 
-_TypeStartsWithKeywordBeforeDeclarator
+_ShortTypeStartsWithKeywordBeforeDeclarator
   ::= !_PM_PrimitiveType
   ::= "const" _TypeBeforeDeclarator:type as ConstType
   ::= "volatile" _TypeBeforeDeclarator:type as VolatileType
   ;
 
-_TypeBeforeDeclarator : TypeOrExpr
+_ShortTypeBeforeDeclarator : TypeOrExpr
   ::= !_PM_QualifiedName
-  ::= !_TypeStartsWithKeywordBeforeDeclarator
+  ::= !_ShortTypeStartsWithKeywordBeforeDeclarator
+  ;
+
+_TypeStartsWithKeywordBeforeDeclarator
+  ::= !_ShortTypeStartsWithKeywordBeforeDeclarator
+  ::= _TypeStartsWithKeywordBeforeDeclarator:type "const" as ConstType
+  ::= _TypeStartsWithKeywordBeforeDeclarator:type "volatile" as VolatileType
+  ;
+
+_TypeBeforeDeclarator
+  ::= !_ShortTypeBeforeDeclarator
+  ::= _TypeBeforeDeclarator:type "const" as ConstType
+  ::= _TypeBeforeDeclarator:type "volatile" as VolatileType
   ;
 
 //////////////////////////////////////////////////////////////////
