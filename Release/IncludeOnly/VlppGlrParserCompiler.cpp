@@ -27,6 +27,7 @@ DEVELOPER: Zihan Chen(vczh)
 #include "..\..\Source\ParserGen\CompileSyntax_ResolveName.cpp"
 #include "..\..\Source\ParserGen\CompileSyntax_RewriteSyntax_PrefixMerge.cpp"
 #include "..\..\Source\ParserGen\CompileSyntax_RewriteSyntax_Switch.cpp"
+#include "..\..\Source\ParserGen\CompileSyntax_ValidatePrefixMerge.cpp"
 #include "..\..\Source\ParserGen\CompileSyntax_ValidateStructure.cpp"
 #include "..\..\Source\ParserGen\CompileSyntax_ValidateSwitchesAndConditions.cpp"
 #include "..\..\Source\ParserGen\CompileSyntax_ValidateTypes.cpp"
