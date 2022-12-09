@@ -106,6 +106,11 @@ void TracedTests()
 	{
 		runParser(L"TypeOrExpr", L"NameOfAs", [&]() { return parser.Parse_TypeOrExpr(L"Name<A...>"); });
 	});
+
+	TEST_CASE(L"sizeof a()")
+	{
+		runParser(L"TypeOrExpr", L"SizeofA", [&]() { return parser.Parse_TypeOrExpr(L"sizeof a()"); });
+	});
 }
 
 TEST_FILE

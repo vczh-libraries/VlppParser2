@@ -166,6 +166,10 @@ namespace cpp_parser
 	public:
 		Parser();
 
+		vl::Ptr<cpp_parser::CppTypeOrExpr> Parse_Type(const vl::WString& input, vl::vint codeIndex = -1) const;
+		vl::Ptr<cpp_parser::CppTypeOrExpr> Parse_Type(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
+		vl::Ptr<cpp_parser::CppTypeOrExpr> Parse_Expr(const vl::WString& input, vl::vint codeIndex = -1) const;
+		vl::Ptr<cpp_parser::CppTypeOrExpr> Parse_Expr(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
 		vl::Ptr<cpp_parser::CppTypeOrExpr> Parse_TypeOrExpr(const vl::WString& input, vl::vint codeIndex = -1) const;
 		vl::Ptr<cpp_parser::CppTypeOrExpr> Parse_TypeOrExpr(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
 		vl::Ptr<cpp_parser::CppFile> Parse_File(const vl::WString& input, vl::vint codeIndex = -1) const;
