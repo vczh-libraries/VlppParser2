@@ -598,14 +598,26 @@ _DeclaratorOptionalName : Declarator
   ::= _DeclaratorAfterInner as Declarator
   ;
 
+_TypeStartsWithKeyword_LRI_Isolated_2 : DeclaratorType
+  ::= _DeclaratorKeyword:keywords {_DeclaratorKeyword:keywords} _TypeBeforeDeclarator:type [_DeclaratorWithoutName:declarator] as DeclaratorType
+  ;
+
 _TypeStartsWithKeyword_LRI_Original : TypeOrExpr
+  ::= left_recursion_placeholder(LRI__TypeStartsWithKeyword)
   ::= !_TypeStartsWithKeywordBeforeDeclarator_LRI_Original
   ::= _TypeStartsWithKeywordBeforeDeclarator_LRI_Original:type _DeclaratorWithoutName:declarator as DeclaratorType
+  ::= !_TypeStartsWithKeyword_LRI_Isolated_2
+  ;
+
+_Type_LRI_Isolated_2 : DeclaratorType
+  ::= _DeclaratorKeyword:keywords {_DeclaratorKeyword:keywords} _TypeBeforeDeclarator:type [_DeclaratorWithoutName:declarator] as DeclaratorType
   ;
 
 _Type_LRI_Original : TypeOrExpr
+  ::= left_recursion_placeholder(LRI__Type)
   ::= !_TypeBeforeDeclarator_LRI_Original
   ::= _TypeBeforeDeclarator_LRI_Original:type _DeclaratorWithoutName:declarator as DeclaratorType
+  ::= !_Type_LRI_Isolated_2
   ;
 
 _Expr_NoComma_Raw_SWITCH_1allow_GT_LRI_Original : TypeOrExpr
@@ -667,6 +679,8 @@ _GenericArgument : TypeOrExprOrOthers
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__PM_QualifiedName, LRI__QualifiedName_PrimitiveExpr) _GenericArgument_LRI_Original]
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_1 [left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _GenericArgument_LRI_Original]
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_2 [left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _GenericArgument_LRI_Original]
+  ::= !_TypeStartsWithKeyword_LRI_Isolated_2 left_recursion_inject_multiple(LRI__TypeStartsWithKeyword) _GenericArgument_LRI_Original
+  ::= !_Type_LRI_Isolated_2 [left_recursion_inject_multiple(LRI__Type) _GenericArgument_LRI_Original]
   ;
 
 _QualifiedName_PrimitiveExpr : TypeOrExpr
@@ -680,6 +694,8 @@ _PostfixUnaryExpr : TypeOrExpr
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__PM_QualifiedName, LRI__QualifiedName_PrimitiveExpr) _PostfixUnaryExpr_LRI_Original]
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_1 left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _PostfixUnaryExpr_LRI_Original
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_2 left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _PostfixUnaryExpr_LRI_Original
+  ::= !_TypeStartsWithKeyword_LRI_Isolated_2 left_recursion_inject(LRI__TypeStartsWithKeyword) _PostfixUnaryExpr_LRI_Original
+  ::= !_Type_LRI_Isolated_2 left_recursion_inject(LRI__Type) _PostfixUnaryExpr_LRI_Original
   ;
 
 _PrefixUnaryExpr : TypeOrExpr
@@ -689,6 +705,8 @@ _PrefixUnaryExpr : TypeOrExpr
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__PM_QualifiedName, LRI__QualifiedName_PrimitiveExpr) _PrefixUnaryExpr_LRI_Original]
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_1 left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _PrefixUnaryExpr_LRI_Original
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_2 left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _PrefixUnaryExpr_LRI_Original
+  ::= !_TypeStartsWithKeyword_LRI_Isolated_2 left_recursion_inject(LRI__TypeStartsWithKeyword) _PrefixUnaryExpr_LRI_Original
+  ::= !_Type_LRI_Isolated_2 left_recursion_inject(LRI__Type) _PrefixUnaryExpr_LRI_Original
   ;
 
 _BExpr0 : TypeOrExpr
@@ -698,6 +716,8 @@ _BExpr0 : TypeOrExpr
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__PM_QualifiedName, LRI__QualifiedName_PrimitiveExpr) _BExpr0_LRI_Original]
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_1 left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _BExpr0_LRI_Original
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_2 left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _BExpr0_LRI_Original
+  ::= !_TypeStartsWithKeyword_LRI_Isolated_2 left_recursion_inject(LRI__TypeStartsWithKeyword) _BExpr0_LRI_Original
+  ::= !_Type_LRI_Isolated_2 left_recursion_inject(LRI__Type) _BExpr0_LRI_Original
   ;
 
 _BExpr1 : TypeOrExpr
@@ -707,6 +727,8 @@ _BExpr1 : TypeOrExpr
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__PM_QualifiedName, LRI__QualifiedName_PrimitiveExpr) _BExpr1_LRI_Original]
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_1 left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _BExpr1_LRI_Original
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_2 left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _BExpr1_LRI_Original
+  ::= !_TypeStartsWithKeyword_LRI_Isolated_2 left_recursion_inject(LRI__TypeStartsWithKeyword) _BExpr1_LRI_Original
+  ::= !_Type_LRI_Isolated_2 left_recursion_inject(LRI__Type) _BExpr1_LRI_Original
   ;
 
 _BExpr2 : TypeOrExpr
@@ -716,6 +738,8 @@ _BExpr2 : TypeOrExpr
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__PM_QualifiedName, LRI__QualifiedName_PrimitiveExpr) _BExpr2_LRI_Original]
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_1 left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _BExpr2_LRI_Original
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_2 left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _BExpr2_LRI_Original
+  ::= !_TypeStartsWithKeyword_LRI_Isolated_2 left_recursion_inject(LRI__TypeStartsWithKeyword) _BExpr2_LRI_Original
+  ::= !_Type_LRI_Isolated_2 left_recursion_inject(LRI__Type) _BExpr2_LRI_Original
   ;
 
 _BExpr3 : TypeOrExpr
@@ -725,6 +749,8 @@ _BExpr3 : TypeOrExpr
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__PM_QualifiedName, LRI__QualifiedName_PrimitiveExpr) _BExpr3_LRI_Original]
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_1 left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _BExpr3_LRI_Original
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_2 left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _BExpr3_LRI_Original
+  ::= !_TypeStartsWithKeyword_LRI_Isolated_2 left_recursion_inject(LRI__TypeStartsWithKeyword) _BExpr3_LRI_Original
+  ::= !_Type_LRI_Isolated_2 left_recursion_inject(LRI__Type) _BExpr3_LRI_Original
   ;
 
 _BExpr4_SWITCH_COMBINED : TypeOrExpr
@@ -734,6 +760,8 @@ _BExpr4_SWITCH_COMBINED : TypeOrExpr
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__PM_QualifiedName, LRI__QualifiedName_PrimitiveExpr) _BExpr4_SWITCH_COMBINED_LRI_Original]
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_1 left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _BExpr4_SWITCH_COMBINED_LRI_Original
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_2 left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _BExpr4_SWITCH_COMBINED_LRI_Original
+  ::= !_TypeStartsWithKeyword_LRI_Isolated_2 left_recursion_inject(LRI__TypeStartsWithKeyword) _BExpr4_SWITCH_COMBINED_LRI_Original
+  ::= !_Type_LRI_Isolated_2 left_recursion_inject(LRI__Type) _BExpr4_SWITCH_COMBINED_LRI_Original
   ;
 
 _BExpr4_SWITCH_0allow_GT : TypeOrExpr
@@ -743,6 +771,8 @@ _BExpr4_SWITCH_0allow_GT : TypeOrExpr
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__PM_QualifiedName, LRI__QualifiedName_PrimitiveExpr) _BExpr4_SWITCH_0allow_GT_LRI_Original]
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_1 left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _BExpr4_SWITCH_0allow_GT_LRI_Original
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_2 left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _BExpr4_SWITCH_0allow_GT_LRI_Original
+  ::= !_TypeStartsWithKeyword_LRI_Isolated_2 left_recursion_inject(LRI__TypeStartsWithKeyword) _BExpr4_SWITCH_0allow_GT_LRI_Original
+  ::= !_Type_LRI_Isolated_2 left_recursion_inject(LRI__Type) _BExpr4_SWITCH_0allow_GT_LRI_Original
   ;
 
 _BExpr4_SWITCH_1allow_GT : TypeOrExpr
@@ -752,6 +782,8 @@ _BExpr4_SWITCH_1allow_GT : TypeOrExpr
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__PM_QualifiedName, LRI__QualifiedName_PrimitiveExpr) _BExpr4_SWITCH_1allow_GT_LRI_Original]
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_1 left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _BExpr4_SWITCH_1allow_GT_LRI_Original
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_2 left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _BExpr4_SWITCH_1allow_GT_LRI_Original
+  ::= !_TypeStartsWithKeyword_LRI_Isolated_2 left_recursion_inject(LRI__TypeStartsWithKeyword) _BExpr4_SWITCH_1allow_GT_LRI_Original
+  ::= !_Type_LRI_Isolated_2 left_recursion_inject(LRI__Type) _BExpr4_SWITCH_1allow_GT_LRI_Original
   ;
 
 _BExpr5_SWITCH_0allow_GT : TypeOrExpr
@@ -761,6 +793,8 @@ _BExpr5_SWITCH_0allow_GT : TypeOrExpr
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__PM_QualifiedName, LRI__QualifiedName_PrimitiveExpr) _BExpr5_SWITCH_0allow_GT_LRI_Original]
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_1 left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _BExpr5_SWITCH_0allow_GT_LRI_Original
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_2 left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _BExpr5_SWITCH_0allow_GT_LRI_Original
+  ::= !_TypeStartsWithKeyword_LRI_Isolated_2 left_recursion_inject(LRI__TypeStartsWithKeyword) _BExpr5_SWITCH_0allow_GT_LRI_Original
+  ::= !_Type_LRI_Isolated_2 left_recursion_inject(LRI__Type) _BExpr5_SWITCH_0allow_GT_LRI_Original
   ;
 
 _BExpr5_SWITCH_1allow_GT : TypeOrExpr
@@ -770,6 +804,8 @@ _BExpr5_SWITCH_1allow_GT : TypeOrExpr
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__PM_QualifiedName, LRI__QualifiedName_PrimitiveExpr) _BExpr5_SWITCH_1allow_GT_LRI_Original]
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_1 left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _BExpr5_SWITCH_1allow_GT_LRI_Original
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_2 left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _BExpr5_SWITCH_1allow_GT_LRI_Original
+  ::= !_TypeStartsWithKeyword_LRI_Isolated_2 left_recursion_inject(LRI__TypeStartsWithKeyword) _BExpr5_SWITCH_1allow_GT_LRI_Original
+  ::= !_Type_LRI_Isolated_2 left_recursion_inject(LRI__Type) _BExpr5_SWITCH_1allow_GT_LRI_Original
   ;
 
 _BExpr6_SWITCH_0allow_GT : TypeOrExpr
@@ -779,6 +815,8 @@ _BExpr6_SWITCH_0allow_GT : TypeOrExpr
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__PM_QualifiedName, LRI__QualifiedName_PrimitiveExpr) _BExpr6_SWITCH_0allow_GT_LRI_Original]
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_1 left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _BExpr6_SWITCH_0allow_GT_LRI_Original
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_2 left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _BExpr6_SWITCH_0allow_GT_LRI_Original
+  ::= !_TypeStartsWithKeyword_LRI_Isolated_2 left_recursion_inject(LRI__TypeStartsWithKeyword) _BExpr6_SWITCH_0allow_GT_LRI_Original
+  ::= !_Type_LRI_Isolated_2 left_recursion_inject(LRI__Type) _BExpr6_SWITCH_0allow_GT_LRI_Original
   ;
 
 _BExpr6_SWITCH_1allow_GT : TypeOrExpr
@@ -788,6 +826,8 @@ _BExpr6_SWITCH_1allow_GT : TypeOrExpr
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__PM_QualifiedName, LRI__QualifiedName_PrimitiveExpr) _BExpr6_SWITCH_1allow_GT_LRI_Original]
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_1 left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _BExpr6_SWITCH_1allow_GT_LRI_Original
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_2 left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _BExpr6_SWITCH_1allow_GT_LRI_Original
+  ::= !_TypeStartsWithKeyword_LRI_Isolated_2 left_recursion_inject(LRI__TypeStartsWithKeyword) _BExpr6_SWITCH_1allow_GT_LRI_Original
+  ::= !_Type_LRI_Isolated_2 left_recursion_inject(LRI__Type) _BExpr6_SWITCH_1allow_GT_LRI_Original
   ;
 
 _BExpr7_SWITCH_0allow_GT : TypeOrExpr
@@ -797,6 +837,8 @@ _BExpr7_SWITCH_0allow_GT : TypeOrExpr
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__PM_QualifiedName, LRI__QualifiedName_PrimitiveExpr) _BExpr7_SWITCH_0allow_GT_LRI_Original]
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_1 left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _BExpr7_SWITCH_0allow_GT_LRI_Original
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_2 left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _BExpr7_SWITCH_0allow_GT_LRI_Original
+  ::= !_TypeStartsWithKeyword_LRI_Isolated_2 left_recursion_inject(LRI__TypeStartsWithKeyword) _BExpr7_SWITCH_0allow_GT_LRI_Original
+  ::= !_Type_LRI_Isolated_2 left_recursion_inject(LRI__Type) _BExpr7_SWITCH_0allow_GT_LRI_Original
   ;
 
 _BExpr7_SWITCH_1allow_GT : TypeOrExpr
@@ -806,6 +848,8 @@ _BExpr7_SWITCH_1allow_GT : TypeOrExpr
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__PM_QualifiedName, LRI__QualifiedName_PrimitiveExpr) _BExpr7_SWITCH_1allow_GT_LRI_Original]
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_1 left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _BExpr7_SWITCH_1allow_GT_LRI_Original
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_2 left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _BExpr7_SWITCH_1allow_GT_LRI_Original
+  ::= !_TypeStartsWithKeyword_LRI_Isolated_2 left_recursion_inject(LRI__TypeStartsWithKeyword) _BExpr7_SWITCH_1allow_GT_LRI_Original
+  ::= !_Type_LRI_Isolated_2 left_recursion_inject(LRI__Type) _BExpr7_SWITCH_1allow_GT_LRI_Original
   ;
 
 _BExpr8_SWITCH_0allow_GT : TypeOrExpr
@@ -815,6 +859,8 @@ _BExpr8_SWITCH_0allow_GT : TypeOrExpr
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__PM_QualifiedName, LRI__QualifiedName_PrimitiveExpr) _BExpr8_SWITCH_0allow_GT_LRI_Original]
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_1 left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _BExpr8_SWITCH_0allow_GT_LRI_Original
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_2 left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _BExpr8_SWITCH_0allow_GT_LRI_Original
+  ::= !_TypeStartsWithKeyword_LRI_Isolated_2 left_recursion_inject(LRI__TypeStartsWithKeyword) _BExpr8_SWITCH_0allow_GT_LRI_Original
+  ::= !_Type_LRI_Isolated_2 left_recursion_inject(LRI__Type) _BExpr8_SWITCH_0allow_GT_LRI_Original
   ;
 
 _BExpr8_SWITCH_1allow_GT : TypeOrExpr
@@ -824,6 +870,8 @@ _BExpr8_SWITCH_1allow_GT : TypeOrExpr
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__PM_QualifiedName, LRI__QualifiedName_PrimitiveExpr) _BExpr8_SWITCH_1allow_GT_LRI_Original]
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_1 left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _BExpr8_SWITCH_1allow_GT_LRI_Original
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_2 left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _BExpr8_SWITCH_1allow_GT_LRI_Original
+  ::= !_TypeStartsWithKeyword_LRI_Isolated_2 left_recursion_inject(LRI__TypeStartsWithKeyword) _BExpr8_SWITCH_1allow_GT_LRI_Original
+  ::= !_Type_LRI_Isolated_2 left_recursion_inject(LRI__Type) _BExpr8_SWITCH_1allow_GT_LRI_Original
   ;
 
 _BExpr9_SWITCH_0allow_GT : TypeOrExpr
@@ -833,6 +881,8 @@ _BExpr9_SWITCH_0allow_GT : TypeOrExpr
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__PM_QualifiedName, LRI__QualifiedName_PrimitiveExpr) _BExpr9_SWITCH_0allow_GT_LRI_Original]
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_1 left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _BExpr9_SWITCH_0allow_GT_LRI_Original
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_2 left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _BExpr9_SWITCH_0allow_GT_LRI_Original
+  ::= !_TypeStartsWithKeyword_LRI_Isolated_2 left_recursion_inject(LRI__TypeStartsWithKeyword) _BExpr9_SWITCH_0allow_GT_LRI_Original
+  ::= !_Type_LRI_Isolated_2 left_recursion_inject(LRI__Type) _BExpr9_SWITCH_0allow_GT_LRI_Original
   ;
 
 _BExpr9_SWITCH_1allow_GT : TypeOrExpr
@@ -842,6 +892,8 @@ _BExpr9_SWITCH_1allow_GT : TypeOrExpr
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__PM_QualifiedName, LRI__QualifiedName_PrimitiveExpr) _BExpr9_SWITCH_1allow_GT_LRI_Original]
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_1 left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _BExpr9_SWITCH_1allow_GT_LRI_Original
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_2 left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _BExpr9_SWITCH_1allow_GT_LRI_Original
+  ::= !_TypeStartsWithKeyword_LRI_Isolated_2 left_recursion_inject(LRI__TypeStartsWithKeyword) _BExpr9_SWITCH_1allow_GT_LRI_Original
+  ::= !_Type_LRI_Isolated_2 left_recursion_inject(LRI__Type) _BExpr9_SWITCH_1allow_GT_LRI_Original
   ;
 
 _BExpr10_SWITCH_0allow_GT : TypeOrExpr
@@ -851,6 +903,8 @@ _BExpr10_SWITCH_0allow_GT : TypeOrExpr
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__PM_QualifiedName, LRI__QualifiedName_PrimitiveExpr) _BExpr10_SWITCH_0allow_GT_LRI_Original]
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_1 left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _BExpr10_SWITCH_0allow_GT_LRI_Original
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_2 left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _BExpr10_SWITCH_0allow_GT_LRI_Original
+  ::= !_TypeStartsWithKeyword_LRI_Isolated_2 left_recursion_inject(LRI__TypeStartsWithKeyword) _BExpr10_SWITCH_0allow_GT_LRI_Original
+  ::= !_Type_LRI_Isolated_2 left_recursion_inject(LRI__Type) _BExpr10_SWITCH_0allow_GT_LRI_Original
   ;
 
 _BExpr10_SWITCH_1allow_GT : TypeOrExpr
@@ -860,6 +914,8 @@ _BExpr10_SWITCH_1allow_GT : TypeOrExpr
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__PM_QualifiedName, LRI__QualifiedName_PrimitiveExpr) _BExpr10_SWITCH_1allow_GT_LRI_Original]
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_1 left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _BExpr10_SWITCH_1allow_GT_LRI_Original
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_2 left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _BExpr10_SWITCH_1allow_GT_LRI_Original
+  ::= !_TypeStartsWithKeyword_LRI_Isolated_2 left_recursion_inject(LRI__TypeStartsWithKeyword) _BExpr10_SWITCH_1allow_GT_LRI_Original
+  ::= !_Type_LRI_Isolated_2 left_recursion_inject(LRI__Type) _BExpr10_SWITCH_1allow_GT_LRI_Original
   ;
 
 _BExpr_NoComma_SWITCH_0allow_GT : TypeOrExpr
@@ -870,6 +926,8 @@ _BExpr_NoComma_SWITCH_0allow_GT : TypeOrExpr
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__PM_QualifiedName, LRI__QualifiedName_PrimitiveExpr) _BExpr_NoComma_SWITCH_0allow_GT_LRI_Original]
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_1 left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _BExpr_NoComma_SWITCH_0allow_GT_LRI_Original
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_2 left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _BExpr_NoComma_SWITCH_0allow_GT_LRI_Original
+  ::= !_TypeStartsWithKeyword_LRI_Isolated_2 left_recursion_inject_multiple(LRI__TypeStartsWithKeyword) _BExpr_NoComma_SWITCH_0allow_GT_LRI_Original
+  ::= !_Type_LRI_Isolated_2 left_recursion_inject_multiple(LRI__Type) _BExpr_NoComma_SWITCH_0allow_GT_LRI_Original
   ;
 
 _BExpr_NoComma_SWITCH_1allow_GT : TypeOrExpr
@@ -880,6 +938,8 @@ _BExpr_NoComma_SWITCH_1allow_GT : TypeOrExpr
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__PM_QualifiedName, LRI__QualifiedName_PrimitiveExpr) _BExpr_NoComma_SWITCH_1allow_GT_LRI_Original]
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_1 left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _BExpr_NoComma_SWITCH_1allow_GT_LRI_Original
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_2 left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _BExpr_NoComma_SWITCH_1allow_GT_LRI_Original
+  ::= !_TypeStartsWithKeyword_LRI_Isolated_2 left_recursion_inject_multiple(LRI__TypeStartsWithKeyword) _BExpr_NoComma_SWITCH_1allow_GT_LRI_Original
+  ::= !_Type_LRI_Isolated_2 left_recursion_inject_multiple(LRI__Type) _BExpr_NoComma_SWITCH_1allow_GT_LRI_Original
   ;
 
 _BExpr_SWITCH_1allow_GT : TypeOrExpr
@@ -890,6 +950,8 @@ _BExpr_SWITCH_1allow_GT : TypeOrExpr
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__PM_QualifiedName, LRI__QualifiedName_PrimitiveExpr) _BExpr_SWITCH_1allow_GT_LRI_Original]
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_1 left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _BExpr_SWITCH_1allow_GT_LRI_Original
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_2 left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _BExpr_SWITCH_1allow_GT_LRI_Original
+  ::= !_TypeStartsWithKeyword_LRI_Isolated_2 left_recursion_inject_multiple(LRI__TypeStartsWithKeyword) _BExpr_SWITCH_1allow_GT_LRI_Original
+  ::= !_Type_LRI_Isolated_2 left_recursion_inject_multiple(LRI__Type) _BExpr_SWITCH_1allow_GT_LRI_Original
   ;
 
 _PM_PrimitiveType : TypeOrExpr
@@ -935,12 +997,14 @@ _DeclaratorFunctionParameter : TypeOrExprOrOthers
   ;
 
 _TypeStartsWithKeyword : TypeOrExpr
+  ::= !_TypeStartsWithKeyword_LRI_Isolated_2
   ::= !_PrimitiveType [left_recursion_inject_multiple(LRI__PM_PrimitiveType) _TypeStartsWithKeyword_LRI_Original]
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_1 [left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _TypeStartsWithKeyword_LRI_Original]
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_2 [left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _TypeStartsWithKeyword_LRI_Original]
   ;
 
 _Type : TypeOrExpr
+  ::= !_Type_LRI_Isolated_2
   ::= !_PrimitiveType [left_recursion_inject_multiple(LRI__PM_PrimitiveType) _Type_LRI_Original]
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__PM_QualifiedName) _Type_LRI_Original]
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_1 [left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _Type_LRI_Original]
@@ -955,6 +1019,8 @@ _Expr_NoComma_Raw_SWITCH_1allow_GT : TypeOrExpr
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__PM_QualifiedName, LRI__QualifiedName_PrimitiveExpr) _Expr_NoComma_Raw_SWITCH_1allow_GT_LRI_Original]
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_1 left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _Expr_NoComma_Raw_SWITCH_1allow_GT_LRI_Original
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_2 left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _Expr_NoComma_Raw_SWITCH_1allow_GT_LRI_Original
+  ::= !_TypeStartsWithKeyword_LRI_Isolated_2 left_recursion_inject_multiple(LRI__TypeStartsWithKeyword) _Expr_NoComma_Raw_SWITCH_1allow_GT_LRI_Original
+  ::= !_Type_LRI_Isolated_2 left_recursion_inject_multiple(LRI__Type) _Expr_NoComma_Raw_SWITCH_1allow_GT_LRI_Original
   ;
 
 _Expr_Raw_SWITCH_1allow_GT : TypeOrExpr
@@ -965,9 +1031,12 @@ _Expr_Raw_SWITCH_1allow_GT : TypeOrExpr
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__PM_QualifiedName, LRI__QualifiedName_PrimitiveExpr) _Expr_Raw_SWITCH_1allow_GT_LRI_Original]
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_1 left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _Expr_Raw_SWITCH_1allow_GT_LRI_Original
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_2 left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _Expr_Raw_SWITCH_1allow_GT_LRI_Original
+  ::= !_TypeStartsWithKeyword_LRI_Isolated_2 left_recursion_inject_multiple(LRI__TypeStartsWithKeyword) _Expr_Raw_SWITCH_1allow_GT_LRI_Original
+  ::= !_Type_LRI_Isolated_2 left_recursion_inject_multiple(LRI__Type) _Expr_Raw_SWITCH_1allow_GT_LRI_Original
   ;
 
 _TypeOrExpr_NoComma_Raw_SWITCH_COMBINED : TypeOrExpr
+  ::= !_Type_LRI_Isolated_2
   ::= !_PrimitiveType [left_recursion_inject_multiple(LRI__PM_PrimitiveType) _TypeOrExpr_NoComma_Raw_SWITCH_COMBINED_LRI_Original]
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__PM_QualifiedName) _TypeOrExpr_NoComma_Raw_SWITCH_COMBINED_LRI_Original]
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_1 [left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _TypeOrExpr_NoComma_Raw_SWITCH_COMBINED_LRI_Original]
@@ -982,9 +1051,12 @@ _TypeOrExpr_NoComma_Raw_SWITCH_0allow_GT : TypeOrExpr
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__PM_QualifiedName, LRI__QualifiedName_PrimitiveExpr) _TypeOrExpr_NoComma_Raw_SWITCH_0allow_GT_LRI_Original]
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_1 [left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _TypeOrExpr_NoComma_Raw_SWITCH_0allow_GT_LRI_Original]
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_2 [left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _TypeOrExpr_NoComma_Raw_SWITCH_0allow_GT_LRI_Original]
+  ::= !_TypeStartsWithKeyword_LRI_Isolated_2 left_recursion_inject_multiple(LRI__TypeStartsWithKeyword) _TypeOrExpr_NoComma_Raw_SWITCH_0allow_GT_LRI_Original
+  ::= !_Type_LRI_Isolated_2 [left_recursion_inject_multiple(LRI__Type) _TypeOrExpr_NoComma_Raw_SWITCH_0allow_GT_LRI_Original]
   ;
 
 _TypeOrExpr_Raw_SWITCH_COMBINED : TypeOrExpr
+  ::= !_Type_LRI_Isolated_2
   ::= !_PrimitiveType [left_recursion_inject_multiple(LRI__PM_PrimitiveType) _TypeOrExpr_Raw_SWITCH_COMBINED_LRI_Original]
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__PM_QualifiedName) _TypeOrExpr_Raw_SWITCH_COMBINED_LRI_Original]
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_1 [left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _TypeOrExpr_Raw_SWITCH_COMBINED_LRI_Original]
@@ -999,6 +1071,8 @@ _TypeOrExpr_Raw_SWITCH_1allow_GT : TypeOrExpr
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__PM_QualifiedName, LRI__QualifiedName_PrimitiveExpr) _TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original]
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_1 [left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original]
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_2 [left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original]
+  ::= !_TypeStartsWithKeyword_LRI_Isolated_2 left_recursion_inject_multiple(LRI__TypeStartsWithKeyword) _TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original
+  ::= !_Type_LRI_Isolated_2 [left_recursion_inject_multiple(LRI__Type) _TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original]
   ;
 
 _Expr_NoComma : TypeOrExpr
@@ -1009,6 +1083,8 @@ _Expr_NoComma : TypeOrExpr
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__PM_QualifiedName, LRI__QualifiedName_PrimitiveExpr) _Expr_NoComma_LRI_Original]
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_1 left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _Expr_NoComma_LRI_Original
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_2 left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _Expr_NoComma_LRI_Original
+  ::= !_TypeStartsWithKeyword_LRI_Isolated_2 left_recursion_inject_multiple(LRI__TypeStartsWithKeyword) _Expr_NoComma_LRI_Original
+  ::= !_Type_LRI_Isolated_2 left_recursion_inject_multiple(LRI__Type) _Expr_NoComma_LRI_Original
   ;
 
 _Expr : TypeOrExpr
@@ -1019,6 +1095,8 @@ _Expr : TypeOrExpr
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__PM_QualifiedName, LRI__QualifiedName_PrimitiveExpr) _Expr_LRI_Original]
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_1 left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _Expr_LRI_Original
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_2 left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _Expr_LRI_Original
+  ::= !_TypeStartsWithKeyword_LRI_Isolated_2 left_recursion_inject_multiple(LRI__TypeStartsWithKeyword) _Expr_LRI_Original
+  ::= !_Type_LRI_Isolated_2 left_recursion_inject_multiple(LRI__Type) _Expr_LRI_Original
   ;
 
 _Expr_Argument : TypeOrExpr
@@ -1029,6 +1107,8 @@ _Expr_Argument : TypeOrExpr
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__PM_QualifiedName, LRI__QualifiedName_PrimitiveExpr) _Expr_Argument_LRI_Original]
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_1 left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _Expr_Argument_LRI_Original
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_2 left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _Expr_Argument_LRI_Original
+  ::= !_TypeStartsWithKeyword_LRI_Isolated_2 left_recursion_inject_multiple(LRI__TypeStartsWithKeyword) _Expr_Argument_LRI_Original
+  ::= !_Type_LRI_Isolated_2 left_recursion_inject_multiple(LRI__Type) _Expr_Argument_LRI_Original
   ;
 
 _TypeOrExpr_NoComma_NoGT : TypeOrExpr
@@ -1039,6 +1119,8 @@ _TypeOrExpr_NoComma_NoGT : TypeOrExpr
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__PM_QualifiedName, LRI__QualifiedName_PrimitiveExpr) _TypeOrExpr_NoComma_NoGT_LRI_Original]
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_1 [left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _TypeOrExpr_NoComma_NoGT_LRI_Original]
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_2 [left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _TypeOrExpr_NoComma_NoGT_LRI_Original]
+  ::= !_TypeStartsWithKeyword_LRI_Isolated_2 left_recursion_inject_multiple(LRI__TypeStartsWithKeyword) _TypeOrExpr_NoComma_NoGT_LRI_Original
+  ::= !_Type_LRI_Isolated_2 [left_recursion_inject_multiple(LRI__Type) _TypeOrExpr_NoComma_NoGT_LRI_Original]
   ;
 
 _TypeOrExpr : TypeOrExpr
@@ -1049,5 +1131,7 @@ _TypeOrExpr : TypeOrExpr
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__PM_QualifiedName, LRI__QualifiedName_PrimitiveExpr) _TypeOrExpr_LRI_Original]
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_1 [left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _TypeOrExpr_LRI_Original]
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_2 [left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _TypeOrExpr_LRI_Original]
+  ::= !_TypeStartsWithKeyword_LRI_Isolated_2 left_recursion_inject_multiple(LRI__TypeStartsWithKeyword) _TypeOrExpr_LRI_Original
+  ::= !_Type_LRI_Isolated_2 [left_recursion_inject_multiple(LRI__Type) _TypeOrExpr_LRI_Original]
   ;
 
