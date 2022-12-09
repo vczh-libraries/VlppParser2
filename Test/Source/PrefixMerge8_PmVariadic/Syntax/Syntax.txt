@@ -1,0 +1,83 @@
+////////////////////////////////////////
+// Left Recursive (Primitives)
+////////////////////////////////////////
+
+_GenericArgument
+  ::= !Module
+  ::= Module:operand "..." as VariadicArgument
+  ;
+
+_GenericArguments
+  ::= "<" {_GenericArgument:args ; ","} ">" as partial GenericQualifiedName
+  ;
+
+_Name
+  ::= ID:name as Name
+  ::= ID:name _GenericArguments as GenericName
+  ::= _Name:parent "." ID:member as MemberName
+  ::= _Name:parent "." ID:member _GenericArguments as GenericMemberName
+  ;
+
+_PrimitiveShared
+  ::= !_Name
+  ;
+
+_PrimitiveTypeOnly
+  ::= "const" _PrimitiveShared:type as ConstType
+  ::= "const" _PrimitiveTypeOnly:type as ConstType
+  ;
+
+_PrimitiveExprOnly
+  ::= "(" !_Expr ")"
+  ;
+
+////////////////////////////////////////
+// Left Recursive (Types)
+////////////////////////////////////////
+
+_LongTypeArg
+  ::= !_LongType
+  ::= _LongType:operand "..." as VariadicArgument
+  ;
+
+_LongType
+  ::= !prefix_merge(_PrimitiveShared)
+  ::= !prefix_merge(_PrimitiveTypeOnly)
+  ::= _LongType:type "const" as ConstType
+  ::= _LongType:type "*" as PointerType
+  ::= _LongType:returnType "(" {_LongTypeArg:args ; ","} ")" as FunctionType
+  ;
+
+////////////////////////////////////////
+// Left Recursive (Expressions)
+////////////////////////////////////////
+
+_ExprArg
+  ::= !_Expr
+  ::= _Expr:operand "..." as VariadicArgument
+  ;
+
+_Expr0
+  ::= !prefix_merge(_PrimitiveShared)
+  ::= !prefix_merge(_PrimitiveExprOnly)
+  ::= _LongType:type "{" {_ExprArg:args ; ","} "}" as CtorExpr
+  ;
+
+_Expr1
+  ::= !_Expr0
+  ::= _Expr1:func "(" {_ExprArg:args ; ","} ")" as CallExpr
+  ;
+
+_Expr
+  ::= !_Expr1
+  ::= _Expr:first "*" _Expr1:second as MulExpr
+  ;
+
+////////////////////////////////////////
+// Left Recursive (Module)
+////////////////////////////////////////
+
+Module
+  ::= !_Expr
+  ::= !_LongType
+  ;

@@ -19,12 +19,12 @@ namespace prefixmerge4_lrimultiple
 		_PrimitiveTypeOnly = 9,
 		_PrimitiveExprOnly = 15,
 		_LongType = 20,
-		_Expr0 = 35,
-		_Expr1 = 46,
-		_Expr = 54,
-		_Expr1_Raw = 60,
-		_Expr_Raw = 68,
-		Module = 76,
+		_Expr0 = 34,
+		_Expr1 = 44,
+		_Expr = 52,
+		_Expr1_Raw = 58,
+		_Expr_Raw = 66,
+		Module = 74,
 	};
 
 	const wchar_t* ModuleParserRuleName(vl::vint index);

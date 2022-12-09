@@ -1336,6 +1336,13 @@
     }, {
         "$ast": "Rule",
         "clauses": [{
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "_TypeOrExpr_NoComma_NoGT"
+            }
+        }, {
             "$ast": "CreateClause",
             "assignments": [],
             "syntax": {
@@ -1347,14 +1354,10 @@
                     "refType": "Id"
                 },
                 "second": {
-                    "$ast": "OptionalSyntax",
-                    "priority": "Equal",
-                    "syntax": {
-                        "$ast": "RefSyntax",
-                        "field": "variadic",
-                        "literal": "\"...\"",
-                        "refType": "Literal"
-                    }
+                    "$ast": "RefSyntax",
+                    "field": "variadic",
+                    "literal": "\"...\"",
+                    "refType": "Literal"
                 }
             },
             "type": "GenericArgument"
@@ -1918,7 +1921,7 @@
                         "syntax": {
                             "$ast": "RefSyntax",
                             "field": "arguments",
-                            "literal": "_Expr_NoComma",
+                            "literal": "_Expr_Argument",
                             "refType": "Id"
                         }
                     }
@@ -2486,7 +2489,7 @@
                         "first": {
                             "$ast": "RefSyntax",
                             "field": "operand",
-                            "literal": "_LongType",
+                            "literal": "_TypeStartsWithKeyword",
                             "refType": "Id"
                         },
                         "second": {
@@ -2507,7 +2510,7 @@
                         "syntax": {
                             "$ast": "RefSyntax",
                             "field": "arguments",
-                            "literal": "_Expr_NoComma",
+                            "literal": "_Expr_Argument",
                             "refType": "Id"
                         }
                     }
@@ -2537,7 +2540,7 @@
                         "first": {
                             "$ast": "RefSyntax",
                             "field": "operand",
-                            "literal": "_LongType",
+                            "literal": "_Type",
                             "refType": "Id"
                         },
                         "second": {
@@ -2558,7 +2561,7 @@
                         "syntax": {
                             "$ast": "RefSyntax",
                             "field": "arguments",
-                            "literal": "_Expr_NoComma",
+                            "literal": "_Expr_Argument",
                             "refType": "Id"
                         }
                     }
@@ -2760,7 +2763,7 @@
                         "syntax": {
                             "$ast": "RefSyntax",
                             "field": "arguments",
-                            "literal": "_Expr_NoComma",
+                            "literal": "_Expr_Argument",
                             "refType": "Id"
                         }
                     }
@@ -2871,7 +2874,7 @@
                         "syntax": {
                             "$ast": "RefSyntax",
                             "field": "initArguments",
-                            "literal": "_Expr_NoComma",
+                            "literal": "_Expr_Argument",
                             "refType": "Id"
                         }
                     }
@@ -2913,7 +2916,7 @@
                         "syntax": {
                             "$ast": "RefSyntax",
                             "field": "initArguments",
-                            "literal": "_Expr_NoComma",
+                            "literal": "_Expr_Argument",
                             "refType": "Id"
                         }
                     }
@@ -3019,7 +3022,7 @@
                                         "syntax": {
                                             "$ast": "RefSyntax",
                                             "field": "placementArguments",
-                                            "literal": "_Expr_NoComma",
+                                            "literal": "_Expr_Argument",
                                             "refType": "Id"
                                         }
                                     }
@@ -5262,19 +5265,24 @@
             "rule": {
                 "$ast": "RefSyntax",
                 "field": "",
-                "literal": "_QualifiedName",
-                "refType": "Id"
-            }
-        }, {
-            "$ast": "PrefixMergeClause",
-            "rule": {
-                "$ast": "RefSyntax",
-                "field": "",
                 "literal": "_PrimitiveType",
                 "refType": "Id"
             }
         }],
-        "name": "_QualifiedName_PrimitiveType",
+        "name": "_PM_PrimitiveType",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "PrefixMergeClause",
+            "rule": {
+                "$ast": "RefSyntax",
+                "field": "",
+                "literal": "_QualifiedName",
+                "refType": "Id"
+            }
+        }],
+        "name": "_PM_QualifiedName",
         "type": ""
     }, {
         "$ast": "Rule",
@@ -5283,7 +5291,7 @@
             "assignments": [],
             "syntax": {
                 "$ast": "UseSyntax",
-                "name": "_QualifiedName_PrimitiveType"
+                "name": "_PM_PrimitiveType"
             }
         }, {
             "$ast": "CreateClause",
@@ -5299,7 +5307,7 @@
                 "second": {
                     "$ast": "RefSyntax",
                     "field": "type",
-                    "literal": "_ShortType",
+                    "literal": "_TypeBeforeDeclarator",
                     "refType": "Id"
                 }
             },
@@ -5318,13 +5326,32 @@
                 "second": {
                     "$ast": "RefSyntax",
                     "field": "type",
-                    "literal": "_ShortType",
+                    "literal": "_TypeBeforeDeclarator",
                     "refType": "Id"
                 }
             },
             "type": "VolatileType"
         }],
-        "name": "_ShortType",
+        "name": "_ShortTypeStartsWithKeywordBeforeDeclarator",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "_PM_QualifiedName"
+            }
+        }, {
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "_ShortTypeStartsWithKeywordBeforeDeclarator"
+            }
+        }],
+        "name": "_ShortTypeBeforeDeclarator",
         "type": "TypeOrExpr"
     }, {
         "$ast": "Rule",
@@ -5333,7 +5360,7 @@
             "assignments": [],
             "syntax": {
                 "$ast": "UseSyntax",
-                "name": "_ShortType"
+                "name": "_ShortTypeStartsWithKeywordBeforeDeclarator"
             }
         }, {
             "$ast": "CreateClause",
@@ -5343,7 +5370,7 @@
                 "first": {
                     "$ast": "RefSyntax",
                     "field": "type",
-                    "literal": "_LongType",
+                    "literal": "_TypeStartsWithKeywordBeforeDeclarator",
                     "refType": "Id"
                 },
                 "second": {
@@ -5362,7 +5389,7 @@
                 "first": {
                     "$ast": "RefSyntax",
                     "field": "type",
-                    "literal": "_LongType",
+                    "literal": "_TypeStartsWithKeywordBeforeDeclarator",
                     "refType": "Id"
                 },
                 "second": {
@@ -5374,7 +5401,57 @@
             },
             "type": "VolatileType"
         }],
-        "name": "_LongType",
+        "name": "_TypeStartsWithKeywordBeforeDeclarator",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "_ShortTypeBeforeDeclarator"
+            }
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "RefSyntax",
+                    "field": "type",
+                    "literal": "_TypeBeforeDeclarator",
+                    "refType": "Id"
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "\"const\"",
+                    "refType": "Literal"
+                }
+            },
+            "type": "ConstType"
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "RefSyntax",
+                    "field": "type",
+                    "literal": "_TypeBeforeDeclarator",
+                    "refType": "Id"
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "\"volatile\"",
+                    "refType": "Literal"
+                }
+            },
+            "type": "VolatileType"
+        }],
+        "name": "_TypeBeforeDeclarator",
         "type": ""
     }, {
         "$ast": "Rule",
@@ -5867,6 +5944,82 @@
     }, {
         "$ast": "Rule",
         "clauses": [{
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "_TypeBeforeDeclarator"
+            }
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "RefSyntax",
+                        "field": "type",
+                        "literal": "_TypeBeforeDeclarator",
+                        "refType": "Id"
+                    },
+                    "second": {
+                        "$ast": "RefSyntax",
+                        "field": "",
+                        "literal": "\"=\"",
+                        "refType": "Literal"
+                    }
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "defaultValue",
+                    "literal": "_Expr_NoComma",
+                    "refType": "Id"
+                }
+            },
+            "type": "FunctionParameter"
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "RefSyntax",
+                        "field": "type",
+                        "literal": "_TypeBeforeDeclarator",
+                        "refType": "Id"
+                    },
+                    "second": {
+                        "$ast": "RefSyntax",
+                        "field": "declarator",
+                        "literal": "_DeclaratorOptionalName",
+                        "refType": "Id"
+                    }
+                },
+                "second": {
+                    "$ast": "OptionalSyntax",
+                    "priority": "Equal",
+                    "syntax": {
+                        "$ast": "SequenceSyntax",
+                        "first": {
+                            "$ast": "RefSyntax",
+                            "field": "",
+                            "literal": "\"=\"",
+                            "refType": "Literal"
+                        },
+                        "second": {
+                            "$ast": "RefSyntax",
+                            "field": "defaultValue",
+                            "literal": "_Expr_NoComma",
+                            "refType": "Id"
+                        }
+                    }
+                }
+            },
+            "type": "FunctionParameter"
+        }, {
             "$ast": "CreateClause",
             "assignments": [],
             "syntax": {
@@ -5876,19 +6029,28 @@
                     "first": {
                         "$ast": "SequenceSyntax",
                         "first": {
-                            "$ast": "LoopSyntax",
-                            "delimiter": null,
-                            "syntax": {
+                            "$ast": "SequenceSyntax",
+                            "first": {
                                 "$ast": "RefSyntax",
                                 "field": "keywords",
                                 "literal": "_DeclaratorKeyword",
                                 "refType": "Id"
+                            },
+                            "second": {
+                                "$ast": "LoopSyntax",
+                                "delimiter": null,
+                                "syntax": {
+                                    "$ast": "RefSyntax",
+                                    "field": "keywords",
+                                    "literal": "_DeclaratorKeyword",
+                                    "refType": "Id"
+                                }
                             }
                         },
                         "second": {
                             "$ast": "RefSyntax",
                             "field": "type",
-                            "literal": "_LongType",
+                            "literal": "_TypeBeforeDeclarator",
                             "refType": "Id"
                         }
                     },
@@ -5935,25 +6097,6 @@
             "syntax": {
                 "$ast": "SequenceSyntax",
                 "first": {
-                    "$ast": "RefSyntax",
-                    "field": "",
-                    "literal": "\"(\"",
-                    "refType": "Literal"
-                },
-                "second": {
-                    "$ast": "RefSyntax",
-                    "field": "",
-                    "literal": "\")\"",
-                    "refType": "Literal"
-                }
-            },
-            "type": "DeclaratorFunctionPart"
-        }, {
-            "$ast": "PartialClause",
-            "assignments": [],
-            "syntax": {
-                "$ast": "SequenceSyntax",
-                "first": {
                     "$ast": "SequenceSyntax",
                     "first": {
                         "$ast": "RefSyntax",
@@ -5962,10 +6105,14 @@
                         "refType": "Literal"
                     },
                     "second": {
-                        "$ast": "RefSyntax",
-                        "field": "variadic",
-                        "literal": "\"...\"",
-                        "refType": "Literal"
+                        "$ast": "OptionalSyntax",
+                        "priority": "Equal",
+                        "syntax": {
+                            "$ast": "RefSyntax",
+                            "field": "variadic",
+                            "literal": "\"...\"",
+                            "refType": "Literal"
+                        }
                     }
                 },
                 "second": {
@@ -6168,7 +6315,7 @@
                                 "syntax": {
                                     "$ast": "RefSyntax",
                                     "field": "arguments",
-                                    "literal": "_Expr_NoComma",
+                                    "literal": "_Expr_Argument",
                                     "refType": "Id"
                                 }
                             }
@@ -6548,31 +6695,6 @@
     }, {
         "$ast": "Rule",
         "clauses": [{
-            "$ast": "ReuseClause",
-            "assignments": [],
-            "syntax": {
-                "$ast": "SequenceSyntax",
-                "first": {
-                    "$ast": "LoopSyntax",
-                    "delimiter": null,
-                    "syntax": {
-                        "$ast": "RefSyntax",
-                        "field": "",
-                        "literal": "_DeclaratorAKCV",
-                        "refType": "Id"
-                    }
-                },
-                "second": {
-                    "$ast": "UseSyntax",
-                    "name": "_DeclaratorWithName"
-                }
-            }
-        }],
-        "name": "_InnerDeclaratorInnerWithName",
-        "type": ""
-    }, {
-        "$ast": "Rule",
-        "clauses": [{
             "$ast": "PartialClause",
             "assignments": [],
             "syntax": {
@@ -6598,16 +6720,6 @@
                     "literal": "\")\"",
                     "refType": "Literal"
                 }
-            },
-            "type": "Declarator"
-        }, {
-            "$ast": "PartialClause",
-            "assignments": [],
-            "syntax": {
-                "$ast": "RefSyntax",
-                "field": "variadic",
-                "literal": "\"...\"",
-                "refType": "Literal"
             },
             "type": "Declarator"
         }],
@@ -6678,62 +6790,6 @@
             "type": "Declarator"
         }],
         "name": "_DeclaratorInnerOptionalName",
-        "type": ""
-    }, {
-        "$ast": "Rule",
-        "clauses": [{
-            "$ast": "PartialClause",
-            "assignments": [],
-            "syntax": {
-                "$ast": "SequenceSyntax",
-                "first": {
-                    "$ast": "SequenceSyntax",
-                    "first": {
-                        "$ast": "RefSyntax",
-                        "field": "",
-                        "literal": "\"(\"",
-                        "refType": "Literal"
-                    },
-                    "second": {
-                        "$ast": "RefSyntax",
-                        "field": "innerDeclarator",
-                        "literal": "_InnerDeclaratorInnerWithName",
-                        "refType": "Id"
-                    }
-                },
-                "second": {
-                    "$ast": "RefSyntax",
-                    "field": "",
-                    "literal": "\")\"",
-                    "refType": "Literal"
-                }
-            },
-            "type": "Declarator"
-        }, {
-            "$ast": "PartialClause",
-            "assignments": [],
-            "syntax": {
-                "$ast": "SequenceSyntax",
-                "first": {
-                    "$ast": "OptionalSyntax",
-                    "priority": "Equal",
-                    "syntax": {
-                        "$ast": "RefSyntax",
-                        "field": "variadic",
-                        "literal": "\"...\"",
-                        "refType": "Literal"
-                    }
-                },
-                "second": {
-                    "$ast": "RefSyntax",
-                    "field": "id",
-                    "literal": "_DeclaratorId",
-                    "refType": "Id"
-                }
-            },
-            "type": "Declarator"
-        }],
-        "name": "_DeclaratorInnerWithName",
         "type": ""
     }, {
         "$ast": "Rule",
@@ -6886,52 +6942,11 @@
     }, {
         "$ast": "Rule",
         "clauses": [{
-            "$ast": "CreateClause",
-            "assignments": [],
-            "syntax": {
-                "$ast": "SequenceSyntax",
-                "first": {
-                    "$ast": "SequenceSyntax",
-                    "first": {
-                        "$ast": "OptionalSyntax",
-                        "priority": "Equal",
-                        "syntax": {
-                            "$ast": "RefSyntax",
-                            "field": "",
-                            "literal": "_DeclaratorBeforeInner",
-                            "refType": "Id"
-                        }
-                    },
-                    "second": {
-                        "$ast": "RefSyntax",
-                        "field": "",
-                        "literal": "_DeclaratorInnerWithName",
-                        "refType": "Id"
-                    }
-                },
-                "second": {
-                    "$ast": "OptionalSyntax",
-                    "priority": "Equal",
-                    "syntax": {
-                        "$ast": "RefSyntax",
-                        "field": "",
-                        "literal": "_DeclaratorAfterInner",
-                        "refType": "Id"
-                    }
-                }
-            },
-            "type": "Declarator"
-        }],
-        "name": "_DeclaratorWithName",
-        "type": ""
-    }, {
-        "$ast": "Rule",
-        "clauses": [{
             "$ast": "ReuseClause",
             "assignments": [],
             "syntax": {
                 "$ast": "UseSyntax",
-                "name": "_LongType"
+                "name": "_TypeStartsWithKeywordBeforeDeclarator"
             }
         }, {
             "$ast": "CreateClause",
@@ -6941,7 +6956,7 @@
                 "first": {
                     "$ast": "RefSyntax",
                     "field": "type",
-                    "literal": "_LongType",
+                    "literal": "_TypeStartsWithKeywordBeforeDeclarator",
                     "refType": "Id"
                 },
                 "second": {
@@ -6949,6 +6964,127 @@
                     "field": "declarator",
                     "literal": "_DeclaratorWithoutName",
                     "refType": "Id"
+                }
+            },
+            "type": "DeclaratorType"
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "SequenceSyntax",
+                        "first": {
+                            "$ast": "RefSyntax",
+                            "field": "keywords",
+                            "literal": "_DeclaratorKeyword",
+                            "refType": "Id"
+                        },
+                        "second": {
+                            "$ast": "LoopSyntax",
+                            "delimiter": null,
+                            "syntax": {
+                                "$ast": "RefSyntax",
+                                "field": "keywords",
+                                "literal": "_DeclaratorKeyword",
+                                "refType": "Id"
+                            }
+                        }
+                    },
+                    "second": {
+                        "$ast": "RefSyntax",
+                        "field": "type",
+                        "literal": "_TypeBeforeDeclarator",
+                        "refType": "Id"
+                    }
+                },
+                "second": {
+                    "$ast": "OptionalSyntax",
+                    "priority": "Equal",
+                    "syntax": {
+                        "$ast": "RefSyntax",
+                        "field": "declarator",
+                        "literal": "_DeclaratorWithoutName",
+                        "refType": "Id"
+                    }
+                }
+            },
+            "type": "DeclaratorType"
+        }],
+        "name": "_TypeStartsWithKeyword",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "_TypeBeforeDeclarator"
+            }
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "RefSyntax",
+                    "field": "type",
+                    "literal": "_TypeBeforeDeclarator",
+                    "refType": "Id"
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "declarator",
+                    "literal": "_DeclaratorWithoutName",
+                    "refType": "Id"
+                }
+            },
+            "type": "DeclaratorType"
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "SequenceSyntax",
+                        "first": {
+                            "$ast": "RefSyntax",
+                            "field": "keywords",
+                            "literal": "_DeclaratorKeyword",
+                            "refType": "Id"
+                        },
+                        "second": {
+                            "$ast": "LoopSyntax",
+                            "delimiter": null,
+                            "syntax": {
+                                "$ast": "RefSyntax",
+                                "field": "keywords",
+                                "literal": "_DeclaratorKeyword",
+                                "refType": "Id"
+                            }
+                        }
+                    },
+                    "second": {
+                        "$ast": "RefSyntax",
+                        "field": "type",
+                        "literal": "_TypeBeforeDeclarator",
+                        "refType": "Id"
+                    }
+                },
+                "second": {
+                    "$ast": "OptionalSyntax",
+                    "priority": "Equal",
+                    "syntax": {
+                        "$ast": "RefSyntax",
+                        "field": "declarator",
+                        "literal": "_DeclaratorWithoutName",
+                        "refType": "Id"
+                    }
                 }
             },
             "type": "DeclaratorType"
@@ -7056,6 +7192,37 @@
             }
         }],
         "name": "_Expr",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "_Expr_NoComma"
+            }
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "RefSyntax",
+                    "field": "operand",
+                    "literal": "_Expr_NoComma",
+                    "refType": "Id"
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "variadic",
+                    "literal": "\"...\"",
+                    "refType": "Literal"
+                }
+            },
+            "type": "VariadicExpr"
+        }],
+        "name": "_Expr_Argument",
         "type": ""
     }, {
         "$ast": "Rule",

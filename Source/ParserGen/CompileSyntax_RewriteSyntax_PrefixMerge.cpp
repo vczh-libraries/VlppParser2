@@ -108,10 +108,13 @@ FillMissingPrefixMergeClauses
 						// create new rule and replace the clause with prefix_merge
 						auto newRule = Ptr(new GlrRule);
 						rewritten->rules.Insert(ruleIndex, newRule);
-						newRule->name.value = ruleRaw->name.value + L"_LRI_Isolated_" + itow(clauseIndex);
+						newRule->codeRange = clauseRaw->codeRange;
+						newRule->name = ruleRaw->name;
+						newRule->name.value += L"_LRI_Isolated_" + itow(clauseIndex);
 						newRule->clauses.Add(clause);
 
 						auto newPM = Ptr(new GlrPrefixMergeClause);
+						newPM->codeRange = clauseRaw->codeRange;
 						ruleRaw->clauses[clauseIndex] = newPM;
 						{
 							auto startRule = Ptr(new GlrRefSyntax);
@@ -260,7 +263,8 @@ CreateRewrittenRules
 						rewritten->rules.Add(lri);
 						rContext.lriRules.Add(ruleSymbol, lri.Obj());
 
-						lri->name.value = originRule->name.value;
+						lri->codeRange = originRule->name.codeRange;
+						lri->name = originRule->name;
 						originRule->name.value += L"_LRI_Original";
 					}
 
@@ -275,6 +279,8 @@ CreateRewrittenRules
 							rewritten->rules.Insert(rewritten->rules.IndexOf(originRule), ep);
 							rContext.extractedPrefixRules.Add({ ruleSymbol,prefixRuleSymbol }, ep.Obj());
 
+							ep->codeRange = originRule->codeRange;
+							ep->name.codeRange = originRule->name.codeRange;
 							ep->name.value = ruleSymbol->Name() + L"_" + prefixRuleSymbol->Name() + L"_LRI_Prefix";
 						}
 					}
@@ -332,6 +338,7 @@ RewriteExtractedPrefixRules
 					{
 						{
 							auto lrpClause = Ptr(new GlrLeftRecursionPlaceholderClause);
+							lrpClause->codeRange = epRule->codeRange;
 							epRule->clauses.Add(lrpClause);
 
 							auto lrp = Ptr(new GlrLeftRecursionPlaceholder);
@@ -341,6 +348,7 @@ RewriteExtractedPrefixRules
 						}
 						{
 							auto reuseClause = Ptr(new GlrReuseClause);
+							reuseClause->codeRange = epRule->codeRange;
 							epRule->clauses.Add(reuseClause);
 
 							auto useSyntax = Ptr(new GlrUseSyntax);
@@ -604,7 +612,7 @@ RewriteRules (AST Creation)
 					}
 
 					auto lriContFlag = Ptr(new GlrLeftRecursionPlaceholder);
-					lriCont->flag = lriContFlag;
+					lriCont->flags.Add(lriContFlag);
 					lriContFlag->flag.value = flag;
 
 					auto lriContTarget = CreateLriClause(rContext.originRules[pmInjectRecord.injectIntoRule]->name.value);
@@ -650,6 +658,7 @@ RewriteRules (Unaffected)
 						if (generateOptionalLri && flags.Count() == 0)
 						{
 							auto reuseClause = Ptr(new GlrReuseClause);
+							reuseClause->codeRange = lriRule->codeRange;
 							lriRule->clauses.Add(reuseClause);
 
 							auto useSyntax = Ptr(new GlrUseSyntax);
@@ -866,6 +875,93 @@ RewriteRules (Affected)
 RewriteRules
 ***********************************************************************/
 
+				bool CompareLri(Ptr<GlrLeftRecursionInjectClause> c1, Ptr<GlrLeftRecursionInjectClause> c2);
+
+				bool CompareLriTargest(List<Ptr<GlrLeftRecursionInjectClause>>& targets1, List<Ptr<GlrLeftRecursionInjectClause>>& targets2)
+				{
+					if (targets1.Count() != targets2.Count()) return false;
+					for (auto [target, i] : indexed(targets1))
+					{
+						if (!CompareLri(targets1[i], targets2[i])) return false;
+					}
+					return true;
+				}
+
+				bool CompareLri(Ptr<GlrLeftRecursionInjectClause> c1, Ptr<GlrLeftRecursionInjectClause> c2)
+				{
+					if (c1->rule->literal.value != c2->rule->literal.value) return false;
+					if ((c1->continuation == nullptr) != (c2->continuation == nullptr)) return false;
+					if (!c1->continuation) return true;
+
+					auto cont1 = c1->continuation;
+					auto cont2 = c2->continuation;
+					if (cont1->flags.Count() != cont2->flags.Count()) return false;
+					for (auto [flag, i] : indexed(cont1->flags))
+					{
+						if (cont1->flags[i]->flag.value != cont2->flags[i]->flag.value) return false;
+					}
+
+					return CompareLriTargest(cont1->injectionTargets, cont2->injectionTargets);
+				}
+
+				void OptimizeLri(List<Ptr<GlrLeftRecursionInjectClause>>& lriClauses)
+				{
+					for (auto lriClause : lriClauses)
+					{
+						if (lriClause->continuation)
+						{
+							OptimizeLri(lriClause->continuation->injectionTargets);
+						}
+					}
+
+					List<Ptr<GlrLeftRecursionInjectClause>> results, candidates;
+					for (auto [prefixRuleName, subLriClauses] : From(lriClauses)
+						.GroupBy([](auto lriClause) {return lriClause->rule->literal.value; })
+						)
+					{
+						CopyFrom(candidates, From(subLriClauses).Reverse());
+						while (candidates.Count() > 0)
+						{
+							auto candidate = candidates[candidates.Count() - 1];
+							candidates.RemoveAt(candidates.Count() - 1);
+							for (vint i = candidates.Count() - 1; i >= 0; i--)
+							{
+								auto compare = candidates[i];
+								if (CompareLriTargest(candidate->continuation->injectionTargets, compare->continuation->injectionTargets))
+								{
+									List<Ptr<GlrLeftRecursionPlaceholder>> flags;
+									CopyFrom(
+										flags,
+										From(candidate->continuation->flags)
+											.Concat(compare->continuation->flags)
+									);
+									CopyFrom(
+										candidate->continuation->flags,
+										From(flags)
+											.GroupBy([](auto flag) { return flag->flag.value; })
+											.Select([](auto pair) { return pair.value.First(); })
+									);
+
+									if (compare->continuation->configuration == GlrLeftRecursionConfiguration::Multiple)
+									{
+										candidate->continuation->configuration = GlrLeftRecursionConfiguration::Multiple;
+									}
+
+									if(compare->continuation->type==GlrLeftRecursionInjectContinuationType::Optional)
+									{
+										candidate->continuation->type = GlrLeftRecursionInjectContinuationType::Optional;
+									}
+
+									candidates.RemoveAt(i);
+								}
+							}
+							results.Add(candidate);
+						}
+					}
+
+					CopyFrom(lriClauses, results);
+				}
+
 				void RewriteRules(const VisitorContext& vContext, const RewritingContext& rContext, SyntaxSymbolManager& syntaxManager)
 				{
 					Dictionary<Pair<RuleSymbol*, RuleSymbol*>, vint> pathCounter;
@@ -909,6 +1005,32 @@ RewriteRules
 								knownOptionalStartRules
 								);
 						}
+
+						List<Ptr<GlrClause>> otherClauses;
+						List<Ptr<GlrLeftRecursionInjectClause>> lriClauses;
+						for (auto clause : lriRule->clauses)
+						{
+							if (auto lriClause = clause.Cast<GlrLeftRecursionInjectClause>())
+							{
+								lriClauses.Add(lriClause);
+							}
+							else
+							{
+								otherClauses.Add(clause);
+							}
+						}
+
+						if (lriClauses.Count() > 0)
+						{
+							OptimizeLri(lriClauses);
+							CopyFrom(
+								lriRule->clauses,
+								From(otherClauses)
+									.Concat(
+										From(lriClauses).Select([](auto clause)->Ptr<GlrClause> {return clause; })
+									)
+								);
+						}
 					}
 				}
 
@@ -923,6 +1045,7 @@ FixPrefixMergeClauses
 						auto originRule = rContext.originRules[ruleSymbol];
 
 						auto lrpClause = Ptr(new GlrLeftRecursionPlaceholderClause);
+						lrpClause->codeRange = originRule->codeRange;
 						originRule->clauses.Insert(0, lrpClause);
 
 						auto lrp = Ptr(new GlrLeftRecursionPlaceholder);
@@ -937,6 +1060,7 @@ FixPrefixMergeClauses
 								if (ruleSymbol->isPartial)
 								{
 									auto partialClause = Ptr(new GlrPartialClause);
+									originRule->codeRange = originRule->codeRange;
 									originRule->clauses[i] = partialClause;
 
 									partialClause->type.value = ruleSymbol->ruleType->Name();
@@ -949,6 +1073,7 @@ FixPrefixMergeClauses
 								else
 								{
 									auto reuseClause = Ptr(new GlrReuseClause);
+									originRule->codeRange = originRule->codeRange;
 									originRule->clauses[i] = reuseClause;
 
 									auto useSyntax = Ptr(new GlrUseSyntax);

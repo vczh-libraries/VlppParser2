@@ -1235,11 +1235,56 @@ namespace cpp_parser
 		void AstVisitor::PrintFields(CppTypeOrExpr* node)
 		{
 		}
+		void AstVisitor::PrintFields(CppTypeOrExprOrOthers* node)
+		{
+		}
+		void AstVisitor::PrintFields(CppVariadicExpr* node)
+		{
+			BeginField(L"operand");
+			Print(node->operand.Obj());
+			EndField();
+			BeginField(L"variadic");
+			WriteToken(node->variadic);
+			EndField();
+		}
 		void AstVisitor::PrintFields(CppVolatileType* node)
 		{
 			BeginField(L"type");
 			Print(node->type.Obj());
 			EndField();
+		}
+
+		void AstVisitor::Visit(CppTypeOrExpr* node)
+		{
+			node->Accept(static_cast<CppTypeOrExpr::IVisitor*>(this));
+		}
+
+		void AstVisitor::Visit(CppGenericArgument* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"GenericArgument", node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
+			PrintFields(static_cast<CppGenericArgument*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppFunctionParameter* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"FunctionParameter", node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
+			PrintFields(static_cast<CppFunctionParameter*>(node));
+			EndObject();
 		}
 
 		void AstVisitor::Visit(CppExprOnly* node)
@@ -1261,6 +1306,7 @@ namespace cpp_parser
 			}
 			BeginObject();
 			WriteType(L"QualifiedName", node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 			PrintFields(static_cast<CppTypeOrExpr*>(node));
 			PrintFields(static_cast<CppQualifiedName*>(node));
 			EndObject();
@@ -1275,6 +1321,7 @@ namespace cpp_parser
 			}
 			BeginObject();
 			WriteType(L"DeclaratorType", node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 			PrintFields(static_cast<CppTypeOrExpr*>(node));
 			PrintFields(static_cast<CppDeclaratorType*>(node));
 			EndObject();
@@ -1289,6 +1336,7 @@ namespace cpp_parser
 			}
 			BeginObject();
 			WriteType(L"PrimitiveExprLiteral", node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 			PrintFields(static_cast<CppTypeOrExpr*>(node));
 			PrintFields(static_cast<CppExprOnly*>(node));
 			PrintFields(static_cast<CppPrimitiveExprLiteral*>(node));
@@ -1304,6 +1352,7 @@ namespace cpp_parser
 			}
 			BeginObject();
 			WriteType(L"NumericExprLiteral", node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 			PrintFields(static_cast<CppTypeOrExpr*>(node));
 			PrintFields(static_cast<CppExprOnly*>(node));
 			PrintFields(static_cast<CppNumericExprLiteral*>(node));
@@ -1319,6 +1368,7 @@ namespace cpp_parser
 			}
 			BeginObject();
 			WriteType(L"StringLiteral", node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 			PrintFields(static_cast<CppTypeOrExpr*>(node));
 			PrintFields(static_cast<CppExprOnly*>(node));
 			PrintFields(static_cast<CppStringLiteral*>(node));
@@ -1334,6 +1384,7 @@ namespace cpp_parser
 			}
 			BeginObject();
 			WriteType(L"ParenthesisExpr", node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 			PrintFields(static_cast<CppTypeOrExpr*>(node));
 			PrintFields(static_cast<CppExprOnly*>(node));
 			PrintFields(static_cast<CppParenthesisExpr*>(node));
@@ -1349,6 +1400,7 @@ namespace cpp_parser
 			}
 			BeginObject();
 			WriteType(L"BraceExpr", node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 			PrintFields(static_cast<CppTypeOrExpr*>(node));
 			PrintFields(static_cast<CppExprOnly*>(node));
 			PrintFields(static_cast<CppBraceExpr*>(node));
@@ -1364,6 +1416,7 @@ namespace cpp_parser
 			}
 			BeginObject();
 			WriteType(L"CastExpr", node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 			PrintFields(static_cast<CppTypeOrExpr*>(node));
 			PrintFields(static_cast<CppExprOnly*>(node));
 			PrintFields(static_cast<CppCastExpr*>(node));
@@ -1379,6 +1432,7 @@ namespace cpp_parser
 			}
 			BeginObject();
 			WriteType(L"SysFuncExpr", node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 			PrintFields(static_cast<CppTypeOrExpr*>(node));
 			PrintFields(static_cast<CppExprOnly*>(node));
 			PrintFields(static_cast<CppSysFuncExpr*>(node));
@@ -1394,6 +1448,7 @@ namespace cpp_parser
 			}
 			BeginObject();
 			WriteType(L"SizeofExpr", node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 			PrintFields(static_cast<CppTypeOrExpr*>(node));
 			PrintFields(static_cast<CppExprOnly*>(node));
 			PrintFields(static_cast<CppSizeofExpr*>(node));
@@ -1409,6 +1464,7 @@ namespace cpp_parser
 			}
 			BeginObject();
 			WriteType(L"DeleteExpr", node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 			PrintFields(static_cast<CppTypeOrExpr*>(node));
 			PrintFields(static_cast<CppExprOnly*>(node));
 			PrintFields(static_cast<CppDeleteExpr*>(node));
@@ -1424,6 +1480,7 @@ namespace cpp_parser
 			}
 			BeginObject();
 			WriteType(L"NewExpr", node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 			PrintFields(static_cast<CppTypeOrExpr*>(node));
 			PrintFields(static_cast<CppExprOnly*>(node));
 			PrintFields(static_cast<CppNewExpr*>(node));
@@ -1439,6 +1496,7 @@ namespace cpp_parser
 			}
 			BeginObject();
 			WriteType(L"PrefixUnaryExpr", node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 			PrintFields(static_cast<CppTypeOrExpr*>(node));
 			PrintFields(static_cast<CppExprOnly*>(node));
 			PrintFields(static_cast<CppPrefixUnaryExpr*>(node));
@@ -1454,6 +1512,7 @@ namespace cpp_parser
 			}
 			BeginObject();
 			WriteType(L"PostfixUnaryExpr", node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 			PrintFields(static_cast<CppTypeOrExpr*>(node));
 			PrintFields(static_cast<CppExprOnly*>(node));
 			PrintFields(static_cast<CppPostfixUnaryExpr*>(node));
@@ -1469,6 +1528,7 @@ namespace cpp_parser
 			}
 			BeginObject();
 			WriteType(L"IndexExpr", node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 			PrintFields(static_cast<CppTypeOrExpr*>(node));
 			PrintFields(static_cast<CppExprOnly*>(node));
 			PrintFields(static_cast<CppIndexExpr*>(node));
@@ -1484,6 +1544,7 @@ namespace cpp_parser
 			}
 			BeginObject();
 			WriteType(L"CallExpr", node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 			PrintFields(static_cast<CppTypeOrExpr*>(node));
 			PrintFields(static_cast<CppExprOnly*>(node));
 			PrintFields(static_cast<CppCallExpr*>(node));
@@ -1499,6 +1560,7 @@ namespace cpp_parser
 			}
 			BeginObject();
 			WriteType(L"BinaryExpr", node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 			PrintFields(static_cast<CppTypeOrExpr*>(node));
 			PrintFields(static_cast<CppExprOnly*>(node));
 			PrintFields(static_cast<CppBinaryExpr*>(node));
@@ -1514,6 +1576,7 @@ namespace cpp_parser
 			}
 			BeginObject();
 			WriteType(L"IfExpr", node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 			PrintFields(static_cast<CppTypeOrExpr*>(node));
 			PrintFields(static_cast<CppExprOnly*>(node));
 			PrintFields(static_cast<CppIfExpr*>(node));
@@ -1529,9 +1592,26 @@ namespace cpp_parser
 			}
 			BeginObject();
 			WriteType(L"ThrowExpr", node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 			PrintFields(static_cast<CppTypeOrExpr*>(node));
 			PrintFields(static_cast<CppExprOnly*>(node));
 			PrintFields(static_cast<CppThrowExpr*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppVariadicExpr* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"VariadicExpr", node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
+			PrintFields(static_cast<CppTypeOrExpr*>(node));
+			PrintFields(static_cast<CppExprOnly*>(node));
+			PrintFields(static_cast<CppVariadicExpr*>(node));
 			EndObject();
 		}
 
@@ -1544,6 +1624,7 @@ namespace cpp_parser
 			}
 			BeginObject();
 			WriteType(L"PrimitiveType", node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 			PrintFields(static_cast<CppTypeOrExpr*>(node));
 			PrintFields(static_cast<CppTypeOnly*>(node));
 			PrintFields(static_cast<CppPrimitiveType*>(node));
@@ -1559,6 +1640,7 @@ namespace cpp_parser
 			}
 			BeginObject();
 			WriteType(L"ConstType", node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 			PrintFields(static_cast<CppTypeOrExpr*>(node));
 			PrintFields(static_cast<CppTypeOnly*>(node));
 			PrintFields(static_cast<CppConstType*>(node));
@@ -1574,6 +1656,7 @@ namespace cpp_parser
 			}
 			BeginObject();
 			WriteType(L"VolatileType", node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 			PrintFields(static_cast<CppTypeOrExpr*>(node));
 			PrintFields(static_cast<CppTypeOnly*>(node));
 			PrintFields(static_cast<CppVolatileType*>(node));
@@ -1613,14 +1696,14 @@ namespace cpp_parser
 		{
 		}
 
-		void AstVisitor::Print(CppTypeOrExpr* node)
+		void AstVisitor::Print(CppTypeOrExprOrOthers* node)
 		{
 			if (!node)
 			{
 				WriteNull();
 				return;
 			}
-			node->Accept(static_cast<CppTypeOrExpr::IVisitor*>(this));
+			node->Accept(static_cast<CppTypeOrExprOrOthers::IVisitor*>(this));
 		}
 
 		void AstVisitor::Print(CppIdentifier* node)
@@ -1631,19 +1714,6 @@ namespace cpp_parser
 				return;
 			}
 			node->Accept(static_cast<CppIdentifier::IVisitor*>(this));
-		}
-
-		void AstVisitor::Print(CppGenericArgument* node)
-		{
-			if (!node)
-			{
-				WriteNull();
-				return;
-			}
-			BeginObject();
-			WriteType(L"GenericArgument", node);
-			PrintFields(static_cast<CppGenericArgument*>(node));
-			EndObject();
 		}
 
 		void AstVisitor::Print(CppGenericArguments* node)
@@ -1708,19 +1778,6 @@ namespace cpp_parser
 			BeginObject();
 			WriteType(L"FunctionKeyword", node);
 			PrintFields(static_cast<CppFunctionKeyword*>(node));
-			EndObject();
-		}
-
-		void AstVisitor::Print(CppFunctionParameter* node)
-		{
-			if (!node)
-			{
-				WriteNull();
-				return;
-			}
-			BeginObject();
-			WriteType(L"FunctionParameter", node);
-			PrintFields(static_cast<CppFunctionParameter*>(node));
 			EndObject();
 		}
 

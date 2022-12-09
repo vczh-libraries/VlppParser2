@@ -415,7 +415,7 @@ TEST_FILE
 		MemoryStream data;
 		CppLexerData(data);
 		data.SeekFromBegin(0);
-		cppLexer = new regex::RegexLexer(data);
+		cppLexer = Ptr(new regex::RegexLexer(data));
 	}
 
 	TEST_CASE(L"Punctuators")

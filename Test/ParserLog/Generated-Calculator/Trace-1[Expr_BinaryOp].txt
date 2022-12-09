@@ -121,7 +121,9 @@
 | [22][Exp1]< Exp1 @ "(" { Exp ; "," } ")" >                 |
 | [AST-INSTRUCTIONS]:                                        |
 |   - EndObject()                                            |
-|   - BeginObjectLeftRecursive(Call)                         |
+|   - LriStore()                                             |
+|   - BeginObject(Call)                                      |
+|   - LriFetch()                                             |
 |   + Field(Call::func)                                      |
 | [RETURN STACK]:                                            |
 |   [6][4]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                  |
@@ -267,7 +269,9 @@
 | [39][Exp3]< Exp3 @ "+" Exp2 >                               |
 | [AST-INSTRUCTIONS]:                                         |
 |   - EndObject()                                             |
-|   - BeginObjectLeftRecursive(Binary)                        |
+|   - LriStore()                                              |
+|   - BeginObject(Binary)                                     |
+|   - LriFetch()                                              |
 |   + Field(Binary::left)                                     |
 | [RETURN STACK]:                                             |
 |   [11][9]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                  |
@@ -394,7 +398,9 @@
 | [30][Exp2]< Exp2 @ "*" Exp1 >                               |
 | [AST-INSTRUCTIONS]:                                         |
 |   - EndObject()                                             |
-|   - BeginObjectLeftRecursive(Binary)                        |
+|   - LriStore()                                              |
+|   - BeginObject(Binary)                                     |
+|   - LriFetch()                                              |
 |   + Field(Binary::left)                                     |
 | [RETURN STACK]:                                             |
 |   [15][16]: Exp2 -> [36][Exp3]< Exp3 "+" Exp2 @ >           |
@@ -549,7 +555,9 @@
 |   - EnumItem(0)                                             |
 |   - Field(Binary::op)                                       |
 |   - EndObject()                                             |
-|   - BeginObjectLeftRecursive(Binary)                        |
+|   - LriStore()                                              |
+|   - BeginObject(Binary)                                     |
+|   - LriFetch()                                              |
 |   + Field(Binary::left)                                     |
 | [RETURN STACK]:                                             |
 |   [11][9]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                  |
@@ -931,7 +939,9 @@
 | [52][Exp4]< Exp4 @ "<" Exp3 >                                 |
 | [AST-INSTRUCTIONS]:                                           |
 |   - EndObject()                                               |
-|   - BeginObjectLeftRecursive(Binary)                          |
+|   - LriStore()                                                |
+|   - BeginObject(Binary)                                       |
+|   - LriFetch()                                                |
 |   + Field(Binary::left)                                       |
 | [RETURN STACK]:                                               |
 |   [25][38]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                   |
@@ -1125,7 +1135,9 @@
 | [64][Exp5]< Exp5 @ "==" Exp4 >                                |
 | [AST-INSTRUCTIONS]:                                           |
 |   - EndObject()                                               |
-|   - BeginObjectLeftRecursive(Binary)                          |
+|   - LriStore()                                                |
+|   - BeginObject(Binary)                                       |
+|   - LriFetch()                                                |
 |   + Field(Binary::left)                                       |
 | [RETURN STACK]:                                               |
 |   [24][38]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    |
@@ -1295,7 +1307,9 @@
 | [54][Exp4]< Exp4 @ ">" Exp3 >                                 |
 | [AST-INSTRUCTIONS]:                                           |
 |   - EndObject()                                               |
-|   - BeginObjectLeftRecursive(Binary)                          |
+|   - LriStore()                                                |
+|   - BeginObject(Binary)                                       |
+|   - LriFetch()                                                |
 |   + Field(Binary::left)                                       |
 | [RETURN STACK]:                                               |
 |   [34][55]: Exp4 -> [62][Exp5]< Exp5 "==" Exp4 @ >            |

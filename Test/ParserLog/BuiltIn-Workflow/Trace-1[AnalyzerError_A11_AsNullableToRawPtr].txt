@@ -491,7 +491,9 @@
 |   - EnumItem(7)                                                                                                          |
 |   - Field(PredefinedType::name)                                                                                          |
 |   - EndObject()                                                                                                          |
-|   - BeginObjectLeftRecursive(NullableType)                                                                               |
+|   - LriStore()                                                                                                           |
+|   - BeginObject(NullableType)                                                                                            |
+|   - LriFetch()                                                                                                           |
 |   + Field(NullableType::element)                                                                                         |
 | [RETURN STACK]:                                                                                                          |
 |   [20][33]: _Type -> [607][_Variable]< "var" NAME [ ":" _Type @ ] "=" _Expression ";" >                                  |
@@ -1220,7 +1222,9 @@
 | [217][_ExpPrimitive]< _ExpPrimitive @ "as" _Type >                                                                       |
 | [AST-INSTRUCTIONS]:                                                                                                      |
 |   - EndObject()                                                                                                          |
-|   - BeginObjectLeftRecursive(TypeCastingExpression)                                                                      |
+|   - LriStore()                                                                                                           |
+|   - BeginObject(TypeCastingExpression)                                                                                   |
+|   - LriFetch()                                                                                                           |
 |   + Field(TypeCastingExpression::expression)                                                                             |
 | [RETURN STACK]:                                                                                                          |
 |   [51][63]: _ExpPrimitive -> [245][_Exp0]<< !_ExpPrimitive @ >>                                                          |
@@ -1333,7 +1337,9 @@
 | [41][_Type]< _Type @ "*" >                                                                                               |
 | [AST-INSTRUCTIONS]:                                                                                                      |
 |   - EndObject()                                                                                                          |
-|   - BeginObjectLeftRecursive(RawPointerType)                                                                             |
+|   - LriStore()                                                                                                           |
+|   - BeginObject(RawPointerType)                                                                                          |
+|   - LriFetch()                                                                                                           |
 |   + Field(RawPointerType::element)                                                                                       |
 | [RETURN STACK]:                                                                                                          |
 |   [52][69]: _Type -> [197][_ExpPrimitive]< _ExpPrimitive "as" _Type @ >                                                  |

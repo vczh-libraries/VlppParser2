@@ -2,31 +2,30 @@
 
 ## Progressing
 
-- Revisit `RuleIndirectlyBeginsWithPrefixMergeMixedNonSimpleUseClause`
-  - Reported in `BuiltIn-Cpp` there is `_GenericArgument ::= _TypeOrExpr_NoComma_NoGT...`
-  - This is incorrect since `_TypeOrExpr_NoComma_NoGT` begins with `prefix_merge` clause
-  - If `_TypeOrExpr_NoComma_NoGT` violates the rule, the error should be raised inside it
-- Reject if clause starts with prefix_merge and non-prefix_merge
-  - clause not starts with prefix_merge could be extracted, doesn't matter if starts with rule or not
+- `::a::b::c::* const & && volatile (&[10])(int)`
+  - Ambiguity
+  - It should be invalid, instead of being `::a(::b::c::*)` and `::a::b(::c::*)`
 
 ## Next task
 
-- Rewrire and remove switch before removing PrefixMerge.
+- Rewrite and remove switch before removing PrefixMerge.
   - Rename `LeftRecursionPlaceholderMixedWithSwitches`
 - Multiple LRI following one Target
 - Generate multiple level of LRI from prefix_merge
   - Remove `PrefixExtractionAffectedRuleReferencedAnother`
   - Currently it generates an error if 3 levels are required
+  - Allow one prefix followed by multiple continuations
+    - Optional applies to all continuations as a whole
 
 ## Test Cases
 
 - `PrefixMerge` 1-7 add test cases to parse expr and type separately.
-- `PartialRuleIndirectlyBeginsWithPrefixMergeMixedWithClauseNotSyntacticallyBeginWithARule`
 - Create test cases that only rewrite syntax without generating C++ code for:
   - `DeductEmptySyntaxVisitor`
   - Invalid combined clauses during expanding switches
   - everything else that is needed
 - TODO(s) in `RewriteRules_GenerateAffectedLRIClausesSubgroup`.
+- TODO(s) in `CalculateObjectFirstInstruction` and `InjectFirstInstruction`.
 - Make a test case to test `prefix_merge` generates `left_recursion_inject_multiple`.
 - Create ambiguity test case caused by only one clause with alternative syntax.
 - Test when an object get LriFetch to multiple branches following a ReopenObject.
@@ -41,7 +40,7 @@
 
 - When `XToResolve` is in another `XToResolve`, flatten them.
 - TODO in `CalculateRuleAndClauseTypes`.
-- TODO in `ValidateStructurePrefixMergeRuleVisitor`.
+- TODO in `ValidateDirectPrefixMergeRuleVisitor`.
 - Optimize `CalculateFirstSet_IndirectStartRules` using partial ordering.
 - TODO in `SyntaxSymbolManager::EliminateSingleRulePrefix`.
   - Deny `A ::= !B ::= B as Something ::= ...;`.

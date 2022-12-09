@@ -2,7 +2,11 @@
 // Base Types
 //////////////////////////////////////////////////////////////////
 
-class TypeOrExpr
+class TypeOrExprOrOthers
+{
+}
+
+class TypeOrExpr : TypeOrExprOrOthers
 {
 }
 
@@ -94,7 +98,7 @@ class OperatorIdentifier : Identifier
     var op : Operators;
 }
 
-class GenericArgument
+class GenericArgument : TypeOrExprOrOthers
 {
     var argument : TypeOrExpr;
     var variadic : token;
@@ -102,7 +106,7 @@ class GenericArgument
 
 class GenericArguments
 {
-    var arguments : GenericArgument[];
+    var arguments : TypeOrExprOrOthers[];
 }
 
 enum QualifiedNameKinds
@@ -299,6 +303,12 @@ class ThrowExpr : ExprOnly
     var argument : TypeOrExpr;
 }
 
+class VariadicExpr : ExprOnly
+{
+    var operand : TypeOrExpr;
+    var variadic : token;
+}
+
 //////////////////////////////////////////////////////////////////
 // PrimitiveType
 //////////////////////////////////////////////////////////////////
@@ -363,7 +373,7 @@ class FunctionKeyword
     var arguments : TypeOrExpr[];
 }
 
-class FunctionParameter
+class FunctionParameter : TypeOrExprOrOthers
 {
     var keywords : DeclaratorKeyword[];
     var type : TypeOrExpr;
@@ -373,7 +383,7 @@ class FunctionParameter
 
 class DeclaratorFunctionPart
 {
-    var parameters : FunctionParameter[];
+    var parameters : TypeOrExprOrOthers[];
     var variadic : token;
     var keywords : FunctionKeyword[];
     var deferredType : TypeOrExpr;

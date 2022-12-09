@@ -930,6 +930,7 @@ RewriteSyntax
 									refSyntax->refType = GlrRefType::Id;
 
 									auto partialClause = Ptr(new GlrPartialClause);
+									partialClause->codeRange = rule->codeRange;
 									partialClause->type = rule->name;
 									partialClause->type.value = ruleSymbol->ruleType->Name();
 									partialClause->syntax = refSyntax;
@@ -943,6 +944,7 @@ RewriteSyntax
 									useSyntax->name.value = ruleName;
 
 									auto reuseClause = Ptr(new GlrReuseClause);
+									reuseClause->codeRange = rule->codeRange;
 									reuseClause->syntax = useSyntax;
 
 									newRule->clauses.Add(reuseClause);

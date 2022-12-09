@@ -105,6 +105,7 @@ namespace ifelseambiguity2
 		{
 			if (!node) return nullptr;
 			node->Accept(static_cast<Stat::IVisitor*>(this));
+			this->result->codeRange = node->codeRange;
 			return this->result.Cast<Stat>();
 		}
 
@@ -112,6 +113,7 @@ namespace ifelseambiguity2
 		{
 			if (!node) return nullptr;
 			node->Accept(static_cast<IfContent::IVisitor*>(this));
+			this->result->codeRange = node->codeRange;
 			return this->result.Cast<IfContent>();
 		}
 
@@ -119,6 +121,7 @@ namespace ifelseambiguity2
 		{
 			if (!node) return nullptr;
 			Visit(node);
+			this->result->codeRange = node->codeRange;
 			return this->result.Cast<Module>();
 		}
 

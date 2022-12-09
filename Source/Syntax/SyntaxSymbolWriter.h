@@ -70,8 +70,8 @@ AutomatonBuilder
 				StatePair					BuildPartialClause(const StateBuilder& compileSyntax);
 				StatePair					BuildReuseClause(const StateBuilder& compileSyntax);
 
-				StatePair					BuildLrpClause(collections::List<vint32_t>& flags, const Func<WString(vint32_t)>& flagName);
-				StatePair					BuildLriSyntax(vint32_t flag, RuleSymbol* rule);
+				StatePair					BuildLrpClause(collections::SortedList<vint32_t>& flags, const Func<WString(vint32_t)>& flagName);
+				StatePair					BuildLriSyntax(collections::SortedList<vint32_t>& flags, RuleSymbol* rule, const Func<WString(vint32_t)>& flagName);
 				StatePair					BuildLriSkip();
 				StatePair					BuildLriClauseSyntax(StateBuilder useOrLriSyntax, bool optional, collections::List<StateBuilder>&& continuations);
 			};

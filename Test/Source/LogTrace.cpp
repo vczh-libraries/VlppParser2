@@ -25,9 +25,6 @@ void LogInstruction(
 	case AstInsType::BeginObject:
 		writer.WriteLine(L"BeginObject(" + typeName(ins.param) + L")");
 		break;
-	case AstInsType::BeginObjectLeftRecursive:
-		writer.WriteLine(L"BeginObjectLeftRecursive(" + typeName(ins.param) + L")");
-		break;
 	case AstInsType::DelayFieldAssignment:
 		writer.WriteLine(L"DelayFieldAssignment()");
 		break;
@@ -216,6 +213,11 @@ void RenderTrace(
 				auto ieCSTop = tm.GetInsExec_CreateStack(context.createStack);
 				writer.WriteString(L"CSTop: [");
 				logObjRefLink(ieCSTop->objectIds);
+				if (ieCSTop->reverseInjectObjectIds != nullref)
+				{
+					writer.WriteString(L"] lri:[");
+					logObjRefLink(ieCSTop->reverseInjectObjectIds);
+				}
 				writer.WriteLine(
 					L"] [" +
 					itow(ieCSTop->allocatedIndex) +
@@ -452,14 +454,22 @@ void RenderTrace(
 					auto ieObject = tm.GetInsExec_Object(insExec->createdObjectId);
 					writer.WriteString(
 						L"      obj:" + itow(ieObject->allocatedIndex) +
-						L", new:" + itow(ieObject->bo_bolr_Trace.handle) +
-						L"@" + itow(ieObject->bo_bolr_Ins)
+						L", new:" + itow(ieObject->createTrace.handle) +
+						L"@" + itow(ieObject->createIns)
 					);
 
-					if (ieObject->lrObjectIds != nullref)
+					if (ieObject->topTrace != nullref)
 					{
-						writer.WriteString(L" lrs:[");
-						logObjRefLink(ieObject->lrObjectIds);
+						writer.WriteString(
+							L", top:" + itow(ieObject->topTrace.handle) +
+							L"@" + itow(ieObject->topIns)
+						);
+					}
+
+					if (ieObject->injectObjectIds != nullref)
+					{
+						writer.WriteString(L" injectInto:[");
+						logObjRefLink(ieObject->injectObjectIds);
 						writer.WriteString(L"]");
 					}
 

@@ -130,6 +130,7 @@ namespace vl
 				{
 					if (!node) return nullptr;
 					node->Accept(static_cast<XmlNode::IVisitor*>(this));
+					this->result->codeRange = node->codeRange;
 					return this->result.Cast<XmlNode>();
 				}
 
@@ -137,6 +138,7 @@ namespace vl
 				{
 					if (!node) return nullptr;
 					Visit(node);
+					this->result->codeRange = node->codeRange;
 					return this->result.Cast<XmlAttribute>();
 				}
 

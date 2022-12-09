@@ -17,7 +17,7 @@
 ++==================================================++    ++==================================================++
 || [1]: {PREFIX_WITH_LEFTREC} prefix_with_leftrec   ||    || [2]: {PREFIX_WITH_LEFTREC} prefix_with_leftrec   ||
 ||   TraceExec: [1]                                 ||    ||   TraceExec: [13]                                ||
-||   InsExec: [0:1]                                 ||    ||   InsExec: [23:1]                                ||
+||   InsExec: [0:1]                                 ||    ||   InsExec: [27:1]                                ||
 ||   ForwardTrace: 1                                ||    ||   ForwardTrace: 2                                ||
 || [183][Module]<< "prefix_with_leftrec" @ !Pwl1 >> ||    || [184][Module]<< "prefix_with_leftrec" @ !Pwl2 >> ||
 || [AST-INSTRUCTIONS]:                              ||    || [AST-INSTRUCTIONS]:                              ||
@@ -42,7 +42,7 @@
 ++====================================================================++    ++====================================================================++
 || [3]: {LT} <                                                        ||    || [8]: {LT} <                                                        ||
 ||   TraceExec: [2]                                                   ||    ||   TraceExec: [14]                                                  ||
-||   InsExec: [1:3]                                                   ||    ||   InsExec: [24:3]                                                  ||
+||   InsExec: [1:3]                                                   ||    ||   InsExec: [28:3]                                                  ||
 ||   ForwardTrace: 1                                                  ||    ||   ForwardTrace: 2                                                  ||
 || [5][Lt]< "<" @ >                                                   ||    || [5][Lt]< "<" @ >                                                   ||
 || [AST-INSTRUCTIONS]:                                                ||    || [AST-INSTRUCTIONS]:                                                ||
@@ -57,14 +57,14 @@
 ||     OSTop: []                                                      ||    ||     OSTop: []                                                      ||
 ||     LriStored: []                                                  ||    ||     LriStored: []                                                  ||
 ||   - BeginObject(PwlFeature)                                        ||    ||   - BeginObject(PwlFeature)                                        ||
-||       obj:0, new:3@1 dfas:[3@0]                                    ||    ||       obj:6, new:8@1                                               ||
+||       obj:0, new:3@1, top:3@0 injectInto:[2] dfas:[3@0]            ||    ||       obj:6, new:8@1, top:8@1 injectInto:[8]                       ||
 ||       eoInsRefs: 5@1                                               ||    ||       eoInsRefs: 10@0                                              ||
 ||                                                                    ||    ||                                                                    ||
 ||     CSTop: [0] [2 -> 1]                                            ||    ||     CSTop: [6] [10 -> 9]                                           ||
 ||     OSTop: []                                                      ||    ||     OSTop: []                                                      ||
 ||     LriStored: []                                                  ||    ||     LriStored: []                                                  ||
 ||   - BeginObject(Lt)                                                ||    ||   - BeginObject(Lt)                                                ||
-||       obj:1, new:3@2                                               ||    ||       obj:7, new:8@2                                               ||
+||       obj:1, new:3@2, top:3@2                                      ||    ||       obj:7, new:8@2, top:8@2                                      ||
 ||       eoInsRefs: 4@0                                               ||    ||       eoInsRefs: 9@0                                               ||
 ||                                                                    ||    ||                                                                    ||
 ||     CSTop: [1] [3 -> 2]                                            ||    ||     CSTop: [7] [11 -> 10]                                          ||
@@ -83,7 +83,7 @@
 +--------------------------------------------------------------------+      +--------------------------------------------------------------------+
 | [4]: <Ending>                                                      |      | [9]: <Ending>                                                      |
 |   TraceExec: [3]                                                   |      |   TraceExec: [15]                                                  |
-|   InsExec: [4:1]                                                   |      |   InsExec: [27:2]                                                  |
+|   InsExec: [4:1]                                                   |      |   InsExec: [31:2]                                                  |
 |   ForwardTrace: 1                                                  |      |   ForwardTrace: 2                                                  |
 | [127][Pwl1_P]< Lt @ >                                              |      | [137][Pwl2_P]< Lt @ >                                              |
 | [AST-INSTRUCTIONS]:                                                |      | [AST-INSTRUCTIONS]:                                                |
@@ -94,7 +94,7 @@
 |       objRefs: 1                                                   |      |       objRefs: 7                                                   |
 |                                                                    |      |                                                                    |
 |     CSTop: [0] [2 -> 1]                                            |      |     CSTop: [6] [10 -> 9]                                           |
-|     OSTop: [1] [0 -> -1]                                           |      |     OSTop: [7] [8 -> -1]                                           |
+|     OSTop: [1] [0 -> -1]                                           |      |     OSTop: [7] [10 -> -1]                                          |
 |     LriStored: []                                                  |      |     LriStored: []                                                  |
 | [RETURN STACK]:                                                    |      |   > Field(PwlFeature::two)                                         |
 |   [1][1]: Pwl1_P -> [134][Pwl1]<< !Pwl1_P @ >>                     |      |                                                                    |
@@ -113,7 +113,7 @@
 +--------------------------------------------------------------------+      +--------------------------------------------------------------------+
 | [5]: <Ending>                                                      |      | [10]: <Leftrec>                                                    |
 |   TraceExec: [4]                                                   |      |   TraceExec: [16]                                                  |
-|   InsExec: [5:3]                                                   |      |   InsExec: [29:3]                                                  |
+|   InsExec: [5:3]                                                   |      |   InsExec: [33:5]                                                  |
 |   ForwardTrace: 1                                                  |      |   ForwardTrace: 2                                                  |
 | [134][Pwl1]<< !Pwl1_P @ >>                                         |      | [138][Pwl2_P]< Pwl2_P @ Lt >                                       |
 | [AST-INSTRUCTIONS]:                                                |      | [AST-INSTRUCTIONS]:                                                |
@@ -124,23 +124,33 @@
 |                                                                    |      |       objRefs: 6                                                   |
 |     CSTop: [0] [2 -> 1]                                            |      |                                                                    |
 |     OSTop: []                                                      |      |     CSTop: [10] [9 -> 8]                                           |
-|     LriStored: []                                                  |      |     OSTop: [6] [9 -> -1]                                           |
+|     LriStored: []                                                  |      |     OSTop: [6] [11 -> -1]                                          |
 |   - EndObject()                                                    |      |     LriStored: []                                                  |
-|       objRefs: 0                                                   |      |   - BeginObjectLeftRecursive(PwlFeature)                           |
-|                                                                    |      |       obj:8, new:10@1 lrs:[6]                                      |
+|       objRefs: 0                                                   |      |   - LriStore()                                                     |
+|                                                                    |      |                                                                    |
+|     CSTop: [0] [1 -> 0]                                            |      |     CSTop: [10] [9 -> 8]                                           |
+|     OSTop: [0] [1 -> -1]                                           |      |     OSTop: []                                                      |
+|     LriStored: []                                                  |      |     LriStored: [6]                                                 |
+|   > ReopenObject()                                                 |      |   - BeginObject(PwlFeature)                                        |
+|                                                                    |      |       obj:8, new:10@2, top:8@1 injectInto:[10]                     |
 |     CSTop: [0] [1 -> 0]                                            |      |       eoInsRefs: 18@0                                              |
-|     OSTop: [0] [1 -> -1]                                           |      |                                                                    |
-|     LriStored: []                                                  |      |     CSTop: [8] [12 -> 9]                                           |
-|   > ReopenObject()                                                 |      |     OSTop: [6] [9 -> -1]                                           |
-|                                                                    |      |     LriStored: []                                                  |
-|     CSTop: [0] [1 -> 0]                                            |      |   + Field(PwlFeature::prev)                                        |
 |     OSTop: []                                                      |      |                                                                    |
 |     LriStored: []                                                  |      |     CSTop: [8] [12 -> 9]                                           |
 | [RETURN STACK]:                                                    |      |     OSTop: []                                                      |
-|   [0][1]: Pwl1 -> [181][Module]<< "prefix_with_leftrec" !Pwl1 @ >> |      |     LriStored: []                                                  |
-| [PREDECESSORS 4-4]: [4]                                            |      | [RETURN STACK]:                                                    |
-| [SUCCESORS 6-6]: [6]                                               |      |   [4][2]: Pwl2_P -> [143][Pwl2]<< { Plus } !Pwl2_P @ >>            |
-+--------------------------------------------------------------------+      |   [3][2]: Pwl2 -> [182][Module]<< "prefix_with_leftrec" !Pwl2 @ >> |
+|   [0][1]: Pwl1 -> [181][Module]<< "prefix_with_leftrec" !Pwl1 @ >> |      |     LriStored: [6]                                                 |
+| [PREDECESSORS 4-4]: [4]                                            |      |   - LriFetch()                                                     |
+| [SUCCESORS 6-6]: [6]                                               |      |                                                                    |
++--------------------------------------------------------------------+      |     CSTop: [8] [12 -> 9]                                           |
+|                                                                           |     OSTop: [6] [12 -> -1]                                          |
+|                                                                           |     LriStored: []                                                  |
+|                                                                           |   + Field(PwlFeature::prev)                                        |
+|                                                                           |                                                                    |
+|                                                                           |     CSTop: [8] [12 -> 9]                                           |
+|                                                                           |     OSTop: []                                                      |
+|                                                                           |     LriStored: []                                                  |
+|                                                                           | [RETURN STACK]:                                                    |
+|                                                                           |   [4][2]: Pwl2_P -> [143][Pwl2]<< { Plus } !Pwl2_P @ >>            |
+|                                                                           |   [3][2]: Pwl2 -> [182][Module]<< "prefix_with_leftrec" !Pwl2 @ >> |
 |                                                                           | [PREDECESSORS 9-9]: [9]                                            |
 |                                                                           | [SUCCESORS 16-16]: [16]                                            |
 |                                                                           +--------------------------------------------------------------------+
@@ -150,7 +160,7 @@
 +--------------------------------------------------------------------+      |
 | [6]: <Leftrec>                                                     |      |
 |   TraceExec: [5]                                                   |      |
-|   InsExec: [8:3]                                                   |      |
+|   InsExec: [8:5]                                                   |      |
 |   ForwardTrace: 1                                                  |      |
 | [132][Pwl1]< Pwl1 @ Lt >                                           |      |
 | [AST-INSTRUCTIONS]:                                                |      |
@@ -163,12 +173,22 @@
 |     CSTop: [4] [0 -> -1]                                           |      |
 |     OSTop: [0] [2 -> -1]                                           |      |
 |     LriStored: []                                                  |      |
-|   - BeginObjectLeftRecursive(PwlFeature)                           |      |
-|       obj:2, new:6@1 lrs:[0]                                       |      |
+|   - LriStore()                                                     |      |
+|                                                                    |      |
+|     CSTop: [4] [0 -> -1]                                           |      |
+|     OSTop: []                                                      |      |
+|     LriStored: [0]                                                 |      |
+|   - BeginObject(PwlFeature)                                        |      |
+|       obj:2, new:6@2, top:3@0 injectInto:[4]                       |      |
 |       eoInsRefs: 14@0                                              |      |
 |                                                                    |      |
 |     CSTop: [2] [4 -> 0]                                            |      |
-|     OSTop: [0] [2 -> -1]                                           |      |
+|     OSTop: []                                                      |      |
+|     LriStored: [0]                                                 |      |
+|   - LriFetch()                                                     |      |
+|                                                                    |      |
+|     CSTop: [2] [4 -> 0]                                            |      |
+|     OSTop: [0] [3 -> -1]                                           |      |
 |     LriStored: []                                                  |      |
 |   + Field(PwlFeature::prev)                                        |      |
 |                                                                    |      |
@@ -188,7 +208,7 @@
 ++====================================================================++    ++====================================================================++
 || [12]: {LT} <                                                       ||    || [16]: {LT} <                                                       ||
 ||   TraceExec: [6]                                                   ||    ||   TraceExec: [17]                                                  ||
-||   InsExec: [11:1]                                                  ||    ||   InsExec: [32:1]                                                  ||
+||   InsExec: [13:1]                                                  ||    ||   InsExec: [38:1]                                                  ||
 ||   ForwardTrace: 1                                                  ||    ||   ForwardTrace: 2                                                  ||
 || [5][Lt]< "<" @ >                                                   ||    || [5][Lt]< "<" @ >                                                   ||
 || [AST-INSTRUCTIONS]:                                                ||    || [AST-INSTRUCTIONS]:                                                ||
@@ -196,7 +216,7 @@
 ||     OSTop: []                                                      ||    ||     OSTop: []                                                      ||
 ||     LriStored: []                                                  ||    ||     LriStored: []                                                  ||
 ||   - BeginObject(Lt)                                                ||    ||   - BeginObject(Lt)                                                ||
-||       obj:3, new:12@0                                              ||    ||       obj:9, new:16@0                                              ||
+||       obj:3, new:12@0, top:12@0                                    ||    ||       obj:9, new:16@0, top:16@0                                    ||
 ||       eoInsRefs: 13@0                                              ||    ||       eoInsRefs: 17@0                                              ||
 ||                                                                    ||    ||                                                                    ||
 ||     CSTop: [3] [5 -> 4]                                            ||    ||     CSTop: [9] [13 -> 12]                                          ||
@@ -215,7 +235,7 @@
 +--------------------------------------------------------------------+      +--------------------------------------------------------------------+
 | [13]: <Ending>                                                     |      | [17]: <Ending>                                                     |
 |   TraceExec: [7]                                                   |      |   TraceExec: [18]                                                  |
-|   InsExec: [12:2]                                                  |      |   InsExec: [33:2]                                                  |
+|   InsExec: [14:2]                                                  |      |   InsExec: [39:2]                                                  |
 |   ForwardTrace: 1                                                  |      |   ForwardTrace: 2                                                  |
 | [133][Pwl1]< Pwl1 Lt @ >                                           |      | [139][Pwl2_P]< Pwl2_P Lt @ >                                       |
 | [AST-INSTRUCTIONS]:                                                |      | [AST-INSTRUCTIONS]:                                                |
@@ -226,7 +246,7 @@
 |       objRefs: 3                                                   |      |       objRefs: 9                                                   |
 |                                                                    |      |                                                                    |
 |     CSTop: [2] [4 -> 0]                                            |      |     CSTop: [8] [12 -> 9]                                           |
-|     OSTop: [3] [3 -> -1]                                           |      |     OSTop: [9] [10 -> -1]                                          |
+|     OSTop: [3] [4 -> -1]                                           |      |     OSTop: [9] [13 -> -1]                                          |
 |     LriStored: []                                                  |      |     LriStored: []                                                  |
 |   > Field(PwlFeature::one)                                         |      |   > Field(PwlFeature::two)                                         |
 |                                                                    |      |                                                                    |
@@ -245,7 +265,7 @@
 +--------------------------------------------------------------------+      +--------------------------------------------------------------------+
 | [14]: <Leftrec>                                                    |      | [18]: <Leftrec>                                                    |
 |   TraceExec: [8]                                                   |      |   TraceExec: [19]                                                  |
-|   InsExec: [14:3]                                                  |      |   InsExec: [35:3]                                                  |
+|   InsExec: [16:5]                                                  |      |   InsExec: [41:5]                                                  |
 |   ForwardTrace: 1                                                  |      |   ForwardTrace: 2                                                  |
 | [132][Pwl1]< Pwl1 @ Lt >                                           |      | [138][Pwl2_P]< Pwl2_P @ Lt >                                       |
 | [AST-INSTRUCTIONS]:                                                |      | [AST-INSTRUCTIONS]:                                                |
@@ -256,14 +276,24 @@
 |       objRefs: 2                                                   |      |       objRefs: 8                                                   |
 |                                                                    |      |                                                                    |
 |     CSTop: [4] [0 -> -1]                                           |      |     CSTop: [10] [9 -> 8]                                           |
-|     OSTop: [2] [4 -> -1]                                           |      |     OSTop: [8] [11 -> -1]                                          |
+|     OSTop: [2] [5 -> -1]                                           |      |     OSTop: [8] [14 -> -1]                                          |
 |     LriStored: []                                                  |      |     LriStored: []                                                  |
-|   - BeginObjectLeftRecursive(PwlFeature)                           |      |   - BeginObjectLeftRecursive(PwlFeature)                           |
-|       obj:4, new:14@1 lrs:[2] dfas:[1@0]                           |      |       obj:10, new:18@1 lrs:[8] dfas:[2@0, 8@0]                     |
+|   - LriStore()                                                     |      |   - LriStore()                                                     |
+|                                                                    |      |                                                                    |
+|     CSTop: [4] [0 -> -1]                                           |      |     CSTop: [10] [9 -> 8]                                           |
+|     OSTop: []                                                      |      |     OSTop: []                                                      |
+|     LriStored: [2]                                                 |      |     LriStored: [8]                                                 |
+|   - BeginObject(PwlFeature)                                        |      |   - BeginObject(PwlFeature)                                        |
+|       obj:4, new:14@2, top:1@0 dfas:[1@0]                          |      |       obj:10, new:18@2, top:2@0 dfas:[2@0, 8@0]                    |
 |       eoInsRefs: 22@0                                              |      |       eoInsRefs: 26@0                                              |
 |                                                                    |      |                                                                    |
 |     CSTop: [4] [6 -> 0]                                            |      |     CSTop: [10] [14 -> 9]                                          |
-|     OSTop: [2] [4 -> -1]                                           |      |     OSTop: [8] [11 -> -1]                                          |
+|     OSTop: []                                                      |      |     OSTop: []                                                      |
+|     LriStored: [2]                                                 |      |     LriStored: [8]                                                 |
+|   - LriFetch()                                                     |      |   - LriFetch()                                                     |
+|                                                                    |      |                                                                    |
+|     CSTop: [4] [6 -> 0]                                            |      |     CSTop: [10] [14 -> 9]                                          |
+|     OSTop: [2] [6 -> -1]                                           |      |     OSTop: [8] [15 -> -1]                                          |
 |     LriStored: []                                                  |      |     LriStored: []                                                  |
 |   + Field(PwlFeature::prev)                                        |      |   + Field(PwlFeature::prev)                                        |
 |                                                                    |      |                                                                    |
@@ -284,7 +314,7 @@
 ++====================================================================++    ++====================================================================++
 || [20]: {LT} <                                                       ||    || [24]: {LT} <                                                       ||
 ||   TraceExec: [9]                                                   ||    ||   TraceExec: [20]                                                  ||
-||   InsExec: [17:1]                                                  ||    ||   InsExec: [38:1]                                                  ||
+||   InsExec: [21:1]                                                  ||    ||   InsExec: [46:1]                                                  ||
 ||   ForwardTrace: 1                                                  ||    ||   ForwardTrace: 2                                                  ||
 || [5][Lt]< "<" @ >                                                   ||    || [5][Lt]< "<" @ >                                                   ||
 || [AST-INSTRUCTIONS]:                                                ||    || [AST-INSTRUCTIONS]:                                                ||
@@ -292,7 +322,7 @@
 ||     OSTop: []                                                      ||    ||     OSTop: []                                                      ||
 ||     LriStored: []                                                  ||    ||     LriStored: []                                                  ||
 ||   - BeginObject(Lt)                                                ||    ||   - BeginObject(Lt)                                                ||
-||       obj:5, new:20@0                                              ||    ||       obj:11, new:24@0                                             ||
+||       obj:5, new:20@0, top:20@0                                    ||    ||       obj:11, new:24@0, top:24@0                                   ||
 ||       eoInsRefs: 21@0                                              ||    ||       eoInsRefs: 25@0                                              ||
 ||                                                                    ||    ||                                                                    ||
 ||     CSTop: [5] [7 -> 6]                                            ||    ||     CSTop: [11] [15 -> 14]                                         ||
@@ -311,7 +341,7 @@
 +--------------------------------------------------------------------+      +--------------------------------------------------------------------+
 | [21]: <Ending>                                                     |      | [25]: <Ending>                                                     |
 |   TraceExec: [10]                                                  |      |   TraceExec: [21]                                                  |
-|   InsExec: [18:2]                                                  |      |   InsExec: [39:2]                                                  |
+|   InsExec: [22:2]                                                  |      |   InsExec: [47:2]                                                  |
 |   ForwardTrace: 1                                                  |      |   ForwardTrace: 2                                                  |
 | [133][Pwl1]< Pwl1 Lt @ >                                           |      | [139][Pwl2_P]< Pwl2_P Lt @ >                                       |
 | [AST-INSTRUCTIONS]:                                                |      | [AST-INSTRUCTIONS]:                                                |
@@ -322,7 +352,7 @@
 |       objRefs: 5                                                   |      |       objRefs: 11                                                  |
 |                                                                    |      |                                                                    |
 |     CSTop: [4] [6 -> 0]                                            |      |     CSTop: [10] [14 -> 9]                                          |
-|     OSTop: [5] [5 -> -1]                                           |      |     OSTop: [11] [12 -> -1]                                         |
+|     OSTop: [5] [7 -> -1]                                           |      |     OSTop: [11] [16 -> -1]                                         |
 |     LriStored: []                                                  |      |     LriStored: []                                                  |
 |   > Field(PwlFeature::one)                                         |      |   > Field(PwlFeature::two)                                         |
 |                                                                    |      |                                                                    |
@@ -341,7 +371,7 @@
 +--------------------------------------------------+                        +--------------------------------------------------------------------+
 | [22]: <Ending>                                   |                        | [26]: <Ending>                                                     |
 |   TraceExec: [11]                                |                        |   TraceExec: [22]                                                  |
-|   InsExec: [20:2]                                |                        |   InsExec: [41:2]                                                  |
+|   InsExec: [24:2]                                |                        |   InsExec: [49:2]                                                  |
 |   ForwardTrace: 1                                |                        |   ForwardTrace: 2                                                  |
 | [181][Module]<< "prefix_with_leftrec" !Pwl1 @ >> |                        | [143][Pwl2]<< { Plus } !Pwl2_P @ >>                                |
 | [AST-INSTRUCTIONS]:                              |                        | [AST-INSTRUCTIONS]:                                                |
@@ -352,7 +382,7 @@
 |       objRefs: 4                                 |                        |       objRefs: 10                                                  |
 |                                                  |                        |                                                                    |
 |     CSTop: [4] [0 -> -1]                         |                        |     CSTop: [10] [9 -> 8]                                           |
-|     OSTop: [4] [6 -> -1]                         |                        |     OSTop: [10] [13 -> -1]                                         |
+|     OSTop: [4] [8 -> -1]                         |                        |     OSTop: [10] [17 -> -1]                                         |
 |     LriStored: []                                |                        |     LriStored: []                                                  |
 |   > ReopenObject()                               |                        |   > ReopenObject()                                                 |
 |                                                  |                        |                                                                    |
@@ -370,7 +400,7 @@
 +----------------------------+                                              +--------------------------------------------------+
 | [29]: <Ending>             |                                              | [27]: <Ending>                                   |
 |   TraceExec: [12]          |                                              |   TraceExec: [23]                                |
-|   InsExec: [22:1]          |                                              |   InsExec: [43:2]                                |
+|   InsExec: [26:1]          |                                              |   InsExec: [51:2]                                |
 |   ForwardTrace: 1          |                                              |   ForwardTrace: 2                                |
 | [152][Module] END [ENDING] |                                              | [182][Module]<< "prefix_with_leftrec" !Pwl2 @ >> |
 | [AST-INSTRUCTIONS]:        |                                              | [AST-INSTRUCTIONS]:                              |
@@ -381,7 +411,7 @@
 |       objRefs: 4           |                                              |       objRefs: 10                                |
 |                            |                                              |                                                  |
 |     CSTop: []              |                                              |     CSTop: [10] [8 -> -1]                        |
-|     OSTop: [4] [7 -> -1]   |                                              |     OSTop: [10] [14 -> -1]                       |
+|     OSTop: [4] [9 -> -1]   |                                              |     OSTop: [10] [18 -> -1]                       |
 |     LriStored: []          |                                              |     LriStored: []                                |
 | [PREDECESSORS 22-22]: [22] |                                              |   > ReopenObject()                               |
 | [SUCCESORS 23-23]: [23]    |                                              |                                                  |
@@ -397,7 +427,7 @@
 |                                                                           +----------------------------+
 |                                                                           | [28]: <Ending>             |
 |                                                                           |   TraceExec: [24]          |
-|                                                                           |   InsExec: [45:1]          |
+|                                                                           |   InsExec: [53:1]          |
 |                                                                           |   ForwardTrace: 2          |
 |                                                                           | [152][Module] END [ENDING] |
 |                                                                           | [AST-INSTRUCTIONS]:        |
@@ -408,7 +438,7 @@
 |                                                                           |       objRefs: 10          |
 |                                                                           |                            |
 |                                                                           |     CSTop: []              |
-|                                                                           |     OSTop: [10] [15 -> -1] |
+|                                                                           |     OSTop: [10] [19 -> -1] |
 |                                                                           |     LriStored: []          |
 |                                                                           | [PREDECESSORS 27-27]: [27] |
 |                                                                           | [SUCCESORS 23-23]: [23]    |
@@ -424,6 +454,6 @@
 |   CommonForwardTrace: 0     |
 | [CONTEXT]                   |
 |   CSTop: []                 |
-|   OSTop: [10, 4] [16 -> -1] |
+|   OSTop: [10, 4] [20 -> -1] |
 |   LriStored: []             |
 +-----------------------------+

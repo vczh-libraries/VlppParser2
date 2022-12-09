@@ -106,6 +106,7 @@ namespace vl
 				{
 					if (!node) return nullptr;
 					node->Accept(static_cast<JsonNode::IVisitor*>(this));
+					this->result->codeRange = node->codeRange;
 					return this->result.Cast<JsonNode>();
 				}
 
@@ -113,6 +114,7 @@ namespace vl
 				{
 					if (!node) return nullptr;
 					Visit(node);
+					this->result->codeRange = node->codeRange;
 					return this->result.Cast<JsonObjectField>();
 				}
 

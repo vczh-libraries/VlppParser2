@@ -242,20 +242,20 @@ SyntaxSymbolManager::BuildLeftRecEdge
 				CopyFrom(newEdge->insBeforeInput, lrecPrefixEdge->insBeforeInput, true);
 				CopyFrom(newEdge->insAfterInput, lrecPrefixEdge->insAfterInput, true);
 
-				for (vint i = 0; i < newEdge->insBeforeInput.Count(); i++)
+				for (vint i = newEdge->insBeforeInput.Count() - 1; i >= 0; i--)
 				{
-					auto& ins = newEdge->insBeforeInput[i];
-					if (ins.type == AstInsType::BeginObject)
+					if (newEdge->insBeforeInput[i].type == AstInsType::BeginObject)
 					{
-						ins.type = AstInsType::BeginObjectLeftRecursive;
+						newEdge->insBeforeInput.Insert(i, { AstInsType::LriStore });
+						newEdge->insBeforeInput.Insert(i + 2, { AstInsType::LriFetch });
 					}
 				}
-				for (vint i = 0; i < newEdge->insAfterInput.Count(); i++)
+				for (vint i = newEdge->insAfterInput.Count() - 1; i >= 0; i--)
 				{
-					auto& ins = newEdge->insAfterInput[i];
-					if (ins.type == AstInsType::BeginObject)
+					if (newEdge->insAfterInput[i].type == AstInsType::BeginObject)
 					{
-						ins.type = AstInsType::BeginObjectLeftRecursive;
+						newEdge->insBeforeInput.Insert(i, { AstInsType::LriStore });
+						newEdge->insBeforeInput.Insert(i + 2, { AstInsType::LriFetch });
 					}
 				}
 			}
@@ -370,6 +370,12 @@ SyntaxSymbolManager::EliminateSingleRulePrefix
 					CHECK_ERROR(prefixEdgesOfRule.Count() == 1, L"<EliminateSingleRulePrefix>Multiple prefix edges under the same rule is not supported yet.");
 
 					// TODO:
+					// prefixEdge means the clause could consume only one rule
+					// multiple prefixEdge could be
+					//   the rule has multiple such clauses
+					//   there is one clause but it looks like "([a] | [b]) c"
+					//     where both [a] and [b] create an epsilon edge to c
+					//     and after removing epsilon edges they become both edge consuming c
 					// in this case we need to create a prefix edges to replace all others
 					// it also means unresolvable ambiguity
 					// maybe a better solution is to define it as a kind of invalid syntax

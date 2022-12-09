@@ -212,7 +212,9 @@
 | [42][_Type]< _Type @ "::" NAME >                                                                                |
 | [AST-INSTRUCTIONS]:                                                                                             |
 |   - EndObject()                                                                                                 |
-|   - BeginObjectLeftRecursive(ChildType)                                                                         |
+|   - LriStore()                                                                                                  |
+|   - BeginObject(ChildType)                                                                                      |
+|   - LriFetch()                                                                                                  |
 |   + Field(ChildType::parent)                                                                                    |
 | [RETURN STACK]:                                                                                                 |
 |   [9][12]: _Type -> [585][_FunctionBody]"(" { _FunctionArgument ; "," } ")" ":" _Type @ ( _FunctionStat | ";" ) |
@@ -272,7 +274,9 @@
 | [41][_Type]< _Type @ "*" >                                                                                      |
 | [AST-INSTRUCTIONS]:                                                                                             |
 |   - EndObject()                                                                                                 |
-|   - BeginObjectLeftRecursive(RawPointerType)                                                                    |
+|   - LriStore()                                                                                                  |
+|   - BeginObject(RawPointerType)                                                                                 |
+|   - LriFetch()                                                                                                  |
 |   + Field(RawPointerType::element)                                                                              |
 | [RETURN STACK]:                                                                                                 |
 |   [9][12]: _Type -> [585][_FunctionBody]"(" { _FunctionArgument ; "," } ")" ":" _Type @ ( _FunctionStat | ";" ) |

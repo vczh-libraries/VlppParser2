@@ -43,6 +43,7 @@ Initialize
 
 				firstBranchTrace = nullref;
 				firstMergeTrace = nullref;
+				firstObject = nullref;
 				firstStep = nullref;
 				traceAmbiguities.Clear();
 				traceAmbiguityLinks.Clear();

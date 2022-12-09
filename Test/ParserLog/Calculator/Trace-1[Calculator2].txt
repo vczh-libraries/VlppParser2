@@ -207,7 +207,9 @@
 | [22][Exp1]< Exp1 @ "(" { Exp ; "," } ")" >                  |
 | [AST-INSTRUCTIONS]:                                         |
 |   - EndObject()                                             |
-|   - BeginObjectLeftRecursive(Call)                          |
+|   - LriStore()                                              |
+|   - BeginObject(Call)                                       |
+|   - LriFetch()                                              |
 |   + Field(Call::func)                                       |
 | [RETURN STACK]:                                             |
 |   [8][10]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                  |
@@ -353,7 +355,9 @@
 | [22][Exp1]< Exp1 @ "(" { Exp ; "," } ")" >                    |
 | [AST-INSTRUCTIONS]:                                           |
 |   - EndObject()                                               |
-|   - BeginObjectLeftRecursive(Call)                            |
+|   - LriStore()                                                |
+|   - BeginObject(Call)                                         |
+|   - LriFetch()                                                |
 |   + Field(Call::func)                                         |
 | [RETURN STACK]:                                               |
 |   [22][16]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                   |
@@ -804,7 +808,9 @@
 | [39][Exp3]< Exp3 @ "+" Exp2 >                                 |
 | [AST-INSTRUCTIONS]:                                           |
 |   - EndObject()                                               |
-|   - BeginObjectLeftRecursive(Binary)                          |
+|   - LriStore()                                                |
+|   - BeginObject(Binary)                                       |
+|   - LriFetch()                                                |
 |   + Field(Binary::left)                                       |
 | [RETURN STACK]:                                               |
 |   [20][16]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                   |
@@ -935,7 +941,9 @@
 | [22][Exp1]< Exp1 @ "(" { Exp ; "," } ")" >                    |
 | [AST-INSTRUCTIONS]:                                           |
 |   - EndObject()                                               |
-|   - BeginObjectLeftRecursive(Call)                            |
+|   - LriStore()                                                |
+|   - BeginObject(Call)                                         |
+|   - LriFetch()                                                |
 |   + Field(Call::func)                                         |
 | [RETURN STACK]:                                               |
 |   [33][38]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                   |

@@ -221,6 +221,7 @@ namespace featuretest
 		{
 			if (!node) return nullptr;
 			node->Accept(static_cast<Feature::IVisitor*>(this));
+			this->result->codeRange = node->codeRange;
 			return this->result.Cast<Feature>();
 		}
 
@@ -228,6 +229,7 @@ namespace featuretest
 		{
 			if (!node) return nullptr;
 			Visit(node);
+			this->result->codeRange = node->codeRange;
 			return this->result.Cast<Plus>();
 		}
 
@@ -235,6 +237,7 @@ namespace featuretest
 		{
 			if (!node) return nullptr;
 			Visit(node);
+			this->result->codeRange = node->codeRange;
 			return this->result.Cast<Lt>();
 		}
 
@@ -242,6 +245,7 @@ namespace featuretest
 		{
 			if (!node) return nullptr;
 			Visit(node);
+			this->result->codeRange = node->codeRange;
 			return this->result.Cast<Gt>();
 		}
 

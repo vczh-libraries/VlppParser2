@@ -16,6 +16,7 @@ namespace cpp_parser
 		/// <summary>A traverse visitor, overriding all abstract methods with AST visiting code.</summary>
 		class AstVisitor
 			: public vl::Object
+			, protected virtual CppTypeOrExprOrOthers::IVisitor
 			, protected virtual CppTypeOrExpr::IVisitor
 			, protected virtual CppExprOnly::IVisitor
 			, protected virtual CppTypeOnly::IVisitor
@@ -62,6 +63,8 @@ namespace cpp_parser
 			virtual void Traverse(CppThrowExpr* node);
 			virtual void Traverse(CppTypeOnly* node);
 			virtual void Traverse(CppTypeOrExpr* node);
+			virtual void Traverse(CppTypeOrExprOrOthers* node);
+			virtual void Traverse(CppVariadicExpr* node);
 			virtual void Traverse(CppVolatileType* node);
 
 		protected:
@@ -104,9 +107,15 @@ namespace cpp_parser
 			virtual void Finishing(CppThrowExpr* node);
 			virtual void Finishing(CppTypeOnly* node);
 			virtual void Finishing(CppTypeOrExpr* node);
+			virtual void Finishing(CppTypeOrExprOrOthers* node);
+			virtual void Finishing(CppVariadicExpr* node);
 			virtual void Finishing(CppVolatileType* node);
 
 		protected:
+			void Visit(CppTypeOrExpr* node) override;
+			void Visit(CppGenericArgument* node) override;
+			void Visit(CppFunctionParameter* node) override;
+
 			void Visit(CppExprOnly* node) override;
 			void Visit(CppTypeOnly* node) override;
 			void Visit(CppQualifiedName* node) override;
@@ -129,6 +138,7 @@ namespace cpp_parser
 			void Visit(CppBinaryExpr* node) override;
 			void Visit(CppIfExpr* node) override;
 			void Visit(CppThrowExpr* node) override;
+			void Visit(CppVariadicExpr* node) override;
 
 			void Visit(CppPrimitiveType* node) override;
 			void Visit(CppConstType* node) override;
@@ -138,15 +148,13 @@ namespace cpp_parser
 			void Visit(CppOperatorIdentifier* node) override;
 
 		public:
-			void InspectInto(CppTypeOrExpr* node);
+			void InspectInto(CppTypeOrExprOrOthers* node);
 			void InspectInto(CppIdentifier* node);
-			void InspectInto(CppGenericArgument* node);
 			void InspectInto(CppGenericArguments* node);
 			void InspectInto(CppStringLiteralFragment* node);
 			void InspectInto(CppAdvancedType* node);
 			void InspectInto(CppDeclaratorKeyword* node);
 			void InspectInto(CppFunctionKeyword* node);
-			void InspectInto(CppFunctionParameter* node);
 			void InspectInto(CppDeclaratorFunctionPart* node);
 			void InspectInto(CppDeclaratorArrayPart* node);
 			void InspectInto(CppDeclarator* node);

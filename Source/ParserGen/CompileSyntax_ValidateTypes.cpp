@@ -348,57 +348,60 @@ LriVerifyTypesVisitor
 					for (auto lriTarget : node->continuation->injectionTargets)
 					{
 						auto target = lriTarget->rule;
-						List<GlrLeftRecursionPlaceholderClause*> lrpClauses;
+						for (auto lriFlag : node->continuation->flags)
 						{
-							vint index = context.indirectLrpClauses.Keys().IndexOf(context.syntaxManager.Rules()[target->literal.value]);
-							if (index != -1)
+							List<GlrLeftRecursionPlaceholderClause*> lrpClauses;
 							{
-								CopyFrom(
-									lrpClauses,
-									From(context.indirectLrpClauses.GetByIndex(index))
-										.Where([node](auto&& lrp)
-										{
-											return !From(lrp->flags)
-												.Where([node](auto&& flag) { return flag->flag.value == node->continuation->flag->flag.value; })
-												.IsEmpty();
-										}));
+								vint index = context.indirectLrpClauses.Keys().IndexOf(context.syntaxManager.Rules()[target->literal.value]);
+								if (index != -1)
+								{
+									CopyFrom(
+										lrpClauses,
+										From(context.indirectLrpClauses.GetByIndex(index))
+											.Where([lriFlag](auto&& lrp)
+											{
+												return !From(lrp->flags)
+													.Where([lriFlag](auto&& flag) { return flag->flag.value == lriFlag->flag.value; })
+													.IsEmpty();
+											}));
+								}
 							}
-						}
 
-						if (lrpClauses.Count() == 0)
-						{
-							context.syntaxManager.AddError(
-								ParserErrorType::LeftRecursionPlaceholderNotFoundInRule,
-								target->codeRange,
-								ruleSymbol->Name(),
-								node->continuation->flag->flag.value,
-								target->literal.value
-								);
-						}
-						else if (lrpClauses.Count() > 1 && node->continuation->configuration == GlrLeftRecursionConfiguration::Single)
-						{
-							context.syntaxManager.AddError(
-								ParserErrorType::LeftRecursionPlaceholderNotUnique,
-								target->codeRange,
-								ruleSymbol->Name(),
-								node->continuation->flag->flag.value,
-								target->literal.value
-								);
-						}
-
-						for (auto lrpClause : lrpClauses)
-						{
-							auto lrpClauseRule = context.clauseToRules[lrpClause];
-							if (!ConvertibleTo(prefixRule->ruleType, lrpClauseRule->ruleType))
+							if (lrpClauses.Count() == 0)
 							{
 								context.syntaxManager.AddError(
-									ParserErrorType::LeftRecursionPlaceholderTypeMismatched,
+									ParserErrorType::LeftRecursionPlaceholderNotFoundInRule,
 									target->codeRange,
 									ruleSymbol->Name(),
-									node->continuation->flag->flag.value,
-									target->literal.value,
-									lrpClauseRule->Name()
+									lriFlag->flag.value,
+									target->literal.value
 									);
+							}
+							else if (lrpClauses.Count() > 1 && node->continuation->configuration == GlrLeftRecursionConfiguration::Single)
+							{
+								context.syntaxManager.AddError(
+									ParserErrorType::LeftRecursionPlaceholderNotUnique,
+									target->codeRange,
+									ruleSymbol->Name(),
+									lriFlag->flag.value,
+									target->literal.value
+									);
+							}
+
+							for (auto lrpClause : lrpClauses)
+							{
+								auto lrpClauseRule = context.clauseToRules[lrpClause];
+								if (!ConvertibleTo(prefixRule->ruleType, lrpClauseRule->ruleType))
+								{
+									context.syntaxManager.AddError(
+										ParserErrorType::LeftRecursionPlaceholderTypeMismatched,
+										target->codeRange,
+										ruleSymbol->Name(),
+										lriFlag->flag.value,
+										target->literal.value,
+										lrpClauseRule->Name()
+										);
+								}
 							}
 						}
 
@@ -490,7 +493,7 @@ LriPrefixTestingVisitor
 											ParserErrorType::LeftRecursionInjectTargetIsPrefixOfAnotherSameEnding,
 											node->codeRange,
 											ruleSymbol->Name(),
-											node->continuation->flag->flag.value,
+											node->continuation->flags[0]->flag.value,
 											k1->Name(),
 											k2->Name()
 											);

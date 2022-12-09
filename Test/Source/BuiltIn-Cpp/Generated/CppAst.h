@@ -50,6 +50,8 @@ namespace cpp_parser
 	class CppThrowExpr;
 	class CppTypeOnly;
 	class CppTypeOrExpr;
+	class CppTypeOrExprOrOthers;
+	class CppVariadicExpr;
 	class CppVolatileType;
 
 	enum class CppNameKinds
@@ -207,7 +209,22 @@ namespace cpp_parser
 		AlignAs = 8,
 	};
 
-	class CppTypeOrExpr abstract : public vl::glr::ParsingAstBase, vl::reflection::Description<CppTypeOrExpr>
+	class CppTypeOrExprOrOthers abstract : public vl::glr::ParsingAstBase, vl::reflection::Description<CppTypeOrExprOrOthers>
+	{
+	public:
+		class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
+		{
+		public:
+			virtual void Visit(CppTypeOrExpr* node) = 0;
+			virtual void Visit(CppGenericArgument* node) = 0;
+			virtual void Visit(CppFunctionParameter* node) = 0;
+		};
+
+		virtual void Accept(CppTypeOrExprOrOthers::IVisitor* visitor) = 0;
+
+	};
+
+	class CppTypeOrExpr abstract : public CppTypeOrExprOrOthers, vl::reflection::Description<CppTypeOrExpr>
 	{
 	public:
 		class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
@@ -221,6 +238,8 @@ namespace cpp_parser
 
 		virtual void Accept(CppTypeOrExpr::IVisitor* visitor) = 0;
 
+
+		void Accept(CppTypeOrExprOrOthers::IVisitor* visitor) override;
 	};
 
 	class CppExprOnly abstract : public CppTypeOrExpr, vl::reflection::Description<CppExprOnly>
@@ -246,6 +265,7 @@ namespace cpp_parser
 			virtual void Visit(CppBinaryExpr* node) = 0;
 			virtual void Visit(CppIfExpr* node) = 0;
 			virtual void Visit(CppThrowExpr* node) = 0;
+			virtual void Visit(CppVariadicExpr* node) = 0;
 		};
 
 		virtual void Accept(CppExprOnly::IVisitor* visitor) = 0;
@@ -302,17 +322,19 @@ namespace cpp_parser
 		void Accept(CppIdentifier::IVisitor* visitor) override;
 	};
 
-	class CppGenericArgument : public vl::glr::ParsingAstBase, vl::reflection::Description<CppGenericArgument>
+	class CppGenericArgument : public CppTypeOrExprOrOthers, vl::reflection::Description<CppGenericArgument>
 	{
 	public:
 		vl::Ptr<CppTypeOrExpr> argument;
 		vl::glr::ParsingToken variadic;
+
+		void Accept(CppTypeOrExprOrOthers::IVisitor* visitor) override;
 	};
 
 	class CppGenericArguments : public vl::glr::ParsingAstBase, vl::reflection::Description<CppGenericArguments>
 	{
 	public:
-		vl::collections::List<vl::Ptr<CppGenericArgument>> arguments;
+		vl::collections::List<vl::Ptr<CppTypeOrExprOrOthers>> arguments;
 	};
 
 	class CppQualifiedName : public CppTypeOrExpr, vl::reflection::Description<CppQualifiedName>
@@ -491,6 +513,15 @@ namespace cpp_parser
 		void Accept(CppExprOnly::IVisitor* visitor) override;
 	};
 
+	class CppVariadicExpr : public CppExprOnly, vl::reflection::Description<CppVariadicExpr>
+	{
+	public:
+		vl::Ptr<CppTypeOrExpr> operand;
+		vl::glr::ParsingToken variadic;
+
+		void Accept(CppExprOnly::IVisitor* visitor) override;
+	};
+
 	class CppPrimitiveType : public CppTypeOnly, vl::reflection::Description<CppPrimitiveType>
 	{
 	public:
@@ -537,19 +568,21 @@ namespace cpp_parser
 		vl::collections::List<vl::Ptr<CppTypeOrExpr>> arguments;
 	};
 
-	class CppFunctionParameter : public vl::glr::ParsingAstBase, vl::reflection::Description<CppFunctionParameter>
+	class CppFunctionParameter : public CppTypeOrExprOrOthers, vl::reflection::Description<CppFunctionParameter>
 	{
 	public:
 		vl::collections::List<vl::Ptr<CppDeclaratorKeyword>> keywords;
 		vl::Ptr<CppTypeOrExpr> type;
 		vl::Ptr<CppDeclarator> declarator;
 		vl::Ptr<CppTypeOrExpr> defaultValue;
+
+		void Accept(CppTypeOrExprOrOthers::IVisitor* visitor) override;
 	};
 
 	class CppDeclaratorFunctionPart : public vl::glr::ParsingAstBase, vl::reflection::Description<CppDeclaratorFunctionPart>
 	{
 	public:
-		vl::collections::List<vl::Ptr<CppFunctionParameter>> parameters;
+		vl::collections::List<vl::Ptr<CppTypeOrExprOrOthers>> parameters;
 		vl::glr::ParsingToken variadic;
 		vl::collections::List<vl::Ptr<CppFunctionKeyword>> keywords;
 		vl::Ptr<CppTypeOrExpr> deferredType;
@@ -595,6 +628,8 @@ namespace vl
 		namespace description
 		{
 #ifndef VCZH_DEBUG_NO_REFLECTION
+			DECL_TYPE_INFO(cpp_parser::CppTypeOrExprOrOthers)
+			DECL_TYPE_INFO(cpp_parser::CppTypeOrExprOrOthers::IVisitor)
 			DECL_TYPE_INFO(cpp_parser::CppTypeOrExpr)
 			DECL_TYPE_INFO(cpp_parser::CppTypeOrExpr::IVisitor)
 			DECL_TYPE_INFO(cpp_parser::CppExprOnly)
@@ -636,6 +671,7 @@ namespace vl
 			DECL_TYPE_INFO(cpp_parser::CppBinaryExpr)
 			DECL_TYPE_INFO(cpp_parser::CppIfExpr)
 			DECL_TYPE_INFO(cpp_parser::CppThrowExpr)
+			DECL_TYPE_INFO(cpp_parser::CppVariadicExpr)
 			DECL_TYPE_INFO(cpp_parser::CppPrimitiveTypeKinds)
 			DECL_TYPE_INFO(cpp_parser::CppPrimitiveType)
 			DECL_TYPE_INFO(cpp_parser::CppConstType)
@@ -652,6 +688,24 @@ namespace vl
 			DECL_TYPE_INFO(cpp_parser::CppFile)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
+
+			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(cpp_parser::CppTypeOrExprOrOthers::IVisitor)
+				void Visit(cpp_parser::CppTypeOrExpr* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+				void Visit(cpp_parser::CppGenericArgument* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+				void Visit(cpp_parser::CppFunctionParameter* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+			END_INTERFACE_PROXY(cpp_parser::CppTypeOrExprOrOthers::IVisitor)
 
 			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(cpp_parser::CppTypeOrExpr::IVisitor)
 				void Visit(cpp_parser::CppExprOnly* node) override
@@ -758,6 +812,11 @@ namespace vl
 				}
 
 				void Visit(cpp_parser::CppThrowExpr* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+				void Visit(cpp_parser::CppVariadicExpr* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}

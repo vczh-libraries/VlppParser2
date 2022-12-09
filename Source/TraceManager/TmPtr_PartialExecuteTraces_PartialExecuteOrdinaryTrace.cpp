@@ -14,7 +14,10 @@ PartialExecuteOrdinaryTrace
 
 			InsExec_Object* TraceManager::NewObject()
 			{
-				return GetInsExec_Object(insExec_Objects.Allocate());
+				auto ieObject = GetInsExec_Object(insExec_Objects.Allocate());
+				ieObject->previous = firstObject;
+				firstObject = ieObject;
+				return ieObject;
 			}
 
 			vint32_t TraceManager::GetStackBase(InsExec_Context& context)
@@ -106,6 +109,43 @@ PartialExecuteOrdinaryTrace
 				return newStack;
 			}
 
+			void TraceManager::PushInjectObjectIdsSingleWithMagic(Ref<InsExec_ObjRefLink> container, Ref<InsExec_Object> element)
+			{
+				NEW_MERGE_STACK_MAGIC_COUNTER;
+				auto magicContainer = MergeStack_MagicCounter;
+
+				auto linkRef = container;
+				while (linkRef != nullref)
+				{
+					auto link = GetInsExec_ObjRefLink(linkRef);
+					linkRef = link->previous;
+
+					auto ieContainerObject = GetInsExec_Object(link->id);
+					if (ieContainerObject->mergeCounter == magicContainer) continue;
+					ieContainerObject->mergeCounter = magicContainer;
+					PushObjRefLink(ieContainerObject->injectObjectIds, element);
+				}
+			}
+
+			void TraceManager::PushInjectObjectIdsMultipleWithMagic(Ref<InsExec_ObjRefLink> container, Ref<InsExec_ObjRefLink> elements)
+			{
+				NEW_MERGE_STACK_MAGIC_COUNTER;
+				auto magicElement = MergeStack_MagicCounter;
+
+				auto linkRef = elements;
+				while (linkRef != nullref)
+				{
+					auto link = GetInsExec_ObjRefLink(linkRef);
+					linkRef = link->previous;
+
+					auto ieElementObject = GetInsExec_Object(link->id);
+					if (ieElementObject->mergeCounter == magicElement) return;
+					ieElementObject->mergeCounter = magicElement;
+
+					PushInjectObjectIdsSingleWithMagic(container, link->id);
+				}
+			}
+
 			InsExec_ObjectStack* TraceManager::PushObjectStackSingle(InsExec_Context& context, Ref<InsExec_Object> objectId)
 			{
 				auto ie = GetInsExec_ObjectStack(insExec_ObjectStacks.Allocate());
@@ -158,36 +198,13 @@ PartialExecuteOrdinaryTrace
 						{
 							// new object
 							auto ieObject = NewObject();
-							ieObject->bo_bolr_Trace = trace;
-							ieObject->bo_bolr_Ins = insRef;
+							ieObject->createTrace = trace;
+							ieObject->createIns = insRef;
 
 							// new create stack
 							auto ieCSTop = PushCreateStack(context);
 							PushInsRefLink(ieCSTop->createInsRefs, trace, insRef);
 							ieCSTop->stackBase = GetStackTop(context);
-							PushObjRefLink(ieCSTop->objectIds, ieObject);
-
-							// InsExec::createdObjectId
-							insExec->createdObjectId = ieObject;
-						}
-						break;
-					case AstInsType::BeginObjectLeftRecursive:
-						{
-							CHECK_ERROR(GetStackTop(context) - GetStackBase(context) >= 1, ERROR_MESSAGE_PREFIX L"Pushed values not enough.");
-
-							// observe the object stack top
-							auto ieOSTop = GetInsExec_ObjectStack(context.objectStack);
-
-							// new object
-							auto ieObject = NewObject();
-							ieObject->lrObjectIds = ieOSTop->objectIds;
-							ieObject->bo_bolr_Trace = trace;
-							ieObject->bo_bolr_Ins = insRef;
-
-							// new create stack, the top object is not frozen
-							auto ieCSTop = PushCreateStack(context);
-							PushInsRefLink(ieCSTop->createInsRefs, trace, insRef);
-							ieCSTop->stackBase = ieOSTop->pushedCount - 1;
 							PushObjRefLink(ieCSTop->objectIds, ieObject);
 
 							// InsExec::createdObjectId
@@ -211,6 +228,11 @@ PartialExecuteOrdinaryTrace
 							auto ieOSTop = GetInsExec_ObjectStack(context.objectStack);
 							context.objectStack = ieOSTop->previous;
 
+							auto ieCSTop = GetInsExec_CreateStack(context.createStack);
+
+							// InsExec_Object::injectObjectIds
+							PushInjectObjectIdsMultipleWithMagic(ieCSTop->reverseInjectObjectIds, ieCSTop->objectIds);
+
 							// reopen an object
 							// ReopenObject in different branches could write to the same InsExec_CreateStack
 							// this happens when ambiguity happens in the !Rule syntax
@@ -220,7 +242,6 @@ PartialExecuteOrdinaryTrace
 							// this means it is impossible to continue with InsExec_CreateStack polluted by sibling traces
 							// therefore adding multiple objects to the same InsExec_CreateStack in multiple branches is fine
 							// the successor trace will be a merge trace taking all of the information
-							auto ieCSTop = GetInsExec_CreateStack(context.createStack);
 							NEW_MERGE_STACK_MAGIC_COUNTER;
 							{
 								auto ref = ieCSTop->objectIds;
@@ -325,6 +346,21 @@ PartialExecuteOrdinaryTrace
 					case AstInsType::LriFetch:
 						{
 							CHECK_ERROR(context.lriStoredObjects != nullref, ERROR_MESSAGE_PREFIX L"LriStore is not executed before the next LriFetch.");
+
+							// InsExec_Object::injectObjectIds
+							if (context.createStack != nullref)
+							{
+								auto ieCSTop = GetInsExec_CreateStack(context.createStack);
+								if (ieCSTop->objectIds == nullref)
+								{
+									ieCSTop->reverseInjectObjectIds = JoinObjRefLink(ieCSTop->reverseInjectObjectIds, context.lriStoredObjects);
+								}
+								else
+								{
+									PushInjectObjectIdsMultipleWithMagic(context.lriStoredObjects, ieCSTop->objectIds);
+								}
+							}
+
 							PushObjectStackMultiple(context, context.lriStoredObjects);
 							context.lriStoredObjects = nullref;
 						}
@@ -337,6 +373,10 @@ PartialExecuteOrdinaryTrace
 						break;
 					case AstInsType::ResolveAmbiguity:
 						CHECK_FAIL(ERROR_MESSAGE_PREFIX L"ResolveAmbiguity should not appear in traces.");
+					case AstInsType::AccumulatedDfa:
+						CHECK_FAIL(ERROR_MESSAGE_PREFIX L"AccumulatedDfa should not appear in traces.");
+					case AstInsType::AccumulatedEoRo:
+						CHECK_FAIL(ERROR_MESSAGE_PREFIX L"AccumulatedEoRo should not appear in traces.");
 					default:;
 						CHECK_FAIL(ERROR_MESSAGE_PREFIX L"Unrecognizabled instruction.");
 					}

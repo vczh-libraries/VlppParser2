@@ -432,7 +432,9 @@ export 1 + 2
 				receiver.Execute({ AstInsType::EndObject }, tokens[1], 1);
 			}
 			{
-				receiver.Execute({ AstInsType::BeginObjectLeftRecursive, (vint32_t)CalculatorClasses::Binary }, tokens[1], 1);
+				receiver.Execute({ AstInsType::LriStore }, tokens[1], 1);
+				receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::Binary }, tokens[1], 1);
+				receiver.Execute({ AstInsType::LriFetch }, tokens[1], 1);
 				receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Binary_left }, tokens[1], 1);
 				{
 					receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::NumExpr }, tokens[3], 3);
@@ -492,7 +494,9 @@ export 1 + 2
 				receiver.Execute({ AstInsType::DelayFieldAssignment }, tokens[1], 1);
 				receiver.Execute({ AstInsType::LriFetch }, tokens[1], 1);
 				{
-					receiver.Execute({ AstInsType::BeginObjectLeftRecursive, (vint32_t)CalculatorClasses::Binary }, tokens[1], 1);
+					receiver.Execute({ AstInsType::LriStore }, tokens[1], 1);
+					receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::Binary }, tokens[1], 1);
+					receiver.Execute({ AstInsType::LriFetch }, tokens[1], 1);
 					receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Binary_left }, tokens[1], 1);
 					{
 						receiver.Execute({ AstInsType::DelayFieldAssignment }, tokens[3], 3);

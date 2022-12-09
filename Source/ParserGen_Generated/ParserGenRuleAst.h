@@ -316,7 +316,7 @@ namespace vl
 			class GlrLeftRecursionInjectContinuation : public vl::glr::ParsingAstBase, vl::reflection::Description<GlrLeftRecursionInjectContinuation>
 			{
 			public:
-				vl::Ptr<GlrLeftRecursionPlaceholder> flag;
+				vl::collections::List<vl::Ptr<GlrLeftRecursionPlaceholder>> flags;
 				GlrLeftRecursionConfiguration configuration = GlrLeftRecursionConfiguration::UNDEFINED_ENUM_ITEM_VALUE;
 				GlrLeftRecursionInjectContinuationType type = GlrLeftRecursionInjectContinuationType::UNDEFINED_ENUM_ITEM_VALUE;
 				vl::collections::List<vl::Ptr<GlrLeftRecursionInjectClause>> injectionTargets;

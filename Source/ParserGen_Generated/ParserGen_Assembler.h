@@ -78,7 +78,7 @@ namespace vl
 				LeftRecursionInjectClause_continuation = 19,
 				LeftRecursionInjectClause_rule = 20,
 				LeftRecursionInjectContinuation_configuration = 21,
-				LeftRecursionInjectContinuation_flag = 22,
+				LeftRecursionInjectContinuation_flags = 22,
 				LeftRecursionInjectContinuation_injectionTargets = 23,
 				LeftRecursionInjectContinuation_type = 24,
 				LeftRecursionPlaceholder_flag = 25,

@@ -279,7 +279,11 @@ protected:
 		}
 
 		writer.WriteChar(L'(');
-		writer.WriteString(node->flag->flag.value);
+		for (auto [lriFlag, index] : indexed(node->flags))
+		{
+			if (index != 0) writer.WriteString(L", ");
+			writer.WriteString(lriFlag->flag.value);
+		}
 		writer.WriteString(L") ");
 
 		for (auto [target, index] : indexed(node->injectionTargets))

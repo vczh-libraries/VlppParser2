@@ -46,6 +46,7 @@ namespace binaryop
 		{
 			if (!node) return nullptr;
 			node->Accept(static_cast<Expr::IVisitor*>(this));
+			this->result->codeRange = node->codeRange;
 			return this->result.Cast<Expr>();
 		}
 

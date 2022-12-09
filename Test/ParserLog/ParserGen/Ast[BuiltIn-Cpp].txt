@@ -2,9 +2,15 @@
     "$ast": "AstFile",
     "types": [{
         "$ast": "Class",
-        "name": "TypeOrExpr",
+        "name": "TypeOrExprOrOthers",
         "ambiguity": "No",
         "baseClass": "",
+        "props": []
+    }, {
+        "$ast": "Class",
+        "name": "TypeOrExpr",
+        "ambiguity": "No",
+        "baseClass": "TypeOrExprOrOthers",
         "props": []
     }, {
         "$ast": "Class",
@@ -225,7 +231,7 @@
         "$ast": "Class",
         "name": "GenericArgument",
         "ambiguity": "No",
-        "baseClass": "",
+        "baseClass": "TypeOrExprOrOthers",
         "props": [{
             "$ast": "ClassProp",
             "name": "argument",
@@ -246,7 +252,7 @@
             "$ast": "ClassProp",
             "name": "arguments",
             "propType": "Array",
-            "propTypeName": "GenericArgument"
+            "propTypeName": "TypeOrExprOrOthers"
         }]
     }, {
         "$ast": "Enum",
@@ -707,6 +713,22 @@
             "propTypeName": "TypeOrExpr"
         }]
     }, {
+        "$ast": "Class",
+        "name": "VariadicExpr",
+        "ambiguity": "No",
+        "baseClass": "ExprOnly",
+        "props": [{
+            "$ast": "ClassProp",
+            "name": "operand",
+            "propType": "Type",
+            "propTypeName": "TypeOrExpr"
+        }, {
+            "$ast": "ClassProp",
+            "name": "variadic",
+            "propType": "Token",
+            "propTypeName": ""
+        }]
+    }, {
         "$ast": "Enum",
         "name": "PrimitiveTypeKinds",
         "items": [{
@@ -840,7 +862,7 @@
         "$ast": "Class",
         "name": "FunctionParameter",
         "ambiguity": "No",
-        "baseClass": "",
+        "baseClass": "TypeOrExprOrOthers",
         "props": [{
             "$ast": "ClassProp",
             "name": "keywords",
@@ -871,7 +893,7 @@
             "$ast": "ClassProp",
             "name": "parameters",
             "propType": "Array",
-            "propTypeName": "FunctionParameter"
+            "propTypeName": "TypeOrExprOrOthers"
         }, {
             "$ast": "ClassProp",
             "name": "variadic",

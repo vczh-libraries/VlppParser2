@@ -17,6 +17,7 @@ namespace vl
 			extern void					CalculateFirstSet(VisitorContext& context, Ptr<GlrSyntaxFile> syntaxFile);
 			extern void					ValidateTypes(VisitorContext& context, Ptr<GlrSyntaxFile> syntaxFile);
 			extern void					ValidateStructure(VisitorContext& context, Ptr<GlrSyntaxFile> syntaxFile);
+			extern void					ValidatePrefixMerge(VisitorContext& context, Ptr<GlrSyntaxFile> syntaxFile);
 
 			extern Ptr<GlrSyntaxFile>	RewriteSyntax_Switch(VisitorContext& context, VisitorSwitchContext& sContext, SyntaxSymbolManager& syntaxManager, Ptr<GlrSyntaxFile> syntaxFile);
 			extern Ptr<GlrSyntaxFile>	RewriteSyntax_PrefixMerge(VisitorContext& context, SyntaxSymbolManager& syntaxManager, Ptr<GlrSyntaxFile> syntaxFile);
@@ -98,6 +99,9 @@ CompileSyntax
 				if (context.syntaxManager.Global().Errors().Count() > 0) return false;
 
 				ValidateStructure(context, syntaxFile);
+				if (context.syntaxManager.Global().Errors().Count() > 0) return false;
+
+				ValidatePrefixMerge(context, syntaxFile);
 				if (context.syntaxManager.Global().Errors().Count() > 0) return false;
 
 				return true;

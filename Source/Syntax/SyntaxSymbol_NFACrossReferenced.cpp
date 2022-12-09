@@ -80,87 +80,95 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 
 			void SyntaxSymbolManager::FixLeftRecursionInjectEdge(StateSymbol* startState, EdgeSymbol* injectEdge)
 			{
+				// search for all qualified placeholder edge starts from inject targets
 				List<EdgeSymbol*> placeholderEdges;
 				for (auto outEdge : startState->OutEdges())
 				{
-					if (outEdge->input.type == EdgeInputType::LrPlaceholder && outEdge->input.token == injectEdge->input.token)
+					if (outEdge->input.type == EdgeInputType::LrPlaceholder)
 					{
-						placeholderEdges.Add(outEdge);
+						if (!From(outEdge->input.flags).Intersect(injectEdge->input.flags).IsEmpty())
+						{
+							placeholderEdges.Add(outEdge);
+						}
 					}
 				}
 
-				vint created = 0;
-				for(auto placeholderEdge : From(placeholderEdges))
+				// calculate all return edges and ending states for each placeholder edge
+				// return edges:
+				//   injectEdge
+				//   return edge begins from inject target
+				//   ...
+				//   return edge begins from most inner rule that contains placeholder
+				// ending states:
+				//   to state of return edge begins from inject target
+				//   ...
+				//   to state of return edge begins from most inner rule that contains placeholder
+				//   to state from placeholder edge
+				Array<List<StateSymbol*>> endingStatesArray(placeholderEdges.Count());
+				Array<List<EdgeSymbol*>> returnEdgesArray(placeholderEdges.Count());
+				for(auto [placeholderEdge, index] : indexed(placeholderEdges))
 				{
-					List<StateSymbol*> endingStates;
-					List<EdgeSymbol*> returnEdges;
+					auto& endingStates = endingStatesArray[index];
+					auto& returnEdges = returnEdgesArray[index];
+
+					// check if placeholderEdge does nothing more than using rules
+					if (placeholderEdge->insAfterInput.Count() > 0)
 					{
-						// check if placeholderEdge does nothing more than using rules
-
-						if (placeholderEdge->insAfterInput.Count() > 0)
-						{
-							goto FAILED_INSTRUCTION_CHECKING;
-						}
-
-						for (vint i = 0; i <= placeholderEdge->returnEdges.Count(); i++)
-						{
-							auto returnEdge =
-								i == 0
-								? injectEdge
-								: placeholderEdge->returnEdges[i - 1]
-								;
-							auto endingState =
-								i == placeholderEdge->returnEdges.Count()
-								? placeholderEdge->To()
-								: placeholderEdge->returnEdges[i]->To()
-								;
-
-							for (auto outEdge : endingState->OutEdges())
-							{
-								if (outEdge->input.type == EdgeInputType::Ending && outEdge->insAfterInput.Count() > 0)
-								{
-									goto FAILED_INSTRUCTION_CHECKING;
-								}
-							}
-
-							returnEdges.Add(returnEdge);
-							endingStates.Add(endingState);
-						}
-						goto PASSED_INSTRUCTION_CHECKING;
-					FAILED_INSTRUCTION_CHECKING:
-						AddError(
-							ParserErrorType::LeftRecursionPlaceholderMixedWithSwitches,
-							{},
-							injectEdge->fromState->Rule()->Name(),
-							lrpFlags[injectEdge->input.token],
-							startState->Rule()->Name()
-							);
-						return;
+						goto FAILED_INSTRUCTION_CHECKING;
 					}
-				PASSED_INSTRUCTION_CHECKING:;
 
-					// search for all possible "LrPlaceholder {Ending} LeftRec Token" transitions
-					// for each transition, compact edges and put injectEdge properly in returnEdges
-					// here insBeforeInput has been ensured to be:
-					//   EndObject
-					//   LriStore
-					//   placeholderEdge->insBeforeInput
-					//   DelayFieldAssignment
-					//   LriFetch
-					//   loop {endingEdge->insBeforeInput returnEdge->insAfterInput}
-					//   --LeftRec--> ...
+					for (vint i = 0; i <= placeholderEdge->returnEdges.Count(); i++)
+					{
+						auto returnEdge =
+							i == 0
+							? injectEdge
+							: placeholderEdge->returnEdges[i - 1]
+							;
+						auto endingState =
+							i == placeholderEdge->returnEdges.Count()
+							? placeholderEdge->To()
+							: placeholderEdge->returnEdges[i]->To()
+							;
 
-					// EndObject is for the ReopenObject in the use rule transition before
-					// DelayFieldAssignment is for the ReopenObject in injectEdge->insAfterInput
-					// injectEdge is the last returnEdge
+						for (auto outEdge : endingState->OutEdges())
+						{
+							if (outEdge->input.type == EdgeInputType::Ending && outEdge->insAfterInput.Count() > 0)
+							{
+								goto FAILED_INSTRUCTION_CHECKING;
+							}
+						}
 
-					List<AstIns> instructionPrefix;
-					// there is no instruction in injectEdge->insBeforeInput
-					instructionPrefix.Add({ AstInsType::EndObject });
-					instructionPrefix.Add({ AstInsType::LriStore });
-					instructionPrefix.Add({ AstInsType::DelayFieldAssignment });
-					CopyFrom(instructionPrefix, placeholderEdge->insBeforeInput, true);
-					instructionPrefix.Add({ AstInsType::LriFetch });
+						returnEdges.Add(returnEdge);
+						endingStates.Add(endingState);
+					}
+					continue;
+				FAILED_INSTRUCTION_CHECKING:
+					AddError(
+						ParserErrorType::LeftRecursionPlaceholderMixedWithSwitches,
+						{},
+						injectEdge->fromState->Rule()->Name(),
+						lrpFlags[injectEdge->input.flags[0]],
+						startState->Rule()->Name()
+						);
+					return;
+				}
+
+				// calculate all acceptable input from inject edge
+				// key:
+				//   token
+				//   the number of return edges carried into this edge, at least 1
+				// value:
+				//   index of placeholder edge
+				//   the LeftRec edge before the Token edge (optional)
+				//   the Token edge that consume this input
+				using InputKey = Pair<vint32_t, vint>;
+				using InputValue = Tuple<vint, EdgeSymbol*, EdgeSymbol*>;
+				Group<InputKey, InputValue> acceptableInputs;
+
+				for(auto [placeholderEdge, index] : indexed(placeholderEdges))
+				{
+					auto& endingStates = endingStatesArray[index];
+					auto& returnEdges = returnEdgesArray[index];
 
 					for (vint i = returnEdges.Count() - 1; i >= 0; i--)
 					{
@@ -178,79 +186,195 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 							// find if there is any LeftRec from this state
 							case EdgeInputType::LeftRec:
 								{
-									auto lrEdge = outEdge;
 									// compact everything on top of this LeftRec and create an Input
-									for (auto tokenEdge : lrEdge->To()->OutEdges())
+									for (auto tokenEdge : outEdge->To()->OutEdges())
 									{
 										if (tokenEdge->input.type == EdgeInputType::Token)
 										{
-											created++;
-											auto newEdge = Ptr(new EdgeSymbol(injectEdge->From(), tokenEdge->To()));
-											edges.Add(newEdge);
-
-											newEdge->input = tokenEdge->input;
-											newEdge->importancy = tokenEdge->importancy;
-											CopyFrom(newEdge->returnEdges, From(returnEdges).Take(i + 1), true);
-											CopyFrom(newEdge->returnEdges, tokenEdge->returnEdges, true);
-
-											// newEdge consumes a token
-											// lrEdge->insAfterInput happens before consuming this token
-											// so it should be copied to newEdge->insBeforeInput
-											CopyFrom(newEdge->insBeforeInput, instructionPrefix, true);
-											CopyFrom(newEdge->insBeforeInput, lrEdge->insBeforeInput, true);
-											CopyFrom(newEdge->insBeforeInput, lrEdge->insAfterInput, true);
-											CopyFrom(newEdge->insBeforeInput, tokenEdge->insBeforeInput, true);
-
-											CopyFrom(newEdge->insAfterInput, tokenEdge->insAfterInput, true);
+											acceptableInputs.Add({ tokenEdge->input.token,i + 1 }, { index,outEdge,tokenEdge });
 										}
 									}
 								}
 								break;
 							// find if there is any Token from this state
 							case EdgeInputType::Token:
-								{
-									created++;
-									auto tokenEdge = outEdge;
-									auto newEdge = Ptr(new EdgeSymbol(injectEdge->From(), tokenEdge->To()));
-									edges.Add(newEdge);
-
-									newEdge->input = tokenEdge->input;
-									newEdge->importancy = tokenEdge->importancy;
-									CopyFrom(newEdge->returnEdges, From(returnEdges).Take(i + 1), true);
-									CopyFrom(newEdge->returnEdges, tokenEdge->returnEdges, true);
-
-									// newEdge consumes a token
-									// lrEdge->insAfterInput happens before consuming this token
-									// so it should be copied to newEdge->insBeforeInput
-									CopyFrom(newEdge->insBeforeInput, instructionPrefix, true);
-									CopyFrom(newEdge->insBeforeInput, tokenEdge->insBeforeInput, true);
-									CopyFrom(newEdge->insAfterInput, tokenEdge->insAfterInput, true);
-								}
+								acceptableInputs.Add({ outEdge->input.token,i + 1 }, { index,nullptr,outEdge });
 								break;
 							default:;
 							}
 						}
 
-						if (endingEdge)
+						if (!endingEdge)
 						{
-							CopyFrom(instructionPrefix, endingEdge->insBeforeInput, true);
-							CopyFrom(instructionPrefix, returnEdge->insAfterInput, true);
-						}
-						else
-						{
+							// stop searching if any Token edge are found
 							break;
 						}
 					}
 				}
 
+				for (auto [input, inputIndex] : indexed(acceptableInputs.Keys()))
+				{
+					auto [inputToken, returnEdgeCount] = input;
+					auto&& placeholderRecords = acceptableInputs.GetByIndex(inputIndex);
+
+					// group inputs by lrEdge, tokenEdge, carried return edges
+					// if there are multiple inputs from the same key
+					// it means such input creates an ambiguity
+					// 
+					// it usually happens in clauses like Prefix lri(flags) Target
+					// where multiple valid flags found in Target at the same time
+					//
+					// if we could indentify some inputs here where excluded return edges are all reuse edges
+					// then we can only create edges for one of them
+
+					struct Entry
+					{
+						EdgeSymbol*				lrEdge;
+						EdgeSymbol*				tokenEdge;
+						List<EdgeSymbol*>*		returnEdges;
+						vint					returnEdgeCount;
+
+						vint Compare(const Entry& entry)const
+						{
+							if (lrEdge < entry.lrEdge) return -1;
+							if (lrEdge > entry.lrEdge) return 1;
+							if (tokenEdge < entry.tokenEdge) return -1;
+							if (tokenEdge > entry.tokenEdge) return 1;
+							return CompareEnumerable(
+								From(*returnEdges).Take(returnEdgeCount),
+								From(*entry.returnEdges).Take(returnEdgeCount)
+								);
+						}
+
+						bool operator< (const Entry& entry)const { return Compare(entry) < 0; }
+						bool operator> (const Entry& entry)const { return Compare(entry) > 0; }
+						bool operator==(const Entry& entry)const { return Compare(entry) == 0; }
+					};
+					Group<Entry, vint> simpleUseRecords;
+
+					// search for placeholder edges where their excluded return edges are all reuse edges
+					for (vint recordIndex = 0; recordIndex < placeholderRecords.Count(); recordIndex++)
+					{
+						auto [placeholderIndex, lrEdge, tokenEdge] = placeholderRecords[recordIndex];
+						Entry entry{ lrEdge,tokenEdge,&returnEdgesArray[placeholderIndex],returnEdgeCount };
+						if(From(*entry.returnEdges)
+							.Skip(returnEdgeCount)
+							.All([](EdgeSymbol* edge) {return edge->input.ruleType == automaton::ReturnRuleType::Reuse; })
+							)
+						{
+							simpleUseRecords.Add(entry, recordIndex);
+						}
+					}
+
+					// for each group, if there are more than one placeholder edges
+					// mark them as deleted except the first one
+					SortedList<vint> recordsToRemove;
+					for (vint recordGroup = 0; recordGroup < simpleUseRecords.Count(); recordGroup++)
+					{
+						auto&& records = simpleUseRecords.GetByIndex(recordGroup);
+						if (records.Count() > 1)
+						{
+							CopyFrom(recordsToRemove, From(records).Skip(1));
+						}
+					}
+
+					// delete them in Group
+					// this way is not recommended but the group is going to be discarded very soon
+					for (vint i = recordsToRemove.Count() - 1; i >= 0; i--)
+					{
+						const_cast<List<InputValue>&>(placeholderRecords).RemoveAt(recordsToRemove[i]);
+					}
+
+					// convert reminaings
+					for (auto [placeholderIndex, lrEdge, tokenEdge] : placeholderRecords)
+					{
+						auto placeholderEdge = placeholderEdges[placeholderIndex];
+						auto& endingStates = endingStatesArray[placeholderIndex];
+						auto& returnEdges = returnEdgesArray[placeholderIndex];
+
+						// search for all possible "LrPlaceholder {Ending} LeftRec Token" transitions
+						// for each transition, compact edges and put injectEdge properly in returnEdges
+						// here insBeforeInput has been ensured to be:
+						//   EndObject
+						//   LriStore
+						//   DelayFieldAssignment
+						//   placeholderEdge->insBeforeInput
+						//   LriFetch
+						//   loop {endingEdge->insBeforeInput returnEdge->insAfterInput}
+						//   --LeftRec--> ...
+
+						// EndObject is for the ReopenObject in the use rule transition before
+						// DelayFieldAssignment is for the ReopenObject in injectEdge->insAfterInput
+						// injectEdge is the last returnEdge
+
+						List<AstIns> instructionPrefix;
+						// there is no instruction in injectEdge->insBeforeInput
+						instructionPrefix.Add({ AstInsType::EndObject });
+						instructionPrefix.Add({ AstInsType::LriStore });
+						instructionPrefix.Add({ AstInsType::DelayFieldAssignment });
+						CopyFrom(instructionPrefix, placeholderEdge->insBeforeInput, true);
+						instructionPrefix.Add({ AstInsType::LriFetch });
+
+						for (vint i = returnEdges.Count() - 1; i >= returnEdgeCount;i --)
+						{
+							auto endingState = endingStates[i];
+							auto returnEdge = returnEdges[i];
+							auto endingEdge = From(endingState->OutEdges())
+								.Where([](auto edge) { return edge->input.type == EdgeInputType::Ending; })
+								.First();
+
+							CopyFrom(instructionPrefix, endingEdge->insBeforeInput, true);
+							CopyFrom(instructionPrefix, returnEdge->insAfterInput, true);
+						}
+
+						if (lrEdge)
+						{
+							auto newEdge = Ptr(new EdgeSymbol(injectEdge->From(), tokenEdge->To()));
+							edges.Add(newEdge);
+
+							newEdge->input = tokenEdge->input;
+							newEdge->importancy = tokenEdge->importancy;
+							CopyFrom(newEdge->returnEdges, From(returnEdges).Take(returnEdgeCount), true);
+							CopyFrom(newEdge->returnEdges, tokenEdge->returnEdges, true);
+
+							// newEdge consumes a token
+							// lrEdge->insAfterInput happens before consuming this token
+							// so it should be copied to newEdge->insBeforeInput
+							CopyFrom(newEdge->insBeforeInput, instructionPrefix, true);
+							CopyFrom(newEdge->insBeforeInput, lrEdge->insBeforeInput, true);
+							CopyFrom(newEdge->insBeforeInput, lrEdge->insAfterInput, true);
+							CopyFrom(newEdge->insBeforeInput, tokenEdge->insBeforeInput, true);
+
+							CopyFrom(newEdge->insAfterInput, tokenEdge->insAfterInput, true);
+						}
+						else
+						{
+							auto newEdge = Ptr(new EdgeSymbol(injectEdge->From(), tokenEdge->To()));
+							edges.Add(newEdge);
+
+							newEdge->input = tokenEdge->input;
+							newEdge->importancy = tokenEdge->importancy;
+							CopyFrom(newEdge->returnEdges, From(returnEdges).Take(returnEdgeCount), true);
+							CopyFrom(newEdge->returnEdges, tokenEdge->returnEdges, true);
+
+							// newEdge consumes a token
+							// lrEdge->insAfterInput happens before consuming this token
+							// so it should be copied to newEdge->insBeforeInput
+							CopyFrom(newEdge->insBeforeInput, instructionPrefix, true);
+							CopyFrom(newEdge->insBeforeInput, tokenEdge->insBeforeInput, true);
+							CopyFrom(newEdge->insAfterInput, tokenEdge->insAfterInput, true);
+						}
+					}
+				}
+
 				// report an error if nothing is created
-				if (created == 0)
+				if (acceptableInputs.Count() == 0)
 				{
 					AddError(
 						ParserErrorType::LeftRecursionInjectHasNoContinuation,
 						{},
 						injectEdge->fromState->Rule()->Name(),
-						lrpFlags[injectEdge->input.token],
+						lrpFlags[injectEdge->input.flags[0]],
 						startState->Rule()->Name()
 						);
 				}

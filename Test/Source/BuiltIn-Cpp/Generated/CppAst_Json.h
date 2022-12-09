@@ -16,6 +16,7 @@ namespace cpp_parser
 		/// <summary>A JSON visitor, overriding all abstract methods with AST to JSON serialization code.</summary>
 		class AstVisitor
 			: public vl::glr::JsonVisitorBase
+			, protected virtual CppTypeOrExprOrOthers::IVisitor
 			, protected virtual CppTypeOrExpr::IVisitor
 			, protected virtual CppExprOnly::IVisitor
 			, protected virtual CppTypeOnly::IVisitor
@@ -60,9 +61,15 @@ namespace cpp_parser
 			virtual void PrintFields(CppThrowExpr* node);
 			virtual void PrintFields(CppTypeOnly* node);
 			virtual void PrintFields(CppTypeOrExpr* node);
+			virtual void PrintFields(CppTypeOrExprOrOthers* node);
+			virtual void PrintFields(CppVariadicExpr* node);
 			virtual void PrintFields(CppVolatileType* node);
 
 		protected:
+			void Visit(CppTypeOrExpr* node) override;
+			void Visit(CppGenericArgument* node) override;
+			void Visit(CppFunctionParameter* node) override;
+
 			void Visit(CppExprOnly* node) override;
 			void Visit(CppTypeOnly* node) override;
 			void Visit(CppQualifiedName* node) override;
@@ -85,6 +92,7 @@ namespace cpp_parser
 			void Visit(CppBinaryExpr* node) override;
 			void Visit(CppIfExpr* node) override;
 			void Visit(CppThrowExpr* node) override;
+			void Visit(CppVariadicExpr* node) override;
 
 			void Visit(CppPrimitiveType* node) override;
 			void Visit(CppConstType* node) override;
@@ -96,15 +104,13 @@ namespace cpp_parser
 		public:
 			AstVisitor(vl::stream::StreamWriter& _writer);
 
-			void Print(CppTypeOrExpr* node);
+			void Print(CppTypeOrExprOrOthers* node);
 			void Print(CppIdentifier* node);
-			void Print(CppGenericArgument* node);
 			void Print(CppGenericArguments* node);
 			void Print(CppStringLiteralFragment* node);
 			void Print(CppAdvancedType* node);
 			void Print(CppDeclaratorKeyword* node);
 			void Print(CppFunctionKeyword* node);
-			void Print(CppFunctionParameter* node);
 			void Print(CppDeclaratorFunctionPart* node);
 			void Print(CppDeclaratorArrayPart* node);
 			void Print(CppDeclarator* node);

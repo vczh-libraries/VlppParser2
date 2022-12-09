@@ -59,13 +59,15 @@
 | [134][Pwl1]<< !Pwl1_P @ >>                                         |      | [138][Pwl2_P]< Pwl2_P @ Lt >                                       |
 | [AST-INSTRUCTIONS]:                                                |      | [AST-INSTRUCTIONS]:                                                |
 |   - Field(PwlFeature::one)                                         |      |   - EndObject()                                                    |
-|   - EndObject()                                                    |      |   - BeginObjectLeftRecursive(PwlFeature)                           |
-|   > ReopenObject()                                                 |      |   + Field(PwlFeature::prev)                                        |
-| [RETURN STACK]:                                                    |      | [RETURN STACK]:                                                    |
-|   [0][1]: Pwl1 -> [181][Module]<< "prefix_with_leftrec" !Pwl1 @ >> |      |   [4][2]: Pwl2_P -> [143][Pwl2]<< { Plus } !Pwl2_P @ >>            |
-| [PREDECESSORS 4-4]: [4]                                            |      |   [3][2]: Pwl2 -> [182][Module]<< "prefix_with_leftrec" !Pwl2 @ >> |
-| [SUCCESORS 6-6]: [6]                                               |      | [PREDECESSORS 9-9]: [9]                                            |
-+--------------------------------------------------------------------+      | [SUCCESORS 16-16]: [16]                                            |
+|   - EndObject()                                                    |      |   - LriStore()                                                     |
+|   > ReopenObject()                                                 |      |   - BeginObject(PwlFeature)                                        |
+| [RETURN STACK]:                                                    |      |   - LriFetch()                                                     |
+|   [0][1]: Pwl1 -> [181][Module]<< "prefix_with_leftrec" !Pwl1 @ >> |      |   + Field(PwlFeature::prev)                                        |
+| [PREDECESSORS 4-4]: [4]                                            |      | [RETURN STACK]:                                                    |
+| [SUCCESORS 6-6]: [6]                                               |      |   [4][2]: Pwl2_P -> [143][Pwl2]<< { Plus } !Pwl2_P @ >>            |
++--------------------------------------------------------------------+      |   [3][2]: Pwl2 -> [182][Module]<< "prefix_with_leftrec" !Pwl2 @ >> |
+|                                                                           | [PREDECESSORS 9-9]: [9]                                            |
+|                                                                           | [SUCCESORS 16-16]: [16]                                            |
 |                                                                           +--------------------------------------------------------------------+
 |                                                                           |
 +                                                                           +
@@ -75,7 +77,9 @@
 | [132][Pwl1]< Pwl1 @ Lt >                                           |      |
 | [AST-INSTRUCTIONS]:                                                |      |
 |   - EndObject()                                                    |      |
-|   - BeginObjectLeftRecursive(PwlFeature)                           |      |
+|   - LriStore()                                                     |      |
+|   - BeginObject(PwlFeature)                                        |      |
+|   - LriFetch()                                                     |      |
 |   + Field(PwlFeature::prev)                                        |      |
 | [RETURN STACK]:                                                    |      |
 |   [0][1]: Pwl1 -> [181][Module]<< "prefix_with_leftrec" !Pwl1 @ >> |      |
@@ -122,7 +126,9 @@
 | [132][Pwl1]< Pwl1 @ Lt >                                           |      | [138][Pwl2_P]< Pwl2_P @ Lt >                                       |
 | [AST-INSTRUCTIONS]:                                                |      | [AST-INSTRUCTIONS]:                                                |
 |   - EndObject()                                                    |      |   - EndObject()                                                    |
-|   - BeginObjectLeftRecursive(PwlFeature)                           |      |   - BeginObjectLeftRecursive(PwlFeature)                           |
+|   - LriStore()                                                     |      |   - LriStore()                                                     |
+|   - BeginObject(PwlFeature)                                        |      |   - BeginObject(PwlFeature)                                        |
+|   - LriFetch()                                                     |      |   - LriFetch()                                                     |
 |   + Field(PwlFeature::prev)                                        |      |   + Field(PwlFeature::prev)                                        |
 | [RETURN STACK]:                                                    |      | [RETURN STACK]:                                                    |
 |   [0][1]: Pwl1 -> [181][Module]<< "prefix_with_leftrec" !Pwl1 @ >> |      |   [4][2]: Pwl2_P -> [143][Pwl2]<< { Plus } !Pwl2_P @ >>            |

@@ -98,6 +98,7 @@ namespace vl
 				{
 					if (!node) return nullptr;
 					node->Accept(static_cast<GlrType::IVisitor*>(this));
+					this->result->codeRange = node->codeRange;
 					return this->result.Cast<GlrType>();
 				}
 
@@ -105,6 +106,7 @@ namespace vl
 				{
 					if (!node) return nullptr;
 					Visit(node);
+					this->result->codeRange = node->codeRange;
 					return this->result.Cast<GlrEnumItem>();
 				}
 
@@ -112,6 +114,7 @@ namespace vl
 				{
 					if (!node) return nullptr;
 					Visit(node);
+					this->result->codeRange = node->codeRange;
 					return this->result.Cast<GlrClassProp>();
 				}
 
@@ -119,6 +122,7 @@ namespace vl
 				{
 					if (!node) return nullptr;
 					Visit(node);
+					this->result->codeRange = node->codeRange;
 					return this->result.Cast<GlrAstFile>();
 				}
 

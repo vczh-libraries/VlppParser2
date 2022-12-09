@@ -96,6 +96,21 @@ void TracedTests()
 	{
 		runParser(L"TypeOrExpr", L"PointerOfInt", [&]() { return parser.Parse_TypeOrExpr(L"int*"); });
 	});
+
+	TEST_CASE(L"Name<int>")
+	{
+		runParser(L"TypeOrExpr", L"NameOfInt", [&]() { return parser.Parse_TypeOrExpr(L"Name<int>"); });
+	});
+
+	TEST_CASE(L"Name<A...>")
+	{
+		runParser(L"TypeOrExpr", L"NameOfAs", [&]() { return parser.Parse_TypeOrExpr(L"Name<A...>"); });
+	});
+
+	TEST_CASE(L"sizeof a()")
+	{
+		runParser(L"TypeOrExpr", L"SizeofA", [&]() { return parser.Parse_TypeOrExpr(L"sizeof a()"); });
+	});
 }
 
 TEST_FILE

@@ -348,7 +348,7 @@ Module : Module
   ::= !Module "+"
   ;
 Exp3
-  ::= !Exp0 [left_recursion_inject(Prefix) (Module left_recursion_inject(Expression) Exp2)]
+  ::= !Exp0 left_recursion_inject(Prefix) (Module left_recursion_inject(Expression) Exp2)
   ;
 )SYNTAX";
 		ExpectError(
