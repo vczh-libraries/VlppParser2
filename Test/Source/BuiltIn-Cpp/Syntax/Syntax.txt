@@ -147,8 +147,8 @@ _QualifiedName_PrimitiveExpr
 
 _PostfixUnaryExpr
   ::= !_QualifiedName_PrimitiveExpr
-  ::= _LongType:operand "(" {_Expr_Argument:arguments ; ","} ")" as CallExpr {kind = Parenthesis}
-  ::= _LongType:operand "{" {_Expr_Argument:arguments ; ","} "}" as CallExpr {kind = Brace}
+  ::= _Type:operand "(" {_Expr_Argument:arguments ; ","} ")" as CallExpr {kind = Parenthesis}
+  ::= _Type:operand "{" {_Expr_Argument:arguments ; ","} "}" as CallExpr {kind = Brace}
   ::= _PostfixUnaryExpr:left "." _MemberOperatorQualifiedName:right as BinaryExpr {op = Member}
   ::= _PostfixUnaryExpr:left "->" _MemberOperatorQualifiedName:right as BinaryExpr {op = Pointer}
   ::= _PostfixUnaryExpr:operand "++" as PostfixUnaryExpr {op = Increase}
@@ -362,16 +362,10 @@ _QualifiedName_PrimitiveType
   ::= !prefix_merge(_PrimitiveType)
   ;
 
-_ShortType : TypeOrExpr
+_TypeBeforeDeclarator : TypeOrExpr
   ::= !_QualifiedName_PrimitiveType
-  ::= "const" _ShortType:type as ConstType
-  ::= "volatile" _ShortType:type as VolatileType
-  ;
-
-_LongType
-  ::= !_ShortType
-  ::= _LongType:type "const" as ConstType
-  ::= _LongType:type "volatile" as VolatileType
+  ::= "const" _TypeBeforeDeclarator:type as ConstType
+  ::= "volatile" _TypeBeforeDeclarator:type as VolatileType
   ;
 
 //////////////////////////////////////////////////////////////////
@@ -445,11 +439,11 @@ _DeclaratorAKMember
 //================================================================
 
 _DeclaratorFunctionParameter
-  ::= !_LongType
-  ::= _LongType:type "=" _Expr_NoComma:defaultValue as FunctionParameter
-  ::= _LongType:type _DeclaratorOptionalName:declarator ["=" _Expr_NoComma:defaultValue] as FunctionParameter
+  ::= !_TypeBeforeDeclarator
+  ::= _TypeBeforeDeclarator:type "=" _Expr_NoComma:defaultValue as FunctionParameter
+  ::= _TypeBeforeDeclarator:type _DeclaratorOptionalName:declarator ["=" _Expr_NoComma:defaultValue] as FunctionParameter
   ::= _DeclaratorKeyword:keywords {_DeclaratorKeyword:keywords}
-      _LongType:type [_DeclaratorOptionalName:declarator] ["=" _Expr_NoComma:defaultValue] as FunctionParameter
+      _TypeBeforeDeclarator:type [_DeclaratorOptionalName:declarator] ["=" _Expr_NoComma:defaultValue] as FunctionParameter
   ;
 
 _DeclaratorFunctionParameters
@@ -539,8 +533,8 @@ _DeclaratorOptionalName
 //////////////////////////////////////////////////////////////////
 
 _Type
-  ::= !_LongType
-  ::= _LongType:type _DeclaratorWithoutName:declarator as DeclaratorType
+  ::= !_TypeBeforeDeclarator
+  ::= _TypeBeforeDeclarator:type _DeclaratorWithoutName:declarator as DeclaratorType
   ;
 
 //////////////////////////////////////////////////////////////////
