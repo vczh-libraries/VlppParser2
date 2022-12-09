@@ -2,7 +2,10 @@
 
 ## Progressing
 
-- `throw` is missing in `BuiltIn-Cpp` in `_TypeOrExpr`
+- `int*{}` failed to parse
+- `sizeof a(b, c)` clause unexpected ambiguity
+- `a() + 1` failed to generate instructions
+- `int()` failed to generate instructions
 
 ## Next task
 

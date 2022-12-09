@@ -158,102 +158,6 @@ ValidateDirectPrefixMergeRuleVisitor
 			};
 
 /***********************************************************************
-ValidateIndirectPrefixMergeRuleVisitor
-***********************************************************************/
-
-			class ValidateIndirectPrefixMergeRuleVisitor
-				: public Object
-				, protected virtual GlrClause::IVisitor
-			{
-			protected:
-				VisitorContext&				context;
-				RuleSymbol*					ruleSymbol;
-				RuleSymbol*					pmRuleSymbol;
-
-			public:
-				ValidateIndirectPrefixMergeRuleVisitor(
-					VisitorContext& _context,
-					RuleSymbol* _ruleSymbol,
-					RuleSymbol* _pmRuleSymbol
-				)
-					: context(_context)
-					, ruleSymbol(_ruleSymbol)
-					, pmRuleSymbol(_pmRuleSymbol)
-				{
-				}
-
-				void ValidateClause(Ptr<GlrClause> clause)
-				{
-					clause->Accept(this);
-				}
-
-			protected:
-
-				void NotSimpleUsingRule(GlrClause* node)
-				{
-					if (context.leftRecursiveClauses.Contains(ruleSymbol, node))
-					{
-						goto SKIP_ADDING;
-					}
-
-					// safe to add the clause since errors have been detected in ClausePartiallyIndirectlyBeginsWithPrefixMerge
-					{
-						vint index = context.clauseToStartRules.Keys().IndexOf(node);
-						if (index != -1)
-						{
-							for (auto ruleSymbol : context.clauseToStartRules.GetByIndex(index))
-							{
-								if (context.indirectPmClauses.Keys().IndexOf(ruleSymbol) != -1)
-								{
-									goto SKIP_ADDING;
-								}
-							}
-						}
-						context.clauseToConvertedToPrefixMerge.Add(node);
-					}
-				SKIP_ADDING:;
-				}
-
-				////////////////////////////////////////////////////////////////////////
-				// GlrClause::IVisitor
-				////////////////////////////////////////////////////////////////////////
-
-				void Visit(GlrCreateClause* node) override
-				{
-					NotSimpleUsingRule(node);
-				}
-
-				void Visit(GlrPartialClause* node) override
-				{
-					NotSimpleUsingRule(node);
-				}
-
-				void Visit(GlrReuseClause* node) override
-				{
-					if (!dynamic_cast<GlrUseSyntax*>(node->syntax.Obj()))
-					{
-						NotSimpleUsingRule(node);
-					}
-					else if (node->assignments.Count() > 0)
-					{
-						NotSimpleUsingRule(node);
-					}
-				}
-
-				void Visit(GlrLeftRecursionPlaceholderClause* node) override
-				{
-				}
-
-				void Visit(GlrLeftRecursionInjectClause* node) override
-				{
-				}
-
-				void Visit(GlrPrefixMergeClause* node) override
-				{
-				}
-			};
-
-/***********************************************************************
 ValidateDeducingPrefixMergeRuleVisitor
 ***********************************************************************/
 
@@ -550,7 +454,6 @@ ValidatePrefixMerge
 
 						if (!context.directPmClauses.Keys().Contains(ruleSymbol))
 						{
-							ValidateIndirectPrefixMergeRuleVisitor visitor3(context, ruleSymbol, rulePm);
 							for (auto clause : rule->clauses)
 							{
 								ParsingToken firstDirectLiteral;
@@ -621,9 +524,22 @@ ValidatePrefixMerge
 										firstIndirectNonPmRule->Name()
 										);
 								}
-								else
+								else if (!context.leftRecursiveClauses.Contains(ruleSymbol, clause.Obj()))
 								{
-									visitor3.ValidateClause(clause);
+									// safe to add the clause since errors have been detected in ClausePartiallyIndirectlyBeginsWithPrefixMerge
+									vint index = context.clauseToStartRules.Keys().IndexOf(clause.Obj());
+									if (index != -1)
+									{
+										for (auto ruleSymbol : context.clauseToStartRules.GetByIndex(index))
+										{
+											if (context.indirectPmClauses.Keys().IndexOf(ruleSymbol) != -1)
+											{
+												goto SKIP_ADDING;
+											}
+										}
+									}
+									context.clauseToConvertedToPrefixMerge.Add(clause.Obj());
+								SKIP_ADDING:;
 								}
 							}
 						}
