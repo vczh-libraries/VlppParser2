@@ -2,8 +2,9 @@
 
 ## Progressing
 
-- `decltype(auto) X::(int a, Y<Z> ...b, ...) -> ::X<int>::Y<0>::Z:: * const & && volatile (&[10])(int)`
+- `::a::b::c::* const & && volatile (&[10])(int)`
   - Ambiguity
+  - It should be invalid, instead of being `::a(::b::c::*)` and `::a::b(::c::*)`
 - `constexpr extern static mutable thread_local virtual explicit decltype(auto) friend abstract __fastcall inline __inline __forceinline X::(int a, Y<Z> ...b, ...)`
   - Failed to parse
 - `constexpr extern static mutable thread_local virtual explicit decltype(auto) friend abstract __fastcall inline __inline __forceinline X::(int a, Y<Z> ...b, ...) constexpr const volatile && & override final mutable noexcept noexcept(10) throw () throw(bool) throw(int, float, bool) = 0 = default = delete -> ::X<int>::Y<0>::Z`
