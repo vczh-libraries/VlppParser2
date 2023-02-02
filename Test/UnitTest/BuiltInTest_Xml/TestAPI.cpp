@@ -17,6 +17,7 @@ TEST_FILE
 			L"<comment><!-- <This-is-a-single-line-of/> <Comment/> --></comment>",
 			L"<text> normal <b>bold</b> normal <!--comment--> <i>italic</i> normal </text>",
 			L"<text> \"normal\" <b>bold</b> \"normal\' <!--comment--> <i>italic</i> \'normal\" </text>",
+			L"<nested> <![CDATA[<![CDATA[]]]]> <![CDATA[>]]> </nested>",
 		};
 		const wchar_t* output[] =
 		{
@@ -28,6 +29,7 @@ TEST_FILE
 			L"<comment><!-- <This-is-a-single-line-of/> <Comment/> --></comment>",
 			L"<text> normal <b>bold</b> normal <!--comment--><i>italic</i> normal </text>",
 			L"<text> &quot;normal&quot; <b>bold</b> &quot;normal&apos; <!--comment--><i>italic</i> &apos;normal&quot; </text>",
+			L"<nested><![CDATA[<![CDATA[]]]]><![CDATA[>]]></nested>",
 		};
 
 		Parser parser;
@@ -40,5 +42,17 @@ TEST_FILE
 				TEST_ASSERT(xml == output[i]);
 			});
 		}
+	});
+
+	TEST_CASE(L"Nested CDATA")
+	{
+		const wchar_t* input = L"<nested><![CDATA[<![CDATA[]]]]><![CDATA[>]]></nested>";
+
+		Parser parser;
+		auto ast = XmlParseDocument(WString::Unmanaged(input), parser);
+
+		TEST_ASSERT(ast->rootElement->subNodes.Count() == 2);
+		TEST_ASSERT(ast->rootElement->subNodes[0].Cast<XmlCData>()->content.value == L"<![CDATA[]]");
+		TEST_ASSERT(ast->rootElement->subNodes[1].Cast<XmlCData>()->content.value == L">");
 	});
 }
