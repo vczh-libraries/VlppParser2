@@ -278,12 +278,12 @@
 
 [62][Exp2]< Exp2 "*" @ Exp1 >
 [RULE: 3][CLAUSE: 1]
-	epsilon -> [63][Exp2]< Exp2 "*" @ Exp1 >
+	rule: Exp1 -> [66][Exp2]< Exp2 "*" Exp1 @ >
+		+ Field(Binary::right)
 
 [63][Exp2]< Exp2 "*" @ Exp1 >
 [RULE: 3][CLAUSE: 1]
-	rule: Exp1 -> [66][Exp2]< Exp2 "*" Exp1 @ >
-		+ Field(Binary::right)
+	epsilon -> [62][Exp2]< Exp2 "*" @ Exp1 >
 
 [64][Exp2]< Exp2 "*" Exp1 > @[ENDING]
 [RULE: 3][CLAUSE: 1]
@@ -328,7 +328,7 @@
 
 [73][Exp2]< Exp2 @ "*" Exp1 >
 [RULE: 3][CLAUSE: 1]
-	token: "*" -> [62][Exp2]< Exp2 "*" @ Exp1 >
+	token: "*" -> [63][Exp2]< Exp2 "*" @ Exp1 >
 
 [74][Exp2]< Exp2 @ "/" Exp1 >
 [RULE: 3][CLAUSE: 2]
@@ -378,12 +378,12 @@
 
 [84][Exp3]< Exp3 "+" @ Exp2 >
 [RULE: 4][CLAUSE: 1]
-	epsilon -> [85][Exp3]< Exp3 "+" @ Exp2 >
+	rule: Exp2 -> [88][Exp3]< Exp3 "+" Exp2 @ >
+		+ Field(Binary::right)
 
 [85][Exp3]< Exp3 "+" @ Exp2 >
 [RULE: 4][CLAUSE: 1]
-	rule: Exp2 -> [88][Exp3]< Exp3 "+" Exp2 @ >
-		+ Field(Binary::right)
+	epsilon -> [84][Exp3]< Exp3 "+" @ Exp2 >
 
 [86][Exp3]< Exp3 "+" Exp2 > @[ENDING]
 [RULE: 4][CLAUSE: 1]
@@ -428,7 +428,7 @@
 
 [95][Exp3]< Exp3 @ "+" Exp2 >
 [RULE: 4][CLAUSE: 1]
-	token: "+" -> [84][Exp3]< Exp3 "+" @ Exp2 >
+	token: "+" -> [85][Exp3]< Exp3 "+" @ Exp2 >
 
 [96][Exp3]< Exp3 @ "-" Exp2 >
 [RULE: 4][CLAUSE: 2]
@@ -478,7 +478,7 @@
 
 [106][Exp4]< @ Exp4 ">" Exp3 >
 [RULE: 5][CLAUSE: 3]
-	rule: Exp4 -> [132][Exp4]< Exp4 @ ">" Exp3 >
+	rule: Exp4 -> [133][Exp4]< Exp4 @ ">" Exp3 >
 		+ Field(Binary::left)
 
 [107][Exp4]< @ Exp4 ">=" Exp3 >
@@ -488,12 +488,12 @@
 
 [108][Exp4]< Exp4 "<" @ Exp3 >
 [RULE: 5][CLAUSE: 1]
-	epsilon -> [109][Exp4]< Exp4 "<" @ Exp3 >
+	rule: Exp3 -> [111][Exp4]< Exp4 "<" Exp3 @ >
+		+ Field(Binary::right)
 
 [109][Exp4]< Exp4 "<" @ Exp3 >
 [RULE: 5][CLAUSE: 1]
-	rule: Exp3 -> [111][Exp4]< Exp4 "<" Exp3 @ >
-		+ Field(Binary::right)
+	epsilon -> [108][Exp4]< Exp4 "<" @ Exp3 >
 
 [110][Exp4]< Exp4 "<" Exp3 > @[ENDING]
 [RULE: 5][CLAUSE: 1]
@@ -515,7 +515,7 @@
 
 [114][Exp4]< Exp4 "<=" @ Exp3 >
 [RULE: 5][CLAUSE: 2]
-	rule: Exp3 -> [117][Exp4]< Exp4 "<=" Exp3 @ >
+	rule: Exp3 -> [116][Exp4]< Exp4 "<=" Exp3 @ >
 		+ Field(Binary::right)
 
 [115][Exp4]< Exp4 "<=" Exp3 > @[ENDING]
@@ -523,23 +523,23 @@
 
 [116][Exp4]< Exp4 "<=" Exp3 @ >
 [RULE: 5][CLAUSE: 2]
-	epsilon -> [115][Exp4]< Exp4 "<=" Exp3 > @[ENDING]
-		- EndObject()
-
-[117][Exp4]< Exp4 "<=" Exp3 @ >
-[RULE: 5][CLAUSE: 2]
-	epsilon -> [116][Exp4]< Exp4 "<=" Exp3 @ >
+	epsilon -> [117][Exp4]< Exp4 "<=" Exp3 @ >
 		- EnumItem(7)
 		- Field(Binary::op)
 
+[117][Exp4]< Exp4 "<=" Exp3 @ >
+[RULE: 5][CLAUSE: 2]
+	epsilon -> [115][Exp4]< Exp4 "<=" Exp3 > @[ENDING]
+		- EndObject()
+
 [118][Exp4]< Exp4 ">" @ Exp3 >
 [RULE: 5][CLAUSE: 3]
-	rule: Exp3 -> [122][Exp4]< Exp4 ">" Exp3 @ >
-		+ Field(Binary::right)
+	epsilon -> [119][Exp4]< Exp4 ">" @ Exp3 >
 
 [119][Exp4]< Exp4 ">" @ Exp3 >
 [RULE: 5][CLAUSE: 3]
-	epsilon -> [118][Exp4]< Exp4 ">" @ Exp3 >
+	rule: Exp3 -> [122][Exp4]< Exp4 ">" Exp3 @ >
+		+ Field(Binary::right)
 
 [120][Exp4]< Exp4 ">" Exp3 > @[ENDING]
 [RULE: 5][CLAUSE: 3]
@@ -584,7 +584,7 @@
 
 [129][Exp4]< Exp4 @ "<" Exp3 >
 [RULE: 5][CLAUSE: 1]
-	token: "<" -> [108][Exp4]< Exp4 "<" @ Exp3 >
+	token: "<" -> [109][Exp4]< Exp4 "<" @ Exp3 >
 
 [130][Exp4]< Exp4 @ "<=" Exp3 >
 [RULE: 5][CLAUSE: 2]
@@ -596,11 +596,11 @@
 
 [132][Exp4]< Exp4 @ ">" Exp3 >
 [RULE: 5][CLAUSE: 3]
-	epsilon -> [133][Exp4]< Exp4 @ ">" Exp3 >
+	token: ">" -> [118][Exp4]< Exp4 ">" @ Exp3 >
 
 [133][Exp4]< Exp4 @ ">" Exp3 >
 [RULE: 5][CLAUSE: 3]
-	token: ">" -> [119][Exp4]< Exp4 ">" @ Exp3 >
+	epsilon -> [132][Exp4]< Exp4 @ ">" Exp3 >
 
 [134][Exp4]< Exp4 @ ">=" Exp3 >
 [RULE: 5][CLAUSE: 4]
@@ -650,7 +650,7 @@
 
 [144][Exp5]< @ Exp5 "!=" Exp4 >
 [RULE: 6][CLAUSE: 2]
-	rule: Exp5 -> [156][Exp5]< Exp5 @ "!=" Exp4 >
+	rule: Exp5 -> [157][Exp5]< Exp5 @ "!=" Exp4 >
 		+ Field(Binary::left)
 
 [145][Exp5]< @ Exp5 "==" Exp4 >
@@ -706,11 +706,11 @@
 
 [156][Exp5]< Exp5 @ "!=" Exp4 >
 [RULE: 6][CLAUSE: 2]
-	epsilon -> [157][Exp5]< Exp5 @ "!=" Exp4 >
+	token: "!=" -> [146][Exp5]< Exp5 "!=" @ Exp4 >
 
 [157][Exp5]< Exp5 @ "!=" Exp4 >
 [RULE: 6][CLAUSE: 2]
-	token: "!=" -> [146][Exp5]< Exp5 "!=" @ Exp4 >
+	epsilon -> [156][Exp5]< Exp5 @ "!=" Exp4 >
 
 [158][Exp5]< Exp5 @ "==" Exp4 >
 [RULE: 6][CLAUSE: 1]
