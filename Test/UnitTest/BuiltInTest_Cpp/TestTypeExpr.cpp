@@ -308,7 +308,7 @@ TEST_FILE
 		File(
 			FilePath(GetTestParserInputPath(L"BuiltIn-Cpp"))
 			/ L"Input"
-			/ L"TypeOrExpr_LambdaLambdaAmbiguous.txt"
+			/ L"TypeOrExpr_LambdaAmbiguous.txt"
 		).ReadAllLinesByBom(lines);
 		for (auto&& line : lines)
 		{
