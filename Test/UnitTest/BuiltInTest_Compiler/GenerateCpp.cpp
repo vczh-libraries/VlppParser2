@@ -85,7 +85,7 @@ TEST_FILE
 	}
 
 	Ptr<GlrAstFile> astFile;
-	Ptr<GlrSyntaxFile> syntaxFile;
+	List<Ptr<GlrSyntaxFile>> syntaxFiles;
 
 	TEST_CASE(L"Parse Ast.txt")
 	{
@@ -96,14 +96,22 @@ TEST_FILE
 		File(dirOutput / (L"Ast[BuiltIn-Cpp].txt")).WriteAllText(actualJson, true, BomEncoder::Utf8);
 	});
 
-	TEST_CASE(L"Parse Syntax.txt")
+	List<WString> syntaxFileNames;
+	syntaxFileNames.Add(L"Syntax");
+	for (auto syntaxFileName : syntaxFileNames)
 	{
-		RuleParser ruleParser;
-		auto input = File(dirParser / L"Syntax/Syntax.txt").ReadAllTextByBom();
-		syntaxFile = ruleParser.ParseFile(input);
-		auto actualJson = PrintAstJson<json_visitor::RuleAstVisitor>(syntaxFile);
-		File(dirOutput / (L"Syntax[BuiltIn-Cpp].txt")).WriteAllText(actualJson, true, BomEncoder::Utf8);
-	});
+		TEST_CASE(L"Parse " + syntaxFileName + L".txt")
+		{
+			RuleParser ruleParser;
+			{
+				auto input = File(dirParser / L"Syntax" / (syntaxFileName + L".txt")).ReadAllTextByBom();
+				auto syntaxFile = ruleParser.ParseFile(input);
+				syntaxFiles.Add(syntaxFile);
+				auto actualJson = PrintAstJson<json_visitor::RuleAstVisitor>(syntaxFile);
+				File(dirOutput / (L"Syntax[BuiltIn-Cpp][" + syntaxFileName + L"].txt")).WriteAllText(actualJson, true, BomEncoder::Utf8);
+			}
+		});
+	}
 
 	ParserSymbolManager global;
 	AstSymbolManager astManager(global);
@@ -145,8 +153,6 @@ TEST_FILE
 
 	TEST_CASE(L"CompilerSyntax")
 	{
-		List<Ptr<GlrSyntaxFile>> syntaxFiles;
-		syntaxFiles.Add(syntaxFile);
 		auto rewritten = CompileSyntax(astManager, lexerManager, syntaxManager, output, syntaxFiles);
 		for (auto error : global.Errors())
 		{
