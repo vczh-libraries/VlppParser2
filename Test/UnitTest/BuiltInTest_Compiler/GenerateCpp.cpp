@@ -97,14 +97,17 @@ TEST_FILE
 	});
 
 	List<WString> syntaxFileNames;
-	syntaxFileNames.Add(L"Syntax");
+	syntaxFileNames.Add(L"QualifiedName");
+	syntaxFileNames.Add(L"Expressions");
+	syntaxFileNames.Add(L"Types");
+	syntaxFileNames.Add(L"API");
 	for (auto syntaxFileName : syntaxFileNames)
 	{
 		TEST_CASE(L"Parse " + syntaxFileName + L".txt")
 		{
 			RuleParser ruleParser;
 			{
-				auto input = File(dirParser / L"Syntax" / (syntaxFileName + L".txt")).ReadAllTextByBom();
+				auto input = File(dirParser / L"Syntax" / L"Syntax" / (syntaxFileName + L".txt")).ReadAllTextByBom();
 				auto syntaxFile = ruleParser.ParseFile(input);
 				syntaxFiles.Add(syntaxFile);
 				auto actualJson = PrintAstJson<json_visitor::RuleAstVisitor>(syntaxFile);
