@@ -2,7 +2,6 @@
 
 TEST_FILE
 {
-	return;
 	cpp_parser::Parser parser;
 
 	TEST_CATEGORY(L"SingleLevel")

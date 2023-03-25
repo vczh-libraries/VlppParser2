@@ -1798,6 +1798,20 @@ namespace cpp_parser
 			EndObject();
 		}
 
+		void AstVisitor::Visit(CppExprStat* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"ExprStat", node);
+			PrintFields(static_cast<CppStatement*>(node));
+			PrintFields(static_cast<CppExprStat*>(node));
+			EndObject();
+		}
+
 		void AstVisitor::Visit(CppBreakStat* node)
 		{
 			if (!node)
@@ -1837,20 +1851,6 @@ namespace cpp_parser
 			WriteType(L"ReturnStat", node);
 			PrintFields(static_cast<CppStatement*>(node));
 			PrintFields(static_cast<CppReturnStat*>(node));
-			EndObject();
-		}
-
-		void AstVisitor::Visit(CppExprStat* node)
-		{
-			if (!node)
-			{
-				WriteNull();
-				return;
-			}
-			BeginObject();
-			WriteType(L"ExprStat", node);
-			PrintFields(static_cast<CppStatement*>(node));
-			PrintFields(static_cast<CppExprStat*>(node));
 			EndObject();
 		}
 

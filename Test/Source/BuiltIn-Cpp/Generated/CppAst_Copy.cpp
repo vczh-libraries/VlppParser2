@@ -690,6 +690,13 @@ namespace cpp_parser
 			this->result = newNode;
 		}
 
+		void AstVisitor::Visit(CppExprStat* node)
+		{
+			auto newNode = vl::Ptr(new CppExprStat);
+			CopyFields(node, newNode.Obj());
+			this->result = newNode;
+		}
+
 		void AstVisitor::Visit(CppBreakStat* node)
 		{
 			auto newNode = vl::Ptr(new CppBreakStat);
@@ -707,13 +714,6 @@ namespace cpp_parser
 		void AstVisitor::Visit(CppReturnStat* node)
 		{
 			auto newNode = vl::Ptr(new CppReturnStat);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppExprStat* node)
-		{
-			auto newNode = vl::Ptr(new CppExprStat);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}

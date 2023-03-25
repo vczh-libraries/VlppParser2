@@ -172,6 +172,11 @@ Visitor Pattern Implementation
 		visitor->Visit(this);
 	}
 
+	void CppExprStat::Accept(CppStatement::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
 	void CppBreakStat::Accept(CppStatement::IVisitor* visitor)
 	{
 		visitor->Visit(this);
@@ -183,11 +188,6 @@ Visitor Pattern Implementation
 	}
 
 	void CppReturnStat::Accept(CppStatement::IVisitor* visitor)
-	{
-		visitor->Visit(this);
-	}
-
-	void CppExprStat::Accept(CppStatement::IVisitor* visitor)
 	{
 		visitor->Visit(this);
 	}
@@ -291,10 +291,10 @@ namespace vl
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppStatement::IVisitor, cpp_parser::CppStatement::IVisitor)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppEmptyStat, cpp_parser::CppEmptyStat)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppBlockStat, cpp_parser::CppBlockStat)
+			IMPL_TYPE_INFO_RENAME(cpp_parser::CppExprStat, cpp_parser::CppExprStat)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppBreakStat, cpp_parser::CppBreakStat)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppContinueStat, cpp_parser::CppContinueStat)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppReturnStat, cpp_parser::CppReturnStat)
-			IMPL_TYPE_INFO_RENAME(cpp_parser::CppExprStat, cpp_parser::CppExprStat)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppLabelStat, cpp_parser::CppLabelStat)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppGotoStat, cpp_parser::CppGotoStat)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppCaseStat, cpp_parser::CppCaseStat)
@@ -820,6 +820,14 @@ namespace vl
 				CLASS_MEMBER_FIELD(statements)
 			END_CLASS_MEMBER(cpp_parser::CppBlockStat)
 
+			BEGIN_CLASS_MEMBER(cpp_parser::CppExprStat)
+				CLASS_MEMBER_BASE(cpp_parser::CppStatement)
+
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppExprStat>(), NO_PARAMETER)
+
+				CLASS_MEMBER_FIELD(expr)
+			END_CLASS_MEMBER(cpp_parser::CppExprStat)
+
 			BEGIN_CLASS_MEMBER(cpp_parser::CppBreakStat)
 				CLASS_MEMBER_BASE(cpp_parser::CppStatement)
 
@@ -841,14 +849,6 @@ namespace vl
 
 				CLASS_MEMBER_FIELD(expr)
 			END_CLASS_MEMBER(cpp_parser::CppReturnStat)
-
-			BEGIN_CLASS_MEMBER(cpp_parser::CppExprStat)
-				CLASS_MEMBER_BASE(cpp_parser::CppStatement)
-
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppExprStat>(), NO_PARAMETER)
-
-				CLASS_MEMBER_FIELD(expr)
-			END_CLASS_MEMBER(cpp_parser::CppExprStat)
 
 			BEGIN_CLASS_MEMBER(cpp_parser::CppLabelStat)
 				CLASS_MEMBER_BASE(cpp_parser::CppStatement)
@@ -955,10 +955,10 @@ namespace vl
 			BEGIN_INTERFACE_MEMBER(cpp_parser::CppStatement::IVisitor)
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppStatement::IVisitor::*)(cpp_parser::CppEmptyStat* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppStatement::IVisitor::*)(cpp_parser::CppBlockStat* node))
+				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppStatement::IVisitor::*)(cpp_parser::CppExprStat* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppStatement::IVisitor::*)(cpp_parser::CppBreakStat* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppStatement::IVisitor::*)(cpp_parser::CppContinueStat* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppStatement::IVisitor::*)(cpp_parser::CppReturnStat* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppStatement::IVisitor::*)(cpp_parser::CppExprStat* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppStatement::IVisitor::*)(cpp_parser::CppLabelStat* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppStatement::IVisitor::*)(cpp_parser::CppGotoStat* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppStatement::IVisitor::*)(cpp_parser::CppCaseStat* node))
@@ -1036,10 +1036,10 @@ namespace vl
 					ADD_TYPE_INFO(cpp_parser::CppStatement::IVisitor)
 					ADD_TYPE_INFO(cpp_parser::CppEmptyStat)
 					ADD_TYPE_INFO(cpp_parser::CppBlockStat)
+					ADD_TYPE_INFO(cpp_parser::CppExprStat)
 					ADD_TYPE_INFO(cpp_parser::CppBreakStat)
 					ADD_TYPE_INFO(cpp_parser::CppContinueStat)
 					ADD_TYPE_INFO(cpp_parser::CppReturnStat)
-					ADD_TYPE_INFO(cpp_parser::CppExprStat)
 					ADD_TYPE_INFO(cpp_parser::CppLabelStat)
 					ADD_TYPE_INFO(cpp_parser::CppGotoStat)
 					ADD_TYPE_INFO(cpp_parser::CppCaseStat)

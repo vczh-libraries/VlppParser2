@@ -637,10 +637,10 @@ namespace cpp_parser
 		public:
 			virtual void Visit(CppEmptyStat* node) = 0;
 			virtual void Visit(CppBlockStat* node) = 0;
+			virtual void Visit(CppExprStat* node) = 0;
 			virtual void Visit(CppBreakStat* node) = 0;
 			virtual void Visit(CppContinueStat* node) = 0;
 			virtual void Visit(CppReturnStat* node) = 0;
-			virtual void Visit(CppExprStat* node) = 0;
 			virtual void Visit(CppLabelStat* node) = 0;
 			virtual void Visit(CppGotoStat* node) = 0;
 			virtual void Visit(CppCaseStat* node) = 0;
@@ -668,6 +668,14 @@ namespace cpp_parser
 		void Accept(CppStatement::IVisitor* visitor) override;
 	};
 
+	class CppExprStat : public CppStatement, vl::reflection::Description<CppExprStat>
+	{
+	public:
+		vl::Ptr<CppTypeOrExpr> expr;
+
+		void Accept(CppStatement::IVisitor* visitor) override;
+	};
+
 	class CppBreakStat : public CppStatement, vl::reflection::Description<CppBreakStat>
 	{
 	public:
@@ -683,14 +691,6 @@ namespace cpp_parser
 	};
 
 	class CppReturnStat : public CppStatement, vl::reflection::Description<CppReturnStat>
-	{
-	public:
-		vl::Ptr<CppTypeOrExpr> expr;
-
-		void Accept(CppStatement::IVisitor* visitor) override;
-	};
-
-	class CppExprStat : public CppStatement, vl::reflection::Description<CppExprStat>
 	{
 	public:
 		vl::Ptr<CppTypeOrExpr> expr;
@@ -821,10 +821,10 @@ namespace vl
 			DECL_TYPE_INFO(cpp_parser::CppStatement::IVisitor)
 			DECL_TYPE_INFO(cpp_parser::CppEmptyStat)
 			DECL_TYPE_INFO(cpp_parser::CppBlockStat)
+			DECL_TYPE_INFO(cpp_parser::CppExprStat)
 			DECL_TYPE_INFO(cpp_parser::CppBreakStat)
 			DECL_TYPE_INFO(cpp_parser::CppContinueStat)
 			DECL_TYPE_INFO(cpp_parser::CppReturnStat)
-			DECL_TYPE_INFO(cpp_parser::CppExprStat)
 			DECL_TYPE_INFO(cpp_parser::CppLabelStat)
 			DECL_TYPE_INFO(cpp_parser::CppGotoStat)
 			DECL_TYPE_INFO(cpp_parser::CppCaseStat)
@@ -1011,6 +1011,11 @@ namespace vl
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
+				void Visit(cpp_parser::CppExprStat* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
 				void Visit(cpp_parser::CppBreakStat* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
@@ -1022,11 +1027,6 @@ namespace vl
 				}
 
 				void Visit(cpp_parser::CppReturnStat* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(cpp_parser::CppExprStat* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}

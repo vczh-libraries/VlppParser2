@@ -178,6 +178,10 @@ StatementVisitor
 		{
 		}
 
+		void StatementVisitor::Visit(CppExprStat* node)
+		{
+		}
+
 		void StatementVisitor::Visit(CppBreakStat* node)
 		{
 		}
@@ -187,10 +191,6 @@ StatementVisitor
 		}
 
 		void StatementVisitor::Visit(CppReturnStat* node)
-		{
-		}
-
-		void StatementVisitor::Visit(CppExprStat* node)
 		{
 		}
 

@@ -2,7 +2,11 @@
 // Statements
 //////////////////////////////////////////////////////////////////
 
-_Stat
+_ExprStat
+  ::= _Expr:expr ";" as ExprStat
+  ;
+
+_OtherStats
   ::= ";" as EmptyStat
   ::= "{" { _Stat:statements } "}" as BlockStat
   ::= "break" ";" as BreakStat
@@ -14,4 +18,9 @@ _Stat
   ::= "default" ":" _Stat:stat as DefaultStat
   ::= "__leave" ";" as __LeaveStat
   ::= "static_assert" "(" _Expr:expr ["," _Expr:message] ")" ";" as StaticAssertStat
+  ;
+
+_Stat
+  ::= !_ExprStat
+  ::= !_OtherStats
   ;

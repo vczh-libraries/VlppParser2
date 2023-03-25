@@ -176,10 +176,10 @@ namespace cpp_parser
 
 			void Visit(CppEmptyStat* node) override;
 			void Visit(CppBlockStat* node) override;
+			void Visit(CppExprStat* node) override;
 			void Visit(CppBreakStat* node) override;
 			void Visit(CppContinueStat* node) override;
 			void Visit(CppReturnStat* node) override;
-			void Visit(CppExprStat* node) override;
 			void Visit(CppLabelStat* node) override;
 			void Visit(CppGotoStat* node) override;
 			void Visit(CppCaseStat* node) override;
