@@ -413,6 +413,73 @@ class DeclaratorType : TypeOrExpr
 }
 
 //////////////////////////////////////////////////////////////////
+// Statements
+//////////////////////////////////////////////////////////////////
+
+class Statement
+{
+}
+
+class EmptyStat : Statement
+{
+}
+
+class BlockStat : Statement
+{
+    var statements : Statement[];
+}
+
+class BreakStat : Statement
+{
+}
+
+class ContinueStat : Statement
+{
+}
+
+class ReturnStat : Statement
+{
+    var expr : TypeOrExpr;
+}
+
+class ExprStat : Statement
+{
+    var expr : TypeOrExpr;
+}
+
+class LabelStat : Statement
+{
+    var label : token;
+    var stat : Statement;
+}
+
+class GotoStat : Statement
+{
+    var label : token;
+}
+
+class CaseStat : Statement
+{
+    var expr : TypeOrExpr;
+    var stat : Statement;
+}
+
+class DefaultStat : Statement
+{
+    var stat : Statement;
+}
+
+class __LeaveStat : Statement
+{
+}
+
+class StaticAssertStat : Statement
+{
+    var expr : TypeOrExpr;
+    var message : TypeOrExpr;
+}
+
+//////////////////////////////////////////////////////////////////
 // File
 //////////////////////////////////////////////////////////////////
 

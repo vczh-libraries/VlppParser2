@@ -1,0 +1,17 @@
+//////////////////////////////////////////////////////////////////
+// Statements
+//////////////////////////////////////////////////////////////////
+
+_Stat
+  ::= ";" as EmptyStat
+  ::= "{" { _Stat:statements } "}" as BlockStat
+  ::= "break" ";" as BreakStat
+  ::= "continue" ";" as ContinueStat
+  ::= "return" [_Expr:expr] ";" as ReturnStat
+  ::= ID:label ":" _Stat:stat as LabelStat
+  ::= "goto" ID:label ";" as GotoStat
+  ::= "case" _Expr:expr ":" _Stat:stat as CaseStat
+  ::= "default" ":" _Stat:stat as DefaultStat
+  ::= "__leave" ";" as __LeaveStat
+  ::= "static_assert" "(" _Expr:expr ["," _Expr:message] ")" ";" as StaticAssertStat
+  ;
