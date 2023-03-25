@@ -50,6 +50,16 @@ MakeBinaryExpr
 		}
 
 /***********************************************************************
+MakeBlockStat
+***********************************************************************/
+
+		MakeBlockStat& MakeBlockStat::statements(const vl::Ptr<CppStatement>& value)
+		{
+			node->statements.Add(value);
+			return *this;
+		}
+
+/***********************************************************************
 MakeBraceExpr
 ***********************************************************************/
 
@@ -78,6 +88,22 @@ MakeCallExpr
 		MakeCallExpr& MakeCallExpr::operand(const vl::Ptr<CppTypeOrExpr>& value)
 		{
 			node->operand = value;
+			return *this;
+		}
+
+/***********************************************************************
+MakeCaseStat
+***********************************************************************/
+
+		MakeCaseStat& MakeCaseStat::expr(const vl::Ptr<CppTypeOrExpr>& value)
+		{
+			node->expr = value;
+			return *this;
+		}
+
+		MakeCaseStat& MakeCaseStat::stat(const vl::Ptr<CppStatement>& value)
+		{
+			node->stat = value;
 			return *this;
 		}
 
@@ -230,6 +256,16 @@ MakeDeclaratorType
 		}
 
 /***********************************************************************
+MakeDefaultStat
+***********************************************************************/
+
+		MakeDefaultStat& MakeDefaultStat::stat(const vl::Ptr<CppStatement>& value)
+		{
+			node->stat = value;
+			return *this;
+		}
+
+/***********************************************************************
 MakeDeleteExpr
 ***********************************************************************/
 
@@ -248,6 +284,16 @@ MakeDeleteExpr
 		MakeDeleteExpr& MakeDeleteExpr::scope(CppOperatorScope value)
 		{
 			node->scope = value;
+			return *this;
+		}
+
+/***********************************************************************
+MakeExprStat
+***********************************************************************/
+
+		MakeExprStat& MakeExprStat::expr(const vl::Ptr<CppTypeOrExpr>& value)
+		{
+			node->expr = value;
 			return *this;
 		}
 
@@ -322,6 +368,16 @@ MakeGenericArguments
 		}
 
 /***********************************************************************
+MakeGotoStat
+***********************************************************************/
+
+		MakeGotoStat& MakeGotoStat::label(const vl::WString& value)
+		{
+			node->label.value = value;
+			return *this;
+		}
+
+/***********************************************************************
 MakeIfExpr
 ***********************************************************************/
 
@@ -356,6 +412,22 @@ MakeIndexExpr
 		MakeIndexExpr& MakeIndexExpr::operand(const vl::Ptr<CppTypeOrExpr>& value)
 		{
 			node->operand = value;
+			return *this;
+		}
+
+/***********************************************************************
+MakeLabelStat
+***********************************************************************/
+
+		MakeLabelStat& MakeLabelStat::label(const vl::WString& value)
+		{
+			node->label.value = value;
+			return *this;
+		}
+
+		MakeLabelStat& MakeLabelStat::stat(const vl::Ptr<CppStatement>& value)
+		{
+			node->stat = value;
 			return *this;
 		}
 
@@ -544,6 +616,16 @@ MakeQualifiedName
 		}
 
 /***********************************************************************
+MakeReturnStat
+***********************************************************************/
+
+		MakeReturnStat& MakeReturnStat::expr(const vl::Ptr<CppTypeOrExpr>& value)
+		{
+			node->expr = value;
+			return *this;
+		}
+
+/***********************************************************************
 MakeSizeofExpr
 ***********************************************************************/
 
@@ -556,6 +638,22 @@ MakeSizeofExpr
 		MakeSizeofExpr& MakeSizeofExpr::variadic(const vl::WString& value)
 		{
 			node->variadic.value = value;
+			return *this;
+		}
+
+/***********************************************************************
+MakeStaticAssertStat
+***********************************************************************/
+
+		MakeStaticAssertStat& MakeStaticAssertStat::expr(const vl::Ptr<CppTypeOrExpr>& value)
+		{
+			node->expr = value;
+			return *this;
+		}
+
+		MakeStaticAssertStat& MakeStaticAssertStat::message(const vl::Ptr<CppTypeOrExpr>& value)
+		{
+			node->message = value;
 			return *this;
 		}
 

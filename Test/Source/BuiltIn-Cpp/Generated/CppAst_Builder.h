@@ -28,6 +28,12 @@ namespace cpp_parser
 			MakeBinaryExpr& right(const vl::Ptr<CppTypeOrExpr>& value);
 		};
 
+		class MakeBlockStat : public vl::glr::ParsingAstBuilder<CppBlockStat>
+		{
+		public:
+			MakeBlockStat& statements(const vl::Ptr<CppStatement>& value);
+		};
+
 		class MakeBraceExpr : public vl::glr::ParsingAstBuilder<CppBraceExpr>
 		{
 		public:
@@ -40,6 +46,13 @@ namespace cpp_parser
 			MakeCallExpr& arguments(const vl::Ptr<CppTypeOrExpr>& value);
 			MakeCallExpr& kind(CppCallKinds value);
 			MakeCallExpr& operand(const vl::Ptr<CppTypeOrExpr>& value);
+		};
+
+		class MakeCaseStat : public vl::glr::ParsingAstBuilder<CppCaseStat>
+		{
+		public:
+			MakeCaseStat& expr(const vl::Ptr<CppTypeOrExpr>& value);
+			MakeCaseStat& stat(const vl::Ptr<CppStatement>& value);
 		};
 
 		class MakeCastExpr : public vl::glr::ParsingAstBuilder<CppCastExpr>
@@ -97,12 +110,24 @@ namespace cpp_parser
 			MakeDeclaratorType& type(const vl::Ptr<CppTypeOrExpr>& value);
 		};
 
+		class MakeDefaultStat : public vl::glr::ParsingAstBuilder<CppDefaultStat>
+		{
+		public:
+			MakeDefaultStat& stat(const vl::Ptr<CppStatement>& value);
+		};
+
 		class MakeDeleteExpr : public vl::glr::ParsingAstBuilder<CppDeleteExpr>
 		{
 		public:
 			MakeDeleteExpr& argument(const vl::Ptr<CppTypeOrExpr>& value);
 			MakeDeleteExpr& array(CppOperatorArray value);
 			MakeDeleteExpr& scope(CppOperatorScope value);
+		};
+
+		class MakeExprStat : public vl::glr::ParsingAstBuilder<CppExprStat>
+		{
+		public:
+			MakeExprStat& expr(const vl::Ptr<CppTypeOrExpr>& value);
 		};
 
 		class MakeFunctionKeyword : public vl::glr::ParsingAstBuilder<CppFunctionKeyword>
@@ -134,6 +159,12 @@ namespace cpp_parser
 			MakeGenericArguments& arguments(const vl::Ptr<CppTypeOrExprOrOthers>& value);
 		};
 
+		class MakeGotoStat : public vl::glr::ParsingAstBuilder<CppGotoStat>
+		{
+		public:
+			MakeGotoStat& label(const vl::WString& value);
+		};
+
 		class MakeIfExpr : public vl::glr::ParsingAstBuilder<CppIfExpr>
 		{
 		public:
@@ -147,6 +178,13 @@ namespace cpp_parser
 		public:
 			MakeIndexExpr& index(const vl::Ptr<CppTypeOrExpr>& value);
 			MakeIndexExpr& operand(const vl::Ptr<CppTypeOrExpr>& value);
+		};
+
+		class MakeLabelStat : public vl::glr::ParsingAstBuilder<CppLabelStat>
+		{
+		public:
+			MakeLabelStat& label(const vl::WString& value);
+			MakeLabelStat& stat(const vl::Ptr<CppStatement>& value);
 		};
 
 		class MakeNameIdentifier : public vl::glr::ParsingAstBuilder<CppNameIdentifier>
@@ -223,11 +261,24 @@ namespace cpp_parser
 			MakeQualifiedName& parent(const vl::Ptr<CppQualifiedName>& value);
 		};
 
+		class MakeReturnStat : public vl::glr::ParsingAstBuilder<CppReturnStat>
+		{
+		public:
+			MakeReturnStat& expr(const vl::Ptr<CppTypeOrExpr>& value);
+		};
+
 		class MakeSizeofExpr : public vl::glr::ParsingAstBuilder<CppSizeofExpr>
 		{
 		public:
 			MakeSizeofExpr& argument(const vl::Ptr<CppTypeOrExpr>& value);
 			MakeSizeofExpr& variadic(const vl::WString& value);
+		};
+
+		class MakeStaticAssertStat : public vl::glr::ParsingAstBuilder<CppStaticAssertStat>
+		{
+		public:
+			MakeStaticAssertStat& expr(const vl::Ptr<CppTypeOrExpr>& value);
+			MakeStaticAssertStat& message(const vl::Ptr<CppTypeOrExpr>& value);
 		};
 
 		class MakeStringLiteral : public vl::glr::ParsingAstBuilder<CppStringLiteral>

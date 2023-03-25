@@ -96,6 +96,28 @@ namespace cpp_parser
 			void Visit(CppOperatorIdentifier* node) override;
 		};
 
+		/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
+		class StatementVisitor : public vl::Object, public CppStatement::IVisitor
+		{
+		protected:
+			// Dispatch (virtual) --------------------------------
+
+		public:
+			// Visitor Members -----------------------------------
+			void Visit(CppEmptyStat* node) override;
+			void Visit(CppBlockStat* node) override;
+			void Visit(CppBreakStat* node) override;
+			void Visit(CppContinueStat* node) override;
+			void Visit(CppReturnStat* node) override;
+			void Visit(CppExprStat* node) override;
+			void Visit(CppLabelStat* node) override;
+			void Visit(CppGotoStat* node) override;
+			void Visit(CppCaseStat* node) override;
+			void Visit(CppDefaultStat* node) override;
+			void Visit(Cpp__LeaveStat* node) override;
+			void Visit(CppStaticAssertStat* node) override;
+		};
+
 	}
 }
 #endif

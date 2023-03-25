@@ -163,5 +163,59 @@ IdentifierVisitor
 		void IdentifierVisitor::Visit(CppOperatorIdentifier* node)
 		{
 		}
+
+/***********************************************************************
+StatementVisitor
+***********************************************************************/
+
+		// Visitor Members -----------------------------------
+
+		void StatementVisitor::Visit(CppEmptyStat* node)
+		{
+		}
+
+		void StatementVisitor::Visit(CppBlockStat* node)
+		{
+		}
+
+		void StatementVisitor::Visit(CppBreakStat* node)
+		{
+		}
+
+		void StatementVisitor::Visit(CppContinueStat* node)
+		{
+		}
+
+		void StatementVisitor::Visit(CppReturnStat* node)
+		{
+		}
+
+		void StatementVisitor::Visit(CppExprStat* node)
+		{
+		}
+
+		void StatementVisitor::Visit(CppLabelStat* node)
+		{
+		}
+
+		void StatementVisitor::Visit(CppGotoStat* node)
+		{
+		}
+
+		void StatementVisitor::Visit(CppCaseStat* node)
+		{
+		}
+
+		void StatementVisitor::Visit(CppDefaultStat* node)
+		{
+		}
+
+		void StatementVisitor::Visit(Cpp__LeaveStat* node)
+		{
+		}
+
+		void StatementVisitor::Visit(CppStaticAssertStat* node)
+		{
+		}
 	}
 }
