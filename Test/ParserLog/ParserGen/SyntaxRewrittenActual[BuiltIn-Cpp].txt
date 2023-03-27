@@ -584,6 +584,10 @@ _InnerDeclaratorInnerOptionalName : Declarator
   ::= {_DeclaratorAKCV} !_DeclaratorOptionalName
   ;
 
+_InnerDeclaratorInnerRequiredName : Declarator
+  ::= {_DeclaratorAKCV} !_DeclaratorRequiredName
+  ;
+
 _DeclaratorInnerWithoutName : Declarator
   ::= "(" _InnerDeclaratorWithoutName:innerDeclarator ")" as partial Declarator
   ;
@@ -592,6 +596,12 @@ _DeclaratorInnerOptionalName : Declarator
   ::= "(" _InnerDeclaratorInnerOptionalName:innerDeclarator ")" as partial Declarator
   ::= _DeclaratorId:id as partial Declarator
   ::= "...":variadic [_DeclaratorId:id] as partial Declarator
+  ;
+
+_DeclaratorInnerRequiredName : Declarator
+  ::= "(" _InnerDeclaratorInnerRequiredName:innerDeclarator ")" as partial Declarator
+  ::= _DeclaratorId:id as partial Declarator
+  ::= "...":variadic _DeclaratorId:id as partial Declarator
   ;
 
 _DeclaratorWithoutName : Declarator
@@ -604,6 +614,11 @@ _DeclaratorOptionalName : Declarator
   ::= _DeclaratorBeforeInner [_DeclaratorInnerOptionalName] [_DeclaratorAfterInner] as Declarator
   ::= _DeclaratorInnerOptionalName [_DeclaratorAfterInner] as Declarator
   ::= _DeclaratorAfterInner as Declarator
+  ;
+
+_DeclaratorRequiredName : Declarator
+  ::= _DeclaratorBeforeInner _DeclaratorInnerRequiredName [_DeclaratorAfterInner] as Declarator
+  ::= _DeclaratorInnerRequiredName [_DeclaratorAfterInner] as Declarator
   ;
 
 _ExprStat_LRI_Original : ExprStat

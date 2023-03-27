@@ -196,6 +196,10 @@ _InnerDeclaratorInnerOptionalName
   ::= {_DeclaratorAKCV} !_DeclaratorOptionalName
   ;
 
+_InnerDeclaratorInnerRequiredName
+  ::= {_DeclaratorAKCV} !_DeclaratorRequiredName
+  ;
+
 //================================================================
 
 _DeclaratorInnerWithoutName
@@ -206,6 +210,12 @@ _DeclaratorInnerOptionalName
   ::= "(" _InnerDeclaratorInnerOptionalName:innerDeclarator ")" as partial Declarator
   ::=  _DeclaratorId:id as partial Declarator
   ::=  "...":variadic [_DeclaratorId:id] as partial Declarator
+  ;
+
+_DeclaratorInnerRequiredName
+  ::= "(" _InnerDeclaratorInnerRequiredName:innerDeclarator ")" as partial Declarator
+  ::=  _DeclaratorId:id as partial Declarator
+  ::=  "...":variadic _DeclaratorId:id as partial Declarator
   ;
 
 //================================================================
@@ -220,4 +230,9 @@ _DeclaratorOptionalName
   ::= _DeclaratorBeforeInner [_DeclaratorInnerOptionalName] [_DeclaratorAfterInner] as Declarator
   ::= _DeclaratorInnerOptionalName [_DeclaratorAfterInner] as Declarator
   ::= _DeclaratorAfterInner as Declarator
+  ;
+
+_DeclaratorRequiredName
+  ::= _DeclaratorBeforeInner _DeclaratorInnerRequiredName [_DeclaratorAfterInner] as Declarator
+  ::= _DeclaratorInnerRequiredName [_DeclaratorAfterInner] as Declarator
   ;
