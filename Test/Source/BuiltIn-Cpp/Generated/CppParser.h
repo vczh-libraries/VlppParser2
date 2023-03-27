@@ -75,11 +75,11 @@ namespace cpp_parser
 		_DeclaratorInnerOptionalName = 674,
 		_DeclaratorWithoutName = 682,
 		_DeclaratorOptionalName = 690,
-		_TypeStartsWithKeyword = 698,
-		_Type = 707,
-		_ExprStat = 718,
-		_OtherStats = 738,
-		_Stat = 773,
+		_ExprStat = 698,
+		_OtherStats = 718,
+		_Stat = 753,
+		_TypeStartsWithKeyword = 774,
+		_Type = 783,
 		_Expr_NoComma = 794,
 		_Expr = 813,
 		_Expr_Argument = 833,
@@ -118,9 +118,9 @@ namespace cpp_parser
 		_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_1 = 1340,
 		_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_2 = 1344,
 		_DeclaratorFunctionParameter_LRI_Isolated_3 = 1348,
-		_TypeStartsWithKeyword_LRI_Isolated_2 = 1356,
-		_Type_LRI_Isolated_2 = 1362,
-		_Stat_LRI_Isolated_1 = 1368,
+		_Stat_LRI_Isolated_1 = 1356,
+		_TypeStartsWithKeyword_LRI_Isolated_2 = 1359,
+		_Type_LRI_Isolated_2 = 1365,
 		_GenericArgument_LRI_Original = 1371,
 		_QualifiedName_PrimitiveExpr_LRI_Original = 1376,
 		_PostfixUnaryExpr_LRI_Original = 1381,
@@ -156,14 +156,14 @@ namespace cpp_parser
 		_TypeStartsWithKeywordBeforeDeclarator_LRI_Original = 1681,
 		_TypeBeforeDeclarator_LRI_Original = 1688,
 		_DeclaratorFunctionParameter_LRI_Original = 1695,
-		_TypeStartsWithKeyword_LRI_Original = 1707,
-		_Type_LRI_Original = 1714,
-		_ExprStat_LRI_Original = 1721,
-		_Stat_LRI_Original = 1725,
-		_TypeOrExpr_NoComma_Raw_SWITCH_COMBINED_LRI_Original = 1730,
-		_TypeOrExpr_NoComma_Raw_SWITCH_0allow_GT_LRI_Original = 1733,
-		_TypeOrExpr_Raw_SWITCH_COMBINED_LRI_Original = 1737,
-		_TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original = 1740,
+		_ExprStat_LRI_Original = 1707,
+		_Stat_LRI_Original = 1711,
+		_TypeOrExpr_NoComma_Raw_SWITCH_COMBINED_LRI_Original = 1716,
+		_TypeOrExpr_NoComma_Raw_SWITCH_0allow_GT_LRI_Original = 1719,
+		_TypeOrExpr_Raw_SWITCH_COMBINED_LRI_Original = 1723,
+		_TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original = 1726,
+		_TypeStartsWithKeyword_LRI_Original = 1730,
+		_Type_LRI_Original = 1737,
 		_Expr_NoComma_LRI_Original = 1744,
 		_Expr_LRI_Original = 1747,
 		_Expr_Argument_LRI_Original = 1750,
@@ -184,10 +184,10 @@ namespace cpp_parser
 	public:
 		Parser();
 
-		vl::Ptr<cpp_parser::CppTypeOrExpr> Parse_Type(const vl::WString& input, vl::vint codeIndex = -1) const;
-		vl::Ptr<cpp_parser::CppTypeOrExpr> Parse_Type(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
 		vl::Ptr<cpp_parser::CppStatement> Parse_Stat(const vl::WString& input, vl::vint codeIndex = -1) const;
 		vl::Ptr<cpp_parser::CppStatement> Parse_Stat(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
+		vl::Ptr<cpp_parser::CppTypeOrExpr> Parse_Type(const vl::WString& input, vl::vint codeIndex = -1) const;
+		vl::Ptr<cpp_parser::CppTypeOrExpr> Parse_Type(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
 		vl::Ptr<cpp_parser::CppTypeOrExpr> Parse_Expr(const vl::WString& input, vl::vint codeIndex = -1) const;
 		vl::Ptr<cpp_parser::CppTypeOrExpr> Parse_Expr(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
 		vl::Ptr<cpp_parser::CppTypeOrExpr> Parse_TypeOrExpr(const vl::WString& input, vl::vint codeIndex = -1) const;
