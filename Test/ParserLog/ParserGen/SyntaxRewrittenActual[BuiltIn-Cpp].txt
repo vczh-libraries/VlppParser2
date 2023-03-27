@@ -622,7 +622,7 @@ _DeclaratorRequiredName : Declarator
   ;
 
 _ExprStat_LRI_Original : ExprStat
-  ::= _Expr_LRI_Original:expr ";" as ExprStat
+  ::= _DeclVarOrExpr_LRI_Original:expr ";" as ExprStat
   ;
 
 _OtherStats : Statement
@@ -1080,6 +1080,7 @@ _DeclaratorFunctionParameter : TypeOrExprOrOthers
 
 _ExprStat : ExprStat
   ::= !_BExpr_NoComma_SWITCH_1allow_GT_LRI_Isolated_1 left_recursion_inject(LRI__BExpr_NoComma_SWITCH_1allow_GT) _ExprStat_LRI_Original
+  ::= !_DeclVar_LRI_Isolated_1 left_recursion_inject(LRI__DeclVar) _ExprStat_LRI_Original
   ::= !_PrefixUnaryExpr_LRI_Isolated_1 left_recursion_inject_multiple(LRI__PrefixUnaryExpr) _ExprStat_LRI_Original
   ::= !_PrimitiveExpr left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveExpr) _ExprStat_LRI_Original
   ::= !_PrimitiveType left_recursion_inject_multiple(LRI__PM_PrimitiveType) _ExprStat_LRI_Original
@@ -1093,6 +1094,7 @@ _ExprStat : ExprStat
 _Stat : Statement
   ::= !_Stat_LRI_Isolated_1
   ::= !_BExpr_NoComma_SWITCH_1allow_GT_LRI_Isolated_1 left_recursion_inject(LRI__BExpr_NoComma_SWITCH_1allow_GT) _Stat_LRI_Original
+  ::= !_DeclVar_LRI_Isolated_1 left_recursion_inject(LRI__DeclVar) _Stat_LRI_Original
   ::= !_PrefixUnaryExpr_LRI_Isolated_1 left_recursion_inject_multiple(LRI__PrefixUnaryExpr) _Stat_LRI_Original
   ::= !_PrimitiveExpr left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveExpr) _Stat_LRI_Original
   ::= !_PrimitiveType left_recursion_inject_multiple(LRI__PM_PrimitiveType) _Stat_LRI_Original
