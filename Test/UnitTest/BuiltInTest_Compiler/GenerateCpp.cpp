@@ -201,7 +201,7 @@ TEST_FILE
 			syntaxManager.ruleTypes.Add(rule, L"cpp_parser::CppTypeOrExpr");
 		}
 		{
-			auto rule = syntaxManager.Rules()[L"_DeclOrExpr"];
+			auto rule = syntaxManager.Rules()[L"_DeclVarOrExpr"];
 			syntaxManager.parsableRules.Add(rule);
 			syntaxManager.ruleTypes.Add(rule, L"cpp_parser::CppTypeOrExpr");
 		}

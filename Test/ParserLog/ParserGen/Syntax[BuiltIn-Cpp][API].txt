@@ -229,46 +229,6 @@
             "$ast": "ReuseClause",
             "assignments": [],
             "syntax": {
-                "$ast": "PushConditionSyntax",
-                "switches": [{
-                    "$ast": "SwitchItem",
-                    "name": "allow_GT",
-                    "value": "False"
-                }],
-                "syntax": {
-                    "$ast": "UseSyntax",
-                    "name": "_TypeOrExpr_NoComma_Raw"
-                }
-            }
-        }],
-        "name": "_TypeOrExpr_NoComma_NoGT",
-        "type": ""
-    }, {
-        "$ast": "Rule",
-        "clauses": [{
-            "$ast": "ReuseClause",
-            "assignments": [],
-            "syntax": {
-                "$ast": "PushConditionSyntax",
-                "switches": [{
-                    "$ast": "SwitchItem",
-                    "name": "allow_GT",
-                    "value": "True"
-                }],
-                "syntax": {
-                    "$ast": "UseSyntax",
-                    "name": "_TypeOrExpr_Raw"
-                }
-            }
-        }],
-        "name": "_TypeOrExpr",
-        "type": ""
-    }, {
-        "$ast": "Rule",
-        "clauses": [{
-            "$ast": "ReuseClause",
-            "assignments": [],
-            "syntax": {
                 "$ast": "UseSyntax",
                 "name": "_BExpr_NoComma"
             }
@@ -307,9 +267,61 @@
             "$ast": "ReuseClause",
             "assignments": [],
             "syntax": {
-                "$ast": "UseSyntax",
-                "name": "_BExpr"
+                "$ast": "PushConditionSyntax",
+                "switches": [{
+                    "$ast": "SwitchItem",
+                    "name": "allow_GT",
+                    "value": "False"
+                }],
+                "syntax": {
+                    "$ast": "UseSyntax",
+                    "name": "_TypeOrExpr_NoComma_Raw"
+                }
             }
+        }],
+        "name": "_TypeOrExpr_NoComma_NoGT",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "PushConditionSyntax",
+                "switches": [{
+                    "$ast": "SwitchItem",
+                    "name": "allow_GT",
+                    "value": "True"
+                }],
+                "syntax": {
+                    "$ast": "UseSyntax",
+                    "name": "_TypeOrExpr_Raw"
+                }
+            }
+        }],
+        "name": "_TypeOrExpr",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "RefSyntax",
+                    "field": "type",
+                    "literal": "_TypeBeforeDeclarator",
+                    "refType": "Id"
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "declarator",
+                    "literal": "_DeclaratorRequiredName",
+                    "refType": "Id"
+                }
+            },
+            "type": "DeclaratorType"
         }, {
             "$ast": "CreateClause",
             "assignments": [],
@@ -318,13 +330,22 @@
                 "first": {
                     "$ast": "SequenceSyntax",
                     "first": {
-                        "$ast": "LoopSyntax",
-                        "delimiter": null,
-                        "syntax": {
+                        "$ast": "SequenceSyntax",
+                        "first": {
                             "$ast": "RefSyntax",
                             "field": "keywords",
                             "literal": "_DeclaratorKeyword",
                             "refType": "Id"
+                        },
+                        "second": {
+                            "$ast": "LoopSyntax",
+                            "delimiter": null,
+                            "syntax": {
+                                "$ast": "RefSyntax",
+                                "field": "keywords",
+                                "literal": "_DeclaratorKeyword",
+                                "refType": "Id"
+                            }
                         }
                     },
                     "second": {
@@ -343,7 +364,26 @@
             },
             "type": "DeclaratorType"
         }],
-        "name": "_DeclOrExpr",
+        "name": "_DeclVar",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "_Expr"
+            }
+        }, {
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "_DeclVar"
+            }
+        }],
+        "name": "_DeclVarOrExpr",
         "type": ""
     }, {
         "$ast": "Rule",
