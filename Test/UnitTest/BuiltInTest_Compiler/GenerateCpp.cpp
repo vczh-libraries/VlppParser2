@@ -186,17 +186,22 @@ TEST_FILE
 			);
 
 		{
-			auto rule = syntaxManager.Rules()[L"_TypeOrExpr"];
-			syntaxManager.parsableRules.Add(rule);
-			syntaxManager.ruleTypes.Add(rule, L"cpp_parser::CppTypeOrExpr");
-		}
-		{
 			auto rule = syntaxManager.Rules()[L"_Type"];
 			syntaxManager.parsableRules.Add(rule);
 			syntaxManager.ruleTypes.Add(rule, L"cpp_parser::CppTypeOrExpr");
 		}
 		{
 			auto rule = syntaxManager.Rules()[L"_Expr"];
+			syntaxManager.parsableRules.Add(rule);
+			syntaxManager.ruleTypes.Add(rule, L"cpp_parser::CppTypeOrExpr");
+		}
+		{
+			auto rule = syntaxManager.Rules()[L"_TypeOrExpr"];
+			syntaxManager.parsableRules.Add(rule);
+			syntaxManager.ruleTypes.Add(rule, L"cpp_parser::CppTypeOrExpr");
+		}
+		{
+			auto rule = syntaxManager.Rules()[L"_DeclOrExpr"];
 			syntaxManager.parsableRules.Add(rule);
 			syntaxManager.ruleTypes.Add(rule, L"cpp_parser::CppTypeOrExpr");
 		}
