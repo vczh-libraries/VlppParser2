@@ -60,8 +60,6 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::Ptr(new cpp_parser::CppFile);
 		case CppClasses::FunctionKeyword:
 			return vl::Ptr(new cpp_parser::CppFunctionKeyword);
-		case CppClasses::FunctionParameter:
-			return vl::Ptr(new cpp_parser::CppFunctionParameter);
 		case CppClasses::GenericArgument:
 			return vl::Ptr(new cpp_parser::CppGenericArgument);
 		case CppClasses::GenericArguments:
@@ -96,6 +94,8 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::Ptr(new cpp_parser::CppQualifiedName);
 		case CppClasses::ReturnStat:
 			return vl::Ptr(new cpp_parser::CppReturnStat);
+		case CppClasses::SingleVarDeclaration:
+			return vl::Ptr(new cpp_parser::CppSingleVarDeclaration);
 		case CppClasses::SizeofExpr:
 			return vl::Ptr(new cpp_parser::CppSizeofExpr);
 		case CppClasses::StaticAssertStat:
@@ -182,14 +182,6 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppExprStat::expr, object, field, value, cppFieldName);
 		case CppFields::FunctionKeyword_arguments:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppFunctionKeyword::arguments, object, field, value, cppFieldName);
-		case CppFields::FunctionParameter_declarator:
-			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppFunctionParameter::declarator, object, field, value, cppFieldName);
-		case CppFields::FunctionParameter_defaultValue:
-			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppFunctionParameter::defaultValue, object, field, value, cppFieldName);
-		case CppFields::FunctionParameter_keywords:
-			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppFunctionParameter::keywords, object, field, value, cppFieldName);
-		case CppFields::FunctionParameter_type:
-			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppFunctionParameter::type, object, field, value, cppFieldName);
 		case CppFields::GenericArgument_argument:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppGenericArgument::argument, object, field, value, cppFieldName);
 		case CppFields::GenericArguments_arguments:
@@ -228,6 +220,14 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppQualifiedName::parent, object, field, value, cppFieldName);
 		case CppFields::ReturnStat_expr:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppReturnStat::expr, object, field, value, cppFieldName);
+		case CppFields::SingleVarDeclaration_declarator:
+			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppSingleVarDeclaration::declarator, object, field, value, cppFieldName);
+		case CppFields::SingleVarDeclaration_defaultValue:
+			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppSingleVarDeclaration::defaultValue, object, field, value, cppFieldName);
+		case CppFields::SingleVarDeclaration_keywords:
+			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppSingleVarDeclaration::keywords, object, field, value, cppFieldName);
+		case CppFields::SingleVarDeclaration_type:
+			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppSingleVarDeclaration::type, object, field, value, cppFieldName);
 		case CppFields::SizeofExpr_argument:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppSizeofExpr::argument, object, field, value, cppFieldName);
 		case CppFields::StaticAssertStat_expr:
@@ -348,6 +348,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"CastExpr",
 			L"ConstType",
 			L"ContinueStat",
+			L"Declaration",
 			L"Declarator",
 			L"DeclaratorArrayPart",
 			L"DeclaratorFunctionPart",
@@ -360,7 +361,6 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"ExprStat",
 			L"File",
 			L"FunctionKeyword",
-			L"FunctionParameter",
 			L"GenericArgument",
 			L"GenericArguments",
 			L"GotoStat",
@@ -379,6 +379,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"PrimitiveType",
 			L"QualifiedName",
 			L"ReturnStat",
+			L"SingleVarDeclaration",
 			L"SizeofExpr",
 			L"Statement",
 			L"StaticAssertStat",
@@ -394,7 +395,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"__LeaveStat",
 		};
 		vl::vint index = (vl::vint)type;
-		return 0 <= index && index < 54 ? results[index] : nullptr;
+		return 0 <= index && index < 55 ? results[index] : nullptr;
 	}
 
 	const wchar_t* CppCppTypeName(CppClasses type)
@@ -410,6 +411,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::CppCastExpr",
 			L"cpp_parser::CppConstType",
 			L"cpp_parser::CppContinueStat",
+			L"cpp_parser::CppDeclaration",
 			L"cpp_parser::CppDeclarator",
 			L"cpp_parser::CppDeclaratorArrayPart",
 			L"cpp_parser::CppDeclaratorFunctionPart",
@@ -422,7 +424,6 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::CppExprStat",
 			L"cpp_parser::CppFile",
 			L"cpp_parser::CppFunctionKeyword",
-			L"cpp_parser::CppFunctionParameter",
 			L"cpp_parser::CppGenericArgument",
 			L"cpp_parser::CppGenericArguments",
 			L"cpp_parser::CppGotoStat",
@@ -441,6 +442,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::CppPrimitiveType",
 			L"cpp_parser::CppQualifiedName",
 			L"cpp_parser::CppReturnStat",
+			L"cpp_parser::CppSingleVarDeclaration",
 			L"cpp_parser::CppSizeofExpr",
 			L"cpp_parser::CppStatement",
 			L"cpp_parser::CppStaticAssertStat",
@@ -456,7 +458,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::Cpp__LeaveStat",
 		};
 		vl::vint index = (vl::vint)type;
-		return 0 <= index && index < 54 ? results[index] : nullptr;
+		return 0 <= index && index < 55 ? results[index] : nullptr;
 	}
 
 	const wchar_t* CppFieldName(CppFields field)
@@ -501,10 +503,6 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"ExprStat::expr",
 			L"FunctionKeyword::arguments",
 			L"FunctionKeyword::keyword",
-			L"FunctionParameter::declarator",
-			L"FunctionParameter::defaultValue",
-			L"FunctionParameter::keywords",
-			L"FunctionParameter::type",
 			L"GenericArgument::argument",
 			L"GenericArgument::variadic",
 			L"GenericArguments::arguments",
@@ -541,6 +539,10 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"QualifiedName::kind",
 			L"QualifiedName::parent",
 			L"ReturnStat::expr",
+			L"SingleVarDeclaration::declarator",
+			L"SingleVarDeclaration::defaultValue",
+			L"SingleVarDeclaration::keywords",
+			L"SingleVarDeclaration::type",
 			L"SizeofExpr::argument",
 			L"SizeofExpr::variadic",
 			L"StaticAssertStat::expr",
@@ -602,10 +604,6 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::CppExprStat::expr",
 			L"cpp_parser::CppFunctionKeyword::arguments",
 			L"cpp_parser::CppFunctionKeyword::keyword",
-			L"cpp_parser::CppFunctionParameter::declarator",
-			L"cpp_parser::CppFunctionParameter::defaultValue",
-			L"cpp_parser::CppFunctionParameter::keywords",
-			L"cpp_parser::CppFunctionParameter::type",
 			L"cpp_parser::CppGenericArgument::argument",
 			L"cpp_parser::CppGenericArgument::variadic",
 			L"cpp_parser::CppGenericArguments::arguments",
@@ -642,6 +640,10 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::CppQualifiedName::kind",
 			L"cpp_parser::CppQualifiedName::parent",
 			L"cpp_parser::CppReturnStat::expr",
+			L"cpp_parser::CppSingleVarDeclaration::declarator",
+			L"cpp_parser::CppSingleVarDeclaration::defaultValue",
+			L"cpp_parser::CppSingleVarDeclaration::keywords",
+			L"cpp_parser::CppSingleVarDeclaration::type",
 			L"cpp_parser::CppSizeofExpr::argument",
 			L"cpp_parser::CppSizeofExpr::variadic",
 			L"cpp_parser::CppStaticAssertStat::expr",

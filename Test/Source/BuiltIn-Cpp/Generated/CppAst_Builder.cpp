@@ -314,34 +314,6 @@ MakeFunctionKeyword
 		}
 
 /***********************************************************************
-MakeFunctionParameter
-***********************************************************************/
-
-		MakeFunctionParameter& MakeFunctionParameter::declarator(const vl::Ptr<CppDeclarator>& value)
-		{
-			node->declarator = value;
-			return *this;
-		}
-
-		MakeFunctionParameter& MakeFunctionParameter::defaultValue(const vl::Ptr<CppTypeOrExpr>& value)
-		{
-			node->defaultValue = value;
-			return *this;
-		}
-
-		MakeFunctionParameter& MakeFunctionParameter::keywords(const vl::Ptr<CppDeclaratorKeyword>& value)
-		{
-			node->keywords.Add(value);
-			return *this;
-		}
-
-		MakeFunctionParameter& MakeFunctionParameter::type(const vl::Ptr<CppTypeOrExpr>& value)
-		{
-			node->type = value;
-			return *this;
-		}
-
-/***********************************************************************
 MakeGenericArgument
 ***********************************************************************/
 
@@ -622,6 +594,34 @@ MakeReturnStat
 		MakeReturnStat& MakeReturnStat::expr(const vl::Ptr<CppTypeOrExpr>& value)
 		{
 			node->expr = value;
+			return *this;
+		}
+
+/***********************************************************************
+MakeSingleVarDeclaration
+***********************************************************************/
+
+		MakeSingleVarDeclaration& MakeSingleVarDeclaration::declarator(const vl::Ptr<CppDeclarator>& value)
+		{
+			node->declarator = value;
+			return *this;
+		}
+
+		MakeSingleVarDeclaration& MakeSingleVarDeclaration::defaultValue(const vl::Ptr<CppTypeOrExpr>& value)
+		{
+			node->defaultValue = value;
+			return *this;
+		}
+
+		MakeSingleVarDeclaration& MakeSingleVarDeclaration::keywords(const vl::Ptr<CppDeclaratorKeyword>& value)
+		{
+			node->keywords.Add(value);
+			return *this;
+		}
+
+		MakeSingleVarDeclaration& MakeSingleVarDeclaration::type(const vl::Ptr<CppTypeOrExpr>& value)
+		{
+			node->type = value;
 			return *this;
 		}
 

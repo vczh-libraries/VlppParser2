@@ -292,6 +292,9 @@ namespace cpp_parser
 		void AstVisitor::PrintFields(CppContinueStat* node)
 		{
 		}
+		void AstVisitor::PrintFields(CppDeclaration* node)
+		{
+		}
 		void AstVisitor::PrintFields(CppDeclarator* node)
 		{
 			BeginField(L"advancedTypes");
@@ -464,28 +467,6 @@ namespace cpp_parser
 			EndField();
 			BeginField(L"keyword");
 			WriteToken(node->keyword);
-			EndField();
-		}
-		void AstVisitor::PrintFields(CppFunctionParameter* node)
-		{
-			BeginField(L"declarator");
-			Print(node->declarator.Obj());
-			EndField();
-			BeginField(L"defaultValue");
-			Print(node->defaultValue.Obj());
-			EndField();
-			BeginField(L"keywords");
-			BeginArray();
-			for (auto&& listItem : node->keywords)
-			{
-				BeginArrayItem();
-				Print(listItem.Obj());
-				EndArrayItem();
-			}
-			EndArray();
-			EndField();
-			BeginField(L"type");
-			Print(node->type.Obj());
 			EndField();
 		}
 		void AstVisitor::PrintFields(CppGenericArgument* node)
@@ -1234,6 +1215,28 @@ namespace cpp_parser
 			Print(node->expr.Obj());
 			EndField();
 		}
+		void AstVisitor::PrintFields(CppSingleVarDeclaration* node)
+		{
+			BeginField(L"declarator");
+			Print(node->declarator.Obj());
+			EndField();
+			BeginField(L"defaultValue");
+			Print(node->defaultValue.Obj());
+			EndField();
+			BeginField(L"keywords");
+			BeginArray();
+			for (auto&& listItem : node->keywords)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+			BeginField(L"type");
+			Print(node->type.Obj());
+			EndField();
+		}
 		void AstVisitor::PrintFields(CppSizeofExpr* node)
 		{
 			BeginField(L"argument");
@@ -1333,6 +1336,11 @@ namespace cpp_parser
 		{
 		}
 
+		void AstVisitor::Visit(CppDeclaration* node)
+		{
+			node->Accept(static_cast<CppDeclaration::IVisitor*>(this));
+		}
+
 		void AstVisitor::Visit(CppTypeOrExpr* node)
 		{
 			node->Accept(static_cast<CppTypeOrExpr::IVisitor*>(this));
@@ -1352,7 +1360,7 @@ namespace cpp_parser
 			EndObject();
 		}
 
-		void AstVisitor::Visit(CppFunctionParameter* node)
+		void AstVisitor::Visit(CppSingleVarDeclaration* node)
 		{
 			if (!node)
 			{
@@ -1360,9 +1368,10 @@ namespace cpp_parser
 				return;
 			}
 			BeginObject();
-			WriteType(L"FunctionParameter", node);
+			WriteType(L"SingleVarDeclaration", node);
 			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
-			PrintFields(static_cast<CppFunctionParameter*>(node));
+			PrintFields(static_cast<CppDeclaration*>(node));
+			PrintFields(static_cast<CppSingleVarDeclaration*>(node));
 			EndObject();
 		}
 

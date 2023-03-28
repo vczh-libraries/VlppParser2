@@ -17,6 +17,11 @@ TypeOrExprOrOthersVisitor
 
 		// Visitor Members -----------------------------------
 
+		void TypeOrExprOrOthersVisitor::Visit(CppDeclaration* node)
+		{
+			Dispatch(node);
+		}
+
 		void TypeOrExprOrOthersVisitor::Visit(CppTypeOrExpr* node)
 		{
 			Dispatch(node);
@@ -26,7 +31,13 @@ TypeOrExprOrOthersVisitor
 		{
 		}
 
-		void TypeOrExprOrOthersVisitor::Visit(CppFunctionParameter* node)
+/***********************************************************************
+DeclarationVisitor
+***********************************************************************/
+
+		// Visitor Members -----------------------------------
+
+		void DeclarationVisitor::Visit(CppSingleVarDeclaration* node)
 		{
 		}
 

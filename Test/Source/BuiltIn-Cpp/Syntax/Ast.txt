@@ -6,6 +6,10 @@ class TypeOrExprOrOthers
 {
 }
 
+class Declaration : TypeOrExprOrOthers
+{
+}
+
 class TypeOrExpr : TypeOrExprOrOthers
 {
 }
@@ -373,14 +377,6 @@ class FunctionKeyword
     var arguments : TypeOrExpr[];
 }
 
-class FunctionParameter : TypeOrExprOrOthers
-{
-    var keywords : DeclaratorKeyword[];
-    var type : TypeOrExpr;
-    var declarator : Declarator;
-    var defaultValue : TypeOrExpr;
-}
-
 class DeclaratorFunctionPart
 {
     var parameters : TypeOrExprOrOthers[];
@@ -410,6 +406,18 @@ class DeclaratorType : TypeOrExpr
     var keywords : DeclaratorKeyword[];
     var type : TypeOrExpr;
     var declarator : Declarator;
+}
+
+//////////////////////////////////////////////////////////////////
+// Declaration
+//////////////////////////////////////////////////////////////////
+
+class SingleVarDeclaration : Declaration
+{
+    var keywords : DeclaratorKeyword[];
+    var type : TypeOrExpr;
+    var declarator : Declarator;
+    var defaultValue : TypeOrExpr;
 }
 
 //////////////////////////////////////////////////////////////////

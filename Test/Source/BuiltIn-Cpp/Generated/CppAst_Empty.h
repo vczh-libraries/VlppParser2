@@ -18,13 +18,25 @@ namespace cpp_parser
 		{
 		protected:
 			// Dispatch (virtual) --------------------------------
+			virtual void Dispatch(CppDeclaration* node) = 0;
 			virtual void Dispatch(CppTypeOrExpr* node) = 0;
 
 		public:
 			// Visitor Members -----------------------------------
+			void Visit(CppDeclaration* node) override;
 			void Visit(CppTypeOrExpr* node) override;
 			void Visit(CppGenericArgument* node) override;
-			void Visit(CppFunctionParameter* node) override;
+		};
+
+		/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
+		class DeclarationVisitor : public vl::Object, public CppDeclaration::IVisitor
+		{
+		protected:
+			// Dispatch (virtual) --------------------------------
+
+		public:
+			// Visitor Members -----------------------------------
+			void Visit(CppSingleVarDeclaration* node) override;
 		};
 
 		/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>

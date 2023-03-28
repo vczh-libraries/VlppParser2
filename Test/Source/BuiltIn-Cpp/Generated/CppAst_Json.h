@@ -17,6 +17,7 @@ namespace cpp_parser
 		class AstVisitor
 			: public vl::glr::JsonVisitorBase
 			, protected virtual CppTypeOrExprOrOthers::IVisitor
+			, protected virtual CppDeclaration::IVisitor
 			, protected virtual CppTypeOrExpr::IVisitor
 			, protected virtual CppExprOnly::IVisitor
 			, protected virtual CppTypeOnly::IVisitor
@@ -34,6 +35,7 @@ namespace cpp_parser
 			virtual void PrintFields(CppCastExpr* node);
 			virtual void PrintFields(CppConstType* node);
 			virtual void PrintFields(CppContinueStat* node);
+			virtual void PrintFields(CppDeclaration* node);
 			virtual void PrintFields(CppDeclarator* node);
 			virtual void PrintFields(CppDeclaratorArrayPart* node);
 			virtual void PrintFields(CppDeclaratorFunctionPart* node);
@@ -46,7 +48,6 @@ namespace cpp_parser
 			virtual void PrintFields(CppExprStat* node);
 			virtual void PrintFields(CppFile* node);
 			virtual void PrintFields(CppFunctionKeyword* node);
-			virtual void PrintFields(CppFunctionParameter* node);
 			virtual void PrintFields(CppGenericArgument* node);
 			virtual void PrintFields(CppGenericArguments* node);
 			virtual void PrintFields(CppGotoStat* node);
@@ -65,6 +66,7 @@ namespace cpp_parser
 			virtual void PrintFields(CppPrimitiveType* node);
 			virtual void PrintFields(CppQualifiedName* node);
 			virtual void PrintFields(CppReturnStat* node);
+			virtual void PrintFields(CppSingleVarDeclaration* node);
 			virtual void PrintFields(CppSizeofExpr* node);
 			virtual void PrintFields(CppStatement* node);
 			virtual void PrintFields(CppStaticAssertStat* node);
@@ -80,9 +82,11 @@ namespace cpp_parser
 			virtual void PrintFields(Cpp__LeaveStat* node);
 
 		protected:
+			void Visit(CppDeclaration* node) override;
 			void Visit(CppTypeOrExpr* node) override;
 			void Visit(CppGenericArgument* node) override;
-			void Visit(CppFunctionParameter* node) override;
+
+			void Visit(CppSingleVarDeclaration* node) override;
 
 			void Visit(CppExprOnly* node) override;
 			void Visit(CppTypeOnly* node) override;

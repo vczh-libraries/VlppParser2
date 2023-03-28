@@ -22,6 +22,7 @@ namespace cpp_parser
 		void AstVisitor::Traverse(CppCastExpr* node) {}
 		void AstVisitor::Traverse(CppConstType* node) {}
 		void AstVisitor::Traverse(CppContinueStat* node) {}
+		void AstVisitor::Traverse(CppDeclaration* node) {}
 		void AstVisitor::Traverse(CppDeclarator* node) {}
 		void AstVisitor::Traverse(CppDeclaratorArrayPart* node) {}
 		void AstVisitor::Traverse(CppDeclaratorFunctionPart* node) {}
@@ -34,7 +35,6 @@ namespace cpp_parser
 		void AstVisitor::Traverse(CppExprStat* node) {}
 		void AstVisitor::Traverse(CppFile* node) {}
 		void AstVisitor::Traverse(CppFunctionKeyword* node) {}
-		void AstVisitor::Traverse(CppFunctionParameter* node) {}
 		void AstVisitor::Traverse(CppGenericArgument* node) {}
 		void AstVisitor::Traverse(CppGenericArguments* node) {}
 		void AstVisitor::Traverse(CppGotoStat* node) {}
@@ -53,6 +53,7 @@ namespace cpp_parser
 		void AstVisitor::Traverse(CppPrimitiveType* node) {}
 		void AstVisitor::Traverse(CppQualifiedName* node) {}
 		void AstVisitor::Traverse(CppReturnStat* node) {}
+		void AstVisitor::Traverse(CppSingleVarDeclaration* node) {}
 		void AstVisitor::Traverse(CppSizeofExpr* node) {}
 		void AstVisitor::Traverse(CppStatement* node) {}
 		void AstVisitor::Traverse(CppStaticAssertStat* node) {}
@@ -78,6 +79,7 @@ namespace cpp_parser
 		void AstVisitor::Finishing(CppCastExpr* node) {}
 		void AstVisitor::Finishing(CppConstType* node) {}
 		void AstVisitor::Finishing(CppContinueStat* node) {}
+		void AstVisitor::Finishing(CppDeclaration* node) {}
 		void AstVisitor::Finishing(CppDeclarator* node) {}
 		void AstVisitor::Finishing(CppDeclaratorArrayPart* node) {}
 		void AstVisitor::Finishing(CppDeclaratorFunctionPart* node) {}
@@ -90,7 +92,6 @@ namespace cpp_parser
 		void AstVisitor::Finishing(CppExprStat* node) {}
 		void AstVisitor::Finishing(CppFile* node) {}
 		void AstVisitor::Finishing(CppFunctionKeyword* node) {}
-		void AstVisitor::Finishing(CppFunctionParameter* node) {}
 		void AstVisitor::Finishing(CppGenericArgument* node) {}
 		void AstVisitor::Finishing(CppGenericArguments* node) {}
 		void AstVisitor::Finishing(CppGotoStat* node) {}
@@ -109,6 +110,7 @@ namespace cpp_parser
 		void AstVisitor::Finishing(CppPrimitiveType* node) {}
 		void AstVisitor::Finishing(CppQualifiedName* node) {}
 		void AstVisitor::Finishing(CppReturnStat* node) {}
+		void AstVisitor::Finishing(CppSingleVarDeclaration* node) {}
 		void AstVisitor::Finishing(CppSizeofExpr* node) {}
 		void AstVisitor::Finishing(CppStatement* node) {}
 		void AstVisitor::Finishing(CppStaticAssertStat* node) {}
@@ -122,6 +124,11 @@ namespace cpp_parser
 		void AstVisitor::Finishing(CppVariadicExpr* node) {}
 		void AstVisitor::Finishing(CppVolatileType* node) {}
 		void AstVisitor::Finishing(Cpp__LeaveStat* node) {}
+
+		void AstVisitor::Visit(CppDeclaration* node)
+		{
+			node->Accept(static_cast<CppDeclaration::IVisitor*>(this));
+		}
 
 		void AstVisitor::Visit(CppTypeOrExpr* node)
 		{
@@ -141,12 +148,13 @@ namespace cpp_parser
 			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 		}
 
-		void AstVisitor::Visit(CppFunctionParameter* node)
+		void AstVisitor::Visit(CppSingleVarDeclaration* node)
 		{
 			if (!node) return;
 			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
 			Traverse(static_cast<CppTypeOrExprOrOthers*>(node));
-			Traverse(static_cast<CppFunctionParameter*>(node));
+			Traverse(static_cast<CppDeclaration*>(node));
+			Traverse(static_cast<CppSingleVarDeclaration*>(node));
 			InspectInto(node->declarator.Obj());
 			InspectInto(node->defaultValue.Obj());
 			for (auto&& listItem : node->keywords)
@@ -154,7 +162,8 @@ namespace cpp_parser
 				InspectInto(listItem.Obj());
 			}
 			InspectInto(node->type.Obj());
-			Finishing(static_cast<CppFunctionParameter*>(node));
+			Finishing(static_cast<CppSingleVarDeclaration*>(node));
+			Finishing(static_cast<CppDeclaration*>(node));
 			Finishing(static_cast<CppTypeOrExprOrOthers*>(node));
 			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 		}

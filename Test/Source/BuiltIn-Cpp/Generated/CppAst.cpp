@@ -12,6 +12,11 @@ namespace cpp_parser
 Visitor Pattern Implementation
 ***********************************************************************/
 
+	void CppDeclaration::Accept(CppTypeOrExprOrOthers::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
 	void CppTypeOrExpr::Accept(CppTypeOrExprOrOthers::IVisitor* visitor)
 	{
 		visitor->Visit(this);
@@ -152,12 +157,12 @@ Visitor Pattern Implementation
 		visitor->Visit(this);
 	}
 
-	void CppFunctionParameter::Accept(CppTypeOrExprOrOthers::IVisitor* visitor)
+	void CppDeclaratorType::Accept(CppTypeOrExpr::IVisitor* visitor)
 	{
 		visitor->Visit(this);
 	}
 
-	void CppDeclaratorType::Accept(CppTypeOrExpr::IVisitor* visitor)
+	void CppSingleVarDeclaration::Accept(CppDeclaration::IVisitor* visitor)
 	{
 		visitor->Visit(this);
 	}
@@ -232,6 +237,8 @@ namespace vl
 
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppTypeOrExprOrOthers, cpp_parser::CppTypeOrExprOrOthers)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppTypeOrExprOrOthers::IVisitor, cpp_parser::CppTypeOrExprOrOthers::IVisitor)
+			IMPL_TYPE_INFO_RENAME(cpp_parser::CppDeclaration, cpp_parser::CppDeclaration)
+			IMPL_TYPE_INFO_RENAME(cpp_parser::CppDeclaration::IVisitor, cpp_parser::CppDeclaration::IVisitor)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppTypeOrExpr, cpp_parser::CppTypeOrExpr)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppTypeOrExpr::IVisitor, cpp_parser::CppTypeOrExpr::IVisitor)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppExprOnly, cpp_parser::CppExprOnly)
@@ -282,11 +289,11 @@ namespace vl
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppAdvancedType, cpp_parser::CppAdvancedType)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppDeclaratorKeyword, cpp_parser::CppDeclaratorKeyword)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppFunctionKeyword, cpp_parser::CppFunctionKeyword)
-			IMPL_TYPE_INFO_RENAME(cpp_parser::CppFunctionParameter, cpp_parser::CppFunctionParameter)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppDeclaratorFunctionPart, cpp_parser::CppDeclaratorFunctionPart)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppDeclaratorArrayPart, cpp_parser::CppDeclaratorArrayPart)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppDeclarator, cpp_parser::CppDeclarator)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppDeclaratorType, cpp_parser::CppDeclaratorType)
+			IMPL_TYPE_INFO_RENAME(cpp_parser::CppSingleVarDeclaration, cpp_parser::CppSingleVarDeclaration)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppStatement, cpp_parser::CppStatement)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppStatement::IVisitor, cpp_parser::CppStatement::IVisitor)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppEmptyStat, cpp_parser::CppEmptyStat)
@@ -309,6 +316,11 @@ namespace vl
 				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
 			END_CLASS_MEMBER(cpp_parser::CppTypeOrExprOrOthers)
+
+			BEGIN_CLASS_MEMBER(cpp_parser::CppDeclaration)
+				CLASS_MEMBER_BASE(cpp_parser::CppTypeOrExprOrOthers)
+
+			END_CLASS_MEMBER(cpp_parser::CppDeclaration)
 
 			BEGIN_CLASS_MEMBER(cpp_parser::CppTypeOrExpr)
 				CLASS_MEMBER_BASE(cpp_parser::CppTypeOrExprOrOthers)
@@ -746,17 +758,6 @@ namespace vl
 				CLASS_MEMBER_FIELD(arguments)
 			END_CLASS_MEMBER(cpp_parser::CppFunctionKeyword)
 
-			BEGIN_CLASS_MEMBER(cpp_parser::CppFunctionParameter)
-				CLASS_MEMBER_BASE(cpp_parser::CppTypeOrExprOrOthers)
-
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppFunctionParameter>(), NO_PARAMETER)
-
-				CLASS_MEMBER_FIELD(keywords)
-				CLASS_MEMBER_FIELD(type)
-				CLASS_MEMBER_FIELD(declarator)
-				CLASS_MEMBER_FIELD(defaultValue)
-			END_CLASS_MEMBER(cpp_parser::CppFunctionParameter)
-
 			BEGIN_CLASS_MEMBER(cpp_parser::CppDeclaratorFunctionPart)
 				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
@@ -799,6 +800,17 @@ namespace vl
 				CLASS_MEMBER_FIELD(type)
 				CLASS_MEMBER_FIELD(declarator)
 			END_CLASS_MEMBER(cpp_parser::CppDeclaratorType)
+
+			BEGIN_CLASS_MEMBER(cpp_parser::CppSingleVarDeclaration)
+				CLASS_MEMBER_BASE(cpp_parser::CppDeclaration)
+
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppSingleVarDeclaration>(), NO_PARAMETER)
+
+				CLASS_MEMBER_FIELD(keywords)
+				CLASS_MEMBER_FIELD(type)
+				CLASS_MEMBER_FIELD(declarator)
+				CLASS_MEMBER_FIELD(defaultValue)
+			END_CLASS_MEMBER(cpp_parser::CppSingleVarDeclaration)
 
 			BEGIN_CLASS_MEMBER(cpp_parser::CppStatement)
 				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
@@ -908,10 +920,14 @@ namespace vl
 			END_CLASS_MEMBER(cpp_parser::CppFile)
 
 			BEGIN_INTERFACE_MEMBER(cpp_parser::CppTypeOrExprOrOthers::IVisitor)
+				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppTypeOrExprOrOthers::IVisitor::*)(cpp_parser::CppDeclaration* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppTypeOrExprOrOthers::IVisitor::*)(cpp_parser::CppTypeOrExpr* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppTypeOrExprOrOthers::IVisitor::*)(cpp_parser::CppGenericArgument* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppTypeOrExprOrOthers::IVisitor::*)(cpp_parser::CppFunctionParameter* node))
 			END_INTERFACE_MEMBER(cpp_parser::CppTypeOrExprOrOthers)
+
+			BEGIN_INTERFACE_MEMBER(cpp_parser::CppDeclaration::IVisitor)
+				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppDeclaration::IVisitor::*)(cpp_parser::CppSingleVarDeclaration* node))
+			END_INTERFACE_MEMBER(cpp_parser::CppDeclaration)
 
 			BEGIN_INTERFACE_MEMBER(cpp_parser::CppTypeOrExpr::IVisitor)
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppTypeOrExpr::IVisitor::*)(cpp_parser::CppExprOnly* node))
@@ -977,6 +993,8 @@ namespace vl
 				{
 					ADD_TYPE_INFO(cpp_parser::CppTypeOrExprOrOthers)
 					ADD_TYPE_INFO(cpp_parser::CppTypeOrExprOrOthers::IVisitor)
+					ADD_TYPE_INFO(cpp_parser::CppDeclaration)
+					ADD_TYPE_INFO(cpp_parser::CppDeclaration::IVisitor)
 					ADD_TYPE_INFO(cpp_parser::CppTypeOrExpr)
 					ADD_TYPE_INFO(cpp_parser::CppTypeOrExpr::IVisitor)
 					ADD_TYPE_INFO(cpp_parser::CppExprOnly)
@@ -1027,11 +1045,11 @@ namespace vl
 					ADD_TYPE_INFO(cpp_parser::CppAdvancedType)
 					ADD_TYPE_INFO(cpp_parser::CppDeclaratorKeyword)
 					ADD_TYPE_INFO(cpp_parser::CppFunctionKeyword)
-					ADD_TYPE_INFO(cpp_parser::CppFunctionParameter)
 					ADD_TYPE_INFO(cpp_parser::CppDeclaratorFunctionPart)
 					ADD_TYPE_INFO(cpp_parser::CppDeclaratorArrayPart)
 					ADD_TYPE_INFO(cpp_parser::CppDeclarator)
 					ADD_TYPE_INFO(cpp_parser::CppDeclaratorType)
+					ADD_TYPE_INFO(cpp_parser::CppSingleVarDeclaration)
 					ADD_TYPE_INFO(cpp_parser::CppStatement)
 					ADD_TYPE_INFO(cpp_parser::CppStatement::IVisitor)
 					ADD_TYPE_INFO(cpp_parser::CppEmptyStat)

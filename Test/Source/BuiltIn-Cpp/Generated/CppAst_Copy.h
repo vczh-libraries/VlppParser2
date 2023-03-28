@@ -17,6 +17,7 @@ namespace cpp_parser
 		class AstVisitor
 			: public virtual vl::glr::CopyVisitorBase
 			, protected virtual CppTypeOrExprOrOthers::IVisitor
+			, protected virtual CppDeclaration::IVisitor
 			, protected virtual CppTypeOrExpr::IVisitor
 			, protected virtual CppExprOnly::IVisitor
 			, protected virtual CppTypeOnly::IVisitor
@@ -34,6 +35,7 @@ namespace cpp_parser
 			void CopyFields(CppCastExpr* from, CppCastExpr* to);
 			void CopyFields(CppConstType* from, CppConstType* to);
 			void CopyFields(CppContinueStat* from, CppContinueStat* to);
+			void CopyFields(CppDeclaration* from, CppDeclaration* to);
 			void CopyFields(CppDeclarator* from, CppDeclarator* to);
 			void CopyFields(CppDeclaratorArrayPart* from, CppDeclaratorArrayPart* to);
 			void CopyFields(CppDeclaratorFunctionPart* from, CppDeclaratorFunctionPart* to);
@@ -46,7 +48,6 @@ namespace cpp_parser
 			void CopyFields(CppExprStat* from, CppExprStat* to);
 			void CopyFields(CppFile* from, CppFile* to);
 			void CopyFields(CppFunctionKeyword* from, CppFunctionKeyword* to);
-			void CopyFields(CppFunctionParameter* from, CppFunctionParameter* to);
 			void CopyFields(CppGenericArgument* from, CppGenericArgument* to);
 			void CopyFields(CppGenericArguments* from, CppGenericArguments* to);
 			void CopyFields(CppGotoStat* from, CppGotoStat* to);
@@ -65,6 +66,7 @@ namespace cpp_parser
 			void CopyFields(CppPrimitiveType* from, CppPrimitiveType* to);
 			void CopyFields(CppQualifiedName* from, CppQualifiedName* to);
 			void CopyFields(CppReturnStat* from, CppReturnStat* to);
+			void CopyFields(CppSingleVarDeclaration* from, CppSingleVarDeclaration* to);
 			void CopyFields(CppSizeofExpr* from, CppSizeofExpr* to);
 			void CopyFields(CppStatement* from, CppStatement* to);
 			void CopyFields(CppStaticAssertStat* from, CppStaticAssertStat* to);
@@ -90,9 +92,11 @@ namespace cpp_parser
 			virtual void Visit(CppDeclarator* node);
 			virtual void Visit(CppFile* node);
 
+			void Visit(CppDeclaration* node) override;
 			void Visit(CppTypeOrExpr* node) override;
 			void Visit(CppGenericArgument* node) override;
-			void Visit(CppFunctionParameter* node) override;
+
+			void Visit(CppSingleVarDeclaration* node) override;
 
 			void Visit(CppExprOnly* node) override;
 			void Visit(CppTypeOnly* node) override;
@@ -161,13 +165,13 @@ namespace cpp_parser
 			vl::Ptr<CppCastExpr> CopyNode(CppCastExpr* node);
 			vl::Ptr<CppConstType> CopyNode(CppConstType* node);
 			vl::Ptr<CppContinueStat> CopyNode(CppContinueStat* node);
+			vl::Ptr<CppDeclaration> CopyNode(CppDeclaration* node);
 			vl::Ptr<CppDeclaratorType> CopyNode(CppDeclaratorType* node);
 			vl::Ptr<CppDefaultStat> CopyNode(CppDefaultStat* node);
 			vl::Ptr<CppDeleteExpr> CopyNode(CppDeleteExpr* node);
 			vl::Ptr<CppEmptyStat> CopyNode(CppEmptyStat* node);
 			vl::Ptr<CppExprOnly> CopyNode(CppExprOnly* node);
 			vl::Ptr<CppExprStat> CopyNode(CppExprStat* node);
-			vl::Ptr<CppFunctionParameter> CopyNode(CppFunctionParameter* node);
 			vl::Ptr<CppGenericArgument> CopyNode(CppGenericArgument* node);
 			vl::Ptr<CppGotoStat> CopyNode(CppGotoStat* node);
 			vl::Ptr<CppIfExpr> CopyNode(CppIfExpr* node);
@@ -184,6 +188,7 @@ namespace cpp_parser
 			vl::Ptr<CppPrimitiveType> CopyNode(CppPrimitiveType* node);
 			vl::Ptr<CppQualifiedName> CopyNode(CppQualifiedName* node);
 			vl::Ptr<CppReturnStat> CopyNode(CppReturnStat* node);
+			vl::Ptr<CppSingleVarDeclaration> CopyNode(CppSingleVarDeclaration* node);
 			vl::Ptr<CppSizeofExpr> CopyNode(CppSizeofExpr* node);
 			vl::Ptr<CppStaticAssertStat> CopyNode(CppStaticAssertStat* node);
 			vl::Ptr<CppStringLiteral> CopyNode(CppStringLiteral* node);

@@ -17,6 +17,7 @@ namespace cpp_parser
 		class AstVisitor
 			: public vl::Object
 			, protected virtual CppTypeOrExprOrOthers::IVisitor
+			, protected virtual CppDeclaration::IVisitor
 			, protected virtual CppTypeOrExpr::IVisitor
 			, protected virtual CppExprOnly::IVisitor
 			, protected virtual CppTypeOnly::IVisitor
@@ -36,6 +37,7 @@ namespace cpp_parser
 			virtual void Traverse(CppCastExpr* node);
 			virtual void Traverse(CppConstType* node);
 			virtual void Traverse(CppContinueStat* node);
+			virtual void Traverse(CppDeclaration* node);
 			virtual void Traverse(CppDeclarator* node);
 			virtual void Traverse(CppDeclaratorArrayPart* node);
 			virtual void Traverse(CppDeclaratorFunctionPart* node);
@@ -48,7 +50,6 @@ namespace cpp_parser
 			virtual void Traverse(CppExprStat* node);
 			virtual void Traverse(CppFile* node);
 			virtual void Traverse(CppFunctionKeyword* node);
-			virtual void Traverse(CppFunctionParameter* node);
 			virtual void Traverse(CppGenericArgument* node);
 			virtual void Traverse(CppGenericArguments* node);
 			virtual void Traverse(CppGotoStat* node);
@@ -67,6 +68,7 @@ namespace cpp_parser
 			virtual void Traverse(CppPrimitiveType* node);
 			virtual void Traverse(CppQualifiedName* node);
 			virtual void Traverse(CppReturnStat* node);
+			virtual void Traverse(CppSingleVarDeclaration* node);
 			virtual void Traverse(CppSizeofExpr* node);
 			virtual void Traverse(CppStatement* node);
 			virtual void Traverse(CppStaticAssertStat* node);
@@ -93,6 +95,7 @@ namespace cpp_parser
 			virtual void Finishing(CppCastExpr* node);
 			virtual void Finishing(CppConstType* node);
 			virtual void Finishing(CppContinueStat* node);
+			virtual void Finishing(CppDeclaration* node);
 			virtual void Finishing(CppDeclarator* node);
 			virtual void Finishing(CppDeclaratorArrayPart* node);
 			virtual void Finishing(CppDeclaratorFunctionPart* node);
@@ -105,7 +108,6 @@ namespace cpp_parser
 			virtual void Finishing(CppExprStat* node);
 			virtual void Finishing(CppFile* node);
 			virtual void Finishing(CppFunctionKeyword* node);
-			virtual void Finishing(CppFunctionParameter* node);
 			virtual void Finishing(CppGenericArgument* node);
 			virtual void Finishing(CppGenericArguments* node);
 			virtual void Finishing(CppGotoStat* node);
@@ -124,6 +126,7 @@ namespace cpp_parser
 			virtual void Finishing(CppPrimitiveType* node);
 			virtual void Finishing(CppQualifiedName* node);
 			virtual void Finishing(CppReturnStat* node);
+			virtual void Finishing(CppSingleVarDeclaration* node);
 			virtual void Finishing(CppSizeofExpr* node);
 			virtual void Finishing(CppStatement* node);
 			virtual void Finishing(CppStaticAssertStat* node);
@@ -139,9 +142,11 @@ namespace cpp_parser
 			virtual void Finishing(Cpp__LeaveStat* node);
 
 		protected:
+			void Visit(CppDeclaration* node) override;
 			void Visit(CppTypeOrExpr* node) override;
 			void Visit(CppGenericArgument* node) override;
-			void Visit(CppFunctionParameter* node) override;
+
+			void Visit(CppSingleVarDeclaration* node) override;
 
 			void Visit(CppExprOnly* node) override;
 			void Visit(CppTypeOnly* node) override;

@@ -100,6 +100,7 @@ TEST_FILE
 	syntaxFileNames.Add(L"QualifiedName");
 	syntaxFileNames.Add(L"Expressions");
 	syntaxFileNames.Add(L"Types");
+	syntaxFileNames.Add(L"Declarations");
 	syntaxFileNames.Add(L"Statements");
 	syntaxFileNames.Add(L"API");
 	for (auto syntaxFileName : syntaxFileNames)

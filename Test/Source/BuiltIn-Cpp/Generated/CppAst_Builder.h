@@ -137,15 +137,6 @@ namespace cpp_parser
 			MakeFunctionKeyword& keyword(const vl::WString& value);
 		};
 
-		class MakeFunctionParameter : public vl::glr::ParsingAstBuilder<CppFunctionParameter>
-		{
-		public:
-			MakeFunctionParameter& declarator(const vl::Ptr<CppDeclarator>& value);
-			MakeFunctionParameter& defaultValue(const vl::Ptr<CppTypeOrExpr>& value);
-			MakeFunctionParameter& keywords(const vl::Ptr<CppDeclaratorKeyword>& value);
-			MakeFunctionParameter& type(const vl::Ptr<CppTypeOrExpr>& value);
-		};
-
 		class MakeGenericArgument : public vl::glr::ParsingAstBuilder<CppGenericArgument>
 		{
 		public:
@@ -265,6 +256,15 @@ namespace cpp_parser
 		{
 		public:
 			MakeReturnStat& expr(const vl::Ptr<CppTypeOrExpr>& value);
+		};
+
+		class MakeSingleVarDeclaration : public vl::glr::ParsingAstBuilder<CppSingleVarDeclaration>
+		{
+		public:
+			MakeSingleVarDeclaration& declarator(const vl::Ptr<CppDeclarator>& value);
+			MakeSingleVarDeclaration& defaultValue(const vl::Ptr<CppTypeOrExpr>& value);
+			MakeSingleVarDeclaration& keywords(const vl::Ptr<CppDeclaratorKeyword>& value);
+			MakeSingleVarDeclaration& type(const vl::Ptr<CppTypeOrExpr>& value);
 		};
 
 		class MakeSizeofExpr : public vl::glr::ParsingAstBuilder<CppSizeofExpr>
