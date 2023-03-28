@@ -891,7 +891,7 @@ namespace cpp_parser
 	class CppForStatLoopCondition : public CppForStatConditionPart, vl::reflection::Description<CppForStatLoopCondition>
 	{
 	public:
-		vl::Ptr<CppMultipleVarDeclaration> varsDecl;
+		vl::Ptr<CppTypeOrExprOrOthers> varsDecl;
 		vl::Ptr<CppTypeOrExpr> condition;
 		vl::Ptr<CppTypeOrExpr> sideEffect;
 

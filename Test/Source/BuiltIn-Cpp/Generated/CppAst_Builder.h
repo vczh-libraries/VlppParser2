@@ -169,7 +169,7 @@ namespace cpp_parser
 		public:
 			MakeForStatLoopCondition& condition(const vl::Ptr<CppTypeOrExpr>& value);
 			MakeForStatLoopCondition& sideEffect(const vl::Ptr<CppTypeOrExpr>& value);
-			MakeForStatLoopCondition& varsDecl(const vl::Ptr<CppMultipleVarDeclaration>& value);
+			MakeForStatLoopCondition& varsDecl(const vl::Ptr<CppTypeOrExprOrOthers>& value);
 		};
 
 		class MakeFunctionKeyword : public vl::glr::ParsingAstBuilder<CppFunctionKeyword>

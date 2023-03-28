@@ -387,7 +387,7 @@ MakeForStatLoopCondition
 			return *this;
 		}
 
-		MakeForStatLoopCondition& MakeForStatLoopCondition::varsDecl(const vl::Ptr<CppMultipleVarDeclaration>& value)
+		MakeForStatLoopCondition& MakeForStatLoopCondition::varsDecl(const vl::Ptr<CppTypeOrExprOrOthers>& value)
 		{
 			node->varsDecl = value;
 			return *this;
