@@ -62,8 +62,9 @@
 ## BuiltIn-Cpp
 
 - Progress
-  - Only prepared test cases from `Input_Sample/(Exprs|Types).txt`, ignoring lambda expressions.
-  - Doing statements.
+  - Passed test cases from `Input_Sample/(Exprs|Types|Stats).txt`
+    - Lambda unfinished.
+    - Ambiguity unhandled.
 
 ## Experiments
 
