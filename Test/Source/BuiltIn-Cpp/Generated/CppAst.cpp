@@ -613,6 +613,7 @@ namespace vl
 				CLASS_MEMBER_FIELD(scope)
 				CLASS_MEMBER_FIELD(type)
 				CLASS_MEMBER_FIELD(placementArguments)
+				CLASS_MEMBER_FIELD(arrayArguments)
 				CLASS_MEMBER_FIELD(init)
 			END_CLASS_MEMBER(cpp_parser::CppNewExpr)
 

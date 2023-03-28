@@ -65,7 +65,11 @@ _NewPrefix
   ;
 
 _NewExpr
-  ::= _NewPrefix ["(" {_Expr_Argument:placementArguments ; ","} ")"] _QualifiedName:type [_VarCtorInit:init] as NewExpr
+  ::= _NewPrefix
+      ["(" {_Expr_Argument:placementArguments ; ","} ")"]
+      _QualifiedName:type
+      {"[" _Expr:arrayArguments "]"}
+      [_VarCtorInit:init] as NewExpr
   ;
 
 _DeletePrefix

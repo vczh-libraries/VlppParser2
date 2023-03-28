@@ -244,6 +244,10 @@ namespace cpp_parser
 		void AstVisitor::CopyFields(CppNewExpr* from, CppNewExpr* to)
 		{
 			CopyFields(static_cast<CppExprOnly*>(from), static_cast<CppExprOnly*>(to));
+			for (auto&& listItem : from->arrayArguments)
+			{
+				to->arrayArguments.Add(CopyNode(listItem.Obj()));
+			}
 			to->init = CopyNode(from->init.Obj());
 			for (auto&& listItem : from->placementArguments)
 			{

@@ -204,6 +204,8 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppIndexExpr::operand, object, field, value, cppFieldName);
 		case CppFields::LabelStat_stat:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppLabelStat::stat, object, field, value, cppFieldName);
+		case CppFields::NewExpr_arrayArguments:
+			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppNewExpr::arrayArguments, object, field, value, cppFieldName);
 		case CppFields::NewExpr_init:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppNewExpr::init, object, field, value, cppFieldName);
 		case CppFields::NewExpr_placementArguments:
@@ -534,6 +536,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"LabelStat::stat",
 			L"NameIdentifier::kind",
 			L"NameIdentifier::name",
+			L"NewExpr::arrayArguments",
 			L"NewExpr::init",
 			L"NewExpr::placementArguments",
 			L"NewExpr::scope",
@@ -579,7 +582,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"VolatileType::type",
 		};
 		vl::vint index = (vl::vint)field;
-		return 0 <= index && index < 95 ? results[index] : nullptr;
+		return 0 <= index && index < 96 ? results[index] : nullptr;
 	}
 
 	const wchar_t* CppCppFieldName(CppFields field)
@@ -637,6 +640,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::CppLabelStat::stat",
 			L"cpp_parser::CppNameIdentifier::kind",
 			L"cpp_parser::CppNameIdentifier::name",
+			L"cpp_parser::CppNewExpr::arrayArguments",
 			L"cpp_parser::CppNewExpr::init",
 			L"cpp_parser::CppNewExpr::placementArguments",
 			L"cpp_parser::CppNewExpr::scope",
@@ -682,7 +686,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::CppVolatileType::type",
 		};
 		vl::vint index = (vl::vint)field;
-		return 0 <= index && index < 95 ? results[index] : nullptr;
+		return 0 <= index && index < 96 ? results[index] : nullptr;
 	}
 
 	vl::Ptr<vl::glr::ParsingAstBase> CppAstInsReceiver::ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates)

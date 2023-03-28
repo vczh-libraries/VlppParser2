@@ -466,6 +466,7 @@ namespace cpp_parser
 		CppOperatorScope scope = CppOperatorScope::UNDEFINED_ENUM_ITEM_VALUE;
 		vl::collections::List<vl::Ptr<CppTypeOrExpr>> type;
 		vl::collections::List<vl::Ptr<CppTypeOrExpr>> placementArguments;
+		vl::collections::List<vl::Ptr<CppTypeOrExpr>> arrayArguments;
 		vl::Ptr<CppVarInit> init;
 
 		void Accept(CppExprOnly::IVisitor* visitor) override;

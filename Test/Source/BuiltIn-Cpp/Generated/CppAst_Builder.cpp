@@ -423,6 +423,12 @@ MakeNameIdentifier
 MakeNewExpr
 ***********************************************************************/
 
+		MakeNewExpr& MakeNewExpr::arrayArguments(const vl::Ptr<CppTypeOrExpr>& value)
+		{
+			node->arrayArguments.Add(value);
+			return *this;
+		}
+
 		MakeNewExpr& MakeNewExpr::init(const vl::Ptr<CppVarInit>& value)
 		{
 			node->init = value;

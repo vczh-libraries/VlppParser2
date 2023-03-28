@@ -569,6 +569,16 @@ namespace cpp_parser
 		}
 		void AstVisitor::PrintFields(CppNewExpr* node)
 		{
+			BeginField(L"arrayArguments");
+			BeginArray();
+			for (auto&& listItem : node->arrayArguments)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
 			BeginField(L"init");
 			Print(node->init.Obj());
 			EndField();
