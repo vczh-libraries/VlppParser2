@@ -242,6 +242,8 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppGenericArguments::arguments, object, field, value, cppFieldName);
 		case CppFields::IfElseStat_condition:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppIfElseStat::condition, object, field, value, cppFieldName);
+		case CppFields::IfElseStat_conditionExtra:
+			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppIfElseStat::conditionExtra, object, field, value, cppFieldName);
 		case CppFields::IfElseStat_falseStat:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppIfElseStat::falseStat, object, field, value, cppFieldName);
 		case CppFields::IfElseStat_trueStat:
@@ -646,6 +648,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"GenericArguments::arguments",
 			L"GotoStat::label",
 			L"IfElseStat::condition",
+			L"IfElseStat::conditionExtra",
 			L"IfElseStat::falseStat",
 			L"IfElseStat::trueStat",
 			L"IfExpr::condition",
@@ -717,7 +720,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"__TryStat::tryStat",
 		};
 		vl::vint index = (vl::vint)field;
-		return 0 <= index && index < 125 ? results[index] : nullptr;
+		return 0 <= index && index < 126 ? results[index] : nullptr;
 	}
 
 	const wchar_t* CppCppFieldName(CppFields field)
@@ -779,6 +782,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::CppGenericArguments::arguments",
 			L"cpp_parser::CppGotoStat::label",
 			L"cpp_parser::CppIfElseStat::condition",
+			L"cpp_parser::CppIfElseStat::conditionExtra",
 			L"cpp_parser::CppIfElseStat::falseStat",
 			L"cpp_parser::CppIfElseStat::trueStat",
 			L"cpp_parser::CppIfExpr::condition",
@@ -850,7 +854,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::Cpp__TryStat::tryStat",
 		};
 		vl::vint index = (vl::vint)field;
-		return 0 <= index && index < 125 ? results[index] : nullptr;
+		return 0 <= index && index < 126 ? results[index] : nullptr;
 	}
 
 	vl::Ptr<vl::glr::ParsingAstBase> CppAstInsReceiver::ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates)

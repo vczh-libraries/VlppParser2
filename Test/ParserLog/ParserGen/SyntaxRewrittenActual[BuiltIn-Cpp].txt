@@ -729,7 +729,7 @@ _OtherStats : Statement
   ::= "static_assert" "(" _Expr:expr ["," _Expr:message] ")" ";" as StaticAssertStat
   ::= "while" "(" _ExprOrVarWithInit:condition ")" _Stat:stat as WhileStat
   ::= "do" _Stat:stat "while" "(" _Expr:condition ")" as DoWhileStat
-  ::= "if" "(" _ExprOrVarWithInit:condition ")" _Stat:trueStat +["else" _Stat:falseStat] as IfElseStat
+  ::= "if" "(" _ExprOrVarWithInit:condition [";" _Expr:conditionExtra] ")" _Stat:trueStat +["else" _Stat:falseStat] as IfElseStat
   ::= "switch" "(" _ExprOrVarWithInit:condition ")" _BlockStat:stat as SwitchStat
   ;
 

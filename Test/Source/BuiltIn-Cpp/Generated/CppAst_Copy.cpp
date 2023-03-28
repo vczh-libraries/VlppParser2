@@ -252,6 +252,7 @@ namespace cpp_parser
 		{
 			CopyFields(static_cast<CppStatement*>(from), static_cast<CppStatement*>(to));
 			to->condition = CopyNode(from->condition.Obj());
+			to->conditionExtra = CopyNode(from->conditionExtra.Obj());
 			to->falseStat = CopyNode(from->falseStat.Obj());
 			to->trueStat = CopyNode(from->trueStat.Obj());
 		}

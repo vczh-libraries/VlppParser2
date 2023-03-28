@@ -866,6 +866,7 @@ namespace cpp_parser
 	{
 	public:
 		vl::Ptr<CppTypeOrExprOrOthers> condition;
+		vl::Ptr<CppTypeOrExpr> conditionExtra;
 		vl::Ptr<CppStatement> trueStat;
 		vl::Ptr<CppStatement> falseStat;
 

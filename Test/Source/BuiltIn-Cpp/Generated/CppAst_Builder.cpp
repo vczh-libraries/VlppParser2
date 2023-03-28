@@ -451,6 +451,12 @@ MakeIfElseStat
 			return *this;
 		}
 
+		MakeIfElseStat& MakeIfElseStat::conditionExtra(const vl::Ptr<CppTypeOrExpr>& value)
+		{
+			node->conditionExtra = value;
+			return *this;
+		}
+
 		MakeIfElseStat& MakeIfElseStat::falseStat(const vl::Ptr<CppStatement>& value)
 		{
 			node->falseStat = value;
