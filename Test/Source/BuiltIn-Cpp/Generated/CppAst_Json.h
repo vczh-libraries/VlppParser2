@@ -83,7 +83,7 @@ namespace cpp_parser
 			virtual void PrintFields(CppSwitchStat* node);
 			virtual void PrintFields(CppSysFuncExpr* node);
 			virtual void PrintFields(CppThrowExpr* node);
-			virtual void PrintFields(CppTryCatchStat* node);
+			virtual void PrintFields(CppTryStat* node);
 			virtual void PrintFields(CppTryStatCatchPart* node);
 			virtual void PrintFields(CppTypeOnly* node);
 			virtual void PrintFields(CppTypeOrExpr* node);
@@ -160,7 +160,7 @@ namespace cpp_parser
 			void Visit(CppForStat* node) override;
 			void Visit(CppForEachStat* node) override;
 			void Visit(CppSwitchStat* node) override;
-			void Visit(CppTryCatchStat* node) override;
+			void Visit(CppTryStat* node) override;
 			void Visit(Cpp__TryStat* node) override;
 
 		public:

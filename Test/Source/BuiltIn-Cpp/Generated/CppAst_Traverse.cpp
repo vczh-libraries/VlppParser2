@@ -69,7 +69,7 @@ namespace cpp_parser
 		void AstVisitor::Traverse(CppSwitchStat* node) {}
 		void AstVisitor::Traverse(CppSysFuncExpr* node) {}
 		void AstVisitor::Traverse(CppThrowExpr* node) {}
-		void AstVisitor::Traverse(CppTryCatchStat* node) {}
+		void AstVisitor::Traverse(CppTryStat* node) {}
 		void AstVisitor::Traverse(CppTryStatCatchPart* node) {}
 		void AstVisitor::Traverse(CppTypeOnly* node) {}
 		void AstVisitor::Traverse(CppTypeOrExpr* node) {}
@@ -142,7 +142,7 @@ namespace cpp_parser
 		void AstVisitor::Finishing(CppSwitchStat* node) {}
 		void AstVisitor::Finishing(CppSysFuncExpr* node) {}
 		void AstVisitor::Finishing(CppThrowExpr* node) {}
-		void AstVisitor::Finishing(CppTryCatchStat* node) {}
+		void AstVisitor::Finishing(CppTryStat* node) {}
 		void AstVisitor::Finishing(CppTryStatCatchPart* node) {}
 		void AstVisitor::Finishing(CppTypeOnly* node) {}
 		void AstVisitor::Finishing(CppTypeOrExpr* node) {}
@@ -940,15 +940,18 @@ namespace cpp_parser
 			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 		}
 
-		void AstVisitor::Visit(CppTryCatchStat* node)
+		void AstVisitor::Visit(CppTryStat* node)
 		{
 			if (!node) return;
 			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
 			Traverse(static_cast<CppStatement*>(node));
-			Traverse(static_cast<CppTryCatchStat*>(node));
-			InspectInto(node->catchParts.Obj());
+			Traverse(static_cast<CppTryStat*>(node));
+			for (auto&& listItem : node->catchParts)
+			{
+				InspectInto(listItem.Obj());
+			}
 			InspectInto(node->tryStat.Obj());
-			Finishing(static_cast<CppTryCatchStat*>(node));
+			Finishing(static_cast<CppTryStat*>(node));
 			Finishing(static_cast<CppStatement*>(node));
 			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 		}
@@ -959,7 +962,7 @@ namespace cpp_parser
 			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
 			Traverse(static_cast<CppStatement*>(node));
 			Traverse(static_cast<Cpp__TryStat*>(node));
-			InspectInto(node->catchStat.Obj());
+			InspectInto(node->exceptStat.Obj());
 			InspectInto(node->filter.Obj());
 			InspectInto(node->finallyStat.Obj());
 			InspectInto(node->tryStat.Obj());

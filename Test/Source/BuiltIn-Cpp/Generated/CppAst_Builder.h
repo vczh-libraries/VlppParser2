@@ -367,11 +367,11 @@ namespace cpp_parser
 			MakeThrowExpr& argument(const vl::Ptr<CppTypeOrExpr>& value);
 		};
 
-		class MakeTryCatchStat : public vl::glr::ParsingAstBuilder<CppTryCatchStat>
+		class MakeTryStat : public vl::glr::ParsingAstBuilder<CppTryStat>
 		{
 		public:
-			MakeTryCatchStat& catchParts(const vl::Ptr<CppTryStatCatchPart>& value);
-			MakeTryCatchStat& tryStat(const vl::Ptr<CppStatement>& value);
+			MakeTryStat& catchParts(const vl::Ptr<CppTryStatCatchPart>& value);
+			MakeTryStat& tryStat(const vl::Ptr<CppStatement>& value);
 		};
 
 		class MakeTryStatCatchPart : public vl::glr::ParsingAstBuilder<CppTryStatCatchPart>
@@ -422,7 +422,7 @@ namespace cpp_parser
 		class Make__TryStat : public vl::glr::ParsingAstBuilder<Cpp__TryStat>
 		{
 		public:
-			Make__TryStat& catchStat(const vl::Ptr<CppStatement>& value);
+			Make__TryStat& exceptStat(const vl::Ptr<CppStatement>& value);
 			Make__TryStat& filter(const vl::Ptr<CppTypeOrExpr>& value);
 			Make__TryStat& finallyStat(const vl::Ptr<CppStatement>& value);
 			Make__TryStat& tryStat(const vl::Ptr<CppStatement>& value);

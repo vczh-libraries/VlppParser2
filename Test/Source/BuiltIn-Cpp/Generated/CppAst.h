@@ -69,7 +69,7 @@ namespace cpp_parser
 	class CppSwitchStat;
 	class CppSysFuncExpr;
 	class CppThrowExpr;
-	class CppTryCatchStat;
+	class CppTryStat;
 	class CppTryStatCatchPart;
 	class CppTypeOnly;
 	class CppTypeOrExpr;
@@ -733,7 +733,7 @@ namespace cpp_parser
 			virtual void Visit(CppForStat* node) = 0;
 			virtual void Visit(CppForEachStat* node) = 0;
 			virtual void Visit(CppSwitchStat* node) = 0;
-			virtual void Visit(CppTryCatchStat* node) = 0;
+			virtual void Visit(CppTryStat* node) = 0;
 			virtual void Visit(Cpp__TryStat* node) = 0;
 		};
 
@@ -909,11 +909,11 @@ namespace cpp_parser
 		vl::Ptr<CppStatement> stat;
 	};
 
-	class CppTryCatchStat : public CppStatement, vl::reflection::Description<CppTryCatchStat>
+	class CppTryStat : public CppStatement, vl::reflection::Description<CppTryStat>
 	{
 	public:
 		vl::Ptr<CppStatement> tryStat;
-		vl::Ptr<CppTryStatCatchPart> catchParts;
+		vl::collections::List<vl::Ptr<CppTryStatCatchPart>> catchParts;
 
 		void Accept(CppStatement::IVisitor* visitor) override;
 	};
@@ -922,7 +922,7 @@ namespace cpp_parser
 	{
 	public:
 		vl::Ptr<CppStatement> tryStat;
-		vl::Ptr<CppStatement> catchStat;
+		vl::Ptr<CppStatement> exceptStat;
 		vl::Ptr<CppStatement> finallyStat;
 		vl::Ptr<CppTypeOrExpr> filter;
 
@@ -1028,7 +1028,7 @@ namespace vl
 			DECL_TYPE_INFO(cpp_parser::CppForEachStat)
 			DECL_TYPE_INFO(cpp_parser::CppSwitchStat)
 			DECL_TYPE_INFO(cpp_parser::CppTryStatCatchPart)
-			DECL_TYPE_INFO(cpp_parser::CppTryCatchStat)
+			DECL_TYPE_INFO(cpp_parser::CppTryStat)
 			DECL_TYPE_INFO(cpp_parser::Cpp__TryStat)
 			DECL_TYPE_INFO(cpp_parser::CppFile)
 
@@ -1326,7 +1326,7 @@ namespace vl
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(cpp_parser::CppTryCatchStat* node) override
+				void Visit(cpp_parser::CppTryStat* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}

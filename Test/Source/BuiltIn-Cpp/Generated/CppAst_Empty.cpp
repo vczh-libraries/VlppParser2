@@ -279,7 +279,7 @@ StatementVisitor
 		{
 		}
 
-		void StatementVisitor::Visit(CppTryCatchStat* node)
+		void StatementVisitor::Visit(CppTryStat* node)
 		{
 		}
 

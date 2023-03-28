@@ -446,10 +446,13 @@ namespace cpp_parser
 			to->argument = CopyNode(from->argument.Obj());
 		}
 
-		void AstVisitor::CopyFields(CppTryCatchStat* from, CppTryCatchStat* to)
+		void AstVisitor::CopyFields(CppTryStat* from, CppTryStat* to)
 		{
 			CopyFields(static_cast<CppStatement*>(from), static_cast<CppStatement*>(to));
-			to->catchParts = CopyNode(from->catchParts.Obj());
+			for (auto&& listItem : from->catchParts)
+			{
+				to->catchParts.Add(CopyNode(listItem.Obj()));
+			}
 			to->tryStat = CopyNode(from->tryStat.Obj());
 		}
 
@@ -529,7 +532,7 @@ namespace cpp_parser
 		void AstVisitor::CopyFields(Cpp__TryStat* from, Cpp__TryStat* to)
 		{
 			CopyFields(static_cast<CppStatement*>(from), static_cast<CppStatement*>(to));
-			to->catchStat = CopyNode(from->catchStat.Obj());
+			to->exceptStat = CopyNode(from->exceptStat.Obj());
 			to->filter = CopyNode(from->filter.Obj());
 			to->finallyStat = CopyNode(from->finallyStat.Obj());
 			to->tryStat = CopyNode(from->tryStat.Obj());
@@ -982,9 +985,9 @@ namespace cpp_parser
 			this->result = newNode;
 		}
 
-		void AstVisitor::Visit(CppTryCatchStat* node)
+		void AstVisitor::Visit(CppTryStat* node)
 		{
-			auto newNode = vl::Ptr(new CppTryCatchStat);
+			auto newNode = vl::Ptr(new CppTryStat);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
@@ -1386,10 +1389,10 @@ namespace cpp_parser
 			return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppThrowExpr>();
 		}
 
-		vl::Ptr<CppTryCatchStat> AstVisitor::CopyNode(CppTryCatchStat* node)
+		vl::Ptr<CppTryStat> AstVisitor::CopyNode(CppTryStat* node)
 		{
 			if (!node) return nullptr;
-			return CopyNode(static_cast<CppStatement*>(node)).Cast<CppTryCatchStat>();
+			return CopyNode(static_cast<CppStatement*>(node)).Cast<CppTryStat>();
 		}
 
 		vl::Ptr<CppTypeOnly> AstVisitor::CopyNode(CppTypeOnly* node)

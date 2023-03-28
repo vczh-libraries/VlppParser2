@@ -85,7 +85,7 @@ namespace cpp_parser
 			virtual void Traverse(CppSwitchStat* node);
 			virtual void Traverse(CppSysFuncExpr* node);
 			virtual void Traverse(CppThrowExpr* node);
-			virtual void Traverse(CppTryCatchStat* node);
+			virtual void Traverse(CppTryStat* node);
 			virtual void Traverse(CppTryStatCatchPart* node);
 			virtual void Traverse(CppTypeOnly* node);
 			virtual void Traverse(CppTypeOrExpr* node);
@@ -159,7 +159,7 @@ namespace cpp_parser
 			virtual void Finishing(CppSwitchStat* node);
 			virtual void Finishing(CppSysFuncExpr* node);
 			virtual void Finishing(CppThrowExpr* node);
-			virtual void Finishing(CppTryCatchStat* node);
+			virtual void Finishing(CppTryStat* node);
 			virtual void Finishing(CppTryStatCatchPart* node);
 			virtual void Finishing(CppTypeOnly* node);
 			virtual void Finishing(CppTypeOrExpr* node);
@@ -236,7 +236,7 @@ namespace cpp_parser
 			void Visit(CppForStat* node) override;
 			void Visit(CppForEachStat* node) override;
 			void Visit(CppSwitchStat* node) override;
-			void Visit(CppTryCatchStat* node) override;
+			void Visit(CppTryStat* node) override;
 			void Visit(Cpp__TryStat* node) override;
 
 		public:

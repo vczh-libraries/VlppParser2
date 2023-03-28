@@ -862,16 +862,16 @@ MakeThrowExpr
 		}
 
 /***********************************************************************
-MakeTryCatchStat
+MakeTryStat
 ***********************************************************************/
 
-		MakeTryCatchStat& MakeTryCatchStat::catchParts(const vl::Ptr<CppTryStatCatchPart>& value)
+		MakeTryStat& MakeTryStat::catchParts(const vl::Ptr<CppTryStatCatchPart>& value)
 		{
-			node->catchParts = value;
+			node->catchParts.Add(value);
 			return *this;
 		}
 
-		MakeTryCatchStat& MakeTryCatchStat::tryStat(const vl::Ptr<CppStatement>& value)
+		MakeTryStat& MakeTryStat::tryStat(const vl::Ptr<CppStatement>& value)
 		{
 			node->tryStat = value;
 			return *this;
@@ -969,9 +969,9 @@ MakeWhileStat
 Make__TryStat
 ***********************************************************************/
 
-		Make__TryStat& Make__TryStat::catchStat(const vl::Ptr<CppStatement>& value)
+		Make__TryStat& Make__TryStat::exceptStat(const vl::Ptr<CppStatement>& value)
 		{
-			node->catchStat = value;
+			node->exceptStat = value;
 			return *this;
 		}
 

@@ -282,7 +282,7 @@ Visitor Pattern Implementation
 		visitor->Visit(this);
 	}
 
-	void CppTryCatchStat::Accept(CppStatement::IVisitor* visitor)
+	void CppTryStat::Accept(CppStatement::IVisitor* visitor)
 	{
 		visitor->Visit(this);
 	}
@@ -387,7 +387,7 @@ namespace vl
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppForEachStat, cpp_parser::CppForEachStat)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppSwitchStat, cpp_parser::CppSwitchStat)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppTryStatCatchPart, cpp_parser::CppTryStatCatchPart)
-			IMPL_TYPE_INFO_RENAME(cpp_parser::CppTryCatchStat, cpp_parser::CppTryCatchStat)
+			IMPL_TYPE_INFO_RENAME(cpp_parser::CppTryStat, cpp_parser::CppTryStat)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::Cpp__TryStat, cpp_parser::Cpp__TryStat)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppFile, cpp_parser::CppFile)
 
@@ -1107,14 +1107,14 @@ namespace vl
 				CLASS_MEMBER_FIELD(stat)
 			END_CLASS_MEMBER(cpp_parser::CppTryStatCatchPart)
 
-			BEGIN_CLASS_MEMBER(cpp_parser::CppTryCatchStat)
+			BEGIN_CLASS_MEMBER(cpp_parser::CppTryStat)
 				CLASS_MEMBER_BASE(cpp_parser::CppStatement)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppTryCatchStat>(), NO_PARAMETER)
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppTryStat>(), NO_PARAMETER)
 
 				CLASS_MEMBER_FIELD(tryStat)
 				CLASS_MEMBER_FIELD(catchParts)
-			END_CLASS_MEMBER(cpp_parser::CppTryCatchStat)
+			END_CLASS_MEMBER(cpp_parser::CppTryStat)
 
 			BEGIN_CLASS_MEMBER(cpp_parser::Cpp__TryStat)
 				CLASS_MEMBER_BASE(cpp_parser::CppStatement)
@@ -1122,7 +1122,7 @@ namespace vl
 				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::Cpp__TryStat>(), NO_PARAMETER)
 
 				CLASS_MEMBER_FIELD(tryStat)
-				CLASS_MEMBER_FIELD(catchStat)
+				CLASS_MEMBER_FIELD(exceptStat)
 				CLASS_MEMBER_FIELD(finallyStat)
 				CLASS_MEMBER_FIELD(filter)
 			END_CLASS_MEMBER(cpp_parser::Cpp__TryStat)
@@ -1210,7 +1210,7 @@ namespace vl
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppStatement::IVisitor::*)(cpp_parser::CppForStat* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppStatement::IVisitor::*)(cpp_parser::CppForEachStat* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppStatement::IVisitor::*)(cpp_parser::CppSwitchStat* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppStatement::IVisitor::*)(cpp_parser::CppTryCatchStat* node))
+				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppStatement::IVisitor::*)(cpp_parser::CppTryStat* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppStatement::IVisitor::*)(cpp_parser::Cpp__TryStat* node))
 			END_INTERFACE_MEMBER(cpp_parser::CppStatement)
 
@@ -1309,7 +1309,7 @@ namespace vl
 					ADD_TYPE_INFO(cpp_parser::CppForEachStat)
 					ADD_TYPE_INFO(cpp_parser::CppSwitchStat)
 					ADD_TYPE_INFO(cpp_parser::CppTryStatCatchPart)
-					ADD_TYPE_INFO(cpp_parser::CppTryCatchStat)
+					ADD_TYPE_INFO(cpp_parser::CppTryStat)
 					ADD_TYPE_INFO(cpp_parser::Cpp__TryStat)
 					ADD_TYPE_INFO(cpp_parser::CppFile)
 				}

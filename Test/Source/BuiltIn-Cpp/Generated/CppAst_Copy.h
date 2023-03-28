@@ -83,7 +83,7 @@ namespace cpp_parser
 			void CopyFields(CppSwitchStat* from, CppSwitchStat* to);
 			void CopyFields(CppSysFuncExpr* from, CppSysFuncExpr* to);
 			void CopyFields(CppThrowExpr* from, CppThrowExpr* to);
-			void CopyFields(CppTryCatchStat* from, CppTryCatchStat* to);
+			void CopyFields(CppTryStat* from, CppTryStat* to);
 			void CopyFields(CppTryStatCatchPart* from, CppTryStatCatchPart* to);
 			void CopyFields(CppTypeOnly* from, CppTypeOnly* to);
 			void CopyFields(CppTypeOrExpr* from, CppTypeOrExpr* to);
@@ -172,7 +172,7 @@ namespace cpp_parser
 			void Visit(CppForStat* node) override;
 			void Visit(CppForEachStat* node) override;
 			void Visit(CppSwitchStat* node) override;
-			void Visit(CppTryCatchStat* node) override;
+			void Visit(CppTryStat* node) override;
 			void Visit(Cpp__TryStat* node) override;
 
 		public:
@@ -237,7 +237,7 @@ namespace cpp_parser
 			vl::Ptr<CppSwitchStat> CopyNode(CppSwitchStat* node);
 			vl::Ptr<CppSysFuncExpr> CopyNode(CppSysFuncExpr* node);
 			vl::Ptr<CppThrowExpr> CopyNode(CppThrowExpr* node);
-			vl::Ptr<CppTryCatchStat> CopyNode(CppTryCatchStat* node);
+			vl::Ptr<CppTryStat> CopyNode(CppTryStat* node);
 			vl::Ptr<CppTypeOnly> CopyNode(CppTypeOnly* node);
 			vl::Ptr<CppTypeOrExpr> CopyNode(CppTypeOrExpr* node);
 			vl::Ptr<CppVarBraceInit> CopyNode(CppVarBraceInit* node);

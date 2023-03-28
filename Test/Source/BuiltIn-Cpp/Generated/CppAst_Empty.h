@@ -149,7 +149,7 @@ namespace cpp_parser
 			void Visit(CppForStat* node) override;
 			void Visit(CppForEachStat* node) override;
 			void Visit(CppSwitchStat* node) override;
-			void Visit(CppTryCatchStat* node) override;
+			void Visit(CppTryStat* node) override;
 			void Visit(Cpp__TryStat* node) override;
 		};
 

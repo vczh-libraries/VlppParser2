@@ -49,16 +49,6 @@
             "$ast": "CreateClause",
             "assignments": [],
             "syntax": {
-                "$ast": "RefSyntax",
-                "field": "",
-                "literal": "\";\"",
-                "refType": "Literal"
-            },
-            "type": "EmptyStat"
-        }, {
-            "$ast": "CreateClause",
-            "assignments": [],
-            "syntax": {
                 "$ast": "SequenceSyntax",
                 "first": {
                     "$ast": "SequenceSyntax",
@@ -87,6 +77,214 @@
                 }
             },
             "type": "BlockStat"
+        }],
+        "name": "_BlockStat",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "SequenceSyntax",
+                        "first": {
+                            "$ast": "SequenceSyntax",
+                            "first": {
+                                "$ast": "RefSyntax",
+                                "field": "",
+                                "literal": "\"catch\"",
+                                "refType": "Literal"
+                            },
+                            "second": {
+                                "$ast": "RefSyntax",
+                                "field": "",
+                                "literal": "\"(\"",
+                                "refType": "Literal"
+                            }
+                        },
+                        "second": {
+                            "$ast": "AlternativeSyntax",
+                            "first": {
+                                "$ast": "RefSyntax",
+                                "field": "decl",
+                                "literal": "_VarWithoutInit",
+                                "refType": "Id"
+                            },
+                            "second": {
+                                "$ast": "RefSyntax",
+                                "field": "",
+                                "literal": "\"...\"",
+                                "refType": "Literal"
+                            }
+                        }
+                    },
+                    "second": {
+                        "$ast": "RefSyntax",
+                        "field": "",
+                        "literal": "\")\"",
+                        "refType": "Literal"
+                    }
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "stat",
+                    "literal": "_Stat",
+                    "refType": "Id"
+                }
+            },
+            "type": "TryStatCatchPart"
+        }],
+        "name": "_TryStatCatchPart",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "SequenceSyntax",
+                        "first": {
+                            "$ast": "RefSyntax",
+                            "field": "",
+                            "literal": "\"try\"",
+                            "refType": "Literal"
+                        },
+                        "second": {
+                            "$ast": "RefSyntax",
+                            "field": "tryStat",
+                            "literal": "_Stat",
+                            "refType": "Id"
+                        }
+                    },
+                    "second": {
+                        "$ast": "RefSyntax",
+                        "field": "catchParts",
+                        "literal": "_TryStatCatchPart",
+                        "refType": "Id"
+                    }
+                },
+                "second": {
+                    "$ast": "LoopSyntax",
+                    "delimiter": null,
+                    "syntax": {
+                        "$ast": "RefSyntax",
+                        "field": "catchParts",
+                        "literal": "_TryStatCatchPart",
+                        "refType": "Id"
+                    }
+                }
+            },
+            "type": "TryStat"
+        }],
+        "name": "_TryStat",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "RefSyntax",
+                        "field": "",
+                        "literal": "\"__try\"",
+                        "refType": "Literal"
+                    },
+                    "second": {
+                        "$ast": "RefSyntax",
+                        "field": "tryStat",
+                        "literal": "_Stat",
+                        "refType": "Id"
+                    }
+                },
+                "second": {
+                    "$ast": "AlternativeSyntax",
+                    "first": {
+                        "$ast": "SequenceSyntax",
+                        "first": {
+                            "$ast": "SequenceSyntax",
+                            "first": {
+                                "$ast": "SequenceSyntax",
+                                "first": {
+                                    "$ast": "SequenceSyntax",
+                                    "first": {
+                                        "$ast": "RefSyntax",
+                                        "field": "",
+                                        "literal": "\"__except\"",
+                                        "refType": "Literal"
+                                    },
+                                    "second": {
+                                        "$ast": "RefSyntax",
+                                        "field": "",
+                                        "literal": "\"(\"",
+                                        "refType": "Literal"
+                                    }
+                                },
+                                "second": {
+                                    "$ast": "RefSyntax",
+                                    "field": "filter",
+                                    "literal": "_Expr",
+                                    "refType": "Id"
+                                }
+                            },
+                            "second": {
+                                "$ast": "RefSyntax",
+                                "field": "",
+                                "literal": "\")\"",
+                                "refType": "Literal"
+                            }
+                        },
+                        "second": {
+                            "$ast": "RefSyntax",
+                            "field": "exceptStat",
+                            "literal": "_Stat",
+                            "refType": "Id"
+                        }
+                    },
+                    "second": {
+                        "$ast": "SequenceSyntax",
+                        "first": {
+                            "$ast": "RefSyntax",
+                            "field": "",
+                            "literal": "\"__finally\"",
+                            "refType": "Literal"
+                        },
+                        "second": {
+                            "$ast": "RefSyntax",
+                            "field": "finallyStat",
+                            "literal": "_Stat",
+                            "refType": "Id"
+                        }
+                    }
+                }
+            },
+            "type": "__TryStat"
+        }],
+        "name": "___TryStat",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "RefSyntax",
+                "field": "",
+                "literal": "\";\"",
+                "refType": "Literal"
+            },
+            "type": "EmptyStat"
         }, {
             "$ast": "CreateClause",
             "assignments": [],
@@ -365,6 +563,221 @@
                 }
             },
             "type": "StaticAssertStat"
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "SequenceSyntax",
+                        "first": {
+                            "$ast": "SequenceSyntax",
+                            "first": {
+                                "$ast": "RefSyntax",
+                                "field": "",
+                                "literal": "\"while\"",
+                                "refType": "Literal"
+                            },
+                            "second": {
+                                "$ast": "RefSyntax",
+                                "field": "",
+                                "literal": "\"(\"",
+                                "refType": "Literal"
+                            }
+                        },
+                        "second": {
+                            "$ast": "RefSyntax",
+                            "field": "condition",
+                            "literal": "_ExprOrVarWithInit",
+                            "refType": "Id"
+                        }
+                    },
+                    "second": {
+                        "$ast": "RefSyntax",
+                        "field": "",
+                        "literal": "\")\"",
+                        "refType": "Literal"
+                    }
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "stat",
+                    "literal": "_Stat",
+                    "refType": "Id"
+                }
+            },
+            "type": "WhileStat"
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "SequenceSyntax",
+                        "first": {
+                            "$ast": "SequenceSyntax",
+                            "first": {
+                                "$ast": "SequenceSyntax",
+                                "first": {
+                                    "$ast": "RefSyntax",
+                                    "field": "",
+                                    "literal": "\"do\"",
+                                    "refType": "Literal"
+                                },
+                                "second": {
+                                    "$ast": "RefSyntax",
+                                    "field": "stat",
+                                    "literal": "_Stat",
+                                    "refType": "Id"
+                                }
+                            },
+                            "second": {
+                                "$ast": "RefSyntax",
+                                "field": "",
+                                "literal": "\"while\"",
+                                "refType": "Literal"
+                            }
+                        },
+                        "second": {
+                            "$ast": "RefSyntax",
+                            "field": "",
+                            "literal": "\"(\"",
+                            "refType": "Literal"
+                        }
+                    },
+                    "second": {
+                        "$ast": "RefSyntax",
+                        "field": "condition",
+                        "literal": "_Expr",
+                        "refType": "Id"
+                    }
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "\")\"",
+                    "refType": "Literal"
+                }
+            },
+            "type": "DoWhileStat"
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "SequenceSyntax",
+                        "first": {
+                            "$ast": "SequenceSyntax",
+                            "first": {
+                                "$ast": "SequenceSyntax",
+                                "first": {
+                                    "$ast": "RefSyntax",
+                                    "field": "",
+                                    "literal": "\"if\"",
+                                    "refType": "Literal"
+                                },
+                                "second": {
+                                    "$ast": "RefSyntax",
+                                    "field": "",
+                                    "literal": "\"(\"",
+                                    "refType": "Literal"
+                                }
+                            },
+                            "second": {
+                                "$ast": "RefSyntax",
+                                "field": "condition",
+                                "literal": "_ExprOrVarWithInit",
+                                "refType": "Id"
+                            }
+                        },
+                        "second": {
+                            "$ast": "RefSyntax",
+                            "field": "",
+                            "literal": "\")\"",
+                            "refType": "Literal"
+                        }
+                    },
+                    "second": {
+                        "$ast": "RefSyntax",
+                        "field": "trueStat",
+                        "literal": "_Stat",
+                        "refType": "Id"
+                    }
+                },
+                "second": {
+                    "$ast": "OptionalSyntax",
+                    "priority": "PreferTake",
+                    "syntax": {
+                        "$ast": "SequenceSyntax",
+                        "first": {
+                            "$ast": "RefSyntax",
+                            "field": "",
+                            "literal": "\"else\"",
+                            "refType": "Literal"
+                        },
+                        "second": {
+                            "$ast": "RefSyntax",
+                            "field": "falseStat",
+                            "literal": "_Stat",
+                            "refType": "Id"
+                        }
+                    }
+                }
+            },
+            "type": "IfElseStat"
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "SequenceSyntax",
+                        "first": {
+                            "$ast": "SequenceSyntax",
+                            "first": {
+                                "$ast": "RefSyntax",
+                                "field": "",
+                                "literal": "\"switch\"",
+                                "refType": "Literal"
+                            },
+                            "second": {
+                                "$ast": "RefSyntax",
+                                "field": "",
+                                "literal": "\"(\"",
+                                "refType": "Literal"
+                            }
+                        },
+                        "second": {
+                            "$ast": "RefSyntax",
+                            "field": "condition",
+                            "literal": "_ExprOrVarWithInit",
+                            "refType": "Id"
+                        }
+                    },
+                    "second": {
+                        "$ast": "RefSyntax",
+                        "field": "",
+                        "literal": "\")\"",
+                        "refType": "Literal"
+                    }
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "stat",
+                    "literal": "_BlockStat",
+                    "refType": "Id"
+                }
+            },
+            "type": "SwitchStat"
         }],
         "name": "_OtherStats",
         "type": ""
@@ -376,6 +789,27 @@
             "syntax": {
                 "$ast": "UseSyntax",
                 "name": "_ExprStat"
+            }
+        }, {
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "_BlockStat"
+            }
+        }, {
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "_TryStat"
+            }
+        }, {
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "___TryStat"
             }
         }, {
             "$ast": "ReuseClause",

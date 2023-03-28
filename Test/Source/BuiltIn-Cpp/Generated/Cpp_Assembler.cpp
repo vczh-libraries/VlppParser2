@@ -124,8 +124,8 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::Ptr(new cpp_parser::CppSysFuncExpr);
 		case CppClasses::ThrowExpr:
 			return vl::Ptr(new cpp_parser::CppThrowExpr);
-		case CppClasses::TryCatchStat:
-			return vl::Ptr(new cpp_parser::CppTryCatchStat);
+		case CppClasses::TryStat:
+			return vl::Ptr(new cpp_parser::CppTryStat);
 		case CppClasses::TryStatCatchPart:
 			return vl::Ptr(new cpp_parser::CppTryStatCatchPart);
 		case CppClasses::VarBraceInit:
@@ -310,10 +310,10 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppSysFuncExpr::argument, object, field, value, cppFieldName);
 		case CppFields::ThrowExpr_argument:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppThrowExpr::argument, object, field, value, cppFieldName);
-		case CppFields::TryCatchStat_catchParts:
-			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppTryCatchStat::catchParts, object, field, value, cppFieldName);
-		case CppFields::TryCatchStat_tryStat:
-			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppTryCatchStat::tryStat, object, field, value, cppFieldName);
+		case CppFields::TryStat_catchParts:
+			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppTryStat::catchParts, object, field, value, cppFieldName);
+		case CppFields::TryStat_tryStat:
+			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppTryStat::tryStat, object, field, value, cppFieldName);
 		case CppFields::TryStatCatchPart_decl:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppTryStatCatchPart::decl, object, field, value, cppFieldName);
 		case CppFields::TryStatCatchPart_stat:
@@ -332,8 +332,8 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppWhileStat::condition, object, field, value, cppFieldName);
 		case CppFields::WhileStat_stat:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppWhileStat::stat, object, field, value, cppFieldName);
-		case CppFields::__TryStat_catchStat:
-			return vl::glr::AssemblerSetObjectField(&cpp_parser::Cpp__TryStat::catchStat, object, field, value, cppFieldName);
+		case CppFields::__TryStat_exceptStat:
+			return vl::glr::AssemblerSetObjectField(&cpp_parser::Cpp__TryStat::exceptStat, object, field, value, cppFieldName);
 		case CppFields::__TryStat_filter:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::Cpp__TryStat::filter, object, field, value, cppFieldName);
 		case CppFields::__TryStat_finallyStat:
@@ -489,7 +489,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"SwitchStat",
 			L"SysFuncExpr",
 			L"ThrowExpr",
-			L"TryCatchStat",
+			L"TryStat",
 			L"TryStatCatchPart",
 			L"TypeOnly",
 			L"TypeOrExpr",
@@ -568,7 +568,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::CppSwitchStat",
 			L"cpp_parser::CppSysFuncExpr",
 			L"cpp_parser::CppThrowExpr",
-			L"cpp_parser::CppTryCatchStat",
+			L"cpp_parser::CppTryStat",
 			L"cpp_parser::CppTryStatCatchPart",
 			L"cpp_parser::CppTypeOnly",
 			L"cpp_parser::CppTypeOrExpr",
@@ -699,8 +699,8 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"SysFuncExpr::keyword",
 			L"SysFuncExpr::variadic",
 			L"ThrowExpr::argument",
-			L"TryCatchStat::catchParts",
-			L"TryCatchStat::tryStat",
+			L"TryStat::catchParts",
+			L"TryStat::tryStat",
 			L"TryStatCatchPart::decl",
 			L"TryStatCatchPart::stat",
 			L"VarBraceInit::arguments",
@@ -711,7 +711,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"VolatileType::type",
 			L"WhileStat::condition",
 			L"WhileStat::stat",
-			L"__TryStat::catchStat",
+			L"__TryStat::exceptStat",
 			L"__TryStat::filter",
 			L"__TryStat::finallyStat",
 			L"__TryStat::tryStat",
@@ -832,8 +832,8 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::CppSysFuncExpr::keyword",
 			L"cpp_parser::CppSysFuncExpr::variadic",
 			L"cpp_parser::CppThrowExpr::argument",
-			L"cpp_parser::CppTryCatchStat::catchParts",
-			L"cpp_parser::CppTryCatchStat::tryStat",
+			L"cpp_parser::CppTryStat::catchParts",
+			L"cpp_parser::CppTryStat::tryStat",
 			L"cpp_parser::CppTryStatCatchPart::decl",
 			L"cpp_parser::CppTryStatCatchPart::stat",
 			L"cpp_parser::CppVarBraceInit::arguments",
@@ -844,7 +844,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::CppVolatileType::type",
 			L"cpp_parser::CppWhileStat::condition",
 			L"cpp_parser::CppWhileStat::stat",
-			L"cpp_parser::Cpp__TryStat::catchStat",
+			L"cpp_parser::Cpp__TryStat::exceptStat",
 			L"cpp_parser::Cpp__TryStat::filter",
 			L"cpp_parser::Cpp__TryStat::finallyStat",
 			L"cpp_parser::Cpp__TryStat::tryStat",
