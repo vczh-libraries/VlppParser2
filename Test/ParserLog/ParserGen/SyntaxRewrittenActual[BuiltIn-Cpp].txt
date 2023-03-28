@@ -144,19 +144,13 @@ _PostfixUnaryExpr_LRI_Original : TypeOrExpr
   ::= _PostfixUnaryExpr_LRI_Original:operand "(" {_Expr_Argument:arguments ; ","} ")" as CallExpr {kind = Parenthesis}
   ;
 
-_NewInit : NewExpr
-  ::= "[" _Expr:initArguments "]" {"[" _Expr:initArguments "]"} as partial NewExpr {init = Array}
-  ::= "(" {_Expr_Argument:initArguments ; ","} ")" as partial NewExpr {init = Parenthesis}
-  ::= "{" {_Expr_Argument:initArguments ; ","} "}" as partial NewExpr {init = Brace}
-  ;
-
 _NewPrefix : NewExpr
   ::= "new" as partial NewExpr {scope = Context}
   ::= "::" "new" as partial NewExpr {scope = Root}
   ;
 
 _NewExpr : NewExpr
-  ::= _NewPrefix ["(" {_Expr_Argument:placementArguments ; ","} ")"] _QualifiedName:type [_NewInit] as NewExpr {init ?= None}
+  ::= _NewPrefix ["(" {_Expr_Argument:placementArguments ; ","} ")"] _QualifiedName:type [_VarCtorInit:init] as NewExpr
   ;
 
 _DeletePrefix : DeleteExpr
@@ -613,10 +607,14 @@ _VarValueInit : VarValueInit
   ::= "=" _Expr_NoComma:expr as VarValueInit
   ;
 
-_VarInit : VarInit
-  ::= !_VarValueInit
+_VarCtorInit : VarInit
   ::= "(" {_Expr_Argument:arguments ; ","} ")" as VarParanthesisInit
   ::= "{" {_Expr_Argument:arguments ; ","} "}" as VarBraceInit
+  ;
+
+_VarInit : VarInit
+  ::= !_VarValueInit
+  ::= !_VarCtorInit
   ;
 
 _FunctionParameter_LRI_Isolated_3 : SingleVarDeclaration

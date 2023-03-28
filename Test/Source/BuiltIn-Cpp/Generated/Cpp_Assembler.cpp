@@ -204,8 +204,8 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppIndexExpr::operand, object, field, value, cppFieldName);
 		case CppFields::LabelStat_stat:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppLabelStat::stat, object, field, value, cppFieldName);
-		case CppFields::NewExpr_initArguments:
-			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppNewExpr::initArguments, object, field, value, cppFieldName);
+		case CppFields::NewExpr_init:
+			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppNewExpr::init, object, field, value, cppFieldName);
 		case CppFields::NewExpr_placementArguments:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppNewExpr::placementArguments, object, field, value, cppFieldName);
 		case CppFields::NewExpr_type:
@@ -322,8 +322,6 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::glr::AssemblerSetEnumField(&cpp_parser::CppDeleteExpr::scope, object, field, enumItem, weakAssignment, cppFieldName);
 		case CppFields::NameIdentifier_kind:
 			return vl::glr::AssemblerSetEnumField(&cpp_parser::CppNameIdentifier::kind, object, field, enumItem, weakAssignment, cppFieldName);
-		case CppFields::NewExpr_init:
-			return vl::glr::AssemblerSetEnumField(&cpp_parser::CppNewExpr::init, object, field, enumItem, weakAssignment, cppFieldName);
 		case CppFields::NewExpr_scope:
 			return vl::glr::AssemblerSetEnumField(&cpp_parser::CppNewExpr::scope, object, field, enumItem, weakAssignment, cppFieldName);
 		case CppFields::NumericExprLiteral_kind:
@@ -537,7 +535,6 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"NameIdentifier::kind",
 			L"NameIdentifier::name",
 			L"NewExpr::init",
-			L"NewExpr::initArguments",
 			L"NewExpr::placementArguments",
 			L"NewExpr::scope",
 			L"NewExpr::type",
@@ -582,7 +579,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"VolatileType::type",
 		};
 		vl::vint index = (vl::vint)field;
-		return 0 <= index && index < 96 ? results[index] : nullptr;
+		return 0 <= index && index < 95 ? results[index] : nullptr;
 	}
 
 	const wchar_t* CppCppFieldName(CppFields field)
@@ -641,7 +638,6 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::CppNameIdentifier::kind",
 			L"cpp_parser::CppNameIdentifier::name",
 			L"cpp_parser::CppNewExpr::init",
-			L"cpp_parser::CppNewExpr::initArguments",
 			L"cpp_parser::CppNewExpr::placementArguments",
 			L"cpp_parser::CppNewExpr::scope",
 			L"cpp_parser::CppNewExpr::type",
@@ -686,7 +682,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::CppVolatileType::type",
 		};
 		vl::vint index = (vl::vint)field;
-		return 0 <= index && index < 96 ? results[index] : nullptr;
+		return 0 <= index && index < 95 ? results[index] : nullptr;
 	}
 
 	vl::Ptr<vl::glr::ParsingAstBase> CppAstInsReceiver::ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates)

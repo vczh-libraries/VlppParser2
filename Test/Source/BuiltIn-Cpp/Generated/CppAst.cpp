@@ -285,7 +285,6 @@ namespace vl
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppSizeofExpr, cpp_parser::CppSizeofExpr)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppOperatorArray, cpp_parser::CppOperatorArray)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppDeleteExpr, cpp_parser::CppDeleteExpr)
-			IMPL_TYPE_INFO_RENAME(cpp_parser::CppOperatorInit, cpp_parser::CppOperatorInit)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppNewExpr, cpp_parser::CppNewExpr)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppPrefixUnaryExpr, cpp_parser::CppPrefixUnaryExpr)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppPostfixUnaryExpr, cpp_parser::CppPostfixUnaryExpr)
@@ -606,24 +605,15 @@ namespace vl
 				CLASS_MEMBER_FIELD(argument)
 			END_CLASS_MEMBER(cpp_parser::CppDeleteExpr)
 
-			BEGIN_ENUM_ITEM(cpp_parser::CppOperatorInit)
-				ENUM_ITEM_NAMESPACE(cpp_parser::CppOperatorInit)
-				ENUM_NAMESPACE_ITEM(None)
-				ENUM_NAMESPACE_ITEM(Array)
-				ENUM_NAMESPACE_ITEM(Parenthesis)
-				ENUM_NAMESPACE_ITEM(Brace)
-			END_ENUM_ITEM(cpp_parser::CppOperatorInit)
-
 			BEGIN_CLASS_MEMBER(cpp_parser::CppNewExpr)
 				CLASS_MEMBER_BASE(cpp_parser::CppExprOnly)
 
 				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppNewExpr>(), NO_PARAMETER)
 
 				CLASS_MEMBER_FIELD(scope)
-				CLASS_MEMBER_FIELD(init)
 				CLASS_MEMBER_FIELD(type)
 				CLASS_MEMBER_FIELD(placementArguments)
-				CLASS_MEMBER_FIELD(initArguments)
+				CLASS_MEMBER_FIELD(init)
 			END_CLASS_MEMBER(cpp_parser::CppNewExpr)
 
 			BEGIN_CLASS_MEMBER(cpp_parser::CppPrefixUnaryExpr)
@@ -1081,7 +1071,6 @@ namespace vl
 					ADD_TYPE_INFO(cpp_parser::CppSizeofExpr)
 					ADD_TYPE_INFO(cpp_parser::CppOperatorArray)
 					ADD_TYPE_INFO(cpp_parser::CppDeleteExpr)
-					ADD_TYPE_INFO(cpp_parser::CppOperatorInit)
 					ADD_TYPE_INFO(cpp_parser::CppNewExpr)
 					ADD_TYPE_INFO(cpp_parser::CppPrefixUnaryExpr)
 					ADD_TYPE_INFO(cpp_parser::CppPostfixUnaryExpr)

@@ -189,15 +189,6 @@ namespace cpp_parser
 		NotArray = 1,
 	};
 
-	enum class CppOperatorInit
-	{
-		UNDEFINED_ENUM_ITEM_VALUE = -1,
-		None = 0,
-		Array = 1,
-		Parenthesis = 2,
-		Brace = 3,
-	};
-
 	enum class CppCallKinds
 	{
 		UNDEFINED_ENUM_ITEM_VALUE = -1,
@@ -473,10 +464,9 @@ namespace cpp_parser
 	{
 	public:
 		CppOperatorScope scope = CppOperatorScope::UNDEFINED_ENUM_ITEM_VALUE;
-		CppOperatorInit init = CppOperatorInit::UNDEFINED_ENUM_ITEM_VALUE;
 		vl::collections::List<vl::Ptr<CppTypeOrExpr>> type;
 		vl::collections::List<vl::Ptr<CppTypeOrExpr>> placementArguments;
-		vl::collections::List<vl::Ptr<CppTypeOrExpr>> initArguments;
+		vl::Ptr<CppVarInit> init;
 
 		void Accept(CppExprOnly::IVisitor* visitor) override;
 	};
@@ -854,7 +844,6 @@ namespace vl
 			DECL_TYPE_INFO(cpp_parser::CppSizeofExpr)
 			DECL_TYPE_INFO(cpp_parser::CppOperatorArray)
 			DECL_TYPE_INFO(cpp_parser::CppDeleteExpr)
-			DECL_TYPE_INFO(cpp_parser::CppOperatorInit)
 			DECL_TYPE_INFO(cpp_parser::CppNewExpr)
 			DECL_TYPE_INFO(cpp_parser::CppPrefixUnaryExpr)
 			DECL_TYPE_INFO(cpp_parser::CppPostfixUnaryExpr)

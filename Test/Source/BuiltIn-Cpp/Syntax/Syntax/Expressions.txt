@@ -59,19 +59,13 @@ _PostfixUnaryExpr
 // PrefixUnaryExpr
 //////////////////////////////////////////////////////////////////
 
-_NewInit
-  ::= "[" _Expr:initArguments "]" {"[" _Expr:initArguments "]"} as partial NewExpr {init = Array}
-  ::= "(" {_Expr_Argument:initArguments ; ","} ")" as partial NewExpr {init = Parenthesis}
-  ::= "{" {_Expr_Argument:initArguments ; ","} "}" as partial NewExpr {init = Brace}
-  ;
-
 _NewPrefix
   ::= "new" as partial NewExpr {scope = Context}
   ::= "::" "new" as partial NewExpr {scope = Root}
   ;
 
 _NewExpr
-  ::= _NewPrefix ["(" {_Expr_Argument:placementArguments ; ","} ")"] _QualifiedName:type [_NewInit] as NewExpr {init ?= None}
+  ::= _NewPrefix ["(" {_Expr_Argument:placementArguments ; ","} ")"] _QualifiedName:type [_VarCtorInit:init] as NewExpr
   ;
 
 _DeletePrefix

@@ -384,10 +384,7 @@ namespace cpp_parser
 			Traverse(static_cast<CppTypeOrExpr*>(node));
 			Traverse(static_cast<CppExprOnly*>(node));
 			Traverse(static_cast<CppNewExpr*>(node));
-			for (auto&& listItem : node->initArguments)
-			{
-				InspectInto(listItem.Obj());
-			}
+			InspectInto(node->init.Obj());
 			for (auto&& listItem : node->placementArguments)
 			{
 				InspectInto(listItem.Obj());

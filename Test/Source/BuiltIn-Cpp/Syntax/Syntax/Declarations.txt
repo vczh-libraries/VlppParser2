@@ -6,10 +6,14 @@ _VarValueInit
   ::= "=" _Expr_NoComma:expr as VarValueInit
   ;
 
-_VarInit
-  ::= !_VarValueInit
+_VarCtorInit
   ::= "(" {_Expr_Argument:arguments ; ","} ")" as VarParanthesisInit
   ::= "{" {_Expr_Argument:arguments ; ","} "}" as VarBraceInit
+  ;
+
+_VarInit
+  ::= !_VarValueInit
+  ::= !_VarCtorInit
   ;
 
 _FunctionParameter

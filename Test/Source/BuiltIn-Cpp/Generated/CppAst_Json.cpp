@@ -570,33 +570,7 @@ namespace cpp_parser
 		void AstVisitor::PrintFields(CppNewExpr* node)
 		{
 			BeginField(L"init");
-			switch (node->init)
-			{
-			case cpp_parser::CppOperatorInit::Array:
-				WriteString(L"Array");
-				break;
-			case cpp_parser::CppOperatorInit::Brace:
-				WriteString(L"Brace");
-				break;
-			case cpp_parser::CppOperatorInit::None:
-				WriteString(L"None");
-				break;
-			case cpp_parser::CppOperatorInit::Parenthesis:
-				WriteString(L"Parenthesis");
-				break;
-			default:
-				WriteNull();
-			}
-			EndField();
-			BeginField(L"initArguments");
-			BeginArray();
-			for (auto&& listItem : node->initArguments)
-			{
-				BeginArrayItem();
-				Print(listItem.Obj());
-				EndArrayItem();
-			}
-			EndArray();
+			Print(node->init.Obj());
 			EndField();
 			BeginField(L"placementArguments");
 			BeginArray();

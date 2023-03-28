@@ -188,8 +188,7 @@ namespace cpp_parser
 		class MakeNewExpr : public vl::glr::ParsingAstBuilder<CppNewExpr>
 		{
 		public:
-			MakeNewExpr& init(CppOperatorInit value);
-			MakeNewExpr& initArguments(const vl::Ptr<CppTypeOrExpr>& value);
+			MakeNewExpr& init(const vl::Ptr<CppVarInit>& value);
 			MakeNewExpr& placementArguments(const vl::Ptr<CppTypeOrExpr>& value);
 			MakeNewExpr& scope(CppOperatorScope value);
 			MakeNewExpr& type(const vl::Ptr<CppTypeOrExpr>& value);
