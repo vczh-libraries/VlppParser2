@@ -17,6 +17,11 @@ TypeOrExprOrOthersVisitor
 
 		// Visitor Members -----------------------------------
 
+		void TypeOrExprOrOthersVisitor::Visit(CppDeclaration* node)
+		{
+			Dispatch(node);
+		}
+
 		void TypeOrExprOrOthersVisitor::Visit(CppTypeOrExpr* node)
 		{
 			Dispatch(node);
@@ -26,7 +31,17 @@ TypeOrExprOrOthersVisitor
 		{
 		}
 
-		void TypeOrExprOrOthersVisitor::Visit(CppFunctionParameter* node)
+/***********************************************************************
+DeclarationVisitor
+***********************************************************************/
+
+		// Visitor Members -----------------------------------
+
+		void DeclarationVisitor::Visit(CppSingleVarDeclaration* node)
+		{
+		}
+
+		void DeclarationVisitor::Visit(CppMultipleVarDeclaration* node)
 		{
 		}
 
@@ -161,6 +176,124 @@ IdentifierVisitor
 		}
 
 		void IdentifierVisitor::Visit(CppOperatorIdentifier* node)
+		{
+		}
+
+/***********************************************************************
+VarInitVisitor
+***********************************************************************/
+
+		// Visitor Members -----------------------------------
+
+		void VarInitVisitor::Visit(CppVarValueInit* node)
+		{
+		}
+
+		void VarInitVisitor::Visit(CppVarParanthesisInit* node)
+		{
+		}
+
+		void VarInitVisitor::Visit(CppVarBraceInit* node)
+		{
+		}
+
+/***********************************************************************
+StatementVisitor
+***********************************************************************/
+
+		// Visitor Members -----------------------------------
+
+		void StatementVisitor::Visit(CppEmptyStat* node)
+		{
+		}
+
+		void StatementVisitor::Visit(CppBlockStat* node)
+		{
+		}
+
+		void StatementVisitor::Visit(CppExprStat* node)
+		{
+		}
+
+		void StatementVisitor::Visit(CppDeclStat* node)
+		{
+		}
+
+		void StatementVisitor::Visit(CppBreakStat* node)
+		{
+		}
+
+		void StatementVisitor::Visit(CppContinueStat* node)
+		{
+		}
+
+		void StatementVisitor::Visit(CppReturnStat* node)
+		{
+		}
+
+		void StatementVisitor::Visit(CppLabelStat* node)
+		{
+		}
+
+		void StatementVisitor::Visit(CppGotoStat* node)
+		{
+		}
+
+		void StatementVisitor::Visit(CppCaseStat* node)
+		{
+		}
+
+		void StatementVisitor::Visit(CppDefaultStat* node)
+		{
+		}
+
+		void StatementVisitor::Visit(Cpp__LeaveStat* node)
+		{
+		}
+
+		void StatementVisitor::Visit(CppStaticAssertStat* node)
+		{
+		}
+
+		void StatementVisitor::Visit(CppWhileStat* node)
+		{
+		}
+
+		void StatementVisitor::Visit(CppDoWhileStat* node)
+		{
+		}
+
+		void StatementVisitor::Visit(CppIfElseStat* node)
+		{
+		}
+
+		void StatementVisitor::Visit(CppForStat* node)
+		{
+		}
+
+		void StatementVisitor::Visit(CppSwitchStat* node)
+		{
+		}
+
+		void StatementVisitor::Visit(CppTryStat* node)
+		{
+		}
+
+		void StatementVisitor::Visit(Cpp__TryStat* node)
+		{
+		}
+
+/***********************************************************************
+ForStatConditionPartVisitor
+***********************************************************************/
+
+		// Visitor Members -----------------------------------
+
+		void ForStatConditionPartVisitor::Visit(CppForStatLoopCondition* node)
+		{
+		}
+
+		void ForStatConditionPartVisitor::Visit(CppForStatIterateCondition* node)
 		{
 		}
 	}

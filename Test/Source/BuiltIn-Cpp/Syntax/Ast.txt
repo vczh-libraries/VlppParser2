@@ -6,6 +6,10 @@ class TypeOrExprOrOthers
 {
 }
 
+class Declaration : TypeOrExprOrOthers
+{
+}
+
 class TypeOrExpr : TypeOrExprOrOthers
 {
 }
@@ -232,21 +236,13 @@ class DeleteExpr : ExprOnly
     var argument : TypeOrExpr;
 }
 
-enum OperatorInit
-{
-    None,
-    Array,
-    Parenthesis,
-    Brace,
-}
-
 class NewExpr : ExprOnly
 {
     var scope : OperatorScope;
-    var init : OperatorInit;
     var type : TypeOrExpr[];
     var placementArguments : TypeOrExpr[];
-    var initArguments : TypeOrExpr[];
+    var arrayArguments : TypeOrExpr[];
+    var init : VarInit;
 }
 
 //////////////////////////////////////////////////////////////////
@@ -373,14 +369,6 @@ class FunctionKeyword
     var arguments : TypeOrExpr[];
 }
 
-class FunctionParameter : TypeOrExprOrOthers
-{
-    var keywords : DeclaratorKeyword[];
-    var type : TypeOrExpr;
-    var declarator : Declarator;
-    var defaultValue : TypeOrExpr;
-}
-
 class DeclaratorFunctionPart
 {
     var parameters : TypeOrExprOrOthers[];
@@ -410,6 +398,190 @@ class DeclaratorType : TypeOrExpr
     var keywords : DeclaratorKeyword[];
     var type : TypeOrExpr;
     var declarator : Declarator;
+}
+
+//////////////////////////////////////////////////////////////////
+// Function or Variable Declaration
+//////////////////////////////////////////////////////////////////
+
+class VarInit
+{
+}
+
+class VarValueInit : VarInit
+{
+    var expr : TypeOrExpr;
+}
+
+class VarParanthesisInit : VarInit
+{
+    var arguments : TypeOrExpr[];
+}
+
+class VarBraceInit : VarInit
+{
+    var arguments : TypeOrExpr[];
+}
+
+class DeclaratorVariablePart
+{
+    var declarator : Declarator;
+    var init : VarInit;
+}
+
+class SingleVarDeclaration : Declaration
+{
+    var keywords : DeclaratorKeyword[];
+    var type : TypeOrExpr;
+    var varPart : DeclaratorVariablePart;
+}
+
+class MultipleVarDeclaration : Declaration
+{
+    var keywords : DeclaratorKeyword[];
+    var type : TypeOrExpr;
+    var varParts : DeclaratorVariablePart[];
+}
+
+//////////////////////////////////////////////////////////////////
+// Statements
+//////////////////////////////////////////////////////////////////
+
+class Statement
+{
+}
+
+class EmptyStat : Statement
+{
+}
+
+class BlockStat : Statement
+{
+    var statements : Statement[];
+}
+
+class ExprStat : Statement
+{
+    var expr : TypeOrExpr;
+}
+
+class DeclStat : Statement
+{
+    var decl : Declaration;
+}
+
+class BreakStat : Statement
+{
+}
+
+class ContinueStat : Statement
+{
+}
+
+class ReturnStat : Statement
+{
+    var expr : TypeOrExpr;
+}
+
+class LabelStat : Statement
+{
+    var label : token;
+    var stat : Statement;
+}
+
+class GotoStat : Statement
+{
+    var label : token;
+}
+
+class CaseStat : Statement
+{
+    var expr : TypeOrExpr;
+    var stat : Statement;
+}
+
+class DefaultStat : Statement
+{
+    var stat : Statement;
+}
+
+class __LeaveStat : Statement
+{
+}
+
+class StaticAssertStat : Statement
+{
+    var expr : TypeOrExpr;
+    var message : TypeOrExpr;
+}
+
+class WhileStat : Statement
+{
+    var condition : TypeOrExprOrOthers;
+    var stat : Statement;
+}
+
+class DoWhileStat : Statement
+{
+    var condition : TypeOrExpr;
+    var stat : Statement;
+}
+
+class IfElseStat : Statement
+{
+    var varsDecl : MultipleVarDeclaration;
+    var condition : TypeOrExprOrOthers;
+    var trueStat : Statement;
+    var falseStat : Statement;
+}
+
+class ForStatConditionPart
+{
+}
+
+class ForStatLoopCondition : ForStatConditionPart
+{
+    var varsDecl : TypeOrExprOrOthers;
+    var condition : TypeOrExpr;
+    var sideEffect : TypeOrExpr;
+}
+
+class ForStatIterateCondition : ForStatConditionPart
+{
+    var decl : SingleVarDeclaration;
+    var collection : TypeOrExpr;
+}
+
+class ForStat : Statement
+{
+    var conditionPart : ForStatConditionPart;
+    var stat : Statement;
+}
+
+class SwitchStat : Statement
+{
+    var condition : TypeOrExprOrOthers;
+    var stat : Statement;
+}
+
+class TryStatCatchPart
+{
+    var decl : TypeOrExprOrOthers;
+    var stat : Statement;
+}
+
+class TryStat : Statement
+{
+    var tryStat : Statement;
+    var catchParts : TryStatCatchPart[];
+}
+
+class __TryStat : Statement
+{
+    var tryStat : Statement;
+    var exceptStat : Statement;
+    var finallyStat : Statement;
+    var filter : TypeOrExpr;
 }
 
 //////////////////////////////////////////////////////////////////

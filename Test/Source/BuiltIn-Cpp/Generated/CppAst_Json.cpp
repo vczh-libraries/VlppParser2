@@ -204,6 +204,19 @@ namespace cpp_parser
 			Print(node->right.Obj());
 			EndField();
 		}
+		void AstVisitor::PrintFields(CppBlockStat* node)
+		{
+			BeginField(L"statements");
+			BeginArray();
+			for (auto&& listItem : node->statements)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+		}
 		void AstVisitor::PrintFields(CppBraceExpr* node)
 		{
 			BeginField(L"arguments");
@@ -216,6 +229,9 @@ namespace cpp_parser
 			}
 			EndArray();
 			EndField();
+		}
+		void AstVisitor::PrintFields(CppBreakStat* node)
+		{
 		}
 		void AstVisitor::PrintFields(CppCallExpr* node)
 		{
@@ -246,6 +262,15 @@ namespace cpp_parser
 			Print(node->operand.Obj());
 			EndField();
 		}
+		void AstVisitor::PrintFields(CppCaseStat* node)
+		{
+			BeginField(L"expr");
+			Print(node->expr.Obj());
+			EndField();
+			BeginField(L"stat");
+			Print(node->stat.Obj());
+			EndField();
+		}
 		void AstVisitor::PrintFields(CppCastExpr* node)
 		{
 			BeginField(L"expr");
@@ -263,6 +288,18 @@ namespace cpp_parser
 			BeginField(L"type");
 			Print(node->type.Obj());
 			EndField();
+		}
+		void AstVisitor::PrintFields(CppContinueStat* node)
+		{
+		}
+		void AstVisitor::PrintFields(CppDeclStat* node)
+		{
+			BeginField(L"decl");
+			Print(node->decl.Obj());
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppDeclaration* node)
+		{
 		}
 		void AstVisitor::PrintFields(CppDeclarator* node)
 		{
@@ -369,6 +406,21 @@ namespace cpp_parser
 			Print(node->type.Obj());
 			EndField();
 		}
+		void AstVisitor::PrintFields(CppDeclaratorVariablePart* node)
+		{
+			BeginField(L"declarator");
+			Print(node->declarator.Obj());
+			EndField();
+			BeginField(L"init");
+			Print(node->init.Obj());
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppDefaultStat* node)
+		{
+			BeginField(L"stat");
+			Print(node->stat.Obj());
+			EndField();
+		}
 		void AstVisitor::PrintFields(CppDeleteExpr* node)
 		{
 			BeginField(L"argument");
@@ -401,11 +453,62 @@ namespace cpp_parser
 			}
 			EndField();
 		}
+		void AstVisitor::PrintFields(CppDoWhileStat* node)
+		{
+			BeginField(L"condition");
+			Print(node->condition.Obj());
+			EndField();
+			BeginField(L"stat");
+			Print(node->stat.Obj());
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppEmptyStat* node)
+		{
+		}
 		void AstVisitor::PrintFields(CppExprOnly* node)
 		{
 		}
+		void AstVisitor::PrintFields(CppExprStat* node)
+		{
+			BeginField(L"expr");
+			Print(node->expr.Obj());
+			EndField();
+		}
 		void AstVisitor::PrintFields(CppFile* node)
 		{
+		}
+		void AstVisitor::PrintFields(CppForStat* node)
+		{
+			BeginField(L"conditionPart");
+			Print(node->conditionPart.Obj());
+			EndField();
+			BeginField(L"stat");
+			Print(node->stat.Obj());
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppForStatConditionPart* node)
+		{
+		}
+		void AstVisitor::PrintFields(CppForStatIterateCondition* node)
+		{
+			BeginField(L"collection");
+			Print(node->collection.Obj());
+			EndField();
+			BeginField(L"decl");
+			Print(node->decl.Obj());
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppForStatLoopCondition* node)
+		{
+			BeginField(L"condition");
+			Print(node->condition.Obj());
+			EndField();
+			BeginField(L"sideEffect");
+			Print(node->sideEffect.Obj());
+			EndField();
+			BeginField(L"varsDecl");
+			Print(node->varsDecl.Obj());
+			EndField();
 		}
 		void AstVisitor::PrintFields(CppFunctionKeyword* node)
 		{
@@ -421,28 +524,6 @@ namespace cpp_parser
 			EndField();
 			BeginField(L"keyword");
 			WriteToken(node->keyword);
-			EndField();
-		}
-		void AstVisitor::PrintFields(CppFunctionParameter* node)
-		{
-			BeginField(L"declarator");
-			Print(node->declarator.Obj());
-			EndField();
-			BeginField(L"defaultValue");
-			Print(node->defaultValue.Obj());
-			EndField();
-			BeginField(L"keywords");
-			BeginArray();
-			for (auto&& listItem : node->keywords)
-			{
-				BeginArrayItem();
-				Print(listItem.Obj());
-				EndArrayItem();
-			}
-			EndArray();
-			EndField();
-			BeginField(L"type");
-			Print(node->type.Obj());
 			EndField();
 		}
 		void AstVisitor::PrintFields(CppGenericArgument* node)
@@ -467,8 +548,29 @@ namespace cpp_parser
 			EndArray();
 			EndField();
 		}
+		void AstVisitor::PrintFields(CppGotoStat* node)
+		{
+			BeginField(L"label");
+			WriteToken(node->label);
+			EndField();
+		}
 		void AstVisitor::PrintFields(CppIdentifier* node)
 		{
+		}
+		void AstVisitor::PrintFields(CppIfElseStat* node)
+		{
+			BeginField(L"condition");
+			Print(node->condition.Obj());
+			EndField();
+			BeginField(L"falseStat");
+			Print(node->falseStat.Obj());
+			EndField();
+			BeginField(L"trueStat");
+			Print(node->trueStat.Obj());
+			EndField();
+			BeginField(L"varsDecl");
+			Print(node->varsDecl.Obj());
+			EndField();
 		}
 		void AstVisitor::PrintFields(CppIfExpr* node)
 		{
@@ -489,6 +591,41 @@ namespace cpp_parser
 			EndField();
 			BeginField(L"operand");
 			Print(node->operand.Obj());
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppLabelStat* node)
+		{
+			BeginField(L"label");
+			WriteToken(node->label);
+			EndField();
+			BeginField(L"stat");
+			Print(node->stat.Obj());
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppMultipleVarDeclaration* node)
+		{
+			BeginField(L"keywords");
+			BeginArray();
+			for (auto&& listItem : node->keywords)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+			BeginField(L"type");
+			Print(node->type.Obj());
+			EndField();
+			BeginField(L"varParts");
+			BeginArray();
+			for (auto&& listItem : node->varParts)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
 			EndField();
 		}
 		void AstVisitor::PrintFields(CppNameIdentifier* node)
@@ -530,34 +667,18 @@ namespace cpp_parser
 		}
 		void AstVisitor::PrintFields(CppNewExpr* node)
 		{
-			BeginField(L"init");
-			switch (node->init)
-			{
-			case cpp_parser::CppOperatorInit::Array:
-				WriteString(L"Array");
-				break;
-			case cpp_parser::CppOperatorInit::Brace:
-				WriteString(L"Brace");
-				break;
-			case cpp_parser::CppOperatorInit::None:
-				WriteString(L"None");
-				break;
-			case cpp_parser::CppOperatorInit::Parenthesis:
-				WriteString(L"Parenthesis");
-				break;
-			default:
-				WriteNull();
-			}
-			EndField();
-			BeginField(L"initArguments");
+			BeginField(L"arrayArguments");
 			BeginArray();
-			for (auto&& listItem : node->initArguments)
+			for (auto&& listItem : node->arrayArguments)
 			{
 				BeginArrayItem();
 				Print(listItem.Obj());
 				EndArrayItem();
 			}
 			EndArray();
+			EndField();
+			BeginField(L"init");
+			Print(node->init.Obj());
 			EndField();
 			BeginField(L"placementArguments");
 			BeginArray();
@@ -1170,6 +1291,31 @@ namespace cpp_parser
 			Print(node->parent.Obj());
 			EndField();
 		}
+		void AstVisitor::PrintFields(CppReturnStat* node)
+		{
+			BeginField(L"expr");
+			Print(node->expr.Obj());
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppSingleVarDeclaration* node)
+		{
+			BeginField(L"keywords");
+			BeginArray();
+			for (auto&& listItem : node->keywords)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+			BeginField(L"type");
+			Print(node->type.Obj());
+			EndField();
+			BeginField(L"varPart");
+			Print(node->varPart.Obj());
+			EndField();
+		}
 		void AstVisitor::PrintFields(CppSizeofExpr* node)
 		{
 			BeginField(L"argument");
@@ -1177,6 +1323,18 @@ namespace cpp_parser
 			EndField();
 			BeginField(L"variadic");
 			WriteToken(node->variadic);
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppStatement* node)
+		{
+		}
+		void AstVisitor::PrintFields(CppStaticAssertStat* node)
+		{
+			BeginField(L"expr");
+			Print(node->expr.Obj());
+			EndField();
+			BeginField(L"message");
+			Print(node->message.Obj());
 			EndField();
 		}
 		void AstVisitor::PrintFields(CppStringLiteral* node)
@@ -1211,6 +1369,15 @@ namespace cpp_parser
 			WriteToken(node->literal);
 			EndField();
 		}
+		void AstVisitor::PrintFields(CppSwitchStat* node)
+		{
+			BeginField(L"condition");
+			Print(node->condition.Obj());
+			EndField();
+			BeginField(L"stat");
+			Print(node->stat.Obj());
+			EndField();
+		}
 		void AstVisitor::PrintFields(CppSysFuncExpr* node)
 		{
 			BeginField(L"argument");
@@ -1229,6 +1396,31 @@ namespace cpp_parser
 			Print(node->argument.Obj());
 			EndField();
 		}
+		void AstVisitor::PrintFields(CppTryStat* node)
+		{
+			BeginField(L"catchParts");
+			BeginArray();
+			for (auto&& listItem : node->catchParts)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+			BeginField(L"tryStat");
+			Print(node->tryStat.Obj());
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppTryStatCatchPart* node)
+		{
+			BeginField(L"decl");
+			Print(node->decl.Obj());
+			EndField();
+			BeginField(L"stat");
+			Print(node->stat.Obj());
+			EndField();
+		}
 		void AstVisitor::PrintFields(CppTypeOnly* node)
 		{
 		}
@@ -1237,6 +1429,41 @@ namespace cpp_parser
 		}
 		void AstVisitor::PrintFields(CppTypeOrExprOrOthers* node)
 		{
+		}
+		void AstVisitor::PrintFields(CppVarBraceInit* node)
+		{
+			BeginField(L"arguments");
+			BeginArray();
+			for (auto&& listItem : node->arguments)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppVarInit* node)
+		{
+		}
+		void AstVisitor::PrintFields(CppVarParanthesisInit* node)
+		{
+			BeginField(L"arguments");
+			BeginArray();
+			for (auto&& listItem : node->arguments)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppVarValueInit* node)
+		{
+			BeginField(L"expr");
+			Print(node->expr.Obj());
+			EndField();
 		}
 		void AstVisitor::PrintFields(CppVariadicExpr* node)
 		{
@@ -1252,6 +1479,38 @@ namespace cpp_parser
 			BeginField(L"type");
 			Print(node->type.Obj());
 			EndField();
+		}
+		void AstVisitor::PrintFields(CppWhileStat* node)
+		{
+			BeginField(L"condition");
+			Print(node->condition.Obj());
+			EndField();
+			BeginField(L"stat");
+			Print(node->stat.Obj());
+			EndField();
+		}
+		void AstVisitor::PrintFields(Cpp__LeaveStat* node)
+		{
+		}
+		void AstVisitor::PrintFields(Cpp__TryStat* node)
+		{
+			BeginField(L"exceptStat");
+			Print(node->exceptStat.Obj());
+			EndField();
+			BeginField(L"filter");
+			Print(node->filter.Obj());
+			EndField();
+			BeginField(L"finallyStat");
+			Print(node->finallyStat.Obj());
+			EndField();
+			BeginField(L"tryStat");
+			Print(node->tryStat.Obj());
+			EndField();
+		}
+
+		void AstVisitor::Visit(CppDeclaration* node)
+		{
+			node->Accept(static_cast<CppDeclaration::IVisitor*>(this));
 		}
 
 		void AstVisitor::Visit(CppTypeOrExpr* node)
@@ -1273,7 +1532,7 @@ namespace cpp_parser
 			EndObject();
 		}
 
-		void AstVisitor::Visit(CppFunctionParameter* node)
+		void AstVisitor::Visit(CppSingleVarDeclaration* node)
 		{
 			if (!node)
 			{
@@ -1281,9 +1540,25 @@ namespace cpp_parser
 				return;
 			}
 			BeginObject();
-			WriteType(L"FunctionParameter", node);
+			WriteType(L"SingleVarDeclaration", node);
 			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
-			PrintFields(static_cast<CppFunctionParameter*>(node));
+			PrintFields(static_cast<CppDeclaration*>(node));
+			PrintFields(static_cast<CppSingleVarDeclaration*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppMultipleVarDeclaration* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"MultipleVarDeclaration", node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
+			PrintFields(static_cast<CppDeclaration*>(node));
+			PrintFields(static_cast<CppMultipleVarDeclaration*>(node));
 			EndObject();
 		}
 
@@ -1691,6 +1966,356 @@ namespace cpp_parser
 			EndObject();
 		}
 
+		void AstVisitor::Visit(CppVarValueInit* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"VarValueInit", node);
+			PrintFields(static_cast<CppVarInit*>(node));
+			PrintFields(static_cast<CppVarValueInit*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppVarParanthesisInit* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"VarParanthesisInit", node);
+			PrintFields(static_cast<CppVarInit*>(node));
+			PrintFields(static_cast<CppVarParanthesisInit*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppVarBraceInit* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"VarBraceInit", node);
+			PrintFields(static_cast<CppVarInit*>(node));
+			PrintFields(static_cast<CppVarBraceInit*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppEmptyStat* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"EmptyStat", node);
+			PrintFields(static_cast<CppStatement*>(node));
+			PrintFields(static_cast<CppEmptyStat*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppBlockStat* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"BlockStat", node);
+			PrintFields(static_cast<CppStatement*>(node));
+			PrintFields(static_cast<CppBlockStat*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppExprStat* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"ExprStat", node);
+			PrintFields(static_cast<CppStatement*>(node));
+			PrintFields(static_cast<CppExprStat*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppDeclStat* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"DeclStat", node);
+			PrintFields(static_cast<CppStatement*>(node));
+			PrintFields(static_cast<CppDeclStat*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppBreakStat* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"BreakStat", node);
+			PrintFields(static_cast<CppStatement*>(node));
+			PrintFields(static_cast<CppBreakStat*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppContinueStat* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"ContinueStat", node);
+			PrintFields(static_cast<CppStatement*>(node));
+			PrintFields(static_cast<CppContinueStat*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppReturnStat* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"ReturnStat", node);
+			PrintFields(static_cast<CppStatement*>(node));
+			PrintFields(static_cast<CppReturnStat*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppLabelStat* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"LabelStat", node);
+			PrintFields(static_cast<CppStatement*>(node));
+			PrintFields(static_cast<CppLabelStat*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppGotoStat* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"GotoStat", node);
+			PrintFields(static_cast<CppStatement*>(node));
+			PrintFields(static_cast<CppGotoStat*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppCaseStat* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"CaseStat", node);
+			PrintFields(static_cast<CppStatement*>(node));
+			PrintFields(static_cast<CppCaseStat*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppDefaultStat* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"DefaultStat", node);
+			PrintFields(static_cast<CppStatement*>(node));
+			PrintFields(static_cast<CppDefaultStat*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(Cpp__LeaveStat* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"__LeaveStat", node);
+			PrintFields(static_cast<CppStatement*>(node));
+			PrintFields(static_cast<Cpp__LeaveStat*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppStaticAssertStat* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"StaticAssertStat", node);
+			PrintFields(static_cast<CppStatement*>(node));
+			PrintFields(static_cast<CppStaticAssertStat*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppWhileStat* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"WhileStat", node);
+			PrintFields(static_cast<CppStatement*>(node));
+			PrintFields(static_cast<CppWhileStat*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppDoWhileStat* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"DoWhileStat", node);
+			PrintFields(static_cast<CppStatement*>(node));
+			PrintFields(static_cast<CppDoWhileStat*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppIfElseStat* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"IfElseStat", node);
+			PrintFields(static_cast<CppStatement*>(node));
+			PrintFields(static_cast<CppIfElseStat*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppForStat* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"ForStat", node);
+			PrintFields(static_cast<CppStatement*>(node));
+			PrintFields(static_cast<CppForStat*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppSwitchStat* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"SwitchStat", node);
+			PrintFields(static_cast<CppStatement*>(node));
+			PrintFields(static_cast<CppSwitchStat*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppTryStat* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"TryStat", node);
+			PrintFields(static_cast<CppStatement*>(node));
+			PrintFields(static_cast<CppTryStat*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(Cpp__TryStat* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"__TryStat", node);
+			PrintFields(static_cast<CppStatement*>(node));
+			PrintFields(static_cast<Cpp__TryStat*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppForStatLoopCondition* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"ForStatLoopCondition", node);
+			PrintFields(static_cast<CppForStatConditionPart*>(node));
+			PrintFields(static_cast<CppForStatLoopCondition*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppForStatIterateCondition* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"ForStatIterateCondition", node);
+			PrintFields(static_cast<CppForStatConditionPart*>(node));
+			PrintFields(static_cast<CppForStatIterateCondition*>(node));
+			EndObject();
+		}
+
 		AstVisitor::AstVisitor(vl::stream::StreamWriter& _writer)
 			: vl::glr::JsonVisitorBase(_writer)
 		{
@@ -1714,6 +2339,36 @@ namespace cpp_parser
 				return;
 			}
 			node->Accept(static_cast<CppIdentifier::IVisitor*>(this));
+		}
+
+		void AstVisitor::Print(CppVarInit* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			node->Accept(static_cast<CppVarInit::IVisitor*>(this));
+		}
+
+		void AstVisitor::Print(CppStatement* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			node->Accept(static_cast<CppStatement::IVisitor*>(this));
+		}
+
+		void AstVisitor::Print(CppForStatConditionPart* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			node->Accept(static_cast<CppForStatConditionPart::IVisitor*>(this));
 		}
 
 		void AstVisitor::Print(CppGenericArguments* node)
@@ -1817,6 +2472,32 @@ namespace cpp_parser
 			BeginObject();
 			WriteType(L"Declarator", node);
 			PrintFields(static_cast<CppDeclarator*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Print(CppDeclaratorVariablePart* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"DeclaratorVariablePart", node);
+			PrintFields(static_cast<CppDeclaratorVariablePart*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Print(CppTryStatCatchPart* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"TryStatCatchPart", node);
+			PrintFields(static_cast<CppTryStatCatchPart*>(node));
 			EndObject();
 		}
 

@@ -8,6 +8,12 @@
         "props": []
     }, {
         "$ast": "Class",
+        "name": "Declaration",
+        "ambiguity": "No",
+        "baseClass": "TypeOrExprOrOthers",
+        "props": []
+    }, {
+        "$ast": "Class",
         "name": "TypeOrExpr",
         "ambiguity": "No",
         "baseClass": "TypeOrExprOrOthers",
@@ -534,22 +540,6 @@
             "propTypeName": "TypeOrExpr"
         }]
     }, {
-        "$ast": "Enum",
-        "name": "OperatorInit",
-        "items": [{
-            "$ast": "EnumItem",
-            "name": "None"
-        }, {
-            "$ast": "EnumItem",
-            "name": "Array"
-        }, {
-            "$ast": "EnumItem",
-            "name": "Parenthesis"
-        }, {
-            "$ast": "EnumItem",
-            "name": "Brace"
-        }]
-    }, {
         "$ast": "Class",
         "name": "NewExpr",
         "ambiguity": "No",
@@ -559,11 +549,6 @@
             "name": "scope",
             "propType": "Type",
             "propTypeName": "OperatorScope"
-        }, {
-            "$ast": "ClassProp",
-            "name": "init",
-            "propType": "Type",
-            "propTypeName": "OperatorInit"
         }, {
             "$ast": "ClassProp",
             "name": "type",
@@ -576,9 +561,14 @@
             "propTypeName": "TypeOrExpr"
         }, {
             "$ast": "ClassProp",
-            "name": "initArguments",
+            "name": "arrayArguments",
             "propType": "Array",
             "propTypeName": "TypeOrExpr"
+        }, {
+            "$ast": "ClassProp",
+            "name": "init",
+            "propType": "Type",
+            "propTypeName": "VarInit"
         }]
     }, {
         "$ast": "Class",
@@ -860,32 +850,6 @@
         }]
     }, {
         "$ast": "Class",
-        "name": "FunctionParameter",
-        "ambiguity": "No",
-        "baseClass": "TypeOrExprOrOthers",
-        "props": [{
-            "$ast": "ClassProp",
-            "name": "keywords",
-            "propType": "Array",
-            "propTypeName": "DeclaratorKeyword"
-        }, {
-            "$ast": "ClassProp",
-            "name": "type",
-            "propType": "Type",
-            "propTypeName": "TypeOrExpr"
-        }, {
-            "$ast": "ClassProp",
-            "name": "declarator",
-            "propType": "Type",
-            "propTypeName": "Declarator"
-        }, {
-            "$ast": "ClassProp",
-            "name": "defaultValue",
-            "propType": "Type",
-            "propTypeName": "TypeOrExpr"
-        }]
-    }, {
-        "$ast": "Class",
         "name": "DeclaratorFunctionPart",
         "ambiguity": "No",
         "baseClass": "",
@@ -982,6 +946,438 @@
             "name": "declarator",
             "propType": "Type",
             "propTypeName": "Declarator"
+        }]
+    }, {
+        "$ast": "Class",
+        "name": "VarInit",
+        "ambiguity": "No",
+        "baseClass": "",
+        "props": []
+    }, {
+        "$ast": "Class",
+        "name": "VarValueInit",
+        "ambiguity": "No",
+        "baseClass": "VarInit",
+        "props": [{
+            "$ast": "ClassProp",
+            "name": "expr",
+            "propType": "Type",
+            "propTypeName": "TypeOrExpr"
+        }]
+    }, {
+        "$ast": "Class",
+        "name": "VarParanthesisInit",
+        "ambiguity": "No",
+        "baseClass": "VarInit",
+        "props": [{
+            "$ast": "ClassProp",
+            "name": "arguments",
+            "propType": "Array",
+            "propTypeName": "TypeOrExpr"
+        }]
+    }, {
+        "$ast": "Class",
+        "name": "VarBraceInit",
+        "ambiguity": "No",
+        "baseClass": "VarInit",
+        "props": [{
+            "$ast": "ClassProp",
+            "name": "arguments",
+            "propType": "Array",
+            "propTypeName": "TypeOrExpr"
+        }]
+    }, {
+        "$ast": "Class",
+        "name": "DeclaratorVariablePart",
+        "ambiguity": "No",
+        "baseClass": "",
+        "props": [{
+            "$ast": "ClassProp",
+            "name": "declarator",
+            "propType": "Type",
+            "propTypeName": "Declarator"
+        }, {
+            "$ast": "ClassProp",
+            "name": "init",
+            "propType": "Type",
+            "propTypeName": "VarInit"
+        }]
+    }, {
+        "$ast": "Class",
+        "name": "SingleVarDeclaration",
+        "ambiguity": "No",
+        "baseClass": "Declaration",
+        "props": [{
+            "$ast": "ClassProp",
+            "name": "keywords",
+            "propType": "Array",
+            "propTypeName": "DeclaratorKeyword"
+        }, {
+            "$ast": "ClassProp",
+            "name": "type",
+            "propType": "Type",
+            "propTypeName": "TypeOrExpr"
+        }, {
+            "$ast": "ClassProp",
+            "name": "varPart",
+            "propType": "Type",
+            "propTypeName": "DeclaratorVariablePart"
+        }]
+    }, {
+        "$ast": "Class",
+        "name": "MultipleVarDeclaration",
+        "ambiguity": "No",
+        "baseClass": "Declaration",
+        "props": [{
+            "$ast": "ClassProp",
+            "name": "keywords",
+            "propType": "Array",
+            "propTypeName": "DeclaratorKeyword"
+        }, {
+            "$ast": "ClassProp",
+            "name": "type",
+            "propType": "Type",
+            "propTypeName": "TypeOrExpr"
+        }, {
+            "$ast": "ClassProp",
+            "name": "varParts",
+            "propType": "Array",
+            "propTypeName": "DeclaratorVariablePart"
+        }]
+    }, {
+        "$ast": "Class",
+        "name": "Statement",
+        "ambiguity": "No",
+        "baseClass": "",
+        "props": []
+    }, {
+        "$ast": "Class",
+        "name": "EmptyStat",
+        "ambiguity": "No",
+        "baseClass": "Statement",
+        "props": []
+    }, {
+        "$ast": "Class",
+        "name": "BlockStat",
+        "ambiguity": "No",
+        "baseClass": "Statement",
+        "props": [{
+            "$ast": "ClassProp",
+            "name": "statements",
+            "propType": "Array",
+            "propTypeName": "Statement"
+        }]
+    }, {
+        "$ast": "Class",
+        "name": "ExprStat",
+        "ambiguity": "No",
+        "baseClass": "Statement",
+        "props": [{
+            "$ast": "ClassProp",
+            "name": "expr",
+            "propType": "Type",
+            "propTypeName": "TypeOrExpr"
+        }]
+    }, {
+        "$ast": "Class",
+        "name": "DeclStat",
+        "ambiguity": "No",
+        "baseClass": "Statement",
+        "props": [{
+            "$ast": "ClassProp",
+            "name": "decl",
+            "propType": "Type",
+            "propTypeName": "Declaration"
+        }]
+    }, {
+        "$ast": "Class",
+        "name": "BreakStat",
+        "ambiguity": "No",
+        "baseClass": "Statement",
+        "props": []
+    }, {
+        "$ast": "Class",
+        "name": "ContinueStat",
+        "ambiguity": "No",
+        "baseClass": "Statement",
+        "props": []
+    }, {
+        "$ast": "Class",
+        "name": "ReturnStat",
+        "ambiguity": "No",
+        "baseClass": "Statement",
+        "props": [{
+            "$ast": "ClassProp",
+            "name": "expr",
+            "propType": "Type",
+            "propTypeName": "TypeOrExpr"
+        }]
+    }, {
+        "$ast": "Class",
+        "name": "LabelStat",
+        "ambiguity": "No",
+        "baseClass": "Statement",
+        "props": [{
+            "$ast": "ClassProp",
+            "name": "label",
+            "propType": "Token",
+            "propTypeName": ""
+        }, {
+            "$ast": "ClassProp",
+            "name": "stat",
+            "propType": "Type",
+            "propTypeName": "Statement"
+        }]
+    }, {
+        "$ast": "Class",
+        "name": "GotoStat",
+        "ambiguity": "No",
+        "baseClass": "Statement",
+        "props": [{
+            "$ast": "ClassProp",
+            "name": "label",
+            "propType": "Token",
+            "propTypeName": ""
+        }]
+    }, {
+        "$ast": "Class",
+        "name": "CaseStat",
+        "ambiguity": "No",
+        "baseClass": "Statement",
+        "props": [{
+            "$ast": "ClassProp",
+            "name": "expr",
+            "propType": "Type",
+            "propTypeName": "TypeOrExpr"
+        }, {
+            "$ast": "ClassProp",
+            "name": "stat",
+            "propType": "Type",
+            "propTypeName": "Statement"
+        }]
+    }, {
+        "$ast": "Class",
+        "name": "DefaultStat",
+        "ambiguity": "No",
+        "baseClass": "Statement",
+        "props": [{
+            "$ast": "ClassProp",
+            "name": "stat",
+            "propType": "Type",
+            "propTypeName": "Statement"
+        }]
+    }, {
+        "$ast": "Class",
+        "name": "__LeaveStat",
+        "ambiguity": "No",
+        "baseClass": "Statement",
+        "props": []
+    }, {
+        "$ast": "Class",
+        "name": "StaticAssertStat",
+        "ambiguity": "No",
+        "baseClass": "Statement",
+        "props": [{
+            "$ast": "ClassProp",
+            "name": "expr",
+            "propType": "Type",
+            "propTypeName": "TypeOrExpr"
+        }, {
+            "$ast": "ClassProp",
+            "name": "message",
+            "propType": "Type",
+            "propTypeName": "TypeOrExpr"
+        }]
+    }, {
+        "$ast": "Class",
+        "name": "WhileStat",
+        "ambiguity": "No",
+        "baseClass": "Statement",
+        "props": [{
+            "$ast": "ClassProp",
+            "name": "condition",
+            "propType": "Type",
+            "propTypeName": "TypeOrExprOrOthers"
+        }, {
+            "$ast": "ClassProp",
+            "name": "stat",
+            "propType": "Type",
+            "propTypeName": "Statement"
+        }]
+    }, {
+        "$ast": "Class",
+        "name": "DoWhileStat",
+        "ambiguity": "No",
+        "baseClass": "Statement",
+        "props": [{
+            "$ast": "ClassProp",
+            "name": "condition",
+            "propType": "Type",
+            "propTypeName": "TypeOrExpr"
+        }, {
+            "$ast": "ClassProp",
+            "name": "stat",
+            "propType": "Type",
+            "propTypeName": "Statement"
+        }]
+    }, {
+        "$ast": "Class",
+        "name": "IfElseStat",
+        "ambiguity": "No",
+        "baseClass": "Statement",
+        "props": [{
+            "$ast": "ClassProp",
+            "name": "varsDecl",
+            "propType": "Type",
+            "propTypeName": "MultipleVarDeclaration"
+        }, {
+            "$ast": "ClassProp",
+            "name": "condition",
+            "propType": "Type",
+            "propTypeName": "TypeOrExprOrOthers"
+        }, {
+            "$ast": "ClassProp",
+            "name": "trueStat",
+            "propType": "Type",
+            "propTypeName": "Statement"
+        }, {
+            "$ast": "ClassProp",
+            "name": "falseStat",
+            "propType": "Type",
+            "propTypeName": "Statement"
+        }]
+    }, {
+        "$ast": "Class",
+        "name": "ForStatConditionPart",
+        "ambiguity": "No",
+        "baseClass": "",
+        "props": []
+    }, {
+        "$ast": "Class",
+        "name": "ForStatLoopCondition",
+        "ambiguity": "No",
+        "baseClass": "ForStatConditionPart",
+        "props": [{
+            "$ast": "ClassProp",
+            "name": "varsDecl",
+            "propType": "Type",
+            "propTypeName": "TypeOrExprOrOthers"
+        }, {
+            "$ast": "ClassProp",
+            "name": "condition",
+            "propType": "Type",
+            "propTypeName": "TypeOrExpr"
+        }, {
+            "$ast": "ClassProp",
+            "name": "sideEffect",
+            "propType": "Type",
+            "propTypeName": "TypeOrExpr"
+        }]
+    }, {
+        "$ast": "Class",
+        "name": "ForStatIterateCondition",
+        "ambiguity": "No",
+        "baseClass": "ForStatConditionPart",
+        "props": [{
+            "$ast": "ClassProp",
+            "name": "decl",
+            "propType": "Type",
+            "propTypeName": "SingleVarDeclaration"
+        }, {
+            "$ast": "ClassProp",
+            "name": "collection",
+            "propType": "Type",
+            "propTypeName": "TypeOrExpr"
+        }]
+    }, {
+        "$ast": "Class",
+        "name": "ForStat",
+        "ambiguity": "No",
+        "baseClass": "Statement",
+        "props": [{
+            "$ast": "ClassProp",
+            "name": "conditionPart",
+            "propType": "Type",
+            "propTypeName": "ForStatConditionPart"
+        }, {
+            "$ast": "ClassProp",
+            "name": "stat",
+            "propType": "Type",
+            "propTypeName": "Statement"
+        }]
+    }, {
+        "$ast": "Class",
+        "name": "SwitchStat",
+        "ambiguity": "No",
+        "baseClass": "Statement",
+        "props": [{
+            "$ast": "ClassProp",
+            "name": "condition",
+            "propType": "Type",
+            "propTypeName": "TypeOrExprOrOthers"
+        }, {
+            "$ast": "ClassProp",
+            "name": "stat",
+            "propType": "Type",
+            "propTypeName": "Statement"
+        }]
+    }, {
+        "$ast": "Class",
+        "name": "TryStatCatchPart",
+        "ambiguity": "No",
+        "baseClass": "",
+        "props": [{
+            "$ast": "ClassProp",
+            "name": "decl",
+            "propType": "Type",
+            "propTypeName": "TypeOrExprOrOthers"
+        }, {
+            "$ast": "ClassProp",
+            "name": "stat",
+            "propType": "Type",
+            "propTypeName": "Statement"
+        }]
+    }, {
+        "$ast": "Class",
+        "name": "TryStat",
+        "ambiguity": "No",
+        "baseClass": "Statement",
+        "props": [{
+            "$ast": "ClassProp",
+            "name": "tryStat",
+            "propType": "Type",
+            "propTypeName": "Statement"
+        }, {
+            "$ast": "ClassProp",
+            "name": "catchParts",
+            "propType": "Array",
+            "propTypeName": "TryStatCatchPart"
+        }]
+    }, {
+        "$ast": "Class",
+        "name": "__TryStat",
+        "ambiguity": "No",
+        "baseClass": "Statement",
+        "props": [{
+            "$ast": "ClassProp",
+            "name": "tryStat",
+            "propType": "Type",
+            "propTypeName": "Statement"
+        }, {
+            "$ast": "ClassProp",
+            "name": "exceptStat",
+            "propType": "Type",
+            "propTypeName": "Statement"
+        }, {
+            "$ast": "ClassProp",
+            "name": "finallyStat",
+            "propType": "Type",
+            "propTypeName": "Statement"
+        }, {
+            "$ast": "ClassProp",
+            "name": "filter",
+            "propType": "Type",
+            "propTypeName": "TypeOrExpr"
         }]
     }, {
         "$ast": "Class",

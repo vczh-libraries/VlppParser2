@@ -1,0 +1,99 @@
+//////////////////////////////////////////////////////////////////
+// QualifiedName
+//////////////////////////////////////////////////////////////////
+
+_NameIdentifier
+  ::= ID:name                       as NameIdentifier {kind = Normal}
+  ;
+
+_DtorIdentifier
+  ::= "~" ID:name                   as NameIdentifier {kind = Dtor}
+  ;
+
+_TypeIdentifier
+  ::= "enum" ID:name                as NameIdentifier {kind = Enum}
+  ::= "enum" "class" ID:name        as NameIdentifier {kind = EnumClass}
+  ::= "class" ID:name               as NameIdentifier {kind = Class}
+  ::= "struct" ID:name              as NameIdentifier {kind = Struct}
+  ::= "union" ID:name               as NameIdentifier {kind = Union}
+  ;
+
+_OperatorIdentifier
+  ::= "operator" '""' ID:name       as NameIdentifier {kind = UserDefinedLiteral}
+  ::= "operator" "new"              as OperatorIdentifier {op = New}
+  ::= "operator" "new" "[" "]"      as OperatorIdentifier {op = NewArray}
+  ::= "operator" "delete"           as OperatorIdentifier {op = Delete}
+  ::= "operator" "delete" "[" "]"   as OperatorIdentifier {op = DeleteArray}
+  ::= "operator" ","                as OperatorIdentifier {op = Comma}
+  ::= "operator" "(" ")"            as OperatorIdentifier {op = Parantheses}
+  ::= "operator" "[" "]"            as OperatorIdentifier {op = Bracket}
+  ::= "operator" "->*"              as OperatorIdentifier {op = PointerDeref}
+  ::= "operator" "->"               as OperatorIdentifier {op = Pointer}
+  ::= "operator" "!="               as OperatorIdentifier {op = NE}
+  ::= "operator" "!"                as OperatorIdentifier {op = Not}
+  ::= "operator" "=="               as OperatorIdentifier {op = EQ}
+  ::= "operator" "="                as OperatorIdentifier {op = Assign}
+  ::= "operator" "~="               as OperatorIdentifier {op = RevertAssign}
+  ::= "operator" "~"                as OperatorIdentifier {op = Revert}
+  ::= "operator" "^="               as OperatorIdentifier {op = XorAssign}
+  ::= "operator" "^"                as OperatorIdentifier {op = Xor}
+  ::= "operator" "&&"               as OperatorIdentifier {op = And}
+  ::= "operator" "&="               as OperatorIdentifier {op = AndAssign}
+  ::= "operator" "&"                as OperatorIdentifier {op = BitwiseAnd}
+  ::= "operator" "||"               as OperatorIdentifier {op = Or}
+  ::= "operator" "|="               as OperatorIdentifier {op = OrAssign}
+  ::= "operator" "|"                as OperatorIdentifier {op = BitwiseOr}
+  ::= "operator" "*="               as OperatorIdentifier {op = MulAssign}
+  ::= "operator" "*"                as OperatorIdentifier {op = Mul}
+  ::= "operator" "/="               as OperatorIdentifier {op = DivAssign}
+  ::= "operator" "/"                as OperatorIdentifier {op = Div}
+  ::= "operator" "%="               as OperatorIdentifier {op = ModAssign}
+  ::= "operator" "%"                as OperatorIdentifier {op = Mod}
+  ::= "operator" "+="               as OperatorIdentifier {op = PlusAssign}
+  ::= "operator" "++"               as OperatorIdentifier {op = Increase}
+  ::= "operator" "+"                as OperatorIdentifier {op = Plus}
+  ::= "operator" "-="               as OperatorIdentifier {op = MinusAssign}
+  ::= "operator" "--"               as OperatorIdentifier {op = Decrease}
+  ::= "operator" "-"                as OperatorIdentifier {op = Minus}
+  ::= "operator" "<<="              as OperatorIdentifier {op = LeftShiftAssign}
+  ::= "operator" "<<"               as OperatorIdentifier {op = LeftShift}
+  ::= "operator" "<="               as OperatorIdentifier {op = LE}
+  ::= "operator" "<"                as OperatorIdentifier {op = LT}
+  ::= "operator" ">>="              as OperatorIdentifier {op = RightShiftAssign}
+  ::= "operator" ">>"               as OperatorIdentifier {op = RightShift}
+  ::= "operator" ">="               as OperatorIdentifier {op = GE}
+  ::= "operator" ">"                as OperatorIdentifier {op = GT}
+  ;
+
+_Identifier
+  ::= !_NameIdentifier
+  ::= !_TypeIdentifier
+  ::= !_OperatorIdentifier
+  ;
+
+_GenericArgument
+  ::= !_TypeOrExpr_NoComma_NoGT
+  ::= _TypeOrExpr_NoComma_NoGT:argument "...":variadic as GenericArgument
+  ;
+
+_GenericArguments
+  ::= "<" {_GenericArgument:arguments ; ","} ">" as GenericArguments
+  ;
+
+_QualifiedNameFragment
+  ::= _Identifier:id [_GenericArguments:arguments] as partial QualifiedName
+  ::= "template" _Identifier:id _GenericArguments:arguments as partial QualifiedName
+  ;
+
+_MemberQualifiedNameFragment
+  ::= _DtorIdentifier:id as partial QualifiedName
+  ;
+
+_QualifiedName
+  ::= _QualifiedNameFragment as QualifiedName {kind = Context}
+  ::= "::" _QualifiedNameFragment as QualifiedName {kind = Root}
+  ::= "auto" as QualifiedName {kind = Auto}
+  ::= "decltype" "(" _Expr:expr ")" as QualifiedName {kind = Decltype}
+  ::= _QualifiedName:parent "::" _QualifiedNameFragment as QualifiedName {kind = Member}
+  ::= _QualifiedName:parent "::" _MemberQualifiedNameFragment as QualifiedName {kind = Member}
+  ;

@@ -1,0 +1,167 @@
+//////////////////////////////////////////////////////////////////
+// PrimitiveType
+//////////////////////////////////////////////////////////////////
+
+_PrimitiveTypeLiteral
+  ::= "wchar_t":literal1                 as partial PrimitiveType
+  ::= "char8_t":literal1                 as partial PrimitiveType
+  ::= "char16_t":literal1                as partial PrimitiveType
+  ::= "char32_t":literal1                as partial PrimitiveType
+  ::= "char":literal1                    as partial PrimitiveType
+  ::= "short":literal1                   as partial PrimitiveType
+  ::= "int":literal1                     as partial PrimitiveType
+  ::= "__int8":literal1                  as partial PrimitiveType
+  ::= "__int16":literal1                 as partial PrimitiveType
+  ::= "__int32":literal1                 as partial PrimitiveType
+  ::= "__int64":literal1                 as partial PrimitiveType
+  ::= "long":literal1                    as partial PrimitiveType
+  ::= "long":literal1 "int":literal2     as partial PrimitiveType
+  ::= "long":literal1 "long":literal2    as partial PrimitiveType
+  ;
+
+_PrimitiveType
+  ::= "signed" [_PrimitiveTypeLiteral]   as PrimitiveType {kind = Signed}
+  ::= "unsigned" [_PrimitiveTypeLiteral] as PrimitiveType {kind = Unsigned}
+  ::= "void":literal1                    as PrimitiveType {kind = Neutral}
+  ::= "bool":literal1                    as PrimitiveType {kind = Neutral}
+  ::= "float":literal1                   as PrimitiveType {kind = Neutral}
+  ::= "double":literal1                  as PrimitiveType {kind = Neutral}
+  ::= "long":literal1 "double":literal2  as PrimitiveType {kind = Neutral}
+  ::= _PrimitiveTypeLiteral              as PrimitiveType {kind = Neutral}
+  ::= "typename" !_QualifiedName
+  ;
+
+_PM_PrimitiveType
+  ::= !prefix_merge(_PrimitiveType)
+  ;
+
+_PM_QualifiedName
+  ::= !prefix_merge(_QualifiedName)
+  ;
+
+_ShortTypeStartsWithKeywordBeforeDeclarator
+  ::= !_PM_PrimitiveType
+  ::= "const" _TypeBeforeDeclarator:type as ConstType
+  ::= "volatile" _TypeBeforeDeclarator:type as VolatileType
+  ;
+
+_ShortTypeBeforeDeclarator : TypeOrExpr
+  ::= !_PM_QualifiedName
+  ::= !_ShortTypeStartsWithKeywordBeforeDeclarator
+  ;
+
+_TypeStartsWithKeywordBeforeDeclarator
+  ::= !_ShortTypeStartsWithKeywordBeforeDeclarator
+  ::= _TypeStartsWithKeywordBeforeDeclarator:type "const" as ConstType
+  ::= _TypeStartsWithKeywordBeforeDeclarator:type "volatile" as VolatileType
+  ;
+
+_TypeBeforeDeclarator
+  ::= !_ShortTypeBeforeDeclarator
+  ::= _TypeBeforeDeclarator:type "const" as ConstType
+  ::= _TypeBeforeDeclarator:type "volatile" as VolatileType
+  ;
+
+//////////////////////////////////////////////////////////////////
+// Declarator Components
+//////////////////////////////////////////////////////////////////
+
+_AdvancedTypeNoCVNoMember
+  ::= "&" as AdvancedType {kind = LRef}
+  ::= "&&" as AdvancedType {kind = RRef}
+  ::= "*" as AdvancedType {kind = Pointer}
+  ::= "*" "__ptr32" as AdvancedType {kind = Pointer32}
+  ::= "*" "__ptr64" as AdvancedType {kind = Pointer64}
+  ::= "alignas" "(" _Expr:argument ")" as AdvancedType {kind = AlignAs}
+  ;
+
+_AdvancedTypeCV
+  ::= "const" as AdvancedType {kind = Const}
+  ::= "volatile" as AdvancedType {kind = Volatile}
+  ;
+
+_AdvancedTypeNoMember
+  ::= !_AdvancedTypeNoCVNoMember
+  ::= !_AdvancedTypeCV
+  ;
+
+_AdvancedTypeMember
+  ::= _QualifiedName:argument "::" as AdvancedType {kind = Member}
+  ;
+
+_DeclaratorKeyword
+  ::= "constexpr":keyword as DeclaratorKeyword
+  ::= "extern":keyword as DeclaratorKeyword
+  ::= "static":keyword as DeclaratorKeyword
+  ::= "mutable":keyword as DeclaratorKeyword
+  ::= "thread_local":keyword as DeclaratorKeyword
+  ::= "virtual":keyword as DeclaratorKeyword
+  ::= "explicit":keyword as DeclaratorKeyword
+  ::= "friend":keyword as DeclaratorKeyword
+  ::= "abstract":keyword as DeclaratorKeyword
+  ::= "inline":keyword as DeclaratorKeyword
+  ::= "__inline":keyword as DeclaratorKeyword
+  ::= "__forceinline":keyword as DeclaratorKeyword
+  ::= "__cdecl":keyword as DeclaratorKeyword
+  ::= "__clrcall":keyword as DeclaratorKeyword
+  ::= "__stdcall":keyword as DeclaratorKeyword
+  ::= "__fastcall":keyword as DeclaratorKeyword
+  ::= "__thiscall":keyword as DeclaratorKeyword
+  ::= "__vectorcall":keyword as DeclaratorKeyword
+  ;
+
+//================================================================
+
+_DeclaratorAKFirst
+  ::= _AdvancedTypeNoCVNoMember:advancedTypes as partial Declarator
+  ::= _DeclaratorKeyword:keywords as partial Declarator
+  ;
+
+_DeclaratorAKFollow
+  ::= _AdvancedTypeNoMember:advancedTypes as partial Declarator
+  ::= _DeclaratorKeyword:keywords as partial Declarator
+  ;
+
+_DeclaratorAKCV
+  ::= _AdvancedTypeCV:advancedTypes as partial Declarator
+  ;
+
+_DeclaratorAKMember
+  ::= _AdvancedTypeMember:advancedTypes as partial Declarator
+  ;
+
+//================================================================
+
+_DeclaratorFunctionParameters
+  ::= "(" ["...":variadic] ")" as partial DeclaratorFunctionPart
+  ::= "(" _FunctionParameter:parameters {"," _FunctionParameter:parameters} ["," "...":variadic] ")" as partial DeclaratorFunctionPart
+  ;
+
+_FunctionKeyword
+  ::= "constexpr":keyword as FunctionKeyword
+  ::= "&":keyword as FunctionKeyword
+  ::= "&&":keyword as FunctionKeyword
+  ::= "const":keyword as FunctionKeyword
+  ::= "volatile":keyword as FunctionKeyword
+  ::= "override":keyword as FunctionKeyword
+  ::= "final":keyword as FunctionKeyword
+  ::= "mutable":keyword as FunctionKeyword
+  ::= "noexcept":keyword ["(" {_Expr_Argument:arguments ; ","} ")"] as FunctionKeyword
+  ::= "throw":keyword ["(" {_Type:arguments ; ","} ")"] as FunctionKeyword
+  ::= "=" '0':keyword as FunctionKeyword
+  ::= "=" "delete":keyword as FunctionKeyword
+  ::= "=" "default":keyword as FunctionKeyword
+  ;
+
+_DeclaratorFunctionPart
+  ::= _DeclaratorFunctionParameters {_FunctionKeyword:keywords} ["->" _Type:deferredType] as DeclaratorFunctionPart
+  ;
+
+_DeclaratorArrayPart
+  ::= "[" _Expr:argument "]" as DeclaratorArrayPart
+  ;
+
+_DeclaratorId
+  ::= !_NameIdentifier
+  ::= !_OperatorIdentifier
+  ;

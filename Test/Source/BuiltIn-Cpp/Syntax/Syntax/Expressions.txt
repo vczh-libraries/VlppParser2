@@ -1,0 +1,233 @@
+//////////////////////////////////////////////////////////////////
+// PrimitiveExpr
+//////////////////////////////////////////////////////////////////
+
+_StringLiteralFragment
+  ::= MACRO_LPREFIX as StringLiteralFragment {kind = Macro_LPREFIX}
+  ::= STRING:literal as StringLiteralFragment {kind = String}
+  ;
+
+_PrimitiveExpr : TypeOrExpr
+  ::= "true" as PrimitiveExprLiteral {kind = True}
+  ::= "false" as PrimitiveExprLiteral {kind = False}
+  ::= "nullptr" as PrimitiveExprLiteral {kind = Nullptr}
+  ::= "this" as PrimitiveExprLiteral {kind = This}
+  ::= "__nullptr" as PrimitiveExprLiteral {kind = __Nullptr}
+  ::= INT:literal as NumericExprLiteral {kind = Integer}
+  ::= HEX:literal as NumericExprLiteral {kind = Hex}
+  ::= BIN:literal as NumericExprLiteral {kind = Binary}
+  ::= FLOAT:literal as NumericExprLiteral {kind = Float}
+  ::= FLOATHEX:literal as NumericExprLiteral {kind = FloatHex}
+  ::= CHAR:literal as NumericExprLiteral {kind = Char}
+  ::= _StringLiteralFragment:fragments {_StringLiteralFragment:fragments} as StringLiteral
+  ::= "(" _Expr:expr ")" as ParenthesisExpr
+  ::= "{" {_Expr_Argument:arguments ; ","} "}" as BraceExpr
+  ::= "dynamic_cast":keyword "<" _Type:type ">" "(" _Expr:expr ")" as CastExpr
+  ::= "static_cast":keyword "<" _Type:type ">" "(" _Expr:expr ")" as CastExpr
+  ::= "const_cast":keyword "<" _Type:type ">" "(" _Expr:expr ")" as CastExpr
+  ::= "reinterpret_cast":keyword "<" _Type:type ">" "(" _Expr:expr ")" as CastExpr
+  ::= "safe_cast":keyword "<" _Type:type ">" "(" _Expr:expr ")" as CastExpr
+  ::= "typeid":keyword "(" _TypeOrExpr:argument ")" as SysFuncExpr
+  ::= "alignof":keyword "(" _TypeOrExpr:argument ")" as SysFuncExpr
+  ::= "__alignof":keyword "(" _TypeOrExpr:argument ")" as SysFuncExpr
+  ::= "__uuidof":keyword "(" _TypeOrExpr:argument ")" as SysFuncExpr
+  ::= "noexcept":keyword "(" _TypeOrExpr:argument ")" as SysFuncExpr
+  ;
+
+//////////////////////////////////////////////////////////////////
+// PostfixUnaryExpr
+//////////////////////////////////////////////////////////////////
+
+_QualifiedName_PrimitiveExpr
+  ::= !prefix_merge(_PrimitiveExpr)
+  ::= !prefix_merge(_QualifiedName)
+  ;
+
+_PostfixUnaryExpr
+  ::= !_QualifiedName_PrimitiveExpr
+  ::= _TypeStartsWithKeyword:operand "(" {_Expr_Argument:arguments ; ","} ")" as CallExpr {kind = Parenthesis}
+  ::= _Type:operand "{" {_Expr_Argument:arguments ; ","} "}" as CallExpr {kind = Brace}
+  ::= _PostfixUnaryExpr:left "." _MemberOperatorQualifiedName:right as BinaryExpr {op = Member}
+  ::= _PostfixUnaryExpr:left "->" _MemberOperatorQualifiedName:right as BinaryExpr {op = Pointer}
+  ::= _PostfixUnaryExpr:operand "++" as PostfixUnaryExpr {op = Increase}
+  ::= _PostfixUnaryExpr:operand "--" as PostfixUnaryExpr {op = Decrease}
+  ::= _PostfixUnaryExpr:operand "[" _Expr:index "]" as IndexExpr
+  ::= _PostfixUnaryExpr:operand "(" {_Expr_Argument:arguments ; ","} ")" as CallExpr {kind = Parenthesis}
+  ;
+
+//////////////////////////////////////////////////////////////////
+// PrefixUnaryExpr
+//////////////////////////////////////////////////////////////////
+
+_NewPrefix
+  ::= "new" as partial NewExpr {scope = Context}
+  ::= "::" "new" as partial NewExpr {scope = Root}
+  ;
+
+_NewExpr
+  ::= _NewPrefix
+      ["(" {_Expr_Argument:placementArguments ; ","} ")"]
+      _QualifiedName:type
+      {"[" _Expr:arrayArguments "]"}
+      [_VarCtorInit:init] as NewExpr
+  ;
+
+_DeletePrefix
+  ::= "delete" as partial DeleteExpr {scope = Context}
+  ::= "::" "delete" as partial DeleteExpr {scope = Root}
+  ;
+
+_DeleteExpr
+  ::= _DeletePrefix _PrefixUnaryExpr:argument as DeleteExpr
+  ::= _DeletePrefix "[" "]" _PrefixUnaryExpr:argument as DeleteExpr
+  ;
+
+_SizeOfPrefix
+  ::= "sizeof" ["...":variadic] as partial SizeofExpr
+  ;
+
+_SizeofExpr
+  ::= _SizeOfPrefix _PostfixUnaryExpr:argument as SizeofExpr
+  ::= _SizeOfPrefix _AllPrefixUnaryExpr_NoCStyleCast:argument as SizeofExpr
+  ::= _SizeOfPrefix "(" _Type:argument ")" as SizeofExpr
+  ;
+
+_AllPrefixUnaryExpr_NoCStyleCast
+  ::= "++" _PrefixUnaryExpr:operand as PrefixUnaryExpr {op = Increase}
+  ::= "--" _PrefixUnaryExpr:operand as PrefixUnaryExpr {op = Decrease}
+  ::= "~" _PrefixUnaryExpr:operand as PrefixUnaryExpr {op = Revert}
+  ::= "!" _PrefixUnaryExpr:operand as PrefixUnaryExpr {op = Not}
+  ::= "-" _PrefixUnaryExpr:operand as PrefixUnaryExpr {op = Minus}
+  ::= "+" _PrefixUnaryExpr:operand as PrefixUnaryExpr {op = Plus}
+  ::= "&" _PrefixUnaryExpr:operand as PrefixUnaryExpr {op = BitwiseAnd}
+  ::= "*" _PrefixUnaryExpr:operand as PrefixUnaryExpr {op = Mul}
+  ::= !_NewExpr
+  ::= !_DeleteExpr
+  ::= !_SizeofExpr
+  ;
+
+_AllPrefixUnaryExpr
+  ::= !_AllPrefixUnaryExpr_NoCStyleCast
+  ::= "(" _Type:type ")" _PrefixUnaryExpr:expr as CastExpr
+  ;
+
+_PrefixUnaryExpr
+  ::= !_PostfixUnaryExpr
+  ::= !_AllPrefixUnaryExpr
+  ;
+
+//////////////////////////////////////////////////////////////////
+// BinaryExpr
+//////////////////////////////////////////////////////////////////
+
+_MemberOperatorIdentifier
+  ::= !_NameIdentifier
+  ::= !_DtorIdentifier
+  ::= !_OperatorIdentifier
+  ;
+
+_MemberOperatorQualifiedName
+  ::= _Identifier:id [_GenericArguments:arguments] as QualifiedName {kind = Context}
+  ;
+
+_BExpr0
+  ::= !_PrefixUnaryExpr
+  ::= _BExpr0:left ".*" _PrefixUnaryExpr:right as BinaryExpr {op = MemberDeref}
+  ::= _BExpr0:left "->*" _PrefixUnaryExpr:right as BinaryExpr {op = PointerDeref}
+  ;
+
+_BExpr1
+  ::= !_BExpr0
+  ::= _BExpr1:left "*" _BExpr0:right as BinaryExpr {op = Mul}
+  ::= _BExpr1:left "/" _BExpr0:right as BinaryExpr {op = Div}
+  ::= _BExpr1:left "%" _BExpr0:right as BinaryExpr {op = Mod}
+  ;
+
+_BExpr2
+  ::= !_BExpr1
+  ::= _BExpr2:left "+" _BExpr1:right as BinaryExpr {op = Plus}
+  ::= _BExpr2:left "-" _BExpr1:right as BinaryExpr {op = Minus}
+  ;
+
+_BExpr3
+  ::= !_BExpr2
+  ::= _BExpr3:left "<<" _BExpr2:right as BinaryExpr {op = LeftShift}
+  ::= _BExpr3:left ">>" _BExpr2:right as BinaryExpr {op = RightShift}
+  ;
+
+_BExpr4
+  ::= !_BExpr3
+  ::= _BExpr4:left "<" _BExpr3:right as BinaryExpr {op = LT}
+  ::= _BExpr4:left ?(allow_GT: ">" _BExpr3:right) as BinaryExpr {op = GT}
+  ::= _BExpr4:left "<=" _BExpr3:right as BinaryExpr {op = LE}
+  ::= _BExpr4:left ">=" _BExpr3:right as BinaryExpr {op = GE}
+  ;
+
+_BExpr5
+  ::= !_BExpr4
+  ::= _BExpr5:left "==" _BExpr4:right as BinaryExpr {op = EQ}
+  ::= _BExpr5:left "!=" _BExpr4:right as BinaryExpr {op = NE}
+  ;
+
+_BExpr6
+  ::= !_BExpr5
+  ::= _BExpr6:left "&" _BExpr5:right as BinaryExpr {op = BitwiseAnd}
+  ;
+
+_BExpr7
+  ::= !_BExpr6
+  ::= _BExpr7:left "^" _BExpr6:right as BinaryExpr {op = Xor}
+  ;
+
+_BExpr8
+  ::= !_BExpr7
+  ::= _BExpr8:left "|" _BExpr7:right as BinaryExpr {op = BitwiseOr}
+  ;
+
+_BExpr9
+  ::= !_BExpr8
+  ::= _BExpr9:left "&&" _BExpr8:right as BinaryExpr {op = And}
+  ;
+
+_BExpr10
+  ::= !_BExpr9
+  ::= _BExpr10:left "||" _BExpr9:right as BinaryExpr {op = Or}
+  ;
+
+_ThrowExpr
+  ::= "throw" [_BExpr10:argument] as ThrowExpr
+  ;
+
+_BExpr_NoComma
+  ::= !_BExpr10
+  ::= !_ThrowExpr
+  ::= _BExpr10:condition "?" _Expr:trueBranch ":" _BExpr_NoComma:falseBranch as IfExpr
+  ::= _BExpr10:left "=" _BExpr_NoComma:right as BinaryExpr {op = Assign}
+  ::= _BExpr10:left "*=" _BExpr_NoComma:right as BinaryExpr {op = MulAssign}
+  ::= _BExpr10:left "/=" _BExpr_NoComma:right as BinaryExpr {op = DivAssign}
+  ::= _BExpr10:left "%=" _BExpr_NoComma:right as BinaryExpr {op = ModAssign}
+  ::= _BExpr10:left "+=" _BExpr_NoComma:right as BinaryExpr {op = PlusAssign}
+  ::= _BExpr10:left "-=" _BExpr_NoComma:right as BinaryExpr {op = MinusAssign}
+  ::= _BExpr10:left "<<=" _BExpr_NoComma:right as BinaryExpr {op = LeftShiftAssign}
+  ::= _BExpr10:left ">>=" _BExpr_NoComma:right as BinaryExpr {op = RightShiftAssign}
+  ::= _BExpr10:left "&=" _BExpr_NoComma:right as BinaryExpr {op = AndAssign}
+  ::= _BExpr10:left "|=" _BExpr_NoComma:right as BinaryExpr {op = OrAssign}
+  ::= _BExpr10:left "^=" _BExpr_NoComma:right as BinaryExpr {op = XorAssign}
+  ;
+
+_BExpr
+  ::= !_BExpr_NoComma
+  ::= _BExpr:left "," _BExpr_NoComma:right as BinaryExpr {op = Comma}
+  ;
+
+//////////////////////////////////////////////////////////////////
+// _Expr
+//////////////////////////////////////////////////////////////////
+
+_Expr_NoComma_Raw
+  ::= !_BExpr_NoComma
+  ;
+
+_Expr_Raw
+  ::= !_BExpr
+  ;

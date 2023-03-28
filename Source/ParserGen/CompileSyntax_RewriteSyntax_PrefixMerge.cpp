@@ -275,13 +275,16 @@ CreateRewrittenRules
 						for (auto [prefixRuleSymbol, prefixClause] : From(prefixClauses)
 							.OrderBy([](auto p1, auto p2) {return WString::Compare(p1.ruleSymbol->Name(), p2.ruleSymbol->Name()); }))
 						{
-							auto ep = Ptr(new GlrRule);
-							rewritten->rules.Insert(rewritten->rules.IndexOf(originRule), ep);
-							rContext.extractedPrefixRules.Add({ ruleSymbol,prefixRuleSymbol }, ep.Obj());
+							if (!rContext.extractedPrefixRules.Keys().Contains({ ruleSymbol,prefixRuleSymbol }))
+							{
+								auto ep = Ptr(new GlrRule);
+								rewritten->rules.Insert(rewritten->rules.IndexOf(originRule), ep);
+								rContext.extractedPrefixRules.Add({ ruleSymbol,prefixRuleSymbol }, ep.Obj());
 
-							ep->codeRange = originRule->codeRange;
-							ep->name.codeRange = originRule->name.codeRange;
-							ep->name.value = ruleSymbol->Name() + L"_" + prefixRuleSymbol->Name() + L"_LRI_Prefix";
+								ep->codeRange = originRule->codeRange;
+								ep->name.codeRange = originRule->name.codeRange;
+								ep->name.value = ruleSymbol->Name() + L"_" + prefixRuleSymbol->Name() + L"_LRI_Prefix";
+							}
 						}
 					}
 				}

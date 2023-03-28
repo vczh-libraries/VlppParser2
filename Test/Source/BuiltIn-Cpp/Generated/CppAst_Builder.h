@@ -28,6 +28,12 @@ namespace cpp_parser
 			MakeBinaryExpr& right(const vl::Ptr<CppTypeOrExpr>& value);
 		};
 
+		class MakeBlockStat : public vl::glr::ParsingAstBuilder<CppBlockStat>
+		{
+		public:
+			MakeBlockStat& statements(const vl::Ptr<CppStatement>& value);
+		};
+
 		class MakeBraceExpr : public vl::glr::ParsingAstBuilder<CppBraceExpr>
 		{
 		public:
@@ -42,6 +48,13 @@ namespace cpp_parser
 			MakeCallExpr& operand(const vl::Ptr<CppTypeOrExpr>& value);
 		};
 
+		class MakeCaseStat : public vl::glr::ParsingAstBuilder<CppCaseStat>
+		{
+		public:
+			MakeCaseStat& expr(const vl::Ptr<CppTypeOrExpr>& value);
+			MakeCaseStat& stat(const vl::Ptr<CppStatement>& value);
+		};
+
 		class MakeCastExpr : public vl::glr::ParsingAstBuilder<CppCastExpr>
 		{
 		public:
@@ -54,6 +67,12 @@ namespace cpp_parser
 		{
 		public:
 			MakeConstType& type(const vl::Ptr<CppTypeOrExpr>& value);
+		};
+
+		class MakeDeclStat : public vl::glr::ParsingAstBuilder<CppDeclStat>
+		{
+		public:
+			MakeDeclStat& decl(const vl::Ptr<CppDeclaration>& value);
 		};
 
 		class MakeDeclarator : public vl::glr::ParsingAstBuilder<CppDeclarator>
@@ -97,6 +116,19 @@ namespace cpp_parser
 			MakeDeclaratorType& type(const vl::Ptr<CppTypeOrExpr>& value);
 		};
 
+		class MakeDeclaratorVariablePart : public vl::glr::ParsingAstBuilder<CppDeclaratorVariablePart>
+		{
+		public:
+			MakeDeclaratorVariablePart& declarator(const vl::Ptr<CppDeclarator>& value);
+			MakeDeclaratorVariablePart& init(const vl::Ptr<CppVarInit>& value);
+		};
+
+		class MakeDefaultStat : public vl::glr::ParsingAstBuilder<CppDefaultStat>
+		{
+		public:
+			MakeDefaultStat& stat(const vl::Ptr<CppStatement>& value);
+		};
+
 		class MakeDeleteExpr : public vl::glr::ParsingAstBuilder<CppDeleteExpr>
 		{
 		public:
@@ -105,20 +137,46 @@ namespace cpp_parser
 			MakeDeleteExpr& scope(CppOperatorScope value);
 		};
 
+		class MakeDoWhileStat : public vl::glr::ParsingAstBuilder<CppDoWhileStat>
+		{
+		public:
+			MakeDoWhileStat& condition(const vl::Ptr<CppTypeOrExpr>& value);
+			MakeDoWhileStat& stat(const vl::Ptr<CppStatement>& value);
+		};
+
+		class MakeExprStat : public vl::glr::ParsingAstBuilder<CppExprStat>
+		{
+		public:
+			MakeExprStat& expr(const vl::Ptr<CppTypeOrExpr>& value);
+		};
+
+		class MakeForStat : public vl::glr::ParsingAstBuilder<CppForStat>
+		{
+		public:
+			MakeForStat& conditionPart(const vl::Ptr<CppForStatConditionPart>& value);
+			MakeForStat& stat(const vl::Ptr<CppStatement>& value);
+		};
+
+		class MakeForStatIterateCondition : public vl::glr::ParsingAstBuilder<CppForStatIterateCondition>
+		{
+		public:
+			MakeForStatIterateCondition& collection(const vl::Ptr<CppTypeOrExpr>& value);
+			MakeForStatIterateCondition& decl(const vl::Ptr<CppSingleVarDeclaration>& value);
+		};
+
+		class MakeForStatLoopCondition : public vl::glr::ParsingAstBuilder<CppForStatLoopCondition>
+		{
+		public:
+			MakeForStatLoopCondition& condition(const vl::Ptr<CppTypeOrExpr>& value);
+			MakeForStatLoopCondition& sideEffect(const vl::Ptr<CppTypeOrExpr>& value);
+			MakeForStatLoopCondition& varsDecl(const vl::Ptr<CppTypeOrExprOrOthers>& value);
+		};
+
 		class MakeFunctionKeyword : public vl::glr::ParsingAstBuilder<CppFunctionKeyword>
 		{
 		public:
 			MakeFunctionKeyword& arguments(const vl::Ptr<CppTypeOrExpr>& value);
 			MakeFunctionKeyword& keyword(const vl::WString& value);
-		};
-
-		class MakeFunctionParameter : public vl::glr::ParsingAstBuilder<CppFunctionParameter>
-		{
-		public:
-			MakeFunctionParameter& declarator(const vl::Ptr<CppDeclarator>& value);
-			MakeFunctionParameter& defaultValue(const vl::Ptr<CppTypeOrExpr>& value);
-			MakeFunctionParameter& keywords(const vl::Ptr<CppDeclaratorKeyword>& value);
-			MakeFunctionParameter& type(const vl::Ptr<CppTypeOrExpr>& value);
 		};
 
 		class MakeGenericArgument : public vl::glr::ParsingAstBuilder<CppGenericArgument>
@@ -132,6 +190,21 @@ namespace cpp_parser
 		{
 		public:
 			MakeGenericArguments& arguments(const vl::Ptr<CppTypeOrExprOrOthers>& value);
+		};
+
+		class MakeGotoStat : public vl::glr::ParsingAstBuilder<CppGotoStat>
+		{
+		public:
+			MakeGotoStat& label(const vl::WString& value);
+		};
+
+		class MakeIfElseStat : public vl::glr::ParsingAstBuilder<CppIfElseStat>
+		{
+		public:
+			MakeIfElseStat& condition(const vl::Ptr<CppTypeOrExprOrOthers>& value);
+			MakeIfElseStat& falseStat(const vl::Ptr<CppStatement>& value);
+			MakeIfElseStat& trueStat(const vl::Ptr<CppStatement>& value);
+			MakeIfElseStat& varsDecl(const vl::Ptr<CppMultipleVarDeclaration>& value);
 		};
 
 		class MakeIfExpr : public vl::glr::ParsingAstBuilder<CppIfExpr>
@@ -149,6 +222,21 @@ namespace cpp_parser
 			MakeIndexExpr& operand(const vl::Ptr<CppTypeOrExpr>& value);
 		};
 
+		class MakeLabelStat : public vl::glr::ParsingAstBuilder<CppLabelStat>
+		{
+		public:
+			MakeLabelStat& label(const vl::WString& value);
+			MakeLabelStat& stat(const vl::Ptr<CppStatement>& value);
+		};
+
+		class MakeMultipleVarDeclaration : public vl::glr::ParsingAstBuilder<CppMultipleVarDeclaration>
+		{
+		public:
+			MakeMultipleVarDeclaration& keywords(const vl::Ptr<CppDeclaratorKeyword>& value);
+			MakeMultipleVarDeclaration& type(const vl::Ptr<CppTypeOrExpr>& value);
+			MakeMultipleVarDeclaration& varParts(const vl::Ptr<CppDeclaratorVariablePart>& value);
+		};
+
 		class MakeNameIdentifier : public vl::glr::ParsingAstBuilder<CppNameIdentifier>
 		{
 		public:
@@ -159,8 +247,8 @@ namespace cpp_parser
 		class MakeNewExpr : public vl::glr::ParsingAstBuilder<CppNewExpr>
 		{
 		public:
-			MakeNewExpr& init(CppOperatorInit value);
-			MakeNewExpr& initArguments(const vl::Ptr<CppTypeOrExpr>& value);
+			MakeNewExpr& arrayArguments(const vl::Ptr<CppTypeOrExpr>& value);
+			MakeNewExpr& init(const vl::Ptr<CppVarInit>& value);
 			MakeNewExpr& placementArguments(const vl::Ptr<CppTypeOrExpr>& value);
 			MakeNewExpr& scope(CppOperatorScope value);
 			MakeNewExpr& type(const vl::Ptr<CppTypeOrExpr>& value);
@@ -223,11 +311,32 @@ namespace cpp_parser
 			MakeQualifiedName& parent(const vl::Ptr<CppQualifiedName>& value);
 		};
 
+		class MakeReturnStat : public vl::glr::ParsingAstBuilder<CppReturnStat>
+		{
+		public:
+			MakeReturnStat& expr(const vl::Ptr<CppTypeOrExpr>& value);
+		};
+
+		class MakeSingleVarDeclaration : public vl::glr::ParsingAstBuilder<CppSingleVarDeclaration>
+		{
+		public:
+			MakeSingleVarDeclaration& keywords(const vl::Ptr<CppDeclaratorKeyword>& value);
+			MakeSingleVarDeclaration& type(const vl::Ptr<CppTypeOrExpr>& value);
+			MakeSingleVarDeclaration& varPart(const vl::Ptr<CppDeclaratorVariablePart>& value);
+		};
+
 		class MakeSizeofExpr : public vl::glr::ParsingAstBuilder<CppSizeofExpr>
 		{
 		public:
 			MakeSizeofExpr& argument(const vl::Ptr<CppTypeOrExpr>& value);
 			MakeSizeofExpr& variadic(const vl::WString& value);
+		};
+
+		class MakeStaticAssertStat : public vl::glr::ParsingAstBuilder<CppStaticAssertStat>
+		{
+		public:
+			MakeStaticAssertStat& expr(const vl::Ptr<CppTypeOrExpr>& value);
+			MakeStaticAssertStat& message(const vl::Ptr<CppTypeOrExpr>& value);
 		};
 
 		class MakeStringLiteral : public vl::glr::ParsingAstBuilder<CppStringLiteral>
@@ -241,6 +350,13 @@ namespace cpp_parser
 		public:
 			MakeStringLiteralFragment& kind(CppStringLiteralKinds value);
 			MakeStringLiteralFragment& literal(const vl::WString& value);
+		};
+
+		class MakeSwitchStat : public vl::glr::ParsingAstBuilder<CppSwitchStat>
+		{
+		public:
+			MakeSwitchStat& condition(const vl::Ptr<CppTypeOrExprOrOthers>& value);
+			MakeSwitchStat& stat(const vl::Ptr<CppStatement>& value);
 		};
 
 		class MakeSysFuncExpr : public vl::glr::ParsingAstBuilder<CppSysFuncExpr>
@@ -257,6 +373,38 @@ namespace cpp_parser
 			MakeThrowExpr& argument(const vl::Ptr<CppTypeOrExpr>& value);
 		};
 
+		class MakeTryStat : public vl::glr::ParsingAstBuilder<CppTryStat>
+		{
+		public:
+			MakeTryStat& catchParts(const vl::Ptr<CppTryStatCatchPart>& value);
+			MakeTryStat& tryStat(const vl::Ptr<CppStatement>& value);
+		};
+
+		class MakeTryStatCatchPart : public vl::glr::ParsingAstBuilder<CppTryStatCatchPart>
+		{
+		public:
+			MakeTryStatCatchPart& decl(const vl::Ptr<CppTypeOrExprOrOthers>& value);
+			MakeTryStatCatchPart& stat(const vl::Ptr<CppStatement>& value);
+		};
+
+		class MakeVarBraceInit : public vl::glr::ParsingAstBuilder<CppVarBraceInit>
+		{
+		public:
+			MakeVarBraceInit& arguments(const vl::Ptr<CppTypeOrExpr>& value);
+		};
+
+		class MakeVarParanthesisInit : public vl::glr::ParsingAstBuilder<CppVarParanthesisInit>
+		{
+		public:
+			MakeVarParanthesisInit& arguments(const vl::Ptr<CppTypeOrExpr>& value);
+		};
+
+		class MakeVarValueInit : public vl::glr::ParsingAstBuilder<CppVarValueInit>
+		{
+		public:
+			MakeVarValueInit& expr(const vl::Ptr<CppTypeOrExpr>& value);
+		};
+
 		class MakeVariadicExpr : public vl::glr::ParsingAstBuilder<CppVariadicExpr>
 		{
 		public:
@@ -268,6 +416,22 @@ namespace cpp_parser
 		{
 		public:
 			MakeVolatileType& type(const vl::Ptr<CppTypeOrExpr>& value);
+		};
+
+		class MakeWhileStat : public vl::glr::ParsingAstBuilder<CppWhileStat>
+		{
+		public:
+			MakeWhileStat& condition(const vl::Ptr<CppTypeOrExprOrOthers>& value);
+			MakeWhileStat& stat(const vl::Ptr<CppStatement>& value);
+		};
+
+		class Make__TryStat : public vl::glr::ParsingAstBuilder<Cpp__TryStat>
+		{
+		public:
+			Make__TryStat& exceptStat(const vl::Ptr<CppStatement>& value);
+			Make__TryStat& filter(const vl::Ptr<CppTypeOrExpr>& value);
+			Make__TryStat& finallyStat(const vl::Ptr<CppStatement>& value);
+			Make__TryStat& tryStat(const vl::Ptr<CppStatement>& value);
 		};
 
 	}

@@ -5,6 +5,9 @@
 - `::a::b::c::*`
   - Ambiguity
   - It should be invalid, instead of being `::a(::b::c::*)` and `::a::b(::c::*)`
+- Compiler crashes:
+  - `_DeclOrExpr ::= !_BExpr ::= {_DeclaratorKeyword:keywords} _TypeBeforeDeclarator:type _DeclaratorRequiredName:declarator as DeclaratorType ;`
+  - `workingSwitchValues` is nullptr in `ExpandClauseVisitor::FixRuleName`
 
 ## Next task
 
@@ -35,6 +38,7 @@
 
 - Extensible tokens, for example, recognize `R"[^\s(]\(` and invoke a callback function to determine the end of the string.
   - Offer two options: using (rich regex | C++) to search for complete token.
+- Add `extern` rule, non-`extern` rules can only be used inside the same syntax file
 
 ## Issues
 
@@ -57,7 +61,9 @@
 
 ## BuiltIn-Cpp
 
-- Progress: Only prepared test cases from `Input_Sample/(Exprs|Types).txt`, ignoring lambda expressions.
+- Progress
+  - Only prepared test cases from `Input_Sample/(Exprs|Types).txt`, ignoring lambda expressions.
+  - Doing statements.
 
 ## Experiments
 

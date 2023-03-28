@@ -1,0 +1,70 @@
+//////////////////////////////////////////////////////////////////
+// Statements
+//////////////////////////////////////////////////////////////////
+
+_ExprStat
+  ::= _Expr:expr ";" as ExprStat
+  ::= _Decl:decl ";" as DeclStat
+  ;
+
+_BlockStat
+  ::= "{" { _Stat:statements } "}" as BlockStat
+  ;
+
+_TryStatCatchPart
+  ::= "catch" "(" (_CatchParameter:decl|"...") ")" _Stat:stat as TryStatCatchPart
+  ;
+
+_TryStat
+  ::= "try" _Stat:tryStat _TryStatCatchPart:catchParts {_TryStatCatchPart:catchParts} as TryStat
+  ;
+
+___TryStat
+  ::= "__try" _Stat:tryStat ( "__except" "(" _Expr:filter ")" _Stat:exceptStat | "__finally" _Stat:finallyStat ) as __TryStat
+  ;
+
+_IfStatConditionPart
+  ::= _ExprOrVarWithInit:condition ")" as IfElseStat
+  ::= _VarsDecl:varsDecl ";" _ExprOrVarWithInit:condition ")" as IfElseStat
+  ;
+
+_IfStat
+  ::= "if" "(" !_IfStatConditionPart _Stat:trueStat +["else" _Stat:falseStat]
+  ;
+
+_ForStatConditionPart
+  ::= ";" [_Expr:condition] ";" [_Expr:sideEffect] as ForStatLoopCondition
+  ::= _Expr:varsDecl ";" [_Expr:condition] ";" [_Expr:sideEffect] as ForStatLoopCondition
+  ::= _VarsDecl:varsDecl ";" [_Expr:condition] ";" [_Expr:sideEffect] as ForStatLoopCondition
+  ::= _VarWithoutInit:decl ":" _Expr:collection as ForStatIterateCondition
+  ;
+
+_ForStat
+  ::= "for" "(" _ForStatConditionPart:conditionPart ")" _Stat:stat as ForStat
+  ;
+
+_OtherStats
+  ::= ";" as EmptyStat
+  ::= "break" ";" as BreakStat
+  ::= "continue" ";" as ContinueStat
+  ::= "return" [_Expr:expr] ";" as ReturnStat
+  ::= ID:label ":" _Stat:stat as LabelStat
+  ::= "goto" ID:label ";" as GotoStat
+  ::= "case" _Expr:expr ":" _Stat:stat as CaseStat
+  ::= "default" ":" _Stat:stat as DefaultStat
+  ::= "__leave" ";" as __LeaveStat
+  ::= "static_assert" "(" _Expr:expr ["," _Expr:message] ")" ";" as StaticAssertStat
+  ::= "while" "(" _ExprOrVarWithInit:condition ")" _Stat:stat as WhileStat
+  ::= "do" _Stat:stat "while" "(" _Expr:condition ")" ";" as DoWhileStat
+  ::= "switch" "(" _ExprOrVarWithInit:condition ")" _Stat:stat as SwitchStat
+  ;
+
+_Stat
+  ::= !_ExprStat
+  ::= !_BlockStat
+  ::= !_TryStat
+  ::= !___TryStat
+  ::= !_IfStat
+  ::= !_ForStat
+  ::= !_OtherStats
+  ;

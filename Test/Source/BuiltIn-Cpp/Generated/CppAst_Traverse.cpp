@@ -14,25 +14,43 @@ namespace cpp_parser
 		void AstVisitor::Traverse(vl::glr::ParsingAstBase* node) {}
 		void AstVisitor::Traverse(CppAdvancedType* node) {}
 		void AstVisitor::Traverse(CppBinaryExpr* node) {}
+		void AstVisitor::Traverse(CppBlockStat* node) {}
 		void AstVisitor::Traverse(CppBraceExpr* node) {}
+		void AstVisitor::Traverse(CppBreakStat* node) {}
 		void AstVisitor::Traverse(CppCallExpr* node) {}
+		void AstVisitor::Traverse(CppCaseStat* node) {}
 		void AstVisitor::Traverse(CppCastExpr* node) {}
 		void AstVisitor::Traverse(CppConstType* node) {}
+		void AstVisitor::Traverse(CppContinueStat* node) {}
+		void AstVisitor::Traverse(CppDeclStat* node) {}
+		void AstVisitor::Traverse(CppDeclaration* node) {}
 		void AstVisitor::Traverse(CppDeclarator* node) {}
 		void AstVisitor::Traverse(CppDeclaratorArrayPart* node) {}
 		void AstVisitor::Traverse(CppDeclaratorFunctionPart* node) {}
 		void AstVisitor::Traverse(CppDeclaratorKeyword* node) {}
 		void AstVisitor::Traverse(CppDeclaratorType* node) {}
+		void AstVisitor::Traverse(CppDeclaratorVariablePart* node) {}
+		void AstVisitor::Traverse(CppDefaultStat* node) {}
 		void AstVisitor::Traverse(CppDeleteExpr* node) {}
+		void AstVisitor::Traverse(CppDoWhileStat* node) {}
+		void AstVisitor::Traverse(CppEmptyStat* node) {}
 		void AstVisitor::Traverse(CppExprOnly* node) {}
+		void AstVisitor::Traverse(CppExprStat* node) {}
 		void AstVisitor::Traverse(CppFile* node) {}
+		void AstVisitor::Traverse(CppForStat* node) {}
+		void AstVisitor::Traverse(CppForStatConditionPart* node) {}
+		void AstVisitor::Traverse(CppForStatIterateCondition* node) {}
+		void AstVisitor::Traverse(CppForStatLoopCondition* node) {}
 		void AstVisitor::Traverse(CppFunctionKeyword* node) {}
-		void AstVisitor::Traverse(CppFunctionParameter* node) {}
 		void AstVisitor::Traverse(CppGenericArgument* node) {}
 		void AstVisitor::Traverse(CppGenericArguments* node) {}
+		void AstVisitor::Traverse(CppGotoStat* node) {}
 		void AstVisitor::Traverse(CppIdentifier* node) {}
+		void AstVisitor::Traverse(CppIfElseStat* node) {}
 		void AstVisitor::Traverse(CppIfExpr* node) {}
 		void AstVisitor::Traverse(CppIndexExpr* node) {}
+		void AstVisitor::Traverse(CppLabelStat* node) {}
+		void AstVisitor::Traverse(CppMultipleVarDeclaration* node) {}
 		void AstVisitor::Traverse(CppNameIdentifier* node) {}
 		void AstVisitor::Traverse(CppNewExpr* node) {}
 		void AstVisitor::Traverse(CppNumericExprLiteral* node) {}
@@ -43,39 +61,71 @@ namespace cpp_parser
 		void AstVisitor::Traverse(CppPrimitiveExprLiteral* node) {}
 		void AstVisitor::Traverse(CppPrimitiveType* node) {}
 		void AstVisitor::Traverse(CppQualifiedName* node) {}
+		void AstVisitor::Traverse(CppReturnStat* node) {}
+		void AstVisitor::Traverse(CppSingleVarDeclaration* node) {}
 		void AstVisitor::Traverse(CppSizeofExpr* node) {}
+		void AstVisitor::Traverse(CppStatement* node) {}
+		void AstVisitor::Traverse(CppStaticAssertStat* node) {}
 		void AstVisitor::Traverse(CppStringLiteral* node) {}
 		void AstVisitor::Traverse(CppStringLiteralFragment* node) {}
+		void AstVisitor::Traverse(CppSwitchStat* node) {}
 		void AstVisitor::Traverse(CppSysFuncExpr* node) {}
 		void AstVisitor::Traverse(CppThrowExpr* node) {}
+		void AstVisitor::Traverse(CppTryStat* node) {}
+		void AstVisitor::Traverse(CppTryStatCatchPart* node) {}
 		void AstVisitor::Traverse(CppTypeOnly* node) {}
 		void AstVisitor::Traverse(CppTypeOrExpr* node) {}
 		void AstVisitor::Traverse(CppTypeOrExprOrOthers* node) {}
+		void AstVisitor::Traverse(CppVarBraceInit* node) {}
+		void AstVisitor::Traverse(CppVarInit* node) {}
+		void AstVisitor::Traverse(CppVarParanthesisInit* node) {}
+		void AstVisitor::Traverse(CppVarValueInit* node) {}
 		void AstVisitor::Traverse(CppVariadicExpr* node) {}
 		void AstVisitor::Traverse(CppVolatileType* node) {}
+		void AstVisitor::Traverse(CppWhileStat* node) {}
+		void AstVisitor::Traverse(Cpp__LeaveStat* node) {}
+		void AstVisitor::Traverse(Cpp__TryStat* node) {}
 
 		void AstVisitor::Finishing(vl::glr::ParsingAstBase* node) {}
 		void AstVisitor::Finishing(CppAdvancedType* node) {}
 		void AstVisitor::Finishing(CppBinaryExpr* node) {}
+		void AstVisitor::Finishing(CppBlockStat* node) {}
 		void AstVisitor::Finishing(CppBraceExpr* node) {}
+		void AstVisitor::Finishing(CppBreakStat* node) {}
 		void AstVisitor::Finishing(CppCallExpr* node) {}
+		void AstVisitor::Finishing(CppCaseStat* node) {}
 		void AstVisitor::Finishing(CppCastExpr* node) {}
 		void AstVisitor::Finishing(CppConstType* node) {}
+		void AstVisitor::Finishing(CppContinueStat* node) {}
+		void AstVisitor::Finishing(CppDeclStat* node) {}
+		void AstVisitor::Finishing(CppDeclaration* node) {}
 		void AstVisitor::Finishing(CppDeclarator* node) {}
 		void AstVisitor::Finishing(CppDeclaratorArrayPart* node) {}
 		void AstVisitor::Finishing(CppDeclaratorFunctionPart* node) {}
 		void AstVisitor::Finishing(CppDeclaratorKeyword* node) {}
 		void AstVisitor::Finishing(CppDeclaratorType* node) {}
+		void AstVisitor::Finishing(CppDeclaratorVariablePart* node) {}
+		void AstVisitor::Finishing(CppDefaultStat* node) {}
 		void AstVisitor::Finishing(CppDeleteExpr* node) {}
+		void AstVisitor::Finishing(CppDoWhileStat* node) {}
+		void AstVisitor::Finishing(CppEmptyStat* node) {}
 		void AstVisitor::Finishing(CppExprOnly* node) {}
+		void AstVisitor::Finishing(CppExprStat* node) {}
 		void AstVisitor::Finishing(CppFile* node) {}
+		void AstVisitor::Finishing(CppForStat* node) {}
+		void AstVisitor::Finishing(CppForStatConditionPart* node) {}
+		void AstVisitor::Finishing(CppForStatIterateCondition* node) {}
+		void AstVisitor::Finishing(CppForStatLoopCondition* node) {}
 		void AstVisitor::Finishing(CppFunctionKeyword* node) {}
-		void AstVisitor::Finishing(CppFunctionParameter* node) {}
 		void AstVisitor::Finishing(CppGenericArgument* node) {}
 		void AstVisitor::Finishing(CppGenericArguments* node) {}
+		void AstVisitor::Finishing(CppGotoStat* node) {}
 		void AstVisitor::Finishing(CppIdentifier* node) {}
+		void AstVisitor::Finishing(CppIfElseStat* node) {}
 		void AstVisitor::Finishing(CppIfExpr* node) {}
 		void AstVisitor::Finishing(CppIndexExpr* node) {}
+		void AstVisitor::Finishing(CppLabelStat* node) {}
+		void AstVisitor::Finishing(CppMultipleVarDeclaration* node) {}
 		void AstVisitor::Finishing(CppNameIdentifier* node) {}
 		void AstVisitor::Finishing(CppNewExpr* node) {}
 		void AstVisitor::Finishing(CppNumericExprLiteral* node) {}
@@ -86,16 +136,35 @@ namespace cpp_parser
 		void AstVisitor::Finishing(CppPrimitiveExprLiteral* node) {}
 		void AstVisitor::Finishing(CppPrimitiveType* node) {}
 		void AstVisitor::Finishing(CppQualifiedName* node) {}
+		void AstVisitor::Finishing(CppReturnStat* node) {}
+		void AstVisitor::Finishing(CppSingleVarDeclaration* node) {}
 		void AstVisitor::Finishing(CppSizeofExpr* node) {}
+		void AstVisitor::Finishing(CppStatement* node) {}
+		void AstVisitor::Finishing(CppStaticAssertStat* node) {}
 		void AstVisitor::Finishing(CppStringLiteral* node) {}
 		void AstVisitor::Finishing(CppStringLiteralFragment* node) {}
+		void AstVisitor::Finishing(CppSwitchStat* node) {}
 		void AstVisitor::Finishing(CppSysFuncExpr* node) {}
 		void AstVisitor::Finishing(CppThrowExpr* node) {}
+		void AstVisitor::Finishing(CppTryStat* node) {}
+		void AstVisitor::Finishing(CppTryStatCatchPart* node) {}
 		void AstVisitor::Finishing(CppTypeOnly* node) {}
 		void AstVisitor::Finishing(CppTypeOrExpr* node) {}
 		void AstVisitor::Finishing(CppTypeOrExprOrOthers* node) {}
+		void AstVisitor::Finishing(CppVarBraceInit* node) {}
+		void AstVisitor::Finishing(CppVarInit* node) {}
+		void AstVisitor::Finishing(CppVarParanthesisInit* node) {}
+		void AstVisitor::Finishing(CppVarValueInit* node) {}
 		void AstVisitor::Finishing(CppVariadicExpr* node) {}
 		void AstVisitor::Finishing(CppVolatileType* node) {}
+		void AstVisitor::Finishing(CppWhileStat* node) {}
+		void AstVisitor::Finishing(Cpp__LeaveStat* node) {}
+		void AstVisitor::Finishing(Cpp__TryStat* node) {}
+
+		void AstVisitor::Visit(CppDeclaration* node)
+		{
+			node->Accept(static_cast<CppDeclaration::IVisitor*>(this));
+		}
 
 		void AstVisitor::Visit(CppTypeOrExpr* node)
 		{
@@ -115,20 +184,43 @@ namespace cpp_parser
 			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 		}
 
-		void AstVisitor::Visit(CppFunctionParameter* node)
+		void AstVisitor::Visit(CppSingleVarDeclaration* node)
 		{
 			if (!node) return;
 			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
 			Traverse(static_cast<CppTypeOrExprOrOthers*>(node));
-			Traverse(static_cast<CppFunctionParameter*>(node));
-			InspectInto(node->declarator.Obj());
-			InspectInto(node->defaultValue.Obj());
+			Traverse(static_cast<CppDeclaration*>(node));
+			Traverse(static_cast<CppSingleVarDeclaration*>(node));
 			for (auto&& listItem : node->keywords)
 			{
 				InspectInto(listItem.Obj());
 			}
 			InspectInto(node->type.Obj());
-			Finishing(static_cast<CppFunctionParameter*>(node));
+			InspectInto(node->varPart.Obj());
+			Finishing(static_cast<CppSingleVarDeclaration*>(node));
+			Finishing(static_cast<CppDeclaration*>(node));
+			Finishing(static_cast<CppTypeOrExprOrOthers*>(node));
+			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+		}
+
+		void AstVisitor::Visit(CppMultipleVarDeclaration* node)
+		{
+			if (!node) return;
+			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+			Traverse(static_cast<CppTypeOrExprOrOthers*>(node));
+			Traverse(static_cast<CppDeclaration*>(node));
+			Traverse(static_cast<CppMultipleVarDeclaration*>(node));
+			for (auto&& listItem : node->keywords)
+			{
+				InspectInto(listItem.Obj());
+			}
+			InspectInto(node->type.Obj());
+			for (auto&& listItem : node->varParts)
+			{
+				InspectInto(listItem.Obj());
+			}
+			Finishing(static_cast<CppMultipleVarDeclaration*>(node));
+			Finishing(static_cast<CppDeclaration*>(node));
 			Finishing(static_cast<CppTypeOrExprOrOthers*>(node));
 			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 		}
@@ -341,10 +433,11 @@ namespace cpp_parser
 			Traverse(static_cast<CppTypeOrExpr*>(node));
 			Traverse(static_cast<CppExprOnly*>(node));
 			Traverse(static_cast<CppNewExpr*>(node));
-			for (auto&& listItem : node->initArguments)
+			for (auto&& listItem : node->arrayArguments)
 			{
 				InspectInto(listItem.Obj());
 			}
+			InspectInto(node->init.Obj());
 			for (auto&& listItem : node->placementArguments)
 			{
 				InspectInto(listItem.Obj());
@@ -569,6 +662,331 @@ namespace cpp_parser
 			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 		}
 
+		void AstVisitor::Visit(CppVarValueInit* node)
+		{
+			if (!node) return;
+			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+			Traverse(static_cast<CppVarInit*>(node));
+			Traverse(static_cast<CppVarValueInit*>(node));
+			InspectInto(node->expr.Obj());
+			Finishing(static_cast<CppVarValueInit*>(node));
+			Finishing(static_cast<CppVarInit*>(node));
+			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+		}
+
+		void AstVisitor::Visit(CppVarParanthesisInit* node)
+		{
+			if (!node) return;
+			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+			Traverse(static_cast<CppVarInit*>(node));
+			Traverse(static_cast<CppVarParanthesisInit*>(node));
+			for (auto&& listItem : node->arguments)
+			{
+				InspectInto(listItem.Obj());
+			}
+			Finishing(static_cast<CppVarParanthesisInit*>(node));
+			Finishing(static_cast<CppVarInit*>(node));
+			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+		}
+
+		void AstVisitor::Visit(CppVarBraceInit* node)
+		{
+			if (!node) return;
+			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+			Traverse(static_cast<CppVarInit*>(node));
+			Traverse(static_cast<CppVarBraceInit*>(node));
+			for (auto&& listItem : node->arguments)
+			{
+				InspectInto(listItem.Obj());
+			}
+			Finishing(static_cast<CppVarBraceInit*>(node));
+			Finishing(static_cast<CppVarInit*>(node));
+			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+		}
+
+		void AstVisitor::Visit(CppEmptyStat* node)
+		{
+			if (!node) return;
+			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+			Traverse(static_cast<CppStatement*>(node));
+			Traverse(static_cast<CppEmptyStat*>(node));
+			Finishing(static_cast<CppEmptyStat*>(node));
+			Finishing(static_cast<CppStatement*>(node));
+			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+		}
+
+		void AstVisitor::Visit(CppBlockStat* node)
+		{
+			if (!node) return;
+			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+			Traverse(static_cast<CppStatement*>(node));
+			Traverse(static_cast<CppBlockStat*>(node));
+			for (auto&& listItem : node->statements)
+			{
+				InspectInto(listItem.Obj());
+			}
+			Finishing(static_cast<CppBlockStat*>(node));
+			Finishing(static_cast<CppStatement*>(node));
+			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+		}
+
+		void AstVisitor::Visit(CppExprStat* node)
+		{
+			if (!node) return;
+			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+			Traverse(static_cast<CppStatement*>(node));
+			Traverse(static_cast<CppExprStat*>(node));
+			InspectInto(node->expr.Obj());
+			Finishing(static_cast<CppExprStat*>(node));
+			Finishing(static_cast<CppStatement*>(node));
+			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+		}
+
+		void AstVisitor::Visit(CppDeclStat* node)
+		{
+			if (!node) return;
+			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+			Traverse(static_cast<CppStatement*>(node));
+			Traverse(static_cast<CppDeclStat*>(node));
+			InspectInto(node->decl.Obj());
+			Finishing(static_cast<CppDeclStat*>(node));
+			Finishing(static_cast<CppStatement*>(node));
+			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+		}
+
+		void AstVisitor::Visit(CppBreakStat* node)
+		{
+			if (!node) return;
+			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+			Traverse(static_cast<CppStatement*>(node));
+			Traverse(static_cast<CppBreakStat*>(node));
+			Finishing(static_cast<CppBreakStat*>(node));
+			Finishing(static_cast<CppStatement*>(node));
+			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+		}
+
+		void AstVisitor::Visit(CppContinueStat* node)
+		{
+			if (!node) return;
+			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+			Traverse(static_cast<CppStatement*>(node));
+			Traverse(static_cast<CppContinueStat*>(node));
+			Finishing(static_cast<CppContinueStat*>(node));
+			Finishing(static_cast<CppStatement*>(node));
+			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+		}
+
+		void AstVisitor::Visit(CppReturnStat* node)
+		{
+			if (!node) return;
+			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+			Traverse(static_cast<CppStatement*>(node));
+			Traverse(static_cast<CppReturnStat*>(node));
+			InspectInto(node->expr.Obj());
+			Finishing(static_cast<CppReturnStat*>(node));
+			Finishing(static_cast<CppStatement*>(node));
+			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+		}
+
+		void AstVisitor::Visit(CppLabelStat* node)
+		{
+			if (!node) return;
+			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+			Traverse(static_cast<CppStatement*>(node));
+			Traverse(static_cast<CppLabelStat*>(node));
+			Traverse(node->label);
+			InspectInto(node->stat.Obj());
+			Finishing(static_cast<CppLabelStat*>(node));
+			Finishing(static_cast<CppStatement*>(node));
+			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+		}
+
+		void AstVisitor::Visit(CppGotoStat* node)
+		{
+			if (!node) return;
+			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+			Traverse(static_cast<CppStatement*>(node));
+			Traverse(static_cast<CppGotoStat*>(node));
+			Traverse(node->label);
+			Finishing(static_cast<CppGotoStat*>(node));
+			Finishing(static_cast<CppStatement*>(node));
+			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+		}
+
+		void AstVisitor::Visit(CppCaseStat* node)
+		{
+			if (!node) return;
+			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+			Traverse(static_cast<CppStatement*>(node));
+			Traverse(static_cast<CppCaseStat*>(node));
+			InspectInto(node->expr.Obj());
+			InspectInto(node->stat.Obj());
+			Finishing(static_cast<CppCaseStat*>(node));
+			Finishing(static_cast<CppStatement*>(node));
+			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+		}
+
+		void AstVisitor::Visit(CppDefaultStat* node)
+		{
+			if (!node) return;
+			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+			Traverse(static_cast<CppStatement*>(node));
+			Traverse(static_cast<CppDefaultStat*>(node));
+			InspectInto(node->stat.Obj());
+			Finishing(static_cast<CppDefaultStat*>(node));
+			Finishing(static_cast<CppStatement*>(node));
+			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+		}
+
+		void AstVisitor::Visit(Cpp__LeaveStat* node)
+		{
+			if (!node) return;
+			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+			Traverse(static_cast<CppStatement*>(node));
+			Traverse(static_cast<Cpp__LeaveStat*>(node));
+			Finishing(static_cast<Cpp__LeaveStat*>(node));
+			Finishing(static_cast<CppStatement*>(node));
+			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+		}
+
+		void AstVisitor::Visit(CppStaticAssertStat* node)
+		{
+			if (!node) return;
+			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+			Traverse(static_cast<CppStatement*>(node));
+			Traverse(static_cast<CppStaticAssertStat*>(node));
+			InspectInto(node->expr.Obj());
+			InspectInto(node->message.Obj());
+			Finishing(static_cast<CppStaticAssertStat*>(node));
+			Finishing(static_cast<CppStatement*>(node));
+			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+		}
+
+		void AstVisitor::Visit(CppWhileStat* node)
+		{
+			if (!node) return;
+			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+			Traverse(static_cast<CppStatement*>(node));
+			Traverse(static_cast<CppWhileStat*>(node));
+			InspectInto(node->condition.Obj());
+			InspectInto(node->stat.Obj());
+			Finishing(static_cast<CppWhileStat*>(node));
+			Finishing(static_cast<CppStatement*>(node));
+			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+		}
+
+		void AstVisitor::Visit(CppDoWhileStat* node)
+		{
+			if (!node) return;
+			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+			Traverse(static_cast<CppStatement*>(node));
+			Traverse(static_cast<CppDoWhileStat*>(node));
+			InspectInto(node->condition.Obj());
+			InspectInto(node->stat.Obj());
+			Finishing(static_cast<CppDoWhileStat*>(node));
+			Finishing(static_cast<CppStatement*>(node));
+			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+		}
+
+		void AstVisitor::Visit(CppIfElseStat* node)
+		{
+			if (!node) return;
+			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+			Traverse(static_cast<CppStatement*>(node));
+			Traverse(static_cast<CppIfElseStat*>(node));
+			InspectInto(node->condition.Obj());
+			InspectInto(node->falseStat.Obj());
+			InspectInto(node->trueStat.Obj());
+			InspectInto(node->varsDecl.Obj());
+			Finishing(static_cast<CppIfElseStat*>(node));
+			Finishing(static_cast<CppStatement*>(node));
+			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+		}
+
+		void AstVisitor::Visit(CppForStat* node)
+		{
+			if (!node) return;
+			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+			Traverse(static_cast<CppStatement*>(node));
+			Traverse(static_cast<CppForStat*>(node));
+			InspectInto(node->conditionPart.Obj());
+			InspectInto(node->stat.Obj());
+			Finishing(static_cast<CppForStat*>(node));
+			Finishing(static_cast<CppStatement*>(node));
+			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+		}
+
+		void AstVisitor::Visit(CppSwitchStat* node)
+		{
+			if (!node) return;
+			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+			Traverse(static_cast<CppStatement*>(node));
+			Traverse(static_cast<CppSwitchStat*>(node));
+			InspectInto(node->condition.Obj());
+			InspectInto(node->stat.Obj());
+			Finishing(static_cast<CppSwitchStat*>(node));
+			Finishing(static_cast<CppStatement*>(node));
+			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+		}
+
+		void AstVisitor::Visit(CppTryStat* node)
+		{
+			if (!node) return;
+			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+			Traverse(static_cast<CppStatement*>(node));
+			Traverse(static_cast<CppTryStat*>(node));
+			for (auto&& listItem : node->catchParts)
+			{
+				InspectInto(listItem.Obj());
+			}
+			InspectInto(node->tryStat.Obj());
+			Finishing(static_cast<CppTryStat*>(node));
+			Finishing(static_cast<CppStatement*>(node));
+			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+		}
+
+		void AstVisitor::Visit(Cpp__TryStat* node)
+		{
+			if (!node) return;
+			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+			Traverse(static_cast<CppStatement*>(node));
+			Traverse(static_cast<Cpp__TryStat*>(node));
+			InspectInto(node->exceptStat.Obj());
+			InspectInto(node->filter.Obj());
+			InspectInto(node->finallyStat.Obj());
+			InspectInto(node->tryStat.Obj());
+			Finishing(static_cast<Cpp__TryStat*>(node));
+			Finishing(static_cast<CppStatement*>(node));
+			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+		}
+
+		void AstVisitor::Visit(CppForStatLoopCondition* node)
+		{
+			if (!node) return;
+			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+			Traverse(static_cast<CppForStatConditionPart*>(node));
+			Traverse(static_cast<CppForStatLoopCondition*>(node));
+			InspectInto(node->condition.Obj());
+			InspectInto(node->sideEffect.Obj());
+			InspectInto(node->varsDecl.Obj());
+			Finishing(static_cast<CppForStatLoopCondition*>(node));
+			Finishing(static_cast<CppForStatConditionPart*>(node));
+			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+		}
+
+		void AstVisitor::Visit(CppForStatIterateCondition* node)
+		{
+			if (!node) return;
+			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+			Traverse(static_cast<CppForStatConditionPart*>(node));
+			Traverse(static_cast<CppForStatIterateCondition*>(node));
+			InspectInto(node->collection.Obj());
+			InspectInto(node->decl.Obj());
+			Finishing(static_cast<CppForStatIterateCondition*>(node));
+			Finishing(static_cast<CppForStatConditionPart*>(node));
+			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+		}
+
 		void AstVisitor::InspectInto(CppTypeOrExprOrOthers* node)
 		{
 			if (!node) return;
@@ -579,6 +997,24 @@ namespace cpp_parser
 		{
 			if (!node) return;
 			node->Accept(static_cast<CppIdentifier::IVisitor*>(this));
+		}
+
+		void AstVisitor::InspectInto(CppVarInit* node)
+		{
+			if (!node) return;
+			node->Accept(static_cast<CppVarInit::IVisitor*>(this));
+		}
+
+		void AstVisitor::InspectInto(CppStatement* node)
+		{
+			if (!node) return;
+			node->Accept(static_cast<CppStatement::IVisitor*>(this));
+		}
+
+		void AstVisitor::InspectInto(CppForStatConditionPart* node)
+		{
+			if (!node) return;
+			node->Accept(static_cast<CppForStatConditionPart::IVisitor*>(this));
 		}
 
 		void AstVisitor::InspectInto(CppGenericArguments* node)
@@ -689,6 +1125,28 @@ namespace cpp_parser
 			}
 			Traverse(node->variadic);
 			Finishing(static_cast<CppDeclarator*>(node));
+			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+		}
+
+		void AstVisitor::InspectInto(CppDeclaratorVariablePart* node)
+		{
+			if (!node) return;
+			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+			Traverse(static_cast<CppDeclaratorVariablePart*>(node));
+			InspectInto(node->declarator.Obj());
+			InspectInto(node->init.Obj());
+			Finishing(static_cast<CppDeclaratorVariablePart*>(node));
+			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+		}
+
+		void AstVisitor::InspectInto(CppTryStatCatchPart* node)
+		{
+			if (!node) return;
+			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+			Traverse(static_cast<CppTryStatCatchPart*>(node));
+			InspectInto(node->decl.Obj());
+			InspectInto(node->stat.Obj());
+			Finishing(static_cast<CppTryStatCatchPart*>(node));
 			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 		}
 

@@ -85,7 +85,7 @@ TEST_FILE
 	}
 
 	Ptr<GlrAstFile> astFile;
-	Ptr<GlrSyntaxFile> syntaxFile;
+	List<Ptr<GlrSyntaxFile>> syntaxFiles;
 
 	TEST_CASE(L"Parse Ast.txt")
 	{
@@ -96,14 +96,28 @@ TEST_FILE
 		File(dirOutput / (L"Ast[BuiltIn-Cpp].txt")).WriteAllText(actualJson, true, BomEncoder::Utf8);
 	});
 
-	TEST_CASE(L"Parse Syntax.txt")
+	List<WString> syntaxFileNames;
+	syntaxFileNames.Add(L"QualifiedName");
+	syntaxFileNames.Add(L"Expressions");
+	syntaxFileNames.Add(L"Types");
+	syntaxFileNames.Add(L"DeclaratorConfigurations");
+	syntaxFileNames.Add(L"Declarations");
+	syntaxFileNames.Add(L"Statements");
+	syntaxFileNames.Add(L"API");
+	for (auto syntaxFileName : syntaxFileNames)
 	{
-		RuleParser ruleParser;
-		auto input = File(dirParser / L"Syntax/Syntax.txt").ReadAllTextByBom();
-		syntaxFile = ruleParser.ParseFile(input);
-		auto actualJson = PrintAstJson<json_visitor::RuleAstVisitor>(syntaxFile);
-		File(dirOutput / (L"Syntax[BuiltIn-Cpp].txt")).WriteAllText(actualJson, true, BomEncoder::Utf8);
-	});
+		TEST_CASE(L"Parse " + syntaxFileName + L".txt")
+		{
+			RuleParser ruleParser;
+			{
+				auto input = File(dirParser / L"Syntax" / L"Syntax" / (syntaxFileName + L".txt")).ReadAllTextByBom();
+				auto syntaxFile = ruleParser.ParseFile(input);
+				syntaxFiles.Add(syntaxFile);
+				auto actualJson = PrintAstJson<json_visitor::RuleAstVisitor>(syntaxFile);
+				File(dirOutput / (L"Syntax[BuiltIn-Cpp][" + syntaxFileName + L"].txt")).WriteAllText(actualJson, true, BomEncoder::Utf8);
+			}
+		});
+	}
 
 	ParserSymbolManager global;
 	AstSymbolManager astManager(global);
@@ -145,8 +159,7 @@ TEST_FILE
 
 	TEST_CASE(L"CompilerSyntax")
 	{
-		List<Ptr<GlrSyntaxFile>> syntaxFiles;
-		syntaxFiles.Add(syntaxFile);
+		unittest::UnitTest::PrintMessage(L"CompileSyntax() ...", unittest::UnitTest::MessageKind::Info);
 		auto rewritten = CompileSyntax(astManager, lexerManager, syntaxManager, output, syntaxFiles);
 		for (auto error : global.Errors())
 		{
@@ -158,14 +171,16 @@ TEST_FILE
 			File(dirOutput / (L"SyntaxRewrittenActual[BuiltIn-Cpp].txt")).WriteAllText(formattedActual, true, BomEncoder::Utf8);
 		}
 		TEST_ASSERT(global.Errors().Count() == 0);
-	
+
+		unittest::UnitTest::PrintMessage(L"BuildAutomaton() ...", unittest::UnitTest::MessageKind::Info);
 		syntaxManager.BuildCompactNFA();
 		TEST_ASSERT(global.Errors().Count() == 0);
 		syntaxManager.BuildCrossReferencedNFA();
 		TEST_ASSERT(global.Errors().Count() == 0);
 		syntaxManager.BuildAutomaton(lexerManager.Tokens().Count(), executable, metadata);
 		TEST_ASSERT(global.Errors().Count() == 0);
-	
+
+		unittest::UnitTest::PrintMessage(L"LogAutomatonWithPath() ...", unittest::UnitTest::MessageKind::Info);
 		LogAutomatonWithPath(
 			dirOutput / (L"Automaton[BuiltIn-Cpp].txt"),
 			executable,
@@ -175,11 +190,7 @@ TEST_FILE
 			[&](vint32_t index) { auto token = lexerManager.Tokens()[lexerManager.TokenOrder()[index]]; return token->displayText == L"" ? token->Name() : L"\"" + token->displayText + L"\""; }
 			);
 
-		{
-			auto rule = syntaxManager.Rules()[L"_TypeOrExpr"];
-			syntaxManager.parsableRules.Add(rule);
-			syntaxManager.ruleTypes.Add(rule, L"cpp_parser::CppTypeOrExpr");
-		}
+		unittest::UnitTest::PrintMessage(L"WriteSyntaxFiles() ...", unittest::UnitTest::MessageKind::Info);
 		{
 			auto rule = syntaxManager.Rules()[L"_Type"];
 			syntaxManager.parsableRules.Add(rule);
@@ -189,6 +200,16 @@ TEST_FILE
 			auto rule = syntaxManager.Rules()[L"_Expr"];
 			syntaxManager.parsableRules.Add(rule);
 			syntaxManager.ruleTypes.Add(rule, L"cpp_parser::CppTypeOrExpr");
+		}
+		{
+			auto rule = syntaxManager.Rules()[L"_TypeOrExpr"];
+			syntaxManager.parsableRules.Add(rule);
+			syntaxManager.ruleTypes.Add(rule, L"cpp_parser::CppTypeOrExpr");
+		}
+		{
+			auto rule = syntaxManager.Rules()[L"_Stat"];
+			syntaxManager.parsableRules.Add(rule);
+			syntaxManager.ruleTypes.Add(rule, L"cpp_parser::CppStatement");
 		}
 		{
 			auto rule = syntaxManager.Rules()[L"_File"];
