@@ -12,7 +12,7 @@ _BlockStat
   ;
 
 _TryStatCatchPart
-  ::= "catch" "(" (_VarWithoutInit:decl|"...") ")" _Stat:stat as TryStatCatchPart
+  ::= "catch" "(" (_CatchParameter:decl|"...") ")" _Stat:stat as TryStatCatchPart
   ;
 
 _TryStat
@@ -44,8 +44,8 @@ _OtherStats
   ::= "__leave" ";" as __LeaveStat
   ::= "static_assert" "(" _Expr:expr ["," _Expr:message] ")" ";" as StaticAssertStat
   ::= "while" "(" _ExprOrVarWithInit:condition ")" _Stat:stat as WhileStat
-  ::= "do" _Stat:stat "while" "(" _Expr:condition ")" as DoWhileStat
-  ::= "switch" "(" _ExprOrVarWithInit:condition ")" _BlockStat:stat as SwitchStat
+  ::= "do" _Stat:stat "while" "(" _Expr:condition ")" ";" as DoWhileStat
+  ::= "switch" "(" _ExprOrVarWithInit:condition ")" _Stat:stat as SwitchStat
   ;
 
 _Stat

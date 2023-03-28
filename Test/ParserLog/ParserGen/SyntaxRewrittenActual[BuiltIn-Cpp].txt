@@ -630,11 +630,6 @@ _VarInit : VarInit
   ::= !_VarBraceInit
   ;
 
-_FunctionParameterVariablePart : DeclaratorVariablePart
-  ::= _VarValueInit:init as DeclaratorVariablePart
-  ::= _DeclaratorOptionalName:declarator [_VarValueInit:init] as DeclaratorVariablePart
-  ;
-
 _DeclaratorVariablePartWithoutInit : DeclaratorVariablePart
   ::= _DeclaratorRequiredName:declarator as DeclaratorVariablePart
   ;
@@ -655,6 +650,11 @@ _VarRequiredInit_LRI_Original : SingleVarDeclaration
   ::= _TypeBeforeDeclarator_LRI_Original:type _DeclaratorVariablePartRequiredInit:varPart as SingleVarDeclaration
   ;
 
+_FunctionParameterVariablePart : DeclaratorVariablePart
+  ::= _VarValueInit:init as DeclaratorVariablePart
+  ::= _DeclaratorOptionalName:declarator [_VarValueInit:init] as DeclaratorVariablePart
+  ;
+
 _FunctionParameter_LRI_Isolated_2 : SingleVarDeclaration
   ::= _DeclaratorKeyword:keywords {_DeclaratorKeyword:keywords} _TypeBeforeDeclarator:type [_FunctionParameterVariablePart:varPart] as SingleVarDeclaration
   ;
@@ -664,6 +664,14 @@ _FunctionParameter_LRI_Original : TypeOrExprOrOthers
   ::= !_TypeBeforeDeclarator_LRI_Original
   ::= _TypeBeforeDeclarator_LRI_Original:type _FunctionParameterVariablePart:varPart as SingleVarDeclaration
   ::= !_FunctionParameter_LRI_Isolated_2
+  ;
+
+_CatchParameterVariablePart : DeclaratorVariablePart
+  ::= _DeclaratorOptionalName:declarator as DeclaratorVariablePart
+  ;
+
+_CatchParameter_LRI_Original : SingleVarDeclaration
+  ::= _TypeBeforeDeclarator_LRI_Original:type _CatchParameterVariablePart:varPart as SingleVarDeclaration
   ;
 
 _ExprOrVarWithInit_LRI_Isolated_2 : SingleVarDeclaration
@@ -705,7 +713,7 @@ _BlockStat : BlockStat
   ;
 
 _TryStatCatchPart : TryStatCatchPart
-  ::= "catch" "(" (_VarWithoutInit:decl | "...") ")" _Stat:stat as TryStatCatchPart
+  ::= "catch" "(" (_CatchParameter:decl | "...") ")" _Stat:stat as TryStatCatchPart
   ;
 
 _TryStat : TryStat
@@ -737,8 +745,8 @@ _OtherStats : Statement
   ::= "__leave" ";" as __LeaveStat
   ::= "static_assert" "(" _Expr:expr ["," _Expr:message] ")" ";" as StaticAssertStat
   ::= "while" "(" _ExprOrVarWithInit:condition ")" _Stat:stat as WhileStat
-  ::= "do" _Stat:stat "while" "(" _Expr:condition ")" as DoWhileStat
-  ::= "switch" "(" _ExprOrVarWithInit:condition ")" _BlockStat:stat as SwitchStat
+  ::= "do" _Stat:stat "while" "(" _Expr:condition ")" ";" as DoWhileStat
+  ::= "switch" "(" _ExprOrVarWithInit:condition ")" _Stat:stat as SwitchStat
   ;
 
 _Stat_LRI_Isolated_1 : BlockStat
@@ -1197,6 +1205,13 @@ _FunctionParameter : TypeOrExprOrOthers
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__PM_QualifiedName) _FunctionParameter_LRI_Original]
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_1 [left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _FunctionParameter_LRI_Original]
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_2 [left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _FunctionParameter_LRI_Original]
+  ;
+
+_CatchParameter : SingleVarDeclaration
+  ::= !_PrimitiveType left_recursion_inject(LRI__PM_PrimitiveType) _CatchParameter_LRI_Original
+  ::= !_QualifiedName left_recursion_inject(LRI__PM_QualifiedName) _CatchParameter_LRI_Original
+  ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_1 left_recursion_inject(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _CatchParameter_LRI_Original
+  ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_2 left_recursion_inject(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _CatchParameter_LRI_Original
   ;
 
 _ExprOrVarWithInit : TypeOrExprOrOthers

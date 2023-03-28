@@ -29,10 +29,7 @@ _VarInit
   ::= !_VarBraceInit
   ;
 
-_FunctionParameterVariablePart
-  ::= _VarValueInit:init as DeclaratorVariablePart
-  ::= _DeclaratorOptionalName:declarator [_VarValueInit:init] as DeclaratorVariablePart
-  ;
+//================================================================
 
 _DeclaratorVariablePartWithoutInit
   ::= _DeclaratorRequiredName:declarator as DeclaratorVariablePart
@@ -46,6 +43,8 @@ _DeclaratorVariablePartRequiredInit
   ::= _DeclaratorRequiredName:declarator _VarInit:init as DeclaratorVariablePart
   ;
 
+//================================================================
+
 _VarWithoutInit
   ::= _TypeBeforeDeclarator:type _DeclaratorVariablePartWithoutInit:varPart as SingleVarDeclaration
   ;
@@ -54,12 +53,31 @@ _VarRequiredInit
   ::= _TypeBeforeDeclarator:type _DeclaratorVariablePartRequiredInit:varPart as SingleVarDeclaration
   ;
 
+//================================================================
+
+_FunctionParameterVariablePart
+  ::= _VarValueInit:init as DeclaratorVariablePart
+  ::= _DeclaratorOptionalName:declarator [_VarValueInit:init] as DeclaratorVariablePart
+  ;
+
 _FunctionParameter
   ::= !_TypeBeforeDeclarator
   ::= _TypeBeforeDeclarator:type _FunctionParameterVariablePart:varPart as SingleVarDeclaration
   ::= _DeclaratorKeyword:keywords {_DeclaratorKeyword:keywords}
       _TypeBeforeDeclarator:type [_FunctionParameterVariablePart:varPart] as SingleVarDeclaration
   ;
+
+//================================================================
+
+_CatchParameterVariablePart
+  ::= _DeclaratorOptionalName:declarator as DeclaratorVariablePart
+  ;
+
+_CatchParameter
+  ::= _TypeBeforeDeclarator:type _CatchParameterVariablePart:varPart as SingleVarDeclaration
+  ;
+
+//================================================================
 
 _ExprOrVarWithInit
   ::= !_Expr
