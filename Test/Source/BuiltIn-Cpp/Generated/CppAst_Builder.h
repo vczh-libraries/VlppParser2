@@ -383,7 +383,7 @@ namespace cpp_parser
 		class MakeTryStatCatchPart : public vl::glr::ParsingAstBuilder<CppTryStatCatchPart>
 		{
 		public:
-			MakeTryStatCatchPart& decl(const vl::Ptr<CppSingleVarDeclaration>& value);
+			MakeTryStatCatchPart& decl(const vl::Ptr<CppTypeOrExprOrOthers>& value);
 			MakeTryStatCatchPart& stat(const vl::Ptr<CppStatement>& value);
 		};
 

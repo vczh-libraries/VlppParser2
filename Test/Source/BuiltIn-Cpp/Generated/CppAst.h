@@ -928,7 +928,7 @@ namespace cpp_parser
 	class CppTryStatCatchPart : public vl::glr::ParsingAstBase, vl::reflection::Description<CppTryStatCatchPart>
 	{
 	public:
-		vl::Ptr<CppSingleVarDeclaration> decl;
+		vl::Ptr<CppTypeOrExprOrOthers> decl;
 		vl::Ptr<CppStatement> stat;
 	};
 

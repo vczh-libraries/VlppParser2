@@ -670,8 +670,15 @@ _CatchParameterVariablePart : DeclaratorVariablePart
   ::= _DeclaratorOptionalName:declarator as DeclaratorVariablePart
   ;
 
-_CatchParameter_LRI_Original : SingleVarDeclaration
+_CatchParameter_LRI_Isolated_2 : SingleVarDeclaration
+  ::= _DeclaratorKeyword:keywords {_DeclaratorKeyword:keywords} _TypeBeforeDeclarator:type _CatchParameterVariablePart:varPart as SingleVarDeclaration
+  ;
+
+_CatchParameter_LRI_Original : TypeOrExprOrOthers
+  ::= left_recursion_placeholder(LRI__CatchParameter)
+  ::= !_TypeBeforeDeclarator_LRI_Original
   ::= _TypeBeforeDeclarator_LRI_Original:type _CatchParameterVariablePart:varPart as SingleVarDeclaration
+  ::= !_CatchParameter_LRI_Isolated_2
   ;
 
 _ExprOrVarWithInit_LRI_Isolated_2 : SingleVarDeclaration
@@ -1228,11 +1235,12 @@ _FunctionParameter : TypeOrExprOrOthers
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_2 [left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _FunctionParameter_LRI_Original]
   ;
 
-_CatchParameter : SingleVarDeclaration
-  ::= !_PrimitiveType left_recursion_inject(LRI__PM_PrimitiveType) _CatchParameter_LRI_Original
-  ::= !_QualifiedName left_recursion_inject(LRI__PM_QualifiedName) _CatchParameter_LRI_Original
-  ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_1 left_recursion_inject(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _CatchParameter_LRI_Original
-  ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_2 left_recursion_inject(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _CatchParameter_LRI_Original
+_CatchParameter : TypeOrExprOrOthers
+  ::= !_CatchParameter_LRI_Isolated_2
+  ::= !_PrimitiveType [left_recursion_inject_multiple(LRI__PM_PrimitiveType) _CatchParameter_LRI_Original]
+  ::= !_QualifiedName [left_recursion_inject_multiple(LRI__PM_QualifiedName) _CatchParameter_LRI_Original]
+  ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_1 [left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _CatchParameter_LRI_Original]
+  ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_2 [left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _CatchParameter_LRI_Original]
   ;
 
 _ExprOrVarWithInit : TypeOrExprOrOthers

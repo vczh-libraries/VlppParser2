@@ -891,7 +891,7 @@ MakeTryStat
 MakeTryStatCatchPart
 ***********************************************************************/
 
-		MakeTryStatCatchPart& MakeTryStatCatchPart::decl(const vl::Ptr<CppSingleVarDeclaration>& value)
+		MakeTryStatCatchPart& MakeTryStatCatchPart::decl(const vl::Ptr<CppTypeOrExprOrOthers>& value)
 		{
 			node->decl = value;
 			return *this;
