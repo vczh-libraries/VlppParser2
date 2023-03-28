@@ -48,15 +48,19 @@ namespace cpp_parser
 			virtual void Traverse(CppDeclaratorVariablePart* node);
 			virtual void Traverse(CppDefaultStat* node);
 			virtual void Traverse(CppDeleteExpr* node);
+			virtual void Traverse(CppDoWhileStat* node);
 			virtual void Traverse(CppEmptyStat* node);
 			virtual void Traverse(CppExprOnly* node);
 			virtual void Traverse(CppExprStat* node);
 			virtual void Traverse(CppFile* node);
+			virtual void Traverse(CppForEachStat* node);
+			virtual void Traverse(CppForStat* node);
 			virtual void Traverse(CppFunctionKeyword* node);
 			virtual void Traverse(CppGenericArgument* node);
 			virtual void Traverse(CppGenericArguments* node);
 			virtual void Traverse(CppGotoStat* node);
 			virtual void Traverse(CppIdentifier* node);
+			virtual void Traverse(CppIfElseStat* node);
 			virtual void Traverse(CppIfExpr* node);
 			virtual void Traverse(CppIndexExpr* node);
 			virtual void Traverse(CppLabelStat* node);
@@ -78,8 +82,11 @@ namespace cpp_parser
 			virtual void Traverse(CppStaticAssertStat* node);
 			virtual void Traverse(CppStringLiteral* node);
 			virtual void Traverse(CppStringLiteralFragment* node);
+			virtual void Traverse(CppSwitchStat* node);
 			virtual void Traverse(CppSysFuncExpr* node);
 			virtual void Traverse(CppThrowExpr* node);
+			virtual void Traverse(CppTryCatchStat* node);
+			virtual void Traverse(CppTryStatCatchPart* node);
 			virtual void Traverse(CppTypeOnly* node);
 			virtual void Traverse(CppTypeOrExpr* node);
 			virtual void Traverse(CppTypeOrExprOrOthers* node);
@@ -89,7 +96,9 @@ namespace cpp_parser
 			virtual void Traverse(CppVarValueInit* node);
 			virtual void Traverse(CppVariadicExpr* node);
 			virtual void Traverse(CppVolatileType* node);
+			virtual void Traverse(CppWhileStat* node);
 			virtual void Traverse(Cpp__LeaveStat* node);
+			virtual void Traverse(Cpp__TryStat* node);
 
 		protected:
 			virtual void Finishing(vl::glr::ParsingAstBase* node);
@@ -113,15 +122,19 @@ namespace cpp_parser
 			virtual void Finishing(CppDeclaratorVariablePart* node);
 			virtual void Finishing(CppDefaultStat* node);
 			virtual void Finishing(CppDeleteExpr* node);
+			virtual void Finishing(CppDoWhileStat* node);
 			virtual void Finishing(CppEmptyStat* node);
 			virtual void Finishing(CppExprOnly* node);
 			virtual void Finishing(CppExprStat* node);
 			virtual void Finishing(CppFile* node);
+			virtual void Finishing(CppForEachStat* node);
+			virtual void Finishing(CppForStat* node);
 			virtual void Finishing(CppFunctionKeyword* node);
 			virtual void Finishing(CppGenericArgument* node);
 			virtual void Finishing(CppGenericArguments* node);
 			virtual void Finishing(CppGotoStat* node);
 			virtual void Finishing(CppIdentifier* node);
+			virtual void Finishing(CppIfElseStat* node);
 			virtual void Finishing(CppIfExpr* node);
 			virtual void Finishing(CppIndexExpr* node);
 			virtual void Finishing(CppLabelStat* node);
@@ -143,8 +156,11 @@ namespace cpp_parser
 			virtual void Finishing(CppStaticAssertStat* node);
 			virtual void Finishing(CppStringLiteral* node);
 			virtual void Finishing(CppStringLiteralFragment* node);
+			virtual void Finishing(CppSwitchStat* node);
 			virtual void Finishing(CppSysFuncExpr* node);
 			virtual void Finishing(CppThrowExpr* node);
+			virtual void Finishing(CppTryCatchStat* node);
+			virtual void Finishing(CppTryStatCatchPart* node);
 			virtual void Finishing(CppTypeOnly* node);
 			virtual void Finishing(CppTypeOrExpr* node);
 			virtual void Finishing(CppTypeOrExprOrOthers* node);
@@ -154,7 +170,9 @@ namespace cpp_parser
 			virtual void Finishing(CppVarValueInit* node);
 			virtual void Finishing(CppVariadicExpr* node);
 			virtual void Finishing(CppVolatileType* node);
+			virtual void Finishing(CppWhileStat* node);
 			virtual void Finishing(Cpp__LeaveStat* node);
+			virtual void Finishing(Cpp__TryStat* node);
 
 		protected:
 			void Visit(CppDeclaration* node) override;
@@ -212,6 +230,14 @@ namespace cpp_parser
 			void Visit(CppDefaultStat* node) override;
 			void Visit(Cpp__LeaveStat* node) override;
 			void Visit(CppStaticAssertStat* node) override;
+			void Visit(CppWhileStat* node) override;
+			void Visit(CppDoWhileStat* node) override;
+			void Visit(CppIfElseStat* node) override;
+			void Visit(CppForStat* node) override;
+			void Visit(CppForEachStat* node) override;
+			void Visit(CppSwitchStat* node) override;
+			void Visit(CppTryCatchStat* node) override;
+			void Visit(Cpp__TryStat* node) override;
 
 		public:
 			void InspectInto(CppTypeOrExprOrOthers* node);
@@ -227,6 +253,7 @@ namespace cpp_parser
 			void InspectInto(CppDeclaratorArrayPart* node);
 			void InspectInto(CppDeclarator* node);
 			void InspectInto(CppDeclaratorVariablePart* node);
+			void InspectInto(CppTryStatCatchPart* node);
 			void InspectInto(CppFile* node);
 		};
 	}

@@ -46,15 +46,19 @@ namespace cpp_parser
 			void CopyFields(CppDeclaratorVariablePart* from, CppDeclaratorVariablePart* to);
 			void CopyFields(CppDefaultStat* from, CppDefaultStat* to);
 			void CopyFields(CppDeleteExpr* from, CppDeleteExpr* to);
+			void CopyFields(CppDoWhileStat* from, CppDoWhileStat* to);
 			void CopyFields(CppEmptyStat* from, CppEmptyStat* to);
 			void CopyFields(CppExprOnly* from, CppExprOnly* to);
 			void CopyFields(CppExprStat* from, CppExprStat* to);
 			void CopyFields(CppFile* from, CppFile* to);
+			void CopyFields(CppForEachStat* from, CppForEachStat* to);
+			void CopyFields(CppForStat* from, CppForStat* to);
 			void CopyFields(CppFunctionKeyword* from, CppFunctionKeyword* to);
 			void CopyFields(CppGenericArgument* from, CppGenericArgument* to);
 			void CopyFields(CppGenericArguments* from, CppGenericArguments* to);
 			void CopyFields(CppGotoStat* from, CppGotoStat* to);
 			void CopyFields(CppIdentifier* from, CppIdentifier* to);
+			void CopyFields(CppIfElseStat* from, CppIfElseStat* to);
 			void CopyFields(CppIfExpr* from, CppIfExpr* to);
 			void CopyFields(CppIndexExpr* from, CppIndexExpr* to);
 			void CopyFields(CppLabelStat* from, CppLabelStat* to);
@@ -76,8 +80,11 @@ namespace cpp_parser
 			void CopyFields(CppStaticAssertStat* from, CppStaticAssertStat* to);
 			void CopyFields(CppStringLiteral* from, CppStringLiteral* to);
 			void CopyFields(CppStringLiteralFragment* from, CppStringLiteralFragment* to);
+			void CopyFields(CppSwitchStat* from, CppSwitchStat* to);
 			void CopyFields(CppSysFuncExpr* from, CppSysFuncExpr* to);
 			void CopyFields(CppThrowExpr* from, CppThrowExpr* to);
+			void CopyFields(CppTryCatchStat* from, CppTryCatchStat* to);
+			void CopyFields(CppTryStatCatchPart* from, CppTryStatCatchPart* to);
 			void CopyFields(CppTypeOnly* from, CppTypeOnly* to);
 			void CopyFields(CppTypeOrExpr* from, CppTypeOrExpr* to);
 			void CopyFields(CppTypeOrExprOrOthers* from, CppTypeOrExprOrOthers* to);
@@ -87,7 +94,9 @@ namespace cpp_parser
 			void CopyFields(CppVarValueInit* from, CppVarValueInit* to);
 			void CopyFields(CppVariadicExpr* from, CppVariadicExpr* to);
 			void CopyFields(CppVolatileType* from, CppVolatileType* to);
+			void CopyFields(CppWhileStat* from, CppWhileStat* to);
 			void CopyFields(Cpp__LeaveStat* from, Cpp__LeaveStat* to);
+			void CopyFields(Cpp__TryStat* from, Cpp__TryStat* to);
 
 		protected:
 			virtual void Visit(CppGenericArguments* node);
@@ -99,6 +108,7 @@ namespace cpp_parser
 			virtual void Visit(CppDeclaratorArrayPart* node);
 			virtual void Visit(CppDeclarator* node);
 			virtual void Visit(CppDeclaratorVariablePart* node);
+			virtual void Visit(CppTryStatCatchPart* node);
 			virtual void Visit(CppFile* node);
 
 			void Visit(CppDeclaration* node) override;
@@ -156,6 +166,14 @@ namespace cpp_parser
 			void Visit(CppDefaultStat* node) override;
 			void Visit(Cpp__LeaveStat* node) override;
 			void Visit(CppStaticAssertStat* node) override;
+			void Visit(CppWhileStat* node) override;
+			void Visit(CppDoWhileStat* node) override;
+			void Visit(CppIfElseStat* node) override;
+			void Visit(CppForStat* node) override;
+			void Visit(CppForEachStat* node) override;
+			void Visit(CppSwitchStat* node) override;
+			void Visit(CppTryCatchStat* node) override;
+			void Visit(Cpp__TryStat* node) override;
 
 		public:
 			virtual vl::Ptr<CppTypeOrExprOrOthers> CopyNode(CppTypeOrExprOrOthers* node);
@@ -171,6 +189,7 @@ namespace cpp_parser
 			virtual vl::Ptr<CppDeclaratorArrayPart> CopyNode(CppDeclaratorArrayPart* node);
 			virtual vl::Ptr<CppDeclarator> CopyNode(CppDeclarator* node);
 			virtual vl::Ptr<CppDeclaratorVariablePart> CopyNode(CppDeclaratorVariablePart* node);
+			virtual vl::Ptr<CppTryStatCatchPart> CopyNode(CppTryStatCatchPart* node);
 			virtual vl::Ptr<CppFile> CopyNode(CppFile* node);
 
 			vl::Ptr<CppBinaryExpr> CopyNode(CppBinaryExpr* node);
@@ -187,11 +206,15 @@ namespace cpp_parser
 			vl::Ptr<CppDeclaratorType> CopyNode(CppDeclaratorType* node);
 			vl::Ptr<CppDefaultStat> CopyNode(CppDefaultStat* node);
 			vl::Ptr<CppDeleteExpr> CopyNode(CppDeleteExpr* node);
+			vl::Ptr<CppDoWhileStat> CopyNode(CppDoWhileStat* node);
 			vl::Ptr<CppEmptyStat> CopyNode(CppEmptyStat* node);
 			vl::Ptr<CppExprOnly> CopyNode(CppExprOnly* node);
 			vl::Ptr<CppExprStat> CopyNode(CppExprStat* node);
+			vl::Ptr<CppForEachStat> CopyNode(CppForEachStat* node);
+			vl::Ptr<CppForStat> CopyNode(CppForStat* node);
 			vl::Ptr<CppGenericArgument> CopyNode(CppGenericArgument* node);
 			vl::Ptr<CppGotoStat> CopyNode(CppGotoStat* node);
+			vl::Ptr<CppIfElseStat> CopyNode(CppIfElseStat* node);
 			vl::Ptr<CppIfExpr> CopyNode(CppIfExpr* node);
 			vl::Ptr<CppIndexExpr> CopyNode(CppIndexExpr* node);
 			vl::Ptr<CppLabelStat> CopyNode(CppLabelStat* node);
@@ -211,8 +234,10 @@ namespace cpp_parser
 			vl::Ptr<CppSizeofExpr> CopyNode(CppSizeofExpr* node);
 			vl::Ptr<CppStaticAssertStat> CopyNode(CppStaticAssertStat* node);
 			vl::Ptr<CppStringLiteral> CopyNode(CppStringLiteral* node);
+			vl::Ptr<CppSwitchStat> CopyNode(CppSwitchStat* node);
 			vl::Ptr<CppSysFuncExpr> CopyNode(CppSysFuncExpr* node);
 			vl::Ptr<CppThrowExpr> CopyNode(CppThrowExpr* node);
+			vl::Ptr<CppTryCatchStat> CopyNode(CppTryCatchStat* node);
 			vl::Ptr<CppTypeOnly> CopyNode(CppTypeOnly* node);
 			vl::Ptr<CppTypeOrExpr> CopyNode(CppTypeOrExpr* node);
 			vl::Ptr<CppVarBraceInit> CopyNode(CppVarBraceInit* node);
@@ -220,7 +245,9 @@ namespace cpp_parser
 			vl::Ptr<CppVarValueInit> CopyNode(CppVarValueInit* node);
 			vl::Ptr<CppVariadicExpr> CopyNode(CppVariadicExpr* node);
 			vl::Ptr<CppVolatileType> CopyNode(CppVolatileType* node);
+			vl::Ptr<CppWhileStat> CopyNode(CppWhileStat* node);
 			vl::Ptr<Cpp__LeaveStat> CopyNode(Cpp__LeaveStat* node);
+			vl::Ptr<Cpp__TryStat> CopyNode(Cpp__TryStat* node);
 		};
 	}
 }

@@ -314,12 +314,78 @@ MakeDeleteExpr
 		}
 
 /***********************************************************************
+MakeDoWhileStat
+***********************************************************************/
+
+		MakeDoWhileStat& MakeDoWhileStat::condition(const vl::Ptr<CppTypeOrExpr>& value)
+		{
+			node->condition = value;
+			return *this;
+		}
+
+		MakeDoWhileStat& MakeDoWhileStat::stat(const vl::Ptr<CppStatement>& value)
+		{
+			node->stat = value;
+			return *this;
+		}
+
+/***********************************************************************
 MakeExprStat
 ***********************************************************************/
 
 		MakeExprStat& MakeExprStat::expr(const vl::Ptr<CppTypeOrExpr>& value)
 		{
 			node->expr = value;
+			return *this;
+		}
+
+/***********************************************************************
+MakeForEachStat
+***********************************************************************/
+
+		MakeForEachStat& MakeForEachStat::collection(const vl::Ptr<CppTypeOrExpr>& value)
+		{
+			node->collection = value;
+			return *this;
+		}
+
+		MakeForEachStat& MakeForEachStat::decl(const vl::Ptr<CppSingleVarDeclaration>& value)
+		{
+			node->decl = value;
+			return *this;
+		}
+
+		MakeForEachStat& MakeForEachStat::stat(const vl::Ptr<CppStatement>& value)
+		{
+			node->stat = value;
+			return *this;
+		}
+
+/***********************************************************************
+MakeForStat
+***********************************************************************/
+
+		MakeForStat& MakeForStat::condition(const vl::Ptr<CppTypeOrExpr>& value)
+		{
+			node->condition = value;
+			return *this;
+		}
+
+		MakeForStat& MakeForStat::decl(const vl::Ptr<CppSingleVarDeclaration>& value)
+		{
+			node->decl = value;
+			return *this;
+		}
+
+		MakeForStat& MakeForStat::sideEffect(const vl::Ptr<CppTypeOrExpr>& value)
+		{
+			node->sideEffect = value;
+			return *this;
+		}
+
+		MakeForStat& MakeForStat::stat(const vl::Ptr<CppStatement>& value)
+		{
+			node->stat = value;
 			return *this;
 		}
 
@@ -372,6 +438,28 @@ MakeGotoStat
 		MakeGotoStat& MakeGotoStat::label(const vl::WString& value)
 		{
 			node->label.value = value;
+			return *this;
+		}
+
+/***********************************************************************
+MakeIfElseStat
+***********************************************************************/
+
+		MakeIfElseStat& MakeIfElseStat::condition(const vl::Ptr<CppTypeOrExprOrOthers>& value)
+		{
+			node->condition = value;
+			return *this;
+		}
+
+		MakeIfElseStat& MakeIfElseStat::falseStat(const vl::Ptr<CppStatement>& value)
+		{
+			node->falseStat = value;
+			return *this;
+		}
+
+		MakeIfElseStat& MakeIfElseStat::trueStat(const vl::Ptr<CppStatement>& value)
+		{
+			node->trueStat = value;
 			return *this;
 		}
 
@@ -726,6 +814,22 @@ MakeStringLiteralFragment
 		}
 
 /***********************************************************************
+MakeSwitchStat
+***********************************************************************/
+
+		MakeSwitchStat& MakeSwitchStat::condition(const vl::Ptr<CppTypeOrExprOrOthers>& value)
+		{
+			node->condition = value;
+			return *this;
+		}
+
+		MakeSwitchStat& MakeSwitchStat::stat(const vl::Ptr<CppStatement>& value)
+		{
+			node->stat = value;
+			return *this;
+		}
+
+/***********************************************************************
 MakeSysFuncExpr
 ***********************************************************************/
 
@@ -754,6 +858,38 @@ MakeThrowExpr
 		MakeThrowExpr& MakeThrowExpr::argument(const vl::Ptr<CppTypeOrExpr>& value)
 		{
 			node->argument = value;
+			return *this;
+		}
+
+/***********************************************************************
+MakeTryCatchStat
+***********************************************************************/
+
+		MakeTryCatchStat& MakeTryCatchStat::catchParts(const vl::Ptr<CppTryStatCatchPart>& value)
+		{
+			node->catchParts = value;
+			return *this;
+		}
+
+		MakeTryCatchStat& MakeTryCatchStat::tryStat(const vl::Ptr<CppStatement>& value)
+		{
+			node->tryStat = value;
+			return *this;
+		}
+
+/***********************************************************************
+MakeTryStatCatchPart
+***********************************************************************/
+
+		MakeTryStatCatchPart& MakeTryStatCatchPart::decl(const vl::Ptr<CppSingleVarDeclaration>& value)
+		{
+			node->decl = value;
+			return *this;
+		}
+
+		MakeTryStatCatchPart& MakeTryStatCatchPart::stat(const vl::Ptr<CppStatement>& value)
+		{
+			node->stat = value;
 			return *this;
 		}
 
@@ -810,6 +946,50 @@ MakeVolatileType
 		MakeVolatileType& MakeVolatileType::type(const vl::Ptr<CppTypeOrExpr>& value)
 		{
 			node->type = value;
+			return *this;
+		}
+
+/***********************************************************************
+MakeWhileStat
+***********************************************************************/
+
+		MakeWhileStat& MakeWhileStat::condition(const vl::Ptr<CppTypeOrExprOrOthers>& value)
+		{
+			node->condition = value;
+			return *this;
+		}
+
+		MakeWhileStat& MakeWhileStat::stat(const vl::Ptr<CppStatement>& value)
+		{
+			node->stat = value;
+			return *this;
+		}
+
+/***********************************************************************
+Make__TryStat
+***********************************************************************/
+
+		Make__TryStat& Make__TryStat::catchStat(const vl::Ptr<CppStatement>& value)
+		{
+			node->catchStat = value;
+			return *this;
+		}
+
+		Make__TryStat& Make__TryStat::filter(const vl::Ptr<CppTypeOrExpr>& value)
+		{
+			node->filter = value;
+			return *this;
+		}
+
+		Make__TryStat& Make__TryStat::finallyStat(const vl::Ptr<CppStatement>& value)
+		{
+			node->finallyStat = value;
+			return *this;
+		}
+
+		Make__TryStat& Make__TryStat::tryStat(const vl::Ptr<CppStatement>& value)
+		{
+			node->tryStat = value;
 			return *this;
 		}
 	}

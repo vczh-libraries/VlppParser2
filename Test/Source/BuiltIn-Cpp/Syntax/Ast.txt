@@ -515,6 +515,66 @@ class StaticAssertStat : Statement
     var message : TypeOrExpr;
 }
 
+class WhileStat : Statement
+{
+    var condition : TypeOrExprOrOthers;
+    var stat : Statement;
+}
+
+class DoWhileStat : Statement
+{
+    var condition : TypeOrExpr;
+    var stat : Statement;
+}
+
+class IfElseStat : Statement
+{
+    var condition : TypeOrExprOrOthers;
+    var trueStat : Statement;
+    var falseStat : Statement;
+}
+
+class ForStat : Statement
+{
+    var decl : SingleVarDeclaration;
+    var condition : TypeOrExpr;
+    var sideEffect : TypeOrExpr;
+    var stat : Statement;
+}
+
+class ForEachStat : Statement
+{
+    var decl : SingleVarDeclaration;
+    var collection : TypeOrExpr;
+    var stat : Statement;
+}
+
+class SwitchStat : Statement
+{
+    var condition : TypeOrExprOrOthers;
+    var stat : Statement;
+}
+
+class TryStatCatchPart
+{
+    var decl : SingleVarDeclaration;
+    var stat : Statement;
+}
+
+class TryCatchStat : Statement
+{
+    var tryStat : Statement;
+    var catchParts : TryStatCatchPart;
+}
+
+class __TryStat : Statement
+{
+    var tryStat : Statement;
+    var catchStat : Statement;
+    var finallyStat : Statement;
+    var filter : TypeOrExpr;
+}
+
 //////////////////////////////////////////////////////////////////
 // File
 //////////////////////////////////////////////////////////////////

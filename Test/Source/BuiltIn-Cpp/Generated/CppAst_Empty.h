@@ -143,6 +143,14 @@ namespace cpp_parser
 			void Visit(CppDefaultStat* node) override;
 			void Visit(Cpp__LeaveStat* node) override;
 			void Visit(CppStaticAssertStat* node) override;
+			void Visit(CppWhileStat* node) override;
+			void Visit(CppDoWhileStat* node) override;
+			void Visit(CppIfElseStat* node) override;
+			void Visit(CppForStat* node) override;
+			void Visit(CppForEachStat* node) override;
+			void Visit(CppSwitchStat* node) override;
+			void Visit(CppTryCatchStat* node) override;
+			void Visit(Cpp__TryStat* node) override;
 		};
 
 	}

@@ -254,5 +254,37 @@ StatementVisitor
 		void StatementVisitor::Visit(CppStaticAssertStat* node)
 		{
 		}
+
+		void StatementVisitor::Visit(CppWhileStat* node)
+		{
+		}
+
+		void StatementVisitor::Visit(CppDoWhileStat* node)
+		{
+		}
+
+		void StatementVisitor::Visit(CppIfElseStat* node)
+		{
+		}
+
+		void StatementVisitor::Visit(CppForStat* node)
+		{
+		}
+
+		void StatementVisitor::Visit(CppForEachStat* node)
+		{
+		}
+
+		void StatementVisitor::Visit(CppSwitchStat* node)
+		{
+		}
+
+		void StatementVisitor::Visit(CppTryCatchStat* node)
+		{
+		}
+
+		void StatementVisitor::Visit(Cpp__TryStat* node)
+		{
+		}
 	}
 }
