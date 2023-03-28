@@ -63,7 +63,67 @@
                 }
             },
             "type": "VarParanthesisInit"
-        }, {
+        }],
+        "name": "_VarNewParanInit",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "SequenceSyntax",
+                        "first": {
+                            "$ast": "RefSyntax",
+                            "field": "",
+                            "literal": "\"(\"",
+                            "refType": "Literal"
+                        },
+                        "second": {
+                            "$ast": "RefSyntax",
+                            "field": "arguments",
+                            "literal": "_Expr_Argument",
+                            "refType": "Id"
+                        }
+                    },
+                    "second": {
+                        "$ast": "LoopSyntax",
+                        "delimiter": null,
+                        "syntax": {
+                            "$ast": "SequenceSyntax",
+                            "first": {
+                                "$ast": "RefSyntax",
+                                "field": "",
+                                "literal": "\",\"",
+                                "refType": "Literal"
+                            },
+                            "second": {
+                                "$ast": "RefSyntax",
+                                "field": "arguments",
+                                "literal": "_Expr_Argument",
+                                "refType": "Id"
+                            }
+                        }
+                    }
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "\")\"",
+                    "refType": "Literal"
+                }
+            },
+            "type": "VarParanthesisInit"
+        }],
+        "name": "_VarVarParanInit",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
             "$ast": "CreateClause",
             "assignments": [],
             "syntax": {
@@ -101,6 +161,25 @@
             },
             "type": "VarBraceInit"
         }],
+        "name": "_VarBraceInit",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "_VarNewParanInit"
+            }
+        }, {
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "_VarBraceInit"
+            }
+        }],
         "name": "_VarCtorInit",
         "type": ""
     }, {
@@ -117,7 +196,14 @@
             "assignments": [],
             "syntax": {
                 "$ast": "UseSyntax",
-                "name": "_VarCtorInit"
+                "name": "_VarVarParanInit"
+            }
+        }, {
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "_VarBraceInit"
             }
         }],
         "name": "_VarInit",

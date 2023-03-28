@@ -607,14 +607,27 @@ _VarValueInit : VarValueInit
   ::= "=" _Expr_NoComma:expr as VarValueInit
   ;
 
-_VarCtorInit : VarInit
+_VarNewParanInit : VarParanthesisInit
   ::= "(" {_Expr_Argument:arguments ; ","} ")" as VarParanthesisInit
+  ;
+
+_VarVarParanInit : VarParanthesisInit
+  ::= "(" _Expr_Argument:arguments {"," _Expr_Argument:arguments} ")" as VarParanthesisInit
+  ;
+
+_VarBraceInit : VarBraceInit
   ::= "{" {_Expr_Argument:arguments ; ","} "}" as VarBraceInit
+  ;
+
+_VarCtorInit : VarInit
+  ::= !_VarNewParanInit
+  ::= !_VarBraceInit
   ;
 
 _VarInit : VarInit
   ::= !_VarValueInit
-  ::= !_VarCtorInit
+  ::= !_VarVarParanInit
+  ::= !_VarBraceInit
   ;
 
 _FunctionParameterVariablePart : DeclaratorVariablePart

@@ -159,6 +159,7 @@ TEST_FILE
 
 	TEST_CASE(L"CompilerSyntax")
 	{
+		unittest::UnitTest::PrintMessage(L"CompileSyntax() ...", unittest::UnitTest::MessageKind::Info);
 		auto rewritten = CompileSyntax(astManager, lexerManager, syntaxManager, output, syntaxFiles);
 		for (auto error : global.Errors())
 		{
@@ -170,14 +171,16 @@ TEST_FILE
 			File(dirOutput / (L"SyntaxRewrittenActual[BuiltIn-Cpp].txt")).WriteAllText(formattedActual, true, BomEncoder::Utf8);
 		}
 		TEST_ASSERT(global.Errors().Count() == 0);
-	
+
+		unittest::UnitTest::PrintMessage(L"BuildAutomaton() ...", unittest::UnitTest::MessageKind::Info);
 		syntaxManager.BuildCompactNFA();
 		TEST_ASSERT(global.Errors().Count() == 0);
 		syntaxManager.BuildCrossReferencedNFA();
 		TEST_ASSERT(global.Errors().Count() == 0);
 		syntaxManager.BuildAutomaton(lexerManager.Tokens().Count(), executable, metadata);
 		TEST_ASSERT(global.Errors().Count() == 0);
-	
+
+		unittest::UnitTest::PrintMessage(L"LogAutomatonWithPath() ...", unittest::UnitTest::MessageKind::Info);
 		LogAutomatonWithPath(
 			dirOutput / (L"Automaton[BuiltIn-Cpp].txt"),
 			executable,
@@ -187,6 +190,7 @@ TEST_FILE
 			[&](vint32_t index) { auto token = lexerManager.Tokens()[lexerManager.TokenOrder()[index]]; return token->displayText == L"" ? token->Name() : L"\"" + token->displayText + L"\""; }
 			);
 
+		unittest::UnitTest::PrintMessage(L"WriteSyntaxFiles() ...", unittest::UnitTest::MessageKind::Info);
 		{
 			auto rule = syntaxManager.Rules()[L"_Type"];
 			syntaxManager.parsableRules.Add(rule);
