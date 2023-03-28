@@ -41,6 +41,10 @@ DeclarationVisitor
 		{
 		}
 
+		void DeclarationVisitor::Visit(CppMultipleVarDeclaration* node)
+		{
+		}
+
 /***********************************************************************
 TypeOrExprVisitor
 ***********************************************************************/
@@ -208,6 +212,10 @@ StatementVisitor
 		}
 
 		void StatementVisitor::Visit(CppExprStat* node)
+		{
+		}
+
+		void StatementVisitor::Visit(CppDeclStat* node)
 		{
 		}
 

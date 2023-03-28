@@ -125,6 +125,96 @@
     }, {
         "$ast": "Rule",
         "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "RefSyntax",
+                "field": "init",
+                "literal": "_VarValueInit",
+                "refType": "Id"
+            },
+            "type": "DeclaratorVariablePart"
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "RefSyntax",
+                    "field": "declarator",
+                    "literal": "_DeclaratorOptionalName",
+                    "refType": "Id"
+                },
+                "second": {
+                    "$ast": "OptionalSyntax",
+                    "priority": "Equal",
+                    "syntax": {
+                        "$ast": "RefSyntax",
+                        "field": "init",
+                        "literal": "_VarValueInit",
+                        "refType": "Id"
+                    }
+                }
+            },
+            "type": "DeclaratorVariablePart"
+        }],
+        "name": "_FunctionParameterVariablePart",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "RefSyntax",
+                    "field": "declarator",
+                    "literal": "_DeclaratorRequiredName",
+                    "refType": "Id"
+                },
+                "second": {
+                    "$ast": "OptionalSyntax",
+                    "priority": "Equal",
+                    "syntax": {
+                        "$ast": "RefSyntax",
+                        "field": "init",
+                        "literal": "_VarInit",
+                        "refType": "Id"
+                    }
+                }
+            },
+            "type": "DeclaratorVariablePart"
+        }],
+        "name": "_DeclaratorVariablePartOptionalInit",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "RefSyntax",
+                    "field": "declarator",
+                    "literal": "_DeclaratorRequiredName",
+                    "refType": "Id"
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "init",
+                    "literal": "_VarInit",
+                    "refType": "Id"
+                }
+            },
+            "type": "DeclaratorVariablePart"
+        }],
+        "name": "_DeclaratorVariablePartRequiredInit",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
             "$ast": "ReuseClause",
             "assignments": [],
             "syntax": {
@@ -144,41 +234,9 @@
                 },
                 "second": {
                     "$ast": "RefSyntax",
-                    "field": "init",
-                    "literal": "_VarValueInit",
+                    "field": "varPart",
+                    "literal": "_FunctionParameterVariablePart",
                     "refType": "Id"
-                }
-            },
-            "type": "SingleVarDeclaration"
-        }, {
-            "$ast": "CreateClause",
-            "assignments": [],
-            "syntax": {
-                "$ast": "SequenceSyntax",
-                "first": {
-                    "$ast": "SequenceSyntax",
-                    "first": {
-                        "$ast": "RefSyntax",
-                        "field": "type",
-                        "literal": "_TypeBeforeDeclarator",
-                        "refType": "Id"
-                    },
-                    "second": {
-                        "$ast": "RefSyntax",
-                        "field": "declarator",
-                        "literal": "_DeclaratorOptionalName",
-                        "refType": "Id"
-                    }
-                },
-                "second": {
-                    "$ast": "OptionalSyntax",
-                    "priority": "Equal",
-                    "syntax": {
-                        "$ast": "RefSyntax",
-                        "field": "init",
-                        "literal": "_VarValueInit",
-                        "refType": "Id"
-                    }
                 }
             },
             "type": "SingleVarDeclaration"
@@ -192,40 +250,27 @@
                     "first": {
                         "$ast": "SequenceSyntax",
                         "first": {
-                            "$ast": "SequenceSyntax",
-                            "first": {
+                            "$ast": "RefSyntax",
+                            "field": "keywords",
+                            "literal": "_DeclaratorKeyword",
+                            "refType": "Id"
+                        },
+                        "second": {
+                            "$ast": "LoopSyntax",
+                            "delimiter": null,
+                            "syntax": {
                                 "$ast": "RefSyntax",
                                 "field": "keywords",
                                 "literal": "_DeclaratorKeyword",
                                 "refType": "Id"
-                            },
-                            "second": {
-                                "$ast": "LoopSyntax",
-                                "delimiter": null,
-                                "syntax": {
-                                    "$ast": "RefSyntax",
-                                    "field": "keywords",
-                                    "literal": "_DeclaratorKeyword",
-                                    "refType": "Id"
-                                }
                             }
-                        },
-                        "second": {
-                            "$ast": "RefSyntax",
-                            "field": "type",
-                            "literal": "_TypeBeforeDeclarator",
-                            "refType": "Id"
                         }
                     },
                     "second": {
-                        "$ast": "OptionalSyntax",
-                        "priority": "Equal",
-                        "syntax": {
-                            "$ast": "RefSyntax",
-                            "field": "declarator",
-                            "literal": "_DeclaratorOptionalName",
-                            "refType": "Id"
-                        }
+                        "$ast": "RefSyntax",
+                        "field": "type",
+                        "literal": "_TypeBeforeDeclarator",
+                        "refType": "Id"
                     }
                 },
                 "second": {
@@ -233,8 +278,8 @@
                     "priority": "Equal",
                     "syntax": {
                         "$ast": "RefSyntax",
-                        "field": "init",
-                        "literal": "_VarValueInit",
+                        "field": "varPart",
+                        "literal": "_FunctionParameterVariablePart",
                         "refType": "Id"
                     }
                 }
@@ -258,24 +303,15 @@
             "syntax": {
                 "$ast": "SequenceSyntax",
                 "first": {
-                    "$ast": "SequenceSyntax",
-                    "first": {
-                        "$ast": "RefSyntax",
-                        "field": "type",
-                        "literal": "_TypeBeforeDeclarator",
-                        "refType": "Id"
-                    },
-                    "second": {
-                        "$ast": "RefSyntax",
-                        "field": "declarator",
-                        "literal": "_DeclaratorRequiredName",
-                        "refType": "Id"
-                    }
+                    "$ast": "RefSyntax",
+                    "field": "type",
+                    "literal": "_TypeBeforeDeclarator",
+                    "refType": "Id"
                 },
                 "second": {
                     "$ast": "RefSyntax",
-                    "field": "init",
-                    "literal": "_VarInit",
+                    "field": "varPart",
+                    "literal": "_DeclaratorVariablePartRequiredInit",
                     "refType": "Id"
                 }
             },
@@ -290,46 +326,33 @@
                     "first": {
                         "$ast": "SequenceSyntax",
                         "first": {
-                            "$ast": "SequenceSyntax",
-                            "first": {
+                            "$ast": "RefSyntax",
+                            "field": "keywords",
+                            "literal": "_DeclaratorKeyword",
+                            "refType": "Id"
+                        },
+                        "second": {
+                            "$ast": "LoopSyntax",
+                            "delimiter": null,
+                            "syntax": {
                                 "$ast": "RefSyntax",
                                 "field": "keywords",
                                 "literal": "_DeclaratorKeyword",
                                 "refType": "Id"
-                            },
-                            "second": {
-                                "$ast": "LoopSyntax",
-                                "delimiter": null,
-                                "syntax": {
-                                    "$ast": "RefSyntax",
-                                    "field": "keywords",
-                                    "literal": "_DeclaratorKeyword",
-                                    "refType": "Id"
-                                }
                             }
-                        },
-                        "second": {
-                            "$ast": "RefSyntax",
-                            "field": "type",
-                            "literal": "_TypeBeforeDeclarator",
-                            "refType": "Id"
                         }
                     },
                     "second": {
-                        "$ast": "OptionalSyntax",
-                        "priority": "Equal",
-                        "syntax": {
-                            "$ast": "RefSyntax",
-                            "field": "declarator",
-                            "literal": "_DeclaratorRequiredName",
-                            "refType": "Id"
-                        }
+                        "$ast": "RefSyntax",
+                        "field": "type",
+                        "literal": "_TypeBeforeDeclarator",
+                        "refType": "Id"
                     }
                 },
                 "second": {
                     "$ast": "RefSyntax",
-                    "field": "init",
-                    "literal": "_VarInit",
+                    "field": "varPart",
+                    "literal": "_DeclaratorVariablePartRequiredInit",
                     "refType": "Id"
                 }
             },

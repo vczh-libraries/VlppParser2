@@ -182,6 +182,11 @@ Visitor Pattern Implementation
 		visitor->Visit(this);
 	}
 
+	void CppMultipleVarDeclaration::Accept(CppDeclaration::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
 	void CppEmptyStat::Accept(CppStatement::IVisitor* visitor)
 	{
 		visitor->Visit(this);
@@ -193,6 +198,11 @@ Visitor Pattern Implementation
 	}
 
 	void CppExprStat::Accept(CppStatement::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void CppDeclStat::Accept(CppStatement::IVisitor* visitor)
 	{
 		visitor->Visit(this);
 	}
@@ -312,12 +322,15 @@ namespace vl
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppVarValueInit, cpp_parser::CppVarValueInit)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppVarParanthesisInit, cpp_parser::CppVarParanthesisInit)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppVarBraceInit, cpp_parser::CppVarBraceInit)
+			IMPL_TYPE_INFO_RENAME(cpp_parser::CppDeclaratorVariablePart, cpp_parser::CppDeclaratorVariablePart)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppSingleVarDeclaration, cpp_parser::CppSingleVarDeclaration)
+			IMPL_TYPE_INFO_RENAME(cpp_parser::CppMultipleVarDeclaration, cpp_parser::CppMultipleVarDeclaration)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppStatement, cpp_parser::CppStatement)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppStatement::IVisitor, cpp_parser::CppStatement::IVisitor)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppEmptyStat, cpp_parser::CppEmptyStat)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppBlockStat, cpp_parser::CppBlockStat)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppExprStat, cpp_parser::CppExprStat)
+			IMPL_TYPE_INFO_RENAME(cpp_parser::CppDeclStat, cpp_parser::CppDeclStat)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppBreakStat, cpp_parser::CppBreakStat)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppContinueStat, cpp_parser::CppContinueStat)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppReturnStat, cpp_parser::CppReturnStat)
@@ -841,6 +854,15 @@ namespace vl
 				CLASS_MEMBER_FIELD(arguments)
 			END_CLASS_MEMBER(cpp_parser::CppVarBraceInit)
 
+			BEGIN_CLASS_MEMBER(cpp_parser::CppDeclaratorVariablePart)
+				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppDeclaratorVariablePart>(), NO_PARAMETER)
+
+				CLASS_MEMBER_FIELD(declarator)
+				CLASS_MEMBER_FIELD(init)
+			END_CLASS_MEMBER(cpp_parser::CppDeclaratorVariablePart)
+
 			BEGIN_CLASS_MEMBER(cpp_parser::CppSingleVarDeclaration)
 				CLASS_MEMBER_BASE(cpp_parser::CppDeclaration)
 
@@ -848,9 +870,18 @@ namespace vl
 
 				CLASS_MEMBER_FIELD(keywords)
 				CLASS_MEMBER_FIELD(type)
-				CLASS_MEMBER_FIELD(declarator)
-				CLASS_MEMBER_FIELD(init)
+				CLASS_MEMBER_FIELD(varPart)
 			END_CLASS_MEMBER(cpp_parser::CppSingleVarDeclaration)
+
+			BEGIN_CLASS_MEMBER(cpp_parser::CppMultipleVarDeclaration)
+				CLASS_MEMBER_BASE(cpp_parser::CppDeclaration)
+
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppMultipleVarDeclaration>(), NO_PARAMETER)
+
+				CLASS_MEMBER_FIELD(keywords)
+				CLASS_MEMBER_FIELD(type)
+				CLASS_MEMBER_FIELD(varParts)
+			END_CLASS_MEMBER(cpp_parser::CppMultipleVarDeclaration)
 
 			BEGIN_CLASS_MEMBER(cpp_parser::CppStatement)
 				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
@@ -879,6 +910,14 @@ namespace vl
 
 				CLASS_MEMBER_FIELD(expr)
 			END_CLASS_MEMBER(cpp_parser::CppExprStat)
+
+			BEGIN_CLASS_MEMBER(cpp_parser::CppDeclStat)
+				CLASS_MEMBER_BASE(cpp_parser::CppStatement)
+
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppDeclStat>(), NO_PARAMETER)
+
+				CLASS_MEMBER_FIELD(decl)
+			END_CLASS_MEMBER(cpp_parser::CppDeclStat)
 
 			BEGIN_CLASS_MEMBER(cpp_parser::CppBreakStat)
 				CLASS_MEMBER_BASE(cpp_parser::CppStatement)
@@ -967,6 +1006,7 @@ namespace vl
 
 			BEGIN_INTERFACE_MEMBER(cpp_parser::CppDeclaration::IVisitor)
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppDeclaration::IVisitor::*)(cpp_parser::CppSingleVarDeclaration* node))
+				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppDeclaration::IVisitor::*)(cpp_parser::CppMultipleVarDeclaration* node))
 			END_INTERFACE_MEMBER(cpp_parser::CppDeclaration)
 
 			BEGIN_INTERFACE_MEMBER(cpp_parser::CppTypeOrExpr::IVisitor)
@@ -1018,6 +1058,7 @@ namespace vl
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppStatement::IVisitor::*)(cpp_parser::CppEmptyStat* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppStatement::IVisitor::*)(cpp_parser::CppBlockStat* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppStatement::IVisitor::*)(cpp_parser::CppExprStat* node))
+				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppStatement::IVisitor::*)(cpp_parser::CppDeclStat* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppStatement::IVisitor::*)(cpp_parser::CppBreakStat* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppStatement::IVisitor::*)(cpp_parser::CppContinueStat* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppStatement::IVisitor::*)(cpp_parser::CppReturnStat* node))
@@ -1099,12 +1140,15 @@ namespace vl
 					ADD_TYPE_INFO(cpp_parser::CppVarValueInit)
 					ADD_TYPE_INFO(cpp_parser::CppVarParanthesisInit)
 					ADD_TYPE_INFO(cpp_parser::CppVarBraceInit)
+					ADD_TYPE_INFO(cpp_parser::CppDeclaratorVariablePart)
 					ADD_TYPE_INFO(cpp_parser::CppSingleVarDeclaration)
+					ADD_TYPE_INFO(cpp_parser::CppMultipleVarDeclaration)
 					ADD_TYPE_INFO(cpp_parser::CppStatement)
 					ADD_TYPE_INFO(cpp_parser::CppStatement::IVisitor)
 					ADD_TYPE_INFO(cpp_parser::CppEmptyStat)
 					ADD_TYPE_INFO(cpp_parser::CppBlockStat)
 					ADD_TYPE_INFO(cpp_parser::CppExprStat)
+					ADD_TYPE_INFO(cpp_parser::CppDeclStat)
 					ADD_TYPE_INFO(cpp_parser::CppBreakStat)
 					ADD_TYPE_INFO(cpp_parser::CppContinueStat)
 					ADD_TYPE_INFO(cpp_parser::CppReturnStat)

@@ -37,6 +37,7 @@ namespace cpp_parser
 		public:
 			// Visitor Members -----------------------------------
 			void Visit(CppSingleVarDeclaration* node) override;
+			void Visit(CppMultipleVarDeclaration* node) override;
 		};
 
 		/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
@@ -132,6 +133,7 @@ namespace cpp_parser
 			void Visit(CppEmptyStat* node) override;
 			void Visit(CppBlockStat* node) override;
 			void Visit(CppExprStat* node) override;
+			void Visit(CppDeclStat* node) override;
 			void Visit(CppBreakStat* node) override;
 			void Visit(CppContinueStat* node) override;
 			void Visit(CppReturnStat* node) override;

@@ -36,12 +36,14 @@ namespace cpp_parser
 			virtual void PrintFields(CppCastExpr* node);
 			virtual void PrintFields(CppConstType* node);
 			virtual void PrintFields(CppContinueStat* node);
+			virtual void PrintFields(CppDeclStat* node);
 			virtual void PrintFields(CppDeclaration* node);
 			virtual void PrintFields(CppDeclarator* node);
 			virtual void PrintFields(CppDeclaratorArrayPart* node);
 			virtual void PrintFields(CppDeclaratorFunctionPart* node);
 			virtual void PrintFields(CppDeclaratorKeyword* node);
 			virtual void PrintFields(CppDeclaratorType* node);
+			virtual void PrintFields(CppDeclaratorVariablePart* node);
 			virtual void PrintFields(CppDefaultStat* node);
 			virtual void PrintFields(CppDeleteExpr* node);
 			virtual void PrintFields(CppEmptyStat* node);
@@ -56,6 +58,7 @@ namespace cpp_parser
 			virtual void PrintFields(CppIfExpr* node);
 			virtual void PrintFields(CppIndexExpr* node);
 			virtual void PrintFields(CppLabelStat* node);
+			virtual void PrintFields(CppMultipleVarDeclaration* node);
 			virtual void PrintFields(CppNameIdentifier* node);
 			virtual void PrintFields(CppNewExpr* node);
 			virtual void PrintFields(CppNumericExprLiteral* node);
@@ -92,6 +95,7 @@ namespace cpp_parser
 			void Visit(CppGenericArgument* node) override;
 
 			void Visit(CppSingleVarDeclaration* node) override;
+			void Visit(CppMultipleVarDeclaration* node) override;
 
 			void Visit(CppExprOnly* node) override;
 			void Visit(CppTypeOnly* node) override;
@@ -131,6 +135,7 @@ namespace cpp_parser
 			void Visit(CppEmptyStat* node) override;
 			void Visit(CppBlockStat* node) override;
 			void Visit(CppExprStat* node) override;
+			void Visit(CppDeclStat* node) override;
 			void Visit(CppBreakStat* node) override;
 			void Visit(CppContinueStat* node) override;
 			void Visit(CppReturnStat* node) override;
@@ -156,6 +161,7 @@ namespace cpp_parser
 			void Print(CppDeclaratorFunctionPart* node);
 			void Print(CppDeclaratorArrayPart* node);
 			void Print(CppDeclarator* node);
+			void Print(CppDeclaratorVariablePart* node);
 			void Print(CppFile* node);
 		};
 	}

@@ -22,12 +22,14 @@ namespace cpp_parser
 	class CppCastExpr;
 	class CppConstType;
 	class CppContinueStat;
+	class CppDeclStat;
 	class CppDeclaration;
 	class CppDeclarator;
 	class CppDeclaratorArrayPart;
 	class CppDeclaratorFunctionPart;
 	class CppDeclaratorKeyword;
 	class CppDeclaratorType;
+	class CppDeclaratorVariablePart;
 	class CppDefaultStat;
 	class CppDeleteExpr;
 	class CppEmptyStat;
@@ -42,6 +44,7 @@ namespace cpp_parser
 	class CppIfExpr;
 	class CppIndexExpr;
 	class CppLabelStat;
+	class CppMultipleVarDeclaration;
 	class CppNameIdentifier;
 	class CppNewExpr;
 	class CppNumericExprLiteral;
@@ -240,6 +243,7 @@ namespace cpp_parser
 		{
 		public:
 			virtual void Visit(CppSingleVarDeclaration* node) = 0;
+			virtual void Visit(CppMultipleVarDeclaration* node) = 0;
 		};
 
 		virtual void Accept(CppDeclaration::IVisitor* visitor) = 0;
@@ -668,13 +672,29 @@ namespace cpp_parser
 		void Accept(CppVarInit::IVisitor* visitor) override;
 	};
 
+	class CppDeclaratorVariablePart : public vl::glr::ParsingAstBase, vl::reflection::Description<CppDeclaratorVariablePart>
+	{
+	public:
+		vl::Ptr<CppDeclarator> declarator;
+		vl::Ptr<CppVarInit> init;
+	};
+
 	class CppSingleVarDeclaration : public CppDeclaration, vl::reflection::Description<CppSingleVarDeclaration>
 	{
 	public:
 		vl::collections::List<vl::Ptr<CppDeclaratorKeyword>> keywords;
 		vl::Ptr<CppTypeOrExpr> type;
-		vl::Ptr<CppDeclarator> declarator;
-		vl::Ptr<CppVarInit> init;
+		vl::Ptr<CppDeclaratorVariablePart> varPart;
+
+		void Accept(CppDeclaration::IVisitor* visitor) override;
+	};
+
+	class CppMultipleVarDeclaration : public CppDeclaration, vl::reflection::Description<CppMultipleVarDeclaration>
+	{
+	public:
+		vl::collections::List<vl::Ptr<CppDeclaratorKeyword>> keywords;
+		vl::Ptr<CppTypeOrExpr> type;
+		vl::collections::List<vl::Ptr<CppDeclaratorVariablePart>> varParts;
 
 		void Accept(CppDeclaration::IVisitor* visitor) override;
 	};
@@ -688,6 +708,7 @@ namespace cpp_parser
 			virtual void Visit(CppEmptyStat* node) = 0;
 			virtual void Visit(CppBlockStat* node) = 0;
 			virtual void Visit(CppExprStat* node) = 0;
+			virtual void Visit(CppDeclStat* node) = 0;
 			virtual void Visit(CppBreakStat* node) = 0;
 			virtual void Visit(CppContinueStat* node) = 0;
 			virtual void Visit(CppReturnStat* node) = 0;
@@ -722,6 +743,14 @@ namespace cpp_parser
 	{
 	public:
 		vl::Ptr<CppTypeOrExpr> expr;
+
+		void Accept(CppStatement::IVisitor* visitor) override;
+	};
+
+	class CppDeclStat : public CppStatement, vl::reflection::Description<CppDeclStat>
+	{
+	public:
+		vl::Ptr<CppDeclaration> decl;
 
 		void Accept(CppStatement::IVisitor* visitor) override;
 	};
@@ -872,12 +901,15 @@ namespace vl
 			DECL_TYPE_INFO(cpp_parser::CppVarValueInit)
 			DECL_TYPE_INFO(cpp_parser::CppVarParanthesisInit)
 			DECL_TYPE_INFO(cpp_parser::CppVarBraceInit)
+			DECL_TYPE_INFO(cpp_parser::CppDeclaratorVariablePart)
 			DECL_TYPE_INFO(cpp_parser::CppSingleVarDeclaration)
+			DECL_TYPE_INFO(cpp_parser::CppMultipleVarDeclaration)
 			DECL_TYPE_INFO(cpp_parser::CppStatement)
 			DECL_TYPE_INFO(cpp_parser::CppStatement::IVisitor)
 			DECL_TYPE_INFO(cpp_parser::CppEmptyStat)
 			DECL_TYPE_INFO(cpp_parser::CppBlockStat)
 			DECL_TYPE_INFO(cpp_parser::CppExprStat)
+			DECL_TYPE_INFO(cpp_parser::CppDeclStat)
 			DECL_TYPE_INFO(cpp_parser::CppBreakStat)
 			DECL_TYPE_INFO(cpp_parser::CppContinueStat)
 			DECL_TYPE_INFO(cpp_parser::CppReturnStat)
@@ -911,6 +943,11 @@ namespace vl
 
 			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(cpp_parser::CppDeclaration::IVisitor)
 				void Visit(cpp_parser::CppSingleVarDeclaration* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+				void Visit(cpp_parser::CppMultipleVarDeclaration* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
@@ -1094,6 +1131,11 @@ namespace vl
 				}
 
 				void Visit(cpp_parser::CppExprStat* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+				void Visit(cpp_parser::CppDeclStat* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}

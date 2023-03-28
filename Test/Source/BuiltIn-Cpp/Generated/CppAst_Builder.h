@@ -69,6 +69,12 @@ namespace cpp_parser
 			MakeConstType& type(const vl::Ptr<CppTypeOrExpr>& value);
 		};
 
+		class MakeDeclStat : public vl::glr::ParsingAstBuilder<CppDeclStat>
+		{
+		public:
+			MakeDeclStat& decl(const vl::Ptr<CppDeclaration>& value);
+		};
+
 		class MakeDeclarator : public vl::glr::ParsingAstBuilder<CppDeclarator>
 		{
 		public:
@@ -108,6 +114,13 @@ namespace cpp_parser
 			MakeDeclaratorType& declarator(const vl::Ptr<CppDeclarator>& value);
 			MakeDeclaratorType& keywords(const vl::Ptr<CppDeclaratorKeyword>& value);
 			MakeDeclaratorType& type(const vl::Ptr<CppTypeOrExpr>& value);
+		};
+
+		class MakeDeclaratorVariablePart : public vl::glr::ParsingAstBuilder<CppDeclaratorVariablePart>
+		{
+		public:
+			MakeDeclaratorVariablePart& declarator(const vl::Ptr<CppDeclarator>& value);
+			MakeDeclaratorVariablePart& init(const vl::Ptr<CppVarInit>& value);
 		};
 
 		class MakeDefaultStat : public vl::glr::ParsingAstBuilder<CppDefaultStat>
@@ -176,6 +189,14 @@ namespace cpp_parser
 		public:
 			MakeLabelStat& label(const vl::WString& value);
 			MakeLabelStat& stat(const vl::Ptr<CppStatement>& value);
+		};
+
+		class MakeMultipleVarDeclaration : public vl::glr::ParsingAstBuilder<CppMultipleVarDeclaration>
+		{
+		public:
+			MakeMultipleVarDeclaration& keywords(const vl::Ptr<CppDeclaratorKeyword>& value);
+			MakeMultipleVarDeclaration& type(const vl::Ptr<CppTypeOrExpr>& value);
+			MakeMultipleVarDeclaration& varParts(const vl::Ptr<CppDeclaratorVariablePart>& value);
 		};
 
 		class MakeNameIdentifier : public vl::glr::ParsingAstBuilder<CppNameIdentifier>
@@ -261,10 +282,9 @@ namespace cpp_parser
 		class MakeSingleVarDeclaration : public vl::glr::ParsingAstBuilder<CppSingleVarDeclaration>
 		{
 		public:
-			MakeSingleVarDeclaration& declarator(const vl::Ptr<CppDeclarator>& value);
-			MakeSingleVarDeclaration& init(const vl::Ptr<CppVarInit>& value);
 			MakeSingleVarDeclaration& keywords(const vl::Ptr<CppDeclaratorKeyword>& value);
 			MakeSingleVarDeclaration& type(const vl::Ptr<CppTypeOrExpr>& value);
+			MakeSingleVarDeclaration& varPart(const vl::Ptr<CppDeclaratorVariablePart>& value);
 		};
 
 		class MakeSizeofExpr : public vl::glr::ParsingAstBuilder<CppSizeofExpr>

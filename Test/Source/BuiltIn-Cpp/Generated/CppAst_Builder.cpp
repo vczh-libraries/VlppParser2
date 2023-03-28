@@ -140,6 +140,16 @@ MakeConstType
 		}
 
 /***********************************************************************
+MakeDeclStat
+***********************************************************************/
+
+		MakeDeclStat& MakeDeclStat::decl(const vl::Ptr<CppDeclaration>& value)
+		{
+			node->decl = value;
+			return *this;
+		}
+
+/***********************************************************************
 MakeDeclarator
 ***********************************************************************/
 
@@ -252,6 +262,22 @@ MakeDeclaratorType
 		MakeDeclaratorType& MakeDeclaratorType::type(const vl::Ptr<CppTypeOrExpr>& value)
 		{
 			node->type = value;
+			return *this;
+		}
+
+/***********************************************************************
+MakeDeclaratorVariablePart
+***********************************************************************/
+
+		MakeDeclaratorVariablePart& MakeDeclaratorVariablePart::declarator(const vl::Ptr<CppDeclarator>& value)
+		{
+			node->declarator = value;
+			return *this;
+		}
+
+		MakeDeclaratorVariablePart& MakeDeclaratorVariablePart::init(const vl::Ptr<CppVarInit>& value)
+		{
+			node->init = value;
 			return *this;
 		}
 
@@ -400,6 +426,28 @@ MakeLabelStat
 		MakeLabelStat& MakeLabelStat::stat(const vl::Ptr<CppStatement>& value)
 		{
 			node->stat = value;
+			return *this;
+		}
+
+/***********************************************************************
+MakeMultipleVarDeclaration
+***********************************************************************/
+
+		MakeMultipleVarDeclaration& MakeMultipleVarDeclaration::keywords(const vl::Ptr<CppDeclaratorKeyword>& value)
+		{
+			node->keywords.Add(value);
+			return *this;
+		}
+
+		MakeMultipleVarDeclaration& MakeMultipleVarDeclaration::type(const vl::Ptr<CppTypeOrExpr>& value)
+		{
+			node->type = value;
+			return *this;
+		}
+
+		MakeMultipleVarDeclaration& MakeMultipleVarDeclaration::varParts(const vl::Ptr<CppDeclaratorVariablePart>& value)
+		{
+			node->varParts.Add(value);
 			return *this;
 		}
 
@@ -601,18 +649,6 @@ MakeReturnStat
 MakeSingleVarDeclaration
 ***********************************************************************/
 
-		MakeSingleVarDeclaration& MakeSingleVarDeclaration::declarator(const vl::Ptr<CppDeclarator>& value)
-		{
-			node->declarator = value;
-			return *this;
-		}
-
-		MakeSingleVarDeclaration& MakeSingleVarDeclaration::init(const vl::Ptr<CppVarInit>& value)
-		{
-			node->init = value;
-			return *this;
-		}
-
 		MakeSingleVarDeclaration& MakeSingleVarDeclaration::keywords(const vl::Ptr<CppDeclaratorKeyword>& value)
 		{
 			node->keywords.Add(value);
@@ -622,6 +658,12 @@ MakeSingleVarDeclaration
 		MakeSingleVarDeclaration& MakeSingleVarDeclaration::type(const vl::Ptr<CppTypeOrExpr>& value)
 		{
 			node->type = value;
+			return *this;
+		}
+
+		MakeSingleVarDeclaration& MakeSingleVarDeclaration::varPart(const vl::Ptr<CppDeclaratorVariablePart>& value)
+		{
+			node->varPart = value;
 			return *this;
 		}
 

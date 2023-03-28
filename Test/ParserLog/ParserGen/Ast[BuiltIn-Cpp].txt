@@ -988,6 +988,22 @@
         }]
     }, {
         "$ast": "Class",
+        "name": "DeclaratorVariablePart",
+        "ambiguity": "No",
+        "baseClass": "",
+        "props": [{
+            "$ast": "ClassProp",
+            "name": "declarator",
+            "propType": "Type",
+            "propTypeName": "Declarator"
+        }, {
+            "$ast": "ClassProp",
+            "name": "init",
+            "propType": "Type",
+            "propTypeName": "VarInit"
+        }]
+    }, {
+        "$ast": "Class",
         "name": "SingleVarDeclaration",
         "ambiguity": "No",
         "baseClass": "Declaration",
@@ -1003,14 +1019,30 @@
             "propTypeName": "TypeOrExpr"
         }, {
             "$ast": "ClassProp",
-            "name": "declarator",
+            "name": "varPart",
             "propType": "Type",
-            "propTypeName": "Declarator"
+            "propTypeName": "DeclaratorVariablePart"
+        }]
+    }, {
+        "$ast": "Class",
+        "name": "MultipleVarDeclaration",
+        "ambiguity": "No",
+        "baseClass": "Declaration",
+        "props": [{
+            "$ast": "ClassProp",
+            "name": "keywords",
+            "propType": "Array",
+            "propTypeName": "DeclaratorKeyword"
         }, {
             "$ast": "ClassProp",
-            "name": "init",
+            "name": "type",
             "propType": "Type",
-            "propTypeName": "VarInit"
+            "propTypeName": "TypeOrExpr"
+        }, {
+            "$ast": "ClassProp",
+            "name": "varParts",
+            "propType": "Array",
+            "propTypeName": "DeclaratorVariablePart"
         }]
     }, {
         "$ast": "Class",
@@ -1045,6 +1077,17 @@
             "name": "expr",
             "propType": "Type",
             "propTypeName": "TypeOrExpr"
+        }]
+    }, {
+        "$ast": "Class",
+        "name": "DeclStat",
+        "ambiguity": "No",
+        "baseClass": "Statement",
+        "props": [{
+            "$ast": "ClassProp",
+            "name": "decl",
+            "propType": "Type",
+            "propTypeName": "Declaration"
         }]
     }, {
         "$ast": "Class",

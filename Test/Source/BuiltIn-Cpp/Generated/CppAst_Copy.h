@@ -36,12 +36,14 @@ namespace cpp_parser
 			void CopyFields(CppCastExpr* from, CppCastExpr* to);
 			void CopyFields(CppConstType* from, CppConstType* to);
 			void CopyFields(CppContinueStat* from, CppContinueStat* to);
+			void CopyFields(CppDeclStat* from, CppDeclStat* to);
 			void CopyFields(CppDeclaration* from, CppDeclaration* to);
 			void CopyFields(CppDeclarator* from, CppDeclarator* to);
 			void CopyFields(CppDeclaratorArrayPart* from, CppDeclaratorArrayPart* to);
 			void CopyFields(CppDeclaratorFunctionPart* from, CppDeclaratorFunctionPart* to);
 			void CopyFields(CppDeclaratorKeyword* from, CppDeclaratorKeyword* to);
 			void CopyFields(CppDeclaratorType* from, CppDeclaratorType* to);
+			void CopyFields(CppDeclaratorVariablePart* from, CppDeclaratorVariablePart* to);
 			void CopyFields(CppDefaultStat* from, CppDefaultStat* to);
 			void CopyFields(CppDeleteExpr* from, CppDeleteExpr* to);
 			void CopyFields(CppEmptyStat* from, CppEmptyStat* to);
@@ -56,6 +58,7 @@ namespace cpp_parser
 			void CopyFields(CppIfExpr* from, CppIfExpr* to);
 			void CopyFields(CppIndexExpr* from, CppIndexExpr* to);
 			void CopyFields(CppLabelStat* from, CppLabelStat* to);
+			void CopyFields(CppMultipleVarDeclaration* from, CppMultipleVarDeclaration* to);
 			void CopyFields(CppNameIdentifier* from, CppNameIdentifier* to);
 			void CopyFields(CppNewExpr* from, CppNewExpr* to);
 			void CopyFields(CppNumericExprLiteral* from, CppNumericExprLiteral* to);
@@ -95,6 +98,7 @@ namespace cpp_parser
 			virtual void Visit(CppDeclaratorFunctionPart* node);
 			virtual void Visit(CppDeclaratorArrayPart* node);
 			virtual void Visit(CppDeclarator* node);
+			virtual void Visit(CppDeclaratorVariablePart* node);
 			virtual void Visit(CppFile* node);
 
 			void Visit(CppDeclaration* node) override;
@@ -102,6 +106,7 @@ namespace cpp_parser
 			void Visit(CppGenericArgument* node) override;
 
 			void Visit(CppSingleVarDeclaration* node) override;
+			void Visit(CppMultipleVarDeclaration* node) override;
 
 			void Visit(CppExprOnly* node) override;
 			void Visit(CppTypeOnly* node) override;
@@ -141,6 +146,7 @@ namespace cpp_parser
 			void Visit(CppEmptyStat* node) override;
 			void Visit(CppBlockStat* node) override;
 			void Visit(CppExprStat* node) override;
+			void Visit(CppDeclStat* node) override;
 			void Visit(CppBreakStat* node) override;
 			void Visit(CppContinueStat* node) override;
 			void Visit(CppReturnStat* node) override;
@@ -164,6 +170,7 @@ namespace cpp_parser
 			virtual vl::Ptr<CppDeclaratorFunctionPart> CopyNode(CppDeclaratorFunctionPart* node);
 			virtual vl::Ptr<CppDeclaratorArrayPart> CopyNode(CppDeclaratorArrayPart* node);
 			virtual vl::Ptr<CppDeclarator> CopyNode(CppDeclarator* node);
+			virtual vl::Ptr<CppDeclaratorVariablePart> CopyNode(CppDeclaratorVariablePart* node);
 			virtual vl::Ptr<CppFile> CopyNode(CppFile* node);
 
 			vl::Ptr<CppBinaryExpr> CopyNode(CppBinaryExpr* node);
@@ -175,6 +182,7 @@ namespace cpp_parser
 			vl::Ptr<CppCastExpr> CopyNode(CppCastExpr* node);
 			vl::Ptr<CppConstType> CopyNode(CppConstType* node);
 			vl::Ptr<CppContinueStat> CopyNode(CppContinueStat* node);
+			vl::Ptr<CppDeclStat> CopyNode(CppDeclStat* node);
 			vl::Ptr<CppDeclaration> CopyNode(CppDeclaration* node);
 			vl::Ptr<CppDeclaratorType> CopyNode(CppDeclaratorType* node);
 			vl::Ptr<CppDefaultStat> CopyNode(CppDefaultStat* node);
@@ -187,6 +195,7 @@ namespace cpp_parser
 			vl::Ptr<CppIfExpr> CopyNode(CppIfExpr* node);
 			vl::Ptr<CppIndexExpr> CopyNode(CppIndexExpr* node);
 			vl::Ptr<CppLabelStat> CopyNode(CppLabelStat* node);
+			vl::Ptr<CppMultipleVarDeclaration> CopyNode(CppMultipleVarDeclaration* node);
 			vl::Ptr<CppNameIdentifier> CopyNode(CppNameIdentifier* node);
 			vl::Ptr<CppNewExpr> CopyNode(CppNewExpr* node);
 			vl::Ptr<CppNumericExprLiteral> CopyNode(CppNumericExprLiteral* node);

@@ -617,26 +617,38 @@ _VarInit : VarInit
   ::= !_VarCtorInit
   ;
 
-_FunctionParameter_LRI_Isolated_3 : SingleVarDeclaration
-  ::= _DeclaratorKeyword:keywords {_DeclaratorKeyword:keywords} _TypeBeforeDeclarator:type [_DeclaratorOptionalName:declarator] [_VarValueInit:init] as SingleVarDeclaration
+_FunctionParameterVariablePart : DeclaratorVariablePart
+  ::= _VarValueInit:init as DeclaratorVariablePart
+  ::= _DeclaratorOptionalName:declarator [_VarValueInit:init] as DeclaratorVariablePart
+  ;
+
+_DeclaratorVariablePartOptionalInit : DeclaratorVariablePart
+  ::= _DeclaratorRequiredName:declarator [_VarInit:init] as DeclaratorVariablePart
+  ;
+
+_DeclaratorVariablePartRequiredInit : DeclaratorVariablePart
+  ::= _DeclaratorRequiredName:declarator _VarInit:init as DeclaratorVariablePart
+  ;
+
+_FunctionParameter_LRI_Isolated_2 : SingleVarDeclaration
+  ::= _DeclaratorKeyword:keywords {_DeclaratorKeyword:keywords} _TypeBeforeDeclarator:type [_FunctionParameterVariablePart:varPart] as SingleVarDeclaration
   ;
 
 _FunctionParameter_LRI_Original : TypeOrExprOrOthers
   ::= left_recursion_placeholder(LRI__FunctionParameter)
   ::= !_TypeBeforeDeclarator_LRI_Original
-  ::= _TypeBeforeDeclarator_LRI_Original:type _VarValueInit:init as SingleVarDeclaration
-  ::= _TypeBeforeDeclarator_LRI_Original:type _DeclaratorOptionalName:declarator [_VarValueInit:init] as SingleVarDeclaration
-  ::= !_FunctionParameter_LRI_Isolated_3
+  ::= _TypeBeforeDeclarator_LRI_Original:type _FunctionParameterVariablePart:varPart as SingleVarDeclaration
+  ::= !_FunctionParameter_LRI_Isolated_2
   ;
 
 _ExprOrVarWithInit_LRI_Isolated_2 : SingleVarDeclaration
-  ::= _DeclaratorKeyword:keywords {_DeclaratorKeyword:keywords} _TypeBeforeDeclarator:type [_DeclaratorRequiredName:declarator] _VarInit:init as SingleVarDeclaration
+  ::= _DeclaratorKeyword:keywords {_DeclaratorKeyword:keywords} _TypeBeforeDeclarator:type _DeclaratorVariablePartRequiredInit:varPart as SingleVarDeclaration
   ;
 
 _ExprOrVarWithInit_LRI_Original : TypeOrExprOrOthers
   ::= left_recursion_placeholder(LRI__ExprOrVarWithInit)
   ::= !_Expr_LRI_Original
-  ::= _TypeBeforeDeclarator_LRI_Original:type _DeclaratorRequiredName:declarator _VarInit:init as SingleVarDeclaration
+  ::= _TypeBeforeDeclarator_LRI_Original:type _DeclaratorVariablePartRequiredInit:varPart as SingleVarDeclaration
   ::= !_ExprOrVarWithInit_LRI_Isolated_2
   ;
 
@@ -1075,7 +1087,7 @@ _TypeBeforeDeclarator : TypeOrExpr
   ;
 
 _FunctionParameter : TypeOrExprOrOthers
-  ::= !_FunctionParameter_LRI_Isolated_3
+  ::= !_FunctionParameter_LRI_Isolated_2
   ::= !_PrimitiveType [left_recursion_inject_multiple(LRI__PM_PrimitiveType) _FunctionParameter_LRI_Original]
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__PM_QualifiedName) _FunctionParameter_LRI_Original]
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_1 [left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _FunctionParameter_LRI_Original]

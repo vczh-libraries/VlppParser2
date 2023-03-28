@@ -292,6 +292,12 @@ namespace cpp_parser
 		void AstVisitor::PrintFields(CppContinueStat* node)
 		{
 		}
+		void AstVisitor::PrintFields(CppDeclStat* node)
+		{
+			BeginField(L"decl");
+			Print(node->decl.Obj());
+			EndField();
+		}
 		void AstVisitor::PrintFields(CppDeclaration* node)
 		{
 		}
@@ -398,6 +404,15 @@ namespace cpp_parser
 			EndField();
 			BeginField(L"type");
 			Print(node->type.Obj());
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppDeclaratorVariablePart* node)
+		{
+			BeginField(L"declarator");
+			Print(node->declarator.Obj());
+			EndField();
+			BeginField(L"init");
+			Print(node->init.Obj());
 			EndField();
 		}
 		void AstVisitor::PrintFields(CppDefaultStat* node)
@@ -528,6 +543,32 @@ namespace cpp_parser
 			EndField();
 			BeginField(L"stat");
 			Print(node->stat.Obj());
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppMultipleVarDeclaration* node)
+		{
+			BeginField(L"keywords");
+			BeginArray();
+			for (auto&& listItem : node->keywords)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+			BeginField(L"type");
+			Print(node->type.Obj());
+			EndField();
+			BeginField(L"varParts");
+			BeginArray();
+			for (auto&& listItem : node->varParts)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
 			EndField();
 		}
 		void AstVisitor::PrintFields(CppNameIdentifier* node)
@@ -1201,12 +1242,6 @@ namespace cpp_parser
 		}
 		void AstVisitor::PrintFields(CppSingleVarDeclaration* node)
 		{
-			BeginField(L"declarator");
-			Print(node->declarator.Obj());
-			EndField();
-			BeginField(L"init");
-			Print(node->init.Obj());
-			EndField();
 			BeginField(L"keywords");
 			BeginArray();
 			for (auto&& listItem : node->keywords)
@@ -1219,6 +1254,9 @@ namespace cpp_parser
 			EndField();
 			BeginField(L"type");
 			Print(node->type.Obj());
+			EndField();
+			BeginField(L"varPart");
+			Print(node->varPart.Obj());
 			EndField();
 		}
 		void AstVisitor::PrintFields(CppSizeofExpr* node)
@@ -1391,6 +1429,21 @@ namespace cpp_parser
 			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 			PrintFields(static_cast<CppDeclaration*>(node));
 			PrintFields(static_cast<CppSingleVarDeclaration*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppMultipleVarDeclaration* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"MultipleVarDeclaration", node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
+			PrintFields(static_cast<CppDeclaration*>(node));
+			PrintFields(static_cast<CppMultipleVarDeclaration*>(node));
 			EndObject();
 		}
 
@@ -1882,6 +1935,20 @@ namespace cpp_parser
 			EndObject();
 		}
 
+		void AstVisitor::Visit(CppDeclStat* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"DeclStat", node);
+			PrintFields(static_cast<CppStatement*>(node));
+			PrintFields(static_cast<CppDeclStat*>(node));
+			EndObject();
+		}
+
 		void AstVisitor::Visit(CppBreakStat* node)
 		{
 			if (!node)
@@ -2154,6 +2221,19 @@ namespace cpp_parser
 			BeginObject();
 			WriteType(L"Declarator", node);
 			PrintFields(static_cast<CppDeclarator*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Print(CppDeclaratorVariablePart* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"DeclaratorVariablePart", node);
+			PrintFields(static_cast<CppDeclaratorVariablePart*>(node));
 			EndObject();
 		}
 
