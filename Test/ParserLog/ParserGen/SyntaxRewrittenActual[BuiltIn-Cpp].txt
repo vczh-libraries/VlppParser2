@@ -652,8 +652,27 @@ _ExprOrVarWithInit_LRI_Original : TypeOrExprOrOthers
   ::= !_ExprOrVarWithInit_LRI_Isolated_2
   ;
 
-_ExprStat_LRI_Original : ExprStat
+_VarsDeclWithoutKeyword_LRI_Original : MultipleVarDeclaration
+  ::= _TypeBeforeDeclarator_LRI_Original:type _DeclaratorVariablePartRequiredInit:varParts {"," _DeclaratorVariablePartRequiredInit:varParts} as MultipleVarDeclaration
+  ;
+
+_VarsDecl_LRI_Isolated_1 : MultipleVarDeclaration
+  ::= _DeclaratorKeyword:keywords {_DeclaratorKeyword:keywords} !_VarsDeclWithoutKeyword
+  ;
+
+_VarsDecl_LRI_Original : MultipleVarDeclaration
+  ::= left_recursion_placeholder(LRI__VarsDecl)
+  ::= !_VarsDeclWithoutKeyword_LRI_Original
+  ::= !_VarsDecl_LRI_Isolated_1
+  ;
+
+_Decl_LRI_Original : MultipleVarDeclaration
+  ::= !_VarsDecl_LRI_Original
+  ;
+
+_ExprStat_LRI_Original : Statement
   ::= _Expr_LRI_Original:expr ";" as ExprStat
+  ::= _Decl_LRI_Original:decl ";" as DeclStat
   ;
 
 _OtherStats : Statement
@@ -1107,7 +1126,30 @@ _ExprOrVarWithInit : TypeOrExprOrOthers
   ::= !_Type_LRI_Isolated_2 left_recursion_inject_multiple(LRI__Type) _ExprOrVarWithInit_LRI_Original
   ;
 
-_ExprStat : ExprStat
+_VarsDeclWithoutKeyword : MultipleVarDeclaration
+  ::= !_PrimitiveType left_recursion_inject(LRI__PM_PrimitiveType) _VarsDeclWithoutKeyword_LRI_Original
+  ::= !_QualifiedName left_recursion_inject(LRI__PM_QualifiedName) _VarsDeclWithoutKeyword_LRI_Original
+  ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_1 left_recursion_inject(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _VarsDeclWithoutKeyword_LRI_Original
+  ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_2 left_recursion_inject(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _VarsDeclWithoutKeyword_LRI_Original
+  ;
+
+_VarsDecl : MultipleVarDeclaration
+  ::= !_VarsDecl_LRI_Isolated_1
+  ::= !_PrimitiveType left_recursion_inject(LRI__PM_PrimitiveType) _VarsDecl_LRI_Original
+  ::= !_QualifiedName left_recursion_inject(LRI__PM_QualifiedName) _VarsDecl_LRI_Original
+  ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_1 left_recursion_inject(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _VarsDecl_LRI_Original
+  ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_2 left_recursion_inject(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _VarsDecl_LRI_Original
+  ;
+
+_Decl : MultipleVarDeclaration
+  ::= !_VarsDecl_LRI_Isolated_1
+  ::= !_PrimitiveType left_recursion_inject(LRI__PM_PrimitiveType) _Decl_LRI_Original
+  ::= !_QualifiedName left_recursion_inject(LRI__PM_QualifiedName) _Decl_LRI_Original
+  ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_1 left_recursion_inject(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _Decl_LRI_Original
+  ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_2 left_recursion_inject(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _Decl_LRI_Original
+  ;
+
+_ExprStat : Statement
   ::= !_BExpr_NoComma_SWITCH_1allow_GT_LRI_Isolated_1 left_recursion_inject(LRI__BExpr_NoComma_SWITCH_1allow_GT) _ExprStat_LRI_Original
   ::= !_PrefixUnaryExpr_LRI_Isolated_1 left_recursion_inject_multiple(LRI__PrefixUnaryExpr) _ExprStat_LRI_Original
   ::= !_PrimitiveExpr left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveExpr) _ExprStat_LRI_Original
@@ -1117,6 +1159,7 @@ _ExprStat : ExprStat
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_2 left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _ExprStat_LRI_Original
   ::= !_TypeStartsWithKeyword_LRI_Isolated_2 left_recursion_inject_multiple(LRI__TypeStartsWithKeyword) _ExprStat_LRI_Original
   ::= !_Type_LRI_Isolated_2 left_recursion_inject_multiple(LRI__Type) _ExprStat_LRI_Original
+  ::= !_VarsDecl_LRI_Isolated_1 left_recursion_inject(LRI__VarsDecl) _ExprStat_LRI_Original
   ;
 
 _Stat : Statement
@@ -1130,6 +1173,7 @@ _Stat : Statement
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_2 left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _Stat_LRI_Original
   ::= !_TypeStartsWithKeyword_LRI_Isolated_2 left_recursion_inject_multiple(LRI__TypeStartsWithKeyword) _Stat_LRI_Original
   ::= !_Type_LRI_Isolated_2 left_recursion_inject_multiple(LRI__Type) _Stat_LRI_Original
+  ::= !_VarsDecl_LRI_Isolated_1 left_recursion_inject(LRI__VarsDecl) _Stat_LRI_Original
   ;
 
 _TypeStartsWithKeyword : TypeOrExpr

@@ -46,3 +46,16 @@ _ExprOrVarWithInit
 //////////////////////////////////////////////////////////////////
 // Variable Declarations
 //////////////////////////////////////////////////////////////////
+
+_VarsDeclWithoutKeyword
+  ::= _TypeBeforeDeclarator:type _DeclaratorVariablePartRequiredInit:varParts {"," _DeclaratorVariablePartRequiredInit:varParts} as MultipleVarDeclaration
+  ;
+
+_VarsDecl
+  ::= !_VarsDeclWithoutKeyword
+  ::= _DeclaratorKeyword:keywords {_DeclaratorKeyword:keywords} !_VarsDeclWithoutKeyword
+  ;
+
+_Decl
+  ::= !_VarsDecl
+  ;

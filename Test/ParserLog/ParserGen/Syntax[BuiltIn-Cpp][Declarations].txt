@@ -360,6 +360,105 @@
         }],
         "name": "_ExprOrVarWithInit",
         "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "RefSyntax",
+                        "field": "type",
+                        "literal": "_TypeBeforeDeclarator",
+                        "refType": "Id"
+                    },
+                    "second": {
+                        "$ast": "RefSyntax",
+                        "field": "varParts",
+                        "literal": "_DeclaratorVariablePartRequiredInit",
+                        "refType": "Id"
+                    }
+                },
+                "second": {
+                    "$ast": "LoopSyntax",
+                    "delimiter": null,
+                    "syntax": {
+                        "$ast": "SequenceSyntax",
+                        "first": {
+                            "$ast": "RefSyntax",
+                            "field": "",
+                            "literal": "\",\"",
+                            "refType": "Literal"
+                        },
+                        "second": {
+                            "$ast": "RefSyntax",
+                            "field": "varParts",
+                            "literal": "_DeclaratorVariablePartRequiredInit",
+                            "refType": "Id"
+                        }
+                    }
+                }
+            },
+            "type": "MultipleVarDeclaration"
+        }],
+        "name": "_VarsDeclWithoutKeyword",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "_VarsDeclWithoutKeyword"
+            }
+        }, {
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "RefSyntax",
+                        "field": "keywords",
+                        "literal": "_DeclaratorKeyword",
+                        "refType": "Id"
+                    },
+                    "second": {
+                        "$ast": "LoopSyntax",
+                        "delimiter": null,
+                        "syntax": {
+                            "$ast": "RefSyntax",
+                            "field": "keywords",
+                            "literal": "_DeclaratorKeyword",
+                            "refType": "Id"
+                        }
+                    }
+                },
+                "second": {
+                    "$ast": "UseSyntax",
+                    "name": "_VarsDeclWithoutKeyword"
+                }
+            }
+        }],
+        "name": "_VarsDecl",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "_VarsDecl"
+            }
+        }],
+        "name": "_Decl",
+        "type": ""
     }],
     "switches": []
 }
