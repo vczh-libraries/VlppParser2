@@ -132,14 +132,9 @@ _DeclaratorAKMember
 
 //================================================================
 
-_DeclaratorFunctionParameter
-  ::= !_TypeBeforeDeclarator
-  ::= !_SingleVarDeclOptionalName
-  ;
-
 _DeclaratorFunctionParameters
   ::= "(" ["...":variadic] ")" as partial DeclaratorFunctionPart
-  ::= "(" _DeclaratorFunctionParameter:parameters {"," _DeclaratorFunctionParameter:parameters} ["," "...":variadic] ")" as partial DeclaratorFunctionPart
+  ::= "(" _TypeOrSingleVarDeclOptionalName:parameters {"," _TypeOrSingleVarDeclOptionalName:parameters} ["," "...":variadic] ")" as partial DeclaratorFunctionPart
   ;
 
 _FunctionKeyword
@@ -169,67 +164,4 @@ _DeclaratorArrayPart
 _DeclaratorId
   ::= !_NameIdentifier
   ::= !_OperatorIdentifier
-  ;
-
-//////////////////////////////////////////////////////////////////
-// Declarator
-//////////////////////////////////////////////////////////////////
-
-_DeclaratorBeforeInner
-  ::= (_DeclaratorAKFirst [_DeclaratorAKMember] | _DeclaratorAKMember) {_DeclaratorAKFollow [_DeclaratorAKMember]} as partial Declarator
-  ;
-
-_DeclaratorAfterInner
-  ::= _DeclaratorFunctionPart:funcPart | _DeclaratorArrayPart:arrayParts {_DeclaratorArrayPart:arrayParts} as partial Declarator
-  ;
-
-//================================================================
-
-_InnerDeclaratorWithoutName
-  ::= {_DeclaratorAKCV} !_DeclaratorWithoutName
-  ;
-
-_InnerDeclaratorInnerOptionalName
-  ::= {_DeclaratorAKCV} !_DeclaratorOptionalName
-  ;
-
-_InnerDeclaratorInnerRequiredName
-  ::= {_DeclaratorAKCV} !_DeclaratorRequiredName
-  ;
-
-//================================================================
-
-_DeclaratorInnerWithoutName
-  ::= "(" _InnerDeclaratorWithoutName:innerDeclarator ")" as partial Declarator
-  ;
-
-_DeclaratorInnerOptionalName
-  ::= "(" _InnerDeclaratorInnerOptionalName:innerDeclarator ")" as partial Declarator
-  ::=  _DeclaratorId:id as partial Declarator
-  ::=  "...":variadic [_DeclaratorId:id] as partial Declarator
-  ;
-
-_DeclaratorInnerRequiredName
-  ::= "(" _InnerDeclaratorInnerRequiredName:innerDeclarator ")" as partial Declarator
-  ::=  _DeclaratorId:id as partial Declarator
-  ::=  "...":variadic _DeclaratorId:id as partial Declarator
-  ;
-
-//================================================================
-
-_DeclaratorWithoutName
-  ::= _DeclaratorBeforeInner [_DeclaratorInnerWithoutName] [_DeclaratorAfterInner] as Declarator
-  ::= _DeclaratorInnerWithoutName [_DeclaratorAfterInner] as Declarator
-  ::= _DeclaratorAfterInner as Declarator
-  ;
-
-_DeclaratorOptionalName
-  ::= _DeclaratorBeforeInner [_DeclaratorInnerOptionalName] [_DeclaratorAfterInner] as Declarator
-  ::= _DeclaratorInnerOptionalName [_DeclaratorAfterInner] as Declarator
-  ::= _DeclaratorAfterInner as Declarator
-  ;
-
-_DeclaratorRequiredName
-  ::= _DeclaratorBeforeInner _DeclaratorInnerRequiredName [_DeclaratorAfterInner] as Declarator
-  ::= _DeclaratorInnerRequiredName [_DeclaratorAfterInner] as Declarator
   ;

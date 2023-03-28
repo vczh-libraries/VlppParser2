@@ -522,14 +522,9 @@ _DeclaratorAKMember : Declarator
   ::= _AdvancedTypeMember:advancedTypes as partial Declarator
   ;
 
-_DeclaratorFunctionParameter_LRI_Original : TypeOrExprOrOthers
-  ::= !_TypeBeforeDeclarator_LRI_Original
-  ::= !_SingleVarDeclOptionalName_LRI_Original
-  ;
-
 _DeclaratorFunctionParameters : DeclaratorFunctionPart
   ::= "(" ["...":variadic] ")" as partial DeclaratorFunctionPart
-  ::= "(" _DeclaratorFunctionParameter:parameters {"," _DeclaratorFunctionParameter:parameters} ["," "...":variadic] ")" as partial DeclaratorFunctionPart
+  ::= "(" _TypeOrSingleVarDeclOptionalName:parameters {"," _TypeOrSingleVarDeclOptionalName:parameters} ["," "...":variadic] ")" as partial DeclaratorFunctionPart
   ;
 
 _FunctionKeyword : FunctionKeyword
@@ -614,20 +609,16 @@ _DeclaratorRequiredName : Declarator
   ::= _DeclaratorInnerRequiredName [_DeclaratorAfterInner] as Declarator
   ;
 
-_SingleVarDeclOptionalName_LRI_Isolated_2 : SingleVarDeclaration
+_TypeOrSingleVarDeclOptionalName_LRI_Isolated_3 : SingleVarDeclaration
   ::= _DeclaratorKeyword:keywords {_DeclaratorKeyword:keywords} _TypeBeforeDeclarator:type [_DeclaratorOptionalName:declarator] ["=" _Expr_NoComma:defaultValue] as SingleVarDeclaration
   ;
 
-_SingleVarDeclOptionalName__TypeBeforeDeclarator_LRI_Prefix : TypeOrExpr
-  ::= left_recursion_placeholder(LRIP__SingleVarDeclOptionalName__TypeBeforeDeclarator)
+_TypeOrSingleVarDeclOptionalName_LRI_Original : TypeOrExprOrOthers
+  ::= left_recursion_placeholder(LRI__TypeOrSingleVarDeclOptionalName)
   ::= !_TypeBeforeDeclarator_LRI_Original
-  ;
-
-_SingleVarDeclOptionalName_LRI_Original : SingleVarDeclaration
-  ::= left_recursion_placeholder(LRI__SingleVarDeclOptionalName)
-  ::= _SingleVarDeclOptionalName__TypeBeforeDeclarator_LRI_Prefix:type "=" _Expr_NoComma:defaultValue as SingleVarDeclaration
-  ::= _SingleVarDeclOptionalName__TypeBeforeDeclarator_LRI_Prefix:type _DeclaratorOptionalName:declarator ["=" _Expr_NoComma:defaultValue] as SingleVarDeclaration
-  ::= !_SingleVarDeclOptionalName_LRI_Isolated_2
+  ::= _TypeBeforeDeclarator_LRI_Original:type "=" _Expr_NoComma:defaultValue as SingleVarDeclaration
+  ::= _TypeBeforeDeclarator_LRI_Original:type _DeclaratorOptionalName:declarator ["=" _Expr_NoComma:defaultValue] as SingleVarDeclaration
+  ::= !_TypeOrSingleVarDeclOptionalName_LRI_Isolated_3
   ;
 
 _ExprStat_LRI_Original : ExprStat
@@ -1079,24 +1070,12 @@ _TypeBeforeDeclarator : TypeOrExpr
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_2 [left_recursion_inject(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _TypeBeforeDeclarator_LRI_Original]
   ;
 
-_DeclaratorFunctionParameter : TypeOrExprOrOthers
-  ::= !_SingleVarDeclOptionalName_LRI_Isolated_2
-  ::= !_PrimitiveType left_recursion_inject_multiple(LRIP__SingleVarDeclOptionalName__TypeBeforeDeclarator) _SingleVarDeclOptionalName_LRI_Original
-  ::= !_PrimitiveType [left_recursion_inject(LRI__PM_PrimitiveType) (_TypeBeforeDeclarator_LRI_Original [left_recursion_inject_multiple(LRIP__SingleVarDeclOptionalName__TypeBeforeDeclarator) _SingleVarDeclOptionalName_LRI_Original])]
-  ::= !_QualifiedName left_recursion_inject_multiple(LRIP__SingleVarDeclOptionalName__TypeBeforeDeclarator) _SingleVarDeclOptionalName_LRI_Original
-  ::= !_QualifiedName [left_recursion_inject(LRI__PM_QualifiedName) (_TypeBeforeDeclarator_LRI_Original [left_recursion_inject_multiple(LRIP__SingleVarDeclOptionalName__TypeBeforeDeclarator) _SingleVarDeclOptionalName_LRI_Original])]
-  ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_1 left_recursion_inject_multiple(LRIP__SingleVarDeclOptionalName__TypeBeforeDeclarator) _SingleVarDeclOptionalName_LRI_Original
-  ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_1 [left_recursion_inject(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) (_TypeBeforeDeclarator_LRI_Original [left_recursion_inject_multiple(LRIP__SingleVarDeclOptionalName__TypeBeforeDeclarator) _SingleVarDeclOptionalName_LRI_Original])]
-  ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_2 left_recursion_inject_multiple(LRIP__SingleVarDeclOptionalName__TypeBeforeDeclarator) _SingleVarDeclOptionalName_LRI_Original
-  ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_2 [left_recursion_inject(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) (_TypeBeforeDeclarator_LRI_Original [left_recursion_inject_multiple(LRIP__SingleVarDeclOptionalName__TypeBeforeDeclarator) _SingleVarDeclOptionalName_LRI_Original])]
-  ;
-
-_SingleVarDeclOptionalName : SingleVarDeclaration
-  ::= !_SingleVarDeclOptionalName_LRI_Isolated_2
-  ::= !_PrimitiveType left_recursion_inject_multiple(LRI__PM_PrimitiveType) _SingleVarDeclOptionalName_LRI_Original
-  ::= !_QualifiedName left_recursion_inject_multiple(LRI__PM_QualifiedName) _SingleVarDeclOptionalName_LRI_Original
-  ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_1 left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _SingleVarDeclOptionalName_LRI_Original
-  ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_2 left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _SingleVarDeclOptionalName_LRI_Original
+_TypeOrSingleVarDeclOptionalName : TypeOrExprOrOthers
+  ::= !_TypeOrSingleVarDeclOptionalName_LRI_Isolated_3
+  ::= !_PrimitiveType [left_recursion_inject_multiple(LRI__PM_PrimitiveType) _TypeOrSingleVarDeclOptionalName_LRI_Original]
+  ::= !_QualifiedName [left_recursion_inject_multiple(LRI__PM_QualifiedName) _TypeOrSingleVarDeclOptionalName_LRI_Original]
+  ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_1 [left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _TypeOrSingleVarDeclOptionalName_LRI_Original]
+  ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_2 [left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _TypeOrSingleVarDeclOptionalName_LRI_Original]
   ;
 
 _ExprStat : ExprStat

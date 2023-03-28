@@ -100,6 +100,7 @@ TEST_FILE
 	syntaxFileNames.Add(L"QualifiedName");
 	syntaxFileNames.Add(L"Expressions");
 	syntaxFileNames.Add(L"Types");
+	syntaxFileNames.Add(L"DeclaratorConfigurations");
 	syntaxFileNames.Add(L"Declarations");
 	syntaxFileNames.Add(L"Statements");
 	syntaxFileNames.Add(L"API");
@@ -198,11 +199,6 @@ TEST_FILE
 		}
 		{
 			auto rule = syntaxManager.Rules()[L"_TypeOrExpr"];
-			syntaxManager.parsableRules.Add(rule);
-			syntaxManager.ruleTypes.Add(rule, L"cpp_parser::CppTypeOrExpr");
-		}
-		{
-			auto rule = syntaxManager.Rules()[L"_DeclVarOrExpr"];
 			syntaxManager.parsableRules.Add(rule);
 			syntaxManager.ruleTypes.Add(rule, L"cpp_parser::CppTypeOrExpr");
 		}
