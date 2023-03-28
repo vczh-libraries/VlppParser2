@@ -716,6 +716,15 @@ ___TryStat : __TryStat
   ::= "__try" _Stat:tryStat ("__except" "(" _Expr:filter ")" _Stat:exceptStat | "__finally" _Stat:finallyStat) as __TryStat
   ;
 
+_IfStatConditionPart_LRI_Original : IfElseStat
+  ::= _ExprOrVarWithInit_LRI_Original:condition ")" as IfElseStat
+  ::= _VarsDecl_LRI_Original:varsDecl ";" _ExprOrVarWithInit:condition ")" as IfElseStat
+  ;
+
+_IfStat : IfElseStat
+  ::= "if" "(" !_IfStatConditionPart _Stat:trueStat +["else" _Stat:falseStat]
+  ;
+
 _OtherStats : Statement
   ::= ";" as EmptyStat
   ::= "break" ";" as BreakStat
@@ -729,7 +738,6 @@ _OtherStats : Statement
   ::= "static_assert" "(" _Expr:expr ["," _Expr:message] ")" ";" as StaticAssertStat
   ::= "while" "(" _ExprOrVarWithInit:condition ")" _Stat:stat as WhileStat
   ::= "do" _Stat:stat "while" "(" _Expr:condition ")" as DoWhileStat
-  ::= "if" "(" _ExprOrVarWithInit:condition [";" _Expr:conditionExtra] ")" _Stat:trueStat +["else" _Stat:falseStat] as IfElseStat
   ::= "switch" "(" _ExprOrVarWithInit:condition ")" _BlockStat:stat as SwitchStat
   ;
 
@@ -745,7 +753,11 @@ _Stat_LRI_Isolated_3 : __TryStat
   ::= !___TryStat
   ;
 
-_Stat_LRI_Isolated_4 : Statement
+_Stat_LRI_Isolated_4 : IfElseStat
+  ::= !_IfStat
+  ;
+
+_Stat_LRI_Isolated_5 : Statement
   ::= !_OtherStats
   ;
 
@@ -756,6 +768,7 @@ _Stat_LRI_Original : Statement
   ::= !_Stat_LRI_Isolated_2
   ::= !_Stat_LRI_Isolated_3
   ::= !_Stat_LRI_Isolated_4
+  ::= !_Stat_LRI_Isolated_5
   ;
 
 _TypeStartsWithKeyword_LRI_Isolated_2 : DeclaratorType
@@ -1235,11 +1248,26 @@ _ExprStat : Statement
   ::= !_VarsDecl_LRI_Isolated_1 left_recursion_inject(LRI__VarsDecl) _ExprStat_LRI_Original
   ;
 
+_IfStatConditionPart : IfElseStat
+  ::= !_BExpr_NoComma_SWITCH_1allow_GT_LRI_Isolated_1 left_recursion_inject(LRI__BExpr_NoComma_SWITCH_1allow_GT) _IfStatConditionPart_LRI_Original
+  ::= !_ExprOrVarWithInit_LRI_Isolated_2 left_recursion_inject(LRI__ExprOrVarWithInit) _IfStatConditionPart_LRI_Original
+  ::= !_PrefixUnaryExpr_LRI_Isolated_1 left_recursion_inject_multiple(LRI__PrefixUnaryExpr) _IfStatConditionPart_LRI_Original
+  ::= !_PrimitiveExpr left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveExpr) _IfStatConditionPart_LRI_Original
+  ::= !_PrimitiveType left_recursion_inject_multiple(LRI__PM_PrimitiveType) _IfStatConditionPart_LRI_Original
+  ::= !_QualifiedName left_recursion_inject_multiple(LRI__PM_QualifiedName, LRI__QualifiedName_PrimitiveExpr) _IfStatConditionPart_LRI_Original
+  ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_1 left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _IfStatConditionPart_LRI_Original
+  ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_2 left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _IfStatConditionPart_LRI_Original
+  ::= !_TypeStartsWithKeyword_LRI_Isolated_2 left_recursion_inject_multiple(LRI__TypeStartsWithKeyword) _IfStatConditionPart_LRI_Original
+  ::= !_Type_LRI_Isolated_2 left_recursion_inject_multiple(LRI__Type) _IfStatConditionPart_LRI_Original
+  ::= !_VarsDecl_LRI_Isolated_1 left_recursion_inject(LRI__VarsDecl) _IfStatConditionPart_LRI_Original
+  ;
+
 _Stat : Statement
   ::= !_Stat_LRI_Isolated_1
   ::= !_Stat_LRI_Isolated_2
   ::= !_Stat_LRI_Isolated_3
   ::= !_Stat_LRI_Isolated_4
+  ::= !_Stat_LRI_Isolated_5
   ::= !_BExpr_NoComma_SWITCH_1allow_GT_LRI_Isolated_1 left_recursion_inject(LRI__BExpr_NoComma_SWITCH_1allow_GT) _Stat_LRI_Original
   ::= !_PrefixUnaryExpr_LRI_Isolated_1 left_recursion_inject_multiple(LRI__PrefixUnaryExpr) _Stat_LRI_Original
   ::= !_PrimitiveExpr left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveExpr) _Stat_LRI_Original

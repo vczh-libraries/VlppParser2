@@ -891,9 +891,9 @@ namespace cpp_parser
 			Traverse(static_cast<CppStatement*>(node));
 			Traverse(static_cast<CppIfElseStat*>(node));
 			InspectInto(node->condition.Obj());
-			InspectInto(node->conditionExtra.Obj());
 			InspectInto(node->falseStat.Obj());
 			InspectInto(node->trueStat.Obj());
+			InspectInto(node->varsDecl.Obj());
 			Finishing(static_cast<CppIfElseStat*>(node));
 			Finishing(static_cast<CppStatement*>(node));
 			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));

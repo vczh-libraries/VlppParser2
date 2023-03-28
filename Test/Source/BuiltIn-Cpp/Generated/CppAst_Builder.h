@@ -197,9 +197,9 @@ namespace cpp_parser
 		{
 		public:
 			MakeIfElseStat& condition(const vl::Ptr<CppTypeOrExprOrOthers>& value);
-			MakeIfElseStat& conditionExtra(const vl::Ptr<CppTypeOrExpr>& value);
 			MakeIfElseStat& falseStat(const vl::Ptr<CppStatement>& value);
 			MakeIfElseStat& trueStat(const vl::Ptr<CppStatement>& value);
+			MakeIfElseStat& varsDecl(const vl::Ptr<CppMultipleVarDeclaration>& value);
 		};
 
 		class MakeIfExpr : public vl::glr::ParsingAstBuilder<CppIfExpr>

@@ -23,6 +23,15 @@ ___TryStat
   ::= "__try" _Stat:tryStat ( "__except" "(" _Expr:filter ")" _Stat:exceptStat | "__finally" _Stat:finallyStat ) as __TryStat
   ;
 
+_IfStatConditionPart
+  ::= _ExprOrVarWithInit:condition ")" as IfElseStat
+  ::= _VarsDecl:varsDecl ";" _ExprOrVarWithInit:condition ")" as IfElseStat
+  ;
+
+_IfStat
+  ::= "if" "(" !_IfStatConditionPart _Stat:trueStat +["else" _Stat:falseStat]
+  ;
+
 _OtherStats
   ::= ";" as EmptyStat
   ::= "break" ";" as BreakStat
@@ -36,7 +45,6 @@ _OtherStats
   ::= "static_assert" "(" _Expr:expr ["," _Expr:message] ")" ";" as StaticAssertStat
   ::= "while" "(" _ExprOrVarWithInit:condition ")" _Stat:stat as WhileStat
   ::= "do" _Stat:stat "while" "(" _Expr:condition ")" as DoWhileStat
-  ::= "if" "(" _ExprOrVarWithInit:condition [";" _Expr:conditionExtra] ")" _Stat:trueStat +["else" _Stat:falseStat] as IfElseStat
   ::= "switch" "(" _ExprOrVarWithInit:condition ")" _BlockStat:stat as SwitchStat
   ;
 
@@ -45,5 +53,6 @@ _Stat
   ::= !_BlockStat
   ::= !_TryStat
   ::= !___TryStat
+  ::= !_IfStat
   ::= !_OtherStats
   ;

@@ -556,14 +556,14 @@ namespace cpp_parser
 			BeginField(L"condition");
 			Print(node->condition.Obj());
 			EndField();
-			BeginField(L"conditionExtra");
-			Print(node->conditionExtra.Obj());
-			EndField();
 			BeginField(L"falseStat");
 			Print(node->falseStat.Obj());
 			EndField();
 			BeginField(L"trueStat");
 			Print(node->trueStat.Obj());
+			EndField();
+			BeginField(L"varsDecl");
+			Print(node->varsDecl.Obj());
 			EndField();
 		}
 		void AstVisitor::PrintFields(CppIfExpr* node)

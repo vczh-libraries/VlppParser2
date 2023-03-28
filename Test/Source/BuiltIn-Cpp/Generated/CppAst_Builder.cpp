@@ -451,12 +451,6 @@ MakeIfElseStat
 			return *this;
 		}
 
-		MakeIfElseStat& MakeIfElseStat::conditionExtra(const vl::Ptr<CppTypeOrExpr>& value)
-		{
-			node->conditionExtra = value;
-			return *this;
-		}
-
 		MakeIfElseStat& MakeIfElseStat::falseStat(const vl::Ptr<CppStatement>& value)
 		{
 			node->falseStat = value;
@@ -466,6 +460,12 @@ MakeIfElseStat
 		MakeIfElseStat& MakeIfElseStat::trueStat(const vl::Ptr<CppStatement>& value)
 		{
 			node->trueStat = value;
+			return *this;
+		}
+
+		MakeIfElseStat& MakeIfElseStat::varsDecl(const vl::Ptr<CppMultipleVarDeclaration>& value)
+		{
+			node->varsDecl = value;
 			return *this;
 		}
 

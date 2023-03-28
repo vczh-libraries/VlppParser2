@@ -865,8 +865,8 @@ namespace cpp_parser
 	class CppIfElseStat : public CppStatement, vl::reflection::Description<CppIfElseStat>
 	{
 	public:
+		vl::Ptr<CppMultipleVarDeclaration> varsDecl;
 		vl::Ptr<CppTypeOrExprOrOthers> condition;
-		vl::Ptr<CppTypeOrExpr> conditionExtra;
 		vl::Ptr<CppStatement> trueStat;
 		vl::Ptr<CppStatement> falseStat;
 

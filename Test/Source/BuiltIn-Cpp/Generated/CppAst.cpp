@@ -1063,8 +1063,8 @@ namespace vl
 
 				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppIfElseStat>(), NO_PARAMETER)
 
+				CLASS_MEMBER_FIELD(varsDecl)
 				CLASS_MEMBER_FIELD(condition)
-				CLASS_MEMBER_FIELD(conditionExtra)
 				CLASS_MEMBER_FIELD(trueStat)
 				CLASS_MEMBER_FIELD(falseStat)
 			END_CLASS_MEMBER(cpp_parser::CppIfElseStat)

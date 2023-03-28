@@ -242,12 +242,12 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppGenericArguments::arguments, object, field, value, cppFieldName);
 		case CppFields::IfElseStat_condition:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppIfElseStat::condition, object, field, value, cppFieldName);
-		case CppFields::IfElseStat_conditionExtra:
-			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppIfElseStat::conditionExtra, object, field, value, cppFieldName);
 		case CppFields::IfElseStat_falseStat:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppIfElseStat::falseStat, object, field, value, cppFieldName);
 		case CppFields::IfElseStat_trueStat:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppIfElseStat::trueStat, object, field, value, cppFieldName);
+		case CppFields::IfElseStat_varsDecl:
+			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppIfElseStat::varsDecl, object, field, value, cppFieldName);
 		case CppFields::IfExpr_condition:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppIfExpr::condition, object, field, value, cppFieldName);
 		case CppFields::IfExpr_falseBranch:
@@ -648,9 +648,9 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"GenericArguments::arguments",
 			L"GotoStat::label",
 			L"IfElseStat::condition",
-			L"IfElseStat::conditionExtra",
 			L"IfElseStat::falseStat",
 			L"IfElseStat::trueStat",
+			L"IfElseStat::varsDecl",
 			L"IfExpr::condition",
 			L"IfExpr::falseBranch",
 			L"IfExpr::trueBranch",
@@ -782,9 +782,9 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::CppGenericArguments::arguments",
 			L"cpp_parser::CppGotoStat::label",
 			L"cpp_parser::CppIfElseStat::condition",
-			L"cpp_parser::CppIfElseStat::conditionExtra",
 			L"cpp_parser::CppIfElseStat::falseStat",
 			L"cpp_parser::CppIfElseStat::trueStat",
+			L"cpp_parser::CppIfElseStat::varsDecl",
 			L"cpp_parser::CppIfExpr::condition",
 			L"cpp_parser::CppIfExpr::falseBranch",
 			L"cpp_parser::CppIfExpr::trueBranch",
