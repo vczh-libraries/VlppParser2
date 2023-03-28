@@ -635,12 +635,24 @@ _FunctionParameterVariablePart : DeclaratorVariablePart
   ::= _DeclaratorOptionalName:declarator [_VarValueInit:init] as DeclaratorVariablePart
   ;
 
+_DeclaratorVariablePartWithoutInit : DeclaratorVariablePart
+  ::= _DeclaratorRequiredName:declarator as DeclaratorVariablePart
+  ;
+
 _DeclaratorVariablePartOptionalInit : DeclaratorVariablePart
   ::= _DeclaratorRequiredName:declarator [_VarInit:init] as DeclaratorVariablePart
   ;
 
 _DeclaratorVariablePartRequiredInit : DeclaratorVariablePart
   ::= _DeclaratorRequiredName:declarator _VarInit:init as DeclaratorVariablePart
+  ;
+
+_VarWithoutInit_LRI_Original : SingleVarDeclaration
+  ::= _TypeBeforeDeclarator_LRI_Original:type _DeclaratorVariablePartWithoutInit:varPart as SingleVarDeclaration
+  ;
+
+_VarRequiredInit_LRI_Original : SingleVarDeclaration
+  ::= _TypeBeforeDeclarator_LRI_Original:type _DeclaratorVariablePartRequiredInit:varPart as SingleVarDeclaration
   ;
 
 _FunctionParameter_LRI_Isolated_2 : SingleVarDeclaration
@@ -1116,6 +1128,20 @@ _TypeBeforeDeclarator : TypeOrExpr
   ::= !_QualifiedName [left_recursion_inject(LRI__PM_QualifiedName) _TypeBeforeDeclarator_LRI_Original]
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_1 [left_recursion_inject(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _TypeBeforeDeclarator_LRI_Original]
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_2 [left_recursion_inject(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _TypeBeforeDeclarator_LRI_Original]
+  ;
+
+_VarWithoutInit : SingleVarDeclaration
+  ::= !_PrimitiveType left_recursion_inject(LRI__PM_PrimitiveType) _VarWithoutInit_LRI_Original
+  ::= !_QualifiedName left_recursion_inject(LRI__PM_QualifiedName) _VarWithoutInit_LRI_Original
+  ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_1 left_recursion_inject(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _VarWithoutInit_LRI_Original
+  ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_2 left_recursion_inject(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _VarWithoutInit_LRI_Original
+  ;
+
+_VarRequiredInit : SingleVarDeclaration
+  ::= !_PrimitiveType left_recursion_inject(LRI__PM_PrimitiveType) _VarRequiredInit_LRI_Original
+  ::= !_QualifiedName left_recursion_inject(LRI__PM_QualifiedName) _VarRequiredInit_LRI_Original
+  ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_1 left_recursion_inject(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _VarRequiredInit_LRI_Original
+  ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_2 left_recursion_inject(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _VarRequiredInit_LRI_Original
   ;
 
 _FunctionParameter : TypeOrExprOrOthers

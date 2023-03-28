@@ -34,12 +34,24 @@ _FunctionParameterVariablePart
   ::= _DeclaratorOptionalName:declarator [_VarValueInit:init] as DeclaratorVariablePart
   ;
 
+_DeclaratorVariablePartWithoutInit
+  ::= _DeclaratorRequiredName:declarator as DeclaratorVariablePart
+  ;
+
 _DeclaratorVariablePartOptionalInit
   ::= _DeclaratorRequiredName:declarator [_VarInit:init] as DeclaratorVariablePart
   ;
 
 _DeclaratorVariablePartRequiredInit
   ::= _DeclaratorRequiredName:declarator _VarInit:init as DeclaratorVariablePart
+  ;
+
+_VarWithoutInit
+  ::= _TypeBeforeDeclarator:type _DeclaratorVariablePartWithoutInit:varPart as SingleVarDeclaration
+  ;
+
+_VarRequiredInit
+  ::= _TypeBeforeDeclarator:type _DeclaratorVariablePartRequiredInit:varPart as SingleVarDeclaration
   ;
 
 _FunctionParameter
