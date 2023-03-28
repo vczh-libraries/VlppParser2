@@ -22,6 +22,7 @@ namespace cpp_parser
 			, protected virtual CppExprOnly::IVisitor
 			, protected virtual CppTypeOnly::IVisitor
 			, protected virtual CppIdentifier::IVisitor
+			, protected virtual CppVarInit::IVisitor
 			, protected virtual CppStatement::IVisitor
 		{
 		protected:
@@ -77,6 +78,10 @@ namespace cpp_parser
 			virtual void PrintFields(CppTypeOnly* node);
 			virtual void PrintFields(CppTypeOrExpr* node);
 			virtual void PrintFields(CppTypeOrExprOrOthers* node);
+			virtual void PrintFields(CppVarBraceInit* node);
+			virtual void PrintFields(CppVarInit* node);
+			virtual void PrintFields(CppVarParanthesisInit* node);
+			virtual void PrintFields(CppVarValueInit* node);
 			virtual void PrintFields(CppVariadicExpr* node);
 			virtual void PrintFields(CppVolatileType* node);
 			virtual void PrintFields(Cpp__LeaveStat* node);
@@ -119,6 +124,10 @@ namespace cpp_parser
 			void Visit(CppNameIdentifier* node) override;
 			void Visit(CppOperatorIdentifier* node) override;
 
+			void Visit(CppVarValueInit* node) override;
+			void Visit(CppVarParanthesisInit* node) override;
+			void Visit(CppVarBraceInit* node) override;
+
 			void Visit(CppEmptyStat* node) override;
 			void Visit(CppBlockStat* node) override;
 			void Visit(CppExprStat* node) override;
@@ -137,6 +146,7 @@ namespace cpp_parser
 
 			void Print(CppTypeOrExprOrOthers* node);
 			void Print(CppIdentifier* node);
+			void Print(CppVarInit* node);
 			void Print(CppStatement* node);
 			void Print(CppGenericArguments* node);
 			void Print(CppStringLiteralFragment* node);

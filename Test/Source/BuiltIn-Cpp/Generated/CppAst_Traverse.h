@@ -22,6 +22,7 @@ namespace cpp_parser
 			, protected virtual CppExprOnly::IVisitor
 			, protected virtual CppTypeOnly::IVisitor
 			, protected virtual CppIdentifier::IVisitor
+			, protected virtual CppVarInit::IVisitor
 			, protected virtual CppStatement::IVisitor
 		{
 		protected:
@@ -79,6 +80,10 @@ namespace cpp_parser
 			virtual void Traverse(CppTypeOnly* node);
 			virtual void Traverse(CppTypeOrExpr* node);
 			virtual void Traverse(CppTypeOrExprOrOthers* node);
+			virtual void Traverse(CppVarBraceInit* node);
+			virtual void Traverse(CppVarInit* node);
+			virtual void Traverse(CppVarParanthesisInit* node);
+			virtual void Traverse(CppVarValueInit* node);
 			virtual void Traverse(CppVariadicExpr* node);
 			virtual void Traverse(CppVolatileType* node);
 			virtual void Traverse(Cpp__LeaveStat* node);
@@ -137,6 +142,10 @@ namespace cpp_parser
 			virtual void Finishing(CppTypeOnly* node);
 			virtual void Finishing(CppTypeOrExpr* node);
 			virtual void Finishing(CppTypeOrExprOrOthers* node);
+			virtual void Finishing(CppVarBraceInit* node);
+			virtual void Finishing(CppVarInit* node);
+			virtual void Finishing(CppVarParanthesisInit* node);
+			virtual void Finishing(CppVarValueInit* node);
 			virtual void Finishing(CppVariadicExpr* node);
 			virtual void Finishing(CppVolatileType* node);
 			virtual void Finishing(Cpp__LeaveStat* node);
@@ -179,6 +188,10 @@ namespace cpp_parser
 			void Visit(CppNameIdentifier* node) override;
 			void Visit(CppOperatorIdentifier* node) override;
 
+			void Visit(CppVarValueInit* node) override;
+			void Visit(CppVarParanthesisInit* node) override;
+			void Visit(CppVarBraceInit* node) override;
+
 			void Visit(CppEmptyStat* node) override;
 			void Visit(CppBlockStat* node) override;
 			void Visit(CppExprStat* node) override;
@@ -195,6 +208,7 @@ namespace cpp_parser
 		public:
 			void InspectInto(CppTypeOrExprOrOthers* node);
 			void InspectInto(CppIdentifier* node);
+			void InspectInto(CppVarInit* node);
 			void InspectInto(CppStatement* node);
 			void InspectInto(CppGenericArguments* node);
 			void InspectInto(CppStringLiteralFragment* node);

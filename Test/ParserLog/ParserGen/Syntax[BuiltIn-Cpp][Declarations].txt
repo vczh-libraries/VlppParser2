@@ -3,6 +3,116 @@
     "rules": [{
         "$ast": "Rule",
         "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "\"=\"",
+                    "refType": "Literal"
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "expr",
+                    "literal": "_Expr_NoComma",
+                    "refType": "Id"
+                }
+            },
+            "type": "VarValueInit"
+        }],
+        "name": "_VarValueInit",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "_VarValueInit"
+            }
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "RefSyntax",
+                        "field": "",
+                        "literal": "\"(\"",
+                        "refType": "Literal"
+                    },
+                    "second": {
+                        "$ast": "LoopSyntax",
+                        "delimiter": {
+                            "$ast": "RefSyntax",
+                            "field": "",
+                            "literal": "\",\"",
+                            "refType": "Literal"
+                        },
+                        "syntax": {
+                            "$ast": "RefSyntax",
+                            "field": "arguments",
+                            "literal": "_Expr_Argument",
+                            "refType": "Id"
+                        }
+                    }
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "\")\"",
+                    "refType": "Literal"
+                }
+            },
+            "type": "VarParanthesisInit"
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "RefSyntax",
+                        "field": "",
+                        "literal": "\"{\"",
+                        "refType": "Literal"
+                    },
+                    "second": {
+                        "$ast": "LoopSyntax",
+                        "delimiter": {
+                            "$ast": "RefSyntax",
+                            "field": "",
+                            "literal": "\",\"",
+                            "refType": "Literal"
+                        },
+                        "syntax": {
+                            "$ast": "RefSyntax",
+                            "field": "arguments",
+                            "literal": "_Expr_Argument",
+                            "refType": "Id"
+                        }
+                    }
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "\"}\"",
+                    "refType": "Literal"
+                }
+            },
+            "type": "VarBraceInit"
+        }],
+        "name": "_VarInit",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
             "$ast": "ReuseClause",
             "assignments": [],
             "syntax": {
@@ -15,24 +125,15 @@
             "syntax": {
                 "$ast": "SequenceSyntax",
                 "first": {
-                    "$ast": "SequenceSyntax",
-                    "first": {
-                        "$ast": "RefSyntax",
-                        "field": "type",
-                        "literal": "_TypeBeforeDeclarator",
-                        "refType": "Id"
-                    },
-                    "second": {
-                        "$ast": "RefSyntax",
-                        "field": "",
-                        "literal": "\"=\"",
-                        "refType": "Literal"
-                    }
+                    "$ast": "RefSyntax",
+                    "field": "type",
+                    "literal": "_TypeBeforeDeclarator",
+                    "refType": "Id"
                 },
                 "second": {
                     "$ast": "RefSyntax",
-                    "field": "defaultValue",
-                    "literal": "_Expr_NoComma",
+                    "field": "init",
+                    "literal": "_VarValueInit",
                     "refType": "Id"
                 }
             },
@@ -61,19 +162,10 @@
                     "$ast": "OptionalSyntax",
                     "priority": "Equal",
                     "syntax": {
-                        "$ast": "SequenceSyntax",
-                        "first": {
-                            "$ast": "RefSyntax",
-                            "field": "",
-                            "literal": "\"=\"",
-                            "refType": "Literal"
-                        },
-                        "second": {
-                            "$ast": "RefSyntax",
-                            "field": "defaultValue",
-                            "literal": "_Expr_NoComma",
-                            "refType": "Id"
-                        }
+                        "$ast": "RefSyntax",
+                        "field": "init",
+                        "literal": "_VarValueInit",
+                        "refType": "Id"
                     }
                 }
             },
@@ -128,25 +220,110 @@
                     "$ast": "OptionalSyntax",
                     "priority": "Equal",
                     "syntax": {
-                        "$ast": "SequenceSyntax",
-                        "first": {
-                            "$ast": "RefSyntax",
-                            "field": "",
-                            "literal": "\"=\"",
-                            "refType": "Literal"
-                        },
-                        "second": {
-                            "$ast": "RefSyntax",
-                            "field": "defaultValue",
-                            "literal": "_Expr_NoComma",
-                            "refType": "Id"
-                        }
+                        "$ast": "RefSyntax",
+                        "field": "init",
+                        "literal": "_VarValueInit",
+                        "refType": "Id"
                     }
                 }
             },
             "type": "SingleVarDeclaration"
         }],
-        "name": "_TypeOrSingleVarDeclOptionalName",
+        "name": "_FunctionParameter",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "_Expr"
+            }
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "RefSyntax",
+                        "field": "type",
+                        "literal": "_TypeBeforeDeclarator",
+                        "refType": "Id"
+                    },
+                    "second": {
+                        "$ast": "RefSyntax",
+                        "field": "declarator",
+                        "literal": "_DeclaratorRequiredName",
+                        "refType": "Id"
+                    }
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "init",
+                    "literal": "_VarInit",
+                    "refType": "Id"
+                }
+            },
+            "type": "SingleVarDeclaration"
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "SequenceSyntax",
+                        "first": {
+                            "$ast": "SequenceSyntax",
+                            "first": {
+                                "$ast": "RefSyntax",
+                                "field": "keywords",
+                                "literal": "_DeclaratorKeyword",
+                                "refType": "Id"
+                            },
+                            "second": {
+                                "$ast": "LoopSyntax",
+                                "delimiter": null,
+                                "syntax": {
+                                    "$ast": "RefSyntax",
+                                    "field": "keywords",
+                                    "literal": "_DeclaratorKeyword",
+                                    "refType": "Id"
+                                }
+                            }
+                        },
+                        "second": {
+                            "$ast": "RefSyntax",
+                            "field": "type",
+                            "literal": "_TypeBeforeDeclarator",
+                            "refType": "Id"
+                        }
+                    },
+                    "second": {
+                        "$ast": "OptionalSyntax",
+                        "priority": "Equal",
+                        "syntax": {
+                            "$ast": "RefSyntax",
+                            "field": "declarator",
+                            "literal": "_DeclaratorRequiredName",
+                            "refType": "Id"
+                        }
+                    }
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "init",
+                    "literal": "_VarInit",
+                    "refType": "Id"
+                }
+            },
+            "type": "SingleVarDeclaration"
+        }],
+        "name": "_ExprOrVarWithInit",
         "type": ""
     }],
     "switches": []

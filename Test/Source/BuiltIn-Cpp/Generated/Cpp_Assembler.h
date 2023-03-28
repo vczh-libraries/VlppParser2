@@ -65,9 +65,13 @@ namespace cpp_parser
 		TypeOnly = 49,
 		TypeOrExpr = 50,
 		TypeOrExprOrOthers = 51,
-		VariadicExpr = 52,
-		VolatileType = 53,
-		__LeaveStat = 54,
+		VarBraceInit = 52,
+		VarInit = 53,
+		VarParanthesisInit = 54,
+		VarValueInit = 55,
+		VariadicExpr = 56,
+		VolatileType = 57,
+		__LeaveStat = 58,
 	};
 
 	enum class CppFields : vl::vint32_t
@@ -148,7 +152,7 @@ namespace cpp_parser
 		QualifiedName_parent = 73,
 		ReturnStat_expr = 74,
 		SingleVarDeclaration_declarator = 75,
-		SingleVarDeclaration_defaultValue = 76,
+		SingleVarDeclaration_init = 76,
 		SingleVarDeclaration_keywords = 77,
 		SingleVarDeclaration_type = 78,
 		SizeofExpr_argument = 79,
@@ -162,9 +166,12 @@ namespace cpp_parser
 		SysFuncExpr_keyword = 87,
 		SysFuncExpr_variadic = 88,
 		ThrowExpr_argument = 89,
-		VariadicExpr_operand = 90,
-		VariadicExpr_variadic = 91,
-		VolatileType_type = 92,
+		VarBraceInit_arguments = 90,
+		VarParanthesisInit_arguments = 91,
+		VarValueInit_expr = 92,
+		VariadicExpr_operand = 93,
+		VariadicExpr_variadic = 94,
+		VolatileType_type = 95,
 	};
 
 	extern const wchar_t* CppTypeName(CppClasses type);

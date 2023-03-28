@@ -607,9 +607,9 @@ MakeSingleVarDeclaration
 			return *this;
 		}
 
-		MakeSingleVarDeclaration& MakeSingleVarDeclaration::defaultValue(const vl::Ptr<CppTypeOrExpr>& value)
+		MakeSingleVarDeclaration& MakeSingleVarDeclaration::init(const vl::Ptr<CppVarInit>& value)
 		{
-			node->defaultValue = value;
+			node->init = value;
 			return *this;
 		}
 
@@ -712,6 +712,36 @@ MakeThrowExpr
 		MakeThrowExpr& MakeThrowExpr::argument(const vl::Ptr<CppTypeOrExpr>& value)
 		{
 			node->argument = value;
+			return *this;
+		}
+
+/***********************************************************************
+MakeVarBraceInit
+***********************************************************************/
+
+		MakeVarBraceInit& MakeVarBraceInit::arguments(const vl::Ptr<CppTypeOrExpr>& value)
+		{
+			node->arguments.Add(value);
+			return *this;
+		}
+
+/***********************************************************************
+MakeVarParanthesisInit
+***********************************************************************/
+
+		MakeVarParanthesisInit& MakeVarParanthesisInit::arguments(const vl::Ptr<CppTypeOrExpr>& value)
+		{
+			node->arguments.Add(value);
+			return *this;
+		}
+
+/***********************************************************************
+MakeVarValueInit
+***********************************************************************/
+
+		MakeVarValueInit& MakeVarValueInit::expr(const vl::Ptr<CppTypeOrExpr>& value)
+		{
+			node->expr = value;
 			return *this;
 		}
 

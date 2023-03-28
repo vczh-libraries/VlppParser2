@@ -176,6 +176,24 @@ IdentifierVisitor
 		}
 
 /***********************************************************************
+VarInitVisitor
+***********************************************************************/
+
+		// Visitor Members -----------------------------------
+
+		void VarInitVisitor::Visit(CppVarValueInit* node)
+		{
+		}
+
+		void VarInitVisitor::Visit(CppVarParanthesisInit* node)
+		{
+		}
+
+		void VarInitVisitor::Visit(CppVarBraceInit* node)
+		{
+		}
+
+/***********************************************************************
 StatementVisitor
 ***********************************************************************/
 

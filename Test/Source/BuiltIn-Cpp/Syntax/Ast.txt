@@ -412,12 +412,31 @@ class DeclaratorType : TypeOrExpr
 // Declaration
 //////////////////////////////////////////////////////////////////
 
+class VarInit
+{
+}
+
+class VarValueInit : VarInit
+{
+    var expr : TypeOrExpr;
+}
+
+class VarParanthesisInit : VarInit
+{
+    var arguments : TypeOrExpr[];
+}
+
+class VarBraceInit : VarInit
+{
+    var arguments : TypeOrExpr[];
+}
+
 class SingleVarDeclaration : Declaration
 {
     var keywords : DeclaratorKeyword[];
     var type : TypeOrExpr;
     var declarator : Declarator;
-    var defaultValue : TypeOrExpr;
+    var init : VarInit;
 }
 
 //////////////////////////////////////////////////////////////////

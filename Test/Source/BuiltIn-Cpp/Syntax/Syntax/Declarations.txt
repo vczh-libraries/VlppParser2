@@ -2,10 +2,31 @@
 // Mixed Declarations
 //////////////////////////////////////////////////////////////////
 
-_TypeOrSingleVarDeclOptionalName
-  ::= !_TypeBeforeDeclarator
-  ::= _TypeBeforeDeclarator:type "=" _Expr_NoComma:defaultValue as SingleVarDeclaration
-  ::= _TypeBeforeDeclarator:type _DeclaratorOptionalName:declarator ["=" _Expr_NoComma:defaultValue] as SingleVarDeclaration
-  ::= _DeclaratorKeyword:keywords {_DeclaratorKeyword:keywords}
-      _TypeBeforeDeclarator:type [_DeclaratorOptionalName:declarator] ["=" _Expr_NoComma:defaultValue] as SingleVarDeclaration
+_VarValueInit
+  ::= "=" _Expr_NoComma:expr as VarValueInit
   ;
+
+_VarInit
+  ::= !_VarValueInit
+  ::= "(" {_Expr_Argument:arguments ; ","} ")" as VarParanthesisInit
+  ::= "{" {_Expr_Argument:arguments ; ","} "}" as VarBraceInit
+  ;
+
+_FunctionParameter
+  ::= !_TypeBeforeDeclarator
+  ::= _TypeBeforeDeclarator:type _VarValueInit:init as SingleVarDeclaration
+  ::= _TypeBeforeDeclarator:type _DeclaratorOptionalName:declarator [_VarValueInit:init] as SingleVarDeclaration
+  ::= _DeclaratorKeyword:keywords {_DeclaratorKeyword:keywords}
+      _TypeBeforeDeclarator:type [_DeclaratorOptionalName:declarator] [_VarValueInit:init] as SingleVarDeclaration
+  ;
+
+_ExprOrVarWithInit
+  ::= !_Expr
+  ::= _TypeBeforeDeclarator:type _DeclaratorRequiredName:declarator _VarInit:init as SingleVarDeclaration
+  ::= _DeclaratorKeyword:keywords {_DeclaratorKeyword:keywords}
+      _TypeBeforeDeclarator:type [_DeclaratorRequiredName:declarator] _VarInit:init as SingleVarDeclaration
+  ;
+
+//////////////////////////////////////////////////////////////////
+// Variable Declarations
+//////////////////////////////////////////////////////////////////

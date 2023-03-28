@@ -262,7 +262,7 @@ namespace cpp_parser
 		{
 		public:
 			MakeSingleVarDeclaration& declarator(const vl::Ptr<CppDeclarator>& value);
-			MakeSingleVarDeclaration& defaultValue(const vl::Ptr<CppTypeOrExpr>& value);
+			MakeSingleVarDeclaration& init(const vl::Ptr<CppVarInit>& value);
 			MakeSingleVarDeclaration& keywords(const vl::Ptr<CppDeclaratorKeyword>& value);
 			MakeSingleVarDeclaration& type(const vl::Ptr<CppTypeOrExpr>& value);
 		};
@@ -306,6 +306,24 @@ namespace cpp_parser
 		{
 		public:
 			MakeThrowExpr& argument(const vl::Ptr<CppTypeOrExpr>& value);
+		};
+
+		class MakeVarBraceInit : public vl::glr::ParsingAstBuilder<CppVarBraceInit>
+		{
+		public:
+			MakeVarBraceInit& arguments(const vl::Ptr<CppTypeOrExpr>& value);
+		};
+
+		class MakeVarParanthesisInit : public vl::glr::ParsingAstBuilder<CppVarParanthesisInit>
+		{
+		public:
+			MakeVarParanthesisInit& arguments(const vl::Ptr<CppTypeOrExpr>& value);
+		};
+
+		class MakeVarValueInit : public vl::glr::ParsingAstBuilder<CppVarValueInit>
+		{
+		public:
+			MakeVarValueInit& expr(const vl::Ptr<CppTypeOrExpr>& value);
 		};
 
 		class MakeVariadicExpr : public vl::glr::ParsingAstBuilder<CppVariadicExpr>

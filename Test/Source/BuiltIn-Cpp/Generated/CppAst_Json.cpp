@@ -1220,8 +1220,8 @@ namespace cpp_parser
 			BeginField(L"declarator");
 			Print(node->declarator.Obj());
 			EndField();
-			BeginField(L"defaultValue");
-			Print(node->defaultValue.Obj());
+			BeginField(L"init");
+			Print(node->init.Obj());
 			EndField();
 			BeginField(L"keywords");
 			BeginArray();
@@ -1316,6 +1316,41 @@ namespace cpp_parser
 		}
 		void AstVisitor::PrintFields(CppTypeOrExprOrOthers* node)
 		{
+		}
+		void AstVisitor::PrintFields(CppVarBraceInit* node)
+		{
+			BeginField(L"arguments");
+			BeginArray();
+			for (auto&& listItem : node->arguments)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppVarInit* node)
+		{
+		}
+		void AstVisitor::PrintFields(CppVarParanthesisInit* node)
+		{
+			BeginField(L"arguments");
+			BeginArray();
+			for (auto&& listItem : node->arguments)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppVarValueInit* node)
+		{
+			BeginField(L"expr");
+			Print(node->expr.Obj());
+			EndField();
 		}
 		void AstVisitor::PrintFields(CppVariadicExpr* node)
 		{
@@ -1779,6 +1814,48 @@ namespace cpp_parser
 			EndObject();
 		}
 
+		void AstVisitor::Visit(CppVarValueInit* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"VarValueInit", node);
+			PrintFields(static_cast<CppVarInit*>(node));
+			PrintFields(static_cast<CppVarValueInit*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppVarParanthesisInit* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"VarParanthesisInit", node);
+			PrintFields(static_cast<CppVarInit*>(node));
+			PrintFields(static_cast<CppVarParanthesisInit*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppVarBraceInit* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"VarBraceInit", node);
+			PrintFields(static_cast<CppVarInit*>(node));
+			PrintFields(static_cast<CppVarBraceInit*>(node));
+			EndObject();
+		}
+
 		void AstVisitor::Visit(CppEmptyStat* node)
 		{
 			if (!node)
@@ -1970,6 +2047,16 @@ namespace cpp_parser
 				return;
 			}
 			node->Accept(static_cast<CppIdentifier::IVisitor*>(this));
+		}
+
+		void AstVisitor::Print(CppVarInit* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			node->Accept(static_cast<CppVarInit::IVisitor*>(this));
 		}
 
 		void AstVisitor::Print(CppStatement* node)

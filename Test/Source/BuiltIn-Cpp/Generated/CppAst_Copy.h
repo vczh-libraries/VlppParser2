@@ -22,6 +22,7 @@ namespace cpp_parser
 			, protected virtual CppExprOnly::IVisitor
 			, protected virtual CppTypeOnly::IVisitor
 			, protected virtual CppIdentifier::IVisitor
+			, protected virtual CppVarInit::IVisitor
 			, protected virtual CppStatement::IVisitor
 		{
 		protected:
@@ -77,6 +78,10 @@ namespace cpp_parser
 			void CopyFields(CppTypeOnly* from, CppTypeOnly* to);
 			void CopyFields(CppTypeOrExpr* from, CppTypeOrExpr* to);
 			void CopyFields(CppTypeOrExprOrOthers* from, CppTypeOrExprOrOthers* to);
+			void CopyFields(CppVarBraceInit* from, CppVarBraceInit* to);
+			void CopyFields(CppVarInit* from, CppVarInit* to);
+			void CopyFields(CppVarParanthesisInit* from, CppVarParanthesisInit* to);
+			void CopyFields(CppVarValueInit* from, CppVarValueInit* to);
 			void CopyFields(CppVariadicExpr* from, CppVariadicExpr* to);
 			void CopyFields(CppVolatileType* from, CppVolatileType* to);
 			void CopyFields(Cpp__LeaveStat* from, Cpp__LeaveStat* to);
@@ -129,6 +134,10 @@ namespace cpp_parser
 			void Visit(CppNameIdentifier* node) override;
 			void Visit(CppOperatorIdentifier* node) override;
 
+			void Visit(CppVarValueInit* node) override;
+			void Visit(CppVarParanthesisInit* node) override;
+			void Visit(CppVarBraceInit* node) override;
+
 			void Visit(CppEmptyStat* node) override;
 			void Visit(CppBlockStat* node) override;
 			void Visit(CppExprStat* node) override;
@@ -145,6 +154,7 @@ namespace cpp_parser
 		public:
 			virtual vl::Ptr<CppTypeOrExprOrOthers> CopyNode(CppTypeOrExprOrOthers* node);
 			virtual vl::Ptr<CppIdentifier> CopyNode(CppIdentifier* node);
+			virtual vl::Ptr<CppVarInit> CopyNode(CppVarInit* node);
 			virtual vl::Ptr<CppStatement> CopyNode(CppStatement* node);
 			virtual vl::Ptr<CppGenericArguments> CopyNode(CppGenericArguments* node);
 			virtual vl::Ptr<CppStringLiteralFragment> CopyNode(CppStringLiteralFragment* node);
@@ -196,6 +206,9 @@ namespace cpp_parser
 			vl::Ptr<CppThrowExpr> CopyNode(CppThrowExpr* node);
 			vl::Ptr<CppTypeOnly> CopyNode(CppTypeOnly* node);
 			vl::Ptr<CppTypeOrExpr> CopyNode(CppTypeOrExpr* node);
+			vl::Ptr<CppVarBraceInit> CopyNode(CppVarBraceInit* node);
+			vl::Ptr<CppVarParanthesisInit> CopyNode(CppVarParanthesisInit* node);
+			vl::Ptr<CppVarValueInit> CopyNode(CppVarValueInit* node);
 			vl::Ptr<CppVariadicExpr> CopyNode(CppVariadicExpr* node);
 			vl::Ptr<CppVolatileType> CopyNode(CppVolatileType* node);
 			vl::Ptr<Cpp__LeaveStat> CopyNode(Cpp__LeaveStat* node);
