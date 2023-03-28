@@ -37,8 +37,10 @@ namespace cpp_parser
 	class CppExprOnly;
 	class CppExprStat;
 	class CppFile;
-	class CppForEachStat;
 	class CppForStat;
+	class CppForStatConditionPart;
+	class CppForStatIterateCondition;
+	class CppForStatLoopCondition;
 	class CppFunctionKeyword;
 	class CppGenericArgument;
 	class CppGenericArguments;
@@ -731,7 +733,6 @@ namespace cpp_parser
 			virtual void Visit(CppDoWhileStat* node) = 0;
 			virtual void Visit(CppIfElseStat* node) = 0;
 			virtual void Visit(CppForStat* node) = 0;
-			virtual void Visit(CppForEachStat* node) = 0;
 			virtual void Visit(CppSwitchStat* node) = 0;
 			virtual void Visit(CppTryStat* node) = 0;
 			virtual void Visit(Cpp__TryStat* node) = 0;
@@ -873,22 +874,43 @@ namespace cpp_parser
 		void Accept(CppStatement::IVisitor* visitor) override;
 	};
 
-	class CppForStat : public CppStatement, vl::reflection::Description<CppForStat>
+	class CppForStatConditionPart abstract : public vl::glr::ParsingAstBase, vl::reflection::Description<CppForStatConditionPart>
 	{
 	public:
-		vl::Ptr<CppSingleVarDeclaration> decl;
-		vl::Ptr<CppTypeOrExpr> condition;
-		vl::Ptr<CppTypeOrExpr> sideEffect;
-		vl::Ptr<CppStatement> stat;
+		class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
+		{
+		public:
+			virtual void Visit(CppForStatLoopCondition* node) = 0;
+			virtual void Visit(CppForStatIterateCondition* node) = 0;
+		};
 
-		void Accept(CppStatement::IVisitor* visitor) override;
+		virtual void Accept(CppForStatConditionPart::IVisitor* visitor) = 0;
+
 	};
 
-	class CppForEachStat : public CppStatement, vl::reflection::Description<CppForEachStat>
+	class CppForStatLoopCondition : public CppForStatConditionPart, vl::reflection::Description<CppForStatLoopCondition>
+	{
+	public:
+		vl::Ptr<CppMultipleVarDeclaration> varsDecl;
+		vl::Ptr<CppTypeOrExpr> condition;
+		vl::Ptr<CppTypeOrExpr> sideEffect;
+
+		void Accept(CppForStatConditionPart::IVisitor* visitor) override;
+	};
+
+	class CppForStatIterateCondition : public CppForStatConditionPart, vl::reflection::Description<CppForStatIterateCondition>
 	{
 	public:
 		vl::Ptr<CppSingleVarDeclaration> decl;
 		vl::Ptr<CppTypeOrExpr> collection;
+
+		void Accept(CppForStatConditionPart::IVisitor* visitor) override;
+	};
+
+	class CppForStat : public CppStatement, vl::reflection::Description<CppForStat>
+	{
+	public:
+		vl::Ptr<CppForStatConditionPart> conditionPart;
 		vl::Ptr<CppStatement> stat;
 
 		void Accept(CppStatement::IVisitor* visitor) override;
@@ -1025,8 +1047,11 @@ namespace vl
 			DECL_TYPE_INFO(cpp_parser::CppWhileStat)
 			DECL_TYPE_INFO(cpp_parser::CppDoWhileStat)
 			DECL_TYPE_INFO(cpp_parser::CppIfElseStat)
+			DECL_TYPE_INFO(cpp_parser::CppForStatConditionPart)
+			DECL_TYPE_INFO(cpp_parser::CppForStatConditionPart::IVisitor)
+			DECL_TYPE_INFO(cpp_parser::CppForStatLoopCondition)
+			DECL_TYPE_INFO(cpp_parser::CppForStatIterateCondition)
 			DECL_TYPE_INFO(cpp_parser::CppForStat)
-			DECL_TYPE_INFO(cpp_parser::CppForEachStat)
 			DECL_TYPE_INFO(cpp_parser::CppSwitchStat)
 			DECL_TYPE_INFO(cpp_parser::CppTryStatCatchPart)
 			DECL_TYPE_INFO(cpp_parser::CppTryStat)
@@ -1317,11 +1342,6 @@ namespace vl
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
-				void Visit(cpp_parser::CppForEachStat* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
 				void Visit(cpp_parser::CppSwitchStat* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
@@ -1338,6 +1358,19 @@ namespace vl
 				}
 
 			END_INTERFACE_PROXY(cpp_parser::CppStatement::IVisitor)
+
+			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(cpp_parser::CppForStatConditionPart::IVisitor)
+				void Visit(cpp_parser::CppForStatLoopCondition* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+				void Visit(cpp_parser::CppForStatIterateCondition* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+			END_INTERFACE_PROXY(cpp_parser::CppForStatConditionPart::IVisitor)
 
 #endif
 #endif

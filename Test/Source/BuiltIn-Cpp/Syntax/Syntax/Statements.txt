@@ -32,6 +32,16 @@ _IfStat
   ::= "if" "(" !_IfStatConditionPart _Stat:trueStat +["else" _Stat:falseStat]
   ;
 
+_ForStatConditionPart
+  ::= ";" [_Expr:condition] ";" [_Expr:sideEffect] as ForStatLoopCondition
+  ::= _VarsDecl:varsDecl ";" [_Expr:condition] ";" [_Expr:sideEffect] as ForStatLoopCondition
+  ::= _VarWithoutInit:decl ":" _Expr:collection as ForStatIterateCondition
+  ;
+
+_ForStat
+  ::= "for" "(" _ForStatConditionPart:conditionPart ")" _Stat:stat as ForStat
+  ;
+
 _OtherStats
   ::= ";" as EmptyStat
   ::= "break" ";" as BreakStat
@@ -54,5 +64,6 @@ _Stat
   ::= !_TryStat
   ::= !___TryStat
   ::= !_IfStat
+  ::= !_ForStat
   ::= !_OtherStats
   ;

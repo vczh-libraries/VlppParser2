@@ -340,52 +340,56 @@ MakeExprStat
 		}
 
 /***********************************************************************
-MakeForEachStat
-***********************************************************************/
-
-		MakeForEachStat& MakeForEachStat::collection(const vl::Ptr<CppTypeOrExpr>& value)
-		{
-			node->collection = value;
-			return *this;
-		}
-
-		MakeForEachStat& MakeForEachStat::decl(const vl::Ptr<CppSingleVarDeclaration>& value)
-		{
-			node->decl = value;
-			return *this;
-		}
-
-		MakeForEachStat& MakeForEachStat::stat(const vl::Ptr<CppStatement>& value)
-		{
-			node->stat = value;
-			return *this;
-		}
-
-/***********************************************************************
 MakeForStat
 ***********************************************************************/
 
-		MakeForStat& MakeForStat::condition(const vl::Ptr<CppTypeOrExpr>& value)
+		MakeForStat& MakeForStat::conditionPart(const vl::Ptr<CppForStatConditionPart>& value)
 		{
-			node->condition = value;
-			return *this;
-		}
-
-		MakeForStat& MakeForStat::decl(const vl::Ptr<CppSingleVarDeclaration>& value)
-		{
-			node->decl = value;
-			return *this;
-		}
-
-		MakeForStat& MakeForStat::sideEffect(const vl::Ptr<CppTypeOrExpr>& value)
-		{
-			node->sideEffect = value;
+			node->conditionPart = value;
 			return *this;
 		}
 
 		MakeForStat& MakeForStat::stat(const vl::Ptr<CppStatement>& value)
 		{
 			node->stat = value;
+			return *this;
+		}
+
+/***********************************************************************
+MakeForStatIterateCondition
+***********************************************************************/
+
+		MakeForStatIterateCondition& MakeForStatIterateCondition::collection(const vl::Ptr<CppTypeOrExpr>& value)
+		{
+			node->collection = value;
+			return *this;
+		}
+
+		MakeForStatIterateCondition& MakeForStatIterateCondition::decl(const vl::Ptr<CppSingleVarDeclaration>& value)
+		{
+			node->decl = value;
+			return *this;
+		}
+
+/***********************************************************************
+MakeForStatLoopCondition
+***********************************************************************/
+
+		MakeForStatLoopCondition& MakeForStatLoopCondition::condition(const vl::Ptr<CppTypeOrExpr>& value)
+		{
+			node->condition = value;
+			return *this;
+		}
+
+		MakeForStatLoopCondition& MakeForStatLoopCondition::sideEffect(const vl::Ptr<CppTypeOrExpr>& value)
+		{
+			node->sideEffect = value;
+			return *this;
+		}
+
+		MakeForStatLoopCondition& MakeForStatLoopCondition::varsDecl(const vl::Ptr<CppMultipleVarDeclaration>& value)
+		{
+			node->varsDecl = value;
 			return *this;
 		}
 

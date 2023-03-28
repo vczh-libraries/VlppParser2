@@ -267,12 +267,17 @@ Visitor Pattern Implementation
 		visitor->Visit(this);
 	}
 
-	void CppForStat::Accept(CppStatement::IVisitor* visitor)
+	void CppForStatLoopCondition::Accept(CppForStatConditionPart::IVisitor* visitor)
 	{
 		visitor->Visit(this);
 	}
 
-	void CppForEachStat::Accept(CppStatement::IVisitor* visitor)
+	void CppForStatIterateCondition::Accept(CppForStatConditionPart::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void CppForStat::Accept(CppStatement::IVisitor* visitor)
 	{
 		visitor->Visit(this);
 	}
@@ -383,8 +388,11 @@ namespace vl
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppWhileStat, cpp_parser::CppWhileStat)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppDoWhileStat, cpp_parser::CppDoWhileStat)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppIfElseStat, cpp_parser::CppIfElseStat)
+			IMPL_TYPE_INFO_RENAME(cpp_parser::CppForStatConditionPart, cpp_parser::CppForStatConditionPart)
+			IMPL_TYPE_INFO_RENAME(cpp_parser::CppForStatConditionPart::IVisitor, cpp_parser::CppForStatConditionPart::IVisitor)
+			IMPL_TYPE_INFO_RENAME(cpp_parser::CppForStatLoopCondition, cpp_parser::CppForStatLoopCondition)
+			IMPL_TYPE_INFO_RENAME(cpp_parser::CppForStatIterateCondition, cpp_parser::CppForStatIterateCondition)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppForStat, cpp_parser::CppForStat)
-			IMPL_TYPE_INFO_RENAME(cpp_parser::CppForEachStat, cpp_parser::CppForEachStat)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppSwitchStat, cpp_parser::CppSwitchStat)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppTryStatCatchPart, cpp_parser::CppTryStatCatchPart)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppTryStat, cpp_parser::CppTryStat)
@@ -1069,26 +1077,38 @@ namespace vl
 				CLASS_MEMBER_FIELD(falseStat)
 			END_CLASS_MEMBER(cpp_parser::CppIfElseStat)
 
+			BEGIN_CLASS_MEMBER(cpp_parser::CppForStatConditionPart)
+				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+
+			END_CLASS_MEMBER(cpp_parser::CppForStatConditionPart)
+
+			BEGIN_CLASS_MEMBER(cpp_parser::CppForStatLoopCondition)
+				CLASS_MEMBER_BASE(cpp_parser::CppForStatConditionPart)
+
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppForStatLoopCondition>(), NO_PARAMETER)
+
+				CLASS_MEMBER_FIELD(varsDecl)
+				CLASS_MEMBER_FIELD(condition)
+				CLASS_MEMBER_FIELD(sideEffect)
+			END_CLASS_MEMBER(cpp_parser::CppForStatLoopCondition)
+
+			BEGIN_CLASS_MEMBER(cpp_parser::CppForStatIterateCondition)
+				CLASS_MEMBER_BASE(cpp_parser::CppForStatConditionPart)
+
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppForStatIterateCondition>(), NO_PARAMETER)
+
+				CLASS_MEMBER_FIELD(decl)
+				CLASS_MEMBER_FIELD(collection)
+			END_CLASS_MEMBER(cpp_parser::CppForStatIterateCondition)
+
 			BEGIN_CLASS_MEMBER(cpp_parser::CppForStat)
 				CLASS_MEMBER_BASE(cpp_parser::CppStatement)
 
 				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppForStat>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(decl)
-				CLASS_MEMBER_FIELD(condition)
-				CLASS_MEMBER_FIELD(sideEffect)
+				CLASS_MEMBER_FIELD(conditionPart)
 				CLASS_MEMBER_FIELD(stat)
 			END_CLASS_MEMBER(cpp_parser::CppForStat)
-
-			BEGIN_CLASS_MEMBER(cpp_parser::CppForEachStat)
-				CLASS_MEMBER_BASE(cpp_parser::CppStatement)
-
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppForEachStat>(), NO_PARAMETER)
-
-				CLASS_MEMBER_FIELD(decl)
-				CLASS_MEMBER_FIELD(collection)
-				CLASS_MEMBER_FIELD(stat)
-			END_CLASS_MEMBER(cpp_parser::CppForEachStat)
 
 			BEGIN_CLASS_MEMBER(cpp_parser::CppSwitchStat)
 				CLASS_MEMBER_BASE(cpp_parser::CppStatement)
@@ -1209,11 +1229,15 @@ namespace vl
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppStatement::IVisitor::*)(cpp_parser::CppDoWhileStat* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppStatement::IVisitor::*)(cpp_parser::CppIfElseStat* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppStatement::IVisitor::*)(cpp_parser::CppForStat* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppStatement::IVisitor::*)(cpp_parser::CppForEachStat* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppStatement::IVisitor::*)(cpp_parser::CppSwitchStat* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppStatement::IVisitor::*)(cpp_parser::CppTryStat* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppStatement::IVisitor::*)(cpp_parser::Cpp__TryStat* node))
 			END_INTERFACE_MEMBER(cpp_parser::CppStatement)
+
+			BEGIN_INTERFACE_MEMBER(cpp_parser::CppForStatConditionPart::IVisitor)
+				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppForStatConditionPart::IVisitor::*)(cpp_parser::CppForStatLoopCondition* node))
+				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppForStatConditionPart::IVisitor::*)(cpp_parser::CppForStatIterateCondition* node))
+			END_INTERFACE_MEMBER(cpp_parser::CppForStatConditionPart)
 
 #endif
 
@@ -1306,8 +1330,11 @@ namespace vl
 					ADD_TYPE_INFO(cpp_parser::CppWhileStat)
 					ADD_TYPE_INFO(cpp_parser::CppDoWhileStat)
 					ADD_TYPE_INFO(cpp_parser::CppIfElseStat)
+					ADD_TYPE_INFO(cpp_parser::CppForStatConditionPart)
+					ADD_TYPE_INFO(cpp_parser::CppForStatConditionPart::IVisitor)
+					ADD_TYPE_INFO(cpp_parser::CppForStatLoopCondition)
+					ADD_TYPE_INFO(cpp_parser::CppForStatIterateCondition)
 					ADD_TYPE_INFO(cpp_parser::CppForStat)
-					ADD_TYPE_INFO(cpp_parser::CppForEachStat)
 					ADD_TYPE_INFO(cpp_parser::CppSwitchStat)
 					ADD_TYPE_INFO(cpp_parser::CppTryStatCatchPart)
 					ADD_TYPE_INFO(cpp_parser::CppTryStat)

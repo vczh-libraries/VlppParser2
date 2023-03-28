@@ -24,6 +24,7 @@ namespace cpp_parser
 			, protected virtual CppIdentifier::IVisitor
 			, protected virtual CppVarInit::IVisitor
 			, protected virtual CppStatement::IVisitor
+			, protected virtual CppForStatConditionPart::IVisitor
 		{
 		protected:
 			void CopyFields(CppAdvancedType* from, CppAdvancedType* to);
@@ -51,8 +52,10 @@ namespace cpp_parser
 			void CopyFields(CppExprOnly* from, CppExprOnly* to);
 			void CopyFields(CppExprStat* from, CppExprStat* to);
 			void CopyFields(CppFile* from, CppFile* to);
-			void CopyFields(CppForEachStat* from, CppForEachStat* to);
 			void CopyFields(CppForStat* from, CppForStat* to);
+			void CopyFields(CppForStatConditionPart* from, CppForStatConditionPart* to);
+			void CopyFields(CppForStatIterateCondition* from, CppForStatIterateCondition* to);
+			void CopyFields(CppForStatLoopCondition* from, CppForStatLoopCondition* to);
 			void CopyFields(CppFunctionKeyword* from, CppFunctionKeyword* to);
 			void CopyFields(CppGenericArgument* from, CppGenericArgument* to);
 			void CopyFields(CppGenericArguments* from, CppGenericArguments* to);
@@ -170,16 +173,19 @@ namespace cpp_parser
 			void Visit(CppDoWhileStat* node) override;
 			void Visit(CppIfElseStat* node) override;
 			void Visit(CppForStat* node) override;
-			void Visit(CppForEachStat* node) override;
 			void Visit(CppSwitchStat* node) override;
 			void Visit(CppTryStat* node) override;
 			void Visit(Cpp__TryStat* node) override;
+
+			void Visit(CppForStatLoopCondition* node) override;
+			void Visit(CppForStatIterateCondition* node) override;
 
 		public:
 			virtual vl::Ptr<CppTypeOrExprOrOthers> CopyNode(CppTypeOrExprOrOthers* node);
 			virtual vl::Ptr<CppIdentifier> CopyNode(CppIdentifier* node);
 			virtual vl::Ptr<CppVarInit> CopyNode(CppVarInit* node);
 			virtual vl::Ptr<CppStatement> CopyNode(CppStatement* node);
+			virtual vl::Ptr<CppForStatConditionPart> CopyNode(CppForStatConditionPart* node);
 			virtual vl::Ptr<CppGenericArguments> CopyNode(CppGenericArguments* node);
 			virtual vl::Ptr<CppStringLiteralFragment> CopyNode(CppStringLiteralFragment* node);
 			virtual vl::Ptr<CppAdvancedType> CopyNode(CppAdvancedType* node);
@@ -210,8 +216,9 @@ namespace cpp_parser
 			vl::Ptr<CppEmptyStat> CopyNode(CppEmptyStat* node);
 			vl::Ptr<CppExprOnly> CopyNode(CppExprOnly* node);
 			vl::Ptr<CppExprStat> CopyNode(CppExprStat* node);
-			vl::Ptr<CppForEachStat> CopyNode(CppForEachStat* node);
 			vl::Ptr<CppForStat> CopyNode(CppForStat* node);
+			vl::Ptr<CppForStatIterateCondition> CopyNode(CppForStatIterateCondition* node);
+			vl::Ptr<CppForStatLoopCondition> CopyNode(CppForStatLoopCondition* node);
 			vl::Ptr<CppGenericArgument> CopyNode(CppGenericArgument* node);
 			vl::Ptr<CppGotoStat> CopyNode(CppGotoStat* node);
 			vl::Ptr<CppIfElseStat> CopyNode(CppIfElseStat* node);

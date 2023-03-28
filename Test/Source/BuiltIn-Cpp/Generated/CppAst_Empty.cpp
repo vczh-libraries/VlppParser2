@@ -271,10 +271,6 @@ StatementVisitor
 		{
 		}
 
-		void StatementVisitor::Visit(CppForEachStat* node)
-		{
-		}
-
 		void StatementVisitor::Visit(CppSwitchStat* node)
 		{
 		}
@@ -284,6 +280,20 @@ StatementVisitor
 		}
 
 		void StatementVisitor::Visit(Cpp__TryStat* node)
+		{
+		}
+
+/***********************************************************************
+ForStatConditionPartVisitor
+***********************************************************************/
+
+		// Visitor Members -----------------------------------
+
+		void ForStatConditionPartVisitor::Visit(CppForStatLoopCondition* node)
+		{
+		}
+
+		void ForStatConditionPartVisitor::Visit(CppForStatIterateCondition* node)
 		{
 		}
 	}

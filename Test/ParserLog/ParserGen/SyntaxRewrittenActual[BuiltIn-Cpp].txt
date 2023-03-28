@@ -733,6 +733,21 @@ _IfStat : IfElseStat
   ::= "if" "(" !_IfStatConditionPart _Stat:trueStat +["else" _Stat:falseStat]
   ;
 
+_ForStatConditionPart_LRI_Isolated_0 : ForStatLoopCondition
+  ::= ";" [_Expr:condition] ";" [_Expr:sideEffect] as ForStatLoopCondition
+  ;
+
+_ForStatConditionPart_LRI_Original : ForStatConditionPart
+  ::= left_recursion_placeholder(LRI__ForStatConditionPart)
+  ::= !_ForStatConditionPart_LRI_Isolated_0
+  ::= _VarsDecl_LRI_Original:varsDecl ";" [_Expr:condition] ";" [_Expr:sideEffect] as ForStatLoopCondition
+  ::= _VarWithoutInit_LRI_Original:decl ":" _Expr:collection as ForStatIterateCondition
+  ;
+
+_ForStat : ForStat
+  ::= "for" "(" _ForStatConditionPart:conditionPart ")" _Stat:stat as ForStat
+  ;
+
 _OtherStats : Statement
   ::= ";" as EmptyStat
   ::= "break" ";" as BreakStat
@@ -765,7 +780,11 @@ _Stat_LRI_Isolated_4 : IfElseStat
   ::= !_IfStat
   ;
 
-_Stat_LRI_Isolated_5 : Statement
+_Stat_LRI_Isolated_5 : ForStat
+  ::= !_ForStat
+  ;
+
+_Stat_LRI_Isolated_6 : Statement
   ::= !_OtherStats
   ;
 
@@ -777,6 +796,7 @@ _Stat_LRI_Original : Statement
   ::= !_Stat_LRI_Isolated_3
   ::= !_Stat_LRI_Isolated_4
   ::= !_Stat_LRI_Isolated_5
+  ::= !_Stat_LRI_Isolated_6
   ;
 
 _TypeStartsWithKeyword_LRI_Isolated_2 : DeclaratorType
@@ -1277,12 +1297,22 @@ _IfStatConditionPart : IfElseStat
   ::= !_VarsDecl_LRI_Isolated_1 left_recursion_inject(LRI__VarsDecl) _IfStatConditionPart_LRI_Original
   ;
 
+_ForStatConditionPart : ForStatConditionPart
+  ::= !_ForStatConditionPart_LRI_Isolated_0
+  ::= !_PrimitiveType left_recursion_inject_multiple(LRI__PM_PrimitiveType) _ForStatConditionPart_LRI_Original
+  ::= !_QualifiedName left_recursion_inject_multiple(LRI__PM_QualifiedName) _ForStatConditionPart_LRI_Original
+  ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_1 left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _ForStatConditionPart_LRI_Original
+  ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_2 left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _ForStatConditionPart_LRI_Original
+  ::= !_VarsDecl_LRI_Isolated_1 left_recursion_inject(LRI__VarsDecl) _ForStatConditionPart_LRI_Original
+  ;
+
 _Stat : Statement
   ::= !_Stat_LRI_Isolated_1
   ::= !_Stat_LRI_Isolated_2
   ::= !_Stat_LRI_Isolated_3
   ::= !_Stat_LRI_Isolated_4
   ::= !_Stat_LRI_Isolated_5
+  ::= !_Stat_LRI_Isolated_6
   ::= !_BExpr_NoComma_SWITCH_1allow_GT_LRI_Isolated_1 left_recursion_inject(LRI__BExpr_NoComma_SWITCH_1allow_GT) _Stat_LRI_Original
   ::= !_PrefixUnaryExpr_LRI_Isolated_1 left_recursion_inject_multiple(LRI__PrefixUnaryExpr) _Stat_LRI_Original
   ::= !_PrimitiveExpr left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveExpr) _Stat_LRI_Original

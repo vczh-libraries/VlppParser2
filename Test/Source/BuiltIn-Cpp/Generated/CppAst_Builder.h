@@ -150,21 +150,26 @@ namespace cpp_parser
 			MakeExprStat& expr(const vl::Ptr<CppTypeOrExpr>& value);
 		};
 
-		class MakeForEachStat : public vl::glr::ParsingAstBuilder<CppForEachStat>
-		{
-		public:
-			MakeForEachStat& collection(const vl::Ptr<CppTypeOrExpr>& value);
-			MakeForEachStat& decl(const vl::Ptr<CppSingleVarDeclaration>& value);
-			MakeForEachStat& stat(const vl::Ptr<CppStatement>& value);
-		};
-
 		class MakeForStat : public vl::glr::ParsingAstBuilder<CppForStat>
 		{
 		public:
-			MakeForStat& condition(const vl::Ptr<CppTypeOrExpr>& value);
-			MakeForStat& decl(const vl::Ptr<CppSingleVarDeclaration>& value);
-			MakeForStat& sideEffect(const vl::Ptr<CppTypeOrExpr>& value);
+			MakeForStat& conditionPart(const vl::Ptr<CppForStatConditionPart>& value);
 			MakeForStat& stat(const vl::Ptr<CppStatement>& value);
+		};
+
+		class MakeForStatIterateCondition : public vl::glr::ParsingAstBuilder<CppForStatIterateCondition>
+		{
+		public:
+			MakeForStatIterateCondition& collection(const vl::Ptr<CppTypeOrExpr>& value);
+			MakeForStatIterateCondition& decl(const vl::Ptr<CppSingleVarDeclaration>& value);
+		};
+
+		class MakeForStatLoopCondition : public vl::glr::ParsingAstBuilder<CppForStatLoopCondition>
+		{
+		public:
+			MakeForStatLoopCondition& condition(const vl::Ptr<CppTypeOrExpr>& value);
+			MakeForStatLoopCondition& sideEffect(const vl::Ptr<CppTypeOrExpr>& value);
+			MakeForStatLoopCondition& varsDecl(const vl::Ptr<CppMultipleVarDeclaration>& value);
 		};
 
 		class MakeFunctionKeyword : public vl::glr::ParsingAstBuilder<CppFunctionKeyword>

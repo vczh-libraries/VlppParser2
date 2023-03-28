@@ -24,6 +24,7 @@ namespace cpp_parser
 			, protected virtual CppIdentifier::IVisitor
 			, protected virtual CppVarInit::IVisitor
 			, protected virtual CppStatement::IVisitor
+			, protected virtual CppForStatConditionPart::IVisitor
 		{
 		protected:
 			virtual void PrintFields(CppAdvancedType* node);
@@ -51,8 +52,10 @@ namespace cpp_parser
 			virtual void PrintFields(CppExprOnly* node);
 			virtual void PrintFields(CppExprStat* node);
 			virtual void PrintFields(CppFile* node);
-			virtual void PrintFields(CppForEachStat* node);
 			virtual void PrintFields(CppForStat* node);
+			virtual void PrintFields(CppForStatConditionPart* node);
+			virtual void PrintFields(CppForStatIterateCondition* node);
+			virtual void PrintFields(CppForStatLoopCondition* node);
 			virtual void PrintFields(CppFunctionKeyword* node);
 			virtual void PrintFields(CppGenericArgument* node);
 			virtual void PrintFields(CppGenericArguments* node);
@@ -158,10 +161,12 @@ namespace cpp_parser
 			void Visit(CppDoWhileStat* node) override;
 			void Visit(CppIfElseStat* node) override;
 			void Visit(CppForStat* node) override;
-			void Visit(CppForEachStat* node) override;
 			void Visit(CppSwitchStat* node) override;
 			void Visit(CppTryStat* node) override;
 			void Visit(Cpp__TryStat* node) override;
+
+			void Visit(CppForStatLoopCondition* node) override;
+			void Visit(CppForStatIterateCondition* node) override;
 
 		public:
 			AstVisitor(vl::stream::StreamWriter& _writer);
@@ -170,6 +175,7 @@ namespace cpp_parser
 			void Print(CppIdentifier* node);
 			void Print(CppVarInit* node);
 			void Print(CppStatement* node);
+			void Print(CppForStatConditionPart* node);
 			void Print(CppGenericArguments* node);
 			void Print(CppStringLiteralFragment* node);
 			void Print(CppAdvancedType* node);

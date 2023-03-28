@@ -535,18 +535,26 @@ class IfElseStat : Statement
     var falseStat : Statement;
 }
 
-class ForStat : Statement
+class ForStatConditionPart
 {
-    var decl : SingleVarDeclaration;
-    var condition : TypeOrExpr;
-    var sideEffect : TypeOrExpr;
-    var stat : Statement;
 }
 
-class ForEachStat : Statement
+class ForStatLoopCondition : ForStatConditionPart
+{
+    var varsDecl : MultipleVarDeclaration;
+    var condition : TypeOrExpr;
+    var sideEffect : TypeOrExpr;
+}
+
+class ForStatIterateCondition : ForStatConditionPart
 {
     var decl : SingleVarDeclaration;
     var collection : TypeOrExpr;
+}
+
+class ForStat : Statement
+{
+    var conditionPart : ForStatConditionPart;
     var stat : Statement;
 }
 

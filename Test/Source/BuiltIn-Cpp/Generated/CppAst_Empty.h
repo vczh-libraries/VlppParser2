@@ -147,10 +147,21 @@ namespace cpp_parser
 			void Visit(CppDoWhileStat* node) override;
 			void Visit(CppIfElseStat* node) override;
 			void Visit(CppForStat* node) override;
-			void Visit(CppForEachStat* node) override;
 			void Visit(CppSwitchStat* node) override;
 			void Visit(CppTryStat* node) override;
 			void Visit(Cpp__TryStat* node) override;
+		};
+
+		/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
+		class ForStatConditionPartVisitor : public vl::Object, public CppForStatConditionPart::IVisitor
+		{
+		protected:
+			// Dispatch (virtual) --------------------------------
+
+		public:
+			// Visitor Members -----------------------------------
+			void Visit(CppForStatLoopCondition* node) override;
+			void Visit(CppForStatIterateCondition* node) override;
 		};
 
 	}

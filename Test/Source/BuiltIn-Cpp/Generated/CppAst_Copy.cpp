@@ -197,21 +197,30 @@ namespace cpp_parser
 		{
 		}
 
-		void AstVisitor::CopyFields(CppForEachStat* from, CppForEachStat* to)
-		{
-			CopyFields(static_cast<CppStatement*>(from), static_cast<CppStatement*>(to));
-			to->collection = CopyNode(from->collection.Obj());
-			to->decl = CopyNode(from->decl.Obj());
-			to->stat = CopyNode(from->stat.Obj());
-		}
-
 		void AstVisitor::CopyFields(CppForStat* from, CppForStat* to)
 		{
 			CopyFields(static_cast<CppStatement*>(from), static_cast<CppStatement*>(to));
-			to->condition = CopyNode(from->condition.Obj());
-			to->decl = CopyNode(from->decl.Obj());
-			to->sideEffect = CopyNode(from->sideEffect.Obj());
+			to->conditionPart = CopyNode(from->conditionPart.Obj());
 			to->stat = CopyNode(from->stat.Obj());
+		}
+
+		void AstVisitor::CopyFields(CppForStatConditionPart* from, CppForStatConditionPart* to)
+		{
+		}
+
+		void AstVisitor::CopyFields(CppForStatIterateCondition* from, CppForStatIterateCondition* to)
+		{
+			CopyFields(static_cast<CppForStatConditionPart*>(from), static_cast<CppForStatConditionPart*>(to));
+			to->collection = CopyNode(from->collection.Obj());
+			to->decl = CopyNode(from->decl.Obj());
+		}
+
+		void AstVisitor::CopyFields(CppForStatLoopCondition* from, CppForStatLoopCondition* to)
+		{
+			CopyFields(static_cast<CppForStatConditionPart*>(from), static_cast<CppForStatConditionPart*>(to));
+			to->condition = CopyNode(from->condition.Obj());
+			to->sideEffect = CopyNode(from->sideEffect.Obj());
+			to->varsDecl = CopyNode(from->varsDecl.Obj());
 		}
 
 		void AstVisitor::CopyFields(CppFunctionKeyword* from, CppFunctionKeyword* to)
@@ -972,13 +981,6 @@ namespace cpp_parser
 			this->result = newNode;
 		}
 
-		void AstVisitor::Visit(CppForEachStat* node)
-		{
-			auto newNode = vl::Ptr(new CppForEachStat);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
 		void AstVisitor::Visit(CppSwitchStat* node)
 		{
 			auto newNode = vl::Ptr(new CppSwitchStat);
@@ -996,6 +998,20 @@ namespace cpp_parser
 		void AstVisitor::Visit(Cpp__TryStat* node)
 		{
 			auto newNode = vl::Ptr(new Cpp__TryStat);
+			CopyFields(node, newNode.Obj());
+			this->result = newNode;
+		}
+
+		void AstVisitor::Visit(CppForStatLoopCondition* node)
+		{
+			auto newNode = vl::Ptr(new CppForStatLoopCondition);
+			CopyFields(node, newNode.Obj());
+			this->result = newNode;
+		}
+
+		void AstVisitor::Visit(CppForStatIterateCondition* node)
+		{
+			auto newNode = vl::Ptr(new CppForStatIterateCondition);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
@@ -1030,6 +1046,14 @@ namespace cpp_parser
 			node->Accept(static_cast<CppStatement::IVisitor*>(this));
 			this->result->codeRange = node->codeRange;
 			return this->result.Cast<CppStatement>();
+		}
+
+		vl::Ptr<CppForStatConditionPart> AstVisitor::CopyNode(CppForStatConditionPart* node)
+		{
+			if (!node) return nullptr;
+			node->Accept(static_cast<CppForStatConditionPart::IVisitor*>(this));
+			this->result->codeRange = node->codeRange;
+			return this->result.Cast<CppForStatConditionPart>();
 		}
 
 		vl::Ptr<CppGenericArguments> AstVisitor::CopyNode(CppGenericArguments* node)
@@ -1228,16 +1252,22 @@ namespace cpp_parser
 			return CopyNode(static_cast<CppStatement*>(node)).Cast<CppExprStat>();
 		}
 
-		vl::Ptr<CppForEachStat> AstVisitor::CopyNode(CppForEachStat* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<CppStatement*>(node)).Cast<CppForEachStat>();
-		}
-
 		vl::Ptr<CppForStat> AstVisitor::CopyNode(CppForStat* node)
 		{
 			if (!node) return nullptr;
 			return CopyNode(static_cast<CppStatement*>(node)).Cast<CppForStat>();
+		}
+
+		vl::Ptr<CppForStatIterateCondition> AstVisitor::CopyNode(CppForStatIterateCondition* node)
+		{
+			if (!node) return nullptr;
+			return CopyNode(static_cast<CppForStatConditionPart*>(node)).Cast<CppForStatIterateCondition>();
+		}
+
+		vl::Ptr<CppForStatLoopCondition> AstVisitor::CopyNode(CppForStatLoopCondition* node)
+		{
+			if (!node) return nullptr;
+			return CopyNode(static_cast<CppForStatConditionPart*>(node)).Cast<CppForStatLoopCondition>();
 		}
 
 		vl::Ptr<CppGenericArgument> AstVisitor::CopyNode(CppGenericArgument* node)

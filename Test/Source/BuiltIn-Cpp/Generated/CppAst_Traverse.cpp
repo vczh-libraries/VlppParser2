@@ -37,8 +37,10 @@ namespace cpp_parser
 		void AstVisitor::Traverse(CppExprOnly* node) {}
 		void AstVisitor::Traverse(CppExprStat* node) {}
 		void AstVisitor::Traverse(CppFile* node) {}
-		void AstVisitor::Traverse(CppForEachStat* node) {}
 		void AstVisitor::Traverse(CppForStat* node) {}
+		void AstVisitor::Traverse(CppForStatConditionPart* node) {}
+		void AstVisitor::Traverse(CppForStatIterateCondition* node) {}
+		void AstVisitor::Traverse(CppForStatLoopCondition* node) {}
 		void AstVisitor::Traverse(CppFunctionKeyword* node) {}
 		void AstVisitor::Traverse(CppGenericArgument* node) {}
 		void AstVisitor::Traverse(CppGenericArguments* node) {}
@@ -110,8 +112,10 @@ namespace cpp_parser
 		void AstVisitor::Finishing(CppExprOnly* node) {}
 		void AstVisitor::Finishing(CppExprStat* node) {}
 		void AstVisitor::Finishing(CppFile* node) {}
-		void AstVisitor::Finishing(CppForEachStat* node) {}
 		void AstVisitor::Finishing(CppForStat* node) {}
+		void AstVisitor::Finishing(CppForStatConditionPart* node) {}
+		void AstVisitor::Finishing(CppForStatIterateCondition* node) {}
+		void AstVisitor::Finishing(CppForStatLoopCondition* node) {}
 		void AstVisitor::Finishing(CppFunctionKeyword* node) {}
 		void AstVisitor::Finishing(CppGenericArgument* node) {}
 		void AstVisitor::Finishing(CppGenericArguments* node) {}
@@ -905,25 +909,9 @@ namespace cpp_parser
 			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
 			Traverse(static_cast<CppStatement*>(node));
 			Traverse(static_cast<CppForStat*>(node));
-			InspectInto(node->condition.Obj());
-			InspectInto(node->decl.Obj());
-			InspectInto(node->sideEffect.Obj());
+			InspectInto(node->conditionPart.Obj());
 			InspectInto(node->stat.Obj());
 			Finishing(static_cast<CppForStat*>(node));
-			Finishing(static_cast<CppStatement*>(node));
-			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
-		}
-
-		void AstVisitor::Visit(CppForEachStat* node)
-		{
-			if (!node) return;
-			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-			Traverse(static_cast<CppStatement*>(node));
-			Traverse(static_cast<CppForEachStat*>(node));
-			InspectInto(node->collection.Obj());
-			InspectInto(node->decl.Obj());
-			InspectInto(node->stat.Obj());
-			Finishing(static_cast<CppForEachStat*>(node));
 			Finishing(static_cast<CppStatement*>(node));
 			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 		}
@@ -972,6 +960,33 @@ namespace cpp_parser
 			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 		}
 
+		void AstVisitor::Visit(CppForStatLoopCondition* node)
+		{
+			if (!node) return;
+			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+			Traverse(static_cast<CppForStatConditionPart*>(node));
+			Traverse(static_cast<CppForStatLoopCondition*>(node));
+			InspectInto(node->condition.Obj());
+			InspectInto(node->sideEffect.Obj());
+			InspectInto(node->varsDecl.Obj());
+			Finishing(static_cast<CppForStatLoopCondition*>(node));
+			Finishing(static_cast<CppForStatConditionPart*>(node));
+			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+		}
+
+		void AstVisitor::Visit(CppForStatIterateCondition* node)
+		{
+			if (!node) return;
+			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+			Traverse(static_cast<CppForStatConditionPart*>(node));
+			Traverse(static_cast<CppForStatIterateCondition*>(node));
+			InspectInto(node->collection.Obj());
+			InspectInto(node->decl.Obj());
+			Finishing(static_cast<CppForStatIterateCondition*>(node));
+			Finishing(static_cast<CppForStatConditionPart*>(node));
+			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+		}
+
 		void AstVisitor::InspectInto(CppTypeOrExprOrOthers* node)
 		{
 			if (!node) return;
@@ -994,6 +1009,12 @@ namespace cpp_parser
 		{
 			if (!node) return;
 			node->Accept(static_cast<CppStatement::IVisitor*>(this));
+		}
+
+		void AstVisitor::InspectInto(CppForStatConditionPart* node)
+		{
+			if (!node) return;
+			node->Accept(static_cast<CppForStatConditionPart::IVisitor*>(this));
 		}
 
 		void AstVisitor::InspectInto(CppGenericArguments* node)

@@ -64,10 +64,12 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::Ptr(new cpp_parser::CppExprStat);
 		case CppClasses::File:
 			return vl::Ptr(new cpp_parser::CppFile);
-		case CppClasses::ForEachStat:
-			return vl::Ptr(new cpp_parser::CppForEachStat);
 		case CppClasses::ForStat:
 			return vl::Ptr(new cpp_parser::CppForStat);
+		case CppClasses::ForStatIterateCondition:
+			return vl::Ptr(new cpp_parser::CppForStatIterateCondition);
+		case CppClasses::ForStatLoopCondition:
+			return vl::Ptr(new cpp_parser::CppForStatLoopCondition);
 		case CppClasses::FunctionKeyword:
 			return vl::Ptr(new cpp_parser::CppFunctionKeyword);
 		case CppClasses::GenericArgument:
@@ -220,20 +222,20 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppDoWhileStat::stat, object, field, value, cppFieldName);
 		case CppFields::ExprStat_expr:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppExprStat::expr, object, field, value, cppFieldName);
-		case CppFields::ForEachStat_collection:
-			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppForEachStat::collection, object, field, value, cppFieldName);
-		case CppFields::ForEachStat_decl:
-			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppForEachStat::decl, object, field, value, cppFieldName);
-		case CppFields::ForEachStat_stat:
-			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppForEachStat::stat, object, field, value, cppFieldName);
-		case CppFields::ForStat_condition:
-			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppForStat::condition, object, field, value, cppFieldName);
-		case CppFields::ForStat_decl:
-			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppForStat::decl, object, field, value, cppFieldName);
-		case CppFields::ForStat_sideEffect:
-			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppForStat::sideEffect, object, field, value, cppFieldName);
+		case CppFields::ForStat_conditionPart:
+			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppForStat::conditionPart, object, field, value, cppFieldName);
 		case CppFields::ForStat_stat:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppForStat::stat, object, field, value, cppFieldName);
+		case CppFields::ForStatIterateCondition_collection:
+			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppForStatIterateCondition::collection, object, field, value, cppFieldName);
+		case CppFields::ForStatIterateCondition_decl:
+			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppForStatIterateCondition::decl, object, field, value, cppFieldName);
+		case CppFields::ForStatLoopCondition_condition:
+			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppForStatLoopCondition::condition, object, field, value, cppFieldName);
+		case CppFields::ForStatLoopCondition_sideEffect:
+			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppForStatLoopCondition::sideEffect, object, field, value, cppFieldName);
+		case CppFields::ForStatLoopCondition_varsDecl:
+			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppForStatLoopCondition::varsDecl, object, field, value, cppFieldName);
 		case CppFields::FunctionKeyword_arguments:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppFunctionKeyword::arguments, object, field, value, cppFieldName);
 		case CppFields::GenericArgument_argument:
@@ -459,8 +461,10 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"ExprOnly",
 			L"ExprStat",
 			L"File",
-			L"ForEachStat",
 			L"ForStat",
+			L"ForStatConditionPart",
+			L"ForStatIterateCondition",
+			L"ForStatLoopCondition",
 			L"FunctionKeyword",
 			L"GenericArgument",
 			L"GenericArguments",
@@ -507,7 +511,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"__TryStat",
 		};
 		vl::vint index = (vl::vint)type;
-		return 0 <= index && index < 71 ? results[index] : nullptr;
+		return 0 <= index && index < 73 ? results[index] : nullptr;
 	}
 
 	const wchar_t* CppCppTypeName(CppClasses type)
@@ -538,8 +542,10 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::CppExprOnly",
 			L"cpp_parser::CppExprStat",
 			L"cpp_parser::CppFile",
-			L"cpp_parser::CppForEachStat",
 			L"cpp_parser::CppForStat",
+			L"cpp_parser::CppForStatConditionPart",
+			L"cpp_parser::CppForStatIterateCondition",
+			L"cpp_parser::CppForStatLoopCondition",
 			L"cpp_parser::CppFunctionKeyword",
 			L"cpp_parser::CppGenericArgument",
 			L"cpp_parser::CppGenericArguments",
@@ -586,7 +592,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::Cpp__TryStat",
 		};
 		vl::vint index = (vl::vint)type;
-		return 0 <= index && index < 71 ? results[index] : nullptr;
+		return 0 <= index && index < 73 ? results[index] : nullptr;
 	}
 
 	const wchar_t* CppFieldName(CppFields field)
@@ -634,13 +640,13 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"DoWhileStat::condition",
 			L"DoWhileStat::stat",
 			L"ExprStat::expr",
-			L"ForEachStat::collection",
-			L"ForEachStat::decl",
-			L"ForEachStat::stat",
-			L"ForStat::condition",
-			L"ForStat::decl",
-			L"ForStat::sideEffect",
+			L"ForStat::conditionPart",
 			L"ForStat::stat",
+			L"ForStatIterateCondition::collection",
+			L"ForStatIterateCondition::decl",
+			L"ForStatLoopCondition::condition",
+			L"ForStatLoopCondition::sideEffect",
+			L"ForStatLoopCondition::varsDecl",
 			L"FunctionKeyword::arguments",
 			L"FunctionKeyword::keyword",
 			L"GenericArgument::argument",
@@ -768,13 +774,13 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::CppDoWhileStat::condition",
 			L"cpp_parser::CppDoWhileStat::stat",
 			L"cpp_parser::CppExprStat::expr",
-			L"cpp_parser::CppForEachStat::collection",
-			L"cpp_parser::CppForEachStat::decl",
-			L"cpp_parser::CppForEachStat::stat",
-			L"cpp_parser::CppForStat::condition",
-			L"cpp_parser::CppForStat::decl",
-			L"cpp_parser::CppForStat::sideEffect",
+			L"cpp_parser::CppForStat::conditionPart",
 			L"cpp_parser::CppForStat::stat",
+			L"cpp_parser::CppForStatIterateCondition::collection",
+			L"cpp_parser::CppForStatIterateCondition::decl",
+			L"cpp_parser::CppForStatLoopCondition::condition",
+			L"cpp_parser::CppForStatLoopCondition::sideEffect",
+			L"cpp_parser::CppForStatLoopCondition::varsDecl",
 			L"cpp_parser::CppFunctionKeyword::arguments",
 			L"cpp_parser::CppFunctionKeyword::keyword",
 			L"cpp_parser::CppGenericArgument::argument",

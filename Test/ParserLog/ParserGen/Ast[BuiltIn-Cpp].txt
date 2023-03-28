@@ -1248,14 +1248,20 @@
         }]
     }, {
         "$ast": "Class",
-        "name": "ForStat",
+        "name": "ForStatConditionPart",
         "ambiguity": "No",
-        "baseClass": "Statement",
+        "baseClass": "",
+        "props": []
+    }, {
+        "$ast": "Class",
+        "name": "ForStatLoopCondition",
+        "ambiguity": "No",
+        "baseClass": "ForStatConditionPart",
         "props": [{
             "$ast": "ClassProp",
-            "name": "decl",
+            "name": "varsDecl",
             "propType": "Type",
-            "propTypeName": "SingleVarDeclaration"
+            "propTypeName": "MultipleVarDeclaration"
         }, {
             "$ast": "ClassProp",
             "name": "condition",
@@ -1266,17 +1272,12 @@
             "name": "sideEffect",
             "propType": "Type",
             "propTypeName": "TypeOrExpr"
-        }, {
-            "$ast": "ClassProp",
-            "name": "stat",
-            "propType": "Type",
-            "propTypeName": "Statement"
         }]
     }, {
         "$ast": "Class",
-        "name": "ForEachStat",
+        "name": "ForStatIterateCondition",
         "ambiguity": "No",
-        "baseClass": "Statement",
+        "baseClass": "ForStatConditionPart",
         "props": [{
             "$ast": "ClassProp",
             "name": "decl",
@@ -1287,6 +1288,17 @@
             "name": "collection",
             "propType": "Type",
             "propTypeName": "TypeOrExpr"
+        }]
+    }, {
+        "$ast": "Class",
+        "name": "ForStat",
+        "ambiguity": "No",
+        "baseClass": "Statement",
+        "props": [{
+            "$ast": "ClassProp",
+            "name": "conditionPart",
+            "propType": "Type",
+            "propTypeName": "ForStatConditionPart"
         }, {
             "$ast": "ClassProp",
             "name": "stat",

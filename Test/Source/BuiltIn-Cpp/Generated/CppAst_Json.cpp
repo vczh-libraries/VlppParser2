@@ -477,7 +477,19 @@ namespace cpp_parser
 		void AstVisitor::PrintFields(CppFile* node)
 		{
 		}
-		void AstVisitor::PrintFields(CppForEachStat* node)
+		void AstVisitor::PrintFields(CppForStat* node)
+		{
+			BeginField(L"conditionPart");
+			Print(node->conditionPart.Obj());
+			EndField();
+			BeginField(L"stat");
+			Print(node->stat.Obj());
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppForStatConditionPart* node)
+		{
+		}
+		void AstVisitor::PrintFields(CppForStatIterateCondition* node)
 		{
 			BeginField(L"collection");
 			Print(node->collection.Obj());
@@ -485,23 +497,17 @@ namespace cpp_parser
 			BeginField(L"decl");
 			Print(node->decl.Obj());
 			EndField();
-			BeginField(L"stat");
-			Print(node->stat.Obj());
-			EndField();
 		}
-		void AstVisitor::PrintFields(CppForStat* node)
+		void AstVisitor::PrintFields(CppForStatLoopCondition* node)
 		{
 			BeginField(L"condition");
 			Print(node->condition.Obj());
 			EndField();
-			BeginField(L"decl");
-			Print(node->decl.Obj());
-			EndField();
 			BeginField(L"sideEffect");
 			Print(node->sideEffect.Obj());
 			EndField();
-			BeginField(L"stat");
-			Print(node->stat.Obj());
+			BeginField(L"varsDecl");
+			Print(node->varsDecl.Obj());
 			EndField();
 		}
 		void AstVisitor::PrintFields(CppFunctionKeyword* node)
@@ -2240,20 +2246,6 @@ namespace cpp_parser
 			EndObject();
 		}
 
-		void AstVisitor::Visit(CppForEachStat* node)
-		{
-			if (!node)
-			{
-				WriteNull();
-				return;
-			}
-			BeginObject();
-			WriteType(L"ForEachStat", node);
-			PrintFields(static_cast<CppStatement*>(node));
-			PrintFields(static_cast<CppForEachStat*>(node));
-			EndObject();
-		}
-
 		void AstVisitor::Visit(CppSwitchStat* node)
 		{
 			if (!node)
@@ -2293,6 +2285,34 @@ namespace cpp_parser
 			WriteType(L"__TryStat", node);
 			PrintFields(static_cast<CppStatement*>(node));
 			PrintFields(static_cast<Cpp__TryStat*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppForStatLoopCondition* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"ForStatLoopCondition", node);
+			PrintFields(static_cast<CppForStatConditionPart*>(node));
+			PrintFields(static_cast<CppForStatLoopCondition*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppForStatIterateCondition* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"ForStatIterateCondition", node);
+			PrintFields(static_cast<CppForStatConditionPart*>(node));
+			PrintFields(static_cast<CppForStatIterateCondition*>(node));
 			EndObject();
 		}
 
@@ -2339,6 +2359,16 @@ namespace cpp_parser
 				return;
 			}
 			node->Accept(static_cast<CppStatement::IVisitor*>(this));
+		}
+
+		void AstVisitor::Print(CppForStatConditionPart* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			node->Accept(static_cast<CppForStatConditionPart::IVisitor*>(this));
 		}
 
 		void AstVisitor::Print(CppGenericArguments* node)

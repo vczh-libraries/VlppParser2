@@ -24,6 +24,7 @@ namespace cpp_parser
 			, protected virtual CppIdentifier::IVisitor
 			, protected virtual CppVarInit::IVisitor
 			, protected virtual CppStatement::IVisitor
+			, protected virtual CppForStatConditionPart::IVisitor
 		{
 		protected:
 			virtual void Traverse(vl::glr::ParsingToken& token);
@@ -53,8 +54,10 @@ namespace cpp_parser
 			virtual void Traverse(CppExprOnly* node);
 			virtual void Traverse(CppExprStat* node);
 			virtual void Traverse(CppFile* node);
-			virtual void Traverse(CppForEachStat* node);
 			virtual void Traverse(CppForStat* node);
+			virtual void Traverse(CppForStatConditionPart* node);
+			virtual void Traverse(CppForStatIterateCondition* node);
+			virtual void Traverse(CppForStatLoopCondition* node);
 			virtual void Traverse(CppFunctionKeyword* node);
 			virtual void Traverse(CppGenericArgument* node);
 			virtual void Traverse(CppGenericArguments* node);
@@ -127,8 +130,10 @@ namespace cpp_parser
 			virtual void Finishing(CppExprOnly* node);
 			virtual void Finishing(CppExprStat* node);
 			virtual void Finishing(CppFile* node);
-			virtual void Finishing(CppForEachStat* node);
 			virtual void Finishing(CppForStat* node);
+			virtual void Finishing(CppForStatConditionPart* node);
+			virtual void Finishing(CppForStatIterateCondition* node);
+			virtual void Finishing(CppForStatLoopCondition* node);
 			virtual void Finishing(CppFunctionKeyword* node);
 			virtual void Finishing(CppGenericArgument* node);
 			virtual void Finishing(CppGenericArguments* node);
@@ -234,16 +239,19 @@ namespace cpp_parser
 			void Visit(CppDoWhileStat* node) override;
 			void Visit(CppIfElseStat* node) override;
 			void Visit(CppForStat* node) override;
-			void Visit(CppForEachStat* node) override;
 			void Visit(CppSwitchStat* node) override;
 			void Visit(CppTryStat* node) override;
 			void Visit(Cpp__TryStat* node) override;
+
+			void Visit(CppForStatLoopCondition* node) override;
+			void Visit(CppForStatIterateCondition* node) override;
 
 		public:
 			void InspectInto(CppTypeOrExprOrOthers* node);
 			void InspectInto(CppIdentifier* node);
 			void InspectInto(CppVarInit* node);
 			void InspectInto(CppStatement* node);
+			void InspectInto(CppForStatConditionPart* node);
 			void InspectInto(CppGenericArguments* node);
 			void InspectInto(CppStringLiteralFragment* node);
 			void InspectInto(CppAdvancedType* node);
