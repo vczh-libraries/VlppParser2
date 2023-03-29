@@ -1,1 +1,40 @@
-[](){}
+[&](){}
+[=](){}
+[this](){}
+[*this](){}
+
+[i](){}
+[i...](){}
+[i=0](){}
+[i(0)](){}
+[i{0}](){}
+[...i=0](){}
+[...i(0)](){}
+[...i{0}](){}
+
+[&i](){}
+[&i...](){}
+[&i=0](){}
+[&i(0)](){}
+[&i{0}](){}
+[&...i=0](){}
+[&...i(0)](){}
+[&...i{0}](){}
+
+[](int a, bool(&...b)[]){return;}
+[]{return;}
+[] -> ::X<int>::Y<0>::Z {return;}
+[] -> ::X<int>::Y<0>::Z * const & && volatile (&[10])(int) {return;}
+[] constexpr const volatile && & override final mutable noexcept noexcept(10) throw () throw(bool) throw(int, float, bool) -> ::X<int>::Y<0>::Z {return;}
+
+[] <>                             (int a, bool(&...b)[]){return;}
+[] <typename, class...>           (int a, bool(&...b)[]){return;}
+[] <typename T, class ...U = int> (int a, bool(&...b)[]){return;}
+[] <int, char ... = 'c'>          (int a, bool(&...b)[]){return;}
+[] <int I, char ...I = 'c'>       (int a, bool(&...b)[]){return;}
+
+[] <template<auto, auto... = int>          class>                ()                             {return;}
+[] <template<typename, class...>           class>                (auto...) -> ::X<int>::Y<0>::Z {return;}
+[] <template<typename T, class ...U = int> class = MyClass>                                     {return;}
+[] <template<int, char ...= 'c'>           class ...>                      -> ::X<int>::Y<0>::Z {return;}
+[] <template<int I, char ...I = 'c'>       class ...T = MyClass>           constexpr const volatile && & override final mutable noexcept noexcept(10) throw () throw(bool) throw(int, float, bool)-> ::X<int>::Y<0>::Z {return;}
