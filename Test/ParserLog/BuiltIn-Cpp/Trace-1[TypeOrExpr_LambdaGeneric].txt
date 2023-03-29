@@ -1,0 +1,661 @@
+﻿+----------------------------+
+| [0]: <Start>               |
+| [1219][_TypeOrExpr] BEGIN  |
+| [AST-INSTRUCTIONS]:        |
+| [SUCCESORS 1-1]: [1]       |
++----------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++==========================================================================================================================================================++
+|| [1]: {LBRACKET} [                                                                                                                                        ||
+|| [202][_LambdaExpr]< "[" @ { _LambdaCapture ; "," } "]" [ _GenericHeader ] [ _DeclaratorFunctionPartOptionalParameters ] _BlockStat >                     ||
+|| [AST-INSTRUCTIONS]:                                                                                                                                      ||
+||   - DelayFieldAssignment()                                                                                                                               ||
+||   - DelayFieldAssignment()                                                                                                                               ||
+||   - BeginObject(LambdaExpr)                                                                                                                              ||
+|| [RETURN STACK]:                                                                                                                                          ||
+||   [1][0]: _LambdaExpr -> [286][_PrimitiveExpr]<< !_LambdaExpr @ >>                                                                                       ||
+||   [0][0]: _PrimitiveExpr -> [1226][_TypeOrExpr]<< !_PrimitiveExpr @ ( lri:(LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_LRI_Original | lri:<skip> ) >> ||
+|| [PREDECESSORS 0-0]: [0]                                                                                                                                  ||
+|| [SUCCESORS 2-2]: [2]                                                                                                                                     ||
+++==========================================================================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++==========================================================================================================================================================++
+|| [2]: {RBRACKET} ]                                                                                                                                        ||
+|| [204][_LambdaExpr]< "[" { _LambdaCapture ; "," } "]" @ [ _GenericHeader ] [ _DeclaratorFunctionPartOptionalParameters ] _BlockStat >                     ||
+|| [AST-INSTRUCTIONS]:                                                                                                                                      ||
+|| [RETURN STACK]:                                                                                                                                          ||
+||   [1][0]: _LambdaExpr -> [286][_PrimitiveExpr]<< !_LambdaExpr @ >>                                                                                       ||
+||   [0][0]: _PrimitiveExpr -> [1226][_TypeOrExpr]<< !_PrimitiveExpr @ ( lri:(LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_LRI_Original | lri:<skip> ) >> ||
+|| [PREDECESSORS 1-1]: [1]                                                                                                                                  ||
+|| [SUCCESORS 3-3]: [3]                                                                                                                                     ||
+++==========================================================================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++==================================================================================================================================================================++
+|| [3]: {LT} <                                                                                                                                                      ||
+|| [894][_GenericHeader]< "<" @ { _GenericParameter ; "," } ">" >                                                                                                   ||
+|| [AST-INSTRUCTIONS]:                                                                                                                                              ||
+||   - BeginObject(GenericHeader)                                                                                                                                   ||
+|| [RETURN STACK]:                                                                                                                                                  ||
+||   [2][2]: _GenericHeader -> [205][_LambdaExpr]< "[" { _LambdaCapture ; "," } "]" [ _GenericHeader @ ] [ _DeclaratorFunctionPartOptionalParameters ] _BlockStat > ||
+||   [1][0]: _LambdaExpr -> [286][_PrimitiveExpr]<< !_LambdaExpr @ >>                                                                                               ||
+||   [0][0]: _PrimitiveExpr -> [1226][_TypeOrExpr]<< !_PrimitiveExpr @ ( lri:(LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_LRI_Original | lri:<skip> ) >>         ||
+|| [PREDECESSORS 2-2]: [2]                                                                                                                                          ||
+|| [SUCCESORS 4-5]: [4][5]                                                                                                                                          ||
+++==================================================================================================================================================================++
+[0/1]
+ |
+ +-------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+ |                                                                                                                                                                         |
+[0]                                                                                                                                                                       [1]
+++==================================================================================================================================================================++    ++===================================================================================================================================================================++
+|| [4]: {TYPENAME} typename                                                                                                                                         ||    || [5]: {TYPENAME} typename                                                                                                                                          ||
+|| [509][_PrimitiveType]<< "typename" @ !_QualifiedName >>                                                                                                          ||    || [854][_GenericParameterKeyword]"typename" @                                                                                                                       ||
+|| [AST-INSTRUCTIONS]:                                                                                                                                              ||    || [AST-INSTRUCTIONS]:                                                                                                                                               ||
+||   - DelayFieldAssignment()                                                                                                                                       ||    ||   - DelayFieldAssignment()                                                                                                                                        ||
+||   - DelayFieldAssignment()                                                                                                                                       ||    ||   - DelayFieldAssignment()                                                                                                                                        ||
+|| [RETURN STACK]:                                                                                                                                                  ||    ||   - BeginObject(OrdinaryGenericParameter)                                                                                                                         ||
+||   [4][3]: _PrimitiveType -> [885][_GenericParameter]<< !_PrimitiveType @ ( lri:(LRI__PM_PrimitiveType)->_GenericParameter_LRI_Original | lri:<skip> ) >>         ||    ||   + Token()                                                                                                                                                       ||
+||   [3][3]: _GenericParameter -> [897][_GenericHeader]< "<" { _GenericParameter @ ; "," } ">" >                                                                    ||    ||   + Field(OrdinaryGenericParameter::typenameToken)                                                                                                                ||
+||   [2][2]: _GenericHeader -> [205][_LambdaExpr]< "[" { _LambdaCapture ; "," } "]" [ _GenericHeader @ ] [ _DeclaratorFunctionPartOptionalParameters ] _BlockStat > ||    || [RETURN STACK]:                                                                                                                                                   ||
+||   [1][0]: _LambdaExpr -> [286][_PrimitiveExpr]<< !_LambdaExpr @ >>                                                                                               ||    ||   [7][3]: _GenericParameterKeyword -> [857][_OrdinaryGenericParameter]< _GenericParameterKeyword @ [ "..." ] [ _DeclaratorId ] [ "=" _TypeOrExpr_NoComma_NoGT ] > ||
+||   [0][0]: _PrimitiveExpr -> [1226][_TypeOrExpr]<< !_PrimitiveExpr @ ( lri:(LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_LRI_Original | lri:<skip> ) >>         ||    ||   [6][3]: _OrdinaryGenericParameter -> [1715][_GenericParameter_LRI_Isolated_0]<< !_OrdinaryGenericParameter @ >>                                                 ||
+|| [PREDECESSORS 3-3]: [3]                                                                                                                                          ||    ||   [5][3]: _GenericParameter_LRI_Isolated_0 -> [883][_GenericParameter]<< !_GenericParameter_LRI_Isolated_0 @ >>                                                   ||
+|| [SUCCESORS 8-8]: [8]                                                                                                                                             ||    ||   [3][3]: _GenericParameter -> [897][_GenericHeader]< "<" { _GenericParameter @ ; "," } ">" >                                                                     ||
+++==================================================================================================================================================================++    ||   [2][2]: _GenericHeader -> [205][_LambdaExpr]< "[" { _LambdaCapture ; "," } "]" [ _GenericHeader @ ] [ _DeclaratorFunctionPartOptionalParameters ] _BlockStat >  ||
+|                                                                                                                                                                         ||   [1][0]: _LambdaExpr -> [286][_PrimitiveExpr]<< !_LambdaExpr @ >>                                                                                                ||
+|                                                                                                                                                                         ||   [0][0]: _PrimitiveExpr -> [1226][_TypeOrExpr]<< !_PrimitiveExpr @ ( lri:(LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_LRI_Original | lri:<skip> ) >>          ||
+|                                                                                                                                                                         || [PREDECESSORS 3-3]: [3]                                                                                                                                           ||
+|                                                                                                                                                                         || [SUCCESORS 6-6]: [6]                                                                                                                                              ||
+|                                                                                                                                                                         ++===================================================================================================================================================================++
+|                                                                                                                                                                         |
++                                                                                                                                                                         +
+|                                                                                                                                                                         |
+|                                                                                                                                                                         +------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                                                                                                                                                                         | [6]: <Ending>                                                                                                                                                    |
+|                                                                                                                                                                         | [857][_OrdinaryGenericParameter]< _GenericParameterKeyword @ [ "..." ] [ _DeclaratorId ] [ "=" _TypeOrExpr_NoComma_NoGT ] >                                      |
+|                                                                                                                                                                         | [AST-INSTRUCTIONS]:                                                                                                                                              |
+|                                                                                                                                                                         | [RETURN STACK]:                                                                                                                                                  |
+|                                                                                                                                                                         |   [6][3]: _OrdinaryGenericParameter -> [1715][_GenericParameter_LRI_Isolated_0]<< !_OrdinaryGenericParameter @ >>                                                |
+|                                                                                                                                                                         |   [5][3]: _GenericParameter_LRI_Isolated_0 -> [883][_GenericParameter]<< !_GenericParameter_LRI_Isolated_0 @ >>                                                  |
+|                                                                                                                                                                         |   [3][3]: _GenericParameter -> [897][_GenericHeader]< "<" { _GenericParameter @ ; "," } ">" >                                                                    |
+|                                                                                                                                                                         |   [2][2]: _GenericHeader -> [205][_LambdaExpr]< "[" { _LambdaCapture ; "," } "]" [ _GenericHeader @ ] [ _DeclaratorFunctionPartOptionalParameters ] _BlockStat > |
+|                                                                                                                                                                         |   [1][0]: _LambdaExpr -> [286][_PrimitiveExpr]<< !_LambdaExpr @ >>                                                                                               |
+|                                                                                                                                                                         |   [0][0]: _PrimitiveExpr -> [1226][_TypeOrExpr]<< !_PrimitiveExpr @ ( lri:(LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_LRI_Original | lri:<skip> ) >>         |
+|                                                                                                                                                                         | [PREDECESSORS 5-5]: [5]                                                                                                                                          |
+|                                                                                                                                                                         | [SUCCESORS 15-15]: [15]                                                                                                                                          |
+|                                                                                                                                                                         +------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+[0]                                                                                                                                                                       [1]
+ |                                                                                                                                                                         |
+ +                                                                                                                                                                         +
+ |                                                                                                                                                                         |
+[0]                                                                                                                                                                       [1]
+++==================================================================================================================================================================++    ++==================================================================================================================================================================++
+|| [8]: {ID} T                                                                                                                                                      ||    || [15]: {ID} T                                                                                                                                                     ||
+|| [2][_NameIdentifier]< ID @ >                                                                                                                                     ||    || [2][_NameIdentifier]< ID @ >                                                                                                                                     ||
+|| [AST-INSTRUCTIONS]:                                                                                                                                              ||    || [AST-INSTRUCTIONS]:                                                                                                                                              ||
+||   - BeginObject(QualifiedName)                                                                                                                                   ||    ||   - DelayFieldAssignment()                                                                                                                                       ||
+||   - DelayFieldAssignment()                                                                                                                                       ||    ||   - BeginObject(NameIdentifier)                                                                                                                                  ||
+||   - BeginObject(NameIdentifier)                                                                                                                                  ||    ||   + Token()                                                                                                                                                      ||
+||   + Token()                                                                                                                                                      ||    ||   + Field(NameIdentifier::name)                                                                                                                                  ||
+||   + Field(NameIdentifier::name)                                                                                                                                  ||    || [RETURN STACK]:                                                                                                                                                  ||
+|| [RETURN STACK]:                                                                                                                                                  ||    ||   [13][6]: _NameIdentifier -> [664][_DeclaratorId]<< !_NameIdentifier @ >>                                                                                       ||
+||   [11][4]: _NameIdentifier -> [121][_Identifier]<< !_NameIdentifier @ >>                                                                                         ||    ||   [12][6]: _DeclaratorId -> [859][_OrdinaryGenericParameter]< _GenericParameterKeyword [ "..." ] [ _DeclaratorId @ ] [ "=" _TypeOrExpr_NoComma_NoGT ] >          ||
+||   [10][4]: _Identifier -> [155][_QualifiedNameFragment]_Identifier @ [ _GenericArguments ]                                                                       ||    ||   [6][3]: _OrdinaryGenericParameter -> [1715][_GenericParameter_LRI_Isolated_0]<< !_OrdinaryGenericParameter @ >>                                                ||
+||   [9][4]: _QualifiedNameFragment -> [175][_QualifiedName]< _QualifiedNameFragment @ >                                                                            ||    ||   [5][3]: _GenericParameter_LRI_Isolated_0 -> [883][_GenericParameter]<< !_GenericParameter_LRI_Isolated_0 @ >>                                                  ||
+||   [8][4]: _QualifiedName -> [508][_PrimitiveType]<< "typename" !_QualifiedName @ >>                                                                              ||    ||   [3][3]: _GenericParameter -> [897][_GenericHeader]< "<" { _GenericParameter @ ; "," } ">" >                                                                    ||
+||   [4][3]: _PrimitiveType -> [885][_GenericParameter]<< !_PrimitiveType @ ( lri:(LRI__PM_PrimitiveType)->_GenericParameter_LRI_Original | lri:<skip> ) >>         ||    ||   [2][2]: _GenericHeader -> [205][_LambdaExpr]< "[" { _LambdaCapture ; "," } "]" [ _GenericHeader @ ] [ _DeclaratorFunctionPartOptionalParameters ] _BlockStat > ||
+||   [3][3]: _GenericParameter -> [897][_GenericHeader]< "<" { _GenericParameter @ ; "," } ">" >                                                                    ||    ||   [1][0]: _LambdaExpr -> [286][_PrimitiveExpr]<< !_LambdaExpr @ >>                                                                                               ||
+||   [2][2]: _GenericHeader -> [205][_LambdaExpr]< "[" { _LambdaCapture ; "," } "]" [ _GenericHeader @ ] [ _DeclaratorFunctionPartOptionalParameters ] _BlockStat > ||    ||   [0][0]: _PrimitiveExpr -> [1226][_TypeOrExpr]<< !_PrimitiveExpr @ ( lri:(LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_LRI_Original | lri:<skip> ) >>         ||
+||   [1][0]: _LambdaExpr -> [286][_PrimitiveExpr]<< !_LambdaExpr @ >>                                                                                               ||    || [PREDECESSORS 6-6]: [6]                                                                                                                                          ||
+||   [0][0]: _PrimitiveExpr -> [1226][_TypeOrExpr]<< !_PrimitiveExpr @ ( lri:(LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_LRI_Original | lri:<skip> ) >>         ||    || [SUCCESORS 16-16]: [16]                                                                                                                                          ||
+|| [PREDECESSORS 4-4]: [4]                                                                                                                                          ||    ++==================================================================================================================================================================++
+|| [SUCCESORS 9-9]: [9]                                                                                                                                             ||    |
+++==================================================================================================================================================================++    |
+|                                                                                                                                                                         |
++                                                                                                                                                                         +
+|                                                                                                                                                                         |
++------------------------------------------------------------------------------------------------------------------------------------------------------------------+      +------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [9]: <Ending>                                                                                                                                                    |      | [16]: <Ending>                                                                                                                                                   |
+| [121][_Identifier]<< !_NameIdentifier @ >>                                                                                                                       |      | [664][_DeclaratorId]<< !_NameIdentifier @ >>                                                                                                                     |
+| [AST-INSTRUCTIONS]:                                                                                                                                              |      | [AST-INSTRUCTIONS]:                                                                                                                                              |
+|   - EnumItem(0)                                                                                                                                                  |      |   - EnumItem(0)                                                                                                                                                  |
+|   - Field(NameIdentifier::kind)                                                                                                                                  |      |   - Field(NameIdentifier::kind)                                                                                                                                  |
+|   - EndObject()                                                                                                                                                  |      |   - EndObject()                                                                                                                                                  |
+| [RETURN STACK]:                                                                                                                                                  |      | [RETURN STACK]:                                                                                                                                                  |
+|   [10][4]: _Identifier -> [155][_QualifiedNameFragment]_Identifier @ [ _GenericArguments ]                                                                       |      |   [12][6]: _DeclaratorId -> [859][_OrdinaryGenericParameter]< _GenericParameterKeyword [ "..." ] [ _DeclaratorId @ ] [ "=" _TypeOrExpr_NoComma_NoGT ] >          |
+|   [9][4]: _QualifiedNameFragment -> [175][_QualifiedName]< _QualifiedNameFragment @ >                                                                            |      |   [6][3]: _OrdinaryGenericParameter -> [1715][_GenericParameter_LRI_Isolated_0]<< !_OrdinaryGenericParameter @ >>                                                |
+|   [8][4]: _QualifiedName -> [508][_PrimitiveType]<< "typename" !_QualifiedName @ >>                                                                              |      |   [5][3]: _GenericParameter_LRI_Isolated_0 -> [883][_GenericParameter]<< !_GenericParameter_LRI_Isolated_0 @ >>                                                  |
+|   [4][3]: _PrimitiveType -> [885][_GenericParameter]<< !_PrimitiveType @ ( lri:(LRI__PM_PrimitiveType)->_GenericParameter_LRI_Original | lri:<skip> ) >>         |      |   [3][3]: _GenericParameter -> [897][_GenericHeader]< "<" { _GenericParameter @ ; "," } ">" >                                                                    |
+|   [3][3]: _GenericParameter -> [897][_GenericHeader]< "<" { _GenericParameter @ ; "," } ">" >                                                                    |      |   [2][2]: _GenericHeader -> [205][_LambdaExpr]< "[" { _LambdaCapture ; "," } "]" [ _GenericHeader @ ] [ _DeclaratorFunctionPartOptionalParameters ] _BlockStat > |
+|   [2][2]: _GenericHeader -> [205][_LambdaExpr]< "[" { _LambdaCapture ; "," } "]" [ _GenericHeader @ ] [ _DeclaratorFunctionPartOptionalParameters ] _BlockStat > |      |   [1][0]: _LambdaExpr -> [286][_PrimitiveExpr]<< !_LambdaExpr @ >>                                                                                               |
+|   [1][0]: _LambdaExpr -> [286][_PrimitiveExpr]<< !_LambdaExpr @ >>                                                                                               |      |   [0][0]: _PrimitiveExpr -> [1226][_TypeOrExpr]<< !_PrimitiveExpr @ ( lri:(LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_LRI_Original | lri:<skip> ) >>         |
+|   [0][0]: _PrimitiveExpr -> [1226][_TypeOrExpr]<< !_PrimitiveExpr @ ( lri:(LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_LRI_Original | lri:<skip> ) >>         |      | [PREDECESSORS 15-15]: [15]                                                                                                                                       |
+| [PREDECESSORS 8-8]: [8]                                                                                                                                          |      | [SUCCESORS 17-17]: [17]                                                                                                                                          |
+| [SUCCESORS 10-10]: [10]                                                                                                                                          |      +------------------------------------------------------------------------------------------------------------------------------------------------------------------+
++------------------------------------------------------------------------------------------------------------------------------------------------------------------+      |
+|                                                                                                                                                                         |
++                                                                                                                                                                         +
+|                                                                                                                                                                         |
++------------------------------------------------------------------------------------------------------------------------------------------------------------------+      +------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [10]: <Ending>                                                                                                                                                   |      | [17]: <Ending>                                                                                                                                                   |
+| [155][_QualifiedNameFragment]_Identifier @ [ _GenericArguments ]                                                                                                 |      | [859][_OrdinaryGenericParameter]< _GenericParameterKeyword [ "..." ] [ _DeclaratorId @ ] [ "=" _TypeOrExpr_NoComma_NoGT ] >                                      |
+| [AST-INSTRUCTIONS]:                                                                                                                                              |      | [AST-INSTRUCTIONS]:                                                                                                                                              |
+|   - ReopenObject()                                                                                                                                               |      |   - ReopenObject()                                                                                                                                               |
+|   - EndObject()                                                                                                                                                  |      |   - EndObject()                                                                                                                                                  |
+|   > Field(QualifiedName::id)                                                                                                                                     |      |   > Field(OrdinaryGenericParameter::id)                                                                                                                          |
+| [RETURN STACK]:                                                                                                                                                  |      | [RETURN STACK]:                                                                                                                                                  |
+|   [9][4]: _QualifiedNameFragment -> [175][_QualifiedName]< _QualifiedNameFragment @ >                                                                            |      |   [6][3]: _OrdinaryGenericParameter -> [1715][_GenericParameter_LRI_Isolated_0]<< !_OrdinaryGenericParameter @ >>                                                |
+|   [8][4]: _QualifiedName -> [508][_PrimitiveType]<< "typename" !_QualifiedName @ >>                                                                              |      |   [5][3]: _GenericParameter_LRI_Isolated_0 -> [883][_GenericParameter]<< !_GenericParameter_LRI_Isolated_0 @ >>                                                  |
+|   [4][3]: _PrimitiveType -> [885][_GenericParameter]<< !_PrimitiveType @ ( lri:(LRI__PM_PrimitiveType)->_GenericParameter_LRI_Original | lri:<skip> ) >>         |      |   [3][3]: _GenericParameter -> [897][_GenericHeader]< "<" { _GenericParameter @ ; "," } ">" >                                                                    |
+|   [3][3]: _GenericParameter -> [897][_GenericHeader]< "<" { _GenericParameter @ ; "," } ">" >                                                                    |      |   [2][2]: _GenericHeader -> [205][_LambdaExpr]< "[" { _LambdaCapture ; "," } "]" [ _GenericHeader @ ] [ _DeclaratorFunctionPartOptionalParameters ] _BlockStat > |
+|   [2][2]: _GenericHeader -> [205][_LambdaExpr]< "[" { _LambdaCapture ; "," } "]" [ _GenericHeader @ ] [ _DeclaratorFunctionPartOptionalParameters ] _BlockStat > |      |   [1][0]: _LambdaExpr -> [286][_PrimitiveExpr]<< !_LambdaExpr @ >>                                                                                               |
+|   [1][0]: _LambdaExpr -> [286][_PrimitiveExpr]<< !_LambdaExpr @ >>                                                                                               |      |   [0][0]: _PrimitiveExpr -> [1226][_TypeOrExpr]<< !_PrimitiveExpr @ ( lri:(LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_LRI_Original | lri:<skip> ) >>         |
+|   [0][0]: _PrimitiveExpr -> [1226][_TypeOrExpr]<< !_PrimitiveExpr @ ( lri:(LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_LRI_Original | lri:<skip> ) >>         |      | [PREDECESSORS 16-16]: [16]                                                                                                                                       |
+| [PREDECESSORS 9-9]: [9]                                                                                                                                          |      | [SUCCESORS 18-18]: [18]                                                                                                                                          |
+| [SUCCESORS 11-11]: [11]                                                                                                                                          |      +------------------------------------------------------------------------------------------------------------------------------------------------------------------+
++------------------------------------------------------------------------------------------------------------------------------------------------------------------+      |
+|                                                                                                                                                                         |
++                                                                                                                                                                         +
+|                                                                                                                                                                         |
++------------------------------------------------------------------------------------------------------------------------------------------------------------------+      +------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [11]: <Ending>                                                                                                                                                   |      | [18]: <Ending>                                                                                                                                                   |
+| [175][_QualifiedName]< _QualifiedNameFragment @ >                                                                                                                |      | [1715][_GenericParameter_LRI_Isolated_0]<< !_OrdinaryGenericParameter @ >>                                                                                       |
+| [AST-INSTRUCTIONS]:                                                                                                                                              |      | [AST-INSTRUCTIONS]:                                                                                                                                              |
+| [RETURN STACK]:                                                                                                                                                  |      |   - EndObject()                                                                                                                                                  |
+|   [8][4]: _QualifiedName -> [508][_PrimitiveType]<< "typename" !_QualifiedName @ >>                                                                              |      | [RETURN STACK]:                                                                                                                                                  |
+|   [4][3]: _PrimitiveType -> [885][_GenericParameter]<< !_PrimitiveType @ ( lri:(LRI__PM_PrimitiveType)->_GenericParameter_LRI_Original | lri:<skip> ) >>         |      |   [5][3]: _GenericParameter_LRI_Isolated_0 -> [883][_GenericParameter]<< !_GenericParameter_LRI_Isolated_0 @ >>                                                  |
+|   [3][3]: _GenericParameter -> [897][_GenericHeader]< "<" { _GenericParameter @ ; "," } ">" >                                                                    |      |   [3][3]: _GenericParameter -> [897][_GenericHeader]< "<" { _GenericParameter @ ; "," } ">" >                                                                    |
+|   [2][2]: _GenericHeader -> [205][_LambdaExpr]< "[" { _LambdaCapture ; "," } "]" [ _GenericHeader @ ] [ _DeclaratorFunctionPartOptionalParameters ] _BlockStat > |      |   [2][2]: _GenericHeader -> [205][_LambdaExpr]< "[" { _LambdaCapture ; "," } "]" [ _GenericHeader @ ] [ _DeclaratorFunctionPartOptionalParameters ] _BlockStat > |
+|   [1][0]: _LambdaExpr -> [286][_PrimitiveExpr]<< !_LambdaExpr @ >>                                                                                               |      |   [1][0]: _LambdaExpr -> [286][_PrimitiveExpr]<< !_LambdaExpr @ >>                                                                                               |
+|   [0][0]: _PrimitiveExpr -> [1226][_TypeOrExpr]<< !_PrimitiveExpr @ ( lri:(LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_LRI_Original | lri:<skip> ) >>         |      |   [0][0]: _PrimitiveExpr -> [1226][_TypeOrExpr]<< !_PrimitiveExpr @ ( lri:(LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_LRI_Original | lri:<skip> ) >>         |
+| [PREDECESSORS 10-10]: [10]                                                                                                                                       |      | [PREDECESSORS 17-17]: [17]                                                                                                                                       |
+| [SUCCESORS 12-12]: [12]                                                                                                                                          |      | [SUCCESORS 19-19]: [19]                                                                                                                                          |
++------------------------------------------------------------------------------------------------------------------------------------------------------------------+      +------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                                                                                                                                                                         |
++                                                                                                                                                                         +
+|                                                                                                                                                                         |
++------------------------------------------------------------------------------------------------------------------------------------------------------------------+      +------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [12]: <Ending>                                                                                                                                                   |      | [19]: <Ending>                                                                                                                                                   |
+| [508][_PrimitiveType]<< "typename" !_QualifiedName @ >>                                                                                                          |      | [883][_GenericParameter]<< !_GenericParameter_LRI_Isolated_0 @ >>                                                                                                |
+| [AST-INSTRUCTIONS]:                                                                                                                                              |      | [AST-INSTRUCTIONS]:                                                                                                                                              |
+|   - EnumItem(1)                                                                                                                                                  |      |   - ReopenObject()                                                                                                                                               |
+|   - Field(QualifiedName::kind)                                                                                                                                   |      |   - EndObject()                                                                                                                                                  |
+|   - EndObject()                                                                                                                                                  |      | [RETURN STACK]:                                                                                                                                                  |
+|   > ReopenObject()                                                                                                                                               |      |   [3][3]: _GenericParameter -> [897][_GenericHeader]< "<" { _GenericParameter @ ; "," } ">" >                                                                    |
+| [RETURN STACK]:                                                                                                                                                  |      |   [2][2]: _GenericHeader -> [205][_LambdaExpr]< "[" { _LambdaCapture ; "," } "]" [ _GenericHeader @ ] [ _DeclaratorFunctionPartOptionalParameters ] _BlockStat > |
+|   [4][3]: _PrimitiveType -> [885][_GenericParameter]<< !_PrimitiveType @ ( lri:(LRI__PM_PrimitiveType)->_GenericParameter_LRI_Original | lri:<skip> ) >>         |      |   [1][0]: _LambdaExpr -> [286][_PrimitiveExpr]<< !_LambdaExpr @ >>                                                                                               |
+|   [3][3]: _GenericParameter -> [897][_GenericHeader]< "<" { _GenericParameter @ ; "," } ">" >                                                                    |      |   [0][0]: _PrimitiveExpr -> [1226][_TypeOrExpr]<< !_PrimitiveExpr @ ( lri:(LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_LRI_Original | lri:<skip> ) >>         |
+|   [2][2]: _GenericHeader -> [205][_LambdaExpr]< "[" { _LambdaCapture ; "," } "]" [ _GenericHeader @ ] [ _DeclaratorFunctionPartOptionalParameters ] _BlockStat > |      | [PREDECESSORS 18-18]: [18]                                                                                                                                       |
+|   [1][0]: _LambdaExpr -> [286][_PrimitiveExpr]<< !_LambdaExpr @ >>                                                                                               |      | [SUCCESORS 20-20]: [20]                                                                                                                                          |
+|   [0][0]: _PrimitiveExpr -> [1226][_TypeOrExpr]<< !_PrimitiveExpr @ ( lri:(LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_LRI_Original | lri:<skip> ) >>         |      +------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [PREDECESSORS 11-11]: [11]                                                                                                                                       |      |
+| [SUCCESORS 13-13]: [13]                                                                                                                                          |      |
++------------------------------------------------------------------------------------------------------------------------------------------------------------------+      |
+|                                                                                                                                                                         |
++                                                                                                                                                                         +
+|                                                                                                                                                                         |
++------------------------------------------------------------------------------------------------------------------------------------------------------------------+      +------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [13]: <Ending>                                                                                                                                                   |      | [20]: <Ending>                                                                                                                                                   |
+| [885][_GenericParameter]<< !_PrimitiveType @ ( lri:(LRI__PM_PrimitiveType)->_GenericParameter_LRI_Original | lri:<skip> ) >>                                     |      | [897][_GenericHeader]< "<" { _GenericParameter @ ; "," } ">" >                                                                                                   |
+| [AST-INSTRUCTIONS]:                                                                                                                                              |      | [AST-INSTRUCTIONS]:                                                                                                                                              |
+|   - EndObject()                                                                                                                                                  |      |   - ReopenObject()                                                                                                                                               |
+|   > ReopenObject()                                                                                                                                               |      |   - EndObject()                                                                                                                                                  |
+| [RETURN STACK]:                                                                                                                                                  |      |   > Field(GenericHeader::parameters)                                                                                                                             |
+|   [3][3]: _GenericParameter -> [897][_GenericHeader]< "<" { _GenericParameter @ ; "," } ">" >                                                                    |      | [RETURN STACK]:                                                                                                                                                  |
+|   [2][2]: _GenericHeader -> [205][_LambdaExpr]< "[" { _LambdaCapture ; "," } "]" [ _GenericHeader @ ] [ _DeclaratorFunctionPartOptionalParameters ] _BlockStat > |      |   [2][2]: _GenericHeader -> [205][_LambdaExpr]< "[" { _LambdaCapture ; "," } "]" [ _GenericHeader @ ] [ _DeclaratorFunctionPartOptionalParameters ] _BlockStat > |
+|   [1][0]: _LambdaExpr -> [286][_PrimitiveExpr]<< !_LambdaExpr @ >>                                                                                               |      |   [1][0]: _LambdaExpr -> [286][_PrimitiveExpr]<< !_LambdaExpr @ >>                                                                                               |
+|   [0][0]: _PrimitiveExpr -> [1226][_TypeOrExpr]<< !_PrimitiveExpr @ ( lri:(LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_LRI_Original | lri:<skip> ) >>         |      |   [0][0]: _PrimitiveExpr -> [1226][_TypeOrExpr]<< !_PrimitiveExpr @ ( lri:(LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_LRI_Original | lri:<skip> ) >>         |
+| [PREDECESSORS 12-12]: [12]                                                                                                                                       |      | [PREDECESSORS 19-19]: [19]                                                                                                                                       |
+| [SUCCESORS 21-21]: [21]                                                                                                                                          |      | [SUCCESORS 14-14]: [14]                                                                                                                                          |
++------------------------------------------------------------------------------------------------------------------------------------------------------------------+      +------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                                                                                                                                                                         |
++                                                                                                                                                                         +
+|                                                                                                                                                                         |
++------------------------------------------------------------------------------------------------------------------------------------------------------------------+      |
+| [21]: <Ending>                                                                                                                                                   |      |
+| [897][_GenericHeader]< "<" { _GenericParameter @ ; "," } ">" >                                                                                                   |      |
+| [AST-INSTRUCTIONS]:                                                                                                                                              |      |
+|   - EndObject()                                                                                                                                                  |      |
+|   > Field(GenericHeader::parameters)                                                                                                                             |      |
+| [RETURN STACK]:                                                                                                                                                  |      |
+|   [2][2]: _GenericHeader -> [205][_LambdaExpr]< "[" { _LambdaCapture ; "," } "]" [ _GenericHeader @ ] [ _DeclaratorFunctionPartOptionalParameters ] _BlockStat > |      |
+|   [1][0]: _LambdaExpr -> [286][_PrimitiveExpr]<< !_LambdaExpr @ >>                                                                                               |      |
+|   [0][0]: _PrimitiveExpr -> [1226][_TypeOrExpr]<< !_PrimitiveExpr @ ( lri:(LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_LRI_Original | lri:<skip> ) >>         |      |
+| [PREDECESSORS 13-13]: [13]                                                                                                                                       |      |
+| [SUCCESORS 14-14]: [14]                                                                                                                                          |      |
++------------------------------------------------------------------------------------------------------------------------------------------------------------------+      |
+|                                                                                                                                                                         |
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|
++-----------------+
+| [14]: <Merging> |
+| <Start>         |
++-----------------+
+[0/0]
+ |
+ +
+ |
+[0]
+++==================================================================================================================================================================++
+|| [22]: {COMMA} ,                                                                                                                                                  ||
+|| [895][_GenericHeader]< "<" { _GenericParameter ; "," @ } ">" >                                                                                                   ||
+|| [AST-INSTRUCTIONS]:                                                                                                                                              ||
+|| [RETURN STACK]:                                                                                                                                                  ||
+||   [2][2]: _GenericHeader -> [205][_LambdaExpr]< "[" { _LambdaCapture ; "," } "]" [ _GenericHeader @ ] [ _DeclaratorFunctionPartOptionalParameters ] _BlockStat > ||
+||   [1][0]: _LambdaExpr -> [286][_PrimitiveExpr]<< !_LambdaExpr @ >>                                                                                               ||
+||   [0][0]: _PrimitiveExpr -> [1226][_TypeOrExpr]<< !_PrimitiveExpr @ ( lri:(LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_LRI_Original | lri:<skip> ) >>         ||
+|| [PREDECESSORS 14-14]: [14]                                                                                                                                       ||
+|| [SUCCESORS 24-24]: [24]                                                                                                                                          ||
+++==================================================================================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++=====================================================================================================================================================================++
+|| [24]: {DECL_CLASS} class                                                                                                                                            ||
+|| [850][_GenericParameterKeyword]"class" @                                                                                                                            ||
+|| [AST-INSTRUCTIONS]:                                                                                                                                                 ||
+||   - DelayFieldAssignment()                                                                                                                                          ||
+||   - DelayFieldAssignment()                                                                                                                                          ||
+||   - BeginObject(OrdinaryGenericParameter)                                                                                                                           ||
+||   + Token()                                                                                                                                                         ||
+||   + Field(OrdinaryGenericParameter::typenameToken)                                                                                                                  ||
+|| [RETURN STACK]:                                                                                                                                                     ||
+||   [21][22]: _GenericParameterKeyword -> [857][_OrdinaryGenericParameter]< _GenericParameterKeyword @ [ "..." ] [ _DeclaratorId ] [ "=" _TypeOrExpr_NoComma_NoGT ] > ||
+||   [20][22]: _OrdinaryGenericParameter -> [1715][_GenericParameter_LRI_Isolated_0]<< !_OrdinaryGenericParameter @ >>                                                 ||
+||   [19][22]: _GenericParameter_LRI_Isolated_0 -> [883][_GenericParameter]<< !_GenericParameter_LRI_Isolated_0 @ >>                                                   ||
+||   [14][22]: _GenericParameter -> [897][_GenericHeader]< "<" { _GenericParameter @ ; "," } ">" >                                                                     ||
+||   [2][2]: _GenericHeader -> [205][_LambdaExpr]< "[" { _LambdaCapture ; "," } "]" [ _GenericHeader @ ] [ _DeclaratorFunctionPartOptionalParameters ] _BlockStat >    ||
+||   [1][0]: _LambdaExpr -> [286][_PrimitiveExpr]<< !_LambdaExpr @ >>                                                                                                  ||
+||   [0][0]: _PrimitiveExpr -> [1226][_TypeOrExpr]<< !_PrimitiveExpr @ ( lri:(LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_LRI_Original | lri:<skip> ) >>            ||
+|| [PREDECESSORS 22-22]: [22]                                                                                                                                          ||
+|| [SUCCESORS 25-25]: [25]                                                                                                                                             ||
+++=====================================================================================================================================================================++
+|
++
+|
++------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [25]: <Ending>                                                                                                                                                   |
+| [857][_OrdinaryGenericParameter]< _GenericParameterKeyword @ [ "..." ] [ _DeclaratorId ] [ "=" _TypeOrExpr_NoComma_NoGT ] >                                      |
+| [AST-INSTRUCTIONS]:                                                                                                                                              |
+| [RETURN STACK]:                                                                                                                                                  |
+|   [20][22]: _OrdinaryGenericParameter -> [1715][_GenericParameter_LRI_Isolated_0]<< !_OrdinaryGenericParameter @ >>                                              |
+|   [19][22]: _GenericParameter_LRI_Isolated_0 -> [883][_GenericParameter]<< !_GenericParameter_LRI_Isolated_0 @ >>                                                |
+|   [14][22]: _GenericParameter -> [897][_GenericHeader]< "<" { _GenericParameter @ ; "," } ">" >                                                                  |
+|   [2][2]: _GenericHeader -> [205][_LambdaExpr]< "[" { _LambdaCapture ; "," } "]" [ _GenericHeader @ ] [ _DeclaratorFunctionPartOptionalParameters ] _BlockStat > |
+|   [1][0]: _LambdaExpr -> [286][_PrimitiveExpr]<< !_LambdaExpr @ >>                                                                                               |
+|   [0][0]: _PrimitiveExpr -> [1226][_TypeOrExpr]<< !_PrimitiveExpr @ ( lri:(LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_LRI_Original | lri:<skip> ) >>         |
+| [PREDECESSORS 24-24]: [24]                                                                                                                                       |
+| [SUCCESORS 27-27]: [27]                                                                                                                                          |
++------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++==================================================================================================================================================================++
+|| [27]: {VARIADIC} ...                                                                                                                                             ||
+|| [858][_OrdinaryGenericParameter]< _GenericParameterKeyword [ "..." @ ] [ _DeclaratorId ] [ "=" _TypeOrExpr_NoComma_NoGT ] >                                      ||
+|| [AST-INSTRUCTIONS]:                                                                                                                                              ||
+||   + Token()                                                                                                                                                      ||
+||   + Field(OrdinaryGenericParameter::variadic)                                                                                                                    ||
+|| [RETURN STACK]:                                                                                                                                                  ||
+||   [20][22]: _OrdinaryGenericParameter -> [1715][_GenericParameter_LRI_Isolated_0]<< !_OrdinaryGenericParameter @ >>                                              ||
+||   [19][22]: _GenericParameter_LRI_Isolated_0 -> [883][_GenericParameter]<< !_GenericParameter_LRI_Isolated_0 @ >>                                                ||
+||   [14][22]: _GenericParameter -> [897][_GenericHeader]< "<" { _GenericParameter @ ; "," } ">" >                                                                  ||
+||   [2][2]: _GenericHeader -> [205][_LambdaExpr]< "[" { _LambdaCapture ; "," } "]" [ _GenericHeader @ ] [ _DeclaratorFunctionPartOptionalParameters ] _BlockStat > ||
+||   [1][0]: _LambdaExpr -> [286][_PrimitiveExpr]<< !_LambdaExpr @ >>                                                                                               ||
+||   [0][0]: _PrimitiveExpr -> [1226][_TypeOrExpr]<< !_PrimitiveExpr @ ( lri:(LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_LRI_Original | lri:<skip> ) >>         ||
+|| [PREDECESSORS 25-25]: [25]                                                                                                                                       ||
+|| [SUCCESORS 29-29]: [29]                                                                                                                                          ||
+++==================================================================================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++==================================================================================================================================================================++
+|| [29]: {ID} U                                                                                                                                                     ||
+|| [2][_NameIdentifier]< ID @ >                                                                                                                                     ||
+|| [AST-INSTRUCTIONS]:                                                                                                                                              ||
+||   - DelayFieldAssignment()                                                                                                                                       ||
+||   - BeginObject(NameIdentifier)                                                                                                                                  ||
+||   + Token()                                                                                                                                                      ||
+||   + Field(NameIdentifier::name)                                                                                                                                  ||
+|| [RETURN STACK]:                                                                                                                                                  ||
+||   [23][27]: _NameIdentifier -> [664][_DeclaratorId]<< !_NameIdentifier @ >>                                                                                      ||
+||   [22][27]: _DeclaratorId -> [859][_OrdinaryGenericParameter]< _GenericParameterKeyword [ "..." ] [ _DeclaratorId @ ] [ "=" _TypeOrExpr_NoComma_NoGT ] >         ||
+||   [20][22]: _OrdinaryGenericParameter -> [1715][_GenericParameter_LRI_Isolated_0]<< !_OrdinaryGenericParameter @ >>                                              ||
+||   [19][22]: _GenericParameter_LRI_Isolated_0 -> [883][_GenericParameter]<< !_GenericParameter_LRI_Isolated_0 @ >>                                                ||
+||   [14][22]: _GenericParameter -> [897][_GenericHeader]< "<" { _GenericParameter @ ; "," } ">" >                                                                  ||
+||   [2][2]: _GenericHeader -> [205][_LambdaExpr]< "[" { _LambdaCapture ; "," } "]" [ _GenericHeader @ ] [ _DeclaratorFunctionPartOptionalParameters ] _BlockStat > ||
+||   [1][0]: _LambdaExpr -> [286][_PrimitiveExpr]<< !_LambdaExpr @ >>                                                                                               ||
+||   [0][0]: _PrimitiveExpr -> [1226][_TypeOrExpr]<< !_PrimitiveExpr @ ( lri:(LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_LRI_Original | lri:<skip> ) >>         ||
+|| [PREDECESSORS 27-27]: [27]                                                                                                                                       ||
+|| [SUCCESORS 30-30]: [30]                                                                                                                                          ||
+++==================================================================================================================================================================++
+|
++
+|
++------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [30]: <Ending>                                                                                                                                                   |
+| [664][_DeclaratorId]<< !_NameIdentifier @ >>                                                                                                                     |
+| [AST-INSTRUCTIONS]:                                                                                                                                              |
+|   - EnumItem(0)                                                                                                                                                  |
+|   - Field(NameIdentifier::kind)                                                                                                                                  |
+|   - EndObject()                                                                                                                                                  |
+| [RETURN STACK]:                                                                                                                                                  |
+|   [22][27]: _DeclaratorId -> [859][_OrdinaryGenericParameter]< _GenericParameterKeyword [ "..." ] [ _DeclaratorId @ ] [ "=" _TypeOrExpr_NoComma_NoGT ] >         |
+|   [20][22]: _OrdinaryGenericParameter -> [1715][_GenericParameter_LRI_Isolated_0]<< !_OrdinaryGenericParameter @ >>                                              |
+|   [19][22]: _GenericParameter_LRI_Isolated_0 -> [883][_GenericParameter]<< !_GenericParameter_LRI_Isolated_0 @ >>                                                |
+|   [14][22]: _GenericParameter -> [897][_GenericHeader]< "<" { _GenericParameter @ ; "," } ">" >                                                                  |
+|   [2][2]: _GenericHeader -> [205][_LambdaExpr]< "[" { _LambdaCapture ; "," } "]" [ _GenericHeader @ ] [ _DeclaratorFunctionPartOptionalParameters ] _BlockStat > |
+|   [1][0]: _LambdaExpr -> [286][_PrimitiveExpr]<< !_LambdaExpr @ >>                                                                                               |
+|   [0][0]: _PrimitiveExpr -> [1226][_TypeOrExpr]<< !_PrimitiveExpr @ ( lri:(LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_LRI_Original | lri:<skip> ) >>         |
+| [PREDECESSORS 29-29]: [29]                                                                                                                                       |
+| [SUCCESORS 31-31]: [31]                                                                                                                                          |
++------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|
++
+|
++------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [31]: <Ending>                                                                                                                                                   |
+| [859][_OrdinaryGenericParameter]< _GenericParameterKeyword [ "..." ] [ _DeclaratorId @ ] [ "=" _TypeOrExpr_NoComma_NoGT ] >                                      |
+| [AST-INSTRUCTIONS]:                                                                                                                                              |
+|   - ReopenObject()                                                                                                                                               |
+|   - EndObject()                                                                                                                                                  |
+|   > Field(OrdinaryGenericParameter::id)                                                                                                                          |
+| [RETURN STACK]:                                                                                                                                                  |
+|   [20][22]: _OrdinaryGenericParameter -> [1715][_GenericParameter_LRI_Isolated_0]<< !_OrdinaryGenericParameter @ >>                                              |
+|   [19][22]: _GenericParameter_LRI_Isolated_0 -> [883][_GenericParameter]<< !_GenericParameter_LRI_Isolated_0 @ >>                                                |
+|   [14][22]: _GenericParameter -> [897][_GenericHeader]< "<" { _GenericParameter @ ; "," } ">" >                                                                  |
+|   [2][2]: _GenericHeader -> [205][_LambdaExpr]< "[" { _LambdaCapture ; "," } "]" [ _GenericHeader @ ] [ _DeclaratorFunctionPartOptionalParameters ] _BlockStat > |
+|   [1][0]: _LambdaExpr -> [286][_PrimitiveExpr]<< !_LambdaExpr @ >>                                                                                               |
+|   [0][0]: _PrimitiveExpr -> [1226][_TypeOrExpr]<< !_PrimitiveExpr @ ( lri:(LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_LRI_Original | lri:<skip> ) >>         |
+| [PREDECESSORS 30-30]: [30]                                                                                                                                       |
+| [SUCCESORS 33-33]: [33]                                                                                                                                          |
++------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++==================================================================================================================================================================++
+|| [33]: {ASSIGN} =                                                                                                                                                 ||
+|| [860][_OrdinaryGenericParameter]< _GenericParameterKeyword [ "..." ] [ _DeclaratorId ] [ "=" @ _TypeOrExpr_NoComma_NoGT ] >                                      ||
+|| [AST-INSTRUCTIONS]:                                                                                                                                              ||
+|| [RETURN STACK]:                                                                                                                                                  ||
+||   [20][22]: _OrdinaryGenericParameter -> [1715][_GenericParameter_LRI_Isolated_0]<< !_OrdinaryGenericParameter @ >>                                              ||
+||   [19][22]: _GenericParameter_LRI_Isolated_0 -> [883][_GenericParameter]<< !_GenericParameter_LRI_Isolated_0 @ >>                                                ||
+||   [14][22]: _GenericParameter -> [897][_GenericHeader]< "<" { _GenericParameter @ ; "," } ">" >                                                                  ||
+||   [2][2]: _GenericHeader -> [205][_LambdaExpr]< "[" { _LambdaCapture ; "," } "]" [ _GenericHeader @ ] [ _DeclaratorFunctionPartOptionalParameters ] _BlockStat > ||
+||   [1][0]: _LambdaExpr -> [286][_PrimitiveExpr]<< !_LambdaExpr @ >>                                                                                               ||
+||   [0][0]: _PrimitiveExpr -> [1226][_TypeOrExpr]<< !_PrimitiveExpr @ ( lri:(LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_LRI_Original | lri:<skip> ) >>         ||
+|| [PREDECESSORS 31-31]: [31]                                                                                                                                       ||
+|| [SUCCESORS 34-34]: [34]                                                                                                                                          ||
+++==================================================================================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++===========================================================================================================================================================================++
+|| [34]: {TYPE_INT} int                                                                                                                                                      ||
+|| [487][_PrimitiveTypeLiteral]"int" @                                                                                                                                       ||
+|| [AST-INSTRUCTIONS]:                                                                                                                                                       ||
+||   - DelayFieldAssignment()                                                                                                                                                ||
+||   - BeginObject(PrimitiveType)                                                                                                                                            ||
+||   + Token()                                                                                                                                                               ||
+||   + Field(PrimitiveType::literal1)                                                                                                                                        ||
+|| [RETURN STACK]:                                                                                                                                                           ||
+||   [26][33]: _PrimitiveTypeLiteral -> [507][_PrimitiveType]< _PrimitiveTypeLiteral @ >                                                                                     ||
+||   [25][33]: _PrimitiveType -> [1208][_TypeOrExpr_NoComma_NoGT]<< !_PrimitiveType @ ( lri:(LRI__PM_PrimitiveType)->_TypeOrExpr_NoComma_NoGT_LRI_Original | lri:<skip> ) >> ||
+||   [24][33]: _TypeOrExpr_NoComma_NoGT -> [861][_OrdinaryGenericParameter]< _GenericParameterKeyword [ "..." ] [ _DeclaratorId ] [ "=" _TypeOrExpr_NoComma_NoGT @ ] >       ||
+||   [20][22]: _OrdinaryGenericParameter -> [1715][_GenericParameter_LRI_Isolated_0]<< !_OrdinaryGenericParameter @ >>                                                       ||
+||   [19][22]: _GenericParameter_LRI_Isolated_0 -> [883][_GenericParameter]<< !_GenericParameter_LRI_Isolated_0 @ >>                                                         ||
+||   [14][22]: _GenericParameter -> [897][_GenericHeader]< "<" { _GenericParameter @ ; "," } ">" >                                                                           ||
+||   [2][2]: _GenericHeader -> [205][_LambdaExpr]< "[" { _LambdaCapture ; "," } "]" [ _GenericHeader @ ] [ _DeclaratorFunctionPartOptionalParameters ] _BlockStat >          ||
+||   [1][0]: _LambdaExpr -> [286][_PrimitiveExpr]<< !_LambdaExpr @ >>                                                                                                        ||
+||   [0][0]: _PrimitiveExpr -> [1226][_TypeOrExpr]<< !_PrimitiveExpr @ ( lri:(LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_LRI_Original | lri:<skip> ) >>                  ||
+|| [PREDECESSORS 33-33]: [33]                                                                                                                                                ||
+|| [SUCCESORS 35-35]: [35]                                                                                                                                                   ||
+++===========================================================================================================================================================================++
+|
++
+|
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [35]: <Ending>                                                                                                                                                            |
+| [507][_PrimitiveType]< _PrimitiveTypeLiteral @ >                                                                                                                          |
+| [AST-INSTRUCTIONS]:                                                                                                                                                       |
+| [RETURN STACK]:                                                                                                                                                           |
+|   [25][33]: _PrimitiveType -> [1208][_TypeOrExpr_NoComma_NoGT]<< !_PrimitiveType @ ( lri:(LRI__PM_PrimitiveType)->_TypeOrExpr_NoComma_NoGT_LRI_Original | lri:<skip> ) >> |
+|   [24][33]: _TypeOrExpr_NoComma_NoGT -> [861][_OrdinaryGenericParameter]< _GenericParameterKeyword [ "..." ] [ _DeclaratorId ] [ "=" _TypeOrExpr_NoComma_NoGT @ ] >       |
+|   [20][22]: _OrdinaryGenericParameter -> [1715][_GenericParameter_LRI_Isolated_0]<< !_OrdinaryGenericParameter @ >>                                                       |
+|   [19][22]: _GenericParameter_LRI_Isolated_0 -> [883][_GenericParameter]<< !_GenericParameter_LRI_Isolated_0 @ >>                                                         |
+|   [14][22]: _GenericParameter -> [897][_GenericHeader]< "<" { _GenericParameter @ ; "," } ">" >                                                                           |
+|   [2][2]: _GenericHeader -> [205][_LambdaExpr]< "[" { _LambdaCapture ; "," } "]" [ _GenericHeader @ ] [ _DeclaratorFunctionPartOptionalParameters ] _BlockStat >          |
+|   [1][0]: _LambdaExpr -> [286][_PrimitiveExpr]<< !_LambdaExpr @ >>                                                                                                        |
+|   [0][0]: _PrimitiveExpr -> [1226][_TypeOrExpr]<< !_PrimitiveExpr @ ( lri:(LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_LRI_Original | lri:<skip> ) >>                  |
+| [PREDECESSORS 34-34]: [34]                                                                                                                                                |
+| [SUCCESORS 36-36]: [36]                                                                                                                                                   |
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [36]: <Ending>                                                                                                                                                      |
+| [1208][_TypeOrExpr_NoComma_NoGT]<< !_PrimitiveType @ ( lri:(LRI__PM_PrimitiveType)->_TypeOrExpr_NoComma_NoGT_LRI_Original | lri:<skip> ) >>                         |
+| [AST-INSTRUCTIONS]:                                                                                                                                                 |
+|   - EnumItem(0)                                                                                                                                                     |
+|   - Field(PrimitiveType::kind)                                                                                                                                      |
+|   - EndObject()                                                                                                                                                     |
+|   > ReopenObject()                                                                                                                                                  |
+| [RETURN STACK]:                                                                                                                                                     |
+|   [24][33]: _TypeOrExpr_NoComma_NoGT -> [861][_OrdinaryGenericParameter]< _GenericParameterKeyword [ "..." ] [ _DeclaratorId ] [ "=" _TypeOrExpr_NoComma_NoGT @ ] > |
+|   [20][22]: _OrdinaryGenericParameter -> [1715][_GenericParameter_LRI_Isolated_0]<< !_OrdinaryGenericParameter @ >>                                                 |
+|   [19][22]: _GenericParameter_LRI_Isolated_0 -> [883][_GenericParameter]<< !_GenericParameter_LRI_Isolated_0 @ >>                                                   |
+|   [14][22]: _GenericParameter -> [897][_GenericHeader]< "<" { _GenericParameter @ ; "," } ">" >                                                                     |
+|   [2][2]: _GenericHeader -> [205][_LambdaExpr]< "[" { _LambdaCapture ; "," } "]" [ _GenericHeader @ ] [ _DeclaratorFunctionPartOptionalParameters ] _BlockStat >    |
+|   [1][0]: _LambdaExpr -> [286][_PrimitiveExpr]<< !_LambdaExpr @ >>                                                                                                  |
+|   [0][0]: _PrimitiveExpr -> [1226][_TypeOrExpr]<< !_PrimitiveExpr @ ( lri:(LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_LRI_Original | lri:<skip> ) >>            |
+| [PREDECESSORS 35-35]: [35]                                                                                                                                          |
+| [SUCCESORS 37-37]: [37]                                                                                                                                             |
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|
++
+|
++------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [37]: <Ending>                                                                                                                                                   |
+| [861][_OrdinaryGenericParameter]< _GenericParameterKeyword [ "..." ] [ _DeclaratorId ] [ "=" _TypeOrExpr_NoComma_NoGT @ ] >                                      |
+| [AST-INSTRUCTIONS]:                                                                                                                                              |
+|   - EndObject()                                                                                                                                                  |
+|   > Field(OrdinaryGenericParameter::init)                                                                                                                        |
+| [RETURN STACK]:                                                                                                                                                  |
+|   [20][22]: _OrdinaryGenericParameter -> [1715][_GenericParameter_LRI_Isolated_0]<< !_OrdinaryGenericParameter @ >>                                              |
+|   [19][22]: _GenericParameter_LRI_Isolated_0 -> [883][_GenericParameter]<< !_GenericParameter_LRI_Isolated_0 @ >>                                                |
+|   [14][22]: _GenericParameter -> [897][_GenericHeader]< "<" { _GenericParameter @ ; "," } ">" >                                                                  |
+|   [2][2]: _GenericHeader -> [205][_LambdaExpr]< "[" { _LambdaCapture ; "," } "]" [ _GenericHeader @ ] [ _DeclaratorFunctionPartOptionalParameters ] _BlockStat > |
+|   [1][0]: _LambdaExpr -> [286][_PrimitiveExpr]<< !_LambdaExpr @ >>                                                                                               |
+|   [0][0]: _PrimitiveExpr -> [1226][_TypeOrExpr]<< !_PrimitiveExpr @ ( lri:(LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_LRI_Original | lri:<skip> ) >>         |
+| [PREDECESSORS 36-36]: [36]                                                                                                                                       |
+| [SUCCESORS 38-38]: [38]                                                                                                                                          |
++------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|
++
+|
++------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [38]: <Ending>                                                                                                                                                   |
+| [1715][_GenericParameter_LRI_Isolated_0]<< !_OrdinaryGenericParameter @ >>                                                                                       |
+| [AST-INSTRUCTIONS]:                                                                                                                                              |
+|   - EndObject()                                                                                                                                                  |
+| [RETURN STACK]:                                                                                                                                                  |
+|   [19][22]: _GenericParameter_LRI_Isolated_0 -> [883][_GenericParameter]<< !_GenericParameter_LRI_Isolated_0 @ >>                                                |
+|   [14][22]: _GenericParameter -> [897][_GenericHeader]< "<" { _GenericParameter @ ; "," } ">" >                                                                  |
+|   [2][2]: _GenericHeader -> [205][_LambdaExpr]< "[" { _LambdaCapture ; "," } "]" [ _GenericHeader @ ] [ _DeclaratorFunctionPartOptionalParameters ] _BlockStat > |
+|   [1][0]: _LambdaExpr -> [286][_PrimitiveExpr]<< !_LambdaExpr @ >>                                                                                               |
+|   [0][0]: _PrimitiveExpr -> [1226][_TypeOrExpr]<< !_PrimitiveExpr @ ( lri:(LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_LRI_Original | lri:<skip> ) >>         |
+| [PREDECESSORS 37-37]: [37]                                                                                                                                       |
+| [SUCCESORS 39-39]: [39]                                                                                                                                          |
++------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|
++
+|
++------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [39]: <Ending>                                                                                                                                                   |
+| [883][_GenericParameter]<< !_GenericParameter_LRI_Isolated_0 @ >>                                                                                                |
+| [AST-INSTRUCTIONS]:                                                                                                                                              |
+|   - ReopenObject()                                                                                                                                               |
+|   - EndObject()                                                                                                                                                  |
+| [RETURN STACK]:                                                                                                                                                  |
+|   [14][22]: _GenericParameter -> [897][_GenericHeader]< "<" { _GenericParameter @ ; "," } ">" >                                                                  |
+|   [2][2]: _GenericHeader -> [205][_LambdaExpr]< "[" { _LambdaCapture ; "," } "]" [ _GenericHeader @ ] [ _DeclaratorFunctionPartOptionalParameters ] _BlockStat > |
+|   [1][0]: _LambdaExpr -> [286][_PrimitiveExpr]<< !_LambdaExpr @ >>                                                                                               |
+|   [0][0]: _PrimitiveExpr -> [1226][_TypeOrExpr]<< !_PrimitiveExpr @ ( lri:(LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_LRI_Original | lri:<skip> ) >>         |
+| [PREDECESSORS 38-38]: [38]                                                                                                                                       |
+| [SUCCESORS 40-40]: [40]                                                                                                                                          |
++------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|
++
+|
++------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [40]: <Ending>                                                                                                                                                   |
+| [897][_GenericHeader]< "<" { _GenericParameter @ ; "," } ">" >                                                                                                   |
+| [AST-INSTRUCTIONS]:                                                                                                                                              |
+|   - ReopenObject()                                                                                                                                               |
+|   - EndObject()                                                                                                                                                  |
+|   > Field(GenericHeader::parameters)                                                                                                                             |
+| [RETURN STACK]:                                                                                                                                                  |
+|   [2][2]: _GenericHeader -> [205][_LambdaExpr]< "[" { _LambdaCapture ; "," } "]" [ _GenericHeader @ ] [ _DeclaratorFunctionPartOptionalParameters ] _BlockStat > |
+|   [1][0]: _LambdaExpr -> [286][_PrimitiveExpr]<< !_LambdaExpr @ >>                                                                                               |
+|   [0][0]: _PrimitiveExpr -> [1226][_TypeOrExpr]<< !_PrimitiveExpr @ ( lri:(LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_LRI_Original | lri:<skip> ) >>         |
+| [PREDECESSORS 39-39]: [39]                                                                                                                                       |
+| [SUCCESORS 41-41]: [41]                                                                                                                                          |
++------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++==================================================================================================================================================================++
+|| [41]: {GT} >                                                                                                                                                     ||
+|| [896][_GenericHeader]< "<" { _GenericParameter ; "," } ">" @ >                                                                                                   ||
+|| [AST-INSTRUCTIONS]:                                                                                                                                              ||
+|| [RETURN STACK]:                                                                                                                                                  ||
+||   [2][2]: _GenericHeader -> [205][_LambdaExpr]< "[" { _LambdaCapture ; "," } "]" [ _GenericHeader @ ] [ _DeclaratorFunctionPartOptionalParameters ] _BlockStat > ||
+||   [1][0]: _LambdaExpr -> [286][_PrimitiveExpr]<< !_LambdaExpr @ >>                                                                                               ||
+||   [0][0]: _PrimitiveExpr -> [1226][_TypeOrExpr]<< !_PrimitiveExpr @ ( lri:(LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_LRI_Original | lri:<skip> ) >>         ||
+|| [PREDECESSORS 40-40]: [40]                                                                                                                                       ||
+|| [SUCCESORS 42-42]: [42]                                                                                                                                          ||
+++==================================================================================================================================================================++
+|
++
+|
++----------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [42]: <Ending>                                                                                                                                           |
+| [205][_LambdaExpr]< "[" { _LambdaCapture ; "," } "]" [ _GenericHeader @ ] [ _DeclaratorFunctionPartOptionalParameters ] _BlockStat >                     |
+| [AST-INSTRUCTIONS]:                                                                                                                                      |
+|   - EndObject()                                                                                                                                          |
+|   > Field(LambdaExpr::genericHeader)                                                                                                                     |
+| [RETURN STACK]:                                                                                                                                          |
+|   [1][0]: _LambdaExpr -> [286][_PrimitiveExpr]<< !_LambdaExpr @ >>                                                                                       |
+|   [0][0]: _PrimitiveExpr -> [1226][_TypeOrExpr]<< !_PrimitiveExpr @ ( lri:(LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_LRI_Original | lri:<skip> ) >> |
+| [PREDECESSORS 41-41]: [41]                                                                                                                               |
+| [SUCCESORS 43-43]: [43]                                                                                                                                  |
++----------------------------------------------------------------------------------------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++================================================================================================================================================================++
+|| [43]: {LBRACE} {                                                                                                                                               ||
+|| [954][_BlockStat]< "{" @ { _Stat } "}" >                                                                                                                       ||
+|| [AST-INSTRUCTIONS]:                                                                                                                                            ||
+||   - BeginObject(BlockStat)                                                                                                                                     ||
+|| [RETURN STACK]:                                                                                                                                                ||
+||   [27][42]: _BlockStat -> [207][_LambdaExpr]< "[" { _LambdaCapture ; "," } "]" [ _GenericHeader ] [ _DeclaratorFunctionPartOptionalParameters ] _BlockStat @ > ||
+||   [1][0]: _LambdaExpr -> [286][_PrimitiveExpr]<< !_LambdaExpr @ >>                                                                                             ||
+||   [0][0]: _PrimitiveExpr -> [1226][_TypeOrExpr]<< !_PrimitiveExpr @ ( lri:(LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_LRI_Original | lri:<skip> ) >>       ||
+|| [PREDECESSORS 42-42]: [42]                                                                                                                                     ||
+|| [SUCCESORS 44-44]: [44]                                                                                                                                        ||
+++================================================================================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++================================================================================================================================================================++
+|| [44]: {RBRACE} }                                                                                                                                               ||
+|| [956][_BlockStat]< "{" { _Stat } "}" @ >                                                                                                                       ||
+|| [AST-INSTRUCTIONS]:                                                                                                                                            ||
+|| [RETURN STACK]:                                                                                                                                                ||
+||   [27][42]: _BlockStat -> [207][_LambdaExpr]< "[" { _LambdaCapture ; "," } "]" [ _GenericHeader ] [ _DeclaratorFunctionPartOptionalParameters ] _BlockStat @ > ||
+||   [1][0]: _LambdaExpr -> [286][_PrimitiveExpr]<< !_LambdaExpr @ >>                                                                                             ||
+||   [0][0]: _PrimitiveExpr -> [1226][_TypeOrExpr]<< !_PrimitiveExpr @ ( lri:(LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_LRI_Original | lri:<skip> ) >>       ||
+|| [PREDECESSORS 43-43]: [43]                                                                                                                                     ||
+|| [SUCCESORS 45-45]: [45]                                                                                                                                        ||
+++================================================================================================================================================================++
+|
++
+|
++----------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [45]: <Ending>                                                                                                                                           |
+| [207][_LambdaExpr]< "[" { _LambdaCapture ; "," } "]" [ _GenericHeader ] [ _DeclaratorFunctionPartOptionalParameters ] _BlockStat @ >                     |
+| [AST-INSTRUCTIONS]:                                                                                                                                      |
+|   - EndObject()                                                                                                                                          |
+|   > Field(LambdaExpr::stat)                                                                                                                              |
+| [RETURN STACK]:                                                                                                                                          |
+|   [1][0]: _LambdaExpr -> [286][_PrimitiveExpr]<< !_LambdaExpr @ >>                                                                                       |
+|   [0][0]: _PrimitiveExpr -> [1226][_TypeOrExpr]<< !_PrimitiveExpr @ ( lri:(LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_LRI_Original | lri:<skip> ) >> |
+| [PREDECESSORS 44-44]: [44]                                                                                                                               |
+| [SUCCESORS 46-46]: [46]                                                                                                                                  |
++----------------------------------------------------------------------------------------------------------------------------------------------------------+
+|
++
+|
++----------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [46]: <Ending>                                                                                                                                           |
+| [286][_PrimitiveExpr]<< !_LambdaExpr @ >>                                                                                                                |
+| [AST-INSTRUCTIONS]:                                                                                                                                      |
+|   - EndObject()                                                                                                                                          |
+| [RETURN STACK]:                                                                                                                                          |
+|   [0][0]: _PrimitiveExpr -> [1226][_TypeOrExpr]<< !_PrimitiveExpr @ ( lri:(LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_LRI_Original | lri:<skip> ) >> |
+| [PREDECESSORS 45-45]: [45]                                                                                                                               |
+| [SUCCESORS 47-47]: [47]                                                                                                                                  |
++----------------------------------------------------------------------------------------------------------------------------------------------------------+
+|
++
+|
++------------------------------------------------------------------------------------------------------------------------------+
+| [47]: <Ending>                                                                                                               |
+| [1226][_TypeOrExpr]<< !_PrimitiveExpr @ ( lri:(LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_LRI_Original | lri:<skip> ) >> |
+| [AST-INSTRUCTIONS]:                                                                                                          |
+|   - ReopenObject()                                                                                                           |
+|   - EndObject()                                                                                                              |
+|   > ReopenObject()                                                                                                           |
+| [PREDECESSORS 46-46]: [46]                                                                                                   |
+| [SUCCESORS 48-48]: [48]                                                                                                      |
++------------------------------------------------------------------------------------------------------------------------------+
+|
++
+|
++----------------------------------+
+| [48]: <Ending>                   |
+| [1220][_TypeOrExpr] END [ENDING] |
+| [AST-INSTRUCTIONS]:              |
+|   - EndObject()                  |
+| [PREDECESSORS 47-47]: [47]       |
++----------------------------------+
