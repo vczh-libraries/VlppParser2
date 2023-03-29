@@ -7,6 +7,22 @@ _StringLiteralFragment
   ::= STRING:literal as StringLiteralFragment {kind = String}
   ;
 
+_LambdaCaptureId
+  ::= _Identifier:id                     as LambdaCapture {objKind = Id}
+  ::= _Identifier:id _VarInit:init       as LambdaCapture {objKind = Id}
+  ::= _Identifier:id "..."               as LambdaCapture {objKind = PackId}
+  ::= "..." _Identifier:id _VarInit:init as LambdaCapture {objKind = PackInit}
+  ;
+
+_LambdaCapture
+  ::= "&"                 as LambdaCapture {objKind = Default, refKind = Ref }
+  ::= "="                 as LambdaCapture {objKind = Default, refKind = Copy}
+  ::= "this"              as LambdaCapture {objKind = This,    refKind = Ref }
+  ::= "*" "this"          as LambdaCapture {objKind = This,    refKind = Copy}
+  ::= !_LambdaCaptureId     {refKind = Copy}
+  ::= "&" !_LambdaCaptureId {refKind = Ref}
+  ;
+
 _PrimitiveExpr : TypeOrExpr
   ::= "true" as PrimitiveExprLiteral {kind = True}
   ::= "false" as PrimitiveExprLiteral {kind = False}
@@ -32,6 +48,7 @@ _PrimitiveExpr : TypeOrExpr
   ::= "__alignof":keyword "(" _TypeOrExpr:argument ")" as SysFuncExpr
   ::= "__uuidof":keyword "(" _TypeOrExpr:argument ")" as SysFuncExpr
   ::= "noexcept":keyword "(" _TypeOrExpr:argument ")" as SysFuncExpr
+  ::= !_LambdaExpr
   ;
 
 //////////////////////////////////////////////////////////////////

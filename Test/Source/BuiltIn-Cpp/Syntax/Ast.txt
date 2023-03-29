@@ -136,6 +136,10 @@ class QualifiedName : TypeOrExpr
 // GenericHeader
 //////////////////////////////////////////////////////////////////
 
+class GenericHeader
+{
+}
+
 //////////////////////////////////////////////////////////////////
 // PrimitiveExpr
 //////////////////////////////////////////////////////////////////
@@ -187,8 +191,39 @@ class StringLiteral : ExprOnly
     var fragments : StringLiteralFragment[];
 }
 
+//////////////////////////////////////////////////////////////////
+// PrimitiveExpr (lambda)
+//////////////////////////////////////////////////////////////////
+
+enum LambdaCaptureObjectKinds
+{
+    Default,
+    This,
+    Id,
+    PackId,
+    IdWithPackInit,
+}
+
+enum LambdaCaptureRefeferenceKinds
+{
+    Ref,
+    Copy,
+}
+
+class LambdaCapture
+{
+    var objKind : LambdaCaptureObjectKinds;
+    var refKind : LambdaCaptureRefeferenceKinds
+    var name : Identifier;
+    var init : VarInit;
+}
+
 class LambdaExpr : ExprOnly
 {
+    var captures : LambdaCapture[];
+    var genericHeader : GenericHeader;
+    var functionHeader : DeclaratorFunctionPart;
+    var stat : Statement;
 }
 
 //////////////////////////////////////////////////////////////////
