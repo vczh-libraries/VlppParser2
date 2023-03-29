@@ -38,7 +38,8 @@
 
 - Extensible tokens, for example, recognize `R"[^\s(]\(` and invoke a callback function to determine the end of the string.
   - Offer two options: using (rich regex | C++) to search for complete token.
-- Add `extern` rule, non-`extern` rules can only be used inside the same syntax file
+- Add `extern` rule, non-`extern` rules can only be used inside the same syntax file.
+- Add union type and remove `TypeOrExprOrOthers` in C++.
 
 ## Issues
 

@@ -249,6 +249,10 @@ namespace cpp_parser
 
 		void AstVisitor::CopyFields(CppGenericHeader* from, CppGenericHeader* to)
 		{
+			for (auto&& listItem : from->parameters)
+			{
+				to->parameters.Add(CopyNode(listItem.Obj()));
+			}
 		}
 
 		void AstVisitor::CopyFields(CppGotoStat* from, CppGotoStat* to)
@@ -363,6 +367,16 @@ namespace cpp_parser
 		{
 			CopyFields(static_cast<CppIdentifier*>(from), static_cast<CppIdentifier*>(to));
 			to->op = from->op;
+		}
+
+		void AstVisitor::CopyFields(CppOrdinaryGenericParameter* from, CppOrdinaryGenericParameter* to)
+		{
+			CopyFields(static_cast<CppTypeOrExprOrOthers*>(from), static_cast<CppTypeOrExprOrOthers*>(to));
+			to->genericHeader = CopyNode(from->genericHeader.Obj());
+			to->id = CopyNode(from->id.Obj());
+			to->init = CopyNode(from->init.Obj());
+			to->typenameToken = from->typenameToken;
+			to->variadic = from->variadic;
 		}
 
 		void AstVisitor::CopyFields(CppParenthesisExpr* from, CppParenthesisExpr* to)
@@ -676,6 +690,13 @@ namespace cpp_parser
 		void AstVisitor::Visit(CppGenericArgument* node)
 		{
 			auto newNode = vl::Ptr(new CppGenericArgument);
+			CopyFields(node, newNode.Obj());
+			this->result = newNode;
+		}
+
+		void AstVisitor::Visit(CppOrdinaryGenericParameter* node)
+		{
+			auto newNode = vl::Ptr(new CppOrdinaryGenericParameter);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
@@ -1401,6 +1422,12 @@ namespace cpp_parser
 		{
 			if (!node) return nullptr;
 			return CopyNode(static_cast<CppIdentifier*>(node)).Cast<CppOperatorIdentifier>();
+		}
+
+		vl::Ptr<CppOrdinaryGenericParameter> AstVisitor::CopyNode(CppOrdinaryGenericParameter* node)
+		{
+			if (!node) return nullptr;
+			return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppOrdinaryGenericParameter>();
 		}
 
 		vl::Ptr<CppParenthesisExpr> AstVisitor::CopyNode(CppParenthesisExpr* node)

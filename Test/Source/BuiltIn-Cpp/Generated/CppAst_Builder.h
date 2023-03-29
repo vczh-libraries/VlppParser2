@@ -192,6 +192,12 @@ namespace cpp_parser
 			MakeGenericArguments& arguments(const vl::Ptr<CppTypeOrExprOrOthers>& value);
 		};
 
+		class MakeGenericHeader : public vl::glr::ParsingAstBuilder<CppGenericHeader>
+		{
+		public:
+			MakeGenericHeader& parameters(const vl::Ptr<CppTypeOrExprOrOthers>& value);
+		};
+
 		class MakeGotoStat : public vl::glr::ParsingAstBuilder<CppGotoStat>
 		{
 		public:
@@ -283,6 +289,16 @@ namespace cpp_parser
 		{
 		public:
 			MakeOperatorIdentifier& op(CppOperators value);
+		};
+
+		class MakeOrdinaryGenericParameter : public vl::glr::ParsingAstBuilder<CppOrdinaryGenericParameter>
+		{
+		public:
+			MakeOrdinaryGenericParameter& genericHeader(const vl::Ptr<CppGenericHeader>& value);
+			MakeOrdinaryGenericParameter& id(const vl::Ptr<CppIdentifier>& value);
+			MakeOrdinaryGenericParameter& init(const vl::Ptr<CppTypeOrExpr>& value);
+			MakeOrdinaryGenericParameter& typenameToken(const vl::WString& value);
+			MakeOrdinaryGenericParameter& variadic(const vl::WString& value);
 		};
 
 		class MakeParenthesisExpr : public vl::glr::ParsingAstBuilder<CppParenthesisExpr>

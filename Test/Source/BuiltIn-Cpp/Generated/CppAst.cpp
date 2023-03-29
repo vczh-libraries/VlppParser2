@@ -52,6 +52,11 @@ Visitor Pattern Implementation
 		visitor->Visit(this);
 	}
 
+	void CppOrdinaryGenericParameter::Accept(CppTypeOrExprOrOthers::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
 	void CppPrimitiveExprLiteral::Accept(CppExprOnly::IVisitor* visitor)
 	{
 		visitor->Visit(this);
@@ -330,6 +335,7 @@ namespace vl
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppGenericArguments, cpp_parser::CppGenericArguments)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppQualifiedNameKinds, cpp_parser::CppQualifiedNameKinds)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppQualifiedName, cpp_parser::CppQualifiedName)
+			IMPL_TYPE_INFO_RENAME(cpp_parser::CppOrdinaryGenericParameter, cpp_parser::CppOrdinaryGenericParameter)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppGenericHeader, cpp_parser::CppGenericHeader)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppPrimitiveExprLiteralKinds, cpp_parser::CppPrimitiveExprLiteralKinds)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppPrimitiveExprLiteral, cpp_parser::CppPrimitiveExprLiteral)
@@ -559,11 +565,24 @@ namespace vl
 				CLASS_MEMBER_FIELD(arguments)
 			END_CLASS_MEMBER(cpp_parser::CppQualifiedName)
 
+			BEGIN_CLASS_MEMBER(cpp_parser::CppOrdinaryGenericParameter)
+				CLASS_MEMBER_BASE(cpp_parser::CppTypeOrExprOrOthers)
+
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppOrdinaryGenericParameter>(), NO_PARAMETER)
+
+				CLASS_MEMBER_FIELD(genericHeader)
+				CLASS_MEMBER_FIELD(typenameToken)
+				CLASS_MEMBER_FIELD(variadic)
+				CLASS_MEMBER_FIELD(id)
+				CLASS_MEMBER_FIELD(init)
+			END_CLASS_MEMBER(cpp_parser::CppOrdinaryGenericParameter)
+
 			BEGIN_CLASS_MEMBER(cpp_parser::CppGenericHeader)
 				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
 				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppGenericHeader>(), NO_PARAMETER)
 
+				CLASS_MEMBER_FIELD(parameters)
 			END_CLASS_MEMBER(cpp_parser::CppGenericHeader)
 
 			BEGIN_ENUM_ITEM(cpp_parser::CppPrimitiveExprLiteralKinds)
@@ -1213,6 +1232,7 @@ namespace vl
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppTypeOrExprOrOthers::IVisitor::*)(cpp_parser::CppDeclaration* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppTypeOrExprOrOthers::IVisitor::*)(cpp_parser::CppTypeOrExpr* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppTypeOrExprOrOthers::IVisitor::*)(cpp_parser::CppGenericArgument* node))
+				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppTypeOrExprOrOthers::IVisitor::*)(cpp_parser::CppOrdinaryGenericParameter* node))
 			END_INTERFACE_MEMBER(cpp_parser::CppTypeOrExprOrOthers)
 
 			BEGIN_INTERFACE_MEMBER(cpp_parser::CppDeclaration::IVisitor)
@@ -1322,6 +1342,7 @@ namespace vl
 					ADD_TYPE_INFO(cpp_parser::CppGenericArguments)
 					ADD_TYPE_INFO(cpp_parser::CppQualifiedNameKinds)
 					ADD_TYPE_INFO(cpp_parser::CppQualifiedName)
+					ADD_TYPE_INFO(cpp_parser::CppOrdinaryGenericParameter)
 					ADD_TYPE_INFO(cpp_parser::CppGenericHeader)
 					ADD_TYPE_INFO(cpp_parser::CppPrimitiveExprLiteralKinds)
 					ADD_TYPE_INFO(cpp_parser::CppPrimitiveExprLiteral)

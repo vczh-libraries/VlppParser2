@@ -31,6 +31,10 @@ TypeOrExprOrOthersVisitor
 		{
 		}
 
+		void TypeOrExprOrOthersVisitor::Visit(CppOrdinaryGenericParameter* node)
+		{
+		}
+
 /***********************************************************************
 DeclarationVisitor
 ***********************************************************************/

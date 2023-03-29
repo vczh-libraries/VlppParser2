@@ -58,6 +58,7 @@ namespace cpp_parser
 	class CppNewExpr;
 	class CppNumericExprLiteral;
 	class CppOperatorIdentifier;
+	class CppOrdinaryGenericParameter;
 	class CppParenthesisExpr;
 	class CppPostfixUnaryExpr;
 	class CppPrefixUnaryExpr;
@@ -261,6 +262,7 @@ namespace cpp_parser
 			virtual void Visit(CppDeclaration* node) = 0;
 			virtual void Visit(CppTypeOrExpr* node) = 0;
 			virtual void Visit(CppGenericArgument* node) = 0;
+			virtual void Visit(CppOrdinaryGenericParameter* node) = 0;
 		};
 
 		virtual void Accept(CppTypeOrExprOrOthers::IVisitor* visitor) = 0;
@@ -409,9 +411,22 @@ namespace cpp_parser
 		void Accept(CppTypeOrExpr::IVisitor* visitor) override;
 	};
 
+	class CppOrdinaryGenericParameter : public CppTypeOrExprOrOthers, vl::reflection::Description<CppOrdinaryGenericParameter>
+	{
+	public:
+		vl::Ptr<CppGenericHeader> genericHeader;
+		vl::glr::ParsingToken typenameToken;
+		vl::glr::ParsingToken variadic;
+		vl::Ptr<CppIdentifier> id;
+		vl::Ptr<CppTypeOrExpr> init;
+
+		void Accept(CppTypeOrExprOrOthers::IVisitor* visitor) override;
+	};
+
 	class CppGenericHeader : public vl::glr::ParsingAstBase, vl::reflection::Description<CppGenericHeader>
 	{
 	public:
+		vl::collections::List<vl::Ptr<CppTypeOrExprOrOthers>> parameters;
 	};
 
 	class CppPrimitiveExprLiteral : public CppExprOnly, vl::reflection::Description<CppPrimitiveExprLiteral>
@@ -1030,6 +1045,7 @@ namespace vl
 			DECL_TYPE_INFO(cpp_parser::CppGenericArguments)
 			DECL_TYPE_INFO(cpp_parser::CppQualifiedNameKinds)
 			DECL_TYPE_INFO(cpp_parser::CppQualifiedName)
+			DECL_TYPE_INFO(cpp_parser::CppOrdinaryGenericParameter)
 			DECL_TYPE_INFO(cpp_parser::CppGenericHeader)
 			DECL_TYPE_INFO(cpp_parser::CppPrimitiveExprLiteralKinds)
 			DECL_TYPE_INFO(cpp_parser::CppPrimitiveExprLiteral)
@@ -1123,6 +1139,11 @@ namespace vl
 				}
 
 				void Visit(cpp_parser::CppGenericArgument* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+				void Visit(cpp_parser::CppOrdinaryGenericParameter* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}

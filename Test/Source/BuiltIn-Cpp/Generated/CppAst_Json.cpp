@@ -550,6 +550,16 @@ namespace cpp_parser
 		}
 		void AstVisitor::PrintFields(CppGenericHeader* node)
 		{
+			BeginField(L"parameters");
+			BeginArray();
+			for (auto&& listItem : node->parameters)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
 		}
 		void AstVisitor::PrintFields(CppGotoStat* node)
 		{
@@ -960,6 +970,24 @@ namespace cpp_parser
 			default:
 				WriteNull();
 			}
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppOrdinaryGenericParameter* node)
+		{
+			BeginField(L"genericHeader");
+			Print(node->genericHeader.Obj());
+			EndField();
+			BeginField(L"id");
+			Print(node->id.Obj());
+			EndField();
+			BeginField(L"init");
+			Print(node->init.Obj());
+			EndField();
+			BeginField(L"typenameToken");
+			WriteToken(node->typenameToken);
+			EndField();
+			BeginField(L"variadic");
+			WriteToken(node->variadic);
 			EndField();
 		}
 		void AstVisitor::PrintFields(CppParenthesisExpr* node)
@@ -1598,6 +1626,20 @@ namespace cpp_parser
 			WriteType(L"GenericArgument", node);
 			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 			PrintFields(static_cast<CppGenericArgument*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppOrdinaryGenericParameter* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"OrdinaryGenericParameter", node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
+			PrintFields(static_cast<CppOrdinaryGenericParameter*>(node));
 			EndObject();
 		}
 

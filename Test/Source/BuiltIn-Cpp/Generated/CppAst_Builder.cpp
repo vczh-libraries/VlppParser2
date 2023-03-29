@@ -436,6 +436,16 @@ MakeGenericArguments
 		}
 
 /***********************************************************************
+MakeGenericHeader
+***********************************************************************/
+
+		MakeGenericHeader& MakeGenericHeader::parameters(const vl::Ptr<CppTypeOrExprOrOthers>& value)
+		{
+			node->parameters.Add(value);
+			return *this;
+		}
+
+/***********************************************************************
 MakeGotoStat
 ***********************************************************************/
 
@@ -678,6 +688,40 @@ MakeOperatorIdentifier
 		MakeOperatorIdentifier& MakeOperatorIdentifier::op(CppOperators value)
 		{
 			node->op = value;
+			return *this;
+		}
+
+/***********************************************************************
+MakeOrdinaryGenericParameter
+***********************************************************************/
+
+		MakeOrdinaryGenericParameter& MakeOrdinaryGenericParameter::genericHeader(const vl::Ptr<CppGenericHeader>& value)
+		{
+			node->genericHeader = value;
+			return *this;
+		}
+
+		MakeOrdinaryGenericParameter& MakeOrdinaryGenericParameter::id(const vl::Ptr<CppIdentifier>& value)
+		{
+			node->id = value;
+			return *this;
+		}
+
+		MakeOrdinaryGenericParameter& MakeOrdinaryGenericParameter::init(const vl::Ptr<CppTypeOrExpr>& value)
+		{
+			node->init = value;
+			return *this;
+		}
+
+		MakeOrdinaryGenericParameter& MakeOrdinaryGenericParameter::typenameToken(const vl::WString& value)
+		{
+			node->typenameToken.value = value;
+			return *this;
+		}
+
+		MakeOrdinaryGenericParameter& MakeOrdinaryGenericParameter::variadic(const vl::WString& value)
+		{
+			node->variadic.value = value;
 			return *this;
 		}
 

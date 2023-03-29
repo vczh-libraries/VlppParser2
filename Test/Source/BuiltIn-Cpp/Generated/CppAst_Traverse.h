@@ -75,6 +75,7 @@ namespace cpp_parser
 			virtual void Traverse(CppNewExpr* node);
 			virtual void Traverse(CppNumericExprLiteral* node);
 			virtual void Traverse(CppOperatorIdentifier* node);
+			virtual void Traverse(CppOrdinaryGenericParameter* node);
 			virtual void Traverse(CppParenthesisExpr* node);
 			virtual void Traverse(CppPostfixUnaryExpr* node);
 			virtual void Traverse(CppPrefixUnaryExpr* node);
@@ -154,6 +155,7 @@ namespace cpp_parser
 			virtual void Finishing(CppNewExpr* node);
 			virtual void Finishing(CppNumericExprLiteral* node);
 			virtual void Finishing(CppOperatorIdentifier* node);
+			virtual void Finishing(CppOrdinaryGenericParameter* node);
 			virtual void Finishing(CppParenthesisExpr* node);
 			virtual void Finishing(CppPostfixUnaryExpr* node);
 			virtual void Finishing(CppPrefixUnaryExpr* node);
@@ -189,6 +191,7 @@ namespace cpp_parser
 			void Visit(CppDeclaration* node) override;
 			void Visit(CppTypeOrExpr* node) override;
 			void Visit(CppGenericArgument* node) override;
+			void Visit(CppOrdinaryGenericParameter* node) override;
 
 			void Visit(CppSingleVarDeclaration* node) override;
 			void Visit(CppMultipleVarDeclaration* node) override;

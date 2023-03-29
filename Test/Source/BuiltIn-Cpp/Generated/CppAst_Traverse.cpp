@@ -58,6 +58,7 @@ namespace cpp_parser
 		void AstVisitor::Traverse(CppNewExpr* node) {}
 		void AstVisitor::Traverse(CppNumericExprLiteral* node) {}
 		void AstVisitor::Traverse(CppOperatorIdentifier* node) {}
+		void AstVisitor::Traverse(CppOrdinaryGenericParameter* node) {}
 		void AstVisitor::Traverse(CppParenthesisExpr* node) {}
 		void AstVisitor::Traverse(CppPostfixUnaryExpr* node) {}
 		void AstVisitor::Traverse(CppPrefixUnaryExpr* node) {}
@@ -136,6 +137,7 @@ namespace cpp_parser
 		void AstVisitor::Finishing(CppNewExpr* node) {}
 		void AstVisitor::Finishing(CppNumericExprLiteral* node) {}
 		void AstVisitor::Finishing(CppOperatorIdentifier* node) {}
+		void AstVisitor::Finishing(CppOrdinaryGenericParameter* node) {}
 		void AstVisitor::Finishing(CppParenthesisExpr* node) {}
 		void AstVisitor::Finishing(CppPostfixUnaryExpr* node) {}
 		void AstVisitor::Finishing(CppPrefixUnaryExpr* node) {}
@@ -186,6 +188,22 @@ namespace cpp_parser
 			InspectInto(node->argument.Obj());
 			Traverse(node->variadic);
 			Finishing(static_cast<CppGenericArgument*>(node));
+			Finishing(static_cast<CppTypeOrExprOrOthers*>(node));
+			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+		}
+
+		void AstVisitor::Visit(CppOrdinaryGenericParameter* node)
+		{
+			if (!node) return;
+			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+			Traverse(static_cast<CppTypeOrExprOrOthers*>(node));
+			Traverse(static_cast<CppOrdinaryGenericParameter*>(node));
+			InspectInto(node->genericHeader.Obj());
+			InspectInto(node->id.Obj());
+			InspectInto(node->init.Obj());
+			Traverse(node->typenameToken);
+			Traverse(node->variadic);
+			Finishing(static_cast<CppOrdinaryGenericParameter*>(node));
 			Finishing(static_cast<CppTypeOrExprOrOthers*>(node));
 			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 		}
@@ -1063,6 +1081,10 @@ namespace cpp_parser
 			if (!node) return;
 			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
 			Traverse(static_cast<CppGenericHeader*>(node));
+			for (auto&& listItem : node->parameters)
+			{
+				InspectInto(listItem.Obj());
+			}
 			Finishing(static_cast<CppGenericHeader*>(node));
 			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 		}
