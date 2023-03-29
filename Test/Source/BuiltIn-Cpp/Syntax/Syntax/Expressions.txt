@@ -23,6 +23,10 @@ _LambdaCapture
   ::= "&" !_LambdaCaptureId {refKind = Ref}
   ;
 
+_LambdaExpr
+  ::= "[" {_LambdaCapture:captures ; ","} "]" [_DeclaratorFunctionPartOptionalParameters:functionHeader] _BlockStat:stat
+  ;
+
 _PrimitiveExpr : TypeOrExpr
   ::= "true"                                                              as PrimitiveExprLiteral {kind = True}
   ::= "false"                                                             as PrimitiveExprLiteral {kind = False}
