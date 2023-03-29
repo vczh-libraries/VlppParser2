@@ -1,13 +1,13 @@
 # TODO
 
-## Progressing
+## BuiltIn-Cpp
 
-- `::a::b::c::*`
-  - Ambiguity
-  - It should be invalid, instead of being `::a(::b::c::*)` and `::a::b(::c::*)`
-- Compiler crashes:
-  - `_DeclOrExpr ::= !_BExpr ::= {_DeclaratorKeyword:keywords} _TypeBeforeDeclarator:type _DeclaratorRequiredName:declarator as DeclaratorType ;`
-  - `workingSwitchValues` is nullptr in `ExpandClauseVisitor::FixRuleName`
+- Progress
+  - Ambiguity unhandled.
+    - Type/Expr
+    - Expr/Decl Statement
+    - etc
+  - Declaration unfinished.
 
 ## Next task
 
@@ -41,7 +41,16 @@
 - Add `extern` rule, non-`extern` rules can only be used inside the same syntax file.
 - Add union type and remove `TypeOrExprOrOthers` in C++.
 
-## Issues
+## Issues (BuiltIn-Cpp)
+
+- `::a::b::c::*`
+  - Ambiguity
+  - It should be invalid, instead of being `::a(::b::c::*)` and `::a::b(::c::*)`
+- Compiler crashes:
+  - `_DeclOrExpr ::= !_BExpr ::= {_DeclaratorKeyword:keywords} _TypeBeforeDeclarator:type _DeclaratorRequiredName:declarator as DeclaratorType ;`
+  - `workingSwitchValues` is nullptr in `ExpandClauseVisitor::FixRuleName`
+
+## Issues (Glr)
 
 - When `XToResolve` is in another `XToResolve`, flatten them.
 - TODO in `CalculateRuleAndClauseTypes`.
@@ -59,15 +68,6 @@
 - Optimize `CrossReferencedNFA` to merge prefix (two states can be merged if their `InEdges` are identical, `FromState` in `InEdges` are replaced by merged states).
 - `JsonEscapeString` `JsonUnescapeString` handle surrogate pairs correctly.
 - Review all comments.
-
-## BuiltIn-Cpp
-
-- Progress
-  - Ambiguity unhandled.
-    - Type/Expr
-    - Expr/Decl Statement
-    - etc
-  - Declaration unfinished.
 
 ## Experiments
 
