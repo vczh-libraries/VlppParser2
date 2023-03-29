@@ -67,6 +67,7 @@ namespace cpp_parser
 			void Visit(CppPrimitiveExprLiteral* node) override;
 			void Visit(CppNumericExprLiteral* node) override;
 			void Visit(CppStringLiteral* node) override;
+			void Visit(CppLambdaExpr* node) override;
 			void Visit(CppParenthesisExpr* node) override;
 			void Visit(CppBraceExpr* node) override;
 			void Visit(CppCastExpr* node) override;

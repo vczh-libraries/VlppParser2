@@ -67,6 +67,11 @@ Visitor Pattern Implementation
 		visitor->Visit(this);
 	}
 
+	void CppLambdaExpr::Accept(CppExprOnly::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
 	void CppParenthesisExpr::Accept(CppExprOnly::IVisitor* visitor)
 	{
 		visitor->Visit(this);
@@ -332,6 +337,7 @@ namespace vl
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppStringLiteralKinds, cpp_parser::CppStringLiteralKinds)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppStringLiteralFragment, cpp_parser::CppStringLiteralFragment)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppStringLiteral, cpp_parser::CppStringLiteral)
+			IMPL_TYPE_INFO_RENAME(cpp_parser::CppLambdaExpr, cpp_parser::CppLambdaExpr)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppParenthesisExpr, cpp_parser::CppParenthesisExpr)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppBraceExpr, cpp_parser::CppBraceExpr)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppCastExpr, cpp_parser::CppCastExpr)
@@ -607,6 +613,13 @@ namespace vl
 
 				CLASS_MEMBER_FIELD(fragments)
 			END_CLASS_MEMBER(cpp_parser::CppStringLiteral)
+
+			BEGIN_CLASS_MEMBER(cpp_parser::CppLambdaExpr)
+				CLASS_MEMBER_BASE(cpp_parser::CppExprOnly)
+
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppLambdaExpr>(), NO_PARAMETER)
+
+			END_CLASS_MEMBER(cpp_parser::CppLambdaExpr)
 
 			BEGIN_CLASS_MEMBER(cpp_parser::CppParenthesisExpr)
 				CLASS_MEMBER_BASE(cpp_parser::CppExprOnly)
@@ -1177,6 +1190,7 @@ namespace vl
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppExprOnly::IVisitor::*)(cpp_parser::CppPrimitiveExprLiteral* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppExprOnly::IVisitor::*)(cpp_parser::CppNumericExprLiteral* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppExprOnly::IVisitor::*)(cpp_parser::CppStringLiteral* node))
+				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppExprOnly::IVisitor::*)(cpp_parser::CppLambdaExpr* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppExprOnly::IVisitor::*)(cpp_parser::CppParenthesisExpr* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppExprOnly::IVisitor::*)(cpp_parser::CppBraceExpr* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppExprOnly::IVisitor::*)(cpp_parser::CppCastExpr* node))
@@ -1274,6 +1288,7 @@ namespace vl
 					ADD_TYPE_INFO(cpp_parser::CppStringLiteralKinds)
 					ADD_TYPE_INFO(cpp_parser::CppStringLiteralFragment)
 					ADD_TYPE_INFO(cpp_parser::CppStringLiteral)
+					ADD_TYPE_INFO(cpp_parser::CppLambdaExpr)
 					ADD_TYPE_INFO(cpp_parser::CppParenthesisExpr)
 					ADD_TYPE_INFO(cpp_parser::CppBraceExpr)
 					ADD_TYPE_INFO(cpp_parser::CppCastExpr)

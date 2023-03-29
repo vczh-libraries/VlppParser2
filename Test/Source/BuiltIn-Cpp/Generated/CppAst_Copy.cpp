@@ -288,6 +288,11 @@ namespace cpp_parser
 			to->stat = CopyNode(from->stat.Obj());
 		}
 
+		void AstVisitor::CopyFields(CppLambdaExpr* from, CppLambdaExpr* to)
+		{
+			CopyFields(static_cast<CppExprOnly*>(from), static_cast<CppExprOnly*>(to));
+		}
+
 		void AstVisitor::CopyFields(CppMultipleVarDeclaration* from, CppMultipleVarDeclaration* to)
 		{
 			CopyFields(static_cast<CppDeclaration*>(from), static_cast<CppDeclaration*>(to));
@@ -697,6 +702,13 @@ namespace cpp_parser
 		void AstVisitor::Visit(CppStringLiteral* node)
 		{
 			auto newNode = vl::Ptr(new CppStringLiteral);
+			CopyFields(node, newNode.Obj());
+			this->result = newNode;
+		}
+
+		void AstVisitor::Visit(CppLambdaExpr* node)
+		{
+			auto newNode = vl::Ptr(new CppLambdaExpr);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
@@ -1304,6 +1316,12 @@ namespace cpp_parser
 		{
 			if (!node) return nullptr;
 			return CopyNode(static_cast<CppStatement*>(node)).Cast<CppLabelStat>();
+		}
+
+		vl::Ptr<CppLambdaExpr> AstVisitor::CopyNode(CppLambdaExpr* node)
+		{
+			if (!node) return nullptr;
+			return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppLambdaExpr>();
 		}
 
 		vl::Ptr<CppMultipleVarDeclaration> AstVisitor::CopyNode(CppMultipleVarDeclaration* node)

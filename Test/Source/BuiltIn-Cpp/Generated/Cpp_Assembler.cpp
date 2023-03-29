@@ -86,6 +86,8 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::Ptr(new cpp_parser::CppIndexExpr);
 		case CppClasses::LabelStat:
 			return vl::Ptr(new cpp_parser::CppLabelStat);
+		case CppClasses::LambdaExpr:
+			return vl::Ptr(new cpp_parser::CppLambdaExpr);
 		case CppClasses::MultipleVarDeclaration:
 			return vl::Ptr(new cpp_parser::CppMultipleVarDeclaration);
 		case CppClasses::NameIdentifier:
@@ -474,6 +476,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"IfExpr",
 			L"IndexExpr",
 			L"LabelStat",
+			L"LambdaExpr",
 			L"MultipleVarDeclaration",
 			L"NameIdentifier",
 			L"NewExpr",
@@ -511,7 +514,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"__TryStat",
 		};
 		vl::vint index = (vl::vint)type;
-		return 0 <= index && index < 73 ? results[index] : nullptr;
+		return 0 <= index && index < 74 ? results[index] : nullptr;
 	}
 
 	const wchar_t* CppCppTypeName(CppClasses type)
@@ -555,6 +558,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::CppIfExpr",
 			L"cpp_parser::CppIndexExpr",
 			L"cpp_parser::CppLabelStat",
+			L"cpp_parser::CppLambdaExpr",
 			L"cpp_parser::CppMultipleVarDeclaration",
 			L"cpp_parser::CppNameIdentifier",
 			L"cpp_parser::CppNewExpr",
@@ -592,7 +596,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::Cpp__TryStat",
 		};
 		vl::vint index = (vl::vint)type;
-		return 0 <= index && index < 73 ? results[index] : nullptr;
+		return 0 <= index && index < 74 ? results[index] : nullptr;
 	}
 
 	const wchar_t* CppFieldName(CppFields field)

@@ -87,6 +87,10 @@ ExprOnlyVisitor
 		{
 		}
 
+		void ExprOnlyVisitor::Visit(CppLambdaExpr* node)
+		{
+		}
+
 		void ExprOnlyVisitor::Visit(CppParenthesisExpr* node)
 		{
 		}

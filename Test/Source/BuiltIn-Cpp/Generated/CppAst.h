@@ -50,6 +50,7 @@ namespace cpp_parser
 	class CppIfExpr;
 	class CppIndexExpr;
 	class CppLabelStat;
+	class CppLambdaExpr;
 	class CppMultipleVarDeclaration;
 	class CppNameIdentifier;
 	class CppNewExpr;
@@ -290,6 +291,7 @@ namespace cpp_parser
 			virtual void Visit(CppPrimitiveExprLiteral* node) = 0;
 			virtual void Visit(CppNumericExprLiteral* node) = 0;
 			virtual void Visit(CppStringLiteral* node) = 0;
+			virtual void Visit(CppLambdaExpr* node) = 0;
 			virtual void Visit(CppParenthesisExpr* node) = 0;
 			virtual void Visit(CppBraceExpr* node) = 0;
 			virtual void Visit(CppCastExpr* node) = 0;
@@ -416,6 +418,13 @@ namespace cpp_parser
 	{
 	public:
 		vl::collections::List<vl::Ptr<CppStringLiteralFragment>> fragments;
+
+		void Accept(CppExprOnly::IVisitor* visitor) override;
+	};
+
+	class CppLambdaExpr : public CppExprOnly, vl::reflection::Description<CppLambdaExpr>
+	{
+	public:
 
 		void Accept(CppExprOnly::IVisitor* visitor) override;
 	};
@@ -991,6 +1000,7 @@ namespace vl
 			DECL_TYPE_INFO(cpp_parser::CppStringLiteralKinds)
 			DECL_TYPE_INFO(cpp_parser::CppStringLiteralFragment)
 			DECL_TYPE_INFO(cpp_parser::CppStringLiteral)
+			DECL_TYPE_INFO(cpp_parser::CppLambdaExpr)
 			DECL_TYPE_INFO(cpp_parser::CppParenthesisExpr)
 			DECL_TYPE_INFO(cpp_parser::CppBraceExpr)
 			DECL_TYPE_INFO(cpp_parser::CppCastExpr)
@@ -1126,6 +1136,11 @@ namespace vl
 				}
 
 				void Visit(cpp_parser::CppStringLiteral* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+				void Visit(cpp_parser::CppLambdaExpr* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}

@@ -602,6 +602,9 @@ namespace cpp_parser
 			Print(node->stat.Obj());
 			EndField();
 		}
+		void AstVisitor::PrintFields(CppLambdaExpr* node)
+		{
+		}
 		void AstVisitor::PrintFields(CppMultipleVarDeclaration* node)
 		{
 			BeginField(L"keywords");
@@ -1647,6 +1650,22 @@ namespace cpp_parser
 			PrintFields(static_cast<CppTypeOrExpr*>(node));
 			PrintFields(static_cast<CppExprOnly*>(node));
 			PrintFields(static_cast<CppStringLiteral*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppLambdaExpr* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"LambdaExpr", node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
+			PrintFields(static_cast<CppTypeOrExpr*>(node));
+			PrintFields(static_cast<CppExprOnly*>(node));
+			PrintFields(static_cast<CppLambdaExpr*>(node));
 			EndObject();
 		}
 
