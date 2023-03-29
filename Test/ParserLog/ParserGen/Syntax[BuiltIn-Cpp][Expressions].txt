@@ -48,7 +48,7 @@
             "syntax": {
                 "$ast": "RefSyntax",
                 "field": "id",
-                "literal": "_Identifier",
+                "literal": "_DeclaratorId",
                 "refType": "Id"
             },
             "type": "LambdaCapture"
@@ -65,7 +65,7 @@
                 "first": {
                     "$ast": "RefSyntax",
                     "field": "id",
-                    "literal": "_Identifier",
+                    "literal": "_DeclaratorId",
                     "refType": "Id"
                 },
                 "second": {
@@ -89,7 +89,7 @@
                 "first": {
                     "$ast": "RefSyntax",
                     "field": "id",
-                    "literal": "_Identifier",
+                    "literal": "_DeclaratorId",
                     "refType": "Id"
                 },
                 "second": {
@@ -121,7 +121,7 @@
                     "second": {
                         "$ast": "RefSyntax",
                         "field": "id",
-                        "literal": "_Identifier",
+                        "literal": "_DeclaratorId",
                         "refType": "Id"
                     }
                 },
@@ -277,32 +277,45 @@
                         "first": {
                             "$ast": "SequenceSyntax",
                             "first": {
-                                "$ast": "RefSyntax",
-                                "field": "",
-                                "literal": "\"[\"",
-                                "refType": "Literal"
-                            },
-                            "second": {
-                                "$ast": "LoopSyntax",
-                                "delimiter": {
+                                "$ast": "SequenceSyntax",
+                                "first": {
                                     "$ast": "RefSyntax",
                                     "field": "",
-                                    "literal": "\",\"",
+                                    "literal": "\"[\"",
                                     "refType": "Literal"
                                 },
-                                "syntax": {
-                                    "$ast": "RefSyntax",
-                                    "field": "captures",
-                                    "literal": "_LambdaCapture",
-                                    "refType": "Id"
+                                "second": {
+                                    "$ast": "LoopSyntax",
+                                    "delimiter": {
+                                        "$ast": "RefSyntax",
+                                        "field": "",
+                                        "literal": "\",\"",
+                                        "refType": "Literal"
+                                    },
+                                    "syntax": {
+                                        "$ast": "RefSyntax",
+                                        "field": "captures",
+                                        "literal": "_LambdaCapture",
+                                        "refType": "Id"
+                                    }
                                 }
+                            },
+                            "second": {
+                                "$ast": "RefSyntax",
+                                "field": "",
+                                "literal": "\"]\"",
+                                "refType": "Literal"
                             }
                         },
                         "second": {
-                            "$ast": "RefSyntax",
-                            "field": "",
-                            "literal": "\"]\"",
-                            "refType": "Literal"
+                            "$ast": "OptionalSyntax",
+                            "priority": "Equal",
+                            "syntax": {
+                                "$ast": "RefSyntax",
+                                "field": "genericHeader",
+                                "literal": "_GenericHeader",
+                                "refType": "Id"
+                            }
                         }
                     },
                     "second": {

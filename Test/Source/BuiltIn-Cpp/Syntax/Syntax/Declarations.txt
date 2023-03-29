@@ -94,8 +94,9 @@ _ExprOrVarWithInit
 //////////////////////////////////////////////////////////////////
 
 _GenericParameterKeyword
-  ::= "typename":typenameToken as partial GenericParameter
-  ::= "class":typenameToken as partial GenericParameter
+  ::= "typename":typenameToken as partial OrdinaryGenericParameter
+  ::= "class":typenameToken as partial OrdinaryGenericParameter
+  ::= "template" _GenericHeader:genericHeader "class":typenameToken as partial OrdinaryGenericParameter
   ;
 
 _OrdinaryGenericParameter
