@@ -62,9 +62,9 @@
 ## BuiltIn-Cpp
 
 - Progress
-  - Passed test cases from `Input_Sample/(Exprs|Types|Stats).txt`
-    - Lambda unfinished.
-    - Ambiguity unhandled.
+  - Lambda unfinished.
+  - Ambiguity unhandled.
+  - Declaration unfinished.
 
 ## Experiments
 
