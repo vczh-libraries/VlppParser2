@@ -90,6 +90,46 @@ _ExprOrVarWithInit
   ;
 
 //////////////////////////////////////////////////////////////////
+// Generic Header
+//////////////////////////////////////////////////////////////////
+
+_GenericParameterKeyword
+  ::= "typename":typenameToken as partial GenericParameter
+  ::= "class":typenameToken as partial GenericParameter
+  ;
+
+_OrdinaryGenericParameter
+  ::= _GenericParameterKeyword ["...":variadic] [_DeclaratorId:id] ["=" _TypeOrExpr:init] as OrdinaryGenericParameter
+  ;
+
+_TypedGenericParameterInit
+  ::= "=" _TypeOrExpr:expr as VarValueInit
+  ;
+
+_TypedGenericParameterVariablePart
+  ::= _TypedGenericParameterInit:init as DeclaratorVariablePart
+  ::= _DeclaratorOptionalName:declarator [_TypedGenericParameterInit:init] as DeclaratorVariablePart
+  ;
+
+_TypedGenericParameterDeclaration
+  ::= !_TypeBeforeDeclarator
+  ::= _TypeBeforeDeclarator:type _TypedGenericParameterVariablePart:varPart as SingleVarDeclaration
+  ;
+
+_TypedGenericParameter
+  ::= _TypedGenericParameterDeclaration:varDecl as TypedGenericParameter
+  ;
+
+_GenericParameter
+  ::= !_OrdinaryGenericParameter
+  ::= !_TypedGenericParameter
+  ;
+
+_GenericHeader
+  ::= "<" {_GenericParameter:parameters} ">" as GenericHeader
+  ;
+
+//////////////////////////////////////////////////////////////////
 // Variable Declarations
 //////////////////////////////////////////////////////////////////
 
