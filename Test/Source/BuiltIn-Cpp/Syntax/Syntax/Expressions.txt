@@ -7,31 +7,52 @@ _StringLiteralFragment
   ::= STRING:literal as StringLiteralFragment {kind = String}
   ;
 
+_LambdaCaptureId
+  ::= _DeclaratorId:id                     as LambdaCapture {objKind = Id}
+  ::= _DeclaratorId:id _VarInit:init       as LambdaCapture {objKind = Id}
+  ::= _DeclaratorId:id "..."               as LambdaCapture {objKind = PackId}
+  ::= "..." _DeclaratorId:id _VarInit:init as LambdaCapture {objKind = PackInit}
+  ;
+
+_LambdaCapture
+  ::= "&"                 as LambdaCapture {objKind = Default, refKind = Ref }
+  ::= "="                 as LambdaCapture {objKind = Default, refKind = Copy}
+  ::= "this"              as LambdaCapture {objKind = This,    refKind = Ref }
+  ::= "*" "this"          as LambdaCapture {objKind = This,    refKind = Copy}
+  ::= !_LambdaCaptureId     {refKind = Copy}
+  ::= "&" !_LambdaCaptureId {refKind = Ref}
+  ;
+
+_LambdaExpr
+  ::= "[" {_LambdaCapture:captures ; ","} "]" [_GenericHeader:genericHeader] [_DeclaratorFunctionPartOptionalParameters:functionHeader] _BlockStat:stat as LambdaExpr
+  ;
+
 _PrimitiveExpr : TypeOrExpr
-  ::= "true" as PrimitiveExprLiteral {kind = True}
-  ::= "false" as PrimitiveExprLiteral {kind = False}
-  ::= "nullptr" as PrimitiveExprLiteral {kind = Nullptr}
-  ::= "this" as PrimitiveExprLiteral {kind = This}
-  ::= "__nullptr" as PrimitiveExprLiteral {kind = __Nullptr}
-  ::= INT:literal as NumericExprLiteral {kind = Integer}
-  ::= HEX:literal as NumericExprLiteral {kind = Hex}
-  ::= BIN:literal as NumericExprLiteral {kind = Binary}
-  ::= FLOAT:literal as NumericExprLiteral {kind = Float}
-  ::= FLOATHEX:literal as NumericExprLiteral {kind = FloatHex}
-  ::= CHAR:literal as NumericExprLiteral {kind = Char}
+  ::= "true"                                                              as PrimitiveExprLiteral {kind = True}
+  ::= "false"                                                             as PrimitiveExprLiteral {kind = False}
+  ::= "nullptr"                                                           as PrimitiveExprLiteral {kind = Nullptr}
+  ::= "this"                                                              as PrimitiveExprLiteral {kind = This}
+  ::= "__nullptr"                                                         as PrimitiveExprLiteral {kind = __Nullptr}
+  ::= INT:literal                                                         as NumericExprLiteral {kind = Integer}
+  ::= HEX:literal                                                         as NumericExprLiteral {kind = Hex}
+  ::= BIN:literal                                                         as NumericExprLiteral {kind = Binary}
+  ::= FLOAT:literal                                                       as NumericExprLiteral {kind = Float}
+  ::= FLOATHEX:literal                                                    as NumericExprLiteral {kind = FloatHex}
+  ::= CHAR:literal                                                        as NumericExprLiteral {kind = Char}
   ::= _StringLiteralFragment:fragments {_StringLiteralFragment:fragments} as StringLiteral
-  ::= "(" _Expr:expr ")" as ParenthesisExpr
-  ::= "{" {_Expr_Argument:arguments ; ","} "}" as BraceExpr
-  ::= "dynamic_cast":keyword "<" _Type:type ">" "(" _Expr:expr ")" as CastExpr
-  ::= "static_cast":keyword "<" _Type:type ">" "(" _Expr:expr ")" as CastExpr
-  ::= "const_cast":keyword "<" _Type:type ">" "(" _Expr:expr ")" as CastExpr
-  ::= "reinterpret_cast":keyword "<" _Type:type ">" "(" _Expr:expr ")" as CastExpr
-  ::= "safe_cast":keyword "<" _Type:type ">" "(" _Expr:expr ")" as CastExpr
-  ::= "typeid":keyword "(" _TypeOrExpr:argument ")" as SysFuncExpr
-  ::= "alignof":keyword "(" _TypeOrExpr:argument ")" as SysFuncExpr
-  ::= "__alignof":keyword "(" _TypeOrExpr:argument ")" as SysFuncExpr
-  ::= "__uuidof":keyword "(" _TypeOrExpr:argument ")" as SysFuncExpr
-  ::= "noexcept":keyword "(" _TypeOrExpr:argument ")" as SysFuncExpr
+  ::= "(" _Expr:expr ")"                                                  as ParenthesisExpr
+  ::= "{" {_Expr_Argument:arguments ; ","} "}"                            as BraceExpr
+  ::= "dynamic_cast":keyword "<" _Type:type ">" "(" _Expr:expr ")"        as CastExpr
+  ::= "static_cast":keyword "<" _Type:type ">" "(" _Expr:expr ")"         as CastExpr
+  ::= "const_cast":keyword "<" _Type:type ">" "(" _Expr:expr ")"          as CastExpr
+  ::= "reinterpret_cast":keyword "<" _Type:type ">" "(" _Expr:expr ")"    as CastExpr
+  ::= "safe_cast":keyword "<" _Type:type ">" "(" _Expr:expr ")"           as CastExpr
+  ::= "typeid":keyword "(" _TypeOrExpr:argument ")"                       as SysFuncExpr
+  ::= "alignof":keyword "(" _TypeOrExpr:argument ")"                      as SysFuncExpr
+  ::= "__alignof":keyword "(" _TypeOrExpr:argument ")"                    as SysFuncExpr
+  ::= "__uuidof":keyword "(" _TypeOrExpr:argument ")"                     as SysFuncExpr
+  ::= "noexcept":keyword "(" _TypeOrExpr:argument ")"                     as SysFuncExpr
+  ::= !_LambdaExpr
   ;
 
 //////////////////////////////////////////////////////////////////

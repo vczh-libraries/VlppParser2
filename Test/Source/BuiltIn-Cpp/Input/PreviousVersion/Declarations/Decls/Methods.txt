@@ -1,0 +1,18 @@
+struct Vector
+{
+	static_assert(sizeof(int) == 8, "This is an error message.");
+	double x = 0;
+	double y = 0;
+
+	__stdcall Vector();
+	Vector(double _x, double _y);
+	Vector(const Vector& v)=default;
+	Vector(Vector&& v)=delete;
+	~Vector();
+
+	operator bool()const;
+	explicit operator double()const;
+	Vector operator*(double z)const;
+};
+static Vector operator+(Vector v1, Vector v2);
+static Vector operator-(Vector v1, Vector v2);

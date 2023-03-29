@@ -192,6 +192,12 @@ namespace cpp_parser
 			MakeGenericArguments& arguments(const vl::Ptr<CppTypeOrExprOrOthers>& value);
 		};
 
+		class MakeGenericHeader : public vl::glr::ParsingAstBuilder<CppGenericHeader>
+		{
+		public:
+			MakeGenericHeader& parameters(const vl::Ptr<CppTypeOrExprOrOthers>& value);
+		};
+
 		class MakeGotoStat : public vl::glr::ParsingAstBuilder<CppGotoStat>
 		{
 		public:
@@ -227,6 +233,24 @@ namespace cpp_parser
 		public:
 			MakeLabelStat& label(const vl::WString& value);
 			MakeLabelStat& stat(const vl::Ptr<CppStatement>& value);
+		};
+
+		class MakeLambdaCapture : public vl::glr::ParsingAstBuilder<CppLambdaCapture>
+		{
+		public:
+			MakeLambdaCapture& id(const vl::Ptr<CppIdentifier>& value);
+			MakeLambdaCapture& init(const vl::Ptr<CppVarInit>& value);
+			MakeLambdaCapture& objKind(CppLambdaCaptureObjectKinds value);
+			MakeLambdaCapture& refKind(CppLambdaCaptureRefeferenceKinds value);
+		};
+
+		class MakeLambdaExpr : public vl::glr::ParsingAstBuilder<CppLambdaExpr>
+		{
+		public:
+			MakeLambdaExpr& captures(const vl::Ptr<CppLambdaCapture>& value);
+			MakeLambdaExpr& functionHeader(const vl::Ptr<CppDeclaratorFunctionPart>& value);
+			MakeLambdaExpr& genericHeader(const vl::Ptr<CppGenericHeader>& value);
+			MakeLambdaExpr& stat(const vl::Ptr<CppStatement>& value);
 		};
 
 		class MakeMultipleVarDeclaration : public vl::glr::ParsingAstBuilder<CppMultipleVarDeclaration>
@@ -265,6 +289,16 @@ namespace cpp_parser
 		{
 		public:
 			MakeOperatorIdentifier& op(CppOperators value);
+		};
+
+		class MakeOrdinaryGenericParameter : public vl::glr::ParsingAstBuilder<CppOrdinaryGenericParameter>
+		{
+		public:
+			MakeOrdinaryGenericParameter& genericHeader(const vl::Ptr<CppGenericHeader>& value);
+			MakeOrdinaryGenericParameter& id(const vl::Ptr<CppIdentifier>& value);
+			MakeOrdinaryGenericParameter& init(const vl::Ptr<CppTypeOrExpr>& value);
+			MakeOrdinaryGenericParameter& typenameToken(const vl::WString& value);
+			MakeOrdinaryGenericParameter& variadic(const vl::WString& value);
 		};
 
 		class MakeParenthesisExpr : public vl::glr::ParsingAstBuilder<CppParenthesisExpr>

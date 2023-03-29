@@ -44,17 +44,21 @@ namespace cpp_parser
 	class CppFunctionKeyword;
 	class CppGenericArgument;
 	class CppGenericArguments;
+	class CppGenericHeader;
 	class CppGotoStat;
 	class CppIdentifier;
 	class CppIfElseStat;
 	class CppIfExpr;
 	class CppIndexExpr;
 	class CppLabelStat;
+	class CppLambdaCapture;
+	class CppLambdaExpr;
 	class CppMultipleVarDeclaration;
 	class CppNameIdentifier;
 	class CppNewExpr;
 	class CppNumericExprLiteral;
 	class CppOperatorIdentifier;
+	class CppOrdinaryGenericParameter;
 	class CppParenthesisExpr;
 	class CppPostfixUnaryExpr;
 	class CppPrefixUnaryExpr;
@@ -189,6 +193,23 @@ namespace cpp_parser
 		Macro_LPREFIX = 1,
 	};
 
+	enum class CppLambdaCaptureObjectKinds
+	{
+		UNDEFINED_ENUM_ITEM_VALUE = -1,
+		Default = 0,
+		This = 1,
+		Id = 2,
+		PackId = 3,
+		PackInit = 4,
+	};
+
+	enum class CppLambdaCaptureRefeferenceKinds
+	{
+		UNDEFINED_ENUM_ITEM_VALUE = -1,
+		Ref = 0,
+		Copy = 1,
+	};
+
 	enum class CppOperatorScope
 	{
 		UNDEFINED_ENUM_ITEM_VALUE = -1,
@@ -241,6 +262,7 @@ namespace cpp_parser
 			virtual void Visit(CppDeclaration* node) = 0;
 			virtual void Visit(CppTypeOrExpr* node) = 0;
 			virtual void Visit(CppGenericArgument* node) = 0;
+			virtual void Visit(CppOrdinaryGenericParameter* node) = 0;
 		};
 
 		virtual void Accept(CppTypeOrExprOrOthers::IVisitor* visitor) = 0;
@@ -290,6 +312,7 @@ namespace cpp_parser
 			virtual void Visit(CppPrimitiveExprLiteral* node) = 0;
 			virtual void Visit(CppNumericExprLiteral* node) = 0;
 			virtual void Visit(CppStringLiteral* node) = 0;
+			virtual void Visit(CppLambdaExpr* node) = 0;
 			virtual void Visit(CppParenthesisExpr* node) = 0;
 			virtual void Visit(CppBraceExpr* node) = 0;
 			virtual void Visit(CppCastExpr* node) = 0;
@@ -388,6 +411,24 @@ namespace cpp_parser
 		void Accept(CppTypeOrExpr::IVisitor* visitor) override;
 	};
 
+	class CppOrdinaryGenericParameter : public CppTypeOrExprOrOthers, vl::reflection::Description<CppOrdinaryGenericParameter>
+	{
+	public:
+		vl::Ptr<CppGenericHeader> genericHeader;
+		vl::glr::ParsingToken typenameToken;
+		vl::glr::ParsingToken variadic;
+		vl::Ptr<CppIdentifier> id;
+		vl::Ptr<CppTypeOrExpr> init;
+
+		void Accept(CppTypeOrExprOrOthers::IVisitor* visitor) override;
+	};
+
+	class CppGenericHeader : public vl::glr::ParsingAstBase, vl::reflection::Description<CppGenericHeader>
+	{
+	public:
+		vl::collections::List<vl::Ptr<CppTypeOrExprOrOthers>> parameters;
+	};
+
 	class CppPrimitiveExprLiteral : public CppExprOnly, vl::reflection::Description<CppPrimitiveExprLiteral>
 	{
 	public:
@@ -416,6 +457,26 @@ namespace cpp_parser
 	{
 	public:
 		vl::collections::List<vl::Ptr<CppStringLiteralFragment>> fragments;
+
+		void Accept(CppExprOnly::IVisitor* visitor) override;
+	};
+
+	class CppLambdaCapture : public vl::glr::ParsingAstBase, vl::reflection::Description<CppLambdaCapture>
+	{
+	public:
+		CppLambdaCaptureObjectKinds objKind = CppLambdaCaptureObjectKinds::UNDEFINED_ENUM_ITEM_VALUE;
+		CppLambdaCaptureRefeferenceKinds refKind = CppLambdaCaptureRefeferenceKinds::UNDEFINED_ENUM_ITEM_VALUE;
+		vl::Ptr<CppIdentifier> id;
+		vl::Ptr<CppVarInit> init;
+	};
+
+	class CppLambdaExpr : public CppExprOnly, vl::reflection::Description<CppLambdaExpr>
+	{
+	public:
+		vl::collections::List<vl::Ptr<CppLambdaCapture>> captures;
+		vl::Ptr<CppGenericHeader> genericHeader;
+		vl::Ptr<CppDeclaratorFunctionPart> functionHeader;
+		vl::Ptr<CppStatement> stat;
 
 		void Accept(CppExprOnly::IVisitor* visitor) override;
 	};
@@ -984,6 +1045,8 @@ namespace vl
 			DECL_TYPE_INFO(cpp_parser::CppGenericArguments)
 			DECL_TYPE_INFO(cpp_parser::CppQualifiedNameKinds)
 			DECL_TYPE_INFO(cpp_parser::CppQualifiedName)
+			DECL_TYPE_INFO(cpp_parser::CppOrdinaryGenericParameter)
+			DECL_TYPE_INFO(cpp_parser::CppGenericHeader)
 			DECL_TYPE_INFO(cpp_parser::CppPrimitiveExprLiteralKinds)
 			DECL_TYPE_INFO(cpp_parser::CppPrimitiveExprLiteral)
 			DECL_TYPE_INFO(cpp_parser::CppNumericExprLiteralKinds)
@@ -991,6 +1054,10 @@ namespace vl
 			DECL_TYPE_INFO(cpp_parser::CppStringLiteralKinds)
 			DECL_TYPE_INFO(cpp_parser::CppStringLiteralFragment)
 			DECL_TYPE_INFO(cpp_parser::CppStringLiteral)
+			DECL_TYPE_INFO(cpp_parser::CppLambdaCaptureObjectKinds)
+			DECL_TYPE_INFO(cpp_parser::CppLambdaCaptureRefeferenceKinds)
+			DECL_TYPE_INFO(cpp_parser::CppLambdaCapture)
+			DECL_TYPE_INFO(cpp_parser::CppLambdaExpr)
 			DECL_TYPE_INFO(cpp_parser::CppParenthesisExpr)
 			DECL_TYPE_INFO(cpp_parser::CppBraceExpr)
 			DECL_TYPE_INFO(cpp_parser::CppCastExpr)
@@ -1076,6 +1143,11 @@ namespace vl
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
 
+				void Visit(cpp_parser::CppOrdinaryGenericParameter* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
 			END_INTERFACE_PROXY(cpp_parser::CppTypeOrExprOrOthers::IVisitor)
 
 			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(cpp_parser::CppDeclaration::IVisitor)
@@ -1126,6 +1198,11 @@ namespace vl
 				}
 
 				void Visit(cpp_parser::CppStringLiteral* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+				void Visit(cpp_parser::CppLambdaExpr* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}

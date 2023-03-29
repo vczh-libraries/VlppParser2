@@ -1,0 +1,81 @@
+template<typename TX>
+struct x
+{
+	template<typename T>
+	struct A
+	{
+		auto _A()					{ return this; }
+		auto _A() const				{ return this; }
+		auto _A() volatile			{ return this; }
+		auto _A() const volatile	{ return this; }
+	};
+
+	template<typename T>
+	struct A<T[]>
+	{
+	};
+
+	template<typename TY>
+	struct y
+	{
+		struct B : A<int>
+		{
+			auto _B()					{ return this; }
+			auto _B() const				{ return this; }
+			auto _B() volatile			{ return this; }
+			auto _B() const volatile	{ return this; }
+		};
+
+		struct C
+		{
+			auto _C()					{ return this; }
+			auto _C() const				{ return this; }
+			auto _C() volatile			{ return this; }
+			auto _C() const volatile	{ return this; }
+		};
+	};
+
+	template<typename T>
+	struct y<T[]>
+	{
+	};
+
+	template<typename T>
+	struct D : y<float>::B, y<double>::C
+	{
+		auto _D()					{ return this; }
+		auto _D() const				{ return this; }
+		auto _D() volatile			{ return this; }
+		auto _D() const volatile	{ return this; }
+
+		auto A_()					{ return _A(); }
+		auto A_() const				{ return _A(); }
+		auto A_() volatile			{ return _A(); }
+		auto A_() const volatile	{ return _A(); }
+
+		auto B_()					{ return _B(); }
+		auto B_() const				{ return _B(); }
+		auto B_() volatile			{ return _B(); }
+		auto B_() const volatile	{ return _B(); }
+
+		auto C_()					{ return _C(); }
+		auto C_() const				{ return _C(); }
+		auto C_() volatile			{ return _C(); }
+		auto C_() const volatile	{ return _C(); }
+
+		auto D_()					{ return _D(); }
+		auto D_() const				{ return _D(); }
+		auto D_() volatile			{ return _D(); }
+		auto D_() const volatile	{ return _D(); }
+	};
+};
+
+template<typename T>
+struct x<T[]>
+{
+};
+
+x<void*>::D<char> d;
+const x<void*>::D<char> cd;
+volatile x<void*>::D<char> vd;
+volatile const x<void*>::D<char> cvd;

@@ -1,0 +1,13 @@
+char G(char);
+int G(int);
+void* G(...);
+
+template<typename T>
+auto F(T t)
+{
+	template<typename U>
+	using H = decltype(G((U){}));
+
+	H<T> h;
+	return {t, h};
+}

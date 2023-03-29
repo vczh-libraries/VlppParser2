@@ -26,6 +26,7 @@ namespace cpp_parser
 			void Visit(CppDeclaration* node) override;
 			void Visit(CppTypeOrExpr* node) override;
 			void Visit(CppGenericArgument* node) override;
+			void Visit(CppOrdinaryGenericParameter* node) override;
 		};
 
 		/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
@@ -67,6 +68,7 @@ namespace cpp_parser
 			void Visit(CppPrimitiveExprLiteral* node) override;
 			void Visit(CppNumericExprLiteral* node) override;
 			void Visit(CppStringLiteral* node) override;
+			void Visit(CppLambdaExpr* node) override;
 			void Visit(CppParenthesisExpr* node) override;
 			void Visit(CppBraceExpr* node) override;
 			void Visit(CppCastExpr* node) override;

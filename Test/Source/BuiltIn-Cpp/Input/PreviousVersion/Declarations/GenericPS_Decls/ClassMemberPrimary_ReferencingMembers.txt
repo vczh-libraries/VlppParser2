@@ -1,0 +1,38 @@
+template<typename X>
+struct Field;
+
+template<typename X>
+struct Field<X[]>;
+
+template<typename T, typename U>
+struct A
+{
+	Field<T> a;
+	Field<T> A<T, U>::* b;
+	Field<U> C();
+	Field<U> (A<T, U>::*d)();
+	Field<U> E(...)const;
+	Field<U> (A<T, U>::*f)(...)const;
+};
+
+template<typename T, typename U>
+struct A<T[], U[]>
+{
+};
+
+A<int, double> a;
+A<int, double>* pa;
+const A<int, double> ca;
+volatile A<int, double>* pva;
+)";
+
+		WString input2 = input1 + LR"(
+template<typename T, typename U>
+Field<U> A<T, U>::C()
+{
+}
+
+template<typename T, typename U>
+Field<U> A<T, U>::E(...)const
+{
+}

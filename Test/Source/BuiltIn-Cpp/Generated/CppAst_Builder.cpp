@@ -436,6 +436,16 @@ MakeGenericArguments
 		}
 
 /***********************************************************************
+MakeGenericHeader
+***********************************************************************/
+
+		MakeGenericHeader& MakeGenericHeader::parameters(const vl::Ptr<CppTypeOrExprOrOthers>& value)
+		{
+			node->parameters.Add(value);
+			return *this;
+		}
+
+/***********************************************************************
 MakeGotoStat
 ***********************************************************************/
 
@@ -522,6 +532,62 @@ MakeLabelStat
 		}
 
 		MakeLabelStat& MakeLabelStat::stat(const vl::Ptr<CppStatement>& value)
+		{
+			node->stat = value;
+			return *this;
+		}
+
+/***********************************************************************
+MakeLambdaCapture
+***********************************************************************/
+
+		MakeLambdaCapture& MakeLambdaCapture::id(const vl::Ptr<CppIdentifier>& value)
+		{
+			node->id = value;
+			return *this;
+		}
+
+		MakeLambdaCapture& MakeLambdaCapture::init(const vl::Ptr<CppVarInit>& value)
+		{
+			node->init = value;
+			return *this;
+		}
+
+		MakeLambdaCapture& MakeLambdaCapture::objKind(CppLambdaCaptureObjectKinds value)
+		{
+			node->objKind = value;
+			return *this;
+		}
+
+		MakeLambdaCapture& MakeLambdaCapture::refKind(CppLambdaCaptureRefeferenceKinds value)
+		{
+			node->refKind = value;
+			return *this;
+		}
+
+/***********************************************************************
+MakeLambdaExpr
+***********************************************************************/
+
+		MakeLambdaExpr& MakeLambdaExpr::captures(const vl::Ptr<CppLambdaCapture>& value)
+		{
+			node->captures.Add(value);
+			return *this;
+		}
+
+		MakeLambdaExpr& MakeLambdaExpr::functionHeader(const vl::Ptr<CppDeclaratorFunctionPart>& value)
+		{
+			node->functionHeader = value;
+			return *this;
+		}
+
+		MakeLambdaExpr& MakeLambdaExpr::genericHeader(const vl::Ptr<CppGenericHeader>& value)
+		{
+			node->genericHeader = value;
+			return *this;
+		}
+
+		MakeLambdaExpr& MakeLambdaExpr::stat(const vl::Ptr<CppStatement>& value)
 		{
 			node->stat = value;
 			return *this;
@@ -622,6 +688,40 @@ MakeOperatorIdentifier
 		MakeOperatorIdentifier& MakeOperatorIdentifier::op(CppOperators value)
 		{
 			node->op = value;
+			return *this;
+		}
+
+/***********************************************************************
+MakeOrdinaryGenericParameter
+***********************************************************************/
+
+		MakeOrdinaryGenericParameter& MakeOrdinaryGenericParameter::genericHeader(const vl::Ptr<CppGenericHeader>& value)
+		{
+			node->genericHeader = value;
+			return *this;
+		}
+
+		MakeOrdinaryGenericParameter& MakeOrdinaryGenericParameter::id(const vl::Ptr<CppIdentifier>& value)
+		{
+			node->id = value;
+			return *this;
+		}
+
+		MakeOrdinaryGenericParameter& MakeOrdinaryGenericParameter::init(const vl::Ptr<CppTypeOrExpr>& value)
+		{
+			node->init = value;
+			return *this;
+		}
+
+		MakeOrdinaryGenericParameter& MakeOrdinaryGenericParameter::typenameToken(const vl::WString& value)
+		{
+			node->typenameToken.value = value;
+			return *this;
+		}
+
+		MakeOrdinaryGenericParameter& MakeOrdinaryGenericParameter::variadic(const vl::WString& value)
+		{
+			node->variadic.value = value;
 			return *this;
 		}
 

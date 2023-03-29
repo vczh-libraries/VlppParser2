@@ -548,6 +548,19 @@ namespace cpp_parser
 			EndArray();
 			EndField();
 		}
+		void AstVisitor::PrintFields(CppGenericHeader* node)
+		{
+			BeginField(L"parameters");
+			BeginArray();
+			for (auto&& listItem : node->parameters)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+		}
 		void AstVisitor::PrintFields(CppGotoStat* node)
 		{
 			BeginField(L"label");
@@ -597,6 +610,72 @@ namespace cpp_parser
 		{
 			BeginField(L"label");
 			WriteToken(node->label);
+			EndField();
+			BeginField(L"stat");
+			Print(node->stat.Obj());
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppLambdaCapture* node)
+		{
+			BeginField(L"id");
+			Print(node->id.Obj());
+			EndField();
+			BeginField(L"init");
+			Print(node->init.Obj());
+			EndField();
+			BeginField(L"objKind");
+			switch (node->objKind)
+			{
+			case cpp_parser::CppLambdaCaptureObjectKinds::Default:
+				WriteString(L"Default");
+				break;
+			case cpp_parser::CppLambdaCaptureObjectKinds::Id:
+				WriteString(L"Id");
+				break;
+			case cpp_parser::CppLambdaCaptureObjectKinds::PackId:
+				WriteString(L"PackId");
+				break;
+			case cpp_parser::CppLambdaCaptureObjectKinds::PackInit:
+				WriteString(L"PackInit");
+				break;
+			case cpp_parser::CppLambdaCaptureObjectKinds::This:
+				WriteString(L"This");
+				break;
+			default:
+				WriteNull();
+			}
+			EndField();
+			BeginField(L"refKind");
+			switch (node->refKind)
+			{
+			case cpp_parser::CppLambdaCaptureRefeferenceKinds::Copy:
+				WriteString(L"Copy");
+				break;
+			case cpp_parser::CppLambdaCaptureRefeferenceKinds::Ref:
+				WriteString(L"Ref");
+				break;
+			default:
+				WriteNull();
+			}
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppLambdaExpr* node)
+		{
+			BeginField(L"captures");
+			BeginArray();
+			for (auto&& listItem : node->captures)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+			BeginField(L"functionHeader");
+			Print(node->functionHeader.Obj());
+			EndField();
+			BeginField(L"genericHeader");
+			Print(node->genericHeader.Obj());
 			EndField();
 			BeginField(L"stat");
 			Print(node->stat.Obj());
@@ -891,6 +970,24 @@ namespace cpp_parser
 			default:
 				WriteNull();
 			}
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppOrdinaryGenericParameter* node)
+		{
+			BeginField(L"genericHeader");
+			Print(node->genericHeader.Obj());
+			EndField();
+			BeginField(L"id");
+			Print(node->id.Obj());
+			EndField();
+			BeginField(L"init");
+			Print(node->init.Obj());
+			EndField();
+			BeginField(L"typenameToken");
+			WriteToken(node->typenameToken);
+			EndField();
+			BeginField(L"variadic");
+			WriteToken(node->variadic);
 			EndField();
 		}
 		void AstVisitor::PrintFields(CppParenthesisExpr* node)
@@ -1532,6 +1629,20 @@ namespace cpp_parser
 			EndObject();
 		}
 
+		void AstVisitor::Visit(CppOrdinaryGenericParameter* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"OrdinaryGenericParameter", node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
+			PrintFields(static_cast<CppOrdinaryGenericParameter*>(node));
+			EndObject();
+		}
+
 		void AstVisitor::Visit(CppSingleVarDeclaration* node)
 		{
 			if (!node)
@@ -1647,6 +1758,22 @@ namespace cpp_parser
 			PrintFields(static_cast<CppTypeOrExpr*>(node));
 			PrintFields(static_cast<CppExprOnly*>(node));
 			PrintFields(static_cast<CppStringLiteral*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppLambdaExpr* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"LambdaExpr", node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
+			PrintFields(static_cast<CppTypeOrExpr*>(node));
+			PrintFields(static_cast<CppExprOnly*>(node));
+			PrintFields(static_cast<CppLambdaExpr*>(node));
 			EndObject();
 		}
 
@@ -2384,6 +2511,19 @@ namespace cpp_parser
 			EndObject();
 		}
 
+		void AstVisitor::Print(CppGenericHeader* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"GenericHeader", node);
+			PrintFields(static_cast<CppGenericHeader*>(node));
+			EndObject();
+		}
+
 		void AstVisitor::Print(CppStringLiteralFragment* node)
 		{
 			if (!node)
@@ -2394,6 +2534,19 @@ namespace cpp_parser
 			BeginObject();
 			WriteType(L"StringLiteralFragment", node);
 			PrintFields(static_cast<CppStringLiteralFragment*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Print(CppLambdaCapture* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"LambdaCapture", node);
+			PrintFields(static_cast<CppLambdaCapture*>(node));
 			EndObject();
 		}
 

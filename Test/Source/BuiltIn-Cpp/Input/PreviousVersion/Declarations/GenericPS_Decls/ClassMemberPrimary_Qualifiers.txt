@@ -1,0 +1,39 @@
+template<typename Tx, typename Ty>
+struct X
+{
+	Tx x;
+	Ty y;
+};
+
+template<typename Tx, typename Ty>
+struct X<Tx[], Ty[]>
+{
+};
+
+template<typename Tx, typename Ty>
+struct Z
+{
+	X<volatile Tx, const Ty>* operator->()const;
+	volatile X<const Tx, volatile Ty>* operator->();
+	X<volatile Tx, const Ty> operator()(int)const;
+	X<const Tx, volatile Ty> operator()(int);
+	X<volatile Tx, const Ty> operator[](int)const;
+	X<const Tx, volatile Ty> operator[](int);
+};
+
+template<typename Tx, typename Ty>
+struct Z<Tx[], Ty[]>
+{
+};
+
+Z<int, double> z;
+const Z<int, double> cz;
+
+Z<int, double>& lz;
+const Z<int, double>& lcz;
+
+Z<int, double>&& rz;
+const Z<int, double>&& rcz;
+
+Z<int, double>* const pz;
+const Z<int, double>* const pcz;

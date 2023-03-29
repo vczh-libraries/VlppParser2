@@ -28,7 +28,7 @@ _PrimitiveType
   ::= "double":literal1                  as PrimitiveType {kind = Neutral}
   ::= "long":literal1 "double":literal2  as PrimitiveType {kind = Neutral}
   ::= _PrimitiveTypeLiteral              as PrimitiveType {kind = Neutral}
-  ::= "typename" !_QualifiedName
+  ::= "typename" !_QualifiedNameAfterTypename
   ;
 
 _PM_PrimitiveType
@@ -157,8 +157,14 @@ _DeclaratorFunctionPart
   ::= _DeclaratorFunctionParameters {_FunctionKeyword:keywords} ["->" _Type:deferredType] as DeclaratorFunctionPart
   ;
 
+_DeclaratorFunctionPartOptionalParameters
+  ::= !_DeclaratorFunctionPart
+  ::= _FunctionKeyword:keywords {_FunctionKeyword:keywords} ["->" _Type:deferredType] as DeclaratorFunctionPart
+  ::= "->" _Type:deferredType as DeclaratorFunctionPart
+  ;
+
 _DeclaratorArrayPart
-  ::= "[" _Expr:argument "]" as DeclaratorArrayPart
+  ::= "[" [_Expr:argument] "]" as DeclaratorArrayPart
   ;
 
 _DeclaratorId

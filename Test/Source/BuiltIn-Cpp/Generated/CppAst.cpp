@@ -52,6 +52,11 @@ Visitor Pattern Implementation
 		visitor->Visit(this);
 	}
 
+	void CppOrdinaryGenericParameter::Accept(CppTypeOrExprOrOthers::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
 	void CppPrimitiveExprLiteral::Accept(CppExprOnly::IVisitor* visitor)
 	{
 		visitor->Visit(this);
@@ -63,6 +68,11 @@ Visitor Pattern Implementation
 	}
 
 	void CppStringLiteral::Accept(CppExprOnly::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void CppLambdaExpr::Accept(CppExprOnly::IVisitor* visitor)
 	{
 		visitor->Visit(this);
 	}
@@ -325,6 +335,8 @@ namespace vl
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppGenericArguments, cpp_parser::CppGenericArguments)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppQualifiedNameKinds, cpp_parser::CppQualifiedNameKinds)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppQualifiedName, cpp_parser::CppQualifiedName)
+			IMPL_TYPE_INFO_RENAME(cpp_parser::CppOrdinaryGenericParameter, cpp_parser::CppOrdinaryGenericParameter)
+			IMPL_TYPE_INFO_RENAME(cpp_parser::CppGenericHeader, cpp_parser::CppGenericHeader)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppPrimitiveExprLiteralKinds, cpp_parser::CppPrimitiveExprLiteralKinds)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppPrimitiveExprLiteral, cpp_parser::CppPrimitiveExprLiteral)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppNumericExprLiteralKinds, cpp_parser::CppNumericExprLiteralKinds)
@@ -332,6 +344,10 @@ namespace vl
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppStringLiteralKinds, cpp_parser::CppStringLiteralKinds)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppStringLiteralFragment, cpp_parser::CppStringLiteralFragment)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppStringLiteral, cpp_parser::CppStringLiteral)
+			IMPL_TYPE_INFO_RENAME(cpp_parser::CppLambdaCaptureObjectKinds, cpp_parser::CppLambdaCaptureObjectKinds)
+			IMPL_TYPE_INFO_RENAME(cpp_parser::CppLambdaCaptureRefeferenceKinds, cpp_parser::CppLambdaCaptureRefeferenceKinds)
+			IMPL_TYPE_INFO_RENAME(cpp_parser::CppLambdaCapture, cpp_parser::CppLambdaCapture)
+			IMPL_TYPE_INFO_RENAME(cpp_parser::CppLambdaExpr, cpp_parser::CppLambdaExpr)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppParenthesisExpr, cpp_parser::CppParenthesisExpr)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppBraceExpr, cpp_parser::CppBraceExpr)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppCastExpr, cpp_parser::CppCastExpr)
@@ -549,6 +565,26 @@ namespace vl
 				CLASS_MEMBER_FIELD(arguments)
 			END_CLASS_MEMBER(cpp_parser::CppQualifiedName)
 
+			BEGIN_CLASS_MEMBER(cpp_parser::CppOrdinaryGenericParameter)
+				CLASS_MEMBER_BASE(cpp_parser::CppTypeOrExprOrOthers)
+
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppOrdinaryGenericParameter>(), NO_PARAMETER)
+
+				CLASS_MEMBER_FIELD(genericHeader)
+				CLASS_MEMBER_FIELD(typenameToken)
+				CLASS_MEMBER_FIELD(variadic)
+				CLASS_MEMBER_FIELD(id)
+				CLASS_MEMBER_FIELD(init)
+			END_CLASS_MEMBER(cpp_parser::CppOrdinaryGenericParameter)
+
+			BEGIN_CLASS_MEMBER(cpp_parser::CppGenericHeader)
+				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppGenericHeader>(), NO_PARAMETER)
+
+				CLASS_MEMBER_FIELD(parameters)
+			END_CLASS_MEMBER(cpp_parser::CppGenericHeader)
+
 			BEGIN_ENUM_ITEM(cpp_parser::CppPrimitiveExprLiteralKinds)
 				ENUM_ITEM_NAMESPACE(cpp_parser::CppPrimitiveExprLiteralKinds)
 				ENUM_NAMESPACE_ITEM(True)
@@ -607,6 +643,43 @@ namespace vl
 
 				CLASS_MEMBER_FIELD(fragments)
 			END_CLASS_MEMBER(cpp_parser::CppStringLiteral)
+
+			BEGIN_ENUM_ITEM(cpp_parser::CppLambdaCaptureObjectKinds)
+				ENUM_ITEM_NAMESPACE(cpp_parser::CppLambdaCaptureObjectKinds)
+				ENUM_NAMESPACE_ITEM(Default)
+				ENUM_NAMESPACE_ITEM(This)
+				ENUM_NAMESPACE_ITEM(Id)
+				ENUM_NAMESPACE_ITEM(PackId)
+				ENUM_NAMESPACE_ITEM(PackInit)
+			END_ENUM_ITEM(cpp_parser::CppLambdaCaptureObjectKinds)
+
+			BEGIN_ENUM_ITEM(cpp_parser::CppLambdaCaptureRefeferenceKinds)
+				ENUM_ITEM_NAMESPACE(cpp_parser::CppLambdaCaptureRefeferenceKinds)
+				ENUM_NAMESPACE_ITEM(Ref)
+				ENUM_NAMESPACE_ITEM(Copy)
+			END_ENUM_ITEM(cpp_parser::CppLambdaCaptureRefeferenceKinds)
+
+			BEGIN_CLASS_MEMBER(cpp_parser::CppLambdaCapture)
+				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppLambdaCapture>(), NO_PARAMETER)
+
+				CLASS_MEMBER_FIELD(objKind)
+				CLASS_MEMBER_FIELD(refKind)
+				CLASS_MEMBER_FIELD(id)
+				CLASS_MEMBER_FIELD(init)
+			END_CLASS_MEMBER(cpp_parser::CppLambdaCapture)
+
+			BEGIN_CLASS_MEMBER(cpp_parser::CppLambdaExpr)
+				CLASS_MEMBER_BASE(cpp_parser::CppExprOnly)
+
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppLambdaExpr>(), NO_PARAMETER)
+
+				CLASS_MEMBER_FIELD(captures)
+				CLASS_MEMBER_FIELD(genericHeader)
+				CLASS_MEMBER_FIELD(functionHeader)
+				CLASS_MEMBER_FIELD(stat)
+			END_CLASS_MEMBER(cpp_parser::CppLambdaExpr)
 
 			BEGIN_CLASS_MEMBER(cpp_parser::CppParenthesisExpr)
 				CLASS_MEMBER_BASE(cpp_parser::CppExprOnly)
@@ -1159,6 +1232,7 @@ namespace vl
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppTypeOrExprOrOthers::IVisitor::*)(cpp_parser::CppDeclaration* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppTypeOrExprOrOthers::IVisitor::*)(cpp_parser::CppTypeOrExpr* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppTypeOrExprOrOthers::IVisitor::*)(cpp_parser::CppGenericArgument* node))
+				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppTypeOrExprOrOthers::IVisitor::*)(cpp_parser::CppOrdinaryGenericParameter* node))
 			END_INTERFACE_MEMBER(cpp_parser::CppTypeOrExprOrOthers)
 
 			BEGIN_INTERFACE_MEMBER(cpp_parser::CppDeclaration::IVisitor)
@@ -1177,6 +1251,7 @@ namespace vl
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppExprOnly::IVisitor::*)(cpp_parser::CppPrimitiveExprLiteral* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppExprOnly::IVisitor::*)(cpp_parser::CppNumericExprLiteral* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppExprOnly::IVisitor::*)(cpp_parser::CppStringLiteral* node))
+				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppExprOnly::IVisitor::*)(cpp_parser::CppLambdaExpr* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppExprOnly::IVisitor::*)(cpp_parser::CppParenthesisExpr* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppExprOnly::IVisitor::*)(cpp_parser::CppBraceExpr* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppExprOnly::IVisitor::*)(cpp_parser::CppCastExpr* node))
@@ -1267,6 +1342,8 @@ namespace vl
 					ADD_TYPE_INFO(cpp_parser::CppGenericArguments)
 					ADD_TYPE_INFO(cpp_parser::CppQualifiedNameKinds)
 					ADD_TYPE_INFO(cpp_parser::CppQualifiedName)
+					ADD_TYPE_INFO(cpp_parser::CppOrdinaryGenericParameter)
+					ADD_TYPE_INFO(cpp_parser::CppGenericHeader)
 					ADD_TYPE_INFO(cpp_parser::CppPrimitiveExprLiteralKinds)
 					ADD_TYPE_INFO(cpp_parser::CppPrimitiveExprLiteral)
 					ADD_TYPE_INFO(cpp_parser::CppNumericExprLiteralKinds)
@@ -1274,6 +1351,10 @@ namespace vl
 					ADD_TYPE_INFO(cpp_parser::CppStringLiteralKinds)
 					ADD_TYPE_INFO(cpp_parser::CppStringLiteralFragment)
 					ADD_TYPE_INFO(cpp_parser::CppStringLiteral)
+					ADD_TYPE_INFO(cpp_parser::CppLambdaCaptureObjectKinds)
+					ADD_TYPE_INFO(cpp_parser::CppLambdaCaptureRefeferenceKinds)
+					ADD_TYPE_INFO(cpp_parser::CppLambdaCapture)
+					ADD_TYPE_INFO(cpp_parser::CppLambdaExpr)
 					ADD_TYPE_INFO(cpp_parser::CppParenthesisExpr)
 					ADD_TYPE_INFO(cpp_parser::CppBraceExpr)
 					ADD_TYPE_INFO(cpp_parser::CppCastExpr)

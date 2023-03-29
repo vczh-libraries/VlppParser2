@@ -156,10 +156,10 @@ TEST_FILE
 		{
 			if (line != L"")
 			{
-				//TEST_CASE(line)
-				//{
-				//	ParseTypeExpr<CppExprOnly>(parser, line);
-				//});
+				TEST_CASE(line)
+				{
+					ParseTypeExpr<CppLambdaExpr>(parser, line);
+				});
 			}
 		}
 	});

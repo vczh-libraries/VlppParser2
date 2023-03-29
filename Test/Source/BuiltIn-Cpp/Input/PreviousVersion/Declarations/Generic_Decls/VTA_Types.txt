@@ -1,0 +1,39 @@
+struct A{ typedef int X; };
+struct B{ typedef bool X; };
+struct C{ typedef char X; };
+struct D{ typedef double X; };
+struct X{};
+struct Y{};
+
+template<typename T>
+using PtrLRef = T*&&;
+
+template<typename R, typename... TArgs>
+using Ref = R(*)(TArgs*&&...);
+
+template<typename R, typename... TArgs>
+using Ref2 = R(*)(PtrLRef<TArgs>...);
+
+template<typename R, typename... TArgs>
+using Array = R(*)(TArgs...[10]);
+
+template<typename R, typename... TArgs>
+using Child = R(*)(const volatile typename TArgs::X...);
+
+template<typename R, typename... TArgs>
+using Member1 = R(*)(X TArgs::*...);
+
+template<typename R, typename... TArgs>
+using Member2 = R(*)(TArgs Y::*...);
+
+template<typename R, typename... TArgs>
+using Member3 = R(*)(TArgs TArgs::*...);
+
+template<typename R, typename... TArgs>
+using Func1 = R(*)(TArgs(*...)());
+
+template<typename R, typename... TArgs>
+using Func2 = R(*)(int(*...)(TArgs));
+
+template<typename R, typename... TArgs>
+using Func3 = R(*)(TArgs(*...)(TArgs));

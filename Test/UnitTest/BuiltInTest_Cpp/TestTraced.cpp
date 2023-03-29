@@ -69,4 +69,9 @@ TEST_FILE
 	{
 		runParser(L"TypeOrExpr", L"SizeofA", [&]() { return parser.Parse_TypeOrExpr(L"sizeof a()"); });
 	});
+
+	TEST_CASE(L"[]<typename T, class ...U = int>{}")
+	{
+		runParser(L"TypeOrExpr", L"LambdaGeneric", [&]() { return parser.Parse_TypeOrExpr(L"[]<typename T, class ...U = int>{}"); });
+	});
 }

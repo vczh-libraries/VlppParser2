@@ -31,6 +31,10 @@ TypeOrExprOrOthersVisitor
 		{
 		}
 
+		void TypeOrExprOrOthersVisitor::Visit(CppOrdinaryGenericParameter* node)
+		{
+		}
+
 /***********************************************************************
 DeclarationVisitor
 ***********************************************************************/
@@ -84,6 +88,10 @@ ExprOnlyVisitor
 		}
 
 		void ExprOnlyVisitor::Visit(CppStringLiteral* node)
+		{
+		}
+
+		void ExprOnlyVisitor::Visit(CppLambdaExpr* node)
 		{
 		}
 

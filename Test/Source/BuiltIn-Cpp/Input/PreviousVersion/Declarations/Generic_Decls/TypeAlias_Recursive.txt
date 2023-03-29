@@ -1,0 +1,35 @@
+template<int X>
+struct Int;
+
+template<typename T, typename U>
+struct Add;
+
+template<int X, int Y>
+struct Add<Int<X>, Int<Y>>
+{
+	using Type = Int<X + Y>;
+};
+
+template<typename T>
+struct FibImpl;
+
+template<int X>
+using Fib = typename FibImpl<Int<X>>::Type;
+
+template<>
+struct FibImpl<Int<0>>
+{
+	using Type = Int<1>;
+};
+
+template<>
+struct FibImpl<Int<1>>
+{
+	using Type = Int<1>;
+};
+
+template<int X>
+struct FibImpl<Int<X>>
+{
+	using Type = typename Add<Fib<X - 1>, Fib<X - 2>>::Type;
+};

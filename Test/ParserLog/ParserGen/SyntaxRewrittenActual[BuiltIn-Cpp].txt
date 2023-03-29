@@ -14,12 +14,18 @@ _TypeIdentifier : NameIdentifier
   ::= "union" ID:name as NameIdentifier {kind = Union}
   ;
 
+_OperatorIdentifierNewArray : OperatorIdentifier
+  ::= "[" "]" as partial OperatorIdentifier {op = NewArray}
+  ;
+
+_OperatorIdentifierDeleteArray : OperatorIdentifier
+  ::= "[" "]" as partial OperatorIdentifier {op = DeleteArray}
+  ;
+
 _OperatorIdentifier : Identifier
+  ::= "operator" "new" +[_OperatorIdentifierNewArray] as OperatorIdentifier {op ?= New}
+  ::= "operator" "delete" +[_OperatorIdentifierDeleteArray] as OperatorIdentifier {op ?= Delete}
   ::= "operator" '""' ID:name as NameIdentifier {kind = UserDefinedLiteral}
-  ::= "operator" "new" as OperatorIdentifier {op = New}
-  ::= "operator" "new" "[" "]" as OperatorIdentifier {op = NewArray}
-  ::= "operator" "delete" as OperatorIdentifier {op = Delete}
-  ::= "operator" "delete" "[" "]" as OperatorIdentifier {op = DeleteArray}
   ::= "operator" "," as OperatorIdentifier {op = Comma}
   ::= "operator" "(" ")" as OperatorIdentifier {op = Parantheses}
   ::= "operator" "[" "]" as OperatorIdentifier {op = Bracket}
@@ -85,18 +91,51 @@ _MemberQualifiedNameFragment : QualifiedName
   ::= _DtorIdentifier:id as partial QualifiedName
   ;
 
-_QualifiedName : QualifiedName
+_SingleLevelQualifiedName : QualifiedName
   ::= _QualifiedNameFragment as QualifiedName {kind = Context}
   ::= "::" _QualifiedNameFragment as QualifiedName {kind = Root}
   ::= "auto" as QualifiedName {kind = Auto}
   ::= "decltype" "(" _Expr:expr ")" as QualifiedName {kind = Decltype}
-  ::= _QualifiedName:parent "::" _QualifiedNameFragment as QualifiedName {kind = Member}
-  ::= _QualifiedName:parent "::" _MemberQualifiedNameFragment as QualifiedName {kind = Member}
+  ;
+
+_NextLevelQualifiedName : QualifiedName
+  ::= "::" _QualifiedNameFragment as partial QualifiedName {kind = Member}
+  ::= "::" _MemberQualifiedNameFragment as partial QualifiedName {kind = Member}
+  ;
+
+_QualifiedName : QualifiedName
+  ::= !_SingleLevelQualifiedName
+  ::= _QualifiedName:parent _NextLevelQualifiedName as QualifiedName
+  ;
+
+_QualifiedNameAfterTypename : QualifiedName
+  ::= _SingleLevelQualifiedName:parent _NextLevelQualifiedName as QualifiedName
+  ::= _QualifiedNameAfterTypename:parent _NextLevelQualifiedName as QualifiedName
   ;
 
 _StringLiteralFragment : StringLiteralFragment
   ::= MACRO_LPREFIX as StringLiteralFragment {kind = Macro_LPREFIX}
   ::= STRING:literal as StringLiteralFragment {kind = String}
+  ;
+
+_LambdaCaptureId : LambdaCapture
+  ::= _DeclaratorId:id as LambdaCapture {objKind = Id}
+  ::= _DeclaratorId:id _VarInit:init as LambdaCapture {objKind = Id}
+  ::= _DeclaratorId:id "..." as LambdaCapture {objKind = PackId}
+  ::= "..." _DeclaratorId:id _VarInit:init as LambdaCapture {objKind = PackInit}
+  ;
+
+_LambdaCapture : LambdaCapture
+  ::= "&" as LambdaCapture {objKind = Default, refKind = Ref}
+  ::= "=" as LambdaCapture {objKind = Default, refKind = Copy}
+  ::= "this" as LambdaCapture {objKind = This, refKind = Ref}
+  ::= "*" "this" as LambdaCapture {objKind = This, refKind = Copy}
+  ::= !_LambdaCaptureId {refKind = Copy}
+  ::= "&" !_LambdaCaptureId {refKind = Ref}
+  ;
+
+_LambdaExpr : LambdaExpr
+  ::= "[" {_LambdaCapture:captures ; ","} "]" [_GenericHeader:genericHeader] [_DeclaratorFunctionPartOptionalParameters:functionHeader] _BlockStat:stat as LambdaExpr
   ;
 
 _PrimitiveExpr : TypeOrExpr
@@ -124,6 +163,7 @@ _PrimitiveExpr : TypeOrExpr
   ::= "__alignof":keyword "(" _TypeOrExpr:argument ")" as SysFuncExpr
   ::= "__uuidof":keyword "(" _TypeOrExpr:argument ")" as SysFuncExpr
   ::= "noexcept":keyword "(" _TypeOrExpr:argument ")" as SysFuncExpr
+  ::= !_LambdaExpr
   ;
 
 _QualifiedName_PrimitiveExpr_LRI_Original : TypeOrExpr
@@ -409,7 +449,7 @@ _PrimitiveType : TypeOrExpr
   ::= "double":literal1 as PrimitiveType {kind = Neutral}
   ::= "long":literal1 "double":literal2 as PrimitiveType {kind = Neutral}
   ::= _PrimitiveTypeLiteral as PrimitiveType {kind = Neutral}
-  ::= "typename" !_QualifiedName
+  ::= "typename" !_QualifiedNameAfterTypename
   ;
 
 _PM_PrimitiveType_LRI_Original : TypeOrExpr
@@ -541,8 +581,14 @@ _DeclaratorFunctionPart : DeclaratorFunctionPart
   ::= _DeclaratorFunctionParameters {_FunctionKeyword:keywords} ["->" _Type:deferredType] as DeclaratorFunctionPart
   ;
 
+_DeclaratorFunctionPartOptionalParameters : DeclaratorFunctionPart
+  ::= !_DeclaratorFunctionPart
+  ::= _FunctionKeyword:keywords {_FunctionKeyword:keywords} ["->" _Type:deferredType] as DeclaratorFunctionPart
+  ::= "->" _Type:deferredType as DeclaratorFunctionPart
+  ;
+
 _DeclaratorArrayPart : DeclaratorArrayPart
-  ::= "[" _Expr:argument "]" as DeclaratorArrayPart
+  ::= "[" [_Expr:argument] "]" as DeclaratorArrayPart
   ;
 
 _DeclaratorId : Identifier
@@ -690,6 +736,44 @@ _ExprOrVarWithInit_LRI_Original : TypeOrExprOrOthers
   ::= !_Expr_LRI_Original
   ::= _TypeBeforeDeclarator_LRI_Original:type _DeclaratorVariablePartRequiredInit:varPart as SingleVarDeclaration
   ::= !_ExprOrVarWithInit_LRI_Isolated_2
+  ;
+
+_GenericParameterKeyword : OrdinaryGenericParameter
+  ::= "typename":typenameToken as partial OrdinaryGenericParameter
+  ::= "class":typenameToken as partial OrdinaryGenericParameter
+  ::= "template" _GenericHeader:genericHeader "class":typenameToken as partial OrdinaryGenericParameter
+  ;
+
+_OrdinaryGenericParameter : OrdinaryGenericParameter
+  ::= _GenericParameterKeyword ["...":variadic] [_DeclaratorId:id] ["=" _TypeOrExpr_NoComma_NoGT:init] as OrdinaryGenericParameter
+  ;
+
+_TypedGenericParameterInit : VarValueInit
+  ::= "=" _TypeOrExpr_NoComma_NoGT:expr as VarValueInit
+  ;
+
+_TypedGenericParameterVariablePart : DeclaratorVariablePart
+  ::= _TypedGenericParameterInit:init as DeclaratorVariablePart
+  ::= _DeclaratorOptionalName:declarator [_TypedGenericParameterInit:init] as DeclaratorVariablePart
+  ;
+
+_TypedGenericParameter_LRI_Original : TypeOrExprOrOthers
+  ::= !_TypeBeforeDeclarator_LRI_Original
+  ::= _TypeBeforeDeclarator_LRI_Original:type _TypedGenericParameterVariablePart:varPart as SingleVarDeclaration
+  ;
+
+_GenericParameter_LRI_Isolated_0 : OrdinaryGenericParameter
+  ::= !_OrdinaryGenericParameter
+  ;
+
+_GenericParameter_LRI_Original : TypeOrExprOrOthers
+  ::= left_recursion_placeholder(LRI__GenericParameter)
+  ::= !_GenericParameter_LRI_Isolated_0
+  ::= !_TypedGenericParameter_LRI_Original
+  ;
+
+_GenericHeader : GenericHeader
+  ::= "<" {_GenericParameter:parameters ; ","} ">" as GenericHeader
   ;
 
 _VarsDeclWithoutKeyword_LRI_Original : MultipleVarDeclaration
@@ -1254,6 +1338,21 @@ _ExprOrVarWithInit : TypeOrExprOrOthers
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_2 left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _ExprOrVarWithInit_LRI_Original
   ::= !_TypeStartsWithKeyword_LRI_Isolated_2 left_recursion_inject_multiple(LRI__TypeStartsWithKeyword) _ExprOrVarWithInit_LRI_Original
   ::= !_Type_LRI_Isolated_2 left_recursion_inject_multiple(LRI__Type) _ExprOrVarWithInit_LRI_Original
+  ;
+
+_TypedGenericParameter : TypeOrExprOrOthers
+  ::= !_PrimitiveType [left_recursion_inject_multiple(LRI__PM_PrimitiveType) _TypedGenericParameter_LRI_Original]
+  ::= !_QualifiedName [left_recursion_inject_multiple(LRI__PM_QualifiedName) _TypedGenericParameter_LRI_Original]
+  ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_1 [left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _TypedGenericParameter_LRI_Original]
+  ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_2 [left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _TypedGenericParameter_LRI_Original]
+  ;
+
+_GenericParameter : TypeOrExprOrOthers
+  ::= !_GenericParameter_LRI_Isolated_0
+  ::= !_PrimitiveType [left_recursion_inject_multiple(LRI__PM_PrimitiveType) _GenericParameter_LRI_Original]
+  ::= !_QualifiedName [left_recursion_inject_multiple(LRI__PM_QualifiedName) _GenericParameter_LRI_Original]
+  ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_1 [left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _GenericParameter_LRI_Original]
+  ::= !_ShortTypeStartsWithKeywordBeforeDeclarator_LRI_Isolated_2 [left_recursion_inject_multiple(LRI__ShortTypeStartsWithKeywordBeforeDeclarator) _GenericParameter_LRI_Original]
   ;
 
 _VarsDeclWithoutKeyword : MultipleVarDeclaration

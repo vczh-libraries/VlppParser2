@@ -1,0 +1,19 @@
+namespace a::b
+{
+	struct X {};
+	enum class Y {};
+}
+namespace c
+{
+	using a::b::X;
+	using a::b::Y;
+}
+namespace c
+{
+	struct Z : X
+	{
+		friend X;
+		a::b::Y y1;
+		Y y3;
+	};
+}

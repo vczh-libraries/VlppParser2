@@ -1,0 +1,8 @@
+template<typename T, template<typename U, U> class U>
+using Container = U<T, {}>;
+
+template<typename T, T Value>
+using Impl = T(*)(T, int);
+
+template<typename T, T Value>
+using Impl2 = T(*)(decltype(Value), int);

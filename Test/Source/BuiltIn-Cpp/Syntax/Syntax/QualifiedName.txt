@@ -18,12 +18,18 @@ _TypeIdentifier
   ::= "union" ID:name               as NameIdentifier {kind = Union}
   ;
 
+_OperatorIdentifierNewArray
+  ::= "[" "]" as partial OperatorIdentifier {op = NewArray}
+  ;
+
+_OperatorIdentifierDeleteArray
+  ::= "[" "]" as partial OperatorIdentifier {op = DeleteArray}
+  ;
+
 _OperatorIdentifier
+  ::= "operator" "new"    +[_OperatorIdentifierNewArray]    as OperatorIdentifier {op ?= New}
+  ::= "operator" "delete" +[_OperatorIdentifierDeleteArray] as OperatorIdentifier {op ?= Delete}
   ::= "operator" '""' ID:name       as NameIdentifier {kind = UserDefinedLiteral}
-  ::= "operator" "new"              as OperatorIdentifier {op = New}
-  ::= "operator" "new" "[" "]"      as OperatorIdentifier {op = NewArray}
-  ::= "operator" "delete"           as OperatorIdentifier {op = Delete}
-  ::= "operator" "delete" "[" "]"   as OperatorIdentifier {op = DeleteArray}
   ::= "operator" ","                as OperatorIdentifier {op = Comma}
   ::= "operator" "(" ")"            as OperatorIdentifier {op = Parantheses}
   ::= "operator" "[" "]"            as OperatorIdentifier {op = Bracket}
@@ -89,11 +95,24 @@ _MemberQualifiedNameFragment
   ::= _DtorIdentifier:id as partial QualifiedName
   ;
 
-_QualifiedName
+_SingleLevelQualifiedName
   ::= _QualifiedNameFragment as QualifiedName {kind = Context}
   ::= "::" _QualifiedNameFragment as QualifiedName {kind = Root}
   ::= "auto" as QualifiedName {kind = Auto}
   ::= "decltype" "(" _Expr:expr ")" as QualifiedName {kind = Decltype}
-  ::= _QualifiedName:parent "::" _QualifiedNameFragment as QualifiedName {kind = Member}
-  ::= _QualifiedName:parent "::" _MemberQualifiedNameFragment as QualifiedName {kind = Member}
+  ;
+
+_NextLevelQualifiedName
+  ::= "::" _QualifiedNameFragment as partial QualifiedName {kind = Member}
+  ::= "::" _MemberQualifiedNameFragment as partial QualifiedName {kind = Member}
+  ;
+
+_QualifiedName
+  ::= !_SingleLevelQualifiedName
+  ::= _QualifiedName:parent _NextLevelQualifiedName as QualifiedName
+  ;
+
+_QualifiedNameAfterTypename
+  ::= _SingleLevelQualifiedName:parent _NextLevelQualifiedName as QualifiedName
+  ::= _QualifiedNameAfterTypename:parent _NextLevelQualifiedName as QualifiedName
   ;

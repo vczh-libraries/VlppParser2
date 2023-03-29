@@ -1,0 +1,40 @@
+template<typename T>
+struct A
+{
+	template<typename U>
+	struct B
+	{
+		static void F() {}
+		static void G();
+	};
+
+	template<typename U>
+	struct B<U*>
+	{
+		static void F() {}
+		static void G();
+	};
+};
+
+template<typename T>
+struct A<T*>
+{
+	template<typename U>
+	struct B
+	{
+		static void F() {}
+		static void G();
+	};
+
+	template<typename U>
+	struct B<U*>
+	{
+		static void F() {}
+		static void G();
+	};
+};
+
+template<typename X>	template<typename Y>	void A<X>::B<Y>::G()	{}
+template<typename X>	template<typename Y>	void A<X>::B<Y*>::G()	{}
+template<typename X>	template<typename Y>	void A<X*>::B<Y>::G()	{}
+template<typename X>	template<typename Y>	void A<X*>::B<Y*>::G()	{}
