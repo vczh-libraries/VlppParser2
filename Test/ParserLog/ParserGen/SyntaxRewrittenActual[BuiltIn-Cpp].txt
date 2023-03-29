@@ -91,13 +91,26 @@ _MemberQualifiedNameFragment : QualifiedName
   ::= _DtorIdentifier:id as partial QualifiedName
   ;
 
-_QualifiedName : QualifiedName
+_SingleLevelQualifiedName : QualifiedName
   ::= _QualifiedNameFragment as QualifiedName {kind = Context}
   ::= "::" _QualifiedNameFragment as QualifiedName {kind = Root}
   ::= "auto" as QualifiedName {kind = Auto}
   ::= "decltype" "(" _Expr:expr ")" as QualifiedName {kind = Decltype}
-  ::= _QualifiedName:parent "::" _QualifiedNameFragment as QualifiedName {kind = Member}
-  ::= _QualifiedName:parent "::" _MemberQualifiedNameFragment as QualifiedName {kind = Member}
+  ;
+
+_NextLevelQualifiedName : QualifiedName
+  ::= "::" _QualifiedNameFragment as partial QualifiedName {kind = Member}
+  ::= "::" _MemberQualifiedNameFragment as partial QualifiedName {kind = Member}
+  ;
+
+_QualifiedName : QualifiedName
+  ::= !_SingleLevelQualifiedName
+  ::= _QualifiedName:parent _NextLevelQualifiedName as QualifiedName
+  ;
+
+_QualifiedNameAfterTypename : QualifiedName
+  ::= _SingleLevelQualifiedName:parent _NextLevelQualifiedName as QualifiedName
+  ::= _QualifiedNameAfterTypename:parent _NextLevelQualifiedName as QualifiedName
   ;
 
 _StringLiteralFragment : StringLiteralFragment
@@ -436,7 +449,7 @@ _PrimitiveType : TypeOrExpr
   ::= "double":literal1 as PrimitiveType {kind = Neutral}
   ::= "long":literal1 "double":literal2 as PrimitiveType {kind = Neutral}
   ::= _PrimitiveTypeLiteral as PrimitiveType {kind = Neutral}
-  ::= "typename" !_QualifiedName
+  ::= "typename" !_QualifiedNameAfterTypename
   ;
 
 _PM_PrimitiveType_LRI_Original : TypeOrExpr

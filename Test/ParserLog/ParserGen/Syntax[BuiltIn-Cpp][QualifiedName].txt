@@ -1575,8 +1575,13 @@
                 }
             },
             "type": "QualifiedName"
-        }, {
-            "$ast": "CreateClause",
+        }],
+        "name": "_SingleLevelQualifiedName",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "PartialClause",
             "assignments": [{
                 "$ast": "Assignment",
                 "field": "kind",
@@ -1586,19 +1591,10 @@
             "syntax": {
                 "$ast": "SequenceSyntax",
                 "first": {
-                    "$ast": "SequenceSyntax",
-                    "first": {
-                        "$ast": "RefSyntax",
-                        "field": "parent",
-                        "literal": "_QualifiedName",
-                        "refType": "Id"
-                    },
-                    "second": {
-                        "$ast": "RefSyntax",
-                        "field": "",
-                        "literal": "\"::\"",
-                        "refType": "Literal"
-                    }
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "\"::\"",
+                    "refType": "Literal"
                 },
                 "second": {
                     "$ast": "RefSyntax",
@@ -1609,7 +1605,7 @@
             },
             "type": "QualifiedName"
         }, {
-            "$ast": "CreateClause",
+            "$ast": "PartialClause",
             "assignments": [{
                 "$ast": "Assignment",
                 "field": "kind",
@@ -1619,19 +1615,10 @@
             "syntax": {
                 "$ast": "SequenceSyntax",
                 "first": {
-                    "$ast": "SequenceSyntax",
-                    "first": {
-                        "$ast": "RefSyntax",
-                        "field": "parent",
-                        "literal": "_QualifiedName",
-                        "refType": "Id"
-                    },
-                    "second": {
-                        "$ast": "RefSyntax",
-                        "field": "",
-                        "literal": "\"::\"",
-                        "refType": "Literal"
-                    }
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "\"::\"",
+                    "refType": "Literal"
                 },
                 "second": {
                     "$ast": "RefSyntax",
@@ -1642,7 +1629,81 @@
             },
             "type": "QualifiedName"
         }],
+        "name": "_NextLevelQualifiedName",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "_SingleLevelQualifiedName"
+            }
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "RefSyntax",
+                    "field": "parent",
+                    "literal": "_QualifiedName",
+                    "refType": "Id"
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "_NextLevelQualifiedName",
+                    "refType": "Id"
+                }
+            },
+            "type": "QualifiedName"
+        }],
         "name": "_QualifiedName",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "RefSyntax",
+                    "field": "parent",
+                    "literal": "_SingleLevelQualifiedName",
+                    "refType": "Id"
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "_NextLevelQualifiedName",
+                    "refType": "Id"
+                }
+            },
+            "type": "QualifiedName"
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "RefSyntax",
+                    "field": "parent",
+                    "literal": "_QualifiedNameAfterTypename",
+                    "refType": "Id"
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "_NextLevelQualifiedName",
+                    "refType": "Id"
+                }
+            },
+            "type": "QualifiedName"
+        }],
+        "name": "_QualifiedNameAfterTypename",
         "type": ""
     }],
     "switches": []

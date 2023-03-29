@@ -1,11 +1,11 @@
 ﻿================ EXECUTION STEPS ================
-[0]: 0@0 - 20@0
+[0]: 0@0 - 22@0
 
 ==================== TRACES =====================
 
 +----------------------------+
 | [0]: <Start>               |
-| [1219][_TypeOrExpr] BEGIN  |
+| [1230][_TypeOrExpr] BEGIN  |
 | [AST-INSTRUCTIONS]:        |
 | [SUCCESORS 1-1]: [1]       |
 +----------------------------+
@@ -19,16 +19,18 @@
 || [2][_NameIdentifier]< ID @ >                                                                                                                                                   ||
 || [AST-INSTRUCTIONS]:                                                                                                                                                            ||
 ||   - DelayFieldAssignment()                                                                                                                                                     ||
+||   - DelayFieldAssignment()                                                                                                                                                     ||
 ||   - BeginObject(QualifiedName)                                                                                                                                                 ||
 ||   - DelayFieldAssignment()                                                                                                                                                     ||
 ||   - BeginObject(NameIdentifier)                                                                                                                                                ||
 ||   + Token()                                                                                                                                                                    ||
 ||   + Field(NameIdentifier::name)                                                                                                                                                ||
 || [RETURN STACK]:                                                                                                                                                                ||
-||   [3][0]: _NameIdentifier -> [121][_Identifier]<< !_NameIdentifier @ >>                                                                                                        ||
-||   [2][0]: _Identifier -> [155][_QualifiedNameFragment]_Identifier @ [ _GenericArguments ]                                                                                      ||
-||   [1][0]: _QualifiedNameFragment -> [175][_QualifiedName]< _QualifiedNameFragment @ >                                                                                          ||
-||   [0][0]: _QualifiedName -> [1230][_TypeOrExpr]<< !_QualifiedName @ ( lri:(LRI__PM_QualifiedName,LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_LRI_Original | lri:<skip> ) >> ||
+||   [4][0]: _NameIdentifier -> [121][_Identifier]<< !_NameIdentifier @ >>                                                                                                        ||
+||   [3][0]: _Identifier -> [155][_QualifiedNameFragment]_Identifier @ [ _GenericArguments ]                                                                                      ||
+||   [2][0]: _QualifiedNameFragment -> [169][_SingleLevelQualifiedName]< _QualifiedNameFragment @ >                                                                               ||
+||   [1][0]: _SingleLevelQualifiedName -> [180][_QualifiedName]<< !_SingleLevelQualifiedName @ >>                                                                                 ||
+||   [0][0]: _QualifiedName -> [1241][_TypeOrExpr]<< !_QualifiedName @ ( lri:(LRI__PM_QualifiedName,LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_LRI_Original | lri:<skip> ) >> ||
 || [PREDECESSORS 0-0]: [0]                                                                                                                                                        ||
 || [SUCCESORS 2-2]: [2]                                                                                                                                                           ||
 ++================================================================================================================================================================================++
@@ -43,9 +45,10 @@
 |   - Field(NameIdentifier::kind)                                                                                                                                                |
 |   - EndObject()                                                                                                                                                                |
 | [RETURN STACK]:                                                                                                                                                                |
-|   [2][0]: _Identifier -> [155][_QualifiedNameFragment]_Identifier @ [ _GenericArguments ]                                                                                      |
-|   [1][0]: _QualifiedNameFragment -> [175][_QualifiedName]< _QualifiedNameFragment @ >                                                                                          |
-|   [0][0]: _QualifiedName -> [1230][_TypeOrExpr]<< !_QualifiedName @ ( lri:(LRI__PM_QualifiedName,LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_LRI_Original | lri:<skip> ) >> |
+|   [3][0]: _Identifier -> [155][_QualifiedNameFragment]_Identifier @ [ _GenericArguments ]                                                                                      |
+|   [2][0]: _QualifiedNameFragment -> [169][_SingleLevelQualifiedName]< _QualifiedNameFragment @ >                                                                               |
+|   [1][0]: _SingleLevelQualifiedName -> [180][_QualifiedName]<< !_SingleLevelQualifiedName @ >>                                                                                 |
+|   [0][0]: _QualifiedName -> [1241][_TypeOrExpr]<< !_QualifiedName @ ( lri:(LRI__PM_QualifiedName,LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_LRI_Original | lri:<skip> ) >> |
 | [PREDECESSORS 1-1]: [1]                                                                                                                                                        |
 | [SUCCESORS 3-3]: [3]                                                                                                                                                           |
 +--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -60,10 +63,11 @@
 |   - EndObject()                                                                                                                                                                |
 |   > Field(QualifiedName::id)                                                                                                                                                   |
 | [RETURN STACK]:                                                                                                                                                                |
-|   [1][0]: _QualifiedNameFragment -> [175][_QualifiedName]< _QualifiedNameFragment @ >                                                                                          |
-|   [0][0]: _QualifiedName -> [1230][_TypeOrExpr]<< !_QualifiedName @ ( lri:(LRI__PM_QualifiedName,LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_LRI_Original | lri:<skip> ) >> |
+|   [2][0]: _QualifiedNameFragment -> [169][_SingleLevelQualifiedName]< _QualifiedNameFragment @ >                                                                               |
+|   [1][0]: _SingleLevelQualifiedName -> [180][_QualifiedName]<< !_SingleLevelQualifiedName @ >>                                                                                 |
+|   [0][0]: _QualifiedName -> [1241][_TypeOrExpr]<< !_QualifiedName @ ( lri:(LRI__PM_QualifiedName,LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_LRI_Original | lri:<skip> ) >> |
 | [PREDECESSORS 2-2]: [2]                                                                                                                                                        |
-| [SUCCESORS 7-7]: [7]                                                                                                                                                           |
+| [SUCCESORS 8-8]: [8]                                                                                                                                                           |
 +--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 [0]
  |
@@ -71,16 +75,17 @@
  |
 [0]
 ++================================================================================================================================================================================++
-|| [7]: {LT} <                                                                                                                                                                    ||
+|| [8]: {LT} <                                                                                                                                                                    ||
 || [146][_GenericArguments]< "<" @ { _GenericArgument ; "," } ">" >                                                                                                               ||
 || [AST-INSTRUCTIONS]:                                                                                                                                                            ||
 ||   - BeginObject(GenericArguments)                                                                                                                                              ||
 || [RETURN STACK]:                                                                                                                                                                ||
-||   [4][3]: _GenericArguments -> [156][_QualifiedNameFragment]_Identifier [ _GenericArguments @ ]                                                                                ||
-||   [1][0]: _QualifiedNameFragment -> [175][_QualifiedName]< _QualifiedNameFragment @ >                                                                                          ||
-||   [0][0]: _QualifiedName -> [1230][_TypeOrExpr]<< !_QualifiedName @ ( lri:(LRI__PM_QualifiedName,LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_LRI_Original | lri:<skip> ) >> ||
+||   [5][3]: _GenericArguments -> [156][_QualifiedNameFragment]_Identifier [ _GenericArguments @ ]                                                                                ||
+||   [2][0]: _QualifiedNameFragment -> [169][_SingleLevelQualifiedName]< _QualifiedNameFragment @ >                                                                               ||
+||   [1][0]: _SingleLevelQualifiedName -> [180][_QualifiedName]<< !_SingleLevelQualifiedName @ >>                                                                                 ||
+||   [0][0]: _QualifiedName -> [1241][_TypeOrExpr]<< !_QualifiedName @ ( lri:(LRI__PM_QualifiedName,LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_LRI_Original | lri:<skip> ) >> ||
 || [PREDECESSORS 3-3]: [3]                                                                                                                                                        ||
-|| [SUCCESORS 9-9]: [9]                                                                                                                                                           ||
+|| [SUCCESORS 10-10]: [10]                                                                                                                                                        ||
 ++================================================================================================================================================================================++
 [0]
  |
@@ -88,55 +93,38 @@
  |
 [0]
 ++================================================================================================================================================================================++
-|| [9]: {TYPE_INT} int                                                                                                                                                            ||
-|| [487][_PrimitiveTypeLiteral]"int" @                                                                                                                                            ||
+|| [10]: {TYPE_INT} int                                                                                                                                                           ||
+|| [498][_PrimitiveTypeLiteral]"int" @                                                                                                                                            ||
 || [AST-INSTRUCTIONS]:                                                                                                                                                            ||
 ||   - DelayFieldAssignment()                                                                                                                                                     ||
 ||   - BeginObject(PrimitiveType)                                                                                                                                                 ||
 ||   + Token()                                                                                                                                                                    ||
 ||   + Field(PrimitiveType::literal1)                                                                                                                                             ||
 || [RETURN STACK]:                                                                                                                                                                ||
-||   [18][7]: _PrimitiveTypeLiteral -> [507][_PrimitiveType]< _PrimitiveTypeLiteral @ >                                                                                           ||
-||   [17][7]: _PrimitiveType -> [133][_GenericArgument]<< !_PrimitiveType @ ( lri:(LRI__PM_PrimitiveType)->_GenericArgument_LRI_Original | lri:<skip> ) >>                        ||
-||   [16][7]: _GenericArgument -> [149][_GenericArguments]< "<" { _GenericArgument @ ; "," } ">" >                                                                                ||
-||   [4][3]: _GenericArguments -> [156][_QualifiedNameFragment]_Identifier [ _GenericArguments @ ]                                                                                ||
-||   [1][0]: _QualifiedNameFragment -> [175][_QualifiedName]< _QualifiedNameFragment @ >                                                                                          ||
-||   [0][0]: _QualifiedName -> [1230][_TypeOrExpr]<< !_QualifiedName @ ( lri:(LRI__PM_QualifiedName,LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_LRI_Original | lri:<skip> ) >> ||
-|| [PREDECESSORS 7-7]: [7]                                                                                                                                                        ||
-|| [SUCCESORS 10-10]: [10]                                                                                                                                                        ||
+||   [19][8]: _PrimitiveTypeLiteral -> [518][_PrimitiveType]< _PrimitiveTypeLiteral @ >                                                                                           ||
+||   [18][8]: _PrimitiveType -> [133][_GenericArgument]<< !_PrimitiveType @ ( lri:(LRI__PM_PrimitiveType)->_GenericArgument_LRI_Original | lri:<skip> ) >>                        ||
+||   [17][8]: _GenericArgument -> [149][_GenericArguments]< "<" { _GenericArgument @ ; "," } ">" >                                                                                ||
+||   [5][3]: _GenericArguments -> [156][_QualifiedNameFragment]_Identifier [ _GenericArguments @ ]                                                                                ||
+||   [2][0]: _QualifiedNameFragment -> [169][_SingleLevelQualifiedName]< _QualifiedNameFragment @ >                                                                               ||
+||   [1][0]: _SingleLevelQualifiedName -> [180][_QualifiedName]<< !_SingleLevelQualifiedName @ >>                                                                                 ||
+||   [0][0]: _QualifiedName -> [1241][_TypeOrExpr]<< !_QualifiedName @ ( lri:(LRI__PM_QualifiedName,LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_LRI_Original | lri:<skip> ) >> ||
+|| [PREDECESSORS 8-8]: [8]                                                                                                                                                        ||
+|| [SUCCESORS 11-11]: [11]                                                                                                                                                        ||
 ++================================================================================================================================================================================++
 |
 +
 |
 +--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| [10]: <Ending>                                                                                                                                                                 |
-| [507][_PrimitiveType]< _PrimitiveTypeLiteral @ >                                                                                                                               |
-| [AST-INSTRUCTIONS]:                                                                                                                                                            |
-| [RETURN STACK]:                                                                                                                                                                |
-|   [17][7]: _PrimitiveType -> [133][_GenericArgument]<< !_PrimitiveType @ ( lri:(LRI__PM_PrimitiveType)->_GenericArgument_LRI_Original | lri:<skip> ) >>                        |
-|   [16][7]: _GenericArgument -> [149][_GenericArguments]< "<" { _GenericArgument @ ; "," } ">" >                                                                                |
-|   [4][3]: _GenericArguments -> [156][_QualifiedNameFragment]_Identifier [ _GenericArguments @ ]                                                                                |
-|   [1][0]: _QualifiedNameFragment -> [175][_QualifiedName]< _QualifiedNameFragment @ >                                                                                          |
-|   [0][0]: _QualifiedName -> [1230][_TypeOrExpr]<< !_QualifiedName @ ( lri:(LRI__PM_QualifiedName,LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_LRI_Original | lri:<skip> ) >> |
-| [PREDECESSORS 9-9]: [9]                                                                                                                                                        |
-| [SUCCESORS 11-11]: [11]                                                                                                                                                        |
-+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-|
-+
-|
-+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | [11]: <Ending>                                                                                                                                                                 |
-| [133][_GenericArgument]<< !_PrimitiveType @ ( lri:(LRI__PM_PrimitiveType)->_GenericArgument_LRI_Original | lri:<skip> ) >>                                                     |
+| [518][_PrimitiveType]< _PrimitiveTypeLiteral @ >                                                                                                                               |
 | [AST-INSTRUCTIONS]:                                                                                                                                                            |
-|   - EnumItem(0)                                                                                                                                                                |
-|   - Field(PrimitiveType::kind)                                                                                                                                                 |
-|   - EndObject()                                                                                                                                                                |
-|   > ReopenObject()                                                                                                                                                             |
 | [RETURN STACK]:                                                                                                                                                                |
-|   [16][7]: _GenericArgument -> [149][_GenericArguments]< "<" { _GenericArgument @ ; "," } ">" >                                                                                |
-|   [4][3]: _GenericArguments -> [156][_QualifiedNameFragment]_Identifier [ _GenericArguments @ ]                                                                                |
-|   [1][0]: _QualifiedNameFragment -> [175][_QualifiedName]< _QualifiedNameFragment @ >                                                                                          |
-|   [0][0]: _QualifiedName -> [1230][_TypeOrExpr]<< !_QualifiedName @ ( lri:(LRI__PM_QualifiedName,LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_LRI_Original | lri:<skip> ) >> |
+|   [18][8]: _PrimitiveType -> [133][_GenericArgument]<< !_PrimitiveType @ ( lri:(LRI__PM_PrimitiveType)->_GenericArgument_LRI_Original | lri:<skip> ) >>                        |
+|   [17][8]: _GenericArgument -> [149][_GenericArguments]< "<" { _GenericArgument @ ; "," } ">" >                                                                                |
+|   [5][3]: _GenericArguments -> [156][_QualifiedNameFragment]_Identifier [ _GenericArguments @ ]                                                                                |
+|   [2][0]: _QualifiedNameFragment -> [169][_SingleLevelQualifiedName]< _QualifiedNameFragment @ >                                                                               |
+|   [1][0]: _SingleLevelQualifiedName -> [180][_QualifiedName]<< !_SingleLevelQualifiedName @ >>                                                                                 |
+|   [0][0]: _QualifiedName -> [1241][_TypeOrExpr]<< !_QualifiedName @ ( lri:(LRI__PM_QualifiedName,LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_LRI_Original | lri:<skip> ) >> |
 | [PREDECESSORS 10-10]: [10]                                                                                                                                                     |
 | [SUCCESORS 12-12]: [12]                                                                                                                                                        |
 +--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -145,16 +133,37 @@
 |
 +--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | [12]: <Ending>                                                                                                                                                                 |
+| [133][_GenericArgument]<< !_PrimitiveType @ ( lri:(LRI__PM_PrimitiveType)->_GenericArgument_LRI_Original | lri:<skip> ) >>                                                     |
+| [AST-INSTRUCTIONS]:                                                                                                                                                            |
+|   - EnumItem(0)                                                                                                                                                                |
+|   - Field(PrimitiveType::kind)                                                                                                                                                 |
+|   - EndObject()                                                                                                                                                                |
+|   > ReopenObject()                                                                                                                                                             |
+| [RETURN STACK]:                                                                                                                                                                |
+|   [17][8]: _GenericArgument -> [149][_GenericArguments]< "<" { _GenericArgument @ ; "," } ">" >                                                                                |
+|   [5][3]: _GenericArguments -> [156][_QualifiedNameFragment]_Identifier [ _GenericArguments @ ]                                                                                |
+|   [2][0]: _QualifiedNameFragment -> [169][_SingleLevelQualifiedName]< _QualifiedNameFragment @ >                                                                               |
+|   [1][0]: _SingleLevelQualifiedName -> [180][_QualifiedName]<< !_SingleLevelQualifiedName @ >>                                                                                 |
+|   [0][0]: _QualifiedName -> [1241][_TypeOrExpr]<< !_QualifiedName @ ( lri:(LRI__PM_QualifiedName,LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_LRI_Original | lri:<skip> ) >> |
+| [PREDECESSORS 11-11]: [11]                                                                                                                                                     |
+| [SUCCESORS 13-13]: [13]                                                                                                                                                        |
++--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|
++
+|
++--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [13]: <Ending>                                                                                                                                                                 |
 | [149][_GenericArguments]< "<" { _GenericArgument @ ; "," } ">" >                                                                                                               |
 | [AST-INSTRUCTIONS]:                                                                                                                                                            |
 |   - EndObject()                                                                                                                                                                |
 |   > Field(GenericArguments::arguments)                                                                                                                                         |
 | [RETURN STACK]:                                                                                                                                                                |
-|   [4][3]: _GenericArguments -> [156][_QualifiedNameFragment]_Identifier [ _GenericArguments @ ]                                                                                |
-|   [1][0]: _QualifiedNameFragment -> [175][_QualifiedName]< _QualifiedNameFragment @ >                                                                                          |
-|   [0][0]: _QualifiedName -> [1230][_TypeOrExpr]<< !_QualifiedName @ ( lri:(LRI__PM_QualifiedName,LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_LRI_Original | lri:<skip> ) >> |
-| [PREDECESSORS 11-11]: [11]                                                                                                                                                     |
-| [SUCCESORS 16-16]: [16]                                                                                                                                                        |
+|   [5][3]: _GenericArguments -> [156][_QualifiedNameFragment]_Identifier [ _GenericArguments @ ]                                                                                |
+|   [2][0]: _QualifiedNameFragment -> [169][_SingleLevelQualifiedName]< _QualifiedNameFragment @ >                                                                               |
+|   [1][0]: _SingleLevelQualifiedName -> [180][_QualifiedName]<< !_SingleLevelQualifiedName @ >>                                                                                 |
+|   [0][0]: _QualifiedName -> [1241][_TypeOrExpr]<< !_QualifiedName @ ( lri:(LRI__PM_QualifiedName,LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_LRI_Original | lri:<skip> ) >> |
+| [PREDECESSORS 12-12]: [12]                                                                                                                                                     |
+| [SUCCESORS 17-17]: [17]                                                                                                                                                        |
 +--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 [0]
  |
@@ -162,64 +171,81 @@
  |
 [0]
 ++================================================================================================================================================================================++
-|| [16]: {GT} >                                                                                                                                                                   ||
+|| [17]: {GT} >                                                                                                                                                                   ||
 || [148][_GenericArguments]< "<" { _GenericArgument ; "," } ">" @ >                                                                                                               ||
 || [AST-INSTRUCTIONS]:                                                                                                                                                            ||
 || [RETURN STACK]:                                                                                                                                                                ||
-||   [4][3]: _GenericArguments -> [156][_QualifiedNameFragment]_Identifier [ _GenericArguments @ ]                                                                                ||
-||   [1][0]: _QualifiedNameFragment -> [175][_QualifiedName]< _QualifiedNameFragment @ >                                                                                          ||
-||   [0][0]: _QualifiedName -> [1230][_TypeOrExpr]<< !_QualifiedName @ ( lri:(LRI__PM_QualifiedName,LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_LRI_Original | lri:<skip> ) >> ||
-|| [PREDECESSORS 12-12]: [12]                                                                                                                                                     ||
-|| [SUCCESORS 17-17]: [17]                                                                                                                                                        ||
+||   [5][3]: _GenericArguments -> [156][_QualifiedNameFragment]_Identifier [ _GenericArguments @ ]                                                                                ||
+||   [2][0]: _QualifiedNameFragment -> [169][_SingleLevelQualifiedName]< _QualifiedNameFragment @ >                                                                               ||
+||   [1][0]: _SingleLevelQualifiedName -> [180][_QualifiedName]<< !_SingleLevelQualifiedName @ >>                                                                                 ||
+||   [0][0]: _QualifiedName -> [1241][_TypeOrExpr]<< !_QualifiedName @ ( lri:(LRI__PM_QualifiedName,LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_LRI_Original | lri:<skip> ) >> ||
+|| [PREDECESSORS 13-13]: [13]                                                                                                                                                     ||
+|| [SUCCESORS 18-18]: [18]                                                                                                                                                        ||
 ++================================================================================================================================================================================++
 |
 +
 |
 +--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| [17]: <Ending>                                                                                                                                                                 |
+| [18]: <Ending>                                                                                                                                                                 |
 | [156][_QualifiedNameFragment]_Identifier [ _GenericArguments @ ]                                                                                                               |
 | [AST-INSTRUCTIONS]:                                                                                                                                                            |
 |   - EndObject()                                                                                                                                                                |
 |   > Field(QualifiedName::arguments)                                                                                                                                            |
 | [RETURN STACK]:                                                                                                                                                                |
-|   [1][0]: _QualifiedNameFragment -> [175][_QualifiedName]< _QualifiedNameFragment @ >                                                                                          |
-|   [0][0]: _QualifiedName -> [1230][_TypeOrExpr]<< !_QualifiedName @ ( lri:(LRI__PM_QualifiedName,LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_LRI_Original | lri:<skip> ) >> |
-| [PREDECESSORS 16-16]: [16]                                                                                                                                                     |
-| [SUCCESORS 18-18]: [18]                                                                                                                                                        |
-+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-|
-+
-|
-+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| [18]: <Ending>                                                                                                                                                                 |
-| [175][_QualifiedName]< _QualifiedNameFragment @ >                                                                                                                              |
-| [AST-INSTRUCTIONS]:                                                                                                                                                            |
-| [RETURN STACK]:                                                                                                                                                                |
-|   [0][0]: _QualifiedName -> [1230][_TypeOrExpr]<< !_QualifiedName @ ( lri:(LRI__PM_QualifiedName,LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_LRI_Original | lri:<skip> ) >> |
+|   [2][0]: _QualifiedNameFragment -> [169][_SingleLevelQualifiedName]< _QualifiedNameFragment @ >                                                                               |
+|   [1][0]: _SingleLevelQualifiedName -> [180][_QualifiedName]<< !_SingleLevelQualifiedName @ >>                                                                                 |
+|   [0][0]: _QualifiedName -> [1241][_TypeOrExpr]<< !_QualifiedName @ ( lri:(LRI__PM_QualifiedName,LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_LRI_Original | lri:<skip> ) >> |
 | [PREDECESSORS 17-17]: [17]                                                                                                                                                     |
 | [SUCCESORS 19-19]: [19]                                                                                                                                                        |
 +--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 |
 +
 |
++--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [19]: <Ending>                                                                                                                                                                 |
+| [169][_SingleLevelQualifiedName]< _QualifiedNameFragment @ >                                                                                                                   |
+| [AST-INSTRUCTIONS]:                                                                                                                                                            |
+| [RETURN STACK]:                                                                                                                                                                |
+|   [1][0]: _SingleLevelQualifiedName -> [180][_QualifiedName]<< !_SingleLevelQualifiedName @ >>                                                                                 |
+|   [0][0]: _QualifiedName -> [1241][_TypeOrExpr]<< !_QualifiedName @ ( lri:(LRI__PM_QualifiedName,LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_LRI_Original | lri:<skip> ) >> |
+| [PREDECESSORS 18-18]: [18]                                                                                                                                                     |
+| [SUCCESORS 20-20]: [20]                                                                                                                                                        |
++--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|
++
+|
++--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [20]: <Ending>                                                                                                                                                                 |
+| [180][_QualifiedName]<< !_SingleLevelQualifiedName @ >>                                                                                                                        |
+| [AST-INSTRUCTIONS]:                                                                                                                                                            |
+|   - EnumItem(1)                                                                                                                                                                |
+|   - Field(QualifiedName::kind)                                                                                                                                                 |
+|   - EndObject()                                                                                                                                                                |
+|   > ReopenObject()                                                                                                                                                             |
+| [RETURN STACK]:                                                                                                                                                                |
+|   [0][0]: _QualifiedName -> [1241][_TypeOrExpr]<< !_QualifiedName @ ( lri:(LRI__PM_QualifiedName,LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_LRI_Original | lri:<skip> ) >> |
+| [PREDECESSORS 19-19]: [19]                                                                                                                                                     |
+| [SUCCESORS 21-21]: [21]                                                                                                                                                        |
++--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|
++
+|
 +----------------------------------------------------------------------------------------------------------------------------------------------------+
-| [19]: <Ending>                                                                                                                                     |
-| [1230][_TypeOrExpr]<< !_QualifiedName @ ( lri:(LRI__PM_QualifiedName,LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_LRI_Original | lri:<skip> ) >> |
+| [21]: <Ending>                                                                                                                                     |
+| [1241][_TypeOrExpr]<< !_QualifiedName @ ( lri:(LRI__PM_QualifiedName,LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_LRI_Original | lri:<skip> ) >> |
 | [AST-INSTRUCTIONS]:                                                                                                                                |
-|   - EnumItem(1)                                                                                                                                    |
-|   - Field(QualifiedName::kind)                                                                                                                     |
 |   - EndObject()                                                                                                                                    |
 |   > ReopenObject()                                                                                                                                 |
-| [PREDECESSORS 18-18]: [18]                                                                                                                         |
-| [SUCCESORS 20-20]: [20]                                                                                                                            |
+| [PREDECESSORS 20-20]: [20]                                                                                                                         |
+| [SUCCESORS 22-22]: [22]                                                                                                                            |
 +----------------------------------------------------------------------------------------------------------------------------------------------------+
 |
 +
 |
 +----------------------------------+
-| [20]: <Ending>                   |
-| [1220][_TypeOrExpr] END [ENDING] |
+| [22]: <Ending>                   |
+| [1231][_TypeOrExpr] END [ENDING] |
 | [AST-INSTRUCTIONS]:              |
 |   - EndObject()                  |
-| [PREDECESSORS 19-19]: [19]       |
+| [PREDECESSORS 21-21]: [21]       |
 +----------------------------------+
