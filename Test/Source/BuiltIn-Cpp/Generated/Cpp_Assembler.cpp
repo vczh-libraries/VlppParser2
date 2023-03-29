@@ -76,6 +76,8 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::Ptr(new cpp_parser::CppGenericArgument);
 		case CppClasses::GenericArguments:
 			return vl::Ptr(new cpp_parser::CppGenericArguments);
+		case CppClasses::GenericHeader:
+			return vl::Ptr(new cpp_parser::CppGenericHeader);
 		case CppClasses::GotoStat:
 			return vl::Ptr(new cpp_parser::CppGotoStat);
 		case CppClasses::IfElseStat:
@@ -86,6 +88,8 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::Ptr(new cpp_parser::CppIndexExpr);
 		case CppClasses::LabelStat:
 			return vl::Ptr(new cpp_parser::CppLabelStat);
+		case CppClasses::LambdaCapture:
+			return vl::Ptr(new cpp_parser::CppLambdaCapture);
 		case CppClasses::LambdaExpr:
 			return vl::Ptr(new cpp_parser::CppLambdaExpr);
 		case CppClasses::MultipleVarDeclaration:
@@ -264,6 +268,18 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppIndexExpr::operand, object, field, value, cppFieldName);
 		case CppFields::LabelStat_stat:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppLabelStat::stat, object, field, value, cppFieldName);
+		case CppFields::LambdaCapture_id:
+			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppLambdaCapture::id, object, field, value, cppFieldName);
+		case CppFields::LambdaCapture_init:
+			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppLambdaCapture::init, object, field, value, cppFieldName);
+		case CppFields::LambdaExpr_captures:
+			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppLambdaExpr::captures, object, field, value, cppFieldName);
+		case CppFields::LambdaExpr_functionHeader:
+			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppLambdaExpr::functionHeader, object, field, value, cppFieldName);
+		case CppFields::LambdaExpr_genericHeader:
+			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppLambdaExpr::genericHeader, object, field, value, cppFieldName);
+		case CppFields::LambdaExpr_stat:
+			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppLambdaExpr::stat, object, field, value, cppFieldName);
 		case CppFields::MultipleVarDeclaration_keywords:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppMultipleVarDeclaration::keywords, object, field, value, cppFieldName);
 		case CppFields::MultipleVarDeclaration_type:
@@ -410,6 +426,10 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::glr::AssemblerSetEnumField(&cpp_parser::CppDeleteExpr::array, object, field, enumItem, weakAssignment, cppFieldName);
 		case CppFields::DeleteExpr_scope:
 			return vl::glr::AssemblerSetEnumField(&cpp_parser::CppDeleteExpr::scope, object, field, enumItem, weakAssignment, cppFieldName);
+		case CppFields::LambdaCapture_objKind:
+			return vl::glr::AssemblerSetEnumField(&cpp_parser::CppLambdaCapture::objKind, object, field, enumItem, weakAssignment, cppFieldName);
+		case CppFields::LambdaCapture_refKind:
+			return vl::glr::AssemblerSetEnumField(&cpp_parser::CppLambdaCapture::refKind, object, field, enumItem, weakAssignment, cppFieldName);
 		case CppFields::NameIdentifier_kind:
 			return vl::glr::AssemblerSetEnumField(&cpp_parser::CppNameIdentifier::kind, object, field, enumItem, weakAssignment, cppFieldName);
 		case CppFields::NewExpr_scope:
@@ -470,12 +490,14 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"FunctionKeyword",
 			L"GenericArgument",
 			L"GenericArguments",
+			L"GenericHeader",
 			L"GotoStat",
 			L"Identifier",
 			L"IfElseStat",
 			L"IfExpr",
 			L"IndexExpr",
 			L"LabelStat",
+			L"LambdaCapture",
 			L"LambdaExpr",
 			L"MultipleVarDeclaration",
 			L"NameIdentifier",
@@ -514,7 +536,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"__TryStat",
 		};
 		vl::vint index = (vl::vint)type;
-		return 0 <= index && index < 74 ? results[index] : nullptr;
+		return 0 <= index && index < 76 ? results[index] : nullptr;
 	}
 
 	const wchar_t* CppCppTypeName(CppClasses type)
@@ -552,12 +574,14 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::CppFunctionKeyword",
 			L"cpp_parser::CppGenericArgument",
 			L"cpp_parser::CppGenericArguments",
+			L"cpp_parser::CppGenericHeader",
 			L"cpp_parser::CppGotoStat",
 			L"cpp_parser::CppIdentifier",
 			L"cpp_parser::CppIfElseStat",
 			L"cpp_parser::CppIfExpr",
 			L"cpp_parser::CppIndexExpr",
 			L"cpp_parser::CppLabelStat",
+			L"cpp_parser::CppLambdaCapture",
 			L"cpp_parser::CppLambdaExpr",
 			L"cpp_parser::CppMultipleVarDeclaration",
 			L"cpp_parser::CppNameIdentifier",
@@ -596,7 +620,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::Cpp__TryStat",
 		};
 		vl::vint index = (vl::vint)type;
-		return 0 <= index && index < 74 ? results[index] : nullptr;
+		return 0 <= index && index < 76 ? results[index] : nullptr;
 	}
 
 	const wchar_t* CppFieldName(CppFields field)
@@ -668,6 +692,14 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"IndexExpr::operand",
 			L"LabelStat::label",
 			L"LabelStat::stat",
+			L"LambdaCapture::id",
+			L"LambdaCapture::init",
+			L"LambdaCapture::objKind",
+			L"LambdaCapture::refKind",
+			L"LambdaExpr::captures",
+			L"LambdaExpr::functionHeader",
+			L"LambdaExpr::genericHeader",
+			L"LambdaExpr::stat",
 			L"MultipleVarDeclaration::keywords",
 			L"MultipleVarDeclaration::type",
 			L"MultipleVarDeclaration::varParts",
@@ -730,7 +762,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"__TryStat::tryStat",
 		};
 		vl::vint index = (vl::vint)field;
-		return 0 <= index && index < 126 ? results[index] : nullptr;
+		return 0 <= index && index < 134 ? results[index] : nullptr;
 	}
 
 	const wchar_t* CppCppFieldName(CppFields field)
@@ -802,6 +834,14 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::CppIndexExpr::operand",
 			L"cpp_parser::CppLabelStat::label",
 			L"cpp_parser::CppLabelStat::stat",
+			L"cpp_parser::CppLambdaCapture::id",
+			L"cpp_parser::CppLambdaCapture::init",
+			L"cpp_parser::CppLambdaCapture::objKind",
+			L"cpp_parser::CppLambdaCapture::refKind",
+			L"cpp_parser::CppLambdaExpr::captures",
+			L"cpp_parser::CppLambdaExpr::functionHeader",
+			L"cpp_parser::CppLambdaExpr::genericHeader",
+			L"cpp_parser::CppLambdaExpr::stat",
 			L"cpp_parser::CppMultipleVarDeclaration::keywords",
 			L"cpp_parser::CppMultipleVarDeclaration::type",
 			L"cpp_parser::CppMultipleVarDeclaration::varParts",
@@ -864,7 +904,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::Cpp__TryStat::tryStat",
 		};
 		vl::vint index = (vl::vint)field;
-		return 0 <= index && index < 126 ? results[index] : nullptr;
+		return 0 <= index && index < 134 ? results[index] : nullptr;
 	}
 
 	vl::Ptr<vl::glr::ParsingAstBase> CppAstInsReceiver::ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates)

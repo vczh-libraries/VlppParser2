@@ -229,6 +229,24 @@ namespace cpp_parser
 			MakeLabelStat& stat(const vl::Ptr<CppStatement>& value);
 		};
 
+		class MakeLambdaCapture : public vl::glr::ParsingAstBuilder<CppLambdaCapture>
+		{
+		public:
+			MakeLambdaCapture& id(const vl::Ptr<CppIdentifier>& value);
+			MakeLambdaCapture& init(const vl::Ptr<CppVarInit>& value);
+			MakeLambdaCapture& objKind(CppLambdaCaptureObjectKinds value);
+			MakeLambdaCapture& refKind(CppLambdaCaptureRefeferenceKinds value);
+		};
+
+		class MakeLambdaExpr : public vl::glr::ParsingAstBuilder<CppLambdaExpr>
+		{
+		public:
+			MakeLambdaExpr& captures(const vl::Ptr<CppLambdaCapture>& value);
+			MakeLambdaExpr& functionHeader(const vl::Ptr<CppDeclaratorFunctionPart>& value);
+			MakeLambdaExpr& genericHeader(const vl::Ptr<CppGenericHeader>& value);
+			MakeLambdaExpr& stat(const vl::Ptr<CppStatement>& value);
+		};
+
 		class MakeMultipleVarDeclaration : public vl::glr::ParsingAstBuilder<CppMultipleVarDeclaration>
 		{
 		public:

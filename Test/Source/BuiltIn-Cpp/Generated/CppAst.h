@@ -44,12 +44,14 @@ namespace cpp_parser
 	class CppFunctionKeyword;
 	class CppGenericArgument;
 	class CppGenericArguments;
+	class CppGenericHeader;
 	class CppGotoStat;
 	class CppIdentifier;
 	class CppIfElseStat;
 	class CppIfExpr;
 	class CppIndexExpr;
 	class CppLabelStat;
+	class CppLambdaCapture;
 	class CppLambdaExpr;
 	class CppMultipleVarDeclaration;
 	class CppNameIdentifier;
@@ -188,6 +190,23 @@ namespace cpp_parser
 		UNDEFINED_ENUM_ITEM_VALUE = -1,
 		String = 0,
 		Macro_LPREFIX = 1,
+	};
+
+	enum class CppLambdaCaptureObjectKinds
+	{
+		UNDEFINED_ENUM_ITEM_VALUE = -1,
+		Default = 0,
+		This = 1,
+		Id = 2,
+		PackId = 3,
+		PackInit = 4,
+	};
+
+	enum class CppLambdaCaptureRefeferenceKinds
+	{
+		UNDEFINED_ENUM_ITEM_VALUE = -1,
+		Ref = 0,
+		Copy = 1,
 	};
 
 	enum class CppOperatorScope
@@ -390,6 +409,11 @@ namespace cpp_parser
 		void Accept(CppTypeOrExpr::IVisitor* visitor) override;
 	};
 
+	class CppGenericHeader : public vl::glr::ParsingAstBase, vl::reflection::Description<CppGenericHeader>
+	{
+	public:
+	};
+
 	class CppPrimitiveExprLiteral : public CppExprOnly, vl::reflection::Description<CppPrimitiveExprLiteral>
 	{
 	public:
@@ -422,9 +446,22 @@ namespace cpp_parser
 		void Accept(CppExprOnly::IVisitor* visitor) override;
 	};
 
+	class CppLambdaCapture : public vl::glr::ParsingAstBase, vl::reflection::Description<CppLambdaCapture>
+	{
+	public:
+		CppLambdaCaptureObjectKinds objKind = CppLambdaCaptureObjectKinds::UNDEFINED_ENUM_ITEM_VALUE;
+		CppLambdaCaptureRefeferenceKinds refKind = CppLambdaCaptureRefeferenceKinds::UNDEFINED_ENUM_ITEM_VALUE;
+		vl::Ptr<CppIdentifier> id;
+		vl::Ptr<CppVarInit> init;
+	};
+
 	class CppLambdaExpr : public CppExprOnly, vl::reflection::Description<CppLambdaExpr>
 	{
 	public:
+		vl::collections::List<vl::Ptr<CppLambdaCapture>> captures;
+		vl::Ptr<CppGenericHeader> genericHeader;
+		vl::Ptr<CppDeclaratorFunctionPart> functionHeader;
+		vl::Ptr<CppStatement> stat;
 
 		void Accept(CppExprOnly::IVisitor* visitor) override;
 	};
@@ -993,6 +1030,7 @@ namespace vl
 			DECL_TYPE_INFO(cpp_parser::CppGenericArguments)
 			DECL_TYPE_INFO(cpp_parser::CppQualifiedNameKinds)
 			DECL_TYPE_INFO(cpp_parser::CppQualifiedName)
+			DECL_TYPE_INFO(cpp_parser::CppGenericHeader)
 			DECL_TYPE_INFO(cpp_parser::CppPrimitiveExprLiteralKinds)
 			DECL_TYPE_INFO(cpp_parser::CppPrimitiveExprLiteral)
 			DECL_TYPE_INFO(cpp_parser::CppNumericExprLiteralKinds)
@@ -1000,6 +1038,9 @@ namespace vl
 			DECL_TYPE_INFO(cpp_parser::CppStringLiteralKinds)
 			DECL_TYPE_INFO(cpp_parser::CppStringLiteralFragment)
 			DECL_TYPE_INFO(cpp_parser::CppStringLiteral)
+			DECL_TYPE_INFO(cpp_parser::CppLambdaCaptureObjectKinds)
+			DECL_TYPE_INFO(cpp_parser::CppLambdaCaptureRefeferenceKinds)
+			DECL_TYPE_INFO(cpp_parser::CppLambdaCapture)
 			DECL_TYPE_INFO(cpp_parser::CppLambdaExpr)
 			DECL_TYPE_INFO(cpp_parser::CppParenthesisExpr)
 			DECL_TYPE_INFO(cpp_parser::CppBraceExpr)

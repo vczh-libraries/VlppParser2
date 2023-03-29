@@ -548,6 +548,9 @@ namespace cpp_parser
 			EndArray();
 			EndField();
 		}
+		void AstVisitor::PrintFields(CppGenericHeader* node)
+		{
+		}
 		void AstVisitor::PrintFields(CppGotoStat* node)
 		{
 			BeginField(L"label");
@@ -602,8 +605,71 @@ namespace cpp_parser
 			Print(node->stat.Obj());
 			EndField();
 		}
+		void AstVisitor::PrintFields(CppLambdaCapture* node)
+		{
+			BeginField(L"id");
+			Print(node->id.Obj());
+			EndField();
+			BeginField(L"init");
+			Print(node->init.Obj());
+			EndField();
+			BeginField(L"objKind");
+			switch (node->objKind)
+			{
+			case cpp_parser::CppLambdaCaptureObjectKinds::Default:
+				WriteString(L"Default");
+				break;
+			case cpp_parser::CppLambdaCaptureObjectKinds::Id:
+				WriteString(L"Id");
+				break;
+			case cpp_parser::CppLambdaCaptureObjectKinds::PackId:
+				WriteString(L"PackId");
+				break;
+			case cpp_parser::CppLambdaCaptureObjectKinds::PackInit:
+				WriteString(L"PackInit");
+				break;
+			case cpp_parser::CppLambdaCaptureObjectKinds::This:
+				WriteString(L"This");
+				break;
+			default:
+				WriteNull();
+			}
+			EndField();
+			BeginField(L"refKind");
+			switch (node->refKind)
+			{
+			case cpp_parser::CppLambdaCaptureRefeferenceKinds::Copy:
+				WriteString(L"Copy");
+				break;
+			case cpp_parser::CppLambdaCaptureRefeferenceKinds::Ref:
+				WriteString(L"Ref");
+				break;
+			default:
+				WriteNull();
+			}
+			EndField();
+		}
 		void AstVisitor::PrintFields(CppLambdaExpr* node)
 		{
+			BeginField(L"captures");
+			BeginArray();
+			for (auto&& listItem : node->captures)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+			BeginField(L"functionHeader");
+			Print(node->functionHeader.Obj());
+			EndField();
+			BeginField(L"genericHeader");
+			Print(node->genericHeader.Obj());
+			EndField();
+			BeginField(L"stat");
+			Print(node->stat.Obj());
+			EndField();
 		}
 		void AstVisitor::PrintFields(CppMultipleVarDeclaration* node)
 		{
@@ -2403,6 +2469,19 @@ namespace cpp_parser
 			EndObject();
 		}
 
+		void AstVisitor::Print(CppGenericHeader* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"GenericHeader", node);
+			PrintFields(static_cast<CppGenericHeader*>(node));
+			EndObject();
+		}
+
 		void AstVisitor::Print(CppStringLiteralFragment* node)
 		{
 			if (!node)
@@ -2413,6 +2492,19 @@ namespace cpp_parser
 			BeginObject();
 			WriteType(L"StringLiteralFragment", node);
 			PrintFields(static_cast<CppStringLiteralFragment*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Print(CppLambdaCapture* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"LambdaCapture", node);
+			PrintFields(static_cast<CppLambdaCapture*>(node));
 			EndObject();
 		}
 

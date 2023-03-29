@@ -99,6 +99,26 @@ _StringLiteralFragment : StringLiteralFragment
   ::= STRING:literal as StringLiteralFragment {kind = String}
   ;
 
+_LambdaCaptureId : LambdaCapture
+  ::= _Identifier:id as LambdaCapture {objKind = Id}
+  ::= _Identifier:id _VarInit:init as LambdaCapture {objKind = Id}
+  ::= _Identifier:id "..." as LambdaCapture {objKind = PackId}
+  ::= "..." _Identifier:id _VarInit:init as LambdaCapture {objKind = PackInit}
+  ;
+
+_LambdaCapture : LambdaCapture
+  ::= "&" as LambdaCapture {objKind = Default, refKind = Ref}
+  ::= "=" as LambdaCapture {objKind = Default, refKind = Copy}
+  ::= "this" as LambdaCapture {objKind = This, refKind = Ref}
+  ::= "*" "this" as LambdaCapture {objKind = This, refKind = Copy}
+  ::= !_LambdaCaptureId {refKind = Copy}
+  ::= "&" !_LambdaCaptureId {refKind = Ref}
+  ;
+
+_LambdaExpr : LambdaExpr
+  ::= "[" {_LambdaCapture:captures ; ","} "]" [_DeclaratorFunctionPartOptionalParameters:functionHeader] _BlockStat:stat as LambdaExpr
+  ;
+
 _PrimitiveExpr : TypeOrExpr
   ::= "true" as PrimitiveExprLiteral {kind = True}
   ::= "false" as PrimitiveExprLiteral {kind = False}
@@ -124,6 +144,7 @@ _PrimitiveExpr : TypeOrExpr
   ::= "__alignof":keyword "(" _TypeOrExpr:argument ")" as SysFuncExpr
   ::= "__uuidof":keyword "(" _TypeOrExpr:argument ")" as SysFuncExpr
   ::= "noexcept":keyword "(" _TypeOrExpr:argument ")" as SysFuncExpr
+  ::= !_LambdaExpr
   ;
 
 _QualifiedName_PrimitiveExpr_LRI_Original : TypeOrExpr
@@ -539,6 +560,12 @@ _FunctionKeyword : FunctionKeyword
 
 _DeclaratorFunctionPart : DeclaratorFunctionPart
   ::= _DeclaratorFunctionParameters {_FunctionKeyword:keywords} ["->" _Type:deferredType] as DeclaratorFunctionPart
+  ;
+
+_DeclaratorFunctionPartOptionalParameters : DeclaratorFunctionPart
+  ::= !_DeclaratorFunctionPart
+  ::= _FunctionKeyword:keywords {_FunctionKeyword:keywords} ["->" _Type:deferredType] as DeclaratorFunctionPart
+  ::= "->" _Type:deferredType as DeclaratorFunctionPart
   ;
 
 _DeclaratorArrayPart : DeclaratorArrayPart

@@ -59,12 +59,14 @@ namespace cpp_parser
 			void CopyFields(CppFunctionKeyword* from, CppFunctionKeyword* to);
 			void CopyFields(CppGenericArgument* from, CppGenericArgument* to);
 			void CopyFields(CppGenericArguments* from, CppGenericArguments* to);
+			void CopyFields(CppGenericHeader* from, CppGenericHeader* to);
 			void CopyFields(CppGotoStat* from, CppGotoStat* to);
 			void CopyFields(CppIdentifier* from, CppIdentifier* to);
 			void CopyFields(CppIfElseStat* from, CppIfElseStat* to);
 			void CopyFields(CppIfExpr* from, CppIfExpr* to);
 			void CopyFields(CppIndexExpr* from, CppIndexExpr* to);
 			void CopyFields(CppLabelStat* from, CppLabelStat* to);
+			void CopyFields(CppLambdaCapture* from, CppLambdaCapture* to);
 			void CopyFields(CppLambdaExpr* from, CppLambdaExpr* to);
 			void CopyFields(CppMultipleVarDeclaration* from, CppMultipleVarDeclaration* to);
 			void CopyFields(CppNameIdentifier* from, CppNameIdentifier* to);
@@ -104,7 +106,9 @@ namespace cpp_parser
 
 		protected:
 			virtual void Visit(CppGenericArguments* node);
+			virtual void Visit(CppGenericHeader* node);
 			virtual void Visit(CppStringLiteralFragment* node);
+			virtual void Visit(CppLambdaCapture* node);
 			virtual void Visit(CppAdvancedType* node);
 			virtual void Visit(CppDeclaratorKeyword* node);
 			virtual void Visit(CppFunctionKeyword* node);
@@ -189,7 +193,9 @@ namespace cpp_parser
 			virtual vl::Ptr<CppStatement> CopyNode(CppStatement* node);
 			virtual vl::Ptr<CppForStatConditionPart> CopyNode(CppForStatConditionPart* node);
 			virtual vl::Ptr<CppGenericArguments> CopyNode(CppGenericArguments* node);
+			virtual vl::Ptr<CppGenericHeader> CopyNode(CppGenericHeader* node);
 			virtual vl::Ptr<CppStringLiteralFragment> CopyNode(CppStringLiteralFragment* node);
+			virtual vl::Ptr<CppLambdaCapture> CopyNode(CppLambdaCapture* node);
 			virtual vl::Ptr<CppAdvancedType> CopyNode(CppAdvancedType* node);
 			virtual vl::Ptr<CppDeclaratorKeyword> CopyNode(CppDeclaratorKeyword* node);
 			virtual vl::Ptr<CppFunctionKeyword> CopyNode(CppFunctionKeyword* node);

@@ -59,12 +59,14 @@ namespace cpp_parser
 			virtual void PrintFields(CppFunctionKeyword* node);
 			virtual void PrintFields(CppGenericArgument* node);
 			virtual void PrintFields(CppGenericArguments* node);
+			virtual void PrintFields(CppGenericHeader* node);
 			virtual void PrintFields(CppGotoStat* node);
 			virtual void PrintFields(CppIdentifier* node);
 			virtual void PrintFields(CppIfElseStat* node);
 			virtual void PrintFields(CppIfExpr* node);
 			virtual void PrintFields(CppIndexExpr* node);
 			virtual void PrintFields(CppLabelStat* node);
+			virtual void PrintFields(CppLambdaCapture* node);
 			virtual void PrintFields(CppLambdaExpr* node);
 			virtual void PrintFields(CppMultipleVarDeclaration* node);
 			virtual void PrintFields(CppNameIdentifier* node);
@@ -179,7 +181,9 @@ namespace cpp_parser
 			void Print(CppStatement* node);
 			void Print(CppForStatConditionPart* node);
 			void Print(CppGenericArguments* node);
+			void Print(CppGenericHeader* node);
 			void Print(CppStringLiteralFragment* node);
+			void Print(CppLambdaCapture* node);
 			void Print(CppAdvancedType* node);
 			void Print(CppDeclaratorKeyword* node);
 			void Print(CppFunctionKeyword* node);
