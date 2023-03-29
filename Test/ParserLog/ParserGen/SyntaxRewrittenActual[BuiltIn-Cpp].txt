@@ -14,12 +14,18 @@ _TypeIdentifier : NameIdentifier
   ::= "union" ID:name as NameIdentifier {kind = Union}
   ;
 
+_OperatorIdentifierNewArray : OperatorIdentifier
+  ::= "[" "]" as partial OperatorIdentifier {op = NewArray}
+  ;
+
+_OperatorIdentifierDeleteArray : OperatorIdentifier
+  ::= "[" "]" as partial OperatorIdentifier {op = DeleteArray}
+  ;
+
 _OperatorIdentifier : Identifier
+  ::= "operator" "new" +[_OperatorIdentifierNewArray] as OperatorIdentifier {op ?= New}
+  ::= "operator" "delete" +[_OperatorIdentifierDeleteArray] as OperatorIdentifier {op ?= Delete}
   ::= "operator" '""' ID:name as NameIdentifier {kind = UserDefinedLiteral}
-  ::= "operator" "new" as OperatorIdentifier {op = New}
-  ::= "operator" "new" "[" "]" as OperatorIdentifier {op = NewArray}
-  ::= "operator" "delete" as OperatorIdentifier {op = Delete}
-  ::= "operator" "delete" "[" "]" as OperatorIdentifier {op = DeleteArray}
   ::= "operator" "," as OperatorIdentifier {op = Comma}
   ::= "operator" "(" ")" as OperatorIdentifier {op = Parantheses}
   ::= "operator" "[" "]" as OperatorIdentifier {op = Bracket}
