@@ -63,8 +63,10 @@
 ## BuiltIn-Cpp
 
 - Progress
-  - Lambda unfinished.
   - Ambiguity unhandled.
+    - Type/Expr
+    - Expr/Decl Statement
+    - etc
   - Declaration unfinished.
 
 ## Experiments
