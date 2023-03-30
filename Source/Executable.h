@@ -118,9 +118,22 @@ Executable
 				collections::Array<WString>			ruleNames;
 				collections::Array<WString>			stateLabels;
 			};
+
 /***********************************************************************
 IExecutor
 ***********************************************************************/
+
+			class ExecutorException : public Exception
+			{
+			public:
+				vint32_t							tokenIndex = -1;
+
+				ExecutorException(const WString& message, vint32_t _tokenIndex)
+					: Exception(message)
+					, tokenIndex(_tokenIndex)
+				{
+				}
+			};
 
 			struct Trace;
 
