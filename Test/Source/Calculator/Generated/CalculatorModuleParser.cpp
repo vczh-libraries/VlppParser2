@@ -177,30 +177,35 @@ namespace calculator
 	ModuleParser::ModuleParser()
 		: vl::glr::ParserBase<CalculatorTokens, ModuleParserStates, CalculatorAstInsReceiver>(&CalculatorTokenDeleter, &CalculatorLexerData, &CalculatorModuleParserData)
 	{
-	};
+	}
+
+	vl::WString ModuleParser::GetClassName(vl::vint32_t classIndex) const
+	{
+		return vl::WString::Unmanaged(CalculatorTypeName((CalculatorClasses)classIndex));
+	}
 
 	vl::vint32_t ModuleParser::FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2) const
 	{
 		return -1;
-	};
+	}
 
 	vl::Ptr<calculator::Expr> ModuleParser::ParseExp(const vl::WString& input, vl::vint codeIndex) const
 	{
 		 return ParseWithString<calculator::Expr, ModuleParserStates::Exp>(input, this, codeIndex);
-	};
+	}
 
 	vl::Ptr<calculator::Expr> ModuleParser::ParseExp(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex) const
 	{
 		 return ParseWithTokens<calculator::Expr, ModuleParserStates::Exp>(tokens, this, codeIndex);
-	};
+	}
 
 	vl::Ptr<calculator::Module> ModuleParser::ParseModule(const vl::WString& input, vl::vint codeIndex) const
 	{
 		 return ParseWithString<calculator::Module, ModuleParserStates::Module>(input, this, codeIndex);
-	};
+	}
 
 	vl::Ptr<calculator::Module> ModuleParser::ParseModule(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex) const
 	{
 		 return ParseWithTokens<calculator::Module, ModuleParserStates::Module>(tokens, this, codeIndex);
-	};
+	}
 }

@@ -184,7 +184,12 @@ namespace prefixmerge3_lrinested
 	ModuleParser::ModuleParser()
 		: vl::glr::ParserBase<PrefixMerge3_LriNestedTokens, ModuleParserStates, PrefixMerge3_LriNestedAstInsReceiver>(&PrefixMerge3_LriNestedTokenDeleter, &PrefixMerge3_LriNestedLexerData, &PrefixMerge3_LriNestedModuleParserData)
 	{
-	};
+	}
+
+	vl::WString ModuleParser::GetClassName(vl::vint32_t classIndex) const
+	{
+		return vl::WString::Unmanaged(PrefixMerge3_LriNestedTypeName((PrefixMerge3_LriNestedClasses)classIndex));
+	}
 
 	vl::vint32_t ModuleParser::FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2) const
 	{
@@ -202,15 +207,15 @@ namespace prefixmerge3_lrinested
 			{9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 10, },
 		};
 		return vl::glr::AssemblerFindCommonBaseClass(class1, class2, results);
-	};
+	}
 
 	vl::Ptr<prefixmerge3_lrinested::TypeOrExpr> ModuleParser::ParseModule(const vl::WString& input, vl::vint codeIndex) const
 	{
 		 return ParseWithString<prefixmerge3_lrinested::TypeOrExpr, ModuleParserStates::Module>(input, this, codeIndex);
-	};
+	}
 
 	vl::Ptr<prefixmerge3_lrinested::TypeOrExpr> ModuleParser::ParseModule(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex) const
 	{
 		 return ParseWithTokens<prefixmerge3_lrinested::TypeOrExpr, ModuleParserStates::Module>(tokens, this, codeIndex);
-	};
+	}
 }

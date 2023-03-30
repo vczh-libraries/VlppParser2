@@ -130,6 +130,7 @@ IExecutor
 				class ITypeCallback : public virtual Interface
 				{
 				public:
+					virtual WString					GetClassName(vint32_t classIndex) const = 0;
 					virtual vint32_t				FindCommonBaseClass(vint32_t class1, vint32_t class2) const = 0;
 				};
 

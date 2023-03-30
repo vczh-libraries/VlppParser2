@@ -106,20 +106,25 @@ namespace ifelseswitch
 	ModuleParser::ModuleParser()
 		: vl::glr::ParserBase<IfElseSwitchTokens, ModuleParserStates, IfElseSwitchAstInsReceiver>(&IfElseSwitchTokenDeleter, &IfElseSwitchLexerData, &IfElseSwitchModuleParserData)
 	{
-	};
+	}
+
+	vl::WString ModuleParser::GetClassName(vl::vint32_t classIndex) const
+	{
+		return vl::WString::Unmanaged(IfElseSwitchTypeName((IfElseSwitchClasses)classIndex));
+	}
 
 	vl::vint32_t ModuleParser::FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2) const
 	{
 		return -1;
-	};
+	}
 
 	vl::Ptr<ifelseswitch::Module> ModuleParser::ParseModule(const vl::WString& input, vl::vint codeIndex) const
 	{
 		 return ParseWithString<ifelseswitch::Module, ModuleParserStates::Module>(input, this, codeIndex);
-	};
+	}
 
 	vl::Ptr<ifelseswitch::Module> ModuleParser::ParseModule(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex) const
 	{
 		 return ParseWithTokens<ifelseswitch::Module, ModuleParserStates::Module>(tokens, this, codeIndex);
-	};
+	}
 }

@@ -104,32 +104,37 @@ namespace vl
 			Parser::Parser()
 				: vl::glr::ParserBase<XmlTokens, ParserStates, XmlAstInsReceiver>(&XmlTokenDeleter, &XmlLexerData, &XmlParserData)
 			{
-			};
+			}
+
+			vl::WString Parser::GetClassName(vl::vint32_t classIndex) const
+			{
+				return vl::WString::Unmanaged(XmlTypeName((XmlClasses)classIndex));
+			}
 
 			vl::vint32_t Parser::FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2) const
 			{
 				return -1;
-			};
+			}
 
 			vl::Ptr<vl::glr::xml::XmlElement> Parser::ParseXElement(const vl::WString& input, vl::vint codeIndex) const
 			{
 				 return ParseWithString<vl::glr::xml::XmlElement, ParserStates::XElement>(input, this, codeIndex);
-			};
+			}
 
 			vl::Ptr<vl::glr::xml::XmlElement> Parser::ParseXElement(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex) const
 			{
 				 return ParseWithTokens<vl::glr::xml::XmlElement, ParserStates::XElement>(tokens, this, codeIndex);
-			};
+			}
 
 			vl::Ptr<vl::glr::xml::XmlDocument> Parser::ParseXDocument(const vl::WString& input, vl::vint codeIndex) const
 			{
 				 return ParseWithString<vl::glr::xml::XmlDocument, ParserStates::XDocument>(input, this, codeIndex);
-			};
+			}
 
 			vl::Ptr<vl::glr::xml::XmlDocument> Parser::ParseXDocument(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex) const
 			{
 				 return ParseWithTokens<vl::glr::xml::XmlDocument, ParserStates::XDocument>(tokens, this, codeIndex);
-			};
+			}
 		}
 	}
 }

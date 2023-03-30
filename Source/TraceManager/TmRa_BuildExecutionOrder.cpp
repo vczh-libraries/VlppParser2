@@ -570,8 +570,9 @@ BuildAmbiguousStepLink
 						}
 						else if (stepRA->et_ra.type != ins.param)
 						{
-							stepRA->et_ra.type = typeCallback->FindCommonBaseClass(stepRA->et_ra.type, ins.param);
-							CHECK_ERROR(stepRA->et_ra.type != -1, ERROR_MESSAGE_PREFIX L"Unable to resolve the type from multiple objects.");
+							vint32_t baseClass = typeCallback->FindCommonBaseClass(stepRA->et_ra.type, ins.param);
+							CHECK_ERROR(baseClass != -1, ERROR_MESSAGE_PREFIX L"Unable to resolve the type from multiple objects.");
+							stepRA->et_ra.type = baseClass;
 						}
 					}
 				}

@@ -78,7 +78,12 @@ namespace ifelseambiguity2
 	ModuleParser::ModuleParser()
 		: vl::glr::ParserBase<IfElseAmbiguity2Tokens, ModuleParserStates, IfElseAmbiguity2AstInsReceiver>(&IfElseAmbiguity2TokenDeleter, &IfElseAmbiguity2LexerData, &IfElseAmbiguity2ModuleParserData)
 	{
-	};
+	}
+
+	vl::WString ModuleParser::GetClassName(vl::vint32_t classIndex) const
+	{
+		return vl::WString::Unmanaged(IfElseAmbiguity2TypeName((IfElseAmbiguity2Classes)classIndex));
+	}
 
 	vl::vint32_t ModuleParser::FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2) const
 	{
@@ -93,15 +98,15 @@ namespace ifelseambiguity2
 			{7, 7, -1, -1, -1, 7, -1, 7, },
 		};
 		return vl::glr::AssemblerFindCommonBaseClass(class1, class2, results);
-	};
+	}
 
 	vl::Ptr<ifelseambiguity2::Module> ModuleParser::ParseModule(const vl::WString& input, vl::vint codeIndex) const
 	{
 		 return ParseWithString<ifelseambiguity2::Module, ModuleParserStates::Module>(input, this, codeIndex);
-	};
+	}
 
 	vl::Ptr<ifelseambiguity2::Module> ModuleParser::ParseModule(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex) const
 	{
 		 return ParseWithTokens<ifelseambiguity2::Module, ModuleParserStates::Module>(tokens, this, codeIndex);
-	};
+	}
 }

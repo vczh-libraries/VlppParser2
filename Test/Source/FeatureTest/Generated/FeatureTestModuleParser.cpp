@@ -289,7 +289,12 @@ namespace featuretest
 	ModuleParser::ModuleParser()
 		: vl::glr::ParserBase<FeatureTestTokens, ModuleParserStates, FeatureTestAstInsReceiver>(&FeatureTestTokenDeleter, &FeatureTestLexerData, &FeatureTestModuleParserData)
 	{
-	};
+	}
+
+	vl::WString ModuleParser::GetClassName(vl::vint32_t classIndex) const
+	{
+		return vl::WString::Unmanaged(FeatureTestTypeName((FeatureTestClasses)classIndex));
+	}
 
 	vl::vint32_t ModuleParser::FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2) const
 	{
@@ -309,15 +314,15 @@ namespace featuretest
 			{3, 3, 3, 3, 3, -1, -1, 3, 3, 3, -1, 3, 12, },
 		};
 		return vl::glr::AssemblerFindCommonBaseClass(class1, class2, results);
-	};
+	}
 
 	vl::Ptr<featuretest::Feature> ModuleParser::ParseModule(const vl::WString& input, vl::vint codeIndex) const
 	{
 		 return ParseWithString<featuretest::Feature, ModuleParserStates::Module>(input, this, codeIndex);
-	};
+	}
 
 	vl::Ptr<featuretest::Feature> ModuleParser::ParseModule(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex) const
 	{
 		 return ParseWithTokens<featuretest::Feature, ModuleParserStates::Module>(tokens, this, codeIndex);
-	};
+	}
 }

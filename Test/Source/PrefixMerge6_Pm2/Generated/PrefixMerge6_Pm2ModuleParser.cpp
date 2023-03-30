@@ -248,7 +248,12 @@ namespace prefixmerge6_pm2
 	ModuleParser::ModuleParser()
 		: vl::glr::ParserBase<PrefixMerge6_Pm2Tokens, ModuleParserStates, PrefixMerge6_Pm2AstInsReceiver>(&PrefixMerge6_Pm2TokenDeleter, &PrefixMerge6_Pm2LexerData, &PrefixMerge6_Pm2ModuleParserData)
 	{
-	};
+	}
+
+	vl::WString ModuleParser::GetClassName(vl::vint32_t classIndex) const
+	{
+		return vl::WString::Unmanaged(PrefixMerge6_Pm2TypeName((PrefixMerge6_Pm2Classes)classIndex));
+	}
 
 	vl::vint32_t ModuleParser::FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2) const
 	{
@@ -268,15 +273,15 @@ namespace prefixmerge6_pm2
 			{11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 12, },
 		};
 		return vl::glr::AssemblerFindCommonBaseClass(class1, class2, results);
-	};
+	}
 
 	vl::Ptr<prefixmerge6_pm2::TypeOrExpr> ModuleParser::ParseModule(const vl::WString& input, vl::vint codeIndex) const
 	{
 		 return ParseWithString<prefixmerge6_pm2::TypeOrExpr, ModuleParserStates::Module>(input, this, codeIndex);
-	};
+	}
 
 	vl::Ptr<prefixmerge6_pm2::TypeOrExpr> ModuleParser::ParseModule(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex) const
 	{
 		 return ParseWithTokens<prefixmerge6_pm2::TypeOrExpr, ModuleParserStates::Module>(tokens, this, codeIndex);
-	};
+	}
 }

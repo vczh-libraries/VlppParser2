@@ -88,22 +88,27 @@ namespace vl
 			Parser::Parser()
 				: vl::glr::ParserBase<JsonTokens, ParserStates, JsonAstInsReceiver>(&JsonTokenDeleter, &JsonLexerData, &JsonParserData)
 			{
-			};
+			}
+
+			vl::WString Parser::GetClassName(vl::vint32_t classIndex) const
+			{
+				return vl::WString::Unmanaged(JsonTypeName((JsonClasses)classIndex));
+			}
 
 			vl::vint32_t Parser::FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2) const
 			{
 				return -1;
-			};
+			}
 
 			vl::Ptr<vl::glr::json::JsonNode> Parser::ParseJRoot(const vl::WString& input, vl::vint codeIndex) const
 			{
 				 return ParseWithString<vl::glr::json::JsonNode, ParserStates::JRoot>(input, this, codeIndex);
-			};
+			}
 
 			vl::Ptr<vl::glr::json::JsonNode> Parser::ParseJRoot(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex) const
 			{
 				 return ParseWithTokens<vl::glr::json::JsonNode, ParserStates::JRoot>(tokens, this, codeIndex);
-			};
+			}
 		}
 	}
 }

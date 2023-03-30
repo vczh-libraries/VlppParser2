@@ -157,7 +157,12 @@ namespace prefixmerge4_lrimultiple
 	ModuleParser::ModuleParser()
 		: vl::glr::ParserBase<PrefixMerge4_LriMultipleTokens, ModuleParserStates, PrefixMerge4_LriMultipleAstInsReceiver>(&PrefixMerge4_LriMultipleTokenDeleter, &PrefixMerge4_LriMultipleLexerData, &PrefixMerge4_LriMultipleModuleParserData)
 	{
-	};
+	}
+
+	vl::WString ModuleParser::GetClassName(vl::vint32_t classIndex) const
+	{
+		return vl::WString::Unmanaged(PrefixMerge4_LriMultipleTypeName((PrefixMerge4_LriMultipleClasses)classIndex));
+	}
 
 	vl::vint32_t ModuleParser::FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2) const
 	{
@@ -175,15 +180,15 @@ namespace prefixmerge4_lrimultiple
 			{9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 10, },
 		};
 		return vl::glr::AssemblerFindCommonBaseClass(class1, class2, results);
-	};
+	}
 
 	vl::Ptr<prefixmerge4_lrimultiple::TypeOrExpr> ModuleParser::ParseModule(const vl::WString& input, vl::vint codeIndex) const
 	{
 		 return ParseWithString<prefixmerge4_lrimultiple::TypeOrExpr, ModuleParserStates::Module>(input, this, codeIndex);
-	};
+	}
 
 	vl::Ptr<prefixmerge4_lrimultiple::TypeOrExpr> ModuleParser::ParseModule(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex) const
 	{
 		 return ParseWithTokens<prefixmerge4_lrimultiple::TypeOrExpr, ModuleParserStates::Module>(tokens, this, codeIndex);
-	};
+	}
 }
