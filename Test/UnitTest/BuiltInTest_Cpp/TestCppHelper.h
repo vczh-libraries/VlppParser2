@@ -8,6 +8,7 @@ using namespace vl::filesystem;
 using namespace vl::regex;
 using namespace cpp_parser;
 
+extern cpp_parser::Parser& GetCppParser();
 extern WString GetTestParserInputPath(const WString& parserName);
 extern FilePath GetOutputDir(const WString& parserName);
 
@@ -49,3 +50,30 @@ void ParseStatement(cpp_parser::Parser& parser, const WString& code)
 	TEST_ASSERT(ast);
 	AssertPtrStruct<TArgs...>::AssertPtr(ast.Obj());
 }
+
+template<typename TTestCase>
+void TestParser(const wchar_t* caseName, const wchar_t* fileName, TTestCase&& testCase)
+{
+	TEST_CATEGORY(WString::Unmanaged(caseName))
+	{
+		List<WString> lines;
+		bool testFileExists = File(
+			FilePath(GetTestParserInputPath(L"BuiltIn-Cpp"))
+			/ L"Input"
+			/ WString::Unmanaged(fileName)
+		).ReadAllLinesByBom(lines);
+		TEST_CASE_ASSERT(testFileExists);
+		for (auto&& line : lines)
+		{
+			if (line != L"")
+			{
+				TEST_CASE(line)
+				{
+					testCase(GetCppParser(), line);
+				});
+			}
+		}
+	});
+}
+
+#define TEST_PARSER(CATEGORY, CASE) TestParser(CASE, CATEGORY L"_" CASE L".txt", [](cpp_parser::Parser& parser, const WString& line)

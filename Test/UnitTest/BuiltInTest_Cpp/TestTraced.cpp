@@ -1,7 +1,5 @@
 #include "TestCppHelper.h"
 
-extern cpp_parser::Parser& GetCppParser();
-
 TEST_FILE
 {
 	WString indexName;
