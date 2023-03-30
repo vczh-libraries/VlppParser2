@@ -470,7 +470,7 @@ BuildAmbiguousStepLink
 
 			void TraceManager::BuildAmbiguousStepLink(TraceAmbiguity* ta, bool checkCoveredMark, ExecutionStep*& first, ExecutionStep*& last)
 			{
-#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::CheckMergeTraces()#"
+#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::BuildAmbiguousStepLink()#"
 				auto taFirst = GetTrace(ta->firstTrace);
 				auto taFirstExec = GetTraceExec(taFirst->traceExecRef);
 				auto taLast = GetTrace(ta->lastTrace);
@@ -574,12 +574,13 @@ BuildAmbiguousStepLink
 							if (baseClass == -1)
 							{
 								throw ExecutorException(
-									WString::Unmanaged(L"Unable to resolve the common base class from ") +
+									WString::Unmanaged(L"Unable to resolve ambiguity from ") +
 									typeCallback->GetClassName(stepRA->et_ra.type) +
 									WString::Unmanaged(L" and ") +
 									typeCallback->GetClassName(ins.param) +
 									WString::Unmanaged(L"."),
-									ieTrace->currentTokenIndex
+									EnsureTraceWithValidStates(taFirst)->currentTokenIndex,
+									EnsureTraceWithValidStates(taLast)->currentTokenIndex
 									);
 							}
 							stepRA->et_ra.type = baseClass;
@@ -610,7 +611,7 @@ BuildExecutionOrder
 
 			void TraceManager::BuildExecutionOrder()
 			{
-#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::CheckMergeTraces()#"
+#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::BuildExecutionOrder()#"
 				// get the instruction range
 				auto startTrace = initialTrace;
 				vint32_t startIns = 0;

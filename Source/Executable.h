@@ -126,11 +126,13 @@ IExecutor
 			class ExecutorException : public Exception
 			{
 			public:
-				vint32_t							tokenIndex = -1;
+				vint32_t							tokenIndex1 = -1;
+				vint32_t							tokenIndex2 = -1;
 
-				ExecutorException(const WString& message, vint32_t _tokenIndex)
+				ExecutorException(const WString& message, vint32_t _tokenIndex1, vint32_t _tokenIndex2)
 					: Exception(message)
-					, tokenIndex(_tokenIndex)
+					, tokenIndex1(_tokenIndex1)
+					, tokenIndex2(_tokenIndex2)
 				{
 				}
 			};
