@@ -882,6 +882,16 @@ MakeSizeofExpr
 		}
 
 /***********************************************************************
+MakeStatementToResolve
+***********************************************************************/
+
+		MakeStatementToResolve& MakeStatementToResolve::candidates(const vl::Ptr<CppStatement>& value)
+		{
+			node->candidates.Add(value);
+			return *this;
+		}
+
+/***********************************************************************
 MakeStaticAssertStat
 ***********************************************************************/
 

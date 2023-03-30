@@ -1425,6 +1425,19 @@ namespace cpp_parser
 		void AstVisitor::PrintFields(CppStatement* node)
 		{
 		}
+		void AstVisitor::PrintFields(CppStatementToResolve* node)
+		{
+			BeginField(L"candidates");
+			BeginArray();
+			for (auto&& listItem : node->candidates)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+		}
 		void AstVisitor::PrintFields(CppStaticAssertStat* node)
 		{
 			BeginField(L"expr");
@@ -2187,6 +2200,20 @@ namespace cpp_parser
 			WriteType(L"VarBraceInit", node);
 			PrintFields(static_cast<CppVarInit*>(node));
 			PrintFields(static_cast<CppVarBraceInit*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppStatementToResolve* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"StatementToResolve", node);
+			PrintFields(static_cast<CppStatement*>(node));
+			PrintFields(static_cast<CppStatementToResolve*>(node));
 			EndObject();
 		}
 

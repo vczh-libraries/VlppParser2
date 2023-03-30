@@ -316,6 +316,11 @@ Visitor Pattern Implementation
 	{
 		visitor->Visit(this);
 	}
+
+	void CppStatementToResolve::Accept(CppStatement::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
 }
 namespace vl
 {
@@ -426,6 +431,7 @@ namespace vl
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppFile, cpp_parser::CppFile)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppTypeOrExprOrOthersToResolve, cpp_parser::CppTypeOrExprOrOthersToResolve)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppTypeOrExprToResolve, cpp_parser::CppTypeOrExprToResolve)
+			IMPL_TYPE_INFO_RENAME(cpp_parser::CppStatementToResolve, cpp_parser::CppStatementToResolve)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 
@@ -1256,6 +1262,14 @@ namespace vl
 				CLASS_MEMBER_FIELD(candidates)
 			END_CLASS_MEMBER(cpp_parser::CppTypeOrExprToResolve)
 
+			BEGIN_CLASS_MEMBER(cpp_parser::CppStatementToResolve)
+				CLASS_MEMBER_BASE(cpp_parser::CppStatement)
+
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppStatementToResolve>(), NO_PARAMETER)
+
+				CLASS_MEMBER_FIELD(candidates)
+			END_CLASS_MEMBER(cpp_parser::CppStatementToResolve)
+
 			BEGIN_INTERFACE_MEMBER(cpp_parser::CppTypeOrExprOrOthers::IVisitor)
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppTypeOrExprOrOthers::IVisitor::*)(cpp_parser::CppTypeOrExprOrOthersToResolve* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppTypeOrExprOrOthers::IVisitor::*)(cpp_parser::CppDeclaration* node))
@@ -1317,6 +1331,7 @@ namespace vl
 			END_INTERFACE_MEMBER(cpp_parser::CppVarInit)
 
 			BEGIN_INTERFACE_MEMBER(cpp_parser::CppStatement::IVisitor)
+				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppStatement::IVisitor::*)(cpp_parser::CppStatementToResolve* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppStatement::IVisitor::*)(cpp_parser::CppEmptyStat* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppStatement::IVisitor::*)(cpp_parser::CppBlockStat* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppStatement::IVisitor::*)(cpp_parser::CppExprStat* node))
@@ -1453,6 +1468,7 @@ namespace vl
 					ADD_TYPE_INFO(cpp_parser::CppFile)
 					ADD_TYPE_INFO(cpp_parser::CppTypeOrExprOrOthersToResolve)
 					ADD_TYPE_INFO(cpp_parser::CppTypeOrExprToResolve)
+					ADD_TYPE_INFO(cpp_parser::CppStatementToResolve)
 				}
 
 				void Unload(ITypeManager* manager)

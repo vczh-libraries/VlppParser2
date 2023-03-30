@@ -86,6 +86,7 @@ namespace cpp_parser
 			virtual void Traverse(CppSingleVarDeclaration* node);
 			virtual void Traverse(CppSizeofExpr* node);
 			virtual void Traverse(CppStatement* node);
+			virtual void Traverse(CppStatementToResolve* node);
 			virtual void Traverse(CppStaticAssertStat* node);
 			virtual void Traverse(CppStringLiteral* node);
 			virtual void Traverse(CppStringLiteralFragment* node);
@@ -168,6 +169,7 @@ namespace cpp_parser
 			virtual void Finishing(CppSingleVarDeclaration* node);
 			virtual void Finishing(CppSizeofExpr* node);
 			virtual void Finishing(CppStatement* node);
+			virtual void Finishing(CppStatementToResolve* node);
 			virtual void Finishing(CppStaticAssertStat* node);
 			virtual void Finishing(CppStringLiteral* node);
 			virtual void Finishing(CppStringLiteralFragment* node);
@@ -238,6 +240,7 @@ namespace cpp_parser
 			void Visit(CppVarParanthesisInit* node) override;
 			void Visit(CppVarBraceInit* node) override;
 
+			void Visit(CppStatementToResolve* node) override;
 			void Visit(CppEmptyStat* node) override;
 			void Visit(CppBlockStat* node) override;
 			void Visit(CppExprStat* node) override;

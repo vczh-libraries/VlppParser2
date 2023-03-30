@@ -366,6 +366,12 @@ namespace cpp_parser
 			MakeSizeofExpr& variadic(const vl::WString& value);
 		};
 
+		class MakeStatementToResolve : public vl::glr::ParsingAstBuilder<CppStatementToResolve>
+		{
+		public:
+			MakeStatementToResolve& candidates(const vl::Ptr<CppStatement>& value);
+		};
+
 		class MakeStaticAssertStat : public vl::glr::ParsingAstBuilder<CppStaticAssertStat>
 		{
 		public:

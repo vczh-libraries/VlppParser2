@@ -69,6 +69,7 @@ namespace cpp_parser
 	class CppSingleVarDeclaration;
 	class CppSizeofExpr;
 	class CppStatement;
+	class CppStatementToResolve;
 	class CppStaticAssertStat;
 	class CppStringLiteral;
 	class CppStringLiteralFragment;
@@ -781,6 +782,7 @@ namespace cpp_parser
 		class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
 		{
 		public:
+			virtual void Visit(CppStatementToResolve* node) = 0;
 			virtual void Visit(CppEmptyStat* node) = 0;
 			virtual void Visit(CppBlockStat* node) = 0;
 			virtual void Visit(CppExprStat* node) = 0;
@@ -1037,6 +1039,14 @@ namespace cpp_parser
 
 		void Accept(CppTypeOrExpr::IVisitor* visitor) override;
 	};
+
+	class CppStatementToResolve : public CppStatement, vl::reflection::Description<CppStatementToResolve>
+	{
+	public:
+		vl::collections::List<vl::Ptr<CppStatement>> candidates;
+
+		void Accept(CppStatement::IVisitor* visitor) override;
+	};
 }
 namespace vl
 {
@@ -1146,6 +1156,7 @@ namespace vl
 			DECL_TYPE_INFO(cpp_parser::CppFile)
 			DECL_TYPE_INFO(cpp_parser::CppTypeOrExprOrOthersToResolve)
 			DECL_TYPE_INFO(cpp_parser::CppTypeOrExprToResolve)
+			DECL_TYPE_INFO(cpp_parser::CppStatementToResolve)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 
@@ -1366,6 +1377,11 @@ namespace vl
 			END_INTERFACE_PROXY(cpp_parser::CppVarInit::IVisitor)
 
 			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(cpp_parser::CppStatement::IVisitor)
+				void Visit(cpp_parser::CppStatementToResolve* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
 				void Visit(cpp_parser::CppEmptyStat* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);

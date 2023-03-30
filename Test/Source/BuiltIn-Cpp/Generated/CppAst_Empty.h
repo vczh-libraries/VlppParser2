@@ -134,6 +134,7 @@ namespace cpp_parser
 
 		public:
 			// Visitor Members -----------------------------------
+			void Visit(CppStatementToResolve* node) override;
 			void Visit(CppEmptyStat* node) override;
 			void Visit(CppBlockStat* node) override;
 			void Visit(CppExprStat* node) override;

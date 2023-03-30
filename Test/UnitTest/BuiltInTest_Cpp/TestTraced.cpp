@@ -80,6 +80,11 @@ TEST_FILE
 		runParser(L"TypeOrExpr", L"CallOrCast", [&]() { return GetCppParser().Parse_TypeOrExpr(L"(T)(a)"); });
 	});
 
+	TEST_CASE(L"T*{a}")
+	{
+		runParser(L"TypeOrExpr", L"MuliplyOrInit", [&]() { return GetCppParser().Parse_TypeOrExpr(L"T*{a}"); });
+	});
+
 	GetCppParser().OnTraceProcessing.Remove(handlerOnTraceProcessing);
 	GetCppParser().OnReadyToExecute.Remove(handlerOnReadyToExecute);
 }

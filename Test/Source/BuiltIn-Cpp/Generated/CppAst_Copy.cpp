@@ -451,6 +451,15 @@ namespace cpp_parser
 		{
 		}
 
+		void AstVisitor::CopyFields(CppStatementToResolve* from, CppStatementToResolve* to)
+		{
+			CopyFields(static_cast<CppStatement*>(from), static_cast<CppStatement*>(to));
+			for (auto&& listItem : from->candidates)
+			{
+				to->candidates.Add(CopyNode(listItem.Obj()));
+			}
+		}
+
 		void AstVisitor::CopyFields(CppStaticAssertStat* from, CppStaticAssertStat* to)
 		{
 			CopyFields(static_cast<CppStatement*>(from), static_cast<CppStatement*>(to));
@@ -956,6 +965,13 @@ namespace cpp_parser
 		void AstVisitor::Visit(CppVarBraceInit* node)
 		{
 			auto newNode = vl::Ptr(new CppVarBraceInit);
+			CopyFields(node, newNode.Obj());
+			this->result = newNode;
+		}
+
+		void AstVisitor::Visit(CppStatementToResolve* node)
+		{
+			auto newNode = vl::Ptr(new CppStatementToResolve);
 			CopyFields(node, newNode.Obj());
 			this->result = newNode;
 		}
@@ -1514,6 +1530,12 @@ namespace cpp_parser
 		{
 			if (!node) return nullptr;
 			return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppSizeofExpr>();
+		}
+
+		vl::Ptr<CppStatementToResolve> AstVisitor::CopyNode(CppStatementToResolve* node)
+		{
+			if (!node) return nullptr;
+			return CopyNode(static_cast<CppStatement*>(node)).Cast<CppStatementToResolve>();
 		}
 
 		vl::Ptr<CppStaticAssertStat> AstVisitor::CopyNode(CppStaticAssertStat* node)

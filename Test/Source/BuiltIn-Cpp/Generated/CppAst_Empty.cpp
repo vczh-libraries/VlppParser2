@@ -219,6 +219,10 @@ StatementVisitor
 
 		// Visitor Members -----------------------------------
 
+		void StatementVisitor::Visit(CppStatementToResolve* node)
+		{
+		}
+
 		void StatementVisitor::Visit(CppEmptyStat* node)
 		{
 		}
