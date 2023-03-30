@@ -123,14 +123,18 @@ Executable
 IExecutor
 ***********************************************************************/
 
-			class ExecutorException : public Exception
+			class UnableToResolveAmbiguityException : public Exception
 			{
 			public:
+				vint32_t							class1 = -1;
+				vint32_t							class2 = -1;
 				vint32_t							tokenIndex1 = -1;
 				vint32_t							tokenIndex2 = -1;
 
-				ExecutorException(const WString& message, vint32_t _tokenIndex1, vint32_t _tokenIndex2)
+				UnableToResolveAmbiguityException(const WString& message, vint32_t _class1, vint32_t _class2, vint32_t _tokenIndex1, vint32_t _tokenIndex2)
 					: Exception(message)
+					, class1(_class1)
+					, class2(_class2)
 					, tokenIndex1(_tokenIndex1)
 					, tokenIndex2(_tokenIndex2)
 				{

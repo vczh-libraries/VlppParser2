@@ -573,12 +573,14 @@ BuildAmbiguousStepLink
 							vint32_t baseClass = typeCallback->FindCommonBaseClass(stepRA->et_ra.type, ins.param);
 							if (baseClass == -1)
 							{
-								throw ExecutorException(
+								throw UnableToResolveAmbiguityException(
 									WString::Unmanaged(L"Unable to resolve ambiguity from ") +
 									typeCallback->GetClassName(stepRA->et_ra.type) +
 									WString::Unmanaged(L" and ") +
 									typeCallback->GetClassName(ins.param) +
 									WString::Unmanaged(L"."),
+									stepRA->et_ra.type,
+									ins.param,
 									EnsureTraceWithValidStates(taFirst)->currentTokenIndex,
 									EnsureTraceWithValidStates(taLast)->currentTokenIndex
 									);
