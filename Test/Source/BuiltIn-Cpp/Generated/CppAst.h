@@ -80,6 +80,8 @@ namespace cpp_parser
 	class CppTypeOnly;
 	class CppTypeOrExpr;
 	class CppTypeOrExprOrOthers;
+	class CppTypeOrExprOrOthersToResolve;
+	class CppTypeOrExprToResolve;
 	class CppVarBraceInit;
 	class CppVarInit;
 	class CppVarParanthesisInit;
@@ -259,6 +261,7 @@ namespace cpp_parser
 		class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
 		{
 		public:
+			virtual void Visit(CppTypeOrExprOrOthersToResolve* node) = 0;
 			virtual void Visit(CppDeclaration* node) = 0;
 			virtual void Visit(CppTypeOrExpr* node) = 0;
 			virtual void Visit(CppGenericArgument* node) = 0;
@@ -291,6 +294,7 @@ namespace cpp_parser
 		class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
 		{
 		public:
+			virtual void Visit(CppTypeOrExprToResolve* node) = 0;
 			virtual void Visit(CppExprOnly* node) = 0;
 			virtual void Visit(CppTypeOnly* node) = 0;
 			virtual void Visit(CppQualifiedName* node) = 0;
@@ -1017,6 +1021,22 @@ namespace cpp_parser
 	{
 	public:
 	};
+
+	class CppTypeOrExprOrOthersToResolve : public CppTypeOrExprOrOthers, vl::reflection::Description<CppTypeOrExprOrOthersToResolve>
+	{
+	public:
+		vl::collections::List<vl::Ptr<CppTypeOrExprOrOthers>> candidates;
+
+		void Accept(CppTypeOrExprOrOthers::IVisitor* visitor) override;
+	};
+
+	class CppTypeOrExprToResolve : public CppTypeOrExpr, vl::reflection::Description<CppTypeOrExprToResolve>
+	{
+	public:
+		vl::collections::List<vl::Ptr<CppTypeOrExpr>> candidates;
+
+		void Accept(CppTypeOrExpr::IVisitor* visitor) override;
+	};
 }
 namespace vl
 {
@@ -1124,10 +1144,17 @@ namespace vl
 			DECL_TYPE_INFO(cpp_parser::CppTryStat)
 			DECL_TYPE_INFO(cpp_parser::Cpp__TryStat)
 			DECL_TYPE_INFO(cpp_parser::CppFile)
+			DECL_TYPE_INFO(cpp_parser::CppTypeOrExprOrOthersToResolve)
+			DECL_TYPE_INFO(cpp_parser::CppTypeOrExprToResolve)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 
 			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(cpp_parser::CppTypeOrExprOrOthers::IVisitor)
+				void Visit(cpp_parser::CppTypeOrExprOrOthersToResolve* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
 				void Visit(cpp_parser::CppDeclaration* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
@@ -1164,6 +1191,11 @@ namespace vl
 			END_INTERFACE_PROXY(cpp_parser::CppDeclaration::IVisitor)
 
 			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(cpp_parser::CppTypeOrExpr::IVisitor)
+				void Visit(cpp_parser::CppTypeOrExprToResolve* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
 				void Visit(cpp_parser::CppExprOnly* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);

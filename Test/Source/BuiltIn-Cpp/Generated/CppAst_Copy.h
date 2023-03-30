@@ -95,6 +95,8 @@ namespace cpp_parser
 			void CopyFields(CppTypeOnly* from, CppTypeOnly* to);
 			void CopyFields(CppTypeOrExpr* from, CppTypeOrExpr* to);
 			void CopyFields(CppTypeOrExprOrOthers* from, CppTypeOrExprOrOthers* to);
+			void CopyFields(CppTypeOrExprOrOthersToResolve* from, CppTypeOrExprOrOthersToResolve* to);
+			void CopyFields(CppTypeOrExprToResolve* from, CppTypeOrExprToResolve* to);
 			void CopyFields(CppVarBraceInit* from, CppVarBraceInit* to);
 			void CopyFields(CppVarInit* from, CppVarInit* to);
 			void CopyFields(CppVarParanthesisInit* from, CppVarParanthesisInit* to);
@@ -120,6 +122,7 @@ namespace cpp_parser
 			virtual void Visit(CppTryStatCatchPart* node);
 			virtual void Visit(CppFile* node);
 
+			void Visit(CppTypeOrExprOrOthersToResolve* node) override;
 			void Visit(CppDeclaration* node) override;
 			void Visit(CppTypeOrExpr* node) override;
 			void Visit(CppGenericArgument* node) override;
@@ -128,6 +131,7 @@ namespace cpp_parser
 			void Visit(CppSingleVarDeclaration* node) override;
 			void Visit(CppMultipleVarDeclaration* node) override;
 
+			void Visit(CppTypeOrExprToResolve* node) override;
 			void Visit(CppExprOnly* node) override;
 			void Visit(CppTypeOnly* node) override;
 			void Visit(CppQualifiedName* node) override;
@@ -259,6 +263,8 @@ namespace cpp_parser
 			vl::Ptr<CppTryStat> CopyNode(CppTryStat* node);
 			vl::Ptr<CppTypeOnly> CopyNode(CppTypeOnly* node);
 			vl::Ptr<CppTypeOrExpr> CopyNode(CppTypeOrExpr* node);
+			vl::Ptr<CppTypeOrExprOrOthersToResolve> CopyNode(CppTypeOrExprOrOthersToResolve* node);
+			vl::Ptr<CppTypeOrExprToResolve> CopyNode(CppTypeOrExprToResolve* node);
 			vl::Ptr<CppVarBraceInit> CopyNode(CppVarBraceInit* node);
 			vl::Ptr<CppVarParanthesisInit> CopyNode(CppVarParanthesisInit* node);
 			vl::Ptr<CppVarValueInit> CopyNode(CppVarValueInit* node);

@@ -1004,6 +1004,26 @@ MakeTryStatCatchPart
 		}
 
 /***********************************************************************
+MakeTypeOrExprOrOthersToResolve
+***********************************************************************/
+
+		MakeTypeOrExprOrOthersToResolve& MakeTypeOrExprOrOthersToResolve::candidates(const vl::Ptr<CppTypeOrExprOrOthers>& value)
+		{
+			node->candidates.Add(value);
+			return *this;
+		}
+
+/***********************************************************************
+MakeTypeOrExprToResolve
+***********************************************************************/
+
+		MakeTypeOrExprToResolve& MakeTypeOrExprToResolve::candidates(const vl::Ptr<CppTypeOrExpr>& value)
+		{
+			node->candidates.Add(value);
+			return *this;
+		}
+
+/***********************************************************************
 MakeVarBraceInit
 ***********************************************************************/
 

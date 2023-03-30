@@ -17,6 +17,10 @@ TypeOrExprOrOthersVisitor
 
 		// Visitor Members -----------------------------------
 
+		void TypeOrExprOrOthersVisitor::Visit(CppTypeOrExprOrOthersToResolve* node)
+		{
+		}
+
 		void TypeOrExprOrOthersVisitor::Visit(CppDeclaration* node)
 		{
 			Dispatch(node);
@@ -54,6 +58,10 @@ TypeOrExprVisitor
 ***********************************************************************/
 
 		// Visitor Members -----------------------------------
+
+		void TypeOrExprVisitor::Visit(CppTypeOrExprToResolve* node)
+		{
+		}
 
 		void TypeOrExprVisitor::Visit(CppExprOnly* node)
 		{

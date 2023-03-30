@@ -138,6 +138,10 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::Ptr(new cpp_parser::CppTryStat);
 		case CppClasses::TryStatCatchPart:
 			return vl::Ptr(new cpp_parser::CppTryStatCatchPart);
+		case CppClasses::TypeOrExprOrOthersToResolve:
+			return vl::Ptr(new cpp_parser::CppTypeOrExprOrOthersToResolve);
+		case CppClasses::TypeOrExprToResolve:
+			return vl::Ptr(new cpp_parser::CppTypeOrExprToResolve);
 		case CppClasses::VarBraceInit:
 			return vl::Ptr(new cpp_parser::CppVarBraceInit);
 		case CppClasses::VarParanthesisInit:
@@ -350,6 +354,10 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppTryStatCatchPart::decl, object, field, value, cppFieldName);
 		case CppFields::TryStatCatchPart_stat:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppTryStatCatchPart::stat, object, field, value, cppFieldName);
+		case CppFields::TypeOrExprOrOthersToResolve_candidates:
+			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppTypeOrExprOrOthersToResolve::candidates, object, field, value, cppFieldName);
+		case CppFields::TypeOrExprToResolve_candidates:
+			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppTypeOrExprToResolve::candidates, object, field, value, cppFieldName);
 		case CppFields::VarBraceInit_arguments:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppVarBraceInit::arguments, object, field, value, cppFieldName);
 		case CppFields::VarParanthesisInit_arguments:
@@ -540,6 +548,8 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"TypeOnly",
 			L"TypeOrExpr",
 			L"TypeOrExprOrOthers",
+			L"TypeOrExprOrOthersToResolve",
+			L"TypeOrExprToResolve",
 			L"VarBraceInit",
 			L"VarInit",
 			L"VarParanthesisInit",
@@ -551,7 +561,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"__TryStat",
 		};
 		vl::vint index = (vl::vint)type;
-		return 0 <= index && index < 77 ? results[index] : nullptr;
+		return 0 <= index && index < 79 ? results[index] : nullptr;
 	}
 
 	const wchar_t* CppCppTypeName(CppClasses type)
@@ -625,6 +635,8 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::CppTypeOnly",
 			L"cpp_parser::CppTypeOrExpr",
 			L"cpp_parser::CppTypeOrExprOrOthers",
+			L"cpp_parser::CppTypeOrExprOrOthersToResolve",
+			L"cpp_parser::CppTypeOrExprToResolve",
 			L"cpp_parser::CppVarBraceInit",
 			L"cpp_parser::CppVarInit",
 			L"cpp_parser::CppVarParanthesisInit",
@@ -636,7 +648,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::Cpp__TryStat",
 		};
 		vl::vint index = (vl::vint)type;
-		return 0 <= index && index < 77 ? results[index] : nullptr;
+		return 0 <= index && index < 79 ? results[index] : nullptr;
 	}
 
 	const wchar_t* CppFieldName(CppFields field)
@@ -770,6 +782,8 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"TryStat::tryStat",
 			L"TryStatCatchPart::decl",
 			L"TryStatCatchPart::stat",
+			L"TypeOrExprOrOthersToResolve::candidates",
+			L"TypeOrExprToResolve::candidates",
 			L"VarBraceInit::arguments",
 			L"VarParanthesisInit::arguments",
 			L"VarValueInit::expr",
@@ -784,7 +798,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"__TryStat::tryStat",
 		};
 		vl::vint index = (vl::vint)field;
-		return 0 <= index && index < 140 ? results[index] : nullptr;
+		return 0 <= index && index < 142 ? results[index] : nullptr;
 	}
 
 	const wchar_t* CppCppFieldName(CppFields field)
@@ -918,6 +932,8 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::CppTryStat::tryStat",
 			L"cpp_parser::CppTryStatCatchPart::decl",
 			L"cpp_parser::CppTryStatCatchPart::stat",
+			L"cpp_parser::CppTypeOrExprOrOthersToResolve::candidates",
+			L"cpp_parser::CppTypeOrExprToResolve::candidates",
 			L"cpp_parser::CppVarBraceInit::arguments",
 			L"cpp_parser::CppVarParanthesisInit::arguments",
 			L"cpp_parser::CppVarValueInit::expr",
@@ -932,12 +948,86 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::Cpp__TryStat::tryStat",
 		};
 		vl::vint index = (vl::vint)field;
-		return 0 <= index && index < 140 ? results[index] : nullptr;
+		return 0 <= index && index < 142 ? results[index] : nullptr;
 	}
 
 	vl::Ptr<vl::glr::ParsingAstBase> CppAstInsReceiver::ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates)
 	{
 		auto cppTypeName = CppCppTypeName((CppClasses)type);
-		return vl::glr::AssemblyThrowTypeNotAllowAmbiguity(type, cppTypeName);
+		switch((CppClasses)type)
+		{
+		case CppClasses::BinaryExpr:
+			return vl::glr::AssemblerResolveAmbiguity<cpp_parser::CppBinaryExpr, cpp_parser::CppTypeOrExprToResolve>(type, candidates, cppTypeName);
+		case CppClasses::BraceExpr:
+			return vl::glr::AssemblerResolveAmbiguity<cpp_parser::CppBraceExpr, cpp_parser::CppTypeOrExprToResolve>(type, candidates, cppTypeName);
+		case CppClasses::CallExpr:
+			return vl::glr::AssemblerResolveAmbiguity<cpp_parser::CppCallExpr, cpp_parser::CppTypeOrExprToResolve>(type, candidates, cppTypeName);
+		case CppClasses::CastExpr:
+			return vl::glr::AssemblerResolveAmbiguity<cpp_parser::CppCastExpr, cpp_parser::CppTypeOrExprToResolve>(type, candidates, cppTypeName);
+		case CppClasses::ConstType:
+			return vl::glr::AssemblerResolveAmbiguity<cpp_parser::CppConstType, cpp_parser::CppTypeOrExprToResolve>(type, candidates, cppTypeName);
+		case CppClasses::Declaration:
+			return vl::glr::AssemblerResolveAmbiguity<cpp_parser::CppDeclaration, cpp_parser::CppTypeOrExprOrOthersToResolve>(type, candidates, cppTypeName);
+		case CppClasses::DeclaratorType:
+			return vl::glr::AssemblerResolveAmbiguity<cpp_parser::CppDeclaratorType, cpp_parser::CppTypeOrExprToResolve>(type, candidates, cppTypeName);
+		case CppClasses::DeleteExpr:
+			return vl::glr::AssemblerResolveAmbiguity<cpp_parser::CppDeleteExpr, cpp_parser::CppTypeOrExprToResolve>(type, candidates, cppTypeName);
+		case CppClasses::ExprOnly:
+			return vl::glr::AssemblerResolveAmbiguity<cpp_parser::CppExprOnly, cpp_parser::CppTypeOrExprToResolve>(type, candidates, cppTypeName);
+		case CppClasses::GenericArgument:
+			return vl::glr::AssemblerResolveAmbiguity<cpp_parser::CppGenericArgument, cpp_parser::CppTypeOrExprOrOthersToResolve>(type, candidates, cppTypeName);
+		case CppClasses::IfExpr:
+			return vl::glr::AssemblerResolveAmbiguity<cpp_parser::CppIfExpr, cpp_parser::CppTypeOrExprToResolve>(type, candidates, cppTypeName);
+		case CppClasses::IndexExpr:
+			return vl::glr::AssemblerResolveAmbiguity<cpp_parser::CppIndexExpr, cpp_parser::CppTypeOrExprToResolve>(type, candidates, cppTypeName);
+		case CppClasses::LambdaExpr:
+			return vl::glr::AssemblerResolveAmbiguity<cpp_parser::CppLambdaExpr, cpp_parser::CppTypeOrExprToResolve>(type, candidates, cppTypeName);
+		case CppClasses::MultipleVarDeclaration:
+			return vl::glr::AssemblerResolveAmbiguity<cpp_parser::CppMultipleVarDeclaration, cpp_parser::CppTypeOrExprOrOthersToResolve>(type, candidates, cppTypeName);
+		case CppClasses::NewExpr:
+			return vl::glr::AssemblerResolveAmbiguity<cpp_parser::CppNewExpr, cpp_parser::CppTypeOrExprToResolve>(type, candidates, cppTypeName);
+		case CppClasses::NumericExprLiteral:
+			return vl::glr::AssemblerResolveAmbiguity<cpp_parser::CppNumericExprLiteral, cpp_parser::CppTypeOrExprToResolve>(type, candidates, cppTypeName);
+		case CppClasses::OrdinaryGenericParameter:
+			return vl::glr::AssemblerResolveAmbiguity<cpp_parser::CppOrdinaryGenericParameter, cpp_parser::CppTypeOrExprOrOthersToResolve>(type, candidates, cppTypeName);
+		case CppClasses::ParenthesisExpr:
+			return vl::glr::AssemblerResolveAmbiguity<cpp_parser::CppParenthesisExpr, cpp_parser::CppTypeOrExprToResolve>(type, candidates, cppTypeName);
+		case CppClasses::PostfixUnaryExpr:
+			return vl::glr::AssemblerResolveAmbiguity<cpp_parser::CppPostfixUnaryExpr, cpp_parser::CppTypeOrExprToResolve>(type, candidates, cppTypeName);
+		case CppClasses::PrefixUnaryExpr:
+			return vl::glr::AssemblerResolveAmbiguity<cpp_parser::CppPrefixUnaryExpr, cpp_parser::CppTypeOrExprToResolve>(type, candidates, cppTypeName);
+		case CppClasses::PrimitiveExprLiteral:
+			return vl::glr::AssemblerResolveAmbiguity<cpp_parser::CppPrimitiveExprLiteral, cpp_parser::CppTypeOrExprToResolve>(type, candidates, cppTypeName);
+		case CppClasses::PrimitiveType:
+			return vl::glr::AssemblerResolveAmbiguity<cpp_parser::CppPrimitiveType, cpp_parser::CppTypeOrExprToResolve>(type, candidates, cppTypeName);
+		case CppClasses::QualifiedName:
+			return vl::glr::AssemblerResolveAmbiguity<cpp_parser::CppQualifiedName, cpp_parser::CppTypeOrExprToResolve>(type, candidates, cppTypeName);
+		case CppClasses::SingleVarDeclaration:
+			return vl::glr::AssemblerResolveAmbiguity<cpp_parser::CppSingleVarDeclaration, cpp_parser::CppTypeOrExprOrOthersToResolve>(type, candidates, cppTypeName);
+		case CppClasses::SizeofExpr:
+			return vl::glr::AssemblerResolveAmbiguity<cpp_parser::CppSizeofExpr, cpp_parser::CppTypeOrExprToResolve>(type, candidates, cppTypeName);
+		case CppClasses::StringLiteral:
+			return vl::glr::AssemblerResolveAmbiguity<cpp_parser::CppStringLiteral, cpp_parser::CppTypeOrExprToResolve>(type, candidates, cppTypeName);
+		case CppClasses::SysFuncExpr:
+			return vl::glr::AssemblerResolveAmbiguity<cpp_parser::CppSysFuncExpr, cpp_parser::CppTypeOrExprToResolve>(type, candidates, cppTypeName);
+		case CppClasses::ThrowExpr:
+			return vl::glr::AssemblerResolveAmbiguity<cpp_parser::CppThrowExpr, cpp_parser::CppTypeOrExprToResolve>(type, candidates, cppTypeName);
+		case CppClasses::TypeOnly:
+			return vl::glr::AssemblerResolveAmbiguity<cpp_parser::CppTypeOnly, cpp_parser::CppTypeOrExprToResolve>(type, candidates, cppTypeName);
+		case CppClasses::TypeOrExpr:
+			return vl::glr::AssemblerResolveAmbiguity<cpp_parser::CppTypeOrExpr, cpp_parser::CppTypeOrExprToResolve>(type, candidates, cppTypeName);
+		case CppClasses::TypeOrExprOrOthers:
+			return vl::glr::AssemblerResolveAmbiguity<cpp_parser::CppTypeOrExprOrOthers, cpp_parser::CppTypeOrExprOrOthersToResolve>(type, candidates, cppTypeName);
+		case CppClasses::TypeOrExprOrOthersToResolve:
+			return vl::glr::AssemblerResolveAmbiguity<cpp_parser::CppTypeOrExprOrOthersToResolve, cpp_parser::CppTypeOrExprOrOthersToResolve>(type, candidates, cppTypeName);
+		case CppClasses::TypeOrExprToResolve:
+			return vl::glr::AssemblerResolveAmbiguity<cpp_parser::CppTypeOrExprToResolve, cpp_parser::CppTypeOrExprToResolve>(type, candidates, cppTypeName);
+		case CppClasses::VariadicExpr:
+			return vl::glr::AssemblerResolveAmbiguity<cpp_parser::CppVariadicExpr, cpp_parser::CppTypeOrExprToResolve>(type, candidates, cppTypeName);
+		case CppClasses::VolatileType:
+			return vl::glr::AssemblerResolveAmbiguity<cpp_parser::CppVolatileType, cpp_parser::CppTypeOrExprToResolve>(type, candidates, cppTypeName);
+		default:
+			return vl::glr::AssemblyThrowTypeNotAllowAmbiguity(type, cppTypeName);
+		}
 	}
 }

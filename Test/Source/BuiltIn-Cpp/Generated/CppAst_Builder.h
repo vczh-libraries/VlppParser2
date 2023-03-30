@@ -421,6 +421,18 @@ namespace cpp_parser
 			MakeTryStatCatchPart& stat(const vl::Ptr<CppStatement>& value);
 		};
 
+		class MakeTypeOrExprOrOthersToResolve : public vl::glr::ParsingAstBuilder<CppTypeOrExprOrOthersToResolve>
+		{
+		public:
+			MakeTypeOrExprOrOthersToResolve& candidates(const vl::Ptr<CppTypeOrExprOrOthers>& value);
+		};
+
+		class MakeTypeOrExprToResolve : public vl::glr::ParsingAstBuilder<CppTypeOrExprToResolve>
+		{
+		public:
+			MakeTypeOrExprToResolve& candidates(const vl::Ptr<CppTypeOrExpr>& value);
+		};
+
 		class MakeVarBraceInit : public vl::glr::ParsingAstBuilder<CppVarBraceInit>
 		{
 		public:

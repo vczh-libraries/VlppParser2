@@ -23,6 +23,7 @@ namespace cpp_parser
 
 		public:
 			// Visitor Members -----------------------------------
+			void Visit(CppTypeOrExprOrOthersToResolve* node) override;
 			void Visit(CppDeclaration* node) override;
 			void Visit(CppTypeOrExpr* node) override;
 			void Visit(CppGenericArgument* node) override;
@@ -51,6 +52,7 @@ namespace cpp_parser
 
 		public:
 			// Visitor Members -----------------------------------
+			void Visit(CppTypeOrExprToResolve* node) override;
 			void Visit(CppExprOnly* node) override;
 			void Visit(CppTypeOnly* node) override;
 			void Visit(CppQualifiedName* node) override;
