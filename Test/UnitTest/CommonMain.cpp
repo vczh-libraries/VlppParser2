@@ -106,6 +106,21 @@ TEST_FILE
 	TEST_CASE_ASSERT(Folder(GetTestOutputPath()).Exists());
 }
 
+using TExecutor = void(*)(void);
+
+TExecutor runBeforeTests = nullptr;
+TExecutor runAfterTests = nullptr;
+
+void SetRunBeforeTests(TExecutor value)
+{
+	runBeforeTests = value;
+}
+
+void SetRunAfterTests(TExecutor value)
+{
+	runAfterTests = value;
+}
+
 #if defined VCZH_MSVC
 int wmain(int argc, wchar_t* argv[])
 #elif defined VCZH_GCC
@@ -119,7 +134,9 @@ int main(int argc, char* argv[])
 			folder.Create(false);
 		}
 	}
+	if (runBeforeTests) runBeforeTests();
 	int result = unittest::UnitTest::RunAndDisposeTests(argc, argv);
+	if (runAfterTests) runAfterTests();
 	FinalizeGlobalStorage();
 #ifdef VCZH_CHECK_MEMORY_LEAKS
 	_CrtDumpMemoryLeaks();

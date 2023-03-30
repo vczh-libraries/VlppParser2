@@ -1,13 +1,14 @@
 #include "TestCppHelper.h"
 
+extern cpp_parser::Parser& GetCppParser();
+
 TEST_FILE
 {
-	cpp_parser::Parser parser;
 	WString indexName;
 	WString caseName;
 	FilePath dirOutput = GetOutputDir(L"BuiltIn-Cpp");
 
-	parser.OnTraceProcessing.Add(
+	auto handlerOnTraceProcessing = GetCppParser().OnTraceProcessing.Add(
 		[&](TraceProcessingArgs& args)
 		{
 			auto& traceManager = *dynamic_cast<TraceManager*>(args.executor);
@@ -25,7 +26,8 @@ TEST_FILE
 				[=](vint32_t state) { return WString::Unmanaged(ParserStateLabel(state)); }
 			);
 		});
-	parser.OnReadyToExecute.Add(
+
+	auto handlerOnReadyToExecute = GetCppParser().OnReadyToExecute.Add(
 		[&](ReadyToExecuteArgs& args)
 		{
 			auto& traceManager = *dynamic_cast<TraceManager*>(args.executor);
@@ -52,26 +54,29 @@ TEST_FILE
 
 	TEST_CASE(L"int*")
 	{
-		runParser(L"TypeOrExpr", L"PointerOfInt", [&]() { return parser.Parse_TypeOrExpr(L"int*"); });
+		runParser(L"TypeOrExpr", L"PointerOfInt", [&]() { return GetCppParser().Parse_TypeOrExpr(L"int*"); });
 	});
 
 	TEST_CASE(L"Name<int>")
 	{
-		runParser(L"TypeOrExpr", L"NameOfInt", [&]() { return parser.Parse_TypeOrExpr(L"Name<int>"); });
+		runParser(L"TypeOrExpr", L"NameOfInt", [&]() { return GetCppParser().Parse_TypeOrExpr(L"Name<int>"); });
 	});
 
 	TEST_CASE(L"Name<A...>")
 	{
-		runParser(L"TypeOrExpr", L"NameOfAs", [&]() { return parser.Parse_TypeOrExpr(L"Name<A...>"); });
+		runParser(L"TypeOrExpr", L"NameOfAs", [&]() { return GetCppParser().Parse_TypeOrExpr(L"Name<A...>"); });
 	});
 
 	TEST_CASE(L"sizeof a()")
 	{
-		runParser(L"TypeOrExpr", L"SizeofA", [&]() { return parser.Parse_TypeOrExpr(L"sizeof a()"); });
+		runParser(L"TypeOrExpr", L"SizeofA", [&]() { return GetCppParser().Parse_TypeOrExpr(L"sizeof a()"); });
 	});
 
 	TEST_CASE(L"[]<typename T, class ...U = int>{}")
 	{
-		runParser(L"TypeOrExpr", L"LambdaGeneric", [&]() { return parser.Parse_TypeOrExpr(L"[]<typename T, class ...U = int>{}"); });
+		runParser(L"TypeOrExpr", L"LambdaGeneric", [&]() { return GetCppParser().Parse_TypeOrExpr(L"[]<typename T, class ...U = int>{}"); });
 	});
+
+	GetCppParser().OnTraceProcessing.Remove(handlerOnTraceProcessing);
+	GetCppParser().OnReadyToExecute.Remove(handlerOnReadyToExecute);
 }

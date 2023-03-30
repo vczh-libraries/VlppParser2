@@ -1,9 +1,9 @@
 #include "TestCppHelper.h"
 
+extern cpp_parser::Parser& GetCppParser();
+
 TEST_FILE
 {
-	cpp_parser::Parser parser;
-
 	TEST_CATEGORY(L"Identifier")
 	{
 		List<WString> lines;
@@ -18,7 +18,7 @@ TEST_FILE
 			{
 				TEST_CASE(line)
 				{
-					ParseTypeExpr<CppQualifiedName>(parser, line);
+					ParseTypeExpr<CppQualifiedName>(GetCppParser(), line);
 				});
 			}
 		}
@@ -38,7 +38,7 @@ TEST_FILE
 			{
 				TEST_CASE(line)
 				{
-					ParseTypeExpr<CppExprOnly>(parser, line);
+					ParseTypeExpr<CppExprOnly>(GetCppParser(), line);
 				});
 			}
 		}
@@ -58,7 +58,7 @@ TEST_FILE
 			{
 				TEST_CASE(line)
 				{
-					ParseTypeExpr<CppTypeOnly>(parser, line);
+					ParseTypeExpr<CppTypeOnly>(GetCppParser(), line);
 				});
 			}
 		}
@@ -78,7 +78,7 @@ TEST_FILE
 			{
 				TEST_CASE(line)
 				{
-					ParseTypeExpr<CppConstType, CppVolatileType>(parser, line);
+					ParseTypeExpr<CppConstType, CppVolatileType>(GetCppParser(), line);
 				});
 			}
 		}
@@ -98,7 +98,7 @@ TEST_FILE
 			{
 				TEST_CASE(line)
 				{
-					ParseTypeExpr<CppQualifiedName>(parser, line);
+					ParseTypeExpr<CppQualifiedName>(GetCppParser(), line);
 				});
 			}
 		}
@@ -118,7 +118,7 @@ TEST_FILE
 			{
 				TEST_CASE(line)
 				{
-					ParseTypeExpr<CppExprOnly>(parser, line);
+					ParseTypeExpr<CppExprOnly>(GetCppParser(), line);
 				});
 			}
 		}
@@ -138,7 +138,7 @@ TEST_FILE
 			{
 				TEST_CASE(line)
 				{
-					ParseTypeExpr<CppDeclaratorType>(parser, line);
+					ParseTypeExpr<CppDeclaratorType>(GetCppParser(), line);
 				});
 			}
 		}
@@ -158,48 +158,8 @@ TEST_FILE
 			{
 				TEST_CASE(line)
 				{
-					ParseTypeExpr<CppLambdaExpr>(parser, line);
+					ParseTypeExpr<CppLambdaExpr>(GetCppParser(), line);
 				});
-			}
-		}
-	});
-
-	TEST_CATEGORY(L"Ambiguous")
-	{
-		List<WString> lines;
-		File(
-			FilePath(GetTestParserInputPath(L"BuiltIn-Cpp"))
-			/ L"Input"
-			/ L"TypeOrExpr_Ambiguous.txt"
-		).ReadAllLinesByBom(lines);
-		for (auto&& line : lines)
-		{
-			if (line != L"")
-			{
-				//TEST_CASE(line)
-				//{
-				//	ParseTypeExpr<CppTypeOrExpr>(parser, line);
-				//});
-			}
-		}
-	});
-
-	TEST_CATEGORY(L"LambdaAmbiguous")
-	{
-		List<WString> lines;
-		File(
-			FilePath(GetTestParserInputPath(L"BuiltIn-Cpp"))
-			/ L"Input"
-			/ L"TypeOrExpr_LambdaAmbiguous.txt"
-		).ReadAllLinesByBom(lines);
-		for (auto&& line : lines)
-		{
-			if (line != L"")
-			{
-				//TEST_CASE(line)
-				//{
-				//	ParseTypeExpr<CppExprOnly>(parser, line);
-				//});
 			}
 		}
 	});
