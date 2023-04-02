@@ -1,7 +1,20 @@
-﻿+----------------------------+
+﻿================ EXECUTION STEPS ================
+[0]: 0@0 - 1@-1
+[8]: 1@0 - 1@6
+[9]: 2@0 - 6@1
+[4]: 22@0 - 84@0
+[2]: 1@0 - 1@6
+[3]: 2@0 - 6@1
+[5]: 28@0 - 83@0
+[6]: RA(2, ExprOnly)
+
+==================== TRACES =====================
+
++----------------------------+
 | [0]: <Start>               |
 |   TraceExec: [0]           |
 |   ForwardTrace: 0          |
+|   NextACT: 1               |
 | [1230][_TypeOrExpr] BEGIN  |
 | [AST-INSTRUCTIONS]:        |
 |     CSTop: []              |
@@ -19,6 +32,8 @@
 ||   TraceExec: [1]                                                                                                                                                               ||
 ||   InsExec: [0:7]                                                                                                                                                               ||
 ||   ForwardTrace: 0                                                                                                                                                              ||
+||   NextACT: 6                                                                                                                                                                   ||
+||   AmbiguityBegins: [0]                                                                                                                                                         ||
 || [2][_NameIdentifier]< ID @ >                                                                                                                                                   ||
 || [AST-INSTRUCTIONS]:                                                                                                                                                            ||
 ||     CSTop: []                                                                                                                                                                  ||
@@ -245,6 +260,7 @@
 ||   TraceExec: [7]                                                                                                                                                                          ||    ||   TraceExec: [41]                                                                                                                                                                         ||
 ||   InsExec: [19:33]                                                                                                                                                                        ||    ||   InsExec: [123:33]                                                                                                                                                                       ||
 ||   ForwardTrace: 22                                                                                                                                                                        ||    ||   ForwardTrace: 28                                                                                                                                                                        ||
+||   NextACT: 84                                                                                                                                                                             ||    ||   NextACT: 83                                                                                                                                                                             ||
 || [564][_AdvancedTypeNoCVNoMember]< "*" @ >                                                                                                                                                 ||    || [1828][_BExpr1_LRI_Original]< _BExpr1_LRI_Original "*" @ _BExpr0 >                                                                                                                        ||
 || [AST-INSTRUCTIONS]:                                                                                                                                                                       ||    || [AST-INSTRUCTIONS]:                                                                                                                                                                       ||
 ||     CSTop: [0] [0 -> -1]                                                                                                                                                                  ||    ||     CSTop: [0] [0 -> -1]                                                                                                                                                                  ||
@@ -1956,6 +1972,10 @@
 |   TraceExec: [69]          |
 |   ForwardTrace: 64         |
 |   CommonForwardTrace: 0    |
+| [AMBIGUITY-RESOLVING]: [0] |
+|   objs: [2, 8]             |
+|   first: 1 prefix: 0       |
+|   last: 64 postfix: 0      |
 | [CONTEXT]                  |
 |   CSTop: []                |
 |   OSTop: [8, 2] [80 -> -1] |

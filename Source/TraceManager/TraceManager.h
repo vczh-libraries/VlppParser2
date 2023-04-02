@@ -264,11 +264,16 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 
 			struct InsExec_Object : Allocatable<InsExec_Object>, WithMagicCounter
 			{
+				static const vint32_t				TokenOrEnumItemObjectId = -2;
+
 				// previous allocated object
 				Ref<InsExec_Object>					previous;
 
-				// injectObjectIds are objects it injects into by LriFetch
-				Ref<InsExec_ObjRefLink>				injectObjectIds;
+				// fieldObjectIds are object fields of this object
+				Ref<InsExec_ObjRefLink>				fieldObjectIds;
+
+				// assignedToObjectIds are objects who has at least one field that is this object
+				Ref<InsExec_ObjRefLink>				assignedToObjectIds;
 
 				// instruction that creates this object
 				Ref<Trace>							createTrace;
@@ -304,8 +309,9 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 				// InsExec_ObjRefLink assigned by BO/BOLA/RO
 				Ref<InsExec_ObjRefLink>				objectIds;
 
-				// objectIds will be added to reverseInjectObjectIds::injectObjectIds
-				Ref<InsExec_ObjRefLink>				reverseInjectObjectIds;
+				// objectIds will be added to reverseAssignedToObjectIds::assignedToObjectIds when ReopenObject happens
+				// it happens when a field is assigned to a DFA created object, the objectIds are unknown yet
+				Ref<InsExec_ObjRefLink>				reverseAssignedToObjectIds;
 			};
 
 			struct InsExec_Context
@@ -592,8 +598,8 @@ TraceManager
 				void										PushObjRefLink(Ref<InsExec_ObjRefLink>& link, Ref<InsExec_Object> id);
 				Ref<InsExec_InsRefLink>						JoinInsRefLink(Ref<InsExec_InsRefLink> first, Ref<InsExec_InsRefLink> second);
 				Ref<InsExec_ObjRefLink>						JoinObjRefLink(Ref<InsExec_ObjRefLink> first, Ref<InsExec_ObjRefLink> second);
-				void										PushInjectObjectIdsSingleWithMagic(Ref<InsExec_ObjRefLink> container, Ref<InsExec_Object> element);
-				void										PushInjectObjectIdsMultipleWithMagic(Ref<InsExec_ObjRefLink> container, Ref<InsExec_ObjRefLink> elements);
+				void										PushAssignedToObjectIdsSingleWithMagic(Ref<InsExec_ObjRefLink> fieldObjectIds, Ref<InsExec_Object> assignedToTarget);
+				void										PushAssignedToObjectIdsMultipleWithMagic(Ref<InsExec_ObjRefLink> fieldObjectIds, Ref<InsExec_ObjRefLink> assignedToTargets);
 				InsExec_ObjectStack*						PushObjectStackSingle(InsExec_Context& context, Ref<InsExec_Object> objectId);
 				InsExec_ObjectStack*						PushObjectStackMultiple(InsExec_Context& context, Ref<InsExec_ObjRefLink> linkId);
 				InsExec_CreateStack*						PushCreateStack(InsExec_Context& context);

@@ -49,7 +49,7 @@ CalculateObjectFirstInstruction
 					// TODO: prove it
 					if (UpdateTopTrace(ieObject->topTrace, ieObject->topIns, trace, ins))
 					{
-						InjectFirstInstruction(trace, ins, ieObject->injectObjectIds, magicInjection);
+						InjectFirstInstruction(trace, ins, ieObject->assignedToObjectIds, magicInjection);
 					}
 				}
 			}
@@ -85,7 +85,7 @@ CalculateObjectFirstInstruction
 					}
 				}
 
-				// check all inject into targets
+				// check all assigned to targets
 				{
 					auto objRef = firstObject;
 					while (objRef != nullref)
@@ -96,7 +96,7 @@ CalculateObjectFirstInstruction
 						NEW_MERGE_STACK_MAGIC_COUNTER;
 						auto magicInjection = MergeStack_MagicCounter;
 						ieObject->mergeCounter = magicInjection;
-						InjectFirstInstruction(ieObject->topTrace, ieObject->topIns, ieObject->injectObjectIds, magicInjection);
+						InjectFirstInstruction(ieObject->topTrace, ieObject->topIns, ieObject->assignedToObjectIds, magicInjection);
 					}
 				}
 			}

@@ -109,40 +109,44 @@ PartialExecuteOrdinaryTrace
 				return newStack;
 			}
 
-			void TraceManager::PushInjectObjectIdsSingleWithMagic(Ref<InsExec_ObjRefLink> container, Ref<InsExec_Object> element)
+			void TraceManager::PushAssignedToObjectIdsSingleWithMagic(Ref<InsExec_ObjRefLink> fieldObjectIds, Ref<InsExec_Object> assignedToTarget)
 			{
 				NEW_MERGE_STACK_MAGIC_COUNTER;
-				auto magicContainer = MergeStack_MagicCounter;
+				auto magicFieldObject = MergeStack_MagicCounter;
 
-				auto linkRef = container;
+				auto linkRef = fieldObjectIds;
 				while (linkRef != nullref)
 				{
 					auto link = GetInsExec_ObjRefLink(linkRef);
 					linkRef = link->previous;
 
-					auto ieContainerObject = GetInsExec_Object(link->id);
-					if (ieContainerObject->mergeCounter == magicContainer) continue;
-					ieContainerObject->mergeCounter = magicContainer;
-					PushObjRefLink(ieContainerObject->injectObjectIds, element);
+					if (link->id.handle == InsExec_Object::TokenOrEnumItemObjectId)
+					{
+						continue;
+					}
+					auto ieFieldObject = GetInsExec_Object(link->id);
+					if (ieFieldObject->mergeCounter == magicFieldObject) continue;
+					ieFieldObject->mergeCounter = magicFieldObject;
+					PushObjRefLink(ieFieldObject->assignedToObjectIds, assignedToTarget);
 				}
 			}
 
-			void TraceManager::PushInjectObjectIdsMultipleWithMagic(Ref<InsExec_ObjRefLink> container, Ref<InsExec_ObjRefLink> elements)
+			void TraceManager::PushAssignedToObjectIdsMultipleWithMagic(Ref<InsExec_ObjRefLink> fieldObjectIds, Ref<InsExec_ObjRefLink> assignedToTarget)
 			{
 				NEW_MERGE_STACK_MAGIC_COUNTER;
 				auto magicElement = MergeStack_MagicCounter;
 
-				auto linkRef = elements;
+				auto linkRef = assignedToTarget;
 				while (linkRef != nullref)
 				{
 					auto link = GetInsExec_ObjRefLink(linkRef);
 					linkRef = link->previous;
 
-					auto ieElementObject = GetInsExec_Object(link->id);
-					if (ieElementObject->mergeCounter == magicElement) return;
-					ieElementObject->mergeCounter = magicElement;
+					auto ieAssignedToObject = GetInsExec_Object(link->id);
+					if (ieAssignedToObject->mergeCounter == magicElement) return;
+					ieAssignedToObject->mergeCounter = magicElement;
 
-					PushInjectObjectIdsSingleWithMagic(container, link->id);
+					PushAssignedToObjectIdsSingleWithMagic(fieldObjectIds, link->id);
 				}
 			}
 
@@ -230,8 +234,8 @@ PartialExecuteOrdinaryTrace
 
 							auto ieCSTop = GetInsExec_CreateStack(context.createStack);
 
-							// InsExec_Object::injectObjectIds
-							PushInjectObjectIdsMultipleWithMagic(ieCSTop->reverseInjectObjectIds, ieCSTop->objectIds);
+							// InsExec_Object::assignedToObjectIds
+							PushAssignedToObjectIdsMultipleWithMagic(ieCSTop->reverseAssignedToObjectIds, ieCSTop->objectIds);
 
 							// reopen an object
 							// ReopenObject in different branches could write to the same InsExec_CreateStack
@@ -331,6 +335,20 @@ PartialExecuteOrdinaryTrace
 
 							auto ieObjTop = GetInsExec_ObjectStack(context.objectStack);
 							context.objectStack = ieObjTop->previous;
+
+							// InsExec_Object::assignedToObjectIds
+							if (context.createStack != nullref)
+							{
+								auto ieCSTop = GetInsExec_CreateStack(context.createStack);
+								if (ieCSTop->objectIds == nullref)
+								{
+									ieCSTop->reverseAssignedToObjectIds = JoinObjRefLink(ieCSTop->reverseAssignedToObjectIds, ieObjTop->objectIds);
+								}
+								else
+								{
+									PushAssignedToObjectIdsMultipleWithMagic(ieObjTop->objectIds, ieCSTop->objectIds);
+								}
+							}
 						}
 						break;
 					case AstInsType::LriStore:
@@ -346,21 +364,6 @@ PartialExecuteOrdinaryTrace
 					case AstInsType::LriFetch:
 						{
 							CHECK_ERROR(context.lriStoredObjects != nullref, ERROR_MESSAGE_PREFIX L"LriStore is not executed before the next LriFetch.");
-
-							// InsExec_Object::injectObjectIds
-							if (context.createStack != nullref)
-							{
-								auto ieCSTop = GetInsExec_CreateStack(context.createStack);
-								if (ieCSTop->objectIds == nullref)
-								{
-									ieCSTop->reverseInjectObjectIds = JoinObjRefLink(ieCSTop->reverseInjectObjectIds, context.lriStoredObjects);
-								}
-								else
-								{
-									PushInjectObjectIdsMultipleWithMagic(context.lriStoredObjects, ieCSTop->objectIds);
-								}
-							}
-
 							PushObjectStackMultiple(context, context.lriStoredObjects);
 							context.lriStoredObjects = nullref;
 						}
@@ -368,7 +371,7 @@ PartialExecuteOrdinaryTrace
 					case AstInsType::Token:
 					case AstInsType::EnumItem:
 						{
-							PushObjectStackSingle(context, Ref<InsExec_Object>(-2));
+							PushObjectStackSingle(context, Ref<InsExec_Object>(InsExec_Object::TokenOrEnumItemObjectId));
 						}
 						break;
 					case AstInsType::ResolveAmbiguity:
