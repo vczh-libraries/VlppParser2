@@ -85,6 +85,11 @@ TEST_FILE
 		runParser(L"TypeOrExpr", L"MuliplyOrInit", [&]() { return GetCppParser().Parse_TypeOrExpr(L"T*{a}"); });
 	});
 
+	TEST_CASE(L"A<B>::C")
+	{
+		runParser(L"TypeOrExpr", L"BExprOrQName", [&]() { return GetCppParser().Parse_TypeOrExpr(L"A<B>::C"); });
+	});
+
 	GetCppParser().OnTraceProcessing.Remove(handlerOnTraceProcessing);
 	GetCppParser().OnReadyToExecute.Remove(handlerOnReadyToExecute);
 }
