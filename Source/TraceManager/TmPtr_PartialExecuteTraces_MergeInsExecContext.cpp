@@ -16,6 +16,7 @@ MergeInsExecContext
 
 			void TraceManager::PushInsRefLinkWithCounter(Ref<InsExec_InsRefLink>& link, Ref<InsExec_InsRefLink> comming)
 			{
+				auto magicPush = MergeStack_MagicCounter;
 				while (comming != nullref)
 				{
 					auto commingStack = GetInsExec_InsRefLink(comming);
@@ -24,24 +25,25 @@ MergeInsExecContext
 					auto insTrace = GetTrace(commingStack->trace);
 					auto insTraceExec = GetTraceExec(insTrace->traceExecRef);
 					auto insExec = GetInsExec(insTraceExec->insExecRefs.start + commingStack->ins);
-					if (insExec->mergeCounter == MergeStack_MagicCounter) continue;
+					if (insExec->mergeCounter == magicPush) continue;
 
-					insExec->mergeCounter = MergeStack_MagicCounter;
+					insExec->mergeCounter = magicPush;
 					PushInsRefLink(link, commingStack->trace, commingStack->ins);
 				}
 			}
 
 			void TraceManager::PushObjRefLinkWithCounter(Ref<InsExec_ObjRefLink>& link, Ref<InsExec_ObjRefLink> comming)
 			{
+				auto magicPush = MergeStack_MagicCounter;
 				while (comming != nullref)
 				{
 					auto commingStack = GetInsExec_ObjRefLink(comming);
 					comming = commingStack->previous;
 
 					auto ieObject = GetInsExec_Object(commingStack->id);
-					if (ieObject->mergeCounter == MergeStack_MagicCounter) continue;
+					if (ieObject->mergeCounter == magicPush) continue;
 
-					ieObject->mergeCounter = MergeStack_MagicCounter;
+					ieObject->mergeCounter = magicPush;
 					PushObjRefLink(link, ieObject);
 				}
 			}
@@ -93,17 +95,20 @@ MergeInsExecContext
 					*pStackPrevious = newStack;
 					pStackPrevious = &(newStack->previous);
 
-					// call this macro to create a one-time set for InsExec*
-					NEW_MERGE_STACK_MAGIC_COUNTER;
-					for (vint index = 0; index < stacks.Count(); index++)
 					{
-						// do not visit the same stack object repeatly
-						if (stacks[index]->mergeCounter == MergeStack_MagicCounter) continue;
-						stacks[index]->mergeCounter = MergeStack_MagicCounter;
-						merge(newStack, stacks[index]);
+						// call this macro to create a one-time set for InsExec*
+						NEW_MERGE_STACK_MAGIC_COUNTER;
+						auto magicPush = MergeStack_MagicCounter;
+						for (vint index = 0; index < stacks.Count(); index++)
+						{
+							// do not visit the same stack object repeatly
+							if (stacks[index]->mergeCounter == magicPush) continue;
+							stacks[index]->mergeCounter = magicPush;
+							merge(newStack, stacks[index]);
 
-						// do not visit the same object repeatly
-						PushObjRefLinkWithCounter(newStack->objectIds, stacks[index]->objectIds);
+							// do not visit the same object repeatly
+							PushObjRefLinkWithCounter(newStack->objectIds, stacks[index]->objectIds);
+						}
 					}
 
 					// move to next level of stack objects

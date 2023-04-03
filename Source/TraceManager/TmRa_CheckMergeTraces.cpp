@@ -19,9 +19,10 @@ CheckMergeTrace
 ***********************************************************************/
 
 			template<typename TCallback>
-			bool TraceManager::SearchForObjects(Ref<InsExec_ObjRefLink> objRefLinkStartSet, bool withCounter, TCallback&& callback)
+			bool TraceManager::EnumerateObjects(Ref<InsExec_ObjRefLink> objRefLinkStartSet, bool withCounter, TCallback&& callback)
 			{
 				// check every object in the link
+				auto magicIterating = MergeStack_MagicCounter;
 				auto linkId = objRefLinkStartSet;
 				while (linkId != nullref)
 				{
@@ -32,8 +33,8 @@ CheckMergeTrace
 					if (withCounter)
 					{
 						// skip if it has been searched
-						if (ieObject->mergeCounter == MergeStack_MagicCounter) goto CHECK_NEXT_OBJECT;
-						ieObject->mergeCounter = MergeStack_MagicCounter;
+						if (ieObject->mergeCounter == magicIterating) goto CHECK_NEXT_OBJECT;
+						ieObject->mergeCounter = magicIterating;
 					}
 
 					if (!callback(ieObject)) return false;
@@ -43,18 +44,24 @@ CheckMergeTrace
 			}
 
 			template<typename TCallback>
-			bool TraceManager::SearchForEndObjectInstructions(Trace* createTrace, vint32_t createIns, TCallback&& callback)
+			bool TraceManager::SearchForEndObjectInstructions(InsExec_Object* ieObject, TCallback&& callback)
 			{
 				// all EndObject ending a BO/DFA are considered
 				// there is no "bottom EndObject"
 				// each EndObject should be in different branches
-				auto traceExec = GetTraceExec(createTrace->traceExecRef);
-				auto insExec = GetInsExec(traceExec->insExecRefs.start + createIns);
+				auto topLocalTrace = GetTrace(ieObject->topLocalTrace);
+				auto traceExec = GetTraceExec(topLocalTrace->traceExecRef);
+				auto insExec = GetInsExec(traceExec->insExecRefs.start + ieObject->topLocalIns);
 				auto insRefLinkId = insExec->eoInsRefs;
 				while (insRefLinkId != nullref)
 				{
 					auto insRefLink = GetInsExec_InsRefLink(insRefLinkId);
 					insRefLinkId = insRefLink->previous;
+
+					// filter out any result that does not happen after ieObject->createTrace
+					// topLocalTrace could be a DFA created object, and multiple objects could share the same DFA object
+					// in some cases its eoInsRefs could pointing to EndObject of completely unrelated objects
+					// TODO: make it accurate
 					if (!callback(GetTrace(insRefLink->trace), insRefLink->ins)) return false;
 				}
 				return true;
@@ -118,7 +125,7 @@ CheckMergeTrace
 				// iterate all top objects
 				succeeded = callback([&](Ref<InsExec_ObjRefLink> objRefLink)
 				{
-					return SearchForObjects(objRefLink, false, [&](InsExec_Object* ieObject)
+					return EnumerateObjects(objRefLink, false, [&](InsExec_Object* ieObject)
 					{
 						auto createTrace = GetTrace(ieObject->topTrace);
 #ifdef VCZH_DO_DEBUG_CHECK
@@ -160,12 +167,12 @@ CheckMergeTrace
 				NEW_MERGE_STACK_MAGIC_COUNTER;
 				succeeded = callback([&](Ref<InsExec_ObjRefLink> objRefLink)
 				{
-					return SearchForObjects(objRefLink, true, [&](InsExec_Object* ieObject)
+					return EnumerateObjects(objRefLink, true, [&](InsExec_Object* ieObject)
 					{
 						PushObjRefLink(ta->bottomObjectIds, ieObject);
 
 						// check if EO satisfies the condition
-						return SearchForEndObjectInstructions(GetTrace(ieObject->topLocalTrace), ieObject->topLocalIns, [&](Trace* eoTrace, vint32_t eoIns)
+						return SearchForEndObjectInstructions(ieObject, [&](Trace* eoTrace, vint32_t eoIns)
 						{
 #ifdef VCZH_DO_DEBUG_CHECK
 							{

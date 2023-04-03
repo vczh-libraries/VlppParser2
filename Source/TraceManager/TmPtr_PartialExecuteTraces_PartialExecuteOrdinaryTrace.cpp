@@ -248,27 +248,30 @@ PartialExecuteOrdinaryTrace
 							// the successor trace will be a merge trace taking all of the information
 							NEW_MERGE_STACK_MAGIC_COUNTER;
 							{
-								auto ref = ieCSTop->objectIds;
-								while (ref != nullref)
+								auto magicReopen = MergeStack_MagicCounter;
 								{
-									auto link = GetInsExec_ObjRefLink(ref);
-									auto ieObject = GetInsExec_Object(link->id);
-									ieObject->mergeCounter = MergeStack_MagicCounter;
-									ref = link->previous;
-								}
-							}
-							{
-								auto ref = ieOSTop->objectIds;
-								while (ref != nullref)
-								{
-									auto link = GetInsExec_ObjRefLink(ref);
-									auto ieObject = GetInsExec_Object(link->id);
-									if (ieObject->mergeCounter != MergeStack_MagicCounter)
+									auto ref = ieCSTop->objectIds;
+									while (ref != nullref)
 									{
-										ieObject->mergeCounter = MergeStack_MagicCounter;
-										PushObjRefLink(ieCSTop->objectIds, link->id);
+										auto link = GetInsExec_ObjRefLink(ref);
+										auto ieObject = GetInsExec_Object(link->id);
+										ieObject->mergeCounter = magicReopen;
+										ref = link->previous;
 									}
-									ref = link->previous;
+								}
+								{
+									auto ref = ieOSTop->objectIds;
+									while (ref != nullref)
+									{
+										auto link = GetInsExec_ObjRefLink(ref);
+										auto ieObject = GetInsExec_Object(link->id);
+										if (ieObject->mergeCounter != magicReopen)
+										{
+											ieObject->mergeCounter = magicReopen;
+											PushObjRefLink(ieCSTop->objectIds, link->id);
+										}
+										ref = link->previous;
+									}
 								}
 							}
 
