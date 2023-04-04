@@ -36,6 +36,10 @@ CalculateObjectLastInstruction
 						auto traceExec = GetTraceExec(topLocalTrace->traceExecRef);
 						auto insExec = GetInsExec(traceExec->insExecRefs.start + ieObject->topLocalInsRef.ins);
 						auto insRefLinkId = insExec->eoInsRefs;
+
+						NEW_MERGE_STACK_MAGIC_COUNTER;
+						auto magicInsRef = MergeStack_MagicCounter;
+
 						while (insRefLinkId != nullref)
 						{
 							auto insRefLink = GetInsExec_InsRefLink(insRefLinkId);
@@ -46,7 +50,14 @@ CalculateObjectLastInstruction
 							// in some cases its eoInsRefs could pointing to EndObject of completely unrelated objects
 							// TODO: make it accurate
 							auto bottomInsRef = insRefLink->insRef;
-							PushInsRefLink(ieObject->bottomInsRefs, bottomInsRef);
+							auto bottomTrace = GetTrace(bottomInsRef.trace);
+							auto bottomTraceExec = GetTraceExec(bottomTrace->traceExecRef);
+							auto bottomInsExec = GetInsExec(bottomTraceExec->insExecRefs.start + bottomInsRef.ins);
+							if (bottomInsExec->mergeCounter != magicInsRef)
+							{
+								bottomInsExec->mergeCounter = magicInsRef;
+								PushInsRefLink(ieObject->bottomInsRefs, bottomInsRef);
+							}
 
 #ifdef VCZH_DO_DEBUG_CHECK
 							{
@@ -57,6 +68,8 @@ CalculateObjectLastInstruction
 							}
 #endif
 						}
+
+						CHECK_ERROR(ieObject->bottomInsRefs != nullref, ERROR_MESSAGE_PREFIX L"Cannot found bottom instructions for an object.");
 					}
 				}
 #undef ERROR_MESSAGE_PREFIX
