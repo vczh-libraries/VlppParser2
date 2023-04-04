@@ -50,40 +50,40 @@ TEST_FILE
 		File(dirOutput / (L"Output[" + indexName + L"_" + caseName + L"].json")).WriteAllText(astJson, true, BomEncoder::Utf8);
 	};
 
-	//TEST_CASE(L"int*")
-	//{
-	//	runParser(L"TypeOrExpr", L"PointerOfInt", [&]() { return GetCppParser().Parse_TypeOrExpr(L"int*"); });
-	//});
-	//
-	//TEST_CASE(L"Name<int>")
-	//{
-	//	runParser(L"TypeOrExpr", L"NameOfInt", [&]() { return GetCppParser().Parse_TypeOrExpr(L"Name<int>"); });
-	//});
-	//
-	//TEST_CASE(L"Name<A...>")
-	//{
-	//	runParser(L"TypeOrExpr", L"NameOfAs", [&]() { return GetCppParser().Parse_TypeOrExpr(L"Name<A...>"); });
-	//});
-	//
-	//TEST_CASE(L"sizeof a()")
-	//{
-	//	runParser(L"TypeOrExpr", L"SizeofA", [&]() { return GetCppParser().Parse_TypeOrExpr(L"sizeof a()"); });
-	//});
-	//
-	//TEST_CASE(L"[]<typename T, class ...U = int>{}")
-	//{
-	//	runParser(L"TypeOrExpr", L"LambdaGeneric", [&]() { return GetCppParser().Parse_TypeOrExpr(L"[]<typename T, class ...U = int>{}"); });
-	//});
-	//
-	//TEST_CASE(L"(T)(a)")
-	//{
-	//	runParser(L"TypeOrExpr", L"CallOrCast", [&]() { return GetCppParser().Parse_TypeOrExpr(L"(T)(a)"); });
-	//});
-	//
-	//TEST_CASE(L"T*{a}")
-	//{
-	//	runParser(L"TypeOrExpr", L"MuliplyOrInit", [&]() { return GetCppParser().Parse_TypeOrExpr(L"T*{a}"); });
-	//});
+	TEST_CASE(L"int*")
+	{
+		runParser(L"TypeOrExpr", L"PointerOfInt", [&]() { return GetCppParser().Parse_TypeOrExpr(L"int*"); });
+	});
+	
+	TEST_CASE(L"Name<int>")
+	{
+		runParser(L"TypeOrExpr", L"NameOfInt", [&]() { return GetCppParser().Parse_TypeOrExpr(L"Name<int>"); });
+	});
+	
+	TEST_CASE(L"Name<A...>")
+	{
+		runParser(L"TypeOrExpr", L"NameOfAs", [&]() { return GetCppParser().Parse_TypeOrExpr(L"Name<A...>"); });
+	});
+	
+	TEST_CASE(L"sizeof a()")
+	{
+		runParser(L"TypeOrExpr", L"SizeofA", [&]() { return GetCppParser().Parse_TypeOrExpr(L"sizeof a()"); });
+	});
+	
+	TEST_CASE(L"[]<typename T, class ...U = int>{}")
+	{
+		runParser(L"TypeOrExpr", L"LambdaGeneric", [&]() { return GetCppParser().Parse_TypeOrExpr(L"[]<typename T, class ...U = int>{}"); });
+	});
+	
+	TEST_CASE(L"(T)(a)")
+	{
+		runParser(L"TypeOrExpr", L"CallOrCast", [&]() { return GetCppParser().Parse_TypeOrExpr(L"(T)(a)"); });
+	});
+	
+	TEST_CASE(L"T*{a}")
+	{
+		runParser(L"TypeOrExpr", L"MuliplyOrInit", [&]() { return GetCppParser().Parse_TypeOrExpr(L"T*{a}"); });
+	});
 
 	TEST_CASE(L"A<B>::C")
 	{
