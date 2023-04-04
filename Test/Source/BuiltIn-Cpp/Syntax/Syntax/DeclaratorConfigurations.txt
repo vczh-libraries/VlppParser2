@@ -3,7 +3,7 @@
 //////////////////////////////////////////////////////////////////
 
 _DeclaratorBeforeInner
-  ::= (_DeclaratorAKFirst [_DeclaratorAKMember] | _DeclaratorAKMember) {_DeclaratorAKFollow [_DeclaratorAKMember]} as partial Declarator
+  ::= (_DeclaratorAKFirst [_DeclaratorAKMember] | _DeclaratorAKMember) {_DeclaratorAKFollow [_DeclaratorAKMember]} as partial FuncVarDeclarator
   ;
 
 //////////////////////////////////////////////////////////////////
@@ -11,7 +11,7 @@ _DeclaratorBeforeInner
 //////////////////////////////////////////////////////////////////
 
 _DeclaratorAfterInner
-  ::= _DeclaratorFunctionPart:funcPart | _DeclaratorArrayPart:arrayParts {_DeclaratorArrayPart:arrayParts} as partial Declarator
+  ::= _DeclaratorFunctionPart:funcPart | _DeclaratorArrayPart:arrayParts {_DeclaratorArrayPart:arrayParts} as partial FuncVarDeclarator
   ;
 
 //////////////////////////////////////////////////////////////////
@@ -35,20 +35,19 @@ _InnerDeclaratorInnerRequiredName
 //////////////////////////////////////////////////////////////////
 
 _DeclaratorInnerWithoutName
-  ::= "(" _InnerDeclaratorWithoutName:innerDeclarator ")" as partial Declarator
-  ::=  "...":variadic as partial Declarator
+  ::= "(" _InnerDeclaratorWithoutName:innerDeclarator ")" as partial FuncVarDeclarator
   ;
 
 _DeclaratorInnerOptionalName
-  ::= "(" _InnerDeclaratorInnerOptionalName:innerDeclarator ")" as partial Declarator
-  ::=  _DeclaratorId:id as partial Declarator
-  ::=  "...":variadic [_DeclaratorId:id] as partial Declarator
+  ::= "(" _InnerDeclaratorInnerOptionalName:innerDeclarator ")" as partial FuncVarDeclarator
+  ::=  _DeclaratorId:id as partial FuncVarDeclarator
+  ::=  "...":variadic [_DeclaratorId:id] as partial FuncVarDeclarator
   ;
 
 _DeclaratorInnerRequiredName
-  ::= "(" _InnerDeclaratorInnerRequiredName:innerDeclarator ")" as partial Declarator
-  ::=  _DeclaratorId:id as partial Declarator
-  ::=  "...":variadic _DeclaratorId:id as partial Declarator
+  ::= "(" _InnerDeclaratorInnerRequiredName:innerDeclarator ")" as partial FuncVarDeclarator
+  ::=  _DeclaratorId:id as partial FuncVarDeclarator
+  ::=  "...":variadic _DeclaratorId:id as partial FuncVarDeclarator
   ;
 
 //////////////////////////////////////////////////////////////////
@@ -56,18 +55,18 @@ _DeclaratorInnerRequiredName
 //////////////////////////////////////////////////////////////////
 
 _DeclaratorWithoutName
-  ::= _DeclaratorBeforeInner [_DeclaratorInnerWithoutName] [_DeclaratorAfterInner] as Declarator
-  ::= _DeclaratorInnerWithoutName [_DeclaratorAfterInner] as Declarator
-  ::= _DeclaratorAfterInner as Declarator
+  ::= _DeclaratorBeforeInner [_DeclaratorInnerWithoutName] [_DeclaratorAfterInner] as FuncVarDeclarator
+  ::= _DeclaratorInnerWithoutName [_DeclaratorAfterInner] as FuncVarDeclarator
+  ::= _DeclaratorAfterInner as FuncVarDeclarator
   ;
 
 _DeclaratorOptionalName
-  ::= _DeclaratorBeforeInner [_DeclaratorInnerOptionalName] [_DeclaratorAfterInner] as Declarator
-  ::= _DeclaratorInnerOptionalName [_DeclaratorAfterInner] as Declarator
-  ::= _DeclaratorAfterInner as Declarator
+  ::= _DeclaratorBeforeInner [_DeclaratorInnerOptionalName] [_DeclaratorAfterInner] as FuncVarDeclarator
+  ::= _DeclaratorInnerOptionalName [_DeclaratorAfterInner] as FuncVarDeclarator
+  ::= _DeclaratorAfterInner as FuncVarDeclarator
   ;
 
 _DeclaratorRequiredName
-  ::= _DeclaratorBeforeInner _DeclaratorInnerRequiredName [_DeclaratorAfterInner] as Declarator
-  ::= _DeclaratorInnerRequiredName [_DeclaratorAfterInner] as Declarator
+  ::= _DeclaratorBeforeInner _DeclaratorInnerRequiredName [_DeclaratorAfterInner] as FuncVarDeclarator
+  ::= _DeclaratorInnerRequiredName [_DeclaratorAfterInner] as FuncVarDeclarator
   ;

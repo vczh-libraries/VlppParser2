@@ -1,0 +1,113 @@
+//////////////////////////////////////////////////////////////////
+// Declarator Keywords
+//////////////////////////////////////////////////////////////////
+
+_AdvancedTypeNoCVNoMember
+  ::= "&" as AdvancedType {kind = LRef}
+  ::= "&&" as AdvancedType {kind = RRef}
+  ::= "*" as AdvancedType {kind = Pointer}
+  ::= "*" "__ptr32" as AdvancedType {kind = Pointer32}
+  ::= "*" "__ptr64" as AdvancedType {kind = Pointer64}
+  ::= "alignas" "(" _Expr:argument ")" as AdvancedType {kind = AlignAs}
+  ;
+
+_AdvancedTypeCV
+  ::= "const" as AdvancedType {kind = Const}
+  ::= "volatile" as AdvancedType {kind = Volatile}
+  ;
+
+_AdvancedTypeNoMember
+  ::= !_AdvancedTypeNoCVNoMember
+  ::= !_AdvancedTypeCV
+  ;
+
+_AdvancedTypeMember
+  ::= _QualifiedName:argument "::" as AdvancedType {kind = Member}
+  ;
+
+_DeclaratorKeyword
+  ::= "constexpr":keyword as DeclaratorKeyword
+  ::= "extern":keyword as DeclaratorKeyword
+  ::= "static":keyword as DeclaratorKeyword
+  ::= "mutable":keyword as DeclaratorKeyword
+  ::= "thread_local":keyword as DeclaratorKeyword
+  ::= "virtual":keyword as DeclaratorKeyword
+  ::= "explicit":keyword as DeclaratorKeyword
+  ::= "friend":keyword as DeclaratorKeyword
+  ::= "abstract":keyword as DeclaratorKeyword
+  ::= "inline":keyword as DeclaratorKeyword
+  ::= "__inline":keyword as DeclaratorKeyword
+  ::= "__forceinline":keyword as DeclaratorKeyword
+  ::= "__cdecl":keyword as DeclaratorKeyword
+  ::= "__clrcall":keyword as DeclaratorKeyword
+  ::= "__stdcall":keyword as DeclaratorKeyword
+  ::= "__fastcall":keyword as DeclaratorKeyword
+  ::= "__thiscall":keyword as DeclaratorKeyword
+  ::= "__vectorcall":keyword as DeclaratorKeyword
+  ;
+
+//////////////////////////////////////////////////////////////////
+// Declarator Keyword Categories
+//////////////////////////////////////////////////////////////////
+
+_DeclaratorAKFirst
+  ::= _AdvancedTypeNoCVNoMember:advancedTypes as partial  : Declarator
+  ::= _DeclaratorKeyword:keywords as partial  : Declarator
+  ;
+
+_DeclaratorAKFollow
+  ::= _AdvancedTypeNoMember:advancedTypes as partial  : Declarator
+  ::= _DeclaratorKeyword:keywords as partial  : Declarator
+  ;
+
+_DeclaratorAKCV
+  ::= _AdvancedTypeCV:advancedTypes as partial  : Declarator
+  ;
+
+_DeclaratorAKMember
+  ::= _AdvancedTypeMember:advancedTypes as partial  : Declarator
+  ;
+
+//////////////////////////////////////////////////////////////////
+// Declarator Function and Variable Parts
+//////////////////////////////////////////////////////////////////
+
+_DeclaratorFunctionParameters
+  ::= "(" ["...":variadic] ")" as partial DeclaratorFunctionPart
+  ::= "(" _FunctionParameter:parameters {"," _FunctionParameter:parameters} ["," "...":variadic] ")" as partial DeclaratorFunctionPart
+  ;
+
+_FunctionKeyword
+  ::= "constexpr":keyword as FunctionKeyword
+  ::= "&":keyword as FunctionKeyword
+  ::= "&&":keyword as FunctionKeyword
+  ::= "const":keyword as FunctionKeyword
+  ::= "volatile":keyword as FunctionKeyword
+  ::= "override":keyword as FunctionKeyword
+  ::= "final":keyword as FunctionKeyword
+  ::= "mutable":keyword as FunctionKeyword
+  ::= "noexcept":keyword ["(" {_Expr_Argument:arguments ; ","} ")"] as FunctionKeyword
+  ::= "throw":keyword ["(" {_Type:arguments ; ","} ")"] as FunctionKeyword
+  ::= "=" '0':keyword as FunctionKeyword
+  ::= "=" "delete":keyword as FunctionKeyword
+  ::= "=" "default":keyword as FunctionKeyword
+  ;
+
+_DeclaratorFunctionPart
+  ::= _DeclaratorFunctionParameters {_FunctionKeyword:keywords} ["->" _Type:deferredType] as DeclaratorFunctionPart
+  ;
+
+_DeclaratorFunctionPartOptionalParameters
+  ::= !_DeclaratorFunctionPart
+  ::= _FunctionKeyword:keywords {_FunctionKeyword:keywords} ["->" _Type:deferredType] as DeclaratorFunctionPart
+  ::= "->" _Type:deferredType as DeclaratorFunctionPart
+  ;
+
+_DeclaratorArrayPart
+  ::= "[" [_Expr:argument] "]" as DeclaratorArrayPart
+  ;
+
+_DeclaratorId
+  ::= !_NameIdentifier
+  ::= !_OperatorIdentifier
+  ;
