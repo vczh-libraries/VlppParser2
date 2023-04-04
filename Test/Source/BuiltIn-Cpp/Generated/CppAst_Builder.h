@@ -75,18 +75,6 @@ namespace cpp_parser
 			MakeDeclStat& decl(const vl::Ptr<CppDeclaration>& value);
 		};
 
-		class MakeDeclarator : public vl::glr::ParsingAstBuilder<CppDeclarator>
-		{
-		public:
-			MakeDeclarator& advancedTypes(const vl::Ptr<CppAdvancedType>& value);
-			MakeDeclarator& arrayParts(const vl::Ptr<CppDeclaratorArrayPart>& value);
-			MakeDeclarator& funcPart(const vl::Ptr<CppDeclaratorFunctionPart>& value);
-			MakeDeclarator& id(const vl::Ptr<CppIdentifier>& value);
-			MakeDeclarator& innerDeclarator(const vl::Ptr<CppDeclarator>& value);
-			MakeDeclarator& keywords(const vl::Ptr<CppDeclaratorKeyword>& value);
-			MakeDeclarator& variadic(const vl::WString& value);
-		};
-
 		class MakeDeclaratorArrayPart : public vl::glr::ParsingAstBuilder<CppDeclaratorArrayPart>
 		{
 		public:
@@ -106,6 +94,12 @@ namespace cpp_parser
 		{
 		public:
 			MakeDeclaratorKeyword& keyword(const vl::WString& value);
+		};
+
+		class MakeDeclaratorToResolve : public vl::glr::ParsingAstBuilder<CppDeclaratorToResolve>
+		{
+		public:
+			MakeDeclaratorToResolve& candidates(const vl::Ptr<CppDeclarator>& value);
 		};
 
 		class MakeDeclaratorType : public vl::glr::ParsingAstBuilder<CppDeclaratorType>
@@ -170,6 +164,18 @@ namespace cpp_parser
 			MakeForStatLoopCondition& condition(const vl::Ptr<CppTypeOrExpr>& value);
 			MakeForStatLoopCondition& sideEffect(const vl::Ptr<CppTypeOrExpr>& value);
 			MakeForStatLoopCondition& varsDecl(const vl::Ptr<CppTypeOrExprOrOthers>& value);
+		};
+
+		class MakeFuncVarDeclarator : public vl::glr::ParsingAstBuilder<CppFuncVarDeclarator>
+		{
+		public:
+			MakeFuncVarDeclarator& advancedTypes(const vl::Ptr<CppAdvancedType>& value);
+			MakeFuncVarDeclarator& arrayParts(const vl::Ptr<CppDeclaratorArrayPart>& value);
+			MakeFuncVarDeclarator& funcPart(const vl::Ptr<CppDeclaratorFunctionPart>& value);
+			MakeFuncVarDeclarator& id(const vl::Ptr<CppIdentifier>& value);
+			MakeFuncVarDeclarator& innerDeclarator(const vl::Ptr<CppDeclarator>& value);
+			MakeFuncVarDeclarator& keywords(const vl::Ptr<CppDeclaratorKeyword>& value);
+			MakeFuncVarDeclarator& variadic(const vl::WString& value);
 		};
 
 		class MakeFunctionKeyword : public vl::glr::ParsingAstBuilder<CppFunctionKeyword>

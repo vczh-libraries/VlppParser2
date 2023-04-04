@@ -196,6 +196,20 @@ IdentifierVisitor
 		}
 
 /***********************************************************************
+DeclaratorVisitor
+***********************************************************************/
+
+		// Visitor Members -----------------------------------
+
+		void DeclaratorVisitor::Visit(CppDeclaratorToResolve* node)
+		{
+		}
+
+		void DeclaratorVisitor::Visit(CppFuncVarDeclarator* node)
+		{
+		}
+
+/***********************************************************************
 VarInitVisitor
 ***********************************************************************/
 

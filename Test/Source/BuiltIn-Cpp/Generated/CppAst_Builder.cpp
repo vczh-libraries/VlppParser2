@@ -150,52 +150,6 @@ MakeDeclStat
 		}
 
 /***********************************************************************
-MakeDeclarator
-***********************************************************************/
-
-		MakeDeclarator& MakeDeclarator::advancedTypes(const vl::Ptr<CppAdvancedType>& value)
-		{
-			node->advancedTypes.Add(value);
-			return *this;
-		}
-
-		MakeDeclarator& MakeDeclarator::arrayParts(const vl::Ptr<CppDeclaratorArrayPart>& value)
-		{
-			node->arrayParts.Add(value);
-			return *this;
-		}
-
-		MakeDeclarator& MakeDeclarator::funcPart(const vl::Ptr<CppDeclaratorFunctionPart>& value)
-		{
-			node->funcPart = value;
-			return *this;
-		}
-
-		MakeDeclarator& MakeDeclarator::id(const vl::Ptr<CppIdentifier>& value)
-		{
-			node->id = value;
-			return *this;
-		}
-
-		MakeDeclarator& MakeDeclarator::innerDeclarator(const vl::Ptr<CppDeclarator>& value)
-		{
-			node->innerDeclarator = value;
-			return *this;
-		}
-
-		MakeDeclarator& MakeDeclarator::keywords(const vl::Ptr<CppDeclaratorKeyword>& value)
-		{
-			node->keywords.Add(value);
-			return *this;
-		}
-
-		MakeDeclarator& MakeDeclarator::variadic(const vl::WString& value)
-		{
-			node->variadic.value = value;
-			return *this;
-		}
-
-/***********************************************************************
 MakeDeclaratorArrayPart
 ***********************************************************************/
 
@@ -240,6 +194,16 @@ MakeDeclaratorKeyword
 		MakeDeclaratorKeyword& MakeDeclaratorKeyword::keyword(const vl::WString& value)
 		{
 			node->keyword.value = value;
+			return *this;
+		}
+
+/***********************************************************************
+MakeDeclaratorToResolve
+***********************************************************************/
+
+		MakeDeclaratorToResolve& MakeDeclaratorToResolve::candidates(const vl::Ptr<CppDeclarator>& value)
+		{
+			node->candidates.Add(value);
 			return *this;
 		}
 
@@ -390,6 +354,52 @@ MakeForStatLoopCondition
 		MakeForStatLoopCondition& MakeForStatLoopCondition::varsDecl(const vl::Ptr<CppTypeOrExprOrOthers>& value)
 		{
 			node->varsDecl = value;
+			return *this;
+		}
+
+/***********************************************************************
+MakeFuncVarDeclarator
+***********************************************************************/
+
+		MakeFuncVarDeclarator& MakeFuncVarDeclarator::advancedTypes(const vl::Ptr<CppAdvancedType>& value)
+		{
+			node->advancedTypes.Add(value);
+			return *this;
+		}
+
+		MakeFuncVarDeclarator& MakeFuncVarDeclarator::arrayParts(const vl::Ptr<CppDeclaratorArrayPart>& value)
+		{
+			node->arrayParts.Add(value);
+			return *this;
+		}
+
+		MakeFuncVarDeclarator& MakeFuncVarDeclarator::funcPart(const vl::Ptr<CppDeclaratorFunctionPart>& value)
+		{
+			node->funcPart = value;
+			return *this;
+		}
+
+		MakeFuncVarDeclarator& MakeFuncVarDeclarator::id(const vl::Ptr<CppIdentifier>& value)
+		{
+			node->id = value;
+			return *this;
+		}
+
+		MakeFuncVarDeclarator& MakeFuncVarDeclarator::innerDeclarator(const vl::Ptr<CppDeclarator>& value)
+		{
+			node->innerDeclarator = value;
+			return *this;
+		}
+
+		MakeFuncVarDeclarator& MakeFuncVarDeclarator::keywords(const vl::Ptr<CppDeclaratorKeyword>& value)
+		{
+			node->keywords.Add(value);
+			return *this;
+		}
+
+		MakeFuncVarDeclarator& MakeFuncVarDeclarator::variadic(const vl::WString& value)
+		{
+			node->variadic.value = value;
 			return *this;
 		}
 

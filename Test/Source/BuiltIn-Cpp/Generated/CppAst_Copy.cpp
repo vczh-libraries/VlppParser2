@@ -97,22 +97,6 @@ namespace cpp_parser
 
 		void AstVisitor::CopyFields(CppDeclarator* from, CppDeclarator* to)
 		{
-			for (auto&& listItem : from->advancedTypes)
-			{
-				to->advancedTypes.Add(CopyNode(listItem.Obj()));
-			}
-			for (auto&& listItem : from->arrayParts)
-			{
-				to->arrayParts.Add(CopyNode(listItem.Obj()));
-			}
-			to->funcPart = CopyNode(from->funcPart.Obj());
-			to->id = CopyNode(from->id.Obj());
-			to->innerDeclarator = CopyNode(from->innerDeclarator.Obj());
-			for (auto&& listItem : from->keywords)
-			{
-				to->keywords.Add(CopyNode(listItem.Obj()));
-			}
-			to->variadic = from->variadic;
 		}
 
 		void AstVisitor::CopyFields(CppDeclaratorArrayPart* from, CppDeclaratorArrayPart* to)
@@ -137,6 +121,15 @@ namespace cpp_parser
 		void AstVisitor::CopyFields(CppDeclaratorKeyword* from, CppDeclaratorKeyword* to)
 		{
 			to->keyword = from->keyword;
+		}
+
+		void AstVisitor::CopyFields(CppDeclaratorToResolve* from, CppDeclaratorToResolve* to)
+		{
+			CopyFields(static_cast<CppDeclarator*>(from), static_cast<CppDeclarator*>(to));
+			for (auto&& listItem : from->candidates)
+			{
+				to->candidates.Add(CopyNode(listItem.Obj()));
+			}
 		}
 
 		void AstVisitor::CopyFields(CppDeclaratorType* from, CppDeclaratorType* to)
@@ -221,6 +214,27 @@ namespace cpp_parser
 			to->condition = CopyNode(from->condition.Obj());
 			to->sideEffect = CopyNode(from->sideEffect.Obj());
 			to->varsDecl = CopyNode(from->varsDecl.Obj());
+		}
+
+		void AstVisitor::CopyFields(CppFuncVarDeclarator* from, CppFuncVarDeclarator* to)
+		{
+			CopyFields(static_cast<CppDeclarator*>(from), static_cast<CppDeclarator*>(to));
+			for (auto&& listItem : from->advancedTypes)
+			{
+				to->advancedTypes.Add(CopyNode(listItem.Obj()));
+			}
+			for (auto&& listItem : from->arrayParts)
+			{
+				to->arrayParts.Add(CopyNode(listItem.Obj()));
+			}
+			to->funcPart = CopyNode(from->funcPart.Obj());
+			to->id = CopyNode(from->id.Obj());
+			to->innerDeclarator = CopyNode(from->innerDeclarator.Obj());
+			for (auto&& listItem : from->keywords)
+			{
+				to->keywords.Add(CopyNode(listItem.Obj()));
+			}
+			to->variadic = from->variadic;
 		}
 
 		void AstVisitor::CopyFields(CppFunctionKeyword* from, CppFunctionKeyword* to)
@@ -676,13 +690,6 @@ namespace cpp_parser
 			this->result = newNode;
 		}
 
-		void AstVisitor::Visit(CppDeclarator* node)
-		{
-			auto newNode = vl::Ptr(new CppDeclarator);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
 		void AstVisitor::Visit(CppDeclaratorVariablePart* node)
 		{
 			auto newNode = vl::Ptr(new CppDeclaratorVariablePart);
@@ -948,6 +955,20 @@ namespace cpp_parser
 			this->result = newNode;
 		}
 
+		void AstVisitor::Visit(CppDeclaratorToResolve* node)
+		{
+			auto newNode = vl::Ptr(new CppDeclaratorToResolve);
+			CopyFields(node, newNode.Obj());
+			this->result = newNode;
+		}
+
+		void AstVisitor::Visit(CppFuncVarDeclarator* node)
+		{
+			auto newNode = vl::Ptr(new CppFuncVarDeclarator);
+			CopyFields(node, newNode.Obj());
+			this->result = newNode;
+		}
+
 		void AstVisitor::Visit(CppVarValueInit* node)
 		{
 			auto newNode = vl::Ptr(new CppVarValueInit);
@@ -1146,6 +1167,14 @@ namespace cpp_parser
 			return this->result.Cast<CppIdentifier>();
 		}
 
+		vl::Ptr<CppDeclarator> AstVisitor::CopyNode(CppDeclarator* node)
+		{
+			if (!node) return nullptr;
+			node->Accept(static_cast<CppDeclarator::IVisitor*>(this));
+			this->result->codeRange = node->codeRange;
+			return this->result.Cast<CppDeclarator>();
+		}
+
 		vl::Ptr<CppVarInit> AstVisitor::CopyNode(CppVarInit* node)
 		{
 			if (!node) return nullptr;
@@ -1242,14 +1271,6 @@ namespace cpp_parser
 			return this->result.Cast<CppDeclaratorArrayPart>();
 		}
 
-		vl::Ptr<CppDeclarator> AstVisitor::CopyNode(CppDeclarator* node)
-		{
-			if (!node) return nullptr;
-			Visit(node);
-			this->result->codeRange = node->codeRange;
-			return this->result.Cast<CppDeclarator>();
-		}
-
 		vl::Ptr<CppDeclaratorVariablePart> AstVisitor::CopyNode(CppDeclaratorVariablePart* node)
 		{
 			if (!node) return nullptr;
@@ -1340,6 +1361,12 @@ namespace cpp_parser
 			return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppDeclaration>();
 		}
 
+		vl::Ptr<CppDeclaratorToResolve> AstVisitor::CopyNode(CppDeclaratorToResolve* node)
+		{
+			if (!node) return nullptr;
+			return CopyNode(static_cast<CppDeclarator*>(node)).Cast<CppDeclaratorToResolve>();
+		}
+
 		vl::Ptr<CppDeclaratorType> AstVisitor::CopyNode(CppDeclaratorType* node)
 		{
 			if (!node) return nullptr;
@@ -1398,6 +1425,12 @@ namespace cpp_parser
 		{
 			if (!node) return nullptr;
 			return CopyNode(static_cast<CppForStatConditionPart*>(node)).Cast<CppForStatLoopCondition>();
+		}
+
+		vl::Ptr<CppFuncVarDeclarator> AstVisitor::CopyNode(CppFuncVarDeclarator* node)
+		{
+			if (!node) return nullptr;
+			return CopyNode(static_cast<CppDeclarator*>(node)).Cast<CppFuncVarDeclarator>();
 		}
 
 		vl::Ptr<CppGenericArgument> AstVisitor::CopyNode(CppGenericArgument* node)
