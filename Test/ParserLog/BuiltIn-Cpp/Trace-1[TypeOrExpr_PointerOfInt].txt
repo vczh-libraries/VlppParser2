@@ -1,11 +1,11 @@
 ﻿================ EXECUTION STEPS ================
-[0]: 0@0 - 18@0
+[0]: 0@0 - 16@0
 
 ==================== TRACES =====================
 
 +----------------------------+
 | [0]: <Start>               |
-| [1191][_TypeOrExpr] BEGIN  |
+| [1194][_TypeOrExpr] BEGIN  |
 | [AST-INSTRUCTIONS]:        |
 | [SUCCESORS 1-1]: [1]       |
 +----------------------------+
@@ -16,15 +16,15 @@
 [0]
 ++===============================================================================================================================================++
 || [1]: {TYPE_INT} int                                                                                                                           ||
-|| [484][_PrimitiveTypeLiteral]"int" @                                                                                                           ||
+|| [486][_PrimitiveTypeLiteral]"int" @                                                                                                           ||
 || [AST-INSTRUCTIONS]:                                                                                                                           ||
 ||   - DelayFieldAssignment()                                                                                                                    ||
 ||   - BeginObject(PrimitiveType)                                                                                                                ||
 ||   + Token()                                                                                                                                   ||
 ||   + Field(PrimitiveType::literal1)                                                                                                            ||
 || [RETURN STACK]:                                                                                                                               ||
-||   [1][0]: _PrimitiveTypeLiteral -> [504][_PrimitiveType]< _PrimitiveTypeLiteral @ >                                                           ||
-||   [0][0]: _PrimitiveType -> [1200][_TypeOrExpr]<< !_PrimitiveType @ ( lri:(LRI__PM_PrimitiveType)->_TypeOrExpr_LRI_Original | lri:<skip> ) >> ||
+||   [1][0]: _PrimitiveTypeLiteral -> [506][_PrimitiveType]< _PrimitiveTypeLiteral @ >                                                           ||
+||   [0][0]: _PrimitiveType -> [1205][_TypeOrExpr]<< !_PrimitiveType @ ( lri:(LRI__PM_PrimitiveType)->_TypeOrExpr_LRI_Original | lri:<skip> ) >> ||
 || [PREDECESSORS 0-0]: [0]                                                                                                                       ||
 || [SUCCESORS 2-2]: [2]                                                                                                                          ||
 ++===============================================================================================================================================++
@@ -33,10 +33,10 @@
 |
 +-----------------------------------------------------------------------------------------------------------------------------------------------+
 | [2]: <Ending>                                                                                                                                 |
-| [504][_PrimitiveType]< _PrimitiveTypeLiteral @ >                                                                                              |
+| [506][_PrimitiveType]< _PrimitiveTypeLiteral @ >                                                                                              |
 | [AST-INSTRUCTIONS]:                                                                                                                           |
 | [RETURN STACK]:                                                                                                                               |
-|   [0][0]: _PrimitiveType -> [1200][_TypeOrExpr]<< !_PrimitiveType @ ( lri:(LRI__PM_PrimitiveType)->_TypeOrExpr_LRI_Original | lri:<skip> ) >> |
+|   [0][0]: _PrimitiveType -> [1205][_TypeOrExpr]<< !_PrimitiveType @ ( lri:(LRI__PM_PrimitiveType)->_TypeOrExpr_LRI_Original | lri:<skip> ) >> |
 | [PREDECESSORS 1-1]: [1]                                                                                                                       |
 | [SUCCESORS 3-3]: [3]                                                                                                                          |
 +-----------------------------------------------------------------------------------------------------------------------------------------------+
@@ -45,14 +45,14 @@
 |
 +-------------------------------------------------------------------------------------------------------------------+
 | [3]: <Ending>                                                                                                     |
-| [1200][_TypeOrExpr]<< !_PrimitiveType @ ( lri:(LRI__PM_PrimitiveType)->_TypeOrExpr_LRI_Original | lri:<skip> ) >> |
+| [1205][_TypeOrExpr]<< !_PrimitiveType @ ( lri:(LRI__PM_PrimitiveType)->_TypeOrExpr_LRI_Original | lri:<skip> ) >> |
 | [AST-INSTRUCTIONS]:                                                                                               |
 |   - EnumItem(0)                                                                                                   |
 |   - Field(PrimitiveType::kind)                                                                                    |
 |   - EndObject()                                                                                                   |
 |   > ReopenObject()                                                                                                |
 | [PREDECESSORS 2-2]: [2]                                                                                           |
-| [SUCCESORS 9-9]: [9]                                                                                              |
+| [SUCCESORS 7-7]: [7]                                                                                              |
 +-------------------------------------------------------------------------------------------------------------------+
 [0]
  |
@@ -60,8 +60,8 @@
  |
 [0]
 ++======================================================================================================================================================================================++
-|| [9]: {MUL} *                                                                                                                                                                         ||
-|| [552][_AdvancedTypeNoCVNoMember]< "*" @ >                                                                                                                                            ||
+|| [7]: {MUL} *                                                                                                                                                                         ||
+|| [554][_AdvancedTypeNoCVNoMember]< "*" @ >                                                                                                                                            ||
 || [AST-INSTRUCTIONS]:                                                                                                                                                                  ||
 ||   - EndObject()                                                                                                                                                                      ||
 ||   - LriStore()                                                                                                                                                                       ||
@@ -86,53 +86,86 @@
 ||   - BeginObject(Declarator)                                                                                                                                                          ||
 ||   - BeginObject(AdvancedType)                                                                                                                                                        ||
 || [RETURN STACK]:                                                                                                                                                                      ||
-||   [71][3]: _AdvancedTypeNoCVNoMember -> [591][_DeclaratorAKFirst]_AdvancedTypeNoCVNoMember @                                                                                         ||
-||   [70][3]: _DeclaratorAKFirst -> [667][_DeclaratorBeforeInner]( _DeclaratorAKFirst @ [ _DeclaratorAKMember ] | _DeclaratorAKMember ) { _DeclaratorAKFollow [ _DeclaratorAKMember ] } ||
-||   [69][3]: _DeclaratorBeforeInner -> [713][_DeclaratorWithoutName]< _DeclaratorBeforeInner @ [ _DeclaratorInnerWithoutName ] [ _DeclaratorAfterInner ] >                             ||
-||   [68][3]: _DeclaratorWithoutName -> [2102][_Type_LRI_Original]< _TypeBeforeDeclarator_LRI_Original _DeclaratorWithoutName @ >                                                       ||
-||   [67][3]: _Type_LRI_Original -> [2126][_TypeOrExpr_Raw_SWITCH_COMBINED_LRI_Original]<< !_Type_LRI_Original @ >>                                                                     ||
-||   [66][3]: _TypeOrExpr_Raw_SWITCH_COMBINED_LRI_Original -> [2130][_TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original]<< !_TypeOrExpr_Raw_SWITCH_COMBINED_LRI_Original @ >>                ||
-||   [65][3]: _TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original -> [2136][_TypeOrExpr_LRI_Original]<< !_TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original @ >>                                   ||
-||   [64][3]: _TypeOrExpr_LRI_Original -> [1199][_TypeOrExpr]<< !_PrimitiveType ( lri:(LRI__PM_PrimitiveType)->_TypeOrExpr_LRI_Original @ | lri:<skip> ) >>                             ||
+||   [25][3]: _AdvancedTypeNoCVNoMember -> [593][_DeclaratorAKFirst]_AdvancedTypeNoCVNoMember @                                                                                         ||
+||   [24][3]: _DeclaratorAKFirst -> [669][_DeclaratorBeforeInner]( _DeclaratorAKFirst @ [ _DeclaratorAKMember ] | _DeclaratorAKMember ) { _DeclaratorAKFollow [ _DeclaratorAKMember ] } ||
+||   [23][3]: _DeclaratorBeforeInner -> [715][_DeclaratorWithoutName]< _DeclaratorBeforeInner @ [ _DeclaratorInnerWithoutName ] [ _DeclaratorAfterInner ] >                             ||
+||   [22][3]: _DeclaratorWithoutName -> [2117][_Type_LRI_Original]< _TypeBeforeDeclarator_LRI_Original _DeclaratorWithoutName @ >                                                       ||
+||   [21][3]: _Type_LRI_Original -> [2141][_TypeOrExpr_Raw_SWITCH_COMBINED_LRI_Original]<< !_Type_LRI_Original @ >>                                                                     ||
+||   [20][3]: _TypeOrExpr_Raw_SWITCH_COMBINED_LRI_Original -> [2145][_TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original]<< !_TypeOrExpr_Raw_SWITCH_COMBINED_LRI_Original @ >>                ||
+||   [19][3]: _TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original -> [2151][_TypeOrExpr_LRI_Original]<< !_TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original @ >>                                   ||
+||   [18][3]: _TypeOrExpr_LRI_Original -> [1204][_TypeOrExpr]<< !_PrimitiveType ( lri:(LRI__PM_PrimitiveType)->_TypeOrExpr_LRI_Original @ | lri:<skip> ) >>                             ||
 || [PREDECESSORS 3-3]: [3]                                                                                                                                                              ||
-|| [SUCCESORS 10-10]: [10]                                                                                                                                                              ||
+|| [SUCCESORS 8-8]: [8]                                                                                                                                                                 ||
 ++======================================================================================================================================================================================++
 |
 +
 |
 +--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| [10]: <Ending>                                                                                                                                                                       |
-| [591][_DeclaratorAKFirst]_AdvancedTypeNoCVNoMember @                                                                                                                                 |
+| [8]: <Ending>                                                                                                                                                                        |
+| [593][_DeclaratorAKFirst]_AdvancedTypeNoCVNoMember @                                                                                                                                 |
 | [AST-INSTRUCTIONS]:                                                                                                                                                                  |
 |   - EnumItem(4)                                                                                                                                                                      |
 |   - Field(AdvancedType::kind)                                                                                                                                                        |
 |   - EndObject()                                                                                                                                                                      |
 | [RETURN STACK]:                                                                                                                                                                      |
-|   [70][3]: _DeclaratorAKFirst -> [667][_DeclaratorBeforeInner]( _DeclaratorAKFirst @ [ _DeclaratorAKMember ] | _DeclaratorAKMember ) { _DeclaratorAKFollow [ _DeclaratorAKMember ] } |
-|   [69][3]: _DeclaratorBeforeInner -> [713][_DeclaratorWithoutName]< _DeclaratorBeforeInner @ [ _DeclaratorInnerWithoutName ] [ _DeclaratorAfterInner ] >                             |
-|   [68][3]: _DeclaratorWithoutName -> [2102][_Type_LRI_Original]< _TypeBeforeDeclarator_LRI_Original _DeclaratorWithoutName @ >                                                       |
-|   [67][3]: _Type_LRI_Original -> [2126][_TypeOrExpr_Raw_SWITCH_COMBINED_LRI_Original]<< !_Type_LRI_Original @ >>                                                                     |
-|   [66][3]: _TypeOrExpr_Raw_SWITCH_COMBINED_LRI_Original -> [2130][_TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original]<< !_TypeOrExpr_Raw_SWITCH_COMBINED_LRI_Original @ >>                |
-|   [65][3]: _TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original -> [2136][_TypeOrExpr_LRI_Original]<< !_TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original @ >>                                   |
-|   [64][3]: _TypeOrExpr_LRI_Original -> [1199][_TypeOrExpr]<< !_PrimitiveType ( lri:(LRI__PM_PrimitiveType)->_TypeOrExpr_LRI_Original @ | lri:<skip> ) >>                             |
-| [PREDECESSORS 9-9]: [9]                                                                                                                                                              |
-| [SUCCESORS 11-11]: [11]                                                                                                                                                              |
+|   [24][3]: _DeclaratorAKFirst -> [669][_DeclaratorBeforeInner]( _DeclaratorAKFirst @ [ _DeclaratorAKMember ] | _DeclaratorAKMember ) { _DeclaratorAKFollow [ _DeclaratorAKMember ] } |
+|   [23][3]: _DeclaratorBeforeInner -> [715][_DeclaratorWithoutName]< _DeclaratorBeforeInner @ [ _DeclaratorInnerWithoutName ] [ _DeclaratorAfterInner ] >                             |
+|   [22][3]: _DeclaratorWithoutName -> [2117][_Type_LRI_Original]< _TypeBeforeDeclarator_LRI_Original _DeclaratorWithoutName @ >                                                       |
+|   [21][3]: _Type_LRI_Original -> [2141][_TypeOrExpr_Raw_SWITCH_COMBINED_LRI_Original]<< !_Type_LRI_Original @ >>                                                                     |
+|   [20][3]: _TypeOrExpr_Raw_SWITCH_COMBINED_LRI_Original -> [2145][_TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original]<< !_TypeOrExpr_Raw_SWITCH_COMBINED_LRI_Original @ >>                |
+|   [19][3]: _TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original -> [2151][_TypeOrExpr_LRI_Original]<< !_TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original @ >>                                   |
+|   [18][3]: _TypeOrExpr_LRI_Original -> [1204][_TypeOrExpr]<< !_PrimitiveType ( lri:(LRI__PM_PrimitiveType)->_TypeOrExpr_LRI_Original @ | lri:<skip> ) >>                             |
+| [PREDECESSORS 7-7]: [7]                                                                                                                                                              |
+| [SUCCESORS 9-9]: [9]                                                                                                                                                                 |
 +--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 |
 +
 |
 +-----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| [11]: <Ending>                                                                                                                                                        |
-| [667][_DeclaratorBeforeInner]( _DeclaratorAKFirst @ [ _DeclaratorAKMember ] | _DeclaratorAKMember ) { _DeclaratorAKFollow [ _DeclaratorAKMember ] }                   |
+| [9]: <Ending>                                                                                                                                                         |
+| [669][_DeclaratorBeforeInner]( _DeclaratorAKFirst @ [ _DeclaratorAKMember ] | _DeclaratorAKMember ) { _DeclaratorAKFollow [ _DeclaratorAKMember ] }                   |
 | [AST-INSTRUCTIONS]:                                                                                                                                                   |
 |   - Field(Declarator::advancedTypes)                                                                                                                                  |
 | [RETURN STACK]:                                                                                                                                                       |
-|   [69][3]: _DeclaratorBeforeInner -> [713][_DeclaratorWithoutName]< _DeclaratorBeforeInner @ [ _DeclaratorInnerWithoutName ] [ _DeclaratorAfterInner ] >              |
-|   [68][3]: _DeclaratorWithoutName -> [2102][_Type_LRI_Original]< _TypeBeforeDeclarator_LRI_Original _DeclaratorWithoutName @ >                                        |
-|   [67][3]: _Type_LRI_Original -> [2126][_TypeOrExpr_Raw_SWITCH_COMBINED_LRI_Original]<< !_Type_LRI_Original @ >>                                                      |
-|   [66][3]: _TypeOrExpr_Raw_SWITCH_COMBINED_LRI_Original -> [2130][_TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original]<< !_TypeOrExpr_Raw_SWITCH_COMBINED_LRI_Original @ >> |
-|   [65][3]: _TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original -> [2136][_TypeOrExpr_LRI_Original]<< !_TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original @ >>                    |
-|   [64][3]: _TypeOrExpr_LRI_Original -> [1199][_TypeOrExpr]<< !_PrimitiveType ( lri:(LRI__PM_PrimitiveType)->_TypeOrExpr_LRI_Original @ | lri:<skip> ) >>              |
+|   [23][3]: _DeclaratorBeforeInner -> [715][_DeclaratorWithoutName]< _DeclaratorBeforeInner @ [ _DeclaratorInnerWithoutName ] [ _DeclaratorAfterInner ] >              |
+|   [22][3]: _DeclaratorWithoutName -> [2117][_Type_LRI_Original]< _TypeBeforeDeclarator_LRI_Original _DeclaratorWithoutName @ >                                        |
+|   [21][3]: _Type_LRI_Original -> [2141][_TypeOrExpr_Raw_SWITCH_COMBINED_LRI_Original]<< !_Type_LRI_Original @ >>                                                      |
+|   [20][3]: _TypeOrExpr_Raw_SWITCH_COMBINED_LRI_Original -> [2145][_TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original]<< !_TypeOrExpr_Raw_SWITCH_COMBINED_LRI_Original @ >> |
+|   [19][3]: _TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original -> [2151][_TypeOrExpr_LRI_Original]<< !_TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original @ >>                    |
+|   [18][3]: _TypeOrExpr_LRI_Original -> [1204][_TypeOrExpr]<< !_PrimitiveType ( lri:(LRI__PM_PrimitiveType)->_TypeOrExpr_LRI_Original @ | lri:<skip> ) >>              |
+| [PREDECESSORS 8-8]: [8]                                                                                                                                               |
+| [SUCCESORS 10-10]: [10]                                                                                                                                               |
++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|
++
+|
++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [10]: <Ending>                                                                                                                                                        |
+| [715][_DeclaratorWithoutName]< _DeclaratorBeforeInner @ [ _DeclaratorInnerWithoutName ] [ _DeclaratorAfterInner ] >                                                   |
+| [AST-INSTRUCTIONS]:                                                                                                                                                   |
+| [RETURN STACK]:                                                                                                                                                       |
+|   [22][3]: _DeclaratorWithoutName -> [2117][_Type_LRI_Original]< _TypeBeforeDeclarator_LRI_Original _DeclaratorWithoutName @ >                                        |
+|   [21][3]: _Type_LRI_Original -> [2141][_TypeOrExpr_Raw_SWITCH_COMBINED_LRI_Original]<< !_Type_LRI_Original @ >>                                                      |
+|   [20][3]: _TypeOrExpr_Raw_SWITCH_COMBINED_LRI_Original -> [2145][_TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original]<< !_TypeOrExpr_Raw_SWITCH_COMBINED_LRI_Original @ >> |
+|   [19][3]: _TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original -> [2151][_TypeOrExpr_LRI_Original]<< !_TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original @ >>                    |
+|   [18][3]: _TypeOrExpr_LRI_Original -> [1204][_TypeOrExpr]<< !_PrimitiveType ( lri:(LRI__PM_PrimitiveType)->_TypeOrExpr_LRI_Original @ | lri:<skip> ) >>              |
+| [PREDECESSORS 9-9]: [9]                                                                                                                                               |
+| [SUCCESORS 11-11]: [11]                                                                                                                                               |
++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|
++
+|
++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [11]: <Ending>                                                                                                                                                        |
+| [2117][_Type_LRI_Original]< _TypeBeforeDeclarator_LRI_Original _DeclaratorWithoutName @ >                                                                             |
+| [AST-INSTRUCTIONS]:                                                                                                                                                   |
+|   - EndObject()                                                                                                                                                       |
+|   > Field(DeclaratorType::declarator)                                                                                                                                 |
+| [RETURN STACK]:                                                                                                                                                       |
+|   [21][3]: _Type_LRI_Original -> [2141][_TypeOrExpr_Raw_SWITCH_COMBINED_LRI_Original]<< !_Type_LRI_Original @ >>                                                      |
+|   [20][3]: _TypeOrExpr_Raw_SWITCH_COMBINED_LRI_Original -> [2145][_TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original]<< !_TypeOrExpr_Raw_SWITCH_COMBINED_LRI_Original @ >> |
+|   [19][3]: _TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original -> [2151][_TypeOrExpr_LRI_Original]<< !_TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original @ >>                    |
+|   [18][3]: _TypeOrExpr_LRI_Original -> [1204][_TypeOrExpr]<< !_PrimitiveType ( lri:(LRI__PM_PrimitiveType)->_TypeOrExpr_LRI_Original @ | lri:<skip> ) >>              |
 | [PREDECESSORS 10-10]: [10]                                                                                                                                            |
 | [SUCCESORS 12-12]: [12]                                                                                                                                               |
 +-----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -141,98 +174,65 @@
 |
 +-----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | [12]: <Ending>                                                                                                                                                        |
-| [713][_DeclaratorWithoutName]< _DeclaratorBeforeInner @ [ _DeclaratorInnerWithoutName ] [ _DeclaratorAfterInner ] >                                                   |
+| [2141][_TypeOrExpr_Raw_SWITCH_COMBINED_LRI_Original]<< !_Type_LRI_Original @ >>                                                                                       |
 | [AST-INSTRUCTIONS]:                                                                                                                                                   |
+|   - EndObject()                                                                                                                                                       |
 | [RETURN STACK]:                                                                                                                                                       |
-|   [68][3]: _DeclaratorWithoutName -> [2102][_Type_LRI_Original]< _TypeBeforeDeclarator_LRI_Original _DeclaratorWithoutName @ >                                        |
-|   [67][3]: _Type_LRI_Original -> [2126][_TypeOrExpr_Raw_SWITCH_COMBINED_LRI_Original]<< !_Type_LRI_Original @ >>                                                      |
-|   [66][3]: _TypeOrExpr_Raw_SWITCH_COMBINED_LRI_Original -> [2130][_TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original]<< !_TypeOrExpr_Raw_SWITCH_COMBINED_LRI_Original @ >> |
-|   [65][3]: _TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original -> [2136][_TypeOrExpr_LRI_Original]<< !_TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original @ >>                    |
-|   [64][3]: _TypeOrExpr_LRI_Original -> [1199][_TypeOrExpr]<< !_PrimitiveType ( lri:(LRI__PM_PrimitiveType)->_TypeOrExpr_LRI_Original @ | lri:<skip> ) >>              |
+|   [20][3]: _TypeOrExpr_Raw_SWITCH_COMBINED_LRI_Original -> [2145][_TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original]<< !_TypeOrExpr_Raw_SWITCH_COMBINED_LRI_Original @ >> |
+|   [19][3]: _TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original -> [2151][_TypeOrExpr_LRI_Original]<< !_TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original @ >>                    |
+|   [18][3]: _TypeOrExpr_LRI_Original -> [1204][_TypeOrExpr]<< !_PrimitiveType ( lri:(LRI__PM_PrimitiveType)->_TypeOrExpr_LRI_Original @ | lri:<skip> ) >>              |
 | [PREDECESSORS 11-11]: [11]                                                                                                                                            |
 | [SUCCESORS 13-13]: [13]                                                                                                                                               |
 +-----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 |
 +
 |
-+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| [13]: <Ending>                                                                                                                                                        |
-| [2102][_Type_LRI_Original]< _TypeBeforeDeclarator_LRI_Original _DeclaratorWithoutName @ >                                                                             |
-| [AST-INSTRUCTIONS]:                                                                                                                                                   |
-|   - EndObject()                                                                                                                                                       |
-|   > Field(DeclaratorType::declarator)                                                                                                                                 |
-| [RETURN STACK]:                                                                                                                                                       |
-|   [67][3]: _Type_LRI_Original -> [2126][_TypeOrExpr_Raw_SWITCH_COMBINED_LRI_Original]<< !_Type_LRI_Original @ >>                                                      |
-|   [66][3]: _TypeOrExpr_Raw_SWITCH_COMBINED_LRI_Original -> [2130][_TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original]<< !_TypeOrExpr_Raw_SWITCH_COMBINED_LRI_Original @ >> |
-|   [65][3]: _TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original -> [2136][_TypeOrExpr_LRI_Original]<< !_TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original @ >>                    |
-|   [64][3]: _TypeOrExpr_LRI_Original -> [1199][_TypeOrExpr]<< !_PrimitiveType ( lri:(LRI__PM_PrimitiveType)->_TypeOrExpr_LRI_Original @ | lri:<skip> ) >>              |
-| [PREDECESSORS 12-12]: [12]                                                                                                                                            |
-| [SUCCESORS 14-14]: [14]                                                                                                                                               |
-+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-|
-+
-|
-+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| [14]: <Ending>                                                                                                                                                        |
-| [2126][_TypeOrExpr_Raw_SWITCH_COMBINED_LRI_Original]<< !_Type_LRI_Original @ >>                                                                                       |
-| [AST-INSTRUCTIONS]:                                                                                                                                                   |
-|   - EndObject()                                                                                                                                                       |
-| [RETURN STACK]:                                                                                                                                                       |
-|   [66][3]: _TypeOrExpr_Raw_SWITCH_COMBINED_LRI_Original -> [2130][_TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original]<< !_TypeOrExpr_Raw_SWITCH_COMBINED_LRI_Original @ >> |
-|   [65][3]: _TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original -> [2136][_TypeOrExpr_LRI_Original]<< !_TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original @ >>                    |
-|   [64][3]: _TypeOrExpr_LRI_Original -> [1199][_TypeOrExpr]<< !_PrimitiveType ( lri:(LRI__PM_PrimitiveType)->_TypeOrExpr_LRI_Original @ | lri:<skip> ) >>              |
-| [PREDECESSORS 13-13]: [13]                                                                                                                                            |
-| [SUCCESORS 15-15]: [15]                                                                                                                                               |
-+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-|
-+
-|
 +----------------------------------------------------------------------------------------------------------------------------------------------------------+
-| [15]: <Ending>                                                                                                                                           |
-| [2130][_TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original]<< !_TypeOrExpr_Raw_SWITCH_COMBINED_LRI_Original @ >>                                               |
+| [13]: <Ending>                                                                                                                                           |
+| [2145][_TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original]<< !_TypeOrExpr_Raw_SWITCH_COMBINED_LRI_Original @ >>                                               |
 | [AST-INSTRUCTIONS]:                                                                                                                                      |
 |   - ReopenObject()                                                                                                                                       |
 |   - EndObject()                                                                                                                                          |
 | [RETURN STACK]:                                                                                                                                          |
-|   [65][3]: _TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original -> [2136][_TypeOrExpr_LRI_Original]<< !_TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original @ >>       |
-|   [64][3]: _TypeOrExpr_LRI_Original -> [1199][_TypeOrExpr]<< !_PrimitiveType ( lri:(LRI__PM_PrimitiveType)->_TypeOrExpr_LRI_Original @ | lri:<skip> ) >> |
-| [PREDECESSORS 14-14]: [14]                                                                                                                               |
-| [SUCCESORS 16-16]: [16]                                                                                                                                  |
+|   [19][3]: _TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original -> [2151][_TypeOrExpr_LRI_Original]<< !_TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original @ >>       |
+|   [18][3]: _TypeOrExpr_LRI_Original -> [1204][_TypeOrExpr]<< !_PrimitiveType ( lri:(LRI__PM_PrimitiveType)->_TypeOrExpr_LRI_Original @ | lri:<skip> ) >> |
+| [PREDECESSORS 12-12]: [12]                                                                                                                               |
+| [SUCCESORS 14-14]: [14]                                                                                                                                  |
 +----------------------------------------------------------------------------------------------------------------------------------------------------------+
 |
 +
 |
 +----------------------------------------------------------------------------------------------------------------------------------------------------------+
-| [16]: <Ending>                                                                                                                                           |
-| [2136][_TypeOrExpr_LRI_Original]<< !_TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original @ >>                                                                   |
+| [14]: <Ending>                                                                                                                                           |
+| [2151][_TypeOrExpr_LRI_Original]<< !_TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original @ >>                                                                   |
 | [AST-INSTRUCTIONS]:                                                                                                                                      |
 |   - ReopenObject()                                                                                                                                       |
 |   - EndObject()                                                                                                                                          |
 | [RETURN STACK]:                                                                                                                                          |
-|   [64][3]: _TypeOrExpr_LRI_Original -> [1199][_TypeOrExpr]<< !_PrimitiveType ( lri:(LRI__PM_PrimitiveType)->_TypeOrExpr_LRI_Original @ | lri:<skip> ) >> |
-| [PREDECESSORS 15-15]: [15]                                                                                                                               |
-| [SUCCESORS 17-17]: [17]                                                                                                                                  |
+|   [18][3]: _TypeOrExpr_LRI_Original -> [1204][_TypeOrExpr]<< !_PrimitiveType ( lri:(LRI__PM_PrimitiveType)->_TypeOrExpr_LRI_Original @ | lri:<skip> ) >> |
+| [PREDECESSORS 13-13]: [13]                                                                                                                               |
+| [SUCCESORS 15-15]: [15]                                                                                                                                  |
 +----------------------------------------------------------------------------------------------------------------------------------------------------------+
 |
 +
 |
 +-------------------------------------------------------------------------------------------------------------------+
-| [17]: <Ending>                                                                                                    |
-| [1199][_TypeOrExpr]<< !_PrimitiveType ( lri:(LRI__PM_PrimitiveType)->_TypeOrExpr_LRI_Original @ | lri:<skip> ) >> |
+| [15]: <Ending>                                                                                                    |
+| [1204][_TypeOrExpr]<< !_PrimitiveType ( lri:(LRI__PM_PrimitiveType)->_TypeOrExpr_LRI_Original @ | lri:<skip> ) >> |
 | [AST-INSTRUCTIONS]:                                                                                               |
 |   - ReopenObject()                                                                                                |
 |   - EndObject()                                                                                                   |
 |   > ReopenObject()                                                                                                |
-| [PREDECESSORS 16-16]: [16]                                                                                        |
-| [SUCCESORS 18-18]: [18]                                                                                           |
+| [PREDECESSORS 14-14]: [14]                                                                                        |
+| [SUCCESORS 16-16]: [16]                                                                                           |
 +-------------------------------------------------------------------------------------------------------------------+
 |
 +
 |
 +----------------------------------+
-| [18]: <Ending>                   |
-| [1192][_TypeOrExpr] END [ENDING] |
+| [16]: <Ending>                   |
+| [1195][_TypeOrExpr] END [ENDING] |
 | [AST-INSTRUCTIONS]:              |
 |   - EndObject()                  |
-| [PREDECESSORS 17-17]: [17]       |
+| [PREDECESSORS 15-15]: [15]       |
 +----------------------------------+
