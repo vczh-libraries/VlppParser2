@@ -39,15 +39,15 @@ _PM_QualifiedName
   ::= !prefix_merge(_QualifiedName)
   ;
 
-_ShortTypeStartsWithKeywordBeforeDeclarator
+_CallConstructibleTypeBeforeDeclarator
   ::= !_PM_PrimitiveType
-  ::= "const" _TypeBeforeDeclarator:type as ConstType
-  ::= "volatile" _TypeBeforeDeclarator:type as VolatileType
+  ::= "const" _ShortTypeBeforeDeclarator:type as ConstType
+  ::= "volatile" _ShortTypeBeforeDeclarator:type as VolatileType
   ;
 
 _ShortTypeBeforeDeclarator : TypeOrExpr
   ::= !_PM_QualifiedName
-  ::= !_ShortTypeStartsWithKeywordBeforeDeclarator
+  ::= !_CallConstructibleTypeBeforeDeclarator
   ;
 
 _CallConstructibleType
