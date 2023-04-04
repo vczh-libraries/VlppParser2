@@ -14,53 +14,53 @@
  +
  |
 [0]
-++======================================================================++
-|| [1]: {ID} A                                                          ||
-||   TraceExec: [1]                                                     ||
-||   InsExec: [0:5]                                                     ||
-||   ForwardTrace: 0                                                    ||
-|| [2][_Name]< ID @ >                                                   ||
-|| [AST-INSTRUCTIONS]:                                                  ||
-||     CSTop: []                                                        ||
-||     OSTop: []                                                        ||
-||     LriStored: []                                                    ||
-||   - DelayFieldAssignment()                                           ||
-||       objRefs: 0                                                     ||
-||       eoInsRefs: 7@0, 6@0                                            ||
-||                                                                      ||
-||     CSTop: [0] [0 -> -1]                                             ||
-||     OSTop: []                                                        ||
-||     LriStored: []                                                    ||
-||   - DelayFieldAssignment()                                           ||
-||       objRefs: 0                                                     ||
-||       eoInsRefs: 3@1                                                 ||
-||                                                                      ||
-||     CSTop: [0] [1 -> 0]                                              ||
-||     OSTop: []                                                        ||
-||     LriStored: []                                                    ||
-||   - BeginObject(Name)                                                ||
-||       obj:0, new:1@2, top:1@0 assignedTo:[5, 1] dfas:[7@4, 1@0, 1@1] ||
-||       eoInsRefs: 2@0                                                 ||
-||                                                                      ||
-||     CSTop: [0] [2 -> 1]                                              ||
-||     OSTop: []                                                        ||
-||     LriStored: []                                                    ||
-||   + Token()                                                          ||
-||                                                                      ||
-||     CSTop: [0] [2 -> 1]                                              ||
-||     OSTop: [-2] [0 -> -1]                                            ||
-||     LriStored: []                                                    ||
-||   + Field(Name::name)                                                ||
-||                                                                      ||
-||     CSTop: [0] [2 -> 1]                                              ||
-||     OSTop: []                                                        ||
-||     LriStored: []                                                    ||
-|| [RETURN STACK]:                                                      ||
-||   [1][0]: _Name -> [8][_PrimitiveShared]<< !_Name @ >>               ||
-||   [0][0]: _PrimitiveShared -> [61][Module]<< !_PrimitiveShared @ >>  ||
-|| [PREDECESSORS 0-0]: [0]                                              ||
-|| [SUCCESORS 2-2]: [2]                                                 ||
-++======================================================================++
+++========================================================================================++
+|| [1]: {ID} A                                                                            ||
+||   TraceExec: [1]                                                                       ||
+||   InsExec: [0:5]                                                                       ||
+||   ForwardTrace: 0                                                                      ||
+|| [2][_Name]< ID @ >                                                                     ||
+|| [AST-INSTRUCTIONS]:                                                                    ||
+||     CSTop: []                                                                          ||
+||     OSTop: []                                                                          ||
+||     LriStored: []                                                                      ||
+||   - DelayFieldAssignment()                                                             ||
+||       objRefs: 0                                                                       ||
+||       eoInsRefs: 7@0, 6@0                                                              ||
+||                                                                                        ||
+||     CSTop: [0] [0 -> -1]                                                               ||
+||     OSTop: []                                                                          ||
+||     LriStored: []                                                                      ||
+||   - DelayFieldAssignment()                                                             ||
+||       objRefs: 0                                                                       ||
+||       eoInsRefs: 3@1                                                                   ||
+||                                                                                        ||
+||     CSTop: [0] [1 -> 0]                                                                ||
+||     OSTop: []                                                                          ||
+||     LriStored: []                                                                      ||
+||   - BeginObject(Name)                                                                  ||
+||       obj:0, new:1@2, top:1@0 bottom:[6@0, 7@0] assignedTo:[5, 1] dfas:[7@4, 1@0, 1@1] ||
+||       eoInsRefs: 2@0                                                                   ||
+||                                                                                        ||
+||     CSTop: [0] [2 -> 1]                                                                ||
+||     OSTop: []                                                                          ||
+||     LriStored: []                                                                      ||
+||   + Token()                                                                            ||
+||                                                                                        ||
+||     CSTop: [0] [2 -> 1]                                                                ||
+||     OSTop: [-2] [0 -> -1]                                                              ||
+||     LriStored: []                                                                      ||
+||   + Field(Name::name)                                                                  ||
+||                                                                                        ||
+||     CSTop: [0] [2 -> 1]                                                                ||
+||     OSTop: []                                                                          ||
+||     LriStored: []                                                                      ||
+|| [RETURN STACK]:                                                                        ||
+||   [1][0]: _Name -> [8][_PrimitiveShared]<< !_Name @ >>                                 ||
+||   [0][0]: _PrimitiveShared -> [61][Module]<< !_PrimitiveShared @ >>                    ||
+|| [PREDECESSORS 0-0]: [0]                                                                ||
+|| [SUCCESORS 2-2]: [2]                                                                   ||
+++========================================================================================++
 |
 +
 |
@@ -177,7 +177,7 @@
 ||     OSTop: []                                                                                                  ||    ||       objRefs: 0                                                                                           ||
 ||     LriStored: [0]                                                                                             ||    ||       eoInsRefs: 7@7                                                                                       ||
 ||   - BeginObject(FunctionType)                                                                                  ||    ||                                                                                                            ||
-||       obj:1, new:6@5, top:1@0 dfas:[6@2]                                                                       ||    ||     CSTop: [0] [16 -> 15]                                                                                  ||
+||       obj:1, new:6@5, top:1@0 bottom:[49@0] dfas:[6@2]                                                         ||    ||     CSTop: [0] [16 -> 15]                                                                                  ||
 ||       eoInsRefs: 43@0                                                                                          ||    ||     OSTop: []                                                                                              ||
 ||                                                                                                                ||    ||     LriStored: [0]                                                                                         ||
 ||     CSTop: [1] [4 -> 3]                                                                                        ||    ||   - LriFetch()                                                                                             ||
@@ -202,7 +202,7 @@
 |                                                                                                                       ||     OSTop: []                                                                                              ||
 |                                                                                                                       ||     LriStored: [0]                                                                                         ||
 |                                                                                                                       ||   - BeginObject(CallExpr)                                                                                  ||
-|                                                                                                                       ||       obj:5, new:7@9, top:1@0 dfas:[7@2, 7@3]                                                              ||
+|                                                                                                                       ||       obj:5, new:7@9, top:1@0 bottom:[48@0] dfas:[7@2, 7@3]                                                ||
 |                                                                                                                       ||       eoInsRefs: 46@0                                                                                      ||
 |                                                                                                                       ||                                                                                                            ||
 |                                                                                                                       ||     CSTop: [5] [17 -> 15]                                                                                  ||
@@ -254,7 +254,7 @@
 ||     OSTop: []                                                                                                  ||    ||     OSTop: []                                                                                              ||
 ||     LriStored: []                                                                                              ||    ||     LriStored: []                                                                                          ||
 ||   - BeginObject(Name)                                                                                          ||    ||   - DelayFieldAssignment()                                                                                 ||
-||       obj:2, new:8@2, top:8@0 assignedTo:[1] dfas:[8@0, 8@1]                                                   ||    ||       objRefs: 6                                                                                           ||
+||       obj:2, new:8@2, top:8@0 bottom:[11@0] assignedTo:[1] dfas:[8@0, 8@1]                                     ||    ||       objRefs: 6                                                                                           ||
 ||       eoInsRefs: 9@0                                                                                           ||    ||       eoInsRefs: 15@1                                                                                      ||
 ||                                                                                                                ||    ||                                                                                                            ||
 ||     CSTop: [2] [7 -> 6]                                                                                        ||    ||     CSTop: [6] [20 -> 19]                                                                                  ||
@@ -268,7 +268,7 @@
 ||   + Field(Name::name)                                                                                          ||    ||     OSTop: []                                                                                              ||
 ||                                                                                                                ||    ||     LriStored: []                                                                                          ||
 ||     CSTop: [2] [7 -> 6]                                                                                        ||    ||   - BeginObject(Name)                                                                                      ||
-||     OSTop: []                                                                                                  ||    ||       obj:6, new:12@4, top:12@0 assignedTo:[5] dfas:[12@0, 12@1, 12@2, 12@3]                               ||
+||     OSTop: []                                                                                                  ||    ||       obj:6, new:12@4, top:12@0 bottom:[17@0] assignedTo:[5] dfas:[12@0, 12@1, 12@2, 12@3]                 ||
 ||     LriStored: []                                                                                              ||    ||       eoInsRefs: 13@0                                                                                      ||
 || [RETURN STACK]:                                                                                                ||    ||                                                                                                            ||
 ||   [7][6]: _Name -> [8][_PrimitiveShared]<< !_Name @ >>                                                         ||    ||     CSTop: [6] [22 -> 21]                                                                                  ||
@@ -507,7 +507,7 @@
 ||     OSTop: []                                                                                                  ||    ||     OSTop: []                                                                                              ||
 ||     LriStored: []                                                                                              ||    ||     LriStored: []                                                                                          ||
 ||   - BeginObject(Name)                                                                                          ||    ||   - DelayFieldAssignment()                                                                                 ||
-||       obj:3, new:20@2, top:20@0 assignedTo:[1] dfas:[20@0, 20@1]                                               ||    ||       objRefs: 7                                                                                           ||
+||       obj:3, new:20@2, top:20@0 bottom:[23@0] assignedTo:[1] dfas:[20@0, 20@1]                                 ||    ||       objRefs: 7                                                                                           ||
 ||       eoInsRefs: 21@0                                                                                          ||    ||       eoInsRefs: 27@1                                                                                      ||
 ||                                                                                                                ||    ||                                                                                                            ||
 ||     CSTop: [3] [10 -> 9]                                                                                       ||    ||     CSTop: [7] [25 -> 24]                                                                                  ||
@@ -521,7 +521,7 @@
 ||   + Field(Name::name)                                                                                          ||    ||     OSTop: []                                                                                              ||
 ||                                                                                                                ||    ||     LriStored: []                                                                                          ||
 ||     CSTop: [3] [10 -> 9]                                                                                       ||    ||   - BeginObject(Name)                                                                                      ||
-||     OSTop: []                                                                                                  ||    ||       obj:7, new:24@4, top:24@0 assignedTo:[5] dfas:[24@0, 24@1, 24@2, 24@3]                               ||
+||     OSTop: []                                                                                                  ||    ||       obj:7, new:24@4, top:24@0 bottom:[29@0] assignedTo:[5] dfas:[24@0, 24@1, 24@2, 24@3]                 ||
 ||     LriStored: []                                                                                              ||    ||       eoInsRefs: 25@0                                                                                      ||
 || [RETURN STACK]:                                                                                                ||    ||                                                                                                            ||
 ||   [15][18]: _Name -> [8][_PrimitiveShared]<< !_Name @ >>                                                       ||    ||     CSTop: [7] [27 -> 26]                                                                                  ||
@@ -760,7 +760,7 @@
 ||     OSTop: []                                                                                                  ||    ||     OSTop: []                                                                                              ||
 ||     LriStored: []                                                                                              ||    ||     LriStored: []                                                                                          ||
 ||   - BeginObject(Name)                                                                                          ||    ||   - DelayFieldAssignment()                                                                                 ||
-||       obj:4, new:32@2, top:32@0 assignedTo:[1] dfas:[32@0, 32@1]                                               ||    ||       objRefs: 8                                                                                           ||
+||       obj:4, new:32@2, top:32@0 bottom:[35@0] assignedTo:[1] dfas:[32@0, 32@1]                                 ||    ||       objRefs: 8                                                                                           ||
 ||       eoInsRefs: 33@0                                                                                          ||    ||       eoInsRefs: 39@1                                                                                      ||
 ||                                                                                                                ||    ||                                                                                                            ||
 ||     CSTop: [4] [13 -> 12]                                                                                      ||    ||     CSTop: [8] [30 -> 29]                                                                                  ||
@@ -774,7 +774,7 @@
 ||   + Field(Name::name)                                                                                          ||    ||     OSTop: []                                                                                              ||
 ||                                                                                                                ||    ||     LriStored: []                                                                                          ||
 ||     CSTop: [4] [13 -> 12]                                                                                      ||    ||   - BeginObject(Name)                                                                                      ||
-||     OSTop: []                                                                                                  ||    ||       obj:8, new:36@4, top:36@0 assignedTo:[5] dfas:[36@0, 36@1, 36@2, 36@3]                               ||
+||     OSTop: []                                                                                                  ||    ||       obj:8, new:36@4, top:36@0 bottom:[41@0] assignedTo:[5] dfas:[36@0, 36@1, 36@2, 36@3]                 ||
 ||     LriStored: []                                                                                              ||    ||       eoInsRefs: 37@0                                                                                      ||
 || [RETURN STACK]:                                                                                                ||    ||                                                                                                            ||
 ||   [23][30]: _Name -> [8][_PrimitiveShared]<< !_Name @ >>                                                       ||    ||     CSTop: [8] [32 -> 31]                                                                                  ||

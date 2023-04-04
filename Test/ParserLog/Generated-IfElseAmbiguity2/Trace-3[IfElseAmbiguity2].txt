@@ -44,90 +44,90 @@
  +
  |
 [0]
-++=========================================================++
-|| [1]: {OPEN_BRACE} {                                     ||
-||   TraceExec: [1]                                        ||
-||   InsExec: [0:3]                                        ||
-||   ForwardTrace: 0                                       ||
-|| [6][Block]< "{" @ { Stat } "}" >                        ||
-|| [AST-INSTRUCTIONS]:                                     ||
-||     CSTop: []                                           ||
-||     OSTop: []                                           ||
-||     LriStored: []                                       ||
-||   - BeginObject(Module)                                 ||
-||       obj:0, new:1@0, top:1@0                           ||
-||       eoInsRefs: 107@1                                  ||
-||                                                         ||
-||     CSTop: [0] [0 -> -1]                                ||
-||     OSTop: []                                           ||
-||     LriStored: []                                       ||
-||   - DelayFieldAssignment()                              ||
-||       objRefs: 1                                        ||
-||       eoInsRefs: 106@1                                  ||
-||                                                         ||
-||     CSTop: [1] [1 -> 0]                                 ||
-||     OSTop: []                                           ||
-||     LriStored: []                                       ||
-||   - BeginObject(BlockStat)                              ||
-||       obj:1, new:1@2, top:1@1 assignedTo:[0] dfas:[1@1] ||
-||       eoInsRefs: 105@0                                  ||
-||                                                         ||
-||     CSTop: [1] [2 -> 1]                                 ||
-||     OSTop: []                                           ||
-||     LriStored: []                                       ||
-|| [RETURN STACK]:                                         ||
-||   [1][0]: Block -> [24][Stat]<< !Block @ >>             ||
-||   [0][0]: Stat -> [28][Module]< Stat @ >                ||
-|| [PREDECESSORS 0-0]: [0]                                 ||
-|| [SUCCESORS 2-2]: [2]                                    ||
-++=========================================================++
+++========================================================================++
+|| [1]: {OPEN_BRACE} {                                                    ||
+||   TraceExec: [1]                                                       ||
+||   InsExec: [0:3]                                                       ||
+||   ForwardTrace: 0                                                      ||
+|| [6][Block]< "{" @ { Stat } "}" >                                       ||
+|| [AST-INSTRUCTIONS]:                                                    ||
+||     CSTop: []                                                          ||
+||     OSTop: []                                                          ||
+||     LriStored: []                                                      ||
+||   - BeginObject(Module)                                                ||
+||       obj:0, new:1@0, top:1@0 bottom:[107@1]                           ||
+||       eoInsRefs: 107@1                                                 ||
+||                                                                        ||
+||     CSTop: [0] [0 -> -1]                                               ||
+||     OSTop: []                                                          ||
+||     LriStored: []                                                      ||
+||   - DelayFieldAssignment()                                             ||
+||       objRefs: 1                                                       ||
+||       eoInsRefs: 106@1                                                 ||
+||                                                                        ||
+||     CSTop: [1] [1 -> 0]                                                ||
+||     OSTop: []                                                          ||
+||     LriStored: []                                                      ||
+||   - BeginObject(BlockStat)                                             ||
+||       obj:1, new:1@2, top:1@1 bottom:[106@1] assignedTo:[0] dfas:[1@1] ||
+||       eoInsRefs: 105@0                                                 ||
+||                                                                        ||
+||     CSTop: [1] [2 -> 1]                                                ||
+||     OSTop: []                                                          ||
+||     LriStored: []                                                      ||
+|| [RETURN STACK]:                                                        ||
+||   [1][0]: Block -> [24][Stat]<< !Block @ >>                            ||
+||   [0][0]: Stat -> [28][Module]< Stat @ >                               ||
+|| [PREDECESSORS 0-0]: [0]                                                ||
+|| [SUCCESORS 2-2]: [2]                                                   ||
+++========================================================================++
 [0]
  |
  +
  |
 [0]
-++==============================================================++
-|| [2]: {IF} if                                                 ||
-||   TraceExec: [2]                                             ||
-||   InsExec: [3:3]                                             ||
-||   ForwardTrace: 0                                            ||
-||   NextACT: 12                                                ||
-||   AmbiguityBegins: [0]                                       ||
-|| [14][IfThenStat]< "if" @ "cond" "then" Stat >                ||
-|| [AST-INSTRUCTIONS]:                                          ||
-||     CSTop: [1] [2 -> 1]                                      ||
-||     OSTop: []                                                ||
-||     LriStored: []                                            ||
-||   - BeginObject(IfStat)                                      ||
-||       obj:2, new:2@0, top:2@0 assignedTo:[1]                 ||
-||       eoInsRefs: 30@1                                        ||
-||                                                              ||
-||     CSTop: [2] [3 -> 2]                                      ||
-||     OSTop: []                                                ||
-||     LriStored: []                                            ||
-||   - DelayFieldAssignment()                                   ||
-||       objRefs: 3, 3                                          ||
-||       eoInsRefs: 34@0, 35@1                                  ||
-||                                                              ||
-||     CSTop: [3] [4 -> 3]                                      ||
-||     OSTop: []                                                ||
-||     LriStored: []                                            ||
-||   - BeginObject(IfContentCandidate)                          ||
-||       obj:3, new:2@2, top:2@1 assignedTo:[2] dfas:[2@1, 2@1] ||
-||       eoInsRefs: 16@0, 28@0                                  ||
-||                                                              ||
-||     CSTop: [3] [5 -> 4]                                      ||
-||     OSTop: []                                                ||
-||     LriStored: []                                            ||
-|| [RETURN STACK]:                                              ||
-||   [4][1]: IfThenStat -> [20][IfContent]<< !IfThenStat @ >>   ||
-||   [3][1]: IfContent -> [23][Stat]< IfContent @ >             ||
-||   [2][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >           ||
-||   [1][0]: Block -> [24][Stat]<< !Block @ >>                  ||
-||   [0][0]: Stat -> [28][Module]< Stat @ >                     ||
-|| [PREDECESSORS 1-1]: [1]                                      ||
-|| [SUCCESORS 3-3]: [3]                                         ||
-++==============================================================++
+++==================================================================================++
+|| [2]: {IF} if                                                                     ||
+||   TraceExec: [2]                                                                 ||
+||   InsExec: [3:3]                                                                 ||
+||   ForwardTrace: 0                                                                ||
+||   NextACT: 12                                                                    ||
+||   AmbiguityBegins: [0]                                                           ||
+|| [14][IfThenStat]< "if" @ "cond" "then" Stat >                                    ||
+|| [AST-INSTRUCTIONS]:                                                              ||
+||     CSTop: [1] [2 -> 1]                                                          ||
+||     OSTop: []                                                                    ||
+||     LriStored: []                                                                ||
+||   - BeginObject(IfStat)                                                          ||
+||       obj:2, new:2@0, top:2@0 bottom:[30@1] assignedTo:[1]                       ||
+||       eoInsRefs: 30@1                                                            ||
+||                                                                                  ||
+||     CSTop: [2] [3 -> 2]                                                          ||
+||     OSTop: []                                                                    ||
+||     LriStored: []                                                                ||
+||   - DelayFieldAssignment()                                                       ||
+||       objRefs: 3, 3                                                              ||
+||       eoInsRefs: 34@0, 35@1                                                      ||
+||                                                                                  ||
+||     CSTop: [3] [4 -> 3]                                                          ||
+||     OSTop: []                                                                    ||
+||     LriStored: []                                                                ||
+||   - BeginObject(IfContentCandidate)                                              ||
+||       obj:3, new:2@2, top:2@1 bottom:[35@1, 34@0] assignedTo:[2] dfas:[2@1, 2@1] ||
+||       eoInsRefs: 16@0, 28@0                                                      ||
+||                                                                                  ||
+||     CSTop: [3] [5 -> 4]                                                          ||
+||     OSTop: []                                                                    ||
+||     LriStored: []                                                                ||
+|| [RETURN STACK]:                                                                  ||
+||   [4][1]: IfThenStat -> [20][IfContent]<< !IfThenStat @ >>                       ||
+||   [3][1]: IfContent -> [23][Stat]< IfContent @ >                                 ||
+||   [2][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >                               ||
+||   [1][0]: Block -> [24][Stat]<< !Block @ >>                                      ||
+||   [0][0]: Stat -> [28][Module]< Stat @ >                                         ||
+|| [PREDECESSORS 1-1]: [1]                                                          ||
+|| [SUCCESORS 3-3]: [3]                                                             ||
+++==================================================================================++
 [0]
  |
  +
@@ -179,49 +179,49 @@
  +
  |
 [0]
-++=================================================================++
-|| [5]: {IF} if                                                    ||
-||   TraceExec: [5]                                                ||
-||   InsExec: [6:3]                                                ||
-||   ForwardTrace: 0                                               ||
-|| [14][IfThenStat]< "if" @ "cond" "then" Stat >                   ||
-|| [AST-INSTRUCTIONS]:                                             ||
-||     CSTop: [3] [5 -> 4]                                         ||
-||     OSTop: []                                                   ||
-||     LriStored: []                                               ||
-||   - BeginObject(IfStat)                                         ||
-||       obj:4, new:5@0, top:5@0 assignedTo:[3, 3]                 ||
-||       eoInsRefs: 15@1, 27@1                                     ||
-||                                                                 ||
-||     CSTop: [4] [6 -> 5]                                         ||
-||     OSTop: []                                                   ||
-||     LriStored: []                                               ||
-||   - DelayFieldAssignment()                                      ||
-||       objRefs: 5, 5                                             ||
-||       eoInsRefs: 14@1, 26@0                                     ||
-||                                                                 ||
-||     CSTop: [5] [7 -> 6]                                         ||
-||     OSTop: []                                                   ||
-||     LriStored: []                                               ||
-||   - BeginObject(IfContentCandidate)                             ||
-||       obj:5, new:5@2, top:5@1 assignedTo:[4, 4] dfas:[5@1, 5@1] ||
-||       eoInsRefs: 12@0                                           ||
-||                                                                 ||
-||     CSTop: [5] [8 -> 7]                                         ||
-||     OSTop: []                                                   ||
-||     LriStored: []                                               ||
-|| [RETURN STACK]:                                                 ||
-||   [7][4]: IfThenStat -> [20][IfContent]<< !IfThenStat @ >>      ||
-||   [6][4]: IfContent -> [23][Stat]< IfContent @ >                ||
-||   [5][4]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ > ||
-||   [4][1]: IfThenStat -> [20][IfContent]<< !IfThenStat @ >>      ||
-||   [3][1]: IfContent -> [23][Stat]< IfContent @ >                ||
-||   [2][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >              ||
-||   [1][0]: Block -> [24][Stat]<< !Block @ >>                     ||
-||   [0][0]: Stat -> [28][Module]< Stat @ >                        ||
-|| [PREDECESSORS 4-4]: [4]                                         ||
-|| [SUCCESORS 6-6]: [6]                                            ||
-++=================================================================++
+++=====================================================================================++
+|| [5]: {IF} if                                                                        ||
+||   TraceExec: [5]                                                                    ||
+||   InsExec: [6:3]                                                                    ||
+||   ForwardTrace: 0                                                                   ||
+|| [14][IfThenStat]< "if" @ "cond" "then" Stat >                                       ||
+|| [AST-INSTRUCTIONS]:                                                                 ||
+||     CSTop: [3] [5 -> 4]                                                             ||
+||     OSTop: []                                                                       ||
+||     LriStored: []                                                                   ||
+||   - BeginObject(IfStat)                                                             ||
+||       obj:4, new:5@0, top:5@0 bottom:[27@1, 15@1] assignedTo:[3, 3]                 ||
+||       eoInsRefs: 15@1, 27@1                                                         ||
+||                                                                                     ||
+||     CSTop: [4] [6 -> 5]                                                             ||
+||     OSTop: []                                                                       ||
+||     LriStored: []                                                                   ||
+||   - DelayFieldAssignment()                                                          ||
+||       objRefs: 5, 5                                                                 ||
+||       eoInsRefs: 14@1, 26@0                                                         ||
+||                                                                                     ||
+||     CSTop: [5] [7 -> 6]                                                             ||
+||     OSTop: []                                                                       ||
+||     LriStored: []                                                                   ||
+||   - BeginObject(IfContentCandidate)                                                 ||
+||       obj:5, new:5@2, top:5@1 bottom:[26@0, 14@1] assignedTo:[4, 4] dfas:[5@1, 5@1] ||
+||       eoInsRefs: 12@0                                                               ||
+||                                                                                     ||
+||     CSTop: [5] [8 -> 7]                                                             ||
+||     OSTop: []                                                                       ||
+||     LriStored: []                                                                   ||
+|| [RETURN STACK]:                                                                     ||
+||   [7][4]: IfThenStat -> [20][IfContent]<< !IfThenStat @ >>                          ||
+||   [6][4]: IfContent -> [23][Stat]< IfContent @ >                                    ||
+||   [5][4]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ >                     ||
+||   [4][1]: IfThenStat -> [20][IfContent]<< !IfThenStat @ >>                          ||
+||   [3][1]: IfContent -> [23][Stat]< IfContent @ >                                    ||
+||   [2][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >                                  ||
+||   [1][0]: Block -> [24][Stat]<< !Block @ >>                                         ||
+||   [0][0]: Stat -> [28][Module]< Stat @ >                                            ||
+|| [PREDECESSORS 4-4]: [4]                                                             ||
+|| [SUCCESORS 6-6]: [6]                                                                ||
+++=====================================================================================++
 [0]
  |
  +
@@ -279,44 +279,44 @@
  +
  |
 [0]
-++=================================================================++
-|| [8]: {DO} do                                                    ||
-||   TraceExec: [8]                                                ||
-||   InsExec: [9:2]                                                ||
-||   ForwardTrace: 0                                               ||
-|| [3][Do]< "do" @ ";" >                                           ||
-|| [AST-INSTRUCTIONS]:                                             ||
-||     CSTop: [5] [8 -> 7]                                         ||
-||     OSTop: []                                                   ||
-||     LriStored: []                                               ||
-||   - DelayFieldAssignment()                                      ||
-||       objRefs: 6                                                ||
-||       eoInsRefs: 11@1                                           ||
-||                                                                 ||
-||     CSTop: [6] [9 -> 8]                                         ||
-||     OSTop: []                                                   ||
-||     LriStored: []                                               ||
-||   - BeginObject(DoStat)                                         ||
-||       obj:6, new:8@1, top:8@0 assignedTo:[5] dfas:[8@0]         ||
-||       eoInsRefs: 10@0                                           ||
-||                                                                 ||
-||     CSTop: [6] [10 -> 9]                                        ||
-||     OSTop: []                                                   ||
-||     LriStored: []                                               ||
-|| [RETURN STACK]:                                                 ||
-||   [9][7]: Do -> [25][Stat]<< !Do @ >>                           ||
-||   [8][7]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ > ||
-||   [7][4]: IfThenStat -> [20][IfContent]<< !IfThenStat @ >>      ||
-||   [6][4]: IfContent -> [23][Stat]< IfContent @ >                ||
-||   [5][4]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ > ||
-||   [4][1]: IfThenStat -> [20][IfContent]<< !IfThenStat @ >>      ||
-||   [3][1]: IfContent -> [23][Stat]< IfContent @ >                ||
-||   [2][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >              ||
-||   [1][0]: Block -> [24][Stat]<< !Block @ >>                     ||
-||   [0][0]: Stat -> [28][Module]< Stat @ >                        ||
-|| [PREDECESSORS 7-7]: [7]                                         ||
-|| [SUCCESORS 9-9]: [9]                                            ||
-++=================================================================++
+++=======================================================================++
+|| [8]: {DO} do                                                          ||
+||   TraceExec: [8]                                                      ||
+||   InsExec: [9:2]                                                      ||
+||   ForwardTrace: 0                                                     ||
+|| [3][Do]< "do" @ ";" >                                                 ||
+|| [AST-INSTRUCTIONS]:                                                   ||
+||     CSTop: [5] [8 -> 7]                                               ||
+||     OSTop: []                                                         ||
+||     LriStored: []                                                     ||
+||   - DelayFieldAssignment()                                            ||
+||       objRefs: 6                                                      ||
+||       eoInsRefs: 11@1                                                 ||
+||                                                                       ||
+||     CSTop: [6] [9 -> 8]                                               ||
+||     OSTop: []                                                         ||
+||     LriStored: []                                                     ||
+||   - BeginObject(DoStat)                                               ||
+||       obj:6, new:8@1, top:8@0 bottom:[11@1] assignedTo:[5] dfas:[8@0] ||
+||       eoInsRefs: 10@0                                                 ||
+||                                                                       ||
+||     CSTop: [6] [10 -> 9]                                              ||
+||     OSTop: []                                                         ||
+||     LriStored: []                                                     ||
+|| [RETURN STACK]:                                                       ||
+||   [9][7]: Do -> [25][Stat]<< !Do @ >>                                 ||
+||   [8][7]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ >       ||
+||   [7][4]: IfThenStat -> [20][IfContent]<< !IfThenStat @ >>            ||
+||   [6][4]: IfContent -> [23][Stat]< IfContent @ >                      ||
+||   [5][4]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ >       ||
+||   [4][1]: IfThenStat -> [20][IfContent]<< !IfThenStat @ >>            ||
+||   [3][1]: IfContent -> [23][Stat]< IfContent @ >                      ||
+||   [2][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >                    ||
+||   [1][0]: Block -> [24][Stat]<< !Block @ >>                           ||
+||   [0][0]: Stat -> [28][Module]< Stat @ >                              ||
+|| [PREDECESSORS 7-7]: [7]                                               ||
+|| [SUCCESORS 9-9]: [9]                                                  ||
+++=======================================================================++
 [0]
  |
  +
@@ -601,49 +601,49 @@
 ++=================================================================++    |
 [0]                                                                      [1]
  |                                                                        |
- +                                                                        +--+
- |                                                                           |
-[0]                                                                         [1]
-++====================================================================++    ++====================================================================++
-|| [21]: {DO} do                                                      ||    || [22]: {DO} do                                                      ||
-||   TraceExec: [15]                                                  ||    ||   TraceExec: [28]                                                  ||
-||   InsExec: [17:2]                                                  ||    ||   InsExec: [37:2]                                                  ||
-||   ForwardTrace: 13                                                 ||    ||   ForwardTrace: 14                                                 ||
-|| [3][Do]< "do" @ ";" >                                              ||    || [3][Do]< "do" @ ";" >                                              ||
-|| [AST-INSTRUCTIONS]:                                                ||    || [AST-INSTRUCTIONS]:                                                ||
-||     CSTop: [5] [7 -> 6]                                            ||    ||     CSTop: [3] [4 -> 3]                                            ||
-||     OSTop: []                                                      ||    ||     OSTop: []                                                      ||
-||     LriStored: []                                                  ||    ||     LriStored: []                                                  ||
-||   - DelayFieldAssignment()                                         ||    ||   - DelayFieldAssignment()                                         ||
-||       objRefs: 7                                                   ||    ||       objRefs: 8                                                   ||
-||       eoInsRefs: 25@1                                              ||    ||       eoInsRefs: 33@1                                              ||
-||                                                                    ||    ||                                                                    ||
-||     CSTop: [7] [11 -> 7]                                           ||    ||     CSTop: [8] [13 -> 4]                                           ||
-||     OSTop: []                                                      ||    ||     OSTop: []                                                      ||
-||     LriStored: []                                                  ||    ||     LriStored: []                                                  ||
-||   - BeginObject(DoStat)                                            ||    ||   - BeginObject(DoStat)                                            ||
-||       obj:7, new:21@1, top:21@0 assignedTo:[5] dfas:[21@0]         ||    ||       obj:8, new:22@1, top:22@0 assignedTo:[3] dfas:[22@0]         ||
-||       eoInsRefs: 24@0                                              ||    ||       eoInsRefs: 32@0                                              ||
-||                                                                    ||    ||                                                                    ||
-||     CSTop: [7] [12 -> 11]                                          ||    ||     CSTop: [8] [14 -> 13]                                          ||
-||     OSTop: []                                                      ||    ||     OSTop: []                                                      ||
-||     LriStored: []                                                  ||    ||     LriStored: []                                                  ||
-|| [RETURN STACK]:                                                    ||    || [RETURN STACK]:                                                    ||
-||   [11][19]: Do -> [25][Stat]<< !Do @ >>                            ||    ||   [13][20]: Do -> [25][Stat]<< !Do @ >>                            ||
-||   [10][19]: Stat -> [18][IfContent]<< !IfThenStat "else" Stat @ >> ||    ||   [12][20]: Stat -> [18][IfContent]<< !IfThenStat "else" Stat @ >> ||
-||   [6][4]: IfContent -> [23][Stat]< IfContent @ >                   ||    ||   [3][1]: IfContent -> [23][Stat]< IfContent @ >                   ||
-||   [5][4]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ >    ||    ||   [2][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >                 ||
-||   [4][1]: IfThenStat -> [20][IfContent]<< !IfThenStat @ >>         ||    ||   [1][0]: Block -> [24][Stat]<< !Block @ >>                        ||
-||   [3][1]: IfContent -> [23][Stat]< IfContent @ >                   ||    ||   [0][0]: Stat -> [28][Module]< Stat @ >                           ||
-||   [2][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >                 ||    || [PREDECESSORS 20-20]: [20]                                         ||
-||   [1][0]: Block -> [24][Stat]<< !Block @ >>                        ||    || [SUCCESORS 31-31]: [31]                                            ||
-||   [0][0]: Stat -> [28][Module]< Stat @ >                           ||    ++====================================================================++
-|| [PREDECESSORS 19-19]: [19]                                         ||    |
-|| [SUCCESORS 23-23]: [23]                                            ||    |
-++====================================================================++    |
-[0]                                                                         [1]
- |                                                                           |
- +                                                                           +
+ +                                                                        +--------+
+ |                                                                                 |
+[0]                                                                               [1]
+++==========================================================================++    ++==========================================================================++
+|| [21]: {DO} do                                                            ||    || [22]: {DO} do                                                            ||
+||   TraceExec: [15]                                                        ||    ||   TraceExec: [28]                                                        ||
+||   InsExec: [17:2]                                                        ||    ||   InsExec: [37:2]                                                        ||
+||   ForwardTrace: 13                                                       ||    ||   ForwardTrace: 14                                                       ||
+|| [3][Do]< "do" @ ";" >                                                    ||    || [3][Do]< "do" @ ";" >                                                    ||
+|| [AST-INSTRUCTIONS]:                                                      ||    || [AST-INSTRUCTIONS]:                                                      ||
+||     CSTop: [5] [7 -> 6]                                                  ||    ||     CSTop: [3] [4 -> 3]                                                  ||
+||     OSTop: []                                                            ||    ||     OSTop: []                                                            ||
+||     LriStored: []                                                        ||    ||     LriStored: []                                                        ||
+||   - DelayFieldAssignment()                                               ||    ||   - DelayFieldAssignment()                                               ||
+||       objRefs: 7                                                         ||    ||       objRefs: 8                                                         ||
+||       eoInsRefs: 25@1                                                    ||    ||       eoInsRefs: 33@1                                                    ||
+||                                                                          ||    ||                                                                          ||
+||     CSTop: [7] [11 -> 7]                                                 ||    ||     CSTop: [8] [13 -> 4]                                                 ||
+||     OSTop: []                                                            ||    ||     OSTop: []                                                            ||
+||     LriStored: []                                                        ||    ||     LriStored: []                                                        ||
+||   - BeginObject(DoStat)                                                  ||    ||   - BeginObject(DoStat)                                                  ||
+||       obj:7, new:21@1, top:21@0 bottom:[25@1] assignedTo:[5] dfas:[21@0] ||    ||       obj:8, new:22@1, top:22@0 bottom:[33@1] assignedTo:[3] dfas:[22@0] ||
+||       eoInsRefs: 24@0                                                    ||    ||       eoInsRefs: 32@0                                                    ||
+||                                                                          ||    ||                                                                          ||
+||     CSTop: [7] [12 -> 11]                                                ||    ||     CSTop: [8] [14 -> 13]                                                ||
+||     OSTop: []                                                            ||    ||     OSTop: []                                                            ||
+||     LriStored: []                                                        ||    ||     LriStored: []                                                        ||
+|| [RETURN STACK]:                                                          ||    || [RETURN STACK]:                                                          ||
+||   [11][19]: Do -> [25][Stat]<< !Do @ >>                                  ||    ||   [13][20]: Do -> [25][Stat]<< !Do @ >>                                  ||
+||   [10][19]: Stat -> [18][IfContent]<< !IfThenStat "else" Stat @ >>       ||    ||   [12][20]: Stat -> [18][IfContent]<< !IfThenStat "else" Stat @ >>       ||
+||   [6][4]: IfContent -> [23][Stat]< IfContent @ >                         ||    ||   [3][1]: IfContent -> [23][Stat]< IfContent @ >                         ||
+||   [5][4]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ >          ||    ||   [2][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >                       ||
+||   [4][1]: IfThenStat -> [20][IfContent]<< !IfThenStat @ >>               ||    ||   [1][0]: Block -> [24][Stat]<< !Block @ >>                              ||
+||   [3][1]: IfContent -> [23][Stat]< IfContent @ >                         ||    ||   [0][0]: Stat -> [28][Module]< Stat @ >                                 ||
+||   [2][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >                       ||    || [PREDECESSORS 20-20]: [20]                                               ||
+||   [1][0]: Block -> [24][Stat]<< !Block @ >>                              ||    || [SUCCESORS 31-31]: [31]                                                  ||
+||   [0][0]: Stat -> [28][Module]< Stat @ >                                 ||    ++==========================================================================++
+|| [PREDECESSORS 19-19]: [19]                                               ||    |
+|| [SUCCESORS 23-23]: [23]                                                  ||    |
+++==========================================================================++    |
+[0]                                                                               [1]
+ |                                                                                 |
+ +                                                                           +-----+
  |                                                                           |
 [0]                                                                         [1]
 ++====================================================================++    ++====================================================================++
@@ -923,48 +923,48 @@
  +
  |
 [0]
-++===================================================================++
-|| [36]: {IF} if                                                     ||
-||   TraceExec: [35]                                                 ||
-||   InsExec: [47:3]                                                 ||
-||   ForwardTrace: 29                                                ||
-||   NextACT: 46                                                     ||
-||   AmbiguityBegins: [1]                                            ||
-|| [14][IfThenStat]< "if" @ "cond" "then" Stat >                     ||
-|| [AST-INSTRUCTIONS]:                                               ||
-||     CSTop: [1] [2 -> 1]                                           ||
-||     OSTop: []                                                     ||
-||     LriStored: []                                                 ||
-||   - BeginObject(IfStat)                                           ||
-||       obj:9, new:36@0, top:36@0 assignedTo:[1]                    ||
-||       eoInsRefs: 64@1                                             ||
-||                                                                   ||
-||     CSTop: [9] [15 -> 2]                                          ||
-||     OSTop: []                                                     ||
-||     LriStored: []                                                 ||
-||   - DelayFieldAssignment()                                        ||
-||       objRefs: 10, 10                                             ||
-||       eoInsRefs: 68@0, 69@1                                       ||
-||                                                                   ||
-||     CSTop: [10] [16 -> 15]                                        ||
-||     OSTop: []                                                     ||
-||     LriStored: []                                                 ||
-||   - BeginObject(IfContentCandidate)                               ||
-||       obj:10, new:36@2, top:36@1 assignedTo:[9] dfas:[36@1, 36@1] ||
-||       eoInsRefs: 50@0, 62@0                                       ||
-||                                                                   ||
-||     CSTop: [10] [17 -> 16]                                        ||
-||     OSTop: []                                                     ||
-||     LriStored: []                                                 ||
-|| [RETURN STACK]:                                                   ||
-||   [16][30]: IfThenStat -> [20][IfContent]<< !IfThenStat @ >>      ||
-||   [15][30]: IfContent -> [23][Stat]< IfContent @ >                ||
-||   [14][30]: Stat -> [7][Block]< "{" { Stat @ } "}" >              ||
-||   [1][0]: Block -> [24][Stat]<< !Block @ >>                       ||
-||   [0][0]: Stat -> [28][Module]< Stat @ >                          ||
-|| [PREDECESSORS 30-30]: [30]                                        ||
-|| [SUCCESORS 37-37]: [37]                                           ||
-++===================================================================++
+++=======================================================================================++
+|| [36]: {IF} if                                                                         ||
+||   TraceExec: [35]                                                                     ||
+||   InsExec: [47:3]                                                                     ||
+||   ForwardTrace: 29                                                                    ||
+||   NextACT: 46                                                                         ||
+||   AmbiguityBegins: [1]                                                                ||
+|| [14][IfThenStat]< "if" @ "cond" "then" Stat >                                         ||
+|| [AST-INSTRUCTIONS]:                                                                   ||
+||     CSTop: [1] [2 -> 1]                                                               ||
+||     OSTop: []                                                                         ||
+||     LriStored: []                                                                     ||
+||   - BeginObject(IfStat)                                                               ||
+||       obj:9, new:36@0, top:36@0 bottom:[64@1] assignedTo:[1]                          ||
+||       eoInsRefs: 64@1                                                                 ||
+||                                                                                       ||
+||     CSTop: [9] [15 -> 2]                                                              ||
+||     OSTop: []                                                                         ||
+||     LriStored: []                                                                     ||
+||   - DelayFieldAssignment()                                                            ||
+||       objRefs: 10, 10                                                                 ||
+||       eoInsRefs: 68@0, 69@1                                                           ||
+||                                                                                       ||
+||     CSTop: [10] [16 -> 15]                                                            ||
+||     OSTop: []                                                                         ||
+||     LriStored: []                                                                     ||
+||   - BeginObject(IfContentCandidate)                                                   ||
+||       obj:10, new:36@2, top:36@1 bottom:[69@1, 68@0] assignedTo:[9] dfas:[36@1, 36@1] ||
+||       eoInsRefs: 50@0, 62@0                                                           ||
+||                                                                                       ||
+||     CSTop: [10] [17 -> 16]                                                            ||
+||     OSTop: []                                                                         ||
+||     LriStored: []                                                                     ||
+|| [RETURN STACK]:                                                                       ||
+||   [16][30]: IfThenStat -> [20][IfContent]<< !IfThenStat @ >>                          ||
+||   [15][30]: IfContent -> [23][Stat]< IfContent @ >                                    ||
+||   [14][30]: Stat -> [7][Block]< "{" { Stat @ } "}" >                                  ||
+||   [1][0]: Block -> [24][Stat]<< !Block @ >>                                           ||
+||   [0][0]: Stat -> [28][Module]< Stat @ >                                              ||
+|| [PREDECESSORS 30-30]: [30]                                                            ||
+|| [SUCCESORS 37-37]: [37]                                                               ||
+++=======================================================================================++
 [0]
  |
  +
@@ -1016,49 +1016,49 @@
  +
  |
 [0]
-++========================================================================++
-|| [39]: {IF} if                                                          ||
-||   TraceExec: [38]                                                      ||
-||   InsExec: [50:3]                                                      ||
-||   ForwardTrace: 29                                                     ||
-|| [14][IfThenStat]< "if" @ "cond" "then" Stat >                          ||
-|| [AST-INSTRUCTIONS]:                                                    ||
-||     CSTop: [10] [17 -> 16]                                             ||
-||     OSTop: []                                                          ||
-||     LriStored: []                                                      ||
-||   - BeginObject(IfStat)                                                ||
-||       obj:11, new:39@0, top:39@0 assignedTo:[10, 10]                   ||
-||       eoInsRefs: 49@1, 61@1                                            ||
-||                                                                        ||
-||     CSTop: [11] [18 -> 17]                                             ||
-||     OSTop: []                                                          ||
-||     LriStored: []                                                      ||
-||   - DelayFieldAssignment()                                             ||
-||       objRefs: 12, 12                                                  ||
-||       eoInsRefs: 48@1, 60@0                                            ||
-||                                                                        ||
-||     CSTop: [12] [19 -> 18]                                             ||
-||     OSTop: []                                                          ||
-||     LriStored: []                                                      ||
-||   - BeginObject(IfContentCandidate)                                    ||
-||       obj:12, new:39@2, top:39@1 assignedTo:[11, 11] dfas:[39@1, 39@1] ||
-||       eoInsRefs: 46@0                                                  ||
-||                                                                        ||
-||     CSTop: [12] [20 -> 19]                                             ||
-||     OSTop: []                                                          ||
-||     LriStored: []                                                      ||
-|| [RETURN STACK]:                                                        ||
-||   [19][38]: IfThenStat -> [20][IfContent]<< !IfThenStat @ >>           ||
-||   [18][38]: IfContent -> [23][Stat]< IfContent @ >                     ||
-||   [17][38]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ >      ||
-||   [16][30]: IfThenStat -> [20][IfContent]<< !IfThenStat @ >>           ||
-||   [15][30]: IfContent -> [23][Stat]< IfContent @ >                     ||
-||   [14][30]: Stat -> [7][Block]< "{" { Stat @ } "}" >                   ||
-||   [1][0]: Block -> [24][Stat]<< !Block @ >>                            ||
-||   [0][0]: Stat -> [28][Module]< Stat @ >                               ||
-|| [PREDECESSORS 38-38]: [38]                                             ||
-|| [SUCCESORS 40-40]: [40]                                                ||
-++========================================================================++
+++============================================================================================++
+|| [39]: {IF} if                                                                              ||
+||   TraceExec: [38]                                                                          ||
+||   InsExec: [50:3]                                                                          ||
+||   ForwardTrace: 29                                                                         ||
+|| [14][IfThenStat]< "if" @ "cond" "then" Stat >                                              ||
+|| [AST-INSTRUCTIONS]:                                                                        ||
+||     CSTop: [10] [17 -> 16]                                                                 ||
+||     OSTop: []                                                                              ||
+||     LriStored: []                                                                          ||
+||   - BeginObject(IfStat)                                                                    ||
+||       obj:11, new:39@0, top:39@0 bottom:[61@1, 49@1] assignedTo:[10, 10]                   ||
+||       eoInsRefs: 49@1, 61@1                                                                ||
+||                                                                                            ||
+||     CSTop: [11] [18 -> 17]                                                                 ||
+||     OSTop: []                                                                              ||
+||     LriStored: []                                                                          ||
+||   - DelayFieldAssignment()                                                                 ||
+||       objRefs: 12, 12                                                                      ||
+||       eoInsRefs: 48@1, 60@0                                                                ||
+||                                                                                            ||
+||     CSTop: [12] [19 -> 18]                                                                 ||
+||     OSTop: []                                                                              ||
+||     LriStored: []                                                                          ||
+||   - BeginObject(IfContentCandidate)                                                        ||
+||       obj:12, new:39@2, top:39@1 bottom:[60@0, 48@1] assignedTo:[11, 11] dfas:[39@1, 39@1] ||
+||       eoInsRefs: 46@0                                                                      ||
+||                                                                                            ||
+||     CSTop: [12] [20 -> 19]                                                                 ||
+||     OSTop: []                                                                              ||
+||     LriStored: []                                                                          ||
+|| [RETURN STACK]:                                                                            ||
+||   [19][38]: IfThenStat -> [20][IfContent]<< !IfThenStat @ >>                               ||
+||   [18][38]: IfContent -> [23][Stat]< IfContent @ >                                         ||
+||   [17][38]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ >                          ||
+||   [16][30]: IfThenStat -> [20][IfContent]<< !IfThenStat @ >>                               ||
+||   [15][30]: IfContent -> [23][Stat]< IfContent @ >                                         ||
+||   [14][30]: Stat -> [7][Block]< "{" { Stat @ } "}" >                                       ||
+||   [1][0]: Block -> [24][Stat]<< !Block @ >>                                                ||
+||   [0][0]: Stat -> [28][Module]< Stat @ >                                                   ||
+|| [PREDECESSORS 38-38]: [38]                                                                 ||
+|| [SUCCESORS 40-40]: [40]                                                                    ||
+++============================================================================================++
 [0]
  |
  +
@@ -1116,44 +1116,44 @@
  +
  |
 [0]
-++===================================================================++
-|| [42]: {DO} do                                                     ||
-||   TraceExec: [41]                                                 ||
-||   InsExec: [53:2]                                                 ||
-||   ForwardTrace: 29                                                ||
-|| [3][Do]< "do" @ ";" >                                             ||
-|| [AST-INSTRUCTIONS]:                                               ||
-||     CSTop: [12] [20 -> 19]                                        ||
-||     OSTop: []                                                     ||
-||     LriStored: []                                                 ||
-||   - DelayFieldAssignment()                                        ||
-||       objRefs: 13                                                 ||
-||       eoInsRefs: 45@1                                             ||
-||                                                                   ||
-||     CSTop: [13] [21 -> 20]                                        ||
-||     OSTop: []                                                     ||
-||     LriStored: []                                                 ||
-||   - BeginObject(DoStat)                                           ||
-||       obj:13, new:42@1, top:42@0 assignedTo:[12] dfas:[42@0]      ||
-||       eoInsRefs: 44@0                                             ||
-||                                                                   ||
-||     CSTop: [13] [22 -> 21]                                        ||
-||     OSTop: []                                                     ||
-||     LriStored: []                                                 ||
-|| [RETURN STACK]:                                                   ||
-||   [21][41]: Do -> [25][Stat]<< !Do @ >>                           ||
-||   [20][41]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ > ||
-||   [19][38]: IfThenStat -> [20][IfContent]<< !IfThenStat @ >>      ||
-||   [18][38]: IfContent -> [23][Stat]< IfContent @ >                ||
-||   [17][38]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ > ||
-||   [16][30]: IfThenStat -> [20][IfContent]<< !IfThenStat @ >>      ||
-||   [15][30]: IfContent -> [23][Stat]< IfContent @ >                ||
-||   [14][30]: Stat -> [7][Block]< "{" { Stat @ } "}" >              ||
-||   [1][0]: Block -> [24][Stat]<< !Block @ >>                       ||
-||   [0][0]: Stat -> [28][Module]< Stat @ >                          ||
-|| [PREDECESSORS 41-41]: [41]                                        ||
-|| [SUCCESORS 43-43]: [43]                                           ||
-++===================================================================++
+++============================================================================++
+|| [42]: {DO} do                                                              ||
+||   TraceExec: [41]                                                          ||
+||   InsExec: [53:2]                                                          ||
+||   ForwardTrace: 29                                                         ||
+|| [3][Do]< "do" @ ";" >                                                      ||
+|| [AST-INSTRUCTIONS]:                                                        ||
+||     CSTop: [12] [20 -> 19]                                                 ||
+||     OSTop: []                                                              ||
+||     LriStored: []                                                          ||
+||   - DelayFieldAssignment()                                                 ||
+||       objRefs: 13                                                          ||
+||       eoInsRefs: 45@1                                                      ||
+||                                                                            ||
+||     CSTop: [13] [21 -> 20]                                                 ||
+||     OSTop: []                                                              ||
+||     LriStored: []                                                          ||
+||   - BeginObject(DoStat)                                                    ||
+||       obj:13, new:42@1, top:42@0 bottom:[45@1] assignedTo:[12] dfas:[42@0] ||
+||       eoInsRefs: 44@0                                                      ||
+||                                                                            ||
+||     CSTop: [13] [22 -> 21]                                                 ||
+||     OSTop: []                                                              ||
+||     LriStored: []                                                          ||
+|| [RETURN STACK]:                                                            ||
+||   [21][41]: Do -> [25][Stat]<< !Do @ >>                                    ||
+||   [20][41]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ >          ||
+||   [19][38]: IfThenStat -> [20][IfContent]<< !IfThenStat @ >>               ||
+||   [18][38]: IfContent -> [23][Stat]< IfContent @ >                         ||
+||   [17][38]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ >          ||
+||   [16][30]: IfThenStat -> [20][IfContent]<< !IfThenStat @ >>               ||
+||   [15][30]: IfContent -> [23][Stat]< IfContent @ >                         ||
+||   [14][30]: Stat -> [7][Block]< "{" { Stat @ } "}" >                       ||
+||   [1][0]: Block -> [24][Stat]<< !Block @ >>                                ||
+||   [0][0]: Stat -> [28][Module]< Stat @ >                                   ||
+|| [PREDECESSORS 41-41]: [41]                                                 ||
+|| [SUCCESORS 43-43]: [43]                                                    ||
+++============================================================================++
 [0]
  |
  +
@@ -1438,49 +1438,49 @@
 ++===================================================================++    |
 [0]                                                                        [1]
  |                                                                          |
- +                                                                          ++
- |                                                                           |
-[0]                                                                         [1]
-++====================================================================++    ++====================================================================++
-|| [55]: {DO} do                                                      ||    || [56]: {DO} do                                                      ||
-||   TraceExec: [48]                                                  ||    ||   TraceExec: [61]                                                  ||
-||   InsExec: [61:2]                                                  ||    ||   InsExec: [81:2]                                                  ||
-||   ForwardTrace: 47                                                 ||    ||   ForwardTrace: 48                                                 ||
-|| [3][Do]< "do" @ ";" >                                              ||    || [3][Do]< "do" @ ";" >                                              ||
-|| [AST-INSTRUCTIONS]:                                                ||    || [AST-INSTRUCTIONS]:                                                ||
-||     CSTop: [12] [19 -> 18]                                         ||    ||     CSTop: [10] [16 -> 15]                                         ||
-||     OSTop: []                                                      ||    ||     OSTop: []                                                      ||
-||     LriStored: []                                                  ||    ||     LriStored: []                                                  ||
-||   - DelayFieldAssignment()                                         ||    ||   - DelayFieldAssignment()                                         ||
-||       objRefs: 14                                                  ||    ||       objRefs: 15                                                  ||
-||       eoInsRefs: 59@1                                              ||    ||       eoInsRefs: 67@1                                              ||
-||                                                                    ||    ||                                                                    ||
-||     CSTop: [14] [23 -> 19]                                         ||    ||     CSTop: [15] [25 -> 16]                                         ||
-||     OSTop: []                                                      ||    ||     OSTop: []                                                      ||
-||     LriStored: []                                                  ||    ||     LriStored: []                                                  ||
-||   - BeginObject(DoStat)                                            ||    ||   - BeginObject(DoStat)                                            ||
-||       obj:14, new:55@1, top:55@0 assignedTo:[12] dfas:[55@0]       ||    ||       obj:15, new:56@1, top:56@0 assignedTo:[10] dfas:[56@0]       ||
-||       eoInsRefs: 58@0                                              ||    ||       eoInsRefs: 66@0                                              ||
-||                                                                    ||    ||                                                                    ||
-||     CSTop: [14] [24 -> 23]                                         ||    ||     CSTop: [15] [26 -> 25]                                         ||
-||     OSTop: []                                                      ||    ||     OSTop: []                                                      ||
-||     LriStored: []                                                  ||    ||     LriStored: []                                                  ||
-|| [RETURN STACK]:                                                    ||    || [RETURN STACK]:                                                    ||
-||   [23][53]: Do -> [25][Stat]<< !Do @ >>                            ||    ||   [25][54]: Do -> [25][Stat]<< !Do @ >>                            ||
-||   [22][53]: Stat -> [18][IfContent]<< !IfThenStat "else" Stat @ >> ||    ||   [24][54]: Stat -> [18][IfContent]<< !IfThenStat "else" Stat @ >> ||
-||   [18][38]: IfContent -> [23][Stat]< IfContent @ >                 ||    ||   [15][30]: IfContent -> [23][Stat]< IfContent @ >                 ||
-||   [17][38]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ >  ||    ||   [14][30]: Stat -> [7][Block]< "{" { Stat @ } "}" >               ||
-||   [16][30]: IfThenStat -> [20][IfContent]<< !IfThenStat @ >>       ||    ||   [1][0]: Block -> [24][Stat]<< !Block @ >>                        ||
-||   [15][30]: IfContent -> [23][Stat]< IfContent @ >                 ||    ||   [0][0]: Stat -> [28][Module]< Stat @ >                           ||
-||   [14][30]: Stat -> [7][Block]< "{" { Stat @ } "}" >               ||    || [PREDECESSORS 54-54]: [54]                                         ||
-||   [1][0]: Block -> [24][Stat]<< !Block @ >>                        ||    || [SUCCESORS 65-65]: [65]                                            ||
-||   [0][0]: Stat -> [28][Module]< Stat @ >                           ||    ++====================================================================++
-|| [PREDECESSORS 53-53]: [53]                                         ||    |
-|| [SUCCESORS 57-57]: [57]                                            ||    |
-++====================================================================++    |
-[0]                                                                         [1]
- |                                                                           |
- +                                                                           +
+ +                                                                          +--------+
+ |                                                                                   |
+[0]                                                                                 [1]
+++============================================================================++    ++============================================================================++
+|| [55]: {DO} do                                                              ||    || [56]: {DO} do                                                              ||
+||   TraceExec: [48]                                                          ||    ||   TraceExec: [61]                                                          ||
+||   InsExec: [61:2]                                                          ||    ||   InsExec: [81:2]                                                          ||
+||   ForwardTrace: 47                                                         ||    ||   ForwardTrace: 48                                                         ||
+|| [3][Do]< "do" @ ";" >                                                      ||    || [3][Do]< "do" @ ";" >                                                      ||
+|| [AST-INSTRUCTIONS]:                                                        ||    || [AST-INSTRUCTIONS]:                                                        ||
+||     CSTop: [12] [19 -> 18]                                                 ||    ||     CSTop: [10] [16 -> 15]                                                 ||
+||     OSTop: []                                                              ||    ||     OSTop: []                                                              ||
+||     LriStored: []                                                          ||    ||     LriStored: []                                                          ||
+||   - DelayFieldAssignment()                                                 ||    ||   - DelayFieldAssignment()                                                 ||
+||       objRefs: 14                                                          ||    ||       objRefs: 15                                                          ||
+||       eoInsRefs: 59@1                                                      ||    ||       eoInsRefs: 67@1                                                      ||
+||                                                                            ||    ||                                                                            ||
+||     CSTop: [14] [23 -> 19]                                                 ||    ||     CSTop: [15] [25 -> 16]                                                 ||
+||     OSTop: []                                                              ||    ||     OSTop: []                                                              ||
+||     LriStored: []                                                          ||    ||     LriStored: []                                                          ||
+||   - BeginObject(DoStat)                                                    ||    ||   - BeginObject(DoStat)                                                    ||
+||       obj:14, new:55@1, top:55@0 bottom:[59@1] assignedTo:[12] dfas:[55@0] ||    ||       obj:15, new:56@1, top:56@0 bottom:[67@1] assignedTo:[10] dfas:[56@0] ||
+||       eoInsRefs: 58@0                                                      ||    ||       eoInsRefs: 66@0                                                      ||
+||                                                                            ||    ||                                                                            ||
+||     CSTop: [14] [24 -> 23]                                                 ||    ||     CSTop: [15] [26 -> 25]                                                 ||
+||     OSTop: []                                                              ||    ||     OSTop: []                                                              ||
+||     LriStored: []                                                          ||    ||     LriStored: []                                                          ||
+|| [RETURN STACK]:                                                            ||    || [RETURN STACK]:                                                            ||
+||   [23][53]: Do -> [25][Stat]<< !Do @ >>                                    ||    ||   [25][54]: Do -> [25][Stat]<< !Do @ >>                                    ||
+||   [22][53]: Stat -> [18][IfContent]<< !IfThenStat "else" Stat @ >>         ||    ||   [24][54]: Stat -> [18][IfContent]<< !IfThenStat "else" Stat @ >>         ||
+||   [18][38]: IfContent -> [23][Stat]< IfContent @ >                         ||    ||   [15][30]: IfContent -> [23][Stat]< IfContent @ >                         ||
+||   [17][38]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ >          ||    ||   [14][30]: Stat -> [7][Block]< "{" { Stat @ } "}" >                       ||
+||   [16][30]: IfThenStat -> [20][IfContent]<< !IfThenStat @ >>               ||    ||   [1][0]: Block -> [24][Stat]<< !Block @ >>                                ||
+||   [15][30]: IfContent -> [23][Stat]< IfContent @ >                         ||    ||   [0][0]: Stat -> [28][Module]< Stat @ >                                   ||
+||   [14][30]: Stat -> [7][Block]< "{" { Stat @ } "}" >                       ||    || [PREDECESSORS 54-54]: [54]                                                 ||
+||   [1][0]: Block -> [24][Stat]<< !Block @ >>                                ||    || [SUCCESORS 65-65]: [65]                                                    ||
+||   [0][0]: Stat -> [28][Module]< Stat @ >                                   ||    ++============================================================================++
+|| [PREDECESSORS 53-53]: [53]                                                 ||    |
+|| [SUCCESORS 57-57]: [57]                                                    ||    |
+++============================================================================++    |
+[0]                                                                                 [1]
+ |                                                                                   |
+ +                                                                           +-------+
  |                                                                           |
 [0]                                                                         [1]
 ++====================================================================++    ++====================================================================++
@@ -1760,48 +1760,48 @@
  +
  |
 [0]
-++====================================================================++
-|| [70]: {IF} if                                                      ||
-||   TraceExec: [68]                                                  ||
-||   InsExec: [91:3]                                                  ||
-||   ForwardTrace: 63                                                 ||
-||   NextACT: 80                                                      ||
-||   AmbiguityBegins: [2]                                             ||
-|| [14][IfThenStat]< "if" @ "cond" "then" Stat >                      ||
-|| [AST-INSTRUCTIONS]:                                                ||
-||     CSTop: [1] [2 -> 1]                                            ||
-||     OSTop: []                                                      ||
-||     LriStored: []                                                  ||
-||   - BeginObject(IfStat)                                            ||
-||       obj:16, new:70@0, top:70@0 assignedTo:[1]                    ||
-||       eoInsRefs: 98@1                                              ||
-||                                                                    ||
-||     CSTop: [16] [27 -> 2]                                          ||
-||     OSTop: []                                                      ||
-||     LriStored: []                                                  ||
-||   - DelayFieldAssignment()                                         ||
-||       objRefs: 17, 17                                              ||
-||       eoInsRefs: 102@0, 103@1                                      ||
-||                                                                    ||
-||     CSTop: [17] [28 -> 27]                                         ||
-||     OSTop: []                                                      ||
-||     LriStored: []                                                  ||
-||   - BeginObject(IfContentCandidate)                                ||
-||       obj:17, new:70@2, top:70@1 assignedTo:[16] dfas:[70@1, 70@1] ||
-||       eoInsRefs: 84@0, 96@0                                        ||
-||                                                                    ||
-||     CSTop: [17] [29 -> 28]                                         ||
-||     OSTop: []                                                      ||
-||     LriStored: []                                                  ||
-|| [RETURN STACK]:                                                    ||
-||   [28][64]: IfThenStat -> [20][IfContent]<< !IfThenStat @ >>       ||
-||   [27][64]: IfContent -> [23][Stat]< IfContent @ >                 ||
-||   [26][64]: Stat -> [7][Block]< "{" { Stat @ } "}" >               ||
-||   [1][0]: Block -> [24][Stat]<< !Block @ >>                        ||
-||   [0][0]: Stat -> [28][Module]< Stat @ >                           ||
-|| [PREDECESSORS 64-64]: [64]                                         ||
-|| [SUCCESORS 71-71]: [71]                                            ||
-++====================================================================++
+++==========================================================================================++
+|| [70]: {IF} if                                                                            ||
+||   TraceExec: [68]                                                                        ||
+||   InsExec: [91:3]                                                                        ||
+||   ForwardTrace: 63                                                                       ||
+||   NextACT: 80                                                                            ||
+||   AmbiguityBegins: [2]                                                                   ||
+|| [14][IfThenStat]< "if" @ "cond" "then" Stat >                                            ||
+|| [AST-INSTRUCTIONS]:                                                                      ||
+||     CSTop: [1] [2 -> 1]                                                                  ||
+||     OSTop: []                                                                            ||
+||     LriStored: []                                                                        ||
+||   - BeginObject(IfStat)                                                                  ||
+||       obj:16, new:70@0, top:70@0 bottom:[98@1] assignedTo:[1]                            ||
+||       eoInsRefs: 98@1                                                                    ||
+||                                                                                          ||
+||     CSTop: [16] [27 -> 2]                                                                ||
+||     OSTop: []                                                                            ||
+||     LriStored: []                                                                        ||
+||   - DelayFieldAssignment()                                                               ||
+||       objRefs: 17, 17                                                                    ||
+||       eoInsRefs: 102@0, 103@1                                                            ||
+||                                                                                          ||
+||     CSTop: [17] [28 -> 27]                                                               ||
+||     OSTop: []                                                                            ||
+||     LriStored: []                                                                        ||
+||   - BeginObject(IfContentCandidate)                                                      ||
+||       obj:17, new:70@2, top:70@1 bottom:[103@1, 102@0] assignedTo:[16] dfas:[70@1, 70@1] ||
+||       eoInsRefs: 84@0, 96@0                                                              ||
+||                                                                                          ||
+||     CSTop: [17] [29 -> 28]                                                               ||
+||     OSTop: []                                                                            ||
+||     LriStored: []                                                                        ||
+|| [RETURN STACK]:                                                                          ||
+||   [28][64]: IfThenStat -> [20][IfContent]<< !IfThenStat @ >>                             ||
+||   [27][64]: IfContent -> [23][Stat]< IfContent @ >                                       ||
+||   [26][64]: Stat -> [7][Block]< "{" { Stat @ } "}" >                                     ||
+||   [1][0]: Block -> [24][Stat]<< !Block @ >>                                              ||
+||   [0][0]: Stat -> [28][Module]< Stat @ >                                                 ||
+|| [PREDECESSORS 64-64]: [64]                                                               ||
+|| [SUCCESORS 71-71]: [71]                                                                  ||
+++==========================================================================================++
 [0]
  |
  +
@@ -1853,49 +1853,49 @@
  +
  |
 [0]
-++========================================================================++
-|| [73]: {IF} if                                                          ||
-||   TraceExec: [71]                                                      ||
-||   InsExec: [94:3]                                                      ||
-||   ForwardTrace: 63                                                     ||
-|| [14][IfThenStat]< "if" @ "cond" "then" Stat >                          ||
-|| [AST-INSTRUCTIONS]:                                                    ||
-||     CSTop: [17] [29 -> 28]                                             ||
-||     OSTop: []                                                          ||
-||     LriStored: []                                                      ||
-||   - BeginObject(IfStat)                                                ||
-||       obj:18, new:73@0, top:73@0 assignedTo:[17, 17]                   ||
-||       eoInsRefs: 83@1, 95@1                                            ||
-||                                                                        ||
-||     CSTop: [18] [30 -> 29]                                             ||
-||     OSTop: []                                                          ||
-||     LriStored: []                                                      ||
-||   - DelayFieldAssignment()                                             ||
-||       objRefs: 19, 19                                                  ||
-||       eoInsRefs: 82@1, 94@0                                            ||
-||                                                                        ||
-||     CSTop: [19] [31 -> 30]                                             ||
-||     OSTop: []                                                          ||
-||     LriStored: []                                                      ||
-||   - BeginObject(IfContentCandidate)                                    ||
-||       obj:19, new:73@2, top:73@1 assignedTo:[18, 18] dfas:[73@1, 73@1] ||
-||       eoInsRefs: 80@0                                                  ||
-||                                                                        ||
-||     CSTop: [19] [32 -> 31]                                             ||
-||     OSTop: []                                                          ||
-||     LriStored: []                                                      ||
-|| [RETURN STACK]:                                                        ||
-||   [31][72]: IfThenStat -> [20][IfContent]<< !IfThenStat @ >>           ||
-||   [30][72]: IfContent -> [23][Stat]< IfContent @ >                     ||
-||   [29][72]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ >      ||
-||   [28][64]: IfThenStat -> [20][IfContent]<< !IfThenStat @ >>           ||
-||   [27][64]: IfContent -> [23][Stat]< IfContent @ >                     ||
-||   [26][64]: Stat -> [7][Block]< "{" { Stat @ } "}" >                   ||
-||   [1][0]: Block -> [24][Stat]<< !Block @ >>                            ||
-||   [0][0]: Stat -> [28][Module]< Stat @ >                               ||
-|| [PREDECESSORS 72-72]: [72]                                             ||
-|| [SUCCESORS 74-74]: [74]                                                ||
-++========================================================================++
+++============================================================================================++
+|| [73]: {IF} if                                                                              ||
+||   TraceExec: [71]                                                                          ||
+||   InsExec: [94:3]                                                                          ||
+||   ForwardTrace: 63                                                                         ||
+|| [14][IfThenStat]< "if" @ "cond" "then" Stat >                                              ||
+|| [AST-INSTRUCTIONS]:                                                                        ||
+||     CSTop: [17] [29 -> 28]                                                                 ||
+||     OSTop: []                                                                              ||
+||     LriStored: []                                                                          ||
+||   - BeginObject(IfStat)                                                                    ||
+||       obj:18, new:73@0, top:73@0 bottom:[95@1, 83@1] assignedTo:[17, 17]                   ||
+||       eoInsRefs: 83@1, 95@1                                                                ||
+||                                                                                            ||
+||     CSTop: [18] [30 -> 29]                                                                 ||
+||     OSTop: []                                                                              ||
+||     LriStored: []                                                                          ||
+||   - DelayFieldAssignment()                                                                 ||
+||       objRefs: 19, 19                                                                      ||
+||       eoInsRefs: 82@1, 94@0                                                                ||
+||                                                                                            ||
+||     CSTop: [19] [31 -> 30]                                                                 ||
+||     OSTop: []                                                                              ||
+||     LriStored: []                                                                          ||
+||   - BeginObject(IfContentCandidate)                                                        ||
+||       obj:19, new:73@2, top:73@1 bottom:[94@0, 82@1] assignedTo:[18, 18] dfas:[73@1, 73@1] ||
+||       eoInsRefs: 80@0                                                                      ||
+||                                                                                            ||
+||     CSTop: [19] [32 -> 31]                                                                 ||
+||     OSTop: []                                                                              ||
+||     LriStored: []                                                                          ||
+|| [RETURN STACK]:                                                                            ||
+||   [31][72]: IfThenStat -> [20][IfContent]<< !IfThenStat @ >>                               ||
+||   [30][72]: IfContent -> [23][Stat]< IfContent @ >                                         ||
+||   [29][72]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ >                          ||
+||   [28][64]: IfThenStat -> [20][IfContent]<< !IfThenStat @ >>                               ||
+||   [27][64]: IfContent -> [23][Stat]< IfContent @ >                                         ||
+||   [26][64]: Stat -> [7][Block]< "{" { Stat @ } "}" >                                       ||
+||   [1][0]: Block -> [24][Stat]<< !Block @ >>                                                ||
+||   [0][0]: Stat -> [28][Module]< Stat @ >                                                   ||
+|| [PREDECESSORS 72-72]: [72]                                                                 ||
+|| [SUCCESORS 74-74]: [74]                                                                    ||
+++============================================================================================++
 [0]
  |
  +
@@ -1953,44 +1953,44 @@
  +
  |
 [0]
-++===================================================================++
-|| [76]: {DO} do                                                     ||
-||   TraceExec: [74]                                                 ||
-||   InsExec: [97:2]                                                 ||
-||   ForwardTrace: 63                                                ||
-|| [3][Do]< "do" @ ";" >                                             ||
-|| [AST-INSTRUCTIONS]:                                               ||
-||     CSTop: [19] [32 -> 31]                                        ||
-||     OSTop: []                                                     ||
-||     LriStored: []                                                 ||
-||   - DelayFieldAssignment()                                        ||
-||       objRefs: 20                                                 ||
-||       eoInsRefs: 79@1                                             ||
-||                                                                   ||
-||     CSTop: [20] [33 -> 32]                                        ||
-||     OSTop: []                                                     ||
-||     LriStored: []                                                 ||
-||   - BeginObject(DoStat)                                           ||
-||       obj:20, new:76@1, top:76@0 assignedTo:[19] dfas:[76@0]      ||
-||       eoInsRefs: 78@0                                             ||
-||                                                                   ||
-||     CSTop: [20] [34 -> 33]                                        ||
-||     OSTop: []                                                     ||
-||     LriStored: []                                                 ||
-|| [RETURN STACK]:                                                   ||
-||   [33][75]: Do -> [25][Stat]<< !Do @ >>                           ||
-||   [32][75]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ > ||
-||   [31][72]: IfThenStat -> [20][IfContent]<< !IfThenStat @ >>      ||
-||   [30][72]: IfContent -> [23][Stat]< IfContent @ >                ||
-||   [29][72]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ > ||
-||   [28][64]: IfThenStat -> [20][IfContent]<< !IfThenStat @ >>      ||
-||   [27][64]: IfContent -> [23][Stat]< IfContent @ >                ||
-||   [26][64]: Stat -> [7][Block]< "{" { Stat @ } "}" >              ||
-||   [1][0]: Block -> [24][Stat]<< !Block @ >>                       ||
-||   [0][0]: Stat -> [28][Module]< Stat @ >                          ||
-|| [PREDECESSORS 75-75]: [75]                                        ||
-|| [SUCCESORS 77-77]: [77]                                           ||
-++===================================================================++
+++============================================================================++
+|| [76]: {DO} do                                                              ||
+||   TraceExec: [74]                                                          ||
+||   InsExec: [97:2]                                                          ||
+||   ForwardTrace: 63                                                         ||
+|| [3][Do]< "do" @ ";" >                                                      ||
+|| [AST-INSTRUCTIONS]:                                                        ||
+||     CSTop: [19] [32 -> 31]                                                 ||
+||     OSTop: []                                                              ||
+||     LriStored: []                                                          ||
+||   - DelayFieldAssignment()                                                 ||
+||       objRefs: 20                                                          ||
+||       eoInsRefs: 79@1                                                      ||
+||                                                                            ||
+||     CSTop: [20] [33 -> 32]                                                 ||
+||     OSTop: []                                                              ||
+||     LriStored: []                                                          ||
+||   - BeginObject(DoStat)                                                    ||
+||       obj:20, new:76@1, top:76@0 bottom:[79@1] assignedTo:[19] dfas:[76@0] ||
+||       eoInsRefs: 78@0                                                      ||
+||                                                                            ||
+||     CSTop: [20] [34 -> 33]                                                 ||
+||     OSTop: []                                                              ||
+||     LriStored: []                                                          ||
+|| [RETURN STACK]:                                                            ||
+||   [33][75]: Do -> [25][Stat]<< !Do @ >>                                    ||
+||   [32][75]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ >          ||
+||   [31][72]: IfThenStat -> [20][IfContent]<< !IfThenStat @ >>               ||
+||   [30][72]: IfContent -> [23][Stat]< IfContent @ >                         ||
+||   [29][72]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ >          ||
+||   [28][64]: IfThenStat -> [20][IfContent]<< !IfThenStat @ >>               ||
+||   [27][64]: IfContent -> [23][Stat]< IfContent @ >                         ||
+||   [26][64]: Stat -> [7][Block]< "{" { Stat @ } "}" >                       ||
+||   [1][0]: Block -> [24][Stat]<< !Block @ >>                                ||
+||   [0][0]: Stat -> [28][Module]< Stat @ >                                   ||
+|| [PREDECESSORS 75-75]: [75]                                                 ||
+|| [SUCCESORS 77-77]: [77]                                                    ||
+++============================================================================++
 [0]
  |
  +
@@ -2275,49 +2275,49 @@
 ++===================================================================++    |
 [0]                                                                        [1]
  |                                                                          |
- +                                                                          ++
- |                                                                           |
-[0]                                                                         [1]
-++====================================================================++    ++====================================================================++
-|| [89]: {DO} do                                                      ||    || [90]: {DO} do                                                      ||
-||   TraceExec: [81]                                                  ||    ||   TraceExec: [94]                                                  ||
-||   InsExec: [105:2]                                                 ||    ||   InsExec: [125:2]                                                 ||
-||   ForwardTrace: 81                                                 ||    ||   ForwardTrace: 82                                                 ||
-|| [3][Do]< "do" @ ";" >                                              ||    || [3][Do]< "do" @ ";" >                                              ||
-|| [AST-INSTRUCTIONS]:                                                ||    || [AST-INSTRUCTIONS]:                                                ||
-||     CSTop: [19] [31 -> 30]                                         ||    ||     CSTop: [17] [28 -> 27]                                         ||
-||     OSTop: []                                                      ||    ||     OSTop: []                                                      ||
-||     LriStored: []                                                  ||    ||     LriStored: []                                                  ||
-||   - DelayFieldAssignment()                                         ||    ||   - DelayFieldAssignment()                                         ||
-||       objRefs: 21                                                  ||    ||       objRefs: 22                                                  ||
-||       eoInsRefs: 93@1                                              ||    ||       eoInsRefs: 101@1                                             ||
-||                                                                    ||    ||                                                                    ||
-||     CSTop: [21] [35 -> 31]                                         ||    ||     CSTop: [22] [37 -> 28]                                         ||
-||     OSTop: []                                                      ||    ||     OSTop: []                                                      ||
-||     LriStored: []                                                  ||    ||     LriStored: []                                                  ||
-||   - BeginObject(DoStat)                                            ||    ||   - BeginObject(DoStat)                                            ||
-||       obj:21, new:89@1, top:89@0 assignedTo:[19] dfas:[89@0]       ||    ||       obj:22, new:90@1, top:90@0 assignedTo:[17] dfas:[90@0]       ||
-||       eoInsRefs: 92@0                                              ||    ||       eoInsRefs: 100@0                                             ||
-||                                                                    ||    ||                                                                    ||
-||     CSTop: [21] [36 -> 35]                                         ||    ||     CSTop: [22] [38 -> 37]                                         ||
-||     OSTop: []                                                      ||    ||     OSTop: []                                                      ||
-||     LriStored: []                                                  ||    ||     LriStored: []                                                  ||
-|| [RETURN STACK]:                                                    ||    || [RETURN STACK]:                                                    ||
-||   [35][87]: Do -> [25][Stat]<< !Do @ >>                            ||    ||   [37][88]: Do -> [25][Stat]<< !Do @ >>                            ||
-||   [34][87]: Stat -> [18][IfContent]<< !IfThenStat "else" Stat @ >> ||    ||   [36][88]: Stat -> [18][IfContent]<< !IfThenStat "else" Stat @ >> ||
-||   [30][72]: IfContent -> [23][Stat]< IfContent @ >                 ||    ||   [27][64]: IfContent -> [23][Stat]< IfContent @ >                 ||
-||   [29][72]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ >  ||    ||   [26][64]: Stat -> [7][Block]< "{" { Stat @ } "}" >               ||
-||   [28][64]: IfThenStat -> [20][IfContent]<< !IfThenStat @ >>       ||    ||   [1][0]: Block -> [24][Stat]<< !Block @ >>                        ||
-||   [27][64]: IfContent -> [23][Stat]< IfContent @ >                 ||    ||   [0][0]: Stat -> [28][Module]< Stat @ >                           ||
-||   [26][64]: Stat -> [7][Block]< "{" { Stat @ } "}" >               ||    || [PREDECESSORS 88-88]: [88]                                         ||
-||   [1][0]: Block -> [24][Stat]<< !Block @ >>                        ||    || [SUCCESORS 99-99]: [99]                                            ||
-||   [0][0]: Stat -> [28][Module]< Stat @ >                           ||    ++====================================================================++
-|| [PREDECESSORS 87-87]: [87]                                         ||    |
-|| [SUCCESORS 91-91]: [91]                                            ||    |
-++====================================================================++    |
-[0]                                                                         [1]
- |                                                                           |
- +                                                                           +
+ +                                                                          +--------+
+ |                                                                                   |
+[0]                                                                                 [1]
+++============================================================================++    ++=============================================================================++
+|| [89]: {DO} do                                                              ||    || [90]: {DO} do                                                               ||
+||   TraceExec: [81]                                                          ||    ||   TraceExec: [94]                                                           ||
+||   InsExec: [105:2]                                                         ||    ||   InsExec: [125:2]                                                          ||
+||   ForwardTrace: 81                                                         ||    ||   ForwardTrace: 82                                                          ||
+|| [3][Do]< "do" @ ";" >                                                      ||    || [3][Do]< "do" @ ";" >                                                       ||
+|| [AST-INSTRUCTIONS]:                                                        ||    || [AST-INSTRUCTIONS]:                                                         ||
+||     CSTop: [19] [31 -> 30]                                                 ||    ||     CSTop: [17] [28 -> 27]                                                  ||
+||     OSTop: []                                                              ||    ||     OSTop: []                                                               ||
+||     LriStored: []                                                          ||    ||     LriStored: []                                                           ||
+||   - DelayFieldAssignment()                                                 ||    ||   - DelayFieldAssignment()                                                  ||
+||       objRefs: 21                                                          ||    ||       objRefs: 22                                                           ||
+||       eoInsRefs: 93@1                                                      ||    ||       eoInsRefs: 101@1                                                      ||
+||                                                                            ||    ||                                                                             ||
+||     CSTop: [21] [35 -> 31]                                                 ||    ||     CSTop: [22] [37 -> 28]                                                  ||
+||     OSTop: []                                                              ||    ||     OSTop: []                                                               ||
+||     LriStored: []                                                          ||    ||     LriStored: []                                                           ||
+||   - BeginObject(DoStat)                                                    ||    ||   - BeginObject(DoStat)                                                     ||
+||       obj:21, new:89@1, top:89@0 bottom:[93@1] assignedTo:[19] dfas:[89@0] ||    ||       obj:22, new:90@1, top:90@0 bottom:[101@1] assignedTo:[17] dfas:[90@0] ||
+||       eoInsRefs: 92@0                                                      ||    ||       eoInsRefs: 100@0                                                      ||
+||                                                                            ||    ||                                                                             ||
+||     CSTop: [21] [36 -> 35]                                                 ||    ||     CSTop: [22] [38 -> 37]                                                  ||
+||     OSTop: []                                                              ||    ||     OSTop: []                                                               ||
+||     LriStored: []                                                          ||    ||     LriStored: []                                                           ||
+|| [RETURN STACK]:                                                            ||    || [RETURN STACK]:                                                             ||
+||   [35][87]: Do -> [25][Stat]<< !Do @ >>                                    ||    ||   [37][88]: Do -> [25][Stat]<< !Do @ >>                                     ||
+||   [34][87]: Stat -> [18][IfContent]<< !IfThenStat "else" Stat @ >>         ||    ||   [36][88]: Stat -> [18][IfContent]<< !IfThenStat "else" Stat @ >>          ||
+||   [30][72]: IfContent -> [23][Stat]< IfContent @ >                         ||    ||   [27][64]: IfContent -> [23][Stat]< IfContent @ >                          ||
+||   [29][72]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ >          ||    ||   [26][64]: Stat -> [7][Block]< "{" { Stat @ } "}" >                        ||
+||   [28][64]: IfThenStat -> [20][IfContent]<< !IfThenStat @ >>               ||    ||   [1][0]: Block -> [24][Stat]<< !Block @ >>                                 ||
+||   [27][64]: IfContent -> [23][Stat]< IfContent @ >                         ||    ||   [0][0]: Stat -> [28][Module]< Stat @ >                                    ||
+||   [26][64]: Stat -> [7][Block]< "{" { Stat @ } "}" >                       ||    || [PREDECESSORS 88-88]: [88]                                                  ||
+||   [1][0]: Block -> [24][Stat]<< !Block @ >>                                ||    || [SUCCESORS 99-99]: [99]                                                     ||
+||   [0][0]: Stat -> [28][Module]< Stat @ >                                   ||    ++=============================================================================++
+|| [PREDECESSORS 87-87]: [87]                                                 ||    |
+|| [SUCCESORS 91-91]: [91]                                                    ||    |
+++============================================================================++    |
+[0]                                                                                 [1]
+ |                                                                                   |
+ +                                                                           +-------+
  |                                                                           |
 [0]                                                                         [1]
 ++====================================================================++    ++====================================================================++

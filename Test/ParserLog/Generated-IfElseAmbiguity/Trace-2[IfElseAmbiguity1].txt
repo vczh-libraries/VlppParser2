@@ -14,43 +14,43 @@
  +
  |
 [0]
-++==============================================================++
-|| [1]: {IF} if                                                 ||
-||   TraceExec: [1]                                             ||
-||   InsExec: [0:3]                                             ||
-||   ForwardTrace: 0                                            ||
-|| [16][IfContent]< "if" @ "cond" "then" Stat [ "else" Stat ] > ||
-|| [AST-INSTRUCTIONS]:                                          ||
-||     CSTop: []                                                ||
-||     OSTop: []                                                ||
-||     LriStored: []                                            ||
-||   - BeginObject(Module)                                      ||
-||       obj:0, new:1@0, top:1@0                                ||
-||       eoInsRefs: 25@1                                        ||
-||                                                              ||
-||     CSTop: [0] [0 -> -1]                                     ||
-||     OSTop: []                                                ||
-||     LriStored: []                                            ||
-||   - BeginObject(IfStat)                                      ||
-||       obj:1, new:1@1, top:1@1 assignedTo:[0]                 ||
-||       eoInsRefs: 24@1                                        ||
-||                                                              ||
-||     CSTop: [1] [1 -> 0]                                      ||
-||     OSTop: []                                                ||
-||     LriStored: []                                            ||
-||   - BeginObject(IfContentCandidate)                          ||
-||       obj:2, new:1@2, top:1@2 assignedTo:[1]                 ||
-||       eoInsRefs: 29@0, 30@0                                  ||
-||                                                              ||
-||     CSTop: [2] [2 -> 1]                                      ||
-||     OSTop: []                                                ||
-||     LriStored: []                                            ||
-|| [RETURN STACK]:                                              ||
-||   [1][0]: IfContent -> [19][Stat]< IfContent @ >             ||
-||   [0][0]: Stat -> [24][Module]< Stat @ >                     ||
-|| [PREDECESSORS 0-0]: [0]                                      ||
-|| [SUCCESORS 2-2]: [2]                                         ||
-++==============================================================++
+++==================================================================++
+|| [1]: {IF} if                                                     ||
+||   TraceExec: [1]                                                 ||
+||   InsExec: [0:3]                                                 ||
+||   ForwardTrace: 0                                                ||
+|| [16][IfContent]< "if" @ "cond" "then" Stat [ "else" Stat ] >     ||
+|| [AST-INSTRUCTIONS]:                                              ||
+||     CSTop: []                                                    ||
+||     OSTop: []                                                    ||
+||     LriStored: []                                                ||
+||   - BeginObject(Module)                                          ||
+||       obj:0, new:1@0, top:1@0 bottom:[25@1]                      ||
+||       eoInsRefs: 25@1                                            ||
+||                                                                  ||
+||     CSTop: [0] [0 -> -1]                                         ||
+||     OSTop: []                                                    ||
+||     LriStored: []                                                ||
+||   - BeginObject(IfStat)                                          ||
+||       obj:1, new:1@1, top:1@1 bottom:[24@1] assignedTo:[0]       ||
+||       eoInsRefs: 24@1                                            ||
+||                                                                  ||
+||     CSTop: [1] [1 -> 0]                                          ||
+||     OSTop: []                                                    ||
+||     LriStored: []                                                ||
+||   - BeginObject(IfContentCandidate)                              ||
+||       obj:2, new:1@2, top:1@2 bottom:[30@0, 29@0] assignedTo:[1] ||
+||       eoInsRefs: 29@0, 30@0                                      ||
+||                                                                  ||
+||     CSTop: [2] [2 -> 1]                                          ||
+||     OSTop: []                                                    ||
+||     LriStored: []                                                ||
+|| [RETURN STACK]:                                                  ||
+||   [1][0]: IfContent -> [19][Stat]< IfContent @ >                 ||
+||   [0][0]: Stat -> [24][Module]< Stat @ >                         ||
+|| [PREDECESSORS 0-0]: [0]                                          ||
+|| [SUCCESORS 2-2]: [2]                                             ||
+++==================================================================++
 [0]
  |
  +
@@ -107,14 +107,14 @@
 ||     OSTop: []                                                                  ||
 ||     LriStored: []                                                              ||
 ||   - BeginObject(IfStat)                                                        ||
-||       obj:3, new:4@0, top:4@0 assignedTo:[2, 2]                                ||
+||       obj:3, new:4@0, top:4@0 bottom:[22@1, 12@1] assignedTo:[2, 2]            ||
 ||       eoInsRefs: 12@1, 22@1                                                    ||
 ||                                                                                ||
 ||     CSTop: [3] [3 -> 2]                                                        ||
 ||     OSTop: []                                                                  ||
 ||     LriStored: []                                                              ||
 ||   - BeginObject(IfContentCandidate)                                            ||
-||       obj:4, new:4@1, top:4@1 assignedTo:[3, 3]                                ||
+||       obj:4, new:4@1, top:4@1 bottom:[21@0, 11@0] assignedTo:[3, 3]            ||
 ||       eoInsRefs: 11@0, 21@0                                                    ||
 ||                                                                                ||
 ||     CSTop: [4] [4 -> 3]                                                        ||
@@ -195,7 +195,7 @@
 ||     OSTop: []                                                                  ||
 ||     LriStored: []                                                              ||
 ||   - BeginObject(DoStat)                                                        ||
-||       obj:5, new:7@1, top:7@0 assignedTo:[4] dfas:[7@0]                        ||
+||       obj:5, new:7@1, top:7@0 bottom:[10@1] assignedTo:[4] dfas:[7@0]          ||
 ||       eoInsRefs: 9@0                                                           ||
 ||                                                                                ||
 ||     CSTop: [5] [6 -> 5]                                                        ||
@@ -406,7 +406,7 @@
 ||     OSTop: []                                                                   ||    ||     OSTop: []                                                                   ||
 ||     LriStored: []                                                               ||    ||     LriStored: []                                                               ||
 ||   - BeginObject(DoStat)                                                         ||    ||   - BeginObject(DoStat)                                                         ||
-||       obj:6, new:16@1, top:16@0 assignedTo:[4] dfas:[16@0]                      ||    ||       obj:7, new:17@1, top:17@0 assignedTo:[2] dfas:[17@0]                      ||
+||       obj:6, new:16@1, top:16@0 bottom:[20@1] assignedTo:[4] dfas:[16@0]        ||    ||       obj:7, new:17@1, top:17@0 bottom:[28@1] assignedTo:[2] dfas:[17@0]        ||
 ||       eoInsRefs: 19@0                                                           ||    ||       eoInsRefs: 27@0                                                           ||
 ||                                                                                 ||    ||                                                                                 ||
 ||     CSTop: [6] [8 -> 7]                                                         ||    ||     CSTop: [7] [10 -> 9]                                                        ||
