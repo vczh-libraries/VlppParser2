@@ -626,6 +626,7 @@ TraceManager
 				void										CalculateObjectFirstInstruction();
 
 				// phase: PartialExecuteTraces - CalculateObjectLastInstruction
+				bool										IsInTheSameBranch(Trace* forward, Trace* targetForwardAtFront);
 				void										CalculateObjectLastInstruction();
 
 				// phase: PartialExecuteTraces
