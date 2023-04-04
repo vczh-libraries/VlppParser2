@@ -95,6 +95,11 @@ TEST_FILE
 		runParser(L"TypeOrExpr", L"BExprOrQName2", [&]() { return GetCppParser().Parse_TypeOrExpr(L"Name<a < b>"); });
 	});
 
+	TEST_CASE(L"void(int(...))")
+	{
+		runParser(L"TypeOrExpr", L"AmbiguousArgument", [&]() { return GetCppParser().Parse_TypeOrExpr(L"void(int(...))"); });
+	});
+
 	GetCppParser().OnTraceProcessing.Remove(handlerOnTraceProcessing);
 	GetCppParser().OnReadyToExecute.Remove(handlerOnReadyToExecute);
 }
