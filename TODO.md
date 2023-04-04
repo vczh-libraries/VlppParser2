@@ -3,6 +3,7 @@
 ## BuiltIn-Cpp
 
 - Progress
+  - Move `static_assert` from statement to declaration.
   - Declaration unfinished.
 
 ## Next task

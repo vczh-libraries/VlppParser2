@@ -4,21 +4,21 @@ TEST_FILE
 {
 	TEST_PARSER(L"TypeOrExpr", L"Ambiguous_EE")
 	{
-		ParseTypeExpr<CppTypeOrExprToResolve>(parser, line);
+		ParseAmbiguousTypeExpr<CppTypeOrExprToResolve, CppExprOnly>(parser, line);
 	});
 
 	TEST_PARSER(L"TypeOrExpr", L"Ambiguous_EQ")
 	{
-		ParseTypeExpr<CppTypeOrExprToResolve>(parser, line);
+		ParseAmbiguousTypeExpr<CppTypeOrExprToResolve, CppExprOnly, CppQualifiedName>(parser, line);
 	});
 
 	TEST_PARSER(L"TypeOrExpr", L"Ambiguous_ET")
 	{
-		ParseTypeExpr<CppTypeOrExprToResolve>(parser, line);
+		ParseAmbiguousTypeExpr<CppTypeOrExprToResolve, CppExprOnly, CppDeclaratorType>(parser, line);
 	});
 
 	TEST_PARSER(L"Statements", L"Ambiguous")
 	{
-		ParseStatement<CppStatementToResolve>(parser, line);
+		ParseAmbiguousStatement<CppStatementToResolve, CppExprStat, CppDeclStat>(parser, line);
 	});
 }

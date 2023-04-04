@@ -51,6 +51,50 @@ void ParseStatement(cpp_parser::Parser& parser, const WString& code)
 	AssertPtrStruct<TArgs...>::AssertPtr(ast.Obj());
 }
 
+/////////////////////////////////////////////////////////
+
+template<typename ...TArgs>
+struct AssertAmbiguousBranches
+{
+	static_assert(sizeof...(TArgs) > 0);
+
+	template<typename T, size_t ...Is>
+	static void AssertCandidatesInternal(List<Ptr<T>>& candidates, std::index_sequence<Is...>)
+	{
+		bool casts[] = { (candidates[Is].Cast<std::tuple_element_t<Is, std::tuple<TArgs...>>>() != nullptr)... };
+		bool other = ((candidates[Is].Cast<std::tuple_element_t<Is, std::tuple<TArgs...>>>() == nullptr) || ...);
+		TEST_ASSERT((casts[Is] && ...) && !other);
+	}
+
+	template<typename T>
+	static void AssertCandidates(List<Ptr<T>>& candidates)
+	{
+		AssertCandidatesInternal(candidates, std::index_sequence_for<TArgs...>());
+	}
+};
+
+template<typename TToResolve, typename ...TArgs>
+void ParseAmbiguousTypeExpr(cpp_parser::Parser& parser, const WString& code)
+{
+	auto ast = parser.Parse_TypeOrExpr(code);
+	TEST_ASSERT(ast);
+	auto astToResolve = ast.Cast<TToResolve>();
+	TEST_ASSERT(astToResolve);
+	AssertAmbiguousBranches<TArgs...>::AssertCandidates(astToResolve->candidates);
+}
+
+template<typename TToResolve, typename ...TArgs>
+void ParseAmbiguousStatement(cpp_parser::Parser& parser, const WString& code)
+{
+	auto ast = parser.Parse_Stat(code);
+	TEST_ASSERT(ast);
+	auto astToResolve = ast.Cast<TToResolve>();
+	TEST_ASSERT(astToResolve);
+	AssertAmbiguousBranches<TArgs...>::AssertCandidates(astToResolve->candidates);
+}
+
+/////////////////////////////////////////////////////////
+
 template<typename TTestCase>
 void TestParser(const wchar_t* caseName, const wchar_t* fileName, TTestCase&& testCase)
 {
