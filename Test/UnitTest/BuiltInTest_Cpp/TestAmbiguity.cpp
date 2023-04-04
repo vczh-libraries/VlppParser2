@@ -2,8 +2,6 @@
 
 TEST_FILE
 {
-	return;
-
 	TEST_PARSER(L"TypeOrExpr", L"Ambiguous_EE")
 	{
 		ParseTypeExpr<CppTypeOrExprToResolve>(parser, line);

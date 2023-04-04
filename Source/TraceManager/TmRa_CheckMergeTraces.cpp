@@ -178,15 +178,70 @@ CheckMergeTrace
 						});
 					});
 
+					// find the most possible answer from postfixesAtSelf and postfixesAtSuccessor
+					vint maxOccurences = -1;
+					for (vint i = 0; i < postfixesAtSelf.Count(); i++)
+					{
+						vint count = postfixesAtSelf.GetByIndex(i).Count();
+						if (count > maxOccurences)
+						{
+							maxOccurences = count;
+						}
+					}
+					for (vint i = 0; i < postfixesAtSuccessor.Count(); i++)
+					{
+						vint count = postfixesAtSuccessor.GetByIndex(i).Count();
+						if (count > maxOccurences)
+						{
+							maxOccurences = count;
+						}
+					}
+
+					vint uniqueAtSelf = -1;
+					for (vint i = 0; i < postfixesAtSelf.Count(); i++)
+					{
+						vint count = postfixesAtSelf.GetByIndex(i).Count();
+						if (count == maxOccurences)
+						{
+							if (uniqueAtSelf == -1)
+							{
+								uniqueAtSelf = i;
+							}
+							else
+							{
+								uniqueAtSelf = -2;
+								break;
+							}
+						}
+					}
+
+					vint uniqueAtSuccessor = -1;
+					for (vint i = 0; i < postfixesAtSuccessor.Count(); i++)
+					{
+						vint count = postfixesAtSuccessor.GetByIndex(i).Count();
+						if (count == maxOccurences)
+						{
+							if (uniqueAtSuccessor == -1)
+							{
+								uniqueAtSuccessor = i;
+							}
+							else
+							{
+								uniqueAtSuccessor = -2;
+								break;
+							}
+						}
+					}
+
 					InsRef lastPostfix;
-					if (postfixesAtSelf.Count() == 1)
+					if (uniqueAtSelf >= 0)
 					{
 						// if all bottom traces are the same, their first successors are also the same
-						lastPostfix = postfixesAtSelf.GetByIndex(0)[0];
+						lastPostfix = postfixesAtSelf.GetByIndex(uniqueAtSelf)[0];
 					}
-					else if (postfixesAtSuccessor.Count() == 1 && postfixesAtSuccessor.Keys()[0] != nullptr)
+					else if (uniqueAtSuccessor >= 0)
 					{
-						lastPostfix = postfixesAtSuccessor.GetByIndex(0)[0];
+						lastPostfix = postfixesAtSuccessor.GetByIndex(uniqueAtSuccessor)[0];
 						foundEndPostfix = true;
 					}
 
