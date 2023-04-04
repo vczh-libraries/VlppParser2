@@ -50,10 +50,12 @@ _ShortTypeBeforeDeclarator : TypeOrExpr
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator
   ;
 
-_TypeStartsWithKeywordBeforeDeclarator
+_CallConstructibleType
   ::= !_ShortTypeStartsWithKeywordBeforeDeclarator
-  ::= _TypeStartsWithKeywordBeforeDeclarator:type "const" as ConstType
-  ::= _TypeStartsWithKeywordBeforeDeclarator:type "volatile" as VolatileType
+  ::= _PM_QualifiedName:type "const" as ConstType
+  ::= _PM_QualifiedName:type "volatile" as VolatileType
+  ::= _CallConstructibleType:type "const" as ConstType
+  ::= _CallConstructibleType:type "volatile" as VolatileType
   ;
 
 _TypeBeforeDeclarator

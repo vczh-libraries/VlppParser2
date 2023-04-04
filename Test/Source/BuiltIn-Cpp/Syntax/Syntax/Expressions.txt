@@ -66,7 +66,7 @@ _QualifiedName_PrimitiveExpr
 
 _PostfixUnaryExpr
   ::= !_QualifiedName_PrimitiveExpr
-  ::= _TypeStartsWithKeyword:operand "(" {_Expr_Argument:arguments ; ","} ")" as CallExpr {kind = Parenthesis}
+  ::= _CallConstructibleType:operand "(" {_Expr_Argument:arguments ; ","} ")" as CallExpr {kind = Parenthesis}
   ::= _Type:operand "{" {_Expr_Argument:arguments ; ","} "}" as CallExpr {kind = Brace}
   ::= _PostfixUnaryExpr:left "." _MemberOperatorQualifiedName:right as BinaryExpr {op = Member}
   ::= _PostfixUnaryExpr:left "->" _MemberOperatorQualifiedName:right as BinaryExpr {op = Pointer}
