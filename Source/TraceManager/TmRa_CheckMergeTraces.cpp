@@ -286,7 +286,43 @@ CheckMergeTrace
 					ta->lastTrace = last;
 				}
 
-				return true;
+				// ensure firstTrace and lastTrace are in the same branch
+				auto firstForward = GetTrace(GetTraceExec(GetTrace(ta->firstTrace)->traceExecRef)->branchData.forwardTrace);
+				auto lastForward = GetTrace(GetTraceExec(GetTrace(ta->lastTrace)->traceExecRef)->branchData.forwardTrace);
+				auto currentForward = lastForward;
+				while (true)
+				{
+					if (currentForward->traceExecRef < firstForward->traceExecRef)
+					{
+						return false;
+					}
+					if (currentForward == firstForward)
+					{
+						return true;
+					}
+
+					auto currentExec = GetTraceExec(currentForward->traceExecRef);
+					auto nextForwardRef = currentExec->branchData.commonForwardBranch;
+					if (nextForwardRef == nullptr)
+					{
+						nextForwardRef = currentExec->branchData.forwardTrace;
+					}
+
+					auto nextForward = GetTrace(currentExec->branchData.forwardTrace);
+					if (currentForward != nextForward)
+					{
+						currentForward = nextForward;
+					}
+					else if (currentForward->predecessorCount > 0)
+					{
+						currentForward = GetTrace(GetTraceExec(GetTrace(currentForward->predecessors.first)->traceExecRef)->branchData.forwardTrace);
+					}
+					else
+					{
+						break;
+					}
+				}
+				return false;
 #undef ERROR_MESSAGE_PREFIX
 			}
 
