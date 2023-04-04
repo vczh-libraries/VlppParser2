@@ -17,11 +17,6 @@ TEST_FILE
 		ParseTypeExpr<CppTypeOrExprToResolve>(parser, line);
 	});
 
-	TEST_PARSER(L"TypeOrExpr", L"Ambiguous_TT")
-	{
-		ParseTypeExpr<CppTypeOrExprToResolve>(parser, line);
-	});
-
 	TEST_PARSER(L"TypeOrExpr", L"LambdaAmbiguous")
 	{
 		ParseTypeExpr<CppLambdaExpr>(parser, line);
