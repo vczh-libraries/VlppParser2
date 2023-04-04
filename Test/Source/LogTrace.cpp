@@ -172,7 +172,7 @@ void RenderTrace(
 			{
 				if (ref != first) writer.WriteString(L", ");
 				auto link = tm.GetInsExec_InsRefLink(ref);
-				writer.WriteString(itow(link->trace.handle) + L"@" + itow(link->ins));
+				writer.WriteString(itow(link->insRef.trace.handle) + L"@" + itow(link->insRef.ins));
 				ref = link->previous;
 			}
 		};
@@ -213,11 +213,6 @@ void RenderTrace(
 				auto ieCSTop = tm.GetInsExec_CreateStack(context.createStack);
 				writer.WriteString(L"CSTop: [");
 				logObjRefLink(ieCSTop->objectIds);
-				if (ieCSTop->reverseInjectObjectIds != nullref)
-				{
-					writer.WriteString(L"] lri:[");
-					logObjRefLink(ieCSTop->reverseInjectObjectIds);
-				}
 				writer.WriteLine(
 					L"] [" +
 					itow(ieCSTop->allocatedIndex) +
@@ -454,22 +449,29 @@ void RenderTrace(
 					auto ieObject = tm.GetInsExec_Object(insExec->createdObjectId);
 					writer.WriteString(
 						L"      obj:" + itow(ieObject->allocatedIndex) +
-						L", new:" + itow(ieObject->createTrace.handle) +
-						L"@" + itow(ieObject->createIns)
+						L", new:" + itow(ieObject->createInsRef.trace.handle) +
+						L"@" + itow(ieObject->createInsRef.ins)
 					);
 
-					if (ieObject->topTrace != nullref)
+					if (ieObject->topInsRef.trace != nullref)
 					{
 						writer.WriteString(
-							L", top:" + itow(ieObject->topTrace.handle) +
-							L"@" + itow(ieObject->topIns)
+							L", top:" + itow(ieObject->topInsRef.trace.handle) +
+							L"@" + itow(ieObject->topInsRef.ins)
 						);
 					}
 
-					if (ieObject->injectObjectIds != nullref)
+					if (ieObject->bottomInsRefs != nullref)
 					{
-						writer.WriteString(L" injectInto:[");
-						logObjRefLink(ieObject->injectObjectIds);
+						writer.WriteString(L" bottom:[");
+						logInsRefLink(ieObject->bottomInsRefs);
+						writer.WriteString(L"]");
+					}
+
+					if (ieObject->assignedToObjectIds != nullref)
+					{
+						writer.WriteString(L" assignedTo:[");
+						logObjRefLink(ieObject->assignedToObjectIds);
 						writer.WriteString(L"]");
 					}
 

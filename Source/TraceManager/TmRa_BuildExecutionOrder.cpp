@@ -470,7 +470,7 @@ BuildAmbiguousStepLink
 
 			void TraceManager::BuildAmbiguousStepLink(TraceAmbiguity* ta, bool checkCoveredMark, ExecutionStep*& first, ExecutionStep*& last)
 			{
-#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::CheckMergeTraces()#"
+#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::BuildAmbiguousStepLink()#"
 				auto taFirst = GetTrace(ta->firstTrace);
 				auto taFirstExec = GetTraceExec(taFirst->traceExecRef);
 				auto taLast = GetTrace(ta->lastTrace);
@@ -560,18 +560,32 @@ BuildAmbiguousStepLink
 						linkRef = link->previous;
 
 						auto ieObject = GetInsExec_Object(link->id);
-						auto ieTrace = GetTrace(ieObject->createTrace);
+						auto ieTrace = GetTrace(ieObject->createInsRef.trace);
 						auto ieTraceExec = GetTraceExec(ieTrace->traceExecRef);
 
-						auto&& ins = ReadInstruction(ieObject->createIns, ieTraceExec->insLists);
+						auto&& ins = ReadInstruction(ieObject->createInsRef.ins, ieTraceExec->insLists);
 						if (stepRA->et_ra.type == -1)
 						{
 							stepRA->et_ra.type = ins.param;
 						}
 						else if (stepRA->et_ra.type != ins.param)
 						{
-							stepRA->et_ra.type = typeCallback->FindCommonBaseClass(stepRA->et_ra.type, ins.param);
-							CHECK_ERROR(stepRA->et_ra.type != -1, ERROR_MESSAGE_PREFIX L"Unable to resolve the type from multiple objects.");
+							vint32_t baseClass = typeCallback->FindCommonBaseClass(stepRA->et_ra.type, ins.param);
+							if (baseClass == -1)
+							{
+								throw UnableToResolveAmbiguityException(
+									WString::Unmanaged(L"Unable to resolve ambiguity from ") +
+									typeCallback->GetClassName(stepRA->et_ra.type) +
+									WString::Unmanaged(L" and ") +
+									typeCallback->GetClassName(ins.param) +
+									WString::Unmanaged(L"."),
+									stepRA->et_ra.type,
+									ins.param,
+									EnsureTraceWithValidStates(taFirst)->currentTokenIndex,
+									EnsureTraceWithValidStates(taLast)->currentTokenIndex
+									);
+							}
+							stepRA->et_ra.type = baseClass;
 						}
 					}
 				}
@@ -599,7 +613,7 @@ BuildExecutionOrder
 
 			void TraceManager::BuildExecutionOrder()
 			{
-#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::CheckMergeTraces()#"
+#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::BuildExecutionOrder()#"
 				// get the instruction range
 				auto startTrace = initialTrace;
 				vint32_t startIns = 0;

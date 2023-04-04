@@ -108,22 +108,27 @@ namespace vl
 			TypeParser::TypeParser()
 				: vl::glr::ParserBase<ParserGenTokens, TypeParserStates, ParserGenAstInsReceiver>(&ParserGenTokenDeleter, &ParserGenLexerData, &ParserGenTypeParserData)
 			{
-			};
+			}
+
+			vl::WString TypeParser::GetClassName(vl::vint32_t classIndex) const
+			{
+				return vl::WString::Unmanaged(ParserGenTypeName((ParserGenClasses)classIndex));
+			}
 
 			vl::vint32_t TypeParser::FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2) const
 			{
 				return -1;
-			};
+			}
 
 			vl::Ptr<vl::glr::parsergen::GlrAstFile> TypeParser::ParseFile(const vl::WString& input, vl::vint codeIndex) const
 			{
 				 return ParseWithString<vl::glr::parsergen::GlrAstFile, TypeParserStates::File>(input, this, codeIndex);
-			};
+			}
 
 			vl::Ptr<vl::glr::parsergen::GlrAstFile> TypeParser::ParseFile(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex) const
 			{
 				 return ParseWithTokens<vl::glr::parsergen::GlrAstFile, TypeParserStates::File>(tokens, this, codeIndex);
-			};
+			}
 		}
 	}
 }

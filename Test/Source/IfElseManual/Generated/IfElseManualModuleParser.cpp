@@ -106,20 +106,25 @@ namespace ifelsemanual
 	ModuleParser::ModuleParser()
 		: vl::glr::ParserBase<IfElseManualTokens, ModuleParserStates, IfElseManualAstInsReceiver>(&IfElseManualTokenDeleter, &IfElseManualLexerData, &IfElseManualModuleParserData)
 	{
-	};
+	}
+
+	vl::WString ModuleParser::GetClassName(vl::vint32_t classIndex) const
+	{
+		return vl::WString::Unmanaged(IfElseManualTypeName((IfElseManualClasses)classIndex));
+	}
 
 	vl::vint32_t ModuleParser::FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2) const
 	{
 		return -1;
-	};
+	}
 
 	vl::Ptr<ifelsemanual::Module> ModuleParser::ParseModule(const vl::WString& input, vl::vint codeIndex) const
 	{
 		 return ParseWithString<ifelsemanual::Module, ModuleParserStates::Module>(input, this, codeIndex);
-	};
+	}
 
 	vl::Ptr<ifelsemanual::Module> ModuleParser::ParseModule(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex) const
 	{
 		 return ParseWithTokens<ifelsemanual::Module, ModuleParserStates::Module>(tokens, this, codeIndex);
-	};
+	}
 }

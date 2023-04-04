@@ -37,6 +37,7 @@ PartialExecuteTraces
 				);
 
 				CalculateObjectFirstInstruction();
+				CalculateObjectLastInstruction();
 #undef ERROR_MESSAGE_PREFIX
 			}
 		}

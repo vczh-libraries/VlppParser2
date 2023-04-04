@@ -39,6 +39,7 @@ namespace prefixmerge3_lrinested
 		, protected vl::glr::automaton::IExecutor::ITypeCallback
 	{
 	protected:
+		vl::WString GetClassName(vl::vint32_t classIndex) const override;
 		vl::vint32_t FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2) const override;
 	public:
 		ModuleParser();

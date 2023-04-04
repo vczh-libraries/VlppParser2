@@ -2,7 +2,7 @@
 // Base Types
 //////////////////////////////////////////////////////////////////
 
-class TypeOrExprOrOthers
+ambiguous class TypeOrExprOrOthers
 {
 }
 
@@ -10,7 +10,7 @@ class Declaration : TypeOrExprOrOthers
 {
 }
 
-class TypeOrExpr : TypeOrExprOrOthers
+ambiguous class TypeOrExpr : TypeOrExprOrOthers
 {
 }
 
@@ -497,10 +497,24 @@ class MultipleVarDeclaration : Declaration
 }
 
 //////////////////////////////////////////////////////////////////
+// ClassStructUnion Declaration
+//////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////
+// Other Declaration
+//////////////////////////////////////////////////////////////////
+
+class StaticAssertDeclaration : Declaration
+{
+    var expr : TypeOrExpr;
+    var message : TypeOrExpr;
+}
+
+//////////////////////////////////////////////////////////////////
 // Statements
 //////////////////////////////////////////////////////////////////
 
-class Statement
+ambiguous class Statement
 {
 }
 
@@ -560,12 +574,6 @@ class DefaultStat : Statement
 
 class __LeaveStat : Statement
 {
-}
-
-class StaticAssertStat : Statement
-{
-    var expr : TypeOrExpr;
-    var message : TypeOrExpr;
 }
 
 class WhileStat : Statement

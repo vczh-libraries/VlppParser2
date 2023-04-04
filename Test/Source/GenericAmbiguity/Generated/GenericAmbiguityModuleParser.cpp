@@ -99,7 +99,12 @@ namespace genericambiguity
 	ModuleParser::ModuleParser()
 		: vl::glr::ParserBase<GenericAmbiguityTokens, ModuleParserStates, GenericAmbiguityAstInsReceiver>(&GenericAmbiguityTokenDeleter, &GenericAmbiguityLexerData, &GenericAmbiguityModuleParserData)
 	{
-	};
+	}
+
+	vl::WString ModuleParser::GetClassName(vl::vint32_t classIndex) const
+	{
+		return vl::WString::Unmanaged(GenericAmbiguityTypeName((GenericAmbiguityClasses)classIndex));
+	}
 
 	vl::vint32_t ModuleParser::FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2) const
 	{
@@ -115,15 +120,15 @@ namespace genericambiguity
 			{3, 3, 3, 3, 3, 3, -1, 3, 8, },
 		};
 		return vl::glr::AssemblerFindCommonBaseClass(class1, class2, results);
-	};
+	}
 
 	vl::Ptr<genericambiguity::Module> ModuleParser::ParseModule(const vl::WString& input, vl::vint codeIndex) const
 	{
 		 return ParseWithString<genericambiguity::Module, ModuleParserStates::Module>(input, this, codeIndex);
-	};
+	}
 
 	vl::Ptr<genericambiguity::Module> ModuleParser::ParseModule(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex) const
 	{
 		 return ParseWithTokens<genericambiguity::Module, ModuleParserStates::Module>(tokens, this, codeIndex);
-	};
+	}
 }

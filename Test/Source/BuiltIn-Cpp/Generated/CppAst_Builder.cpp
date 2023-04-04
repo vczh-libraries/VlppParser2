@@ -882,16 +882,26 @@ MakeSizeofExpr
 		}
 
 /***********************************************************************
-MakeStaticAssertStat
+MakeStatementToResolve
 ***********************************************************************/
 
-		MakeStaticAssertStat& MakeStaticAssertStat::expr(const vl::Ptr<CppTypeOrExpr>& value)
+		MakeStatementToResolve& MakeStatementToResolve::candidates(const vl::Ptr<CppStatement>& value)
+		{
+			node->candidates.Add(value);
+			return *this;
+		}
+
+/***********************************************************************
+MakeStaticAssertDeclaration
+***********************************************************************/
+
+		MakeStaticAssertDeclaration& MakeStaticAssertDeclaration::expr(const vl::Ptr<CppTypeOrExpr>& value)
 		{
 			node->expr = value;
 			return *this;
 		}
 
-		MakeStaticAssertStat& MakeStaticAssertStat::message(const vl::Ptr<CppTypeOrExpr>& value)
+		MakeStaticAssertDeclaration& MakeStaticAssertDeclaration::message(const vl::Ptr<CppTypeOrExpr>& value)
 		{
 			node->message = value;
 			return *this;
@@ -1000,6 +1010,26 @@ MakeTryStatCatchPart
 		MakeTryStatCatchPart& MakeTryStatCatchPart::stat(const vl::Ptr<CppStatement>& value)
 		{
 			node->stat = value;
+			return *this;
+		}
+
+/***********************************************************************
+MakeTypeOrExprOrOthersToResolve
+***********************************************************************/
+
+		MakeTypeOrExprOrOthersToResolve& MakeTypeOrExprOrOthersToResolve::candidates(const vl::Ptr<CppTypeOrExprOrOthers>& value)
+		{
+			node->candidates.Add(value);
+			return *this;
+		}
+
+/***********************************************************************
+MakeTypeOrExprToResolve
+***********************************************************************/
+
+		MakeTypeOrExprToResolve& MakeTypeOrExprToResolve::candidates(const vl::Ptr<CppTypeOrExpr>& value)
+		{
+			node->candidates.Add(value);
 			return *this;
 		}
 

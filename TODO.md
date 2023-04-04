@@ -1,16 +1,15 @@
 # TODO
 
-## Progressing
+## BuiltIn-Cpp
 
-- `::a::b::c::*`
-  - Ambiguity
-  - It should be invalid, instead of being `::a(::b::c::*)` and `::a::b(::c::*)`
-- Compiler crashes:
-  - `_DeclOrExpr ::= !_BExpr ::= {_DeclaratorKeyword:keywords} _TypeBeforeDeclarator:type _DeclaratorRequiredName:declarator as DeclaratorType ;`
-  - `workingSwitchValues` is nullptr in `ExpandClauseVisitor::FixRuleName`
+- Progress
+  - Declaration unfinished.
 
 ## Next task
 
+- Add `extern` rule, non-`extern` rules can only be used inside the same syntax file.
+- Add `extern` type, non-`extern` types can only be used inside the same ast file.
+  - AST uses classes from another AST file in dependency as fields.
 - Rewrite and remove switch before removing PrefixMerge.
   - Rename `LeftRecursionPlaceholderMixedWithSwitches`
 - Multiple LRI following one Target
@@ -38,10 +37,18 @@
 
 - Extensible tokens, for example, recognize `R"[^\s(]\(` and invoke a callback function to determine the end of the string.
   - Offer two options: using (rich regex | C++) to search for complete token.
-- Add `extern` rule, non-`extern` rules can only be used inside the same syntax file.
 - Add union type and remove `TypeOrExprOrOthers` in C++.
 
-## Issues
+## Issues (BuiltIn-Cpp)
+
+- `::a::b::c::*`
+  - Ambiguity
+  - It should be invalid, instead of being `::a(::b::c::*)` and `::a::b(::c::*)`
+- Compiler crashes:
+  - `_DeclOrExpr ::= !_BExpr ::= {_DeclaratorKeyword:keywords} _TypeBeforeDeclarator:type _DeclaratorRequiredName:declarator as DeclaratorType ;`
+  - `workingSwitchValues` is nullptr in `ExpandClauseVisitor::FixRuleName`
+
+## Issues (Glr)
 
 - When `XToResolve` is in another `XToResolve`, flatten them.
 - TODO in `CalculateRuleAndClauseTypes`.
@@ -49,6 +56,7 @@
 - Optimize `CalculateFirstSet_IndirectStartRules` using partial ordering.
 - TODO in `SyntaxSymbolManager::EliminateSingleRulePrefix`.
   - Deny `A ::= !B ::= B as Something ::= ...;`.
+- TODO in `CalculateObjectLastInstruction`
 - Print correct codeRange for:
   - `ParserErrorType::RuleIsIndirectlyLeftRecursive`
   - `ParserErrorType::LeftRecursiveClauseInsidePushCondition`
@@ -59,15 +67,6 @@
 - Optimize `CrossReferencedNFA` to merge prefix (two states can be merged if their `InEdges` are identical, `FromState` in `InEdges` are replaced by merged states).
 - `JsonEscapeString` `JsonUnescapeString` handle surrogate pairs correctly.
 - Review all comments.
-
-## BuiltIn-Cpp
-
-- Progress
-  - Ambiguity unhandled.
-    - Type/Expr
-    - Expr/Decl Statement
-    - etc
-  - Declaration unfinished.
 
 ## Experiments
 
@@ -88,7 +87,6 @@
 
 - Switching lexical analyzer during parsing.
   - Refactor some properties in `LexerSymbolManager` into `LexerFile` with a name.
-- AST uses classes from another AST file in dependency as fields.
 - Printing AST classes that created from a memory pool.
 - All `token` property `X` becomes `X_`, paired with a string property `X` to access the text value in `X_`.
 - New priority syntax

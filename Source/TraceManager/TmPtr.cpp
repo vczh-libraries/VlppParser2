@@ -64,8 +64,8 @@ PrepareTraceRoute
 				state = TraceManagerState::PreparedTraceRoute;
 
 				AllocateExecutionData();
-				PartialExecuteTraces();
 				BuildAmbiguityStructures();
+				PartialExecuteTraces();
 #ifdef VCZH_DO_DEBUG_CHECK
 				DebugCheckTraceExecData();
 #endif

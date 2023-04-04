@@ -366,11 +366,17 @@ namespace cpp_parser
 			MakeSizeofExpr& variadic(const vl::WString& value);
 		};
 
-		class MakeStaticAssertStat : public vl::glr::ParsingAstBuilder<CppStaticAssertStat>
+		class MakeStatementToResolve : public vl::glr::ParsingAstBuilder<CppStatementToResolve>
 		{
 		public:
-			MakeStaticAssertStat& expr(const vl::Ptr<CppTypeOrExpr>& value);
-			MakeStaticAssertStat& message(const vl::Ptr<CppTypeOrExpr>& value);
+			MakeStatementToResolve& candidates(const vl::Ptr<CppStatement>& value);
+		};
+
+		class MakeStaticAssertDeclaration : public vl::glr::ParsingAstBuilder<CppStaticAssertDeclaration>
+		{
+		public:
+			MakeStaticAssertDeclaration& expr(const vl::Ptr<CppTypeOrExpr>& value);
+			MakeStaticAssertDeclaration& message(const vl::Ptr<CppTypeOrExpr>& value);
 		};
 
 		class MakeStringLiteral : public vl::glr::ParsingAstBuilder<CppStringLiteral>
@@ -419,6 +425,18 @@ namespace cpp_parser
 		public:
 			MakeTryStatCatchPart& decl(const vl::Ptr<CppTypeOrExprOrOthers>& value);
 			MakeTryStatCatchPart& stat(const vl::Ptr<CppStatement>& value);
+		};
+
+		class MakeTypeOrExprOrOthersToResolve : public vl::glr::ParsingAstBuilder<CppTypeOrExprOrOthersToResolve>
+		{
+		public:
+			MakeTypeOrExprOrOthersToResolve& candidates(const vl::Ptr<CppTypeOrExprOrOthers>& value);
+		};
+
+		class MakeTypeOrExprToResolve : public vl::glr::ParsingAstBuilder<CppTypeOrExprToResolve>
+		{
+		public:
+			MakeTypeOrExprToResolve& candidates(const vl::Ptr<CppTypeOrExpr>& value);
 		};
 
 		class MakeVarBraceInit : public vl::glr::ParsingAstBuilder<CppVarBraceInit>

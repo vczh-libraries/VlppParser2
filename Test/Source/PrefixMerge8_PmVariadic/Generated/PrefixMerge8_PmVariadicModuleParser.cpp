@@ -271,7 +271,12 @@ namespace prefixmerge8_pmvariadic
 	ModuleParser::ModuleParser()
 		: vl::glr::ParserBase<PrefixMerge8_PmVariadicTokens, ModuleParserStates, PrefixMerge8_PmVariadicAstInsReceiver>(&PrefixMerge8_PmVariadicTokenDeleter, &PrefixMerge8_PmVariadicLexerData, &PrefixMerge8_PmVariadicModuleParserData)
 	{
-	};
+	}
+
+	vl::WString ModuleParser::GetClassName(vl::vint32_t classIndex) const
+	{
+		return vl::WString::Unmanaged(PrefixMerge8_PmVariadicTypeName((PrefixMerge8_PmVariadicClasses)classIndex));
+	}
 
 	vl::vint32_t ModuleParser::FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2) const
 	{
@@ -295,15 +300,15 @@ namespace prefixmerge8_pmvariadic
 			{13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 16, },
 		};
 		return vl::glr::AssemblerFindCommonBaseClass(class1, class2, results);
-	};
+	}
 
 	vl::Ptr<prefixmerge8_pmvariadic::TypeOrExpr> ModuleParser::ParseModule(const vl::WString& input, vl::vint codeIndex) const
 	{
 		 return ParseWithString<prefixmerge8_pmvariadic::TypeOrExpr, ModuleParserStates::Module>(input, this, codeIndex);
-	};
+	}
 
 	vl::Ptr<prefixmerge8_pmvariadic::TypeOrExpr> ModuleParser::ParseModule(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex) const
 	{
 		 return ParseWithTokens<prefixmerge8_pmvariadic::TypeOrExpr, ModuleParserStates::Module>(tokens, this, codeIndex);
-	};
+	}
 }

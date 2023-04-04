@@ -81,18 +81,19 @@ BuildAmbiguityStructures
 							{
 								// find the latest forwardTrace of its commonForwardBranch and the forwardTrace of the predecessor
 								NEW_MERGE_STACK_MAGIC_COUNTER;
+								auto magicCommonForward = MergeStack_MagicCounter;
 
 								auto currentTrace = GetTrace(traceExec->branchData.commonForwardBranch);
 								while (currentTrace)
 								{
-									GetTraceExec(currentTrace->traceExecRef)->branchData.mergeCounter = MergeStack_MagicCounter;
+									GetTraceExec(currentTrace->traceExecRef)->branchData.mergeCounter = magicCommonForward;
 									currentTrace = StepForward(currentTrace);
 								}
 
 								currentTrace = GetTrace(GetTraceExec(predecessor->traceExecRef)->branchData.forwardTrace);
 								while (currentTrace)
 								{
-									if (GetTraceExec(currentTrace->traceExecRef)->branchData.mergeCounter == MergeStack_MagicCounter)
+									if (GetTraceExec(currentTrace->traceExecRef)->branchData.mergeCounter == magicCommonForward)
 									{
 										break;
 									}

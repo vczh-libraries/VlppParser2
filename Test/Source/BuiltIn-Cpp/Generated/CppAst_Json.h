@@ -84,7 +84,8 @@ namespace cpp_parser
 			virtual void PrintFields(CppSingleVarDeclaration* node);
 			virtual void PrintFields(CppSizeofExpr* node);
 			virtual void PrintFields(CppStatement* node);
-			virtual void PrintFields(CppStaticAssertStat* node);
+			virtual void PrintFields(CppStatementToResolve* node);
+			virtual void PrintFields(CppStaticAssertDeclaration* node);
 			virtual void PrintFields(CppStringLiteral* node);
 			virtual void PrintFields(CppStringLiteralFragment* node);
 			virtual void PrintFields(CppSwitchStat* node);
@@ -95,6 +96,8 @@ namespace cpp_parser
 			virtual void PrintFields(CppTypeOnly* node);
 			virtual void PrintFields(CppTypeOrExpr* node);
 			virtual void PrintFields(CppTypeOrExprOrOthers* node);
+			virtual void PrintFields(CppTypeOrExprOrOthersToResolve* node);
+			virtual void PrintFields(CppTypeOrExprToResolve* node);
 			virtual void PrintFields(CppVarBraceInit* node);
 			virtual void PrintFields(CppVarInit* node);
 			virtual void PrintFields(CppVarParanthesisInit* node);
@@ -106,6 +109,7 @@ namespace cpp_parser
 			virtual void PrintFields(Cpp__TryStat* node);
 
 		protected:
+			void Visit(CppTypeOrExprOrOthersToResolve* node) override;
 			void Visit(CppDeclaration* node) override;
 			void Visit(CppTypeOrExpr* node) override;
 			void Visit(CppGenericArgument* node) override;
@@ -113,7 +117,9 @@ namespace cpp_parser
 
 			void Visit(CppSingleVarDeclaration* node) override;
 			void Visit(CppMultipleVarDeclaration* node) override;
+			void Visit(CppStaticAssertDeclaration* node) override;
 
+			void Visit(CppTypeOrExprToResolve* node) override;
 			void Visit(CppExprOnly* node) override;
 			void Visit(CppTypeOnly* node) override;
 			void Visit(CppQualifiedName* node) override;
@@ -150,6 +156,7 @@ namespace cpp_parser
 			void Visit(CppVarParanthesisInit* node) override;
 			void Visit(CppVarBraceInit* node) override;
 
+			void Visit(CppStatementToResolve* node) override;
 			void Visit(CppEmptyStat* node) override;
 			void Visit(CppBlockStat* node) override;
 			void Visit(CppExprStat* node) override;
@@ -162,7 +169,6 @@ namespace cpp_parser
 			void Visit(CppCaseStat* node) override;
 			void Visit(CppDefaultStat* node) override;
 			void Visit(Cpp__LeaveStat* node) override;
-			void Visit(CppStaticAssertStat* node) override;
 			void Visit(CppWhileStat* node) override;
 			void Visit(CppDoWhileStat* node) override;
 			void Visit(CppIfElseStat* node) override;

@@ -100,20 +100,25 @@ namespace binaryop
 	ModuleParser::ModuleParser()
 		: vl::glr::ParserBase<BinaryOpTokens, ModuleParserStates, BinaryOpAstInsReceiver>(&BinaryOpTokenDeleter, &BinaryOpLexerData, &BinaryOpModuleParserData)
 	{
-	};
+	}
+
+	vl::WString ModuleParser::GetClassName(vl::vint32_t classIndex) const
+	{
+		return vl::WString::Unmanaged(BinaryOpTypeName((BinaryOpClasses)classIndex));
+	}
 
 	vl::vint32_t ModuleParser::FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2) const
 	{
 		return -1;
-	};
+	}
 
 	vl::Ptr<binaryop::Expr> ModuleParser::ParseModule(const vl::WString& input, vl::vint codeIndex) const
 	{
 		 return ParseWithString<binaryop::Expr, ModuleParserStates::Module>(input, this, codeIndex);
-	};
+	}
 
 	vl::Ptr<binaryop::Expr> ModuleParser::ParseModule(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex) const
 	{
 		 return ParseWithTokens<binaryop::Expr, ModuleParserStates::Module>(tokens, this, codeIndex);
-	};
+	}
 }

@@ -19,9 +19,10 @@ CheckMergeTrace
 ***********************************************************************/
 
 			template<typename TCallback>
-			bool TraceManager::SearchForObjects(Ref<InsExec_ObjRefLink> objRefLinkStartSet, bool withCounter, TCallback&& callback)
+			bool TraceManager::EnumerateObjects(Ref<InsExec_ObjRefLink> objRefLinkStartSet, bool withCounter, TCallback&& callback)
 			{
 				// check every object in the link
+				auto magicIterating = MergeStack_MagicCounter;
 				auto linkId = objRefLinkStartSet;
 				while (linkId != nullref)
 				{
@@ -32,8 +33,8 @@ CheckMergeTrace
 					if (withCounter)
 					{
 						// skip if it has been searched
-						if (ieObject->mergeCounter == MergeStack_MagicCounter) goto CHECK_NEXT_OBJECT;
-						ieObject->mergeCounter = MergeStack_MagicCounter;
+						if (ieObject->mergeCounter == magicIterating) goto CHECK_NEXT_OBJECT;
+						ieObject->mergeCounter = magicIterating;
 					}
 
 					if (!callback(ieObject)) return false;
@@ -43,19 +44,14 @@ CheckMergeTrace
 			}
 
 			template<typename TCallback>
-			bool TraceManager::SearchForEndObjectInstructions(Trace* createTrace, vint32_t createIns, TCallback&& callback)
+			bool TraceManager::EnumerateBottomInstructions(InsExec_Object* ieObject, TCallback&& callback)
 			{
-				// all EndObject ending a BO/DFA are considered
-				// there is no "bottom EndObject"
-				// each EndObject should be in different branches
-				auto traceExec = GetTraceExec(createTrace->traceExecRef);
-				auto insExec = GetInsExec(traceExec->insExecRefs.start + createIns);
-				auto insRefLinkId = insExec->eoInsRefs;
+				auto insRefLinkId = ieObject->bottomInsRefs;
 				while (insRefLinkId != nullref)
 				{
 					auto insRefLink = GetInsExec_InsRefLink(insRefLinkId);
 					insRefLinkId = insRefLink->previous;
-					if (!callback(GetTrace(insRefLink->trace), insRefLink->ins)) return false;
+					if (!callback(GetTrace(insRefLink->insRef.trace), insRefLink->insRef.ins)) return false;
 				}
 				return true;
 			}
@@ -118,28 +114,20 @@ CheckMergeTrace
 				// iterate all top objects
 				succeeded = callback([&](Ref<InsExec_ObjRefLink> objRefLink)
 				{
-					return SearchForObjects(objRefLink, false, [&](InsExec_Object* ieObject)
+					return EnumerateObjects(objRefLink, false, [&](InsExec_Object* ieObject)
 					{
-						auto createTrace = GetTrace(ieObject->topTrace);
-#ifdef VCZH_DO_DEBUG_CHECK
-						{
-							auto traceExec = GetTraceExec(createTrace->traceExecRef);
-							auto&& ins = ReadInstruction(ieObject->topIns, traceExec->insLists);
-							CHECK_ERROR(ins.type == AstInsType::BeginObject || ins.type == AstInsType::DelayFieldAssignment, ERROR_MESSAGE_PREFIX L"The found instruction is not a BeginObject or DelayFieldAssignment instruction.");
-						}
-#endif
-
+						auto createTrace = GetTrace(ieObject->topInsRef.trace);
 						if (!first)
 						{
 							first = createTrace;
 							firstTraceExec = GetTraceExec(first->traceExecRef);
 							ta->firstTrace = createTrace;
-							ta->prefix = ieObject->topIns;
+							ta->prefix = ieObject->topInsRef.ins;
 						}
 						else if (first == createTrace)
 						{
 							// check if two instruction is the same
-							if (ta->prefix != ieObject->topIns) return false;
+							if (ta->prefix != ieObject->topInsRef.ins) return false;
 							foundBeginSame = true;
 						}
 						else
@@ -156,51 +144,121 @@ CheckMergeTrace
 				});
 				if (!succeeded) return false;
 
-				// iterate all bottom objects
-				NEW_MERGE_STACK_MAGIC_COUNTER;
-				succeeded = callback([&](Ref<InsExec_ObjRefLink> objRefLink)
+				// iterate all bottom instructions
 				{
-					return SearchForObjects(objRefLink, true, [&](InsExec_Object* ieObject)
+					// bottomInsRefs need to be filtered again
+					// because the object from the first branch could be a field in the object from the second branch
+					// in this case, that object could have multiple incompatible bottomInsRefs
+					// so we try eoTrace and the unique and existing eoTrace->successors.first
+					// see which wins
+					Group<Trace*, InsRef> postfixesAtSelf, postfixesAtSuccessor;
+
+					NEW_MERGE_STACK_MAGIC_COUNTER;
+					callback([&](Ref<InsExec_ObjRefLink> objRefLink)
 					{
-						PushObjRefLink(ta->bottomObjectIds, ieObject);
-
-						// check if EO satisfies the condition
-						return SearchForEndObjectInstructions(GetTrace(ieObject->topLocalTrace), ieObject->topLocalIns, [&](Trace* eoTrace, vint32_t eoIns)
+						return EnumerateObjects(objRefLink, true, [&](InsExec_Object* ieObject)
 						{
-#ifdef VCZH_DO_DEBUG_CHECK
-							{
-								auto traceExec = GetTraceExec(eoTrace->traceExecRef);
-								auto&& ins = ReadInstruction(eoIns, traceExec->insLists);
-								CHECK_ERROR(ins.type == AstInsType::EndObject, ERROR_MESSAGE_PREFIX L"The found instruction is not a EndObject instruction.");
-							}
-#endif
+							PushObjRefLink(ta->bottomObjectIds, ieObject);
 
-							if (!last)
+							// check if EO satisfies the condition
+							return EnumerateBottomInstructions(ieObject, [&](Trace* eoTrace, vint32_t eoIns)
 							{
-								last = eoTrace;
-								lastTraceExec = GetTraceExec(last->traceExecRef);
-								ta->lastTrace = eoTrace;
-								ta->postfix = lastTraceExec->insLists.c3 - eoIns - 1;
-							}
-							else if (last == eoTrace)
-							{
-								// check if two instruction is the same
 								auto eoTraceExec = GetTraceExec(eoTrace->traceExecRef);
-								if (ta->postfix != eoTraceExec->insLists.c3 - eoIns - 1) return false;
-								foundEndSame = true;
+								InsRef insRef{ eoTrace,eoTraceExec->insLists.c3 - eoIns - 1 };
+								postfixesAtSelf.Add(eoTrace, insRef);
+
+								Trace* successorTrace = nullptr;
+								if (eoTrace->successorCount == 1)
+								{
+									successorTrace = GetTrace(eoTrace->successors.first);
+								}
+								postfixesAtSuccessor.Add(successorTrace, insRef);
+								return true;
+							});
+						});
+					});
+
+					// find the most possible answer from postfixesAtSelf and postfixesAtSuccessor
+					// bottom bottomInsRefs are splitted into multiple group
+					// find the unique one that has the maximum capacity
+					vint maxOccurences = -1;
+					for (vint i = 0; i < postfixesAtSelf.Count(); i++)
+					{
+						vint count = postfixesAtSelf.GetByIndex(i).Count();
+						if (count > maxOccurences)
+						{
+							maxOccurences = count;
+						}
+					}
+					for (vint i = 0; i < postfixesAtSuccessor.Count(); i++)
+					{
+						vint count = postfixesAtSuccessor.GetByIndex(i).Count();
+						if (count > maxOccurences)
+						{
+							maxOccurences = count;
+						}
+					}
+
+					vint uniqueAtSelf = -1;
+					for (vint i = 0; i < postfixesAtSelf.Count(); i++)
+					{
+						vint count = postfixesAtSelf.GetByIndex(i).Count();
+						if (count == maxOccurences)
+						{
+							if (uniqueAtSelf == -1)
+							{
+								uniqueAtSelf = i;
 							}
 							else
 							{
-								// check if two instruction shares the same postfix
-								if (last->successors.first != eoTrace->successors.first) return false;
-								auto eoTraceExec = GetTraceExec(eoTrace->traceExecRef);
-								if (!ComparePostfix(lastTraceExec, eoTraceExec, ta->postfix + 1)) return false;
-								foundEndPostfix = true;
+								uniqueAtSelf = -2;
+								break;
 							}
-							return true;
-						});
-					});
-				});
+						}
+					}
+
+					vint uniqueAtSuccessor = -1;
+					for (vint i = 0; i < postfixesAtSuccessor.Count(); i++)
+					{
+						vint count = postfixesAtSuccessor.GetByIndex(i).Count();
+						if (count == maxOccurences)
+						{
+							if (uniqueAtSuccessor == -1)
+							{
+								uniqueAtSuccessor = i;
+							}
+							else
+							{
+								uniqueAtSuccessor = -2;
+								break;
+							}
+						}
+					}
+
+					InsRef lastPostfix;
+					if (uniqueAtSelf >= 0)
+					{
+						// if all bottom traces are the same, their first successors are also the same
+						lastPostfix = postfixesAtSelf.GetByIndex(uniqueAtSelf)[0];
+					}
+					else if (uniqueAtSuccessor >= 0)
+					{
+						lastPostfix = postfixesAtSuccessor.GetByIndex(uniqueAtSuccessor)[0];
+						foundEndPostfix = true;
+					}
+
+					if (lastPostfix.trace == nullref)
+					{
+						succeeded = false;
+					}
+					else
+					{
+						last = GetTrace(lastPostfix.trace);
+						ta->lastTrace = last;
+						ta->postfix = lastPostfix.ins;
+						succeeded = true;
+					}
+				}
 				if (!succeeded) return false;
 
 				// ensure the statistics result is compatible
@@ -228,7 +286,43 @@ CheckMergeTrace
 					ta->lastTrace = last;
 				}
 
-				return true;
+				// ensure firstTrace and lastTrace are in the same branch
+				auto firstForward = GetTrace(GetTraceExec(GetTrace(ta->firstTrace)->traceExecRef)->branchData.forwardTrace);
+				auto lastForward = GetTrace(GetTraceExec(GetTrace(ta->lastTrace)->traceExecRef)->branchData.forwardTrace);
+				auto currentForward = lastForward;
+				while (true)
+				{
+					if (currentForward->traceExecRef < firstForward->traceExecRef)
+					{
+						return false;
+					}
+					if (currentForward == firstForward)
+					{
+						return true;
+					}
+
+					auto currentExec = GetTraceExec(currentForward->traceExecRef);
+					auto nextForwardRef = currentExec->branchData.commonForwardBranch;
+					if (nextForwardRef == nullptr)
+					{
+						nextForwardRef = currentExec->branchData.forwardTrace;
+					}
+
+					auto nextForward = GetTrace(currentExec->branchData.forwardTrace);
+					if (currentForward != nextForward)
+					{
+						currentForward = nextForward;
+					}
+					else if (currentForward->predecessorCount > 0)
+					{
+						currentForward = GetTrace(GetTraceExec(GetTrace(currentForward->predecessors.first)->traceExecRef)->branchData.forwardTrace);
+					}
+					else
+					{
+						break;
+					}
+				}
+				return false;
 #undef ERROR_MESSAGE_PREFIX
 			}
 
@@ -325,7 +419,6 @@ CheckMergeTrace
 						});
 						if (succeeded) return true;
 					}
-
 				}
 			CHECK_OBJECTS_IN_TOP_CREATE_STACK:
 				auto ieCSTop = GetInsExec_CreateStack(traceExec->context.createStack);

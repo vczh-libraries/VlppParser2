@@ -72,20 +72,25 @@ namespace ifelsepriority
 	ModuleParser::ModuleParser()
 		: vl::glr::ParserBase<IfElsePriorityTokens, ModuleParserStates, IfElsePriorityAstInsReceiver>(&IfElsePriorityTokenDeleter, &IfElsePriorityLexerData, &IfElsePriorityModuleParserData)
 	{
-	};
+	}
+
+	vl::WString ModuleParser::GetClassName(vl::vint32_t classIndex) const
+	{
+		return vl::WString::Unmanaged(IfElsePriorityTypeName((IfElsePriorityClasses)classIndex));
+	}
 
 	vl::vint32_t ModuleParser::FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2) const
 	{
 		return -1;
-	};
+	}
 
 	vl::Ptr<ifelsepriority::Module> ModuleParser::ParseModule(const vl::WString& input, vl::vint codeIndex) const
 	{
 		 return ParseWithString<ifelsepriority::Module, ModuleParserStates::Module>(input, this, codeIndex);
-	};
+	}
 
 	vl::Ptr<ifelsepriority::Module> ModuleParser::ParseModule(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex) const
 	{
 		 return ParseWithTokens<ifelsepriority::Module, ModuleParserStates::Module>(tokens, this, codeIndex);
-	};
+	}
 }

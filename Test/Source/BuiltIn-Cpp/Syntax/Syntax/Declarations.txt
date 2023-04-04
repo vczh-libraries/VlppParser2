@@ -139,6 +139,11 @@ _VarsDecl
   ::= _DeclaratorKeyword:keywords {_DeclaratorKeyword:keywords} !_VarsDeclWithoutKeyword
   ;
 
+_OtherDecl
+  ::= "static_assert" "(" _Expr:expr ["," _Expr:message] ")" as StaticAssertDeclaration
+  ;
+
 _Decl
   ::= !_VarsDecl
+  ::= !_OtherDecl
   ;

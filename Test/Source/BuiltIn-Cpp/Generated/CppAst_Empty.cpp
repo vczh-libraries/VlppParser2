@@ -17,6 +17,10 @@ TypeOrExprOrOthersVisitor
 
 		// Visitor Members -----------------------------------
 
+		void TypeOrExprOrOthersVisitor::Visit(CppTypeOrExprOrOthersToResolve* node)
+		{
+		}
+
 		void TypeOrExprOrOthersVisitor::Visit(CppDeclaration* node)
 		{
 			Dispatch(node);
@@ -49,11 +53,19 @@ DeclarationVisitor
 		{
 		}
 
+		void DeclarationVisitor::Visit(CppStaticAssertDeclaration* node)
+		{
+		}
+
 /***********************************************************************
 TypeOrExprVisitor
 ***********************************************************************/
 
 		// Visitor Members -----------------------------------
+
+		void TypeOrExprVisitor::Visit(CppTypeOrExprToResolve* node)
+		{
+		}
 
 		void TypeOrExprVisitor::Visit(CppExprOnly* node)
 		{
@@ -211,6 +223,10 @@ StatementVisitor
 
 		// Visitor Members -----------------------------------
 
+		void StatementVisitor::Visit(CppStatementToResolve* node)
+		{
+		}
+
 		void StatementVisitor::Visit(CppEmptyStat* node)
 		{
 		}
@@ -256,10 +272,6 @@ StatementVisitor
 		}
 
 		void StatementVisitor::Visit(Cpp__LeaveStat* node)
-		{
-		}
-
-		void StatementVisitor::Visit(CppStaticAssertStat* node)
 		{
 		}
 

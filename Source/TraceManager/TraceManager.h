@@ -249,11 +249,16 @@ TraceManager (Data Structures -- Input/EndOfInput)
 TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 ***********************************************************************/
 
+			struct InsRef
+			{
+				Ref<Trace>							trace;
+				vint32_t							ins = -1;
+			};
+
 			struct InsExec_InsRefLink : Allocatable<InsExec_InsRefLink>
 			{
 				Ref<InsExec_InsRefLink>				previous;
-				Ref<Trace>							trace;
-				vint32_t							ins = -1;
+				InsRef								insRef;
 			};
 
 			struct InsExec_ObjRefLink : Allocatable<InsExec_ObjRefLink>
@@ -264,26 +269,31 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 
 			struct InsExec_Object : Allocatable<InsExec_Object>, WithMagicCounter
 			{
+				static const vint32_t				TokenOrEnumItemObjectId = -2;
+
 				// previous allocated object
 				Ref<InsExec_Object>					previous;
 
-				// injectObjectIds are objects it injects into by LriFetch
-				Ref<InsExec_ObjRefLink>				injectObjectIds;
+				// fieldObjectIds are object fields of this object
+				Ref<InsExec_ObjRefLink>				fieldObjectIds;
+
+				// assignedToObjectIds are objects who has at least one field that is this object
+				Ref<InsExec_ObjRefLink>				assignedToObjectIds;
 
 				// instruction that creates this object
-				Ref<Trace>							createTrace;
-				vint32_t							createIns = -1;
+				InsRef								createInsRef;
 
 				// DelayFieldAssignment instructions that associates to the current object
 				Ref<InsExec_InsRefLink>				dfaInsRefs;
 
 				// first instruction that creates this object
-				Ref<Trace>							topLocalTrace;
-				vint32_t							topLocalIns = -1;
+				InsRef								topLocalInsRef;
 
 				// first instruction that creates this object or its fields
-				Ref<Trace>							topTrace;
-				vint32_t							topIns = -1;
+				InsRef								topInsRef;
+
+				// last instructions that closes this object
+				Ref<InsExec_InsRefLink>				bottomInsRefs;
 			};
 
 			struct InsExec_ObjectStack : Allocatable<InsExec_ObjectStack>, WithMagicCounter
@@ -304,8 +314,9 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 				// InsExec_ObjRefLink assigned by BO/BOLA/RO
 				Ref<InsExec_ObjRefLink>				objectIds;
 
-				// objectIds will be added to reverseInjectObjectIds::injectObjectIds
-				Ref<InsExec_ObjRefLink>				reverseInjectObjectIds;
+				// objectIds will be added to reverseAssignedToObjectIds::assignedToObjectIds when ReopenObject happens
+				// it happens when a field is assigned to a DFA created object, the objectIds are unknown yet
+				Ref<InsExec_ObjRefLink>				reverseAssignedToObjectIds;
 			};
 
 			struct InsExec_Context
@@ -588,12 +599,12 @@ TraceManager
 				InsExec_Object*								NewObject();
 				vint32_t									GetStackBase(InsExec_Context& context);
 				vint32_t									GetStackTop(InsExec_Context& context);
-				void										PushInsRefLink(Ref<InsExec_InsRefLink>& link, Ref<Trace> trace, vint32_t ins);
+				void										PushInsRefLink(Ref<InsExec_InsRefLink>& link, InsRef insRef);
 				void										PushObjRefLink(Ref<InsExec_ObjRefLink>& link, Ref<InsExec_Object> id);
 				Ref<InsExec_InsRefLink>						JoinInsRefLink(Ref<InsExec_InsRefLink> first, Ref<InsExec_InsRefLink> second);
 				Ref<InsExec_ObjRefLink>						JoinObjRefLink(Ref<InsExec_ObjRefLink> first, Ref<InsExec_ObjRefLink> second);
-				void										PushInjectObjectIdsSingleWithMagic(Ref<InsExec_ObjRefLink> container, Ref<InsExec_Object> element);
-				void										PushInjectObjectIdsMultipleWithMagic(Ref<InsExec_ObjRefLink> container, Ref<InsExec_ObjRefLink> elements);
+				void										PushAssignedToObjectIdsSingleWithMagic(Ref<InsExec_ObjRefLink> fieldObjectIds, Ref<InsExec_Object> assignedToTarget);
+				void										PushAssignedToObjectIdsMultipleWithMagic(Ref<InsExec_ObjRefLink> fieldObjectIds, Ref<InsExec_ObjRefLink> assignedToTargets);
 				InsExec_ObjectStack*						PushObjectStackSingle(InsExec_Context& context, Ref<InsExec_Object> objectId);
 				InsExec_ObjectStack*						PushObjectStackMultiple(InsExec_Context& context, Ref<InsExec_ObjRefLink> linkId);
 				InsExec_CreateStack*						PushCreateStack(InsExec_Context& context);
@@ -610,9 +621,13 @@ TraceManager
 				void										MergeInsExecContext(Trace* mergeTrace);
 
 				// phase: PartialExecuteTraces - CalculateObjectFirstInstruction
-				bool										UpdateTopTrace(Ref<Trace>& topTrace, vint32_t& topIns, Ref<Trace> newTrace, vint32_t newIns);
-				void										InjectFirstInstruction(Ref<Trace> trace, vint32_t ins, Ref<InsExec_ObjRefLink> injectTargets, vuint64_t magicInjection);
+				bool										UpdateTopTrace(InsRef& topInsRef, InsRef newInsRef);
+				void										InjectFirstInstruction(InsRef insRef, Ref<InsExec_ObjRefLink> injectTargets, vuint64_t magicInjection);
 				void										CalculateObjectFirstInstruction();
+
+				// phase: PartialExecuteTraces - CalculateObjectLastInstruction
+				bool										IsInTheSameBranch(Trace* forward, Trace* targetForwardAtFront);
+				void										CalculateObjectLastInstruction();
 
 				// phase: PartialExecuteTraces
 				void										PartialExecuteTraces();
@@ -638,9 +653,9 @@ TraceManager
 
 				// phase: CheckMergeTraces
 				template<typename TCallback>
-				bool										SearchForObjects(Ref<InsExec_ObjRefLink> objRefLinkStartSet, bool withCounter, TCallback&& callback);
+				bool										EnumerateObjects(Ref<InsExec_ObjRefLink> objRefLinkStartSet, bool withCounter, TCallback&& callback);
 				template<typename TCallback>
-				bool										SearchForEndObjectInstructions(Trace* createTrace, vint32_t createIns, TCallback&& callback);
+				bool										EnumerateBottomInstructions(InsExec_Object* ieObject, TCallback&& callback);
 				bool										ComparePrefix(TraceExec* baselineTraceExec, TraceExec* commingTraceExec, vint32_t prefix);
 				bool										ComparePostfix(TraceExec* baselineTraceExec, TraceExec* commingTraceExec, vint32_t postfix);
 				template<typename TCallback>

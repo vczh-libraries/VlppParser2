@@ -50,12 +50,26 @@ new (a, b)T{a, b}
 
 a++
 a--
+
 a{}
-a{b}
-a{b, c}
-int*{}
-int*{b}
-int*{b, c...}
+const a{b}
+a volatile{b, c...}
+const a volatile{b+c}
+
+int{}
+const int{b}
+int volatile{b, c...}
+const int volatile{b+c}
+
+const T(a+b)
+T volatile(a+b)
+const T volatile(a+b)
+
+int(a+b)
+const int(a+b)
+int volatile(a+b)
+const int volatile(a+b)
+
 a++--[b][c]()(d)(e, f...)
 
 ++a
@@ -83,6 +97,7 @@ delete a
 delete[] a
 ::delete a
 ::delete[] a
+
 (T*)a
 (T*)(a+b)
 
