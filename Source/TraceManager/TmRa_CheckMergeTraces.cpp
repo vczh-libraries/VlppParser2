@@ -49,9 +49,9 @@ CheckMergeTrace
 				// all EndObject ending a BO/DFA are considered
 				// there is no "bottom EndObject"
 				// each EndObject should be in different branches
-				auto topLocalTrace = GetTrace(ieObject->topLocalTrace);
+				auto topLocalTrace = GetTrace(ieObject->topLocalInsRef.trace);
 				auto traceExec = GetTraceExec(topLocalTrace->traceExecRef);
-				auto insExec = GetInsExec(traceExec->insExecRefs.start + ieObject->topLocalIns);
+				auto insExec = GetInsExec(traceExec->insExecRefs.start + ieObject->topLocalInsRef.ins);
 				auto insRefLinkId = insExec->eoInsRefs;
 				while (insRefLinkId != nullref)
 				{
@@ -62,7 +62,7 @@ CheckMergeTrace
 					// topLocalTrace could be a DFA created object, and multiple objects could share the same DFA object
 					// in some cases its eoInsRefs could pointing to EndObject of completely unrelated objects
 					// TODO: make it accurate
-					if (!callback(GetTrace(insRefLink->trace), insRefLink->ins)) return false;
+					if (!callback(GetTrace(insRefLink->insRef.trace), insRefLink->insRef.ins)) return false;
 				}
 				return true;
 			}
@@ -127,11 +127,11 @@ CheckMergeTrace
 				{
 					return EnumerateObjects(objRefLink, false, [&](InsExec_Object* ieObject)
 					{
-						auto createTrace = GetTrace(ieObject->topTrace);
+						auto createTrace = GetTrace(ieObject->topInsRef.trace);
 #ifdef VCZH_DO_DEBUG_CHECK
 						{
 							auto traceExec = GetTraceExec(createTrace->traceExecRef);
-							auto&& ins = ReadInstruction(ieObject->topIns, traceExec->insLists);
+							auto&& ins = ReadInstruction(ieObject->topInsRef.ins, traceExec->insLists);
 							CHECK_ERROR(ins.type == AstInsType::BeginObject || ins.type == AstInsType::DelayFieldAssignment, ERROR_MESSAGE_PREFIX L"The found instruction is not a BeginObject or DelayFieldAssignment instruction.");
 						}
 #endif
@@ -141,12 +141,12 @@ CheckMergeTrace
 							first = createTrace;
 							firstTraceExec = GetTraceExec(first->traceExecRef);
 							ta->firstTrace = createTrace;
-							ta->prefix = ieObject->topIns;
+							ta->prefix = ieObject->topInsRef.ins;
 						}
 						else if (first == createTrace)
 						{
 							// check if two instruction is the same
-							if (ta->prefix != ieObject->topIns) return false;
+							if (ta->prefix != ieObject->topInsRef.ins) return false;
 							foundBeginSame = true;
 						}
 						else

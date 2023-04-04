@@ -44,12 +44,11 @@ PartialExecuteOrdinaryTrace
 				}
 			}
 
-			void TraceManager::PushInsRefLink(Ref<InsExec_InsRefLink>& link, Ref<Trace> trace, vint32_t ins)
+			void TraceManager::PushInsRefLink(Ref<InsExec_InsRefLink>& link, InsRef insRef)
 			{
 				auto newLink = GetInsExec_InsRefLink(insExec_InsRefLinks.Allocate());
 				newLink->previous = link;
-				newLink->trace = trace;
-				newLink->ins = ins;
+				newLink->insRef = insRef;
 				link = newLink;
 			}
 
@@ -72,14 +71,14 @@ PartialExecuteOrdinaryTrace
 				{
 					auto stack = GetInsExec_InsRefLink(first);
 					first = stack->previous;
-					PushInsRefLink(newStack, stack->trace, stack->ins);
+					PushInsRefLink(newStack, stack->insRef);
 				}
 
 				while (second != nullref)
 				{
 					auto stack = GetInsExec_InsRefLink(second);
 					second = stack->previous;
-					PushInsRefLink(newStack, stack->trace, stack->ins);
+					PushInsRefLink(newStack, stack->insRef);
 				}
 
 				return newStack;
@@ -202,12 +201,11 @@ PartialExecuteOrdinaryTrace
 						{
 							// new object
 							auto ieObject = NewObject();
-							ieObject->createTrace = trace;
-							ieObject->createIns = insRef;
+							ieObject->createInsRef = { trace,insRef };
 
 							// new create stack
 							auto ieCSTop = PushCreateStack(context);
-							PushInsRefLink(ieCSTop->createInsRefs, trace, insRef);
+							PushInsRefLink(ieCSTop->createInsRefs, ieObject->createInsRef);
 							ieCSTop->stackBase = GetStackTop(context);
 							PushObjRefLink(ieCSTop->objectIds, ieObject);
 
@@ -219,7 +217,7 @@ PartialExecuteOrdinaryTrace
 						{
 							// new create stack
 							auto ieCSTop = PushCreateStack(context);
-							PushInsRefLink(ieCSTop->createInsRefs, trace, insRef);
+							PushInsRefLink(ieCSTop->createInsRefs, { trace, insRef });
 							ieCSTop->stackBase = GetStackTop(context);
 						}
 						break;
@@ -282,18 +280,18 @@ PartialExecuteOrdinaryTrace
 								insRefLinkId = insRefLink->previous;
 
 								// check if the top create stack is from DFA
-								auto traceCSTop = GetTrace(insRefLink->trace);
+								auto traceCSTop = GetTrace(insRefLink->insRef.trace);
 								auto traceExecCSTop = GetTraceExec(traceCSTop->traceExecRef);
-								CHECK_ERROR(ReadInstruction(insRefLink->ins, traceExecCSTop->insLists).type == AstInsType::DelayFieldAssignment, ERROR_MESSAGE_PREFIX L"DelayFieldAssignment is not submitted before ReopenObject.");
+								CHECK_ERROR(ReadInstruction(insRefLink->insRef.ins, traceExecCSTop->insLists).type == AstInsType::DelayFieldAssignment, ERROR_MESSAGE_PREFIX L"DelayFieldAssignment is not submitted before ReopenObject.");
 
-								auto insExecDfa = GetInsExec(traceExecCSTop->insExecRefs.start + insRefLink->ins);
+								auto insExecDfa = GetInsExec(traceExecCSTop->insExecRefs.start + insRefLink->insRef.ins);
 								auto ref = ieOSTop->objectIds;
 								while (ref != nullref)
 								{
 									auto link = GetInsExec_ObjRefLink(ref);
 									auto ieObject = GetInsExec_Object(link->id);
 									// InsExec_Object::dfaInsRefs
-									PushInsRefLink(ieObject->dfaInsRefs, insRefLink->trace, insRefLink->ins);
+									PushInsRefLink(ieObject->dfaInsRefs, insRefLink->insRef);
 									// InsExec::objRefs
 									PushObjRefLink(insExecDfa->objRefs, ieObject);
 									ref = link->previous;
@@ -323,10 +321,10 @@ PartialExecuteOrdinaryTrace
 								auto insRefLink = GetInsExec_InsRefLink(insRefLinkId);
 								insRefLinkId = insRefLink->previous;
 
-								auto traceCSTop = GetTrace(insRefLink->trace);
+								auto traceCSTop = GetTrace(insRefLink->insRef.trace);
 								auto traceExecCSTop = GetTraceExec(traceCSTop->traceExecRef);
-								auto insExecCreate = GetInsExec(traceExecCSTop->insExecRefs.start + insRefLink->ins);
-								PushInsRefLink(insExecCreate->eoInsRefs, trace, insRef);
+								auto insExecCreate = GetInsExec(traceExecCSTop->insExecRefs.start + insRefLink->insRef.ins);
+								PushInsRefLink(insExecCreate->eoInsRefs, { trace, insRef });
 							}
 						}
 						break;

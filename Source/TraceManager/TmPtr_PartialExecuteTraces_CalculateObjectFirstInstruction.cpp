@@ -14,16 +14,15 @@ namespace vl
 CalculateObjectFirstInstruction
 ***********************************************************************/
 
-			bool TraceManager::UpdateTopTrace(Ref<Trace>& topTrace, vint32_t& topIns, Ref<Trace> newTrace, vint32_t newIns)
+			bool TraceManager::UpdateTopTrace(InsRef& topInsRef, InsRef newInsRef)
 			{
 				if (
-					topTrace == nullref ||
-					topTrace > newTrace ||
-					(topTrace == newTrace && topIns > newIns)
+					topInsRef.trace == nullref ||
+					topInsRef.trace > newInsRef.trace ||
+					(topInsRef.trace == newInsRef.trace && topInsRef.ins > newInsRef.ins)
 					)
 				{
-					topTrace = newTrace;
-					topIns = newIns;
+					topInsRef = newInsRef;
 					return true;
 				}
 				else
@@ -32,7 +31,7 @@ CalculateObjectFirstInstruction
 				}
 			}
 
-			void TraceManager::InjectFirstInstruction(Ref<Trace> trace, vint32_t ins, Ref<InsExec_ObjRefLink> injectTargets, vuint64_t magicInjection)
+			void TraceManager::InjectFirstInstruction(InsRef insRef, Ref<InsExec_ObjRefLink> injectTargets, vuint64_t magicInjection)
 			{
 				auto objLinkRef = injectTargets;
 				while (objLinkRef != nullref)
@@ -47,9 +46,9 @@ CalculateObjectFirstInstruction
 					// there will be only one top create instruction per object
 					// even when object relationship is partial ordered
 					// TODO: prove it
-					if (UpdateTopTrace(ieObject->topTrace, ieObject->topIns, trace, ins))
+					if (UpdateTopTrace(ieObject->topInsRef, insRef))
 					{
-						InjectFirstInstruction(trace, ins, ieObject->assignedToObjectIds, magicInjection);
+						InjectFirstInstruction(insRef, ieObject->assignedToObjectIds, magicInjection);
 					}
 				}
 			}
@@ -65,7 +64,7 @@ CalculateObjectFirstInstruction
 						objRef = ieObject->previous;
 
 						// set the top local trace to its create trace
-						UpdateTopTrace(ieObject->topLocalTrace, ieObject->topLocalIns, ieObject->createTrace, ieObject->createIns);
+						UpdateTopTrace(ieObject->topLocalInsRef, ieObject->createInsRef);
 
 						// check all DFA instructions
 						auto insRefLinkId = ieObject->dfaInsRefs;
@@ -77,11 +76,11 @@ CalculateObjectFirstInstruction
 							// there will be only one top local create instruction per object
 							// even when object relationship is partial ordered
 							// TODO: prove it
-							UpdateTopTrace(ieObject->topLocalTrace, ieObject->topLocalIns, insRefLink->trace, insRefLink->ins);
+							UpdateTopTrace(ieObject->topLocalInsRef, insRefLink->insRef);
 						}
 
 						// set the top trace to its top local trace
-						UpdateTopTrace(ieObject->topTrace, ieObject->topIns, ieObject->topLocalTrace, ieObject->topLocalIns);
+						UpdateTopTrace(ieObject->topInsRef, ieObject->topLocalInsRef);
 					}
 				}
 
@@ -96,7 +95,7 @@ CalculateObjectFirstInstruction
 						NEW_MERGE_STACK_MAGIC_COUNTER;
 						auto magicInjection = MergeStack_MagicCounter;
 						ieObject->mergeCounter = magicInjection;
-						InjectFirstInstruction(ieObject->topTrace, ieObject->topIns, ieObject->assignedToObjectIds, magicInjection);
+						InjectFirstInstruction(ieObject->topInsRef, ieObject->assignedToObjectIds, magicInjection);
 					}
 				}
 			}

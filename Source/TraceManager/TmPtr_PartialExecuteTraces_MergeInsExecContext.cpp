@@ -22,13 +22,13 @@ MergeInsExecContext
 					auto commingStack = GetInsExec_InsRefLink(comming);
 					comming = commingStack->previous;
 
-					auto insTrace = GetTrace(commingStack->trace);
+					auto insTrace = GetTrace(commingStack->insRef.trace);
 					auto insTraceExec = GetTraceExec(insTrace->traceExecRef);
-					auto insExec = GetInsExec(insTraceExec->insExecRefs.start + commingStack->ins);
+					auto insExec = GetInsExec(insTraceExec->insExecRefs.start + commingStack->insRef.ins);
 					if (insExec->mergeCounter == magicPush) continue;
 
 					insExec->mergeCounter = magicPush;
-					PushInsRefLink(link, commingStack->trace, commingStack->ins);
+					PushInsRefLink(link, commingStack->insRef);
 				}
 			}
 

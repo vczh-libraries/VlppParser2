@@ -249,11 +249,16 @@ TraceManager (Data Structures -- Input/EndOfInput)
 TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 ***********************************************************************/
 
+			struct InsRef
+			{
+				Ref<Trace>							trace;
+				vint32_t							ins = -1;
+			};
+
 			struct InsExec_InsRefLink : Allocatable<InsExec_InsRefLink>
 			{
 				Ref<InsExec_InsRefLink>				previous;
-				Ref<Trace>							trace;
-				vint32_t							ins = -1;
+				InsRef								insRef;
 			};
 
 			struct InsExec_ObjRefLink : Allocatable<InsExec_ObjRefLink>
@@ -276,19 +281,19 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 				Ref<InsExec_ObjRefLink>				assignedToObjectIds;
 
 				// instruction that creates this object
-				Ref<Trace>							createTrace;
-				vint32_t							createIns = -1;
+				InsRef								createInsRef;
 
 				// DelayFieldAssignment instructions that associates to the current object
 				Ref<InsExec_InsRefLink>				dfaInsRefs;
 
 				// first instruction that creates this object
-				Ref<Trace>							topLocalTrace;
-				vint32_t							topLocalIns = -1;
+				InsRef								topLocalInsRef;
 
 				// first instruction that creates this object or its fields
-				Ref<Trace>							topTrace;
-				vint32_t							topIns = -1;
+				InsRef								topInsRef;
+
+				// last instructions that closes this object
+				Ref<InsExec_InsRefLink>				bottomInsRefs;
 			};
 
 			struct InsExec_ObjectStack : Allocatable<InsExec_ObjectStack>, WithMagicCounter
@@ -594,7 +599,7 @@ TraceManager
 				InsExec_Object*								NewObject();
 				vint32_t									GetStackBase(InsExec_Context& context);
 				vint32_t									GetStackTop(InsExec_Context& context);
-				void										PushInsRefLink(Ref<InsExec_InsRefLink>& link, Ref<Trace> trace, vint32_t ins);
+				void										PushInsRefLink(Ref<InsExec_InsRefLink>& link, InsRef insRef);
 				void										PushObjRefLink(Ref<InsExec_ObjRefLink>& link, Ref<InsExec_Object> id);
 				Ref<InsExec_InsRefLink>						JoinInsRefLink(Ref<InsExec_InsRefLink> first, Ref<InsExec_InsRefLink> second);
 				Ref<InsExec_ObjRefLink>						JoinObjRefLink(Ref<InsExec_ObjRefLink> first, Ref<InsExec_ObjRefLink> second);
@@ -616,9 +621,12 @@ TraceManager
 				void										MergeInsExecContext(Trace* mergeTrace);
 
 				// phase: PartialExecuteTraces - CalculateObjectFirstInstruction
-				bool										UpdateTopTrace(Ref<Trace>& topTrace, vint32_t& topIns, Ref<Trace> newTrace, vint32_t newIns);
-				void										InjectFirstInstruction(Ref<Trace> trace, vint32_t ins, Ref<InsExec_ObjRefLink> injectTargets, vuint64_t magicInjection);
+				bool										UpdateTopTrace(InsRef& topInsRef, InsRef newInsRef);
+				void										InjectFirstInstruction(InsRef insRef, Ref<InsExec_ObjRefLink> injectTargets, vuint64_t magicInjection);
 				void										CalculateObjectFirstInstruction();
+
+				// phase: PartialExecuteTraces - CalculateObjectLastInstruction
+				void										CalculateObjectLastInstruction();
 
 				// phase: PartialExecuteTraces
 				void										PartialExecuteTraces();

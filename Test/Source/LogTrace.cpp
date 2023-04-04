@@ -172,7 +172,7 @@ void RenderTrace(
 			{
 				if (ref != first) writer.WriteString(L", ");
 				auto link = tm.GetInsExec_InsRefLink(ref);
-				writer.WriteString(itow(link->trace.handle) + L"@" + itow(link->ins));
+				writer.WriteString(itow(link->insRef.trace.handle) + L"@" + itow(link->insRef.ins));
 				ref = link->previous;
 			}
 		};
@@ -449,15 +449,15 @@ void RenderTrace(
 					auto ieObject = tm.GetInsExec_Object(insExec->createdObjectId);
 					writer.WriteString(
 						L"      obj:" + itow(ieObject->allocatedIndex) +
-						L", new:" + itow(ieObject->createTrace.handle) +
-						L"@" + itow(ieObject->createIns)
+						L", new:" + itow(ieObject->createInsRef.trace.handle) +
+						L"@" + itow(ieObject->createInsRef.ins)
 					);
 
-					if (ieObject->topTrace != nullref)
+					if (ieObject->topInsRef.trace != nullref)
 					{
 						writer.WriteString(
-							L", top:" + itow(ieObject->topTrace.handle) +
-							L"@" + itow(ieObject->topIns)
+							L", top:" + itow(ieObject->topInsRef.trace.handle) +
+							L"@" + itow(ieObject->topInsRef.ins)
 						);
 					}
 
