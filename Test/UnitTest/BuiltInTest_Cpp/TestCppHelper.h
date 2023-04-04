@@ -61,9 +61,13 @@ struct AssertAmbiguousBranches
 	template<typename T, size_t ...Is>
 	static void AssertCandidatesInternal(List<Ptr<T>>& candidates, std::index_sequence<Is...>)
 	{
-		bool casts[] = { (candidates[Is].Cast<std::tuple_element_t<Is, std::tuple<TArgs...>>>() != nullptr)... };
-		bool other = ((candidates[Is].Cast<std::tuple_element_t<Is, std::tuple<TArgs...>>>() == nullptr) || ...);
-		TEST_ASSERT((casts[Is] && ...) && !other);
+		vint succeeded[] = {(
+			From(candidates).FindType<
+				std::tuple_element_t<Is, std::tuple<TArgs...>>
+				>().Count()
+		)...};
+		TEST_ASSERT(((succeeded[Is] > 0) && ...));
+		TEST_ASSERT((succeeded[Is] + ...) == candidates.Count());
 	}
 
 	template<typename T>

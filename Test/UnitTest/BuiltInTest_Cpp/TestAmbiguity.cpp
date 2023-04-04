@@ -17,6 +17,11 @@ TEST_FILE
 		ParseAmbiguousTypeExpr<CppTypeOrExprToResolve, CppExprOnly, CppDeclaratorType>(parser, line);
 	});
 
+	TEST_PARSER(L"TypeOrExpr", L"Ambiguous_CBF")
+	{
+		ParseAmbiguousTypeExpr<CppTypeOrExprToResolve, CppCallExpr, CppBinaryExpr, CppDeclaratorType>(parser, line);
+	});
+
 	TEST_PARSER(L"Statements", L"Ambiguous")
 	{
 		ParseAmbiguousStatement<CppStatementToResolve, CppExprStat, CppDeclStat>(parser, line);
