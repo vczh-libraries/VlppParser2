@@ -1,5 +1,9 @@
 #include "TraceManager.h"
 
+#if defined VCZH_MSVC && defined _DEBUG
+#define VCZH_DO_DEBUG_CHECK
+#endif
+
 namespace vl
 {
 	namespace glr
@@ -55,6 +59,7 @@ CalculateObjectFirstInstruction
 
 			void TraceManager::CalculateObjectFirstInstruction()
 			{
+#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::CalculateObjectFirstInstruction()#"
 				// check all individual objects
 				{
 					auto objRef = firstObject;
@@ -96,6 +101,15 @@ CalculateObjectFirstInstruction
 						auto magicInjection = MergeStack_MagicCounter;
 						ieObject->mergeCounter = magicInjection;
 						InjectFirstInstruction(ieObject->topInsRef, ieObject->assignedToObjectIds, magicInjection);
+
+#ifdef VCZH_DO_DEBUG_CHECK
+						{
+							auto createTrace = GetTrace(ieObject->topInsRef.trace);
+							auto traceExec = GetTraceExec(createTrace->traceExecRef);
+							auto&& ins = ReadInstruction(ieObject->topInsRef.ins, traceExec->insLists);
+							CHECK_ERROR(ins.type == AstInsType::BeginObject || ins.type == AstInsType::DelayFieldAssignment, ERROR_MESSAGE_PREFIX L"The found instruction is not a BeginObject or DelayFieldAssignment instruction.");
+						}
+#endif
 					}
 				}
 			}

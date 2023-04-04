@@ -44,24 +44,13 @@ CheckMergeTrace
 			}
 
 			template<typename TCallback>
-			bool TraceManager::SearchForEndObjectInstructions(InsExec_Object* ieObject, TCallback&& callback)
+			bool TraceManager::EnumerateBottomInstructions(InsExec_Object* ieObject, TCallback&& callback)
 			{
-				// all EndObject ending a BO/DFA are considered
-				// there is no "bottom EndObject"
-				// each EndObject should be in different branches
-				auto topLocalTrace = GetTrace(ieObject->topLocalInsRef.trace);
-				auto traceExec = GetTraceExec(topLocalTrace->traceExecRef);
-				auto insExec = GetInsExec(traceExec->insExecRefs.start + ieObject->topLocalInsRef.ins);
-				auto insRefLinkId = insExec->eoInsRefs;
+				auto insRefLinkId = ieObject->bottomInsRefs;
 				while (insRefLinkId != nullref)
 				{
 					auto insRefLink = GetInsExec_InsRefLink(insRefLinkId);
 					insRefLinkId = insRefLink->previous;
-
-					// filter out any result that does not happen after ieObject->createTrace
-					// topLocalTrace could be a DFA created object, and multiple objects could share the same DFA object
-					// in some cases its eoInsRefs could pointing to EndObject of completely unrelated objects
-					// TODO: make it accurate
 					if (!callback(GetTrace(insRefLink->insRef.trace), insRefLink->insRef.ins)) return false;
 				}
 				return true;
@@ -163,7 +152,7 @@ CheckMergeTrace
 				});
 				if (!succeeded) return false;
 
-				// iterate all bottom objects
+				// iterate all bottom instructions
 				NEW_MERGE_STACK_MAGIC_COUNTER;
 				succeeded = callback([&](Ref<InsExec_ObjRefLink> objRefLink)
 				{
@@ -172,7 +161,7 @@ CheckMergeTrace
 						PushObjRefLink(ta->bottomObjectIds, ieObject);
 
 						// check if EO satisfies the condition
-						return SearchForEndObjectInstructions(ieObject, [&](Trace* eoTrace, vint32_t eoIns)
+						return EnumerateBottomInstructions(ieObject, [&](Trace* eoTrace, vint32_t eoIns)
 						{
 #ifdef VCZH_DO_DEBUG_CHECK
 							{

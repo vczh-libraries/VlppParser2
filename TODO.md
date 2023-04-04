@@ -58,7 +58,7 @@
 - Optimize `CalculateFirstSet_IndirectStartRules` using partial ordering.
 - TODO in `SyntaxSymbolManager::EliminateSingleRulePrefix`.
   - Deny `A ::= !B ::= B as Something ::= ...;`.
-- TODO in `SearchForEndObjectInstructions`
+- TODO in `CalculateObjectLastInstruction`
 - Print correct codeRange for:
   - `ParserErrorType::RuleIsIndirectlyLeftRecursive`
   - `ParserErrorType::LeftRecursiveClauseInsidePushCondition`

@@ -654,7 +654,7 @@ TraceManager
 				template<typename TCallback>
 				bool										EnumerateObjects(Ref<InsExec_ObjRefLink> objRefLinkStartSet, bool withCounter, TCallback&& callback);
 				template<typename TCallback>
-				bool										SearchForEndObjectInstructions(InsExec_Object* ieObject, TCallback&& callback);
+				bool										EnumerateBottomInstructions(InsExec_Object* ieObject, TCallback&& callback);
 				bool										ComparePrefix(TraceExec* baselineTraceExec, TraceExec* commingTraceExec, vint32_t prefix);
 				bool										ComparePostfix(TraceExec* baselineTraceExec, TraceExec* commingTraceExec, vint32_t postfix);
 				template<typename TCallback>

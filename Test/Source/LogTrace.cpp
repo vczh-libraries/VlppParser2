@@ -461,6 +461,13 @@ void RenderTrace(
 						);
 					}
 
+					if (ieObject->bottomInsRefs != nullref)
+					{
+						writer.WriteString(L" bottom:[");
+						logInsRefLink(ieObject->bottomInsRefs);
+						writer.WriteString(L"]");
+					}
+
 					if (ieObject->assignedToObjectIds != nullref)
 					{
 						writer.WriteString(L" assignedTo:[");
