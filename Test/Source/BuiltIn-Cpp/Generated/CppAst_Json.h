@@ -85,7 +85,7 @@ namespace cpp_parser
 			virtual void PrintFields(CppSizeofExpr* node);
 			virtual void PrintFields(CppStatement* node);
 			virtual void PrintFields(CppStatementToResolve* node);
-			virtual void PrintFields(CppStaticAssertStat* node);
+			virtual void PrintFields(CppStaticAssertDeclaration* node);
 			virtual void PrintFields(CppStringLiteral* node);
 			virtual void PrintFields(CppStringLiteralFragment* node);
 			virtual void PrintFields(CppSwitchStat* node);
@@ -117,6 +117,7 @@ namespace cpp_parser
 
 			void Visit(CppSingleVarDeclaration* node) override;
 			void Visit(CppMultipleVarDeclaration* node) override;
+			void Visit(CppStaticAssertDeclaration* node) override;
 
 			void Visit(CppTypeOrExprToResolve* node) override;
 			void Visit(CppExprOnly* node) override;
@@ -168,7 +169,6 @@ namespace cpp_parser
 			void Visit(CppCaseStat* node) override;
 			void Visit(CppDefaultStat* node) override;
 			void Visit(Cpp__LeaveStat* node) override;
-			void Visit(CppStaticAssertStat* node) override;
 			void Visit(CppWhileStat* node) override;
 			void Visit(CppDoWhileStat* node) override;
 			void Visit(CppIfElseStat* node) override;

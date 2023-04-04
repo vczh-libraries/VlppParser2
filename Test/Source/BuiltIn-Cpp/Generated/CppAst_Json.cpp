@@ -1438,7 +1438,7 @@ namespace cpp_parser
 			EndArray();
 			EndField();
 		}
-		void AstVisitor::PrintFields(CppStaticAssertStat* node)
+		void AstVisitor::PrintFields(CppStaticAssertDeclaration* node)
 		{
 			BeginField(L"expr");
 			Print(node->expr.Obj());
@@ -1723,6 +1723,21 @@ namespace cpp_parser
 			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 			PrintFields(static_cast<CppDeclaration*>(node));
 			PrintFields(static_cast<CppMultipleVarDeclaration*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppStaticAssertDeclaration* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(L"StaticAssertDeclaration", node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
+			PrintFields(static_cast<CppDeclaration*>(node));
+			PrintFields(static_cast<CppStaticAssertDeclaration*>(node));
 			EndObject();
 		}
 
@@ -2382,20 +2397,6 @@ namespace cpp_parser
 			WriteType(L"__LeaveStat", node);
 			PrintFields(static_cast<CppStatement*>(node));
 			PrintFields(static_cast<Cpp__LeaveStat*>(node));
-			EndObject();
-		}
-
-		void AstVisitor::Visit(CppStaticAssertStat* node)
-		{
-			if (!node)
-			{
-				WriteNull();
-				return;
-			}
-			BeginObject();
-			WriteType(L"StaticAssertStat", node);
-			PrintFields(static_cast<CppStatement*>(node));
-			PrintFields(static_cast<CppStaticAssertStat*>(node));
 			EndObject();
 		}
 

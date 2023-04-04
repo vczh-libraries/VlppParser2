@@ -892,16 +892,16 @@ MakeStatementToResolve
 		}
 
 /***********************************************************************
-MakeStaticAssertStat
+MakeStaticAssertDeclaration
 ***********************************************************************/
 
-		MakeStaticAssertStat& MakeStaticAssertStat::expr(const vl::Ptr<CppTypeOrExpr>& value)
+		MakeStaticAssertDeclaration& MakeStaticAssertDeclaration::expr(const vl::Ptr<CppTypeOrExpr>& value)
 		{
 			node->expr = value;
 			return *this;
 		}
 
-		MakeStaticAssertStat& MakeStaticAssertStat::message(const vl::Ptr<CppTypeOrExpr>& value)
+		MakeStaticAssertDeclaration& MakeStaticAssertDeclaration::message(const vl::Ptr<CppTypeOrExpr>& value)
 		{
 			node->message = value;
 			return *this;

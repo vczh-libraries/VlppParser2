@@ -40,6 +40,7 @@ namespace cpp_parser
 			// Visitor Members -----------------------------------
 			void Visit(CppSingleVarDeclaration* node) override;
 			void Visit(CppMultipleVarDeclaration* node) override;
+			void Visit(CppStaticAssertDeclaration* node) override;
 		};
 
 		/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
@@ -147,7 +148,6 @@ namespace cpp_parser
 			void Visit(CppCaseStat* node) override;
 			void Visit(CppDefaultStat* node) override;
 			void Visit(Cpp__LeaveStat* node) override;
-			void Visit(CppStaticAssertStat* node) override;
 			void Visit(CppWhileStat* node) override;
 			void Visit(CppDoWhileStat* node) override;
 			void Visit(CppIfElseStat* node) override;

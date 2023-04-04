@@ -124,8 +124,8 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::Ptr(new cpp_parser::CppSizeofExpr);
 		case CppClasses::StatementToResolve:
 			return vl::Ptr(new cpp_parser::CppStatementToResolve);
-		case CppClasses::StaticAssertStat:
-			return vl::Ptr(new cpp_parser::CppStaticAssertStat);
+		case CppClasses::StaticAssertDeclaration:
+			return vl::Ptr(new cpp_parser::CppStaticAssertDeclaration);
 		case CppClasses::StringLiteral:
 			return vl::Ptr(new cpp_parser::CppStringLiteral);
 		case CppClasses::StringLiteralFragment:
@@ -336,10 +336,10 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppSizeofExpr::argument, object, field, value, cppFieldName);
 		case CppFields::StatementToResolve_candidates:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppStatementToResolve::candidates, object, field, value, cppFieldName);
-		case CppFields::StaticAssertStat_expr:
-			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppStaticAssertStat::expr, object, field, value, cppFieldName);
-		case CppFields::StaticAssertStat_message:
-			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppStaticAssertStat::message, object, field, value, cppFieldName);
+		case CppFields::StaticAssertDeclaration_expr:
+			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppStaticAssertDeclaration::expr, object, field, value, cppFieldName);
+		case CppFields::StaticAssertDeclaration_message:
+			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppStaticAssertDeclaration::message, object, field, value, cppFieldName);
 		case CppFields::StringLiteral_fragments:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppStringLiteral::fragments, object, field, value, cppFieldName);
 		case CppFields::SwitchStat_condition:
@@ -542,7 +542,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"SizeofExpr",
 			L"Statement",
 			L"StatementToResolve",
-			L"StaticAssertStat",
+			L"StaticAssertDeclaration",
 			L"StringLiteral",
 			L"StringLiteralFragment",
 			L"SwitchStat",
@@ -630,7 +630,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::CppSizeofExpr",
 			L"cpp_parser::CppStatement",
 			L"cpp_parser::CppStatementToResolve",
-			L"cpp_parser::CppStaticAssertStat",
+			L"cpp_parser::CppStaticAssertDeclaration",
 			L"cpp_parser::CppStringLiteral",
 			L"cpp_parser::CppStringLiteralFragment",
 			L"cpp_parser::CppSwitchStat",
@@ -774,8 +774,8 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"SizeofExpr::argument",
 			L"SizeofExpr::variadic",
 			L"StatementToResolve::candidates",
-			L"StaticAssertStat::expr",
-			L"StaticAssertStat::message",
+			L"StaticAssertDeclaration::expr",
+			L"StaticAssertDeclaration::message",
 			L"StringLiteral::fragments",
 			L"StringLiteralFragment::kind",
 			L"StringLiteralFragment::literal",
@@ -925,8 +925,8 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::CppSizeofExpr::argument",
 			L"cpp_parser::CppSizeofExpr::variadic",
 			L"cpp_parser::CppStatementToResolve::candidates",
-			L"cpp_parser::CppStaticAssertStat::expr",
-			L"cpp_parser::CppStaticAssertStat::message",
+			L"cpp_parser::CppStaticAssertDeclaration::expr",
+			L"cpp_parser::CppStaticAssertDeclaration::message",
 			L"cpp_parser::CppStringLiteral::fragments",
 			L"cpp_parser::CppStringLiteralFragment::kind",
 			L"cpp_parser::CppStringLiteralFragment::literal",
@@ -1046,8 +1046,8 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::glr::AssemblerResolveAmbiguity<cpp_parser::CppStatement, cpp_parser::CppStatementToResolve>(type, candidates, cppTypeName);
 		case CppClasses::StatementToResolve:
 			return vl::glr::AssemblerResolveAmbiguity<cpp_parser::CppStatementToResolve, cpp_parser::CppStatementToResolve>(type, candidates, cppTypeName);
-		case CppClasses::StaticAssertStat:
-			return vl::glr::AssemblerResolveAmbiguity<cpp_parser::CppStaticAssertStat, cpp_parser::CppStatementToResolve>(type, candidates, cppTypeName);
+		case CppClasses::StaticAssertDeclaration:
+			return vl::glr::AssemblerResolveAmbiguity<cpp_parser::CppStaticAssertDeclaration, cpp_parser::CppTypeOrExprOrOthersToResolve>(type, candidates, cppTypeName);
 		case CppClasses::StringLiteral:
 			return vl::glr::AssemblerResolveAmbiguity<cpp_parser::CppStringLiteral, cpp_parser::CppTypeOrExprToResolve>(type, candidates, cppTypeName);
 		case CppClasses::SwitchStat:

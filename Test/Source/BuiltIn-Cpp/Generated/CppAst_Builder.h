@@ -372,11 +372,11 @@ namespace cpp_parser
 			MakeStatementToResolve& candidates(const vl::Ptr<CppStatement>& value);
 		};
 
-		class MakeStaticAssertStat : public vl::glr::ParsingAstBuilder<CppStaticAssertStat>
+		class MakeStaticAssertDeclaration : public vl::glr::ParsingAstBuilder<CppStaticAssertDeclaration>
 		{
 		public:
-			MakeStaticAssertStat& expr(const vl::Ptr<CppTypeOrExpr>& value);
-			MakeStaticAssertStat& message(const vl::Ptr<CppTypeOrExpr>& value);
+			MakeStaticAssertDeclaration& expr(const vl::Ptr<CppTypeOrExpr>& value);
+			MakeStaticAssertDeclaration& message(const vl::Ptr<CppTypeOrExpr>& value);
 		};
 
 		class MakeStringLiteral : public vl::glr::ParsingAstBuilder<CppStringLiteral>

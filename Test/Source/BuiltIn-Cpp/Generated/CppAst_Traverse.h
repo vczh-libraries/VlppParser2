@@ -87,7 +87,7 @@ namespace cpp_parser
 			virtual void Traverse(CppSizeofExpr* node);
 			virtual void Traverse(CppStatement* node);
 			virtual void Traverse(CppStatementToResolve* node);
-			virtual void Traverse(CppStaticAssertStat* node);
+			virtual void Traverse(CppStaticAssertDeclaration* node);
 			virtual void Traverse(CppStringLiteral* node);
 			virtual void Traverse(CppStringLiteralFragment* node);
 			virtual void Traverse(CppSwitchStat* node);
@@ -170,7 +170,7 @@ namespace cpp_parser
 			virtual void Finishing(CppSizeofExpr* node);
 			virtual void Finishing(CppStatement* node);
 			virtual void Finishing(CppStatementToResolve* node);
-			virtual void Finishing(CppStaticAssertStat* node);
+			virtual void Finishing(CppStaticAssertDeclaration* node);
 			virtual void Finishing(CppStringLiteral* node);
 			virtual void Finishing(CppStringLiteralFragment* node);
 			virtual void Finishing(CppSwitchStat* node);
@@ -202,6 +202,7 @@ namespace cpp_parser
 
 			void Visit(CppSingleVarDeclaration* node) override;
 			void Visit(CppMultipleVarDeclaration* node) override;
+			void Visit(CppStaticAssertDeclaration* node) override;
 
 			void Visit(CppTypeOrExprToResolve* node) override;
 			void Visit(CppExprOnly* node) override;
@@ -253,7 +254,6 @@ namespace cpp_parser
 			void Visit(CppCaseStat* node) override;
 			void Visit(CppDefaultStat* node) override;
 			void Visit(Cpp__LeaveStat* node) override;
-			void Visit(CppStaticAssertStat* node) override;
 			void Visit(CppWhileStat* node) override;
 			void Visit(CppDoWhileStat* node) override;
 			void Visit(CppIfElseStat* node) override;

@@ -53,6 +53,10 @@ DeclarationVisitor
 		{
 		}
 
+		void DeclarationVisitor::Visit(CppStaticAssertDeclaration* node)
+		{
+		}
+
 /***********************************************************************
 TypeOrExprVisitor
 ***********************************************************************/
@@ -268,10 +272,6 @@ StatementVisitor
 		}
 
 		void StatementVisitor::Visit(Cpp__LeaveStat* node)
-		{
-		}
-
-		void StatementVisitor::Visit(CppStaticAssertStat* node)
 		{
 		}
 

@@ -70,7 +70,7 @@ namespace cpp_parser
 	class CppSizeofExpr;
 	class CppStatement;
 	class CppStatementToResolve;
-	class CppStaticAssertStat;
+	class CppStaticAssertDeclaration;
 	class CppStringLiteral;
 	class CppStringLiteralFragment;
 	class CppSwitchStat;
@@ -281,6 +281,7 @@ namespace cpp_parser
 		public:
 			virtual void Visit(CppSingleVarDeclaration* node) = 0;
 			virtual void Visit(CppMultipleVarDeclaration* node) = 0;
+			virtual void Visit(CppStaticAssertDeclaration* node) = 0;
 		};
 
 		virtual void Accept(CppDeclaration::IVisitor* visitor) = 0;
@@ -776,6 +777,15 @@ namespace cpp_parser
 		void Accept(CppDeclaration::IVisitor* visitor) override;
 	};
 
+	class CppStaticAssertDeclaration : public CppDeclaration, vl::reflection::Description<CppStaticAssertDeclaration>
+	{
+	public:
+		vl::Ptr<CppTypeOrExpr> expr;
+		vl::Ptr<CppTypeOrExpr> message;
+
+		void Accept(CppDeclaration::IVisitor* visitor) override;
+	};
+
 	class CppStatement abstract : public vl::glr::ParsingAstBase, vl::reflection::Description<CppStatement>
 	{
 	public:
@@ -795,7 +805,6 @@ namespace cpp_parser
 			virtual void Visit(CppCaseStat* node) = 0;
 			virtual void Visit(CppDefaultStat* node) = 0;
 			virtual void Visit(Cpp__LeaveStat* node) = 0;
-			virtual void Visit(CppStaticAssertStat* node) = 0;
 			virtual void Visit(CppWhileStat* node) = 0;
 			virtual void Visit(CppDoWhileStat* node) = 0;
 			virtual void Visit(CppIfElseStat* node) = 0;
@@ -899,15 +908,6 @@ namespace cpp_parser
 	class Cpp__LeaveStat : public CppStatement, vl::reflection::Description<Cpp__LeaveStat>
 	{
 	public:
-
-		void Accept(CppStatement::IVisitor* visitor) override;
-	};
-
-	class CppStaticAssertStat : public CppStatement, vl::reflection::Description<CppStaticAssertStat>
-	{
-	public:
-		vl::Ptr<CppTypeOrExpr> expr;
-		vl::Ptr<CppTypeOrExpr> message;
 
 		void Accept(CppStatement::IVisitor* visitor) override;
 	};
@@ -1126,6 +1126,7 @@ namespace vl
 			DECL_TYPE_INFO(cpp_parser::CppDeclaratorVariablePart)
 			DECL_TYPE_INFO(cpp_parser::CppSingleVarDeclaration)
 			DECL_TYPE_INFO(cpp_parser::CppMultipleVarDeclaration)
+			DECL_TYPE_INFO(cpp_parser::CppStaticAssertDeclaration)
 			DECL_TYPE_INFO(cpp_parser::CppStatement)
 			DECL_TYPE_INFO(cpp_parser::CppStatement::IVisitor)
 			DECL_TYPE_INFO(cpp_parser::CppEmptyStat)
@@ -1140,7 +1141,6 @@ namespace vl
 			DECL_TYPE_INFO(cpp_parser::CppCaseStat)
 			DECL_TYPE_INFO(cpp_parser::CppDefaultStat)
 			DECL_TYPE_INFO(cpp_parser::Cpp__LeaveStat)
-			DECL_TYPE_INFO(cpp_parser::CppStaticAssertStat)
 			DECL_TYPE_INFO(cpp_parser::CppWhileStat)
 			DECL_TYPE_INFO(cpp_parser::CppDoWhileStat)
 			DECL_TYPE_INFO(cpp_parser::CppIfElseStat)
@@ -1195,6 +1195,11 @@ namespace vl
 				}
 
 				void Visit(cpp_parser::CppMultipleVarDeclaration* node) override
+				{
+					INVOKE_INTERFACE_PROXY(Visit, node);
+				}
+
+				void Visit(cpp_parser::CppStaticAssertDeclaration* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}
@@ -1438,11 +1443,6 @@ namespace vl
 				}
 
 				void Visit(cpp_parser::Cpp__LeaveStat* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(cpp_parser::CppStaticAssertStat* node) override
 				{
 					INVOKE_INTERFACE_PROXY(Visit, node);
 				}

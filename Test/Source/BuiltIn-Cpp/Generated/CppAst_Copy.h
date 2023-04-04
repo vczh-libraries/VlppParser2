@@ -85,7 +85,7 @@ namespace cpp_parser
 			void CopyFields(CppSizeofExpr* from, CppSizeofExpr* to);
 			void CopyFields(CppStatement* from, CppStatement* to);
 			void CopyFields(CppStatementToResolve* from, CppStatementToResolve* to);
-			void CopyFields(CppStaticAssertStat* from, CppStaticAssertStat* to);
+			void CopyFields(CppStaticAssertDeclaration* from, CppStaticAssertDeclaration* to);
 			void CopyFields(CppStringLiteral* from, CppStringLiteral* to);
 			void CopyFields(CppStringLiteralFragment* from, CppStringLiteralFragment* to);
 			void CopyFields(CppSwitchStat* from, CppSwitchStat* to);
@@ -131,6 +131,7 @@ namespace cpp_parser
 
 			void Visit(CppSingleVarDeclaration* node) override;
 			void Visit(CppMultipleVarDeclaration* node) override;
+			void Visit(CppStaticAssertDeclaration* node) override;
 
 			void Visit(CppTypeOrExprToResolve* node) override;
 			void Visit(CppExprOnly* node) override;
@@ -182,7 +183,6 @@ namespace cpp_parser
 			void Visit(CppCaseStat* node) override;
 			void Visit(CppDefaultStat* node) override;
 			void Visit(Cpp__LeaveStat* node) override;
-			void Visit(CppStaticAssertStat* node) override;
 			void Visit(CppWhileStat* node) override;
 			void Visit(CppDoWhileStat* node) override;
 			void Visit(CppIfElseStat* node) override;
@@ -258,7 +258,7 @@ namespace cpp_parser
 			vl::Ptr<CppSingleVarDeclaration> CopyNode(CppSingleVarDeclaration* node);
 			vl::Ptr<CppSizeofExpr> CopyNode(CppSizeofExpr* node);
 			vl::Ptr<CppStatementToResolve> CopyNode(CppStatementToResolve* node);
-			vl::Ptr<CppStaticAssertStat> CopyNode(CppStaticAssertStat* node);
+			vl::Ptr<CppStaticAssertDeclaration> CopyNode(CppStaticAssertDeclaration* node);
 			vl::Ptr<CppStringLiteral> CopyNode(CppStringLiteral* node);
 			vl::Ptr<CppSwitchStat> CopyNode(CppSwitchStat* node);
 			vl::Ptr<CppSysFuncExpr> CopyNode(CppSysFuncExpr* node);

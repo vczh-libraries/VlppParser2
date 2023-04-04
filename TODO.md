@@ -3,12 +3,13 @@
 ## BuiltIn-Cpp
 
 - Progress
-  - Move `static_assert` from statement to declaration.
   - Declaration unfinished.
 
 ## Next task
 
 - Add `extern` rule, non-`extern` rules can only be used inside the same syntax file.
+- Add `extern` type, non-`extern` types can only be used inside the same ast file.
+  - AST uses classes from another AST file in dependency as fields.
 - Rewrite and remove switch before removing PrefixMerge.
   - Rename `LeftRecursionPlaceholderMixedWithSwitches`
 - Multiple LRI following one Target
@@ -86,7 +87,6 @@
 
 - Switching lexical analyzer during parsing.
   - Refactor some properties in `LexerSymbolManager` into `LexerFile` with a name.
-- AST uses classes from another AST file in dependency as fields.
 - Printing AST classes that created from a memory pool.
 - All `token` property `X` becomes `X_`, paired with a string property `X` to access the text value in `X_`.
 - New priority syntax

@@ -197,6 +197,11 @@ Visitor Pattern Implementation
 		visitor->Visit(this);
 	}
 
+	void CppStaticAssertDeclaration::Accept(CppDeclaration::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
 	void CppEmptyStat::Accept(CppStatement::IVisitor* visitor)
 	{
 		visitor->Visit(this);
@@ -253,11 +258,6 @@ Visitor Pattern Implementation
 	}
 
 	void Cpp__LeaveStat::Accept(CppStatement::IVisitor* visitor)
-	{
-		visitor->Visit(this);
-	}
-
-	void CppStaticAssertStat::Accept(CppStatement::IVisitor* visitor)
 	{
 		visitor->Visit(this);
 	}
@@ -401,6 +401,7 @@ namespace vl
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppDeclaratorVariablePart, cpp_parser::CppDeclaratorVariablePart)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppSingleVarDeclaration, cpp_parser::CppSingleVarDeclaration)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppMultipleVarDeclaration, cpp_parser::CppMultipleVarDeclaration)
+			IMPL_TYPE_INFO_RENAME(cpp_parser::CppStaticAssertDeclaration, cpp_parser::CppStaticAssertDeclaration)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppStatement, cpp_parser::CppStatement)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppStatement::IVisitor, cpp_parser::CppStatement::IVisitor)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppEmptyStat, cpp_parser::CppEmptyStat)
@@ -415,7 +416,6 @@ namespace vl
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppCaseStat, cpp_parser::CppCaseStat)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppDefaultStat, cpp_parser::CppDefaultStat)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::Cpp__LeaveStat, cpp_parser::Cpp__LeaveStat)
-			IMPL_TYPE_INFO_RENAME(cpp_parser::CppStaticAssertStat, cpp_parser::CppStaticAssertStat)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppWhileStat, cpp_parser::CppWhileStat)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppDoWhileStat, cpp_parser::CppDoWhileStat)
 			IMPL_TYPE_INFO_RENAME(cpp_parser::CppIfElseStat, cpp_parser::CppIfElseStat)
@@ -1031,6 +1031,15 @@ namespace vl
 				CLASS_MEMBER_FIELD(varParts)
 			END_CLASS_MEMBER(cpp_parser::CppMultipleVarDeclaration)
 
+			BEGIN_CLASS_MEMBER(cpp_parser::CppStaticAssertDeclaration)
+				CLASS_MEMBER_BASE(cpp_parser::CppDeclaration)
+
+				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppStaticAssertDeclaration>(), NO_PARAMETER)
+
+				CLASS_MEMBER_FIELD(expr)
+				CLASS_MEMBER_FIELD(message)
+			END_CLASS_MEMBER(cpp_parser::CppStaticAssertDeclaration)
+
 			BEGIN_CLASS_MEMBER(cpp_parser::CppStatement)
 				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
@@ -1129,15 +1138,6 @@ namespace vl
 				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::Cpp__LeaveStat>(), NO_PARAMETER)
 
 			END_CLASS_MEMBER(cpp_parser::Cpp__LeaveStat)
-
-			BEGIN_CLASS_MEMBER(cpp_parser::CppStaticAssertStat)
-				CLASS_MEMBER_BASE(cpp_parser::CppStatement)
-
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppStaticAssertStat>(), NO_PARAMETER)
-
-				CLASS_MEMBER_FIELD(expr)
-				CLASS_MEMBER_FIELD(message)
-			END_CLASS_MEMBER(cpp_parser::CppStaticAssertStat)
 
 			BEGIN_CLASS_MEMBER(cpp_parser::CppWhileStat)
 				CLASS_MEMBER_BASE(cpp_parser::CppStatement)
@@ -1281,6 +1281,7 @@ namespace vl
 			BEGIN_INTERFACE_MEMBER(cpp_parser::CppDeclaration::IVisitor)
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppDeclaration::IVisitor::*)(cpp_parser::CppSingleVarDeclaration* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppDeclaration::IVisitor::*)(cpp_parser::CppMultipleVarDeclaration* node))
+				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppDeclaration::IVisitor::*)(cpp_parser::CppStaticAssertDeclaration* node))
 			END_INTERFACE_MEMBER(cpp_parser::CppDeclaration)
 
 			BEGIN_INTERFACE_MEMBER(cpp_parser::CppTypeOrExpr::IVisitor)
@@ -1344,7 +1345,6 @@ namespace vl
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppStatement::IVisitor::*)(cpp_parser::CppCaseStat* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppStatement::IVisitor::*)(cpp_parser::CppDefaultStat* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppStatement::IVisitor::*)(cpp_parser::Cpp__LeaveStat* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppStatement::IVisitor::*)(cpp_parser::CppStaticAssertStat* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppStatement::IVisitor::*)(cpp_parser::CppWhileStat* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppStatement::IVisitor::*)(cpp_parser::CppDoWhileStat* node))
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppStatement::IVisitor::*)(cpp_parser::CppIfElseStat* node))
@@ -1438,6 +1438,7 @@ namespace vl
 					ADD_TYPE_INFO(cpp_parser::CppDeclaratorVariablePart)
 					ADD_TYPE_INFO(cpp_parser::CppSingleVarDeclaration)
 					ADD_TYPE_INFO(cpp_parser::CppMultipleVarDeclaration)
+					ADD_TYPE_INFO(cpp_parser::CppStaticAssertDeclaration)
 					ADD_TYPE_INFO(cpp_parser::CppStatement)
 					ADD_TYPE_INFO(cpp_parser::CppStatement::IVisitor)
 					ADD_TYPE_INFO(cpp_parser::CppEmptyStat)
@@ -1452,7 +1453,6 @@ namespace vl
 					ADD_TYPE_INFO(cpp_parser::CppCaseStat)
 					ADD_TYPE_INFO(cpp_parser::CppDefaultStat)
 					ADD_TYPE_INFO(cpp_parser::Cpp__LeaveStat)
-					ADD_TYPE_INFO(cpp_parser::CppStaticAssertStat)
 					ADD_TYPE_INFO(cpp_parser::CppWhileStat)
 					ADD_TYPE_INFO(cpp_parser::CppDoWhileStat)
 					ADD_TYPE_INFO(cpp_parser::CppIfElseStat)

@@ -798,8 +798,18 @@ _VarsDecl_LRI_Original : MultipleVarDeclaration
   ::= !_VarsDecl_LRI_Isolated_1
   ;
 
-_Decl_LRI_Original : MultipleVarDeclaration
+_OtherDecl : StaticAssertDeclaration
+  ::= "static_assert" "(" _Expr:expr ["," _Expr:message] ")" as StaticAssertDeclaration
+  ;
+
+_Decl_LRI_Isolated_1 : StaticAssertDeclaration
+  ::= !_OtherDecl
+  ;
+
+_Decl_LRI_Original : Declaration
+  ::= left_recursion_placeholder(LRI__Decl)
   ::= !_VarsDecl_LRI_Original
+  ::= !_Decl_LRI_Isolated_1
   ;
 
 _ExprStat_LRI_Original : Statement
@@ -858,7 +868,6 @@ _OtherStats : Statement
   ::= "case" _Expr:expr ":" _Stat:stat as CaseStat
   ::= "default" ":" _Stat:stat as DefaultStat
   ::= "__leave" ";" as __LeaveStat
-  ::= "static_assert" "(" _Expr:expr ["," _Expr:message] ")" ";" as StaticAssertStat
   ::= "while" "(" _ExprOrVarWithInit:condition ")" _Stat:stat as WhileStat
   ::= "do" _Stat:stat "while" "(" _Expr:condition ")" ";" as DoWhileStat
   ::= "switch" "(" _ExprOrVarWithInit:condition ")" _Stat:stat as SwitchStat
@@ -1341,7 +1350,8 @@ _VarsDecl : MultipleVarDeclaration
   ::= !_QualifiedName left_recursion_inject(LRI__PM_QualifiedName) _VarsDecl_LRI_Original
   ;
 
-_Decl : MultipleVarDeclaration
+_Decl : Declaration
+  ::= !_Decl_LRI_Isolated_1
   ::= !_VarsDecl_LRI_Isolated_1
   ::= !_CallConstructibleTypeBeforeDeclarator_LRI_Isolated_1 left_recursion_inject(LRI__CallConstructibleTypeBeforeDeclarator) _Decl_LRI_Original
   ::= !_CallConstructibleTypeBeforeDeclarator_LRI_Isolated_2 left_recursion_inject(LRI__CallConstructibleTypeBeforeDeclarator) _Decl_LRI_Original
@@ -1353,6 +1363,7 @@ _ExprStat : Statement
   ::= !_BExpr_NoComma_SWITCH_1allow_GT_LRI_Isolated_1 left_recursion_inject(LRI__BExpr_NoComma_SWITCH_1allow_GT) _ExprStat_LRI_Original
   ::= !_CallConstructibleTypeBeforeDeclarator_LRI_Isolated_1 left_recursion_inject_multiple(LRI__CallConstructibleTypeBeforeDeclarator) _ExprStat_LRI_Original
   ::= !_CallConstructibleTypeBeforeDeclarator_LRI_Isolated_2 left_recursion_inject_multiple(LRI__CallConstructibleTypeBeforeDeclarator) _ExprStat_LRI_Original
+  ::= !_Decl_LRI_Isolated_1 left_recursion_inject(LRI__Decl) _ExprStat_LRI_Original
   ::= !_PostfixUnaryExpr_LRI_Isolated_1 left_recursion_inject_multiple(LRI__PostfixUnaryExpr) _ExprStat_LRI_Original
   ::= !_PrefixUnaryExpr_LRI_Isolated_1 left_recursion_inject_multiple(LRI__PrefixUnaryExpr) _ExprStat_LRI_Original
   ::= !_PrimitiveExpr left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveExpr) _ExprStat_LRI_Original
@@ -1397,6 +1408,7 @@ _Stat : Statement
   ::= !_BExpr_NoComma_SWITCH_1allow_GT_LRI_Isolated_1 left_recursion_inject(LRI__BExpr_NoComma_SWITCH_1allow_GT) _Stat_LRI_Original
   ::= !_CallConstructibleTypeBeforeDeclarator_LRI_Isolated_1 left_recursion_inject_multiple(LRI__CallConstructibleTypeBeforeDeclarator) _Stat_LRI_Original
   ::= !_CallConstructibleTypeBeforeDeclarator_LRI_Isolated_2 left_recursion_inject_multiple(LRI__CallConstructibleTypeBeforeDeclarator) _Stat_LRI_Original
+  ::= !_Decl_LRI_Isolated_1 left_recursion_inject(LRI__Decl) _Stat_LRI_Original
   ::= !_PostfixUnaryExpr_LRI_Isolated_1 left_recursion_inject_multiple(LRI__PostfixUnaryExpr) _Stat_LRI_Original
   ::= !_PrefixUnaryExpr_LRI_Isolated_1 left_recursion_inject_multiple(LRI__PrefixUnaryExpr) _Stat_LRI_Original
   ::= !_PrimitiveExpr left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveExpr) _Stat_LRI_Original
