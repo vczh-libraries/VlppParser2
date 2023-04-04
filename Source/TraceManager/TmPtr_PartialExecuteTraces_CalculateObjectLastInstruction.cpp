@@ -44,7 +44,7 @@ CalculateObjectLastInstruction
 								while (predecessorId != nullref)
 								{
 									auto predecessor = GetTrace(predecessorId);
-									auto predecessorId = predecessor->predecessors.siblingNext;
+									predecessorId = predecessor->predecessors.siblingNext;
 
 									auto predecessorExec = GetTraceExec(predecessor->traceExecRef);
 									if (IsInTheSameBranch(GetTrace(predecessorExec->branchData.forwardTrace), targetForwardAtFront))
@@ -93,10 +93,6 @@ CalculateObjectLastInstruction
 					while (objRef != nullref)
 					{
 						auto ieObject = GetInsExec_Object(objRef);
-						if (ieObject->allocatedIndex == 0)
-						{
-							int a = 0;
-						}
 						objRef = ieObject->previous;
 
 						// all EndObject ending a BO/DFA are considered
