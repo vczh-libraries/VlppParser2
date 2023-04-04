@@ -22,7 +22,6 @@ namespace cpp_parser
 			, protected virtual CppExprOnly::IVisitor
 			, protected virtual CppTypeOnly::IVisitor
 			, protected virtual CppIdentifier::IVisitor
-			, protected virtual CppDeclarator::IVisitor
 			, protected virtual CppVarInit::IVisitor
 			, protected virtual CppStatement::IVisitor
 			, protected virtual CppForStatConditionPart::IVisitor
@@ -44,7 +43,6 @@ namespace cpp_parser
 			virtual void PrintFields(CppDeclaratorArrayPart* node);
 			virtual void PrintFields(CppDeclaratorFunctionPart* node);
 			virtual void PrintFields(CppDeclaratorKeyword* node);
-			virtual void PrintFields(CppDeclaratorToResolve* node);
 			virtual void PrintFields(CppDeclaratorType* node);
 			virtual void PrintFields(CppDeclaratorVariablePart* node);
 			virtual void PrintFields(CppDefaultStat* node);
@@ -58,7 +56,6 @@ namespace cpp_parser
 			virtual void PrintFields(CppForStatConditionPart* node);
 			virtual void PrintFields(CppForStatIterateCondition* node);
 			virtual void PrintFields(CppForStatLoopCondition* node);
-			virtual void PrintFields(CppFuncVarDeclarator* node);
 			virtual void PrintFields(CppFunctionKeyword* node);
 			virtual void PrintFields(CppGenericArgument* node);
 			virtual void PrintFields(CppGenericArguments* node);
@@ -154,9 +151,6 @@ namespace cpp_parser
 			void Visit(CppNameIdentifier* node) override;
 			void Visit(CppOperatorIdentifier* node) override;
 
-			void Visit(CppDeclaratorToResolve* node) override;
-			void Visit(CppFuncVarDeclarator* node) override;
-
 			void Visit(CppVarValueInit* node) override;
 			void Visit(CppVarParanthesisInit* node) override;
 			void Visit(CppVarBraceInit* node) override;
@@ -191,7 +185,6 @@ namespace cpp_parser
 
 			void Print(CppTypeOrExprOrOthers* node);
 			void Print(CppIdentifier* node);
-			void Print(CppDeclarator* node);
 			void Print(CppVarInit* node);
 			void Print(CppStatement* node);
 			void Print(CppForStatConditionPart* node);
@@ -204,6 +197,7 @@ namespace cpp_parser
 			void Print(CppFunctionKeyword* node);
 			void Print(CppDeclaratorFunctionPart* node);
 			void Print(CppDeclaratorArrayPart* node);
+			void Print(CppDeclarator* node);
 			void Print(CppDeclaratorVariablePart* node);
 			void Print(CppTryStatCatchPart* node);
 			void Print(CppFile* node);
