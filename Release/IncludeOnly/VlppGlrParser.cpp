@@ -28,6 +28,7 @@ DEVELOPER: Zihan Chen(vczh)
 #include "..\..\Source\TraceManager\TmPtr_BuildAmbiguityStructures.cpp"
 #include "..\..\Source\TraceManager\TmPtr_PartialExecuteTraces.cpp"
 #include "..\..\Source\TraceManager\TmPtr_PartialExecuteTraces_CalculateObjectFirstInstruction.cpp"
+#include "..\..\Source\TraceManager\TmPtr_PartialExecuteTraces_CalculateObjectLastInstruction.cpp"
 #include "..\..\Source\TraceManager\TmPtr_PartialExecuteTraces_EnsureInsExecContextCompatible.cpp"
 #include "..\..\Source\TraceManager\TmPtr_PartialExecuteTraces_MergeInsExecContext.cpp"
 #include "..\..\Source\TraceManager\TmPtr_PartialExecuteTraces_PartialExecuteOrdinaryTrace.cpp"

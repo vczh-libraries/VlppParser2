@@ -5776,13 +5776,16 @@ CreateRewrittenRules
 						for (auto [prefixRuleSymbol, prefixClause] : From(prefixClauses)
 							.OrderBy([](auto p1, auto p2) {return WString::Compare(p1.ruleSymbol->Name(), p2.ruleSymbol->Name()); }))
 						{
-							auto ep = Ptr(new GlrRule);
-							rewritten->rules.Insert(rewritten->rules.IndexOf(originRule), ep);
-							rContext.extractedPrefixRules.Add({ ruleSymbol,prefixRuleSymbol }, ep.Obj());
+							if (!rContext.extractedPrefixRules.Keys().Contains({ ruleSymbol,prefixRuleSymbol }))
+							{
+								auto ep = Ptr(new GlrRule);
+								rewritten->rules.Insert(rewritten->rules.IndexOf(originRule), ep);
+								rContext.extractedPrefixRules.Add({ ruleSymbol,prefixRuleSymbol }, ep.Obj());
 
-							ep->codeRange = originRule->codeRange;
-							ep->name.codeRange = originRule->name.codeRange;
-							ep->name.value = ruleSymbol->Name() + L"_" + prefixRuleSymbol->Name() + L"_LRI_Prefix";
+								ep->codeRange = originRule->codeRange;
+								ep->name.codeRange = originRule->name.codeRange;
+								ep->name.value = ruleSymbol->Name() + L"_" + prefixRuleSymbol->Name() + L"_LRI_Prefix";
+							}
 						}
 					}
 				}
@@ -13270,22 +13273,27 @@ namespace vl
 			RuleParser::RuleParser()
 				: vl::glr::ParserBase<ParserGenTokens, RuleParserStates, ParserGenAstInsReceiver>(&ParserGenTokenDeleter, &ParserGenLexerData, &ParserGenRuleParserData)
 			{
-			};
+			}
+
+			vl::WString RuleParser::GetClassName(vl::vint32_t classIndex) const
+			{
+				return vl::WString::Unmanaged(ParserGenTypeName((ParserGenClasses)classIndex));
+			}
 
 			vl::vint32_t RuleParser::FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2) const
 			{
 				return -1;
-			};
+			}
 
 			vl::Ptr<vl::glr::parsergen::GlrSyntaxFile> RuleParser::ParseFile(const vl::WString& input, vl::vint codeIndex) const
 			{
 				 return ParseWithString<vl::glr::parsergen::GlrSyntaxFile, RuleParserStates::File>(input, this, codeIndex);
-			};
+			}
 
 			vl::Ptr<vl::glr::parsergen::GlrSyntaxFile> RuleParser::ParseFile(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex) const
 			{
 				 return ParseWithTokens<vl::glr::parsergen::GlrSyntaxFile, RuleParserStates::File>(tokens, this, codeIndex);
-			};
+			}
 		}
 	}
 }
@@ -14184,22 +14192,27 @@ namespace vl
 			TypeParser::TypeParser()
 				: vl::glr::ParserBase<ParserGenTokens, TypeParserStates, ParserGenAstInsReceiver>(&ParserGenTokenDeleter, &ParserGenLexerData, &ParserGenTypeParserData)
 			{
-			};
+			}
+
+			vl::WString TypeParser::GetClassName(vl::vint32_t classIndex) const
+			{
+				return vl::WString::Unmanaged(ParserGenTypeName((ParserGenClasses)classIndex));
+			}
 
 			vl::vint32_t TypeParser::FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2) const
 			{
 				return -1;
-			};
+			}
 
 			vl::Ptr<vl::glr::parsergen::GlrAstFile> TypeParser::ParseFile(const vl::WString& input, vl::vint codeIndex) const
 			{
 				 return ParseWithString<vl::glr::parsergen::GlrAstFile, TypeParserStates::File>(input, this, codeIndex);
-			};
+			}
 
 			vl::Ptr<vl::glr::parsergen::GlrAstFile> TypeParser::ParseFile(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex) const
 			{
 				 return ParseWithTokens<vl::glr::parsergen::GlrAstFile, TypeParserStates::File>(tokens, this, codeIndex);
-			};
+			}
 		}
 	}
 }
@@ -14940,6 +14953,7 @@ WriteSyntaxHeaderFile
 					writer.WriteLine(prefix + L"\t, protected vl::glr::automaton::IExecutor::ITypeCallback");
 					writer.WriteLine(prefix + L"{");
 					writer.WriteLine(prefix + L"protected:");
+					writer.WriteLine(prefix + L"\tvl::WString GetClassName(vl::vint32_t classIndex) const override;");
 					writer.WriteLine(prefix + L"\tvl::vint32_t FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2) const override;");
 					writer.WriteLine(prefix + L"public:");
 					writer.WriteLine(prefix + L"\t" + manager.name + L"();");
@@ -15021,7 +15035,15 @@ WriteSyntaxCppFile
 					writer.WriteString(L"&" + manager.Global().name + L"LexerData, ");
 					writer.WriteLine(L"&" + manager.Global().name + manager.name + L"Data)");
 					writer.WriteLine(prefix + L"{");
-					writer.WriteLine(prefix + L"};");
+					writer.WriteLine(prefix + L"}");
+				}
+
+				{
+					writer.WriteLine(L"");
+					writer.WriteLine(prefix + L"vl::WString " + manager.name + L"::GetClassName(vl::vint32_t classIndex) const");
+					writer.WriteLine(prefix + L"{");
+					writer.WriteLine(prefix + L"\treturn vl::WString::Unmanaged(" + manager.Global().name + L"TypeName((" + manager.Global().name + L"Classes)classIndex));");
+					writer.WriteLine(prefix + L"}");
 				}
 
 				{
@@ -15065,7 +15087,7 @@ WriteSyntaxCppFile
 						writer.WriteLine(prefix + L"\t};");
 						writer.WriteLine(prefix + L"\treturn vl::glr::AssemblerFindCommonBaseClass(class1, class2, results);");
 					}
-					writer.WriteLine(prefix + L"};");
+					writer.WriteLine(prefix + L"}");
 				}
 
 				for (auto ruleName : manager.RuleOrder())
@@ -15078,12 +15100,12 @@ WriteSyntaxCppFile
 						writer.WriteLine(prefix + L"vl::Ptr<" + astType + L"> " + manager.name + L"::Parse" + ruleName + L"(const vl::WString& input, vl::vint codeIndex) const");
 						writer.WriteLine(prefix + L"{");
 						writer.WriteLine(prefix + L"\t return ParseWithString<" + astType + L", " + manager.name + L"States::" + ruleName + L">(input, this, codeIndex);");
-						writer.WriteLine(prefix + L"};");
+						writer.WriteLine(prefix + L"}");
 						writer.WriteLine(L"");
 						writer.WriteLine(prefix + L"vl::Ptr<" + astType + L"> " + manager.name + L"::Parse" + ruleName + L"(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex) const");
 						writer.WriteLine(prefix + L"{");
 						writer.WriteLine(prefix + L"\t return ParseWithTokens<" + astType + L", " + manager.name + L"States::" + ruleName + L">(tokens, this, codeIndex);");
-						writer.WriteLine(prefix + L"};");
+						writer.WriteLine(prefix + L"}");
 					}
 				}
 				WriteNssEnd(manager.Global().cppNss, writer);
