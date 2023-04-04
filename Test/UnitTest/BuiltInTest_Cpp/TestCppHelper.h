@@ -62,9 +62,9 @@ struct AssertAmbiguousBranches
 	static void AssertCandidatesInternal(List<Ptr<T>>& candidates, std::index_sequence<Is...>)
 	{
 		vint succeeded[] = {(
-			From(candidates).FindType<
-				std::tuple_element_t<Is, std::tuple<TArgs...>>
-				>().Count()
+			From(candidates)
+				.FindType<std::tuple_element_t<Is, std::tuple<TArgs...>>>()
+				.Count()
 		)...};
 		TEST_ASSERT(((succeeded[Is] > 0) && ...));
 		TEST_ASSERT((succeeded[Is] + ...) == candidates.Count());
