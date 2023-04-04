@@ -179,6 +179,8 @@ CheckMergeTrace
 					});
 
 					// find the most possible answer from postfixesAtSelf and postfixesAtSuccessor
+					// bottom bottomInsRefs are splitted into multiple group
+					// find the unique one that has the maximum capacity
 					vint maxOccurences = -1;
 					for (vint i = 0; i < postfixesAtSelf.Count(); i++)
 					{
