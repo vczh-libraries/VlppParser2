@@ -117,14 +117,6 @@ CheckMergeTrace
 					return EnumerateObjects(objRefLink, false, [&](InsExec_Object* ieObject)
 					{
 						auto createTrace = GetTrace(ieObject->topInsRef.trace);
-#ifdef VCZH_DO_DEBUG_CHECK
-						{
-							auto traceExec = GetTraceExec(createTrace->traceExecRef);
-							auto&& ins = ReadInstruction(ieObject->topInsRef.ins, traceExec->insLists);
-							CHECK_ERROR(ins.type == AstInsType::BeginObject || ins.type == AstInsType::DelayFieldAssignment, ERROR_MESSAGE_PREFIX L"The found instruction is not a BeginObject or DelayFieldAssignment instruction.");
-						}
-#endif
-
 						if (!first)
 						{
 							first = createTrace;
@@ -163,14 +155,6 @@ CheckMergeTrace
 						// check if EO satisfies the condition
 						return EnumerateBottomInstructions(ieObject, [&](Trace* eoTrace, vint32_t eoIns)
 						{
-#ifdef VCZH_DO_DEBUG_CHECK
-							{
-								auto traceExec = GetTraceExec(eoTrace->traceExecRef);
-								auto&& ins = ReadInstruction(eoIns, traceExec->insLists);
-								CHECK_ERROR(ins.type == AstInsType::EndObject, ERROR_MESSAGE_PREFIX L"The found instruction is not a EndObject instruction.");
-							}
-#endif
-
 							if (!last)
 							{
 								last = eoTrace;

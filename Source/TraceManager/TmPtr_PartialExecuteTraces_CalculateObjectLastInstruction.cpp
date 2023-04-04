@@ -45,7 +45,17 @@ CalculateObjectLastInstruction
 							// topLocalTrace could be a DFA created object, and multiple objects could share the same DFA object
 							// in some cases its eoInsRefs could pointing to EndObject of completely unrelated objects
 							// TODO: make it accurate
-							PushInsRefLink(ieObject->bottomInsRefs, insRefLink->insRef);
+							auto bottomInsRef = insRefLink->insRef;
+							PushInsRefLink(ieObject->bottomInsRefs, bottomInsRef);
+
+#ifdef VCZH_DO_DEBUG_CHECK
+							{
+								auto eoTrace = GetTrace(bottomInsRef.trace);
+								auto traceExec = GetTraceExec(eoTrace->traceExecRef);
+								auto&& ins = ReadInstruction(bottomInsRef.ins, traceExec->insLists);
+								CHECK_ERROR(ins.type == AstInsType::EndObject, ERROR_MESSAGE_PREFIX L"The found instruction is not a EndObject instruction.");
+							}
+#endif
 						}
 					}
 				}
