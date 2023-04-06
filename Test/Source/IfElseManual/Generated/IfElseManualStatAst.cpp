@@ -27,100 +27,94 @@ Visitor Pattern Implementation
 		visitor->Visit(this);
 	}
 }
-namespace vl
+namespace vl::reflection::description
 {
-	namespace reflection
-	{
-		namespace description
-		{
 #ifndef VCZH_DEBUG_NO_REFLECTION
 
-			IMPL_TYPE_INFO_RENAME(ifelsemanual::Stat, ifelsemanual::Stat)
-			IMPL_TYPE_INFO_RENAME(ifelsemanual::Stat::IVisitor, ifelsemanual::Stat::IVisitor)
-			IMPL_TYPE_INFO_RENAME(ifelsemanual::DoStat, ifelsemanual::DoStat)
-			IMPL_TYPE_INFO_RENAME(ifelsemanual::IfStat, ifelsemanual::IfStat)
-			IMPL_TYPE_INFO_RENAME(ifelsemanual::BlockStat, ifelsemanual::BlockStat)
-			IMPL_TYPE_INFO_RENAME(ifelsemanual::Module, ifelsemanual::Module)
+	IMPL_TYPE_INFO_RENAME(ifelsemanual::Stat, ifelsemanual::Stat)
+	IMPL_TYPE_INFO_RENAME(ifelsemanual::Stat::IVisitor, ifelsemanual::Stat::IVisitor)
+	IMPL_TYPE_INFO_RENAME(ifelsemanual::DoStat, ifelsemanual::DoStat)
+	IMPL_TYPE_INFO_RENAME(ifelsemanual::IfStat, ifelsemanual::IfStat)
+	IMPL_TYPE_INFO_RENAME(ifelsemanual::BlockStat, ifelsemanual::BlockStat)
+	IMPL_TYPE_INFO_RENAME(ifelsemanual::Module, ifelsemanual::Module)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 
-			BEGIN_CLASS_MEMBER(ifelsemanual::Stat)
-				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+	BEGIN_CLASS_MEMBER(ifelsemanual::Stat)
+		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
-			END_CLASS_MEMBER(ifelsemanual::Stat)
+	END_CLASS_MEMBER(ifelsemanual::Stat)
 
-			BEGIN_CLASS_MEMBER(ifelsemanual::DoStat)
-				CLASS_MEMBER_BASE(ifelsemanual::Stat)
+	BEGIN_CLASS_MEMBER(ifelsemanual::DoStat)
+		CLASS_MEMBER_BASE(ifelsemanual::Stat)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<ifelsemanual::DoStat>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<ifelsemanual::DoStat>(), NO_PARAMETER)
 
-			END_CLASS_MEMBER(ifelsemanual::DoStat)
+	END_CLASS_MEMBER(ifelsemanual::DoStat)
 
-			BEGIN_CLASS_MEMBER(ifelsemanual::IfStat)
-				CLASS_MEMBER_BASE(ifelsemanual::Stat)
+	BEGIN_CLASS_MEMBER(ifelsemanual::IfStat)
+		CLASS_MEMBER_BASE(ifelsemanual::Stat)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<ifelsemanual::IfStat>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<ifelsemanual::IfStat>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(thenBranch)
-				CLASS_MEMBER_FIELD(elseBranch)
-			END_CLASS_MEMBER(ifelsemanual::IfStat)
+		CLASS_MEMBER_FIELD(thenBranch)
+		CLASS_MEMBER_FIELD(elseBranch)
+	END_CLASS_MEMBER(ifelsemanual::IfStat)
 
-			BEGIN_CLASS_MEMBER(ifelsemanual::BlockStat)
-				CLASS_MEMBER_BASE(ifelsemanual::Stat)
+	BEGIN_CLASS_MEMBER(ifelsemanual::BlockStat)
+		CLASS_MEMBER_BASE(ifelsemanual::Stat)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<ifelsemanual::BlockStat>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<ifelsemanual::BlockStat>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(stats)
-			END_CLASS_MEMBER(ifelsemanual::BlockStat)
+		CLASS_MEMBER_FIELD(stats)
+	END_CLASS_MEMBER(ifelsemanual::BlockStat)
 
-			BEGIN_CLASS_MEMBER(ifelsemanual::Module)
-				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+	BEGIN_CLASS_MEMBER(ifelsemanual::Module)
+		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<ifelsemanual::Module>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<ifelsemanual::Module>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(stat)
-			END_CLASS_MEMBER(ifelsemanual::Module)
+		CLASS_MEMBER_FIELD(stat)
+	END_CLASS_MEMBER(ifelsemanual::Module)
 
-			BEGIN_INTERFACE_MEMBER(ifelsemanual::Stat::IVisitor)
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(ifelsemanual::Stat::IVisitor::*)(ifelsemanual::DoStat* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(ifelsemanual::Stat::IVisitor::*)(ifelsemanual::IfStat* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(ifelsemanual::Stat::IVisitor::*)(ifelsemanual::BlockStat* node))
-			END_INTERFACE_MEMBER(ifelsemanual::Stat)
+	BEGIN_INTERFACE_MEMBER(ifelsemanual::Stat::IVisitor)
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(ifelsemanual::Stat::IVisitor::*)(ifelsemanual::DoStat* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(ifelsemanual::Stat::IVisitor::*)(ifelsemanual::IfStat* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(ifelsemanual::Stat::IVisitor::*)(ifelsemanual::BlockStat* node))
+	END_INTERFACE_MEMBER(ifelsemanual::Stat)
 
 #endif
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
-			class IfElseManualStatAstTypeLoader : public vl::Object, public ITypeLoader
-			{
-			public:
-				void Load(ITypeManager* manager)
-				{
-					ADD_TYPE_INFO(ifelsemanual::Stat)
-					ADD_TYPE_INFO(ifelsemanual::Stat::IVisitor)
-					ADD_TYPE_INFO(ifelsemanual::DoStat)
-					ADD_TYPE_INFO(ifelsemanual::IfStat)
-					ADD_TYPE_INFO(ifelsemanual::BlockStat)
-					ADD_TYPE_INFO(ifelsemanual::Module)
-				}
-
-				void Unload(ITypeManager* manager)
-				{
-				}
-			};
-#endif
-#endif
-
-			bool IfElseManualStatAstLoadTypes()
-			{
-#ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
-				if (auto manager = GetGlobalTypeManager())
-				{
-					auto loader = Ptr(new IfElseManualStatAstTypeLoader);
-					return manager->AddTypeLoader(loader);
-				}
-#endif
-				return false;
-			}
+	class IfElseManualStatAstTypeLoader : public vl::Object, public ITypeLoader
+	{
+	public:
+		void Load(ITypeManager* manager)
+		{
+			ADD_TYPE_INFO(ifelsemanual::Stat)
+			ADD_TYPE_INFO(ifelsemanual::Stat::IVisitor)
+			ADD_TYPE_INFO(ifelsemanual::DoStat)
+			ADD_TYPE_INFO(ifelsemanual::IfStat)
+			ADD_TYPE_INFO(ifelsemanual::BlockStat)
+			ADD_TYPE_INFO(ifelsemanual::Module)
 		}
+
+		void Unload(ITypeManager* manager)
+		{
+		}
+	};
+#endif
+#endif
+
+	bool IfElseManualStatAstLoadTypes()
+	{
+#ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
+		if (auto manager = GetGlobalTypeManager())
+		{
+			auto loader = Ptr(new IfElseManualStatAstTypeLoader);
+			return manager->AddTypeLoader(loader);
+		}
+#endif
+		return false;
 	}
 }

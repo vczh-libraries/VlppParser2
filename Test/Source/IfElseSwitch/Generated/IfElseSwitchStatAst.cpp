@@ -27,100 +27,94 @@ Visitor Pattern Implementation
 		visitor->Visit(this);
 	}
 }
-namespace vl
+namespace vl::reflection::description
 {
-	namespace reflection
-	{
-		namespace description
-		{
 #ifndef VCZH_DEBUG_NO_REFLECTION
 
-			IMPL_TYPE_INFO_RENAME(ifelseswitch::Stat, ifelseswitch::Stat)
-			IMPL_TYPE_INFO_RENAME(ifelseswitch::Stat::IVisitor, ifelseswitch::Stat::IVisitor)
-			IMPL_TYPE_INFO_RENAME(ifelseswitch::DoStat, ifelseswitch::DoStat)
-			IMPL_TYPE_INFO_RENAME(ifelseswitch::IfStat, ifelseswitch::IfStat)
-			IMPL_TYPE_INFO_RENAME(ifelseswitch::BlockStat, ifelseswitch::BlockStat)
-			IMPL_TYPE_INFO_RENAME(ifelseswitch::Module, ifelseswitch::Module)
+	IMPL_TYPE_INFO_RENAME(ifelseswitch::Stat, ifelseswitch::Stat)
+	IMPL_TYPE_INFO_RENAME(ifelseswitch::Stat::IVisitor, ifelseswitch::Stat::IVisitor)
+	IMPL_TYPE_INFO_RENAME(ifelseswitch::DoStat, ifelseswitch::DoStat)
+	IMPL_TYPE_INFO_RENAME(ifelseswitch::IfStat, ifelseswitch::IfStat)
+	IMPL_TYPE_INFO_RENAME(ifelseswitch::BlockStat, ifelseswitch::BlockStat)
+	IMPL_TYPE_INFO_RENAME(ifelseswitch::Module, ifelseswitch::Module)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 
-			BEGIN_CLASS_MEMBER(ifelseswitch::Stat)
-				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+	BEGIN_CLASS_MEMBER(ifelseswitch::Stat)
+		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
-			END_CLASS_MEMBER(ifelseswitch::Stat)
+	END_CLASS_MEMBER(ifelseswitch::Stat)
 
-			BEGIN_CLASS_MEMBER(ifelseswitch::DoStat)
-				CLASS_MEMBER_BASE(ifelseswitch::Stat)
+	BEGIN_CLASS_MEMBER(ifelseswitch::DoStat)
+		CLASS_MEMBER_BASE(ifelseswitch::Stat)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<ifelseswitch::DoStat>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<ifelseswitch::DoStat>(), NO_PARAMETER)
 
-			END_CLASS_MEMBER(ifelseswitch::DoStat)
+	END_CLASS_MEMBER(ifelseswitch::DoStat)
 
-			BEGIN_CLASS_MEMBER(ifelseswitch::IfStat)
-				CLASS_MEMBER_BASE(ifelseswitch::Stat)
+	BEGIN_CLASS_MEMBER(ifelseswitch::IfStat)
+		CLASS_MEMBER_BASE(ifelseswitch::Stat)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<ifelseswitch::IfStat>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<ifelseswitch::IfStat>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(thenBranch)
-				CLASS_MEMBER_FIELD(elseBranch)
-			END_CLASS_MEMBER(ifelseswitch::IfStat)
+		CLASS_MEMBER_FIELD(thenBranch)
+		CLASS_MEMBER_FIELD(elseBranch)
+	END_CLASS_MEMBER(ifelseswitch::IfStat)
 
-			BEGIN_CLASS_MEMBER(ifelseswitch::BlockStat)
-				CLASS_MEMBER_BASE(ifelseswitch::Stat)
+	BEGIN_CLASS_MEMBER(ifelseswitch::BlockStat)
+		CLASS_MEMBER_BASE(ifelseswitch::Stat)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<ifelseswitch::BlockStat>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<ifelseswitch::BlockStat>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(stats)
-			END_CLASS_MEMBER(ifelseswitch::BlockStat)
+		CLASS_MEMBER_FIELD(stats)
+	END_CLASS_MEMBER(ifelseswitch::BlockStat)
 
-			BEGIN_CLASS_MEMBER(ifelseswitch::Module)
-				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+	BEGIN_CLASS_MEMBER(ifelseswitch::Module)
+		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<ifelseswitch::Module>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<ifelseswitch::Module>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(stat)
-			END_CLASS_MEMBER(ifelseswitch::Module)
+		CLASS_MEMBER_FIELD(stat)
+	END_CLASS_MEMBER(ifelseswitch::Module)
 
-			BEGIN_INTERFACE_MEMBER(ifelseswitch::Stat::IVisitor)
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(ifelseswitch::Stat::IVisitor::*)(ifelseswitch::DoStat* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(ifelseswitch::Stat::IVisitor::*)(ifelseswitch::IfStat* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(ifelseswitch::Stat::IVisitor::*)(ifelseswitch::BlockStat* node))
-			END_INTERFACE_MEMBER(ifelseswitch::Stat)
+	BEGIN_INTERFACE_MEMBER(ifelseswitch::Stat::IVisitor)
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(ifelseswitch::Stat::IVisitor::*)(ifelseswitch::DoStat* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(ifelseswitch::Stat::IVisitor::*)(ifelseswitch::IfStat* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(ifelseswitch::Stat::IVisitor::*)(ifelseswitch::BlockStat* node))
+	END_INTERFACE_MEMBER(ifelseswitch::Stat)
 
 #endif
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
-			class IfElseSwitchStatAstTypeLoader : public vl::Object, public ITypeLoader
-			{
-			public:
-				void Load(ITypeManager* manager)
-				{
-					ADD_TYPE_INFO(ifelseswitch::Stat)
-					ADD_TYPE_INFO(ifelseswitch::Stat::IVisitor)
-					ADD_TYPE_INFO(ifelseswitch::DoStat)
-					ADD_TYPE_INFO(ifelseswitch::IfStat)
-					ADD_TYPE_INFO(ifelseswitch::BlockStat)
-					ADD_TYPE_INFO(ifelseswitch::Module)
-				}
-
-				void Unload(ITypeManager* manager)
-				{
-				}
-			};
-#endif
-#endif
-
-			bool IfElseSwitchStatAstLoadTypes()
-			{
-#ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
-				if (auto manager = GetGlobalTypeManager())
-				{
-					auto loader = Ptr(new IfElseSwitchStatAstTypeLoader);
-					return manager->AddTypeLoader(loader);
-				}
-#endif
-				return false;
-			}
+	class IfElseSwitchStatAstTypeLoader : public vl::Object, public ITypeLoader
+	{
+	public:
+		void Load(ITypeManager* manager)
+		{
+			ADD_TYPE_INFO(ifelseswitch::Stat)
+			ADD_TYPE_INFO(ifelseswitch::Stat::IVisitor)
+			ADD_TYPE_INFO(ifelseswitch::DoStat)
+			ADD_TYPE_INFO(ifelseswitch::IfStat)
+			ADD_TYPE_INFO(ifelseswitch::BlockStat)
+			ADD_TYPE_INFO(ifelseswitch::Module)
 		}
+
+		void Unload(ITypeManager* manager)
+		{
+		}
+	};
+#endif
+#endif
+
+	bool IfElseSwitchStatAstLoadTypes()
+	{
+#ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
+		if (auto manager = GetGlobalTypeManager())
+		{
+			auto loader = Ptr(new IfElseSwitchStatAstTypeLoader);
+			return manager->AddTypeLoader(loader);
+		}
+#endif
+		return false;
 	}
 }

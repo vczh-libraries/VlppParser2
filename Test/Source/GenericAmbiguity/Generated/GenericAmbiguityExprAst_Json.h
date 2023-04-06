@@ -9,41 +9,38 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "GenericAmbiguityExprAst.h"
 
-namespace genericambiguity
+namespace genericambiguity::json_visitor
 {
-	namespace json_visitor
+	/// <summary>A JSON visitor, overriding all abstract methods with AST to JSON serialization code.</summary>
+	class ExprAstVisitor
+		: public vl::glr::JsonVisitorBase
+		, protected virtual Expr::IVisitor
 	{
-		/// <summary>A JSON visitor, overriding all abstract methods with AST to JSON serialization code.</summary>
-		class ExprAstVisitor
-			: public vl::glr::JsonVisitorBase
-			, protected virtual Expr::IVisitor
-		{
-		protected:
-			virtual void PrintFields(BinaryExpr* node);
-			virtual void PrintFields(CallExpr* node);
-			virtual void PrintFields(DecrementExpr* node);
-			virtual void PrintFields(Expr* node);
-			virtual void PrintFields(ExprToResolve* node);
-			virtual void PrintFields(GenericExpr* node);
-			virtual void PrintFields(Module* node);
-			virtual void PrintFields(PostfixExpr* node);
-			virtual void PrintFields(RefExpr* node);
+	protected:
+		virtual void PrintFields(BinaryExpr* node);
+		virtual void PrintFields(CallExpr* node);
+		virtual void PrintFields(DecrementExpr* node);
+		virtual void PrintFields(Expr* node);
+		virtual void PrintFields(ExprToResolve* node);
+		virtual void PrintFields(GenericExpr* node);
+		virtual void PrintFields(Module* node);
+		virtual void PrintFields(PostfixExpr* node);
+		virtual void PrintFields(RefExpr* node);
 
-		protected:
-			void Visit(ExprToResolve* node) override;
-			void Visit(RefExpr* node) override;
-			void Visit(GenericExpr* node) override;
-			void Visit(CallExpr* node) override;
-			void Visit(PostfixExpr* node) override;
-			void Visit(DecrementExpr* node) override;
-			void Visit(BinaryExpr* node) override;
+	protected:
+		void Visit(ExprToResolve* node) override;
+		void Visit(RefExpr* node) override;
+		void Visit(GenericExpr* node) override;
+		void Visit(CallExpr* node) override;
+		void Visit(PostfixExpr* node) override;
+		void Visit(DecrementExpr* node) override;
+		void Visit(BinaryExpr* node) override;
 
-		public:
-			ExprAstVisitor(vl::stream::StreamWriter& _writer);
+	public:
+		ExprAstVisitor(vl::stream::StreamWriter& _writer);
 
-			void Print(Expr* node);
-			void Print(Module* node);
-		};
-	}
+		void Print(Expr* node);
+		void Print(Module* node);
+	};
 }
 #endif

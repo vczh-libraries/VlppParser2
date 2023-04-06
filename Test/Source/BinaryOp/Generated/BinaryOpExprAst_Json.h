@@ -9,29 +9,26 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "BinaryOpExprAst.h"
 
-namespace binaryop
+namespace binaryop::json_visitor
 {
-	namespace json_visitor
+	/// <summary>A JSON visitor, overriding all abstract methods with AST to JSON serialization code.</summary>
+	class ExprAstVisitor
+		: public vl::glr::JsonVisitorBase
+		, protected virtual Expr::IVisitor
 	{
-		/// <summary>A JSON visitor, overriding all abstract methods with AST to JSON serialization code.</summary>
-		class ExprAstVisitor
-			: public vl::glr::JsonVisitorBase
-			, protected virtual Expr::IVisitor
-		{
-		protected:
-			virtual void PrintFields(BinaryExpr* node);
-			virtual void PrintFields(Expr* node);
-			virtual void PrintFields(RefExpr* node);
+	protected:
+		virtual void PrintFields(BinaryExpr* node);
+		virtual void PrintFields(Expr* node);
+		virtual void PrintFields(RefExpr* node);
 
-		protected:
-			void Visit(RefExpr* node) override;
-			void Visit(BinaryExpr* node) override;
+	protected:
+		void Visit(RefExpr* node) override;
+		void Visit(BinaryExpr* node) override;
 
-		public:
-			ExprAstVisitor(vl::stream::StreamWriter& _writer);
+	public:
+		ExprAstVisitor(vl::stream::StreamWriter& _writer);
 
-			void Print(Expr* node);
-		};
-	}
+		void Print(Expr* node);
+	};
 }
 #endif

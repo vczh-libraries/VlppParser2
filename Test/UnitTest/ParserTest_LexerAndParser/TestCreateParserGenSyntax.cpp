@@ -1,3 +1,4 @@
+#include "../../../Source/Ast/AstSymbol.h"
 #include "../../../Source/Syntax/SyntaxCppGen.h"
 #include "../../../Source/ParserGen_Generated/ParserGen_Assembler.h"
 #include "../../../Source/ParserGen_Generated/ParserGen_Lexer.h"
@@ -23,6 +24,7 @@ TEST_FILE
 	TEST_CASE(L"CreateParserGenLexer")
 	{
 		ParserSymbolManager global;
+		AstSymbolManager astManager(global);
 
 		SyntaxSymbolManager typeSyntaxManager(global);
 		Executable typeExecutable;
@@ -33,8 +35,10 @@ TEST_FILE
 		Metadata ruleMetadata;
 
 		InitializeParserSymbolManager(global);
-		CreateParserGenTypeSyntax(typeSyntaxManager);
-		CreateParserGenRuleSyntax(ruleSyntaxManager);
+		CreateParserGenTypeAst(astManager);
+		CreateParserGenRuleAst(astManager);
+		CreateParserGenTypeSyntax(astManager, typeSyntaxManager);
+		CreateParserGenRuleSyntax(astManager, ruleSyntaxManager);
 		TEST_ASSERT(global.Errors().Count() == 0);
 		{
 			typeSyntaxManager.BuildCompactNFA();

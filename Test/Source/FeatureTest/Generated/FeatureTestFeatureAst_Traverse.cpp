@@ -6,231 +6,228 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "FeatureTestFeatureAst_Traverse.h"
 
-namespace featuretest
+namespace featuretest::traverse_visitor
 {
-	namespace traverse_visitor
+	void FeatureAstVisitor::Traverse(vl::glr::ParsingToken& token) {}
+	void FeatureAstVisitor::Traverse(vl::glr::ParsingAstBase* node) {}
+	void FeatureAstVisitor::Traverse(BranchedOptionalFeature* node) {}
+	void FeatureAstVisitor::Traverse(ClFeature* node) {}
+	void FeatureAstVisitor::Traverse(FaFeature* node) {}
+	void FeatureAstVisitor::Traverse(Feature* node) {}
+	void FeatureAstVisitor::Traverse(FeatureToResolve* node) {}
+	void FeatureAstVisitor::Traverse(Gt* node) {}
+	void FeatureAstVisitor::Traverse(Lt* node) {}
+	void FeatureAstVisitor::Traverse(NestedOptionalFeature* node) {}
+	void FeatureAstVisitor::Traverse(OptionalFeature* node) {}
+	void FeatureAstVisitor::Traverse(PbaFeature* node) {}
+	void FeatureAstVisitor::Traverse(Plus* node) {}
+	void FeatureAstVisitor::Traverse(Pwa1Feature* node) {}
+	void FeatureAstVisitor::Traverse(PwlFeature* node) {}
+
+	void FeatureAstVisitor::Finishing(vl::glr::ParsingAstBase* node) {}
+	void FeatureAstVisitor::Finishing(BranchedOptionalFeature* node) {}
+	void FeatureAstVisitor::Finishing(ClFeature* node) {}
+	void FeatureAstVisitor::Finishing(FaFeature* node) {}
+	void FeatureAstVisitor::Finishing(Feature* node) {}
+	void FeatureAstVisitor::Finishing(FeatureToResolve* node) {}
+	void FeatureAstVisitor::Finishing(Gt* node) {}
+	void FeatureAstVisitor::Finishing(Lt* node) {}
+	void FeatureAstVisitor::Finishing(NestedOptionalFeature* node) {}
+	void FeatureAstVisitor::Finishing(OptionalFeature* node) {}
+	void FeatureAstVisitor::Finishing(PbaFeature* node) {}
+	void FeatureAstVisitor::Finishing(Plus* node) {}
+	void FeatureAstVisitor::Finishing(Pwa1Feature* node) {}
+	void FeatureAstVisitor::Finishing(PwlFeature* node) {}
+
+	void FeatureAstVisitor::Visit(FeatureToResolve* node)
 	{
-		void FeatureAstVisitor::Traverse(vl::glr::ParsingToken& token) {}
-		void FeatureAstVisitor::Traverse(vl::glr::ParsingAstBase* node) {}
-		void FeatureAstVisitor::Traverse(BranchedOptionalFeature* node) {}
-		void FeatureAstVisitor::Traverse(ClFeature* node) {}
-		void FeatureAstVisitor::Traverse(FaFeature* node) {}
-		void FeatureAstVisitor::Traverse(Feature* node) {}
-		void FeatureAstVisitor::Traverse(FeatureToResolve* node) {}
-		void FeatureAstVisitor::Traverse(Gt* node) {}
-		void FeatureAstVisitor::Traverse(Lt* node) {}
-		void FeatureAstVisitor::Traverse(NestedOptionalFeature* node) {}
-		void FeatureAstVisitor::Traverse(OptionalFeature* node) {}
-		void FeatureAstVisitor::Traverse(PbaFeature* node) {}
-		void FeatureAstVisitor::Traverse(Plus* node) {}
-		void FeatureAstVisitor::Traverse(Pwa1Feature* node) {}
-		void FeatureAstVisitor::Traverse(PwlFeature* node) {}
-
-		void FeatureAstVisitor::Finishing(vl::glr::ParsingAstBase* node) {}
-		void FeatureAstVisitor::Finishing(BranchedOptionalFeature* node) {}
-		void FeatureAstVisitor::Finishing(ClFeature* node) {}
-		void FeatureAstVisitor::Finishing(FaFeature* node) {}
-		void FeatureAstVisitor::Finishing(Feature* node) {}
-		void FeatureAstVisitor::Finishing(FeatureToResolve* node) {}
-		void FeatureAstVisitor::Finishing(Gt* node) {}
-		void FeatureAstVisitor::Finishing(Lt* node) {}
-		void FeatureAstVisitor::Finishing(NestedOptionalFeature* node) {}
-		void FeatureAstVisitor::Finishing(OptionalFeature* node) {}
-		void FeatureAstVisitor::Finishing(PbaFeature* node) {}
-		void FeatureAstVisitor::Finishing(Plus* node) {}
-		void FeatureAstVisitor::Finishing(Pwa1Feature* node) {}
-		void FeatureAstVisitor::Finishing(PwlFeature* node) {}
-
-		void FeatureAstVisitor::Visit(FeatureToResolve* node)
+		if (!node) return;
+		Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+		Traverse(static_cast<Feature*>(node));
+		Traverse(static_cast<FeatureToResolve*>(node));
+		for (auto&& listItem : node->candidates)
 		{
-			if (!node) return;
-			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-			Traverse(static_cast<Feature*>(node));
-			Traverse(static_cast<FeatureToResolve*>(node));
-			for (auto&& listItem : node->candidates)
-			{
-				InspectInto(listItem.Obj());
-			}
-			Finishing(static_cast<FeatureToResolve*>(node));
-			Finishing(static_cast<Feature*>(node));
-			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+			InspectInto(listItem.Obj());
 		}
-
-		void FeatureAstVisitor::Visit(OptionalFeature* node)
-		{
-			if (!node) return;
-			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-			Traverse(static_cast<Feature*>(node));
-			Traverse(static_cast<OptionalFeature*>(node));
-			for (auto&& listItem : node->loop)
-			{
-				InspectInto(listItem.Obj());
-			}
-			InspectInto(node->optional.Obj());
-			Finishing(static_cast<OptionalFeature*>(node));
-			Finishing(static_cast<Feature*>(node));
-			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
-		}
-
-		void FeatureAstVisitor::Visit(NestedOptionalFeature* node)
-		{
-			if (!node) return;
-			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-			Traverse(static_cast<Feature*>(node));
-			Traverse(static_cast<NestedOptionalFeature*>(node));
-			InspectInto(node->optional.Obj());
-			InspectInto(node->tail1.Obj());
-			InspectInto(node->tail2.Obj());
-			InspectInto(node->tail3.Obj());
-			for (auto&& listItem : node->tails)
-			{
-				InspectInto(listItem.Obj());
-			}
-			Finishing(static_cast<NestedOptionalFeature*>(node));
-			Finishing(static_cast<Feature*>(node));
-			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
-		}
-
-		void FeatureAstVisitor::Visit(BranchedOptionalFeature* node)
-		{
-			if (!node) return;
-			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-			Traverse(static_cast<Feature*>(node));
-			Traverse(static_cast<BranchedOptionalFeature*>(node));
-			InspectInto(node->optional.Obj());
-			for (auto&& listItem : node->tails)
-			{
-				InspectInto(listItem.Obj());
-			}
-			Finishing(static_cast<BranchedOptionalFeature*>(node));
-			Finishing(static_cast<Feature*>(node));
-			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
-		}
-
-		void FeatureAstVisitor::Visit(PbaFeature* node)
-		{
-			if (!node) return;
-			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-			Traverse(static_cast<Feature*>(node));
-			Traverse(static_cast<PbaFeature*>(node));
-			for (auto&& listItem : node->gts)
-			{
-				InspectInto(listItem.Obj());
-			}
-			for (auto&& listItem : node->lts)
-			{
-				InspectInto(listItem.Obj());
-			}
-			InspectInto(node->optional.Obj());
-			InspectInto(node->tail.Obj());
-			for (auto&& listItem : node->tails)
-			{
-				InspectInto(listItem.Obj());
-			}
-			Finishing(static_cast<PbaFeature*>(node));
-			Finishing(static_cast<Feature*>(node));
-			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
-		}
-
-		void FeatureAstVisitor::Visit(Pwa1Feature* node)
-		{
-			if (!node) return;
-			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-			Traverse(static_cast<Feature*>(node));
-			Traverse(static_cast<Pwa1Feature*>(node));
-			for (auto&& listItem : node->gts)
-			{
-				InspectInto(listItem.Obj());
-			}
-			for (auto&& listItem : node->lts)
-			{
-				InspectInto(listItem.Obj());
-			}
-			InspectInto(node->pba.Obj());
-			Finishing(static_cast<Pwa1Feature*>(node));
-			Finishing(static_cast<Feature*>(node));
-			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
-		}
-
-		void FeatureAstVisitor::Visit(PwlFeature* node)
-		{
-			if (!node) return;
-			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-			Traverse(static_cast<Feature*>(node));
-			Traverse(static_cast<PwlFeature*>(node));
-			for (auto&& listItem : node->one)
-			{
-				InspectInto(listItem.Obj());
-			}
-			for (auto&& listItem : node->prefix)
-			{
-				InspectInto(listItem.Obj());
-			}
-			InspectInto(node->prev.Obj());
-			for (auto&& listItem : node->two)
-			{
-				InspectInto(listItem.Obj());
-			}
-			Finishing(static_cast<PwlFeature*>(node));
-			Finishing(static_cast<Feature*>(node));
-			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
-		}
-
-		void FeatureAstVisitor::Visit(ClFeature* node)
-		{
-			if (!node) return;
-			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-			Traverse(static_cast<Feature*>(node));
-			Traverse(static_cast<ClFeature*>(node));
-			Traverse(node->id);
-			Finishing(static_cast<ClFeature*>(node));
-			Finishing(static_cast<Feature*>(node));
-			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
-		}
-
-		void FeatureAstVisitor::Visit(FaFeature* node)
-		{
-			if (!node) return;
-			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-			Traverse(static_cast<Feature*>(node));
-			Traverse(static_cast<FaFeature*>(node));
-			Finishing(static_cast<FaFeature*>(node));
-			Finishing(static_cast<Feature*>(node));
-			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
-		}
-
-		void FeatureAstVisitor::InspectInto(Feature* node)
-		{
-			if (!node) return;
-			node->Accept(static_cast<Feature::IVisitor*>(this));
-		}
-
-		void FeatureAstVisitor::InspectInto(Plus* node)
-		{
-			if (!node) return;
-			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-			Traverse(static_cast<Plus*>(node));
-			Finishing(static_cast<Plus*>(node));
-			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
-		}
-
-		void FeatureAstVisitor::InspectInto(Lt* node)
-		{
-			if (!node) return;
-			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-			Traverse(static_cast<Lt*>(node));
-			Finishing(static_cast<Lt*>(node));
-			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
-		}
-
-		void FeatureAstVisitor::InspectInto(Gt* node)
-		{
-			if (!node) return;
-			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-			Traverse(static_cast<Gt*>(node));
-			Finishing(static_cast<Gt*>(node));
-			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
-		}
-
+		Finishing(static_cast<FeatureToResolve*>(node));
+		Finishing(static_cast<Feature*>(node));
+		Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 	}
+
+	void FeatureAstVisitor::Visit(OptionalFeature* node)
+	{
+		if (!node) return;
+		Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+		Traverse(static_cast<Feature*>(node));
+		Traverse(static_cast<OptionalFeature*>(node));
+		for (auto&& listItem : node->loop)
+		{
+			InspectInto(listItem.Obj());
+		}
+		InspectInto(node->optional.Obj());
+		Finishing(static_cast<OptionalFeature*>(node));
+		Finishing(static_cast<Feature*>(node));
+		Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+	}
+
+	void FeatureAstVisitor::Visit(NestedOptionalFeature* node)
+	{
+		if (!node) return;
+		Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+		Traverse(static_cast<Feature*>(node));
+		Traverse(static_cast<NestedOptionalFeature*>(node));
+		InspectInto(node->optional.Obj());
+		InspectInto(node->tail1.Obj());
+		InspectInto(node->tail2.Obj());
+		InspectInto(node->tail3.Obj());
+		for (auto&& listItem : node->tails)
+		{
+			InspectInto(listItem.Obj());
+		}
+		Finishing(static_cast<NestedOptionalFeature*>(node));
+		Finishing(static_cast<Feature*>(node));
+		Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+	}
+
+	void FeatureAstVisitor::Visit(BranchedOptionalFeature* node)
+	{
+		if (!node) return;
+		Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+		Traverse(static_cast<Feature*>(node));
+		Traverse(static_cast<BranchedOptionalFeature*>(node));
+		InspectInto(node->optional.Obj());
+		for (auto&& listItem : node->tails)
+		{
+			InspectInto(listItem.Obj());
+		}
+		Finishing(static_cast<BranchedOptionalFeature*>(node));
+		Finishing(static_cast<Feature*>(node));
+		Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+	}
+
+	void FeatureAstVisitor::Visit(PbaFeature* node)
+	{
+		if (!node) return;
+		Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+		Traverse(static_cast<Feature*>(node));
+		Traverse(static_cast<PbaFeature*>(node));
+		for (auto&& listItem : node->gts)
+		{
+			InspectInto(listItem.Obj());
+		}
+		for (auto&& listItem : node->lts)
+		{
+			InspectInto(listItem.Obj());
+		}
+		InspectInto(node->optional.Obj());
+		InspectInto(node->tail.Obj());
+		for (auto&& listItem : node->tails)
+		{
+			InspectInto(listItem.Obj());
+		}
+		Finishing(static_cast<PbaFeature*>(node));
+		Finishing(static_cast<Feature*>(node));
+		Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+	}
+
+	void FeatureAstVisitor::Visit(Pwa1Feature* node)
+	{
+		if (!node) return;
+		Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+		Traverse(static_cast<Feature*>(node));
+		Traverse(static_cast<Pwa1Feature*>(node));
+		for (auto&& listItem : node->gts)
+		{
+			InspectInto(listItem.Obj());
+		}
+		for (auto&& listItem : node->lts)
+		{
+			InspectInto(listItem.Obj());
+		}
+		InspectInto(node->pba.Obj());
+		Finishing(static_cast<Pwa1Feature*>(node));
+		Finishing(static_cast<Feature*>(node));
+		Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+	}
+
+	void FeatureAstVisitor::Visit(PwlFeature* node)
+	{
+		if (!node) return;
+		Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+		Traverse(static_cast<Feature*>(node));
+		Traverse(static_cast<PwlFeature*>(node));
+		for (auto&& listItem : node->one)
+		{
+			InspectInto(listItem.Obj());
+		}
+		for (auto&& listItem : node->prefix)
+		{
+			InspectInto(listItem.Obj());
+		}
+		InspectInto(node->prev.Obj());
+		for (auto&& listItem : node->two)
+		{
+			InspectInto(listItem.Obj());
+		}
+		Finishing(static_cast<PwlFeature*>(node));
+		Finishing(static_cast<Feature*>(node));
+		Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+	}
+
+	void FeatureAstVisitor::Visit(ClFeature* node)
+	{
+		if (!node) return;
+		Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+		Traverse(static_cast<Feature*>(node));
+		Traverse(static_cast<ClFeature*>(node));
+		Traverse(node->id);
+		Finishing(static_cast<ClFeature*>(node));
+		Finishing(static_cast<Feature*>(node));
+		Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+	}
+
+	void FeatureAstVisitor::Visit(FaFeature* node)
+	{
+		if (!node) return;
+		Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+		Traverse(static_cast<Feature*>(node));
+		Traverse(static_cast<FaFeature*>(node));
+		Finishing(static_cast<FaFeature*>(node));
+		Finishing(static_cast<Feature*>(node));
+		Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+	}
+
+	void FeatureAstVisitor::InspectInto(Feature* node)
+	{
+		if (!node) return;
+		node->Accept(static_cast<Feature::IVisitor*>(this));
+	}
+
+	void FeatureAstVisitor::InspectInto(Plus* node)
+	{
+		if (!node) return;
+		Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+		Traverse(static_cast<Plus*>(node));
+		Finishing(static_cast<Plus*>(node));
+		Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+	}
+
+	void FeatureAstVisitor::InspectInto(Lt* node)
+	{
+		if (!node) return;
+		Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+		Traverse(static_cast<Lt*>(node));
+		Finishing(static_cast<Lt*>(node));
+		Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+	}
+
+	void FeatureAstVisitor::InspectInto(Gt* node)
+	{
+		if (!node) return;
+		Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+		Traverse(static_cast<Gt*>(node));
+		Finishing(static_cast<Gt*>(node));
+		Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+	}
+
 }

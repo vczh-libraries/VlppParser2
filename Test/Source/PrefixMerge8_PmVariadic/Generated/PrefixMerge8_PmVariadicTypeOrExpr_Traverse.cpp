@@ -6,288 +6,285 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "PrefixMerge8_PmVariadicTypeOrExpr_Traverse.h"
 
-namespace prefixmerge8_pmvariadic
+namespace prefixmerge8_pmvariadic::traverse_visitor
 {
-	namespace traverse_visitor
+	void TypeOrExprVisitor::Traverse(vl::glr::ParsingToken& token) {}
+	void TypeOrExprVisitor::Traverse(vl::glr::ParsingAstBase* node) {}
+	void TypeOrExprVisitor::Traverse(CallExpr* node) {}
+	void TypeOrExprVisitor::Traverse(ConstType* node) {}
+	void TypeOrExprVisitor::Traverse(CtorExpr* node) {}
+	void TypeOrExprVisitor::Traverse(FunctionType* node) {}
+	void TypeOrExprVisitor::Traverse(GenericMemberName* node) {}
+	void TypeOrExprVisitor::Traverse(GenericName* node) {}
+	void TypeOrExprVisitor::Traverse(GenericQualifiedName* node) {}
+	void TypeOrExprVisitor::Traverse(MemberName* node) {}
+	void TypeOrExprVisitor::Traverse(MulExpr* node) {}
+	void TypeOrExprVisitor::Traverse(Name* node) {}
+	void TypeOrExprVisitor::Traverse(PointerType* node) {}
+	void TypeOrExprVisitor::Traverse(QualifiedName* node) {}
+	void TypeOrExprVisitor::Traverse(TypeOrExpr* node) {}
+	void TypeOrExprVisitor::Traverse(TypeOrExprOrOthers* node) {}
+	void TypeOrExprVisitor::Traverse(TypeOrExprOrOthersToResolve* node) {}
+	void TypeOrExprVisitor::Traverse(TypeOrExprToResolve* node) {}
+	void TypeOrExprVisitor::Traverse(VariadicArgument* node) {}
+
+	void TypeOrExprVisitor::Finishing(vl::glr::ParsingAstBase* node) {}
+	void TypeOrExprVisitor::Finishing(CallExpr* node) {}
+	void TypeOrExprVisitor::Finishing(ConstType* node) {}
+	void TypeOrExprVisitor::Finishing(CtorExpr* node) {}
+	void TypeOrExprVisitor::Finishing(FunctionType* node) {}
+	void TypeOrExprVisitor::Finishing(GenericMemberName* node) {}
+	void TypeOrExprVisitor::Finishing(GenericName* node) {}
+	void TypeOrExprVisitor::Finishing(GenericQualifiedName* node) {}
+	void TypeOrExprVisitor::Finishing(MemberName* node) {}
+	void TypeOrExprVisitor::Finishing(MulExpr* node) {}
+	void TypeOrExprVisitor::Finishing(Name* node) {}
+	void TypeOrExprVisitor::Finishing(PointerType* node) {}
+	void TypeOrExprVisitor::Finishing(QualifiedName* node) {}
+	void TypeOrExprVisitor::Finishing(TypeOrExpr* node) {}
+	void TypeOrExprVisitor::Finishing(TypeOrExprOrOthers* node) {}
+	void TypeOrExprVisitor::Finishing(TypeOrExprOrOthersToResolve* node) {}
+	void TypeOrExprVisitor::Finishing(TypeOrExprToResolve* node) {}
+	void TypeOrExprVisitor::Finishing(VariadicArgument* node) {}
+
+	void TypeOrExprVisitor::Visit(TypeOrExprOrOthersToResolve* node)
 	{
-		void TypeOrExprVisitor::Traverse(vl::glr::ParsingToken& token) {}
-		void TypeOrExprVisitor::Traverse(vl::glr::ParsingAstBase* node) {}
-		void TypeOrExprVisitor::Traverse(CallExpr* node) {}
-		void TypeOrExprVisitor::Traverse(ConstType* node) {}
-		void TypeOrExprVisitor::Traverse(CtorExpr* node) {}
-		void TypeOrExprVisitor::Traverse(FunctionType* node) {}
-		void TypeOrExprVisitor::Traverse(GenericMemberName* node) {}
-		void TypeOrExprVisitor::Traverse(GenericName* node) {}
-		void TypeOrExprVisitor::Traverse(GenericQualifiedName* node) {}
-		void TypeOrExprVisitor::Traverse(MemberName* node) {}
-		void TypeOrExprVisitor::Traverse(MulExpr* node) {}
-		void TypeOrExprVisitor::Traverse(Name* node) {}
-		void TypeOrExprVisitor::Traverse(PointerType* node) {}
-		void TypeOrExprVisitor::Traverse(QualifiedName* node) {}
-		void TypeOrExprVisitor::Traverse(TypeOrExpr* node) {}
-		void TypeOrExprVisitor::Traverse(TypeOrExprOrOthers* node) {}
-		void TypeOrExprVisitor::Traverse(TypeOrExprOrOthersToResolve* node) {}
-		void TypeOrExprVisitor::Traverse(TypeOrExprToResolve* node) {}
-		void TypeOrExprVisitor::Traverse(VariadicArgument* node) {}
-
-		void TypeOrExprVisitor::Finishing(vl::glr::ParsingAstBase* node) {}
-		void TypeOrExprVisitor::Finishing(CallExpr* node) {}
-		void TypeOrExprVisitor::Finishing(ConstType* node) {}
-		void TypeOrExprVisitor::Finishing(CtorExpr* node) {}
-		void TypeOrExprVisitor::Finishing(FunctionType* node) {}
-		void TypeOrExprVisitor::Finishing(GenericMemberName* node) {}
-		void TypeOrExprVisitor::Finishing(GenericName* node) {}
-		void TypeOrExprVisitor::Finishing(GenericQualifiedName* node) {}
-		void TypeOrExprVisitor::Finishing(MemberName* node) {}
-		void TypeOrExprVisitor::Finishing(MulExpr* node) {}
-		void TypeOrExprVisitor::Finishing(Name* node) {}
-		void TypeOrExprVisitor::Finishing(PointerType* node) {}
-		void TypeOrExprVisitor::Finishing(QualifiedName* node) {}
-		void TypeOrExprVisitor::Finishing(TypeOrExpr* node) {}
-		void TypeOrExprVisitor::Finishing(TypeOrExprOrOthers* node) {}
-		void TypeOrExprVisitor::Finishing(TypeOrExprOrOthersToResolve* node) {}
-		void TypeOrExprVisitor::Finishing(TypeOrExprToResolve* node) {}
-		void TypeOrExprVisitor::Finishing(VariadicArgument* node) {}
-
-		void TypeOrExprVisitor::Visit(TypeOrExprOrOthersToResolve* node)
+		if (!node) return;
+		Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+		Traverse(static_cast<TypeOrExprOrOthers*>(node));
+		Traverse(static_cast<TypeOrExprOrOthersToResolve*>(node));
+		for (auto&& listItem : node->candidates)
 		{
-			if (!node) return;
-			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-			Traverse(static_cast<TypeOrExprOrOthers*>(node));
-			Traverse(static_cast<TypeOrExprOrOthersToResolve*>(node));
-			for (auto&& listItem : node->candidates)
-			{
-				InspectInto(listItem.Obj());
-			}
-			Finishing(static_cast<TypeOrExprOrOthersToResolve*>(node));
-			Finishing(static_cast<TypeOrExprOrOthers*>(node));
-			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+			InspectInto(listItem.Obj());
 		}
-
-		void TypeOrExprVisitor::Visit(VariadicArgument* node)
-		{
-			if (!node) return;
-			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-			Traverse(static_cast<TypeOrExprOrOthers*>(node));
-			Traverse(static_cast<VariadicArgument*>(node));
-			InspectInto(node->operand.Obj());
-			Finishing(static_cast<VariadicArgument*>(node));
-			Finishing(static_cast<TypeOrExprOrOthers*>(node));
-			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
-		}
-
-		void TypeOrExprVisitor::Visit(TypeOrExpr* node)
-		{
-			node->Accept(static_cast<TypeOrExpr::IVisitor*>(this));
-		}
-
-		void TypeOrExprVisitor::Visit(TypeOrExprToResolve* node)
-		{
-			if (!node) return;
-			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-			Traverse(static_cast<TypeOrExprOrOthers*>(node));
-			Traverse(static_cast<TypeOrExpr*>(node));
-			Traverse(static_cast<TypeOrExprToResolve*>(node));
-			for (auto&& listItem : node->candidates)
-			{
-				InspectInto(listItem.Obj());
-			}
-			Finishing(static_cast<TypeOrExprToResolve*>(node));
-			Finishing(static_cast<TypeOrExpr*>(node));
-			Finishing(static_cast<TypeOrExprOrOthers*>(node));
-			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
-		}
-
-		void TypeOrExprVisitor::Visit(QualifiedName* node)
-		{
-			node->Accept(static_cast<QualifiedName::IVisitor*>(this));
-		}
-
-		void TypeOrExprVisitor::Visit(CallExpr* node)
-		{
-			if (!node) return;
-			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-			Traverse(static_cast<TypeOrExprOrOthers*>(node));
-			Traverse(static_cast<TypeOrExpr*>(node));
-			Traverse(static_cast<CallExpr*>(node));
-			for (auto&& listItem : node->args)
-			{
-				InspectInto(listItem.Obj());
-			}
-			InspectInto(node->func.Obj());
-			Finishing(static_cast<CallExpr*>(node));
-			Finishing(static_cast<TypeOrExpr*>(node));
-			Finishing(static_cast<TypeOrExprOrOthers*>(node));
-			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
-		}
-
-		void TypeOrExprVisitor::Visit(CtorExpr* node)
-		{
-			if (!node) return;
-			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-			Traverse(static_cast<TypeOrExprOrOthers*>(node));
-			Traverse(static_cast<TypeOrExpr*>(node));
-			Traverse(static_cast<CtorExpr*>(node));
-			for (auto&& listItem : node->args)
-			{
-				InspectInto(listItem.Obj());
-			}
-			InspectInto(node->type.Obj());
-			Finishing(static_cast<CtorExpr*>(node));
-			Finishing(static_cast<TypeOrExpr*>(node));
-			Finishing(static_cast<TypeOrExprOrOthers*>(node));
-			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
-		}
-
-		void TypeOrExprVisitor::Visit(MulExpr* node)
-		{
-			if (!node) return;
-			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-			Traverse(static_cast<TypeOrExprOrOthers*>(node));
-			Traverse(static_cast<TypeOrExpr*>(node));
-			Traverse(static_cast<MulExpr*>(node));
-			InspectInto(node->first.Obj());
-			InspectInto(node->second.Obj());
-			Finishing(static_cast<MulExpr*>(node));
-			Finishing(static_cast<TypeOrExpr*>(node));
-			Finishing(static_cast<TypeOrExprOrOthers*>(node));
-			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
-		}
-
-		void TypeOrExprVisitor::Visit(ConstType* node)
-		{
-			if (!node) return;
-			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-			Traverse(static_cast<TypeOrExprOrOthers*>(node));
-			Traverse(static_cast<TypeOrExpr*>(node));
-			Traverse(static_cast<ConstType*>(node));
-			InspectInto(node->type.Obj());
-			Finishing(static_cast<ConstType*>(node));
-			Finishing(static_cast<TypeOrExpr*>(node));
-			Finishing(static_cast<TypeOrExprOrOthers*>(node));
-			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
-		}
-
-		void TypeOrExprVisitor::Visit(PointerType* node)
-		{
-			if (!node) return;
-			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-			Traverse(static_cast<TypeOrExprOrOthers*>(node));
-			Traverse(static_cast<TypeOrExpr*>(node));
-			Traverse(static_cast<PointerType*>(node));
-			InspectInto(node->type.Obj());
-			Finishing(static_cast<PointerType*>(node));
-			Finishing(static_cast<TypeOrExpr*>(node));
-			Finishing(static_cast<TypeOrExprOrOthers*>(node));
-			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
-		}
-
-		void TypeOrExprVisitor::Visit(FunctionType* node)
-		{
-			if (!node) return;
-			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-			Traverse(static_cast<TypeOrExprOrOthers*>(node));
-			Traverse(static_cast<TypeOrExpr*>(node));
-			Traverse(static_cast<FunctionType*>(node));
-			for (auto&& listItem : node->args)
-			{
-				InspectInto(listItem.Obj());
-			}
-			InspectInto(node->returnType.Obj());
-			Finishing(static_cast<FunctionType*>(node));
-			Finishing(static_cast<TypeOrExpr*>(node));
-			Finishing(static_cast<TypeOrExprOrOthers*>(node));
-			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
-		}
-
-		void TypeOrExprVisitor::Visit(Name* node)
-		{
-			if (!node) return;
-			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-			Traverse(static_cast<TypeOrExprOrOthers*>(node));
-			Traverse(static_cast<TypeOrExpr*>(node));
-			Traverse(static_cast<QualifiedName*>(node));
-			Traverse(static_cast<Name*>(node));
-			Traverse(node->name);
-			Finishing(static_cast<Name*>(node));
-			Finishing(static_cast<QualifiedName*>(node));
-			Finishing(static_cast<TypeOrExpr*>(node));
-			Finishing(static_cast<TypeOrExprOrOthers*>(node));
-			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
-		}
-
-		void TypeOrExprVisitor::Visit(MemberName* node)
-		{
-			if (!node) return;
-			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-			Traverse(static_cast<TypeOrExprOrOthers*>(node));
-			Traverse(static_cast<TypeOrExpr*>(node));
-			Traverse(static_cast<QualifiedName*>(node));
-			Traverse(static_cast<MemberName*>(node));
-			Traverse(node->member);
-			InspectInto(node->parent.Obj());
-			Finishing(static_cast<MemberName*>(node));
-			Finishing(static_cast<QualifiedName*>(node));
-			Finishing(static_cast<TypeOrExpr*>(node));
-			Finishing(static_cast<TypeOrExprOrOthers*>(node));
-			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
-		}
-
-		void TypeOrExprVisitor::Visit(GenericQualifiedName* node)
-		{
-			node->Accept(static_cast<GenericQualifiedName::IVisitor*>(this));
-		}
-
-		void TypeOrExprVisitor::Visit(GenericName* node)
-		{
-			if (!node) return;
-			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-			Traverse(static_cast<TypeOrExprOrOthers*>(node));
-			Traverse(static_cast<TypeOrExpr*>(node));
-			Traverse(static_cast<QualifiedName*>(node));
-			Traverse(static_cast<GenericQualifiedName*>(node));
-			Traverse(static_cast<GenericName*>(node));
-			Traverse(node->name);
-			for (auto&& listItem : node->args)
-			{
-				InspectInto(listItem.Obj());
-			}
-			Finishing(static_cast<GenericName*>(node));
-			Finishing(static_cast<GenericQualifiedName*>(node));
-			Finishing(static_cast<QualifiedName*>(node));
-			Finishing(static_cast<TypeOrExpr*>(node));
-			Finishing(static_cast<TypeOrExprOrOthers*>(node));
-			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
-		}
-
-		void TypeOrExprVisitor::Visit(GenericMemberName* node)
-		{
-			if (!node) return;
-			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-			Traverse(static_cast<TypeOrExprOrOthers*>(node));
-			Traverse(static_cast<TypeOrExpr*>(node));
-			Traverse(static_cast<QualifiedName*>(node));
-			Traverse(static_cast<GenericQualifiedName*>(node));
-			Traverse(static_cast<GenericMemberName*>(node));
-			Traverse(node->member);
-			InspectInto(node->parent.Obj());
-			for (auto&& listItem : node->args)
-			{
-				InspectInto(listItem.Obj());
-			}
-			Finishing(static_cast<GenericMemberName*>(node));
-			Finishing(static_cast<GenericQualifiedName*>(node));
-			Finishing(static_cast<QualifiedName*>(node));
-			Finishing(static_cast<TypeOrExpr*>(node));
-			Finishing(static_cast<TypeOrExprOrOthers*>(node));
-			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
-		}
-
-		void TypeOrExprVisitor::InspectInto(TypeOrExprOrOthers* node)
-		{
-			if (!node) return;
-			node->Accept(static_cast<TypeOrExprOrOthers::IVisitor*>(this));
-		}
-
+		Finishing(static_cast<TypeOrExprOrOthersToResolve*>(node));
+		Finishing(static_cast<TypeOrExprOrOthers*>(node));
+		Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 	}
+
+	void TypeOrExprVisitor::Visit(VariadicArgument* node)
+	{
+		if (!node) return;
+		Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+		Traverse(static_cast<TypeOrExprOrOthers*>(node));
+		Traverse(static_cast<VariadicArgument*>(node));
+		InspectInto(node->operand.Obj());
+		Finishing(static_cast<VariadicArgument*>(node));
+		Finishing(static_cast<TypeOrExprOrOthers*>(node));
+		Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+	}
+
+	void TypeOrExprVisitor::Visit(TypeOrExpr* node)
+	{
+		node->Accept(static_cast<TypeOrExpr::IVisitor*>(this));
+	}
+
+	void TypeOrExprVisitor::Visit(TypeOrExprToResolve* node)
+	{
+		if (!node) return;
+		Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+		Traverse(static_cast<TypeOrExprOrOthers*>(node));
+		Traverse(static_cast<TypeOrExpr*>(node));
+		Traverse(static_cast<TypeOrExprToResolve*>(node));
+		for (auto&& listItem : node->candidates)
+		{
+			InspectInto(listItem.Obj());
+		}
+		Finishing(static_cast<TypeOrExprToResolve*>(node));
+		Finishing(static_cast<TypeOrExpr*>(node));
+		Finishing(static_cast<TypeOrExprOrOthers*>(node));
+		Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+	}
+
+	void TypeOrExprVisitor::Visit(QualifiedName* node)
+	{
+		node->Accept(static_cast<QualifiedName::IVisitor*>(this));
+	}
+
+	void TypeOrExprVisitor::Visit(CallExpr* node)
+	{
+		if (!node) return;
+		Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+		Traverse(static_cast<TypeOrExprOrOthers*>(node));
+		Traverse(static_cast<TypeOrExpr*>(node));
+		Traverse(static_cast<CallExpr*>(node));
+		for (auto&& listItem : node->args)
+		{
+			InspectInto(listItem.Obj());
+		}
+		InspectInto(node->func.Obj());
+		Finishing(static_cast<CallExpr*>(node));
+		Finishing(static_cast<TypeOrExpr*>(node));
+		Finishing(static_cast<TypeOrExprOrOthers*>(node));
+		Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+	}
+
+	void TypeOrExprVisitor::Visit(CtorExpr* node)
+	{
+		if (!node) return;
+		Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+		Traverse(static_cast<TypeOrExprOrOthers*>(node));
+		Traverse(static_cast<TypeOrExpr*>(node));
+		Traverse(static_cast<CtorExpr*>(node));
+		for (auto&& listItem : node->args)
+		{
+			InspectInto(listItem.Obj());
+		}
+		InspectInto(node->type.Obj());
+		Finishing(static_cast<CtorExpr*>(node));
+		Finishing(static_cast<TypeOrExpr*>(node));
+		Finishing(static_cast<TypeOrExprOrOthers*>(node));
+		Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+	}
+
+	void TypeOrExprVisitor::Visit(MulExpr* node)
+	{
+		if (!node) return;
+		Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+		Traverse(static_cast<TypeOrExprOrOthers*>(node));
+		Traverse(static_cast<TypeOrExpr*>(node));
+		Traverse(static_cast<MulExpr*>(node));
+		InspectInto(node->first.Obj());
+		InspectInto(node->second.Obj());
+		Finishing(static_cast<MulExpr*>(node));
+		Finishing(static_cast<TypeOrExpr*>(node));
+		Finishing(static_cast<TypeOrExprOrOthers*>(node));
+		Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+	}
+
+	void TypeOrExprVisitor::Visit(ConstType* node)
+	{
+		if (!node) return;
+		Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+		Traverse(static_cast<TypeOrExprOrOthers*>(node));
+		Traverse(static_cast<TypeOrExpr*>(node));
+		Traverse(static_cast<ConstType*>(node));
+		InspectInto(node->type.Obj());
+		Finishing(static_cast<ConstType*>(node));
+		Finishing(static_cast<TypeOrExpr*>(node));
+		Finishing(static_cast<TypeOrExprOrOthers*>(node));
+		Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+	}
+
+	void TypeOrExprVisitor::Visit(PointerType* node)
+	{
+		if (!node) return;
+		Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+		Traverse(static_cast<TypeOrExprOrOthers*>(node));
+		Traverse(static_cast<TypeOrExpr*>(node));
+		Traverse(static_cast<PointerType*>(node));
+		InspectInto(node->type.Obj());
+		Finishing(static_cast<PointerType*>(node));
+		Finishing(static_cast<TypeOrExpr*>(node));
+		Finishing(static_cast<TypeOrExprOrOthers*>(node));
+		Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+	}
+
+	void TypeOrExprVisitor::Visit(FunctionType* node)
+	{
+		if (!node) return;
+		Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+		Traverse(static_cast<TypeOrExprOrOthers*>(node));
+		Traverse(static_cast<TypeOrExpr*>(node));
+		Traverse(static_cast<FunctionType*>(node));
+		for (auto&& listItem : node->args)
+		{
+			InspectInto(listItem.Obj());
+		}
+		InspectInto(node->returnType.Obj());
+		Finishing(static_cast<FunctionType*>(node));
+		Finishing(static_cast<TypeOrExpr*>(node));
+		Finishing(static_cast<TypeOrExprOrOthers*>(node));
+		Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+	}
+
+	void TypeOrExprVisitor::Visit(Name* node)
+	{
+		if (!node) return;
+		Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+		Traverse(static_cast<TypeOrExprOrOthers*>(node));
+		Traverse(static_cast<TypeOrExpr*>(node));
+		Traverse(static_cast<QualifiedName*>(node));
+		Traverse(static_cast<Name*>(node));
+		Traverse(node->name);
+		Finishing(static_cast<Name*>(node));
+		Finishing(static_cast<QualifiedName*>(node));
+		Finishing(static_cast<TypeOrExpr*>(node));
+		Finishing(static_cast<TypeOrExprOrOthers*>(node));
+		Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+	}
+
+	void TypeOrExprVisitor::Visit(MemberName* node)
+	{
+		if (!node) return;
+		Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+		Traverse(static_cast<TypeOrExprOrOthers*>(node));
+		Traverse(static_cast<TypeOrExpr*>(node));
+		Traverse(static_cast<QualifiedName*>(node));
+		Traverse(static_cast<MemberName*>(node));
+		Traverse(node->member);
+		InspectInto(node->parent.Obj());
+		Finishing(static_cast<MemberName*>(node));
+		Finishing(static_cast<QualifiedName*>(node));
+		Finishing(static_cast<TypeOrExpr*>(node));
+		Finishing(static_cast<TypeOrExprOrOthers*>(node));
+		Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+	}
+
+	void TypeOrExprVisitor::Visit(GenericQualifiedName* node)
+	{
+		node->Accept(static_cast<GenericQualifiedName::IVisitor*>(this));
+	}
+
+	void TypeOrExprVisitor::Visit(GenericName* node)
+	{
+		if (!node) return;
+		Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+		Traverse(static_cast<TypeOrExprOrOthers*>(node));
+		Traverse(static_cast<TypeOrExpr*>(node));
+		Traverse(static_cast<QualifiedName*>(node));
+		Traverse(static_cast<GenericQualifiedName*>(node));
+		Traverse(static_cast<GenericName*>(node));
+		Traverse(node->name);
+		for (auto&& listItem : node->args)
+		{
+			InspectInto(listItem.Obj());
+		}
+		Finishing(static_cast<GenericName*>(node));
+		Finishing(static_cast<GenericQualifiedName*>(node));
+		Finishing(static_cast<QualifiedName*>(node));
+		Finishing(static_cast<TypeOrExpr*>(node));
+		Finishing(static_cast<TypeOrExprOrOthers*>(node));
+		Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+	}
+
+	void TypeOrExprVisitor::Visit(GenericMemberName* node)
+	{
+		if (!node) return;
+		Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+		Traverse(static_cast<TypeOrExprOrOthers*>(node));
+		Traverse(static_cast<TypeOrExpr*>(node));
+		Traverse(static_cast<QualifiedName*>(node));
+		Traverse(static_cast<GenericQualifiedName*>(node));
+		Traverse(static_cast<GenericMemberName*>(node));
+		Traverse(node->member);
+		InspectInto(node->parent.Obj());
+		for (auto&& listItem : node->args)
+		{
+			InspectInto(listItem.Obj());
+		}
+		Finishing(static_cast<GenericMemberName*>(node));
+		Finishing(static_cast<GenericQualifiedName*>(node));
+		Finishing(static_cast<QualifiedName*>(node));
+		Finishing(static_cast<TypeOrExpr*>(node));
+		Finishing(static_cast<TypeOrExprOrOthers*>(node));
+		Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+	}
+
+	void TypeOrExprVisitor::InspectInto(TypeOrExprOrOthers* node)
+	{
+		if (!node) return;
+		node->Accept(static_cast<TypeOrExprOrOthers::IVisitor*>(this));
+	}
+
 }

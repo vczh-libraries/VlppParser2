@@ -6,51 +6,48 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "BinaryOpExprAst_Traverse.h"
 
-namespace binaryop
+namespace binaryop::traverse_visitor
 {
-	namespace traverse_visitor
+	void ExprAstVisitor::Traverse(vl::glr::ParsingToken& token) {}
+	void ExprAstVisitor::Traverse(vl::glr::ParsingAstBase* node) {}
+	void ExprAstVisitor::Traverse(BinaryExpr* node) {}
+	void ExprAstVisitor::Traverse(Expr* node) {}
+	void ExprAstVisitor::Traverse(RefExpr* node) {}
+
+	void ExprAstVisitor::Finishing(vl::glr::ParsingAstBase* node) {}
+	void ExprAstVisitor::Finishing(BinaryExpr* node) {}
+	void ExprAstVisitor::Finishing(Expr* node) {}
+	void ExprAstVisitor::Finishing(RefExpr* node) {}
+
+	void ExprAstVisitor::Visit(RefExpr* node)
 	{
-		void ExprAstVisitor::Traverse(vl::glr::ParsingToken& token) {}
-		void ExprAstVisitor::Traverse(vl::glr::ParsingAstBase* node) {}
-		void ExprAstVisitor::Traverse(BinaryExpr* node) {}
-		void ExprAstVisitor::Traverse(Expr* node) {}
-		void ExprAstVisitor::Traverse(RefExpr* node) {}
-
-		void ExprAstVisitor::Finishing(vl::glr::ParsingAstBase* node) {}
-		void ExprAstVisitor::Finishing(BinaryExpr* node) {}
-		void ExprAstVisitor::Finishing(Expr* node) {}
-		void ExprAstVisitor::Finishing(RefExpr* node) {}
-
-		void ExprAstVisitor::Visit(RefExpr* node)
-		{
-			if (!node) return;
-			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-			Traverse(static_cast<Expr*>(node));
-			Traverse(static_cast<RefExpr*>(node));
-			Traverse(node->name);
-			Finishing(static_cast<RefExpr*>(node));
-			Finishing(static_cast<Expr*>(node));
-			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
-		}
-
-		void ExprAstVisitor::Visit(BinaryExpr* node)
-		{
-			if (!node) return;
-			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-			Traverse(static_cast<Expr*>(node));
-			Traverse(static_cast<BinaryExpr*>(node));
-			InspectInto(node->left.Obj());
-			InspectInto(node->right.Obj());
-			Finishing(static_cast<BinaryExpr*>(node));
-			Finishing(static_cast<Expr*>(node));
-			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
-		}
-
-		void ExprAstVisitor::InspectInto(Expr* node)
-		{
-			if (!node) return;
-			node->Accept(static_cast<Expr::IVisitor*>(this));
-		}
-
+		if (!node) return;
+		Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+		Traverse(static_cast<Expr*>(node));
+		Traverse(static_cast<RefExpr*>(node));
+		Traverse(node->name);
+		Finishing(static_cast<RefExpr*>(node));
+		Finishing(static_cast<Expr*>(node));
+		Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 	}
+
+	void ExprAstVisitor::Visit(BinaryExpr* node)
+	{
+		if (!node) return;
+		Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+		Traverse(static_cast<Expr*>(node));
+		Traverse(static_cast<BinaryExpr*>(node));
+		InspectInto(node->left.Obj());
+		InspectInto(node->right.Obj());
+		Finishing(static_cast<BinaryExpr*>(node));
+		Finishing(static_cast<Expr*>(node));
+		Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+	}
+
+	void ExprAstVisitor::InspectInto(Expr* node)
+	{
+		if (!node) return;
+		node->Accept(static_cast<Expr::IVisitor*>(this));
+	}
+
 }

@@ -62,230 +62,224 @@ Visitor Pattern Implementation
 		visitor->Visit(this);
 	}
 }
-namespace vl
+namespace vl::reflection::description
 {
-	namespace reflection
-	{
-		namespace description
-		{
 #ifndef VCZH_DEBUG_NO_REFLECTION
 
-			IMPL_TYPE_INFO_RENAME(calculator::Expr, calculator::Expr)
-			IMPL_TYPE_INFO_RENAME(calculator::Expr::IVisitor, calculator::Expr::IVisitor)
-			IMPL_TYPE_INFO_RENAME(calculator::NumExpr, calculator::NumExpr)
-			IMPL_TYPE_INFO_RENAME(calculator::Ref, calculator::Ref)
-			IMPL_TYPE_INFO_RENAME(calculator::True, calculator::True)
-			IMPL_TYPE_INFO_RENAME(calculator::False, calculator::False)
-			IMPL_TYPE_INFO_RENAME(calculator::Arg, calculator::Arg)
-			IMPL_TYPE_INFO_RENAME(calculator::Func, calculator::Func)
-			IMPL_TYPE_INFO_RENAME(calculator::Call, calculator::Call)
-			IMPL_TYPE_INFO_RENAME(calculator::Expandable, calculator::Expandable)
-			IMPL_TYPE_INFO_RENAME(calculator::Expandable::IVisitor, calculator::Expandable::IVisitor)
-			IMPL_TYPE_INFO_RENAME(calculator::LetExpr, calculator::LetExpr)
-			IMPL_TYPE_INFO_RENAME(calculator::UnaryOp, calculator::UnaryOp)
-			IMPL_TYPE_INFO_RENAME(calculator::Unary, calculator::Unary)
-			IMPL_TYPE_INFO_RENAME(calculator::BinaryOp, calculator::BinaryOp)
-			IMPL_TYPE_INFO_RENAME(calculator::Binary, calculator::Binary)
-			IMPL_TYPE_INFO_RENAME(calculator::Import, calculator::Import)
-			IMPL_TYPE_INFO_RENAME(calculator::Module, calculator::Module)
+	IMPL_TYPE_INFO_RENAME(calculator::Expr, calculator::Expr)
+	IMPL_TYPE_INFO_RENAME(calculator::Expr::IVisitor, calculator::Expr::IVisitor)
+	IMPL_TYPE_INFO_RENAME(calculator::NumExpr, calculator::NumExpr)
+	IMPL_TYPE_INFO_RENAME(calculator::Ref, calculator::Ref)
+	IMPL_TYPE_INFO_RENAME(calculator::True, calculator::True)
+	IMPL_TYPE_INFO_RENAME(calculator::False, calculator::False)
+	IMPL_TYPE_INFO_RENAME(calculator::Arg, calculator::Arg)
+	IMPL_TYPE_INFO_RENAME(calculator::Func, calculator::Func)
+	IMPL_TYPE_INFO_RENAME(calculator::Call, calculator::Call)
+	IMPL_TYPE_INFO_RENAME(calculator::Expandable, calculator::Expandable)
+	IMPL_TYPE_INFO_RENAME(calculator::Expandable::IVisitor, calculator::Expandable::IVisitor)
+	IMPL_TYPE_INFO_RENAME(calculator::LetExpr, calculator::LetExpr)
+	IMPL_TYPE_INFO_RENAME(calculator::UnaryOp, calculator::UnaryOp)
+	IMPL_TYPE_INFO_RENAME(calculator::Unary, calculator::Unary)
+	IMPL_TYPE_INFO_RENAME(calculator::BinaryOp, calculator::BinaryOp)
+	IMPL_TYPE_INFO_RENAME(calculator::Binary, calculator::Binary)
+	IMPL_TYPE_INFO_RENAME(calculator::Import, calculator::Import)
+	IMPL_TYPE_INFO_RENAME(calculator::Module, calculator::Module)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 
-			BEGIN_CLASS_MEMBER(calculator::Expr)
-				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+	BEGIN_CLASS_MEMBER(calculator::Expr)
+		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
-			END_CLASS_MEMBER(calculator::Expr)
+	END_CLASS_MEMBER(calculator::Expr)
 
-			BEGIN_CLASS_MEMBER(calculator::NumExpr)
-				CLASS_MEMBER_BASE(calculator::Expr)
+	BEGIN_CLASS_MEMBER(calculator::NumExpr)
+		CLASS_MEMBER_BASE(calculator::Expr)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<calculator::NumExpr>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<calculator::NumExpr>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(value)
-			END_CLASS_MEMBER(calculator::NumExpr)
+		CLASS_MEMBER_FIELD(value)
+	END_CLASS_MEMBER(calculator::NumExpr)
 
-			BEGIN_CLASS_MEMBER(calculator::Ref)
-				CLASS_MEMBER_BASE(calculator::Expr)
+	BEGIN_CLASS_MEMBER(calculator::Ref)
+		CLASS_MEMBER_BASE(calculator::Expr)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<calculator::Ref>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<calculator::Ref>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(name)
-			END_CLASS_MEMBER(calculator::Ref)
+		CLASS_MEMBER_FIELD(name)
+	END_CLASS_MEMBER(calculator::Ref)
 
-			BEGIN_CLASS_MEMBER(calculator::True)
-				CLASS_MEMBER_BASE(calculator::Expr)
+	BEGIN_CLASS_MEMBER(calculator::True)
+		CLASS_MEMBER_BASE(calculator::Expr)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<calculator::True>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<calculator::True>(), NO_PARAMETER)
 
-			END_CLASS_MEMBER(calculator::True)
+	END_CLASS_MEMBER(calculator::True)
 
-			BEGIN_CLASS_MEMBER(calculator::False)
-				CLASS_MEMBER_BASE(calculator::Expr)
+	BEGIN_CLASS_MEMBER(calculator::False)
+		CLASS_MEMBER_BASE(calculator::Expr)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<calculator::False>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<calculator::False>(), NO_PARAMETER)
 
-			END_CLASS_MEMBER(calculator::False)
+	END_CLASS_MEMBER(calculator::False)
 
-			BEGIN_CLASS_MEMBER(calculator::Arg)
-				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+	BEGIN_CLASS_MEMBER(calculator::Arg)
+		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<calculator::Arg>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<calculator::Arg>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(name)
-			END_CLASS_MEMBER(calculator::Arg)
+		CLASS_MEMBER_FIELD(name)
+	END_CLASS_MEMBER(calculator::Arg)
 
-			BEGIN_CLASS_MEMBER(calculator::Func)
-				CLASS_MEMBER_BASE(calculator::Expr)
+	BEGIN_CLASS_MEMBER(calculator::Func)
+		CLASS_MEMBER_BASE(calculator::Expr)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<calculator::Func>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<calculator::Func>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(args)
-				CLASS_MEMBER_FIELD(value)
-			END_CLASS_MEMBER(calculator::Func)
+		CLASS_MEMBER_FIELD(args)
+		CLASS_MEMBER_FIELD(value)
+	END_CLASS_MEMBER(calculator::Func)
 
-			BEGIN_CLASS_MEMBER(calculator::Call)
-				CLASS_MEMBER_BASE(calculator::Expr)
+	BEGIN_CLASS_MEMBER(calculator::Call)
+		CLASS_MEMBER_BASE(calculator::Expr)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<calculator::Call>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<calculator::Call>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(func)
-				CLASS_MEMBER_FIELD(args)
-			END_CLASS_MEMBER(calculator::Call)
+		CLASS_MEMBER_FIELD(func)
+		CLASS_MEMBER_FIELD(args)
+	END_CLASS_MEMBER(calculator::Call)
 
-			BEGIN_CLASS_MEMBER(calculator::Expandable)
-				CLASS_MEMBER_BASE(calculator::Expr)
+	BEGIN_CLASS_MEMBER(calculator::Expandable)
+		CLASS_MEMBER_BASE(calculator::Expr)
 
-				CLASS_MEMBER_FIELD(expanded)
-			END_CLASS_MEMBER(calculator::Expandable)
+		CLASS_MEMBER_FIELD(expanded)
+	END_CLASS_MEMBER(calculator::Expandable)
 
-			BEGIN_CLASS_MEMBER(calculator::LetExpr)
-				CLASS_MEMBER_BASE(calculator::Expandable)
+	BEGIN_CLASS_MEMBER(calculator::LetExpr)
+		CLASS_MEMBER_BASE(calculator::Expandable)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<calculator::LetExpr>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<calculator::LetExpr>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(name)
-				CLASS_MEMBER_FIELD(value)
-				CLASS_MEMBER_FIELD(result)
-			END_CLASS_MEMBER(calculator::LetExpr)
+		CLASS_MEMBER_FIELD(name)
+		CLASS_MEMBER_FIELD(value)
+		CLASS_MEMBER_FIELD(result)
+	END_CLASS_MEMBER(calculator::LetExpr)
 
-			BEGIN_ENUM_ITEM(calculator::UnaryOp)
-				ENUM_ITEM_NAMESPACE(calculator::UnaryOp)
-				ENUM_NAMESPACE_ITEM(Positive)
-				ENUM_NAMESPACE_ITEM(Negative)
-			END_ENUM_ITEM(calculator::UnaryOp)
+	BEGIN_ENUM_ITEM(calculator::UnaryOp)
+		ENUM_ITEM_NAMESPACE(calculator::UnaryOp)
+		ENUM_NAMESPACE_ITEM(Positive)
+		ENUM_NAMESPACE_ITEM(Negative)
+	END_ENUM_ITEM(calculator::UnaryOp)
 
-			BEGIN_CLASS_MEMBER(calculator::Unary)
-				CLASS_MEMBER_BASE(calculator::Expandable)
+	BEGIN_CLASS_MEMBER(calculator::Unary)
+		CLASS_MEMBER_BASE(calculator::Expandable)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<calculator::Unary>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<calculator::Unary>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(op)
-				CLASS_MEMBER_FIELD(operand)
-			END_CLASS_MEMBER(calculator::Unary)
+		CLASS_MEMBER_FIELD(op)
+		CLASS_MEMBER_FIELD(operand)
+	END_CLASS_MEMBER(calculator::Unary)
 
-			BEGIN_ENUM_ITEM(calculator::BinaryOp)
-				ENUM_ITEM_NAMESPACE(calculator::BinaryOp)
-				ENUM_NAMESPACE_ITEM(Add)
-				ENUM_NAMESPACE_ITEM(Minus)
-				ENUM_NAMESPACE_ITEM(Multiply)
-				ENUM_NAMESPACE_ITEM(Divid)
-				ENUM_NAMESPACE_ITEM(GT)
-				ENUM_NAMESPACE_ITEM(GE)
-				ENUM_NAMESPACE_ITEM(LT)
-				ENUM_NAMESPACE_ITEM(LE)
-				ENUM_NAMESPACE_ITEM(EQ)
-				ENUM_NAMESPACE_ITEM(NE)
-			END_ENUM_ITEM(calculator::BinaryOp)
+	BEGIN_ENUM_ITEM(calculator::BinaryOp)
+		ENUM_ITEM_NAMESPACE(calculator::BinaryOp)
+		ENUM_NAMESPACE_ITEM(Add)
+		ENUM_NAMESPACE_ITEM(Minus)
+		ENUM_NAMESPACE_ITEM(Multiply)
+		ENUM_NAMESPACE_ITEM(Divid)
+		ENUM_NAMESPACE_ITEM(GT)
+		ENUM_NAMESPACE_ITEM(GE)
+		ENUM_NAMESPACE_ITEM(LT)
+		ENUM_NAMESPACE_ITEM(LE)
+		ENUM_NAMESPACE_ITEM(EQ)
+		ENUM_NAMESPACE_ITEM(NE)
+	END_ENUM_ITEM(calculator::BinaryOp)
 
-			BEGIN_CLASS_MEMBER(calculator::Binary)
-				CLASS_MEMBER_BASE(calculator::Expandable)
+	BEGIN_CLASS_MEMBER(calculator::Binary)
+		CLASS_MEMBER_BASE(calculator::Expandable)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<calculator::Binary>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<calculator::Binary>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(op)
-				CLASS_MEMBER_FIELD(left)
-				CLASS_MEMBER_FIELD(right)
-			END_CLASS_MEMBER(calculator::Binary)
+		CLASS_MEMBER_FIELD(op)
+		CLASS_MEMBER_FIELD(left)
+		CLASS_MEMBER_FIELD(right)
+	END_CLASS_MEMBER(calculator::Binary)
 
-			BEGIN_CLASS_MEMBER(calculator::Import)
-				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+	BEGIN_CLASS_MEMBER(calculator::Import)
+		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<calculator::Import>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<calculator::Import>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(name)
-			END_CLASS_MEMBER(calculator::Import)
+		CLASS_MEMBER_FIELD(name)
+	END_CLASS_MEMBER(calculator::Import)
 
-			BEGIN_CLASS_MEMBER(calculator::Module)
-				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+	BEGIN_CLASS_MEMBER(calculator::Module)
+		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<calculator::Module>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<calculator::Module>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(imports)
-				CLASS_MEMBER_FIELD(exported)
-			END_CLASS_MEMBER(calculator::Module)
+		CLASS_MEMBER_FIELD(imports)
+		CLASS_MEMBER_FIELD(exported)
+	END_CLASS_MEMBER(calculator::Module)
 
-			BEGIN_INTERFACE_MEMBER(calculator::Expr::IVisitor)
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(calculator::Expr::IVisitor::*)(calculator::NumExpr* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(calculator::Expr::IVisitor::*)(calculator::Ref* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(calculator::Expr::IVisitor::*)(calculator::True* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(calculator::Expr::IVisitor::*)(calculator::False* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(calculator::Expr::IVisitor::*)(calculator::Func* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(calculator::Expr::IVisitor::*)(calculator::Call* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(calculator::Expr::IVisitor::*)(calculator::Expandable* node))
-			END_INTERFACE_MEMBER(calculator::Expr)
+	BEGIN_INTERFACE_MEMBER(calculator::Expr::IVisitor)
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(calculator::Expr::IVisitor::*)(calculator::NumExpr* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(calculator::Expr::IVisitor::*)(calculator::Ref* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(calculator::Expr::IVisitor::*)(calculator::True* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(calculator::Expr::IVisitor::*)(calculator::False* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(calculator::Expr::IVisitor::*)(calculator::Func* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(calculator::Expr::IVisitor::*)(calculator::Call* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(calculator::Expr::IVisitor::*)(calculator::Expandable* node))
+	END_INTERFACE_MEMBER(calculator::Expr)
 
-			BEGIN_INTERFACE_MEMBER(calculator::Expandable::IVisitor)
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(calculator::Expandable::IVisitor::*)(calculator::LetExpr* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(calculator::Expandable::IVisitor::*)(calculator::Unary* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(calculator::Expandable::IVisitor::*)(calculator::Binary* node))
-			END_INTERFACE_MEMBER(calculator::Expandable)
+	BEGIN_INTERFACE_MEMBER(calculator::Expandable::IVisitor)
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(calculator::Expandable::IVisitor::*)(calculator::LetExpr* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(calculator::Expandable::IVisitor::*)(calculator::Unary* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(calculator::Expandable::IVisitor::*)(calculator::Binary* node))
+	END_INTERFACE_MEMBER(calculator::Expandable)
 
 #endif
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
-			class CalculatorExprAstTypeLoader : public vl::Object, public ITypeLoader
-			{
-			public:
-				void Load(ITypeManager* manager)
-				{
-					ADD_TYPE_INFO(calculator::Expr)
-					ADD_TYPE_INFO(calculator::Expr::IVisitor)
-					ADD_TYPE_INFO(calculator::NumExpr)
-					ADD_TYPE_INFO(calculator::Ref)
-					ADD_TYPE_INFO(calculator::True)
-					ADD_TYPE_INFO(calculator::False)
-					ADD_TYPE_INFO(calculator::Arg)
-					ADD_TYPE_INFO(calculator::Func)
-					ADD_TYPE_INFO(calculator::Call)
-					ADD_TYPE_INFO(calculator::Expandable)
-					ADD_TYPE_INFO(calculator::Expandable::IVisitor)
-					ADD_TYPE_INFO(calculator::LetExpr)
-					ADD_TYPE_INFO(calculator::UnaryOp)
-					ADD_TYPE_INFO(calculator::Unary)
-					ADD_TYPE_INFO(calculator::BinaryOp)
-					ADD_TYPE_INFO(calculator::Binary)
-					ADD_TYPE_INFO(calculator::Import)
-					ADD_TYPE_INFO(calculator::Module)
-				}
-
-				void Unload(ITypeManager* manager)
-				{
-				}
-			};
-#endif
-#endif
-
-			bool CalculatorExprAstLoadTypes()
-			{
-#ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
-				if (auto manager = GetGlobalTypeManager())
-				{
-					auto loader = Ptr(new CalculatorExprAstTypeLoader);
-					return manager->AddTypeLoader(loader);
-				}
-#endif
-				return false;
-			}
+	class CalculatorExprAstTypeLoader : public vl::Object, public ITypeLoader
+	{
+	public:
+		void Load(ITypeManager* manager)
+		{
+			ADD_TYPE_INFO(calculator::Expr)
+			ADD_TYPE_INFO(calculator::Expr::IVisitor)
+			ADD_TYPE_INFO(calculator::NumExpr)
+			ADD_TYPE_INFO(calculator::Ref)
+			ADD_TYPE_INFO(calculator::True)
+			ADD_TYPE_INFO(calculator::False)
+			ADD_TYPE_INFO(calculator::Arg)
+			ADD_TYPE_INFO(calculator::Func)
+			ADD_TYPE_INFO(calculator::Call)
+			ADD_TYPE_INFO(calculator::Expandable)
+			ADD_TYPE_INFO(calculator::Expandable::IVisitor)
+			ADD_TYPE_INFO(calculator::LetExpr)
+			ADD_TYPE_INFO(calculator::UnaryOp)
+			ADD_TYPE_INFO(calculator::Unary)
+			ADD_TYPE_INFO(calculator::BinaryOp)
+			ADD_TYPE_INFO(calculator::Binary)
+			ADD_TYPE_INFO(calculator::Import)
+			ADD_TYPE_INFO(calculator::Module)
 		}
+
+		void Unload(ITypeManager* manager)
+		{
+		}
+	};
+#endif
+#endif
+
+	bool CalculatorExprAstLoadTypes()
+	{
+#ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
+		if (auto manager = GetGlobalTypeManager())
+		{
+			auto loader = Ptr(new CalculatorExprAstTypeLoader);
+			return manager->AddTypeLoader(loader);
+		}
+#endif
+		return false;
 	}
 }

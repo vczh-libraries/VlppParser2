@@ -9,65 +9,62 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "FeatureTestFeatureAst.h"
 
-namespace featuretest
+namespace featuretest::traverse_visitor
 {
-	namespace traverse_visitor
+	/// <summary>A traverse visitor, overriding all abstract methods with AST visiting code.</summary>
+	class FeatureAstVisitor
+		: public vl::Object
+		, protected virtual Feature::IVisitor
 	{
-		/// <summary>A traverse visitor, overriding all abstract methods with AST visiting code.</summary>
-		class FeatureAstVisitor
-			: public vl::Object
-			, protected virtual Feature::IVisitor
-		{
-		protected:
-			virtual void Traverse(vl::glr::ParsingToken& token);
-			virtual void Traverse(vl::glr::ParsingAstBase* node);
-			virtual void Traverse(BranchedOptionalFeature* node);
-			virtual void Traverse(ClFeature* node);
-			virtual void Traverse(FaFeature* node);
-			virtual void Traverse(Feature* node);
-			virtual void Traverse(FeatureToResolve* node);
-			virtual void Traverse(Gt* node);
-			virtual void Traverse(Lt* node);
-			virtual void Traverse(NestedOptionalFeature* node);
-			virtual void Traverse(OptionalFeature* node);
-			virtual void Traverse(PbaFeature* node);
-			virtual void Traverse(Plus* node);
-			virtual void Traverse(Pwa1Feature* node);
-			virtual void Traverse(PwlFeature* node);
+	protected:
+		virtual void Traverse(vl::glr::ParsingToken& token);
+		virtual void Traverse(vl::glr::ParsingAstBase* node);
+		virtual void Traverse(BranchedOptionalFeature* node);
+		virtual void Traverse(ClFeature* node);
+		virtual void Traverse(FaFeature* node);
+		virtual void Traverse(Feature* node);
+		virtual void Traverse(FeatureToResolve* node);
+		virtual void Traverse(Gt* node);
+		virtual void Traverse(Lt* node);
+		virtual void Traverse(NestedOptionalFeature* node);
+		virtual void Traverse(OptionalFeature* node);
+		virtual void Traverse(PbaFeature* node);
+		virtual void Traverse(Plus* node);
+		virtual void Traverse(Pwa1Feature* node);
+		virtual void Traverse(PwlFeature* node);
 
-		protected:
-			virtual void Finishing(vl::glr::ParsingAstBase* node);
-			virtual void Finishing(BranchedOptionalFeature* node);
-			virtual void Finishing(ClFeature* node);
-			virtual void Finishing(FaFeature* node);
-			virtual void Finishing(Feature* node);
-			virtual void Finishing(FeatureToResolve* node);
-			virtual void Finishing(Gt* node);
-			virtual void Finishing(Lt* node);
-			virtual void Finishing(NestedOptionalFeature* node);
-			virtual void Finishing(OptionalFeature* node);
-			virtual void Finishing(PbaFeature* node);
-			virtual void Finishing(Plus* node);
-			virtual void Finishing(Pwa1Feature* node);
-			virtual void Finishing(PwlFeature* node);
+	protected:
+		virtual void Finishing(vl::glr::ParsingAstBase* node);
+		virtual void Finishing(BranchedOptionalFeature* node);
+		virtual void Finishing(ClFeature* node);
+		virtual void Finishing(FaFeature* node);
+		virtual void Finishing(Feature* node);
+		virtual void Finishing(FeatureToResolve* node);
+		virtual void Finishing(Gt* node);
+		virtual void Finishing(Lt* node);
+		virtual void Finishing(NestedOptionalFeature* node);
+		virtual void Finishing(OptionalFeature* node);
+		virtual void Finishing(PbaFeature* node);
+		virtual void Finishing(Plus* node);
+		virtual void Finishing(Pwa1Feature* node);
+		virtual void Finishing(PwlFeature* node);
 
-		protected:
-			void Visit(FeatureToResolve* node) override;
-			void Visit(OptionalFeature* node) override;
-			void Visit(NestedOptionalFeature* node) override;
-			void Visit(BranchedOptionalFeature* node) override;
-			void Visit(PbaFeature* node) override;
-			void Visit(Pwa1Feature* node) override;
-			void Visit(PwlFeature* node) override;
-			void Visit(ClFeature* node) override;
-			void Visit(FaFeature* node) override;
+	protected:
+		void Visit(FeatureToResolve* node) override;
+		void Visit(OptionalFeature* node) override;
+		void Visit(NestedOptionalFeature* node) override;
+		void Visit(BranchedOptionalFeature* node) override;
+		void Visit(PbaFeature* node) override;
+		void Visit(Pwa1Feature* node) override;
+		void Visit(PwlFeature* node) override;
+		void Visit(ClFeature* node) override;
+		void Visit(FaFeature* node) override;
 
-		public:
-			void InspectInto(Feature* node);
-			void InspectInto(Plus* node);
-			void InspectInto(Lt* node);
-			void InspectInto(Gt* node);
-		};
-	}
+	public:
+		void InspectInto(Feature* node);
+		void InspectInto(Plus* node);
+		void InspectInto(Lt* node);
+		void InspectInto(Gt* node);
+	};
 }
 #endif

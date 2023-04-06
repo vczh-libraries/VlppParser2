@@ -57,226 +57,220 @@ Visitor Pattern Implementation
 		visitor->Visit(this);
 	}
 }
-namespace vl
+namespace vl::reflection::description
 {
-	namespace reflection
-	{
-		namespace description
-		{
 #ifndef VCZH_DEBUG_NO_REFLECTION
 
-			IMPL_TYPE_INFO_RENAME(featuretest::Plus, featuretest::Plus)
-			IMPL_TYPE_INFO_RENAME(featuretest::Lt, featuretest::Lt)
-			IMPL_TYPE_INFO_RENAME(featuretest::Gt, featuretest::Gt)
-			IMPL_TYPE_INFO_RENAME(featuretest::Feature, featuretest::Feature)
-			IMPL_TYPE_INFO_RENAME(featuretest::Feature::IVisitor, featuretest::Feature::IVisitor)
-			IMPL_TYPE_INFO_RENAME(featuretest::OptionalProprity, featuretest::OptionalProprity)
-			IMPL_TYPE_INFO_RENAME(featuretest::OptionalFeature, featuretest::OptionalFeature)
-			IMPL_TYPE_INFO_RENAME(featuretest::NestedOptionalFeature, featuretest::NestedOptionalFeature)
-			IMPL_TYPE_INFO_RENAME(featuretest::BranchType, featuretest::BranchType)
-			IMPL_TYPE_INFO_RENAME(featuretest::BranchedOptionalFeature, featuretest::BranchedOptionalFeature)
-			IMPL_TYPE_INFO_RENAME(featuretest::PbaFeature, featuretest::PbaFeature)
-			IMPL_TYPE_INFO_RENAME(featuretest::Pwa1Feature, featuretest::Pwa1Feature)
-			IMPL_TYPE_INFO_RENAME(featuretest::PwlFeature, featuretest::PwlFeature)
-			IMPL_TYPE_INFO_RENAME(featuretest::ClFeature, featuretest::ClFeature)
-			IMPL_TYPE_INFO_RENAME(featuretest::FieldAssignment, featuretest::FieldAssignment)
-			IMPL_TYPE_INFO_RENAME(featuretest::FaFeature, featuretest::FaFeature)
-			IMPL_TYPE_INFO_RENAME(featuretest::FeatureToResolve, featuretest::FeatureToResolve)
+	IMPL_TYPE_INFO_RENAME(featuretest::Plus, featuretest::Plus)
+	IMPL_TYPE_INFO_RENAME(featuretest::Lt, featuretest::Lt)
+	IMPL_TYPE_INFO_RENAME(featuretest::Gt, featuretest::Gt)
+	IMPL_TYPE_INFO_RENAME(featuretest::Feature, featuretest::Feature)
+	IMPL_TYPE_INFO_RENAME(featuretest::Feature::IVisitor, featuretest::Feature::IVisitor)
+	IMPL_TYPE_INFO_RENAME(featuretest::OptionalProprity, featuretest::OptionalProprity)
+	IMPL_TYPE_INFO_RENAME(featuretest::OptionalFeature, featuretest::OptionalFeature)
+	IMPL_TYPE_INFO_RENAME(featuretest::NestedOptionalFeature, featuretest::NestedOptionalFeature)
+	IMPL_TYPE_INFO_RENAME(featuretest::BranchType, featuretest::BranchType)
+	IMPL_TYPE_INFO_RENAME(featuretest::BranchedOptionalFeature, featuretest::BranchedOptionalFeature)
+	IMPL_TYPE_INFO_RENAME(featuretest::PbaFeature, featuretest::PbaFeature)
+	IMPL_TYPE_INFO_RENAME(featuretest::Pwa1Feature, featuretest::Pwa1Feature)
+	IMPL_TYPE_INFO_RENAME(featuretest::PwlFeature, featuretest::PwlFeature)
+	IMPL_TYPE_INFO_RENAME(featuretest::ClFeature, featuretest::ClFeature)
+	IMPL_TYPE_INFO_RENAME(featuretest::FieldAssignment, featuretest::FieldAssignment)
+	IMPL_TYPE_INFO_RENAME(featuretest::FaFeature, featuretest::FaFeature)
+	IMPL_TYPE_INFO_RENAME(featuretest::FeatureToResolve, featuretest::FeatureToResolve)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 
-			BEGIN_CLASS_MEMBER(featuretest::Plus)
-				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+	BEGIN_CLASS_MEMBER(featuretest::Plus)
+		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<featuretest::Plus>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<featuretest::Plus>(), NO_PARAMETER)
 
-			END_CLASS_MEMBER(featuretest::Plus)
+	END_CLASS_MEMBER(featuretest::Plus)
 
-			BEGIN_CLASS_MEMBER(featuretest::Lt)
-				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+	BEGIN_CLASS_MEMBER(featuretest::Lt)
+		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<featuretest::Lt>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<featuretest::Lt>(), NO_PARAMETER)
 
-			END_CLASS_MEMBER(featuretest::Lt)
+	END_CLASS_MEMBER(featuretest::Lt)
 
-			BEGIN_CLASS_MEMBER(featuretest::Gt)
-				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+	BEGIN_CLASS_MEMBER(featuretest::Gt)
+		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<featuretest::Gt>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<featuretest::Gt>(), NO_PARAMETER)
 
-			END_CLASS_MEMBER(featuretest::Gt)
+	END_CLASS_MEMBER(featuretest::Gt)
 
-			BEGIN_CLASS_MEMBER(featuretest::Feature)
-				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+	BEGIN_CLASS_MEMBER(featuretest::Feature)
+		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
-			END_CLASS_MEMBER(featuretest::Feature)
+	END_CLASS_MEMBER(featuretest::Feature)
 
-			BEGIN_ENUM_ITEM(featuretest::OptionalProprity)
-				ENUM_ITEM_NAMESPACE(featuretest::OptionalProprity)
-				ENUM_NAMESPACE_ITEM(Equal)
-				ENUM_NAMESPACE_ITEM(PreferTake)
-				ENUM_NAMESPACE_ITEM(PreferSkip)
-			END_ENUM_ITEM(featuretest::OptionalProprity)
+	BEGIN_ENUM_ITEM(featuretest::OptionalProprity)
+		ENUM_ITEM_NAMESPACE(featuretest::OptionalProprity)
+		ENUM_NAMESPACE_ITEM(Equal)
+		ENUM_NAMESPACE_ITEM(PreferTake)
+		ENUM_NAMESPACE_ITEM(PreferSkip)
+	END_ENUM_ITEM(featuretest::OptionalProprity)
 
-			BEGIN_CLASS_MEMBER(featuretest::OptionalFeature)
-				CLASS_MEMBER_BASE(featuretest::Feature)
+	BEGIN_CLASS_MEMBER(featuretest::OptionalFeature)
+		CLASS_MEMBER_BASE(featuretest::Feature)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<featuretest::OptionalFeature>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<featuretest::OptionalFeature>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(priority)
-				CLASS_MEMBER_FIELD(optional)
-				CLASS_MEMBER_FIELD(loop)
-			END_CLASS_MEMBER(featuretest::OptionalFeature)
+		CLASS_MEMBER_FIELD(priority)
+		CLASS_MEMBER_FIELD(optional)
+		CLASS_MEMBER_FIELD(loop)
+	END_CLASS_MEMBER(featuretest::OptionalFeature)
 
-			BEGIN_CLASS_MEMBER(featuretest::NestedOptionalFeature)
-				CLASS_MEMBER_BASE(featuretest::Feature)
+	BEGIN_CLASS_MEMBER(featuretest::NestedOptionalFeature)
+		CLASS_MEMBER_BASE(featuretest::Feature)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<featuretest::NestedOptionalFeature>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<featuretest::NestedOptionalFeature>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(optional)
-				CLASS_MEMBER_FIELD(tail1)
-				CLASS_MEMBER_FIELD(tail2)
-				CLASS_MEMBER_FIELD(tail3)
-				CLASS_MEMBER_FIELD(tails)
-			END_CLASS_MEMBER(featuretest::NestedOptionalFeature)
+		CLASS_MEMBER_FIELD(optional)
+		CLASS_MEMBER_FIELD(tail1)
+		CLASS_MEMBER_FIELD(tail2)
+		CLASS_MEMBER_FIELD(tail3)
+		CLASS_MEMBER_FIELD(tails)
+	END_CLASS_MEMBER(featuretest::NestedOptionalFeature)
 
-			BEGIN_ENUM_ITEM(featuretest::BranchType)
-				ENUM_ITEM_NAMESPACE(featuretest::BranchType)
-				ENUM_NAMESPACE_ITEM(Plus)
-				ENUM_NAMESPACE_ITEM(Minus)
-				ENUM_NAMESPACE_ITEM(NoCompetition)
-			END_ENUM_ITEM(featuretest::BranchType)
+	BEGIN_ENUM_ITEM(featuretest::BranchType)
+		ENUM_ITEM_NAMESPACE(featuretest::BranchType)
+		ENUM_NAMESPACE_ITEM(Plus)
+		ENUM_NAMESPACE_ITEM(Minus)
+		ENUM_NAMESPACE_ITEM(NoCompetition)
+	END_ENUM_ITEM(featuretest::BranchType)
 
-			BEGIN_CLASS_MEMBER(featuretest::BranchedOptionalFeature)
-				CLASS_MEMBER_BASE(featuretest::Feature)
+	BEGIN_CLASS_MEMBER(featuretest::BranchedOptionalFeature)
+		CLASS_MEMBER_BASE(featuretest::Feature)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<featuretest::BranchedOptionalFeature>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<featuretest::BranchedOptionalFeature>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(type)
-				CLASS_MEMBER_FIELD(optional)
-				CLASS_MEMBER_FIELD(tails)
-			END_CLASS_MEMBER(featuretest::BranchedOptionalFeature)
+		CLASS_MEMBER_FIELD(type)
+		CLASS_MEMBER_FIELD(optional)
+		CLASS_MEMBER_FIELD(tails)
+	END_CLASS_MEMBER(featuretest::BranchedOptionalFeature)
 
-			BEGIN_CLASS_MEMBER(featuretest::PbaFeature)
-				CLASS_MEMBER_BASE(featuretest::Feature)
+	BEGIN_CLASS_MEMBER(featuretest::PbaFeature)
+		CLASS_MEMBER_BASE(featuretest::Feature)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<featuretest::PbaFeature>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<featuretest::PbaFeature>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(lts)
-				CLASS_MEMBER_FIELD(gts)
-				CLASS_MEMBER_FIELD(optional)
-				CLASS_MEMBER_FIELD(tail)
-				CLASS_MEMBER_FIELD(tails)
-			END_CLASS_MEMBER(featuretest::PbaFeature)
+		CLASS_MEMBER_FIELD(lts)
+		CLASS_MEMBER_FIELD(gts)
+		CLASS_MEMBER_FIELD(optional)
+		CLASS_MEMBER_FIELD(tail)
+		CLASS_MEMBER_FIELD(tails)
+	END_CLASS_MEMBER(featuretest::PbaFeature)
 
-			BEGIN_CLASS_MEMBER(featuretest::Pwa1Feature)
-				CLASS_MEMBER_BASE(featuretest::Feature)
+	BEGIN_CLASS_MEMBER(featuretest::Pwa1Feature)
+		CLASS_MEMBER_BASE(featuretest::Feature)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<featuretest::Pwa1Feature>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<featuretest::Pwa1Feature>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(pba)
-				CLASS_MEMBER_FIELD(lts)
-				CLASS_MEMBER_FIELD(gts)
-			END_CLASS_MEMBER(featuretest::Pwa1Feature)
+		CLASS_MEMBER_FIELD(pba)
+		CLASS_MEMBER_FIELD(lts)
+		CLASS_MEMBER_FIELD(gts)
+	END_CLASS_MEMBER(featuretest::Pwa1Feature)
 
-			BEGIN_CLASS_MEMBER(featuretest::PwlFeature)
-				CLASS_MEMBER_BASE(featuretest::Feature)
+	BEGIN_CLASS_MEMBER(featuretest::PwlFeature)
+		CLASS_MEMBER_BASE(featuretest::Feature)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<featuretest::PwlFeature>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<featuretest::PwlFeature>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(prefix)
-				CLASS_MEMBER_FIELD(one)
-				CLASS_MEMBER_FIELD(two)
-				CLASS_MEMBER_FIELD(prev)
-			END_CLASS_MEMBER(featuretest::PwlFeature)
+		CLASS_MEMBER_FIELD(prefix)
+		CLASS_MEMBER_FIELD(one)
+		CLASS_MEMBER_FIELD(two)
+		CLASS_MEMBER_FIELD(prev)
+	END_CLASS_MEMBER(featuretest::PwlFeature)
 
-			BEGIN_CLASS_MEMBER(featuretest::ClFeature)
-				CLASS_MEMBER_BASE(featuretest::Feature)
+	BEGIN_CLASS_MEMBER(featuretest::ClFeature)
+		CLASS_MEMBER_BASE(featuretest::Feature)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<featuretest::ClFeature>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<featuretest::ClFeature>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(id)
-			END_CLASS_MEMBER(featuretest::ClFeature)
+		CLASS_MEMBER_FIELD(id)
+	END_CLASS_MEMBER(featuretest::ClFeature)
 
-			BEGIN_ENUM_ITEM(featuretest::FieldAssignment)
-				ENUM_ITEM_NAMESPACE(featuretest::FieldAssignment)
-				ENUM_NAMESPACE_ITEM(A)
-				ENUM_NAMESPACE_ITEM(B)
-			END_ENUM_ITEM(featuretest::FieldAssignment)
+	BEGIN_ENUM_ITEM(featuretest::FieldAssignment)
+		ENUM_ITEM_NAMESPACE(featuretest::FieldAssignment)
+		ENUM_NAMESPACE_ITEM(A)
+		ENUM_NAMESPACE_ITEM(B)
+	END_ENUM_ITEM(featuretest::FieldAssignment)
 
-			BEGIN_CLASS_MEMBER(featuretest::FaFeature)
-				CLASS_MEMBER_BASE(featuretest::Feature)
+	BEGIN_CLASS_MEMBER(featuretest::FaFeature)
+		CLASS_MEMBER_BASE(featuretest::Feature)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<featuretest::FaFeature>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<featuretest::FaFeature>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(fa)
-			END_CLASS_MEMBER(featuretest::FaFeature)
+		CLASS_MEMBER_FIELD(fa)
+	END_CLASS_MEMBER(featuretest::FaFeature)
 
-			BEGIN_CLASS_MEMBER(featuretest::FeatureToResolve)
-				CLASS_MEMBER_BASE(featuretest::Feature)
+	BEGIN_CLASS_MEMBER(featuretest::FeatureToResolve)
+		CLASS_MEMBER_BASE(featuretest::Feature)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<featuretest::FeatureToResolve>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<featuretest::FeatureToResolve>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(candidates)
-			END_CLASS_MEMBER(featuretest::FeatureToResolve)
+		CLASS_MEMBER_FIELD(candidates)
+	END_CLASS_MEMBER(featuretest::FeatureToResolve)
 
-			BEGIN_INTERFACE_MEMBER(featuretest::Feature::IVisitor)
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(featuretest::Feature::IVisitor::*)(featuretest::FeatureToResolve* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(featuretest::Feature::IVisitor::*)(featuretest::OptionalFeature* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(featuretest::Feature::IVisitor::*)(featuretest::NestedOptionalFeature* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(featuretest::Feature::IVisitor::*)(featuretest::BranchedOptionalFeature* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(featuretest::Feature::IVisitor::*)(featuretest::PbaFeature* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(featuretest::Feature::IVisitor::*)(featuretest::Pwa1Feature* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(featuretest::Feature::IVisitor::*)(featuretest::PwlFeature* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(featuretest::Feature::IVisitor::*)(featuretest::ClFeature* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(featuretest::Feature::IVisitor::*)(featuretest::FaFeature* node))
-			END_INTERFACE_MEMBER(featuretest::Feature)
+	BEGIN_INTERFACE_MEMBER(featuretest::Feature::IVisitor)
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(featuretest::Feature::IVisitor::*)(featuretest::FeatureToResolve* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(featuretest::Feature::IVisitor::*)(featuretest::OptionalFeature* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(featuretest::Feature::IVisitor::*)(featuretest::NestedOptionalFeature* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(featuretest::Feature::IVisitor::*)(featuretest::BranchedOptionalFeature* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(featuretest::Feature::IVisitor::*)(featuretest::PbaFeature* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(featuretest::Feature::IVisitor::*)(featuretest::Pwa1Feature* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(featuretest::Feature::IVisitor::*)(featuretest::PwlFeature* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(featuretest::Feature::IVisitor::*)(featuretest::ClFeature* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(featuretest::Feature::IVisitor::*)(featuretest::FaFeature* node))
+	END_INTERFACE_MEMBER(featuretest::Feature)
 
 #endif
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
-			class FeatureTestFeatureAstTypeLoader : public vl::Object, public ITypeLoader
-			{
-			public:
-				void Load(ITypeManager* manager)
-				{
-					ADD_TYPE_INFO(featuretest::Plus)
-					ADD_TYPE_INFO(featuretest::Lt)
-					ADD_TYPE_INFO(featuretest::Gt)
-					ADD_TYPE_INFO(featuretest::Feature)
-					ADD_TYPE_INFO(featuretest::Feature::IVisitor)
-					ADD_TYPE_INFO(featuretest::OptionalProprity)
-					ADD_TYPE_INFO(featuretest::OptionalFeature)
-					ADD_TYPE_INFO(featuretest::NestedOptionalFeature)
-					ADD_TYPE_INFO(featuretest::BranchType)
-					ADD_TYPE_INFO(featuretest::BranchedOptionalFeature)
-					ADD_TYPE_INFO(featuretest::PbaFeature)
-					ADD_TYPE_INFO(featuretest::Pwa1Feature)
-					ADD_TYPE_INFO(featuretest::PwlFeature)
-					ADD_TYPE_INFO(featuretest::ClFeature)
-					ADD_TYPE_INFO(featuretest::FieldAssignment)
-					ADD_TYPE_INFO(featuretest::FaFeature)
-					ADD_TYPE_INFO(featuretest::FeatureToResolve)
-				}
-
-				void Unload(ITypeManager* manager)
-				{
-				}
-			};
-#endif
-#endif
-
-			bool FeatureTestFeatureAstLoadTypes()
-			{
-#ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
-				if (auto manager = GetGlobalTypeManager())
-				{
-					auto loader = Ptr(new FeatureTestFeatureAstTypeLoader);
-					return manager->AddTypeLoader(loader);
-				}
-#endif
-				return false;
-			}
+	class FeatureTestFeatureAstTypeLoader : public vl::Object, public ITypeLoader
+	{
+	public:
+		void Load(ITypeManager* manager)
+		{
+			ADD_TYPE_INFO(featuretest::Plus)
+			ADD_TYPE_INFO(featuretest::Lt)
+			ADD_TYPE_INFO(featuretest::Gt)
+			ADD_TYPE_INFO(featuretest::Feature)
+			ADD_TYPE_INFO(featuretest::Feature::IVisitor)
+			ADD_TYPE_INFO(featuretest::OptionalProprity)
+			ADD_TYPE_INFO(featuretest::OptionalFeature)
+			ADD_TYPE_INFO(featuretest::NestedOptionalFeature)
+			ADD_TYPE_INFO(featuretest::BranchType)
+			ADD_TYPE_INFO(featuretest::BranchedOptionalFeature)
+			ADD_TYPE_INFO(featuretest::PbaFeature)
+			ADD_TYPE_INFO(featuretest::Pwa1Feature)
+			ADD_TYPE_INFO(featuretest::PwlFeature)
+			ADD_TYPE_INFO(featuretest::ClFeature)
+			ADD_TYPE_INFO(featuretest::FieldAssignment)
+			ADD_TYPE_INFO(featuretest::FaFeature)
+			ADD_TYPE_INFO(featuretest::FeatureToResolve)
 		}
+
+		void Unload(ITypeManager* manager)
+		{
+		}
+	};
+#endif
+#endif
+
+	bool FeatureTestFeatureAstLoadTypes()
+	{
+#ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
+		if (auto manager = GetGlobalTypeManager())
+		{
+			auto loader = Ptr(new FeatureTestFeatureAstTypeLoader);
+			return manager->AddTypeLoader(loader);
+		}
+#endif
+		return false;
 	}
 }

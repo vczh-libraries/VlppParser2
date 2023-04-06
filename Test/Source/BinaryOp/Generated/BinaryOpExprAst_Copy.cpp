@@ -6,61 +6,58 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "BinaryOpExprAst_Copy.h"
 
-namespace binaryop
+namespace binaryop::copy_visitor
 {
-	namespace copy_visitor
+	void ExprAstVisitor::CopyFields(BinaryExpr* from, BinaryExpr* to)
 	{
-		void ExprAstVisitor::CopyFields(BinaryExpr* from, BinaryExpr* to)
-		{
-			CopyFields(static_cast<Expr*>(from), static_cast<Expr*>(to));
-			to->left = CopyNode(from->left.Obj());
-			to->op = from->op;
-			to->right = CopyNode(from->right.Obj());
-		}
-
-		void ExprAstVisitor::CopyFields(Expr* from, Expr* to)
-		{
-		}
-
-		void ExprAstVisitor::CopyFields(RefExpr* from, RefExpr* to)
-		{
-			CopyFields(static_cast<Expr*>(from), static_cast<Expr*>(to));
-			to->name = from->name;
-		}
-
-		void ExprAstVisitor::Visit(RefExpr* node)
-		{
-			auto newNode = vl::Ptr(new RefExpr);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void ExprAstVisitor::Visit(BinaryExpr* node)
-		{
-			auto newNode = vl::Ptr(new BinaryExpr);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		vl::Ptr<Expr> ExprAstVisitor::CopyNode(Expr* node)
-		{
-			if (!node) return nullptr;
-			node->Accept(static_cast<Expr::IVisitor*>(this));
-			this->result->codeRange = node->codeRange;
-			return this->result.Cast<Expr>();
-		}
-
-		vl::Ptr<BinaryExpr> ExprAstVisitor::CopyNode(BinaryExpr* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<Expr*>(node)).Cast<BinaryExpr>();
-		}
-
-		vl::Ptr<RefExpr> ExprAstVisitor::CopyNode(RefExpr* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<Expr*>(node)).Cast<RefExpr>();
-		}
-
+		CopyFields(static_cast<Expr*>(from), static_cast<Expr*>(to));
+		to->left = CopyNode(from->left.Obj());
+		to->op = from->op;
+		to->right = CopyNode(from->right.Obj());
 	}
+
+	void ExprAstVisitor::CopyFields(Expr* from, Expr* to)
+	{
+	}
+
+	void ExprAstVisitor::CopyFields(RefExpr* from, RefExpr* to)
+	{
+		CopyFields(static_cast<Expr*>(from), static_cast<Expr*>(to));
+		to->name = from->name;
+	}
+
+	void ExprAstVisitor::Visit(RefExpr* node)
+	{
+		auto newNode = vl::Ptr(new RefExpr);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void ExprAstVisitor::Visit(BinaryExpr* node)
+	{
+		auto newNode = vl::Ptr(new BinaryExpr);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	vl::Ptr<Expr> ExprAstVisitor::CopyNode(Expr* node)
+	{
+		if (!node) return nullptr;
+		node->Accept(static_cast<Expr::IVisitor*>(this));
+		this->result->codeRange = node->codeRange;
+		return this->result.Cast<Expr>();
+	}
+
+	vl::Ptr<BinaryExpr> ExprAstVisitor::CopyNode(BinaryExpr* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<Expr*>(node)).Cast<BinaryExpr>();
+	}
+
+	vl::Ptr<RefExpr> ExprAstVisitor::CopyNode(RefExpr* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<Expr*>(node)).Cast<RefExpr>();
+	}
+
 }

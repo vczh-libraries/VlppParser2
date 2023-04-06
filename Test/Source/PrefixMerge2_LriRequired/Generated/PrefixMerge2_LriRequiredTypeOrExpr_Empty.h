@@ -9,40 +9,37 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "PrefixMerge2_LriRequiredTypeOrExpr.h"
 
-namespace prefixmerge2_lrirequired
+namespace prefixmerge2_lrirequired::empty_visitor
 {
-	namespace empty_visitor
+	/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
+	class TypeOrExprVisitor : public vl::Object, public TypeOrExpr::IVisitor
 	{
-		/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
-		class TypeOrExprVisitor : public vl::Object, public TypeOrExpr::IVisitor
-		{
-		protected:
-			// Dispatch (virtual) --------------------------------
-			virtual void Dispatch(QualifiedName* node) = 0;
+	protected:
+		// Dispatch (virtual) --------------------------------
+		virtual void Dispatch(QualifiedName* node) = 0;
 
-		public:
-			// Visitor Members -----------------------------------
-			void Visit(TypeOrExprToResolve* node) override;
-			void Visit(QualifiedName* node) override;
-			void Visit(CallExpr* node) override;
-			void Visit(MulExpr* node) override;
-			void Visit(ConstType* node) override;
-			void Visit(PointerType* node) override;
-			void Visit(FunctionType* node) override;
-		};
+	public:
+		// Visitor Members -----------------------------------
+		void Visit(TypeOrExprToResolve* node) override;
+		void Visit(QualifiedName* node) override;
+		void Visit(CallExpr* node) override;
+		void Visit(MulExpr* node) override;
+		void Visit(ConstType* node) override;
+		void Visit(PointerType* node) override;
+		void Visit(FunctionType* node) override;
+	};
 
-		/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
-		class QualifiedNameVisitor : public vl::Object, public QualifiedName::IVisitor
-		{
-		protected:
-			// Dispatch (virtual) --------------------------------
+	/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
+	class QualifiedNameVisitor : public vl::Object, public QualifiedName::IVisitor
+	{
+	protected:
+		// Dispatch (virtual) --------------------------------
 
-		public:
-			// Visitor Members -----------------------------------
-			void Visit(Name* node) override;
-			void Visit(MemberName* node) override;
-		};
+	public:
+		// Visitor Members -----------------------------------
+		void Visit(Name* node) override;
+		void Visit(MemberName* node) override;
+	};
 
-	}
 }
 #endif

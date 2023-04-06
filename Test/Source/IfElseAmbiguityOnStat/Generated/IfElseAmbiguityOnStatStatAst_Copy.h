@@ -9,40 +9,37 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "IfElseAmbiguityOnStatStatAst.h"
 
-namespace ifelseambiguityonstat
+namespace ifelseambiguityonstat::copy_visitor
 {
-	namespace copy_visitor
+	/// <summary>A copy visitor, overriding all abstract methods with AST copying code.</summary>
+	class StatAstVisitor
+		: public virtual vl::glr::CopyVisitorBase
+		, protected virtual Stat::IVisitor
 	{
-		/// <summary>A copy visitor, overriding all abstract methods with AST copying code.</summary>
-		class StatAstVisitor
-			: public virtual vl::glr::CopyVisitorBase
-			, protected virtual Stat::IVisitor
-		{
-		protected:
-			void CopyFields(BlockStat* from, BlockStat* to);
-			void CopyFields(DoStat* from, DoStat* to);
-			void CopyFields(IfStat* from, IfStat* to);
-			void CopyFields(Module* from, Module* to);
-			void CopyFields(Stat* from, Stat* to);
-			void CopyFields(StatToResolve* from, StatToResolve* to);
+	protected:
+		void CopyFields(BlockStat* from, BlockStat* to);
+		void CopyFields(DoStat* from, DoStat* to);
+		void CopyFields(IfStat* from, IfStat* to);
+		void CopyFields(Module* from, Module* to);
+		void CopyFields(Stat* from, Stat* to);
+		void CopyFields(StatToResolve* from, StatToResolve* to);
 
-		protected:
-			virtual void Visit(Module* node);
+	protected:
+		virtual void Visit(Module* node);
 
-			void Visit(StatToResolve* node) override;
-			void Visit(DoStat* node) override;
-			void Visit(IfStat* node) override;
-			void Visit(BlockStat* node) override;
+		void Visit(StatToResolve* node) override;
+		void Visit(DoStat* node) override;
+		void Visit(IfStat* node) override;
+		void Visit(BlockStat* node) override;
 
-		public:
-			virtual vl::Ptr<Stat> CopyNode(Stat* node);
-			virtual vl::Ptr<Module> CopyNode(Module* node);
+	public:
+		virtual vl::Ptr<Stat> CopyNode(Stat* node);
+		virtual vl::Ptr<Module> CopyNode(Module* node);
 
-			vl::Ptr<BlockStat> CopyNode(BlockStat* node);
-			vl::Ptr<DoStat> CopyNode(DoStat* node);
-			vl::Ptr<IfStat> CopyNode(IfStat* node);
-			vl::Ptr<StatToResolve> CopyNode(StatToResolve* node);
-		};
-	}
+		vl::Ptr<BlockStat> CopyNode(BlockStat* node);
+		vl::Ptr<DoStat> CopyNode(DoStat* node);
+		vl::Ptr<IfStat> CopyNode(IfStat* node);
+		vl::Ptr<StatToResolve> CopyNode(StatToResolve* node);
+	};
 }
 #endif

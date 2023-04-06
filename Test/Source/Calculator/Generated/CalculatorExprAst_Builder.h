@@ -9,87 +9,84 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "CalculatorExprAst.h"
 
-namespace calculator
+namespace calculator::builder
 {
-	namespace builder
+	class MakeArg : public vl::glr::ParsingAstBuilder<Arg>
 	{
-		class MakeArg : public vl::glr::ParsingAstBuilder<Arg>
-		{
-		public:
-			MakeArg& name(const vl::WString& value);
-		};
+	public:
+		MakeArg& name(const vl::WString& value);
+	};
 
-		class MakeBinary : public vl::glr::ParsingAstBuilder<Binary>
-		{
-		public:
-			MakeBinary& left(const vl::Ptr<Expr>& value);
-			MakeBinary& op(BinaryOp value);
-			MakeBinary& right(const vl::Ptr<Expr>& value);
-			MakeBinary& expanded(const vl::Ptr<Expr>& value);
-		};
+	class MakeBinary : public vl::glr::ParsingAstBuilder<Binary>
+	{
+	public:
+		MakeBinary& left(const vl::Ptr<Expr>& value);
+		MakeBinary& op(BinaryOp value);
+		MakeBinary& right(const vl::Ptr<Expr>& value);
+		MakeBinary& expanded(const vl::Ptr<Expr>& value);
+	};
 
-		class MakeCall : public vl::glr::ParsingAstBuilder<Call>
-		{
-		public:
-			MakeCall& args(const vl::Ptr<Expr>& value);
-			MakeCall& func(const vl::Ptr<Expr>& value);
-		};
+	class MakeCall : public vl::glr::ParsingAstBuilder<Call>
+	{
+	public:
+		MakeCall& args(const vl::Ptr<Expr>& value);
+		MakeCall& func(const vl::Ptr<Expr>& value);
+	};
 
-		class MakeExpandable : public vl::glr::ParsingAstBuilder<Expandable>
-		{
-		public:
-			MakeExpandable& expanded(const vl::Ptr<Expr>& value);
-		};
+	class MakeExpandable : public vl::glr::ParsingAstBuilder<Expandable>
+	{
+	public:
+		MakeExpandable& expanded(const vl::Ptr<Expr>& value);
+	};
 
-		class MakeFunc : public vl::glr::ParsingAstBuilder<Func>
-		{
-		public:
-			MakeFunc& args(const vl::Ptr<Arg>& value);
-			MakeFunc& value(const vl::Ptr<Expr>& value);
-		};
+	class MakeFunc : public vl::glr::ParsingAstBuilder<Func>
+	{
+	public:
+		MakeFunc& args(const vl::Ptr<Arg>& value);
+		MakeFunc& value(const vl::Ptr<Expr>& value);
+	};
 
-		class MakeImport : public vl::glr::ParsingAstBuilder<Import>
-		{
-		public:
-			MakeImport& name(const vl::WString& value);
-		};
+	class MakeImport : public vl::glr::ParsingAstBuilder<Import>
+	{
+	public:
+		MakeImport& name(const vl::WString& value);
+	};
 
-		class MakeLetExpr : public vl::glr::ParsingAstBuilder<LetExpr>
-		{
-		public:
-			MakeLetExpr& name(const vl::WString& value);
-			MakeLetExpr& result(const vl::Ptr<Expr>& value);
-			MakeLetExpr& value(const vl::Ptr<Expr>& value);
-			MakeLetExpr& expanded(const vl::Ptr<Expr>& value);
-		};
+	class MakeLetExpr : public vl::glr::ParsingAstBuilder<LetExpr>
+	{
+	public:
+		MakeLetExpr& name(const vl::WString& value);
+		MakeLetExpr& result(const vl::Ptr<Expr>& value);
+		MakeLetExpr& value(const vl::Ptr<Expr>& value);
+		MakeLetExpr& expanded(const vl::Ptr<Expr>& value);
+	};
 
-		class MakeModule : public vl::glr::ParsingAstBuilder<Module>
-		{
-		public:
-			MakeModule& exported(const vl::Ptr<Expr>& value);
-			MakeModule& imports(const vl::Ptr<Import>& value);
-		};
+	class MakeModule : public vl::glr::ParsingAstBuilder<Module>
+	{
+	public:
+		MakeModule& exported(const vl::Ptr<Expr>& value);
+		MakeModule& imports(const vl::Ptr<Import>& value);
+	};
 
-		class MakeNumExpr : public vl::glr::ParsingAstBuilder<NumExpr>
-		{
-		public:
-			MakeNumExpr& value(const vl::WString& value);
-		};
+	class MakeNumExpr : public vl::glr::ParsingAstBuilder<NumExpr>
+	{
+	public:
+		MakeNumExpr& value(const vl::WString& value);
+	};
 
-		class MakeRef : public vl::glr::ParsingAstBuilder<Ref>
-		{
-		public:
-			MakeRef& name(const vl::WString& value);
-		};
+	class MakeRef : public vl::glr::ParsingAstBuilder<Ref>
+	{
+	public:
+		MakeRef& name(const vl::WString& value);
+	};
 
-		class MakeUnary : public vl::glr::ParsingAstBuilder<Unary>
-		{
-		public:
-			MakeUnary& op(UnaryOp value);
-			MakeUnary& operand(const vl::Ptr<Expr>& value);
-			MakeUnary& expanded(const vl::Ptr<Expr>& value);
-		};
+	class MakeUnary : public vl::glr::ParsingAstBuilder<Unary>
+	{
+	public:
+		MakeUnary& op(UnaryOp value);
+		MakeUnary& operand(const vl::Ptr<Expr>& value);
+		MakeUnary& expanded(const vl::Ptr<Expr>& value);
+	};
 
-	}
 }
 #endif

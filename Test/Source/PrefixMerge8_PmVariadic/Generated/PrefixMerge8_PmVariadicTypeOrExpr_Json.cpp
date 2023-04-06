@@ -6,392 +6,389 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "PrefixMerge8_PmVariadicTypeOrExpr_Json.h"
 
-namespace prefixmerge8_pmvariadic
+namespace prefixmerge8_pmvariadic::json_visitor
 {
-	namespace json_visitor
+	void TypeOrExprVisitor::PrintFields(CallExpr* node)
 	{
-		void TypeOrExprVisitor::PrintFields(CallExpr* node)
+		BeginField(L"args");
+		BeginArray();
+		for (auto&& listItem : node->args)
 		{
-			BeginField(L"args");
-			BeginArray();
-			for (auto&& listItem : node->args)
-			{
-				BeginArrayItem();
-				Print(listItem.Obj());
-				EndArrayItem();
-			}
-			EndArray();
-			EndField();
-			BeginField(L"func");
-			Print(node->func.Obj());
-			EndField();
+			BeginArrayItem();
+			Print(listItem.Obj());
+			EndArrayItem();
 		}
-		void TypeOrExprVisitor::PrintFields(ConstType* node)
-		{
-			BeginField(L"type");
-			Print(node->type.Obj());
-			EndField();
-		}
-		void TypeOrExprVisitor::PrintFields(CtorExpr* node)
-		{
-			BeginField(L"args");
-			BeginArray();
-			for (auto&& listItem : node->args)
-			{
-				BeginArrayItem();
-				Print(listItem.Obj());
-				EndArrayItem();
-			}
-			EndArray();
-			EndField();
-			BeginField(L"type");
-			Print(node->type.Obj());
-			EndField();
-		}
-		void TypeOrExprVisitor::PrintFields(FunctionType* node)
-		{
-			BeginField(L"args");
-			BeginArray();
-			for (auto&& listItem : node->args)
-			{
-				BeginArrayItem();
-				Print(listItem.Obj());
-				EndArrayItem();
-			}
-			EndArray();
-			EndField();
-			BeginField(L"returnType");
-			Print(node->returnType.Obj());
-			EndField();
-		}
-		void TypeOrExprVisitor::PrintFields(GenericMemberName* node)
-		{
-			BeginField(L"member");
-			WriteToken(node->member);
-			EndField();
-			BeginField(L"parent");
-			Print(node->parent.Obj());
-			EndField();
-		}
-		void TypeOrExprVisitor::PrintFields(GenericName* node)
-		{
-			BeginField(L"name");
-			WriteToken(node->name);
-			EndField();
-		}
-		void TypeOrExprVisitor::PrintFields(GenericQualifiedName* node)
-		{
-			BeginField(L"args");
-			BeginArray();
-			for (auto&& listItem : node->args)
-			{
-				BeginArrayItem();
-				Print(listItem.Obj());
-				EndArrayItem();
-			}
-			EndArray();
-			EndField();
-		}
-		void TypeOrExprVisitor::PrintFields(MemberName* node)
-		{
-			BeginField(L"member");
-			WriteToken(node->member);
-			EndField();
-			BeginField(L"parent");
-			Print(node->parent.Obj());
-			EndField();
-		}
-		void TypeOrExprVisitor::PrintFields(MulExpr* node)
-		{
-			BeginField(L"first");
-			Print(node->first.Obj());
-			EndField();
-			BeginField(L"second");
-			Print(node->second.Obj());
-			EndField();
-		}
-		void TypeOrExprVisitor::PrintFields(Name* node)
-		{
-			BeginField(L"name");
-			WriteToken(node->name);
-			EndField();
-		}
-		void TypeOrExprVisitor::PrintFields(PointerType* node)
-		{
-			BeginField(L"type");
-			Print(node->type.Obj());
-			EndField();
-		}
-		void TypeOrExprVisitor::PrintFields(QualifiedName* node)
-		{
-		}
-		void TypeOrExprVisitor::PrintFields(TypeOrExpr* node)
-		{
-		}
-		void TypeOrExprVisitor::PrintFields(TypeOrExprOrOthers* node)
-		{
-		}
-		void TypeOrExprVisitor::PrintFields(TypeOrExprOrOthersToResolve* node)
-		{
-			BeginField(L"candidates");
-			BeginArray();
-			for (auto&& listItem : node->candidates)
-			{
-				BeginArrayItem();
-				Print(listItem.Obj());
-				EndArrayItem();
-			}
-			EndArray();
-			EndField();
-		}
-		void TypeOrExprVisitor::PrintFields(TypeOrExprToResolve* node)
-		{
-			BeginField(L"candidates");
-			BeginArray();
-			for (auto&& listItem : node->candidates)
-			{
-				BeginArrayItem();
-				Print(listItem.Obj());
-				EndArrayItem();
-			}
-			EndArray();
-			EndField();
-		}
-		void TypeOrExprVisitor::PrintFields(VariadicArgument* node)
-		{
-			BeginField(L"operand");
-			Print(node->operand.Obj());
-			EndField();
-		}
-
-		void TypeOrExprVisitor::Visit(TypeOrExprOrOthersToResolve* node)
-		{
-			if (!node)
-			{
-				WriteNull();
-				return;
-			}
-			BeginObject();
-			WriteType(L"TypeOrExprOrOthersToResolve", node);
-			PrintFields(static_cast<TypeOrExprOrOthers*>(node));
-			PrintFields(static_cast<TypeOrExprOrOthersToResolve*>(node));
-			EndObject();
-		}
-
-		void TypeOrExprVisitor::Visit(VariadicArgument* node)
-		{
-			if (!node)
-			{
-				WriteNull();
-				return;
-			}
-			BeginObject();
-			WriteType(L"VariadicArgument", node);
-			PrintFields(static_cast<TypeOrExprOrOthers*>(node));
-			PrintFields(static_cast<VariadicArgument*>(node));
-			EndObject();
-		}
-
-		void TypeOrExprVisitor::Visit(TypeOrExpr* node)
-		{
-			node->Accept(static_cast<TypeOrExpr::IVisitor*>(this));
-		}
-
-		void TypeOrExprVisitor::Visit(TypeOrExprToResolve* node)
-		{
-			if (!node)
-			{
-				WriteNull();
-				return;
-			}
-			BeginObject();
-			WriteType(L"TypeOrExprToResolve", node);
-			PrintFields(static_cast<TypeOrExprOrOthers*>(node));
-			PrintFields(static_cast<TypeOrExpr*>(node));
-			PrintFields(static_cast<TypeOrExprToResolve*>(node));
-			EndObject();
-		}
-
-		void TypeOrExprVisitor::Visit(QualifiedName* node)
-		{
-			node->Accept(static_cast<QualifiedName::IVisitor*>(this));
-		}
-
-		void TypeOrExprVisitor::Visit(CallExpr* node)
-		{
-			if (!node)
-			{
-				WriteNull();
-				return;
-			}
-			BeginObject();
-			WriteType(L"CallExpr", node);
-			PrintFields(static_cast<TypeOrExprOrOthers*>(node));
-			PrintFields(static_cast<TypeOrExpr*>(node));
-			PrintFields(static_cast<CallExpr*>(node));
-			EndObject();
-		}
-
-		void TypeOrExprVisitor::Visit(CtorExpr* node)
-		{
-			if (!node)
-			{
-				WriteNull();
-				return;
-			}
-			BeginObject();
-			WriteType(L"CtorExpr", node);
-			PrintFields(static_cast<TypeOrExprOrOthers*>(node));
-			PrintFields(static_cast<TypeOrExpr*>(node));
-			PrintFields(static_cast<CtorExpr*>(node));
-			EndObject();
-		}
-
-		void TypeOrExprVisitor::Visit(MulExpr* node)
-		{
-			if (!node)
-			{
-				WriteNull();
-				return;
-			}
-			BeginObject();
-			WriteType(L"MulExpr", node);
-			PrintFields(static_cast<TypeOrExprOrOthers*>(node));
-			PrintFields(static_cast<TypeOrExpr*>(node));
-			PrintFields(static_cast<MulExpr*>(node));
-			EndObject();
-		}
-
-		void TypeOrExprVisitor::Visit(ConstType* node)
-		{
-			if (!node)
-			{
-				WriteNull();
-				return;
-			}
-			BeginObject();
-			WriteType(L"ConstType", node);
-			PrintFields(static_cast<TypeOrExprOrOthers*>(node));
-			PrintFields(static_cast<TypeOrExpr*>(node));
-			PrintFields(static_cast<ConstType*>(node));
-			EndObject();
-		}
-
-		void TypeOrExprVisitor::Visit(PointerType* node)
-		{
-			if (!node)
-			{
-				WriteNull();
-				return;
-			}
-			BeginObject();
-			WriteType(L"PointerType", node);
-			PrintFields(static_cast<TypeOrExprOrOthers*>(node));
-			PrintFields(static_cast<TypeOrExpr*>(node));
-			PrintFields(static_cast<PointerType*>(node));
-			EndObject();
-		}
-
-		void TypeOrExprVisitor::Visit(FunctionType* node)
-		{
-			if (!node)
-			{
-				WriteNull();
-				return;
-			}
-			BeginObject();
-			WriteType(L"FunctionType", node);
-			PrintFields(static_cast<TypeOrExprOrOthers*>(node));
-			PrintFields(static_cast<TypeOrExpr*>(node));
-			PrintFields(static_cast<FunctionType*>(node));
-			EndObject();
-		}
-
-		void TypeOrExprVisitor::Visit(Name* node)
-		{
-			if (!node)
-			{
-				WriteNull();
-				return;
-			}
-			BeginObject();
-			WriteType(L"Name", node);
-			PrintFields(static_cast<TypeOrExprOrOthers*>(node));
-			PrintFields(static_cast<TypeOrExpr*>(node));
-			PrintFields(static_cast<QualifiedName*>(node));
-			PrintFields(static_cast<Name*>(node));
-			EndObject();
-		}
-
-		void TypeOrExprVisitor::Visit(MemberName* node)
-		{
-			if (!node)
-			{
-				WriteNull();
-				return;
-			}
-			BeginObject();
-			WriteType(L"MemberName", node);
-			PrintFields(static_cast<TypeOrExprOrOthers*>(node));
-			PrintFields(static_cast<TypeOrExpr*>(node));
-			PrintFields(static_cast<QualifiedName*>(node));
-			PrintFields(static_cast<MemberName*>(node));
-			EndObject();
-		}
-
-		void TypeOrExprVisitor::Visit(GenericQualifiedName* node)
-		{
-			node->Accept(static_cast<GenericQualifiedName::IVisitor*>(this));
-		}
-
-		void TypeOrExprVisitor::Visit(GenericName* node)
-		{
-			if (!node)
-			{
-				WriteNull();
-				return;
-			}
-			BeginObject();
-			WriteType(L"GenericName", node);
-			PrintFields(static_cast<TypeOrExprOrOthers*>(node));
-			PrintFields(static_cast<TypeOrExpr*>(node));
-			PrintFields(static_cast<QualifiedName*>(node));
-			PrintFields(static_cast<GenericQualifiedName*>(node));
-			PrintFields(static_cast<GenericName*>(node));
-			EndObject();
-		}
-
-		void TypeOrExprVisitor::Visit(GenericMemberName* node)
-		{
-			if (!node)
-			{
-				WriteNull();
-				return;
-			}
-			BeginObject();
-			WriteType(L"GenericMemberName", node);
-			PrintFields(static_cast<TypeOrExprOrOthers*>(node));
-			PrintFields(static_cast<TypeOrExpr*>(node));
-			PrintFields(static_cast<QualifiedName*>(node));
-			PrintFields(static_cast<GenericQualifiedName*>(node));
-			PrintFields(static_cast<GenericMemberName*>(node));
-			EndObject();
-		}
-
-		TypeOrExprVisitor::TypeOrExprVisitor(vl::stream::StreamWriter& _writer)
-			: vl::glr::JsonVisitorBase(_writer)
-		{
-		}
-
-		void TypeOrExprVisitor::Print(TypeOrExprOrOthers* node)
-		{
-			if (!node)
-			{
-				WriteNull();
-				return;
-			}
-			node->Accept(static_cast<TypeOrExprOrOthers::IVisitor*>(this));
-		}
-
+		EndArray();
+		EndField();
+		BeginField(L"func");
+		Print(node->func.Obj());
+		EndField();
 	}
+	void TypeOrExprVisitor::PrintFields(ConstType* node)
+	{
+		BeginField(L"type");
+		Print(node->type.Obj());
+		EndField();
+	}
+	void TypeOrExprVisitor::PrintFields(CtorExpr* node)
+	{
+		BeginField(L"args");
+		BeginArray();
+		for (auto&& listItem : node->args)
+		{
+			BeginArrayItem();
+			Print(listItem.Obj());
+			EndArrayItem();
+		}
+		EndArray();
+		EndField();
+		BeginField(L"type");
+		Print(node->type.Obj());
+		EndField();
+	}
+	void TypeOrExprVisitor::PrintFields(FunctionType* node)
+	{
+		BeginField(L"args");
+		BeginArray();
+		for (auto&& listItem : node->args)
+		{
+			BeginArrayItem();
+			Print(listItem.Obj());
+			EndArrayItem();
+		}
+		EndArray();
+		EndField();
+		BeginField(L"returnType");
+		Print(node->returnType.Obj());
+		EndField();
+	}
+	void TypeOrExprVisitor::PrintFields(GenericMemberName* node)
+	{
+		BeginField(L"member");
+		WriteToken(node->member);
+		EndField();
+		BeginField(L"parent");
+		Print(node->parent.Obj());
+		EndField();
+	}
+	void TypeOrExprVisitor::PrintFields(GenericName* node)
+	{
+		BeginField(L"name");
+		WriteToken(node->name);
+		EndField();
+	}
+	void TypeOrExprVisitor::PrintFields(GenericQualifiedName* node)
+	{
+		BeginField(L"args");
+		BeginArray();
+		for (auto&& listItem : node->args)
+		{
+			BeginArrayItem();
+			Print(listItem.Obj());
+			EndArrayItem();
+		}
+		EndArray();
+		EndField();
+	}
+	void TypeOrExprVisitor::PrintFields(MemberName* node)
+	{
+		BeginField(L"member");
+		WriteToken(node->member);
+		EndField();
+		BeginField(L"parent");
+		Print(node->parent.Obj());
+		EndField();
+	}
+	void TypeOrExprVisitor::PrintFields(MulExpr* node)
+	{
+		BeginField(L"first");
+		Print(node->first.Obj());
+		EndField();
+		BeginField(L"second");
+		Print(node->second.Obj());
+		EndField();
+	}
+	void TypeOrExprVisitor::PrintFields(Name* node)
+	{
+		BeginField(L"name");
+		WriteToken(node->name);
+		EndField();
+	}
+	void TypeOrExprVisitor::PrintFields(PointerType* node)
+	{
+		BeginField(L"type");
+		Print(node->type.Obj());
+		EndField();
+	}
+	void TypeOrExprVisitor::PrintFields(QualifiedName* node)
+	{
+	}
+	void TypeOrExprVisitor::PrintFields(TypeOrExpr* node)
+	{
+	}
+	void TypeOrExprVisitor::PrintFields(TypeOrExprOrOthers* node)
+	{
+	}
+	void TypeOrExprVisitor::PrintFields(TypeOrExprOrOthersToResolve* node)
+	{
+		BeginField(L"candidates");
+		BeginArray();
+		for (auto&& listItem : node->candidates)
+		{
+			BeginArrayItem();
+			Print(listItem.Obj());
+			EndArrayItem();
+		}
+		EndArray();
+		EndField();
+	}
+	void TypeOrExprVisitor::PrintFields(TypeOrExprToResolve* node)
+	{
+		BeginField(L"candidates");
+		BeginArray();
+		for (auto&& listItem : node->candidates)
+		{
+			BeginArrayItem();
+			Print(listItem.Obj());
+			EndArrayItem();
+		}
+		EndArray();
+		EndField();
+	}
+	void TypeOrExprVisitor::PrintFields(VariadicArgument* node)
+	{
+		BeginField(L"operand");
+		Print(node->operand.Obj());
+		EndField();
+	}
+
+	void TypeOrExprVisitor::Visit(TypeOrExprOrOthersToResolve* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"TypeOrExprOrOthersToResolve", node);
+		PrintFields(static_cast<TypeOrExprOrOthers*>(node));
+		PrintFields(static_cast<TypeOrExprOrOthersToResolve*>(node));
+		EndObject();
+	}
+
+	void TypeOrExprVisitor::Visit(VariadicArgument* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"VariadicArgument", node);
+		PrintFields(static_cast<TypeOrExprOrOthers*>(node));
+		PrintFields(static_cast<VariadicArgument*>(node));
+		EndObject();
+	}
+
+	void TypeOrExprVisitor::Visit(TypeOrExpr* node)
+	{
+		node->Accept(static_cast<TypeOrExpr::IVisitor*>(this));
+	}
+
+	void TypeOrExprVisitor::Visit(TypeOrExprToResolve* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"TypeOrExprToResolve", node);
+		PrintFields(static_cast<TypeOrExprOrOthers*>(node));
+		PrintFields(static_cast<TypeOrExpr*>(node));
+		PrintFields(static_cast<TypeOrExprToResolve*>(node));
+		EndObject();
+	}
+
+	void TypeOrExprVisitor::Visit(QualifiedName* node)
+	{
+		node->Accept(static_cast<QualifiedName::IVisitor*>(this));
+	}
+
+	void TypeOrExprVisitor::Visit(CallExpr* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"CallExpr", node);
+		PrintFields(static_cast<TypeOrExprOrOthers*>(node));
+		PrintFields(static_cast<TypeOrExpr*>(node));
+		PrintFields(static_cast<CallExpr*>(node));
+		EndObject();
+	}
+
+	void TypeOrExprVisitor::Visit(CtorExpr* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"CtorExpr", node);
+		PrintFields(static_cast<TypeOrExprOrOthers*>(node));
+		PrintFields(static_cast<TypeOrExpr*>(node));
+		PrintFields(static_cast<CtorExpr*>(node));
+		EndObject();
+	}
+
+	void TypeOrExprVisitor::Visit(MulExpr* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"MulExpr", node);
+		PrintFields(static_cast<TypeOrExprOrOthers*>(node));
+		PrintFields(static_cast<TypeOrExpr*>(node));
+		PrintFields(static_cast<MulExpr*>(node));
+		EndObject();
+	}
+
+	void TypeOrExprVisitor::Visit(ConstType* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"ConstType", node);
+		PrintFields(static_cast<TypeOrExprOrOthers*>(node));
+		PrintFields(static_cast<TypeOrExpr*>(node));
+		PrintFields(static_cast<ConstType*>(node));
+		EndObject();
+	}
+
+	void TypeOrExprVisitor::Visit(PointerType* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"PointerType", node);
+		PrintFields(static_cast<TypeOrExprOrOthers*>(node));
+		PrintFields(static_cast<TypeOrExpr*>(node));
+		PrintFields(static_cast<PointerType*>(node));
+		EndObject();
+	}
+
+	void TypeOrExprVisitor::Visit(FunctionType* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"FunctionType", node);
+		PrintFields(static_cast<TypeOrExprOrOthers*>(node));
+		PrintFields(static_cast<TypeOrExpr*>(node));
+		PrintFields(static_cast<FunctionType*>(node));
+		EndObject();
+	}
+
+	void TypeOrExprVisitor::Visit(Name* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"Name", node);
+		PrintFields(static_cast<TypeOrExprOrOthers*>(node));
+		PrintFields(static_cast<TypeOrExpr*>(node));
+		PrintFields(static_cast<QualifiedName*>(node));
+		PrintFields(static_cast<Name*>(node));
+		EndObject();
+	}
+
+	void TypeOrExprVisitor::Visit(MemberName* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"MemberName", node);
+		PrintFields(static_cast<TypeOrExprOrOthers*>(node));
+		PrintFields(static_cast<TypeOrExpr*>(node));
+		PrintFields(static_cast<QualifiedName*>(node));
+		PrintFields(static_cast<MemberName*>(node));
+		EndObject();
+	}
+
+	void TypeOrExprVisitor::Visit(GenericQualifiedName* node)
+	{
+		node->Accept(static_cast<GenericQualifiedName::IVisitor*>(this));
+	}
+
+	void TypeOrExprVisitor::Visit(GenericName* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"GenericName", node);
+		PrintFields(static_cast<TypeOrExprOrOthers*>(node));
+		PrintFields(static_cast<TypeOrExpr*>(node));
+		PrintFields(static_cast<QualifiedName*>(node));
+		PrintFields(static_cast<GenericQualifiedName*>(node));
+		PrintFields(static_cast<GenericName*>(node));
+		EndObject();
+	}
+
+	void TypeOrExprVisitor::Visit(GenericMemberName* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"GenericMemberName", node);
+		PrintFields(static_cast<TypeOrExprOrOthers*>(node));
+		PrintFields(static_cast<TypeOrExpr*>(node));
+		PrintFields(static_cast<QualifiedName*>(node));
+		PrintFields(static_cast<GenericQualifiedName*>(node));
+		PrintFields(static_cast<GenericMemberName*>(node));
+		EndObject();
+	}
+
+	TypeOrExprVisitor::TypeOrExprVisitor(vl::stream::StreamWriter& _writer)
+		: vl::glr::JsonVisitorBase(_writer)
+	{
+	}
+
+	void TypeOrExprVisitor::Print(TypeOrExprOrOthers* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		node->Accept(static_cast<TypeOrExprOrOthers::IVisitor*>(this));
+	}
+
 }

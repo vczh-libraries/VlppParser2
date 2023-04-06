@@ -9,41 +9,38 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "IfElseAmbiguity2StatAst.h"
 
-namespace ifelseambiguity2
+namespace ifelseambiguity2::builder
 {
-	namespace builder
+	class MakeBlockStat : public vl::glr::ParsingAstBuilder<BlockStat>
 	{
-		class MakeBlockStat : public vl::glr::ParsingAstBuilder<BlockStat>
-		{
-		public:
-			MakeBlockStat& stats(const vl::Ptr<Stat>& value);
-		};
+	public:
+		MakeBlockStat& stats(const vl::Ptr<Stat>& value);
+	};
 
-		class MakeIfContentCandidate : public vl::glr::ParsingAstBuilder<IfContentCandidate>
-		{
-		public:
-			MakeIfContentCandidate& elseBranch(const vl::Ptr<Stat>& value);
-			MakeIfContentCandidate& thenBranch(const vl::Ptr<Stat>& value);
-		};
+	class MakeIfContentCandidate : public vl::glr::ParsingAstBuilder<IfContentCandidate>
+	{
+	public:
+		MakeIfContentCandidate& elseBranch(const vl::Ptr<Stat>& value);
+		MakeIfContentCandidate& thenBranch(const vl::Ptr<Stat>& value);
+	};
 
-		class MakeIfContentToResolve : public vl::glr::ParsingAstBuilder<IfContentToResolve>
-		{
-		public:
-			MakeIfContentToResolve& candidates(const vl::Ptr<IfContent>& value);
-		};
+	class MakeIfContentToResolve : public vl::glr::ParsingAstBuilder<IfContentToResolve>
+	{
+	public:
+		MakeIfContentToResolve& candidates(const vl::Ptr<IfContent>& value);
+	};
 
-		class MakeIfStat : public vl::glr::ParsingAstBuilder<IfStat>
-		{
-		public:
-			MakeIfStat& content(const vl::Ptr<IfContent>& value);
-		};
+	class MakeIfStat : public vl::glr::ParsingAstBuilder<IfStat>
+	{
+	public:
+		MakeIfStat& content(const vl::Ptr<IfContent>& value);
+	};
 
-		class MakeModule : public vl::glr::ParsingAstBuilder<Module>
-		{
-		public:
-			MakeModule& stat(const vl::Ptr<Stat>& value);
-		};
+	class MakeModule : public vl::glr::ParsingAstBuilder<Module>
+	{
+	public:
+		MakeModule& stat(const vl::Ptr<Stat>& value);
+	};
 
-	}
 }
 #endif

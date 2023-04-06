@@ -9,49 +9,46 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "GenericAmbiguityExprAst.h"
 
-namespace genericambiguity
+namespace genericambiguity::copy_visitor
 {
-	namespace copy_visitor
+	/// <summary>A copy visitor, overriding all abstract methods with AST copying code.</summary>
+	class ExprAstVisitor
+		: public virtual vl::glr::CopyVisitorBase
+		, protected virtual Expr::IVisitor
 	{
-		/// <summary>A copy visitor, overriding all abstract methods with AST copying code.</summary>
-		class ExprAstVisitor
-			: public virtual vl::glr::CopyVisitorBase
-			, protected virtual Expr::IVisitor
-		{
-		protected:
-			void CopyFields(BinaryExpr* from, BinaryExpr* to);
-			void CopyFields(CallExpr* from, CallExpr* to);
-			void CopyFields(DecrementExpr* from, DecrementExpr* to);
-			void CopyFields(Expr* from, Expr* to);
-			void CopyFields(ExprToResolve* from, ExprToResolve* to);
-			void CopyFields(GenericExpr* from, GenericExpr* to);
-			void CopyFields(Module* from, Module* to);
-			void CopyFields(PostfixExpr* from, PostfixExpr* to);
-			void CopyFields(RefExpr* from, RefExpr* to);
+	protected:
+		void CopyFields(BinaryExpr* from, BinaryExpr* to);
+		void CopyFields(CallExpr* from, CallExpr* to);
+		void CopyFields(DecrementExpr* from, DecrementExpr* to);
+		void CopyFields(Expr* from, Expr* to);
+		void CopyFields(ExprToResolve* from, ExprToResolve* to);
+		void CopyFields(GenericExpr* from, GenericExpr* to);
+		void CopyFields(Module* from, Module* to);
+		void CopyFields(PostfixExpr* from, PostfixExpr* to);
+		void CopyFields(RefExpr* from, RefExpr* to);
 
-		protected:
-			virtual void Visit(Module* node);
+	protected:
+		virtual void Visit(Module* node);
 
-			void Visit(ExprToResolve* node) override;
-			void Visit(RefExpr* node) override;
-			void Visit(GenericExpr* node) override;
-			void Visit(CallExpr* node) override;
-			void Visit(PostfixExpr* node) override;
-			void Visit(DecrementExpr* node) override;
-			void Visit(BinaryExpr* node) override;
+		void Visit(ExprToResolve* node) override;
+		void Visit(RefExpr* node) override;
+		void Visit(GenericExpr* node) override;
+		void Visit(CallExpr* node) override;
+		void Visit(PostfixExpr* node) override;
+		void Visit(DecrementExpr* node) override;
+		void Visit(BinaryExpr* node) override;
 
-		public:
-			virtual vl::Ptr<Expr> CopyNode(Expr* node);
-			virtual vl::Ptr<Module> CopyNode(Module* node);
+	public:
+		virtual vl::Ptr<Expr> CopyNode(Expr* node);
+		virtual vl::Ptr<Module> CopyNode(Module* node);
 
-			vl::Ptr<BinaryExpr> CopyNode(BinaryExpr* node);
-			vl::Ptr<CallExpr> CopyNode(CallExpr* node);
-			vl::Ptr<DecrementExpr> CopyNode(DecrementExpr* node);
-			vl::Ptr<ExprToResolve> CopyNode(ExprToResolve* node);
-			vl::Ptr<GenericExpr> CopyNode(GenericExpr* node);
-			vl::Ptr<PostfixExpr> CopyNode(PostfixExpr* node);
-			vl::Ptr<RefExpr> CopyNode(RefExpr* node);
-		};
-	}
+		vl::Ptr<BinaryExpr> CopyNode(BinaryExpr* node);
+		vl::Ptr<CallExpr> CopyNode(CallExpr* node);
+		vl::Ptr<DecrementExpr> CopyNode(DecrementExpr* node);
+		vl::Ptr<ExprToResolve> CopyNode(ExprToResolve* node);
+		vl::Ptr<GenericExpr> CopyNode(GenericExpr* node);
+		vl::Ptr<PostfixExpr> CopyNode(PostfixExpr* node);
+		vl::Ptr<RefExpr> CopyNode(RefExpr* node);
+	};
 }
 #endif

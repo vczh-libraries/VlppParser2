@@ -62,174 +62,168 @@ Visitor Pattern Implementation
 		visitor->Visit(this);
 	}
 }
-namespace vl
+namespace vl::reflection::description
 {
-	namespace reflection
-	{
-		namespace description
-		{
 #ifndef VCZH_DEBUG_NO_REFLECTION
 
-			IMPL_TYPE_INFO_RENAME(prefixmerge3_lrinested::TypeOrExpr, prefixmerge3_lrinested::TypeOrExpr)
-			IMPL_TYPE_INFO_RENAME(prefixmerge3_lrinested::TypeOrExpr::IVisitor, prefixmerge3_lrinested::TypeOrExpr::IVisitor)
-			IMPL_TYPE_INFO_RENAME(prefixmerge3_lrinested::QualifiedName, prefixmerge3_lrinested::QualifiedName)
-			IMPL_TYPE_INFO_RENAME(prefixmerge3_lrinested::QualifiedName::IVisitor, prefixmerge3_lrinested::QualifiedName::IVisitor)
-			IMPL_TYPE_INFO_RENAME(prefixmerge3_lrinested::Name, prefixmerge3_lrinested::Name)
-			IMPL_TYPE_INFO_RENAME(prefixmerge3_lrinested::MemberName, prefixmerge3_lrinested::MemberName)
-			IMPL_TYPE_INFO_RENAME(prefixmerge3_lrinested::CallExpr, prefixmerge3_lrinested::CallExpr)
-			IMPL_TYPE_INFO_RENAME(prefixmerge3_lrinested::CtorExpr, prefixmerge3_lrinested::CtorExpr)
-			IMPL_TYPE_INFO_RENAME(prefixmerge3_lrinested::MulExpr, prefixmerge3_lrinested::MulExpr)
-			IMPL_TYPE_INFO_RENAME(prefixmerge3_lrinested::ConstType, prefixmerge3_lrinested::ConstType)
-			IMPL_TYPE_INFO_RENAME(prefixmerge3_lrinested::PointerType, prefixmerge3_lrinested::PointerType)
-			IMPL_TYPE_INFO_RENAME(prefixmerge3_lrinested::FunctionType, prefixmerge3_lrinested::FunctionType)
-			IMPL_TYPE_INFO_RENAME(prefixmerge3_lrinested::TypeOrExprToResolve, prefixmerge3_lrinested::TypeOrExprToResolve)
+	IMPL_TYPE_INFO_RENAME(prefixmerge3_lrinested::TypeOrExpr, prefixmerge3_lrinested::TypeOrExpr)
+	IMPL_TYPE_INFO_RENAME(prefixmerge3_lrinested::TypeOrExpr::IVisitor, prefixmerge3_lrinested::TypeOrExpr::IVisitor)
+	IMPL_TYPE_INFO_RENAME(prefixmerge3_lrinested::QualifiedName, prefixmerge3_lrinested::QualifiedName)
+	IMPL_TYPE_INFO_RENAME(prefixmerge3_lrinested::QualifiedName::IVisitor, prefixmerge3_lrinested::QualifiedName::IVisitor)
+	IMPL_TYPE_INFO_RENAME(prefixmerge3_lrinested::Name, prefixmerge3_lrinested::Name)
+	IMPL_TYPE_INFO_RENAME(prefixmerge3_lrinested::MemberName, prefixmerge3_lrinested::MemberName)
+	IMPL_TYPE_INFO_RENAME(prefixmerge3_lrinested::CallExpr, prefixmerge3_lrinested::CallExpr)
+	IMPL_TYPE_INFO_RENAME(prefixmerge3_lrinested::CtorExpr, prefixmerge3_lrinested::CtorExpr)
+	IMPL_TYPE_INFO_RENAME(prefixmerge3_lrinested::MulExpr, prefixmerge3_lrinested::MulExpr)
+	IMPL_TYPE_INFO_RENAME(prefixmerge3_lrinested::ConstType, prefixmerge3_lrinested::ConstType)
+	IMPL_TYPE_INFO_RENAME(prefixmerge3_lrinested::PointerType, prefixmerge3_lrinested::PointerType)
+	IMPL_TYPE_INFO_RENAME(prefixmerge3_lrinested::FunctionType, prefixmerge3_lrinested::FunctionType)
+	IMPL_TYPE_INFO_RENAME(prefixmerge3_lrinested::TypeOrExprToResolve, prefixmerge3_lrinested::TypeOrExprToResolve)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 
-			BEGIN_CLASS_MEMBER(prefixmerge3_lrinested::TypeOrExpr)
-				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+	BEGIN_CLASS_MEMBER(prefixmerge3_lrinested::TypeOrExpr)
+		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
-			END_CLASS_MEMBER(prefixmerge3_lrinested::TypeOrExpr)
+	END_CLASS_MEMBER(prefixmerge3_lrinested::TypeOrExpr)
 
-			BEGIN_CLASS_MEMBER(prefixmerge3_lrinested::QualifiedName)
-				CLASS_MEMBER_BASE(prefixmerge3_lrinested::TypeOrExpr)
+	BEGIN_CLASS_MEMBER(prefixmerge3_lrinested::QualifiedName)
+		CLASS_MEMBER_BASE(prefixmerge3_lrinested::TypeOrExpr)
 
-			END_CLASS_MEMBER(prefixmerge3_lrinested::QualifiedName)
+	END_CLASS_MEMBER(prefixmerge3_lrinested::QualifiedName)
 
-			BEGIN_CLASS_MEMBER(prefixmerge3_lrinested::Name)
-				CLASS_MEMBER_BASE(prefixmerge3_lrinested::QualifiedName)
+	BEGIN_CLASS_MEMBER(prefixmerge3_lrinested::Name)
+		CLASS_MEMBER_BASE(prefixmerge3_lrinested::QualifiedName)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge3_lrinested::Name>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge3_lrinested::Name>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(name)
-			END_CLASS_MEMBER(prefixmerge3_lrinested::Name)
+		CLASS_MEMBER_FIELD(name)
+	END_CLASS_MEMBER(prefixmerge3_lrinested::Name)
 
-			BEGIN_CLASS_MEMBER(prefixmerge3_lrinested::MemberName)
-				CLASS_MEMBER_BASE(prefixmerge3_lrinested::QualifiedName)
+	BEGIN_CLASS_MEMBER(prefixmerge3_lrinested::MemberName)
+		CLASS_MEMBER_BASE(prefixmerge3_lrinested::QualifiedName)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge3_lrinested::MemberName>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge3_lrinested::MemberName>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(parent)
-				CLASS_MEMBER_FIELD(member)
-			END_CLASS_MEMBER(prefixmerge3_lrinested::MemberName)
+		CLASS_MEMBER_FIELD(parent)
+		CLASS_MEMBER_FIELD(member)
+	END_CLASS_MEMBER(prefixmerge3_lrinested::MemberName)
 
-			BEGIN_CLASS_MEMBER(prefixmerge3_lrinested::CallExpr)
-				CLASS_MEMBER_BASE(prefixmerge3_lrinested::TypeOrExpr)
+	BEGIN_CLASS_MEMBER(prefixmerge3_lrinested::CallExpr)
+		CLASS_MEMBER_BASE(prefixmerge3_lrinested::TypeOrExpr)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge3_lrinested::CallExpr>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge3_lrinested::CallExpr>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(func)
-				CLASS_MEMBER_FIELD(args)
-			END_CLASS_MEMBER(prefixmerge3_lrinested::CallExpr)
+		CLASS_MEMBER_FIELD(func)
+		CLASS_MEMBER_FIELD(args)
+	END_CLASS_MEMBER(prefixmerge3_lrinested::CallExpr)
 
-			BEGIN_CLASS_MEMBER(prefixmerge3_lrinested::CtorExpr)
-				CLASS_MEMBER_BASE(prefixmerge3_lrinested::TypeOrExpr)
+	BEGIN_CLASS_MEMBER(prefixmerge3_lrinested::CtorExpr)
+		CLASS_MEMBER_BASE(prefixmerge3_lrinested::TypeOrExpr)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge3_lrinested::CtorExpr>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge3_lrinested::CtorExpr>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(type)
-				CLASS_MEMBER_FIELD(args)
-			END_CLASS_MEMBER(prefixmerge3_lrinested::CtorExpr)
+		CLASS_MEMBER_FIELD(type)
+		CLASS_MEMBER_FIELD(args)
+	END_CLASS_MEMBER(prefixmerge3_lrinested::CtorExpr)
 
-			BEGIN_CLASS_MEMBER(prefixmerge3_lrinested::MulExpr)
-				CLASS_MEMBER_BASE(prefixmerge3_lrinested::TypeOrExpr)
+	BEGIN_CLASS_MEMBER(prefixmerge3_lrinested::MulExpr)
+		CLASS_MEMBER_BASE(prefixmerge3_lrinested::TypeOrExpr)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge3_lrinested::MulExpr>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge3_lrinested::MulExpr>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(first)
-				CLASS_MEMBER_FIELD(second)
-			END_CLASS_MEMBER(prefixmerge3_lrinested::MulExpr)
+		CLASS_MEMBER_FIELD(first)
+		CLASS_MEMBER_FIELD(second)
+	END_CLASS_MEMBER(prefixmerge3_lrinested::MulExpr)
 
-			BEGIN_CLASS_MEMBER(prefixmerge3_lrinested::ConstType)
-				CLASS_MEMBER_BASE(prefixmerge3_lrinested::TypeOrExpr)
+	BEGIN_CLASS_MEMBER(prefixmerge3_lrinested::ConstType)
+		CLASS_MEMBER_BASE(prefixmerge3_lrinested::TypeOrExpr)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge3_lrinested::ConstType>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge3_lrinested::ConstType>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(type)
-			END_CLASS_MEMBER(prefixmerge3_lrinested::ConstType)
+		CLASS_MEMBER_FIELD(type)
+	END_CLASS_MEMBER(prefixmerge3_lrinested::ConstType)
 
-			BEGIN_CLASS_MEMBER(prefixmerge3_lrinested::PointerType)
-				CLASS_MEMBER_BASE(prefixmerge3_lrinested::TypeOrExpr)
+	BEGIN_CLASS_MEMBER(prefixmerge3_lrinested::PointerType)
+		CLASS_MEMBER_BASE(prefixmerge3_lrinested::TypeOrExpr)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge3_lrinested::PointerType>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge3_lrinested::PointerType>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(type)
-			END_CLASS_MEMBER(prefixmerge3_lrinested::PointerType)
+		CLASS_MEMBER_FIELD(type)
+	END_CLASS_MEMBER(prefixmerge3_lrinested::PointerType)
 
-			BEGIN_CLASS_MEMBER(prefixmerge3_lrinested::FunctionType)
-				CLASS_MEMBER_BASE(prefixmerge3_lrinested::TypeOrExpr)
+	BEGIN_CLASS_MEMBER(prefixmerge3_lrinested::FunctionType)
+		CLASS_MEMBER_BASE(prefixmerge3_lrinested::TypeOrExpr)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge3_lrinested::FunctionType>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge3_lrinested::FunctionType>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(returnType)
-				CLASS_MEMBER_FIELD(args)
-			END_CLASS_MEMBER(prefixmerge3_lrinested::FunctionType)
+		CLASS_MEMBER_FIELD(returnType)
+		CLASS_MEMBER_FIELD(args)
+	END_CLASS_MEMBER(prefixmerge3_lrinested::FunctionType)
 
-			BEGIN_CLASS_MEMBER(prefixmerge3_lrinested::TypeOrExprToResolve)
-				CLASS_MEMBER_BASE(prefixmerge3_lrinested::TypeOrExpr)
+	BEGIN_CLASS_MEMBER(prefixmerge3_lrinested::TypeOrExprToResolve)
+		CLASS_MEMBER_BASE(prefixmerge3_lrinested::TypeOrExpr)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge3_lrinested::TypeOrExprToResolve>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge3_lrinested::TypeOrExprToResolve>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(candidates)
-			END_CLASS_MEMBER(prefixmerge3_lrinested::TypeOrExprToResolve)
+		CLASS_MEMBER_FIELD(candidates)
+	END_CLASS_MEMBER(prefixmerge3_lrinested::TypeOrExprToResolve)
 
-			BEGIN_INTERFACE_MEMBER(prefixmerge3_lrinested::TypeOrExpr::IVisitor)
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge3_lrinested::TypeOrExpr::IVisitor::*)(prefixmerge3_lrinested::TypeOrExprToResolve* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge3_lrinested::TypeOrExpr::IVisitor::*)(prefixmerge3_lrinested::QualifiedName* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge3_lrinested::TypeOrExpr::IVisitor::*)(prefixmerge3_lrinested::CallExpr* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge3_lrinested::TypeOrExpr::IVisitor::*)(prefixmerge3_lrinested::CtorExpr* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge3_lrinested::TypeOrExpr::IVisitor::*)(prefixmerge3_lrinested::MulExpr* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge3_lrinested::TypeOrExpr::IVisitor::*)(prefixmerge3_lrinested::ConstType* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge3_lrinested::TypeOrExpr::IVisitor::*)(prefixmerge3_lrinested::PointerType* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge3_lrinested::TypeOrExpr::IVisitor::*)(prefixmerge3_lrinested::FunctionType* node))
-			END_INTERFACE_MEMBER(prefixmerge3_lrinested::TypeOrExpr)
+	BEGIN_INTERFACE_MEMBER(prefixmerge3_lrinested::TypeOrExpr::IVisitor)
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge3_lrinested::TypeOrExpr::IVisitor::*)(prefixmerge3_lrinested::TypeOrExprToResolve* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge3_lrinested::TypeOrExpr::IVisitor::*)(prefixmerge3_lrinested::QualifiedName* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge3_lrinested::TypeOrExpr::IVisitor::*)(prefixmerge3_lrinested::CallExpr* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge3_lrinested::TypeOrExpr::IVisitor::*)(prefixmerge3_lrinested::CtorExpr* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge3_lrinested::TypeOrExpr::IVisitor::*)(prefixmerge3_lrinested::MulExpr* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge3_lrinested::TypeOrExpr::IVisitor::*)(prefixmerge3_lrinested::ConstType* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge3_lrinested::TypeOrExpr::IVisitor::*)(prefixmerge3_lrinested::PointerType* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge3_lrinested::TypeOrExpr::IVisitor::*)(prefixmerge3_lrinested::FunctionType* node))
+	END_INTERFACE_MEMBER(prefixmerge3_lrinested::TypeOrExpr)
 
-			BEGIN_INTERFACE_MEMBER(prefixmerge3_lrinested::QualifiedName::IVisitor)
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge3_lrinested::QualifiedName::IVisitor::*)(prefixmerge3_lrinested::Name* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge3_lrinested::QualifiedName::IVisitor::*)(prefixmerge3_lrinested::MemberName* node))
-			END_INTERFACE_MEMBER(prefixmerge3_lrinested::QualifiedName)
+	BEGIN_INTERFACE_MEMBER(prefixmerge3_lrinested::QualifiedName::IVisitor)
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge3_lrinested::QualifiedName::IVisitor::*)(prefixmerge3_lrinested::Name* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge3_lrinested::QualifiedName::IVisitor::*)(prefixmerge3_lrinested::MemberName* node))
+	END_INTERFACE_MEMBER(prefixmerge3_lrinested::QualifiedName)
 
 #endif
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
-			class PrefixMerge3_LriNestedTypeOrExprTypeLoader : public vl::Object, public ITypeLoader
-			{
-			public:
-				void Load(ITypeManager* manager)
-				{
-					ADD_TYPE_INFO(prefixmerge3_lrinested::TypeOrExpr)
-					ADD_TYPE_INFO(prefixmerge3_lrinested::TypeOrExpr::IVisitor)
-					ADD_TYPE_INFO(prefixmerge3_lrinested::QualifiedName)
-					ADD_TYPE_INFO(prefixmerge3_lrinested::QualifiedName::IVisitor)
-					ADD_TYPE_INFO(prefixmerge3_lrinested::Name)
-					ADD_TYPE_INFO(prefixmerge3_lrinested::MemberName)
-					ADD_TYPE_INFO(prefixmerge3_lrinested::CallExpr)
-					ADD_TYPE_INFO(prefixmerge3_lrinested::CtorExpr)
-					ADD_TYPE_INFO(prefixmerge3_lrinested::MulExpr)
-					ADD_TYPE_INFO(prefixmerge3_lrinested::ConstType)
-					ADD_TYPE_INFO(prefixmerge3_lrinested::PointerType)
-					ADD_TYPE_INFO(prefixmerge3_lrinested::FunctionType)
-					ADD_TYPE_INFO(prefixmerge3_lrinested::TypeOrExprToResolve)
-				}
-
-				void Unload(ITypeManager* manager)
-				{
-				}
-			};
-#endif
-#endif
-
-			bool PrefixMerge3_LriNestedTypeOrExprLoadTypes()
-			{
-#ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
-				if (auto manager = GetGlobalTypeManager())
-				{
-					auto loader = Ptr(new PrefixMerge3_LriNestedTypeOrExprTypeLoader);
-					return manager->AddTypeLoader(loader);
-				}
-#endif
-				return false;
-			}
+	class PrefixMerge3_LriNestedTypeOrExprTypeLoader : public vl::Object, public ITypeLoader
+	{
+	public:
+		void Load(ITypeManager* manager)
+		{
+			ADD_TYPE_INFO(prefixmerge3_lrinested::TypeOrExpr)
+			ADD_TYPE_INFO(prefixmerge3_lrinested::TypeOrExpr::IVisitor)
+			ADD_TYPE_INFO(prefixmerge3_lrinested::QualifiedName)
+			ADD_TYPE_INFO(prefixmerge3_lrinested::QualifiedName::IVisitor)
+			ADD_TYPE_INFO(prefixmerge3_lrinested::Name)
+			ADD_TYPE_INFO(prefixmerge3_lrinested::MemberName)
+			ADD_TYPE_INFO(prefixmerge3_lrinested::CallExpr)
+			ADD_TYPE_INFO(prefixmerge3_lrinested::CtorExpr)
+			ADD_TYPE_INFO(prefixmerge3_lrinested::MulExpr)
+			ADD_TYPE_INFO(prefixmerge3_lrinested::ConstType)
+			ADD_TYPE_INFO(prefixmerge3_lrinested::PointerType)
+			ADD_TYPE_INFO(prefixmerge3_lrinested::FunctionType)
+			ADD_TYPE_INFO(prefixmerge3_lrinested::TypeOrExprToResolve)
 		}
+
+		void Unload(ITypeManager* manager)
+		{
+		}
+	};
+#endif
+#endif
+
+	bool PrefixMerge3_LriNestedTypeOrExprLoadTypes()
+	{
+#ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
+		if (auto manager = GetGlobalTypeManager())
+		{
+			auto loader = Ptr(new PrefixMerge3_LriNestedTypeOrExprTypeLoader);
+			return manager->AddTypeLoader(loader);
+		}
+#endif
+		return false;
 	}
 }

@@ -96,63 +96,57 @@ namespace ifelseambiguity
 		void Accept(IfContent::IVisitor* visitor) override;
 	};
 }
-namespace vl
+namespace vl::reflection::description
 {
-	namespace reflection
-	{
-		namespace description
-		{
 #ifndef VCZH_DEBUG_NO_REFLECTION
-			DECL_TYPE_INFO(ifelseambiguity::Stat)
-			DECL_TYPE_INFO(ifelseambiguity::Stat::IVisitor)
-			DECL_TYPE_INFO(ifelseambiguity::DoStat)
-			DECL_TYPE_INFO(ifelseambiguity::IfContent)
-			DECL_TYPE_INFO(ifelseambiguity::IfContent::IVisitor)
-			DECL_TYPE_INFO(ifelseambiguity::IfContentCandidate)
-			DECL_TYPE_INFO(ifelseambiguity::IfStat)
-			DECL_TYPE_INFO(ifelseambiguity::BlockStat)
-			DECL_TYPE_INFO(ifelseambiguity::Module)
-			DECL_TYPE_INFO(ifelseambiguity::IfContentToResolve)
+	DECL_TYPE_INFO(ifelseambiguity::Stat)
+	DECL_TYPE_INFO(ifelseambiguity::Stat::IVisitor)
+	DECL_TYPE_INFO(ifelseambiguity::DoStat)
+	DECL_TYPE_INFO(ifelseambiguity::IfContent)
+	DECL_TYPE_INFO(ifelseambiguity::IfContent::IVisitor)
+	DECL_TYPE_INFO(ifelseambiguity::IfContentCandidate)
+	DECL_TYPE_INFO(ifelseambiguity::IfStat)
+	DECL_TYPE_INFO(ifelseambiguity::BlockStat)
+	DECL_TYPE_INFO(ifelseambiguity::Module)
+	DECL_TYPE_INFO(ifelseambiguity::IfContentToResolve)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 
-			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(ifelseambiguity::Stat::IVisitor)
-				void Visit(ifelseambiguity::DoStat* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(ifelseambiguity::IfStat* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(ifelseambiguity::BlockStat* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-			END_INTERFACE_PROXY(ifelseambiguity::Stat::IVisitor)
-
-			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(ifelseambiguity::IfContent::IVisitor)
-				void Visit(ifelseambiguity::IfContentToResolve* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(ifelseambiguity::IfContentCandidate* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-			END_INTERFACE_PROXY(ifelseambiguity::IfContent::IVisitor)
-
-#endif
-#endif
-			/// <summary>Load all reflectable AST types, only available when <b>VCZH_DEBUG_NO_REFLECTION</b> is off.</summary>
-			/// <returns>Returns true if this operation succeeded.</returns>
-			extern bool IfElseAmbiguityStatAstLoadTypes();
+	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(ifelseambiguity::Stat::IVisitor)
+		void Visit(ifelseambiguity::DoStat* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
 		}
-	}
+
+		void Visit(ifelseambiguity::IfStat* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(ifelseambiguity::BlockStat* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+	END_INTERFACE_PROXY(ifelseambiguity::Stat::IVisitor)
+
+	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(ifelseambiguity::IfContent::IVisitor)
+		void Visit(ifelseambiguity::IfContentToResolve* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(ifelseambiguity::IfContentCandidate* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+	END_INTERFACE_PROXY(ifelseambiguity::IfContent::IVisitor)
+
+#endif
+#endif
+	/// <summary>Load all reflectable AST types, only available when <b>VCZH_DEBUG_NO_REFLECTION</b> is off.</summary>
+	/// <returns>Returns true if this operation succeeded.</returns>
+	extern bool IfElseAmbiguityStatAstLoadTypes();
 }
 #endif

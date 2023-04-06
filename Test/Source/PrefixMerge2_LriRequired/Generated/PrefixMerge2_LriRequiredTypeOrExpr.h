@@ -126,85 +126,79 @@ namespace prefixmerge2_lrirequired
 		void Accept(TypeOrExpr::IVisitor* visitor) override;
 	};
 }
-namespace vl
+namespace vl::reflection::description
 {
-	namespace reflection
-	{
-		namespace description
-		{
 #ifndef VCZH_DEBUG_NO_REFLECTION
-			DECL_TYPE_INFO(prefixmerge2_lrirequired::TypeOrExpr)
-			DECL_TYPE_INFO(prefixmerge2_lrirequired::TypeOrExpr::IVisitor)
-			DECL_TYPE_INFO(prefixmerge2_lrirequired::QualifiedName)
-			DECL_TYPE_INFO(prefixmerge2_lrirequired::QualifiedName::IVisitor)
-			DECL_TYPE_INFO(prefixmerge2_lrirequired::Name)
-			DECL_TYPE_INFO(prefixmerge2_lrirequired::MemberName)
-			DECL_TYPE_INFO(prefixmerge2_lrirequired::CallExpr)
-			DECL_TYPE_INFO(prefixmerge2_lrirequired::MulExpr)
-			DECL_TYPE_INFO(prefixmerge2_lrirequired::ConstType)
-			DECL_TYPE_INFO(prefixmerge2_lrirequired::PointerType)
-			DECL_TYPE_INFO(prefixmerge2_lrirequired::FunctionType)
-			DECL_TYPE_INFO(prefixmerge2_lrirequired::TypeOrExprToResolve)
+	DECL_TYPE_INFO(prefixmerge2_lrirequired::TypeOrExpr)
+	DECL_TYPE_INFO(prefixmerge2_lrirequired::TypeOrExpr::IVisitor)
+	DECL_TYPE_INFO(prefixmerge2_lrirequired::QualifiedName)
+	DECL_TYPE_INFO(prefixmerge2_lrirequired::QualifiedName::IVisitor)
+	DECL_TYPE_INFO(prefixmerge2_lrirequired::Name)
+	DECL_TYPE_INFO(prefixmerge2_lrirequired::MemberName)
+	DECL_TYPE_INFO(prefixmerge2_lrirequired::CallExpr)
+	DECL_TYPE_INFO(prefixmerge2_lrirequired::MulExpr)
+	DECL_TYPE_INFO(prefixmerge2_lrirequired::ConstType)
+	DECL_TYPE_INFO(prefixmerge2_lrirequired::PointerType)
+	DECL_TYPE_INFO(prefixmerge2_lrirequired::FunctionType)
+	DECL_TYPE_INFO(prefixmerge2_lrirequired::TypeOrExprToResolve)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 
-			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(prefixmerge2_lrirequired::TypeOrExpr::IVisitor)
-				void Visit(prefixmerge2_lrirequired::TypeOrExprToResolve* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(prefixmerge2_lrirequired::QualifiedName* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(prefixmerge2_lrirequired::CallExpr* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(prefixmerge2_lrirequired::MulExpr* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(prefixmerge2_lrirequired::ConstType* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(prefixmerge2_lrirequired::PointerType* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(prefixmerge2_lrirequired::FunctionType* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-			END_INTERFACE_PROXY(prefixmerge2_lrirequired::TypeOrExpr::IVisitor)
-
-			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(prefixmerge2_lrirequired::QualifiedName::IVisitor)
-				void Visit(prefixmerge2_lrirequired::Name* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(prefixmerge2_lrirequired::MemberName* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-			END_INTERFACE_PROXY(prefixmerge2_lrirequired::QualifiedName::IVisitor)
-
-#endif
-#endif
-			/// <summary>Load all reflectable AST types, only available when <b>VCZH_DEBUG_NO_REFLECTION</b> is off.</summary>
-			/// <returns>Returns true if this operation succeeded.</returns>
-			extern bool PrefixMerge2_LriRequiredTypeOrExprLoadTypes();
+	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(prefixmerge2_lrirequired::TypeOrExpr::IVisitor)
+		void Visit(prefixmerge2_lrirequired::TypeOrExprToResolve* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
 		}
-	}
+
+		void Visit(prefixmerge2_lrirequired::QualifiedName* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(prefixmerge2_lrirequired::CallExpr* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(prefixmerge2_lrirequired::MulExpr* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(prefixmerge2_lrirequired::ConstType* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(prefixmerge2_lrirequired::PointerType* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(prefixmerge2_lrirequired::FunctionType* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+	END_INTERFACE_PROXY(prefixmerge2_lrirequired::TypeOrExpr::IVisitor)
+
+	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(prefixmerge2_lrirequired::QualifiedName::IVisitor)
+		void Visit(prefixmerge2_lrirequired::Name* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(prefixmerge2_lrirequired::MemberName* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+	END_INTERFACE_PROXY(prefixmerge2_lrirequired::QualifiedName::IVisitor)
+
+#endif
+#endif
+	/// <summary>Load all reflectable AST types, only available when <b>VCZH_DEBUG_NO_REFLECTION</b> is off.</summary>
+	/// <returns>Returns true if this operation succeeded.</returns>
+	extern bool PrefixMerge2_LriRequiredTypeOrExprLoadTypes();
 }
 #endif

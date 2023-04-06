@@ -32,111 +32,105 @@ Visitor Pattern Implementation
 		visitor->Visit(this);
 	}
 }
-namespace vl
+namespace vl::reflection::description
 {
-	namespace reflection
-	{
-		namespace description
-		{
 #ifndef VCZH_DEBUG_NO_REFLECTION
 
-			IMPL_TYPE_INFO_RENAME(ifelseambiguityonstat::Stat, ifelseambiguityonstat::Stat)
-			IMPL_TYPE_INFO_RENAME(ifelseambiguityonstat::Stat::IVisitor, ifelseambiguityonstat::Stat::IVisitor)
-			IMPL_TYPE_INFO_RENAME(ifelseambiguityonstat::DoStat, ifelseambiguityonstat::DoStat)
-			IMPL_TYPE_INFO_RENAME(ifelseambiguityonstat::IfStat, ifelseambiguityonstat::IfStat)
-			IMPL_TYPE_INFO_RENAME(ifelseambiguityonstat::BlockStat, ifelseambiguityonstat::BlockStat)
-			IMPL_TYPE_INFO_RENAME(ifelseambiguityonstat::Module, ifelseambiguityonstat::Module)
-			IMPL_TYPE_INFO_RENAME(ifelseambiguityonstat::StatToResolve, ifelseambiguityonstat::StatToResolve)
+	IMPL_TYPE_INFO_RENAME(ifelseambiguityonstat::Stat, ifelseambiguityonstat::Stat)
+	IMPL_TYPE_INFO_RENAME(ifelseambiguityonstat::Stat::IVisitor, ifelseambiguityonstat::Stat::IVisitor)
+	IMPL_TYPE_INFO_RENAME(ifelseambiguityonstat::DoStat, ifelseambiguityonstat::DoStat)
+	IMPL_TYPE_INFO_RENAME(ifelseambiguityonstat::IfStat, ifelseambiguityonstat::IfStat)
+	IMPL_TYPE_INFO_RENAME(ifelseambiguityonstat::BlockStat, ifelseambiguityonstat::BlockStat)
+	IMPL_TYPE_INFO_RENAME(ifelseambiguityonstat::Module, ifelseambiguityonstat::Module)
+	IMPL_TYPE_INFO_RENAME(ifelseambiguityonstat::StatToResolve, ifelseambiguityonstat::StatToResolve)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 
-			BEGIN_CLASS_MEMBER(ifelseambiguityonstat::Stat)
-				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+	BEGIN_CLASS_MEMBER(ifelseambiguityonstat::Stat)
+		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
-			END_CLASS_MEMBER(ifelseambiguityonstat::Stat)
+	END_CLASS_MEMBER(ifelseambiguityonstat::Stat)
 
-			BEGIN_CLASS_MEMBER(ifelseambiguityonstat::DoStat)
-				CLASS_MEMBER_BASE(ifelseambiguityonstat::Stat)
+	BEGIN_CLASS_MEMBER(ifelseambiguityonstat::DoStat)
+		CLASS_MEMBER_BASE(ifelseambiguityonstat::Stat)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<ifelseambiguityonstat::DoStat>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<ifelseambiguityonstat::DoStat>(), NO_PARAMETER)
 
-			END_CLASS_MEMBER(ifelseambiguityonstat::DoStat)
+	END_CLASS_MEMBER(ifelseambiguityonstat::DoStat)
 
-			BEGIN_CLASS_MEMBER(ifelseambiguityonstat::IfStat)
-				CLASS_MEMBER_BASE(ifelseambiguityonstat::Stat)
+	BEGIN_CLASS_MEMBER(ifelseambiguityonstat::IfStat)
+		CLASS_MEMBER_BASE(ifelseambiguityonstat::Stat)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<ifelseambiguityonstat::IfStat>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<ifelseambiguityonstat::IfStat>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(thenBranch)
-				CLASS_MEMBER_FIELD(elseBranch)
-			END_CLASS_MEMBER(ifelseambiguityonstat::IfStat)
+		CLASS_MEMBER_FIELD(thenBranch)
+		CLASS_MEMBER_FIELD(elseBranch)
+	END_CLASS_MEMBER(ifelseambiguityonstat::IfStat)
 
-			BEGIN_CLASS_MEMBER(ifelseambiguityonstat::BlockStat)
-				CLASS_MEMBER_BASE(ifelseambiguityonstat::Stat)
+	BEGIN_CLASS_MEMBER(ifelseambiguityonstat::BlockStat)
+		CLASS_MEMBER_BASE(ifelseambiguityonstat::Stat)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<ifelseambiguityonstat::BlockStat>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<ifelseambiguityonstat::BlockStat>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(stats)
-			END_CLASS_MEMBER(ifelseambiguityonstat::BlockStat)
+		CLASS_MEMBER_FIELD(stats)
+	END_CLASS_MEMBER(ifelseambiguityonstat::BlockStat)
 
-			BEGIN_CLASS_MEMBER(ifelseambiguityonstat::Module)
-				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+	BEGIN_CLASS_MEMBER(ifelseambiguityonstat::Module)
+		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<ifelseambiguityonstat::Module>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<ifelseambiguityonstat::Module>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(stat)
-			END_CLASS_MEMBER(ifelseambiguityonstat::Module)
+		CLASS_MEMBER_FIELD(stat)
+	END_CLASS_MEMBER(ifelseambiguityonstat::Module)
 
-			BEGIN_CLASS_MEMBER(ifelseambiguityonstat::StatToResolve)
-				CLASS_MEMBER_BASE(ifelseambiguityonstat::Stat)
+	BEGIN_CLASS_MEMBER(ifelseambiguityonstat::StatToResolve)
+		CLASS_MEMBER_BASE(ifelseambiguityonstat::Stat)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<ifelseambiguityonstat::StatToResolve>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<ifelseambiguityonstat::StatToResolve>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(candidates)
-			END_CLASS_MEMBER(ifelseambiguityonstat::StatToResolve)
+		CLASS_MEMBER_FIELD(candidates)
+	END_CLASS_MEMBER(ifelseambiguityonstat::StatToResolve)
 
-			BEGIN_INTERFACE_MEMBER(ifelseambiguityonstat::Stat::IVisitor)
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(ifelseambiguityonstat::Stat::IVisitor::*)(ifelseambiguityonstat::StatToResolve* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(ifelseambiguityonstat::Stat::IVisitor::*)(ifelseambiguityonstat::DoStat* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(ifelseambiguityonstat::Stat::IVisitor::*)(ifelseambiguityonstat::IfStat* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(ifelseambiguityonstat::Stat::IVisitor::*)(ifelseambiguityonstat::BlockStat* node))
-			END_INTERFACE_MEMBER(ifelseambiguityonstat::Stat)
+	BEGIN_INTERFACE_MEMBER(ifelseambiguityonstat::Stat::IVisitor)
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(ifelseambiguityonstat::Stat::IVisitor::*)(ifelseambiguityonstat::StatToResolve* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(ifelseambiguityonstat::Stat::IVisitor::*)(ifelseambiguityonstat::DoStat* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(ifelseambiguityonstat::Stat::IVisitor::*)(ifelseambiguityonstat::IfStat* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(ifelseambiguityonstat::Stat::IVisitor::*)(ifelseambiguityonstat::BlockStat* node))
+	END_INTERFACE_MEMBER(ifelseambiguityonstat::Stat)
 
 #endif
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
-			class IfElseAmbiguityOnStatStatAstTypeLoader : public vl::Object, public ITypeLoader
-			{
-			public:
-				void Load(ITypeManager* manager)
-				{
-					ADD_TYPE_INFO(ifelseambiguityonstat::Stat)
-					ADD_TYPE_INFO(ifelseambiguityonstat::Stat::IVisitor)
-					ADD_TYPE_INFO(ifelseambiguityonstat::DoStat)
-					ADD_TYPE_INFO(ifelseambiguityonstat::IfStat)
-					ADD_TYPE_INFO(ifelseambiguityonstat::BlockStat)
-					ADD_TYPE_INFO(ifelseambiguityonstat::Module)
-					ADD_TYPE_INFO(ifelseambiguityonstat::StatToResolve)
-				}
-
-				void Unload(ITypeManager* manager)
-				{
-				}
-			};
-#endif
-#endif
-
-			bool IfElseAmbiguityOnStatStatAstLoadTypes()
-			{
-#ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
-				if (auto manager = GetGlobalTypeManager())
-				{
-					auto loader = Ptr(new IfElseAmbiguityOnStatStatAstTypeLoader);
-					return manager->AddTypeLoader(loader);
-				}
-#endif
-				return false;
-			}
+	class IfElseAmbiguityOnStatStatAstTypeLoader : public vl::Object, public ITypeLoader
+	{
+	public:
+		void Load(ITypeManager* manager)
+		{
+			ADD_TYPE_INFO(ifelseambiguityonstat::Stat)
+			ADD_TYPE_INFO(ifelseambiguityonstat::Stat::IVisitor)
+			ADD_TYPE_INFO(ifelseambiguityonstat::DoStat)
+			ADD_TYPE_INFO(ifelseambiguityonstat::IfStat)
+			ADD_TYPE_INFO(ifelseambiguityonstat::BlockStat)
+			ADD_TYPE_INFO(ifelseambiguityonstat::Module)
+			ADD_TYPE_INFO(ifelseambiguityonstat::StatToResolve)
 		}
+
+		void Unload(ITypeManager* manager)
+		{
+		}
+	};
+#endif
+#endif
+
+	bool IfElseAmbiguityOnStatStatAstLoadTypes()
+	{
+#ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
+		if (auto manager = GetGlobalTypeManager())
+		{
+			auto loader = Ptr(new IfElseAmbiguityOnStatStatAstTypeLoader);
+			return manager->AddTypeLoader(loader);
+		}
+#endif
+		return false;
 	}
 }

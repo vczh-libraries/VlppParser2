@@ -6,55 +6,52 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "IfElseAmbiguityOnStatStatAst_Builder.h"
 
-namespace ifelseambiguityonstat
+namespace ifelseambiguityonstat::builder
 {
-	namespace builder
-	{
 
 /***********************************************************************
 MakeBlockStat
 ***********************************************************************/
 
-		MakeBlockStat& MakeBlockStat::stats(const vl::Ptr<Stat>& value)
-		{
-			node->stats.Add(value);
-			return *this;
-		}
+	MakeBlockStat& MakeBlockStat::stats(const vl::Ptr<Stat>& value)
+	{
+		node->stats.Add(value);
+		return *this;
+	}
 
 /***********************************************************************
 MakeIfStat
 ***********************************************************************/
 
-		MakeIfStat& MakeIfStat::elseBranch(const vl::Ptr<Stat>& value)
-		{
-			node->elseBranch = value;
-			return *this;
-		}
+	MakeIfStat& MakeIfStat::elseBranch(const vl::Ptr<Stat>& value)
+	{
+		node->elseBranch = value;
+		return *this;
+	}
 
-		MakeIfStat& MakeIfStat::thenBranch(const vl::Ptr<Stat>& value)
-		{
-			node->thenBranch = value;
-			return *this;
-		}
+	MakeIfStat& MakeIfStat::thenBranch(const vl::Ptr<Stat>& value)
+	{
+		node->thenBranch = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeModule
 ***********************************************************************/
 
-		MakeModule& MakeModule::stat(const vl::Ptr<Stat>& value)
-		{
-			node->stat = value;
-			return *this;
-		}
+	MakeModule& MakeModule::stat(const vl::Ptr<Stat>& value)
+	{
+		node->stat = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeStatToResolve
 ***********************************************************************/
 
-		MakeStatToResolve& MakeStatToResolve::candidates(const vl::Ptr<Stat>& value)
-		{
-			node->candidates.Add(value);
-			return *this;
-		}
+	MakeStatToResolve& MakeStatToResolve::candidates(const vl::Ptr<Stat>& value)
+	{
+		node->candidates.Add(value);
+		return *this;
 	}
 }

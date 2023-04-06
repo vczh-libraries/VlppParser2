@@ -6,96 +6,93 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "BinaryOpExprAst_Json.h"
 
-namespace binaryop
+namespace binaryop::json_visitor
 {
-	namespace json_visitor
+	void ExprAstVisitor::PrintFields(BinaryExpr* node)
 	{
-		void ExprAstVisitor::PrintFields(BinaryExpr* node)
+		BeginField(L"left");
+		Print(node->left.Obj());
+		EndField();
+		BeginField(L"op");
+		switch (node->op)
 		{
-			BeginField(L"left");
-			Print(node->left.Obj());
-			EndField();
-			BeginField(L"op");
-			switch (node->op)
-			{
-			case binaryop::BinaryOp::Add:
-				WriteString(L"Add");
-				break;
-			case binaryop::BinaryOp::Assign:
-				WriteString(L"Assign");
-				break;
-			case binaryop::BinaryOp::Dollar:
-				WriteString(L"Dollar");
-				break;
-			case binaryop::BinaryOp::Exp:
-				WriteString(L"Exp");
-				break;
-			case binaryop::BinaryOp::Mul:
-				WriteString(L"Mul");
-				break;
-			case binaryop::BinaryOp::Try:
-				WriteString(L"Try");
-				break;
-			default:
-				WriteNull();
-			}
-			EndField();
-			BeginField(L"right");
-			Print(node->right.Obj());
-			EndField();
+		case binaryop::BinaryOp::Add:
+			WriteString(L"Add");
+			break;
+		case binaryop::BinaryOp::Assign:
+			WriteString(L"Assign");
+			break;
+		case binaryop::BinaryOp::Dollar:
+			WriteString(L"Dollar");
+			break;
+		case binaryop::BinaryOp::Exp:
+			WriteString(L"Exp");
+			break;
+		case binaryop::BinaryOp::Mul:
+			WriteString(L"Mul");
+			break;
+		case binaryop::BinaryOp::Try:
+			WriteString(L"Try");
+			break;
+		default:
+			WriteNull();
 		}
-		void ExprAstVisitor::PrintFields(Expr* node)
-		{
-		}
-		void ExprAstVisitor::PrintFields(RefExpr* node)
-		{
-			BeginField(L"name");
-			WriteToken(node->name);
-			EndField();
-		}
-
-		void ExprAstVisitor::Visit(RefExpr* node)
-		{
-			if (!node)
-			{
-				WriteNull();
-				return;
-			}
-			BeginObject();
-			WriteType(L"RefExpr", node);
-			PrintFields(static_cast<Expr*>(node));
-			PrintFields(static_cast<RefExpr*>(node));
-			EndObject();
-		}
-
-		void ExprAstVisitor::Visit(BinaryExpr* node)
-		{
-			if (!node)
-			{
-				WriteNull();
-				return;
-			}
-			BeginObject();
-			WriteType(L"BinaryExpr", node);
-			PrintFields(static_cast<Expr*>(node));
-			PrintFields(static_cast<BinaryExpr*>(node));
-			EndObject();
-		}
-
-		ExprAstVisitor::ExprAstVisitor(vl::stream::StreamWriter& _writer)
-			: vl::glr::JsonVisitorBase(_writer)
-		{
-		}
-
-		void ExprAstVisitor::Print(Expr* node)
-		{
-			if (!node)
-			{
-				WriteNull();
-				return;
-			}
-			node->Accept(static_cast<Expr::IVisitor*>(this));
-		}
-
+		EndField();
+		BeginField(L"right");
+		Print(node->right.Obj());
+		EndField();
 	}
+	void ExprAstVisitor::PrintFields(Expr* node)
+	{
+	}
+	void ExprAstVisitor::PrintFields(RefExpr* node)
+	{
+		BeginField(L"name");
+		WriteToken(node->name);
+		EndField();
+	}
+
+	void ExprAstVisitor::Visit(RefExpr* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"RefExpr", node);
+		PrintFields(static_cast<Expr*>(node));
+		PrintFields(static_cast<RefExpr*>(node));
+		EndObject();
+	}
+
+	void ExprAstVisitor::Visit(BinaryExpr* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"BinaryExpr", node);
+		PrintFields(static_cast<Expr*>(node));
+		PrintFields(static_cast<BinaryExpr*>(node));
+		EndObject();
+	}
+
+	ExprAstVisitor::ExprAstVisitor(vl::stream::StreamWriter& _writer)
+		: vl::glr::JsonVisitorBase(_writer)
+	{
+	}
+
+	void ExprAstVisitor::Print(Expr* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		node->Accept(static_cast<Expr::IVisitor*>(this));
+	}
+
 }

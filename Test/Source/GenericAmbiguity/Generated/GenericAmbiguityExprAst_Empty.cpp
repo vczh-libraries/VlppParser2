@@ -6,43 +6,40 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "GenericAmbiguityExprAst_Empty.h"
 
-namespace genericambiguity
+namespace genericambiguity::empty_visitor
 {
-	namespace empty_visitor
-	{
 
 /***********************************************************************
 ExprVisitor
 ***********************************************************************/
 
-		// Visitor Members -----------------------------------
+	// Visitor Members -----------------------------------
 
-		void ExprVisitor::Visit(ExprToResolve* node)
-		{
-		}
+	void ExprVisitor::Visit(ExprToResolve* node)
+	{
+	}
 
-		void ExprVisitor::Visit(RefExpr* node)
-		{
-		}
+	void ExprVisitor::Visit(RefExpr* node)
+	{
+	}
 
-		void ExprVisitor::Visit(GenericExpr* node)
-		{
-		}
+	void ExprVisitor::Visit(GenericExpr* node)
+	{
+	}
 
-		void ExprVisitor::Visit(CallExpr* node)
-		{
-		}
+	void ExprVisitor::Visit(CallExpr* node)
+	{
+	}
 
-		void ExprVisitor::Visit(PostfixExpr* node)
-		{
-		}
+	void ExprVisitor::Visit(PostfixExpr* node)
+	{
+	}
 
-		void ExprVisitor::Visit(DecrementExpr* node)
-		{
-		}
+	void ExprVisitor::Visit(DecrementExpr* node)
+	{
+	}
 
-		void ExprVisitor::Visit(BinaryExpr* node)
-		{
-		}
+	void ExprVisitor::Visit(BinaryExpr* node)
+	{
 	}
 }

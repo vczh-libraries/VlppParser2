@@ -6,23 +6,20 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "BinaryOpExprAst_Empty.h"
 
-namespace binaryop
+namespace binaryop::empty_visitor
 {
-	namespace empty_visitor
-	{
 
 /***********************************************************************
 ExprVisitor
 ***********************************************************************/
 
-		// Visitor Members -----------------------------------
+	// Visitor Members -----------------------------------
 
-		void ExprVisitor::Visit(RefExpr* node)
-		{
-		}
+	void ExprVisitor::Visit(RefExpr* node)
+	{
+	}
 
-		void ExprVisitor::Visit(BinaryExpr* node)
-		{
-		}
+	void ExprVisitor::Visit(BinaryExpr* node)
+	{
 	}
 }

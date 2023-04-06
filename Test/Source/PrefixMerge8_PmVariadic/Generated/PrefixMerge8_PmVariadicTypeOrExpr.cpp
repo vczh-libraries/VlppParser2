@@ -92,246 +92,240 @@ Visitor Pattern Implementation
 		visitor->Visit(this);
 	}
 }
-namespace vl
+namespace vl::reflection::description
 {
-	namespace reflection
-	{
-		namespace description
-		{
 #ifndef VCZH_DEBUG_NO_REFLECTION
 
-			IMPL_TYPE_INFO_RENAME(prefixmerge8_pmvariadic::TypeOrExprOrOthers, prefixmerge8_pmvariadic::TypeOrExprOrOthers)
-			IMPL_TYPE_INFO_RENAME(prefixmerge8_pmvariadic::TypeOrExprOrOthers::IVisitor, prefixmerge8_pmvariadic::TypeOrExprOrOthers::IVisitor)
-			IMPL_TYPE_INFO_RENAME(prefixmerge8_pmvariadic::VariadicArgument, prefixmerge8_pmvariadic::VariadicArgument)
-			IMPL_TYPE_INFO_RENAME(prefixmerge8_pmvariadic::TypeOrExpr, prefixmerge8_pmvariadic::TypeOrExpr)
-			IMPL_TYPE_INFO_RENAME(prefixmerge8_pmvariadic::TypeOrExpr::IVisitor, prefixmerge8_pmvariadic::TypeOrExpr::IVisitor)
-			IMPL_TYPE_INFO_RENAME(prefixmerge8_pmvariadic::QualifiedName, prefixmerge8_pmvariadic::QualifiedName)
-			IMPL_TYPE_INFO_RENAME(prefixmerge8_pmvariadic::QualifiedName::IVisitor, prefixmerge8_pmvariadic::QualifiedName::IVisitor)
-			IMPL_TYPE_INFO_RENAME(prefixmerge8_pmvariadic::Name, prefixmerge8_pmvariadic::Name)
-			IMPL_TYPE_INFO_RENAME(prefixmerge8_pmvariadic::MemberName, prefixmerge8_pmvariadic::MemberName)
-			IMPL_TYPE_INFO_RENAME(prefixmerge8_pmvariadic::GenericQualifiedName, prefixmerge8_pmvariadic::GenericQualifiedName)
-			IMPL_TYPE_INFO_RENAME(prefixmerge8_pmvariadic::GenericQualifiedName::IVisitor, prefixmerge8_pmvariadic::GenericQualifiedName::IVisitor)
-			IMPL_TYPE_INFO_RENAME(prefixmerge8_pmvariadic::GenericName, prefixmerge8_pmvariadic::GenericName)
-			IMPL_TYPE_INFO_RENAME(prefixmerge8_pmvariadic::GenericMemberName, prefixmerge8_pmvariadic::GenericMemberName)
-			IMPL_TYPE_INFO_RENAME(prefixmerge8_pmvariadic::CallExpr, prefixmerge8_pmvariadic::CallExpr)
-			IMPL_TYPE_INFO_RENAME(prefixmerge8_pmvariadic::CtorExpr, prefixmerge8_pmvariadic::CtorExpr)
-			IMPL_TYPE_INFO_RENAME(prefixmerge8_pmvariadic::MulExpr, prefixmerge8_pmvariadic::MulExpr)
-			IMPL_TYPE_INFO_RENAME(prefixmerge8_pmvariadic::ConstType, prefixmerge8_pmvariadic::ConstType)
-			IMPL_TYPE_INFO_RENAME(prefixmerge8_pmvariadic::PointerType, prefixmerge8_pmvariadic::PointerType)
-			IMPL_TYPE_INFO_RENAME(prefixmerge8_pmvariadic::FunctionType, prefixmerge8_pmvariadic::FunctionType)
-			IMPL_TYPE_INFO_RENAME(prefixmerge8_pmvariadic::TypeOrExprOrOthersToResolve, prefixmerge8_pmvariadic::TypeOrExprOrOthersToResolve)
-			IMPL_TYPE_INFO_RENAME(prefixmerge8_pmvariadic::TypeOrExprToResolve, prefixmerge8_pmvariadic::TypeOrExprToResolve)
+	IMPL_TYPE_INFO_RENAME(prefixmerge8_pmvariadic::TypeOrExprOrOthers, prefixmerge8_pmvariadic::TypeOrExprOrOthers)
+	IMPL_TYPE_INFO_RENAME(prefixmerge8_pmvariadic::TypeOrExprOrOthers::IVisitor, prefixmerge8_pmvariadic::TypeOrExprOrOthers::IVisitor)
+	IMPL_TYPE_INFO_RENAME(prefixmerge8_pmvariadic::VariadicArgument, prefixmerge8_pmvariadic::VariadicArgument)
+	IMPL_TYPE_INFO_RENAME(prefixmerge8_pmvariadic::TypeOrExpr, prefixmerge8_pmvariadic::TypeOrExpr)
+	IMPL_TYPE_INFO_RENAME(prefixmerge8_pmvariadic::TypeOrExpr::IVisitor, prefixmerge8_pmvariadic::TypeOrExpr::IVisitor)
+	IMPL_TYPE_INFO_RENAME(prefixmerge8_pmvariadic::QualifiedName, prefixmerge8_pmvariadic::QualifiedName)
+	IMPL_TYPE_INFO_RENAME(prefixmerge8_pmvariadic::QualifiedName::IVisitor, prefixmerge8_pmvariadic::QualifiedName::IVisitor)
+	IMPL_TYPE_INFO_RENAME(prefixmerge8_pmvariadic::Name, prefixmerge8_pmvariadic::Name)
+	IMPL_TYPE_INFO_RENAME(prefixmerge8_pmvariadic::MemberName, prefixmerge8_pmvariadic::MemberName)
+	IMPL_TYPE_INFO_RENAME(prefixmerge8_pmvariadic::GenericQualifiedName, prefixmerge8_pmvariadic::GenericQualifiedName)
+	IMPL_TYPE_INFO_RENAME(prefixmerge8_pmvariadic::GenericQualifiedName::IVisitor, prefixmerge8_pmvariadic::GenericQualifiedName::IVisitor)
+	IMPL_TYPE_INFO_RENAME(prefixmerge8_pmvariadic::GenericName, prefixmerge8_pmvariadic::GenericName)
+	IMPL_TYPE_INFO_RENAME(prefixmerge8_pmvariadic::GenericMemberName, prefixmerge8_pmvariadic::GenericMemberName)
+	IMPL_TYPE_INFO_RENAME(prefixmerge8_pmvariadic::CallExpr, prefixmerge8_pmvariadic::CallExpr)
+	IMPL_TYPE_INFO_RENAME(prefixmerge8_pmvariadic::CtorExpr, prefixmerge8_pmvariadic::CtorExpr)
+	IMPL_TYPE_INFO_RENAME(prefixmerge8_pmvariadic::MulExpr, prefixmerge8_pmvariadic::MulExpr)
+	IMPL_TYPE_INFO_RENAME(prefixmerge8_pmvariadic::ConstType, prefixmerge8_pmvariadic::ConstType)
+	IMPL_TYPE_INFO_RENAME(prefixmerge8_pmvariadic::PointerType, prefixmerge8_pmvariadic::PointerType)
+	IMPL_TYPE_INFO_RENAME(prefixmerge8_pmvariadic::FunctionType, prefixmerge8_pmvariadic::FunctionType)
+	IMPL_TYPE_INFO_RENAME(prefixmerge8_pmvariadic::TypeOrExprOrOthersToResolve, prefixmerge8_pmvariadic::TypeOrExprOrOthersToResolve)
+	IMPL_TYPE_INFO_RENAME(prefixmerge8_pmvariadic::TypeOrExprToResolve, prefixmerge8_pmvariadic::TypeOrExprToResolve)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 
-			BEGIN_CLASS_MEMBER(prefixmerge8_pmvariadic::TypeOrExprOrOthers)
-				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+	BEGIN_CLASS_MEMBER(prefixmerge8_pmvariadic::TypeOrExprOrOthers)
+		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
-			END_CLASS_MEMBER(prefixmerge8_pmvariadic::TypeOrExprOrOthers)
+	END_CLASS_MEMBER(prefixmerge8_pmvariadic::TypeOrExprOrOthers)
 
-			BEGIN_CLASS_MEMBER(prefixmerge8_pmvariadic::VariadicArgument)
-				CLASS_MEMBER_BASE(prefixmerge8_pmvariadic::TypeOrExprOrOthers)
+	BEGIN_CLASS_MEMBER(prefixmerge8_pmvariadic::VariadicArgument)
+		CLASS_MEMBER_BASE(prefixmerge8_pmvariadic::TypeOrExprOrOthers)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge8_pmvariadic::VariadicArgument>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge8_pmvariadic::VariadicArgument>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(operand)
-			END_CLASS_MEMBER(prefixmerge8_pmvariadic::VariadicArgument)
+		CLASS_MEMBER_FIELD(operand)
+	END_CLASS_MEMBER(prefixmerge8_pmvariadic::VariadicArgument)
 
-			BEGIN_CLASS_MEMBER(prefixmerge8_pmvariadic::TypeOrExpr)
-				CLASS_MEMBER_BASE(prefixmerge8_pmvariadic::TypeOrExprOrOthers)
+	BEGIN_CLASS_MEMBER(prefixmerge8_pmvariadic::TypeOrExpr)
+		CLASS_MEMBER_BASE(prefixmerge8_pmvariadic::TypeOrExprOrOthers)
 
-			END_CLASS_MEMBER(prefixmerge8_pmvariadic::TypeOrExpr)
+	END_CLASS_MEMBER(prefixmerge8_pmvariadic::TypeOrExpr)
 
-			BEGIN_CLASS_MEMBER(prefixmerge8_pmvariadic::QualifiedName)
-				CLASS_MEMBER_BASE(prefixmerge8_pmvariadic::TypeOrExpr)
+	BEGIN_CLASS_MEMBER(prefixmerge8_pmvariadic::QualifiedName)
+		CLASS_MEMBER_BASE(prefixmerge8_pmvariadic::TypeOrExpr)
 
-			END_CLASS_MEMBER(prefixmerge8_pmvariadic::QualifiedName)
+	END_CLASS_MEMBER(prefixmerge8_pmvariadic::QualifiedName)
 
-			BEGIN_CLASS_MEMBER(prefixmerge8_pmvariadic::Name)
-				CLASS_MEMBER_BASE(prefixmerge8_pmvariadic::QualifiedName)
+	BEGIN_CLASS_MEMBER(prefixmerge8_pmvariadic::Name)
+		CLASS_MEMBER_BASE(prefixmerge8_pmvariadic::QualifiedName)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge8_pmvariadic::Name>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge8_pmvariadic::Name>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(name)
-			END_CLASS_MEMBER(prefixmerge8_pmvariadic::Name)
+		CLASS_MEMBER_FIELD(name)
+	END_CLASS_MEMBER(prefixmerge8_pmvariadic::Name)
 
-			BEGIN_CLASS_MEMBER(prefixmerge8_pmvariadic::MemberName)
-				CLASS_MEMBER_BASE(prefixmerge8_pmvariadic::QualifiedName)
+	BEGIN_CLASS_MEMBER(prefixmerge8_pmvariadic::MemberName)
+		CLASS_MEMBER_BASE(prefixmerge8_pmvariadic::QualifiedName)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge8_pmvariadic::MemberName>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge8_pmvariadic::MemberName>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(parent)
-				CLASS_MEMBER_FIELD(member)
-			END_CLASS_MEMBER(prefixmerge8_pmvariadic::MemberName)
+		CLASS_MEMBER_FIELD(parent)
+		CLASS_MEMBER_FIELD(member)
+	END_CLASS_MEMBER(prefixmerge8_pmvariadic::MemberName)
 
-			BEGIN_CLASS_MEMBER(prefixmerge8_pmvariadic::GenericQualifiedName)
-				CLASS_MEMBER_BASE(prefixmerge8_pmvariadic::QualifiedName)
+	BEGIN_CLASS_MEMBER(prefixmerge8_pmvariadic::GenericQualifiedName)
+		CLASS_MEMBER_BASE(prefixmerge8_pmvariadic::QualifiedName)
 
-				CLASS_MEMBER_FIELD(args)
-			END_CLASS_MEMBER(prefixmerge8_pmvariadic::GenericQualifiedName)
+		CLASS_MEMBER_FIELD(args)
+	END_CLASS_MEMBER(prefixmerge8_pmvariadic::GenericQualifiedName)
 
-			BEGIN_CLASS_MEMBER(prefixmerge8_pmvariadic::GenericName)
-				CLASS_MEMBER_BASE(prefixmerge8_pmvariadic::GenericQualifiedName)
+	BEGIN_CLASS_MEMBER(prefixmerge8_pmvariadic::GenericName)
+		CLASS_MEMBER_BASE(prefixmerge8_pmvariadic::GenericQualifiedName)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge8_pmvariadic::GenericName>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge8_pmvariadic::GenericName>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(name)
-			END_CLASS_MEMBER(prefixmerge8_pmvariadic::GenericName)
+		CLASS_MEMBER_FIELD(name)
+	END_CLASS_MEMBER(prefixmerge8_pmvariadic::GenericName)
 
-			BEGIN_CLASS_MEMBER(prefixmerge8_pmvariadic::GenericMemberName)
-				CLASS_MEMBER_BASE(prefixmerge8_pmvariadic::GenericQualifiedName)
+	BEGIN_CLASS_MEMBER(prefixmerge8_pmvariadic::GenericMemberName)
+		CLASS_MEMBER_BASE(prefixmerge8_pmvariadic::GenericQualifiedName)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge8_pmvariadic::GenericMemberName>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge8_pmvariadic::GenericMemberName>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(parent)
-				CLASS_MEMBER_FIELD(member)
-			END_CLASS_MEMBER(prefixmerge8_pmvariadic::GenericMemberName)
+		CLASS_MEMBER_FIELD(parent)
+		CLASS_MEMBER_FIELD(member)
+	END_CLASS_MEMBER(prefixmerge8_pmvariadic::GenericMemberName)
 
-			BEGIN_CLASS_MEMBER(prefixmerge8_pmvariadic::CallExpr)
-				CLASS_MEMBER_BASE(prefixmerge8_pmvariadic::TypeOrExpr)
+	BEGIN_CLASS_MEMBER(prefixmerge8_pmvariadic::CallExpr)
+		CLASS_MEMBER_BASE(prefixmerge8_pmvariadic::TypeOrExpr)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge8_pmvariadic::CallExpr>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge8_pmvariadic::CallExpr>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(func)
-				CLASS_MEMBER_FIELD(args)
-			END_CLASS_MEMBER(prefixmerge8_pmvariadic::CallExpr)
+		CLASS_MEMBER_FIELD(func)
+		CLASS_MEMBER_FIELD(args)
+	END_CLASS_MEMBER(prefixmerge8_pmvariadic::CallExpr)
 
-			BEGIN_CLASS_MEMBER(prefixmerge8_pmvariadic::CtorExpr)
-				CLASS_MEMBER_BASE(prefixmerge8_pmvariadic::TypeOrExpr)
+	BEGIN_CLASS_MEMBER(prefixmerge8_pmvariadic::CtorExpr)
+		CLASS_MEMBER_BASE(prefixmerge8_pmvariadic::TypeOrExpr)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge8_pmvariadic::CtorExpr>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge8_pmvariadic::CtorExpr>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(type)
-				CLASS_MEMBER_FIELD(args)
-			END_CLASS_MEMBER(prefixmerge8_pmvariadic::CtorExpr)
+		CLASS_MEMBER_FIELD(type)
+		CLASS_MEMBER_FIELD(args)
+	END_CLASS_MEMBER(prefixmerge8_pmvariadic::CtorExpr)
 
-			BEGIN_CLASS_MEMBER(prefixmerge8_pmvariadic::MulExpr)
-				CLASS_MEMBER_BASE(prefixmerge8_pmvariadic::TypeOrExpr)
+	BEGIN_CLASS_MEMBER(prefixmerge8_pmvariadic::MulExpr)
+		CLASS_MEMBER_BASE(prefixmerge8_pmvariadic::TypeOrExpr)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge8_pmvariadic::MulExpr>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge8_pmvariadic::MulExpr>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(first)
-				CLASS_MEMBER_FIELD(second)
-			END_CLASS_MEMBER(prefixmerge8_pmvariadic::MulExpr)
+		CLASS_MEMBER_FIELD(first)
+		CLASS_MEMBER_FIELD(second)
+	END_CLASS_MEMBER(prefixmerge8_pmvariadic::MulExpr)
 
-			BEGIN_CLASS_MEMBER(prefixmerge8_pmvariadic::ConstType)
-				CLASS_MEMBER_BASE(prefixmerge8_pmvariadic::TypeOrExpr)
+	BEGIN_CLASS_MEMBER(prefixmerge8_pmvariadic::ConstType)
+		CLASS_MEMBER_BASE(prefixmerge8_pmvariadic::TypeOrExpr)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge8_pmvariadic::ConstType>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge8_pmvariadic::ConstType>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(type)
-			END_CLASS_MEMBER(prefixmerge8_pmvariadic::ConstType)
+		CLASS_MEMBER_FIELD(type)
+	END_CLASS_MEMBER(prefixmerge8_pmvariadic::ConstType)
 
-			BEGIN_CLASS_MEMBER(prefixmerge8_pmvariadic::PointerType)
-				CLASS_MEMBER_BASE(prefixmerge8_pmvariadic::TypeOrExpr)
+	BEGIN_CLASS_MEMBER(prefixmerge8_pmvariadic::PointerType)
+		CLASS_MEMBER_BASE(prefixmerge8_pmvariadic::TypeOrExpr)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge8_pmvariadic::PointerType>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge8_pmvariadic::PointerType>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(type)
-			END_CLASS_MEMBER(prefixmerge8_pmvariadic::PointerType)
+		CLASS_MEMBER_FIELD(type)
+	END_CLASS_MEMBER(prefixmerge8_pmvariadic::PointerType)
 
-			BEGIN_CLASS_MEMBER(prefixmerge8_pmvariadic::FunctionType)
-				CLASS_MEMBER_BASE(prefixmerge8_pmvariadic::TypeOrExpr)
+	BEGIN_CLASS_MEMBER(prefixmerge8_pmvariadic::FunctionType)
+		CLASS_MEMBER_BASE(prefixmerge8_pmvariadic::TypeOrExpr)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge8_pmvariadic::FunctionType>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge8_pmvariadic::FunctionType>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(returnType)
-				CLASS_MEMBER_FIELD(args)
-			END_CLASS_MEMBER(prefixmerge8_pmvariadic::FunctionType)
+		CLASS_MEMBER_FIELD(returnType)
+		CLASS_MEMBER_FIELD(args)
+	END_CLASS_MEMBER(prefixmerge8_pmvariadic::FunctionType)
 
-			BEGIN_CLASS_MEMBER(prefixmerge8_pmvariadic::TypeOrExprOrOthersToResolve)
-				CLASS_MEMBER_BASE(prefixmerge8_pmvariadic::TypeOrExprOrOthers)
+	BEGIN_CLASS_MEMBER(prefixmerge8_pmvariadic::TypeOrExprOrOthersToResolve)
+		CLASS_MEMBER_BASE(prefixmerge8_pmvariadic::TypeOrExprOrOthers)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge8_pmvariadic::TypeOrExprOrOthersToResolve>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge8_pmvariadic::TypeOrExprOrOthersToResolve>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(candidates)
-			END_CLASS_MEMBER(prefixmerge8_pmvariadic::TypeOrExprOrOthersToResolve)
+		CLASS_MEMBER_FIELD(candidates)
+	END_CLASS_MEMBER(prefixmerge8_pmvariadic::TypeOrExprOrOthersToResolve)
 
-			BEGIN_CLASS_MEMBER(prefixmerge8_pmvariadic::TypeOrExprToResolve)
-				CLASS_MEMBER_BASE(prefixmerge8_pmvariadic::TypeOrExpr)
+	BEGIN_CLASS_MEMBER(prefixmerge8_pmvariadic::TypeOrExprToResolve)
+		CLASS_MEMBER_BASE(prefixmerge8_pmvariadic::TypeOrExpr)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge8_pmvariadic::TypeOrExprToResolve>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge8_pmvariadic::TypeOrExprToResolve>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(candidates)
-			END_CLASS_MEMBER(prefixmerge8_pmvariadic::TypeOrExprToResolve)
+		CLASS_MEMBER_FIELD(candidates)
+	END_CLASS_MEMBER(prefixmerge8_pmvariadic::TypeOrExprToResolve)
 
-			BEGIN_INTERFACE_MEMBER(prefixmerge8_pmvariadic::TypeOrExprOrOthers::IVisitor)
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge8_pmvariadic::TypeOrExprOrOthers::IVisitor::*)(prefixmerge8_pmvariadic::TypeOrExprOrOthersToResolve* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge8_pmvariadic::TypeOrExprOrOthers::IVisitor::*)(prefixmerge8_pmvariadic::VariadicArgument* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge8_pmvariadic::TypeOrExprOrOthers::IVisitor::*)(prefixmerge8_pmvariadic::TypeOrExpr* node))
-			END_INTERFACE_MEMBER(prefixmerge8_pmvariadic::TypeOrExprOrOthers)
+	BEGIN_INTERFACE_MEMBER(prefixmerge8_pmvariadic::TypeOrExprOrOthers::IVisitor)
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge8_pmvariadic::TypeOrExprOrOthers::IVisitor::*)(prefixmerge8_pmvariadic::TypeOrExprOrOthersToResolve* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge8_pmvariadic::TypeOrExprOrOthers::IVisitor::*)(prefixmerge8_pmvariadic::VariadicArgument* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge8_pmvariadic::TypeOrExprOrOthers::IVisitor::*)(prefixmerge8_pmvariadic::TypeOrExpr* node))
+	END_INTERFACE_MEMBER(prefixmerge8_pmvariadic::TypeOrExprOrOthers)
 
-			BEGIN_INTERFACE_MEMBER(prefixmerge8_pmvariadic::TypeOrExpr::IVisitor)
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge8_pmvariadic::TypeOrExpr::IVisitor::*)(prefixmerge8_pmvariadic::TypeOrExprToResolve* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge8_pmvariadic::TypeOrExpr::IVisitor::*)(prefixmerge8_pmvariadic::QualifiedName* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge8_pmvariadic::TypeOrExpr::IVisitor::*)(prefixmerge8_pmvariadic::CallExpr* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge8_pmvariadic::TypeOrExpr::IVisitor::*)(prefixmerge8_pmvariadic::CtorExpr* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge8_pmvariadic::TypeOrExpr::IVisitor::*)(prefixmerge8_pmvariadic::MulExpr* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge8_pmvariadic::TypeOrExpr::IVisitor::*)(prefixmerge8_pmvariadic::ConstType* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge8_pmvariadic::TypeOrExpr::IVisitor::*)(prefixmerge8_pmvariadic::PointerType* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge8_pmvariadic::TypeOrExpr::IVisitor::*)(prefixmerge8_pmvariadic::FunctionType* node))
-			END_INTERFACE_MEMBER(prefixmerge8_pmvariadic::TypeOrExpr)
+	BEGIN_INTERFACE_MEMBER(prefixmerge8_pmvariadic::TypeOrExpr::IVisitor)
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge8_pmvariadic::TypeOrExpr::IVisitor::*)(prefixmerge8_pmvariadic::TypeOrExprToResolve* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge8_pmvariadic::TypeOrExpr::IVisitor::*)(prefixmerge8_pmvariadic::QualifiedName* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge8_pmvariadic::TypeOrExpr::IVisitor::*)(prefixmerge8_pmvariadic::CallExpr* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge8_pmvariadic::TypeOrExpr::IVisitor::*)(prefixmerge8_pmvariadic::CtorExpr* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge8_pmvariadic::TypeOrExpr::IVisitor::*)(prefixmerge8_pmvariadic::MulExpr* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge8_pmvariadic::TypeOrExpr::IVisitor::*)(prefixmerge8_pmvariadic::ConstType* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge8_pmvariadic::TypeOrExpr::IVisitor::*)(prefixmerge8_pmvariadic::PointerType* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge8_pmvariadic::TypeOrExpr::IVisitor::*)(prefixmerge8_pmvariadic::FunctionType* node))
+	END_INTERFACE_MEMBER(prefixmerge8_pmvariadic::TypeOrExpr)
 
-			BEGIN_INTERFACE_MEMBER(prefixmerge8_pmvariadic::QualifiedName::IVisitor)
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge8_pmvariadic::QualifiedName::IVisitor::*)(prefixmerge8_pmvariadic::Name* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge8_pmvariadic::QualifiedName::IVisitor::*)(prefixmerge8_pmvariadic::MemberName* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge8_pmvariadic::QualifiedName::IVisitor::*)(prefixmerge8_pmvariadic::GenericQualifiedName* node))
-			END_INTERFACE_MEMBER(prefixmerge8_pmvariadic::QualifiedName)
+	BEGIN_INTERFACE_MEMBER(prefixmerge8_pmvariadic::QualifiedName::IVisitor)
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge8_pmvariadic::QualifiedName::IVisitor::*)(prefixmerge8_pmvariadic::Name* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge8_pmvariadic::QualifiedName::IVisitor::*)(prefixmerge8_pmvariadic::MemberName* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge8_pmvariadic::QualifiedName::IVisitor::*)(prefixmerge8_pmvariadic::GenericQualifiedName* node))
+	END_INTERFACE_MEMBER(prefixmerge8_pmvariadic::QualifiedName)
 
-			BEGIN_INTERFACE_MEMBER(prefixmerge8_pmvariadic::GenericQualifiedName::IVisitor)
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge8_pmvariadic::GenericQualifiedName::IVisitor::*)(prefixmerge8_pmvariadic::GenericName* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge8_pmvariadic::GenericQualifiedName::IVisitor::*)(prefixmerge8_pmvariadic::GenericMemberName* node))
-			END_INTERFACE_MEMBER(prefixmerge8_pmvariadic::GenericQualifiedName)
+	BEGIN_INTERFACE_MEMBER(prefixmerge8_pmvariadic::GenericQualifiedName::IVisitor)
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge8_pmvariadic::GenericQualifiedName::IVisitor::*)(prefixmerge8_pmvariadic::GenericName* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge8_pmvariadic::GenericQualifiedName::IVisitor::*)(prefixmerge8_pmvariadic::GenericMemberName* node))
+	END_INTERFACE_MEMBER(prefixmerge8_pmvariadic::GenericQualifiedName)
 
 #endif
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
-			class PrefixMerge8_PmVariadicTypeOrExprTypeLoader : public vl::Object, public ITypeLoader
-			{
-			public:
-				void Load(ITypeManager* manager)
-				{
-					ADD_TYPE_INFO(prefixmerge8_pmvariadic::TypeOrExprOrOthers)
-					ADD_TYPE_INFO(prefixmerge8_pmvariadic::TypeOrExprOrOthers::IVisitor)
-					ADD_TYPE_INFO(prefixmerge8_pmvariadic::VariadicArgument)
-					ADD_TYPE_INFO(prefixmerge8_pmvariadic::TypeOrExpr)
-					ADD_TYPE_INFO(prefixmerge8_pmvariadic::TypeOrExpr::IVisitor)
-					ADD_TYPE_INFO(prefixmerge8_pmvariadic::QualifiedName)
-					ADD_TYPE_INFO(prefixmerge8_pmvariadic::QualifiedName::IVisitor)
-					ADD_TYPE_INFO(prefixmerge8_pmvariadic::Name)
-					ADD_TYPE_INFO(prefixmerge8_pmvariadic::MemberName)
-					ADD_TYPE_INFO(prefixmerge8_pmvariadic::GenericQualifiedName)
-					ADD_TYPE_INFO(prefixmerge8_pmvariadic::GenericQualifiedName::IVisitor)
-					ADD_TYPE_INFO(prefixmerge8_pmvariadic::GenericName)
-					ADD_TYPE_INFO(prefixmerge8_pmvariadic::GenericMemberName)
-					ADD_TYPE_INFO(prefixmerge8_pmvariadic::CallExpr)
-					ADD_TYPE_INFO(prefixmerge8_pmvariadic::CtorExpr)
-					ADD_TYPE_INFO(prefixmerge8_pmvariadic::MulExpr)
-					ADD_TYPE_INFO(prefixmerge8_pmvariadic::ConstType)
-					ADD_TYPE_INFO(prefixmerge8_pmvariadic::PointerType)
-					ADD_TYPE_INFO(prefixmerge8_pmvariadic::FunctionType)
-					ADD_TYPE_INFO(prefixmerge8_pmvariadic::TypeOrExprOrOthersToResolve)
-					ADD_TYPE_INFO(prefixmerge8_pmvariadic::TypeOrExprToResolve)
-				}
-
-				void Unload(ITypeManager* manager)
-				{
-				}
-			};
-#endif
-#endif
-
-			bool PrefixMerge8_PmVariadicTypeOrExprLoadTypes()
-			{
-#ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
-				if (auto manager = GetGlobalTypeManager())
-				{
-					auto loader = Ptr(new PrefixMerge8_PmVariadicTypeOrExprTypeLoader);
-					return manager->AddTypeLoader(loader);
-				}
-#endif
-				return false;
-			}
+	class PrefixMerge8_PmVariadicTypeOrExprTypeLoader : public vl::Object, public ITypeLoader
+	{
+	public:
+		void Load(ITypeManager* manager)
+		{
+			ADD_TYPE_INFO(prefixmerge8_pmvariadic::TypeOrExprOrOthers)
+			ADD_TYPE_INFO(prefixmerge8_pmvariadic::TypeOrExprOrOthers::IVisitor)
+			ADD_TYPE_INFO(prefixmerge8_pmvariadic::VariadicArgument)
+			ADD_TYPE_INFO(prefixmerge8_pmvariadic::TypeOrExpr)
+			ADD_TYPE_INFO(prefixmerge8_pmvariadic::TypeOrExpr::IVisitor)
+			ADD_TYPE_INFO(prefixmerge8_pmvariadic::QualifiedName)
+			ADD_TYPE_INFO(prefixmerge8_pmvariadic::QualifiedName::IVisitor)
+			ADD_TYPE_INFO(prefixmerge8_pmvariadic::Name)
+			ADD_TYPE_INFO(prefixmerge8_pmvariadic::MemberName)
+			ADD_TYPE_INFO(prefixmerge8_pmvariadic::GenericQualifiedName)
+			ADD_TYPE_INFO(prefixmerge8_pmvariadic::GenericQualifiedName::IVisitor)
+			ADD_TYPE_INFO(prefixmerge8_pmvariadic::GenericName)
+			ADD_TYPE_INFO(prefixmerge8_pmvariadic::GenericMemberName)
+			ADD_TYPE_INFO(prefixmerge8_pmvariadic::CallExpr)
+			ADD_TYPE_INFO(prefixmerge8_pmvariadic::CtorExpr)
+			ADD_TYPE_INFO(prefixmerge8_pmvariadic::MulExpr)
+			ADD_TYPE_INFO(prefixmerge8_pmvariadic::ConstType)
+			ADD_TYPE_INFO(prefixmerge8_pmvariadic::PointerType)
+			ADD_TYPE_INFO(prefixmerge8_pmvariadic::FunctionType)
+			ADD_TYPE_INFO(prefixmerge8_pmvariadic::TypeOrExprOrOthersToResolve)
+			ADD_TYPE_INFO(prefixmerge8_pmvariadic::TypeOrExprToResolve)
 		}
+
+		void Unload(ITypeManager* manager)
+		{
+		}
+	};
+#endif
+#endif
+
+	bool PrefixMerge8_PmVariadicTypeOrExprLoadTypes()
+	{
+#ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
+		if (auto manager = GetGlobalTypeManager())
+		{
+			auto loader = Ptr(new PrefixMerge8_PmVariadicTypeOrExprTypeLoader);
+			return manager->AddTypeLoader(loader);
+		}
+#endif
+		return false;
 	}
 }

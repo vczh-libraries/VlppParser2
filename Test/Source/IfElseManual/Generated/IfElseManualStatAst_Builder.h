@@ -9,29 +9,26 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "IfElseManualStatAst.h"
 
-namespace ifelsemanual
+namespace ifelsemanual::builder
 {
-	namespace builder
+	class MakeBlockStat : public vl::glr::ParsingAstBuilder<BlockStat>
 	{
-		class MakeBlockStat : public vl::glr::ParsingAstBuilder<BlockStat>
-		{
-		public:
-			MakeBlockStat& stats(const vl::Ptr<Stat>& value);
-		};
+	public:
+		MakeBlockStat& stats(const vl::Ptr<Stat>& value);
+	};
 
-		class MakeIfStat : public vl::glr::ParsingAstBuilder<IfStat>
-		{
-		public:
-			MakeIfStat& elseBranch(const vl::Ptr<Stat>& value);
-			MakeIfStat& thenBranch(const vl::Ptr<Stat>& value);
-		};
+	class MakeIfStat : public vl::glr::ParsingAstBuilder<IfStat>
+	{
+	public:
+		MakeIfStat& elseBranch(const vl::Ptr<Stat>& value);
+		MakeIfStat& thenBranch(const vl::Ptr<Stat>& value);
+	};
 
-		class MakeModule : public vl::glr::ParsingAstBuilder<Module>
-		{
-		public:
-			MakeModule& stat(const vl::Ptr<Stat>& value);
-		};
+	class MakeModule : public vl::glr::ParsingAstBuilder<Module>
+	{
+	public:
+		MakeModule& stat(const vl::Ptr<Stat>& value);
+	};
 
-	}
 }
 #endif

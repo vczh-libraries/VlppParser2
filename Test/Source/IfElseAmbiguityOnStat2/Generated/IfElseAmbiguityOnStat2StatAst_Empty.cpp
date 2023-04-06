@@ -6,31 +6,28 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "IfElseAmbiguityOnStat2StatAst_Empty.h"
 
-namespace ifelseambiguityonstat2
+namespace ifelseambiguityonstat2::empty_visitor
 {
-	namespace empty_visitor
-	{
 
 /***********************************************************************
 StatVisitor
 ***********************************************************************/
 
-		// Visitor Members -----------------------------------
+	// Visitor Members -----------------------------------
 
-		void StatVisitor::Visit(StatToResolve* node)
-		{
-		}
+	void StatVisitor::Visit(StatToResolve* node)
+	{
+	}
 
-		void StatVisitor::Visit(DoStat* node)
-		{
-		}
+	void StatVisitor::Visit(DoStat* node)
+	{
+	}
 
-		void StatVisitor::Visit(IfStat* node)
-		{
-		}
+	void StatVisitor::Visit(IfStat* node)
+	{
+	}
 
-		void StatVisitor::Visit(BlockStat* node)
-		{
-		}
+	void StatVisitor::Visit(BlockStat* node)
+	{
 	}
 }

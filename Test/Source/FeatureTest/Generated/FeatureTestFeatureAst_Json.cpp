@@ -6,427 +6,424 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "FeatureTestFeatureAst_Json.h"
 
-namespace featuretest
+namespace featuretest::json_visitor
 {
-	namespace json_visitor
+	void FeatureAstVisitor::PrintFields(BranchedOptionalFeature* node)
 	{
-		void FeatureAstVisitor::PrintFields(BranchedOptionalFeature* node)
+		BeginField(L"optional");
+		Print(node->optional.Obj());
+		EndField();
+		BeginField(L"tails");
+		BeginArray();
+		for (auto&& listItem : node->tails)
 		{
-			BeginField(L"optional");
-			Print(node->optional.Obj());
-			EndField();
-			BeginField(L"tails");
-			BeginArray();
-			for (auto&& listItem : node->tails)
-			{
-				BeginArrayItem();
-				Print(listItem.Obj());
-				EndArrayItem();
-			}
-			EndArray();
-			EndField();
-			BeginField(L"type");
-			switch (node->type)
-			{
-			case featuretest::BranchType::Minus:
-				WriteString(L"Minus");
-				break;
-			case featuretest::BranchType::NoCompetition:
-				WriteString(L"NoCompetition");
-				break;
-			case featuretest::BranchType::Plus:
-				WriteString(L"Plus");
-				break;
-			default:
-				WriteNull();
-			}
-			EndField();
+			BeginArrayItem();
+			Print(listItem.Obj());
+			EndArrayItem();
 		}
-		void FeatureAstVisitor::PrintFields(ClFeature* node)
+		EndArray();
+		EndField();
+		BeginField(L"type");
+		switch (node->type)
 		{
-			BeginField(L"id");
-			WriteToken(node->id);
-			EndField();
+		case featuretest::BranchType::Minus:
+			WriteString(L"Minus");
+			break;
+		case featuretest::BranchType::NoCompetition:
+			WriteString(L"NoCompetition");
+			break;
+		case featuretest::BranchType::Plus:
+			WriteString(L"Plus");
+			break;
+		default:
+			WriteNull();
 		}
-		void FeatureAstVisitor::PrintFields(FaFeature* node)
-		{
-			BeginField(L"fa");
-			switch (node->fa)
-			{
-			case featuretest::FieldAssignment::A:
-				WriteString(L"A");
-				break;
-			case featuretest::FieldAssignment::B:
-				WriteString(L"B");
-				break;
-			default:
-				WriteNull();
-			}
-			EndField();
-		}
-		void FeatureAstVisitor::PrintFields(Feature* node)
-		{
-		}
-		void FeatureAstVisitor::PrintFields(FeatureToResolve* node)
-		{
-			BeginField(L"candidates");
-			BeginArray();
-			for (auto&& listItem : node->candidates)
-			{
-				BeginArrayItem();
-				Print(listItem.Obj());
-				EndArrayItem();
-			}
-			EndArray();
-			EndField();
-		}
-		void FeatureAstVisitor::PrintFields(Gt* node)
-		{
-		}
-		void FeatureAstVisitor::PrintFields(Lt* node)
-		{
-		}
-		void FeatureAstVisitor::PrintFields(NestedOptionalFeature* node)
-		{
-			BeginField(L"optional");
-			Print(node->optional.Obj());
-			EndField();
-			BeginField(L"tail1");
-			Print(node->tail1.Obj());
-			EndField();
-			BeginField(L"tail2");
-			Print(node->tail2.Obj());
-			EndField();
-			BeginField(L"tail3");
-			Print(node->tail3.Obj());
-			EndField();
-			BeginField(L"tails");
-			BeginArray();
-			for (auto&& listItem : node->tails)
-			{
-				BeginArrayItem();
-				Print(listItem.Obj());
-				EndArrayItem();
-			}
-			EndArray();
-			EndField();
-		}
-		void FeatureAstVisitor::PrintFields(OptionalFeature* node)
-		{
-			BeginField(L"loop");
-			BeginArray();
-			for (auto&& listItem : node->loop)
-			{
-				BeginArrayItem();
-				Print(listItem.Obj());
-				EndArrayItem();
-			}
-			EndArray();
-			EndField();
-			BeginField(L"optional");
-			Print(node->optional.Obj());
-			EndField();
-			BeginField(L"priority");
-			switch (node->priority)
-			{
-			case featuretest::OptionalProprity::Equal:
-				WriteString(L"Equal");
-				break;
-			case featuretest::OptionalProprity::PreferSkip:
-				WriteString(L"PreferSkip");
-				break;
-			case featuretest::OptionalProprity::PreferTake:
-				WriteString(L"PreferTake");
-				break;
-			default:
-				WriteNull();
-			}
-			EndField();
-		}
-		void FeatureAstVisitor::PrintFields(PbaFeature* node)
-		{
-			BeginField(L"gts");
-			BeginArray();
-			for (auto&& listItem : node->gts)
-			{
-				BeginArrayItem();
-				Print(listItem.Obj());
-				EndArrayItem();
-			}
-			EndArray();
-			EndField();
-			BeginField(L"lts");
-			BeginArray();
-			for (auto&& listItem : node->lts)
-			{
-				BeginArrayItem();
-				Print(listItem.Obj());
-				EndArrayItem();
-			}
-			EndArray();
-			EndField();
-			BeginField(L"optional");
-			Print(node->optional.Obj());
-			EndField();
-			BeginField(L"tail");
-			Print(node->tail.Obj());
-			EndField();
-			BeginField(L"tails");
-			BeginArray();
-			for (auto&& listItem : node->tails)
-			{
-				BeginArrayItem();
-				Print(listItem.Obj());
-				EndArrayItem();
-			}
-			EndArray();
-			EndField();
-		}
-		void FeatureAstVisitor::PrintFields(Plus* node)
-		{
-		}
-		void FeatureAstVisitor::PrintFields(Pwa1Feature* node)
-		{
-			BeginField(L"gts");
-			BeginArray();
-			for (auto&& listItem : node->gts)
-			{
-				BeginArrayItem();
-				Print(listItem.Obj());
-				EndArrayItem();
-			}
-			EndArray();
-			EndField();
-			BeginField(L"lts");
-			BeginArray();
-			for (auto&& listItem : node->lts)
-			{
-				BeginArrayItem();
-				Print(listItem.Obj());
-				EndArrayItem();
-			}
-			EndArray();
-			EndField();
-			BeginField(L"pba");
-			Print(node->pba.Obj());
-			EndField();
-		}
-		void FeatureAstVisitor::PrintFields(PwlFeature* node)
-		{
-			BeginField(L"one");
-			BeginArray();
-			for (auto&& listItem : node->one)
-			{
-				BeginArrayItem();
-				Print(listItem.Obj());
-				EndArrayItem();
-			}
-			EndArray();
-			EndField();
-			BeginField(L"prefix");
-			BeginArray();
-			for (auto&& listItem : node->prefix)
-			{
-				BeginArrayItem();
-				Print(listItem.Obj());
-				EndArrayItem();
-			}
-			EndArray();
-			EndField();
-			BeginField(L"prev");
-			Print(node->prev.Obj());
-			EndField();
-			BeginField(L"two");
-			BeginArray();
-			for (auto&& listItem : node->two)
-			{
-				BeginArrayItem();
-				Print(listItem.Obj());
-				EndArrayItem();
-			}
-			EndArray();
-			EndField();
-		}
-
-		void FeatureAstVisitor::Visit(FeatureToResolve* node)
-		{
-			if (!node)
-			{
-				WriteNull();
-				return;
-			}
-			BeginObject();
-			WriteType(L"FeatureToResolve", node);
-			PrintFields(static_cast<Feature*>(node));
-			PrintFields(static_cast<FeatureToResolve*>(node));
-			EndObject();
-		}
-
-		void FeatureAstVisitor::Visit(OptionalFeature* node)
-		{
-			if (!node)
-			{
-				WriteNull();
-				return;
-			}
-			BeginObject();
-			WriteType(L"OptionalFeature", node);
-			PrintFields(static_cast<Feature*>(node));
-			PrintFields(static_cast<OptionalFeature*>(node));
-			EndObject();
-		}
-
-		void FeatureAstVisitor::Visit(NestedOptionalFeature* node)
-		{
-			if (!node)
-			{
-				WriteNull();
-				return;
-			}
-			BeginObject();
-			WriteType(L"NestedOptionalFeature", node);
-			PrintFields(static_cast<Feature*>(node));
-			PrintFields(static_cast<NestedOptionalFeature*>(node));
-			EndObject();
-		}
-
-		void FeatureAstVisitor::Visit(BranchedOptionalFeature* node)
-		{
-			if (!node)
-			{
-				WriteNull();
-				return;
-			}
-			BeginObject();
-			WriteType(L"BranchedOptionalFeature", node);
-			PrintFields(static_cast<Feature*>(node));
-			PrintFields(static_cast<BranchedOptionalFeature*>(node));
-			EndObject();
-		}
-
-		void FeatureAstVisitor::Visit(PbaFeature* node)
-		{
-			if (!node)
-			{
-				WriteNull();
-				return;
-			}
-			BeginObject();
-			WriteType(L"PbaFeature", node);
-			PrintFields(static_cast<Feature*>(node));
-			PrintFields(static_cast<PbaFeature*>(node));
-			EndObject();
-		}
-
-		void FeatureAstVisitor::Visit(Pwa1Feature* node)
-		{
-			if (!node)
-			{
-				WriteNull();
-				return;
-			}
-			BeginObject();
-			WriteType(L"Pwa1Feature", node);
-			PrintFields(static_cast<Feature*>(node));
-			PrintFields(static_cast<Pwa1Feature*>(node));
-			EndObject();
-		}
-
-		void FeatureAstVisitor::Visit(PwlFeature* node)
-		{
-			if (!node)
-			{
-				WriteNull();
-				return;
-			}
-			BeginObject();
-			WriteType(L"PwlFeature", node);
-			PrintFields(static_cast<Feature*>(node));
-			PrintFields(static_cast<PwlFeature*>(node));
-			EndObject();
-		}
-
-		void FeatureAstVisitor::Visit(ClFeature* node)
-		{
-			if (!node)
-			{
-				WriteNull();
-				return;
-			}
-			BeginObject();
-			WriteType(L"ClFeature", node);
-			PrintFields(static_cast<Feature*>(node));
-			PrintFields(static_cast<ClFeature*>(node));
-			EndObject();
-		}
-
-		void FeatureAstVisitor::Visit(FaFeature* node)
-		{
-			if (!node)
-			{
-				WriteNull();
-				return;
-			}
-			BeginObject();
-			WriteType(L"FaFeature", node);
-			PrintFields(static_cast<Feature*>(node));
-			PrintFields(static_cast<FaFeature*>(node));
-			EndObject();
-		}
-
-		FeatureAstVisitor::FeatureAstVisitor(vl::stream::StreamWriter& _writer)
-			: vl::glr::JsonVisitorBase(_writer)
-		{
-		}
-
-		void FeatureAstVisitor::Print(Feature* node)
-		{
-			if (!node)
-			{
-				WriteNull();
-				return;
-			}
-			node->Accept(static_cast<Feature::IVisitor*>(this));
-		}
-
-		void FeatureAstVisitor::Print(Plus* node)
-		{
-			if (!node)
-			{
-				WriteNull();
-				return;
-			}
-			BeginObject();
-			WriteType(L"Plus", node);
-			PrintFields(static_cast<Plus*>(node));
-			EndObject();
-		}
-
-		void FeatureAstVisitor::Print(Lt* node)
-		{
-			if (!node)
-			{
-				WriteNull();
-				return;
-			}
-			BeginObject();
-			WriteType(L"Lt", node);
-			PrintFields(static_cast<Lt*>(node));
-			EndObject();
-		}
-
-		void FeatureAstVisitor::Print(Gt* node)
-		{
-			if (!node)
-			{
-				WriteNull();
-				return;
-			}
-			BeginObject();
-			WriteType(L"Gt", node);
-			PrintFields(static_cast<Gt*>(node));
-			EndObject();
-		}
-
+		EndField();
 	}
+	void FeatureAstVisitor::PrintFields(ClFeature* node)
+	{
+		BeginField(L"id");
+		WriteToken(node->id);
+		EndField();
+	}
+	void FeatureAstVisitor::PrintFields(FaFeature* node)
+	{
+		BeginField(L"fa");
+		switch (node->fa)
+		{
+		case featuretest::FieldAssignment::A:
+			WriteString(L"A");
+			break;
+		case featuretest::FieldAssignment::B:
+			WriteString(L"B");
+			break;
+		default:
+			WriteNull();
+		}
+		EndField();
+	}
+	void FeatureAstVisitor::PrintFields(Feature* node)
+	{
+	}
+	void FeatureAstVisitor::PrintFields(FeatureToResolve* node)
+	{
+		BeginField(L"candidates");
+		BeginArray();
+		for (auto&& listItem : node->candidates)
+		{
+			BeginArrayItem();
+			Print(listItem.Obj());
+			EndArrayItem();
+		}
+		EndArray();
+		EndField();
+	}
+	void FeatureAstVisitor::PrintFields(Gt* node)
+	{
+	}
+	void FeatureAstVisitor::PrintFields(Lt* node)
+	{
+	}
+	void FeatureAstVisitor::PrintFields(NestedOptionalFeature* node)
+	{
+		BeginField(L"optional");
+		Print(node->optional.Obj());
+		EndField();
+		BeginField(L"tail1");
+		Print(node->tail1.Obj());
+		EndField();
+		BeginField(L"tail2");
+		Print(node->tail2.Obj());
+		EndField();
+		BeginField(L"tail3");
+		Print(node->tail3.Obj());
+		EndField();
+		BeginField(L"tails");
+		BeginArray();
+		for (auto&& listItem : node->tails)
+		{
+			BeginArrayItem();
+			Print(listItem.Obj());
+			EndArrayItem();
+		}
+		EndArray();
+		EndField();
+	}
+	void FeatureAstVisitor::PrintFields(OptionalFeature* node)
+	{
+		BeginField(L"loop");
+		BeginArray();
+		for (auto&& listItem : node->loop)
+		{
+			BeginArrayItem();
+			Print(listItem.Obj());
+			EndArrayItem();
+		}
+		EndArray();
+		EndField();
+		BeginField(L"optional");
+		Print(node->optional.Obj());
+		EndField();
+		BeginField(L"priority");
+		switch (node->priority)
+		{
+		case featuretest::OptionalProprity::Equal:
+			WriteString(L"Equal");
+			break;
+		case featuretest::OptionalProprity::PreferSkip:
+			WriteString(L"PreferSkip");
+			break;
+		case featuretest::OptionalProprity::PreferTake:
+			WriteString(L"PreferTake");
+			break;
+		default:
+			WriteNull();
+		}
+		EndField();
+	}
+	void FeatureAstVisitor::PrintFields(PbaFeature* node)
+	{
+		BeginField(L"gts");
+		BeginArray();
+		for (auto&& listItem : node->gts)
+		{
+			BeginArrayItem();
+			Print(listItem.Obj());
+			EndArrayItem();
+		}
+		EndArray();
+		EndField();
+		BeginField(L"lts");
+		BeginArray();
+		for (auto&& listItem : node->lts)
+		{
+			BeginArrayItem();
+			Print(listItem.Obj());
+			EndArrayItem();
+		}
+		EndArray();
+		EndField();
+		BeginField(L"optional");
+		Print(node->optional.Obj());
+		EndField();
+		BeginField(L"tail");
+		Print(node->tail.Obj());
+		EndField();
+		BeginField(L"tails");
+		BeginArray();
+		for (auto&& listItem : node->tails)
+		{
+			BeginArrayItem();
+			Print(listItem.Obj());
+			EndArrayItem();
+		}
+		EndArray();
+		EndField();
+	}
+	void FeatureAstVisitor::PrintFields(Plus* node)
+	{
+	}
+	void FeatureAstVisitor::PrintFields(Pwa1Feature* node)
+	{
+		BeginField(L"gts");
+		BeginArray();
+		for (auto&& listItem : node->gts)
+		{
+			BeginArrayItem();
+			Print(listItem.Obj());
+			EndArrayItem();
+		}
+		EndArray();
+		EndField();
+		BeginField(L"lts");
+		BeginArray();
+		for (auto&& listItem : node->lts)
+		{
+			BeginArrayItem();
+			Print(listItem.Obj());
+			EndArrayItem();
+		}
+		EndArray();
+		EndField();
+		BeginField(L"pba");
+		Print(node->pba.Obj());
+		EndField();
+	}
+	void FeatureAstVisitor::PrintFields(PwlFeature* node)
+	{
+		BeginField(L"one");
+		BeginArray();
+		for (auto&& listItem : node->one)
+		{
+			BeginArrayItem();
+			Print(listItem.Obj());
+			EndArrayItem();
+		}
+		EndArray();
+		EndField();
+		BeginField(L"prefix");
+		BeginArray();
+		for (auto&& listItem : node->prefix)
+		{
+			BeginArrayItem();
+			Print(listItem.Obj());
+			EndArrayItem();
+		}
+		EndArray();
+		EndField();
+		BeginField(L"prev");
+		Print(node->prev.Obj());
+		EndField();
+		BeginField(L"two");
+		BeginArray();
+		for (auto&& listItem : node->two)
+		{
+			BeginArrayItem();
+			Print(listItem.Obj());
+			EndArrayItem();
+		}
+		EndArray();
+		EndField();
+	}
+
+	void FeatureAstVisitor::Visit(FeatureToResolve* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"FeatureToResolve", node);
+		PrintFields(static_cast<Feature*>(node));
+		PrintFields(static_cast<FeatureToResolve*>(node));
+		EndObject();
+	}
+
+	void FeatureAstVisitor::Visit(OptionalFeature* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"OptionalFeature", node);
+		PrintFields(static_cast<Feature*>(node));
+		PrintFields(static_cast<OptionalFeature*>(node));
+		EndObject();
+	}
+
+	void FeatureAstVisitor::Visit(NestedOptionalFeature* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"NestedOptionalFeature", node);
+		PrintFields(static_cast<Feature*>(node));
+		PrintFields(static_cast<NestedOptionalFeature*>(node));
+		EndObject();
+	}
+
+	void FeatureAstVisitor::Visit(BranchedOptionalFeature* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"BranchedOptionalFeature", node);
+		PrintFields(static_cast<Feature*>(node));
+		PrintFields(static_cast<BranchedOptionalFeature*>(node));
+		EndObject();
+	}
+
+	void FeatureAstVisitor::Visit(PbaFeature* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"PbaFeature", node);
+		PrintFields(static_cast<Feature*>(node));
+		PrintFields(static_cast<PbaFeature*>(node));
+		EndObject();
+	}
+
+	void FeatureAstVisitor::Visit(Pwa1Feature* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"Pwa1Feature", node);
+		PrintFields(static_cast<Feature*>(node));
+		PrintFields(static_cast<Pwa1Feature*>(node));
+		EndObject();
+	}
+
+	void FeatureAstVisitor::Visit(PwlFeature* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"PwlFeature", node);
+		PrintFields(static_cast<Feature*>(node));
+		PrintFields(static_cast<PwlFeature*>(node));
+		EndObject();
+	}
+
+	void FeatureAstVisitor::Visit(ClFeature* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"ClFeature", node);
+		PrintFields(static_cast<Feature*>(node));
+		PrintFields(static_cast<ClFeature*>(node));
+		EndObject();
+	}
+
+	void FeatureAstVisitor::Visit(FaFeature* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"FaFeature", node);
+		PrintFields(static_cast<Feature*>(node));
+		PrintFields(static_cast<FaFeature*>(node));
+		EndObject();
+	}
+
+	FeatureAstVisitor::FeatureAstVisitor(vl::stream::StreamWriter& _writer)
+		: vl::glr::JsonVisitorBase(_writer)
+	{
+	}
+
+	void FeatureAstVisitor::Print(Feature* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		node->Accept(static_cast<Feature::IVisitor*>(this));
+	}
+
+	void FeatureAstVisitor::Print(Plus* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"Plus", node);
+		PrintFields(static_cast<Plus*>(node));
+		EndObject();
+	}
+
+	void FeatureAstVisitor::Print(Lt* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"Lt", node);
+		PrintFields(static_cast<Lt*>(node));
+		EndObject();
+	}
+
+	void FeatureAstVisitor::Print(Gt* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"Gt", node);
+		PrintFields(static_cast<Gt*>(node));
+		EndObject();
+	}
+
 }

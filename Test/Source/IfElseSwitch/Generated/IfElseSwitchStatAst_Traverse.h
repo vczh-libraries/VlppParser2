@@ -9,41 +9,38 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "IfElseSwitchStatAst.h"
 
-namespace ifelseswitch
+namespace ifelseswitch::traverse_visitor
 {
-	namespace traverse_visitor
+	/// <summary>A traverse visitor, overriding all abstract methods with AST visiting code.</summary>
+	class StatAstVisitor
+		: public vl::Object
+		, protected virtual Stat::IVisitor
 	{
-		/// <summary>A traverse visitor, overriding all abstract methods with AST visiting code.</summary>
-		class StatAstVisitor
-			: public vl::Object
-			, protected virtual Stat::IVisitor
-		{
-		protected:
-			virtual void Traverse(vl::glr::ParsingToken& token);
-			virtual void Traverse(vl::glr::ParsingAstBase* node);
-			virtual void Traverse(BlockStat* node);
-			virtual void Traverse(DoStat* node);
-			virtual void Traverse(IfStat* node);
-			virtual void Traverse(Module* node);
-			virtual void Traverse(Stat* node);
+	protected:
+		virtual void Traverse(vl::glr::ParsingToken& token);
+		virtual void Traverse(vl::glr::ParsingAstBase* node);
+		virtual void Traverse(BlockStat* node);
+		virtual void Traverse(DoStat* node);
+		virtual void Traverse(IfStat* node);
+		virtual void Traverse(Module* node);
+		virtual void Traverse(Stat* node);
 
-		protected:
-			virtual void Finishing(vl::glr::ParsingAstBase* node);
-			virtual void Finishing(BlockStat* node);
-			virtual void Finishing(DoStat* node);
-			virtual void Finishing(IfStat* node);
-			virtual void Finishing(Module* node);
-			virtual void Finishing(Stat* node);
+	protected:
+		virtual void Finishing(vl::glr::ParsingAstBase* node);
+		virtual void Finishing(BlockStat* node);
+		virtual void Finishing(DoStat* node);
+		virtual void Finishing(IfStat* node);
+		virtual void Finishing(Module* node);
+		virtual void Finishing(Stat* node);
 
-		protected:
-			void Visit(DoStat* node) override;
-			void Visit(IfStat* node) override;
-			void Visit(BlockStat* node) override;
+	protected:
+		void Visit(DoStat* node) override;
+		void Visit(IfStat* node) override;
+		void Visit(BlockStat* node) override;
 
-		public:
-			void InspectInto(Stat* node);
-			void InspectInto(Module* node);
-		};
-	}
+	public:
+		void InspectInto(Stat* node);
+		void InspectInto(Module* node);
+	};
 }
 #endif

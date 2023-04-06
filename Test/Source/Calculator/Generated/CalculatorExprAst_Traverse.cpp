@@ -6,213 +6,210 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "CalculatorExprAst_Traverse.h"
 
-namespace calculator
+namespace calculator::traverse_visitor
 {
-	namespace traverse_visitor
+	void ExprAstVisitor::Traverse(vl::glr::ParsingToken& token) {}
+	void ExprAstVisitor::Traverse(vl::glr::ParsingAstBase* node) {}
+	void ExprAstVisitor::Traverse(Arg* node) {}
+	void ExprAstVisitor::Traverse(Binary* node) {}
+	void ExprAstVisitor::Traverse(Call* node) {}
+	void ExprAstVisitor::Traverse(Expandable* node) {}
+	void ExprAstVisitor::Traverse(Expr* node) {}
+	void ExprAstVisitor::Traverse(False* node) {}
+	void ExprAstVisitor::Traverse(Func* node) {}
+	void ExprAstVisitor::Traverse(Import* node) {}
+	void ExprAstVisitor::Traverse(LetExpr* node) {}
+	void ExprAstVisitor::Traverse(Module* node) {}
+	void ExprAstVisitor::Traverse(NumExpr* node) {}
+	void ExprAstVisitor::Traverse(Ref* node) {}
+	void ExprAstVisitor::Traverse(True* node) {}
+	void ExprAstVisitor::Traverse(Unary* node) {}
+
+	void ExprAstVisitor::Finishing(vl::glr::ParsingAstBase* node) {}
+	void ExprAstVisitor::Finishing(Arg* node) {}
+	void ExprAstVisitor::Finishing(Binary* node) {}
+	void ExprAstVisitor::Finishing(Call* node) {}
+	void ExprAstVisitor::Finishing(Expandable* node) {}
+	void ExprAstVisitor::Finishing(Expr* node) {}
+	void ExprAstVisitor::Finishing(False* node) {}
+	void ExprAstVisitor::Finishing(Func* node) {}
+	void ExprAstVisitor::Finishing(Import* node) {}
+	void ExprAstVisitor::Finishing(LetExpr* node) {}
+	void ExprAstVisitor::Finishing(Module* node) {}
+	void ExprAstVisitor::Finishing(NumExpr* node) {}
+	void ExprAstVisitor::Finishing(Ref* node) {}
+	void ExprAstVisitor::Finishing(True* node) {}
+	void ExprAstVisitor::Finishing(Unary* node) {}
+
+	void ExprAstVisitor::Visit(NumExpr* node)
 	{
-		void ExprAstVisitor::Traverse(vl::glr::ParsingToken& token) {}
-		void ExprAstVisitor::Traverse(vl::glr::ParsingAstBase* node) {}
-		void ExprAstVisitor::Traverse(Arg* node) {}
-		void ExprAstVisitor::Traverse(Binary* node) {}
-		void ExprAstVisitor::Traverse(Call* node) {}
-		void ExprAstVisitor::Traverse(Expandable* node) {}
-		void ExprAstVisitor::Traverse(Expr* node) {}
-		void ExprAstVisitor::Traverse(False* node) {}
-		void ExprAstVisitor::Traverse(Func* node) {}
-		void ExprAstVisitor::Traverse(Import* node) {}
-		void ExprAstVisitor::Traverse(LetExpr* node) {}
-		void ExprAstVisitor::Traverse(Module* node) {}
-		void ExprAstVisitor::Traverse(NumExpr* node) {}
-		void ExprAstVisitor::Traverse(Ref* node) {}
-		void ExprAstVisitor::Traverse(True* node) {}
-		void ExprAstVisitor::Traverse(Unary* node) {}
-
-		void ExprAstVisitor::Finishing(vl::glr::ParsingAstBase* node) {}
-		void ExprAstVisitor::Finishing(Arg* node) {}
-		void ExprAstVisitor::Finishing(Binary* node) {}
-		void ExprAstVisitor::Finishing(Call* node) {}
-		void ExprAstVisitor::Finishing(Expandable* node) {}
-		void ExprAstVisitor::Finishing(Expr* node) {}
-		void ExprAstVisitor::Finishing(False* node) {}
-		void ExprAstVisitor::Finishing(Func* node) {}
-		void ExprAstVisitor::Finishing(Import* node) {}
-		void ExprAstVisitor::Finishing(LetExpr* node) {}
-		void ExprAstVisitor::Finishing(Module* node) {}
-		void ExprAstVisitor::Finishing(NumExpr* node) {}
-		void ExprAstVisitor::Finishing(Ref* node) {}
-		void ExprAstVisitor::Finishing(True* node) {}
-		void ExprAstVisitor::Finishing(Unary* node) {}
-
-		void ExprAstVisitor::Visit(NumExpr* node)
-		{
-			if (!node) return;
-			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-			Traverse(static_cast<Expr*>(node));
-			Traverse(static_cast<NumExpr*>(node));
-			Traverse(node->value);
-			Finishing(static_cast<NumExpr*>(node));
-			Finishing(static_cast<Expr*>(node));
-			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
-		}
-
-		void ExprAstVisitor::Visit(Ref* node)
-		{
-			if (!node) return;
-			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-			Traverse(static_cast<Expr*>(node));
-			Traverse(static_cast<Ref*>(node));
-			Traverse(node->name);
-			Finishing(static_cast<Ref*>(node));
-			Finishing(static_cast<Expr*>(node));
-			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
-		}
-
-		void ExprAstVisitor::Visit(True* node)
-		{
-			if (!node) return;
-			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-			Traverse(static_cast<Expr*>(node));
-			Traverse(static_cast<True*>(node));
-			Finishing(static_cast<True*>(node));
-			Finishing(static_cast<Expr*>(node));
-			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
-		}
-
-		void ExprAstVisitor::Visit(False* node)
-		{
-			if (!node) return;
-			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-			Traverse(static_cast<Expr*>(node));
-			Traverse(static_cast<False*>(node));
-			Finishing(static_cast<False*>(node));
-			Finishing(static_cast<Expr*>(node));
-			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
-		}
-
-		void ExprAstVisitor::Visit(Func* node)
-		{
-			if (!node) return;
-			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-			Traverse(static_cast<Expr*>(node));
-			Traverse(static_cast<Func*>(node));
-			for (auto&& listItem : node->args)
-			{
-				InspectInto(listItem.Obj());
-			}
-			InspectInto(node->value.Obj());
-			Finishing(static_cast<Func*>(node));
-			Finishing(static_cast<Expr*>(node));
-			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
-		}
-
-		void ExprAstVisitor::Visit(Call* node)
-		{
-			if (!node) return;
-			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-			Traverse(static_cast<Expr*>(node));
-			Traverse(static_cast<Call*>(node));
-			for (auto&& listItem : node->args)
-			{
-				InspectInto(listItem.Obj());
-			}
-			InspectInto(node->func.Obj());
-			Finishing(static_cast<Call*>(node));
-			Finishing(static_cast<Expr*>(node));
-			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
-		}
-
-		void ExprAstVisitor::Visit(Expandable* node)
-		{
-			node->Accept(static_cast<Expandable::IVisitor*>(this));
-		}
-
-		void ExprAstVisitor::Visit(LetExpr* node)
-		{
-			if (!node) return;
-			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-			Traverse(static_cast<Expr*>(node));
-			Traverse(static_cast<Expandable*>(node));
-			Traverse(static_cast<LetExpr*>(node));
-			Traverse(node->name);
-			InspectInto(node->result.Obj());
-			InspectInto(node->value.Obj());
-			InspectInto(node->expanded.Obj());
-			Finishing(static_cast<LetExpr*>(node));
-			Finishing(static_cast<Expandable*>(node));
-			Finishing(static_cast<Expr*>(node));
-			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
-		}
-
-		void ExprAstVisitor::Visit(Unary* node)
-		{
-			if (!node) return;
-			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-			Traverse(static_cast<Expr*>(node));
-			Traverse(static_cast<Expandable*>(node));
-			Traverse(static_cast<Unary*>(node));
-			InspectInto(node->operand.Obj());
-			InspectInto(node->expanded.Obj());
-			Finishing(static_cast<Unary*>(node));
-			Finishing(static_cast<Expandable*>(node));
-			Finishing(static_cast<Expr*>(node));
-			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
-		}
-
-		void ExprAstVisitor::Visit(Binary* node)
-		{
-			if (!node) return;
-			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-			Traverse(static_cast<Expr*>(node));
-			Traverse(static_cast<Expandable*>(node));
-			Traverse(static_cast<Binary*>(node));
-			InspectInto(node->left.Obj());
-			InspectInto(node->right.Obj());
-			InspectInto(node->expanded.Obj());
-			Finishing(static_cast<Binary*>(node));
-			Finishing(static_cast<Expandable*>(node));
-			Finishing(static_cast<Expr*>(node));
-			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
-		}
-
-		void ExprAstVisitor::InspectInto(Expr* node)
-		{
-			if (!node) return;
-			node->Accept(static_cast<Expr::IVisitor*>(this));
-		}
-
-		void ExprAstVisitor::InspectInto(Arg* node)
-		{
-			if (!node) return;
-			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-			Traverse(static_cast<Arg*>(node));
-			Traverse(node->name);
-			Finishing(static_cast<Arg*>(node));
-			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
-		}
-
-		void ExprAstVisitor::InspectInto(Import* node)
-		{
-			if (!node) return;
-			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-			Traverse(static_cast<Import*>(node));
-			Traverse(node->name);
-			Finishing(static_cast<Import*>(node));
-			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
-		}
-
-		void ExprAstVisitor::InspectInto(Module* node)
-		{
-			if (!node) return;
-			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-			Traverse(static_cast<Module*>(node));
-			InspectInto(node->exported.Obj());
-			for (auto&& listItem : node->imports)
-			{
-				InspectInto(listItem.Obj());
-			}
-			Finishing(static_cast<Module*>(node));
-			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
-		}
-
+		if (!node) return;
+		Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+		Traverse(static_cast<Expr*>(node));
+		Traverse(static_cast<NumExpr*>(node));
+		Traverse(node->value);
+		Finishing(static_cast<NumExpr*>(node));
+		Finishing(static_cast<Expr*>(node));
+		Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 	}
+
+	void ExprAstVisitor::Visit(Ref* node)
+	{
+		if (!node) return;
+		Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+		Traverse(static_cast<Expr*>(node));
+		Traverse(static_cast<Ref*>(node));
+		Traverse(node->name);
+		Finishing(static_cast<Ref*>(node));
+		Finishing(static_cast<Expr*>(node));
+		Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+	}
+
+	void ExprAstVisitor::Visit(True* node)
+	{
+		if (!node) return;
+		Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+		Traverse(static_cast<Expr*>(node));
+		Traverse(static_cast<True*>(node));
+		Finishing(static_cast<True*>(node));
+		Finishing(static_cast<Expr*>(node));
+		Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+	}
+
+	void ExprAstVisitor::Visit(False* node)
+	{
+		if (!node) return;
+		Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+		Traverse(static_cast<Expr*>(node));
+		Traverse(static_cast<False*>(node));
+		Finishing(static_cast<False*>(node));
+		Finishing(static_cast<Expr*>(node));
+		Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+	}
+
+	void ExprAstVisitor::Visit(Func* node)
+	{
+		if (!node) return;
+		Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+		Traverse(static_cast<Expr*>(node));
+		Traverse(static_cast<Func*>(node));
+		for (auto&& listItem : node->args)
+		{
+			InspectInto(listItem.Obj());
+		}
+		InspectInto(node->value.Obj());
+		Finishing(static_cast<Func*>(node));
+		Finishing(static_cast<Expr*>(node));
+		Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+	}
+
+	void ExprAstVisitor::Visit(Call* node)
+	{
+		if (!node) return;
+		Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+		Traverse(static_cast<Expr*>(node));
+		Traverse(static_cast<Call*>(node));
+		for (auto&& listItem : node->args)
+		{
+			InspectInto(listItem.Obj());
+		}
+		InspectInto(node->func.Obj());
+		Finishing(static_cast<Call*>(node));
+		Finishing(static_cast<Expr*>(node));
+		Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+	}
+
+	void ExprAstVisitor::Visit(Expandable* node)
+	{
+		node->Accept(static_cast<Expandable::IVisitor*>(this));
+	}
+
+	void ExprAstVisitor::Visit(LetExpr* node)
+	{
+		if (!node) return;
+		Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+		Traverse(static_cast<Expr*>(node));
+		Traverse(static_cast<Expandable*>(node));
+		Traverse(static_cast<LetExpr*>(node));
+		Traverse(node->name);
+		InspectInto(node->result.Obj());
+		InspectInto(node->value.Obj());
+		InspectInto(node->expanded.Obj());
+		Finishing(static_cast<LetExpr*>(node));
+		Finishing(static_cast<Expandable*>(node));
+		Finishing(static_cast<Expr*>(node));
+		Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+	}
+
+	void ExprAstVisitor::Visit(Unary* node)
+	{
+		if (!node) return;
+		Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+		Traverse(static_cast<Expr*>(node));
+		Traverse(static_cast<Expandable*>(node));
+		Traverse(static_cast<Unary*>(node));
+		InspectInto(node->operand.Obj());
+		InspectInto(node->expanded.Obj());
+		Finishing(static_cast<Unary*>(node));
+		Finishing(static_cast<Expandable*>(node));
+		Finishing(static_cast<Expr*>(node));
+		Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+	}
+
+	void ExprAstVisitor::Visit(Binary* node)
+	{
+		if (!node) return;
+		Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+		Traverse(static_cast<Expr*>(node));
+		Traverse(static_cast<Expandable*>(node));
+		Traverse(static_cast<Binary*>(node));
+		InspectInto(node->left.Obj());
+		InspectInto(node->right.Obj());
+		InspectInto(node->expanded.Obj());
+		Finishing(static_cast<Binary*>(node));
+		Finishing(static_cast<Expandable*>(node));
+		Finishing(static_cast<Expr*>(node));
+		Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+	}
+
+	void ExprAstVisitor::InspectInto(Expr* node)
+	{
+		if (!node) return;
+		node->Accept(static_cast<Expr::IVisitor*>(this));
+	}
+
+	void ExprAstVisitor::InspectInto(Arg* node)
+	{
+		if (!node) return;
+		Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+		Traverse(static_cast<Arg*>(node));
+		Traverse(node->name);
+		Finishing(static_cast<Arg*>(node));
+		Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+	}
+
+	void ExprAstVisitor::InspectInto(Import* node)
+	{
+		if (!node) return;
+		Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+		Traverse(static_cast<Import*>(node));
+		Traverse(node->name);
+		Finishing(static_cast<Import*>(node));
+		Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+	}
+
+	void ExprAstVisitor::InspectInto(Module* node)
+	{
+		if (!node) return;
+		Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+		Traverse(static_cast<Module*>(node));
+		InspectInto(node->exported.Obj());
+		for (auto&& listItem : node->imports)
+		{
+			InspectInto(listItem.Obj());
+		}
+		Finishing(static_cast<Module*>(node));
+		Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+	}
+
 }

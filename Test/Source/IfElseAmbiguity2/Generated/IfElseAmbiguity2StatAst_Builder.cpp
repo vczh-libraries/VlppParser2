@@ -6,65 +6,62 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "IfElseAmbiguity2StatAst_Builder.h"
 
-namespace ifelseambiguity2
+namespace ifelseambiguity2::builder
 {
-	namespace builder
-	{
 
 /***********************************************************************
 MakeBlockStat
 ***********************************************************************/
 
-		MakeBlockStat& MakeBlockStat::stats(const vl::Ptr<Stat>& value)
-		{
-			node->stats.Add(value);
-			return *this;
-		}
+	MakeBlockStat& MakeBlockStat::stats(const vl::Ptr<Stat>& value)
+	{
+		node->stats.Add(value);
+		return *this;
+	}
 
 /***********************************************************************
 MakeIfContentCandidate
 ***********************************************************************/
 
-		MakeIfContentCandidate& MakeIfContentCandidate::elseBranch(const vl::Ptr<Stat>& value)
-		{
-			node->elseBranch = value;
-			return *this;
-		}
+	MakeIfContentCandidate& MakeIfContentCandidate::elseBranch(const vl::Ptr<Stat>& value)
+	{
+		node->elseBranch = value;
+		return *this;
+	}
 
-		MakeIfContentCandidate& MakeIfContentCandidate::thenBranch(const vl::Ptr<Stat>& value)
-		{
-			node->thenBranch = value;
-			return *this;
-		}
+	MakeIfContentCandidate& MakeIfContentCandidate::thenBranch(const vl::Ptr<Stat>& value)
+	{
+		node->thenBranch = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeIfContentToResolve
 ***********************************************************************/
 
-		MakeIfContentToResolve& MakeIfContentToResolve::candidates(const vl::Ptr<IfContent>& value)
-		{
-			node->candidates.Add(value);
-			return *this;
-		}
+	MakeIfContentToResolve& MakeIfContentToResolve::candidates(const vl::Ptr<IfContent>& value)
+	{
+		node->candidates.Add(value);
+		return *this;
+	}
 
 /***********************************************************************
 MakeIfStat
 ***********************************************************************/
 
-		MakeIfStat& MakeIfStat::content(const vl::Ptr<IfContent>& value)
-		{
-			node->content = value;
-			return *this;
-		}
+	MakeIfStat& MakeIfStat::content(const vl::Ptr<IfContent>& value)
+	{
+		node->content = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeModule
 ***********************************************************************/
 
-		MakeModule& MakeModule::stat(const vl::Ptr<Stat>& value)
-		{
-			node->stat = value;
-			return *this;
-		}
+	MakeModule& MakeModule::stat(const vl::Ptr<Stat>& value)
+	{
+		node->stat = value;
+		return *this;
 	}
 }

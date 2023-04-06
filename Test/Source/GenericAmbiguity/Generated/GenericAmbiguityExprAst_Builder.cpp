@@ -6,119 +6,116 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "GenericAmbiguityExprAst_Builder.h"
 
-namespace genericambiguity
+namespace genericambiguity::builder
 {
-	namespace builder
-	{
 
 /***********************************************************************
 MakeBinaryExpr
 ***********************************************************************/
 
-		MakeBinaryExpr& MakeBinaryExpr::left(const vl::Ptr<Expr>& value)
-		{
-			node->left = value;
-			return *this;
-		}
+	MakeBinaryExpr& MakeBinaryExpr::left(const vl::Ptr<Expr>& value)
+	{
+		node->left = value;
+		return *this;
+	}
 
-		MakeBinaryExpr& MakeBinaryExpr::op(BinaryOp value)
-		{
-			node->op = value;
-			return *this;
-		}
+	MakeBinaryExpr& MakeBinaryExpr::op(BinaryOp value)
+	{
+		node->op = value;
+		return *this;
+	}
 
-		MakeBinaryExpr& MakeBinaryExpr::right(const vl::Ptr<Expr>& value)
-		{
-			node->right = value;
-			return *this;
-		}
+	MakeBinaryExpr& MakeBinaryExpr::right(const vl::Ptr<Expr>& value)
+	{
+		node->right = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeCallExpr
 ***********************************************************************/
 
-		MakeCallExpr& MakeCallExpr::args(const vl::Ptr<Expr>& value)
-		{
-			node->args.Add(value);
-			return *this;
-		}
+	MakeCallExpr& MakeCallExpr::args(const vl::Ptr<Expr>& value)
+	{
+		node->args.Add(value);
+		return *this;
+	}
 
-		MakeCallExpr& MakeCallExpr::func(const vl::Ptr<Expr>& value)
-		{
-			node->func = value;
-			return *this;
-		}
+	MakeCallExpr& MakeCallExpr::func(const vl::Ptr<Expr>& value)
+	{
+		node->func = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeDecrementExpr
 ***********************************************************************/
 
-		MakeDecrementExpr& MakeDecrementExpr::expr(const vl::Ptr<Expr>& value)
-		{
-			node->expr = value;
-			return *this;
-		}
+	MakeDecrementExpr& MakeDecrementExpr::expr(const vl::Ptr<Expr>& value)
+	{
+		node->expr = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeExprToResolve
 ***********************************************************************/
 
-		MakeExprToResolve& MakeExprToResolve::candidates(const vl::Ptr<Expr>& value)
-		{
-			node->candidates.Add(value);
-			return *this;
-		}
+	MakeExprToResolve& MakeExprToResolve::candidates(const vl::Ptr<Expr>& value)
+	{
+		node->candidates.Add(value);
+		return *this;
+	}
 
 /***********************************************************************
 MakeGenericExpr
 ***********************************************************************/
 
-		MakeGenericExpr& MakeGenericExpr::args(const vl::Ptr<Expr>& value)
-		{
-			node->args.Add(value);
-			return *this;
-		}
+	MakeGenericExpr& MakeGenericExpr::args(const vl::Ptr<Expr>& value)
+	{
+		node->args.Add(value);
+		return *this;
+	}
 
-		MakeGenericExpr& MakeGenericExpr::name(const vl::WString& value)
-		{
-			node->name.value = value;
-			return *this;
-		}
+	MakeGenericExpr& MakeGenericExpr::name(const vl::WString& value)
+	{
+		node->name.value = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeModule
 ***********************************************************************/
 
-		MakeModule& MakeModule::expr(const vl::Ptr<Expr>& value)
-		{
-			node->expr = value;
-			return *this;
-		}
+	MakeModule& MakeModule::expr(const vl::Ptr<Expr>& value)
+	{
+		node->expr = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakePostfixExpr
 ***********************************************************************/
 
-		MakePostfixExpr& MakePostfixExpr::expr(const vl::Ptr<Expr>& value)
-		{
-			node->expr = value;
-			return *this;
-		}
+	MakePostfixExpr& MakePostfixExpr::expr(const vl::Ptr<Expr>& value)
+	{
+		node->expr = value;
+		return *this;
+	}
 
-		MakePostfixExpr& MakePostfixExpr::op(PostfixOp value)
-		{
-			node->op = value;
-			return *this;
-		}
+	MakePostfixExpr& MakePostfixExpr::op(PostfixOp value)
+	{
+		node->op = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeRefExpr
 ***********************************************************************/
 
-		MakeRefExpr& MakeRefExpr::name(const vl::WString& value)
-		{
-			node->name.value = value;
-			return *this;
-		}
+	MakeRefExpr& MakeRefExpr::name(const vl::WString& value)
+	{
+		node->name.value = value;
+		return *this;
 	}
 }

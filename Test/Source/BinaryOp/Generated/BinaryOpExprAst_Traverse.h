@@ -9,35 +9,32 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "BinaryOpExprAst.h"
 
-namespace binaryop
+namespace binaryop::traverse_visitor
 {
-	namespace traverse_visitor
+	/// <summary>A traverse visitor, overriding all abstract methods with AST visiting code.</summary>
+	class ExprAstVisitor
+		: public vl::Object
+		, protected virtual Expr::IVisitor
 	{
-		/// <summary>A traverse visitor, overriding all abstract methods with AST visiting code.</summary>
-		class ExprAstVisitor
-			: public vl::Object
-			, protected virtual Expr::IVisitor
-		{
-		protected:
-			virtual void Traverse(vl::glr::ParsingToken& token);
-			virtual void Traverse(vl::glr::ParsingAstBase* node);
-			virtual void Traverse(BinaryExpr* node);
-			virtual void Traverse(Expr* node);
-			virtual void Traverse(RefExpr* node);
+	protected:
+		virtual void Traverse(vl::glr::ParsingToken& token);
+		virtual void Traverse(vl::glr::ParsingAstBase* node);
+		virtual void Traverse(BinaryExpr* node);
+		virtual void Traverse(Expr* node);
+		virtual void Traverse(RefExpr* node);
 
-		protected:
-			virtual void Finishing(vl::glr::ParsingAstBase* node);
-			virtual void Finishing(BinaryExpr* node);
-			virtual void Finishing(Expr* node);
-			virtual void Finishing(RefExpr* node);
+	protected:
+		virtual void Finishing(vl::glr::ParsingAstBase* node);
+		virtual void Finishing(BinaryExpr* node);
+		virtual void Finishing(Expr* node);
+		virtual void Finishing(RefExpr* node);
 
-		protected:
-			void Visit(RefExpr* node) override;
-			void Visit(BinaryExpr* node) override;
+	protected:
+		void Visit(RefExpr* node) override;
+		void Visit(BinaryExpr* node) override;
 
-		public:
-			void InspectInto(Expr* node);
-		};
-	}
+	public:
+		void InspectInto(Expr* node);
+	};
 }
 #endif

@@ -6,62 +6,59 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "PrefixMerge3_LriNestedTypeOrExpr_Empty.h"
 
-namespace prefixmerge3_lrinested
+namespace prefixmerge3_lrinested::empty_visitor
 {
-	namespace empty_visitor
-	{
 
 /***********************************************************************
 TypeOrExprVisitor
 ***********************************************************************/
 
-		// Visitor Members -----------------------------------
+	// Visitor Members -----------------------------------
 
-		void TypeOrExprVisitor::Visit(TypeOrExprToResolve* node)
-		{
-		}
+	void TypeOrExprVisitor::Visit(TypeOrExprToResolve* node)
+	{
+	}
 
-		void TypeOrExprVisitor::Visit(QualifiedName* node)
-		{
-			Dispatch(node);
-		}
+	void TypeOrExprVisitor::Visit(QualifiedName* node)
+	{
+		Dispatch(node);
+	}
 
-		void TypeOrExprVisitor::Visit(CallExpr* node)
-		{
-		}
+	void TypeOrExprVisitor::Visit(CallExpr* node)
+	{
+	}
 
-		void TypeOrExprVisitor::Visit(CtorExpr* node)
-		{
-		}
+	void TypeOrExprVisitor::Visit(CtorExpr* node)
+	{
+	}
 
-		void TypeOrExprVisitor::Visit(MulExpr* node)
-		{
-		}
+	void TypeOrExprVisitor::Visit(MulExpr* node)
+	{
+	}
 
-		void TypeOrExprVisitor::Visit(ConstType* node)
-		{
-		}
+	void TypeOrExprVisitor::Visit(ConstType* node)
+	{
+	}
 
-		void TypeOrExprVisitor::Visit(PointerType* node)
-		{
-		}
+	void TypeOrExprVisitor::Visit(PointerType* node)
+	{
+	}
 
-		void TypeOrExprVisitor::Visit(FunctionType* node)
-		{
-		}
+	void TypeOrExprVisitor::Visit(FunctionType* node)
+	{
+	}
 
 /***********************************************************************
 QualifiedNameVisitor
 ***********************************************************************/
 
-		// Visitor Members -----------------------------------
+	// Visitor Members -----------------------------------
 
-		void QualifiedNameVisitor::Visit(Name* node)
-		{
-		}
+	void QualifiedNameVisitor::Visit(Name* node)
+	{
+	}
 
-		void QualifiedNameVisitor::Visit(MemberName* node)
-		{
-		}
+	void QualifiedNameVisitor::Visit(MemberName* node)
+	{
 	}
 }

@@ -9,81 +9,78 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "FeatureTestFeatureAst.h"
 
-namespace featuretest
+namespace featuretest::builder
 {
-	namespace builder
+	class MakeBranchedOptionalFeature : public vl::glr::ParsingAstBuilder<BranchedOptionalFeature>
 	{
-		class MakeBranchedOptionalFeature : public vl::glr::ParsingAstBuilder<BranchedOptionalFeature>
-		{
-		public:
-			MakeBranchedOptionalFeature& optional(const vl::Ptr<Plus>& value);
-			MakeBranchedOptionalFeature& tails(const vl::Ptr<Plus>& value);
-			MakeBranchedOptionalFeature& type(BranchType value);
-		};
+	public:
+		MakeBranchedOptionalFeature& optional(const vl::Ptr<Plus>& value);
+		MakeBranchedOptionalFeature& tails(const vl::Ptr<Plus>& value);
+		MakeBranchedOptionalFeature& type(BranchType value);
+	};
 
-		class MakeClFeature : public vl::glr::ParsingAstBuilder<ClFeature>
-		{
-		public:
-			MakeClFeature& id(const vl::WString& value);
-		};
+	class MakeClFeature : public vl::glr::ParsingAstBuilder<ClFeature>
+	{
+	public:
+		MakeClFeature& id(const vl::WString& value);
+	};
 
-		class MakeFaFeature : public vl::glr::ParsingAstBuilder<FaFeature>
-		{
-		public:
-			MakeFaFeature& fa(FieldAssignment value);
-		};
+	class MakeFaFeature : public vl::glr::ParsingAstBuilder<FaFeature>
+	{
+	public:
+		MakeFaFeature& fa(FieldAssignment value);
+	};
 
-		class MakeFeatureToResolve : public vl::glr::ParsingAstBuilder<FeatureToResolve>
-		{
-		public:
-			MakeFeatureToResolve& candidates(const vl::Ptr<Feature>& value);
-		};
+	class MakeFeatureToResolve : public vl::glr::ParsingAstBuilder<FeatureToResolve>
+	{
+	public:
+		MakeFeatureToResolve& candidates(const vl::Ptr<Feature>& value);
+	};
 
-		class MakeNestedOptionalFeature : public vl::glr::ParsingAstBuilder<NestedOptionalFeature>
-		{
-		public:
-			MakeNestedOptionalFeature& optional(const vl::Ptr<Plus>& value);
-			MakeNestedOptionalFeature& tail1(const vl::Ptr<Plus>& value);
-			MakeNestedOptionalFeature& tail2(const vl::Ptr<Plus>& value);
-			MakeNestedOptionalFeature& tail3(const vl::Ptr<Plus>& value);
-			MakeNestedOptionalFeature& tails(const vl::Ptr<Plus>& value);
-		};
+	class MakeNestedOptionalFeature : public vl::glr::ParsingAstBuilder<NestedOptionalFeature>
+	{
+	public:
+		MakeNestedOptionalFeature& optional(const vl::Ptr<Plus>& value);
+		MakeNestedOptionalFeature& tail1(const vl::Ptr<Plus>& value);
+		MakeNestedOptionalFeature& tail2(const vl::Ptr<Plus>& value);
+		MakeNestedOptionalFeature& tail3(const vl::Ptr<Plus>& value);
+		MakeNestedOptionalFeature& tails(const vl::Ptr<Plus>& value);
+	};
 
-		class MakeOptionalFeature : public vl::glr::ParsingAstBuilder<OptionalFeature>
-		{
-		public:
-			MakeOptionalFeature& loop(const vl::Ptr<Plus>& value);
-			MakeOptionalFeature& optional(const vl::Ptr<Plus>& value);
-			MakeOptionalFeature& priority(OptionalProprity value);
-		};
+	class MakeOptionalFeature : public vl::glr::ParsingAstBuilder<OptionalFeature>
+	{
+	public:
+		MakeOptionalFeature& loop(const vl::Ptr<Plus>& value);
+		MakeOptionalFeature& optional(const vl::Ptr<Plus>& value);
+		MakeOptionalFeature& priority(OptionalProprity value);
+	};
 
-		class MakePbaFeature : public vl::glr::ParsingAstBuilder<PbaFeature>
-		{
-		public:
-			MakePbaFeature& gts(const vl::Ptr<Gt>& value);
-			MakePbaFeature& lts(const vl::Ptr<Lt>& value);
-			MakePbaFeature& optional(const vl::Ptr<Plus>& value);
-			MakePbaFeature& tail(const vl::Ptr<Plus>& value);
-			MakePbaFeature& tails(const vl::Ptr<Plus>& value);
-		};
+	class MakePbaFeature : public vl::glr::ParsingAstBuilder<PbaFeature>
+	{
+	public:
+		MakePbaFeature& gts(const vl::Ptr<Gt>& value);
+		MakePbaFeature& lts(const vl::Ptr<Lt>& value);
+		MakePbaFeature& optional(const vl::Ptr<Plus>& value);
+		MakePbaFeature& tail(const vl::Ptr<Plus>& value);
+		MakePbaFeature& tails(const vl::Ptr<Plus>& value);
+	};
 
-		class MakePwa1Feature : public vl::glr::ParsingAstBuilder<Pwa1Feature>
-		{
-		public:
-			MakePwa1Feature& gts(const vl::Ptr<Gt>& value);
-			MakePwa1Feature& lts(const vl::Ptr<Lt>& value);
-			MakePwa1Feature& pba(const vl::Ptr<Feature>& value);
-		};
+	class MakePwa1Feature : public vl::glr::ParsingAstBuilder<Pwa1Feature>
+	{
+	public:
+		MakePwa1Feature& gts(const vl::Ptr<Gt>& value);
+		MakePwa1Feature& lts(const vl::Ptr<Lt>& value);
+		MakePwa1Feature& pba(const vl::Ptr<Feature>& value);
+	};
 
-		class MakePwlFeature : public vl::glr::ParsingAstBuilder<PwlFeature>
-		{
-		public:
-			MakePwlFeature& one(const vl::Ptr<Lt>& value);
-			MakePwlFeature& prefix(const vl::Ptr<Plus>& value);
-			MakePwlFeature& prev(const vl::Ptr<PwlFeature>& value);
-			MakePwlFeature& two(const vl::Ptr<Lt>& value);
-		};
+	class MakePwlFeature : public vl::glr::ParsingAstBuilder<PwlFeature>
+	{
+	public:
+		MakePwlFeature& one(const vl::Ptr<Lt>& value);
+		MakePwlFeature& prefix(const vl::Ptr<Plus>& value);
+		MakePwlFeature& prev(const vl::Ptr<PwlFeature>& value);
+		MakePwlFeature& two(const vl::Ptr<Lt>& value);
+	};
 
-	}
 }
 #endif

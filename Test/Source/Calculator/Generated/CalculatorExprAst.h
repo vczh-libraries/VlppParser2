@@ -182,96 +182,90 @@ namespace calculator
 		vl::Ptr<Expr> exported;
 	};
 }
-namespace vl
+namespace vl::reflection::description
 {
-	namespace reflection
-	{
-		namespace description
-		{
 #ifndef VCZH_DEBUG_NO_REFLECTION
-			DECL_TYPE_INFO(calculator::Expr)
-			DECL_TYPE_INFO(calculator::Expr::IVisitor)
-			DECL_TYPE_INFO(calculator::NumExpr)
-			DECL_TYPE_INFO(calculator::Ref)
-			DECL_TYPE_INFO(calculator::True)
-			DECL_TYPE_INFO(calculator::False)
-			DECL_TYPE_INFO(calculator::Arg)
-			DECL_TYPE_INFO(calculator::Func)
-			DECL_TYPE_INFO(calculator::Call)
-			DECL_TYPE_INFO(calculator::Expandable)
-			DECL_TYPE_INFO(calculator::Expandable::IVisitor)
-			DECL_TYPE_INFO(calculator::LetExpr)
-			DECL_TYPE_INFO(calculator::UnaryOp)
-			DECL_TYPE_INFO(calculator::Unary)
-			DECL_TYPE_INFO(calculator::BinaryOp)
-			DECL_TYPE_INFO(calculator::Binary)
-			DECL_TYPE_INFO(calculator::Import)
-			DECL_TYPE_INFO(calculator::Module)
+	DECL_TYPE_INFO(calculator::Expr)
+	DECL_TYPE_INFO(calculator::Expr::IVisitor)
+	DECL_TYPE_INFO(calculator::NumExpr)
+	DECL_TYPE_INFO(calculator::Ref)
+	DECL_TYPE_INFO(calculator::True)
+	DECL_TYPE_INFO(calculator::False)
+	DECL_TYPE_INFO(calculator::Arg)
+	DECL_TYPE_INFO(calculator::Func)
+	DECL_TYPE_INFO(calculator::Call)
+	DECL_TYPE_INFO(calculator::Expandable)
+	DECL_TYPE_INFO(calculator::Expandable::IVisitor)
+	DECL_TYPE_INFO(calculator::LetExpr)
+	DECL_TYPE_INFO(calculator::UnaryOp)
+	DECL_TYPE_INFO(calculator::Unary)
+	DECL_TYPE_INFO(calculator::BinaryOp)
+	DECL_TYPE_INFO(calculator::Binary)
+	DECL_TYPE_INFO(calculator::Import)
+	DECL_TYPE_INFO(calculator::Module)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 
-			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(calculator::Expr::IVisitor)
-				void Visit(calculator::NumExpr* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(calculator::Ref* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(calculator::True* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(calculator::False* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(calculator::Func* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(calculator::Call* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(calculator::Expandable* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-			END_INTERFACE_PROXY(calculator::Expr::IVisitor)
-
-			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(calculator::Expandable::IVisitor)
-				void Visit(calculator::LetExpr* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(calculator::Unary* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(calculator::Binary* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-			END_INTERFACE_PROXY(calculator::Expandable::IVisitor)
-
-#endif
-#endif
-			/// <summary>Load all reflectable AST types, only available when <b>VCZH_DEBUG_NO_REFLECTION</b> is off.</summary>
-			/// <returns>Returns true if this operation succeeded.</returns>
-			extern bool CalculatorExprAstLoadTypes();
+	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(calculator::Expr::IVisitor)
+		void Visit(calculator::NumExpr* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
 		}
-	}
+
+		void Visit(calculator::Ref* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(calculator::True* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(calculator::False* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(calculator::Func* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(calculator::Call* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(calculator::Expandable* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+	END_INTERFACE_PROXY(calculator::Expr::IVisitor)
+
+	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(calculator::Expandable::IVisitor)
+		void Visit(calculator::LetExpr* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(calculator::Unary* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(calculator::Binary* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+	END_INTERFACE_PROXY(calculator::Expandable::IVisitor)
+
+#endif
+#endif
+	/// <summary>Load all reflectable AST types, only available when <b>VCZH_DEBUG_NO_REFLECTION</b> is off.</summary>
+	/// <returns>Returns true if this operation succeeded.</returns>
+	extern bool CalculatorExprAstLoadTypes();
 }
 #endif

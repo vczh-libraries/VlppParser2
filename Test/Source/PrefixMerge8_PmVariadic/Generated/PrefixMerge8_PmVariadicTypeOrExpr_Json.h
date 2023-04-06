@@ -9,63 +9,60 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "PrefixMerge8_PmVariadicTypeOrExpr.h"
 
-namespace prefixmerge8_pmvariadic
+namespace prefixmerge8_pmvariadic::json_visitor
 {
-	namespace json_visitor
+	/// <summary>A JSON visitor, overriding all abstract methods with AST to JSON serialization code.</summary>
+	class TypeOrExprVisitor
+		: public vl::glr::JsonVisitorBase
+		, protected virtual TypeOrExprOrOthers::IVisitor
+		, protected virtual TypeOrExpr::IVisitor
+		, protected virtual QualifiedName::IVisitor
+		, protected virtual GenericQualifiedName::IVisitor
 	{
-		/// <summary>A JSON visitor, overriding all abstract methods with AST to JSON serialization code.</summary>
-		class TypeOrExprVisitor
-			: public vl::glr::JsonVisitorBase
-			, protected virtual TypeOrExprOrOthers::IVisitor
-			, protected virtual TypeOrExpr::IVisitor
-			, protected virtual QualifiedName::IVisitor
-			, protected virtual GenericQualifiedName::IVisitor
-		{
-		protected:
-			virtual void PrintFields(CallExpr* node);
-			virtual void PrintFields(ConstType* node);
-			virtual void PrintFields(CtorExpr* node);
-			virtual void PrintFields(FunctionType* node);
-			virtual void PrintFields(GenericMemberName* node);
-			virtual void PrintFields(GenericName* node);
-			virtual void PrintFields(GenericQualifiedName* node);
-			virtual void PrintFields(MemberName* node);
-			virtual void PrintFields(MulExpr* node);
-			virtual void PrintFields(Name* node);
-			virtual void PrintFields(PointerType* node);
-			virtual void PrintFields(QualifiedName* node);
-			virtual void PrintFields(TypeOrExpr* node);
-			virtual void PrintFields(TypeOrExprOrOthers* node);
-			virtual void PrintFields(TypeOrExprOrOthersToResolve* node);
-			virtual void PrintFields(TypeOrExprToResolve* node);
-			virtual void PrintFields(VariadicArgument* node);
+	protected:
+		virtual void PrintFields(CallExpr* node);
+		virtual void PrintFields(ConstType* node);
+		virtual void PrintFields(CtorExpr* node);
+		virtual void PrintFields(FunctionType* node);
+		virtual void PrintFields(GenericMemberName* node);
+		virtual void PrintFields(GenericName* node);
+		virtual void PrintFields(GenericQualifiedName* node);
+		virtual void PrintFields(MemberName* node);
+		virtual void PrintFields(MulExpr* node);
+		virtual void PrintFields(Name* node);
+		virtual void PrintFields(PointerType* node);
+		virtual void PrintFields(QualifiedName* node);
+		virtual void PrintFields(TypeOrExpr* node);
+		virtual void PrintFields(TypeOrExprOrOthers* node);
+		virtual void PrintFields(TypeOrExprOrOthersToResolve* node);
+		virtual void PrintFields(TypeOrExprToResolve* node);
+		virtual void PrintFields(VariadicArgument* node);
 
-		protected:
-			void Visit(TypeOrExprOrOthersToResolve* node) override;
-			void Visit(VariadicArgument* node) override;
-			void Visit(TypeOrExpr* node) override;
+	protected:
+		void Visit(TypeOrExprOrOthersToResolve* node) override;
+		void Visit(VariadicArgument* node) override;
+		void Visit(TypeOrExpr* node) override;
 
-			void Visit(TypeOrExprToResolve* node) override;
-			void Visit(QualifiedName* node) override;
-			void Visit(CallExpr* node) override;
-			void Visit(CtorExpr* node) override;
-			void Visit(MulExpr* node) override;
-			void Visit(ConstType* node) override;
-			void Visit(PointerType* node) override;
-			void Visit(FunctionType* node) override;
+		void Visit(TypeOrExprToResolve* node) override;
+		void Visit(QualifiedName* node) override;
+		void Visit(CallExpr* node) override;
+		void Visit(CtorExpr* node) override;
+		void Visit(MulExpr* node) override;
+		void Visit(ConstType* node) override;
+		void Visit(PointerType* node) override;
+		void Visit(FunctionType* node) override;
 
-			void Visit(Name* node) override;
-			void Visit(MemberName* node) override;
-			void Visit(GenericQualifiedName* node) override;
+		void Visit(Name* node) override;
+		void Visit(MemberName* node) override;
+		void Visit(GenericQualifiedName* node) override;
 
-			void Visit(GenericName* node) override;
-			void Visit(GenericMemberName* node) override;
+		void Visit(GenericName* node) override;
+		void Visit(GenericMemberName* node) override;
 
-		public:
-			TypeOrExprVisitor(vl::stream::StreamWriter& _writer);
+	public:
+		TypeOrExprVisitor(vl::stream::StreamWriter& _writer);
 
-			void Print(TypeOrExprOrOthers* node);
-		};
-	}
+		void Print(TypeOrExprOrOthers* node);
+	};
 }
 #endif
