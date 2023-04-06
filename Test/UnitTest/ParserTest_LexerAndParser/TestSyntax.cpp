@@ -5,13 +5,15 @@
 #include "../../Source/Calculator/Parser/Calculator_Assembler.h"
 #include "../../Source/Calculator/Parser/Calculator_Lexer.h"
 #include "../../Source/LogParser.h"
+#include "../../../Source/Ast/AstSymbol.h"
 
 using namespace calculator;
 using namespace calculator::builder;
 
 extern WString GetTestParserInputPath(const WString& parserName);
 extern FilePath GetOutputDir(const WString& parserName);
-extern void GenerateCalculatorSyntax(SyntaxSymbolManager& manager);
+extern void GenerateCalculatorAst(AstSymbolManager& manager);
+extern void GenerateCalculatorSyntax(AstSymbolManager& ast, SyntaxSymbolManager& manager);
 
 namespace TestSyntax_TestObjects
 {
@@ -140,8 +142,10 @@ using namespace TestSyntax_TestObjects;
 TEST_FILE
 {
 	ParserSymbolManager global;
+	AstSymbolManager astManager(global);
 	SyntaxSymbolManager syntaxManager(global);
-	GenerateCalculatorSyntax(syntaxManager);
+	GenerateCalculatorAst(astManager);
+	GenerateCalculatorSyntax(astManager, syntaxManager);
 	TEST_CASE_ASSERT(global.Errors().Count() == 0);
 	LogCalculatorSyntax(syntaxManager, L"NFA[1]");
 

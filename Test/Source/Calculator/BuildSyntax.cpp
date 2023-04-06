@@ -1,4 +1,5 @@
 #include "../../../Source/Syntax/SyntaxSymbolWriter.h"
+#include "../../../Source/Ast/AstSymbol.h"
 #include "Parser/Calculator_Assembler.h"
 #include "Parser/Calculator_Lexer.h"
 
@@ -28,7 +29,7 @@ auto tok(CalculatorTokens id, CalculatorFields field)
 		);
 }
 
-void GenerateCalculatorSyntax(SyntaxSymbolManager& manager)
+void GenerateCalculatorSyntax(AstSymbolManager& ast, SyntaxSymbolManager& manager)
 {
 	manager.name = L"ModuleParser";
 
@@ -44,7 +45,9 @@ void GenerateCalculatorSyntax(SyntaxSymbolManager& manager)
 	auto _module = manager.CreateRule(L"Module");
 
 	_exp->isParser = true;
+	_exp->ruleType = dynamic_cast<AstClassSymbol*>(ast.Symbols()[L"Expr"]);
 	_module->isParser = true;
+	_module->ruleType = dynamic_cast<AstClassSymbol*>(ast.Symbols()[L"Module"]);
 
 	using T = CalculatorTokens;
 	using C = CalculatorClasses;
